@@ -3,71 +3,73 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stSir-002cTi-0e
+	id 1stSir-002cU4-1T
 	for lore@lore.pengutronix.de;
 	Wed, 25 Sep 2024 16:10:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stSir-0004dj-CP
+	id 1stSir-0004eE-Sv
 	for lore@pengutronix.de; Wed, 25 Sep 2024 16:10:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gpCfFxfl2X9SAKTi777gbYnSTy1ypLQ2PnTjqg0aj6Y=; b=mQlAc7CGGnOemn0Tl/NNoPVVn4
-	R8xzaH0+ap70iXBtkgHQ5HFlzeKQ1u46mio/W2pvModaSrSPrny9Lc4+SHsigs4WfyBgkz0JR/5jc
-	FL2NjHGXZq62kg+HM4kQSKa9pEVnOy0t0S/GPphCtYwvpEqXFRViJ9TyKMeWXFjoN2+/1fWJxPonW
-	hjaabdw9eKOe2uf8eZvm+kRzCKMuX8YhfOhQ3tSw1SyG1R3plLpU6y2n05Y9OhIOAfB4Uus3guxwG
-	gdnRPK9pis7GGB6gcQ/aEiOi9bxnUEEOqRi5jOnFmFCX5eGlYM8YrccPU4nYfd154wgYN1/qK/ips
-	OKj226Ug==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=qvX5yuBNCLJHtZv9YQHS/edvF6zrwR/iLpFSR/3iw9I=; b=1iwTQk7ofmBwRAkMtuZQlxLyoN
+	0wQKyMLBeTppi+HoFBN4G61rJpg2TTRgP4goGyZi2/Vk0Ssimu3saXuXsSTFST4t97vMKaOj5SBcl
+	1wn0X1X0RH3DKjHo6jiqLytO8vWOzxPCvVP4wkcwhp/i9P6r4vAvf1x5USMB8KP0vB46LuT3AwIEo
+	nc29n9ySZ119WIzjYHCdizlxEJJCGkpotIKADsN0jJ+Q1CnzdejRNkgRY6IRJcyXTQnmaulOVZ7qz
+	rBJ5jgavgNWLQQsE2O6vHgRxJclpp7CmqBsdQguTj4Ee8GKaG8K6VveV8Cd5FMZXOkrvx9UMRheIj
+	6SILtfVQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stSiO-00000005XyZ-2ktE;
-	Wed, 25 Sep 2024 14:10:00 +0000
+	id 1stSiN-00000005Xxi-1isu;
+	Wed, 25 Sep 2024 14:09:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stSf6-00000005X9c-12uR
+	id 1stSf6-00000005X9b-12yK
 	for barebox@lists.infradead.org;
-	Wed, 25 Sep 2024 14:06:38 +0000
+	Wed, 25 Sep 2024 14:06:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSf4-0003zb-Tg; Wed, 25 Sep 2024 16:06:34 +0200
+	id 1stSf4-0003zY-Sw; Wed, 25 Sep 2024 16:06:34 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSf4-001Ssh-GV; Wed, 25 Sep 2024 16:06:34 +0200
+	id 1stSf4-001Sse-Fs; Wed, 25 Sep 2024 16:06:34 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSf4-00DDhp-2t;
+	id 1stSf4-00DDhp-2q;
 	Wed, 25 Sep 2024 16:06:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Sep 2024 16:06:34 +0200
+Date: Wed, 25 Sep 2024 16:06:31 +0200
+Message-Id: <20240925-spi-gpio-v1-0-47f6285b3bf1@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240925-spi-gpio-v1-3-47f6285b3bf1@pengutronix.de>
-References: <20240925-spi-gpio-v1-0-47f6285b3bf1@pengutronix.de>
-In-Reply-To: <20240925-spi-gpio-v1-0-47f6285b3bf1@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAOgY9GYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDSyNT3eKCTN30gsx8XZNUM9OkVMM08yRLAyWg8oKi1LTMCrBR0bG1tQD
+ sFQmHWgAAAA==
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727273194; l=2370;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727273194; l=790;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Pz31nyz5xACNyLVHpP4P/8XuXKhnDitNxQ9D00UCYDI=;
- b=C3ByBTA7aMbAvPxVQqeE4wgP4CZB+zNJkrSZFSGIPNsCJJPsxGxQaWnATHciBZAivsu78evIP
- 5f0U0mNQ3+/BqFa3k1DRo3hhElvM8SDny+He4PBj4/x2hiSBrCfTlS7
+ bh=OQYDPanjo0reTNO2uKKn2yMCx0kY5hWLZ7d+ymedO60=;
+ b=D79PbRgsG7emXPb7F08PfA5ymccmqYjOeB6vkxmJfUYxRjcdjoM24yOX4e1c7smnc5OtFVDTx
+ 2cjUByOwIsfAtY2JnWMIxtYmS9zyZSzktGHp1EFIjvXsKD4xWIGAX/g
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240925_070636_350262_7AEA4758 
-X-CRM114-Status: GOOD (  14.73  )
+X-CRM114-CacheID: sfid-20240925_070636_341629_9E071AE5 
+X-CRM114-Status: UNSURE (   8.20  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,72 +91,31 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] spi: spi-gpio: switch to new gpio binding
+Subject: [PATCH 0/3] spi-gpio updates
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The old deprecated device tree binding for the spi-gpio driver uses
-"gpio-sck", "gpio-mosi" and "gpio-miso" to specify the GPIOs. Switch to
-the new binding which uses the standard GPIO property names.
-
-The old binding is still used in some device trees, but none of the SoCs
-using them is actually supported in barebox, so do not bother to keep a
-fallback to the old binding. The one in-tree user of the old binding is
-converted in this patch.
+Our spio-gpio driver currently only supports 8bit word width. This
+series updates the driver to support arbitrary word widths up to 32bit.
+Also we get rid of the deprecated GPIO binding that the driver uses.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/stm32mp151-mect1s.dts | 6 +++---
- drivers/spi/gpio_spi.c             | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+Sascha Hauer (3):
+      spi: spi-gpio: actually delay in spidelay()
+      spi: spi-gpio: support different word widths
+      spi: spi-gpio: switch to new gpio binding
 
-diff --git a/arch/arm/dts/stm32mp151-mect1s.dts b/arch/arm/dts/stm32mp151-mect1s.dts
-index 4d0e31d189..b0dc1cfaa8 100644
---- a/arch/arm/dts/stm32mp151-mect1s.dts
-+++ b/arch/arm/dts/stm32mp151-mect1s.dts
-@@ -65,9 +65,9 @@ led-1 {
- 
- 	spi_gpio: spi-gpio-0 {
- 		compatible = "spi-gpio";
--		gpio-sck = <&gpioi 1 GPIO_ACTIVE_HIGH>;
--		gpio-mosi = <&gpioi 3 GPIO_ACTIVE_HIGH>;
--		gpio-miso = <&gpioi 2 GPIO_ACTIVE_HIGH>;
-+		sck-gpios = <&gpioi 1 GPIO_ACTIVE_HIGH>;
-+		mosi-gpios = <&gpioi 3 GPIO_ACTIVE_HIGH>;
-+		miso-gpios = <&gpioi 2 GPIO_ACTIVE_HIGH>;
- 		cs-gpios = <&gpioj 3 GPIO_ACTIVE_LOW>;
- 		num-chipselects = <1>;
- 		#address-cells = <1>;
-diff --git a/drivers/spi/gpio_spi.c b/drivers/spi/gpio_spi.c
-index c76b71f610..34d74faf4c 100644
---- a/drivers/spi/gpio_spi.c
-+++ b/drivers/spi/gpio_spi.c
-@@ -178,7 +178,7 @@ static int gpio_spi_of_probe(struct device *dev)
- 	if (!IS_ENABLED(CONFIG_OFDEVICE) || dev->platform_data)
- 		return 0;
- 
--	sck = of_get_named_gpio(np, "gpio-sck", 0);
-+	sck = of_get_named_gpio(np, "sck-gpios", 0);
- 	if (!gpio_is_valid(sck))
- 		return dev_err_probe(dev, sck < 0 ? sck : -EINVAL,
- 				     "missing mandatory SCK gpio\n");
-@@ -187,11 +187,11 @@ static int gpio_spi_of_probe(struct device *dev)
- 	pdata->sck = sck;
- 	pdata->num_cs = MAX_CHIPSELECT;
- 
--	pdata->miso = of_get_named_gpio(np, "gpio-miso", 0);
-+	pdata->miso = of_get_named_gpio(np, "miso-gpios", 0);
- 	if (!gpio_is_valid(pdata->miso))
- 		pdata->miso = SPI_GPIO_NO_MISO;
- 
--	pdata->mosi = of_get_named_gpio(np, "gpio-mosi", 0);
-+	pdata->mosi = of_get_named_gpio(np, "mosi-gpios", 0);
- 	if (!gpio_is_valid(pdata->mosi))
- 		pdata->mosi = SPI_GPIO_NO_MOSI;
- 
+ arch/arm/dts/stm32mp151-mect1s.dts |  6 ++--
+ drivers/spi/gpio_spi.c             | 69 +++++++++++++++++++++++++++++++-------
+ 2 files changed, 59 insertions(+), 16 deletions(-)
+---
+base-commit: 419ea9350aa083d4a2806a70132129a49a5ecf95
+change-id: 20240925-spi-gpio-4e65be1f7b90
 
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
