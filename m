@@ -1,16 +1,16 @@
-Delivery-date: Wed, 25 Sep 2024 16:36:39 +0200
+Delivery-date: Wed, 25 Sep 2024 16:36:40 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stT8A-002d69-0T
+	id 1stT8A-002d6V-2o
 	for lore@lore.pengutronix.de;
 	Wed, 25 Sep 2024 16:36:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stT88-0000r2-VS
+	id 1stT8B-0000sx-9O
 	for lore@pengutronix.de; Wed, 25 Sep 2024 16:36:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,56 +18,56 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Yl50CBgsTiikvp+snmNHbqoyPi0fncGtNI0FuuejM7s=; b=AOSLtv6Nmi1FbDf/RFLhvu5j5o
-	axEb+z7ZqzwWGE7lv+ORReWyPHxYkFeSZNz8EmzBAhukJTIUjwMdD5EIBFyf5jv645oEJ+OI3x1Cc
-	q2716H2GTOU5VnJMuWIZMjBW6q4LH64tZiGTV6xl6wMnXOW3B06GHknvpnMQFyE5MhoOnko03wexs
-	P59czQpCz+nq7Yuqm8sd3AqnprIru/oJtl969iEM3xK74lEo7xi9zPNBmTkeY3C5LE+vDZ/Yps9ZC
-	/hPjiBAATGOgiJeBbJUYoxJswx1Jq6ayYrFYS9NkMYjTHjiwxXtkntq3XdB43r9Cd/dg8DJcouQli
-	Uaz7ApGg==;
+	bh=SjkX9+mzq4EsjFKZAwDaPEPGS4lG8rWAOjivNzBsUs4=; b=xncuTxE2qS5jr0iNmlQ1nCBoXP
+	PdgpnlRvTZ3mVteU3O6+JwgCLV6IM3MJQULatxkyuSsI0KIVl4lIVRSi9HxyAN0M5Yeee59xwe45e
+	azN5aJZtLQgdnB5kU9i9cAvZUAWF26wD1E9kmvRVCJslPCpbzXFc1OnwcehIyL33ojRmeFvEy8SNK
+	qsKO5oGJj5v7il+ehlCQmLG/LkTFdkw/6BZVYm3601Wv6L3gF0JstxgUYnCEseGW9SDXd4W/u8WNk
+	/RwYphbDCKmLG7njtxuG5/jFWZN3Q+pocyN4GdYrIjZX0BdXwLOgzjWVV4YpBTwDohxPZHoxFJBzc
+	9HEwa0aw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stT7h-00000005eyZ-2EnO;
-	Wed, 25 Sep 2024 14:36:09 +0000
+	id 1stT7g-00000005eyD-3r2A;
+	Wed, 25 Sep 2024 14:36:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stT6a-00000005ef4-38TS
+	id 1stT6S-00000005ea8-2gHR
 	for barebox@lists.infradead.org;
-	Wed, 25 Sep 2024 14:35:02 +0000
+	Wed, 25 Sep 2024 14:34:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stT6R-0000Ij-D8; Wed, 25 Sep 2024 16:34:51 +0200
+	id 1stT6R-0000Ii-Cf; Wed, 25 Sep 2024 16:34:51 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stT6Q-001TDU-Ul; Wed, 25 Sep 2024 16:34:50 +0200
+	id 1stT6Q-001TDW-Uj; Wed, 25 Sep 2024 16:34:50 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stT6R-00DPQo-0z;
+	id 1stT6R-00DPQo-12;
 	Wed, 25 Sep 2024 16:34:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Sep 2024 16:34:49 +0200
+Date: Wed, 25 Sep 2024 16:34:52 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240925-graphics-v1-1-f1fe5d2cceec@pengutronix.de>
+Message-Id: <20240925-graphics-v1-4-f1fe5d2cceec@pengutronix.de>
 References: <20240925-graphics-v1-0-f1fe5d2cceec@pengutronix.de>
 In-Reply-To: <20240925-graphics-v1-0-f1fe5d2cceec@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727274890; l=1117;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727274890; l=886;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=qvKSoia28YlGG+p+FIdzRilcYFItxmhLo0nIeRITWyw=;
- b=YVthCCtclITle3aT1HMiXT/OuLKaoV3k4+BsBbU1G7DQuARAEt4lQ6tBvtYJTRmKMsKckzQa/
- kpyTXBpBi7uCzg1gv08ZJ7xPdzdrJIZacBveAAgNEDZZXvQy2d4Cqde
+ bh=nrQcpJLY6rweVbfi4KAf9IzG4A5gtsmg0NrnuA21040=;
+ b=dlUH8bMX4gtH04qi2n9WT2oxAaNiO9jJJIIxODvu30t23buQTPmqlkk9TiMPNoBsBw+BPWcji
+ aZd8wUY2DIEDioXSK55w4hG4l65KxyOAK7UiGt1Z/ZyF6UeS1VW11ST
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240925_073500_859371_BB3AABEB 
-X-CRM114-Status: GOOD (  10.46  )
+X-CRM114-CacheID: sfid-20240925_073452_732461_D71ED107 
+X-CRM114-Status: GOOD (  12.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,42 +89,32 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] graphic_utils: Clip to screen boundaries
+Subject: [PATCH 4/5] fbconsole: make background pixels transparent
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Do not render the parts of the image that are outside the screen
-boundaries to prevent memory corruptions.
+When we have a background image we want the background to actually shine
+through, so set the alpha value of the background to transparent and not
+opaque.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- lib/gui/graphic_utils.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/video/fbconsole.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
-index d91a7f3550..93ef1214f9 100644
---- a/lib/gui/graphic_utils.c
-+++ b/lib/gui/graphic_utils.c
-@@ -229,6 +229,9 @@ void gu_rgba_blend(struct fb_info *info, struct image *img, void* buf, int heigh
- 	line_length = info->line_length;
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+index cec1afec56..d3615bc07f 100644
+--- a/drivers/video/fbconsole.c
++++ b/drivers/video/fbconsole.c
+@@ -139,7 +139,7 @@ static void drawchar(struct fbc_priv *priv, int x, int y, int c)
+ 	color = gu_rgb_to_pixel(priv->fb, rgb->r, rgb->g, rgb->b, 0xff);
  
- 	for (y = 0; y < height; y++) {
-+		if (y + starty >= info->yres)
-+			break;
-+
- 		adr = buf + (y + starty) * line_length +
- 				startx * (info->bits_per_pixel >> 3);
- 		image = img->data + (y * img->width *img_byte_per_pixel);
-@@ -236,6 +239,9 @@ void gu_rgba_blend(struct fb_info *info, struct image *img, void* buf, int heigh
- 		for (x = 0; x < width; x++) {
- 			uint8_t *pixel = image;
+ 	rgb = &colors[bgcolor];
+-	bgcolor = gu_rgb_to_pixel(priv->fb, rgb->r, rgb->g, rgb->b, 0xff);
++	bgcolor = gu_rgb_to_pixel(priv->fb, rgb->r, rgb->g, rgb->b, 0x0);
  
-+			if (x + startx >= info->xres)
-+				break;
-+
- 			if (is_rgba)
- 				gu_set_rgba_pixel(info, adr, pixel[0], pixel[1],
- 						pixel[2], pixel[3]);
+ 	for (i = 0; i < priv->font->height; i++) {
+ 		uint8_t mask = 0x80;
 
 -- 
 2.39.5
