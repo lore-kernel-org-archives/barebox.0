@@ -1,73 +1,73 @@
-Delivery-date: Thu, 26 Sep 2024 15:16:02 +0200
+Delivery-date: Thu, 26 Sep 2024 15:16:11 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stoLh-0030rf-2U
+	id 1stoLq-0030sG-2f
 	for lore@lore.pengutronix.de;
-	Thu, 26 Sep 2024 15:16:02 +0200
+	Thu, 26 Sep 2024 15:16:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stoLe-0005lk-80
-	for lore@pengutronix.de; Thu, 26 Sep 2024 15:16:02 +0200
+	id 1stoLk-0005rg-UC
+	for lore@pengutronix.de; Thu, 26 Sep 2024 15:16:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6djYQjVnsf6j9lv/pevthtMAr6HXB0MvFNspHz8LH+8=; b=35YkNNgcbR7FnmCc/pI4rO640D
-	c5VYKAeUqENFwOpvb5d4TpDrjFcv3FVXwK3TShhd/OaTUYTodCtC13fnErsi0wybF6BDOnJNd1p3D
-	P7AE504yNuQdok7a/H8ixSKuFQg3TSR94oELOwoG8DAI4tgSnCNtzAOQi+NzRAaNqPYdofBroJHJS
-	AGB3fvhbm/+s46pMhLVPANJL7cuNBtTeKeo6AOyjXGJm/eY+TOBFd7HdgBRD3rw6zsVId1FB+t60I
-	IkXzc7D6yeabOqtmWpJ5MsHY1mak0AuzzVMitjNzSMqghuD4VkOnDDOjRB4Rdx2FB2b/UUp/+EDUF
-	fviZkWzg==;
+	bh=uxIWbEcVq2+qXac1AcHYJXxeM6KbpfbFcGf5E4uxrfw=; b=RtAzR5kH3+sz8IuCF2r5ErBMWI
+	lSvJ5HzQBFcEzlIS8ddeVu012HnUkbDQGAFm6OYEzcssT1dBDqeO6Kp1I7dUHTEYusQhtb3ZsMY+V
+	hYsqssPhGPI2tzCPTi/SyqM9vJKvkWHF9ZGrSHLRDPF5arVJiqUA4bHQwfJCyDeLbk/DjrZXv57Fc
+	zDJDb3ySVPXUZ+luUOJSr+f5A32RAF0W/lqo0CRirX5u9ztAC/b5B9dhFcVIoH4UtzTX31Ci/vi3C
+	N634fPcWDU7ImXDMEI+y+1Armpr4nihLzLhVkq/+xHTn1gQEo9skHM7JuMuGZSv17yGGATWiQlN3v
+	z9TjfcMw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stoKw-00000008QzR-3vSB;
-	Thu, 26 Sep 2024 13:15:14 +0000
+	id 1stoKx-00000008R00-2WwN;
+	Thu, 26 Sep 2024 13:15:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stoKn-00000008Qvv-3VdP
+	id 1stoKn-00000008Qvu-3rGA
 	for barebox@lists.infradead.org;
 	Thu, 26 Sep 2024 13:15:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-0004uq-Ps; Thu, 26 Sep 2024 15:15:03 +0200
+	id 1stoKl-0004uo-Px; Thu, 26 Sep 2024 15:15:03 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-001h7E-5N; Thu, 26 Sep 2024 15:15:03 +0200
+	id 1stoKl-001h7G-5P; Thu, 26 Sep 2024 15:15:03 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-00GZyn-1g;
+	id 1stoKl-00GZyn-1i;
 	Thu, 26 Sep 2024 15:15:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 26 Sep 2024 15:15:03 +0200
+Date: Thu, 26 Sep 2024 15:15:05 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240926-vop2-v1-5-fe0581f2020b@pengutronix.de>
+Message-Id: <20240926-vop2-v1-7-fe0581f2020b@pengutronix.de>
 References: <20240926-vop2-v1-0-fe0581f2020b@pengutronix.de>
 In-Reply-To: <20240926-vop2-v1-0-fe0581f2020b@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727356502; l=16204;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727356502; l=23242;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=A3Ajykg3EDsi4gKV7BXWHC8Kvd8FfFUOmTKr9TCZGZo=;
- b=tDF9/LkMkM3AlGqJyS0hWM+hAONoE+A4rS1lGPz0lFS5zkj0uYOklMBZxceecRzr77kVLOilG
- rIMp3mj2JvDD+eLzY8BS8LdjDXiZC5K3FJvNb9IZNkWgrARrUJQDqmo
+ bh=Qd2xzt0sVYSPg5NglhCWsgYTOoCD5LPXzDpoGxTygcY=;
+ b=8svRBiAVo/rhA3uw3TWoFTknQrlPUHghzkJMCsqY0nDzjrq6sA2PCyrLlaclC7bh0lFIfl9bc
+ o9xi5C+I4eQCTgo8HNEeA2Wx8Fydp0c0BsZc5Y0d/W1q23kNxqpBsZL
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240926_061506_281943_45F1EA73 
-X-CRM114-Status: GOOD (  30.85  )
+X-CRM114-CacheID: sfid-20240926_061506_367209_06F416EB 
+X-CRM114-Status: GOOD (  20.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,527 +89,722 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 05/13] video: add include/video/drm/drm_connector.h
+Subject: [PATCH 07/13] video: Add Sitronix st7789v panel driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-drm_connector.h from Linux contains several defines and struct
-types useful for porting over DRM drivers to barebox. This is
-based on Linux-6.10.
+This adds a panel driver for the Sitronix st7789v panel based
+on the corresponding Linux-6.10 driver.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/video/drm/drm_connector.h | 502 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 502 insertions(+)
+ drivers/video/Kconfig                  |   8 +
+ drivers/video/Makefile                 |   1 +
+ drivers/video/panel-sitronix-st7789v.c | 652 +++++++++++++++++++++++++++++++++
+ include/video/vpl.h                    |   1 +
+ 4 files changed, 662 insertions(+)
 
-diff --git a/include/video/drm/drm_connector.h b/include/video/drm/drm_connector.h
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 9e176d3198..e86f511da4 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -186,6 +186,14 @@ config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
+ 	  QVGA (240x320) RGB panels. support serial & parallel rgb
+ 	  interface.
+ 
++config DRIVER_VIDEO_PANEL_SITRONIX_ST7789V
++	tristate "Sitronix ST7789V panel"
++	depends on OFTREE && SPI
++	select VIDEO_VPL
++	help
++	  Say Y here if you want to enable support for the Sitronix
++	  ST7789V controller for 240x320 LCD panels
++
+ config DRIVER_VIDEO_PANEL_MIPI_DBI
+ 	tristate "DRM support for MIPI DBI compatible panels"
+ 	depends on OFTREE && SPI
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 9e6a241a33..37a184a7e2 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -12,6 +12,7 @@ obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
+ obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
++obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
+ 
+ obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
+ obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
+diff --git a/drivers/video/panel-sitronix-st7789v.c b/drivers/video/panel-sitronix-st7789v.c
 new file mode 100644
-index 0000000000..53ec7d3b79
+index 0000000000..36852fb88e
 --- /dev/null
-+++ b/include/video/drm/drm_connector.h
-@@ -0,0 +1,502 @@
++++ b/drivers/video/panel-sitronix-st7789v.c
+@@ -0,0 +1,652 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Copyright (c) 2016 Intel Corporation
-+ *
-+ * Permission to use, copy, modify, distribute, and sell this software and its
-+ * documentation for any purpose is hereby granted without fee, provided that
-+ * the above copyright notice appear in all copies and that both that copyright
-+ * notice and this permission notice appear in supporting documentation, and
-+ * that the name of the copyright holders not be used in advertising or
-+ * publicity pertaining to distribution of the software without specific,
-+ * written prior permission.  The copyright holders make no representations
-+ * about the suitability of this software for any purpose.  It is provided "as
-+ * is" without express or implied warranty.
-+ *
-+ * THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
-+ * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
-+ * EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
-+ * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
-+ * DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-+ * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-+ * OF THIS SOFTWARE.
++ * Copyright (C) 2017 Free Electrons
 + */
 +
-+#ifndef __DRM_CONNECTOR_H__
-+#define __DRM_CONNECTOR_H__
++#include <driver.h>
++#include <linux/gpio/consumer.h>
++#include <linux/module.h>
++#include <regulator.h>
++#include <spi/spi.h>
++#include <fb.h>
++#include <linux/device.h>
++#include <video/vpl.h>
++#include <video/videomode.h>
++#include <video/drm/drm_connector.h>
++#include <video/mipi_display.h>
++#include <video/media-bus-format.h>
 +
-+#include <uapi/drm/drm_mode.h>
++#define ST7789V_RAMCTRL_CMD		0xb0
++#define ST7789V_RAMCTRL_RM_RGB			BIT(4)
++#define ST7789V_RAMCTRL_DM_RGB			BIT(0)
++#define ST7789V_RAMCTRL_MAGIC			(3 << 6)
++#define ST7789V_RAMCTRL_EPF(n)			(((n) & 3) << 4)
 +
-+enum drm_connector_force {
-+	DRM_FORCE_UNSPECIFIED,
-+	DRM_FORCE_OFF,
-+	DRM_FORCE_ON,         /* force on analog part normally */
-+	DRM_FORCE_ON_DIGITAL, /* for DVI-I use digital connector */
-+};
++#define ST7789V_RGBCTRL_CMD		0xb1
++#define ST7789V_RGBCTRL_WO			BIT(7)
++#define ST7789V_RGBCTRL_RCM(n)			(((n) & 3) << 5)
++#define ST7789V_RGBCTRL_VSYNC_HIGH		BIT(3)
++#define ST7789V_RGBCTRL_HSYNC_HIGH		BIT(2)
++#define ST7789V_RGBCTRL_PCLK_FALLING		BIT(1)
++#define ST7789V_RGBCTRL_DE_LOW			BIT(0)
++#define ST7789V_RGBCTRL_VBP(n)			((n) & 0x7f)
++#define ST7789V_RGBCTRL_HBP(n)			((n) & 0x1f)
 +
-+/**
-+ * enum drm_connector_status - status for a &drm_connector
-+ *
-+ * This enum is used to track the connector status. There are no separate
-+ * #defines for the uapi!
-+ */
-+enum drm_connector_status {
-+	/**
-+	 * @connector_status_connected: The connector is definitely connected to
-+	 * a sink device, and can be enabled.
-+	 */
-+	connector_status_connected = 1,
-+	/**
-+	 * @connector_status_disconnected: The connector isn't connected to a
-+	 * sink device which can be autodetect. For digital outputs like DP or
-+	 * HDMI (which can be realiable probed) this means there's really
-+	 * nothing there. It is driver-dependent whether a connector with this
-+	 * status can be lit up or not.
-+	 */
-+	connector_status_disconnected = 2,
-+	/**
-+	 * @connector_status_unknown: The connector's status could not be
-+	 * reliably detected. This happens when probing would either cause
-+	 * flicker (like load-detection when the connector is in use), or when a
-+	 * hardware resource isn't available (like when load-detection needs a
-+	 * free CRTC). It should be possible to light up the connector with one
-+	 * of the listed fallback modes. For default configuration userspace
-+	 * should only try to light up connectors with unknown status when
-+	 * there's not connector with @connector_status_connected.
-+	 */
-+	connector_status_unknown = 3,
-+};
++#define ST7789V_PORCTRL_CMD		0xb2
++#define ST7789V_PORCTRL_IDLE_BP(n)		(((n) & 0xf) << 4)
++#define ST7789V_PORCTRL_IDLE_FP(n)		((n) & 0xf)
++#define ST7789V_PORCTRL_PARTIAL_BP(n)		(((n) & 0xf) << 4)
++#define ST7789V_PORCTRL_PARTIAL_FP(n)		((n) & 0xf)
 +
-+/**
-+ * struct drm_scrambling: sink's scrambling support.
-+ */
-+struct drm_scrambling {
-+	/**
-+	 * @supported: scrambling supported for rates > 340 Mhz.
-+	 */
-+	bool supported;
-+	/**
-+	 * @low_rates: scrambling supported for rates <= 340 Mhz.
-+	 */
-+	bool low_rates;
-+};
++#define ST7789V_GCTRL_CMD		0xb7
++#define ST7789V_GCTRL_VGHS(n)			(((n) & 7) << 4)
++#define ST7789V_GCTRL_VGLS(n)			((n) & 7)
 +
-+/*
-+ * struct drm_scdc - Information about scdc capabilities of a HDMI 2.0 sink
-+ *
-+ * Provides SCDC register support and capabilities related information on a
-+ * HDMI 2.0 sink. In case of a HDMI 1.4 sink, all parameter must be 0.
-+ */
-+struct drm_scdc {
-+	/**
-+	 * @supported: status control & data channel present.
-+	 */
-+	bool supported;
-+	/**
-+	 * @read_request: sink is capable of generating scdc read request.
-+	 */
-+	bool read_request;
-+	/**
-+	 * @scrambling: sink's scrambling capabilities
-+	 */
-+	struct drm_scrambling scrambling;
-+};
++#define ST7789V_VCOMS_CMD		0xbb
 +
-+/**
-+ * struct drm_hdmi_dsc_cap - DSC capabilities of HDMI sink
-+ *
-+ * Describes the DSC support provided by HDMI 2.1 sink.
-+ * The information is fetched fom additional HFVSDB blocks defined
-+ * for HDMI 2.1.
-+ */
-+struct drm_hdmi_dsc_cap {
-+	/** @v_1p2: flag for dsc1.2 version support by sink */
-+	bool v_1p2;
++#define ST7789V_LCMCTRL_CMD		0xc0
++#define ST7789V_LCMCTRL_XBGR			BIT(5)
++#define ST7789V_LCMCTRL_XMX			BIT(3)
++#define ST7789V_LCMCTRL_XMH			BIT(2)
 +
-+	/** @native_420: Does sink support DSC with 4:2:0 compression */
-+	bool native_420;
++#define ST7789V_VDVVRHEN_CMD		0xc2
++#define ST7789V_VDVVRHEN_CMDEN			BIT(0)
 +
-+	/**
-+	 * @all_bpp: Does sink support all bpp with 4:4:4: or 4:2:2
-+	 * compressed formats
-+	 */
-+	bool all_bpp;
++#define ST7789V_VRHS_CMD		0xc3
 +
-+	/**
-+	 * @bpc_supported: compressed bpc supported by sink : 10, 12 or 16 bpc
-+	 */
-+	u8 bpc_supported;
++#define ST7789V_VDVS_CMD		0xc4
 +
-+	/** @max_slices: maximum number of Horizontal slices supported by */
-+	u8 max_slices;
++#define ST7789V_FRCTRL2_CMD		0xc6
 +
-+	/** @clk_per_slice : max pixel clock in MHz supported per slice */
-+	int clk_per_slice;
++#define ST7789V_PWCTRL1_CMD		0xd0
++#define ST7789V_PWCTRL1_MAGIC			0xa4
++#define ST7789V_PWCTRL1_AVDD(n)			(((n) & 3) << 6)
++#define ST7789V_PWCTRL1_AVCL(n)			(((n) & 3) << 4)
++#define ST7789V_PWCTRL1_VDS(n)			((n) & 3)
 +
-+	/** @max_lanes : dsc max lanes supported for Fixed rate Link training */
-+	u8 max_lanes;
++#define ST7789V_PVGAMCTRL_CMD		0xe0
++#define ST7789V_PVGAMCTRL_JP0(n)		(((n) & 3) << 4)
++#define ST7789V_PVGAMCTRL_JP1(n)		(((n) & 3) << 4)
++#define ST7789V_PVGAMCTRL_VP0(n)		((n) & 0xf)
++#define ST7789V_PVGAMCTRL_VP1(n)		((n) & 0x3f)
++#define ST7789V_PVGAMCTRL_VP2(n)		((n) & 0x3f)
++#define ST7789V_PVGAMCTRL_VP4(n)		((n) & 0x1f)
++#define ST7789V_PVGAMCTRL_VP6(n)		((n) & 0x1f)
++#define ST7789V_PVGAMCTRL_VP13(n)		((n) & 0xf)
++#define ST7789V_PVGAMCTRL_VP20(n)		((n) & 0x7f)
++#define ST7789V_PVGAMCTRL_VP27(n)		((n) & 7)
++#define ST7789V_PVGAMCTRL_VP36(n)		(((n) & 7) << 4)
++#define ST7789V_PVGAMCTRL_VP43(n)		((n) & 0x7f)
++#define ST7789V_PVGAMCTRL_VP50(n)		((n) & 0xf)
++#define ST7789V_PVGAMCTRL_VP57(n)		((n) & 0x1f)
++#define ST7789V_PVGAMCTRL_VP59(n)		((n) & 0x1f)
++#define ST7789V_PVGAMCTRL_VP61(n)		((n) & 0x3f)
++#define ST7789V_PVGAMCTRL_VP62(n)		((n) & 0x3f)
++#define ST7789V_PVGAMCTRL_VP63(n)		(((n) & 0xf) << 4)
 +
-+	/** @max_frl_rate_per_lane : maximum frl rate with DSC per lane */
-+	u8 max_frl_rate_per_lane;
++#define ST7789V_NVGAMCTRL_CMD		0xe1
++#define ST7789V_NVGAMCTRL_JN0(n)		(((n) & 3) << 4)
++#define ST7789V_NVGAMCTRL_JN1(n)		(((n) & 3) << 4)
++#define ST7789V_NVGAMCTRL_VN0(n)		((n) & 0xf)
++#define ST7789V_NVGAMCTRL_VN1(n)		((n) & 0x3f)
++#define ST7789V_NVGAMCTRL_VN2(n)		((n) & 0x3f)
++#define ST7789V_NVGAMCTRL_VN4(n)		((n) & 0x1f)
++#define ST7789V_NVGAMCTRL_VN6(n)		((n) & 0x1f)
++#define ST7789V_NVGAMCTRL_VN13(n)		((n) & 0xf)
++#define ST7789V_NVGAMCTRL_VN20(n)		((n) & 0x7f)
++#define ST7789V_NVGAMCTRL_VN27(n)		((n) & 7)
++#define ST7789V_NVGAMCTRL_VN36(n)		(((n) & 7) << 4)
++#define ST7789V_NVGAMCTRL_VN43(n)		((n) & 0x7f)
++#define ST7789V_NVGAMCTRL_VN50(n)		((n) & 0xf)
++#define ST7789V_NVGAMCTRL_VN57(n)		((n) & 0x1f)
++#define ST7789V_NVGAMCTRL_VN59(n)		((n) & 0x1f)
++#define ST7789V_NVGAMCTRL_VN61(n)		((n) & 0x3f)
++#define ST7789V_NVGAMCTRL_VN62(n)		((n) & 0x3f)
++#define ST7789V_NVGAMCTRL_VN63(n)		(((n) & 0xf) << 4)
 +
-+	/** @total_chunk_kbytes: max size of chunks in KBs supported per line*/
-+	u8 total_chunk_kbytes;
-+};
++#define ST7789V_TEST(val, func)			\
++	do {					\
++		if ((val = (func)))		\
++			return val;		\
++	} while (0)
 +
-+/**
-+ * struct drm_hdmi_info - runtime information about the connected HDMI sink
-+ *
-+ * Describes if a given display supports advanced HDMI 2.0 features.
-+ * This information is available in CEA-861-F extension blocks (like HF-VSDB).
-+ */
-+struct drm_hdmi_info {
-+	/** @scdc: sink's scdc support and capabilities */
-+	struct drm_scdc scdc;
++#define ST7789V_IDS { 0x85, 0x85, 0x52 }
++#define ST7789V_IDS_SIZE 3
 +
-+	/**
-+	 * @y420_vdb_modes: bitmap of modes which can support ycbcr420
-+	 * output only (not normal RGB/YCBCR444/422 outputs). The max VIC
-+	 * defined by the CEA-861-G spec is 219, so the size is 256 bits to map
-+	 * up to 256 VICs.
-+	 */
-+	unsigned long y420_vdb_modes[BITS_TO_LONGS(256)];
-+
-+	/**
-+	 * @y420_cmdb_modes: bitmap of modes which can support ycbcr420
-+	 * output also, along with normal HDMI outputs. The max VIC defined by
-+	 * the CEA-861-G spec is 219, so the size is 256 bits to map up to 256
-+	 * VICs.
-+	 */
-+	unsigned long y420_cmdb_modes[BITS_TO_LONGS(256)];
-+
-+	/** @y420_dc_modes: bitmap of deep color support index */
-+	u8 y420_dc_modes;
-+
-+	/** @max_frl_rate_per_lane: support fixed rate link */
-+	u8 max_frl_rate_per_lane;
-+
-+	/** @max_lanes: supported by sink */
-+	u8 max_lanes;
-+
-+	/** @dsc_cap: DSC capabilities of the sink */
-+	struct drm_hdmi_dsc_cap dsc_cap;
-+};
-+
-+/**
-+ * enum drm_panel_orientation - panel_orientation info for &drm_display_info
-+ *
-+ * This enum is used to track the (LCD) panel orientation. There are no
-+ * separate #defines for the uapi!
-+ *
-+ * @DRM_MODE_PANEL_ORIENTATION_UNKNOWN: The drm driver has not provided any
-+ *					panel orientation information (normal
-+ *					for non panels) in this case the "panel
-+ *					orientation" connector prop will not be
-+ *					attached.
-+ * @DRM_MODE_PANEL_ORIENTATION_NORMAL:	The top side of the panel matches the
-+ *					top side of the device's casing.
-+ * @DRM_MODE_PANEL_ORIENTATION_BOTTOM_UP: The top side of the panel matches the
-+ *					bottom side of the device's casing, iow
-+ *					the panel is mounted upside-down.
-+ * @DRM_MODE_PANEL_ORIENTATION_LEFT_UP:	The left side of the panel matches the
-+ *					top side of the device's casing.
-+ * @DRM_MODE_PANEL_ORIENTATION_RIGHT_UP: The right side of the panel matches the
-+ *					top side of the device's casing.
-+ */
-+enum drm_panel_orientation {
-+	DRM_MODE_PANEL_ORIENTATION_UNKNOWN = -1,
-+	DRM_MODE_PANEL_ORIENTATION_NORMAL = 0,
-+	DRM_MODE_PANEL_ORIENTATION_BOTTOM_UP,
-+	DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
-+	DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
-+};
-+
-+/**
-+ * enum drm_bus_flags - bus_flags info for &drm_display_info
-+ *
-+ * This enum defines signal polarities and clock edge information for signals on
-+ * a bus as bitmask flags.
-+ *
-+ * The clock edge information is conveyed by two sets of symbols,
-+ * DRM_BUS_FLAGS_*_DRIVE_\* and DRM_BUS_FLAGS_*_SAMPLE_\*. When this enum is
-+ * used to describe a bus from the point of view of the transmitter, the
-+ * \*_DRIVE_\* flags should be used. When used from the point of view of the
-+ * receiver, the \*_SAMPLE_\* flags should be used. The \*_DRIVE_\* and
-+ * \*_SAMPLE_\* flags alias each other, with the \*_SAMPLE_POSEDGE and
-+ * \*_SAMPLE_NEGEDGE flags being equal to \*_DRIVE_NEGEDGE and \*_DRIVE_POSEDGE
-+ * respectively. This simplifies code as signals are usually sampled on the
-+ * opposite edge of the driving edge. Transmitters and receivers may however
-+ * need to take other signal timings into account to convert between driving
-+ * and sample edges.
-+ */
-+enum drm_bus_flags {
-+	/**
-+	 * @DRM_BUS_FLAG_DE_LOW:
-+	 *
-+	 * The Data Enable signal is active low
-+	 */
-+	DRM_BUS_FLAG_DE_LOW = BIT(0),
-+
-+	/**
-+	 * @DRM_BUS_FLAG_DE_HIGH:
-+	 *
-+	 * The Data Enable signal is active high
-+	 */
-+	DRM_BUS_FLAG_DE_HIGH = BIT(1),
-+
-+	/**
-+	 * @DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE:
-+	 *
-+	 * Data is driven on the rising edge of the pixel clock
-+	 */
-+	DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE = BIT(2),
-+
-+	/**
-+	 * @DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE:
-+	 *
-+	 * Data is driven on the falling edge of the pixel clock
-+	 */
-+	DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE = BIT(3),
-+
-+	/**
-+	 * @DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE:
-+	 *
-+	 * Data is sampled on the rising edge of the pixel clock
-+	 */
-+	DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE = DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
-+
-+	/**
-+	 * @DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE:
-+	 *
-+	 * Data is sampled on the falling edge of the pixel clock
-+	 */
-+	DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE = DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
-+
-+	/**
-+	 * @DRM_BUS_FLAG_DATA_MSB_TO_LSB:
-+	 *
-+	 * Data is transmitted MSB to LSB on the bus
-+	 */
-+	DRM_BUS_FLAG_DATA_MSB_TO_LSB = BIT(4),
-+
-+	/**
-+	 * @DRM_BUS_FLAG_DATA_LSB_TO_MSB:
-+	 *
-+	 * Data is transmitted LSB to MSB on the bus
-+	 */
-+	DRM_BUS_FLAG_DATA_LSB_TO_MSB = BIT(5),
-+
-+	/**
-+	 * @DRM_BUS_FLAG_SYNC_DRIVE_POSEDGE:
-+	 *
-+	 * Sync signals are driven on the rising edge of the pixel clock
-+	 */
-+	DRM_BUS_FLAG_SYNC_DRIVE_POSEDGE = BIT(6),
-+
-+	/**
-+	 * @DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE:
-+	 *
-+	 * Sync signals are driven on the falling edge of the pixel clock
-+	 */
-+	DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE = BIT(7),
-+
-+	/**
-+	 * @DRM_BUS_FLAG_SYNC_SAMPLE_POSEDGE:
-+	 *
-+	 * Sync signals are sampled on the rising edge of the pixel clock
-+	 */
-+	DRM_BUS_FLAG_SYNC_SAMPLE_POSEDGE = DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE,
-+
-+	/**
-+	 * @DRM_BUS_FLAG_SYNC_SAMPLE_NEGEDGE:
-+	 *
-+	 * Sync signals are sampled on the falling edge of the pixel clock
-+	 */
-+	DRM_BUS_FLAG_SYNC_SAMPLE_NEGEDGE = DRM_BUS_FLAG_SYNC_DRIVE_POSEDGE,
-+
-+	/**
-+	 * @DRM_BUS_FLAG_SHARP_SIGNALS:
-+	 *
-+	 *  Set if the Sharp-specific signals (SPL, CLS, PS, REV) must be used
-+	 */
-+	DRM_BUS_FLAG_SHARP_SIGNALS = BIT(8),
-+};
-+
-+/**
-+ * struct drm_display_info - runtime data about the connected sink
-+ *
-+ * Describes a given display (e.g. CRT or flat panel) and its limitations. For
-+ * fixed display sinks like built-in panels there's not much difference between
-+ * this and &struct drm_connector. But for sinks with a real cable this
-+ * structure is meant to describe all the things at the other end of the cable.
-+ *
-+ * For sinks which provide an EDID this can be filled out by calling
-+ * drm_add_edid_modes().
-+ */
-+struct drm_display_info {
-+	/**
-+	 * @width_mm: Physical width in mm.
-+	 */
-+	unsigned int width_mm;
-+
-+	/**
-+	 * @height_mm: Physical height in mm.
-+	 */
-+	unsigned int height_mm;
-+
-+	/**
-+	 * @bpc: Maximum bits per color channel. Used by HDMI and DP outputs.
-+	 */
-+	unsigned int bpc;
-+
-+#define DRM_COLOR_FORMAT_RGB444		(1<<0)
-+#define DRM_COLOR_FORMAT_YCBCR444	(1<<1)
-+#define DRM_COLOR_FORMAT_YCBCR422	(1<<2)
-+#define DRM_COLOR_FORMAT_YCBCR420	(1<<3)
-+
-+	/**
-+	 * @panel_orientation: Read only connector property for built-in panels,
-+	 * indicating the orientation of the panel vs the device's casing.
-+	 * drm_connector_init() sets this to DRM_MODE_PANEL_ORIENTATION_UNKNOWN.
-+	 * When not UNKNOWN this gets used by the drm_fb_helpers to rotate the
-+	 * fb to compensate and gets exported as prop to userspace.
-+	 */
-+	int panel_orientation;
-+
-+	/**
-+	 * @color_formats: HDMI Color formats, selects between RGB and YCrCb
-+	 * modes. Used DRM_COLOR_FORMAT\_ defines, which are _not_ the same ones
-+	 * as used to describe the pixel format in framebuffers, and also don't
-+	 * match the formats in @bus_formats which are shared with v4l.
-+	 */
-+	u32 color_formats;
-+
-+	/**
-+	 * @bus_formats: Pixel data format on the wire, somewhat redundant with
-+	 * @color_formats. Array of size @num_bus_formats encoded using
-+	 * MEDIA_BUS_FMT\_ defines shared with v4l and media drivers.
-+	 */
-+	const u32 *bus_formats;
-+	/**
-+	 * @num_bus_formats: Size of @bus_formats array.
-+	 */
-+	unsigned int num_bus_formats;
-+
-+	/**
-+	 * @bus_flags: Additional information (like pixel signal polarity) for
-+	 * the pixel data on the bus, using &enum drm_bus_flags values
-+	 * DRM_BUS_FLAGS\_.
-+	 */
++struct st7789_panel_info {
++	const struct drm_display_mode *mode;
++	u32 bus_format;
 +	u32 bus_flags;
-+
-+	/**
-+	 * @max_tmds_clock: Maximum TMDS clock rate supported by the
-+	 * sink in kHz. 0 means undefined.
-+	 */
-+	int max_tmds_clock;
-+
-+	/**
-+	 * @dvi_dual: Dual-link DVI sink?
-+	 */
-+	bool dvi_dual;
-+
-+	/**
-+	 * @is_hdmi: True if the sink is an HDMI device.
-+	 *
-+	 * This field shall be used instead of calling
-+	 * drm_detect_hdmi_monitor() when possible.
-+	 */
-+	bool is_hdmi;
-+
-+	/**
-+	 * @has_audio: True if the sink supports audio.
-+	 *
-+	 * This field shall be used instead of calling
-+	 * drm_detect_monitor_audio() when possible.
-+	 */
-+	bool has_audio;
-+
-+	/**
-+	 * @has_hdmi_infoframe: Does the sink support the HDMI infoframe?
-+	 */
-+	bool has_hdmi_infoframe;
-+
-+	/**
-+	 * @rgb_quant_range_selectable: Does the sink support selecting
-+	 * the RGB quantization range?
-+	 */
-+	bool rgb_quant_range_selectable;
-+
-+	/**
-+	 * @edid_hdmi_rgb444_dc_modes: Mask of supported hdmi deep color modes
-+	 * in RGB 4:4:4. Even more stuff redundant with @bus_formats.
-+	 */
-+	u8 edid_hdmi_rgb444_dc_modes;
-+
-+	/**
-+	 * @edid_hdmi_ycbcr444_dc_modes: Mask of supported hdmi deep color
-+	 * modes in YCbCr 4:4:4. Even more stuff redundant with @bus_formats.
-+	 */
-+	u8 edid_hdmi_ycbcr444_dc_modes;
-+
-+	/**
-+	 * @cea_rev: CEA revision of the HDMI sink.
-+	 */
-+	u8 cea_rev;
-+
-+	/**
-+	 * @hdmi: advance features of a HDMI sink.
-+	 */
-+	struct drm_hdmi_info hdmi;
-+
-+	/**
-+	 * @non_desktop: Non desktop display (HMD).
-+	 */
-+	bool non_desktop;
-+
-+	/**
-+	 * @mso_stream_count: eDP Multi-SST Operation (MSO) stream count from
-+	 * the DisplayID VESA vendor block. 0 for conventional Single-Stream
-+	 * Transport (SST), or 2 or 4 MSO streams.
-+	 */
-+	u8 mso_stream_count;
-+
-+	/**
-+	 * @mso_pixel_overlap: eDP MSO segment pixel overlap, 0-8 pixels.
-+	 */
-+	u8 mso_pixel_overlap;
-+
-+	/**
-+	 * @max_dsc_bpp: Maximum DSC target bitrate, if it is set to 0 the
-+	 * monitor's default value is used instead.
-+	 */
-+	u32 max_dsc_bpp;
-+
-+	/**
-+	 * @vics: Array of vics_len VICs. Internal to EDID parsing.
-+	 */
-+	u8 *vics;
-+
-+	/**
-+	 * @vics_len: Number of elements in vics. Internal to EDID parsing.
-+	 */
-+	int vics_len;
-+
-+	/**
-+	 * @quirks: EDID based quirks. Internal to EDID parsing.
-+	 */
-+	u32 quirks;
-+
-+	/**
-+	 * @source_physical_address: Source Physical Address from HDMI
-+	 * Vendor-Specific Data Block, for CEC usage.
-+	 *
-+	 * Defaults to CEC_PHYS_ADDR_INVALID (0xffff).
-+	 */
-+	u16 source_physical_address;
++	bool invert_mode;
++	bool partial_mode;
++	u16 partial_start;
++	u16 partial_end;
 +};
 +
-+int drm_display_info_set_bus_formats(struct drm_display_info *info,
-+				     const u32 *formats,
-+				     unsigned int num_formats);
++struct st7789v {
++	const struct st7789_panel_info *info;
++	struct spi_device *spi;
++	struct gpio_desc *reset;
++	struct regulator *power;
++	enum drm_panel_orientation orientation;
++	struct device *dev;
++	struct vpl vpl;
++};
 +
++enum st7789v_prefix {
++	ST7789V_COMMAND = 0,
++	ST7789V_DATA = 1,
++};
 +
-+#endif
++static int st7789v_spi_write(struct st7789v *ctx, enum st7789v_prefix prefix,
++			     u8 data)
++{
++	struct spi_transfer xfer = { };
++	u16 txbuf = ((prefix & 1) << 8) | data;
++
++	xfer.tx_buf = &txbuf;
++	xfer.len = sizeof(txbuf);
++
++	return spi_sync_transfer(ctx->spi, &xfer, 1);
++}
++
++static int st7789v_write_command(struct st7789v *ctx, u8 cmd)
++{
++	return st7789v_spi_write(ctx, ST7789V_COMMAND, cmd);
++}
++
++static int st7789v_write_data(struct st7789v *ctx, u8 cmd)
++{
++	return st7789v_spi_write(ctx, ST7789V_DATA, cmd);
++}
++
++static int st7789v_read_data(struct st7789v *ctx, u8 cmd, u8 *buf,
++			     unsigned int len)
++{
++	struct spi_transfer xfer[2] = { };
++	struct spi_message msg;
++	u16 txbuf = ((ST7789V_COMMAND & 1) << 8) | cmd;
++	u16 rxbuf[4] = {};
++	u8 bit9 = 0;
++	int ret, i;
++
++	switch (len) {
++	case 1:
++	case 3:
++	case 4:
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	spi_message_init(&msg);
++
++	xfer[0].tx_buf = &txbuf;
++	xfer[0].len = sizeof(txbuf);
++	spi_message_add_tail(&xfer[0], &msg);
++
++	xfer[1].rx_buf = rxbuf;
++	xfer[1].len = len * 2;
++	spi_message_add_tail(&xfer[1], &msg);
++
++	ret = spi_sync(ctx->spi, &msg);
++	if (ret)
++		return ret;
++
++	for (i = 0; i < len; i++) {
++		buf[i] = rxbuf[i] >> i | (bit9 << (9 - i));
++		if (i)
++			bit9 = rxbuf[i] & GENMASK(i - 1, 0);
++	}
++
++	return 0;
++}
++
++static int st7789v_check_id(struct st7789v *ctx)
++{
++	const u8 st7789v_ids[ST7789V_IDS_SIZE] = ST7789V_IDS;
++	bool invalid_ids = false;
++	int ret, i;
++	u8 ids[3];
++
++	ret = st7789v_read_data(ctx, MIPI_DCS_GET_DISPLAY_ID, ids, ST7789V_IDS_SIZE);
++	if (ret)
++		return ret;
++printf("%s: %02x %02x %02x\n", __func__, ids[0], ids[1], ids[2]);
++	for (i = 0; i < ST7789V_IDS_SIZE; i++) {
++		if (ids[i] != st7789v_ids[i]) {
++			invalid_ids = true;
++			break;
++		}
++	}
++
++	if (invalid_ids)
++		return -EIO;
++
++	return 0;
++}
++
++static const struct drm_display_mode default_mode = {
++	.clock = 7000,
++	.hdisplay = 240,
++	.hsync_start = 240 + 38,
++	.hsync_end = 240 + 38 + 10,
++	.htotal = 240 + 38 + 10 + 10,
++	.vdisplay = 320,
++	.vsync_start = 320 + 8,
++	.vsync_end = 320 + 8 + 4,
++	.vtotal = 320 + 8 + 4 + 4,
++	.width_mm = 61,
++	.height_mm = 103,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
++};
++
++static const struct drm_display_mode t28cp45tn89_mode = {
++	.clock = 6008,
++	.hdisplay = 240,
++	.hsync_start = 240 + 38,
++	.hsync_end = 240 + 38 + 10,
++	.htotal = 240 + 38 + 10 + 10,
++	.vdisplay = 320,
++	.vsync_start = 320 + 8,
++	.vsync_end = 320 + 8 + 4,
++	.vtotal = 320 + 8 + 4 + 4,
++	.width_mm = 43,
++	.height_mm = 57,
++	.flags = DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_NVSYNC,
++};
++
++static const struct drm_display_mode et028013dma_mode = {
++	.clock = 3000,
++	.hdisplay = 240,
++	.hsync_start = 240 + 38,
++	.hsync_end = 240 + 38 + 10,
++	.htotal = 240 + 38 + 10 + 10,
++	.vdisplay = 320,
++	.vsync_start = 320 + 8,
++	.vsync_end = 320 + 8 + 4,
++	.vtotal = 320 + 8 + 4 + 4,
++	.width_mm = 43,
++	.height_mm = 58,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
++};
++
++static const struct drm_display_mode jt240mhqs_hwt_ek_e3_mode = {
++	.clock = 6000,
++	.hdisplay = 240,
++	.hsync_start = 240 + 28,
++	.hsync_end = 240 + 28 + 10,
++	.htotal = 240 + 28 + 10 + 10,
++	.vdisplay = 280,
++	.vsync_start = 280 + 8,
++	.vsync_end = 280 + 8 + 4,
++	.vtotal = 280 + 8 + 4 + 4,
++	.width_mm = 43,
++	.height_mm = 37,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
++};
++
++static const struct st7789_panel_info default_panel = {
++	.mode = &default_mode,
++	.invert_mode = true,
++	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH |
++		     DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
++};
++
++static const struct st7789_panel_info t28cp45tn89_panel = {
++	.mode = &t28cp45tn89_mode,
++	.invert_mode = false,
++	.bus_format = MEDIA_BUS_FMT_RGB565_1X16,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH |
++		     DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE,
++};
++
++static const struct st7789_panel_info et028013dma_panel = {
++	.mode = &et028013dma_mode,
++	.invert_mode = true,
++	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH |
++		     DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE,
++};
++
++static const struct st7789_panel_info jt240mhqs_hwt_ek_e3_panel = {
++	.mode = &jt240mhqs_hwt_ek_e3_mode,
++	.invert_mode = true,
++	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH |
++		     DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
++	.partial_mode = true,
++	.partial_start = 38,
++	.partial_end = 318,
++};
++
++static int st7789v_get_modes(struct st7789v *ctx,
++			     struct display_timings *timings)
++{
++	struct fb_videomode *mode;
++
++	mode = xzalloc(sizeof(*mode));
++
++	drm_display_mode_to_fb_videomode(ctx->info->mode, mode);
++
++	timings->modes = mode;
++	timings->num_modes = 1;
++
++	return 0;
++}
++
++static int st7789v_get_display_info(struct st7789v *ctx,
++			     struct drm_display_info *display_info)
++{
++	display_info->bus_flags = ctx->info->bus_flags;
++	display_info->panel_orientation = ctx->orientation;
++
++	return 0;
++}
++
++static int st7789v_prepare(struct st7789v *ctx)
++{
++	u8 mode, pixel_fmt, polarity;
++	int ret;
++
++	if (!ctx->info->partial_mode)
++		mode = ST7789V_RGBCTRL_WO;
++	else
++		mode = 0;
++
++	switch (ctx->info->bus_format) {
++	case MEDIA_BUS_FMT_RGB666_1X18:
++		pixel_fmt = MIPI_DCS_PIXEL_FMT_18BIT;
++		break;
++	case MEDIA_BUS_FMT_RGB565_1X16:
++		pixel_fmt = MIPI_DCS_PIXEL_FMT_16BIT;
++		break;
++	default:
++		dev_err(ctx->dev, "unsupported bus format: %d\n",
++			ctx->info->bus_format);
++		return -EINVAL;
++	}
++
++	pixel_fmt = (pixel_fmt << 4) | pixel_fmt;
++
++	polarity = 0;
++	if (ctx->info->mode->flags & DRM_MODE_FLAG_PVSYNC)
++		polarity |= ST7789V_RGBCTRL_VSYNC_HIGH;
++	if (ctx->info->mode->flags & DRM_MODE_FLAG_PHSYNC)
++		polarity |= ST7789V_RGBCTRL_HSYNC_HIGH;
++	if (ctx->info->bus_flags & DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE)
++		polarity |= ST7789V_RGBCTRL_PCLK_FALLING;
++	if (ctx->info->bus_flags & DRM_BUS_FLAG_DE_LOW)
++		polarity |= ST7789V_RGBCTRL_DE_LOW;
++
++	ret = regulator_enable(ctx->power);
++	if (ret)
++		return ret;
++
++	gpiod_set_value(ctx->reset, 1);
++	mdelay(30);
++	gpiod_set_value(ctx->reset, 0);
++	mdelay(120);
++
++	/*
++	 * Avoid failing if the IDs are invalid in case the Rx bus width
++	 * description is missing.
++	 */
++	ret = st7789v_check_id(ctx);
++	if (ret)
++		dev_warn(ctx->dev, "Unrecognized panel IDs");
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, MIPI_DCS_EXIT_SLEEP_MODE));
++
++	/* We need to wait 120ms after a sleep out command */
++	mdelay(120);
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx,
++						MIPI_DCS_SET_ADDRESS_MODE));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, 0));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx,
++						MIPI_DCS_SET_PIXEL_FORMAT));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, pixel_fmt));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_PORCTRL_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, 0xc));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, 0xc));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, 0));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PORCTRL_IDLE_BP(3) |
++					     ST7789V_PORCTRL_IDLE_FP(3)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx,
++					     ST7789V_PORCTRL_PARTIAL_BP(3) |
++					     ST7789V_PORCTRL_PARTIAL_FP(3)));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_GCTRL_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_GCTRL_VGLS(5) |
++					     ST7789V_GCTRL_VGHS(3)));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_VCOMS_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, 0x2b));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_LCMCTRL_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_LCMCTRL_XMH |
++					     ST7789V_LCMCTRL_XMX |
++					     ST7789V_LCMCTRL_XBGR));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_VDVVRHEN_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_VDVVRHEN_CMDEN));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_VRHS_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, 0xf));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_VDVS_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, 0x20));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_FRCTRL2_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, 0xf));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_PWCTRL1_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PWCTRL1_MAGIC));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PWCTRL1_AVDD(2) |
++					     ST7789V_PWCTRL1_AVCL(2) |
++					     ST7789V_PWCTRL1_VDS(1)));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_PVGAMCTRL_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP63(0xd)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP1(0xca)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP2(0xe)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP4(8)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP6(9)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP13(7)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP20(0x2d)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP27(0xb) |
++					     ST7789V_PVGAMCTRL_VP36(3)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP43(0x3d)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_JP1(3) |
++					     ST7789V_PVGAMCTRL_VP50(4)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP57(0xa)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP59(0xa)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP61(0x1b)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP62(0x28)));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_NVGAMCTRL_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN63(0xd)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN1(0xca)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN2(0xf)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN4(8)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN6(8)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN13(7)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN20(0x2e)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN27(0xc) |
++					     ST7789V_NVGAMCTRL_VN36(5)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN43(0x40)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_JN1(3) |
++					     ST7789V_NVGAMCTRL_VN50(4)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN57(9)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN59(0xb)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN61(0x1b)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN62(0x28)));
++
++	if (ctx->info->invert_mode) {
++		ST7789V_TEST(ret, st7789v_write_command(ctx,
++						MIPI_DCS_ENTER_INVERT_MODE));
++	} else {
++		ST7789V_TEST(ret, st7789v_write_command(ctx,
++						MIPI_DCS_EXIT_INVERT_MODE));
++	}
++
++	if (ctx->info->partial_mode) {
++		u8 area_data[4] = {
++			(ctx->info->partial_start >> 8) & 0xff,
++			(ctx->info->partial_start >> 0) & 0xff,
++			((ctx->info->partial_end - 1) >> 8) & 0xff,
++			((ctx->info->partial_end - 1) >> 0) & 0xff,
++		};
++
++		/* Caution: if userspace ever pushes a mode different from the
++		 * expected one (i.e., the one advertised by get_modes), we'll
++		 * add margins.
++		 */
++
++		ST7789V_TEST(ret, st7789v_write_command(
++					  ctx, MIPI_DCS_ENTER_PARTIAL_MODE));
++
++		ST7789V_TEST(ret, st7789v_write_command(
++					  ctx, MIPI_DCS_SET_PAGE_ADDRESS));
++		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[0]));
++		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[1]));
++		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[2]));
++		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[3]));
++
++		ST7789V_TEST(ret, st7789v_write_command(
++					  ctx, MIPI_DCS_SET_PARTIAL_ROWS));
++		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[0]));
++		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[1]));
++		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[2]));
++		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[3]));
++	}
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_RAMCTRL_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_RAMCTRL_DM_RGB |
++					     ST7789V_RAMCTRL_RM_RGB));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_RAMCTRL_EPF(3) |
++					     ST7789V_RAMCTRL_MAGIC));
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_RGBCTRL_CMD));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, mode |
++					     ST7789V_RGBCTRL_RCM(2) |
++					     polarity));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_RGBCTRL_VBP(8)));
++	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_RGBCTRL_HBP(20)));
++
++	return 0;
++}
++
++static int st7789v_enable(struct st7789v *ctx)
++{
++	return st7789v_write_command(ctx, MIPI_DCS_SET_DISPLAY_ON);
++}
++
++static int st7789v_disable(struct st7789v *ctx)
++{
++	int ret;
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, MIPI_DCS_SET_DISPLAY_OFF));
++
++	return 0;
++}
++
++static int st7789v_unprepare(struct st7789v *ctx)
++{
++	int ret;
++
++	ST7789V_TEST(ret, st7789v_write_command(ctx, MIPI_DCS_ENTER_SLEEP_MODE));
++
++	regulator_disable(ctx->power);
++
++	return 0;
++}
++
++static int ili9341_ioctl(struct vpl *vpl, unsigned int port,
++			 unsigned int cmd, void *ptr)
++{       
++	struct st7789v *ctx = container_of(vpl, struct st7789v, vpl);
++
++	switch (cmd) {
++	case VPL_PREPARE:
++		return st7789v_prepare(ctx);
++	case VPL_ENABLE:
++		return st7789v_enable(ctx);
++	case VPL_DISABLE:
++		return st7789v_disable(ctx);
++	case VPL_UNPREPARE:
++		return st7789v_unprepare(ctx);
++	case VPL_GET_VIDEOMODES:
++		return st7789v_get_modes(ctx, ptr);
++	case VPL_GET_BUS_FORMAT:
++		*(u32 *)ptr = ctx->info->bus_format;
++		return 0;
++	case VPL_GET_DISPLAY_INFO:
++		return st7789v_get_display_info(ctx, ptr);
++	default:
++		return 0;
++	}
++}
++
++#define spi_setup(spi) spi->master->setup(spi)
++
++static int st7789v_probe(struct device *dev)
++{
++	struct spi_device *spi = to_spi_device(dev);
++	struct st7789v *ctx;
++	int ret;
++
++	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++
++	ctx->spi = spi;
++	ctx->dev = dev;
++
++	spi->bits_per_word = 9;
++	ret = spi_setup(spi);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to setup spi\n");
++
++	ctx->info = device_get_match_data(&spi->dev);
++
++	ctx->power = regulator_get(dev, "power");
++	ret = PTR_ERR_OR_ZERO(ctx->power);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to get regulator\n");
++
++	ctx->reset = gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
++	ret = PTR_ERR_OR_ZERO(ctx->reset);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to get reset line\n");
++
++	ctx->vpl.node = dev->of_node;
++	ctx->vpl.ioctl = ili9341_ioctl;
++
++	return vpl_register(&ctx->vpl);
++}
++
++static const struct of_device_id st7789v_of_match[] = {
++	{ .compatible = "sitronix,st7789v", .data = &default_panel },
++	{ .compatible = "inanbo,t28cp45tn89-v17", .data = &t28cp45tn89_panel },
++	{ .compatible = "edt,et028013dma", .data = &et028013dma_panel },
++	{ .compatible = "jasonic,jt240mhqs-hwt-ek-e3",
++	  .data = &jt240mhqs_hwt_ek_e3_panel },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, st7789v_of_match);
++
++static struct driver st7789v_driver = {
++	.name = "panel-sitronix-st7789v",
++	.of_compatible = st7789v_of_match,
++	.probe = st7789v_probe,
++};
++device_spi_driver(st7789v_driver);
++
++MODULE_AUTHOR("Maxime Ripard <maxime.ripard@free-electrons.com>");
++MODULE_DESCRIPTION("Sitronix st7789v LCD Driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/include/video/vpl.h b/include/video/vpl.h
+index 15711b4701..5ea3d6dcf2 100644
+--- a/include/video/vpl.h
++++ b/include/video/vpl.h
+@@ -11,6 +11,7 @@
+ #define VPL_DISABLE		0x67660004
+ #define VPL_GET_VIDEOMODES	0x67660005
+ #define VPL_GET_BUS_FORMAT	0x67660006
++#define VPL_GET_DISPLAY_INFO	0x67660007
+ 
+ struct vpl {
+ 	int (*ioctl)(struct vpl *, unsigned int port,
 
 -- 
 2.39.5
