@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stmb4-002yrX-1S
+	id 1stmb4-002yrY-1g
 	for lore@lore.pengutronix.de;
 	Thu, 26 Sep 2024 13:23:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stmb1-0002gV-3C
+	id 1stmb3-0002ip-9y
 	for lore@pengutronix.de; Thu, 26 Sep 2024 13:23:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,56 +18,56 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=x/11I6AMxVuGE1zV/LElPodgdtSwHNZlf001BRV7myg=; b=G6WkZrBJarLttl4mu7xOnZXwE/
-	6SkFxznSowoQ9+HtNmCJIJstvH24rfr4S2Icp9vIgvPT+x+au7Rzk29uDjQWeP0OAIec/hnPLmcyQ
-	xe4U6wYZwjdXN4i/LSeUH2dHhT2/2fBdIyTtX1ffmfs696tPq/WA1iV/BJVAOQRPIsTjL8Mj2ewW0
-	C0CXGcn6DriiRgP2y4RcgUXmGKcT1ig1nba1rY3v/4Q0BYSH48hoOwGu+EzytfsTbupLIjTZ4AJ/s
-	IF2U1HSK9EmeMQdrS0k8bflEfDJ0cW81RmMyDvmDpj0lEQEB7jt4KtVU3lDZ/BDwISyHAym4GuQ5c
-	Tlj5tg2g==;
+	bh=u8l9AbFYJCs8NfWPda8TDxSK/ndeDnB1TQcJNVA36ag=; b=yAyXdZzgj3wEnuoFyNSnp4cBaQ
+	FqctBi9igdKDgiK4nPi2C392eQTqihVzDlrwaqnb264NoUuzLICGmiVLxU+HVXx2skJ8o+Vcg8PSR
+	pOojHHXW7tzmHyNoIM1vKcJonRcudjGPJ3xHInQrKVFgtVD0sJrbFFOR5KSXcK2AuUDDLGQR/i1WX
+	UnH2Xc1vK6qFkz9kTTQRQ3ZuYRx5OK0hhFkpDOsvHSaDv4yxOMyG3zhZgstBAF+dHokSR+7IN9V2G
+	trDGL6MCXdH/uPFQEJ8I5TwpNE+dwwljTu6ISYdPvRhOLJrvsuAbwkBgEzkoOhrqtprL2ODLSSwIv
+	Sq6dhbww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stmaO-00000008DXJ-0Iw6;
-	Thu, 26 Sep 2024 11:23:04 +0000
+	id 1stmaS-00000008DaN-1D3f;
+	Thu, 26 Sep 2024 11:23:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stmUe-00000008CYf-0jQH
+	id 1stmUu-00000008CeT-0xca
 	for barebox@lists.infradead.org;
-	Thu, 26 Sep 2024 11:17:13 +0000
+	Thu, 26 Sep 2024 11:17:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stmUc-0006sr-Tb; Thu, 26 Sep 2024 13:17:06 +0200
+	id 1stmUc-0006st-Si; Thu, 26 Sep 2024 13:17:06 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stmUc-001fjt-9R; Thu, 26 Sep 2024 13:17:06 +0200
+	id 1stmUc-001fjp-8y; Thu, 26 Sep 2024 13:17:06 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stmUc-00FhS5-22;
+	id 1stmUc-00FhS5-1v;
 	Thu, 26 Sep 2024 13:17:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 26 Sep 2024 13:17:10 +0200
+Date: Thu, 26 Sep 2024 13:17:03 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240926-arm-assembly-memmove-v2-8-0a3313d29a66@pengutronix.de>
+Message-Id: <20240926-arm-assembly-memmove-v2-1-0a3313d29a66@pengutronix.de>
 References: <20240926-arm-assembly-memmove-v2-0-0a3313d29a66@pengutronix.de>
 In-Reply-To: <20240926-arm-assembly-memmove-v2-0-0a3313d29a66@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727349426; l=11576;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727349426; l=5095;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=yTxsUSHi074ZFnWurYAlO7d7fEkZBlEVXuItH7rec2M=;
- b=zJD9d2ojycKsMtoe9iSqLfIt/phXdU98iNRYDtSaj0rosZoLoEgHoiwznAJ45sKZnw4B9D4zP
- gsmZE5aF+IDBcnW2HuSy+Jl8Ko9K/n6nhr1lmIBEjeq5refXxQ9RAEQ
+ bh=mD/wn1eq/oaXC8T5Z000wPfKOB/jvyKH/W2lOIbVE6E=;
+ b=KlsQenCK48t6dK/FfW/7mJrEi+v9oRTCX9zimaqYwrLICUuXvQ7C5qOuYN2Wz2qaJbhCbo9b8
+ ET23NT4U4wYDKx7KsEHPO/CpllYggoUUy2YF/BUjP+T85vYiio1aur/
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240926_041708_535301_F1F0D5B4 
-X-CRM114-Status: GOOD (  18.21  )
+X-CRM114-CacheID: sfid-20240926_041724_313506_1E0F9C51 
+X-CRM114-Status: GOOD (  11.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,471 +90,189 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 08/10] ARM: update memcpy.S and memset.S from Linux
+Subject: [PATCH v2 01/10] ARM: Use optimized reads[bwl] and writes[bwl]
+ functions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This updates the assembler optimized memcpy() and memset() functions
-from Linux-6.10.
+The optimized versions are there for ARM32, but since 0d53f3c584a2
+("arm: use asm-generic/io.h") they were no longer used. Activate
+them again.
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/assembler.h |  6 +++
- arch/arm/lib32/copy_template.S   | 58 +++++++++++++-----------
- arch/arm/lib32/memcpy.S          | 30 +++++++------
- arch/arm/lib32/memset.S          | 96 +++++++++++++++++++++++++---------------
- 4 files changed, 117 insertions(+), 73 deletions(-)
+ arch/arm/include/asm/io.h        | 24 ++++++++++++++++++++++++
+ arch/arm/lib32/io-readsb.S       |  6 +++---
+ arch/arm/lib32/io-readsl.S       |  6 +++---
+ arch/arm/lib32/io-readsw-armv4.S |  6 +++---
+ arch/arm/lib32/io-writesb.S      |  6 +++---
+ arch/arm/lib32/io-writesl.S      |  6 +++---
+ 6 files changed, 39 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/include/asm/assembler.h b/arch/arm/include/asm/assembler.h
-index e8f5625a0a..c84c8ec734 100644
---- a/arch/arm/include/asm/assembler.h
-+++ b/arch/arm/include/asm/assembler.h
-@@ -67,6 +67,12 @@
- #define CALGN(code...)
- #endif
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index 486b142950..9e9b13ad18 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -3,6 +3,30 @@
+ #ifndef __ASM_ARM_IO_H
+ #define __ASM_ARM_IO_H
  
++#include <linux/compiler.h>
++
 +#ifndef CONFIG_CPU_64
-+/* the frame pointer used for stack unwinding */
-+ARM(	fpreg	.req	r11	)
-+THUMB(	fpreg	.req	r7	)
++/*
++ * Generic IO read/write.  These perform native-endian accesses.  Note
++ * that some architectures will want to re-define __raw_{read,write}w.
++ */
++void __raw_writesb(volatile void __iomem *addr, const void *data, int bytelen);
++void __raw_writesw(volatile void __iomem *addr, const void *data, int wordlen);
++void __raw_writesl(volatile void __iomem *addr, const void *data, int longlen);
++
++void __raw_readsb(const volatile void __iomem *addr, void *data, int bytelen);
++void __raw_readsw(const volatile void __iomem *addr, void *data, int wordlen);
++void __raw_readsl(const volatile void __iomem *addr, void *data, int longlen);
++
++#define readsb(p,d,l)		__raw_readsb(p,d,l)
++#define readsw(p,d,l)		__raw_readsw(p,d,l)
++#define readsl(p,d,l)		__raw_readsl(p,d,l)
++
++#define writesb(p,d,l)		__raw_writesb(p,d,l)
++#define writesw(p,d,l)		__raw_writesw(p,d,l)
++#define writesl(p,d,l)		__raw_writesl(p,d,l)
 +#endif
 +
- /*
-  * Enable and disable interrupts
-  */
-diff --git a/arch/arm/lib32/copy_template.S b/arch/arm/lib32/copy_template.S
-index 897e3db3ff..777e185701 100644
---- a/arch/arm/lib32/copy_template.S
-+++ b/arch/arm/lib32/copy_template.S
-@@ -1,5 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 2005 MontaVista Software, Inc (Nicolas Pitre)
-+/* SPDX-FileCopyrightText: 2005 MontaVista Software, Inc (Nicolas Pitre) */
+ #define	IO_SPACE_LIMIT	0
  
- /*
-  * linux/arch/arm/lib/copy_template.s
-@@ -48,6 +48,12 @@
-  *	data as needed by the implementation including this code. Called
-  *	upon code entry.
-  *
-+ * usave reg1 reg2
-+ *
-+ *	Unwind annotation macro is corresponding for 'enter' macro.
-+ *	It tell unwinder that preserved some provided registers on the stack
-+ *	and additional data by a prior 'enter' macro.
-+ *
-  * exit reg1 reg2
-  *
-  *	Restore registers with the values previously saved with the
-@@ -61,8 +67,10 @@
-  *	than one 32bit instruction in Thumb-2)
-  */
- 
--
--		enter	r4, lr
-+	UNWIND(	.fnstart			)
-+		enter	r4, UNWIND(fpreg,) lr
-+	UNWIND(	.setfp	fpreg, sp		)
-+	UNWIND(	mov	fpreg, sp		)
- 
- 		subs	r2, r2, #4
- 		blt	8f
-@@ -73,12 +81,12 @@
- 		bne	10f
- 
- 1:		subs	r2, r2, #(28)
--		stmfd	sp!, {r5 - r8}
-+		stmfd	sp!, {r5, r6, r8, r9}
- 		blt	5f
- 
- 	CALGN(	ands	ip, r0, #31		)
- 	CALGN(	rsb	r3, ip, #32		)
--	CALGN(	sbcnes	r4, r3, r2		)  @ C is always set here
-+	CALGN(	sbcsne	r4, r3, r2		)  @ C is always set here
- 	CALGN(	bcs	2f			)
- 	CALGN(	adr	r4, 6f			)
- 	CALGN(	subs	r2, r2, r3		)  @ C gets set
-@@ -92,9 +100,9 @@
- 	PLD(	pld	[r1, #92]		)
- 
- 3:	PLD(	pld	[r1, #124]		)
--4:		ldr8w	r1, r3, r4, r5, r6, r7, r8, ip, lr, abort=20f
-+4:		ldr8w	r1, r3, r4, r5, r6, r8, r9, ip, lr, abort=20f
- 		subs	r2, r2, #32
--		str8w	r0, r3, r4, r5, r6, r7, r8, ip, lr, abort=20f
-+		str8w	r0, r3, r4, r5, r6, r8, r9, ip, lr, abort=20f
- 		bge	3b
- 	PLD(	cmn	r2, #96			)
- 	PLD(	bge	4b			)
-@@ -114,8 +122,8 @@
- 		ldr1w	r1, r4, abort=20f
- 		ldr1w	r1, r5, abort=20f
- 		ldr1w	r1, r6, abort=20f
--		ldr1w	r1, r7, abort=20f
- 		ldr1w	r1, r8, abort=20f
-+		ldr1w	r1, r9, abort=20f
- 		ldr1w	r1, lr, abort=20f
- 
- #if LDR1W_SHIFT < STR1W_SHIFT
-@@ -132,13 +140,13 @@
- 		str1w	r0, r4, abort=20f
- 		str1w	r0, r5, abort=20f
- 		str1w	r0, r6, abort=20f
--		str1w	r0, r7, abort=20f
- 		str1w	r0, r8, abort=20f
-+		str1w	r0, r9, abort=20f
- 		str1w	r0, lr, abort=20f
- 
- 	CALGN(	bcs	2b			)
- 
--7:		ldmfd	sp!, {r5 - r8}
-+7:		ldmfd	sp!, {r5, r6, r8, r9}
- 
- 8:		movs	r2, r2, lsl #31
- 		ldr1b	r1, r3, ne, abort=21f
-@@ -148,7 +156,7 @@
- 		str1b	r0, r4, cs, abort=21f
- 		str1b	r0, ip, cs, abort=21f
- 
--		exit	r4, pc
-+		exit	r4, UNWIND(fpreg,) pc
- 
- 9:		rsb	ip, ip, #4
- 		cmp	ip, #2
-@@ -177,11 +185,11 @@
- 
- 	CALGN(	ands	ip, r0, #31		)
- 	CALGN(	rsb	ip, ip, #32		)
--	CALGN(	sbcnes	r4, ip, r2		)  @ C is always set here
-+	CALGN(	sbcsne	r4, ip, r2		)  @ C is always set here
- 	CALGN(	subcc	r2, r2, ip		)
- 	CALGN(	bcc	15f			)
- 
--11:		stmfd	sp!, {r5 - r9}
-+11:		stmfd	sp!, {r5, r6, r8 - r10}
- 
- 	PLD(	pld	[r1, #0]		)
- 	PLD(	subs	r2, r2, #96		)
-@@ -191,31 +199,31 @@
- 	PLD(	pld	[r1, #92]		)
- 
- 12:	PLD(	pld	[r1, #124]		)
--13:		ldr4w	r1, r4, r5, r6, r7, abort=19f
-+13:		ldr4w	r1, r4, r5, r6, r8, abort=19f
- 		mov	r3, lr, lspull #\pull
- 		subs	r2, r2, #32
--		ldr4w	r1, r8, r9, ip, lr, abort=19f
-+		ldr4w	r1, r9, r10, ip, lr, abort=19f
- 		orr	r3, r3, r4, lspush #\push
- 		mov	r4, r4, lspull #\pull
- 		orr	r4, r4, r5, lspush #\push
- 		mov	r5, r5, lspull #\pull
- 		orr	r5, r5, r6, lspush #\push
- 		mov	r6, r6, lspull #\pull
--		orr	r6, r6, r7, lspush #\push
--		mov	r7, r7, lspull #\pull
--		orr	r7, r7, r8, lspush #\push
-+		orr	r6, r6, r8, lspush #\push
- 		mov	r8, r8, lspull #\pull
- 		orr	r8, r8, r9, lspush #\push
- 		mov	r9, r9, lspull #\pull
--		orr	r9, r9, ip, lspush #\push
-+		orr	r9, r9, r10, lspush #\push
-+		mov	r10, r10, lspull #\pull
-+		orr	r10, r10, ip, lspush #\push
- 		mov	ip, ip, lspull #\pull
- 		orr	ip, ip, lr, lspush #\push
--		str8w	r0, r3, r4, r5, r6, r7, r8, r9, ip, , abort=19f
-+		str8w	r0, r3, r4, r5, r6, r8, r9, r10, ip, abort=19f
- 		bge	12b
- 	PLD(	cmn	r2, #96			)
- 	PLD(	bge	13b			)
- 
--		ldmfd	sp!, {r5 - r9}
-+		ldmfd	sp!, {r5, r6, r8 - r10}
- 
- 14:		ands	ip, r2, #28
- 		beq	16f
-@@ -241,6 +249,7 @@
- 
- 18:		forward_copy_shift	pull=24	push=8
- 
-+	UNWIND(	.fnend				)
- 
- /*
-  * Abort preamble and completion macros.
-@@ -250,14 +259,13 @@
-  */
- 
- 	.macro	copy_abort_preamble
--19:	ldmfd	sp!, {r5 - r9}
-+19:	ldmfd	sp!, {r5, r6, r8 - r10}
- 	b	21f
--20:	ldmfd	sp!, {r5 - r8}
-+20:	ldmfd	sp!, {r5, r6, r8, r9}
- 21:
- 	.endm
- 
- 	.macro	copy_abort_end
--	ldmfd	sp!, {r4, pc}
-+	ldmfd	sp!, {r4, UNWIND(fpreg,) pc}
- 	.endm
- 
--
-diff --git a/arch/arm/lib32/memcpy.S b/arch/arm/lib32/memcpy.S
-index d40296e4bf..90f2b645aa 100644
---- a/arch/arm/lib32/memcpy.S
-+++ b/arch/arm/lib32/memcpy.S
-@@ -1,12 +1,15 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 2005 MontaVista Software, Inc (Nicolas Pitre)
--
- /*
-- * linux/arch/arm/lib/memcpy.S
-+ *  linux/arch/arm/lib/memcpy.S
-+ *
-+ *  Author:	Nicolas Pitre
-+ *  Created:	Sep 28, 2005
-+ *  Copyright:	MontaVista Software, Inc.
-  */
- 
+ #define memcpy_fromio memcpy_fromio
+diff --git a/arch/arm/lib32/io-readsb.S b/arch/arm/lib32/io-readsb.S
+index f853c48021..41f68092c5 100644
+--- a/arch/arm/lib32/io-readsb.S
++++ b/arch/arm/lib32/io-readsb.S
+@@ -7,7 +7,7 @@
  #include <linux/linkage.h>
  #include <asm/assembler.h>
-+#include <asm/unwind.h>
  
- #define LDR1W_SHIFT	0
- #define STR1W_SHIFT	0
-@@ -24,7 +27,7 @@
- 	.endm
+-.section .text.readsb
++.section .text.__raw_readsb
  
- 	.macro ldr1b ptr reg cond=al abort
--	ldr\cond\()b \reg, [\ptr], #1
-+	ldrb\cond \reg, [\ptr], #1
- 	.endm
+ .Linsb_align:	rsb	ip, ip, #4
+ 		cmp	ip, r2
+@@ -22,7 +22,7 @@
+ 		subs	r2, r2, ip
+ 		bne	.Linsb_aligned
  
- 	.macro str1w ptr reg abort
-@@ -36,27 +39,28 @@
- 	.endm
+-ENTRY(readsb)
++ENTRY(__raw_readsb)
+ 		teq	r2, #0		@ do we have to check for the zero len?
+ 		moveq	pc, lr
+ 		ands	ip, r1, #3
+@@ -119,4 +119,4 @@ ENTRY(readsb)
+ 		strgtb	r3, [r1]
  
- 	.macro str1b ptr reg cond=al abort
--	str\cond\()b \reg, [\ptr], #1
-+	strb\cond \reg, [\ptr], #1
- 	.endm
- 
--	.macro enter reg1 reg2
--	stmdb sp!, {r0, \reg1, \reg2}
-+	.macro enter regs:vararg
-+UNWIND( .save	{r0, \regs}		)
-+	stmdb sp!, {r0, \regs}
- 	.endm
- 
--	.macro exit reg1 reg2
--	ldmfd sp!, {r0, \reg1, \reg2}
-+	.macro exit regs:vararg
-+	ldmfd sp!, {r0, \regs}
- 	.endm
- 
- 	.text
- 
- /* Prototype: void *memcpy(void *dest, const void *src, size_t n); */
- 
--.weak memcpy
--ENTRY(memcpy)
- ENTRY(__memcpy)
-+ENTRY(mmiocpy)
-+WEAK(memcpy)
- 
- #include "copy_template.S"
- 
--ENDPROC(__memcpy)
- ENDPROC(memcpy)
--
-+ENDPROC(mmiocpy)
-+ENDPROC(__memcpy)
-diff --git a/arch/arm/lib32/memset.S b/arch/arm/lib32/memset.S
-index 4ba74e0c6c..de75ae4d5a 100644
---- a/arch/arm/lib32/memset.S
-+++ b/arch/arm/lib32/memset.S
-@@ -1,19 +1,23 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 1995-2000 Russell King */
--
- /*
-- * linux/arch/arm/lib/memset.S
-- * ASM optimised string functions
-+ *  linux/arch/arm/lib/memset.S
-+ *
-+ *  Copyright (C) 1995-2000 Russell King
-+ *
-+ *  ASM optimised string functions
-  */
+ 		ldmfd	sp!, {r4 - r6, pc}
+-ENDPROC(readsb)
++ENDPROC(__raw_readsb)
+diff --git a/arch/arm/lib32/io-readsl.S b/arch/arm/lib32/io-readsl.S
+index bb8b96ded0..e1855fd636 100644
+--- a/arch/arm/lib32/io-readsl.S
++++ b/arch/arm/lib32/io-readsl.S
+@@ -7,9 +7,9 @@
  #include <linux/linkage.h>
  #include <asm/assembler.h>
-+#include <asm/unwind.h>
  
- 	.text
- 	.align	5
+-.section .text.readsl
++.section .text.__raw_readsl
  
--.weak memset
- ENTRY(__memset)
--ENTRY(memset)
-+ENTRY(mmioset)
-+WEAK(memset)
-+UNWIND( .fnstart         )
-+	and	r1, r1, #255		@ cast to unsigned char
- 	ands	r3, r0, #3		@ 1 unaligned?
- 	mov	ip, r0			@ preserve r0 as return value
- 	bne	6f			@ 1
-@@ -23,34 +27,38 @@ ENTRY(memset)
- 1:	orr	r1, r1, r1, lsl #8
- 	orr	r1, r1, r1, lsl #16
- 	mov	r3, r1
--	cmp	r2, #16
-+7:	cmp	r2, #16
- 	blt	4f
-+UNWIND( .fnend              )
- 
- #if ! CALGN(1)+0
- 
- /*
-- * We need an 2 extra registers for this loop - use r8 and the LR
-+ * We need 2 extra registers for this loop - use r8 and the LR
-  */
-+UNWIND( .fnstart            )
-+UNWIND( .save {r8, lr}      )
- 	stmfd	sp!, {r8, lr}
- 	mov	r8, r1
--	mov	lr, r1
-+	mov	lr, r3
- 
- 2:	subs	r2, r2, #64
--	stmgeia	ip!, {r1, r3, r8, lr}	@ 64 bytes at a time.
--	stmgeia	ip!, {r1, r3, r8, lr}
--	stmgeia	ip!, {r1, r3, r8, lr}
--	stmgeia	ip!, {r1, r3, r8, lr}
-+	stmiage	ip!, {r1, r3, r8, lr}	@ 64 bytes at a time.
-+	stmiage	ip!, {r1, r3, r8, lr}
-+	stmiage	ip!, {r1, r3, r8, lr}
-+	stmiage	ip!, {r1, r3, r8, lr}
- 	bgt	2b
--	ldmeqfd	sp!, {r8, pc}		@ Now <64 bytes to go.
-+	ldmfdeq	sp!, {r8, pc}		@ Now <64 bytes to go.
- /*
-  * No need to correct the count; we're only testing bits from now on
-  */
- 	tst	r2, #32
--	stmneia	ip!, {r1, r3, r8, lr}
--	stmneia	ip!, {r1, r3, r8, lr}
-+	stmiane	ip!, {r1, r3, r8, lr}
-+	stmiane	ip!, {r1, r3, r8, lr}
- 	tst	r2, #16
--	stmneia	ip!, {r1, r3, r8, lr}
-+	stmiane	ip!, {r1, r3, r8, lr}
- 	ldmfd	sp!, {r8, lr}
-+UNWIND( .fnend              )
- 
- #else
- 
-@@ -59,13 +67,15 @@ ENTRY(memset)
-  * whole cache lines at once.
-  */
- 
-+UNWIND( .fnstart               )
-+UNWIND( .save {r4-r8, lr}      )
- 	stmfd	sp!, {r4-r8, lr}
- 	mov	r4, r1
--	mov	r5, r1
-+	mov	r5, r3
- 	mov	r6, r1
--	mov	r7, r1
-+	mov	r7, r3
- 	mov	r8, r1
--	mov	lr, r1
-+	mov	lr, r3
- 
- 	cmp	r2, #96
- 	tstgt	ip, #31
-@@ -75,48 +85,64 @@ ENTRY(memset)
- 	rsb	r8, r8, #32
- 	sub	r2, r2, r8
- 	movs	r8, r8, lsl #(32 - 4)
--	stmcsia	ip!, {r4, r5, r6, r7}
--	stmmiia	ip!, {r4, r5}
-+	stmiacs	ip!, {r4, r5, r6, r7}
-+	stmiami	ip!, {r4, r5}
- 	tst	r8, #(1 << 30)
- 	mov	r8, r1
- 	strne	r1, [ip], #4
- 
- 3:	subs	r2, r2, #64
--	stmgeia	ip!, {r1, r3-r8, lr}
--	stmgeia	ip!, {r1, r3-r8, lr}
-+	stmiage	ip!, {r1, r3-r8, lr}
-+	stmiage	ip!, {r1, r3-r8, lr}
- 	bgt	3b
--	ldmeqfd	sp!, {r4-r8, pc}
-+	ldmfdeq	sp!, {r4-r8, pc}
- 
- 	tst	r2, #32
--	stmneia	ip!, {r1, r3-r8, lr}
-+	stmiane	ip!, {r1, r3-r8, lr}
- 	tst	r2, #16
--	stmneia	ip!, {r4-r7}
-+	stmiane	ip!, {r4-r7}
- 	ldmfd	sp!, {r4-r8, lr}
-+UNWIND( .fnend                 )
- 
+-ENTRY(readsl)
++ENTRY(__raw_readsl)
+ 		teq	r2, #0		@ do we have to check for the zero len?
+ 		moveq	pc, lr
+ 		ands	ip, r1, #3
+@@ -75,4 +75,4 @@ ENTRY(readsl)
+ 8:		mov	r3, ip, get_byte_0
+ 		strb	r3, [r1, #0]
+ 		mov	pc, lr
+-ENDPROC(readsl)
++ENDPROC(__raw_readsl)
+diff --git a/arch/arm/lib32/io-readsw-armv4.S b/arch/arm/lib32/io-readsw-armv4.S
+index 25f2778860..9fb7fd7576 100644
+--- a/arch/arm/lib32/io-readsw-armv4.S
++++ b/arch/arm/lib32/io-readsw-armv4.S
+@@ -15,7 +15,7 @@
  #endif
+ 		.endm
  
-+UNWIND( .fnstart            )
- 4:	tst	r2, #8
--	stmneia	ip!, {r1, r3}
-+	stmiane	ip!, {r1, r3}
- 	tst	r2, #4
- 	strne	r1, [ip], #4
- /*
-- * When we get here, we've got less than 4 bytes to zero.  We
-+ * When we get here, we've got less than 4 bytes to set.  We
-  * may have an unaligned pointer as well.
-  */
- 5:	tst	r2, #2
--	strneb	r1, [ip], #1
--	strneb	r1, [ip], #1
-+	strbne	r1, [ip], #1
-+	strbne	r1, [ip], #1
- 	tst	r2, #1
--	strneb	r1, [ip], #1
--	mov	pc, lr
-+	strbne	r1, [ip], #1
-+	ret	lr
+-.section .text.readsw
++.section .text.__raw_readsw
  
- 6:	subs	r2, r2, #4		@ 1 do we have enough
- 	blt	5b			@ 1 bytes to align with?
- 	cmp	r3, #2			@ 1
--	strltb	r1, [ip], #1		@ 1
--	strleb	r1, [ip], #1		@ 1
-+	strblt	r1, [ip], #1		@ 1
-+	strble	r1, [ip], #1		@ 1
- 	strb	r1, [ip], #1		@ 1
- 	add	r2, r2, r3		@ 1 (r2 = r2 - (4 - r3))
- 	b	1b
-+UNWIND( .fnend   )
- ENDPROC(memset)
-+ENDPROC(mmioset)
- ENDPROC(__memset)
-+
-+ENTRY(__memset32)
-+UNWIND( .fnstart         )
-+	mov	r3, r1			@ copy r1 to r3 and fall into memset64
-+UNWIND( .fnend   )
-+ENDPROC(__memset32)
-+ENTRY(__memset64)
-+UNWIND( .fnstart         )
-+	mov	ip, r0			@ preserve r0 as return value
-+	b	7b			@ jump into the middle of memset
-+UNWIND( .fnend   )
-+ENDPROC(__memset64)
+ .Linsw_align:	movs	ip, r1, lsl #31
+ 		bne	.Linsw_noalign
+@@ -23,7 +23,7 @@
+ 		sub	r2, r2, #1
+ 		strh	ip, [r1], #2
+ 
+-ENTRY(readsw)
++ENTRY(__raw_readsw)
+ 		teq	r2, #0
+ 		moveq	pc, lr
+ 		tst	r1, #3
+@@ -127,4 +127,4 @@ ENTRY(readsw)
+    _BE_ONLY_(	movne	ip, ip, lsr #24		)
+ 		strneb	ip, [r1]
+ 		ldmfd	sp!, {r4, pc}
+-ENDPROC(readsw)
++ENDPROC(__raw_readsw)
+diff --git a/arch/arm/lib32/io-writesb.S b/arch/arm/lib32/io-writesb.S
+index 313839bff6..b6ce85f0d4 100644
+--- a/arch/arm/lib32/io-writesb.S
++++ b/arch/arm/lib32/io-writesb.S
+@@ -27,7 +27,7 @@
+ #endif
+ 		.endm
+ 
+-.section .text.writesb
++.section .text.__raw_writesb
+ 
+ .Loutsb_align:	rsb	ip, ip, #4
+ 		cmp	ip, r2
+@@ -42,7 +42,7 @@
+ 		subs	r2, r2, ip
+ 		bne	.Loutsb_aligned
+ 
+-ENTRY(writesb)
++ENTRY(__raw_writesb)
+ 		teq	r2, #0		@ do we have to check for the zero len?
+ 		moveq	pc, lr
+ 		ands	ip, r1, #3
+@@ -90,4 +90,4 @@ ENTRY(writesb)
+ 		strgtb	r3, [r0]
+ 
+ 		ldmfd	sp!, {r4, r5, pc}
+-ENDPROC(writesb)
++ENDPROC(__raw_writesb)
+diff --git a/arch/arm/lib32/io-writesl.S b/arch/arm/lib32/io-writesl.S
+index d9a29d9153..ed91ae19b7 100644
+--- a/arch/arm/lib32/io-writesl.S
++++ b/arch/arm/lib32/io-writesl.S
+@@ -7,9 +7,9 @@
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+ 
+-.section .text.writesl
++.section .text.__raw_writesl
+ 
+-ENTRY(writesl)
++ENTRY(__raw_writesl)
+ 		teq	r2, #0		@ do we have to check for the zero len?
+ 		moveq	pc, lr
+ 		ands	ip, r1, #3
+@@ -63,4 +63,4 @@ ENTRY(writesl)
+ 		str	ip, [r0]
+ 		bne	6b
+ 		mov	pc, lr
+-ENDPROC(writesl)
++ENDPROC(__raw_writesl)
 
 -- 
 2.39.5
