@@ -1,58 +1,58 @@
-Delivery-date: Wed, 25 Sep 2024 18:11:26 +0200
+Delivery-date: Thu, 26 Sep 2024 07:28:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stUbt-002f0r-18
+	id 1sth3I-002sav-0e
 	for lore@lore.pengutronix.de;
-	Wed, 25 Sep 2024 18:11:26 +0200
+	Thu, 26 Sep 2024 07:28:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stUbt-0008EC-R6
-	for lore@pengutronix.de; Wed, 25 Sep 2024 18:11:26 +0200
+	id 1sth3I-00005U-Mf
+	for lore@pengutronix.de; Thu, 26 Sep 2024 07:28:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AKLSXyPNCiNHkuK2U3uQODXeDxci93HxrTKk7tK91Gg=; b=pxL/Cip/iwf0wyI63m5OqVW48L
-	T8T+7brxxD+or/dxvOAGD1MTPVnLD+Xj2KWWt5x3VXOcusTTZ1mB4C51oOLxJh7IZXRy91p7v+nI3
-	ezs/6UseG/70ydbKd2Zk9VL6kTJsR5ptk+eel8/LjjdkQn4tQLz7PCcC2yfX1RMedMw4AnfCjyXiW
-	+nYZy0Oh1N3ocA/cL5Zq5xwgeiiGQxzCekWaQAEfzkUUCkNKJ3lFblWeAxkWqa/NU8ucl5OSARMyJ
-	6raDRvqm1TLK1u6tfL9RJS8Jpj/vaEnNp/P+y2JgT5W4Q5DIkydLAepQbI3eBe+zWsfAQKxVvc1IP
-	u1xM0ODg==;
+	bh=oJ8Cu9Wc/9vsXEhpL5c7wTX5GujguQ3fQzfZHpjZWtk=; b=gQZ5vt11/Jacm5BaXBFKBtU/19
+	lNhrQ0SV/pCgvAnKmSeiolo5x0SQhym2nacxtYnNf5jnSf6MEfWylQ7lOeaf/Quq1I3m1f+I/mZe/
+	QjTxjd1l/gVt50LnyxC6J6IrVpIzaT8d7n17U7PL1ZEyMsCYz5fhR5w1cQn6Spg0siePn9viXh8oy
+	34rOT7G8TOao3ezJtS8+qtw7pb2+l9zhGalf9NBmvshrUCeDK4tWtmfpBwlyPrQBrOZKeL7wUlV/Q
+	dRhcLRNDrSGyS2nQRv3p3omekOWWZIBMLOOO9GsO3ZaHcmVXNKkUmh9KKXyG0ORKJ1tl/poy/pE3M
+	aMGxKiEQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stUbW-000000060Xu-0wbr;
-	Wed, 25 Sep 2024 16:11:02 +0000
+	id 1sth2g-00000007EVt-2I2c;
+	Thu, 26 Sep 2024 05:27:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stUbS-000000060Wg-2McX
+	id 1sth1W-00000007EPq-01Tw
 	for barebox@lists.infradead.org;
-	Wed, 25 Sep 2024 16:11:00 +0000
+	Thu, 26 Sep 2024 05:26:44 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1stUbR-000884-BD; Wed, 25 Sep 2024 18:10:57 +0200
-Message-ID: <99c810ae-a3da-4f53-8f5f-d9e4b53cfc47@pengutronix.de>
-Date: Wed, 25 Sep 2024 18:10:57 +0200
+	id 1sth1U-0007ha-4l; Thu, 26 Sep 2024 07:26:40 +0200
+Message-ID: <239d4bc5-4cd0-48b7-8907-24dff31c9362@pengutronix.de>
+Date: Thu, 26 Sep 2024 07:26:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  "open list:BAREBOX" <barebox@lists.infradead.org>
-References: <20240925-arm-assembly-memmove-v1-0-0d92103658a0@pengutronix.de>
- <20240925-arm-assembly-memmove-v1-9-0d92103658a0@pengutronix.de>
+References: <20240925-graphics-v1-0-f1fe5d2cceec@pengutronix.de>
+ <20240925-graphics-v1-1-f1fe5d2cceec@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240925-arm-assembly-memmove-v1-9-0d92103658a0@pengutronix.de>
+In-Reply-To: <20240925-graphics-v1-1-f1fe5d2cceec@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240925_091058_637903_0EF5A9C7 
-X-CRM114-Status: GOOD (  17.55  )
+X-CRM114-CacheID: sfid-20240925_222642_076405_00D1436A 
+X-CRM114-Status: GOOD (  16.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,60 +74,46 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 09/10] lib/string.c: export non optimized memmove as
- __default_memmove
+Subject: Re: [PATCH 1/5] graphic_utils: Clip to screen boundaries
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25.09.24 15:55, Sascha Hauer wrote:
-> When an architecture defines __HAVE_ARCH_MEMMOVE then the generic
-> non optimized memmove is not compiled in. It is needed on ARM64
-> as a fallback in certain cases though, so make it available as
-> __default_memmove just like done with __default_memcpy already.
+On 25.09.24 16:34, Sascha Hauer wrote:
+> Do not render the parts of the image that are outside the screen
+> boundaries to prevent memory corruptions.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  lib/string.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+>  lib/gui/graphic_utils.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/lib/string.c b/lib/string.c
-> index 374f326143..98dd3cffdd 100644
-> --- a/lib/string.c
-> +++ b/lib/string.c
-> @@ -666,7 +666,6 @@ void *mempcpy(void *dest, const void *src, size_t count)
->  }
->  EXPORT_SYMBOL(mempcpy);
+> diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+> index d91a7f3550..93ef1214f9 100644
+> --- a/lib/gui/graphic_utils.c
+> +++ b/lib/gui/graphic_utils.c
+> @@ -229,6 +229,9 @@ void gu_rgba_blend(struct fb_info *info, struct image *img, void* buf, int heigh
+>  	line_length = info->line_length;
 >  
-> -#ifndef __HAVE_ARCH_MEMMOVE
->  /**
->   * memmove - Copy one area of memory to another
->   * @dest: Where to copy to
-> @@ -675,7 +674,7 @@ EXPORT_SYMBOL(mempcpy);
->   *
->   * Unlike memcpy(), memmove() copes with overlapping areas.
->   */
-> -void * memmove(void * dest,const void *src,size_t count)
-> +void *__default_memmove(void * dest,const void *src,size_t count)
->  {
->  	char *tmp, *s;
->  
-> @@ -694,6 +693,13 @@ void * memmove(void * dest,const void *src,size_t count)
->  
->  	return dest;
->  }
-> +EXPORT_SYMBOL(__default_memmove);
+>  	for (y = 0; y < height; y++) {
+> +		if (y + starty >= info->yres)
+> +			break;
 > +
-> +#ifndef __HAVE_ARCH_MEMMOVE
-> +void *memmove(void * dest, const void *src, size_t count)
-> +	__alias(__default_memmove);
-> +void *__memmove(void * dest, const void *src, size_t count)
-> +	__alias(__default_memmove);
->  #endif
->  EXPORT_SYMBOL(memmove);
+>  		adr = buf + (y + starty) * line_length +
+>  				startx * (info->bits_per_pixel >> 3);
+>  		image = img->data + (y * img->width *img_byte_per_pixel);
+> @@ -236,6 +239,9 @@ void gu_rgba_blend(struct fb_info *info, struct image *img, void* buf, int heigh
+>  		for (x = 0; x < width; x++) {
+>  			uint8_t *pixel = image;
 >  
+> +			if (x + startx >= info->xres)
+> +				break;
+> +
+>  			if (is_rgba)
+>  				gu_set_rgba_pixel(info, adr, pixel[0], pixel[1],
+>  						pixel[2], pixel[3]);
 > 
 
 
