@@ -1,73 +1,73 @@
-Delivery-date: Thu, 26 Sep 2024 15:15:56 +0200
+Delivery-date: Thu, 26 Sep 2024 15:16:00 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stoLb-0030qt-0f
+	id 1stoLf-0030rG-0S
 	for lore@lore.pengutronix.de;
-	Thu, 26 Sep 2024 15:15:56 +0200
+	Thu, 26 Sep 2024 15:16:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stoLa-0005fx-7K
-	for lore@pengutronix.de; Thu, 26 Sep 2024 15:15:56 +0200
+	id 1stoLd-0005kr-Bl
+	for lore@pengutronix.de; Thu, 26 Sep 2024 15:16:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wu3xcM7/3opxdJcRtFhhu/Gxjjm4zd9GCsTU46jUOOM=; b=4pwAjSZne7I4n1Gzi5q3ZS6sDh
-	2Xt0js9FgN09B9IYbAKPaisA+XnbqSR/ZKLrvxoa0JJXh3hZX/i5/EaVaD+sEqyMD4iL/ruE+CQlf
-	OFRuVDquUGy5riWkopV0sme6IUOhERvXolVYNBt9ukyeULABUIg70MxOkWX6VZs8+fWk4T2FSFvd4
-	wsswavgda6WIOh8K4zlqIqjUgdZxglTF/NWVHwyYMuK1ZdaGjOTovL2KgRLXrrcoErMxt0NX1Pwjq
-	6nGzozyHDD5fgVnykW6Wvyw0lYe2Lw3w860KqWSaPHZEzPCrIlgHJ+ghnMioMMuz0ysRXm3fGo7l9
-	2dFjsVjw==;
+	bh=kFhom7hVZnwCI3aTYvoHO/DF3VfUAPnFdqtlmW6nqPo=; b=FTqUczli3+41j7GNBZLVVhoPap
+	Lv4rWELuH62IPnVDkB371FkTegdtlOqzYgCATCem1rsARjDoRyuVXDcwGPHoNte9Z65/aBBHZeM36
+	yeGXd0VKEWOI10EAyV8bRTPffYh4nRCaOHP5l9jRcEnV0NVWOccU3O5PG132O0yUFDWrUg5q9rnzz
+	MGJr6Xuq5KkbLvcVGQ5gJUJtVdfteDtiZirI5Bage9XX3CWC28vuXWNcuFyNZAlk64vTY3dk0qZc9
+	6zHjTBGFIGLukW6BGHzPqOV+H8A5JIiD3A0KeQi8gfr3wt0wloUtE/DOVxgMfBi86xIJTMPDNOqka
+	e1UQbMlg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stoKw-00000008QzK-0kCI;
-	Thu, 26 Sep 2024 13:15:14 +0000
+	id 1stoL1-00000008R1g-3oKp;
+	Thu, 26 Sep 2024 13:15:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stoKn-00000008Qvs-3rZJ
+	id 1stoKu-00000008Qya-46al
 	for barebox@lists.infradead.org;
-	Thu, 26 Sep 2024 13:15:09 +0000
+	Thu, 26 Sep 2024 13:15:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-0004uk-Mx; Thu, 26 Sep 2024 15:15:03 +0200
+	id 1stoKl-0004un-Pr; Thu, 26 Sep 2024 15:15:03 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-001h7C-4T; Thu, 26 Sep 2024 15:15:03 +0200
+	id 1stoKl-001h7D-58; Thu, 26 Sep 2024 15:15:03 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-00GZyn-1e;
+	id 1stoKl-00GZyn-1f;
 	Thu, 26 Sep 2024 15:15:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 26 Sep 2024 15:15:01 +0200
+Date: Thu, 26 Sep 2024 15:15:02 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240926-vop2-v1-3-fe0581f2020b@pengutronix.de>
+Message-Id: <20240926-vop2-v1-4-fe0581f2020b@pengutronix.de>
 References: <20240926-vop2-v1-0-fe0581f2020b@pengutronix.de>
 In-Reply-To: <20240926-vop2-v1-0-fe0581f2020b@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727356502; l=5545;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727356502; l=7345;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Jhg7p+Dbp00bz8u0wboocpC2xUXQCtiX6vFiw1tWSJE=;
- b=mqP4VvLSsY15FHC+KkaAp/EBtPGLIc6S59wl0MhehP0/bWwyypDNB23GBHWPk9Fl7rjqtnAvD
- P7Nksyt6B8vBagaD8Ot3YRoi3fKyTbH9Btl3BJXNueA0xeM2U1lci3/
+ bh=gF64Y61eQNBCKngUrCXn8m74fkMJsiUFgxjCTRKZDp0=;
+ b=eMuF3cPKKge4dbQ01Kon131OK1oXh1C5fSSUKp+lyI0vS9Jgv3QZx32mw/VSePdY1HmILX09q
+ Dif5J/mjf+jBemehxSiSDw6wFLiGCntlwm1UHr+q7qK1Zq44FKKOfkR
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240926_061506_169797_FAB98C9B 
-X-CRM114-Status: GOOD (  12.82  )
+X-CRM114-CacheID: sfid-20240926_061513_400027_1CAF8969 
+X-CRM114-Status: GOOD (  19.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,149 +89,248 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 03/13] media-bus-format: update from kernel
+Subject: [PATCH 04/13] regmap: add regfield support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-There are several new media bus formats since we last updated
-media-bus-format.h from Linux. Update it from Linux-6.10 to
-get the new formats.
+Add regfield support to get comfortable access to register fields in a
+regmap. The functions are taken directly from Linux-6.10.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/video/media-bus-format.h | 55 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 52 insertions(+), 3 deletions(-)
+ drivers/base/regmap/internal.h |  11 ++++
+ drivers/base/regmap/regmap.c   | 131 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/regmap.h         |  39 ++++++++++++
+ 3 files changed, 181 insertions(+)
 
-diff --git a/include/video/media-bus-format.h b/include/video/media-bus-format.h
-index 190d491d5b..d4c1d99101 100644
---- a/include/video/media-bus-format.h
-+++ b/include/video/media-bus-format.h
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
- /*
-  * Media Bus API header
-  *
-@@ -33,7 +34,7 @@
+diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
+index ac3f0d3c0f..6f6a34edc7 100644
+--- a/drivers/base/regmap/internal.h
++++ b/drivers/base/regmap/internal.h
+@@ -41,6 +41,17 @@ struct regmap {
+ 			 unsigned int val);
+ };
  
- #define MEDIA_BUS_FMT_FIXED			0x0001
++struct regmap_field {
++	struct regmap *regmap;
++	unsigned int mask;
++	/* lsb */
++	unsigned int shift;
++	unsigned int reg;
++
++	unsigned int id_size;
++	unsigned int id_offset;
++};
++
+ enum regmap_endian regmap_get_val_endian(struct device *dev,
+ 					 const struct regmap_bus *bus,
+ 					 const struct regmap_config *config);
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 7ad527954c..1f10424a42 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -242,6 +242,30 @@ int regmap_write_bits(struct regmap *map, unsigned int reg,
+ 	return regmap_write(map, reg, tmp);
+ }
  
--/* RGB - next is	0x1018 */
-+/* RGB - next is	0x1026 */
- #define MEDIA_BUS_FMT_RGB444_1X12		0x1016
- #define MEDIA_BUS_FMT_RGB444_2X8_PADHI_BE	0x1001
- #define MEDIA_BUS_FMT_RGB444_2X8_PADHI_LE	0x1002
-@@ -45,20 +46,34 @@
- #define MEDIA_BUS_FMT_RGB565_2X8_BE		0x1007
- #define MEDIA_BUS_FMT_RGB565_2X8_LE		0x1008
- #define MEDIA_BUS_FMT_RGB666_1X18		0x1009
-+#define MEDIA_BUS_FMT_RGB666_2X9_BE		0x1025
-+#define MEDIA_BUS_FMT_BGR666_1X18		0x1023
- #define MEDIA_BUS_FMT_RBG888_1X24		0x100e
- #define MEDIA_BUS_FMT_RGB666_1X24_CPADHI	0x1015
-+#define MEDIA_BUS_FMT_BGR666_1X24_CPADHI	0x1024
-+#define MEDIA_BUS_FMT_RGB565_1X24_CPADHI	0x1022
- #define MEDIA_BUS_FMT_RGB666_1X7X3_SPWG		0x1010
- #define MEDIA_BUS_FMT_BGR888_1X24		0x1013
-+#define MEDIA_BUS_FMT_BGR888_3X8		0x101b
- #define MEDIA_BUS_FMT_GBR888_1X24		0x1014
- #define MEDIA_BUS_FMT_RGB888_1X24		0x100a
- #define MEDIA_BUS_FMT_RGB888_2X12_BE		0x100b
- #define MEDIA_BUS_FMT_RGB888_2X12_LE		0x100c
-+#define MEDIA_BUS_FMT_RGB888_3X8		0x101c
-+#define MEDIA_BUS_FMT_RGB888_3X8_DELTA		0x101d
- #define MEDIA_BUS_FMT_RGB888_1X7X4_SPWG		0x1011
- #define MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA	0x1012
-+#define MEDIA_BUS_FMT_RGB666_1X30_CPADLO	0x101e
-+#define MEDIA_BUS_FMT_RGB888_1X30_CPADLO	0x101f
- #define MEDIA_BUS_FMT_ARGB8888_1X32		0x100d
- #define MEDIA_BUS_FMT_RGB888_1X32_PADHI		0x100f
-+#define MEDIA_BUS_FMT_RGB101010_1X30		0x1018
-+#define MEDIA_BUS_FMT_RGB666_1X36_CPADLO	0x1020
-+#define MEDIA_BUS_FMT_RGB888_1X36_CPADLO	0x1021
-+#define MEDIA_BUS_FMT_RGB121212_1X36		0x1019
-+#define MEDIA_BUS_FMT_RGB161616_1X48		0x101a
- 
--/* YUV (including grey) - next is	0x2026 */
-+/* YUV (including grey) - next is	0x202f */
- #define MEDIA_BUS_FMT_Y8_1X8			0x2001
- #define MEDIA_BUS_FMT_UV8_1X8			0x2015
- #define MEDIA_BUS_FMT_UYVY8_1_5X8		0x2002
-@@ -70,6 +85,7 @@
- #define MEDIA_BUS_FMT_YUYV8_2X8			0x2008
- #define MEDIA_BUS_FMT_YVYU8_2X8			0x2009
- #define MEDIA_BUS_FMT_Y10_1X10			0x200a
-+#define MEDIA_BUS_FMT_Y10_2X8_PADHI_LE		0x202c
- #define MEDIA_BUS_FMT_UYVY10_2X10		0x2018
- #define MEDIA_BUS_FMT_VYUY10_2X10		0x2019
- #define MEDIA_BUS_FMT_YUYV10_2X10		0x200b
-@@ -79,6 +95,8 @@
- #define MEDIA_BUS_FMT_VYUY12_2X12		0x201d
- #define MEDIA_BUS_FMT_YUYV12_2X12		0x201e
- #define MEDIA_BUS_FMT_YVYU12_2X12		0x201f
-+#define MEDIA_BUS_FMT_Y14_1X14			0x202d
-+#define MEDIA_BUS_FMT_Y16_1X16			0x202e
- #define MEDIA_BUS_FMT_UYVY8_1X16		0x200f
- #define MEDIA_BUS_FMT_VYUY8_1X16		0x2010
- #define MEDIA_BUS_FMT_YUYV8_1X16		0x2011
-@@ -90,14 +108,20 @@
- #define MEDIA_BUS_FMT_YVYU10_1X20		0x200e
- #define MEDIA_BUS_FMT_VUY8_1X24			0x2024
- #define MEDIA_BUS_FMT_YUV8_1X24			0x2025
-+#define MEDIA_BUS_FMT_UYYVYY8_0_5X24		0x2026
- #define MEDIA_BUS_FMT_UYVY12_1X24		0x2020
- #define MEDIA_BUS_FMT_VYUY12_1X24		0x2021
- #define MEDIA_BUS_FMT_YUYV12_1X24		0x2022
- #define MEDIA_BUS_FMT_YVYU12_1X24		0x2023
- #define MEDIA_BUS_FMT_YUV10_1X30		0x2016
-+#define MEDIA_BUS_FMT_UYYVYY10_0_5X30		0x2027
- #define MEDIA_BUS_FMT_AYUV8_1X32		0x2017
-+#define MEDIA_BUS_FMT_UYYVYY12_0_5X36		0x2028
-+#define MEDIA_BUS_FMT_YUV12_1X36		0x2029
-+#define MEDIA_BUS_FMT_YUV16_1X48		0x202a
-+#define MEDIA_BUS_FMT_UYYVYY16_0_5X48		0x202b
- 
--/* Bayer - next is	0x3019 */
-+/* Bayer - next is	0x3021 */
- #define MEDIA_BUS_FMT_SBGGR8_1X8		0x3001
- #define MEDIA_BUS_FMT_SGBRG8_1X8		0x3013
- #define MEDIA_BUS_FMT_SGRBG8_1X8		0x3002
-@@ -122,6 +146,14 @@
- #define MEDIA_BUS_FMT_SGBRG12_1X12		0x3010
- #define MEDIA_BUS_FMT_SGRBG12_1X12		0x3011
- #define MEDIA_BUS_FMT_SRGGB12_1X12		0x3012
-+#define MEDIA_BUS_FMT_SBGGR14_1X14		0x3019
-+#define MEDIA_BUS_FMT_SGBRG14_1X14		0x301a
-+#define MEDIA_BUS_FMT_SGRBG14_1X14		0x301b
-+#define MEDIA_BUS_FMT_SRGGB14_1X14		0x301c
-+#define MEDIA_BUS_FMT_SBGGR16_1X16		0x301d
-+#define MEDIA_BUS_FMT_SGBRG16_1X16		0x301e
-+#define MEDIA_BUS_FMT_SGRBG16_1X16		0x301f
-+#define MEDIA_BUS_FMT_SRGGB16_1X16		0x3020
- 
- /* JPEG compressed formats - next is	0x4002 */
- #define MEDIA_BUS_FMT_JPEG_1X8			0x4001
-@@ -134,4 +166,21 @@
- /* HSV - next is	0x6002 */
- #define MEDIA_BUS_FMT_AHSV8888_1X32		0x6001
- 
-+/*
-+ * This format should be used when the same driver handles
-+ * both sides of the link and the bus format is a fixed
-+ * metadata format that is not configurable from userspace.
-+ * Width and height will be set to 0 for this format.
++/**
++ * regmap_field_read(): Read a value to a single register field
++ *
++ * @field: Register field to read from
++ * @val: Pointer to store read value
++ *
++ * A value of zero will be returned on success, a negative errno will
++ * be returned in error cases.
 + */
-+#define MEDIA_BUS_FMT_METADATA_FIXED		0x7001
++int regmap_field_read(struct regmap_field *field, unsigned int *val)
++{
++	int ret;
++	unsigned int reg_val;
++	ret = regmap_read(field->regmap, field->reg, &reg_val);
++	if (ret != 0)
++		return ret;
 +
-+/* Generic line based metadata formats for serial buses. Next is 0x8008. */
-+#define MEDIA_BUS_FMT_META_8			0x8001
-+#define MEDIA_BUS_FMT_META_10			0x8002
-+#define MEDIA_BUS_FMT_META_12			0x8003
-+#define MEDIA_BUS_FMT_META_14			0x8004
-+#define MEDIA_BUS_FMT_META_16			0x8005
-+#define MEDIA_BUS_FMT_META_20			0x8006
-+#define MEDIA_BUS_FMT_META_24			0x8007
++	reg_val &= field->mask;
++	reg_val >>= field->shift;
++	*val = reg_val;
 +
- #endif /* __LINUX_MEDIA_BUS_FORMAT_H */
++	return ret;
++}
++
+ /**
+  * regmap_bulk_read(): Read data from the device
+  *
+@@ -377,6 +401,67 @@ static int regmap_round_val_bytes(struct regmap *map)
+ 	return map->format.val_bytes ?: 1;
+ }
+ 
++/**
++ * regmap_update_bits_base() - Perform a read/modify/write cycle on a register
++ *
++ * @map: Register map to update
++ * @reg: Register to update
++ * @mask: Bitmask to change
++ * @val: New value for bitmask
++ * @change: Boolean indicating if a write was done
++ * @async: Boolean indicating asynchronously
++ * @force: Boolean indicating use force update
++ *
++ * Perform a read/modify/write cycle on a register map with change, async, force
++ * options.
++ *
++ * If async is true:
++ *
++ * With most buses the read must be done synchronously so this is most useful
++ * for devices with a cache which do not need to interact with the hardware to
++ * determine the current register value.
++ *
++ * Returns zero for success, a negative number on error.
++ */
++int regmap_update_bits_base(struct regmap *map, unsigned int reg,
++			    unsigned int mask, unsigned int val,
++			    bool *change, bool async, bool force)
++{
++	int ret;
++
++	ret = regmap_update_bits(map, reg, mask, val);
++
++	return ret;
++}
++
++/**
++ * regmap_field_update_bits_base() - Perform a read/modify/write cycle a
++ *                                   register field.
++ *
++ * @field: Register field to write to
++ * @mask: Bitmask to change
++ * @val: Value to be written
++ * @change: Boolean indicating if a write was done
++ * @async: Boolean indicating asynchronously
++ * @force: Boolean indicating use force update
++ *
++ * Perform a read/modify/write cycle on the register field with change,
++ * async, force option.
++ *
++ * A value of zero will be returned on success, a negative errno will
++ * be returned in error cases.
++ */
++int regmap_field_update_bits_base(struct regmap_field *field,
++				  unsigned int mask, unsigned int val,
++				  bool *change, bool async, bool force)
++{
++	mask = (mask << field->shift) & field->mask;
++
++	return regmap_update_bits_base(field->regmap, field->reg,
++				       mask, val << field->shift,
++				       change, async, force);
++}
++
+ static ssize_t regmap_cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
+ 		       unsigned long flags)
+ {
+@@ -442,6 +527,52 @@ size_t regmap_size_bytes(struct regmap *map)
+ 	return regmap_round_val_bytes(map) * regmap_count_registers(map);
+ }
+ 
++static void regmap_field_init(struct regmap_field *rm_field,
++	struct regmap *regmap, struct reg_field reg_field)
++{
++	rm_field->regmap = regmap;
++	rm_field->reg = reg_field.reg;
++	rm_field->shift = reg_field.lsb;
++	rm_field->mask = GENMASK(reg_field.msb, reg_field.lsb);
++
++	WARN_ONCE(rm_field->mask == 0, "invalid empty mask defined\n");
++
++	rm_field->id_size = reg_field.id_size;
++	rm_field->id_offset = reg_field.id_offset;
++}
++
++/**
++ * regmap_field_bulk_alloc() - Allocate and initialise a bulk register field.
++ *
++ * @regmap: regmap bank in which this register field is located.
++ * @rm_field: regmap register fields within the bank.
++ * @reg_field: Register fields within the bank.
++ * @num_fields: Number of register fields.
++ *
++ * The return value will be an -ENOMEM on error or zero for success.
++ * Newly allocated regmap_fields should be freed by calling
++ * regmap_field_bulk_free()
++ */
++int regmap_field_bulk_alloc(struct regmap *regmap,
++			    struct regmap_field **rm_field,
++			    const struct reg_field *reg_field,
++			    int num_fields)
++{
++	struct regmap_field *rf;
++	int i;
++
++	rf = kcalloc(num_fields, sizeof(*rf), GFP_KERNEL);
++	if (!rf)
++		return -ENOMEM;
++
++	for (i = 0; i < num_fields; i++) {
++		regmap_field_init(&rf[i], regmap, reg_field[i]);
++		rm_field[i] = &rf[i];
++	}
++
++	return 0;
++}
++
+ /*
+  * regmap_register_cdev - register a devfs file for a regmap
+  *
+diff --git a/include/linux/regmap.h b/include/linux/regmap.h
+index 3ba0f852f6..e38b4f2dc8 100644
+--- a/include/linux/regmap.h
++++ b/include/linux/regmap.h
+@@ -212,6 +212,45 @@ int regmap_bulk_read(struct regmap *map, unsigned int reg, void *val,
+ #define regmap_bulk_write regmap_bulk_write
+ int regmap_bulk_write(struct regmap *map, unsigned int reg,
+ 		     const void *val, size_t val_count);
++
++struct regmap_field;
++
++struct reg_field {
++	unsigned int reg;
++	unsigned int lsb;
++	unsigned int msb;
++	unsigned int id_size;
++	unsigned int id_offset;
++};
++
++#define REG_FIELD(_reg, _lsb, _msb) {           \
++				.reg = _reg,    \
++				.lsb = _lsb,    \
++				.msb = _msb,    \
++				}
++
++int regmap_field_bulk_alloc(struct regmap *regmap,
++			    struct regmap_field **rm_field,
++			    const struct reg_field *reg_field,
++			    int num_fields);
++
++int regmap_field_read(struct regmap_field *field, unsigned int *val);
++
++int regmap_update_bits_base(struct regmap *map, unsigned int reg,
++			    unsigned int mask, unsigned int val,
++			    bool *change, bool async, bool force);
++
++int regmap_field_update_bits_base(struct regmap_field *field,
++				  unsigned int mask, unsigned int val,
++				  bool *change, bool async, bool force);
++
++static inline int regmap_field_write(struct regmap_field *field,
++				     unsigned int val)
++{
++	return regmap_field_update_bits_base(field, ~0, val,
++					     NULL, false, false);
++}
++
+ #endif
+ 
+ int regmap_get_val_bytes(struct regmap *map);
 
 -- 
 2.39.5
