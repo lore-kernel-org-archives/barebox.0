@@ -1,73 +1,73 @@
-Delivery-date: Thu, 26 Sep 2024 15:16:00 +0200
+Delivery-date: Thu, 26 Sep 2024 15:16:02 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stoLf-0030rG-0S
+	id 1stoLh-0030rf-2U
 	for lore@lore.pengutronix.de;
-	Thu, 26 Sep 2024 15:16:00 +0200
+	Thu, 26 Sep 2024 15:16:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stoLd-0005kr-Bl
-	for lore@pengutronix.de; Thu, 26 Sep 2024 15:16:00 +0200
+	id 1stoLe-0005lk-80
+	for lore@pengutronix.de; Thu, 26 Sep 2024 15:16:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kFhom7hVZnwCI3aTYvoHO/DF3VfUAPnFdqtlmW6nqPo=; b=FTqUczli3+41j7GNBZLVVhoPap
-	Lv4rWELuH62IPnVDkB371FkTegdtlOqzYgCATCem1rsARjDoRyuVXDcwGPHoNte9Z65/aBBHZeM36
-	yeGXd0VKEWOI10EAyV8bRTPffYh4nRCaOHP5l9jRcEnV0NVWOccU3O5PG132O0yUFDWrUg5q9rnzz
-	MGJr6Xuq5KkbLvcVGQ5gJUJtVdfteDtiZirI5Bage9XX3CWC28vuXWNcuFyNZAlk64vTY3dk0qZc9
-	6zHjTBGFIGLukW6BGHzPqOV+H8A5JIiD3A0KeQi8gfr3wt0wloUtE/DOVxgMfBi86xIJTMPDNOqka
-	e1UQbMlg==;
+	bh=6djYQjVnsf6j9lv/pevthtMAr6HXB0MvFNspHz8LH+8=; b=35YkNNgcbR7FnmCc/pI4rO640D
+	c5VYKAeUqENFwOpvb5d4TpDrjFcv3FVXwK3TShhd/OaTUYTodCtC13fnErsi0wybF6BDOnJNd1p3D
+	P7AE504yNuQdok7a/H8ixSKuFQg3TSR94oELOwoG8DAI4tgSnCNtzAOQi+NzRAaNqPYdofBroJHJS
+	AGB3fvhbm/+s46pMhLVPANJL7cuNBtTeKeo6AOyjXGJm/eY+TOBFd7HdgBRD3rw6zsVId1FB+t60I
+	IkXzc7D6yeabOqtmWpJ5MsHY1mak0AuzzVMitjNzSMqghuD4VkOnDDOjRB4Rdx2FB2b/UUp/+EDUF
+	fviZkWzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stoL1-00000008R1g-3oKp;
-	Thu, 26 Sep 2024 13:15:19 +0000
+	id 1stoKw-00000008QzR-3vSB;
+	Thu, 26 Sep 2024 13:15:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stoKu-00000008Qya-46al
+	id 1stoKn-00000008Qvv-3VdP
 	for barebox@lists.infradead.org;
-	Thu, 26 Sep 2024 13:15:14 +0000
+	Thu, 26 Sep 2024 13:15:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-0004un-Pr; Thu, 26 Sep 2024 15:15:03 +0200
+	id 1stoKl-0004uq-Ps; Thu, 26 Sep 2024 15:15:03 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-001h7D-58; Thu, 26 Sep 2024 15:15:03 +0200
+	id 1stoKl-001h7E-5N; Thu, 26 Sep 2024 15:15:03 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-00GZyn-1f;
+	id 1stoKl-00GZyn-1g;
 	Thu, 26 Sep 2024 15:15:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 26 Sep 2024 15:15:02 +0200
+Date: Thu, 26 Sep 2024 15:15:03 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240926-vop2-v1-4-fe0581f2020b@pengutronix.de>
+Message-Id: <20240926-vop2-v1-5-fe0581f2020b@pengutronix.de>
 References: <20240926-vop2-v1-0-fe0581f2020b@pengutronix.de>
 In-Reply-To: <20240926-vop2-v1-0-fe0581f2020b@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727356502; l=7345;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727356502; l=16204;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=gF64Y61eQNBCKngUrCXn8m74fkMJsiUFgxjCTRKZDp0=;
- b=eMuF3cPKKge4dbQ01Kon131OK1oXh1C5fSSUKp+lyI0vS9Jgv3QZx32mw/VSePdY1HmILX09q
- Dif5J/mjf+jBemehxSiSDw6wFLiGCntlwm1UHr+q7qK1Zq44FKKOfkR
+ bh=A3Ajykg3EDsi4gKV7BXWHC8Kvd8FfFUOmTKr9TCZGZo=;
+ b=tDF9/LkMkM3AlGqJyS0hWM+hAONoE+A4rS1lGPz0lFS5zkj0uYOklMBZxceecRzr77kVLOilG
+ rIMp3mj2JvDD+eLzY8BS8LdjDXiZC5K3FJvNb9IZNkWgrARrUJQDqmo
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240926_061513_400027_1CAF8969 
-X-CRM114-Status: GOOD (  19.66  )
+X-CRM114-CacheID: sfid-20240926_061506_281943_45F1EA73 
+X-CRM114-Status: GOOD (  30.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,248 +89,527 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 04/13] regmap: add regfield support
+Subject: [PATCH 05/13] video: add include/video/drm/drm_connector.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add regfield support to get comfortable access to register fields in a
-regmap. The functions are taken directly from Linux-6.10.
+drm_connector.h from Linux contains several defines and struct
+types useful for porting over DRM drivers to barebox. This is
+based on Linux-6.10.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/base/regmap/internal.h |  11 ++++
- drivers/base/regmap/regmap.c   | 131 +++++++++++++++++++++++++++++++++++++++++
- include/linux/regmap.h         |  39 ++++++++++++
- 3 files changed, 181 insertions(+)
+ include/video/drm/drm_connector.h | 502 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 502 insertions(+)
 
-diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
-index ac3f0d3c0f..6f6a34edc7 100644
---- a/drivers/base/regmap/internal.h
-+++ b/drivers/base/regmap/internal.h
-@@ -41,6 +41,17 @@ struct regmap {
- 			 unsigned int val);
- };
- 
-+struct regmap_field {
-+	struct regmap *regmap;
-+	unsigned int mask;
-+	/* lsb */
-+	unsigned int shift;
-+	unsigned int reg;
+diff --git a/include/video/drm/drm_connector.h b/include/video/drm/drm_connector.h
+new file mode 100644
+index 0000000000..53ec7d3b79
+--- /dev/null
++++ b/include/video/drm/drm_connector.h
+@@ -0,0 +1,502 @@
++/*
++ * Copyright (c) 2016 Intel Corporation
++ *
++ * Permission to use, copy, modify, distribute, and sell this software and its
++ * documentation for any purpose is hereby granted without fee, provided that
++ * the above copyright notice appear in all copies and that both that copyright
++ * notice and this permission notice appear in supporting documentation, and
++ * that the name of the copyright holders not be used in advertising or
++ * publicity pertaining to distribution of the software without specific,
++ * written prior permission.  The copyright holders make no representations
++ * about the suitability of this software for any purpose.  It is provided "as
++ * is" without express or implied warranty.
++ *
++ * THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
++ * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
++ * EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
++ * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
++ * DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
++ * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
++ * OF THIS SOFTWARE.
++ */
 +
-+	unsigned int id_size;
-+	unsigned int id_offset;
++#ifndef __DRM_CONNECTOR_H__
++#define __DRM_CONNECTOR_H__
++
++#include <uapi/drm/drm_mode.h>
++
++enum drm_connector_force {
++	DRM_FORCE_UNSPECIFIED,
++	DRM_FORCE_OFF,
++	DRM_FORCE_ON,         /* force on analog part normally */
++	DRM_FORCE_ON_DIGITAL, /* for DVI-I use digital connector */
 +};
 +
- enum regmap_endian regmap_get_val_endian(struct device *dev,
- 					 const struct regmap_bus *bus,
- 					 const struct regmap_config *config);
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 7ad527954c..1f10424a42 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -242,6 +242,30 @@ int regmap_write_bits(struct regmap *map, unsigned int reg,
- 	return regmap_write(map, reg, tmp);
- }
- 
 +/**
-+ * regmap_field_read(): Read a value to a single register field
++ * enum drm_connector_status - status for a &drm_connector
 + *
-+ * @field: Register field to read from
-+ * @val: Pointer to store read value
-+ *
-+ * A value of zero will be returned on success, a negative errno will
-+ * be returned in error cases.
++ * This enum is used to track the connector status. There are no separate
++ * #defines for the uapi!
 + */
-+int regmap_field_read(struct regmap_field *field, unsigned int *val)
-+{
-+	int ret;
-+	unsigned int reg_val;
-+	ret = regmap_read(field->regmap, field->reg, &reg_val);
-+	if (ret != 0)
-+		return ret;
-+
-+	reg_val &= field->mask;
-+	reg_val >>= field->shift;
-+	*val = reg_val;
-+
-+	return ret;
-+}
-+
- /**
-  * regmap_bulk_read(): Read data from the device
-  *
-@@ -377,6 +401,67 @@ static int regmap_round_val_bytes(struct regmap *map)
- 	return map->format.val_bytes ?: 1;
- }
- 
-+/**
-+ * regmap_update_bits_base() - Perform a read/modify/write cycle on a register
-+ *
-+ * @map: Register map to update
-+ * @reg: Register to update
-+ * @mask: Bitmask to change
-+ * @val: New value for bitmask
-+ * @change: Boolean indicating if a write was done
-+ * @async: Boolean indicating asynchronously
-+ * @force: Boolean indicating use force update
-+ *
-+ * Perform a read/modify/write cycle on a register map with change, async, force
-+ * options.
-+ *
-+ * If async is true:
-+ *
-+ * With most buses the read must be done synchronously so this is most useful
-+ * for devices with a cache which do not need to interact with the hardware to
-+ * determine the current register value.
-+ *
-+ * Returns zero for success, a negative number on error.
-+ */
-+int regmap_update_bits_base(struct regmap *map, unsigned int reg,
-+			    unsigned int mask, unsigned int val,
-+			    bool *change, bool async, bool force)
-+{
-+	int ret;
-+
-+	ret = regmap_update_bits(map, reg, mask, val);
-+
-+	return ret;
-+}
-+
-+/**
-+ * regmap_field_update_bits_base() - Perform a read/modify/write cycle a
-+ *                                   register field.
-+ *
-+ * @field: Register field to write to
-+ * @mask: Bitmask to change
-+ * @val: Value to be written
-+ * @change: Boolean indicating if a write was done
-+ * @async: Boolean indicating asynchronously
-+ * @force: Boolean indicating use force update
-+ *
-+ * Perform a read/modify/write cycle on the register field with change,
-+ * async, force option.
-+ *
-+ * A value of zero will be returned on success, a negative errno will
-+ * be returned in error cases.
-+ */
-+int regmap_field_update_bits_base(struct regmap_field *field,
-+				  unsigned int mask, unsigned int val,
-+				  bool *change, bool async, bool force)
-+{
-+	mask = (mask << field->shift) & field->mask;
-+
-+	return regmap_update_bits_base(field->regmap, field->reg,
-+				       mask, val << field->shift,
-+				       change, async, force);
-+}
-+
- static ssize_t regmap_cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
- 		       unsigned long flags)
- {
-@@ -442,6 +527,52 @@ size_t regmap_size_bytes(struct regmap *map)
- 	return regmap_round_val_bytes(map) * regmap_count_registers(map);
- }
- 
-+static void regmap_field_init(struct regmap_field *rm_field,
-+	struct regmap *regmap, struct reg_field reg_field)
-+{
-+	rm_field->regmap = regmap;
-+	rm_field->reg = reg_field.reg;
-+	rm_field->shift = reg_field.lsb;
-+	rm_field->mask = GENMASK(reg_field.msb, reg_field.lsb);
-+
-+	WARN_ONCE(rm_field->mask == 0, "invalid empty mask defined\n");
-+
-+	rm_field->id_size = reg_field.id_size;
-+	rm_field->id_offset = reg_field.id_offset;
-+}
-+
-+/**
-+ * regmap_field_bulk_alloc() - Allocate and initialise a bulk register field.
-+ *
-+ * @regmap: regmap bank in which this register field is located.
-+ * @rm_field: regmap register fields within the bank.
-+ * @reg_field: Register fields within the bank.
-+ * @num_fields: Number of register fields.
-+ *
-+ * The return value will be an -ENOMEM on error or zero for success.
-+ * Newly allocated regmap_fields should be freed by calling
-+ * regmap_field_bulk_free()
-+ */
-+int regmap_field_bulk_alloc(struct regmap *regmap,
-+			    struct regmap_field **rm_field,
-+			    const struct reg_field *reg_field,
-+			    int num_fields)
-+{
-+	struct regmap_field *rf;
-+	int i;
-+
-+	rf = kcalloc(num_fields, sizeof(*rf), GFP_KERNEL);
-+	if (!rf)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < num_fields; i++) {
-+		regmap_field_init(&rf[i], regmap, reg_field[i]);
-+		rm_field[i] = &rf[i];
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * regmap_register_cdev - register a devfs file for a regmap
-  *
-diff --git a/include/linux/regmap.h b/include/linux/regmap.h
-index 3ba0f852f6..e38b4f2dc8 100644
---- a/include/linux/regmap.h
-+++ b/include/linux/regmap.h
-@@ -212,6 +212,45 @@ int regmap_bulk_read(struct regmap *map, unsigned int reg, void *val,
- #define regmap_bulk_write regmap_bulk_write
- int regmap_bulk_write(struct regmap *map, unsigned int reg,
- 		     const void *val, size_t val_count);
-+
-+struct regmap_field;
-+
-+struct reg_field {
-+	unsigned int reg;
-+	unsigned int lsb;
-+	unsigned int msb;
-+	unsigned int id_size;
-+	unsigned int id_offset;
++enum drm_connector_status {
++	/**
++	 * @connector_status_connected: The connector is definitely connected to
++	 * a sink device, and can be enabled.
++	 */
++	connector_status_connected = 1,
++	/**
++	 * @connector_status_disconnected: The connector isn't connected to a
++	 * sink device which can be autodetect. For digital outputs like DP or
++	 * HDMI (which can be realiable probed) this means there's really
++	 * nothing there. It is driver-dependent whether a connector with this
++	 * status can be lit up or not.
++	 */
++	connector_status_disconnected = 2,
++	/**
++	 * @connector_status_unknown: The connector's status could not be
++	 * reliably detected. This happens when probing would either cause
++	 * flicker (like load-detection when the connector is in use), or when a
++	 * hardware resource isn't available (like when load-detection needs a
++	 * free CRTC). It should be possible to light up the connector with one
++	 * of the listed fallback modes. For default configuration userspace
++	 * should only try to light up connectors with unknown status when
++	 * there's not connector with @connector_status_connected.
++	 */
++	connector_status_unknown = 3,
 +};
 +
-+#define REG_FIELD(_reg, _lsb, _msb) {           \
-+				.reg = _reg,    \
-+				.lsb = _lsb,    \
-+				.msb = _msb,    \
-+				}
++/**
++ * struct drm_scrambling: sink's scrambling support.
++ */
++struct drm_scrambling {
++	/**
++	 * @supported: scrambling supported for rates > 340 Mhz.
++	 */
++	bool supported;
++	/**
++	 * @low_rates: scrambling supported for rates <= 340 Mhz.
++	 */
++	bool low_rates;
++};
 +
-+int regmap_field_bulk_alloc(struct regmap *regmap,
-+			    struct regmap_field **rm_field,
-+			    const struct reg_field *reg_field,
-+			    int num_fields);
++/*
++ * struct drm_scdc - Information about scdc capabilities of a HDMI 2.0 sink
++ *
++ * Provides SCDC register support and capabilities related information on a
++ * HDMI 2.0 sink. In case of a HDMI 1.4 sink, all parameter must be 0.
++ */
++struct drm_scdc {
++	/**
++	 * @supported: status control & data channel present.
++	 */
++	bool supported;
++	/**
++	 * @read_request: sink is capable of generating scdc read request.
++	 */
++	bool read_request;
++	/**
++	 * @scrambling: sink's scrambling capabilities
++	 */
++	struct drm_scrambling scrambling;
++};
 +
-+int regmap_field_read(struct regmap_field *field, unsigned int *val);
++/**
++ * struct drm_hdmi_dsc_cap - DSC capabilities of HDMI sink
++ *
++ * Describes the DSC support provided by HDMI 2.1 sink.
++ * The information is fetched fom additional HFVSDB blocks defined
++ * for HDMI 2.1.
++ */
++struct drm_hdmi_dsc_cap {
++	/** @v_1p2: flag for dsc1.2 version support by sink */
++	bool v_1p2;
 +
-+int regmap_update_bits_base(struct regmap *map, unsigned int reg,
-+			    unsigned int mask, unsigned int val,
-+			    bool *change, bool async, bool force);
++	/** @native_420: Does sink support DSC with 4:2:0 compression */
++	bool native_420;
 +
-+int regmap_field_update_bits_base(struct regmap_field *field,
-+				  unsigned int mask, unsigned int val,
-+				  bool *change, bool async, bool force);
++	/**
++	 * @all_bpp: Does sink support all bpp with 4:4:4: or 4:2:2
++	 * compressed formats
++	 */
++	bool all_bpp;
 +
-+static inline int regmap_field_write(struct regmap_field *field,
-+				     unsigned int val)
-+{
-+	return regmap_field_update_bits_base(field, ~0, val,
-+					     NULL, false, false);
-+}
++	/**
++	 * @bpc_supported: compressed bpc supported by sink : 10, 12 or 16 bpc
++	 */
++	u8 bpc_supported;
 +
- #endif
- 
- int regmap_get_val_bytes(struct regmap *map);
++	/** @max_slices: maximum number of Horizontal slices supported by */
++	u8 max_slices;
++
++	/** @clk_per_slice : max pixel clock in MHz supported per slice */
++	int clk_per_slice;
++
++	/** @max_lanes : dsc max lanes supported for Fixed rate Link training */
++	u8 max_lanes;
++
++	/** @max_frl_rate_per_lane : maximum frl rate with DSC per lane */
++	u8 max_frl_rate_per_lane;
++
++	/** @total_chunk_kbytes: max size of chunks in KBs supported per line*/
++	u8 total_chunk_kbytes;
++};
++
++/**
++ * struct drm_hdmi_info - runtime information about the connected HDMI sink
++ *
++ * Describes if a given display supports advanced HDMI 2.0 features.
++ * This information is available in CEA-861-F extension blocks (like HF-VSDB).
++ */
++struct drm_hdmi_info {
++	/** @scdc: sink's scdc support and capabilities */
++	struct drm_scdc scdc;
++
++	/**
++	 * @y420_vdb_modes: bitmap of modes which can support ycbcr420
++	 * output only (not normal RGB/YCBCR444/422 outputs). The max VIC
++	 * defined by the CEA-861-G spec is 219, so the size is 256 bits to map
++	 * up to 256 VICs.
++	 */
++	unsigned long y420_vdb_modes[BITS_TO_LONGS(256)];
++
++	/**
++	 * @y420_cmdb_modes: bitmap of modes which can support ycbcr420
++	 * output also, along with normal HDMI outputs. The max VIC defined by
++	 * the CEA-861-G spec is 219, so the size is 256 bits to map up to 256
++	 * VICs.
++	 */
++	unsigned long y420_cmdb_modes[BITS_TO_LONGS(256)];
++
++	/** @y420_dc_modes: bitmap of deep color support index */
++	u8 y420_dc_modes;
++
++	/** @max_frl_rate_per_lane: support fixed rate link */
++	u8 max_frl_rate_per_lane;
++
++	/** @max_lanes: supported by sink */
++	u8 max_lanes;
++
++	/** @dsc_cap: DSC capabilities of the sink */
++	struct drm_hdmi_dsc_cap dsc_cap;
++};
++
++/**
++ * enum drm_panel_orientation - panel_orientation info for &drm_display_info
++ *
++ * This enum is used to track the (LCD) panel orientation. There are no
++ * separate #defines for the uapi!
++ *
++ * @DRM_MODE_PANEL_ORIENTATION_UNKNOWN: The drm driver has not provided any
++ *					panel orientation information (normal
++ *					for non panels) in this case the "panel
++ *					orientation" connector prop will not be
++ *					attached.
++ * @DRM_MODE_PANEL_ORIENTATION_NORMAL:	The top side of the panel matches the
++ *					top side of the device's casing.
++ * @DRM_MODE_PANEL_ORIENTATION_BOTTOM_UP: The top side of the panel matches the
++ *					bottom side of the device's casing, iow
++ *					the panel is mounted upside-down.
++ * @DRM_MODE_PANEL_ORIENTATION_LEFT_UP:	The left side of the panel matches the
++ *					top side of the device's casing.
++ * @DRM_MODE_PANEL_ORIENTATION_RIGHT_UP: The right side of the panel matches the
++ *					top side of the device's casing.
++ */
++enum drm_panel_orientation {
++	DRM_MODE_PANEL_ORIENTATION_UNKNOWN = -1,
++	DRM_MODE_PANEL_ORIENTATION_NORMAL = 0,
++	DRM_MODE_PANEL_ORIENTATION_BOTTOM_UP,
++	DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
++	DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
++};
++
++/**
++ * enum drm_bus_flags - bus_flags info for &drm_display_info
++ *
++ * This enum defines signal polarities and clock edge information for signals on
++ * a bus as bitmask flags.
++ *
++ * The clock edge information is conveyed by two sets of symbols,
++ * DRM_BUS_FLAGS_*_DRIVE_\* and DRM_BUS_FLAGS_*_SAMPLE_\*. When this enum is
++ * used to describe a bus from the point of view of the transmitter, the
++ * \*_DRIVE_\* flags should be used. When used from the point of view of the
++ * receiver, the \*_SAMPLE_\* flags should be used. The \*_DRIVE_\* and
++ * \*_SAMPLE_\* flags alias each other, with the \*_SAMPLE_POSEDGE and
++ * \*_SAMPLE_NEGEDGE flags being equal to \*_DRIVE_NEGEDGE and \*_DRIVE_POSEDGE
++ * respectively. This simplifies code as signals are usually sampled on the
++ * opposite edge of the driving edge. Transmitters and receivers may however
++ * need to take other signal timings into account to convert between driving
++ * and sample edges.
++ */
++enum drm_bus_flags {
++	/**
++	 * @DRM_BUS_FLAG_DE_LOW:
++	 *
++	 * The Data Enable signal is active low
++	 */
++	DRM_BUS_FLAG_DE_LOW = BIT(0),
++
++	/**
++	 * @DRM_BUS_FLAG_DE_HIGH:
++	 *
++	 * The Data Enable signal is active high
++	 */
++	DRM_BUS_FLAG_DE_HIGH = BIT(1),
++
++	/**
++	 * @DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE:
++	 *
++	 * Data is driven on the rising edge of the pixel clock
++	 */
++	DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE = BIT(2),
++
++	/**
++	 * @DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE:
++	 *
++	 * Data is driven on the falling edge of the pixel clock
++	 */
++	DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE = BIT(3),
++
++	/**
++	 * @DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE:
++	 *
++	 * Data is sampled on the rising edge of the pixel clock
++	 */
++	DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE = DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
++
++	/**
++	 * @DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE:
++	 *
++	 * Data is sampled on the falling edge of the pixel clock
++	 */
++	DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE = DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
++
++	/**
++	 * @DRM_BUS_FLAG_DATA_MSB_TO_LSB:
++	 *
++	 * Data is transmitted MSB to LSB on the bus
++	 */
++	DRM_BUS_FLAG_DATA_MSB_TO_LSB = BIT(4),
++
++	/**
++	 * @DRM_BUS_FLAG_DATA_LSB_TO_MSB:
++	 *
++	 * Data is transmitted LSB to MSB on the bus
++	 */
++	DRM_BUS_FLAG_DATA_LSB_TO_MSB = BIT(5),
++
++	/**
++	 * @DRM_BUS_FLAG_SYNC_DRIVE_POSEDGE:
++	 *
++	 * Sync signals are driven on the rising edge of the pixel clock
++	 */
++	DRM_BUS_FLAG_SYNC_DRIVE_POSEDGE = BIT(6),
++
++	/**
++	 * @DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE:
++	 *
++	 * Sync signals are driven on the falling edge of the pixel clock
++	 */
++	DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE = BIT(7),
++
++	/**
++	 * @DRM_BUS_FLAG_SYNC_SAMPLE_POSEDGE:
++	 *
++	 * Sync signals are sampled on the rising edge of the pixel clock
++	 */
++	DRM_BUS_FLAG_SYNC_SAMPLE_POSEDGE = DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE,
++
++	/**
++	 * @DRM_BUS_FLAG_SYNC_SAMPLE_NEGEDGE:
++	 *
++	 * Sync signals are sampled on the falling edge of the pixel clock
++	 */
++	DRM_BUS_FLAG_SYNC_SAMPLE_NEGEDGE = DRM_BUS_FLAG_SYNC_DRIVE_POSEDGE,
++
++	/**
++	 * @DRM_BUS_FLAG_SHARP_SIGNALS:
++	 *
++	 *  Set if the Sharp-specific signals (SPL, CLS, PS, REV) must be used
++	 */
++	DRM_BUS_FLAG_SHARP_SIGNALS = BIT(8),
++};
++
++/**
++ * struct drm_display_info - runtime data about the connected sink
++ *
++ * Describes a given display (e.g. CRT or flat panel) and its limitations. For
++ * fixed display sinks like built-in panels there's not much difference between
++ * this and &struct drm_connector. But for sinks with a real cable this
++ * structure is meant to describe all the things at the other end of the cable.
++ *
++ * For sinks which provide an EDID this can be filled out by calling
++ * drm_add_edid_modes().
++ */
++struct drm_display_info {
++	/**
++	 * @width_mm: Physical width in mm.
++	 */
++	unsigned int width_mm;
++
++	/**
++	 * @height_mm: Physical height in mm.
++	 */
++	unsigned int height_mm;
++
++	/**
++	 * @bpc: Maximum bits per color channel. Used by HDMI and DP outputs.
++	 */
++	unsigned int bpc;
++
++#define DRM_COLOR_FORMAT_RGB444		(1<<0)
++#define DRM_COLOR_FORMAT_YCBCR444	(1<<1)
++#define DRM_COLOR_FORMAT_YCBCR422	(1<<2)
++#define DRM_COLOR_FORMAT_YCBCR420	(1<<3)
++
++	/**
++	 * @panel_orientation: Read only connector property for built-in panels,
++	 * indicating the orientation of the panel vs the device's casing.
++	 * drm_connector_init() sets this to DRM_MODE_PANEL_ORIENTATION_UNKNOWN.
++	 * When not UNKNOWN this gets used by the drm_fb_helpers to rotate the
++	 * fb to compensate and gets exported as prop to userspace.
++	 */
++	int panel_orientation;
++
++	/**
++	 * @color_formats: HDMI Color formats, selects between RGB and YCrCb
++	 * modes. Used DRM_COLOR_FORMAT\_ defines, which are _not_ the same ones
++	 * as used to describe the pixel format in framebuffers, and also don't
++	 * match the formats in @bus_formats which are shared with v4l.
++	 */
++	u32 color_formats;
++
++	/**
++	 * @bus_formats: Pixel data format on the wire, somewhat redundant with
++	 * @color_formats. Array of size @num_bus_formats encoded using
++	 * MEDIA_BUS_FMT\_ defines shared with v4l and media drivers.
++	 */
++	const u32 *bus_formats;
++	/**
++	 * @num_bus_formats: Size of @bus_formats array.
++	 */
++	unsigned int num_bus_formats;
++
++	/**
++	 * @bus_flags: Additional information (like pixel signal polarity) for
++	 * the pixel data on the bus, using &enum drm_bus_flags values
++	 * DRM_BUS_FLAGS\_.
++	 */
++	u32 bus_flags;
++
++	/**
++	 * @max_tmds_clock: Maximum TMDS clock rate supported by the
++	 * sink in kHz. 0 means undefined.
++	 */
++	int max_tmds_clock;
++
++	/**
++	 * @dvi_dual: Dual-link DVI sink?
++	 */
++	bool dvi_dual;
++
++	/**
++	 * @is_hdmi: True if the sink is an HDMI device.
++	 *
++	 * This field shall be used instead of calling
++	 * drm_detect_hdmi_monitor() when possible.
++	 */
++	bool is_hdmi;
++
++	/**
++	 * @has_audio: True if the sink supports audio.
++	 *
++	 * This field shall be used instead of calling
++	 * drm_detect_monitor_audio() when possible.
++	 */
++	bool has_audio;
++
++	/**
++	 * @has_hdmi_infoframe: Does the sink support the HDMI infoframe?
++	 */
++	bool has_hdmi_infoframe;
++
++	/**
++	 * @rgb_quant_range_selectable: Does the sink support selecting
++	 * the RGB quantization range?
++	 */
++	bool rgb_quant_range_selectable;
++
++	/**
++	 * @edid_hdmi_rgb444_dc_modes: Mask of supported hdmi deep color modes
++	 * in RGB 4:4:4. Even more stuff redundant with @bus_formats.
++	 */
++	u8 edid_hdmi_rgb444_dc_modes;
++
++	/**
++	 * @edid_hdmi_ycbcr444_dc_modes: Mask of supported hdmi deep color
++	 * modes in YCbCr 4:4:4. Even more stuff redundant with @bus_formats.
++	 */
++	u8 edid_hdmi_ycbcr444_dc_modes;
++
++	/**
++	 * @cea_rev: CEA revision of the HDMI sink.
++	 */
++	u8 cea_rev;
++
++	/**
++	 * @hdmi: advance features of a HDMI sink.
++	 */
++	struct drm_hdmi_info hdmi;
++
++	/**
++	 * @non_desktop: Non desktop display (HMD).
++	 */
++	bool non_desktop;
++
++	/**
++	 * @mso_stream_count: eDP Multi-SST Operation (MSO) stream count from
++	 * the DisplayID VESA vendor block. 0 for conventional Single-Stream
++	 * Transport (SST), or 2 or 4 MSO streams.
++	 */
++	u8 mso_stream_count;
++
++	/**
++	 * @mso_pixel_overlap: eDP MSO segment pixel overlap, 0-8 pixels.
++	 */
++	u8 mso_pixel_overlap;
++
++	/**
++	 * @max_dsc_bpp: Maximum DSC target bitrate, if it is set to 0 the
++	 * monitor's default value is used instead.
++	 */
++	u32 max_dsc_bpp;
++
++	/**
++	 * @vics: Array of vics_len VICs. Internal to EDID parsing.
++	 */
++	u8 *vics;
++
++	/**
++	 * @vics_len: Number of elements in vics. Internal to EDID parsing.
++	 */
++	int vics_len;
++
++	/**
++	 * @quirks: EDID based quirks. Internal to EDID parsing.
++	 */
++	u32 quirks;
++
++	/**
++	 * @source_physical_address: Source Physical Address from HDMI
++	 * Vendor-Specific Data Block, for CEC usage.
++	 *
++	 * Defaults to CEC_PHYS_ADDR_INVALID (0xffff).
++	 */
++	u16 source_physical_address;
++};
++
++int drm_display_info_set_bus_formats(struct drm_display_info *info,
++				     const u32 *formats,
++				     unsigned int num_formats);
++
++
++#endif
 
 -- 
 2.39.5
