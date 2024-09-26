@@ -1,73 +1,73 @@
-Delivery-date: Thu, 26 Sep 2024 15:16:11 +0200
+Delivery-date: Thu, 26 Sep 2024 15:16:13 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stoLq-0030sG-2f
+	id 1stoLs-0030sy-0K
 	for lore@lore.pengutronix.de;
-	Thu, 26 Sep 2024 15:16:11 +0200
+	Thu, 26 Sep 2024 15:16:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stoLk-0005rg-UC
-	for lore@pengutronix.de; Thu, 26 Sep 2024 15:16:11 +0200
+	id 1stoLn-0005tv-B5
+	for lore@pengutronix.de; Thu, 26 Sep 2024 15:16:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uxIWbEcVq2+qXac1AcHYJXxeM6KbpfbFcGf5E4uxrfw=; b=RtAzR5kH3+sz8IuCF2r5ErBMWI
-	lSvJ5HzQBFcEzlIS8ddeVu012HnUkbDQGAFm6OYEzcssT1dBDqeO6Kp1I7dUHTEYusQhtb3ZsMY+V
-	hYsqssPhGPI2tzCPTi/SyqM9vJKvkWHF9ZGrSHLRDPF5arVJiqUA4bHQwfJCyDeLbk/DjrZXv57Fc
-	zDJDb3ySVPXUZ+luUOJSr+f5A32RAF0W/lqo0CRirX5u9ztAC/b5B9dhFcVIoH4UtzTX31Ci/vi3C
-	N634fPcWDU7ImXDMEI+y+1Armpr4nihLzLhVkq/+xHTn1gQEo9skHM7JuMuGZSv17yGGATWiQlN3v
-	z9TjfcMw==;
+	bh=usGbUqLDI7GvBDYVEfQMk+z+Kl2GN3gJq99rqwdgTII=; b=SrLPpp5QWSquiOfvvob0iqSx05
+	2TYnFs1b7QJ+cimVb4qI5BC1ztv7w+8LxWPpLQcrvrMitTonUMEPMV3qpBso8vpITVB3qxg60EzGI
+	sOHvIKceBYXV0F6sR/TTcKslJtntwz1DSOFFqa+IUXyIV+BVFp0nVGWdCU7d0+dPb9x5NHQmhafx8
+	bDJkzDj4cOvjYqyAgbdItunfR/gwpNCAoecSykjo9PNz7wSzUVeOfrSi+idWhU5YryRfZP+PuiOzF
+	xiOlTQC9A0+6S8TiCWHPUTK9kPo4SkAV5R7kb5DmNM5uJi7Jgkcpj18E+8OuRdW5f1xFKP885TLSu
+	Ro1DwVfQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stoKx-00000008R00-2WwN;
-	Thu, 26 Sep 2024 13:15:15 +0000
+	id 1stoKy-00000008R0F-1ftj;
+	Thu, 26 Sep 2024 13:15:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stoKn-00000008Qvu-3rGA
+	id 1stoKn-00000008Qvr-3Vu4
 	for barebox@lists.infradead.org;
-	Thu, 26 Sep 2024 13:15:10 +0000
+	Thu, 26 Sep 2024 13:15:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-0004uo-Px; Thu, 26 Sep 2024 15:15:03 +0200
+	id 1stoKl-0004um-Lq; Thu, 26 Sep 2024 15:15:03 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-001h7G-5P; Thu, 26 Sep 2024 15:15:03 +0200
+	id 1stoKl-001h7B-4R; Thu, 26 Sep 2024 15:15:03 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stoKl-00GZyn-1i;
+	id 1stoKl-00GZyn-1d;
 	Thu, 26 Sep 2024 15:15:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 26 Sep 2024 15:15:05 +0200
+Date: Thu, 26 Sep 2024 15:15:00 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240926-vop2-v1-7-fe0581f2020b@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240926-vop2-v1-2-fe0581f2020b@pengutronix.de>
 References: <20240926-vop2-v1-0-fe0581f2020b@pengutronix.de>
 In-Reply-To: <20240926-vop2-v1-0-fe0581f2020b@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727356502; l=23242;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727356502; l=29203;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Qd2xzt0sVYSPg5NglhCWsgYTOoCD5LPXzDpoGxTygcY=;
- b=8svRBiAVo/rhA3uw3TWoFTknQrlPUHghzkJMCsqY0nDzjrq6sA2PCyrLlaclC7bh0lFIfl9bc
- o9xi5C+I4eQCTgo8HNEeA2Wx8Fydp0c0BsZc5Y0d/W1q23kNxqpBsZL
+ bh=rXqY8fTLqldiEki0BMNg3GI2uhMsm3jST7UdzjC6mQ8=;
+ b=Mtl5FSoxPwrhuuY9LKlHPH9OwIftJgj92s1oItK9Bfk97aIRAZIE+dVahES6aWvy+ZIHwoe5y
+ d5vVU37cuP5C1ogexthSUSIG7iYDtm8G61AB5IaUhxOkv44lFC49F3H
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240926_061506_367209_06F416EB 
-X-CRM114-Status: GOOD (  20.09  )
+X-CRM114-CacheID: sfid-20240926_061506_265101_E0ABBFE8 
+X-CRM114-Status: GOOD (  29.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,722 +89,812 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 07/13] video: Add Sitronix st7789v panel driver
+Subject: [PATCH 02/13] video: add videomode helpers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds a panel driver for the Sitronix st7789v panel based
-on the corresponding Linux-6.10 driver.
+Linux has three different structures to describle video modes: The
+FB subsystem specific struct fb_videomode, the DRM subsystem specific
+struct drm_display_mode and one to rule them all, struct videomode.
+
+In barebox we used to stick to struct fb_videomode, but as new graphic
+drivers are likely to be derived from the DRM subsystem, add the
+remaining struct types and add functions to convert between them.
+
+The functions are taken from Linux with some adjustments of the function
+names for consistency.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/Kconfig                  |   8 +
- drivers/video/Makefile                 |   1 +
- drivers/video/panel-sitronix-st7789v.c | 652 +++++++++++++++++++++++++++++++++
- include/video/vpl.h                    |   1 +
- 4 files changed, 662 insertions(+)
+ drivers/video/Makefile        |   2 +-
+ drivers/video/mode-helpers.c  | 174 ++++++++++++++++++
+ include/fb.h                  |  12 ++
+ include/uapi/drm/drm_mode.h   |  93 ++++++++++
+ include/video/drm/drm_modes.h | 409 ++++++++++++++++++++++++++++++++++++++++++
+ include/video/videomode.h     |  40 +++++
+ 6 files changed, 729 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 9e176d3198..e86f511da4 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -186,6 +186,14 @@ config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
- 	  QVGA (240x320) RGB panels. support serial & parallel rgb
- 	  interface.
- 
-+config DRIVER_VIDEO_PANEL_SITRONIX_ST7789V
-+	tristate "Sitronix ST7789V panel"
-+	depends on OFTREE && SPI
-+	select VIDEO_VPL
-+	help
-+	  Say Y here if you want to enable support for the Sitronix
-+	  ST7789V controller for 240x320 LCD panels
-+
- config DRIVER_VIDEO_PANEL_MIPI_DBI
- 	tristate "DRM support for MIPI DBI compatible panels"
- 	depends on OFTREE && SPI
 diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 9e6a241a33..37a184a7e2 100644
+index 85cffb5a33..9e6a241a33 100644
 --- a/drivers/video/Makefile
 +++ b/drivers/video/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
- obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
- obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
- obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
-+obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
- 
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
-diff --git a/drivers/video/panel-sitronix-st7789v.c b/drivers/video/panel-sitronix-st7789v.c
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_VIDEO) += fb.o
++obj-$(CONFIG_VIDEO) += fb.o mode-helpers.o
+ obj-$(CONFIG_DRIVER_VIDEO_EDID) += edid.o
+ obj-$(CONFIG_OFDEVICE) += of_display_timing.o
+ obj-$(CONFIG_DRIVER_VIDEO_BACKLIGHT) += backlight.o
+diff --git a/drivers/video/mode-helpers.c b/drivers/video/mode-helpers.c
 new file mode 100644
-index 0000000000..36852fb88e
+index 0000000000..2ad3d6b8c0
 --- /dev/null
-+++ b/drivers/video/panel-sitronix-st7789v.c
-@@ -0,0 +1,652 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2017 Free Electrons
-+ */
-+
-+#include <driver.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/module.h>
-+#include <regulator.h>
-+#include <spi/spi.h>
++++ b/drivers/video/mode-helpers.c
+@@ -0,0 +1,174 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +#include <fb.h>
-+#include <linux/device.h>
-+#include <video/vpl.h>
++#include <video/drm/drm_modes.h>
 +#include <video/videomode.h>
-+#include <video/drm/drm_connector.h>
-+#include <video/mipi_display.h>
-+#include <video/media-bus-format.h>
 +
-+#define ST7789V_RAMCTRL_CMD		0xb0
-+#define ST7789V_RAMCTRL_RM_RGB			BIT(4)
-+#define ST7789V_RAMCTRL_DM_RGB			BIT(0)
-+#define ST7789V_RAMCTRL_MAGIC			(3 << 6)
-+#define ST7789V_RAMCTRL_EPF(n)			(((n) & 3) << 4)
-+
-+#define ST7789V_RGBCTRL_CMD		0xb1
-+#define ST7789V_RGBCTRL_WO			BIT(7)
-+#define ST7789V_RGBCTRL_RCM(n)			(((n) & 3) << 5)
-+#define ST7789V_RGBCTRL_VSYNC_HIGH		BIT(3)
-+#define ST7789V_RGBCTRL_HSYNC_HIGH		BIT(2)
-+#define ST7789V_RGBCTRL_PCLK_FALLING		BIT(1)
-+#define ST7789V_RGBCTRL_DE_LOW			BIT(0)
-+#define ST7789V_RGBCTRL_VBP(n)			((n) & 0x7f)
-+#define ST7789V_RGBCTRL_HBP(n)			((n) & 0x1f)
-+
-+#define ST7789V_PORCTRL_CMD		0xb2
-+#define ST7789V_PORCTRL_IDLE_BP(n)		(((n) & 0xf) << 4)
-+#define ST7789V_PORCTRL_IDLE_FP(n)		((n) & 0xf)
-+#define ST7789V_PORCTRL_PARTIAL_BP(n)		(((n) & 0xf) << 4)
-+#define ST7789V_PORCTRL_PARTIAL_FP(n)		((n) & 0xf)
-+
-+#define ST7789V_GCTRL_CMD		0xb7
-+#define ST7789V_GCTRL_VGHS(n)			(((n) & 7) << 4)
-+#define ST7789V_GCTRL_VGLS(n)			((n) & 7)
-+
-+#define ST7789V_VCOMS_CMD		0xbb
-+
-+#define ST7789V_LCMCTRL_CMD		0xc0
-+#define ST7789V_LCMCTRL_XBGR			BIT(5)
-+#define ST7789V_LCMCTRL_XMX			BIT(3)
-+#define ST7789V_LCMCTRL_XMH			BIT(2)
-+
-+#define ST7789V_VDVVRHEN_CMD		0xc2
-+#define ST7789V_VDVVRHEN_CMDEN			BIT(0)
-+
-+#define ST7789V_VRHS_CMD		0xc3
-+
-+#define ST7789V_VDVS_CMD		0xc4
-+
-+#define ST7789V_FRCTRL2_CMD		0xc6
-+
-+#define ST7789V_PWCTRL1_CMD		0xd0
-+#define ST7789V_PWCTRL1_MAGIC			0xa4
-+#define ST7789V_PWCTRL1_AVDD(n)			(((n) & 3) << 6)
-+#define ST7789V_PWCTRL1_AVCL(n)			(((n) & 3) << 4)
-+#define ST7789V_PWCTRL1_VDS(n)			((n) & 3)
-+
-+#define ST7789V_PVGAMCTRL_CMD		0xe0
-+#define ST7789V_PVGAMCTRL_JP0(n)		(((n) & 3) << 4)
-+#define ST7789V_PVGAMCTRL_JP1(n)		(((n) & 3) << 4)
-+#define ST7789V_PVGAMCTRL_VP0(n)		((n) & 0xf)
-+#define ST7789V_PVGAMCTRL_VP1(n)		((n) & 0x3f)
-+#define ST7789V_PVGAMCTRL_VP2(n)		((n) & 0x3f)
-+#define ST7789V_PVGAMCTRL_VP4(n)		((n) & 0x1f)
-+#define ST7789V_PVGAMCTRL_VP6(n)		((n) & 0x1f)
-+#define ST7789V_PVGAMCTRL_VP13(n)		((n) & 0xf)
-+#define ST7789V_PVGAMCTRL_VP20(n)		((n) & 0x7f)
-+#define ST7789V_PVGAMCTRL_VP27(n)		((n) & 7)
-+#define ST7789V_PVGAMCTRL_VP36(n)		(((n) & 7) << 4)
-+#define ST7789V_PVGAMCTRL_VP43(n)		((n) & 0x7f)
-+#define ST7789V_PVGAMCTRL_VP50(n)		((n) & 0xf)
-+#define ST7789V_PVGAMCTRL_VP57(n)		((n) & 0x1f)
-+#define ST7789V_PVGAMCTRL_VP59(n)		((n) & 0x1f)
-+#define ST7789V_PVGAMCTRL_VP61(n)		((n) & 0x3f)
-+#define ST7789V_PVGAMCTRL_VP62(n)		((n) & 0x3f)
-+#define ST7789V_PVGAMCTRL_VP63(n)		(((n) & 0xf) << 4)
-+
-+#define ST7789V_NVGAMCTRL_CMD		0xe1
-+#define ST7789V_NVGAMCTRL_JN0(n)		(((n) & 3) << 4)
-+#define ST7789V_NVGAMCTRL_JN1(n)		(((n) & 3) << 4)
-+#define ST7789V_NVGAMCTRL_VN0(n)		((n) & 0xf)
-+#define ST7789V_NVGAMCTRL_VN1(n)		((n) & 0x3f)
-+#define ST7789V_NVGAMCTRL_VN2(n)		((n) & 0x3f)
-+#define ST7789V_NVGAMCTRL_VN4(n)		((n) & 0x1f)
-+#define ST7789V_NVGAMCTRL_VN6(n)		((n) & 0x1f)
-+#define ST7789V_NVGAMCTRL_VN13(n)		((n) & 0xf)
-+#define ST7789V_NVGAMCTRL_VN20(n)		((n) & 0x7f)
-+#define ST7789V_NVGAMCTRL_VN27(n)		((n) & 7)
-+#define ST7789V_NVGAMCTRL_VN36(n)		(((n) & 7) << 4)
-+#define ST7789V_NVGAMCTRL_VN43(n)		((n) & 0x7f)
-+#define ST7789V_NVGAMCTRL_VN50(n)		((n) & 0xf)
-+#define ST7789V_NVGAMCTRL_VN57(n)		((n) & 0x1f)
-+#define ST7789V_NVGAMCTRL_VN59(n)		((n) & 0x1f)
-+#define ST7789V_NVGAMCTRL_VN61(n)		((n) & 0x3f)
-+#define ST7789V_NVGAMCTRL_VN62(n)		((n) & 0x3f)
-+#define ST7789V_NVGAMCTRL_VN63(n)		(((n) & 0xf) << 4)
-+
-+#define ST7789V_TEST(val, func)			\
-+	do {					\
-+		if ((val = (func)))		\
-+			return val;		\
-+	} while (0)
-+
-+#define ST7789V_IDS { 0x85, 0x85, 0x52 }
-+#define ST7789V_IDS_SIZE 3
-+
-+struct st7789_panel_info {
-+	const struct drm_display_mode *mode;
-+	u32 bus_format;
-+	u32 bus_flags;
-+	bool invert_mode;
-+	bool partial_mode;
-+	u16 partial_start;
-+	u16 partial_end;
-+};
-+
-+struct st7789v {
-+	const struct st7789_panel_info *info;
-+	struct spi_device *spi;
-+	struct gpio_desc *reset;
-+	struct regulator *power;
-+	enum drm_panel_orientation orientation;
-+	struct device *dev;
-+	struct vpl vpl;
-+};
-+
-+enum st7789v_prefix {
-+	ST7789V_COMMAND = 0,
-+	ST7789V_DATA = 1,
-+};
-+
-+static int st7789v_spi_write(struct st7789v *ctx, enum st7789v_prefix prefix,
-+			     u8 data)
++/**
++ * drm_display_mode_from_videomode - fill in @dmode using @vm,
++ * @vm: videomode structure to use as source
++ * @dmode: drm_display_mode structure to use as destination
++ *
++ * Fills out @dmode using the display mode specified in @vm.
++ */
++void videomode_to_drm_display_mode(const struct videomode *vm,
++				   struct drm_display_mode *dmode)
 +{
-+	struct spi_transfer xfer = { };
-+	u16 txbuf = ((prefix & 1) << 8) | data;
++	dmode->hdisplay = vm->hactive;
++	dmode->hsync_start = dmode->hdisplay + vm->hfront_porch;
++	dmode->hsync_end = dmode->hsync_start + vm->hsync_len;
++	dmode->htotal = dmode->hsync_end + vm->hback_porch;
 +
-+	xfer.tx_buf = &txbuf;
-+	xfer.len = sizeof(txbuf);
++	dmode->vdisplay = vm->vactive;
++	dmode->vsync_start = dmode->vdisplay + vm->vfront_porch;
++	dmode->vsync_end = dmode->vsync_start + vm->vsync_len;
++	dmode->vtotal = dmode->vsync_end + vm->vback_porch;
 +
-+	return spi_sync_transfer(ctx->spi, &xfer, 1);
++	dmode->clock = vm->pixelclock / 1000;
++
++	dmode->flags = 0;
++	if (vm->flags & DISPLAY_FLAGS_HSYNC_HIGH)
++		dmode->flags |= DRM_MODE_FLAG_PHSYNC;
++	else if (vm->flags & DISPLAY_FLAGS_HSYNC_LOW)
++		dmode->flags |= DRM_MODE_FLAG_NHSYNC;
++	if (vm->flags & DISPLAY_FLAGS_VSYNC_HIGH)
++		dmode->flags |= DRM_MODE_FLAG_PVSYNC;
++	else if (vm->flags & DISPLAY_FLAGS_VSYNC_LOW)
++		dmode->flags |= DRM_MODE_FLAG_NVSYNC;
++	if (vm->flags & DISPLAY_FLAGS_INTERLACED)
++		dmode->flags |= DRM_MODE_FLAG_INTERLACE;
++	if (vm->flags & DISPLAY_FLAGS_DOUBLESCAN)
++		dmode->flags |= DRM_MODE_FLAG_DBLSCAN;
++	if (vm->flags & DISPLAY_FLAGS_DOUBLECLK)
++		dmode->flags |= DRM_MODE_FLAG_DBLCLK;
 +}
 +
-+static int st7789v_write_command(struct st7789v *ctx, u8 cmd)
++/**
++ * drm_display_mode_to_videomode - fill in @vm using @dmode,
++ * @dmode: drm_display_mode structure to use as source
++ * @vm: videomode structure to use as destination
++ *
++ * Fills out @vm using the display mode specified in @dmode.
++ */
++void drm_display_mode_to_videomode(const struct drm_display_mode *dmode,
++				   struct videomode *vm)
 +{
-+	return st7789v_spi_write(ctx, ST7789V_COMMAND, cmd);
++	vm->hactive = dmode->hdisplay;
++	vm->hfront_porch = dmode->hsync_start - dmode->hdisplay;
++	vm->hsync_len = dmode->hsync_end - dmode->hsync_start;
++	vm->hback_porch = dmode->htotal - dmode->hsync_end;
++
++	vm->vactive = dmode->vdisplay;
++	vm->vfront_porch = dmode->vsync_start - dmode->vdisplay;
++	vm->vsync_len = dmode->vsync_end - dmode->vsync_start;
++	vm->vback_porch = dmode->vtotal - dmode->vsync_end;
++
++	vm->pixelclock = dmode->clock * 1000;
++
++	vm->flags = 0;
++	if (dmode->flags & DRM_MODE_FLAG_PHSYNC)
++		vm->flags |= DISPLAY_FLAGS_HSYNC_HIGH;
++	else if (dmode->flags & DRM_MODE_FLAG_NHSYNC)
++		vm->flags |= DISPLAY_FLAGS_HSYNC_LOW;
++	if (dmode->flags & DRM_MODE_FLAG_PVSYNC)
++		vm->flags |= DISPLAY_FLAGS_VSYNC_HIGH;
++	else if (dmode->flags & DRM_MODE_FLAG_NVSYNC)
++		vm->flags |= DISPLAY_FLAGS_VSYNC_LOW;
++	if (dmode->flags & DRM_MODE_FLAG_INTERLACE)
++		vm->flags |= DISPLAY_FLAGS_INTERLACED;
++	if (dmode->flags & DRM_MODE_FLAG_DBLSCAN)
++		vm->flags |= DISPLAY_FLAGS_DOUBLESCAN;
++	if (dmode->flags & DRM_MODE_FLAG_DBLCLK)
++		vm->flags |= DISPLAY_FLAGS_DOUBLECLK;
 +}
 +
-+static int st7789v_write_data(struct st7789v *ctx, u8 cmd)
++int videomode_to_fb_videomode(const struct videomode *vm,
++			      struct fb_videomode *fbmode)
 +{
-+	return st7789v_spi_write(ctx, ST7789V_DATA, cmd);
-+}
++	unsigned int htotal, vtotal, total;
 +
-+static int st7789v_read_data(struct st7789v *ctx, u8 cmd, u8 *buf,
-+			     unsigned int len)
-+{
-+	struct spi_transfer xfer[2] = { };
-+	struct spi_message msg;
-+	u16 txbuf = ((ST7789V_COMMAND & 1) << 8) | cmd;
-+	u16 rxbuf[4] = {};
-+	u8 bit9 = 0;
-+	int ret, i;
++	fbmode->xres = vm->hactive;
++	fbmode->left_margin = vm->hback_porch;
++	fbmode->right_margin = vm->hfront_porch;
++	fbmode->hsync_len = vm->hsync_len;
 +
-+	switch (len) {
-+	case 1:
-+	case 3:
-+	case 4:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
++	fbmode->yres = vm->vactive;
++	fbmode->upper_margin = vm->vback_porch;
++	fbmode->lower_margin = vm->vfront_porch;
++	fbmode->vsync_len = vm->vsync_len;
 +
-+	spi_message_init(&msg);
++	/* prevent division by zero in KHZ2PICOS macro */
++	fbmode->pixclock = vm->pixelclock ?
++			KHZ2PICOS(vm->pixelclock / 1000) : 0;
 +
-+	xfer[0].tx_buf = &txbuf;
-+	xfer[0].len = sizeof(txbuf);
-+	spi_message_add_tail(&xfer[0], &msg);
++	fbmode->sync = 0;
++	fbmode->vmode = 0;
++	if (vm->flags & DISPLAY_FLAGS_HSYNC_HIGH)
++		fbmode->sync |= FB_SYNC_HOR_HIGH_ACT;
++	if (vm->flags & DISPLAY_FLAGS_VSYNC_HIGH)
++		fbmode->sync |= FB_SYNC_VERT_HIGH_ACT;
++	if (vm->flags & DISPLAY_FLAGS_INTERLACED)
++		fbmode->vmode |= FB_VMODE_INTERLACED;
++	if (vm->flags & DISPLAY_FLAGS_DOUBLESCAN)
++		fbmode->vmode |= FB_VMODE_DOUBLE;
 +
-+	xfer[1].rx_buf = rxbuf;
-+	xfer[1].len = len * 2;
-+	spi_message_add_tail(&xfer[1], &msg);
-+
-+	ret = spi_sync(ctx->spi, &msg);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < len; i++) {
-+		buf[i] = rxbuf[i] >> i | (bit9 << (9 - i));
-+		if (i)
-+			bit9 = rxbuf[i] & GENMASK(i - 1, 0);
-+	}
-+
-+	return 0;
-+}
-+
-+static int st7789v_check_id(struct st7789v *ctx)
-+{
-+	const u8 st7789v_ids[ST7789V_IDS_SIZE] = ST7789V_IDS;
-+	bool invalid_ids = false;
-+	int ret, i;
-+	u8 ids[3];
-+
-+	ret = st7789v_read_data(ctx, MIPI_DCS_GET_DISPLAY_ID, ids, ST7789V_IDS_SIZE);
-+	if (ret)
-+		return ret;
-+printf("%s: %02x %02x %02x\n", __func__, ids[0], ids[1], ids[2]);
-+	for (i = 0; i < ST7789V_IDS_SIZE; i++) {
-+		if (ids[i] != st7789v_ids[i]) {
-+			invalid_ids = true;
-+			break;
-+		}
-+	}
-+
-+	if (invalid_ids)
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+static const struct drm_display_mode default_mode = {
-+	.clock = 7000,
-+	.hdisplay = 240,
-+	.hsync_start = 240 + 38,
-+	.hsync_end = 240 + 38 + 10,
-+	.htotal = 240 + 38 + 10 + 10,
-+	.vdisplay = 320,
-+	.vsync_start = 320 + 8,
-+	.vsync_end = 320 + 8 + 4,
-+	.vtotal = 320 + 8 + 4 + 4,
-+	.width_mm = 61,
-+	.height_mm = 103,
-+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
-+};
-+
-+static const struct drm_display_mode t28cp45tn89_mode = {
-+	.clock = 6008,
-+	.hdisplay = 240,
-+	.hsync_start = 240 + 38,
-+	.hsync_end = 240 + 38 + 10,
-+	.htotal = 240 + 38 + 10 + 10,
-+	.vdisplay = 320,
-+	.vsync_start = 320 + 8,
-+	.vsync_end = 320 + 8 + 4,
-+	.vtotal = 320 + 8 + 4 + 4,
-+	.width_mm = 43,
-+	.height_mm = 57,
-+	.flags = DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_NVSYNC,
-+};
-+
-+static const struct drm_display_mode et028013dma_mode = {
-+	.clock = 3000,
-+	.hdisplay = 240,
-+	.hsync_start = 240 + 38,
-+	.hsync_end = 240 + 38 + 10,
-+	.htotal = 240 + 38 + 10 + 10,
-+	.vdisplay = 320,
-+	.vsync_start = 320 + 8,
-+	.vsync_end = 320 + 8 + 4,
-+	.vtotal = 320 + 8 + 4 + 4,
-+	.width_mm = 43,
-+	.height_mm = 58,
-+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
-+};
-+
-+static const struct drm_display_mode jt240mhqs_hwt_ek_e3_mode = {
-+	.clock = 6000,
-+	.hdisplay = 240,
-+	.hsync_start = 240 + 28,
-+	.hsync_end = 240 + 28 + 10,
-+	.htotal = 240 + 28 + 10 + 10,
-+	.vdisplay = 280,
-+	.vsync_start = 280 + 8,
-+	.vsync_end = 280 + 8 + 4,
-+	.vtotal = 280 + 8 + 4 + 4,
-+	.width_mm = 43,
-+	.height_mm = 37,
-+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
-+};
-+
-+static const struct st7789_panel_info default_panel = {
-+	.mode = &default_mode,
-+	.invert_mode = true,
-+	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH |
-+		     DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
-+};
-+
-+static const struct st7789_panel_info t28cp45tn89_panel = {
-+	.mode = &t28cp45tn89_mode,
-+	.invert_mode = false,
-+	.bus_format = MEDIA_BUS_FMT_RGB565_1X16,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH |
-+		     DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE,
-+};
-+
-+static const struct st7789_panel_info et028013dma_panel = {
-+	.mode = &et028013dma_mode,
-+	.invert_mode = true,
-+	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH |
-+		     DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE,
-+};
-+
-+static const struct st7789_panel_info jt240mhqs_hwt_ek_e3_panel = {
-+	.mode = &jt240mhqs_hwt_ek_e3_mode,
-+	.invert_mode = true,
-+	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH |
-+		     DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
-+	.partial_mode = true,
-+	.partial_start = 38,
-+	.partial_end = 318,
-+};
-+
-+static int st7789v_get_modes(struct st7789v *ctx,
-+			     struct display_timings *timings)
-+{
-+	struct fb_videomode *mode;
-+
-+	mode = xzalloc(sizeof(*mode));
-+
-+	drm_display_mode_to_fb_videomode(ctx->info->mode, mode);
-+
-+	timings->modes = mode;
-+	timings->num_modes = 1;
-+
-+	return 0;
-+}
-+
-+static int st7789v_get_display_info(struct st7789v *ctx,
-+			     struct drm_display_info *display_info)
-+{
-+	display_info->bus_flags = ctx->info->bus_flags;
-+	display_info->panel_orientation = ctx->orientation;
-+
-+	return 0;
-+}
-+
-+static int st7789v_prepare(struct st7789v *ctx)
-+{
-+	u8 mode, pixel_fmt, polarity;
-+	int ret;
-+
-+	if (!ctx->info->partial_mode)
-+		mode = ST7789V_RGBCTRL_WO;
-+	else
-+		mode = 0;
-+
-+	switch (ctx->info->bus_format) {
-+	case MEDIA_BUS_FMT_RGB666_1X18:
-+		pixel_fmt = MIPI_DCS_PIXEL_FMT_18BIT;
-+		break;
-+	case MEDIA_BUS_FMT_RGB565_1X16:
-+		pixel_fmt = MIPI_DCS_PIXEL_FMT_16BIT;
-+		break;
-+	default:
-+		dev_err(ctx->dev, "unsupported bus format: %d\n",
-+			ctx->info->bus_format);
++	htotal = vm->hactive + vm->hfront_porch + vm->hback_porch +
++		 vm->hsync_len;
++	vtotal = vm->vactive + vm->vfront_porch + vm->vback_porch +
++		 vm->vsync_len;
++	/* prevent division by zero */
++	total = htotal * vtotal;
++	if (total) {
++		fbmode->refresh = vm->pixelclock / total;
++	/* a mode must have htotal and vtotal != 0 or it is invalid */
++	} else {
++		fbmode->refresh = 0;
 +		return -EINVAL;
 +	}
 +
-+	pixel_fmt = (pixel_fmt << 4) | pixel_fmt;
-+
-+	polarity = 0;
-+	if (ctx->info->mode->flags & DRM_MODE_FLAG_PVSYNC)
-+		polarity |= ST7789V_RGBCTRL_VSYNC_HIGH;
-+	if (ctx->info->mode->flags & DRM_MODE_FLAG_PHSYNC)
-+		polarity |= ST7789V_RGBCTRL_HSYNC_HIGH;
-+	if (ctx->info->bus_flags & DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE)
-+		polarity |= ST7789V_RGBCTRL_PCLK_FALLING;
-+	if (ctx->info->bus_flags & DRM_BUS_FLAG_DE_LOW)
-+		polarity |= ST7789V_RGBCTRL_DE_LOW;
-+
-+	ret = regulator_enable(ctx->power);
-+	if (ret)
-+		return ret;
-+
-+	gpiod_set_value(ctx->reset, 1);
-+	mdelay(30);
-+	gpiod_set_value(ctx->reset, 0);
-+	mdelay(120);
-+
-+	/*
-+	 * Avoid failing if the IDs are invalid in case the Rx bus width
-+	 * description is missing.
-+	 */
-+	ret = st7789v_check_id(ctx);
-+	if (ret)
-+		dev_warn(ctx->dev, "Unrecognized panel IDs");
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, MIPI_DCS_EXIT_SLEEP_MODE));
-+
-+	/* We need to wait 120ms after a sleep out command */
-+	mdelay(120);
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx,
-+						MIPI_DCS_SET_ADDRESS_MODE));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, 0));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx,
-+						MIPI_DCS_SET_PIXEL_FORMAT));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, pixel_fmt));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_PORCTRL_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, 0xc));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, 0xc));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, 0));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PORCTRL_IDLE_BP(3) |
-+					     ST7789V_PORCTRL_IDLE_FP(3)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx,
-+					     ST7789V_PORCTRL_PARTIAL_BP(3) |
-+					     ST7789V_PORCTRL_PARTIAL_FP(3)));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_GCTRL_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_GCTRL_VGLS(5) |
-+					     ST7789V_GCTRL_VGHS(3)));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_VCOMS_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, 0x2b));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_LCMCTRL_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_LCMCTRL_XMH |
-+					     ST7789V_LCMCTRL_XMX |
-+					     ST7789V_LCMCTRL_XBGR));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_VDVVRHEN_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_VDVVRHEN_CMDEN));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_VRHS_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, 0xf));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_VDVS_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, 0x20));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_FRCTRL2_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, 0xf));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_PWCTRL1_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PWCTRL1_MAGIC));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PWCTRL1_AVDD(2) |
-+					     ST7789V_PWCTRL1_AVCL(2) |
-+					     ST7789V_PWCTRL1_VDS(1)));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_PVGAMCTRL_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP63(0xd)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP1(0xca)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP2(0xe)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP4(8)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP6(9)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP13(7)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP20(0x2d)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP27(0xb) |
-+					     ST7789V_PVGAMCTRL_VP36(3)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP43(0x3d)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_JP1(3) |
-+					     ST7789V_PVGAMCTRL_VP50(4)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP57(0xa)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP59(0xa)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP61(0x1b)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_PVGAMCTRL_VP62(0x28)));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_NVGAMCTRL_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN63(0xd)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN1(0xca)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN2(0xf)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN4(8)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN6(8)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN13(7)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN20(0x2e)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN27(0xc) |
-+					     ST7789V_NVGAMCTRL_VN36(5)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN43(0x40)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_JN1(3) |
-+					     ST7789V_NVGAMCTRL_VN50(4)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN57(9)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN59(0xb)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN61(0x1b)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_NVGAMCTRL_VN62(0x28)));
-+
-+	if (ctx->info->invert_mode) {
-+		ST7789V_TEST(ret, st7789v_write_command(ctx,
-+						MIPI_DCS_ENTER_INVERT_MODE));
-+	} else {
-+		ST7789V_TEST(ret, st7789v_write_command(ctx,
-+						MIPI_DCS_EXIT_INVERT_MODE));
-+	}
-+
-+	if (ctx->info->partial_mode) {
-+		u8 area_data[4] = {
-+			(ctx->info->partial_start >> 8) & 0xff,
-+			(ctx->info->partial_start >> 0) & 0xff,
-+			((ctx->info->partial_end - 1) >> 8) & 0xff,
-+			((ctx->info->partial_end - 1) >> 0) & 0xff,
-+		};
-+
-+		/* Caution: if userspace ever pushes a mode different from the
-+		 * expected one (i.e., the one advertised by get_modes), we'll
-+		 * add margins.
-+		 */
-+
-+		ST7789V_TEST(ret, st7789v_write_command(
-+					  ctx, MIPI_DCS_ENTER_PARTIAL_MODE));
-+
-+		ST7789V_TEST(ret, st7789v_write_command(
-+					  ctx, MIPI_DCS_SET_PAGE_ADDRESS));
-+		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[0]));
-+		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[1]));
-+		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[2]));
-+		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[3]));
-+
-+		ST7789V_TEST(ret, st7789v_write_command(
-+					  ctx, MIPI_DCS_SET_PARTIAL_ROWS));
-+		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[0]));
-+		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[1]));
-+		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[2]));
-+		ST7789V_TEST(ret, st7789v_write_data(ctx, area_data[3]));
-+	}
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_RAMCTRL_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_RAMCTRL_DM_RGB |
-+					     ST7789V_RAMCTRL_RM_RGB));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_RAMCTRL_EPF(3) |
-+					     ST7789V_RAMCTRL_MAGIC));
-+
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, ST7789V_RGBCTRL_CMD));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, mode |
-+					     ST7789V_RGBCTRL_RCM(2) |
-+					     polarity));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_RGBCTRL_VBP(8)));
-+	ST7789V_TEST(ret, st7789v_write_data(ctx, ST7789V_RGBCTRL_HBP(20)));
-+
 +	return 0;
 +}
 +
-+static int st7789v_enable(struct st7789v *ctx)
++void fb_videomode_to_videomode(const struct fb_videomode *fbmode,
++			       struct videomode *vm)
 +{
-+	return st7789v_write_command(ctx, MIPI_DCS_SET_DISPLAY_ON);
++	vm->pixelclock = fbmode->pixclock ?
++			 (PICOS2KHZ(fbmode->pixclock) * 1000) : 0;
++	vm->hactive = fbmode->xres;
++	vm->hfront_porch = fbmode->right_margin;
++	vm->hback_porch = fbmode->left_margin;
++	vm->hsync_len = fbmode->hsync_len;
++	vm->vactive = fbmode->yres;
++	vm->vfront_porch = fbmode->lower_margin;
++	vm->vback_porch = fbmode->upper_margin;
++	vm->vsync_len = fbmode->vsync_len;
++
++	vm->flags = 0;
++
++	if (fbmode->sync & FB_SYNC_HOR_HIGH_ACT)
++		vm->flags |= DISPLAY_FLAGS_HSYNC_HIGH;
++	if (fbmode->sync & FB_SYNC_VERT_HIGH_ACT)
++		vm->flags |= DISPLAY_FLAGS_VSYNC_HIGH;
++	if (fbmode->vmode & FB_VMODE_INTERLACED)
++		vm->flags |= DISPLAY_FLAGS_INTERLACED;
++	if (fbmode->vmode & FB_VMODE_DOUBLE)
++		vm->flags |= DISPLAY_FLAGS_DOUBLESCAN;
 +}
 +
-+static int st7789v_disable(struct st7789v *ctx)
++void fb_videomode_to_drm_display_mode(const struct fb_videomode *fbmode,
++				      struct drm_display_mode *dmode)
 +{
-+	int ret;
++	struct videomode vm = {};
 +
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, MIPI_DCS_SET_DISPLAY_OFF));
-+
-+	return 0;
++	fb_videomode_to_videomode(fbmode, &vm);
++	videomode_to_drm_display_mode(&vm, dmode);
 +}
 +
-+static int st7789v_unprepare(struct st7789v *ctx)
++int drm_display_mode_to_fb_videomode(const struct drm_display_mode *dmode,
++				     struct fb_videomode *fbmode)
 +{
-+	int ret;
++	struct videomode vm = {};
 +
-+	ST7789V_TEST(ret, st7789v_write_command(ctx, MIPI_DCS_ENTER_SLEEP_MODE));
++	drm_display_mode_to_videomode(dmode, &vm);
 +
-+	regulator_disable(ctx->power);
-+
-+	return 0;
++	return videomode_to_fb_videomode(&vm, fbmode);
 +}
-+
-+static int ili9341_ioctl(struct vpl *vpl, unsigned int port,
-+			 unsigned int cmd, void *ptr)
-+{       
-+	struct st7789v *ctx = container_of(vpl, struct st7789v, vpl);
-+
-+	switch (cmd) {
-+	case VPL_PREPARE:
-+		return st7789v_prepare(ctx);
-+	case VPL_ENABLE:
-+		return st7789v_enable(ctx);
-+	case VPL_DISABLE:
-+		return st7789v_disable(ctx);
-+	case VPL_UNPREPARE:
-+		return st7789v_unprepare(ctx);
-+	case VPL_GET_VIDEOMODES:
-+		return st7789v_get_modes(ctx, ptr);
-+	case VPL_GET_BUS_FORMAT:
-+		*(u32 *)ptr = ctx->info->bus_format;
-+		return 0;
-+	case VPL_GET_DISPLAY_INFO:
-+		return st7789v_get_display_info(ctx, ptr);
-+	default:
-+		return 0;
-+	}
-+}
-+
-+#define spi_setup(spi) spi->master->setup(spi)
-+
-+static int st7789v_probe(struct device *dev)
-+{
-+	struct spi_device *spi = to_spi_device(dev);
-+	struct st7789v *ctx;
-+	int ret;
-+
-+	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	ctx->spi = spi;
-+	ctx->dev = dev;
-+
-+	spi->bits_per_word = 9;
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to setup spi\n");
-+
-+	ctx->info = device_get_match_data(&spi->dev);
-+
-+	ctx->power = regulator_get(dev, "power");
-+	ret = PTR_ERR_OR_ZERO(ctx->power);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get regulator\n");
-+
-+	ctx->reset = gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
-+	ret = PTR_ERR_OR_ZERO(ctx->reset);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get reset line\n");
-+
-+	ctx->vpl.node = dev->of_node;
-+	ctx->vpl.ioctl = ili9341_ioctl;
-+
-+	return vpl_register(&ctx->vpl);
-+}
-+
-+static const struct of_device_id st7789v_of_match[] = {
-+	{ .compatible = "sitronix,st7789v", .data = &default_panel },
-+	{ .compatible = "inanbo,t28cp45tn89-v17", .data = &t28cp45tn89_panel },
-+	{ .compatible = "edt,et028013dma", .data = &et028013dma_panel },
-+	{ .compatible = "jasonic,jt240mhqs-hwt-ek-e3",
-+	  .data = &jt240mhqs_hwt_ek_e3_panel },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, st7789v_of_match);
-+
-+static struct driver st7789v_driver = {
-+	.name = "panel-sitronix-st7789v",
-+	.of_compatible = st7789v_of_match,
-+	.probe = st7789v_probe,
-+};
-+device_spi_driver(st7789v_driver);
-+
-+MODULE_AUTHOR("Maxime Ripard <maxime.ripard@free-electrons.com>");
-+MODULE_DESCRIPTION("Sitronix st7789v LCD Driver");
-+MODULE_LICENSE("GPL v2");
-diff --git a/include/video/vpl.h b/include/video/vpl.h
-index 15711b4701..5ea3d6dcf2 100644
---- a/include/video/vpl.h
-+++ b/include/video/vpl.h
-@@ -11,6 +11,7 @@
- #define VPL_DISABLE		0x67660004
- #define VPL_GET_VIDEOMODES	0x67660005
- #define VPL_GET_BUS_FORMAT	0x67660006
-+#define VPL_GET_DISPLAY_INFO	0x67660007
+diff --git a/include/fb.h b/include/fb.h
+index 88e6c0e458..2dd55eb83d 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -35,6 +35,11 @@
+ #define KHZ2PICOS(a) (1000000000UL/(a))
  
- struct vpl {
- 	int (*ioctl)(struct vpl *, unsigned int port,
+ enum display_flags {
++	DISPLAY_FLAGS_HSYNC_LOW		= BIT(0),
++	DISPLAY_FLAGS_HSYNC_HIGH	= BIT(1),
++	DISPLAY_FLAGS_VSYNC_LOW		= BIT(2),
++	DISPLAY_FLAGS_VSYNC_HIGH	= BIT(3),
++
+ 	/* data enable flag */
+ 	DISPLAY_FLAGS_DE_LOW		= BIT(4),
+ 	DISPLAY_FLAGS_DE_HIGH		= BIT(5),
+@@ -42,6 +47,13 @@ enum display_flags {
+ 	DISPLAY_FLAGS_PIXDATA_POSEDGE	= BIT(6),
+ 	/* drive data on neg. edge */
+ 	DISPLAY_FLAGS_PIXDATA_NEGEDGE	= BIT(7),
++	DISPLAY_FLAGS_INTERLACED	= BIT(8),
++	DISPLAY_FLAGS_DOUBLESCAN	= BIT(9),
++	DISPLAY_FLAGS_DOUBLECLK		= BIT(10),
++	/* drive sync on pos. edge */
++	DISPLAY_FLAGS_SYNC_POSEDGE	= BIT(11),
++	/* drive sync on neg. edge */
++	DISPLAY_FLAGS_SYNC_NEGEDGE	= BIT(12),
+ };
+ 
+ struct fb_videomode {
+diff --git a/include/uapi/drm/drm_mode.h b/include/uapi/drm/drm_mode.h
+new file mode 100644
+index 0000000000..63dcf39924
+--- /dev/null
++++ b/include/uapi/drm/drm_mode.h
+@@ -0,0 +1,93 @@
++/*
++ * Copyright (c) 2007 Dave Airlie <airlied@linux.ie>
++ * Copyright (c) 2007 Jakob Bornecrantz <wallbraker@gmail.com>
++ * Copyright (c) 2008 Red Hat Inc.
++ * Copyright (c) 2007-2008 Tungsten Graphics, Inc., Cedar Park, TX., USA
++ * Copyright (c) 2007-2008 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#ifndef _DRM_MODE_H
++#define _DRM_MODE_H
++
++/**
++ * DOC: overview
++ *
++ * DRM exposes many UAPI and structure definitions to have a consistent
++ * and standardized interface with users.
++ * Userspace can refer to these structure definitions and UAPI formats
++ * to communicate to drivers.
++ */
++
++#define DRM_CONNECTOR_NAME_LEN	32
++#define DRM_DISPLAY_MODE_LEN	32
++#define DRM_PROP_NAME_LEN	32
++
++#define DRM_MODE_TYPE_BUILTIN	(1<<0) /* deprecated */
++#define DRM_MODE_TYPE_CLOCK_C	((1<<1) | DRM_MODE_TYPE_BUILTIN) /* deprecated */
++#define DRM_MODE_TYPE_CRTC_C	((1<<2) | DRM_MODE_TYPE_BUILTIN) /* deprecated */
++#define DRM_MODE_TYPE_PREFERRED	(1<<3)
++#define DRM_MODE_TYPE_DEFAULT	(1<<4) /* deprecated */
++#define DRM_MODE_TYPE_USERDEF	(1<<5)
++#define DRM_MODE_TYPE_DRIVER	(1<<6)
++
++#define DRM_MODE_TYPE_ALL	(DRM_MODE_TYPE_PREFERRED |	\
++				 DRM_MODE_TYPE_USERDEF |	\
++				 DRM_MODE_TYPE_DRIVER)
++
++/* Video mode flags */
++/* bit compatible with the xrandr RR_ definitions (bits 0-13)
++ *
++ * ABI warning: Existing userspace really expects
++ * the mode flags to match the xrandr definitions. Any
++ * changes that don't match the xrandr definitions will
++ * likely need a new client cap or some other mechanism
++ * to avoid breaking existing userspace. This includes
++ * allocating new flags in the previously unused bits!
++ */
++#define DRM_MODE_FLAG_PHSYNC			(1<<0)
++#define DRM_MODE_FLAG_NHSYNC			(1<<1)
++#define DRM_MODE_FLAG_PVSYNC			(1<<2)
++#define DRM_MODE_FLAG_NVSYNC			(1<<3)
++#define DRM_MODE_FLAG_INTERLACE			(1<<4)
++#define DRM_MODE_FLAG_DBLSCAN			(1<<5)
++#define DRM_MODE_FLAG_CSYNC			(1<<6)
++#define DRM_MODE_FLAG_PCSYNC			(1<<7)
++#define DRM_MODE_FLAG_NCSYNC			(1<<8)
++#define DRM_MODE_FLAG_HSKEW			(1<<9) /* hskew provided */
++#define DRM_MODE_FLAG_BCAST			(1<<10) /* deprecated */
++#define DRM_MODE_FLAG_PIXMUX			(1<<11) /* deprecated */
++#define DRM_MODE_FLAG_DBLCLK			(1<<12)
++#define DRM_MODE_FLAG_CLKDIV2			(1<<13)
++
++#define  DRM_MODE_FLAG_ALL	(DRM_MODE_FLAG_PHSYNC |		\
++				 DRM_MODE_FLAG_NHSYNC |		\
++				 DRM_MODE_FLAG_PVSYNC |		\
++				 DRM_MODE_FLAG_NVSYNC |		\
++				 DRM_MODE_FLAG_INTERLACE |	\
++				 DRM_MODE_FLAG_DBLSCAN |	\
++				 DRM_MODE_FLAG_CSYNC |		\
++				 DRM_MODE_FLAG_PCSYNC |		\
++				 DRM_MODE_FLAG_NCSYNC |		\
++				 DRM_MODE_FLAG_HSKEW |		\
++				 DRM_MODE_FLAG_DBLCLK |		\
++				 DRM_MODE_FLAG_CLKDIV2)
++
++#endif
+diff --git a/include/video/drm/drm_modes.h b/include/video/drm/drm_modes.h
+new file mode 100644
+index 0000000000..afce8a25a9
+--- /dev/null
++++ b/include/video/drm/drm_modes.h
+@@ -0,0 +1,409 @@
++/*
++ * Copyright © 2006 Keith Packard
++ * Copyright © 2007-2008 Dave Airlie
++ * Copyright © 2007-2008 Intel Corporation
++ *   Jesse Barnes <jesse.barnes@intel.com>
++ * Copyright © 2014 Intel Corporation
++ *   Daniel Vetter <daniel.vetter@ffwll.ch>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++#ifndef __DRM_MODES_H__
++#define __DRM_MODES_H__
++
++#include <uapi/drm/drm_mode.h>
++
++/*
++ * Note on terminology:  here, for brevity and convenience, we refer to connector
++ * control chips as 'CRTCs'.  They can control any type of connector, VGA, LVDS,
++ * DVI, etc.  And 'screen' refers to the whole of the visible display, which
++ * may span multiple monitors (and therefore multiple CRTC and connector
++ * structures).
++ */
++
++/**
++ * enum drm_mode_status - hardware support status of a mode
++ * @MODE_OK: Mode OK
++ * @MODE_HSYNC: hsync out of range
++ * @MODE_VSYNC: vsync out of range
++ * @MODE_H_ILLEGAL: mode has illegal horizontal timings
++ * @MODE_V_ILLEGAL: mode has illegal vertical timings
++ * @MODE_BAD_WIDTH: requires an unsupported linepitch
++ * @MODE_NOMODE: no mode with a matching name
++ * @MODE_NO_INTERLACE: interlaced mode not supported
++ * @MODE_NO_DBLESCAN: doublescan mode not supported
++ * @MODE_NO_VSCAN: multiscan mode not supported
++ * @MODE_MEM: insufficient video memory
++ * @MODE_VIRTUAL_X: mode width too large for specified virtual size
++ * @MODE_VIRTUAL_Y: mode height too large for specified virtual size
++ * @MODE_MEM_VIRT: insufficient video memory given virtual size
++ * @MODE_NOCLOCK: no fixed clock available
++ * @MODE_CLOCK_HIGH: clock required is too high
++ * @MODE_CLOCK_LOW: clock required is too low
++ * @MODE_CLOCK_RANGE: clock/mode isn't in a ClockRange
++ * @MODE_BAD_HVALUE: horizontal timing was out of range
++ * @MODE_BAD_VVALUE: vertical timing was out of range
++ * @MODE_BAD_VSCAN: VScan value out of range
++ * @MODE_HSYNC_NARROW: horizontal sync too narrow
++ * @MODE_HSYNC_WIDE: horizontal sync too wide
++ * @MODE_HBLANK_NARROW: horizontal blanking too narrow
++ * @MODE_HBLANK_WIDE: horizontal blanking too wide
++ * @MODE_VSYNC_NARROW: vertical sync too narrow
++ * @MODE_VSYNC_WIDE: vertical sync too wide
++ * @MODE_VBLANK_NARROW: vertical blanking too narrow
++ * @MODE_VBLANK_WIDE: vertical blanking too wide
++ * @MODE_PANEL: exceeds panel dimensions
++ * @MODE_INTERLACE_WIDTH: width too large for interlaced mode
++ * @MODE_ONE_WIDTH: only one width is supported
++ * @MODE_ONE_HEIGHT: only one height is supported
++ * @MODE_ONE_SIZE: only one resolution is supported
++ * @MODE_NO_REDUCED: monitor doesn't accept reduced blanking
++ * @MODE_NO_STEREO: stereo modes not supported
++ * @MODE_NO_420: ycbcr 420 modes not supported
++ * @MODE_STALE: mode has become stale
++ * @MODE_BAD: unspecified reason
++ * @MODE_ERROR: error condition
++ *
++ * This enum is used to filter out modes not supported by the driver/hardware
++ * combination.
++ */
++enum drm_mode_status {
++	MODE_OK = 0,
++	MODE_HSYNC,
++	MODE_VSYNC,
++	MODE_H_ILLEGAL,
++	MODE_V_ILLEGAL,
++	MODE_BAD_WIDTH,
++	MODE_NOMODE,
++	MODE_NO_INTERLACE,
++	MODE_NO_DBLESCAN,
++	MODE_NO_VSCAN,
++	MODE_MEM,
++	MODE_VIRTUAL_X,
++	MODE_VIRTUAL_Y,
++	MODE_MEM_VIRT,
++	MODE_NOCLOCK,
++	MODE_CLOCK_HIGH,
++	MODE_CLOCK_LOW,
++	MODE_CLOCK_RANGE,
++	MODE_BAD_HVALUE,
++	MODE_BAD_VVALUE,
++	MODE_BAD_VSCAN,
++	MODE_HSYNC_NARROW,
++	MODE_HSYNC_WIDE,
++	MODE_HBLANK_NARROW,
++	MODE_HBLANK_WIDE,
++	MODE_VSYNC_NARROW,
++	MODE_VSYNC_WIDE,
++	MODE_VBLANK_NARROW,
++	MODE_VBLANK_WIDE,
++	MODE_PANEL,
++	MODE_INTERLACE_WIDTH,
++	MODE_ONE_WIDTH,
++	MODE_ONE_HEIGHT,
++	MODE_ONE_SIZE,
++	MODE_NO_REDUCED,
++	MODE_NO_STEREO,
++	MODE_NO_420,
++	MODE_STALE = -3,
++	MODE_BAD = -2,
++	MODE_ERROR = -1
++};
++
++#define DRM_MODE(nm, t, c, hd, hss, hse, ht, hsk, vd, vss, vse, vt, vs, f) \
++	.name = nm, .status = 0, .type = (t), .clock = (c), \
++	.hdisplay = (hd), .hsync_start = (hss), .hsync_end = (hse), \
++	.htotal = (ht), .hskew = (hsk), .vdisplay = (vd), \
++	.vsync_start = (vss), .vsync_end = (vse), .vtotal = (vt), \
++	.vscan = (vs), .flags = (f)
++
++/**
++ * DRM_MODE_RES_MM - Calculates the display size from resolution and DPI
++ * @res: The resolution in pixel
++ * @dpi: The number of dots per inch
++ */
++#define DRM_MODE_RES_MM(res, dpi)	\
++	(((res) * 254ul) / ((dpi) * 10ul))
++
++#define __DRM_MODE_INIT(pix, hd, vd, hd_mm, vd_mm) \
++	.type = DRM_MODE_TYPE_DRIVER, .clock = (pix), \
++	.hdisplay = (hd), .hsync_start = (hd), .hsync_end = (hd), \
++	.htotal = (hd), .vdisplay = (vd), .vsync_start = (vd), \
++	.vsync_end = (vd), .vtotal = (vd), .width_mm = (hd_mm), \
++	.height_mm = (vd_mm)
++
++/**
++ * DRM_MODE_INIT - Initialize display mode
++ * @hz: Vertical refresh rate in Hertz
++ * @hd: Horizontal resolution, width
++ * @vd: Vertical resolution, height
++ * @hd_mm: Display width in millimeters
++ * @vd_mm: Display height in millimeters
++ *
++ * This macro initializes a &drm_display_mode that contains information about
++ * refresh rate, resolution and physical size.
++ */
++#define DRM_MODE_INIT(hz, hd, vd, hd_mm, vd_mm) \
++	__DRM_MODE_INIT((hd) * (vd) * (hz) / 1000 /* kHz */, hd, vd, hd_mm, vd_mm)
++
++/**
++ * DRM_SIMPLE_MODE - Simple display mode
++ * @hd: Horizontal resolution, width
++ * @vd: Vertical resolution, height
++ * @hd_mm: Display width in millimeters
++ * @vd_mm: Display height in millimeters
++ *
++ * This macro initializes a &drm_display_mode that only contains info about
++ * resolution and physical size.
++ */
++#define DRM_SIMPLE_MODE(hd, vd, hd_mm, vd_mm) \
++	__DRM_MODE_INIT(1 /* pass validation */, hd, vd, hd_mm, vd_mm)
++
++#define CRTC_INTERLACE_HALVE_V	(1 << 0) /* halve V values for interlacing */
++#define CRTC_STEREO_DOUBLE	(1 << 1) /* adjust timings for stereo modes */
++#define CRTC_NO_DBLSCAN		(1 << 2) /* don't adjust doublescan */
++#define CRTC_NO_VSCAN		(1 << 3) /* don't adjust doublescan */
++#define CRTC_STEREO_DOUBLE_ONLY	(CRTC_STEREO_DOUBLE | CRTC_NO_DBLSCAN | CRTC_NO_VSCAN)
++
++#define DRM_MODE_FLAG_3D_MAX	DRM_MODE_FLAG_3D_SIDE_BY_SIDE_HALF
++
++#define DRM_MODE_MATCH_TIMINGS (1 << 0)
++#define DRM_MODE_MATCH_CLOCK (1 << 1)
++#define DRM_MODE_MATCH_FLAGS (1 << 2)
++#define DRM_MODE_MATCH_3D_FLAGS (1 << 3)
++#define DRM_MODE_MATCH_ASPECT_RATIO (1 << 4)
++
++/**
++ * struct drm_display_mode - DRM kernel-internal display mode structure
++ * @hdisplay: horizontal display size
++ * @hsync_start: horizontal sync start
++ * @hsync_end: horizontal sync end
++ * @htotal: horizontal total size
++ * @hskew: horizontal skew?!
++ * @vdisplay: vertical display size
++ * @vsync_start: vertical sync start
++ * @vsync_end: vertical sync end
++ * @vtotal: vertical total size
++ * @vscan: vertical scan?!
++ * @crtc_hdisplay: hardware mode horizontal display size
++ * @crtc_hblank_start: hardware mode horizontal blank start
++ * @crtc_hblank_end: hardware mode horizontal blank end
++ * @crtc_hsync_start: hardware mode horizontal sync start
++ * @crtc_hsync_end: hardware mode horizontal sync end
++ * @crtc_htotal: hardware mode horizontal total size
++ * @crtc_hskew: hardware mode horizontal skew?!
++ * @crtc_vdisplay: hardware mode vertical display size
++ * @crtc_vblank_start: hardware mode vertical blank start
++ * @crtc_vblank_end: hardware mode vertical blank end
++ * @crtc_vsync_start: hardware mode vertical sync start
++ * @crtc_vsync_end: hardware mode vertical sync end
++ * @crtc_vtotal: hardware mode vertical total size
++ *
++ * This is the kernel API display mode information structure. For the
++ * user-space version see struct drm_mode_modeinfo.
++ *
++ * The horizontal and vertical timings are defined per the following diagram.
++ *
++ * ::
++ *
++ *
++ *               Active                 Front           Sync           Back
++ *              Region                 Porch                          Porch
++ *     <-----------------------><----------------><-------------><-------------->
++ *       //////////////////////|
++ *      ////////////////////// |
++ *     //////////////////////  |..................               ................
++ *                                                _______________
++ *     <----- [hv]display ----->
++ *     <------------- [hv]sync_start ------------>
++ *     <--------------------- [hv]sync_end --------------------->
++ *     <-------------------------------- [hv]total ----------------------------->*
++ *
++ * This structure contains two copies of timings. First are the plain timings,
++ * which specify the logical mode, as it would be for a progressive 1:1 scanout
++ * at the refresh rate userspace can observe through vblank timestamps. Then
++ * there's the hardware timings, which are corrected for interlacing,
++ * double-clocking and similar things. They are provided as a convenience, and
++ * can be appropriately computed using drm_mode_set_crtcinfo().
++ *
++ * For printing you can use %DRM_MODE_FMT and DRM_MODE_ARG().
++ */
++struct drm_display_mode {
++	/**
++	 * @clock:
++	 *
++	 * Pixel clock in kHz.
++	 */
++	int clock;		/* in kHz */
++	u16 hdisplay;
++	u16 hsync_start;
++	u16 hsync_end;
++	u16 htotal;
++	u16 hskew;
++	u16 vdisplay;
++	u16 vsync_start;
++	u16 vsync_end;
++	u16 vtotal;
++	u16 vscan;
++	/**
++	 * @flags:
++	 *
++	 * Sync and timing flags:
++	 *
++	 *  - DRM_MODE_FLAG_PHSYNC: horizontal sync is active high.
++	 *  - DRM_MODE_FLAG_NHSYNC: horizontal sync is active low.
++	 *  - DRM_MODE_FLAG_PVSYNC: vertical sync is active high.
++	 *  - DRM_MODE_FLAG_NVSYNC: vertical sync is active low.
++	 *  - DRM_MODE_FLAG_INTERLACE: mode is interlaced.
++	 *  - DRM_MODE_FLAG_DBLSCAN: mode uses doublescan.
++	 *  - DRM_MODE_FLAG_CSYNC: mode uses composite sync.
++	 *  - DRM_MODE_FLAG_PCSYNC: composite sync is active high.
++	 *  - DRM_MODE_FLAG_NCSYNC: composite sync is active low.
++	 *  - DRM_MODE_FLAG_HSKEW: hskew provided (not used?).
++	 *  - DRM_MODE_FLAG_BCAST: <deprecated>
++	 *  - DRM_MODE_FLAG_PIXMUX: <deprecated>
++	 *  - DRM_MODE_FLAG_DBLCLK: double-clocked mode.
++	 *  - DRM_MODE_FLAG_CLKDIV2: half-clocked mode.
++	 *
++	 * Additionally there's flags to specify how 3D modes are packed:
++	 *
++	 *  - DRM_MODE_FLAG_3D_NONE: normal, non-3D mode.
++	 *  - DRM_MODE_FLAG_3D_FRAME_PACKING: 2 full frames for left and right.
++	 *  - DRM_MODE_FLAG_3D_FIELD_ALTERNATIVE: interleaved like fields.
++	 *  - DRM_MODE_FLAG_3D_LINE_ALTERNATIVE: interleaved lines.
++	 *  - DRM_MODE_FLAG_3D_SIDE_BY_SIDE_FULL: side-by-side full frames.
++	 *  - DRM_MODE_FLAG_3D_L_DEPTH: ?
++	 *  - DRM_MODE_FLAG_3D_L_DEPTH_GFX_GFX_DEPTH: ?
++	 *  - DRM_MODE_FLAG_3D_TOP_AND_BOTTOM: frame split into top and bottom
++	 *    parts.
++	 *  - DRM_MODE_FLAG_3D_SIDE_BY_SIDE_HALF: frame split into left and
++	 *    right parts.
++	 */
++	u32 flags;
++
++	/**
++	 * @crtc_clock:
++	 *
++	 * Actual pixel or dot clock in the hardware. This differs from the
++	 * logical @clock when e.g. using interlacing, double-clocking, stereo
++	 * modes or other fancy stuff that changes the timings and signals
++	 * actually sent over the wire.
++	 *
++	 * This is again in kHz.
++	 *
++	 * Note that with digital outputs like HDMI or DP there's usually a
++	 * massive confusion between the dot clock and the signal clock at the
++	 * bit encoding level. Especially when a 8b/10b encoding is used and the
++	 * difference is exactly a factor of 10.
++	 */
++	int crtc_clock;
++	u16 crtc_hdisplay;
++	u16 crtc_hblank_start;
++	u16 crtc_hblank_end;
++	u16 crtc_hsync_start;
++	u16 crtc_hsync_end;
++	u16 crtc_htotal;
++	u16 crtc_hskew;
++	u16 crtc_vdisplay;
++	u16 crtc_vblank_start;
++	u16 crtc_vblank_end;
++	u16 crtc_vsync_start;
++	u16 crtc_vsync_end;
++	u16 crtc_vtotal;
++
++	/**
++	 * @width_mm:
++	 *
++	 * Addressable size of the output in mm, projectors should set this to
++	 * 0.
++	 */
++	u16 width_mm;
++
++	/**
++	 * @height_mm:
++	 *
++	 * Addressable size of the output in mm, projectors should set this to
++	 * 0.
++	 */
++	u16 height_mm;
++
++	/**
++	 * @type:
++	 *
++	 * A bitmask of flags, mostly about the source of a mode. Possible flags
++	 * are:
++	 *
++	 *  - DRM_MODE_TYPE_PREFERRED: Preferred mode, usually the native
++	 *    resolution of an LCD panel. There should only be one preferred
++	 *    mode per connector at any given time.
++	 *  - DRM_MODE_TYPE_DRIVER: Mode created by the driver, which is all of
++	 *    them really. Drivers must set this bit for all modes they create
++	 *    and expose to userspace.
++	 *  - DRM_MODE_TYPE_USERDEF: Mode defined or selected via the kernel
++	 *    command line.
++	 *
++	 * Plus a big list of flags which shouldn't be used at all, but are
++	 * still around since these flags are also used in the userspace ABI.
++	 * We no longer accept modes with these types though:
++	 *
++	 *  - DRM_MODE_TYPE_BUILTIN: Meant for hard-coded modes, unused.
++	 *    Use DRM_MODE_TYPE_DRIVER instead.
++	 *  - DRM_MODE_TYPE_DEFAULT: Again a leftover, use
++	 *    DRM_MODE_TYPE_PREFERRED instead.
++	 *  - DRM_MODE_TYPE_CLOCK_C and DRM_MODE_TYPE_CRTC_C: Define leftovers
++	 *    which are stuck around for hysterical raisins only. No one has an
++	 *    idea what they were meant for. Don't use.
++	 */
++	u8 type;
++
++	/**
++	 * @expose_to_userspace:
++	 *
++	 * Indicates whether the mode is to be exposed to the userspace.
++	 * This is to maintain a set of exposed modes while preparing
++	 * user-mode's list in drm_mode_getconnector ioctl. The purpose of
++	 * this only lies in the ioctl function, and is not to be used
++	 * outside the function.
++	 */
++	bool expose_to_userspace;
++
++	/**
++	 * @head:
++	 *
++	 * struct list_head for mode lists.
++	 */
++	struct list_head head;
++
++	/**
++	 * @name:
++	 *
++	 * Human-readable name of the mode, filled out with drm_mode_set_name().
++	 */
++	char name[DRM_DISPLAY_MODE_LEN];
++
++	/**
++	 * @status:
++	 *
++	 * Status of the mode, used to filter out modes not supported by the
++	 * hardware. See enum &drm_mode_status.
++	 */
++	enum drm_mode_status status;
++};
++
++#endif /* __DRM_MODES_H__ */
+diff --git a/include/video/videomode.h b/include/video/videomode.h
+new file mode 100644
+index 0000000000..868fc3986d
+--- /dev/null
++++ b/include/video/videomode.h
+@@ -0,0 +1,40 @@
++#ifndef __INCLUDE_VIDEO_VIDEOMODE_H
++#define __INCLUDE_VIDEO_VIDEOMODE_H
++
++#include <fb.h>
++#include <video/drm/drm_modes.h>
++
++/*
++ * Subsystem independent description of a videomode.
++ * Can be generated from struct display_timing.
++ */
++struct videomode {
++	unsigned long pixelclock;	/* pixelclock in Hz */
++
++	u32 hactive;
++	u32 hfront_porch;
++	u32 hback_porch;
++	u32 hsync_len;
++
++	u32 vactive;
++	u32 vfront_porch;
++	u32 vback_porch;
++	u32 vsync_len;
++
++	enum display_flags flags; /* display flags */
++};
++
++void videomode_to_drm_display_mode(const struct videomode *vm,
++				   struct drm_display_mode *dmode);
++void drm_display_mode_to_videomode(const struct drm_display_mode *dmode,
++				   struct videomode *vm);
++int videomode_to_fb_videomode(const struct videomode *vm,
++			      struct fb_videomode *fbmode);
++void fb_videomode_to_videomode(const struct fb_videomode *fbmode,
++			       struct videomode *vm);
++void fb_videomode_to_drm_display_mode(const struct fb_videomode *fbmode,
++				      struct drm_display_mode *dmode);
++int drm_display_mode_to_fb_videomode(const struct drm_display_mode *dmode,
++				     struct fb_videomode *fbmode);
++
++#endif /* __INCLUDE_VIDEO_VIDEOMODE_H */
 
 -- 
 2.39.5
