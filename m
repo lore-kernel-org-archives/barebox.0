@@ -1,58 +1,58 @@
-Delivery-date: Fri, 27 Sep 2024 10:19:51 +0200
+Delivery-date: Fri, 27 Sep 2024 10:21:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1su6Cc-003Ka2-2Y
+	id 1su6EB-003KbE-0d
 	for lore@lore.pengutronix.de;
-	Fri, 27 Sep 2024 10:19:51 +0200
+	Fri, 27 Sep 2024 10:21:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1su6Cd-00005s-8I
-	for lore@pengutronix.de; Fri, 27 Sep 2024 10:19:51 +0200
+	id 1su6EB-0000pG-0G
+	for lore@pengutronix.de; Fri, 27 Sep 2024 10:21:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZlrODTqxK3Mdd3bP97s9cEskyYptzRLY2cNni9UbZTM=; b=0lYgVrJllNJwBjCKnyg53QrR/h
-	GbjxV9GehzTqbR6Pc51iS8fRcEsnOpQ2IVxUaNwzcIXr2RrJemdrNV7Sf1qZvxLJm2RrPy+TeXztq
-	hQs/oQia+WWue2KJqCFCEeoptgbNzKHNGiM/WS0SGv651hyxZyUMIyjbp07QLbMTeP4dzZNppR+9D
-	2QLr8z3POO8YVe1/1T0YwVMnhzccWXvTFMbxnwdLZ52ce2JgwYtZ2hGJVC3UkCMR3QG1STM1wmzfx
-	scndCp0fwONOICgYL0zGqL+WHNXiac1PqYhHpAyAm+P2lRwyHESt0YTeWLvW2HE+/H0focxpYpvIR
-	YwEtkTeg==;
+	bh=061iQQtORCf2AVMVi6JPC/MRCCXPyWlQOE0EKiO6Bi0=; b=EmwEah4cJYLUu8Q0mge1gHOTnv
+	v6kFrydNk4uXdlsJQEJXj281/sJqKtgnAOuSYZK3h2EFNxNVPoX6xQzZPveJpYb8LqtPlkukYCFOW
+	rH8Vt0pgECFilsErYZIDz3VQp5oFUtO6WbpTHvIzp4wMzQcOFBdPsNsF7YoaE70YLUToPMY/DsGb+
+	C3Hm6h6G/2+igjVMS0yo6e1geSDPDms8b1CsT2T7rz3xOXp38IOWehJpUzNTSd31748IAjhpvvtQk
+	sCmRcqM88oUxhImhmBysYFXVvZHVlJXVHVdSedHg8GMKJuBQvY/pfu/etR4n839zK69GU71yDpPm8
+	J9NpNQaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1su6C5-0000000ATby-3I94;
-	Fri, 27 Sep 2024 08:19:17 +0000
+	id 1su6Dg-0000000ATu4-1Bhg;
+	Fri, 27 Sep 2024 08:20:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1su6Ay-0000000ATNz-0hrh
+	id 1su6DO-0000000ATqs-1bh3
 	for barebox@lists.infradead.org;
-	Fri, 27 Sep 2024 08:18:10 +0000
+	Fri, 27 Sep 2024 08:20:40 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1su6Aw-0007lP-5e; Fri, 27 Sep 2024 10:18:06 +0200
-Message-ID: <92ac4a49-5086-4244-8d0e-d91af72c7ac3@pengutronix.de>
-Date: Fri, 27 Sep 2024 10:18:05 +0200
+	id 1su6DM-0000OW-Uh; Fri, 27 Sep 2024 10:20:37 +0200
+Message-ID: <a87cea41-c783-4d3d-a755-265ebcdfcffa@pengutronix.de>
+Date: Fri, 27 Sep 2024 10:20:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  Barebox List <barebox@lists.infradead.org>
 References: <20240913075924.1652866-1-s.hauer@pengutronix.de>
- <20240913075924.1652866-8-s.hauer@pengutronix.de>
+ <20240913075924.1652866-11-s.hauer@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240913075924.1652866-8-s.hauer@pengutronix.de>
+In-Reply-To: <20240913075924.1652866-11-s.hauer@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240927_011808_253956_511C450C 
-X-CRM114-Status: GOOD (  19.85  )
+X-CRM114-CacheID: sfid-20240927_012038_788340_BA74EE39 
+X-CRM114-Status: GOOD (  30.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,88 +74,471 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v4 07/16] keytoc: make key name hint optional
+Subject: Re: [PATCH v4 10/16] crypto: add public_key functions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 13.09.24 09:59, Sascha Hauer wrote:
-> The key name hint is used in barebox to find a key without iterating
-> over all keys, but it's not required. Make the key name hint optional
-> to keytoc.
+> Now that we have a struct public_key as a general container for keys
+> create and use functions making use of it. Move the list from struct
+> rsa_public_key to struct public_key, add public_key_verify() and use
+> it instead of rsa_verify(), move key_name_hint to struct public_key.
+> 
+> With this we do not need to bother the FIT image code when adding
+> support for ECDSA keys.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  scripts/keytoc.c | 31 ++++++++++++++++++++++---------
->  1 file changed, 22 insertions(+), 9 deletions(-)
+>  common/image-fit.c          | 20 ++++----
+>  crypto/public-keys.c        | 92 ++++++++++++++++++++++++++++++-------
+>  crypto/rsa.c                | 74 +++++++++--------------------
+>  include/crypto/public_key.h | 15 ++++++
+>  include/rsa.h               | 16 +------
+>  scripts/keytoc.c            |  3 +-
+>  6 files changed, 126 insertions(+), 94 deletions(-)
 > 
-> diff --git a/scripts/keytoc.c b/scripts/keytoc.c
-> index ecb33cbe47..85a7cd7319 100644
-> --- a/scripts/keytoc.c
-> +++ b/scripts/keytoc.c
-> @@ -9,6 +9,7 @@
->   *
->   */
->  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-> +#define _GNU_SOURCE
->  #include <stdio.h>
->  #include <string.h>
->  #include <time.h>
-> @@ -602,9 +603,9 @@ static int gen_key(const char *keyname, const char *path)
+> diff --git a/common/image-fit.c b/common/image-fit.c
+> index 4a69049abc..c5d2196bda 100644
+> --- a/common/image-fit.c
+> +++ b/common/image-fit.c
+> @@ -20,7 +20,7 @@
+>  #include <errno.h>
+>  #include <linux/err.h>
+>  #include <stringlist.h>
+> -#include <rsa.h>
+> +#include <crypto/public_key.h>
+>  #include <uncompress.h>
+>  #include <image-fit.h>
 >  
->  int main(int argc, char *argv[])
+> @@ -253,10 +253,10 @@ static struct digest *fit_alloc_digest(struct device_node *sig_node,
+>  	return digest;
+>  }
+>  
+> -static int fit_check_rsa_signature(struct device_node *sig_node,
+> -				   enum hash_algo algo, void *hash)
+> +static int fit_check_signature(struct device_node *sig_node,
+> +			       enum hash_algo algo, void *hash)
 >  {
-> -	char *path, *keyname;
->  	int i, opt, ret;
->  	char *outfile = NULL;
-> +	int keynum = 1;
+> -	const struct rsa_public_key *key;
+> +	const struct public_key *key;
+>  	const char *key_name = NULL;
+>  	int sig_len;
+>  	const char *sig_value;
+> @@ -270,19 +270,19 @@ static int fit_check_rsa_signature(struct device_node *sig_node,
 >  
->  	outfilep = stdout;
->  
-> @@ -652,21 +653,33 @@ int main(int argc, char *argv[])
+>  	of_property_read_string(sig_node, "key-name-hint", &key_name);
+>  	if (key_name) {
+> -		key = rsa_get_key(key_name);
+> +		key = public_key_get(key_name);
+>  		if (key) {
+> -			ret = rsa_verify(key, sig_value, sig_len, hash, algo);
+> +			ret = public_key_verify(key, sig_value, sig_len, hash, algo);
+>  			if (!ret)
+>  				goto ok;
+>  		}
 >  	}
 >  
->  	for (i = optind; i < argc; i++) {
-> -		keyname = argv[i];
-> +		char *keyspec = argv[i];
-> +		char *keyname = NULL;
-> +		char *path, *freep = NULL;
+> -	for_each_rsa_key(key) {
+> +	for_each_public_key(key) {
+>  		if (key_name && !strcmp(key->key_name_hint, key_name))
+>  			continue;
 >  
-> -		path = strchr(keyname, ':');
-> -		if (!path) {
-> -			fprintf(stderr,
-> -				"keys must be given as <key_name_hint>:<crt>\n");
-> -			exit(1);
-> +		if (!strncmp(keyspec, "pkcs11:", 7)) {
-> +			path = keyspec;
-> +		} else {
-> +			path = strchr(keyspec, ':');
-> +			if (path) {
-> +				*path = 0;
-> +				path++;
-> +				keyname = keyspec;
-> +			} else {
-> +				path = keyspec;
-> +			}
+> -		ret = rsa_verify(key, sig_value, sig_len, hash, algo);
+> +		ret = public_key_verify(key, sig_value, sig_len, hash, algo);
+>  		if (!ret)
+>  			goto ok;
+>  	}
+> @@ -341,7 +341,7 @@ static int fit_verify_signature(struct device_node *sig_node, const void *fit)
+>  	hash = xzalloc(digest_length(digest));
+>  	digest_final(digest, hash);
+>  
+> -	ret = fit_check_rsa_signature(sig_node, algo, hash);
+> +	ret = fit_check_signature(sig_node, algo, hash);
+>  	if (ret)
+>  		goto out_free_hash;
+>  
+> @@ -464,7 +464,7 @@ static int fit_image_verify_signature(struct fit_handle *handle,
+>  	hash = xzalloc(digest_length(digest));
+>  	digest_final(digest, hash);
+>  
+> -	ret = fit_check_rsa_signature(sig_node, algo, hash);
+> +	ret = fit_check_signature(sig_node, algo, hash);
+>  
+>  	free(hash);
+>  
+> diff --git a/crypto/public-keys.c b/crypto/public-keys.c
+> index a3ef3bafc8..36c308908d 100644
+> --- a/crypto/public-keys.c
+> +++ b/crypto/public-keys.c
+> @@ -2,31 +2,91 @@
+>  #include <crypto/public_key.h>
+>  #include <rsa.h>
+>  
+> +static LIST_HEAD(public_keys);
+> +
+> +const struct public_key *public_key_next(const struct public_key *prev)
+> +{
+> +	prev = list_prepare_entry(prev, &public_keys, list);
+> +	list_for_each_entry_continue(prev, &public_keys, list)
+> +		return prev;
+> +
+> +	return NULL;
+> +}
+> +
+> +const struct public_key *public_key_get(const char *name)
+> +{
+> +	const struct public_key *key;
+> +
+> +	list_for_each_entry(key, &public_keys, list) {
+> +		if (!strcmp(key->key_name_hint, name))
+> +			return key;
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +int public_key_add(struct public_key *key)
+> +{
+> +	if (public_key_get(key->key_name_hint))
+> +		return -EEXIST;
+> +
+> +	list_add_tail(&key->list, &public_keys);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct public_key *public_key_dup(const struct public_key *key)
+> +{
+> +	struct public_key *k = xzalloc(sizeof(*k));
+> +
+> +	k->type = key->type;
+> +	if (key->key_name_hint)
+> +		k->key_name_hint = xstrdup(key->key_name_hint);
+> +
+> +	switch (key->type) {
+> +	case PUBLIC_KEY_TYPE_RSA:
+> +		k->rsa = rsa_key_dup(key->rsa);
+> +		if (!k->rsa)
+> +			goto err;
+> +		break;
+> +	default:
+> +		goto err;
+> +	}
+> +
+> +	return k;
+> +err:
+> +	free(k->key_name_hint);
+> +	free(k);
+> +
+> +	return NULL;
+> +}
+> +
+> +int public_key_verify(const struct public_key *key, const uint8_t *sig,
+> +		      const uint32_t sig_len, const uint8_t *hash,
+> +		      enum hash_algo algo)
+> +{
+> +	switch (key->type) {
+> +	case PUBLIC_KEY_TYPE_RSA:
+> +		return rsa_verify(key->rsa, sig, sig_len, hash, algo);
+> +	}
+> +
+> +	return -ENOKEY;
+> +}
+> +
+>  extern const struct public_key * const __public_keys_start;
+>  extern const struct public_key * const __public_keys_end;
+>  
+>  static int init_public_keys(void)
+>  {
+>  	const struct public_key * const *iter;
+> -	int ret;
+>  
+>  	for (iter = &__public_keys_start; iter != &__public_keys_end; iter++) {
+> -		struct rsa_public_key *rsa_key;
+> -
+> -		switch ((*iter)->type) {
+> -		case PUBLIC_KEY_TYPE_RSA:
+> -			rsa_key = rsa_key_dup((*iter)->rsa);
+> -			if (!rsa_key)
+> -				continue;
+> -
+> -			ret = rsa_key_add(rsa_key);
+> -			if (ret)
+> -				pr_err("Cannot add rsa key: %pe\n", ERR_PTR(ret));
+> -			break;
+> -		default:
+> -			pr_err("Ignoring unknown key type %u\n", (*iter)->type);
+> -		}
+> +		struct public_key *key = public_key_dup(*iter);
+> +
+> +		if (!key)
+> +			continue;
+>  
+> +		public_key_add(key);
+>  	}
+>  
+>  	return 0;
+> diff --git a/crypto/rsa.c b/crypto/rsa.c
+> index 8eab07beed..969dbfb32b 100644
+> --- a/crypto/rsa.c
+> +++ b/crypto/rsa.c
+> @@ -15,6 +15,7 @@
+>  #include <asm/byteorder.h>
+>  #include <errno.h>
+>  #include <rsa.h>
+> +#include <crypto/public_key.h>
+>  #include <asm/unaligned.h>
+>  
+>  #define UINT64_MULT32(v, multby)  (((uint64_t)(v)) * ((uint32_t)(multby)))
+> @@ -380,105 +381,74 @@ static void rsa_convert_big_endian(uint32_t *dst, const uint32_t *src, int len)
+>  		dst[i] = fdt32_to_cpu(src[len - 1 - i]);
+>  }
+>  
+> -struct rsa_public_key *rsa_of_read_key(struct device_node *node)
+> +struct public_key *rsa_of_read_key(struct device_node *node)
+>  {
+>  	const void *modulus, *rr;
+>  	const uint64_t *public_exponent;
+>  	int length;
+> -	struct rsa_public_key *key;
+> +	struct public_key *key;
+> +	struct rsa_public_key *rsa;
+>  	int err;
+>  
+>  	if (strncmp(node->name, "key-", 4))
+>  		return ERR_PTR(-EINVAL);
+>  
+>  	key = xzalloc(sizeof(*key));
+> +	rsa = key->rsa = xzalloc(sizeof(*rsa));
+>  
+>  	key->key_name_hint = xstrdup(node->name + 4);
+>  
+> -	of_property_read_u32(node, "rsa,num-bits", &key->len);
+> -	of_property_read_u32(node, "rsa,n0-inverse", &key->n0inv);
+> +	of_property_read_u32(node, "rsa,num-bits", &rsa->len);
+> +	of_property_read_u32(node, "rsa,n0-inverse", &rsa->n0inv);
+>  
+>  	public_exponent = of_get_property(node, "rsa,exponent", &length);
+>  	if (!public_exponent || length < sizeof(*public_exponent))
+> -		key->exponent = RSA_DEFAULT_PUBEXP;
+> +		rsa->exponent = RSA_DEFAULT_PUBEXP;
+>  	else
+> -		key->exponent = fdt64_to_cpu(*public_exponent);
+> +		rsa->exponent = fdt64_to_cpu(*public_exponent);
+>  
+>  	modulus = of_get_property(node, "rsa,modulus", NULL);
+>  	rr = of_get_property(node, "rsa,r-squared", NULL);
+>  
+> -	if (!key->len || !modulus || !rr) {
+> +	if (!rsa->len || !modulus || !rr) {
+>  		pr_debug("%s: Missing RSA key info", __func__);
+>  		err = -EFAULT;
+>  		goto out;
+>  	}
+>  
+>  	/* Sanity check for stack size */
+> -	if (key->len > RSA_MAX_KEY_BITS || key->len < RSA_MIN_KEY_BITS) {
+> +	if (rsa->len > RSA_MAX_KEY_BITS || rsa->len < RSA_MIN_KEY_BITS) {
+>  		pr_debug("RSA key bits %u outside allowed range %d..%d\n",
+> -			 key->len, RSA_MIN_KEY_BITS, RSA_MAX_KEY_BITS);
+> +			 rsa->len, RSA_MIN_KEY_BITS, RSA_MAX_KEY_BITS);
+>  		err = -EFAULT;
+>  		goto out;
+>  	}
+>  
+> -	key->len /= sizeof(uint32_t) * 8;
+> +	rsa->len /= sizeof(uint32_t) * 8;
+>  
+> -	key->modulus = xzalloc(RSA_MAX_KEY_BITS / 8);
+> -	key->rr = xzalloc(RSA_MAX_KEY_BITS / 8);
+> +	rsa->modulus = xzalloc(RSA_MAX_KEY_BITS / 8);
+> +	rsa->rr = xzalloc(RSA_MAX_KEY_BITS / 8);
+>  
+> -	rsa_convert_big_endian(key->modulus, modulus, key->len);
+> -	rsa_convert_big_endian(key->rr, rr, key->len);
+> +	rsa_convert_big_endian(rsa->modulus, modulus, rsa->len);
+> +	rsa_convert_big_endian(rsa->rr, rr, rsa->len);
+>  
+>  	err = 0;
+>  out:
+> -	if (err)
+> +	if (err) {
+>  		free(key);
+> +		free(rsa);
+> +	}
+>  
+>  	return err ? ERR_PTR(err) : key;
+>  }
+>  
+>  void rsa_key_free(struct rsa_public_key *key)
+>  {
+> -	list_del(&key->list);
+> -
+>  	free(key->modulus);
+>  	free(key->rr);
+>  	free(key);
+>  }
+>  
+> -static LIST_HEAD(rsa_keys);
+> -
+> -const struct rsa_public_key *rsa_key_next(const struct rsa_public_key *prev)
+> -{
+> -	prev = list_prepare_entry(prev, &rsa_keys, list);
+> -	list_for_each_entry_continue(prev, &rsa_keys, list)
+> -		return prev;
+> -
+> -	return NULL;
+> -}
+> -
+> -const struct rsa_public_key *rsa_get_key(const char *name)
+> -{
+> -	const struct rsa_public_key *key;
+> -
+> -	list_for_each_entry(key, &rsa_keys, list) {
+> -		if (!strcmp(key->key_name_hint, name))
+> -			return key;
+> -	}
+> -
+> -	return NULL;
+> -}
+> -
+> -int rsa_key_add(struct rsa_public_key *key)
+> -{
+> -	if (rsa_get_key(key->key_name_hint))
+> -		return -EEXIST;
+> -
+> -	list_add_tail(&key->list, &rsa_keys);
+> -
+> -	return 0;
+> -}
+> -
+>  struct rsa_public_key *rsa_key_dup(const struct rsa_public_key *key)
+>  {
+>  	struct rsa_public_key *new;
+> @@ -493,7 +463,7 @@ struct rsa_public_key *rsa_key_dup(const struct rsa_public_key *key)
+>  static void rsa_init_keys_of(void)
+>  {
+>  	struct device_node *sigs, *sig;
+> -	struct rsa_public_key *key;
+> +	struct public_key *key;
+>  	int ret;
+>  
+>  	if (!IS_ENABLED(CONFIG_OFTREE))
+> @@ -511,7 +481,7 @@ static void rsa_init_keys_of(void)
+>  			continue;
 >  		}
 >  
-> -		*path = 0;
-> -		path++;
-> +		if (!keyname) {
-> +			asprintf(&freep, "key_%d", keynum++);
-> +			keyname = freep;
-> +		}
->  
->  		ret = gen_key(keyname, path);
+> -		ret = rsa_key_add(key);
+> +		ret = public_key_add(key);
 >  		if (ret)
->  			exit(1);
-> +
-> +		free(freep);
->  	}
+>  			pr_err("Cannot add rsa key %s: %s\n",
+>  				key->key_name_hint, strerror(-ret));
+> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+> index 83e8401aed..1b91063042 100644
+> --- a/include/crypto/public_key.h
+> +++ b/include/crypto/public_key.h
+> @@ -1,6 +1,8 @@
+>  #ifndef __CRYPTO_PUBLIC_KEY_H
+>  #define __CRYPTO_PUBLIC_KEY_H
 >  
->  	if (dts) {
+> +#include <digest.h>
+> +
+>  struct rsa_public_key;
+>  struct ecdsa_public_key;
+>  
+> @@ -10,6 +12,8 @@ enum pulic_key_type {
+>  
+>  struct public_key {
+>  	enum pulic_key_type type;
+> +	struct list_head list;
+> +	char *key_name_hint;
+>  
+>  	union {
+>  		struct rsa_public_key *rsa;
+> @@ -17,4 +21,15 @@ struct public_key {
+>  	};
+>  };
+>  
+> +int public_key_add(struct public_key *key);
+> +const struct public_key *public_key_get(const char *name);
+> +const struct public_key *public_key_next(const struct public_key *prev);
+> +
+> +#define for_each_public_key(key) \
+> +		for (key = public_key_next(NULL); key; key = public_key_next(key))
+> +
+> +int public_key_verify(const struct public_key *key, const uint8_t *sig,
+> +		      const uint32_t sig_len, const uint8_t *hash,
+> +		      enum hash_algo algo);
+> +
+>  #endif /* __CRYPTO_PUBLIC_KEY_H */
+> diff --git a/include/rsa.h b/include/rsa.h
+> index ecb2f42957..ef03a925b8 100644
+> --- a/include/rsa.h
+> +++ b/include/rsa.h
+> @@ -29,8 +29,6 @@ struct rsa_public_key {
+>  	uint32_t *modulus;	/* modulus as little endian array */
+>  	uint32_t *rr;		/* R^2 as little endian array */
+>  	uint64_t exponent;	/* public exponent */
+> -	char *key_name_hint;
+> -	struct list_head list;
+>  };
+>  
+>  /**
+> @@ -54,24 +52,12 @@ int rsa_verify(const struct rsa_public_key *key, const uint8_t *sig,
+>  
+>  struct device_node;
+>  
+> -struct rsa_public_key *rsa_of_read_key(struct device_node *node);
+> +struct public_key *rsa_of_read_key(struct device_node *node);
+>  void rsa_key_free(struct rsa_public_key *key);
+> -const struct rsa_public_key *rsa_get_key(const char *name);
+> -
+> -const struct rsa_public_key *rsa_key_next(const struct rsa_public_key *prev);
+> -
+> -#define for_each_rsa_key(key) \
+> -		for (key = rsa_key_next(NULL); key; key = rsa_key_next(key))
+>  
+>  #ifdef CONFIG_CRYPTO_RSA
+> -int rsa_key_add(struct rsa_public_key *key);
+>  struct rsa_public_key *rsa_key_dup(const struct rsa_public_key *key);
+>  #else
+> -static inline int rsa_key_add(struct rsa_public_key *key)
+> -{
+> -	return -ENOSYS;
+> -}
+> -
+>  static inline struct rsa_public_key *rsa_key_dup(const struct rsa_public_key *key);
+>  {
+>  	return NULL;
+> diff --git a/scripts/keytoc.c b/scripts/keytoc.c
+> index e66c5989bf..8b29118c95 100644
+> --- a/scripts/keytoc.c
+> +++ b/scripts/keytoc.c
+> @@ -491,6 +491,7 @@ static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *key_na
+>  		if (!standalone) {
+>  			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", key_name_c);
+>  			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_ECDSA,\n");
+> +			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
+>  			fprintf(outfilep, "\t.ecdsa = &%s,\n", key_name_c);
+>  			fprintf(outfilep, "};");
+>  			fprintf(outfilep, "\nstruct public_key *%s_ecdsa_p __attribute__((section(\".public_keys.rodata.%s\"))) = &%s_public_key;\n",
+> @@ -551,12 +552,12 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *key_name
+>  		fprintf(outfilep, "\t.modulus = %s_modulus,\n", key_name_c);
+>  		fprintf(outfilep, "\t.rr = %s_rr,\n", key_name_c);
+>  		fprintf(outfilep, "\t.exponent = 0x%0lx,\n", exponent);
+> -		fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
+>  		fprintf(outfilep, "};\n");
+>  
+>  		if (!standalone) {
+>  			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", key_name_c);
+>  			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_RSA,\n");
+> +			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
+>  			fprintf(outfilep, "\t.rsa = &%s,\n", key_name_c);
+>  			fprintf(outfilep, "};");
+>  			fprintf(outfilep, "\nstruct public_key *%sp __attribute__((section(\".public_keys.rodata.%s\"))) = &%s_public_key;\n",
 
 
 -- 
