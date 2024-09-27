@@ -1,88 +1,85 @@
-Delivery-date: Fri, 27 Sep 2024 12:44:05 +0200
+Delivery-date: Fri, 27 Sep 2024 12:44:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1su8SC-003N7Q-1P
+	id 1su8SN-003N7p-21
 	for lore@lore.pengutronix.de;
-	Fri, 27 Sep 2024 12:44:05 +0200
+	Fri, 27 Sep 2024 12:44:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1su8Rm-0006Cd-Ht
-	for lore@pengutronix.de; Fri, 27 Sep 2024 12:44:05 +0200
+	id 1su8Rv-0006Ih-4h
+	for lore@pengutronix.de; Fri, 27 Sep 2024 12:44:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0O7B7eaJJX9WJsMH7vIwqlJsdEwxKGgFWRcIWXcJfjA=; b=PMlVWUyVFRIxhK4/pI0StGAkCS
-	xrq/tK6kb+wUfJy+OPvCGYGFoa6SReZd/IKnEm6JN4O1N02k+4/q52vQWqXrlTI4QXjmCP7PT+0xX
-	+UnLQih8qya4p9wIbAENIen7bGPUansEXJ9StBzRLOXfgaZfGAKc8zMlRXY40tin4yd9zIB51lwMI
-	WY8YQOLpjlxAe8Z0EiG0ZnknZdmsS65DbeTJ85In8Fs67cRHFNu8eeSjxguxFcZrjVNbsyULVdtDW
-	lVmW+5L6u/69YhHRx/o7A81iU8aexqXY5FP8LI4AbopVCfg63QEthoZCim0LACEkU5oOYs8Tn/W+4
-	NqieWDdg==;
+	bh=ZBwGkp86SaJU1KBkC7NKwTFhYlK4X3y/GNUD+eFRoH4=; b=LcJkAiQeHa54i8Z/obLnarqqPM
+	sFhAbyQ2TQssParyYtVEuCtrc+WxrmXBQZbeoAT8s4YLkC4woQW7DiGZ3ABFIIsibyeJsJQRk31nv
+	w4AfImfd8HgSOSo7PlhyYHN/OZ8zAJFecOQqs8DV2t8cc4/0SOeBZaXWcUIaM/Z0O6who+tf1PSra
+	tjgi1pCuzJtE0RLAdb7St4Y9HNrc0UDXmqWXQHQ3l56cSh6zutbxAxNwSaMPJfXaIIVbSrFsPQQtH
+	XZ/Fzjaioee2lTaMIIEyMczOAZUYEDdRHzpRJQeC7cmHtAefB+xJduvepOI8um5siKhXIXwmxWMVr
+	kZGhdsPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1su8QF-0000000Aqkf-0OxK;
+	id 1su8QF-0000000Aql6-3yH4;
 	Fri, 27 Sep 2024 10:42:03 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1su8M9-0000000Aq0l-3DUd
+	id 1su8MG-0000000Aq1i-1WH0
 	for barebox@bombadil.infradead.org;
-	Fri, 27 Sep 2024 10:37:50 +0000
+	Fri, 27 Sep 2024 10:37:56 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=0O7B7eaJJX9WJsMH7vIwqlJsdEwxKGgFWRcIWXcJfjA=; b=GKcMKWEHjezmz6laUr64jDNK06
-	PZx8RH60UMawzA0gr7TdAKaHRCZ7uI+y7ZW4ByvWsiz+1YP2TMYXS9o2UHqXeZW3PKgR9fzeRBZMx
-	41rGTSswqpk/3ve4ALCyIsQhMo91giOpCOAI+WlNEPdxb6UCu9FoJjlN7TElc9WrcOORV6HerNqX7
-	nrnKYIRc+WKSJs90B7bmo0iiItjOfWAjs+0Qh4nBEYS52WZYSW72iB45+JUyKptt579yU5/Hw6aem
-	6Ovt76r/p0ro8e4bgGbb8p/g/gv9ylp1007gzGhLnvAvScaN17roe0UJEXHQ6lQKAmAr/mYaYnezM
-	k8EtoJrA==;
+	bh=ZBwGkp86SaJU1KBkC7NKwTFhYlK4X3y/GNUD+eFRoH4=; b=V+URbIqQGN1JrHCONhN+gaPTBw
+	6iPgB+EsReivqvRWtrr/kltyRiFQaA1dI9WPKuOnC53tuKbzt03zipXNu0otZbohiLrZ63ejMaiJC
+	QWXRsx9+qBujf8L9GLrPRQQu0/5ZzAth3+HOIJTBKlEZiPJGovtUEgGVD3Wam3Lp1a98tVEOGvATM
+	GKkiPt23kkjVIve4bH0gK8CUpMtZY0a5W3GGzno2TmM0p1Wozk8RWhPhEK0UQ47c56Y71UsaXtNdh
+	TvILwNY84Kqf2YRXBoJJO1fk3kDUPGM3zZ9T+zOmkGYo6mgtLUaSvjd3TXQhK4llX6FzqK7NgGKr2
+	YNAN5VLg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1su8M4-00000002KZO-0wjt
+	id 1su8MC-00000002KaJ-1Ga0
 	for barebox@lists.infradead.org;
-	Fri, 27 Sep 2024 10:37:48 +0000
+	Fri, 27 Sep 2024 10:37:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1su8Lv-0002d5-Py; Fri, 27 Sep 2024 12:37:35 +0200
+	id 1su8Lv-0002d1-P9; Fri, 27 Sep 2024 12:37:35 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1su8Lv-001tz5-2e; Fri, 27 Sep 2024 12:37:35 +0200
+	id 1su8Lv-001tz4-33; Fri, 27 Sep 2024 12:37:35 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1su8Lv-000PJg-1S;
+	id 1su8Lv-000PJg-1R;
 	Fri, 27 Sep 2024 12:37:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Sep 2024 12:37:42 +0200
+Date: Fri, 27 Sep 2024 12:37:41 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240927-vop2-v2-9-dc8dcfc651d5@pengutronix.de>
+Message-Id: <20240927-vop2-v2-8-dc8dcfc651d5@pengutronix.de>
 References: <20240927-vop2-v2-0-dc8dcfc651d5@pengutronix.de>
 In-Reply-To: <20240927-vop2-v2-0-dc8dcfc651d5@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727433454; l=93827;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727433454; l=145044;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=F1BzYVpSzQOOfIK0aJvFV1R3G6y6F7J3bxy6rWf5zcE=;
- b=AZQxjeJVpb4lDlg+xHfXqCNSwFfqC+qiDP2LreWF8aG6tBkTAPIIdSFcRubWQ86hzYv9QRevw
- bEoDcIt3SlDDIj5pD9uSqhQhQFdRanu2RqohmtqnGIug1g9RsMVVPuf
+ bh=EFv4zUrcXIpm/qUdlM7RgsPoRtZnybDAXKIrrWMSJ0g=;
+ b=65XGJBXpMwWodqCxU6FE6Mh7RXC3m0YU5XLM8bja4QvXOdbytghc69kvVNxQXyNTZRIBXn1o9
+ pe1kZ4jGXraC7GQsmPdjqArGnqPNAmB0o//PyLUqRxsLuB82VKnOoRA
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240927_113745_478844_3C8E68B8 
-X-CRM114-Status: GOOD (  25.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -104,173 +101,325 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 09/15] video: i.MX ipuv3: switch to upstream hdmi driver
+Subject: [PATCH v2 08/15] video: add dw-hdmi driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Linux dw-hdmi driver is based on a driver which originally was
-written specifically for the i.MX and was converted later to a generic
-dw-hdmi driver. The barebox driver is still based on the original Linux
-driver. We just merged the dw-hdmi driver. With this patch we now get
-rid of the i.MX specific driver and use the generic one.
+This adds the Designware HDMI driver from Linux-6.10. The code is directly
+taken from Linux with the necessary adjustments for the barebox API.
+Audio support has been removed.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx-ipu-v3/Kconfig       |    3 +-
- drivers/video/imx-ipu-v3/Makefile      |    2 +-
- drivers/video/imx-ipu-v3/dw_hdmi-imx.c |  223 ++++++
- drivers/video/imx-ipu-v3/imx-hdmi.c    | 1360 --------------------------------
- drivers/video/imx-ipu-v3/imx-hdmi.h    | 1029 ------------------------
- 5 files changed, 226 insertions(+), 2391 deletions(-)
+ drivers/video/Kconfig   |    9 +
+ drivers/video/Makefile  |    1 +
+ drivers/video/dw-hdmi.c | 2286 +++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/video/dw-hdmi.h | 1168 ++++++++++++++++++++++++
+ include/linux/hdmi.h    |  445 +++++++++
+ include/video/dw_hdmi.h |  203 +++++
+ 6 files changed, 4112 insertions(+)
 
-diff --git a/drivers/video/imx-ipu-v3/Kconfig b/drivers/video/imx-ipu-v3/Kconfig
-index 4429e815cd..fb65f8a85e 100644
---- a/drivers/video/imx-ipu-v3/Kconfig
-+++ b/drivers/video/imx-ipu-v3/Kconfig
-@@ -15,7 +15,8 @@ config DRIVER_VIDEO_IMX_IPUV3_LVDS
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index e86f511da4..588f0cfde5 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -206,4 +206,13 @@ config DRIVER_VIDEO_PANEL_MIPI_DBI
+           firmware file. For more information see
+           https://github.com/notro/panel-mipi-dbi/wiki.
  
- config DRIVER_VIDEO_IMX_IPUV3_HDMI
- 	bool "IPUv3 HDMI support"
--	depends on DRIVER_VIDEO_EDID
-+	select DRIVER_VIDEO_EDID
-+	select DRIVER_VIDEO_DW_HDMI
- 	select OFDEVICE
- 
- config DRIVER_VIDEO_IMX_IPUV3_PARALLEL
-diff --git a/drivers/video/imx-ipu-v3/Makefile b/drivers/video/imx-ipu-v3/Makefile
-index 709a9203a3..67a3f35603 100644
---- a/drivers/video/imx-ipu-v3/Makefile
-+++ b/drivers/video/imx-ipu-v3/Makefile
-@@ -3,5 +3,5 @@ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += ipu-common.o ipu-dmfc.o ipu-di.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += ipu-dp.o ipuv3-plane.o ipufb.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += ipu-dc.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3_LVDS) += imx-ldb.o
--obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3_HDMI) += imx-hdmi.o
-+obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3_HDMI) += dw_hdmi-imx.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3_PARALLEL) += imx-pd.o
-diff --git a/drivers/video/imx-ipu-v3/dw_hdmi-imx.c b/drivers/video/imx-ipu-v3/dw_hdmi-imx.c
++config DRIVER_VIDEO_DW_HDMI
++	tristate "Designware HDMI support"
++	select VIDEO_VPL
++	select OFTREE
++	help
++	  Say Y here if you want to enable support for the Designware HDMI
++	  controller. To make use of this driver you need platform specific
++	  glue code to be selected as well.
++
+ endif
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 37a184a7e2..fd1da2a864 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -31,4 +31,5 @@ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
+ obj-$(CONFIG_DRIVER_VIDEO_EFI_GOP) += efi_gop.o
+ obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
+ obj-$(CONFIG_BACKLIGHT_RAVE_SP)	+= rave-sp-backlight.o
++obj-$(CONFIG_DRIVER_VIDEO_DW_HDMI) += dw-hdmi.o
+ obj-$(CONFIG_DRIVER_VIDEO_BOCHS) += bochs/
+diff --git a/drivers/video/dw-hdmi.c b/drivers/video/dw-hdmi.c
 new file mode 100644
-index 0000000000..b2a32c406c
+index 0000000000..2e9f21332c
 --- /dev/null
-+++ b/drivers/video/imx-ipu-v3/dw_hdmi-imx.c
-@@ -0,0 +1,223 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2011-2013 Freescale Semiconductor, Inc.
++++ b/drivers/video/dw-hdmi.c
+@@ -0,0 +1,2286 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * DesignWare High-Definition Multimedia Interface (HDMI) driver
 + *
-+ * derived from imx-hdmi.c(renamed to bridge/dw_hdmi.c now)
++ * Copyright (C) 2013-2015 Mentor Graphics Inc.
++ * Copyright (C) 2011-2013 Freescale Semiconductor, Inc.
++ * Copyright (C) 2010, Guennadi Liakhovetski <g.liakhovetski@gmx.de>
 + */
 +#include <linux/clk.h>
-+#include <driver.h>
-+#include <mfd/syscon.h>
-+#include <regulator.h>
-+#include <linux/bits.h>
++#include <linux/err.h>
++#include <linux/hdmi.h>
++#include <i2c/i2c.h>
++#include <of.h>
 +#include <linux/regmap.h>
 +#include <video/dw_hdmi.h>
-+#include <linux/phy/phy.h>
-+#include <linux/math.h>
 +#include <video/drm/drm_connector.h>
-+#include <video/drm/drm_modes.h>
-+#include <fb.h>
 +#include <video/media-bus-format.h>
-+#include <mfd/imx6q-iomuxc-gpr.h>
++#include <fb.h>
++#include <gpio.h>
++#include <of_gpio.h>
++#include <video/vpl.h>
++#include <video/videomode.h>
++#include <linux/pinctrl/consumer.h>
 +
-+#include "imx-ipu-v3.h"
++#include "dw-hdmi.h"
 +
-+struct imx_hdmi {
++#define V4L2_YCBCR_ENC_601 1
++#define V4L2_YCBCR_ENC_709 2
++#define V4L2_YCBCR_ENC_DEFAULT 0
++
++#define DDC_CI_ADDR		0x37
++#define DDC_SEGMENT_ADDR	0x30
++
++#define HDMI_EDID_LEN		512
++
++/* DW-HDMI Controller >= 0x200a are at least compliant with SCDC version 1 */
++#define SCDC_MIN_SOURCE_VERSION	0x1
++
++#define HDMI14_MAX_TMDSCLK	340000000
++
++static const u16 csc_coeff_default[3][4] = {
++	{ 0x2000, 0x0000, 0x0000, 0x0000 },
++	{ 0x0000, 0x2000, 0x0000, 0x0000 },
++	{ 0x0000, 0x0000, 0x2000, 0x0000 }
++};
++
++static const u16 csc_coeff_rgb_out_eitu601[3][4] = {
++	{ 0x2000, 0x6926, 0x74fd, 0x010e },
++	{ 0x2000, 0x2cdd, 0x0000, 0x7e9a },
++	{ 0x2000, 0x0000, 0x38b4, 0x7e3b }
++};
++
++static const u16 csc_coeff_rgb_out_eitu709[3][4] = {
++	{ 0x2000, 0x7106, 0x7a02, 0x00a7 },
++	{ 0x2000, 0x3264, 0x0000, 0x7e6d },
++	{ 0x2000, 0x0000, 0x3b61, 0x7e25 }
++};
++
++static const u16 csc_coeff_rgb_in_eitu601[3][4] = {
++	{ 0x2591, 0x1322, 0x074b, 0x0000 },
++	{ 0x6535, 0x2000, 0x7acc, 0x0200 },
++	{ 0x6acd, 0x7534, 0x2000, 0x0200 }
++};
++
++static const u16 csc_coeff_rgb_in_eitu709[3][4] = {
++	{ 0x2dc5, 0x0d9b, 0x049e, 0x0000 },
++	{ 0x62f0, 0x2000, 0x7d11, 0x0200 },
++	{ 0x6756, 0x78ab, 0x2000, 0x0200 }
++};
++
++static const u16 csc_coeff_rgb_full_to_rgb_limited[3][4] = {
++	{ 0x1b7c, 0x0000, 0x0000, 0x0020 },
++	{ 0x0000, 0x1b7c, 0x0000, 0x0020 },
++	{ 0x0000, 0x0000, 0x1b7c, 0x0020 }
++};
++
++struct hdmi_vmode {
++	bool mdataenablepolarity;
++
++	unsigned int mpixelclock;
++	unsigned int mpixelrepetitioninput;
++	unsigned int mpixelrepetitionoutput;
++	unsigned int mtmdsclock;
++};
++
++struct hdmi_data_info {
++	unsigned int enc_in_bus_format;
++	unsigned int enc_out_bus_format;
++	unsigned int enc_in_encoding;
++	unsigned int enc_out_encoding;
++	unsigned int pix_repet_factor;
++	unsigned int hdcp_enable;
++	struct hdmi_vmode video_mode;
++	bool rgb_limited_range;
++};
++
++struct dw_hdmi;
++
++struct dw_hdmi_i2c {
++	struct i2c_adapter	adap;
++
++	u8			stat;
++
++	u8			slave_reg;
++	bool			is_regaddr;
++	bool			is_segment;
++
++	struct dw_hdmi		*hdmi;
++	struct i2c_bus_recovery_info rinfo;
++};
++
++struct dw_hdmi_phy_data {
++	enum dw_hdmi_phy_type type;
++	const char *name;
++	unsigned int gen;
++	bool has_svsret;
++	int (*configure)(struct dw_hdmi *hdmi,
++			 const struct dw_hdmi_plat_data *pdata,
++			 unsigned long mpixelclock);
++};
++
++struct dw_hdmi {
++	struct drm_bridge *next_bridge;
++
++	unsigned int version;
++
 +	struct device *dev;
-+	struct dw_hdmi *hdmi;
-+	struct regmap *regmap;
++	struct clk *isfr_clk;
++	struct clk *iahb_clk;
++	struct clk *cec_clk;
++	struct dw_hdmi_i2c *i2c;
++
++	struct hdmi_data_info hdmi_data;
++	const struct dw_hdmi_plat_data *plat_data;
++
++	int vic;
++
++	u8 edid[HDMI_EDID_LEN];
++
++	struct {
++		const struct dw_hdmi_phy_ops *ops;
++		const char *name;
++		void *data;
++		bool enabled;
++	} phy;
++
++	struct drm_display_mode previous_mode;
++
++	struct device_node *ddc_node;;
++
++	void __iomem *regs;
++	bool sink_is_hdmi;
++	bool sink_has_audio;
++
++	struct pinctrl *pinctrl;
++	struct pinctrl_state *default_state;
++	struct pinctrl_state *unwedge_state;
++
++	enum drm_connector_force force;	/* mutex-protected force state */
++	bool disabled;			/* DRM has disabled our bridge */
++	bool rxsense;			/* rxsense state */
++	u8 phy_mask;			/* desired phy int mask settings */
++	u8 mc_clkdis;			/* clock disable register */
++
++	unsigned int sample_non_pcm;
++	unsigned int sample_width;
++	unsigned int sample_rate;
++	unsigned int channels;
++	unsigned int audio_cts;
++	unsigned int audio_n;
++	bool audio_enable;
++
++	unsigned int reg_shift;
++	struct regmap *regm;
++
++	struct cec_notifier *cec_notifier;
++
++	struct device *codec_dev;
++	enum drm_connector_status last_connector_result;
++
++	struct vpl vpl;
++	struct fb_videomode *mode;
 +};
 +
-+static const struct dw_hdmi_mpll_config imx_mpll_cfg[] = {
-+	{
-+		45250000, {
-+			{ 0x01e0, 0x0000 },
-+			{ 0x21e1, 0x0000 },
-+			{ 0x41e2, 0x0000 }
-+		},
-+	}, {
-+		92500000, {
-+			{ 0x0140, 0x0005 },
-+			{ 0x2141, 0x0005 },
-+			{ 0x4142, 0x0005 },
-+	},
-+	}, {
-+		148500000, {
-+			{ 0x00a0, 0x000a },
-+			{ 0x20a1, 0x000a },
-+			{ 0x40a2, 0x000a },
-+		},
-+	}, {
-+		216000000, {
-+			{ 0x00a0, 0x000a },
-+			{ 0x2001, 0x000f },
-+			{ 0x4002, 0x000f },
-+		},
-+	}, {
-+		~0UL, {
-+			{ 0x0000, 0x0000 },
-+			{ 0x0000, 0x0000 },
-+			{ 0x0000, 0x0000 },
-+		},
-+	}
-+};
++#define HDMI_IH_PHY_STAT0_RX_SENSE \
++	(HDMI_IH_PHY_STAT0_RX_SENSE0 | HDMI_IH_PHY_STAT0_RX_SENSE1 | \
++	 HDMI_IH_PHY_STAT0_RX_SENSE2 | HDMI_IH_PHY_STAT0_RX_SENSE3)
 +
-+static const struct dw_hdmi_curr_ctrl imx_cur_ctr[] = {
-+	/*      pixelclk     bpp8    bpp10   bpp12 */
-+	{
-+		54000000, { 0x091c, 0x091c, 0x06dc },
-+	}, {
-+		58400000, { 0x091c, 0x06dc, 0x06dc },
-+	}, {
-+		72000000, { 0x06dc, 0x06dc, 0x091c },
-+	}, {
-+		74250000, { 0x06dc, 0x0b5c, 0x091c },
-+	}, {
-+		118800000, { 0x091c, 0x091c, 0x06dc },
-+	}, {
-+		216000000, { 0x06dc, 0x0b5c, 0x091c },
-+	}, {
-+		~0UL, { 0x0000, 0x0000, 0x0000 },
-+	},
-+};
++#define HDMI_PHY_RX_SENSE \
++	(HDMI_PHY_RX_SENSE0 | HDMI_PHY_RX_SENSE1 | \
++	 HDMI_PHY_RX_SENSE2 | HDMI_PHY_RX_SENSE3)
 +
-+/*
-+ * Resistance term 133Ohm Cfg
-+ * PREEMP config 0.00
-+ * TX/CK level 10
-+ */
-+static const struct dw_hdmi_phy_config imx_phy_config[] = {
-+	/*pixelclk   symbol   term   vlev */
-+	{ 216000000, 0x800d, 0x0005, 0x01ad},
-+	{ ~0UL,      0x0000, 0x0000, 0x0000}
-+};
-+
-+#define IMX6Q_GPR3_HDMI_MUX_CTL_SHIFT		2
-+#define IMX6Q_GPR3_HDMI_MUX_CTL_MASK		(0x3 << 2)
-+
-+static void dw_hdmi_set_ipu_di_mux(struct imx_hdmi *hdmi, int ipu_di)
++static inline void hdmi_writeb(struct dw_hdmi *hdmi, u8 val, int offset)
 +{
-+	regmap_update_bits(hdmi->regmap, IOMUXC_GPR3,
-+			   IMX6Q_GPR3_HDMI_MUX_CTL_MASK,
-+			   ipu_di << IMX6Q_GPR3_HDMI_MUX_CTL_SHIFT);
++	regmap_write(hdmi->regm, offset << hdmi->reg_shift, val);
 +}
 +
-+static int dw_hdmi_imx_vpl_ioctl(struct dw_hdmi *unused, void *data,
-+				 unsigned int port, unsigned int cmd, void *cmddata)
++static inline u8 hdmi_readb(struct dw_hdmi *hdmi, int offset)
 +{
-+	struct imx_hdmi *hdmi = data;
-+	struct ipu_di_mode *mode;
++	unsigned int val = 0;
 +
-+	switch (cmd) {
-+	case VPL_PREPARE:
-+		dw_hdmi_set_ipu_di_mux(hdmi, port);
-+		return 0;
-+	case IMX_IPU_VPL_DI_MODE:
-+		mode = cmddata;
++	regmap_read(hdmi->regm, offset << hdmi->reg_shift, &val);
 +
-+		mode->di_clkflags = IPU_DI_CLKMODE_EXT | IPU_DI_CLKMODE_SYNC;
-+		mode->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++	return val;
++}
++
++static void handle_plugged_change(struct dw_hdmi *hdmi, bool plugged)
++{
++}
++
++static void hdmi_modb(struct dw_hdmi *hdmi, u8 data, u8 mask, unsigned reg)
++{
++	regmap_update_bits(hdmi->regm, reg << hdmi->reg_shift, mask, data);
++}
++
++static void hdmi_mask_writeb(struct dw_hdmi *hdmi, u8 data, unsigned int reg,
++			     u8 shift, u8 mask)
++{
++	hdmi_modb(hdmi, data << shift, mask, reg);
++}
++
++static void dw_hdmi_i2c_init(struct dw_hdmi *hdmi)
++{
++	hdmi_writeb(hdmi, HDMI_PHY_I2CM_INT_ADDR_DONE_POL,
++		    HDMI_PHY_I2CM_INT_ADDR);
++
++	hdmi_writeb(hdmi, HDMI_PHY_I2CM_CTLINT_ADDR_NAC_POL |
++		    HDMI_PHY_I2CM_CTLINT_ADDR_ARBITRATION_POL,
++		    HDMI_PHY_I2CM_CTLINT_ADDR);
++
++	/* Software reset */
++	hdmi_writeb(hdmi, 0x00, HDMI_I2CM_SOFTRSTZ);
++
++	/* Set Standard Mode speed (determined to be 100KHz on iMX6) */
++	hdmi_writeb(hdmi, 0x00, HDMI_I2CM_DIV);
++
++	/* Set done, not acknowledged and arbitration interrupt polarities */
++	hdmi_writeb(hdmi, HDMI_I2CM_INT_DONE_POL, HDMI_I2CM_INT);
++	hdmi_writeb(hdmi, HDMI_I2CM_CTLINT_NAC_POL | HDMI_I2CM_CTLINT_ARB_POL,
++		    HDMI_I2CM_CTLINT);
++
++	/* Clear DONE and ERROR interrupts */
++	hdmi_writeb(hdmi, HDMI_IH_I2CM_STAT0_ERROR | HDMI_IH_I2CM_STAT0_DONE,
++		    HDMI_IH_I2CM_STAT0);
++
++	/* Mute DONE and ERROR interrupts */
++	hdmi_writeb(hdmi, HDMI_IH_I2CM_STAT0_ERROR | HDMI_IH_I2CM_STAT0_DONE,
++		    HDMI_IH_MUTE_I2CM_STAT0);
++}
++
++static int dw_hdmi_i2c_wait(struct dw_hdmi *hdmi)
++{
++	unsigned int stat;
++	uint64_t start = get_time_ns();
++
++	while (1) {
++		if (is_timeout(start, 100 * MSECOND))
++			return -ETIMEDOUT;
++
++		stat = hdmi_readb(hdmi, HDMI_IH_I2CM_STAT0);
++		if (!stat)
++			continue;
++		hdmi_writeb(hdmi, stat, HDMI_IH_I2CM_STAT0);
++
++		/* Check for error condition on the bus */
++		if (stat & HDMI_IH_I2CM_STAT0_ERROR)
++			return -EIO;
 +
 +		return 0;
 +	}
@@ -278,2506 +427,3852 @@ index 0000000000..b2a32c406c
 +	return 0;
 +}
 +
-+static bool
-+imx6q_hdmi_mode_valid(struct dw_hdmi *hdmi, void *data,
-+		      const struct drm_display_info *info,
-+		      const struct drm_display_mode *mode)
++static int dw_hdmi_i2c_read(struct dw_hdmi *hdmi,
++			    unsigned char *buf, unsigned int length)
 +{
-+	if (mode->clock < 13500)
-+		return false;
-+	/* FIXME: Hardware is capable of 266MHz, but setup data is missing. */
-+	if (mode->clock > 216000)
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool
-+imx6dl_hdmi_mode_valid(struct dw_hdmi *hdmi, void *data,
-+		       const struct drm_display_info *info,
-+		       const struct drm_display_mode *mode)
-+{
-+	if (mode->clock < 13500)
-+		return false;
-+	/* FIXME: Hardware is capable of 270MHz, but setup data is missing. */
-+	if (mode->clock > 216000)
-+		return false;
-+
-+	return true;
-+}
-+
-+static struct dw_hdmi_plat_data imx6q_hdmi_drv_data = {
-+	.mpll_cfg   = imx_mpll_cfg,
-+	.cur_ctr    = imx_cur_ctr,
-+	.phy_config = imx_phy_config,
-+	.mode_valid = imx6q_hdmi_mode_valid,
-+	.vpl_ioctl  = dw_hdmi_imx_vpl_ioctl,
-+};
-+
-+static struct dw_hdmi_plat_data imx6dl_hdmi_drv_data = {
-+	.mpll_cfg = imx_mpll_cfg,
-+	.cur_ctr  = imx_cur_ctr,
-+	.phy_config = imx_phy_config,
-+	.mode_valid = imx6dl_hdmi_mode_valid,
-+	.vpl_ioctl  = dw_hdmi_imx_vpl_ioctl,
-+};
-+
-+static const struct of_device_id dw_hdmi_imx_dt_ids[] = {
-+	{ .compatible = "fsl,imx6q-hdmi",
-+	  .data = &imx6q_hdmi_drv_data
-+	}, {
-+	  .compatible = "fsl,imx6dl-hdmi",
-+	  .data = &imx6dl_hdmi_drv_data
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, dw_hdmi_imx_dt_ids);
-+
-+static int dw_hdmi_imx_probe(struct device *dev)
-+{
-+	struct dw_hdmi_plat_data *plat_data;
-+	struct device_node *np = dev->of_node;
-+	struct imx_hdmi *hdmi;
++	struct dw_hdmi_i2c *i2c = hdmi->i2c;
 +	int ret;
 +
-+	hdmi = xzalloc(sizeof(*hdmi));
-+
-+	ret = dev_get_drvdata(dev, (const void **)&plat_data);
-+	if (ret)
-+		return ret;
-+
-+	plat_data = xmemdup(plat_data, sizeof(*plat_data));
-+	plat_data->phy_data = hdmi;
-+	plat_data->priv_data = hdmi;
-+
-+	hdmi->dev = dev;
-+
-+	hdmi->regmap = syscon_regmap_lookup_by_phandle(np, "gpr");
-+	if (IS_ERR(hdmi->regmap)) {
-+		dev_err(hdmi->dev, "Unable to get gpr\n");
-+		return PTR_ERR(hdmi->regmap);
++	if (!i2c->is_regaddr) {
++		dev_dbg(hdmi->dev, "set read register address to 0\n");
++		i2c->slave_reg = 0x00;
++		i2c->is_regaddr = true;
 +	}
 +
-+	hdmi->hdmi = dw_hdmi_bind(dev, plat_data);
-+	if (IS_ERR(hdmi->hdmi))
-+		ret = PTR_ERR(hdmi->hdmi);
++	while (length--) {
++		hdmi_writeb(hdmi, i2c->slave_reg++, HDMI_I2CM_ADDRESS);
++		if (i2c->is_segment)
++			hdmi_writeb(hdmi, HDMI_I2CM_OPERATION_READ_EXT,
++				    HDMI_I2CM_OPERATION);
++		else
++			hdmi_writeb(hdmi, HDMI_I2CM_OPERATION_READ,
++				    HDMI_I2CM_OPERATION);
++
++		ret = dw_hdmi_i2c_wait(hdmi);
++		if (ret)
++			return ret;
++
++		*buf++ = hdmi_readb(hdmi, HDMI_I2CM_DATAI);
++	}
++	i2c->is_segment = false;
++
++	return 0;
++}
++
++static int dw_hdmi_i2c_write(struct dw_hdmi *hdmi,
++			     unsigned char *buf, unsigned int length)
++{
++	struct dw_hdmi_i2c *i2c = hdmi->i2c;
++	int ret;
++
++	if (!i2c->is_regaddr) {
++		/* Use the first write byte as register address */
++		i2c->slave_reg = buf[0];
++		length--;
++		buf++;
++		i2c->is_regaddr = true;
++	}
++
++	while (length--) {
++		hdmi_writeb(hdmi, *buf++, HDMI_I2CM_DATAO);
++		hdmi_writeb(hdmi, i2c->slave_reg++, HDMI_I2CM_ADDRESS);
++		hdmi_writeb(hdmi, HDMI_I2CM_OPERATION_WRITE,
++			    HDMI_I2CM_OPERATION);
++
++		ret = dw_hdmi_i2c_wait(hdmi);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int dw_hdmi_i2c_xfer(struct i2c_adapter *adap,
++			    struct i2c_msg *msgs, int num)
++{
++	struct dw_hdmi_i2c *i2c = container_of(adap, struct dw_hdmi_i2c, adap);
++	struct dw_hdmi *hdmi = i2c->hdmi;
++	u8 addr = msgs[0].addr;
++	int i, ret = 0;
++
++	if (addr == DDC_CI_ADDR)
++		/*
++		 * The internal I2C controller does not support the multi-byte
++		 * read and write operations needed for DDC/CI.
++		 * TOFIX: Blacklist the DDC/CI address until we filter out
++		 * unsupported I2C operations.
++		 */
++		return -EOPNOTSUPP;
++
++	dev_dbg(hdmi->dev, "xfer: num: %d, addr: %#x\n", num, addr);
++
++	for (i = 0; i < num; i++) {
++		if (msgs[i].len == 0) {
++			dev_dbg(hdmi->dev,
++				"unsupported transfer %d/%d, no data\n",
++				i + 1, num);
++			return -EOPNOTSUPP;
++		}
++	}
++
++	/* Unmute DONE and ERROR interrupts */
++	hdmi_writeb(hdmi, 0x00, HDMI_IH_MUTE_I2CM_STAT0);
++
++	/* Set slave device address taken from the first I2C message */
++	hdmi_writeb(hdmi, addr, HDMI_I2CM_SLAVE);
++
++	/* Set slave device register address on transfer */
++	i2c->is_regaddr = false;
++
++	/* Set segment pointer for I2C extended read mode operation */
++	i2c->is_segment = false;
++
++	for (i = 0; i < num; i++) {
++		dev_dbg(hdmi->dev, "xfer: num: %d/%d, len: %d, flags: %#x\n",
++			i + 1, num, msgs[i].len, msgs[i].flags);
++		if (msgs[i].addr == DDC_SEGMENT_ADDR && msgs[i].len == 1) {
++			i2c->is_segment = true;
++			hdmi_writeb(hdmi, DDC_SEGMENT_ADDR, HDMI_I2CM_SEGADDR);
++			hdmi_writeb(hdmi, *msgs[i].buf, HDMI_I2CM_SEGPTR);
++		} else {
++			if (msgs[i].flags & I2C_M_RD)
++				ret = dw_hdmi_i2c_read(hdmi, msgs[i].buf,
++						       msgs[i].len);
++			else
++				ret = dw_hdmi_i2c_write(hdmi, msgs[i].buf,
++							msgs[i].len);
++		}
++		if (ret < 0)
++			break;
++	}
++
++	if (!ret)
++		ret = num;
++
++	/* Mute DONE and ERROR interrupts */
++	hdmi_writeb(hdmi, HDMI_IH_I2CM_STAT0_ERROR | HDMI_IH_I2CM_STAT0_DONE,
++		    HDMI_IH_MUTE_I2CM_STAT0);
 +
 +	return ret;
 +}
 +
-+struct driver dw_hdmi_imx_platform_driver = {
-+	.probe  = dw_hdmi_imx_probe,
-+	.name = "dwhdmi-imx",
-+	.of_compatible = dw_hdmi_imx_dt_ids,
-+};
-+device_platform_driver(dw_hdmi_imx_platform_driver);
++static void dw_hdmi_i2c_pinctrl_select_state(struct i2c_adapter *adapter,
++					 const char *name)
++{
++	struct pinctrl *pinctrl;
 +
++	pinctrl = pinctrl_get_select(adapter->dev.parent, name);
++	if (pinctrl)
++		pinctrl_put(pinctrl);
++	else
++		dev_err(adapter->dev.parent, "pinctrl failed: %pe\n", pinctrl);
++}
++
++static void dw_hdmi_i2c_prepare_recovery(struct i2c_adapter *adapter)
++{
++	dw_hdmi_i2c_pinctrl_select_state(adapter, "gpio");
++}
++static void dw_hdmi_i2c_unprepare_recovery(struct i2c_adapter *adapter)
++{
++	dw_hdmi_i2c_pinctrl_select_state(adapter, "default");
++}
++
++static struct i2c_adapter *dw_hdmi_i2c_adapter(struct dw_hdmi *hdmi)
++{
++	struct i2c_adapter *adap;
++	struct dw_hdmi_i2c *i2c;
++	int ret;
++
++	i2c = xzalloc(sizeof(*i2c));
++
++	adap = &i2c->adap;
++	adap->dev.parent = hdmi->dev;
++	adap->master_xfer = dw_hdmi_i2c_xfer;
++	adap->nr = -1;
++
++	i2c->rinfo.sda_gpio = of_get_named_gpio_flags(hdmi->dev->of_node,
++							  "sda-gpios", 0,
++							  NULL);
++	i2c->rinfo.scl_gpio = of_get_named_gpio_flags(hdmi->dev->of_node,
++							  "scl-gpios", 0,
++							  NULL);
++
++	if (gpio_is_valid(i2c->rinfo.sda_gpio) &&
++	    gpio_is_valid(i2c->rinfo.scl_gpio)) {
++		i2c->rinfo.get_scl = i2c_get_scl_gpio_value;
++		i2c->rinfo.get_sda = i2c_get_sda_gpio_value;
++		i2c->rinfo.set_scl = i2c_set_scl_gpio_value;
++		i2c->rinfo.prepare_recovery = dw_hdmi_i2c_prepare_recovery;
++		i2c->rinfo.unprepare_recovery = dw_hdmi_i2c_unprepare_recovery;
++		i2c->rinfo.recover_bus = i2c_generic_gpio_recovery;
++		adap->bus_recovery_info = &i2c->rinfo;
++	}
++
++	ret = i2c_add_numbered_adapter(adap);
++	if (ret) {
++		dev_warn(hdmi->dev, "cannot add I2C adapter\n");
++		free(i2c);
++		return ERR_PTR(ret);
++	}
++
++	hdmi->i2c = i2c;
++	i2c->hdmi = hdmi;
++
++	dev_info(hdmi->dev, "registered I2C bus driver\n");
++
++	return adap;
++}
++
++static void hdmi_set_cts_n(struct dw_hdmi *hdmi, unsigned int cts,
++			   unsigned int n)
++{
++	/* Must be set/cleared first */
++	hdmi_modb(hdmi, 0, HDMI_AUD_CTS3_CTS_MANUAL, HDMI_AUD_CTS3);
++
++	/* nshift factor = 0 */
++	hdmi_modb(hdmi, 0, HDMI_AUD_CTS3_N_SHIFT_MASK, HDMI_AUD_CTS3);
++
++	/* Use automatic CTS generation mode when CTS is not set */
++	if (cts)
++		hdmi_writeb(hdmi, ((cts >> 16) &
++				   HDMI_AUD_CTS3_AUDCTS19_16_MASK) |
++				  HDMI_AUD_CTS3_CTS_MANUAL,
++			    HDMI_AUD_CTS3);
++	else
++		hdmi_writeb(hdmi, 0, HDMI_AUD_CTS3);
++	hdmi_writeb(hdmi, (cts >> 8) & 0xff, HDMI_AUD_CTS2);
++	hdmi_writeb(hdmi, cts & 0xff, HDMI_AUD_CTS1);
++
++	hdmi_writeb(hdmi, (n >> 16) & 0x0f, HDMI_AUD_N3);
++	hdmi_writeb(hdmi, (n >> 8) & 0xff, HDMI_AUD_N2);
++	hdmi_writeb(hdmi, n & 0xff, HDMI_AUD_N1);
++}
++
++static unsigned int hdmi_compute_n(unsigned int freq, unsigned long pixel_clk)
++{
++	unsigned int n = (128 * freq) / 1000;
++	unsigned int mult = 1;
++
++	while (freq > 48000) {
++		mult *= 2;
++		freq /= 2;
++	}
++
++	switch (freq) {
++	case 32000:
++		if (pixel_clk == 25175000)
++			n = 4576;
++		else if (pixel_clk == 27027000)
++			n = 4096;
++		else if (pixel_clk == 74176000 || pixel_clk == 148352000)
++			n = 11648;
++		else if (pixel_clk == 297000000)
++			n = 3072;
++		else
++			n = 4096;
++		n *= mult;
++		break;
++
++	case 44100:
++		if (pixel_clk == 25175000)
++			n = 7007;
++		else if (pixel_clk == 74176000)
++			n = 17836;
++		else if (pixel_clk == 148352000)
++			n = 8918;
++		else if (pixel_clk == 297000000)
++			n = 4704;
++		else
++			n = 6272;
++		n *= mult;
++		break;
++
++	case 48000:
++		if (pixel_clk == 25175000)
++			n = 6864;
++		else if (pixel_clk == 27027000)
++			n = 6144;
++		else if (pixel_clk == 74176000)
++			n = 11648;
++		else if (pixel_clk == 148352000)
++			n = 5824;
++		else if (pixel_clk == 297000000)
++			n = 5120;
++		else
++			n = 6144;
++		n *= mult;
++		break;
++
++	default:
++		break;
++	}
++
++	return n;
++}
++
++/*
++ * When transmitting IEC60958 linear PCM audio, these registers allow to
++ * configure the channel status information of all the channel status
++ * bits in the IEC60958 frame. For the moment this configuration is only
++ * used when the I2S audio interface, General Purpose Audio (GPA),
++ * or AHB audio DMA (AHBAUDDMA) interface is active
++ * (for S/PDIF interface this information comes from the stream).
++ */
++void dw_hdmi_set_channel_status(struct dw_hdmi *hdmi,
++				u8 *channel_status)
++{
++	/*
++	 * Set channel status register for frequency and word length.
++	 * Use default values for other registers.
++	 */
++	hdmi_writeb(hdmi, channel_status[3], HDMI_FC_AUDSCHNLS7);
++	hdmi_writeb(hdmi, channel_status[4], HDMI_FC_AUDSCHNLS8);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_set_channel_status);
++
++static void hdmi_set_clk_regenerator(struct dw_hdmi *hdmi,
++	unsigned long pixel_clk, unsigned int sample_rate)
++{
++	unsigned long ftdms = pixel_clk;
++	unsigned int n, cts;
++	u8 config3;
++	u64 tmp;
++
++	n = hdmi_compute_n(sample_rate, pixel_clk);
++
++	config3 = hdmi_readb(hdmi, HDMI_CONFIG3_ID);
++
++	/* Compute CTS when using internal AHB audio or General Parallel audio*/
++	if ((config3 & HDMI_CONFIG3_AHBAUDDMA) || (config3 & HDMI_CONFIG3_GPAUD)) {
++		/*
++		 * Compute the CTS value from the N value.  Note that CTS and N
++		 * can be up to 20 bits in total, so we need 64-bit math.  Also
++		 * note that our TDMS clock is not fully accurate; it is
++		 * accurate to kHz.  This can introduce an unnecessary remainder
++		 * in the calculation below, so we don't try to warn about that.
++		 */
++		tmp = (u64)ftdms * n;
++		do_div(tmp, 128 * sample_rate);
++		cts = tmp;
++
++		dev_dbg(hdmi->dev, "%s: fs=%uHz ftdms=%lu.%03luMHz N=%d cts=%d\n",
++			__func__, sample_rate,
++			ftdms / 1000000, (ftdms / 1000) % 1000,
++			n, cts);
++	} else {
++		cts = 0;
++	}
++
++	hdmi->audio_n = n;
++	hdmi->audio_cts = cts;
++	hdmi_set_cts_n(hdmi, cts, hdmi->audio_enable ? n : 0);
++}
++
++static void hdmi_init_clk_regenerator(struct dw_hdmi *hdmi)
++{
++	hdmi_set_clk_regenerator(hdmi, 74250000, hdmi->sample_rate);
++}
++
++void dw_hdmi_set_channel_count(struct dw_hdmi *hdmi, unsigned int cnt)
++{
++	u8 layout;
++
++	hdmi->channels = cnt;
++
++	/*
++	 * For >2 channel PCM audio, we need to select layout 1
++	 * and set an appropriate channel map.
++	 */
++	if (cnt > 2)
++		layout = HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_LAYOUT1;
++	else
++		layout = HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_LAYOUT0;
++
++	hdmi_modb(hdmi, layout, HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_MASK,
++		  HDMI_FC_AUDSCONF);
++
++	/* Set the audio infoframes channel count */
++	hdmi_modb(hdmi, (cnt - 1) << HDMI_FC_AUDICONF0_CC_OFFSET,
++		  HDMI_FC_AUDICONF0_CC_MASK, HDMI_FC_AUDICONF0);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_set_channel_count);
++
++void dw_hdmi_set_channel_allocation(struct dw_hdmi *hdmi, unsigned int ca)
++{
++	hdmi_writeb(hdmi, ca, HDMI_FC_AUDICONF2);
++
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_set_channel_allocation);
++
++static bool hdmi_bus_fmt_is_rgb(unsigned int bus_format)
++{
++	switch (bus_format) {
++	case MEDIA_BUS_FMT_RGB888_1X24:
++	case MEDIA_BUS_FMT_RGB101010_1X30:
++	case MEDIA_BUS_FMT_RGB121212_1X36:
++	case MEDIA_BUS_FMT_RGB161616_1X48:
++		return true;
++
++	default:
++		return false;
++	}
++}
++
++static bool hdmi_bus_fmt_is_yuv444(unsigned int bus_format)
++{
++	switch (bus_format) {
++	case MEDIA_BUS_FMT_YUV8_1X24:
++	case MEDIA_BUS_FMT_YUV10_1X30:
++	case MEDIA_BUS_FMT_YUV12_1X36:
++	case MEDIA_BUS_FMT_YUV16_1X48:
++		return true;
++
++	default:
++		return false;
++	}
++}
++
++static bool hdmi_bus_fmt_is_yuv422(unsigned int bus_format)
++{
++	switch (bus_format) {
++	case MEDIA_BUS_FMT_UYVY8_1X16:
++	case MEDIA_BUS_FMT_UYVY10_1X20:
++	case MEDIA_BUS_FMT_UYVY12_1X24:
++		return true;
++
++	default:
++		return false;
++	}
++}
++
++static bool hdmi_bus_fmt_is_yuv420(unsigned int bus_format)
++{
++	switch (bus_format) {
++	case MEDIA_BUS_FMT_UYYVYY8_0_5X24:
++	case MEDIA_BUS_FMT_UYYVYY10_0_5X30:
++	case MEDIA_BUS_FMT_UYYVYY12_0_5X36:
++	case MEDIA_BUS_FMT_UYYVYY16_0_5X48:
++		return true;
++
++	default:
++		return false;
++	}
++}
++
++static int hdmi_bus_fmt_color_depth(unsigned int bus_format)
++{
++	switch (bus_format) {
++	case MEDIA_BUS_FMT_RGB888_1X24:
++	case MEDIA_BUS_FMT_YUV8_1X24:
++	case MEDIA_BUS_FMT_UYVY8_1X16:
++	case MEDIA_BUS_FMT_UYYVYY8_0_5X24:
++		return 8;
++
++	case MEDIA_BUS_FMT_RGB101010_1X30:
++	case MEDIA_BUS_FMT_YUV10_1X30:
++	case MEDIA_BUS_FMT_UYVY10_1X20:
++	case MEDIA_BUS_FMT_UYYVYY10_0_5X30:
++		return 10;
++
++	case MEDIA_BUS_FMT_RGB121212_1X36:
++	case MEDIA_BUS_FMT_YUV12_1X36:
++	case MEDIA_BUS_FMT_UYVY12_1X24:
++	case MEDIA_BUS_FMT_UYYVYY12_0_5X36:
++		return 12;
++
++	case MEDIA_BUS_FMT_RGB161616_1X48:
++	case MEDIA_BUS_FMT_YUV16_1X48:
++	case MEDIA_BUS_FMT_UYYVYY16_0_5X48:
++		return 16;
++
++	default:
++		return 0;
++	}
++}
++
++/*
++ * this submodule is responsible for the video data synchronization.
++ * for example, for RGB 4:4:4 input, the data map is defined as
++ *			pin{47~40} <==> R[7:0]
++ *			pin{31~24} <==> G[7:0]
++ *			pin{15~8}  <==> B[7:0]
++ */
++static void hdmi_video_sample(struct dw_hdmi *hdmi)
++{
++	int color_format = 0;
++	u8 val;
++
++	switch (hdmi->hdmi_data.enc_in_bus_format) {
++	case MEDIA_BUS_FMT_RGB888_1X24:
++		color_format = 0x01;
++		break;
++	case MEDIA_BUS_FMT_RGB101010_1X30:
++		color_format = 0x03;
++		break;
++	case MEDIA_BUS_FMT_RGB121212_1X36:
++		color_format = 0x05;
++		break;
++	case MEDIA_BUS_FMT_RGB161616_1X48:
++		color_format = 0x07;
++		break;
++
++	case MEDIA_BUS_FMT_YUV8_1X24:
++	case MEDIA_BUS_FMT_UYYVYY8_0_5X24:
++		color_format = 0x09;
++		break;
++	case MEDIA_BUS_FMT_YUV10_1X30:
++	case MEDIA_BUS_FMT_UYYVYY10_0_5X30:
++		color_format = 0x0B;
++		break;
++	case MEDIA_BUS_FMT_YUV12_1X36:
++	case MEDIA_BUS_FMT_UYYVYY12_0_5X36:
++		color_format = 0x0D;
++		break;
++	case MEDIA_BUS_FMT_YUV16_1X48:
++	case MEDIA_BUS_FMT_UYYVYY16_0_5X48:
++		color_format = 0x0F;
++		break;
++
++	case MEDIA_BUS_FMT_UYVY8_1X16:
++		color_format = 0x16;
++		break;
++	case MEDIA_BUS_FMT_UYVY10_1X20:
++		color_format = 0x14;
++		break;
++	case MEDIA_BUS_FMT_UYVY12_1X24:
++		color_format = 0x12;
++		break;
++
++	default:
++		return;
++	}
++
++	val = HDMI_TX_INVID0_INTERNAL_DE_GENERATOR_DISABLE |
++		((color_format << HDMI_TX_INVID0_VIDEO_MAPPING_OFFSET) &
++		HDMI_TX_INVID0_VIDEO_MAPPING_MASK);
++	hdmi_writeb(hdmi, val, HDMI_TX_INVID0);
++
++	/* Enable TX stuffing: When DE is inactive, fix the output data to 0 */
++	val = HDMI_TX_INSTUFFING_BDBDATA_STUFFING_ENABLE |
++		HDMI_TX_INSTUFFING_RCRDATA_STUFFING_ENABLE |
++		HDMI_TX_INSTUFFING_GYDATA_STUFFING_ENABLE;
++	hdmi_writeb(hdmi, val, HDMI_TX_INSTUFFING);
++	hdmi_writeb(hdmi, 0x0, HDMI_TX_GYDATA0);
++	hdmi_writeb(hdmi, 0x0, HDMI_TX_GYDATA1);
++	hdmi_writeb(hdmi, 0x0, HDMI_TX_RCRDATA0);
++	hdmi_writeb(hdmi, 0x0, HDMI_TX_RCRDATA1);
++	hdmi_writeb(hdmi, 0x0, HDMI_TX_BCBDATA0);
++	hdmi_writeb(hdmi, 0x0, HDMI_TX_BCBDATA1);
++}
++
++static int is_color_space_conversion(struct dw_hdmi *hdmi)
++{
++	struct hdmi_data_info *hdmi_data = &hdmi->hdmi_data;
++	bool is_input_rgb, is_output_rgb;
++
++	is_input_rgb = hdmi_bus_fmt_is_rgb(hdmi_data->enc_in_bus_format);
++	is_output_rgb = hdmi_bus_fmt_is_rgb(hdmi_data->enc_out_bus_format);
++
++	return (is_input_rgb != is_output_rgb) ||
++	       (is_input_rgb && is_output_rgb && hdmi_data->rgb_limited_range);
++}
++
++static int is_color_space_decimation(struct dw_hdmi *hdmi)
++{
++	if (!hdmi_bus_fmt_is_yuv422(hdmi->hdmi_data.enc_out_bus_format))
++		return 0;
++
++	if (hdmi_bus_fmt_is_rgb(hdmi->hdmi_data.enc_in_bus_format) ||
++	    hdmi_bus_fmt_is_yuv444(hdmi->hdmi_data.enc_in_bus_format))
++		return 1;
++
++	return 0;
++}
++
++static int is_color_space_interpolation(struct dw_hdmi *hdmi)
++{
++	if (!hdmi_bus_fmt_is_yuv422(hdmi->hdmi_data.enc_in_bus_format))
++		return 0;
++
++	if (hdmi_bus_fmt_is_rgb(hdmi->hdmi_data.enc_out_bus_format) ||
++	    hdmi_bus_fmt_is_yuv444(hdmi->hdmi_data.enc_out_bus_format))
++		return 1;
++
++	return 0;
++}
++
++static bool is_csc_needed(struct dw_hdmi *hdmi)
++{
++	return is_color_space_conversion(hdmi) ||
++	       is_color_space_decimation(hdmi) ||
++	       is_color_space_interpolation(hdmi);
++}
++
++static void dw_hdmi_update_csc_coeffs(struct dw_hdmi *hdmi)
++{
++	const u16 (*csc_coeff)[3][4] = &csc_coeff_default;
++	bool is_input_rgb, is_output_rgb;
++	unsigned i;
++	u32 csc_scale = 1;
++
++	is_input_rgb = hdmi_bus_fmt_is_rgb(hdmi->hdmi_data.enc_in_bus_format);
++	is_output_rgb = hdmi_bus_fmt_is_rgb(hdmi->hdmi_data.enc_out_bus_format);
++
++	if (!is_input_rgb && is_output_rgb) {
++		if (hdmi->hdmi_data.enc_out_encoding == V4L2_YCBCR_ENC_601)
++			csc_coeff = &csc_coeff_rgb_out_eitu601;
++		else
++			csc_coeff = &csc_coeff_rgb_out_eitu709;
++	} else if (is_input_rgb && !is_output_rgb) {
++		if (hdmi->hdmi_data.enc_out_encoding == V4L2_YCBCR_ENC_601)
++			csc_coeff = &csc_coeff_rgb_in_eitu601;
++		else
++			csc_coeff = &csc_coeff_rgb_in_eitu709;
++		csc_scale = 0;
++	} else if (is_input_rgb && is_output_rgb &&
++		   hdmi->hdmi_data.rgb_limited_range) {
++		csc_coeff = &csc_coeff_rgb_full_to_rgb_limited;
++	}
++
++	/* The CSC registers are sequential, alternating MSB then LSB */
++	for (i = 0; i < ARRAY_SIZE(csc_coeff_default[0]); i++) {
++		u16 coeff_a = (*csc_coeff)[0][i];
++		u16 coeff_b = (*csc_coeff)[1][i];
++		u16 coeff_c = (*csc_coeff)[2][i];
++
++		hdmi_writeb(hdmi, coeff_a & 0xff, HDMI_CSC_COEF_A1_LSB + i * 2);
++		hdmi_writeb(hdmi, coeff_a >> 8, HDMI_CSC_COEF_A1_MSB + i * 2);
++		hdmi_writeb(hdmi, coeff_b & 0xff, HDMI_CSC_COEF_B1_LSB + i * 2);
++		hdmi_writeb(hdmi, coeff_b >> 8, HDMI_CSC_COEF_B1_MSB + i * 2);
++		hdmi_writeb(hdmi, coeff_c & 0xff, HDMI_CSC_COEF_C1_LSB + i * 2);
++		hdmi_writeb(hdmi, coeff_c >> 8, HDMI_CSC_COEF_C1_MSB + i * 2);
++	}
++
++	hdmi_modb(hdmi, csc_scale, HDMI_CSC_SCALE_CSCSCALE_MASK,
++		  HDMI_CSC_SCALE);
++}
++
++static void hdmi_video_csc(struct dw_hdmi *hdmi)
++{
++	int color_depth = 0;
++	int interpolation = HDMI_CSC_CFG_INTMODE_DISABLE;
++	int decimation = 0;
++
++	/* YCC422 interpolation to 444 mode */
++	if (is_color_space_interpolation(hdmi))
++		interpolation = HDMI_CSC_CFG_INTMODE_CHROMA_INT_FORMULA1;
++	else if (is_color_space_decimation(hdmi))
++		decimation = HDMI_CSC_CFG_DECMODE_CHROMA_INT_FORMULA3;
++
++	switch (hdmi_bus_fmt_color_depth(hdmi->hdmi_data.enc_out_bus_format)) {
++	case 8:
++		color_depth = HDMI_CSC_SCALE_CSC_COLORDE_PTH_24BPP;
++		break;
++	case 10:
++		color_depth = HDMI_CSC_SCALE_CSC_COLORDE_PTH_30BPP;
++		break;
++	case 12:
++		color_depth = HDMI_CSC_SCALE_CSC_COLORDE_PTH_36BPP;
++		break;
++	case 16:
++		color_depth = HDMI_CSC_SCALE_CSC_COLORDE_PTH_48BPP;
++		break;
++
++	default:
++		return;
++	}
++
++	/* Configure the CSC registers */
++	hdmi_writeb(hdmi, interpolation | decimation, HDMI_CSC_CFG);
++	hdmi_modb(hdmi, color_depth, HDMI_CSC_SCALE_CSC_COLORDE_PTH_MASK,
++		  HDMI_CSC_SCALE);
++
++	dw_hdmi_update_csc_coeffs(hdmi);
++}
++
++/*
++ * HDMI video packetizer is used to packetize the data.
++ * for example, if input is YCC422 mode or repeater is used,
++ * data should be repacked this module can be bypassed.
++ */
++static void hdmi_video_packetize(struct dw_hdmi *hdmi)
++{
++	unsigned int color_depth = 0;
++	unsigned int remap_size = HDMI_VP_REMAP_YCC422_16bit;
++	unsigned int output_select = HDMI_VP_CONF_OUTPUT_SELECTOR_PP;
++	struct hdmi_data_info *hdmi_data = &hdmi->hdmi_data;
++	u8 val, vp_conf;
++	u8 clear_gcp_auto = 0;
++
++
++	if (hdmi_bus_fmt_is_rgb(hdmi->hdmi_data.enc_out_bus_format) ||
++	    hdmi_bus_fmt_is_yuv444(hdmi->hdmi_data.enc_out_bus_format) ||
++	    hdmi_bus_fmt_is_yuv420(hdmi->hdmi_data.enc_out_bus_format)) {
++		switch (hdmi_bus_fmt_color_depth(
++					hdmi->hdmi_data.enc_out_bus_format)) {
++		case 8:
++			color_depth = 4;
++			output_select = HDMI_VP_CONF_OUTPUT_SELECTOR_BYPASS;
++			clear_gcp_auto = 1;
++			break;
++		case 10:
++			color_depth = 5;
++			break;
++		case 12:
++			color_depth = 6;
++			break;
++		case 16:
++			color_depth = 7;
++			break;
++		default:
++			output_select = HDMI_VP_CONF_OUTPUT_SELECTOR_BYPASS;
++		}
++	} else if (hdmi_bus_fmt_is_yuv422(hdmi->hdmi_data.enc_out_bus_format)) {
++		switch (hdmi_bus_fmt_color_depth(
++					hdmi->hdmi_data.enc_out_bus_format)) {
++		case 0:
++		case 8:
++			remap_size = HDMI_VP_REMAP_YCC422_16bit;
++			clear_gcp_auto = 1;
++			break;
++		case 10:
++			remap_size = HDMI_VP_REMAP_YCC422_20bit;
++			break;
++		case 12:
++			remap_size = HDMI_VP_REMAP_YCC422_24bit;
++			break;
++
++		default:
++			return;
++		}
++		output_select = HDMI_VP_CONF_OUTPUT_SELECTOR_YCC422;
++	} else {
++		return;
++	}
++
++	/* set the packetizer registers */
++	val = ((color_depth << HDMI_VP_PR_CD_COLOR_DEPTH_OFFSET) &
++		HDMI_VP_PR_CD_COLOR_DEPTH_MASK) |
++		((hdmi_data->pix_repet_factor <<
++		HDMI_VP_PR_CD_DESIRED_PR_FACTOR_OFFSET) &
++		HDMI_VP_PR_CD_DESIRED_PR_FACTOR_MASK);
++	hdmi_writeb(hdmi, val, HDMI_VP_PR_CD);
++
++	/* HDMI1.4b specification section 6.5.3:
++	 * Source shall only send GCPs with non-zero CD to sinks
++	 * that indicate support for Deep Color.
++	 * GCP only transmit CD and do not handle AVMUTE, PP norDefault_Phase (yet).
++	 * Disable Auto GCP when 24-bit color for sinks that not support Deep Color.
++	 */
++	val = hdmi_readb(hdmi, HDMI_FC_DATAUTO3);
++	if (clear_gcp_auto == 1)
++		val &= ~HDMI_FC_DATAUTO3_GCP_AUTO;
++	else
++		val |= HDMI_FC_DATAUTO3_GCP_AUTO;
++	hdmi_writeb(hdmi, val, HDMI_FC_DATAUTO3);
++
++	hdmi_modb(hdmi, HDMI_VP_STUFF_PR_STUFFING_STUFFING_MODE,
++		  HDMI_VP_STUFF_PR_STUFFING_MASK, HDMI_VP_STUFF);
++
++	/* Data from pixel repeater block */
++	if (hdmi_data->pix_repet_factor > 1) {
++		vp_conf = HDMI_VP_CONF_PR_EN_ENABLE |
++			  HDMI_VP_CONF_BYPASS_SELECT_PIX_REPEATER;
++	} else { /* data from packetizer block */
++		vp_conf = HDMI_VP_CONF_PR_EN_DISABLE |
++			  HDMI_VP_CONF_BYPASS_SELECT_VID_PACKETIZER;
++	}
++
++	hdmi_modb(hdmi, vp_conf,
++		  HDMI_VP_CONF_PR_EN_MASK |
++		  HDMI_VP_CONF_BYPASS_SELECT_MASK, HDMI_VP_CONF);
++
++	hdmi_modb(hdmi, 1 << HDMI_VP_STUFF_IDEFAULT_PHASE_OFFSET,
++		  HDMI_VP_STUFF_IDEFAULT_PHASE_MASK, HDMI_VP_STUFF);
++
++	hdmi_writeb(hdmi, remap_size, HDMI_VP_REMAP);
++
++	if (output_select == HDMI_VP_CONF_OUTPUT_SELECTOR_PP) {
++		vp_conf = HDMI_VP_CONF_BYPASS_EN_DISABLE |
++			  HDMI_VP_CONF_PP_EN_ENABLE |
++			  HDMI_VP_CONF_YCC422_EN_DISABLE;
++	} else if (output_select == HDMI_VP_CONF_OUTPUT_SELECTOR_YCC422) {
++		vp_conf = HDMI_VP_CONF_BYPASS_EN_DISABLE |
++			  HDMI_VP_CONF_PP_EN_DISABLE |
++			  HDMI_VP_CONF_YCC422_EN_ENABLE;
++	} else if (output_select == HDMI_VP_CONF_OUTPUT_SELECTOR_BYPASS) {
++		vp_conf = HDMI_VP_CONF_BYPASS_EN_ENABLE |
++			  HDMI_VP_CONF_PP_EN_DISABLE |
++			  HDMI_VP_CONF_YCC422_EN_DISABLE;
++	} else {
++		return;
++	}
++
++	hdmi_modb(hdmi, vp_conf,
++		  HDMI_VP_CONF_BYPASS_EN_MASK | HDMI_VP_CONF_PP_EN_ENMASK |
++		  HDMI_VP_CONF_YCC422_EN_MASK, HDMI_VP_CONF);
++
++	hdmi_modb(hdmi, HDMI_VP_STUFF_PP_STUFFING_STUFFING_MODE |
++			HDMI_VP_STUFF_YCC422_STUFFING_STUFFING_MODE,
++		  HDMI_VP_STUFF_PP_STUFFING_MASK |
++		  HDMI_VP_STUFF_YCC422_STUFFING_MASK, HDMI_VP_STUFF);
++
++	hdmi_modb(hdmi, output_select, HDMI_VP_CONF_OUTPUT_SELECTOR_MASK,
++		  HDMI_VP_CONF);
++}
++
++/* -----------------------------------------------------------------------------
++ * Synopsys PHY Handling
++ */
++
++static inline void hdmi_phy_test_clear(struct dw_hdmi *hdmi,
++				       unsigned char bit)
++{
++	hdmi_modb(hdmi, bit << HDMI_PHY_TST0_TSTCLR_OFFSET,
++		  HDMI_PHY_TST0_TSTCLR_MASK, HDMI_PHY_TST0);
++}
++
++static bool hdmi_phy_wait_i2c_done(struct dw_hdmi *hdmi, int msec)
++{
++	u32 val;
++
++	while ((val = hdmi_readb(hdmi, HDMI_IH_I2CMPHY_STAT0) & 0x3) == 0) {
++		if (msec-- == 0)
++			return false;
++		udelay(1000);
++	}
++	hdmi_writeb(hdmi, val, HDMI_IH_I2CMPHY_STAT0);
++
++	return true;
++}
++
++void dw_hdmi_phy_i2c_write(struct dw_hdmi *hdmi, unsigned short data,
++			   unsigned char addr)
++{
++	hdmi_writeb(hdmi, 0xFF, HDMI_IH_I2CMPHY_STAT0);
++	hdmi_writeb(hdmi, addr, HDMI_PHY_I2CM_ADDRESS_ADDR);
++	hdmi_writeb(hdmi, (unsigned char)(data >> 8),
++		    HDMI_PHY_I2CM_DATAO_1_ADDR);
++	hdmi_writeb(hdmi, (unsigned char)(data >> 0),
++		    HDMI_PHY_I2CM_DATAO_0_ADDR);
++	hdmi_writeb(hdmi, HDMI_PHY_I2CM_OPERATION_ADDR_WRITE,
++		    HDMI_PHY_I2CM_OPERATION_ADDR);
++	hdmi_phy_wait_i2c_done(hdmi, 1000);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_i2c_write);
++
++/*
++ * HDMI2.0 Specifies the following procedure for High TMDS Bit Rates:
++ * - The Source shall suspend transmission of the TMDS clock and data
++ * - The Source shall write to the TMDS_Bit_Clock_Ratio bit to change it
++ * from a 0 to a 1 or from a 1 to a 0
++ * - The Source shall allow a minimum of 1 ms and a maximum of 100 ms from
++ * the time the TMDS_Bit_Clock_Ratio bit is written until resuming
++ * transmission of TMDS clock and data
++ *
++ * To respect the 100ms maximum delay, the dw_hdmi_set_high_tmds_clock_ratio()
++ * helper should called right before enabling the TMDS Clock and Data in
++ * the PHY configuration callback.
++ */
++void dw_hdmi_set_high_tmds_clock_ratio(struct dw_hdmi *hdmi,
++				       const struct drm_display_info *display)
++{
++#if 0
++	unsigned long mtmdsclock = hdmi->hdmi_data.video_mode.mtmdsclock;
++
++	/* Control for TMDS Bit Period/TMDS Clock-Period Ratio */
++	if (dw_hdmi_support_scdc(hdmi, display)) {
++		if (mtmdsclock > HDMI14_MAX_TMDSCLK)
++			drm_scdc_set_high_tmds_clock_ratio(hdmi->curr_conn, 1);
++		else
++			drm_scdc_set_high_tmds_clock_ratio(hdmi->curr_conn, 0);
++	}
++#endif
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_set_high_tmds_clock_ratio);
++
++static void dw_hdmi_phy_enable_powerdown(struct dw_hdmi *hdmi, bool enable)
++{
++	hdmi_mask_writeb(hdmi, !enable, HDMI_PHY_CONF0,
++			 HDMI_PHY_CONF0_PDZ_OFFSET,
++			 HDMI_PHY_CONF0_PDZ_MASK);
++}
++
++static void dw_hdmi_phy_enable_tmds(struct dw_hdmi *hdmi, u8 enable)
++{
++	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
++			 HDMI_PHY_CONF0_ENTMDS_OFFSET,
++			 HDMI_PHY_CONF0_ENTMDS_MASK);
++}
++
++static void dw_hdmi_phy_enable_svsret(struct dw_hdmi *hdmi, u8 enable)
++{
++	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
++			 HDMI_PHY_CONF0_SVSRET_OFFSET,
++			 HDMI_PHY_CONF0_SVSRET_MASK);
++}
++
++void dw_hdmi_phy_gen2_pddq(struct dw_hdmi *hdmi, u8 enable)
++{
++	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
++			 HDMI_PHY_CONF0_GEN2_PDDQ_OFFSET,
++			 HDMI_PHY_CONF0_GEN2_PDDQ_MASK);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_gen2_pddq);
++
++void dw_hdmi_phy_gen2_txpwron(struct dw_hdmi *hdmi, u8 enable)
++{
++	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
++			 HDMI_PHY_CONF0_GEN2_TXPWRON_OFFSET,
++			 HDMI_PHY_CONF0_GEN2_TXPWRON_MASK);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_gen2_txpwron);
++
++static void dw_hdmi_phy_sel_data_en_pol(struct dw_hdmi *hdmi, u8 enable)
++{
++	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
++			 HDMI_PHY_CONF0_SELDATAENPOL_OFFSET,
++			 HDMI_PHY_CONF0_SELDATAENPOL_MASK);
++}
++
++static void dw_hdmi_phy_sel_interface_control(struct dw_hdmi *hdmi, u8 enable)
++{
++	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
++			 HDMI_PHY_CONF0_SELDIPIF_OFFSET,
++			 HDMI_PHY_CONF0_SELDIPIF_MASK);
++}
++
++void dw_hdmi_phy_gen1_reset(struct dw_hdmi *hdmi)
++{
++	/* PHY reset. The reset signal is active low on Gen1 PHYs. */
++	hdmi_writeb(hdmi, 0, HDMI_MC_PHYRSTZ);
++	hdmi_writeb(hdmi, HDMI_MC_PHYRSTZ_PHYRSTZ, HDMI_MC_PHYRSTZ);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_gen1_reset);
++
++void dw_hdmi_phy_gen2_reset(struct dw_hdmi *hdmi)
++{
++	/* PHY reset. The reset signal is active high on Gen2 PHYs. */
++	hdmi_writeb(hdmi, HDMI_MC_PHYRSTZ_PHYRSTZ, HDMI_MC_PHYRSTZ);
++	hdmi_writeb(hdmi, 0, HDMI_MC_PHYRSTZ);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_gen2_reset);
++
++void dw_hdmi_phy_i2c_set_addr(struct dw_hdmi *hdmi, u8 address)
++{
++	hdmi_phy_test_clear(hdmi, 1);
++	hdmi_writeb(hdmi, address, HDMI_PHY_I2CM_SLAVE_ADDR);
++	hdmi_phy_test_clear(hdmi, 0);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_i2c_set_addr);
++
++static void dw_hdmi_phy_power_off(struct dw_hdmi *hdmi)
++{
++	const struct dw_hdmi_phy_data *phy = hdmi->phy.data;
++	unsigned int i;
++	u16 val;
++
++	if (phy->gen == 1) {
++		dw_hdmi_phy_enable_tmds(hdmi, 0);
++		dw_hdmi_phy_enable_powerdown(hdmi, true);
++		return;
++	}
++
++	dw_hdmi_phy_gen2_txpwron(hdmi, 0);
++
++	/*
++	 * Wait for TX_PHY_LOCK to be deasserted to indicate that the PHY went
++	 * to low power mode.
++	 */
++	for (i = 0; i < 5; ++i) {
++		val = hdmi_readb(hdmi, HDMI_PHY_STAT0);
++		if (!(val & HDMI_PHY_TX_PHY_LOCK))
++			break;
++
++		udelay(1000);
++	}
++
++	if (val & HDMI_PHY_TX_PHY_LOCK)
++		dev_warn(hdmi->dev, "PHY failed to power down\n");
++	else
++		dev_dbg(hdmi->dev, "PHY powered down in %u iterations\n", i);
++
++	dw_hdmi_phy_gen2_pddq(hdmi, 1);
++}
++
++static int dw_hdmi_phy_power_on(struct dw_hdmi *hdmi)
++{
++	const struct dw_hdmi_phy_data *phy = hdmi->phy.data;
++	unsigned int i;
++	u8 val;
++
++	if (phy->gen == 1) {
++		dw_hdmi_phy_enable_powerdown(hdmi, false);
++
++		/* Toggle TMDS enable. */
++		dw_hdmi_phy_enable_tmds(hdmi, 0);
++		dw_hdmi_phy_enable_tmds(hdmi, 1);
++		return 0;
++	}
++
++	dw_hdmi_phy_gen2_txpwron(hdmi, 1);
++	dw_hdmi_phy_gen2_pddq(hdmi, 0);
++
++	/* Wait for PHY PLL lock */
++	for (i = 0; i < 5; ++i) {
++		val = hdmi_readb(hdmi, HDMI_PHY_STAT0) & HDMI_PHY_TX_PHY_LOCK;
++		if (val)
++			break;
++
++		udelay(1000);
++	}
++
++	if (!val) {
++		dev_err(hdmi->dev, "PHY PLL failed to lock\n");
++		return -ETIMEDOUT;
++	}
++
++	dev_dbg(hdmi->dev, "PHY PLL locked %u iterations\n", i);
++	return 0;
++}
++
++/*
++ * PHY configuration function for the DWC HDMI 3D TX PHY. Based on the available
++ * information the DWC MHL PHY has the same register layout and is thus also
++ * supported by this function.
++ */
++static int hdmi_phy_configure_dwc_hdmi_3d_tx(struct dw_hdmi *hdmi,
++		const struct dw_hdmi_plat_data *pdata,
++		unsigned long mpixelclock)
++{
++	const struct dw_hdmi_mpll_config *mpll_config = pdata->mpll_cfg;
++	const struct dw_hdmi_curr_ctrl *curr_ctrl = pdata->cur_ctr;
++	const struct dw_hdmi_phy_config *phy_config = pdata->phy_config;
++
++	/* TOFIX Will need 420 specific PHY configuration tables */
++
++	/* PLL/MPLL Cfg - always match on final entry */
++	for (; mpll_config->mpixelclock != ~0UL; mpll_config++)
++		if (mpixelclock <= mpll_config->mpixelclock)
++			break;
++
++	for (; curr_ctrl->mpixelclock != ~0UL; curr_ctrl++)
++		if (mpixelclock <= curr_ctrl->mpixelclock)
++			break;
++
++	for (; phy_config->mpixelclock != ~0UL; phy_config++)
++		if (mpixelclock <= phy_config->mpixelclock)
++			break;
++
++	if (mpll_config->mpixelclock == ~0UL ||
++	    curr_ctrl->mpixelclock == ~0UL ||
++	    phy_config->mpixelclock == ~0UL)
++		return -EINVAL;
++
++	dw_hdmi_phy_i2c_write(hdmi, mpll_config->res[0].cpce,
++			      HDMI_3D_TX_PHY_CPCE_CTRL);
++	dw_hdmi_phy_i2c_write(hdmi, mpll_config->res[0].gmp,
++			      HDMI_3D_TX_PHY_GMPCTRL);
++	dw_hdmi_phy_i2c_write(hdmi, curr_ctrl->curr[0],
++			      HDMI_3D_TX_PHY_CURRCTRL);
++
++	dw_hdmi_phy_i2c_write(hdmi, 0, HDMI_3D_TX_PHY_PLLPHBYCTRL);
++	dw_hdmi_phy_i2c_write(hdmi, HDMI_3D_TX_PHY_MSM_CTRL_CKO_SEL_FB_CLK,
++			      HDMI_3D_TX_PHY_MSM_CTRL);
++
++	dw_hdmi_phy_i2c_write(hdmi, phy_config->term, HDMI_3D_TX_PHY_TXTERM);
++	dw_hdmi_phy_i2c_write(hdmi, phy_config->sym_ctr,
++			      HDMI_3D_TX_PHY_CKSYMTXCTRL);
++	dw_hdmi_phy_i2c_write(hdmi, phy_config->vlev_ctr,
++			      HDMI_3D_TX_PHY_VLEVCTRL);
++
++	/* Override and disable clock termination. */
++	dw_hdmi_phy_i2c_write(hdmi, HDMI_3D_TX_PHY_CKCALCTRL_OVERRIDE,
++			      HDMI_3D_TX_PHY_CKCALCTRL);
++
++	return 0;
++}
++
++static int hdmi_phy_configure(struct dw_hdmi *hdmi,
++			      const struct drm_display_info *display)
++{
++	const struct dw_hdmi_phy_data *phy = hdmi->phy.data;
++	const struct dw_hdmi_plat_data *pdata = hdmi->plat_data;
++	unsigned long mpixelclock = hdmi->hdmi_data.video_mode.mpixelclock;
++	unsigned long mtmdsclock = hdmi->hdmi_data.video_mode.mtmdsclock;
++	int ret;
++
++	dw_hdmi_phy_power_off(hdmi);
++
++	dw_hdmi_set_high_tmds_clock_ratio(hdmi, display);
++
++	/* Leave low power consumption mode by asserting SVSRET. */
++	if (phy->has_svsret)
++		dw_hdmi_phy_enable_svsret(hdmi, 1);
++
++	dw_hdmi_phy_gen2_reset(hdmi);
++
++	hdmi_writeb(hdmi, HDMI_MC_HEACPHY_RST_ASSERT, HDMI_MC_HEACPHY_RST);
++
++	dw_hdmi_phy_i2c_set_addr(hdmi, HDMI_PHY_I2CM_SLAVE_ADDR_PHY_GEN2);
++
++	/* Write to the PHY as configured by the platform */
++	if (pdata->configure_phy)
++		ret = pdata->configure_phy(hdmi, pdata->priv_data, mpixelclock);
++	else
++		ret = phy->configure(hdmi, pdata, mpixelclock);
++	if (ret) {
++		dev_err(hdmi->dev, "PHY configuration failed (clock %lu)\n",
++			mpixelclock);
++		return ret;
++	}
++
++	/* Wait for resuming transmission of TMDS clock and data */
++	if (mtmdsclock > HDMI14_MAX_TMDSCLK)
++		mdelay(100);
++
++	return dw_hdmi_phy_power_on(hdmi);
++}
++
++static int dw_hdmi_phy_init(struct dw_hdmi *hdmi, void *data,
++			    const struct drm_display_info *display,
++			    const struct drm_display_mode *mode)
++{
++	int i, ret;
++
++	/* HDMI Phy spec says to do the phy initialization sequence twice */
++	for (i = 0; i < 2; i++) {
++		dw_hdmi_phy_sel_data_en_pol(hdmi, 1);
++		dw_hdmi_phy_sel_interface_control(hdmi, 0);
++
++		ret = hdmi_phy_configure(hdmi, display);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static void dw_hdmi_phy_disable(struct dw_hdmi *hdmi, void *data)
++{
++	dw_hdmi_phy_power_off(hdmi);
++}
++
++enum drm_connector_status dw_hdmi_phy_read_hpd(struct dw_hdmi *hdmi,
++					       void *data)
++{
++	return hdmi_readb(hdmi, HDMI_PHY_STAT0) & HDMI_PHY_HPD ?
++		connector_status_connected : connector_status_disconnected;
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_read_hpd);
++
++void dw_hdmi_phy_update_hpd(struct dw_hdmi *hdmi, void *data,
++			    bool force, bool disabled, bool rxsense)
++{
++	u8 old_mask = hdmi->phy_mask;
++
++	if (force || disabled || !rxsense)
++		hdmi->phy_mask |= HDMI_PHY_RX_SENSE;
++	else
++		hdmi->phy_mask &= ~HDMI_PHY_RX_SENSE;
++
++	if (old_mask != hdmi->phy_mask)
++		hdmi_writeb(hdmi, hdmi->phy_mask, HDMI_PHY_MASK0);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_update_hpd);
++
++void dw_hdmi_phy_setup_hpd(struct dw_hdmi *hdmi, void *data)
++{
++	/*
++	 * Configure the PHY RX SENSE and HPD interrupts polarities and clear
++	 * any pending interrupt.
++	 */
++	hdmi_writeb(hdmi, HDMI_PHY_HPD | HDMI_PHY_RX_SENSE, HDMI_PHY_POL0);
++	hdmi_writeb(hdmi, HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE,
++		    HDMI_IH_PHY_STAT0);
++
++	/* Enable cable hot plug irq. */
++	hdmi_writeb(hdmi, hdmi->phy_mask, HDMI_PHY_MASK0);
++
++	/* Clear and unmute interrupts. */
++	hdmi_writeb(hdmi, HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE,
++		    HDMI_IH_PHY_STAT0);
++	hdmi_writeb(hdmi, ~(HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE),
++		    HDMI_IH_MUTE_PHY_STAT0);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_phy_setup_hpd);
++
++static const struct dw_hdmi_phy_ops dw_hdmi_synopsys_phy_ops = {
++	.init = dw_hdmi_phy_init,
++	.disable = dw_hdmi_phy_disable,
++	.read_hpd = dw_hdmi_phy_read_hpd,
++	.update_hpd = dw_hdmi_phy_update_hpd,
++	.setup_hpd = dw_hdmi_phy_setup_hpd,
++};
++
++/* -----------------------------------------------------------------------------
++ * HDMI TX Setup
++ */
++
++static void hdmi_tx_hdcp_config(struct dw_hdmi *hdmi)
++{
++	u8 de;
++
++	if (hdmi->hdmi_data.video_mode.mdataenablepolarity)
++		de = HDMI_A_VIDPOLCFG_DATAENPOL_ACTIVE_HIGH;
++	else
++		de = HDMI_A_VIDPOLCFG_DATAENPOL_ACTIVE_LOW;
++
++	/* disable rx detect */
++	hdmi_modb(hdmi, HDMI_A_HDCPCFG0_RXDETECT_DISABLE,
++		  HDMI_A_HDCPCFG0_RXDETECT_MASK, HDMI_A_HDCPCFG0);
++
++	hdmi_modb(hdmi, de, HDMI_A_VIDPOLCFG_DATAENPOL_MASK, HDMI_A_VIDPOLCFG);
++
++	hdmi_modb(hdmi, HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_DISABLE,
++		  HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_MASK, HDMI_A_HDCPCFG1);
++}
++
++static void hdmi_av_composer(struct dw_hdmi *hdmi,
++			     const struct drm_display_mode *mode)
++{
++	u8 inv_val;
++	struct hdmi_vmode *vmode = &hdmi->hdmi_data.video_mode;
++	int hblank, vblank, h_de_hs, v_de_vs, hsync_len, vsync_len;
++	unsigned int vdisplay, hdisplay;
++
++	vmode->mpixelclock = mode->clock * 1000;
++
++	dev_dbg(hdmi->dev, "final pixclk = %d\n", vmode->mpixelclock);
++
++	vmode->mtmdsclock = vmode->mpixelclock;
++
++	if (!hdmi_bus_fmt_is_yuv422(hdmi->hdmi_data.enc_out_bus_format)) {
++		switch (hdmi_bus_fmt_color_depth(
++				hdmi->hdmi_data.enc_out_bus_format)) {
++		case 16:
++			vmode->mtmdsclock = vmode->mpixelclock * 2;
++			break;
++		case 12:
++			vmode->mtmdsclock = vmode->mpixelclock * 3 / 2;
++			break;
++		case 10:
++			vmode->mtmdsclock = vmode->mpixelclock * 5 / 4;
++			break;
++		}
++	}
++
++	if (hdmi_bus_fmt_is_yuv420(hdmi->hdmi_data.enc_out_bus_format))
++		vmode->mtmdsclock /= 2;
++
++	dev_dbg(hdmi->dev, "final tmdsclock = %d\n", vmode->mtmdsclock);
++
++	/* Set up HDMI_FC_INVIDCONF */
++	inv_val = HDMI_FC_INVIDCONF_HDCP_KEEPOUT_INACTIVE;
++
++	inv_val |= mode->flags & DRM_MODE_FLAG_PVSYNC ?
++		HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_ACTIVE_HIGH :
++		HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_ACTIVE_LOW;
++
++	inv_val |= mode->flags & DRM_MODE_FLAG_PHSYNC ?
++		HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_ACTIVE_HIGH :
++		HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_ACTIVE_LOW;
++
++	inv_val |= (vmode->mdataenablepolarity ?
++		HDMI_FC_INVIDCONF_DE_IN_POLARITY_ACTIVE_HIGH :
++		HDMI_FC_INVIDCONF_DE_IN_POLARITY_ACTIVE_LOW);
++
++	if (hdmi->vic == 39)
++		inv_val |= HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_HIGH;
++	else
++		inv_val |= mode->flags & DRM_MODE_FLAG_INTERLACE ?
++			HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_HIGH :
++			HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_LOW;
++
++	inv_val |= mode->flags & DRM_MODE_FLAG_INTERLACE ?
++		HDMI_FC_INVIDCONF_IN_I_P_INTERLACED :
++		HDMI_FC_INVIDCONF_IN_I_P_PROGRESSIVE;
++
++	inv_val |= hdmi->sink_is_hdmi ?
++		HDMI_FC_INVIDCONF_DVI_MODEZ_HDMI_MODE :
++		HDMI_FC_INVIDCONF_DVI_MODEZ_DVI_MODE;
++
++	hdmi_writeb(hdmi, inv_val, HDMI_FC_INVIDCONF);
++
++	hdisplay = mode->hdisplay;
++	hblank = mode->htotal - mode->hdisplay;
++	h_de_hs = mode->hsync_start - mode->hdisplay;
++	hsync_len = mode->hsync_end - mode->hsync_start;
++
++	/*
++	 * When we're setting a YCbCr420 mode, we need
++	 * to adjust the horizontal timing to suit.
++	 */
++	if (hdmi_bus_fmt_is_yuv420(hdmi->hdmi_data.enc_out_bus_format)) {
++		hdisplay /= 2;
++		hblank /= 2;
++		h_de_hs /= 2;
++		hsync_len /= 2;
++	}
++
++	vdisplay = mode->vdisplay;
++	vblank = mode->vtotal - mode->vdisplay;
++	v_de_vs = mode->vsync_start - mode->vdisplay;
++	vsync_len = mode->vsync_end - mode->vsync_start;
++
++	/*
++	 * When we're setting an interlaced mode, we need
++	 * to adjust the vertical timing to suit.
++	 */
++	if (mode->flags & DRM_MODE_FLAG_INTERLACE) {
++		vdisplay /= 2;
++		vblank /= 2;
++		v_de_vs /= 2;
++		vsync_len /= 2;
++	}
++
++	/* Set up horizontal active pixel width */
++	hdmi_writeb(hdmi, hdisplay >> 8, HDMI_FC_INHACTV1);
++	hdmi_writeb(hdmi, hdisplay, HDMI_FC_INHACTV0);
++
++	/* Set up vertical active lines */
++	hdmi_writeb(hdmi, vdisplay >> 8, HDMI_FC_INVACTV1);
++	hdmi_writeb(hdmi, vdisplay, HDMI_FC_INVACTV0);
++
++	/* Set up horizontal blanking pixel region width */
++	hdmi_writeb(hdmi, hblank >> 8, HDMI_FC_INHBLANK1);
++	hdmi_writeb(hdmi, hblank, HDMI_FC_INHBLANK0);
++
++	/* Set up vertical blanking pixel region width */
++	hdmi_writeb(hdmi, vblank, HDMI_FC_INVBLANK);
++
++	/* Set up HSYNC active edge delay width (in pixel clks) */
++	hdmi_writeb(hdmi, h_de_hs >> 8, HDMI_FC_HSYNCINDELAY1);
++	hdmi_writeb(hdmi, h_de_hs, HDMI_FC_HSYNCINDELAY0);
++
++	/* Set up VSYNC active edge delay (in lines) */
++	hdmi_writeb(hdmi, v_de_vs, HDMI_FC_VSYNCINDELAY);
++
++	/* Set up HSYNC active pulse width (in pixel clks) */
++	hdmi_writeb(hdmi, hsync_len >> 8, HDMI_FC_HSYNCINWIDTH1);
++	hdmi_writeb(hdmi, hsync_len, HDMI_FC_HSYNCINWIDTH0);
++
++	/* Set up VSYNC active edge delay (in lines) */
++	hdmi_writeb(hdmi, vsync_len, HDMI_FC_VSYNCINWIDTH);
++}
++
++/* HDMI Initialization Step B.4 */
++static void dw_hdmi_enable_video_path(struct dw_hdmi *hdmi)
++{
++	/* control period minimum duration */
++	hdmi_writeb(hdmi, 12, HDMI_FC_CTRLDUR);
++	hdmi_writeb(hdmi, 32, HDMI_FC_EXCTRLDUR);
++	hdmi_writeb(hdmi, 1, HDMI_FC_EXCTRLSPAC);
++
++	/* Set to fill TMDS data channels */
++	hdmi_writeb(hdmi, 0x0B, HDMI_FC_CH0PREAM);
++	hdmi_writeb(hdmi, 0x16, HDMI_FC_CH1PREAM);
++	hdmi_writeb(hdmi, 0x21, HDMI_FC_CH2PREAM);
++
++	/* Enable pixel clock and tmds data path */
++	hdmi->mc_clkdis |= HDMI_MC_CLKDIS_HDCPCLK_DISABLE |
++			   HDMI_MC_CLKDIS_CSCCLK_DISABLE |
++			   HDMI_MC_CLKDIS_AUDCLK_DISABLE |
++			   HDMI_MC_CLKDIS_PREPCLK_DISABLE |
++			   HDMI_MC_CLKDIS_TMDSCLK_DISABLE;
++	hdmi->mc_clkdis &= ~HDMI_MC_CLKDIS_PIXELCLK_DISABLE;
++	hdmi_writeb(hdmi, hdmi->mc_clkdis, HDMI_MC_CLKDIS);
++
++	hdmi->mc_clkdis &= ~HDMI_MC_CLKDIS_TMDSCLK_DISABLE;
++	hdmi_writeb(hdmi, hdmi->mc_clkdis, HDMI_MC_CLKDIS);
++
++	/* Enable csc path */
++	if (is_csc_needed(hdmi)) {
++		hdmi->mc_clkdis &= ~HDMI_MC_CLKDIS_CSCCLK_DISABLE;
++		hdmi_writeb(hdmi, hdmi->mc_clkdis, HDMI_MC_CLKDIS);
++
++		hdmi_writeb(hdmi, HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_CSC_IN_PATH,
++			    HDMI_MC_FLOWCTRL);
++	} else {
++		hdmi->mc_clkdis |= HDMI_MC_CLKDIS_CSCCLK_DISABLE;
++		hdmi_writeb(hdmi, hdmi->mc_clkdis, HDMI_MC_CLKDIS);
++
++		hdmi_writeb(hdmi, HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_CSC_BYPASS,
++			    HDMI_MC_FLOWCTRL);
++	}
++}
++
++/* Workaround to clear the overflow condition */
++static void dw_hdmi_clear_overflow(struct dw_hdmi *hdmi)
++{
++	unsigned int count;
++	unsigned int i;
++	u8 val;
++
++	/*
++	 * Under some circumstances the Frame Composer arithmetic unit can miss
++	 * an FC register write due to being busy processing the previous one.
++	 * The issue can be worked around by issuing a TMDS software reset and
++	 * then write one of the FC registers several times.
++	 *
++	 * The number of iterations matters and depends on the HDMI TX revision
++	 * (and possibly on the platform).
++	 * 4 iterations for i.MX6Q(v1.30a) and 1 iteration for others.
++	 * i.MX6DL (v1.31a), Allwinner SoCs (v1.32a), Rockchip RK3288 SoC (v2.00a),
++	 * Amlogic Meson GX SoCs (v2.01a), RK3328/RK3399 SoCs (v2.11a)
++	 * and i.MX8MPlus (v2.13a) have been identified as needing the workaround
++	 * with a single iteration.
++	 */
++
++	switch (hdmi->version) {
++	case 0x130a:
++		count = 4;
++		break;
++	default:
++		count = 1;
++		break;
++	}
++
++	/* TMDS software reset */
++	hdmi_writeb(hdmi, (u8)~HDMI_MC_SWRSTZ_TMDSSWRST_REQ, HDMI_MC_SWRSTZ);
++
++	val = hdmi_readb(hdmi, HDMI_FC_INVIDCONF);
++	for (i = 0; i < count; i++)
++		hdmi_writeb(hdmi, val, HDMI_FC_INVIDCONF);
++}
++
++static void hdmi_disable_overflow_interrupts(struct dw_hdmi *hdmi)
++{
++	hdmi_writeb(hdmi, HDMI_IH_MUTE_FC_STAT2_OVERFLOW_MASK,
++		    HDMI_IH_MUTE_FC_STAT2);
++}
++
++static int dw_hdmi_setup(struct dw_hdmi *hdmi,
++			 const struct drm_display_mode *mode)
++{
++	int ret;
++
++	hdmi_disable_overflow_interrupts(hdmi);
++
++	hdmi->vic = 0; // drm_match_cea_mode(mode);
++
++	if (!hdmi->vic) {
++		dev_dbg(hdmi->dev, "Non-CEA mode used in HDMI\n");
++	} else {
++		dev_dbg(hdmi->dev, "CEA mode used vic=%d\n", hdmi->vic);
++	}
++
++	if ((hdmi->vic == 6) || (hdmi->vic == 7) ||
++	    (hdmi->vic == 21) || (hdmi->vic == 22) ||
++	    (hdmi->vic == 2) || (hdmi->vic == 3) ||
++	    (hdmi->vic == 17) || (hdmi->vic == 18))
++		hdmi->hdmi_data.enc_out_encoding = V4L2_YCBCR_ENC_601;
++	else
++		hdmi->hdmi_data.enc_out_encoding = V4L2_YCBCR_ENC_709;
++
++	hdmi->hdmi_data.video_mode.mpixelrepetitionoutput = 0;
++	hdmi->hdmi_data.video_mode.mpixelrepetitioninput = 0;
++
++	if (hdmi->hdmi_data.enc_in_bus_format == MEDIA_BUS_FMT_FIXED)
++		hdmi->hdmi_data.enc_in_bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++
++	/* TOFIX: Get input encoding from plat data or fallback to none */
++	if (hdmi->plat_data->input_bus_encoding)
++		hdmi->hdmi_data.enc_in_encoding =
++			hdmi->plat_data->input_bus_encoding;
++	else
++		hdmi->hdmi_data.enc_in_encoding = V4L2_YCBCR_ENC_DEFAULT;
++
++	if (hdmi->hdmi_data.enc_out_bus_format == MEDIA_BUS_FMT_FIXED)
++		hdmi->hdmi_data.enc_out_bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++
++	hdmi->hdmi_data.rgb_limited_range = 0;
++
++	hdmi->hdmi_data.pix_repet_factor = 0;
++	hdmi->hdmi_data.hdcp_enable = 0;
++	hdmi->hdmi_data.video_mode.mdataenablepolarity = true;
++
++	/* HDMI Initialization Step B.1 */
++	hdmi_av_composer(hdmi, mode);
++
++	/* HDMI Initializateion Step B.2 */
++	ret = hdmi->phy.ops->init(hdmi, hdmi->phy.data,
++				  NULL,
++				  mode);
++	if (ret)
++		return ret;
++	hdmi->phy.enabled = true;
++
++	/* HDMI Initialization Step B.3 */
++	dw_hdmi_enable_video_path(hdmi);
++
++	/* not for DVI mode */
++	if (hdmi->sink_is_hdmi) {
++		dev_dbg(hdmi->dev, "%s HDMI mode\n", __func__);
++		/* HDMI Initialization Step F - Configure AVI InfoFrame */
++	} else {
++		dev_dbg(hdmi->dev, "%s DVI mode\n", __func__);
++	}
++
++	hdmi_video_packetize(hdmi);
++	hdmi_video_csc(hdmi);
++	hdmi_video_sample(hdmi);
++	hdmi_tx_hdcp_config(hdmi);
++
++	dw_hdmi_clear_overflow(hdmi);
++
++	return 0;
++}
++
++static void initialize_hdmi_ih_mutes(struct dw_hdmi *hdmi)
++{
++	u8 ih_mute;
++
++	/*
++	 * Boot up defaults are:
++	 * HDMI_IH_MUTE   = 0x03 (disabled)
++	 * HDMI_IH_MUTE_* = 0x00 (enabled)
++	 *
++	 * Disable top level interrupt bits in HDMI block
++	 */
++	ih_mute = hdmi_readb(hdmi, HDMI_IH_MUTE) |
++		  HDMI_IH_MUTE_MUTE_WAKEUP_INTERRUPT |
++		  HDMI_IH_MUTE_MUTE_ALL_INTERRUPT;
++
++	hdmi_writeb(hdmi, ih_mute, HDMI_IH_MUTE);
++
++	/* by default mask all interrupts */
++	hdmi_writeb(hdmi, 0xff, HDMI_VP_MASK);
++	hdmi_writeb(hdmi, 0xff, HDMI_FC_MASK0);
++	hdmi_writeb(hdmi, 0xff, HDMI_FC_MASK1);
++	hdmi_writeb(hdmi, 0xff, HDMI_FC_MASK2);
++	hdmi_writeb(hdmi, 0xff, HDMI_PHY_MASK0);
++	hdmi_writeb(hdmi, 0xff, HDMI_PHY_I2CM_INT_ADDR);
++	hdmi_writeb(hdmi, 0xff, HDMI_PHY_I2CM_CTLINT_ADDR);
++	hdmi_writeb(hdmi, 0xff, HDMI_AUD_INT);
++	hdmi_writeb(hdmi, 0xff, HDMI_AUD_SPDIFINT);
++	hdmi_writeb(hdmi, 0xff, HDMI_AUD_HBR_MASK);
++	hdmi_writeb(hdmi, 0xff, HDMI_GP_MASK);
++	hdmi_writeb(hdmi, 0xff, HDMI_A_APIINTMSK);
++	hdmi_writeb(hdmi, 0xff, HDMI_I2CM_INT);
++	hdmi_writeb(hdmi, 0xff, HDMI_I2CM_CTLINT);
++
++	/* Disable interrupts in the IH_MUTE_* registers */
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_FC_STAT0);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_FC_STAT1);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_FC_STAT2);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_AS_STAT0);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_PHY_STAT0);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_I2CM_STAT0);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_CEC_STAT0);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_VP_STAT0);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_I2CMPHY_STAT0);
++	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_AHBDMAAUD_STAT0);
++
++	/* Enable top level interrupt bits in HDMI block */
++	ih_mute &= ~(HDMI_IH_MUTE_MUTE_WAKEUP_INTERRUPT |
++		    HDMI_IH_MUTE_MUTE_ALL_INTERRUPT);
++	hdmi_writeb(hdmi, ih_mute, HDMI_IH_MUTE);
++}
++
++static void dw_hdmi_poweroff(struct dw_hdmi *hdmi)
++{
++	if (hdmi->phy.enabled) {
++		hdmi->phy.ops->disable(hdmi, hdmi->phy.data);
++		hdmi->phy.enabled = false;
++	}
++}
++
++/*
++ * Adjust the detection of RXSENSE according to whether we have a forced
++ * connection mode enabled, or whether we have been disabled.  There is
++ * no point processing RXSENSE interrupts if we have a forced connection
++ * state, or DRM has us disabled.
++ *
++ * We also disable rxsense interrupts when we think we're disconnected
++ * to avoid floating TDMS signals giving false rxsense interrupts.
++ *
++ * Note: we still need to listen for HPD interrupts even when DRM has us
++ * disabled so that we can detect a connect event.
++ */
++static void dw_hdmi_update_phy_mask(struct dw_hdmi *hdmi)
++{
++	if (hdmi->phy.ops->update_hpd)
++		hdmi->phy.ops->update_hpd(hdmi, hdmi->phy.data,
++					  hdmi->force, hdmi->disabled,
++					  hdmi->rxsense);
++}
++
++/* -----------------------------------------------------------------------------
++ * DRM Connector Operations
++ */
++
++static int dw_hdmi_get_modes(struct dw_hdmi *hdmi, struct display_timings *timings)
++{
++	struct fb_videomode *modes;
++	int ret = -ENOENT;
++	int i, j = 0;
++	unsigned int native_mode = 0;
++
++	if (hdmi->ddc_node) {
++		struct i2c_adapter *i2c;
++
++		i2c = of_find_i2c_adapter_by_node(hdmi->ddc_node);
++		if (!i2c)
++			return -ENODEV;
++		timings->edid = edid_read_i2c(i2c);
++		if (!timings->edid)
++			return -EINVAL;
++
++		ret = edid_to_display_timings(timings, timings->edid);
++	} else {
++		timings->edid = edid_read_i2c(&hdmi->i2c->adap);
++		if (!timings->edid)
++			return -EINVAL;
++		ret = edid_to_display_timings(timings, timings->edid);
++	}
++
++	if (ret)
++		return ret;
++
++	modes = xzalloc(sizeof(*modes) * timings->num_modes);
++
++	for (i = 0; i < timings->num_modes; i++) {
++		struct drm_display_mode dmode;
++		bool valid;
++
++		fb_videomode_to_drm_display_mode(&timings->modes[i], &dmode);
++
++		valid = hdmi->plat_data->mode_valid(hdmi, hdmi->plat_data->priv_data,
++						    NULL, &dmode);
++
++		if (i == timings->native_mode) {
++			if (valid)
++				native_mode = j;
++			else
++				dev_err(hdmi->dev, "native mode is invlid\n");
++		}
++
++		if (valid) {
++			modes[j] = timings->modes[i];
++			j++;
++		}
++	}
++
++	free(timings->modes);
++	timings->modes = modes;
++	timings->num_modes = j;
++
++	return 0;
++}
++
++void dw_hdmi_setup_rx_sense(struct dw_hdmi *hdmi, bool hpd, bool rx_sense)
++{
++	if (!hdmi->force) {
++		/*
++		 * If the RX sense status indicates we're disconnected,
++		 * clear the software rxsense status.
++		 */
++		if (!rx_sense)
++			hdmi->rxsense = false;
++
++		/*
++		 * Only set the software rxsense status when both
++		 * rxsense and hpd indicates we're connected.
++		 * This avoids what seems to be bad behaviour in
++		 * at least iMX6S versions of the phy.
++		 */
++		if (hpd)
++			hdmi->rxsense = true;
++
++		dw_hdmi_update_phy_mask(hdmi);
++	}
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_setup_rx_sense);
++
++static const struct dw_hdmi_phy_data dw_hdmi_phys[] = {
++	{
++		.type = DW_HDMI_PHY_DWC_HDMI_TX_PHY,
++		.name = "DWC HDMI TX PHY",
++		.gen = 1,
++	}, {
++		.type = DW_HDMI_PHY_DWC_MHL_PHY_HEAC,
++		.name = "DWC MHL PHY + HEAC PHY",
++		.gen = 2,
++		.has_svsret = true,
++		.configure = hdmi_phy_configure_dwc_hdmi_3d_tx,
++	}, {
++		.type = DW_HDMI_PHY_DWC_MHL_PHY,
++		.name = "DWC MHL PHY",
++		.gen = 2,
++		.has_svsret = true,
++		.configure = hdmi_phy_configure_dwc_hdmi_3d_tx,
++	}, {
++		.type = DW_HDMI_PHY_DWC_HDMI_3D_TX_PHY_HEAC,
++		.name = "DWC HDMI 3D TX PHY + HEAC PHY",
++		.gen = 2,
++		.configure = hdmi_phy_configure_dwc_hdmi_3d_tx,
++	}, {
++		.type = DW_HDMI_PHY_DWC_HDMI_3D_TX_PHY,
++		.name = "DWC HDMI 3D TX PHY",
++		.gen = 2,
++		.configure = hdmi_phy_configure_dwc_hdmi_3d_tx,
++	}, {
++		.type = DW_HDMI_PHY_DWC_HDMI20_TX_PHY,
++		.name = "DWC HDMI 2.0 TX PHY",
++		.gen = 2,
++		.has_svsret = true,
++		.configure = hdmi_phy_configure_dwc_hdmi_3d_tx,
++	}, {
++		.type = DW_HDMI_PHY_VENDOR_PHY,
++		.name = "Vendor PHY",
++	}
++};
++
++static int dw_hdmi_detect_phy(struct dw_hdmi *hdmi)
++{
++	unsigned int i;
++	u8 phy_type;
++
++	phy_type = hdmi->plat_data->phy_force_vendor ?
++				DW_HDMI_PHY_VENDOR_PHY :
++				hdmi_readb(hdmi, HDMI_CONFIG2_ID);
++
++	if (phy_type == DW_HDMI_PHY_VENDOR_PHY) {
++		/* Vendor PHYs require support from the glue layer. */
++		if (!hdmi->plat_data->phy_ops || !hdmi->plat_data->phy_name) {
++			dev_err(hdmi->dev,
++				"Vendor HDMI PHY not supported by glue layer\n");
++			return -ENODEV;
++		}
++
++		hdmi->phy.ops = hdmi->plat_data->phy_ops;
++		hdmi->phy.data = hdmi->plat_data->phy_data;
++		hdmi->phy.name = hdmi->plat_data->phy_name;
++		return 0;
++	}
++
++	/* Synopsys PHYs are handled internally. */
++	for (i = 0; i < ARRAY_SIZE(dw_hdmi_phys); ++i) {
++		if (dw_hdmi_phys[i].type == phy_type) {
++			hdmi->phy.ops = &dw_hdmi_synopsys_phy_ops;
++			hdmi->phy.name = dw_hdmi_phys[i].name;
++			hdmi->phy.data = (void *)&dw_hdmi_phys[i];
++
++			if (!dw_hdmi_phys[i].configure &&
++			    !hdmi->plat_data->configure_phy) {
++				dev_err(hdmi->dev, "%s requires platform support\n",
++					hdmi->phy.name);
++				return -ENODEV;
++			}
++
++			return 0;
++		}
++	}
++
++	dev_err(hdmi->dev, "Unsupported HDMI PHY type (%02x)\n", phy_type);
++	return -ENODEV;
++}
++
++static const struct regmap_config hdmi_regmap_8bit_config = {
++	.reg_bits	= 32,
++	.val_bits	= 8,
++	.reg_stride	= 1,
++	.max_register	= HDMI_I2CM_FS_SCL_LCNT_0_ADDR,
++};
++
++static const struct regmap_config hdmi_regmap_32bit_config = {
++	.reg_bits	= 32,
++	.val_bits	= 32,
++	.reg_stride	= 4,
++	.max_register	= HDMI_I2CM_FS_SCL_LCNT_0_ADDR << 2,
++};
++
++static void dw_hdmi_init_hw(struct dw_hdmi *hdmi)
++{
++	initialize_hdmi_ih_mutes(hdmi);
++
++	/*
++	 * Reset HDMI DDC I2C master controller and mute I2CM interrupts.
++	 * Even if we are using a separate i2c adapter doing this doesn't
++	 * hurt.
++	 */
++	dw_hdmi_i2c_init(hdmi);
++
++	if (hdmi->phy.ops->setup_hpd)
++		hdmi->phy.ops->setup_hpd(hdmi, hdmi->phy.data);
++}
++
++static int dw_hdmi_ioctl(struct vpl *vpl, unsigned int port,
++			 unsigned int cmd, void *data)
++{
++	struct dw_hdmi *hdmi = container_of(vpl, struct dw_hdmi, vpl);
++	struct drm_display_mode mode = {};
++	int ret;
++
++	if (hdmi->plat_data->vpl_ioctl) {
++		ret = hdmi->plat_data->vpl_ioctl(hdmi, hdmi->plat_data->priv_data, port, cmd, data);
++		if (ret)
++			return ret;
++	}
++
++	switch (cmd) {
++	case VPL_ENABLE:
++		hdmi->hdmi_data.enc_in_bus_format = MEDIA_BUS_FMT_FIXED;
++		hdmi->hdmi_data.enc_out_bus_format = MEDIA_BUS_FMT_FIXED;
++		fb_videomode_to_drm_display_mode(hdmi->mode, &mode);
++		ret = dw_hdmi_setup(hdmi, &mode);
++		if (ret)
++			return ret;
++		hdmi->disabled = false;
++		dw_hdmi_update_phy_mask(hdmi);
++		handle_plugged_change(hdmi, true);
++		return 0;
++	case VPL_DISABLE:
++		dw_hdmi_poweroff(hdmi);
++		return 0;
++	case VPL_PREPARE:
++		hdmi->mode = data;
++		fb_videomode_to_drm_display_mode(hdmi->mode, &mode);
++		if (hdmi->plat_data->mode_set)
++			hdmi->plat_data->mode_set(hdmi, hdmi->plat_data->priv_data, &mode);
++		return 0;
++	case VPL_GET_VIDEOMODES:
++		return dw_hdmi_get_modes(hdmi, data);
++	}
++
++	return 0;
++}
++
++/* -----------------------------------------------------------------------------
++ * Probe/remove API, used from platforms based on the DRM bridge API.
++ */
++
++bool dw_hdmi_bus_fmt_is_420(struct dw_hdmi *hdmi)
++{
++	return hdmi_bus_fmt_is_yuv420(hdmi->hdmi_data.enc_out_bus_format);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_bus_fmt_is_420);
++
++struct dw_hdmi *dw_hdmi_probe(struct device *dev,
++			      const struct dw_hdmi_plat_data *plat_data)
++{
++	struct device_node *np = dev->of_node;
++	struct dw_hdmi *hdmi;
++	struct resource *iores = NULL;
++	int ret;
++	u32 val = 1;
++	u8 prod_id0;
++	u8 prod_id1;
++
++	hdmi = xzalloc(sizeof(*hdmi));
++
++	hdmi->plat_data = plat_data;
++	hdmi->dev = dev;
++	hdmi->sample_rate = 48000;
++	hdmi->channels = 2;
++	hdmi->disabled = true;
++	hdmi->rxsense = true;
++	hdmi->phy_mask = (u8)~(HDMI_PHY_HPD | HDMI_PHY_RX_SENSE);
++	hdmi->mc_clkdis = 0x7f;
++	hdmi->last_connector_result = connector_status_disconnected;
++
++	hdmi->ddc_node = of_parse_phandle(np, "ddc-i2c-bus", 0);
++	if (!hdmi->ddc_node) {
++		dw_hdmi_i2c_adapter(hdmi);
++	}
++
++	if (!plat_data->regm) {
++		const struct regmap_config *reg_config;
++
++		of_property_read_u32(np, "reg-io-width", &val);
++		switch (val) {
++		case 4:
++			reg_config = &hdmi_regmap_32bit_config;
++			hdmi->reg_shift = 2;
++			break;
++		case 1:
++			reg_config = &hdmi_regmap_8bit_config;
++			break;
++		default:
++			dev_err(dev, "reg-io-width must be 1 or 4\n");
++			return ERR_PTR(-EINVAL);
++		}
++
++		iores = dev_request_mem_resource(dev, 0);
++		if (IS_ERR(iores))
++			return ERR_CAST(iores);
++		hdmi->regs = IOMEM(iores->start);
++
++		hdmi->regm = regmap_init_mmio(dev, hdmi->regs, reg_config);
++		if (IS_ERR(hdmi->regm)) {
++			dev_err(dev, "Failed to configure regmap\n");
++			ret = PTR_ERR(hdmi->regm);
++			goto err_res;
++		}
++	} else {
++		hdmi->regm = plat_data->regm;
++	}
++
++	hdmi->isfr_clk = clk_get(hdmi->dev, "isfr");
++	if (IS_ERR(hdmi->isfr_clk)) {
++		ret = PTR_ERR(hdmi->isfr_clk);
++		dev_err(hdmi->dev, "Unable to get HDMI isfr clk: %d\n", ret);
++		goto err_res;
++	}
++
++	ret = clk_prepare_enable(hdmi->isfr_clk);
++	if (ret) {
++		dev_err(hdmi->dev, "Cannot enable HDMI isfr clock: %d\n", ret);
++		goto err_res;
++	}
++
++	hdmi->iahb_clk = clk_get(hdmi->dev, "iahb");
++	if (IS_ERR(hdmi->iahb_clk)) {
++		ret = PTR_ERR(hdmi->iahb_clk);
++		dev_err(hdmi->dev, "Unable to get HDMI iahb clk: %d\n", ret);
++		goto err_isfr;
++	}
++
++	ret = clk_prepare_enable(hdmi->iahb_clk);
++	if (ret) {
++		dev_err(hdmi->dev, "Cannot enable HDMI iahb clock: %d\n", ret);
++		goto err_isfr;
++	}
++
++	hdmi->cec_clk = clk_get(hdmi->dev, "cec");
++	if (PTR_ERR(hdmi->cec_clk) == -ENOENT) {
++		hdmi->cec_clk = NULL;
++	} else if (IS_ERR(hdmi->cec_clk)) {
++		ret = PTR_ERR(hdmi->cec_clk);
++		if (ret != -EPROBE_DEFER)
++			dev_err(hdmi->dev, "Cannot get HDMI cec clock: %d\n",
++				ret);
++
++		hdmi->cec_clk = NULL;
++		goto err_iahb;
++	} else {
++		ret = clk_prepare_enable(hdmi->cec_clk);
++		if (ret) {
++			dev_err(hdmi->dev, "Cannot enable HDMI cec clock: %d\n",
++				ret);
++			goto err_iahb;
++		}
++	}
++
++	/* Product and revision IDs */
++	hdmi->version = (hdmi_readb(hdmi, HDMI_DESIGN_ID) << 8)
++		      | (hdmi_readb(hdmi, HDMI_REVISION_ID) << 0);
++	prod_id0 = hdmi_readb(hdmi, HDMI_PRODUCT_ID0);
++	prod_id1 = hdmi_readb(hdmi, HDMI_PRODUCT_ID1);
++
++	if (prod_id0 != HDMI_PRODUCT_ID0_HDMI_TX ||
++	    (prod_id1 & ~HDMI_PRODUCT_ID1_HDCP) != HDMI_PRODUCT_ID1_HDMI_TX) {
++		dev_err(dev, "Unsupported HDMI controller (%04x:%02x:%02x)\n",
++			hdmi->version, prod_id0, prod_id1);
++		ret = -ENODEV;
++		goto err_iahb;
++	}
++
++	ret = dw_hdmi_detect_phy(hdmi);
++	if (ret < 0)
++		goto err_iahb;
++
++	dev_info(dev, "Detected HDMI TX controller v%x.%03x %s HDCP (%s)\n",
++		 hdmi->version >> 12, hdmi->version & 0xfff,
++		 prod_id1 & HDMI_PRODUCT_ID1_HDCP ? "with" : "without",
++		 hdmi->phy.name);
++
++	dw_hdmi_init_hw(hdmi);
++
++	/*
++	 * To prevent overflows in HDMI_IH_FC_STAT2, set the clk regenerator
++	 * N and cts values before enabling phy
++	 */
++	hdmi_init_clk_regenerator(hdmi);
++
++	hdmi->vpl.node = np;
++	hdmi->vpl.ioctl = dw_hdmi_ioctl;
++	ret = vpl_register(&hdmi->vpl);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return hdmi;
++
++err_res:
++err_iahb:
++	clk_disable_unprepare(hdmi->iahb_clk);
++	clk_disable_unprepare(hdmi->cec_clk);
++err_isfr:
++	clk_disable_unprepare(hdmi->isfr_clk);
++
++	return ERR_PTR(ret);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_probe);
++
++/* -----------------------------------------------------------------------------
++ * Bind/unbind API, used from platforms based on the component framework.
++ */
++struct dw_hdmi *dw_hdmi_bind(struct device *dev,
++			     const struct dw_hdmi_plat_data *plat_data)
++{
++	struct dw_hdmi *hdmi;
++
++	hdmi = dw_hdmi_probe(dev, plat_data);
++	if (IS_ERR(hdmi))
++		return hdmi;
++
++	return hdmi;
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_bind);
++
++void dw_hdmi_unbind(struct dw_hdmi *hdmi)
++{
++	dw_hdmi_remove(hdmi);
++}
++EXPORT_SYMBOL_GPL(dw_hdmi_unbind);
++
++MODULE_AUTHOR("Sascha Hauer <s.hauer@pengutronix.de>");
 +MODULE_AUTHOR("Andy Yan <andy.yan@rock-chips.com>");
 +MODULE_AUTHOR("Yakir Yang <ykk@rock-chips.com>");
-+MODULE_DESCRIPTION("IMX6 Specific DW-HDMI Driver Extension");
++MODULE_AUTHOR("Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>");
++MODULE_DESCRIPTION("DW HDMI transmitter driver");
 +MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:dwhdmi-imx");
-diff --git a/drivers/video/imx-ipu-v3/imx-hdmi.c b/drivers/video/imx-ipu-v3/imx-hdmi.c
-deleted file mode 100644
-index 2d5fd98666..0000000000
---- a/drivers/video/imx-ipu-v3/imx-hdmi.c
-+++ /dev/null
-@@ -1,1360 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * Designware High-Definition Multimedia Interface (HDMI) driver
-- *
-- * Copyright (C) 2010, Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-- * Copyright (C) 2011-2013 Freescale Semiconductor, Inc.
-- */
--#include <common.h>
--#include <fb.h>
--#include <io.h>
--#include <driver.h>
--#include <malloc.h>
--#include <errno.h>
--#include <init.h>
--#include <linux/clk.h>
--#include <linux/err.h>
--#include <linux/math64.h>
--#include <i2c/i2c.h>
--#include <video/media-bus-format.h>
--#include <video/vpl.h>
--#include <mach/imx/imx6-regs.h>
--#include <mach/imx/imx53-regs.h>
--
--#include "imx-ipu-v3.h"
--#include "ipuv3-plane.h"
--#include "imx-hdmi.h"
--
--#define HDMI_EDID_LEN		512
--
--#define RGB			0
--#define YCBCR444		1
--#define YCBCR422_16BITS		2
--#define YCBCR422_8BITS		3
--#define XVYCC444		4
--
--enum hdmi_colorimetry {
--	HDMI_COLORIMETRY_NONE,
--	HDMI_COLORIMETRY_ITU_601,
--	HDMI_COLORIMETRY_ITU_709,
--	HDMI_COLORIMETRY_EXTENDED,
--};
--
--enum hdmi_datamap {
--	RGB444_8B = 0x01,
--	RGB444_10B = 0x03,
--	RGB444_12B = 0x05,
--	RGB444_16B = 0x07,
--	YCbCr444_8B = 0x09,
--	YCbCr444_10B = 0x0B,
--	YCbCr444_12B = 0x0D,
--	YCbCr444_16B = 0x0F,
--	YCbCr422_8B = 0x16,
--	YCbCr422_10B = 0x14,
--	YCbCr422_12B = 0x12,
--};
--
--enum dw_hdmi_devtype {
--	IMX6Q_HDMI,
--	IMX6DL_HDMI,
--};
--
--static const u16 csc_coeff_default[3][4] = {
--	{ 0x2000, 0x0000, 0x0000, 0x0000 },
--	{ 0x0000, 0x2000, 0x0000, 0x0000 },
--	{ 0x0000, 0x0000, 0x2000, 0x0000 }
--};
--
--static const u16 csc_coeff_rgb_out_eitu601[3][4] = {
--	{ 0x2000, 0x6926, 0x74fd, 0x010e },
--	{ 0x2000, 0x2cdd, 0x0000, 0x7e9a },
--	{ 0x2000, 0x0000, 0x38b4, 0x7e3b }
--};
--
--static const u16 csc_coeff_rgb_out_eitu709[3][4] = {
--	{ 0x2000, 0x7106, 0x7a02, 0x00a7 },
--	{ 0x2000, 0x3264, 0x0000, 0x7e6d },
--	{ 0x2000, 0x0000, 0x3b61, 0x7e25 }
--};
--
--static const u16 csc_coeff_rgb_in_eitu601[3][4] = {
--	{ 0x2591, 0x1322, 0x074b, 0x0000 },
--	{ 0x6535, 0x2000, 0x7acc, 0x0200 },
--	{ 0x6acd, 0x7534, 0x2000, 0x0200 }
--};
--
--static const u16 csc_coeff_rgb_in_eitu709[3][4] = {
--	{ 0x2dc5, 0x0d9b, 0x049e, 0x0000 },
--	{ 0x62f0, 0x2000, 0x7d11, 0x0200 },
--	{ 0x6756, 0x78ab, 0x2000, 0x0200 }
--};
--
--struct hdmi_vmode {
--	bool mdvi;
--	bool mhsyncpolarity;
--	bool mvsyncpolarity;
--	bool minterlaced;
--	bool mdataenablepolarity;
--
--	unsigned int mpixelclock;
--	unsigned int mpixelrepetitioninput;
--	unsigned int mpixelrepetitionoutput;
--};
--
--struct hdmi_data_info {
--	unsigned int enc_in_format;
--	unsigned int enc_out_format;
--	unsigned int enc_color_depth;
--	unsigned int colorimetry;
--	unsigned int pix_repet_factor;
--	unsigned int hdcp_enable;
--	struct hdmi_vmode video_mode;
--};
--
--struct dw_hdmi {
--	enum dw_hdmi_devtype dev_type;
--	struct device *dev;
--	struct clk *isfr_clk;
--	struct clk *iahb_clk;
--
--	bool connected;
--
--	struct hdmi_data_info hdmi_data;
--	int vic;
--
--	u8 edid[HDMI_EDID_LEN];
--	bool cable_plugin;
--
--	bool phy_enabled;
--
--	struct device_node *ddc_node;;
--	void __iomem *regs;
--
--	unsigned int sample_rate;
--	int ratio;
--
--	struct fb_videomode *mode;
--
--	struct vpl vpl;
--};
--
--static void dw_hdmi_set_ipu_di_mux(struct dw_hdmi *hdmi, int ipu_di)
--{
--	void __iomem *gpr3 = (void *)MX6_IOMUXC_BASE_ADDR + 0xc;
--	uint32_t val;
--
--	dev_info(hdmi->dev, "setup hdmi mux to %d\n", ipu_di);
--
--	val = readl(gpr3);
--	val &= ~(3 << 2);
--	val |= ipu_di << 2;
--	writel(val, gpr3);
--}
--
--static inline void hdmi_writeb(struct dw_hdmi *hdmi, u8 val, int offset)
--{
--	writeb(val, hdmi->regs + offset);
--}
--
--static inline u8 hdmi_readb(struct dw_hdmi *hdmi, int offset)
--{
--	return readb(hdmi->regs + offset);
--}
--
--static void hdmi_modb(struct dw_hdmi *hdmi, u8 data, u8 mask, unsigned reg)
--{
--	u8 val = hdmi_readb(hdmi, reg) & ~mask;
--
--	val |= data & mask;
--	hdmi_writeb(hdmi, val, reg);
--}
--
--static void hdmi_mask_writeb(struct dw_hdmi *hdmi, u8 data, unsigned int reg,
--			     u8 shift, u8 mask)
--{
--	hdmi_modb(hdmi, data << shift, mask, reg);
--}
--
--static void hdmi_set_cts_n(struct dw_hdmi *hdmi, unsigned int cts,
--			   unsigned int n)
--{
--	/* Must be set/cleared first */
--	hdmi_modb(hdmi, 0, HDMI_AUD_CTS3_CTS_MANUAL, HDMI_AUD_CTS3);
--
--	/* nshift factor = 0 */
--	hdmi_modb(hdmi, 0, HDMI_AUD_CTS3_N_SHIFT_MASK, HDMI_AUD_CTS3);
--
--	hdmi_writeb(hdmi, ((cts >> 16) & HDMI_AUD_CTS3_AUDCTS19_16_MASK) |
--		    HDMI_AUD_CTS3_CTS_MANUAL, HDMI_AUD_CTS3);
--	hdmi_writeb(hdmi, (cts >> 8) & 0xff, HDMI_AUD_CTS2);
--	hdmi_writeb(hdmi, cts & 0xff, HDMI_AUD_CTS1);
--
--	hdmi_writeb(hdmi, (n >> 16) & 0x0f, HDMI_AUD_N3);
--	hdmi_writeb(hdmi, (n >> 8) & 0xff, HDMI_AUD_N2);
--	hdmi_writeb(hdmi, n & 0xff, HDMI_AUD_N1);
--}
--
--static unsigned int hdmi_compute_n(unsigned int freq, unsigned long pixel_clk,
--				   unsigned int ratio)
--{
--	unsigned int n = (128 * freq) / 1000;
--
--	switch (freq) {
--	case 32000:
--		if (pixel_clk == 25170000)
--			n = (ratio == 150) ? 9152 : 4576;
--		else if (pixel_clk == 27020000)
--			n = (ratio == 150) ? 8192 : 4096;
--		else if (pixel_clk == 74170000 || pixel_clk == 148350000)
--			n = 11648;
--		else
--			n = 4096;
--		break;
--
--	case 44100:
--		if (pixel_clk == 25170000)
--			n = 7007;
--		else if (pixel_clk == 74170000)
--			n = 17836;
--		else if (pixel_clk == 148350000)
--			n = (ratio == 150) ? 17836 : 8918;
--		else
--			n = 6272;
--		break;
--
--	case 48000:
--		if (pixel_clk == 25170000)
--			n = (ratio == 150) ? 9152 : 6864;
--		else if (pixel_clk == 27020000)
--			n = (ratio == 150) ? 8192 : 6144;
--		else if (pixel_clk == 74170000)
--			n = 11648;
--		else if (pixel_clk == 148350000)
--			n = (ratio == 150) ? 11648 : 5824;
--		else
--			n = 6144;
--		break;
--
--	case 88200:
--		n = hdmi_compute_n(44100, pixel_clk, ratio) * 2;
--		break;
--
--	case 96000:
--		n = hdmi_compute_n(48000, pixel_clk, ratio) * 2;
--		break;
--
--	case 176400:
--		n = hdmi_compute_n(44100, pixel_clk, ratio) * 4;
--		break;
--
--	case 192000:
--		n = hdmi_compute_n(48000, pixel_clk, ratio) * 4;
--		break;
--
--	default:
--		break;
--	}
--
--	return n;
--}
--
--static unsigned int hdmi_compute_cts(unsigned int freq, unsigned long pixel_clk,
--				     unsigned int ratio)
--{
--	unsigned int cts = 0;
--
--	pr_debug("%s: freq: %d pixel_clk: %ld ratio: %d\n", __func__, freq,
--		 pixel_clk, ratio);
--
--	switch (freq) {
--	case 32000:
--		if (pixel_clk == 297000000) {
--			cts = 222750;
--			break;
--		}
--	case 48000:
--	case 96000:
--	case 192000:
--		switch (pixel_clk) {
--		case 25200000:
--		case 27000000:
--		case 54000000:
--		case 74250000:
--		case 148500000:
--			cts = pixel_clk / 1000;
--			break;
--		case 297000000:
--			cts = 247500;
--			break;
--		/*
--		 * All other TMDS clocks are not supported by
--		 * DWC_hdmi_tx. The TMDS clocks divided or
--		 * multiplied by 1,001 coefficients are not
--		 * supported.
--		 */
--		default:
--			break;
--		}
--		break;
--	case 44100:
--	case 88200:
--	case 176400:
--		switch (pixel_clk) {
--		case 25200000:
--			cts = 28000;
--			break;
--		case 27000000:
--			cts = 30000;
--			break;
--		case 54000000:
--			cts = 60000;
--			break;
--		case 74250000:
--			cts = 82500;
--			break;
--		case 148500000:
--			cts = 165000;
--			break;
--		case 297000000:
--			cts = 247500;
--			break;
--		default:
--			break;
--		}
--		break;
--	default:
--		break;
--	}
--	if (ratio == 100)
--		return cts;
--	return (cts * ratio) / 100;
--}
--
--static void hdmi_set_clk_regenerator(struct dw_hdmi *hdmi,
--				     unsigned long pixel_clk)
--{
--	unsigned int clk_n, clk_cts;
--
--	clk_n = hdmi_compute_n(hdmi->sample_rate, pixel_clk,
--			       hdmi->ratio);
--	clk_cts = hdmi_compute_cts(hdmi->sample_rate, pixel_clk,
--				   hdmi->ratio);
--
--	if (!clk_cts) {
--		dev_dbg(hdmi->dev, "%s: pixel clock not supported: %lu\n",
--			__func__, pixel_clk);
--		return;
--	}
--
--	dev_dbg(hdmi->dev, "%s: samplerate=%d  ratio=%d  pixelclk=%lu  N=%d cts=%d\n",
--		__func__, hdmi->sample_rate, hdmi->ratio,
--		pixel_clk, clk_n, clk_cts);
--
--	hdmi_set_cts_n(hdmi, clk_cts, clk_n);
--}
--
--static void hdmi_init_clk_regenerator(struct dw_hdmi *hdmi)
--{
--	hdmi_set_clk_regenerator(hdmi, 74250000);
--}
--
--/*
-- * this submodule is responsible for the video data synchronization.
-- * for example, for RGB 4:4:4 input, the data map is defined as
-- *			pin{47~40} <==> R[7:0]
-- *			pin{31~24} <==> G[7:0]
-- *			pin{15~8}  <==> B[7:0]
-- */
--static void hdmi_video_sample(struct dw_hdmi *hdmi)
--{
--	int color_format = 0;
--	u8 val;
--
--	if (hdmi->hdmi_data.enc_in_format == RGB) {
--		if (hdmi->hdmi_data.enc_color_depth == 8)
--			color_format = 0x01;
--		else if (hdmi->hdmi_data.enc_color_depth == 10)
--			color_format = 0x03;
--		else if (hdmi->hdmi_data.enc_color_depth == 12)
--			color_format = 0x05;
--		else if (hdmi->hdmi_data.enc_color_depth == 16)
--			color_format = 0x07;
--		else
--			return;
--	} else if (hdmi->hdmi_data.enc_in_format == YCBCR444) {
--		if (hdmi->hdmi_data.enc_color_depth == 8)
--			color_format = 0x09;
--		else if (hdmi->hdmi_data.enc_color_depth == 10)
--			color_format = 0x0B;
--		else if (hdmi->hdmi_data.enc_color_depth == 12)
--			color_format = 0x0D;
--		else if (hdmi->hdmi_data.enc_color_depth == 16)
--			color_format = 0x0F;
--		else
--			return;
--	} else if (hdmi->hdmi_data.enc_in_format == YCBCR422_8BITS) {
--		if (hdmi->hdmi_data.enc_color_depth == 8)
--			color_format = 0x16;
--		else if (hdmi->hdmi_data.enc_color_depth == 10)
--			color_format = 0x14;
--		else if (hdmi->hdmi_data.enc_color_depth == 12)
--			color_format = 0x12;
--		else
--			return;
--	}
--
--	val = HDMI_TX_INVID0_INTERNAL_DE_GENERATOR_DISABLE |
--		((color_format << HDMI_TX_INVID0_VIDEO_MAPPING_OFFSET) &
--		HDMI_TX_INVID0_VIDEO_MAPPING_MASK);
--	hdmi_writeb(hdmi, val, HDMI_TX_INVID0);
--
--	/* Enable TX stuffing: When DE is inactive, fix the output data to 0 */
--	val = HDMI_TX_INSTUFFING_BDBDATA_STUFFING_ENABLE |
--		HDMI_TX_INSTUFFING_RCRDATA_STUFFING_ENABLE |
--		HDMI_TX_INSTUFFING_GYDATA_STUFFING_ENABLE;
--	hdmi_writeb(hdmi, val, HDMI_TX_INSTUFFING);
--	hdmi_writeb(hdmi, 0x0, HDMI_TX_GYDATA0);
--	hdmi_writeb(hdmi, 0x0, HDMI_TX_GYDATA1);
--	hdmi_writeb(hdmi, 0x0, HDMI_TX_RCRDATA0);
--	hdmi_writeb(hdmi, 0x0, HDMI_TX_RCRDATA1);
--	hdmi_writeb(hdmi, 0x0, HDMI_TX_BCBDATA0);
--	hdmi_writeb(hdmi, 0x0, HDMI_TX_BCBDATA1);
--}
--
--static int is_color_space_conversion(struct dw_hdmi *hdmi)
--{
--	return hdmi->hdmi_data.enc_in_format != hdmi->hdmi_data.enc_out_format;
--}
--
--static int is_color_space_decimation(struct dw_hdmi *hdmi)
--{
--	if (hdmi->hdmi_data.enc_out_format != YCBCR422_8BITS)
--		return 0;
--	if (hdmi->hdmi_data.enc_in_format == RGB ||
--	    hdmi->hdmi_data.enc_in_format == YCBCR444)
--		return 1;
--	return 0;
--}
--
--static int is_color_space_interpolation(struct dw_hdmi *hdmi)
--{
--	if (hdmi->hdmi_data.enc_in_format != YCBCR422_8BITS)
--		return 0;
--	if (hdmi->hdmi_data.enc_out_format == RGB ||
--	    hdmi->hdmi_data.enc_out_format == YCBCR444)
--		return 1;
--	return 0;
--}
--
--static void dw_hdmi_update_csc_coeffs(struct dw_hdmi *hdmi)
--{
--	const u16 (*csc_coeff)[3][4] = &csc_coeff_default;
--	unsigned i;
--	u32 csc_scale = 1;
--
--	if (is_color_space_conversion(hdmi)) {
--		if (hdmi->hdmi_data.enc_out_format == RGB) {
--			if (hdmi->hdmi_data.colorimetry ==
--					HDMI_COLORIMETRY_ITU_601)
--				csc_coeff = &csc_coeff_rgb_out_eitu601;
--			else
--				csc_coeff = &csc_coeff_rgb_out_eitu709;
--		} else if (hdmi->hdmi_data.enc_in_format == RGB) {
--			if (hdmi->hdmi_data.colorimetry ==
--					HDMI_COLORIMETRY_ITU_601)
--				csc_coeff = &csc_coeff_rgb_in_eitu601;
--			else
--				csc_coeff = &csc_coeff_rgb_in_eitu709;
--			csc_scale = 0;
--		}
--	}
--
--	/* The CSC registers are sequential, alternating MSB then LSB */
--	for (i = 0; i < ARRAY_SIZE(csc_coeff_default[0]); i++) {
--		u16 coeff_a = (*csc_coeff)[0][i];
--		u16 coeff_b = (*csc_coeff)[1][i];
--		u16 coeff_c = (*csc_coeff)[2][i];
--
--		hdmi_writeb(hdmi, coeff_a & 0xff, HDMI_CSC_COEF_A1_LSB + i * 2);
--		hdmi_writeb(hdmi, coeff_a >> 8, HDMI_CSC_COEF_A1_MSB + i * 2);
--		hdmi_writeb(hdmi, coeff_b & 0xff, HDMI_CSC_COEF_B1_LSB + i * 2);
--		hdmi_writeb(hdmi, coeff_b >> 8, HDMI_CSC_COEF_B1_MSB + i * 2);
--		hdmi_writeb(hdmi, coeff_c & 0xff, HDMI_CSC_COEF_C1_LSB + i * 2);
--		hdmi_writeb(hdmi, coeff_c >> 8, HDMI_CSC_COEF_C1_MSB + i * 2);
--	}
--
--	hdmi_modb(hdmi, csc_scale, HDMI_CSC_SCALE_CSCSCALE_MASK,
--		  HDMI_CSC_SCALE);
--}
--
--static void hdmi_video_csc(struct dw_hdmi *hdmi)
--{
--	int color_depth = 0;
--	int interpolation = HDMI_CSC_CFG_INTMODE_DISABLE;
--	int decimation = 0;
--
--	/* YCC422 interpolation to 444 mode */
--	if (is_color_space_interpolation(hdmi))
--		interpolation = HDMI_CSC_CFG_INTMODE_CHROMA_INT_FORMULA1;
--	else if (is_color_space_decimation(hdmi))
--		decimation = HDMI_CSC_CFG_DECMODE_CHROMA_INT_FORMULA3;
--
--	if (hdmi->hdmi_data.enc_color_depth == 8)
--		color_depth = HDMI_CSC_SCALE_CSC_COLORDE_PTH_24BPP;
--	else if (hdmi->hdmi_data.enc_color_depth == 10)
--		color_depth = HDMI_CSC_SCALE_CSC_COLORDE_PTH_30BPP;
--	else if (hdmi->hdmi_data.enc_color_depth == 12)
--		color_depth = HDMI_CSC_SCALE_CSC_COLORDE_PTH_36BPP;
--	else if (hdmi->hdmi_data.enc_color_depth == 16)
--		color_depth = HDMI_CSC_SCALE_CSC_COLORDE_PTH_48BPP;
--	else
--		return;
--
--	/* Configure the CSC registers */
--	hdmi_writeb(hdmi, interpolation | decimation, HDMI_CSC_CFG);
--	hdmi_modb(hdmi, color_depth, HDMI_CSC_SCALE_CSC_COLORDE_PTH_MASK,
--		  HDMI_CSC_SCALE);
--
--	dw_hdmi_update_csc_coeffs(hdmi);
--}
--
--/*
-- * HDMI video packetizer is used to packetize the data.
-- * for example, if input is YCC422 mode or repeater is used,
-- * data should be repacked this module can be bypassed.
-- */
--static void hdmi_video_packetize(struct dw_hdmi *hdmi)
--{
--	unsigned int color_depth = 0;
--	unsigned int remap_size = HDMI_VP_REMAP_YCC422_16bit;
--	unsigned int output_select = HDMI_VP_CONF_OUTPUT_SELECTOR_PP;
--	struct hdmi_data_info *hdmi_data = &hdmi->hdmi_data;
--	u8 val, vp_conf;
--
--	if (hdmi_data->enc_out_format == RGB ||
--	    hdmi_data->enc_out_format == YCBCR444) {
--		if (!hdmi_data->enc_color_depth) {
--			output_select = HDMI_VP_CONF_OUTPUT_SELECTOR_BYPASS;
--		} else if (hdmi_data->enc_color_depth == 8) {
--			color_depth = 4;
--			output_select = HDMI_VP_CONF_OUTPUT_SELECTOR_BYPASS;
--		} else if (hdmi_data->enc_color_depth == 10) {
--			color_depth = 5;
--		} else if (hdmi_data->enc_color_depth == 12) {
--			color_depth = 6;
--		} else if (hdmi_data->enc_color_depth == 16) {
--			color_depth = 7;
--		} else {
--			return;
--		}
--	} else if (hdmi_data->enc_out_format == YCBCR422_8BITS) {
--		if (!hdmi_data->enc_color_depth ||
--		    hdmi_data->enc_color_depth == 8)
--			remap_size = HDMI_VP_REMAP_YCC422_16bit;
--		else if (hdmi_data->enc_color_depth == 10)
--			remap_size = HDMI_VP_REMAP_YCC422_20bit;
--		else if (hdmi_data->enc_color_depth == 12)
--			remap_size = HDMI_VP_REMAP_YCC422_24bit;
--		else
--			return;
--		output_select = HDMI_VP_CONF_OUTPUT_SELECTOR_YCC422;
--	} else {
--		return;
--	}
--
--	/* set the packetizer registers */
--	val = ((color_depth << HDMI_VP_PR_CD_COLOR_DEPTH_OFFSET) &
--		HDMI_VP_PR_CD_COLOR_DEPTH_MASK) |
--		((hdmi_data->pix_repet_factor <<
--		HDMI_VP_PR_CD_DESIRED_PR_FACTOR_OFFSET) &
--		HDMI_VP_PR_CD_DESIRED_PR_FACTOR_MASK);
--	hdmi_writeb(hdmi, val, HDMI_VP_PR_CD);
--
--	hdmi_modb(hdmi, HDMI_VP_STUFF_PR_STUFFING_STUFFING_MODE,
--		  HDMI_VP_STUFF_PR_STUFFING_MASK, HDMI_VP_STUFF);
--
--	/* Data from pixel repeater block */
--	if (hdmi_data->pix_repet_factor > 1) {
--		vp_conf = HDMI_VP_CONF_PR_EN_ENABLE |
--			  HDMI_VP_CONF_BYPASS_SELECT_PIX_REPEATER;
--	} else { /* data from packetizer block */
--		vp_conf = HDMI_VP_CONF_PR_EN_DISABLE |
--			  HDMI_VP_CONF_BYPASS_SELECT_VID_PACKETIZER;
--	}
--
--	hdmi_modb(hdmi, vp_conf,
--		  HDMI_VP_CONF_PR_EN_MASK |
--		  HDMI_VP_CONF_BYPASS_SELECT_MASK, HDMI_VP_CONF);
--
--	hdmi_modb(hdmi, 1 << HDMI_VP_STUFF_IDEFAULT_PHASE_OFFSET,
--		  HDMI_VP_STUFF_IDEFAULT_PHASE_MASK, HDMI_VP_STUFF);
--
--	hdmi_writeb(hdmi, remap_size, HDMI_VP_REMAP);
--
--	if (output_select == HDMI_VP_CONF_OUTPUT_SELECTOR_PP) {
--		vp_conf = HDMI_VP_CONF_BYPASS_EN_DISABLE |
--			  HDMI_VP_CONF_PP_EN_ENABLE |
--			  HDMI_VP_CONF_YCC422_EN_DISABLE;
--	} else if (output_select == HDMI_VP_CONF_OUTPUT_SELECTOR_YCC422) {
--		vp_conf = HDMI_VP_CONF_BYPASS_EN_DISABLE |
--			  HDMI_VP_CONF_PP_EN_DISABLE |
--			  HDMI_VP_CONF_YCC422_EN_ENABLE;
--	} else if (output_select == HDMI_VP_CONF_OUTPUT_SELECTOR_BYPASS) {
--		vp_conf = HDMI_VP_CONF_BYPASS_EN_ENABLE |
--			  HDMI_VP_CONF_PP_EN_DISABLE |
--			  HDMI_VP_CONF_YCC422_EN_DISABLE;
--	} else {
--		return;
--	}
--
--	hdmi_modb(hdmi, vp_conf,
--		  HDMI_VP_CONF_BYPASS_EN_MASK | HDMI_VP_CONF_PP_EN_ENMASK |
--		  HDMI_VP_CONF_YCC422_EN_MASK, HDMI_VP_CONF);
--
--	hdmi_modb(hdmi, HDMI_VP_STUFF_PP_STUFFING_STUFFING_MODE |
--			HDMI_VP_STUFF_YCC422_STUFFING_STUFFING_MODE,
--		  HDMI_VP_STUFF_PP_STUFFING_MASK |
--		  HDMI_VP_STUFF_YCC422_STUFFING_MASK, HDMI_VP_STUFF);
--
--	hdmi_modb(hdmi, output_select, HDMI_VP_CONF_OUTPUT_SELECTOR_MASK,
--		  HDMI_VP_CONF);
--}
--
--static inline void hdmi_phy_test_clear(struct dw_hdmi *hdmi,
--				       unsigned char bit)
--{
--	hdmi_modb(hdmi, bit << HDMI_PHY_TST0_TSTCLR_OFFSET,
--		  HDMI_PHY_TST0_TSTCLR_MASK, HDMI_PHY_TST0);
--}
--
--static inline void hdmi_phy_test_enable(struct dw_hdmi *hdmi,
--					unsigned char bit)
--{
--	hdmi_modb(hdmi, bit << HDMI_PHY_TST0_TSTEN_OFFSET,
--		  HDMI_PHY_TST0_TSTEN_MASK, HDMI_PHY_TST0);
--}
--
--static inline void hdmi_phy_test_clock(struct dw_hdmi *hdmi,
--				       unsigned char bit)
--{
--	hdmi_modb(hdmi, bit << HDMI_PHY_TST0_TSTCLK_OFFSET,
--		  HDMI_PHY_TST0_TSTCLK_MASK, HDMI_PHY_TST0);
--}
--
--static inline void hdmi_phy_test_din(struct dw_hdmi *hdmi,
--				     unsigned char bit)
--{
--	hdmi_writeb(hdmi, bit, HDMI_PHY_TST1);
--}
--
--static inline void hdmi_phy_test_dout(struct dw_hdmi *hdmi,
--				      unsigned char bit)
--{
--	hdmi_writeb(hdmi, bit, HDMI_PHY_TST2);
--}
--
--static bool hdmi_phy_wait_i2c_done(struct dw_hdmi *hdmi, int msec)
--{
--	u32 val;
--
--	while ((val = hdmi_readb(hdmi, HDMI_IH_I2CMPHY_STAT0) & 0x3) == 0) {
--		if (msec-- == 0)
--			return false;
--		udelay(1000);
--	}
--	hdmi_writeb(hdmi, val, HDMI_IH_I2CMPHY_STAT0);
--
--	return true;
--}
--
--static void __hdmi_phy_i2c_write(struct dw_hdmi *hdmi, unsigned short data,
--				 unsigned char addr)
--{
--	hdmi_writeb(hdmi, 0xFF, HDMI_IH_I2CMPHY_STAT0);
--	hdmi_writeb(hdmi, addr, HDMI_PHY_I2CM_ADDRESS_ADDR);
--	hdmi_writeb(hdmi, (unsigned char)(data >> 8),
--		    HDMI_PHY_I2CM_DATAO_1_ADDR);
--	hdmi_writeb(hdmi, (unsigned char)(data >> 0),
--		    HDMI_PHY_I2CM_DATAO_0_ADDR);
--	hdmi_writeb(hdmi, HDMI_PHY_I2CM_OPERATION_ADDR_WRITE,
--		    HDMI_PHY_I2CM_OPERATION_ADDR);
--	hdmi_phy_wait_i2c_done(hdmi, 1000);
--}
--
--static int hdmi_phy_i2c_write(struct dw_hdmi *hdmi, unsigned short data,
--			      unsigned char addr)
--{
--	__hdmi_phy_i2c_write(hdmi, data, addr);
--	return 0;
--}
--
--static void dw_hdmi_phy_enable_power(struct dw_hdmi *hdmi, u8 enable)
--{
--	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
--			 HDMI_PHY_CONF0_PDZ_OFFSET,
--			 HDMI_PHY_CONF0_PDZ_MASK);
--}
--
--static void dw_hdmi_phy_enable_tmds(struct dw_hdmi *hdmi, u8 enable)
--{
--	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
--			 HDMI_PHY_CONF0_ENTMDS_OFFSET,
--			 HDMI_PHY_CONF0_ENTMDS_MASK);
--}
--
--static void dw_hdmi_phy_gen2_pddq(struct dw_hdmi *hdmi, u8 enable)
--{
--	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
--			 HDMI_PHY_CONF0_GEN2_PDDQ_OFFSET,
--			 HDMI_PHY_CONF0_GEN2_PDDQ_MASK);
--}
--
--static void dw_hdmi_phy_gen2_txpwron(struct dw_hdmi *hdmi, u8 enable)
--{
--	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
--			 HDMI_PHY_CONF0_GEN2_TXPWRON_OFFSET,
--			 HDMI_PHY_CONF0_GEN2_TXPWRON_MASK);
--}
--
--static void dw_hdmi_phy_sel_data_en_pol(struct dw_hdmi *hdmi, u8 enable)
--{
--	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
--			 HDMI_PHY_CONF0_SELDATAENPOL_OFFSET,
--			 HDMI_PHY_CONF0_SELDATAENPOL_MASK);
--}
--
--static void dw_hdmi_phy_sel_interface_control(struct dw_hdmi *hdmi, u8 enable)
--{
--	hdmi_mask_writeb(hdmi, enable, HDMI_PHY_CONF0,
--			 HDMI_PHY_CONF0_SELDIPIF_OFFSET,
--			 HDMI_PHY_CONF0_SELDIPIF_MASK);
--}
--
--enum {
--	DW_HDMI_RES_8,
--	DW_HDMI_RES_10,
--	DW_HDMI_RES_12,
--	DW_HDMI_RES_MAX,
--};
--
--struct mpll_config {
--	unsigned long mpixelclock;
--	struct {
--		u16 cpce;
--		u16 gmp;
--	} res[DW_HDMI_RES_MAX];
--};
--
--static const struct mpll_config mpll_config[] = {
--	{
--		45250000, {
--			{ 0x01e0, 0x0000 },
--			{ 0x21e1, 0x0000 },
--			{ 0x41e2, 0x0000 }
--		},
--	}, {
--		92500000, {
--			{ 0x0140, 0x0005 },
--			{ 0x2141, 0x0005 },
--			{ 0x4142, 0x0005 },
--		},
--	}, {
--		148500000, {
--			{ 0x00a0, 0x000a },
--			{ 0x20a1, 0x000a },
--			{ 0x40a2, 0x000a },
--		},
--	}, {
--		~0UL, {
--			{ 0x00a0, 0x000a },
--			{ 0x2001, 0x000f },
--			{ 0x4002, 0x000f },
--		},
--	}
--};
--
--struct curr_ctrl {
--	unsigned long mpixelclock;
--	u16 curr[DW_HDMI_RES_MAX];
--};
--
--static const struct curr_ctrl curr_ctrl[] = {
--	/*	pixelclk     bpp8    bpp10   bpp12 */
--	{
--		 54000000, { 0x091c, 0x091c, 0x06dc },
--	}, {
--		 58400000, { 0x091c, 0x06dc, 0x06dc },
--	}, {
--		 72000000, { 0x06dc, 0x06dc, 0x091c },
--	}, {
--		 74250000, { 0x06dc, 0x0b5c, 0x091c },
--	}, {
--		118800000, { 0x091c, 0x091c, 0x06dc },
--	}, {
--		216000000, { 0x06dc, 0x0b5c, 0x091c },
--	}
--};
--
--static int hdmi_phy_configure(struct dw_hdmi *hdmi, unsigned char prep,
--			      unsigned char res, int cscon)
--{
--	unsigned res_idx, i;
--	u8 val, msec;
--
--	if (prep)
--		return -EINVAL;
--
--	switch (res) {
--	case 0:	/* color resolution 0 is 8 bit colour depth */
--	case 8:
--		res_idx = DW_HDMI_RES_8;
--		break;
--	case 10:
--		res_idx = DW_HDMI_RES_10;
--		break;
--	case 12:
--		res_idx = DW_HDMI_RES_12;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	/* Enable csc path */
--	if (cscon)
--		val = HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_CSC_IN_PATH;
--	else
--		val = HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_CSC_BYPASS;
--
--	hdmi_writeb(hdmi, val, HDMI_MC_FLOWCTRL);
--
--	/* gen2 tx power off */
--	dw_hdmi_phy_gen2_txpwron(hdmi, 0);
--
--	/* gen2 pddq */
--	dw_hdmi_phy_gen2_pddq(hdmi, 1);
--
--	/* PHY reset */
--	hdmi_writeb(hdmi, HDMI_MC_PHYRSTZ_DEASSERT, HDMI_MC_PHYRSTZ);
--	hdmi_writeb(hdmi, HDMI_MC_PHYRSTZ_ASSERT, HDMI_MC_PHYRSTZ);
--
--	hdmi_writeb(hdmi, HDMI_MC_HEACPHY_RST_ASSERT, HDMI_MC_HEACPHY_RST);
--
--	hdmi_phy_test_clear(hdmi, 1);
--	hdmi_writeb(hdmi, HDMI_PHY_I2CM_SLAVE_ADDR_PHY_GEN2,
--		    HDMI_PHY_I2CM_SLAVE_ADDR);
--	hdmi_phy_test_clear(hdmi, 0);
--
--	/* PLL/MPLL Cfg - always match on final entry */
--	for (i = 0; i < ARRAY_SIZE(mpll_config) - 1; i++)
--		if (hdmi->hdmi_data.video_mode.mpixelclock <=
--		    mpll_config[i].mpixelclock)
--			break;
--
--	hdmi_phy_i2c_write(hdmi, mpll_config[i].res[res_idx].cpce, 0x06);
--	hdmi_phy_i2c_write(hdmi, mpll_config[i].res[res_idx].gmp, 0x15);
--
--	for (i = 0; i < ARRAY_SIZE(curr_ctrl); i++)
--		if (hdmi->hdmi_data.video_mode.mpixelclock <=
--		    curr_ctrl[i].mpixelclock)
--			break;
--
--	if (i >= ARRAY_SIZE(curr_ctrl)) {
--		dev_err(hdmi->dev,
--				"Pixel clock %d - unsupported by HDMI\n",
--				hdmi->hdmi_data.video_mode.mpixelclock);
--		return -EINVAL;
--	}
--
--	/* CURRCTRL */
--	hdmi_phy_i2c_write(hdmi, curr_ctrl[i].curr[res_idx], 0x10);
--
--	hdmi_phy_i2c_write(hdmi, 0x0000, 0x13);  /* PLLPHBYCTRL */
--	hdmi_phy_i2c_write(hdmi, 0x0006, 0x17);
--	/* RESISTANCE TERM 133Ohm Cfg */
--	hdmi_phy_i2c_write(hdmi, 0x0005, 0x19);  /* TXTERM */
--	/* PREEMP Cgf 0.00 */
--	hdmi_phy_i2c_write(hdmi, 0x800d, 0x09);  /* CKSYMTXCTRL */
--	/* TX/CK LVL 10 */
--	hdmi_phy_i2c_write(hdmi, 0x01ad, 0x0E);  /* VLEVCTRL */
--	/* REMOVE CLK TERM */
--	hdmi_phy_i2c_write(hdmi, 0x8000, 0x05);  /* CKCALCTRL */
--
--	dw_hdmi_phy_enable_power(hdmi, 1);
--
--	/* toggle TMDS enable */
--	dw_hdmi_phy_enable_tmds(hdmi, 0);
--	dw_hdmi_phy_enable_tmds(hdmi, 1);
--
--	/* gen2 tx power on */
--	dw_hdmi_phy_gen2_txpwron(hdmi, 1);
--	dw_hdmi_phy_gen2_pddq(hdmi, 0);
--
--	/*Wait for PHY PLL lock */
--	msec = 5;
--	do {
--		val = hdmi_readb(hdmi, HDMI_PHY_STAT0) & HDMI_PHY_TX_PHY_LOCK;
--		if (!val)
--			break;
--
--		if (msec == 0) {
--			dev_err(hdmi->dev, "PHY PLL not locked\n");
--			return -ETIMEDOUT;
--		}
--
--		udelay(1000);
--		msec--;
--	} while (1);
--
--	return 0;
--}
--
--static int dw_hdmi_phy_init(struct dw_hdmi *hdmi)
--{
--	int i, ret;
--	bool cscon = false;
--
--	/*check csc whether needed activated in HDMI mode */
--	cscon = (is_color_space_conversion(hdmi) &&
--			!hdmi->hdmi_data.video_mode.mdvi);
--
--	/* HDMI Phy spec says to do the phy initialization sequence twice */
--	for (i = 0; i < 2; i++) {
--		dw_hdmi_phy_sel_data_en_pol(hdmi, 1);
--		dw_hdmi_phy_sel_interface_control(hdmi, 0);
--		dw_hdmi_phy_enable_tmds(hdmi, 0);
--		dw_hdmi_phy_enable_power(hdmi, 0);
--
--		/* Enable CSC */
--		ret = hdmi_phy_configure(hdmi, 0, 8, cscon);
--		if (ret)
--			return ret;
--	}
--
--	hdmi->phy_enabled = true;
--	return 0;
--}
--
--static void hdmi_tx_hdcp_config(struct dw_hdmi *hdmi)
--{
--	u8 de;
--
--	if (hdmi->hdmi_data.video_mode.mdataenablepolarity)
--		de = HDMI_A_VIDPOLCFG_DATAENPOL_ACTIVE_HIGH;
--	else
--		de = HDMI_A_VIDPOLCFG_DATAENPOL_ACTIVE_LOW;
--
--	/* disable rx detect */
--	hdmi_modb(hdmi, HDMI_A_HDCPCFG0_RXDETECT_DISABLE,
--		  HDMI_A_HDCPCFG0_RXDETECT_MASK, HDMI_A_HDCPCFG0);
--
--	hdmi_modb(hdmi, de, HDMI_A_VIDPOLCFG_DATAENPOL_MASK, HDMI_A_VIDPOLCFG);
--
--	hdmi_modb(hdmi, HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_DISABLE,
--		  HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_MASK, HDMI_A_HDCPCFG1);
--}
--
--static void hdmi_av_composer(struct dw_hdmi *hdmi)
--{
--	u8 inv_val;
--	struct hdmi_vmode *vmode = &hdmi->hdmi_data.video_mode;
--	int hblank, vblank;
--	struct fb_videomode *mode = hdmi->mode;
--
--	vmode->mhsyncpolarity = !!(mode->sync & FB_SYNC_HOR_HIGH_ACT);
--	vmode->mvsyncpolarity = !!(mode->sync & FB_SYNC_VERT_HIGH_ACT);
--	vmode->minterlaced = !!(mode->vmode & FB_VMODE_INTERLACED);
--	vmode->mpixelclock = PICOS2KHZ(mode->pixclock) * 1000;
--
--	dev_dbg(hdmi->dev, "final pixclk = %d\n", vmode->mpixelclock);
--
--	/* Set up HDMI_FC_INVIDCONF */
--	inv_val = (hdmi->hdmi_data.hdcp_enable ?
--		HDMI_FC_INVIDCONF_HDCP_KEEPOUT_ACTIVE :
--		HDMI_FC_INVIDCONF_HDCP_KEEPOUT_INACTIVE);
--
--	inv_val |= (vmode->mvsyncpolarity ?
--		HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_ACTIVE_HIGH :
--		HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_ACTIVE_LOW);
--
--	inv_val |= (vmode->mhsyncpolarity ?
--		HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_ACTIVE_HIGH :
--		HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_ACTIVE_LOW);
--
--	inv_val |= (vmode->mdataenablepolarity ?
--		HDMI_FC_INVIDCONF_DE_IN_POLARITY_ACTIVE_HIGH :
--		HDMI_FC_INVIDCONF_DE_IN_POLARITY_ACTIVE_LOW);
--
--	if (hdmi->vic == 39)
--		inv_val |= HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_HIGH;
--	else
--		inv_val |= (vmode->minterlaced ?
--			HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_HIGH :
--			HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_LOW);
--
--	inv_val |= (vmode->minterlaced ?
--		HDMI_FC_INVIDCONF_IN_I_P_INTERLACED :
--		HDMI_FC_INVIDCONF_IN_I_P_PROGRESSIVE);
--
--	inv_val |= (vmode->mdvi ?
--		HDMI_FC_INVIDCONF_DVI_MODEZ_DVI_MODE :
--		HDMI_FC_INVIDCONF_DVI_MODEZ_HDMI_MODE);
--
--	hdmi_writeb(hdmi, inv_val, HDMI_FC_INVIDCONF);
--
--	/* Set up horizontal active pixel width */
--	hdmi_writeb(hdmi, mode->xres >> 8, HDMI_FC_INHACTV1);
--	hdmi_writeb(hdmi, mode->xres, HDMI_FC_INHACTV0);
--
--	/* Set up vertical active lines */
--	hdmi_writeb(hdmi, mode->yres >> 8, HDMI_FC_INVACTV1);
--	hdmi_writeb(hdmi, mode->yres, HDMI_FC_INVACTV0);
--
--	/* Set up horizontal blanking pixel region width */
--	hblank = mode->left_margin + mode->right_margin + mode->hsync_len;
--	hdmi_writeb(hdmi, hblank >> 8, HDMI_FC_INHBLANK1);
--	hdmi_writeb(hdmi, hblank, HDMI_FC_INHBLANK0);
--
--	/* Set up vertical blanking pixel region width */
--	vblank = mode->upper_margin + mode->lower_margin + mode->vsync_len;
--	hdmi_writeb(hdmi, vblank, HDMI_FC_INVBLANK);
--
--	/* Set up HSYNC active edge delay width (in pixel clks) */
--	hdmi_writeb(hdmi, mode->right_margin >> 8, HDMI_FC_HSYNCINDELAY1);
--	hdmi_writeb(hdmi, mode->right_margin, HDMI_FC_HSYNCINDELAY0);
--
--	/* Set up VSYNC active edge delay (in lines) */
--	hdmi_writeb(hdmi, mode->lower_margin, HDMI_FC_VSYNCINDELAY);
--
--	/* Set up HSYNC active pulse width (in pixel clks) */
--	hdmi_writeb(hdmi, mode->hsync_len >> 8, HDMI_FC_HSYNCINWIDTH1);
--	hdmi_writeb(hdmi, mode->hsync_len, HDMI_FC_HSYNCINWIDTH0);
--
--	/* Set up VSYNC active edge delay (in lines) */
--	hdmi_writeb(hdmi, mode->vsync_len, HDMI_FC_VSYNCINWIDTH);
--}
--
--static void dw_hdmi_phy_disable(struct dw_hdmi *hdmi)
--{
--	if (!hdmi->phy_enabled)
--		return;
--
--	dw_hdmi_phy_enable_tmds(hdmi, 0);
--	dw_hdmi_phy_enable_power(hdmi, 0);
--
--	hdmi->phy_enabled = false;
--}
--
--/* HDMI Initialization Step B.4 */
--static void dw_hdmi_enable_video_path(struct dw_hdmi *hdmi)
--{
--	u8 clkdis;
--
--	/* control period minimum duration */
--	hdmi_writeb(hdmi, 12, HDMI_FC_CTRLDUR);
--	hdmi_writeb(hdmi, 32, HDMI_FC_EXCTRLDUR);
--	hdmi_writeb(hdmi, 1, HDMI_FC_EXCTRLSPAC);
--
--	/* Set to fill TMDS data channels */
--	hdmi_writeb(hdmi, 0x0B, HDMI_FC_CH0PREAM);
--	hdmi_writeb(hdmi, 0x16, HDMI_FC_CH1PREAM);
--	hdmi_writeb(hdmi, 0x21, HDMI_FC_CH2PREAM);
--
--	/* Enable pixel clock and tmds data path */
--	clkdis = 0x7F;
--	clkdis &= ~HDMI_MC_CLKDIS_PIXELCLK_DISABLE;
--	hdmi_writeb(hdmi, clkdis, HDMI_MC_CLKDIS);
--
--	clkdis &= ~HDMI_MC_CLKDIS_TMDSCLK_DISABLE;
--	hdmi_writeb(hdmi, clkdis, HDMI_MC_CLKDIS);
--
--	/* Enable csc path */
--	if (is_color_space_conversion(hdmi)) {
--		clkdis &= ~HDMI_MC_CLKDIS_CSCCLK_DISABLE;
--		hdmi_writeb(hdmi, clkdis, HDMI_MC_CLKDIS);
--	}
--}
--
--/* Workaround to clear the overflow condition */
--static void dw_hdmi_clear_overflow(struct dw_hdmi *hdmi)
--{
--	int count = 4;
--	u8 val;
--
--	/* TMDS software reset */
--	hdmi_writeb(hdmi, (u8)~HDMI_MC_SWRSTZ_TMDSSWRST_REQ, HDMI_MC_SWRSTZ);
--
--	val = hdmi_readb(hdmi, HDMI_FC_INVIDCONF);
--
--	if (hdmi->dev_type == IMX6DL_HDMI)
--		count = 1;
--
--	while (count--)
--		hdmi_writeb(hdmi, val, HDMI_FC_INVIDCONF);
--}
--
--static int dw_hdmi_setup(struct dw_hdmi *hdmi)
--{
--	int ret;
--
--	dev_dbg(hdmi->dev, "Non-CEA mode used in HDMI\n");
--	hdmi->hdmi_data.video_mode.mdvi = true;
--
--	hdmi->hdmi_data.colorimetry = HDMI_COLORIMETRY_ITU_709;
--	hdmi->hdmi_data.video_mode.mpixelrepetitionoutput = 0;
--	hdmi->hdmi_data.video_mode.mpixelrepetitioninput = 0;
--
--	/* TODO: Get input format from IPU (via FB driver interface) */
--	hdmi->hdmi_data.enc_in_format = RGB;
--
--	hdmi->hdmi_data.enc_out_format = RGB;
--
--	hdmi->hdmi_data.enc_color_depth = 8;
--	hdmi->hdmi_data.pix_repet_factor = 0;
--	hdmi->hdmi_data.hdcp_enable = 0;
--	hdmi->hdmi_data.video_mode.mdataenablepolarity = true;
--
--	/* HDMI Initialization Step B.1 */
--	hdmi_av_composer(hdmi);
--
--	/* HDMI Initializateion Step B.2 */
--	ret = dw_hdmi_phy_init(hdmi);
--	if (ret)
--		return ret;
--
--	/* HDMI Initialization Step B.3 */
--	dw_hdmi_enable_video_path(hdmi);
--
--	hdmi_video_packetize(hdmi);
--	hdmi_video_csc(hdmi);
--	hdmi_video_sample(hdmi);
--	hdmi_tx_hdcp_config(hdmi);
--
--	dw_hdmi_clear_overflow(hdmi);
--
--	return 0;
--}
--
--static void initialize_hdmi_ih_mutes(struct dw_hdmi *hdmi)
--{
--	u8 ih_mute;
--
--	/*
--	 * Boot up defaults are:
--	 * HDMI_IH_MUTE   = 0x03 (disabled)
--	 * HDMI_IH_MUTE_* = 0x00 (enabled)
--	 *
--	 * Disable top level interrupt bits in HDMI block
--	 */
--	ih_mute = hdmi_readb(hdmi, HDMI_IH_MUTE) |
--		  HDMI_IH_MUTE_MUTE_WAKEUP_INTERRUPT |
--		  HDMI_IH_MUTE_MUTE_ALL_INTERRUPT;
--
--	hdmi_writeb(hdmi, ih_mute, HDMI_IH_MUTE);
--
--	/* by default mask all interrupts */
--	hdmi_writeb(hdmi, 0xff, HDMI_VP_MASK);
--	hdmi_writeb(hdmi, 0xff, HDMI_FC_MASK0);
--	hdmi_writeb(hdmi, 0xff, HDMI_FC_MASK1);
--	hdmi_writeb(hdmi, 0xff, HDMI_FC_MASK2);
--	hdmi_writeb(hdmi, 0xff, HDMI_PHY_MASK0);
--	hdmi_writeb(hdmi, 0xff, HDMI_PHY_I2CM_INT_ADDR);
--	hdmi_writeb(hdmi, 0xff, HDMI_PHY_I2CM_CTLINT_ADDR);
--	hdmi_writeb(hdmi, 0xff, HDMI_AUD_INT);
--	hdmi_writeb(hdmi, 0xff, HDMI_AUD_SPDIFINT);
--	hdmi_writeb(hdmi, 0xff, HDMI_AUD_HBR_MASK);
--	hdmi_writeb(hdmi, 0xff, HDMI_GP_MASK);
--	hdmi_writeb(hdmi, 0xff, HDMI_A_APIINTMSK);
--	hdmi_writeb(hdmi, 0xff, HDMI_CEC_MASK);
--	hdmi_writeb(hdmi, 0xff, HDMI_I2CM_INT);
--	hdmi_writeb(hdmi, 0xff, HDMI_I2CM_CTLINT);
--
--	/* Disable interrupts in the IH_MUTE_* registers */
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_FC_STAT0);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_FC_STAT1);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_FC_STAT2);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_AS_STAT0);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_PHY_STAT0);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_I2CM_STAT0);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_CEC_STAT0);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_VP_STAT0);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_I2CMPHY_STAT0);
--	hdmi_writeb(hdmi, 0xff, HDMI_IH_MUTE_AHBDMAAUD_STAT0);
--
--	/* Enable top level interrupt bits in HDMI block */
--	ih_mute &= ~(HDMI_IH_MUTE_MUTE_WAKEUP_INTERRUPT |
--		    HDMI_IH_MUTE_MUTE_ALL_INTERRUPT);
--	hdmi_writeb(hdmi, ih_mute, HDMI_IH_MUTE);
--}
--
--static struct of_device_id dw_hdmi_dt_ids[] = {
--	{
--		.compatible = "fsl,imx6q-hdmi",
--		.data = (void *)IMX6Q_HDMI,
--	}, {
--		.compatible = "fsl,imx6dl-hdmi",
--		.data = (void *)IMX6DL_HDMI,
--	}, {
--		/* sentinel */
--	}
--};
--MODULE_DEVICE_TABLE(of, dw_hdmi_dt_ids);
--
--static int dw_hdmi_get_modes(struct dw_hdmi *hdmi, struct display_timings *timings)
--{
--	int ret = -ENOENT;
--
--	if (hdmi->ddc_node) {
--		struct i2c_adapter *i2c;
--
--                i2c = of_find_i2c_adapter_by_node(hdmi->ddc_node);
--		if (!i2c)
--			return -ENODEV;
--		timings->edid = edid_read_i2c(i2c);
--		if (!timings->edid)
--			return -EINVAL;
--
--		ret = edid_to_display_timings(timings, timings->edid);
--	}
--
--	return ret;
--}
--
--static int dw_hdmi_ioctl(struct vpl *vpl, unsigned int port,
--		unsigned int cmd, void *data)
--{
--	struct dw_hdmi *hdmi = container_of(vpl, struct dw_hdmi, vpl);
--	struct ipu_di_mode *mode;
--
--	switch (cmd) {
--	case VPL_ENABLE:
--		return dw_hdmi_setup(hdmi);
--	case VPL_DISABLE:
--		dw_hdmi_phy_disable(hdmi);
--		return 0;
--	case VPL_PREPARE:
--		hdmi->mode = data;
--		dw_hdmi_set_ipu_di_mux(hdmi, port);
--		return 0;
--	case VPL_GET_VIDEOMODES:
--		return dw_hdmi_get_modes(hdmi, data);
--	case IMX_IPU_VPL_DI_MODE:
--		mode = data;
--
--		mode->di_clkflags = IPU_DI_CLKMODE_EXT | IPU_DI_CLKMODE_SYNC;
--		mode->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
--
--		return 0;
--	}
--
--	return 0;
--}
--
--static int dw_hdmi_probe(struct device *dev)
--{
--	struct resource *iores;
--	struct device_node *np = dev->of_node;
--	struct dw_hdmi *hdmi;
--	int ret;
--
--	hdmi = xzalloc(sizeof(*hdmi));
--
--	hdmi->dev = dev;
--	hdmi->connected = 0;
--	hdmi->sample_rate = 48000;
--	hdmi->ratio = 100;
--
--	hdmi->dev_type = (enum dw_hdmi_devtype)device_get_match_data(dev);
--
--	hdmi->ddc_node = of_parse_phandle(np, "ddc-i2c-bus", 0);
--
--	iores = dev_request_mem_resource(dev, 0);
--	if (IS_ERR(iores))
--		return PTR_ERR(iores);
--	hdmi->regs = IOMEM(iores->start);
--
--	hdmi->isfr_clk = clk_get(hdmi->dev, "isfr");
--	if (IS_ERR(hdmi->isfr_clk)) {
--		ret = PTR_ERR(hdmi->isfr_clk);
--		dev_err(dev,
--			"Unable to get HDMI isfr clk: %d\n", ret);
--		return ret;
--	}
--
--	ret = clk_enable(hdmi->isfr_clk);
--	if (ret)
--		return ret;
--
--	hdmi->iahb_clk = clk_get(hdmi->dev, "iahb");
--	if (IS_ERR(hdmi->iahb_clk)) {
--		ret = PTR_ERR(hdmi->iahb_clk);
--		dev_err(dev,
--			"Unable to get HDMI iahb clk: %d\n", ret);
--		goto err_isfr;
--	}
--
--	ret = clk_enable(hdmi->iahb_clk);
--	if (ret)
--		goto err_isfr;
--
--	/* Product and revision IDs */
--	dev_info(dev,
--		"Detected HDMI controller 0x%x:0x%x:0x%x:0x%x\n",
--		hdmi_readb(hdmi, HDMI_DESIGN_ID),
--		hdmi_readb(hdmi, HDMI_REVISION_ID),
--		hdmi_readb(hdmi, HDMI_PRODUCT_ID0),
--		hdmi_readb(hdmi, HDMI_PRODUCT_ID1));
--
--	initialize_hdmi_ih_mutes(hdmi);
--
--	/*
--	 * To prevent overflows in HDMI_IH_FC_STAT2, set the clk regenerator
--	 * N and cts values before enabling phy
--	 */
--	hdmi_init_clk_regenerator(hdmi);
--
--	/*
--	 * Configure registers related to HDMI interrupt
--	 * generation before registering IRQ.
--	 */
--	hdmi_writeb(hdmi, HDMI_PHY_HPD, HDMI_PHY_POL0);
--
--	/* Clear Hotplug interrupts */
--	hdmi_writeb(hdmi, HDMI_IH_PHY_STAT0_HPD, HDMI_IH_PHY_STAT0);
--
--	hdmi_writeb(hdmi, HDMI_PHY_I2CM_INT_ADDR_DONE_POL,
--		    HDMI_PHY_I2CM_INT_ADDR);
--
--	hdmi_writeb(hdmi, HDMI_PHY_I2CM_CTLINT_ADDR_NAC_POL |
--		    HDMI_PHY_I2CM_CTLINT_ADDR_ARBITRATION_POL,
--		    HDMI_PHY_I2CM_CTLINT_ADDR);
--
--	/* enable cable hot plug irq */
--	hdmi_writeb(hdmi, (u8)~HDMI_PHY_HPD, HDMI_PHY_MASK0);
--
--	/* Unmute interrupts */
--	hdmi_writeb(hdmi, ~HDMI_IH_PHY_STAT0_HPD, HDMI_IH_MUTE_PHY_STAT0);
--
--	hdmi->vpl.node = np;
--	hdmi->vpl.ioctl = dw_hdmi_ioctl;
--	ret = vpl_register(&hdmi->vpl);
--	if (ret)
--		return ret;
--
--	return 0;
--
--err_isfr:
--	clk_disable(hdmi->isfr_clk);
--
--	return ret;
--}
--
--static struct driver dw_hdmi_driver = {
--	.probe		= dw_hdmi_probe,
--	.of_compatible	= dw_hdmi_dt_ids,
--	.name		= "imx-hdmi",
--};
--device_platform_driver(dw_hdmi_driver);
--
--MODULE_AUTHOR("Sascha Hauer <s.hauer@pengutronix.de>");
--MODULE_DESCRIPTION("i.MX6 HDMI transmitter driver");
--MODULE_LICENSE("GPL");
-diff --git a/drivers/video/imx-ipu-v3/imx-hdmi.h b/drivers/video/imx-ipu-v3/imx-hdmi.h
-deleted file mode 100644
-index dcffe75529..0000000000
---- a/drivers/video/imx-ipu-v3/imx-hdmi.h
-+++ /dev/null
-@@ -1,1029 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--/*
-- * Copyright (C) 2011 Freescale Semiconductor, Inc.
-- */
--
--#ifndef __IMX_HDMI_H__
--#define __IMX_HDMI_H__
--
--/* Identification Registers */
--#define HDMI_DESIGN_ID                          0x0000
--#define HDMI_REVISION_ID                        0x0001
--#define HDMI_PRODUCT_ID0                        0x0002
--#define HDMI_PRODUCT_ID1                        0x0003
--#define HDMI_CONFIG0_ID                         0x0004
--#define HDMI_CONFIG1_ID                         0x0005
--#define HDMI_CONFIG2_ID                         0x0006
--#define HDMI_CONFIG3_ID                         0x0007
--
--/* Interrupt Registers */
--#define HDMI_IH_FC_STAT0                        0x0100
--#define HDMI_IH_FC_STAT1                        0x0101
--#define HDMI_IH_FC_STAT2                        0x0102
--#define HDMI_IH_AS_STAT0                        0x0103
--#define HDMI_IH_PHY_STAT0                       0x0104
--#define HDMI_IH_I2CM_STAT0                      0x0105
--#define HDMI_IH_CEC_STAT0                       0x0106
--#define HDMI_IH_VP_STAT0                        0x0107
--#define HDMI_IH_I2CMPHY_STAT0                   0x0108
--#define HDMI_IH_AHBDMAAUD_STAT0                 0x0109
--
--#define HDMI_IH_MUTE_FC_STAT0                   0x0180
--#define HDMI_IH_MUTE_FC_STAT1                   0x0181
--#define HDMI_IH_MUTE_FC_STAT2                   0x0182
--#define HDMI_IH_MUTE_AS_STAT0                   0x0183
--#define HDMI_IH_MUTE_PHY_STAT0                  0x0184
--#define HDMI_IH_MUTE_I2CM_STAT0                 0x0185
--#define HDMI_IH_MUTE_CEC_STAT0                  0x0186
--#define HDMI_IH_MUTE_VP_STAT0                   0x0187
--#define HDMI_IH_MUTE_I2CMPHY_STAT0              0x0188
--#define HDMI_IH_MUTE_AHBDMAAUD_STAT0            0x0189
--#define HDMI_IH_MUTE                            0x01FF
--
--/* Video Sample Registers */
--#define HDMI_TX_INVID0                          0x0200
--#define HDMI_TX_INSTUFFING                      0x0201
--#define HDMI_TX_GYDATA0                         0x0202
--#define HDMI_TX_GYDATA1                         0x0203
--#define HDMI_TX_RCRDATA0                        0x0204
--#define HDMI_TX_RCRDATA1                        0x0205
--#define HDMI_TX_BCBDATA0                        0x0206
--#define HDMI_TX_BCBDATA1                        0x0207
--
--/* Video Packetizer Registers */
--#define HDMI_VP_STATUS                          0x0800
--#define HDMI_VP_PR_CD                           0x0801
--#define HDMI_VP_STUFF                           0x0802
--#define HDMI_VP_REMAP                           0x0803
--#define HDMI_VP_CONF                            0x0804
--#define HDMI_VP_STAT                            0x0805
--#define HDMI_VP_INT                             0x0806
--#define HDMI_VP_MASK                            0x0807
--#define HDMI_VP_POL                             0x0808
--
--/* Frame Composer Registers */
--#define HDMI_FC_INVIDCONF                       0x1000
--#define HDMI_FC_INHACTV0                        0x1001
--#define HDMI_FC_INHACTV1                        0x1002
--#define HDMI_FC_INHBLANK0                       0x1003
--#define HDMI_FC_INHBLANK1                       0x1004
--#define HDMI_FC_INVACTV0                        0x1005
--#define HDMI_FC_INVACTV1                        0x1006
--#define HDMI_FC_INVBLANK                        0x1007
--#define HDMI_FC_HSYNCINDELAY0                   0x1008
--#define HDMI_FC_HSYNCINDELAY1                   0x1009
--#define HDMI_FC_HSYNCINWIDTH0                   0x100A
--#define HDMI_FC_HSYNCINWIDTH1                   0x100B
--#define HDMI_FC_VSYNCINDELAY                    0x100C
--#define HDMI_FC_VSYNCINWIDTH                    0x100D
--#define HDMI_FC_INFREQ0                         0x100E
--#define HDMI_FC_INFREQ1                         0x100F
--#define HDMI_FC_INFREQ2                         0x1010
--#define HDMI_FC_CTRLDUR                         0x1011
--#define HDMI_FC_EXCTRLDUR                       0x1012
--#define HDMI_FC_EXCTRLSPAC                      0x1013
--#define HDMI_FC_CH0PREAM                        0x1014
--#define HDMI_FC_CH1PREAM                        0x1015
--#define HDMI_FC_CH2PREAM                        0x1016
--#define HDMI_FC_AVICONF3                        0x1017
--#define HDMI_FC_GCP                             0x1018
--#define HDMI_FC_AVICONF0                        0x1019
--#define HDMI_FC_AVICONF1                        0x101A
--#define HDMI_FC_AVICONF2                        0x101B
--#define HDMI_FC_AVIVID                          0x101C
--#define HDMI_FC_AVIETB0                         0x101D
--#define HDMI_FC_AVIETB1                         0x101E
--#define HDMI_FC_AVISBB0                         0x101F
--#define HDMI_FC_AVISBB1                         0x1020
--#define HDMI_FC_AVIELB0                         0x1021
--#define HDMI_FC_AVIELB1                         0x1022
--#define HDMI_FC_AVISRB0                         0x1023
--#define HDMI_FC_AVISRB1                         0x1024
--#define HDMI_FC_AUDICONF0                       0x1025
--#define HDMI_FC_AUDICONF1                       0x1026
--#define HDMI_FC_AUDICONF2                       0x1027
--#define HDMI_FC_AUDICONF3                       0x1028
--#define HDMI_FC_VSDIEEEID0                      0x1029
--#define HDMI_FC_VSDSIZE                         0x102A
--#define HDMI_FC_VSDIEEEID1                      0x1030
--#define HDMI_FC_VSDIEEEID2                      0x1031
--#define HDMI_FC_VSDPAYLOAD0                     0x1032
--#define HDMI_FC_VSDPAYLOAD1                     0x1033
--#define HDMI_FC_VSDPAYLOAD2                     0x1034
--#define HDMI_FC_VSDPAYLOAD3                     0x1035
--#define HDMI_FC_VSDPAYLOAD4                     0x1036
--#define HDMI_FC_VSDPAYLOAD5                     0x1037
--#define HDMI_FC_VSDPAYLOAD6                     0x1038
--#define HDMI_FC_VSDPAYLOAD7                     0x1039
--#define HDMI_FC_VSDPAYLOAD8                     0x103A
--#define HDMI_FC_VSDPAYLOAD9                     0x103B
--#define HDMI_FC_VSDPAYLOAD10                    0x103C
--#define HDMI_FC_VSDPAYLOAD11                    0x103D
--#define HDMI_FC_VSDPAYLOAD12                    0x103E
--#define HDMI_FC_VSDPAYLOAD13                    0x103F
--#define HDMI_FC_VSDPAYLOAD14                    0x1040
--#define HDMI_FC_VSDPAYLOAD15                    0x1041
--#define HDMI_FC_VSDPAYLOAD16                    0x1042
--#define HDMI_FC_VSDPAYLOAD17                    0x1043
--#define HDMI_FC_VSDPAYLOAD18                    0x1044
--#define HDMI_FC_VSDPAYLOAD19                    0x1045
--#define HDMI_FC_VSDPAYLOAD20                    0x1046
--#define HDMI_FC_VSDPAYLOAD21                    0x1047
--#define HDMI_FC_VSDPAYLOAD22                    0x1048
--#define HDMI_FC_VSDPAYLOAD23                    0x1049
--#define HDMI_FC_SPDVENDORNAME0                  0x104A
--#define HDMI_FC_SPDVENDORNAME1                  0x104B
--#define HDMI_FC_SPDVENDORNAME2                  0x104C
--#define HDMI_FC_SPDVENDORNAME3                  0x104D
--#define HDMI_FC_SPDVENDORNAME4                  0x104E
--#define HDMI_FC_SPDVENDORNAME5                  0x104F
--#define HDMI_FC_SPDVENDORNAME6                  0x1050
--#define HDMI_FC_SPDVENDORNAME7                  0x1051
--#define HDMI_FC_SDPPRODUCTNAME0                 0x1052
--#define HDMI_FC_SDPPRODUCTNAME1                 0x1053
--#define HDMI_FC_SDPPRODUCTNAME2                 0x1054
--#define HDMI_FC_SDPPRODUCTNAME3                 0x1055
--#define HDMI_FC_SDPPRODUCTNAME4                 0x1056
--#define HDMI_FC_SDPPRODUCTNAME5                 0x1057
--#define HDMI_FC_SDPPRODUCTNAME6                 0x1058
--#define HDMI_FC_SDPPRODUCTNAME7                 0x1059
--#define HDMI_FC_SDPPRODUCTNAME8                 0x105A
--#define HDMI_FC_SDPPRODUCTNAME9                 0x105B
--#define HDMI_FC_SDPPRODUCTNAME10                0x105C
--#define HDMI_FC_SDPPRODUCTNAME11                0x105D
--#define HDMI_FC_SDPPRODUCTNAME12                0x105E
--#define HDMI_FC_SDPPRODUCTNAME13                0x105F
--#define HDMI_FC_SDPPRODUCTNAME14                0x1060
--#define HDMI_FC_SPDPRODUCTNAME15                0x1061
--#define HDMI_FC_SPDDEVICEINF                    0x1062
--#define HDMI_FC_AUDSCONF                        0x1063
--#define HDMI_FC_AUDSSTAT                        0x1064
--#define HDMI_FC_DATACH0FILL                     0x1070
--#define HDMI_FC_DATACH1FILL                     0x1071
--#define HDMI_FC_DATACH2FILL                     0x1072
--#define HDMI_FC_CTRLQHIGH                       0x1073
--#define HDMI_FC_CTRLQLOW                        0x1074
--#define HDMI_FC_ACP0                            0x1075
--#define HDMI_FC_ACP28                           0x1076
--#define HDMI_FC_ACP27                           0x1077
--#define HDMI_FC_ACP26                           0x1078
--#define HDMI_FC_ACP25                           0x1079
--#define HDMI_FC_ACP24                           0x107A
--#define HDMI_FC_ACP23                           0x107B
--#define HDMI_FC_ACP22                           0x107C
--#define HDMI_FC_ACP21                           0x107D
--#define HDMI_FC_ACP20                           0x107E
--#define HDMI_FC_ACP19                           0x107F
--#define HDMI_FC_ACP18                           0x1080
--#define HDMI_FC_ACP17                           0x1081
--#define HDMI_FC_ACP16                           0x1082
--#define HDMI_FC_ACP15                           0x1083
--#define HDMI_FC_ACP14                           0x1084
--#define HDMI_FC_ACP13                           0x1085
--#define HDMI_FC_ACP12                           0x1086
--#define HDMI_FC_ACP11                           0x1087
--#define HDMI_FC_ACP10                           0x1088
--#define HDMI_FC_ACP9                            0x1089
--#define HDMI_FC_ACP8                            0x108A
--#define HDMI_FC_ACP7                            0x108B
--#define HDMI_FC_ACP6                            0x108C
--#define HDMI_FC_ACP5                            0x108D
--#define HDMI_FC_ACP4                            0x108E
--#define HDMI_FC_ACP3                            0x108F
--#define HDMI_FC_ACP2                            0x1090
--#define HDMI_FC_ACP1                            0x1091
--#define HDMI_FC_ISCR1_0                         0x1092
--#define HDMI_FC_ISCR1_16                        0x1093
--#define HDMI_FC_ISCR1_15                        0x1094
--#define HDMI_FC_ISCR1_14                        0x1095
--#define HDMI_FC_ISCR1_13                        0x1096
--#define HDMI_FC_ISCR1_12                        0x1097
--#define HDMI_FC_ISCR1_11                        0x1098
--#define HDMI_FC_ISCR1_10                        0x1099
--#define HDMI_FC_ISCR1_9                         0x109A
--#define HDMI_FC_ISCR1_8                         0x109B
--#define HDMI_FC_ISCR1_7                         0x109C
--#define HDMI_FC_ISCR1_6                         0x109D
--#define HDMI_FC_ISCR1_5                         0x109E
--#define HDMI_FC_ISCR1_4                         0x109F
--#define HDMI_FC_ISCR1_3                         0x10A0
--#define HDMI_FC_ISCR1_2                         0x10A1
--#define HDMI_FC_ISCR1_1                         0x10A2
--#define HDMI_FC_ISCR2_15                        0x10A3
--#define HDMI_FC_ISCR2_14                        0x10A4
--#define HDMI_FC_ISCR2_13                        0x10A5
--#define HDMI_FC_ISCR2_12                        0x10A6
--#define HDMI_FC_ISCR2_11                        0x10A7
--#define HDMI_FC_ISCR2_10                        0x10A8
--#define HDMI_FC_ISCR2_9                         0x10A9
--#define HDMI_FC_ISCR2_8                         0x10AA
--#define HDMI_FC_ISCR2_7                         0x10AB
--#define HDMI_FC_ISCR2_6                         0x10AC
--#define HDMI_FC_ISCR2_5                         0x10AD
--#define HDMI_FC_ISCR2_4                         0x10AE
--#define HDMI_FC_ISCR2_3                         0x10AF
--#define HDMI_FC_ISCR2_2                         0x10B0
--#define HDMI_FC_ISCR2_1                         0x10B1
--#define HDMI_FC_ISCR2_0                         0x10B2
--#define HDMI_FC_DATAUTO0                        0x10B3
--#define HDMI_FC_DATAUTO1                        0x10B4
--#define HDMI_FC_DATAUTO2                        0x10B5
--#define HDMI_FC_DATMAN                          0x10B6
--#define HDMI_FC_DATAUTO3                        0x10B7
--#define HDMI_FC_RDRB0                           0x10B8
--#define HDMI_FC_RDRB1                           0x10B9
--#define HDMI_FC_RDRB2                           0x10BA
--#define HDMI_FC_RDRB3                           0x10BB
--#define HDMI_FC_RDRB4                           0x10BC
--#define HDMI_FC_RDRB5                           0x10BD
--#define HDMI_FC_RDRB6                           0x10BE
--#define HDMI_FC_RDRB7                           0x10BF
--#define HDMI_FC_STAT0                           0x10D0
--#define HDMI_FC_INT0                            0x10D1
--#define HDMI_FC_MASK0                           0x10D2
--#define HDMI_FC_POL0                            0x10D3
--#define HDMI_FC_STAT1                           0x10D4
--#define HDMI_FC_INT1                            0x10D5
--#define HDMI_FC_MASK1                           0x10D6
--#define HDMI_FC_POL1                            0x10D7
--#define HDMI_FC_STAT2                           0x10D8
--#define HDMI_FC_INT2                            0x10D9
--#define HDMI_FC_MASK2                           0x10DA
--#define HDMI_FC_POL2                            0x10DB
--#define HDMI_FC_PRCONF                          0x10E0
--
--#define HDMI_FC_GMD_STAT                        0x1100
--#define HDMI_FC_GMD_EN                          0x1101
--#define HDMI_FC_GMD_UP                          0x1102
--#define HDMI_FC_GMD_CONF                        0x1103
--#define HDMI_FC_GMD_HB                          0x1104
--#define HDMI_FC_GMD_PB0                         0x1105
--#define HDMI_FC_GMD_PB1                         0x1106
--#define HDMI_FC_GMD_PB2                         0x1107
--#define HDMI_FC_GMD_PB3                         0x1108
--#define HDMI_FC_GMD_PB4                         0x1109
--#define HDMI_FC_GMD_PB5                         0x110A
--#define HDMI_FC_GMD_PB6                         0x110B
--#define HDMI_FC_GMD_PB7                         0x110C
--#define HDMI_FC_GMD_PB8                         0x110D
--#define HDMI_FC_GMD_PB9                         0x110E
--#define HDMI_FC_GMD_PB10                        0x110F
--#define HDMI_FC_GMD_PB11                        0x1110
--#define HDMI_FC_GMD_PB12                        0x1111
--#define HDMI_FC_GMD_PB13                        0x1112
--#define HDMI_FC_GMD_PB14                        0x1113
--#define HDMI_FC_GMD_PB15                        0x1114
--#define HDMI_FC_GMD_PB16                        0x1115
--#define HDMI_FC_GMD_PB17                        0x1116
--#define HDMI_FC_GMD_PB18                        0x1117
--#define HDMI_FC_GMD_PB19                        0x1118
--#define HDMI_FC_GMD_PB20                        0x1119
--#define HDMI_FC_GMD_PB21                        0x111A
--#define HDMI_FC_GMD_PB22                        0x111B
--#define HDMI_FC_GMD_PB23                        0x111C
--#define HDMI_FC_GMD_PB24                        0x111D
--#define HDMI_FC_GMD_PB25                        0x111E
--#define HDMI_FC_GMD_PB26                        0x111F
--#define HDMI_FC_GMD_PB27                        0x1120
--
--#define HDMI_FC_DBGFORCE                        0x1200
--#define HDMI_FC_DBGAUD0CH0                      0x1201
--#define HDMI_FC_DBGAUD1CH0                      0x1202
--#define HDMI_FC_DBGAUD2CH0                      0x1203
--#define HDMI_FC_DBGAUD0CH1                      0x1204
--#define HDMI_FC_DBGAUD1CH1                      0x1205
--#define HDMI_FC_DBGAUD2CH1                      0x1206
--#define HDMI_FC_DBGAUD0CH2                      0x1207
--#define HDMI_FC_DBGAUD1CH2                      0x1208
--#define HDMI_FC_DBGAUD2CH2                      0x1209
--#define HDMI_FC_DBGAUD0CH3                      0x120A
--#define HDMI_FC_DBGAUD1CH3                      0x120B
--#define HDMI_FC_DBGAUD2CH3                      0x120C
--#define HDMI_FC_DBGAUD0CH4                      0x120D
--#define HDMI_FC_DBGAUD1CH4                      0x120E
--#define HDMI_FC_DBGAUD2CH4                      0x120F
--#define HDMI_FC_DBGAUD0CH5                      0x1210
--#define HDMI_FC_DBGAUD1CH5                      0x1211
--#define HDMI_FC_DBGAUD2CH5                      0x1212
--#define HDMI_FC_DBGAUD0CH6                      0x1213
--#define HDMI_FC_DBGAUD1CH6                      0x1214
--#define HDMI_FC_DBGAUD2CH6                      0x1215
--#define HDMI_FC_DBGAUD0CH7                      0x1216
--#define HDMI_FC_DBGAUD1CH7                      0x1217
--#define HDMI_FC_DBGAUD2CH7                      0x1218
--#define HDMI_FC_DBGTMDS0                        0x1219
--#define HDMI_FC_DBGTMDS1                        0x121A
--#define HDMI_FC_DBGTMDS2                        0x121B
--
--/* HDMI Source PHY Registers */
--#define HDMI_PHY_CONF0                          0x3000
--#define HDMI_PHY_TST0                           0x3001
--#define HDMI_PHY_TST1                           0x3002
--#define HDMI_PHY_TST2                           0x3003
--#define HDMI_PHY_STAT0                          0x3004
--#define HDMI_PHY_INT0                           0x3005
--#define HDMI_PHY_MASK0                          0x3006
--#define HDMI_PHY_POL0                           0x3007
--
--/* HDMI Master PHY Registers */
--#define HDMI_PHY_I2CM_SLAVE_ADDR                0x3020
--#define HDMI_PHY_I2CM_ADDRESS_ADDR              0x3021
--#define HDMI_PHY_I2CM_DATAO_1_ADDR              0x3022
--#define HDMI_PHY_I2CM_DATAO_0_ADDR              0x3023
--#define HDMI_PHY_I2CM_DATAI_1_ADDR              0x3024
--#define HDMI_PHY_I2CM_DATAI_0_ADDR              0x3025
--#define HDMI_PHY_I2CM_OPERATION_ADDR            0x3026
--#define HDMI_PHY_I2CM_INT_ADDR                  0x3027
--#define HDMI_PHY_I2CM_CTLINT_ADDR               0x3028
--#define HDMI_PHY_I2CM_DIV_ADDR                  0x3029
--#define HDMI_PHY_I2CM_SOFTRSTZ_ADDR             0x302a
--#define HDMI_PHY_I2CM_SS_SCL_HCNT_1_ADDR        0x302b
--#define HDMI_PHY_I2CM_SS_SCL_HCNT_0_ADDR        0x302c
--#define HDMI_PHY_I2CM_SS_SCL_LCNT_1_ADDR        0x302d
--#define HDMI_PHY_I2CM_SS_SCL_LCNT_0_ADDR        0x302e
--#define HDMI_PHY_I2CM_FS_SCL_HCNT_1_ADDR        0x302f
--#define HDMI_PHY_I2CM_FS_SCL_HCNT_0_ADDR        0x3030
--#define HDMI_PHY_I2CM_FS_SCL_LCNT_1_ADDR        0x3031
--#define HDMI_PHY_I2CM_FS_SCL_LCNT_0_ADDR        0x3032
--
--/* Audio Sampler Registers */
--#define HDMI_AUD_CONF0                          0x3100
--#define HDMI_AUD_CONF1                          0x3101
--#define HDMI_AUD_INT                            0x3102
--#define HDMI_AUD_CONF2                          0x3103
--#define HDMI_AUD_N1                             0x3200
--#define HDMI_AUD_N2                             0x3201
--#define HDMI_AUD_N3                             0x3202
--#define HDMI_AUD_CTS1                           0x3203
--#define HDMI_AUD_CTS2                           0x3204
--#define HDMI_AUD_CTS3                           0x3205
--#define HDMI_AUD_INPUTCLKFS                     0x3206
--#define HDMI_AUD_SPDIFINT			0x3302
--#define HDMI_AUD_CONF0_HBR                      0x3400
--#define HDMI_AUD_HBR_STATUS                     0x3401
--#define HDMI_AUD_HBR_INT                        0x3402
--#define HDMI_AUD_HBR_POL                        0x3403
--#define HDMI_AUD_HBR_MASK                       0x3404
--
--/*
-- * Generic Parallel Audio Interface Registers
-- * Not used as GPAUD interface is not enabled in hw
-- */
--#define HDMI_GP_CONF0                           0x3500
--#define HDMI_GP_CONF1                           0x3501
--#define HDMI_GP_CONF2                           0x3502
--#define HDMI_GP_STAT                            0x3503
--#define HDMI_GP_INT                             0x3504
--#define HDMI_GP_MASK                            0x3505
--#define HDMI_GP_POL                             0x3506
--
--/* Audio DMA Registers */
--#define HDMI_AHB_DMA_CONF0                      0x3600
--#define HDMI_AHB_DMA_START                      0x3601
--#define HDMI_AHB_DMA_STOP                       0x3602
--#define HDMI_AHB_DMA_THRSLD                     0x3603
--#define HDMI_AHB_DMA_STRADDR0                   0x3604
--#define HDMI_AHB_DMA_STRADDR1                   0x3605
--#define HDMI_AHB_DMA_STRADDR2                   0x3606
--#define HDMI_AHB_DMA_STRADDR3                   0x3607
--#define HDMI_AHB_DMA_STPADDR0                   0x3608
--#define HDMI_AHB_DMA_STPADDR1                   0x3609
--#define HDMI_AHB_DMA_STPADDR2                   0x360a
--#define HDMI_AHB_DMA_STPADDR3                   0x360b
--#define HDMI_AHB_DMA_BSTADDR0                   0x360c
--#define HDMI_AHB_DMA_BSTADDR1                   0x360d
--#define HDMI_AHB_DMA_BSTADDR2                   0x360e
--#define HDMI_AHB_DMA_BSTADDR3                   0x360f
--#define HDMI_AHB_DMA_MBLENGTH0                  0x3610
--#define HDMI_AHB_DMA_MBLENGTH1                  0x3611
--#define HDMI_AHB_DMA_STAT                       0x3612
--#define HDMI_AHB_DMA_INT                        0x3613
--#define HDMI_AHB_DMA_MASK                       0x3614
--#define HDMI_AHB_DMA_POL                        0x3615
--#define HDMI_AHB_DMA_CONF1                      0x3616
--#define HDMI_AHB_DMA_BUFFSTAT                   0x3617
--#define HDMI_AHB_DMA_BUFFINT                    0x3618
--#define HDMI_AHB_DMA_BUFFMASK                   0x3619
--#define HDMI_AHB_DMA_BUFFPOL                    0x361a
--
--/* Main Controller Registers */
--#define HDMI_MC_SFRDIV                          0x4000
--#define HDMI_MC_CLKDIS                          0x4001
--#define HDMI_MC_SWRSTZ                          0x4002
--#define HDMI_MC_OPCTRL                          0x4003
--#define HDMI_MC_FLOWCTRL                        0x4004
--#define HDMI_MC_PHYRSTZ                         0x4005
--#define HDMI_MC_LOCKONCLOCK                     0x4006
--#define HDMI_MC_HEACPHY_RST                     0x4007
--
--/* Color Space  Converter Registers */
--#define HDMI_CSC_CFG                            0x4100
--#define HDMI_CSC_SCALE                          0x4101
--#define HDMI_CSC_COEF_A1_MSB                    0x4102
--#define HDMI_CSC_COEF_A1_LSB                    0x4103
--#define HDMI_CSC_COEF_A2_MSB                    0x4104
--#define HDMI_CSC_COEF_A2_LSB                    0x4105
--#define HDMI_CSC_COEF_A3_MSB                    0x4106
--#define HDMI_CSC_COEF_A3_LSB                    0x4107
--#define HDMI_CSC_COEF_A4_MSB                    0x4108
--#define HDMI_CSC_COEF_A4_LSB                    0x4109
--#define HDMI_CSC_COEF_B1_MSB                    0x410A
--#define HDMI_CSC_COEF_B1_LSB                    0x410B
--#define HDMI_CSC_COEF_B2_MSB                    0x410C
--#define HDMI_CSC_COEF_B2_LSB                    0x410D
--#define HDMI_CSC_COEF_B3_MSB                    0x410E
--#define HDMI_CSC_COEF_B3_LSB                    0x410F
--#define HDMI_CSC_COEF_B4_MSB                    0x4110
--#define HDMI_CSC_COEF_B4_LSB                    0x4111
--#define HDMI_CSC_COEF_C1_MSB                    0x4112
--#define HDMI_CSC_COEF_C1_LSB                    0x4113
--#define HDMI_CSC_COEF_C2_MSB                    0x4114
--#define HDMI_CSC_COEF_C2_LSB                    0x4115
--#define HDMI_CSC_COEF_C3_MSB                    0x4116
--#define HDMI_CSC_COEF_C3_LSB                    0x4117
--#define HDMI_CSC_COEF_C4_MSB                    0x4118
--#define HDMI_CSC_COEF_C4_LSB                    0x4119
--
--/* HDCP Encryption Engine Registers */
--#define HDMI_A_HDCPCFG0                         0x5000
--#define HDMI_A_HDCPCFG1                         0x5001
--#define HDMI_A_HDCPOBS0                         0x5002
--#define HDMI_A_HDCPOBS1                         0x5003
--#define HDMI_A_HDCPOBS2                         0x5004
--#define HDMI_A_HDCPOBS3                         0x5005
--#define HDMI_A_APIINTCLR                        0x5006
--#define HDMI_A_APIINTSTAT                       0x5007
--#define HDMI_A_APIINTMSK                        0x5008
--#define HDMI_A_VIDPOLCFG                        0x5009
--#define HDMI_A_OESSWCFG                         0x500A
--#define HDMI_A_TIMER1SETUP0                     0x500B
--#define HDMI_A_TIMER1SETUP1                     0x500C
--#define HDMI_A_TIMER2SETUP0                     0x500D
--#define HDMI_A_TIMER2SETUP1                     0x500E
--#define HDMI_A_100MSCFG                         0x500F
--#define HDMI_A_2SCFG0                           0x5010
--#define HDMI_A_2SCFG1                           0x5011
--#define HDMI_A_5SCFG0                           0x5012
--#define HDMI_A_5SCFG1                           0x5013
--#define HDMI_A_SRMVERLSB                        0x5014
--#define HDMI_A_SRMVERMSB                        0x5015
--#define HDMI_A_SRMCTRL                          0x5016
--#define HDMI_A_SFRSETUP                         0x5017
--#define HDMI_A_I2CHSETUP                        0x5018
--#define HDMI_A_INTSETUP                         0x5019
--#define HDMI_A_PRESETUP                         0x501A
--#define HDMI_A_SRM_BASE                         0x5020
--
--/* CEC Engine Registers */
--#define HDMI_CEC_CTRL                           0x7D00
--#define HDMI_CEC_STAT                           0x7D01
--#define HDMI_CEC_MASK                           0x7D02
--#define HDMI_CEC_POLARITY                       0x7D03
--#define HDMI_CEC_INT                            0x7D04
--#define HDMI_CEC_ADDR_L                         0x7D05
--#define HDMI_CEC_ADDR_H                         0x7D06
--#define HDMI_CEC_TX_CNT                         0x7D07
--#define HDMI_CEC_RX_CNT                         0x7D08
--#define HDMI_CEC_TX_DATA0                       0x7D10
--#define HDMI_CEC_TX_DATA1                       0x7D11
--#define HDMI_CEC_TX_DATA2                       0x7D12
--#define HDMI_CEC_TX_DATA3                       0x7D13
--#define HDMI_CEC_TX_DATA4                       0x7D14
--#define HDMI_CEC_TX_DATA5                       0x7D15
--#define HDMI_CEC_TX_DATA6                       0x7D16
--#define HDMI_CEC_TX_DATA7                       0x7D17
--#define HDMI_CEC_TX_DATA8                       0x7D18
--#define HDMI_CEC_TX_DATA9                       0x7D19
--#define HDMI_CEC_TX_DATA10                      0x7D1a
--#define HDMI_CEC_TX_DATA11                      0x7D1b
--#define HDMI_CEC_TX_DATA12                      0x7D1c
--#define HDMI_CEC_TX_DATA13                      0x7D1d
--#define HDMI_CEC_TX_DATA14                      0x7D1e
--#define HDMI_CEC_TX_DATA15                      0x7D1f
--#define HDMI_CEC_RX_DATA0                       0x7D20
--#define HDMI_CEC_RX_DATA1                       0x7D21
--#define HDMI_CEC_RX_DATA2                       0x7D22
--#define HDMI_CEC_RX_DATA3                       0x7D23
--#define HDMI_CEC_RX_DATA4                       0x7D24
--#define HDMI_CEC_RX_DATA5                       0x7D25
--#define HDMI_CEC_RX_DATA6                       0x7D26
--#define HDMI_CEC_RX_DATA7                       0x7D27
--#define HDMI_CEC_RX_DATA8                       0x7D28
--#define HDMI_CEC_RX_DATA9                       0x7D29
--#define HDMI_CEC_RX_DATA10                      0x7D2a
--#define HDMI_CEC_RX_DATA11                      0x7D2b
--#define HDMI_CEC_RX_DATA12                      0x7D2c
--#define HDMI_CEC_RX_DATA13                      0x7D2d
--#define HDMI_CEC_RX_DATA14                      0x7D2e
--#define HDMI_CEC_RX_DATA15                      0x7D2f
--#define HDMI_CEC_LOCK                           0x7D30
--#define HDMI_CEC_WKUPCTRL                       0x7D31
--
--/* I2C Master Registers (E-DDC) */
--#define HDMI_I2CM_SLAVE                         0x7E00
--#define HDMI_I2CMESS                            0x7E01
--#define HDMI_I2CM_DATAO                         0x7E02
--#define HDMI_I2CM_DATAI                         0x7E03
--#define HDMI_I2CM_OPERATION                     0x7E04
--#define HDMI_I2CM_INT                           0x7E05
--#define HDMI_I2CM_CTLINT                        0x7E06
--#define HDMI_I2CM_DIV                           0x7E07
--#define HDMI_I2CM_SEGADDR                       0x7E08
--#define HDMI_I2CM_SOFTRSTZ                      0x7E09
--#define HDMI_I2CM_SEGPTR                        0x7E0A
--#define HDMI_I2CM_SS_SCL_HCNT_1_ADDR            0x7E0B
--#define HDMI_I2CM_SS_SCL_HCNT_0_ADDR            0x7E0C
--#define HDMI_I2CM_SS_SCL_LCNT_1_ADDR            0x7E0D
--#define HDMI_I2CM_SS_SCL_LCNT_0_ADDR            0x7E0E
--#define HDMI_I2CM_FS_SCL_HCNT_1_ADDR            0x7E0F
--#define HDMI_I2CM_FS_SCL_HCNT_0_ADDR            0x7E10
--#define HDMI_I2CM_FS_SCL_LCNT_1_ADDR            0x7E11
--#define HDMI_I2CM_FS_SCL_LCNT_0_ADDR            0x7E12
--
--enum {
--/* IH_FC_INT2 field values */
--	HDMI_IH_FC_INT2_OVERFLOW_MASK = 0x03,
--	HDMI_IH_FC_INT2_LOW_PRIORITY_OVERFLOW = 0x02,
--	HDMI_IH_FC_INT2_HIGH_PRIORITY_OVERFLOW = 0x01,
--
--/* IH_FC_STAT2 field values */
--	HDMI_IH_FC_STAT2_OVERFLOW_MASK = 0x03,
--	HDMI_IH_FC_STAT2_LOW_PRIORITY_OVERFLOW = 0x02,
--	HDMI_IH_FC_STAT2_HIGH_PRIORITY_OVERFLOW = 0x01,
--
--/* IH_PHY_STAT0 field values */
--	HDMI_IH_PHY_STAT0_RX_SENSE3 = 0x20,
--	HDMI_IH_PHY_STAT0_RX_SENSE2 = 0x10,
--	HDMI_IH_PHY_STAT0_RX_SENSE1 = 0x8,
--	HDMI_IH_PHY_STAT0_RX_SENSE0 = 0x4,
--	HDMI_IH_PHY_STAT0_TX_PHY_LOCK = 0x2,
--	HDMI_IH_PHY_STAT0_HPD = 0x1,
--
--/* IH_MUTE_I2CMPHY_STAT0 field values */
--	HDMI_IH_MUTE_I2CMPHY_STAT0_I2CMPHYDONE = 0x2,
--	HDMI_IH_MUTE_I2CMPHY_STAT0_I2CMPHYERROR = 0x1,
--
--/* IH_AHBDMAAUD_STAT0 field values */
--	HDMI_IH_AHBDMAAUD_STAT0_ERROR = 0x20,
--	HDMI_IH_AHBDMAAUD_STAT0_LOST = 0x10,
--	HDMI_IH_AHBDMAAUD_STAT0_RETRY = 0x08,
--	HDMI_IH_AHBDMAAUD_STAT0_DONE = 0x04,
--	HDMI_IH_AHBDMAAUD_STAT0_BUFFFULL = 0x02,
--	HDMI_IH_AHBDMAAUD_STAT0_BUFFEMPTY = 0x01,
--
--/* IH_MUTE_FC_STAT2 field values */
--	HDMI_IH_MUTE_FC_STAT2_OVERFLOW_MASK = 0x03,
--	HDMI_IH_MUTE_FC_STAT2_LOW_PRIORITY_OVERFLOW = 0x02,
--	HDMI_IH_MUTE_FC_STAT2_HIGH_PRIORITY_OVERFLOW = 0x01,
--
--/* IH_MUTE_AHBDMAAUD_STAT0 field values */
--	HDMI_IH_MUTE_AHBDMAAUD_STAT0_ERROR = 0x20,
--	HDMI_IH_MUTE_AHBDMAAUD_STAT0_LOST = 0x10,
--	HDMI_IH_MUTE_AHBDMAAUD_STAT0_RETRY = 0x08,
--	HDMI_IH_MUTE_AHBDMAAUD_STAT0_DONE = 0x04,
--	HDMI_IH_MUTE_AHBDMAAUD_STAT0_BUFFFULL = 0x02,
--	HDMI_IH_MUTE_AHBDMAAUD_STAT0_BUFFEMPTY = 0x01,
--
--/* IH_MUTE field values */
--	HDMI_IH_MUTE_MUTE_WAKEUP_INTERRUPT = 0x2,
--	HDMI_IH_MUTE_MUTE_ALL_INTERRUPT = 0x1,
--
--/* TX_INVID0 field values */
--	HDMI_TX_INVID0_INTERNAL_DE_GENERATOR_MASK = 0x80,
--	HDMI_TX_INVID0_INTERNAL_DE_GENERATOR_ENABLE = 0x80,
--	HDMI_TX_INVID0_INTERNAL_DE_GENERATOR_DISABLE = 0x00,
--	HDMI_TX_INVID0_VIDEO_MAPPING_MASK = 0x1F,
--	HDMI_TX_INVID0_VIDEO_MAPPING_OFFSET = 0,
--
--/* TX_INSTUFFING field values */
--	HDMI_TX_INSTUFFING_BDBDATA_STUFFING_MASK = 0x4,
--	HDMI_TX_INSTUFFING_BDBDATA_STUFFING_ENABLE = 0x4,
--	HDMI_TX_INSTUFFING_BDBDATA_STUFFING_DISABLE = 0x0,
--	HDMI_TX_INSTUFFING_RCRDATA_STUFFING_MASK = 0x2,
--	HDMI_TX_INSTUFFING_RCRDATA_STUFFING_ENABLE = 0x2,
--	HDMI_TX_INSTUFFING_RCRDATA_STUFFING_DISABLE = 0x0,
--	HDMI_TX_INSTUFFING_GYDATA_STUFFING_MASK = 0x1,
--	HDMI_TX_INSTUFFING_GYDATA_STUFFING_ENABLE = 0x1,
--	HDMI_TX_INSTUFFING_GYDATA_STUFFING_DISABLE = 0x0,
--
--/* VP_PR_CD field values */
--	HDMI_VP_PR_CD_COLOR_DEPTH_MASK = 0xF0,
--	HDMI_VP_PR_CD_COLOR_DEPTH_OFFSET = 4,
--	HDMI_VP_PR_CD_DESIRED_PR_FACTOR_MASK = 0x0F,
--	HDMI_VP_PR_CD_DESIRED_PR_FACTOR_OFFSET = 0,
--
--/* VP_STUFF field values */
--	HDMI_VP_STUFF_IDEFAULT_PHASE_MASK = 0x20,
--	HDMI_VP_STUFF_IDEFAULT_PHASE_OFFSET = 5,
--	HDMI_VP_STUFF_IFIX_PP_TO_LAST_MASK = 0x10,
--	HDMI_VP_STUFF_IFIX_PP_TO_LAST_OFFSET = 4,
--	HDMI_VP_STUFF_ICX_GOTO_P0_ST_MASK = 0x8,
--	HDMI_VP_STUFF_ICX_GOTO_P0_ST_OFFSET = 3,
--	HDMI_VP_STUFF_YCC422_STUFFING_MASK = 0x4,
--	HDMI_VP_STUFF_YCC422_STUFFING_STUFFING_MODE = 0x4,
--	HDMI_VP_STUFF_YCC422_STUFFING_DIRECT_MODE = 0x0,
--	HDMI_VP_STUFF_PP_STUFFING_MASK = 0x2,
--	HDMI_VP_STUFF_PP_STUFFING_STUFFING_MODE = 0x2,
--	HDMI_VP_STUFF_PP_STUFFING_DIRECT_MODE = 0x0,
--	HDMI_VP_STUFF_PR_STUFFING_MASK = 0x1,
--	HDMI_VP_STUFF_PR_STUFFING_STUFFING_MODE = 0x1,
--	HDMI_VP_STUFF_PR_STUFFING_DIRECT_MODE = 0x0,
--
--/* VP_CONF field values */
--	HDMI_VP_CONF_BYPASS_EN_MASK = 0x40,
--	HDMI_VP_CONF_BYPASS_EN_ENABLE = 0x40,
--	HDMI_VP_CONF_BYPASS_EN_DISABLE = 0x00,
--	HDMI_VP_CONF_PP_EN_ENMASK = 0x20,
--	HDMI_VP_CONF_PP_EN_ENABLE = 0x20,
--	HDMI_VP_CONF_PP_EN_DISABLE = 0x00,
--	HDMI_VP_CONF_PR_EN_MASK = 0x10,
--	HDMI_VP_CONF_PR_EN_ENABLE = 0x10,
--	HDMI_VP_CONF_PR_EN_DISABLE = 0x00,
--	HDMI_VP_CONF_YCC422_EN_MASK = 0x8,
--	HDMI_VP_CONF_YCC422_EN_ENABLE = 0x8,
--	HDMI_VP_CONF_YCC422_EN_DISABLE = 0x0,
--	HDMI_VP_CONF_BYPASS_SELECT_MASK = 0x4,
--	HDMI_VP_CONF_BYPASS_SELECT_VID_PACKETIZER = 0x4,
--	HDMI_VP_CONF_BYPASS_SELECT_PIX_REPEATER = 0x0,
--	HDMI_VP_CONF_OUTPUT_SELECTOR_MASK = 0x3,
--	HDMI_VP_CONF_OUTPUT_SELECTOR_BYPASS = 0x3,
--	HDMI_VP_CONF_OUTPUT_SELECTOR_YCC422 = 0x1,
--	HDMI_VP_CONF_OUTPUT_SELECTOR_PP = 0x0,
--
--/* VP_REMAP field values */
--	HDMI_VP_REMAP_MASK = 0x3,
--	HDMI_VP_REMAP_YCC422_24bit = 0x2,
--	HDMI_VP_REMAP_YCC422_20bit = 0x1,
--	HDMI_VP_REMAP_YCC422_16bit = 0x0,
--
--/* FC_INVIDCONF field values */
--	HDMI_FC_INVIDCONF_HDCP_KEEPOUT_MASK = 0x80,
--	HDMI_FC_INVIDCONF_HDCP_KEEPOUT_ACTIVE = 0x80,
--	HDMI_FC_INVIDCONF_HDCP_KEEPOUT_INACTIVE = 0x00,
--	HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_MASK = 0x40,
--	HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_ACTIVE_HIGH = 0x40,
--	HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_ACTIVE_LOW = 0x00,
--	HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_MASK = 0x20,
--	HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_ACTIVE_HIGH = 0x20,
--	HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_ACTIVE_LOW = 0x00,
--	HDMI_FC_INVIDCONF_DE_IN_POLARITY_MASK = 0x10,
--	HDMI_FC_INVIDCONF_DE_IN_POLARITY_ACTIVE_HIGH = 0x10,
--	HDMI_FC_INVIDCONF_DE_IN_POLARITY_ACTIVE_LOW = 0x00,
--	HDMI_FC_INVIDCONF_DVI_MODEZ_MASK = 0x8,
--	HDMI_FC_INVIDCONF_DVI_MODEZ_HDMI_MODE = 0x8,
--	HDMI_FC_INVIDCONF_DVI_MODEZ_DVI_MODE = 0x0,
--	HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_MASK = 0x2,
--	HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_HIGH = 0x2,
--	HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_LOW = 0x0,
--	HDMI_FC_INVIDCONF_IN_I_P_MASK = 0x1,
--	HDMI_FC_INVIDCONF_IN_I_P_INTERLACED = 0x1,
--	HDMI_FC_INVIDCONF_IN_I_P_PROGRESSIVE = 0x0,
--
--/* FC_AUDICONF0 field values */
--	HDMI_FC_AUDICONF0_CC_OFFSET = 4,
--	HDMI_FC_AUDICONF0_CC_MASK = 0x70,
--	HDMI_FC_AUDICONF0_CT_OFFSET = 0,
--	HDMI_FC_AUDICONF0_CT_MASK = 0xF,
--
--/* FC_AUDICONF1 field values */
--	HDMI_FC_AUDICONF1_SS_OFFSET = 3,
--	HDMI_FC_AUDICONF1_SS_MASK = 0x18,
--	HDMI_FC_AUDICONF1_SF_OFFSET = 0,
--	HDMI_FC_AUDICONF1_SF_MASK = 0x7,
--
--/* FC_AUDICONF3 field values */
--	HDMI_FC_AUDICONF3_LFEPBL_OFFSET = 5,
--	HDMI_FC_AUDICONF3_LFEPBL_MASK = 0x60,
--	HDMI_FC_AUDICONF3_DM_INH_OFFSET = 4,
--	HDMI_FC_AUDICONF3_DM_INH_MASK = 0x10,
--	HDMI_FC_AUDICONF3_LSV_OFFSET = 0,
--	HDMI_FC_AUDICONF3_LSV_MASK = 0xF,
--
--/* FC_AUDSCHNLS0 field values */
--	HDMI_FC_AUDSCHNLS0_CGMSA_OFFSET = 4,
--	HDMI_FC_AUDSCHNLS0_CGMSA_MASK = 0x30,
--	HDMI_FC_AUDSCHNLS0_COPYRIGHT_OFFSET = 0,
--	HDMI_FC_AUDSCHNLS0_COPYRIGHT_MASK = 0x01,
--
--/* FC_AUDSCHNLS3-6 field values */
--	HDMI_FC_AUDSCHNLS3_OIEC_CH0_OFFSET = 0,
--	HDMI_FC_AUDSCHNLS3_OIEC_CH0_MASK = 0x0f,
--	HDMI_FC_AUDSCHNLS3_OIEC_CH1_OFFSET = 4,
--	HDMI_FC_AUDSCHNLS3_OIEC_CH1_MASK = 0xf0,
--	HDMI_FC_AUDSCHNLS4_OIEC_CH2_OFFSET = 0,
--	HDMI_FC_AUDSCHNLS4_OIEC_CH2_MASK = 0x0f,
--	HDMI_FC_AUDSCHNLS4_OIEC_CH3_OFFSET = 4,
--	HDMI_FC_AUDSCHNLS4_OIEC_CH3_MASK = 0xf0,
--
--	HDMI_FC_AUDSCHNLS5_OIEC_CH0_OFFSET = 0,
--	HDMI_FC_AUDSCHNLS5_OIEC_CH0_MASK = 0x0f,
--	HDMI_FC_AUDSCHNLS5_OIEC_CH1_OFFSET = 4,
--	HDMI_FC_AUDSCHNLS5_OIEC_CH1_MASK = 0xf0,
--	HDMI_FC_AUDSCHNLS6_OIEC_CH2_OFFSET = 0,
--	HDMI_FC_AUDSCHNLS6_OIEC_CH2_MASK = 0x0f,
--	HDMI_FC_AUDSCHNLS6_OIEC_CH3_OFFSET = 4,
--	HDMI_FC_AUDSCHNLS6_OIEC_CH3_MASK = 0xf0,
--
--/* HDMI_FC_AUDSCHNLS7 field values */
--	HDMI_FC_AUDSCHNLS7_ACCURACY_OFFSET = 4,
--	HDMI_FC_AUDSCHNLS7_ACCURACY_MASK = 0x30,
--
--/* HDMI_FC_AUDSCHNLS8 field values */
--	HDMI_FC_AUDSCHNLS8_ORIGSAMPFREQ_MASK = 0xf0,
--	HDMI_FC_AUDSCHNLS8_ORIGSAMPFREQ_OFFSET = 4,
--	HDMI_FC_AUDSCHNLS8_WORDLEGNTH_MASK = 0x0f,
--	HDMI_FC_AUDSCHNLS8_WORDLEGNTH_OFFSET = 0,
--
--/* FC_AUDSCONF field values */
--	HDMI_FC_AUDSCONF_AUD_PACKET_SAMPFIT_MASK = 0xF0,
--	HDMI_FC_AUDSCONF_AUD_PACKET_SAMPFIT_OFFSET = 4,
--	HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_MASK = 0x1,
--	HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_OFFSET = 0,
--	HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_LAYOUT1 = 0x1,
--	HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_LAYOUT0 = 0x0,
--
--/* FC_STAT2 field values */
--	HDMI_FC_STAT2_OVERFLOW_MASK = 0x03,
--	HDMI_FC_STAT2_LOW_PRIORITY_OVERFLOW = 0x02,
--	HDMI_FC_STAT2_HIGH_PRIORITY_OVERFLOW = 0x01,
--
--/* FC_INT2 field values */
--	HDMI_FC_INT2_OVERFLOW_MASK = 0x03,
--	HDMI_FC_INT2_LOW_PRIORITY_OVERFLOW = 0x02,
--	HDMI_FC_INT2_HIGH_PRIORITY_OVERFLOW = 0x01,
--
--/* FC_MASK2 field values */
--	HDMI_FC_MASK2_OVERFLOW_MASK = 0x03,
--	HDMI_FC_MASK2_LOW_PRIORITY_OVERFLOW = 0x02,
--	HDMI_FC_MASK2_HIGH_PRIORITY_OVERFLOW = 0x01,
--
--/* FC_PRCONF field values */
--	HDMI_FC_PRCONF_INCOMING_PR_FACTOR_MASK = 0xF0,
--	HDMI_FC_PRCONF_INCOMING_PR_FACTOR_OFFSET = 4,
--	HDMI_FC_PRCONF_OUTPUT_PR_FACTOR_MASK = 0x0F,
--	HDMI_FC_PRCONF_OUTPUT_PR_FACTOR_OFFSET = 0,
--
--/* FC_AVICONF0-FC_AVICONF3 field values */
--	HDMI_FC_AVICONF0_PIX_FMT_MASK = 0x03,
--	HDMI_FC_AVICONF0_PIX_FMT_RGB = 0x00,
--	HDMI_FC_AVICONF0_PIX_FMT_YCBCR422 = 0x01,
--	HDMI_FC_AVICONF0_PIX_FMT_YCBCR444 = 0x02,
--	HDMI_FC_AVICONF0_ACTIVE_FMT_MASK = 0x40,
--	HDMI_FC_AVICONF0_ACTIVE_FMT_INFO_PRESENT = 0x40,
--	HDMI_FC_AVICONF0_ACTIVE_FMT_NO_INFO = 0x00,
--	HDMI_FC_AVICONF0_BAR_DATA_MASK = 0x0C,
--	HDMI_FC_AVICONF0_BAR_DATA_NO_DATA = 0x00,
--	HDMI_FC_AVICONF0_BAR_DATA_VERT_BAR = 0x04,
--	HDMI_FC_AVICONF0_BAR_DATA_HORIZ_BAR = 0x08,
--	HDMI_FC_AVICONF0_BAR_DATA_VERT_HORIZ_BAR = 0x0C,
--	HDMI_FC_AVICONF0_SCAN_INFO_MASK = 0x30,
--	HDMI_FC_AVICONF0_SCAN_INFO_OVERSCAN = 0x10,
--	HDMI_FC_AVICONF0_SCAN_INFO_UNDERSCAN = 0x20,
--	HDMI_FC_AVICONF0_SCAN_INFO_NODATA = 0x00,
--
--	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_MASK = 0x0F,
--	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_USE_CODED = 0x08,
--	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_4_3 = 0x09,
--	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_16_9 = 0x0A,
--	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_14_9 = 0x0B,
--	HDMI_FC_AVICONF1_CODED_ASPECT_RATIO_MASK = 0x30,
--	HDMI_FC_AVICONF1_CODED_ASPECT_RATIO_NO_DATA = 0x00,
--	HDMI_FC_AVICONF1_CODED_ASPECT_RATIO_4_3 = 0x10,
--	HDMI_FC_AVICONF1_CODED_ASPECT_RATIO_16_9 = 0x20,
--	HDMI_FC_AVICONF1_COLORIMETRY_MASK = 0xC0,
--	HDMI_FC_AVICONF1_COLORIMETRY_NO_DATA = 0x00,
--	HDMI_FC_AVICONF1_COLORIMETRY_SMPTE = 0x40,
--	HDMI_FC_AVICONF1_COLORIMETRY_ITUR = 0x80,
--	HDMI_FC_AVICONF1_COLORIMETRY_EXTENDED_INFO = 0xC0,
--
--	HDMI_FC_AVICONF2_SCALING_MASK = 0x03,
--	HDMI_FC_AVICONF2_SCALING_NONE = 0x00,
--	HDMI_FC_AVICONF2_SCALING_HORIZ = 0x01,
--	HDMI_FC_AVICONF2_SCALING_VERT = 0x02,
--	HDMI_FC_AVICONF2_SCALING_HORIZ_VERT = 0x03,
--	HDMI_FC_AVICONF2_RGB_QUANT_MASK = 0x0C,
--	HDMI_FC_AVICONF2_RGB_QUANT_DEFAULT = 0x00,
--	HDMI_FC_AVICONF2_RGB_QUANT_LIMITED_RANGE = 0x04,
--	HDMI_FC_AVICONF2_RGB_QUANT_FULL_RANGE = 0x08,
--	HDMI_FC_AVICONF2_EXT_COLORIMETRY_MASK = 0x70,
--	HDMI_FC_AVICONF2_EXT_COLORIMETRY_XVYCC601 = 0x00,
--	HDMI_FC_AVICONF2_EXT_COLORIMETRY_XVYCC709 = 0x10,
--	HDMI_FC_AVICONF2_EXT_COLORIMETRY_SYCC601 = 0x20,
--	HDMI_FC_AVICONF2_EXT_COLORIMETRY_ADOBE_YCC601 = 0x30,
--	HDMI_FC_AVICONF2_EXT_COLORIMETRY_ADOBE_RGB = 0x40,
--	HDMI_FC_AVICONF2_IT_CONTENT_MASK = 0x80,
--	HDMI_FC_AVICONF2_IT_CONTENT_NO_DATA = 0x00,
--	HDMI_FC_AVICONF2_IT_CONTENT_VALID = 0x80,
--
--	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_MASK = 0x03,
--	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_GRAPHICS = 0x00,
--	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_PHOTO = 0x01,
--	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_CINEMA = 0x02,
--	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_GAME = 0x03,
--	HDMI_FC_AVICONF3_QUANT_RANGE_MASK = 0x0C,
--	HDMI_FC_AVICONF3_QUANT_RANGE_LIMITED = 0x00,
--	HDMI_FC_AVICONF3_QUANT_RANGE_FULL = 0x04,
--
--/* FC_DBGFORCE field values */
--	HDMI_FC_DBGFORCE_FORCEAUDIO = 0x10,
--	HDMI_FC_DBGFORCE_FORCEVIDEO = 0x1,
--
--/* PHY_CONF0 field values */
--	HDMI_PHY_CONF0_PDZ_MASK = 0x80,
--	HDMI_PHY_CONF0_PDZ_OFFSET = 7,
--	HDMI_PHY_CONF0_ENTMDS_MASK = 0x40,
--	HDMI_PHY_CONF0_ENTMDS_OFFSET = 6,
--	HDMI_PHY_CONF0_SPARECTRL_MASK = 0x20,
--	HDMI_PHY_CONF0_SPARECTRL_OFFSET = 5,
--	HDMI_PHY_CONF0_GEN2_PDDQ_MASK = 0x10,
--	HDMI_PHY_CONF0_GEN2_PDDQ_OFFSET = 4,
--	HDMI_PHY_CONF0_GEN2_TXPWRON_MASK = 0x8,
--	HDMI_PHY_CONF0_GEN2_TXPWRON_OFFSET = 3,
--	HDMI_PHY_CONF0_GEN2_ENHPDRXSENSE_MASK = 0x4,
--	HDMI_PHY_CONF0_GEN2_ENHPDRXSENSE_OFFSET = 2,
--	HDMI_PHY_CONF0_SELDATAENPOL_MASK = 0x2,
--	HDMI_PHY_CONF0_SELDATAENPOL_OFFSET = 1,
--	HDMI_PHY_CONF0_SELDIPIF_MASK = 0x1,
--	HDMI_PHY_CONF0_SELDIPIF_OFFSET = 0,
--
--/* PHY_TST0 field values */
--	HDMI_PHY_TST0_TSTCLR_MASK = 0x20,
--	HDMI_PHY_TST0_TSTCLR_OFFSET = 5,
--	HDMI_PHY_TST0_TSTEN_MASK = 0x10,
--	HDMI_PHY_TST0_TSTEN_OFFSET = 4,
--	HDMI_PHY_TST0_TSTCLK_MASK = 0x1,
--	HDMI_PHY_TST0_TSTCLK_OFFSET = 0,
--
--/* PHY_STAT0 field values */
--	HDMI_PHY_RX_SENSE3 = 0x80,
--	HDMI_PHY_RX_SENSE2 = 0x40,
--	HDMI_PHY_RX_SENSE1 = 0x20,
--	HDMI_PHY_RX_SENSE0 = 0x10,
--	HDMI_PHY_HPD = 0x02,
--	HDMI_PHY_TX_PHY_LOCK = 0x01,
--
--/* PHY_I2CM_SLAVE_ADDR field values */
--	HDMI_PHY_I2CM_SLAVE_ADDR_PHY_GEN2 = 0x69,
--	HDMI_PHY_I2CM_SLAVE_ADDR_HEAC_PHY = 0x49,
--
--/* PHY_I2CM_OPERATION_ADDR field values */
--	HDMI_PHY_I2CM_OPERATION_ADDR_WRITE = 0x10,
--	HDMI_PHY_I2CM_OPERATION_ADDR_READ = 0x1,
--
--/* HDMI_PHY_I2CM_INT_ADDR */
--	HDMI_PHY_I2CM_INT_ADDR_DONE_POL = 0x08,
--	HDMI_PHY_I2CM_INT_ADDR_DONE_MASK = 0x04,
--
--/* HDMI_PHY_I2CM_CTLINT_ADDR */
--	HDMI_PHY_I2CM_CTLINT_ADDR_NAC_POL = 0x80,
--	HDMI_PHY_I2CM_CTLINT_ADDR_NAC_MASK = 0x40,
--	HDMI_PHY_I2CM_CTLINT_ADDR_ARBITRATION_POL = 0x08,
--	HDMI_PHY_I2CM_CTLINT_ADDR_ARBITRATION_MASK = 0x04,
--
--/* AUD_CTS3 field values */
--	HDMI_AUD_CTS3_N_SHIFT_OFFSET = 5,
--	HDMI_AUD_CTS3_N_SHIFT_MASK = 0xe0,
--	HDMI_AUD_CTS3_N_SHIFT_1 = 0,
--	HDMI_AUD_CTS3_N_SHIFT_16 = 0x20,
--	HDMI_AUD_CTS3_N_SHIFT_32 = 0x40,
--	HDMI_AUD_CTS3_N_SHIFT_64 = 0x60,
--	HDMI_AUD_CTS3_N_SHIFT_128 = 0x80,
--	HDMI_AUD_CTS3_N_SHIFT_256 = 0xa0,
--	/* note that the CTS3 MANUAL bit has been removed
--	   from our part. Can't set it, will read as 0. */
--	HDMI_AUD_CTS3_CTS_MANUAL = 0x10,
--	HDMI_AUD_CTS3_AUDCTS19_16_MASK = 0x0f,
--
--/* AHB_DMA_CONF0 field values */
--	HDMI_AHB_DMA_CONF0_SW_FIFO_RST_OFFSET = 7,
--	HDMI_AHB_DMA_CONF0_SW_FIFO_RST_MASK = 0x80,
--	HDMI_AHB_DMA_CONF0_HBR = 0x10,
--	HDMI_AHB_DMA_CONF0_EN_HLOCK_OFFSET = 3,
--	HDMI_AHB_DMA_CONF0_EN_HLOCK_MASK = 0x08,
--	HDMI_AHB_DMA_CONF0_INCR_TYPE_OFFSET = 1,
--	HDMI_AHB_DMA_CONF0_INCR_TYPE_MASK = 0x06,
--	HDMI_AHB_DMA_CONF0_INCR4 = 0x0,
--	HDMI_AHB_DMA_CONF0_INCR8 = 0x2,
--	HDMI_AHB_DMA_CONF0_INCR16 = 0x4,
--	HDMI_AHB_DMA_CONF0_BURST_MODE = 0x1,
--
--/* HDMI_AHB_DMA_START field values */
--	HDMI_AHB_DMA_START_START_OFFSET = 0,
--	HDMI_AHB_DMA_START_START_MASK = 0x01,
--
--/* HDMI_AHB_DMA_STOP field values */
--	HDMI_AHB_DMA_STOP_STOP_OFFSET = 0,
--	HDMI_AHB_DMA_STOP_STOP_MASK = 0x01,
--
--/* AHB_DMA_STAT, AHB_DMA_INT, AHB_DMA_MASK, AHB_DMA_POL field values */
--	HDMI_AHB_DMA_DONE = 0x80,
--	HDMI_AHB_DMA_RETRY_SPLIT = 0x40,
--	HDMI_AHB_DMA_LOSTOWNERSHIP = 0x20,
--	HDMI_AHB_DMA_ERROR = 0x10,
--	HDMI_AHB_DMA_FIFO_THREMPTY = 0x04,
--	HDMI_AHB_DMA_FIFO_FULL = 0x02,
--	HDMI_AHB_DMA_FIFO_EMPTY = 0x01,
--
--/* AHB_DMA_BUFFSTAT, AHB_DMA_BUFFINT,AHB_DMA_BUFFMASK,AHB_DMA_BUFFPOL values */
--	HDMI_AHB_DMA_BUFFSTAT_FULL = 0x02,
--	HDMI_AHB_DMA_BUFFSTAT_EMPTY = 0x01,
--
--/* MC_CLKDIS field values */
--	HDMI_MC_CLKDIS_HDCPCLK_DISABLE = 0x40,
--	HDMI_MC_CLKDIS_CECCLK_DISABLE = 0x20,
--	HDMI_MC_CLKDIS_CSCCLK_DISABLE = 0x10,
--	HDMI_MC_CLKDIS_AUDCLK_DISABLE = 0x8,
--	HDMI_MC_CLKDIS_PREPCLK_DISABLE = 0x4,
--	HDMI_MC_CLKDIS_TMDSCLK_DISABLE = 0x2,
--	HDMI_MC_CLKDIS_PIXELCLK_DISABLE = 0x1,
--
--/* MC_SWRSTZ field values */
--	HDMI_MC_SWRSTZ_TMDSSWRST_REQ = 0x02,
--
--/* MC_FLOWCTRL field values */
--	HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_MASK = 0x1,
--	HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_CSC_IN_PATH = 0x1,
--	HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_CSC_BYPASS = 0x0,
--
--/* MC_PHYRSTZ field values */
--	HDMI_MC_PHYRSTZ_ASSERT = 0x0,
--	HDMI_MC_PHYRSTZ_DEASSERT = 0x1,
--
--/* MC_HEACPHY_RST field values */
--	HDMI_MC_HEACPHY_RST_ASSERT = 0x1,
--	HDMI_MC_HEACPHY_RST_DEASSERT = 0x0,
--
--/* CSC_CFG field values */
--	HDMI_CSC_CFG_INTMODE_MASK = 0x30,
--	HDMI_CSC_CFG_INTMODE_OFFSET = 4,
--	HDMI_CSC_CFG_INTMODE_DISABLE = 0x00,
--	HDMI_CSC_CFG_INTMODE_CHROMA_INT_FORMULA1 = 0x10,
--	HDMI_CSC_CFG_INTMODE_CHROMA_INT_FORMULA2 = 0x20,
--	HDMI_CSC_CFG_DECMODE_MASK = 0x3,
--	HDMI_CSC_CFG_DECMODE_OFFSET = 0,
--	HDMI_CSC_CFG_DECMODE_DISABLE = 0x0,
--	HDMI_CSC_CFG_DECMODE_CHROMA_INT_FORMULA1 = 0x1,
--	HDMI_CSC_CFG_DECMODE_CHROMA_INT_FORMULA2 = 0x2,
--	HDMI_CSC_CFG_DECMODE_CHROMA_INT_FORMULA3 = 0x3,
--
--/* CSC_SCALE field values */
--	HDMI_CSC_SCALE_CSC_COLORDE_PTH_MASK = 0xF0,
--	HDMI_CSC_SCALE_CSC_COLORDE_PTH_24BPP = 0x00,
--	HDMI_CSC_SCALE_CSC_COLORDE_PTH_30BPP = 0x50,
--	HDMI_CSC_SCALE_CSC_COLORDE_PTH_36BPP = 0x60,
--	HDMI_CSC_SCALE_CSC_COLORDE_PTH_48BPP = 0x70,
--	HDMI_CSC_SCALE_CSCSCALE_MASK = 0x03,
--
--/* A_HDCPCFG0 field values */
--	HDMI_A_HDCPCFG0_ELVENA_MASK = 0x80,
--	HDMI_A_HDCPCFG0_ELVENA_ENABLE = 0x80,
--	HDMI_A_HDCPCFG0_ELVENA_DISABLE = 0x00,
--	HDMI_A_HDCPCFG0_I2CFASTMODE_MASK = 0x40,
--	HDMI_A_HDCPCFG0_I2CFASTMODE_ENABLE = 0x40,
--	HDMI_A_HDCPCFG0_I2CFASTMODE_DISABLE = 0x00,
--	HDMI_A_HDCPCFG0_BYPENCRYPTION_MASK = 0x20,
--	HDMI_A_HDCPCFG0_BYPENCRYPTION_ENABLE = 0x20,
--	HDMI_A_HDCPCFG0_BYPENCRYPTION_DISABLE = 0x00,
--	HDMI_A_HDCPCFG0_SYNCRICHECK_MASK = 0x10,
--	HDMI_A_HDCPCFG0_SYNCRICHECK_ENABLE = 0x10,
--	HDMI_A_HDCPCFG0_SYNCRICHECK_DISABLE = 0x00,
--	HDMI_A_HDCPCFG0_AVMUTE_MASK = 0x8,
--	HDMI_A_HDCPCFG0_AVMUTE_ENABLE = 0x8,
--	HDMI_A_HDCPCFG0_AVMUTE_DISABLE = 0x0,
--	HDMI_A_HDCPCFG0_RXDETECT_MASK = 0x4,
--	HDMI_A_HDCPCFG0_RXDETECT_ENABLE = 0x4,
--	HDMI_A_HDCPCFG0_RXDETECT_DISABLE = 0x0,
--	HDMI_A_HDCPCFG0_EN11FEATURE_MASK = 0x2,
--	HDMI_A_HDCPCFG0_EN11FEATURE_ENABLE = 0x2,
--	HDMI_A_HDCPCFG0_EN11FEATURE_DISABLE = 0x0,
--	HDMI_A_HDCPCFG0_HDMIDVI_MASK = 0x1,
--	HDMI_A_HDCPCFG0_HDMIDVI_HDMI = 0x1,
--	HDMI_A_HDCPCFG0_HDMIDVI_DVI = 0x0,
--
--/* A_HDCPCFG1 field values */
--	HDMI_A_HDCPCFG1_DISSHA1CHECK_MASK = 0x8,
--	HDMI_A_HDCPCFG1_DISSHA1CHECK_DISABLE = 0x8,
--	HDMI_A_HDCPCFG1_DISSHA1CHECK_ENABLE = 0x0,
--	HDMI_A_HDCPCFG1_PH2UPSHFTENC_MASK = 0x4,
--	HDMI_A_HDCPCFG1_PH2UPSHFTENC_ENABLE = 0x4,
--	HDMI_A_HDCPCFG1_PH2UPSHFTENC_DISABLE = 0x0,
--	HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_MASK = 0x2,
--	HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_DISABLE = 0x2,
--	HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_ENABLE = 0x0,
--	HDMI_A_HDCPCFG1_SWRESET_MASK = 0x1,
--	HDMI_A_HDCPCFG1_SWRESET_ASSERT = 0x0,
--
--/* A_VIDPOLCFG field values */
--	HDMI_A_VIDPOLCFG_UNENCRYPTCONF_MASK = 0x60,
--	HDMI_A_VIDPOLCFG_UNENCRYPTCONF_OFFSET = 5,
--	HDMI_A_VIDPOLCFG_DATAENPOL_MASK = 0x10,
--	HDMI_A_VIDPOLCFG_DATAENPOL_ACTIVE_HIGH = 0x10,
--	HDMI_A_VIDPOLCFG_DATAENPOL_ACTIVE_LOW = 0x0,
--	HDMI_A_VIDPOLCFG_VSYNCPOL_MASK = 0x8,
--	HDMI_A_VIDPOLCFG_VSYNCPOL_ACTIVE_HIGH = 0x8,
--	HDMI_A_VIDPOLCFG_VSYNCPOL_ACTIVE_LOW = 0x0,
--	HDMI_A_VIDPOLCFG_HSYNCPOL_MASK = 0x2,
--	HDMI_A_VIDPOLCFG_HSYNCPOL_ACTIVE_HIGH = 0x2,
--	HDMI_A_VIDPOLCFG_HSYNCPOL_ACTIVE_LOW = 0x0,
--};
--#endif /* __IMX_HDMI_H__ */
++MODULE_ALIAS("platform:dw-hdmi");
+diff --git a/drivers/video/dw-hdmi.h b/drivers/video/dw-hdmi.h
+new file mode 100644
+index 0000000000..af43a0414b
+--- /dev/null
++++ b/drivers/video/dw-hdmi.h
+@@ -0,0 +1,1168 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright (C) 2011 Freescale Semiconductor, Inc.
++ */
++
++#ifndef __DW_HDMI_H__
++#define __DW_HDMI_H__
++
++/* Identification Registers */
++#define HDMI_DESIGN_ID                          0x0000
++#define HDMI_REVISION_ID                        0x0001
++#define HDMI_PRODUCT_ID0                        0x0002
++#define HDMI_PRODUCT_ID1                        0x0003
++#define HDMI_CONFIG0_ID                         0x0004
++#define HDMI_CONFIG1_ID                         0x0005
++#define HDMI_CONFIG2_ID                         0x0006
++#define HDMI_CONFIG3_ID                         0x0007
++
++/* Interrupt Registers */
++#define HDMI_IH_FC_STAT0                        0x0100
++#define HDMI_IH_FC_STAT1                        0x0101
++#define HDMI_IH_FC_STAT2                        0x0102
++#define HDMI_IH_AS_STAT0                        0x0103
++#define HDMI_IH_PHY_STAT0                       0x0104
++#define HDMI_IH_I2CM_STAT0                      0x0105
++#define HDMI_IH_CEC_STAT0                       0x0106
++#define HDMI_IH_VP_STAT0                        0x0107
++#define HDMI_IH_I2CMPHY_STAT0                   0x0108
++#define HDMI_IH_AHBDMAAUD_STAT0                 0x0109
++
++#define HDMI_IH_MUTE_FC_STAT0                   0x0180
++#define HDMI_IH_MUTE_FC_STAT1                   0x0181
++#define HDMI_IH_MUTE_FC_STAT2                   0x0182
++#define HDMI_IH_MUTE_AS_STAT0                   0x0183
++#define HDMI_IH_MUTE_PHY_STAT0                  0x0184
++#define HDMI_IH_MUTE_I2CM_STAT0                 0x0185
++#define HDMI_IH_MUTE_CEC_STAT0                  0x0186
++#define HDMI_IH_MUTE_VP_STAT0                   0x0187
++#define HDMI_IH_MUTE_I2CMPHY_STAT0              0x0188
++#define HDMI_IH_MUTE_AHBDMAAUD_STAT0            0x0189
++#define HDMI_IH_MUTE                            0x01FF
++
++/* Video Sample Registers */
++#define HDMI_TX_INVID0                          0x0200
++#define HDMI_TX_INSTUFFING                      0x0201
++#define HDMI_TX_GYDATA0                         0x0202
++#define HDMI_TX_GYDATA1                         0x0203
++#define HDMI_TX_RCRDATA0                        0x0204
++#define HDMI_TX_RCRDATA1                        0x0205
++#define HDMI_TX_BCBDATA0                        0x0206
++#define HDMI_TX_BCBDATA1                        0x0207
++
++/* Video Packetizer Registers */
++#define HDMI_VP_STATUS                          0x0800
++#define HDMI_VP_PR_CD                           0x0801
++#define HDMI_VP_STUFF                           0x0802
++#define HDMI_VP_REMAP                           0x0803
++#define HDMI_VP_CONF                            0x0804
++#define HDMI_VP_STAT                            0x0805
++#define HDMI_VP_INT                             0x0806
++#define HDMI_VP_MASK                            0x0807
++#define HDMI_VP_POL                             0x0808
++
++/* Frame Composer Registers */
++#define HDMI_FC_INVIDCONF                       0x1000
++#define HDMI_FC_INHACTV0                        0x1001
++#define HDMI_FC_INHACTV1                        0x1002
++#define HDMI_FC_INHBLANK0                       0x1003
++#define HDMI_FC_INHBLANK1                       0x1004
++#define HDMI_FC_INVACTV0                        0x1005
++#define HDMI_FC_INVACTV1                        0x1006
++#define HDMI_FC_INVBLANK                        0x1007
++#define HDMI_FC_HSYNCINDELAY0                   0x1008
++#define HDMI_FC_HSYNCINDELAY1                   0x1009
++#define HDMI_FC_HSYNCINWIDTH0                   0x100A
++#define HDMI_FC_HSYNCINWIDTH1                   0x100B
++#define HDMI_FC_VSYNCINDELAY                    0x100C
++#define HDMI_FC_VSYNCINWIDTH                    0x100D
++#define HDMI_FC_INFREQ0                         0x100E
++#define HDMI_FC_INFREQ1                         0x100F
++#define HDMI_FC_INFREQ2                         0x1010
++#define HDMI_FC_CTRLDUR                         0x1011
++#define HDMI_FC_EXCTRLDUR                       0x1012
++#define HDMI_FC_EXCTRLSPAC                      0x1013
++#define HDMI_FC_CH0PREAM                        0x1014
++#define HDMI_FC_CH1PREAM                        0x1015
++#define HDMI_FC_CH2PREAM                        0x1016
++#define HDMI_FC_AVICONF3                        0x1017
++#define HDMI_FC_GCP                             0x1018
++#define HDMI_FC_AVICONF0                        0x1019
++#define HDMI_FC_AVICONF1                        0x101A
++#define HDMI_FC_AVICONF2                        0x101B
++#define HDMI_FC_AVIVID                          0x101C
++#define HDMI_FC_AVIETB0                         0x101D
++#define HDMI_FC_AVIETB1                         0x101E
++#define HDMI_FC_AVISBB0                         0x101F
++#define HDMI_FC_AVISBB1                         0x1020
++#define HDMI_FC_AVIELB0                         0x1021
++#define HDMI_FC_AVIELB1                         0x1022
++#define HDMI_FC_AVISRB0                         0x1023
++#define HDMI_FC_AVISRB1                         0x1024
++#define HDMI_FC_AUDICONF0                       0x1025
++#define HDMI_FC_AUDICONF1                       0x1026
++#define HDMI_FC_AUDICONF2                       0x1027
++#define HDMI_FC_AUDICONF3                       0x1028
++#define HDMI_FC_VSDIEEEID0                      0x1029
++#define HDMI_FC_VSDSIZE                         0x102A
++#define HDMI_FC_VSDIEEEID1                      0x1030
++#define HDMI_FC_VSDIEEEID2                      0x1031
++#define HDMI_FC_VSDPAYLOAD0                     0x1032
++#define HDMI_FC_VSDPAYLOAD1                     0x1033
++#define HDMI_FC_VSDPAYLOAD2                     0x1034
++#define HDMI_FC_VSDPAYLOAD3                     0x1035
++#define HDMI_FC_VSDPAYLOAD4                     0x1036
++#define HDMI_FC_VSDPAYLOAD5                     0x1037
++#define HDMI_FC_VSDPAYLOAD6                     0x1038
++#define HDMI_FC_VSDPAYLOAD7                     0x1039
++#define HDMI_FC_VSDPAYLOAD8                     0x103A
++#define HDMI_FC_VSDPAYLOAD9                     0x103B
++#define HDMI_FC_VSDPAYLOAD10                    0x103C
++#define HDMI_FC_VSDPAYLOAD11                    0x103D
++#define HDMI_FC_VSDPAYLOAD12                    0x103E
++#define HDMI_FC_VSDPAYLOAD13                    0x103F
++#define HDMI_FC_VSDPAYLOAD14                    0x1040
++#define HDMI_FC_VSDPAYLOAD15                    0x1041
++#define HDMI_FC_VSDPAYLOAD16                    0x1042
++#define HDMI_FC_VSDPAYLOAD17                    0x1043
++#define HDMI_FC_VSDPAYLOAD18                    0x1044
++#define HDMI_FC_VSDPAYLOAD19                    0x1045
++#define HDMI_FC_VSDPAYLOAD20                    0x1046
++#define HDMI_FC_VSDPAYLOAD21                    0x1047
++#define HDMI_FC_VSDPAYLOAD22                    0x1048
++#define HDMI_FC_VSDPAYLOAD23                    0x1049
++#define HDMI_FC_SPDVENDORNAME0                  0x104A
++#define HDMI_FC_SPDVENDORNAME1                  0x104B
++#define HDMI_FC_SPDVENDORNAME2                  0x104C
++#define HDMI_FC_SPDVENDORNAME3                  0x104D
++#define HDMI_FC_SPDVENDORNAME4                  0x104E
++#define HDMI_FC_SPDVENDORNAME5                  0x104F
++#define HDMI_FC_SPDVENDORNAME6                  0x1050
++#define HDMI_FC_SPDVENDORNAME7                  0x1051
++#define HDMI_FC_SDPPRODUCTNAME0                 0x1052
++#define HDMI_FC_SDPPRODUCTNAME1                 0x1053
++#define HDMI_FC_SDPPRODUCTNAME2                 0x1054
++#define HDMI_FC_SDPPRODUCTNAME3                 0x1055
++#define HDMI_FC_SDPPRODUCTNAME4                 0x1056
++#define HDMI_FC_SDPPRODUCTNAME5                 0x1057
++#define HDMI_FC_SDPPRODUCTNAME6                 0x1058
++#define HDMI_FC_SDPPRODUCTNAME7                 0x1059
++#define HDMI_FC_SDPPRODUCTNAME8                 0x105A
++#define HDMI_FC_SDPPRODUCTNAME9                 0x105B
++#define HDMI_FC_SDPPRODUCTNAME10                0x105C
++#define HDMI_FC_SDPPRODUCTNAME11                0x105D
++#define HDMI_FC_SDPPRODUCTNAME12                0x105E
++#define HDMI_FC_SDPPRODUCTNAME13                0x105F
++#define HDMI_FC_SDPPRODUCTNAME14                0x1060
++#define HDMI_FC_SPDPRODUCTNAME15                0x1061
++#define HDMI_FC_SPDDEVICEINF                    0x1062
++#define HDMI_FC_AUDSCONF                        0x1063
++#define HDMI_FC_AUDSSTAT                        0x1064
++#define HDMI_FC_AUDSV                           0x1065
++#define HDMI_FC_AUDSU                           0x1066
++#define HDMI_FC_AUDSCHNLS0                       0x1067
++#define HDMI_FC_AUDSCHNLS1                       0x1068
++#define HDMI_FC_AUDSCHNLS2                       0x1069
++#define HDMI_FC_AUDSCHNLS3                       0x106A
++#define HDMI_FC_AUDSCHNLS4                       0x106B
++#define HDMI_FC_AUDSCHNLS5                       0x106C
++#define HDMI_FC_AUDSCHNLS6                       0x106D
++#define HDMI_FC_AUDSCHNLS7                       0x106E
++#define HDMI_FC_AUDSCHNLS8                       0x106F
++#define HDMI_FC_DATACH0FILL                     0x1070
++#define HDMI_FC_DATACH1FILL                     0x1071
++#define HDMI_FC_DATACH2FILL                     0x1072
++#define HDMI_FC_CTRLQHIGH                       0x1073
++#define HDMI_FC_CTRLQLOW                        0x1074
++#define HDMI_FC_ACP0                            0x1075
++#define HDMI_FC_ACP28                           0x1076
++#define HDMI_FC_ACP27                           0x1077
++#define HDMI_FC_ACP26                           0x1078
++#define HDMI_FC_ACP25                           0x1079
++#define HDMI_FC_ACP24                           0x107A
++#define HDMI_FC_ACP23                           0x107B
++#define HDMI_FC_ACP22                           0x107C
++#define HDMI_FC_ACP21                           0x107D
++#define HDMI_FC_ACP20                           0x107E
++#define HDMI_FC_ACP19                           0x107F
++#define HDMI_FC_ACP18                           0x1080
++#define HDMI_FC_ACP17                           0x1081
++#define HDMI_FC_ACP16                           0x1082
++#define HDMI_FC_ACP15                           0x1083
++#define HDMI_FC_ACP14                           0x1084
++#define HDMI_FC_ACP13                           0x1085
++#define HDMI_FC_ACP12                           0x1086
++#define HDMI_FC_ACP11                           0x1087
++#define HDMI_FC_ACP10                           0x1088
++#define HDMI_FC_ACP9                            0x1089
++#define HDMI_FC_ACP8                            0x108A
++#define HDMI_FC_ACP7                            0x108B
++#define HDMI_FC_ACP6                            0x108C
++#define HDMI_FC_ACP5                            0x108D
++#define HDMI_FC_ACP4                            0x108E
++#define HDMI_FC_ACP3                            0x108F
++#define HDMI_FC_ACP2                            0x1090
++#define HDMI_FC_ACP1                            0x1091
++#define HDMI_FC_ISCR1_0                         0x1092
++#define HDMI_FC_ISCR1_16                        0x1093
++#define HDMI_FC_ISCR1_15                        0x1094
++#define HDMI_FC_ISCR1_14                        0x1095
++#define HDMI_FC_ISCR1_13                        0x1096
++#define HDMI_FC_ISCR1_12                        0x1097
++#define HDMI_FC_ISCR1_11                        0x1098
++#define HDMI_FC_ISCR1_10                        0x1099
++#define HDMI_FC_ISCR1_9                         0x109A
++#define HDMI_FC_ISCR1_8                         0x109B
++#define HDMI_FC_ISCR1_7                         0x109C
++#define HDMI_FC_ISCR1_6                         0x109D
++#define HDMI_FC_ISCR1_5                         0x109E
++#define HDMI_FC_ISCR1_4                         0x109F
++#define HDMI_FC_ISCR1_3                         0x10A0
++#define HDMI_FC_ISCR1_2                         0x10A1
++#define HDMI_FC_ISCR1_1                         0x10A2
++#define HDMI_FC_ISCR2_15                        0x10A3
++#define HDMI_FC_ISCR2_14                        0x10A4
++#define HDMI_FC_ISCR2_13                        0x10A5
++#define HDMI_FC_ISCR2_12                        0x10A6
++#define HDMI_FC_ISCR2_11                        0x10A7
++#define HDMI_FC_ISCR2_10                        0x10A8
++#define HDMI_FC_ISCR2_9                         0x10A9
++#define HDMI_FC_ISCR2_8                         0x10AA
++#define HDMI_FC_ISCR2_7                         0x10AB
++#define HDMI_FC_ISCR2_6                         0x10AC
++#define HDMI_FC_ISCR2_5                         0x10AD
++#define HDMI_FC_ISCR2_4                         0x10AE
++#define HDMI_FC_ISCR2_3                         0x10AF
++#define HDMI_FC_ISCR2_2                         0x10B0
++#define HDMI_FC_ISCR2_1                         0x10B1
++#define HDMI_FC_ISCR2_0                         0x10B2
++#define HDMI_FC_DATAUTO0                        0x10B3
++#define HDMI_FC_DATAUTO1                        0x10B4
++#define HDMI_FC_DATAUTO2                        0x10B5
++#define HDMI_FC_DATMAN                          0x10B6
++#define HDMI_FC_DATAUTO3                        0x10B7
++#define HDMI_FC_RDRB0                           0x10B8
++#define HDMI_FC_RDRB1                           0x10B9
++#define HDMI_FC_RDRB2                           0x10BA
++#define HDMI_FC_RDRB3                           0x10BB
++#define HDMI_FC_RDRB4                           0x10BC
++#define HDMI_FC_RDRB5                           0x10BD
++#define HDMI_FC_RDRB6                           0x10BE
++#define HDMI_FC_RDRB7                           0x10BF
++#define HDMI_FC_STAT0                           0x10D0
++#define HDMI_FC_INT0                            0x10D1
++#define HDMI_FC_MASK0                           0x10D2
++#define HDMI_FC_POL0                            0x10D3
++#define HDMI_FC_STAT1                           0x10D4
++#define HDMI_FC_INT1                            0x10D5
++#define HDMI_FC_MASK1                           0x10D6
++#define HDMI_FC_POL1                            0x10D7
++#define HDMI_FC_STAT2                           0x10D8
++#define HDMI_FC_INT2                            0x10D9
++#define HDMI_FC_MASK2                           0x10DA
++#define HDMI_FC_POL2                            0x10DB
++#define HDMI_FC_PRCONF                          0x10E0
++#define HDMI_FC_SCRAMBLER_CTRL                  0x10E1
++#define HDMI_FC_PACKET_TX_EN                    0x10E3
++
++#define HDMI_FC_GMD_STAT                        0x1100
++#define HDMI_FC_GMD_EN                          0x1101
++#define HDMI_FC_GMD_UP                          0x1102
++#define HDMI_FC_GMD_CONF                        0x1103
++#define HDMI_FC_GMD_HB                          0x1104
++#define HDMI_FC_GMD_PB0                         0x1105
++#define HDMI_FC_GMD_PB1                         0x1106
++#define HDMI_FC_GMD_PB2                         0x1107
++#define HDMI_FC_GMD_PB3                         0x1108
++#define HDMI_FC_GMD_PB4                         0x1109
++#define HDMI_FC_GMD_PB5                         0x110A
++#define HDMI_FC_GMD_PB6                         0x110B
++#define HDMI_FC_GMD_PB7                         0x110C
++#define HDMI_FC_GMD_PB8                         0x110D
++#define HDMI_FC_GMD_PB9                         0x110E
++#define HDMI_FC_GMD_PB10                        0x110F
++#define HDMI_FC_GMD_PB11                        0x1110
++#define HDMI_FC_GMD_PB12                        0x1111
++#define HDMI_FC_GMD_PB13                        0x1112
++#define HDMI_FC_GMD_PB14                        0x1113
++#define HDMI_FC_GMD_PB15                        0x1114
++#define HDMI_FC_GMD_PB16                        0x1115
++#define HDMI_FC_GMD_PB17                        0x1116
++#define HDMI_FC_GMD_PB18                        0x1117
++#define HDMI_FC_GMD_PB19                        0x1118
++#define HDMI_FC_GMD_PB20                        0x1119
++#define HDMI_FC_GMD_PB21                        0x111A
++#define HDMI_FC_GMD_PB22                        0x111B
++#define HDMI_FC_GMD_PB23                        0x111C
++#define HDMI_FC_GMD_PB24                        0x111D
++#define HDMI_FC_GMD_PB25                        0x111E
++#define HDMI_FC_GMD_PB26                        0x111F
++#define HDMI_FC_GMD_PB27                        0x1120
++
++#define HDMI_FC_DRM_UP                          0x1167
++#define HDMI_FC_DRM_HB0                         0x1168
++#define HDMI_FC_DRM_HB1                         0x1169
++#define HDMI_FC_DRM_PB0                         0x116A
++#define HDMI_FC_DRM_PB1                         0x116B
++#define HDMI_FC_DRM_PB2                         0x116C
++#define HDMI_FC_DRM_PB3                         0x116D
++#define HDMI_FC_DRM_PB4                         0x116E
++#define HDMI_FC_DRM_PB5                         0x116F
++#define HDMI_FC_DRM_PB6                         0x1170
++#define HDMI_FC_DRM_PB7                         0x1171
++#define HDMI_FC_DRM_PB8                         0x1172
++#define HDMI_FC_DRM_PB9                         0x1173
++#define HDMI_FC_DRM_PB10                        0x1174
++#define HDMI_FC_DRM_PB11                        0x1175
++#define HDMI_FC_DRM_PB12                        0x1176
++#define HDMI_FC_DRM_PB13                        0x1177
++#define HDMI_FC_DRM_PB14                        0x1178
++#define HDMI_FC_DRM_PB15                        0x1179
++#define HDMI_FC_DRM_PB16                        0x117A
++#define HDMI_FC_DRM_PB17                        0x117B
++#define HDMI_FC_DRM_PB18                        0x117C
++#define HDMI_FC_DRM_PB19                        0x117D
++#define HDMI_FC_DRM_PB20                        0x117E
++#define HDMI_FC_DRM_PB21                        0x117F
++#define HDMI_FC_DRM_PB22                        0x1180
++#define HDMI_FC_DRM_PB23                        0x1181
++#define HDMI_FC_DRM_PB24                        0x1182
++#define HDMI_FC_DRM_PB25                        0x1183
++#define HDMI_FC_DRM_PB26                        0x1184
++
++#define HDMI_FC_DBGFORCE                        0x1200
++#define HDMI_FC_DBGAUD0CH0                      0x1201
++#define HDMI_FC_DBGAUD1CH0                      0x1202
++#define HDMI_FC_DBGAUD2CH0                      0x1203
++#define HDMI_FC_DBGAUD0CH1                      0x1204
++#define HDMI_FC_DBGAUD1CH1                      0x1205
++#define HDMI_FC_DBGAUD2CH1                      0x1206
++#define HDMI_FC_DBGAUD0CH2                      0x1207
++#define HDMI_FC_DBGAUD1CH2                      0x1208
++#define HDMI_FC_DBGAUD2CH2                      0x1209
++#define HDMI_FC_DBGAUD0CH3                      0x120A
++#define HDMI_FC_DBGAUD1CH3                      0x120B
++#define HDMI_FC_DBGAUD2CH3                      0x120C
++#define HDMI_FC_DBGAUD0CH4                      0x120D
++#define HDMI_FC_DBGAUD1CH4                      0x120E
++#define HDMI_FC_DBGAUD2CH4                      0x120F
++#define HDMI_FC_DBGAUD0CH5                      0x1210
++#define HDMI_FC_DBGAUD1CH5                      0x1211
++#define HDMI_FC_DBGAUD2CH5                      0x1212
++#define HDMI_FC_DBGAUD0CH6                      0x1213
++#define HDMI_FC_DBGAUD1CH6                      0x1214
++#define HDMI_FC_DBGAUD2CH6                      0x1215
++#define HDMI_FC_DBGAUD0CH7                      0x1216
++#define HDMI_FC_DBGAUD1CH7                      0x1217
++#define HDMI_FC_DBGAUD2CH7                      0x1218
++#define HDMI_FC_DBGTMDS0                        0x1219
++#define HDMI_FC_DBGTMDS1                        0x121A
++#define HDMI_FC_DBGTMDS2                        0x121B
++
++/* HDMI Source PHY Registers */
++#define HDMI_PHY_CONF0                          0x3000
++#define HDMI_PHY_TST0                           0x3001
++#define HDMI_PHY_TST1                           0x3002
++#define HDMI_PHY_TST2                           0x3003
++#define HDMI_PHY_STAT0                          0x3004
++#define HDMI_PHY_INT0                           0x3005
++#define HDMI_PHY_MASK0                          0x3006
++#define HDMI_PHY_POL0                           0x3007
++
++/* HDMI Master PHY Registers */
++#define HDMI_PHY_I2CM_SLAVE_ADDR                0x3020
++#define HDMI_PHY_I2CM_ADDRESS_ADDR              0x3021
++#define HDMI_PHY_I2CM_DATAO_1_ADDR              0x3022
++#define HDMI_PHY_I2CM_DATAO_0_ADDR              0x3023
++#define HDMI_PHY_I2CM_DATAI_1_ADDR              0x3024
++#define HDMI_PHY_I2CM_DATAI_0_ADDR              0x3025
++#define HDMI_PHY_I2CM_OPERATION_ADDR            0x3026
++#define HDMI_PHY_I2CM_INT_ADDR                  0x3027
++#define HDMI_PHY_I2CM_CTLINT_ADDR               0x3028
++#define HDMI_PHY_I2CM_DIV_ADDR                  0x3029
++#define HDMI_PHY_I2CM_SOFTRSTZ_ADDR             0x302a
++#define HDMI_PHY_I2CM_SS_SCL_HCNT_1_ADDR        0x302b
++#define HDMI_PHY_I2CM_SS_SCL_HCNT_0_ADDR        0x302c
++#define HDMI_PHY_I2CM_SS_SCL_LCNT_1_ADDR        0x302d
++#define HDMI_PHY_I2CM_SS_SCL_LCNT_0_ADDR        0x302e
++#define HDMI_PHY_I2CM_FS_SCL_HCNT_1_ADDR        0x302f
++#define HDMI_PHY_I2CM_FS_SCL_HCNT_0_ADDR        0x3030
++#define HDMI_PHY_I2CM_FS_SCL_LCNT_1_ADDR        0x3031
++#define HDMI_PHY_I2CM_FS_SCL_LCNT_0_ADDR        0x3032
++
++/* Audio Sampler Registers */
++#define HDMI_AUD_CONF0                          0x3100
++#define HDMI_AUD_CONF1                          0x3101
++#define HDMI_AUD_INT                            0x3102
++#define HDMI_AUD_CONF2                          0x3103
++#define HDMI_AUD_N1                             0x3200
++#define HDMI_AUD_N2                             0x3201
++#define HDMI_AUD_N3                             0x3202
++#define HDMI_AUD_CTS1                           0x3203
++#define HDMI_AUD_CTS2                           0x3204
++#define HDMI_AUD_CTS3                           0x3205
++#define HDMI_AUD_INPUTCLKFS                     0x3206
++#define HDMI_AUD_SPDIFINT			0x3302
++#define HDMI_AUD_CONF0_HBR                      0x3400
++#define HDMI_AUD_HBR_STATUS                     0x3401
++#define HDMI_AUD_HBR_INT                        0x3402
++#define HDMI_AUD_HBR_POL                        0x3403
++#define HDMI_AUD_HBR_MASK                       0x3404
++
++/*
++ * Generic Parallel Audio Interface Registers
++ * Not used as GPAUD interface is not enabled in hw
++ */
++#define HDMI_GP_CONF0                           0x3500
++#define HDMI_GP_CONF1                           0x3501
++#define HDMI_GP_CONF2                           0x3502
++#define HDMI_GP_STAT                            0x3503
++#define HDMI_GP_INT                             0x3504
++#define HDMI_GP_MASK                            0x3505
++#define HDMI_GP_POL                             0x3506
++
++/* Audio DMA Registers */
++#define HDMI_AHB_DMA_CONF0                      0x3600
++#define HDMI_AHB_DMA_START                      0x3601
++#define HDMI_AHB_DMA_STOP                       0x3602
++#define HDMI_AHB_DMA_THRSLD                     0x3603
++#define HDMI_AHB_DMA_STRADDR0                   0x3604
++#define HDMI_AHB_DMA_STRADDR1                   0x3605
++#define HDMI_AHB_DMA_STRADDR2                   0x3606
++#define HDMI_AHB_DMA_STRADDR3                   0x3607
++#define HDMI_AHB_DMA_STPADDR0                   0x3608
++#define HDMI_AHB_DMA_STPADDR1                   0x3609
++#define HDMI_AHB_DMA_STPADDR2                   0x360a
++#define HDMI_AHB_DMA_STPADDR3                   0x360b
++#define HDMI_AHB_DMA_BSTADDR0                   0x360c
++#define HDMI_AHB_DMA_BSTADDR1                   0x360d
++#define HDMI_AHB_DMA_BSTADDR2                   0x360e
++#define HDMI_AHB_DMA_BSTADDR3                   0x360f
++#define HDMI_AHB_DMA_MBLENGTH0                  0x3610
++#define HDMI_AHB_DMA_MBLENGTH1                  0x3611
++#define HDMI_AHB_DMA_STAT                       0x3612
++#define HDMI_AHB_DMA_INT                        0x3613
++#define HDMI_AHB_DMA_MASK                       0x3614
++#define HDMI_AHB_DMA_POL                        0x3615
++#define HDMI_AHB_DMA_CONF1                      0x3616
++#define HDMI_AHB_DMA_BUFFSTAT                   0x3617
++#define HDMI_AHB_DMA_BUFFINT                    0x3618
++#define HDMI_AHB_DMA_BUFFMASK                   0x3619
++#define HDMI_AHB_DMA_BUFFPOL                    0x361a
++
++/* Main Controller Registers */
++#define HDMI_MC_SFRDIV                          0x4000
++#define HDMI_MC_CLKDIS                          0x4001
++#define HDMI_MC_SWRSTZ                          0x4002
++#define HDMI_MC_OPCTRL                          0x4003
++#define HDMI_MC_FLOWCTRL                        0x4004
++#define HDMI_MC_PHYRSTZ                         0x4005
++#define HDMI_MC_LOCKONCLOCK                     0x4006
++#define HDMI_MC_HEACPHY_RST                     0x4007
++
++/* Color Space  Converter Registers */
++#define HDMI_CSC_CFG                            0x4100
++#define HDMI_CSC_SCALE                          0x4101
++#define HDMI_CSC_COEF_A1_MSB                    0x4102
++#define HDMI_CSC_COEF_A1_LSB                    0x4103
++#define HDMI_CSC_COEF_A2_MSB                    0x4104
++#define HDMI_CSC_COEF_A2_LSB                    0x4105
++#define HDMI_CSC_COEF_A3_MSB                    0x4106
++#define HDMI_CSC_COEF_A3_LSB                    0x4107
++#define HDMI_CSC_COEF_A4_MSB                    0x4108
++#define HDMI_CSC_COEF_A4_LSB                    0x4109
++#define HDMI_CSC_COEF_B1_MSB                    0x410A
++#define HDMI_CSC_COEF_B1_LSB                    0x410B
++#define HDMI_CSC_COEF_B2_MSB                    0x410C
++#define HDMI_CSC_COEF_B2_LSB                    0x410D
++#define HDMI_CSC_COEF_B3_MSB                    0x410E
++#define HDMI_CSC_COEF_B3_LSB                    0x410F
++#define HDMI_CSC_COEF_B4_MSB                    0x4110
++#define HDMI_CSC_COEF_B4_LSB                    0x4111
++#define HDMI_CSC_COEF_C1_MSB                    0x4112
++#define HDMI_CSC_COEF_C1_LSB                    0x4113
++#define HDMI_CSC_COEF_C2_MSB                    0x4114
++#define HDMI_CSC_COEF_C2_LSB                    0x4115
++#define HDMI_CSC_COEF_C3_MSB                    0x4116
++#define HDMI_CSC_COEF_C3_LSB                    0x4117
++#define HDMI_CSC_COEF_C4_MSB                    0x4118
++#define HDMI_CSC_COEF_C4_LSB                    0x4119
++
++/* HDCP Encryption Engine Registers */
++#define HDMI_A_HDCPCFG0                         0x5000
++#define HDMI_A_HDCPCFG1                         0x5001
++#define HDMI_A_HDCPOBS0                         0x5002
++#define HDMI_A_HDCPOBS1                         0x5003
++#define HDMI_A_HDCPOBS2                         0x5004
++#define HDMI_A_HDCPOBS3                         0x5005
++#define HDMI_A_APIINTCLR                        0x5006
++#define HDMI_A_APIINTSTAT                       0x5007
++#define HDMI_A_APIINTMSK                        0x5008
++#define HDMI_A_VIDPOLCFG                        0x5009
++#define HDMI_A_OESSWCFG                         0x500A
++#define HDMI_A_TIMER1SETUP0                     0x500B
++#define HDMI_A_TIMER1SETUP1                     0x500C
++#define HDMI_A_TIMER2SETUP0                     0x500D
++#define HDMI_A_TIMER2SETUP1                     0x500E
++#define HDMI_A_100MSCFG                         0x500F
++#define HDMI_A_2SCFG0                           0x5010
++#define HDMI_A_2SCFG1                           0x5011
++#define HDMI_A_5SCFG0                           0x5012
++#define HDMI_A_5SCFG1                           0x5013
++#define HDMI_A_SRMVERLSB                        0x5014
++#define HDMI_A_SRMVERMSB                        0x5015
++#define HDMI_A_SRMCTRL                          0x5016
++#define HDMI_A_SFRSETUP                         0x5017
++#define HDMI_A_I2CHSETUP                        0x5018
++#define HDMI_A_INTSETUP                         0x5019
++#define HDMI_A_PRESETUP                         0x501A
++#define HDMI_A_SRM_BASE                         0x5020
++
++/* I2C Master Registers (E-DDC) */
++#define HDMI_I2CM_SLAVE                         0x7E00
++#define HDMI_I2CM_ADDRESS                       0x7E01
++#define HDMI_I2CM_DATAO                         0x7E02
++#define HDMI_I2CM_DATAI                         0x7E03
++#define HDMI_I2CM_OPERATION                     0x7E04
++#define HDMI_I2CM_INT                           0x7E05
++#define HDMI_I2CM_CTLINT                        0x7E06
++#define HDMI_I2CM_DIV                           0x7E07
++#define HDMI_I2CM_SEGADDR                       0x7E08
++#define HDMI_I2CM_SOFTRSTZ                      0x7E09
++#define HDMI_I2CM_SEGPTR                        0x7E0A
++#define HDMI_I2CM_SS_SCL_HCNT_1_ADDR            0x7E0B
++#define HDMI_I2CM_SS_SCL_HCNT_0_ADDR            0x7E0C
++#define HDMI_I2CM_SS_SCL_LCNT_1_ADDR            0x7E0D
++#define HDMI_I2CM_SS_SCL_LCNT_0_ADDR            0x7E0E
++#define HDMI_I2CM_FS_SCL_HCNT_1_ADDR            0x7E0F
++#define HDMI_I2CM_FS_SCL_HCNT_0_ADDR            0x7E10
++#define HDMI_I2CM_FS_SCL_LCNT_1_ADDR            0x7E11
++#define HDMI_I2CM_FS_SCL_LCNT_0_ADDR            0x7E12
++
++enum {
++/* PRODUCT_ID0 field values */
++	HDMI_PRODUCT_ID0_HDMI_TX = 0xa0,
++
++/* PRODUCT_ID1 field values */
++	HDMI_PRODUCT_ID1_HDCP = 0xc0,
++	HDMI_PRODUCT_ID1_HDMI_RX = 0x02,
++	HDMI_PRODUCT_ID1_HDMI_TX = 0x01,
++
++/* CONFIG0_ID field values */
++	HDMI_CONFIG0_I2S = 0x10,
++	HDMI_CONFIG0_CEC = 0x02,
++
++/* CONFIG1_ID field values */
++	HDMI_CONFIG1_AHB = 0x01,
++
++/* CONFIG3_ID field values */
++	HDMI_CONFIG3_AHBAUDDMA = 0x02,
++	HDMI_CONFIG3_GPAUD = 0x01,
++
++/* IH_FC_INT2 field values */
++	HDMI_IH_FC_INT2_OVERFLOW_MASK = 0x03,
++	HDMI_IH_FC_INT2_LOW_PRIORITY_OVERFLOW = 0x02,
++	HDMI_IH_FC_INT2_HIGH_PRIORITY_OVERFLOW = 0x01,
++
++/* IH_FC_STAT2 field values */
++	HDMI_IH_FC_STAT2_OVERFLOW_MASK = 0x03,
++	HDMI_IH_FC_STAT2_LOW_PRIORITY_OVERFLOW = 0x02,
++	HDMI_IH_FC_STAT2_HIGH_PRIORITY_OVERFLOW = 0x01,
++
++/* IH_PHY_STAT0 field values */
++	HDMI_IH_PHY_STAT0_RX_SENSE3 = 0x20,
++	HDMI_IH_PHY_STAT0_RX_SENSE2 = 0x10,
++	HDMI_IH_PHY_STAT0_RX_SENSE1 = 0x8,
++	HDMI_IH_PHY_STAT0_RX_SENSE0 = 0x4,
++	HDMI_IH_PHY_STAT0_TX_PHY_LOCK = 0x2,
++	HDMI_IH_PHY_STAT0_HPD = 0x1,
++
++/* IH_I2CM_STAT0 and IH_MUTE_I2CM_STAT0 field values */
++	HDMI_IH_I2CM_STAT0_DONE = 0x2,
++	HDMI_IH_I2CM_STAT0_ERROR = 0x1,
++
++/* IH_MUTE_I2CMPHY_STAT0 field values */
++	HDMI_IH_MUTE_I2CMPHY_STAT0_I2CMPHYDONE = 0x2,
++	HDMI_IH_MUTE_I2CMPHY_STAT0_I2CMPHYERROR = 0x1,
++
++/* IH_AHBDMAAUD_STAT0 field values */
++	HDMI_IH_AHBDMAAUD_STAT0_ERROR = 0x20,
++	HDMI_IH_AHBDMAAUD_STAT0_LOST = 0x10,
++	HDMI_IH_AHBDMAAUD_STAT0_RETRY = 0x08,
++	HDMI_IH_AHBDMAAUD_STAT0_DONE = 0x04,
++	HDMI_IH_AHBDMAAUD_STAT0_BUFFFULL = 0x02,
++	HDMI_IH_AHBDMAAUD_STAT0_BUFFEMPTY = 0x01,
++
++/* IH_MUTE_FC_STAT2 field values */
++	HDMI_IH_MUTE_FC_STAT2_OVERFLOW_MASK = 0x03,
++	HDMI_IH_MUTE_FC_STAT2_LOW_PRIORITY_OVERFLOW = 0x02,
++	HDMI_IH_MUTE_FC_STAT2_HIGH_PRIORITY_OVERFLOW = 0x01,
++
++/* IH_MUTE_AHBDMAAUD_STAT0 field values */
++	HDMI_IH_MUTE_AHBDMAAUD_STAT0_ERROR = 0x20,
++	HDMI_IH_MUTE_AHBDMAAUD_STAT0_LOST = 0x10,
++	HDMI_IH_MUTE_AHBDMAAUD_STAT0_RETRY = 0x08,
++	HDMI_IH_MUTE_AHBDMAAUD_STAT0_DONE = 0x04,
++	HDMI_IH_MUTE_AHBDMAAUD_STAT0_BUFFFULL = 0x02,
++	HDMI_IH_MUTE_AHBDMAAUD_STAT0_BUFFEMPTY = 0x01,
++
++/* IH_MUTE field values */
++	HDMI_IH_MUTE_MUTE_WAKEUP_INTERRUPT = 0x2,
++	HDMI_IH_MUTE_MUTE_ALL_INTERRUPT = 0x1,
++
++/* TX_INVID0 field values */
++	HDMI_TX_INVID0_INTERNAL_DE_GENERATOR_MASK = 0x80,
++	HDMI_TX_INVID0_INTERNAL_DE_GENERATOR_ENABLE = 0x80,
++	HDMI_TX_INVID0_INTERNAL_DE_GENERATOR_DISABLE = 0x00,
++	HDMI_TX_INVID0_VIDEO_MAPPING_MASK = 0x1F,
++	HDMI_TX_INVID0_VIDEO_MAPPING_OFFSET = 0,
++
++/* TX_INSTUFFING field values */
++	HDMI_TX_INSTUFFING_BDBDATA_STUFFING_MASK = 0x4,
++	HDMI_TX_INSTUFFING_BDBDATA_STUFFING_ENABLE = 0x4,
++	HDMI_TX_INSTUFFING_BDBDATA_STUFFING_DISABLE = 0x0,
++	HDMI_TX_INSTUFFING_RCRDATA_STUFFING_MASK = 0x2,
++	HDMI_TX_INSTUFFING_RCRDATA_STUFFING_ENABLE = 0x2,
++	HDMI_TX_INSTUFFING_RCRDATA_STUFFING_DISABLE = 0x0,
++	HDMI_TX_INSTUFFING_GYDATA_STUFFING_MASK = 0x1,
++	HDMI_TX_INSTUFFING_GYDATA_STUFFING_ENABLE = 0x1,
++	HDMI_TX_INSTUFFING_GYDATA_STUFFING_DISABLE = 0x0,
++
++/* VP_PR_CD field values */
++	HDMI_VP_PR_CD_COLOR_DEPTH_MASK = 0xF0,
++	HDMI_VP_PR_CD_COLOR_DEPTH_OFFSET = 4,
++	HDMI_VP_PR_CD_DESIRED_PR_FACTOR_MASK = 0x0F,
++	HDMI_VP_PR_CD_DESIRED_PR_FACTOR_OFFSET = 0,
++
++/* VP_STUFF field values */
++	HDMI_VP_STUFF_IDEFAULT_PHASE_MASK = 0x20,
++	HDMI_VP_STUFF_IDEFAULT_PHASE_OFFSET = 5,
++	HDMI_VP_STUFF_IFIX_PP_TO_LAST_MASK = 0x10,
++	HDMI_VP_STUFF_IFIX_PP_TO_LAST_OFFSET = 4,
++	HDMI_VP_STUFF_ICX_GOTO_P0_ST_MASK = 0x8,
++	HDMI_VP_STUFF_ICX_GOTO_P0_ST_OFFSET = 3,
++	HDMI_VP_STUFF_YCC422_STUFFING_MASK = 0x4,
++	HDMI_VP_STUFF_YCC422_STUFFING_STUFFING_MODE = 0x4,
++	HDMI_VP_STUFF_YCC422_STUFFING_DIRECT_MODE = 0x0,
++	HDMI_VP_STUFF_PP_STUFFING_MASK = 0x2,
++	HDMI_VP_STUFF_PP_STUFFING_STUFFING_MODE = 0x2,
++	HDMI_VP_STUFF_PP_STUFFING_DIRECT_MODE = 0x0,
++	HDMI_VP_STUFF_PR_STUFFING_MASK = 0x1,
++	HDMI_VP_STUFF_PR_STUFFING_STUFFING_MODE = 0x1,
++	HDMI_VP_STUFF_PR_STUFFING_DIRECT_MODE = 0x0,
++
++/* VP_CONF field values */
++	HDMI_VP_CONF_BYPASS_EN_MASK = 0x40,
++	HDMI_VP_CONF_BYPASS_EN_ENABLE = 0x40,
++	HDMI_VP_CONF_BYPASS_EN_DISABLE = 0x00,
++	HDMI_VP_CONF_PP_EN_ENMASK = 0x20,
++	HDMI_VP_CONF_PP_EN_ENABLE = 0x20,
++	HDMI_VP_CONF_PP_EN_DISABLE = 0x00,
++	HDMI_VP_CONF_PR_EN_MASK = 0x10,
++	HDMI_VP_CONF_PR_EN_ENABLE = 0x10,
++	HDMI_VP_CONF_PR_EN_DISABLE = 0x00,
++	HDMI_VP_CONF_YCC422_EN_MASK = 0x8,
++	HDMI_VP_CONF_YCC422_EN_ENABLE = 0x8,
++	HDMI_VP_CONF_YCC422_EN_DISABLE = 0x0,
++	HDMI_VP_CONF_BYPASS_SELECT_MASK = 0x4,
++	HDMI_VP_CONF_BYPASS_SELECT_VID_PACKETIZER = 0x4,
++	HDMI_VP_CONF_BYPASS_SELECT_PIX_REPEATER = 0x0,
++	HDMI_VP_CONF_OUTPUT_SELECTOR_MASK = 0x3,
++	HDMI_VP_CONF_OUTPUT_SELECTOR_BYPASS = 0x3,
++	HDMI_VP_CONF_OUTPUT_SELECTOR_YCC422 = 0x1,
++	HDMI_VP_CONF_OUTPUT_SELECTOR_PP = 0x0,
++
++/* VP_REMAP field values */
++	HDMI_VP_REMAP_MASK = 0x3,
++	HDMI_VP_REMAP_YCC422_24bit = 0x2,
++	HDMI_VP_REMAP_YCC422_20bit = 0x1,
++	HDMI_VP_REMAP_YCC422_16bit = 0x0,
++
++/* FC_INVIDCONF field values */
++	HDMI_FC_INVIDCONF_HDCP_KEEPOUT_MASK = 0x80,
++	HDMI_FC_INVIDCONF_HDCP_KEEPOUT_ACTIVE = 0x80,
++	HDMI_FC_INVIDCONF_HDCP_KEEPOUT_INACTIVE = 0x00,
++	HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_MASK = 0x40,
++	HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_ACTIVE_HIGH = 0x40,
++	HDMI_FC_INVIDCONF_VSYNC_IN_POLARITY_ACTIVE_LOW = 0x00,
++	HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_MASK = 0x20,
++	HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_ACTIVE_HIGH = 0x20,
++	HDMI_FC_INVIDCONF_HSYNC_IN_POLARITY_ACTIVE_LOW = 0x00,
++	HDMI_FC_INVIDCONF_DE_IN_POLARITY_MASK = 0x10,
++	HDMI_FC_INVIDCONF_DE_IN_POLARITY_ACTIVE_HIGH = 0x10,
++	HDMI_FC_INVIDCONF_DE_IN_POLARITY_ACTIVE_LOW = 0x00,
++	HDMI_FC_INVIDCONF_DVI_MODEZ_MASK = 0x8,
++	HDMI_FC_INVIDCONF_DVI_MODEZ_HDMI_MODE = 0x8,
++	HDMI_FC_INVIDCONF_DVI_MODEZ_DVI_MODE = 0x0,
++	HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_MASK = 0x2,
++	HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_HIGH = 0x2,
++	HDMI_FC_INVIDCONF_R_V_BLANK_IN_OSC_ACTIVE_LOW = 0x0,
++	HDMI_FC_INVIDCONF_IN_I_P_MASK = 0x1,
++	HDMI_FC_INVIDCONF_IN_I_P_INTERLACED = 0x1,
++	HDMI_FC_INVIDCONF_IN_I_P_PROGRESSIVE = 0x0,
++
++/* FC_AUDICONF0 field values */
++	HDMI_FC_AUDICONF0_CC_OFFSET = 4,
++	HDMI_FC_AUDICONF0_CC_MASK = 0x70,
++	HDMI_FC_AUDICONF0_CT_OFFSET = 0,
++	HDMI_FC_AUDICONF0_CT_MASK = 0xF,
++
++/* FC_AUDICONF1 field values */
++	HDMI_FC_AUDICONF1_SS_OFFSET = 3,
++	HDMI_FC_AUDICONF1_SS_MASK = 0x18,
++	HDMI_FC_AUDICONF1_SF_OFFSET = 0,
++	HDMI_FC_AUDICONF1_SF_MASK = 0x7,
++
++/* FC_AUDICONF3 field values */
++	HDMI_FC_AUDICONF3_LFEPBL_OFFSET = 5,
++	HDMI_FC_AUDICONF3_LFEPBL_MASK = 0x60,
++	HDMI_FC_AUDICONF3_DM_INH_OFFSET = 4,
++	HDMI_FC_AUDICONF3_DM_INH_MASK = 0x10,
++	HDMI_FC_AUDICONF3_LSV_OFFSET = 0,
++	HDMI_FC_AUDICONF3_LSV_MASK = 0xF,
++
++/* FC_AUDSCHNLS0 field values */
++	HDMI_FC_AUDSCHNLS0_CGMSA_OFFSET = 4,
++	HDMI_FC_AUDSCHNLS0_CGMSA_MASK = 0x30,
++	HDMI_FC_AUDSCHNLS0_COPYRIGHT_OFFSET = 0,
++	HDMI_FC_AUDSCHNLS0_COPYRIGHT_MASK = 0x01,
++
++/* FC_AUDSCHNLS3-6 field values */
++	HDMI_FC_AUDSCHNLS3_OIEC_CH0_OFFSET = 0,
++	HDMI_FC_AUDSCHNLS3_OIEC_CH0_MASK = 0x0f,
++	HDMI_FC_AUDSCHNLS3_OIEC_CH1_OFFSET = 4,
++	HDMI_FC_AUDSCHNLS3_OIEC_CH1_MASK = 0xf0,
++	HDMI_FC_AUDSCHNLS4_OIEC_CH2_OFFSET = 0,
++	HDMI_FC_AUDSCHNLS4_OIEC_CH2_MASK = 0x0f,
++	HDMI_FC_AUDSCHNLS4_OIEC_CH3_OFFSET = 4,
++	HDMI_FC_AUDSCHNLS4_OIEC_CH3_MASK = 0xf0,
++
++	HDMI_FC_AUDSCHNLS5_OIEC_CH0_OFFSET = 0,
++	HDMI_FC_AUDSCHNLS5_OIEC_CH0_MASK = 0x0f,
++	HDMI_FC_AUDSCHNLS5_OIEC_CH1_OFFSET = 4,
++	HDMI_FC_AUDSCHNLS5_OIEC_CH1_MASK = 0xf0,
++	HDMI_FC_AUDSCHNLS6_OIEC_CH2_OFFSET = 0,
++	HDMI_FC_AUDSCHNLS6_OIEC_CH2_MASK = 0x0f,
++	HDMI_FC_AUDSCHNLS6_OIEC_CH3_OFFSET = 4,
++	HDMI_FC_AUDSCHNLS6_OIEC_CH3_MASK = 0xf0,
++
++/* HDMI_FC_AUDSCHNLS7 field values */
++	HDMI_FC_AUDSCHNLS7_ACCURACY_OFFSET = 4,
++	HDMI_FC_AUDSCHNLS7_ACCURACY_MASK = 0x30,
++
++/* HDMI_FC_AUDSCHNLS8 field values */
++	HDMI_FC_AUDSCHNLS8_ORIGSAMPFREQ_MASK = 0xf0,
++	HDMI_FC_AUDSCHNLS8_ORIGSAMPFREQ_OFFSET = 4,
++	HDMI_FC_AUDSCHNLS8_WORDLEGNTH_MASK = 0x0f,
++	HDMI_FC_AUDSCHNLS8_WORDLEGNTH_OFFSET = 0,
++
++/* FC_AUDSCONF field values */
++	HDMI_FC_AUDSCONF_AUD_PACKET_SAMPFIT_MASK = 0xF0,
++	HDMI_FC_AUDSCONF_AUD_PACKET_SAMPFIT_OFFSET = 4,
++	HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_MASK = 0x1,
++	HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_OFFSET = 0,
++	HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_LAYOUT1 = 0x1,
++	HDMI_FC_AUDSCONF_AUD_PACKET_LAYOUT_LAYOUT0 = 0x0,
++
++/* FC_STAT2 field values */
++	HDMI_FC_STAT2_OVERFLOW_MASK = 0x03,
++	HDMI_FC_STAT2_LOW_PRIORITY_OVERFLOW = 0x02,
++	HDMI_FC_STAT2_HIGH_PRIORITY_OVERFLOW = 0x01,
++
++/* FC_INT2 field values */
++	HDMI_FC_INT2_OVERFLOW_MASK = 0x03,
++	HDMI_FC_INT2_LOW_PRIORITY_OVERFLOW = 0x02,
++	HDMI_FC_INT2_HIGH_PRIORITY_OVERFLOW = 0x01,
++
++/* FC_MASK2 field values */
++	HDMI_FC_MASK2_OVERFLOW_MASK = 0x03,
++	HDMI_FC_MASK2_LOW_PRIORITY_OVERFLOW = 0x02,
++	HDMI_FC_MASK2_HIGH_PRIORITY_OVERFLOW = 0x01,
++
++/* FC_PRCONF field values */
++	HDMI_FC_PRCONF_INCOMING_PR_FACTOR_MASK = 0xF0,
++	HDMI_FC_PRCONF_INCOMING_PR_FACTOR_OFFSET = 4,
++	HDMI_FC_PRCONF_OUTPUT_PR_FACTOR_MASK = 0x0F,
++	HDMI_FC_PRCONF_OUTPUT_PR_FACTOR_OFFSET = 0,
++
++/* FC_PACKET_TX_EN field values */
++	HDMI_FC_PACKET_TX_EN_DRM_MASK = 0x80,
++	HDMI_FC_PACKET_TX_EN_DRM_ENABLE = 0x80,
++	HDMI_FC_PACKET_TX_EN_DRM_DISABLE = 0x00,
++
++/* FC_AVICONF0-FC_AVICONF3 field values */
++	HDMI_FC_AVICONF0_PIX_FMT_MASK = 0x03,
++	HDMI_FC_AVICONF0_PIX_FMT_RGB = 0x00,
++	HDMI_FC_AVICONF0_PIX_FMT_YCBCR422 = 0x01,
++	HDMI_FC_AVICONF0_PIX_FMT_YCBCR444 = 0x02,
++	HDMI_FC_AVICONF0_ACTIVE_FMT_MASK = 0x40,
++	HDMI_FC_AVICONF0_ACTIVE_FMT_INFO_PRESENT = 0x40,
++	HDMI_FC_AVICONF0_ACTIVE_FMT_NO_INFO = 0x00,
++	HDMI_FC_AVICONF0_BAR_DATA_MASK = 0x0C,
++	HDMI_FC_AVICONF0_BAR_DATA_NO_DATA = 0x00,
++	HDMI_FC_AVICONF0_BAR_DATA_VERT_BAR = 0x04,
++	HDMI_FC_AVICONF0_BAR_DATA_HORIZ_BAR = 0x08,
++	HDMI_FC_AVICONF0_BAR_DATA_VERT_HORIZ_BAR = 0x0C,
++	HDMI_FC_AVICONF0_SCAN_INFO_MASK = 0x30,
++	HDMI_FC_AVICONF0_SCAN_INFO_OVERSCAN = 0x10,
++	HDMI_FC_AVICONF0_SCAN_INFO_UNDERSCAN = 0x20,
++	HDMI_FC_AVICONF0_SCAN_INFO_NODATA = 0x00,
++
++	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_MASK = 0x0F,
++	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_USE_CODED = 0x08,
++	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_4_3 = 0x09,
++	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_16_9 = 0x0A,
++	HDMI_FC_AVICONF1_ACTIVE_ASPECT_RATIO_14_9 = 0x0B,
++	HDMI_FC_AVICONF1_CODED_ASPECT_RATIO_MASK = 0x30,
++	HDMI_FC_AVICONF1_CODED_ASPECT_RATIO_NO_DATA = 0x00,
++	HDMI_FC_AVICONF1_CODED_ASPECT_RATIO_4_3 = 0x10,
++	HDMI_FC_AVICONF1_CODED_ASPECT_RATIO_16_9 = 0x20,
++	HDMI_FC_AVICONF1_COLORIMETRY_MASK = 0xC0,
++	HDMI_FC_AVICONF1_COLORIMETRY_NO_DATA = 0x00,
++	HDMI_FC_AVICONF1_COLORIMETRY_SMPTE = 0x40,
++	HDMI_FC_AVICONF1_COLORIMETRY_ITUR = 0x80,
++	HDMI_FC_AVICONF1_COLORIMETRY_EXTENDED_INFO = 0xC0,
++
++	HDMI_FC_AVICONF2_SCALING_MASK = 0x03,
++	HDMI_FC_AVICONF2_SCALING_NONE = 0x00,
++	HDMI_FC_AVICONF2_SCALING_HORIZ = 0x01,
++	HDMI_FC_AVICONF2_SCALING_VERT = 0x02,
++	HDMI_FC_AVICONF2_SCALING_HORIZ_VERT = 0x03,
++	HDMI_FC_AVICONF2_RGB_QUANT_MASK = 0x0C,
++	HDMI_FC_AVICONF2_RGB_QUANT_DEFAULT = 0x00,
++	HDMI_FC_AVICONF2_RGB_QUANT_LIMITED_RANGE = 0x04,
++	HDMI_FC_AVICONF2_RGB_QUANT_FULL_RANGE = 0x08,
++	HDMI_FC_AVICONF2_EXT_COLORIMETRY_MASK = 0x70,
++	HDMI_FC_AVICONF2_EXT_COLORIMETRY_XVYCC601 = 0x00,
++	HDMI_FC_AVICONF2_EXT_COLORIMETRY_XVYCC709 = 0x10,
++	HDMI_FC_AVICONF2_EXT_COLORIMETRY_SYCC601 = 0x20,
++	HDMI_FC_AVICONF2_EXT_COLORIMETRY_ADOBE_YCC601 = 0x30,
++	HDMI_FC_AVICONF2_EXT_COLORIMETRY_ADOBE_RGB = 0x40,
++	HDMI_FC_AVICONF2_IT_CONTENT_MASK = 0x80,
++	HDMI_FC_AVICONF2_IT_CONTENT_NO_DATA = 0x00,
++	HDMI_FC_AVICONF2_IT_CONTENT_VALID = 0x80,
++
++	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_MASK = 0x03,
++	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_GRAPHICS = 0x00,
++	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_PHOTO = 0x01,
++	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_CINEMA = 0x02,
++	HDMI_FC_AVICONF3_IT_CONTENT_TYPE_GAME = 0x03,
++	HDMI_FC_AVICONF3_QUANT_RANGE_MASK = 0x0C,
++	HDMI_FC_AVICONF3_QUANT_RANGE_LIMITED = 0x00,
++	HDMI_FC_AVICONF3_QUANT_RANGE_FULL = 0x04,
++
++/* FC_DBGFORCE field values */
++	HDMI_FC_DBGFORCE_FORCEAUDIO = 0x10,
++	HDMI_FC_DBGFORCE_FORCEVIDEO = 0x1,
++
++/* FC_DATAUTO0 field values */
++	HDMI_FC_DATAUTO0_VSD_MASK = 0x08,
++	HDMI_FC_DATAUTO0_VSD_OFFSET = 3,
++
++/* FC_DATAUTO3 field values */
++	HDMI_FC_DATAUTO3_GCP_AUTO = 0x04,
++
++/* PHY_CONF0 field values */
++	HDMI_PHY_CONF0_PDZ_MASK = 0x80,
++	HDMI_PHY_CONF0_PDZ_OFFSET = 7,
++	HDMI_PHY_CONF0_ENTMDS_MASK = 0x40,
++	HDMI_PHY_CONF0_ENTMDS_OFFSET = 6,
++	HDMI_PHY_CONF0_SVSRET_MASK = 0x20,
++	HDMI_PHY_CONF0_SVSRET_OFFSET = 5,
++	HDMI_PHY_CONF0_GEN2_PDDQ_MASK = 0x10,
++	HDMI_PHY_CONF0_GEN2_PDDQ_OFFSET = 4,
++	HDMI_PHY_CONF0_GEN2_TXPWRON_MASK = 0x8,
++	HDMI_PHY_CONF0_GEN2_TXPWRON_OFFSET = 3,
++	HDMI_PHY_CONF0_GEN2_ENHPDRXSENSE_MASK = 0x4,
++	HDMI_PHY_CONF0_GEN2_ENHPDRXSENSE_OFFSET = 2,
++	HDMI_PHY_CONF0_SELDATAENPOL_MASK = 0x2,
++	HDMI_PHY_CONF0_SELDATAENPOL_OFFSET = 1,
++	HDMI_PHY_CONF0_SELDIPIF_MASK = 0x1,
++	HDMI_PHY_CONF0_SELDIPIF_OFFSET = 0,
++
++/* PHY_TST0 field values */
++	HDMI_PHY_TST0_TSTCLR_MASK = 0x20,
++	HDMI_PHY_TST0_TSTCLR_OFFSET = 5,
++	HDMI_PHY_TST0_TSTEN_MASK = 0x10,
++	HDMI_PHY_TST0_TSTEN_OFFSET = 4,
++	HDMI_PHY_TST0_TSTCLK_MASK = 0x1,
++	HDMI_PHY_TST0_TSTCLK_OFFSET = 0,
++
++/* PHY_STAT0 field values */
++	HDMI_PHY_RX_SENSE3 = 0x80,
++	HDMI_PHY_RX_SENSE2 = 0x40,
++	HDMI_PHY_RX_SENSE1 = 0x20,
++	HDMI_PHY_RX_SENSE0 = 0x10,
++	HDMI_PHY_HPD = 0x02,
++	HDMI_PHY_TX_PHY_LOCK = 0x01,
++
++/* PHY_I2CM_SLAVE_ADDR field values */
++	HDMI_PHY_I2CM_SLAVE_ADDR_PHY_GEN2 = 0x69,
++	HDMI_PHY_I2CM_SLAVE_ADDR_HEAC_PHY = 0x49,
++
++/* PHY_I2CM_OPERATION_ADDR field values */
++	HDMI_PHY_I2CM_OPERATION_ADDR_WRITE = 0x10,
++	HDMI_PHY_I2CM_OPERATION_ADDR_READ = 0x1,
++
++/* HDMI_PHY_I2CM_INT_ADDR */
++	HDMI_PHY_I2CM_INT_ADDR_DONE_POL = 0x08,
++	HDMI_PHY_I2CM_INT_ADDR_DONE_MASK = 0x04,
++
++/* HDMI_PHY_I2CM_CTLINT_ADDR */
++	HDMI_PHY_I2CM_CTLINT_ADDR_NAC_POL = 0x80,
++	HDMI_PHY_I2CM_CTLINT_ADDR_NAC_MASK = 0x40,
++	HDMI_PHY_I2CM_CTLINT_ADDR_ARBITRATION_POL = 0x08,
++	HDMI_PHY_I2CM_CTLINT_ADDR_ARBITRATION_MASK = 0x04,
++
++/* AUD_CONF0 field values */
++	HDMI_AUD_CONF0_SW_RESET = 0x80,
++	HDMI_AUD_CONF0_I2S_SELECT = 0x20,
++	HDMI_AUD_CONF0_I2S_EN3 = 0x08,
++	HDMI_AUD_CONF0_I2S_EN2 = 0x04,
++	HDMI_AUD_CONF0_I2S_EN1 = 0x02,
++	HDMI_AUD_CONF0_I2S_EN0 = 0x01,
++
++/* AUD_CONF1 field values */
++	HDMI_AUD_CONF1_MODE_I2S = 0x00,
++	HDMI_AUD_CONF1_MODE_RIGHT_J = 0x20,
++	HDMI_AUD_CONF1_MODE_LEFT_J = 0x40,
++	HDMI_AUD_CONF1_MODE_BURST_1 = 0x60,
++	HDMI_AUD_CONF1_MODE_BURST_2 = 0x80,
++	HDMI_AUD_CONF1_WIDTH_16 = 0x10,
++	HDMI_AUD_CONF1_WIDTH_24 = 0x18,
++
++/* AUD_CTS3 field values */
++	HDMI_AUD_CTS3_N_SHIFT_OFFSET = 5,
++	HDMI_AUD_CTS3_N_SHIFT_MASK = 0xe0,
++	HDMI_AUD_CTS3_N_SHIFT_1 = 0,
++	HDMI_AUD_CTS3_N_SHIFT_16 = 0x20,
++	HDMI_AUD_CTS3_N_SHIFT_32 = 0x40,
++	HDMI_AUD_CTS3_N_SHIFT_64 = 0x60,
++	HDMI_AUD_CTS3_N_SHIFT_128 = 0x80,
++	HDMI_AUD_CTS3_N_SHIFT_256 = 0xa0,
++	/* note that the CTS3 MANUAL bit has been removed
++	   from our part. Can't set it, will read as 0. */
++	HDMI_AUD_CTS3_CTS_MANUAL = 0x10,
++	HDMI_AUD_CTS3_AUDCTS19_16_MASK = 0x0f,
++
++/* HDMI_AUD_INPUTCLKFS field values */
++	HDMI_AUD_INPUTCLKFS_128FS = 0,
++	HDMI_AUD_INPUTCLKFS_256FS = 1,
++	HDMI_AUD_INPUTCLKFS_512FS = 2,
++	HDMI_AUD_INPUTCLKFS_64FS = 4,
++
++/* AHB_DMA_CONF0 field values */
++	HDMI_AHB_DMA_CONF0_SW_FIFO_RST_OFFSET = 7,
++	HDMI_AHB_DMA_CONF0_SW_FIFO_RST_MASK = 0x80,
++	HDMI_AHB_DMA_CONF0_HBR = 0x10,
++	HDMI_AHB_DMA_CONF0_EN_HLOCK_OFFSET = 3,
++	HDMI_AHB_DMA_CONF0_EN_HLOCK_MASK = 0x08,
++	HDMI_AHB_DMA_CONF0_INCR_TYPE_OFFSET = 1,
++	HDMI_AHB_DMA_CONF0_INCR_TYPE_MASK = 0x06,
++	HDMI_AHB_DMA_CONF0_INCR4 = 0x0,
++	HDMI_AHB_DMA_CONF0_INCR8 = 0x2,
++	HDMI_AHB_DMA_CONF0_INCR16 = 0x4,
++	HDMI_AHB_DMA_CONF0_BURST_MODE = 0x1,
++
++/* HDMI_AHB_DMA_START field values */
++	HDMI_AHB_DMA_START_START_OFFSET = 0,
++	HDMI_AHB_DMA_START_START_MASK = 0x01,
++
++/* HDMI_AHB_DMA_STOP field values */
++	HDMI_AHB_DMA_STOP_STOP_OFFSET = 0,
++	HDMI_AHB_DMA_STOP_STOP_MASK = 0x01,
++
++/* AHB_DMA_STAT, AHB_DMA_INT, AHB_DMA_MASK, AHB_DMA_POL field values */
++	HDMI_AHB_DMA_DONE = 0x80,
++	HDMI_AHB_DMA_RETRY_SPLIT = 0x40,
++	HDMI_AHB_DMA_LOSTOWNERSHIP = 0x20,
++	HDMI_AHB_DMA_ERROR = 0x10,
++	HDMI_AHB_DMA_FIFO_THREMPTY = 0x04,
++	HDMI_AHB_DMA_FIFO_FULL = 0x02,
++	HDMI_AHB_DMA_FIFO_EMPTY = 0x01,
++
++/* AHB_DMA_BUFFSTAT, AHB_DMA_BUFFINT,AHB_DMA_BUFFMASK,AHB_DMA_BUFFPOL values */
++	HDMI_AHB_DMA_BUFFSTAT_FULL = 0x02,
++	HDMI_AHB_DMA_BUFFSTAT_EMPTY = 0x01,
++
++/* MC_CLKDIS field values */
++	HDMI_MC_CLKDIS_HDCPCLK_DISABLE = 0x40,
++	HDMI_MC_CLKDIS_CECCLK_DISABLE = 0x20,
++	HDMI_MC_CLKDIS_CSCCLK_DISABLE = 0x10,
++	HDMI_MC_CLKDIS_AUDCLK_DISABLE = 0x8,
++	HDMI_MC_CLKDIS_PREPCLK_DISABLE = 0x4,
++	HDMI_MC_CLKDIS_TMDSCLK_DISABLE = 0x2,
++	HDMI_MC_CLKDIS_PIXELCLK_DISABLE = 0x1,
++
++/* MC_SWRSTZ field values */
++	HDMI_MC_SWRSTZ_I2SSWRST_REQ = 0x08,
++	HDMI_MC_SWRSTZ_TMDSSWRST_REQ = 0x02,
++
++/* MC_FLOWCTRL field values */
++	HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_MASK = 0x1,
++	HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_CSC_IN_PATH = 0x1,
++	HDMI_MC_FLOWCTRL_FEED_THROUGH_OFF_CSC_BYPASS = 0x0,
++
++/* MC_PHYRSTZ field values */
++	HDMI_MC_PHYRSTZ_PHYRSTZ = 0x01,
++
++/* MC_HEACPHY_RST field values */
++	HDMI_MC_HEACPHY_RST_ASSERT = 0x1,
++	HDMI_MC_HEACPHY_RST_DEASSERT = 0x0,
++
++/* CSC_CFG field values */
++	HDMI_CSC_CFG_INTMODE_MASK = 0x30,
++	HDMI_CSC_CFG_INTMODE_OFFSET = 4,
++	HDMI_CSC_CFG_INTMODE_DISABLE = 0x00,
++	HDMI_CSC_CFG_INTMODE_CHROMA_INT_FORMULA1 = 0x10,
++	HDMI_CSC_CFG_INTMODE_CHROMA_INT_FORMULA2 = 0x20,
++	HDMI_CSC_CFG_DECMODE_MASK = 0x3,
++	HDMI_CSC_CFG_DECMODE_OFFSET = 0,
++	HDMI_CSC_CFG_DECMODE_DISABLE = 0x0,
++	HDMI_CSC_CFG_DECMODE_CHROMA_INT_FORMULA1 = 0x1,
++	HDMI_CSC_CFG_DECMODE_CHROMA_INT_FORMULA2 = 0x2,
++	HDMI_CSC_CFG_DECMODE_CHROMA_INT_FORMULA3 = 0x3,
++
++/* CSC_SCALE field values */
++	HDMI_CSC_SCALE_CSC_COLORDE_PTH_MASK = 0xF0,
++	HDMI_CSC_SCALE_CSC_COLORDE_PTH_24BPP = 0x00,
++	HDMI_CSC_SCALE_CSC_COLORDE_PTH_30BPP = 0x50,
++	HDMI_CSC_SCALE_CSC_COLORDE_PTH_36BPP = 0x60,
++	HDMI_CSC_SCALE_CSC_COLORDE_PTH_48BPP = 0x70,
++	HDMI_CSC_SCALE_CSCSCALE_MASK = 0x03,
++
++/* A_HDCPCFG0 field values */
++	HDMI_A_HDCPCFG0_ELVENA_MASK = 0x80,
++	HDMI_A_HDCPCFG0_ELVENA_ENABLE = 0x80,
++	HDMI_A_HDCPCFG0_ELVENA_DISABLE = 0x00,
++	HDMI_A_HDCPCFG0_I2CFASTMODE_MASK = 0x40,
++	HDMI_A_HDCPCFG0_I2CFASTMODE_ENABLE = 0x40,
++	HDMI_A_HDCPCFG0_I2CFASTMODE_DISABLE = 0x00,
++	HDMI_A_HDCPCFG0_BYPENCRYPTION_MASK = 0x20,
++	HDMI_A_HDCPCFG0_BYPENCRYPTION_ENABLE = 0x20,
++	HDMI_A_HDCPCFG0_BYPENCRYPTION_DISABLE = 0x00,
++	HDMI_A_HDCPCFG0_SYNCRICHECK_MASK = 0x10,
++	HDMI_A_HDCPCFG0_SYNCRICHECK_ENABLE = 0x10,
++	HDMI_A_HDCPCFG0_SYNCRICHECK_DISABLE = 0x00,
++	HDMI_A_HDCPCFG0_AVMUTE_MASK = 0x8,
++	HDMI_A_HDCPCFG0_AVMUTE_ENABLE = 0x8,
++	HDMI_A_HDCPCFG0_AVMUTE_DISABLE = 0x0,
++	HDMI_A_HDCPCFG0_RXDETECT_MASK = 0x4,
++	HDMI_A_HDCPCFG0_RXDETECT_ENABLE = 0x4,
++	HDMI_A_HDCPCFG0_RXDETECT_DISABLE = 0x0,
++	HDMI_A_HDCPCFG0_EN11FEATURE_MASK = 0x2,
++	HDMI_A_HDCPCFG0_EN11FEATURE_ENABLE = 0x2,
++	HDMI_A_HDCPCFG0_EN11FEATURE_DISABLE = 0x0,
++	HDMI_A_HDCPCFG0_HDMIDVI_MASK = 0x1,
++	HDMI_A_HDCPCFG0_HDMIDVI_HDMI = 0x1,
++	HDMI_A_HDCPCFG0_HDMIDVI_DVI = 0x0,
++
++/* A_HDCPCFG1 field values */
++	HDMI_A_HDCPCFG1_DISSHA1CHECK_MASK = 0x8,
++	HDMI_A_HDCPCFG1_DISSHA1CHECK_DISABLE = 0x8,
++	HDMI_A_HDCPCFG1_DISSHA1CHECK_ENABLE = 0x0,
++	HDMI_A_HDCPCFG1_PH2UPSHFTENC_MASK = 0x4,
++	HDMI_A_HDCPCFG1_PH2UPSHFTENC_ENABLE = 0x4,
++	HDMI_A_HDCPCFG1_PH2UPSHFTENC_DISABLE = 0x0,
++	HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_MASK = 0x2,
++	HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_DISABLE = 0x2,
++	HDMI_A_HDCPCFG1_ENCRYPTIONDISABLE_ENABLE = 0x0,
++	HDMI_A_HDCPCFG1_SWRESET_MASK = 0x1,
++	HDMI_A_HDCPCFG1_SWRESET_ASSERT = 0x0,
++
++/* A_VIDPOLCFG field values */
++	HDMI_A_VIDPOLCFG_UNENCRYPTCONF_MASK = 0x60,
++	HDMI_A_VIDPOLCFG_UNENCRYPTCONF_OFFSET = 5,
++	HDMI_A_VIDPOLCFG_DATAENPOL_MASK = 0x10,
++	HDMI_A_VIDPOLCFG_DATAENPOL_ACTIVE_HIGH = 0x10,
++	HDMI_A_VIDPOLCFG_DATAENPOL_ACTIVE_LOW = 0x0,
++	HDMI_A_VIDPOLCFG_VSYNCPOL_MASK = 0x8,
++	HDMI_A_VIDPOLCFG_VSYNCPOL_ACTIVE_HIGH = 0x8,
++	HDMI_A_VIDPOLCFG_VSYNCPOL_ACTIVE_LOW = 0x0,
++	HDMI_A_VIDPOLCFG_HSYNCPOL_MASK = 0x2,
++	HDMI_A_VIDPOLCFG_HSYNCPOL_ACTIVE_HIGH = 0x2,
++	HDMI_A_VIDPOLCFG_HSYNCPOL_ACTIVE_LOW = 0x0,
++
++/* I2CM_OPERATION field values */
++	HDMI_I2CM_OPERATION_WRITE = 0x10,
++	HDMI_I2CM_OPERATION_READ_EXT = 0x2,
++	HDMI_I2CM_OPERATION_READ = 0x1,
++
++/* I2CM_INT field values */
++	HDMI_I2CM_INT_DONE_POL = 0x8,
++	HDMI_I2CM_INT_DONE_MASK = 0x4,
++
++/* I2CM_CTLINT field values */
++	HDMI_I2CM_CTLINT_NAC_POL = 0x80,
++	HDMI_I2CM_CTLINT_NAC_MASK = 0x40,
++	HDMI_I2CM_CTLINT_ARB_POL = 0x8,
++	HDMI_I2CM_CTLINT_ARB_MASK = 0x4,
++};
++
++/*
++ * HDMI 3D TX PHY registers
++ */
++#define HDMI_3D_TX_PHY_PWRCTRL			0x00
++#define HDMI_3D_TX_PHY_SERDIVCTRL		0x01
++#define HDMI_3D_TX_PHY_SERCKCTRL		0x02
++#define HDMI_3D_TX_PHY_SERCKKILLCTRL		0x03
++#define HDMI_3D_TX_PHY_TXRESCTRL		0x04
++#define HDMI_3D_TX_PHY_CKCALCTRL		0x05
++#define HDMI_3D_TX_PHY_CPCE_CTRL		0x06
++#define HDMI_3D_TX_PHY_TXCLKMEASCTRL		0x07
++#define HDMI_3D_TX_PHY_TXMEASCTRL		0x08
++#define HDMI_3D_TX_PHY_CKSYMTXCTRL		0x09
++#define HDMI_3D_TX_PHY_CMPSEQCTRL		0x0a
++#define HDMI_3D_TX_PHY_CMPPWRCTRL		0x0b
++#define HDMI_3D_TX_PHY_CMPMODECTRL		0x0c
++#define HDMI_3D_TX_PHY_MEASCTRL			0x0d
++#define HDMI_3D_TX_PHY_VLEVCTRL			0x0e
++#define HDMI_3D_TX_PHY_D2ACTRL			0x0f
++#define HDMI_3D_TX_PHY_CURRCTRL			0x10
++#define HDMI_3D_TX_PHY_DRVANACTRL		0x11
++#define HDMI_3D_TX_PHY_PLLMEASCTRL		0x12
++#define HDMI_3D_TX_PHY_PLLPHBYCTRL		0x13
++#define HDMI_3D_TX_PHY_GRP_CTRL			0x14
++#define HDMI_3D_TX_PHY_GMPCTRL			0x15
++#define HDMI_3D_TX_PHY_MPLLMEASCTRL		0x16
++#define HDMI_3D_TX_PHY_MSM_CTRL			0x17
++#define HDMI_3D_TX_PHY_SCRPB_STATUS		0x18
++#define HDMI_3D_TX_PHY_TXTERM			0x19
++#define HDMI_3D_TX_PHY_PTRPT_ENBL		0x1a
++#define HDMI_3D_TX_PHY_PATTERNGEN		0x1b
++#define HDMI_3D_TX_PHY_SDCAP_MODE		0x1c
++#define HDMI_3D_TX_PHY_SCOPEMODE		0x1d
++#define HDMI_3D_TX_PHY_DIGTXMODE		0x1e
++#define HDMI_3D_TX_PHY_STR_STATUS		0x1f
++#define HDMI_3D_TX_PHY_SCOPECNT0		0x20
++#define HDMI_3D_TX_PHY_SCOPECNT1		0x21
++#define HDMI_3D_TX_PHY_SCOPECNT2		0x22
++#define HDMI_3D_TX_PHY_SCOPECNTCLK		0x23
++#define HDMI_3D_TX_PHY_SCOPESAMPLE		0x24
++#define HDMI_3D_TX_PHY_SCOPECNTMSB01		0x25
++#define HDMI_3D_TX_PHY_SCOPECNTMSB2CK		0x26
++
++/* HDMI_3D_TX_PHY_CKCALCTRL values */
++#define HDMI_3D_TX_PHY_CKCALCTRL_OVERRIDE		BIT(15)
++
++/* HDMI_3D_TX_PHY_MSM_CTRL values */
++#define HDMI_3D_TX_PHY_MSM_CTRL_MPLL_PH_SEL_CK		BIT(13)
++#define HDMI_3D_TX_PHY_MSM_CTRL_CKO_SEL_CLK_REF_MPLL	(0 << 1)
++#define HDMI_3D_TX_PHY_MSM_CTRL_CKO_SEL_OFF		(1 << 1)
++#define HDMI_3D_TX_PHY_MSM_CTRL_CKO_SEL_PCLK		(2 << 1)
++#define HDMI_3D_TX_PHY_MSM_CTRL_CKO_SEL_FB_CLK		(3 << 1)
++#define HDMI_3D_TX_PHY_MSM_CTRL_SCOPE_CK_SEL		BIT(0)
++
++/* HDMI_3D_TX_PHY_PTRPT_ENBL values */
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_OVERRIDE		BIT(15)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_PG_SKIP_BIT2		BIT(8)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_PG_SKIP_BIT1		BIT(7)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_PG_SKIP_BIT0		BIT(6)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_CK_REF_ENB		BIT(5)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_RCAL_ENB		BIT(4)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_TX_CLK_ALIGN_ENB	BIT(3)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_TX_READY		BIT(2)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_CKO_WORD_ENB		BIT(1)
++#define HDMI_3D_TX_PHY_PTRPT_ENBL_REFCLK_ENB		BIT(0)
++
++#endif /* __DW_HDMI_H__ */
+diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
+new file mode 100644
+index 0000000000..3bb87bf6bc
+--- /dev/null
++++ b/include/linux/hdmi.h
+@@ -0,0 +1,445 @@
++/*
++ * Copyright (C) 2012 Avionic Design GmbH
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sub license,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the
++ * next paragraph) shall be included in all copies or substantial portions
++ * of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++ * DEALINGS IN THE SOFTWARE.
++ */
++
++#ifndef __LINUX_HDMI_H_
++#define __LINUX_HDMI_H_
++
++#include <linux/types.h>
++#include <linux/device.h>
++
++enum hdmi_packet_type {
++	HDMI_PACKET_TYPE_NULL = 0x00,
++	HDMI_PACKET_TYPE_AUDIO_CLOCK_REGEN = 0x01,
++	HDMI_PACKET_TYPE_AUDIO_SAMPLE = 0x02,
++	HDMI_PACKET_TYPE_GENERAL_CONTROL = 0x03,
++	HDMI_PACKET_TYPE_ACP = 0x04,
++	HDMI_PACKET_TYPE_ISRC1 = 0x05,
++	HDMI_PACKET_TYPE_ISRC2 = 0x06,
++	HDMI_PACKET_TYPE_ONE_BIT_AUDIO_SAMPLE = 0x07,
++	HDMI_PACKET_TYPE_DST_AUDIO = 0x08,
++	HDMI_PACKET_TYPE_HBR_AUDIO_STREAM = 0x09,
++	HDMI_PACKET_TYPE_GAMUT_METADATA = 0x0a,
++	/* + enum hdmi_infoframe_type */
++};
++
++enum hdmi_infoframe_type {
++	HDMI_INFOFRAME_TYPE_VENDOR = 0x81,
++	HDMI_INFOFRAME_TYPE_AVI = 0x82,
++	HDMI_INFOFRAME_TYPE_SPD = 0x83,
++	HDMI_INFOFRAME_TYPE_AUDIO = 0x84,
++	HDMI_INFOFRAME_TYPE_DRM = 0x87,
++};
++
++#define HDMI_IEEE_OUI 0x000c03
++#define HDMI_FORUM_IEEE_OUI 0xc45dd8
++#define HDMI_INFOFRAME_HEADER_SIZE  4
++#define HDMI_AVI_INFOFRAME_SIZE    13
++#define HDMI_SPD_INFOFRAME_SIZE    25
++#define HDMI_AUDIO_INFOFRAME_SIZE  10
++#define HDMI_DRM_INFOFRAME_SIZE    26
++#define HDMI_VENDOR_INFOFRAME_SIZE  4
++
++#define HDMI_INFOFRAME_SIZE(type)	\
++	(HDMI_INFOFRAME_HEADER_SIZE + HDMI_ ## type ## _INFOFRAME_SIZE)
++
++struct hdmi_any_infoframe {
++	enum hdmi_infoframe_type type;
++	unsigned char version;
++	unsigned char length;
++};
++
++enum hdmi_colorspace {
++	HDMI_COLORSPACE_RGB,
++	HDMI_COLORSPACE_YUV422,
++	HDMI_COLORSPACE_YUV444,
++	HDMI_COLORSPACE_YUV420,
++	HDMI_COLORSPACE_RESERVED4,
++	HDMI_COLORSPACE_RESERVED5,
++	HDMI_COLORSPACE_RESERVED6,
++	HDMI_COLORSPACE_IDO_DEFINED,
++};
++
++enum hdmi_scan_mode {
++	HDMI_SCAN_MODE_NONE,
++	HDMI_SCAN_MODE_OVERSCAN,
++	HDMI_SCAN_MODE_UNDERSCAN,
++	HDMI_SCAN_MODE_RESERVED,
++};
++
++enum hdmi_colorimetry {
++	HDMI_COLORIMETRY_NONE,
++	HDMI_COLORIMETRY_ITU_601,
++	HDMI_COLORIMETRY_ITU_709,
++	HDMI_COLORIMETRY_EXTENDED,
++};
++
++enum hdmi_picture_aspect {
++	HDMI_PICTURE_ASPECT_NONE,
++	HDMI_PICTURE_ASPECT_4_3,
++	HDMI_PICTURE_ASPECT_16_9,
++	HDMI_PICTURE_ASPECT_64_27,
++	HDMI_PICTURE_ASPECT_256_135,
++	HDMI_PICTURE_ASPECT_RESERVED,
++};
++
++enum hdmi_active_aspect {
++	HDMI_ACTIVE_ASPECT_16_9_TOP = 2,
++	HDMI_ACTIVE_ASPECT_14_9_TOP = 3,
++	HDMI_ACTIVE_ASPECT_16_9_CENTER = 4,
++	HDMI_ACTIVE_ASPECT_PICTURE = 8,
++	HDMI_ACTIVE_ASPECT_4_3 = 9,
++	HDMI_ACTIVE_ASPECT_16_9 = 10,
++	HDMI_ACTIVE_ASPECT_14_9 = 11,
++	HDMI_ACTIVE_ASPECT_4_3_SP_14_9 = 13,
++	HDMI_ACTIVE_ASPECT_16_9_SP_14_9 = 14,
++	HDMI_ACTIVE_ASPECT_16_9_SP_4_3 = 15,
++};
++
++enum hdmi_extended_colorimetry {
++	HDMI_EXTENDED_COLORIMETRY_XV_YCC_601,
++	HDMI_EXTENDED_COLORIMETRY_XV_YCC_709,
++	HDMI_EXTENDED_COLORIMETRY_S_YCC_601,
++	HDMI_EXTENDED_COLORIMETRY_OPYCC_601,
++	HDMI_EXTENDED_COLORIMETRY_OPRGB,
++
++	/* The following EC values are only defined in CEA-861-F. */
++	HDMI_EXTENDED_COLORIMETRY_BT2020_CONST_LUM,
++	HDMI_EXTENDED_COLORIMETRY_BT2020,
++	HDMI_EXTENDED_COLORIMETRY_RESERVED,
++};
++
++enum hdmi_quantization_range {
++	HDMI_QUANTIZATION_RANGE_DEFAULT,
++	HDMI_QUANTIZATION_RANGE_LIMITED,
++	HDMI_QUANTIZATION_RANGE_FULL,
++	HDMI_QUANTIZATION_RANGE_RESERVED,
++};
++
++/* non-uniform picture scaling */
++enum hdmi_nups {
++	HDMI_NUPS_UNKNOWN,
++	HDMI_NUPS_HORIZONTAL,
++	HDMI_NUPS_VERTICAL,
++	HDMI_NUPS_BOTH,
++};
++
++enum hdmi_ycc_quantization_range {
++	HDMI_YCC_QUANTIZATION_RANGE_LIMITED,
++	HDMI_YCC_QUANTIZATION_RANGE_FULL,
++};
++
++enum hdmi_content_type {
++	HDMI_CONTENT_TYPE_GRAPHICS,
++	HDMI_CONTENT_TYPE_PHOTO,
++	HDMI_CONTENT_TYPE_CINEMA,
++	HDMI_CONTENT_TYPE_GAME,
++};
++
++enum hdmi_metadata_type {
++	HDMI_STATIC_METADATA_TYPE1 = 0,
++};
++
++enum hdmi_eotf {
++	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
++	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
++	HDMI_EOTF_SMPTE_ST2084,
++	HDMI_EOTF_BT_2100_HLG,
++};
++
++struct hdmi_avi_infoframe {
++	enum hdmi_infoframe_type type;
++	unsigned char version;
++	unsigned char length;
++	bool itc;
++	unsigned char pixel_repeat;
++	enum hdmi_colorspace colorspace;
++	enum hdmi_scan_mode scan_mode;
++	enum hdmi_colorimetry colorimetry;
++	enum hdmi_picture_aspect picture_aspect;
++	enum hdmi_active_aspect active_aspect;
++	enum hdmi_extended_colorimetry extended_colorimetry;
++	enum hdmi_quantization_range quantization_range;
++	enum hdmi_nups nups;
++	unsigned char video_code;
++	enum hdmi_ycc_quantization_range ycc_quantization_range;
++	enum hdmi_content_type content_type;
++	unsigned short top_bar;
++	unsigned short bottom_bar;
++	unsigned short left_bar;
++	unsigned short right_bar;
++};
++
++/* DRM Infoframe as per CTA 861.G spec */
++struct hdmi_drm_infoframe {
++	enum hdmi_infoframe_type type;
++	unsigned char version;
++	unsigned char length;
++	enum hdmi_eotf eotf;
++	enum hdmi_metadata_type metadata_type;
++	struct {
++		u16 x, y;
++	} display_primaries[3];
++	struct {
++		u16 x, y;
++	} white_point;
++	u16 max_display_mastering_luminance;
++	u16 min_display_mastering_luminance;
++	u16 max_cll;
++	u16 max_fall;
++};
++
++void hdmi_avi_infoframe_init(struct hdmi_avi_infoframe *frame);
++ssize_t hdmi_avi_infoframe_pack(struct hdmi_avi_infoframe *frame, void *buffer,
++				size_t size);
++ssize_t hdmi_avi_infoframe_pack_only(const struct hdmi_avi_infoframe *frame,
++				     void *buffer, size_t size);
++int hdmi_avi_infoframe_check(struct hdmi_avi_infoframe *frame);
++int hdmi_drm_infoframe_init(struct hdmi_drm_infoframe *frame);
++ssize_t hdmi_drm_infoframe_pack(struct hdmi_drm_infoframe *frame, void *buffer,
++				size_t size);
++ssize_t hdmi_drm_infoframe_pack_only(const struct hdmi_drm_infoframe *frame,
++				     void *buffer, size_t size);
++int hdmi_drm_infoframe_check(struct hdmi_drm_infoframe *frame);
++int hdmi_drm_infoframe_unpack_only(struct hdmi_drm_infoframe *frame,
++				   const void *buffer, size_t size);
++
++enum hdmi_spd_sdi {
++	HDMI_SPD_SDI_UNKNOWN,
++	HDMI_SPD_SDI_DSTB,
++	HDMI_SPD_SDI_DVDP,
++	HDMI_SPD_SDI_DVHS,
++	HDMI_SPD_SDI_HDDVR,
++	HDMI_SPD_SDI_DVC,
++	HDMI_SPD_SDI_DSC,
++	HDMI_SPD_SDI_VCD,
++	HDMI_SPD_SDI_GAME,
++	HDMI_SPD_SDI_PC,
++	HDMI_SPD_SDI_BD,
++	HDMI_SPD_SDI_SACD,
++	HDMI_SPD_SDI_HDDVD,
++	HDMI_SPD_SDI_PMP,
++};
++
++struct hdmi_spd_infoframe {
++	enum hdmi_infoframe_type type;
++	unsigned char version;
++	unsigned char length;
++	char vendor[8];
++	char product[16];
++	enum hdmi_spd_sdi sdi;
++};
++
++int hdmi_spd_infoframe_init(struct hdmi_spd_infoframe *frame,
++			    const char *vendor, const char *product);
++ssize_t hdmi_spd_infoframe_pack(struct hdmi_spd_infoframe *frame, void *buffer,
++				size_t size);
++ssize_t hdmi_spd_infoframe_pack_only(const struct hdmi_spd_infoframe *frame,
++				     void *buffer, size_t size);
++int hdmi_spd_infoframe_check(struct hdmi_spd_infoframe *frame);
++
++enum hdmi_audio_coding_type {
++	HDMI_AUDIO_CODING_TYPE_STREAM,
++	HDMI_AUDIO_CODING_TYPE_PCM,
++	HDMI_AUDIO_CODING_TYPE_AC3,
++	HDMI_AUDIO_CODING_TYPE_MPEG1,
++	HDMI_AUDIO_CODING_TYPE_MP3,
++	HDMI_AUDIO_CODING_TYPE_MPEG2,
++	HDMI_AUDIO_CODING_TYPE_AAC_LC,
++	HDMI_AUDIO_CODING_TYPE_DTS,
++	HDMI_AUDIO_CODING_TYPE_ATRAC,
++	HDMI_AUDIO_CODING_TYPE_DSD,
++	HDMI_AUDIO_CODING_TYPE_EAC3,
++	HDMI_AUDIO_CODING_TYPE_DTS_HD,
++	HDMI_AUDIO_CODING_TYPE_MLP,
++	HDMI_AUDIO_CODING_TYPE_DST,
++	HDMI_AUDIO_CODING_TYPE_WMA_PRO,
++	HDMI_AUDIO_CODING_TYPE_CXT,
++};
++
++enum hdmi_audio_sample_size {
++	HDMI_AUDIO_SAMPLE_SIZE_STREAM,
++	HDMI_AUDIO_SAMPLE_SIZE_16,
++	HDMI_AUDIO_SAMPLE_SIZE_20,
++	HDMI_AUDIO_SAMPLE_SIZE_24,
++};
++
++enum hdmi_audio_sample_frequency {
++	HDMI_AUDIO_SAMPLE_FREQUENCY_STREAM,
++	HDMI_AUDIO_SAMPLE_FREQUENCY_32000,
++	HDMI_AUDIO_SAMPLE_FREQUENCY_44100,
++	HDMI_AUDIO_SAMPLE_FREQUENCY_48000,
++	HDMI_AUDIO_SAMPLE_FREQUENCY_88200,
++	HDMI_AUDIO_SAMPLE_FREQUENCY_96000,
++	HDMI_AUDIO_SAMPLE_FREQUENCY_176400,
++	HDMI_AUDIO_SAMPLE_FREQUENCY_192000,
++};
++
++enum hdmi_audio_coding_type_ext {
++	/* Refer to Audio Coding Type (CT) field in Data Byte 1 */
++	HDMI_AUDIO_CODING_TYPE_EXT_CT,
++
++	/*
++	 * The next three CXT values are defined in CEA-861-E only.
++	 * They do not exist in older versions, and in CEA-861-F they are
++	 * defined as 'Not in use'.
++	 */
++	HDMI_AUDIO_CODING_TYPE_EXT_HE_AAC,
++	HDMI_AUDIO_CODING_TYPE_EXT_HE_AAC_V2,
++	HDMI_AUDIO_CODING_TYPE_EXT_MPEG_SURROUND,
++
++	/* The following CXT values are only defined in CEA-861-F. */
++	HDMI_AUDIO_CODING_TYPE_EXT_MPEG4_HE_AAC,
++	HDMI_AUDIO_CODING_TYPE_EXT_MPEG4_HE_AAC_V2,
++	HDMI_AUDIO_CODING_TYPE_EXT_MPEG4_AAC_LC,
++	HDMI_AUDIO_CODING_TYPE_EXT_DRA,
++	HDMI_AUDIO_CODING_TYPE_EXT_MPEG4_HE_AAC_SURROUND,
++	HDMI_AUDIO_CODING_TYPE_EXT_MPEG4_AAC_LC_SURROUND = 10,
++};
++
++struct hdmi_audio_infoframe {
++	enum hdmi_infoframe_type type;
++	unsigned char version;
++	unsigned char length;
++	unsigned char channels;
++	enum hdmi_audio_coding_type coding_type;
++	enum hdmi_audio_sample_size sample_size;
++	enum hdmi_audio_sample_frequency sample_frequency;
++	enum hdmi_audio_coding_type_ext coding_type_ext;
++	unsigned char channel_allocation;
++	unsigned char level_shift_value;
++	bool downmix_inhibit;
++
++};
++
++int hdmi_audio_infoframe_init(struct hdmi_audio_infoframe *frame);
++ssize_t hdmi_audio_infoframe_pack(struct hdmi_audio_infoframe *frame,
++				  void *buffer, size_t size);
++ssize_t hdmi_audio_infoframe_pack_only(const struct hdmi_audio_infoframe *frame,
++				       void *buffer, size_t size);
++int hdmi_audio_infoframe_check(const struct hdmi_audio_infoframe *frame);
++
++struct dp_sdp;
++ssize_t
++hdmi_audio_infoframe_pack_for_dp(const struct hdmi_audio_infoframe *frame,
++				 struct dp_sdp *sdp, u8 dp_version);
++
++enum hdmi_3d_structure {
++	HDMI_3D_STRUCTURE_INVALID = -1,
++	HDMI_3D_STRUCTURE_FRAME_PACKING = 0,
++	HDMI_3D_STRUCTURE_FIELD_ALTERNATIVE,
++	HDMI_3D_STRUCTURE_LINE_ALTERNATIVE,
++	HDMI_3D_STRUCTURE_SIDE_BY_SIDE_FULL,
++	HDMI_3D_STRUCTURE_L_DEPTH,
++	HDMI_3D_STRUCTURE_L_DEPTH_GFX_GFX_DEPTH,
++	HDMI_3D_STRUCTURE_TOP_AND_BOTTOM,
++	HDMI_3D_STRUCTURE_SIDE_BY_SIDE_HALF = 8,
++};
++
++
++struct hdmi_vendor_infoframe {
++	enum hdmi_infoframe_type type;
++	unsigned char version;
++	unsigned char length;
++	unsigned int oui;
++	u8 vic;
++	enum hdmi_3d_structure s3d_struct;
++	unsigned int s3d_ext_data;
++};
++
++/* HDR Metadata as per 861.G spec */
++struct hdr_static_metadata {
++	__u8 eotf;
++	__u8 metadata_type;
++	__u16 max_cll;
++	__u16 max_fall;
++	__u16 min_cll;
++};
++
++/**
++ * struct hdr_sink_metadata - HDR sink metadata
++ *
++ * Metadata Information read from Sink's EDID
++ */
++struct hdr_sink_metadata {
++	/**
++	 * @metadata_type: Static_Metadata_Descriptor_ID.
++	 */
++	__u32 metadata_type;
++	/**
++	 * @hdmi_type1: HDR Metadata Infoframe.
++	 */
++	union {
++		struct hdr_static_metadata hdmi_type1;
++	};
++};
++
++int hdmi_vendor_infoframe_init(struct hdmi_vendor_infoframe *frame);
++ssize_t hdmi_vendor_infoframe_pack(struct hdmi_vendor_infoframe *frame,
++				   void *buffer, size_t size);
++ssize_t hdmi_vendor_infoframe_pack_only(const struct hdmi_vendor_infoframe *frame,
++					void *buffer, size_t size);
++int hdmi_vendor_infoframe_check(struct hdmi_vendor_infoframe *frame);
++
++union hdmi_vendor_any_infoframe {
++	struct {
++		enum hdmi_infoframe_type type;
++		unsigned char version;
++		unsigned char length;
++		unsigned int oui;
++	} any;
++	struct hdmi_vendor_infoframe hdmi;
++};
++
++/**
++ * union hdmi_infoframe - overall union of all abstract infoframe representations
++ * @any: generic infoframe
++ * @avi: avi infoframe
++ * @spd: spd infoframe
++ * @vendor: union of all vendor infoframes
++ * @audio: audio infoframe
++ * @drm: Dynamic Range and Mastering infoframe
++ *
++ * This is used by the generic pack function. This works since all infoframes
++ * have the same header which also indicates which type of infoframe should be
++ * packed.
++ */
++union hdmi_infoframe {
++	struct hdmi_any_infoframe any;
++	struct hdmi_avi_infoframe avi;
++	struct hdmi_spd_infoframe spd;
++	union hdmi_vendor_any_infoframe vendor;
++	struct hdmi_audio_infoframe audio;
++	struct hdmi_drm_infoframe drm;
++};
++
++ssize_t hdmi_infoframe_pack(union hdmi_infoframe *frame, void *buffer,
++			    size_t size);
++ssize_t hdmi_infoframe_pack_only(const union hdmi_infoframe *frame,
++				 void *buffer, size_t size);
++int hdmi_infoframe_check(union hdmi_infoframe *frame);
++int hdmi_infoframe_unpack(union hdmi_infoframe *frame,
++			  const void *buffer, size_t size);
++void hdmi_infoframe_log(const char *level, struct device *dev,
++			const union hdmi_infoframe *frame);
++
++#endif /* _DRM_HDMI_H */
+diff --git a/include/video/dw_hdmi.h b/include/video/dw_hdmi.h
+new file mode 100644
+index 0000000000..c7a2ee3381
+--- /dev/null
++++ b/include/video/dw_hdmi.h
+@@ -0,0 +1,203 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright (C) 2011 Freescale Semiconductor, Inc.
++ */
++
++#ifndef __DW_HDMI__
++#define __DW_HDMI__
++
++struct drm_display_info;
++struct drm_display_mode;
++struct dw_hdmi;
++
++/**
++ * DOC: Supported input formats and encodings
++ *
++ * Depending on the Hardware configuration of the Controller IP, it supports
++ * a subset of the following input formats and encodings on its internal
++ * 48bit bus.
++ *
++ * +----------------------+----------------------------------+------------------------------+
++ * | Format Name          | Format Code                      | Encodings                    |
++ * +----------------------+----------------------------------+------------------------------+
++ * | RGB 4:4:4 8bit       | ``MEDIA_BUS_FMT_RGB888_1X24``    | ``V4L2_YCBCR_ENC_DEFAULT``   |
++ * +----------------------+----------------------------------+------------------------------+
++ * | RGB 4:4:4 10bits     | ``MEDIA_BUS_FMT_RGB101010_1X30`` | ``V4L2_YCBCR_ENC_DEFAULT``   |
++ * +----------------------+----------------------------------+------------------------------+
++ * | RGB 4:4:4 12bits     | ``MEDIA_BUS_FMT_RGB121212_1X36`` | ``V4L2_YCBCR_ENC_DEFAULT``   |
++ * +----------------------+----------------------------------+------------------------------+
++ * | RGB 4:4:4 16bits     | ``MEDIA_BUS_FMT_RGB161616_1X48`` | ``V4L2_YCBCR_ENC_DEFAULT``   |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:4:4 8bit     | ``MEDIA_BUS_FMT_YUV8_1X24``      | ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_XV601``  |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_XV709``  |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:4:4 10bits   | ``MEDIA_BUS_FMT_YUV10_1X30``     | ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_XV601``  |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_XV709``  |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:4:4 12bits   | ``MEDIA_BUS_FMT_YUV12_1X36``     | ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_XV601``  |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_XV709``  |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:4:4 16bits   | ``MEDIA_BUS_FMT_YUV16_1X48``     | ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_XV601``  |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_XV709``  |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:2:2 8bit     | ``MEDIA_BUS_FMT_UYVY8_1X16``     | ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:2:2 10bits   | ``MEDIA_BUS_FMT_UYVY10_1X20``    | ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:2:2 12bits   | ``MEDIA_BUS_FMT_UYVY12_1X24``    | ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:2:0 8bit     | ``MEDIA_BUS_FMT_UYYVYY8_0_5X24`` | ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:2:0 10bits   | ``MEDIA_BUS_FMT_UYYVYY10_0_5X30``| ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:2:0 12bits   | ``MEDIA_BUS_FMT_UYYVYY12_0_5X36``| ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * +----------------------+----------------------------------+------------------------------+
++ * | YCbCr 4:2:0 16bits   | ``MEDIA_BUS_FMT_UYYVYY16_0_5X48``| ``V4L2_YCBCR_ENC_601``       |
++ * |                      |                                  | or ``V4L2_YCBCR_ENC_709``    |
++ * +----------------------+----------------------------------+------------------------------+
++ */
++
++enum {
++	DW_HDMI_RES_8,
++	DW_HDMI_RES_10,
++	DW_HDMI_RES_12,
++	DW_HDMI_RES_MAX,
++};
++
++enum dw_hdmi_phy_type {
++	DW_HDMI_PHY_DWC_HDMI_TX_PHY = 0x00,
++	DW_HDMI_PHY_DWC_MHL_PHY_HEAC = 0xb2,
++	DW_HDMI_PHY_DWC_MHL_PHY = 0xc2,
++	DW_HDMI_PHY_DWC_HDMI_3D_TX_PHY_HEAC = 0xe2,
++	DW_HDMI_PHY_DWC_HDMI_3D_TX_PHY = 0xf2,
++	DW_HDMI_PHY_DWC_HDMI20_TX_PHY = 0xf3,
++	DW_HDMI_PHY_VENDOR_PHY = 0xfe,
++};
++
++struct dw_hdmi_mpll_config {
++	unsigned long mpixelclock;
++	struct {
++		u16 cpce;
++		u16 gmp;
++	} res[DW_HDMI_RES_MAX];
++};
++
++struct dw_hdmi_curr_ctrl {
++	unsigned long mpixelclock;
++	u16 curr[DW_HDMI_RES_MAX];
++};
++
++struct dw_hdmi_phy_config {
++	unsigned long mpixelclock;
++	u16 sym_ctr;    /*clock symbol and transmitter control*/
++	u16 term;       /*transmission termination value*/
++	u16 vlev_ctr;   /* voltage level control */
++};
++
++struct dw_hdmi_phy_ops {
++	int (*init)(struct dw_hdmi *hdmi, void *data,
++		    const struct drm_display_info *display,
++		    const struct drm_display_mode *mode);
++	void (*disable)(struct dw_hdmi *hdmi, void *data);
++	enum drm_connector_status (*read_hpd)(struct dw_hdmi *hdmi, void *data);
++	void (*update_hpd)(struct dw_hdmi *hdmi, void *data,
++			   bool force, bool disabled, bool rxsense);
++	void (*setup_hpd)(struct dw_hdmi *hdmi, void *data);
++};
++
++struct dw_hdmi_plat_data {
++	struct regmap *regm;
++
++	unsigned int output_port;
++
++	unsigned long input_bus_encoding;
++	bool use_drm_infoframe;
++	bool ycbcr_420_allowed;
++
++	/*
++	 * Private data passed to all the .mode_valid() and .configure_phy()
++	 * callback functions.
++	 */
++	void *priv_data;
++
++	/* Platform-specific mode validation (optional). */
++	bool (*mode_valid)(struct dw_hdmi *hdmi, void *data,
++			   const struct drm_display_info *info,
++			   const struct drm_display_mode *mode);
++	int (*mode_set)(struct dw_hdmi *hdmi, void *data,
++			const struct drm_display_mode *mode);
++
++	int (*vpl_ioctl)(struct dw_hdmi *hdmi, void *data,
++			 unsigned int port, unsigned int cmd,
++			 void *cmddata);
++
++	/* Platform-specific audio enable/disable (optional) */
++	void (*enable_audio)(struct dw_hdmi *hdmi, int channel,
++			     int width, int rate, int non_pcm);
++	void (*disable_audio)(struct dw_hdmi *hdmi);
++
++	/* Vendor PHY support */
++	const struct dw_hdmi_phy_ops *phy_ops;
++	const char *phy_name;
++	void *phy_data;
++	unsigned int phy_force_vendor;
++
++	/* Synopsys PHY support */
++	const struct dw_hdmi_mpll_config *mpll_cfg;
++	const struct dw_hdmi_curr_ctrl *cur_ctr;
++	const struct dw_hdmi_phy_config *phy_config;
++	int (*configure_phy)(struct dw_hdmi *hdmi, void *data,
++			     unsigned long mpixelclock);
++
++	unsigned int disable_cec : 1;
++};
++
++struct dw_hdmi *dw_hdmi_probe(struct device *dev,
++			      const struct dw_hdmi_plat_data *plat_data);
++void dw_hdmi_remove(struct dw_hdmi *hdmi);
++void dw_hdmi_unbind(struct dw_hdmi *hdmi);
++struct dw_hdmi *dw_hdmi_bind(struct device *dev,
++			     const struct dw_hdmi_plat_data *plat_data);
++
++void dw_hdmi_setup_rx_sense(struct dw_hdmi *hdmi, bool hpd, bool rx_sense);
++
++void dw_hdmi_set_channel_count(struct dw_hdmi *hdmi, unsigned int cnt);
++void dw_hdmi_set_channel_status(struct dw_hdmi *hdmi, u8 *channel_status);
++void dw_hdmi_set_channel_allocation(struct dw_hdmi *hdmi, unsigned int ca);
++void dw_hdmi_set_high_tmds_clock_ratio(struct dw_hdmi *hdmi,
++				       const struct drm_display_info *display);
++
++/* PHY configuration */
++void dw_hdmi_phy_i2c_set_addr(struct dw_hdmi *hdmi, u8 address);
++void dw_hdmi_phy_i2c_write(struct dw_hdmi *hdmi, unsigned short data,
++			   unsigned char addr);
++
++void dw_hdmi_phy_gen1_reset(struct dw_hdmi *hdmi);
++
++void dw_hdmi_phy_gen2_pddq(struct dw_hdmi *hdmi, u8 enable);
++void dw_hdmi_phy_gen2_txpwron(struct dw_hdmi *hdmi, u8 enable);
++void dw_hdmi_phy_gen2_reset(struct dw_hdmi *hdmi);
++
++enum drm_connector_status dw_hdmi_phy_read_hpd(struct dw_hdmi *hdmi,
++					       void *data);
++void dw_hdmi_phy_update_hpd(struct dw_hdmi *hdmi, void *data,
++			    bool force, bool disabled, bool rxsense);
++void dw_hdmi_phy_setup_hpd(struct dw_hdmi *hdmi, void *data);
++
++bool dw_hdmi_bus_fmt_is_420(struct dw_hdmi *hdmi);
++
++#endif /* __IMX_HDMI_H__ */
 
 -- 
 2.39.5
