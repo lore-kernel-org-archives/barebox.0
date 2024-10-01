@@ -1,63 +1,78 @@
-Delivery-date: Tue, 01 Oct 2024 08:48:04 +0200
+Delivery-date: Tue, 01 Oct 2024 10:53:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1svWfz-004rrB-0a
+	id 1svYdI-004tyB-1q
 	for lore@lore.pengutronix.de;
-	Tue, 01 Oct 2024 08:48:04 +0200
+	Tue, 01 Oct 2024 10:53:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1svWfz-0005Oy-3O
-	for lore@pengutronix.de; Tue, 01 Oct 2024 08:48:04 +0200
+	id 1svYdI-0005CL-Vi
+	for lore@pengutronix.de; Tue, 01 Oct 2024 10:53:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=sRC1k1EMOJSANjAwcIA/iBFm9fIN8LSMDIlEYyvn36Q=; b=rApWEO1hj+zb/d1DE3rpOyRiII
-	UAAtvkcaQYXuoskdQjJ+A6FXJW49Lc702S3lNMvMueNZ5nAiP1vQjqeNgyCoYtXPjrxQOpLWDD1aD
-	uhP0ZtRDMID8h0A2bTohz8uTcmkaHThslOducLKHY3UJITGhNtCDyEt3Yk0Dg+RYWd4FSvNo56CtP
-	soe4/CR8ie7m+Tic1Cwv9saT0Jv5RyejQAqeexm6czslXLSdhlnJIZSUc8T0QeTfw8vzvLqPgAPeX
-	AIE1An6vzzAaVvGH6csI+HupfkXnVgCq5cQ1OXACS2LC9CBYMABG2zWWWlscOvVn/16Hg08DrwWSe
-	hYeTbZwg==;
+	bh=CHqpsdbNouFN1cu4WHJlCYcPUGbAP/okQyGIQhg+ijY=; b=LGkHO5mkUOoui2ZA5HU+7ZslkS
+	RRZVTgq63lhMu4BcgPsP9VNsx6gWOQ5XVxjciaU0Oy3jlWlip52JaB6HAtxEMQxY/vOrBE/LRrgoC
+	lLbYmdwgob+qS4+3WeaoMscIb7h++/SuRbhG+XkPdn8Wcvj0f4qx2xmNJUCCF8PpxmommdNh3GUk9
+	QLu2VmSZICsLtI4yFnr4zztw0j7k9lpvzOMrcPhRQPNyfH/hD2WPk5Xg4s1blM9ZAXNAy763httap
+	meMdXL0YeULAdpDE4ovLgn97NchaE9qhjfHWtG3WRAuLYAVYrFBslGcztnjnT0sPNp7/1oVgB7kLm
+	581a37RA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1svWfO-00000001oCI-41oj;
-	Tue, 01 Oct 2024 06:47:26 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1svYcg-000000028Qw-0HpL;
+	Tue, 01 Oct 2024 08:52:46 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1svWfL-00000001oBo-24ej
+	id 1svYcJ-000000028Py-3nlG
+	for barebox@bombadil.infradead.org;
+	Tue, 01 Oct 2024 08:52:23 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=CHqpsdbNouFN1cu4WHJlCYcPUGbAP/okQyGIQhg+ijY=; b=rPxS6Gid/izTuKlXxgkKCCeIJo
+	8Vp3uOvWGqlC2ZXO7JYkJAVtFnlSYi6BeEiM4prLOm8cONEv+4iE5FIr47hrPcYlOStaoxrFO60I8
+	KA+TnTWUtdxDol7wqab6DbgDqEKBNx69ua1KwKYQkwLte9Den1XQ3VsS6+AGSQq/CfrwFUz6igoBU
+	bHudg+F4DKdFtPjESx1Ds1T3DgSmuJ+4PKbKp94F4ql3f0pvvLf++k9hmYQUnR0xzzQ+iAaKaiSeX
+	n2nE9AndCO2ECJf712w8YlaA+tGn4bg0HPM0qx8diAOrI4N+8NtRHnjbZVBelPo5UIh1yf+8t8/HG
+	SUkuKF4g==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
+	id 1svYcG-00000002zzB-3R3I
 	for barebox@lists.infradead.org;
-	Tue, 01 Oct 2024 06:47:25 +0000
+	Tue, 01 Oct 2024 08:52:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1svWfJ-00057L-IM; Tue, 01 Oct 2024 08:47:21 +0200
+	id 1svYcD-0004g7-AF; Tue, 01 Oct 2024 10:52:17 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1svWfJ-002obl-5l; Tue, 01 Oct 2024 08:47:21 +0200
+	id 1svYcC-002prk-U1; Tue, 01 Oct 2024 10:52:16 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1svWfJ-00GK39-0F;
-	Tue, 01 Oct 2024 08:47:21 +0200
+	id 1svYcC-002BpQ-2f;
+	Tue, 01 Oct 2024 10:52:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  1 Oct 2024 08:47:20 +0200
-Message-Id: <20241001064720.3890312-1-s.hauer@pengutronix.de>
+Date: Tue,  1 Oct 2024 10:52:13 +0200
+Message-Id: <20241001085213.522115-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240930_234723_875963_BAC4CF26 
-X-CRM114-Status: GOOD (  18.22  )
+X-CRM114-CacheID: sfid-20241001_095220_964102_42F62FD9 
+X-CRM114-Status: GOOD (  13.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,452 +90,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,PDS_OTHER_BAD_TLD,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLACK autolearn=no autolearn_force=no version=3.4.2
-Subject: [PATCH] fbconsole: implement panel orientation support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] ARM: i.MX6 sabrelite: free USB VBUS GPIO after use
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds a fbconsolex.orientation property to rotate the console
-by 90, 180 or 270 degrees in case the panel is not natively oriented.
+The sabrelite board code uses a GPIO to enable USB VBUS. The same GPIO
+is registered in the device tree as a USB VBUS regulator. This regulator
+currently can't probe because the GPIO is busy due to its usage in board
+code. Free the GPIO after usage in board code to allow probing the VBUS
+regulator.
+
+The board specific code to enable VBUS might not be needed at all
+anymore, but I currently do not have the board handy to try out, so
+for now just avoid the error messages from failed driver probe.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/fbconsole.c | 328 ++++++++++++++++++++++++++++++++------
- 1 file changed, 278 insertions(+), 50 deletions(-)
+ arch/arm/boards/freescale-mx6-sabrelite/board.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-index eec524318f..24592d00ed 100644
---- a/drivers/video/fbconsole.c
-+++ b/drivers/video/fbconsole.c
-@@ -18,6 +18,20 @@ enum state_t {
- 	CSI_CNT,
- };
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index fe47743540..5982d75e2b 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -117,10 +117,16 @@ static int sabrelite_ksz9021rn_setup(void)
  
-+enum fbconsole_rotation {
-+	FBCONSOLE_ROTATE_0,
-+	FBCONSOLE_ROTATE_90,
-+	FBCONSOLE_ROTATE_180,
-+	FBCONSOLE_ROTATE_270,
-+};
-+
-+static const char * const rotation_names[] = {
-+	[FBCONSOLE_ROTATE_0] = "0",
-+	[FBCONSOLE_ROTATE_90] = "90",
-+	[FBCONSOLE_ROTATE_180] = "180",
-+	[FBCONSOLE_ROTATE_270] = "270",
-+};
-+
- struct fbc_priv {
- 	struct console_device cdev;
- 	struct fb_info *fb;
-@@ -38,6 +52,7 @@ struct fbc_priv {
- 	unsigned int cols, rows;
- 	unsigned int x, y; /* cursor position */
- 
-+	unsigned int rotation;
- 	enum state_t state;
- 
- 	int color;
-@@ -124,6 +139,10 @@ static void drawchar(struct fbc_priv *priv, int x, int y, int c)
- 	int line_length;
- 	u32 color, bgcolor;
- 	struct rgb *rgb;
-+	int xstep;
-+	int ystep;
-+	int startx;
-+	int starty;
- 
- 	buf = gui_screen_render_buffer(priv->sc);
- 
-@@ -144,13 +163,44 @@ static void drawchar(struct fbc_priv *priv, int x, int y, int c)
- 	rgb = &colors[bgcolor];
- 	bgcolor = gu_rgb_to_pixel(priv->fb, rgb->r, rgb->g, rgb->b, 0x0);
- 
-+	adr = buf;
-+
-+	switch (priv->rotation) {
-+	case FBCONSOLE_ROTATE_0:
-+		xstep = bpp;
-+		ystep = line_length;
-+		startx = x * priv->font->width;
-+		starty = y * priv->font->height;
-+		break;
-+	case FBCONSOLE_ROTATE_90:
-+		xstep = line_length;
-+		ystep = -bpp;
-+		startx = (priv->rows - y) * priv->font->height - 1;
-+		starty = x * priv->font->width;
-+		break;
-+	case FBCONSOLE_ROTATE_180:
-+		xstep = -bpp;
-+		ystep = -line_length;
-+		startx = (priv->cols - x) * priv->font->width - 1;
-+		starty = (priv->rows - y) * priv->font->height - 1;
-+		break;
-+	case FBCONSOLE_ROTATE_270:
-+		xstep = -line_length;
-+		ystep = bpp;
-+		startx = priv->font->height * y;
-+		starty = (priv->cols - x) * priv->font->width - 1;
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	adr += (priv->margin.left + startx) * bpp;
-+	adr += (priv->margin.top + starty) * line_length;
-+
- 	for (i = 0; i < priv->font->height; i++) {
- 		uint8_t mask = 0x80;
- 		int j;
- 
--		adr = buf + line_length * (priv->margin.top + y * priv->font->height + i) +
--		      (priv->margin.left + x * priv->font->width) * bpp;
--
- 		for (j = 0; j < priv->font->width; j++) {
- 			if (!mask) {
- 				inbuf++;
-@@ -158,32 +208,107 @@ static void drawchar(struct fbc_priv *priv, int x, int y, int c)
- 			}
- 
- 			if (*inbuf & mask)
--				gu_set_pixel(priv->fb, adr, color);
-+				gu_set_pixel(priv->fb, adr + j * xstep, color);
- 			else
--				gu_set_pixel(priv->fb, adr, bgcolor);
-+				gu_set_pixel(priv->fb, adr + j * xstep, bgcolor);
- 
--			adr += priv->fb->bits_per_pixel >> 3;
- 			mask >>= 1;
- 
- 		}
- 
-+		adr += ystep;
-+
- 		inbuf++;
- 		mask = 0x80;
- 	}
- }
- 
-+static void fb_blit_area(struct fbc_priv *priv, int x, int y)
-+{
-+	int startx, starty, width, height, fw, fh;
-+	int mx, my;
-+
-+	mx = priv->margin.left;
-+	my = priv->margin.top;
-+
-+	fw = priv->font->width;
-+	fh = priv->font->height;
-+
-+	switch (priv->rotation) {
-+	case FBCONSOLE_ROTATE_0:
-+		startx = mx + x * fw;
-+		starty = my + y * fh;
-+		width = fw;
-+		height = fh;
-+		break;
-+	case FBCONSOLE_ROTATE_90:
-+		startx = mx + (priv->rows - y - 1) * fh;
-+		starty = my + x * fw;
-+		width = fh;
-+		height = fw;
-+		break;
-+	case FBCONSOLE_ROTATE_180:
-+		startx = mx + (priv->cols - x - 1) * fw;
-+		starty = my + (priv->rows - y - 1) * fh;
-+		width = fw;
-+		height = fh;
-+		break;
-+	case FBCONSOLE_ROTATE_270:
-+		startx = mx + y * fh;
-+		starty = my + (priv->cols - x - 1) * fw;
-+		width = fh;
-+		height = fw;
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	gu_screen_blit_area(priv->sc, startx, starty, width, height);
-+}
-+
- static void video_invertchar(struct fbc_priv *priv, int x, int y)
+ static void sabrelite_ehci_init(void)
  {
-+	int startx, starty, width, height, fw, fh;
- 	void *buf;
- 
- 	buf = gui_screen_render_buffer(priv->sc);
-+	buf += priv->margin.top * priv->fb->line_length;
-+	buf += priv->margin.left * (priv->fb->bits_per_pixel >> 3);
++	unsigned int vbus_gpio = IMX_GPIO_NR(7, 12);
 +
-+	fw = priv->font->width;
-+	fh = priv->font->height;
++	gpio_request(vbus_gpio, "usb-vbus");
 +
-+	switch (priv->rotation) {
-+	case FBCONSOLE_ROTATE_0:
-+		startx = x * fw;
-+		starty = y * fh;
-+		width = fw;
-+		height = fh;
-+		break;
-+	case FBCONSOLE_ROTATE_90:
-+		startx = (priv->rows - y - 1) * fh;
-+		starty = x * fw;
-+		width = fh;
-+		height = fw;
-+		break;
-+	case FBCONSOLE_ROTATE_180:
-+		startx = (priv->cols - x - 1) * fw;
-+		starty = (priv->rows - y - 1) * fh;
-+		width = fw;
-+		height = fh;
-+		break;
-+	case FBCONSOLE_ROTATE_270:
-+		startx = y * fh;
-+		starty = (priv->cols - x - 1) * fw;
-+		width = fh;
-+		height = fw;
-+		break;
-+	default:
-+		return;
-+	}
- 
--	gu_invert_area(priv->fb, buf, priv->margin.left + x * priv->font->width,
--			priv->margin.top + y * priv->font->height,
--			priv->font->width, priv->font->height);
--	gu_screen_blit_area(priv->sc, priv->margin.left + x * priv->font->width,
--			priv->margin.top + y * priv->font->height,
--			priv->font->width, priv->font->height);
-+	gu_invert_area(priv->fb, buf, startx, starty, width, height);
-+	fb_blit_area(priv, x, y);
+ 	/* hub reset */
+-	gpio_direction_output(IMX_GPIO_NR(7, 12), 0);
++	gpio_direction_output(vbus_gpio, 0);
+ 	udelay(2000);
+-	gpio_set_value(IMX_GPIO_NR(7, 12), 1);
++	gpio_set_value(vbus_gpio, 1);
++
++	gpio_free(vbus_gpio);
  }
  
- static void show_cursor(struct fbc_priv *priv, int x, int y)
-@@ -192,6 +317,118 @@ static void show_cursor(struct fbc_priv *priv, int x, int y)
- 		video_invertchar(priv, x, y);
- }
- 
-+static void fb_scroll_up_0(struct fbc_priv *priv, void *adr, int width, int height)
-+{
-+	u32 line_length = priv->fb->line_length;
-+	int line_height = line_length * priv->font->height;
-+
-+	if (!priv->margin.left && !priv->margin.right) {
-+		memcpy(adr, adr + line_height, line_height * (priv->rows - 1));
-+		memset(adr + line_height * (priv->rows - 1), 0, line_height);
-+	} else {
-+		int bpp = priv->fb->bits_per_pixel >> 3;
-+		int y;
-+
-+		for (y = 0; y < height - priv->font->height; y++) {
-+			memcpy(adr, adr + line_height, width * bpp);
-+			adr += line_length;
-+		}
-+
-+		for (y = height - priv->font->height; y < height; y++) {
-+			memset(adr, 0, width * bpp);
-+			adr += line_length;
-+		}
-+	}
-+}
-+
-+static void fb_scroll_up_180(struct fbc_priv *priv, void *adr, int width, int height)
-+{
-+	u32 line_length = priv->fb->line_length;
-+	int line_height = line_length * priv->font->height;
-+
-+	if (!priv->margin.left && !priv->margin.right) {
-+		memmove(adr + line_height, adr, line_height * (priv->rows - 1));
-+		memset(adr, 0, line_height);
-+	} else {
-+		int bpp = priv->fb->bits_per_pixel >> 3;
-+		int y;
-+
-+		adr += (height - 1) * line_length;
-+
-+		for (y = height; y > priv->font->height; y--) {
-+			memcpy(adr, adr - line_height, width * bpp);
-+			adr -= line_length;
-+		}
-+
-+		for (y = 0; y < priv->font->height; y++) {
-+			memset(adr, 0, width * bpp);
-+			adr -= line_length;
-+		}
-+	}
-+}
-+
-+static void fb_scroll_up_90(struct fbc_priv *priv, void *adr, int width, int height)
-+{
-+	u32 line_length = priv->fb->line_length;
-+	int bpp = priv->fb->bits_per_pixel >> 3;
-+	int y;
-+
-+	for (y = 0; y < priv->cols * priv->font->width; y++) {
-+		memmove(adr + priv->font->height * bpp,
-+			adr,
-+			(priv->rows - 1) * priv->font->height * bpp);
-+		memset(adr, 0, priv->font->height * bpp);
-+		adr += line_length;
-+	}
-+}
-+
-+static void fb_scroll_up_270(struct fbc_priv *priv, void *adr, int width, int height)
-+{
-+	u32 line_length = priv->fb->line_length;
-+	int bpp = priv->fb->bits_per_pixel >> 3;
-+	int y;
-+
-+	for (y = 0; y < priv->cols * priv->font->width; y++) {
-+		memmove(adr,
-+			adr + priv->font->height * bpp,
-+			(priv->rows - 1) * priv->font->height * bpp);
-+		memset(adr + priv->font->height * bpp * (priv->rows - 1),
-+		       0x0,
-+		       priv->font->height * bpp);
-+		adr += line_length;
-+	}
-+}
-+
-+static void fb_scroll_up(struct fbc_priv *priv)
-+{
-+	int width = priv->fb->xres - priv->margin.left - priv->margin.right;
-+	int height = priv->fb->yres - priv->margin.top - priv->margin.bottom;
-+	int bpp = priv->fb->bits_per_pixel >> 3;
-+	void *adr;
-+
-+	adr = gui_screen_render_buffer(priv->sc);
-+	adr += priv->margin.top * priv->fb->line_length;
-+	adr += priv->margin.left * bpp;
-+
-+	switch (priv->rotation) {
-+	case FBCONSOLE_ROTATE_0:
-+		fb_scroll_up_0(priv, adr, width, height);
-+		break;
-+	case FBCONSOLE_ROTATE_90:
-+		fb_scroll_up_90(priv, adr, width, height);
-+		break;
-+	case FBCONSOLE_ROTATE_180:
-+		fb_scroll_up_180(priv, adr, width, height);
-+		break;
-+	case FBCONSOLE_ROTATE_270:
-+		fb_scroll_up_270(priv, adr, width, height);
-+		break;
-+	}
-+
-+	gu_screen_blit_area(priv->sc, priv->margin.left, priv->margin.top,
-+			    width, height);
-+}
-+
- static void printchar(struct fbc_priv *priv, int c)
- {
- 	video_invertchar(priv, priv->x, priv->y);
-@@ -222,11 +459,7 @@ static void printchar(struct fbc_priv *priv, int c)
- 
- 	default:
- 		drawchar(priv, priv->x, priv->y, c);
--
--		gu_screen_blit_area(priv->sc,
--				priv->margin.left + priv->x * priv->font->width,
--				priv->margin.top + priv->y * priv->font->height,
--				priv->font->width, priv->font->height);
-+		fb_blit_area(priv, priv->x, priv->y);
- 
- 		priv->x++;
- 		if (priv->x >= priv->cols) {
-@@ -236,37 +469,7 @@ static void printchar(struct fbc_priv *priv, int c)
- 	}
- 
- 	if (priv->y >= priv->rows) {
--		void *buf;
--		void *adr;
--		u32 line_length = priv->fb->line_length;
--		int line_height = line_length * priv->font->height;
--		int width = priv->fb->xres - priv->margin.left - priv->margin.right;
--		int height = priv->rows * priv->font->height;
--
--		buf = gui_screen_render_buffer(priv->sc);
--		adr = buf + priv->margin.top * line_length;
--
--		if (!priv->margin.left && !priv->margin.right) {
--			memcpy(adr, adr + line_height, line_height * (priv->rows - 1));
--			memset(adr + line_height * (priv->rows - 1), 0, line_height);
--		} else {
--			int bpp = priv->fb->bits_per_pixel >> 3;
--			int y;
--
--			adr += priv->margin.left * bpp;
--
--			for (y = 0; y < height - priv->font->height; y++) {
--				memcpy(adr, adr + line_height, width * bpp);
--				adr += line_length;
--			}
--			for (y = height - priv->font->height; y < height; y++) {
--				memset(adr, 0, width * bpp);
--				adr += line_length;
--			}
--		}
--
--		gu_screen_blit_area(priv->sc, priv->margin.left, priv->margin.top,
--				width, height);
-+		fb_scroll_up(priv);
- 		priv->y = priv->rows - 1;
- 	}
- 
-@@ -472,8 +675,18 @@ static int setup_font(struct fbc_priv *priv)
- 
- 	priv->font = font;
- 
--	priv->rows = height / priv->font->height;
--	priv->cols = width / priv->font->width;
-+	switch (priv->rotation) {
-+	case FBCONSOLE_ROTATE_0:
-+	case FBCONSOLE_ROTATE_180:
-+		priv->rows = height / priv->font->height;
-+		priv->cols = width / priv->font->width;
-+		break;
-+	case FBCONSOLE_ROTATE_90:
-+	case FBCONSOLE_ROTATE_270:
-+		priv->rows = width / priv->font->height;
-+		priv->cols = height / priv->font->width;
-+		break;
-+	}
- 
- 	return 0;
- }
-@@ -562,6 +775,18 @@ static int set_margin(struct param_d *p, void *vpriv)
- 	return 0;
- }
- 
-+static int set_rotation(struct param_d *p, void *vpriv)
-+{
-+	struct fbc_priv *priv = vpriv;
-+
-+	cls(priv);
-+	priv->x = 0;
-+	priv->y = 0;
-+	setup_font(priv);
-+
-+	return 0;
-+}
-+
- int register_fbconsole(struct fb_info *fb)
- {
- 	struct fbc_priv *priv;
-@@ -621,6 +846,9 @@ int register_fbconsole(struct fb_info *fb)
- 			NULL, &priv->margin.bottom, "%u", priv);
- 	dev_add_param_uint32(&cdev->class_dev, "margin.right", set_margin,
- 			NULL, &priv->margin.right, "%u", priv);
-+	dev_add_param_enum(&cdev->class_dev, "rotation", set_rotation, NULL,
-+                           &priv->rotation, rotation_names,
-+                           ARRAY_SIZE(rotation_names), priv);
- 
- 	pr_info("registered as %s%d\n", cdev->class_dev.name, cdev->class_dev.id);
- 
+ static int sabrelite_probe(struct device *dev)
 -- 
 2.39.5
 
