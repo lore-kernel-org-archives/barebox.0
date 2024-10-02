@@ -1,65 +1,64 @@
-Delivery-date: Wed, 02 Oct 2024 18:08:12 +0200
+Delivery-date: Wed, 02 Oct 2024 18:37:05 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sw1tb-005Quy-0C
+	id 1sw2LY-005RK3-0i
 	for lore@lore.pengutronix.de;
-	Wed, 02 Oct 2024 18:08:12 +0200
+	Wed, 02 Oct 2024 18:37:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sw1tb-0003Ue-Hz
-	for lore@pengutronix.de; Wed, 02 Oct 2024 18:08:12 +0200
+	id 1sw2LY-0006cp-Mq
+	for lore@pengutronix.de; Wed, 02 Oct 2024 18:37:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=fHYHQWHYSE5oHnsYVd/hWOpFUz3GVrLrMlJ2PDrOhlw=; b=S/vdoFMeM/xEdLgsS1zJrcGBhr
-	fCad+vg68lL1CF9xLAVltV7ButSTE4nTMkbgLk1VpLCLLCtna2/ZkxPUTxjvZlc2y3cr51QBhO4p1
-	72fEmpQaaW/L4V7v69IqrwYSpx0Ewa1DhyFyHIwNrTwQeBxTRhMpFsmcC5HWuURGqw2kq56/t3WXc
-	cGx8D8tpn8f020GeQFbsFb+b5/gYWEXWnu16GmQJRNJ0TwAteLoFmBdu118fE7FEG8pGcxrwZY6iW
-	48+d1WzCa1YmVeL+23juuUiHKsECPAy2wYLy7V78pE7uTBGTrWxZj7PXzAlpU8XNuynDFCUgvNzkt
-	oVLvGRbw==;
+	bh=HFA2suBdnA3a9QRLyMq0bQOItS71BLdmLi4TalVzVSo=; b=fqmOAUhqKlVjtwPxcWjiZ4J/c8
+	CZHny71y4eVgZm6lXx60uVrUt3xQvz6hykT8EbJbxzOeiLKqAM46NEykE69JhW+3lXKv2M/UpnRg0
+	adBybgMioRmyx9/DFdlDkixOmNGAbVgqGHcyd964qJYLLaGfQNxTQtCecGTA9N3qpKF4dcW2kg8b5
+	947pWOa4UwBkic5AF98zApppfwqIwxFKKFpzeduBuDIoZ3HMuJ1x/dAYCJjTSFRKJZh3LeSsmcQnc
+	C8/C6H3lgTnECtJ5YKccz70AMs+RHYjgAomeHbeDhs4nUa5ekGM9wFwRXSAu1YgVT3ghlLejNQVIa
+	dDGFe94Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1sw1sy-00000006r71-3aDo;
-	Wed, 02 Oct 2024 16:07:32 +0000
+	id 1sw2L0-00000006wb3-3rcA;
+	Wed, 02 Oct 2024 16:36:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1sw1sv-00000006r65-16hC
+	id 1sw2Ku-00000006wYw-2esC
 	for barebox@lists.infradead.org;
-	Wed, 02 Oct 2024 16:07:30 +0000
+	Wed, 02 Oct 2024 16:36:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sw1sr-0003QD-EL; Wed, 02 Oct 2024 18:07:25 +0200
+	id 1sw2Ks-0006XY-St; Wed, 02 Oct 2024 18:36:22 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sw1sr-00393H-1m; Wed, 02 Oct 2024 18:07:25 +0200
+	id 1sw2Ks-0039RB-Ci; Wed, 02 Oct 2024 18:36:22 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sw1sq-00AAZQ-35;
-	Wed, 02 Oct 2024 18:07:25 +0200
+	id 1sw2Ks-00AJc2-0z;
+	Wed, 02 Oct 2024 18:36:22 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Rashidwi <rashidwinter@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Oct 2024 18:07:15 +0200
-Message-Id: <20241002160714.2423842-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  2 Oct 2024 18:36:21 +0200
+Message-Id: <20241002163621.2458659-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241002_090729_320735_08AA29D0 
-X-CRM114-Status: GOOD (  10.83  )
+X-CRM114-CacheID: sfid-20241002_093624_695463_1068318F 
+X-CRM114-Status: GOOD (  12.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,49 +80,68 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] uimage: fix CRC32 verification on NFS
+Subject: [PATCH] uimage: use read_full where appropriate
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Reading a file over NFS is prone to return short reads as the file
-content is split over multiple UDP packets and reads won't return
-more than the number of bytes that have gathered in the FIFO.
+Apart from the CRC code, where it's no problem to just compute the CRC
+of the last read and read again, all other instances of read() in the
+uimage code are written with the assumption that the read will not be
+short.
 
-The uImage verification code didn't account for this and handled neither
-short reads or the file prematurely ending.
+Use read_full to satisfy this assumption.
 
-Address both to fix this unexpected result:
-
-  uimage -v /mnt/nfs/uImage
-  verifying data CRC... Bad Data CRC: 0x56474aa2 != 0x6b8f0a9c
-
-  cp /mnt/nfs/uImage .
-  uimage -v uImage
-  verifying data CRC... ok
-
-Fixes: 390249968c4e ("reimplement uImage code")
-Closes: https://github.com/barebox/barebox/issues/28
-Reported-by: Rashidwi <rashidwinter@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/uimage.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ common/uimage.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/common/uimage.c b/common/uimage.c
-index 140a08c1e426..c578edae2606 100644
+index c578edae2606..06a2c05ead67 100644
 --- a/common/uimage.c
 +++ b/common/uimage.c
-@@ -272,7 +272,9 @@ int uimage_verify(struct uimage_handle *handle)
- 		ret = read(handle->fd, buf, now);
- 		if (ret < 0)
- 			goto err;
--		crc = crc32(crc, buf, now);
-+		if (!ret)
-+			break;
-+		crc = crc32(crc, buf, ret);
- 		len -= ret;
+@@ -110,7 +110,7 @@ struct uimage_handle *uimage_open(const char *filename)
+ 
+ 	handle->copy = copy;
+ 
+-	if (read(fd, header, sizeof(*header)) < 0) {
++	if (read_full(fd, header, sizeof(*header)) != sizeof(*header)) {
+ 		printf("could not read: %m\n");
+ 		goto err_out;
+ 	}
+@@ -150,8 +150,8 @@ struct uimage_handle *uimage_open(const char *filename)
+ 		for (i = 0; i < MAX_MULTI_IMAGE_COUNT; i++) {
+ 			u32 size;
+ 
+-			ret = read(fd, &size, sizeof(size));
+-			if (ret < 0)
++			ret = read_full(fd, &size, sizeof(size));
++			if (ret != sizeof(size))
+ 				goto err_out;
+ 
+ 			if (!size)
+@@ -437,8 +437,8 @@ void *uimage_load_to_buf(struct uimage_handle *handle, int image_no,
+ 		goto out;
  	}
  
+-	ret = read(handle->fd, ftbuf, 128);
+-	if (ret < 0)
++	ret = read_full(handle->fd, ftbuf, 128);
++	if (ret != 128)
+ 		return NULL;
+ 
+ 	ft = file_detect_type(ftbuf, 128);
+@@ -452,8 +452,8 @@ void *uimage_load_to_buf(struct uimage_handle *handle, int image_no,
+ 	if (lseek(handle->fd, off, SEEK_SET) != off)
+ 		return NULL;
+ 
+-	ret = read(handle->fd, &size, 4);
+-	if (ret < 0)
++	ret = read_full(handle->fd, &size, 4);
++	if (ret != 4)
+ 		return NULL;
+ 
+ 	size = le32_to_cpu(size);
 -- 
 2.39.5
 
