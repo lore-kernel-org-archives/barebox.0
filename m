@@ -1,67 +1,65 @@
-Delivery-date: Wed, 02 Oct 2024 14:06:05 +0200
+Delivery-date: Wed, 02 Oct 2024 18:08:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1svy7I-005Mdl-0J
+	id 1sw1tb-005Quy-0C
 	for lore@lore.pengutronix.de;
-	Wed, 02 Oct 2024 14:06:05 +0200
+	Wed, 02 Oct 2024 18:08:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1svy7I-0002Qn-Kt
-	for lore@pengutronix.de; Wed, 02 Oct 2024 14:06:05 +0200
+	id 1sw1tb-0003Ue-Hz
+	for lore@pengutronix.de; Wed, 02 Oct 2024 18:08:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WdNQiN268U7RuhTUcbp9nfMb570b4BGUuLfo/mLK2U0=; b=0gcmbicwgf0yODrfdrJnr8ZYCM
-	Fm0VWwpdNdIGtQO1hMOIO4qZ6PYBmAXqatYQccozHLbUW0ncU5WiO9etq+dfYeDT786F9mN7mVRhX
-	8XRuFBKg/yN3UpnPdRzxoV31qqtg16nVo2ovxN9S1ICA1KHkIboXmvx2icRcw3NcUzJ56TUkaF4Cr
-	oZKEajkEMnwzxK5rQm5jfiaGQEbVzDAKB0KLsDaEkFkbcStD6FjGMo2bR+yMEsj794qfJv5CteNHM
-	i81AAj4G0+S2BX7h0cHTRE7n80/GP6f9YTS6WMSqoRaSgfZOM8ei8oDm6wBSrtQiBSZTd/6Y4BxAG
-	QPDpRH+g==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=fHYHQWHYSE5oHnsYVd/hWOpFUz3GVrLrMlJ2PDrOhlw=; b=S/vdoFMeM/xEdLgsS1zJrcGBhr
+	fCad+vg68lL1CF9xLAVltV7ButSTE4nTMkbgLk1VpLCLLCtna2/ZkxPUTxjvZlc2y3cr51QBhO4p1
+	72fEmpQaaW/L4V7v69IqrwYSpx0Ewa1DhyFyHIwNrTwQeBxTRhMpFsmcC5HWuURGqw2kq56/t3WXc
+	cGx8D8tpn8f020GeQFbsFb+b5/gYWEXWnu16GmQJRNJ0TwAteLoFmBdu118fE7FEG8pGcxrwZY6iW
+	48+d1WzCa1YmVeL+23juuUiHKsECPAy2wYLy7V78pE7uTBGTrWxZj7PXzAlpU8XNuynDFCUgvNzkt
+	oVLvGRbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1svy6s-00000005mhQ-1Yb3;
-	Wed, 02 Oct 2024 12:05:38 +0000
+	id 1sw1sy-00000006r71-3aDo;
+	Wed, 02 Oct 2024 16:07:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1svy1x-00000005lI8-2FuB
+	id 1sw1sv-00000006r65-16hC
 	for barebox@lists.infradead.org;
-	Wed, 02 Oct 2024 12:00:35 +0000
+	Wed, 02 Oct 2024 16:07:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1svy1w-0001SX-65; Wed, 02 Oct 2024 14:00:32 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sw1sr-0003QD-EL; Wed, 02 Oct 2024 18:07:25 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1svy1v-0036LY-Pc; Wed, 02 Oct 2024 14:00:31 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1svy1v-00930u-2P;
-	Wed, 02 Oct 2024 14:00:31 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241001191956.2765504-1-a.fatoum@pengutronix.de>
-References: <20241001191956.2765504-1-a.fatoum@pengutronix.de>
-Message-Id: <172787043174.2155874.6915594486230898748.b4-ty@pengutronix.de>
-Date: Wed, 02 Oct 2024 14:00:31 +0200
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sw1sr-00393H-1m; Wed, 02 Oct 2024 18:07:25 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sw1sq-00AAZQ-35;
+	Wed, 02 Oct 2024 18:07:25 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Rashidwi <rashidwinter@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  2 Oct 2024 18:07:15 +0200
+Message-Id: <20241002160714.2423842-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241002_050033_606166_749A8D4F 
-X-CRM114-Status: UNSURE (   5.27  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241002_090729_320735_08AA29D0 
+X-CRM114-Status: GOOD (  10.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,29 +77,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] video: mipi-dbi: reword Kconfig prompt
+Subject: [PATCH] uimage: fix CRC32 verification on NFS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Reading a file over NFS is prone to return short reads as the file
+content is split over multiple UDP packets and reads won't return
+more than the number of bytes that have gathered in the FIFO.
 
-On Tue, 01 Oct 2024 21:19:56 +0200, Ahmad Fatoum wrote:
-> We don't (yet? ;) have a Direct Rendering Manager subsystem as in Linux,
-> so let's rename the option to avoid confusion.
-> 
-> 
+The uImage verification code didn't account for this and handled neither
+short reads or the file prematurely ending.
 
-Applied, thanks!
+Address both to fix this unexpected result:
 
-[1/1] video: mipi-dbi: reword Kconfig prompt
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f62ba2277676 (link may not be stable)
+  uimage -v /mnt/nfs/uImage
+  verifying data CRC... Bad Data CRC: 0x56474aa2 != 0x6b8f0a9c
 
-Best regards,
+  cp /mnt/nfs/uImage .
+  uimage -v uImage
+  verifying data CRC... ok
+
+Fixes: 390249968c4e ("reimplement uImage code")
+Closes: https://github.com/barebox/barebox/issues/28
+Reported-by: Rashidwi <rashidwinter@gmail.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/uimage.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/common/uimage.c b/common/uimage.c
+index 140a08c1e426..c578edae2606 100644
+--- a/common/uimage.c
++++ b/common/uimage.c
+@@ -272,7 +272,9 @@ int uimage_verify(struct uimage_handle *handle)
+ 		ret = read(handle->fd, buf, now);
+ 		if (ret < 0)
+ 			goto err;
+-		crc = crc32(crc, buf, now);
++		if (!ret)
++			break;
++		crc = crc32(crc, buf, ret);
+ 		len -= ret;
+ 	}
+ 
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.5
 
 
 
