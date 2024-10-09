@@ -1,58 +1,57 @@
-Delivery-date: Wed, 09 Oct 2024 07:41:33 +0200
+Delivery-date: Wed, 09 Oct 2024 07:46:36 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1syPS0-002723-3A
+	id 1syPWu-002789-2g
 	for lore@lore.pengutronix.de;
-	Wed, 09 Oct 2024 07:41:32 +0200
+	Wed, 09 Oct 2024 07:46:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1syPS0-0004IU-C0
-	for lore@pengutronix.de; Wed, 09 Oct 2024 07:41:32 +0200
+	id 1syPWt-0004iG-QU
+	for lore@pengutronix.de; Wed, 09 Oct 2024 07:46:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JUae4QG0himshjB48eqm52X7NILniaTASeadWFmTHO8=; b=PBT8w6ffjRS3cN2Cj1DHPDcBVD
-	8TQHXqwaGHMMwamUvlynsPIMcdL/2COLGG0fKiwa0/Bn9eapvlr/DU1PmexXUH3/q/r9A6jzdJikU
-	FNOMDqWu2J9TqBnU/4ieo69+Uddmden6xaLCaTMGnwJeHgAI2lSDagb2R9vHS7x3Ek+CKKyswhPPz
-	ZESgVMCjgdQvxwVI9t4/SFJqkWkB4YMmo+s5W5Byke36+22SfvySk7I2qOR1gpQgW/cwmrywJ3Mcb
-	nAZNxuOIT5t9sxBqAQpl8Z8pYGSYXdC9h7Fmq/RG0KQD5GjNmqVuQ32sEuVdEbGGIz2pijdG9xuTt
-	vjI8lY2g==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=uqJGlRKGwbaVbk1TiboSBTFfoY+rZPE8aTaiNzObdcc=; b=ZeYJo3WqmJHO64X9VRA1tpjXk2
+	W8xX76McaBmg00ThhBK/Xn9JUV6N3BEUBcmXXCGJ1R9IfjR63p92usBiOMYMa9CcFZsyUwRJkrbM8
+	xDy3Lg46UsJPwGOnyPbCHr7NgeB1VCPNaAUzEdY/ZAONAHPgSfQnfnJOTqnkXYhpf1WS4ZgIpXrS2
+	N3zUQWUbc//ffdfpXB+1arJch+eqTEa9agojX/s0gzp2unBxCR68UYUXH4eXcvPZjEHhXtdbK+KIH
+	VP++1vYQxTGHALXIjo6PwBCs7XIYpMlSO4BGRsd05A9v59r7nsRhqIQfTs1zSelRSOXlyieJLMDN+
+	6pnhtf4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1syPRM-00000007ykh-2T66;
-	Wed, 09 Oct 2024 05:40:52 +0000
+	id 1syPWQ-00000007zau-1Wrh;
+	Wed, 09 Oct 2024 05:46:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1syPQh-00000007ya7-1PVq
+	id 1syPWM-00000007zZb-2XfF
 	for barebox@lists.infradead.org;
-	Wed, 09 Oct 2024 05:40:13 +0000
+	Wed, 09 Oct 2024 05:46:04 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1syPQd-000432-Ha; Wed, 09 Oct 2024 07:40:07 +0200
-Message-ID: <97bbc7a6-5014-43ed-a253-792faf7570a8@pengutronix.de>
-Date: Wed, 9 Oct 2024 07:40:07 +0200
+	id 1syPWL-0004cI-6J; Wed, 09 Oct 2024 07:46:01 +0200
+Message-ID: <151044a1-3460-4cd8-a585-42d2401d7d54@pengutronix.de>
+Date: Wed, 9 Oct 2024 07:46:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
- barebox@lists.infradead.org
-References: <20241008231228.2106435-1-m.grzeschik@pengutronix.de>
+To: Jonas Rebmann <mail@schlaraffenlan.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <20241008-test_tftp-v2-1-509b8e861702@schlaraffenlan.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Marco Felsch <m.felsch@pengutronix.de>
-In-Reply-To: <20241008231228.2106435-1-m.grzeschik@pengutronix.de>
+In-Reply-To: <20241008-test_tftp-v2-1-509b8e861702@schlaraffenlan.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241008_224011_444700_3F2183E6 
-X-CRM114-Status: GOOD (  22.27  )
+X-CRM114-CacheID: sfid-20241008_224602_842790_A40CFD9F 
+X-CRM114-Status: GOOD (  32.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,80 +73,200 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: core: add write_reliable device parameter
+Subject: Re: [PATCH v2] test: pytest: introduce pytest for network, test tftp
+ notfound
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Michael,
-
-On 09.10.24 01:12, Michael Grzeschik wrote:
-> Add mmcX.write_reliable parameter so it can be queried by
-> scripts and board code.
+On 08.10.24 13:21, Jonas Rebmann wrote:
+> barebox already has a few pytest integration tests but none of them are
+> networking related.
 > 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> This patch introduces a test that asserts on bringing up at least one
+> DHCP interface and, on any of these interfaces, a successful ICMP-ping
+> from the DUT to the test pytest-host as well as a basic "File not Found"
+> conversation between the DUT and the test pytest-host.
+> 
+> As the test requires a network connection to the barebox device, without
+> the "network" feature the test is marked xfail. For the case of a qemu
+> device we also assume DHCP to set serverip correctly. In any other case,
+> it is set via console to that IP of the pytest-host that has the route
+> to the barebox devices IP.
+> 
+> Signed-off-by: Jonas Rebmann <mail@schlaraffenlan.de>
+
+This test ran successfully against an i.MX8MP with a switch and only
+eth2 having link up.
+
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
 > ---
->  drivers/mci/mci-core.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 48a3df9ec9..1b7526abfa 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -2680,6 +2680,22 @@ static int mci_get_partition_setting_completed(struct mci *mci)
->  	return ret;
->  }
->  
-> +static int mci_get_write_reliable(struct mci *mci)
-> +{
-> +	u8 *ext_csd;
-> +	int ret;
-> +
-> +	ext_csd = mci_get_ext_csd(mci);
-> +	if (IS_ERR(ext_csd))
-> +		return PTR_ERR(ext_csd);
-> +
-> +	ret = ext_csd[EXT_CSD_WR_REL_SET] & 0x1f;
-> +
-> +	dma_free(ext_csd);
+> Changes in v2:
+> - use random ephermal instead of hardcoded port for tftp test
 
-I know that this is copied off mci_get_partition_setting_completed(),
-but why does it need to call mci_get_ext_csd()? Can't we just access
-prepopulated mci->ext_csd?
+I noticed an issue with this approach now: I had to disable my firewall,
+because it's not known beforehand which port is going to be chosen...
 
-> +
-> +	return ret;
-> +}> +
->  /**
->   * Probe an MCI card at the given host interface
->   * @param mci MCI device instance
-> @@ -2796,6 +2812,13 @@ static int mci_card_probe(struct mci *mci)
->  				"Failed to determine EXT_CSD_PARTITION_SETTING_COMPLETED\n");
->  		else
->  			dev_add_param_bool_fixed(&mci->dev, "partitioning_completed", ret);
-> +
-> +		ret = mci_get_write_reliable(mci);
-> +		if (ret < 0)
-> +			dev_dbg(&mci->dev,
-> +				"Failed to determine EXT_CSD_WR_REL_SET\n");
-> +		else
-> +			dev_add_param_bool_fixed(&mci->dev, "write_reliable", ret);
+Maybe there should also be a way to hardcode a user-supplied value,
+but this shouldn't delay application of this patch.
 
-Wouldn't it be confusing for the write reliability setting to remain constant?
-
-For example a script may want to check that the value is not set before running,
-but if it's set at runtime, we want the script to notice that on the second run
-without having to reset.
-
-I know this would apply to partitioning_completed too.
-
-What do you think?
-
-Cheers,
+Thanks!
 Ahmad
 
->  	}
->  
->  	mci_parse_cid(mci);
+> - test any interface doing DHCP, expect one to test without issues
+> - fail on any tftp error code
+> - cleanup
+> - update commit message
+> - Link to v1: https://lore.barebox.org/barebox/20240605-test_tftp-v1-1-5752ea677b06@schlaraffenlan.de
+> ---
+>  test/arm/virt@multi_v8_defconfig.yaml |   1 +
+>  test/openrisc/generic_defconfig.yaml  |   2 +
+>  test/py/test_network.py               | 106 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 109 insertions(+)
+> 
+> diff --git a/test/arm/virt@multi_v8_defconfig.yaml b/test/arm/virt@multi_v8_defconfig.yaml
+> index d8f8ab5cbff35b5f9c414b0c7a66974a9a723794..42ce10328d7cc903010199364f5464d5146239e0 100644
+> --- a/test/arm/virt@multi_v8_defconfig.yaml
+> +++ b/test/arm/virt@multi_v8_defconfig.yaml
+> @@ -14,6 +14,7 @@ targets:
+>        BareboxTestStrategy: {}
+>      features:
+>        - virtio-mmio
+> +      - network
+>      runner:
+>        tuxmake_arch: arm64
+>  images:
+> diff --git a/test/openrisc/generic_defconfig.yaml b/test/openrisc/generic_defconfig.yaml
+> index 93ba9586c439d597c1a5e8deca44d1b99c902bed..56b70b8242f0e7f50f7ac732525a4857d8541744 100644
+> --- a/test/openrisc/generic_defconfig.yaml
+> +++ b/test/openrisc/generic_defconfig.yaml
+> @@ -12,6 +12,8 @@ targets:
+>          prompt: 'barebox@[^:]+:[^ ]+ '
+>          bootstring: 'commandline:'
+>        BareboxTestStrategy: {}
+> +    features:
+> +      - network
+>  images:
+>    barebox: !template "$LG_BUILDDIR/barebox"
+>  imports:
+> diff --git a/test/py/test_network.py b/test/py/test_network.py
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..afaa259e2496740fabe61129e8e7d4190c5d4c50
+> --- /dev/null
+> +++ b/test/py/test_network.py
+> @@ -0,0 +1,106 @@
+> +import pytest
+> +
+> +from labgrid import driver,Environment
+> +import socket
+> +import threading
+> +import re
+> +import warnings
+> +
+> +# Setting the port to zero causes bind to choose a random ephermal port
+> +TFTP_TEST_PORT = 0
+> +
+> +def get_source_addr(destination_ip, destination_port):
+> +    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+> +    udp_socket.connect((destination_ip, destination_port))
+> +    source_ip, _ = udp_socket.getsockname()
+> +    return source_ip
+> +
+> +def tftp_setup_socket(listen_addr, listen_port=0):
+> +    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+> +    udp_socket.bind((listen_addr, listen_port))
+> +    udp_socket.settimeout(3)
+> +    return udp_socket
+> +
+> +
+> +def tftp_expect_notfound(filename, udp_socket):
+> +    uname = filename.encode("ascii")
+> +    messages = [
+> +        b"\000\001" + uname + b"\000octet\000timeout\0005\000blksize\000512\000tsize\0000\000",
+> +        b"\000\005\000\001File not found\000",
+> +    ]
+> +    data, addr = udp_socket.recvfrom(1024)
+> +    udp_socket.sendto(messages[1], addr)
+> +    udp_socket.close()
+> +    assert data == messages[0]
+> +
+> +def tftp_conversation(barebox, barebox_interface, guestaddr):
+> +
+> +    listen_addr = "127.0.0.1"
+> +    if not isinstance(barebox.console, driver.QEMUDriver):
+> +        # sending an arbitrary udp package to determine the IP towards DUT
+> +        listen_addr = get_source_addr(guestaddr, TFTP_TEST_PORT)
+> +        barebox.run_check(f"eth0.serverip={listen_addr}")
+> +
+> +    barebox.run_check("ping $eth0.serverip", timeout=2)
+> +
+> +    tftp_socket=tftp_setup_socket(listen_addr, TFTP_TEST_PORT)
+> +    tftp_port_used=tftp_socket.getsockname()[1]
+> +
+> +    tftp_thread = threading.Thread(
+> +        target=tftp_expect_notfound,
+> +        name="tftp_expect_notfound",
+> +        args=("a", tftp_socket),
+> +    )
+> +    tftp_thread.daemon = True
+> +    tftp_thread.start()
+> +
+> +    try:
+> +        stdout, _, returncode = barebox.run(f"tftp -P {tftp_port_used} a", timeout=3)
+> +        assert returncode != 0
+> +    finally:
+> +        # terminate a timed-out tftp
+> +        barebox.console.sendcontrol("c")
+> +        tftp_thread.join()
+> +        barebox.run_check("ifdown eth0")
+> +
+> +
+> +def test_barebox_network(barebox, env):
+> +    # on DUTs without network feature, this is expected to fail
+> +    # set xfail_strict=True to enforce specifying the network feature if available
+> +    if not 'network' in env.get_target_features():
+> +        pytest.xfail("network feature not specified")
+> +
+> +    stdout = barebox.run_check("ifup -a")
+> +
+> +    interfaces = []
+> +
+> +    for line in stdout:
+> +        # eth0: DHCP client bound to address 10.0.2.15
+> +        m = re.search('(eth[0-9]+): DHCP client bound to address (.*)', line)
+> +        if m is None:
+> +            continue
+> +        else:
+> +            interfaces.append((m.group(1), m.group(2)))
+> +
+> +    assert interfaces, "Network testing is only possible with at least one DHCP interface"
+> +
+> +    for iface in interfaces:
+> +        ifname = iface[0]
+> +        ifaddr = iface[1]
+> +
+> +        assert ifaddr != "0.0.0.0"
+> +        assert ifaddr == barebox.run_check(f"echo ${ifname}.ipaddr")[0]
+> +
+> +        # Attempt a conversation with the DUT, which needs to succeed only on one interface
+> +        success = False
+> +
+> +        try:
+> +            tftp_conversation(barebox, ifname, ifaddr)
+> +            success = True
+> +            break
+> +        except Exception as e:
+> +            warnings.warn(f"Could not connect to DUT on {ifname} ({ifaddr}): {e}")
+> +
+> +        if not success:
+> +            pytest.fail("Could not converse with DUT on any of the found DHCP interfaces!")
+> +
+> 
+> ---
+> base-commit: 5a2866973d386ffe9b9f5c429a0cbcd58bcef69c
+> change-id: 20240605-test_tftp-9e12282d46a0
+> 
+> Best regards,
 
 
 -- 
