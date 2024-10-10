@@ -1,66 +1,69 @@
-Delivery-date: Wed, 09 Oct 2024 17:02:39 +0200
+Delivery-date: Thu, 10 Oct 2024 16:24:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1syYD1-002Ga2-2m
+	id 1syu5M-002epr-22
 	for lore@lore.pengutronix.de;
-	Wed, 09 Oct 2024 17:02:39 +0200
+	Thu, 10 Oct 2024 16:24:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1syYD1-00081o-5p
-	for lore@pengutronix.de; Wed, 09 Oct 2024 17:02:39 +0200
+	id 1syu5L-0006Hp-Tz
+	for lore@pengutronix.de; Thu, 10 Oct 2024 16:24:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=7yZMEfh2j8uwdzWWJh3gzjT0n4p92odZtkc5RALBcRc=; b=Lqd9E32BA+icTnc/llJ1xkQhNs
-	tE/1Q5xljAVdO3DKKIz+RQEW5wgXSLhuMyRhgSPqSEX0VpqHlcxyoUnNt809hsk1yvdCGETPIJOJR
-	FdPwO30TvI6ZLuEs0ZMRt1qRLc4FI5Zt7RTpPJsxzrNoEedqp+xLprJp1kXQryT+KzSSKGSU6PlUl
-	xMj0Ye2MTUbLIoNzR1Rui/H4/3uuRjNZdOEvyHR17HEQnCoXr/1sX22nzw9Y5KKHPsIUhaSA2P2oU
-	ERM55t6I6uwx08wKDaSlD4U2xNqwzhcENERkBmFfr3V9OqdvQ2ChqFIy4UVOIPInpYPgdo8Xck8HB
-	WVqwh4Eg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=7p35xSpc5GowXtklXALK5fkRim0nViGFzVHazpWDi28=; b=BRbUic0OzLk8m5a2lTSNK7Za30
+	y4WinEdLUDHBTn4yQN0i1VIi7tLE3GjYB4aAj3ngARE3UT4C8h0hx6wQsPuR2T5xaC42xdVmobZcn
+	9OOJonqsxsXl+RRPCkNcFhfQWMpv3RTs01JikZp+LeroIuGrKqaAWr6AY1uVtJoY+x8gTqXKgCZiw
+	I9cddxFC65ZL+oTmvhTnCBuMTGdc2w+LlRUrwXlhSrIJJjei3e6WWjQkewst+xuJg2cnHEFyyJ//I
+	K711o0HQ6KLSAu3ppNjroQhuIjMXyoMy8YwcvwenYK9oMrcBdonIVhYZq71qvGzFNPcbvW0quG3MO
+	93GiMoVw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1syYCU-00000009hkB-22iS;
-	Wed, 09 Oct 2024 15:02:06 +0000
+	id 1syu4c-0000000D55x-2ReI;
+	Thu, 10 Oct 2024 14:23:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1syYCR-00000009hij-1rvk
+	id 1syu4Y-0000000D546-1aUi
 	for barebox@lists.infradead.org;
-	Wed, 09 Oct 2024 15:02:04 +0000
+	Thu, 10 Oct 2024 14:23:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1syYCP-0007wb-I3
-	for barebox@lists.infradead.org; Wed, 09 Oct 2024 17:02:01 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1syu4U-0006D5-I8; Thu, 10 Oct 2024 16:23:18 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1syYCP-000czG-5W
-	for barebox@lists.infradead.org; Wed, 09 Oct 2024 17:02:01 +0200
-Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
-	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1syYCP-00AtmH-0G
-	for barebox@lists.infradead.org;
-	Wed, 09 Oct 2024 17:02:01 +0200
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Wed,  9 Oct 2024 17:01:59 +0200
-Message-Id: <20241009150159.2597633-1-m.grzeschik@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1syu4U-000rjZ-5U; Thu, 10 Oct 2024 16:23:18 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1syu4U-00FQQU-0P;
+	Thu, 10 Oct 2024 16:23:18 +0200
+From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Date: Thu, 10 Oct 2024 16:23:04 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241010-fix-designware-fixed-link-v1-1-de2df5485a25@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAEfjB2cC/xXMwQqDMBCE4VeRPbuwEeOhryIeYjPaxRIlAS2Ev
+ HuT48fPTKaEqEj06jJF3Jr0DBWm7+j9cWEHq6+mQYbRiBHe9MceSffwuIhGeP5qONiuo0xWHOw
+ GqvsrotX2PS+l/AHb4QyEawAAAA==
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+X-Mailer: b4 0.12.4
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241009_080203_505468_9BE9145F 
-X-CRM114-Status: GOOD (  11.79  )
+X-CRM114-CacheID: sfid-20241010_072322_631181_6A4C0448 
+X-CRM114-Status: GOOD (  11.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,76 +81,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] commands: mmc: write_reliability: bail out early if already set
+Subject: [PATCH] net: designware: let phy_resume handle fixed link phys
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Some cards may have HS_CTRL_REL set as 0. This is obsolete
-per-spec, but seems to indicate that write reliability was
-factory-set. Therefore, just bail out early before checking the
-parm.
+This applies the same handling of fixed-link phys to the designware
+driver as Rouven Czerwinski already did in commit
+`6269556397ed646e9fdcdefa855944fcff0f3608 (net: eqos: let phy_resume
+handle fixed link phys)`.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Without this change the driver segfaults on the socfpga platform if
+there is no mdio bus attached, as it is the case in a fixed-link setup:
+
+unable to handle NULL pointer dereference at address 0x00000140
+pc : [<1fd026ae>]    lr : [<1fd026a7>]
+sp : 1fff7e50  ip : 0be53f7a  fp : 00000000
+r10: 0ffb6288  r9 : ff703000  r8 : 0fea5af0
+r7 : 00000140  r6 : 00000000  r5 : 00000001  r4 : 00000140
+r3 : 1fd026a7  r2 : 1fe462c8  r1 : 07e80000  r0 : 00000140
+Flags: Nzcv  IRQs off  FIQs off  Mode SVC_32
+[<1fd026ae>] (__slice_acquire+0x12/0x40) from [<1fd1cec7>] (mdiobus_read+0x13/0x2e)
+[<1fd1cec7>] (mdiobus_read+0x13/0x2e) from [<1fd1d637>] (dwc_ether_open+0xaf/0x378)
+[<1fd1d637>] (dwc_ether_open+0xaf/0x378) from [<1fd4f543>] (eth_open+0x2b/0x40)
+[<1fd4f543>] (eth_open+0x2b/0x40) from [<1fd4f5c7>] (eth_open_all+0x47/0x5c)
+[<1fd4f5c7>] (eth_open_all+0x47/0x5c) from [<1fd019a9>] (run_init+0xfd/0x264)
+[<1fd019a9>] (run_init+0xfd/0x264) from [<1fd01b5d>] (start_barebox+0x4d/0xc8)
+[<1fd01b5d>] (start_barebox+0x4d/0xc8) from [<1fd62c89>] (barebox_non_pbl_start+0xc1/0xe8)
+[<1fd62c89>] (barebox_non_pbl_start+0xc1/0xe8) from [<1fd00005>] (__bare_init_start+0x1/0xc)
+
+Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- commands/mmc.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+This applies the same handling of fixed-link phys to the designware
+driver as Rouven Czerwinski already did in commit
+`6269556397ed646e9fdcdefa855944fcff0f3608 (net: eqos: let phy_resume
+handle fixed link phys)`.
+---
+ drivers/net/designware.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/commands/mmc.c b/commands/mmc.c
-index 718558f18b..dafc3a755f 100644
---- a/commands/mmc.c
-+++ b/commands/mmc.c
-@@ -138,6 +138,7 @@ static int do_mmc_write_reliability(int argc, char *argv[])
- 	const char *devpath;
- 	struct mci *mci;
- 	u8 *ext_csd;
-+	int ret;
+diff --git a/drivers/net/designware.c b/drivers/net/designware.c
+index 66f28b429d..706987675c 100644
+--- a/drivers/net/designware.c
++++ b/drivers/net/designware.c
+@@ -181,6 +181,10 @@ static int phy_resume(struct phy_device *phydev)
+ {
+ 	int bmcr;
  
- 	if (argc - optind != 1) {
- 		printf("Usage: mmc write_reliability /dev/mmcX\n");
-@@ -166,6 +167,15 @@ static int do_mmc_write_reliability(int argc, char *argv[])
- 		goto error;
- 	}
- 
-+	/* Some cards may have HS_CTRL_REL set as 0. This is obsolete
-+	 * per-spec, but seems to indicate that write reliability was
-+	 * factory-set. Therefore, just bail out early here
-+	 */
-+	if ((ext_csd[EXT_CSD_WR_REL_SET] & 0x1f) == 0x1f) {
-+		printf("reliable write already set\n");
-+		goto out;
-+	}
++	// Bus will be NULL if a fixed-link is used.
++	if (!phydev->bus)
++		return 0;
 +
- 	if (!(ext_csd[EXT_CSD_WR_REL_PARAM] & EXT_CSD_HS_CTRL_REL)) {
- 		printf("Device doesn't support WR_REL_SET writes\n");
- 		goto error;
-@@ -175,16 +185,13 @@ static int do_mmc_write_reliability(int argc, char *argv[])
- 	 * Host has one opportunity to write all of the bits. Separate writes to
- 	 * individual bits are not permitted so set all bits for now.
- 	 */
--	if ((ext_csd[EXT_CSD_WR_REL_SET] & 0x1f) != 0x1f) {
--		int ret;
--
--		ret = mci_switch(mci, EXT_CSD_WR_REL_SET, 0x1f);
--		if (ret) {
--			printf("Failure to write to EXT_CSD_WR_REL_SET\n");
--			goto error;
--		}
-+	ret = mci_switch(mci, EXT_CSD_WR_REL_SET, 0x1f);
-+	if (ret) {
-+		printf("Failure to write to EXT_CSD_WR_REL_SET\n");
-+		goto error;
- 	}
- 
-+out:
- 	dma_free(ext_csd);
- 
- 	return COMMAND_SUCCESS;
+ 	bmcr = phy_read(phydev, MII_BMCR);
+ 	if (bmcr < 0)
+ 		return bmcr;
+
+---
+base-commit: 5a2866973d386ffe9b9f5c429a0cbcd58bcef69c
+change-id: 20241010-fix-designware-fixed-link-5b40650ae5fe
+
+Best regards,
 -- 
-2.39.5
+Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
 
 
