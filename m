@@ -1,69 +1,84 @@
-Delivery-date: Thu, 10 Oct 2024 16:24:12 +0200
+Delivery-date: Fri, 11 Oct 2024 22:28:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1syu5M-002epr-22
+	id 1szMFv-003B2f-1k
 	for lore@lore.pengutronix.de;
-	Thu, 10 Oct 2024 16:24:12 +0200
+	Fri, 11 Oct 2024 22:28:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1syu5L-0006Hp-Tz
-	for lore@pengutronix.de; Thu, 10 Oct 2024 16:24:12 +0200
+	id 1szMFv-0002V4-0x
+	for lore@pengutronix.de; Fri, 11 Oct 2024 22:28:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=7p35xSpc5GowXtklXALK5fkRim0nViGFzVHazpWDi28=; b=BRbUic0OzLk8m5a2lTSNK7Za30
-	y4WinEdLUDHBTn4yQN0i1VIi7tLE3GjYB4aAj3ngARE3UT4C8h0hx6wQsPuR2T5xaC42xdVmobZcn
-	9OOJonqsxsXl+RRPCkNcFhfQWMpv3RTs01JikZp+LeroIuGrKqaAWr6AY1uVtJoY+x8gTqXKgCZiw
-	I9cddxFC65ZL+oTmvhTnCBuMTGdc2w+LlRUrwXlhSrIJJjei3e6WWjQkewst+xuJg2cnHEFyyJ//I
-	K711o0HQ6KLSAu3ppNjroQhuIjMXyoMy8YwcvwenYK9oMrcBdonIVhYZq71qvGzFNPcbvW0quG3MO
-	93GiMoVw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=8wsbJbEUot9PRuprsL46Aax00OwHnnFh8UnpxYToMg0=; b=ycvDTNrMSCOvU3MEFMT84ZXiH9
+	YMPIC+L6xkQzafx9Zc3xTmPKukBkTEPaCEMxDKLTOh7iXjYRQRL89oonDBlYbqGG0pRftKjmAA8On
+	rXAfxvdVhyktjTqqyad8mSB58BHElYrvDncwnEdvXjX0+l43xZ60B3oyFvsNAKe2IkHlHeoK7TAy4
+	DXe9NvtfwdTq0Q5xmfiORLQMMTQ5utZLggmQgBjd396GIOXFZ2leqrI6EBI5W83AVUl/w+YMERHSg
+	bTzSR3GJw8tOXFi+a6/PKsft8Hrr2qBhgasZZwZ2BrZTPhvLckcNgLcbhgid140UVQFg3I8+UPyMh
+	kz1i+w9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1syu4c-0000000D55x-2ReI;
-	Thu, 10 Oct 2024 14:23:26 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1szMF9-0000000HWiD-3Mfz;
+	Fri, 11 Oct 2024 20:28:11 +0000
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1syu4Y-0000000D546-1aUi
+	id 1szM6Q-0000000HW3g-0Ojt
 	for barebox@lists.infradead.org;
-	Thu, 10 Oct 2024 14:23:24 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1syu4U-0006D5-I8; Thu, 10 Oct 2024 16:23:18 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1syu4U-000rjZ-5U; Thu, 10 Oct 2024 16:23:18 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1syu4U-00FQQU-0P;
-	Thu, 10 Oct 2024 16:23:18 +0200
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Thu, 10 Oct 2024 16:23:04 +0200
+	Fri, 11 Oct 2024 20:19:11 +0000
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-43117fd9afeso3729065e9.2
+        for <barebox@lists.infradead.org>; Fri, 11 Oct 2024 13:19:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728677948; x=1729282748; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8wsbJbEUot9PRuprsL46Aax00OwHnnFh8UnpxYToMg0=;
+        b=CgQPgtHo66u7oxYjWCH8u7hy1Eyjuq7VtZftS+2DaOQ/9uvuMnSJFhfAfHR5i6z3Vi
+         4XAZzpiEzr1S6PflfSz6YJT5J9ECY8liR2MRclYTD1VOspNdRBKEV9HuTiYNgjzWwQFB
+         hnkOsyCWFtSSk4lIiCOTMQ+2b2d/6gIX1FXUolB+bDMk759YZLis5klx3EOK60SUXlAu
+         KbeX6PPyUrB571TyIPi+T64KpxuiyxMWEnxFaRSBlKkbHl7TcS8bFSSyPkMOqHnxWzQ3
+         6Z2qjR8RR6axyRHO7HaMQp0Bbzl1VNpiK0wiwFqpZuWXiWQUKBVWni227N91mqG0s+jV
+         t47A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728677948; x=1729282748;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8wsbJbEUot9PRuprsL46Aax00OwHnnFh8UnpxYToMg0=;
+        b=tk3OBKPIhGcRtXZPD/oTFd8Ta5n6MONGnq2sVxYv5XeH5stZHXdJPtESF4sfl0NZtm
+         Uw48q9KoNckEMzwRUMqsz9+avxujO5hycYPF+Eyv3sw0pyHF9TauEJHd8QGY51HMHdlZ
+         6gJ/7ZZMac3l+vNtoE9AUOTyDDxYkH6lFhi57mFHKuAqwv3GYwi3Mx38bOvSMtC7BUSJ
+         0N/YU0RlhdGrHL/oQ6z+pW4fpIvRJZh8jkyTS+mO61nmib9huU848Un0a27jyyTCFfV6
+         BXDvuO6RIOWMoRCLheyOM7CBJ4VKq2b/cz4iFujYJNlcd0WfXQVq7CtZM6d4uSikt62h
+         +5PA==
+X-Gm-Message-State: AOJu0YwNySLHB2B+D55iy+xU55t4yxtq2ZdV/HbgjX0pCVwj1k27+L4G
+	Z7QIIqtlLoL5wj1qB37nsnZ1yeF9UpbBCIPetSwzBz/u5nrFlCfpBpWMEZ1EHPc=
+X-Google-Smtp-Source: AGHT+IEM/g18fE1TXx4Ek9TqBdZBSgua7mA+NXbBVo8rZ6NMi+mIvlSDQUZ2g3HUmpZaV+OK28IrCQ==
+X-Received: by 2002:a05:600c:1551:b0:42c:aeee:80c with SMTP id 5b1f17b1804b1-4311dfcf26dmr14858005e9.9.1728677947734;
+        Fri, 11 Oct 2024 13:19:07 -0700 (PDT)
+Received: from localhost.localdomain ([156.209.172.205])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4311fd69e1asm21866135e9.1.2024.10.11.13.19.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Oct 2024 13:19:06 -0700 (PDT)
+From: Mohamed Sawy <mohamedsawy1022@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Mohamed Sawy <mohamedsawy1022@gmail.com>
+Date: Fri, 11 Oct 2024 23:18:18 +0300
+Message-Id: <20241011201818.42338-1-mohamedsawy1022@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241010-fix-designware-fixed-link-v1-1-de2df5485a25@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAEfjB2cC/xXMwQqDMBCE4VeRPbuwEeOhryIeYjPaxRIlAS2Ev
- HuT48fPTKaEqEj06jJF3Jr0DBWm7+j9cWEHq6+mQYbRiBHe9MceSffwuIhGeP5qONiuo0xWHOw
- GqvsrotX2PS+l/AHb4QyEawAAAA==
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241010_072322_631181_6A4C0448 
-X-CRM114-Status: GOOD (  11.55  )
+X-CRM114-CacheID: sfid-20241011_131910_153354_B1FEE4AC 
+X-CRM114-Status: UNSURE (   8.40  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,71 +96,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] net: designware: let phy_resume handle fixed link phys
+X-Spam-Status: No, score=-5.0 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] sandbox: defconfig: activate CONFIG_CONSOLE_ACTIVATE_ALL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This applies the same handling of fixed-link phys to the designware
-driver as Rouven Czerwinski already did in commit
-`6269556397ed646e9fdcdefa855944fcff0f3608 (net: eqos: let phy_resume
-handle fixed link phys)`.
+The default CONSOLE_ACTIVATE value set in common/Kconfig is
+CONSOLE_ACTIVATE_ALL_FALLBACK.
 
-Without this change the driver segfaults on the socfpga platform if
-there is no mdio bus attached, as it is the case in a fixed-link setup:
+Which adds an error when there's no explicit activation for a specific
+console, that is important for real hardware as it may write barebox log
+to external devices that don't expect it.
 
-unable to handle NULL pointer dereference at address 0x00000140
-pc : [<1fd026ae>]    lr : [<1fd026a7>]
-sp : 1fff7e50  ip : 0be53f7a  fp : 00000000
-r10: 0ffb6288  r9 : ff703000  r8 : 0fea5af0
-r7 : 00000140  r6 : 00000000  r5 : 00000001  r4 : 00000140
-r3 : 1fd026a7  r2 : 1fe462c8  r1 : 07e80000  r0 : 00000140
-Flags: Nzcv  IRQs off  FIQs off  Mode SVC_32
-[<1fd026ae>] (__slice_acquire+0x12/0x40) from [<1fd1cec7>] (mdiobus_read+0x13/0x2e)
-[<1fd1cec7>] (mdiobus_read+0x13/0x2e) from [<1fd1d637>] (dwc_ether_open+0xaf/0x378)
-[<1fd1d637>] (dwc_ether_open+0xaf/0x378) from [<1fd4f543>] (eth_open+0x2b/0x40)
-[<1fd4f543>] (eth_open+0x2b/0x40) from [<1fd4f5c7>] (eth_open_all+0x47/0x5c)
-[<1fd4f5c7>] (eth_open_all+0x47/0x5c) from [<1fd019a9>] (run_init+0xfd/0x264)
-[<1fd019a9>] (run_init+0xfd/0x264) from [<1fd01b5d>] (start_barebox+0x4d/0xc8)
-[<1fd01b5d>] (start_barebox+0x4d/0xc8) from [<1fd62c89>] (barebox_non_pbl_start+0xc1/0xe8)
-[<1fd62c89>] (barebox_non_pbl_start+0xc1/0xe8) from [<1fd00005>] (__bare_init_start+0x1/0xc)
+But in case of sandbox mode there's no explicit activation and the error
+is always there in spite of number of consoles and there are no external
+devices to worry about.
 
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Fixes: 219b2341dc16 ("console: add new CONSOLE_ACTIVATE_ALL_FALLBACK option")
+Signed-off-by: Mohamed Sawy <mohamedsawy1022@gmail.com>
 ---
-This applies the same handling of fixed-link phys to the designware
-driver as Rouven Czerwinski already did in commit
-`6269556397ed646e9fdcdefa855944fcff0f3608 (net: eqos: let phy_resume
-handle fixed link phys)`.
----
- drivers/net/designware.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/sandbox/configs/sandbox_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index 66f28b429d..706987675c 100644
---- a/drivers/net/designware.c
-+++ b/drivers/net/designware.c
-@@ -181,6 +181,10 @@ static int phy_resume(struct phy_device *phydev)
- {
- 	int bmcr;
- 
-+	// Bus will be NULL if a fixed-link is used.
-+	if (!phydev->bus)
-+		return 0;
-+
- 	bmcr = phy_read(phydev, MII_BMCR);
- 	if (bmcr < 0)
- 		return bmcr;
-
----
-base-commit: 5a2866973d386ffe9b9f5c429a0cbcd58bcef69c
-change-id: 20241010-fix-designware-fixed-link-5b40650ae5fe
-
-Best regards,
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index 1bb98c550c..a5e0f72c63 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -3,6 +3,7 @@ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
++CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_PARTITION_DISK_EFI=y
+ CONFIG_DEFAULT_COMPRESSION_GZIP=y
 -- 
-Stefan Kerkmann <s.kerkmann@pengutronix.de>
+2.34.1
 
 
 
