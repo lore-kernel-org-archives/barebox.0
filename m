@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0LCe-004H9n-08
+	id 1t0LCe-004H9o-08
 	for lore@lore.pengutronix.de;
 	Mon, 14 Oct 2024 15:33:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0LCd-0004CR-8j
+	id 1t0LCd-0004CV-AM
 	for lore@pengutronix.de; Mon, 14 Oct 2024 15:33:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,49 +18,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1wKnfaFSxVg8dFiwcmeuoh3zj6FJOmdgaw4esvSUopQ=; b=D00JXOZFXpv8kO0D1L43MpCFsg
-	PHHctq/2jVuVaC3yuOojdhWFzbwUskjq3wP9Wy6daxfbGfYXAjuXFVYYVF18HrU4USgBrcXqhDU6H
-	ysZNbXc8SWMDmOgt1LBdSFVgyneVdQbWk5VH7r3ccy7VzoyQoKRVAHUID7CSvKPWqLVhBNYa2a27Y
-	npU+FjDTyTVBoZLNwkN56mcUxWN4YpHOrpBsO8mERHOQvZhMksfJUQImh2cdlcOLOjW5T8J4AVeF1
-	a+59wwKxrorcGa9s7JNs2r5JmKJW7GCOTsLOb/lyiHZnvdJhMtMLT8HW+5ZgaHTzVnowPvE+NWZUT
-	Wve/bAKA==;
+	bh=xVyc7zHQIk2w+ifl/rbhfUynYwyfeTh607fVZE16/i4=; b=mz4fV013MtF44O5yVWsNLBp4hq
+	37yl1B21yRQ35+RY0K7AqSZyAuQIA5LC5hBZwHdVdt5+TyLrOOnK0QVvldi7UJ8rMNHF6gWMF04dZ
+	o9AyPLEuB4HmaEvihtOnixceJRdYwHzj4XsUZtlm3xW5Lrmc+DrPlCf2dMGRlYe3spucfNm2CljGv
+	R9OnH0DlVne9L5PYdL8rG9HLIZ73CudeHIv4S3EzZAXCBe1/oPLOJ3eKYbzjI5IVDboII2FcJZ7g4
+	H0avlSyfG/uvUMNbYXM9fADCm3KWcs70yG9LQ/0/Sr9dPbwvRueEjHJWMViVol4p5vaTVKQk03Rf4
+	5UT15duw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0LC5-00000005Il8-1YKk;
-	Mon, 14 Oct 2024 13:33:05 +0000
+	id 1t0LCC-00000005IpZ-1YEB;
+	Mon, 14 Oct 2024 13:33:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0JsR-000000051rK-36dF
+	id 1t0JsR-000000051rN-36rv
 	for barebox@lists.infradead.org;
-	Mon, 14 Oct 2024 12:08:46 +0000
+	Mon, 14 Oct 2024 12:08:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0JsN-0002kZ-Gu; Mon, 14 Oct 2024 14:08:39 +0200
+	id 1t0JsN-0002l0-Ql; Mon, 14 Oct 2024 14:08:39 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0JsN-001msi-4L; Mon, 14 Oct 2024 14:08:39 +0200
+	id 1t0JsN-001msx-DF; Mon, 14 Oct 2024 14:08:39 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0JPu-00BrES-0h;
+	id 1t0JPu-00BrES-0P;
 	Mon, 14 Oct 2024 13:39:14 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Oct 2024 13:39:11 +0200
-Message-Id: <20241014113912.2826190-13-a.fatoum@pengutronix.de>
+Date: Mon, 14 Oct 2024 13:39:09 +0200
+Message-Id: <20241014113912.2826190-11-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241014113912.2826190-1-a.fatoum@pengutronix.de>
 References: <20241014113912.2826190-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241014_050843_886761_5429416A 
-X-CRM114-Status: GOOD (  11.43  )
+X-CRM114-CacheID: sfid-20241014_050843_877358_09045E11 
+X-CRM114-Status: GOOD (  10.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,31 +82,60 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 12/13] hw_random: fix compilation with 64-bit size_t
+Subject: [PATCH master 10/13] bitops: fix missing defintion for DIV_ROUND_UP definitions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-max has the type size_t, while data_size is a u32.
-This doesn't matter for 32-bit OMAP, but has min() trigger a compile
-error when compile testing for 64-bit. Add a cast via min_t to fix this.
+Macros like BITS_TO_LONGS defined in <linux/bitops.h> expand to
+DIV_ROUND_UP, which isn't defined in the same file.
+
+We can't easily include <linux/math.h> however as this leads to a
+recursive file inclusion:
+
+In file included from ./include/asm-generic/div64.h:53,
+                 from ./include/linux/math64.h:7,
+                 from ./include/linux/math.h:6,
+                 from ./include/linux/bitops.h:9,
+                 from ./include/clock.h:7,
+                 from ./include/console.h:15,
+                 from ./include/stdio.h:6,
+                 from ./include/common.h:10,
+                 from ./common/partitions/dos.c:15:
+ ./include/linux/log2.h: In function '__ilog2_u32':
+ ./include/linux/log2.h:28:16: error: implicit declaration of function 'fls'
+		[-Wimplicit-function-declaration]
+    28 |         return fls(n) - 1;
+
+Fix this by doing it like Linux does and use the UAPI
+__KERNEL_DIV_ROUND_UP definition instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/hw_random/omap-rng.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/bitops.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hw_random/omap-rng.c b/drivers/hw_random/omap-rng.c
-index 9fa50bc8e7a9..6b69994aad0b 100644
---- a/drivers/hw_random/omap-rng.c
-+++ b/drivers/hw_random/omap-rng.c
-@@ -190,7 +190,7 @@ static int omap_rng_do_read(struct hwrng *rng, void *data, size_t max,
- 	if (!present)
- 		return 0;
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index 7646e1563478..44602ad5af84 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -7,12 +7,14 @@
+ #include <linux/const.h>
+ #include <linux/bits.h>
  
--	max = min(max, priv->pdata->data_size);
-+	max = min_t(size_t, max, priv->pdata->data_size);
- 
- 	memcpy_fromio(data, priv->base + priv->pdata->regs[RNG_OUTPUT_0_REG], max);
++#include <uapi/linux/kernel.h>
++
+ #ifdef	__KERNEL__
+ #define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
+-#define BITS_TO_LONGS(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
+-#define BITS_TO_U64(nr)		DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
+-#define BITS_TO_U32(nr)		DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
+-#define BITS_TO_BYTES(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
++#define BITS_TO_LONGS(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
++#define BITS_TO_U64(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
++#define BITS_TO_U32(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
++#define BITS_TO_BYTES(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
+ #define BYTES_TO_BITS(nb)	(((BITS_PER_LONG * (nb)) / sizeof(long)))
+ #endif
  
 -- 
 2.39.5
