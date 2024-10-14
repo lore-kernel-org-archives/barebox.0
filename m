@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0KZp-004GAV-19
+	id 1t0KZp-004GAf-1X
 	for lore@lore.pengutronix.de;
 	Mon, 14 Oct 2024 14:53:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0KZo-0006o5-QE
+	id 1t0KZo-0006oA-UH
 	for lore@pengutronix.de; Mon, 14 Oct 2024 14:53:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,49 +18,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m4azmRpnCQwKMrvL78a2E604SdaE8yLiXDpMPdFp8FY=; b=VdgpVPjgFQKOCMd5KIiVDPPzTz
-	kYWfAN2bKA/g1PfWTyxYtvY8wD5vvUw2R0rwI5ZC7N+45mrxc4xpPF5dR7UL+9HYZ9XO3nD3WWf5u
-	PMzgtkhMxYsX3DOTYIDQSAeBdlsgKQLTb0cBrgac8CXRLwAv+cbyB8sKjT+RiBwVi+DGed0YzhP1o
-	YVdoiq9lxnXN6EFHKXWC+qzuI3QYFP9xPtUYWsw/Cz7dVK45q5NdBMrFZykn0oEtDnEd9hO3lfTKO
-	2mk3MdS7qqU+bbW0e7Ptd1K25dXdHttyJRE/66+9Ndkcbx2R5zj4qKd9USgVAOvKcdaNUeRns1x0/
-	kNGKnheA==;
+	bh=xrE0fRBNcej0ZXhfY7CI3KSmG9GywJdhPwx4etiGIiE=; b=Xa15nwxPIXvF7MXOpPX9wEY8ep
+	hkPMC406X/Xd1ZYUoameW1B0mdz1FC2RJTMpnLWV6tE9C6/Tl/vZcssy/5/2HmF4rz9FFo8cxaCvk
+	u1m4RI05cpCuFJzFxHhlTw20HBa6NGbJWQEk5bx1Ljam89MJOORbxb5pR3yMJBJcjBcwBeYA4sb/S
+	jaGUhWzg//KltN8oHiwZGTHqmxHP5m0a4UxroT6DUyWAoyZgARgqVELGsl0pSkvNQANJTV7xDiRwd
+	8Mc6PvHuxQCFcb3HwXspkD2NLqkpErHglPkxFweJjwbNZcm5zvAfvfwfobGFSuckods4MWUQ6qW+b
+	m9mmsE8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0KZA-000000059NY-3u9I;
-	Mon, 14 Oct 2024 12:52:52 +0000
+	id 1t0KZ9-000000059Mr-0JeU;
+	Mon, 14 Oct 2024 12:52:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0J1U-00000004sAl-1JI6
+	id 1t0J00-00000004rjF-2heS
 	for barebox@lists.infradead.org;
-	Mon, 14 Oct 2024 11:14:01 +0000
+	Mon, 14 Oct 2024 11:12:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0J1T-0006qc-7d; Mon, 14 Oct 2024 13:13:59 +0200
+	id 1t0Izx-0006gN-AB; Mon, 14 Oct 2024 13:12:25 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0J1S-001mDF-MX; Mon, 14 Oct 2024 13:13:58 +0200
+	id 1t0Izw-001mCv-Tm; Mon, 14 Oct 2024 13:12:24 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0J1S-00Fjzm-26;
-	Mon, 14 Oct 2024 13:13:58 +0200
+	id 1t0Izw-00FY8U-2i;
+	Mon, 14 Oct 2024 13:12:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Mohamed Sawy <mohamedsawy1022@gmail.com>
-In-Reply-To: <20241011201818.42338-1-mohamedsawy1022@gmail.com>
-References: <20241011201818.42338-1-mohamedsawy1022@gmail.com>
-Message-Id: <172890443865.3751653.3173473569733709030.b4-ty@pengutronix.de>
-Date: Mon, 14 Oct 2024 13:13:58 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20241014104644.2610132-1-a.fatoum@pengutronix.de>
+References: <20241014104644.2610132-1-a.fatoum@pengutronix.de>
+Message-Id: <172890434483.3706022.3023016287670954323.b4-ty@pengutronix.de>
+Date: Mon, 14 Oct 2024 13:12:24 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241014_041400_431631_887D3F12 
-X-CRM114-Status: UNSURE (   8.02  )
+X-CRM114-CacheID: sfid-20241014_041228_788419_626FED3B 
+X-CRM114-Status: UNSURE (   8.19  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,26 +83,29 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] sandbox: defconfig: activate
- CONFIG_CONSOLE_ACTIVATE_ALL
+Subject: Re: [PATCH 1/2] fixup! video: add dw-hdmi driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 11 Oct 2024 23:18:18 +0300, Mohamed Sawy wrote:
-> The default CONSOLE_ACTIVATE value set in common/Kconfig is
-> CONSOLE_ACTIVATE_ALL_FALLBACK.
+On Mon, 14 Oct 2024 12:46:43 +0200, Ahmad Fatoum wrote:
+> video: dw-hdmi: drop never defined dw_hdmi_remove
 > 
-> Which adds an error when there's no explicit activation for a specific
-> console, that is important for real hardware as it may write barebox log
-> to external devices that don't expect it.
+> Building without linker garbage collection triggers an error, because
+> dw_hdmi_remove is never defined.
+> 
+> We remove it, but keep dw_hdmi_unbind as a dummy function as it can
+> be called by other drivers and then we could make it do something
+> useful in future.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] sandbox: defconfig: activate CONFIG_CONSOLE_ACTIVATE_ALL
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e395b09d30c8 (link may not be stable)
+[1/2] fixup! video: add dw-hdmi driver
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3f61bbe2b1f4 (link may not be stable)
+[2/2] fixup! video: add dw-hdmi driver
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3f61bbe2b1f4 (link may not be stable)
 
 Best regards,
 -- 
