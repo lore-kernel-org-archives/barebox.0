@@ -1,82 +1,79 @@
-Delivery-date: Mon, 14 Oct 2024 15:30:29 +0200
+Delivery-date: Mon, 14 Oct 2024 15:32:02 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0L9Z-004H5e-2l
+	id 1t0LB4-004H6l-1X
 	for lore@lore.pengutronix.de;
-	Mon, 14 Oct 2024 15:30:29 +0200
+	Mon, 14 Oct 2024 15:32:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0L9Z-0003ZG-9L
-	for lore@pengutronix.de; Mon, 14 Oct 2024 15:30:29 +0200
+	id 1t0LB3-0003oI-U7
+	for lore@pengutronix.de; Mon, 14 Oct 2024 15:32:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=boW3NmezsQtlBGVp/uDza9G97N/lFrQ4+fNvIVkZnZk=; b=mcgPmSOYRAX/ymKLESttLHc5xC
-	PEwP3CG+C+js144w+W6jTSyX8JoIebCxDDKlAarygnHGEtvjn+n/XXn9ePBUPVU92R375vrWcbZDm
-	8U1CwgdDP8hvvwvlBgV5RhfwOvcKGpoXTyaSCAsk749RkvgL00WK2VxtW2y+ez240TU02inusKeRu
-	FKdoxys828SXA3W03w5kwLA5HG3kaSlrke87Lfzm5Xy036k6kRyS8//mep5wUUntlI5lywVikvTcB
-	b4dksa977oaEkJoxvZpvFS2F9kTy0ZA3Wjkps1Bj8QEfdU74cTMZ2Ky1wLlO8sPF2PWh8GGYskRCV
-	ug7vZVcA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=vLKaJOioOVV/96kgBhBA4fE1VFRnURNBTALQOhzt7Gw=; b=TPZxe/TftZKu1hYen4tIJMfWST
+	CzMwlFTczNGUPz7zkBhkNpJ+gc2YdbQlwEJYJgkILejiiB40znAuTTb/dGZtgOMDehc3pUXb4ITkU
+	tTQ2IeLDQnujGzGze2jYvV3QpOUIiA2tTcnNlBaR+tc7HKmJ68uZx/+Y2jz8sD5neg51hWwHsX1vZ
+	UnTzG1wyB0DEP/ypPDCwg/XppU3HA17hHWHWB6LGk5Z5fZ1gogO5CI7JjivYP8LsZj9wsGmooKZF2
+	YGmx6KXwC9Lja4RzUy0N00U59H6IuhIRdUWUHcVacI7jYYWGzdRYbewlESkO+TVkLh2sE6wsWmJjS
+	HMF6C7uw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0L91-00000005Hne-2hNf;
-	Mon, 14 Oct 2024 13:29:55 +0000
+	id 1t0LAc-00000005IRb-0MGc;
+	Mon, 14 Oct 2024 13:31:34 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0JcZ-00000004za5-2qgr
+	id 1t0Jcr-00000004zdK-0Ofd
 	for barebox@bombadil.infradead.org;
-	Mon, 14 Oct 2024 11:52:19 +0000
+	Mon, 14 Oct 2024 11:52:37 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=boW3NmezsQtlBGVp/uDza9G97N/lFrQ4+fNvIVkZnZk=; b=j2ynSVmUInf8/yGQbf2JCwOwpV
-	G0O4d3qZ7sBKjqVaV00Ao8JUzyhNLbe2476fPH4XuMsMFe7goBTX4ZPQax8GzVHhFu2MUWkcDkmPQ
-	sGUjYOx298J94nR3m16hi6GF9sn8ClyZ7NG2Pp7KJYFy+KrYYX9+8btxlIkjq78/KZC2uCoLmEaeQ
-	0rMrNJTyG/QFzt+DIHA3mQEflkdRZxGtRo6gN+VAqq7v3J05lM75Ke7u15GJcSs6ieGMnNedjyDGP
-	ewwanH7LlH6LM5jJJ8uxzyGU8DdvfcMtloaXZXknaDgXiBR0liTrYi5H+synKaGwl+xgDxdg/z0ix
-	aKNtqt7g==;
+	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=vLKaJOioOVV/96kgBhBA4fE1VFRnURNBTALQOhzt7Gw=; b=asrXT/6MZgqO8f+YueEFIAi5AR
+	rpzL88Y9mtu+5nhvSGFOqqkvk9J459G7ZU5njr54WOWk2EqW5mpsutiyWPQ1oFoCOl/R3B9j0o3so
+	UGCX8051oErnv15z6VewkAUiR2UuOuHsh9D3t0gyeg+EXc7JFNQzLwRwhTfFEhvSMFc8f5uCKiN7z
+	Vf4JhLezNzjt4/MXjD/qFbPmUoTFfn7dBTaSJFOmJ+S7gJ/BCMYtV9p/hCnyuHS0WfTwtJIZF50Li
+	IXnhumzvS7o0kx6mgZ9uJof6yB727uaCey3xrfW5SltD4SNU7GN8lHwS9M3f0Qc7+GwI73JrvtFTN
+	CXixvHZg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0JcV-00000006Ko8-0CE6
+	id 1t0Jco-00000006Kp2-0UCT
 	for barebox@lists.infradead.org;
-	Mon, 14 Oct 2024 11:52:18 +0000
+	Mon, 14 Oct 2024 11:52:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0JcU-0001H8-KB; Mon, 14 Oct 2024 13:52:14 +0200
+	id 1t0Jcn-0001Ig-In; Mon, 14 Oct 2024 13:52:33 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0JcU-001mVO-7l; Mon, 14 Oct 2024 13:52:14 +0200
+	id 1t0Jcn-001mVf-6H; Mon, 14 Oct 2024 13:52:33 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0JcU-00BwOc-0V;
-	Mon, 14 Oct 2024 13:52:14 +0200
+	id 1t0Jcn-00BwRg-0L;
+	Mon, 14 Oct 2024 13:52:33 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Oct 2024 13:52:12 +0200
-Message-Id: <20241014115213.2846066-2-a.fatoum@pengutronix.de>
+Date: Mon, 14 Oct 2024 13:52:31 +0200
+Message-Id: <20241014115232.2846257-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241014115213.2846066-1-a.fatoum@pengutronix.de>
-References: <20241014115213.2846066-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241014_125215_430125_8A424CDF 
-X-CRM114-Status: UNSURE (   8.86  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241014_125234_329869_57B262D0 
+X-CRM114-Status: GOOD (  10.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,39 +95,39 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] crypto: fix compile with empty CONFIG_CRYPTO_PUBLIC_KEYS
+Subject: [PATCH 1/2] net: r8169: use lower/upper_32_bits for clarity
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This currently results in an error message from keytoc when there are no
-keys to convert into C. This breaks make allyesconfig, so workaround
-that by allowing the symbol to be empty and generating an empty header
-in that case.
+No functional difference, but the code is much more readable without the
+casts and shifts.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Additional benefit is removing the strange use of DMA_BIT_MASK here.
+
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- crypto/Makefile | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/r8169_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/crypto/Makefile b/crypto/Makefile
-index aa8cd21e1d5d..0354e4568373 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -33,7 +33,13 @@ $(obj)/public-keys.o: $(obj)/public-keys.h
- CONFIG_CRYPTO_PUBLIC_KEYS := $(shell echo $(CONFIG_CRYPTO_PUBLIC_KEYS))
- CONFIG_CRYPTO_PUBLIC_KEYS := $(foreach d,$(CONFIG_CRYPTO_PUBLIC_KEYS),"$(d)")
+diff --git a/drivers/net/r8169_main.c b/drivers/net/r8169_main.c
+index cd45677131ab..2d895cf88b43 100644
+--- a/drivers/net/r8169_main.c
++++ b/drivers/net/r8169_main.c
+@@ -1542,10 +1542,10 @@ static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp)
+ 	 * register to be written before TxDescAddrLow to work.
+ 	 * Switching from MMIO to I/O access fixes the issue as well.
+ 	 */
+-	RTL_W32(tp, TxDescStartAddrHigh, ((u64) tp->TxPhyAddr) >> 32);
+-	RTL_W32(tp, TxDescStartAddrLow, ((u64) tp->TxPhyAddr) & DMA_BIT_MASK(32));
+-	RTL_W32(tp, RxDescAddrHigh, ((u64) tp->RxPhyAddr) >> 32);
+-	RTL_W32(tp, RxDescAddrLow, ((u64) tp->RxPhyAddr) & DMA_BIT_MASK(32));
++	RTL_W32(tp, TxDescStartAddrHigh, upper_32_bits(tp->TxPhyAddr));
++	RTL_W32(tp, TxDescStartAddrLow, lower_32_bits(tp->TxPhyAddr));
++	RTL_W32(tp, RxDescAddrHigh, upper_32_bits(tp->RxPhyAddr));
++	RTL_W32(tp, RxDescAddrLow, lower_32_bits(tp->RxPhyAddr));
+ }
  
-+filechk_public_keys_dummy = echo
-+
- $(obj)/public-keys.h: FORCE
-+ifdef CONFIG_CRYPTO_PUBLIC_KEYS
- 	$(call cmd,public_keys,$(CONFIG_CRYPTO_PUBLIC_KEYS))
-+else
-+	$(call filechk,public_keys_dummy)
-+endif
- 
- endif
+ static void rtl8169_set_magic_reg(struct rtl8169_private *tp)
 -- 
 2.39.5
 
