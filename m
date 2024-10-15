@@ -1,73 +1,73 @@
-Delivery-date: Tue, 15 Oct 2024 13:21:37 +0200
+Delivery-date: Tue, 15 Oct 2024 13:21:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0fcP-004dmb-30
+	id 1t0fcQ-004dmw-1S
 	for lore@lore.pengutronix.de;
-	Tue, 15 Oct 2024 13:21:37 +0200
+	Tue, 15 Oct 2024 13:21:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0fcO-0000Nq-A6
-	for lore@pengutronix.de; Tue, 15 Oct 2024 13:21:37 +0200
+	id 1t0fcO-0000O9-Kt
+	for lore@pengutronix.de; Tue, 15 Oct 2024 13:21:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nOVjrw3zgDQNdriw/TOnZTO9O1wjng5EUlAeVi8ruMo=; b=C8OWo3XZWweMvU8o5o6qlokME/
-	/eHT9HXK3e+FcmL79koidm1epbniITDeyTk9IVgrUnv2KtDZfOJTm/ayv6njEcE57TE4T4WHDjGnU
-	rerzlyk/mFZDQcwWL/+/WV4RyBpTf/xG5kFXqX3vKDgezlbEW+lLSuyrJ369o8C2euFO4TMSEygvP
-	pClHsGsFVy/IUFjmBHYF82PbUpwTDv0Dk2/0UNO9/4pJCFHyeMiT0iCV8m9fUzvrXL8SKs9jvzPTM
-	dGCU0E/+rlblNfO2pcUBkiQqnCioMWl6QzguxASER+Y8SAhD70zc0vBdTpJ6ryryewPTlaroh9r0n
-	iuJLHHGw==;
+	bh=AY3P0ZmQ2GeC7a2V6r4/JMHKEREPIs2ElF2Kl3NHDQo=; b=EFd4OMJB0ierLRMSRvxKT9CeaD
+	62Y2tU1gusN6XN9HVKKGaLyyo+BxN989leIs0MQQs9chebjcXLEfzJqXN9NOA0XqfFnNhbFRfzHV4
+	QGWSDJlhISxvIRcTyz8FA6uHu9yMsfY55RyDxggrY4eBlVQD3VgG7L6HZAuf//QRiXcx3KldlxEaK
+	/eRAN8YDlPLjEvUxpS+gVswSd+8IJe8pid/3oHcoEvRpyiARZCheaqmS6yyPNzYG6DBtxv1t6kfxD
+	VfQTYIInGxK4QP6j5wMzxpcgClXZ2OzqAeVLpOepR2Cb2ovpB7YDEjNFeZ/2aRzXFO1i9OEkutfqk
+	p0kJr/Rg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0fbc-00000007zkP-3luC;
-	Tue, 15 Oct 2024 11:20:48 +0000
+	id 1t0fbd-00000007zkv-2CF3;
+	Tue, 15 Oct 2024 11:20:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0fSK-00000007yGR-2z4A
+	id 1t0fSS-00000007yJS-3in8
 	for barebox@lists.infradead.org;
-	Tue, 15 Oct 2024 11:11:15 +0000
+	Tue, 15 Oct 2024 11:11:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0fSB-0007ue-H8; Tue, 15 Oct 2024 13:11:03 +0200
+	id 1t0fSB-0007uf-KN; Tue, 15 Oct 2024 13:11:03 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0fSB-00219B-05; Tue, 15 Oct 2024 13:11:03 +0200
+	id 1t0fSB-00219E-0w; Tue, 15 Oct 2024 13:11:03 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0fSA-000ubB-33;
+	id 1t0fSA-000ubB-36;
 	Tue, 15 Oct 2024 13:11:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Oct 2024 13:10:58 +0200
+Date: Tue, 15 Oct 2024 13:11:01 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241015-rockchip-spi-rk808-v1-1-e276b4b59603@pengutronix.de>
+Message-Id: <20241015-rockchip-spi-rk808-v1-4-e276b4b59603@pengutronix.de>
 References: <20241015-rockchip-spi-rk808-v1-0-e276b4b59603@pengutronix.de>
 In-Reply-To: <20241015-rockchip-spi-rk808-v1-0-e276b4b59603@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728990662; l=17342;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728990662; l=22186;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=FKVS+0UX9oaCuhc01MQEIF3Sh+4AKW8WwX4Q6+NWcn8=;
- b=x5M4HMDu1b+FP9eSnTKUR1QSaOF9fMgFcaD84Lh3B3VFy/Pihdiev1ztSRllrmOswR/j1zKvC
- Wh+PzdXGxZlBDtzLC6n7NitAamGp+Bn2dfRBupMTmrR4oSBUcmCJali
+ bh=AeIs51vWj4OOzOx2jhjHdRZW4v97GsmxzqTMHnl0gzQ=;
+ b=dzvkZkMjN3G0iYvwx0JjJuy80tDucZQE7oybDwbmRq6lsMc25NzyF45qh27B4PCX3nQ21BLsd
+ FFLM54FYsrWBMsxLG0KKNHUocjYHLaxuLSa319jddlOMvYYu81z4mlR
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241015_041113_126434_CBDC9A66 
-X-CRM114-Status: GOOD (  27.25  )
+X-CRM114-CacheID: sfid-20241015_041121_282319_44B79821 
+X-CRM114-Status: GOOD (  11.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,640 +87,731 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/7] spi: add rockchip spi controller support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 4/7] mfd: rk808: update header file from kernel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds support for the SPI controller found on many Rockchip SoCs.
-The driver is based on the corresponding Linux driver as of
-Linux-6.12-rc1.
+This updates rk808.h from Linux as of Linux-6.12-rc1. We currently do
+not need all register defines from this file, but maintenance will be
+easier when we just verbatim copy it from Linux.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/spi/Makefile       |   1 +
- drivers/spi/spi-rockchip.c | 584 +++++++++++++++++++++++++++++++++++++++++++++
- include/spi/spi.h          |   7 +
- 3 files changed, 592 insertions(+)
+ include/linux/mfd/rk808.h | 646 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 646 insertions(+)
 
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 68a8c4e675..f9aefdfe45 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -17,3 +17,4 @@ obj-$(CONFIG_SPI_ZYNQ_QSPI) += zynq_qspi.o
- obj-$(CONFIG_SPI_NXP_FLEXSPI) += spi-nxp-fspi.o
- obj-$(CONFIG_DRIVER_SPI_STM32) += stm32_spi.o
- obj-$(CONFIG_SPI_SIFIVE) += spi-sifive.o
-+obj-y += spi-rockchip.o
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-new file mode 100644
-index 0000000000..1e81e9393f
---- /dev/null
-+++ b/drivers/spi/spi-rockchip.c
-@@ -0,0 +1,584 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2014, Fuzhou Rockchip Electronics Co., Ltd
-+ * Author: Addy Ke <addy.ke@rock-chips.com>
-+ */
-+
-+#include <common.h>
-+#include <linux/clk.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <spi/spi.h>
-+#include <linux/spi/spi-mem.h>
-+#include <linux/bitops.h>
-+#include <clock.h>
-+#include <gpio.h>
-+#include <of_gpio.h>
-+#include <linux/bitfield.h>
-+#include <linux/iopoll.h>
-+
-+#define DRIVER_NAME "rockchip-spi"
-+
-+#define ROCKCHIP_SPI_CLR_BITS(reg, bits) \
-+		writel_relaxed(readl_relaxed(reg) & ~(bits), reg)
-+#define ROCKCHIP_SPI_SET_BITS(reg, bits) \
-+		writel_relaxed(readl_relaxed(reg) | (bits), reg)
-+
-+/* SPI register offsets */
-+#define ROCKCHIP_SPI_CTRLR0			0x0000
-+#define ROCKCHIP_SPI_CTRLR1			0x0004
-+#define ROCKCHIP_SPI_SSIENR			0x0008
-+#define ROCKCHIP_SPI_SER			0x000c
-+#define ROCKCHIP_SPI_BAUDR			0x0010
-+#define ROCKCHIP_SPI_TXFTLR			0x0014
-+#define ROCKCHIP_SPI_RXFTLR			0x0018
-+#define ROCKCHIP_SPI_TXFLR			0x001c
-+#define ROCKCHIP_SPI_RXFLR			0x0020
-+#define ROCKCHIP_SPI_SR				0x0024
-+#define ROCKCHIP_SPI_IPR			0x0028
-+#define ROCKCHIP_SPI_IMR			0x002c
-+#define ROCKCHIP_SPI_ISR			0x0030
-+#define ROCKCHIP_SPI_RISR			0x0034
-+#define ROCKCHIP_SPI_ICR			0x0038
-+#define ROCKCHIP_SPI_DMACR			0x003c
-+#define ROCKCHIP_SPI_DMATDLR			0x0040
-+#define ROCKCHIP_SPI_DMARDLR			0x0044
-+#define ROCKCHIP_SPI_VERSION			0x0048
-+#define ROCKCHIP_SPI_TXDR			0x0400
-+#define ROCKCHIP_SPI_RXDR			0x0800
-+
-+/* Bit fields in CTRLR0 */
-+#define CR0_DFS_OFFSET				0
-+#define CR0_DFS_4BIT				0x0
-+#define CR0_DFS_8BIT				0x1
-+#define CR0_DFS_16BIT				0x2
-+
-+#define CR0_CFS_OFFSET				2
-+
-+#define CR0_SCPH_OFFSET				6
-+
-+#define CR0_SCPOL_OFFSET			7
-+
-+#define CR0_CSM_OFFSET				8
-+#define CR0_CSM_KEEP				0x0
-+/* ss_n be high for half sclk_out cycles */
-+#define CR0_CSM_HALF				0X1
-+/* ss_n be high for one sclk_out cycle */
-+#define CR0_CSM_ONE					0x2
-+
-+/* ss_n to sclk_out delay */
-+#define CR0_SSD_OFFSET				10
-+/*
-+ * The period between ss_n active and
-+ * sclk_out active is half sclk_out cycles
-+ */
-+#define CR0_SSD_HALF				0x0
-+/*
-+ * The period between ss_n active and
-+ * sclk_out active is one sclk_out cycle
-+ */
-+#define CR0_SSD_ONE					0x1
-+
-+#define CR0_EM_OFFSET				11
-+#define CR0_EM_LITTLE				0x0
-+#define CR0_EM_BIG					0x1
-+
-+#define CR0_FBM_OFFSET				12
-+#define CR0_FBM_MSB					0x0
-+#define CR0_FBM_LSB					0x1
-+
-+#define CR0_BHT_OFFSET				13
-+#define CR0_BHT_16BIT				0x0
-+#define CR0_BHT_8BIT				0x1
-+
-+#define CR0_RSD_OFFSET				14
-+#define CR0_RSD_MAX				0x3
-+
-+#define CR0_FRF_OFFSET				16
-+#define CR0_FRF_SPI					0x0
-+#define CR0_FRF_SSP					0x1
-+#define CR0_FRF_MICROWIRE			0x2
-+
-+#define CR0_XFM_OFFSET				18
-+#define CR0_XFM_MASK				(0x03 << SPI_XFM_OFFSET)
-+#define CR0_XFM_TR					0x0
-+#define CR0_XFM_TO					0x1
-+#define CR0_XFM_RO					0x2
-+
-+#define CR0_OPM_OFFSET				20
-+#define CR0_OPM_HOST				0x0
-+#define CR0_OPM_TARGET				0x1
-+
-+#define CR0_SOI_OFFSET				23
-+
-+#define CR0_MTM_OFFSET				0x21
-+
-+/* Bit fields in SER, 2bit */
-+#define SER_MASK					0x3
-+
-+/* Bit fields in BAUDR */
-+#define BAUDR_SCKDV_MIN				2
-+#define BAUDR_SCKDV_MAX				65534
-+
-+/* Bit fields in SR, 6bit */
-+#define SR_MASK						0x3f
-+#define SR_BUSY						(1 << 0)
-+#define SR_TF_FULL					(1 << 1)
-+#define SR_TF_EMPTY					(1 << 2)
-+#define SR_RF_EMPTY					(1 << 3)
-+#define SR_RF_FULL					(1 << 4)
-+#define SR_TARGET_TX_BUSY				(1 << 5)
-+
-+/* Bit fields in ISR, IMR, ISR, RISR, 5bit */
-+#define INT_MASK					0x1f
-+#define INT_TF_EMPTY				(1 << 0)
-+#define INT_TF_OVERFLOW				(1 << 1)
-+#define INT_RF_UNDERFLOW			(1 << 2)
-+#define INT_RF_OVERFLOW				(1 << 3)
-+#define INT_RF_FULL				(1 << 4)
-+#define INT_CS_INACTIVE				(1 << 6)
-+
-+/* Bit fields in ICR, 4bit */
-+#define ICR_MASK					0x0f
-+#define ICR_ALL						(1 << 0)
-+#define ICR_RF_UNDERFLOW			(1 << 1)
-+#define ICR_RF_OVERFLOW				(1 << 2)
-+#define ICR_TF_OVERFLOW				(1 << 3)
-+
-+/* Bit fields in DMACR */
-+#define RF_DMA_EN					(1 << 0)
-+#define TF_DMA_EN					(1 << 1)
-+
-+/* Driver state flags */
-+#define RXDMA					(1 << 0)
-+#define TXDMA					(1 << 1)
-+
-+/* sclk_out: spi host internal logic in rk3x can support 50Mhz */
-+#define MAX_SCLK_OUT				50000000U
-+
-+/*
-+ * SPI_CTRLR1 is 16-bits, so we should support lengths of 0xffff + 1. However,
-+ * the controller seems to hang when given 0x10000, so stick with this for now.
-+ */
-+#define ROCKCHIP_SPI_MAX_TRANLEN		0xffff
-+
-+#define ROCKCHIP_SPI_MAX_NATIVE_CS_NUM		2
-+#define ROCKCHIP_SPI_VER2_TYPE1			0x05EC0002
-+#define ROCKCHIP_SPI_VER2_TYPE2			0x00110002
-+
-+#define ROCKCHIP_AUTOSUSPEND_TIMEOUT		2000
-+
-+struct rockchip_spi {
-+	struct spi_controller ctlr;
-+	struct device *dev;
-+
-+	struct clk *spiclk;
-+	struct clk *apb_pclk;
-+
-+	void __iomem *regs;
-+
-+	/*depth of the FIFO buffer */
-+	u32 fifo_len;
-+	/* frequency of spiclk */
-+	u32 freq;
-+
-+	u8 rsd;
-+
-+	bool cs_high_supported; /* native CS supports active-high polarity */
-+
-+	struct spi_transfer *xfer; /* Store xfer temporarily */
-+};
-+
-+static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
-+{
-+	writel_relaxed((enable ? 1U : 0U), rs->regs + ROCKCHIP_SPI_SSIENR);
-+}
-+
-+static inline void wait_for_tx_idle(struct rockchip_spi *rs, bool target_mode)
-+{
-+	u64 start = get_time_ns();
-+
-+	do {
-+		if (target_mode) {
-+			if (!(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_TARGET_TX_BUSY) &&
-+			    !((readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY)))
-+				return;
-+		} else {
-+			if (!(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY))
-+				return;
-+		}
-+	} while (!is_timeout(start, 5 * MSECOND));
-+
-+	dev_warn(rs->dev, "spi controller is in busy state!\n");
-+}
-+
-+static u32 get_fifo_len(struct rockchip_spi *rs)
-+{
-+	u32 ver;
-+
-+	ver = readl_relaxed(rs->regs + ROCKCHIP_SPI_VERSION);
-+
-+	switch (ver) {
-+	case ROCKCHIP_SPI_VER2_TYPE1:
-+	case ROCKCHIP_SPI_VER2_TYPE2:
-+		return 64;
-+	default:
-+		return 32;
-+	}
-+}
-+
-+static inline struct gpio_desc *spi_get_csgpiod(const struct spi_device *spi, u8 idx)
-+{
-+	return NULL;
-+}
-+
-+static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
-+{
-+	struct spi_controller *ctlr = spi->controller;
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
-+	bool cs_asserted = spi->mode & SPI_CS_HIGH ? !enable : enable;
-+
-+	if (cs_asserted) {
-+		if (spi_get_csgpiod(spi, 0))
-+			ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER, 1);
-+		else
-+			ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER,
-+					      BIT(spi_get_chipselect(spi, 0)));
-+	} else {
-+		if (spi_get_csgpiod(spi, 0))
-+			ROCKCHIP_SPI_CLR_BITS(rs->regs + ROCKCHIP_SPI_SER, 1);
-+		else
-+			ROCKCHIP_SPI_CLR_BITS(rs->regs + ROCKCHIP_SPI_SER,
-+					      BIT(spi_get_chipselect(spi, 0)));
-+	}
-+}
-+
-+static int rockchip_spi_pio(struct rockchip_spi *rs, struct spi_transfer *xfer)
-+{
-+	int bytes_per_word = xfer->bits_per_word <= 8 ? 1 : 2;
-+	const void *txbuf = xfer->tx_buf;
-+	void *rxbuf = xfer->rx_buf;
-+	int rxwords, txwords;
-+
-+	txwords = rxwords = xfer->len / bytes_per_word;
-+
-+	while (1) {
-+		unsigned int fifowords = readl_relaxed(rs->regs + ROCKCHIP_SPI_TXFLR);
-+		unsigned int tx_free = rs->fifo_len - fifowords;
-+
-+		if (tx_free && txwords) {
-+			u32 txw;
-+
-+			if (!txbuf)
-+				txw = 0;
-+			else if (bytes_per_word == 1)
-+				txw = *(u8 *)txbuf;
-+			else
-+				txw = *(u16 *)txbuf;
-+
-+			writel_relaxed(txw, rs->regs + ROCKCHIP_SPI_TXDR);
-+
-+			if (txbuf)
-+				txbuf += bytes_per_word;
-+
-+			txwords--;
-+		}
-+
-+		fifowords = readl_relaxed(rs->regs + ROCKCHIP_SPI_RXFLR);
-+
-+		if (fifowords) {
-+			u32 rxw = readl_relaxed(rs->regs + ROCKCHIP_SPI_RXDR);
-+
-+			if (rxbuf) {
-+				if (bytes_per_word == 1)
-+					*(u8 *)rxbuf = (u8)rxw;
-+				else
-+					*(u16 *)rxbuf = (u16)rxw;
-+				rxbuf += bytes_per_word;
-+			}
-+			
-+			rxwords--;
-+		}
-+
-+		if (!rxwords)
-+			return 0;
-+	}
-+}
-+
-+static int rockchip_spi_config(struct rockchip_spi *rs,
-+		struct spi_device *spi, struct spi_transfer *xfer)
-+{
-+	u32 cr0 = CR0_FRF_SPI  << CR0_FRF_OFFSET
-+		| CR0_BHT_8BIT << CR0_BHT_OFFSET
-+		| CR0_SSD_ONE  << CR0_SSD_OFFSET
-+		| CR0_EM_BIG   << CR0_EM_OFFSET;
-+
-+	cr0 |= rs->rsd << CR0_RSD_OFFSET;
-+	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
-+	if (spi->mode & SPI_LSB_FIRST)
-+		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
-+	if (spi->mode & SPI_CS_HIGH)
-+		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
-+
-+	if (xfer->rx_buf && xfer->tx_buf)
-+		cr0 |= CR0_XFM_TR << CR0_XFM_OFFSET;
-+	else if (xfer->rx_buf)
-+		cr0 |= CR0_XFM_RO << CR0_XFM_OFFSET;
-+
-+	cr0 |= CR0_XFM_TR << CR0_XFM_OFFSET;
-+
-+	switch (xfer->bits_per_word) {
-+	case 4:
-+		cr0 |= CR0_DFS_4BIT << CR0_DFS_OFFSET;
-+		break;
-+	case 8:
-+		cr0 |= CR0_DFS_8BIT << CR0_DFS_OFFSET;
-+		break;
-+	case 16:
-+		cr0 |= CR0_DFS_16BIT << CR0_DFS_OFFSET;
-+		break;
-+	default:
-+		/* we only whitelist 4, 8 and 16 bit words in
-+		 * ctlr->bits_per_word_mask, so this shouldn't
-+		 * happen
-+		 */
-+		dev_err(rs->dev, "unknown bits per word: %d\n",
-+			xfer->bits_per_word);
-+		return -EINVAL;
-+	}
-+
-+	writel_relaxed(cr0, rs->regs + ROCKCHIP_SPI_CTRLR0);
-+
-+	/* the hardware only supports an even clock divisor, so
-+	 * round divisor = spiclk / speed up to nearest even number
-+	 * so that the resulting speed is <= the requested speed
-+	 */
-+	writel_relaxed(2 * DIV_ROUND_UP(rs->freq, 2 * xfer->speed_hz),
-+			rs->regs + ROCKCHIP_SPI_BAUDR);
-+
-+	return 0;
-+}
-+
-+static size_t rockchip_spi_max_transfer_size(struct spi_device *spi)
-+{
-+	return ROCKCHIP_SPI_MAX_TRANLEN;
-+}
-+
-+static int rockchip_spi_transfer_one(
-+		struct rockchip_spi *rs,
-+		struct spi_device *spi,
-+		struct spi_transfer *xfer)
-+{
-+	int ret;
-+
-+	/* Zero length transfers won't trigger an interrupt on completion */
-+	if (!xfer->len)
-+		return 1;
-+
-+	if (!xfer->tx_buf && !xfer->rx_buf) {
-+		dev_err(rs->dev, "No buffer for transfer\n");
-+		return -EINVAL;
-+	}
-+
-+	if (xfer->len > ROCKCHIP_SPI_MAX_TRANLEN) {
-+		dev_err(rs->dev, "Transfer is too long (%d)\n", xfer->len);
-+		return -EINVAL;
-+	}
-+
-+	ret = rockchip_spi_config(rs, spi, xfer);
-+	if (ret)
-+		return ret;
-+
-+	spi_enable_chip(rs, true);
-+	rockchip_spi_pio(rs, xfer);
-+	spi_enable_chip(rs, false);
-+
-+	return 0;
-+}
-+
-+static int rockchip_spi_transfer(struct spi_device *spi_dev, struct spi_message *msg)
-+{
-+	struct rockchip_spi *rs = spi_controller_get_devdata(spi_dev->controller);
-+	struct spi_transfer *t;
-+	int ret = 0;
-+
-+	if (list_empty(&msg->transfers))
-+		return 0;
-+
-+	rockchip_spi_set_cs(spi_dev, true);
-+
-+	msg->actual_length = 0;
-+
-+	list_for_each_entry(t, &msg->transfers, transfer_list) {
-+		dev_dbg(rs->dev, "  xfer %p: len %u tx %p rx %p\n",
-+			t, t->len, t->tx_buf, t->rx_buf);
-+
-+		ret = rockchip_spi_transfer_one(rs, spi_dev, t);
-+		if (ret < 0)
-+			goto out;
-+		msg->actual_length += t->len;
-+	}
-+
-+out:
-+	rockchip_spi_set_cs(spi_dev, false);
-+	return ret;
-+}
-+
-+static int rockchip_spi_setup(struct spi_device *spi)
-+{
-+	struct rockchip_spi *rs = spi_controller_get_devdata(spi->controller);
-+	u32 cr0;
-+
-+	if (!spi_get_csgpiod(spi, 0) && (spi->mode & SPI_CS_HIGH) && !rs->cs_high_supported) {
-+		dev_warn(&spi->dev, "setup: non GPIO CS can't be active-high\n");
-+		return -EINVAL;
-+	}
-+
-+	cr0 = readl_relaxed(rs->regs + ROCKCHIP_SPI_CTRLR0);
-+
-+	cr0 &= ~(0x3 << CR0_SCPH_OFFSET);
-+	cr0 |= ((spi->mode & 0x3) << CR0_SCPH_OFFSET);
-+	if (spi->mode & SPI_CS_HIGH && spi_get_chipselect(spi, 0) <= 1)
-+		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
-+	else if (spi_get_chipselect(spi, 0) <= 1)
-+		cr0 &= ~(BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET);
-+
-+	writel_relaxed(cr0, rs->regs + ROCKCHIP_SPI_CTRLR0);
-+
-+	return 0;
-+}
-+
-+static int rockchip_spi_probe(struct device *dev)
-+{
-+	int ret;
-+	struct rockchip_spi *rs;
-+	struct spi_controller *ctlr;
-+	struct device_node *np = dev->of_node;
-+	u32 rsd_nsecs, num_cs;
-+	bool target_mode;
-+	struct resource *iores;
-+
-+	target_mode = of_property_read_bool(np, "spi-slave");
-+	if (target_mode)
-+		return 0;
-+
-+	rs = xzalloc(sizeof(*rs));
-+	ctlr = &rs->ctlr;
-+
-+	/* Get basic io resource and map it */
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+	rs->regs = IOMEM(iores->start);
-+
-+	rs->apb_pclk = clk_get_enabled(dev, "apb_pclk");
-+	if (IS_ERR(rs->apb_pclk)) {
-+		dev_err(dev, "Failed to get apb_pclk\n");
-+		ret = PTR_ERR(rs->apb_pclk);
-+		goto err_put_ctlr;
-+	}
-+
-+	rs->spiclk = clk_get_enabled(dev, "spiclk");
-+	if (IS_ERR(rs->spiclk)) {
-+		dev_err(dev, "Failed to get spi_pclk\n");
-+		ret = PTR_ERR(rs->spiclk);
-+		goto err_put_ctlr;
-+	}
-+
-+	spi_enable_chip(rs, false);
-+
-+	rs->dev = dev;
-+	rs->freq = clk_get_rate(rs->spiclk);
-+
-+	if (!of_property_read_u32(np, "rx-sample-delay-ns",
-+				  &rsd_nsecs)) {
-+		/* rx sample delay is expressed in parent clock cycles (max 3) */
-+		u32 rsd = DIV_ROUND_CLOSEST(rsd_nsecs * (rs->freq >> 8),
-+				1000000000 >> 8);
-+		if (!rsd) {
-+			dev_warn(rs->dev, "%u Hz are too slow to express %u ns delay\n",
-+					rs->freq, rsd_nsecs);
-+		} else if (rsd > CR0_RSD_MAX) {
-+			rsd = CR0_RSD_MAX;
-+			dev_warn(rs->dev, "%u Hz are too fast to express %u ns delay, clamping at %u ns\n",
-+					rs->freq, rsd_nsecs,
-+					CR0_RSD_MAX * 1000000000U / rs->freq);
-+		}
-+		rs->rsd = rsd;
-+	}
-+
-+	rs->fifo_len = get_fifo_len(rs);
-+	if (!rs->fifo_len) {
-+		dev_err(dev, "Failed to get fifo length\n");
-+		ret = -EINVAL;
-+		goto err_put_ctlr;
-+	}
-+
-+//	ctlr->bus_num = pdev->id;
-+//	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST;
-+
-+	/*
-+	 * rk spi0 has two native cs, spi1..5 one cs only
-+	 * if num-cs is missing in the dts, default to 1
-+	 */
-+	num_cs = 1;
-+	of_property_read_u32(np, "num-cs", &num_cs);
-+	ctlr->num_chipselect = num_cs;
-+
-+	ctlr->dev = dev;
-+	ctlr->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8) | SPI_BPW_MASK(4);
-+	ctlr->max_speed_hz = min(rs->freq / BAUDR_SCKDV_MIN, MAX_SCLK_OUT);
-+
-+	ctlr->setup = rockchip_spi_setup;
-+	ctlr->transfer = rockchip_spi_transfer;
-+	ctlr->max_transfer_size = rockchip_spi_max_transfer_size;
-+
-+	switch (readl_relaxed(rs->regs + ROCKCHIP_SPI_VERSION)) {
-+	case ROCKCHIP_SPI_VER2_TYPE2:
-+		rs->cs_high_supported = true;
-+		break;
-+	}
-+
-+	spi_controller_set_devdata(ctlr, rs);
-+
-+	ret = spi_register_controller(ctlr);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to register controller\n");
-+		goto err_free_dma_rx;
-+	}
-+
-+	return 0;
-+
-+err_free_dma_rx:
-+err_put_ctlr:
-+
-+	return ret;
-+}
-+
-+static const struct of_device_id rockchip_spi_dt_match[] = {
-+	{ .compatible = "rockchip,px30-spi", },
-+	{ .compatible = "rockchip,rk3036-spi", },
-+	{ .compatible = "rockchip,rk3066-spi", },
-+	{ .compatible = "rockchip,rk3188-spi", },
-+	{ .compatible = "rockchip,rk3228-spi", },
-+	{ .compatible = "rockchip,rk3288-spi", },
-+	{ .compatible = "rockchip,rk3308-spi", },
-+	{ .compatible = "rockchip,rk3328-spi", },
-+	{ .compatible = "rockchip,rk3368-spi", },
-+	{ .compatible = "rockchip,rk3399-spi", },
-+	{ .compatible = "rockchip,rv1108-spi", },
-+	{ .compatible = "rockchip,rv1126-spi", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, rockchip_spi_dt_match);
-+
-+static struct driver rockchip_spi_driver = {
-+        .name  = DRIVER_NAME,
-+        .probe = rockchip_spi_probe,
-+        .of_compatible = rockchip_spi_dt_match,
-+};
-+coredevice_platform_driver(rockchip_spi_driver);
-+
-+MODULE_AUTHOR("Addy Ke <addy.ke@rock-chips.com>");
-+MODULE_DESCRIPTION("ROCKCHIP SPI Controller Driver");
-+MODULE_LICENSE("GPL v2");
-diff --git a/include/spi/spi.h b/include/spi/spi.h
-index 45d6f5931c..0c60e99868 100644
---- a/include/spi/spi.h
-+++ b/include/spi/spi.h
-@@ -115,6 +115,13 @@ static inline struct spi_device *to_spi_device(struct device *dev)
-         return dev ? container_of(dev, struct spi_device, dev) : NULL;
- }
+diff --git a/include/linux/mfd/rk808.h b/include/linux/mfd/rk808.h
+index 7804ea80f6..8cd152625b 100644
+--- a/include/linux/mfd/rk808.h
++++ b/include/linux/mfd/rk808.h
+@@ -113,6 +113,148 @@ enum rk808_reg {
+ #define RK808_INT_STS_MSK_REG2	0x4f
+ #define RK808_IO_POL_REG	0x50
  
-+static inline u8 spi_get_chipselect(const struct spi_device *spi, u8 idx)
-+{
-+	BUG_ON(idx != 0);
++/* RK816 */
++enum rk816_reg {
++	RK816_ID_DCDC1,
++	RK816_ID_DCDC2,
++	RK816_ID_DCDC3,
++	RK816_ID_DCDC4,
++	RK816_ID_LDO1,
++	RK816_ID_LDO2,
++	RK816_ID_LDO3,
++	RK816_ID_LDO4,
++	RK816_ID_LDO5,
++	RK816_ID_LDO6,
++	RK816_ID_BOOST,
++	RK816_ID_OTG_SW,
++};
 +
-+	return spi->chip_select;
-+}
++enum rk816_irqs {
++	/* INT_STS_REG1 */
++	RK816_IRQ_PWRON_FALL,
++	RK816_IRQ_PWRON_RISE,
 +
- struct spi_message;
++	/* INT_STS_REG2 */
++	RK816_IRQ_VB_LOW,
++	RK816_IRQ_PWRON,
++	RK816_IRQ_PWRON_LP,
++	RK816_IRQ_HOTDIE,
++	RK816_IRQ_RTC_ALARM,
++	RK816_IRQ_RTC_PERIOD,
++	RK816_IRQ_USB_OV,
++
++	/* INT_STS_REG3 */
++	RK816_IRQ_PLUG_IN,
++	RK816_IRQ_PLUG_OUT,
++	RK816_IRQ_CHG_OK,
++	RK816_IRQ_CHG_TE,
++	RK816_IRQ_CHG_TS,
++	RK816_IRQ_CHG_CVTLIM,
++	RK816_IRQ_DISCHG_ILIM,
++};
++
++/* power channel registers */
++#define RK816_DCDC_EN_REG1		0x23
++
++#define RK816_DCDC_EN_REG2		0x24
++#define	RK816_BOOST_EN			BIT(1)
++#define RK816_OTG_EN			BIT(2)
++#define	RK816_BOOST_EN_MSK		BIT(5)
++#define RK816_OTG_EN_MSK		BIT(6)
++#define RK816_BUCK_DVS_CONFIRM		BIT(7)
++
++#define RK816_LDO_EN_REG1		0x27
++
++#define RK816_LDO_EN_REG2		0x28
++
++/* interrupt registers and irq definitions */
++#define RK816_INT_STS_REG1		0x49
++#define RK816_INT_STS_MSK_REG1		0x4a
++#define RK816_INT_STS_PWRON_FALL	BIT(5)
++#define RK816_INT_STS_PWRON_RISE	BIT(6)
++
++#define RK816_INT_STS_REG2		0x4c
++#define RK816_INT_STS_MSK_REG2		0x4d
++#define RK816_INT_STS_VB_LOW		BIT(1)
++#define RK816_INT_STS_PWRON		BIT(2)
++#define RK816_INT_STS_PWRON_LP		BIT(3)
++#define RK816_INT_STS_HOTDIE		BIT(4)
++#define RK816_INT_STS_RTC_ALARM		BIT(5)
++#define RK816_INT_STS_RTC_PERIOD	BIT(6)
++#define RK816_INT_STS_USB_OV		BIT(7)
++
++#define RK816_INT_STS_REG3		0x4e
++#define RK816_INT_STS_MSK_REG3		0x4f
++#define RK816_INT_STS_PLUG_IN		BIT(0)
++#define RK816_INT_STS_PLUG_OUT		BIT(1)
++#define RK816_INT_STS_CHG_OK		BIT(2)
++#define RK816_INT_STS_CHG_TE		BIT(3)
++#define RK816_INT_STS_CHG_TS		BIT(4)
++#define RK816_INT_STS_CHG_CVTLIM	BIT(6)
++#define RK816_INT_STS_DISCHG_ILIM	BIT(7)
++
++#define RK816_IRQ_STS_OFFSET(x)		((x) - RK816_INT_STS_REG1)
++#define RK816_IRQ_MSK_OFFSET(x)		((x) - RK816_INT_STS_MSK_REG1)
++
++/* charger, boost and OTG registers */
++#define RK816_OTG_BUCK_LDO_CONFIG_REG	0x2a
++#define RK816_CHRG_CONFIG_REG		0x2b
++#define RK816_BOOST_ON_VESL_REG		0x54
++#define RK816_BOOST_SLP_VSEL_REG	0x55
++#define RK816_CHRG_BOOST_CONFIG_REG	0x9a
++#define RK816_SUP_STS_REG		0xa0
++#define RK816_USB_CTRL_REG		0xa1
++#define RK816_CHRG_CTRL(x)		(0xa3 + (x))
++#define RK816_BAT_CTRL_REG		0xa6
++#define RK816_BAT_HTS_TS_REG		0xa8
++#define RK816_BAT_LTS_TS_REG		0xa9
++
++/* adc and fuel gauge registers */
++#define RK816_TS_CTRL_REG		0xac
++#define RK816_ADC_CTRL_REG		0xad
++#define RK816_GGCON_REG			0xb0
++#define RK816_GGSTS_REG			0xb1
++#define RK816_ZERO_CUR_ADC_REGH		0xb2
++#define RK816_ZERO_CUR_ADC_REGL		0xb3
++#define RK816_GASCNT_CAL_REG(x)		(0xb7 - (x))
++#define RK816_GASCNT_REG(x)		(0xbb - (x))
++#define RK816_BAT_CUR_AVG_REGH		0xbc
++#define RK816_BAT_CUR_AVG_REGL		0xbd
++#define RK816_TS_ADC_REGH		0xbe
++#define RK816_TS_ADC_REGL		0xbf
++#define RK816_USB_ADC_REGH		0xc0
++#define RK816_USB_ADC_REGL		0xc1
++#define RK816_BAT_OCV_REGH		0xc2
++#define RK816_BAT_OCV_REGL		0xc3
++#define RK816_BAT_VOL_REGH		0xc4
++#define RK816_BAT_VOL_REGL		0xc5
++#define RK816_RELAX_ENTRY_THRES_REGH	0xc6
++#define RK816_RELAX_ENTRY_THRES_REGL	0xc7
++#define RK816_RELAX_EXIT_THRES_REGH	0xc8
++#define RK816_RELAX_EXIT_THRES_REGL	0xc9
++#define RK816_RELAX_VOL1_REGH		0xca
++#define RK816_RELAX_VOL1_REGL		0xcb
++#define RK816_RELAX_VOL2_REGH		0xcc
++#define RK816_RELAX_VOL2_REGL		0xcd
++#define RK816_RELAX_CUR1_REGH		0xce
++#define RK816_RELAX_CUR1_REGL		0xcf
++#define RK816_RELAX_CUR2_REGH		0xd0
++#define RK816_RELAX_CUR2_REGL		0xd1
++#define RK816_CAL_OFFSET_REGH		0xd2
++#define RK816_CAL_OFFSET_REGL		0xd3
++#define RK816_NON_ACT_TIMER_CNT_REG	0xd4
++#define RK816_VCALIB0_REGH		0xd5
++#define RK816_VCALIB0_REGL		0xd6
++#define RK816_VCALIB1_REGH		0xd7
++#define RK816_VCALIB1_REGL		0xd8
++#define RK816_FCC_GASCNT_REG(x)		(0xdc - (x))
++#define RK816_IOFFSET_REGH		0xdd
++#define RK816_IOFFSET_REGL		0xde
++#define RK816_SLEEP_CON_SAMP_CUR_REG	0xdf
++
++/* general purpose data registers 0xe0 ~ 0xf2 */
++#define RK816_DATA_REG(x)		(0xe0 + (x))
++
+ /* RK818 */
+ #define RK818_DCDC1			0
+ #define RK818_LDO1			4
+@@ -289,6 +431,414 @@ enum rk805_reg {
+ #define RK805_INT_ALARM_EN		(1 << 3)
+ #define RK805_INT_TIMER_EN		(1 << 2)
  
- /**
++/* RK806 */
++#define RK806_POWER_EN0			0x0
++#define RK806_POWER_EN1			0x1
++#define RK806_POWER_EN2			0x2
++#define RK806_POWER_EN3			0x3
++#define RK806_POWER_EN4			0x4
++#define RK806_POWER_EN5			0x5
++#define RK806_POWER_SLP_EN0		0x6
++#define RK806_POWER_SLP_EN1		0x7
++#define RK806_POWER_SLP_EN2		0x8
++#define RK806_POWER_DISCHRG_EN0		0x9
++#define RK806_POWER_DISCHRG_EN1		0xA
++#define RK806_POWER_DISCHRG_EN2		0xB
++#define RK806_BUCK_FB_CONFIG		0xC
++#define RK806_SLP_LP_CONFIG		0xD
++#define RK806_POWER_FPWM_EN0		0xE
++#define RK806_POWER_FPWM_EN1		0xF
++#define RK806_BUCK1_CONFIG		0x10
++#define RK806_BUCK2_CONFIG		0x11
++#define RK806_BUCK3_CONFIG		0x12
++#define RK806_BUCK4_CONFIG		0x13
++#define RK806_BUCK5_CONFIG		0x14
++#define RK806_BUCK6_CONFIG		0x15
++#define RK806_BUCK7_CONFIG		0x16
++#define RK806_BUCK8_CONFIG		0x17
++#define RK806_BUCK9_CONFIG		0x18
++#define RK806_BUCK10_CONFIG		0x19
++#define RK806_BUCK1_ON_VSEL		0x1A
++#define RK806_BUCK2_ON_VSEL		0x1B
++#define RK806_BUCK3_ON_VSEL		0x1C
++#define RK806_BUCK4_ON_VSEL		0x1D
++#define RK806_BUCK5_ON_VSEL		0x1E
++#define RK806_BUCK6_ON_VSEL		0x1F
++#define RK806_BUCK7_ON_VSEL		0x20
++#define RK806_BUCK8_ON_VSEL		0x21
++#define RK806_BUCK9_ON_VSEL		0x22
++#define RK806_BUCK10_ON_VSEL		0x23
++#define RK806_BUCK1_SLP_VSEL		0x24
++#define RK806_BUCK2_SLP_VSEL		0x25
++#define RK806_BUCK3_SLP_VSEL		0x26
++#define RK806_BUCK4_SLP_VSEL		0x27
++#define RK806_BUCK5_SLP_VSEL		0x28
++#define RK806_BUCK6_SLP_VSEL		0x29
++#define RK806_BUCK7_SLP_VSEL		0x2A
++#define RK806_BUCK8_SLP_VSEL		0x2B
++#define RK806_BUCK9_SLP_VSEL		0x2D
++#define RK806_BUCK10_SLP_VSEL		0x2E
++#define RK806_BUCK_DEBUG1		0x30
++#define RK806_BUCK_DEBUG2		0x31
++#define RK806_BUCK_DEBUG3		0x32
++#define RK806_BUCK_DEBUG4		0x33
++#define RK806_BUCK_DEBUG5		0x34
++#define RK806_BUCK_DEBUG6		0x35
++#define RK806_BUCK_DEBUG7		0x36
++#define RK806_BUCK_DEBUG8		0x37
++#define RK806_BUCK_DEBUG9		0x38
++#define RK806_BUCK_DEBUG10		0x39
++#define RK806_BUCK_DEBUG11		0x3A
++#define RK806_BUCK_DEBUG12		0x3B
++#define RK806_BUCK_DEBUG13		0x3C
++#define RK806_BUCK_DEBUG14		0x3D
++#define RK806_BUCK_DEBUG15		0x3E
++#define RK806_BUCK_DEBUG16		0x3F
++#define RK806_BUCK_DEBUG17		0x40
++#define RK806_BUCK_DEBUG18		0x41
++#define RK806_NLDO_IMAX			0x42
++#define RK806_NLDO1_ON_VSEL		0x43
++#define RK806_NLDO2_ON_VSEL		0x44
++#define RK806_NLDO3_ON_VSEL		0x45
++#define RK806_NLDO4_ON_VSEL		0x46
++#define RK806_NLDO5_ON_VSEL		0x47
++#define RK806_NLDO1_SLP_VSEL		0x48
++#define RK806_NLDO2_SLP_VSEL		0x49
++#define RK806_NLDO3_SLP_VSEL		0x4A
++#define RK806_NLDO4_SLP_VSEL		0x4B
++#define RK806_NLDO5_SLP_VSEL		0x4C
++#define RK806_PLDO_IMAX			0x4D
++#define RK806_PLDO1_ON_VSEL		0x4E
++#define RK806_PLDO2_ON_VSEL		0x4F
++#define RK806_PLDO3_ON_VSEL		0x50
++#define RK806_PLDO4_ON_VSEL		0x51
++#define RK806_PLDO5_ON_VSEL		0x52
++#define RK806_PLDO6_ON_VSEL		0x53
++#define RK806_PLDO1_SLP_VSEL		0x54
++#define RK806_PLDO2_SLP_VSEL		0x55
++#define RK806_PLDO3_SLP_VSEL		0x56
++#define RK806_PLDO4_SLP_VSEL		0x57
++#define RK806_PLDO5_SLP_VSEL		0x58
++#define RK806_PLDO6_SLP_VSEL		0x59
++#define RK806_CHIP_NAME			0x5A
++#define RK806_CHIP_VER			0x5B
++#define RK806_OTP_VER			0x5C
++#define RK806_SYS_STS			0x5D
++#define RK806_SYS_CFG0			0x5E
++#define RK806_SYS_CFG1			0x5F
++#define RK806_SYS_OPTION		0x61
++#define RK806_SLEEP_CONFIG0		0x62
++#define RK806_SLEEP_CONFIG1		0x63
++#define RK806_SLEEP_CTR_SEL0		0x64
++#define RK806_SLEEP_CTR_SEL1		0x65
++#define RK806_SLEEP_CTR_SEL2		0x66
++#define RK806_SLEEP_CTR_SEL3		0x67
++#define RK806_SLEEP_CTR_SEL4		0x68
++#define RK806_SLEEP_CTR_SEL5		0x69
++#define RK806_DVS_CTRL_SEL0		0x6A
++#define RK806_DVS_CTRL_SEL1		0x6B
++#define RK806_DVS_CTRL_SEL2		0x6C
++#define RK806_DVS_CTRL_SEL3		0x6D
++#define RK806_DVS_CTRL_SEL4		0x6E
++#define RK806_DVS_CTRL_SEL5		0x6F
++#define RK806_DVS_START_CTRL		0x70
++#define RK806_SLEEP_GPIO		0x71
++#define RK806_SYS_CFG3			0x72
++#define RK806_ON_SOURCE			0x74
++#define RK806_OFF_SOURCE		0x75
++#define RK806_PWRON_KEY			0x76
++#define RK806_INT_STS0			0x77
++#define RK806_INT_MSK0			0x78
++#define RK806_INT_STS1			0x79
++#define RK806_INT_MSK1			0x7A
++#define RK806_GPIO_INT_CONFIG		0x7B
++#define RK806_DATA_REG0			0x7C
++#define RK806_DATA_REG1			0x7D
++#define RK806_DATA_REG2			0x7E
++#define RK806_DATA_REG3			0x7F
++#define RK806_DATA_REG4			0x80
++#define RK806_DATA_REG5			0x81
++#define RK806_DATA_REG6			0x82
++#define RK806_DATA_REG7			0x83
++#define RK806_DATA_REG8			0x84
++#define RK806_DATA_REG9			0x85
++#define RK806_DATA_REG10		0x86
++#define RK806_DATA_REG11		0x87
++#define RK806_DATA_REG12		0x88
++#define RK806_DATA_REG13		0x89
++#define RK806_DATA_REG14		0x8A
++#define RK806_DATA_REG15		0x8B
++#define RK806_TM_REG			0x8C
++#define RK806_OTP_EN_REG		0x8D
++#define RK806_FUNC_OTP_EN_REG		0x8E
++#define RK806_TEST_REG1			0x8F
++#define RK806_TEST_REG2			0x90
++#define RK806_TEST_REG3			0x91
++#define RK806_TEST_REG4			0x92
++#define RK806_TEST_REG5			0x93
++#define RK806_BUCK_VSEL_OTP_REG0	0x94
++#define RK806_BUCK_VSEL_OTP_REG1	0x95
++#define RK806_BUCK_VSEL_OTP_REG2	0x96
++#define RK806_BUCK_VSEL_OTP_REG3	0x97
++#define RK806_BUCK_VSEL_OTP_REG4	0x98
++#define RK806_BUCK_VSEL_OTP_REG5	0x99
++#define RK806_BUCK_VSEL_OTP_REG6	0x9A
++#define RK806_BUCK_VSEL_OTP_REG7	0x9B
++#define RK806_BUCK_VSEL_OTP_REG8	0x9C
++#define RK806_BUCK_VSEL_OTP_REG9	0x9D
++#define RK806_NLDO1_VSEL_OTP_REG0	0x9E
++#define RK806_NLDO1_VSEL_OTP_REG1	0x9F
++#define RK806_NLDO1_VSEL_OTP_REG2	0xA0
++#define RK806_NLDO1_VSEL_OTP_REG3	0xA1
++#define RK806_NLDO1_VSEL_OTP_REG4	0xA2
++#define RK806_PLDO_VSEL_OTP_REG0	0xA3
++#define RK806_PLDO_VSEL_OTP_REG1	0xA4
++#define RK806_PLDO_VSEL_OTP_REG2	0xA5
++#define RK806_PLDO_VSEL_OTP_REG3	0xA6
++#define RK806_PLDO_VSEL_OTP_REG4	0xA7
++#define RK806_PLDO_VSEL_OTP_REG5	0xA8
++#define RK806_BUCK_EN_OTP_REG1		0xA9
++#define RK806_NLDO_EN_OTP_REG1		0xAA
++#define RK806_PLDO_EN_OTP_REG1		0xAB
++#define RK806_BUCK_FB_RES_OTP_REG1	0xAC
++#define RK806_OTP_RESEV_REG0		0xAD
++#define RK806_OTP_RESEV_REG1		0xAE
++#define RK806_OTP_RESEV_REG2		0xAF
++#define RK806_OTP_RESEV_REG3		0xB0
++#define RK806_OTP_RESEV_REG4		0xB1
++#define RK806_BUCK_SEQ_REG0		0xB2
++#define RK806_BUCK_SEQ_REG1		0xB3
++#define RK806_BUCK_SEQ_REG2		0xB4
++#define RK806_BUCK_SEQ_REG3		0xB5
++#define RK806_BUCK_SEQ_REG4		0xB6
++#define RK806_BUCK_SEQ_REG5		0xB7
++#define RK806_BUCK_SEQ_REG6		0xB8
++#define RK806_BUCK_SEQ_REG7		0xB9
++#define RK806_BUCK_SEQ_REG8		0xBA
++#define RK806_BUCK_SEQ_REG9		0xBB
++#define RK806_BUCK_SEQ_REG10		0xBC
++#define RK806_BUCK_SEQ_REG11		0xBD
++#define RK806_BUCK_SEQ_REG12		0xBE
++#define RK806_BUCK_SEQ_REG13		0xBF
++#define RK806_BUCK_SEQ_REG14		0xC0
++#define RK806_BUCK_SEQ_REG15		0xC1
++#define RK806_BUCK_SEQ_REG16		0xC2
++#define RK806_BUCK_SEQ_REG17		0xC3
++#define RK806_HK_TRIM_REG1		0xC4
++#define RK806_HK_TRIM_REG2		0xC5
++#define RK806_BUCK_REF_TRIM_REG1	0xC6
++#define RK806_BUCK_REF_TRIM_REG2	0xC7
++#define RK806_BUCK_REF_TRIM_REG3	0xC8
++#define RK806_BUCK_REF_TRIM_REG4	0xC9
++#define RK806_BUCK_REF_TRIM_REG5	0xCA
++#define RK806_BUCK_OSC_TRIM_REG1	0xCB
++#define RK806_BUCK_OSC_TRIM_REG2	0xCC
++#define RK806_BUCK_OSC_TRIM_REG3	0xCD
++#define RK806_BUCK_OSC_TRIM_REG4	0xCE
++#define RK806_BUCK_OSC_TRIM_REG5	0xCF
++#define RK806_BUCK_TRIM_ZCDIOS_REG1	0xD0
++#define RK806_BUCK_TRIM_ZCDIOS_REG2	0xD1
++#define RK806_NLDO_TRIM_REG1		0xD2
++#define RK806_NLDO_TRIM_REG2		0xD3
++#define RK806_NLDO_TRIM_REG3		0xD4
++#define RK806_PLDO_TRIM_REG1		0xD5
++#define RK806_PLDO_TRIM_REG2		0xD6
++#define RK806_PLDO_TRIM_REG3		0xD7
++#define RK806_TRIM_ICOMP_REG1		0xD8
++#define RK806_TRIM_ICOMP_REG2		0xD9
++#define RK806_EFUSE_CONTROL_REGH	0xDA
++#define RK806_FUSE_PROG_REG		0xDB
++#define RK806_MAIN_FSM_STS_REG		0xDD
++#define RK806_FSM_REG			0xDE
++#define RK806_TOP_RESEV_OFFR		0xEC
++#define RK806_TOP_RESEV_POR		0xED
++#define RK806_BUCK_VRSN_REG1		0xEE
++#define RK806_BUCK_VRSN_REG2		0xEF
++#define RK806_NLDO_RLOAD_SEL_REG1	0xF0
++#define RK806_PLDO_RLOAD_SEL_REG1	0xF1
++#define RK806_PLDO_RLOAD_SEL_REG2	0xF2
++#define RK806_BUCK_CMIN_MX_REG1		0xF3
++#define RK806_BUCK_CMIN_MX_REG2		0xF4
++#define RK806_BUCK_FREQ_SET_REG1	0xF5
++#define RK806_BUCK_FREQ_SET_REG2	0xF6
++#define RK806_BUCK_RS_MEABS_REG1	0xF7
++#define RK806_BUCK_RS_MEABS_REG2	0xF8
++#define RK806_BUCK_RS_ZDLEB_REG1	0xF9
++#define RK806_BUCK_RS_ZDLEB_REG2	0xFA
++#define RK806_BUCK_RSERVE_REG1		0xFB
++#define RK806_BUCK_RSERVE_REG2		0xFC
++#define RK806_BUCK_RSERVE_REG3		0xFD
++#define RK806_BUCK_RSERVE_REG4		0xFE
++#define RK806_BUCK_RSERVE_REG5		0xFF
++
++/* INT_STS Register field definitions */
++#define RK806_INT_STS_PWRON_FALL	BIT(0)
++#define RK806_INT_STS_PWRON_RISE	BIT(1)
++#define RK806_INT_STS_PWRON		BIT(2)
++#define RK806_INT_STS_PWRON_LP		BIT(3)
++#define RK806_INT_STS_HOTDIE		BIT(4)
++#define RK806_INT_STS_VDC_RISE		BIT(5)
++#define RK806_INT_STS_VDC_FALL		BIT(6)
++#define RK806_INT_STS_VB_LO		BIT(7)
++#define RK806_INT_STS_REV0		BIT(0)
++#define RK806_INT_STS_REV1		BIT(1)
++#define RK806_INT_STS_REV2		BIT(2)
++#define RK806_INT_STS_CRC_ERROR		BIT(3)
++#define RK806_INT_STS_SLP3_GPIO		BIT(4)
++#define RK806_INT_STS_SLP2_GPIO		BIT(5)
++#define RK806_INT_STS_SLP1_GPIO		BIT(6)
++#define RK806_INT_STS_WDT		BIT(7)
++
++/* SPI command */
++#define RK806_CMD_READ			0
++#define RK806_CMD_WRITE			BIT(7)
++#define RK806_CMD_CRC_EN		BIT(6)
++#define RK806_CMD_CRC_DIS		0
++#define RK806_CMD_LEN_MSK		0x0f
++#define RK806_REG_H			0x00
++
++#define VERSION_AB		0x01
++
++enum rk806_reg_id {
++	RK806_ID_DCDC1 = 0,
++	RK806_ID_DCDC2,
++	RK806_ID_DCDC3,
++	RK806_ID_DCDC4,
++	RK806_ID_DCDC5,
++	RK806_ID_DCDC6,
++	RK806_ID_DCDC7,
++	RK806_ID_DCDC8,
++	RK806_ID_DCDC9,
++	RK806_ID_DCDC10,
++
++	RK806_ID_NLDO1,
++	RK806_ID_NLDO2,
++	RK806_ID_NLDO3,
++	RK806_ID_NLDO4,
++	RK806_ID_NLDO5,
++
++	RK806_ID_PLDO1,
++	RK806_ID_PLDO2,
++	RK806_ID_PLDO3,
++	RK806_ID_PLDO4,
++	RK806_ID_PLDO5,
++	RK806_ID_PLDO6,
++	RK806_ID_END,
++};
++
++/* Define the RK806 IRQ numbers */
++enum rk806_irqs {
++	/* INT_STS0 registers */
++	RK806_IRQ_PWRON_FALL,
++	RK806_IRQ_PWRON_RISE,
++	RK806_IRQ_PWRON,
++	RK806_IRQ_PWRON_LP,
++	RK806_IRQ_HOTDIE,
++	RK806_IRQ_VDC_RISE,
++	RK806_IRQ_VDC_FALL,
++	RK806_IRQ_VB_LO,
++
++	/* INT_STS0 registers */
++	RK806_IRQ_REV0,
++	RK806_IRQ_REV1,
++	RK806_IRQ_REV2,
++	RK806_IRQ_CRC_ERROR,
++	RK806_IRQ_SLP3_GPIO,
++	RK806_IRQ_SLP2_GPIO,
++	RK806_IRQ_SLP1_GPIO,
++	RK806_IRQ_WDT,
++};
++
++/* VCC1 Low Voltage Threshold */
++enum rk806_lv_sel {
++	VB_LO_SEL_2800,
++	VB_LO_SEL_2900,
++	VB_LO_SEL_3000,
++	VB_LO_SEL_3100,
++	VB_LO_SEL_3200,
++	VB_LO_SEL_3300,
++	VB_LO_SEL_3400,
++	VB_LO_SEL_3500,
++};
++
++/* System Shutdown Voltage Select */
++enum rk806_uv_sel {
++	VB_UV_SEL_2700,
++	VB_UV_SEL_2800,
++	VB_UV_SEL_2900,
++	VB_UV_SEL_3000,
++	VB_UV_SEL_3100,
++	VB_UV_SEL_3200,
++	VB_UV_SEL_3300,
++	VB_UV_SEL_3400,
++};
++
++/* Pin Function */
++enum rk806_pwrctrl_fun {
++	PWRCTRL_NULL_FUN,
++	PWRCTRL_SLP_FUN,
++	PWRCTRL_POWOFF_FUN,
++	PWRCTRL_RST_FUN,
++	PWRCTRL_DVS_FUN,
++	PWRCTRL_GPIO_FUN,
++};
++
++/* Pin Polarity */
++enum rk806_pin_level {
++	POL_LOW,
++	POL_HIGH,
++};
++
++enum rk806_vsel_ctr_sel {
++	CTR_BY_NO_EFFECT,
++	CTR_BY_PWRCTRL1,
++	CTR_BY_PWRCTRL2,
++	CTR_BY_PWRCTRL3,
++};
++
++enum rk806_dvs_ctr_sel {
++	CTR_SEL_NO_EFFECT,
++	CTR_SEL_DVS_START1,
++	CTR_SEL_DVS_START2,
++	CTR_SEL_DVS_START3,
++};
++
++enum rk806_pin_dr_sel {
++	RK806_PIN_INPUT,
++	RK806_PIN_OUTPUT,
++};
++
++#define RK806_INT_POL_MSK		BIT(1)
++#define RK806_INT_POL_H			BIT(1)
++#define RK806_INT_POL_L			0
++
++#define RK806_SLAVE_RESTART_FUN_MSK	BIT(1)
++#define RK806_SLAVE_RESTART_FUN_EN	BIT(1)
++#define RK806_SLAVE_RESTART_FUN_OFF	0
++
++#define RK806_SYS_ENB2_2M_MSK		BIT(1)
++#define RK806_SYS_ENB2_2M_EN		BIT(1)
++#define RK806_SYS_ENB2_2M_OFF		0
++
++enum rk806_int_fun {
++	RK806_INT_ONLY,
++	RK806_INT_ADN_WKUP,
++};
++
++enum rk806_dvs_mode {
++	RK806_DVS_NOT_SUPPORT,
++	RK806_DVS_START1,
++	RK806_DVS_START2,
++	RK806_DVS_START3,
++	RK806_DVS_PWRCTRL1,
++	RK806_DVS_PWRCTRL2,
++	RK806_DVS_PWRCTRL3,
++	RK806_DVS_START_PWRCTR1,
++	RK806_DVS_START_PWRCTR2,
++	RK806_DVS_START_PWRCTR3,
++	RK806_DVS_END,
++};
++
+ /* RK808 IRQ Definitions */
+ #define RK808_IRQ_VOUT_LO	0
+ #define RK808_IRQ_VB_LO		1
+@@ -373,6 +923,7 @@ enum rk805_reg {
+ #define SWITCH2_EN	BIT(6)
+ #define SWITCH1_EN	BIT(5)
+ #define DEV_OFF_RST	BIT(3)
++#define DEV_RST		BIT(2)
+ #define DEV_OFF		BIT(0)
+ #define RTC_STOP	BIT(0)
+ 
+@@ -382,6 +933,7 @@ enum rk805_reg {
+ #define VOUT_LO_INT	BIT(0)
+ #define CLK32KOUT2_EN	BIT(0)
+ 
++#define TEMP105C			0x08
+ #define TEMP115C			0x0c
+ #define TEMP_HOTDIE_MSK			0x0c
+ #define SLP_SD_MSK			(0x3 << 2)
+@@ -531,6 +1083,77 @@ enum rk809_reg_id {
+ #define MIC_DIFF_DIS			(0x0 << 7)
+ #define MIC_DIFF_EN			(0x1 << 7)
+ 
++/* RK817 Battery Registers */
++#define RK817_GAS_GAUGE_ADC_CONFIG0	0x50
++#define RK817_GG_EN			(0x1 << 7)
++#define RK817_SYS_VOL_ADC_EN		(0x1 << 6)
++#define RK817_TS_ADC_EN			(0x1 << 5)
++#define RK817_USB_VOL_ADC_EN		(0x1 << 4)
++#define RK817_BAT_VOL_ADC_EN		(0x1 << 3)
++#define RK817_BAT_CUR_ADC_EN		(0x1 << 2)
++
++#define RK817_GAS_GAUGE_ADC_CONFIG1	0x55
++
++#define RK817_VOL_CUR_CALIB_UPD		BIT(7)
++
++#define RK817_GAS_GAUGE_GG_CON		0x56
++#define RK817_GAS_GAUGE_GG_STS		0x57
++
++#define RK817_BAT_CON			(0x1 << 4)
++#define RK817_RELAX_VOL_UPD		(0x3 << 2)
++#define RK817_RELAX_STS			(0x1 << 1)
++
++#define RK817_GAS_GAUGE_RELAX_THRE_H	0x58
++#define RK817_GAS_GAUGE_RELAX_THRE_L	0x59
++#define RK817_GAS_GAUGE_OCV_THRE_VOL	0x62
++#define RK817_GAS_GAUGE_OCV_VOL_H	0x63
++#define RK817_GAS_GAUGE_OCV_VOL_L	0x64
++#define RK817_GAS_GAUGE_PWRON_VOL_H	0x6b
++#define RK817_GAS_GAUGE_PWRON_VOL_L	0x6c
++#define RK817_GAS_GAUGE_PWRON_CUR_H	0x6d
++#define RK817_GAS_GAUGE_PWRON_CUR_L	0x6e
++#define RK817_GAS_GAUGE_OFF_CNT		0x6f
++#define RK817_GAS_GAUGE_Q_INIT_H3	0x70
++#define RK817_GAS_GAUGE_Q_INIT_H2	0x71
++#define RK817_GAS_GAUGE_Q_INIT_L1	0x72
++#define RK817_GAS_GAUGE_Q_INIT_L0	0x73
++#define RK817_GAS_GAUGE_Q_PRES_H3	0x74
++#define RK817_GAS_GAUGE_Q_PRES_H2	0x75
++#define RK817_GAS_GAUGE_Q_PRES_L1	0x76
++#define RK817_GAS_GAUGE_Q_PRES_L0	0x77
++#define RK817_GAS_GAUGE_BAT_VOL_H	0x78
++#define RK817_GAS_GAUGE_BAT_VOL_L	0x79
++#define RK817_GAS_GAUGE_BAT_CUR_H	0x7a
++#define RK817_GAS_GAUGE_BAT_CUR_L	0x7b
++#define RK817_GAS_GAUGE_USB_VOL_H	0x7e
++#define RK817_GAS_GAUGE_USB_VOL_L	0x7f
++#define RK817_GAS_GAUGE_SYS_VOL_H	0x80
++#define RK817_GAS_GAUGE_SYS_VOL_L	0x81
++#define RK817_GAS_GAUGE_Q_MAX_H3	0x82
++#define RK817_GAS_GAUGE_Q_MAX_H2	0x83
++#define RK817_GAS_GAUGE_Q_MAX_L1	0x84
++#define RK817_GAS_GAUGE_Q_MAX_L0	0x85
++#define RK817_GAS_GAUGE_SLEEP_CON_SAMP_CUR_H	0x8f
++#define RK817_GAS_GAUGE_SLEEP_CON_SAMP_CUR_L	0x90
++#define RK817_GAS_GAUGE_CAL_OFFSET_H	0x91
++#define RK817_GAS_GAUGE_CAL_OFFSET_L	0x92
++#define RK817_GAS_GAUGE_VCALIB0_H	0x93
++#define RK817_GAS_GAUGE_VCALIB0_L	0x94
++#define RK817_GAS_GAUGE_VCALIB1_H	0x95
++#define RK817_GAS_GAUGE_VCALIB1_L	0x96
++#define RK817_GAS_GAUGE_IOFFSET_H	0x97
++#define RK817_GAS_GAUGE_IOFFSET_L	0x98
++#define RK817_GAS_GAUGE_BAT_R1		0x9a
++#define RK817_GAS_GAUGE_BAT_R2		0x9b
++#define RK817_GAS_GAUGE_BAT_R3		0x9c
++#define RK817_GAS_GAUGE_DATA0		0x9d
++#define RK817_GAS_GAUGE_DATA1		0x9e
++#define RK817_GAS_GAUGE_DATA2		0x9f
++#define RK817_GAS_GAUGE_DATA3		0xa0
++#define RK817_GAS_GAUGE_DATA4		0xa1
++#define RK817_GAS_GAUGE_DATA5		0xa2
++#define RK817_GAS_GAUGE_CUR_ADC_K0	0xb0
++
+ #define RK817_POWER_EN_REG(i)		(0xb1 + (i))
+ #define RK817_POWER_SLP_EN_REG(i)	(0xb5 + (i))
+ 
+@@ -556,10 +1179,30 @@ enum rk809_reg_id {
+ #define RK817_LDO_ON_VSEL_REG(idx)	(0xcc + (idx) * 2)
+ #define RK817_BOOST_OTG_CFG		(0xde)
+ 
++#define RK817_PMIC_CHRG_OUT		0xe4
++#define RK817_CHRG_VOL_SEL		(0x07 << 4)
++#define RK817_CHRG_CUR_SEL		(0x07 << 0)
++
++#define RK817_PMIC_CHRG_IN		0xe5
++#define RK817_USB_VLIM_EN		(0x01 << 7)
++#define RK817_USB_VLIM_SEL		(0x07 << 4)
++#define RK817_USB_ILIM_EN		(0x01 << 3)
++#define RK817_USB_ILIM_SEL		(0x07 << 0)
++#define RK817_PMIC_CHRG_TERM		0xe6
++#define RK817_CHRG_TERM_ANA_DIG		(0x01 << 2)
++#define RK817_CHRG_TERM_ANA_SEL		(0x03 << 0)
++#define RK817_CHRG_EN			(0x01 << 6)
++
++#define RK817_PMIC_CHRG_STS		0xeb
++#define RK817_BAT_EXS			BIT(7)
++#define RK817_CHG_STS			(0x07 << 4)
++
+ #define RK817_ID_MSB			0xed
+ #define RK817_ID_LSB			0xee
+ 
+ #define RK817_SYS_STS			0xf0
++#define RK817_PLUG_IN_STS		(0x1 << 6)
++
+ #define RK817_SYS_CFG(i)		(0xf1 + (i))
+ 
+ #define RK817_ON_SOURCE_REG		0xf5
+@@ -701,8 +1344,10 @@ enum {
+ 
+ enum {
+ 	RK805_ID = 0x8050,
++	RK806_ID = 0x8060,
+ 	RK808_ID = 0x0000,
+ 	RK809_ID = 0x8090,
++	RK816_ID = 0x8160,
+ 	RK817_ID = 0x8170,
+ 	RK818_ID = 0x8180,
+ };
+@@ -717,4 +1362,5 @@ struct rk808 {
+ 	const struct regmap_config	*regmap_cfg;
+ 	struct poweroff_handler		poweroff;
+ };
++
+ #endif /* __LINUX_REGULATOR_RK808_H */
 
 -- 
 2.39.5
