@@ -1,92 +1,67 @@
-Delivery-date: Mon, 14 Oct 2024 17:38:55 +0200
+Delivery-date: Tue, 15 Oct 2024 08:55:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0N9r-004JWx-19
+	id 1t0bTA-004Z0o-0L
 	for lore@lore.pengutronix.de;
-	Mon, 14 Oct 2024 17:38:55 +0200
+	Tue, 15 Oct 2024 08:55:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0N9q-0001qU-RE
-	for lore@pengutronix.de; Mon, 14 Oct 2024 17:38:55 +0200
+	id 1t0bT9-0001Z3-G5
+	for lore@pengutronix.de; Tue, 15 Oct 2024 08:55:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Reply-To:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=chUJqKfTaYmGyq4fUS4K/3+lj6fy9E/FZCHLWqJ6tHM=; b=t6tvX7GCTcK/1gm8qi5n1PovDd
-	uKWWK+Ez2Z8MNMma5shQknVpxaFU7pQdYJPZlRRo0ht/hLwj8xPOnGbr5H35eecOTzpq1gbROnHbi
-	HVz+0tn+jebZKX5oolTkJECuD//1nmfOXeVr7SMztmNuFJArcGfz6Ix4pA/LQCsSdXrdADte80/qW
-	dtvygADMeonKzB9i9J6/8miZaupaYth2ImuFXN4gOwQBGJgyCHoSX4uLOBAJOXcIS/DkmaTwoGrJ4
-	Wi2TJWleQMwYJKJS4zwKb4yuPRJDBrVuVztP/6R5R+NiiC+qCeAqS82nlN2v7Sq+zHQ2p6MLyy1JV
-	Xe2CxLtQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=KywyjeYrn0i73iTeePC3tuC5xoOgGvGNXpm4Agw2jbA=; b=w8JF23Cnqk/7WFkcXv88rKqWWx
+	xi5rfBbze3A+zyYYmlBy3z1jJKWH8kmZMRM88GHdNdw28m6ZaScvoQiAhmZxPb0dnIMfFoeMVJj5I
+	9smmHfD3GAcux2iFby7JGBZ5IHt+FC4+P0/EacsKCc14DiBC0nOnrJ0j5ww0avauudSqbOEbtuqeF
+	uRZCLdHRGURULj6e2WwT9RDBHUoyckWpYFsWw1JQps+FI2dmKi9ThMwc9nD+DDr1+g/xO+ZEYFX9t
+	VZKb2tEpYRSjY/KmwmL8gW5wDOP0qtemHWu8h5GGzs99CxwMYq2Dno0IxOcHhFkfiIgaEBPI/59T1
+	ltXvCFNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0N9I-00000005iXF-3nHE;
-	Mon, 14 Oct 2024 15:38:20 +0000
-Received: from nyc.source.kernel.org ([147.75.193.91])
+	id 1t0bSW-00000007H5J-35lL;
+	Tue, 15 Oct 2024 06:55:08 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0N3u-00000005fN3-39u2
+	id 1t0bRw-00000007H1y-3oeW
 	for barebox@lists.infradead.org;
-	Mon, 14 Oct 2024 15:32:48 +0000
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 5AE23A41F28;
-	Mon, 14 Oct 2024 15:32:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E41A8C4CEC3;
-	Mon, 14 Oct 2024 15:32:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728919964;
-	bh=lHqOBKpd6l/4Kus20bEPdv3rbTwDA5Rkr7KkrW5Bjzw=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=C297i5IKEfcAgI0zE8tc8DBjXDSxaTecv2GJfwGEx5UYK3YAgoe97kFGyLb8zucjK
-	 SN6FdOS7YqCbW8IaMFITpBvNu2eiwn2yRlWE4/zuZ3fZWimLtTXcaJZXedO67RZrfB
-	 KmOVjZlREcS/iIXfe+o7re9raf3nI71E5uNCV6NHwZ5S1iWbWDeByaoK7M1xb0jCS/
-	 5nzbeM4KrckroJ11PiiwlWW9plM/V1n075W3rt5rc35rkAo7dhcBCRWLHWCVXF+RgG
-	 Z8YvcKerkahqqqqI8FzWLHZpF1wW2JefwyC0Infyen4X73u+XQFpZvfjQT8ZaXTpeP
-	 YTeApU46K1pHg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1358D1812A;
-	Mon, 14 Oct 2024 15:32:44 +0000 (UTC)
-From: Ahmad Fatoum via B4 Relay <devnull+a.fatoum.barebox.org@kernel.org>
-Date: Mon, 14 Oct 2024 17:32:38 +0200
+	Tue, 15 Oct 2024 06:54:35 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t0bRu-0001Pv-Is; Tue, 15 Oct 2024 08:54:30 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t0bRu-001yAn-6U; Tue, 15 Oct 2024 08:54:30 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t0bRu-0041dv-0T;
+	Tue, 15 Oct 2024 08:54:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: ejo@pengutronix.de
+In-Reply-To: <20241009060511.4121157-1-a.fatoum@pengutronix.de>
+References: <20241009060511.4121157-1-a.fatoum@pengutronix.de>
+Message-Id: <172897527014.959514.11559235043161085627.b4-ty@pengutronix.de>
+Date: Tue, 15 Oct 2024 08:54:30 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-usb_kbd-polling_interval-v1-1-92309deabaf2@barebox.org>
-X-B4-Tracking: v=1; b=H4sIAJU5DWcC/x3M0QpAMBSA4VfRubbaGMmrSMI55mSNNqS0d7dcf
- hf//0IgzxSgzV7wdHPg3SWoPIN5HZ0hwZgMhSy0kkqLK0zDNqE4dmvZmYHdSf4erZDUaJQ1Nlh
- WkPLD08LPv+76GD/JiObWagAAAA==
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1232;
- i=a.fatoum@barebox.org; h=from:subject:message-id;
- bh=+oTe0y6oPSO9CGWeM1TS2pqbtm7feOiUaQ80clLoiBI=;
- b=owEBbQKS/ZANAwAIAcPqw96TIdWbAcsmYgBnDTmbsunNEfFmGcgfmWhpxfDVMBa8MYSF07Npf
- 98m9VIDaHiJAjMEAAEIAB0WIQTK3+EIrTqYqXmq7ubD6sPekyHVmwUCZw05mwAKCRDD6sPekyHV
- m3HmD/0akWU9RghUv9cKcB5XbMJ5HC705NvtYd89i6bZE17FTjN52K/CkXjXjgYrn9O97MX6PWS
- xMDn8sHRpOOc5V6juYg3XSqCcR99dSfhvc3U7nCUJ8O/bxlVmsSEZTPpcgw5PueRxb9cvrlC6oR
- Yw/cEFKIcmbun2QmCVnxCFYfKHoQP/nOnuBu4McxqeqqLKL1pPYDZJOLxaIkoOQxEl52YMzOQGa
- CLpPeF1lv2nRXy9xqpz2s1IiFsw7Z/mfkbPsR5j1qtPqXawtPrQ73EZaMNQd9ks4DzGe3G/skCc
- JK7TSSRy/zzYjqD7l8E83Gq2tsOLXyUFFIqsntjHXzyIkXtPgt0qW1ahbwxYGfulSliAmlO+4vx
- ubNOHZjCFyeoX4OHe3CP1I3hwgBHE6Lj+pjRryRYusR3rbqW5QwwpOc64YPAk+LA8YnSfukc1NI
- 8lbBBLI734SUXndWTYeT/XJNB9MvdsgUwFmv4UdUXI+fWh96Pms6X+gw86n3TuafJr6JhwSzecA
- Jwf54FQ/aLfXZJ4E7qfwR8y8yB77QGq1FXZ2Ws8Rt52FxqfS5A79QH7TapdwMlGxKK1QtXrH/+0
- eL7m803ADIW8sLKDecm+CJpb+9dMGfS8UJo7ZIsPgDSaNlPPqhY3sVgdKXcIxkG0WDB7vBq0xcW
- c23xMv2LGunMREg==
-X-Developer-Key: i=a.fatoum@barebox.org; a=openpgp;
- fpr=CADFE108AD3A98A979AAEEE6C3EAC3DE9321D59B
-X-Endpoint-Received: by B4 Relay for a.fatoum@barebox.org/default with
- auth_id=246
-X-Original-From: Ahmad Fatoum <a.fatoum@barebox.org>
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241014_083246_980848_52921803 
-X-CRM114-Status: UNSURE (   8.01  )
+X-CRM114-CacheID: sfid-20241014_235433_085097_40DA04B0 
+X-CRM114-Status: UNSURE (   9.02  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -99,62 +74,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: a.fatoum@barebox.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-105.1 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] input: usb_kbd: make polling interval configurable
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 0/5] ARM64: make barebox compatible with KVM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-We currently use whatever polling interval the keyboard reports, but in
-some keyboard it can be useful to set a lower interval, e.g. for better
-control of the snake in the barebox demo[1].
+On Wed, 09 Oct 2024 08:05:06 +0200, Ahmad Fatoum wrote:
+> It was noticed by a patch series[1] for OpenEmbedded-core that
+> neither barebox nor U-Boot reach their shell when tested on a native
+> AArch64 server with Qemu running with KVM enabled.
+> 
+> After investigation and help from the Qemu/KVM maintainers[2], it turns
+> out that software that wants to run under KVM needs to take care what
+> instructions it uses for MMIO accesses:
+> 
+> [...]
 
-Add a parameter to make this possible.
+Applied, thanks!
 
-[1]: https://fosstodon.org/@barebox/112983807569839989
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- drivers/input/usb_kbd.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
-index 2e75aabf3da4..d47e760a89ee 100644
---- a/drivers/input/usb_kbd.c
-+++ b/drivers/input/usb_kbd.c
-@@ -169,6 +169,11 @@ static int usb_kbd_probe(struct usb_device *usbdev,
- 	data->intpktsize = min(usb_maxpacket(usbdev, data->intpipe),
- 			       USB_KBD_BOOT_REPORT_SIZE);
- 	data->intinterval = data->ep->bInterval;
-+
-+	dev_add_param_uint32(&usbdev->dev, "polling_interval",
-+			     NULL, NULL, &data->intinterval, "%u",
-+			     NULL);
-+
- 	/* test polling via interrupt endpoint */
- 	data->do_poll = usb_kbd_int_poll;
- 	ret = data->do_poll(data);
-
----
-base-commit: ac1be0df8dce0a220e254005e1e07a0d23299f6b
-change-id: 20241014-usb_kbd-polling_interval-0e84d06d8d35
+[1/5] ARM64: io: implement I/O accessors in assembly
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ad6062f654a4 (link may not be stable)
+[2/5] ARM64: board-dt-2nd: grow stack down from start of binary
+      https://git.pengutronix.de/cgit/barebox/commit/?id=cf7081c0771f (link may not be stable)
+[3/5] mtd: cfi-flash: use I/O accessors for reads/writes of MMIO regions
+      https://git.pengutronix.de/cgit/barebox/commit/?id=133903c41840 (link may not be stable)
+[4/5] ARM64: mmu: flush cacheable regions prior to remapping
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b8454cae3b1e (link may not be stable)
+[5/5] virtio: don't use DMA API unless required
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3ebd05809a49 (link may not be stable)
 
 Best regards,
 -- 
-Ahmad Fatoum <a.fatoum@barebox.org>
-
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
