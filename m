@@ -1,68 +1,70 @@
-Delivery-date: Tue, 15 Oct 2024 09:41:48 +0200
+Delivery-date: Tue, 15 Oct 2024 09:48:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0cBf-004Zru-39
+	id 1t0cHs-004a28-0w
 	for lore@lore.pengutronix.de;
-	Tue, 15 Oct 2024 09:41:47 +0200
+	Tue, 15 Oct 2024 09:48:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0cBf-0004V6-Cq
-	for lore@pengutronix.de; Tue, 15 Oct 2024 09:41:47 +0200
+	id 1t0cHr-00055x-N6
+	for lore@pengutronix.de; Tue, 15 Oct 2024 09:48:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=P/6eyb5CDbGfvjWRUBl+8LtY1wf84WzV1h+/0Hx3xVI=; b=TSFtrMLTHbtR4JOyDBfKCVPzOX
-	9dw8f2hWciVFSjlNH8UpzmXjq1499rjifE05385+gU6zpzliGxgnzCbdQ3VhJoDzUft/CuuJjVZMl
-	Z9TLP0HcucTw9iNqP3ib9wOtSbgW3cEbJVS+m5GnRO/YH+TU6sZOEJ2gIjeQcZ392w99t6dmAivtD
-	kKr6jtXu3G6QbZS7qfW60YTvE+pL9g6KcbBjSLUR0e+oUrrDOxe2W1X+y9NOOsOB2bVG5xbRpX3gK
-	+F8B/n5EEFsjLRs7z1ppm8+4g6f2Yh1mprFqkD7o/YA/kDH0xhxXyqa7KvPH0Xlrenr+gNdqucCql
-	DYYqOgGw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=f17KxiMyKnYuIBVdtHD2x+GkQzlaqPvpCCqoG3y3+Pg=; b=RcHDG7+9k02SM86lO2MI9TMRAq
+	YqhJpX7UFin43lQg3yW+gYcNN7bB4WJOnVvSJVns51NXCEnOFPHvo5YQdGKLnc7AmRJiTMDGwdBUG
+	5uGMBRb2v28bYYXUO9N1YhcsIfRYIBWXTwKaZ5ZECmELsBL8Igs3d99OVd4vrPugYBuOV0I5u5PRk
+	TIQRIrsGxZ9bhhU9sBMfwlJ8anzil6KsEeLIa5sPu/84B5QwMzlhmOCyXHSUDOTRmRYL0Pslt/Qu7
+	lYScaIri1sH7LtLkVnWaNSoybmJRpuHFGMw6+dPDAKXaM/aErpf8GuhAjHTfdkWBz0JswD06PZsLI
+	z2eI+WKQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0cB8-00000007MnV-21xL;
-	Tue, 15 Oct 2024 07:41:14 +0000
+	id 1t0cHI-00000007NkQ-0tHM;
+	Tue, 15 Oct 2024 07:47:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0cB5-00000007Mm2-02bv
+	id 1t0cH7-00000007Ngl-0YKG
 	for barebox@lists.infradead.org;
-	Tue, 15 Oct 2024 07:41:12 +0000
+	Tue, 15 Oct 2024 07:47:26 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0cB3-0004RY-8Y; Tue, 15 Oct 2024 09:41:09 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t0cH5-0004xG-Ez; Tue, 15 Oct 2024 09:47:23 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0cB2-001ylb-NJ; Tue, 15 Oct 2024 09:41:08 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t0cB2-009wPh-28;
-	Tue, 15 Oct 2024 09:41:08 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1t0cH5-001ymE-1A; Tue, 15 Oct 2024 09:47:23 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t0cH4-00CbJp-34;
+	Tue, 15 Oct 2024 09:47:22 +0200
+Date: Tue, 15 Oct 2024 09:47:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Denis Orlov <denorl2009@gmail.com>
-In-Reply-To: <20241014125843.2064532-1-a.fatoum@pengutronix.de>
-References: <20241014125843.2064532-1-a.fatoum@pengutronix.de>
-Message-Id: <172897806865.2368693.18152888665059519055.b4-ty@pengutronix.de>
-Date: Tue, 15 Oct 2024 09:41:08 +0200
+To: Ahmad Fatoum via B4 Relay <devnull+a.fatoum.barebox.org@kernel.org>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Message-ID: <Zw4eCkcezQBu55b9@pengutronix.de>
+References: <20241014-usb_kbd-polling_interval-v1-1-92309deabaf2@barebox.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241014-usb_kbd-polling_interval-v1-1-92309deabaf2@barebox.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241015_004111_074364_69126581 
-X-CRM114-Status: UNSURE (   8.29  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241015_004725_194569_CC637B5C 
+X-CRM114-Status: GOOD (  20.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,39 +86,48 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/6] dma: give dma_alloc_coherent a device parameter
+Subject: Re: [PATCH] input: usb_kbd: make polling interval configurable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Mon, 14 Oct 2024 14:58:37 +0200, Ahmad Fatoum wrote:
-> Devices can be inherently DMA coherent and thus dma_alloc_coherent could
-> be implemented as a normal allocation.
+On Mon, Oct 14, 2024 at 05:32:38PM +0200, Ahmad Fatoum via B4 Relay wrote:
+> From: Ahmad Fatoum <a.fatoum@barebox.org>
 > 
-> While using uncached memory in this case isn't wrong, it can lead
-> to a a very stark performance degradation as identified in this patch[1]
-> when barebox ran under KVM.
+> We currently use whatever polling interval the keyboard reports, but in
+> some keyboard it can be useful to set a lower interval, e.g. for better
+> control of the snake in the barebox demo[1].
 > 
-> [...]
+> Add a parameter to make this possible.
+> 
+> [1]: https://fosstodon.org/@barebox/112983807569839989
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+> ---
+>  drivers/input/usb_kbd.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
+> index 2e75aabf3da4..d47e760a89ee 100644
+> --- a/drivers/input/usb_kbd.c
+> +++ b/drivers/input/usb_kbd.c
+> @@ -169,6 +169,11 @@ static int usb_kbd_probe(struct usb_device *usbdev,
+>  	data->intpktsize = min(usb_maxpacket(usbdev, data->intpipe),
+>  			       USB_KBD_BOOT_REPORT_SIZE);
+>  	data->intinterval = data->ep->bInterval;
+> +
+> +	dev_add_param_uint32(&usbdev->dev, "polling_interval",
+> +			     NULL, NULL, &data->intinterval, "%u",
+> +			     NULL);
 
-Applied, thanks!
+Should be polling_interval_ms to make it more clear what is expected
+here.
 
-[1/6] dma: make DMA_ADDRESS_BROKEN type-safe
-      https://git.pengutronix.de/cgit/barebox/commit/?id=5f004115ac0f (link may not be stable)
-[2/6] video: stm: use DMA_ADDRESS_BROKEN instead of NULL
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2ca7fca692c0 (link may not be stable)
-[3/6] crypto: caam - pbl-init: use DMA_ADDRESS_BROKEN instead of NULL
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b3b20535573c (link may not be stable)
-[4/6] net: designware: don't use dma_mapping_error for non-streaming DMA
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0b2bc567a82a (link may not be stable)
-[5/6] net: macb: fix DMA_ADDRESS_BROKEN in the coherent ring allocations
-      https://git.pengutronix.de/cgit/barebox/commit/?id=df13e1902a2c (link may not be stable)
-[6/6] dma: give dma_alloc_coherent a device parameter
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a4c9398795be (link may not be stable)
+Sascha
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
