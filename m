@@ -1,73 +1,66 @@
-Delivery-date: Wed, 16 Oct 2024 11:02:02 +0200
+Delivery-date: Wed, 16 Oct 2024 11:02:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0zus-004zxc-1Z
+	id 1t0zvN-004zyN-2a
 	for lore@lore.pengutronix.de;
-	Wed, 16 Oct 2024 11:02:02 +0200
+	Wed, 16 Oct 2024 11:02:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0zur-0005P6-SC
-	for lore@pengutronix.de; Wed, 16 Oct 2024 11:02:02 +0200
+	id 1t0zvN-0005go-1s
+	for lore@pengutronix.de; Wed, 16 Oct 2024 11:02:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=39fB+Vj6Ql5sfMoJfFP/vHAlkwLFMD1r0EFtvny7IV4=; b=bYfNnhq8j4iS/tcJj+MPdWt9Yr
-	ZOYidqF7pv5+0zlkTYBF9KWUSbBqoICJ4iPudv5N25nibusiycqA/JjTAO4cozpVNMjVW3LMtDoH8
-	TEJxR9R/cts0R4HBO6MkpBb65LncD552D6iKdgM/xpvHLNEpnXr7VH/fdXh27cHCV6GtoLlDbFXwW
-	HnsgnK8YlVkgVjzxgogmxqpaERuY3xE0fc2VmmuDoJKYfT9UQXWrKsiEIBREkXaIDQwKSCN4cFJ9P
-	F3JPzF+pdUzEg8bIimYkpUkfoYL5CE0VpBCSj6b+pTyK03abAAIi8VloGVKToMrBIxDAz/doSakUp
-	4ameHdlw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=DLd34ATwwEvE//hXUOoiOAatQ2pzC9E5gM5Y89N5npM=; b=KWSCFQqeE8gs08l9IJZmZ/Or6w
+	OnQooIK9c07a1hBjYQUBvo2DRsptmub+jwFixKIA3vUnkfX5GCdaWhaY5WGi6TY+Pj/ld1NJ89QUP
+	PziHgkBvnyThvf4lFZ9nDcA58jLvwdw3Y/PJRhYzz4YQdYcdAfi+beWWR5Vry/9A+vP9i+qiFp9b+
+	N3mIHWk+L0msWK3PC7gwkw43MRwFQbo8in8zmaDHAcAtwqETxXxIYuYSuBak/TgGdSK71l6qqVQE2
+	5zMHY56kxpF/RAv795/SXpv/F6/1+2ZaJoHhmXZ0hNBrk4rO1KsWzj4QkVFKRvbPH3IiQ/nUaaY6V
+	5l/yWxPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0zuL-0000000B90p-2OGQ;
-	Wed, 16 Oct 2024 09:01:29 +0000
+	id 1t0zuq-0000000B9Fc-3cKp;
+	Wed, 16 Oct 2024 09:02:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0zu5-0000000B8w2-1N2l
+	id 1t0zui-0000000B9B0-3eFm
 	for barebox@lists.infradead.org;
-	Wed, 16 Oct 2024 09:01:14 +0000
+	Wed, 16 Oct 2024 09:01:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t0zu2-00055L-GK; Wed, 16 Oct 2024 11:01:10 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1t0zuh-0005La-DZ; Wed, 16 Oct 2024 11:01:51 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t0zu2-002EM7-2c; Wed, 16 Oct 2024 11:01:10 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t0zu1-00ENrB-3A;
-	Wed, 16 Oct 2024 11:01:10 +0200
-Date: Wed, 16 Oct 2024 11:01:09 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Message-ID: <Zw-A1UWpcffBeb1g@pengutronix.de>
-References: <20241015-rockchip-spi-rk808-v1-0-e276b4b59603@pengutronix.de>
- <20241015-rockchip-spi-rk808-v1-5-e276b4b59603@pengutronix.de>
- <CAP1tNvQZ+-DXG862KJ1PMBJb5Z_pmngMqcCr7CrMDFs+MQOZ1g@mail.gmail.com>
- <CAP1tNvT6P9v9n74K=fdvnQoOx1FuEKhWT_W7c7f98riRFg0W5Q@mail.gmail.com>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1t0zug-002EMF-OY; Wed, 16 Oct 2024 11:01:50 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1t0zug-00GdhR-2A;
+	Wed, 16 Oct 2024 11:01:50 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 16 Oct 2024 11:01:38 +0200
+Message-Id: <20241016090150.3963002-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241016090150.3963002-1-a.fatoum@pengutronix.de>
+References: <20241016090150.3963002-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP1tNvT6P9v9n74K=fdvnQoOx1FuEKhWT_W7c7f98riRFg0W5Q@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241016_020113_384258_3349F555 
-X-CRM114-Status: GOOD (  21.39  )
+X-CRM114-CacheID: sfid-20241016_020153_037654_79E48C15 
+X-CRM114-Status: GOOD (  12.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,51 +78,56 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 5/7] mfd: rk808: add support for RK806
+Subject: [PATCH 01/13] kconfig: add IS_PROPER helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Oct 16, 2024 at 10:07:57AM +0300, Alexander Shiyan wrote:
-> Oh, I see that in [4/7]. Sorry for the noise.
+We depend on -ffunction-sections -fdata-sections at a lot of places and
+fail the link without due to undefined references. This is especially
+needed for obj-pbl-y code as the files usually have other functions
+depending on barebox proper infrastructure, but that is never called.
 
-I think you are misreading the patch. Indeed the RK806 can work in I2C
-mode and my patch series currently doesn't support this. I have two
-different of_device_id tables, one used for I2C and the other for SPI.
-RK806 currently only is in the SPI table, not in the I2C table.
+This works so far, but breaks for two things: LTO and using PBL on
+sandbox. Both I have not managed to get the linker not to complain about
+the undefined references in the ultimately unreferenced code.
 
-I2C support for RK806 is likely only a matter of adding the compatible
-entry. I can add it, but I cannot test it. Do you have a hardware to
-test this on?
+Therefore, let's solve this a different way: Add an IS_PROPER macro and
+have the stubs defined when !IS_PROPER.
 
-Sascha
+This has the nice side effect of compile testing the stubs during PBL
+build, so forgotten semicolons are more likely to be noticed during
+development instead of CI run.
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/linux/kconfig.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-> 
-> вт, 15 окт. 2024 г. в 17:46, Alexander Shiyan <eagle.alexander923@gmail.com>:
-> >
-> > вт, 15 окт. 2024 г. в 14:21, Sascha Hauer <s.hauer@pengutronix.de>:
-> > >
-> > > This adds support for the RK806 to the rk808 driver. Additionally to
-> > > I2C this variant comes with SPI support, so add SPI probe support to the
-> > > driver.
-> > >
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> >
-> > Hello Sascha.
-> >
-> > RK806 can also work via I2C. Can you add this compatibility together?
-> >
-> > Thanks!
-> 
-
+diff --git a/include/linux/kconfig.h b/include/linux/kconfig.h
+index 58f68adbbadf..8d31584c0c2a 100644
+--- a/include/linux/kconfig.h
++++ b/include/linux/kconfig.h
+@@ -33,4 +33,14 @@
+  */
+ #define IS_ENABLED(option) __or(IS_BUILTIN(option), IS_MODULE(option))
+ 
++/*
++ * IS_PROPER(CONFIG_FOO) evaluates to 1 if CONFIG_FOO is set to 'y', or 'm'
++ * and file is being compiled for barebox proper, 0 otherwise.
++ */
++#ifndef __PBL__
++#define IS_PROPER(option) IS_ENABLED(option)
++#else
++#define IS_PROPER(option) 0
++#endif
++
+ #endif /* __LINUX_KCONFIG_H */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
