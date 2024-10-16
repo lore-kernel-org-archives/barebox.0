@@ -1,71 +1,71 @@
-Delivery-date: Wed, 16 Oct 2024 11:12:36 +0200
+Delivery-date: Wed, 16 Oct 2024 11:18:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t1056-0050SA-0l
+	id 1t10B9-0050Vo-21
 	for lore@lore.pengutronix.de;
-	Wed, 16 Oct 2024 11:12:36 +0200
+	Wed, 16 Oct 2024 11:18:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t1055-0007Xf-Ll
-	for lore@pengutronix.de; Wed, 16 Oct 2024 11:12:36 +0200
+	id 1t10B9-00007X-1S
+	for lore@pengutronix.de; Wed, 16 Oct 2024 11:18:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
 	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZMfBjlyJS3DMmG5bmoroPAVhHALTZDGryeP/A1sUyRc=; b=1EN5xpZx29pzyo6zftbNOxiNfF
-	qdH59Qxcxj1oRGRnN5h936ppR5P9b7X8mgg4jKGqCutQBHg0IdW9JuwQKuGFNacJ9+2zE/Bx0ntq4
-	JO9Kbni07piNjHGW+eZy4yk+wm4yMgyRddpxeF+pUcrfVwzEQfXf1KVt7siOLOya535kt29rLhVnY
-	gBZsbvGDBX9lysE4nG9hFP6d2jGhlomJPxuBo2l/gINmieOwl61KRNAQk7TxAFbf0DzLrOG+eVZph
-	ewMWzZ12cvoxltcq08bbzVcteuSAPLjm/UtnFYkXm9aYJ85EHfoLXOglbC4/D0CCIJn7gRQg181IF
-	MJDhfekw==;
+	bh=810dmg6ihTvop8+cX5WeOVkNT/gKRPXvTEH7BqjU0yc=; b=EB8/xeFQwJAZEnvz/RFY+d7b6I
+	cP2kTyHUFtmM+xsigoHyei0yNiEPmy8YXjrVip2ghvdqWbbVvfSEXWrNY5HIek+bd0Z9/+rknNZaK
+	NJmjsSKmBo++h/OyRKJlS+0v9v1H8yrs12C1ITQp3rixo5jdVYn/CuVav75f6xHhzGW4Zwg1hKj4r
+	bzyVxtt+GIm+5qaaN6uuNRMkiRvUvghipimVjyNnhCKpIuC6HFg7kAAoDB2giSXDZR5ujXeLurlKh
+	OtHf19iLxS1w09vkrvZvDw23EwQYOLq0LDxoNnn6g3K1j84dDS/qAVxcZ2IF6Xd3A04lG7ISS22k7
+	itG6JOiQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t104Z-0000000BBbm-29Vi;
-	Wed, 16 Oct 2024 09:12:03 +0000
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+	id 1t10Ag-0000000BCcd-4AVy;
+	Wed, 16 Oct 2024 09:18:23 +0000
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t104W-0000000BBbO-0mNl
+	id 1t1069-0000000BBvS-07by
 	for barebox@lists.infradead.org;
-	Wed, 16 Oct 2024 09:12:01 +0000
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2e3010478e6so4086312a91.1
-        for <barebox@lists.infradead.org>; Wed, 16 Oct 2024 02:11:59 -0700 (PDT)
+	Wed, 16 Oct 2024 09:13:42 +0000
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-20c7ee8fe6bso46146515ad.2
+        for <barebox@lists.infradead.org>; Wed, 16 Oct 2024 02:13:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729069919; x=1729674719; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1729070020; x=1729674820; darn=lists.infradead.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZMfBjlyJS3DMmG5bmoroPAVhHALTZDGryeP/A1sUyRc=;
-        b=K+923Zs4QWc9K/eVqDMD4slwGL6R5aycgkY/k4vXDigtvDOKsgKVfJbukSsCgQXGGg
-         aSXu/dSVS9Xykr98NXbLAoCAiNxuoroKKFmPYDslCl0mq974rvncaZvwx6sblK7UMUZF
-         RySJ+sK7WrNEfc2dBdhIdgEsRBKh2FTJNjQXMHWSMnpJNX6e7NWXoBDtOlV1UApWHvZD
-         SpD//ioV8qyetTPEGlcntVjVhmT5BBqPX/idf96LP/qlUjxTY4Gwu+b01FzWZlvCs/P8
-         UYpk+VoFyoamXWjJ1J0tL7I+8v2q4s7ec02GIy8cLFHlAHLQT/2sbhc1IWpn8J38cQ2B
-         m6jA==
+        bh=810dmg6ihTvop8+cX5WeOVkNT/gKRPXvTEH7BqjU0yc=;
+        b=G5dNrteo9uR4pyc7otjQ3UrVZMSg6yEWDcUVEYHNZYAdAODpT3r/0ICuS93nVW/7RF
+         SGhsD6Qe6fg8ewQos47XFD5fY5wV1kMUmx4Usoo8MEOOzHWZFYcNZc4iDNVxb3SoiFM3
+         hgPD8xzuqZG4KLLoXSo2QTukTvekmm8MjogHRC6swacKUavRweij2XYq+xGHuhdhTD0h
+         4BTGZ3Rjvvy1TBi2QQuk1sx3zMYhfliWZxWSU0XPkPUe/vBVszF4D5lPuiBzMA/MC7q2
+         wBUBxAmgsdvKLalpNlgHOqmxBEH/lgJrHtjKJPUPGAlhzM/IjZKM/xBeOJEaPY+X4bt1
+         8Kvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729069919; x=1729674719;
+        d=1e100.net; s=20230601; t=1729070020; x=1729674820;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZMfBjlyJS3DMmG5bmoroPAVhHALTZDGryeP/A1sUyRc=;
-        b=BdyFa82rW1+EBknl/cZvgJim7a90MgylWIB9PtJtVZbt0CY8VzrkTb0fSSpCFn3J8a
-         RWtEIk0njvIaiw3O68oBqw5WpFrDFagQQh6hzaBZVTF6ZLTs5Z59l0hkSgJCtUHkx5XQ
-         8K9OUHB43GDDEaxandzbw8h9ntREq+jGvKCRX08odf+hWkwivDR/TvPsDbmCIG2ViNKb
-         9+/Ll/7BzqiP1qySWGHNd1RW/tsGz/1HgQNkAxl/eEAdHsCkmQSRMYKRlVmlHJ3PO9Us
-         gfmJQ0wCajDXpV6p07INfzRO6rXu0g5UKXEc4a422K1r7jpYMiZg2Vie11co3bsMNSNR
-         Pcvw==
-X-Gm-Message-State: AOJu0YyqSMvI/q+VDlsk6j+JKJas6qjnRKGjUgSwBBON/IeFFJUyAAL3
-	094XEG6IjEy1kikcY9iop9A03zyB6XN9o74E4MsLI/ZYo7+jIQuCFRzgGSMoMN9m1p0nfiUM+7g
-	aYHgx7BzLeFgtA9sUBw8oRbcnkTA=
-X-Google-Smtp-Source: AGHT+IGWevqtt30v3GFOOLJpfxuM12qq83aLBgfMO0MBPGpuDGcOXv4yN+Cln6bPppxqr7HGfEQ4jLWRjkO+HKx7+FA=
-X-Received: by 2002:a17:90a:c28c:b0:2e2:8bce:3d16 with SMTP id
- 98e67ed59e1d1-2e3152e3b20mr18411854a91.19.1729069919222; Wed, 16 Oct 2024
- 02:11:59 -0700 (PDT)
+        bh=810dmg6ihTvop8+cX5WeOVkNT/gKRPXvTEH7BqjU0yc=;
+        b=HhkkeVJ9jnA+1uthAAs8jMKvyjXOJ1GloOFIfyF0r0/v0Sz01B1Pt6Gb0nbpNboflZ
+         UL0ast5PLmIjEp/ht42F3R7Fvkq5nEhTw4KnEsJxsqKNRpveEx9mvJcvSErs1zG79GuH
+         8KPatZx/lGV3K92DvcYsLNtN0Ewz0Z1bUcS+eGCmTDZWTNcoEppSZiBJh/texhXk+317
+         GHTejtzOAh8CZvQQpzyBA/nQMLe5W6Txg8pd82MgSPiHBlrUdk2bqvr/6/wURsXpXRO7
+         D7FpGQmrhVZj+ctEpSxhWOoCHNFp5vJaf0fE+UUazo5Vb574yPvKZxZVMeOAXfCBvmh6
+         0MNg==
+X-Gm-Message-State: AOJu0Yz969l1AQ4ojI87YQ+X699kpAj1Zeh4n+EXGbSclNS22wuvEtw6
+	2PBaaO/saEZDqKcA5ZjtUA229RHOEjI5Pqk304fvdidpfUdcR6SdynBcat913UXO/HeFVoP3OpI
+	QtQs6pa3oPfvuDjBKcqQJzaOadcwaJi9Oacc=
+X-Google-Smtp-Source: AGHT+IHugwRJTDvMZ5bTmadbSAvQfTBzktAK5pMbfjfVY+Nxf3Tnatz1nZBXI2gsx53zyFDV7Qt+IGGLQ4jhICzLJSU=
+X-Received: by 2002:a17:90b:4b04:b0:2e2:ca67:dade with SMTP id
+ 98e67ed59e1d1-2e3ab8bc83amr3834135a91.32.1729070020254; Wed, 16 Oct 2024
+ 02:13:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <20241015-rockchip-spi-rk808-v1-0-e276b4b59603@pengutronix.de>
  <20241015-rockchip-spi-rk808-v1-5-e276b4b59603@pengutronix.de>
@@ -73,15 +73,15 @@ References: <20241015-rockchip-spi-rk808-v1-0-e276b4b59603@pengutronix.de>
  <CAP1tNvT6P9v9n74K=fdvnQoOx1FuEKhWT_W7c7f98riRFg0W5Q@mail.gmail.com> <Zw-A1UWpcffBeb1g@pengutronix.de>
 In-Reply-To: <Zw-A1UWpcffBeb1g@pengutronix.de>
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 16 Oct 2024 12:11:47 +0300
-Message-ID: <CAP1tNvSH3FP77Qsy+K9Wq7uuNvAAWuY02gkHOpodSCb-anTAgg@mail.gmail.com>
+Date: Wed, 16 Oct 2024 12:13:28 +0300
+Message-ID: <CAP1tNvRXQiiSY-tv0q+4VVc0o6Se9jfE7TB6JCbGYBT-ApR6yg@mail.gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241016_021200_246503_D72C7FD9 
-X-CRM114-Status: GOOD (  21.21  )
+X-CRM114-CacheID: sfid-20241016_021341_148184_20EF3D81 
+X-CRM114-Status: GOOD (  22.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -108,9 +108,7 @@ Subject: Re: [PATCH 5/7] mfd: rk808: add support for RK806
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello.
-
-Yes, we have developed a scheme and soon I will have a sample in my hands.
+As an example, this can be tested with i2c-gpio driver, is'nt it?
 
 =D1=81=D1=80, 16 =D0=BE=D0=BA=D1=82. 2024=E2=80=AF=D0=B3. =D0=B2 12:01, Sas=
 cha Hauer <s.hauer@pengutronix.de>:
