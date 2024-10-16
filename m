@@ -1,66 +1,66 @@
-Delivery-date: Wed, 16 Oct 2024 11:02:59 +0200
+Delivery-date: Wed, 16 Oct 2024 11:03:05 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0zvn-00501n-0k
+	id 1t0zvt-005029-1o
 	for lore@lore.pengutronix.de;
-	Wed, 16 Oct 2024 11:02:59 +0200
+	Wed, 16 Oct 2024 11:03:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t0zvm-00063f-Jq
-	for lore@pengutronix.de; Wed, 16 Oct 2024 11:02:59 +0200
+	id 1t0zvs-000676-40
+	for lore@pengutronix.de; Wed, 16 Oct 2024 11:03:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Iaq/K7RMThAkj9hS28/roQPWkhbfEYRlSq+YOHQYOEw=; b=IUI/qbUSJbMoXGs+8fs+GMvkwW
-	H0dem0zoz2hCT7QabwZRcbaBKxgq6Q2LX4t44lKMwNGz6O+XDBMmW7wwSo/Fklri25eb6ovsbCEKs
-	THQlCUnElRUMt5v0Xb4iNiXguoOy07tYECYw04YBOQ/QMQxH8kxH6wfGRT22Dy3t0H4mA1UVDTtat
-	ZlPNGnFQAQCU/hFHbeBDKFaFvfaI9DbHu6iG9JiTq9w82fhKgjqCwCgN6RwTMIPUJGWqtWfQDZYMb
-	kPWmZIOid70uPECUfLZlZGnzAzyXHdMju5aIpF0jntldVQ7vtM4MSC7mM/AKjI6U+UcLY+nADuTup
-	774dGHMg==;
+	bh=LPiP21P1+lGyvlXfIPvqLZdNrOU8JY84hfhxTTpY+Vk=; b=h5ZoeFGxESaH3GVoAPPjq48o8f
+	W7XB/MfHCwlSUTVgsJEOErLC3T08493iZC5GacHEVtzdtxYQxafA0QJnksxCO6ohwxlAU8JxbqBk9
+	OtFpNBxes8uNdZxfMr8mtE2jFKFA7hN2r+TQGGJJvSeb0b01Vdo4UgMYjB7uf65zc3xm//Olh8BVs
+	7/CXoX9vRZgTS97wenH+8RC3E8TbgvSLuiprgSu4Psfv05GCRl7PpDRzKrnjnqKoVi7osf8VfPZ1v
+	0R60K18OshhLgzCrLW2Gbho4W9KbX44wUpgyMvvV9lelfDRYvK0RpcVZy9synTSHo4/Dca1Qcffu9
+	tw+KfYUA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0zvF-0000000B9Xg-3QtF;
-	Wed, 16 Oct 2024 09:02:25 +0000
+	id 1t0zvK-0000000B9aU-15TL;
+	Wed, 16 Oct 2024 09:02:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0zuq-0000000B9GB-483B
+	id 1t0zuq-0000000B9GA-3yu6
 	for barebox@lists.infradead.org;
-	Wed, 16 Oct 2024 09:02:05 +0000
+	Wed, 16 Oct 2024 09:02:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0zuh-0005Lq-Ie; Wed, 16 Oct 2024 11:01:51 +0200
+	id 1t0zuh-0005Lm-GK; Wed, 16 Oct 2024 11:01:51 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0zuh-002EMX-0e; Wed, 16 Oct 2024 11:01:51 +0200
+	id 1t0zug-002EMR-U2; Wed, 16 Oct 2024 11:01:50 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t0zug-00GdhR-31;
+	id 1t0zug-00GdhR-2j;
 	Wed, 16 Oct 2024 11:01:50 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 16 Oct 2024 11:01:44 +0200
-Message-Id: <20241016090150.3963002-8-a.fatoum@pengutronix.de>
+Date: Wed, 16 Oct 2024 11:01:42 +0200
+Message-Id: <20241016090150.3963002-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241016090150.3963002-1-a.fatoum@pengutronix.de>
 References: <20241016090150.3963002-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241016_020201_271853_5A52C118 
-X-CRM114-Status: GOOD (  10.51  )
+X-CRM114-CacheID: sfid-20241016_020201_236801_3D4E63EC 
+X-CRM114-Status: GOOD (  11.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,7 +82,7 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/13] environment: stub out environment API for PBL
+Subject: [PATCH 05/13] cdev: stub out cdev_read/write for PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -91,24 +91,69 @@ instead of link time, let's define stubs for the functions that
 are referenced in obj-pbl-y files, but inside function sections
 that are ultimately unreferenced.
 
+We don't use IS_PROPER here as cdev support is always available
+in barebox proper.
+
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/environment.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/driver.h | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/include/environment.h b/include/environment.h
-index 8b143c16b7ad..d8871109362a 100644
---- a/include/environment.h
-+++ b/include/environment.h
-@@ -29,7 +29,7 @@ struct env_context *get_current_context(void);
- char *var_val(struct variable_d *);
- char *var_name(struct variable_d *);
+diff --git a/include/driver.h b/include/driver.h
+index c4067d531cc7..04d7125ac786 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -14,6 +14,7 @@
+ #include <device.h>
+ #include <of.h>
+ #include <init.h>
++#include <errno.h>
+ #include <filetype.h>
  
--#ifdef CONFIG_ENVIRONMENT_VARIABLES
-+#if IS_PROPER(CONFIG_ENVIRONMENT_VARIABLES)
- const char *getenv(const char *);
- int setenv(const char *, const char *);
- int pr_setenv(const char *, const char *fmt, ...)  __attribute__ ((format(__printf__, 2, 3)));
+ #define FORMAT_DRIVER_NAME_ID	"%s%d"
+@@ -514,21 +515,40 @@ int devfs_create_link(struct cdev *, const char *name);
+ int devfs_remove(struct cdev *);
+ int cdev_find_free_index(const char *);
+ struct cdev *device_find_partition(struct device *dev, const char *name);
+-struct cdev *cdev_by_name(const char *filename);
+ struct cdev *lcdev_by_name(const char *filename);
+ struct cdev *cdev_readlink(struct cdev *cdev);
+ struct cdev *cdev_by_device_node(struct device_node *node);
+ struct cdev *cdev_by_partuuid(const char *partuuid);
+ struct cdev *cdev_by_diskuuid(const char *partuuid);
+-struct cdev *cdev_open_by_name(const char *name, unsigned long flags);
+ struct cdev *cdev_create_loop(const char *path, ulong flags, loff_t offset);
+ void cdev_remove_loop(struct cdev *cdev);
+ int cdev_open(struct cdev *, unsigned long flags);
+ int cdev_fdopen(struct cdev *cdev, unsigned long flags);
+ int cdev_close(struct cdev *cdev);
+ int cdev_flush(struct cdev *cdev);
++#ifndef __PBL__
+ ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags);
+ ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
++struct cdev *cdev_by_name(const char *filename);
++struct cdev *cdev_open_by_name(const char *name, unsigned long flags);
++#else
++static inline ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
++{
++	return -ENOSYS;
++}
++static inline ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
++{
++	return -ENOSYS;
++}
++static inline struct cdev *cdev_by_name(const char *filename)
++{
++	return NULL;
++}
++static inline struct cdev *cdev_open_by_name(const char *name, unsigned long flags)
++{
++	return NULL;
++}
++#endif
+ int cdev_ioctl(struct cdev *cdev, unsigned int cmd, void *buf);
+ int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
+ int cdev_lseek(struct cdev*, loff_t);
 -- 
 2.39.5
 
