@@ -1,64 +1,77 @@
-Delivery-date: Thu, 17 Oct 2024 11:11:05 +0200
+Delivery-date: Thu, 17 Oct 2024 13:14:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t1MXB-005Pum-26
+	id 1t1OSN-005S3y-1U
 	for lore@lore.pengutronix.de;
-	Thu, 17 Oct 2024 11:11:05 +0200
+	Thu, 17 Oct 2024 13:14:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t1MX7-0004Sm-Bx
-	for lore@pengutronix.de; Thu, 17 Oct 2024 11:11:05 +0200
+	id 1t1OSJ-0000Ob-NE
+	for lore@pengutronix.de; Thu, 17 Oct 2024 13:14:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=iVgK6O3RiKxhB4YtU0wlsOnLWtTU07Q860/ZpXs8Q9Y=; b=ohOG9neAHtogeKfo9EmZ3ThXxo
-	XbrH/2zzwRO6B2+Z3kCvd3YeX0fhbMGUrRIFAan5WgkIoheDnuDNckJvDBOL+b70k+XTgxrGLWYIG
-	xK1v3x09Old+MSVJKHiymo9i7oKsAGXFXlYNapkPkpVJiJV6ltQOf8g7gECOgnywLcMZ0qfNtdDo2
-	+qFtZsmyeSS2JLvWFuUQzrNkuKYVRIri7Ld3gpfTG4wPHHB9uvhfrwTaMMCmgf7SBVW2tEEOTwWPm
-	B4l4mXBCLFmt7F7rMI3XZu5/xfoK6Fwo9dl/2zpm6lodxKkj5U8hBeljnb3SJZla0U+hxkeluZPm9
-	jeZMgF5g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8itxagi4obRh8+kY8mxAwjqtecZ2sHfYeuLeEqH8uKQ=; b=mVSbQFA4wocn5YdD3kst3rXv2h
+	glYVt1wdivygqErhJQVSAPHIr04+prki4iLl15s3+8LqnaWKcXXMIQ4XiqbMmNXcq/1U9RgIpN2vf
+	w1V7ArqFR5GoN7vQs5qyxucK8mLmnwNjgmSmqc0IGVDFQP2wUsQDtOFawUaaBLhrsmGYFORSr1+KH
+	j+zfVwDQjSjsnXnzohv43nnC0vGsSK5Y/Jaf/GB+9guJnAUjV76qHCgMiOuDNdYJ+tOCH7eIESCNZ
+	+/qUbUt48iwGQDkR15+msqJH4oqnNwemQ7qVOQWuySO+XCUHJLZpmasLUeOMYrD+uyiuMOpOtWjSY
+	MCGYzZjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t1MW8-0000000EHW5-3f0w;
-	Thu, 17 Oct 2024 09:10:00 +0000
+	id 1t1ORS-0000000EcAg-0TCu;
+	Thu, 17 Oct 2024 11:13:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t1MW5-0000000EHVO-12JQ
+	id 1t1OJz-0000000Eb8r-2Eke
 	for barebox@lists.infradead.org;
-	Thu, 17 Oct 2024 09:09:59 +0000
+	Thu, 17 Oct 2024 11:05:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t1MW1-0004OP-FM; Thu, 17 Oct 2024 11:09:53 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t1OJw-0007nD-7F; Thu, 17 Oct 2024 13:05:32 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t1MVz-002VXe-Bc; Thu, 17 Oct 2024 11:09:51 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t1MVz-000X4h-0s;
-	Thu, 17 Oct 2024 11:09:51 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 17 Oct 2024 11:09:47 +0200
-Message-Id: <20241017090947.127049-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <sha@pengutronix.de>)
+	id 1t1OJv-002Woe-Qt; Thu, 17 Oct 2024 13:05:31 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t1OJv-00GH2L-2N;
+	Thu, 17 Oct 2024 13:05:31 +0200
+Date: Thu, 17 Oct 2024 13:05:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
+Message-ID: <ZxDve8R0y3-uz3Jc@pengutronix.de>
+References: <20241015-rockchip-spi-rk808-v1-0-e276b4b59603@pengutronix.de>
+ <20241015-rockchip-spi-rk808-v1-5-e276b4b59603@pengutronix.de>
+ <CAP1tNvQZ+-DXG862KJ1PMBJb5Z_pmngMqcCr7CrMDFs+MQOZ1g@mail.gmail.com>
+ <CAP1tNvT6P9v9n74K=fdvnQoOx1FuEKhWT_W7c7f98riRFg0W5Q@mail.gmail.com>
+ <Zw-A1UWpcffBeb1g@pengutronix.de>
+ <CAP1tNvRXQiiSY-tv0q+4VVc0o6Se9jfE7TB6JCbGYBT-ApR6yg@mail.gmail.com>
+ <Zw-Z4X0I-yhYxB4y@pengutronix.de>
+ <CAP1tNvTv15iVnfgEmQOkG0oBZOextR7HrtsgaA03MBXcG47vcw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP1tNvTv15iVnfgEmQOkG0oBZOextR7HrtsgaA03MBXcG47vcw@mail.gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241017_020957_308505_72467F40 
-X-CRM114-Status: GOOD (  10.91  )
+X-CRM114-CacheID: sfid-20241017_040535_595699_7D383DC7 
+X-CRM114-Status: GOOD (  32.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,45 +93,84 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] i2c: lpi2c: fix potential read of uninitialized variable
+Subject: Re: [PATCH 5/7] mfd: rk808: add support for RK806
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-If the continue statement in the do {} while () loop is
-reached on the first iteration, the loop condition is evaluated without
-having first being set.
+On Wed, Oct 16, 2024 at 07:08:24PM +0300, Alexander Shiyan wrote:
+> I'm just saying that we can use i2c-gpio driver on SPI pins since in
+> rk806 pins are common for i2c/spi :)
 
-Fix this by initializing it to the maximum length of the I2C message.
+Ok, that could work. We would still bootstrap the RK806 for I2C mode
+instead of SPI mode. Anyway, I am not keen on doing that.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/i2c/busses/i2c-imx-lpi2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Sascha
 
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index e32bc4fd1805..763074ae63c7 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -330,7 +330,7 @@ static void lpi2c_imx_set_rx_watermark(struct lpi2c_imx_struct *lpi2c_imx)
- 
- static int lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
- {
--	unsigned int data, remaining;
-+	unsigned int data, remaining = lpi2c_imx->msglen;
- 	unsigned int timeout = 100000;;
- 
- 	do {
-@@ -353,7 +353,7 @@ static int lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
- 
- static int lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
- {
--	unsigned int remaining;
-+	unsigned int remaining = lpi2c_imx->msglen;
- 	unsigned int data;
- 	unsigned int timeout = 100000;;
- 
+> 
+> ср, 16 окт. 2024 г. в 13:48, Sascha Hauer <s.hauer@pengutronix.de>:
+> >
+> > On Wed, Oct 16, 2024 at 12:13:28PM +0300, Alexander Shiyan wrote:
+> > > As an example, this can be tested with i2c-gpio driver, is'nt it?
+> >
+> > We have a rockchip i2c driver in barebox. I just don't have a board
+> > where the RK806 is connected via I2C.
+> >
+> > Sascha
+> >
+> > >
+> > > ср, 16 окт. 2024 г. в 12:01, Sascha Hauer <s.hauer@pengutronix.de>:
+> > > >
+> > > > On Wed, Oct 16, 2024 at 10:07:57AM +0300, Alexander Shiyan wrote:
+> > > > > Oh, I see that in [4/7]. Sorry for the noise.
+> > > >
+> > > > I think you are misreading the patch. Indeed the RK806 can work in I2C
+> > > > mode and my patch series currently doesn't support this. I have two
+> > > > different of_device_id tables, one used for I2C and the other for SPI.
+> > > > RK806 currently only is in the SPI table, not in the I2C table.
+> > > >
+> > > > I2C support for RK806 is likely only a matter of adding the compatible
+> > > > entry. I can add it, but I cannot test it. Do you have a hardware to
+> > > > test this on?
+> > > >
+> > > > Sascha
+> > > >
+> > > >
+> > > > >
+> > > > > вт, 15 окт. 2024 г. в 17:46, Alexander Shiyan <eagle.alexander923@gmail.com>:
+> > > > > >
+> > > > > > вт, 15 окт. 2024 г. в 14:21, Sascha Hauer <s.hauer@pengutronix.de>:
+> > > > > > >
+> > > > > > > This adds support for the RK806 to the rk808 driver. Additionally to
+> > > > > > > I2C this variant comes with SPI support, so add SPI probe support to the
+> > > > > > > driver.
+> > > > > > >
+> > > > > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > > >
+> > > > > > Hello Sascha.
+> > > > > >
+> > > > > > RK806 can also work via I2C. Can you add this compatibility together?
+> > > > > >
+> > > > > > Thanks!
+> > > > >
+> > > >
+> > > > --
+> > > > Pengutronix e.K.                           |                             |
+> > > > Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> > > > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> > > > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > >
+> >
+> > --
+> > Pengutronix e.K.                           |                             |
+> > Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
