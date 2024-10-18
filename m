@@ -1,58 +1,58 @@
-Delivery-date: Fri, 18 Oct 2024 14:03:52 +0200
+Delivery-date: Fri, 18 Oct 2024 14:09:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t1lhv-005sPe-3A
+	id 1t1lna-005sSp-2y
 	for lore@lore.pengutronix.de;
-	Fri, 18 Oct 2024 14:03:51 +0200
+	Fri, 18 Oct 2024 14:09:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t1lhv-0006Ap-Dn
-	for lore@pengutronix.de; Fri, 18 Oct 2024 14:03:51 +0200
+	id 1t1lna-0006r0-B6
+	for lore@pengutronix.de; Fri, 18 Oct 2024 14:09:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0YVqzBBlbhCZh43ZjwPnNNIw5fiFhDF2hndBhDa3cSw=; b=iLcNz3Na8Zq7ECe01Dsuh1Zin5
-	JFoNUR/RtGmtpOXVMLjve6zM89XG+YQWtpXMfZSKlvJKSGuezeah1k6N4xdSuMGsercWrpsJelb4l
-	HAaevuF5cV16/SljQgQIJm+rL7rXBxhQRjvos//fcWxv5c/c+wpesxRKSpR/PtUtoZTOJ5jf3WCZ/
-	MimC2Ya1OEyMCjfwAUMGPhYjEzzGZLy+7GtJu09/TmCoTTE45r9SwX6vZasWN+MF1woymKLotZHJL
-	DawYDpi179LiXCko8r2SmyNcWiKeXmgdawRHm4B1I1ADg5DClBmsouAtlzsfrGGDCyjwXqWBSMdFz
-	x5Q+TMPA==;
+	bh=WO6PUf3vbVF6qA0RvmPyp3mzKpOVRgb30JblNHaK2ZE=; b=N3bxzc79uXPqAgbVz8txH2ZikP
+	kMHbWwkBduzVD/o0leWZL166LA/tBeaow/6u+IpYXOeZoVRdnVL0yPjXn+gZUkwUnHbs304BnmKIr
+	mqTONXeuiHrXxSY1Ts2qBwcIhRp1rJNWF3/iC/jYjy2LeKf2b2Ip0WxllRWf0X4rMWaOiqSvyZcx3
+	uY3qzShL+IiKSH2nYA33FpLTqqK0eE8/apLNXzQ44cl/pOoJlY4Kc1wx7PIajKpEE22SpGr0eul5x
+	k0CgHknWItIZhm3P/JYlEK+2x7FXzE8+liJQwnehDKY/oUb6hw4BPlJIF9vPb7JgvEz52eiq0/Mu1
+	H8IzUmUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t1lhI-00000000hdw-2tTX;
-	Fri, 18 Oct 2024 12:03:12 +0000
+	id 1t1ln6-00000000ibD-0Zky;
+	Fri, 18 Oct 2024 12:09:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t1lhF-00000000hd0-1wSd
+	id 1t1lk4-00000000iAY-01B3
 	for barebox@lists.infradead.org;
-	Fri, 18 Oct 2024 12:03:10 +0000
+	Fri, 18 Oct 2024 12:06:05 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t1lhA-0005yx-RD; Fri, 18 Oct 2024 14:03:04 +0200
-Message-ID: <f78f7491-de44-44ff-aca4-5f9a02d0fc98@pengutronix.de>
-Date: Fri, 18 Oct 2024 14:03:02 +0200
+	id 1t1lk2-0006MZ-Or; Fri, 18 Oct 2024 14:06:02 +0200
+Message-ID: <e1790030-409b-4b14-9580-72ed64a60598@pengutronix.de>
+Date: Fri, 18 Oct 2024 14:06:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: abdelrahmanyossef12@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 References: <20241018-errors_fixes-v2-0-7f49d5a0087b@gmail.com>
- <20241018-errors_fixes-v2-1-7f49d5a0087b@gmail.com>
+ <20241018-errors_fixes-v2-2-7f49d5a0087b@gmail.com>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241018-errors_fixes-v2-1-7f49d5a0087b@gmail.com>
+In-Reply-To: <20241018-errors_fixes-v2-2-7f49d5a0087b@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241018_050309_533291_3E09F646 
-X-CRM114-Status: GOOD (  14.84  )
+X-CRM114-CacheID: sfid-20241018_050604_076895_88B7100C 
+X-CRM114-Status: GOOD (  18.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,42 +74,57 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/2] include: Include <linux/math.h> to resolve
- implicit declaration of do_div()
+Subject: Re: [PATCH v2 2/2] common: buffer access out-of-bounds
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Abdelrahman,
+Hi,
 
 On 18.10.24 13:45, Abdelrahman Youssef via B4 Relay wrote:
 > From: Abdelrahman Youssef <abdelrahmanyossef12@gmail.com>
 > 
-> I was testing barebox with randconfig, so I got a warning (treated as an error) : implicit declaration of do_div().
-> So <linux/math.h> needs to included.
+> in file_detect_type() to detect file of type socfpga_xload you need at least
+> 68 bytes bytes, so we need to check if we have enough bufsize.
+> So I moved it after checking if `bufsize >= 256`.
 > 
 > Signed-off-by: Abdelrahman Youssef <abdelrahmanyossef12@gmail.com>
 
-If there's no changes to v1, there no need to resend.
-
-Cheers,
-Ahmad
+Given that there's a small thing to fix with this patch, please resend
+it separately with below point addressed.
 
 > ---
->  include/linux/ktime.h | 1 +
->  1 file changed, 1 insertion(+)
+>  common/filetype.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/include/linux/ktime.h b/include/linux/ktime.h
-> index ea368b8802..2b9a91d540 100644
-> --- a/include/linux/ktime.h
-> +++ b/include/linux/ktime.h
-> @@ -21,6 +21,7 @@
->  #ifndef _LINUX_KTIME_H
->  #define _LINUX_KTIME_H
+> diff --git a/common/filetype.c b/common/filetype.c
+> index 3690d4ae07..3f74871d7f 100644
+> --- a/common/filetype.c
+> +++ b/common/filetype.c
+> @@ -374,9 +374,6 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+>  	if (le32_to_cpu(buf[5]) == 0x504d5453)
+>  		return filetype_mxs_bootstream;
 >  
-> +#include <linux/math.h>
->  #include <linux/time.h>
->  #include <clock.h>
->  #include <linux/bug.h>
+> -	if (buf[16] == 0x31305341)
+> -		return filetype_socfpga_xload;
+> -
+>  	if (is_barebox_arm_head(_buf))
+>  		return filetype_arm_barebox;
+>  	if (buf[9] == 0x016f2818 || buf[9] == 0x18286f01)
+> @@ -388,7 +385,10 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+>  	if (bufsize < 256)
+>  		return filetype_unknown;
+>  
+> -	if (strncmp(buf8, "STM\x32", 4) == 0) {
+> +	if (buf[16] == 0x31305341)
+> +		return filetype_socfpga_xload;
+> +
+> +    if (strncmp(buf8, "STM\x32", 4) == 0) {
+
+This whitespace change is unrelated to your fix.
+
+>  		if (buf8[74] == 0x01) {
+>  			switch(le32_to_cpu(buf[63])) {
+>  			case 0x00000000:
 > 
 
 
