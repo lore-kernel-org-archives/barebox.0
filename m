@@ -1,60 +1,66 @@
-Delivery-date: Mon, 21 Oct 2024 13:22:22 +0200
+Delivery-date: Mon, 21 Oct 2024 16:00:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t2qUQ-0072zH-0t
+	id 1t2sxZ-0075T7-1t
 	for lore@lore.pengutronix.de;
-	Mon, 21 Oct 2024 13:22:22 +0200
+	Mon, 21 Oct 2024 16:00:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t2qUP-0006VO-Mc
-	for lore@pengutronix.de; Mon, 21 Oct 2024 13:22:22 +0200
+	id 1t2sxY-00012U-Rl
+	for lore@pengutronix.de; Mon, 21 Oct 2024 16:00:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YDzR5QpW0suCqH/twJ+u5ter26amcbzjZ2WuyJ6qHL4=; b=qa3ALeaFlgPwkR5p4Eza2PWvg/
-	7AOS6l5FSVcGrHXq78oCvvfLH78s6qBgZ5SQSgTB9CGCPqPoAvaBhGDDFupN++dJ8CHm78O5CGsOY
-	KW4Vqss3Pe1ySrfILAhrYh9MGlPiwK7VGEZ2RVyY1yzMy34GbnmI9/bYFLGDjuBlc9KmtQ7Qg2TGU
-	scgIYtobhMXb8jDX3l2FJOdc/H9rIYTZDDQEP72f6LoqR2dGMBP9OAeZctlIi20WtHvopUc92aC9G
-	l//oXVQDoZy05m01bhsrFysogFy0Ng8vK8v/304ZC27MjMxouV8DWZ661hVzdgXl5voD035iTKeRt
-	3gq6/N3w==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=odQX1YPqQ/87jTBQoKWHNOh5X6c0clajpOnWyVaBWNA=; b=lsU4tfLqsUW4FLIeZvfff2sum0
+	4V61w5C2+n7m8Hy7ybTavgLGOMjV+8YPC74I5l0hrsR39dE5aVJa4oYGGb1/iV1pC/C+CUQ6w39ME
+	Vsks7OhbQd8igqyUJyEzjzZkQbfoSuT42mf8pzDg//01MZWTRYcqZliPPXA2ZD9BlRoSQEayU4X6s
+	KD16+cWNLoaXfF1tn8VlggjoU3PHFnGHjrdJdT845dOsFDKo6EvNG7AVcoB4vML/TXxL8DLZY24/D
+	45CrV4jvs6GABVJtQPcLP4/KfuiqxufNaZWb8o3JUg7uhZvn+dousXG66fLKvNaqHV5DVfcrG+Gri
+	e3Cn+DXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t2qTp-000000072W5-1rwb;
-	Mon, 21 Oct 2024 11:21:45 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1t2swt-00000007Wbw-3SYe;
+	Mon, 21 Oct 2024 13:59:55 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t2qT5-000000072O8-2P6Q
+	id 1t2scg-00000007RpG-3l8a
 	for barebox@lists.infradead.org;
-	Mon, 21 Oct 2024 11:21:00 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Mon, 21 Oct 2024 13:39:04 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t2qT4-0006J3-Cr; Mon, 21 Oct 2024 13:20:58 +0200
-Message-ID: <307cd091-188b-4124-bded-7cb8c8913dab@pengutronix.de>
-Date: Mon, 21 Oct 2024 13:20:57 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-References: <20241021-arm-layerscape-tfa-v1-0-0980697b6f66@pengutronix.de>
- <20241021-arm-layerscape-tfa-v1-2-0980697b6f66@pengutronix.de>
- <f4a3b122-28c3-4e23-aba1-2a41d3c77425@pengutronix.de>
- <ZxY47o0QiqLzn4oc@pengutronix.de>
-Content-Language: en-US
+	id 1t2scd-00079Y-Jy; Mon, 21 Oct 2024 15:38:59 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1t2scd-000hry-1P;
+	Mon, 21 Oct 2024 15:38:59 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1t2scd-0017Vu-18;
+	Mon, 21 Oct 2024 15:38:59 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <ZxY47o0QiqLzn4oc@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 21 Oct 2024 15:38:55 +0200
+Message-Id: <20241021133855.266927-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241021_042059_643854_B79228D5 
-X-CRM114-Status: GOOD (  18.49  )
+X-CRM114-CacheID: sfid-20241021_063902_960643_E5631F8C 
+X-CRM114-Status: UNSURE (   9.85  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,65 +82,41 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/9] ARM: Layerscape: TQMLS1046a: add support for 8GiB
- variant
+Subject: [PATCH] console_countdown: use CTL_CH macro for control characters
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 21.10.24 13:20, Sascha Hauer wrote:
-> On Mon, Oct 21, 2024 at 11:06:47AM +0200, Ahmad Fatoum wrote:
->> Hello Sascha,
->>
->> On 21.10.24 09:21, Sascha Hauer wrote:
->>> The tqmls1046a also has a 8GiB DDR variant. This patch adds support for
->>> this variant as an additional image with suffix _8g in the name.
->>>
->>> The 8GiB boards use two different types of DDR chips which can be
->>> distinguished by reading the EEPROM. There is one regular version which
->>> has the string "TQMLS1046A-P2.0201" is the EEPROM. The other one is
->>> possibly only used for Arkona and has the string "TQMLS1046A-CA.0202"
->>> in the EEPROM. There might be other possible strings we are currently
->>> not aware of, we fall back to the P2 variant in this case.
->>>
->>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->>> ---
->>
->> [snip]
->>
->>> -static int tqmls1046a_mem_init(void)
->>> +static void ls1046a_add_memory(void)
->>>  {
->>> +	u32 cs0_bnds;
->>> +	unsigned long long memsize, lower, upper;
->>
->> Nitpick: u64
->>
->>> +ENTRY_PROC(start_tqmls1046a_8g)
->>> +	mov x3, #STACK_TOP
->>> +	mov sp, x3
->>> +	b tqmls1046a_8g_entry
->>
->> We should be able to migrate these assembly entry points to
->> use ENTRY_FUNCTION_WITHSTACK.
-> 
-> We could do here. A few patches further down though when adding TF-A
-> support the stack address will depend on the exception level which can't
-> be covered by ENTRY_FUNCTION_WITHSTACK.
+This introduces no functional change, but makes code more readable as
+it's directly evident that the 3 here means ctrl+c.
 
-Alright. never mind then. :-)
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/console_countdown.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Cheers,
-Ahmad
-
-> 
-> Sascha
-> 
-
-
+diff --git a/common/console_countdown.c b/common/console_countdown.c
+index e41641aca23e..832505c1d755 100644
+--- a/common/console_countdown.c
++++ b/common/console_countdown.c
+@@ -10,6 +10,7 @@
+ #include <errno.h>
+ #include <console_countdown.h>
+ #include <stdio.h>
++#include <readkey.h>
+ 
+ static bool console_countdown_timeout_abort;
+ 
+@@ -57,7 +58,7 @@ int console_countdown(int timeout_s, unsigned flags, const char *keys,
+ 					goto out;
+ 				if (flags & CONSOLE_COUNTDOWN_RETURN && (key == '\n' || key == '\r'))
+ 					goto out;
+-				if (flags & CONSOLE_COUNTDOWN_CTRLC && key == 3)
++				if (flags & CONSOLE_COUNTDOWN_CTRLC && key == CTL_CH('c'))
+ 					goto out;
+ 			}
+ 			key = 0;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
