@@ -1,74 +1,74 @@
-Delivery-date: Mon, 21 Oct 2024 10:30:48 +0200
+Delivery-date: Mon, 21 Oct 2024 10:30:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t2noO-00704K-0F
+	id 1t2noP-00704t-1k
 	for lore@lore.pengutronix.de;
-	Mon, 21 Oct 2024 10:30:48 +0200
+	Mon, 21 Oct 2024 10:30:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t2noN-0006QF-6h
-	for lore@pengutronix.de; Mon, 21 Oct 2024 10:30:48 +0200
+	id 1t2noO-0006Qd-Ew
+	for lore@pengutronix.de; Mon, 21 Oct 2024 10:30:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9p6oOLwMOHOSABSKhuzoO0/wLKC7YrhKhsM+7fh16yE=; b=UqPChV696suYk5S51nmxROzcP2
-	6rV4tEzXDJcFVePolMFJM+G1xnqdsX2P/gMJnOxp3HEp3dEGmmzRo0TxMkjVhfU4JTzpDRSp0VICY
-	zNU8pfUATZ+PycY8r29PmB0ZiMGIPbNrpxCaaXm3Rmb4slfN2akLRZtV810OUp2TmPUiPlRBF9nfh
-	EY+EMb1ky+rpuNQ2i5cI7ACpmu+7qHeXnlm3ZOFl1LVtm7CdkoRKiIK3x5ZeJdEGJXCu7Durg/Avz
-	4cC92Ph+t2DXhmqhx8mtYaana7UhgccmUlpEIp6Vathv0yTZsq0zwWBlMsU2TIl6xSfBUrDHogVCS
-	TuklByPQ==;
+	bh=/gvGJdXAtr6Ee4GlniwsWbQ539Hw6YZMgoaTvLKjjYE=; b=gdLaEYhFUnty72Jkr1vaxIRQrf
+	iH2mtItalwRhEqzsH1Cue3HpBuOW4907UkVu9uR+v7iurNKWIqi17I2CH/11ZTGq7M6nzLo1xAtRk
+	h9VndpyrLeI0V9/63SoTzYXQ8DQxOl88lH7oMWWEjU25awA5HuYRZ8RHtG+Inb5uK7DwzV8Ey7WUK
+	qaTiCPDM5Tg/ycLN4czH1y4Xe3AB+U49hEwwKAhIlzX6luuqaYZ+jLRx+EfIYZdVHgFtYy4v7xtX+
+	9U6OT7gDC8l0h16CoQxhNO4nIbfCaBetsI/lOp6m5nto+zLg7cVwd7ml+y/nQoAFZedgr9AeQxpyC
+	BrTF8wYg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t2no6-00000006Y9Q-2z2C;
-	Mon, 21 Oct 2024 08:30:30 +0000
+	id 1t2noA-00000006YBM-0gx5;
+	Mon, 21 Oct 2024 08:30:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t2mj9-00000006Lmi-3AUV
+	id 1t2mj9-00000006Lmh-3AGA
 	for barebox@lists.infradead.org;
 	Mon, 21 Oct 2024 07:21:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t2mj7-0005nv-UT; Mon, 21 Oct 2024 09:21:17 +0200
+	id 1t2mj7-0005nu-UJ; Mon, 21 Oct 2024 09:21:17 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t2mj7-000ecU-1r;
+	id 1t2mj7-000ecR-1q;
 	Mon, 21 Oct 2024 09:21:17 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t2mj7-00FGWz-1Z;
+	id 1t2mj7-00FGWz-1W;
 	Mon, 21 Oct 2024 09:21:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 21 Oct 2024 09:21:21 +0200
+Date: Mon, 21 Oct 2024 09:21:18 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241021-arm-layerscape-tfa-v1-7-0980697b6f66@pengutronix.de>
+Message-Id: <20241021-arm-layerscape-tfa-v1-4-0980697b6f66@pengutronix.de>
 References: <20241021-arm-layerscape-tfa-v1-0-0980697b6f66@pengutronix.de>
 In-Reply-To: <20241021-arm-layerscape-tfa-v1-0-0980697b6f66@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729495277; l=4119;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729495277; l=9873;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=PuGfdyL+wH1LSwELK/MJePL6MtsRQgDl+Gtl24NWVm8=;
- b=PYF91G/6qeF5tJ9t/Q3FL1y87qsLpxxR2roo2yh8PhExPMb6tmVjGojIGLMA/tOSWPPYHS/ni
- B2lVQRv5bdyCikTT6EpsImyUexCxzsmiwlHNQ6A6EV7E1FoI+rZ6Ues
+ bh=t8WcZ9MaylLOOjMp+paiYOXcLXC8OB2bkmUVEkahVag=;
+ b=Nv0gY8sx5eUdyJp9emvwpWHSZktPWA0bbL8ivZShjSogkSg2L9eQgQTzFZUNIsOrd4C0Yp++f
+ lG1q5mrvo3EDSG8anU63nyas1eiecWQgqqR5yLw3wY6aqd4XuTewlcw
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241021_002119_901893_A6570FB8 
-X-CRM114-Status: GOOD (  15.99  )
+X-CRM114-CacheID: sfid-20241021_002120_098800_18462CF0 
+X-CRM114-Status: GOOD (  15.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,150 +90,284 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 7/9] ARM: Layerscape: TQMLS1046a: Switch to TF-A support
+Subject: [PATCH 4/9] ARM: Layerscape: remove register arguments
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that we can start TF-A on LS1046a based boards switch the TQMLS1046a
-over to use this rather than deprecated PPA.
+The various Layerscape xload_start_image functions all take r0, r1 and
+r2 arguments. These are all unused in the code, so remove them.
+
+The ls1021aiot board passes the memory size in r0 in one case, but this
+is never used, so it's safe to remove that as well.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/tqmls1046a/board.c    |  8 ++++----
- arch/arm/boards/tqmls1046a/lowlevel.c | 32 ++++++++++++++++++++++++++++++--
- arch/arm/boards/tqmls1046a/start.S    | 14 +++++++++++++-
- 3 files changed, 47 insertions(+), 7 deletions(-)
+ arch/arm/boards/ls1021aiot/lowlevel.c |  6 +++---
+ arch/arm/boards/ls1046ardb/lowlevel.c |  6 +++---
+ arch/arm/boards/tqmls1046a/lowlevel.c | 10 +++++-----
+ arch/arm/mach-layerscape/xload-qspi.c | 17 +++++++----------
+ arch/arm/mach-layerscape/xload.c      | 12 +++++-------
+ drivers/mci/imx-esdhc-pbl.c           | 10 ++++------
+ include/mach/layerscape/xload.h       | 14 +++++---------
+ 7 files changed, 32 insertions(+), 43 deletions(-)
 
-diff --git a/arch/arm/boards/tqmls1046a/board.c b/arch/arm/boards/tqmls1046a/board.c
-index df49d0f780..99344e6e95 100644
---- a/arch/arm/boards/tqmls1046a/board.c
-+++ b/arch/arm/boards/tqmls1046a/board.c
-@@ -15,9 +15,9 @@
+diff --git a/arch/arm/boards/ls1021aiot/lowlevel.c b/arch/arm/boards/ls1021aiot/lowlevel.c
+index d2d4237c3d..887f0e39db 100644
+--- a/arch/arm/boards/ls1021aiot/lowlevel.c
++++ b/arch/arm/boards/ls1021aiot/lowlevel.c
+@@ -97,7 +97,7 @@ static noinline __noreturn void ls1021aiot_r_entry(void)
  
- static void ls1046a_add_memory(void)
- {
-+	struct resource *res;
- 	u32 cs0_bnds;
- 	unsigned long long memsize, lower, upper;
--	int ret;
+ 	ls1021a_errata_post_ddr();
  
- 	cs0_bnds = in_be32(LS1046A_DDRC_BASE);
- 	switch (cs0_bnds) {
-@@ -41,9 +41,9 @@ static void ls1046a_add_memory(void)
- 		arm_add_mem_device("ram1", 0x880000000, upper);
- 	}
- 
--	ret = ls1046a_ppa_init(0x100000000 - SZ_64M, SZ_64M);
--	if (ret)
--		pr_err("Failed to initialize PPA firmware: %s\n", strerror(-ret));
-+	res = reserve_sdram_region("tfa", 0xfbe00000, 0x4200000);
-+
-+	of_register_fixup(of_fixup_reserved_memory, res);
- }
- 
- static int tqmls1046a_postcore_init(void)
-diff --git a/arch/arm/boards/tqmls1046a/lowlevel.c b/arch/arm/boards/tqmls1046a/lowlevel.c
-index 5ccafb2d77..e139fe19a1 100644
---- a/arch/arm/boards/tqmls1046a/lowlevel.c
-+++ b/arch/arm/boards/tqmls1046a/lowlevel.c
-@@ -300,15 +300,41 @@ static int tqmls1046a_get_variant(void)
- 	return variant;
- }
- 
-+static struct dram_regions_info dram_info_2g = {
-+	.num_dram_regions = 1,
-+	.total_dram_size = SZ_2G,
-+	.region = {
-+		{
-+			.addr = SZ_2G,
-+			.size = SZ_2G,
-+		},
-+	},
-+};
-+
-+static struct dram_regions_info dram_info_8g = {
-+	.num_dram_regions = 2,
-+	.total_dram_size = SZ_8G,
-+	.region = {
-+		{
-+			.addr = SZ_2G,
-+			.size = SZ_2G,
-+		}, {
-+			.addr = SZ_32G + SZ_2G,
-+			.size = SZ_4G + SZ_2G,
-+		},
-+	},
-+};
-+
- extern char __dtb_z_fsl_ls1046a_tqmls1046a_mbls10xxa_start[];
- 
- static noinline __noreturn void tqmls1046a_r_entry(bool is_8g)
- {
- 	unsigned long membase = LS1046A_DDR_SDRAM_BASE;
- 	int board_variant = 0;
-+	struct dram_regions_info *dram_info;
- 
- 	if (get_pc() >= membase)
--		barebox_arm_entry(membase, 0x80000000 - SZ_64M,
-+		barebox_arm_entry(membase, 0x80000000 - SZ_128M,
- 				  __dtb_z_fsl_ls1046a_tqmls1046a_mbls10xxa_start);
- 
- 	arm_cpu_lowlevel_init();
-@@ -321,17 +347,19 @@ static noinline __noreturn void tqmls1046a_r_entry(bool is_8g)
- 
- 	if (is_8g) {
- 		board_variant = tqmls1046a_get_variant();
-+		dram_info = &dram_info_8g;
- 		if (board_variant == TQ_VARIANT_TQMLS1046A_CA)
- 			fsl_ddr_set_memctl_regs(&tqmls1046a_ddrc_8g_ca[0], 0, false);
- 		else
- 			fsl_ddr_set_memctl_regs(&tqmls1046a_ddrc_8g[0], 0, false);
- 	} else {
-+		dram_info = &dram_info_2g;
- 		fsl_ddr_set_memctl_regs(&tqmls1046a_ddrc[0], 0, false);
- 	}
- 
- 	ls1046a_errata_post_ddr();
- 
--	ls1046a_xload_start_image(NULL);
-+	ls1046a_xload_start_image(dram_info);
+-	ls1021a_xload_start_image(SZ_1G, 0, 0);
++	ls1021a_xload_start_image();
  
  	pr_err("Booting failed\n");
  
-diff --git a/arch/arm/boards/tqmls1046a/start.S b/arch/arm/boards/tqmls1046a/start.S
-index 84c4626880..c812a35768 100644
---- a/arch/arm/boards/tqmls1046a/start.S
-+++ b/arch/arm/boards/tqmls1046a/start.S
-@@ -1,8 +1,13 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
- #include <linux/linkage.h>
- #include <asm/barebox-arm64.h>
-+#include <asm/assembler64.h>
+@@ -105,10 +105,10 @@ static noinline __noreturn void ls1021aiot_r_entry(void)
+ 		;
+ }
  
--#define STACK_TOP 0x10020000
-+/*
-+ * OCRAM is occupied by TF-A, so in EL2 and EL1 use a temporary stack in SDRAM
-+ */
-+#define STACK_TOP		0x10020000
-+#define STACK_TOP_TMP_SDRAM	0x90000000
+-void ls1021aiot_entry(unsigned long r0, unsigned long r1, unsigned long r2);
++void ls1021aiot_entry(void);
  
- ENTRY_PROC(start_tqmls1046a)
- 	mov x3, #STACK_TOP
-@@ -11,7 +16,14 @@ ENTRY_PROC(start_tqmls1046a)
- ENTRY_PROC_END(start_tqmls1046a)
+ __noreturn void
+-ls1021aiot_entry(unsigned long r0, unsigned long r1, unsigned long r2)
++ls1021aiot_entry(void)
+ {
+ 	relocate_to_current_adr();
+ 	setup_c();
+diff --git a/arch/arm/boards/ls1046ardb/lowlevel.c b/arch/arm/boards/ls1046ardb/lowlevel.c
+index 9c3f1a8375..753fca3272 100644
+--- a/arch/arm/boards/ls1046ardb/lowlevel.c
++++ b/arch/arm/boards/ls1046ardb/lowlevel.c
+@@ -210,7 +210,7 @@ static noinline __noreturn void ls1046ardb_r_entry(void)
  
- ENTRY_PROC(start_tqmls1046a_8g)
-+	switch_el x3, 3f, 2f, 1f
-+3:
- 	mov x3, #STACK_TOP
- 	mov sp, x3
- 	b tqmls1046a_8g_entry
-+2:
-+1:
-+	mov x3, STACK_TOP_TMP_SDRAM
-+	mov sp, x3
-+	b tqmls1046a_8g_entry
- ENTRY_PROC_END(start_tqmls1046a_8g)
+ 	ls1046a_errata_post_ddr();
+ 
+-	ls1046a_esdhc_start_image(0, 0, 0);
++	ls1046a_esdhc_start_image();
+ 
+ err:
+ 	pr_err("Booting failed\n");
+@@ -218,9 +218,9 @@ static noinline __noreturn void ls1046ardb_r_entry(void)
+ 	while (1);
+ }
+ 
+-void ls1046ardb_entry(unsigned long r0, unsigned long r1, unsigned long r2);
++void ls1046ardb_entry(void);
+ 
+-__noreturn void ls1046ardb_entry(unsigned long r0, unsigned long r1, unsigned long r2)
++__noreturn void ls1046ardb_entry(void)
+ {
+ 	relocate_to_current_adr();
+ 	setup_c();
+diff --git a/arch/arm/boards/tqmls1046a/lowlevel.c b/arch/arm/boards/tqmls1046a/lowlevel.c
+index 9f471d001e..6531b22bd1 100644
+--- a/arch/arm/boards/tqmls1046a/lowlevel.c
++++ b/arch/arm/boards/tqmls1046a/lowlevel.c
+@@ -331,16 +331,16 @@ static noinline __noreturn void tqmls1046a_r_entry(bool is_8g)
+ 
+ 	ls1046a_errata_post_ddr();
+ 
+-	ls1046a_xload_start_image(0, 0, 0);
++	ls1046a_xload_start_image();
+ 
+ 	pr_err("Booting failed\n");
+ 
+ 	while (1);
+ }
+ 
+-void tqmls1046a_entry(unsigned long r0, unsigned long r1, unsigned long r2);
++void tqmls1046a_entry(void);
+ 
+-__noreturn void tqmls1046a_entry(unsigned long r0, unsigned long r1, unsigned long r2)
++__noreturn void tqmls1046a_entry(void)
+ {
+ 	relocate_to_current_adr();
+ 	setup_c();
+@@ -348,9 +348,9 @@ __noreturn void tqmls1046a_entry(unsigned long r0, unsigned long r1, unsigned lo
+ 	tqmls1046a_r_entry(false);
+ }
+ 
+-void tqmls1046a_8g_entry(unsigned long r0, unsigned long r1, unsigned long r2);
++void tqmls1046a_8g_entry(void);
+ 
+-__noreturn void tqmls1046a_8g_entry(unsigned long r0, unsigned long r1, unsigned long r2)
++__noreturn void tqmls1046a_8g_entry(void)
+ {
+ 	relocate_to_current_adr();
+ 	setup_c();
+diff --git a/arch/arm/mach-layerscape/xload-qspi.c b/arch/arm/mach-layerscape/xload-qspi.c
+index 608434bf1f..11119840c3 100644
+--- a/arch/arm/mach-layerscape/xload-qspi.c
++++ b/arch/arm/mach-layerscape/xload-qspi.c
+@@ -19,10 +19,9 @@ struct layerscape_base_addr {
+ 	void *qspi_mem_base;
+ };
+ 
+-static int layerscape_qspi_start_image(struct layerscape_base_addr *base,
+-		unsigned long r0, unsigned long r1, unsigned long r2)
++static int layerscape_qspi_start_image(struct layerscape_base_addr *base)
+ {
+-	void (*barebox)(unsigned long, unsigned long, unsigned long) = base->membase;
++	void (*barebox)(void) = base->membase;
+ 
+ 	/* Switch controller into little endian mode */
+ 	out_be32(base->qspi_reg_base, 0x000f400c);
+@@ -33,15 +32,14 @@ static int layerscape_qspi_start_image(struct layerscape_base_addr *base,
+ 
+ 	printf("Starting barebox\n");
+ 
+-	barebox(r0, r1, r2);
++	barebox();
+ 
+ 	printf("failed\n");
+ 
+ 	return -EIO;
+ }
+ 
+-int ls1046a_qspi_start_image(unsigned long r0, unsigned long r1,
+-					     unsigned long r2)
++int ls1046a_qspi_start_image(void)
+ {
+ 	struct layerscape_base_addr base;
+ 
+@@ -49,11 +47,10 @@ int ls1046a_qspi_start_image(unsigned long r0, unsigned long r1,
+ 	base.membase = IOMEM(LS1046A_DDR_SDRAM_BASE);
+ 	base.qspi_mem_base = IOMEM(0x40000000);
+ 
+-	return layerscape_qspi_start_image(&base, r0, r1, r2);
++	return layerscape_qspi_start_image(&base);
+ }
+ 
+-int ls1021a_qspi_start_image(unsigned long r0, unsigned long r1,
+-					     unsigned long r2)
++int ls1021a_qspi_start_image(void)
+ {
+ 	struct layerscape_base_addr base;
+ 
+@@ -61,5 +58,5 @@ int ls1021a_qspi_start_image(unsigned long r0, unsigned long r1,
+ 	base.membase = IOMEM(LS1021A_DDR_SDRAM_BASE);
+ 	base.qspi_mem_base = IOMEM(0x40000000);
+ 
+-	return layerscape_qspi_start_image(&base, r0, r1, r2);
++	return layerscape_qspi_start_image(&base);
+ }
+diff --git a/arch/arm/mach-layerscape/xload.c b/arch/arm/mach-layerscape/xload.c
+index 32ff158b1b..9103e8b4bc 100644
+--- a/arch/arm/mach-layerscape/xload.c
++++ b/arch/arm/mach-layerscape/xload.c
+@@ -5,8 +5,7 @@
+ #include <mach/layerscape/layerscape.h>
+ #include <mach/layerscape/xload.h>
+ 
+-int ls1046a_xload_start_image(unsigned long r0, unsigned long r1,
+-			      unsigned long r2)
++int ls1046a_xload_start_image(void)
+ {
+ 	enum bootsource src;
+ 
+@@ -14,10 +13,10 @@ int ls1046a_xload_start_image(unsigned long r0, unsigned long r1,
+ 
+ 	switch (src) {
+ 	case BOOTSOURCE_SPI_NOR:
+-		return ls1046a_qspi_start_image(r0, r1, r2);
++		return ls1046a_qspi_start_image();
+ #if defined(CONFIG_MCI_IMX_ESDHC_PBL)
+ 	case BOOTSOURCE_MMC:
+-		return ls1046a_esdhc_start_image(r0, r1, r2);
++		return ls1046a_esdhc_start_image();
+ #endif
+ 	default:
+ 		pr_err("Unknown bootsource\n");
+@@ -25,8 +24,7 @@ int ls1046a_xload_start_image(unsigned long r0, unsigned long r1,
+ 	}
+ }
+ 
+-int ls1021a_xload_start_image(unsigned long r0, unsigned long r1,
+-			      unsigned long r2)
++int ls1021a_xload_start_image(void)
+ {
+ 	enum bootsource src;
+ 
+@@ -34,7 +32,7 @@ int ls1021a_xload_start_image(unsigned long r0, unsigned long r1,
+ 
+ 	switch (src) {
+ 	case BOOTSOURCE_SPI_NOR:
+-		return ls1021a_qspi_start_image(r0, r1, r2);
++		return ls1021a_qspi_start_image();
+ 	default:
+ 		pr_err("Unknown bootsource\n");
+ 		return -EINVAL;
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 5b1d9a3cf4..3bf3a7ace6 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -352,7 +352,7 @@ static int layerscape_esdhc_load_image(struct fsl_esdhc_host *host, void *adr, u
+  * Return: If successful, this function does not return. A negative error
+  * code is returned when this function fails.
+  */
+-int ls1046a_esdhc_start_image(unsigned long r0, unsigned long r1, unsigned long r2)
++int ls1046a_esdhc_start_image(void)
+ {
+ 	int ret;
+ 	struct esdhc_soc_data data = {
+@@ -364,8 +364,7 @@ int ls1046a_esdhc_start_image(unsigned long r0, unsigned long r1, unsigned long
+ 	};
+ 	void *sdram = (void *)0x80000000;
+ 	unsigned long size = ALIGN(barebox_image_size + LS1046A_SD_IMAGE_OFFSET, 512);
+-	void (*barebox)(unsigned long, unsigned long, unsigned long) =
+-		(sdram + LS1046A_SD_IMAGE_OFFSET);
++	void (*barebox)(void) = (sdram + LS1046A_SD_IMAGE_OFFSET);
+ 
+ 	ret = layerscape_esdhc_load_image(&host, sdram, size, (8 << 8) | (3 << 4));
+ 	if (ret)
+@@ -373,7 +372,7 @@ int ls1046a_esdhc_start_image(unsigned long r0, unsigned long r1, unsigned long
+ 
+ 	printf("Starting barebox\n");
+ 
+-	barebox(r0, r1, r2);
++	barebox();
+ 
+ 	return -EINVAL;
+ }
+@@ -393,8 +392,7 @@ static int ls1028a_esdhc_start_image(void __iomem *base, struct dram_regions_inf
+ 	void *bl31_image;
+ 	struct bl2_to_bl31_params_mem_v2 *params;
+ 	unsigned long size = ALIGN(barebox_image_size + LS1046A_SD_IMAGE_OFFSET, 512);
+-	void (*barebox)(unsigned long, unsigned long, unsigned long) =
+-		(sdram + LS1046A_SD_IMAGE_OFFSET);
++	void (*barebox)(void) = (sdram + LS1046A_SD_IMAGE_OFFSET);
+ 	int ret;
+ 
+ 	ret = layerscape_esdhc_load_image(&host, sdram, size, 8 << 4);
+diff --git a/include/mach/layerscape/xload.h b/include/mach/layerscape/xload.h
+index 86327c63e6..64990e2ca1 100644
+--- a/include/mach/layerscape/xload.h
++++ b/include/mach/layerscape/xload.h
+@@ -5,16 +5,12 @@
+ 
+ struct dram_regions_info;
+ 
+-int ls1046a_esdhc_start_image(unsigned long r0, unsigned long r1, unsigned long r2);
++int ls1046a_esdhc_start_image(void);
+ int ls1028a_esdhc1_start_image(struct dram_regions_info *dram_info);
+ int ls1028a_esdhc2_start_image(struct dram_regions_info *dram_info);
+-int ls1046a_qspi_start_image(unsigned long r0, unsigned long r1,
+-					     unsigned long r2);
+-int ls1021a_qspi_start_image(unsigned long r0, unsigned long r1,
+-					     unsigned long r2);
+-int ls1046a_xload_start_image(unsigned long r0, unsigned long r1,
+-			      unsigned long r2);
+-int ls1021a_xload_start_image(unsigned long r0, unsigned long r1,
+-			      unsigned long r2);
++int ls1046a_qspi_start_image(void);
++int ls1021a_qspi_start_image(void);
++int ls1046a_xload_start_image(void);
++int ls1021a_xload_start_image(void);
+ 
+ #endif /* __MACH_LAYERSCAPE_XLOAD_H */
 
 -- 
 2.39.5
