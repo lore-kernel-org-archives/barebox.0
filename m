@@ -1,61 +1,72 @@
-Delivery-date: Mon, 21 Oct 2024 09:43:25 +0200
+Delivery-date: Mon, 21 Oct 2024 10:00:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t2n4X-006zFL-1M
+	id 1t2nL5-006zRA-1F
 	for lore@lore.pengutronix.de;
-	Mon, 21 Oct 2024 09:43:25 +0200
+	Mon, 21 Oct 2024 10:00:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t2n4W-0000Iq-RR
-	for lore@pengutronix.de; Mon, 21 Oct 2024 09:43:25 +0200
+	id 1t2nL4-00027T-P1
+	for lore@pengutronix.de; Mon, 21 Oct 2024 10:00:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BMgCa2qlKKcYoMOiju+9eqF+cGKqQlgIL4b1DvTkfJQ=; b=y0lo3J8aO/3CMwVpLboy23Q+1Y
-	Pr9uzFqaJd+NlUqUtTvqOk4CZNHft/MlftKJlTQjAEWKDv3njn2IAjPaTkFdavuJ+RTB1o9rN/c3Z
-	f3UFD0JtqIZf5H1USv6dw2oicmnQEstxKEveTfT9RBwwrK69nI8M9YlPwfLCk7bBNVdmwJ19qoEiz
-	skyzOM+YF8VCM1m0Pe0HmPnL9xth+8+c+uqSONVO4EcIj/g1+emWADqKW64mG9bkVUlD7bnsqX5o/
-	Va2q2ddwPXXrrpoJ2KUHgvFQ/k8zeyVoBoB1g1BdZskMqN64un49zHXPMIfJMXaxIDmzV3dVWOIxg
-	2zzZIouw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=XdgSEUX710yNf8Uhg91L29U4R5SgIkTkJWD6Ap8UCMQ=; b=nvS3IWgVbHjxGKt6EWKm3g8SNY
+	e5/6d6GEmkV3t7cklkc1tKTOea+xqIzu4fe/h/WMw1vEzqaQIk0FTJ/fte0JWjVOy9Kyn9RyxBVxz
+	8kE/G0f9fHa377qKkmlUkoLwvPbSBd9FqMcch+2rmhP/afBDQoyPcPx7dDNVICl+M8QGTsV6wvJNu
+	nSoLHXxTGO4/jTYRpY8OTiAUhhVEBgmopo1q8gpfuvC29246JuPFpVfLAHTTmC7sY1qf3U4G2C4Go
+	FiOCLMsVbyBYtbApQBWDDxQIiN+Ozdxw0+HAEXCKR5BbRzJ//vhnJYfv45us1MzinyrzTY/V2nj38
+	2MlwzwCQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t2n43-00000006Q4N-0Rdy;
-	Mon, 21 Oct 2024 07:42:55 +0000
+	id 1t2nKO-00000006TCs-42Ei;
+	Mon, 21 Oct 2024 07:59:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t2mxG-00000006OL0-0kPN
+	id 1t2nIa-00000006Syr-1f3O
 	for barebox@lists.infradead.org;
-	Mon, 21 Oct 2024 07:35:57 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t2mxE-0007X8-QX; Mon, 21 Oct 2024 09:35:52 +0200
-Message-ID: <c71f9d53-ddd1-418d-94ad-99d26249e3e4@pengutronix.de>
-Date: Mon, 21 Oct 2024 09:35:52 +0200
+	Mon, 21 Oct 2024 07:57:58 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t2nIX-0001jb-Af; Mon, 21 Oct 2024 09:57:53 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t2nIX-000elj-0U;
+	Mon, 21 Oct 2024 09:57:53 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t2nIX-005fRG-0D;
+	Mon, 21 Oct 2024 09:57:53 +0200
+Date: Mon, 21 Oct 2024 09:57:53 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
+Message-ID: <ZxYJga-58XM-f4uy@pengutronix.de>
+References: <20241021-arm-layerscape-tfa-v1-0-0980697b6f66@pengutronix.de>
+ <20241021-arm-layerscape-tfa-v1-9-0980697b6f66@pengutronix.de>
+ <3435d9d4-2a71-48b6-879a-1dbf043ff6d7@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Yann Sionneau <ysionneau@kalrayinc.com>
-Cc: barebox@lists.infradead.org
-References: <20241016085543.3961965-1-a.fatoum@pengutronix.de>
- <20241016085543.3961965-2-a.fatoum@pengutronix.de>
- <777ad095-34c5-43fd-bd52-a7ca938adcf6@kalrayinc.com>
- <ZxIlC-56_P6aHIrg@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <ZxIlC-56_P6aHIrg@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3435d9d4-2a71-48b6-879a-1dbf043ff6d7@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241021_003554_251359_9F63F394 
-X-CRM114-Status: GOOD (  16.05  )
+X-CRM114-CacheID: sfid-20241021_005756_456210_133A0C96 
+X-CRM114-Status: GOOD (  20.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,48 +88,41 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] sandbox: add cpuinfo command
+Subject: Re: [PATCH 9/9] ARM: Layerscape: LS1046a: add PSCI node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
+Hi Ahmad,
 
-On 18.10.24 11:06, Sascha Hauer wrote:
-> On Wed, Oct 16, 2024 at 11:32:40AM +0200, Yann Sionneau wrote:
->> Hi Ahmad,
->>
->> On 16/10/2024 10:55, Ahmad Fatoum wrote:
->>> We have stack dump support in sandbox via AddressSanitizer, if it's
->>> compiled in. To make it easier to test proper operation, let's a cpuinfo
->> Small typo in the commit msg
->>> command like we already do on ARM and give it the same -s option.
->>>
->>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>> ---
->>>
->>> +BAREBOX_CMD_START(cpuinfo)
->>> +	.cmd            = do_cpuinfo,
->>> +	BAREBOX_CMD_DESC("show info about CPU")
->>> +	BAREBOX_CMD_OPTS("[-s]")
->>
->> It seems the -s option here is mandatory, maybe remove the [ ] brackets? Not sure if it means "optional" here...
+On Mon, Oct 21, 2024 at 09:33:23AM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
 > 
-> The ARM cpuinfo command shows information about the CPU when called
-> without options, so on ARM -s is really optional and I think Ahmad
-> wanted the same behaviour here. It's a bit unfortunate that the sandbox
-> command doesn't have any information to show when called without
-> options.
+> On 21.10.24 09:21, Sascha Hauer wrote:
+> > Unlike other SoCs the LS1046a upstream dtsi files do not have a PSCI
+> > node. Add one for barebox and Linux to find the PSCI support.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> I am wondering how powering CPUs on and off worked before?
+> I see no enable-method = "spin-table" in the kernel DT for the SoC.
 
-I can output host system uname -a output in the argumentless case.
-I will prepare a v2 in a few days.
-
-Cheers,
-Ahmad
+The PPA is PSCI compatible. The barebox PPA adapter called
+of_psci_fixup() to register a PSCI node.
 
 > 
-> Sascha
-> 
+> Anyhow, barebox should probably fixup enable-method = "psci" into each
+> CPU in /cpus in the kernel DT.
 
+This is already done in of_psci_fixup().
+
+The PSCI node in the barebox dts is only needed to probe the psci-client
+driver which in turn creates/fixups the PSCI node for the kernel. We
+already know that we started the TF-A. I thought about using this
+knowledge to register the PSCI client driver without explicitly creating
+a device node for it, but on the other hand there isn't too much gain in
+doing so, so I just created a node for now.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
