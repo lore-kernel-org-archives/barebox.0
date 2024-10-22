@@ -1,72 +1,69 @@
-Delivery-date: Tue, 22 Oct 2024 10:22:38 +0200
+Delivery-date: Tue, 22 Oct 2024 10:22:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t3AA2-007OPN-25
+	id 1t3AA5-007OPn-0T
 	for lore@lore.pengutronix.de;
-	Tue, 22 Oct 2024 10:22:38 +0200
+	Tue, 22 Oct 2024 10:22:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t3AA2-0005L5-3L
-	for lore@pengutronix.de; Tue, 22 Oct 2024 10:22:38 +0200
+	id 1t3AA4-0005Ll-K2
+	for lore@pengutronix.de; Tue, 22 Oct 2024 10:22:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6ZtalOByYC76agrCSxiS5VOLJcWoLRFMH4aCgex5/OY=; b=wq1686nbuize1sxyCwuhzNVbmS
-	q5R7OGDkhLEQbkp5/ZEoir6kLeYNRWrrEBv9YRmvsWP8O2zAqJU1jAQCahVP9zXcNiDZXqDLanQrX
-	HVGQJ64cSw3JwU336Z6/Mybcw1R3dFBzxF4R+y+BSyJBwS+2+JNVHvHYOMhq3O2mE3yoXlKpyAyGM
-	ftTOju1HDHMuD+mBDmHm6Xed1q3Voq67gYLF9cgJBG9EusqK9bG+m89FY24nxoCiK5MLgVOKCOZ7e
-	v/SEPSeNd/8bzIDV4ZiEKW2sXPywlFVvl2hLC28A5AC2i2dQgU8FlaRkUwm1AFmwK7B30K4xjGgGB
-	QrtVRNAg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=H6Lv5Zj9xNQk1izBnyTPSbB9vvStDvm8CJnx8z3jtYY=; b=KfoPxT7rgmjzjhxUpG2W2UAdQ3
+	NLSjDzXyJ2tEunhxpwbkPW+jNE43Lshqhk/xfHuq5OzL4H06hThOigAG+s5E5y/mvltPDls1GoUyG
+	BG/jY9M79VHDF9JxmZaFsa/OXKLl2Ye0WFGDTIqARTJjf0+PwIpo+ic4JJ2/AII5MSH3U2j6qyFyR
+	l8abKlMin9MUAUrG7LtR4pul5cdoVj2MtHEnFSYm6omywqgoTqcUt8dn9K/AkUKYsULjsgBK7NeNv
+	n0dliPRL2BJZDNde4LGysdODfOEW1I/I3KlFDJxQuUog85ykL3jxDC9hG25eGkpvE0ib8ZIe2hlaE
+	te+e9i2w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t3A9K-0000000A9CJ-0w3r;
-	Tue, 22 Oct 2024 08:21:54 +0000
+	id 1t3A9J-0000000A9C9-2q2J;
+	Tue, 22 Oct 2024 08:21:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t3A7s-0000000A8vR-1nHV
+	id 1t3A7B-0000000A8lU-3FBy
 	for barebox@lists.infradead.org;
-	Tue, 22 Oct 2024 08:20:25 +0000
+	Tue, 22 Oct 2024 08:19:43 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t3A7p-00056O-Ii; Tue, 22 Oct 2024 10:20:21 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t3A7A-0004yN-5l; Tue, 22 Oct 2024 10:19:40 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t3A7p-000pfX-1G;
-	Tue, 22 Oct 2024 10:20:21 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t3A7p-007WWR-0z;
-	Tue, 22 Oct 2024 10:20:21 +0200
-Date: Tue, 22 Oct 2024 10:20:21 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t3A79-000pfQ-1S;
+	Tue, 22 Oct 2024 10:19:39 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t3A79-00C8PI-1H;
+	Tue, 22 Oct 2024 10:19:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Jonas Rebmann <jre@pengutronix.de>,
-	BAREBOX <barebox@lists.infradead.org>
-Message-ID: <ZxdgRW6eDs0TYCnP@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Jonas Rebmann <jre@pengutronix.de>
+In-Reply-To: <20241021-phytec-nfs-automount-v1-1-20787c288563@pengutronix.de>
 References: <20241021-phytec-nfs-automount-v1-1-20787c288563@pengutronix.de>
- <b1699907-4424-4da5-bcbc-eed660f8d031@pengutronix.de>
+Message-Id: <172958517939.2892205.982885111856865078.b4-ty@pengutronix.de>
+Date: Tue, 22 Oct 2024 10:19:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b1699907-4424-4da5-bcbc-eed660f8d031@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241022_012024_499150_43B403EE 
-X-CRM114-Status: GOOD (  16.70  )
+X-CRM114-CacheID: sfid-20241022_011941_846271_5DC81D4D 
+X-CRM114-Status: UNSURE (   5.82  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,38 +89,21 @@ Subject: Re: [PATCH] automount: add nfs section to board automount scripts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Oct 22, 2024 at 08:23:43AM +0200, Ahmad Fatoum wrote:
-> Hello Jonas,
-> 
-> Thanks for your patch.
-> 
-> On 21.10.24 17:22, Jonas Rebmann wrote:
-> > When nfs automount was introduced in b31b7cf7e8b6, board specific
-> 
-> Nitpick: Kernel convention is to format commit hashes as
-> commit b31b7cf7e8b6 ("defaultenv-2: add automount for nfs").
-> 
-> > automount scripts where not updated
-> 
-> Nitpick: missing full stop.
-> 
-> > 
-> > ---
-> > Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-> 
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> Note that this will be cut off by git am, because it's under the ---.
 
-Fixed up while applying.
+On Mon, 21 Oct 2024 17:22:58 +0200, Jonas Rebmann wrote:
+> When nfs automount was introduced in b31b7cf7e8b6, board specific
+> automount scripts where not updated
+> 
+> 
 
-Sascha
+Applied, thanks!
 
+[1/1] automount: add nfs section to board automount scripts
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4798d193af4e (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
