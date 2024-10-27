@@ -1,83 +1,84 @@
-Delivery-date: Fri, 25 Oct 2024 16:00:04 +0200
+Delivery-date: Sun, 27 Oct 2024 09:19:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t4KrD-000eCf-1b
+	id 1t4yUI-001MvB-1l
 	for lore@lore.pengutronix.de;
-	Fri, 25 Oct 2024 16:00:04 +0200
+	Sun, 27 Oct 2024 09:19:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t4KrE-00039J-7L
-	for lore@pengutronix.de; Fri, 25 Oct 2024 16:00:04 +0200
+	id 1t4yUJ-0002F2-4G
+	for lore@pengutronix.de; Sun, 27 Oct 2024 09:19:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
-	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1kz5259MwYRI+aDbtE30q508qtTHkpLxxnr+Zb0znIg=; b=QLAXog5ih9QoRC0QbS4dTN8WBt
-	WAm6GfA8f7hutBEdn/2HEEZYmzr5QxOhloeVsiwGM8kPaPzPXh7Ei+GYcqpBmfrNzZAR4Ii2btsuw
-	bB4eZBdmQyUGRM+hu0XHiXfBHGLE0xCQ/SgWPswxmZPtIWfnwobf5iMXgd/wA7PlWIt5MBLXNr2ix
-	Ad+q+6EvpaNI7pdgucvZ1rKrsCSlRLGaL70qoPUvHQV4olx1rijYFFsVAP2qQuKvzEsUcSpkUPqw+
-	7bAdmnztj+a/JlchZlwzR2ru+ZClMjF8ZZqmclmY8DUSWC9zeOl1znv4HqBBocFi84a05NzIzQzIV
-	fn1xSc8g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=lf8auCRw7woFyIQI4Kwkvop6DKRHuhK/jLINfXM+uV0=; b=azckpI7Znq4qGoV3h/oMBBpu0p
+	18UFqMH5Sy19qG8I9GigKOoqh9m6Q+6rzxf/q1PbZzkWoZsUtUFjsqNuuWtoXDhkyaiROraohyDWa
+	caB+gr/cGUs3X1XCKdHMo88QBAEd6rjnk7sKtnffznsrqM23ZF31a5U9saYKsZ0e2udL26vuXAxXP
+	rAEi1quCDhikkXIx/YAd2pXqy6urBEQdInstfWjUYaUGuAwVdEfJeA4hDOeRQt2dY9upYKRYZ8gKb
+	9bA/8k4MM+pgAUNN9D297wguFgDQ9mJK3FmjRZ5a4RfKc2mTDbJQ+3ALAUsONUVwuiXISOh2UNeUB
+	hsdLL7Tw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t4Kqc-00000003uZO-2WzJ;
-	Fri, 25 Oct 2024 13:59:26 +0000
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+	id 1t4yTY-00000007pNI-30Vz;
+	Sun, 27 Oct 2024 08:18:16 +0000
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t4KbT-00000003r7f-3zrW
+	id 1t4yTV-00000007pMe-42KB
 	for barebox@lists.infradead.org;
-	Fri, 25 Oct 2024 13:43:49 +0000
-Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-7db54269325so1381077a12.2
-        for <barebox@lists.infradead.org>; Fri, 25 Oct 2024 06:43:47 -0700 (PDT)
+	Sun, 27 Oct 2024 08:18:15 +0000
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-4314fa33a35so32539245e9.1
+        for <barebox@lists.infradead.org>; Sun, 27 Oct 2024 01:18:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729863827; x=1730468627; darn=lists.infradead.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1kz5259MwYRI+aDbtE30q508qtTHkpLxxnr+Zb0znIg=;
-        b=dks1MEg9QrWSJT+3ZbH8l2Y3BU8fuDDg0J9YOwAnalA4Axyp6kCnYs7X6tFEnM3tiT
-         ZL1R9aceRxhc8aIKmGo6dUqRFZsG5eIQXKD/QNdcHv2Y27WN6Qq3xA/y86noiM0UT6Fk
-         PBfki2vlDFh7iDOKCrBjrwP7zgGhH9usunEJa9eierpdyQuNXOtuqpNdJGfdSAi9dc1l
-         3/c2GTmMprVUR13TSrLqMCQbETRhrqZurwxetWsgfWkULTcyXP/C3FzB60V90jucRr3I
-         om0dSrT3VCCvsggocOJglEQjOAON3bzqsdeAMQPaVjyfsyAiR4a6oKCBsfNz5h15Tt6P
-         4wVw==
+        d=gmail.com; s=20230601; t=1730017091; x=1730621891; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lf8auCRw7woFyIQI4Kwkvop6DKRHuhK/jLINfXM+uV0=;
+        b=REulJJhX/mqIaD5CJDFNyZq5tcYN2VDYknwAxOXqC0l99qn5al71sy5e/H6qd5AqgT
+         xNPsigULA7xIImsoAGs940ImajMMtMk2zCdfzPu+LzE6q6MBkdF4cjJRwrh/4hOvIekf
+         oCGV+9XuGYqqQMaBU9nJMFjpLYDAMd3NTWkmagBIoblhBbp8bp958i5vwNliLQGQBw2m
+         EVOM7yJIvg5d0akk2UiaXJZmPQ8m2TolSPEdPae1xJr68e1KwHWHGmOgrZ+8zEjDwdAU
+         RjLnnDqome+uCA91u0R1TiFrBRPucUBKqU7sPZl2PepIm0XzkrAwLRcUEdjJD9hX43Va
+         ZHJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729863827; x=1730468627;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1730017091; x=1730621891;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1kz5259MwYRI+aDbtE30q508qtTHkpLxxnr+Zb0znIg=;
-        b=rzFAbbNrtUzYxN1Df0V7Zb9m7n9db5MBpjO1McJzdBd0th2goX/EI+3AmXZX3p6UXd
-         IReJAddlzrdySRSmAyEv79JfXKD4Kai3KBt15RZWj9+SDP2iCeHsdteTMjpInM6x6Btu
-         WbhOh5o6CgPkldmOASrlN6/IoX8IUX1gpqzL843tpXTRqB7JyixCuitTbkAfIfnGgnPD
-         zDq3003XyA6zasAZfG6w8cY+bIs5q2ZclydufU5esMSVb8v8F2PqzsRP7ntrIFBb4ZBK
-         nx4kbouwCHt1f+7bF8HewOXgbyBZE9Oxhh79pso87MjQYw5tQOZ4/Bp4D0qLFnoslWn5
-         pX9g==
-X-Gm-Message-State: AOJu0YzsQ/7TbHdurpztK06INlJUOVpPSq7W+IHF6fyFP+z8kI79W8CE
-	R7YqKnHv7VxqTqUsZcqocWT3P3J2OxC0ZZkYeoT5xI4gIfzVQYgTIsMDE0xa0EK2I9qKUHVWIRJ
-	s/klHdouzKqIHd4lZiLht9ebU0f1jhGpm
-X-Google-Smtp-Source: AGHT+IEbnyQwSbNQtSh7sEOODuX/m/yRITasTyiFoK2nSygvxMyXnNuoNBFHRlD79j7hEKKeJF/p6fPJyQr9uzRIOFw=
-X-Received: by 2002:a05:6a20:46a0:b0:1d9:26b7:6ca with SMTP id
- adf61e73a8af0-1d978bd0174mr9226985637.45.1729863826864; Fri, 25 Oct 2024
- 06:43:46 -0700 (PDT)
+        bh=lf8auCRw7woFyIQI4Kwkvop6DKRHuhK/jLINfXM+uV0=;
+        b=pMGdT9c19o2T2hmkOYSUDap6SOHhUEiG5gyIBobTSfNET91yamRxgjA7JGS9LFEhqK
+         M7NcNlRJzP3eWqz19zJMCwGYP0BbTObKZWfsUArJ5hFXAQPJbrPDZ556b91k5YbDILGm
+         R8a2lYJmQi3i0NxKYKvzmExIgRvQvLSi9sevSQvR/KG9btrT7nzz8YY07ZChKPgg5/r/
+         3ZpvXJ3nyPmifXauVWhx3jeEWwpxXAATiwgn+f2vZjxS/COG4V7JuWYFU7oIR43Kfm5c
+         I0Q1Lt1pkcSdJDYQEgeLCN9TBPb1QmYlql/+oQA+73y/lW5otKc3NbOEHrA1bxt0RPhO
+         EMNQ==
+X-Gm-Message-State: AOJu0YyQUXuM6nhJ078JZMe8eGAFiKV5pwaaxsCuUz2gJQhg44hruZG+
+	GfCuww6dkwhRZ9o8xNY0F2KGFc/4Ajo0zysE9Qusftpv8cBIf7uMOJdTsC39
+X-Google-Smtp-Source: AGHT+IHGaTfY9lqpxxquarvaZlCOqY0GsGD0gFVwoQcTW2xiQeIa2pfz1sq9VpS7i/EiK0DWf7FDRQ==
+X-Received: by 2002:a05:600c:1e17:b0:42c:ae30:fc4d with SMTP id 5b1f17b1804b1-4319ac70245mr41153315e9.7.1730017090779;
+        Sun, 27 Oct 2024 01:18:10 -0700 (PDT)
+Received: from alaa.. ([102.43.144.203])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b3ba7fsm6230061f8f.34.2024.10.27.01.18.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Oct 2024 01:18:10 -0700 (PDT)
+From: alaanourali@gmail.com
+To: barebox@lists.infradead.org
+Cc: A.fatoum@barebox.org,
+	Alaa Ali <alaanourali@gmail.com>
+Date: Sun, 27 Oct 2024 11:17:53 +0300
+Message-ID: <20241027081753.256921-1-alaanourali@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20241025-i2c-busnum-v1-0-332d9257eafe@pengutronix.de> <20241025-i2c-busnum-v1-1-332d9257eafe@pengutronix.de>
-In-Reply-To: <20241025-i2c-busnum-v1-1-332d9257eafe@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 25 Oct 2024 16:43:35 +0300
-Message-ID: <CAP1tNvR0tYRQVY63bUwB24gAP4-UWQvP1v=GWZs_GkD0vBUiNg@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241025_064348_011113_B49DE743 
-X-CRM114-Status: UNSURE (   7.04  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241027_011814_030961_57090B54 
+X-CRM114-Status: GOOD (  11.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,26 +96,61 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/3] i2c: set adapter.nr explicitly to -1
+Subject: [PATCH] Fix unresponsive SDL GUI by handling SDL_QUIT events
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello.
+From: Alaa Ali <alaanourali@gmail.com>
 
-Last time I didn't do it completely :)
-https://lore.barebox.org/barebox/20230714051510.2304-4-eagle.alexander923@gmail.com/
+The SDL GUI in the scanout function can appear unresponsive to the
+operating system, as it lacks an event handler. This patch adds a
+new function, handle_sdl_events(), which processes SDL events to
+ensure the window can respond to close requests.
 
-Thanks!
+This addresses issues where Linux might think the SDL window is
+unresponsive, allowing it to handle SDL_QUIT events properly and
+initiate shutdown.
 
-...
+Signed-off-by: Alaa Ali <alaanourali@gmail.com>
+---
+ arch/sandbox/os/sdl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-> dev->id will always be -1 for device tree instantiated devices. Instead
-> of setting adapter.nr to dev->id, set it to -1 explicitly for all I2C
-> bus drivers that are purely instantiated from device tree.
+diff --git a/arch/sandbox/os/sdl.c b/arch/sandbox/os/sdl.c
+index 13178abfc0..0fc281b7b8 100644
+--- a/arch/sandbox/os/sdl.c
++++ b/arch/sandbox/os/sdl.c
+@@ -13,6 +13,15 @@ static void sdl_perror(const char *what)
+ 	printf("SDL: Could not %s: %s.\n", what, SDL_GetError());
+ }
+ 
++static void handle_sdl_events(void)
++{
++    SDL_Event event;
++    while (SDL_PollEvent(&event)) {
++        if (event.type == SDL_QUIT)
++        	SDL_AtomicSet(&shutdown, true);
++    }
++}
++
+ static struct sdl_fb_info info;
+ static SDL_atomic_t shutdown;
+ SDL_Window *window;
+@@ -47,6 +56,7 @@ static int scanout(void *ptr)
+ 	while (!SDL_AtomicGet(&shutdown)) {
+ 		SDL_Delay(100);
+ 
++		handle_sdl_events();  /* Handle events like window close */
+ 		SDL_UpdateTexture(texture, NULL, buf, surface->pitch);
+ 		SDL_RenderClear(renderer);
+ 		SDL_RenderCopy(renderer, texture, NULL, NULL);
+-- 
+2.43.0
+
 
 
