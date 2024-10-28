@@ -1,74 +1,74 @@
-Delivery-date: Mon, 28 Oct 2024 15:41:27 +0100
+Delivery-date: Mon, 28 Oct 2024 15:41:37 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5Qvu-001tls-1W
+	id 1t5Qw4-001tmU-13
 	for lore@lore.pengutronix.de;
-	Mon, 28 Oct 2024 15:41:27 +0100
+	Mon, 28 Oct 2024 15:41:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5Qvq-0005C6-Oh
-	for lore@pengutronix.de; Mon, 28 Oct 2024 15:41:27 +0100
+	id 1t5Qvy-0005J9-Hp
+	for lore@pengutronix.de; Mon, 28 Oct 2024 15:41:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kucO071pbnLpn9rh+x7swheTX9lzqprQj9orGgIfnbQ=; b=fBJ6/pFqCAd5/lmzQcC09CNQ0x
-	qHMB3k6yNgVQFwQKPMWVdU9wpFkGttGn4jk5faH1tS80WYryCchv2i4UpG6i/0vHcq0ZaSspCkzfT
-	9oDAj9vy1lFnnHpnE0+WSCEtXRkmEWX17zCWAihs9ZcAcoJBWVjGNUofXZFzAjec/rX4N7jqL+6P/
-	Xak5jUgEPPCMaQGbNc9jO7+TGCYuXQ8Ntm1SzX/sXqahLpDQTr96oLSrqAN9OHgwVMHhlwssBO52o
-	p3agKzv8VASj0ZSDlkZX+vJOfjncy/pgx0Xw43niAF94WxRjoiavARwGO9TlBoX2OzRT9L3Acvd/E
-	5sYfIv9w==;
+	bh=SobI/OUYpW1nd22PWeWltA8AysOz2xy0+xsDCwTbhsI=; b=tWs9h/C3ScI/HzMszIswgjcPKy
+	L2nFtiPrVqgHwUWEzvHGYAzBDGVSzhsu8IuK7aV0uedqQ9Bn9VC0tILFkgru4fo1KepcutxR3CqWQ
+	MI40oiwLrYAyYGwz4jcpl/I5TW2l0qopd0JOdC2acQYNEWaP3MwkaknIwbJCkd23w30wEZiCiVjmM
+	wS0nD9XpWiOsS30EUQR+hMP33Xc8Sx+DIccGvmkxvKv0AMkqbfEL4TjX7/PevPk2WBzXHlkjxX5p7
+	Z1UAEU44uahkZwcgdimLc68cOT8nMvic4TueyqOR0166dyvy0CRfCVkW+2m0M+LtMYP3hcAw7GuDP
+	u5B7aDmA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5Quw-0000000B9j6-3QAn;
-	Mon, 28 Oct 2024 14:40:26 +0000
+	id 1t5Qv3-0000000B9nZ-2MI1;
+	Mon, 28 Oct 2024 14:40:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5Qb3-0000000B5og-0ZFn
+	id 1t5QbU-0000000B5wP-25yt
 	for barebox@lists.infradead.org;
-	Mon, 28 Oct 2024 14:19:57 +0000
+	Mon, 28 Oct 2024 14:20:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t5Qax-0002nq-28; Mon, 28 Oct 2024 15:19:47 +0100
+	id 1t5Qax-0002nl-2T; Mon, 28 Oct 2024 15:19:47 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t5Qaw-000s7O-2G;
+	id 1t5Qaw-000s7M-28;
 	Mon, 28 Oct 2024 15:19:46 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t5Qaw-00EMX2-1q;
+	id 1t5Qaw-00EMX2-1s;
 	Mon, 28 Oct 2024 15:19:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Oct 2024 15:19:49 +0100
+Date: Mon, 28 Oct 2024 15:19:50 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241028-vop2-rk3588-v1-4-a54bf7c28adc@pengutronix.de>
+Message-Id: <20241028-vop2-rk3588-v1-5-a54bf7c28adc@pengutronix.de>
 References: <20241028-vop2-rk3588-v1-0-a54bf7c28adc@pengutronix.de>
 In-Reply-To: <20241028-vop2-rk3588-v1-0-a54bf7c28adc@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730125186; l=32772;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730125186; l=50759;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Df9qsVux3+34FmiO0Jw/cKz/UznphPx9Iitf59oT98c=;
- b=rLjBL4/mrjeUsPYhIl8q1QifdosodHZ16Cro9cASvFj+9oJqRm+k99Gv3NBRd8ARuaJ8OZFLX
- 88thmunSpnADmCp9AK1OAyahEMQ4bkuv1rzEfmk6FXoartj5hbRGGlj
+ bh=WjRU5P7om9QZvH5PrWMqZcdPaSS/T1PU1Fi+r1W7/gc=;
+ b=DjRCdndCnLlS0mb6dKN0O1oXRDhhZps9fNFJQJsO62fIkcOJDc09GTTStdfJ31Xf3qWG7/3rh
+ W9n5HF0aokwCmM5+/C3Qg/Ebpd38C5ZMX9cq1doEj2FCllZzzmlMBd1
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241028_071953_843542_95056674 
-X-CRM114-Status: GOOD (  17.35  )
+X-CRM114-CacheID: sfid-20241028_072021_082203_9B1D53BB 
+X-CRM114-Status: GOOD (  29.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,74 +90,85 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 04/12] phy: add support for Rockchip Samsung HDMI/eDP Combo
- PHY driver
+Subject: [PATCH 05/12] video: add support for dw-hdmi-qp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds support for the Rockchip Samsung HDMI/eDP Combo PHY driver
-based on Linux commit:
+This adds support for a newer variant of the Synopsys HDMI TX
+controller, based on Linux commit:
 
-| commit 553be2830c5f33308483e8118de748a2c69fe593
+| commit f367bb862ab7d7b38ec4fbfe9f313696a6fe8cd9
 | Author: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-| Date:   Wed Feb 14 13:45:37 2024 +0200
+| Date:   Mon May 20 14:49:50 2024 +0300
 |
-|     phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver
+|     drm/bridge: synopsys: Add DW HDMI QP TX controller driver
 |
-|     Add driver for the HDMI/eDP TX Combo PHY found on Rockchip RK3588 SoC.
+|     The Synopsys DesignWare HDMI 2.1 Quad-Pixel (QP) TX controller supports
+|     the following features, among others:
 |
-|     The PHY is based on a Samsung IP block and supports HDMI 2.1 TMDS, FRL
-|     and eDP links.  The maximum data rate is 12Gbps (FRL), while the minimum
-|     is 250Mbps (TMDS).
+|     * Fixed Rate Link (FRL)
+|     * 4K@120Hz and 8K@60Hz video modes
+|     * Variable Refresh Rate (VRR) including Quick Media Switching (QMS), aka
+|       Cinema VRR
+|     * Fast Vactive (FVA), aka Quick Frame Transport (QFT)
+|     * SCDC I2C DDC access
+|     * TMDS Scrambler enabling 2160p@60Hz with RGB/YCbCr4:4:4
+|     * YCbCr4:2:0 enabling 2160p@60Hz at lower HDMI link speeds
+|     * Multi-stream audio
+|     * Enhanced Audio Return Channel (EARC)
 |
-|     Only the TMDS link is currently supported.
+|     Add driver to enable basic support, i.e. RGB output up to 4K@60Hz,
+|     without audio, CEC or any HDMI 2.1 specific features.
 |
 |     Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
 |     Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
-|     Tested-by: Heiko Stuebner <heiko@sntech.de>
 |     Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-|     Link: https://lore.kernel.org/r/20240214-phy-hdptx-v4-2-e7974f46c1a7@collabora.com
-|     Signed-off-by: Vinod Koul <vkoul@kernel.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/phy/rockchip/Kconfig                      |   8 +
- drivers/phy/rockchip/Makefile                     |   1 +
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 969 ++++++++++++++++++++++
- 3 files changed, 978 insertions(+)
+ drivers/video/Kconfig      |   9 +
+ drivers/video/Makefile     |   1 +
+ drivers/video/dw-hdmi-qp.c | 470 +++++++++++++++++++++++++
+ drivers/video/dw-hdmi-qp.h | 834 +++++++++++++++++++++++++++++++++++++++++++++
+ include/video/dw_hdmi_qp.h |  32 ++
+ 5 files changed, 1346 insertions(+)
 
-diff --git a/drivers/phy/rockchip/Kconfig b/drivers/phy/rockchip/Kconfig
-index 8a10190f8e..9038c7d6b4 100644
---- a/drivers/phy/rockchip/Kconfig
-+++ b/drivers/phy/rockchip/Kconfig
-@@ -18,3 +18,11 @@ config PHY_ROCKCHIP_SNPS_PCIE3
- 	depends on ARCH_ROCKCHIP || COMPILE_TEST
- 	help
- 	  Enable this to support the Rockchip snps PCIe3 PHY.
-+
-+config PHY_ROCKCHIP_SAMSUNG_HDPTX
-+	tristate "Rockchip Samsung HDMI/eDP Combo PHY driver"
-+	depends on ARCH_ROCKCHIP || COMPILE_TEST
-+	select MFD_SYSCON
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 60adc7f30e..2fdc921b52 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -216,4 +216,13 @@ config DRIVER_VIDEO_DW_HDMI
+ 	  controller. To make use of this driver you need platform specific
+ 	  glue code to be selected as well.
+ 
++config DRIVER_VIDEO_DW_HDMI_QP
++	tristate "Designware HDMI QP support"
++	select VIDEO_VPL
++	select OFTREE
 +	help
-+	  Enable this to support the Rockchip HDMI/eDP Combo PHY
-+	  with Samsung IP block.
-diff --git a/drivers/phy/rockchip/Makefile b/drivers/phy/rockchip/Makefile
-index 1eaee4cbee..e951b41970 100644
---- a/drivers/phy/rockchip/Makefile
-+++ b/drivers/phy/rockchip/Makefile
-@@ -2,3 +2,4 @@
- obj-$(CONFIG_PHY_ROCKCHIP_INNO_USB2) += phy-rockchip-inno-usb2.o
- obj-$(CONFIG_PHY_ROCKCHIP_NANENG_COMBO_PHY) += phy-rockchip-naneng-combphy.o
- obj-$(CONFIG_PHY_ROCKCHIP_SNPS_PCIE3) += phy-rockchip-snps-pcie3.o
-+obj-$(CONFIG_PHY_ROCKCHIP_SAMSUNG_HDPTX)       += phy-rockchip-samsung-hdptx.o
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++	  Say Y here if you want to enable support for the Designware HDMI QP
++	  controller. To make use of this driver you need platform specific
++	  glue code to be selected as well.
++
+ endif
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 6aa5d50e5d..2a0d49716a 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -32,5 +32,6 @@ obj-$(CONFIG_DRIVER_VIDEO_EFI_GOP) += efi_gop.o
+ obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
+ obj-$(CONFIG_BACKLIGHT_RAVE_SP)	+= rave-sp-backlight.o
+ obj-$(CONFIG_DRIVER_VIDEO_DW_HDMI) += dw-hdmi.o
++obj-$(CONFIG_DRIVER_VIDEO_DW_HDMI_QP) += dw-hdmi-qp.o
+ obj-$(CONFIG_DRIVER_VIDEO_BOCHS) += bochs/
+ obj-$(CONFIG_DRIVER_VIDEO_ROCKCHIP) += rockchip/
+diff --git a/drivers/video/dw-hdmi-qp.c b/drivers/video/dw-hdmi-qp.c
 new file mode 100644
-index 0000000000..fd8b3ca559
+index 0000000000..4a53b14c61
 --- /dev/null
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -0,0 +1,969 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/drivers/video/dw-hdmi-qp.c
+@@ -0,0 +1,470 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * Copyright (c) 2021-2022 Rockchip Electronics Co., Ltd.
 + * Copyright (c) 2024 Collabora Ltd.
@@ -165,967 +176,1346 @@ index 0000000000..fd8b3ca559
 + * Author: Algea Cao <algea.cao@rock-chips.com>
 + * Author: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 + */
-+#include <init.h>
-+#include <io.h>
-+#include <of.h>
-+#include <errno.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <linux/usb/phy.h>
-+#include <linux/phy/phy.h>
 +#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/regmap.h>
-+#include <mfd/syscon.h>
-+#include <regulator.h>
-+#include <linux/bitfield.h>
-+#include <linux/reset.h>
 +#include <linux/kernel.h>
-+#include <linux/rational.h>
++#include <linux/err.h>
++#include <linux/hdmi.h>
++#include <i2c/i2c.h>
++#include <of.h>
++#include <linux/regmap.h>
++#include <video/dw_hdmi.h>
++#include <video/drm/drm_connector.h>
++#include <video/media-bus-format.h>
++#include <fb.h>
++#include <video/vpl.h>
++#include <video/videomode.h>
++#include <video/dw_hdmi_qp.h>
 +
-+#define GRF_HDPTX_CON0			0x00
-+#define HDPTX_I_PLL_EN			BIT(7)
-+#define HDPTX_I_BIAS_EN			BIT(6)
-+#define HDPTX_I_BGR_EN			BIT(5)
-+#define GRF_HDPTX_STATUS		0x80
-+#define HDPTX_O_PLL_LOCK_DONE		BIT(3)
-+#define HDPTX_O_PHY_CLK_RDY		BIT(2)
-+#define HDPTX_O_PHY_RDY			BIT(1)
-+#define HDPTX_O_SB_RDY			BIT(0)
++#include "dw-hdmi-qp.h"
 +
-+#define HDTPX_REG(_n, _min, _max)				\
-+	(							\
-+		BUILD_BUG_ON_ZERO((0x##_n) < (0x##_min)) +	\
-+		BUILD_BUG_ON_ZERO((0x##_n) > (0x##_max)) +	\
-+		((0x##_n) * 4)					\
-+	)
++#define DDC_CI_ADDR		0x37
++#define DDC_SEGMENT_ADDR	0x30
 +
-+#define CMN_REG(n)			HDTPX_REG(n, 0000, 00a7)
-+#define SB_REG(n)			HDTPX_REG(n, 0100, 0129)
-+#define LNTOP_REG(n)			HDTPX_REG(n, 0200, 0229)
-+#define LANE_REG(n)			HDTPX_REG(n, 0300, 062d)
++#define HDMI14_MAX_TMDSCLK	340000000
 +
-+/* CMN_REG(0008) */
-+#define LCPLL_EN_MASK			BIT(6)
-+#define LCPLL_LCVCO_MODE_EN_MASK	BIT(4)
-+/* CMN_REG(001e) */
-+#define LCPLL_PI_EN_MASK		BIT(5)
-+#define LCPLL_100M_CLK_EN_MASK		BIT(0)
-+/* CMN_REG(0025) */
-+#define LCPLL_PMS_IQDIV_RSTN		BIT(4)
-+/* CMN_REG(0028) */
-+#define LCPLL_SDC_FRAC_EN		BIT(2)
-+#define LCPLL_SDC_FRAC_RSTN		BIT(0)
-+/* CMN_REG(002d) */
-+#define LCPLL_SDC_N_MASK		GENMASK(3, 1)
-+/* CMN_REG(002e) */
-+#define LCPLL_SDC_NUMBERATOR_MASK	GENMASK(5, 0)
-+/* CMN_REG(002f) */
-+#define LCPLL_SDC_DENOMINATOR_MASK	GENMASK(7, 2)
-+#define LCPLL_SDC_NDIV_RSTN		BIT(0)
-+/* CMN_REG(003d) */
-+#define ROPLL_LCVCO_EN			BIT(4)
-+/* CMN_REG(004e) */
-+#define ROPLL_PI_EN			BIT(5)
-+/* CMN_REG(005c) */
-+#define ROPLL_PMS_IQDIV_RSTN		BIT(5)
-+/* CMN_REG(005e) */
-+#define ROPLL_SDM_EN_MASK		BIT(6)
-+#define ROPLL_SDM_FRAC_EN_RBR		BIT(3)
-+#define ROPLL_SDM_FRAC_EN_HBR		BIT(2)
-+#define ROPLL_SDM_FRAC_EN_HBR2		BIT(1)
-+#define ROPLL_SDM_FRAC_EN_HBR3		BIT(0)
-+/* CMN_REG(0064) */
-+#define ROPLL_SDM_NUM_SIGN_RBR_MASK	BIT(3)
-+/* CMN_REG(0069) */
-+#define ROPLL_SDC_N_RBR_MASK		GENMASK(2, 0)
-+/* CMN_REG(0074) */
-+#define ROPLL_SDC_NDIV_RSTN		BIT(2)
-+#define ROPLL_SSC_EN			BIT(0)
-+/* CMN_REG(0081) */
-+#define OVRD_PLL_CD_CLK_EN		BIT(8)
-+#define PLL_CD_HSCLK_EAST_EN		BIT(0)
-+/* CMN_REG(0086) */
-+#define PLL_PCG_POSTDIV_SEL_MASK	GENMASK(7, 4)
-+#define PLL_PCG_CLK_SEL_MASK		GENMASK(3, 1)
-+#define PLL_PCG_CLK_EN			BIT(0)
-+/* CMN_REG(0087) */
-+#define PLL_FRL_MODE_EN			BIT(3)
-+#define PLL_TX_HS_CLK_EN		BIT(2)
-+/* CMN_REG(0089) */
-+#define LCPLL_ALONE_MODE		BIT(1)
-+/* CMN_REG(0097) */
-+#define DIG_CLK_SEL			BIT(1)
-+#define ROPLL_REF			BIT(1)
-+#define LCPLL_REF			0
-+/* CMN_REG(0099) */
-+#define CMN_ROPLL_ALONE_MODE		BIT(2)
-+#define ROPLL_ALONE_MODE		BIT(2)
-+/* CMN_REG(009a) */
-+#define HS_SPEED_SEL			BIT(0)
-+#define DIV_10_CLOCK			BIT(0)
-+/* CMN_REG(009b) */
-+#define IS_SPEED_SEL			BIT(4)
-+#define LINK_SYMBOL_CLOCK		BIT(4)
-+#define LINK_SYMBOL_CLOCK1_2		0
++#define SCRAMB_POLL_DELAY_MS	3000
 +
-+/* SB_REG(0102) */
-+#define OVRD_SB_RXTERM_EN_MASK		BIT(5)
-+#define SB_RXTERM_EN_MASK		BIT(4)
-+#define ANA_SB_RXTERM_OFFSP_MASK	GENMASK(3, 0)
-+/* SB_REG(0103) */
-+#define ANA_SB_RXTERM_OFFSN_MASK	GENMASK(6, 3)
-+#define OVRD_SB_RX_RESCAL_DONE_MASK	BIT(1)
-+#define SB_RX_RESCAL_DONE_MASK		BIT(0)
-+/* SB_REG(0104) */
-+#define OVRD_SB_EN_MASK			BIT(5)
-+#define SB_EN_MASK			BIT(4)
-+/* SB_REG(0105) */
-+#define OVRD_SB_EARC_CMDC_EN_MASK	BIT(6)
-+#define SB_EARC_CMDC_EN_MASK		BIT(5)
-+#define ANA_SB_TX_HLVL_PROG_MASK	GENMASK(2, 0)
-+/* SB_REG(0106) */
-+#define ANA_SB_TX_LLVL_PROG_MASK	GENMASK(6, 4)
-+/* SB_REG(0109) */
-+#define ANA_SB_DMRX_AFC_DIV_RATIO_MASK	GENMASK(2, 0)
-+/* SB_REG(010f) */
-+#define OVRD_SB_VREG_EN_MASK		BIT(7)
-+#define SB_VREG_EN_MASK			BIT(6)
-+#define OVRD_SB_VREG_LPF_BYPASS_MASK	BIT(5)
-+#define SB_VREG_LPF_BYPASS_MASK		BIT(4)
-+#define ANA_SB_VREG_GAIN_CTRL_MASK	GENMASK(3, 0)
-+/* SB_REG(0110) */
-+#define ANA_SB_VREG_REF_SEL_MASK	BIT(0)
-+/* SB_REG(0113) */
-+#define SB_RX_RCAL_OPT_CODE_MASK	GENMASK(5, 4)
-+#define SB_RX_RTERM_CTRL_MASK		GENMASK(3, 0)
-+/* SB_REG(0114) */
-+#define SB_TG_SB_EN_DELAY_TIME_MASK	GENMASK(5, 3)
-+#define SB_TG_RXTERM_EN_DELAY_TIME_MASK	GENMASK(2, 0)
-+/* SB_REG(0115) */
-+#define SB_READY_DELAY_TIME_MASK	GENMASK(5, 3)
-+#define SB_TG_OSC_EN_DELAY_TIME_MASK	GENMASK(2, 0)
-+/* SB_REG(0116) */
-+#define AFC_RSTN_DELAY_TIME_MASK	GENMASK(6, 4)
-+/* SB_REG(0117) */
-+#define FAST_PULSE_TIME_MASK		GENMASK(3, 0)
-+/* SB_REG(011b) */
-+#define SB_EARC_SIG_DET_BYPASS_MASK	BIT(4)
-+#define SB_AFC_TOL_MASK			GENMASK(3, 0)
-+/* SB_REG(011f) */
-+#define SB_PWM_AFC_CTRL_MASK		GENMASK(7, 2)
-+#define SB_RCAL_RSTN_MASK		BIT(1)
-+/* SB_REG(0120) */
-+#define SB_EARC_EN_MASK			BIT(1)
-+#define SB_EARC_AFC_EN_MASK		BIT(2)
-+/* SB_REG(0123) */
-+#define OVRD_SB_READY_MASK		BIT(5)
-+#define SB_READY_MASK			BIT(4)
++struct dw_hdmi_qp;
 +
-+/* LNTOP_REG(0200) */
-+#define PROTOCOL_SEL			BIT(2)
-+#define HDMI_MODE			BIT(2)
-+#define HDMI_TMDS_FRL_SEL		BIT(1)
-+/* LNTOP_REG(0206) */
-+#define DATA_BUS_SEL			BIT(0)
-+#define DATA_BUS_36_40			BIT(0)
-+/* LNTOP_REG(0207) */
-+#define LANE_EN				0xf
-+#define ALL_LANE_EN			0xf
++struct dw_hdmi_qp_i2c {
++	struct i2c_adapter	adap;
 +
-+/* LANE_REG(0312) */
-+#define LN0_TX_SER_RATE_SEL_RBR		BIT(5)
-+#define LN0_TX_SER_RATE_SEL_HBR		BIT(4)
-+#define LN0_TX_SER_RATE_SEL_HBR2	BIT(3)
-+#define LN0_TX_SER_RATE_SEL_HBR3	BIT(2)
-+/* LANE_REG(0412) */
-+#define LN1_TX_SER_RATE_SEL_RBR		BIT(5)
-+#define LN1_TX_SER_RATE_SEL_HBR		BIT(4)
-+#define LN1_TX_SER_RATE_SEL_HBR2	BIT(3)
-+#define LN1_TX_SER_RATE_SEL_HBR3	BIT(2)
-+/* LANE_REG(0512) */
-+#define LN2_TX_SER_RATE_SEL_RBR		BIT(5)
-+#define LN2_TX_SER_RATE_SEL_HBR		BIT(4)
-+#define LN2_TX_SER_RATE_SEL_HBR2	BIT(3)
-+#define LN2_TX_SER_RATE_SEL_HBR3	BIT(2)
-+/* LANE_REG(0612) */
-+#define LN3_TX_SER_RATE_SEL_RBR		BIT(5)
-+#define LN3_TX_SER_RATE_SEL_HBR		BIT(4)
-+#define LN3_TX_SER_RATE_SEL_HBR2	BIT(3)
-+#define LN3_TX_SER_RATE_SEL_HBR3	BIT(2)
++	u8			stat;
 +
-+struct lcpll_config {
-+	u32 bit_rate;
-+	u8 lcvco_mode_en;
-+	u8 pi_en;
-+	u8 clk_en_100m;
-+	u8 pms_mdiv;
-+	u8 pms_mdiv_afc;
-+	u8 pms_pdiv;
-+	u8 pms_refdiv;
-+	u8 pms_sdiv;
-+	u8 pi_cdiv_rstn;
-+	u8 pi_cdiv_sel;
-+	u8 sdm_en;
-+	u8 sdm_rstn;
-+	u8 sdc_frac_en;
-+	u8 sdc_rstn;
-+	u8 sdm_deno;
-+	u8 sdm_num_sign;
-+	u8 sdm_num;
-+	u8 sdc_n;
-+	u8 sdc_n2;
-+	u8 sdc_num;
-+	u8 sdc_deno;
-+	u8 sdc_ndiv_rstn;
-+	u8 ssc_en;
-+	u8 ssc_fm_dev;
-+	u8 ssc_fm_freq;
-+	u8 ssc_clk_div_sel;
-+	u8 cd_tx_ser_rate_sel;
++	u8			slave_reg;
++	bool			is_regaddr;
++	bool			is_segment;
++
++	struct dw_hdmi_qp	*hdmi;
 +};
 +
-+struct ropll_config {
-+	u32 bit_rate;
-+	u8 pms_mdiv;
-+	u8 pms_mdiv_afc;
-+	u8 pms_pdiv;
-+	u8 pms_refdiv;
-+	u8 pms_sdiv;
-+	u8 pms_iqdiv_rstn;
-+	u8 ref_clk_sel;
-+	u8 sdm_en;
-+	u8 sdm_rstn;
-+	u8 sdc_frac_en;
-+	u8 sdc_rstn;
-+	u8 sdm_clk_div;
-+	u8 sdm_deno;
-+	u8 sdm_num_sign;
-+	u8 sdm_num;
-+	u8 sdc_n;
-+	u8 sdc_num;
-+	u8 sdc_deno;
-+	u8 sdc_ndiv_rstn;
-+	u8 ssc_en;
-+	u8 ssc_fm_dev;
-+	u8 ssc_fm_freq;
-+	u8 ssc_clk_div_sel;
-+	u8 ana_cpp_ctrl;
-+	u8 ana_lpf_c_sel;
-+	u8 cd_tx_ser_rate_sel;
-+};
-+
-+enum rk_hdptx_reset {
-+	RST_PHY = 0,
-+	RST_APB,
-+	RST_INIT,
-+	RST_CMN,
-+	RST_LANE,
-+	RST_ROPLL,
-+	RST_LCPLL,
-+	RST_MAX
-+};
-+
-+struct rk_hdptx_phy {
++struct dw_hdmi_qp {
 +	struct device *dev;
-+	struct regmap *regmap;
-+	struct regmap *grf;
++	struct dw_hdmi_qp_i2c *i2c;
 +
-+	struct phy *phy;
-+	struct phy_config *phy_cfg;
-+	struct clk_bulk_data *clks;
-+	int nr_clks;
-+	struct reset_control_bulk_data rsts[RST_MAX];
++	struct {
++		const struct dw_hdmi_qp_phy_ops *ops;
++		void *data;
++	} phy;
++
++	struct regmap *regm;
++	struct vpl vpl;
++	struct fb_videomode *mode;
 +};
 +
-+static const struct ropll_config ropll_tmds_cfg[] = {
-+	{ 5940000, 124, 124, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 3712500, 155, 155, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 2970000, 124, 124, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 1620000, 135, 135, 1, 1, 3, 1, 1, 0, 1, 1, 1, 1, 4, 0, 3, 5, 5, 0x10,
-+	  1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 1856250, 155, 155, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 1540000, 193, 193, 1, 1, 5, 1, 1, 1, 1, 1, 1, 1, 193, 1, 32, 2, 1,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 1485000, 0x7b, 0x7b, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 4, 0, 3, 5, 5,
-+	  0x10, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 1462500, 122, 122, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 244, 1, 16, 2, 1, 1,
-+	  1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 1190000, 149, 149, 1, 1, 5, 1, 1, 1, 1, 1, 1, 1, 149, 1, 16, 2, 1, 1,
-+	  1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 1065000, 89, 89, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 89, 1, 16, 1, 0, 1,
-+	  1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 1080000, 135, 135, 1, 1, 5, 1, 1, 0, 1, 0, 1, 1, 0x9, 0, 0x05, 0,
-+	  0x14, 0x18, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 855000, 214, 214, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 214, 1, 16, 2, 1,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 835000, 105, 105, 1, 1, 5, 1, 1, 1, 1, 1, 1, 1, 42, 1, 16, 1, 0,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 928125, 155, 155, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 742500, 124, 124, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 650000, 162, 162, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 54, 0, 16, 4, 1,
-+	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 337500, 0x70, 0x70, 1, 1, 0xf, 1, 1, 1, 1, 1, 1, 1, 0x2, 0, 0x01, 5,
-+	  1, 1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 400000, 100, 100, 1, 1, 11, 1, 1, 0, 1, 0, 1, 1, 0x9, 0, 0x05, 0,
-+	  0x14, 0x18, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 270000, 0x5a, 0x5a, 1, 1, 0xf, 1, 1, 0, 1, 0, 1, 1, 0x9, 0, 0x05, 0,
-+	  0x14, 0x18, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 251750, 84, 84, 1, 1, 0xf, 1, 1, 1, 1, 1, 1, 1, 168, 1, 16, 4, 1, 1,
-+	  1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+};
-+
-+static const struct reg_sequence rk_hdtpx_common_cmn_init_seq[] = {
-+	REG_SEQ0(CMN_REG(0009), 0x0c),
-+	REG_SEQ0(CMN_REG(000a), 0x83),
-+	REG_SEQ0(CMN_REG(000b), 0x06),
-+	REG_SEQ0(CMN_REG(000c), 0x20),
-+	REG_SEQ0(CMN_REG(000d), 0xb8),
-+	REG_SEQ0(CMN_REG(000e), 0x0f),
-+	REG_SEQ0(CMN_REG(000f), 0x0f),
-+	REG_SEQ0(CMN_REG(0010), 0x04),
-+	REG_SEQ0(CMN_REG(0011), 0x00),
-+	REG_SEQ0(CMN_REG(0012), 0x26),
-+	REG_SEQ0(CMN_REG(0013), 0x22),
-+	REG_SEQ0(CMN_REG(0014), 0x24),
-+	REG_SEQ0(CMN_REG(0015), 0x77),
-+	REG_SEQ0(CMN_REG(0016), 0x08),
-+	REG_SEQ0(CMN_REG(0017), 0x00),
-+	REG_SEQ0(CMN_REG(0018), 0x04),
-+	REG_SEQ0(CMN_REG(0019), 0x48),
-+	REG_SEQ0(CMN_REG(001a), 0x01),
-+	REG_SEQ0(CMN_REG(001b), 0x00),
-+	REG_SEQ0(CMN_REG(001c), 0x01),
-+	REG_SEQ0(CMN_REG(001d), 0x64),
-+	REG_SEQ0(CMN_REG(001f), 0x00),
-+	REG_SEQ0(CMN_REG(0026), 0x53),
-+	REG_SEQ0(CMN_REG(0029), 0x01),
-+	REG_SEQ0(CMN_REG(0030), 0x00),
-+	REG_SEQ0(CMN_REG(0031), 0x20),
-+	REG_SEQ0(CMN_REG(0032), 0x30),
-+	REG_SEQ0(CMN_REG(0033), 0x0b),
-+	REG_SEQ0(CMN_REG(0034), 0x23),
-+	REG_SEQ0(CMN_REG(0035), 0x00),
-+	REG_SEQ0(CMN_REG(0038), 0x00),
-+	REG_SEQ0(CMN_REG(0039), 0x00),
-+	REG_SEQ0(CMN_REG(003a), 0x00),
-+	REG_SEQ0(CMN_REG(003b), 0x00),
-+	REG_SEQ0(CMN_REG(003c), 0x80),
-+	REG_SEQ0(CMN_REG(003e), 0x0c),
-+	REG_SEQ0(CMN_REG(003f), 0x83),
-+	REG_SEQ0(CMN_REG(0040), 0x06),
-+	REG_SEQ0(CMN_REG(0041), 0x20),
-+	REG_SEQ0(CMN_REG(0042), 0xb8),
-+	REG_SEQ0(CMN_REG(0043), 0x00),
-+	REG_SEQ0(CMN_REG(0044), 0x46),
-+	REG_SEQ0(CMN_REG(0045), 0x24),
-+	REG_SEQ0(CMN_REG(0046), 0xff),
-+	REG_SEQ0(CMN_REG(0047), 0x00),
-+	REG_SEQ0(CMN_REG(0048), 0x44),
-+	REG_SEQ0(CMN_REG(0049), 0xfa),
-+	REG_SEQ0(CMN_REG(004a), 0x08),
-+	REG_SEQ0(CMN_REG(004b), 0x00),
-+	REG_SEQ0(CMN_REG(004c), 0x01),
-+	REG_SEQ0(CMN_REG(004d), 0x64),
-+	REG_SEQ0(CMN_REG(004e), 0x14),
-+	REG_SEQ0(CMN_REG(004f), 0x00),
-+	REG_SEQ0(CMN_REG(0050), 0x00),
-+	REG_SEQ0(CMN_REG(005d), 0x0c),
-+	REG_SEQ0(CMN_REG(005f), 0x01),
-+	REG_SEQ0(CMN_REG(006b), 0x04),
-+	REG_SEQ0(CMN_REG(0073), 0x30),
-+	REG_SEQ0(CMN_REG(0074), 0x00),
-+	REG_SEQ0(CMN_REG(0075), 0x20),
-+	REG_SEQ0(CMN_REG(0076), 0x30),
-+	REG_SEQ0(CMN_REG(0077), 0x08),
-+	REG_SEQ0(CMN_REG(0078), 0x0c),
-+	REG_SEQ0(CMN_REG(0079), 0x00),
-+	REG_SEQ0(CMN_REG(007b), 0x00),
-+	REG_SEQ0(CMN_REG(007c), 0x00),
-+	REG_SEQ0(CMN_REG(007d), 0x00),
-+	REG_SEQ0(CMN_REG(007e), 0x00),
-+	REG_SEQ0(CMN_REG(007f), 0x00),
-+	REG_SEQ0(CMN_REG(0080), 0x00),
-+	REG_SEQ0(CMN_REG(0081), 0x09),
-+	REG_SEQ0(CMN_REG(0082), 0x04),
-+	REG_SEQ0(CMN_REG(0083), 0x24),
-+	REG_SEQ0(CMN_REG(0084), 0x20),
-+	REG_SEQ0(CMN_REG(0085), 0x03),
-+	REG_SEQ0(CMN_REG(0086), 0x01),
-+	REG_SEQ0(CMN_REG(0087), 0x0c),
-+	REG_SEQ0(CMN_REG(008a), 0x55),
-+	REG_SEQ0(CMN_REG(008b), 0x25),
-+	REG_SEQ0(CMN_REG(008c), 0x2c),
-+	REG_SEQ0(CMN_REG(008d), 0x22),
-+	REG_SEQ0(CMN_REG(008e), 0x14),
-+	REG_SEQ0(CMN_REG(008f), 0x20),
-+	REG_SEQ0(CMN_REG(0090), 0x00),
-+	REG_SEQ0(CMN_REG(0091), 0x00),
-+	REG_SEQ0(CMN_REG(0092), 0x00),
-+	REG_SEQ0(CMN_REG(0093), 0x00),
-+	REG_SEQ0(CMN_REG(009a), 0x11),
-+	REG_SEQ0(CMN_REG(009b), 0x10),
-+};
-+
-+static const struct reg_sequence rk_hdtpx_tmds_cmn_init_seq[] = {
-+	REG_SEQ0(CMN_REG(0008), 0x00),
-+	REG_SEQ0(CMN_REG(0011), 0x01),
-+	REG_SEQ0(CMN_REG(0017), 0x20),
-+	REG_SEQ0(CMN_REG(001e), 0x14),
-+	REG_SEQ0(CMN_REG(0020), 0x00),
-+	REG_SEQ0(CMN_REG(0021), 0x00),
-+	REG_SEQ0(CMN_REG(0022), 0x11),
-+	REG_SEQ0(CMN_REG(0023), 0x00),
-+	REG_SEQ0(CMN_REG(0024), 0x00),
-+	REG_SEQ0(CMN_REG(0025), 0x53),
-+	REG_SEQ0(CMN_REG(0026), 0x00),
-+	REG_SEQ0(CMN_REG(0027), 0x00),
-+	REG_SEQ0(CMN_REG(0028), 0x01),
-+	REG_SEQ0(CMN_REG(002a), 0x00),
-+	REG_SEQ0(CMN_REG(002b), 0x00),
-+	REG_SEQ0(CMN_REG(002c), 0x00),
-+	REG_SEQ0(CMN_REG(002d), 0x00),
-+	REG_SEQ0(CMN_REG(002e), 0x04),
-+	REG_SEQ0(CMN_REG(002f), 0x00),
-+	REG_SEQ0(CMN_REG(0030), 0x20),
-+	REG_SEQ0(CMN_REG(0031), 0x30),
-+	REG_SEQ0(CMN_REG(0032), 0x0b),
-+	REG_SEQ0(CMN_REG(0033), 0x23),
-+	REG_SEQ0(CMN_REG(0034), 0x00),
-+	REG_SEQ0(CMN_REG(003d), 0x40),
-+	REG_SEQ0(CMN_REG(0042), 0x78),
-+	REG_SEQ0(CMN_REG(004e), 0x34),
-+	REG_SEQ0(CMN_REG(005c), 0x25),
-+	REG_SEQ0(CMN_REG(005e), 0x4f),
-+	REG_SEQ0(CMN_REG(0074), 0x04),
-+	REG_SEQ0(CMN_REG(0081), 0x01),
-+	REG_SEQ0(CMN_REG(0087), 0x04),
-+	REG_SEQ0(CMN_REG(0089), 0x00),
-+	REG_SEQ0(CMN_REG(0095), 0x00),
-+	REG_SEQ0(CMN_REG(0097), 0x02),
-+	REG_SEQ0(CMN_REG(0099), 0x04),
-+	REG_SEQ0(CMN_REG(009b), 0x00),
-+};
-+
-+static const struct reg_sequence rk_hdtpx_common_sb_init_seq[] = {
-+	REG_SEQ0(SB_REG(0114), 0x00),
-+	REG_SEQ0(SB_REG(0115), 0x00),
-+	REG_SEQ0(SB_REG(0116), 0x00),
-+	REG_SEQ0(SB_REG(0117), 0x00),
-+};
-+
-+static const struct reg_sequence rk_hdtpx_tmds_lntop_highbr_seq[] = {
-+	REG_SEQ0(LNTOP_REG(0201), 0x00),
-+	REG_SEQ0(LNTOP_REG(0202), 0x00),
-+	REG_SEQ0(LNTOP_REG(0203), 0x0f),
-+	REG_SEQ0(LNTOP_REG(0204), 0xff),
-+	REG_SEQ0(LNTOP_REG(0205), 0xff),
-+};
-+
-+static const struct reg_sequence rk_hdtpx_tmds_lntop_lowbr_seq[] = {
-+	REG_SEQ0(LNTOP_REG(0201), 0x07),
-+	REG_SEQ0(LNTOP_REG(0202), 0xc1),
-+	REG_SEQ0(LNTOP_REG(0203), 0xf0),
-+	REG_SEQ0(LNTOP_REG(0204), 0x7c),
-+	REG_SEQ0(LNTOP_REG(0205), 0x1f),
-+};
-+
-+static const struct reg_sequence rk_hdtpx_common_lane_init_seq[] = {
-+	REG_SEQ0(LANE_REG(0303), 0x0c),
-+	REG_SEQ0(LANE_REG(0307), 0x20),
-+	REG_SEQ0(LANE_REG(030a), 0x17),
-+	REG_SEQ0(LANE_REG(030b), 0x77),
-+	REG_SEQ0(LANE_REG(030c), 0x77),
-+	REG_SEQ0(LANE_REG(030d), 0x77),
-+	REG_SEQ0(LANE_REG(030e), 0x38),
-+	REG_SEQ0(LANE_REG(0310), 0x03),
-+	REG_SEQ0(LANE_REG(0311), 0x0f),
-+	REG_SEQ0(LANE_REG(0316), 0x02),
-+	REG_SEQ0(LANE_REG(031b), 0x01),
-+	REG_SEQ0(LANE_REG(031f), 0x15),
-+	REG_SEQ0(LANE_REG(0320), 0xa0),
-+	REG_SEQ0(LANE_REG(0403), 0x0c),
-+	REG_SEQ0(LANE_REG(0407), 0x20),
-+	REG_SEQ0(LANE_REG(040a), 0x17),
-+	REG_SEQ0(LANE_REG(040b), 0x77),
-+	REG_SEQ0(LANE_REG(040c), 0x77),
-+	REG_SEQ0(LANE_REG(040d), 0x77),
-+	REG_SEQ0(LANE_REG(040e), 0x38),
-+	REG_SEQ0(LANE_REG(0410), 0x03),
-+	REG_SEQ0(LANE_REG(0411), 0x0f),
-+	REG_SEQ0(LANE_REG(0416), 0x02),
-+	REG_SEQ0(LANE_REG(041b), 0x01),
-+	REG_SEQ0(LANE_REG(041f), 0x15),
-+	REG_SEQ0(LANE_REG(0420), 0xa0),
-+	REG_SEQ0(LANE_REG(0503), 0x0c),
-+	REG_SEQ0(LANE_REG(0507), 0x20),
-+	REG_SEQ0(LANE_REG(050a), 0x17),
-+	REG_SEQ0(LANE_REG(050b), 0x77),
-+	REG_SEQ0(LANE_REG(050c), 0x77),
-+	REG_SEQ0(LANE_REG(050d), 0x77),
-+	REG_SEQ0(LANE_REG(050e), 0x38),
-+	REG_SEQ0(LANE_REG(0510), 0x03),
-+	REG_SEQ0(LANE_REG(0511), 0x0f),
-+	REG_SEQ0(LANE_REG(0516), 0x02),
-+	REG_SEQ0(LANE_REG(051b), 0x01),
-+	REG_SEQ0(LANE_REG(051f), 0x15),
-+	REG_SEQ0(LANE_REG(0520), 0xa0),
-+	REG_SEQ0(LANE_REG(0603), 0x0c),
-+	REG_SEQ0(LANE_REG(0607), 0x20),
-+	REG_SEQ0(LANE_REG(060a), 0x17),
-+	REG_SEQ0(LANE_REG(060b), 0x77),
-+	REG_SEQ0(LANE_REG(060c), 0x77),
-+	REG_SEQ0(LANE_REG(060d), 0x77),
-+	REG_SEQ0(LANE_REG(060e), 0x38),
-+	REG_SEQ0(LANE_REG(0610), 0x03),
-+	REG_SEQ0(LANE_REG(0611), 0x0f),
-+	REG_SEQ0(LANE_REG(0616), 0x02),
-+	REG_SEQ0(LANE_REG(061b), 0x01),
-+	REG_SEQ0(LANE_REG(061f), 0x15),
-+	REG_SEQ0(LANE_REG(0620), 0xa0),
-+};
-+
-+static const struct reg_sequence rk_hdtpx_tmds_lane_init_seq[] = {
-+	REG_SEQ0(LANE_REG(0312), 0x00),
-+	REG_SEQ0(LANE_REG(031e), 0x00),
-+	REG_SEQ0(LANE_REG(0412), 0x00),
-+	REG_SEQ0(LANE_REG(041e), 0x00),
-+	REG_SEQ0(LANE_REG(0512), 0x00),
-+	REG_SEQ0(LANE_REG(051e), 0x00),
-+	REG_SEQ0(LANE_REG(0612), 0x00),
-+	REG_SEQ0(LANE_REG(061e), 0x08),
-+	REG_SEQ0(LANE_REG(0303), 0x2f),
-+	REG_SEQ0(LANE_REG(0403), 0x2f),
-+	REG_SEQ0(LANE_REG(0503), 0x2f),
-+	REG_SEQ0(LANE_REG(0603), 0x2f),
-+	REG_SEQ0(LANE_REG(0305), 0x03),
-+	REG_SEQ0(LANE_REG(0405), 0x03),
-+	REG_SEQ0(LANE_REG(0505), 0x03),
-+	REG_SEQ0(LANE_REG(0605), 0x03),
-+	REG_SEQ0(LANE_REG(0306), 0x1c),
-+	REG_SEQ0(LANE_REG(0406), 0x1c),
-+	REG_SEQ0(LANE_REG(0506), 0x1c),
-+	REG_SEQ0(LANE_REG(0606), 0x1c),
-+};
-+
-+static const struct regmap_config rk_hdptx_phy_regmap_config = {
-+	.reg_bits = 32,
-+	.reg_stride = 4,
-+	.val_bits = 32,
-+	.max_register = 0x18b4,
-+};
-+
-+#define rk_hdptx_multi_reg_write(hdptx, seq) \
-+	regmap_multi_reg_write((hdptx)->regmap, seq, ARRAY_SIZE(seq))
-+
-+static void rk_hdptx_pre_power_up(struct rk_hdptx_phy *hdptx)
++static void dw_hdmi_qp_write(struct dw_hdmi_qp *hdmi, unsigned int val,
++			     int offset)
 +{
-+	u32 val;
-+
-+	reset_control_assert(hdptx->rsts[RST_APB].rstc);
-+	udelay(20);
-+	reset_control_deassert(hdptx->rsts[RST_APB].rstc);
-+
-+	reset_control_assert(hdptx->rsts[RST_LANE].rstc);
-+	reset_control_assert(hdptx->rsts[RST_CMN].rstc);
-+	reset_control_assert(hdptx->rsts[RST_INIT].rstc);
-+
-+	val = (HDPTX_I_PLL_EN | HDPTX_I_BIAS_EN | HDPTX_I_BGR_EN) << 16;
-+	regmap_write(hdptx->grf, GRF_HDPTX_CON0, val);
++	regmap_write(hdmi->regm, offset, val);
 +}
 +
-+static int rk_hdptx_post_enable_lane(struct rk_hdptx_phy *hdptx)
++static unsigned int dw_hdmi_qp_read(struct dw_hdmi_qp *hdmi, int offset)
 +{
-+	u32 val;
++	unsigned int val = 0;
++
++	regmap_read(hdmi->regm, offset, &val);
++
++	return val;
++}
++
++static void dw_hdmi_qp_mod(struct dw_hdmi_qp *hdmi, unsigned int data,
++			   unsigned int mask, unsigned int reg)
++{
++	regmap_update_bits(hdmi->regm, reg, mask, data);
++}
++
++static int dw_hdmi_qp_i2c_wait(struct dw_hdmi_qp *hdmi)
++{
++	struct dw_hdmi_qp_i2c *i2c = hdmi->i2c;
++	uint64_t start = get_time_ns();
++	u32 stat;
++
++	while (1) {
++		if (is_timeout(start, 100 * MSECOND))
++			return -ETIMEDOUT;
++
++		stat = dw_hdmi_qp_read(hdmi, MAINUNIT_1_INT_STATUS);
++
++		i2c->stat = stat & (I2CM_OP_DONE_IRQ | I2CM_READ_REQUEST_IRQ |
++				I2CM_NACK_RCVD_IRQ);
++
++		if (i2c->stat) {
++			dw_hdmi_qp_write(hdmi, i2c->stat, MAINUNIT_1_INT_CLEAR);
++			return 0;
++		}
++	}
++}
++
++static int dw_hdmi_qp_i2c_read(struct dw_hdmi_qp *hdmi,
++			       unsigned char *buf, unsigned int length)
++{
++	struct dw_hdmi_qp_i2c *i2c = hdmi->i2c;
 +	int ret;
 +
-+	reset_control_deassert(hdptx->rsts[RST_LANE].rstc);
-+
-+	val = (HDPTX_I_BIAS_EN | HDPTX_I_BGR_EN) << 16 |
-+	       HDPTX_I_BIAS_EN | HDPTX_I_BGR_EN;
-+	regmap_write(hdptx->grf, GRF_HDPTX_CON0, val);
-+
-+	ret = regmap_read_poll_timeout(hdptx->grf, GRF_HDPTX_STATUS, val,
-+				       (val & HDPTX_O_PHY_RDY) &&
-+				       (val & HDPTX_O_PLL_LOCK_DONE),
-+				       5000);
-+	if (ret) {
-+		dev_err(hdptx->dev, "Failed to get PHY lane lock: %d\n", ret);
-+		return ret;
++	if (!i2c->is_regaddr) {
++		dev_dbg(hdmi->dev, "set read register address to 0\n");
++		i2c->slave_reg = 0x00;
++		i2c->is_regaddr = true;
 +	}
 +
-+	dev_dbg(hdptx->dev, "PHY lane locked\n");
++	while (length--) {
++		dw_hdmi_qp_mod(hdmi, i2c->slave_reg++ << 12, I2CM_ADDR,
++			       I2CM_INTERFACE_CONTROL0);
++
++		if (i2c->is_segment)
++			dw_hdmi_qp_mod(hdmi, I2CM_EXT_READ, I2CM_WR_MASK,
++				       I2CM_INTERFACE_CONTROL0);
++		else
++			dw_hdmi_qp_mod(hdmi, I2CM_FM_READ, I2CM_WR_MASK,
++				       I2CM_INTERFACE_CONTROL0);
++
++		ret = dw_hdmi_qp_i2c_wait(hdmi);
++		if (ret) {
++			dw_hdmi_qp_write(hdmi, 0x01, I2CM_CONTROL0);
++			return ret;
++		}
++
++		/* Check for error condition on the bus */
++		if (i2c->stat & I2CM_NACK_RCVD_IRQ) {
++			dev_err(hdmi->dev, "i2c read error\n");
++			dw_hdmi_qp_write(hdmi, 0x01, I2CM_CONTROL0);
++			return -EIO;
++		}
++
++		*buf++ = dw_hdmi_qp_read(hdmi, I2CM_INTERFACE_RDDATA_0_3) & 0xff;
++		dw_hdmi_qp_mod(hdmi, 0, I2CM_WR_MASK, I2CM_INTERFACE_CONTROL0);
++	}
++
++	i2c->is_segment = false;
 +
 +	return 0;
 +}
 +
-+static int rk_hdptx_post_enable_pll(struct rk_hdptx_phy *hdptx)
++static int dw_hdmi_qp_i2c_write(struct dw_hdmi_qp *hdmi,
++				unsigned char *buf, unsigned int length)
 +{
-+	u32 val;
++	struct dw_hdmi_qp_i2c *i2c = hdmi->i2c;
 +	int ret;
 +
-+	val = (HDPTX_I_BIAS_EN | HDPTX_I_BGR_EN) << 16 |
-+	       HDPTX_I_BIAS_EN | HDPTX_I_BGR_EN;
-+	regmap_write(hdptx->grf, GRF_HDPTX_CON0, val);
-+
-+	udelay(10);
-+	reset_control_deassert(hdptx->rsts[RST_INIT].rstc);
-+
-+	udelay(10);
-+	val = HDPTX_I_PLL_EN << 16 | HDPTX_I_PLL_EN;
-+	regmap_write(hdptx->grf, GRF_HDPTX_CON0, val);
-+
-+	udelay(10);
-+	reset_control_deassert(hdptx->rsts[RST_CMN].rstc);
-+
-+	ret = regmap_read_poll_timeout(hdptx->grf, GRF_HDPTX_STATUS, val,
-+				       val & HDPTX_O_PHY_CLK_RDY, 400);
-+	if (ret) {
-+		dev_err(hdptx->dev, "Failed to get PHY clk ready: %d\n", ret);
-+		return ret;
++	if (!i2c->is_regaddr) {
++		/* Use the first write byte as register address */
++		i2c->slave_reg = buf[0];
++		length--;
++		buf++;
++		i2c->is_regaddr = true;
 +	}
 +
-+	dev_dbg(hdptx->dev, "PHY clk ready\n");
++	while (length--) {
++		dw_hdmi_qp_write(hdmi, *buf++, I2CM_INTERFACE_WRDATA_0_3);
++		dw_hdmi_qp_mod(hdmi, i2c->slave_reg++ << 12, I2CM_ADDR,
++			       I2CM_INTERFACE_CONTROL0);
++		dw_hdmi_qp_mod(hdmi, I2CM_FM_WRITE, I2CM_WR_MASK,
++			       I2CM_INTERFACE_CONTROL0);
++
++		ret = dw_hdmi_qp_i2c_wait(hdmi);
++		if (ret) {
++			dw_hdmi_qp_write(hdmi, 0x01, I2CM_CONTROL0);
++			return ret;
++		}
++
++		/* Check for error condition on the bus */
++		if (i2c->stat & I2CM_NACK_RCVD_IRQ) {
++			dev_err(hdmi->dev, "i2c write nack!\n");
++			dw_hdmi_qp_write(hdmi, 0x01, I2CM_CONTROL0);
++			return -EIO;
++		}
++
++		dw_hdmi_qp_mod(hdmi, 0, I2CM_WR_MASK, I2CM_INTERFACE_CONTROL0);
++	}
 +
 +	return 0;
 +}
 +
-+static void rk_hdptx_phy_disable(struct rk_hdptx_phy *hdptx)
++#define DDC_ADDR       0x50
++
++static int dw_hdmi_qp_i2c_xfer(struct i2c_adapter *adap,
++			       struct i2c_msg *msgs, int num)
 +{
-+	u32 val;
++	struct dw_hdmi_qp_i2c *i2c = container_of(adap, struct dw_hdmi_qp_i2c, adap);
++	struct dw_hdmi_qp *hdmi = i2c->hdmi;
++	u8 addr = msgs[0].addr;
++	int i, ret = 0;
 +
-+	/* reset phy and apb, or phy locked flag may keep 1 */
-+	reset_control_assert(hdptx->rsts[RST_PHY].rstc);
-+	udelay(20);
-+	reset_control_deassert(hdptx->rsts[RST_PHY].rstc);
++	if (addr == DDC_CI_ADDR)
++		/*
++		 * The internal I2C controller does not support the multi-byte
++		 * read and write operations needed for DDC/CI.
++		 * FIXME: Blacklist the DDC/CI address until we filter out
++		 * unsupported I2C operations.
++		 */
++		return -EOPNOTSUPP;
 +
-+	reset_control_assert(hdptx->rsts[RST_APB].rstc);
-+	udelay(20);
-+	reset_control_deassert(hdptx->rsts[RST_APB].rstc);
-+
-+	regmap_write(hdptx->regmap, LANE_REG(0300), 0x82);
-+	regmap_write(hdptx->regmap, SB_REG(010f), 0xc1);
-+	regmap_write(hdptx->regmap, SB_REG(0110), 0x1);
-+	regmap_write(hdptx->regmap, LANE_REG(0301), 0x80);
-+	regmap_write(hdptx->regmap, LANE_REG(0401), 0x80);
-+	regmap_write(hdptx->regmap, LANE_REG(0501), 0x80);
-+	regmap_write(hdptx->regmap, LANE_REG(0601), 0x80);
-+
-+	reset_control_assert(hdptx->rsts[RST_LANE].rstc);
-+	reset_control_assert(hdptx->rsts[RST_CMN].rstc);
-+	reset_control_assert(hdptx->rsts[RST_INIT].rstc);
-+
-+	val = (HDPTX_I_PLL_EN | HDPTX_I_BIAS_EN | HDPTX_I_BGR_EN) << 16;
-+	regmap_write(hdptx->grf, GRF_HDPTX_CON0, val);
-+}
-+
-+static bool rk_hdptx_phy_clk_pll_calc(unsigned int data_rate,
-+				      struct ropll_config *cfg)
-+{
-+	const unsigned int fout = data_rate / 2, fref = 24000;
-+	unsigned long k = 0, lc, k_sub, lc_sub;
-+	unsigned int fvco, sdc;
-+	u32 mdiv, sdiv, n = 8;
-+
-+	if (fout > 0xfffffff)
-+		return false;
-+
-+	for (sdiv = 16; sdiv >= 1; sdiv--) {
-+		if (sdiv % 2 && sdiv != 1)
-+			continue;
-+
-+		fvco = fout * sdiv;
-+
-+		if (fvco < 2000000 || fvco > 4000000)
-+			continue;
-+
-+		mdiv = DIV_ROUND_UP(fvco, fref);
-+		if (mdiv < 20 || mdiv > 255)
-+			continue;
-+
-+		if (fref * mdiv - fvco) {
-+			for (sdc = 264000; sdc <= 750000; sdc += fref)
-+				if (sdc * n > fref * mdiv)
-+					break;
-+
-+			if (sdc > 750000)
-+				continue;
-+
-+			rational_best_approximation(fref * mdiv - fvco,
-+						    sdc / 16,
-+						    GENMASK(6, 0),
-+						    GENMASK(7, 0),
-+						    &k, &lc);
-+
-+			rational_best_approximation(sdc * n - fref * mdiv,
-+						    sdc,
-+						    GENMASK(6, 0),
-+						    GENMASK(7, 0),
-+						    &k_sub, &lc_sub);
-+		}
-+
-+		break;
-+	}
-+
-+	if (sdiv < 1)
-+		return false;
-+
-+	if (cfg) {
-+		cfg->pms_mdiv = mdiv;
-+		cfg->pms_mdiv_afc = mdiv;
-+		cfg->pms_pdiv = 1;
-+		cfg->pms_refdiv = 1;
-+		cfg->pms_sdiv = sdiv - 1;
-+
-+		cfg->sdm_en = k > 0 ? 1 : 0;
-+		if (cfg->sdm_en) {
-+			cfg->sdm_deno = lc;
-+			cfg->sdm_num_sign = 1;
-+			cfg->sdm_num = k;
-+			cfg->sdc_n = n - 3;
-+			cfg->sdc_num = k_sub;
-+			cfg->sdc_deno = lc_sub;
++	for (i = 0; i < num; i++) {
++		if (msgs[i].len == 0) {
++			dev_err(hdmi->dev,
++				"unsupported transfer %d/%d, no data\n",
++				i + 1, num);
++			return -EOPNOTSUPP;
 +		}
 +	}
 +
-+	return true;
-+}
++	/* Unmute DONE and ERROR interrupts */
++	dw_hdmi_qp_mod(hdmi, I2CM_NACK_RCVD_MASK_N | I2CM_OP_DONE_MASK_N,
++		       I2CM_NACK_RCVD_MASK_N | I2CM_OP_DONE_MASK_N,
++		       MAINUNIT_1_INT_MASK_N);
 +
-+static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx,
-+					  unsigned int rate)
-+{
-+	const struct ropll_config *cfg = NULL;
-+	struct ropll_config rc = {0};
-+	int i;
++	/* Set slave device address taken from the first I2C message */
++	if (addr == DDC_SEGMENT_ADDR && msgs[0].len == 1)
++		addr = DDC_ADDR;
 +
-+	for (i = 0; i < ARRAY_SIZE(ropll_tmds_cfg); i++)
-+		if (rate == ropll_tmds_cfg[i].bit_rate) {
-+			cfg = &ropll_tmds_cfg[i];
-+			break;
-+		}
-+printk("%s: RATE: %d\n", __func__, rate);
-+	if (!cfg) {
-+		if (rk_hdptx_phy_clk_pll_calc(rate, &rc)) {
-+			cfg = &rc;
++	dw_hdmi_qp_mod(hdmi, addr << 5, I2CM_SLVADDR, I2CM_INTERFACE_CONTROL0);
++
++	/* Set slave device register address on transfer */
++	i2c->is_regaddr = false;
++
++	/* Set segment pointer for I2C extended read mode operation */
++	i2c->is_segment = false;
++
++	for (i = 0; i < num; i++) {
++		if (msgs[i].addr == DDC_SEGMENT_ADDR && msgs[i].len == 1) {
++			i2c->is_segment = true;
++			dw_hdmi_qp_mod(hdmi, DDC_SEGMENT_ADDR, I2CM_SEG_ADDR,
++				       I2CM_INTERFACE_CONTROL1);
++			dw_hdmi_qp_mod(hdmi, *msgs[i].buf << 7, I2CM_SEG_PTR,
++				       I2CM_INTERFACE_CONTROL1);
 +		} else {
-+			dev_err(hdptx->dev, "%s cannot find pll cfg\n", __func__);
-+			return -EINVAL;
++			if (msgs[i].flags & I2C_M_RD)
++				ret = dw_hdmi_qp_i2c_read(hdmi, msgs[i].buf,
++							  msgs[i].len);
++			else
++				ret = dw_hdmi_qp_i2c_write(hdmi, msgs[i].buf,
++							   msgs[i].len);
 +		}
++		if (ret < 0)
++			break;
 +	}
 +
-+	dev_dbg(hdptx->dev, "mdiv=%u, sdiv=%u, sdm_en=%u, k_sign=%u, k=%u, lc=%u\n",
-+		cfg->pms_mdiv, cfg->pms_sdiv + 1, cfg->sdm_en,
-+		cfg->sdm_num_sign, cfg->sdm_num, cfg->sdm_deno);
++	if (!ret)
++		ret = num;
 +
-+	rk_hdptx_pre_power_up(hdptx);
++	/* Mute DONE and ERROR interrupts */
++	dw_hdmi_qp_mod(hdmi, 0, I2CM_OP_DONE_MASK_N | I2CM_NACK_RCVD_MASK_N,
++		       MAINUNIT_1_INT_MASK_N);
 +
-+	reset_control_assert(hdptx->rsts[RST_ROPLL].rstc);
-+	udelay(20);
-+	reset_control_deassert(hdptx->rsts[RST_ROPLL].rstc);
-+
-+	rk_hdptx_multi_reg_write(hdptx, rk_hdtpx_common_cmn_init_seq);
-+	rk_hdptx_multi_reg_write(hdptx, rk_hdtpx_tmds_cmn_init_seq);
-+
-+	regmap_write(hdptx->regmap, CMN_REG(0051), cfg->pms_mdiv);
-+	regmap_write(hdptx->regmap, CMN_REG(0055), cfg->pms_mdiv_afc);
-+	regmap_write(hdptx->regmap, CMN_REG(0059),
-+		     (cfg->pms_pdiv << 4) | cfg->pms_refdiv);
-+	regmap_write(hdptx->regmap, CMN_REG(005a), cfg->pms_sdiv << 4);
-+
-+	regmap_update_bits(hdptx->regmap, CMN_REG(005e), ROPLL_SDM_EN_MASK,
-+			   FIELD_PREP(ROPLL_SDM_EN_MASK, cfg->sdm_en));
-+	if (!cfg->sdm_en)
-+		regmap_update_bits(hdptx->regmap, CMN_REG(005e), 0xf, 0);
-+
-+	regmap_update_bits(hdptx->regmap, CMN_REG(0064), ROPLL_SDM_NUM_SIGN_RBR_MASK,
-+			   FIELD_PREP(ROPLL_SDM_NUM_SIGN_RBR_MASK, cfg->sdm_num_sign));
-+
-+	regmap_write(hdptx->regmap, CMN_REG(0060), cfg->sdm_deno);
-+	regmap_write(hdptx->regmap, CMN_REG(0065), cfg->sdm_num);
-+
-+	regmap_update_bits(hdptx->regmap, CMN_REG(0069), ROPLL_SDC_N_RBR_MASK,
-+			   FIELD_PREP(ROPLL_SDC_N_RBR_MASK, cfg->sdc_n));
-+
-+	regmap_write(hdptx->regmap, CMN_REG(006c), cfg->sdc_num);
-+	regmap_write(hdptx->regmap, CMN_REG(0070), cfg->sdc_deno);
-+
-+	regmap_update_bits(hdptx->regmap, CMN_REG(0086), PLL_PCG_POSTDIV_SEL_MASK,
-+			   FIELD_PREP(PLL_PCG_POSTDIV_SEL_MASK, cfg->pms_sdiv));
-+
-+	regmap_update_bits(hdptx->regmap, CMN_REG(0086), PLL_PCG_CLK_EN,
-+			   PLL_PCG_CLK_EN);
-+
-+	return rk_hdptx_post_enable_pll(hdptx);
++	return ret;
 +}
 +
-+static int rk_hdptx_ropll_tmds_mode_config(struct rk_hdptx_phy *hdptx,
-+					   unsigned int rate)
++static struct i2c_adapter *dw_hdmi_qp_i2c_adapter(struct dw_hdmi_qp *hdmi)
 +{
-+	u32 val;
++	struct i2c_adapter *adap;
++	struct dw_hdmi_qp_i2c *i2c;
 +	int ret;
 +
-+	ret = regmap_read(hdptx->grf, GRF_HDPTX_STATUS, &val);
++	i2c = xzalloc(sizeof(*i2c));
++
++	adap = &i2c->adap;
++	adap->dev.parent = hdmi->dev;
++	adap->master_xfer = dw_hdmi_qp_i2c_xfer;
++	adap->nr = -1;
++
++	ret = i2c_add_numbered_adapter(adap);
++	if (ret) {
++		dev_warn(hdmi->dev, "cannot add I2C adapter\n");
++		free(i2c);
++		return ERR_PTR(ret);
++	}
++
++	hdmi->i2c = i2c;
++	i2c->hdmi = hdmi;
++
++	dev_info(hdmi->dev, "registered I2C bus driver\n");
++	return adap;
++}
++
++static void dw_hdmi_qp_enable(struct dw_hdmi_qp *hdmi)
++{
++	unsigned int op_mode;
++	bool is_hdmi = false;
++
++	if (is_hdmi) {
++		op_mode = 0;
++	} else {
++		op_mode = OPMODE_DVI;
++	}
++
++	hdmi->phy.ops->init(hdmi, hdmi->phy.data);
++
++	dw_hdmi_qp_mod(hdmi, HDCP2_BYPASS, HDCP2_BYPASS, HDCP2LOGIC_CONFIG0);
++	dw_hdmi_qp_mod(hdmi, op_mode, OPMODE_DVI, LINK_CONFIG0);
++}
++
++static const struct regmap_config dw_hdmi_qp_regmap_config = {
++	.reg_bits	= 32,
++	.val_bits	= 32,
++	.reg_stride	= 4,
++	.max_register	= EARCRX_1_INT_FORCE,
++};
++
++static void dw_hdmi_qp_init_hw(struct dw_hdmi_qp *hdmi)
++{
++	dw_hdmi_qp_write(hdmi, 0, MAINUNIT_0_INT_MASK_N);
++	dw_hdmi_qp_write(hdmi, 0, MAINUNIT_1_INT_MASK_N);
++	dw_hdmi_qp_write(hdmi, 428571429, TIMER_BASE_CONFIG0);
++
++	/* Software reset */
++	dw_hdmi_qp_write(hdmi, 0x01, I2CM_CONTROL0);
++
++	dw_hdmi_qp_write(hdmi, 0x085c085c, I2CM_FM_SCL_CONFIG0);
++
++	dw_hdmi_qp_mod(hdmi, 0, I2CM_FM_EN, I2CM_INTERFACE_CONTROL0);
++
++	/* Clear DONE and ERROR interrupts */
++	dw_hdmi_qp_write(hdmi, I2CM_OP_DONE_CLEAR | I2CM_NACK_RCVD_CLEAR,
++			 MAINUNIT_1_INT_CLEAR);
++
++	if (hdmi->phy.ops->setup_hpd)
++		hdmi->phy.ops->setup_hpd(hdmi, hdmi->phy.data);
++}
++
++static int dw_hdmi_qp_get_modes(struct dw_hdmi_qp *hdmi, struct display_timings *timings)
++{
++	struct fb_videomode *modes;
++	int ret = -ENOENT;
++	int i, j = 0;
++	unsigned int native_mode = 0;
++
++	timings->edid = edid_read_i2c(&hdmi->i2c->adap);
++	if (!timings->edid)
++		return -EINVAL;
++	ret = edid_to_display_timings(timings, timings->edid);
++
 +	if (ret)
 +		return ret;
 +
-+	if (!(val & HDPTX_O_PLL_LOCK_DONE)) {
-+		ret = rk_hdptx_ropll_tmds_cmn_config(hdptx, rate);
-+		if (ret)
-+			return ret;
++	modes = xzalloc(sizeof(*modes) * timings->num_modes);
++
++	for (i = 0; i < timings->num_modes; i++) {
++		struct drm_display_mode dmode;
++		bool valid;
++
++		fb_videomode_to_drm_display_mode(&timings->modes[i], &dmode);
++
++		valid = true;
++//		valid = hdmi->plat_data->mode_valid(hdmi, hdmi->plat_data->priv_data,
++//						    NULL, &dmode);
++
++		if (i == timings->native_mode) {
++			if (valid)
++				native_mode = j;
++			else
++				dev_err(hdmi->dev, "native mode is invlid\n");
++		}
++
++		if (valid) {
++			modes[j] = timings->modes[i];
++			j++;
++		}
 +	}
 +
-+	rk_hdptx_multi_reg_write(hdptx, rk_hdtpx_common_sb_init_seq);
++	free(timings->modes);
++	timings->modes = modes;
++	timings->num_modes = j;
 +
-+	regmap_write(hdptx->regmap, LNTOP_REG(0200), 0x06);
++	return 0;
++}
 +
-+	if (rate >= 3400000) {
-+		/* For 1/40 bitrate clk */
-+		rk_hdptx_multi_reg_write(hdptx, rk_hdtpx_tmds_lntop_highbr_seq);
-+	} else {
-+		/* For 1/10 bitrate clk */
-+		rk_hdptx_multi_reg_write(hdptx, rk_hdtpx_tmds_lntop_lowbr_seq);
++static int dw_hdmi_qp_ioctl(struct vpl *vpl, unsigned int port,
++                         unsigned int cmd, void *data)
++{
++	struct dw_hdmi_qp *hdmi = container_of(vpl, struct dw_hdmi_qp, vpl);
++	struct drm_display_mode mode = {};
++//	int ret;
++
++//	if (hdmi->plat_data->vpl_ioctl) {
++//		ret = hdmi->plat_data->vpl_ioctl(hdmi, hdmi->plat_data->priv_data, port, cmd, data);
++//		if (ret)
++//			return ret;
++//	}
++
++	switch (cmd) {
++	case VPL_ENABLE:
++//		hdmi->hdmi_data.enc_in_bus_format = MEDIA_BUS_FMT_FIXED;
++//		hdmi->hdmi_data.enc_out_bus_format = MEDIA_BUS_FMT_FIXED;
++		fb_videomode_to_drm_display_mode(hdmi->mode, &mode);
++
++		dw_hdmi_qp_enable(hdmi);
++		return 0;
++	case VPL_DISABLE:
++		hdmi->phy.ops->disable(hdmi, hdmi->phy.data);
++		return 0;
++	case VPL_PREPARE:
++		hdmi->mode = data;
++		fb_videomode_to_drm_display_mode(hdmi->mode, &mode);
++		if (hdmi->phy.ops->mode_set)
++			hdmi->phy.ops->mode_set(hdmi, hdmi->phy.data, &mode);
++		return 0;
++	case VPL_GET_VIDEOMODES:
++		return dw_hdmi_qp_get_modes(hdmi, data);
 +	}
 +
-+	regmap_write(hdptx->regmap, LNTOP_REG(0206), 0x07);
-+	regmap_write(hdptx->regmap, LNTOP_REG(0207), 0x0f);
-+
-+	rk_hdptx_multi_reg_write(hdptx, rk_hdtpx_common_lane_init_seq);
-+	rk_hdptx_multi_reg_write(hdptx, rk_hdtpx_tmds_lane_init_seq);
-+
-+	return rk_hdptx_post_enable_lane(hdptx);
++        return 0;
 +}
 +
-+static int rk_hdptx_phy_power_on(struct phy *phy)
++struct dw_hdmi_qp *dw_hdmi_qp_bind(struct device *dev,
++				   const struct dw_hdmi_qp_plat_data *plat_data)
 +{
-+	struct rk_hdptx_phy *hdptx = phy_get_drvdata(phy);
-+	int ret, bus_width = phy_get_bus_width(hdptx->phy);
-+	/*
-+	 * FIXME: Temporary workaround to pass pixel_clk_rate
-+	 * from the HDMI bridge driver until phy_configure_opts_hdmi
-+	 * becomes available in the PHY API.
-+	 */
-+	unsigned int rate = bus_width & 0xfffffff;
-+
-+	dev_dbg(hdptx->dev, "%s bus_width=%x rate=%u\n",
-+		__func__, bus_width, rate);
-+
-+	ret = rk_hdptx_ropll_tmds_mode_config(hdptx, rate);
-+
-+	return ret;
-+}
-+
-+static int rk_hdptx_phy_power_off(struct phy *phy)
-+{
-+	struct rk_hdptx_phy *hdptx = phy_get_drvdata(phy);
-+	u32 val;
-+	int ret;
-+
-+	ret = regmap_read(hdptx->grf, GRF_HDPTX_STATUS, &val);
-+	if (ret == 0 && (val & HDPTX_O_PLL_LOCK_DONE))
-+		rk_hdptx_phy_disable(hdptx);
-+
-+	return ret;
-+}
-+
-+static const struct phy_ops rk_hdptx_phy_ops = {
-+	.power_on  = rk_hdptx_phy_power_on,
-+	.power_off = rk_hdptx_phy_power_off,
-+};
-+
-+static int rk_hdptx_phy_probe(struct device *dev)
-+{
-+	struct phy_provider *phy_provider;
-+	struct rk_hdptx_phy *hdptx;
++	struct device_node *np = dev->of_node;
++	struct dw_hdmi_qp *hdmi;
 +	struct resource *iores;
 +	void __iomem *regs;
 +	int ret;
 +
-+	hdptx = xzalloc(sizeof(*hdptx));
++	if (!plat_data->phy_ops || !plat_data->phy_ops->init ||
++	    !plat_data->phy_ops->disable || !plat_data->phy_ops->read_hpd) {
++		dev_err(dev, "Missing platform PHY ops\n");
++		return ERR_PTR(-ENODEV);
++	}
 +
-+	hdptx->dev = dev;
++	hdmi = xzalloc(sizeof(*hdmi));
++
++	hdmi->dev = dev;
 +
 +	iores = dev_request_mem_resource(dev, 0);
 +	if (IS_ERR(iores))
-+		return dev_err_probe(dev, PTR_ERR(iores), "Failed to get resource\n");
-+
++		return ERR_CAST(iores);
 +	regs = IOMEM(iores->start);
 +
-+	ret = clk_bulk_get_all(dev, &hdptx->clks);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to get clocks\n");
-+	if (ret == 0)
-+		return dev_err_probe(dev, -EINVAL, "Missing clocks\n");
++	hdmi->regm = regmap_init_mmio(dev, regs, &dw_hdmi_qp_regmap_config);
++	if (IS_ERR(hdmi->regm)) {
++		dev_err(dev, "Failed to configure regmap\n");
++		return ERR_CAST(hdmi->regm);
++	}
 +
-+	hdptx->nr_clks = ret;
++	hdmi->phy.ops = plat_data->phy_ops;
++	hdmi->phy.data = plat_data->phy_data;
 +
-+	clk_bulk_prepare_enable(hdptx->nr_clks, hdptx->clks);
++	dw_hdmi_qp_init_hw(hdmi);
 +
-+	hdptx->regmap = regmap_init_mmio(dev, regs,
-+					      &rk_hdptx_phy_regmap_config);
-+	if (IS_ERR(hdptx->regmap))
-+		return dev_err_probe(dev, PTR_ERR(hdptx->regmap),
-+				     "Failed to init regmap\n");
++	dw_hdmi_qp_i2c_adapter(hdmi);
 +
-+	hdptx->rsts[RST_PHY].id = "phy";
-+	hdptx->rsts[RST_APB].id = "apb";
-+	hdptx->rsts[RST_INIT].id = "init";
-+	hdptx->rsts[RST_CMN].id = "cmn";
-+	hdptx->rsts[RST_LANE].id = "lane";
-+	hdptx->rsts[RST_ROPLL].id = "ropll";
-+	hdptx->rsts[RST_LCPLL].id = "lcpll";
++	hdmi->vpl.node = np;
++	hdmi->vpl.ioctl = dw_hdmi_qp_ioctl;
 +
-+	ret = reset_control_bulk_get(dev, RST_MAX, hdptx->rsts);
++	ret = vpl_register(&hdmi->vpl);
 +	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get resets\n");
++		return ERR_PTR(ret);
 +
-+	hdptx->grf = syscon_regmap_lookup_by_phandle(dev->of_node,
-+						     "rockchip,grf");
-+	if (IS_ERR(hdptx->grf))
-+		return dev_err_probe(dev, PTR_ERR(hdptx->grf),
-+				     "Could not get GRF syscon\n");
-+
-+	hdptx->phy = phy_create(dev, NULL, &rk_hdptx_phy_ops);
-+	if (IS_ERR(hdptx->phy))
-+		return dev_err_probe(dev, PTR_ERR(hdptx->phy),
-+				     "Failed to create HDMI PHY\n");
-+
-+	phy_set_drvdata(hdptx->phy, hdptx);
-+	phy_set_bus_width(hdptx->phy, 8);
-+
-+	phy_provider = of_phy_provider_register(dev, of_phy_simple_xlate);
-+	if (IS_ERR(phy_provider))
-+		return dev_err_probe(dev, PTR_ERR(phy_provider),
-+				     "Failed to register PHY provider\n");
-+
-+	reset_control_deassert(hdptx->rsts[RST_APB].rstc);
-+	reset_control_deassert(hdptx->rsts[RST_CMN].rstc);
-+	reset_control_deassert(hdptx->rsts[RST_INIT].rstc);
-+
-+	return 0;
++	return hdmi;
 +}
-+
-+static const struct of_device_id rk_hdptx_phy_of_match[] = {
-+	{ .compatible = "rockchip,rk3588-hdptx-phy", },
-+	{}
-+};
-+
-+static struct driver rockchip_usb2phy_driver = {
-+        .probe          = rk_hdptx_phy_probe,
-+        .name   = "rockchip-hdptx-phy",
-+        .of_compatible = rk_hdptx_phy_of_match,
-+};
-+coredevice_platform_driver(rockchip_usb2phy_driver);
++EXPORT_SYMBOL_GPL(dw_hdmi_qp_bind);
 +
 +MODULE_AUTHOR("Algea Cao <algea.cao@rock-chips.com>");
 +MODULE_AUTHOR("Cristian Ciocaltea <cristian.ciocaltea@collabora.com>");
-+MODULE_DESCRIPTION("Samsung HDMI/eDP Transmitter Combo PHY Driver");
++MODULE_DESCRIPTION("DW HDMI QP transmitter library");
 +MODULE_LICENSE("GPL");
+diff --git a/drivers/video/dw-hdmi-qp.h b/drivers/video/dw-hdmi-qp.h
+new file mode 100644
+index 0000000000..2115b8ef0b
+--- /dev/null
++++ b/drivers/video/dw-hdmi-qp.h
+@@ -0,0 +1,834 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) Rockchip Electronics Co.Ltd
++ * Author:
++ *      Algea Cao <algea.cao@rock-chips.com>
++ */
++#ifndef __DW_HDMI_QP_H__
++#define __DW_HDMI_QP_H__
++
++#include <linux/bits.h>
++
++/* Main Unit Registers */
++#define CORE_ID						0x0
++#define VER_NUMBER					0x4
++#define VER_TYPE					0x8
++#define CONFIG_REG					0xc
++#define CONFIG_CEC					BIT(28)
++#define CONFIG_AUD_UD					BIT(23)
++#define CORE_TIMESTAMP_HHMM				0x14
++#define CORE_TIMESTAMP_MMDD				0x18
++#define CORE_TIMESTAMP_YYYY				0x1c
++/* Reset Manager Registers */
++#define GLOBAL_SWRESET_REQUEST				0x40
++#define EARCRX_CMDC_SWINIT_P				BIT(27)
++#define AVP_DATAPATH_PACKET_AUDIO_SWINIT_P		BIT(10)
++#define GLOBAL_SWDISABLE				0x44
++#define CEC_SWDISABLE					BIT(17)
++#define AVP_DATAPATH_PACKET_AUDIO_SWDISABLE		BIT(10)
++#define AVP_DATAPATH_VIDEO_SWDISABLE			BIT(6)
++#define RESET_MANAGER_CONFIG0				0x48
++#define RESET_MANAGER_STATUS0				0x50
++#define RESET_MANAGER_STATUS1				0x54
++#define RESET_MANAGER_STATUS2				0x58
++/* Timer Base Registers */
++#define TIMER_BASE_CONFIG0				0x80
++#define TIMER_BASE_STATUS0				0x84
++/* CMU Registers */
++#define CMU_CONFIG0					0xa0
++#define CMU_CONFIG1					0xa4
++#define CMU_CONFIG2					0xa8
++#define CMU_CONFIG3					0xac
++#define CMU_STATUS					0xb0
++#define DISPLAY_CLK_MONITOR				0x3f
++#define DISPLAY_CLK_LOCKED				0X15
++#define EARC_BPCLK_OFF					BIT(9)
++#define AUDCLK_OFF					BIT(7)
++#define LINKQPCLK_OFF					BIT(5)
++#define VIDQPCLK_OFF					BIT(3)
++#define IPI_CLK_OFF					BIT(1)
++#define CMU_IPI_CLK_FREQ				0xb4
++#define CMU_VIDQPCLK_FREQ				0xb8
++#define CMU_LINKQPCLK_FREQ				0xbc
++#define CMU_AUDQPCLK_FREQ				0xc0
++#define CMU_EARC_BPCLK_FREQ				0xc4
++/* I2CM Registers */
++#define I2CM_SM_SCL_CONFIG0				0xe0
++#define I2CM_FM_SCL_CONFIG0				0xe4
++#define I2CM_CONFIG0					0xe8
++#define I2CM_CONTROL0					0xec
++#define I2CM_STATUS0					0xf0
++#define I2CM_INTERFACE_CONTROL0				0xf4
++#define I2CM_ADDR					0xff000
++#define I2CM_SLVADDR					0xfe0
++#define I2CM_WR_MASK					0x1e
++#define I2CM_EXT_READ					BIT(4)
++#define I2CM_SHORT_READ					BIT(3)
++#define I2CM_FM_READ					BIT(2)
++#define I2CM_FM_WRITE					BIT(1)
++#define I2CM_FM_EN					BIT(0)
++#define I2CM_INTERFACE_CONTROL1				0xf8
++#define I2CM_SEG_PTR					0x7f80
++#define I2CM_SEG_ADDR					0x7f
++#define I2CM_INTERFACE_WRDATA_0_3			0xfc
++#define I2CM_INTERFACE_WRDATA_4_7			0x100
++#define I2CM_INTERFACE_WRDATA_8_11			0x104
++#define I2CM_INTERFACE_WRDATA_12_15			0x108
++#define I2CM_INTERFACE_RDDATA_0_3			0x10c
++#define I2CM_INTERFACE_RDDATA_4_7			0x110
++#define I2CM_INTERFACE_RDDATA_8_11			0x114
++#define I2CM_INTERFACE_RDDATA_12_15			0x118
++/* SCDC Registers */
++#define SCDC_CONFIG0					0x140
++#define SCDC_I2C_FM_EN					BIT(12)
++#define SCDC_UPD_FLAGS_AUTO_CLR				BIT(6)
++#define SCDC_UPD_FLAGS_POLL_EN				BIT(4)
++#define SCDC_CONTROL0					0x148
++#define SCDC_STATUS0					0x150
++#define STATUS_UPDATE					BIT(0)
++#define FRL_START					BIT(4)
++#define FLT_UPDATE					BIT(5)
++/* FLT Registers */
++#define FLT_CONFIG0					0x160
++#define FLT_CONFIG1					0x164
++#define FLT_CONFIG2					0x168
++#define FLT_CONTROL0					0x170
++/*  Main Unit 2 Registers */
++#define MAINUNIT_STATUS0				0x180
++/* Video Interface Registers */
++#define VIDEO_INTERFACE_CONFIG0				0x800
++#define VIDEO_INTERFACE_CONFIG1				0x804
++#define VIDEO_INTERFACE_CONFIG2				0x808
++#define VIDEO_INTERFACE_CONTROL0			0x80c
++#define VIDEO_INTERFACE_STATUS0				0x814
++/* Video Packing Registers */
++#define VIDEO_PACKING_CONFIG0				0x81c
++/* Audio Interface Registers */
++#define AUDIO_INTERFACE_CONFIG0				0x820
++#define AUD_IF_SEL_MSK					0x3
++#define AUD_IF_SPDIF					0x2
++#define AUD_IF_I2S					0x1
++#define AUD_IF_PAI					0x0
++#define AUD_FIFO_INIT_ON_OVF_MSK			BIT(2)
++#define AUD_FIFO_INIT_ON_OVF_EN				BIT(2)
++#define I2S_LINES_EN_MSK				GENMASK(7, 4)
++#define I2S_LINES_EN(x)					BIT((x) + 4)
++#define I2S_BPCUV_RCV_MSK				BIT(12)
++#define I2S_BPCUV_RCV_EN				BIT(12)
++#define I2S_BPCUV_RCV_DIS				0
++#define SPDIF_LINES_EN					GENMASK(19, 16)
++#define AUD_FORMAT_MSK					GENMASK(26, 24)
++#define AUD_3DOBA					(0x7 << 24)
++#define AUD_3DASP					(0x6 << 24)
++#define AUD_MSOBA					(0x5 << 24)
++#define AUD_MSASP					(0x4 << 24)
++#define AUD_HBR						(0x3 << 24)
++#define AUD_DST						(0x2 << 24)
++#define AUD_OBA						(0x1 << 24)
++#define AUD_ASP						(0x0 << 24)
++#define AUDIO_INTERFACE_CONFIG1				0x824
++#define AUDIO_INTERFACE_CONTROL0			0x82c
++#define AUDIO_FIFO_CLR_P				BIT(0)
++#define AUDIO_INTERFACE_STATUS0				0x834
++/* Frame Composer Registers */
++#define FRAME_COMPOSER_CONFIG0				0x840
++#define FRAME_COMPOSER_CONFIG1				0x844
++#define FRAME_COMPOSER_CONFIG2				0x848
++#define FRAME_COMPOSER_CONFIG3				0x84c
++#define FRAME_COMPOSER_CONFIG4				0x850
++#define FRAME_COMPOSER_CONFIG5				0x854
++#define FRAME_COMPOSER_CONFIG6				0x858
++#define FRAME_COMPOSER_CONFIG7				0x85c
++#define FRAME_COMPOSER_CONFIG8				0x860
++#define FRAME_COMPOSER_CONFIG9				0x864
++#define FRAME_COMPOSER_CONTROL0				0x86c
++/* Video Monitor Registers */
++#define VIDEO_MONITOR_CONFIG0				0x880
++#define VIDEO_MONITOR_STATUS0				0x884
++#define VIDEO_MONITOR_STATUS1				0x888
++#define VIDEO_MONITOR_STATUS2				0x88c
++#define VIDEO_MONITOR_STATUS3				0x890
++#define VIDEO_MONITOR_STATUS4				0x894
++#define VIDEO_MONITOR_STATUS5				0x898
++#define VIDEO_MONITOR_STATUS6				0x89c
++/* HDCP2 Logic Registers */
++#define HDCP2LOGIC_CONFIG0				0x8e0
++#define HDCP2_BYPASS					BIT(0)
++#define HDCP2LOGIC_ESM_GPIO_IN				0x8e4
++#define HDCP2LOGIC_ESM_GPIO_OUT				0x8e8
++/* HDCP14 Registers */
++#define HDCP14_CONFIG0					0x900
++#define HDCP14_CONFIG1					0x904
++#define HDCP14_CONFIG2					0x908
++#define HDCP14_CONFIG3					0x90c
++#define HDCP14_KEY_SEED					0x914
++#define HDCP14_KEY_H					0x918
++#define HDCP14_KEY_L					0x91c
++#define HDCP14_KEY_STATUS				0x920
++#define HDCP14_AKSV_H					0x924
++#define HDCP14_AKSV_L					0x928
++#define HDCP14_AN_H					0x92c
++#define HDCP14_AN_L					0x930
++#define HDCP14_STATUS0					0x934
++#define HDCP14_STATUS1					0x938
++/* Scrambler Registers */
++#define SCRAMB_CONFIG0					0x960
++/* Video Configuration Registers */
++#define LINK_CONFIG0					0x968
++#define OPMODE_FRL_4LANES				BIT(8)
++#define OPMODE_DVI					BIT(4)
++#define OPMODE_FRL					BIT(0)
++/* TMDS FIFO Registers */
++#define TMDS_FIFO_CONFIG0				0x970
++#define TMDS_FIFO_CONTROL0				0x974
++/* FRL RSFEC Registers */
++#define FRL_RSFEC_CONFIG0				0xa20
++#define FRL_RSFEC_STATUS0				0xa30
++/* FRL Packetizer Registers */
++#define FRL_PKTZ_CONFIG0				0xa40
++#define FRL_PKTZ_CONTROL0				0xa44
++#define FRL_PKTZ_CONTROL1				0xa50
++#define FRL_PKTZ_STATUS1				0xa54
++/* Packet Scheduler Registers */
++#define PKTSCHED_CONFIG0				0xa80
++#define PKTSCHED_PRQUEUE0_CONFIG0			0xa84
++#define PKTSCHED_PRQUEUE1_CONFIG0			0xa88
++#define PKTSCHED_PRQUEUE2_CONFIG0			0xa8c
++#define PKTSCHED_PRQUEUE2_CONFIG1			0xa90
++#define PKTSCHED_PRQUEUE2_CONFIG2			0xa94
++#define PKTSCHED_PKT_CONFIG0				0xa98
++#define PKTSCHED_PKT_CONFIG1				0xa9c
++#define PKTSCHED_DRMI_FIELDRATE				BIT(13)
++#define PKTSCHED_AVI_FIELDRATE				BIT(12)
++#define PKTSCHED_PKT_CONFIG2				0xaa0
++#define PKTSCHED_PKT_CONFIG3				0xaa4
++#define PKTSCHED_PKT_EN					0xaa8
++#define PKTSCHED_DRMI_TX_EN				BIT(17)
++#define PKTSCHED_AUDI_TX_EN				BIT(15)
++#define PKTSCHED_AVI_TX_EN				BIT(13)
++#define PKTSCHED_EMP_CVTEM_TX_EN			BIT(10)
++#define PKTSCHED_AMD_TX_EN				BIT(8)
++#define PKTSCHED_GCP_TX_EN				BIT(3)
++#define PKTSCHED_AUDS_TX_EN				BIT(2)
++#define PKTSCHED_ACR_TX_EN				BIT(1)
++#define PKTSCHED_NULL_TX_EN				BIT(0)
++#define PKTSCHED_PKT_CONTROL0				0xaac
++#define PKTSCHED_PKT_SEND				0xab0
++#define PKTSCHED_PKT_STATUS0				0xab4
++#define PKTSCHED_PKT_STATUS1				0xab8
++#define PKT_NULL_CONTENTS0				0xb00
++#define PKT_NULL_CONTENTS1				0xb04
++#define PKT_NULL_CONTENTS2				0xb08
++#define PKT_NULL_CONTENTS3				0xb0c
++#define PKT_NULL_CONTENTS4				0xb10
++#define PKT_NULL_CONTENTS5				0xb14
++#define PKT_NULL_CONTENTS6				0xb18
++#define PKT_NULL_CONTENTS7				0xb1c
++#define PKT_ACP_CONTENTS0				0xb20
++#define PKT_ACP_CONTENTS1				0xb24
++#define PKT_ACP_CONTENTS2				0xb28
++#define PKT_ACP_CONTENTS3				0xb2c
++#define PKT_ACP_CONTENTS4				0xb30
++#define PKT_ACP_CONTENTS5				0xb34
++#define PKT_ACP_CONTENTS6				0xb38
++#define PKT_ACP_CONTENTS7				0xb3c
++#define PKT_ISRC1_CONTENTS0				0xb40
++#define PKT_ISRC1_CONTENTS1				0xb44
++#define PKT_ISRC1_CONTENTS2				0xb48
++#define PKT_ISRC1_CONTENTS3				0xb4c
++#define PKT_ISRC1_CONTENTS4				0xb50
++#define PKT_ISRC1_CONTENTS5				0xb54
++#define PKT_ISRC1_CONTENTS6				0xb58
++#define PKT_ISRC1_CONTENTS7				0xb5c
++#define PKT_ISRC2_CONTENTS0				0xb60
++#define PKT_ISRC2_CONTENTS1				0xb64
++#define PKT_ISRC2_CONTENTS2				0xb68
++#define PKT_ISRC2_CONTENTS3				0xb6c
++#define PKT_ISRC2_CONTENTS4				0xb70
++#define PKT_ISRC2_CONTENTS5				0xb74
++#define PKT_ISRC2_CONTENTS6				0xb78
++#define PKT_ISRC2_CONTENTS7				0xb7c
++#define PKT_GMD_CONTENTS0				0xb80
++#define PKT_GMD_CONTENTS1				0xb84
++#define PKT_GMD_CONTENTS2				0xb88
++#define PKT_GMD_CONTENTS3				0xb8c
++#define PKT_GMD_CONTENTS4				0xb90
++#define PKT_GMD_CONTENTS5				0xb94
++#define PKT_GMD_CONTENTS6				0xb98
++#define PKT_GMD_CONTENTS7				0xb9c
++#define PKT_AMD_CONTENTS0				0xba0
++#define PKT_AMD_CONTENTS1				0xba4
++#define PKT_AMD_CONTENTS2				0xba8
++#define PKT_AMD_CONTENTS3				0xbac
++#define PKT_AMD_CONTENTS4				0xbb0
++#define PKT_AMD_CONTENTS5				0xbb4
++#define PKT_AMD_CONTENTS6				0xbb8
++#define PKT_AMD_CONTENTS7				0xbbc
++#define PKT_VSI_CONTENTS0				0xbc0
++#define PKT_VSI_CONTENTS1				0xbc4
++#define PKT_VSI_CONTENTS2				0xbc8
++#define PKT_VSI_CONTENTS3				0xbcc
++#define PKT_VSI_CONTENTS4				0xbd0
++#define PKT_VSI_CONTENTS5				0xbd4
++#define PKT_VSI_CONTENTS6				0xbd8
++#define PKT_VSI_CONTENTS7				0xbdc
++#define PKT_AVI_CONTENTS0				0xbe0
++#define HDMI_FC_AVICONF0_ACTIVE_FMT_INFO_PRESENT	BIT(4)
++#define HDMI_FC_AVICONF0_BAR_DATA_VERT_BAR		0x04
++#define HDMI_FC_AVICONF0_BAR_DATA_HORIZ_BAR		0x08
++#define HDMI_FC_AVICONF2_IT_CONTENT_VALID		0x80
++#define PKT_AVI_CONTENTS1				0xbe4
++#define PKT_AVI_CONTENTS2				0xbe8
++#define PKT_AVI_CONTENTS3				0xbec
++#define PKT_AVI_CONTENTS4				0xbf0
++#define PKT_AVI_CONTENTS5				0xbf4
++#define PKT_AVI_CONTENTS6				0xbf8
++#define PKT_AVI_CONTENTS7				0xbfc
++#define PKT_SPDI_CONTENTS0				0xc00
++#define PKT_SPDI_CONTENTS1				0xc04
++#define PKT_SPDI_CONTENTS2				0xc08
++#define PKT_SPDI_CONTENTS3				0xc0c
++#define PKT_SPDI_CONTENTS4				0xc10
++#define PKT_SPDI_CONTENTS5				0xc14
++#define PKT_SPDI_CONTENTS6				0xc18
++#define PKT_SPDI_CONTENTS7				0xc1c
++#define PKT_AUDI_CONTENTS0				0xc20
++#define PKT_AUDI_CONTENTS1				0xc24
++#define PKT_AUDI_CONTENTS2				0xc28
++#define PKT_AUDI_CONTENTS3				0xc2c
++#define PKT_AUDI_CONTENTS4				0xc30
++#define PKT_AUDI_CONTENTS5				0xc34
++#define PKT_AUDI_CONTENTS6				0xc38
++#define PKT_AUDI_CONTENTS7				0xc3c
++#define PKT_NVI_CONTENTS0				0xc40
++#define PKT_NVI_CONTENTS1				0xc44
++#define PKT_NVI_CONTENTS2				0xc48
++#define PKT_NVI_CONTENTS3				0xc4c
++#define PKT_NVI_CONTENTS4				0xc50
++#define PKT_NVI_CONTENTS5				0xc54
++#define PKT_NVI_CONTENTS6				0xc58
++#define PKT_NVI_CONTENTS7				0xc5c
++#define PKT_DRMI_CONTENTS0				0xc60
++#define PKT_DRMI_CONTENTS1				0xc64
++#define PKT_DRMI_CONTENTS2				0xc68
++#define PKT_DRMI_CONTENTS3				0xc6c
++#define PKT_DRMI_CONTENTS4				0xc70
++#define PKT_DRMI_CONTENTS5				0xc74
++#define PKT_DRMI_CONTENTS6				0xc78
++#define PKT_DRMI_CONTENTS7				0xc7c
++#define PKT_GHDMI1_CONTENTS0				0xc80
++#define PKT_GHDMI1_CONTENTS1				0xc84
++#define PKT_GHDMI1_CONTENTS2				0xc88
++#define PKT_GHDMI1_CONTENTS3				0xc8c
++#define PKT_GHDMI1_CONTENTS4				0xc90
++#define PKT_GHDMI1_CONTENTS5				0xc94
++#define PKT_GHDMI1_CONTENTS6				0xc98
++#define PKT_GHDMI1_CONTENTS7				0xc9c
++#define PKT_GHDMI2_CONTENTS0				0xca0
++#define PKT_GHDMI2_CONTENTS1				0xca4
++#define PKT_GHDMI2_CONTENTS2				0xca8
++#define PKT_GHDMI2_CONTENTS3				0xcac
++#define PKT_GHDMI2_CONTENTS4				0xcb0
++#define PKT_GHDMI2_CONTENTS5				0xcb4
++#define PKT_GHDMI2_CONTENTS6				0xcb8
++#define PKT_GHDMI2_CONTENTS7				0xcbc
++/* EMP Packetizer Registers */
++#define PKT_EMP_CONFIG0					0xce0
++#define PKT_EMP_CONTROL0				0xcec
++#define PKT_EMP_CONTROL1				0xcf0
++#define PKT_EMP_CONTROL2				0xcf4
++#define PKT_EMP_VTEM_CONTENTS0				0xd00
++#define PKT_EMP_VTEM_CONTENTS1				0xd04
++#define PKT_EMP_VTEM_CONTENTS2				0xd08
++#define PKT_EMP_VTEM_CONTENTS3				0xd0c
++#define PKT_EMP_VTEM_CONTENTS4				0xd10
++#define PKT_EMP_VTEM_CONTENTS5				0xd14
++#define PKT_EMP_VTEM_CONTENTS6				0xd18
++#define PKT_EMP_VTEM_CONTENTS7				0xd1c
++#define PKT0_EMP_CVTEM_CONTENTS0			0xd20
++#define PKT0_EMP_CVTEM_CONTENTS1			0xd24
++#define PKT0_EMP_CVTEM_CONTENTS2			0xd28
++#define PKT0_EMP_CVTEM_CONTENTS3			0xd2c
++#define PKT0_EMP_CVTEM_CONTENTS4			0xd30
++#define PKT0_EMP_CVTEM_CONTENTS5			0xd34
++#define PKT0_EMP_CVTEM_CONTENTS6			0xd38
++#define PKT0_EMP_CVTEM_CONTENTS7			0xd3c
++#define PKT1_EMP_CVTEM_CONTENTS0			0xd40
++#define PKT1_EMP_CVTEM_CONTENTS1			0xd44
++#define PKT1_EMP_CVTEM_CONTENTS2			0xd48
++#define PKT1_EMP_CVTEM_CONTENTS3			0xd4c
++#define PKT1_EMP_CVTEM_CONTENTS4			0xd50
++#define PKT1_EMP_CVTEM_CONTENTS5			0xd54
++#define PKT1_EMP_CVTEM_CONTENTS6			0xd58
++#define PKT1_EMP_CVTEM_CONTENTS7			0xd5c
++#define PKT2_EMP_CVTEM_CONTENTS0			0xd60
++#define PKT2_EMP_CVTEM_CONTENTS1			0xd64
++#define PKT2_EMP_CVTEM_CONTENTS2			0xd68
++#define PKT2_EMP_CVTEM_CONTENTS3			0xd6c
++#define PKT2_EMP_CVTEM_CONTENTS4			0xd70
++#define PKT2_EMP_CVTEM_CONTENTS5			0xd74
++#define PKT2_EMP_CVTEM_CONTENTS6			0xd78
++#define PKT2_EMP_CVTEM_CONTENTS7			0xd7c
++#define PKT3_EMP_CVTEM_CONTENTS0			0xd80
++#define PKT3_EMP_CVTEM_CONTENTS1			0xd84
++#define PKT3_EMP_CVTEM_CONTENTS2			0xd88
++#define PKT3_EMP_CVTEM_CONTENTS3			0xd8c
++#define PKT3_EMP_CVTEM_CONTENTS4			0xd90
++#define PKT3_EMP_CVTEM_CONTENTS5			0xd94
++#define PKT3_EMP_CVTEM_CONTENTS6			0xd98
++#define PKT3_EMP_CVTEM_CONTENTS7			0xd9c
++#define PKT4_EMP_CVTEM_CONTENTS0			0xda0
++#define PKT4_EMP_CVTEM_CONTENTS1			0xda4
++#define PKT4_EMP_CVTEM_CONTENTS2			0xda8
++#define PKT4_EMP_CVTEM_CONTENTS3			0xdac
++#define PKT4_EMP_CVTEM_CONTENTS4			0xdb0
++#define PKT4_EMP_CVTEM_CONTENTS5			0xdb4
++#define PKT4_EMP_CVTEM_CONTENTS6			0xdb8
++#define PKT4_EMP_CVTEM_CONTENTS7			0xdbc
++#define PKT5_EMP_CVTEM_CONTENTS0			0xdc0
++#define PKT5_EMP_CVTEM_CONTENTS1			0xdc4
++#define PKT5_EMP_CVTEM_CONTENTS2			0xdc8
++#define PKT5_EMP_CVTEM_CONTENTS3			0xdcc
++#define PKT5_EMP_CVTEM_CONTENTS4			0xdd0
++#define PKT5_EMP_CVTEM_CONTENTS5			0xdd4
++#define PKT5_EMP_CVTEM_CONTENTS6			0xdd8
++#define PKT5_EMP_CVTEM_CONTENTS7			0xddc
++/* Audio Packetizer Registers */
++#define AUDPKT_CONTROL0					0xe20
++#define AUDPKT_PBIT_FORCE_EN_MASK			BIT(12)
++#define AUDPKT_PBIT_FORCE_EN				BIT(12)
++#define AUDPKT_CHSTATUS_OVR_EN_MASK			BIT(0)
++#define AUDPKT_CHSTATUS_OVR_EN				BIT(0)
++#define AUDPKT_CONTROL1					0xe24
++#define AUDPKT_ACR_CONTROL0				0xe40
++#define AUDPKT_ACR_N_VALUE				0xfffff
++#define AUDPKT_ACR_CONTROL1				0xe44
++#define AUDPKT_ACR_CTS_OVR_VAL_MSK			GENMASK(23, 4)
++#define AUDPKT_ACR_CTS_OVR_VAL(x)			((x) << 4)
++#define AUDPKT_ACR_CTS_OVR_EN_MSK			BIT(1)
++#define AUDPKT_ACR_CTS_OVR_EN				BIT(1)
++#define AUDPKT_ACR_STATUS0				0xe4c
++#define AUDPKT_CHSTATUS_OVR0				0xe60
++#define AUDPKT_CHSTATUS_OVR1				0xe64
++/* IEC60958 Byte 3: Sampleing frenuency Bits 24 to 27 */
++#define AUDPKT_CHSTATUS_SR_MASK				GENMASK(3, 0)
++#define AUDPKT_CHSTATUS_SR_22050			0x4
++#define AUDPKT_CHSTATUS_SR_24000			0x6
++#define AUDPKT_CHSTATUS_SR_32000			0x3
++#define AUDPKT_CHSTATUS_SR_44100			0x0
++#define AUDPKT_CHSTATUS_SR_48000			0x2
++#define AUDPKT_CHSTATUS_SR_88200			0x8
++#define AUDPKT_CHSTATUS_SR_96000			0xa
++#define AUDPKT_CHSTATUS_SR_176400			0xc
++#define AUDPKT_CHSTATUS_SR_192000			0xe
++#define AUDPKT_CHSTATUS_SR_768000			0x9
++#define AUDPKT_CHSTATUS_SR_NOT_INDICATED		0x1
++/* IEC60958 Byte 4: Original Sampleing frenuency Bits 36 to 39 */
++#define AUDPKT_CHSTATUS_0SR_MASK			GENMASK(15, 12)
++#define AUDPKT_CHSTATUS_OSR_8000			0x6
++#define AUDPKT_CHSTATUS_OSR_11025			0xa
++#define AUDPKT_CHSTATUS_OSR_12000			0x2
++#define AUDPKT_CHSTATUS_OSR_16000			0x8
++#define AUDPKT_CHSTATUS_OSR_22050			0xb
++#define AUDPKT_CHSTATUS_OSR_24000			0x9
++#define AUDPKT_CHSTATUS_OSR_32000			0xc
++#define AUDPKT_CHSTATUS_OSR_44100			0xf
++#define AUDPKT_CHSTATUS_OSR_48000			0xd
++#define AUDPKT_CHSTATUS_OSR_88200			0x7
++#define AUDPKT_CHSTATUS_OSR_96000			0x5
++#define AUDPKT_CHSTATUS_OSR_176400			0x3
++#define AUDPKT_CHSTATUS_OSR_192000			0x1
++#define AUDPKT_CHSTATUS_OSR_NOT_INDICATED		0x0
++#define AUDPKT_CHSTATUS_OVR2				0xe68
++#define AUDPKT_CHSTATUS_OVR3				0xe6c
++#define AUDPKT_CHSTATUS_OVR4				0xe70
++#define AUDPKT_CHSTATUS_OVR5				0xe74
++#define AUDPKT_CHSTATUS_OVR6				0xe78
++#define AUDPKT_CHSTATUS_OVR7				0xe7c
++#define AUDPKT_CHSTATUS_OVR8				0xe80
++#define AUDPKT_CHSTATUS_OVR9				0xe84
++#define AUDPKT_CHSTATUS_OVR10				0xe88
++#define AUDPKT_CHSTATUS_OVR11				0xe8c
++#define AUDPKT_CHSTATUS_OVR12				0xe90
++#define AUDPKT_CHSTATUS_OVR13				0xe94
++#define AUDPKT_CHSTATUS_OVR14				0xe98
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC0			0xea0
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC1			0xea4
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC2			0xea8
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC3			0xeac
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC4			0xeb0
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC5			0xeb4
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC6			0xeb8
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC7			0xebc
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC8			0xec0
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC9			0xec4
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC10		0xec8
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC11		0xecc
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC12		0xed0
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC13		0xed4
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC14		0xed8
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC15		0xedc
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC16		0xee0
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC17		0xee4
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC18		0xee8
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC19		0xeec
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC20		0xef0
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC21		0xef4
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC22		0xef8
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC23		0xefc
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC24		0xf00
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC25		0xf04
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC26		0xf08
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC27		0xf0c
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC28		0xf10
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC29		0xf14
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC30		0xf18
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC31		0xf1c
++#define AUDPKT_USRDATA_OVR_MSG_GENERIC32		0xf20
++#define AUDPKT_VBIT_OVR0				0xf24
++/* CEC Registers */
++#define CEC_TX_CONTROL					0x1000
++#define CEC_STATUS					0x1004
++#define CEC_CONFIG					0x1008
++#define CEC_ADDR					0x100c
++#define CEC_TX_COUNT					0x1020
++#define CEC_TX_DATA3_0					0x1024
++#define CEC_TX_DATA7_4					0x1028
++#define CEC_TX_DATA11_8					0x102c
++#define CEC_TX_DATA15_12				0x1030
++#define CEC_RX_COUNT_STATUS				0x1040
++#define CEC_RX_DATA3_0					0x1044
++#define CEC_RX_DATA7_4					0x1048
++#define CEC_RX_DATA11_8					0x104c
++#define CEC_RX_DATA15_12				0x1050
++#define CEC_LOCK_CONTROL				0x1054
++#define CEC_RXQUAL_BITTIME_CONFIG			0x1060
++#define CEC_RX_BITTIME_CONFIG				0x1064
++#define CEC_TX_BITTIME_CONFIG				0x1068
++/* eARC RX CMDC Registers */
++#define EARCRX_CMDC_CONFIG0				0x1800
++#define EARCRX_XACTREAD_STOP_CFG			BIT(26)
++#define EARCRX_XACTREAD_RETRY_CFG			BIT(25)
++#define EARCRX_CMDC_DSCVR_EARCVALID0_TO_DISC1		BIT(24)
++#define EARCRX_CMDC_XACT_RESTART_EN			BIT(18)
++#define EARCRX_CMDC_CONFIG1				0x1804
++#define EARCRX_CMDC_CONTROL				0x1808
++#define EARCRX_CMDC_HEARTBEAT_LOSS_EN			BIT(4)
++#define EARCRX_CMDC_DISCOVERY_EN			BIT(3)
++#define EARCRX_CONNECTOR_HPD				BIT(1)
++#define EARCRX_CMDC_WHITELIST0_CONFIG			0x180c
++#define EARCRX_CMDC_WHITELIST1_CONFIG			0x1810
++#define EARCRX_CMDC_WHITELIST2_CONFIG			0x1814
++#define EARCRX_CMDC_WHITELIST3_CONFIG			0x1818
++#define EARCRX_CMDC_STATUS				0x181c
++#define EARCRX_CMDC_XACT_INFO				0x1820
++#define EARCRX_CMDC_XACT_ACTION				0x1824
++#define EARCRX_CMDC_HEARTBEAT_RXSTAT_SE			0x1828
++#define EARCRX_CMDC_HEARTBEAT_STATUS			0x182c
++#define EARCRX_CMDC_XACT_WR0				0x1840
++#define EARCRX_CMDC_XACT_WR1				0x1844
++#define EARCRX_CMDC_XACT_WR2				0x1848
++#define EARCRX_CMDC_XACT_WR3				0x184c
++#define EARCRX_CMDC_XACT_WR4				0x1850
++#define EARCRX_CMDC_XACT_WR5				0x1854
++#define EARCRX_CMDC_XACT_WR6				0x1858
++#define EARCRX_CMDC_XACT_WR7				0x185c
++#define EARCRX_CMDC_XACT_WR8				0x1860
++#define EARCRX_CMDC_XACT_WR9				0x1864
++#define EARCRX_CMDC_XACT_WR10				0x1868
++#define EARCRX_CMDC_XACT_WR11				0x186c
++#define EARCRX_CMDC_XACT_WR12				0x1870
++#define EARCRX_CMDC_XACT_WR13				0x1874
++#define EARCRX_CMDC_XACT_WR14				0x1878
++#define EARCRX_CMDC_XACT_WR15				0x187c
++#define EARCRX_CMDC_XACT_WR16				0x1880
++#define EARCRX_CMDC_XACT_WR17				0x1884
++#define EARCRX_CMDC_XACT_WR18				0x1888
++#define EARCRX_CMDC_XACT_WR19				0x188c
++#define EARCRX_CMDC_XACT_WR20				0x1890
++#define EARCRX_CMDC_XACT_WR21				0x1894
++#define EARCRX_CMDC_XACT_WR22				0x1898
++#define EARCRX_CMDC_XACT_WR23				0x189c
++#define EARCRX_CMDC_XACT_WR24				0x18a0
++#define EARCRX_CMDC_XACT_WR25				0x18a4
++#define EARCRX_CMDC_XACT_WR26				0x18a8
++#define EARCRX_CMDC_XACT_WR27				0x18ac
++#define EARCRX_CMDC_XACT_WR28				0x18b0
++#define EARCRX_CMDC_XACT_WR29				0x18b4
++#define EARCRX_CMDC_XACT_WR30				0x18b8
++#define EARCRX_CMDC_XACT_WR31				0x18bc
++#define EARCRX_CMDC_XACT_WR32				0x18c0
++#define EARCRX_CMDC_XACT_WR33				0x18c4
++#define EARCRX_CMDC_XACT_WR34				0x18c8
++#define EARCRX_CMDC_XACT_WR35				0x18cc
++#define EARCRX_CMDC_XACT_WR36				0x18d0
++#define EARCRX_CMDC_XACT_WR37				0x18d4
++#define EARCRX_CMDC_XACT_WR38				0x18d8
++#define EARCRX_CMDC_XACT_WR39				0x18dc
++#define EARCRX_CMDC_XACT_WR40				0x18e0
++#define EARCRX_CMDC_XACT_WR41				0x18e4
++#define EARCRX_CMDC_XACT_WR42				0x18e8
++#define EARCRX_CMDC_XACT_WR43				0x18ec
++#define EARCRX_CMDC_XACT_WR44				0x18f0
++#define EARCRX_CMDC_XACT_WR45				0x18f4
++#define EARCRX_CMDC_XACT_WR46				0x18f8
++#define EARCRX_CMDC_XACT_WR47				0x18fc
++#define EARCRX_CMDC_XACT_WR48				0x1900
++#define EARCRX_CMDC_XACT_WR49				0x1904
++#define EARCRX_CMDC_XACT_WR50				0x1908
++#define EARCRX_CMDC_XACT_WR51				0x190c
++#define EARCRX_CMDC_XACT_WR52				0x1910
++#define EARCRX_CMDC_XACT_WR53				0x1914
++#define EARCRX_CMDC_XACT_WR54				0x1918
++#define EARCRX_CMDC_XACT_WR55				0x191c
++#define EARCRX_CMDC_XACT_WR56				0x1920
++#define EARCRX_CMDC_XACT_WR57				0x1924
++#define EARCRX_CMDC_XACT_WR58				0x1928
++#define EARCRX_CMDC_XACT_WR59				0x192c
++#define EARCRX_CMDC_XACT_WR60				0x1930
++#define EARCRX_CMDC_XACT_WR61				0x1934
++#define EARCRX_CMDC_XACT_WR62				0x1938
++#define EARCRX_CMDC_XACT_WR63				0x193c
++#define EARCRX_CMDC_XACT_WR64				0x1940
++#define EARCRX_CMDC_XACT_RD0				0x1960
++#define EARCRX_CMDC_XACT_RD1				0x1964
++#define EARCRX_CMDC_XACT_RD2				0x1968
++#define EARCRX_CMDC_XACT_RD3				0x196c
++#define EARCRX_CMDC_XACT_RD4				0x1970
++#define EARCRX_CMDC_XACT_RD5				0x1974
++#define EARCRX_CMDC_XACT_RD6				0x1978
++#define EARCRX_CMDC_XACT_RD7				0x197c
++#define EARCRX_CMDC_XACT_RD8				0x1980
++#define EARCRX_CMDC_XACT_RD9				0x1984
++#define EARCRX_CMDC_XACT_RD10				0x1988
++#define EARCRX_CMDC_XACT_RD11				0x198c
++#define EARCRX_CMDC_XACT_RD12				0x1990
++#define EARCRX_CMDC_XACT_RD13				0x1994
++#define EARCRX_CMDC_XACT_RD14				0x1998
++#define EARCRX_CMDC_XACT_RD15				0x199c
++#define EARCRX_CMDC_XACT_RD16				0x19a0
++#define EARCRX_CMDC_XACT_RD17				0x19a4
++#define EARCRX_CMDC_XACT_RD18				0x19a8
++#define EARCRX_CMDC_XACT_RD19				0x19ac
++#define EARCRX_CMDC_XACT_RD20				0x19b0
++#define EARCRX_CMDC_XACT_RD21				0x19b4
++#define EARCRX_CMDC_XACT_RD22				0x19b8
++#define EARCRX_CMDC_XACT_RD23				0x19bc
++#define EARCRX_CMDC_XACT_RD24				0x19c0
++#define EARCRX_CMDC_XACT_RD25				0x19c4
++#define EARCRX_CMDC_XACT_RD26				0x19c8
++#define EARCRX_CMDC_XACT_RD27				0x19cc
++#define EARCRX_CMDC_XACT_RD28				0x19d0
++#define EARCRX_CMDC_XACT_RD29				0x19d4
++#define EARCRX_CMDC_XACT_RD30				0x19d8
++#define EARCRX_CMDC_XACT_RD31				0x19dc
++#define EARCRX_CMDC_XACT_RD32				0x19e0
++#define EARCRX_CMDC_XACT_RD33				0x19e4
++#define EARCRX_CMDC_XACT_RD34				0x19e8
++#define EARCRX_CMDC_XACT_RD35				0x19ec
++#define EARCRX_CMDC_XACT_RD36				0x19f0
++#define EARCRX_CMDC_XACT_RD37				0x19f4
++#define EARCRX_CMDC_XACT_RD38				0x19f8
++#define EARCRX_CMDC_XACT_RD39				0x19fc
++#define EARCRX_CMDC_XACT_RD40				0x1a00
++#define EARCRX_CMDC_XACT_RD41				0x1a04
++#define EARCRX_CMDC_XACT_RD42				0x1a08
++#define EARCRX_CMDC_XACT_RD43				0x1a0c
++#define EARCRX_CMDC_XACT_RD44				0x1a10
++#define EARCRX_CMDC_XACT_RD45				0x1a14
++#define EARCRX_CMDC_XACT_RD46				0x1a18
++#define EARCRX_CMDC_XACT_RD47				0x1a1c
++#define EARCRX_CMDC_XACT_RD48				0x1a20
++#define EARCRX_CMDC_XACT_RD49				0x1a24
++#define EARCRX_CMDC_XACT_RD50				0x1a28
++#define EARCRX_CMDC_XACT_RD51				0x1a2c
++#define EARCRX_CMDC_XACT_RD52				0x1a30
++#define EARCRX_CMDC_XACT_RD53				0x1a34
++#define EARCRX_CMDC_XACT_RD54				0x1a38
++#define EARCRX_CMDC_XACT_RD55				0x1a3c
++#define EARCRX_CMDC_XACT_RD56				0x1a40
++#define EARCRX_CMDC_XACT_RD57				0x1a44
++#define EARCRX_CMDC_XACT_RD58				0x1a48
++#define EARCRX_CMDC_XACT_RD59				0x1a4c
++#define EARCRX_CMDC_XACT_RD60				0x1a50
++#define EARCRX_CMDC_XACT_RD61				0x1a54
++#define EARCRX_CMDC_XACT_RD62				0x1a58
++#define EARCRX_CMDC_XACT_RD63				0x1a5c
++#define EARCRX_CMDC_XACT_RD64				0x1a60
++#define EARCRX_CMDC_SYNC_CONFIG				0x1b00
++/* eARC RX DMAC Registers */
++#define EARCRX_DMAC_PHY_CONTROL				0x1c00
++#define EARCRX_DMAC_CONFIG				0x1c08
++#define EARCRX_DMAC_CONTROL0				0x1c0c
++#define EARCRX_DMAC_AUDIO_EN				BIT(1)
++#define EARCRX_DMAC_EN					BIT(0)
++#define EARCRX_DMAC_CONTROL1				0x1c10
++#define EARCRX_DMAC_STATUS				0x1c14
++#define EARCRX_DMAC_CHSTATUS0				0x1c18
++#define EARCRX_DMAC_CHSTATUS1				0x1c1c
++#define EARCRX_DMAC_CHSTATUS2				0x1c20
++#define EARCRX_DMAC_CHSTATUS3				0x1c24
++#define EARCRX_DMAC_CHSTATUS4				0x1c28
++#define EARCRX_DMAC_CHSTATUS5				0x1c2c
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC0		0x1c30
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC1		0x1c34
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC2		0x1c38
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC3		0x1c3c
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC4		0x1c40
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC5		0x1c44
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC6		0x1c48
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC7		0x1c4c
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC8		0x1c50
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC9		0x1c54
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC10		0x1c58
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_AC11		0x1c5c
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT0		0x1c60
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT1		0x1c64
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT2		0x1c68
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT3		0x1c6c
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT4		0x1c70
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT5		0x1c74
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT6		0x1c78
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT7		0x1c7c
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT8		0x1c80
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT9		0x1c84
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT10	0x1c88
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC1_PKT11	0x1c8c
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT0		0x1c90
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT1		0x1c94
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT2		0x1c98
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT3		0x1c9c
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT4		0x1ca0
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT5		0x1ca4
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT6		0x1ca8
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT7		0x1cac
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT8		0x1cb0
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT9		0x1cb4
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT10	0x1cb8
++#define EARCRX_DMAC_USRDATA_MSG_HDMI_ISRC2_PKT11	0x1cbc
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC0		0x1cc0
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC1		0x1cc4
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC2		0x1cc8
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC3		0x1ccc
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC4		0x1cd0
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC5		0x1cd4
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC6		0x1cd8
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC7		0x1cdc
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC8		0x1ce0
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC9		0x1ce4
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC10		0x1ce8
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC11		0x1cec
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC12		0x1cf0
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC13		0x1cf4
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC14		0x1cf8
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC15		0x1cfc
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC16		0x1d00
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC17		0x1d04
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC18		0x1d08
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC19		0x1d0c
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC20		0x1d10
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC21		0x1d14
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC22		0x1d18
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC23		0x1d1c
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC24		0x1d20
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC25		0x1d24
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC26		0x1d28
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC27		0x1d2c
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC28		0x1d30
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC29		0x1d34
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC30		0x1d38
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC31		0x1d3c
++#define EARCRX_DMAC_USRDATA_MSG_GENERIC32		0x1d40
++#define EARCRX_DMAC_CHSTATUS_STREAMER0			0x1d44
++#define EARCRX_DMAC_CHSTATUS_STREAMER1			0x1d48
++#define EARCRX_DMAC_CHSTATUS_STREAMER2			0x1d4c
++#define EARCRX_DMAC_CHSTATUS_STREAMER3			0x1d50
++#define EARCRX_DMAC_CHSTATUS_STREAMER4			0x1d54
++#define EARCRX_DMAC_CHSTATUS_STREAMER5			0x1d58
++#define EARCRX_DMAC_CHSTATUS_STREAMER6			0x1d5c
++#define EARCRX_DMAC_CHSTATUS_STREAMER7			0x1d60
++#define EARCRX_DMAC_CHSTATUS_STREAMER8			0x1d64
++#define EARCRX_DMAC_CHSTATUS_STREAMER9			0x1d68
++#define EARCRX_DMAC_CHSTATUS_STREAMER10			0x1d6c
++#define EARCRX_DMAC_CHSTATUS_STREAMER11			0x1d70
++#define EARCRX_DMAC_CHSTATUS_STREAMER12			0x1d74
++#define EARCRX_DMAC_CHSTATUS_STREAMER13			0x1d78
++#define EARCRX_DMAC_CHSTATUS_STREAMER14			0x1d7c
++#define EARCRX_DMAC_USRDATA_STREAMER0			0x1d80
++/* Main Unit Interrupt Registers */
++#define MAIN_INTVEC_INDEX				0x3000
++#define MAINUNIT_0_INT_STATUS				0x3010
++#define MAINUNIT_0_INT_MASK_N				0x3014
++#define MAINUNIT_0_INT_CLEAR				0x3018
++#define MAINUNIT_0_INT_FORCE				0x301c
++#define MAINUNIT_1_INT_STATUS				0x3020
++#define FLT_EXIT_TO_LTSL_IRQ				BIT(22)
++#define FLT_EXIT_TO_LTS4_IRQ				BIT(21)
++#define FLT_EXIT_TO_LTSP_IRQ				BIT(20)
++#define SCDC_NACK_RCVD_IRQ				BIT(12)
++#define SCDC_RR_REPLY_STOP_IRQ				BIT(11)
++#define SCDC_UPD_FLAGS_CLR_IRQ				BIT(10)
++#define SCDC_UPD_FLAGS_CHG_IRQ				BIT(9)
++#define SCDC_UPD_FLAGS_RD_IRQ				BIT(8)
++#define I2CM_NACK_RCVD_IRQ				BIT(2)
++#define I2CM_READ_REQUEST_IRQ				BIT(1)
++#define I2CM_OP_DONE_IRQ				BIT(0)
++#define MAINUNIT_1_INT_MASK_N				0x3024
++#define I2CM_NACK_RCVD_MASK_N				BIT(2)
++#define I2CM_READ_REQUEST_MASK_N			BIT(1)
++#define I2CM_OP_DONE_MASK_N				BIT(0)
++#define MAINUNIT_1_INT_CLEAR				0x3028
++#define I2CM_NACK_RCVD_CLEAR				BIT(2)
++#define I2CM_READ_REQUEST_CLEAR				BIT(1)
++#define I2CM_OP_DONE_CLEAR				BIT(0)
++#define MAINUNIT_1_INT_FORCE				0x302c
++/* AVPUNIT Interrupt Registers */
++#define AVP_INTVEC_INDEX				0x3800
++#define AVP_0_INT_STATUS				0x3810
++#define AVP_0_INT_MASK_N				0x3814
++#define AVP_0_INT_CLEAR					0x3818
++#define AVP_0_INT_FORCE					0x381c
++#define AVP_1_INT_STATUS				0x3820
++#define AVP_1_INT_MASK_N				0x3824
++#define HDCP14_AUTH_CHG_MASK_N				BIT(6)
++#define AVP_1_INT_CLEAR					0x3828
++#define AVP_1_INT_FORCE					0x382c
++#define AVP_2_INT_STATUS				0x3830
++#define AVP_2_INT_MASK_N				0x3834
++#define AVP_2_INT_CLEAR					0x3838
++#define AVP_2_INT_FORCE					0x383c
++#define AVP_3_INT_STATUS				0x3840
++#define AVP_3_INT_MASK_N				0x3844
++#define AVP_3_INT_CLEAR					0x3848
++#define AVP_3_INT_FORCE					0x384c
++#define AVP_4_INT_STATUS				0x3850
++#define AVP_4_INT_MASK_N				0x3854
++#define AVP_4_INT_CLEAR					0x3858
++#define AVP_4_INT_FORCE					0x385c
++#define AVP_5_INT_STATUS				0x3860
++#define AVP_5_INT_MASK_N				0x3864
++#define AVP_5_INT_CLEAR					0x3868
++#define AVP_5_INT_FORCE					0x386c
++#define AVP_6_INT_STATUS				0x3870
++#define AVP_6_INT_MASK_N				0x3874
++#define AVP_6_INT_CLEAR					0x3878
++#define AVP_6_INT_FORCE					0x387c
++/* CEC Interrupt Registers */
++#define CEC_INT_STATUS					0x4000
++#define CEC_INT_MASK_N					0x4004
++#define CEC_INT_CLEAR					0x4008
++#define CEC_INT_FORCE					0x400c
++/* eARC RX Interrupt Registers  */
++#define EARCRX_INTVEC_INDEX				0x4800
++#define EARCRX_0_INT_STATUS				0x4810
++#define EARCRX_CMDC_DISCOVERY_TIMEOUT_IRQ		BIT(9)
++#define EARCRX_CMDC_DISCOVERY_DONE_IRQ			BIT(8)
++#define EARCRX_0_INT_MASK_N				0x4814
++#define EARCRX_0_INT_CLEAR				0x4818
++#define EARCRX_0_INT_FORCE				0x481c
++#define EARCRX_1_INT_STATUS				0x4820
++#define EARCRX_1_INT_MASK_N				0x4824
++#define EARCRX_1_INT_CLEAR				0x4828
++#define EARCRX_1_INT_FORCE				0x482c
++
++#endif /* __DW_HDMI_QP_H__ */
+diff --git a/include/video/dw_hdmi_qp.h b/include/video/dw_hdmi_qp.h
+new file mode 100644
+index 0000000000..78c28b75af
+--- /dev/null
++++ b/include/video/dw_hdmi_qp.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright (c) 2021-2022 Rockchip Electronics Co., Ltd.
++ * Copyright (c) 2024 Collabora Ltd.
++ */
++
++#ifndef __DW_HDMI_QP__
++#define __DW_HDMI_QP__
++
++struct device;
++struct drm_encoder;
++struct dw_hdmi_qp;
++struct platform_device;
++
++struct dw_hdmi_qp_phy_ops {
++	int (*init)(struct dw_hdmi_qp *hdmi, void *data);
++	void (*disable)(struct dw_hdmi_qp *hdmi, void *data);
++	enum drm_connector_status (*read_hpd)(struct dw_hdmi_qp *hdmi, void *data);
++	void (*setup_hpd)(struct dw_hdmi_qp *hdmi, void *data);
++	int (*mode_set)(struct dw_hdmi_qp *dw_hdmi, void *data,
++		        const struct drm_display_mode *mode);
++};
++
++struct dw_hdmi_qp_plat_data {
++	const struct dw_hdmi_qp_phy_ops *phy_ops;
++	void *phy_data;
++	int main_irq;
++};
++
++struct dw_hdmi_qp *dw_hdmi_qp_bind(struct device *dev,
++				   const struct dw_hdmi_qp_plat_data *plat_data);
++#endif /* __DW_HDMI_QP__ */
 
 -- 
 2.39.5
