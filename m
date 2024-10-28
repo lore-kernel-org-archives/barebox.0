@@ -1,69 +1,70 @@
-Delivery-date: Mon, 28 Oct 2024 17:38:39 +0100
+Delivery-date: Mon, 28 Oct 2024 17:38:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5SlK-001w4j-26
+	id 1t5Slb-001w5N-2e
 	for lore@lore.pengutronix.de;
-	Mon, 28 Oct 2024 17:38:39 +0100
+	Mon, 28 Oct 2024 17:38:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5SlL-00009I-7Z
-	for lore@pengutronix.de; Mon, 28 Oct 2024 17:38:39 +0100
+	id 1t5Slc-0000HX-G1
+	for lore@pengutronix.de; Mon, 28 Oct 2024 17:38:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2EjfoIQVbht8tSDX0+JJ0W9SYf6/YqZl3LtG9fMF1PM=; b=UbiVB7buQqGFSU2kmnJ+7HM3pS
-	i54UHgpr3PEo1DuullZqZOT5gsF50Oi4Jz/Wm/tUy5tfnCbnaIzb6hXr8+Q+TA+x1mnnrAQjILF6T
-	LFZfn7jm1TptkPILn51EILMFAxYjL6yE49xWsz4yLH2yEr5j4fsheLo4rI7q6IRUIs7A6rnjz90ng
-	gtxyNt6r92OpFsXh+yhYQnrLWTP3kBq5kNtG0MWUV5a3Ig9GF+maCQA14SgPli/ZW+33DAH2L4njN
-	fwchh+ch7Jpo3ipaa611uR19Ghx1tWsGYG9fTXhcoPSktJkvTfudc/1Pxm1jWRd/VJMKikGpyC+rN
-	Y1VLAy9g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=iKFwPhUOFN/y3SzC7dEK92jZb/k3GTvxufvtt83DPdw=; b=vfRyD/mDrj55acMib3RfXWKHQL
+	l5HbNJmdM6ZVfkORApvg+LxWz6T0E/Fa3KTTal7uL/fgsTYT3bE6WldfgBjbtHJDfgZfXclBJ/tXb
+	vTdD70+EvWRABmeGJl05ID3IarPW7fLZTiAzGaeWgSvQkP+L4LPyvOMDz6CEqMlGPcZXNTp4i4jUY
+	XJu276buxLAYgvRW0NQilN0Yki3e6XD9IlAblPu7xGNfrNNsxjMUWc1XW2+oRwqdCUQQaCCDIY4A/
+	bicftHNWsULs0SHzq7sKOPAAwFgGXrsY06O5SGu49qsK4GxMbUr7Gxw78mY0MwQjNDzZXAGMGhHtB
+	I4ky8OEw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5Skk-0000000BW8n-0gnw;
-	Mon, 28 Oct 2024 16:38:02 +0000
+	id 1t5Sl6-0000000BWRd-2fDu;
+	Mon, 28 Oct 2024 16:38:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5SQl-0000000BT8H-1WC5
+	id 1t5Shh-0000000BVHA-47XJ
 	for barebox@lists.infradead.org;
-	Mon, 28 Oct 2024 16:17:24 +0000
+	Mon, 28 Oct 2024 16:34:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1t5SQU-00073d-4G; Mon, 28 Oct 2024 17:17:06 +0100
+	id 1t5Shg-0007xk-Gk; Mon, 28 Oct 2024 17:34:52 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1t5SQT-000t3o-31;
-	Mon, 28 Oct 2024 17:17:05 +0100
+	id 1t5Shg-000t9G-15;
+	Mon, 28 Oct 2024 17:34:52 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1t5SQT-0072jj-2q;
-	Mon, 28 Oct 2024 17:17:05 +0100
+	id 1t5Shg-007Q8L-0v;
+	Mon, 28 Oct 2024 17:34:52 +0100
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Mon, 28 Oct 2024 17:17:02 +0100
+Date: Mon, 28 Oct 2024 17:34:52 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241028-fix-noisy-debug-calls-v1-2-e84ce4272313@pengutronix.de>
-References: <20241028-fix-noisy-debug-calls-v1-0-e84ce4272313@pengutronix.de>
-In-Reply-To: <20241028-fix-noisy-debug-calls-v1-0-e84ce4272313@pengutronix.de>
+Message-Id: <20241028-feature-dryrun-global-v1-1-5529ac1e133e@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIACu9H2cC/x3MSwqAMAwA0atI1gZqEPxcRVxUm2pAqqQqinh3i
+ 8u3mHkgsgpHaLMHlE+JsoaEIs9gnG2YGMUlAxkqC0M1erb7oYxObz0CTss62AVNww0R1WXlPKR
+ 2U/Zy/d+uf98P3GbiWWcAAAA=
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 X-Mailer: b4 0.12.4
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241028_091723_434235_B6D17709 
-X-CRM114-Status: GOOD (  11.66  )
+X-CRM114-CacheID: sfid-20241028_093454_055647_BCC5CBB2 
+X-CRM114-Status: GOOD (  10.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,71 +86,55 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] fs: ramfs: downgrade noisy debug calls to verbose
- debug
+Subject: [PATCH] bootm: make dryrun controllable via global variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-These debug calls are in the hotpath of any ramfs interaction,
-cluttering the log buffer, slowing down reads/writes and are usually not
-interesting while debugging, thus they are downgraded to verbose
-debugging.
+When the bootm code is not called directly by the bootm command it is
+useful to control the dryrun with a globalvar. This introduces
+global.bootm.dryrun for this purpose.
 
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- fs/ramfs.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ common/bootm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index a799b23efb..c1ef7acd91 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -224,14 +224,14 @@ static int ramfs_read(struct device *_dev, FILE *f, void *buf, size_t insize)
- 	unsigned long pos = f->pos;
- 	int size = insize;
+diff --git a/common/bootm.c b/common/bootm.c
+index b6ab358426..91e33b3f6b 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -42,6 +42,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
+ }
  
--	debug("%s: %p %zu @ %lld\n", __func__, node, insize, f->pos);
-+	pr_vdebug("%s: %p %zu @ %lld\n", __func__, node, insize, f->pos);
+ static int bootm_appendroot;
++static int bootm_dryrun;
+ static int bootm_earlycon;
+ static int bootm_provide_machine_id;
+ static int bootm_provide_hostname;
+@@ -64,6 +65,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 	data->provide_machine_id = bootm_provide_machine_id;
+ 	data->provide_hostname = bootm_provide_hostname;
+ 	data->verbose = bootm_verbosity;
++	data->dryrun = bootm_dryrun;
+ }
  
- 	while (size) {
- 		data = ramfs_find_chunk(node, pos, &ofs, &len);
- 		if (!data)
- 			return -EINVAL;
+ static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_HASH;
+@@ -1032,6 +1034,7 @@ static int bootm_init(void)
+ 	if (bootm_signed_images_are_forced())
+ 		bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
  
--		debug("%s: pos: %lu ofs: %d len: %d\n", __func__, pos, ofs, len);
-+		pr_vdebug("%s: pos: %lu ofs: %d len: %d\n", __func__, pos, ofs, len);
++	globalvar_add_simple_bool("bootm.dryrun", &bootm_dryrun);
+ 	globalvar_add_simple_int("bootm.verbose", &bootm_verbosity, "%u");
  
- 		now = min(size, len);
- 
-@@ -255,14 +255,14 @@ static int ramfs_write(struct device *_dev, FILE *f, const void *buf,
- 	unsigned long pos = f->pos;
- 	int size = insize;
- 
--	debug("%s: %p %zu @ %lld\n", __func__, node, insize, f->pos);
-+	pr_vdebug("%s: %p %zu @ %lld\n", __func__, node, insize, f->pos);
- 
- 	while (size) {
- 		data = ramfs_find_chunk(node, pos, &ofs, &len);
- 		if (!data)
- 			return -EINVAL;
- 
--		debug("%s: pos: %lu ofs: %d len: %d\n", __func__, pos, ofs, len);
-+		pr_vdebug("%s: pos: %lu ofs: %d len: %d\n", __func__, pos, ofs, len);
- 
- 		now = min(size, len);
- 
-@@ -363,7 +363,7 @@ static int ramfs_truncate(struct device *dev, FILE *f, loff_t size)
- 	if (size > ULONG_MAX)
- 		return -ENOSPC;
- 
--	debug("%s: %p cur: %ld new: %lld alloc: %ld\n", __func__, node,
-+	pr_vdebug("%s: %p cur: %ld new: %lld alloc: %ld\n", __func__, node,
- 	       node->size, size, node->alloc_size);
- 
- 	if (size == node->size)
+ 	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
 
+---
+base-commit: 59658c877bcc605fe3ca36653b4f40f57856b81a
+change-id: 20241028-feature-dryrun-global-09e9222847df
+
+Best regards,
 -- 
-2.39.5
+Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
 
 
