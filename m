@@ -1,56 +1,56 @@
-Delivery-date: Tue, 29 Oct 2024 09:56:53 +0100
+Delivery-date: Tue, 29 Oct 2024 09:57:05 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5i1z-002DFl-2v
+	id 1t5i2C-002DGG-0v
 	for lore@lore.pengutronix.de;
-	Tue, 29 Oct 2024 09:56:53 +0100
+	Tue, 29 Oct 2024 09:57:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5i1z-0002EM-8s
-	for lore@pengutronix.de; Tue, 29 Oct 2024 09:56:52 +0100
+	id 1t5i28-0002LT-L5
+	for lore@pengutronix.de; Tue, 29 Oct 2024 09:57:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7Wp67guw2Wa4Ve2c77LcbLVH0XNUJEDU9oZXgDa4CDg=; b=sxpt8s3KYcR45gOOYDvIEy5zXz
-	tkbGU8LtrAak5OrNe4agAFjrJtqHM3/9Ed0GtaR2FMEb4LgObQ7FEE6bjztER/ZepwrGdq3/fKeoN
-	xtHq5I2etim9KwA0+pO+MyWuwPyg2PbCr+YTAlM9fyTOzMpMpKBbs4kEwVvQJ5NJwnXFEPQC4ElIt
-	mt4lZkbfOPUexO8ZoGKoS3OhdD7zbhZwFEqwognWpOHKbvmdDLuRAJ652Iwb84I1lIGHspPM+mCY+
-	x0H1piL3oGElco1sk4yDa7MNW4+tjZs9Xnixim+IKBYIonolnMl76fo7CauucfmjFzdQ8+bYJUKUY
-	JXjeiTvA==;
+	bh=vPyKG+rlwhwpS0JXNcTbrXTZJ39zy7LU67j7AaB0dtw=; b=Ow7ZcA/2r6ncwnci3LbEndjTvC
+	gJ9qHMFFVE+aCVD4S0UHRRdYA691ooyyrfvHmFrb0ctLBdjmsW8Bi1jLKWWSAWDvvzhmh3sEiJI0+
+	P0EjcdJU0IZaRlk8kYyUpzg/pCVmZW5NbEGxsnUaoQ3eabXcmb7jvxEduHHOgJdRRUI2ZuKPml3kK
+	H/vgsuMl2aX0EGQmg1sUefC34j9URqW0luprCaL+518c9lvbHmNZTgpRZJ6Gjy07KTMfWQKxJSH3O
+	l7o3mqq0bf978NunN1pmlr4Dbt/yD65R3bmS1I8RzxeruchRw3YXPj2GPueCFl1nhEfCWhbsjqgnU
+	wQmFvYIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5i1T-0000000DmJd-0nym;
-	Tue, 29 Oct 2024 08:56:19 +0000
+	id 1t5i1V-0000000DmM8-0jXw;
+	Tue, 29 Oct 2024 08:56:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5hoM-0000000DimB-15cm
+	id 1t5hoL-0000000Dilu-3r9N
 	for barebox@lists.infradead.org;
-	Tue, 29 Oct 2024 08:42:48 +0000
+	Tue, 29 Oct 2024 08:42:50 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1t5hoL-0000Kh-0q; Tue, 29 Oct 2024 09:42:45 +0100
+	id 1t5hoK-0000Kh-Js; Tue, 29 Oct 2024 09:42:44 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 29 Oct 2024 09:42:39 +0100
+Date: Tue, 29 Oct 2024 09:42:37 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-9-96df2d7dadf4@pengutronix.de>
+Message-Id: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-7-96df2d7dadf4@pengutronix.de>
 References: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-0-96df2d7dadf4@pengutronix.de>
 In-Reply-To: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-0-96df2d7dadf4@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241029_014246_460363_15322CC5 
-X-CRM114-Status: GOOD (  16.51  )
+X-CRM114-CacheID: sfid-20241029_014246_412835_E8F35A56 
+X-CRM114-Status: GOOD (  19.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,103 +72,416 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/10] clk: support init->parent_data
+Subject: [PATCH 07/10] net: phy: add Analog Devices ADIN1300
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Linux clk driver supports matching parents via init->parent_data instead
-of init->parent_names.
-
-Add support for this feature to barebox, too.
-Linux however supports setting a "name" and "fw_name" for a parent
-clock. "fw_name" is a local name for the provider registering the clock
-and "name" is a globally unique parent name. For the time being, only
-support the globally unique "name" field.
+The Analog Devices ADIN1300 is a low power 10Mbps,100Mbps, and 1Gbps
+ethernet phy.
+(https://www.analog.com/media/en/technical-documentation/data-sheets/adin1300.pdf)
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/clk/clk.c | 48 ++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 8 deletions(-)
+ drivers/net/phy/Kconfig  |   7 +
+ drivers/net/phy/Makefile |   1 +
+ drivers/net/phy/adin.c   | 360 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 368 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index bd368782804c9a2cce1ced7826501363c0c2ab2d..be4060e6d5a0d7ecbed729b4d96570d7980f5857 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -476,11 +476,28 @@ int bclk_register(struct clk *clk)
- 	return ret;
- }
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 8e12671801f39a4507937e16d2382e60c258990e..ac6fcf79027aa587b658d5f43cfbf7bb4f86f1f3 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -9,6 +9,13 @@ if PHYLIB
  
-+static int clk_cpy_name(const char **dst_p, const char *src, bool must_exist)
-+{
-+	const char *dst;
+ comment "MII PHY device drivers"
+ 
++config ADIN_PHY
++	bool "Driver for Analog Devices Industrial Ethernet PHYs"
++	help
++	  Currently supports the:  
++	  - ADIN1300
++	  Ethernet PHY
 +
-+	if (!src) {
-+		if (must_exist)
-+			return -EINVAL;
-+		return 0;
+ config AR8327N_PHY
+ 	bool "Driver for QCA AR8327N PHYs"
+ 	help
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index ce15e1bab79fb227f48dca5e9cdba2d0f7e92f7b..862a7e9ba1d19a12b272431c88d452e1434e757a 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-y += phy.o mdio_bus.o phy-core.o
++obj-$(CONFIG_ADIN_PHY)		+= adin.o
+ obj-$(CONFIG_AR8327N_PHY)	+= ar8327.o
+ obj-$(CONFIG_AT803X_PHY)	+= at803x.o
+ obj-$(CONFIG_DAVICOM_PHY)	+= davicom.o
+diff --git a/drivers/net/phy/adin.c b/drivers/net/phy/adin.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..413722d9297d28c50633c1f6c1892a055fb728f9
+--- /dev/null
++++ b/drivers/net/phy/adin.c
+@@ -0,0 +1,360 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ *  Driver for Analog Devices Industrial Ethernet PHYs
++ *
++ * Copyright 2019 Analog Devices Inc.
++ */
++#include <common.h>
++#include <init.h>
++#include <linux/bitfield.h>
++#include <linux/mdio.h>
++#include <linux/phy.h>
++#include <linux/string.h>
++
++#define PHY_ID_ADIN1200				0x0283bc20
++#define PHY_ID_ADIN1300				0x0283bc30
++
++#define ADIN1300_MII_EXT_REG_PTR		0x0010
++#define ADIN1300_MII_EXT_REG_DATA		0x0011
++
++#define ADIN1300_PHY_CTRL1			0x0012
++#define   ADIN1300_AUTO_MDI_EN			BIT(10)
++#define   ADIN1300_MAN_MDIX_EN			BIT(9)
++#define   ADIN1300_DIAG_CLK_EN			BIT(2)
++
++#define ADIN1300_RX_ERR_CNT			0x0014
++
++#define ADIN1300_PHY_CTRL_STATUS2		0x0015
++#define   ADIN1300_NRG_PD_EN			BIT(3)
++#define   ADIN1300_NRG_PD_TX_EN			BIT(2)
++#define   ADIN1300_NRG_PD_STATUS		BIT(1)
++
++#define ADIN1300_PHY_CTRL2			0x0016
++#define   ADIN1300_DOWNSPEED_AN_100_EN		BIT(11)
++#define   ADIN1300_DOWNSPEED_AN_10_EN		BIT(10)
++#define   ADIN1300_GROUP_MDIO_EN		BIT(6)
++#define   ADIN1300_DOWNSPEEDS_EN	\
++	(ADIN1300_DOWNSPEED_AN_100_EN | ADIN1300_DOWNSPEED_AN_10_EN)
++
++#define ADIN1300_PHY_CTRL3			0x0017
++#define   ADIN1300_LINKING_EN			BIT(13)
++#define   ADIN1300_DOWNSPEED_RETRIES_MSK	GENMASK(12, 10)
++
++#define ADIN1300_INT_MASK_REG			0x0018
++#define   ADIN1300_INT_MDIO_SYNC_EN		BIT(9)
++#define   ADIN1300_INT_ANEG_STAT_CHNG_EN	BIT(8)
++#define   ADIN1300_INT_ANEG_PAGE_RX_EN		BIT(6)
++#define   ADIN1300_INT_IDLE_ERR_CNT_EN		BIT(5)
++#define   ADIN1300_INT_MAC_FIFO_OU_EN		BIT(4)
++#define   ADIN1300_INT_RX_STAT_CHNG_EN		BIT(3)
++#define   ADIN1300_INT_LINK_STAT_CHNG_EN	BIT(2)
++#define   ADIN1300_INT_SPEED_CHNG_EN		BIT(1)
++#define   ADIN1300_INT_HW_IRQ_EN		BIT(0)
++#define ADIN1300_INT_MASK_EN	\
++	(ADIN1300_INT_LINK_STAT_CHNG_EN | ADIN1300_INT_HW_IRQ_EN)
++#define ADIN1300_INT_STATUS_REG			0x0019
++
++#define ADIN1300_PHY_STATUS1			0x001a
++#define   ADIN1300_PAIR_01_SWAP			BIT(11)
++
++/* EEE register addresses, accessible via Clause 22 access using
++ * ADIN1300_MII_EXT_REG_PTR & ADIN1300_MII_EXT_REG_DATA.
++ * The bit-fields are the same as specified by IEEE for EEE.
++ */
++#define ADIN1300_EEE_CAP_REG			0x8000
++#define ADIN1300_EEE_ADV_REG			0x8001
++#define ADIN1300_EEE_LPABLE_REG			0x8002
++#define ADIN1300_CLOCK_STOP_REG			0x9400
++#define ADIN1300_LPI_WAKE_ERR_CNT_REG		0xa000
++
++#define ADIN1300_CDIAG_RUN			0xba1b
++#define   ADIN1300_CDIAG_RUN_EN			BIT(0)
++
++/*
++ * The XSIM3/2/1 and XSHRT3/2/1 are actually relative.
++ * For CDIAG_DTLD_RSLTS(0) it's ADIN1300_CDIAG_RSLT_XSIM3/2/1
++ * For CDIAG_DTLD_RSLTS(1) it's ADIN1300_CDIAG_RSLT_XSIM3/2/0
++ * For CDIAG_DTLD_RSLTS(2) it's ADIN1300_CDIAG_RSLT_XSIM3/1/0
++ * For CDIAG_DTLD_RSLTS(3) it's ADIN1300_CDIAG_RSLT_XSIM2/1/0
++ */
++#define ADIN1300_CDIAG_DTLD_RSLTS(x)		(0xba1d + (x))
++#define   ADIN1300_CDIAG_RSLT_BUSY		BIT(10)
++#define   ADIN1300_CDIAG_RSLT_XSIM3		BIT(9)
++#define   ADIN1300_CDIAG_RSLT_XSIM2		BIT(8)
++#define   ADIN1300_CDIAG_RSLT_XSIM1		BIT(7)
++#define   ADIN1300_CDIAG_RSLT_SIM		BIT(6)
++#define   ADIN1300_CDIAG_RSLT_XSHRT3		BIT(5)
++#define   ADIN1300_CDIAG_RSLT_XSHRT2		BIT(4)
++#define   ADIN1300_CDIAG_RSLT_XSHRT1		BIT(3)
++#define   ADIN1300_CDIAG_RSLT_SHRT		BIT(2)
++#define   ADIN1300_CDIAG_RSLT_OPEN		BIT(1)
++#define   ADIN1300_CDIAG_RSLT_GOOD		BIT(0)
++
++#define ADIN1300_CDIAG_FLT_DIST(x)		(0xba21 + (x))
++
++#define ADIN1300_GE_SOFT_RESET_REG		0xff0c
++#define   ADIN1300_GE_SOFT_RESET		BIT(0)
++
++#define ADIN1300_GE_CLK_CFG_REG			0xff1f
++#define   ADIN1300_GE_CLK_CFG_MASK		GENMASK(5, 0)
++#define   ADIN1300_GE_CLK_CFG_RCVR_125		BIT(5)
++#define   ADIN1300_GE_CLK_CFG_FREE_125		BIT(4)
++#define   ADIN1300_GE_CLK_CFG_REF_EN		BIT(3)
++#define   ADIN1300_GE_CLK_CFG_HRT_RCVR		BIT(2)
++#define   ADIN1300_GE_CLK_CFG_HRT_FREE		BIT(1)
++#define   ADIN1300_GE_CLK_CFG_25		BIT(0)
++
++#define ADIN1300_GE_RGMII_CFG_REG		0xff23
++#define   ADIN1300_GE_RGMII_RX_MSK		GENMASK(8, 6)
++#define   ADIN1300_GE_RGMII_RX_SEL(x)		\
++		FIELD_PREP(ADIN1300_GE_RGMII_RX_MSK, x)
++#define   ADIN1300_GE_RGMII_GTX_MSK		GENMASK(5, 3)
++#define   ADIN1300_GE_RGMII_GTX_SEL(x)		\
++		FIELD_PREP(ADIN1300_GE_RGMII_GTX_MSK, x)
++#define   ADIN1300_GE_RGMII_RXID_EN		BIT(2)
++#define   ADIN1300_GE_RGMII_TXID_EN		BIT(1)
++#define   ADIN1300_GE_RGMII_EN			BIT(0)
++
++/* RGMII internal delay settings for rx and tx for ADIN1300 */
++#define ADIN1300_RGMII_1_60_NS			0x0001
++#define ADIN1300_RGMII_1_80_NS			0x0002
++#define	ADIN1300_RGMII_2_00_NS			0x0000
++#define	ADIN1300_RGMII_2_20_NS			0x0006
++#define	ADIN1300_RGMII_2_40_NS			0x0007
++
++#define ADIN1300_GE_RMII_CFG_REG		0xff24
++#define   ADIN1300_GE_RMII_FIFO_DEPTH_MSK	GENMASK(6, 4)
++#define   ADIN1300_GE_RMII_FIFO_DEPTH_SEL(x)	\
++		FIELD_PREP(ADIN1300_GE_RMII_FIFO_DEPTH_MSK, x)
++#define   ADIN1300_GE_RMII_EN			BIT(0)
++
++/* RMII fifo depth values */
++#define ADIN1300_RMII_4_BITS			0x0000
++#define ADIN1300_RMII_8_BITS			0x0001
++#define ADIN1300_RMII_12_BITS			0x0002
++#define ADIN1300_RMII_16_BITS			0x0003
++#define ADIN1300_RMII_20_BITS			0x0004
++#define ADIN1300_RMII_24_BITS			0x0005
++
++/**
++ * struct adin_cfg_reg_map - map a config value to aregister value
++ * @cfg:	value in device configuration
++ * @reg:	value in the register
++ */
++struct adin_cfg_reg_map {
++	int cfg;
++	int reg;
++};
++
++static const struct adin_cfg_reg_map adin_rgmii_delays[] = {
++	{ 1600, ADIN1300_RGMII_1_60_NS },
++	{ 1800, ADIN1300_RGMII_1_80_NS },
++	{ 2000, ADIN1300_RGMII_2_00_NS },
++	{ 2200, ADIN1300_RGMII_2_20_NS },
++	{ 2400, ADIN1300_RGMII_2_40_NS },
++	{ },
++};
++
++static const struct adin_cfg_reg_map adin_rmii_fifo_depths[] = {
++	{ 4,  ADIN1300_RMII_4_BITS },
++	{ 8,  ADIN1300_RMII_8_BITS },
++	{ 12, ADIN1300_RMII_12_BITS },
++	{ 16, ADIN1300_RMII_16_BITS },
++	{ 20, ADIN1300_RMII_20_BITS },
++	{ 24, ADIN1300_RMII_24_BITS },
++	{ },
++};
++
++static int adin_lookup_reg_value(const struct adin_cfg_reg_map *tbl, int cfg)
++{
++	size_t i;
++
++	for (i = 0; tbl[i].cfg; i++) {
++		if (tbl[i].cfg == cfg)
++			return tbl[i].reg;
 +	}
 +
-+	*dst_p = dst = xstrdup(src);
-+	if (!dst)
-+		return -ENOMEM;
++	return -EINVAL;
++}
++
++static u32 adin_get_reg_value(struct phy_device *phydev,
++			      const char *prop_name,
++			      const struct adin_cfg_reg_map *tbl,
++			      u32 dflt)
++{
++	struct device *dev = &phydev->bus->dev;
++	u32 val;
++	int rc;
++
++	if (of_property_read_u32(dev->of_node, prop_name, &val))
++		return dflt;
++
++	rc = adin_lookup_reg_value(tbl, val);
++	if (rc < 0) {
++		phydev_warn(phydev,
++			    "Unsupported value %u for %s using default (%u)\n",
++			    val, prop_name, dflt);
++		return dflt;
++	}
++
++	return rc;
++}
++
++static u16 adin_ext_read(struct phy_device *phydev, const u32 regnum)
++{
++	u16 val;
++
++	phy_write(phydev, ADIN1300_MII_EXT_REG_PTR, regnum);
++	val = phy_read(phydev, ADIN1300_MII_EXT_REG_DATA);
++
++	debug("%s: adin@0x%x 0x%x=0x%x\n", __func__, phydev->addr, regnum, val);
++
++	return val;
++}
++
++static int adin_ext_write(struct phy_device *phydev, const u32 regnum, const u16 val)
++{
++	debug("%s: adin@0x%x 0x%x=0x%x\n", __func__, phydev->addr, regnum, val);
++
++	phy_write(phydev, ADIN1300_MII_EXT_REG_PTR, regnum);
++
++	return phy_write(phydev, ADIN1300_MII_EXT_REG_DATA, val);
++}
++
++static int adin_config_rgmii_mode(struct phy_device *phydev)
++{
++	u32 val;
++	int reg;
++
++	if (!phy_interface_is_rgmii(phydev))
++		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1,
++					  ADIN1300_GE_RGMII_CFG_REG,
++					  ADIN1300_GE_RGMII_EN);
++
++	reg = adin_ext_read(phydev, ADIN1300_GE_RGMII_CFG_REG);
++	if (reg < 0)
++		return reg;
++
++	reg |= ADIN1300_GE_RGMII_EN;
++
++	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
++	    phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
++		reg |= ADIN1300_GE_RGMII_RXID_EN;
++
++		val = adin_get_reg_value(phydev, "adi,rx-internal-delay-ps",
++					 adin_rgmii_delays,
++					 ADIN1300_RGMII_2_00_NS);
++		reg &= ~ADIN1300_GE_RGMII_RX_MSK;
++		reg |= ADIN1300_GE_RGMII_RX_SEL(val);
++	} else {
++		reg &= ~ADIN1300_GE_RGMII_RXID_EN;
++	}
++
++	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
++	    phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
++		reg |= ADIN1300_GE_RGMII_TXID_EN;
++
++		val = adin_get_reg_value(phydev, "adi,tx-internal-delay-ps",
++					 adin_rgmii_delays,
++					 ADIN1300_RGMII_2_00_NS);
++		reg &= ~ADIN1300_GE_RGMII_GTX_MSK;
++		reg |= ADIN1300_GE_RGMII_GTX_SEL(val);
++	} else {
++		reg &= ~ADIN1300_GE_RGMII_TXID_EN;
++	}
++
++	return adin_ext_write(phydev, ADIN1300_GE_RGMII_CFG_REG, reg);
++}
++
++static int adin_config_rmii_mode(struct phy_device *phydev)
++{
++	u32 val;
++	int reg;
++
++	if (phydev->interface != PHY_INTERFACE_MODE_RMII)
++		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1,
++					  ADIN1300_GE_RMII_CFG_REG,
++					  ADIN1300_GE_RMII_EN);
++
++	reg = phy_read_mmd(phydev, MDIO_MMD_VEND1, ADIN1300_GE_RMII_CFG_REG);
++	if (reg < 0)
++		return reg;
++
++	reg |= ADIN1300_GE_RMII_EN;
++
++	val = adin_get_reg_value(phydev, "adi,fifo-depth-bits",
++				 adin_rmii_fifo_depths,
++				 ADIN1300_RMII_8_BITS);
++
++	reg &= ~ADIN1300_GE_RMII_FIFO_DEPTH_MSK;
++	reg |= ADIN1300_GE_RMII_FIFO_DEPTH_SEL(val);
++
++	return phy_write_mmd(phydev, MDIO_MMD_VEND1,
++			     ADIN1300_GE_RMII_CFG_REG, reg);
++}
++
++static int adin_config_init(struct phy_device *phydev)
++{
++	int rc;
++
++	rc = adin_config_rgmii_mode(phydev);
++	if (rc < 0)
++		return rc;
++
++	rc = adin_config_rmii_mode(phydev);
++	if (rc < 0)
++		return rc;
++
++	return genphy_config_init(phydev);
++}
++
++static int adin_soft_reset(struct phy_device *phydev)
++{
++	int rc;
++
++	/* Read link and autonegotiation status */
++	/* The reset bit is self-clearing, set it and wait */
++	rc = phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
++			      ADIN1300_GE_SOFT_RESET_REG,
++			      ADIN1300_GE_SOFT_RESET);
++	if (rc < 0)
++		return rc;
++
++	mdelay(20);
++
++	/* If we get a read error something may be wrong */
++	rc = phy_read_mmd(phydev, MDIO_MMD_VEND1,
++			  ADIN1300_GE_SOFT_RESET_REG);
++
++	return rc < 0 ? rc : 0;
++}
++
++static int adin_config_aneg(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = genphy_config_aneg(phydev);
++	if (ret < 0)
++		return ret;
++
++	/* Enable Autonegotiation */
++	phy_write(phydev, MII_BMCR, BMCR_ANENABLE);
++	phydev->autoneg = AUTONEG_ENABLE;
 +
 +	return 0;
 +}
 +
- struct clk *clk_register(struct device *dev, struct clk_hw *hw)
- {
- 	struct clk *clk;
- 	const struct clk_init_data *init = hw->init;
--	char **parent_names = NULL;
-+	const char **parent_names = NULL;
- 	int i, ret;
- 
- 	if (!hw->init)
-@@ -496,14 +513,29 @@ struct clk *clk_register(struct device *dev, struct clk_hw *hw)
- 
- 	clk->parents = xzalloc(sizeof(struct clk *) * clk->num_parents);
- 
--	if (init->parent_names) {
-+	if (init->parent_names || init->parent_data) {
- 		parent_names = xzalloc(init->num_parents * sizeof(char *));
- 
--		for (i = 0; i < init->num_parents; i++)
--			parent_names[i] = xstrdup(init->parent_names[i]);
--
--		clk->parent_names = (const char *const*)parent_names;
--
-+		for (i = 0; i < init->num_parents; i++) {
-+			if (init->parent_names) {
-+				ret = clk_cpy_name(&parent_names[i],
-+						   init->parent_names[i], true);
-+			} else if (init->parent_data) {
-+				/* Linux copies fw_name and if successful also name.
-+				 * As fw_name is not handled in barebox, just copy the
-+				 * name field and fallback to hw->clk.name if it doesn't
-+				 * exist.
-+				 */
-+				ret = clk_cpy_name(&parent_names[i],
-+						   init->parent_data[i].name,
-+						   true);
-+				if (ret)
-+					ret = clk_cpy_name(&parent_names[i],
-+							   init->parent_data[i].hw->clk.name,
-+							   false);
-+			}
-+		}
-+		clk->parent_names = (const char *const *)parent_names;
- 	} else {
- 		for (i = 0; i < init->num_parents; i++)
- 			clk->parents[i] = clk_hw_to_clk(init->parent_hws[i]);
-@@ -515,7 +547,7 @@ struct clk *clk_register(struct device *dev, struct clk_hw *hw)
- 	if (ret) {
- 		if (parent_names) {
- 			for (i = 0; i < init->num_parents; i++)
--				free(parent_names[i]);
-+				free(&parent_names[i]);
- 			free(parent_names);
- 		}
- 		free(clk->parents);
++static struct phy_driver adin_driver[] = {
++	{
++		.phy_id		= 0x0283bc30,
++		.phy_id_mask	= 0xffffffff,
++		.drv.name	= "ADIN1300",
++		.features	= PHY_GBIT_FEATURES,
++		.config_init	= adin_config_init,
++		.soft_reset	= adin_soft_reset,
++		.config_aneg	= adin_config_aneg,
++		.read_status	= genphy_read_status,
++	},
++};
++
++device_phy_drivers(adin_driver);
 
 -- 
 2.46.0
