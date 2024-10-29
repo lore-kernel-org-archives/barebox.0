@@ -1,57 +1,56 @@
-Delivery-date: Tue, 29 Oct 2024 09:56:51 +0100
+Delivery-date: Tue, 29 Oct 2024 09:56:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5i1y-002DF3-0U
+	id 1t5i1z-002DFQ-15
 	for lore@lore.pengutronix.de;
-	Tue, 29 Oct 2024 09:56:51 +0100
+	Tue, 29 Oct 2024 09:56:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5i1w-0002CP-JO
-	for lore@pengutronix.de; Tue, 29 Oct 2024 09:56:51 +0100
+	id 1t5i1z-0002ES-75
+	for lore@pengutronix.de; Tue, 29 Oct 2024 09:56:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5O47ZukxusMS+ayMQ4F0JUMi6aYErIotMwMza6BzsVg=; b=IYKonBSUTcLPX+bQwOOJSXCtiX
-	WXl6BFm1L/5fTfmZDfemZKSkZqenKvwTmDV/DG0TAYgT5snJvn2Wb3pqzh7JIDXC/E9EUFh/bf1Fc
-	8NAauewGiyNjberUGiUL3D1QA0XsjALasl591zDh9I7vIqwAW204RFusOcCjdFNy838zHiQksDKKG
-	Pq8wSnvS9+1r0NFD+FqdhDudFP00T7O9tc/8aGA0yo7htHs+kRK964/fhQ8aqdVtmqqat6yeSmsVO
-	A43a3OxbYZNfiLOFEvOS2xuLW24aFA2hINvQwLltpzY6jfHrvXFIRT8AUVDxf9SYuTQDD7ToyQf6H
-	JTRStW9g==;
+	bh=xBr1ZCZ+mwNC7stvVyzWW9IrH0zsikbnGsc/TBsADTg=; b=3JdPyT6WrQgXpMwijXPTf1gmfM
+	ebsVrqEhmSZsGLXqDKgG17150ffXtrk5HcJYR1zAWKlbha9gsqxecJpZW3x+CWESPbpnXK9JMJjh8
+	Lp4O+W27+1H4aTbIjAa6WCE0HQWUcjyTgmjEC3WERjIlH6LgCKN63rUDxFmgVPSmnDtVWgctm4rJl
+	b6h964oMIKYOR435GCOyPRSVy+9Ikr+Nt1aArPICXc8gfqyh+Tgl7mtLz+J9BKbuU/POQZn5sC+aN
+	Y1+c7EhEEFjC8Hh3N0GO6rQm21qcdDZjLnZG506OU6Huv+ZQDrRosKHdbJZRKY4nA4PGX5U3VAliC
+	o2PBz8ow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5i1N-0000000DmGZ-3nVv;
-	Tue, 29 Oct 2024 08:56:13 +0000
+	id 1t5i1R-0000000DmII-08OQ;
+	Tue, 29 Oct 2024 08:56:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5hoM-0000000DilK-0Iws
+	id 1t5hoM-0000000DilF-064n
 	for barebox@lists.infradead.org;
-	Tue, 29 Oct 2024 08:42:47 +0000
+	Tue, 29 Oct 2024 08:42:48 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1t5hoJ-0000Kh-HQ; Tue, 29 Oct 2024 09:42:43 +0100
+	id 1t5hoJ-0000Kh-Ap; Tue, 29 Oct 2024 09:42:43 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 29 Oct 2024 09:42:33 +0100
+Date: Tue, 29 Oct 2024 09:42:32 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-3-96df2d7dadf4@pengutronix.de>
+Message-Id: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-2-96df2d7dadf4@pengutronix.de>
 References: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-0-96df2d7dadf4@pengutronix.de>
 In-Reply-To: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-0-96df2d7dadf4@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241029_014246_175084_1F584A14 
-X-CRM114-Status: UNSURE (   9.14  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241029_014246_197154_B129A9F0 
+X-CRM114-Status: GOOD (  12.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,46 +72,128 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/10] reset: reset-socfpga: build only for 32-bit socfpga
+Subject: [PATCH 02/10] mach: socfpga: debug_ll: rework putc_ll
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The 64-bit SoCFPGA platforms will use reset-simple.
+Cleanup the debug_ll code for SoCFPGA. The old Gen5 Socfpga have a
+narrower ioport width for the NS16550. All newer generations support
+32-bit access. Invert the logic and add new *_uart_putc functions for
+use with pbl_set_putc.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/reset/Kconfig  | 6 ++++++
- drivers/reset/Makefile | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/mach-socfpga/arria10-init.c  |  2 +-
+ arch/arm/mach-socfpga/cyclone5-init.c |  2 +-
+ include/mach/socfpga/debug_ll.h       | 44 +++++++++++++++++++++++------------
+ 3 files changed, 31 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 16c05d50f0e30cb93609c6fbaa4287975894509a..c3779f087490f57deeabf2178723983a87d0446c 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -57,4 +57,10 @@ config RESET_SCMI
- 	  This driver uses SCMI Message Protocol to interact with the
- 	  firmware controlling all the reset signals.
+diff --git a/arch/arm/mach-socfpga/arria10-init.c b/arch/arm/mach-socfpga/arria10-init.c
+index f8a15ec8b46a761904e470d66bd0900fdb0686ec..14cee3196ade7d36adbb1b70c5b0041bce3cc193 100644
+--- a/arch/arm/mach-socfpga/arria10-init.c
++++ b/arch/arm/mach-socfpga/arria10-init.c
+@@ -147,7 +147,7 @@ void arria10_finish_io(uint32_t *pinmux)
  
-+config RESET_SOCFPGA32
-+	bool "SoCFPGA 32-bit Reset Driver"
-+	default ARCH_SOCFPGA && 32BIT
-+	help
-+	  This enables the reset controller driver for 32-bit SoCFPGA platforms.
+ 	arria10_reset_deassert_fpga_peripherals();
+ 
+-	INIT_LL();
++	socfpga_uart_setup_ll();
+ 
+ 	puts_ll("lowlevel init done\n");
+ }
+diff --git a/arch/arm/mach-socfpga/cyclone5-init.c b/arch/arm/mach-socfpga/cyclone5-init.c
+index 79a9b15d8761baa8b576a83871a06fbf0559ce91..63ec48b8e48d7e8daa9ce9c158ad5716739b9b3d 100644
+--- a/arch/arm/mach-socfpga/cyclone5-init.c
++++ b/arch/arm/mach-socfpga/cyclone5-init.c
+@@ -56,5 +56,5 @@ void socfpga_lowlevel_init(struct socfpga_cm_config *cm_config,
+ 	writel(0x18, CYCLONE5_L3REGS_ADDRESS);
+ 	writel(0x1, 0xfffefc00);
+ 
+-	INIT_LL();
++	socfpga_uart_setup_ll();
+ }
+diff --git a/include/mach/socfpga/debug_ll.h b/include/mach/socfpga/debug_ll.h
+index 25b3581634704ac523b031a915b73408b674e0c5..698cca60373f7e382db12344e83925dbcb3b35aa 100644
+--- a/include/mach/socfpga/debug_ll.h
++++ b/include/mach/socfpga/debug_ll.h
+@@ -30,6 +30,26 @@
+ #define SCR		0x1c
+ #define THR		0x30
+ 
++static inline void socfpga_gen5_uart_putc(void *base, int c)
++{
++	/* Wait until there is space in the FIFO */
++	while ((readb(base + LSR) & LSR_THRE) == 0);
++	/* Send the character */
++	writeb(c, base + THR);
++	/* Wait to make sure it hits the line, in case we die too soon. */
++	while ((readb(base + LSR) & LSR_THRE) == 0);
++}
 +
- endif
-diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-index b1668433d76af89a49ef577ad9d0cdc4af48de8d..a446cb20d0b7ddb6404fdf385498bdf6a076e34e 100644
---- a/drivers/reset/Makefile
-+++ b/drivers/reset/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_RESET_CONTROLLER) += core.o
- obj-$(CONFIG_RESET_SIMPLE) += reset-simple.o
--obj-$(CONFIG_ARCH_SOCFPGA) += reset-socfpga.o
-+obj-$(CONFIG_RESET_SOCFPGA32) += reset-socfpga.o
- obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
- obj-$(CONFIG_RESET_STARFIVE) += reset-starfive-vic.o
- obj-$(CONFIG_RESET_SCMI) += reset-scmi.o
++static inline void socfpga_uart_putc(void *base, int c)
++{
++	/* Wait until there is space in the FIFO */
++	while ((readl(base + LSR) & LSR_THRE) == 0);
++	/* Send the character */
++	writel(c, base + THR);
++	/* Wait to make sure it hits the line, in case we die too soon. */
++	while ((readl(base + LSR) & LSR_THRE) == 0);
++}
++
+ #ifdef CONFIG_DEBUG_LL
+ static inline unsigned int ns16550_calc_divisor(unsigned int clk,
+ 					 unsigned int baudrate)
+@@ -37,7 +57,7 @@ static inline unsigned int ns16550_calc_divisor(unsigned int clk,
+ 	return (clk / 16 / baudrate);
+ }
+ 
+-static inline void INIT_LL(void)
++static inline void socfpga_uart_setup_ll(void)
+ {
+ 	unsigned int div = ns16550_calc_divisor(CONFIG_DEBUG_SOCFPGA_UART_CLOCK,
+ 						115200);
+@@ -53,25 +73,19 @@ static inline void INIT_LL(void)
+ 	writel(FCRVAL, UART_BASE + FCR);
+ }
+ 
+-#ifdef CONFIG_ARCH_SOCFPGA_ARRIA10
++#if defined(CONFIG_ARCH_SOCFPGA_CYCLONE5)
+ static inline void PUTC_LL(char c)
+ {
+-	/* Wait until there is space in the FIFO */
+-	while ((readl(UART_BASE + LSR) & LSR_THRE) == 0);
+-	/* Send the character */
+-	writel(c, UART_BASE + THR);
+-	/* Wait to make sure it hits the line, in case we die too soon. */
+-	while ((readl(UART_BASE + LSR) & LSR_THRE) == 0);
++	void __iomem *base = IOMEM(UART_BASE);
++
++	socfpga_gen5_uart_putc(base, c);
+ }
+ #else
+ static inline void PUTC_LL(char c)
+ {
+-	/* Wait until there is space in the FIFO */
+-	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
+-	/* Send the character */
+-	writeb(c, UART_BASE + THR);
+-	/* Wait to make sure it hits the line, in case we die too soon. */
+-	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
++	void __iomem *base = IOMEM(UART_BASE);
++
++	socfpga_uart_putc(base, c);
+ }
+ #endif
+ 
+@@ -80,7 +94,7 @@ static inline unsigned int ns16550_calc_divisor(unsigned int clk,
+ 					 unsigned int baudrate) {
+ 	return -ENOSYS;
+ }
+-static inline void INIT_LL(void) {}
++static inline void socfpga_uart_setup_ll(void) {}
+ static inline void PUTC_LL(char c) {}
+ #endif
+ #endif /* __MACH_SOCFPGA_DEBUG_LL_H__ */
 
 -- 
 2.46.0
