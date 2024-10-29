@@ -1,59 +1,72 @@
-Delivery-date: Mon, 28 Oct 2024 17:59:26 +0100
+Delivery-date: Tue, 29 Oct 2024 09:29:37 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5T5R-001wOP-12
+	id 1t5hbc-002CoF-0Q
 	for lore@lore.pengutronix.de;
-	Mon, 28 Oct 2024 17:59:26 +0100
+	Tue, 29 Oct 2024 09:29:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5T5R-0001v9-VL
-	for lore@pengutronix.de; Mon, 28 Oct 2024 17:59:26 +0100
+	id 1t5hbc-0007n1-Nm
+	for lore@pengutronix.de; Tue, 29 Oct 2024 09:29:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HK14y9L01TEtTOLOPBlVJ9uN7fM+ekDt6acAwPZrX10=; b=ElVXZohhc8HuS/pqzaI7dYlGSS
-	P5j+fZ85zsoEXjs8MUloYm37NYF4ayOXWafUoEHOMULIpYhH2ONEsVSjHHCxJI5myOUx8R+iI1C9W
-	dhhH7Etgrti/N+38AnW+hQjEIQ1SW5efQE/97j2C5/0Z0IZfDxlaEn+zl9iBHVq1l/idw3XhaU+uX
-	dsoD7OMhiOKla2FDri9kru5ENLNZTn0m2F2ha/oD+XplpS9bZMGdkHQ+Ac264TNZ/UvUos9iWinHB
-	jBB3tE08txDkUYwEhiEw5jvNwh7QVXBdc6Lu/w2iclsqQJYqMDsCpq2dfBRATR1zGmk4o/ucjpMpd
-	7AvI3B4w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=dw2t7g5x9P8Cp/8Bo+rVLPpaQSadv2cNNBQkaJNZuLA=; b=oodcEueQuiNwlJJRlhDSTyHlKo
+	HTZSDtp/0xEdV+w804uekm6LHwqz/jW1ViJb5RPdvRj7/a9WarWr+Nf+SKVZ2dkjPnLOrBptYWcUF
+	441FS78QVAeF/K4UoMGon6moO0dNwFt2NyQDl1uQ2qX97CNYiwNMuGIqZNOGDPuFtv1+0weDipbOC
+	HtDHDn1bn2LEjqnqCR7mT3ueVAF/AWfEsvtkEtUy6Yb279xxuB1bHtyLskmm4C6NlUwO3HJ7I6vO+
+	Xk0FfEopLiNu6+0Xs7ITN1DgQiV9YW4UGt1fCCCkfKxf5j6rdyaO3cN+MMgMsn8yK3rVmqI1nIThf
+	5z2n3Ocw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5T4z-0000000Bakj-2wJd;
-	Mon, 28 Oct 2024 16:58:57 +0000
+	id 1t5hax-0000000Dgn1-1aRs;
+	Tue, 29 Oct 2024 08:28:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5T3Y-0000000Bab1-2DmD
+	id 1t5hX9-0000000Dfip-1b8D
 	for barebox@lists.infradead.org;
-	Mon, 28 Oct 2024 16:57:29 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	Tue, 29 Oct 2024 08:25:02 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1t5T3W-0001kl-V3; Mon, 28 Oct 2024 17:57:27 +0100
-Message-ID: <a8707ffc-be75-4943-9c67-bea50285fe12@pengutronix.de>
-Date: Mon, 28 Oct 2024 17:57:26 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20241028-fix-noisy-debug-calls-v1-0-e84ce4272313@pengutronix.de>
- <d70eeeed-bb47-4d50-ac7e-5174c574aa33@pengutronix.de>
-Content-Language: en-US, de-DE
+	id 1t5hX7-0007FW-A3; Tue, 29 Oct 2024 09:24:57 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1t5hX7-000zgG-0M;
+	Tue, 29 Oct 2024 09:24:57 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1t5hX7-003fAn-0B;
+	Tue, 29 Oct 2024 09:24:57 +0100
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-In-Reply-To: <d70eeeed-bb47-4d50-ac7e-5174c574aa33@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Date: Tue, 29 Oct 2024 09:24:52 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241029-feature-dryrun-global-v2-1-49671d7cc62c@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIANObIGcC/4WNQQqDMBBFryKz7hQzKtWueo/iIjWjBiSRSRRFv
+ HtTL9Dle/DfPyCwWA7wzA4QXm2w3iWgWwbdqN3AaE1ioJxKlVONPeu4CKORXRaHw+Q/esK84Ya
+ I6vJhekjbWbi329V9t4lHG6KX/bpZ1c/+K64KFVYVNbpTrIqCXzO7YYnind3uhqE9z/MLSK5Tc
+ r8AAAA=
+X-Change-ID: 20241028-feature-dryrun-global-09e9222847df
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241028_095728_609718_69C8EAEE 
-X-CRM114-Status: GOOD (  14.14  )
+X-CRM114-CacheID: sfid-20241029_012459_446406_9668B057 
+X-CRM114-Status: GOOD (  11.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,72 +88,67 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/2] downgrade noisy debug calls in block devices and
- ramfs
+Subject: [PATCH v2] bootm: make dryrun controllable via global variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+When the bootm code is not called directly by the bootm command it is
+useful to control the dryrun with a globalvar. This introduces
+global.bootm.dryrun for this purpose.
 
-On 28.10.24 17:44, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 28.10.24 17:17, Stefan Kerkmann wrote:
->> These two patches are the outcome of an investigation why loading a
->> fitimage from an eMMC took nearly 7s - the sheer amount of generated
->> debugging messages slowed down the system by a factor of ~21 with
->> KConfig options:
->>
->> 	CONFIG_COMPILE_LOGLEVEL=7
->> 	CONFIG_DEFAULT_LOGLEVEL=6
->>
->> Which is the current default combination for barebox.
->>
->> Before:
->>
->> 	Booting entry 'system0'
->> 	FIT: Reading time: 6722 ms
->>
->> After:
->>
->> 	Booting entry 'system0'
->> 	FIT: Reading time: 324 ms
-> 
-> This is the time with these two patches applied or with
-> compile log level changed?
-> 
+Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+---
+Changes in v2:
+- Added bootm.dryrun as BAREBOX_MAGICVAR
+- Link to v1: https://lore.kernel.org/r/20241028-feature-dryrun-global-v1-1-5529ac1e133e@pengutronix.de
+---
+ common/bootm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-This is the time with both patches applied and the mentioned default log levels.
+diff --git a/common/bootm.c b/common/bootm.c
+index b6ab358426f60d3bd2c0ae8f1170d5d45a839d98..bc917081d7d1c9ed8ecbcb70974608fdc6dd1402 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -42,6 +42,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
+ }
+ 
+ static int bootm_appendroot;
++static int bootm_dryrun;
+ static int bootm_earlycon;
+ static int bootm_provide_machine_id;
+ static int bootm_provide_hostname;
+@@ -64,6 +65,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 	data->provide_machine_id = bootm_provide_machine_id;
+ 	data->provide_hostname = bootm_provide_hostname;
+ 	data->verbose = bootm_verbosity;
++	data->dryrun = bootm_dryrun;
+ }
+ 
+ static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_HASH;
+@@ -1032,6 +1034,7 @@ static int bootm_init(void)
+ 	if (bootm_signed_images_are_forced())
+ 		bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
+ 
++	globalvar_add_simple_bool("bootm.dryrun", &bootm_dryrun);
+ 	globalvar_add_simple_int("bootm.verbose", &bootm_verbosity, "%u");
+ 
+ 	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
+@@ -1062,6 +1065,7 @@ BAREBOX_MAGICVAR(global.bootm.initrd, "bootm default initrd");
+ BAREBOX_MAGICVAR(global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
+ BAREBOX_MAGICVAR(global.bootm.oftree, "bootm default oftree");
+ BAREBOX_MAGICVAR(global.bootm.tee, "bootm default tee image");
++BAREBOX_MAGICVAR(global.bootm.dryrun, "bootm default dryrun level");
+ BAREBOX_MAGICVAR(global.bootm.verify, "bootm default verify level");
+ BAREBOX_MAGICVAR(global.bootm.verbose, "bootm default verbosity level (0=quiet)");
+ BAREBOX_MAGICVAR(global.bootm.earlycon, "Add earlycon option to Kernel for early log output");
 
-Cheers,
-Stefan
+---
+base-commit: 59658c877bcc605fe3ca36653b4f40f57856b81a
+change-id: 20241028-feature-dryrun-global-09e9222847df
 
-> Cheers,
-> Ahmad
-> 
->>
->> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
->> ---
->> Stefan Kerkmann (2):
->>       block: downgrade noisy debug calls to verbose debug
->>       fs: ramfs: downgrade noisy debug calls to verbose debug
->>
->>  common/block.c |  4 ++--
->>  fs/ramfs.c     | 10 +++++-----
->>  2 files changed, 7 insertions(+), 7 deletions(-)
->> ---
->> base-commit: 59658c877bcc605fe3ca36653b4f40f57856b81a
->> change-id: 20241028-fix-noisy-debug-calls-a6d6185be705
->>
->> Best regards,
-> 
-> 
-
+Best regards,
 -- 
-Pengutronix e.K.                       | Stefan Kerkmann             |
-Steuerwalder Str. 21                   | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany              | Phone: +49-5121-206917-128  |
-Amtsgericht Hildesheim, HRA 2686       | Fax:   +49-5121-206917-9    |
+Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
 
 
