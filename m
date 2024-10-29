@@ -1,56 +1,56 @@
-Delivery-date: Tue, 29 Oct 2024 09:57:18 +0100
+Delivery-date: Tue, 29 Oct 2024 09:57:29 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5i2O-002DGr-2t
+	id 1t5i2a-002DHT-0h
 	for lore@lore.pengutronix.de;
-	Tue, 29 Oct 2024 09:57:18 +0100
+	Tue, 29 Oct 2024 09:57:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t5i2K-0002Sb-Fb
-	for lore@pengutronix.de; Tue, 29 Oct 2024 09:57:17 +0100
+	id 1t5i2V-0002Yy-Qr
+	for lore@pengutronix.de; Tue, 29 Oct 2024 09:57:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iydCMtwunG1yw2UFPsUxdJ3NVQBFWOsnrUFIoV1Gr3s=; b=Hoo9tJ0T8c0IP0vRrMcp7fqLGv
-	8J3huLkFRQgmLFrosFxGp9B6urL2HVc8UHQ83btufmat+qWu+dC0sbbJyA/JXozdIGLZeQXLr5XbF
-	E7CX7jwbg0kB/r7Hov+yfxIR9rVcXWirh0KP2OUTgLR2Svgws296DLh/Q2/XAdxNL8T/AJ0lRj+xA
-	tWJJos/bxjWavmohj53l0xUgaqg8YwV6v7ii17ikucsMZvq9ULTwYM9AnO0iNX81oVlxRQowNq8K+
-	gHw2XAPOhr4xPtedERAOM1X77+DG9osFLyNDlfnCq5zt/Yd2WFE6ps+TYlRMFhogl1cLSAGXZMJE/
-	3VICPaow==;
+	bh=sxMlxjOWGK5GyTwjB297sC2MNDCzxirnASldhyeP34Q=; b=XOkLj4zr+nsmH1UFdkAi4vabLJ
+	Iy7dEPS9B1LphBpTSHgzqoPTRa885qgd8SPdY3bE6H83Hz8kmE8bN70sYABjGnQhexRuBFLR7995q
+	a6Q3uoIT7VJ7u0oqsc9PZcK40n8devCuQG5ifMqir+c9MJhu3qPnZ8I8e8jZDELSlQ2wuYUWbBCGt
+	HLYn3VhduGDD/tRgZVUWUrCuo8nocEY2/nWMEGIDeu0Eae3lPlNQKa0MkVolE34B9xJq51vWOT9w8
+	ssbW9UmYOPhFcVb84/C++5TqJWJ1+OWbEQg0uX6FVFLM2Rmd3bby8/YQcSUGfE3nrZlu4oQQtitNm
+	Na4fzEsw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5i1a-0000000DmNy-23fr;
-	Tue, 29 Oct 2024 08:56:26 +0000
+	id 1t5i1f-0000000DmT2-2ShF;
+	Tue, 29 Oct 2024 08:56:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t5hoM-0000000Dild-3EI5
+	id 1t5hoM-0000000Dilr-4608
 	for barebox@lists.infradead.org;
-	Tue, 29 Oct 2024 08:42:50 +0000
+	Tue, 29 Oct 2024 08:42:52 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1t5hoK-0000Kh-4P; Tue, 29 Oct 2024 09:42:44 +0100
+	id 1t5hoK-0000Kh-BA; Tue, 29 Oct 2024 09:42:44 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 29 Oct 2024 09:42:35 +0100
+Date: Tue, 29 Oct 2024 09:42:36 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-5-96df2d7dadf4@pengutronix.de>
+Message-Id: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-6-96df2d7dadf4@pengutronix.de>
 References: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-0-96df2d7dadf4@pengutronix.de>
 In-Reply-To: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-0-96df2d7dadf4@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241029_014247_151693_71FCE08D 
-X-CRM114-Status: GOOD (  13.94  )
+X-CRM114-CacheID: sfid-20241029_014247_765976_E161CE34 
+X-CRM114-Status: GOOD (  28.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,373 +72,1363 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/10] ARM: socfpga: add Arrow AXE5 Agilex5 board
+Subject: [PATCH 06/10] net: add support for Designware XGMAC (10gb)
+ ethernet
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add the Agilex5-based Arrow AXE5-Eagle board.
-It consists among other things of:
-  - Agilex5 SoCFPGA
-  - 1 GB LPDDR4 SDRAM for HPS
-  - 1 GB LPDDR4 SDRAM for FPGA
-  - 1 Gb QSPI for configuration via SDM
-  - microSD
-  - 4-port USB hub
-  - 2x 1Gb Ethernet
-  - HDMI output
+The Designware XGMAC is designed for 1/2.5/5/10G ethernet applications.
+It is mostly identical to the eqos driver but has a different register
+layout.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/boards/Makefile                    |  1 +
- arch/arm/boards/arrow-axe5-eagle/Makefile   |  3 +
- arch/arm/boards/arrow-axe5-eagle/board.c    | 23 +++++++
- arch/arm/boards/arrow-axe5-eagle/lowlevel.c | 58 ++++++++++++++++++
- arch/arm/configs/socfpga-agilex5_defconfig  | 88 +++++++++++++++++++++++++++
- arch/arm/dts/Makefile                       |  1 +
- arch/arm/dts/socfpga_agilex5_axe5_eagle.dts | 94 +++++++++++++++++++++++++++++
- images/Makefile.socfpga                     |  9 +++
- 8 files changed, 277 insertions(+)
+ drivers/net/Kconfig                    |  18 +
+ drivers/net/Makefile                   |   2 +
+ drivers/net/designware_xgmac.c         | 829 +++++++++++++++++++++++++++++++++
+ drivers/net/designware_xgmac.h         | 294 ++++++++++++
+ drivers/net/designware_xgmac_socfpga.c | 156 +++++++
+ 5 files changed, 1299 insertions(+)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index e0dc27cb3d21cc7bc763f148595321562d65d740..bc4d3bb4ea9e5691de90cbf7e6b0fbc577076732 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -111,6 +111,7 @@ obj-$(CONFIG_MACH_SAMA5D4_WIFX)			+= sama5d4_wifx/
- obj-$(CONFIG_MACH_SCB9328)			+= scb9328/
- obj-$(CONFIG_MACH_SEEED_ODYSSEY)		+= seeed-odyssey/
- obj-$(CONFIG_MACH_SOCFPGA_ALTERA_SOCDK)		+= altera-socdk/
-+obj-$(CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE)	+= arrow-axe5-eagle/
- obj-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES)		+= ebv-socrates/
- obj-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1)	+= enclustra-aa1/
- obj-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES)	+= reflex-achilles/
-diff --git a/arch/arm/boards/arrow-axe5-eagle/Makefile b/arch/arm/boards/arrow-axe5-eagle/Makefile
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 13e9ff6924bbf454c77487ca247c68c458d18f1a..b5134be4b8b3186cd765a1005ade6fade5dd939e 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -140,6 +140,24 @@ config DRIVER_NET_DESIGNWARE_ROCKCHIP
+ 	help
+ 	  This option enables support for the Ethernet MAC on different Rockchip SoCs
+ 
++config DRIVER_NET_DESIGNWARE_XGMAC
++	bool "Designware XGMAC Ethernet driver support" if COMPILE_TEST
++	depends on HAS_DMA && OFTREE
++	select PHYLIB
++	select MFD_SYSCON
++	help
++	  This option enables support for the Synopsys Designware Ethernet XGMAC (10G Ethernet MAC).
++
++config DRIVER_NET_DESIGNWARE_XGMAC_SOCFPGA
++	bool "Designware XGMAC Ethernet driver support for SOCFPGA"
++	select DRIVER_NET_DESIGNWARE_XGMAC
++	depends on (ARCH_SOCFPGA_AGILEX5 || COMPILE_TEST)
++	select RESET_CONTROLLER if ARCH_SOCFPGA
++	select RESET_SIMPLE if ARCH_SOCFPGA_AGILEX5
++	help
++	  This option enables support for the Synopsys Designware Ethernet XGMAC with specific configuration
++	  for the Intel SoC FPGA chip.
++
+ config DRIVER_NET_DM9K
+ 	bool "Davicom dm9k[E|A|B] ethernet driver"
+ 	depends on HAS_DM9000 || COMPILE_TEST
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 207345cfa3688a4d65d2f7f20bd56cef32759024..76582fde366393905b05629772be175a3910b4c6 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -19,6 +19,8 @@ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_IMX8) += designware_imx.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_STM32) += designware_stm32.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_TEGRA186) += designware_tegra186.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP) += designware_rockchip.o
++obj-$(CONFIG_DRIVER_NET_DESIGNWARE_XGMAC) += designware_xgmac.o
++obj-$(CONFIG_DRIVER_NET_DESIGNWARE_XGMAC_SOCFPGA) += designware_xgmac_socfpga.o
+ obj-$(CONFIG_DRIVER_NET_DM9K)		+= dm9k.o
+ obj-$(CONFIG_DRIVER_NET_E1000)		+= e1000/
+ obj-$(CONFIG_DRIVER_NET_ENC28J60)	+= enc28j60.o
+diff --git a/drivers/net/designware_xgmac.c b/drivers/net/designware_xgmac.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..1d052d28c9fc6a82dbf806eedac60fac8a56d4f9
+index 0000000000000000000000000000000000000000..7b7c288ada559095d1c4fefb0a7823a5ba358ee7
 --- /dev/null
-+++ b/arch/arm/boards/arrow-axe5-eagle/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+lwl-y += lowlevel.o
-+obj-y += board.o
-diff --git a/arch/arm/boards/arrow-axe5-eagle/board.c b/arch/arm/boards/arrow-axe5-eagle/board.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..1efea0b3d9cf0aa5ecd7c67ea9348708dcfd0b80
---- /dev/null
-+++ b/arch/arm/boards/arrow-axe5-eagle/board.c
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/net/designware_xgmac.c
+@@ -0,0 +1,829 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2023, Intel Corporation.
++ *
++ * Portions based on U-Boot's dwc_eth_qos.c.
++ */
++
++/*
++ * This driver supports the Synopsys Designware Ethernet XGMAC (10G Ethernet
++ * MAC) IP block. The IP supports multiple options for bus type, clocking/
++ * reset structure, and feature list.
++ *
++ * The driver is written such that generic core logic is kept separate from
++ * configuration-specific logic. Code that interacts with configuration-
++ * specific resources is split out into separate functions to avoid polluting
++ * common code. If/when this driver is enhanced to support multiple
++ * configurations, the core code should be adapted to call all configuration-
++ * specific functions through function pointers, with the definition of those
++ * function pointers being supplied by struct udevice_id xgmac_ids[]'s .data
++ * field.
++ *
++ * This configuration uses an AXI master/DMA bus, an AHB slave/register bus,
++ * contains the DMA, MTL, and MAC sub-blocks, and supports a single RGMII PHY.
++ * This configuration also has SW control over all clock and reset signals to
++ * the HW block.
++ */
++
 +#include <common.h>
 +#include <init.h>
 +#include <io.h>
-+#include <bbu.h>
-+#include <mach/socfpga/soc64-regs.h>
++#include <dma.h>
++#include <errno.h>
++#include <malloc.h>
++#include <net.h>
++#include <of_net.h>
++#include <linux/iopoll.h>
++#include <linux/phy.h>
++#include <asm/cache.h>
++#include "designware_xgmac.h"
 +
-+static int axe5_init(void)
++static int xgmac_mdio_wait_idle(struct xgmac_priv *xgmac)
 +{
-+	if (!of_machine_is_compatible("arrow,axe5-eagle"))
-+		return 0;
++	u32 idle;
 +
-+	pr_debug("Change the pullup values on EMAC2 HPS mii signals\n");
-+	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x224);
-+	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x228);
-+	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x23c);
-+	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x234);
-+	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x248);
-+	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x24c);
++	return readl_poll_timeout(&xgmac->mac_regs->mdio_data, idle,
++				  !(idle & XGMAC_MAC_MDIO_ADDRESS_SBUSY),
++				  XGMAC_TIMEOUT_100MS);
++}
++
++static int xgmac_mdio_read(struct mii_bus *bus, int mdio_addr, int mdio_reg)
++{
++	struct xgmac_priv *xgmac = bus->priv;
++	u32 val;
++	u32 hw_addr;
++	u32 idle;
++	int ret;
++
++	ret = readl_poll_timeout(&xgmac->mac_regs->mdio_data, idle,
++				 !(idle & XGMAC_MAC_MDIO_ADDRESS_SBUSY),
++				 XGMAC_TIMEOUT_100MS);
++	if (ret) {
++		pr_err("MDIO not idle at entry: %d\n", ret);
++		return ret;
++	}
++
++	/* Set clause 22 format */
++	val = BIT(mdio_addr);
++	writel(val, &xgmac->mac_regs->mdio_clause_22_port);
++
++	hw_addr = (mdio_addr << XGMAC_MAC_MDIO_ADDRESS_PA_SHIFT) |
++		   (mdio_reg & XGMAC_MAC_MDIO_REG_ADDR_C22P_MASK);
++
++	val = xgmac->config->config_mac_mdio <<
++	      XGMAC_MAC_MDIO_ADDRESS_CR_SHIFT;
++
++	val |= XGMAC_MAC_MDIO_ADDRESS_SADDR |
++	       XGMAC_MDIO_SINGLE_CMD_ADDR_CMD_READ |
++	       XGMAC_MAC_MDIO_ADDRESS_SBUSY;
++
++	ret = readl_poll_timeout(&xgmac->mac_regs->mdio_data, idle,
++				 !(idle & XGMAC_MAC_MDIO_ADDRESS_SBUSY),
++				 XGMAC_TIMEOUT_100MS);
++	if (ret) {
++		pr_err("MDIO not idle at entry: %d\n", ret);
++		return ret;
++	}
++
++	writel(hw_addr, &xgmac->mac_regs->mdio_address);
++	writel(val, &xgmac->mac_regs->mdio_data);
++
++	ret = readl_poll_timeout(&xgmac->mac_regs->mdio_data, idle,
++				 !(idle & XGMAC_MAC_MDIO_ADDRESS_SBUSY),
++				 XGMAC_TIMEOUT_100MS);
++	if (ret) {
++		pr_err("MDIO read didn't complete: %d\n", ret);
++		return ret;
++	}
++
++	val = readl(&xgmac->mac_regs->mdio_data);
++	val &= XGMAC_MAC_MDIO_DATA_GD_MASK;
++
++	return val;
++}
++
++static int xgmac_mdio_write(struct mii_bus *bus, int mdio_addr, int mdio_reg,
++			    u16 mdio_val)
++{
++	struct xgmac_priv *xgmac = bus->priv;
++	u32 val;
++	u32 hw_addr;
++	int ret;
++
++	ret = xgmac_mdio_wait_idle(xgmac);
++	if (ret) {
++		pr_err("MDIO not idle at entry: %d\n", ret);
++		return ret;
++	}
++
++	/* Set clause 22 format */
++	val = BIT(mdio_addr);
++	writel(val, &xgmac->mac_regs->mdio_clause_22_port);
++
++	hw_addr = (mdio_addr << XGMAC_MAC_MDIO_ADDRESS_PA_SHIFT) |
++		   (mdio_reg & XGMAC_MAC_MDIO_REG_ADDR_C22P_MASK);
++
++	hw_addr |= (mdio_reg >> XGMAC_MAC_MDIO_ADDRESS_PA_SHIFT) <<
++		    XGMAC_MAC_MDIO_ADDRESS_DA_SHIFT;
++
++	val = (xgmac->config->config_mac_mdio <<
++	       XGMAC_MAC_MDIO_ADDRESS_CR_SHIFT);
++
++	val |= XGMAC_MAC_MDIO_ADDRESS_SADDR |
++		mdio_val | XGMAC_MDIO_SINGLE_CMD_ADDR_CMD_WRITE |
++		XGMAC_MAC_MDIO_ADDRESS_SBUSY;
++
++	ret = xgmac_mdio_wait_idle(xgmac);
++	if (ret) {
++		pr_err("MDIO not idle at entry: %d\n", ret);
++		return ret;
++	}
++
++	writel(hw_addr, &xgmac->mac_regs->mdio_address);
++	writel(val, &xgmac->mac_regs->mdio_data);
++
++	ret = xgmac_mdio_wait_idle(xgmac);
++	if (ret) {
++		pr_err("MDIO write didn't complete: %d\n", ret);
++		return ret;
++	}
 +
 +	return 0;
 +}
-+postcore_initcall(axe5_init);
-diff --git a/arch/arm/boards/arrow-axe5-eagle/lowlevel.c b/arch/arm/boards/arrow-axe5-eagle/lowlevel.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..f69d4d91f9ea9a60c17ae58d4f3c124663c600ff
---- /dev/null
-+++ b/arch/arm/boards/arrow-axe5-eagle/lowlevel.c
-@@ -0,0 +1,58 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <common.h>
-+#include <io.h>
-+#include <linux/sizes.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/system.h>
-+#include <pbl.h>
-+#include <mach/socfpga/debug_ll.h>
-+#include <mach/socfpga/init.h>
-+#include <mach/socfpga/generic.h>
-+#include <mach/socfpga/mailbox_s10.h>
-+#include <mach/socfpga/soc64-firewall.h>
-+#include <mach/socfpga/soc64-regs.h>
-+#include <mach/socfpga/soc64-sdram.h>
-+#include <mach/socfpga/soc64-system-manager.h>
 +
-+extern char __dtb_z_socfpga_agilex5_axe5_eagle_start[];
-+
-+#define AXE5_STACKTOP	(SZ_512K)
-+
-+static noinline void axe5_eagle_continue(void)
++static int xgmac_set_full_duplex(struct device *dev)
 +{
-+	void *fdt;
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
 +
-+	agilex5_clk_init();
++	clrbits_le32(&xgmac->mac_regs->mac_extended_conf, XGMAC_MAC_EXT_CONF_HD);
 +
-+	socfpga_uart_setup_ll();
-+	pbl_set_putc(socfpga_uart_putc, (void *) SOCFPGA_UART0_ADDRESS);
++	return 0;
++}
 +
-+	pr_debug("Lowlevel init done\n");
++static int xgmac_set_half_duplex(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
 +
-+	if (current_el() == 3) {
-+		agilex5_initialize_security_policies();
-+		pr_debug("Security policies initialized\n");
++	setbits_le32(&xgmac->mac_regs->mac_extended_conf, XGMAC_MAC_EXT_CONF_HD);
 +
-+		agilex5_ddr_init_full();
++	/* WAR: Flush TX queue when switching to half-duplex */
++	setbits_le32(&xgmac->mtl_regs->txq0_operation_mode,
++		     XGMAC_MTL_TXQ0_OPERATION_MODE_FTQ);
 +
-+		mbox_init();
-+		mbox_qspi_open();
++	return 0;
++}
 +
-+		agilex5_load_and_start_image_via_tfa(SZ_1G);
++static int xgmac_set_gmii_speed(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++
++	clrsetbits_le32(&xgmac->mac_regs->tx_configuration,
++			XGMAC_MAC_CONF_SS_SHIFT_MASK,
++			XGMAC_MAC_CONF_SS_1G_GMII << XGMAC_MAC_CONF_SS_SHIFT);
++
++	return 0;
++}
++
++static int xgmac_set_mii_speed_100(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++
++	clrsetbits_le32(&xgmac->mac_regs->tx_configuration,
++			XGMAC_MAC_CONF_SS_SHIFT_MASK,
++			XGMAC_MAC_CONF_SS_100M_MII << XGMAC_MAC_CONF_SS_SHIFT);
++
++	return 0;
++}
++
++static int xgmac_set_mii_speed_10(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++
++	clrsetbits_le32(&xgmac->mac_regs->tx_configuration,
++			XGMAC_MAC_CONF_SS_SHIFT_MASK,
++			XGMAC_MAC_CONF_SS_2_10M_MII << XGMAC_MAC_CONF_SS_SHIFT);
++
++	return 0;
++}
++
++static void xgmac_adjust_link(struct eth_device *edev)
++{
++	struct device *dev = edev->parent;
++	bool en_calibration;
++	int ret;
++
++	if (edev->phydev->duplex)
++		ret = xgmac_set_full_duplex(dev);
++	else
++		ret = xgmac_set_half_duplex(dev);
++	if (ret < 0) {
++		pr_err("xgmac_set_*_duplex() failed: %d\n", ret);
 +	}
 +
-+	fdt = __dtb_z_socfpga_agilex5_axe5_eagle_start;
-+
-+	barebox_arm_entry(SOCFPGA_AGILEX5_DDR_BASE + SZ_1M, SZ_1G - SZ_1M, fdt);
++	switch (edev->phydev->speed) {
++	case SPEED_1000:
++		en_calibration = true;
++		ret = xgmac_set_gmii_speed(dev);
++		break;
++	case SPEED_100:
++		en_calibration = true;
++		ret = xgmac_set_mii_speed_100(dev);
++		break;
++	case SPEED_10:
++		en_calibration = false;
++		ret = xgmac_set_mii_speed_10(dev);
++		break;
++	default:
++		pr_err("invalid speed %d\n", edev->phydev->speed);
++	}
++	if (ret < 0)
++		pr_err("xgmac_set_*mii_speed*() failed: %d\n", ret);
 +}
 +
-+ENTRY_FUNCTION_WITHSTACK(start_socfpga_agilex5_axe5_eagle, AXE5_STACKTOP, r0, r1, r2)
++static int xgmac_write_hwaddr(struct eth_device *edev, const unsigned char *mac)
 +{
-+	if (current_el() == 3)
-+		socfpga_agilex5_cpu_lowlevel_init();
++	struct xgmac_priv *xgmac = edev->priv;
++	u32 val;
 +
-+	relocate_to_current_adr();
-+	setup_c();
++	memcpy(xgmac->macaddr, mac, ETH_ALEN);
 +
-+	axe5_eagle_continue();
++	/*
++	 * This function may be called before start() or after stop(). At that
++	 * time, on at least some configurations of the XGMAC HW, all clocks to
++	 * the XGMAC HW block will be stopped, and a reset signal applied. If
++	 * any register access is attempted in this state, bus timeouts or CPU
++	 * hangs may occur. This check prevents that.
++	 *
++	 * A simple solution to this problem would be to not implement
++	 * write_hwaddr(), since start() always writes the MAC address into HW
++	 * anyway. However, it is desirable to implement write_hwaddr() to
++	 * support the case of SW that runs subsequent to U-Boot which expects
++	 * the MAC address to already be programmed into the XGMAC registers,
++	 * which must happen irrespective of whether the U-Boot user (or
++	 * scripts) actually made use of the XGMAC device, and hence
++	 * irrespective of whether start() was ever called.
++	 *
++	 */
++	if (!xgmac->config->reg_access_always_ok && !xgmac->reg_access_ok)
++		return 0;
++
++	/* Update the MAC address */
++	val = (xgmac->macaddr[5] << 8) |
++		(xgmac->macaddr[4]);
++	writel(val, &xgmac->mac_regs->address0_high);
++	val = (xgmac->macaddr[3] << 24) |
++		(xgmac->macaddr[2] << 16) |
++		(xgmac->macaddr[1] << 8) |
++		(xgmac->macaddr[0]);
++	writel(val, &xgmac->mac_regs->address0_low);
++	return 0;
 +}
-diff --git a/arch/arm/configs/socfpga-agilex5_defconfig b/arch/arm/configs/socfpga-agilex5_defconfig
++
++static int xgmac_read_rom_hwaddr(struct eth_device *edev, unsigned char *mac)
++{
++	struct xgmac_priv *xgmac = edev->priv;
++	int ret;
++
++	ret = xgmac->config->ops->xgmac_get_enetaddr(edev->parent);
++	if (ret < 0)
++		return ret;
++
++	return !is_valid_ether_addr(xgmac->macaddr);
++}
++
++static int xgmac_start(struct eth_device *edev)
++{
++	struct xgmac_priv *xgmac = edev->priv;
++	int ret, i;
++	u32 val, tx_fifo_sz, rx_fifo_sz, tqs, rqs, pbl;
++	ulong last_rx_desc;
++	ulong desc_pad;
++	u32 idle;
++
++	ret = phy_device_connect(edev, &xgmac->miibus, xgmac->phy_addr,
++				 xgmac_adjust_link, 0, xgmac->interface);
++	if (ret)
++		return ret;
++
++	ret = xgmac->config->ops->xgmac_start_resets(edev->parent);
++	if (ret < 0) {
++		pr_err("xgmac_start_resets() failed: %d\n", ret);
++		goto err;
++	}
++
++	xgmac->reg_access_ok = true;
++
++	setbits_le32(&xgmac->dma_regs->mode, XGMAC_DMA_MODE_SWR);
++
++	ret = readl_poll_timeout(&xgmac->dma_regs->mode, idle,
++				  !(idle & XGMAC_DMA_MODE_SWR),
++				  XGMAC_TIMEOUT_100MS);
++	if (ret) {
++		pr_err("XGMAC_DMA_MODE_SWR stuck: %d\n", ret);
++		goto err;
++	}
++
++	/* Configure MTL */
++
++	/* Enable Store and Forward mode for TX */
++	/* Program Tx operating mode */
++	setbits_le32(&xgmac->mtl_regs->txq0_operation_mode,
++		     XGMAC_MTL_TXQ0_OPERATION_MODE_TSF |
++		     (XGMAC_MTL_TXQ0_OPERATION_MODE_TXQEN_ENABLED <<
++		      XGMAC_MTL_TXQ0_OPERATION_MODE_TXQEN_SHIFT));
++
++	/* Transmit Queue weight */
++	writel(0x10, &xgmac->mtl_regs->txq0_quantum_weight);
++
++	/* Enable Store and Forward mode for RX, since no jumbo frame */
++	setbits_le32(&xgmac->mtl_regs->rxq0_operation_mode,
++		     XGMAC_MTL_RXQ0_OPERATION_MODE_RSF);
++
++	/* Transmit/Receive queue fifo size; use all RAM for 1 queue */
++	val = readl(&xgmac->mac_regs->hw_feature1);
++	tx_fifo_sz = (val >> XGMAC_MAC_HW_FEATURE1_TXFIFOSIZE_SHIFT) &
++		XGMAC_MAC_HW_FEATURE1_TXFIFOSIZE_MASK;
++	rx_fifo_sz = (val >> XGMAC_MAC_HW_FEATURE1_RXFIFOSIZE_SHIFT) &
++		XGMAC_MAC_HW_FEATURE1_RXFIFOSIZE_MASK;
++
++	/*
++	 * r/tx_fifo_sz is encoded as log2(n / 128). Undo that by shifting.
++	 * r/tqs is encoded as (n / 256) - 1.
++	 */
++	tqs = (128 << tx_fifo_sz) / 256 - 1;
++	rqs = (128 << rx_fifo_sz) / 256 - 1;
++
++	clrsetbits_le32(&xgmac->mtl_regs->txq0_operation_mode,
++			XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_MASK <<
++			XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_SHIFT,
++			tqs << XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_SHIFT);
++	clrsetbits_le32(&xgmac->mtl_regs->rxq0_operation_mode,
++			XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_MASK <<
++			XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_SHIFT,
++			rqs << XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_SHIFT);
++
++	setbits_le32(&xgmac->mtl_regs->rxq0_operation_mode,
++		     XGMAC_MTL_RXQ0_OPERATION_MODE_EHFC);
++
++	/* Configure MAC */
++	clrsetbits_le32(&xgmac->mac_regs->rxq_ctrl0,
++			XGMAC_MAC_RXQ_CTRL0_RXQ0EN_MASK <<
++			XGMAC_MAC_RXQ_CTRL0_RXQ0EN_SHIFT,
++			xgmac->config->config_mac <<
++			XGMAC_MAC_RXQ_CTRL0_RXQ0EN_SHIFT);
++
++	/* Multicast and Broadcast Queue Enable */
++	setbits_le32(&xgmac->mac_regs->rxq_ctrl1,
++		     XGMAC_MAC_RXQ_CTRL1_MCBCQEN);
++
++	/* enable promisc mode and receive all mode */
++	setbits_le32(&xgmac->mac_regs->mac_packet_filter,
++		     XGMAC_MAC_PACKET_FILTER_RA |
++			 XGMAC_MAC_PACKET_FILTER_PR);
++
++	/* Set TX flow control parameters */
++	/* Set Pause Time */
++	setbits_le32(&xgmac->mac_regs->q0_tx_flow_ctrl,
++		     XGMAC_MAC_Q0_TX_FLOW_CTRL_PT_MASK <<
++		     XGMAC_MAC_Q0_TX_FLOW_CTRL_PT_SHIFT);
++
++	/* Assign priority for RX flow control */
++	clrbits_le32(&xgmac->mac_regs->rxq_ctrl2,
++		     XGMAC_MAC_RXQ_CTRL2_PSRQ0_MASK <<
++		     XGMAC_MAC_RXQ_CTRL2_PSRQ0_SHIFT);
++
++	/* Enable flow control */
++	setbits_le32(&xgmac->mac_regs->q0_tx_flow_ctrl,
++		     XGMAC_MAC_Q0_TX_FLOW_CTRL_TFE);
++	setbits_le32(&xgmac->mac_regs->rx_flow_ctrl,
++		     XGMAC_MAC_RX_FLOW_CTRL_RFE);
++
++	clrbits_le32(&xgmac->mac_regs->tx_configuration,
++		     XGMAC_MAC_CONF_JD);
++
++	clrbits_le32(&xgmac->mac_regs->rx_configuration,
++		     XGMAC_MAC_CONF_JE |
++		     XGMAC_MAC_CONF_GPSLCE |
++		     XGMAC_MAC_CONF_WD);
++
++	setbits_le32(&xgmac->mac_regs->rx_configuration,
++		     XGMAC_MAC_CONF_ACS |
++		     XGMAC_MAC_CONF_CST);
++
++	/* Configure DMA */
++	clrsetbits_le32(&xgmac->dma_regs->sysbus_mode,
++			XGMAC_DMA_SYSBUS_MODE_AAL,
++			XGMAC_DMA_SYSBUS_MODE_EAME |
++			XGMAC_DMA_SYSBUS_MODE_UNDEF);
++
++	/* Enable OSP mode */
++	setbits_le32(&xgmac->dma_regs->ch0_tx_control,
++		     XGMAC_DMA_CH0_TX_CONTROL_OSP);
++
++	/* RX buffer size. Must be a multiple of bus width */
++	clrsetbits_le32(&xgmac->dma_regs->ch0_rx_control,
++			XGMAC_DMA_CH0_RX_CONTROL_RBSZ_MASK <<
++			XGMAC_DMA_CH0_RX_CONTROL_RBSZ_SHIFT,
++			XGMAC_MAX_PACKET_SIZE <<
++			XGMAC_DMA_CH0_RX_CONTROL_RBSZ_SHIFT);
++
++	desc_pad = 0;
++
++	setbits_le32(&xgmac->dma_regs->ch0_control,
++		     XGMAC_DMA_CH0_CONTROL_PBLX8 |
++		     (desc_pad << XGMAC_DMA_CH0_CONTROL_DSL_SHIFT));
++
++	/*
++	 * Burst length must be < 1/2 FIFO size.
++	 * FIFO size in tqs is encoded as (n / 256) - 1.
++	 * Each burst is n * 8 (PBLX8) * 16 (AXI width) == 128 bytes.
++	 * Half of n * 256 is n * 128, so pbl == tqs, modulo the -1.
++	 */
++	pbl = tqs + 1;
++	if (pbl > 32)
++		pbl = 32;
++
++	clrsetbits_le32(&xgmac->dma_regs->ch0_tx_control,
++			XGMAC_DMA_CH0_TX_CONTROL_TXPBL_MASK <<
++			XGMAC_DMA_CH0_TX_CONTROL_TXPBL_SHIFT,
++			pbl << XGMAC_DMA_CH0_TX_CONTROL_TXPBL_SHIFT);
++
++	clrsetbits_le32(&xgmac->dma_regs->ch0_rx_control,
++			XGMAC_DMA_CH0_RX_CONTROL_RXPBL_MASK <<
++			XGMAC_DMA_CH0_RX_CONTROL_RXPBL_SHIFT,
++			8 << XGMAC_DMA_CH0_RX_CONTROL_RXPBL_SHIFT);
++
++	/* DMA performance configuration */
++	val = (XGMAC_DMA_SYSBUS_MODE_RD_OSR_LMT_MASK <<
++	       XGMAC_DMA_SYSBUS_MODE_RD_OSR_LMT_SHIFT) |
++	       (XGMAC_DMA_SYSBUS_MODE_WR_OSR_LMT_MASK <<
++	       XGMAC_DMA_SYSBUS_MODE_WR_OSR_LMT_SHIFT) |
++	       XGMAC_DMA_SYSBUS_MODE_EAME |
++	       XGMAC_DMA_SYSBUS_MODE_BLEN16 |
++	       XGMAC_DMA_SYSBUS_MODE_BLEN8 |
++	       XGMAC_DMA_SYSBUS_MODE_BLEN4 |
++	       XGMAC_DMA_SYSBUS_MODE_BLEN32;
++
++	writel(val, &xgmac->dma_regs->sysbus_mode);
++
++	/* Set up descriptors */
++
++	xgmac->tx_desc_idx = 0;
++	xgmac->rx_desc_idx = 0;
++
++	for (i = 0; i < XGMAC_DESCRIPTORS_NUM; i++) {
++		struct xgmac_desc *rx_desc = &xgmac->rx_descs[i];
++
++		writel(XGMAC_DESC3_OWN, &rx_desc->des3);
++	}
++
++	writel(0, &xgmac->dma_regs->ch0_txdesc_list_haddress);
++	writel(xgmac->tx_descs_phys, &xgmac->dma_regs->ch0_txdesc_list_address);
++	writel(XGMAC_DESCRIPTORS_NUM - 1,
++	       &xgmac->dma_regs->ch0_txdesc_ring_length);
++
++	writel(0, &xgmac->dma_regs->ch0_rxdesc_list_haddress);
++	writel(xgmac->rx_descs_phys, &xgmac->dma_regs->ch0_rxdesc_list_address);
++	writel(XGMAC_DESCRIPTORS_NUM - 1,
++	       &xgmac->dma_regs->ch0_rxdesc_ring_length);
++
++	/* Enable everything */
++	setbits_le32(&xgmac->dma_regs->ch0_tx_control,
++		     XGMAC_DMA_CH0_TX_CONTROL_ST);
++	setbits_le32(&xgmac->dma_regs->ch0_rx_control,
++		     XGMAC_DMA_CH0_RX_CONTROL_SR);
++	setbits_le32(&xgmac->mac_regs->tx_configuration,
++		     XGMAC_MAC_CONF_TE);
++	setbits_le32(&xgmac->mac_regs->rx_configuration,
++		     XGMAC_MAC_CONF_RE);
++
++	/* TX tail pointer not written until we need to TX a packet */
++	/*
++	 * Point RX tail pointer at last descriptor. Ideally, we'd point at the
++	 * first descriptor, implying all descriptors were available. However,
++	 * that's not distinguishable from none of the descriptors being
++	 * available.
++	 */
++	last_rx_desc = (ulong)&xgmac->rx_descs[(XGMAC_DESCRIPTORS_NUM - 1)];
++	writel(last_rx_desc, &xgmac->dma_regs->ch0_rxdesc_tail_pointer);
++
++	xgmac->started = true;
++
++	return 0;
++
++err:
++	return ret;
++}
++
++static void xgmac_stop(struct eth_device *edev)
++{
++	struct xgmac_priv *xgmac = edev->priv;
++	u64 start_time;
++	u32 val;
++	u32 trcsts;
++	u32 txqsts;
++	u32 prxq;
++	u32 rxqsts;
++
++	debug("%s(dev=%p):\n", __func__, edev);
++
++	if (!xgmac->started)
++		return;
++	xgmac->started = false;
++	xgmac->reg_access_ok = false;
++
++	/* Disable TX DMA */
++	clrbits_le32(&xgmac->dma_regs->ch0_tx_control,
++		     XGMAC_DMA_CH0_TX_CONTROL_ST);
++
++	/* Wait for TX all packets to drain out of MTL */
++	start_time = get_time_ns();
++
++	while (!is_timeout(start_time, XGMAC_TIMEOUT_100MS)) {
++		val = readl(&xgmac->mtl_regs->txq0_debug);
++
++		trcsts = (val >> XGMAC_MTL_TXQ0_DEBUG_TRCSTS_SHIFT) &
++			  XGMAC_MTL_TXQ0_DEBUG_TRCSTS_MASK;
++
++		txqsts = val & XGMAC_MTL_TXQ0_DEBUG_TXQSTS;
++
++		if (trcsts != XGMAC_MTL_TXQ0_DEBUG_TRCSTS_READ_STATE && !txqsts)
++			break;
++	}
++
++	/* Turn off MAC TX and RX */
++	clrbits_le32(&xgmac->mac_regs->tx_configuration,
++		     XGMAC_MAC_CONF_RE);
++	clrbits_le32(&xgmac->mac_regs->rx_configuration,
++		     XGMAC_MAC_CONF_RE);
++
++	/* Wait for all RX packets to drain out of MTL */
++	start_time = get_time_ns();
++
++	while (!is_timeout(start_time, XGMAC_TIMEOUT_100MS)) {
++		val = readl(&xgmac->mtl_regs->rxq0_debug);
++
++		prxq = (val >> XGMAC_MTL_RXQ0_DEBUG_PRXQ_SHIFT) &
++			XGMAC_MTL_RXQ0_DEBUG_PRXQ_MASK;
++
++		rxqsts = (val >> XGMAC_MTL_RXQ0_DEBUG_RXQSTS_SHIFT) &
++			  XGMAC_MTL_RXQ0_DEBUG_RXQSTS_MASK;
++
++		if (!prxq && !rxqsts)
++			break;
++	}
++
++	/* Turn off RX DMA */
++	clrbits_le32(&xgmac->dma_regs->ch0_rx_control,
++		     XGMAC_DMA_CH0_RX_CONTROL_SR);
++}
++
++static int xgmac_send(struct eth_device *edev, void *packet, int length)
++{
++	struct xgmac_priv *xgmac = edev->priv;
++	struct xgmac_desc *tx_desc;
++	dma_addr_t dma;
++	u32 des3_prev, des3;
++	int ret;
++
++	tx_desc = &xgmac->tx_descs[xgmac->tx_desc_idx];
++	xgmac->tx_desc_idx++;
++	xgmac->tx_desc_idx %= XGMAC_DESCRIPTORS_NUM;
++
++	dma = dma_map_single(edev->parent, packet, length, DMA_TO_DEVICE);
++	if (dma_mapping_error(edev->parent, dma))
++		return -EFAULT;
++
++	tx_desc->des0 = dma;
++	tx_desc->des1 = 0;
++	tx_desc->des2 = length;
++	/*
++	 * Make sure that if HW sees the _OWN write below, it will see all the
++	 * writes to the rest of the descriptor too.
++	 */
++	barrier();
++
++	des3_prev = XGMAC_DESC3_OWN | XGMAC_DESC3_FD | XGMAC_DESC3_LD | length;
++	writel(des3_prev, &tx_desc->des3);
++	writel((ulong)(tx_desc + 1), &xgmac->dma_regs->ch0_txdesc_tail_pointer); // <-- TODO
++
++	ret = readl_poll_timeout(&tx_desc->des3, des3,
++				 !(des3 & XGMAC_DESC3_OWN),
++				 100 * USEC_PER_MSEC);
++
++	dma_unmap_single(edev->parent, dma, length, DMA_TO_DEVICE);
++
++	if (ret == -ETIMEDOUT)
++		debug("%s: TX timeout 0x%08x\n", __func__, des3);
++
++	return ret;
++}
++
++static void xgmac_recv(struct eth_device *edev)
++{
++	struct xgmac_priv *xgmac = edev->priv;
++	struct xgmac_desc *rx_desc;
++	dma_addr_t dma;
++	void *pkt;
++	int length;
++
++	rx_desc = &xgmac->rx_descs[xgmac->rx_desc_idx];
++
++	if (rx_desc->des3 & XGMAC_DESC3_OWN)
++		return;
++
++	dma = xgmac->dma_rx_buf[xgmac->rx_desc_idx];
++	pkt = phys_to_virt(dma);
++	length = rx_desc->des3 & XGMAC_RDES3_PKT_LENGTH_MASK;
++
++	dma_sync_single_for_cpu(edev->parent, (unsigned long)pkt, length,
++				DMA_FROM_DEVICE);
++	net_receive(edev, pkt, length);
++	dma_sync_single_for_device(edev->parent, (unsigned long)pkt,
++				   length, DMA_FROM_DEVICE);
++
++	/* Read Format RX descriptor */
++	rx_desc = &xgmac->rx_descs[xgmac->rx_desc_idx];
++	rx_desc->des0 = dma;
++	rx_desc->des1 = 0;
++	rx_desc->des2 = 0;
++	/*
++	 * Make sure that if HW sees the _OWN write below, it will see all the
++	 * writes to the rest of the descriptor too.
++	 */
++	rx_desc->des3 = XGMAC_DESC3_OWN;
++	barrier();
++
++	writel((ulong)rx_desc, &xgmac->dma_regs->ch0_rxdesc_tail_pointer);
++
++	xgmac->rx_desc_idx++;
++	xgmac->rx_desc_idx %= XGMAC_DESCRIPTORS_NUM;
++}
++
++static int xgmac_probe_resources_core(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++	unsigned int desc_step;
++	int ret = 0;
++	void *p;
++	int i;
++
++	/* Maximum distance between neighboring descriptors, in Bytes. */
++	desc_step = sizeof(struct xgmac_desc);
++
++	xgmac->tx_descs = dma_alloc_coherent(XGMAC_DESCRIPTORS_SIZE,
++								  &xgmac->tx_descs_phys);
++	if (!xgmac->tx_descs) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	xgmac->rx_descs = dma_alloc_coherent(XGMAC_DESCRIPTORS_SIZE,
++								   &xgmac->rx_descs_phys);
++	if (!xgmac->rx_descs) {
++		ret = -ENOMEM;
++		goto err_free_tx_descs;
++	}
++
++	p = dma_alloc(XGMAC_RX_BUFFER_SIZE);
++	if (!p)
++		goto err_free_descs;
++
++	for (i = 0; i < XGMAC_DESCRIPTORS_NUM; i++) {
++		struct xgmac_desc *rx_desc = &xgmac->rx_descs[i];
++		dma_addr_t dma;
++
++		dma = dma_map_single(dev, p, XGMAC_MAX_PACKET_SIZE, DMA_FROM_DEVICE);
++		if (dma_mapping_error(dev, dma)) {
++			ret = -EFAULT;
++			goto err_free_dma_bufs;
++		}
++
++		rx_desc->des0 = dma;
++		xgmac->dma_rx_buf[i] = dma;
++
++		p += XGMAC_MAX_PACKET_SIZE;
++	}
++
++	return 0;
++
++err_free_dma_bufs:
++	dma_free(phys_to_virt(xgmac->rx_descs[0].des0));
++err_free_descs:
++	dma_free_coherent(xgmac->rx_descs, xgmac->rx_descs_phys, XGMAC_DESCRIPTORS_SIZE);
++err_free_tx_descs:
++	dma_free_coherent(xgmac->tx_descs, xgmac->tx_descs_phys, XGMAC_DESCRIPTORS_SIZE);
++err:
++
++	return ret;
++}
++
++static int xgmac_remove_resources_core(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++
++	dma_free(xgmac->rx_dma_buf);
++	dma_free_coherent(xgmac->rx_descs, xgmac->rx_descs_phys, XGMAC_DESCRIPTORS_SIZE);
++	dma_free_coherent(xgmac->tx_descs, xgmac->tx_descs_phys, XGMAC_DESCRIPTORS_SIZE);
++
++	return 0;
++}
++
++static void xgmac_probe_dt(struct device *dev, struct xgmac_priv *xgmac)
++{
++	struct device_node *child;
++
++	xgmac->interface = of_get_phy_mode(dev->of_node);
++	xgmac->phy_addr = 0;
++
++	/* Set MDIO bus device node, if present. */
++	for_each_child_of_node(dev->of_node, child) {
++		if (of_device_is_compatible(child, "snps,dwmac-mdio") ||
++		    (child->name && !of_node_cmp(child->name, "mdio"))) {
++			xgmac->miibus.dev.of_node = child;
++			break;
++		}
++	}
++}
++
++int xgmac_probe(struct device *dev)
++{
++	struct device_node *np = dev->of_node;
++	struct mii_bus *miibus;
++	struct xgmac_priv *xgmac;
++	struct resource *iores;
++	struct eth_device *edev;
++	int ret = 0;
++
++	xgmac = xzalloc(sizeof(*xgmac));
++
++	xgmac->dev = dev;
++	ret = dev_get_drvdata(dev, (const void **)&xgmac->config);
++	if (ret < 0) {
++		pr_err("xgmac_probe() failed to get driver data: %d\n", ret);
++		return ret;
++	}
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++	xgmac->regs = IOMEM(iores->start);
++
++	xgmac->mac_regs = (void *)(xgmac->regs + XGMAC_MAC_REGS_BASE);
++	xgmac->mtl_regs = (void *)(xgmac->regs + XGMAC_MTL_REGS_BASE);
++	xgmac->dma_regs = (void *)(xgmac->regs + XGMAC_DMA_REGS_BASE);
++
++	xgmac_probe_dt(dev, xgmac);
++
++	edev = &xgmac->netdev;
++	dev->priv = edev->priv = xgmac;
++
++	edev->parent = dev;
++	edev->open = xgmac_start;
++	edev->send = xgmac_send;
++	edev->halt = xgmac_stop;
++	edev->recv = xgmac_recv;
++	edev->get_ethaddr = xgmac_read_rom_hwaddr;
++	edev->set_ethaddr = xgmac_write_hwaddr;
++
++	of_property_read_u32(np, "max-speed", &xgmac->max_speed);
++
++	miibus = &xgmac->miibus;
++	miibus->parent = edev->parent;
++	miibus->read = xgmac_mdio_read;
++	miibus->write = xgmac_mdio_write;
++	miibus->priv = xgmac;
++
++	ret = xgmac_probe_resources_core(dev);
++	if (ret < 0) {
++		pr_err("xgmac_probe_resources_core() failed: %d\n", ret);
++		return ret;
++	}
++
++	ret = xgmac->config->ops->xgmac_probe_resources(dev);
++	if (ret < 0) {
++		pr_err("xgmac_probe_resources() failed: %d\n", ret);
++		goto err_remove_resources_core;
++	}
++
++	ret = mdiobus_register(miibus);
++	if (ret)
++		return ret;
++
++	return eth_register(edev);
++
++err_remove_resources_core:
++	xgmac_remove_resources_core(dev);
++
++	return ret;
++}
++
++void xgmac_remove(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++
++	eth_unregister(&xgmac->netdev);
++	mdiobus_unregister(&xgmac->miibus);
++
++	xgmac_remove_resources_core(dev);
++}
+diff --git a/drivers/net/designware_xgmac.h b/drivers/net/designware_xgmac.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..b443a1281e6ad621d7270cade3ea0d60ccdc9af5
+index 0000000000000000000000000000000000000000..f6d39adf6c21cd7c17805add7aee3ffe396e18a4
 --- /dev/null
-+++ b/arch/arm/configs/socfpga-agilex5_defconfig
-@@ -0,0 +1,88 @@
-+CONFIG_ARCH_SOCFPGA=y
-+CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_PROMPT="barebox> "
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+# CONFIG_TIMESTAMP is not set
-+CONFIG_BOOTM_SHOW_TYPE=y
-+CONFIG_BOOTM_VERBOSE=y
-+CONFIG_BOOTM_INITRD=y
-+CONFIG_BOOTM_OFTREE=y
-+CONFIG_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_BOOTM_AIMAGE=y
-+CONFIG_BLSPEC=y
-+CONFIG_SYSTEM_PARTITIONS=y
-+CONFIG_CONSOLE_ACTIVATE_FIRST=y
-+CONFIG_CONSOLE_ALLOW_COLOR=y
-+CONFIG_PBL_CONSOLE=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_RESET_SOURCE=y
-+CONFIG_PRINTF_FULL=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_DEFAULTENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_ETHLOG=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_LOGIN=y
-+CONFIG_CMD_PASSWD=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_DIFF=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OF_FIXUP_STATUS=y
-+CONFIG_CMD_OF_OVERLAY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_NET=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_OF_BAREBOX_ENV_IN_FS=y
-+CONFIG_OF_OVERLAY_LIVE=y
-+CONFIG_SERIAL_DEV_BUS=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_MTD_SPI_NOR=y
-+CONFIG_SPI_CADENCE_QUADSPI=y
-+CONFIG_MFD_SYSCON=y
-+# CONFIG_PINCTRL is not set
-+CONFIG_ARM_SCMI_PROTOCOL=y
-+# CONFIG_VIRTIO_MENU is not set
-+CONFIG_MAILBOX=y
-+CONFIG_FS_TFTP=y
-+CONFIG_ZLIB=y
-+CONFIG_CRC_CCITT=y
-+CONFIG_NLS=y
-+# CONFIG_MISSING_FIRMWARE_ERROR is not set
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 3b3236b4165f7ff9fa7acb57bbf9c0ad597c778f..50b7429142ee2fb573d33166c76020975fb5b49f 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -137,6 +137,7 @@ lwl-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES) += socfpga_arria10_achilles.dtb.o
- lwl-$(CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC) += socfpga_cyclone5_de0_nano_soc.dtb.o
- lwl-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO) += socfpga_cyclone5_de10_nano.dtb.o
- lwl-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
-+lwl-$(CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE) += socfpga_agilex5_axe5_eagle.dtb.o
- lwl-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox-bb.dtb.o
- lwl-$(CONFIG_MACH_SOLIDRUN_MICROSOM) += imx6dl-hummingboard.dtb.o imx6q-hummingboard.dtb.o \
- 				imx6dl-hummingboard2.dtb.o imx6q-hummingboard2.dtb.o \
-diff --git a/arch/arm/dts/socfpga_agilex5_axe5_eagle.dts b/arch/arm/dts/socfpga_agilex5_axe5_eagle.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..cd12a2ccd22adca728dcf196a489fdc8c7b9347f
---- /dev/null
-+++ b/arch/arm/dts/socfpga_agilex5_axe5_eagle.dts
-@@ -0,0 +1,94 @@
-+// SPDX-License-Identifier:     GPL-2.0
++++ b/drivers/net/designware_xgmac.h
+@@ -0,0 +1,294 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
-+ * Copyright (C) 2024 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
++ * Copyright 2023 Intel Coporation.
 + */
 +
-+#include <arm64/intel/socfpga_agilex5.dtsi>
-+#include "socfpga_agilex5.dtsi"
++#include <linux/bitops.h>
++#include <linux/phy.h>
 +
-+/ {
-+	model = "SoCFPGA Agilex5 AXE5-Eagle";
-+	compatible = "arrow,axe5-eagle", "intel,socfpga-agilex","altr,socfpga";
++/* Core registers */
 +
-+	aliases {
-+		serial0 = &uart0;
-+		ethernet0 = &gmac2;
-+	};
++#define XGMAC_MAC_REGS_BASE 0x000
 +
-+	chosen {
-+		stdout-path = &uart0;
-+	};
-+
-+	memory@80100000 {
-+		device_type = "memory";
-+		reg = <0 0x80100000 0 0x3ff00000>;
-+	};
++struct xgmac_mac_regs {
++	u32 tx_configuration;			/* 0x000 */
++	u32 rx_configuration;			/* 0x004 */
++	u32 mac_packet_filter;			/* 0x008 */
++	u32 unused_00c[(0x070 - 0x00c) / 4];	/* 0x00c */
++	u32 q0_tx_flow_ctrl;			/* 0x070 */
++	u32 unused_070[(0x090 - 0x074) / 4];	/* 0x074 */
++	u32 rx_flow_ctrl;			/* 0x090 */
++	u32 unused_094[(0x0a0 - 0x094) / 4];	/* 0x094 */
++	u32 rxq_ctrl0;				/* 0x0a0 */
++	u32 rxq_ctrl1;				/* 0x0a4 */
++	u32 rxq_ctrl2;				/* 0x0a8 */
++	u32 unused_0ac[(0x0dc - 0x0ac) / 4];	/* 0x0ac */
++	u32 us_tic_counter;			/* 0x0dc */
++	u32 unused_0e0[(0x11c - 0x0e0) / 4];	/* 0x0e0 */
++	u32 hw_feature0;			/* 0x11c */
++	u32 hw_feature1;			/* 0x120 */
++	u32 hw_feature2;			/* 0x124 */
++	u32 hw_feature3;			/* 0x128 */
++	u32 hw_feature4;			/* 0x12c */
++	u32 unused_130[(0x140 - 0x130) / 4];	/* 0x130 */
++	u32 mac_extended_conf;			/* 0x140 */
++	u32 unused_144[(0x200 - 0x144) / 4];	/* 0x144 */
++	u32 mdio_address;			/* 0x200 */
++	u32 mdio_data;				/* 0x204 */
++	u32 mdio_cont_write_addr;		/* 0x208 */
++	u32 mdio_cont_write_data;		/* 0x20c */
++	u32 mdio_cont_scan_port_enable;		/* 0x210 */
++	u32 mdio_intr_status;			/* 0x214 */
++	u32 mdio_intr_enable;			/* 0x218 */
++	u32 mdio_port_cnct_dsnct_status;	/* 0x21c */
++	u32 mdio_clause_22_port;		/* 0x220 */
++	u32 unused_224[(0x300 - 0x224)	/ 4];	/* 0x224 */
++	u32 address0_high;			/* 0x300 */
++	u32 address0_low;			/* 0x304 */
 +};
 +
-+&osc1 {
-+	clock-frequency = <25000000>;
++#define XGMAC_TIMEOUT_100MS			100000
++#define XGMAC_MAC_CONF_SS_SHIFT			29
++#define XGMAC_MAC_CONF_SS_SHIFT_MASK		GENMASK(31, 29)
++#define XGMAC_MAC_CONF_SS_10G_XGMII		0
++#define XGMAC_MAC_CONF_SS_2_5G_GMII		2
++#define XGMAC_MAC_CONF_SS_1G_GMII		3
++#define XGMAC_MAC_CONF_SS_100M_MII		4
++#define XGMAC_MAC_CONF_SS_5G_XGMII		5
++#define XGMAC_MAC_CONF_SS_2_5G_XGMII		6
++#define XGMAC_MAC_CONF_SS_2_10M_MII		7
++
++#define XGMAC_MAC_CONF_JD			BIT(16)
++#define XGMAC_MAC_CONF_JE			BIT(8)
++#define XGMAC_MAC_CONF_WD			BIT(7)
++#define XGMAC_MAC_CONF_GPSLCE			BIT(6)
++#define XGMAC_MAC_CONF_CST			BIT(2)
++#define XGMAC_MAC_CONF_ACS			BIT(1)
++#define XGMAC_MAC_CONF_TE			BIT(0)
++#define XGMAC_MAC_CONF_RE			BIT(0)
++
++#define XGMAC_MAC_EXT_CONF_HD			BIT(24)
++
++#define XGMAC_MAC_PACKET_FILTER_RA		BIT(31)
++#define XGMAC_MAC_PACKET_FILTER_PR		BIT(0)
++
++#define XGMAC_MAC_Q0_TX_FLOW_CTRL_PT_SHIFT	16
++#define XGMAC_MAC_Q0_TX_FLOW_CTRL_PT_MASK	GENMASK(15, 0)
++#define XGMAC_MAC_Q0_TX_FLOW_CTRL_TFE		BIT(1)
++
++#define XGMAC_MAC_RX_FLOW_CTRL_RFE		BIT(0)
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_SHIFT	0
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_MASK		GENMASK(1, 0)
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_NOT_ENABLED	0
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB	2
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_AV	1
++
++#define XGMAC_MAC_RXQ_CTRL1_MCBCQEN		BIT(15)
++
++#define XGMAC_MAC_RXQ_CTRL2_PSRQ0_SHIFT		0
++#define XGMAC_MAC_RXQ_CTRL2_PSRQ0_MASK		GENMASK(7, 0)
++
++#define XGMAC_MAC_HW_FEATURE1_TXFIFOSIZE_SHIFT	6
++#define XGMAC_MAC_HW_FEATURE1_TXFIFOSIZE_MASK	GENMASK(4, 0)
++#define XGMAC_MAC_HW_FEATURE1_RXFIFOSIZE_SHIFT	0
++#define XGMAC_MAC_HW_FEATURE1_RXFIFOSIZE_MASK	GENMASK(4, 0)
++
++#define XGMAC_MDIO_SINGLE_CMD_SHIFT		16
++#define XGMAC_MDIO_SINGLE_CMD_ADDR_CMD_READ	3 << XGMAC_MDIO_SINGLE_CMD_SHIFT
++#define XGMAC_MDIO_SINGLE_CMD_ADDR_CMD_WRITE	BIT(16)
++#define XGMAC_MAC_MDIO_ADDRESS_PA_SHIFT		16
++#define XGMAC_MAC_MDIO_ADDRESS_PA_MASK		GENMASK(15, 0)
++#define XGMAC_MAC_MDIO_ADDRESS_DA_SHIFT		21
++#define XGMAC_MAC_MDIO_ADDRESS_CR_SHIFT		19
++#define XGMAC_MAC_MDIO_ADDRESS_CR_100_150	0
++#define XGMAC_MAC_MDIO_ADDRESS_CR_150_250	1
++#define XGMAC_MAC_MDIO_ADDRESS_CR_250_300	2
++#define XGMAC_MAC_MDIO_ADDRESS_CR_300_350	3
++#define XGMAC_MAC_MDIO_ADDRESS_CR_350_400	4
++#define XGMAC_MAC_MDIO_ADDRESS_CR_400_500	5
++#define XGMAC_MAC_MDIO_ADDRESS_SADDR		BIT(18)
++#define XGMAC_MAC_MDIO_ADDRESS_SBUSY		BIT(22)
++#define XGMAC_MAC_MDIO_REG_ADDR_C22P_MASK	GENMASK(4, 0)
++#define XGMAC_MAC_MDIO_DATA_GD_MASK		GENMASK(15, 0)
++
++/* MTL Registers */
++
++#define XGMAC_MTL_REGS_BASE 0x1000
++
++struct xgmac_mtl_regs {
++	u32 mtl_operation_mode;			/* 0x1000 */
++	u32 unused_1004[(0x1030 - 0x1004) / 4];	/* 0x1004 */
++	u32 mtl_rxq_dma_map0;			/* 0x1030 */
++	u32 mtl_rxq_dma_map1;			/* 0x1034 */
++	u32 mtl_rxq_dma_map2;			/* 0x1038 */
++	u32 mtl_rxq_dma_map3;			/* 0x103c */
++	u32 mtl_tc_prty_map0;			/* 0x1040 */
++	u32 mtl_tc_prty_map1;			/* 0x1044 */
++	u32 unused_1048[(0x1100 - 0x1048) / 4]; /* 0x1048 */
++	u32 txq0_operation_mode;		/* 0x1100 */
++	u32 unused_1104;			/* 0x1104 */
++	u32 txq0_debug;				/* 0x1108 */
++	u32 unused_100c[(0x1118 - 0x110c) / 4];	/* 0x110c */
++	u32 txq0_quantum_weight;		/* 0x1118 */
++	u32 unused_111c[(0x1140 - 0x111c) / 4];	/* 0x111c */
++	u32 rxq0_operation_mode;		/* 0x1140 */
++	u32 unused_1144;			/* 0x1144 */
++	u32 rxq0_debug;				/* 0x1148 */
 +};
 +
-+&gpio0 {
-+	status = "okay";
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_SHIFT		16
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_MASK		GENMASK(8, 0)
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TXQEN_SHIFT	2
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TXQEN_ENABLED	2
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TSF		BIT(1)
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_FTQ		BIT(0)
++
++#define XGMAC_MTL_TXQ0_DEBUG_TXQSTS			BIT(4)
++#define XGMAC_MTL_TXQ0_DEBUG_TRCSTS_SHIFT		1
++#define XGMAC_MTL_TXQ0_DEBUG_TRCSTS_MASK		GENMASK(2, 0)
++#define XGMAC_MTL_TXQ0_DEBUG_TRCSTS_READ_STATE		0x1
++
++#define XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_SHIFT		16
++#define XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_MASK		GENMASK(9, 0)
++#define XGMAC_MTL_RXQ0_OPERATION_MODE_EHFC		BIT(7)
++#define XGMAC_MTL_RXQ0_OPERATION_MODE_RSF		BIT(5)
++
++#define XGMAC_MTL_RXQ0_DEBUG_PRXQ_SHIFT			16
++#define XGMAC_MTL_RXQ0_DEBUG_PRXQ_MASK			GENMASK(14, 0)
++#define XGMAC_MTL_RXQ0_DEBUG_RXQSTS_SHIFT		4
++#define XGMAC_MTL_RXQ0_DEBUG_RXQSTS_MASK		GENMASK(1, 0)
++
++/* DMA Registers */
++
++#define XGMAC_DMA_REGS_BASE 0x3000
++
++struct xgmac_dma_regs {
++	u32 mode;					/* 0x3000 */
++	u32 sysbus_mode;				/* 0x3004 */
++	u32 unused_3008[(0x3100 - 0x3008) / 4];		/* 0x3008 */
++	u32 ch0_control;				/* 0x3100 */
++	u32 ch0_tx_control;				/* 0x3104 */
++	u32 ch0_rx_control;				/* 0x3108 */
++	u32 slot_func_control_status;			/* 0x310c */
++	u32 ch0_txdesc_list_haddress;			/* 0x3110 */
++	u32 ch0_txdesc_list_address;			/* 0x3114 */
++	u32 ch0_rxdesc_list_haddress;			/* 0x3118 */
++	u32 ch0_rxdesc_list_address;			/* 0x311c */
++	u32 unused_3120;				/* 0x3120 */
++	u32 ch0_txdesc_tail_pointer;			/* 0x3124 */
++	u32 unused_3128;				/* 0x3128 */
++	u32 ch0_rxdesc_tail_pointer;			/* 0x312c */
++	u32 ch0_txdesc_ring_length;			/* 0x3130 */
++	u32 ch0_rxdesc_ring_length;			/* 0x3134 */
++	u32 unused_3138[(0x3160 - 0x3138) / 4];		/* 0x3138 */
++	u32 ch0_status;					/* 0x3160 */
 +};
 +
-+&uart0 {
-+	status = "okay";
++#define XGMAC_DMA_MODE_SWR				BIT(0)
++#define XGMAC_DMA_SYSBUS_MODE_WR_OSR_LMT_SHIFT		24
++#define XGMAC_DMA_SYSBUS_MODE_WR_OSR_LMT_MASK		GENMASK(4, 0)
++#define XGMAC_DMA_SYSBUS_MODE_RD_OSR_LMT_SHIFT		16
++#define XGMAC_DMA_SYSBUS_MODE_RD_OSR_LMT_MASK		GENMASK(4, 0)
++#define XGMAC_DMA_SYSBUS_MODE_AAL			BIT(12)
++#define XGMAC_DMA_SYSBUS_MODE_EAME			BIT(11)
++#define XGMAC_DMA_SYSBUS_MODE_BLEN32			BIT(4)
++#define XGMAC_DMA_SYSBUS_MODE_BLEN16			BIT(3)
++#define XGMAC_DMA_SYSBUS_MODE_BLEN8			BIT(2)
++#define XGMAC_DMA_SYSBUS_MODE_BLEN4			BIT(1)
++#define XGMAC_DMA_SYSBUS_MODE_UNDEF			BIT(0)
++
++#define XGMAC_DMA_CH0_CONTROL_DSL_SHIFT			18
++#define XGMAC_DMA_CH0_CONTROL_PBLX8			BIT(16)
++
++#define XGMAC_DMA_CH0_TX_CONTROL_TXPBL_SHIFT		16
++#define XGMAC_DMA_CH0_TX_CONTROL_TXPBL_MASK		GENMASK(5, 0)
++#define XGMAC_DMA_CH0_TX_CONTROL_OSP			BIT(4)
++#define XGMAC_DMA_CH0_TX_CONTROL_ST			BIT(0)
++
++#define XGMAC_DMA_CH0_RX_CONTROL_RXPBL_SHIFT		16
++#define XGMAC_DMA_CH0_RX_CONTROL_RXPBL_MASK		GENMASK(5, 0)
++#define XGMAC_DMA_CH0_RX_CONTROL_RBSZ_SHIFT		4
++#define XGMAC_DMA_CH0_RX_CONTROL_RBSZ_MASK		GENMASK(10, 0)
++#define XGMAC_DMA_CH0_RX_CONTROL_SR			BIT(0)
++
++/* Descriptors */
++#define XGMAC_DESCRIPTOR_WORDS		4
++#define XGMAC_DESCRIPTOR_SIZE		(XGMAC_DESCRIPTOR_WORDS * 4)
++#define XGMAC_DESCRIPTORS_NUM		8
++#define XGMAC_DESCRIPTOR_ALIGN		64
++#define XGMAC_DESCRIPTORS_SIZE		ALIGN(XGMAC_DESCRIPTORS_NUM * \
++					      XGMAC_DESCRIPTOR_SIZE, XGMAC_DESCRIPTOR_ALIGN)
++#define XGMAC_BUFFER_ALIGN		XGMAC_DESCRIPTOR_ALIGN
++#define XGMAC_MAX_PACKET_SIZE		ALIGN(1568, XGMAC_DESCRIPTOR_ALIGN)
++#define XGMAC_RX_BUFFER_SIZE		(XGMAC_DESCRIPTORS_NUM * XGMAC_MAX_PACKET_SIZE)
++
++#define XGMAC_RDES3_PKT_LENGTH_MASK	GENMASK(13, 0)
++
++struct xgmac_desc {
++	u32 des0;
++	u32 des1;
++	u32 des2;
++	u32 des3;
 +};
 +
-+&qspi {
-+	status = "okay";
++#define XGMAC_DESC3_OWN		BIT(31)
++#define XGMAC_DESC3_FD		BIT(29)
++#define XGMAC_DESC3_LD		BIT(28)
 +
-+	flash0: flash@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "mt25qu02g";
-+		reg = <0>;
-+		spi-max-frequency = <100000000>;
++#define XGMAC_AXI_WIDTH_32	4
++#define XGMAC_AXI_WIDTH_64	8
++#define XGMAC_AXI_WIDTH_128	16
 +
-+		m25p,fast-read;
-+		cdns,page-size = <256>;
-+		cdns,block-size = <16>;
-+		cdns,read-delay = <1>;
-+		cdns,tshsl-ns = <50>;
-+		cdns,tsd2d-ns = <50>;
-+		cdns,tchsh-ns = <4>;
-+		cdns,tslch-ns = <4>;
-+
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			qspi_boot: partition@0 {
-+				label = "u-boot";
-+				reg = <0x0 0x04200000>;
-+			};
-+
-+			root: partition@4200000 {
-+				label = "root";
-+				reg = <0x04200000 0x0BE00000>;
-+			};
-+		};
-+	};
++struct xgmac_config {
++	bool reg_access_always_ok;
++	int swr_wait;
++	int config_mac;
++	int config_mac_mdio;
++	unsigned int axi_bus_width;
++	phy_interface_t interface;
++	struct xgmac_ops *ops;
 +};
 +
-+&gmac2 {
-+	status = "okay";
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&emac2_phy0>;
-+
-+	max-frame-size = <9000>;
-+
-+	mdio0 {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		compatible = "snps,dwmac-mdio";
-+		emac2_phy0: ethernet-phy@1 {
-+			reg = <0x1>;
-+			adi,rx-internal-delay-ps = <2000>;
-+			adi,tx-internal-delay-ps = <2000>;
-+		};
-+	};
++struct xgmac_ops {
++	int (*xgmac_probe_resources)(struct device *dev);
++	int (*xgmac_start_resets)(struct device *dev);
++	int (*xgmac_get_enetaddr)(struct device *dev);
 +};
-diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
-index 807ca78e4ac8636382107f844eeb83ba9007a583..db1a47b6a1ad7f6a7d08036bdeed6a50b707ac47 100644
---- a/images/Makefile.socfpga
-+++ b/images/Makefile.socfpga
-@@ -87,6 +87,15 @@ pblb-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += start_socfpga_socrates
- FILE_barebox-socfpga-socrates.img = start_socfpga_socrates.pblb
- socfpga-barebox-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += barebox-socfpga-socrates.img
- 
-+# ----------------------- Agilex5 based boards ---------------------------
-+pblb-$(CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE) += start_socfpga_agilex5_axe5_eagle
-+FILE_barebox-socfpga-agilex5-axe5-eagle.img = start_socfpga_agilex5_axe5_eagle.pblb.hex
-+socfpga-barebox-$(CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE) += barebox-socfpga-agilex5-axe5-eagle.img
 +
-+pblb-$(CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE) += start_socfpga_agilex5_axe5_eagle
-+FILE_barebox-socfpga-agilex5-axe5-eagle-2nd.img = start_socfpga_agilex5_axe5_eagle.pblb
-+socfpga-barebox-$(CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE) += barebox-socfpga-agilex5-axe5-eagle-2nd.img
++struct xgmac_priv {
++	struct eth_device netdev;
++	struct device *dev;
++	const struct xgmac_config *config;
++	void __iomem *regs;
++	struct xgmac_mac_regs *mac_regs;
++	struct xgmac_mtl_regs *mtl_regs;
++	struct xgmac_dma_regs *dma_regs;
++	struct reset_control *rst;
++	struct reset_control *rst_ocp;
++	struct mii_bus miibus;
++	int phy_addr;
++	phy_interface_t interface;
 +
- ifdef CONFIG_ARCH_SOCFPGA_XLOAD
- image-y += $(socfpga-xload-y)
- else
++	u8 macaddr[6];
++
++	u32 reg_offset, reg_shift;
++	u32 max_speed;
++	struct xgmac_desc *tx_descs, *rx_descs;
++	dma_addr_t tx_descs_phys, rx_descs_phys;
++	dma_addr_t dma_rx_buf[XGMAC_DESCRIPTORS_NUM];
++	int tx_desc_idx, rx_desc_idx;
++	unsigned int desc_size;
++	unsigned int desc_per_cacheline;
++	void *rx_dma_buf;
++	bool started;
++	bool reg_access_ok;
++	bool clk_ck_enabled;
++};
++
++int xgmac_probe(struct device *dev);
++void xgmac_remove(struct device *dev);
++void xgmac_flush_desc_generic(void *desc);
++void xgmac_flush_buffer_generic(void *buf, size_t size);
++int xgmac_null_ops(struct device *dev);
++
++extern struct xgmac_config xgmac_socfpga_config;
+diff --git a/drivers/net/designware_xgmac_socfpga.c b/drivers/net/designware_xgmac_socfpga.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..7d8dba3c17cdb3fe7c82a6fa9315fecfdbfcc32a
+--- /dev/null
++++ b/drivers/net/designware_xgmac_socfpga.c
+@@ -0,0 +1,156 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2023, Intel Corporation
++ */
++#define DEBUG
++#include <common.h>
++#include <init.h>
++#include <errno.h>
++#include <malloc.h>
++#include <net.h>
++#include <linux/reset.h>
++#include <linux/phy.h>
++#include <mfd/syscon.h>
++#include <linux/clk.h>
++#include <mach/socfpga/soc64-system-manager.h>
++#include <mach/socfpga/secure_reg_helper.h>
++
++#include "designware_xgmac.h"
++
++#define SOCFPGA_XGMAC_SYSCON_ARG_COUNT 2
++
++static int dwxgmac_socfpga_do_setphy(struct device *dev, u32 modereg)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++	u32 modemask = SYSMGR_EMACGRP_CTRL_PHYSEL_MASK;
++	u32 index = (xgmac->reg_offset - SYSMGR_SOC64_EMAC0) >> 2;
++	u32 id = SOCFPGA_SECURE_REG_SYSMGR_SOC64_EMAC0 + index;
++	int ret;
++
++	ret = socfpga_secure_reg_update32(id, modemask, modereg);
++	if (ret) {
++		dev_err(dev, "Failed to set PHY register via SMC call\n");
++		return ret;
++	}
++
++	return 0;
++}
++
++static int xgmac_probe_resources_socfpga(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++	phy_interface_t interface;
++	int ret;
++	u32 modereg;
++
++	interface = xgmac->interface;
++
++	switch (interface) {
++	case PHY_INTERFACE_MODE_MII:
++	case PHY_INTERFACE_MODE_GMII:
++		modereg = SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_GMII_MII;
++		break;
++	case PHY_INTERFACE_MODE_RMII:
++		modereg = SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RMII;
++		break;
++	case PHY_INTERFACE_MODE_RGMII:
++	case PHY_INTERFACE_MODE_RGMII_ID:
++		modereg = SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII;
++		break;
++	default:
++		dev_err(dev, "Unsupported PHY mode\n");
++		return -EINVAL;
++	}
++
++	/* Get PHY syscon */
++	ret = of_property_read_u32_index(dev->of_node, "altr,sysmgr-syscon",
++					 1, &xgmac->reg_offset);
++	if (ret) {
++		dev_err(dev, "Could not read reg_offset from sysmgr-syscon! Please update the devicetree.\n");
++
++		return -EINVAL;
++	}
++
++	ret = of_property_read_u32_index(dev->of_node, "altr,sysmgr-syscon",
++					 2, &xgmac->reg_shift);
++	if (ret) {
++		dev_err(dev, "Could not read reg_shift from sysmgr-syscon! Please update the devicetree.\n");
++		return -EINVAL;
++	}
++
++	xgmac->rst = reset_control_get(dev, "stmmaceth");
++	if (IS_ERR(xgmac->rst)) {
++		dev_err(dev, "Invalid reset line 'stmmaceth'.\n");
++		return PTR_ERR(xgmac->rst);
++	}
++	xgmac->rst_ocp = reset_control_get(dev, "stmmaceth-ocp");
++	if (IS_ERR(xgmac->rst_ocp)) {
++		dev_err(dev, "Invalid reset line 'stmmaceth-ocp'.\n");
++		return PTR_ERR(xgmac->rst_ocp);
++	}
++
++	reset_control_assert(xgmac->rst_ocp);
++	reset_control_assert(xgmac->rst);
++
++	ret = dwxgmac_socfpga_do_setphy(dev, modereg);
++	if (ret)
++		return ret;
++
++	reset_control_deassert(xgmac->rst_ocp);
++	reset_control_deassert(xgmac->rst);
++
++	return 0;
++}
++
++static int xgmac_get_enetaddr_socfpga(struct device *dev)
++{
++	return -ENOTSUPP;
++}
++
++static int xgmac_start_resets_socfpga(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++
++	reset_control_assert(xgmac->rst);
++	reset_control_assert(xgmac->rst_ocp);
++
++	udelay(2);
++
++	reset_control_deassert(xgmac->rst);
++	reset_control_deassert(xgmac->rst_ocp);
++
++	return 0;
++}
++
++static struct xgmac_ops xgmac_socfpga_ops = {
++	.xgmac_probe_resources = xgmac_probe_resources_socfpga,
++	.xgmac_start_resets = xgmac_start_resets_socfpga,
++	.xgmac_get_enetaddr = xgmac_get_enetaddr_socfpga,
++};
++
++struct xgmac_config __maybe_unused xgmac_socfpga_config = {
++	.reg_access_always_ok = false,
++	.swr_wait = 50,
++	.config_mac = XGMAC_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB,
++	.config_mac_mdio = XGMAC_MAC_MDIO_ADDRESS_CR_350_400,
++	.axi_bus_width = XGMAC_AXI_WIDTH_64,
++	.ops = &xgmac_socfpga_ops
++};
++
++static __maybe_unused struct of_device_id xgmac_socfpga_compatible[] = {
++	{
++		.compatible = "intel,socfpga-dwxgmac",
++		.data = &xgmac_socfpga_config
++	}, {
++		/* sentinel */
++	}
++};
++MODULE_DEVICE_TABLE(of, xgmac_socfpga_compatible);
++
++static struct driver xgmac_socfpga_driver = {
++	.name = "designware-xgmac-socfpga",
++	.probe = xgmac_probe,
++	.remove = xgmac_remove,
++	.of_compatible = DRV_OF_COMPAT(xgmac_socfpga_compatible),
++};
++device_platform_driver(xgmac_socfpga_driver);
 
 -- 
 2.46.0
