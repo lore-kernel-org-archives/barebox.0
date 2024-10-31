@@ -1,85 +1,88 @@
-Delivery-date: Thu, 31 Oct 2024 10:28:47 +0100
+Delivery-date: Thu, 31 Oct 2024 10:28:48 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t6RTy-0032p9-0s
+	id 1t6RTz-0032pT-0E
 	for lore@lore.pengutronix.de;
-	Thu, 31 Oct 2024 10:28:47 +0100
+	Thu, 31 Oct 2024 10:28:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t6RTy-0007l1-SP
-	for lore@pengutronix.de; Thu, 31 Oct 2024 10:28:47 +0100
+	id 1t6RTz-0007lf-Mn
+	for lore@pengutronix.de; Thu, 31 Oct 2024 10:28:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=oz37kEBVlnkQ9WUaeLj4Vh9qN4/Qntdp6L7HsDuGkrQ=; b=cnHDIhTtXeEGrKxUR2fRLF/+p1
-	dND47C2fQ5guPfkPIm9Tg9SZypPunvNtzVqlF2XTPnpABOpxgVs/dYlym1AxwZtCHasiXIEHAPnX/
-	t1Nroj+835cEoUko/6iILm9y+MJB45rUQgcrYgXiqZvWOiSiIv9SmijWUgO8x1+OE2GDhbsRXdkaW
-	dEX+xxNIczWK3MMDBlyM/AKzkH+KbroJJ6Z+AsxENaFc9rTaMGED08D1j20uQ9+rhkJCkvV43HbyX
-	COLgh1yVEw/gD7VzEhgP1WwVEP6K/pWSupb3wv5aRUsWflxcKSESlXrQ06tQMpFt7nsJ6scKcAlNB
-	CZCyO+Nw==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=NB7tVD01dW1PdEG9amHQnBgRKVqFPeBGcR3asOR2Mag=; b=hwH93TDy4xZ9chxJOJBS6odVYE
+	3NYBHedB2LKEBjdcJrzBukrouab9R13UrEHMk4HYqlmq2nyLdGo82LMJ+cKi0iuA40mp/oD5TuwKb
+	3tmL9Kpxei7oDGwftqox24WYT62QOhHfXz/TkBRgnHumyT/Nfjsw34rZ2wwikYiC3nEH6F48gIG0V
+	tj7f+hHZOathbiPtWXiAafwbbGZIk+SUwNa17Qi4qpzSdwkXtJ0N6ctEwIzJ5kEihGtTMtzs4XQbc
+	i5iZz3TkQc3tUpieKDyBDty5reBOCHmDGH5+JsZsd0Egltil5KaDD4BtG7Dg4FSnbuqzT69uWjrtd
+	W6lqfJsg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t6RTR-000000034rS-1EQo;
+	id 1t6RTR-000000034rn-3OKZ;
 	Thu, 31 Oct 2024 09:28:13 +0000
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t6RSj-000000034oI-1zz8
+	id 1t6RSl-000000034p3-1apT
 	for barebox@lists.infradead.org;
-	Thu, 31 Oct 2024 09:27:30 +0000
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-4319399a411so6105045e9.2
-        for <barebox@lists.infradead.org>; Thu, 31 Oct 2024 02:27:28 -0700 (PDT)
+	Thu, 31 Oct 2024 09:27:32 +0000
+Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-37d47eff9acso459707f8f.3
+        for <barebox@lists.infradead.org>; Thu, 31 Oct 2024 02:27:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730366847; x=1730971647; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oz37kEBVlnkQ9WUaeLj4Vh9qN4/Qntdp6L7HsDuGkrQ=;
-        b=hZGUpqhWPEBhMsO4fWFhwnI83dRU9dt82NBie7BBQRzmjuwaxxuI7/sWzkdXzDr7lo
-         gnq3IaV43L3oXJmYVl8b/algMFgwxfcwJ02cfkSWpGxMnUWLoPgBKsxo7N8pbJ5v3Pmk
-         vQdCuJAn68LbEDzbUuiYdgbFmUVENZuBPNTbog5GJyxO2e16n/eoA6QswTzDRvcVacwe
-         RjGR0Ug/WtwqPWkmBKUrD8kSeSarixI5P8PzkeyrjEFU6OogR9MzEtwDH7d7Mz+iViu4
-         8I0I/BWStFtUAu623g5Rk3ts3YiGbt4tXKkNni6VLgP+pQvin3I0TInCAnufYXXWDNoH
-         lTaQ==
+        d=gmail.com; s=20230601; t=1730366849; x=1730971649; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NB7tVD01dW1PdEG9amHQnBgRKVqFPeBGcR3asOR2Mag=;
+        b=FyT3ix9v7D/LY+lnjHtnVb1uzDOzmoaXZiyANJYH3wo5Sz6EwoKrNQY3prrnwi1Asz
+         P0Q/Y0oOzClu2HgMiVjZ/xMep2cAsdAmhthq7f113RldRn2meeoaAIdU8wNRJX7UetYG
+         Har743jza88JZIgIneoW72DLONZIqtaMA1teBN2V5uLteWXm13PtnubIRv2wHSyA6mq4
+         CKgIieb8Py75gCUumHWe3IxEVe7rMe8g/cJkCu0KVXt/+O42jdihhUscB3SV5DJm7Ucx
+         lFsthvjqNYs8r2cpwREs2ADHDuxr8FiEzgS2B4mrmH+cmsv/kOzZVy81tyFlNq+AB8fW
+         wUqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730366847; x=1730971647;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oz37kEBVlnkQ9WUaeLj4Vh9qN4/Qntdp6L7HsDuGkrQ=;
-        b=OKcL1KI5e0RoYX2NqB5cMTLHaufS4lF0I6ZA7DnanldBTxpbxnwe7mtww/je0EiuX6
-         BMIgT7854JuY6a3nixIfL3vy/qZUSEvn+NOWTesr9jraxDqPfbUqA76GVucH8NKLVpGA
-         tu5xfxQ8acYvleUfWCQfCD5pUzG9oVn4Ga+U5KUqt4lhJrpDF0xZAHdOFnpjrwOVPQI0
-         L/2gZK1wllZlayWKRUMvrtFaw69l3fMZEvKV5dtpjsYNjO42ieXJd898pmPtxyjrW9fs
-         BspiE7//9aKAxQVBPzA/ml7xlcm8pitf2y+cKRHDf0o9g+S0pekEfsJgTkP/ubclN6tR
-         PBzg==
-X-Gm-Message-State: AOJu0YxXnBt8V57nzetacY0F0hbYgxzqk8o6KESNapuSIxeiKOLhIJ+R
-	2gpJLoKIwqX5BXZOra2nJ20brB5WJxg3QeO2xnyd8u0PFhk+/kY1/KNXGoto
-X-Google-Smtp-Source: AGHT+IGxpNns163NP79eapHV3BMiTZUZ9CkPaFt3AZooNIx8dBXLJeN2KFUbSBZUMPEQmX6gUA6Ugw==
-X-Received: by 2002:a05:600c:3583:b0:42c:baf9:bee7 with SMTP id 5b1f17b1804b1-4319ac9ca86mr153524205e9.12.1730366847155;
-        Thu, 31 Oct 2024 02:27:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730366849; x=1730971649;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NB7tVD01dW1PdEG9amHQnBgRKVqFPeBGcR3asOR2Mag=;
+        b=FMdgXVUH23Pn2V5o3GlkSF9I+kW5CERyNKwr4KPDjNZwLj7x8LpmFRZNmW8JXCaVTS
+         TIOBrH37vX+C5/Iu0jCEslfpeP6OltXBL9jJKDvYnlLbBSMkB2ozyx9ZvtUdj9m/JVpN
+         I/ioj0YbcbOHzqsSQCPTUv7k4IoK+vV4xj5wglC4NUULhPSH7an6BHT11m+c/Ih6akNl
+         W4P1bM/+vyFNv9hZz+6v5Usg4JDwSJXPwigT5vHEGmBDumC0lbtJqmyGT7mEJywRlHs4
+         1BPam3826JAzY89+xXVbtkH0IQy48u/9bGHPB4R510CYlhOiZRhkgPAlq5EhMlst+H1H
+         eXQQ==
+X-Gm-Message-State: AOJu0YyV8kHDv3b4SqFtTf1gh3MgF3GnQJY5TKuDUqRFPN46Q/FcCayf
+	B9fm2bzogvw5pa2Xg/cV+ry87xcETV943minKOact+U3bMQxeW8MhblqulpR
+X-Google-Smtp-Source: AGHT+IGThOBoMy4j56dVBAz5XSl0LqsX9s7RBrFmVMFDIJVSQyVOB2geSHlebTBtMwgd1/vVtyZWfQ==
+X-Received: by 2002:a5d:5705:0:b0:37c:cc77:3e72 with SMTP id ffacd0b85a97d-38061163c83mr13917764f8f.33.1730366849272;
+        Thu, 31 Oct 2024 02:27:29 -0700 (PDT)
 Received: from kaliss.. (82-65-217-21.subs.proxad.net. [82.65.217.21])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d4d82sm1538825f8f.45.2024.10.31.02.27.25
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d4d82sm1538825f8f.45.2024.10.31.02.27.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 02:27:26 -0700 (PDT)
+        Thu, 31 Oct 2024 02:27:29 -0700 (PDT)
 From: Sebastien Bourdelin <sebastien.bourdelin@gmail.com>
 To: barebox@lists.infradead.org
 Cc: oss-contrib@rtone.fr,
 	sebastien.bourdelin@gmail.com,
 	Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
-Date: Thu, 31 Oct 2024 10:27:17 +0100
-Message-ID: <20241031092721.763280-1-sebastien.bourdelin@gmail.com>
+Date: Thu, 31 Oct 2024 10:27:18 +0100
+Message-ID: <20241031092721.763280-2-sebastien.bourdelin@gmail.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241031092721.763280-1-sebastien.bourdelin@gmail.com>
+References: <20241031092721.763280-1-sebastien.bourdelin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241031_022729_540335_346F84CE 
-X-CRM114-Status: UNSURE (   9.21  )
+X-CRM114-CacheID: sfid-20241031_022731_441513_35721952 
+X-CRM114-Status: UNSURE (   8.79  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -103,38 +106,31 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 0/4] Add a struct mci_cmd::busy_timeout member
+Subject: [PATCH 1/4] mci: add a busy_timeout member to the struct mci_cmd
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
 
-This patch series introduce the busy_timeout member as part of the
-struct mci_cmd and fix the SDHCI timeout value for the BCM2711 SoC.
+This commit extends the struct mci_cmd to add a new busy_timeout member.
 
-It comes as a first step to [1] and allow sdhci drivers to define their
-timeout value.
+Signed-off-by: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
+---
+ include/mci.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-[1] https://github.com/barebox/barebox/blob/master/drivers/mci/mci-core.c#L2109
-
-Sebastien Bourdelin (4):
-  mci: add a busy_timeout member to the struct mci_cmd
-  mci: zeroed all structs mci_cmd instances
-  mci: sdhci: use the busy_timeout value in the sdhci_wait_idle
-    functions
-  mci: bcm2835: set timeout value to 100ms
-
- arch/arm/mach-socfpga/arria10-xload-emmc.c |  2 +-
- drivers/mci/dwcmshc-sdhci.c                |  2 +-
- drivers/mci/imx-esdhc-pbl.c                |  4 +--
- drivers/mci/mci-bcm2835.c                  |  4 +++
- drivers/mci/mci-core.c                     | 34 +++++++++++-----------
- drivers/mci/sdhci.c                        | 14 +++++++--
- drivers/mci/sdhci.h                        |  2 ++
- drivers/mci/stm32_sdmmc2.c                 |  2 +-
- include/mci.h                              |  1 +
- 9 files changed, 41 insertions(+), 24 deletions(-)
-
+diff --git a/include/mci.h b/include/mci.h
+index cd01e2f992..f607ef1b74 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -471,6 +471,7 @@ struct mci_cmd {
+ 	unsigned cmdidx;	/**< Command to be sent to the SD/MMC card */
+ 	unsigned resp_type;	/**< Type of expected response, refer MMC_RSP_* macros */
+ 	unsigned cmdarg;	/**< Command's arguments */
++	unsigned busy_timeout;	/**< Busy timeout in ms */
+ 	unsigned response[4];	/**< card's response */
+ };
+ 
 -- 
 2.46.2
 
