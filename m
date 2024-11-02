@@ -1,160 +1,134 @@
-Delivery-date: Fri, 01 Nov 2024 06:44:22 +0100
+Delivery-date: Sat, 02 Nov 2024 15:44:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t6kSL-003O0v-1Q
+	id 1t7FMu-003wzu-1V
 	for lore@lore.pengutronix.de;
-	Fri, 01 Nov 2024 06:44:22 +0100
+	Sat, 02 Nov 2024 15:44:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t6kSL-0003Sv-Sx
-	for lore@pengutronix.de; Fri, 01 Nov 2024 06:44:22 +0100
+	id 1t7FMu-0001tG-Tc
+	for lore@pengutronix.de; Sat, 02 Nov 2024 15:44:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
-	:Subject:CC:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=T43bUQchIUTzf1Fvri8rkG+3DWD+OoqaTaDZEpDFMRc=; b=NLItG/j3+Qnt1qjliy6CenvJ9g
-	2l55s4uXziPlSzmX4hkmPBEVWI3rxtSEt0i5aHtFGh6L5zp4D+xaZkd+BdblNoV3GxKRC/1huhheo
-	+t1TnF4iCFQ1rBW8TVF3hKiIwHJ3KWgP83mBRRi0V4SQi9H/yqjRruln2Vr7jinCENxSsmsYD8pzK
-	T82x7ibj+yL+S9SDHabSwL3bc2CeAiyhVzT2s6vVf/7FUG7bQF3XyBKzptnAI3/oKknpGGK7TPCMA
-	m5KtjFBG/tEmLKxcDbz61iKi3Qjtz5rFWIM6HKhOyht7BMcY8ODyFcJUNjhEQWT6hb+Jae+EVzxSs
-	2TCJF4mw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=uC+J2ZAQ489yNlfZGHGXmrLfkiZQ8DhinmsWS+a3ifQ=; b=1xvwvC9dkI279lWw+OFsxpOBbi
+	yT90cklE8OTTceskUHdTCgjxDyrQRYxlZ0UoJhpwu9fOWauUya8qFpzwCd/ZoqbCaa/FEGRbckGBA
+	IlYVsyf/9cW5kLA3dmycFXknROew9Qh3TGt/P7T1Sv3ScuGjWK3/AiYlLN/dVHlHHv3ADOAHV2m4/
+	JFpkr6pjdKvpeFVB2//oHL0WK99mpjOOMrTMIjJN+Mzj6hgKctSS4S49u7FW4oXTiPEEDbfaUW0ow
+	7WGz2Z9/iAld62K4nGiazv2WDh5FCqG3yfinjRgN/oJiYrHr07nVnXUiIKCtbIShZig3NjBDiuUYO
+	jMIDST8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t6kRY-00000005rnG-1TqN;
-	Fri, 01 Nov 2024 05:43:32 +0000
-Received: from mail-vi1eur02on20631.outbound.protection.outlook.com ([2a01:111:f403:2607::631] helo=EUR02-VI1-obe.outbound.protection.outlook.com)
+	id 1t7FMD-00000009sbi-3Wk7;
+	Sat, 02 Nov 2024 14:44:05 +0000
+Received: from mail-db8eur05on20625.outbound.protection.outlook.com ([2a01:111:f403:2614::625] helo=EUR05-DB8-obe.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t6kRV-00000005rmd-0rzM
+	id 1t7FMA-00000009sb9-0ioV
 	for barebox@lists.infradead.org;
-	Fri, 01 Nov 2024 05:43:30 +0000
+	Sat, 02 Nov 2024 14:44:03 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AghSix9E4OATU7t21CpUzspI/7Y/3jOmBhASMH7B4cbT6AoH5Kn7+uBKUostZN5o2PK7TYwLCc6Sq2AHMT5AJgsuuGVBJgmOvfDBbeLb7Y+JdA7M/yOmZxu5Z6SNQeB448ZYJOO40gIvcsxFAbUAmsoEOeRy2jLYA9IhZK7ceTmXshhhFHGNeUmCkKgmq5YS7AIrGSAjdesfp/v1sAG4Ux6ovynFlP8MO4fwhj2eNnpT0SxpChoN8jrgzdzx+hny+XhsKWDsjq5Da6FiThRByOmHTUNKmaLAMny9kP1Sk279+47tiYSEgerSWuS7mVIpZSZ7zU/ltGdM6OWD/j0FNw==
+ b=g9IOk1ZPW6SKRsh5sb5uOOsiD9iT1XxobpzpFowKP+LwjdUayDv8jrTgUxAQSJBzWrzv2bGqjV9V+tUk4XUasDIQg6Ng+CPkFdajThr+vbct5UtAfAkHygf4xR9fCig/+/dD8GFnofqxZs+14B/4+mkLWvoW5hpmt9AwzAXPXz9EQJFCnTrHxfrM8txHG9nUzCGwcsbjyepxmfAwWAbrpLcxU3np0uE+j3crE6P7ABU+cbMNohuWFVoojW5d+pUXK10C+LI1H5rlZjz/HPsY/pthbDQP//tZzXyy//eu7Io9vQ/542Swc5qOVYigRMbDpvfeb0qasr356y/gsrupyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T43bUQchIUTzf1Fvri8rkG+3DWD+OoqaTaDZEpDFMRc=;
- b=y3KBGk+0BIYlFO6J+rXZCL4dRdrdDGrLPnz+e1cv4TXjNZcUxjFgql/0SSH/KdpY6l6rPaRRvy+ZEfD7E3Ix6ifA/I0wFSUXelroYlMGHf/kTsyT339ZWkXL2hhI8a74TLlPrQjvnGNpYbsV3iqeqZwoK06dMjf8q3PsfiAnUOlw1JZ35zHjEIBPoP0GX25XNqhsgVewkO7OUmPJGQNtv+RinQldLeogJD0sSRWkVgqEnqkZX07WBPjujl48tRmSxlwFpo9FsLbxaOpIN5ovhrj/TbWj5gyegOOwzgFePnOYN+mt0yCOm9KngcQzPxPxdUSrUiLsyjw7tQEvTUFOYw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
- header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
- arc=none
+ bh=uC+J2ZAQ489yNlfZGHGXmrLfkiZQ8DhinmsWS+a3ifQ=;
+ b=qdobAOR8QURaO4NE24Qo/+ptgg0sCpn1fME53JhFYg2yCBwSmwYp8zXhDQhHA4nWC2Zvajm0zWJn7WJzBT7TO8e9yqnVexDWrQzErnA5n5R/aKXIrALwjkNFUjgADtBLPH19OePV0IRnybCb7f7ZaQiR0w7gu2nOxNYPRFqoNjpm56J8OGAQGaV/ZWHuxaAuEUamsTW07HFNYDyd7kljXnS26LzIYOh0JLzJCX3jOKr/zQYeGJvpPFj+xE+fNGWPWZ5OeQ8ub71yRJH4nm3qYJJSNbzG+Izhgve+I2q9Lb65/IxcboFweZaLoNYiuqr6kcb8C1hiAmA5DGAV2Wb0qA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.94) smtp.rcpttodomain=lists.infradead.org
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=leica-geosystems.com; dkim=none (message not signed);
+ arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T43bUQchIUTzf1Fvri8rkG+3DWD+OoqaTaDZEpDFMRc=;
- b=SHnS0+axdvKGUZJnazag6rnAJUBKOOzQao2+PJZDnATgOwV8TRQCao3Jpk69dmd1DCDJclZ76SqiwUxF0dZlO0YvYMlYHY1BgItNkFSUpD4VYfXPfWRgglfS70ky/ooQkZwYsAE5JUS0O38leTFN3LTy1bTmL7we5aGvIrlQE3Y=
-Received: from AM8PR06MB7521.eurprd06.prod.outlook.com (2603:10a6:20b:355::8)
- by VI1PR06MB6815.eurprd06.prod.outlook.com (2603:10a6:800:180::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Fri, 1 Nov
- 2024 05:43:18 +0000
-Received: from AM8PR06MB7521.eurprd06.prod.outlook.com
- ([fe80::570d:8853:c13b:c7d3]) by AM8PR06MB7521.eurprd06.prod.outlook.com
- ([fe80::570d:8853:c13b:c7d3%7]) with mapi id 15.20.8093.025; Fri, 1 Nov 2024
- 05:43:18 +0000
-From: SCHNEIDER Johannes <johannes.schneider@leica-geosystems.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-CC: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH] common: add custom autoboot_abort_key
-Thread-Index: AQHbCD/Czt0XB1Wlu0q+X+XHNtrckLKSv/mAgA9uDas=
-Date: Fri, 1 Nov 2024 05:43:18 +0000
-Message-ID: <AM8PR06MB7521D0385F973992AF068967BC562@AM8PR06MB7521.eurprd06.prod.outlook.com>
-References: <20240916135300.3996776-1-johannes.schneider@leica-geosystems.com>
- <Zxd2FV4C6wca_dOJ@pengutronix.de>
-In-Reply-To: <Zxd2FV4C6wca_dOJ@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=leica-geosystems.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR06MB7521:EE_|VI1PR06MB6815:EE_
-x-ms-office365-filtering-correlation-id: c0a1b3df-2248-4edf-a348-08dcfa3816b7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|10070799003|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?7qoUvpmXMSxhPgF0LwqNVRIoQRPV7ZW3lI6l8s9wUUtvE14gZKHGss1ZEd?=
- =?iso-8859-1?Q?pfWe9nRtr+NA6et1LOyiVONmggAiRaWJ3njE9cBsukb6/xbPmZ9yqfN1/p?=
- =?iso-8859-1?Q?AECzlkgO7QXT9QJm/g7pBPguqFY2xCcx+kBPjBNdn0DWFuqP1kCL+P8RQj?=
- =?iso-8859-1?Q?Qn+OIYxKjujeQYulGZlXhTyVxVWYQ+BSLOH4240uJyNoZk4I1nfhxsuaOu?=
- =?iso-8859-1?Q?G5arpHYdfsH0z9+0w8NGGQGgo73C3ithlO8NhW+QVZ4j+i/Ig2o3PL9GID?=
- =?iso-8859-1?Q?g6fQAe1gJcYrhyYIxxmSavIrguJLUPMgsJIQ+HIdUCr7+lqsFi2QTIpSk6?=
- =?iso-8859-1?Q?2JQdQRV2Ag7zWuBhv5rOSC98PpUyqxAAqYJo8QiYuSNMLwn+mkVugl4wvO?=
- =?iso-8859-1?Q?V3DYpm443xNftcOxsRHeYQsWFkU5LUvKm+RSSnX/mm59NMduYurB2w6t1E?=
- =?iso-8859-1?Q?94KZf+lBnOGaHL7/kX2UeazPY6gux4/tvYsURT5ytkCA+A0RQKERYOTomU?=
- =?iso-8859-1?Q?/KPRJWGy8q+3QXGDbbB8V4X/EefpXQ04bIA30oXgkkt29+vKOnEd4PYU0j?=
- =?iso-8859-1?Q?glOY/OqLcjptREO0WInb10GYmSMeTcuy7Q+t0ShJb8gXz5OmoBIcKbc14G?=
- =?iso-8859-1?Q?rAqeqCG+aL7XSPAHJ49YkqlNA+Y0rPtF/Yf9+1Dly28biULVLqePMtMYFG?=
- =?iso-8859-1?Q?XEcvbOueysfHVhqPLPChufkBn8HKOIL0l3md5f256KuuWRzO5kARaFFt9g?=
- =?iso-8859-1?Q?pkSMDRlnTQ4QeygWKz6pEsgAuYukGM0xcnpzkbTuhICnWXSHavsKaPrL+z?=
- =?iso-8859-1?Q?WJyQCmK1pFCOTKOo4SzEXKhm5ugH5LwmUInfkLzH03Gzm9bnzg7EraN402?=
- =?iso-8859-1?Q?aFRldHcYgPwxcgHFUhzopgCq9NGWUA74l/LFdAqmsvbY0Z6tW6O3URr9TF?=
- =?iso-8859-1?Q?Hv4RU9pxP69/stApw944Z7rfjJ+ZqvGVZAOLxJ7OMBtd20YSbnDKJ7cLql?=
- =?iso-8859-1?Q?Yj0yp74s8F/+KMV1d5RMqTbFTzUVatjQoZ8itI05aUbC00Nwdq9MEZbr68?=
- =?iso-8859-1?Q?dqQunnEcFa6NJaxd/laPGDHZ/D+EKNCkntZn9H8aHP/IvvT68gHGHKGi5E?=
- =?iso-8859-1?Q?VWAAvaFK9bD3Ko+v+zHlvt16PXmoGcRNacZVNnRSkmBftHGSV+sUzdynYW?=
- =?iso-8859-1?Q?M1n0MkjLBeQGigPUHp0cJLtV/A/65PxE7qs/Dw0VQxHNCT+plYZR0nju41?=
- =?iso-8859-1?Q?UwTqwieQe6B2T5OmfsNVMhpTjvgCXnzjO3B7SljaCOw1v3jTUY8o01XeeX?=
- =?iso-8859-1?Q?lmafBMt3IFLO4cUGrM+S/J+Pi5WG9YAVh65PjHdbn8Xap85Fv7zp21CWgT?=
- =?iso-8859-1?Q?ZZ6MiUc2NPqxIC6DXGIBR7BRZJG5cpIjbCt//JslB064UsXF9jpQU=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR06MB7521.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?mKF3KXOMDDiMXDoLSi+BYVafXDRu+R3ffOr+IDfYxbcQO8CCRCxWCrIItB?=
- =?iso-8859-1?Q?bFJY9zydJSwkvCJf5RFv3guG50ejCPPpXLw53Na0sEqi5HLbXuWdSxRKbo?=
- =?iso-8859-1?Q?rasGQ9Ash8STu3wvGN7y8NZTND96IdD4gsX2WZNSvXDSy28CogrJrFGpRb?=
- =?iso-8859-1?Q?7VwG/vrmsC3dusb7klhHcjkTD4Zo/Kx7jGH0fUWPHv1/Bv5ZxhdR+pdzn/?=
- =?iso-8859-1?Q?DA5l4NEVU53eONUZywl7q4K2lcFIY9ch/ISseOOFSSzlJzjzLypQjQDZJG?=
- =?iso-8859-1?Q?rxF4qUg5FIbggShFoXxjlgQQunzGSRIwTYVmwjBiP/Pw/PIp1r/wx4PRs6?=
- =?iso-8859-1?Q?V1987A7oHtFtFBmPGje72FANVoPjUSUEOlAsaPyUfGVfUwuUzvtxkR5Rhm?=
- =?iso-8859-1?Q?7fscjgZWXuL4gXqkhpOYz6BTHQ0WRB1Eae9RJJIRvDbxjmUCc+JbaYWyLg?=
- =?iso-8859-1?Q?bnG0VMTLcSIzKZLj92SLIE7PtnjXIcrI+nNmyuY0JeNyNLOIyyi2pK/VZF?=
- =?iso-8859-1?Q?6pMPY7kOb4AN7bjw1/LrEBnLZG/6YuF/uGu1aakL/JRc8OXKZAkps3OU0I?=
- =?iso-8859-1?Q?izgqBO+HQiIxvYGahaJDhno70i2wPEfHIW2yKEmeXKsOR+DhIffBD0aTyI?=
- =?iso-8859-1?Q?Ux5UBR7VHI+OpCLx2iwczxbXGXTD4W5U4lRK84nnqRFbjQ/T26y1Ddu3ZA?=
- =?iso-8859-1?Q?OjcaH42Hb2ibzMPYWZISJ4XcGA4Q8cY7myOhsNzZ+kIQjer6PXMU6zZ1UO?=
- =?iso-8859-1?Q?6cBIcUBdNn16EHriq5Ipe8dsDRIylNycKwtmWpxMBLnnikOhUDeOyRBH8N?=
- =?iso-8859-1?Q?guFtnr8+G2xoyvL8CdSbJ6jarevKTsemjKrhzpeA0ggAt2zc1qJrNwku32?=
- =?iso-8859-1?Q?LhJ8k/ENkxxJvucvlUd/56UKIRjKy02dIwQZk+2oYCKH4g1gIkrsA7xk80?=
- =?iso-8859-1?Q?1JKAnKtPnUDvPa99AY/NirYE3DGzDgVFgiA2rkmQPsx9veRNvXlV54tOdE?=
- =?iso-8859-1?Q?JE1idQY9iICN1esBAaZd7lj2Me4IhEXpUgRXZG5i4PakIZ5VV1uIY2rNWE?=
- =?iso-8859-1?Q?JvkTjpcyD2nRMrqRaKvcsq90kMYf6B58Uz5otKsHFEUcBQIfz0Nbr0d5LU?=
- =?iso-8859-1?Q?YAiFgVm++1Vw2QjWCEQCy8fhMkp/XuvpTJWWEUt4g3hWT0e8lLx5GOygzb?=
- =?iso-8859-1?Q?58hQJ338/iO2YAOBKb1P9a5R+RobD716bxwwTqpugi2WZnAspWm6gns4RR?=
- =?iso-8859-1?Q?hy7/bx54h9owaojDJEppGPgAlXBL3OdsoZBhchE97Fr/Lyz8MgsFJLpBjE?=
- =?iso-8859-1?Q?3jPg6QqzpbPc/SMRdEpEzZ5fwX3w5f7WS/2Fp9qOy4r49zeiouTuYYLSFB?=
- =?iso-8859-1?Q?koNIf2F4DV7149m5zpp+93GymwH7JCpHn3sgfvkit598MkwYzai7+o7FBJ?=
- =?iso-8859-1?Q?MzBmjYlKw7H2TqCZCNrPOwWNgaCrYe5oM9+FT+bOcFjCW2i3NJy9qMcuE/?=
- =?iso-8859-1?Q?RFQiE3u8juuDM9Ega1FPSTWEu2bSUMRaYedq4B6XqfIJk6UuPbYQcVg6lk?=
- =?iso-8859-1?Q?PMcFgA1u81gJzr+1LSnaaBoS4MX2Blvmq5jBXB39jfUF5luMoazDPGfmZr?=
- =?iso-8859-1?Q?dKoYquliI2hDuuzGGzXURIGayfxJ/jnPrlt7sC6cY6gDARoJzL2rKlJmQT?=
- =?iso-8859-1?Q?i0OlHYgla+M1iDxDhXaP3NJlyMzyr5sUvSjUIkcLZJQCsWSzIWi9REklXt?=
- =?iso-8859-1?Q?K5ydgKB6oGSw7s+lmikQCXNo8=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ bh=uC+J2ZAQ489yNlfZGHGXmrLfkiZQ8DhinmsWS+a3ifQ=;
+ b=U42twF0ah0DcmSJ8Oy2/FKpKaLieGe+zkgH1oCgqcDAnFDbetkf24wUOirlZlVkCGON3OTI2TvW13cFqiG9KNSsIIrTNnfQXlsyHwWcOCUDa/zs+ENiCG1ww39/S8PYT1o/Bu/JnPN3m9/MgEUgbUFiCIBvz9jaiy/vQlVb+QDQ=
+Received: from DUZPR01CA0225.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b4::22) by VE1PR06MB6942.eurprd06.prod.outlook.com
+ (2603:10a6:800:1a4::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Sat, 2 Nov
+ 2024 14:43:56 +0000
+Received: from DB5PEPF00014B89.eurprd02.prod.outlook.com
+ (2603:10a6:10:4b4:cafe::1d) by DUZPR01CA0225.outlook.office365.com
+ (2603:10a6:10:4b4::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.28 via Frontend
+ Transport; Sat, 2 Nov 2024 14:43:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
+ designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.94; helo=hexagon.com; pr=C
+Received: from hexagon.com (193.8.40.94) by
+ DB5PEPF00014B89.mail.protection.outlook.com (10.167.8.197) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8114.16 via Frontend Transport; Sat, 2 Nov 2024 14:43:55 +0000
+Received: from aherlnxbspsrv01.lgs-net.com ([10.60.34.116]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+	 Sat, 2 Nov 2024 15:43:55 +0100
+From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+To: barebox@lists.infradead.org,
+	s.hauer@pengutronix.de
+Cc: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Date: Sat,  2 Nov 2024 15:43:42 +0100
+Message-Id: <20241102144342.2464331-1-johannes.schneider@leica-geosystems.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 02 Nov 2024 14:43:55.0187 (UTC) FILETIME=[A4609030:01DB2D35]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB5PEPF00014B89:EE_|VE1PR06MB6942:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: e0fe5e93-6a02-4117-39bc-08dcfb4cc707
+X-SET-LOWER-SCL-SCANNER: YES
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?aP9nO/wAi4WLDCb163/BXNxegQfbHd50+9w3Jx6ZlfI/J/k4o4VK64OU/AOR?=
+ =?us-ascii?Q?BBkWZTAPiA5RMDNNATddLAMUottLfbsk5y19bW5UEWy9QQTBAWNFJdV/1nXs?=
+ =?us-ascii?Q?luZrRyzLiS8pO0arjpWlAOfLBhxhfgQ5lyh9rq+vyYcY2yCH8OMhhpSFZ12p?=
+ =?us-ascii?Q?douHFWjtHu6gLpaFq0pFkQVGALoSUs1pTSWgv0X10h+wQZ/mxcP1jreNR54K?=
+ =?us-ascii?Q?KhOK3tPx7WgYyz7liX5SJ3KfDMAnR8Gxc7cImc8/Gw8dvq3MfDCFU7AYDvkU?=
+ =?us-ascii?Q?+oh+Gyo6cs1t+Vjer+wF/1MiQIZHJYJONsytYFysAcYRCeMd1rg5g0tzJEYc?=
+ =?us-ascii?Q?nFpcjr3BXEF7oEkSfLCo8NWOEpnYY1qBM8fYWe62LfDNg4zjRfxMAdqStRhJ?=
+ =?us-ascii?Q?qGeZ2bRl8qd//PBq5x/VL9krrBksmrLqUNB/WnkTSIyt8F++z+Qzrnb4ZH7k?=
+ =?us-ascii?Q?GguQF3V52tEQOEAZ4JELVGqD7/Tic02Ohi+z75AcLA0E6CbZzzNKphZLAenM?=
+ =?us-ascii?Q?kUbqIZy6B8s8MRfZ+cMC3NhV4trPvDojmK56DUXbGfnDpaOJvd1+lLwVl24f?=
+ =?us-ascii?Q?b9Ju4KmgsVigR2kiNte+uh1hqfWG3tOOmh4julxhxIXphKjhlFK7uOYt/DEc?=
+ =?us-ascii?Q?XqyP5t7skDI7eVzOalqlhLKgBqLm1aecfC1zkYezehIZeKj66tmViB4NSzgK?=
+ =?us-ascii?Q?YdkYiYu/CunYYsWjZ8G0e0tt4lewX4A/bXmu5E8l8LKpnWmMlfGBNzFlPCy+?=
+ =?us-ascii?Q?2u8bo6YMY3xWGLdG18Zr04Mk34JTJxtn5xoef82LzFygRC+bM7gkYYdmXYLF?=
+ =?us-ascii?Q?eskXACbRZ13VSEHGPqrKh1DR05C3tkyXARk2/2OBTp2rpnUj/iVKsHB0OeiD?=
+ =?us-ascii?Q?iba5yCWNUIU49HaqCmjczpNf+WdAOJpfTdJn8U3RXLQR+RY7yMfybdEaFEiO?=
+ =?us-ascii?Q?VelDnTpSwunV8j9yJW/Xi4778py2vaRqAPSlBcYJ33ifAvCPaiRTx3p/N9xa?=
+ =?us-ascii?Q?wuZUthaXS8N3ZnU42+S/etGdd0VcoRwxmLWzQdbYBmsB2XJSxzPU8ahrUUkJ?=
+ =?us-ascii?Q?nI3jn0VmTv2CKJ7Q2pIn+pXad8D4LsyIbf+LFCedpiXu/2hf4V3WFxIQRSLh?=
+ =?us-ascii?Q?l0DYNLd4A8I+FwG59VrrwUmwgZUv4/Esi6sA9Nd9smSivy+bYuzF6Vnb8eC3?=
+ =?us-ascii?Q?p4Lx4f60ilVCoX+zR81x9MqGce5Dd6Kz2mKC0Ms5gkUjc1jKVae+Q3uKt9Gr?=
+ =?us-ascii?Q?Rbhwgk9lys6t28wnZoD36xh1WQa+hqaYuIinvTSSig/FKsmax5mxszg3GaFu?=
+ =?us-ascii?Q?hNktCt6JO7JqguTxzv7eBbgShY9CSqhDXhaJxmbzCNmbkqLFGFQB4HhVJjM8?=
+ =?us-ascii?Q?4X5Iqi7ggu8tP4pj7j+l6jSkXKmV/wNaJMDZFRsb0ur+Jjauig=3D=3D?=
+X-Forefront-Antispam-Report: CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR06MB7521.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0a1b3df-2248-4edf-a348-08dcfa3816b7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Nov 2024 05:43:18.5423
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2024 14:43:55.4524
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7d2D53/V6Wks3qjSuXsIpljgt9g8+FOBMrE1tABF7ula+jC895A88VHRg+adC5ex2S/4BUkk4QBlan0auTd1Wo2VhJgjCXoy0HI+F9uxAc/c8KYYIojUrNo8Jw3JIxat
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR06MB6815
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0fe5e93-6a02-4117-39bc-08dcfb4cc707
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource: DB5PEPF00014B89.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR06MB6942
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241031_224329_335666_A2840BAB 
-X-CRM114-Status: UNSURE (   8.27  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241102_074402_413096_8BCB3361 
+X-CRM114-Status: GOOD (  11.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -172,49 +146,120 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] common: add custom autoboot_abort_key
+Subject: [PATCH v2] common: add custom autoboot_abort_key
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hoi,=0A=
-=0A=
-> =0A=
-> Having a custom key to stop autoboot is generally fine. Defining the key=
-=0A=
-> at compile time not so.=0A=
->=0A=
-=0A=
-i was at first wondering "then how are we supposed to configure it" but loo=
-king=0A=
-through the code how 'global_autoboot_abort_key=3D1' for ctrl-c was nowhere=
- to be=0A=
-found in the codebase, i realized that the <any> is just the=0A=
-global.autoboot_abort_key no-one ever set to anything else :-D=0A=
-=0A=
-... and i should have set it up in a way that you'd feed barebox an=0A=
-env/nv/autoboot_abort_key=0A=
-with 'any', 'ctrl-c' or the one key -- right?=0A=
-=0A=
->=0A=
-> Instead we could convert autoboot_abort_key from=0A=
-> globalvar_add_simple_enum() to dev_add_param_string(&global_device,...)=
-=0A=
-> the set function could then accept "any", "ctrl-c" or any other single=0A=
-> digit string.=0A=
->=0A=
-=0A=
-got it - i'll rework it and send out a v2 :-)=0A=
-=0A=
-> Sascha=0A=
-> =0A=
-> --=0A=
-=0A=
-=0A=
-gru=DF=0A=
-Johannes=
+Extend the autoboot_abort_key handling to alow custom
+abort keys.
+
+Allowed values to set in the env/nv/autoboot_abort_key
+are any single ascii charater corresponding to the desired keyboard
+key, or the strings 'any' or 'ctrl-c'
+
+Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+---
+ common/startup.c | 53 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 31 insertions(+), 22 deletions(-)
+
+diff --git a/common/startup.c b/common/startup.c
+index 47b70a7..125bcf1 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -93,11 +93,7 @@ static int load_environment(void)
+ }
+ environment_initcall(load_environment);
+ 
+-static int global_autoboot_abort_key;
+-static const char * const global_autoboot_abort_keys[] = {
+-	"any",
+-	"ctrl-c",
+-};
++static char *global_autoboot_abort_key;
+ static int global_autoboot_timeout = 3;
+ 
+ static const char * const global_autoboot_states[] = {
+@@ -187,24 +183,22 @@ enum autoboot_state do_autoboot_countdown(void)
+ 	menu_exists = stat(MENUFILE, &s) == 0;
+ 
+ 	if (menu_exists) {
+-		printf("\nHit m for menu or %s to stop autoboot: ",
+-		       global_autoboot_abort_keys[global_autoboot_abort_key]);
+ 		abortkeys = "m";
+-	} else {
+-		printf("\nHit %s to stop autoboot: ",
+-		       global_autoboot_abort_keys[global_autoboot_abort_key]);
+ 	}
+ 
+-	switch (global_autoboot_abort_key) {
+-	case 0:
++	if (!global_autoboot_abort_key ||
++	    !strcmp(global_autoboot_abort_key, "any"))
+ 		flags |= CONSOLE_COUNTDOWN_ANYKEY;
+-		break;
+-	case 1:
++	else if (!strcmp(global_autoboot_abort_key, "ctrl-c"))
+ 		flags |= CONSOLE_COUNTDOWN_CTRLC;
+-		break;
+-	default:
+-		break;
+-	}
++	else
++		abortkeys = xasprintf("%s%s",
++		                      (abortkeys)?abortkeys:"",
++		                      global_autoboot_abort_key);
++
++	printf("\nHit %s%s to stop autoboot: ",
++	       (menu_exists)?"m for menu or ":"",
++	       (global_autoboot_abort_key)?global_autoboot_abort_key:"any");
+ 
+ 	command_slice_release();
+ 	ret = console_countdown(global_autoboot_timeout, flags, abortkeys,
+@@ -221,12 +215,27 @@ enum autoboot_state do_autoboot_countdown(void)
+ 	return autoboot_state;
+ }
+ 
++static int autoboot_abort_key_set(struct param_d *p, void *priv)
++{
++	if (!strcmp(global_autoboot_abort_key, "any"))
++		return 0;
++	if (!strcmp(global_autoboot_abort_key, "ctrl-c"))
++		return 0;
++
++	if (strlen(global_autoboot_abort_key) != 1)
++		return -EINVAL;
++
++	return 0;
++}
++
+ static int register_autoboot_vars(void)
+ {
+-	globalvar_add_simple_enum("autoboot_abort_key",
++	dev_add_param_string(&global_device,
++				  "autoboot_abort_key",
++				  autoboot_abort_key_set,
++				  NULL,
+ 				  &global_autoboot_abort_key,
+-                                  global_autoboot_abort_keys,
+-				  ARRAY_SIZE(global_autoboot_abort_keys));
++				  NULL);
+ 	globalvar_add_simple_int("autoboot_timeout",
+ 				 &global_autoboot_timeout, "%u");
+ 	globalvar_add_simple_enum("autoboot",
+@@ -402,6 +411,6 @@ void shutdown_barebox(void)
+ BAREBOX_MAGICVAR(global.autoboot,
+                  "Autoboot state. Possible values: countdown (default), abort, menu, boot");
+ BAREBOX_MAGICVAR(global.autoboot_abort_key,
+-                 "Which key allows to interrupt autoboot. Possible values: any, ctrl-c");
++                 "Which key allows to interrupt autoboot. Possible values: 'any', 'ctrl-c' or any other single ascii character.");
+ BAREBOX_MAGICVAR(global.autoboot_timeout,
+                  "Timeout before autoboot starts in seconds");
+-- 
+2.43.0
+
 
 
