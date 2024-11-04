@@ -1,70 +1,69 @@
-Delivery-date: Mon, 04 Nov 2024 13:07:42 +0100
+Delivery-date: Mon, 04 Nov 2024 13:07:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t7vrw-004jXD-38
+	id 1t7vry-004jXY-0t
 	for lore@lore.pengutronix.de;
-	Mon, 04 Nov 2024 13:07:42 +0100
+	Mon, 04 Nov 2024 13:07:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t7vrx-000255-Hy
-	for lore@pengutronix.de; Mon, 04 Nov 2024 13:07:42 +0100
+	id 1t7vry-00025a-W3
+	for lore@pengutronix.de; Mon, 04 Nov 2024 13:07:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KZt7ixDsGJRuvuQCrd5CHNzvGVG2kRTibpZ97cBigBM=; b=LtlhSsDSfHmdCwGaZUMtnduWBv
-	0Yfliihs0lY9DF2jcZgDpfU1i92iblS0w5Wu9n8W/83hG7jGtfhgZgkjvOdTUymGd0a5QF8lWqLhv
-	hzCLlfxlEq1kWI2L1D6JBruMany/HyUxaqUOvVbPU/LdTAHbaW7H/qpP6xSeB9YFFtucRVA17RYf4
-	joPQM3LrWadQoEX/vnZ7gTLcp1dljMGfCof4vSnA+I9qaTUA4diQ/TB02nwl5Piajr1Dvvxdt420T
-	zypKfEAr6ufv8d5gznL1ppdvpFHsqgs6uHuH6PBjzhLIpUyjg4Ai+a+CMSmZX2tGmbjYn4Dqf+ako
-	zN/9Id/w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=PA8Kmd2KwWRljc1XoxR+G0/z+qSbSLS37CBQLfANdEA=; b=RxN6zAo4XLlh2+M9qVY4aZIueH
+	9C7S93G8xPAfZ+Tv2ldE00lYiHEn6WntSj4Z6gnBlPp/nCocIdF8U72RGPHM1CygzZP8JM4t1o7qG
+	lX+QitfjpCWZ23ZK+v1DFWnZheX3/gCO9n/ozgOOLaLTgWhbauVD1p0bfyT9+SZuqYDTP18SYYE+F
+	a4sYKMAbY4A2ZwTIabhiEsWaGm66vVfb2g8KzRLKWSn35b2THS5OKUNqRzLCTjQjwM2Baoi0dV2vf
+	aKFRuvyarBsGZ5rpUrxThX9zEYI4NW9IYdtkG+l7/KIMs+RgX9SiAvmJDI4e5xdfyP9uViiGkUdia
+	SRyYbIZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t7vrT-0000000DdpK-1RtV;
-	Mon, 04 Nov 2024 12:07:11 +0000
+	id 1t7vrS-0000000Ddp7-33o0;
+	Mon, 04 Nov 2024 12:07:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t7vfz-0000000Dbwq-2aYJ
+	id 1t7vfG-0000000Dbs5-2xqg
 	for barebox@lists.infradead.org;
-	Mon, 04 Nov 2024 11:55:21 +0000
+	Mon, 04 Nov 2024 11:54:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t7vfy-00009X-F9; Mon, 04 Nov 2024 12:55:18 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t7vfE-0008Qg-JN; Mon, 04 Nov 2024 12:54:32 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t7vfy-001yQg-0h;
-	Mon, 04 Nov 2024 12:55:18 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1t7vfy-00DTFE-0Q;
-	Mon, 04 Nov 2024 12:55:18 +0100
-Date: Mon, 4 Nov 2024 12:55:18 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t7vfE-001yPO-0v;
+	Mon, 04 Nov 2024 12:54:32 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t7vfE-00Gb8F-0l;
+	Mon, 04 Nov 2024 12:54:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <Zyi2JpuQYAb_yHCW@pengutronix.de>
-References: <20241102144342.2464331-1-johannes.schneider@leica-geosystems.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+To: barebox@lists.infradead.org, 
+ Johannes Schneider <johannes.schneider@leica-geosystems.com>
 In-Reply-To: <20241102144342.2464331-1-johannes.schneider@leica-geosystems.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+References: <20241102144342.2464331-1-johannes.schneider@leica-geosystems.com>
+Message-Id: <173072127223.3955948.9765428077303380609.b4-ty@pengutronix.de>
+Date: Mon, 04 Nov 2024 12:54:32 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241104_035519_683574_CBE774ED 
-X-CRM114-Status: GOOD (  24.63  )
+X-CRM114-CacheID: sfid-20241104_035434_779623_85532060 
+X-CRM114-Status: UNSURE (   7.70  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,7 +89,8 @@ Subject: Re: [PATCH v2] common: add custom autoboot_abort_key
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Sat, Nov 02, 2024 at 03:43:42PM +0100, Johannes Schneider wrote:
+
+On Sat, 02 Nov 2024 15:43:42 +0100, Johannes Schneider wrote:
 > Extend the autoboot_abort_key handling to alow custom
 > abort keys.
 > 
@@ -98,67 +98,16 @@ On Sat, Nov 02, 2024 at 03:43:42PM +0100, Johannes Schneider wrote:
 > are any single ascii charater corresponding to the desired keyboard
 > key, or the strings 'any' or 'ctrl-c'
 > 
-> Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-> ---
->  common/startup.c | 53 ++++++++++++++++++++++++++++--------------------
->  1 file changed, 31 insertions(+), 22 deletions(-)
-> 
-> diff --git a/common/startup.c b/common/startup.c
-> index 47b70a7..125bcf1 100644
-> --- a/common/startup.c
-> +++ b/common/startup.c
-> @@ -93,11 +93,7 @@ static int load_environment(void)
->  }
->  environment_initcall(load_environment);
->  
-> -static int global_autoboot_abort_key;
-> -static const char * const global_autoboot_abort_keys[] = {
-> -	"any",
-> -	"ctrl-c",
-> -};
-> +static char *global_autoboot_abort_key;
->  static int global_autoboot_timeout = 3;
->  
->  static const char * const global_autoboot_states[] = {
-> @@ -187,24 +183,22 @@ enum autoboot_state do_autoboot_countdown(void)
->  	menu_exists = stat(MENUFILE, &s) == 0;
->  
->  	if (menu_exists) {
-> -		printf("\nHit m for menu or %s to stop autoboot: ",
-> -		       global_autoboot_abort_keys[global_autoboot_abort_key]);
->  		abortkeys = "m";
-> -	} else {
-> -		printf("\nHit %s to stop autoboot: ",
-> -		       global_autoboot_abort_keys[global_autoboot_abort_key]);
->  	}
->  
-> -	switch (global_autoboot_abort_key) {
-> -	case 0:
-> +	if (!global_autoboot_abort_key ||
-> +	    !strcmp(global_autoboot_abort_key, "any"))
->  		flags |= CONSOLE_COUNTDOWN_ANYKEY;
-> -		break;
-> -	case 1:
-> +	else if (!strcmp(global_autoboot_abort_key, "ctrl-c"))
->  		flags |= CONSOLE_COUNTDOWN_CTRLC;
-> -		break;
-> -	default:
-> -		break;
-> -	}
-> +	else
-> +		abortkeys = xasprintf("%s%s",
-> +		                      (abortkeys)?abortkeys:"",
-> +		                      global_autoboot_abort_key);
+> [...]
 
-This memory is never freed. I converted it into a static array while
-applying.
+Applied, thanks!
 
-Sascha
+[1/1] common: add custom autoboot_abort_key
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8b559bd63205 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
