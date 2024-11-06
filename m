@@ -1,85 +1,85 @@
-Delivery-date: Wed, 06 Nov 2024 16:26:18 +0100
+Delivery-date: Wed, 06 Nov 2024 16:26:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8hvE-005Zif-1p
+	id 1t8hvF-005Zj2-38
 	for lore@lore.pengutronix.de;
-	Wed, 06 Nov 2024 16:26:17 +0100
+	Wed, 06 Nov 2024 16:26:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8hvF-0002Mm-4m
-	for lore@pengutronix.de; Wed, 06 Nov 2024 16:26:17 +0100
+	id 1t8hvG-0002Nb-GN
+	for lore@pengutronix.de; Wed, 06 Nov 2024 16:26:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=4CPwqs5Z2daPn1faEHnUXFTDfaqHq6bitywFsJmJ2Co=; b=aNOcp9vhThqpxY
-	3P5o7DqmrY4BHnZuZngubRuGrN/cme3x6IhHTwZSygTHYZU5WIVQWxSG42zvKNkOVgMRMNw0IuamZ
-	psQn9IKJLGuDfCLmVH2TjR6v9SIQp4sjmJOYMF9cNWo6lPzpGXXSSBvsVX/YUPn3uIP7tAu4vj5+Q
-	2rUJd1fanS/2YgUpJYkW7v9CTOtFCbuT5mg2uyHwl5PLjb60RcJwVxPui0QyittqUm/otdUaWE64G
-	s1YScvcoBijzp8vgtnMJlrjouGLLKUSFpslvvdfpnTD/48/fjVNLN1eyH8JgCsxFP+czN3e6/nSAi
-	rfJOpATsqUIxSFiLcPKQ==;
+	List-Owner; bh=UlENrYdDqzIsMue/WvLn358AGZlqdWtlcc/fUEJG54w=; b=kJWaCmDKN1UTfh
+	B0kuUwG1aDA4Rozm/P8YQzKausR4Y9vHcD6E4tj98XpcqsJje4lZgkqqQ9DKOPOp2m79mXzOPLsfa
+	k0MjP5brrXKpKBuco4NOiL5tZeCgphjwwX817oyCvrMj88yQqW9YYLdYlLdro3vyHfaBp57jx8KFa
+	Kv6vbkrq+aJz8gLr+H4vZ1TElnyOv9fymiOGssYI9qa5QwKgRiWOYvIrOP46bXPZQzlel4ptReuts
+	6DPLJpbWEPQNbeolQkl5zL8dMG2NFCLFyWlJqIdm6YUj12AKjlSau7LMLKM9CP6qknoYa0jKCQTM1
+	pPdyskkA26c0Dd+PciOw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8hup-00000003nup-11Fj;
-	Wed, 06 Nov 2024 15:25:51 +0000
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+	id 1t8hum-00000003ntC-2EdE;
+	Wed, 06 Nov 2024 15:25:48 +0000
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8huj-00000003nrE-3bWF
+	id 1t8huj-00000003nqu-0ce5
 	for barebox@lists.infradead.org;
-	Wed, 06 Nov 2024 15:25:47 +0000
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-37d538fe5f2so4635116f8f.2
-        for <barebox@lists.infradead.org>; Wed, 06 Nov 2024 07:25:45 -0800 (PST)
+	Wed, 06 Nov 2024 15:25:46 +0000
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-37d4ba20075so4707374f8f.0
+        for <barebox@lists.infradead.org>; Wed, 06 Nov 2024 07:25:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730906744; x=1731511544; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1730906743; x=1731511543; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4CPwqs5Z2daPn1faEHnUXFTDfaqHq6bitywFsJmJ2Co=;
-        b=ItNSCeNV4WGwemZyOSZgxd4ArMw5jxXrSQNhHYLjLHdIyNw7UpZfdftOQ4BrDHoPVA
-         6mMQymyGdaaxL/HjqfR2prXVeAHelP/2zva50HowuCJEwZ3LJdlxEFIYevypYUFAEKQa
-         0Z7r5c8PcUXJ8iOWtVYTWwC4KTeiJj2RxfI/7djLWY7/hHaoJ36nfrT5DsAaq3vDb3Nf
-         6HtT2GZZkGflQJaWoWPLl3ZUpeQxFrxDDgQ9A/zXfbzBUCihWmidVtD0krpGQa6uWhND
-         EDg87KmhnWIedHx8w8/q2ODvPnwNjsXTXeev6xGnVaPE07/fEHMVTdmZjTyjmiSQf59Q
-         6+pw==
+        bh=UlENrYdDqzIsMue/WvLn358AGZlqdWtlcc/fUEJG54w=;
+        b=JeZS9v+PyK3K3ZLFfS6M7Q1ERqfPi+AfS3lFJjwLc9BsybbKZegL7e+whOZsMYOltu
+         wkCwq7DA+6DNf+298j6wugt43VMR7zloyaLNVxwj20yPLxYNIVVNvkAvNUKWCXXFx6tu
+         w7yUYwtwa9LnrvACDi08y7t1vPvv4GvbxdEY+15NyKzsflcAwhVrshHi0Ofq/HimfxE3
+         f//zyohK5a4Fp+pqopmtlDRl1aqBQJ+lLPyjQt+OuZ0TDsla+/4Njfv2/THQw1ZvSPZS
+         JATenf1BP5E2KrDSVd6k4Bh1M4sTZfLD4h8aMMkH7mLDIF0wExY+Rpd5ZJ8pNW7ewt3a
+         2ziw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730906744; x=1731511544;
+        d=1e100.net; s=20230601; t=1730906743; x=1731511543;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4CPwqs5Z2daPn1faEHnUXFTDfaqHq6bitywFsJmJ2Co=;
-        b=jz4jTkqmPsQVFVpJH4DIY/Fc9CWvc8mmuogNX+0CMfwBSwbDEeP+Rl2fXlPFw03z48
-         DFIe/0d4MR8J1GNZExnKOXPqgyj9BmXH3uF701endLGHIwQI9XE/mxpRvUBeAHRd4YlF
-         gdUBI7rPxA1p5LJ7RdYBwnCluJSLJzNC8Ma6UtV9CoFhyNSoqiDQmofxanKJP15CIElZ
-         LEhO00Pgega4JxeN9QpveoIuM+V9avi3letZaZgnTJ03+AGh0sTDij/wl+GKQubbsqTI
-         XwqV9ig5aDnKAYpPAOwg4xXPTC3HFTrkQbc7PhzT3sHP1n5+yfDRpTHvJ4fkYWMsL/jh
-         mXUg==
-X-Gm-Message-State: AOJu0YxuoqdLE/fVkxxIwr0ppQSA67qAL3wktaBa99d2NMULnJtSp5Mc
-	l0xsngH5D/fNnr+f9s1IemVOZFF3MkEc55MQmbRZrxkHnRPgHtLHC5IjkHKIKpE=
-X-Google-Smtp-Source: AGHT+IEmZQFY3eIP3YFCYssMUgcnkeq4HtMupNFtmFpvCa8vSGh2i2MJz1QUr/HbBxRrwkLCRTa8+A==
-X-Received: by 2002:a05:6000:2188:b0:37d:5231:f539 with SMTP id ffacd0b85a97d-381bea270b7mr15987105f8f.54.1730906743564;
-        Wed, 06 Nov 2024 07:25:43 -0800 (PST)
+        bh=UlENrYdDqzIsMue/WvLn358AGZlqdWtlcc/fUEJG54w=;
+        b=g/NtvYVigkhD3oBz4pxZ7I/NRcxAXMQoD9kArjOIWKYNX6e+SRoFzsNRtndfPkIvJk
+         MuWaI6aZLRwMmzSMyW6TsDdH7N/ivQwGFjHcYWxIa/YUSvq6QYZlsyZZRwI5o08/Bctv
+         Vc3pFWarGV4olRX4/SvJfTjqVh0JfsuKY7D5aQhFdCgTPNAs/MWUuVzkNLNVnvIbgdjd
+         3ELhyhdQDdfw+fUheGypy3Zo8CgPPcDAaV4EvD9Ix6VwnpKcacFKglZY4RhVTkS1vWa0
+         zvVrtOKLdh+tHh2v9cRWaG7bV0tCg/5KE6udAOVmcGF14TKy+Ug6MY3dr8a6co/WV1yZ
+         34yw==
+X-Gm-Message-State: AOJu0YwgToIpIwzJ4YOxlX66hj+4FbhNsVgnpg5v4x5EDiAxnpwVgX0D
+	VIwYYDw2onoqTWbULNDij86tbBOQMdzg8X6jw2CRpQP80hKlycy0BNC0kTvIm7A=
+X-Google-Smtp-Source: AGHT+IFv5LIExwgMdxVd2yIRUAp6cvdbpuV+TQg8gsiS+sUd9H3A+bVfUje6ptd41XSENli5GlIecg==
+X-Received: by 2002:a05:6000:270b:b0:381:cffc:d419 with SMTP id ffacd0b85a97d-381cffcd7d6mr11793334f8f.36.1730906742671;
+        Wed, 06 Nov 2024 07:25:42 -0800 (PST)
 Received: from kaliss.. ([2a01:e0a:1b8:9000:8227:2526:4e85:b6ad])
         by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6b58d1sm26781685e9.11.2024.11.06.07.25.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 07:25:43 -0800 (PST)
+        Wed, 06 Nov 2024 07:25:42 -0800 (PST)
 From: Sebastien Bourdelin <sebastien.bourdelin@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed,  6 Nov 2024 16:25:25 +0100
-Message-ID: <20241106152525.856201-5-sebastien.bourdelin@gmail.com>
+Date: Wed,  6 Nov 2024 16:25:24 +0100
+Message-ID: <20241106152525.856201-4-sebastien.bourdelin@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106152525.856201-1-sebastien.bourdelin@gmail.com>
 References: <20241106152525.856201-1-sebastien.bourdelin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241106_072545_923393_2C8552B1 
-X-CRM114-Status: GOOD (  11.11  )
+X-CRM114-CacheID: sfid-20241106_072545_267713_913501B9 
+X-CRM114-Status: GOOD (  13.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,46 +103,92 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/4] mci: bcm2835: set timeout value to 100ms
+Subject: [PATCH v2 3/4] mci: sdhci: use the busy_timeout value in the sdhci_wait_idle functions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
 
-As mentionned in the Raspberry Pi4 bootrom Changelog [1]:
-"Increase timeout of early SD/EMMC commands to 100ms".
-The BCM2711 SDHCI can take up to 100ms to complete a command.
+The busy_timeout value is used by the sdhci_wait_idle and
+sdhci_wait_idle_data functions to define the timeout to wait on when
+send a command to the controller.
 
-Without this change, we had noticed that Barebox sometime stay stucked
-on a timeout error while trying to boot Linux from the eMMC.
-
-[1] https://github.com/raspberrypi/rpi-eeprom/blob/master/firmware-2711/release-notes.md#2022-03-10---promote-the-2022-03-10-beta-release-to-lateststable
+The default value remains unchanged and is set to 10ms.
 
 Signed-off-by: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
 
 ---
 Changes v1 -> v2:
-  - cmd can't be null, remove the check (suggested by Sascha Hauer)
+  - rename SDHCI_CMD_DEFAULT_BUSY_TIMEOUT to SDHCI_CMD_DEFAULT_BUSY_TIMEOUT_MS (suggested by Ahmad Fatoum)
 
 Signed-off-by: Sebastien Bourdelin <sebastien.bourdelin@gmail.com>
 ---
- drivers/mci/mci-bcm2835.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mci/sdhci.c | 14 ++++++++++++--
+ drivers/mci/sdhci.h |  2 ++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-index cbf99ee7ca..ff4c6d803c 100644
---- a/drivers/mci/mci-bcm2835.c
-+++ b/drivers/mci/mci-bcm2835.c
-@@ -128,6 +128,9 @@ static int bcm2835_mci_request(struct mci_host *mci, struct mci_cmd *cmd,
- 		block_data |= data->blocksize;
- 	}
+diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
+index fe033583ad..9b04101c0f 100644
+--- a/drivers/mci/sdhci.c
++++ b/drivers/mci/sdhci.c
+@@ -796,9 +796,11 @@ void sdhci_enable_clk(struct sdhci *host, u16 clk)
+ int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd, struct mci_data *data)
+ {
+ 	u32 mask;
++	unsigned timeout_ms;
+ 	int ret;
  
-+	/* BCM2xxx SDHCI might take up to 100ms to complete a command */
-+	cmd->busy_timeout = 100;
+ 	mask = SDHCI_CMD_INHIBIT_CMD;
++	timeout_ms = SDHCI_CMD_DEFAULT_BUSY_TIMEOUT_MS;
+ 
+ 	if (data || (cmd && (cmd->resp_type & MMC_RSP_BUSY)))
+ 		mask |= SDHCI_CMD_INHIBIT_DATA;
+@@ -806,7 +808,10 @@ int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd, struct mci_data *da
+ 	if (cmd && cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
+ 		mask &= ~SDHCI_CMD_INHIBIT_DATA;
+ 
+-	ret = wait_on_timeout(10 * MSECOND,
++	if (cmd && cmd->busy_timeout != 0)
++		timeout_ms = cmd->busy_timeout;
 +
- 	ret = sdhci_wait_idle_data(&host->sdhci, cmd);
- 	if (ret)
- 		return ret;
++	ret = wait_on_timeout(timeout_ms * MSECOND,
+ 			!(sdhci_read32(host, SDHCI_PRESENT_STATE) & mask));
+ 
+ 	if (ret) {
+@@ -821,14 +826,19 @@ int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd, struct mci_data *da
+ int sdhci_wait_idle_data(struct sdhci *host, struct mci_cmd *cmd)
+ {
+ 	u32 mask;
++	unsigned timeout_ms;
+ 	int ret;
+ 
+ 	mask = SDHCI_CMD_INHIBIT_CMD | SDHCI_CMD_INHIBIT_DATA;
++	timeout_ms = SDHCI_CMD_DEFAULT_BUSY_TIMEOUT_MS;
+ 
+ 	if (cmd && cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
+ 		mask &= ~SDHCI_CMD_INHIBIT_DATA;
+ 
+-	ret = wait_on_timeout(10 * MSECOND,
++	if (cmd && cmd->busy_timeout != 0)
++		timeout_ms = cmd->busy_timeout;
++
++	ret = wait_on_timeout(timeout_ms * MSECOND,
+ 			!(sdhci_read32(host, SDHCI_PRESENT_STATE) & mask));
+ 
+ 	if (ret) {
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index 5de85239b1..2a8456545d 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -200,6 +200,8 @@
+ #define SDHCI_MAX_DIV_SPEC_200	256
+ #define SDHCI_MAX_DIV_SPEC_300	2046
+ 
++#define SDHCI_CMD_DEFAULT_BUSY_TIMEOUT_MS 10
++
+ struct sdhci {
+ 	u32 (*read32)(struct sdhci *host, int reg);
+ 	u16 (*read16)(struct sdhci *host, int reg);
 -- 
 2.47.0
 
