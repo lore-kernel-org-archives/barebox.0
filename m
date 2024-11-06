@@ -1,90 +1,59 @@
-Delivery-date: Wed, 06 Nov 2024 14:34:29 +0100
+Delivery-date: Wed, 06 Nov 2024 15:14:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8gB2-005Xlt-19
+	id 1t8gnL-005YMi-07
 	for lore@lore.pengutronix.de;
-	Wed, 06 Nov 2024 14:34:29 +0100
+	Wed, 06 Nov 2024 15:14:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8gB2-0000C1-VD
-	for lore@pengutronix.de; Wed, 06 Nov 2024 14:34:29 +0100
+	id 1t8gnL-0004FR-Al
+	for lore@pengutronix.de; Wed, 06 Nov 2024 15:14:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:
-	From:Subject:Cc:Message-Id:Date:Content-Type:Content-Transfer-Encoding:
-	Mime-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=A7TgnYYWy0F0fWRv3HOw3BSoIvXmvi4ZMuefTQmSC18=; b=rPiX0CZw7aMeMbrJasFdDt2jJ4
-	jcpfg8Y69Jy/8xbbUvYNwOrPYhTHVEM5AkDTh14P0JG/TQSBfWNLsL+xjR6d4cGRoduqZKp/FZaSL
-	OcE61aqVOw3b1qUyyPhD1dEjkMoGNHI7DS0QDOghWm7bT9ExcprlgJj91ZJfgb6ckQokzl3toPnbc
-	GB92ZP9BaJOi/O0QsrrVbhsioIBNUGDGYbzwp4PsLucKsLQblnATnCctLK5o2LuHzuynUjULY3nzQ
-	o0dJnAi0BBFyHwiKzwl18r9Gdwao2+sNvpq1Sa7X7XI1V3dDPBTg9TW8TdXLE+kcQxR3dfaeuh9KN
-	b/XcPAJw==;
+	bh=4W1QWI8IMFtozYnNyMZyWR+bgnSq2PclPfvcr2bmIc8=; b=MkkyK+vz41zC1DD+fXTKMmMtpV
+	m00U9jhBrSmZot4V39sAgk6rFZJcljxQLDM8WUVi1kNOdRg+QRNQuw7l/KdN/WndpKXGV2H1Bz/7z
+	Ft8QdUS8hAGC/bh6WeFN+EHpUai/UMdXcNiKYl0NOWIJLxtDU7MjD8CVeKJeFqQqxdT36Xpk7xDjJ
+	Gk9P3o5WVmm7FsEqqqtGTpeVCTehe3fh59jlm0dfKVDo2OU4AT5PcIaSS1YHzZFCiHUbu+UlMQik0
+	lBH616DwrkiOMiy0emyBXzUb1vzxTX0aXkI1ZNxe99PdTDIlLtdKoJR67bg3kUViXm6DSyntO39Ax
+	YVXC6IWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8gAP-00000003QqV-378j;
-	Wed, 06 Nov 2024 13:33:49 +0000
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+	id 1t8gmp-00000003YS6-2u62;
+	Wed, 06 Nov 2024 14:13:31 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8fbe-00000003Knp-14hq
+	id 1t8gXP-00000003Vum-3ivF
 	for barebox@lists.infradead.org;
-	Wed, 06 Nov 2024 12:57:55 +0000
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so56140545e9.3
-        for <barebox@lists.infradead.org>; Wed, 06 Nov 2024 04:57:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730897872; x=1731502672; darn=lists.infradead.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A7TgnYYWy0F0fWRv3HOw3BSoIvXmvi4ZMuefTQmSC18=;
-        b=YDcCnlBkQlBfb3okE1fTlNXdo1oetIyd6826V04KLEgZHjt9g5UeMtHjZ9z4ZlKNCy
-         C8QnVv9LQIc5HrNP5rrCfl/JsDjKmepEpgbLWHCn3t1/+allzNz2Ts5I6Ddtz6Jzi5lL
-         G4AB403Uvh6WenvN4MPKIvMfipf7LlY675nRAxdmaZeAekN6Pe0XQRAUodY5+xK75AV5
-         JEJNnzRFfejpMLF1VWs+YdygVmGqddDgJLDR348yx38+RDMIFmm54weZuCUR5glkzj3q
-         wjC38uqubJXm3KIbjfeuO0JMHX3fqeSqeS0GL1dlvgxd6V97XkpBdGca6/g97KpXefQF
-         /SCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730897872; x=1731502672;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=A7TgnYYWy0F0fWRv3HOw3BSoIvXmvi4ZMuefTQmSC18=;
-        b=uZKcCU2a3YmEGoWrAqjS7CW0WC50ImJooaniL0LktJ1Ftrg+WWmZnBx3iaxygUez9G
-         Flq35r1733hQ8LmNKZju2UjtcrsqcX/bbkVvHwH7mpsjAz2Y/rwL6KA+rhkOQNp9MUDE
-         Ta2M/AkO4+9fysAu4a2fVmKmJSYh4qh9zeu3SeeYV3EyVjczdJAIjpBKG9EYOBnZPtA8
-         M+wrCXXIe85MDz8QWYv3byALPLBk5CdmBmsyfbzoDVXSZ21mDBoaeU3DESQt6Mc34w01
-         Q/BU4EHoeB6KXJiXEsocU7TstbxW85D5tQ3BV02OrOYDxZCAm3IoWEw0e2biOao02Myq
-         h9Iw==
-X-Gm-Message-State: AOJu0Yz2QlahXSpSFbB9gpBEDgwmL3JU9heru+6yHXO2sEYBRB3U+SdY
-	NxOCDTaBWEOQ9ukSzErDj/sf6IIhXeraSvM17fBfhc23Zgehw5OTKWg1gQDp
-X-Google-Smtp-Source: AGHT+IFiz+ZIBsmD2ojqdXHSBxebYBYnQsQ/Lnod0JUG5naDXK2e3XHAcvTg5HU1x+aH+XY1G2lI9Q==
-X-Received: by 2002:a05:6000:1449:b0:378:7f15:d51e with SMTP id ffacd0b85a97d-381c7ab29d1mr16590459f8f.43.1730897872104;
-        Wed, 06 Nov 2024 04:57:52 -0800 (PST)
-Received: from localhost ([2a01:e0a:1b8:9000:8227:2526:4e85:b6ad])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10ea7a1sm18858452f8f.62.2024.11.06.04.57.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2024 04:57:51 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 06 Nov 2024 13:57:51 +0100
-Message-Id: <D5F434LTU1LZ.1KK4GTAAYPQEM@gmail.com>
-Cc: <barebox@lists.infradead.org>, <oss-contrib@rtone.fr>, "Sebastien
- Bourdelin" <sebastien.bourdelin@rtone.fr>
-From: "Sebastien Bourdelin" <sebastien.bourdelin@gmail.com>
-To: "Sascha Hauer" <s.hauer@pengutronix.de>
-X-Mailer: aerc 0.18.2
+	Wed, 06 Nov 2024 13:57:38 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1t8gXM-0002VX-0x; Wed, 06 Nov 2024 14:57:32 +0100
+Message-ID: <8d4414f2-0fef-4a67-bf92-72ee4a558d9e@pengutronix.de>
+Date: Wed, 6 Nov 2024 14:57:31 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Sebastien Bourdelin <sebastien.bourdelin@gmail.com>,
+ barebox@lists.infradead.org
+Cc: oss-contrib@rtone.fr, Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
 References: <20241031092721.763280-1-sebastien.bourdelin@gmail.com>
- <20241031092721.763280-5-sebastien.bourdelin@gmail.com>
- <Zyi9nvr3acntKtkc@pengutronix.de>
-In-Reply-To: <Zyi9nvr3acntKtkc@pengutronix.de>
+ <20241031092721.763280-2-sebastien.bourdelin@gmail.com>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20241031092721.763280-2-sebastien.bourdelin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241106_045754_318189_F0B9600C 
-X-CRM114-Status: GOOD (  22.47  )
+X-CRM114-CacheID: sfid-20241106_055735_964791_6DD8BE2F 
+X-CRM114-Status: GOOD (  15.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,65 +71,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 4/4] mci: bcm2835: set timeout value to 100ms
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/4] mci: add a busy_timeout member to the struct mci_cmd
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon Nov 4, 2024 at 1:27 PM CET, Sascha Hauer wrote:
-> On Thu, Oct 31, 2024 at 10:27:21AM +0100, Sebastien Bourdelin wrote:
-> > From: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
-> >=20
-> > As mentionned in the Raspberry Pi4 bootrom Changelog [1]:
-> > "Increase timeout of early SD/EMMC commands to 100ms".
-> > The BCM2711 SDHCI can take up to 100ms to complete a command.
-> >=20
-> > Without this change, we had noticed that Barebox sometime stay stucked
-> > on a timeout error while trying to boot Linux from the eMMC.
-> >=20
-> > [1] https://github.com/raspberrypi/rpi-eeprom/blob/master/firmware-2711=
-/release-notes.md#2022-03-10---promote-the-2022-03-10-beta-release-to-lates=
-tstable
-> >=20
-> > Signed-off-by: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
-> > ---
-> >  drivers/mci/mci-bcm2835.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >=20
-> > diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-> > index cbf99ee7ca..3b086ed22c 100644
-> > --- a/drivers/mci/mci-bcm2835.c
-> > +++ b/drivers/mci/mci-bcm2835.c
-> > @@ -128,6 +128,10 @@ static int bcm2835_mci_request(struct mci_host *mc=
-i, struct mci_cmd *cmd,
-> >  		block_data |=3D data->blocksize;
-> >  	}
-> > =20
-> > +	/* BCM2xxx SDHCI might take up to 100ms to complete a command */
-> > +	if (cmd !=3D NULL)
-> > +		cmd->busy_timeout =3D 100;
->
-> Do we need this for all commands or just some specific ones?
-I actually have no idea, the CM4s datasheet doesn't give much
-informations regarding the eMMC controller and we just found that
-information in the rpi-eeprom changelog, and saw it was also the defaut
-timeout value used in U-boot [1].
-After this change, we haven't been able to reproduce the issue.
+On 31.10.24 10:27, Sebastien Bourdelin wrote:
+> From: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
+> 
+> This commit extends the struct mci_cmd to add a new busy_timeout member.
+> 
+> Signed-off-by: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
 
-We know for sure this issue happens at least on a read
-command.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[1] https://github.com/u-boot/u-boot/blob/master/drivers/mmc/sdhci.c#L195
->
-> cmd is always non NULL, no need to check.
-Ok, i can send a v2 for that, just let me know if my explanation for
-your first question is enough.=20
->
-> Sascha
+> ---
+>  include/mci.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/mci.h b/include/mci.h
+> index cd01e2f992..f607ef1b74 100644
+> --- a/include/mci.h
+> +++ b/include/mci.h
+> @@ -471,6 +471,7 @@ struct mci_cmd {
+>  	unsigned cmdidx;	/**< Command to be sent to the SD/MMC card */
+>  	unsigned resp_type;	/**< Type of expected response, refer MMC_RSP_* macros */
+>  	unsigned cmdarg;	/**< Command's arguments */
+> +	unsigned busy_timeout;	/**< Busy timeout in ms */
+>  	unsigned response[4];	/**< card's response */
+>  };
+>  
 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
