@@ -1,59 +1,59 @@
-Delivery-date: Wed, 06 Nov 2024 15:14:23 +0100
+Delivery-date: Wed, 06 Nov 2024 15:14:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8gne-005YNk-1t
+	id 1t8gnf-005YO4-0E
 	for lore@lore.pengutronix.de;
-	Wed, 06 Nov 2024 15:14:23 +0100
+	Wed, 06 Nov 2024 15:14:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8gnf-0004PU-1r
-	for lore@pengutronix.de; Wed, 06 Nov 2024 15:14:23 +0100
+	id 1t8gnf-0004Pb-Iz
+	for lore@pengutronix.de; Wed, 06 Nov 2024 15:14:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=O5qB0h64icQl5q548WBf5XagLpjT4rPYgXjMHOUhK6I=; b=cfdC7/8c6aWGl+7lY+wWlkzHvz
-	w8lfTYeuvuahco/u7EmgZQAbNPfVsfFPjWVLSt4GQcNs7b8sipdb2tDwPNpOXMSTa9tsuVYjfb6RG
-	Z99K4XdD0lMt6n2W8aRCdUawb+tjcerZej2bSnf+bwh58Oi+kdD2wal5cLskCo8DZryLfqFTjhjly
-	honzXdJftSd1/6m1EfKyTxGwAoKhS1MYCh4Vh+L43K6J7B5Z3lDPzazHSoIFLyUdnT9Fb9SkVxkT3
-	cr7KI7vnjSGG0+ypIiR8ChVAHu5YeXz9lFXj10y6IktWTbV2HcEKe/VG8rSkhDiCjgN00RuM4vaYf
-	I3PQbfFw==;
+	bh=O9LpvGNR+qE6eDB+5kPcyl+w41Y3sEO2u0QgUkyOUQs=; b=llBcnCfypqJ0PU5m1mKugnXIE8
+	gEKWRNwXIMKBton441PA26R8LCM8/aenvi7drjXNhavVymtA5lrtqTJ6xfvpEJcSjn1djyIW9xb7r
+	4AaZKi5WoPs8zJcRs2nUUPU1ZDOYmEk2loSHzMeBK4LDWYgsW924RcMlTl+ykXOBtFJK3FlV5zaLQ
+	D5yrCUK5OTpW+jSzcaEJ28Tsj6pGFdhLCgKtFw3sQL15rqlZGPgsxL2aqu3Sk2Bjl29O1H85g82cn
+	PpK4az+wagHrLzV2v4caGoZ5eCy52yStQX9mTNOd30Q6qqot6HIG/Abd4S3g6zL8Ywi5vO9jXDOCE
+	sk+KYOwQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8gnC-00000003Yab-22Ha;
-	Wed, 06 Nov 2024 14:13:54 +0000
+	id 1t8gnD-00000003YbJ-31f1;
+	Wed, 06 Nov 2024 14:13:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8gZv-00000003WTD-03L9
+	id 1t8gaj-00000003WY2-3k6S
 	for barebox@lists.infradead.org;
-	Wed, 06 Nov 2024 14:00:12 +0000
+	Wed, 06 Nov 2024 14:01:03 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t8gZt-0002lg-SI; Wed, 06 Nov 2024 15:00:09 +0100
-Message-ID: <c6803386-83da-47cc-bf1f-235ce6e3503e@pengutronix.de>
-Date: Wed, 6 Nov 2024 15:00:09 +0100
+	id 1t8gai-0002oO-NK; Wed, 06 Nov 2024 15:01:00 +0100
+Message-ID: <d8b41d0f-6716-43f7-b30c-a36800cdb681@pengutronix.de>
+Date: Wed, 6 Nov 2024 15:01:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sebastien Bourdelin <sebastien.bourdelin@gmail.com>,
  barebox@lists.infradead.org
 Cc: oss-contrib@rtone.fr, Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
 References: <20241031092721.763280-1-sebastien.bourdelin@gmail.com>
- <20241031092721.763280-4-sebastien.bourdelin@gmail.com>
+ <20241031092721.763280-5-sebastien.bourdelin@gmail.com>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241031092721.763280-4-sebastien.bourdelin@gmail.com>
+In-Reply-To: <20241031092721.763280-5-sebastien.bourdelin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241106_060011_083748_B0939AAF 
-X-CRM114-Status: GOOD (  15.27  )
+X-CRM114-CacheID: sfid-20241106_060101_967886_70106281 
+X-CRM114-Status: GOOD (  19.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,42 +75,52 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/4] mci: sdhci: use the busy_timeout value in the
- sdhci_wait_idle functions
+Subject: Re: [PATCH 4/4] mci: bcm2835: set timeout value to 100ms
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
+
+Hello Sebastien,
+
+Thanks for your fix.
 
 On 31.10.24 10:27, Sebastien Bourdelin wrote:
 > From: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
 > 
-> The busy_timeout value is used by the sdhci_wait_idle and
-> sdhci_wait_idle_data functions to define the timeout to wait on when
-> send a command to the controller.
+> As mentionned in the Raspberry Pi4 bootrom Changelog [1]:
+> "Increase timeout of early SD/EMMC commands to 100ms".
+> The BCM2711 SDHCI can take up to 100ms to complete a command.
 > 
-> The default value remains unchanged and is set to 10ms.
+> Without this change, we had noticed that Barebox sometime stay stucked
+> on a timeout error while trying to boot Linux from the eMMC.
+> 
+> [1] https://github.com/raspberrypi/rpi-eeprom/blob/master/firmware-2711/release-notes.md#2022-03-10---promote-the-2022-03-10-beta-release-to-lateststable
 > 
 > Signed-off-by: Sebastien Bourdelin <sebastien.bourdelin@rtone.fr>
 
-With below point addressed:
-
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-> diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-> index 5de85239b1..757840acc7 100644
-> --- a/drivers/mci/sdhci.h
-> +++ b/drivers/mci/sdhci.h
-> @@ -200,6 +200,8 @@
->  #define SDHCI_MAX_DIV_SPEC_200	256
->  #define SDHCI_MAX_DIV_SPEC_300	2046
+Cheers,
+Ahmad
+
+> ---
+>  drivers/mci/mci-bcm2835.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
+> index cbf99ee7ca..3b086ed22c 100644
+> --- a/drivers/mci/mci-bcm2835.c
+> +++ b/drivers/mci/mci-bcm2835.c
+> @@ -128,6 +128,10 @@ static int bcm2835_mci_request(struct mci_host *mci, struct mci_cmd *cmd,
+>  		block_data |= data->blocksize;
+>  	}
 >  
-> +#define SDHCI_CMD_DEFAULT_BUSY_TIMEOUT 10
-
-Please rename to SDHCI_CMD_DEFAULT_BUSY_TIMEOUT_MS
-
+> +	/* BCM2xxx SDHCI might take up to 100ms to complete a command */
+> +	if (cmd != NULL)
+> +		cmd->busy_timeout = 100;
 > +
->  struct sdhci {
->  	u32 (*read32)(struct sdhci *host, int reg);
->  	u16 (*read16)(struct sdhci *host, int reg);
+>  	ret = sdhci_wait_idle_data(&host->sdhci, cmd);
+>  	if (ret)
+>  		return ret;
 
 
 -- 
