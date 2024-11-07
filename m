@@ -1,59 +1,58 @@
-Delivery-date: Thu, 07 Nov 2024 09:50:19 +0100
+Delivery-date: Thu, 07 Nov 2024 10:13:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8yDa-005rFK-0a
+	id 1t8yZa-005rjn-2w
 	for lore@lore.pengutronix.de;
-	Thu, 07 Nov 2024 09:50:19 +0100
+	Thu, 07 Nov 2024 10:13:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8yDa-0007ov-67
-	for lore@pengutronix.de; Thu, 07 Nov 2024 09:50:19 +0100
+	id 1t8yZb-0001pp-9y
+	for lore@pengutronix.de; Thu, 07 Nov 2024 10:13:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rRtW0dF9d9YbOQc01aLQ825Nl+eHgMcmwgUGAcD2ieI=; b=o8ol6wain6xvuEBRn1UHPuWq6R
-	ZWnmzUkiLLrD6t+2VkJv79lwO7kkYDLZcr4uH08fLyyym8BLD/VM428CBNUMQSWbRmzCWFbF8059B
-	hhEFMgnAAAdzFsrNIiZv7wdwc1Ceopcdlu8Bk5PRcQ++fyCGCwTf9eHL4l0KPvssPPNizePMc9i0O
-	sN+e+DFVxngmJP49Q6gA1jVLoRQ3s99CNtemOsGmZY2NGGH3X9BpMzZhB1k1CKkG4MZ90w5ZOWUY5
-	T3rgM+S0dhah6jrx/btjhGzB+7nwmXjXIj0hvqGozYMeY4oYZ+xcJj67kx+jDPrJUNMhX78JdgWRp
-	3Y2fYzhQ==;
+	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4j1KLjfg4qQq+Y0oiC1zHQmN6gtHnMK2yPTP0ZrtbHM=; b=p+aCC4fwgvVAUAOWu98puyzWgu
+	wciu+w4QPDQJ942108kNCoLlvO6KJp3QUxWnB9SMSRCx+CnvpZcgdD/cJsUzJ6qx7LNzBp/aUZYxc
+	XkZzAbSUgjc7TCKPcEV+NmiJMF0p/zq6IQJRHCCmgrlRJhf6uzlkdaODAgbT4O2/TESor9Aq7s6OL
+	Oyscz9XQE6OtJ502C70iZQwhE7WGNMGmklXH5YA5BCFOJMCWXmiB/jpm1aeoPmN+WzGPC025PaZXL
+	JhnSeu1MxfGdn+l6yahsfgkfPnTdUDFQbZ93FrbPcHeWSk1FJbPLYRNeDbQCZima29iJ5a1pHj7le
+	sil29xzA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8yDB-00000006C3A-0KWn;
-	Thu, 07 Nov 2024 08:49:53 +0000
+	id 1t8yZ1-00000006G1Q-0gHz;
+	Thu, 07 Nov 2024 09:12:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8yBR-00000006Bfq-41Xp
+	id 1t8yYx-00000006G0w-3kWA
 	for barebox@lists.infradead.org;
-	Thu, 07 Nov 2024 08:48:07 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t8yBQ-0007Zr-6P; Thu, 07 Nov 2024 09:48:04 +0100
-Message-ID: <dbdd9a82-de0c-499e-9828-153dc7ad23c9@pengutronix.de>
-Date: Thu, 7 Nov 2024 09:48:03 +0100
+	Thu, 07 Nov 2024 09:12:25 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	(Exim 4.92)
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1t8yYw-0001k3-KQ; Thu, 07 Nov 2024 10:12:22 +0100
+Message-ID: <86a81980-3811-4c2e-b85b-12cff2370634@pengutronix.de>
+Date: Thu, 7 Nov 2024 10:12:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, Robin van der Gracht <robin@protonic.nl>
-References: <20241106185724.2526-1-a.fatoum@pengutronix.de>
- <20241106185724.2526-4-a.fatoum@pengutronix.de>
- <20241107084213.aay4u2vzwbbxlbfa@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241107084213.aay4u2vzwbbxlbfa@pengutronix.de>
+From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+References: <20241106-fix-sha256-assembly-v1-0-ad1ac961f15f@pengutronix.de>
+Content-Language: en-US, de-DE
+In-Reply-To: <20241106-fix-sha256-assembly-v1-0-ad1ac961f15f@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241107_004806_032906_8A184CC6 
-X-CRM114-Status: GOOD (  18.37  )
+X-CRM114-CacheID: sfid-20241107_011223_957394_D2CBF75B 
+X-CRM114-Status: GOOD (  24.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,70 +70,134 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/6] ARM: Rockchip: fix clang warning about passing 32-bit
- register operand
+Subject: Re: [PATCH 0/7] arm: crypto: sha256: fix generation of thumb2
+ assembly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Marco,
+Hi Sascha,
 
-On 07.11.24 09:42, Marco Felsch wrote:
-> Hi Ahmad,
+On 06.11.24 17:34, Stefan Kerkmann wrote:
+> The checked in `sha256-core.S_shipped` assembly file has a thumb2
+> specific workaround applied[1]. This fix wasn't backported to the perl
+> script `sha256-armv4.pl` used to generate the assembly, thus when the
+> script is run it would regenerate the buggy code.
 > 
-> On 24-11-06, Ahmad Fatoum wrote:
->> clangd warns that "Value size does not match register size specified by
->> the constraint and modifier".
->>
->> Promote the subtraction result to unsigned long to fix this.
->>
->> The 16 is likely unnecessary, but I am hesitant to remove it without testing.
-> 
-> Is it worth to add a comment like: /* TODO: check if 16 is necessary */ ?
+> In-tree builds were not affected as the assembly file already exists in
+> the source tree. However in the context of an out-of-tree build (make
+> O=xyz) the file isn't present from the pov of make - triggering a
+> regeneration. This happens by default during Yocto builds - leading to a
+> broken sha256 sum function on ARMv7 compiled with Thumb2 support. The
+> bug expresses itself not in crashes but wrong sha256 sums.
 
-I am waiting for Sascha's opinion, we have similar subtractions in i.MX code too.
+I just (re-)tested this part without the patch applied, and I'm unable to
+reproduce it in a cleanly checked out state of my BSP. The full chain of events
+and conditions that lead to the regeneration of the file is thus not fully
+understood (yet) — but it clearly happened for me.
+
+Here is the output of a CI[1] run with the assembly file (forcefully) generated
+from the script, that shoes the errors I ran into:
+
+  test_digests_sha12:153: mismatch calculating sha224-asm(zeroes7):
+  	got: c56f57826fa8cc1cae10a3450b90162677ba55cdbaa3d2a72810853e
+  	but: fbf6df85218ac5632461a8a17c6f294e6f35264cbfc0a9774a4f665b expected
+  test_digests_sha12:153: mismatch calculating sha224-asm(one32):
+  	got: 3a81d42a638cf434f5b002ead1252be963880bd3eec627a8b3278bb4
+  	but: 343cb3950305e6e6331e294b0a4925739d09ecbd2b43a2fc87c09941 expected
+  test_digests_sha12:153: mismatch calculating sha224-asm(inc4097):
+  	got: 2e6565a91ff0e4f0d316067ad66eaa3b76d71317171adfd0ec6bbcd4
+  	but: 6596b5dcfbd857f4246d6b94508b8a1a5b715a4f644a0c1e7d54c4f7 expected
+  test_digests_sha12:164: mismatch calculating sha256-asm(zeroes7):
+  	got: 71ab8ff93158c3b8863460dac03e9049bd5d3ec1a2ec4a1ba6e434d0fd33eb5f
+  	but: 837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619 expected
+  test_digests_sha12:164: mismatch calculating sha256-asm(one32):
+  	got: bcbd77ba0128aed7df96f75788fefa5e8da2501bfd3e0fe14753d4b5c27b1564
+  	but: 01d0fabd251fcbbe2b93b4b927b26ad2a1a99077152e45ded1e678afa45dbec5 expected
+  test_digests_sha12:164: mismatch calculating sha256-asm(inc4097):
+  	got: 4dd697b3bf8f7f0630b583356d48dcc7a1c345e62fe189c1d4843a38cd7d59a9
+  	but: 1e973d029df2b2c66cb42a942c5edb45966f02abaff29fe99410e44d271d0efc expected
+  test_digests_sha12:153: mismatch calculating sha224(zeroes7):
+  	got: c56f57826fa8cc1cae10a3450b90162677ba55cdbaa3d2a72810853e
+  	but: fbf6df85218ac5632461a8a17c6f294e6f35264cbfc0a9774a4f665b expected
+  test_digests_sha12:153: mismatch calculating sha224(one32):
+  	got: 3a81d42a638cf434f5b002ead1252be963880bd3eec627a8b3278bb4
+  	but: 343cb3950305e6e6331e294b0a4925739d09ecbd2b43a2fc87c09941 expected
+  test_digests_sha12:153: mismatch calculating sha224(inc4097):
+  	got: 2e6565a91ff0e4f0d316067ad66eaa3b76d71317171adfd0ec6bbcd4
+  	but: 6596b5dcfbd857f4246d6b94508b8a1a5b715a4f644a0c1e7d54c4f7 expected
+  test_digests_sha12:164: mismatch calculating sha256(zeroes7):
+  	got: 71ab8ff93158c3b8863460dac03e9049bd5d3ec1a2ec4a1ba6e434d0fd33eb5f
+  	but: 837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619 expected
+  test_digests_sha12:164: mismatch calculating sha256(one32):
+  	got: bcbd77ba0128aed7df96f75788fefa5e8da2501bfd3e0fe14753d4b5c27b1564
+  	but: 01d0fabd251fcbbe2b93b4b927b26ad2a1a99077152e45ded1e678afa45dbec5 expected
+  test_digests_sha12:164: mismatch calculating sha256(inc4097):
+  	got: 4dd697b3bf8f7f0630b583356d48dcc7a1c345e62fe189c1d4843a38cd7d59a9
+  	but: 1e973d029df2b2c66cb42a942c5edb45966f02abaff29fe99410e44d271d0efc expected
+  ERROR: digest: failed 12 out of 45 tests
+
+[1]: https://github.com/KarlK90/barebox/actions/runs/11704376345/job/32596699159
+
+
+So the patch is still valid, but this paragraph should be replaced with:
+
+Under rare circumstances, in my case it was a Yocto build of barebox from an
+external source tree, the assembly file was regenerated. Leading to a broken
+sha256 sum function on ARMv7 compiled with Thumb2 support. The bug expressed
+itself not in crashes but wrong sha256 sums.
+
+Should I send a v2 for the updated message?
+
+> The mentioned problem in[1] was fixed and explained further in upstream
+> commit[2]. Thus this series updates the script and generated assembly to
+> the most recent Kernel commit[3].
+> 
+> To better catch regressions in the future the existing digest tests now
+> exercise the optimized implementations for ARMv5/v6/v7/v8 and the ARMv7
+> test binaries are compiled in thumb2 mode.
+> 
+> [1]: b73bc6e303 (arm: crypto: fix SHA256 shipped assembler code, 2018-10-05)
+> [2]: 69216a545cf8 (crypto: sha256/arm - fix crash bug in Thumb2 build, 2019-02-16)
+> [3]: 54781938ec34 (crypto: arm/sha256-neon - avoid ADRL pseudo instruction, 2020-09-16)
+> 
+> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+> ---
+> Stefan Kerkmann (7):
+>       arm: crypto: sha256: fix generation of thumb2 assembly
+>       arm: configs: multi_v5_v6_defconfig: move rpi1 armv6 targets
+>       arm: configs: multi_v5_v6_defconfig: enable arm optimized sha1/sha256 digest
+>       arm: configs: multi_v7_defconfig: compile for thumb2
+>       arm: configs: multi_v7_defconfig: enable arm optimized sha256 digest
+>       arm: configs: multi_v8_defconfig: enable arm optimized sha1/sha256 digest
+>       test: arm: rpi: run tests against multi_v5_v6_defconfig
+> 
+>  .github/workflows/test-labgrid-pytest.yml          |  4 ++
+>  arch/arm/configs/multi_v5_v6_defconfig             |  6 ++-
+>  arch/arm/configs/multi_v7_defconfig                |  7 +--
+>  arch/arm/configs/multi_v8_defconfig                |  5 +-
+>  arch/arm/crypto/sha256-armv4.pl                    | 25 ++++++----
+>  arch/arm/crypto/sha256-core.S_shipped              | 55 ++++++++++++++++++----
+>  ...yaml => qemu-raspi0@multi_v5_v6_defconfig.yaml} |  0
+>  ...ml => qemu-raspi1ap@multi_v5_v6_defconfig.yaml} |  0
+>  8 files changed, 74 insertions(+), 28 deletions(-)
+> ---
+> base-commit: d9f7f6d930069df35e28fedb35719bfd12fbd6e4
+> change-id: 20241106-fix-sha256-assembly-ad3d25bf5a9f
+> 
+> Best regards,
 
 Cheers,
-Ahmad
-
-> 
-> Regards,
->   Marco
-> 
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  arch/arm/mach-rockchip/atf.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
->> index 1e1861191c99..4c16ec3bc66a 100644
->> --- a/arch/arm/mach-rockchip/atf.c
->> +++ b/arch/arm/mach-rockchip/atf.c
->> @@ -59,7 +59,7 @@ static unsigned long load_elf64_image_phdr(const void *elf)
->>  										\
->>  	/* Setup an initial stack for EL2 */                                    \
->>  	asm volatile("msr sp_el2, %0" : :                                       \
->> -			"r" (SOC##_BAREBOX_LOAD_ADDRESS - 16) :                 \
->> +			"r" ((ulong)SOC##_BAREBOX_LOAD_ADDRESS - 16) :		\
->>  			"cc");                                                  \
->>  										\
->>  	bl31_entry(bl31, optee_load_address,                                    \
->> -- 
->> 2.39.5
->>
->>
->>
-> 
-
+Stefan
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                       | Stefan Kerkmann             |
+Steuerwalder Str. 21                   | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany              | Phone: +49-5121-206917-128  |
+Amtsgericht Hildesheim, HRA 2686       | Fax:   +49-5121-206917-9    |
+
 
 
