@@ -1,66 +1,66 @@
-Delivery-date: Thu, 07 Nov 2024 16:00:12 +0100
+Delivery-date: Thu, 07 Nov 2024 16:00:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t93zW-005xcE-2h
+	id 1t93za-005xcr-1f
 	for lore@lore.pengutronix.de;
-	Thu, 07 Nov 2024 16:00:12 +0100
+	Thu, 07 Nov 2024 16:00:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t93zW-00020H-BN
-	for lore@pengutronix.de; Thu, 07 Nov 2024 16:00:11 +0100
+	id 1t93zZ-00022Q-IX
+	for lore@pengutronix.de; Thu, 07 Nov 2024 16:00:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fl3JWVM6B20shmLUSztVuzhrE7TfGRPc/7Li6osRjN8=; b=CxUoPDXmJCLxDrzB8V2dPP9C6R
-	2TEiP2rHz6x5jw6/TwMTNPwFsVPxoFqfH0/XDE0hXS0KOmB8TrboRG2JNzN0qHEfgurlAa1rWpZmB
-	KVM2QQ5Nh3O3IzASUg0hqe6Ewbcx7cgHAa8IuJsBn2usdG2+p7yUqDeHGOUsecsNSpUC0J7hNHznW
-	5I423Mktf2Pl7MeQTdMPxI5ZLOk/cDviomskQHEUoNfp86mcF34LM28xPyYrpHYbjvQkhlsY26ChB
-	KUMQFnWReUKqtwq6BXOBiXZqWVzE01Rr63+9RinhrkbvJcWbMj/PKK+r1cqqezCNjr/h1+BvNLeGL
-	Y0DBl0tA==;
+	bh=aA62XIdwzwIXC6ogYHzyq2iaWtNiXPbxUs3ABbjkds4=; b=abGZZvYY2ZuHVfhKj9n0cLwkXh
+	3C2Mv9oWO9ITPwhQDE78CoKWR/cR8GtyStvta0kYO/zBzPOlLNrhKtmaD4bNepgWvu0QWYqZ43jhI
+	sVmv05ufmHWx0wgNThIVfpna7Ie9aVSE9DvJQ80SHFnefMlhZMUoKeUjJtPYsDTrtsBNdCu2ffwCB
+	mCqNFhI918WU1LsNBUKcesILusVxpwqqWOsSan+Rp7Ni0abAQwVzwxt4LiCC0t4VeHL1p4UoA1reO
+	1ezDEGOSkufhznf4SfipyiDBJ9wTgGC9ijRNBiOTs5KsyHjejji8bWUhjvcEzn2GkptY25LC1o2dG
+	uFMOphXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t93ys-00000007McK-2w75;
-	Thu, 07 Nov 2024 14:59:30 +0000
+	id 1t93yv-00000007Mde-22g1;
+	Thu, 07 Nov 2024 14:59:33 +0000
 Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t93x3-00000007MBO-0KnL
+	id 1t93x5-00000007M8h-181s
 	for barebox@lists.infradead.org;
-	Thu, 07 Nov 2024 14:57:39 +0000
+	Thu, 07 Nov 2024 14:57:44 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
 	t=1730991449;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fl3JWVM6B20shmLUSztVuzhrE7TfGRPc/7Li6osRjN8=;
-	b=lO/W8VCLhNdBtsmGHdde9ZhPOEJ7DXh3PIIQ4WOU1v4+qIo8Du5ZYkb7Z1rpeADP0FWcbU
-	TgUOl3CN2YGJ0lS9V04RhmId3BSRBRSILOx46mmXS2VtM590r6p+K9zONLm9kc16933Qft
-	GcX8b62jrKwcqN7pKWtqCtJrOGlb4/Uj4A30Ckq0NKUQFNvIedUbm3s6QD0jXpgdT6BP0g
-	4yg3PE0m4YfKjEnviHAlWWdJF1MsXcKcS/nC4I9qknof2KiIu/IWo2LK4e5IViqkUSUJPq
-	rSdBpVXx787zavGMjuUCoRkOhnMlPmRH0PsSUWhkvK5GpT3M1f/DSoeXum69LA==
+	bh=aA62XIdwzwIXC6ogYHzyq2iaWtNiXPbxUs3ABbjkds4=;
+	b=dis7zXugky2U1NCCfVCw6WCLtPkkE00Gg9N6UQO0dNP6Sqb5DHKFRCUjq5vMvKUL4ERLvg
+	CaJWgUN0HDVZCQHx78YRvVLOcmLR743gyna45vpKeFpp3ckHyzvP3xK/rpVQgkd5qRii+o
+	hPRZ8bbL+FKMfugYEnJ2GYBVGMYFudu09Cc1A7huu0j7w5A6XxwGsvTFeQaiCrE6PbU7m/
+	fXTpeN224hJ5x+I3VygjG9CLS+wNL1zNa+H6qwyV0HrkkDzMSmw4gOiK6RsBuxq/ZBlVrk
+	uVJhD1F+hgRDkRorz2JT1cUeMUGRjNRnKWt09HL7ht46byobiNXkm/0Vsec7cA==
 Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:1b71:4dca:dfdc:1e52])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id ade54e5c (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	by zdiv.net (OpenSMTPD) with ESMTPSA id b26b36f4 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
 	Thu, 7 Nov 2024 15:57:29 +0100 (CET)
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Thu,  7 Nov 2024 15:57:19 +0100
-Message-ID: <20241107145722.5145-4-jmaselbas@zdiv.net>
+Date: Thu,  7 Nov 2024 15:57:21 +0100
+Message-ID: <20241107145722.5145-6-jmaselbas@zdiv.net>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241107145722.5145-1-jmaselbas@zdiv.net>
 References: <20241107145722.5145-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241107_065737_555101_BA6CFD64 
-X-CRM114-Status: GOOD (  21.64  )
+X-CRM114-CacheID: sfid-20241107_065739_768437_8F122AEE 
+X-CRM114-Status: GOOD (  29.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,440 +82,832 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/6] clk: Add clock driver for sun50i-a64
+Subject: [PATCH 5/6] mci: Add sunxi-mmc driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Clock driver adapted from Linux.
-The pll-cpux is set to 816MHz and pll-periph0-2x is set to 1.2GHz.
+This driver is adapted from different sources: Linux, u-boot and p-boot.
+The latter, p-boot (forked from u-boot), is a bootloader for pinephones.
+
+It currently only support PIO xfer but could be further improved to also
+support DMA xfer. This driver is split in three files so it can be used
+by the PBL and barebox proper.
 
 Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 ---
- drivers/clk/Makefile               |   1 +
- drivers/clk/sunxi/Makefile         |   2 +
- drivers/clk/sunxi/clk-sun50i-a64.c | 325 +++++++++++++++++++++++++++++
- drivers/clk/sunxi/clk-sun50i-a64.h |  62 ++++++
- 4 files changed, 390 insertions(+)
- create mode 100644 drivers/clk/sunxi/Makefile
- create mode 100644 drivers/clk/sunxi/clk-sun50i-a64.c
- create mode 100644 drivers/clk/sunxi/clk-sun50i-a64.h
+ drivers/mci/Kconfig            |   6 +
+ drivers/mci/Makefile           |   2 +
+ drivers/mci/sunxi-mmc-common.c | 246 +++++++++++++++++++++++++++++++++
+ drivers/mci/sunxi-mmc-pbl.c    |  81 +++++++++++
+ drivers/mci/sunxi-mmc.c        | 181 ++++++++++++++++++++++++
+ drivers/mci/sunxi-mmc.h        | 221 +++++++++++++++++++++++++++++
+ include/mach/sunxi/xload.h     |  12 ++
+ 7 files changed, 749 insertions(+)
+ create mode 100644 drivers/mci/sunxi-mmc-common.c
+ create mode 100644 drivers/mci/sunxi-mmc-pbl.c
+ create mode 100644 drivers/mci/sunxi-mmc.c
+ create mode 100644 drivers/mci/sunxi-mmc.h
+ create mode 100644 include/mach/sunxi/xload.h
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 764539e91e..7d459c298e 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -31,3 +31,4 @@ obj-y				+= bcm/
- obj-$(CONFIG_COMMON_CLK_SCMI)	+= clk-scmi.o
- obj-$(CONFIG_COMMON_CLK_GPIO)   += clk-gpio.o
- obj-$(CONFIG_TI_SCI_CLK)	+= ti-sci-clk.o
-+obj-$(CONFIG_ARCH_SUNXI)	+= sunxi/
-diff --git a/drivers/clk/sunxi/Makefile b/drivers/clk/sunxi/Makefile
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index f760614725..4641e9cdcd 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -92,6 +92,12 @@ config MCI_DW_PIO
+ 	help
+ 	  Use PIO mode (instead of IDMAC) in DW MMC driver.
+ 
++config MCI_SUNXI_SMHC
++	bool "Allwinner SD-MMC Memory Card Host Controller"
++	help
++	  Enable support for the Allwinner SD-MMC Memory Card Host Controller,
++	  this provides host support for SD and MMC interfaces, in PIO mode.
++
+ config MCI_MXS
+ 	bool "i.MX23/i.MX28"
+ 	depends on ARCH_MXS
+diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+index d8d7818a48..5e951d695f 100644
+--- a/drivers/mci/Makefile
++++ b/drivers/mci/Makefile
+@@ -22,4 +22,6 @@ obj-$(CONFIG_MCI_DW)		+= dw_mmc.o
+ obj-$(CONFIG_MCI_DWC_MSHC)	+= dwcmshc-sdhci.o
+ obj-$(CONFIG_MCI_MMCI)		+= mmci.o
+ obj-$(CONFIG_MCI_STM32_SDMMC2)	+= stm32_sdmmc2.o
++obj-$(CONFIG_MCI_SUNXI_SMHC)	+= sunxi-mmc.o
++pbl-$(CONFIG_MCI_SUNXI_SMHC)	+= sunxi-mmc-pbl.o
+ obj-pbl-$(CONFIG_MCI_SDHCI)	+= sdhci.o
+diff --git a/drivers/mci/sunxi-mmc-common.c b/drivers/mci/sunxi-mmc-common.c
 new file mode 100644
-index 0000000000..4d1dcbebb0
+index 0000000000..cfb6df8cd5
 --- /dev/null
-+++ b/drivers/clk/sunxi/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_ARCH_SUN50I_A64) += clk-sun50i-a64.o
-diff --git a/drivers/clk/sunxi/clk-sun50i-a64.c b/drivers/clk/sunxi/clk-sun50i-a64.c
++++ b/drivers/mci/sunxi-mmc-common.c
+@@ -0,0 +1,246 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: 2024 Jules Maselbas
++#include "sunxi-mmc.h"
++
++static int sdxc_read_data_pio(struct sunxi_mmc_host *host, struct mci_data *data)
++{
++	size_t i, len = (data->blocks * data->blocksize) / sizeof(u32);
++	u32 *dst = (u32 *)data->dest;
++
++	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_ACCESS_BY_AHB);
++
++	for (i = 0; i < len; i++) {
++		if (wait_on_timeout(2000 * MSECOND, !sdxc_is_fifo_empty(host)))
++			return -ETIMEDOUT;
++		dst[i] = sdxc_readl(host, SDXC_REG_FIFO);
++	}
++
++	return 0;
++}
++
++static int sdxc_write_data_pio(struct sunxi_mmc_host *host, struct mci_data *data)
++{
++	size_t i, len = (data->blocks * data->blocksize) / sizeof(u32);
++	u32 *src = (u32 *)data->src;
++
++	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_ACCESS_BY_AHB);
++
++	for (i = 0; i < len; i++) {
++		if (wait_on_timeout(2000 * MSECOND, !sdxc_is_fifo_full(host)))
++			return -ETIMEDOUT;
++		sdxc_writel(host, SDXC_REG_FIFO, src[i]);
++	}
++
++	return 0;
++}
++
++static int sunxi_mmc_send_cmd(struct sunxi_mmc_host *host, struct mci_cmd *cmd,
++			      struct mci_data *data, const char **why)
++{
++	const char *err_why = "";
++	u32 cmdval = SDXC_CMD_START;
++	int ret;
++
++	if ((cmd->resp_type & MMC_RSP_136) && (cmd->resp_type & MMC_RSP_BUSY))
++		return -EINVAL;
++
++	if (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
++		return 0; /* using ACMD12 */
++	if (cmd->cmdidx == MMC_CMD_GO_IDLE_STATE)
++		cmdval |= SDXC_CMD_SEND_INIT_SEQ;
++
++	if (cmd->resp_type & MMC_RSP_PRESENT)
++		cmdval |= SDXC_CMD_RESP_EXPIRE;
++	if (cmd->resp_type & MMC_RSP_136)
++		cmdval |= SDXC_CMD_LONG_RESPONSE;
++	if (cmd->resp_type & MMC_RSP_CRC)
++		cmdval |= SDXC_CMD_CHK_RESPONSE_CRC;
++
++	/* clear interrupts */
++	sdxc_writel(host, SDXC_REG_RINTR, 0xffffffff);
++
++	if (data) {
++		u32 blksiz = data->blocksize;
++		u32 bytcnt = data->blocks * data->blocksize;
++
++		cmdval |= SDXC_CMD_DATA_EXPIRE;
++		cmdval |= SDXC_CMD_WAIT_PRE_OVER;
++		if (data->flags & MMC_DATA_WRITE)
++			cmdval |= SDXC_CMD_WRITE;
++		if (data->blocks > 1)
++			cmdval |= SDXC_CMD_AUTO_STOP;
++
++		sdxc_writel(host, SDXC_REG_TMOUT, 0xFFFFFF40);
++		sdxc_writel(host, SDXC_REG_BLKSZ, blksiz);
++		sdxc_writel(host, SDXC_REG_BCNTR, bytcnt);
++	}
++
++	sdxc_writel(host, SDXC_REG_CARG, cmd->cmdarg);
++	sdxc_writel(host, SDXC_REG_CMDR, cmdval | cmd->cmdidx);
++	if (data) {
++		if (data->flags & MMC_DATA_WRITE)
++			ret = sdxc_write_data_pio(host, data);
++		else
++			ret = sdxc_read_data_pio(host, data);
++		if (ret < 0) {
++			err_why = "pio error";
++			goto err;
++		}
++	}
++
++	ret = sdxc_xfer_complete(host, 1000 * MSECOND, SDXC_INT_COMMAND_DONE);
++	if (ret) {
++		err_why = "cmd timeout";
++		goto err;
++	}
++
++	if (data) {
++		ret = sdxc_xfer_complete(host, 1000 * MSECOND, data->blocks > 1 ?
++					 SDXC_INT_AUTO_COMMAND_DONE :
++					 SDXC_INT_DATA_OVER);
++		if (ret) {
++			err_why = "data timeout";
++			goto err;
++		}
++	}
++
++	if (cmd->resp_type & MMC_RSP_BUSY) {
++		u32 status;
++		u64 start;
++		start = get_time_ns();
++		do {
++			status = sdxc_readl(host, SDXC_REG_STAS);
++			if (is_timeout(start, 2000 * MSECOND)) {
++				err_why = "resp timeout";
++				ret = -ETIMEDOUT;
++				goto err;
++			}
++		} while (status & SDXC_STATUS_BUSY);
++	}
++
++	if (wait_on_timeout(1000 * MSECOND, !sdxc_is_card_busy(host))) {
++		err_why = "card busy timeout";
++		ret = -ETIMEDOUT;
++		goto err;
++	}
++
++	if (cmd->resp_type & MMC_RSP_136) {
++		cmd->response[0] = sdxc_readl(host, SDXC_REG_RESP3);
++		cmd->response[1] = sdxc_readl(host, SDXC_REG_RESP2);
++		cmd->response[2] = sdxc_readl(host, SDXC_REG_RESP1);
++		cmd->response[3] = sdxc_readl(host, SDXC_REG_RESP0);
++	} else if (cmd->resp_type & MMC_RSP_PRESENT) {
++		cmd->response[0] = sdxc_readl(host, SDXC_REG_RESP0);
++	}
++
++err:
++	if (why)
++		*why = err_why;
++	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_FIFO_RESET);
++	return ret;
++}
++
++static int sunxi_mmc_update_clk(struct sunxi_mmc_host *host)
++{
++	u32 cmdval;
++
++	cmdval = SDXC_CMD_START |
++	         SDXC_CMD_UPCLK_ONLY |
++	         SDXC_CMD_WAIT_PRE_OVER;
++
++	sdxc_writel(host, SDXC_REG_CARG, 0);
++	sdxc_writel(host, SDXC_REG_CMDR, cmdval);
++
++	if (wait_on_timeout(2000 * MSECOND, !(sdxc_readl(host, SDXC_REG_CMDR) & SDXC_CMD_START)))
++		return -ETIMEDOUT;
++
++	return 0;
++}
++
++static int sunxi_mmc_setup_clk(struct sunxi_mmc_host *host, u32 freq)
++{
++	u32 val, div, sclk;
++	int ret;
++
++	sclk = host->clkrate;
++	if (sclk == 0)
++		return -EINVAL;
++
++	/* disable card clock */
++	val = sdxc_readl(host, SDXC_REG_CLKCR);
++	val &= ~(SDXC_CLK_ENABLE | SDXC_CLK_LOW_POWER_ON);
++	val |= SDXC_CLK_MASK_DATA0;
++	sdxc_writel(host, SDXC_REG_CLKCR, val);
++
++	ret = sunxi_mmc_update_clk(host);
++	if (ret)
++		return ret;
++
++	/*
++	 * Configure the controller to use the new timing mode if needed.
++	 * On controllers that only support the new timing mode, such as
++	 * the eMMC controller on the A64, this register does not exist,
++	 * and any writes to it are ignored.
++	 */
++	if (host->cfg->needs_new_timings) {
++		/* Don't touch the delay bits */
++		val = sdxc_readl(host, SDXC_REG_NTSR);
++		val |= SDXC_NTSR_2X_TIMING_MODE;
++		sdxc_writel(host, SDXC_REG_NTSR, val);
++	}
++
++	/* setup clock rate */
++	div = DIV_ROUND_UP(sclk, freq);
++	div /= 2; /* divisor is multiplied by 2 */
++	if (div > 255)
++		div = 255;
++
++	/* set internal divider */
++	val = sdxc_readl(host, SDXC_REG_CLKCR);
++	val &= ~SDXC_CLK_DIVIDER_MASK;
++	val |= div;
++	sdxc_writel(host, SDXC_REG_CLKCR, val);
++
++	/* enable card clock */
++	val = sdxc_readl(host, SDXC_REG_CLKCR);
++	val |= SDXC_CLK_ENABLE;
++	val &= ~SDXC_CLK_MASK_DATA0;
++	sdxc_writel(host, SDXC_REG_CLKCR, val);
++
++	return sunxi_mmc_update_clk(host);
++}
++
++static int sunxi_mmc_set_ios(struct sunxi_mmc_host *host, struct mci_ios *ios)
++{
++	int ret = 0;
++	u32 width;
++
++	switch (ios->bus_width) {
++	case MMC_BUS_WIDTH_8:
++		width = SDXC_WIDTH_8BIT;
++		break;
++	case MMC_BUS_WIDTH_4:
++		width = SDXC_WIDTH_4BIT;
++		break;
++	default:
++		width = SDXC_WIDTH_1BIT;
++		break;
++	}
++	sdxc_writel(host, SDXC_REG_WIDTH, width);
++
++	if (ios->clock)
++		ret = sunxi_mmc_setup_clk(host, ios->clock);
++	return ret;
++}
++
++static void sunxi_mmc_init(struct sunxi_mmc_host *host)
++{
++	/* Reset controller */
++	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_RESET);
++	udelay(1000);
++
++	sdxc_writel(host, SDXC_REG_RINTR, 0xffffffff);
++	sdxc_writel(host, SDXC_REG_IMASK, 0);
++
++	sdxc_writel(host, SDXC_REG_TMOUT, 0xffffff40);
++}
+diff --git a/drivers/mci/sunxi-mmc-pbl.c b/drivers/mci/sunxi-mmc-pbl.c
 new file mode 100644
-index 0000000000..c77f366c6e
+index 0000000000..deeb2fa142
 --- /dev/null
-+++ b/drivers/clk/sunxi/clk-sun50i-a64.c
-@@ -0,0 +1,325 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2022 Jules Maselbas
++++ b/drivers/mci/sunxi-mmc-pbl.c
+@@ -0,0 +1,81 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: 2024 Jules Maselbas
++#include <common.h>
++
++#include <mach/sunxi/xload.h>
++#include "sunxi-mmc.h"
++#include "sunxi-mmc-common.c"
++
++#define SECTOR_SIZE			512
++#define SUPPORT_MAX_BLOCKS		16U
++
++static int sunxi_mmc_read_block(struct sunxi_mmc_host *host,
++				void *dst, unsigned int blocknum,
++				unsigned int blocks)
++{
++	struct mci_data data;
++	struct mci_cmd cmd = {
++		.cmdidx = (blocks > 1) ? MMC_CMD_READ_MULTIPLE_BLOCK : MMC_CMD_READ_SINGLE_BLOCK,
++		 /* mci->high_capacity ? blocknum : blocknum * mci->read_bl_len, */
++		 /* TODO: detect if card is high-capacity */
++		.cmdarg = blocknum,
++		.resp_type = MMC_RSP_R1,
++	};
++	int ret;
++
++	data.dest = dst;
++	data.blocks = blocks;
++	data.blocksize = SECTOR_SIZE; /* compat with MMC/SD */
++	data.flags = MMC_DATA_READ;
++
++	ret = sunxi_mmc_send_cmd(host, &cmd, &data, NULL);
++
++	if (ret || blocks > 1) {
++		cmd.cmdidx = MMC_CMD_STOP_TRANSMISSION;
++		cmd.cmdarg = 0;
++		cmd.resp_type = MMC_RSP_R1b;
++		sunxi_mmc_send_cmd(host, &cmd, NULL, NULL);
++	}
++
++	return ret;
++}
++
++static int sunxi_mmc_bio_read(struct pbl_bio *bio, off_t start,
++				void *buf, unsigned int nblocks)
++{
++	struct sunxi_mmc_host *host = bio->priv;
++	unsigned int count = 0;
++	unsigned int block_len = SECTOR_SIZE;
++	int ret;
++
++	while (count < nblocks) {
++		unsigned int n = min_t(unsigned int, nblocks - count, SUPPORT_MAX_BLOCKS);
++
++		ret = sunxi_mmc_read_block(host, buf, start, n);
++		if (ret < 0)
++			return ret;
++
++		count += n;
++		start += n;
++		buf += n * block_len;
++	}
++
++	return count;
++}
++
++int sunxi_mmc_bio_init(struct pbl_bio *bio, void __iomem *base,
++		       unsigned int clock, unsigned int slot)
++{
++	static struct sunxi_mmc_host host;
++	struct mci_ios ios = { .bus_width = MMC_BUS_WIDTH_4, .clock = 400000 };
++
++	host.base = base;
++	host.clkrate = clock / 2;
++	bio->priv = &host;
++	bio->read = sunxi_mmc_bio_read;
++
++	sunxi_mmc_init(&host);
++	sunxi_mmc_set_ios(&host, &ios);
++
++	return 0;
++}
+diff --git a/drivers/mci/sunxi-mmc.c b/drivers/mci/sunxi-mmc.c
+new file mode 100644
+index 0000000000..0f67c198f6
+--- /dev/null
++++ b/drivers/mci/sunxi-mmc.c
+@@ -0,0 +1,181 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: 2024 Jules Maselbas
++// derived from: linux/drivers/mmc/host/sunxi-mmc.c
++#define pr_fmt(fmt) "sunxi-mmc: " fmt
 +
 +#include <common.h>
-+#include <init.h>
 +#include <driver.h>
++#include <malloc.h>
++#include <init.h>
++#include <mci.h>
++
++#include <gpio.h>
++#include <of_gpio.h>
++#include <linux/reset.h>
 +#include <linux/clk.h>
-+#include <io.h>
-+#include <linux/clkdev.h>
 +#include <linux/err.h>
++#include <errno.h>
++#include <dma.h>
 +
-+#define MHZ (1000UL * 1000UL)
++#include "sunxi-mmc.h"
++#include "sunxi-mmc-common.c"
 +
-+#include "clk-sun50i-a64.h"
-+
-+#define CCU_PLL_CPUX		0x00
-+#define CCU_PLL_PERIPH0		0x28
-+#define CCU_CPUX_AXI_CFG	0x50
-+
-+static struct clk *clks[CLK_NUMBER];
-+static struct clk_onecell_data clk_data = {
-+	.clks = clks,
-+	.clk_num = ARRAY_SIZE(clks),
-+};
-+
-+static inline struct clk *
-+sunxi_clk_gate(const char *name, const char *parent, void __iomem *reg, u8 shift)
++static int sdxc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
 +{
-+	return clk_gate(name, parent, reg, shift, 0, 0);
++	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
++	struct device *dev = mci->hw_dev;
++	const char *why;
++	int ret;
++
++	ret = sunxi_mmc_send_cmd(host, cmd, data, &why);
++	if (ret && ret != -ETIMEDOUT)
++		dev_err(dev, "error %s CMD%d (%d)\n", why, cmd->cmdidx, ret);
++	if (ret == -ETIMEDOUT)
++		mdelay(1);
++
++	return ret;
 +}
 +
-+static inline struct clk *
-+sunxi_clk_mux(const char *name, const char * const *parents, u8 num_parents,
-+	      void __iomem *reg, u8 shift, u8 width)
++static void sdxc_set_ios(struct mci_host *mci, struct mci_ios *ios)
 +{
-+	return clk_mux(name, 0, reg, shift, width, parents, num_parents, 0);
++	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
++	struct device *dev = mci->hw_dev;
++
++	dev_dbg(dev, "buswidth: %d clock: %d\n", 1 << ios->bus_width, ios->clock);
++	sunxi_mmc_set_ios(host, ios);
 +}
 +
-+static inline struct clk *
-+sunxi_clk_div_table(const char *name, const char *parent, struct clk_div_table *table,
-+	      void __iomem *reg, u8 shift, u8 width)
++static int sdxc_card_present(struct mci_host *mci)
 +{
-+	return clk_divider_table(name, parent, CLK_SET_RATE_PARENT, reg, shift,
-+				 width, table, 0);
-+}
++	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
++	struct device *dev = mci->hw_dev;
 +
-+static inline struct clk *
-+sunxi_clk_div(const char *name, const char *parent,
-+		void __iomem *reg, u8 shift, u8 width)
-+{
-+	return clk_divider(name, parent, CLK_SET_RATE_PARENT, reg, shift,
-+				 width, 0);
-+}
-+
-+static struct clk_div_table div_apb1[] = {
-+	{ .val = 0, .div = 2 },
-+	{ .val = 1, .div = 2 },
-+	{ .val = 2, .div = 4 },
-+	{ .val = 3, .div = 8 },
-+	{ /* Sentinel */ },
-+};
-+
-+static struct clk_div_table div_N[] = {
-+	{ .val = 0, .div = 1 },
-+	{ .val = 1, .div = 2 },
-+	{ .val = 2, .div = 4 },
-+	{ .val = 3, .div = 8 },
-+	{ /* Sentinel */ },
-+};
-+
-+static const char *sel_cpux[] = {
-+	"osc32k",
-+	"osc24M",
-+	"pll-cpux",
-+};
-+
-+static const char *sel_ahb1[] = {
-+	"osc32k",
-+	"osc24M",
-+	"axi",
-+	"pll-periph0",
-+};
-+
-+static const char *sel_apb2[] = {
-+	"osc32k",
-+	"osc24M",
-+	"pll-periph0-2x",
-+	"pll-periph0-2x",
-+};
-+
-+static const char *sel_ahb2[] = {
-+	"ahb1",
-+	"pll-periph0",
-+};
-+
-+static const char *sel_mmc[] = {
-+	"osc24M",
-+	"pll-periph0-2x",
-+	"pll-periph1-2x",
-+};
-+
-+static void sun50i_a64_resets_init(void __iomem *regs)
-+{
-+	u32 rst;
-+
-+	rst = 0 |
-+		/* RST_USB_PHY0 */ BIT(0) |
-+		/* RST_USB_PHY1 */ BIT(1) |
-+		/* RST_USB_HSIC */ BIT(2);
-+	writel(rst, regs + 0x0cc);
-+
-+	rst = 0 |
-+		/* RST_BUS_MIPI_DSI */ BIT(1) |
-+		/* RST_BUS_CE   */ BIT(5) |
-+		/* RST_BUS_DMA  */ BIT(6) |
-+		/* RST_BUS_MMC0 */ BIT(8) |
-+		/* RST_BUS_MMC1 */ BIT(9) |
-+		/* RST_BUS_MMC2 */ BIT(10) |
-+		/* RST_BUS_NAND */ BIT(13) |
-+		/* RST_BUS_DRAM */ BIT(14) |
-+		/* RST_BUS_EMAC */ BIT(17) |
-+		/* RST_BUS_TS   */ BIT(18) |
-+		/* RST_BUS_HSTIMER */ BIT(19) |
-+		/* RST_BUS_SPI0  */ BIT(20) |
-+		/* RST_BUS_SPI1  */ BIT(21) |
-+		/* RST_BUS_OTG   */ BIT(23) |
-+		/* RST_BUS_EHCI0 */ BIT(24) |
-+		/* RST_BUS_EHCI1 */ BIT(25) |
-+		/* RST_BUS_OHCI0 */ BIT(28) |
-+		/* RST_BUS_OHCI1 */ BIT(29);
-+	writel(rst, regs + 0x2c0);
-+
-+	rst = 0 |
-+		/* RST_BUS_VE    */ BIT(0) |
-+		/* RST_BUS_TCON0 */ BIT(3) |
-+		/* RST_BUS_TCON1 */ BIT(4) |
-+		/* RST_BUS_DEINTERLACE */ BIT(5) |
-+		/* RST_BUS_CSI   */ BIT(8) |
-+		/* RST_BUS_HDMI0 */ BIT(10) |
-+		/* RST_BUS_HDMI1 */ BIT(11) |
-+		/* RST_BUS_DE    */ BIT(12) |
-+		/* RST_BUS_GPU   */ BIT(20) |
-+		/* RST_BUS_MSGBOX   */ BIT(21) |
-+		/* RST_BUS_SPINLOCK */ BIT(22) |
-+		/* RST_BUS_DBG */ BIT(31);
-+	writel(rst, regs + 0x2c4);
-+
-+	rst = /* RST_BUS_LVDS */ BIT(0);
-+	writel(rst, regs + 0x2c8);
-+
-+	rst = 0 |
-+		/* RST_BUS_CODEC */ BIT(0) |
-+		/* RST_BUS_SPDIF */ BIT(1) |
-+		/* RST_BUS_THS   */ BIT(8) |
-+		/* RST_BUS_I2S0  */ BIT(12) |
-+		/* RST_BUS_I2S1  */ BIT(13) |
-+		/* RST_BUS_I2S2  */ BIT(14);
-+	writel(rst, regs + 0x2d0);
-+
-+	rst = 0 |
-+		/* RST_BUS_I2C0 */ BIT(0) |
-+		/* RST_BUS_I2C1 */ BIT(1) |
-+		/* RST_BUS_I2C2 */ BIT(2) |
-+		/* RST_BUS_SCR  */ BIT(5) |
-+		/* RST_BUS_UART0 */ BIT(16) |
-+		/* RST_BUS_UART1 */ BIT(17) |
-+		/* RST_BUS_UART2 */ BIT(18) |
-+		/* RST_BUS_UART3 */ BIT(19) |
-+		/* RST_BUS_UART4 */ BIT(20);
-+	writel(rst, regs + 0x2d8);
-+}
-+
-+static void nop_delay(u32 cnt)
-+{
-+	while (cnt--)
-+		barrier();
-+}
-+
-+static inline void sunxi_clk_set_pll(void __iomem *reg, u32 src, u32 freq)
-+{
-+	/* NOTE: using u32, max freq is 4GHz
-+	 * out freq: src * N * K
-+	 * factor N: [1->32]
-+	 * factor K: [1->4]
-+	 * from the manual: give priority to the choice of K >= 2
-+	 */
-+	u32 mul = freq / src; /* target multiplier (N * K) */
-+	u32 k, n;
-+	u32 cfg = BIT(31); /* ENABLE */
-+
-+	for (k = 4; k > 1; k--) {
-+		if ((mul % k) == 0)
-+			break;
++	/* No gpio, assume card is present */
++	if (!gpio_is_valid(host->gpio_cd)) {
++		dev_err(dev, "card detect fail: gpio not valid\n");
++		return 1;
 +	}
-+	n = mul / k;
 +
-+	cfg |= (k - 1) << 4;
-+	cfg |= (n - 1) << 8;
-+
-+	writel(cfg, reg);
-+
-+	/* wait for pll lock */
-+	while (!(readl(reg) & BIT(28)));
++	return gpio_get_value(host->gpio_cd) ? 0 : 1;
 +}
 +
-+static void sun50i_a64_clocks_init(struct device_node *np, void __iomem *regs)
++static int sdxc_init(struct mci_host *mci, struct device *dev)
 +{
-+	sun50i_a64_resets_init(regs);
++	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
 +
-+	/* switch cpu clock source to osc-24M */
-+	writel(0x10000, regs + CCU_CPUX_AXI_CFG);
-+	/* wait 8 cycles */
-+	nop_delay(8);
-+	/* set pll-cpux to 816MHz */
-+	sunxi_clk_set_pll(regs + CCU_PLL_CPUX, 24 * MHZ, 816 * MHZ);
-+	nop_delay(10000); /* HACK: ~1ms delay  */
-+	/* switch cpu clock source to pll-cpux*/
-+	writel( /* clk_src: 1=24Mhz 2=pll-cpux */ (2 << 16) |
-+		/* apb_div: /2 */ (1 << 8) |
-+		/* axi_div: /2 */ (1 << 0),
-+		regs + CCU_CPUX_AXI_CFG);
-+	/* wait 8 cycles */
-+	nop_delay(8);
++	sunxi_mmc_init(host);
 +
-+	clks[CLK_PLL_CPUX] = clk_fixed("pll-cpux", 816 * MHZ);
-+	clks[CLK_CPUX] = sunxi_clk_mux("cpux", sel_cpux, ARRAY_SIZE(sel_cpux), regs + CCU_CPUX_AXI_CFG, 16, 2);
-+
-+	/* set pll-periph0-2x to 1.2GHz, as recommended */
-+	sunxi_clk_set_pll(regs + CCU_PLL_PERIPH0, 24 * MHZ, 1200 * MHZ);
-+
-+	clks[CLK_PLL_PERIPH0_2X] = clk_fixed("pll-periph0-2x", 1200 * MHZ);
-+	clks[CLK_PLL_PERIPH0]    = clk_fixed_factor("pll-periph0", "pll-periph0-2x", 1, 2, 0);
-+
-+	clks[CLK_AXI] = sunxi_clk_div("axi", "cpux", regs + CCU_CPUX_AXI_CFG, 0, 2);
-+
-+	clks[CLK_AHB1] = sunxi_clk_mux("ahb1", sel_ahb1, ARRAY_SIZE(sel_ahb1), regs + 0x054, 12, 2);
-+	clks[CLK_AHB2] = sunxi_clk_mux("ahb2", sel_ahb2, ARRAY_SIZE(sel_ahb2), regs + 0x05c, 0, 1);
-+
-+	clks[CLK_APB1] = sunxi_clk_div_table("apb1", "ahb1", div_apb1, regs + 0x054, 8, 2);
-+	clks[CLK_APB2] = sunxi_clk_mux("apb2", sel_apb2, ARRAY_SIZE(sel_apb2), regs + 0x058, 24, 2);
-+
-+	clks[CLK_BUS_MIPI_DSI] = sunxi_clk_gate("bus-mipi-dsi","ahb1",regs + 0x060, 1);
-+	clks[CLK_BUS_CE]    = sunxi_clk_gate("bus-ce",    "ahb1", regs + 0x060, 5);
-+	clks[CLK_BUS_DMA]   = sunxi_clk_gate("bus-dma",   "ahb1", regs + 0x060, 6);
-+	clks[CLK_BUS_MMC0]  = sunxi_clk_gate("bus-mmc0",  "ahb1", regs + 0x060, 8);
-+	clks[CLK_BUS_MMC1]  = sunxi_clk_gate("bus-mmc1",  "ahb1", regs + 0x060, 9);
-+	clks[CLK_BUS_MMC2]  = sunxi_clk_gate("bus-mmc2",  "ahb1", regs + 0x060, 10);
-+	clks[CLK_BUS_NAND]  = sunxi_clk_gate("bus-nand",  "ahb1", regs + 0x060, 13);
-+	clks[CLK_BUS_DRAM]  = sunxi_clk_gate("bus-dram",  "ahb1", regs + 0x060, 14);
-+	clks[CLK_BUS_EMAC]  = sunxi_clk_gate("bus-emac",  "ahb2", regs + 0x060, 17);
-+	clks[CLK_BUS_TS]    = sunxi_clk_gate("bus-ts",    "ahb1", regs + 0x060, 18);
-+	clks[CLK_BUS_HSTIMER] = sunxi_clk_gate("bus-hstimer", "ahb1", regs + 0x060, 19);
-+	clks[CLK_BUS_SPI0]  = sunxi_clk_gate("bus-spi0",  "ahb1", regs + 0x060,  20);
-+	clks[CLK_BUS_SPI1]  = sunxi_clk_gate("bus-spi1",  "ahb1", regs + 0x060,  21);
-+	clks[CLK_BUS_OTG]   = sunxi_clk_gate("bus-otg",   "ahb1", regs + 0x060,  23);
-+	clks[CLK_BUS_EHCI0] = sunxi_clk_gate("bus-ehci0", "ahb1", regs + 0x060, 24);
-+	clks[CLK_BUS_EHCI1] = sunxi_clk_gate("bus-ehci1", "ahb2", regs + 0x060, 25);
-+	clks[CLK_BUS_OHCI0] = sunxi_clk_gate("bus-ohci0", "ahb1", regs + 0x060, 28);
-+	clks[CLK_BUS_OHCI1] = sunxi_clk_gate("bus-ohci1", "ahb2", regs + 0x060, 29);
-+
-+	clks[CLK_BUS_CODEC] = sunxi_clk_gate("bus-codec", "apb1", regs + 0x068, 0);
-+	clks[CLK_BUS_SPDIF] = sunxi_clk_gate("bus-spdif", "apb1", regs + 0x068, 1);
-+	clks[CLK_BUS_PIO]   = sunxi_clk_gate("bus-pio",   "apb1", regs + 0x068, 5);
-+	clks[CLK_BUS_THS]   = sunxi_clk_gate("bus-ths",   "apb1", regs + 0x068, 8);
-+	clks[CLK_BUS_I2S0]  = sunxi_clk_gate("bus-i2s0",  "apb1", regs + 0x068, 12);
-+	clks[CLK_BUS_I2S1]  = sunxi_clk_gate("bus-i2s1",  "apb1", regs + 0x068, 13);
-+	clks[CLK_BUS_I2S2]  = sunxi_clk_gate("bus-i2s2",  "apb1", regs + 0x068, 14);
-+
-+	clks[CLK_BUS_UART0] = sunxi_clk_gate("bus-uart0", "apb2", regs + 0x06c, 16);
-+	clks[CLK_BUS_UART1] = sunxi_clk_gate("bus-uart1", "apb2", regs + 0x06c, 17);
-+	clks[CLK_BUS_UART2] = sunxi_clk_gate("bus-uart2", "apb2", regs + 0x06c, 18);
-+	clks[CLK_BUS_UART3] = sunxi_clk_gate("bus-uart3", "apb2", regs + 0x06c, 19);
-+	clks[CLK_BUS_UART4] = sunxi_clk_gate("bus-uart4", "apb2", regs + 0x06c, 20);
-+
-+	writel(0, regs + 0x088);
-+	clks[CLK_MMC0] = clk_register_composite(
-+		"mmc0",	sel_mmc, ARRAY_SIZE(sel_mmc),
-+		sunxi_clk_mux("mmc0-mux", sel_mmc, ARRAY_SIZE(sel_mmc), regs + 0x088, 24, 2),
-+		sunxi_clk_div("mmc0-div-m", "mmc0-mux", regs + 0x088, 0, 4),
-+		sunxi_clk_gate("mmc0-gate", "mmc0-div-n", regs + 0x088, 31),
-+		0);
-+
-+	writel(0, regs + 0x08c);
-+	clks[CLK_MMC1] = clk_register_composite(
-+		"mmc1",	sel_mmc, ARRAY_SIZE(sel_mmc),
-+		sunxi_clk_mux("mmc1-mux", sel_mmc, ARRAY_SIZE(sel_mmc), regs + 0x08c, 24, 2),
-+		sunxi_clk_div("mmc1-div-m", "mmc1-mux", regs + 0x08c, 0, 4),
-+		sunxi_clk_gate("mmc1-gate", "mmc1-div-n", regs + 0x08c, 31),
-+		0);
-+
-+	writel(0, regs + 0x090);
-+	clks[CLK_MMC2] = clk_register_composite(
-+		"mmc2",	sel_mmc, ARRAY_SIZE(sel_mmc),
-+		sunxi_clk_mux("mmc2-mux", sel_mmc, ARRAY_SIZE(sel_mmc), regs + 0x090, 24, 2),
-+		sunxi_clk_div("mmc2-div-m", "mmc2-mux", regs + 0x090, 0, 4),
-+		sunxi_clk_gate("mmc2-gate", "mmc2-div-n", regs + 0x090, 31),
-+		0);
++	return 0;
 +}
 +
-+static int sun50i_a64_ccu_probe(struct device *dev)
++static const struct mci_ops sdxc_mmc_ops = {
++	.send_cmd = sdxc_send_cmd,
++	.set_ios = sdxc_set_ios,
++	.init = sdxc_init,
++	.card_present = sdxc_card_present,
++};
++
++static int sunxi_mmc_probe(struct device *dev)
 +{
++	struct device_node *np = dev->of_node;
 +	struct resource *iores;
++	struct sunxi_mmc_host *host;
++	unsigned int f_min, f_max;
++	int ret;
 +
 +	iores = dev_request_mem_resource(dev, 0);
 +	if (IS_ERR(iores))
 +		return PTR_ERR(iores);
++	host = xzalloc(sizeof(*host));
++	host->base = IOMEM(iores->start);
++	dma_set_mask(dev, DMA_BIT_MASK(32));
++	host->cfg = device_get_match_data(dev);
 +
-+	sun50i_a64_clocks_init(dev->of_node, IOMEM(iores->start));
-+	return of_clk_add_provider(dev->of_node, of_clk_src_onecell_get, &clk_data);
++	host->gpio_cd = of_get_named_gpio(np, "cd-gpios", 0);
++
++	host->clk_ahb = clk_get(dev, "ahb");
++	if (IS_ERR(host->clk_ahb)) {
++		ret = PTR_ERR(host->clk_ahb);
++		goto err;
++	}
++
++	host->clk_mmc = clk_get(dev, "mmc");
++	if (IS_ERR(host->clk_mmc)) {
++		ret = PTR_ERR(host->clk_mmc);
++		goto err;
++	}
++
++	clk_enable(host->clk_ahb);
++	clk_enable(host->clk_mmc);
++
++	host->mci.hw_dev = dev;
++	host->mci.ops = sdxc_mmc_ops;
++	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
++	host->mci.host_caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA
++		| MMC_CAP_MMC_HIGHSPEED | MMC_CAP_SD_HIGHSPEED
++		| MMC_CAP_MMC_HIGHSPEED_52MHZ;
++
++	/* source clock is pre-divided by 2 */
++	host->clkrate = clk_get_rate(host->clk_mmc) / 2;
++	f_min = host->clkrate / 510;
++	f_max = host->clkrate;
++	/* clock must at least support freq as low as 400K, and reach 52M */
++	if (400000 < f_min || f_max < 52000000) {
++		/* if not, try to get a better clock, target rate of 2 * 52MHz,
++		 * 400KHz can be acheived with a divisor of 130, which is well
++		 * within range.
++		 */
++		clk_set_rate(host->clk_mmc, 2 * 260 * 400000);
++		host->clkrate = clk_get_rate(host->clk_mmc) / 2;
++		f_min = host->clkrate / 510;
++		f_max = host->clkrate;
++	}
++	dev_dbg(dev, "freq: min %d max %d\n", f_min, f_max);
++	mci_of_parse(&host->mci);
++	host->mci.host_caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA
++		| MMC_CAP_MMC_HIGHSPEED | MMC_CAP_SD_HIGHSPEED
++		| MMC_CAP_MMC_HIGHSPEED_52MHZ;
++
++	f_min = min_t(unsigned int,   400000, f_min);
++	f_max = min_t(unsigned int, 52000000, f_max);
++	host->mci.f_min = max_t(unsigned int, host->mci.f_min, f_min);
++	host->mci.f_max = min_t(unsigned int, host->mci.f_max, f_max);
++
++	return mci_register(&host->mci);
++err:
++	if (host->clk_mmc)
++		clk_put(host->clk_mmc);
++	if (host->clk_ahb)
++		clk_put(host->clk_ahb);
++	free(host);
++	release_region(iores);
++	return ret;
 +}
 +
-+static __maybe_unused struct of_device_id sun50i_a64_ccu_dt_ids[] = {
-+	{
-+		.compatible = "allwinner,sun50i-a64-ccu",
-+	}, {
-+		/* sentinel */
-+	}
++static const struct sunxi_mmc_cfg sun50i_a64_cfg = {
++	.idma_des_size_bits = 16,
++	.clk_delays = NULL,
++	.can_calibrate = true,
++	.mask_data0 = true,
++	.needs_new_timings = true,
 +};
 +
-+static struct driver sun50i_a64_ccu_driver = {
-+	.probe	= sun50i_a64_ccu_probe,
-+	.name	= "sun50i-a64-ccu",
-+	.of_compatible = DRV_OF_COMPAT(sun50i_a64_ccu_dt_ids),
++static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
++	.idma_des_size_bits = 13,
++	.clk_delays = NULL,
++	.can_calibrate = true,
++	.needs_new_timings = true,
 +};
-+core_platform_driver(sun50i_a64_ccu_driver);
-diff --git a/drivers/clk/sunxi/clk-sun50i-a64.h b/drivers/clk/sunxi/clk-sun50i-a64.h
++
++static __maybe_unused struct of_device_id sunxi_mmc_compatible[] = {
++	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
++	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
++	{ /* sentinel */ }
++};
++
++static struct driver sunxi_mmc_driver = {
++	.name  = "sunxi-mmc",
++	.probe = sunxi_mmc_probe,
++	.of_compatible = DRV_OF_COMPAT(sunxi_mmc_compatible),
++};
++device_platform_driver(sunxi_mmc_driver);
+diff --git a/drivers/mci/sunxi-mmc.h b/drivers/mci/sunxi-mmc.h
 new file mode 100644
-index 0000000000..a4ddc39eb8
+index 0000000000..2f6193d0af
 --- /dev/null
-+++ b/drivers/clk/sunxi/clk-sun50i-a64.h
-@@ -0,0 +1,62 @@
++++ b/drivers/mci/sunxi-mmc.h
+@@ -0,0 +1,221 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* SPDX-FileCopyrightText: 2024 Jules Maselbas */
++/* derived from: linux/drivers/mmc/host/sunxi-mmc.c */
++
++#ifndef SUNXI_MMC_H
++#define SUNXI_MMC_H
++
++#include <io.h>
++#include <linux/bitops.h>
++#include <clock.h>
++#include <mci.h>
++
++#define SDXC_REG_GCTRL	(0x00) /* Global Control */
++#define SDXC_REG_CLKCR	(0x04) /* Clock Control */
++#define SDXC_REG_TMOUT	(0x08) /* Time Out */
++#define SDXC_REG_WIDTH	(0x0C) /* Bus Width */
++#define SDXC_REG_BLKSZ	(0x10) /* Block Size */
++#define SDXC_REG_BCNTR	(0x14) /* Byte Count */
++#define SDXC_REG_CMDR	(0x18) /* Command */
++#define SDXC_REG_CARG	(0x1C) /* Argument */
++#define SDXC_REG_RESP0	(0x20) /* Response 0 */
++#define SDXC_REG_RESP1	(0x24) /* Response 1 */
++#define SDXC_REG_RESP2	(0x28) /* Response 2 */
++#define SDXC_REG_RESP3	(0x2C) /* Response 3 */
++#define SDXC_REG_IMASK	(0x30) /* Interrupt Mask */
++#define SDXC_REG_MISTA	(0x34) /* Masked Interrupt Status */
++#define SDXC_REG_RINTR	(0x38) /* Raw Interrupt Status */
++#define SDXC_REG_STAS	(0x3C) /* Status */
++#define SDXC_REG_FTRGL	(0x40) /* FIFO Threshold Watermark */
++#define SDXC_REG_FUNS	(0x44) /* Function Select */
++#define SDXC_REG_CBCR	(0x48) /* CIU Byte Count */
++#define SDXC_REG_BBCR	(0x4C) /* BIU Byte Count */
++#define SDXC_REG_DBGC	(0x50) /* Debug Enable */
++#define SDXC_REG_A12A	(0x58) /* Auto Command 12 Argument */
++#define SDXC_REG_NTSR	(0x5C) /* SMC New Timing Set Register */
++#define SDXC_REG_HWRST	(0x78) /* Card Hardware Reset */
++#define SDXC_REG_DMAC	(0x80) /* IDMAC Control */
++#define SDXC_REG_DLBA	(0x84) /* IDMAC Descriptor List Base Addresse */
++#define SDXC_REG_IDST	(0x88) /* IDMAC Status */
++#define SDXC_REG_IDIE	(0x8C) /* IDMAC Interrupt Enable */
++#define SDXC_REG_CHDA	(0x90)
++#define SDXC_REG_CBDA	(0x94)
++
++#define SDXC_REG_DRV_DL		0x140 /* Drive Delay Control Register */
++#define SDXC_REG_SAMP_DL_REG	0x144 /* SMC sample delay control */
++#define SDXC_REG_DS_DL_REG	0x148 /* SMC data strobe delay control */
++
++#define SDXC_REG_FIFO	(0x200) /* FIFO */
++
++#define SDXC_GCTRL_SOFT_RESET		BIT(0)
++#define SDXC_GCTRL_FIFO_RESET		BIT(1)
++#define SDXC_GCTRL_DMA_RESET		BIT(2)
++#define SDXC_GCTRL_RESET \
++	(SDXC_GCTRL_SOFT_RESET | SDXC_GCTRL_FIFO_RESET | SDXC_GCTRL_DMA_RESET)
++#define SDXC_GCTRL_DMA_ENABLE		BIT(5)
++#define SDXC_GCTRL_ACCESS_BY_AHB	BIT(31)
++
++#define SDXC_CMD_RESP_EXPIRE		BIT(6)
++#define SDXC_CMD_LONG_RESPONSE		BIT(7)
++#define SDXC_CMD_CHK_RESPONSE_CRC	BIT(8)
++#define SDXC_CMD_DATA_EXPIRE		BIT(9)
++#define SDXC_CMD_WRITE			BIT(10)
++#define SDXC_CMD_AUTO_STOP		BIT(12)
++#define SDXC_CMD_WAIT_PRE_OVER		BIT(13)
++#define SDXC_CMD_ABORT_STOP		BIT(14)
++#define SDXC_CMD_SEND_INIT_SEQ		BIT(15)
++#define SDXC_CMD_UPCLK_ONLY		BIT(21)
++#define SDXC_CMD_START			BIT(31)
++
++#define SDXC_NTSR_2X_TIMING_MODE	BIT(31)
++
++/* clock control bits */
++#define SDXC_CLK_MASK_DATA0	BIT(31)
++#define SDXC_CLK_LOW_POWER_ON	BIT(17)
++#define SDXC_CLK_ENABLE		BIT(16)
++#define SDXC_CLK_DIVIDER_MASK	(0xff)
++
++/* bus width */
++#define SDXC_WIDTH_1BIT	0
++#define SDXC_WIDTH_4BIT	BIT(0)
++#define SDXC_WIDTH_8BIT	BIT(1)
++
++/* interrupt bits */
++#define SDXC_INT_RESP_ERROR		BIT(1)
++#define SDXC_INT_COMMAND_DONE		BIT(2)
++#define SDXC_INT_DATA_OVER		BIT(3)
++#define SDXC_INT_TX_DATA_REQUEST	BIT(4)
++#define SDXC_INT_RX_DATA_REQUEST	BIT(5)
++#define SDXC_INT_RESP_CRC_ERROR		BIT(6)
++#define SDXC_INT_DATA_CRC_ERROR		BIT(7)
++#define SDXC_INT_RESP_TIMEOUT		BIT(8)
++#define SDXC_INT_DATA_TIMEOUT		BIT(9)
++#define SDXC_INT_VOLTAGE_CHANGE_DONE	BIT(10)
++#define SDXC_INT_FIFO_RUN_ERROR		BIT(11)
++#define SDXC_INT_HARD_WARE_LOCKED	BIT(12)
++#define SDXC_INT_START_BIT_ERROR	BIT(13)
++#define SDXC_INT_AUTO_COMMAND_DONE	BIT(14)
++#define SDXC_INT_END_BIT_ERROR		BIT(15)
++#define SDXC_INT_SDIO_INTERRUPT		BIT(16)
++#define SDXC_INT_CARD_INSERT		BIT(30)
++#define SDXC_INT_CARD_REMOVE		BIT(31)
++#define SDXC_INTERRUPT_ERROR_BIT	\
++	(SDXC_INT_RESP_ERROR |		\
++	 SDXC_INT_RESP_CRC_ERROR |	\
++	 SDXC_INT_DATA_CRC_ERROR |	\
++	 SDXC_INT_RESP_TIMEOUT |	\
++	 SDXC_INT_DATA_TIMEOUT |	\
++	 SDXC_INT_HARD_WARE_LOCKED |	\
++	 SDXC_INT_START_BIT_ERROR |	\
++	 SDXC_INT_END_BIT_ERROR)
++
++#define SDXC_INTERRUPT_DONE_BIT		\
++	(SDXC_INT_AUTO_COMMAND_DONE |	\
++	 SDXC_INT_DATA_OVER |		\
++	 SDXC_INT_COMMAND_DONE |	\
++	 SDXC_INT_VOLTAGE_CHANGE_DONE)
++
++/* status */
++#define SDXC_STATUS_FIFO_EMPTY		BIT(2)
++#define SDXC_STATUS_FIFO_FULL		BIT(3)
++#define SDXC_STATUS_CARD_PRESENT	BIT(8)
++#define SDXC_STATUS_BUSY		BIT(9)
++
++struct sunxi_mmc_clk_delay {
++	u32 output;
++	u32 sample;
++};
++
++struct sunxi_mmc_cfg {
++	u32 idma_des_size_bits;
++	u32 idma_des_shift;
++	const struct sunxi_mmc_clk_delay *clk_delays;
++
++	/* does the IP block support autocalibration? */
++	bool can_calibrate;
++
++	/* Does DATA0 needs to be masked while the clock is updated */
++	bool mask_data0;
++
++	/*
++	 * hardware only supports new timing mode, either due to lack of
++	 * a mode switch in the clock controller, or the mmc controller
++	 * is permanently configured in the new timing mode, without the
++	 * NTSR mode switch.
++	 */
++	bool needs_new_timings;
++
++	/* clock hardware can switch between old and new timing modes */
++	bool ccu_has_timings_switch;
++};
++
++struct sunxi_mmc_host {
++	struct mci_host mci;
++	struct device *dev;
++	struct clk *clk_ahb, *clk_mmc;
++	void __iomem *base;
++	int gpio_cd;
++
++	const struct sunxi_mmc_cfg *cfg;
++	u32 clkrate;
++};
++
++static inline struct sunxi_mmc_host *to_sunxi_mmc_host(struct mci_host *mci)
++{
++	return container_of(mci, struct sunxi_mmc_host, mci);
++}
++
++static inline u32 sdxc_readl(struct sunxi_mmc_host *host, u32 reg)
++{
++	return readl(host->base + reg);
++}
++
++static inline void sdxc_writel(struct sunxi_mmc_host *host, u32 reg, u32 val)
++{
++	writel(val, host->base + reg);
++}
++
++static inline int sdxc_is_fifo_empty(struct sunxi_mmc_host *host)
++{
++	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_FIFO_EMPTY;
++}
++
++static inline int sdxc_is_fifo_full(struct sunxi_mmc_host *host)
++{
++	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_FIFO_FULL;
++}
++
++static inline int sdxc_is_card_busy(struct sunxi_mmc_host *host)
++{
++	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_BUSY;
++}
++
++#ifdef __PBL__
 +/*
-+ * Copyright 2016 Maxime Ripard
-+ *
-+ * Maxime Ripard <maxime.ripard@free-electrons.com>
++ * Stubs to make timeout logic below work in PBL
 + */
++#define get_time_ns()		0
++/*
++ * Use time in us as a busy counter timeout value
++ */
++#define is_timeout(s, t)	((s)++ > ((t) / 1000))
++#endif
 +
-+#include <dt-bindings/clock/sun50i-a64-ccu.h>
++static inline int sdxc_xfer_complete(struct sunxi_mmc_host *host, u64 timeout, u32 flags)
++{
++	u64 start;
++	u32 rint;
 +
-+#ifndef _CLK_SUN50I_A64_H_
-+#define _CLK_SUN50I_A64_H_
++	start = get_time_ns();
++	do {
++		rint = sdxc_readl(host, SDXC_REG_RINTR);
++		if (rint & SDXC_INTERRUPT_ERROR_BIT)
++			break;
++		if (rint & flags)
++			return 0;
++	} while (!is_timeout(start, timeout));
 +
-+#include <dt-bindings/clock/sun50i-a64-ccu.h>
-+#include <dt-bindings/reset/sun50i-a64-ccu.h>
++	return -ETIMEDOUT;
++}
 +
-+#define CLK_OSC_12M			0
-+#define CLK_PLL_CPUX			1
-+#define CLK_PLL_AUDIO_BASE		2
-+#define CLK_PLL_AUDIO			3
-+#define CLK_PLL_AUDIO_2X		4
-+#define CLK_PLL_AUDIO_4X		5
-+#define CLK_PLL_AUDIO_8X		6
++#endif
+diff --git a/include/mach/sunxi/xload.h b/include/mach/sunxi/xload.h
+new file mode 100644
+index 0000000000..f978db4951
+--- /dev/null
++++ b/include/mach/sunxi/xload.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
-+/* PLL_VIDEO0 exported for HDMI PHY */
++#ifndef __MACH_XLOAD_H
++#define __MACH_XLOAD_H
 +
-+#define CLK_PLL_VIDEO0_2X		8
-+#define CLK_PLL_VE			9
-+#define CLK_PLL_DDR0			10
++#include <linux/compiler.h>
++#include <pbl/bio.h>
 +
-+/* PLL_PERIPH0 exported for PRCM */
++int sunxi_mmc_bio_init(struct pbl_bio *bio, void __iomem *base,
++		       unsigned int clock, unsigned int slot);
 +
-+#define CLK_PLL_PERIPH0_2X		12
-+#define CLK_PLL_PERIPH1			13
-+#define CLK_PLL_PERIPH1_2X		14
-+#define CLK_PLL_VIDEO1			15
-+#define CLK_PLL_GPU			16
-+#define CLK_PLL_MIPI			17
-+#define CLK_PLL_HSIC			18
-+#define CLK_PLL_DE			19
-+#define CLK_PLL_DDR1			20
-+#define CLK_AXI				22
-+#define CLK_APB				23
-+#define CLK_AHB1			24
-+#define CLK_APB1			25
-+#define CLK_APB2			26
-+#define CLK_AHB2			27
-+
-+/* All the bus gates are exported */
-+
-+/* The first bunch of module clocks are exported */
-+
-+#define CLK_USB_OHCI0_12M		90
-+
-+#define CLK_USB_OHCI1_12M		92
-+
-+/* All the DRAM gates are exported */
-+
-+/* And the DSI and GPU module clock is exported */
-+
-+#define CLK_NUMBER			(CLK_GPU + 1)
-+
-+#endif /* _CLK_SUN50I_A64_H_ */
++#endif
 -- 
 2.46.2
 
