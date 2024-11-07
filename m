@@ -1,67 +1,80 @@
-Delivery-date: Wed, 06 Nov 2024 23:16:48 +0100
+Delivery-date: Thu, 07 Nov 2024 08:34:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8oKV-005gm3-2B
+	id 1t8x2e-005pxy-1O
 	for lore@lore.pengutronix.de;
-	Wed, 06 Nov 2024 23:16:48 +0100
+	Thu, 07 Nov 2024 08:34:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8oKW-0007Wu-CW
-	for lore@pengutronix.de; Wed, 06 Nov 2024 23:16:48 +0100
+	id 1t8x2f-0000cB-2o
+	for lore@pengutronix.de; Thu, 07 Nov 2024 08:34:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3uB6kT/n75jYflhkQizrZQFwbWZQInd04Zys6QPRLFk=; b=4THFSIN5yIFuq1TipVfTIskFvn
-	+wN8qCMT+jD0+3Ze3WF+TlDrwtgzY0sMs36h7Xw7GUGvgwSUkFZFM0hU/VqsU6qmVHRoBhuCdX+NG
-	t7wI6pAuvo4bMKpA0I+hUS1RShrnAKRYF+pRpiruY6qMdgorPL4e+T8EfJiWzt0rf/ET90vFSe+fE
-	Roftogo1NsNuoPL37TwSObxpI+vYDQLhXoN/GlD8lzwzkNmzrLazy4eCuPZdf92P5+bqBOD/e0NCN
-	8EczglkXa7ZmPUCGGjzZDugcVPFBY7HyYprgcOBEDOKsREKk4gnT7fEGubPzY1kYAdmHEfp7dZRYn
-	DilW24xQ==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=sYJvat4h8DDhq2HXNqYUINglBYlpN+3V+x7czQPGKkE=; b=RU843h5qe2y1QxIIHq7E6HSy9A
+	3UjwdLQo/XQVy4Fpm3QD91u56GYQlLKMwLm/D9pIBWWlmwQJng/oPrv9IB/bUdRGbU9I+lXSyo5VK
+	qE33TBYGm2xnRPXxkAx47iOLKz0S5LWBmQW0PqHmSmmOyrwF2TFKmMTx1PFiinYGd8Ah+b/fKnEaZ
+	+V1NB1eiYUnA3fBROZRXdxiwY6B1kp1lRyFU97NLIB+GAZ4/gxhqoTiiv7NtCzg6ch6PZSi/G1O1F
+	uldvA9lFLjI+AZfhOAod/gZOzVziSY+TT2/wabtd0IOxmYa6g8oGCINMLj62iZ74OVCHa4cj9SOBp
+	mNp6viHQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8oJt-00000004tXN-1ztr;
-	Wed, 06 Nov 2024 22:16:09 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1t8x26-000000060S1-0cqe;
+	Thu, 07 Nov 2024 07:34:22 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8oHr-00000004swJ-3alH
+	id 1t8wzA-0000000604m-1AkQ
+	for barebox@bombadil.infradead.org;
+	Thu, 07 Nov 2024 07:31:20 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=sYJvat4h8DDhq2HXNqYUINglBYlpN+3V+x7czQPGKkE=; b=EGsA9E8iYcny4BflpcFWNHdjIk
+	3mWg9eXVtMK0nwAf3WVNI/74WzbVc6tuAvr+9hV6FDyu7aTfueDegpReoD2dV0O6rfDiv6HpgZhIC
+	MvCfYYXfxhfOZ1VNtfwWW+QX32l2QgmmP0ZW9gZrWz1/p61WgPiOp58x4Y2iZpa2Q1S61csrtrvTK
+	qg67/C2voruCsSEt5PcbNgLBJy1icgPiVPVJkJtb5jS8RjOGzPdxuMZpE9Pdnu7IFLgfHFkVu0KG4
+	5pEWlrutlne2AgiqyIaosFSu4TjlOMmNBWUlXuEfabgsT5TyZCaqV/Q5v04R/aJtcJFb81a1x2lhK
+	hRisPnoA==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
+	id 1t8wz6-0000000C4sI-1BNq
 	for barebox@lists.infradead.org;
-	Wed, 06 Nov 2024 22:14:05 +0000
+	Thu, 07 Nov 2024 07:31:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t8oHp-0007Fx-5t; Wed, 06 Nov 2024 23:14:01 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t8wz5-0000I3-TE; Thu, 07 Nov 2024 08:31:15 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t8oHo-002MnU-3C;
-	Wed, 06 Nov 2024 23:14:01 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t8oHo-000Ypm-2u;
-	Wed, 06 Nov 2024 23:14:00 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  6 Nov 2024 23:13:58 +0100
-Message-Id: <20241106221358.131149-1-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t8wz5-002QQL-2I;
+	Thu, 07 Nov 2024 08:31:15 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t8wz5-007pWI-1y;
+	Thu, 07 Nov 2024 08:31:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu,  7 Nov 2024 08:31:14 +0100
+Message-Id: <20241107073114.1866198-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241106185724.2526-2-a.fatoum@pengutronix.de>
-References: <20241106185724.2526-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241106_141403_915682_F7F1622F 
-X-CRM114-Status: GOOD (  10.63  )
+X-CRM114-CacheID: sfid-20241107_073116_534816_AFFC6A4D 
+X-CRM114-Status: UNSURE (   8.78  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,32 +92,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! firmware: rockchip: rename from rk3xxx-op-tee.bin to rk3xxx-bl32.bin
+Subject: [PATCH] mailbox: make mailbox.h self contained
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-rockchip/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+mailbox.h needs linux/list.h, so include it to make the file self
+contained. Also declare of_phandle_args.
 
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 4069ad4ca138..51d81deca97a 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -137,7 +137,7 @@ config ARCH_ROCKCHIP_ATF
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/mailbox.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/mailbox.h b/include/mailbox.h
+index 3be58ec103..9583611da2 100644
+--- a/include/mailbox.h
++++ b/include/mailbox.h
+@@ -1,6 +1,10 @@
+ #ifndef __MAILBOX_H
+ #define __MAILBOX_H
  
- config ARCH_ROCKCHIP_OPTEE
- 	bool "Build rockchip OP-TEE binary into barebox"
--	depends on ARCH_ROCKCHIP_ATF && ARCH_RK3399
-+	depends on ARCH_ROCKCHIP_ATF
- 	select PBL_OPTEE
- 	help
- 	  With this option enabled the OP-TEE binary is compiled
++#include <linux/list.h>
++
++struct of_phandle_args;
++
+ struct mbox_chan {
+ 	struct mbox_controller *mbox;
+ 	struct device *dev;
 -- 
 2.39.5
 
