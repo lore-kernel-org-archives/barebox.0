@@ -1,67 +1,75 @@
-Delivery-date: Thu, 07 Nov 2024 09:45:24 +0100
+Delivery-date: Thu, 07 Nov 2024 09:46:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8y8p-005rA6-09
+	id 1t8yAC-005rBR-17
 	for lore@lore.pengutronix.de;
-	Thu, 07 Nov 2024 09:45:24 +0100
+	Thu, 07 Nov 2024 09:46:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t8y8p-00071S-Nz
-	for lore@pengutronix.de; Thu, 07 Nov 2024 09:45:24 +0100
+	id 1t8yAD-0007AZ-0s
+	for lore@pengutronix.de; Thu, 07 Nov 2024 09:46:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qzCbE7XO2F4UCqkYSviY+gEkpTtVYyytiUQDH7CaQqk=; b=BKPigJIQiz58qfM/S+mI/E+tfg
-	xNHf3Mv04Rf9SvWhB2HKFAFM0sqqi24rJOZNpXWETrKgtqzlcCAkZIFEKAuUl1NIbJoTRvOrrs2jD
-	0dLZ2JQTZlt890i45E/ceEsG50Xb9y4KkxF9NyOAhkLvbTu27ot6T1S/Mqx4uHzIZqulIChqXcSJu
-	orkxOMOhiEvicVrMLQzn0tqKRGRjRZwMjjaa6rHTM7rsnLdBtzpBpzlt+Bh2oTjQhS7SXHdP/Gq61
-	uTLviSpvN8vwqUlxW0BXzW+mYabNVr3yoHBmleQUEjHivqzOJZ15GnniQvJwLeIy4BbyyPuw1KvVG
-	b98pv5Fg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=5elyb39cpu0zY2pFN4izO05/Umlgg+CO7c8o86TZu6c=; b=JWXHMqP5hCRcQt4rC3yaFCxsMv
+	UeH4acQNORNFgmllT6eEVciO0VZkq9ATkqKdOQ5UOjQ+uJTiAJks0BgvZfRQxxRtHBBntCFI/n2ch
+	ALn5aOdOWwi8CT5Kgd69ajNe9hioS++gk+GjupFDxL21wUDIxbXSXZhnIA02uB5qnoSxFBXITepET
+	P9hGaVFF3QplemPyCDcv7Hzi74LavxpX9+R9X6UEEDKaYjX9cF5tGC5jcjTQaoIdbZLKSbH732Z0X
+	TjlNQaRCWACu8jJI7YZUw74e3J1JH30eMIcBECf+fn9kWSlvPCURxolEkWzs0jDgyUDLW0UllhEpv
+	9W+//B/g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8y8B-00000006AEH-1HZr;
-	Thu, 07 Nov 2024 08:44:43 +0000
+	id 1t8yA2-00000006AyG-48HO;
+	Thu, 07 Nov 2024 08:46:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t8y5p-000000069oV-3FxU
+	id 1t8wrg-00000005yX9-0KN9
 	for barebox@lists.infradead.org;
-	Thu, 07 Nov 2024 08:42:19 +0000
+	Thu, 07 Nov 2024 07:23:38 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1t8y5m-0006p9-5B; Thu, 07 Nov 2024 09:42:14 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t8wrc-0007zm-Gy; Thu, 07 Nov 2024 08:23:32 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1t8y5l-002Qu9-2s;
-	Thu, 07 Nov 2024 09:42:13 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1t8y5l-001NlV-2b;
-	Thu, 07 Nov 2024 09:42:13 +0100
-Date: Thu, 7 Nov 2024 09:42:13 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Robin van der Gracht <robin@protonic.nl>
-Message-ID: <20241107084213.aay4u2vzwbbxlbfa@pengutronix.de>
-References: <20241106185724.2526-1-a.fatoum@pengutronix.de>
- <20241106185724.2526-4-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t8wrc-002QOx-0v;
+	Thu, 07 Nov 2024 08:23:32 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t8wrc-006rNQ-0j;
+	Thu, 07 Nov 2024 08:23:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 07 Nov 2024 08:23:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241106185724.2526-4-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241107-fs-tftp-v1-3-39d7e1cff418@pengutronix.de>
+References: <20241107-fs-tftp-v1-0-39d7e1cff418@pengutronix.de>
+In-Reply-To: <20241107-fs-tftp-v1-0-39d7e1cff418@pengutronix.de>
+To: "open list:BAREBOX" <barebox@lists.infradead.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730964212; l=627;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=0e/dXB6248eV6nxZ+Qylr+3Xu79XfUJNycTKgNSsFzo=;
+ b=OOGAazabmOoq6duRCTLpgc+EMcBi3LpWh9+/DZ+wLe2ix0kE7uYdbDz59fIhjG/PdaJbSB7D4
+ ElrKOj6qzH/A0iiEN5M7WObwPlaAcVwb+HEoCpPILCYetY08rwvh0vw
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241107_004217_839201_F9053A6C 
-X-CRM114-Status: GOOD (  15.99  )
+X-CRM114-CacheID: sfid-20241106_232336_158950_1847902D 
+X-CRM114-Status: UNSURE (   9.44  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,53 +87,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/6] ARM: Rockchip: fix clang warning about passing
- 32-bit register operand
+Subject: [PATCH 3/4] fs: kill invalid dentries
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+When a dentry becomes invalid we can safely kill it and free the
+associated memory. This fixes a memory leakage in the tftp and nfs
+code as these regularly declare a dentry as invalid.
 
-On 24-11-06, Ahmad Fatoum wrote:
-> clangd warns that "Value size does not match register size specified by
-> the constraint and modifier".
-> 
-> Promote the subtraction result to unsigned long to fix this.
-> 
-> The 16 is likely unnecessary, but I am hesitant to remove it without testing.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Is it worth to add a comment like: /* TODO: check if 16 is necessary */ ?
+diff --git a/fs/fs.c b/fs/fs.c
+index f24962d2a6..a9d2cc7088 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1577,6 +1577,7 @@ static struct dentry *lookup_dcache(const struct qstr *name,
+ 			if (!error)
+ 				d_invalidate(dentry);
+ 			dput(dentry);
++			dentry_kill(dentry);
+ 			return ERR_PTR(error);
+ 		}
+ 	}
 
-Regards,
-  Marco
+-- 
+2.39.5
 
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/mach-rockchip/atf.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
-> index 1e1861191c99..4c16ec3bc66a 100644
-> --- a/arch/arm/mach-rockchip/atf.c
-> +++ b/arch/arm/mach-rockchip/atf.c
-> @@ -59,7 +59,7 @@ static unsigned long load_elf64_image_phdr(const void *elf)
->  										\
->  	/* Setup an initial stack for EL2 */                                    \
->  	asm volatile("msr sp_el2, %0" : :                                       \
-> -			"r" (SOC##_BAREBOX_LOAD_ADDRESS - 16) :                 \
-> +			"r" ((ulong)SOC##_BAREBOX_LOAD_ADDRESS - 16) :		\
->  			"cc");                                                  \
->  										\
->  	bl31_entry(bl31, optee_load_address,                                    \
-> -- 
-> 2.39.5
-> 
-> 
-> 
 
 
