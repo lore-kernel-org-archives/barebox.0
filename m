@@ -1,84 +1,177 @@
-Delivery-date: Thu, 07 Nov 2024 13:22:05 +0100
+Delivery-date: Thu, 07 Nov 2024 14:43:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t91WV-005uvP-2p
+	id 1t92n1-005wEd-0D
 	for lore@lore.pengutronix.de;
-	Thu, 07 Nov 2024 13:22:05 +0100
+	Thu, 07 Nov 2024 14:43:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t91WW-00043k-EO
-	for lore@pengutronix.de; Thu, 07 Nov 2024 13:22:05 +0100
+	id 1t92n1-0003zd-IS
+	for lore@pengutronix.de; Thu, 07 Nov 2024 14:43:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ghqu356uGiV3CNUREZh3OJleMFmCB5Y/D1/xS61ihcg=; b=3GBdxYzu+UH58CVFFemLFFjs10
-	2B7dt6EYed3dC0q0KA86m5Oi/zN5pIWwuFEbq6fLQjcrcxacylg9WB4B5ePhjB9idY3zV5941ZHyG
-	k6xBu13uFA+HpxuduNqoXNaGXJNdDUdD+6mcuefuEBKRKX6IarSzQolb3CE22OGm7eyY61DySAIti
-	PrbnLBJke4SP4CU3s+BvgHrxPgueJeex9GUE94xgrDNuKaysnU5QBHXNU1sYhca+0EM17n/iUy9TV
-	7hkdnOtTlzfYPuOx/Av4zGeM74KB5joYbWrBRbpVGeekFKuWo0lce+LHjb1wDYjx/A9hZgZLujoDe
-	oayIVtTQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:Message-ID:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=6I0GQayfF+yQ2ibZqeetweFhs0ntJREBxN4K2+sJvOM=; b=ObtrkB/jDYqtNU
+	w5NB4ivlPjxtRUAVTbJhZgMFdfRTYonsLG07KwAe8FGPpVk6gi1ADTl6wHvEmDfKyOft+0kN9wekQ
+	wptlYUZ3oi057A8u8IPe0gX2f87znir01DDav+bCd7MHZ7B7jyKIzZS8jzL4FpZCjTw8pK9B/5RC4
+	3k5GUZeP+GOB1acSlMnKGPNeeIAC7b8L4lHBovRmsxKaoFFsIwtE+EU0PVrfsHlnL8TZbyQULVfoH
+	Zv9MAIryHka+xNYUkh5jkNX2egbeK6Al+dfLSv5lv7IhV/X9uhh+tnKN7QvnOsF6omP/verRwcZdz
+	U284lY6zDWggooYZ3Pxw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t91Vq-00000006uCX-27om;
-	Thu, 07 Nov 2024 12:21:22 +0000
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+	id 1t92mK-00000007917-30OB;
+	Thu, 07 Nov 2024 13:42:28 +0000
+Received: from mx0a-001ec801.pphosted.com ([148.163.144.146])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t91Lk-00000006slL-3LGW
+	id 1t92mG-000000078zj-0HmO
 	for barebox@lists.infradead.org;
-	Thu, 07 Nov 2024 12:10:58 +0000
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-5c9404c0d50so1077852a12.3
-        for <barebox@lists.infradead.org>; Thu, 07 Nov 2024 04:10:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730981454; x=1731586254; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ghqu356uGiV3CNUREZh3OJleMFmCB5Y/D1/xS61ihcg=;
-        b=lwZ0JLmObF2NHlaqRyCQYnnO8o8TnOLEjVeVu3DuOl3G9xHeTmAWTR+nf0ArptgTHr
-         qSK52ObPkQ2/FTIe+US/VU1mERJ0nlTGy/85K/dZLydC2EqGw6gRqs+QbG9Mp3tEuJrD
-         UURUAY3dgDn9o8JWxZ5xzCGIFln2GXdphqkoyZpc5jAD9ryTBgSV+2XvRw/yTlrmxwUQ
-         zafOGH0VG0km+4XEYi3ch44vBdq4XbtHKoS8Ck+e1KQR43r36rPls/TslIGYmXohXmg4
-         v7QY3JoIgGcfkTBNi85FaPkuXLIcimyxDwU+K+SrujrtI6/yIt5EqR358ePrx2ra+iU6
-         3fNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730981454; x=1731586254;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ghqu356uGiV3CNUREZh3OJleMFmCB5Y/D1/xS61ihcg=;
-        b=Lcs08G2M5vGJuMW/328836CSVOfoh2pnNYc8oy/OiFpLVwE5GSWY4/GGbSh+7a1oRR
-         htk1p7i/6cnjyYpeIi40kM9tY3wFctrwR65tSvy83BrZrMtSRyWlHZ/krGI8m/LC5wj9
-         ikCExyl1VrOYH1l8+mnkz2o72xunGRRiKMUTG+Y5LPUBdamYclc+mH5udwEs3j4yBhZ0
-         P+bnAbaD8ZolpJvzEts39CSkTbU5AzFPDKf2H+MMLG0i20sNwCsEd2tbzQZfPTCvGPx/
-         Y3Doi5jmsg9Ig/w9J/LbIgTvHqS6sY4ioLIytMVdTa5dwqV/sZ4AtEvnYz+1tmQr8S1l
-         vPGA==
-X-Gm-Message-State: AOJu0YxZ5RYKhky6RU1hKZF42APYMTJZXysmyrW0V9sAnH/U1mUDxTIN
-	TLJJDrl35BqVa29du3LaHGa8/xOdlqlwdM2S8XzjgXZFttlgUuKW666RnhYoFhg7Tq5yJriG/TX
-	B/ox8YIIIoA2m4vjGLxZKOUboyh0h0ZxX
-X-Google-Smtp-Source: AGHT+IHxcdrzYrJ5XNmWbZzbm802kcsP6LtEqmVLdhzUQZuLXuUsVnvjDOtMJwk8a8kbsC6naUclAFH3xp3+2i9qwVU=
-X-Received: by 2002:a05:6402:2790:b0:5ce:fc3b:ce59 with SMTP id
- 4fb4d7f45d1cf-5cefc3bcfc6mr2210300a12.22.1730981453977; Thu, 07 Nov 2024
- 04:10:53 -0800 (PST)
-MIME-Version: 1.0
-References: <20241031124854.625174-1-abdelrahmanyossef12@gmail.com>
-In-Reply-To: <20241031124854.625174-1-abdelrahmanyossef12@gmail.com>
-From: AbdelRahman Yossef <abdelrahmanyossef12@gmail.com>
-Date: Thu, 7 Nov 2024 14:10:42 +0200
-Message-ID: <CABwgSGYrLnUz1EoHEehHARWe4KLBMCoct91La0UjCzB4Ko_Jcw@mail.gmail.com>
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+	Thu, 07 Nov 2024 13:42:27 +0000
+Received: from pps.filterd (m0163886.ppops.net [127.0.0.1])
+	by mx0a-001ec801.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7BsJDP016954
+	for <barebox@lists.infradead.org>; Thu, 7 Nov 2024 08:42:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pphost; bh=6I0GQayfF+yQ2ibZqeetweFhs
+	0ntJREBxN4K2+sJvOM=; b=N7vPAQSm64rKTGcFeaMR+stKXZBuRLhXcdzSaWUuR
+	hjBewZKvhy4Lqk/mp6dYjyp0Fokla5jv1Ff5xKOjZkcAOUQ9KW0wyjHMT86Ju1rF
+	XslfhIXoA25Bn27MDm/FtOZibiyeKbEG5FJUcg5RdgOkNofbZxFAIKaRbWAiLXjR
+	qr7PTGEUNamlUFFd8YGJJosPzfWXPcNdxOlkuM0TPrTZYyglr9MAZY8ZrB16JkfH
+	15gY8KOxDHoA5z3oJR9eExxik5nbqun/gtOlGW8go2k0rLcsV2vOT8aE8A4YouU+
+	lTbU1MG/5gWVV73Z+FGFpIGQEvJEveb1rtJDj9JGi0JPQ==
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazlp17010002.outbound.protection.outlook.com [40.93.13.2])
+	by mx0a-001ec801.pphosted.com (PPS) with ESMTPS id 42rw39rekt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <barebox@lists.infradead.org>; Thu, 07 Nov 2024 08:42:22 -0500 (EST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X3cAUheYgsLoM/3//OY4S9jn7McLSMoy/sQ1yK18YHbnE8vQkwlvhLbj8ppYCx5925B6CCL8m1ia5GCrX4hiDpatVjGs6TclXXBniBZB9aiMk6jbpb89aNuNIjRhY3yKVgF5Cxj/248uBEusxgcDR7XEVcCbz1ozF1aGyE6364jEqubkwBDtWXNkSDY13m3Wc/rnDJDeskjCKP/fpyXP6lEDa5tMmrDhpMYRskl3UnKzD5kJ+QqWdPLEylUR5EYNoZ/ZPHUvlunBQ09kLkUgm9bvpCIH5D3st+98O9XzrNS1QET70FGBqlxDawC9pz9rGGSgbIUNG9gz7CbGQWpgmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6I0GQayfF+yQ2ibZqeetweFhs0ntJREBxN4K2+sJvOM=;
+ b=xKD7HtwBtGwjU+pBbJnlW5/NLVzSNekJyAwTnjoKCQr0zruxF8iUX3rcgaNAQLc/DqYZqRoPiaTwFCe/NCG7appg8icLLkzPe0RW9WqQWv3Ps13WyLT5uolCi9dHV3TeMdndfa8qbMrtZGHEWhdDkz1RNhrQ2/AgtyGNL6LY9D9AMb9vxvwammaORnEAL3GsX69YJ2OzD5/xGYZkqH+AvwGKwAig1icHfuca7tHBjgUNjckfmrnCkmPrIA5xH7kZId11xtvKOu6FIQG2BlFeo3f9lnMpodDhLIWOIgYKKFiQrAeFltecU9oKiBIDyf1tJJ0xGTuA4rHDruUund6mZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ametek.com; dmarc=pass action=none header.from=ametek.com;
+ dkim=pass header.d=ametek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6I0GQayfF+yQ2ibZqeetweFhs0ntJREBxN4K2+sJvOM=;
+ b=q7shsKrIFVzO1OszElc4DCzr1Iqwt64W93F8Y9Ic1K8cvVKu78LfYR1SRdhv+DZ8xEveer8EFkcqOtSLcy4f3/NzycZaPcsa09y50xKDcdNMgJeSynDcXq165qkmIGaTeNmQmcFJ7Dv0OJeTF1N5gWjNRpPv1/p8U8xsADUsd0U=
+Received: from BYAPR07MB4358.namprd07.prod.outlook.com (2603:10b6:a02:c2::18)
+ by SJ2PR07MB9953.namprd07.prod.outlook.com (2603:10b6:a03:57b::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Thu, 7 Nov
+ 2024 13:42:18 +0000
+Received: from BYAPR07MB4358.namprd07.prod.outlook.com
+ ([fe80::4c6d:4703:feb6:237c]) by BYAPR07MB4358.namprd07.prod.outlook.com
+ ([fe80::4c6d:4703:feb6:237c%7]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 13:42:18 +0000
+From: Renaud Barbier <Renaud.Barbier@ametek.com>
+To: Barebox List <barebox@lists.infradead.org>
+Thread-Topic: NVME o nLS1046A-RDB
+Thread-Index: AdsxGtLdjaonMz/6SkiE9xEoFPlidw==
+Date: Thu, 7 Nov 2024 13:42:18 +0000
+Message-ID: <BYAPR07MB4358138C14685D6A11CFF8A1EC5C2@BYAPR07MB4358.namprd07.prod.outlook.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BYAPR07MB4358:EE_|SJ2PR07MB9953:EE_
+x-ms-office365-filtering-correlation-id: b97eb287-065e-4d04-31e1-08dcff31ff53
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?W/c98335FAxWWFDTgx+Mhux1BN/Hbt0UiDVXCk2oqqazDqE4A0OzgEwGQVKT?=
+ =?us-ascii?Q?7SdrfRRLl37V5WR1I9I38TXNMRVusDdqyTZrusZL3nVmdp3md5SP/iw6UPM0?=
+ =?us-ascii?Q?bPdA7D8skjNzc4HXoGMKOGytz8iruOxfpGYj582cYTwL+0Uu7SZ8HVyZ609/?=
+ =?us-ascii?Q?97JITHPhAu9LIXoeJp54AxEGYXYvOFfqUmc9ot5aDa3xdh5s5yXHqfa8Dptc?=
+ =?us-ascii?Q?L6tJjxf5k5A62VGi7R0zx3BAI6NFaICe2mj0DJwOvoGxInCUvrxDU/zoXVCj?=
+ =?us-ascii?Q?hESsWiX/P1q+6cosE0jdQ1/gFPtQodIhLs61nZtExgmwVitNXoVETIdQNe1m?=
+ =?us-ascii?Q?65hxVZsf95D2wGwqz9Zu5RqrQZ2HQniyKYhtdtTNy4ONbBeQr05Ke+dOdbiJ?=
+ =?us-ascii?Q?Vk5VhMA8Rqd1J7z2qbsCitevxltN2O7o2Z/rTw+IqhGb5S06OQap/fjEd02N?=
+ =?us-ascii?Q?loc2gT8lvBgTd3gNuy4BwhzCvTI45upqA4WxuFMVG6INz/Gfl4ZimpabStZ6?=
+ =?us-ascii?Q?c0UCp0f4Irv5Rd6IJyjbwVqNYBQ74x8sVjmn8KqrGwyLFhEngqq5VexcprJP?=
+ =?us-ascii?Q?XpZ6H796su6dP07wvRjdxVGj7z2XC4100iVEHTNBJ04rpBTHor9N5bPLISE1?=
+ =?us-ascii?Q?i/QSR4W/rCRqbLbtylraXFJEcSUoImJ3USKiwTwhMzuRFwO6EGgjEWZV4ebF?=
+ =?us-ascii?Q?0bRYXiI4pJ/bEIJ8lsDzNm3zhl08VRDcCfxHKRU67P06Fkug6MuCoN4ExH6e?=
+ =?us-ascii?Q?y/KdA1Bz7IakyCvwlpsVXXZlYQyxGRDIlYBnwkVlB0Md8osJkYE9Bn7Pt2Si?=
+ =?us-ascii?Q?YIFHI04qzW9/+6O3OdJYzijc55VoRxe1AZrBJuwtMPLGu8gzX+0s+prkpvkA?=
+ =?us-ascii?Q?rdVik7la7974Ih1VTarZdtLUE7sFZs47icRE6TV40qG4iB/MHnSa/5+gfSlQ?=
+ =?us-ascii?Q?cAOjBFIBrKt/6x08QgD60e5GHLsDY/cwP+gXViI4HlxARLL0jHsaaOLGlDSX?=
+ =?us-ascii?Q?7SNiP8twUHvYluyhIJy2K0CKud0d65WmniCo2JNcAy25hqOp4WMvRhDO1sdn?=
+ =?us-ascii?Q?r+A+ocJR4C6XVS3CRQ1z14oV27wtbiNPhD8W+UZbNH/SmDcDt74Dhc+NJitX?=
+ =?us-ascii?Q?vZLa3WJckeoEXUjztOF7BVl7MG+/QW38MpworWQs4l/RYDlo0qNIYbB6VCMQ?=
+ =?us-ascii?Q?kX8MkpMRn18rBX7amET/t/X5rBhIMCl/+x1j+Ljoul/Rj6oz/W8QT9QVP/xd?=
+ =?us-ascii?Q?lpj1uRnUwOWsuCkthjKaMRUzjjNGV/mmUpftWw+vryVqZ8y8WQQkvQkmQ9Gw?=
+ =?us-ascii?Q?SoVH/Gn/cp+Tv0hYRzbL4aEnLjPMKIinxqe/9kg59ocGtdnPdneu8U+5mRVJ?=
+ =?us-ascii?Q?Yw/uSIQ=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR07MB4358.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?8CZw5Jfz3O0bml5zM3PLqedgwY1Z8XRM9t0IObVy2jjQulSFxqB7OMXt09db?=
+ =?us-ascii?Q?JqX1bbmKxbCcZKjIJ79oW4Oiyzh3cuF+MXqdfikvVV5JHE/D3gUoAb25vREv?=
+ =?us-ascii?Q?NSNG6B9qDxekUrnLh0vSCqy5zLvUlSHMxnW81KCsr7L/4JpUNM4KfD9+BMZV?=
+ =?us-ascii?Q?R3sfU+aSrDNqsgZrg/REM+3gL2+9nxXMzVR5FtDVQ7kY//Ixmxp/aVJuT44c?=
+ =?us-ascii?Q?ApfAJxccDf02ijYwK1dxMsirzouavB/oqaR0yy6xGMa+ww4fZn8aoHqRlZXB?=
+ =?us-ascii?Q?AE8YYvu17oB/jJ5KdJCEGetM9wiQ2f19X2v8AeLjOVyNe5EMr9qAPwvaXqw8?=
+ =?us-ascii?Q?oL6vImaXZNbYnP1d98DTuWcUsNoyTJ4x+lMPX5r4Fi8YSWZOJK7iLKmuy/78?=
+ =?us-ascii?Q?O2UeYvpRA0Urc8Crh3IuPTgX93UqJGl2dlwkQEUu0GICXITS8AGiuWqJ6Hlm?=
+ =?us-ascii?Q?YnBw4NaxOrM7Cw2TMIpYiIlEs63/RbEUwhqSgu3/M/acix1+fVH3PZwOMoAR?=
+ =?us-ascii?Q?8x0adu3TeNDnvv+ConPsB1LK6VOA862M+Efs/I6o51T3pvEzWZXmULkNmOyO?=
+ =?us-ascii?Q?hCj1O9ziAUDCdXt7WpWCDyX8D/umB4G/AHblWutp3FQTMGPPaCz4k7i60Ukv?=
+ =?us-ascii?Q?hB6iJbbShqadkt6dyL5lJuhzF0dtO3tLODdxsg0jQMrej4JrY8D49muxMe4k?=
+ =?us-ascii?Q?44EAotO0bhXCZXR4Ds11dsLSNvQTndDdX/cFz0P/28IprhPQzzsR+eiY9avR?=
+ =?us-ascii?Q?A9tRPkDAeQ4BbvF0/bCdEtOfPLk2zloltM+g5ND7HHeKt04aGufRCw5/a6gU?=
+ =?us-ascii?Q?20+lIzXqwM4oaOLYr7IDznQS4dVsJbELAA0Zt8NmZ4zzSbrUxFHo7IqMFTd9?=
+ =?us-ascii?Q?JriDNl9z8hlmOXcLax3qNRdG3dItBz0sIz8eS3UZzxNLomJK9oXx2wgqobSD?=
+ =?us-ascii?Q?8dwKDtPQ31L0ElitKvPJAaxBqdhRM0+pIGf9ojeN25I5CKwHFSw2e9iqvzUE?=
+ =?us-ascii?Q?F1yxu0mORzW0U9Q2Z1Z1Lb0Ijle3WXZOh8t6Yb9PlXAelNkKBu/MCIGkwgba?=
+ =?us-ascii?Q?Gi0wKL6DpdunBhzRZe5gmXDBpTscHcws7if2ghLN8DHZ4k+anGUTLEAXZdMl?=
+ =?us-ascii?Q?bgaVBE6IQJF3YG+l94LBVVbdESrAFh8Y5ZeiNpj+S/mcYD3ITyRlGaZ4ZZJw?=
+ =?us-ascii?Q?wQWrBGnbUeBSusoOYZQRsFL1pdTqCEV5wM/eEJRbZsKzcWCmcG/A2OF+nl4u?=
+ =?us-ascii?Q?FAKXhufNQnqUTBEklfBXdR+AcoGctMfw99KYUXtjQSdKlEhHxlg1hP4fMRP1?=
+ =?us-ascii?Q?RAKFuTtBOStUToCgL6Jw7oqSnpboie06HfpZyiKpKklw/0P4IqzfvTkIKSf6?=
+ =?us-ascii?Q?h5+Ka5VOD1a6A7ZEFIGEVnsm6mrSrZZUam/rKijBodpr0xzTUSUAI9R9li3i?=
+ =?us-ascii?Q?0+WPZyEb1QRcReB6N3uiZ4K9545ApjPWrh3GFD4II4WGZ8AQYnozxs8omxJH?=
+ =?us-ascii?Q?NlDorqBNXah/aYQO/nVtbisICPbLdjsDByUu93gmY/bG5oyLRIP3+JAZCY7U?=
+ =?us-ascii?Q?z+SKAhqhqGxJFjy57tL8X3BJQDWAY5Qfd3KyL5cW?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: ametek.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR07MB4358.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b97eb287-065e-4d04-31e1-08dcff31ff53
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2024 13:42:18.1656
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 31a88536-e2ab-44b5-837e-5110158247ab
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: epeBbB68WPA0s30nE/7GggDcud1y/vS1K/C+xEcSONJoVD+akIh65F+t/ETUHKm5WKAGoqXXkyaNhATIbusyKI82qNhYruvahRpfYMu2xH8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR07MB9953
+X-Authority-Analysis: v=2.4 cv=G6ROEMk5 c=1 sm=1 tr=0 ts=672cc3be cx=c_pps a=rknZK0v7KRh+kGA6vhtu4g==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=VlfZXiiP6vEA:10 a=t7O-Hdu1JCwA:10
+ a=m3P6IW4lH-wA:10 a=C2ouM7DNtsUhm55rwBkA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: qFil_1Dd5Tp_FX3rm4O6K1B5hgtC_Nl8
+X-Proofpoint-GUID: qFil_1Dd5Tp_FX3rm4O6K1B5hgtC_Nl8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 spamscore=0 phishscore=0
+ adultscore=0 impostorscore=0 suspectscore=0 clxscore=1015 bulkscore=0
+ mlxlogscore=605 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2411070106
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241107_041056_877636_15605071 
-X-CRM114-Status: GOOD (  25.83  )
+X-CRM114-CacheID: sfid-20241107_054224_474219_2B4C3750 
+X-CRM114-Status: UNSURE (   9.28  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,125 +189,30 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] partitions: efi: fix overflow issues while allocating gpt entries
+X-Spam-Status: No, score=-5.4 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: NVME o nLS1046A-RDB
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+I have installed a NVME device on a LS1046A-RDB:
+      `-- pci-1957:81c0.1
+            `-- pci-126f:2263.0
+               `-- 0x00000000-0x6fc86d5fff ( 447.1 GiB): /dev/nvme0n1
 
-This is just a quick reminder if the patch got missed for some reason.
-Please let me know if there is anything that needs to get fixed.
+My barebox version is 2022.03
+
+Is there a way to format or mount the device from barebox?
+
+
+barebox@LS1046A RDB Board:/ mount -t ext4 /dev/nvme0n1 /mnt/nvme0n1/
+mount: No such file or directory
+running automount command 'mount nvme0n1' failed
+mount: No such device
 
 Cheers,
-Abdelrahman
-
-
-On Thu, Oct 31, 2024 at 3:49=E2=80=AFPM Abdelrahman Youssef
-<abdelrahmanyossef12@gmail.com> wrote:
->
-> while parsting the GPT header in alloc_read_gpt_entries() the number
-> of partitions can be large that multiplying it with the size of a single
-> partition overflows 32-bit multiplication.
->
-> we already enforce a MAX_PARTITION limit of 128 partitions in efi_partiti=
-on(),
-> so allowing any bigger value in alloc_read_gpt_entries() would fail,
-> even if we fix the overflow.
->
-> Therefore, we can enforce the limit strictly and treat any overflow as
-> a failing condition.
->
-> Signed-off-by: Abdelrahman Youssef <abdelrahmanyossef12@gmail.com>
-> ---
->  common/partitions/efi.c | 36 ++++++++++++++++++++++++++++--------
->  1 file changed, 28 insertions(+), 8 deletions(-)
->
-> diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-> index 9a04b7014d..8014579b67 100644
-> --- a/common/partitions/efi.c
-> +++ b/common/partitions/efi.c
-> @@ -35,6 +35,25 @@ struct efi_partition {
->
->  static const int force_gpt =3D IS_ENABLED(CONFIG_PARTITION_DISK_EFI_GPT_=
-NO_FORCE);
->
-> +/**
-> +* compute_partitions_entries_size() - return the size of all partitions
-> +* @gpt: GPT header
-> +*
-> +* Description: return size of all partitions, 0 on error
-> +*
-> +* This is a helper function that compute the size of all partitions
-> +* by multiplying the size of a single partition by the number of partiti=
-ons
-> +*/
-> +static u32 compute_partitions_entries_size(const gpt_header *gpt) {
-> +       u32 nb_parts, sz_parts, total_size;
-> +
-> +       nb_parts =3D min(MAX_PARTITION, le32_to_cpu(gpt->num_partition_en=
-tries));
-> +       sz_parts =3D le32_to_cpu(gpt->sizeof_partition_entry);
-> +       if (check_mul_overflow(nb_parts, sz_parts, &total_size))
-> +               return 0;
-> +       return total_size;
-> +}
-> +
->  /**
->   * efi_crc32() - EFI version of crc32 function
->   * @buf: buffer to calculate crc32 of
-> @@ -81,14 +100,12 @@ static u64 last_lba(struct block_device *bdev)
->  static gpt_entry *alloc_read_gpt_entries(struct block_device *blk,
->                                          gpt_header * pgpt_head)
->  {
-> -       size_t count =3D 0;
-> +       u32 count =3D 0;
->         gpt_entry *pte =3D NULL;
->         unsigned long from, size;
->         int ret;
->
-> -       count =3D le32_to_cpu(pgpt_head->num_partition_entries) *
-> -               le32_to_cpu(pgpt_head->sizeof_partition_entry);
-> -
-> +       count =3D compute_partitions_entries_size(pgpt_head);
->         if (!count)
->                 return NULL;
->
-> @@ -156,7 +173,7 @@ static gpt_header *alloc_read_gpt_header(struct block=
-_device *blk,
->  static int is_gpt_valid(struct block_device *blk, u64 lba,
->                         gpt_header **gpt, gpt_entry **ptes)
->  {
-> -       u32 crc, origcrc;
-> +       u32 crc, origcrc, count;
->         u64 lastlba;
->
->         if (!ptes)
-> @@ -215,10 +232,13 @@ static int is_gpt_valid(struct block_device *blk, u=
-64 lba,
->         if (!(*ptes =3D alloc_read_gpt_entries(blk, *gpt)))
->                 goto fail;
->
-> +       /* Check the size of all partitions */
-> +       count =3D compute_partitions_entries_size(*gpt);
-> +       if (!count)
-> +               goto fail_ptes;
-> +
->         /* Check the GUID Partition Table Entry Array CRC */
-> -       crc =3D efi_crc32((const unsigned char *)*ptes,
-> -               le32_to_cpu((*gpt)->num_partition_entries) *
-> -               le32_to_cpu((*gpt)->sizeof_partition_entry));
-> +       crc =3D efi_crc32((const unsigned char *)*ptes, count);
->
->         if (crc !=3D le32_to_cpu((*gpt)->partition_entry_array_crc32)) {
->                 dev_dbg(blk->dev, "GUID Partitition Entry Array CRC check=
- failed: 0x%08x 0x%08x\n",
-> --
-> 2.43.0
->
+Renaud
 
 
