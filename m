@@ -1,66 +1,66 @@
-Delivery-date: Thu, 07 Nov 2024 16:00:15 +0100
+Delivery-date: Thu, 07 Nov 2024 16:00:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t93za-005xcr-1f
+	id 1t93zh-005xdF-2n
 	for lore@lore.pengutronix.de;
-	Thu, 07 Nov 2024 16:00:15 +0100
+	Thu, 07 Nov 2024 16:00:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t93zZ-00022Q-IX
-	for lore@pengutronix.de; Thu, 07 Nov 2024 16:00:15 +0100
+	id 1t93zg-00026c-JO
+	for lore@pengutronix.de; Thu, 07 Nov 2024 16:00:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=aA62XIdwzwIXC6ogYHzyq2iaWtNiXPbxUs3ABbjkds4=; b=abGZZvYY2ZuHVfhKj9n0cLwkXh
-	3C2Mv9oWO9ITPwhQDE78CoKWR/cR8GtyStvta0kYO/zBzPOlLNrhKtmaD4bNepgWvu0QWYqZ43jhI
-	sVmv05ufmHWx0wgNThIVfpna7Ie9aVSE9DvJQ80SHFnefMlhZMUoKeUjJtPYsDTrtsBNdCu2ffwCB
-	mCqNFhI918WU1LsNBUKcesILusVxpwqqWOsSan+Rp7Ni0abAQwVzwxt4LiCC0t4VeHL1p4UoA1reO
-	1ezDEGOSkufhznf4SfipyiDBJ9wTgGC9ijRNBiOTs5KsyHjejji8bWUhjvcEzn2GkptY25LC1o2dG
-	uFMOphXA==;
+	bh=XR+fhEXsa7Ia0oUMRF+55OUEQSxb2yN4uQE1LK/eKbk=; b=itoqIklZ9chYhs95UtBTlJQxwH
+	XCgDSSEc+cRryq8LoyxvdAZyqfEzR24l+nwgcA3LObQ4L4EdlaFiBGyUv0hXzHhRwRYcW+FOaXvFY
+	gReMYXPbut72KBPhE8W20NwsdR/2+emhveiIaK0hk0MO005I3oOE2PgHkCWAZTiI6CTgef0cujo7+
+	UA1hqDRZWepmx/nHAU6wqbZjbAUXmMeSx0YBm0xu30VfOSDml3hMVy04LPBDzxZoAPFh1PBaBxWXa
+	aQr4xc/yL94MTszrEpmCbeGyuokGI4P67Z+qzlC9uAXvq9TVtSzMNo5yb/R+Vm8XtnbeAkilvnURe
+	xNAJ96qw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t93yv-00000007Mde-22g1;
-	Thu, 07 Nov 2024 14:59:33 +0000
-Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
+	id 1t93yu-00000007Md0-0dUV;
+	Thu, 07 Nov 2024 14:59:32 +0000
+Received: from zdiv.net ([46.226.106.130])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t93x5-00000007M8h-181s
+	id 1t93x3-00000007M9n-39hZ
 	for barebox@lists.infradead.org;
-	Thu, 07 Nov 2024 14:57:44 +0000
+	Thu, 07 Nov 2024 14:57:43 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
 	t=1730991449;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aA62XIdwzwIXC6ogYHzyq2iaWtNiXPbxUs3ABbjkds4=;
-	b=dis7zXugky2U1NCCfVCw6WCLtPkkE00Gg9N6UQO0dNP6Sqb5DHKFRCUjq5vMvKUL4ERLvg
-	CaJWgUN0HDVZCQHx78YRvVLOcmLR743gyna45vpKeFpp3ckHyzvP3xK/rpVQgkd5qRii+o
-	hPRZ8bbL+FKMfugYEnJ2GYBVGMYFudu09Cc1A7huu0j7w5A6XxwGsvTFeQaiCrE6PbU7m/
-	fXTpeN224hJ5x+I3VygjG9CLS+wNL1zNa+H6qwyV0HrkkDzMSmw4gOiK6RsBuxq/ZBlVrk
-	uVJhD1F+hgRDkRorz2JT1cUeMUGRjNRnKWt09HL7ht46byobiNXkm/0Vsec7cA==
+	bh=XR+fhEXsa7Ia0oUMRF+55OUEQSxb2yN4uQE1LK/eKbk=;
+	b=V9ttZmgPwAXXwa8ob9xj9ssP8B3X0AwoiaXoLuR6RaFxqK8yqGLLgZRxvCcI3h1VGHH2un
+	2nZESs2O92/hiPSKcFRkPCH9znM5jmO1odWX943M3658vEN6ZPDC5plRPecec5q7p4YknD
+	tS8rnfLifjS2GOc4Zqkh7W50IfWOzOrqjY3zdczwUE148wQ50SKfj/1f3JV6rfdO4G9cEv
+	EXS4BOXAnUGZGOVF4xKEfTOMpFNzBbD8iAZrMtbtu2L3ftRMAT6aWW4NUmwHjFm8xwjQKI
+	EJGYjDj77/eS4hOc9mEgIenBoOiiM/Qi3biFJdabbafp6MmhNI8IVkoBj/lOcQ==
 Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:1b71:4dca:dfdc:1e52])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id b26b36f4 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	by zdiv.net (OpenSMTPD) with ESMTPSA id 09a1c30f (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
 	Thu, 7 Nov 2024 15:57:29 +0100 (CET)
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Thu,  7 Nov 2024 15:57:21 +0100
-Message-ID: <20241107145722.5145-6-jmaselbas@zdiv.net>
+Date: Thu,  7 Nov 2024 15:57:20 +0100
+Message-ID: <20241107145722.5145-5-jmaselbas@zdiv.net>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241107145722.5145-1-jmaselbas@zdiv.net>
 References: <20241107145722.5145-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241107_065739_768437_8F122AEE 
-X-CRM114-Status: GOOD (  29.09  )
+X-CRM114-CacheID: sfid-20241107_065738_254345_79A03A61 
+X-CRM114-Status: GOOD (  14.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,832 +82,1292 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/6] mci: Add sunxi-mmc driver
+Subject: [PATCH 4/6] pinctrl: Add sun50i-a64 pinctrl driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This driver is adapted from different sources: Linux, u-boot and p-boot.
-The latter, p-boot (forked from u-boot), is a bootloader for pinephones.
+sunxi pinctrl driver, adapted from Linux, is split in two parts:
+ - pinctrl-sunxi.c that implements gpio, pinctrl and pinmux functions
+ - pinctrl-sun50i-a64.c that declare sun50i pins and their functions.
+   This file only require minor adaptations and be easily copied from Linux.
 
-It currently only support PIO xfer but could be further improved to also
-support DMA xfer. This driver is split in three files so it can be used
-by the PBL and barebox proper.
+The pin functions are needed for uart, SD/MMC, and likely for other
+controllers too.
 
 Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 ---
- drivers/mci/Kconfig            |   6 +
- drivers/mci/Makefile           |   2 +
- drivers/mci/sunxi-mmc-common.c | 246 +++++++++++++++++++++++++++++++++
- drivers/mci/sunxi-mmc-pbl.c    |  81 +++++++++++
- drivers/mci/sunxi-mmc.c        | 181 ++++++++++++++++++++++++
- drivers/mci/sunxi-mmc.h        | 221 +++++++++++++++++++++++++++++
- include/mach/sunxi/xload.h     |  12 ++
- 7 files changed, 749 insertions(+)
- create mode 100644 drivers/mci/sunxi-mmc-common.c
- create mode 100644 drivers/mci/sunxi-mmc-pbl.c
- create mode 100644 drivers/mci/sunxi-mmc.c
- create mode 100644 drivers/mci/sunxi-mmc.h
- create mode 100644 include/mach/sunxi/xload.h
+ drivers/pinctrl/Kconfig                    |   2 +
+ drivers/pinctrl/Makefile                   |   1 +
+ drivers/pinctrl/sunxi/Kconfig              |  13 +
+ drivers/pinctrl/sunxi/Makefile             |   3 +
+ drivers/pinctrl/sunxi/pinctrl-sun50i-a64.c | 594 +++++++++++++++++++++
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c      | 372 +++++++++++++
+ drivers/pinctrl/sunxi/pinctrl-sunxi.h      | 224 ++++++++
+ 7 files changed, 1209 insertions(+)
+ create mode 100644 drivers/pinctrl/sunxi/Kconfig
+ create mode 100644 drivers/pinctrl/sunxi/Makefile
+ create mode 100644 drivers/pinctrl/sunxi/pinctrl-sun50i-a64.c
+ create mode 100644 drivers/pinctrl/sunxi/pinctrl-sunxi.c
+ create mode 100644 drivers/pinctrl/sunxi/pinctrl-sunxi.h
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index f760614725..4641e9cdcd 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -92,6 +92,12 @@ config MCI_DW_PIO
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index ee15acdcdb..72ca79aa98 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -106,6 +106,8 @@ config PINCTRL_STM32
+ 	select HAVE_GPIO_PINCONF
  	help
- 	  Use PIO mode (instead of IDMAC) in DW MMC driver.
+ 	  Pinmux and GPIO controller found on STM32 family
++
++source "drivers/pinctrl/sunxi/Kconfig"
+ endif
  
-+config MCI_SUNXI_SMHC
-+	bool "Allwinner SD-MMC Memory Card Host Controller"
-+	help
-+	  Enable support for the Allwinner SD-MMC Memory Card Host Controller,
-+	  this provides host support for SD and MMC interfaces, in PIO mode.
-+
- config MCI_MXS
- 	bool "i.MX23/i.MX28"
- 	depends on ARCH_MXS
-diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
-index d8d7818a48..5e951d695f 100644
---- a/drivers/mci/Makefile
-+++ b/drivers/mci/Makefile
-@@ -22,4 +22,6 @@ obj-$(CONFIG_MCI_DW)		+= dw_mmc.o
- obj-$(CONFIG_MCI_DWC_MSHC)	+= dwcmshc-sdhci.o
- obj-$(CONFIG_MCI_MMCI)		+= mmci.o
- obj-$(CONFIG_MCI_STM32_SDMMC2)	+= stm32_sdmmc2.o
-+obj-$(CONFIG_MCI_SUNXI_SMHC)	+= sunxi-mmc.o
-+pbl-$(CONFIG_MCI_SUNXI_SMHC)	+= sunxi-mmc-pbl.o
- obj-pbl-$(CONFIG_MCI_SDHCI)	+= sdhci.o
-diff --git a/drivers/mci/sunxi-mmc-common.c b/drivers/mci/sunxi-mmc-common.c
+ endmenu
+diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
+index f1a5fa5715..3bc718d355 100644
+--- a/drivers/pinctrl/Makefile
++++ b/drivers/pinctrl/Makefile
+@@ -16,3 +16,4 @@ obj-$(CONFIG_PINCTRL_VF610) += pinctrl-vf610.o
+ obj-$(CONFIG_PINCTRL_STM32) += pinctrl-stm32.o
+ 
+ obj-$(CONFIG_ARCH_MVEBU) += mvebu/
++obj-$(CONFIG_ARCH_SUNXI) += sunxi/
+diff --git a/drivers/pinctrl/sunxi/Kconfig b/drivers/pinctrl/sunxi/Kconfig
 new file mode 100644
-index 0000000000..cfb6df8cd5
+index 0000000000..38d8894a7e
 --- /dev/null
-+++ b/drivers/mci/sunxi-mmc-common.c
-@@ -0,0 +1,246 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: 2024 Jules Maselbas
-+#include "sunxi-mmc.h"
++++ b/drivers/pinctrl/sunxi/Kconfig
+@@ -0,0 +1,13 @@
++# SPDX-License-Identifier: GPL-2.0-only
++if ARCH_SUNXI
 +
-+static int sdxc_read_data_pio(struct sunxi_mmc_host *host, struct mci_data *data)
-+{
-+	size_t i, len = (data->blocks * data->blocksize) / sizeof(u32);
-+	u32 *dst = (u32 *)data->dest;
++config PINCTRL_SUNXI
++	bool
++	select GPIOLIB
 +
-+	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_ACCESS_BY_AHB);
++config PINCTRL_SUN50I_A64
++	bool "Support for Allwinner A64 PIO"
++	default ARCH_SUNXI
++	select PINCTRL_SUNXI
 +
-+	for (i = 0; i < len; i++) {
-+		if (wait_on_timeout(2000 * MSECOND, !sdxc_is_fifo_empty(host)))
-+			return -ETIMEDOUT;
-+		dst[i] = sdxc_readl(host, SDXC_REG_FIFO);
-+	}
-+
-+	return 0;
-+}
-+
-+static int sdxc_write_data_pio(struct sunxi_mmc_host *host, struct mci_data *data)
-+{
-+	size_t i, len = (data->blocks * data->blocksize) / sizeof(u32);
-+	u32 *src = (u32 *)data->src;
-+
-+	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_ACCESS_BY_AHB);
-+
-+	for (i = 0; i < len; i++) {
-+		if (wait_on_timeout(2000 * MSECOND, !sdxc_is_fifo_full(host)))
-+			return -ETIMEDOUT;
-+		sdxc_writel(host, SDXC_REG_FIFO, src[i]);
-+	}
-+
-+	return 0;
-+}
-+
-+static int sunxi_mmc_send_cmd(struct sunxi_mmc_host *host, struct mci_cmd *cmd,
-+			      struct mci_data *data, const char **why)
-+{
-+	const char *err_why = "";
-+	u32 cmdval = SDXC_CMD_START;
-+	int ret;
-+
-+	if ((cmd->resp_type & MMC_RSP_136) && (cmd->resp_type & MMC_RSP_BUSY))
-+		return -EINVAL;
-+
-+	if (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
-+		return 0; /* using ACMD12 */
-+	if (cmd->cmdidx == MMC_CMD_GO_IDLE_STATE)
-+		cmdval |= SDXC_CMD_SEND_INIT_SEQ;
-+
-+	if (cmd->resp_type & MMC_RSP_PRESENT)
-+		cmdval |= SDXC_CMD_RESP_EXPIRE;
-+	if (cmd->resp_type & MMC_RSP_136)
-+		cmdval |= SDXC_CMD_LONG_RESPONSE;
-+	if (cmd->resp_type & MMC_RSP_CRC)
-+		cmdval |= SDXC_CMD_CHK_RESPONSE_CRC;
-+
-+	/* clear interrupts */
-+	sdxc_writel(host, SDXC_REG_RINTR, 0xffffffff);
-+
-+	if (data) {
-+		u32 blksiz = data->blocksize;
-+		u32 bytcnt = data->blocks * data->blocksize;
-+
-+		cmdval |= SDXC_CMD_DATA_EXPIRE;
-+		cmdval |= SDXC_CMD_WAIT_PRE_OVER;
-+		if (data->flags & MMC_DATA_WRITE)
-+			cmdval |= SDXC_CMD_WRITE;
-+		if (data->blocks > 1)
-+			cmdval |= SDXC_CMD_AUTO_STOP;
-+
-+		sdxc_writel(host, SDXC_REG_TMOUT, 0xFFFFFF40);
-+		sdxc_writel(host, SDXC_REG_BLKSZ, blksiz);
-+		sdxc_writel(host, SDXC_REG_BCNTR, bytcnt);
-+	}
-+
-+	sdxc_writel(host, SDXC_REG_CARG, cmd->cmdarg);
-+	sdxc_writel(host, SDXC_REG_CMDR, cmdval | cmd->cmdidx);
-+	if (data) {
-+		if (data->flags & MMC_DATA_WRITE)
-+			ret = sdxc_write_data_pio(host, data);
-+		else
-+			ret = sdxc_read_data_pio(host, data);
-+		if (ret < 0) {
-+			err_why = "pio error";
-+			goto err;
-+		}
-+	}
-+
-+	ret = sdxc_xfer_complete(host, 1000 * MSECOND, SDXC_INT_COMMAND_DONE);
-+	if (ret) {
-+		err_why = "cmd timeout";
-+		goto err;
-+	}
-+
-+	if (data) {
-+		ret = sdxc_xfer_complete(host, 1000 * MSECOND, data->blocks > 1 ?
-+					 SDXC_INT_AUTO_COMMAND_DONE :
-+					 SDXC_INT_DATA_OVER);
-+		if (ret) {
-+			err_why = "data timeout";
-+			goto err;
-+		}
-+	}
-+
-+	if (cmd->resp_type & MMC_RSP_BUSY) {
-+		u32 status;
-+		u64 start;
-+		start = get_time_ns();
-+		do {
-+			status = sdxc_readl(host, SDXC_REG_STAS);
-+			if (is_timeout(start, 2000 * MSECOND)) {
-+				err_why = "resp timeout";
-+				ret = -ETIMEDOUT;
-+				goto err;
-+			}
-+		} while (status & SDXC_STATUS_BUSY);
-+	}
-+
-+	if (wait_on_timeout(1000 * MSECOND, !sdxc_is_card_busy(host))) {
-+		err_why = "card busy timeout";
-+		ret = -ETIMEDOUT;
-+		goto err;
-+	}
-+
-+	if (cmd->resp_type & MMC_RSP_136) {
-+		cmd->response[0] = sdxc_readl(host, SDXC_REG_RESP3);
-+		cmd->response[1] = sdxc_readl(host, SDXC_REG_RESP2);
-+		cmd->response[2] = sdxc_readl(host, SDXC_REG_RESP1);
-+		cmd->response[3] = sdxc_readl(host, SDXC_REG_RESP0);
-+	} else if (cmd->resp_type & MMC_RSP_PRESENT) {
-+		cmd->response[0] = sdxc_readl(host, SDXC_REG_RESP0);
-+	}
-+
-+err:
-+	if (why)
-+		*why = err_why;
-+	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_FIFO_RESET);
-+	return ret;
-+}
-+
-+static int sunxi_mmc_update_clk(struct sunxi_mmc_host *host)
-+{
-+	u32 cmdval;
-+
-+	cmdval = SDXC_CMD_START |
-+	         SDXC_CMD_UPCLK_ONLY |
-+	         SDXC_CMD_WAIT_PRE_OVER;
-+
-+	sdxc_writel(host, SDXC_REG_CARG, 0);
-+	sdxc_writel(host, SDXC_REG_CMDR, cmdval);
-+
-+	if (wait_on_timeout(2000 * MSECOND, !(sdxc_readl(host, SDXC_REG_CMDR) & SDXC_CMD_START)))
-+		return -ETIMEDOUT;
-+
-+	return 0;
-+}
-+
-+static int sunxi_mmc_setup_clk(struct sunxi_mmc_host *host, u32 freq)
-+{
-+	u32 val, div, sclk;
-+	int ret;
-+
-+	sclk = host->clkrate;
-+	if (sclk == 0)
-+		return -EINVAL;
-+
-+	/* disable card clock */
-+	val = sdxc_readl(host, SDXC_REG_CLKCR);
-+	val &= ~(SDXC_CLK_ENABLE | SDXC_CLK_LOW_POWER_ON);
-+	val |= SDXC_CLK_MASK_DATA0;
-+	sdxc_writel(host, SDXC_REG_CLKCR, val);
-+
-+	ret = sunxi_mmc_update_clk(host);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Configure the controller to use the new timing mode if needed.
-+	 * On controllers that only support the new timing mode, such as
-+	 * the eMMC controller on the A64, this register does not exist,
-+	 * and any writes to it are ignored.
-+	 */
-+	if (host->cfg->needs_new_timings) {
-+		/* Don't touch the delay bits */
-+		val = sdxc_readl(host, SDXC_REG_NTSR);
-+		val |= SDXC_NTSR_2X_TIMING_MODE;
-+		sdxc_writel(host, SDXC_REG_NTSR, val);
-+	}
-+
-+	/* setup clock rate */
-+	div = DIV_ROUND_UP(sclk, freq);
-+	div /= 2; /* divisor is multiplied by 2 */
-+	if (div > 255)
-+		div = 255;
-+
-+	/* set internal divider */
-+	val = sdxc_readl(host, SDXC_REG_CLKCR);
-+	val &= ~SDXC_CLK_DIVIDER_MASK;
-+	val |= div;
-+	sdxc_writel(host, SDXC_REG_CLKCR, val);
-+
-+	/* enable card clock */
-+	val = sdxc_readl(host, SDXC_REG_CLKCR);
-+	val |= SDXC_CLK_ENABLE;
-+	val &= ~SDXC_CLK_MASK_DATA0;
-+	sdxc_writel(host, SDXC_REG_CLKCR, val);
-+
-+	return sunxi_mmc_update_clk(host);
-+}
-+
-+static int sunxi_mmc_set_ios(struct sunxi_mmc_host *host, struct mci_ios *ios)
-+{
-+	int ret = 0;
-+	u32 width;
-+
-+	switch (ios->bus_width) {
-+	case MMC_BUS_WIDTH_8:
-+		width = SDXC_WIDTH_8BIT;
-+		break;
-+	case MMC_BUS_WIDTH_4:
-+		width = SDXC_WIDTH_4BIT;
-+		break;
-+	default:
-+		width = SDXC_WIDTH_1BIT;
-+		break;
-+	}
-+	sdxc_writel(host, SDXC_REG_WIDTH, width);
-+
-+	if (ios->clock)
-+		ret = sunxi_mmc_setup_clk(host, ios->clock);
-+	return ret;
-+}
-+
-+static void sunxi_mmc_init(struct sunxi_mmc_host *host)
-+{
-+	/* Reset controller */
-+	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_RESET);
-+	udelay(1000);
-+
-+	sdxc_writel(host, SDXC_REG_RINTR, 0xffffffff);
-+	sdxc_writel(host, SDXC_REG_IMASK, 0);
-+
-+	sdxc_writel(host, SDXC_REG_TMOUT, 0xffffff40);
-+}
-diff --git a/drivers/mci/sunxi-mmc-pbl.c b/drivers/mci/sunxi-mmc-pbl.c
++endif
+diff --git a/drivers/pinctrl/sunxi/Makefile b/drivers/pinctrl/sunxi/Makefile
 new file mode 100644
-index 0000000000..deeb2fa142
+index 0000000000..db0ff5b50b
 --- /dev/null
-+++ b/drivers/mci/sunxi-mmc-pbl.c
-@@ -0,0 +1,81 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: 2024 Jules Maselbas
-+#include <common.h>
-+
-+#include <mach/sunxi/xload.h>
-+#include "sunxi-mmc.h"
-+#include "sunxi-mmc-common.c"
-+
-+#define SECTOR_SIZE			512
-+#define SUPPORT_MAX_BLOCKS		16U
-+
-+static int sunxi_mmc_read_block(struct sunxi_mmc_host *host,
-+				void *dst, unsigned int blocknum,
-+				unsigned int blocks)
-+{
-+	struct mci_data data;
-+	struct mci_cmd cmd = {
-+		.cmdidx = (blocks > 1) ? MMC_CMD_READ_MULTIPLE_BLOCK : MMC_CMD_READ_SINGLE_BLOCK,
-+		 /* mci->high_capacity ? blocknum : blocknum * mci->read_bl_len, */
-+		 /* TODO: detect if card is high-capacity */
-+		.cmdarg = blocknum,
-+		.resp_type = MMC_RSP_R1,
-+	};
-+	int ret;
-+
-+	data.dest = dst;
-+	data.blocks = blocks;
-+	data.blocksize = SECTOR_SIZE; /* compat with MMC/SD */
-+	data.flags = MMC_DATA_READ;
-+
-+	ret = sunxi_mmc_send_cmd(host, &cmd, &data, NULL);
-+
-+	if (ret || blocks > 1) {
-+		cmd.cmdidx = MMC_CMD_STOP_TRANSMISSION;
-+		cmd.cmdarg = 0;
-+		cmd.resp_type = MMC_RSP_R1b;
-+		sunxi_mmc_send_cmd(host, &cmd, NULL, NULL);
-+	}
-+
-+	return ret;
-+}
-+
-+static int sunxi_mmc_bio_read(struct pbl_bio *bio, off_t start,
-+				void *buf, unsigned int nblocks)
-+{
-+	struct sunxi_mmc_host *host = bio->priv;
-+	unsigned int count = 0;
-+	unsigned int block_len = SECTOR_SIZE;
-+	int ret;
-+
-+	while (count < nblocks) {
-+		unsigned int n = min_t(unsigned int, nblocks - count, SUPPORT_MAX_BLOCKS);
-+
-+		ret = sunxi_mmc_read_block(host, buf, start, n);
-+		if (ret < 0)
-+			return ret;
-+
-+		count += n;
-+		start += n;
-+		buf += n * block_len;
-+	}
-+
-+	return count;
-+}
-+
-+int sunxi_mmc_bio_init(struct pbl_bio *bio, void __iomem *base,
-+		       unsigned int clock, unsigned int slot)
-+{
-+	static struct sunxi_mmc_host host;
-+	struct mci_ios ios = { .bus_width = MMC_BUS_WIDTH_4, .clock = 400000 };
-+
-+	host.base = base;
-+	host.clkrate = clock / 2;
-+	bio->priv = &host;
-+	bio->read = sunxi_mmc_bio_read;
-+
-+	sunxi_mmc_init(&host);
-+	sunxi_mmc_set_ios(&host, &ios);
-+
-+	return 0;
-+}
-diff --git a/drivers/mci/sunxi-mmc.c b/drivers/mci/sunxi-mmc.c
++++ b/drivers/pinctrl/sunxi/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_ARCH_SUNXI)		+= pinctrl-sunxi.o
++obj-$(CONFIG_PINCTRL_SUN50I_A64)	+= pinctrl-sun50i-a64.o
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sun50i-a64.c b/drivers/pinctrl/sunxi/pinctrl-sun50i-a64.c
 new file mode 100644
-index 0000000000..0f67c198f6
+index 0000000000..db96cb52b9
 --- /dev/null
-+++ b/drivers/mci/sunxi-mmc.c
-@@ -0,0 +1,181 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: 2024 Jules Maselbas
-+// derived from: linux/drivers/mmc/host/sunxi-mmc.c
-+#define pr_fmt(fmt) "sunxi-mmc: " fmt
++++ b/drivers/pinctrl/sunxi/pinctrl-sun50i-a64.c
+@@ -0,0 +1,594 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Allwinner A64 SoCs pinctrl driver.
++ *
++ * Copyright (C) 2016 - ARM Ltd.
++ * Author: Andre Przywara <andre.przywara@arm.com>
++ *
++ * Based on pinctrl-sun7i-a20.c, which is:
++ * Copyright (C) 2014 Maxime Ripard <maxime.ripard@free-electrons.com>
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2.  This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
 +
 +#include <common.h>
-+#include <driver.h>
-+#include <malloc.h>
 +#include <init.h>
-+#include <mci.h>
 +
-+#include <gpio.h>
-+#include <of_gpio.h>
-+#include <linux/reset.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <errno.h>
-+#include <dma.h>
++#include "pinctrl-sunxi.h"
 +
-+#include "sunxi-mmc.h"
-+#include "sunxi-mmc-common.c"
-+
-+static int sdxc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
-+{
-+	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
-+	struct device *dev = mci->hw_dev;
-+	const char *why;
-+	int ret;
-+
-+	ret = sunxi_mmc_send_cmd(host, cmd, data, &why);
-+	if (ret && ret != -ETIMEDOUT)
-+		dev_err(dev, "error %s CMD%d (%d)\n", why, cmd->cmdidx, ret);
-+	if (ret == -ETIMEDOUT)
-+		mdelay(1);
-+
-+	return ret;
-+}
-+
-+static void sdxc_set_ios(struct mci_host *mci, struct mci_ios *ios)
-+{
-+	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
-+	struct device *dev = mci->hw_dev;
-+
-+	dev_dbg(dev, "buswidth: %d clock: %d\n", 1 << ios->bus_width, ios->clock);
-+	sunxi_mmc_set_ios(host, ios);
-+}
-+
-+static int sdxc_card_present(struct mci_host *mci)
-+{
-+	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
-+	struct device *dev = mci->hw_dev;
-+
-+	/* No gpio, assume card is present */
-+	if (!gpio_is_valid(host->gpio_cd)) {
-+		dev_err(dev, "card detect fail: gpio not valid\n");
-+		return 1;
-+	}
-+
-+	return gpio_get_value(host->gpio_cd) ? 0 : 1;
-+}
-+
-+static int sdxc_init(struct mci_host *mci, struct device *dev)
-+{
-+	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
-+
-+	sunxi_mmc_init(host);
-+
-+	return 0;
-+}
-+
-+static const struct mci_ops sdxc_mmc_ops = {
-+	.send_cmd = sdxc_send_cmd,
-+	.set_ios = sdxc_set_ios,
-+	.init = sdxc_init,
-+	.card_present = sdxc_card_present,
++static const struct sunxi_desc_pin a64_pins[] = {
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 0),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart2"),		/* TX */
++		  SUNXI_FUNCTION(0x4, "jtag"),		/* MS0 */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 0)),	/* EINT0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 1),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart2"),		/* RX */
++		  SUNXI_FUNCTION(0x4, "jtag"),		/* CK0 */
++		  SUNXI_FUNCTION(0x5, "sim"),		/* VCCEN */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 1)),		/* EINT1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 2),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart2"),		/* RTS */
++		  SUNXI_FUNCTION(0x4, "jtag"),		/* DO0 */
++		  SUNXI_FUNCTION(0x5, "sim"),		/* VPPEN */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 2)),		/* EINT2 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 3),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart2"),		/* CTS */
++		  SUNXI_FUNCTION(0x3, "i2s0"),		/* MCLK */
++		  SUNXI_FUNCTION(0x4, "jtag"),		/* DI0 */
++		  SUNXI_FUNCTION(0x5, "sim"),		/* VPPPP */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 3)),		/* EINT3 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 4),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "aif2"),		/* SYNC */
++		  SUNXI_FUNCTION(0x3, "i2s0"),		/* SYNC */
++		  SUNXI_FUNCTION(0x5, "sim"),		/* CLK */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 4)),		/* EINT4 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 5),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "aif2"),		/* BCLK */
++		  SUNXI_FUNCTION(0x3, "i2s0"),		/* BCLK */
++		  SUNXI_FUNCTION(0x5, "sim"),		/* DATA */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 5)),		/* EINT5 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 6),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "aif2"),		/* DOUT */
++		  SUNXI_FUNCTION(0x3, "i2s0"),		/* DOUT */
++		  SUNXI_FUNCTION(0x5, "sim"),		/* RST */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 6)),		/* EINT6 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 7),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "aif2"),		/* DIN */
++		  SUNXI_FUNCTION(0x3, "i2s0"),		/* DIN */
++		  SUNXI_FUNCTION(0x5, "sim"),		/* DET */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 7)),		/* EINT7 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 8),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x4, "uart0"),		/* TX */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 8)),		/* EINT8 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(B, 9),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x4, "uart0"),		/* RX */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 0, 9)),		/* EINT9 */
++	/* Hole */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 0),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NWE */
++		  SUNXI_FUNCTION(0x4, "spi0")),		/* MOSI */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 1),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NALE */
++		  SUNXI_FUNCTION(0x3, "mmc2"),		/* DS */
++		  SUNXI_FUNCTION(0x4, "spi0")),		/* MISO */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 2),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NCLE */
++		  SUNXI_FUNCTION(0x4, "spi0")),		/* SCK */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 3),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NCE1 */
++		  SUNXI_FUNCTION(0x4, "spi0")),		/* CS */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 4),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0")),	/* NCE0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 5),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NRE# */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* CLK */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 6),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NRB0 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* CMD */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 7),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0")),	/* NRB1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 8),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQ0 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* D0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 9),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQ1 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* D1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 10),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQ2 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* D2 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 11),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQ3 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* D3 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 12),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQ4 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* D4 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 13),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQ5 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* D5 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 14),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQ6 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* D6 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 15),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQ7 */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* D7 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(C, 16),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "nand0"),		/* NDQS */
++		  SUNXI_FUNCTION(0x3, "mmc2")),		/* RST */
++	/* Hole */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 0),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D2 */
++		  SUNXI_FUNCTION(0x3, "uart3"),		/* TX */
++		  SUNXI_FUNCTION(0x4, "spi1"),		/* CS */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* CLK */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 1),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D3 */
++		  SUNXI_FUNCTION(0x3, "uart3"),		/* RX */
++		  SUNXI_FUNCTION(0x4, "spi1"),		/* CLK */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* DE */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 2),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D4 */
++		  SUNXI_FUNCTION(0x3, "uart4"),		/* TX */
++		  SUNXI_FUNCTION(0x4, "spi1"),		/* MOSI */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* HSYNC */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 3),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D5 */
++		  SUNXI_FUNCTION(0x3, "uart4"),		/* RX */
++		  SUNXI_FUNCTION(0x4, "spi1"),		/* MISO */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* VSYNC */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 4),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D6 */
++		  SUNXI_FUNCTION(0x3, "uart4"),		/* RTS */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* D0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 5),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D7 */
++		  SUNXI_FUNCTION(0x3, "uart4"),		/* CTS */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* D1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 6),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D10 */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* D2 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 7),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D11 */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* D3 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 8),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D12 */
++		  SUNXI_FUNCTION(0x4, "emac"),		/* ERXD3 */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* D4 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 9),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D13 */
++		  SUNXI_FUNCTION(0x4, "emac"),		/* ERXD2 */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* D5 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 10),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D14 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ERXD1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 11),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D15 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ERXD0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 12),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D18 */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VP0 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ERXCK */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 13),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D19 */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VN0 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ERXCTL */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 14),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D20 */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VP1 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ENULL */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 15),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D21 */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VN1 */
++		  SUNXI_FUNCTION(0x4, "emac"),		/* ETXD3 */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* D6 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 16),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D22 */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VP2 */
++		  SUNXI_FUNCTION(0x4, "emac"),		/* ETXD2 */
++		  SUNXI_FUNCTION(0x5, "ccir")),		/* D7 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 17),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* D23 */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VN2 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ETXD1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 18),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* CLK */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VPC */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ETXD0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 19),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* DE */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VNC */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ETXCK */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 20),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* HSYNC */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VP3 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ETXCTL */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 21),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "lcd0"),		/* VSYNC */
++		  SUNXI_FUNCTION(0x3, "lvds0"),		/* VN3 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* ECLKIN */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 22),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "pwm"),		/* PWM0 */
++		  SUNXI_FUNCTION(0x4, "emac")),		/* EMDC */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 23),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x4, "emac")),		/* EMDIO */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(D, 24),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out")),
++	/* Hole */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 0),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* PCK */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* CLK */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 1),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* CK */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* ERR */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 2),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* HSYNC */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* SYNC */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 3),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* VSYNC */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* DVLD */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 4),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* D0 */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* D0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 5),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* D1 */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* D1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 6),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* D2 */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* D2 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 7),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* D3 */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* D3 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 8),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* D4 */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* D4 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 9),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* D5 */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* D5 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 10),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* D6 */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* D6 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 11),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi"),		/* D7 */
++		  SUNXI_FUNCTION(0x4, "ts")),		/* D7 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 12),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi")),		/* SCK */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 13),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "csi")),		/* SDA */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 14),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "pll"),		/* LOCK_DBG */
++		  SUNXI_FUNCTION(0x3, "i2c2")),		/* SCK */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 15),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x3, "i2c2")),		/* SDA */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 16),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out")),
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 17),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out")),
++	/* Hole */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(F, 0),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc0"),		/* D1 */
++		  SUNXI_FUNCTION(0x3, "jtag")),		/* MSI */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(F, 1),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc0"),		/* D0 */
++		  SUNXI_FUNCTION(0x3, "jtag")),		/* DI1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(F, 2),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc0"),		/* CLK */
++		  SUNXI_FUNCTION(0x3, "uart0")),	/* TX */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(F, 3),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc0"),		/* CMD */
++		  SUNXI_FUNCTION(0x3, "jtag")),		/* DO1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(F, 4),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc0"),		/* D3 */
++		  SUNXI_FUNCTION(0x3, "uart0")),	/* RX */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(F, 5),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc0"),		/* D2 */
++		  SUNXI_FUNCTION(0x3, "jtag")),		/* CK1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(F, 6),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out")),
++	/* Hole */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 0),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc1"),		/* CLK */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 0)),	/* EINT0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 1),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc1"),		/* CMD */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 1)),	/* EINT1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 2),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc1"),		/* D0 */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 2)),	/* EINT2 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 3),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc1"),		/* D1 */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 3)),	/* EINT3 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 4),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc1"),		/* D2 */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 4)),	/* EINT4 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 5),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mmc1"),		/* D3 */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 5)),	/* EINT5 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 6),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart1"),		/* TX */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 6)),	/* EINT6 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 7),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart1"),		/* RX */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 7)),	/* EINT7 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 8),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart1"),		/* RTS */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 8)),	/* EINT8 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 9),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart1"),		/* CTS */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 9)),	/* EINT9 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 10),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "aif3"),		/* SYNC */
++		  SUNXI_FUNCTION(0x3, "i2s1"),		/* SYNC */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 10)),	/* EINT10 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 11),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "aif3"),		/* BCLK */
++		  SUNXI_FUNCTION(0x3, "i2s1"),		/* BCLK */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 11)),	/* EINT11 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 12),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "aif3"),		/* DOUT */
++		  SUNXI_FUNCTION(0x3, "i2s1"),		/* DOUT */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 12)),	/* EINT12 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(G, 13),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "aif3"),		/* DIN */
++		  SUNXI_FUNCTION(0x3, "i2s1"),		/* DIN */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 1, 13)),	/* EINT13 */
++	/* Hole */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 0),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "i2c0"),		/* SCK */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 0)),	/* EINT0 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 1),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "i2c0"),		/* SDA */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 1)),	/* EINT1 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 2),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "i2c1"),		/* SCK */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 2)),	/* EINT2 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 3),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "i2c1"),		/* SDA */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 3)),	/* EINT3 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 4),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart3"),		/* TX */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 4)),	/* EINT4 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 5),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart3"),		/* RX */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 5)),	/* EINT5 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 6),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart3"),		/* RTS */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 6)),	/* EINT6 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 7),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "uart3"),		/* CTS */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 7)),	/* EINT7 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 8),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "spdif"),		/* OUT */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 8)),	/* EINT8 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 9),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 9)),	/* EINT9 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 10),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mic"),		/* CLK */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 10)),	/* EINT10 */
++	SUNXI_PIN(SUNXI_PINCTRL_PIN(H, 11),
++		  SUNXI_FUNCTION(0x0, "gpio_in"),
++		  SUNXI_FUNCTION(0x1, "gpio_out"),
++		  SUNXI_FUNCTION(0x2, "mic"),		/* DATA */
++		  SUNXI_FUNCTION_IRQ_BANK(0x6, 2, 11)),	/* EINT11 */
 +};
 +
-+static int sunxi_mmc_probe(struct device *dev)
++static const struct sunxi_pinctrl_desc a64_pinctrl_data = {
++	.pins = a64_pins,
++	.npins = ARRAY_SIZE(a64_pins),
++};
++
++static const struct of_device_id a64_pinctrl_dt_match[] = {
++	{
++		.compatible = "allwinner,sun50i-a64-pinctrl",
++		.data = &a64_pinctrl_data
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver a64_pinctrl_driver = {
++	.name		= "sun50i-a64-pinctrl",
++	.probe		= sunxi_pinctrl_probe,
++	.of_compatible	= DRV_OF_COMPAT(a64_pinctrl_dt_match),
++};
++core_platform_driver(a64_pinctrl_driver);
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+new file mode 100644
+index 0000000000..c52acfe140
+--- /dev/null
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+@@ -0,0 +1,372 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) "pinctrl-sunxi: " fmt
++
++#include <common.h>
++#include <io.h>
++#include <of.h>
++#include <of_address.h>
++#include <malloc.h>
++#include <linux/clk.h>
++
++#include "pinctrl-sunxi.h"
++
++/* This driver assumes the gpio function mux value will not change */
++#define FUNC_GPIO_IN	0
++#define FUNC_GPIO_OUT	1
++
++static struct sunxi_pinctrl *to_sunxi_pinctrl(struct pinctrl_device *pdev)
 +{
-+	struct device_node *np = dev->of_node;
-+	struct resource *iores;
-+	struct sunxi_mmc_host *host;
-+	unsigned int f_min, f_max;
++	return container_of(pdev, struct sunxi_pinctrl, pdev);
++}
++
++static void sunxi_pinctrl_set_pull(struct sunxi_pinctrl *pinctrl,
++				   u16 pin, u32 pull)
++{
++	u32 reg = sunxi_pull_reg(pin);
++	u32 off = sunxi_pull_offset(pin);
++	u32 msk = MUX_PINS_MASK << off;
++	u32 val = readl(pinctrl->base + reg);
++
++	val &= ~msk;
++	val |= (pull << off) & msk;
++	writel(val, pinctrl->base + reg);
++}
++
++static void sunxi_pinctrl_set_dlevel(struct sunxi_pinctrl *pinctrl,
++				   u16 pin, u32 lvl)
++{
++	u32 reg = sunxi_dlevel_reg(pin);
++	u32 off = sunxi_dlevel_offset(pin);
++	u32 msk = MUX_PINS_MASK << off;
++	u32 val = readl(pinctrl->base + reg);
++
++	val &= ~msk;
++	val |= (lvl << off) & msk;
++	writel(val, pinctrl->base + reg);
++}
++
++static void sunxi_pinctrl_set_mux(struct sunxi_pinctrl *pinctrl,
++				  u16 pin, u8 mux)
++{
++	u32 reg = sunxi_mux_reg(pin);
++	u32 off = sunxi_mux_offset(pin);
++	u32 msk = MUX_PINS_MASK << off;
++	u32 val = readl(pinctrl->base + reg);
++
++	val &= ~msk;
++	val |= (mux << off) & msk;
++	writel(val, pinctrl->base + reg);
++}
++
++static u8 sunxi_pinctrl_get_mux(struct sunxi_pinctrl *pinctrl, u16 pin)
++{
++	u32 reg = sunxi_mux_reg(pin);
++	u32 off = sunxi_mux_offset(pin);
++	u32 val = readl(pinctrl->base + reg);
++
++	return (val >> off) & MUX_PINS_MASK;
++}
++
++static void sunxi_pinctrl_set_conf(struct sunxi_pinctrl *pinctrl,
++				  u16 pin, struct device_node *node)
++{
++	u32 val;
++
++	if (of_find_property(node, "bias-pull-up", NULL))
++		sunxi_pinctrl_set_pull(pinctrl, pin, 1);
++	if (of_find_property(node, "bias-pull-down", NULL))
++		sunxi_pinctrl_set_pull(pinctrl, pin, 2);
++	if (of_find_property(node, "bias-disable", NULL))
++		sunxi_pinctrl_set_pull(pinctrl, pin, 0);
++
++	if (!of_property_read_u32(node, "drive-strength", &val)) {
++		val = rounddown(val, 10) / 10 - 1;
++		sunxi_pinctrl_set_dlevel(pinctrl, pin, val);
++	}
++}
++
++static const char *sunxi_pinctrl_parse_function_prop(struct device_node *node)
++{
++	const char *function;
 +	int ret;
++
++	/* Try the generic binding */
++	ret = of_property_read_string(node, "function", &function);
++	if (!ret)
++		return function;
++
++	/* And fall back to our legacy one */
++	ret = of_property_read_string(node, "allwinner,function", &function);
++	if (!ret)
++		return function;
++
++	return NULL;
++}
++
++static struct property *sunxi_pinctrl_find_pins_prop(struct device_node *node)
++{
++	struct property *prop;
++
++	/* Try the generic binding */
++	prop = of_find_property(node, "pins", NULL);
++	if (prop)
++		return prop;
++
++	/* And fall back to our legacy one */
++	prop = of_find_property(node, "allwinner,pins", NULL);
++	if (prop)
++		return prop;
++
++	return NULL;
++}
++
++#define sunxi_pinctrl_of_pins_for_each_string(np, prop, s)	\
++	for (prop = sunxi_pinctrl_find_pins_prop(np),		\
++		s = of_prop_next_string(prop, NULL);		\
++		s;						\
++		s = of_prop_next_string(prop, s))
++
++
++static const struct sunxi_desc_pin *
++sunxi_pinctrl_find_pin(struct sunxi_pinctrl *pinctrl, const char *pin_name)
++{
++	const struct sunxi_desc_pin *pin;
++	int i;
++
++	for (i = 0; i < pinctrl->desc->npins; i++) {
++		pin = &pinctrl->desc->pins[i];
++		if (!strcmp(pin->pin.name, pin_name))
++			return pin;
++	}
++
++	return NULL;
++}
++
++static const struct sunxi_desc_function *
++sunxi_pinctrl_find_func(struct sunxi_pinctrl *pinctrl,
++			const char *pin_name, const char *func_name)
++{
++	const struct sunxi_desc_pin *pin;
++	const struct sunxi_desc_function *func;
++
++	pin = sunxi_pinctrl_find_pin(pinctrl, pin_name);
++	if (!pin)
++		return NULL;
++
++	for (func = pin->functions; func->name; func++)
++		if (!strcmp(func->name, func_name))
++			return func;
++
++	return NULL;
++}
++
++static int sunxi_pinctrl_set_func(struct sunxi_pinctrl *pinctrl,
++				  struct device_node *np,
++				  const char *pin_name, const char *func_name)
++{
++	struct device *dev = pinctrl->pdev.dev;
++	const struct sunxi_desc_pin *pin;
++	const struct sunxi_desc_function *func;
++
++	dev_dbg(dev, "setfunc %s @ %s\n", func_name, pin_name);
++
++	pin = sunxi_pinctrl_find_pin(pinctrl, pin_name);
++	if (!pin) {
++		dev_err(dev, "pin %s not found\n", pin_name);
++		return -EINVAL;
++	}
++
++	func = sunxi_pinctrl_find_func(pinctrl, pin_name, func_name);
++	if (!func) {
++		dev_err(dev, "func %s not found\n", func_name);
++		return -EINVAL;
++	}
++
++	sunxi_pinctrl_set_mux(pinctrl, pin->pin.number, func->muxval);
++	sunxi_pinctrl_set_conf(pinctrl, pin->pin.number, np);
++
++	return 0;
++}
++
++static int sunxi_pinctrl_set_state(struct pinctrl_device *pdev, struct device_node *np)
++{
++	struct sunxi_pinctrl *pinctrl = to_sunxi_pinctrl(pdev);
++	struct device *dev = pinctrl->pdev.dev;
++	struct property *prop;
++	const char *func_name;
++	const char *pin_name;
++
++	func_name = sunxi_pinctrl_parse_function_prop(np);
++	if (!func_name) {
++		dev_err(dev, "%s: missing 'function' property\n", np->full_name);
++		return -EINVAL;
++	}
++
++	sunxi_pinctrl_of_pins_for_each_string(np, prop, pin_name) {
++		sunxi_pinctrl_set_func(pinctrl, np, pin_name, func_name);
++	}
++
++	return 0;
++}
++
++static int sunxi_pinctrl_set_direction(struct pinctrl_device *pdev, unsigned int gpio, bool in)
++{
++	struct sunxi_pinctrl *pinctrl = to_sunxi_pinctrl(pdev);
++	u32 func = in ? FUNC_GPIO_IN : FUNC_GPIO_OUT;
++
++	sunxi_pinctrl_set_mux(pinctrl, gpio, func);
++
++	return 0;
++}
++
++static int sunxi_gpio_get(struct gpio_chip *chip, unsigned gpio)
++{
++	struct sunxi_pinctrl *pinctrl = chip->dev->priv;
++	u32 reg = sunxi_data_reg(gpio);
++	u32 bit = sunxi_data_offset(gpio);
++	u32 val = readl(pinctrl->base + reg);
++
++	return val & BIT(bit);
++}
++
++static void sunxi_gpio_set(struct gpio_chip *chip, unsigned gpio, int value)
++{
++	struct sunxi_pinctrl *pinctrl = chip->dev->priv;
++	u32 reg = sunxi_data_reg(gpio);
++	u32 bit = sunxi_data_offset(gpio);
++	u32 val = readl(pinctrl->base + reg);
++
++	if (value)
++		val |= BIT(bit);
++	else
++		val &= ~BIT(bit);
++	writel(val, pinctrl->base + reg);
++}
++
++static int sunxi_gpio_direction_output(struct gpio_chip *chip,
++				       unsigned gpio, int value)
++{
++	struct sunxi_pinctrl *pinctrl = chip->dev->priv;
++
++	sunxi_gpio_set(chip, gpio, value);
++	sunxi_pinctrl_set_mux(pinctrl, gpio, FUNC_GPIO_OUT);
++
++	return 0;
++}
++
++static int sunxi_gpio_direction_input(struct gpio_chip *chip,
++					unsigned gpio)
++{
++	struct sunxi_pinctrl *pinctrl = chip->dev->priv;
++
++	sunxi_pinctrl_set_mux(pinctrl, gpio, FUNC_GPIO_IN);
++
++	return 0;
++}
++
++static int sunxi_gpio_get_direction(struct gpio_chip *chip, unsigned gpio)
++{
++	struct sunxi_pinctrl *pinctrl = chip->dev->priv;
++	u32 func = sunxi_pinctrl_get_mux(pinctrl, gpio);
++
++	if (func == FUNC_GPIO_IN)
++		return GPIOF_DIR_IN;
++	if (func == FUNC_GPIO_OUT)
++		return GPIOF_DIR_OUT;
++	return -EINVAL;
++}
++
++static int sunxi_gpio_of_xlate(struct gpio_chip *chip,
++			       const struct of_phandle_args *gpiospec,
++			       u32 *flags)
++{
++	int pin, base;
++
++	if (gpiospec->args_count != 3)
++		return -EINVAL;
++
++	base = PINS_PER_BANK * gpiospec->args[0];
++	pin = base + gpiospec->args[1];
++
++	if (pin > chip->ngpio)
++		return -EINVAL;
++
++	if (flags)
++		*flags = gpiospec->args[2];
++
++	return pin;
++}
++
++static struct pinctrl_ops sunxi_pinctrl_ops = {
++	.set_state = sunxi_pinctrl_set_state,
++	.set_direction = sunxi_pinctrl_set_direction,
++};
++
++static struct gpio_ops sunxi_gpio_ops = {
++	.request = sunxi_gpio_direction_input, /* switch to input function */
++	.direction_input = sunxi_gpio_direction_input,
++	.direction_output = sunxi_gpio_direction_output,
++	.get_direction = sunxi_gpio_get_direction,
++	.get = sunxi_gpio_get,
++	.set = sunxi_gpio_set,
++	.of_xlate = sunxi_gpio_of_xlate,
++};
++
++int sunxi_pinctrl_probe(struct device *dev)
++{
++	const struct sunxi_pinctrl_desc *desc;
++	struct sunxi_pinctrl *pinctrl;
++	struct resource *iores;
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_PINCTRL))
++		return 0;
++
++	desc = device_get_match_data(dev);
++	if (!desc)
++                return -EINVAL;
 +
 +	iores = dev_request_mem_resource(dev, 0);
 +	if (IS_ERR(iores))
 +		return PTR_ERR(iores);
-+	host = xzalloc(sizeof(*host));
-+	host->base = IOMEM(iores->start);
-+	dma_set_mask(dev, DMA_BIT_MASK(32));
-+	host->cfg = device_get_match_data(dev);
 +
-+	host->gpio_cd = of_get_named_gpio(np, "cd-gpios", 0);
++	pinctrl = xzalloc(sizeof(*pinctrl));
++	dev->priv = pinctrl;
++	pinctrl->base = IOMEM(iores->start);
 +
-+	host->clk_ahb = clk_get(dev, "ahb");
-+	if (IS_ERR(host->clk_ahb)) {
-+		ret = PTR_ERR(host->clk_ahb);
++	pinctrl->desc = desc;
++	pinctrl->pdev.dev = dev;
++	pinctrl->pdev.ops = &sunxi_pinctrl_ops;
++
++	ret = pinctrl_register(&pinctrl->pdev);
++	if (ret) {
++		dev_err(dev, "couldn't register %s driver\n", "pinctrl");
 +		goto err;
 +	}
++	dev_dbg(dev, "sunxi %s registered\n", "pinctrl");
 +
-+	host->clk_mmc = clk_get(dev, "mmc");
-+	if (IS_ERR(host->clk_mmc)) {
-+		ret = PTR_ERR(host->clk_mmc);
-+		goto err;
++	pinctrl->chip.dev = dev;
++	pinctrl->chip.ops = &sunxi_gpio_ops;
++	/* only the first 8 bank are supported */
++	pinctrl->chip.base = 0;
++	pinctrl->chip.ngpio = 8 * PINS_PER_BANK;
++	pinctrl->chip.of_gpio_n_cells = 3;
++
++	if (of_property_read_bool(dev->of_node, "gpio-controller")) {
++		ret = gpiochip_add(&pinctrl->chip);
++		if (ret) {
++			dev_err(dev, "couldn't register %s driver\n", "gpio-chip");
++			goto pinctrl_unregister;
++		}
++		dev_dbg(dev, "sunxi %s registered\n", "gpio-chip");
 +	}
++	return 0;
 +
-+	clk_enable(host->clk_ahb);
-+	clk_enable(host->clk_mmc);
-+
-+	host->mci.hw_dev = dev;
-+	host->mci.ops = sdxc_mmc_ops;
-+	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
-+	host->mci.host_caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA
-+		| MMC_CAP_MMC_HIGHSPEED | MMC_CAP_SD_HIGHSPEED
-+		| MMC_CAP_MMC_HIGHSPEED_52MHZ;
-+
-+	/* source clock is pre-divided by 2 */
-+	host->clkrate = clk_get_rate(host->clk_mmc) / 2;
-+	f_min = host->clkrate / 510;
-+	f_max = host->clkrate;
-+	/* clock must at least support freq as low as 400K, and reach 52M */
-+	if (400000 < f_min || f_max < 52000000) {
-+		/* if not, try to get a better clock, target rate of 2 * 52MHz,
-+		 * 400KHz can be acheived with a divisor of 130, which is well
-+		 * within range.
-+		 */
-+		clk_set_rate(host->clk_mmc, 2 * 260 * 400000);
-+		host->clkrate = clk_get_rate(host->clk_mmc) / 2;
-+		f_min = host->clkrate / 510;
-+		f_max = host->clkrate;
-+	}
-+	dev_dbg(dev, "freq: min %d max %d\n", f_min, f_max);
-+	mci_of_parse(&host->mci);
-+	host->mci.host_caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA
-+		| MMC_CAP_MMC_HIGHSPEED | MMC_CAP_SD_HIGHSPEED
-+		| MMC_CAP_MMC_HIGHSPEED_52MHZ;
-+
-+	f_min = min_t(unsigned int,   400000, f_min);
-+	f_max = min_t(unsigned int, 52000000, f_max);
-+	host->mci.f_min = max_t(unsigned int, host->mci.f_min, f_min);
-+	host->mci.f_max = min_t(unsigned int, host->mci.f_max, f_max);
-+
-+	return mci_register(&host->mci);
++pinctrl_unregister:
++	pinctrl_unregister(&pinctrl->pdev);
 +err:
-+	if (host->clk_mmc)
-+		clk_put(host->clk_mmc);
-+	if (host->clk_ahb)
-+		clk_put(host->clk_ahb);
-+	free(host);
 +	release_region(iores);
++	free(pinctrl);
 +	return ret;
 +}
-+
-+static const struct sunxi_mmc_cfg sun50i_a64_cfg = {
-+	.idma_des_size_bits = 16,
-+	.clk_delays = NULL,
-+	.can_calibrate = true,
-+	.mask_data0 = true,
-+	.needs_new_timings = true,
-+};
-+
-+static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
-+	.idma_des_size_bits = 13,
-+	.clk_delays = NULL,
-+	.can_calibrate = true,
-+	.needs_new_timings = true,
-+};
-+
-+static __maybe_unused struct of_device_id sunxi_mmc_compatible[] = {
-+	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
-+	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver sunxi_mmc_driver = {
-+	.name  = "sunxi-mmc",
-+	.probe = sunxi_mmc_probe,
-+	.of_compatible = DRV_OF_COMPAT(sunxi_mmc_compatible),
-+};
-+device_platform_driver(sunxi_mmc_driver);
-diff --git a/drivers/mci/sunxi-mmc.h b/drivers/mci/sunxi-mmc.h
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.h b/drivers/pinctrl/sunxi/pinctrl-sunxi.h
 new file mode 100644
-index 0000000000..2f6193d0af
+index 0000000000..630f1ef98e
 --- /dev/null
-+++ b/drivers/mci/sunxi-mmc.h
-@@ -0,0 +1,221 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* SPDX-FileCopyrightText: 2024 Jules Maselbas */
-+/* derived from: linux/drivers/mmc/host/sunxi-mmc.c */
-+
-+#ifndef SUNXI_MMC_H
-+#define SUNXI_MMC_H
-+
-+#include <io.h>
-+#include <linux/bitops.h>
-+#include <clock.h>
-+#include <mci.h>
-+
-+#define SDXC_REG_GCTRL	(0x00) /* Global Control */
-+#define SDXC_REG_CLKCR	(0x04) /* Clock Control */
-+#define SDXC_REG_TMOUT	(0x08) /* Time Out */
-+#define SDXC_REG_WIDTH	(0x0C) /* Bus Width */
-+#define SDXC_REG_BLKSZ	(0x10) /* Block Size */
-+#define SDXC_REG_BCNTR	(0x14) /* Byte Count */
-+#define SDXC_REG_CMDR	(0x18) /* Command */
-+#define SDXC_REG_CARG	(0x1C) /* Argument */
-+#define SDXC_REG_RESP0	(0x20) /* Response 0 */
-+#define SDXC_REG_RESP1	(0x24) /* Response 1 */
-+#define SDXC_REG_RESP2	(0x28) /* Response 2 */
-+#define SDXC_REG_RESP3	(0x2C) /* Response 3 */
-+#define SDXC_REG_IMASK	(0x30) /* Interrupt Mask */
-+#define SDXC_REG_MISTA	(0x34) /* Masked Interrupt Status */
-+#define SDXC_REG_RINTR	(0x38) /* Raw Interrupt Status */
-+#define SDXC_REG_STAS	(0x3C) /* Status */
-+#define SDXC_REG_FTRGL	(0x40) /* FIFO Threshold Watermark */
-+#define SDXC_REG_FUNS	(0x44) /* Function Select */
-+#define SDXC_REG_CBCR	(0x48) /* CIU Byte Count */
-+#define SDXC_REG_BBCR	(0x4C) /* BIU Byte Count */
-+#define SDXC_REG_DBGC	(0x50) /* Debug Enable */
-+#define SDXC_REG_A12A	(0x58) /* Auto Command 12 Argument */
-+#define SDXC_REG_NTSR	(0x5C) /* SMC New Timing Set Register */
-+#define SDXC_REG_HWRST	(0x78) /* Card Hardware Reset */
-+#define SDXC_REG_DMAC	(0x80) /* IDMAC Control */
-+#define SDXC_REG_DLBA	(0x84) /* IDMAC Descriptor List Base Addresse */
-+#define SDXC_REG_IDST	(0x88) /* IDMAC Status */
-+#define SDXC_REG_IDIE	(0x8C) /* IDMAC Interrupt Enable */
-+#define SDXC_REG_CHDA	(0x90)
-+#define SDXC_REG_CBDA	(0x94)
-+
-+#define SDXC_REG_DRV_DL		0x140 /* Drive Delay Control Register */
-+#define SDXC_REG_SAMP_DL_REG	0x144 /* SMC sample delay control */
-+#define SDXC_REG_DS_DL_REG	0x148 /* SMC data strobe delay control */
-+
-+#define SDXC_REG_FIFO	(0x200) /* FIFO */
-+
-+#define SDXC_GCTRL_SOFT_RESET		BIT(0)
-+#define SDXC_GCTRL_FIFO_RESET		BIT(1)
-+#define SDXC_GCTRL_DMA_RESET		BIT(2)
-+#define SDXC_GCTRL_RESET \
-+	(SDXC_GCTRL_SOFT_RESET | SDXC_GCTRL_FIFO_RESET | SDXC_GCTRL_DMA_RESET)
-+#define SDXC_GCTRL_DMA_ENABLE		BIT(5)
-+#define SDXC_GCTRL_ACCESS_BY_AHB	BIT(31)
-+
-+#define SDXC_CMD_RESP_EXPIRE		BIT(6)
-+#define SDXC_CMD_LONG_RESPONSE		BIT(7)
-+#define SDXC_CMD_CHK_RESPONSE_CRC	BIT(8)
-+#define SDXC_CMD_DATA_EXPIRE		BIT(9)
-+#define SDXC_CMD_WRITE			BIT(10)
-+#define SDXC_CMD_AUTO_STOP		BIT(12)
-+#define SDXC_CMD_WAIT_PRE_OVER		BIT(13)
-+#define SDXC_CMD_ABORT_STOP		BIT(14)
-+#define SDXC_CMD_SEND_INIT_SEQ		BIT(15)
-+#define SDXC_CMD_UPCLK_ONLY		BIT(21)
-+#define SDXC_CMD_START			BIT(31)
-+
-+#define SDXC_NTSR_2X_TIMING_MODE	BIT(31)
-+
-+/* clock control bits */
-+#define SDXC_CLK_MASK_DATA0	BIT(31)
-+#define SDXC_CLK_LOW_POWER_ON	BIT(17)
-+#define SDXC_CLK_ENABLE		BIT(16)
-+#define SDXC_CLK_DIVIDER_MASK	(0xff)
-+
-+/* bus width */
-+#define SDXC_WIDTH_1BIT	0
-+#define SDXC_WIDTH_4BIT	BIT(0)
-+#define SDXC_WIDTH_8BIT	BIT(1)
-+
-+/* interrupt bits */
-+#define SDXC_INT_RESP_ERROR		BIT(1)
-+#define SDXC_INT_COMMAND_DONE		BIT(2)
-+#define SDXC_INT_DATA_OVER		BIT(3)
-+#define SDXC_INT_TX_DATA_REQUEST	BIT(4)
-+#define SDXC_INT_RX_DATA_REQUEST	BIT(5)
-+#define SDXC_INT_RESP_CRC_ERROR		BIT(6)
-+#define SDXC_INT_DATA_CRC_ERROR		BIT(7)
-+#define SDXC_INT_RESP_TIMEOUT		BIT(8)
-+#define SDXC_INT_DATA_TIMEOUT		BIT(9)
-+#define SDXC_INT_VOLTAGE_CHANGE_DONE	BIT(10)
-+#define SDXC_INT_FIFO_RUN_ERROR		BIT(11)
-+#define SDXC_INT_HARD_WARE_LOCKED	BIT(12)
-+#define SDXC_INT_START_BIT_ERROR	BIT(13)
-+#define SDXC_INT_AUTO_COMMAND_DONE	BIT(14)
-+#define SDXC_INT_END_BIT_ERROR		BIT(15)
-+#define SDXC_INT_SDIO_INTERRUPT		BIT(16)
-+#define SDXC_INT_CARD_INSERT		BIT(30)
-+#define SDXC_INT_CARD_REMOVE		BIT(31)
-+#define SDXC_INTERRUPT_ERROR_BIT	\
-+	(SDXC_INT_RESP_ERROR |		\
-+	 SDXC_INT_RESP_CRC_ERROR |	\
-+	 SDXC_INT_DATA_CRC_ERROR |	\
-+	 SDXC_INT_RESP_TIMEOUT |	\
-+	 SDXC_INT_DATA_TIMEOUT |	\
-+	 SDXC_INT_HARD_WARE_LOCKED |	\
-+	 SDXC_INT_START_BIT_ERROR |	\
-+	 SDXC_INT_END_BIT_ERROR)
-+
-+#define SDXC_INTERRUPT_DONE_BIT		\
-+	(SDXC_INT_AUTO_COMMAND_DONE |	\
-+	 SDXC_INT_DATA_OVER |		\
-+	 SDXC_INT_COMMAND_DONE |	\
-+	 SDXC_INT_VOLTAGE_CHANGE_DONE)
-+
-+/* status */
-+#define SDXC_STATUS_FIFO_EMPTY		BIT(2)
-+#define SDXC_STATUS_FIFO_FULL		BIT(3)
-+#define SDXC_STATUS_CARD_PRESENT	BIT(8)
-+#define SDXC_STATUS_BUSY		BIT(9)
-+
-+struct sunxi_mmc_clk_delay {
-+	u32 output;
-+	u32 sample;
-+};
-+
-+struct sunxi_mmc_cfg {
-+	u32 idma_des_size_bits;
-+	u32 idma_des_shift;
-+	const struct sunxi_mmc_clk_delay *clk_delays;
-+
-+	/* does the IP block support autocalibration? */
-+	bool can_calibrate;
-+
-+	/* Does DATA0 needs to be masked while the clock is updated */
-+	bool mask_data0;
-+
-+	/*
-+	 * hardware only supports new timing mode, either due to lack of
-+	 * a mode switch in the clock controller, or the mmc controller
-+	 * is permanently configured in the new timing mode, without the
-+	 * NTSR mode switch.
-+	 */
-+	bool needs_new_timings;
-+
-+	/* clock hardware can switch between old and new timing modes */
-+	bool ccu_has_timings_switch;
-+};
-+
-+struct sunxi_mmc_host {
-+	struct mci_host mci;
-+	struct device *dev;
-+	struct clk *clk_ahb, *clk_mmc;
-+	void __iomem *base;
-+	int gpio_cd;
-+
-+	const struct sunxi_mmc_cfg *cfg;
-+	u32 clkrate;
-+};
-+
-+static inline struct sunxi_mmc_host *to_sunxi_mmc_host(struct mci_host *mci)
-+{
-+	return container_of(mci, struct sunxi_mmc_host, mci);
-+}
-+
-+static inline u32 sdxc_readl(struct sunxi_mmc_host *host, u32 reg)
-+{
-+	return readl(host->base + reg);
-+}
-+
-+static inline void sdxc_writel(struct sunxi_mmc_host *host, u32 reg, u32 val)
-+{
-+	writel(val, host->base + reg);
-+}
-+
-+static inline int sdxc_is_fifo_empty(struct sunxi_mmc_host *host)
-+{
-+	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_FIFO_EMPTY;
-+}
-+
-+static inline int sdxc_is_fifo_full(struct sunxi_mmc_host *host)
-+{
-+	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_FIFO_FULL;
-+}
-+
-+static inline int sdxc_is_card_busy(struct sunxi_mmc_host *host)
-+{
-+	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_BUSY;
-+}
-+
-+#ifdef __PBL__
-+/*
-+ * Stubs to make timeout logic below work in PBL
-+ */
-+#define get_time_ns()		0
-+/*
-+ * Use time in us as a busy counter timeout value
-+ */
-+#define is_timeout(s, t)	((s)++ > ((t) / 1000))
-+#endif
-+
-+static inline int sdxc_xfer_complete(struct sunxi_mmc_host *host, u64 timeout, u32 flags)
-+{
-+	u64 start;
-+	u32 rint;
-+
-+	start = get_time_ns();
-+	do {
-+		rint = sdxc_readl(host, SDXC_REG_RINTR);
-+		if (rint & SDXC_INTERRUPT_ERROR_BIT)
-+			break;
-+		if (rint & flags)
-+			return 0;
-+	} while (!is_timeout(start, timeout));
-+
-+	return -ETIMEDOUT;
-+}
-+
-+#endif
-diff --git a/include/mach/sunxi/xload.h b/include/mach/sunxi/xload.h
-new file mode 100644
-index 0000000000..f978db4951
---- /dev/null
-+++ b/include/mach/sunxi/xload.h
-@@ -0,0 +1,12 @@
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.h
+@@ -0,0 +1,224 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Allwinner A1X SoCs pinctrl driver.
++ *
++ * Copyright (C) 2012 Maxime Ripard
++ *
++ * Maxime Ripard <maxime.ripard@free-electrons.com>
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2.  This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
 +
-+#ifndef __MACH_XLOAD_H
-+#define __MACH_XLOAD_H
++#ifndef __PINCTRL_SUNXI_H
++#define __PINCTRL_SUNXI_H
 +
-+#include <linux/compiler.h>
-+#include <pbl/bio.h>
++#include <pinctrl.h>
++#include <gpio.h>
 +
-+int sunxi_mmc_bio_init(struct pbl_bio *bio, void __iomem *base,
-+		       unsigned int clock, unsigned int slot);
++#define PA_BASE	0
++#define PB_BASE	32
++#define PC_BASE	64
++#define PD_BASE	96
++#define PE_BASE	128
++#define PF_BASE	160
++#define PG_BASE	192
++#define PH_BASE	224
++#define PI_BASE	256
++#define PL_BASE	352
++#define PM_BASE	384
++#define PN_BASE	416
 +
-+#endif
++#define SUNXI_PIN_NAME_MAX_LEN	5
++
++#define BANK_MEM_SIZE		0x24
++#define MUX_REGS_OFFSET		0x0
++#define DATA_REGS_OFFSET	0x10
++#define DLEVEL_REGS_OFFSET	0x14
++#define PULL_REGS_OFFSET	0x1c
++
++#define PINS_PER_BANK		32
++#define MUX_PINS_PER_REG	8
++#define MUX_PINS_BITS		4
++#define MUX_PINS_MASK		0x0f
++#define DATA_PINS_PER_REG	32
++#define DATA_PINS_BITS		1
++#define DATA_PINS_MASK		0x01
++#define DLEVEL_PINS_PER_REG	16
++#define DLEVEL_PINS_BITS	2
++#define DLEVEL_PINS_MASK	0x03
++#define PULL_PINS_PER_REG	16
++#define PULL_PINS_BITS		2
++#define PULL_PINS_MASK		0x03
++
++#define GRP_CFG_REG		0x300
++
++#define IO_BIAS_MASK		GENMASK(3, 0)
++
++#define SUN4I_FUNC_INPUT	0
++#define SUN4I_FUNC_IRQ		6
++
++#define PINCTRL_SUN5I_A10S	BIT(1)
++#define PINCTRL_SUN5I_A13	BIT(2)
++#define PINCTRL_SUN5I_GR8	BIT(3)
++#define PINCTRL_SUN6I_A31	BIT(4)
++#define PINCTRL_SUN6I_A31S	BIT(5)
++#define PINCTRL_SUN4I_A10	BIT(6)
++#define PINCTRL_SUN7I_A20	BIT(7)
++#define PINCTRL_SUN8I_R40	BIT(8)
++#define PINCTRL_SUN8I_V3	BIT(9)
++#define PINCTRL_SUN8I_V3S	BIT(10)
++
++#define PIO_POW_MOD_SEL_REG	0x340
++
++enum sunxi_desc_bias_voltage {
++	BIAS_VOLTAGE_NONE,
++	/*
++	 * Bias voltage configuration is done through
++	 * Pn_GRP_CONFIG registers, as seen on A80 SoC.
++	 */
++	BIAS_VOLTAGE_GRP_CONFIG,
++	/*
++	 * Bias voltage is set through PIO_POW_MOD_SEL_REG
++	 * register, as seen on H6 SoC, for example.
++	 */
++	BIAS_VOLTAGE_PIO_POW_MODE_SEL,
++};
++
++struct sunxi_desc_function {
++	const char	*name;
++	u8		muxval;
++};
++
++struct sunxi_desc_pin {
++	struct {
++		const char		name[6];
++		u16			number;
++	} pin;
++	const struct sunxi_desc_function	*functions;
++};
++
++struct sunxi_pinctrl_desc {
++	const struct sunxi_desc_pin	*pins;
++	size_t				npins;
++	unsigned			pin_base;
++	bool				disable_strict_mode;
++	enum sunxi_desc_bias_voltage	io_bias_cfg_variant;
++};
++
++struct sunxi_pinctrl {
++	void __iomem			*base;
++	struct gpio_chip		chip;
++	struct pinctrl_device		pdev;
++	const struct sunxi_pinctrl_desc	*desc;
++};
++
++#define SUNXI_PIN(_pin, ...)					\
++	{							\
++		.pin = _pin,					\
++		.functions = (struct sunxi_desc_function[]){	\
++			__VA_ARGS__, { } },			\
++	}
++
++#define SUNXI_PINCTRL_PIN(bank, pin)				\
++	{							\
++		.name = "P" #bank #pin,				\
++		.number = P ## bank ## _BASE + (pin)		\
++	}
++
++#define SUNXI_FUNCTION(_val, _name)				\
++	{							\
++		.name = _name,					\
++		.muxval = _val,					\
++	}
++
++#define SUNXI_FUNCTION_IRQ_BANK(...)  {}
++
++/*
++ * The sunXi PIO registers are organized as is:
++ * 0x00 - 0x0c	Muxing values.
++ *		8 pins per register, each pin having a 4bits value
++ * 0x10		Pin values
++ *		32 bits per register, each pin corresponding to one bit
++ * 0x14 - 0x18	Drive level
++ *		16 pins per register, each pin having a 2bits value
++ * 0x1c - 0x20	Pull-Up values
++ *		16 pins per register, each pin having a 2bits value
++ *
++ * This is for the first bank. Each bank will have the same layout,
++ * with an offset being a multiple of 0x24.
++ *
++ * The following functions calculate from the pin number the register
++ * and the bit offset that we should access.
++ */
++static inline u32 sunxi_mux_reg(u16 pin)
++{
++	u8 bank = pin / PINS_PER_BANK;
++	u32 offset = bank * BANK_MEM_SIZE;
++	offset += MUX_REGS_OFFSET;
++	offset += pin % PINS_PER_BANK / MUX_PINS_PER_REG * 0x04;
++	return round_down(offset, 4);
++}
++
++static inline u32 sunxi_mux_offset(u16 pin)
++{
++	u32 pin_num = pin % MUX_PINS_PER_REG;
++	return pin_num * MUX_PINS_BITS;
++}
++
++static inline u32 sunxi_data_reg(u16 pin)
++{
++	u8 bank = pin / PINS_PER_BANK;
++	u32 offset = bank * BANK_MEM_SIZE;
++	offset += DATA_REGS_OFFSET;
++	offset += pin % PINS_PER_BANK / DATA_PINS_PER_REG * 0x04;
++	return round_down(offset, 4);
++}
++
++static inline u32 sunxi_data_offset(u16 pin)
++{
++	u32 pin_num = pin % DATA_PINS_PER_REG;
++	return pin_num * DATA_PINS_BITS;
++}
++
++static inline u32 sunxi_dlevel_reg(u16 pin)
++{
++	u8 bank = pin / PINS_PER_BANK;
++	u32 offset = bank * BANK_MEM_SIZE;
++	offset += DLEVEL_REGS_OFFSET;
++	offset += pin % PINS_PER_BANK / DLEVEL_PINS_PER_REG * 0x04;
++	return round_down(offset, 4);
++}
++
++static inline u32 sunxi_dlevel_offset(u16 pin)
++{
++	u32 pin_num = pin % DLEVEL_PINS_PER_REG;
++	return pin_num * DLEVEL_PINS_BITS;
++}
++
++static inline u32 sunxi_pull_reg(u16 pin)
++{
++	u8 bank = pin / PINS_PER_BANK;
++	u32 offset = bank * BANK_MEM_SIZE;
++	offset += PULL_REGS_OFFSET;
++	offset += pin % PINS_PER_BANK / PULL_PINS_PER_REG * 0x04;
++	return round_down(offset, 4);
++}
++
++static inline u32 sunxi_pull_offset(u16 pin)
++{
++	u32 pin_num = pin % PULL_PINS_PER_REG;
++	return pin_num * PULL_PINS_BITS;
++}
++
++static inline u32 sunxi_grp_config_reg(u16 pin)
++{
++	u8 bank = pin / PINS_PER_BANK;
++
++	return GRP_CFG_REG + bank * 0x4;
++}
++
++int sunxi_pinctrl_probe(struct device *dev);
++
++#endif /* __PINCTRL_SUNXI_H */
 -- 
 2.46.2
 
