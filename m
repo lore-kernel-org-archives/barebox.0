@@ -1,68 +1,60 @@
-Delivery-date: Thu, 07 Nov 2024 15:06:24 +0100
+Delivery-date: Thu, 07 Nov 2024 15:06:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t939T-005wmj-0I
+	id 1t939W-005wnI-1Q
 	for lore@lore.pengutronix.de;
-	Thu, 07 Nov 2024 15:06:24 +0100
+	Thu, 07 Nov 2024 15:06:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t939S-0006dB-TZ
-	for lore@pengutronix.de; Thu, 07 Nov 2024 15:06:24 +0100
+	id 1t939W-0006fo-Kt
+	for lore@pengutronix.de; Thu, 07 Nov 2024 15:06:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=34Rc9TYCBt8JRf2O1OPGCZnuowPalB9sh9efoozAGlw=; b=yxwWB1WU1vBc/Y81t6lY/RTlfS
-	d/U6Oc49N+q+H6Y2JZ/U1UrBoI7ZNDv+xyAvpE2cCYOh4WkmPU4OaB+fTV3PMgJ9jeL+3HpP9VdAG
-	0ma0mrh/UCIInqzQPSaxf0KomkVxEUtEQ/bN/3KqA7atAKnohT+Ma7eXB9TjJC6sSmJJgDVRbknZv
-	FuHpO2I4SXU6Q0EN6gnpwsR6m5BeAo7pbiiLOFGj35E1wMtLpd81qOxij57ZEcltrSmTAlK7AYjT3
-	6c70p+Y4URmabSkDXyybYel2EzRiciKfRnMz06twnZRv6OTdljVzb68NBZjbX4KXiopVHpmfGn0F2
-	pRk00q0Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=oIedYOrVQLf9JVnsVIoLDHQETodekXAzRYQEwC35qtU=; b=Xq+XKhyGYcj5C4JV/kFziXtnkM
+	RxDSy3mqjmPATwLVSszHpVXHJIX8n/Vj93Etm3eYwotakro2sVTv0oPCAyCR2n3yvWSpVeMQhvXZb
+	dzOmuSP4oItmOcuYeV4bKUU5B7MyQ8dxxq3CHfrBVy2aPU5YUNrho3o6WvUFetyhDH5o9NT2+qZyC
+	f0BW8ajYTiJsn74wdFsZpzQ0QQOSMTu2tJf1gcZDNQKOZEWS6Ca7BMib3QxSnUMs/8lJtIM1PaHRo
+	IMqVoze4WWX3hrPjDZ9DNUNW2rouUfAYUirvlcuWEh6RnE11ytihG/YwbQ0rV/nRx/CHy/jpQ5+pW
+	Kh/ZO3tQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t938x-00000007EAP-0jzE;
-	Thu, 07 Nov 2024 14:05:51 +0000
+	id 1t938z-00000007EBo-1Fx6;
+	Thu, 07 Nov 2024 14:05:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t935p-00000007Dc0-1F8q
+	id 1t936w-00000007DlC-04eB
 	for barebox@lists.infradead.org;
-	Thu, 07 Nov 2024 14:02:40 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	Thu, 07 Nov 2024 14:03:47 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1t935g-0005ta-1G; Thu, 07 Nov 2024 15:02:28 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1t935f-002T9E-2S;
-	Thu, 07 Nov 2024 15:02:27 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1t935f-00EWBz-2G;
-	Thu, 07 Nov 2024 15:02:27 +0100
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Thu, 07 Nov 2024 15:02:19 +0100
+	id 1t936t-00062H-Js; Thu, 07 Nov 2024 15:03:43 +0100
+Message-ID: <45409ff3-058b-4b78-b1db-6b132aef65e0@pengutronix.de>
+Date: Thu, 7 Nov 2024 15:03:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-fix-sha256-assembly-v2-1-5fdb418f7f54@pengutronix.de>
-References: <20241107-fix-sha256-assembly-v2-0-5fdb418f7f54@pengutronix.de>
-In-Reply-To: <20241107-fix-sha256-assembly-v2-0-5fdb418f7f54@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <20241106-fix-sha256-assembly-v1-0-ad1ac961f15f@pengutronix.de>
+ <86a81980-3811-4c2e-b85b-12cff2370634@pengutronix.de>
+ <ed49b6bd-d44c-4727-b403-35e902ac5ca7@pengutronix.de>
+From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Content-Language: en-US, de-DE
+In-Reply-To: <ed49b6bd-d44c-4727-b403-35e902ac5ca7@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241107_060237_549568_7B48D702 
-X-CRM114-Status: GOOD (  16.66  )
+X-CRM114-CacheID: sfid-20241107_060346_241937_9B711C74 
+X-CRM114-Status: GOOD (  28.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,336 +76,161 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/7] arm: crypto: sha256: fix generation of thumb2
+Subject: Re: [PATCH 0/7] arm: crypto: sha256: fix generation of thumb2
  assembly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The checked in `sha256-core.S_shipped` assembly file has a thumb2
-specific workaround applied[1]. This fix wasn't backported to the perl
-script `sha256-armv4.pl` used to generate the assembly, thus when the
-script is run it would regenerate the buggy code.
+Hi Ahmad,
 
-Under rare circumstances the modification timestamp of `sha256-armv4.pl`
-differs enough from `sha256-core.S_shipped` that make triggers a
-regeneration - leading to a broken sha256 digest on ARMv7 compiled in
-Thumb2 mode. In my case it was a Yocto build of barebox from an external
-source tree. Either the git checkout/clone process produced different
-timestamps, as these are non-deterministic, or I accidentally touched
-the file in another way. The bug expressed itself not in crashes but
-wrong sha256 sums.
+On 07.11.24 10:19, Ahmad Fatoum wrote:
+> Hello Stefan,
+> 
+> On 07.11.24 10:12, Stefan Kerkmann wrote:
+>> Hi Sascha,
+>>
+>> On 06.11.24 17:34, Stefan Kerkmann wrote:
+>>> The checked in `sha256-core.S_shipped` assembly file has a thumb2
+>>> specific workaround applied[1]. This fix wasn't backported to the perl
+>>> script `sha256-armv4.pl` used to generate the assembly, thus when the
+>>> script is run it would regenerate the buggy code.
+>>>
+>>> In-tree builds were not affected as the assembly file already exists in
+>>> the source tree. However in the context of an out-of-tree build (make
+>>> O=xyz) the file isn't present from the pov of make - triggering a
+>>> regeneration. This happens by default during Yocto builds - leading to a
+>>> broken sha256 sum function on ARMv7 compiled with Thumb2 support. The
+>>> bug expresses itself not in crashes but wrong sha256 sums.
+>>
+>> I just (re-)tested this part without the patch applied, and I'm unable to
+>> reproduce it in a cleanly checked out state of my BSP. The full chain of events
+>> and conditions that lead to the regeneration of the file is thus not fully
+>> understood (yet) — but it clearly happened for me.
+> 
+> Try manually touching arch/arch/crypto/sha256-armv4.pl, so it's more
+> recent than sha256-core.S_shipped. The modification timestamps after a
+> git checkout order are non-deterministic and that's probably what bites you.
+> 
 
-The mentioned problem in[1] was fixed and explained further in upstream
-kernel commit[2]. Thus this commit updates the script and generated
-assembly to the most recent kernel commit[3].
+That did the trick! I updated the commit messages in the v2 series. Thanks for
+the insight :-).
 
-[1]: b73bc6e303 (arm: crypto: fix SHA256 shipped assembler code,
-2018-10-05)
-[2]: 69216a545cf8 (crypto: sha256/arm - fix crash bug in Thumb2 build,
-2019-02-16)
-[3]: 54781938ec34 (crypto: arm/sha256-neon - avoid ADRL pseudo
-instruction, 2020-09-16)
+> The kernel used to consult an environment variable to determine whether
+> to rebuild the shipped files exactly to avoid this.
+> 
+> In recent kernel versions, this has been replaced by unconditionally
+> running the Perl script. I don't know what's the reason behind that.
+> 
+> Cheers,
+> Ahmad
+> 
 
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
----
- arch/arm/crypto/sha256-armv4.pl       | 25 ++++++++++------
- arch/arm/crypto/sha256-core.S_shipped | 55 +++++++++++++++++++++++++++++------
- 2 files changed, 62 insertions(+), 18 deletions(-)
+Cheers,
+Stefan
 
-diff --git a/arch/arm/crypto/sha256-armv4.pl b/arch/arm/crypto/sha256-armv4.pl
-index 2b186a034ed11295a09e55ce56fc5c1b54be3832..f3a2b54efd4ee39fbeaefc87ffd850e97915233b 100644
---- a/arch/arm/crypto/sha256-armv4.pl
-+++ b/arch/arm/crypto/sha256-armv4.pl
-@@ -1,12 +1,19 @@
- #!/usr/bin/env perl
-+# SPDX-License-Identifier: GPL-2.0
-+
-+# This code is taken from the OpenSSL project but the author (Andy Polyakov)
-+# has relicensed it under the GPLv2. Therefore this program is free software;
-+# you can redistribute it and/or modify it under the terms of the GNU General
-+# Public License version 2 as published by the Free Software Foundation.
-+#
-+# The original headers, including the original license headers, are
-+# included below for completeness.
- 
- # ====================================================================
- # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
- # project. The module is, however, dual licensed under OpenSSL and
- # CRYPTOGAMS licenses depending on where you obtain it. For further
--# details see http://www.openssl.org/~appro/cryptogams/.
--#
--# Permission to use under GPL terms is granted.
-+# details see https://www.openssl.org/~appro/cryptogams/.
- # ====================================================================
- 
- # SHA256 block procedure for ARMv4. May 2007.
-@@ -73,7 +80,9 @@ $code.=<<___ if ($i<16);
- 	eor	$t0,$e,$e,ror#`$Sigma1[1]-$Sigma1[0]`
- 	add	$a,$a,$t2			@ h+=Maj(a,b,c) from the past
- 	eor	$t0,$t0,$e,ror#`$Sigma1[2]-$Sigma1[0]`	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	$t1,$t1
-+# endif
- #else
- 	@ ldrb	$t1,[$inp,#3]			@ $i
- 	add	$a,$a,$t2			@ h+=Maj(a,b,c) from the past
-@@ -172,10 +181,6 @@ $code=<<___;
- # endif
- #endif
- 
--#ifdef __thumb__
--#define adrl adr
--#endif
--
- .type	K256,%object
- .align	5
- K256:
-@@ -206,10 +211,11 @@ K256:
- .global	sha256_block_data_order
- .type	sha256_block_data_order,%function
- sha256_block_data_order:
-+.Lsha256_block_data_order:
- #if __ARM_ARCH__<7
- 	sub	r3,pc,#8		@ sha256_block_data_order
- #else
--	adr	r3,sha256_block_data_order
-+	adr	r3,.Lsha256_block_data_order
- #endif
- #if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__)
- 	ldr	r12,.LOPENSSL_armcap
-@@ -464,7 +470,8 @@ sha256_block_data_order_neon:
- 	stmdb	sp!,{r4-r12,lr}
- 
- 	sub	$H,sp,#16*4+16
--	adrl	$Ktbl,K256
-+	adr	$Ktbl,.Lsha256_block_data_order
-+	sub	$Ktbl,$Ktbl,#.Lsha256_block_data_order-K256
- 	bic	$H,$H,#15		@ align for 128-bit stores
- 	mov	$t2,sp
- 	mov	sp,$H			@ alloca
-diff --git a/arch/arm/crypto/sha256-core.S_shipped b/arch/arm/crypto/sha256-core.S_shipped
-index 4f9cf833b94b8c7ff07a7e58d0e648c5ef357959..6363014a50d799c0001c71f53b4c2e31949e2ce6 100644
---- a/arch/arm/crypto/sha256-core.S_shipped
-+++ b/arch/arm/crypto/sha256-core.S_shipped
-@@ -1,11 +1,18 @@
-+@ SPDX-License-Identifier: GPL-2.0
-+
-+@ This code is taken from the OpenSSL project but the author (Andy Polyakov)
-+@ has relicensed it under the GPLv2. Therefore this program is free software;
-+@ you can redistribute it and/or modify it under the terms of the GNU General
-+@ Public License version 2 as published by the Free Software Foundation.
-+@
-+@ The original headers, including the original license headers, are
-+@ included below for completeness.
- 
- @ ====================================================================
- @ Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
- @ project. The module is, however, dual licensed under OpenSSL and
- @ CRYPTOGAMS licenses depending on where you obtain it. For further
--@ details see http://www.openssl.org/~appro/cryptogams/.
--@
--@ Permission to use under GPL terms is granted.
-+@ details see https://www.openssl.org/~appro/cryptogams/.
- @ ====================================================================
- 
- @ SHA256 block procedure for ARMv4. May 2007.
-@@ -55,10 +62,6 @@
- # endif
- #endif
- 
--#ifdef __thumb__
--#define adrl adr
--#endif
--
- .type	K256,%object
- .align	5
- K256:
-@@ -89,10 +92,11 @@ K256:
- .global	sha256_block_data_order
- .type	sha256_block_data_order,%function
- sha256_block_data_order:
-+.Lsha256_block_data_order:
- #if __ARM_ARCH__<7
- 	sub	r3,pc,#8		@ sha256_block_data_order
- #else
--	adr	r3,.
-+	adr	r3,.Lsha256_block_data_order
- #endif
- #if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__)
- 	ldr	r12,.LOPENSSL_armcap
-@@ -123,7 +127,9 @@ sha256_block_data_order:
- 	eor	r0,r8,r8,ror#5
- 	add	r4,r4,r12			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r8,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 0
- 	add	r4,r4,r12			@ h+=Maj(a,b,c) from the past
-@@ -179,7 +185,9 @@ sha256_block_data_order:
- 	eor	r0,r7,r7,ror#5
- 	add	r11,r11,r3			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r7,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 1
- 	add	r11,r11,r3			@ h+=Maj(a,b,c) from the past
-@@ -235,7 +243,9 @@ sha256_block_data_order:
- 	eor	r0,r6,r6,ror#5
- 	add	r10,r10,r12			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r6,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 2
- 	add	r10,r10,r12			@ h+=Maj(a,b,c) from the past
-@@ -291,7 +301,9 @@ sha256_block_data_order:
- 	eor	r0,r5,r5,ror#5
- 	add	r9,r9,r3			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r5,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 3
- 	add	r9,r9,r3			@ h+=Maj(a,b,c) from the past
-@@ -347,7 +359,9 @@ sha256_block_data_order:
- 	eor	r0,r4,r4,ror#5
- 	add	r8,r8,r12			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r4,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 4
- 	add	r8,r8,r12			@ h+=Maj(a,b,c) from the past
-@@ -403,7 +417,9 @@ sha256_block_data_order:
- 	eor	r0,r11,r11,ror#5
- 	add	r7,r7,r3			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r11,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 5
- 	add	r7,r7,r3			@ h+=Maj(a,b,c) from the past
-@@ -459,7 +475,9 @@ sha256_block_data_order:
- 	eor	r0,r10,r10,ror#5
- 	add	r6,r6,r12			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r10,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 6
- 	add	r6,r6,r12			@ h+=Maj(a,b,c) from the past
-@@ -515,7 +533,9 @@ sha256_block_data_order:
- 	eor	r0,r9,r9,ror#5
- 	add	r5,r5,r3			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r9,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 7
- 	add	r5,r5,r3			@ h+=Maj(a,b,c) from the past
-@@ -571,7 +591,9 @@ sha256_block_data_order:
- 	eor	r0,r8,r8,ror#5
- 	add	r4,r4,r12			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r8,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 8
- 	add	r4,r4,r12			@ h+=Maj(a,b,c) from the past
-@@ -627,7 +649,9 @@ sha256_block_data_order:
- 	eor	r0,r7,r7,ror#5
- 	add	r11,r11,r3			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r7,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 9
- 	add	r11,r11,r3			@ h+=Maj(a,b,c) from the past
-@@ -683,7 +707,9 @@ sha256_block_data_order:
- 	eor	r0,r6,r6,ror#5
- 	add	r10,r10,r12			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r6,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 10
- 	add	r10,r10,r12			@ h+=Maj(a,b,c) from the past
-@@ -739,7 +765,9 @@ sha256_block_data_order:
- 	eor	r0,r5,r5,ror#5
- 	add	r9,r9,r3			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r5,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 11
- 	add	r9,r9,r3			@ h+=Maj(a,b,c) from the past
-@@ -795,7 +823,9 @@ sha256_block_data_order:
- 	eor	r0,r4,r4,ror#5
- 	add	r8,r8,r12			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r4,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 12
- 	add	r8,r8,r12			@ h+=Maj(a,b,c) from the past
-@@ -851,7 +881,9 @@ sha256_block_data_order:
- 	eor	r0,r11,r11,ror#5
- 	add	r7,r7,r3			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r11,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 13
- 	add	r7,r7,r3			@ h+=Maj(a,b,c) from the past
-@@ -907,7 +939,9 @@ sha256_block_data_order:
- 	eor	r0,r10,r10,ror#5
- 	add	r6,r6,r12			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r10,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 14
- 	add	r6,r6,r12			@ h+=Maj(a,b,c) from the past
-@@ -963,7 +997,9 @@ sha256_block_data_order:
- 	eor	r0,r9,r9,ror#5
- 	add	r5,r5,r3			@ h+=Maj(a,b,c) from the past
- 	eor	r0,r0,r9,ror#19	@ Sigma1(e)
-+# ifndef __ARMEB__
- 	rev	r2,r2
-+# endif
- #else
- 	@ ldrb	r2,[r1,#3]			@ 15
- 	add	r5,r5,r3			@ h+=Maj(a,b,c) from the past
-@@ -1848,7 +1884,8 @@ sha256_block_data_order_neon:
- 	stmdb	sp!,{r4-r12,lr}
- 
- 	sub	r11,sp,#16*4+16
--	adrl	r14,K256
-+	adr	r14,.Lsha256_block_data_order
-+	sub	r14,r14,#.Lsha256_block_data_order-K256
- 	bic	r11,r11,#15		@ align for 128-bit stores
- 	mov	r12,sp
- 	mov	sp,r11			@ alloca
+>>
+>> Here is the output of a CI[1] run with the assembly file (forcefully) generated
+>> from the script, that shoes the errors I ran into:
+>>
+>>   test_digests_sha12:153: mismatch calculating sha224-asm(zeroes7):
+>>   	got: c56f57826fa8cc1cae10a3450b90162677ba55cdbaa3d2a72810853e
+>>   	but: fbf6df85218ac5632461a8a17c6f294e6f35264cbfc0a9774a4f665b expected
+>>   test_digests_sha12:153: mismatch calculating sha224-asm(one32):
+>>   	got: 3a81d42a638cf434f5b002ead1252be963880bd3eec627a8b3278bb4
+>>   	but: 343cb3950305e6e6331e294b0a4925739d09ecbd2b43a2fc87c09941 expected
+>>   test_digests_sha12:153: mismatch calculating sha224-asm(inc4097):
+>>   	got: 2e6565a91ff0e4f0d316067ad66eaa3b76d71317171adfd0ec6bbcd4
+>>   	but: 6596b5dcfbd857f4246d6b94508b8a1a5b715a4f644a0c1e7d54c4f7 expected
+>>   test_digests_sha12:164: mismatch calculating sha256-asm(zeroes7):
+>>   	got: 71ab8ff93158c3b8863460dac03e9049bd5d3ec1a2ec4a1ba6e434d0fd33eb5f
+>>   	but: 837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619 expected
+>>   test_digests_sha12:164: mismatch calculating sha256-asm(one32):
+>>   	got: bcbd77ba0128aed7df96f75788fefa5e8da2501bfd3e0fe14753d4b5c27b1564
+>>   	but: 01d0fabd251fcbbe2b93b4b927b26ad2a1a99077152e45ded1e678afa45dbec5 expected
+>>   test_digests_sha12:164: mismatch calculating sha256-asm(inc4097):
+>>   	got: 4dd697b3bf8f7f0630b583356d48dcc7a1c345e62fe189c1d4843a38cd7d59a9
+>>   	but: 1e973d029df2b2c66cb42a942c5edb45966f02abaff29fe99410e44d271d0efc expected
+>>   test_digests_sha12:153: mismatch calculating sha224(zeroes7):
+>>   	got: c56f57826fa8cc1cae10a3450b90162677ba55cdbaa3d2a72810853e
+>>   	but: fbf6df85218ac5632461a8a17c6f294e6f35264cbfc0a9774a4f665b expected
+>>   test_digests_sha12:153: mismatch calculating sha224(one32):
+>>   	got: 3a81d42a638cf434f5b002ead1252be963880bd3eec627a8b3278bb4
+>>   	but: 343cb3950305e6e6331e294b0a4925739d09ecbd2b43a2fc87c09941 expected
+>>   test_digests_sha12:153: mismatch calculating sha224(inc4097):
+>>   	got: 2e6565a91ff0e4f0d316067ad66eaa3b76d71317171adfd0ec6bbcd4
+>>   	but: 6596b5dcfbd857f4246d6b94508b8a1a5b715a4f644a0c1e7d54c4f7 expected
+>>   test_digests_sha12:164: mismatch calculating sha256(zeroes7):
+>>   	got: 71ab8ff93158c3b8863460dac03e9049bd5d3ec1a2ec4a1ba6e434d0fd33eb5f
+>>   	but: 837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619 expected
+>>   test_digests_sha12:164: mismatch calculating sha256(one32):
+>>   	got: bcbd77ba0128aed7df96f75788fefa5e8da2501bfd3e0fe14753d4b5c27b1564
+>>   	but: 01d0fabd251fcbbe2b93b4b927b26ad2a1a99077152e45ded1e678afa45dbec5 expected
+>>   test_digests_sha12:164: mismatch calculating sha256(inc4097):
+>>   	got: 4dd697b3bf8f7f0630b583356d48dcc7a1c345e62fe189c1d4843a38cd7d59a9
+>>   	but: 1e973d029df2b2c66cb42a942c5edb45966f02abaff29fe99410e44d271d0efc expected
+>>   ERROR: digest: failed 12 out of 45 tests
+>>
+>> [1]: https://github.com/KarlK90/barebox/actions/runs/11704376345/job/32596699159
+>>
+>>
+>> So the patch is still valid, but this paragraph should be replaced with:
+>>
+>> Under rare circumstances, in my case it was a Yocto build of barebox from an
+>> external source tree, the assembly file was regenerated. Leading to a broken
+>> sha256 sum function on ARMv7 compiled with Thumb2 support. The bug expressed
+>> itself not in crashes but wrong sha256 sums.
+>>
+>> Should I send a v2 for the updated message?
+>>
+>>> The mentioned problem in[1] was fixed and explained further in upstream
+>>> commit[2]. Thus this series updates the script and generated assembly to
+>>> the most recent Kernel commit[3].
+>>>
+>>> To better catch regressions in the future the existing digest tests now
+>>> exercise the optimized implementations for ARMv5/v6/v7/v8 and the ARMv7
+>>> test binaries are compiled in thumb2 mode.
+>>>
+>>> [1]: b73bc6e303 (arm: crypto: fix SHA256 shipped assembler code, 2018-10-05)
+>>> [2]: 69216a545cf8 (crypto: sha256/arm - fix crash bug in Thumb2 build, 2019-02-16)
+>>> [3]: 54781938ec34 (crypto: arm/sha256-neon - avoid ADRL pseudo instruction, 2020-09-16)
+>>>
+>>> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+>>> ---
+>>> Stefan Kerkmann (7):
+>>>       arm: crypto: sha256: fix generation of thumb2 assembly
+>>>       arm: configs: multi_v5_v6_defconfig: move rpi1 armv6 targets
+>>>       arm: configs: multi_v5_v6_defconfig: enable arm optimized sha1/sha256 digest
+>>>       arm: configs: multi_v7_defconfig: compile for thumb2
+>>>       arm: configs: multi_v7_defconfig: enable arm optimized sha256 digest
+>>>       arm: configs: multi_v8_defconfig: enable arm optimized sha1/sha256 digest
+>>>       test: arm: rpi: run tests against multi_v5_v6_defconfig
+>>>
+>>>  .github/workflows/test-labgrid-pytest.yml          |  4 ++
+>>>  arch/arm/configs/multi_v5_v6_defconfig             |  6 ++-
+>>>  arch/arm/configs/multi_v7_defconfig                |  7 +--
+>>>  arch/arm/configs/multi_v8_defconfig                |  5 +-
+>>>  arch/arm/crypto/sha256-armv4.pl                    | 25 ++++++----
+>>>  arch/arm/crypto/sha256-core.S_shipped              | 55 ++++++++++++++++++----
+>>>  ...yaml => qemu-raspi0@multi_v5_v6_defconfig.yaml} |  0
+>>>  ...ml => qemu-raspi1ap@multi_v5_v6_defconfig.yaml} |  0
+>>>  8 files changed, 74 insertions(+), 28 deletions(-)
+>>> ---
+>>> base-commit: d9f7f6d930069df35e28fedb35719bfd12fbd6e4
+>>> change-id: 20241106-fix-sha256-assembly-ad3d25bf5a9f
+>>>
+>>> Best regards,
+>>
+>> Cheers,
+>> Stefan
+>>
+> 
+> 
 
 -- 
-2.39.5
+Pengutronix e.K.                       | Stefan Kerkmann             |
+Steuerwalder Str. 21                   | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany              | Phone: +49-5121-206917-128  |
+Amtsgericht Hildesheim, HRA 2686       | Fax:   +49-5121-206917-9    |
 
 
 
