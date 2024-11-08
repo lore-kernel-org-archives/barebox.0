@@ -1,68 +1,68 @@
-Delivery-date: Fri, 08 Nov 2024 10:57:36 +0100
+Delivery-date: Fri, 08 Nov 2024 11:21:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9LkF-006H9y-1B
+	id 1t9M6x-006HjR-1O
 	for lore@lore.pengutronix.de;
-	Fri, 08 Nov 2024 10:57:36 +0100
+	Fri, 08 Nov 2024 11:21:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9LkG-0001CG-1c
-	for lore@pengutronix.de; Fri, 08 Nov 2024 10:57:36 +0100
+	id 1t9M6y-0004Cd-2b
+	for lore@pengutronix.de; Fri, 08 Nov 2024 11:21:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/ICjnYEK/4mRLYf4XspnmnPMaCM9pHKPZpjQXS7PWL8=; b=oPExYoQRvvJh/4cd1KC/8pXlAl
-	eBbefDbUihU9cM4AhCSv9bsF+OJJRSAWNCkQg7JY0VT9SvzslnZJK5IgcnvzAPj0kJqqz8EITu0SS
-	PUTtTwTjHhO5FF1WZChh3ExrCPm+lNaZ1WLP67I9dGKWjav32F++TDxxeGOuMGZ2MQ6m1m4KCWVvY
-	4+xU6cPN3wgeIBIyIrTL0m8pvLpS2QPHK6mzKVTHJxgtv3NnB6dKmWnfwBaP6oU8XExmfbQtiaGfs
-	GQhpyW4w5A/CY/QQuut3JlwlbJLQmRT7N3AZjFoqxoYoeMKhBSE3H3JKun/j4KEBJcI/HfyNtSbYG
-	0oWWxbCg==;
+	bh=cvZnb+j9V3p0Qc0IxqXvspBILaAfyAC91O3PJlRUXrM=; b=OrLcqN2gmoAt2Cuyu/KEGXX8Kg
+	h0W7q2npqLSYb1SUeIiysaGqDkHDVYgNKc75NU3kYKzzuLEi2bhV7ohfPj/EiFUrCandhns2ZfFaX
+	OVICTFluSyeVguzEWNsLu8djzroR2fGTNCnpR/dM9OGhyJiA3YTANjteJQDbrAlnPayu4LZirW0Du
+	tX48fmO1JirM4Tl3q4hG1oRSjA3blDr0gu8EGiafacC5V0CJ0RhiiMQChQ8yAqzyNERUjWer43dpF
+	RO7Ry1UfuVyvy3gVV9HaDqaVKSY3Eed1AYrLcWHT5dy5zfagzu1vbc1zHl5qHJPipzHO69q0PnKiX
+	N6gig7vQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Ljq-0000000A1gs-3Pm5;
-	Fri, 08 Nov 2024 09:57:10 +0000
+	id 1t9M6Q-0000000A5mE-3uua;
+	Fri, 08 Nov 2024 10:20:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Ljn-0000000A1gQ-3J5e
+	id 1t9M6O-0000000A5lg-0ius
 	for barebox@lists.infradead.org;
-	Fri, 08 Nov 2024 09:57:09 +0000
+	Fri, 08 Nov 2024 10:20:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Ljm-000191-9N; Fri, 08 Nov 2024 10:57:06 +0100
+	id 1t9M6M-00044g-LI; Fri, 08 Nov 2024 11:20:26 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Ljm-002bCp-0J;
-	Fri, 08 Nov 2024 10:57:06 +0100
+	id 1t9M6M-002bXQ-1P;
+	Fri, 08 Nov 2024 11:20:26 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Ljm-009dN3-08;
-	Fri, 08 Nov 2024 10:57:06 +0100
+	id 1t9M6M-009fvk-1D;
+	Fri, 08 Nov 2024 11:20:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- Alexander Shiyan <eagle.alexander923@gmail.com>
-In-Reply-To: <20241106060338.8757-1-eagle.alexander923@gmail.com>
-References: <20241106060338.8757-1-eagle.alexander923@gmail.com>
-Message-Id: <173105982603.2296270.11007303917805150715.b4-ty@pengutronix.de>
-Date: Fri, 08 Nov 2024 10:57:06 +0100
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Robin van der Gracht <robin@protonic.nl>
+In-Reply-To: <20241106185724.2526-1-a.fatoum@pengutronix.de>
+References: <20241106185724.2526-1-a.fatoum@pengutronix.de>
+Message-Id: <173106122637.2306089.11349967618608085808.b4-ty@pengutronix.de>
+Date: Fri, 08 Nov 2024 11:20:26 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241108_015707_868570_58859FCC 
-X-CRM114-Status: UNSURE (   8.60  )
+X-CRM114-CacheID: sfid-20241108_022028_243556_EFADF622 
+X-CRM114-Status: UNSURE (   9.78  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,26 +85,41 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ntd: nand: Fix unconditional message
- "CONFIG_NAND_NEED_ECC_PLACEMENT_INTERLEAVED is disabled"
+Subject: Re: [PATCH 0/6] ARM: Rockchip: fix OP-TEE as BL32 installation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 06 Nov 2024 09:03:38 +0300, Alexander Shiyan wrote:
-> The message "CONFIG_NAND_NEED_ECC_PLACEMENT_INTERLEAVED is disabled"
-> is always issued, regardless of the MTD ECC layout used, since it
-> is executed through "fallthrough" from the previous case statement.
+On Wed, 06 Nov 2024 19:57:18 +0100, Ahmad Fatoum wrote:
+> This series resulted while getting OP-TEE to work on RK3399.
+> There is no upstream OP-TEE support for the RK3568 or RK3588,
+> but the expectation that loading the blob is analogous to the
+> RK3399, which is fixed by this series.
 > 
-> Additionally, if !IS_ENABLED(CONFIG_NAND_NEED_ECC_PLACEMENT_INTERLEAVED)
-> is triggered, the patch calls break, which disables the additional checks.
+> Ahmad Fatoum (6):
+>   firmware: rockchip: rename from rk3xxx-op-tee.bin to rk3xxx-bl32.bin
+>   ARM: lds: move stack top section to front of rodata
+>   ARM: Rockchip: fix clang warning about passing 32-bit register operand
+>   ARM: Rockchip: save pointer to scratch memory in global variable
+>   ARM: Rockchip: implement tee.bin v1 header parsing
+>   ARM: Rockchip: use vendor blob OPTEE load addresses
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] ntd: nand: Fix unconditional message "CONFIG_NAND_NEED_ECC_PLACEMENT_INTERLEAVED is disabled"
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4ae4449d63fc (link may not be stable)
+[1/6] firmware: rockchip: rename from rk3xxx-op-tee.bin to rk3xxx-bl32.bin
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c8d797dad31a (link may not be stable)
+[2/6] ARM: lds: move stack top section to front of rodata
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3def2f136aea (link may not be stable)
+[3/6] ARM: Rockchip: fix clang warning about passing 32-bit register operand
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9cd71fc171b6 (link may not be stable)
+[4/6] ARM: Rockchip: save pointer to scratch memory in global variable
+      https://git.pengutronix.de/cgit/barebox/commit/?id=73a2b3c8d293 (link may not be stable)
+[5/6] ARM: Rockchip: implement tee.bin v1 header parsing
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e1ecb0bdeeed (link may not be stable)
+[6/6] ARM: Rockchip: use vendor blob OPTEE load addresses
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d857e9ea91fd (link may not be stable)
 
 Best regards,
 -- 
