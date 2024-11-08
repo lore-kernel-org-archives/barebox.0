@@ -1,74 +1,74 @@
-Delivery-date: Fri, 08 Nov 2024 14:16:04 +0100
+Delivery-date: Fri, 08 Nov 2024 14:16:05 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9OqJ-006Kok-0G
+	id 1t9OqK-006Kp5-1M
 	for lore@lore.pengutronix.de;
-	Fri, 08 Nov 2024 14:16:04 +0100
+	Fri, 08 Nov 2024 14:16:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9OqG-0003xO-9H
-	for lore@pengutronix.de; Fri, 08 Nov 2024 14:16:04 +0100
+	id 1t9OqG-0003xj-NL
+	for lore@pengutronix.de; Fri, 08 Nov 2024 14:16:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wE9Es3nrf46wHDgvLeISRDPvpLfovzRb/SHKzebYRvU=; b=B3cIzGW0iiifi/iefjhUMv3sKs
-	6Ts1q4owQmYtY0D7sdszBPEDcBGbiAOu8ZTJC57yJTGcl8DVL8RsQW7cSHm3UmSIFvf+aiDqHKRz1
-	OVptP26pePLV5svJA7avmuNog6NzkKGLBv6zcD231zMOu7fIo8h3fdlP+sX28pSFIXkAoSE4BC32E
-	1CK0GC6thgxvoAoUlJMigbLaq2x4OuCcKSnO1FmW775RQXDxFzt5gFuvxEySiuzENa8j1BGJ1Q9GB
-	wgM4kqHMN/ul/dXRbhIaDgGil3Wn5AOkbkZFxgu6nvC+brN6FW8KuYU+UbM8RoiFTtfTlAH3/0BRH
-	w9JdEVYg==;
+	bh=4UD5/GewHZEIxOG5Xc6YcGHzgdz+JYdIiDMn2RO0EKU=; b=ptWGyNx1cvNiblM8ONngmMZVbP
+	UfXUQkLhi1vuQ4VpHtsZvb9FRUEN9FMqz17VTeIbJybRKt1xErf+pdjYxqjf9ovNwokGfdQyCGzvJ
+	kqDSgLCJraCVe28kVMNixwilxT8JSWCm1plePj5/6Fbjr6HFI80/JHMPT4b3FO2ILiZu+KLOBlv4u
+	WDKjUKdEUtFIxVvBPYUnSTupW7MzsTSyX61EyG4Z8t6u4OeB5KcxdGnPTQ97MlE/XCxeg9Y8vJii9
+	Vz0cibp03byxt984QzWnZ9EGEOzvNM2Tv35++WEVqT4VdZ7n1UfHzS3JXNKsFz1fYJrvTfK8jxc/S
+	Zj+yOStg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Opc-0000000AdrW-2BPl;
-	Fri, 08 Nov 2024 13:15:20 +0000
+	id 1t9Opa-0000000Adq8-1NUc;
+	Fri, 08 Nov 2024 13:15:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9OpS-0000000AdjN-2FCu
+	id 1t9OpS-0000000AdjG-1WzT
 	for barebox@lists.infradead.org;
-	Fri, 08 Nov 2024 13:15:16 +0000
+	Fri, 08 Nov 2024 13:15:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9OpJ-0003XC-98; Fri, 08 Nov 2024 14:15:01 +0100
+	id 1t9OpJ-0003X5-60; Fri, 08 Nov 2024 14:15:01 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9OpI-002cw1-2x;
+	id 1t9OpI-002cvz-2p;
 	Fri, 08 Nov 2024 14:15:00 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9OpI-00AFXY-2a;
+	id 1t9OpI-00AFXY-2Z;
 	Fri, 08 Nov 2024 14:15:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 08 Nov 2024 14:15:00 +0100
+Date: Fri, 08 Nov 2024 14:14:59 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241108-network-k3-v1-2-ee71bff15eb7@pengutronix.de>
+Message-Id: <20241108-network-k3-v1-1-ee71bff15eb7@pengutronix.de>
 References: <20241108-network-k3-v1-0-ee71bff15eb7@pengutronix.de>
 In-Reply-To: <20241108-network-k3-v1-0-ee71bff15eb7@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731071700; l=13810;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731071700; l=11909;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=ZWLy+CefPZha7u51rYKZqMmyhFVkfnNYGuDpRYvP1KM=;
- b=G/5pUaA0nZTpIZvUgfvjin/qe6I1mXz5X28HelrU2OZ24kUkaWN38gtwRfu82NTrQnYwXZFU1
- 06W7sRNs/zGCJikryPWwX5/eoLEwK1gi9zPdt9XyxiYyc/ch7A8wgr9
+ bh=uQWT1P1N3E30l3yBdBkBD4nrE9aicnf9Z4ynQJ275v8=;
+ b=vzaSd6JnwcU4gWhwEllG7uFn6ATfFTWH43My616ormUC/T3fVrzIV4bCjca5Wn6NHuS9dvsXp
+ bjqHtBohuKjBL180oW03Z0sDU08js62z6zinZTiZ70UoiWaWdekSraM
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241108_051511_076421_E626F4AC 
-X-CRM114-Status: GOOD (  29.06  )
+X-CRM114-CacheID: sfid-20241108_051510_962254_8BDB52DA 
+X-CRM114-Status: GOOD (  25.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,464 +90,456 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/7] firmware: ti_sci: update from U-Boot
+Subject: [PATCH 1/7] net: davinci_mdio: separate driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This imports some U-Boot changes into the ti_sci driver. For upcoming
-k3-udma driver we'll need ti_sci_get_by_phandle() and
-devm_ti_sci_get_of_resource().
+The davinci MDIO driver can be reused for the CPSW found on TI K3 SoCs
+which needs a new ethernet driver. Separate the MDIO driver from the
+CPSW driver to make it usable with other ethernet drivers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/firmware/ti_sci.c        | 276 ++++++++++++++++++++++++++++++++-------
- drivers/firmware/ti_sci.h        |   2 +-
- include/soc/ti/ti_sci_protocol.h |  38 +++++-
- 3 files changed, 264 insertions(+), 52 deletions(-)
+ drivers/net/Kconfig        |   5 ++
+ drivers/net/Makefile       |   1 +
+ drivers/net/cpsw.c         | 178 ------------------------------------------
+ drivers/net/davinci_mdio.c | 188 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 194 insertions(+), 178 deletions(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index c81e8aa1e7..9047f84434 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -3,18 +3,22 @@
-  * Texas Instruments System Control Interface Protocol Driver
-  * Based on drivers/firmware/ti_sci.c from Linux.
-  *
-- * Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com/
-  *	Lokesh Vutla <lokeshvutla@ti.com>
-  */
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 13e9ff6924..7f0d277548 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -53,8 +53,13 @@ config DRIVER_NET_CS8900
+ config DRIVER_NET_CPSW
+ 	bool "CPSW ethernet driver"
+ 	depends on ARCH_OMAP
++	select DRIVER_NET_TI_DAVINCI_MDIO
+ 	select PHYLIB
  
--#include <common.h>
- #include <mailbox.h>
--#include <restart.h>
-+#include <driver.h>
- #include <soc/ti/k3-sec-proxy.h>
- #include <soc/ti/ti_sci_protocol.h>
-+#include <linux/slab.h>
-+#include <linux/device.h>
- 
- #include "ti_sci.h"
- 
-+/* List of all TI SCI devices active in system */
-+static LIST_HEAD(ti_sci_list);
++config DRIVER_NET_TI_DAVINCI_MDIO
++	bool "TI Davinci MDIO driver"
++	depends on ARCH_OMAP3 || COMPILE_TEST
 +
- /**
-  * struct ti_sci_xfer - Structure representing a message flow
-  * @tx_message:	Transmit message
-@@ -126,7 +130,6 @@ static struct ti_sci_xfer *ti_sci_setup_one_xfer(struct ti_sci_info *info,
- 		return ERR_PTR(-ERANGE);
- 	}
+ config DRIVER_NET_DAVINCI_EMAC
+ 	bool "TI Davinci/OMAP EMAC ethernet driver"
+ 	depends on ARCH_OMAP3
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 207345cfa3..b451813f7c 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -10,6 +10,7 @@ obj-$(CONFIG_DRIVER_NET_BCMGENET)	+= bcmgenet.o
+ obj-$(CONFIG_DRIVER_NET_CS8900)		+= cs8900.o
+ obj-$(CONFIG_DRIVER_NET_CPSW)		+= cpsw.o
+ obj-$(CONFIG_DRIVER_NET_DAVINCI_EMAC)	+= davinci_emac.o
++obj-$(CONFIG_DRIVER_NET_TI_DAVINCI_MDIO) += davinci_mdio.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE)	+= designware.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_GENERIC) += designware_generic.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_SOCFPGA) += designware_socfpga.o
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 3e4f6502f9..b11930fdd0 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -28,8 +28,6 @@
+ #define CPSW_VERSION_2		0x19010c
  
+ #define BITMASK(bits)		((1 << (bits)) - 1)
+-#define PHY_REG_MASK		0x1f
+-#define PHY_ID_MASK		0x1f
+ #define NUM_DESCS		(PKTBUFSRX * 2)
+ #define PKT_MIN			60
+ #define PKT_MAX			(1500 + 14 + 4 + 4)
+@@ -60,34 +58,6 @@
+ 
+ #define SLIVER_SIZE		0x40
+ 
+-struct cpsw_mdio_regs {
+-	u32	version;
+-	u32	control;
+-#define CONTROL_IDLE		(1 << 31)
+-#define CONTROL_ENABLE		(1 << 30)
 -
- 	info->seq = ~info->seq;
- 	xfer->tx_message.buf = buf;
- 	xfer->tx_message.len = tx_message_size;
-@@ -223,21 +226,27 @@ static int ti_sci_do_xfer(struct ti_sci_info *info,
+-	u32	alive;
+-	u32	link;
+-	u32	linkintraw;
+-	u32	linkintmasked;
+-	u32	__reserved_0[2];
+-	u32	userintraw;
+-	u32	userintmasked;
+-	u32	userintmaskset;
+-	u32	userintmaskclr;
+-	u32	__reserved_1[20];
+-
+-	struct {
+-		u32 access;
+-		u32 physel;
+-#define USERACCESS_GO		(1 << 31)
+-#define USERACCESS_WRITE	(1 << 30)
+-#define USERACCESS_ACK		(1 << 29)
+-#define USERACCESS_READ		(0)
+-#define USERACCESS_DATA		(0xffff)
+-	} user[0];
+-};
+-
+ struct cpsw_regs {
+ 	u32	id_ver;
+ 	u32	control;
+@@ -226,12 +196,6 @@ struct cpsw_priv {
+ 	struct cpsw_slave		*slaves;
+ };
+ 
+-struct cpsw_mdio_priv {
+-	struct device			*dev;
+-	struct mii_bus			miibus;
+-	struct cpsw_mdio_regs		*mdio_regs;
+-};
+-
+ static int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
  {
- 	struct k3_sec_proxy_msg *msg = &xfer->tx_message;
- 	u8 secure_buf[info->desc->max_msg_size];
--	struct ti_sci_secure_msg_hdr secure_hdr;
-+	struct ti_sci_secure_msg_hdr *secure_hdr = (struct ti_sci_secure_msg_hdr *)secure_buf;
- 	int ret;
- 
-+	/*
-+	 * The reason why we need the is_secure code is because of boot R5.
-+	 * boot R5 starts off in "secure mode" when it hands off from Boot
-+	 * ROM over to the Secondary bootloader. The initial set of calls
-+	 * we have to make need to be on a secure pipe.
-+	 */
- 	if (info->is_secure) {
- 		/* ToDo: get checksum of the entire message */
--		secure_hdr.checksum = 0;
--		secure_hdr.reserved = 0;
--		memcpy(&secure_buf[sizeof(secure_hdr)], xfer->tx_message.buf,
-+		secure_hdr->checksum = 0;
-+		secure_hdr->reserved = 0;
-+		memcpy(&secure_buf[sizeof(*secure_hdr)], xfer->tx_message.buf,
- 		       xfer->tx_message.len);
- 
- 		xfer->tx_message.buf = (u32 *)secure_buf;
--		xfer->tx_message.len += sizeof(secure_hdr);
-+		xfer->tx_message.len += sizeof(*secure_hdr);
- 
- 		if (xfer->rx_len)
--			xfer->rx_len += sizeof(secure_hdr);
-+			xfer->rx_len += sizeof(*secure_hdr);
- 	}
- 
- 	/* Send the message */
-@@ -2558,13 +2567,6 @@ static int ti_sci_cmd_change_fwl_owner(const struct ti_sci_handle *handle,
- 	return ret;
+ 	int idx;
+@@ -524,148 +488,6 @@ static inline void cpsw_ale_port_state(struct cpsw_priv *priv, int port,
+ 	writel(tmp, priv->ale_regs + offset);
  }
  
--static struct ti_sci_handle *g_handle;
--
--const struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
+-/* wait until hardware is ready for another user access */
+-static u32 wait_for_user_access(struct cpsw_mdio_priv *priv)
 -{
--	return g_handle;
+-	struct cpsw_mdio_regs *mdio_regs = priv->mdio_regs;
+-	u32 tmp;
+-	uint64_t start = get_time_ns();
+-
+-	do {
+-		tmp = readl(&mdio_regs->user[0].access);
+-
+-		if (!(tmp & USERACCESS_GO))
+-			break;
+-
+-		if (is_timeout(start, 100 * MSECOND)) {
+-			dev_err(priv->dev, "timeout waiting for user access\n");
+-			break;
+-		}
+-	} while (1);
+-
+-	return tmp;
 -}
 -
- /*
-  * ti_sci_setup_ops() - Setup the operations structures
-  * @info:	pointer to TISCI pointer
-@@ -2648,57 +2650,231 @@ static void ti_sci_setup_ops(struct ti_sci_info *info)
- 	fwl_ops->change_fwl_owner = ti_sci_cmd_change_fwl_owner;
- }
- 
--static void ti_sci_reset(struct restart_handler *unused)
-+/**
-+ * ti_sci_get_handle_from_sysfw() - Get the TI SCI handle of the SYSFW
-+ * @dev:	Pointer to the SYSFW device
-+ *
-+ * Return: pointer to handle if successful, else EINVAL if invalid conditions
-+ *         are encountered.
-+ */
-+const
-+struct ti_sci_handle *ti_sci_get_handle_from_sysfw(struct device *sci_dev)
- {
--	ti_sci_cmd_core_reboot(g_handle);
-+	struct ti_sci_info *info;
-+	int ret;
-+
-+	if (!sci_dev)
-+		return ERR_PTR(-EINVAL);
-+
-+	info = dev_get_priv(sci_dev);
-+	if (!info)
-+		return ERR_PTR(-EINVAL);
-+
-+	ret = ti_sci_cmd_get_revision(&info->handle);
-+	if (ret)
-+		return ERR_PTR(-EINVAL);
-+
-+	return &info->handle;
- }
- 
--static int ti_sci_probe(struct device *dev)
-+/**
-+ * ti_sci_get_handle() - Get the TI SCI handle for a device
-+ * @dev:	Pointer to device for which we want SCI handle
-+ *
-+ * Return: pointer to handle if successful, else EINVAL if invalid conditions
-+ *         are encountered.
-+ */
-+const struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
- {
--	struct ti_sci_info *info;
--	const void *data;
--	int ret;
-+	struct device *sci_dev;
- 
--	if (g_handle)
--		return 0;
-+	if (!dev)
-+		return ERR_PTR(-EINVAL);
- 
--	ret = dev_get_drvdata(dev, &data);
--        if (ret)
--                return ret;
-+	sci_dev = dev->parent;
- 
--	info = xzalloc(sizeof(*info));
-+	return ti_sci_get_handle_from_sysfw(sci_dev);
-+}
- 
--	info->chan_rx = mbox_request_channel_byname(dev, "rx");
--	if (IS_ERR(info->chan_rx))
--		return PTR_ERR(info->chan_rx);
-+/**
-+ * ti_sci_get_by_phandle() - Get the TI SCI handle using DT phandle
-+ * @dev:	device node
-+ * @propname:	property name containing phandle on TISCI node
-+ *
-+ * Return: pointer to handle if successful, else appropriate error value.
-+ */
-+const struct ti_sci_handle *ti_sci_get_by_phandle(struct device *dev,
-+						  const char *property)
-+{
-+	struct ti_sci_info *entry, *info = NULL;
-+	struct device_node *np;
-+
-+	np = of_parse_phandle(dev->of_node, property, 0);
-+	if (!np)
-+		return ERR_PTR(-EINVAL);
-+
-+	of_device_ensure_probed(np);
-+
-+	list_for_each_entry(entry, &ti_sci_list, list)
-+		if (dev_of_node(entry->dev) == np) {
-+			info = entry;
-+			break;
-+		}
- 
-+	if (!info)
-+		return ERR_PTR(-ENODEV);
-+
-+	return &info->handle;
-+}
-+
-+/**
-+ * ti_sci_of_to_info() - generate private data from device tree
-+ * @dev:	corresponding system controller interface device
-+ * @info:	pointer to driver specific private data
-+ *
-+ * Return: 0 if all goes good, else appropriate error message.
-+ */
-+static int ti_sci_of_to_info(struct device *dev, struct ti_sci_info *info)
-+{
- 	info->chan_tx = mbox_request_channel_byname(dev, "tx");
--	if (IS_ERR(info->chan_tx))
-+	if (IS_ERR(info->chan_tx)) {
-+		dev_err(dev, "%s: Acquiring Tx channel failed: %pe\n",
-+			__func__, info->chan_tx);
- 		return PTR_ERR(info->chan_tx);
-+	}
-+
-+	info->chan_rx = mbox_request_channel_byname(dev, "rx");
-+	if (IS_ERR(info->chan_rx)) {
-+		dev_err(dev, "%s: Acquiring Rx channel failed: %pe\n",
-+			__func__, info->chan_rx);
-+		return PTR_ERR(info->chan_rx);
-+	}
-+
-+	/* Notify channel is optional. Enable only if populated */
-+	info->chan_notify = mbox_request_channel_byname(dev, "notify");
-+	if (IS_ERR(info->chan_notify)) {
-+		dev_dbg(dev, "%s: Acquiring notify channel failed: %pe\n",
-+			__func__, info->chan_notify);
-+	}
- 
--	info->desc = data;
- 	info->host_id = info->desc->default_host_id;
- 	of_property_read_u32(dev->of_node, "ti,host-id", &info->host_id);
- 
--        info->is_secure = of_property_read_bool(dev->of_node, "ti,secure-host");
-+	info->is_secure = of_property_read_bool(dev->of_node, "ti,secure-host");
-+
-+	return 0;
-+}
-+
-+/**
-+ * ti_sci_probe() - Basic probe
-+ * @dev:	corresponding system controller interface device
-+ *
-+ * Return: 0 if all goes good, else appropriate error message.
-+ */
-+static int ti_sci_probe(struct device *dev)
-+{
-+	struct ti_sci_info *info;
-+	int ret;
-+
-+	info = xzalloc(sizeof(*info));
-+	info->desc = device_get_match_data(dev);
-+
-+	ret = ti_sci_of_to_info(dev, info);
-+	if (ret) {
-+		dev_err(dev, "%s: Probe failed with error %d\n", __func__, ret);
-+		return ret;
-+	}
- 
-+	dev->priv = info;
- 	info->dev = dev;
--	info->seq = 0xA;
--	INIT_LIST_HEAD(&info->dev_list);
-+	info->seq = 0xa;
- 
-+	list_add_tail(&info->list, &ti_sci_list);
- 	ti_sci_setup_ops(info);
- 
--	ret = ti_sci_cmd_get_revision(&info->handle);
-+	INIT_LIST_HEAD(&info->dev_list);
-+
-+	return 0;
-+}
-+
-+/**
-+ * devm_ti_sci_get_of_resource() - Get a TISCI resource assigned to a device
-+ * @handle:	TISCI handle
-+ * @dev:	Device pointer to which the resource is assigned
-+ * @of_prop:	property name by which the resource are represented
-+ *
-+ * Note: This function expects of_prop to be in the form of tuples
-+ *	<type, subtype>. Allocates and initializes ti_sci_resource structure
-+ *	for each of_prop. Client driver can directly call
-+ *	ti_sci_(get_free, release)_resource apis for handling the resource.
-+ *
-+ * Return: Pointer to ti_sci_resource if all went well else appropriate
-+ *	   error pointer.
-+ */
-+struct ti_sci_resource *
-+devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
-+			    struct device *dev, u32 dev_id, char *of_prop)
-+{
-+	u32 resource_subtype;
-+	struct ti_sci_resource *res;
-+	bool valid_set = false;
-+	int sets, i, ret;
-+	u32 *temp;
-+	const void *pp;
-+
-+	res = devm_kzalloc(dev, sizeof(*res), GFP_KERNEL);
-+	if (!res)
-+		return ERR_PTR(-ENOMEM);
-+
-+	pp = of_get_property(dev->of_node, of_prop, &sets);
-+	if (!pp) {
-+		dev_err(dev, "%s resource type ids not available\n", of_prop);
-+		return ERR_PTR(sets);
-+	}
-+	temp = malloc(sets);
-+	sets /= sizeof(u32);
-+	res->sets = sets;
-+
-+	res->desc = devm_kcalloc(dev, res->sets, sizeof(*res->desc),
-+				 GFP_KERNEL);
-+	if (!res->desc)
-+		return ERR_PTR(-ENOMEM);
-+
-+	ret = of_property_read_u32_array(dev->of_node, of_prop, temp, res->sets);
- 	if (ret)
--		return ret;
-+		return ERR_PTR(-EINVAL);
-+
-+	for (i = 0; i < res->sets; i++) {
-+		resource_subtype = temp[i];
-+		ret = handle->ops.rm_core_ops.get_range(handle, dev_id,
-+							resource_subtype,
-+							&res->desc[i].start,
-+							&res->desc[i].num);
-+		if (ret) {
-+			dev_dbg(dev, "type %d subtype %d not allocated for host %d\n",
-+				dev_id, resource_subtype,
-+				handle_to_ti_sci_info(handle)->host_id);
-+			res->desc[i].start = 0;
-+			res->desc[i].num = 0;
-+			continue;
-+		}
- 
--	g_handle = &info->handle;
-+		valid_set = true;
-+		dev_dbg(dev, "res type = %d, subtype = %d, start = %d, num = %d\n",
-+			dev_id, resource_subtype, res->desc[i].start,
-+			res->desc[i].num);
- 
--	of_platform_populate(dev->of_node, NULL, NULL);
-+		res->desc[i].res_map =
-+			devm_kzalloc(dev, BITS_TO_LONGS(res->desc[i].num) *
-+				     sizeof(*res->desc[i].res_map), GFP_KERNEL);
-+		if (!res->desc[i].res_map)
-+			return ERR_PTR(-ENOMEM);
-+	}
- 
--	restart_handler_register_fn("ti-sci", ti_sci_reset);
-+	if (valid_set)
-+		return res;
- 
+-static int cpsw_mdio_read(struct mii_bus *bus, int phy_id, int phy_reg)
+-{
+-	struct cpsw_mdio_priv *priv = bus->priv;
+-	struct cpsw_mdio_regs *mdio_regs = priv->mdio_regs;
+-
+-	u32 tmp;
+-
+-	if (phy_reg & ~PHY_REG_MASK || phy_id & ~PHY_ID_MASK)
+-		return -EINVAL;
+-
+-	wait_for_user_access(priv);
+-
+-	tmp = (USERACCESS_GO | USERACCESS_READ | (phy_reg << 21) |
+-	       (phy_id << 16));
+-	writel(tmp, &mdio_regs->user[0].access);
+-
+-	tmp = wait_for_user_access(priv);
+-
+-	return (tmp & USERACCESS_ACK) ? (tmp & USERACCESS_DATA) : -1;
+-}
+-
+-static int cpsw_mdio_write(struct mii_bus *bus, int phy_id, int phy_reg, u16 value)
+-{
+-	struct cpsw_mdio_priv *priv = bus->priv;
+-	struct cpsw_mdio_regs *mdio_regs = priv->mdio_regs;
+-	u32 tmp;
+-
+-	if (phy_reg & ~PHY_REG_MASK || phy_id & ~PHY_ID_MASK)
+-		return -EINVAL;
+-
+-	wait_for_user_access(priv);
+-	tmp = (USERACCESS_GO | USERACCESS_WRITE | (phy_reg << 21) |
+-		   (phy_id << 16) | (value & USERACCESS_DATA));
+-	writel(tmp, &mdio_regs->user[0].access);
+-	wait_for_user_access(priv);
+-
 -	return 0;
-+	return ERR_PTR(-EINVAL);
- }
- 
- /* Description for K2G */
-@@ -2721,7 +2897,7 @@ static const struct ti_sci_desc ti_sci_pmmc_am654_desc = {
- 	.max_msg_size = 60,
- };
- 
--static const struct of_device_id ti_sci_of_match[] = {
-+static const struct of_device_id of_ti_sci_ids[] = {
- 	{
- 		.compatible = "ti,k2g-sci",
- 		.data = &ti_sci_pmmc_k2g_desc
-@@ -2729,14 +2905,14 @@ static const struct of_device_id ti_sci_of_match[] = {
- 		.compatible = "ti,am654-sci",
- 		.data = &ti_sci_pmmc_am654_desc
- 	}, {
+-}
+-
+-static int cpsw_mdio_probe(struct device *dev)
+-{
+-	struct resource *iores;
+-	struct cpsw_mdio_priv *priv;
+-	uint64_t start;
+-	uint32_t phy_mask;
+-	int ret;
+-
+-	priv = xzalloc(sizeof(*priv));
+-
+-	/* If we can't request I/O memory region, we'll assume parent did
+-	 * it for us
+-	 */
+-	iores = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(iores) && PTR_ERR(iores) == -EBUSY)
+-		iores = dev_get_resource(dev, IORESOURCE_MEM, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-	priv->mdio_regs = IOMEM(iores->start);
+-	priv->miibus.read = cpsw_mdio_read;
+-	priv->miibus.write = cpsw_mdio_write;
+-	priv->miibus.priv = priv;
+-	priv->miibus.parent = dev;
+-
+-	/*
+-	 * set enable and clock divider
+-	 *
+-	 * FIXME: Use a clock to calculate the divider
+-	 */
+-	writel(0xff | CONTROL_ENABLE, &priv->mdio_regs->control);
+-
+-	/*
+-	 * wait for scan logic to settle:
+-	 * the scan time consists of (a) a large fixed component, and (b) a
+-	 * small component that varies with the mii bus frequency.  These
+-	 * were estimated using measurements at 1.1 and 2.2 MHz on tnetv107x
+-	 * silicon.  Since the effect of (b) was found to be largely
+-	 * negligible, we keep things simple here.
+-	 */
+-	udelay(2000);
+-
+-	start = get_time_ns();
+-	while (1) {
+-		phy_mask = readl(&priv->mdio_regs->alive);
+-		if (phy_mask) {
+-			dev_info(dev, "detected phy mask 0x%x\n", phy_mask);
+-			phy_mask = ~phy_mask;
+-			break;
+-		}
+-		if (is_timeout(start, 256 * MSECOND)) {
+-			dev_err(dev, "no live phy, scanning all\n");
+-			phy_mask = 0;
+-			break;
+-		}
+-	}
+-
+-	priv->miibus.phy_mask = phy_mask;
+-
+-	ret = mdiobus_register(&priv->miibus);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
+-}
+-
+-static __maybe_unused struct of_device_id cpsw_mdio_dt_ids[] = {
+-	{
+-		.compatible = "ti,cpsw-mdio",
+-	}, {
 -		/* sentinel */
 -	}
-+		/* Sentinel */
-+	},
- };
--MODULE_DEVICE_TABLE(of, ti_sci_of_match);
- 
- static struct driver ti_sci_driver = {
--        .name   = "ti-sci",
--        .probe  = ti_sci_probe,
--        .of_compatible = DRV_OF_COMPAT(ti_sci_of_match),
-+	.probe  = ti_sci_probe,
-+	.name   = "ti_sci",
-+	.of_compatible = of_ti_sci_ids,
- };
+-};
+-MODULE_DEVICE_TABLE(of, cpsw_mdio_dt_ids);
+-
+-static struct driver cpsw_mdio_driver = {
+-	.name   = "cpsw-mdio",
+-	.probe  = cpsw_mdio_probe,
+-	.of_compatible = DRV_OF_COMPAT(cpsw_mdio_dt_ids),
+-};
+-coredevice_platform_driver(cpsw_mdio_driver);
+-
+ static inline void soft_reset(struct cpsw_priv *priv, void *reg)
+ {
+ 	int ret;
+diff --git a/drivers/net/davinci_mdio.c b/drivers/net/davinci_mdio.c
+new file mode 100644
+index 0000000000..c5cd28fba4
+--- /dev/null
++++ b/drivers/net/davinci_mdio.c
+@@ -0,0 +1,188 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * DaVinci MDIO Module driver
++ */
++#include <driver.h>
++#include <linux/phy.h>
++#include <clock.h>
++#include <xfuncs.h>
++#include <io.h>
 +
- core_platform_driver(ti_sci_driver);
-diff --git a/drivers/firmware/ti_sci.h b/drivers/firmware/ti_sci.h
-index 101210eb21..bb8bc7beea 100644
---- a/drivers/firmware/ti_sci.h
-+++ b/drivers/firmware/ti_sci.h
-@@ -6,7 +6,7 @@
-  * The system works in a message response protocol
-  * See: http://processors.wiki.ti.com/index.php/TISCI for details
-  *
-- * Copyright (C)  2018 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C)  2018 Texas Instruments Incorporated - https://www.ti.com/
-  * Based on drivers/firmware/ti_sci.h from Linux.
-  *
-  */
-diff --git a/include/soc/ti/ti_sci_protocol.h b/include/soc/ti/ti_sci_protocol.h
-index ec69f07b8e..f41ed82b91 100644
---- a/include/soc/ti/ti_sci_protocol.h
-+++ b/include/soc/ti/ti_sci_protocol.h
-@@ -3,7 +3,7 @@
-  * Texas Instruments System Control Interface Protocol
-  * Based on include/linux/soc/ti/ti_sci_protocol.h from Linux.
-  *
-- * Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com/
-  *	Nishanth Menon
-  *	Lokesh Vutla <lokeshvutla@ti.com>
-  */
-@@ -652,6 +652,42 @@ struct ti_sci_resource {
- 	struct ti_sci_resource_desc *desc;
- };
- 
-+#if IS_ENABLED(CONFIG_TI_SCI_PROTOCOL)
++#define PHY_REG_MASK		0x1f
++#define PHY_ID_MASK		0x1f
 +
-+const struct ti_sci_handle *ti_sci_get_handle_from_sysfw(struct device *dev);
- const struct ti_sci_handle *ti_sci_get_handle(struct device *dev);
-+const struct ti_sci_handle *ti_sci_get_by_phandle(struct device *dev,
-+						  const char *property);
-+struct ti_sci_resource *
-+devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
-+			    struct device *dev, u32 dev_id, char *of_prop);
-+#else	/* CONFIG_TI_SCI_PROTOCOL */
++struct cpsw_mdio_regs {
++	u32	version;
++	u32	control;
++#define CONTROL_IDLE		(1 << 31)
++#define CONTROL_ENABLE		(1 << 30)
 +
-+static inline
-+const struct ti_sci_handle *ti_sci_get_handle_from_sysfw(struct device *dev)
++	u32	alive;
++	u32	link;
++	u32	linkintraw;
++	u32	linkintmasked;
++	u32	__reserved_0[2];
++	u32	userintraw;
++	u32	userintmasked;
++	u32	userintmaskset;
++	u32	userintmaskclr;
++	u32	__reserved_1[20];
++
++	struct {
++		u32 access;
++		u32 physel;
++#define USERACCESS_GO		(1 << 31)
++#define USERACCESS_WRITE	(1 << 30)
++#define USERACCESS_ACK		(1 << 29)
++#define USERACCESS_READ		(0)
++#define USERACCESS_DATA		(0xffff)
++	} user[0];
++};
++
++struct cpsw_mdio_priv {
++	struct device			*dev;
++	struct mii_bus			miibus;
++	struct cpsw_mdio_regs		*mdio_regs;
++};
++
++/* wait until hardware is ready for another user access */
++static u32 wait_for_user_access(struct cpsw_mdio_priv *priv)
 +{
-+	return ERR_PTR(-EINVAL);
++	struct cpsw_mdio_regs *mdio_regs = priv->mdio_regs;
++	u32 tmp;
++	uint64_t start = get_time_ns();
++
++	do {
++		tmp = readl(&mdio_regs->user[0].access);
++
++		if (!(tmp & USERACCESS_GO))
++			break;
++
++		if (is_timeout(start, 100 * MSECOND)) {
++			dev_err(priv->dev, "timeout waiting for user access\n");
++			break;
++		}
++	} while (1);
++
++	return tmp;
 +}
 +
-+static inline const struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
++static int cpsw_mdio_read(struct mii_bus *bus, int phy_id, int phy_reg)
 +{
-+	return ERR_PTR(-EINVAL);
++	struct cpsw_mdio_priv *priv = bus->priv;
++	struct cpsw_mdio_regs *mdio_regs = priv->mdio_regs;
++
++	u32 tmp;
++
++	if (phy_reg & ~PHY_REG_MASK || phy_id & ~PHY_ID_MASK)
++		return -EINVAL;
++
++	wait_for_user_access(priv);
++
++	tmp = (USERACCESS_GO | USERACCESS_READ | (phy_reg << 21) |
++	       (phy_id << 16));
++	writel(tmp, &mdio_regs->user[0].access);
++
++	tmp = wait_for_user_access(priv);
++
++	return (tmp & USERACCESS_ACK) ? (tmp & USERACCESS_DATA) : -1;
 +}
 +
-+static inline
-+const struct ti_sci_handle *ti_sci_get_by_phandle(struct device *dev,
-+						  const char *property)
++static int cpsw_mdio_write(struct mii_bus *bus, int phy_id, int phy_reg, u16 value)
 +{
-+	return ERR_PTR(-EINVAL);
++	struct cpsw_mdio_priv *priv = bus->priv;
++	struct cpsw_mdio_regs *mdio_regs = priv->mdio_regs;
++	u32 tmp;
++
++	if (phy_reg & ~PHY_REG_MASK || phy_id & ~PHY_ID_MASK)
++		return -EINVAL;
++
++	wait_for_user_access(priv);
++	tmp = (USERACCESS_GO | USERACCESS_WRITE | (phy_reg << 21) |
++		   (phy_id << 16) | (value & USERACCESS_DATA));
++	writel(tmp, &mdio_regs->user[0].access);
++	wait_for_user_access(priv);
++
++	return 0;
 +}
 +
-+static inline struct ti_sci_resource *
-+devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
-+			    struct device *dev, u32 dev_id, char *of_prop)
++static int cpsw_mdio_probe(struct device *dev)
 +{
-+	return ERR_PTR(-EINVAL);
++	struct resource *iores;
++	struct cpsw_mdio_priv *priv;
++	uint64_t start;
++	uint32_t phy_mask;
++	int ret;
++
++	priv = xzalloc(sizeof(*priv));
++
++	/* If we can't request I/O memory region, we'll assume parent did
++	 * it for us
++	 */
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores) && PTR_ERR(iores) == -EBUSY)
++		iores = dev_get_resource(dev, IORESOURCE_MEM, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++	priv->mdio_regs = IOMEM(iores->start);
++	priv->miibus.read = cpsw_mdio_read;
++	priv->miibus.write = cpsw_mdio_write;
++	priv->miibus.priv = priv;
++	priv->miibus.parent = dev;
++
++	/*
++	 * set enable and clock divider
++	 *
++	 * FIXME: Use a clock to calculate the divider
++	 */
++	writel(0xff | CONTROL_ENABLE, &priv->mdio_regs->control);
++
++	/*
++	 * wait for scan logic to settle:
++	 * the scan time consists of (a) a large fixed component, and (b) a
++	 * small component that varies with the mii bus frequency.  These
++	 * were estimated using measurements at 1.1 and 2.2 MHz on tnetv107x
++	 * silicon.  Since the effect of (b) was found to be largely
++	 * negligible, we keep things simple here.
++	 */
++	udelay(2000);
++
++	start = get_time_ns();
++	while (1) {
++		phy_mask = readl(&priv->mdio_regs->alive);
++		if (phy_mask) {
++			dev_info(dev, "detected phy mask 0x%x\n", phy_mask);
++			phy_mask = ~phy_mask;
++			break;
++		}
++		if (is_timeout(start, 256 * MSECOND)) {
++			dev_err(dev, "no live phy, scanning all\n");
++			phy_mask = 0;
++			break;
++		}
++	}
++
++	priv->miibus.phy_mask = phy_mask;
++
++	ret = mdiobus_register(&priv->miibus);
++	if (ret)
++		return ret;
++
++	return 0;
 +}
 +
-+#endif	/* CONFIG_TI_SCI_PROTOCOL */
- 
- #endif	/* __TISCI_PROTOCOL_H */
++static __maybe_unused struct of_device_id cpsw_mdio_dt_ids[] = {
++	{
++		.compatible = "ti,cpsw-mdio",
++	}, {
++		/* sentinel */
++	}
++};
++MODULE_DEVICE_TABLE(of, cpsw_mdio_dt_ids);
++
++static struct driver cpsw_mdio_driver = {
++	.name   = "cpsw-mdio",
++	.probe  = cpsw_mdio_probe,
++	.of_compatible = DRV_OF_COMPAT(cpsw_mdio_dt_ids),
++};
++coredevice_platform_driver(cpsw_mdio_driver);
 
 -- 
 2.39.5
