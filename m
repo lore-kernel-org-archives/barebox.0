@@ -1,74 +1,74 @@
-Delivery-date: Fri, 08 Nov 2024 14:16:02 +0100
+Delivery-date: Fri, 08 Nov 2024 14:16:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9OqH-006KoO-0R
+	id 1t9OqJ-006Kok-0G
 	for lore@lore.pengutronix.de;
-	Fri, 08 Nov 2024 14:16:02 +0100
+	Fri, 08 Nov 2024 14:16:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9OqD-0003wS-UH
-	for lore@pengutronix.de; Fri, 08 Nov 2024 14:16:02 +0100
+	id 1t9OqG-0003xO-9H
+	for lore@pengutronix.de; Fri, 08 Nov 2024 14:16:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OQRoHFFXjqcyJCKWfmZD/bGnylhPOaTzblWpKeqZa2Q=; b=N9mIYEdYJWRTVEbndX7MLwijEv
-	15za8TPq3CUjdUglucGSsV40zNMhR9kfmm3Zur+CsiyP7aA8yokO+/Hn5m0waIbIPnKNN4h9u9LFq
-	z5dXT6zL/HInD83pz76ml9UzReroyRyNaEul1ED96+4q//nqFcXsluinisNhiFeoTpwFiDGTbqfth
-	Gi8s+kEUZcvq6qTaHqLbfyNG/Rg7vYEL05LAtmbjS9mxFA1o6ZgN0JfLPCII+af+otZmaW5PEiehs
-	AR60qKuuPW/28P+IuPVSCBLNz9d5aYpiuoXHoDQkzAtZCUfnhY+C+JxHrEGzRbVwJbBRUoZNvt85w
-	Uy/gdPvA==;
+	bh=wE9Es3nrf46wHDgvLeISRDPvpLfovzRb/SHKzebYRvU=; b=B3cIzGW0iiifi/iefjhUMv3sKs
+	6Ts1q4owQmYtY0D7sdszBPEDcBGbiAOu8ZTJC57yJTGcl8DVL8RsQW7cSHm3UmSIFvf+aiDqHKRz1
+	OVptP26pePLV5svJA7avmuNog6NzkKGLBv6zcD231zMOu7fIo8h3fdlP+sX28pSFIXkAoSE4BC32E
+	1CK0GC6thgxvoAoUlJMigbLaq2x4OuCcKSnO1FmW775RQXDxFzt5gFuvxEySiuzENa8j1BGJ1Q9GB
+	wgM4kqHMN/ul/dXRbhIaDgGil3Wn5AOkbkZFxgu6nvC+brN6FW8KuYU+UbM8RoiFTtfTlAH3/0BRH
+	w9JdEVYg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Opb-0000000Adqe-0IoQ;
-	Fri, 08 Nov 2024 13:15:19 +0000
+	id 1t9Opc-0000000AdrW-2BPl;
+	Fri, 08 Nov 2024 13:15:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9OpS-0000000AdjF-1VvM
+	id 1t9OpS-0000000AdjN-2FCu
 	for barebox@lists.infradead.org;
 	Fri, 08 Nov 2024 13:15:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9OpJ-0003X6-5r; Fri, 08 Nov 2024 14:15:01 +0100
+	id 1t9OpJ-0003XC-98; Fri, 08 Nov 2024 14:15:01 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9OpI-002cw3-2t;
+	id 1t9OpI-002cw1-2x;
 	Fri, 08 Nov 2024 14:15:00 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9OpI-00AFXY-2c;
+	id 1t9OpI-00AFXY-2a;
 	Fri, 08 Nov 2024 14:15:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 08 Nov 2024 14:15:02 +0100
+Date: Fri, 08 Nov 2024 14:15:00 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241108-network-k3-v1-4-ee71bff15eb7@pengutronix.de>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241108-network-k3-v1-2-ee71bff15eb7@pengutronix.de>
 References: <20241108-network-k3-v1-0-ee71bff15eb7@pengutronix.de>
 In-Reply-To: <20241108-network-k3-v1-0-ee71bff15eb7@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731071700; l=12306;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731071700; l=13810;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=5BTUXaQNycMzmGzV4vEFLIuagLY17PwBht7NnToCN04=;
- b=wgjzUqiNgt+NEes2nhAW+W1LCKbvcXcyI0r2rOd6I4FyIRao6DHYssciu8jNPOndCdN54WRUG
- 9k7VkG5JrCYB1T6kEOmlcn41s5iEgjMUjbO7t7TJFUTrZuDU02LTmzx
+ bh=ZWLy+CefPZha7u51rYKZqMmyhFVkfnNYGuDpRYvP1KM=;
+ b=G/5pUaA0nZTpIZvUgfvjin/qe6I1mXz5X28HelrU2OZ24kUkaWN38gtwRfu82NTrQnYwXZFU1
+ 06W7sRNs/zGCJikryPWwX5/eoLEwK1gi9zPdt9XyxiYyc/ch7A8wgr9
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241108_051510_937959_85C0D041 
-X-CRM114-Status: GOOD (  28.09  )
+X-CRM114-CacheID: sfid-20241108_051511_076421_E626F4AC 
+X-CRM114-Status: GOOD (  29.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,450 +90,464 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/7] dma: add dma-devices support
+Subject: [PATCH 2/7] firmware: ti_sci: update from U-Boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds support for dma-devices (on Linux aka dmaengines) to barebox.
-The code is based on U-Boot-2025.01-rc1.
-
-The code consists of a shim wrapper layer around a struct dma_ops and
-helper functions to retrieve the suitable dma_ops instance from the
-devices tree based on standard dma properties.
+This imports some U-Boot changes into the ti_sci driver. For upcoming
+k3-udma driver we'll need ti_sci_get_by_phandle() and
+devm_ti_sci_get_of_resource().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/dma/Kconfig       |  10 +++
- drivers/dma/Makefile      |   1 +
- drivers/dma/dma-devices.c | 210 ++++++++++++++++++++++++++++++++++++++++++++++
- include/dma-devices.h     | 172 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 393 insertions(+)
+ drivers/firmware/ti_sci.c        | 276 ++++++++++++++++++++++++++++++++-------
+ drivers/firmware/ti_sci.h        |   2 +-
+ include/soc/ti/ti_sci_protocol.h |  38 +++++-
+ 3 files changed, 264 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
-index e7516466d9..0f55b0a895 100644
---- a/drivers/dma/Kconfig
-+++ b/drivers/dma/Kconfig
-@@ -1,6 +1,16 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menu "DMA support"
+diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
+index c81e8aa1e7..9047f84434 100644
+--- a/drivers/firmware/ti_sci.c
++++ b/drivers/firmware/ti_sci.c
+@@ -3,18 +3,22 @@
+  * Texas Instruments System Control Interface Protocol Driver
+  * Based on drivers/firmware/ti_sci.c from Linux.
+  *
+- * Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com/
++ * Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com/
+  *	Lokesh Vutla <lokeshvutla@ti.com>
+  */
  
-+config DMADEVICES
-+	bool "DMA device support"
-+	help
-+	  Add support for DMA devices. DMA devices can do asynchronous data
-+	  transfers without involving the host CPU.
-+
-+if DMADEVICES
-+comment "DMA Devices"
-+endif
-+
- config MXS_APBH_DMA
- 	tristate "MXS APBH DMA ENGINE"
- 	depends on ARCH_IMX23 || ARCH_IMX28 || ARCH_IMX6 || ARCH_IMX7
-diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
-index 77bd8abba5..28dcf98b4f 100644
---- a/drivers/dma/Makefile
-+++ b/drivers/dma/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_DMADEVICES)	+= dma-devices.o
- obj-$(CONFIG_HAS_DMA)		+= map.o
- obj-$(CONFIG_DMA_API_DEBUG)	+= debug.o
- obj-$(CONFIG_MXS_APBH_DMA)	+= apbh_dma.o
-diff --git a/drivers/dma/dma-devices.c b/drivers/dma/dma-devices.c
-new file mode 100644
-index 0000000000..a8b8086d5f
---- /dev/null
-+++ b/drivers/dma/dma-devices.c
-@@ -0,0 +1,210 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Direct Memory Access U-Class driver
-+ *
-+ * Copyright (C) 2018 Álvaro Fernández Rojas <noltari@gmail.com>
-+ * Copyright (C) 2015 - 2018 Texas Instruments Incorporated <www.ti.com>
-+ * Written by Mugunthan V N <mugunthanvnm@ti.com>
-+ *
-+ * Author: Mugunthan V N <mugunthanvnm@ti.com>
-+ */
-+
+-#include <common.h>
+ #include <mailbox.h>
+-#include <restart.h>
 +#include <driver.h>
-+#include <dma.h>
-+#include <dma-devices.h>
+ #include <soc/ti/k3-sec-proxy.h>
+ #include <soc/ti/ti_sci_protocol.h>
++#include <linux/slab.h>
++#include <linux/device.h>
+ 
+ #include "ti_sci.h"
+ 
++/* List of all TI SCI devices active in system */
++static LIST_HEAD(ti_sci_list);
 +
-+static LIST_HEAD(dma_devices);
-+
-+static int dma_of_xlate_default(struct dma *dma,
-+				struct of_phandle_args *args)
-+{
-+	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
-+
-+	if (args->args_count > 1) {
-+		pr_err("Invalid args_count: %d\n", args->args_count);
-+		return -EINVAL;
-+	}
-+
-+	if (args->args_count)
-+		dma->id = args->args[0];
-+	else
-+		dma->id = 0;
-+
-+	return 0;
-+}
-+
-+static int dma_request(struct device *dev, struct dma *dma)
-+{
-+	const struct dma_ops *ops = dma->dmad->ops;
-+
-+	dev_dbg(dma->dev, "%s(dev=%p, dma=%p)\n", __func__, dev, dma);
-+
-+	if (!ops->request)
-+		return 0;
-+
-+	return ops->request(dma);
-+}
-+
-+static struct dma_device *dma_find_by_node(struct device_node *np)
-+{
-+	struct dma_device *dmad;
-+
-+	list_for_each_entry(dmad, &dma_devices, list) {
-+		if (dmad->dev->of_node == np)
-+			return dmad;
-+	}
-+
-+	return NULL;
-+}
-+
-+struct dma *dma_get_by_index(struct device *dev, int index)
-+{
+ /**
+  * struct ti_sci_xfer - Structure representing a message flow
+  * @tx_message:	Transmit message
+@@ -126,7 +130,6 @@ static struct ti_sci_xfer *ti_sci_setup_one_xfer(struct ti_sci_info *info,
+ 		return ERR_PTR(-ERANGE);
+ 	}
+ 
+-
+ 	info->seq = ~info->seq;
+ 	xfer->tx_message.buf = buf;
+ 	xfer->tx_message.len = tx_message_size;
+@@ -223,21 +226,27 @@ static int ti_sci_do_xfer(struct ti_sci_info *info,
+ {
+ 	struct k3_sec_proxy_msg *msg = &xfer->tx_message;
+ 	u8 secure_buf[info->desc->max_msg_size];
+-	struct ti_sci_secure_msg_hdr secure_hdr;
++	struct ti_sci_secure_msg_hdr *secure_hdr = (struct ti_sci_secure_msg_hdr *)secure_buf;
+ 	int ret;
+ 
++	/*
++	 * The reason why we need the is_secure code is because of boot R5.
++	 * boot R5 starts off in "secure mode" when it hands off from Boot
++	 * ROM over to the Secondary bootloader. The initial set of calls
++	 * we have to make need to be on a secure pipe.
++	 */
+ 	if (info->is_secure) {
+ 		/* ToDo: get checksum of the entire message */
+-		secure_hdr.checksum = 0;
+-		secure_hdr.reserved = 0;
+-		memcpy(&secure_buf[sizeof(secure_hdr)], xfer->tx_message.buf,
++		secure_hdr->checksum = 0;
++		secure_hdr->reserved = 0;
++		memcpy(&secure_buf[sizeof(*secure_hdr)], xfer->tx_message.buf,
+ 		       xfer->tx_message.len);
+ 
+ 		xfer->tx_message.buf = (u32 *)secure_buf;
+-		xfer->tx_message.len += sizeof(secure_hdr);
++		xfer->tx_message.len += sizeof(*secure_hdr);
+ 
+ 		if (xfer->rx_len)
+-			xfer->rx_len += sizeof(secure_hdr);
++			xfer->rx_len += sizeof(*secure_hdr);
+ 	}
+ 
+ 	/* Send the message */
+@@ -2558,13 +2567,6 @@ static int ti_sci_cmd_change_fwl_owner(const struct ti_sci_handle *handle,
+ 	return ret;
+ }
+ 
+-static struct ti_sci_handle *g_handle;
+-
+-const struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
+-{
+-	return g_handle;
+-}
+-
+ /*
+  * ti_sci_setup_ops() - Setup the operations structures
+  * @info:	pointer to TISCI pointer
+@@ -2648,57 +2650,231 @@ static void ti_sci_setup_ops(struct ti_sci_info *info)
+ 	fwl_ops->change_fwl_owner = ti_sci_cmd_change_fwl_owner;
+ }
+ 
+-static void ti_sci_reset(struct restart_handler *unused)
++/**
++ * ti_sci_get_handle_from_sysfw() - Get the TI SCI handle of the SYSFW
++ * @dev:	Pointer to the SYSFW device
++ *
++ * Return: pointer to handle if successful, else EINVAL if invalid conditions
++ *         are encountered.
++ */
++const
++struct ti_sci_handle *ti_sci_get_handle_from_sysfw(struct device *sci_dev)
+ {
+-	ti_sci_cmd_core_reboot(g_handle);
++	struct ti_sci_info *info;
 +	int ret;
-+	struct of_phandle_args args;
-+	const struct dma_ops *ops;
-+	struct dma *dma;
-+	struct dma_device *dmad;
 +
-+	dev_dbg(dev, "%s index=%d)\n", __func__, index);
++	if (!sci_dev)
++		return ERR_PTR(-EINVAL);
 +
-+	ret = of_parse_phandle_with_args(dev->of_node, "dmas", "#dma-cells", index,
-+					 &args);
-+	if (ret) {
-+		dev_err(dev, "%s: dev_read_phandle_with_args failed: %pe\n",
-+		       __func__, ERR_PTR(ret));
-+		return ERR_PTR(ret);
-+	}
++	info = dev_get_priv(sci_dev);
++	if (!info)
++		return ERR_PTR(-EINVAL);
 +
-+	dmad = dma_find_by_node(args.np);
-+	if (!dmad)
++	ret = ti_sci_cmd_get_revision(&info->handle);
++	if (ret)
++		return ERR_PTR(-EINVAL);
++
++	return &info->handle;
+ }
+ 
+-static int ti_sci_probe(struct device *dev)
++/**
++ * ti_sci_get_handle() - Get the TI SCI handle for a device
++ * @dev:	Pointer to device for which we want SCI handle
++ *
++ * Return: pointer to handle if successful, else EINVAL if invalid conditions
++ *         are encountered.
++ */
++const struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
+ {
+-	struct ti_sci_info *info;
+-	const void *data;
+-	int ret;
++	struct device *sci_dev;
+ 
+-	if (g_handle)
+-		return 0;
++	if (!dev)
++		return ERR_PTR(-EINVAL);
+ 
+-	ret = dev_get_drvdata(dev, &data);
+-        if (ret)
+-                return ret;
++	sci_dev = dev->parent;
+ 
+-	info = xzalloc(sizeof(*info));
++	return ti_sci_get_handle_from_sysfw(sci_dev);
++}
+ 
+-	info->chan_rx = mbox_request_channel_byname(dev, "rx");
+-	if (IS_ERR(info->chan_rx))
+-		return PTR_ERR(info->chan_rx);
++/**
++ * ti_sci_get_by_phandle() - Get the TI SCI handle using DT phandle
++ * @dev:	device node
++ * @propname:	property name containing phandle on TISCI node
++ *
++ * Return: pointer to handle if successful, else appropriate error value.
++ */
++const struct ti_sci_handle *ti_sci_get_by_phandle(struct device *dev,
++						  const char *property)
++{
++	struct ti_sci_info *entry, *info = NULL;
++	struct device_node *np;
++
++	np = of_parse_phandle(dev->of_node, property, 0);
++	if (!np)
++		return ERR_PTR(-EINVAL);
++
++	of_device_ensure_probed(np);
++
++	list_for_each_entry(entry, &ti_sci_list, list)
++		if (dev_of_node(entry->dev) == np) {
++			info = entry;
++			break;
++		}
+ 
++	if (!info)
 +		return ERR_PTR(-ENODEV);
 +
-+	dma = xzalloc(sizeof(*dma));
++	return &info->handle;
++}
 +
-+	dma->dmad = dmad;
-+	dma->dev = dmad->dev;
-+
-+	ops = dmad->ops;
-+
-+	if (ops->of_xlate)
-+		ret = ops->of_xlate(dma, &args);
-+	else
-+		ret = dma_of_xlate_default(dma, &args);
-+	if (ret) {
-+		dev_err(dma->dev, "of_xlate() failed: %pe\n", ERR_PTR(ret));
-+		return ERR_PTR(ret);
++/**
++ * ti_sci_of_to_info() - generate private data from device tree
++ * @dev:	corresponding system controller interface device
++ * @info:	pointer to driver specific private data
++ *
++ * Return: 0 if all goes good, else appropriate error message.
++ */
++static int ti_sci_of_to_info(struct device *dev, struct ti_sci_info *info)
++{
+ 	info->chan_tx = mbox_request_channel_byname(dev, "tx");
+-	if (IS_ERR(info->chan_tx))
++	if (IS_ERR(info->chan_tx)) {
++		dev_err(dev, "%s: Acquiring Tx channel failed: %pe\n",
++			__func__, info->chan_tx);
+ 		return PTR_ERR(info->chan_tx);
 +	}
 +
-+	ret = dma_request(dmad->dev, dma);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	return dma;
-+}
-+
-+struct dma *dma_get_by_name(struct device *dev, const char *name)
-+{
-+	int index;
-+
-+	dev_dbg(dev, "%s(dev=%p, name=%s)\n", __func__, dev, name);
-+
-+	index = of_property_match_string(dev->of_node, "dma-names", name);
-+	if (index < 0) {
-+		dev_err(dev, "dev_read_stringlist_search() failed: %pe\n",
-+			ERR_PTR(index));
-+		return ERR_PTR(index);
++	info->chan_rx = mbox_request_channel_byname(dev, "rx");
++	if (IS_ERR(info->chan_rx)) {
++		dev_err(dev, "%s: Acquiring Rx channel failed: %pe\n",
++			__func__, info->chan_rx);
++		return PTR_ERR(info->chan_rx);
 +	}
 +
-+	return dma_get_by_index(dev, index);
-+}
-+
-+int dma_release(struct dma *dma)
-+{
-+	const struct dma_ops *ops = dma->dmad->ops;
-+
-+	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
-+
-+	if (!ops->rfree)
-+		return 0;
-+
-+	return ops->rfree(dma);
-+}
-+
-+int dma_enable(struct dma *dma)
-+{
-+	const struct dma_ops *ops = dma->dmad->ops;
-+
-+	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
-+
-+	if (!ops->enable)
-+		return -ENOSYS;
-+
-+	return ops->enable(dma);
-+}
-+
-+int dma_disable(struct dma *dma)
-+{
-+	const struct dma_ops *ops = dma->dmad->ops;
-+
-+	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
-+
-+	if (!ops->disable)
-+		return -ENOSYS;
-+
-+	return ops->disable(dma);
-+}
-+
-+int dma_prepare_rcv_buf(struct dma *dma, dma_addr_t dst, size_t size)
-+{
-+	const struct dma_ops *ops = dma->dmad->ops;
-+
-+	dev_vdbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
-+
-+	if (!ops->prepare_rcv_buf)
-+		return -1;
-+
-+	return ops->prepare_rcv_buf(dma, dst, size);
-+}
-+
-+int dma_receive(struct dma *dma, dma_addr_t *dst, void *metadata)
-+{
-+	const struct dma_ops *ops = dma->dmad->ops;
-+
-+	dev_vdbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
-+
-+	if (!ops->receive)
-+		return -ENOSYS;
-+
-+	return ops->receive(dma, dst, metadata);
-+}
-+
-+int dma_send(struct dma *dma, dma_addr_t src, size_t len, void *metadata)
-+{
-+	const struct dma_ops *ops = dma->dmad->ops;
-+
-+	dev_vdbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
-+
-+	if (!ops->send)
-+		return -ENOSYS;
-+
-+	return ops->send(dma, src, len, metadata);
-+}
-+
-+int dma_get_cfg(struct dma *dma, u32 cfg_id, void **cfg_data)
-+{
-+	const struct dma_ops *ops = dma->dmad->ops;
-+
-+	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
-+
-+	if (!ops->get_cfg)
-+		return -ENOSYS;
-+
-+	return ops->get_cfg(dma, cfg_id, cfg_data);
-+}
-+
-+int dma_device_register(struct dma_device *dmad)
-+{
-+	list_add_tail(&dmad->list, &dma_devices);
++	/* Notify channel is optional. Enable only if populated */
++	info->chan_notify = mbox_request_channel_byname(dev, "notify");
++	if (IS_ERR(info->chan_notify)) {
++		dev_dbg(dev, "%s: Acquiring notify channel failed: %pe\n",
++			__func__, info->chan_notify);
++	}
+ 
+-	info->desc = data;
+ 	info->host_id = info->desc->default_host_id;
+ 	of_property_read_u32(dev->of_node, "ti,host-id", &info->host_id);
+ 
+-        info->is_secure = of_property_read_bool(dev->of_node, "ti,secure-host");
++	info->is_secure = of_property_read_bool(dev->of_node, "ti,secure-host");
 +
 +	return 0;
 +}
-diff --git a/include/dma-devices.h b/include/dma-devices.h
-new file mode 100644
-index 0000000000..dbc6759496
---- /dev/null
-+++ b/include/dma-devices.h
-@@ -0,0 +1,172 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef __DMA_DEVICES_H
-+#define __DMA_DEVICES_H
 +
 +/**
-+ * enum dma_transfer_direction - dma transfer mode and direction indicator
-+ * @DMA_MEM_TO_MEM: Async/Memcpy mode
-+ * @DMA_MEM_TO_DEV: Slave mode & From Memory to Device
-+ * @DMA_DEV_TO_MEM: Slave mode & From Device to Memory
-+ * @DMA_DEV_TO_DEV: Slave mode & From Device to Device
-+ */
-+enum dma_transfer_direction {
-+	DMA_MEM_TO_MEM,
-+	DMA_MEM_TO_DEV,
-+	DMA_DEV_TO_MEM,
-+	DMA_DEV_TO_DEV,
-+	DMA_TRANS_NONE,
-+};
-+
-+struct dma_device;
-+
-+struct dma {
-+	struct device *dev;
-+	/*
-+	 * Written by of_xlate. We assume a single id is enough for now. In the
-+	 * future, we might add more fields here.
-+	 */
-+	unsigned long id;
-+
-+	struct dma_device *dmad;
-+};
-+
-+struct of_phandle_args;
-+
-+/*
-+ * struct dma_ops - Driver model DMA operations
++ * ti_sci_probe() - Basic probe
++ * @dev:	corresponding system controller interface device
 + *
-+ * The uclass interface is implemented by all DMA devices which use
-+ * driver model.
++ * Return: 0 if all goes good, else appropriate error message.
 + */
-+struct dma_ops {
-+	/**
-+	 * of_xlate - Translate a client's device-tree (OF) DMA specifier.
-+	 *
-+	 * The DMA core calls this function as the first step in implementing
-+	 * a client's dma_get_by_*() call.
-+	 *
-+	 * If this function pointer is set to NULL, the DMA core will use a
-+	 * default implementation, which assumes #dma-cells = <1>, and that
-+	 * the DT cell contains a simple integer DMA Channel.
-+	 *
-+	 * At present, the DMA API solely supports device-tree. If this
-+	 * changes, other xxx_xlate() functions may be added to support those
-+	 * other mechanisms.
-+	 *
-+	 * @dma: The dma struct to hold the translation result.
-+	 * @args:	The dma specifier values from device tree.
-+	 * @return 0 if OK, or a negative error code.
-+	 */
-+	int (*of_xlate)(struct dma *dma,
-+			struct of_phandle_args *args);
-+	/**
-+	 * request - Request a translated DMA.
-+	 *
-+	 * The DMA core calls this function as the second step in
-+	 * implementing a client's dma_get_by_*() call, following a successful
-+	 * xxx_xlate() call, or as the only step in implementing a client's
-+	 * dma_request() call.
-+	 *
-+	 * @dma: The DMA struct to request; this has been filled in by
-+	 *   a previoux xxx_xlate() function call, or by the caller of
-+	 *   dma_request().
-+	 * @return 0 if OK, or a negative error code.
-+	 */
-+	int (*request)(struct dma *dma);
-+	/**
-+	 * rfree - Free a previously requested dma.
-+	 *
-+	 * This is the implementation of the client dma_free() API.
-+	 *
-+	 * @dma: The DMA to free.
-+	 * @return 0 if OK, or a negative error code.
-+	 */
-+	int (*rfree)(struct dma *dma);
-+	/**
-+	 * enable() - Enable a DMA Channel.
-+	 *
-+	 * @dma: The DMA Channel to manipulate.
-+	 * @return zero on success, or -ve error code.
-+	 */
-+	int (*enable)(struct dma *dma);
-+	/**
-+	 * disable() - Disable a DMA Channel.
-+	 *
-+	 * @dma: The DMA Channel to manipulate.
-+	 * @return zero on success, or -ve error code.
-+	 */
-+	int (*disable)(struct dma *dma);
-+	/**
-+	 * prepare_rcv_buf() - Prepare/Add receive DMA buffer.
-+	 *
-+	 * @dma: The DMA Channel to manipulate.
-+	 * @dst: The receive buffer pointer.
-+	 * @size: The receive buffer size
-+	 * @return zero on success, or -ve error code.
-+	 */
-+	int (*prepare_rcv_buf)(struct dma *dma, dma_addr_t dst, size_t size);
-+	/**
-+	 * receive() - Receive a DMA transfer.
-+	 *
-+	 * @dma: The DMA Channel to manipulate.
-+	 * @dst: The destination pointer.
-+	 * @metadata: DMA driver's specific data
-+	 * @return zero on success, or -ve error code.
-+	 */
-+	int (*receive)(struct dma *dma, dma_addr_t *dst, void *metadata);
-+	/**
-+	 * send() - Send a DMA transfer.
-+	 *
-+	 * @dma: The DMA Channel to manipulate.
-+	 * @src: The source pointer.
-+	 * @len: Length of the data to be sent (number of bytes).
-+	 * @metadata: DMA driver's specific data
-+	 * @return zero on success, or -ve error code.
-+	 */
-+	int (*send)(struct dma *dma, dma_addr_t src, size_t len, void *metadata);
-+	/**
-+	 * get_cfg() - Get DMA channel configuration for client's use
-+	 *
-+	 * @dma:    The DMA Channel to manipulate
-+	 * @cfg_id: DMA provider specific ID to identify what
-+	 *          configuration data client needs
-+	 * @data:   Pointer to store pointer to DMA driver specific
-+	 *          configuration data for the given cfg_id (output param)
-+	 * @return zero on success, or -ve error code.
-+	 */
-+	int (*get_cfg)(struct dma *dma, u32 cfg_id, void **data);
-+	/**
-+	 * transfer() - Issue a DMA transfer. The implementation must
-+	 *   wait until the transfer is done.
-+	 *
-+	 * @dev: The DMA device
-+	 * @direction: direction of data transfer (should be one from
-+	 *   enum dma_direction)
-+	 * @dst: The destination pointer.
-+	 * @src: The source pointer.
-+	 * @len: Length of the data to be copied (number of bytes).
-+	 * @return zero on success, or -ve error code.
-+	 */
-+	int (*transfer)(struct device *dev, int direction, dma_addr_t dst,
-+			dma_addr_t src, size_t len);
-+};
++static int ti_sci_probe(struct device *dev)
++{
++	struct ti_sci_info *info;
++	int ret;
 +
-+struct dma_device {
-+	struct device *dev;
-+	const struct dma_ops *ops;
-+	struct list_head list;
-+};
++	info = xzalloc(sizeof(*info));
++	info->desc = device_get_match_data(dev);
 +
-+int dma_device_register(struct dma_device *dmad);
++	ret = ti_sci_of_to_info(dev, info);
++	if (ret) {
++		dev_err(dev, "%s: Probe failed with error %d\n", __func__, ret);
++		return ret;
++	}
+ 
++	dev->priv = info;
+ 	info->dev = dev;
+-	info->seq = 0xA;
+-	INIT_LIST_HEAD(&info->dev_list);
++	info->seq = 0xa;
+ 
++	list_add_tail(&info->list, &ti_sci_list);
+ 	ti_sci_setup_ops(info);
+ 
+-	ret = ti_sci_cmd_get_revision(&info->handle);
++	INIT_LIST_HEAD(&info->dev_list);
 +
-+struct dma *dma_get_by_index(struct device *dev, int index);
-+struct dma *dma_get_by_name(struct device *dev, const char *name);
-+int dma_prepare_rcv_buf(struct dma *dma, dma_addr_t dst, size_t size);
-+int dma_enable(struct dma *dma);
-+int dma_disable(struct dma *dma);
-+int dma_get_cfg(struct dma *dma, u32 cfg_id, void **cfg_data);
-+int dma_send(struct dma *dma, dma_addr_t src, size_t len, void *metadata);
-+int dma_receive(struct dma *dma, dma_addr_t *dst, void *metadata);
-+int dma_release(struct dma *dma);
++	return 0;
++}
 +
-+#endif /* __DMA_DEVICES_H */
++/**
++ * devm_ti_sci_get_of_resource() - Get a TISCI resource assigned to a device
++ * @handle:	TISCI handle
++ * @dev:	Device pointer to which the resource is assigned
++ * @of_prop:	property name by which the resource are represented
++ *
++ * Note: This function expects of_prop to be in the form of tuples
++ *	<type, subtype>. Allocates and initializes ti_sci_resource structure
++ *	for each of_prop. Client driver can directly call
++ *	ti_sci_(get_free, release)_resource apis for handling the resource.
++ *
++ * Return: Pointer to ti_sci_resource if all went well else appropriate
++ *	   error pointer.
++ */
++struct ti_sci_resource *
++devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
++			    struct device *dev, u32 dev_id, char *of_prop)
++{
++	u32 resource_subtype;
++	struct ti_sci_resource *res;
++	bool valid_set = false;
++	int sets, i, ret;
++	u32 *temp;
++	const void *pp;
++
++	res = devm_kzalloc(dev, sizeof(*res), GFP_KERNEL);
++	if (!res)
++		return ERR_PTR(-ENOMEM);
++
++	pp = of_get_property(dev->of_node, of_prop, &sets);
++	if (!pp) {
++		dev_err(dev, "%s resource type ids not available\n", of_prop);
++		return ERR_PTR(sets);
++	}
++	temp = malloc(sets);
++	sets /= sizeof(u32);
++	res->sets = sets;
++
++	res->desc = devm_kcalloc(dev, res->sets, sizeof(*res->desc),
++				 GFP_KERNEL);
++	if (!res->desc)
++		return ERR_PTR(-ENOMEM);
++
++	ret = of_property_read_u32_array(dev->of_node, of_prop, temp, res->sets);
+ 	if (ret)
+-		return ret;
++		return ERR_PTR(-EINVAL);
++
++	for (i = 0; i < res->sets; i++) {
++		resource_subtype = temp[i];
++		ret = handle->ops.rm_core_ops.get_range(handle, dev_id,
++							resource_subtype,
++							&res->desc[i].start,
++							&res->desc[i].num);
++		if (ret) {
++			dev_dbg(dev, "type %d subtype %d not allocated for host %d\n",
++				dev_id, resource_subtype,
++				handle_to_ti_sci_info(handle)->host_id);
++			res->desc[i].start = 0;
++			res->desc[i].num = 0;
++			continue;
++		}
+ 
+-	g_handle = &info->handle;
++		valid_set = true;
++		dev_dbg(dev, "res type = %d, subtype = %d, start = %d, num = %d\n",
++			dev_id, resource_subtype, res->desc[i].start,
++			res->desc[i].num);
+ 
+-	of_platform_populate(dev->of_node, NULL, NULL);
++		res->desc[i].res_map =
++			devm_kzalloc(dev, BITS_TO_LONGS(res->desc[i].num) *
++				     sizeof(*res->desc[i].res_map), GFP_KERNEL);
++		if (!res->desc[i].res_map)
++			return ERR_PTR(-ENOMEM);
++	}
+ 
+-	restart_handler_register_fn("ti-sci", ti_sci_reset);
++	if (valid_set)
++		return res;
+ 
+-	return 0;
++	return ERR_PTR(-EINVAL);
+ }
+ 
+ /* Description for K2G */
+@@ -2721,7 +2897,7 @@ static const struct ti_sci_desc ti_sci_pmmc_am654_desc = {
+ 	.max_msg_size = 60,
+ };
+ 
+-static const struct of_device_id ti_sci_of_match[] = {
++static const struct of_device_id of_ti_sci_ids[] = {
+ 	{
+ 		.compatible = "ti,k2g-sci",
+ 		.data = &ti_sci_pmmc_k2g_desc
+@@ -2729,14 +2905,14 @@ static const struct of_device_id ti_sci_of_match[] = {
+ 		.compatible = "ti,am654-sci",
+ 		.data = &ti_sci_pmmc_am654_desc
+ 	}, {
+-		/* sentinel */
+-	}
++		/* Sentinel */
++	},
+ };
+-MODULE_DEVICE_TABLE(of, ti_sci_of_match);
+ 
+ static struct driver ti_sci_driver = {
+-        .name   = "ti-sci",
+-        .probe  = ti_sci_probe,
+-        .of_compatible = DRV_OF_COMPAT(ti_sci_of_match),
++	.probe  = ti_sci_probe,
++	.name   = "ti_sci",
++	.of_compatible = of_ti_sci_ids,
+ };
++
+ core_platform_driver(ti_sci_driver);
+diff --git a/drivers/firmware/ti_sci.h b/drivers/firmware/ti_sci.h
+index 101210eb21..bb8bc7beea 100644
+--- a/drivers/firmware/ti_sci.h
++++ b/drivers/firmware/ti_sci.h
+@@ -6,7 +6,7 @@
+  * The system works in a message response protocol
+  * See: http://processors.wiki.ti.com/index.php/TISCI for details
+  *
+- * Copyright (C)  2018 Texas Instruments Incorporated - http://www.ti.com/
++ * Copyright (C)  2018 Texas Instruments Incorporated - https://www.ti.com/
+  * Based on drivers/firmware/ti_sci.h from Linux.
+  *
+  */
+diff --git a/include/soc/ti/ti_sci_protocol.h b/include/soc/ti/ti_sci_protocol.h
+index ec69f07b8e..f41ed82b91 100644
+--- a/include/soc/ti/ti_sci_protocol.h
++++ b/include/soc/ti/ti_sci_protocol.h
+@@ -3,7 +3,7 @@
+  * Texas Instruments System Control Interface Protocol
+  * Based on include/linux/soc/ti/ti_sci_protocol.h from Linux.
+  *
+- * Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com/
++ * Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com/
+  *	Nishanth Menon
+  *	Lokesh Vutla <lokeshvutla@ti.com>
+  */
+@@ -652,6 +652,42 @@ struct ti_sci_resource {
+ 	struct ti_sci_resource_desc *desc;
+ };
+ 
++#if IS_ENABLED(CONFIG_TI_SCI_PROTOCOL)
++
++const struct ti_sci_handle *ti_sci_get_handle_from_sysfw(struct device *dev);
+ const struct ti_sci_handle *ti_sci_get_handle(struct device *dev);
++const struct ti_sci_handle *ti_sci_get_by_phandle(struct device *dev,
++						  const char *property);
++struct ti_sci_resource *
++devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
++			    struct device *dev, u32 dev_id, char *of_prop);
++#else	/* CONFIG_TI_SCI_PROTOCOL */
++
++static inline
++const struct ti_sci_handle *ti_sci_get_handle_from_sysfw(struct device *dev)
++{
++	return ERR_PTR(-EINVAL);
++}
++
++static inline const struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
++{
++	return ERR_PTR(-EINVAL);
++}
++
++static inline
++const struct ti_sci_handle *ti_sci_get_by_phandle(struct device *dev,
++						  const char *property)
++{
++	return ERR_PTR(-EINVAL);
++}
++
++static inline struct ti_sci_resource *
++devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
++			    struct device *dev, u32 dev_id, char *of_prop)
++{
++	return ERR_PTR(-EINVAL);
++}
++
++#endif	/* CONFIG_TI_SCI_PROTOCOL */
+ 
+ #endif	/* __TISCI_PROTOCOL_H */
 
 -- 
 2.39.5
