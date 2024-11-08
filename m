@@ -1,79 +1,83 @@
-Delivery-date: Fri, 08 Nov 2024 12:36:52 +0100
+Delivery-date: Fri, 08 Nov 2024 12:36:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9NIJ-006Iyc-25
+	id 1t9NIL-006Iz1-1U
 	for lore@lore.pengutronix.de;
-	Fri, 08 Nov 2024 12:36:52 +0100
+	Fri, 08 Nov 2024 12:36:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9NIK-00043F-A3
-	for lore@pengutronix.de; Fri, 08 Nov 2024 12:36:52 +0100
+	id 1t9NIM-00043W-42
+	for lore@pengutronix.de; Fri, 08 Nov 2024 12:36:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=cyCYNnItT64pS+DfFxouMFPPY5uzWLBCOaUOHjYy9+k=; b=XlpYtL/PY9gew6gO9Kilo7nbtG
-	1l9FIzHp1igFZzB2+RIvjOZSfqoC/hnTVhb2Yn5ff5N45mEU9/c989MigN5AKOEv158YokV/Mf/Dc
-	EeOE+0xoA7EbqTjS/9VebGhFvldqgamJrZiG+nsq3L9rFooR5R6cO2Qee0fWMUpBa8cvkAG3ADZeB
-	bKKWUI6Z3Ka2f13hTkW7i2sFm3d6Sv98VCIsAM9YCC4Cy7FWung3ZiebvBnfn0oC+4wIp1EH2rgVR
-	rDgUmXYZy50zHA0Res5qKHZSbJM2Xx4Sl7/TfvhWLjdP68DqPQkxY9oUZizaueKkaqHux1ogGoLBe
-	KElnOUOQ==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Rr13IOqQne9wrUu+RG0Knxx18QNgsw/TRpXiQd2mHac=; b=cs6EsRJn8KNO7wmoOD7sazeahI
+	RQzDdayn3eKPHtGjTqMPw3zGQ7H114vmc4qkuq8sL64y3g2rytcJ1BaHFdajaXEzo+5QLwGVCh34V
+	O9QGPla4t6wRM7TMC6SIBqbtVtgCC9jlThCcZyCWzpn0ylV2F0X80SepD4Acp3+GLE0/+4Uo0ERnz
+	8L13k5F4TohbUvw87gSSkJbIrZa7pC1t8U4QKFLAtwaNwC1us6drmkioCAZtKLAsYwLboqw+v0roY
+	+O/96m7XELPWWLaEX+miREvcfkzoBQO+ufTdMyGC8GsDyN8bnr55cfGRSOLCHiQRArmOBZwM8pXZN
+	NWZrCodw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9NHr-0000000AMc3-2Y27;
+	id 1t9NHr-0000000AMbd-03qa;
 	Fri, 08 Nov 2024 11:36:23 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Mgm-0000000AEj0-3Rzn
+	id 1t9Mgj-0000000AEhj-2f2M
 	for barebox@bombadil.infradead.org;
-	Fri, 08 Nov 2024 10:58:04 +0000
+	Fri, 08 Nov 2024 10:58:01 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=cyCYNnItT64pS+DfFxouMFPPY5uzWLBCOaUOHjYy9+k=; b=D9w90aJU2loobUu5IaJojKm1Co
-	RaTtpFqsmeZXaEDCW3TBeWMqPb6R1ysyqT7wLy88yVaFppJjsH1inTqnq64sUvkXsuRVAubnephb/
-	aWOSiaqFqcXJ4K06gmfwA5EdE2HzdZFbx388AtIkMqkde4ItBm+wbgW2pM+rBcOuM/lLTbSkxiBMs
-	XbbbFDDAWrokNT1AKz99937q6QiQKRZhuS64OKcJsYsIAjZ/CYCfB5Q3obmPtIHgILXjHSQ6JCm21
-	sHHq2nJgBDkable9+u4CoxOc0JmHeri4ZBMZTg2UwGj5IXZdKZTqkQn/8bBvWkyUX12RJBm/FyBQS
-	05/56fHg==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
+	Reply-To:Cc:Content-ID:Content-Description;
+	bh=Rr13IOqQne9wrUu+RG0Knxx18QNgsw/TRpXiQd2mHac=; b=TWNkcg8i0jI5ZyRuC6e4uvCMYD
+	fWCVXAjhlnt7JkZBaZZ0neKrYqQ/a5NUqPrhSAFpapc0fvohrBThiG6CMBkeMNQHpGV5Fup/fI+7y
+	UI0E9MDyN8/Xi0r0MaAIaGQB95L/43qqX+LJkH99QZfk8afvJ5UeclbHcY91AMia4+Zi7iYEVB/10
+	8hES92UBFofPqCSEcnm3mOOPjMIAa1GSh1nvi9hpyAbCofwSbD7+XRXgKBPFYnbl2GoZ29P0vPBXw
+	SKFfrvfSmj9RAwL2CAZvZJDKRSb4fxjuPx+TP6fgisI4+t9tE9ka8IFhDnPJxMOFcE3WTLmWsrpcn
+	dODA42qQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Mgf-0000000CI9Q-1fxg
+	id 1t9Mgb-0000000CI8L-1Zhy
 	for barebox@lists.infradead.org;
-	Fri, 08 Nov 2024 10:58:02 +0000
+	Fri, 08 Nov 2024 10:57:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <has@pengutronix.de>)
-	id 1t9Mge-0000zf-24; Fri, 08 Nov 2024 11:57:56 +0100
-Received: from dude03.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::39])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t9Mgb-0000zE-0F; Fri, 08 Nov 2024 11:57:53 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <has@pengutronix.de>)
-	id 1t9Mgd-002bfB-2n;
-	Fri, 08 Nov 2024 11:57:55 +0100
-Received: from has by dude03.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <has@pengutronix.de>)
-	id 1t9Mgd-007rCf-2K;
-	Fri, 08 Nov 2024 11:57:55 +0100
-From: Holger Assmann <h.assmann@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Holger Assmann <h.assmann@pengutronix.de>
-Date: Fri,  8 Nov 2024 11:57:51 +0100
-Message-Id: <20241108105751.1872681-1-h.assmann@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t9Mga-002bf7-2e;
+	Fri, 08 Nov 2024 11:57:52 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t9Mga-009mVj-2T;
+	Fri, 08 Nov 2024 11:57:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20241104130423.587874-1-s.hauer@pengutronix.de>
+References: <20241104130423.587874-1-s.hauer@pengutronix.de>
+Message-Id: <173106347276.2331406.16759270880113768331.b4-ty@pengutronix.de>
+Date: Fri, 08 Nov 2024 11:57:52 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241108_105800_670993_D3C3007E 
-X-CRM114-Status: UNSURE (   9.92  )
+X-CRM114-CacheID: sfid-20241108_105755_186913_493B9331 
+X-CRM114-Status: UNSURE (   9.49  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -92,44 +96,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: dts: i.MX8MP: disable NPU node if hardware is missing
+Subject: Re: [PATCH] ARM: i.MX: move handoff-data out of OCRAM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Besides its power domain, the NPU node itself also needs to be disabled
-in the kernel device tree if no respective hardware is present at the
-SoC.
 
-The power domain has already been dealt with by upstream commit
-924101c81d6e ("ARM: i.MX8MP: add feature controller support for Plus").
-This patch adds the necessary entry for the NPU node.
+On Mon, 04 Nov 2024 14:04:23 +0100, Sascha Hauer wrote:
+> During 1st stage boot barebox is running in OCRAM. This OCRAM is
+> occupied by the TF-A once started, so move the handoff-data to SDRAM
+> before starting the TF-A.
+> 
+> Currently no board is using handoff-data from its early board code, so
+> this is not yet necessary, but done now so that board code is able to
+> use handoff-data in the future.
+> 
+> [...]
 
-Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
----
- arch/arm/dts/imx8mp.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+Applied, thanks!
 
-diff --git a/arch/arm/dts/imx8mp.dtsi b/arch/arm/dts/imx8mp.dtsi
-index 4d1f1bf588..1604fa13a5 100644
---- a/arch/arm/dts/imx8mp.dtsi
-+++ b/arch/arm/dts/imx8mp.dtsi
-@@ -99,6 +99,10 @@ &vpumix_blk_ctrl {
- 	barebox,feature-gates = <&feat IMX8M_FEAT_VPU>;
- };
- 
-+&npu {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_NPU>;
-+};
-+
- &pgc_mlmix {
- 	barebox,feature-gates = <&feat IMX8M_FEAT_NPU>;
- };
+[1/1] ARM: i.MX: move handoff-data out of OCRAM
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0e945328e46b (link may not be stable)
+
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
