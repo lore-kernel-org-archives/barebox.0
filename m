@@ -1,84 +1,85 @@
-Delivery-date: Fri, 08 Nov 2024 12:36:56 +0100
+Delivery-date: Fri, 08 Nov 2024 12:46:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9NIN-006IzX-0t
+	id 1t9NRB-006J7s-2Q
 	for lore@lore.pengutronix.de;
-	Fri, 08 Nov 2024 12:36:56 +0100
+	Fri, 08 Nov 2024 12:46:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9NIN-00043a-27
-	for lore@pengutronix.de; Fri, 08 Nov 2024 12:36:56 +0100
+	id 1t9NRC-0004re-Dj
+	for lore@pengutronix.de; Fri, 08 Nov 2024 12:46:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MTmlHNziDMWqdOfI1BABVRECE2AsyR4EwujTG1Zm15g=; b=m3T97TVaAWaT/81DuZu3LYQgwZ
-	dIzi9TVeDQM02R/LeEC/xuYjl8D5i8ZKtg7u2O0lgtlitQGDky0/gK6e8P4Lhza1NHLegJpaQctkP
-	8Q9RYPmYGUwlbQbSNie7mKkmEnTNnmYl5pskS1+kJl/wR+z0QflhagsNheMvb1dMVM425u3rcIaMf
-	JleC/hLTHDflYBct1TIczLVjrEMAJaBSNutKTxdhO4n4oI5OrGj/NqyuNZRcYkpo7Sg9M11Vffj/v
-	enHNdd+X59pIqJZ94mnaD3SEgjXrCMfMZPnPNc6zhtJ0ZbHfm6O0Pr5ovXadxiYX5qXOvlPsOPMPu
-	4C9B8tXQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4I2j/GTZIwiWVf0tCfFsYJTypZIlH6ky8I6dgUA0E8U=; b=RABdtI3lOCOkhqa64tDHpQCNKD
+	lqmhZpmuHO4MJDnIVSKrM5VbqF8IvKhPBS3/Mh/hEOVSnnQz/uj/csbcQ5q50Z6RjY7vT2//0QtYh
+	ec/CaA81BlOdCChb+GfOo8ib4DelVdwsIK21w/+bFVe8EYEJMeiaeNv6mDBCsQHgg/4aIEy4xjvfJ
+	SIluW6dRTOIWEKcmL09dkGcaRzYMkrZuI/HJPqko+WOwCnpVoRl8xraBH5bC1qQZb2Lq/3gtwoeKe
+	qRs/X6iQ8xDwh34KiQ88x2yDPk9MKo1Qe0inxWfMIqnbPhPGB80TKn+IQ6Oysop1Do4K0Z30PgU4L
+	R8s0e1cg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9NHq-0000000AMbX-1UnB;
-	Fri, 08 Nov 2024 11:36:22 +0000
+	id 1t9NQh-0000000AOS6-0bq2;
+	Fri, 08 Nov 2024 11:45:31 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9MgC-0000000AEWs-239p
+	id 1t9MoH-0000000AGyy-1EJ1
 	for barebox@bombadil.infradead.org;
-	Fri, 08 Nov 2024 10:57:28 +0000
+	Fri, 08 Nov 2024 11:05:49 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
-	Reply-To:Cc:Content-ID:Content-Description;
-	bh=MTmlHNziDMWqdOfI1BABVRECE2AsyR4EwujTG1Zm15g=; b=NQ+w+S/myuHSPJBnRkH6FjE8yP
-	1HYXTdIGjGS0w9V0FIJg0ZGyfyJVNyxqXid9ZRvu7WKRqmVqE2ioEHb0mwh2PVHaDmN82wDFOOses
-	fFfZdE0wjVeJewRu3azK0GUj/UZtbcn2uAykOI1xRU2fE+oWeZcgTWSL4lq2ZhbDKufDEiB+P5bw+
-	0K01aON0GMOhiH2I2EGIn/J9uzjIe6EuzRIowWSl8ywAkS3RuzogYNbAIVX9CyXAt0rUlNW1OLj8A
-	vXv80Bxu9pgAr1nU00s2Fnp8f/bP0QwSwf1YlJGjfqRYV9cdxya2k/BR/JHxo5It8fcE3cEOwsCbb
-	qNxCyy6w==;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=4I2j/GTZIwiWVf0tCfFsYJTypZIlH6ky8I6dgUA0E8U=; b=ACthiy7EFs6XUxbPLcJrLcvrWg
+	mdpXUH4wuqrhy2ZiLQFtvcEcL4I+7MXjW1e85Aw3bdSITV+OCjQdFfzG4RpVagGVUCP28tijN4TYl
+	0vzNBjDg0+IX1cw5y+UN77IX2n7eMyK2dFQLGhSGIV/hpjh5eZqCOA4SSeklIG96xVxyiAeFzrRGK
+	78KYlDnbAS0rFt12NuBzADWSJNNbz+pbcKArnckuXR3TAERg/O5eY+v/an3Aq70fHya/ToQ/2uCdl
+	x57CfKeenDQR7olK6V1aBUeEeuV+wJBfF9yNApR1pn/KEkroX5fJFsnF3KuRDL0iEdU7QnJjHifsw
+	cgnzh4sg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Mg5-0000000CI4R-1Jsc
+	id 1t9MoD-0000000CITF-3NoW
 	for barebox@lists.infradead.org;
-	Fri, 08 Nov 2024 10:57:26 +0000
+	Fri, 08 Nov 2024 11:05:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Mg1-0000u9-R4; Fri, 08 Nov 2024 11:57:17 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1t9MoC-0002Sw-G2; Fri, 08 Nov 2024 12:05:44 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Mg1-002bet-26;
-	Fri, 08 Nov 2024 11:57:17 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Mg1-009mRW-1w;
-	Fri, 08 Nov 2024 11:57:17 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1t9MoB-002bjx-1W;
+	Fri, 08 Nov 2024 12:05:43 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t9MoB-0008Kd-1E;
+	Fri, 08 Nov 2024 12:05:43 +0100
+Date: Fri, 8 Nov 2024 12:05:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: "open list:BAREBOX" <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20241030-imx-flash-header-v3-v1-0-1ae28b3b8947@pengutronix.de>
-References: <20241030-imx-flash-header-v3-v1-0-1ae28b3b8947@pengutronix.de>
-Message-Id: <173106343759.2331147.16753778323386310962.b4-ty@pengutronix.de>
-Date: Fri, 08 Nov 2024 11:57:17 +0100
+To: Renaud Barbier <Renaud.Barbier@ametek.com>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <Zy3wh0qqT_LY8SkR@pengutronix.de>
+References: <BYAPR07MB4358138C14685D6A11CFF8A1EC5C2@BYAPR07MB4358.namprd07.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BYAPR07MB4358138C14685D6A11CFF8A1EC5C2@BYAPR07MB4358.namprd07.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241108_105723_984391_01F029B8 
-X-CRM114-Status: UNSURE (   8.36  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241108_110546_105773_B7B7ABD5 
+X-CRM114-Status: GOOD (  19.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,29 +101,44 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/2] ARM: i.MX: Add bootm support for i.MX flash header
- v3 images
+Subject: Re: NVME o nLS1046A-RDB
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi Renaud,
 
-On Wed, 30 Oct 2024 15:59:59 +0100, Sascha Hauer wrote:
-> On i.MX9 and some i.MX8 SoCs the barebox images are encapsulated in the
-> i.MX flash header v3 format. This series adds support for detecting and
-> chainloading them via bootm command.
+On Thu, Nov 07, 2024 at 01:42:18PM +0000, Renaud Barbier wrote:
+> I have installed a NVME device on a LS1046A-RDB:
+>       `-- pci-1957:81c0.1
+>             `-- pci-126f:2263.0
+>                `-- 0x00000000-0x6fc86d5fff ( 447.1 GiB): /dev/nvme0n1
+> 
+> My barebox version is 2022.03
+> 
+> Is there a way to format or mount the device from barebox?
 > 
 > 
+> barebox@LS1046A RDB Board:/ mount -t ext4 /dev/nvme0n1 /mnt/nvme0n1/
 
-Applied, thanks!
+It should work exactly like this.
 
-[1/2] filetype: detect i.MX flash header v3
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4a62bf7493ce (link may not be stable)
-[2/2] ARM: i.MX: Add bootm handler for i.MX flash header v3 images
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ce829430232d (link may not be stable)
+> mount: No such file or directory
+> running automount command 'mount nvme0n1' failed
 
-Best regards,
+This message is because there already is an automount command registered
+for /mnt/nvme0n1. /mnt/nvme0n1 is the default path for /dev/nvme0n1. You
+could have just typed 'mount nvme0n1'
+
+does "md -s /dev/nvme0n1" work as expected?
+
+Is it correct that there is no partition table on that disk?
+
+Sascha
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
