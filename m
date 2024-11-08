@@ -1,69 +1,71 @@
-Delivery-date: Fri, 08 Nov 2024 11:22:05 +0100
+Delivery-date: Fri, 08 Nov 2024 12:29:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9M7v-006HkT-2g
+	id 1t9NBQ-006IqO-2G
 	for lore@lore.pengutronix.de;
-	Fri, 08 Nov 2024 11:22:05 +0100
+	Fri, 08 Nov 2024 12:29:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9M7w-0004Rd-G7
-	for lore@pengutronix.de; Fri, 08 Nov 2024 11:22:04 +0100
+	id 1t9NBR-0003aC-AD
+	for lore@pengutronix.de; Fri, 08 Nov 2024 12:29:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5Ft1q4foZEXSTfrfAU9h/mgsqNe4okkdeAsqHFzulog=; b=Ldqng0c+2iTppEcSlO+g4ESszc
-	VocxIvWpCxclFNa9dmqEZ8AqOxmG26ptWpdHKSKGKog2ryrDsyumZthXFm0a5OdNAkqTmsVtkJ7b3
-	QDPm/p41KQZ1DMh2ZvluSL+0lil2cJ248VHR5pw6NsDIvC1izIWGA7o3bbajIFEQiB4yS4ZTpk8fn
-	zC71F6MXXpQFh+JxxWITN1aKO7gQK6EnECXbYvUptbcZLyGn5DUNrRAw1xwMTs+a2rXPG8N5HUzJk
-	clVoATrfs1Us6HpsiOiw9eGUInNi029wYl7m5/fjB4TVP5IKDma/Jb2HPM8yTQFp3kkZXZUqMvxMY
-	Ildb1lLQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=6QBV1fex7ZLJsIG9/SO9JixgyFcyNxOSPN65Ya5gZfY=; b=FLSSCuTqR+EAox7DboeEGX+Fqo
+	nX7Ok8QZUWDS8M1majLgJ13w8JbmhnrQyYihgvhzytT73NNlqsMx6xrmvUP3Re6WrMqwXZxuELLSJ
+	tRRaq2gSo7CLi+rlCMjuA9vPztUhMHn4xktQ/vIaD8qV1lki3kE4Gmx/hGiL8Bm6WdCy+ZDccLyxG
+	/Fut9OeSRhW0sGlpNxESQ63DI/I37Jl+6AV9TEiCuumHuj2afJlvwq/VEnHMyHLcLBDhdA636RMAT
+	Zg3rgzaaOPPj9DkzbwVi+5JfknTCvn0+++rekI+TUqIaCvsqkjoOXBkbN6TBo0taugdC3+FvlcMEI
+	SUdD1DBQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9M7V-0000000A5tY-3T7m;
-	Fri, 08 Nov 2024 10:21:37 +0000
+	id 1t9NAv-0000000ALZV-43O1;
+	Fri, 08 Nov 2024 11:29:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9M7T-0000000A5t1-0ASO
+	id 1t9MXf-0000000ABdE-2fkG
 	for barebox@lists.infradead.org;
-	Fri, 08 Nov 2024 10:21:36 +0000
+	Fri, 08 Nov 2024 10:48:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9M7R-0004JT-UA; Fri, 08 Nov 2024 11:21:33 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1t9MXd-0008G6-Un; Fri, 08 Nov 2024 11:48:37 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9M7R-002bXa-2F;
-	Fri, 08 Nov 2024 11:21:33 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9M7R-009gMq-24;
-	Fri, 08 Nov 2024 11:21:33 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1t9MXd-002beD-26;
+	Fri, 08 Nov 2024 11:48:37 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t9MXd-0007HI-1o;
+	Fri, 08 Nov 2024 11:48:37 +0100
+Date: Fri, 8 Nov 2024 11:48:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Jules Maselbas <jmaselbas@zdiv.net>
-In-Reply-To: <20241107145722.5145-2-jmaselbas@zdiv.net>
+To: Jules Maselbas <jmaselbas@zdiv.net>
+Cc: barebox@lists.infradead.org
+Message-ID: <Zy3shbbzAHNtiESt@pengutronix.de>
 References: <20241107145722.5145-1-jmaselbas@zdiv.net>
- <20241107145722.5145-2-jmaselbas@zdiv.net>
-Message-Id: <173106129364.2307797.13173005086001545457.b4-ty@pengutronix.de>
-Date: Fri, 08 Nov 2024 11:21:33 +0100
+ <20241107145722.5145-5-jmaselbas@zdiv.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107145722.5145-5-jmaselbas@zdiv.net>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241108_022135_116788_974367CE 
-X-CRM114-Status: UNSURE (   8.08  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241108_024839_695325_09017DF7 
+X-CRM114-Status: GOOD (  20.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,27 +87,65 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: (subset) [PATCH 1/6] clk: clk-composite: fix callback guard in
- clk_composite_round_rate
+Subject: Re: [PATCH 4/6] pinctrl: Add sun50i-a64 pinctrl driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Thu, 07 Nov 2024 15:57:17 +0100, Jules Maselbas wrote:
-> In the function clk_composite_round_rate a test for a NULL function pointer
-> guard the call to the round_rate callback but doesn't check for the correct
-> callback: it should be round_rate instead of set_rate
+On Thu, Nov 07, 2024 at 03:57:20PM +0100, Jules Maselbas wrote:
+> sunxi pinctrl driver, adapted from Linux, is split in two parts:
+>  - pinctrl-sunxi.c that implements gpio, pinctrl and pinmux functions
+>  - pinctrl-sun50i-a64.c that declare sun50i pins and their functions.
+>    This file only require minor adaptations and be easily copied from Linux.
 > 
+> The pin functions are needed for uart, SD/MMC, and likely for other
+> controllers too.
+> 
+> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+> ---
+>  drivers/pinctrl/Kconfig                    |   2 +
+>  drivers/pinctrl/Makefile                   |   1 +
+>  drivers/pinctrl/sunxi/Kconfig              |  13 +
+>  drivers/pinctrl/sunxi/Makefile             |   3 +
+>  drivers/pinctrl/sunxi/pinctrl-sun50i-a64.c | 594 +++++++++++++++++++++
+>  drivers/pinctrl/sunxi/pinctrl-sunxi.c      | 372 +++++++++++++
+>  drivers/pinctrl/sunxi/pinctrl-sunxi.h      | 224 ++++++++
+>  7 files changed, 1209 insertions(+)
+>  create mode 100644 drivers/pinctrl/sunxi/Kconfig
+>  create mode 100644 drivers/pinctrl/sunxi/Makefile
+>  create mode 100644 drivers/pinctrl/sunxi/pinctrl-sun50i-a64.c
+>  create mode 100644 drivers/pinctrl/sunxi/pinctrl-sunxi.c
+>  create mode 100644 drivers/pinctrl/sunxi/pinctrl-sunxi.h
 > 
 
-Applied, thanks!
+...
 
-[1/6] clk: clk-composite: fix callback guard in clk_composite_round_rate
-      https://git.pengutronix.de/cgit/barebox/commit/?id=351a306c0d71 (link may not be stable)
+> +
+> +int sunxi_pinctrl_probe(struct device *dev)
+> +{
+> +	const struct sunxi_pinctrl_desc *desc;
+> +	struct sunxi_pinctrl *pinctrl;
+> +	struct resource *iores;
+> +	int ret;
+> +
+> +	if (!IS_ENABLED(CONFIG_PINCTRL))
+> +		return 0;
 
-Best regards,
+You can drop this. A few drivers have it because they provide GPIO
+support even with pinctrl support disabled, but you don't do this here.
+
+Sascha
+
+> +
+> +	desc = device_get_match_data(dev);
+> +	if (!desc)
+> +                return -EINVAL;
+> +
+
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
