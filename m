@@ -1,68 +1,68 @@
-Delivery-date: Fri, 08 Nov 2024 10:53:23 +0100
+Delivery-date: Fri, 08 Nov 2024 10:57:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9LgA-006H7B-23
+	id 1t9LkF-006H9y-1B
 	for lore@lore.pengutronix.de;
-	Fri, 08 Nov 2024 10:53:23 +0100
+	Fri, 08 Nov 2024 10:57:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1t9LgB-0000xJ-BC
-	for lore@pengutronix.de; Fri, 08 Nov 2024 10:53:23 +0100
+	id 1t9LkG-0001CG-1c
+	for lore@pengutronix.de; Fri, 08 Nov 2024 10:57:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xsCrKpZpBswUG8C+G1krcxvLORe+jsHxeAjC0tQPSYc=; b=vWqio/f1vV1UC8E6IWrHVpRHj7
-	zluJq+XN193fNlYZsTHQNhNy4ZYsH+ovSm7RV2hVSh8k8ehkIJ3rXgwym0Ycg8lLwhR6zwj0wdkr8
-	y9fC+RHw9KesMd3QdP5Dufn+LGPZvkO5f/VDRakgLEgI4hF7bSct9mMZtinNypTVha51WWModoPL0
-	MX5OUjGe30Kk8LQs5DnabeuGc6nMLwJeYVTRQZfF+hi/qvdejFkQphCtFDSmPTWdFwUh4fsCLawbc
-	oVttMszOm81/SEnfYFPKbE1mh0I1BsC0/AQcdD9Kc+GyXC3Sxrf7QQZeMJhm/t7ZTbQCrvFmtR0Qg
-	9iRt0LDw==;
+	bh=/ICjnYEK/4mRLYf4XspnmnPMaCM9pHKPZpjQXS7PWL8=; b=oPExYoQRvvJh/4cd1KC/8pXlAl
+	eBbefDbUihU9cM4AhCSv9bsF+OJJRSAWNCkQg7JY0VT9SvzslnZJK5IgcnvzAPj0kJqqz8EITu0SS
+	PUTtTwTjHhO5FF1WZChh3ExrCPm+lNaZ1WLP67I9dGKWjav32F++TDxxeGOuMGZ2MQ6m1m4KCWVvY
+	4+xU6cPN3wgeIBIyIrTL0m8pvLpS2QPHK6mzKVTHJxgtv3NnB6dKmWnfwBaP6oU8XExmfbQtiaGfs
+	GQhpyW4w5A/CY/QQuut3JlwlbJLQmRT7N3AZjFoqxoYoeMKhBSE3H3JKun/j4KEBJcI/HfyNtSbYG
+	0oWWxbCg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Lfl-0000000A19f-2wqu;
-	Fri, 08 Nov 2024 09:52:57 +0000
+	id 1t9Ljq-0000000A1gs-3Pm5;
+	Fri, 08 Nov 2024 09:57:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9Lfi-0000000A18y-3v7b
+	id 1t9Ljn-0000000A1gQ-3J5e
 	for barebox@lists.infradead.org;
-	Fri, 08 Nov 2024 09:52:56 +0000
+	Fri, 08 Nov 2024 09:57:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Lfh-0000ou-QW; Fri, 08 Nov 2024 10:52:53 +0100
+	id 1t9Ljm-000191-9N; Fri, 08 Nov 2024 10:57:06 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Lfh-002bCb-22;
-	Fri, 08 Nov 2024 10:52:53 +0100
+	id 1t9Ljm-002bCp-0J;
+	Fri, 08 Nov 2024 10:57:06 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1t9Lfh-009dCI-1r;
-	Fri, 08 Nov 2024 10:52:53 +0100
+	id 1t9Ljm-009dN3-08;
+	Fri, 08 Nov 2024 10:57:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20241107073114.1866198-1-s.hauer@pengutronix.de>
-References: <20241107073114.1866198-1-s.hauer@pengutronix.de>
-Message-Id: <173105957357.2295605.7524647184378142234.b4-ty@pengutronix.de>
-Date: Fri, 08 Nov 2024 10:52:53 +0100
+To: barebox@lists.infradead.org, 
+ Alexander Shiyan <eagle.alexander923@gmail.com>
+In-Reply-To: <20241106060338.8757-1-eagle.alexander923@gmail.com>
+References: <20241106060338.8757-1-eagle.alexander923@gmail.com>
+Message-Id: <173105982603.2296270.11007303917805150715.b4-ty@pengutronix.de>
+Date: Fri, 08 Nov 2024 10:57:06 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241108_015255_007812_A249FBDC 
-X-CRM114-Status: UNSURE (   5.45  )
+X-CRM114-CacheID: sfid-20241108_015707_868570_58859FCC 
+X-CRM114-Status: UNSURE (   8.60  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,21 +85,26 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mailbox: make mailbox.h self contained
+Subject: Re: [PATCH] ntd: nand: Fix unconditional message
+ "CONFIG_NAND_NEED_ECC_PLACEMENT_INTERLEAVED is disabled"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 07 Nov 2024 08:31:14 +0100, Sascha Hauer wrote:
-> mailbox.h needs linux/list.h, so include it to make the file self
-> contained. Also declare of_phandle_args.
+On Wed, 06 Nov 2024 09:03:38 +0300, Alexander Shiyan wrote:
+> The message "CONFIG_NAND_NEED_ECC_PLACEMENT_INTERLEAVED is disabled"
+> is always issued, regardless of the MTD ECC layout used, since it
+> is executed through "fallthrough" from the previous case statement.
 > 
+> Additionally, if !IS_ENABLED(CONFIG_NAND_NEED_ECC_PLACEMENT_INTERLEAVED)
+> is triggered, the patch calls break, which disables the additional checks.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] mailbox: make mailbox.h self contained
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8d418ff121da (link may not be stable)
+[1/1] ntd: nand: Fix unconditional message "CONFIG_NAND_NEED_ECC_PLACEMENT_INTERLEAVED is disabled"
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4ae4449d63fc (link may not be stable)
 
 Best regards,
 -- 
