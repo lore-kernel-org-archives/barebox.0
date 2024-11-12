@@ -1,74 +1,75 @@
-Delivery-date: Tue, 12 Nov 2024 10:16:45 +0100
+Delivery-date: Tue, 12 Nov 2024 10:16:47 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tAn0v-000xMA-0E
+	id 1tAn0x-000xMX-2o
 	for lore@lore.pengutronix.de;
-	Tue, 12 Nov 2024 10:16:45 +0100
+	Tue, 12 Nov 2024 10:16:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tAn0u-0006mZ-C4
-	for lore@pengutronix.de; Tue, 12 Nov 2024 10:16:45 +0100
+	id 1tAn0x-0006oU-Ar
+	for lore@pengutronix.de; Tue, 12 Nov 2024 10:16:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6Wi/N9C9Te7+u8ETKIqXA3GwUkrYvt/8VoEbwUbMAv0=; b=y4Z5Ckny5g1Xl6tScYJUHRumVF
-	jN6cbrzfkaqdaTDuqePrKmubptFePXArX0bqOtkNpohZvkciJpBHNThWo7jB3TD/iombubLL0NflK
-	FDh8seV0L2hf0mvTk2VoefP9rPApKTdnnerm0J9nys0pB1dL0mbqvZck9dzuS1bVj5rHF9Rtzm5CG
-	UMRb7CBD7JnkCmDEJ5o9ACfvq0iaKezFbF/qXxpATAk3ZYExSqjrXXyORjFivlCXhiFeWyCv3fyaK
-	ucz3oLmqGFbwi9uXucpd59VrX4gBZJe722mqu643gEuZ7EVWmT6vnd+fofsK942jEgMDasEJolu74
-	cJETIKtQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=q5Sye1TQu66lj4f5de+Ks6oMKP4HOd6zqdNlHfZ+oRc=; b=iTCh2nJSTjqCTV6cQgF9554Q9e
+	rWfOuTYiwmJL1neVbfYAC4Aoe8orCMTANzSxC+stU6N736sHhJOSdQ96PCdK0zOSmRVMqFPvtmRci
+	/EEqQYb76uOD3+JN+LKH5FyWoaLUEdq7q0loPrAaTRoGzzrxCf1N4dA0XMY748dinYAX9JqDUgLPa
+	LXAQqgu93H6ONRNWKQfv9RQLRkVejjrpKQq08G5sbv5DvxBap9H3+uCJYWGLYNu3oLwfVZg47oL4l
+	I3ksQig9492j6h6qEMf0HtUIn/zhBAjYdSA3z8ykj8UnCAg64eRkBQxBBgdQcyYIVU9XTQZV96c+R
+	hygWq6jw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tAn0Q-00000002mf8-4BPs;
-	Tue, 12 Nov 2024 09:16:15 +0000
+	id 1tAn0Z-00000002mjO-1dLx;
+	Tue, 12 Nov 2024 09:16:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tAn0O-00000002me5-06EO
+	id 1tAn0V-00000002mh9-3xgp
 	for barebox@lists.infradead.org;
-	Tue, 12 Nov 2024 09:16:13 +0000
+	Tue, 12 Nov 2024 09:16:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tAn0M-0006P2-PB; Tue, 12 Nov 2024 10:16:10 +0100
+	id 1tAn0M-0006P1-PK; Tue, 12 Nov 2024 10:16:10 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tAn0M-000O0T-1p;
+	id 1tAn0M-000O0R-1m;
 	Tue, 12 Nov 2024 10:16:10 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tAn0M-00GNBa-1c;
+	id 1tAn0M-00GNBa-1a;
 	Tue, 12 Nov 2024 10:16:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Nov 2024 10:16:05 +0100
+Date: Tue, 12 Nov 2024 10:16:03 +0100
+Message-Id: <20241112-k3-watchdog-v1-0-ceb254779735@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241112-k3-watchdog-v1-2-ceb254779735@pengutronix.de>
-References: <20241112-k3-watchdog-v1-0-ceb254779735@pengutronix.de>
-In-Reply-To: <20241112-k3-watchdog-v1-0-ceb254779735@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIANMcM2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDQ0Mj3Wxj3fLEkuSMlPx0XdPk1FRLE6M0Y0PLRCWgjoKi1LTMCrBp0bG
+ 1tQCCXHMxXQAAAA==
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731402970; l=4500;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731402970; l=1089;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=WwP5RvIh8QwIx2aleIQFtc418XAtTVBdXw5vYnPpw5A=;
- b=7y7IUdyj9nPDHqJ8bAWk02Ye1AA6FKYxPpzJCY6+iQ9y+WrroNK0y36fY4eaaI8m41yxwDgl3
- unrOhhmhuPVB+uRgBuVyldb9O5HM8NyjC9YpoPmrevQ6uEEzt1FhNdS
+ bh=w2fV2bGEn2jcGgViajRKEEEmrGxlgYV2bRse2nxicjs=;
+ b=6UVwqe/43qszLjQ72cg304N81NTKrHYmm/nuUOAPiioL+DH3aL/X6BpYwfZKaOxMq1pduFRFG
+ fb515adRHKlAC7bhVSc9ueZ5s6B4AejyK7b1gmnsj+cgEgQLiIZl+sO
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241112_011612_106386_03BC4641 
-X-CRM114-Status: GOOD (  18.48  )
+X-CRM114-CacheID: sfid-20241112_011620_051141_0FABFCD2 
+X-CRM114-Status: GOOD (  10.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,159 +91,40 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] watchdog: add watchdog ping support
+Subject: [PATCH 0/3] watchdog: Add TI rti_wdg support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The barebox watchdog API is quite limited. the set_timeout() hook is an
-all purpose function for enabling and disabling the watchdog and also to
-configure the timeout.
-This is not suitable for watchdogs which for example can't change the
-timeout anymore once started.
-This patch introduces a watchdog_ping() function which hooks into the
-drivers with a struct watchdog::ping function. With this the watchdog
-can be pinged without caring about the timeout.  The ping hook is
-optional. When not implemented watchdog_ping() falls back to call
-watchdog_set_timeout() with the current watchdog timeout.
+This series adds support for the rti_wdg found on TI K3 SoCs. The
+timeout for this watchdog cannot be reconfigured once started which
+doesn't fit well into our current watchdog_set_timeout() API which
+both pings the watchdog and starts it. For this reason this series
+introduces an optional watchdog_ping() function which can be used
+for this type of watchdog.
+
+Sascha
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/wd.c              | 17 ++++++++++++++++-
- drivers/watchdog/wd_core.c | 28 ++++++++++++++++++++++++----
- include/watchdog.h         |  7 +++++++
- 3 files changed, 47 insertions(+), 5 deletions(-)
+Sascha Hauer (3):
+      watchdog: cleanup timeout_cur parameter
+      watchdog: add watchdog ping support
+      watchdog: add rti_wdt support
 
-diff --git a/commands/wd.c b/commands/wd.c
-index 11f888133a..18e8e03378 100644
---- a/commands/wd.c
-+++ b/commands/wd.c
-@@ -17,14 +17,18 @@ static int do_wd(int argc, char *argv[])
- 	struct watchdog *wd = watchdog_get_default();
- 	int opt;
- 	int rc;
-+	bool do_ping = false;
- 
--	while ((opt = getopt(argc, argv, "d:x")) > 0) {
-+	while ((opt = getopt(argc, argv, "d:xp")) > 0) {
- 		switch (opt) {
- 		case 'd':
- 			wd = watchdog_get_by_name(optarg);
- 			break;
- 		case 'x':
- 			return watchdog_inhibit_all();
-+		case 'p':
-+			do_ping = true;
-+			break;
- 		default:
- 			return COMMAND_ERROR_USAGE;
- 		}
-@@ -39,6 +43,16 @@ static int do_wd(int argc, char *argv[])
- 		}
- 	}
- 
-+	if (do_ping) {
-+		rc = watchdog_ping(wd);
-+		if (rc) {
-+			printf("watchdog ping failed: %pe (%d)\n", ERR_PTR(rc), rc);
-+			return COMMAND_ERROR;
-+		}
-+
-+		return 0;
-+	}
-+
- 	rc = watchdog_set_timeout(wd, timeout);
- 	if (rc < 0) {
- 		switch (rc) {
-@@ -68,6 +82,7 @@ BAREBOX_CMD_HELP_TEXT("When TIME is 0, the watchdog gets disabled,")
- BAREBOX_CMD_HELP_TEXT("Without a parameter the watchdog will be re-triggered.")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-d DEVICE\t", "watchdog name (default is highest priority watchdog)")
-+BAREBOX_CMD_HELP_OPT("-p\t", "ping watchdog")
- BAREBOX_CMD_HELP_OPT("-x\t", "inhibit all watchdogs (i.e. disable or autopoll if possible)")
- BAREBOX_CMD_HELP_END
- 
-diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index 663a6e5c75..27371672f3 100644
---- a/drivers/watchdog/wd_core.c
-+++ b/drivers/watchdog/wd_core.c
-@@ -57,6 +57,29 @@ int watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
- }
- EXPORT_SYMBOL(watchdog_set_timeout);
- 
-+int watchdog_ping(struct watchdog *wd)
-+{
-+	int ret;
-+
-+	if (!wd)
-+		return -ENODEV;
-+
-+	if (!watchdog_hw_running(wd))
-+		return 0;
-+
-+	if (wd->ping) {
-+		ret = wd->ping(wd);
-+		if (!ret)
-+			wd->last_ping = get_time_ns();
-+	} else {
-+		if (!wd->timeout_cur)
-+			wd->timeout_cur = wd->timeout_max;
-+		ret = watchdog_set_timeout(wd, wd->timeout_cur);
-+	}
-+
-+	return ret;
-+}
-+
- static int watchdog_set_priority(struct param_d *param, void *priv)
- {
- 	struct watchdog *wd = priv;
-@@ -78,11 +101,8 @@ static void watchdog_poller_cb(void *priv);
- 
- static void watchdog_poller_start(struct watchdog *wd)
- {
--	unsigned int timeout_s;
--
--	timeout_s = wd->timeout_cur ?: wd->timeout_max;
-+	watchdog_ping(wd);
- 
--	watchdog_set_timeout(wd, timeout_s);
- 	poller_call_async(&wd->poller, 500 * MSECOND,
- 			watchdog_poller_cb, wd);
- 
-diff --git a/include/watchdog.h b/include/watchdog.h
-index 8084f27596..c70883fbd0 100644
---- a/include/watchdog.h
-+++ b/include/watchdog.h
-@@ -17,6 +17,7 @@ struct device_node;
- 
- struct watchdog {
- 	int (*set_timeout)(struct watchdog *, unsigned);
-+	int (*ping)(struct watchdog *);
- 	const char *name;
- 	struct device *hwdev;
- 	struct device dev;
-@@ -49,6 +50,7 @@ struct watchdog *watchdog_get_default(void);
- struct watchdog *watchdog_get_by_name(const char *name);
- int watchdog_get_alias_id_from(struct watchdog *, struct device_node *);
- int watchdog_set_timeout(struct watchdog*, unsigned);
-+int watchdog_ping(struct watchdog *);
- int watchdog_inhibit_all(void);
- #else
- static inline int watchdog_register(struct watchdog *w)
-@@ -76,6 +78,11 @@ static inline int watchdog_set_timeout(struct watchdog*w, unsigned t)
- 	return 0;
- }
- 
-+static inline int watchdog_ping(struct watchdog *)
-+{
-+	return 0;
-+}
-+
- static inline int watchdog_inhibit_all(void)
- {
- 	return -ENOSYS;
+ commands/wd.c              |  17 ++++-
+ drivers/watchdog/Kconfig   |   7 ++
+ drivers/watchdog/Makefile  |   1 +
+ drivers/watchdog/rti_wdt.c | 183 +++++++++++++++++++++++++++++++++++++++++++++
+ drivers/watchdog/wd_core.c |  43 ++++++++---
+ include/watchdog.h         |   8 +-
+ 6 files changed, 245 insertions(+), 14 deletions(-)
+---
+base-commit: 11e7f69879ca71f63f4b122c0438c4085281fe17
+change-id: 20241112-k3-watchdog-5cee942f319a
 
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
