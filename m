@@ -1,72 +1,69 @@
-Delivery-date: Tue, 12 Nov 2024 09:01:54 +0100
+Delivery-date: Tue, 12 Nov 2024 09:51:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tAlqU-000vxm-1z
+	id 1tAmcB-000wpd-1r
 	for lore@lore.pengutronix.de;
-	Tue, 12 Nov 2024 09:01:54 +0100
-Received: from bombadil.infradead.org ([198.137.202.133])
+	Tue, 12 Nov 2024 09:51:11 +0100
+Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tAlqU-0001CB-0n
-	for lore@pengutronix.de; Tue, 12 Nov 2024 09:01:54 +0100
+	id 1tAmcA-00011m-UW
+	for lore@pengutronix.de; Tue, 12 Nov 2024 09:51:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+KN1nxp2R/SXjH3QqbFwhUgzISIirbjshB12Cd5jzxI=; b=hxR63N4j0JqzygMKLUGwUxFndq
-	OuH08bFi3D/aMfelrdLkVwJ5RZzJJTACQ2OAacYW5+BUe3Y/2UtVaWwfGiq/ZBB+d6F/bTz/BaW1Q
-	RRvqxXCdjFWiMCfCGhSOT9hHzVh6z/3hSjWNqSryZXE9vSlFBoyC9p9GQNPBryCDxM5dhvGfWoRY9
-	R3h4zuqNC2Z/3vfn7BQIhGaykYwqU2TNPgImi8h3WKH02JL7yCHwKfUcI5TEQMfXfdv4WLVpkdOYu
-	M9QZGrbupEeljVxKQ6VtQ4fb7wJVK0n94oup3MJ4x4kFhTR9cfGMdgV7gtnQJIYeGxF4aM+HYqAQi
-	oXFEKYog==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=o6r+siQFCEfG+Hgy9pCavztCV7AzGk5iorchQIcXWb4=; b=rG2gcPzAUbbz7iQ9gYqeLHr77F
+	ADXgWRzsSx6p0/xkYntKjQ73imEqED0CTKWnUISjCxoXpElJrYbiGalJvghM1PduLCI/9MtctI9Qd
+	y3fjtX2SvRsuOmBMoRf7NDsLocdP0VlxHNF78AcyT7bf7OBxj43Ko85lh2TpkHT9FJpPI5WTsiL2T
+	rJB6nZJ24MK11PvX/yhJyzL7xCbPtM6Z3eRpB2uXRNC44574IhmF+U8Y8OuP1uE+UiTphVuk7w6Dc
+	4tfzwxh/Y/tpQSD2qZSE2wk065QULUbtrk+1LakzXcaBgnAbgrafM5l4HSvfl4UWJpUbQNIBosC7F
+	hEE0Z1yA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tAlnZ-00000002YkC-2Ljs;
-	Tue, 12 Nov 2024 07:58:53 +0000
+	id 1tAmbj-00000002hn7-2fgi;
+	Tue, 12 Nov 2024 08:50:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tAllx-00000002YQx-0hIK
+	id 1tAmXU-00000002h0s-1EZq
 	for barebox@lists.infradead.org;
-	Tue, 12 Nov 2024 07:57:14 +0000
+	Tue, 12 Nov 2024 08:46:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tAllr-0008SP-M1; Tue, 12 Nov 2024 08:57:07 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tAmXR-0000Ey-N0; Tue, 12 Nov 2024 09:46:17 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tAllq-000NGH-2m;
-	Tue, 12 Nov 2024 08:57:06 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tAllq-007iYP-2T;
-	Tue, 12 Nov 2024 08:57:06 +0100
-Date: Tue, 12 Nov 2024 08:57:06 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tAmXR-000NgP-1h;
+	Tue, 12 Nov 2024 09:46:17 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tAmXR-00CdGg-1W;
+	Tue, 12 Nov 2024 09:46:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Renaud Barbier <Renaud.Barbier@ametek.com>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <ZzMKUugcLKGY4aq-@pengutronix.de>
-References: <BYAPR07MB4358138C14685D6A11CFF8A1EC5C2@BYAPR07MB4358.namprd07.prod.outlook.com>
- <Zy3wh0qqT_LY8SkR@pengutronix.de>
- <BYAPR07MB4358A74708FE72C8789667C0EC582@BYAPR07MB4358.namprd07.prod.outlook.com>
+To: "open list:BAREBOX" <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20241108-network-k3-v1-0-ee71bff15eb7@pengutronix.de>
+References: <20241108-network-k3-v1-0-ee71bff15eb7@pengutronix.de>
+Message-Id: <173140117746.3010855.9949814962539416022.b4-ty@pengutronix.de>
+Date: Tue, 12 Nov 2024 09:46:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BYAPR07MB4358A74708FE72C8789667C0EC582@BYAPR07MB4358.namprd07.prod.outlook.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241111_235713_249421_EE348484 
-X-CRM114-Status: GOOD (  15.16  )
+X-CRM114-CacheID: sfid-20241112_004620_374413_DC9EDC56 
+X-CRM114-Status: UNSURE (   9.65  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,52 +76,48 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-SA-Exim-Connect-IP: 198.137.202.133
+X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RCVD_IN_VALIDITY_RPBL_BLOCKED,
-	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: NVME o nLS1046A-RDB
+Subject: Re: [PATCH 0/7] ARM: K3: add AM625 ethernet support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Nov 11, 2024 at 11:15:46AM +0000, Renaud Barbier wrote:
-> 
-> From barebox:
-> -------------------
-> 
-> The node /dev/nvme0n1p1 does not exists only /dev/nvme0n1.
-> From barebox, I saw that below once. 
-> It is not repeating at present whatever the command I use:
-> ERROR: ext4 ext40: probe failed: Invalid argument
-> 
-> 
-> 
-> > 
-> > does "md -s /dev/nvme0n1" work as expected?
-> barebox@LS1046A RDB Board:/ md -s /dev/nvme0n1
-> 00000000: 00000000 00000000 00000000 00000000                ................
-> 00000010: 00000000 00000000 00000000 00000000                ................
-> 00000020: 00000000 00000000 00000000 00000000                ................
-> ....
 
-Ok, 0x00000000 could be correct or not. Try md -s /dev/nvme0n1 0+512, it
-should give you the protective MBR at the end. Or use some other
-non-empty area and verify with Linux the data is correct.
+On Fri, 08 Nov 2024 14:14:58 +0100, Sascha Hauer wrote:
+> This series adds ethernet support for TI K3 SoCs. The driver has been
+> tested on the TI AM625 based Beagleplay board. The driver needs an
+> external DMA engine and also some TI specific units, so this series is
+> longer than it should be for just an ethernet driver.
+> 
+> 
 
-DMA issues as Ahmad mentioned is a good guess.
+Applied, thanks!
 
-Sascha
+[1/7] net: davinci_mdio: separate driver
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b32a92fd714a (link may not be stable)
+[2/7] firmware: ti_sci: update from U-Boot
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d355335adb75 (link may not be stable)
+[3/7] ARM: K3: add navss-ringacc driver
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0ae0d8b12b1c (link may not be stable)
+[4/7] dma: add dma-devices support
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f4b9411a0b97 (link may not be stable)
+[5/7] dma-devices: add k3-udma support
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4cc7c7658297 (link may not be stable)
+[6/7] ARM: k3: am625: add syscon compatible to phy_gmii_sel
+      https://git.pengutronix.de/cgit/barebox/commit/?id=74dda1b25c23 (link may not be stable)
+[7/7] net: add am65-cpsw-nuss driver
+      https://git.pengutronix.de/cgit/barebox/commit/?id=89ad0c51b24d (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
