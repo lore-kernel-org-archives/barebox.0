@@ -1,61 +1,75 @@
-Delivery-date: Wed, 13 Nov 2024 18:46:52 +0100
+Delivery-date: Wed, 13 Nov 2024 22:04:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBHS8-001WLB-1R
+	id 1tBKWx-001Zl4-1n
 	for lore@lore.pengutronix.de;
-	Wed, 13 Nov 2024 18:46:52 +0100
+	Wed, 13 Nov 2024 22:04:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBHS7-0004Yz-Np
-	for lore@pengutronix.de; Wed, 13 Nov 2024 18:46:52 +0100
+	id 1tBKWw-0003wF-VG
+	for lore@pengutronix.de; Wed, 13 Nov 2024 22:04:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tUi5AAeTWnaLNnwoiMZRJNubQ2jvoaTfvJM16gpx9es=; b=jUrUF3fhyQvlJH2ppUQk+20gB+
-	kCplwDmWl8pHzeO9ZW1Hj5ebNL1rkETr8QY4d/vwX4p/ME7gi+tFfoZIT+qNLAbn+FWpqENOCvh0c
-	0B/4Ti32NwHsu7nt2yco7PBCqb48eaDFIAGUe5CStJ/aCvfRpm+TDRi95fUadbRCdmo2BdCy1B695
-	wL2QyP2smBYD9a6rkP62sO+aLkWMkKaWoBA2rPW/QKnYj4pzxD6i4VI/sX6ZU0D3NY2Dpn7U+zmFU
-	yYgBjWNtABcEwe62XI31gEtsZ0/8kWxHPOvtxxrvh5wn/k6gzHCB+r2TzECHea0/z9LeSwSBncQMq
-	ZvEcx2RA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:
+	From:Subject:Cc:Message-Id:Date:Content-Type:Content-Transfer-Encoding:
+	Mime-Version:Resent-To:Resent-Message-ID:Resent-Date:Resent-From:Reply-To:
+	Content-ID:Content-Description:Resent-Sender:Resent-Cc:List-Owner;
+	bh=hoBWjDDQMvpcebxAzbbRcTqFs+xIbCuCcC7UwvhYpfQ=; b=n/nm0DwLh978KDIQs+8i0i1Ia4
+	jirVs7Mw5iDycQA4H40tTgSk8/B/7SORgiq5dMuw+HfcNJmSQHhsTYPo60PqEMLn5l650KClPPsIn
+	LH8z5FNlsRtdesFMKkRqPJEPa6B6sKz0r7c7Ke92ZHPud+fSND1iZq3xmlMIH9hsModApTCDcbc01
+	Ym23kHkn2/OR7gCyr62Wx69PqZWeu6Z8KqHYz5Bn/sRhdvV1V58RL+NpBNuk5wSLUPAFK6eotdEAP
+	3eui3zUd/3NSJm32uZFFAVk8bNoqDoyU3DC9PyxzhG9Eys0wuCegiF3p/9H6QgMJ1FsVD1Q6D90Hk
+	6wNZ7YIw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBHRU-00000007bPG-1tGv;
-	Wed, 13 Nov 2024 17:46:12 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tBKWG-000000081PW-1h9X;
+	Wed, 13 Nov 2024 21:03:20 +0000
+Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBHRR-00000007bON-01nY
+	id 1tBKWC-000000081Oy-3ECv
 	for barebox@lists.infradead.org;
-	Wed, 13 Nov 2024 17:46:10 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBHRM-0004LY-QP; Wed, 13 Nov 2024 18:46:04 +0100
-Message-ID: <cebcef57-6a3a-4403-921f-255b0e5a3864@pengutronix.de>
-Date: Wed, 13 Nov 2024 18:46:04 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: AbdelRahman Yossef <abdelrahmanyossef12@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20241112191058.397165-1-abdelrahmanyossef12@gmail.com>
- <383d6b94-1152-4257-b18c-9f31857944ca@pengutronix.de>
- <ZzSY1El982Q03Pz5@pengutronix.de>
- <CABwgSGZ4kyiz9Yhh1RevsBg=eMgOK29HttSgNc=+o5xgWmXDvw@mail.gmail.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <CABwgSGZ4kyiz9Yhh1RevsBg=eMgOK29HttSgNc=+o5xgWmXDvw@mail.gmail.com>
+	Wed, 13 Nov 2024 21:03:18 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
+	t=1731531790;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:resent-to:
+	 resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references;
+	bh=hoBWjDDQMvpcebxAzbbRcTqFs+xIbCuCcC7UwvhYpfQ=;
+	b=jguApc15/zX7W3xiHJSKfynMdsDNhYs0Me+Myojd1fzdba9nQbTZQKGBTPBL7EbOSCvcwf
+	E138gyQijlmWaLg9TM7bWPUl+y+rtvFIXruKsLL9taJXOoIhiQ65ikcbhUoVkGp1aNPWNu
+	peDX+wHmw/o2l0FtAD45ad6JYcnszZxLK5MNQFWoVE9fI44oFEEbiS87G7Spo3NPmOwVYW
+	/MR9nApohh1jF/2Pq1TqSyK/dbZznL8JF9VZK+XYAEKUOlnQm+NxGUbx5xLOuLLXnBykbK
+	gJDmE3JrMeE+mSPzYDtNYcFDM//qQF4MDiNvPGb90iRbakiWiY8Fca/bOVwhdg==
+Received: from localhost (91-160-75-97.subs.proxad.net [91.160.75.97])
+	by zdiv.net (OpenSMTPD) with ESMTPSA id b152f9f6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <barebox@lists.infradead.org>;
+	Wed, 13 Nov 2024 22:03:10 +0100 (CET)
+Resent-From: "Jules Maselbas" <jmaselbas@zdiv.net>
+Resent-Date: Wed, 13 Nov 2024 22:03:10 +0100
+Resent-Message-ID: <D5LCSJ09YMHQ.2T699FOCCFSDV@zdiv.net>
+Resent-To: barebox@lists.infradead.org
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 12 Nov 2024 16:58:49 +0100
+Message-Id: <D5KBOYOWSVP6.N4RAVEQKZM4U@zdiv.net>
+Cc: <barebox@lists.infradead.org>
+From: "Jules Maselbas" <jmaselbas@zdiv.net>
+To: "Sascha Hauer" <s.hauer@pengutronix.de>
+X-Mailer: aerc 0.18.2
+References: <20241107145722.5145-1-jmaselbas@zdiv.net>
+ <20241107145722.5145-4-jmaselbas@zdiv.net>
+ <Zy3qa6TIqOYksP1K@pengutronix.de> <D5GR0OVKQLUS.3MJMS7VQJ356L@zdiv.net>
+ <Zy4LSAP1EC_yQHH6@pengutronix.de>
+In-Reply-To: <Zy4LSAP1EC_yQHH6@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241113_094609_069980_76042E11 
-X-CRM114-Status: GOOD (  26.43  )
+X-CRM114-CacheID: sfid-20241113_130317_139453_ADF64392 
+X-CRM114-Status: GOOD (  26.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,114 +87,78 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] of: fdt: fix possible overflow during parsing of fdt
+Subject: Re: [PATCH 3/6] clk: Add clock driver for sun50i-a64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+resent, as i forgot barebox ml in CC
 
-On 13.11.24 13:37, AbdelRahman Yossef wrote:
-> I will update the patch and send it as v4.
-> 
-> Is it enough to just add the changes to Changelog or change the commit message?
+On Fri Nov 8, 2024 at 1:59 PM CET, Sascha Hauer wrote:
+> On Fri, Nov 08, 2024 at 12:08:45PM +0100, Jules Maselbas wrote:
+> > Hi Sascha,
+> >
+> > On Fri Nov 8, 2024 at 11:39 AM CET, Sascha Hauer wrote:
+> > > Hi Jules,
+> > >
+> > > On Thu, Nov 07, 2024 at 03:57:19PM +0100, Jules Maselbas wrote:
+> > > > Clock driver adapted from Linux.
+> > > > The pll-cpux is set to 816MHz and pll-periph0-2x is set to 1.2GHz.
+> > >
+> > > From which driver did you adapt this from? I tried copying
+> > > drivers/clk/sunxi-ng/ccu-sun50i-a64.c from Linux over your driver and=
+ it
+> > > looks quite different.
+> > Yes this is adapted from drivers/clk/sunxi-ng/ccu-sun50i-a64.c, but it =
+is very
+> > different. This is a very stripped down version. I wanted to avoid havi=
+ng to
+> > porting all the clock/gate/div code for sunxi and use as much as possib=
+le the
+> > one available in barebox.
+> >
+> > > Would it be possible to get closer to the Linux driver? This would pa=
+y
+> > > off once we want to do an update from Linux.
+> > Humm...
+> > I could try to get it closer, i would like to not having to copy all th=
+e ccu*
+> > drivers, but maybe i could define barebox version of SUNXI_CCU_* macros
+>
+> In my experience Linux clk drivers fit quite nicely into barebox when
+> just blindly throwing the code into it. I haven't got any experience
+> with the allwinner clk code though, so your mileage may vary.
 
-The old commit message wouldn't reflect the new changes, so please
-rewrite it to be in-line with the diff.
+Allwinner clk driver doesn't uses any common clk such as generic div/mux/ga=
+te,
+but redefines a lot of different small clk driver.
 
-The changelog is separate and should look like this or similar:
+I tried to port the Allwinner clk into barebox, but it requires some change=
+s:
+ - get_parent function signatures doesn't match barebox's callback signatur=
+es
+ - include <linux/delay.h> is missing and should include clock.h
+ - clk drivers uses `struct notifier_block` which isn't supported
+ - clk drivers uses get_rate_range which isn't supported either
 
----
-v3 -> v4:
-  - replace < 0 with <= 0 (Sascha)
-  - remove + 1 in strnlen (Sascha)
-v2 -> v3:
-  - did foo to bar ($name_of_person_who_suggested_it)
-v1 > v2:
-  - did baz to bazzer 
----
+> Putting the (mostly) unmodified versions into barebox has the advantage
+> that updating from Linux is easy and adding new SoC support is easy as
+> well.
+>
+> That said, it's fine to have heavily modified ckl driver versions in
+> barebox and we can try that if you like. We can always revisit this
+> decision should we have to.
 
-Thanks,
-Ahmad
+I think that right now i don't have the energy to look further into porting
+the Linux sunxi clock code to barebox.
+I am fine with keeping this modified clk driver.
+However, i would like for the V2 to put some functions into a common file
+so they can be shared with other sunxi SoC.
 
-> 
-> On Wed, Nov 13, 2024 at 2:17 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->>
->> On Tue, Nov 12, 2024 at 08:56:58PM +0100, Ahmad Fatoum wrote:
->>> Hello Abdelrahman,
->>>
->>> Thanks for your patch.
->>>
->>> On 12.11.24 20:10, Abdelrahman Youssef wrote:
->>>> While fuzzing, the name marked by FDT_BEGIN_NODE sometimes extends beyond
->>>> the struct block area, Causing a heap-overflow.
->>>>
->>>> Since `maxlen` is an unsigned integer representing the length of name,
->>>> It can be negative, So it overflows to large numbers, Causing strnlen()
->>>> to overflow.
->>>>
->>>> So we can just change the type of maxlen to signed and check if it's negative.
->>>>
->>>> Signed-off-by: Abdelrahman Youssef <abdelrahmanyossef12@gmail.com>
->>>> ---
->>>
->>> Changelog would've been nice. This also should have been v3 not v2.
->>>
->>>>  drivers/of/fdt.c | 7 ++++++-
->>>>  1 file changed, 6 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
->>>> index 2c3ea31394..d8d8a4922c 100644
->>>> --- a/drivers/of/fdt.c
->>>> +++ b/drivers/of/fdt.c
->>>> @@ -176,7 +176,7 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
->>>>     void *dt_strings;
->>>>     struct fdt_header f;
->>>>     int ret;
->>>> -   unsigned int maxlen;
->>>> +   int maxlen;
->>>>     const struct fdt_header *fdt = infdt;
->>>>
->>>>     ret = fdt_parse_header(infdt, size, &f);
->>>> @@ -210,6 +210,11 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
->>>>                     maxlen = (unsigned long)fdt + f.off_dt_struct +
->>>>                             f.size_dt_struct - (unsigned long)name;
->>>>
->>>> +                   if (maxlen < 0) {
->>>> +                           ret = -ESPIPE;
->>>> +                           goto err;
->>>> +                   }
->>>> +
->>>>                     len = strnlen(name, maxlen + 1);
->>>
->>> Hmm is this + 1 correct? I am wondering if we should be dropping
->>> the + 1 here and make it maxlen <= 0 above.
->>
->> I think maxlen <= 0 is correct indepent of what follows next, because
->> maxlen is the length of a string and a valid string has a minimal length
->> of one byte ('\0').
->>
->> Next we shouldn't look at bytes exceeding maxlen, so indeed
->> strnlen(name, maxlen) should be correct. When changing this we have
->> to adjust the following if (len > maxlen) check to >=.
->>
->> Sascha
->>
->> --
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+Jules
 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
