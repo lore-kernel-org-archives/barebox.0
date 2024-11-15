@@ -1,84 +1,55 @@
-Delivery-date: Fri, 15 Nov 2024 16:06:24 +0100
+Delivery-date: Fri, 15 Nov 2024 20:58:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBxtw-002ID5-10
+	id 1tC2Sk-002N5u-11
 	for lore@lore.pengutronix.de;
-	Fri, 15 Nov 2024 16:06:24 +0100
+	Fri, 15 Nov 2024 20:58:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBxtv-0005m5-EK
-	for lore@pengutronix.de; Fri, 15 Nov 2024 16:06:24 +0100
+	id 1tC2Si-0001iU-S6
+	for lore@pengutronix.de; Fri, 15 Nov 2024 20:58:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
-	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=R4wvOUqc5wFufwSUNYKpVxVfidnyZx/x4rpLoDJG96c=; b=PiJEQWS0ChFj/CMk/NI+w5Bn4+
-	B91Fx0Q9ElZ0gLQRnl1o6Lf041hBkLtvVdw3zi2Dy8xR5tpBHG3J6qlCFQl9saLLG0HEhOgHyhm+Y
-	Aql0wjv5UYbu1lEJc4UUL7oP5TdZVgwKguuAFPT0ZekneMAmB+XnwTKlTkxreTzIz6VnQKpJ8RnfD
-	MCdnK1XjFxIUVYwh0JsaaKOlkjUOHEI7Fy+rm7SmpBKEdIFfVxczHWrp6g3HgZgcPLkDTtT++/m8Z
-	DYZK5a5y3m46pU1mkISgmVdZLuBdR+zqEM4zmSfn0Q2m9bwBHPwg+BJyiE56LXZO+2EnTJYCsubHl
-	YRfxf9AQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ag+M4nnQcvQ0cQME28LZ+qsPorKBuwFGD00clAOe/vM=; b=R9eDhn49ws2wB99UqvOotdUbax
+	B9fw4E0x0k0Mus3XYSWpcTPPX0gf2zK0zVgEMi8qF+bssDEbh1vH9z8R6pcz0nLPp7MfVtYOJixiT
+	tl0JyG5SLkq6nvw0cAMKxVX/8ZflITQoMkQa0xHktgELiDcqlJ+F+k2muW64u0jOWQ1SWANpuubzh
+	i/AISLzmZP2tPa5ZlwpronTh2htiDHjR0ZALnlp1dslJGyaWbF+GJvmpDDv1bxYOin/010bTt28xg
+	xxAmTS8S2g9QDYfbH8B4szb1xYAhI2ksaKJDT9dJkZkHt9OD55P67azAn4sh2wPBq4B1Zi1Suu2qD
+	1W11WaXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBxtP-000000035vV-0r3W;
-	Fri, 15 Nov 2024 15:05:51 +0000
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+	id 1tC2S9-00000003wbN-1of8;
+	Fri, 15 Nov 2024 19:58:01 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBxpF-000000034r8-0K3x
+	id 1tC2S4-00000003wXI-02JI
 	for barebox@lists.infradead.org;
-	Fri, 15 Nov 2024 15:01:34 +0000
-Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-38231f84dccso13792f8f.1
-        for <barebox@lists.infradead.org>; Fri, 15 Nov 2024 07:01:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731682891; x=1732287691; darn=lists.infradead.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=R4wvOUqc5wFufwSUNYKpVxVfidnyZx/x4rpLoDJG96c=;
-        b=RCmNDugQXSF9ED/OA5DWLWVNVT6Rq6zwReY4nMZ5qlkbezlF5HyYM3NdfaTvl6vffF
-         40KVjaHfcRz+oxaETCjpV6Nbn8QygyLchdyZgiqoELpuT09K/HrQ1j6h9fZRmTyVHcfR
-         xNEpu6wNd8l+bzd9GCtKdJju7sVh/+4mL5ZJAuIXQ5wcZ6f3hG+5Fioa1s8SeDzAG5hu
-         zWGIUAADDa59kukTHgvikd9qnJe4u/7/QOfMsOq7kxGHdUAhnPcWo35z8D0sUV7MJ3KB
-         o1i2JNTuWSR7NGKIZFGNwyGKJx9uBNlPBx/94yOd4dieLthjQQA/x8GiRSc1X2RmnAU5
-         ZrQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731682891; x=1732287691;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R4wvOUqc5wFufwSUNYKpVxVfidnyZx/x4rpLoDJG96c=;
-        b=Rp+T6fVpw10yy+D+zzgraZdTxkHVHkA/UIyxRp9igweqCUPlRKJIjxkugMeMOE1+SJ
-         YMlHUvswnb3bnENfYCLRLSvmvVJMI/tnzE3OFTK26SRZ5riSJB5jhhNL8wpfuvC4IvY5
-         nbkLpD0VvbCnofRbLrri5WoxKCLwG0DQBoUbgjKdJ6lHJ+5RfyMMHLyf8Ob37qvAwIRT
-         kTWuw3A7C2hrXTGomIBCycnlDeLUN37Z24s+s1Nfz4SWYY4Jx3S5v7O3EfwjxBW0sFY5
-         wITKSVBfLlZnTsT/CmyjvMYv0O0yYOT847bRZNw7FJx1PBzwKaELege1KASChEbIwWuw
-         xI4g==
-X-Gm-Message-State: AOJu0Ywky4xJng/MOM31i1iNvfUvzBHTm6UyLocR3zEoewgGVCDKjx66
-	vkYAWPON0yVnZ7rNXHrty3I86+XOTSHGK0Aw14aQ8UhOSMSOIi6geNsj74wyW6MZQp/RKLQeS6P
-	T9sFYo3usO1CmFgI1wm0ANu8f6OJmlA==
-X-Google-Smtp-Source: AGHT+IHTsTbKUplUse+j9i+FwsRWlX2EY8YBuBDzCuSFM8GYSHf+l7rqY610X3ivOc59msqzT4WYGMwXvh4fjZbixT0=
-X-Received: by 2002:a05:6000:2ae:b0:382:2d59:b143 with SMTP id
- ffacd0b85a97d-3822d59b3c9mr1043117f8f.52.1731682890118; Fri, 15 Nov 2024
- 07:01:30 -0800 (PST)
+	Fri, 15 Nov 2024 19:57:58 +0000
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1tC2S1-00017y-Gd
+	for barebox@lists.infradead.org; Fri, 15 Nov 2024 20:57:53 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Fri, 15 Nov 2024 20:57:40 +0100
+Message-Id: <20241115195747.997164-5-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241115195747.997164-1-m.felsch@pengutronix.de>
+References: <20241115195747.997164-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-References: <CANn9nbiT8J+irgWYQxiTydNyOiTEiXBo_ZLqdVG1EGpHY9eyOA@mail.gmail.com>
- <ed999cd8-a8e3-4e19-ba7d-924e393945ab@pengutronix.de> <CANn9nbjCGMOavMYQ+_WSGvSXYVcvFsi6d4H89LWqYfjFP4Pk6A@mail.gmail.com>
- <eaf67a30-ea57-4d4a-8be8-b72273918956@pengutronix.de>
-In-Reply-To: <eaf67a30-ea57-4d4a-8be8-b72273918956@pengutronix.de>
-From: Stefano Manni <stefano.manni@gmail.com>
-Date: Fri, 15 Nov 2024 16:01:18 +0100
-Message-ID: <CANn9nbhjc_r+Y2zogX9bgKb=BjvOk2AJc5wa4hYSF=00kAP8zA@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241115_070133_117396_D81A6668 
-X-CRM114-Status: GOOD (  32.71  )
+X-CRM114-CacheID: sfid-20241115_115756_043062_F3C09C3A 
+X-CRM114-Status: GOOD (  11.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,128 +67,84 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: firmwareload fails for cortex-m7 on imx8mp
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 05/12] gpiolib: add support for gpiod_set_consumer_name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Ahmad,
+Add support for the Linux gpiod_set_consumer_name() API to make it
+easier to port drivers. Compared to Linux the function itself is very
+different.
 
-I put it on here: https://we.tl/t-HrzdMMJXpU
-because I didn't know if I can attach files in the mailing list.
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ drivers/gpio/gpiolib.c        | 19 +++++++++++++++++++
+ include/linux/gpio/consumer.h | 10 ++++++++++
+ 2 files changed, 29 insertions(+)
 
-Best,
-Stefano
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 55beaba6acbc..ec4d8e889bb1 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1223,6 +1223,25 @@ int gpiod_set_array_value(unsigned int array_size,
+ }
+ EXPORT_SYMBOL_GPL(gpiod_set_array_value);
+ 
++/**
++ * gpiod_set_consumer_name() - set the consumer name for the descriptor
++ * @desc: gpio to set the consumer name on
++ * @name: the new consumer name
++ *
++ * Returns:
++ * 0 on success, or negative errno on failure.
++ */
++int gpiod_set_consumer_name(struct gpio_desc *desc, const char *name)
++{
++	VALIDATE_DESC(desc);
++
++	free(desc->label);
++	desc->label = xstrdup(name);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(gpiod_set_consumer_name);
++
+ int gpiochip_add(struct gpio_chip *chip)
+ {
+ 	int i;
+diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
+index 34e5795cbc07..d411c3aa3608 100644
+--- a/include/linux/gpio/consumer.h
++++ b/include/linux/gpio/consumer.h
+@@ -84,6 +84,8 @@ int gpiod_get_value(const struct gpio_desc *desc);
+ 
+ void gpiod_put(struct gpio_desc *desc);
+ 
++int gpiod_set_consumer_name(struct gpio_desc *desc, const char *name);
++
+ int gpiod_count(struct device *dev, const char *con_id);
+ 
+ struct gpio_desc *__must_check gpiod_get_index(struct device *dev,
+@@ -172,6 +174,14 @@ static inline void gpiod_put(struct gpio_desc *desc)
+ 	WARN_ON(desc);
+ }
+ 
++static inline int gpiod_set_consumer_name(struct gpio_desc *desc,
++					  const char *name)
++{
++	/* GPIO can never have been requested */
++	WARN_ON(desc);
++	return -EINVAL;
++}
++
+ static inline int gpiod_count(struct device *dev, const char *con_id)
+ {
+ 	return 0;
+-- 
+2.39.5
 
-
-Il giorno ven 15 nov 2024 alle ore 15:49 Ahmad Fatoum
-
-<a.fatoum@pengutronix.de> ha scritto:
->
-> Hello Stefano,
->
-> On 15.11.24 15:47, Stefano Manni wrote:
-> > Hello Ahmad,
-> >
-> > patch [1] works fine when M7 firmware is compiled to run from ITCM. Thank you!
->
-> Thanks for testing.
->
-> > But when I use exactly the same firmware but compiled to run from DDR
-> > (see [2]) I got:
-> >
-> > barebox@NXP i.MX8MPlus EVK board:/ firmwareload hello-ddr.elf
-> > remoteproc0: powering up remoteproc-cm7.of
-> > ERROR: remoteproc0: bad phdr da 0x80000000 mem 0x3de4
-> > ERROR: remoteproc0: Failed to load program segments: -22
-> >
-> > Note that I can run it both from linux and u-boot.
-> >
-> > [1] https://lore.barebox.org/barebox/20241115135242.1251691-1-a.fatoum@pengutronix.de/
-> > [2] https://docs.zephyrproject.org/latest/boards/nxp/imx8mp_evk/doc/index.html#programming-and-debugging-m7
->
-> Can you send me the ELF file, so I can look at the headers myself?
->
-> Cheers,
-> Ahmad
->
-> >
-> > Il giorno ven 15 nov 2024 alle ore 15:02 Ahmad Fatoum
-> > <a.fatoum@pengutronix.de> ha scritto:
-> >>
-> >> Hello Stefano,
-> >>
-> >> On 15.11.24 14:43, Stefano Manni wrote:
-> >>> Dear all,
-> >>>
-> >>> I cannot run an ELF image on the M7 core on the imx8mp soc.
-> >>> The ELF comes from zephyr and it runs as expected when I load it from linux,
-> >>> but in barebox I encounter this error:
-> >>>
-> >>> barebox@NXP i.MX8MPlus EVK board:/ tftp zephyr.elf
-> >>>         [################################################################]
-> >>> barebox@NXP i.MX8MPlus EVK board:/ firmwareload zephyr.elf
-> >>> remoteproc0: powering up remoteproc-cm7.of
-> >>> DABT (current EL) exception (ESR 0x96000061) at 0x00000000007e0004
-> >>
-> >> https://esr.arm64.dev/#0x96000061 decodes this as
-> >> "Abort caused by writing to memory" (Alignment fault) with valid FAR.
-> >>
-> >> FAR is the addresss listed here (0x00000000007e0004), which is indeed
-> >> not divisible by 8.
-> >>
-> >>> [<ffd826f4>] (__arch_memcpy+0x48/0x13c) from [<ffd82a00>] (memcpy+0xc/0x14)
-> >>
-> >> The optimized memcpy used here expects misalignment not to trap.
-> >>
-> >>> As you can see the exception happens when rproc_elf_load_segments() tries to
-> >>> memcpy a segment where the M7 expects it. The ELF has been compiled to run
-> >>> from ITCM memory (0x007E0000-0x007FFFFF).
-> >>>
-> >>> Do you have any idea? Maybe may I have to put a reserved-memory for ITCM?
-> >>
-> >> I think I may have broken this when I changed barebox to map everything outside
-> >> main memory as uncached.
-> >>
-> >> I did this, because we 1) don't want to risk the main CPU speculating into I/O
-> >> memory and 2) don't want to have to use memory barriers for synchronization.
-> >>
-> >> The flipside is that drivers that access I/O memory must do this via
-> >> readl/writel and friends or via memcpy_io/memset_io. This was already required
-> >> before, but some drivers that didn't do this were lucky enough to fly under
-> >> the radar. At least for remoteproc, this seems no longer the case.
-> >>
-> >> I just Cc'd you on a patch to fix this for remoteproc.
-> >> Please let me know with a Tested-by if this resolves your issue.
-> >>
-> >> Cheers,
-> >> Ahmad
-> >>
-> >>>
-> >>> Thank you.
-> >>>
-> >>> Best,
-> >>> Stefano
-> >>>
-> >>>
-> >>
-> >>
-> >> --
-> >> Pengutronix e.K.                           |                             |
-> >> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> >
->
->
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
