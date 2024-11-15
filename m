@@ -1,57 +1,68 @@
-Delivery-date: Fri, 15 Nov 2024 13:08:44 +0100
+Delivery-date: Fri, 15 Nov 2024 13:16:33 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBv80-002Ev2-2P
+	id 1tBvFZ-002F6d-0C
 	for lore@lore.pengutronix.de;
-	Fri, 15 Nov 2024 13:08:44 +0100
+	Fri, 15 Nov 2024 13:16:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBv80-0002xu-0x
-	for lore@pengutronix.de; Fri, 15 Nov 2024 13:08:44 +0100
+	id 1tBvFY-0004OY-Aq
+	for lore@pengutronix.de; Fri, 15 Nov 2024 13:16:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=d/y/3X80UQFJo6S7BhzGZLqFi2lK/5v6DMtN73sn/cg=; b=O3NwY9+KunZjfKMrChS8GCXqHE
-	tZOMMRA810fXd+vYnEE0DbYQNVQgkisoZiHGqAqhIpwmZW/foxI5xQYB6S9auHan0vI/xh67L7hLR
-	Jf7I1KNK7ZJoZHmlslftW04QcBmZbjpCq8S78S7WR5vROeCfuYwv+a2QTKWUMn7E1LZe6u+fv6yUO
-	ohadQ+xMwhSe/6rOng1WuV2mtodzlWE8tepQKUQ20j92Qr7/YzxqxxwYM1UG/Bs2XtfNup1+b+sSz
-	TpYgs5L3T9RT3j8PInCYCNg9iiFFt87Jo7cUSNMXJ2Lapn89bkhN3SMgIjPelhXM/R7Y7aYcFejOo
-	p4jo8sZg==;
+	bh=ZLPJHDhQB/rAIxgdD+QqYgciibildEhJthXzJXvrg04=; b=0f3+meRm9MMi7/HwPL2rntpH9i
+	Z/8ew8moOKM/2bs7pUeVrUjrsuQsKa4kWPft+YOzYdxbvYc/PC7aJ3fbcWm+Utx94HSVHGS2jFgSh
+	VNSmJS/WI0kHDpW5G0hcJSSLJhbDKYF7OL/D6iEeOqWUGDZThizxQY+6rjBLyfKlLuxqdVyYt1FQ7
+	TVeqPP0sosSSrWHLoIEXLYKf5utAiMcBj3d5Xi7q+EWMI7xzVuBb7ZxSWzl9INjpVkK55PNcHVb/F
+	uNwAEaoGzaggDABVVbuoob9Fz7GCaz+vSrYxFG/ofiGpDrkVIUR8+Fwd+pDGE0ZNFsTJ20d5KMDTg
+	tF+dWDNg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBv7P-00000002cJa-3V4p;
-	Fri, 15 Nov 2024 12:08:07 +0000
+	id 1tBvFB-00000002dNo-239J;
+	Fri, 15 Nov 2024 12:16:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBv7N-00000002cJ9-1Mbl
+	id 1tBvF7-00000002dL8-0EQz
 	for barebox@lists.infradead.org;
-	Fri, 15 Nov 2024 12:08:06 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Fri, 15 Nov 2024 12:16:08 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBv7M-0002q4-2O; Fri, 15 Nov 2024 13:08:04 +0100
-Message-ID: <5426833c-e170-4a6d-8013-a131b7106516@pengutronix.de>
-Date: Fri, 15 Nov 2024 13:08:03 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: barebox@lists.infradead.org
-Cc: h.assmann@pengutronix.de
-References: <20241115115736.3945523-1-a.fatoum@pengutronix.de>
-Content-Language: en-US
+	id 1tBvF5-0004BE-JB; Fri, 15 Nov 2024 13:16:03 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tBvF5-000u9l-1K;
+	Fri, 15 Nov 2024 13:16:03 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tBvF5-00GmQm-13;
+	Fri, 15 Nov 2024 13:16:03 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241115115736.3945523-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: h.assmann@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 15 Nov 2024 13:16:01 +0100
+Message-Id: <20241115121602.3999375-3-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241115121602.3999375-1-a.fatoum@pengutronix.de>
+References: <20241115121602.3999375-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241115_040805_367607_B1503AA6 
-X-CRM114-Status: GOOD (  19.65  )
+X-CRM114-CacheID: sfid-20241115_041605_149279_14DA03F4 
+X-CRM114-Status: GOOD (  14.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,157 +84,107 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/4] of: add helpers to get alias from device node path +
- property name
+Subject: [PATCH v2 3/4] bootsource: have bootsource_get_alias_name return const char *
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 15.11.24 12:57, Ahmad Fatoum wrote:
-> The existing of_find_device and of_find_path helpers require that
-> barebox has already probed devices. For use in code where this
-> assumption doesn't always hold true, let's add helpers that return
-> the alias if it exists.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+The only user of bootsource_get_alias_name() calls it and frees it
+shortly after and users in board code will likely do the same.
 
-Please dismiss. Forgot to squash fixups :/
+Instead of allocating every time, let's just return a static array and
+expect users to call strdup() if they want to keep the bootsource valid
+for longer.
 
-> ---
->  drivers/of/base.c | 57 +++++++++++++++++++++++++++++++++++++++++++++++
->  include/of.h      | 32 ++++++++++++++++++++++++++
->  2 files changed, 89 insertions(+)
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 960a9327aed2..0d04bd3ce25b 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -318,6 +318,63 @@ const char *of_alias_get(struct device_node *np)
->  }
->  EXPORT_SYMBOL_GPL(of_alias_get);
->  
-> +static const char *of_get_partition_device_alias(struct device_node *np)
-> +{
-> +	const char *alias;
-> +
-> +	alias = of_alias_get(np);
-> +	if (alias)
-> +		return alias;
-> +
-> +	np = of_get_parent(np);
-> +	if (np && of_device_is_compatible(np, "fixed-partitions"))
-> +		np = of_get_parent(np);
-> +
-> +	return of_alias_get(np);
-> +}
-> +
-> +const char *of_property_get_alias_from(struct device_node *root,
-> +				       const char *np_name, const char *propname,
-> +				       int index)
-> +{
-> +	struct device_node *node, *rnode;
-> +	const char *path;
-> +	int ret;
-> +
-> +	node = of_find_node_by_path_or_alias(root, np_name);
-> +	if (!node)
-> +		return NULL;
-> +
-> +	ret = of_property_read_string_index(root, propname, index, &path);
-> +	if (ret < 0)
-> +		return NULL;
-> +
-> +	rnode = of_find_node_by_path(path);
-> +	if (!rnode)
-> +		return NULL;
-> +
-> +	return of_get_partition_device_alias(rnode);
-> +}
-> +EXPORT_SYMBOL_GPL(of_property_get_alias_from);
-> +
-> +const char *of_parse_phandle_and_get_alias_from(struct device_node *root,
-> +						const char *np_name, const char *phandle_name,
-> +						int index)
-> +{
-> +	struct device_node *node, *rnode;
-> +
-> +	node = of_find_node_by_path_or_alias(root, np_name);
-> +	if (!node)
-> +		return NULL;
-> +
-> +	rnode = of_parse_phandle_from(node, root, phandle_name, index);
-> +	if (!node)
-> +		return NULL;
-> +
-> +	return of_get_partition_device_alias(rnode);
-> +}
-> +EXPORT_SYMBOL_GPL(of_parse_phandle_and_get_alias_from);
-> +
->  /*
->   * of_find_node_by_alias - Find a node given an alias name
->   * @root:    the root node of the tree. If NULL, use internal tree
-> diff --git a/include/of.h b/include/of.h
-> index 3f5e5f9b04bb..e93b1bbf2f0a 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -314,6 +314,14 @@ extern int of_alias_get_id_from(struct device_node *root, struct device_node *np
->  extern const char *of_alias_get(struct device_node *np);
->  extern int of_modalias_node(struct device_node *node, char *modalias, int len);
->  
-> +extern const char *of_property_get_alias_from(struct device_node *root,
-> +					      const char *np_name, const char *propname,
-> +					      int index);
-> +
-> +extern const char *of_parse_phandle_and_get_alias_from(struct device_node *root,
-> +						       const char *np_name, const char *phandle_name,
-> +						       int index);
-> +
->  extern struct device_node *of_get_root_node(void);
->  extern int of_set_root_node(struct device_node *node);
->  extern int barebox_register_of(struct device_node *root);
-> @@ -944,6 +952,20 @@ static inline int of_modalias_node(struct device_node *node, char *modalias,
->  	return -ENOSYS;
->  }
->  
-> +static inline const char *of_property_get_alias_from(struct device_node *root,
-> +						     const char *np_name, const char *propname,
-> +						     int index)
-> +{
-> +	return NULL;
-> +}
-> +
-> +static inline const char *of_parse_phandle_and_get_alias_from(struct device_node *root,
-> +							      const char *np_name, const char *phandle_name,
-> +							      int index)
-> +{
-> +	return NULL;
-> +}
-> +
->  static inline int of_platform_populate(struct device_node *root,
->  				const struct of_device_id *matches,
->  				struct device *parent)
-> @@ -1275,6 +1297,16 @@ static inline void of_delete_property_by_name(struct device_node *np, const char
->  	of_delete_property(of_find_property(np, name, NULL));
->  }
->  
-> +static inline const char *of_property_get_alias(const char *np_name, const char *propname)
-> +{
-> +	return of_property_get_alias_from(NULL, np_name, propname, 0);
-> +}
-> +
-> +static inline const char *of_parse_phandle_and_get_alias(const char *np_name, const char *phandle_name)
-> +{
-> +	return of_parse_phandle_and_get_alias_from(NULL, np_name, phandle_name, 0);
-> +}
-> +
->  extern const struct of_device_id of_default_bus_match_table[];
->  
->  int of_device_enable(struct device_node *node);
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - no change
+---
+ common/bootsource.c  | 23 +++++++++++------------
+ include/bootsource.h |  2 +-
+ 2 files changed, 12 insertions(+), 13 deletions(-)
 
-
+diff --git a/common/bootsource.c b/common/bootsource.c
+index 6808c9c51d88..3c8f53f3a890 100644
+--- a/common/bootsource.c
++++ b/common/bootsource.c
+@@ -72,27 +72,24 @@ const char *bootsource_get_alias_stem(enum bootsource src)
+ /**
+  * bootsource_get_alias_name() - Get the name of the bootsource alias
+  *
+- * This function will return newly allocated string containing name of
++ * This function will return a pointer to a static string containing name of
+  * the alias that is expected to point to DTB node corresponding to
+  * detected bootsource
+  *
+- * NOTE: Caller is expected to free() the string allocated by this
+- * function
+  */
+-char *bootsource_get_alias_name(void)
++const char *bootsource_get_alias_name(void)
+ {
++	static char buf[sizeof("i2c-eeprom-2147483647")];
+ 	const char *stem;
++	int ret;
+ 
+ 	/*
+ 	 * If alias name was overridden via
+ 	 * bootsource_set_alias_name() return that value without
+ 	 * asking any questions.
+-	 *
+-	 * Note that we have to strdup() the result to make it
+-	 * free-able.
+ 	 */
+ 	if (bootsource_alias_name)
+-		return strdup(bootsource_alias_name);
++		return bootsource_alias_name;
+ 
+ 	stem = bootsource_get_alias_stem(bootsource);
+ 	if (!stem)
+@@ -105,13 +102,17 @@ char *bootsource_get_alias_name(void)
+ 	if (bootsource_instance == BOOTSOURCE_INSTANCE_UNKNOWN)
+ 		return NULL;
+ 
+-	return basprintf("%s%d", stem, bootsource_instance);
++	ret = snprintf(buf, sizeof(buf), "%s%d", stem, bootsource_instance);
++	if (ret < 0 || ret >= sizeof(buf))
++		return NULL;
++
++	return buf;
+ }
+ 
+ struct device_node *bootsource_of_node_get(struct device_node *root)
+ {
+ 	struct device_node *np;
+-	char *alias_name;
++	const char *alias_name;
+ 
+ 	alias_name = bootsource_get_alias_name();
+ 	if (!alias_name)
+@@ -119,8 +120,6 @@ struct device_node *bootsource_of_node_get(struct device_node *root)
+ 
+ 	np = of_find_node_by_alias(root, alias_name);
+ 
+-	free(alias_name);
+-
+ 	return np;
+ }
+ 
+diff --git a/include/bootsource.h b/include/bootsource.h
+index 33ad26946059..9fb77a0bb0a9 100644
+--- a/include/bootsource.h
++++ b/include/bootsource.h
+@@ -29,7 +29,7 @@ enum bootsource bootsource_get(void);
+ enum bootsource bootsource_get_device(void);
+ int bootsource_get_instance(void);
+ void bootsource_set_alias_name(const char *name);
+-char *bootsource_get_alias_name(void);
++const char *bootsource_get_alias_name(void);
+ const char *bootsource_to_string(enum bootsource src);
+ const char *bootsource_get_alias_stem(enum bootsource bs);
+ int bootsource_of_alias_xlate(enum bootsource bs, int instance);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
