@@ -1,82 +1,83 @@
-Delivery-date: Fri, 15 Nov 2024 15:35:21 +0100
+Delivery-date: Fri, 15 Nov 2024 15:48:06 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBxPt-002HXI-2u
+	id 1tBxcE-002Hm2-0W
 	for lore@lore.pengutronix.de;
-	Fri, 15 Nov 2024 15:35:21 +0100
+	Fri, 15 Nov 2024 15:48:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBxPt-0006Eh-8D
-	for lore@pengutronix.de; Fri, 15 Nov 2024 15:35:21 +0100
+	id 1tBxcD-0000id-Dl
+	for lore@pengutronix.de; Fri, 15 Nov 2024 15:48:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
 	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vcmLaqwL0uCBAOM0JWKtiIzg7RgFLSBo1mW+5a/eQRI=; b=cDodujhrnIhD1Bp57eE8GYF1cn
-	wO24E86E7cU6pV2bLxv6sHxkEMuiIoA2FTYvw9lGgC02YX0t0C6D1Ll1kBQQVCTvtIuccdmyNNJ0A
-	FB5iAcdpK7lmu/diBUkxm7NTvNQXj4VYnXvdnVhs4cHGU2CBnF2d2lx9rpDQfTI1mLHq1QU/oEUgR
-	Igp8Vx/2tJebJ6o9kc/FxqddS53k6apqokd1k8yjyIbcltHxT+aJQX//K4pzzYN8qtdNdSFtQLeMz
-	yyUiVGh7n+0+iTT5P0+50vQL+tUH5s/aqXp71wj24l0SN+LxqNDKDt4N8IJoebKMLtLgjvm2fjyfR
-	7TzZEFHw==;
+	bh=MWDJo3TDZCnR0bzdEqJZ8zjTOTSKAoKiMLQmfB+1y9E=; b=MLva7u11PkBwFz3JhpMgoeDb6B
+	/exiw7pheKoMznEsy8BBIsIK5Ib2Mv6D+SfziWLESkjoB92DNljCHQHngTCVcisBHVJhv5ltcxGZC
+	mGoElFlq37dl12Vf2AFI9wZMzGvG6oesttW4u62im5KtdJTMq8UAInVAXAk7EX0RY3XLKSM2Y6oUH
+	IvCZcbc8n7R6IGBPlq7JIxn2QNUZKa/cab0JRQIhvVQCdueq4rw0CaqubLL5PqWFfL6ArZ7FgFRI7
+	jKQSOOo4kxq1Rs0mdNQzVXK6L2faEhVyteXBUQWfC+1H7raVdbLZqOXBUdOql/lm0IW6SnOHL3b18
+	F9hhZEng==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBxPJ-00000002zuW-1jFP;
-	Fri, 15 Nov 2024 14:34:45 +0000
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+	id 1tBxbZ-0000000328K-3TkB;
+	Fri, 15 Nov 2024 14:47:25 +0000
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBxPG-00000002ztQ-1DGS
+	id 1tBxbX-0000000327s-2lSu
 	for barebox@lists.infradead.org;
-	Fri, 15 Nov 2024 14:34:43 +0000
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-382219ceaacso901802f8f.3
-        for <barebox@lists.infradead.org>; Fri, 15 Nov 2024 06:34:42 -0800 (PST)
+	Fri, 15 Nov 2024 14:47:24 +0000
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-3821a905dbcso1200508f8f.0
+        for <barebox@lists.infradead.org>; Fri, 15 Nov 2024 06:47:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731681281; x=1732286081; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1731682042; x=1732286842; darn=lists.infradead.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vcmLaqwL0uCBAOM0JWKtiIzg7RgFLSBo1mW+5a/eQRI=;
-        b=Sbo/ippHRFgqCUFTQv4bx9weCod47hLMb/RDiGp8gQPdj/wKRUWpqNj7lUzBUGiF48
-         RP7+NCSA3YrSorHxh2qpQR53yZj0YxFcbW5JRQP4RtajT/IAOx3QoZ3G77+40LgSbRJh
-         cGN1o3DoxG/TktyGovQH6KxZNnBVhCpmW9Og1raFiMv33qrE9hwzYyeJ+A1Xxx68MoyR
-         29G3bjwWGsTDVTxAFJmkrXXuHkHBAj5T+ExNEEWQw3megyTcJB9Q7jfUWYIhw+DYo2xh
-         kcrfkUbF2ZGF+MjTro/S1FZxh/IGrq/yA8u0Vbu0CNmhV8jmkWukpnp0ui0RMkzaR2K5
-         RpOA==
+        bh=MWDJo3TDZCnR0bzdEqJZ8zjTOTSKAoKiMLQmfB+1y9E=;
+        b=ZDu9dKyctCTBR6MXxzy0+wmNitSpgz1dB9MjJfS63SCgphDDZiwBSjI8rwiztHo35L
+         JdeX5i4qoSgVy4MWXX3Yahb14GpL56/MSxadkIZfSOKJ1jw6ZArKwvMHR81dlX8QBLx3
+         A7YFmCgN5lBdO4AVcQPgNVNeWFin7oS1XtYZfABbwizBVc8NLLTWExBOxgYtZ+A2poug
+         wX9BMQsZ98Ks6pmuegvSsGF+hUzWnSsDuimbrDJKYo2oMJgQmFUkeLoDzY+6iPIOYRI2
+         bpJJzuRljk/inYRoM6c3Lpka9Vk4pUJOgXTHf1zxNJ7yJVKWzReW356x7dwZeGdbGA0V
+         9gSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731681281; x=1732286081;
+        d=1e100.net; s=20230601; t=1731682042; x=1732286842;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vcmLaqwL0uCBAOM0JWKtiIzg7RgFLSBo1mW+5a/eQRI=;
-        b=rzqYuk0RnbSz+n4I2iwu8kXil7eCjy33ATKuIKcxXX35Dc/4MT0+NhSvwBbbIX1LX5
-         45sgAIpZwgWNHKjsM38ypNr4fg0EASmiXryVU1qj7+OFyPg/CEilaLvLzzOWaQrJHQmA
-         zh3iYvYWEdihyldKsPVZ4JteEc6AS0VkDIoJH3me+Srt/4F+ovzpMsct6RenJ4FWF+5E
-         CKpQ6DkNVJt8pYud9fcLWAltNlh11zKCpxlA6yapeUQqPCnh/Ch9GIEWnJFeLHIyGpA6
-         uJlySnQahjJLfpWQvRKkNctZweP8Tii3hPzPU4aOuWTgqlTohw1xqKTlVQqqnii4E0BU
-         CQTQ==
-X-Gm-Message-State: AOJu0YzVu4Ahn1L3yjD7H3NGMtFN6q1SvoT5CbnK85mE3Ho3Cjs/iDeZ
-	ZTvLUu1tbfyQ+cHOs9o25rQ038BU44iTUizwKuOGTfszxZSswmufkKbrbWptyZ16LF1zIjRpM4N
-	ZknRMTkgP5fUacsiq+w84RRv+0Fy+Rpvj
-X-Google-Smtp-Source: AGHT+IH3EanYtTpMkxEpnqg3Oz2iWNBfCZTNuWfp4Y/+CkwtITQMIuoV7KMB9LUUJF43kisneEXWecvmhCAwffHNY4s=
-X-Received: by 2002:a05:6000:1fa3:b0:37d:39f8:a77a with SMTP id
- ffacd0b85a97d-382258f77d4mr2412875f8f.8.1731681280573; Fri, 15 Nov 2024
- 06:34:40 -0800 (PST)
+        bh=MWDJo3TDZCnR0bzdEqJZ8zjTOTSKAoKiMLQmfB+1y9E=;
+        b=PwySqaYyKST7Uf95fGit6t2pwPUcUq6J2kcZVghKkZYhv06R/Ms/nZYOEFIOfh+ZB7
+         RBRPsWNxv90ita4Fw9bv7TyWysZf+yhqawecya97gMXwgCdDAGELfUsvVH1+6PVI4lcU
+         jxj/gWL0/aaesyGGe1boJe9KUUSQqx9cGVqrC1LyoQOBqDHoKQYduURGyvu6I+ANesUN
+         YG2RIT5GzVpDzVWWW0OUFJk1xaWfYVWeNcRPyXfYWDAKYO20whO3t01quAewFifCilRJ
+         n1qjAQ5UllXWTIeSznLBzdMFAQHhMBrSdfcl6RDv9wTzWpuCmpqoT8mGuvrK8T2P1MhT
+         hPaw==
+X-Gm-Message-State: AOJu0YzHKnE7puPP7XIfvjSHXkaugmfNHqxaFeh4fYjtHjlE66LfOXpv
+	aP7WMn5vUKpj91cvar6Z8x7cY/w4MtyYRfgJatBGt2zn6RUt0IwWmdmiX3OMwd47Fd2DIu3yuFd
+	CO/b34L8J/zZwB6HSkxNxoWaWMfw=
+X-Google-Smtp-Source: AGHT+IFDoQ4/ZIwTebnAm4XATRS8h157rSIfHQPmAwVBhU71cdyTKEkScQsGaQHKBa2XXAoeKrq9ME4veX3eqWuJgYo=
+X-Received: by 2002:a5d:5c12:0:b0:381:f443:21d0 with SMTP id
+ ffacd0b85a97d-38225ab4464mr2543940f8f.59.1731682041553; Fri, 15 Nov 2024
+ 06:47:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20241115135242.1251691-1-a.fatoum@pengutronix.de> <2b2b5c31-38cd-4456-8f62-946bb6eb72a8@pengutronix.de>
-In-Reply-To: <2b2b5c31-38cd-4456-8f62-946bb6eb72a8@pengutronix.de>
+References: <CANn9nbiT8J+irgWYQxiTydNyOiTEiXBo_ZLqdVG1EGpHY9eyOA@mail.gmail.com>
+ <ed999cd8-a8e3-4e19-ba7d-924e393945ab@pengutronix.de>
+In-Reply-To: <ed999cd8-a8e3-4e19-ba7d-924e393945ab@pengutronix.de>
 From: Stefano Manni <stefano.manni@gmail.com>
-Date: Fri, 15 Nov 2024 15:34:29 +0100
-Message-ID: <CANn9nbhYoaKbFRTk6ODHndSzsZNWvq=ztzegBroXFS4CRSm8vg@mail.gmail.com>
+Date: Fri, 15 Nov 2024 15:47:10 +0100
+Message-ID: <CANn9nbjCGMOavMYQ+_WSGvSXYVcvFsi6d4H89LWqYfjFP4Pk6A@mail.gmail.com>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241115_063442_343830_3C3CC671 
-X-CRM114-Status: GOOD (  22.11  )
+X-CRM114-CacheID: sfid-20241115_064723_696358_D4D96765 
+X-CRM114-Status: GOOD (  29.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,69 +100,85 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] remoteproc: use I/O memory variants of memcpy/memset
+Subject: Re: firmwareload fails for cortex-m7 on imx8mp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Tested-by: Stefano Manni <stefano.manni@gmail.com>
+Hello Ahmad,
 
-Il giorno ven 15 nov 2024 alle ore 15:03 Ahmad Fatoum
+patch [1] works fine when M7 firmware is compiled to run from ITCM. Thank you!
+
+But when I use exactly the same firmware but compiled to run from DDR
+(see [2]) I got:
+
+barebox@NXP i.MX8MPlus EVK board:/ firmwareload hello-ddr.elf
+remoteproc0: powering up remoteproc-cm7.of
+ERROR: remoteproc0: bad phdr da 0x80000000 mem 0x3de4
+ERROR: remoteproc0: Failed to load program segments: -22
+
+Note that I can run it both from linux and u-boot.
+
+[1] https://lore.barebox.org/barebox/20241115135242.1251691-1-a.fatoum@pengutronix.de/
+[2] https://docs.zephyrproject.org/latest/boards/nxp/imx8mp_evk/doc/index.html#programming-and-debugging-m7
+
+Il giorno ven 15 nov 2024 alle ore 15:02 Ahmad Fatoum
 <a.fatoum@pengutronix.de> ha scritto:
 >
-> On 15.11.24 14:52, Ahmad Fatoum wrote:
-> > Reserved memory is unmapped strongly ordered in barebox and calling
+> Hello Stefano,
 >
-> argh, `is mapped' is what's meant of course.
+> On 15.11.24 14:43, Stefano Manni wrote:
+> > Dear all,
+> >
+> > I cannot run an ELF image on the M7 core on the imx8mp soc.
+> > The ELF comes from zephyr and it runs as expected when I load it from linux,
+> > but in barebox I encounter this error:
+> >
+> > barebox@NXP i.MX8MPlus EVK board:/ tftp zephyr.elf
+> >         [################################################################]
+> > barebox@NXP i.MX8MPlus EVK board:/ firmwareload zephyr.elf
+> > remoteproc0: powering up remoteproc-cm7.of
+> > DABT (current EL) exception (ESR 0x96000061) at 0x00000000007e0004
 >
-> > normal optimized memcpy on may trigger an abort due to misalignment.
+> https://esr.arm64.dev/#0x96000061 decodes this as
+> "Abort caused by writing to memory" (Alignment fault) with valid FAR.
+>
+> FAR is the addresss listed here (0x00000000007e0004), which is indeed
+> not divisible by 8.
+>
+> > [<ffd826f4>] (__arch_memcpy+0x48/0x13c) from [<ffd82a00>] (memcpy+0xc/0x14)
+>
+> The optimized memcpy used here expects misalignment not to trap.
+>
+> > As you can see the exception happens when rproc_elf_load_segments() tries to
+> > memcpy a segment where the M7 expects it. The ELF has been compiled to run
+> > from ITCM memory (0x007E0000-0x007FFFFF).
 > >
-> > Fix this by using the slower I/O variants of memcpy/memset, which are
-> > do not expect bufferable memory like the optimized variants and thus
-> > don't cause unaligned accesses.
+> > Do you have any idea? Maybe may I have to put a reserved-memory for ITCM?
+>
+> I think I may have broken this when I changed barebox to map everything outside
+> main memory as uncached.
+>
+> I did this, because we 1) don't want to risk the main CPU speculating into I/O
+> memory and 2) don't want to have to use memory barriers for synchronization.
+>
+> The flipside is that drivers that access I/O memory must do this via
+> readl/writel and friends or via memcpy_io/memset_io. This was already required
+> before, but some drivers that didn't do this were lucky enough to fly under
+> the radar. At least for remoteproc, this seems no longer the case.
+>
+> I just Cc'd you on a patch to fix this for remoteproc.
+> Please let me know with a Tested-by if this resolves your issue.
+>
+> Cheers,
+> Ahmad
+>
 > >
-> > Fixes: 66e233b8c04b ("ARM: mmu64: map reserved regions uncached")
-> > Reported-by: Stefano Manni <stefano.manni@gmail.com>
-> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > ---
-> >  drivers/remoteproc/remoteproc_core.c       | 2 +-
-> >  drivers/remoteproc/remoteproc_elf_loader.c | 4 ++--
-> >  2 files changed, 3 insertions(+), 3 deletions(-)
+> > Thank you.
 > >
-> > diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-> > index 7590c1f9305b..17159316ee31 100644
-> > --- a/drivers/remoteproc/remoteproc_core.c
-> > +++ b/drivers/remoteproc/remoteproc_core.c
-> > @@ -75,7 +75,7 @@ static int rproc_firmware_write_buf(struct firmware_handler *fh, const void *buf
-> >               return -ENOMEM;
-> >       }
+> > Best,
+> > Stefano
 > >
-> > -     memcpy(rproc->fw_buf + rproc->fw_buf_ofs, buf, size);
-> > +     memcpy_toio(rproc->fw_buf + rproc->fw_buf_ofs, buf, size);
-> >       rproc->fw_buf_ofs += size;
 > >
-> >       return 0;
-> > diff --git a/drivers/remoteproc/remoteproc_elf_loader.c b/drivers/remoteproc/remoteproc_elf_loader.c
-> > index f3bf93df2c4a..740ce8765165 100644
-> > --- a/drivers/remoteproc/remoteproc_elf_loader.c
-> > +++ b/drivers/remoteproc/remoteproc_elf_loader.c
-> > @@ -70,7 +70,7 @@ int rproc_elf_load_segments(struct rproc *rproc, const struct firmware *fw)
-> >
-> >               /* put the segment where the remote processor expects it */
-> >               if (phdr->p_filesz)
-> > -                     memcpy(ptr, elf_data + phdr->p_offset, filesz);
-> > +                     memcpy_toio(ptr, elf_data + phdr->p_offset, filesz);
-> >
-> >               /*
-> >                * Zero out remaining memory for this segment.
-> > @@ -80,7 +80,7 @@ int rproc_elf_load_segments(struct rproc *rproc, const struct firmware *fw)
-> >                * this.
-> >                */
-> >               if (memsz > filesz)
-> > -                     memset(ptr + filesz, 0, memsz - filesz);
-> > +                     memset_io(ptr + filesz, 0, memsz - filesz);
-> >       }
-> >
-> >       return ret;
 >
 >
 > --
