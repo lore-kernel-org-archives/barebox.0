@@ -1,68 +1,66 @@
-Delivery-date: Fri, 15 Nov 2024 13:16:34 +0100
+Delivery-date: Fri, 15 Nov 2024 13:16:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBvFa-002F6z-2j
+	id 1tBvFc-002F7N-0x
 	for lore@lore.pengutronix.de;
-	Fri, 15 Nov 2024 13:16:34 +0100
+	Fri, 15 Nov 2024 13:16:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBvFa-0004Pp-8r
-	for lore@pengutronix.de; Fri, 15 Nov 2024 13:16:34 +0100
+	id 1tBvFb-0004QC-IY
+	for lore@pengutronix.de; Fri, 15 Nov 2024 13:16:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=g5uDPc/ukXCPmp9D7bg8DsZO5m3/wu25eVEw37pPy6I=; b=iCm/vlNUtExAkwy09r/lKPYAR9
-	+sdLUer7S106enUcGSBGb2mq7fFfMcZ7tmCcRXb3te8dyRPc5r/HLttlADP4J2xtQy3COcAJxtSTq
-	hSBffnLUlmjEYwehbiXAiW+W0mWq5djOVt2NxOPEpp7Rb95yxVEcwWPg2rGq27d3vV1S06H1Yc0iv
-	O3sj27MC+RFOlAL9XB3lwXtHjh1eTVNoXJOx4fy1g5PzohHZWt8Im+2gt71TY1liIFJCwcx1VOzie
-	Q54rW1Ad9KJ74u7Ur+dA9V7krWOddzbmk7xR4biJ/3jqIOqggmExsv5kyEI4zl35S6PY9qC7wLo41
-	SodTIUuQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=MqtFaRLeP00Er92giX/Fa91uBnpUzeWyp+hHwqixclQ=; b=iF71olfMnux0dpBCtVImaIEuOA
+	YkpSqfwCXL7JBZ3xPv3fygsXX6eD/NJmHqWocgrzD/L/nb4XkCazrEAsQvocIjtTIk4jVdBrLM3OV
+	uBuhzjCt3nTfHZ/X+63FTnnuPz/3fKRJUKjSRs3SAEcXqk/IHoQaAi3zw7JXHbI6Q1H2TtjS2BG4E
+	ank+HeYigQfr53iOYR5oteEmiNIJEruhH4JeTFwmYz1kwTsa7YV3MRcdVxLBc1tctej7iVtJP+tMf
+	L3ykRRYh3mVQZ072/PMT2LpetXoK+jL2T3Eg6bS8cs2VhhncUuwanot7SWmCqmBHp8ixkwRdptM5d
+	1TgOsSaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBvFA-00000002dMv-1y6y;
-	Fri, 15 Nov 2024 12:16:08 +0000
+	id 1tBvFC-00000002dO9-0VnB;
+	Fri, 15 Nov 2024 12:16:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBvF7-00000002dL9-0ENV
+	id 1tBvF7-00000002dLB-0EVU
 	for barebox@lists.infradead.org;
-	Fri, 15 Nov 2024 12:16:07 +0000
+	Fri, 15 Nov 2024 12:16:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBvF5-0004BD-IP; Fri, 15 Nov 2024 13:16:03 +0100
+	id 1tBvF5-0004BC-Gn; Fri, 15 Nov 2024 13:16:03 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBvF5-000u9i-1B;
+	id 1tBvF5-000u9h-13;
 	Fri, 15 Nov 2024 13:16:03 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBvF5-00GmQm-0u;
+	id 1tBvF5-00GmQm-0l;
 	Fri, 15 Nov 2024 13:16:03 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: h.assmann@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 15 Nov 2024 13:16:00 +0100
-Message-Id: <20241115121602.3999375-2-a.fatoum@pengutronix.de>
+Date: Fri, 15 Nov 2024 13:15:59 +0100
+Message-Id: <20241115121602.3999375-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241115121602.3999375-1-a.fatoum@pengutronix.de>
-References: <20241115121602.3999375-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241115_041605_176690_0FE4D24D 
-X-CRM114-Status: GOOD (  12.27  )
+X-CRM114-CacheID: sfid-20241115_041605_154109_7A29B18E 
+X-CRM114-Status: GOOD (  11.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,61 +82,151 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/4] environment: implement of_env_get_alias_by_path helper
+Subject: [PATCH v2 1/4] of: add helpers to get alias from device node path + property name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For use by board-code that wants to get the alias pointing at the
-backing device of an environment node add a simple
-of_env_get_alias_by_path() helper, so board code doesn't need to worry
-about property name and whether the binding uses a phandle or string path.
+The existing of_find_device and of_find_path helpers require that
+barebox has already probed devices. For use in code where this
+assumption doesn't always hold true, let's add helpers that return
+the alias if it exists.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - no change
+  - fix check for wring variable: rnode = ...; if (!node)
+    to if (!rnode)
+  - look up property in node at np_name, not in root node
 ---
- drivers/of/barebox.c |  5 +++++
- include/envfs.h      | 10 ++++++++++
- 2 files changed, 15 insertions(+)
+ drivers/of/base.c | 57 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/of.h      | 32 ++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
 
-diff --git a/drivers/of/barebox.c b/drivers/of/barebox.c
-index ed5d171e43a8..7d433e280ba5 100644
---- a/drivers/of/barebox.c
-+++ b/drivers/of/barebox.c
-@@ -15,6 +15,11 @@
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 960a9327aed2..cf850d4bf789 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -318,6 +318,63 @@ const char *of_alias_get(struct device_node *np)
+ }
+ EXPORT_SYMBOL_GPL(of_alias_get);
  
- #define ENV_MNT_DIR "/boot"	/* If env on filesystem, where to mount */
- 
-+const char *of_env_get_alias_by_path(const char *of_path)
++static const char *of_get_partition_device_alias(struct device_node *np)
 +{
-+	return of_property_get_alias(of_path, "device-path");
++	const char *alias;
++
++	alias = of_alias_get(np);
++	if (alias)
++		return alias;
++
++	np = of_get_parent(np);
++	if (np && of_device_is_compatible(np, "fixed-partitions"))
++		np = of_get_parent(np);
++
++	return of_alias_get(np);
 +}
 +
- /* If dev describes a file on a fs, mount the fs and return a pointer
-  * to the file's path.  Otherwise return an error code or NULL if the
-  * device path should be used.
-diff --git a/include/envfs.h b/include/envfs.h
-index 767b34c943de..8bfc83b6b008 100644
---- a/include/envfs.h
-+++ b/include/envfs.h
-@@ -118,6 +118,16 @@ static inline const char *default_environment_path_get(void)
- }
- #endif
++const char *of_property_get_alias_from(struct device_node *root,
++				       const char *np_name, const char *propname,
++				       int index)
++{
++	struct device_node *node, *rnode;
++	const char *path;
++	int ret;
++
++	node = of_find_node_by_path_or_alias(root, np_name);
++	if (!node)
++		return NULL;
++
++	ret = of_property_read_string_index(node, propname, index, &path);
++	if (ret < 0)
++		return NULL;
++
++	rnode = of_find_node_by_path(path);
++	if (!rnode)
++		return NULL;
++
++	return of_get_partition_device_alias(rnode);
++}
++EXPORT_SYMBOL_GPL(of_property_get_alias_from);
++
++const char *of_parse_phandle_and_get_alias_from(struct device_node *root,
++						const char *np_name, const char *phandle_name,
++						int index)
++{
++	struct device_node *node, *rnode;
++
++	node = of_find_node_by_path_or_alias(root, np_name);
++	if (!node)
++		return NULL;
++
++	rnode = of_parse_phandle_from(node, root, phandle_name, index);
++	if (!rnode)
++		return NULL;
++
++	return of_get_partition_device_alias(rnode);
++}
++EXPORT_SYMBOL_GPL(of_parse_phandle_and_get_alias_from);
++
+ /*
+  * of_find_node_by_alias - Find a node given an alias name
+  * @root:    the root node of the tree. If NULL, use internal tree
+diff --git a/include/of.h b/include/of.h
+index 3f5e5f9b04bb..e93b1bbf2f0a 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -314,6 +314,14 @@ extern int of_alias_get_id_from(struct device_node *root, struct device_node *np
+ extern const char *of_alias_get(struct device_node *np);
+ extern int of_modalias_node(struct device_node *node, char *modalias, int len);
  
-+#ifdef CONFIG_OF_BAREBOX_DRIVERS
-+const char *of_env_get_alias_by_path(const char *of_path);
-+#else
-+static inline const char *of_env_get_alias_by_path(const char *of_path)
++extern const char *of_property_get_alias_from(struct device_node *root,
++					      const char *np_name, const char *propname,
++					      int index);
++
++extern const char *of_parse_phandle_and_get_alias_from(struct device_node *root,
++						       const char *np_name, const char *phandle_name,
++						       int index);
++
+ extern struct device_node *of_get_root_node(void);
+ extern int of_set_root_node(struct device_node *node);
+ extern int barebox_register_of(struct device_node *root);
+@@ -944,6 +952,20 @@ static inline int of_modalias_node(struct device_node *node, char *modalias,
+ 	return -ENOSYS;
+ }
+ 
++static inline const char *of_property_get_alias_from(struct device_node *root,
++						     const char *np_name, const char *propname,
++						     int index)
 +{
 +	return NULL;
 +}
-+#endif
 +
++static inline const char *of_parse_phandle_and_get_alias_from(struct device_node *root,
++							      const char *np_name, const char *phandle_name,
++							      int index)
++{
++	return NULL;
++}
 +
- #ifdef CONFIG_DEFAULT_ENVIRONMENT
- void defaultenv_append(void *buf, unsigned int size, const char *name);
- int defaultenv_load(const char *dir, unsigned flags);
+ static inline int of_platform_populate(struct device_node *root,
+ 				const struct of_device_id *matches,
+ 				struct device *parent)
+@@ -1275,6 +1297,16 @@ static inline void of_delete_property_by_name(struct device_node *np, const char
+ 	of_delete_property(of_find_property(np, name, NULL));
+ }
+ 
++static inline const char *of_property_get_alias(const char *np_name, const char *propname)
++{
++	return of_property_get_alias_from(NULL, np_name, propname, 0);
++}
++
++static inline const char *of_parse_phandle_and_get_alias(const char *np_name, const char *phandle_name)
++{
++	return of_parse_phandle_and_get_alias_from(NULL, np_name, phandle_name, 0);
++}
++
+ extern const struct of_device_id of_default_bus_match_table[];
+ 
+ int of_device_enable(struct device_node *node);
 -- 
 2.39.5
 
