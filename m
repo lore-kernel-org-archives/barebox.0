@@ -1,68 +1,68 @@
-Delivery-date: Fri, 15 Nov 2024 12:58:19 +0100
+Delivery-date: Fri, 15 Nov 2024 12:58:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBuxv-002EYU-2b
+	id 1tBuxw-002EYg-1K
 	for lore@lore.pengutronix.de;
-	Fri, 15 Nov 2024 12:58:19 +0100
+	Fri, 15 Nov 2024 12:58:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBuxv-00013R-3p
-	for lore@pengutronix.de; Fri, 15 Nov 2024 12:58:19 +0100
+	id 1tBuxv-00013Z-P2
+	for lore@pengutronix.de; Fri, 15 Nov 2024 12:58:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oFHQ0C3ClroExc6cCGvxgMe5xPEIoxLOdt6ixTzuYhk=; b=f+P2zRD+fIZpCeSEQeFwLAHr9j
-	Rd71c4xH0bv8l8WFEK/nvMTeyb9F93vVXW2IlRoTBZsZNFdJl0T0/Ao8mQeMIxGcaTkEiXMn15jOS
-	qU5GbiL8HD4k02lBKhP5Oifr8HCp6VDxipRie16lLSWB/MB538+lqxOCgroJiO36ya7fYcccgtP71
-	3CqIK8au+++QNGfGwXXJEuPFEUOONah5mbECXjUtLzGlO79zA4iHJWiB9frDpr/1YQSN1xD5shiJf
-	OAIFl1Zn+6SzFAn5X4b/jLMMWyQvqA4Wt4IGH0ITF6hpWVScig6I+agJhN71psvV/j3iLwsc7cRBN
-	CNGIomRA==;
+	bh=vmEbiYXf3VYo+4CWW+hMPRh2IaxSy2TI9OTOqiPEWTQ=; b=hy/deV3AjxJ+wnvOogTXvmJSft
+	2kvD58XTHZzTGtP35Cid96JSoOdbkoNWOd5AeziRkoVOafDgDGELkcAl/W4p0bnwacp+8d9Oc/Ca8
+	Qu2hyerTbozSGjB3P4O9YZo6n3SnhRtp/MEaqVQ8WnsC2poVi0zDhzH6hyF7v47Asm2fkgYbBM0zf
+	zyq0o4UUGsx8vs/aG3/uzWxxh0sQXy8L6WBqXTsz+Maz0g5bBYhnJfDZlagin8qlEVueYsLnlAAE/
+	IDPohzmB2MG0A75JPAJFjdNmd/DcjgtHlV9UWM34bIsxce7+LwxWZxMKgubr3dQz0mHqsYqKM4KNR
+	PZvzT2ug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBuxO-00000002aYa-45p7;
+	id 1tBuxO-00000002aYO-21zB;
 	Fri, 15 Nov 2024 11:57:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBuxK-00000002aWP-39Kf
+	id 1tBuxK-00000002aWR-39Rh
 	for barebox@lists.infradead.org;
 	Fri, 15 Nov 2024 11:57:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBuxH-0000n0-3P; Fri, 15 Nov 2024 12:57:39 +0100
+	id 1tBuxH-0000n1-4c; Fri, 15 Nov 2024 12:57:39 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBuxG-000trj-2u;
+	id 1tBuxG-000trm-33;
 	Fri, 15 Nov 2024 12:57:38 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBuxG-00GYQA-2d;
+	id 1tBuxG-00GYQA-2m;
 	Fri, 15 Nov 2024 12:57:38 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: h.assmann@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 15 Nov 2024 12:57:35 +0100
-Message-Id: <20241115115736.3945523-3-a.fatoum@pengutronix.de>
+Date: Fri, 15 Nov 2024 12:57:36 +0100
+Message-Id: <20241115115736.3945523-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241115115736.3945523-1-a.fatoum@pengutronix.de>
 References: <20241115115736.3945523-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241115_035742_801383_257F69D8 
-X-CRM114-Status: GOOD (  14.04  )
+X-CRM114-CacheID: sfid-20241115_035742_797231_5244929D 
+X-CRM114-Status: GOOD (  18.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,102 +84,87 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/4] bootsource: have bootsource_get_alias_name return const char *
+Subject: [PATCH 4/4] ARM: i.MX8MP: tqma8mpxl: fix bbu registration for other boards using SoM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The only user of bootsource_get_alias_name() calls it and frees it
-shortly after and users in board code will likely do the same.
+The board code matches against the SoM compatible and there are two
+upstream device trees making use of the SoM.
 
-Instead of allocating every time, let's just return a static array and
-expect users to call strdup() if they want to keep the bootsource valid
-for longer.
+Both device trees reorder the device tree aliases to be different from
+the SoC ordering specified in dts/src/arm64/freescale/imx8mp.dtsi.
 
+This is partially addressed by the /chosen/barebox,bootsource-mmcX
+properties in arch/arm/dts/imx8mp.dtsi.
+
+What's not addressed is the name of the eMMC device in /dev: This is
+currently hardcoded to /dev/mmc0, but any other board that includes the
+same SoM and doesn't override the SoCs aliases will have the eMMC
+instead at /dev/mmc2, breaking the barebox update handler.
+
+One way to workaround this would be reverting commit 9f3f4af8cf56
+("ARM: i.MX8MP: tqma8mpxl: match board code against SoM compatible") and
+expect that other boards take care of registering the bbu handler themselves.
+
+What is implemented here is an alternative that could also be useful to
+other boards: Given that /chosen/environment-sd/device-path already points
+at the SD and /chosen/environment-mmc/device-path already points at the eMMC,
+let's just get the alias for the nodes they point at and use these to
+dynamically derive the device's name in /dev.
+
+Doing it this way requires only that there are any aliases for the MMCs at all
+(which should be the case as the upstream SoC dtsi has them) and doesn't
+suffer from probe order issues.
+
+Fixes: 9f3f4af8cf56 ("ARM: i.MX8MP: tqma8mpxl: match board code against SoM compatible")
+Reported-by: Holger Assmann <h.assmann@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootsource.c  | 23 +++++++++++------------
- include/bootsource.h |  2 +-
- 2 files changed, 12 insertions(+), 13 deletions(-)
+ arch/arm/boards/tqma8mpxl/board.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/common/bootsource.c b/common/bootsource.c
-index 6808c9c51d88..3c8f53f3a890 100644
---- a/common/bootsource.c
-+++ b/common/bootsource.c
-@@ -72,27 +72,24 @@ const char *bootsource_get_alias_stem(enum bootsource src)
- /**
-  * bootsource_get_alias_name() - Get the name of the bootsource alias
-  *
-- * This function will return newly allocated string containing name of
-+ * This function will return a pointer to a static string containing name of
-  * the alias that is expected to point to DTB node corresponding to
-  * detected bootsource
-  *
-- * NOTE: Caller is expected to free() the string allocated by this
-- * function
-  */
--char *bootsource_get_alias_name(void)
-+const char *bootsource_get_alias_name(void)
+diff --git a/arch/arm/boards/tqma8mpxl/board.c b/arch/arm/boards/tqma8mpxl/board.c
+index 8b67acb91c55..9d7cedc434c2 100644
+--- a/arch/arm/boards/tqma8mpxl/board.c
++++ b/arch/arm/boards/tqma8mpxl/board.c
+@@ -14,22 +14,31 @@
+ #include <mach/imx/iomux-mx8mp.h>
+ #include <gpio.h>
+ #include <envfs.h>
++#include <string.h>
+ 
+ static int tqma8mpxl_probe(struct device *dev)
  {
-+	static char buf[sizeof("i2c-eeprom-2147483647")];
- 	const char *stem;
-+	int ret;
++	const char *emmc, *sd;
+ 	int emmc_bbu_flag = 0;
+ 	int sd_bbu_flag = 0;
  
- 	/*
- 	 * If alias name was overridden via
- 	 * bootsource_set_alias_name() return that value without
- 	 * asking any questions.
--	 *
--	 * Note that we have to strdup() the result to make it
--	 * free-able.
- 	 */
- 	if (bootsource_alias_name)
--		return strdup(bootsource_alias_name);
-+		return bootsource_alias_name;
- 
- 	stem = bootsource_get_alias_stem(bootsource);
- 	if (!stem)
-@@ -105,13 +102,17 @@ char *bootsource_get_alias_name(void)
- 	if (bootsource_instance == BOOTSOURCE_INSTANCE_UNKNOWN)
- 		return NULL;
- 
--	return basprintf("%s%d", stem, bootsource_instance);
-+	ret = snprintf(buf, sizeof(buf), "%s%d", stem, bootsource_instance);
-+	if (ret < 0 || ret >= sizeof(buf))
-+		return NULL;
+-	if (bootsource_get() == BOOTSOURCE_MMC && bootsource_get_instance() == 1) {
+-		of_device_enable_path("/chosen/environment-sd");
++	sd = of_env_get_alias_by_path("/chosen/environment-sd");
++	emmc = of_env_get_alias_by_path("/chosen/environment-emmc");
 +
-+	return buf;
++	if (streq_ptr(bootsource_get_alias_name(), sd)) {
++		of_device_enable_by_alias(sd);
+ 		sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
+-	} else {
+-		of_device_enable_path("/chosen/environment-emmc");
++	} else if (emmc) {
++		of_device_enable_by_alias(emmc);
+ 		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
+ 	}
+ 
+-	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", sd_bbu_flag);
+-	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", emmc_bbu_flag);
++	if (sd)
++		imx8m_bbu_internal_mmc_register_handler("SD",
++			basprintf("/dev/%s.barebox", sd), sd_bbu_flag);
++	if (emmc)
++		imx8m_bbu_internal_mmcboot_register_handler("eMMC",
++			basprintf("/dev/%s", emmc), emmc_bbu_flag);
+ 
+ 	return 0;
  }
- 
- struct device_node *bootsource_of_node_get(struct device_node *root)
- {
- 	struct device_node *np;
--	char *alias_name;
-+	const char *alias_name;
- 
- 	alias_name = bootsource_get_alias_name();
- 	if (!alias_name)
-@@ -119,8 +120,6 @@ struct device_node *bootsource_of_node_get(struct device_node *root)
- 
- 	np = of_find_node_by_alias(root, alias_name);
- 
--	free(alias_name);
--
- 	return np;
- }
- 
-diff --git a/include/bootsource.h b/include/bootsource.h
-index 33ad26946059..9fb77a0bb0a9 100644
---- a/include/bootsource.h
-+++ b/include/bootsource.h
-@@ -29,7 +29,7 @@ enum bootsource bootsource_get(void);
- enum bootsource bootsource_get_device(void);
- int bootsource_get_instance(void);
- void bootsource_set_alias_name(const char *name);
--char *bootsource_get_alias_name(void);
-+const char *bootsource_get_alias_name(void);
- const char *bootsource_to_string(enum bootsource src);
- const char *bootsource_get_alias_stem(enum bootsource bs);
- int bootsource_of_alias_xlate(enum bootsource bs, int instance);
 -- 
 2.39.5
 
