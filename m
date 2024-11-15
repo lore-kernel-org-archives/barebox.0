@@ -1,68 +1,68 @@
-Delivery-date: Fri, 15 Nov 2024 13:16:33 +0100
+Delivery-date: Fri, 15 Nov 2024 13:16:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBvFZ-002F6d-0C
+	id 1tBvFa-002F6z-2j
 	for lore@lore.pengutronix.de;
-	Fri, 15 Nov 2024 13:16:33 +0100
+	Fri, 15 Nov 2024 13:16:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tBvFY-0004OY-Aq
-	for lore@pengutronix.de; Fri, 15 Nov 2024 13:16:32 +0100
+	id 1tBvFa-0004Pp-8r
+	for lore@pengutronix.de; Fri, 15 Nov 2024 13:16:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZLPJHDhQB/rAIxgdD+QqYgciibildEhJthXzJXvrg04=; b=0f3+meRm9MMi7/HwPL2rntpH9i
-	Z/8ew8moOKM/2bs7pUeVrUjrsuQsKa4kWPft+YOzYdxbvYc/PC7aJ3fbcWm+Utx94HSVHGS2jFgSh
-	VNSmJS/WI0kHDpW5G0hcJSSLJhbDKYF7OL/D6iEeOqWUGDZThizxQY+6rjBLyfKlLuxqdVyYt1FQ7
-	TVeqPP0sosSSrWHLoIEXLYKf5utAiMcBj3d5Xi7q+EWMI7xzVuBb7ZxSWzl9INjpVkK55PNcHVb/F
-	uNwAEaoGzaggDABVVbuoob9Fz7GCaz+vSrYxFG/ofiGpDrkVIUR8+Fwd+pDGE0ZNFsTJ20d5KMDTg
-	tF+dWDNg==;
+	bh=g5uDPc/ukXCPmp9D7bg8DsZO5m3/wu25eVEw37pPy6I=; b=iCm/vlNUtExAkwy09r/lKPYAR9
+	+sdLUer7S106enUcGSBGb2mq7fFfMcZ7tmCcRXb3te8dyRPc5r/HLttlADP4J2xtQy3COcAJxtSTq
+	hSBffnLUlmjEYwehbiXAiW+W0mWq5djOVt2NxOPEpp7Rb95yxVEcwWPg2rGq27d3vV1S06H1Yc0iv
+	O3sj27MC+RFOlAL9XB3lwXtHjh1eTVNoXJOx4fy1g5PzohHZWt8Im+2gt71TY1liIFJCwcx1VOzie
+	Q54rW1Ad9KJ74u7Ur+dA9V7krWOddzbmk7xR4biJ/3jqIOqggmExsv5kyEI4zl35S6PY9qC7wLo41
+	SodTIUuQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBvFB-00000002dNo-239J;
-	Fri, 15 Nov 2024 12:16:09 +0000
+	id 1tBvFA-00000002dMv-1y6y;
+	Fri, 15 Nov 2024 12:16:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tBvF7-00000002dL8-0EQz
+	id 1tBvF7-00000002dL9-0ENV
 	for barebox@lists.infradead.org;
-	Fri, 15 Nov 2024 12:16:08 +0000
+	Fri, 15 Nov 2024 12:16:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBvF5-0004BE-JB; Fri, 15 Nov 2024 13:16:03 +0100
+	id 1tBvF5-0004BD-IP; Fri, 15 Nov 2024 13:16:03 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBvF5-000u9l-1K;
+	id 1tBvF5-000u9i-1B;
 	Fri, 15 Nov 2024 13:16:03 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tBvF5-00GmQm-13;
+	id 1tBvF5-00GmQm-0u;
 	Fri, 15 Nov 2024 13:16:03 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: h.assmann@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 15 Nov 2024 13:16:01 +0100
-Message-Id: <20241115121602.3999375-3-a.fatoum@pengutronix.de>
+Date: Fri, 15 Nov 2024 13:16:00 +0100
+Message-Id: <20241115121602.3999375-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241115121602.3999375-1-a.fatoum@pengutronix.de>
 References: <20241115121602.3999375-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241115_041605_149279_14DA03F4 
-X-CRM114-Status: GOOD (  14.64  )
+X-CRM114-CacheID: sfid-20241115_041605_176690_0FE4D24D 
+X-CRM114-Status: GOOD (  12.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,105 +84,61 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/4] bootsource: have bootsource_get_alias_name return const char *
+Subject: [PATCH v2 2/4] environment: implement of_env_get_alias_by_path helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The only user of bootsource_get_alias_name() calls it and frees it
-shortly after and users in board code will likely do the same.
-
-Instead of allocating every time, let's just return a static array and
-expect users to call strdup() if they want to keep the bootsource valid
-for longer.
+For use by board-code that wants to get the alias pointing at the
+backing device of an environment node add a simple
+of_env_get_alias_by_path() helper, so board code doesn't need to worry
+about property name and whether the binding uses a phandle or string path.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
   - no change
 ---
- common/bootsource.c  | 23 +++++++++++------------
- include/bootsource.h |  2 +-
- 2 files changed, 12 insertions(+), 13 deletions(-)
+ drivers/of/barebox.c |  5 +++++
+ include/envfs.h      | 10 ++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/common/bootsource.c b/common/bootsource.c
-index 6808c9c51d88..3c8f53f3a890 100644
---- a/common/bootsource.c
-+++ b/common/bootsource.c
-@@ -72,27 +72,24 @@ const char *bootsource_get_alias_stem(enum bootsource src)
- /**
-  * bootsource_get_alias_name() - Get the name of the bootsource alias
-  *
-- * This function will return newly allocated string containing name of
-+ * This function will return a pointer to a static string containing name of
-  * the alias that is expected to point to DTB node corresponding to
-  * detected bootsource
-  *
-- * NOTE: Caller is expected to free() the string allocated by this
-- * function
-  */
--char *bootsource_get_alias_name(void)
-+const char *bootsource_get_alias_name(void)
- {
-+	static char buf[sizeof("i2c-eeprom-2147483647")];
- 	const char *stem;
-+	int ret;
+diff --git a/drivers/of/barebox.c b/drivers/of/barebox.c
+index ed5d171e43a8..7d433e280ba5 100644
+--- a/drivers/of/barebox.c
++++ b/drivers/of/barebox.c
+@@ -15,6 +15,11 @@
  
- 	/*
- 	 * If alias name was overridden via
- 	 * bootsource_set_alias_name() return that value without
- 	 * asking any questions.
--	 *
--	 * Note that we have to strdup() the result to make it
--	 * free-able.
- 	 */
- 	if (bootsource_alias_name)
--		return strdup(bootsource_alias_name);
-+		return bootsource_alias_name;
+ #define ENV_MNT_DIR "/boot"	/* If env on filesystem, where to mount */
  
- 	stem = bootsource_get_alias_stem(bootsource);
- 	if (!stem)
-@@ -105,13 +102,17 @@ char *bootsource_get_alias_name(void)
- 	if (bootsource_instance == BOOTSOURCE_INSTANCE_UNKNOWN)
- 		return NULL;
- 
--	return basprintf("%s%d", stem, bootsource_instance);
-+	ret = snprintf(buf, sizeof(buf), "%s%d", stem, bootsource_instance);
-+	if (ret < 0 || ret >= sizeof(buf))
-+		return NULL;
++const char *of_env_get_alias_by_path(const char *of_path)
++{
++	return of_property_get_alias(of_path, "device-path");
++}
 +
-+	return buf;
+ /* If dev describes a file on a fs, mount the fs and return a pointer
+  * to the file's path.  Otherwise return an error code or NULL if the
+  * device path should be used.
+diff --git a/include/envfs.h b/include/envfs.h
+index 767b34c943de..8bfc83b6b008 100644
+--- a/include/envfs.h
++++ b/include/envfs.h
+@@ -118,6 +118,16 @@ static inline const char *default_environment_path_get(void)
  }
+ #endif
  
- struct device_node *bootsource_of_node_get(struct device_node *root)
- {
- 	struct device_node *np;
--	char *alias_name;
-+	const char *alias_name;
- 
- 	alias_name = bootsource_get_alias_name();
- 	if (!alias_name)
-@@ -119,8 +120,6 @@ struct device_node *bootsource_of_node_get(struct device_node *root)
- 
- 	np = of_find_node_by_alias(root, alias_name);
- 
--	free(alias_name);
--
- 	return np;
- }
- 
-diff --git a/include/bootsource.h b/include/bootsource.h
-index 33ad26946059..9fb77a0bb0a9 100644
---- a/include/bootsource.h
-+++ b/include/bootsource.h
-@@ -29,7 +29,7 @@ enum bootsource bootsource_get(void);
- enum bootsource bootsource_get_device(void);
- int bootsource_get_instance(void);
- void bootsource_set_alias_name(const char *name);
--char *bootsource_get_alias_name(void);
-+const char *bootsource_get_alias_name(void);
- const char *bootsource_to_string(enum bootsource src);
- const char *bootsource_get_alias_stem(enum bootsource bs);
- int bootsource_of_alias_xlate(enum bootsource bs, int instance);
++#ifdef CONFIG_OF_BAREBOX_DRIVERS
++const char *of_env_get_alias_by_path(const char *of_path);
++#else
++static inline const char *of_env_get_alias_by_path(const char *of_path)
++{
++	return NULL;
++}
++#endif
++
++
+ #ifdef CONFIG_DEFAULT_ENVIRONMENT
+ void defaultenv_append(void *buf, unsigned int size, const char *name);
+ int defaultenv_load(const char *dir, unsigned flags);
 -- 
 2.39.5
 
