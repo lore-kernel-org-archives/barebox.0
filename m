@@ -1,69 +1,71 @@
-Delivery-date: Mon, 25 Nov 2024 09:16:09 +0100
+Delivery-date: Mon, 25 Nov 2024 09:34:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tFUGO-0007mM-1Q
+	id 1tFUY6-000814-0O
 	for lore@lore.pengutronix.de;
-	Mon, 25 Nov 2024 09:16:08 +0100
+	Mon, 25 Nov 2024 09:34:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tFUGO-0007yL-EJ
-	for lore@pengutronix.de; Mon, 25 Nov 2024 09:16:08 +0100
+	id 1tFUY5-0001rq-Uq
+	for lore@pengutronix.de; Mon, 25 Nov 2024 09:34:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JBertj3YjQno9mVoysKgiFL6/RoZT48ozTVK8rc+QaQ=; b=g9q7YtbcaJ+QNfHYGSnjeRIrIO
-	e2tTY4AykIdeOVFmTeR9uAQzAuidgKATkkJnNLxrALKJcWk/or6DfGdqqrnz3UbToghzX0cC1VlJD
-	lgUg+F3n3ni1xmh2s3opTBLlVgXh1ezeZkw9v0yp5cw0OWFNeWrFeSHnpS55K/S45W65JHA4IONCK
-	SFaGdfPoCX7xd+7ZjSo9oxA9xm5Ll+LBCwnIgNyBAGeP4CRXXe1TTliQGoq4MC6D7fptMZaeJpOSG
-	sQj3SQGP3D4ENQBxiEbOAysm8p+WR/pmBtCbjd0wnnzRKEJfXgxEiKYqkYh80ivSxOA85kn5ax6eI
-	npZxkYpQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=xhDnhtGT37nNxzVnKCtOfG2daEd7JvLA1zihuJAh7Rk=; b=kGHeyPZZCR+LR5RK9uOneFGvcc
+	4J+J7sb7SonaeJD9wRyl+m3LUYItgwHRWUymQrv4IHIe7n3A95EDDU3KdORffXP7U22NH2FuebiSc
+	7Jg2zqQCLDp+P0QYDE88WJ/t16oYnUYE9I8URo+YQx4BgYi/+G1tFv5NkGpGVzGGBgpGCPGwUi8wi
+	N/R5ZyurPN9HOPw2T2nhhHEnFrh6TQBiJ6zLj57790vPvJCzpJcMgRG8YgAkOR79MUMAl9YBJO384
+	IbIsIBH6rwNqo8LyhBtkmKn/E2OMho4vjQqBi5gYaYrTWZoZuM1lZerY5/2MOh12q9AlxhHOVLXiq
+	zjJdXRoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tFUFn-00000007Lg4-37Tq;
-	Mon, 25 Nov 2024 08:15:31 +0000
+	id 1tFUXd-00000007OTf-1zxn;
+	Mon, 25 Nov 2024 08:33:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tFUEy-00000007LRa-48sm
+	id 1tFUKg-00000007MRK-28tW
 	for barebox@lists.infradead.org;
-	Mon, 25 Nov 2024 08:14:42 +0000
+	Mon, 25 Nov 2024 08:20:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tFUEu-0007aN-TA; Mon, 25 Nov 2024 09:14:36 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1tFUKd-0000Yc-Lc; Mon, 25 Nov 2024 09:20:31 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tFUEt-00030d-32;
-	Mon, 25 Nov 2024 09:14:36 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tFUEu-000gv2-25;
-	Mon, 25 Nov 2024 09:14:36 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1tFUKc-00031K-2J;
+	Mon, 25 Nov 2024 09:20:31 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tFUKd-00EaiA-1J;
+	Mon, 25 Nov 2024 09:20:31 +0100
+Date: Mon, 25 Nov 2024 09:20:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: bst@pengutronix.de
-In-Reply-To: <20241122162321.3909910-1-a.fatoum@pengutronix.de>
-References: <20241122162321.3909910-1-a.fatoum@pengutronix.de>
-Message-Id: <173252247664.164969.5333756455197877350.b4-ty@pengutronix.de>
-Date: Mon, 25 Nov 2024 09:14:36 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <Z0QzT1LZ6Lo2kxtr@pengutronix.de>
+References: <20241120130640.3866362-1-a.fatoum@pengutronix.de>
+ <20241120130640.3866362-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241120130640.3866362-2-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241125_001441_025042_B24C4967 
-X-CRM114-Status: UNSURE (   7.56  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241125_002034_546947_6C544045 
+X-CRM114-Status: GOOD (  22.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,29 +87,112 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master v2 1/2] sandbox: noshell_defconfig: set
- CONFIG_CONSOLE_DISABLE_INPUT=y
+Subject: Re: [PATCH 2/3] mfd: rn5t568: refactor to call
+ reset_source_set_device only once
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Fri, 22 Nov 2024 17:23:20 +0100, Ahmad Fatoum wrote:
-> We are currently disabling CONFIG_DISABLE_INPUT, which is non-existent
-> option. It makes sense to _enable_ the option though after fixing the
-> typo, to get more coverage.
-> 
+On Wed, Nov 20, 2024 at 02:06:39PM +0100, Ahmad Fatoum wrote:
+> ---
+>  drivers/mfd/rn5t568.c | 59 +++++++++++++++++++++----------------------
+>  1 file changed, 29 insertions(+), 30 deletions(-)
 > 
 
-Applied, thanks!
+No S-o-b?
 
-[1/2] sandbox: noshell_defconfig: set CONFIG_CONSOLE_DISABLE_INPUT=y
-      https://git.pengutronix.de/cgit/barebox/commit/?id=5fb7dda6b1e0 (link may not be stable)
-[2/2] startup: do not bring up networking if console input disabled
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8637b876fb16 (link may not be stable)
+Sascha
 
-Best regards,
+> diff --git a/drivers/mfd/rn5t568.c b/drivers/mfd/rn5t568.c
+> index f1e2eeb0c88b..7468338a2d53 100644
+> --- a/drivers/mfd/rn5t568.c
+> +++ b/drivers/mfd/rn5t568.c
+> @@ -33,6 +33,7 @@ static void rn5t568_restart(struct restart_handler *rst)
+>  static int rn5t568_reset_reason_detect(struct device *dev,
+>  				       struct regmap *regmap)
+>  {
+> +	enum reset_src_type type;
+>  	unsigned int reg;
+>  	int ret;
+>  
+> @@ -47,40 +48,38 @@ static int rn5t568_reset_reason_detect(struct device *dev,
+>  		return 0;
+>  	}
+>  
+> -	if (reg & RN5T568_PONHIS_ON_EXTINPON) {
+> -		reset_source_set_device(dev, RESET_POR);
+> -		return 0;
+> -	} else if (reg & RN5T568_PONHIS_ON_PWRONPON) {
+> -		reset_source_set_device(dev, RESET_POR);
+> -		return 0;
+> -	} else if (!(reg & RN5T568_PONHIS_ON_REPWRPON))
+> +	if (reg & (RN5T568_PONHIS_ON_EXTINPON | RN5T568_PONHIS_ON_PWRONPON)) {
+> +		type = RESET_POR;
+> +	} else if (!(reg & RN5T568_PONHIS_ON_REPWRPON)) {
+>  		return -EINVAL;
+> +	} else {
+> +		ret = regmap_read(regmap, RN5T568_POFFHIS, &reg);
+> +		if (ret)
+> +			return ret;
+>  
+> -	ret = regmap_read(regmap, RN5T568_POFFHIS, &reg);
+> -	if (ret)
+> -		return ret;
+> +		dev_dbg(dev, "Power-off history: %x\n", reg);
+>  
+> -	dev_dbg(dev, "Power-off history: %x\n", reg);
+> -
+> -	if (reg & RN5T568_POFFHIS_PWRONPOFF)
+> -		reset_source_set_device(dev, RESET_POR);
+> -	else if (reg & RN5T568_POFFHIS_TSHUTPOFF)
+> -		reset_source_set_device(dev, RESET_THERM);
+> -	else if (reg & RN5T568_POFFHIS_VINDETPOFF)
+> -		reset_source_set_device(dev, RESET_BROWNOUT);
+> -	else if (reg & RN5T568_POFFHIS_IODETPOFF)
+> -		reset_source_set_device(dev, RESET_UKWN);
+> -	else if (reg & RN5T568_POFFHIS_CPUPOFF)
+> -		reset_source_set_device(dev, RESET_RST);
+> -	else if (reg & RN5T568_POFFHIS_WDGPOFF)
+> -		reset_source_set_device(dev, RESET_WDG);
+> -	else if (reg & RN5T568_POFFHIS_DCLIMPOFF)
+> -		reset_source_set_device(dev, RESET_BROWNOUT);
+> -	else if (reg & RN5T568_POFFHIS_N_OEPOFF)
+> -		reset_source_set_device(dev, RESET_EXT);
+> -	else
+> -		return -EINVAL;
+> +		if (reg & RN5T568_POFFHIS_PWRONPOFF)
+> +			type = RESET_POR;
+> +		else if (reg & RN5T568_POFFHIS_TSHUTPOFF)
+> +			type = RESET_THERM;
+> +		else if (reg & RN5T568_POFFHIS_VINDETPOFF)
+> +			type = RESET_BROWNOUT;
+> +		else if (reg & RN5T568_POFFHIS_IODETPOFF)
+> +			type = RESET_UKWN;
+> +		else if (reg & RN5T568_POFFHIS_CPUPOFF)
+> +			type = RESET_RST;
+> +		else if (reg & RN5T568_POFFHIS_WDGPOFF)
+> +			type = RESET_WDG;
+> +		else if (reg & RN5T568_POFFHIS_DCLIMPOFF)
+> +			type = RESET_BROWNOUT;
+> +		else if (reg & RN5T568_POFFHIS_N_OEPOFF)
+> +			type = RESET_EXT;
+> +		else
+> +			return -EINVAL;
+> +	}
+>  
+> +	reset_source_set_device(dev, type);
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.39.5
+> 
+> 
+> 
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
