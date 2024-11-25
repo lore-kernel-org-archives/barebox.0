@@ -1,71 +1,71 @@
-Delivery-date: Mon, 25 Nov 2024 10:19:50 +0100
+Delivery-date: Mon, 25 Nov 2024 10:26:14 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tFVG2-00090o-0c
+	id 1tFVME-00094W-1E
 	for lore@lore.pengutronix.de;
-	Mon, 25 Nov 2024 10:19:50 +0100
+	Mon, 25 Nov 2024 10:26:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tFVG2-0000Ew-3e
-	for lore@pengutronix.de; Mon, 25 Nov 2024 10:19:50 +0100
+	id 1tFVME-0000mL-8v
+	for lore@pengutronix.de; Mon, 25 Nov 2024 10:26:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jVXdlHcHS3GfozrZJ7FE1Qbg25nBaXQa8t7BQIcaomE=; b=UbgxGibhP5ar0zIyylm+Yk/2Bs
-	NokFN59bQLwDhD9FrgE+m9gCwG8PLS74889pi+vdWm32/PPKbfMk139mfkV40/fe48Hc+PVOM9HIX
-	bs718P0k3TPs9Mu7lscYfT3agT9kKOOIVlQ+hblJvYPZci7RjCI6Zal8/k0B6NHq6ttJJAAEMVlIN
-	ozXhVU8xuoAHmSkMgyXxRelvZXa3owYf9yLgSUCMMDtLVws27UlmD+2tr6eyR3dN8OZzRvO2LI/Ro
-	UgT/Dx6S8T44QWVD9m9wudnj0+ykfPDyIcNidCEGEtwxKVDPrf0v28JL+Pui4ZVWWyGNMBYR8CXgS
-	6USPfazw==;
+	bh=i0g6owrEjF3FFLNGZOCauZVGvRDmA3ppClBVL3YakGg=; b=LfO2U7jKwuNvnhdakn7C+2lVLd
+	FRKjC9ZHH5bdctuph6nOe56qlR0WR1goXRxvw+vGmAyA2NbrZmdNZvoy8VTRCm/b/zrd/WFlbXCvU
+	8LQlem9LuM62aFXovzbKxXGaE7lRh8w55dfy6aAS0Yq98enUyJt8SnC1y2ODoKWByNOnSyFiswRbc
+	MRy9TAGwnP6bXFsH7ggkUhJ3OFINaz+m/x0J1ioMYTB+gr+PB0q5gjtUAAIUqRg2xxrn0J2b9np7u
+	KM/zXCHLrH+/jsLLRx52H8DattPVq2iQzSgEOOqG41XNL2Cx/Ub6RdelUu20mUlOEi08z0iUbvjk3
+	DB8u4qTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tFVFa-00000007XPa-3RUm;
-	Mon, 25 Nov 2024 09:19:22 +0000
+	id 1tFVLo-00000007YOA-00xO;
+	Mon, 25 Nov 2024 09:25:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tFVFU-00000007XO8-0xLa
+	id 1tFVKs-00000007YDz-0jLC
 	for barebox@lists.infradead.org;
-	Mon, 25 Nov 2024 09:19:17 +0000
+	Mon, 25 Nov 2024 09:24:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1tFVFS-00008v-VN; Mon, 25 Nov 2024 10:19:14 +0100
+	id 1tFVKq-0000dw-TO; Mon, 25 Nov 2024 10:24:48 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1tFVFS-0003UG-03;
-	Mon, 25 Nov 2024 10:19:14 +0100
+	id 1tFVKp-0003Uw-33;
+	Mon, 25 Nov 2024 10:24:48 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1tFVFS-00EcAS-2G;
-	Mon, 25 Nov 2024 10:19:14 +0100
-Date: Mon, 25 Nov 2024 10:19:14 +0100
+	id 1tFVKq-00EcCj-23;
+	Mon, 25 Nov 2024 10:24:48 +0100
+Date: Mon, 25 Nov 2024 10:24:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <Z0RBEioJ_pm7K95U@pengutronix.de>
+Message-ID: <Z0RCYFRw50l0E2qU@pengutronix.de>
 References: <20241115195747.997164-1-m.felsch@pengutronix.de>
- <20241115195747.997164-6-m.felsch@pengutronix.de>
+ <20241115195747.997164-10-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241115195747.997164-6-m.felsch@pengutronix.de>
+In-Reply-To: <20241115195747.997164-10-m.felsch@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241125_011916_268295_68B81340 
-X-CRM114-Status: GOOD (  22.09  )
+X-CRM114-CacheID: sfid-20241125_012450_210763_86238D21 
+X-CRM114-Status: GOOD (  29.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,41 +87,53 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 06/12] spi: add support to handle cs-gpios
+Subject: Re: [PATCH 10/12] spi: add support for spi_controller::set_cs_timing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Nov 15, 2024 at 08:57:41PM +0100, Marco Felsch wrote:
-> At the moment all drivers have to parse the cs-gpios on their own and
-> have to implement the mapping. By this commit we add the support to
-> handle this within the core and if there is a valid CS GPIO for a device
-> we assign it accordingly.
+On Fri, Nov 15, 2024 at 08:57:45PM +0100, Marco Felsch wrote:
+> Import the spi_controller set_cs_timing() hook to make it easier to port
+> code from the Linux.
 > 
-
-...
-
->  	 * likely need more hooks for more protocol options affecting how
-> @@ -156,6 +158,9 @@ static inline void spi_set_ctldata(struct spi_device *spi, void *state)
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  include/spi/spi.h | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/include/spi/spi.h b/include/spi/spi.h
+> index 8354b7d8baa6..092eacd4a8e1 100644
+> --- a/include/spi/spi.h
+> +++ b/include/spi/spi.h
+> @@ -179,6 +179,9 @@ static inline void spi_set_ctldata(struct spi_device *spi, void *state)
+>   *	must fail if an unrecognized or unsupported mode is requested.
+>   *	It's always safe to call this unless transfers are pending on
 >   *	the device whose settings are being modified.
+> + * @set_cs_timing: optional hook for SPI devices to request SPI master
+> + * controller for configuring specific CS setup time, hold time and inactive
+> + * delay interms of clock counts
 >   * @transfer: adds a message to the controller's transfer queue.
 >   * @cleanup: frees controller-specific state
-> + * @cs_gpiods: Array of GPIO descriptors to use as chip select lines; one per CS
-> + *	number. Any individual value may be NULL for CS lines that
-> + *	are not GPIOs (driven by the SPI controller itself).
->   * @list: link with the global spi_controller list
->   *
->   * Each SPI controller can communicate with one or more @spi_device
-> @@ -233,6 +238,10 @@ struct spi_controller {
->  	/* called on release() to free memory provided by spi_controller */
->  	void			(*cleanup)(struct spi_device *spi);
+>   * @cs_gpiods: Array of GPIO descriptors to use as chip select lines; one per CS
+> @@ -246,6 +249,16 @@ struct spi_controller {
+>  	/* setup mode and clock, etc (spi driver may call many times) */
+>  	int			(*setup)(struct spi_device *spi);
 >  
-> +	/* GPIO chip select */
-> +	struct gpio_desc	**cs_gpiods;
-> +	bool			use_gpio_descriptors;
+> +	/*
+> +	 * set_cs_timing() method is for SPI controllers that supports
+> +	 * configuring CS timing.
+> +	 *
+> +	 * This hook allows SPI client drivers to request SPI controllers
+> +	 * to configure specific CS timing through spi_set_cs_timing() after
+> +	 * spi_setup().
+> +	 */
+> +	int (*set_cs_timing)(struct spi_device *spi);
 
-You forgot to copy the documentation for this member.
+You add this hook here, but it's not called from the core code changes
+in the next commit and it's not implemented in the new driver you
+introduce with this series. Is there something missing in this series?
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
