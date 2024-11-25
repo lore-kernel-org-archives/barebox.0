@@ -1,67 +1,68 @@
-Delivery-date: Mon, 25 Nov 2024 16:17:55 +0100
+Delivery-date: Mon, 25 Nov 2024 16:17:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tFaqY-000FiC-1q
+	id 1tFaqZ-000Fia-3C
 	for lore@lore.pengutronix.de;
-	Mon, 25 Nov 2024 16:17:55 +0100
+	Mon, 25 Nov 2024 16:17:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tFaqY-00018J-HC
-	for lore@pengutronix.de; Mon, 25 Nov 2024 16:17:55 +0100
+	id 1tFaqZ-00018f-R4
+	for lore@pengutronix.de; Mon, 25 Nov 2024 16:17:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6H/EXy50SL1UxQBq8IbfIHn78aVQd0gU91Hf1jNOBm8=; b=FnU6eZVagmPq4doIFbDZprG7GH
-	ggvdCA9LV39NbokRjrj8fSjVaOgCdNEKrSBgc5H0Zmv1Uy7C/J6WduKDKDvcG3J7e0WA1d93E908G
-	8Jt91U1h/dm/8dHHTz+YphifyjaCMVyyw54zsg2W6OMGZbdMA2YAUGR7XkEZjRY77ee83eaKwckXJ
-	me7tRbjoQa9aVfT1KGDLE+SKWDdTfpYsm6sRR4cApbkKygAHTBmraWdvXQlQcRUtUJLkBKQh5EoO6
-	UC1NbkWB7z9BpHKsLIMtDhBaZDYQ1g5qHEqWrj/eO0fbJ6Y/HH1GzzTj3jQaBI+fzc+MrRk2/stXF
-	VLsmlumg==;
+	bh=VU7Wd4rmuUEBVj7UKsCkSzyoxRWs/fgp76YnmuE6ZzA=; b=XeO5ZGMcuM7v4r2kPFeIqdJd1b
+	h5mepuwGIxGqeA/5ltol1xkAS5wxGQZTJ/5vwOqP+v+zbMiHWPnpPJRd1zENAg7G0eLa5Z97VO20O
+	IhifWYHrGAAdgvQK4povFBbmsKbTgmrBBWvpVDRGI56kLrQUicoy5JgIpKX1IWn9kwmmLOgmSwYVq
+	mcahC5UY4kXR1DVqU9k2XFYFvecXYE7/mN+Jk3lnIYkIFWgx6FtdTzYTjUqMp2Dy8GnJNxi5fH1HP
+	PUhDaNzUMb369ZR1eLzQrevNmVUyrdSAA30pF8wh/y1qoYqkx1TkfX8/ZhpudiYn4IujiT4MqzjVJ
+	ebiFxClw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tFaq8-00000008RMq-427M;
-	Mon, 25 Nov 2024 15:17:28 +0000
+	id 1tFaqA-00000008RO6-05jq;
+	Mon, 25 Nov 2024 15:17:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tFaq2-00000008RHg-3rIt
+	id 1tFaq3-00000008RHh-06lR
 	for barebox@lists.infradead.org;
-	Mon, 25 Nov 2024 15:17:24 +0000
+	Mon, 25 Nov 2024 15:17:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tFaq1-0000l1-O6; Mon, 25 Nov 2024 16:17:21 +0100
+	id 1tFaq1-0000l4-Qy; Mon, 25 Nov 2024 16:17:21 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tFaq0-0006OK-2U;
+	id 1tFaq0-0006OO-2i;
 	Mon, 25 Nov 2024 16:17:21 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tFalK-001lGb-1Y;
+	id 1tFalK-001lGb-27;
 	Mon, 25 Nov 2024 16:12:31 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 25 Nov 2024 16:12:23 +0100
-Message-Id: <20241125151228.341441-12-a.fatoum@pengutronix.de>
+Date: Mon, 25 Nov 2024 16:12:27 +0100
+Message-Id: <20241125151228.341441-16-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241125151228.341441-1-a.fatoum@pengutronix.de>
 References: <20241125151228.341441-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241125_071722_969406_BD874460 
-X-CRM114-Status: GOOD (  10.92  )
+X-CRM114-CacheID: sfid-20241125_071723_058755_EC0630EB 
+X-CRM114-Status: UNSURE (   8.92  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,7 +84,7 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 11/16] of: stub out live tree API when using PBL
+Subject: [PATCH v2 15/16] memory: stub out request_barebox_region for PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -94,22 +95,32 @@ that are ultimately unreferenced.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/of.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/memory.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/of.h b/include/of.h
-index 05e92d41b9f0..3d24e17e43a0 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -131,7 +131,7 @@ struct cdev;
- /* Maximum score returned by of_device_is_compatible() */
- #define OF_DEVICE_COMPATIBLE_MAX_SCORE	(INT_MAX / 2)
+diff --git a/include/memory.h b/include/memory.h
+index 571effd3b0d6..8c330e65c012 100644
+--- a/include/memory.h
++++ b/include/memory.h
+@@ -63,8 +63,18 @@ static inline u64 memory_sdram_size(unsigned int cols,
  
--#ifdef CONFIG_OFTREE
-+#if IS_ENABLED(CONFIG_OFTREE) && IN_PROPER
- extern struct device_node *of_read_file(const char *filename);
- extern struct of_reserve_map *of_get_reserve_map(void);
- extern int of_bus_n_addr_cells(struct device_node *np);
+ void register_barebox_area(resource_size_t start, resource_size_t size);
+ 
++#if IN_PROPER
+ struct resource *request_barebox_region(const char *name,
+ 					resource_size_t start,
+ 					resource_size_t size);
++#else
++static inline struct resource *request_barebox_region(const char *name,
++					resource_size_t start,
++					resource_size_t size)
++{
++
++		return ERR_PTR(-ENOSYS);
++}
++#endif
+ 
+ #endif
 -- 
 2.39.5
 
