@@ -1,59 +1,71 @@
-Delivery-date: Thu, 28 Nov 2024 08:30:49 +0100
+Delivery-date: Thu, 28 Nov 2024 08:37:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tGYzB-001MWh-14
+	id 1tGZ5Y-001MZx-1d
 	for lore@lore.pengutronix.de;
-	Thu, 28 Nov 2024 08:30:49 +0100
+	Thu, 28 Nov 2024 08:37:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tGYzB-0004no-8t
-	for lore@pengutronix.de; Thu, 28 Nov 2024 08:30:49 +0100
+	id 1tGZ5Y-0005zk-EN
+	for lore@pengutronix.de; Thu, 28 Nov 2024 08:37:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ATwu9Ut7938TK33mqMXChQZekKVQ/dQXSNjMqfy6Q40=; b=lMIwQKZeVeSgAusxyb1IU2VOqP
-	e2LNh9xSEgi2j5rBgxxQLKvc0yOGHCsJ+/CEmW9VvUF7DPj8oy5NqFTNs49jxM2Mpi5AUpeXQVF8d
-	bVn+NDRj3KTwjA2FuWRctvycXun6uXKQEsJtXTRYqDPmkmF0cHYYxFqokz3UbdOVcvLrqjj147qLW
-	wl/TBNg0yWjZuDD7X6hQqpAwBnK5iULLRY7VzTenx6ojyeD3yITiL496ClJouO70fJ6LYEjrKx0Ui
-	xKQa5datdJ99zyV/R+n6FeO6c7YrQtASLtop6eQ0Fqx4qas7ulcsWY128fZH7+GdBrqZrsg+a5vv+
-	Rlmrn58Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=cHHSAL+vqc2dyoK3G0muFEFoXfHg9ELxz2lk2/sAIFY=; b=HDGKRJkQ/E8PzRXh/JTDuOHcuh
+	FD+Vxl4U9BOO6HuOfjeTHkCWxTVYH7lZcCuw4VAQcu8G4ZoNA3Ucoxe/Tsv9VVuaIwFs0lUkoTDIZ
+	RF5o3wGbHADPRbSjk+WphjIIcT5Sn+oFTG/q1uA3kRMxQ1YSB3/SleDNJw/62x6wzPpZeL6Ma0F/i
+	wGpI6RGt8vYzJyWie7FVXqxnQOz61N3ETWtKms6lgHXW5UdX7S1qJD8nGYIL8E8/+eNgjWJE0LqVI
+	p3EWEn5N5Lrxhzwo/ud5jAJxYyUrGvZYbaQeZxnFqdI7FV/puuNz40W9DZKhFuOctX6wNntD3moFk
+	23DKwczA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGYyo-0000000Et1u-2T0X;
-	Thu, 28 Nov 2024 07:30:26 +0000
+	id 1tGZ5A-0000000EtZs-2o9N;
+	Thu, 28 Nov 2024 07:37:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGYyl-0000000Et03-3eCh
+	id 1tGZ56-0000000EtZR-41ME
 	for barebox@lists.infradead.org;
-	Thu, 28 Nov 2024 07:30:25 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tGYyj-0004gZ-BP; Thu, 28 Nov 2024 08:30:21 +0100
-Message-ID: <8465616c-8518-45a6-af57-42286bbdbf1c@pengutronix.de>
-Date: Thu, 28 Nov 2024 08:30:21 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
+	Thu, 28 Nov 2024 07:36:58 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tGZ55-0005r9-Fx; Thu, 28 Nov 2024 08:36:55 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tGZ54-000Zfm-1k;
+	Thu, 28 Nov 2024 08:36:55 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tGZ55-002p09-0k;
+	Thu, 28 Nov 2024 08:36:55 +0100
+Date: Thu, 28 Nov 2024 08:36:55 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
+Message-ID: <Z0gdl5vSvNaLYqXP@pengutronix.de>
 References: <20241126151744.3621717-1-a.fatoum@pengutronix.de>
- <20241126151744.3621717-2-a.fatoum@pengutronix.de>
- <Z0gbpZog23pPY-UA@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z0gbpZog23pPY-UA@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20241126151744.3621717-5-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241126151744.3621717-5-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241127_233023_909997_122711DC 
-X-CRM114-Status: GOOD (  20.28  )
+X-CRM114-CacheID: sfid-20241127_233656_995958_C9F89813 
+X-CRM114-Status: GOOD (  20.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,75 +87,55 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/4] net: add ethaddr sequence handling
+Subject: Re: [PATCH 4/4] net: implement ethaddr_string_cmp()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 28.11.24 08:28, Sascha Hauer wrote:
-> On Tue, Nov 26, 2024 at 04:17:41PM +0100, Ahmad Fatoum wrote:
->> Instead of storing every MAC address in full, boards may elect
->> to store a base address and increment it N times. Add a helper
->> to iterate over such an Ethernet address sequence. Example usage:
->>
->>   const u8 *eth_addr;
->>   u8 eth_base[ETH_ALEN] = "\x00\x01\x02\x03\x04\x05";
->>   int i = 0, eth_count = 4;
->>
->>   for_each_seq_ethaddr(eth_addr, eth_base, &eth_count)
->>           eth_register_ethaddr(i++, eth_addr);
+On Tue, Nov 26, 2024 at 04:17:44PM +0100, Ahmad Fatoum wrote:
+> We keep ethernet addresses either in binary or in text form at a couple
+> of places, e.g. device tree, device parameters, struct net_device,
+> ... etc. We have memcmp() and strcmp() respectively to compare each, add
+> one more function to compare a text string with binary. This will be
+> used in a follow up commit.
 > 
-> 	for (i = 0; i < 4; i++, eth_addr_inc(eth_addr))
-> 		eth_register_ethaddr(i, eth_addr);
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  include/net.h |  2 ++
+>  net/lib.c     | 17 +++++++++++++++++
+>  2 files changed, 19 insertions(+)
 > 
-> I think the open coded variant is easier to read and write, I don't
-> think we should introduce a helper for this.
+> diff --git a/include/net.h b/include/net.h
+> index d9b7953a3c33..dbc45b806a51 100644
+> --- a/include/net.h
+> +++ b/include/net.h
+> @@ -366,6 +366,8 @@ IPaddr_t getenv_ip(const char *name);
+>  int setenv_ip(const char *name, IPaddr_t ip);
+>  
+>  int string_to_ethaddr(const char *str, u8 enetaddr[6]);
+> +void ethaddr_to_string(const u8 enetaddr[6], char *str);
+> +int ethaddr_string_cmp(const u8 enetaddr_a[6], const char *str_b);
+>  
+>  #ifdef CONFIG_NET_RESOLV
+>  int resolv(const char *host, IPaddr_t *ip);
+> diff --git a/net/lib.c b/net/lib.c
+> index dc6e138f392c..59bd4c280caf 100644
+> --- a/net/lib.c
+> +++ b/net/lib.c
+> @@ -37,6 +37,23 @@ int string_to_ethaddr(const char *str, u8 enetaddr[ETH_ALEN])
+>  	return 0;
+>  }
+>  
+> +void ethaddr_to_string(const u8 enetaddr[ETH_ALEN], char *str)
+> +{
+> +	sprintf(str, "%02x:%02x:%02x:%02x:%02x:%02x",
+> +		 enetaddr[0], enetaddr[1], enetaddr[2], enetaddr[3],
+> +		 enetaddr[4], enetaddr[5]);
+> +}
 
-Fair enough. The patch predates the introduction of eth_addr_inc.
+Do you reintroduce this function on purpose or due to rebasing
+conflicts? A MAC address can now be printed with "%pM".
 
-Please drop this one patch.
-
-Thanks,
-Ahmad
-
-> 
-> Sascha
-> 
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  include/net.h | 12 ++++++++++++
->>  1 file changed, 12 insertions(+)
->>
->> diff --git a/include/net.h b/include/net.h
->> index a04ed5b0ab92..1b6995b50043 100644
->> --- a/include/net.h
->> +++ b/include/net.h
->> @@ -516,6 +516,18 @@ static inline void eth_addr_add(u8 *addr, long offset)
->>  	u64_to_ether_addr(u, addr);
->>  }
->>  
->> +#define for_each_seq_ethaddr(eth_addr, eth_base, eth_count) \
->> +	for (eth_addr = *eth_count ? eth_base : NULL; eth_addr; eth_addr = eth_addr_seq_next(eth_base, eth_count))
->> +
->> +static inline const u8 *eth_addr_seq_next(u8 eth_base[6], unsigned *eth_count)
->> +{
->> +	if (--(*eth_count) <= 0)
->> +		return NULL;
->> +
->> +	eth_addr_inc(eth_base);
->> +	return eth_base;
->> +}
->> +
->>  typedef void rx_handler_f(void *ctx, char *packet, unsigned int len);
->>  
->>  struct eth_device *eth_get_byname(const char *name);
->> -- 
->> 2.39.5
->>
->>
->>
-> 
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
