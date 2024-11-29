@@ -1,74 +1,74 @@
-Delivery-date: Fri, 29 Nov 2024 13:52:25 +0100
+Delivery-date: Fri, 29 Nov 2024 14:07:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tH0Tw-001rN4-33
+	id 1tH0iO-001rkT-1G
 	for lore@lore.pengutronix.de;
-	Fri, 29 Nov 2024 13:52:25 +0100
+	Fri, 29 Nov 2024 14:07:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tH0Tw-0006Oe-Mi
-	for lore@pengutronix.de; Fri, 29 Nov 2024 13:52:25 +0100
+	id 1tH0iO-0002bx-AQ
+	for lore@pengutronix.de; Fri, 29 Nov 2024 14:07:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uOikD3qz0uUiNSCxkXLn8J5VO43bNR0R+EbNmQzwabk=; b=gdm0EeWR7S+h9yZ743MJ/NGhml
-	uCck4UMAw5yaHnMEacY/PUBENRsnYxA9FoaDMF0sSeSXoSNVdEmmMPWAjcLW8pdOx9ITPNr4s5D5j
-	g5kBbduFOI2AQezDUmLahUALMr5Sq/9vHRLZOByQl2fII/s0q0jELjaEWayQu7uGxwRhSHKdqKA9o
-	zjCVFPvudPZCnhLQI4NOfVozj2kNSpiyZ/BMUZ+dWxauxmhq72z4FoYOn7qfwaeLJ2L8/+/bRi0nL
-	eLXucVC7095vFNvN8vBSdc9c9Wmf9CIfLZ4rVVsBflXT8yLcsdq+qEakFrk8u9QG/ErtL76UDZ/V1
-	VYn+IcAA==;
+	bh=98DRkh/LaV8NG87UIrjg2+e5ItxGxZukGpHJLmidCww=; b=l7kgpuUja5EM3GRsoiC/5M8EXr
+	0QiAlYgh+1TVFVFsocxw6XXF7zAOUMqJyX070fBhGNdp1/iKQ5AgewhfzQAWPwts4LmQR7ypC01Nl
+	H3wCGETp1lfOvvZBdmu4rlbHwqnBLv6Uvts/porwtesjGh7OJ9/BE+Lpt4oJddnP/4caECchpjyiN
+	O7hKH+x7VG089w6eDG0iQzHuOu5Uh2ttiDa9eg24VNaP94WHmG6IrTSaAbPSY6O98Jl4y918FURZv
+	QXJIh+ebxMsE2tkuIdbGxUPuOGvHq8kYdenAsNPaZ82ZfCVnOSkBFvdzRW5I6HoskUTOsKKWazxxF
+	kNy00OAw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tH0Ti-000000007BY-0iwP;
-	Fri, 29 Nov 2024 12:52:10 +0000
+	id 1tH0iE-000000009Jb-2rym;
+	Fri, 29 Nov 2024 13:07:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzQD-0000000Ha7G-38nG
+	id 1tGzhK-000000001Ox-2D4T
 	for barebox@lists.infradead.org;
-	Fri, 29 Nov 2024 11:44:31 +0000
+	Fri, 29 Nov 2024 12:02:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQA-0005CC-5U; Fri, 29 Nov 2024 12:44:26 +0100
+	id 1tGzhJ-0001MF-6Y; Fri, 29 Nov 2024 13:02:09 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQ9-000mJK-04;
-	Fri, 29 Nov 2024 12:44:25 +0100
+	id 1tGzhI-000mLm-0E;
+	Fri, 29 Nov 2024 13:02:08 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQ9-000vyS-2C;
+	id 1tGzQ9-000vyS-2K;
 	Fri, 29 Nov 2024 12:44:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Nov 2024 12:44:20 +0100
+Date: Fri, 29 Nov 2024 12:44:28 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241129-k3-r5-v1-5-67c4bb42a5c7@pengutronix.de>
+Message-Id: <20241129-k3-r5-v1-13-67c4bb42a5c7@pengutronix.de>
 References: <20241129-k3-r5-v1-0-67c4bb42a5c7@pengutronix.de>
 In-Reply-To: <20241129-k3-r5-v1-0-67c4bb42a5c7@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732880665; l=1278;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732880665; l=1707;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=I6AffcjyjYkKWZa3YxC9m6UC+aI8am6CNeW0ALNPMjk=;
- b=7G8EYdh+b1ZVy2n8miBqbzEjPPJ/LcjW15504rTDR2WCip9PiKVwf17AcSaksSJkN4KTAAt0n
- isFQJYcBb0mCdU6iHobvUPmO3neeesN2GlQ5b1pLZqodzwFd8/dFvXY
+ bh=Opa9imGjIOmT2Zemeh/fGI5DJlRSiyOTVDkPGAGmiYU=;
+ b=kcKj9h/5q4gYRJJCAY5O55RK/8RVRenZJbOnUSbaf/LdP4Et+f6WW5S4qvfJIachPCfrUsF59
+ NH/Q3g+LOqJAR7vOMX6fa9Fnjkt1JQPW4QquwJ/wwJqkZreCYhTVfk2
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241129_034429_784633_E83FCA21 
-X-CRM114-Status: GOOD (  12.43  )
+X-CRM114-CacheID: sfid-20241129_040210_613859_300E23F3 
+X-CRM114-Status: GOOD (  14.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,60 +90,64 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/20] nommu_v7_vectors_init: disable for r5
+Subject: [PATCH 13/20] elf: use iomem regions as fallback when loading to
+ non-sdram memory
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Some ARMv7 cores like the Cortex-R5 do not have a VBAR register for
-setting up the vector table. This patch disables the vector table
-setup specifically for the Cortex-R5.
+The ELF code uses request_sdram_region() to request the regions the
+binary shall be copied to. However, not all of these regions are
+actually SDRAM. Some specialized ELF files might also use SoC SRAM
+which is not registered as SDRAM, so use request_region as a fallback
+in these cases.
+
+This is needed on the TI K3 AM625 SoC to successfully load the ti-dm
+firmware binary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/no-mmu.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ common/elf.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/cpu/no-mmu.c b/arch/arm/cpu/no-mmu.c
-index be3cfaf12b..c4ef5d1f9d 100644
---- a/arch/arm/cpu/no-mmu.c
-+++ b/arch/arm/cpu/no-mmu.c
-@@ -19,9 +19,26 @@
- #include <asm/system_info.h>
- #include <debug_ll.h>
- #include <asm/sections.h>
-+#include <asm/cputype.h>
+diff --git a/common/elf.c b/common/elf.c
+index 62f793010f..cfe84939af 100644
+--- a/common/elf.c
++++ b/common/elf.c
+@@ -18,6 +18,7 @@ struct elf_section {
+ 	struct list_head list;
+ 	struct resource *r;
+ 	void *phdr;
++	bool is_iomem_region;
+ };
  
- #define __exceptions_size (__exceptions_stop - __exceptions_start)
+ static int elf_request_region(struct elf_image *elf, resource_size_t start,
+@@ -33,8 +34,12 @@ static int elf_request_region(struct elf_image *elf, resource_size_t start,
  
-+static bool has_vbar(void)
-+{
-+	u32 mainid;
-+
-+	__asm__ __volatile__(
-+		"mrc    p15, 0, %0, c0, c0, 0   @ read control reg\n"
-+		: "=r" (mainid)
-+		:
-+		: "memory");
-+
-+	if ((mainid & 0xfff0) == ARM_CPU_PART_CORTEX_R5)
-+		return false;
-+
-+	return true;
-+}
-+
- static int nommu_v7_vectors_init(void)
- {
- 	void *vectors;
-@@ -30,6 +47,9 @@ static int nommu_v7_vectors_init(void)
- 	if (cpu_architecture() < CPU_ARCH_ARMv7)
- 		return 0;
+ 	r_new = request_sdram_region("elf_section", start, size);
+ 	if (!r_new) {
+-		pr_err("Failed to request region: %pa %pa\n", &start, &size);
+-		return -EINVAL;
++		r_new = request_iomem_region("elf_section", start, size);
++		if (!r_new) {
++			pr_err("Failed to request region: %pa %pa\n", &start, &size);
++			return -EINVAL;
++		}
++		r->is_iomem_region = true;
+ 	}
  
-+	if (!has_vbar())
-+		return 0;
-+
- 	/*
- 	 * High vectors cannot be re-mapped, so we have to use normal
- 	 * vectors
+ 	r->r = r_new;
+@@ -50,7 +55,10 @@ static void elf_release_regions(struct elf_image *elf)
+ 	struct elf_section *r, *r_tmp;
+ 
+ 	list_for_each_entry_safe(r, r_tmp, list, list) {
+-		release_sdram_region(r->r);
++		if (r->is_iomem_region)
++			release_region(r->r);
++		else
++			release_sdram_region(r->r);
+ 		list_del(&r->list);
+ 		free(r);
+ 	}
 
 -- 
 2.39.5
