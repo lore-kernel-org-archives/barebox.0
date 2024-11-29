@@ -1,74 +1,89 @@
-Delivery-date: Fri, 29 Nov 2024 12:45:20 +0100
+Delivery-date: Fri, 29 Nov 2024 12:45:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tGzR2-001qAK-09
+	id 1tGzR8-001qBN-1x
 	for lore@lore.pengutronix.de;
-	Fri, 29 Nov 2024 12:45:20 +0100
+	Fri, 29 Nov 2024 12:45:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tGzR0-0005jj-Ou
-	for lore@pengutronix.de; Fri, 29 Nov 2024 12:45:20 +0100
+	id 1tGzR5-0005nT-99
+	for lore@pengutronix.de; Fri, 29 Nov 2024 12:45:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=d49hhv+C1L3wgOQxQsVC02gnN+eQxA7is39qE2tY6ec=; b=4r1mIPAJD/PY23Gr0zZzG5PC4Y
-	r4LkLkxd7yNcrmm8tRLNVv94BJmHsflZlcOj0C0EACpqZmlF8psHdUnggaDQP80FBm67UwOGFNUkt
-	tav/DPPn/lOJojmZ/RYSAtQ+dCrImBgIbFmh6xQa4KBqZu7JME2uMz72pNvPbIHfyns4sKy3SoStn
-	tNGy3wKjzkR5qjnYxuiB4uY2wKCCZpyKmA14d42h94wSDbC1l0qTRw1Kwh/7KwTPVztty88R1K9OU
-	IoeYQKBo9MEr5EqxEkHZgwUt8Ii+vfHzWlvvwhghwSdB9SkX1zaI0iSbHiYTR9yQKQAFWMTriwcqw
-	3sMb6C+A==;
+	bh=7kv1FXqDxyFA28aKwH8BZu+iOxYYzAJMFDVkwpqGNsM=; b=My0977JffbqzI3kk3MJ7uu2fEl
+	Xm4Q1PWPFzvclWftofxduYyJn8qzxvsyTPlKRg8AxRLcrQ2CUxl5U1UTVHzYlKII3h/MJhmY8BzTH
+	scug5f5kWYkxiNC4YyuoMWlU6BmFRo1e+lk63exuzQ4/4xWUq6zTdcXLktcnnFnA9VSO/P9HzPtXE
+	pDlUAUIHxggLian4lQ9CtCsAhd1uQpAMfYkK0omPaqk17PxG+OjyDqo21ktOPQ/+QCHWyMSlNmj4F
+	UTpLAe9R2SXGotp8Z4B0WljvqReNxT1TnkT4IMFAW/qj6gWwt9BCZA44s0nVsmCnpNFyVXONIpzuc
+	jptwzwsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzQK-0000000HaBH-0DZj;
-	Fri, 29 Nov 2024 11:44:36 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tGzQM-0000000HaCd-0YIg;
+	Fri, 29 Nov 2024 11:44:38 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzQD-0000000Ha7F-38bc
+	id 1tGzQH-0000000Ha9k-0zPy
+	for barebox@bombadil.infradead.org;
+	Fri, 29 Nov 2024 11:44:33 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=7kv1FXqDxyFA28aKwH8BZu+iOxYYzAJMFDVkwpqGNsM=; b=gaJjpEhUEhFjT1G3aVy2yIF6nG
+	Gtoypc5Hgd/KAvbuZ8/G3jnZKvz6cmaqSKKSDUiO7F3pw2A5lQ4YTmvWR7aklsOj468EpWinyol/+
+	+0VGfDzcQdgZ7dgm6i7bh7ANcq0vEOpxdlt9pcO4TlWN4Zcw/nzW/mzlez+4SBWOc8weI5bdeVgwi
+	axy+jTgS5toK2xnxWxlIYadAHNPzqUa1LQMzF2PR8Dq1lBrdFxwtWgFApE+BIbMBTcaqiGFxrkHZB
+	sNLrmK310ePIBsYMKs9zDLVN/r55i8eKzo6fN+SAzkzdp1KavK5hAk/Dcb4+J5g5SeW443Q9aDO9A
+	kqea43tg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
+	id 1tGzQD-00000001jO7-3PVl
 	for barebox@lists.infradead.org;
 	Fri, 29 Nov 2024 11:44:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQ9-0005C6-Vt; Fri, 29 Nov 2024 12:44:26 +0100
+	id 1tGzQA-0005CE-6o; Fri, 29 Nov 2024 12:44:26 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQ8-000mJG-2v;
+	id 1tGzQ9-000mJM-09;
 	Fri, 29 Nov 2024 12:44:25 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQ9-000vyS-20;
+	id 1tGzQ9-000vyS-2F;
 	Fri, 29 Nov 2024 12:44:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Nov 2024 12:44:16 +0100
+Date: Fri, 29 Nov 2024 12:44:23 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241129-k3-r5-v1-1-67c4bb42a5c7@pengutronix.de>
+Message-Id: <20241129-k3-r5-v1-8-67c4bb42a5c7@pengutronix.de>
 References: <20241129-k3-r5-v1-0-67c4bb42a5c7@pengutronix.de>
 In-Reply-To: <20241129-k3-r5-v1-0-67c4bb42a5c7@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732880662; l=8555;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732880665; l=36182;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=hxa4S/rfwv+1X22tOnmQ9fZ9zjoHZAlfBgmei6WUUN0=;
- b=LxgRDpFRteJcUPZmXHMq7e2Uc4O/1u3Q+Z+p1jrqwsW1qFmhhOQZn9/mb9Zz66aOHp298N1JY
- rtF2+e5X2TeBr7zjwWMos4waxeEppfFd893VLP+aeoETramQ/CBtE/j
+ bh=DaFJDo6z0SHzBmIUejleQTdCqS8ZRej6OREMpEEMqcA=;
+ b=DnSFRoUJA8avZzeJDn/mQutvhA33Eo9lrcnDAAUqm/iTSzTn/1Imq2HDm2i0dXiaBdS8X0/fb
+ vX6xKhHwjuGC6s/Cv7+fvAkrTkezWmATdY/a7hExRMH5yX6MFNpg/0y
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241129_034429_942914_AD3C5242 
-X-CRM114-Status: GOOD (  23.24  )
+X-CRM114-CacheID: sfid-20241129_114429_990883_140F59BE 
+X-CRM114-Status: GOOD (  14.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,349 +105,932 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 01/20] ARM: add ARMv7R MPU support
+Subject: [PATCH 08/20] clk: add K3 clk driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds MPU (memory protection unit) support for ARMv7R cores.
-Code is based on U-Boot-2025.01-rc1.
+The clk support for K3 SoCs is implemented on the Cortex-R5 boot
+processor by the ti-dm firmware binary. The A53 cores access the clks
+via mailboxes. However, during early boot we are running barebox on the
+Cortex-R5 processor and the ti-dm firmware is not yet running, so we
+must implement our own clk driver. Code is based on U-Boot-2025.01-rc1.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Kconfig              |   7 ++
- arch/arm/cpu/Makefile             |   3 +-
- arch/arm/cpu/armv7r-mpu.c         | 117 +++++++++++++++++++++++++++++++++
- arch/arm/cpu/cpu.c                |   3 +
- arch/arm/cpu/uncompress.c         |   2 +
- arch/arm/include/asm/armv7r-mpu.h | 134 ++++++++++++++++++++++++++++++++++++++
- 6 files changed, 265 insertions(+), 1 deletion(-)
+ drivers/clk/Makefile       |   1 +
+ drivers/clk/k3/Makefile    |   2 +
+ drivers/clk/k3/am625.c     | 475 +++++++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/k3/pll.c       | 375 +++++++++++++++++++++++++++++++++++
+ drivers/clk/k3/ti-k3-clk.h |   8 +
+ include/soc/k3/clk.h       |   7 +
+ 6 files changed, 868 insertions(+)
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index 6563394a7a..737586b826 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -156,3 +156,10 @@ config CACHE_L2X0
- 	bool "Enable L2x0 PrimeCell"
- 	depends on MMU && ARCH_HAS_L2X0
- 
-+config ARMV7R_MPU
-+	bool
-+	depends on CPU_V7
-+	help
-+	  Some ARM systems without an MMU have instead a Memory Protection
-+	  Unit (MPU) that defines the type and permissions for regions of
-+	  memory.
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 999cc375da..1769249645 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
--obj-y += cpu.o
-+obj-pbl-y += cpu.o
- 
- obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_$(S64_32).o interrupts_$(S64_32).o
- obj-$(CONFIG_MMU) += mmu-common.o
-@@ -62,3 +62,4 @@ pbl-$(CONFIG_ARM_ATF) += atf.o
- 
- obj-pbl-y += common.o sections.o
- KASAN_SANITIZE_common.o := n
-+obj-pbl-$(CONFIG_ARMV7R_MPU) += armv7r-mpu.o
-diff --git a/arch/arm/cpu/armv7r-mpu.c b/arch/arm/cpu/armv7r-mpu.c
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index 764539e91e..8c3544c750 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -31,3 +31,4 @@ obj-y				+= bcm/
+ obj-$(CONFIG_COMMON_CLK_SCMI)	+= clk-scmi.o
+ obj-$(CONFIG_COMMON_CLK_GPIO)   += clk-gpio.o
+ obj-$(CONFIG_TI_SCI_CLK)	+= ti-sci-clk.o
++obj-$(CONFIG_ARCH_K3)		+= k3/
+diff --git a/drivers/clk/k3/Makefile b/drivers/clk/k3/Makefile
 new file mode 100644
-index 0000000000..e28a7b3c5e
+index 0000000000..8d96373ab6
 --- /dev/null
-+++ b/arch/arm/cpu/armv7r-mpu.c
-@@ -0,0 +1,117 @@
++++ b/drivers/clk/k3/Makefile
+@@ -0,0 +1,2 @@
++obj-y += am625.o
++obj-pbl-y += pll.o
+diff --git a/drivers/clk/k3/am625.c b/drivers/clk/k3/am625.c
+new file mode 100644
+index 0000000000..c7e28658d1
+--- /dev/null
++++ b/drivers/clk/k3/am625.c
+@@ -0,0 +1,475 @@
++#define pr_fmt(fmt)     "ti-k3-clk: " fmt
++
++#include <linux/clk.h>
++#include <of.h>
++#include <driver.h>
++#include "ti-k3-clk.h"
++
++static const char * const gluelogic_hfosc0_clkout_parents[] = {
++	NULL,
++	NULL,
++	"osc_24_mhz",
++	"osc_25_mhz",
++	"osc_26_mhz",
++	NULL,
++};
++
++static const char * const main_emmcsd0_io_clklb_sel_out0_parents[] = {
++	"board_0_mmc0_clklb_out",
++	"board_0_mmc0_clk_out",
++};
++
++static const char * const main_emmcsd1_io_clklb_sel_out0_parents[] = {
++	"board_0_mmc1_clklb_out",
++	"board_0_mmc1_clk_out",
++};
++
++static const char * const main_ospi_loopback_clk_sel_out0_parents[] = {
++	"board_0_ospi0_dqs_out",
++	"board_0_ospi0_lbclko_out",
++};
++
++static const char * const main_usb0_refclk_sel_out0_parents[] = {
++	"gluelogic_hfosc0_clkout",
++	"postdiv4_16ff_main_0_hsdivout8_clk",
++};
++
++static const char * const main_usb1_refclk_sel_out0_parents[] = {
++	"gluelogic_hfosc0_clkout",
++	"postdiv4_16ff_main_0_hsdivout8_clk",
++};
++
++static const char * const sam62_pll_ctrl_wrap_main_0_sysclkout_clk_parents[] = {
++	"gluelogic_hfosc0_clkout",
++	"hsdiv4_16fft_main_0_hsdivout0_clk",
++};
++
++static const char * const sam62_pll_ctrl_wrap_mcu_0_sysclkout_clk_parents[] = {
++	"gluelogic_hfosc0_clkout",
++	"hsdiv4_16fft_mcu_0_hsdivout0_clk",
++};
++
++static const char * const clkout0_ctrl_out0_parents[] = {
++	"hsdiv4_16fft_main_2_hsdivout1_clk",
++	"hsdiv4_16fft_main_2_hsdivout1_clk10",
++};
++
++static const char * const clk_32k_rc_sel_out0_parents[] = {
++	"gluelogic_rcosc_clk_1p0v_97p65k",
++	"hsdiv0_16fft_mcu_32khz_gen_0_hsdivout0_clk",
++	"clk_32k_rc_sel_div_clkout",
++	"gluelogic_lfosc0_clkout",
++};
++
++static const char * const main_cp_gemac_cpts_clk_sel_out0_parents[] = {
++	"postdiv4_16ff_main_2_hsdivout5_clk",
++	"postdiv4_16ff_main_0_hsdivout6_clk",
++	"board_0_cp_gemac_cpts0_rft_clk_out",
++	NULL,
++	"board_0_mcu_ext_refclk0_out",
++	"board_0_ext_refclk1_out",
++	"sam62_pll_ctrl_wrap_mcu_0_chip_div1_clk_clk",
++	"sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk",
++};
++
++static const char * const main_emmcsd0_refclk_sel_out0_parents[] = {
++	"postdiv4_16ff_main_0_hsdivout5_clk",
++	"hsdiv4_16fft_main_2_hsdivout2_clk",
++};
++
++static const char * const main_emmcsd1_refclk_sel_out0_parents[] = {
++	"postdiv4_16ff_main_0_hsdivout5_clk",
++	"hsdiv4_16fft_main_2_hsdivout2_clk",
++};
++
++static const char * const main_gtcclk_sel_out0_parents[] = {
++	"postdiv4_16ff_main_2_hsdivout5_clk",
++	"postdiv4_16ff_main_0_hsdivout6_clk",
++	"board_0_cp_gemac_cpts0_rft_clk_out",
++	NULL,
++	"board_0_mcu_ext_refclk0_out",
++	"board_0_ext_refclk1_out",
++	"sam62_pll_ctrl_wrap_mcu_0_chip_div1_clk_clk",
++	"sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk",
++};
++
++static const char * const main_ospi_ref_clk_sel_out0_parents[] = {
++	"hsdiv4_16fft_main_0_hsdivout1_clk",
++	"postdiv1_16fft_main_1_hsdivout5_clk",
++};
++
++static const char * const wkup_clkout_sel_out0_parents[] = {
++	"gluelogic_hfosc0_clkout",
++	"gluelogic_lfosc0_clkout",
++	"hsdiv4_16fft_main_0_hsdivout2_clk",
++	"hsdiv4_16fft_main_1_hsdivout2_clk",
++	"postdiv4_16ff_main_2_hsdivout9_clk",
++	"clk_32k_rc_sel_out0",
++	"gluelogic_rcosc_clkout",
++	"gluelogic_hfosc0_clkout",
++};
++
++static const char * const wkup_clksel_out0_parents[] = {
++	"hsdiv1_16fft_main_15_hsdivout0_clk",
++	"hsdiv4_16fft_mcu_0_hsdivout0_clk",
++};
++
++static const char * const main_usart0_fclk_sel_out0_parents[] = {
++	"usart_programmable_clock_divider_out0",
++	"hsdiv4_16fft_main_1_hsdivout1_clk",
++};
++
++static inline struct clk *k3_clk_divider(const char *name, const char *parent,
++                void __iomem *reg, u8 shift, u8 width, u32 flags, u32 div_flags)
++{
++        return clk_divider(name, parent, CLK_SET_RATE_PARENT, reg, shift, width, 0);
++}
++
++static inline struct clk *k3_clk_pll(const char *name, const char *parent,
++                void __iomem *reg, u32 flags)
++{
++	return clk_register_ti_k3_pll(name, parent, reg);
++}
++
++static inline struct clk *k3_clk_mux(const char *name, const char * const *parents,
++				     int num_parents, void __iomem *reg, u8 shift,
++				     u8 width, u32 flags)
++{
++	return clk_mux(name, CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_REPARENT | flags, reg,
++		       shift, width, parents, num_parents, 0);
++}
++
++static inline struct clk *k3_clk_div_devfreq(const char *name, const char *parent,
++                void __iomem *reg, u8 shift, u8 width, u32 flags, u32 div_flags, u32 freq)
++{
++	return NULL;
++}
++
++static inline struct clk *k3_clk_mux_pllctrl(const char *name, const char * const *parents,
++					     int num_parents, void __iomem *reg, u32 freq)
++{
++	return NULL;
++}
++
++struct clk_lookup_data {
++	unsigned int dev_id;
++	unsigned int clk_id;
++	const char *clk_name;
++};
++
++#define DEV_CLK(_dev_id, _clk_id, _clk_name) { .dev_id = _dev_id, \
++	.clk_id = _clk_id, .clk_name = _clk_name, }
++
++static struct clk_lookup_data am625_lookup[] = {
++	DEV_CLK(13, 0, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(13, 3, "main_cp_gemac_cpts_clk_sel_out0"),
++	DEV_CLK(13, 4, "postdiv4_16ff_main_2_hsdivout5_clk"),
++	DEV_CLK(13, 5, "postdiv4_16ff_main_0_hsdivout6_clk"),
++	DEV_CLK(13, 6, "board_0_cp_gemac_cpts0_rft_clk_out"),
++	DEV_CLK(13, 8, "board_0_mcu_ext_refclk0_out"),
++	DEV_CLK(13, 9, "board_0_ext_refclk1_out"),
++	DEV_CLK(13, 10, "sam62_pll_ctrl_wrap_mcu_0_chip_div1_clk_clk"),
++	DEV_CLK(13, 11, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(13, 13, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(13, 14, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(13, 15, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(13, 16, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(13, 17, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(13, 19, "board_0_rgmii1_rxc_out"),
++	DEV_CLK(13, 20, "board_0_rgmii1_txc_out"),
++	DEV_CLK(13, 22, "board_0_rgmii2_rxc_out"),
++	DEV_CLK(13, 23, "board_0_rgmii2_txc_out"),
++	DEV_CLK(13, 25, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(13, 26, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(13, 27, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(13, 28, "board_0_rmii1_ref_clk_out"),
++	DEV_CLK(13, 29, "board_0_rmii2_ref_clk_out"),
++	DEV_CLK(16, 0, "hsdiv4_16fft_main_0_hsdivout1_clk"),
++	DEV_CLK(16, 1, "hsdiv4_16fft_main_0_hsdivout2_clk"),
++	DEV_CLK(16, 2, "hsdiv4_16fft_main_0_hsdivout3_clk"),
++	DEV_CLK(16, 3, "hsdiv4_16fft_main_0_hsdivout4_clk"),
++	DEV_CLK(16, 4, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(16, 5, "board_0_ext_refclk1_out"),
++	DEV_CLK(16, 6, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(16, 7, "postdiv4_16ff_main_2_hsdivout8_clk"),
++	DEV_CLK(16, 8, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(16, 9, "board_0_ext_refclk1_out"),
++	DEV_CLK(16, 10, "gluelogic_rcosc_clkout"),
++	DEV_CLK(16, 11, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(16, 12, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(57, 0, "main_emmcsd0_io_clklb_sel_out0"),
++	DEV_CLK(57, 1, "board_0_mmc0_clklb_out"),
++	DEV_CLK(57, 2, "board_0_mmc0_clk_out"),
++	DEV_CLK(57, 5, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(57, 6, "main_emmcsd0_refclk_sel_out0"),
++	DEV_CLK(57, 7, "postdiv4_16ff_main_0_hsdivout5_clk"),
++	DEV_CLK(57, 8, "hsdiv4_16fft_main_2_hsdivout2_clk"),
++	DEV_CLK(58, 0, "main_emmcsd1_io_clklb_sel_out0"),
++	DEV_CLK(58, 1, "board_0_mmc1_clklb_out"),
++	DEV_CLK(58, 2, "board_0_mmc1_clk_out"),
++	DEV_CLK(58, 5, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(58, 6, "main_emmcsd1_refclk_sel_out0"),
++	DEV_CLK(58, 7, "postdiv4_16ff_main_0_hsdivout5_clk"),
++	DEV_CLK(58, 8, "hsdiv4_16fft_main_2_hsdivout2_clk"),
++	DEV_CLK(61, 0, "main_gtcclk_sel_out0"),
++	DEV_CLK(61, 1, "postdiv4_16ff_main_2_hsdivout5_clk"),
++	DEV_CLK(61, 2, "postdiv4_16ff_main_0_hsdivout6_clk"),
++	DEV_CLK(61, 3, "board_0_cp_gemac_cpts0_rft_clk_out"),
++	DEV_CLK(61, 5, "board_0_mcu_ext_refclk0_out"),
++	DEV_CLK(61, 6, "board_0_ext_refclk1_out"),
++	DEV_CLK(61, 7, "sam62_pll_ctrl_wrap_mcu_0_chip_div1_clk_clk"),
++	DEV_CLK(61, 8, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(61, 9, "wkup_clksel_out0"),
++	DEV_CLK(61, 10, "hsdiv1_16fft_main_15_hsdivout0_clk"),
++	DEV_CLK(61, 11, "hsdiv4_16fft_mcu_0_hsdivout0_clk"),
++	DEV_CLK(75, 0, "board_0_ospi0_dqs_out"),
++	DEV_CLK(75, 1, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(75, 2, "main_ospi_loopback_clk_sel_out0"),
++	DEV_CLK(75, 3, "board_0_ospi0_dqs_out"),
++	DEV_CLK(75, 4, "board_0_ospi0_lbclko_out"),
++	DEV_CLK(75, 6, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(75, 7, "main_ospi_ref_clk_sel_out0"),
++	DEV_CLK(75, 8, "hsdiv4_16fft_main_0_hsdivout1_clk"),
++	DEV_CLK(75, 9, "postdiv1_16fft_main_1_hsdivout5_clk"),
++	DEV_CLK(77, 0, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(95, 0, "gluelogic_rcosc_clkout"),
++	DEV_CLK(95, 1, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(95, 2, "wkup_clksel_out0"),
++	DEV_CLK(95, 3, "hsdiv1_16fft_main_15_hsdivout0_clk"),
++	DEV_CLK(95, 4, "hsdiv4_16fft_mcu_0_hsdivout0_clk"),
++	DEV_CLK(102, 0, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(102, 1, "board_0_i2c0_scl_out"),
++	DEV_CLK(102, 2, "hsdiv4_16fft_main_1_hsdivout0_clk"),
++	DEV_CLK(107, 0, "wkup_clksel_out0"),
++	DEV_CLK(107, 1, "hsdiv1_16fft_main_15_hsdivout0_clk"),
++	DEV_CLK(107, 2, "hsdiv4_16fft_mcu_0_hsdivout0_clk"),
++	DEV_CLK(107, 3, "mshsi2c_wkup_0_porscl"),
++	DEV_CLK(107, 4, "hsdiv4_16fft_mcu_0_hsdivout1_clk"),
++	DEV_CLK(135, 0, "hsdiv0_16fft_main_8_hsdivout0_clk"),
++	DEV_CLK(136, 0, "hsdiv0_16fft_main_8_hsdivout0_clk"),
++	DEV_CLK(140, 0, "sam62_pll_ctrl_wrap_mcu_0_chip_div1_clk_clk"),
++	DEV_CLK(140, 1, "sam62_pll_ctrl_wrap_mcu_0_chip_div1_clk_clk"),
++	DEV_CLK(146, 0, "main_usart0_fclk_sel_out0"),
++	DEV_CLK(146, 1, "usart_programmable_clock_divider_out0"),
++	DEV_CLK(146, 2, "hsdiv4_16fft_main_1_hsdivout1_clk"),
++	DEV_CLK(146, 5, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(157, 20, "clkout0_ctrl_out0"),
++	DEV_CLK(157, 21, "hsdiv4_16fft_main_2_hsdivout1_clk"),
++	DEV_CLK(157, 22, "hsdiv4_16fft_main_2_hsdivout1_clk10"),
++	DEV_CLK(157, 24, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(157, 25, "board_0_ddr0_ck0_out"),
++	DEV_CLK(157, 40, "mshsi2c_main_0_porscl"),
++	DEV_CLK(157, 77, "sam62_pll_ctrl_wrap_mcu_0_sysclkout_clk"),
++	DEV_CLK(157, 82, "cpsw_3guss_main_0_mdio_mdclk_o"),
++	DEV_CLK(157, 83, "emmcsd8ss_main_0_emmcsdss_io_clk_o"),
++	DEV_CLK(157, 87, "emmcsd4ss_main_0_emmcsdss_io_clk_o"),
++	DEV_CLK(157, 89, "emmcsd4ss_main_0_emmcsdss_io_clk_o"),
++	DEV_CLK(157, 129, "fss_ul_main_0_ospi_0_ospi_oclk_clk"),
++	DEV_CLK(157, 132, "cpsw_3guss_main_0_rgmii1_txc_o"),
++	DEV_CLK(157, 135, "cpsw_3guss_main_0_rgmii2_txc_o"),
++	DEV_CLK(157, 145, "sam62_pll_ctrl_wrap_main_0_sysclkout_clk"),
++	DEV_CLK(157, 158, "wkup_clkout_sel_out0"),
++	DEV_CLK(157, 159, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(157, 160, "gluelogic_lfosc0_clkout"),
++	DEV_CLK(157, 161, "hsdiv4_16fft_main_0_hsdivout2_clk"),
++	DEV_CLK(157, 162, "hsdiv4_16fft_main_1_hsdivout2_clk"),
++	DEV_CLK(157, 163, "postdiv4_16ff_main_2_hsdivout9_clk"),
++	DEV_CLK(157, 164, "clk_32k_rc_sel_out0"),
++	DEV_CLK(157, 165, "gluelogic_rcosc_clkout"),
++	DEV_CLK(157, 166, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(161, 0, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(161, 1, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(161, 2, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(161, 3, "main_usb0_refclk_sel_out0"),
++	DEV_CLK(161, 4, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(161, 5, "postdiv4_16ff_main_0_hsdivout8_clk"),
++	DEV_CLK(161, 10, "board_0_tck_out"),
++	DEV_CLK(162, 0, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(162, 1, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(162, 2, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(162, 3, "main_usb1_refclk_sel_out0"),
++	DEV_CLK(162, 4, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(162, 5, "postdiv4_16ff_main_0_hsdivout8_clk"),
++	DEV_CLK(162, 10, "board_0_tck_out"),
++	DEV_CLK(166, 3, "hsdiv0_16fft_main_8_hsdivout0_clk"),
++	DEV_CLK(166, 5, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(169, 0, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(169, 1, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++	DEV_CLK(170, 0, "hsdiv0_16fft_main_12_hsdivout0_clk"),
++	DEV_CLK(170, 1, "board_0_tck_out"),
++	DEV_CLK(170, 2, "sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk"),
++
++	/*
++	 * Timer clocks. There is a mux between the timer and the clock core
++	 * which we haven't modeled here. The values reflect the reset default
++	 * of the mux
++	 */
++	DEV_CLK(35, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(36, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(37, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(38, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(39, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(40, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(41, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(42, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(43, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(48, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(49, 2, "gluelogic_hfosc0_clkout"),
++	DEV_CLK(50, 2, "gluelogic_hfosc0_clkout"),
++
++	DEV_CLK(0, 0, NULL),
++};
++
++static struct clk *of_clk_ti_k3_get(struct of_phandle_args *clkspec, void *data)
++{
++	struct clk_lookup_data *clk_data = data;
++	struct clk *clk;
++	unsigned int dev_id = clkspec->args[0];
++	unsigned int clk_id = clkspec->args[1];
++
++	while (1) {
++		if (!clk_data->clk_name) {
++			pr_err("clk %d/%d not found\n", dev_id, clk_id);
++			return ERR_PTR(-ENOENT);
++		}
++
++		if (clk_data->dev_id == dev_id && clk_data->clk_id == clk_id)
++			goto found;
++
++		clk_data++;
++	}
++found:
++	clk = clk_lookup(clk_data->clk_name);
++	if (IS_ERR(clk))
++		pr_err("clk %s not found\n", clk_data->clk_name);
++
++	return clk;
++}
++
++static int am625_clk_init(struct device *dev)
++{
++	int ret;
++
++	clk_fixed("osc_26_mhz", 26000000);
++	clk_fixed("osc_25_mhz", 25000000);
++	clk_fixed("osc_24_mhz", 24000000);
++	k3_clk_mux("gluelogic_hfosc0_clkout",
++	 gluelogic_hfosc0_clkout_parents, 6, (void *)0x43000030, 0, 3, 0),
++	clk_fixed("gluelogic_rcosc_clkout", 12500000);
++	clk_fixed("gluelogic_rcosc_clk_1p0v_97p65k", 97656);
++	clk_fixed("board_0_cp_gemac_cpts0_rft_clk_out", 0);
++	clk_fixed("board_0_ddr0_ck0_out", 0);
++	clk_fixed("board_0_ext_refclk1_out", 0);
++	clk_fixed("board_0_i2c0_scl_out", 0);
++	clk_fixed("board_0_mcu_ext_refclk0_out", 0);
++	clk_fixed("board_0_mmc0_clklb_out", 0);
++	clk_fixed("board_0_mmc0_clk_out", 0);
++	clk_fixed("board_0_mmc1_clklb_out", 0);
++	clk_fixed("board_0_mmc1_clk_out", 0);
++	clk_fixed("board_0_ospi0_dqs_out", 0);
++	clk_fixed("board_0_ospi0_lbclko_out", 0);
++	clk_fixed("board_0_rgmii1_rxc_out", 0);
++	clk_fixed("board_0_rgmii1_txc_out", 0);
++	clk_fixed("board_0_rgmii2_rxc_out", 0);
++	clk_fixed("board_0_rgmii2_txc_out", 0);
++	clk_fixed("board_0_rmii1_ref_clk_out", 0);
++	clk_fixed("board_0_rmii2_ref_clk_out", 0);
++	clk_fixed("board_0_tck_out", 0);
++	clk_fixed("cpsw_3guss_main_0_mdio_mdclk_o", 0);
++	clk_fixed("cpsw_3guss_main_0_rgmii1_txc_o", 0);
++	clk_fixed("cpsw_3guss_main_0_rgmii2_txc_o", 0);
++	clk_fixed("emmcsd4ss_main_0_emmcsdss_io_clk_o", 0);
++	clk_fixed("emmcsd8ss_main_0_emmcsdss_io_clk_o", 0);
++	clk_fixed("fss_ul_main_0_ospi_0_ospi_oclk_clk", 0);
++	k3_clk_divider("hsdiv0_16fft_mcu_32khz_gen_0_hsdivout0_clk", "gluelogic_hfosc0_clkout", (void *)0x4508030, 0, 7, 0, 0);
++	clk_fixed("mshsi2c_main_0_porscl", 0);
++	k3_clk_pll("pllfracf_ssmod_16fft_main_0_foutvcop_clk", "gluelogic_hfosc0_clkout", (void *)0x680000, 0);
++	k3_clk_divider("pllfracf_ssmod_16fft_main_0_foutpostdiv_clk_subdiv", "pllfracf_ssmod_16fft_main_0_foutvcop_clk", (void *)0x680038, 16, 3, 0, CLK_DIVIDER_ONE_BASED);
++	k3_clk_divider("pllfracf_ssmod_16fft_main_0_foutpostdiv_clk", "pllfracf_ssmod_16fft_main_0_foutpostdiv_clk_subdiv", (void *)0x680038, 24, 3, 0, CLK_DIVIDER_ONE_BASED);
++	k3_clk_pll("pllfracf_ssmod_16fft_main_1_foutvcop_clk", "gluelogic_hfosc0_clkout", (void *)0x681000, 0);
++	k3_clk_divider("pllfracf_ssmod_16fft_main_1_foutpostdiv_clk_subdiv", "pllfracf_ssmod_16fft_main_1_foutvcop_clk", (void *)0x681038, 16, 3, 0, CLK_DIVIDER_ONE_BASED);
++	k3_clk_divider("pllfracf_ssmod_16fft_main_1_foutpostdiv_clk", "pllfracf_ssmod_16fft_main_1_foutpostdiv_clk_subdiv", (void *)0x681038, 24, 3, 0, CLK_DIVIDER_ONE_BASED);
++	k3_clk_pll("pllfracf_ssmod_16fft_main_12_foutvcop_clk", "gluelogic_hfosc0_clkout", (void *)0x68c000, 0);
++	k3_clk_pll("pllfracf_ssmod_16fft_main_15_foutvcop_clk", "gluelogic_hfosc0_clkout", (void *)0x68f000, 0);
++	k3_clk_pll("pllfracf_ssmod_16fft_main_2_foutvcop_clk", "gluelogic_hfosc0_clkout", (void *)0x682000, 0);
++	k3_clk_divider("pllfracf_ssmod_16fft_main_2_foutpostdiv_clk_subdiv", "pllfracf_ssmod_16fft_main_2_foutvcop_clk", (void *)0x682038, 16, 3, 0, CLK_DIVIDER_ONE_BASED);
++	k3_clk_divider("pllfracf_ssmod_16fft_main_2_foutpostdiv_clk", "pllfracf_ssmod_16fft_main_2_foutpostdiv_clk_subdiv", (void *)0x682038, 24, 3, 0, CLK_DIVIDER_ONE_BASED);
++	k3_clk_pll("pllfracf_ssmod_16fft_main_8_foutvcop_clk", "gluelogic_hfosc0_clkout", (void *)0x688000, 0);
++	k3_clk_pll("pllfracf_ssmod_16fft_mcu_0_foutvcop_clk", "gluelogic_hfosc0_clkout", (void *)0x4040000, 0);
++	k3_clk_divider("postdiv1_16fft_main_1_hsdivout5_clk", "pllfracf_ssmod_16fft_main_1_foutpostdiv_clk", (void *)0x681094, 0, 7, 0, 0);
++	k3_clk_divider("postdiv4_16ff_main_0_hsdivout5_clk", "pllfracf_ssmod_16fft_main_0_foutpostdiv_clk", (void *)0x680094, 0, 7, 0, 0);
++	k3_clk_divider("postdiv4_16ff_main_0_hsdivout6_clk", "pllfracf_ssmod_16fft_main_0_foutpostdiv_clk", (void *)0x680098, 0, 7, 0, 0);
++	k3_clk_divider("postdiv4_16ff_main_0_hsdivout8_clk", "pllfracf_ssmod_16fft_main_0_foutpostdiv_clk", (void *)0x6800a0, 0, 7, 0, 0);
++	k3_clk_divider("postdiv4_16ff_main_2_hsdivout5_clk", "pllfracf_ssmod_16fft_main_2_foutpostdiv_clk", (void *)0x682094, 0, 7, 0, 0);
++	k3_clk_divider("postdiv4_16ff_main_2_hsdivout8_clk", "pllfracf_ssmod_16fft_main_2_foutpostdiv_clk", (void *)0x6820a0, 0, 7, 0, 0);
++	k3_clk_divider("postdiv4_16ff_main_2_hsdivout9_clk", "pllfracf_ssmod_16fft_main_2_foutpostdiv_clk", (void *)0x6820a4, 0, 7, 0, 0);
++	k3_clk_mux("main_emmcsd0_io_clklb_sel_out0", main_emmcsd0_io_clklb_sel_out0_parents, 2, (void *)0x108160, 16, 1, 0);
++	k3_clk_mux("main_emmcsd1_io_clklb_sel_out0", main_emmcsd1_io_clklb_sel_out0_parents, 2, (void *)0x108168, 16, 1, 0);
++	k3_clk_mux("main_ospi_loopback_clk_sel_out0", main_ospi_loopback_clk_sel_out0_parents, 2, (void *)0x108500, 4, 1, 0);
++	k3_clk_mux("main_usb0_refclk_sel_out0", main_usb0_refclk_sel_out0_parents, 2, (void *)0x43008190, 0, 1, 0);
++	k3_clk_mux("main_usb1_refclk_sel_out0", main_usb1_refclk_sel_out0_parents, 2, (void *)0x43008194, 0, 1, 0);
++	k3_clk_divider("hsdiv0_16fft_main_12_hsdivout0_clk", "pllfracf_ssmod_16fft_main_12_foutvcop_clk", (void *)0x68c080, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv0_16fft_main_8_hsdivout0_clk", "pllfracf_ssmod_16fft_main_8_foutvcop_clk", (void *)0x688080, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv1_16fft_main_15_hsdivout0_clk", "pllfracf_ssmod_16fft_main_15_foutvcop_clk", (void *)0x68f080, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_0_hsdivout0_clk", "pllfracf_ssmod_16fft_main_0_foutvcop_clk", (void *)0x680080, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_0_hsdivout1_clk", "pllfracf_ssmod_16fft_main_0_foutvcop_clk", (void *)0x680084, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_0_hsdivout2_clk", "pllfracf_ssmod_16fft_main_0_foutvcop_clk", (void *)0x680088, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_0_hsdivout3_clk", "pllfracf_ssmod_16fft_main_0_foutvcop_clk", (void *)0x68008c, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_0_hsdivout4_clk", "pllfracf_ssmod_16fft_main_0_foutvcop_clk", (void *)0x680090, 0, 7, 0, 0);
++	k3_clk_div_devfreq("hsdiv4_16fft_main_1_hsdivout0_clk", "pllfracf_ssmod_16fft_main_1_foutvcop_clk", (void *)0x681080, 0, 7, 0, 0, 192000000);
++	k3_clk_divider("hsdiv4_16fft_main_1_hsdivout1_clk", "pllfracf_ssmod_16fft_main_1_foutvcop_clk", (void *)0x681084, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_1_hsdivout2_clk", "pllfracf_ssmod_16fft_main_1_foutvcop_clk", (void *)0x681088, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_2_hsdivout1_clk", "pllfracf_ssmod_16fft_main_2_foutvcop_clk", (void *)0x682084, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_2_hsdivout1_clk10", "pllfracf_ssmod_16fft_main_2_foutvcop_clk", (void *)0x682084, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_main_2_hsdivout2_clk", "pllfracf_ssmod_16fft_main_2_foutvcop_clk", (void *)0x682088, 0, 7, 0, 0);
++	k3_clk_divider("hsdiv4_16fft_mcu_0_hsdivout0_clk", "pllfracf_ssmod_16fft_mcu_0_foutvcop_clk", (void *)0x4040080, 0, 7, 0, 0);
++	k3_clk_mux_pllctrl("sam62_pll_ctrl_wrap_main_0_sysclkout_clk", sam62_pll_ctrl_wrap_main_0_sysclkout_clk_parents, 2, (void *)0x410000, 0);
++	k3_clk_divider("sam62_pll_ctrl_wrap_main_0_chip_div1_clk_clk", "sam62_pll_ctrl_wrap_main_0_sysclkout_clk", (void *)0x410118, 0, 5, 0, 0);
++	k3_clk_mux_pllctrl("sam62_pll_ctrl_wrap_mcu_0_sysclkout_clk", sam62_pll_ctrl_wrap_mcu_0_sysclkout_clk_parents, 2, (void *)0x4020000, 0);
++	k3_clk_divider("sam62_pll_ctrl_wrap_mcu_0_chip_div1_clk_clk", "sam62_pll_ctrl_wrap_mcu_0_sysclkout_clk", (void *)0x4020118, 0, 5, 0, 0);
++	k3_clk_mux("clkout0_ctrl_out0", clkout0_ctrl_out0_parents, 2, (void *)0x108010, 0, 1, 0);
++	k3_clk_mux("clk_32k_rc_sel_out0", clk_32k_rc_sel_out0_parents, 4, (void *)0x4508058, 0, 2, 0);
++	k3_clk_mux("main_cp_gemac_cpts_clk_sel_out0", main_cp_gemac_cpts_clk_sel_out0_parents, 8, (void *)0x108140, 0, 3, 0);
++	k3_clk_mux("main_emmcsd0_refclk_sel_out0", main_emmcsd0_refclk_sel_out0_parents, 2, (void *)0x108160, 0, 1, 0);
++	k3_clk_mux("main_emmcsd1_refclk_sel_out0", main_emmcsd1_refclk_sel_out0_parents, 2, (void *)0x108168, 0, 1, 0);
++	k3_clk_mux("main_gtcclk_sel_out0", main_gtcclk_sel_out0_parents, 8, (void *)0x43008030, 0, 3, 0);
++	k3_clk_mux("main_ospi_ref_clk_sel_out0", main_ospi_ref_clk_sel_out0_parents, 2, (void *)0x108500, 0, 1, 0);
++	k3_clk_div_devfreq("usart_programmable_clock_divider_out0", "hsdiv4_16fft_main_1_hsdivout0_clk", (void *)0x108240, 0, 2, 0, 0, 48000000);
++	k3_clk_mux("wkup_clkout_sel_out0", wkup_clkout_sel_out0_parents, 8, (void *)0x43008020, 0, 3, 0);
++	k3_clk_mux("wkup_clksel_out0", wkup_clksel_out0_parents, 2, (void *)0x43008010, 0, 1, 0);
++	k3_clk_mux("main_usart0_fclk_sel_out0", main_usart0_fclk_sel_out0_parents, 2, (void *)0x108280, 0, 1, 0);
++	k3_clk_divider("hsdiv4_16fft_mcu_0_hsdivout1_clk", "pllfracf_ssmod_16fft_mcu_0_foutvcop_clk", (void *)0x4040084, 0, 7, 0, 0);
++	clk_fixed("mshsi2c_wkup_0_porscl", 0);
++	k3_clk_divider("sam62_pll_ctrl_wrap_main_0_chip_div24_clk_clk", "sam62_pll_ctrl_wrap_main_0_sysclkout_clk", (void *)0x41011c, 0, 5, 0, 0);
++	k3_clk_divider("sam62_pll_ctrl_wrap_mcu_0_chip_div24_clk_clk", "sam62_pll_ctrl_wrap_mcu_0_sysclkout_clk", (void *)0x402011c, 0, 5, 0, 0);
++
++	ret = of_clk_add_provider(dev->of_node, of_clk_ti_k3_get, &am625_lookup);
++	if (ret < 0)
++		pr_err("failed to register clks for i.MX8MM\n");
++
++	return 0;
++};
++
++static int ti_k3_clk_probe(struct device *dev)
++{
++	if (of_machine_is_compatible("ti,am625"))
++                return am625_clk_init(dev);
++
++	return dev_err_probe(dev, -EINVAL, "Unknown SoC\n");
++}
++
++static __maybe_unused struct of_device_id ti_k3_clk_dt_ids[] = {
++	{
++		.compatible = "ti,k2g-sci-clk",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver ti_k3_clk_driver = {
++	.probe = ti_k3_clk_probe,
++	.name = "ti-k3-clk",
++	.of_compatible = ti_k3_clk_dt_ids,
++};
++
++core_platform_driver(ti_k3_clk_driver);
+diff --git a/drivers/clk/k3/pll.c b/drivers/clk/k3/pll.c
+new file mode 100644
+index 0000000000..c76a91b1d0
+--- /dev/null
++++ b/drivers/clk/k3/pll.c
+@@ -0,0 +1,375 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Cortex-R Memory Protection Unit specific code
++ * Texas Instruments K3 SoC PLL clock driver
 + *
-+ * Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com/
-+ *	Lokesh Vutla <lokeshvutla@ti.com>
++ * Copyright (C) 2020-2021 Texas Instruments Incorporated - https://www.ti.com/
++ *	Tero Kristo <t-kristo@ti.com>
 + */
 +
-+#include <asm/armv7r-mpu.h>
-+#include <asm/system.h>
-+#include <cache.h>
-+#include <asm/cache.h>
++#include <io.h>
++#include <errno.h>
++#include <linux/clk-provider.h>
++#include <linux/rational.h>
++#include <linux/slab.h>
++#include <linux/bitmap.h>
++#include <linux/printk.h>
++#include <soc/k3/clk.h>
 +
-+/* MPU Type register definitions */
-+#define MPUIR_S_SHIFT		0
-+#define MPUIR_S_MASK		BIT(MPUIR_S_SHIFT)
-+#define MPUIR_DREGION_SHIFT	8
-+#define MPUIR_DREGION_MASK	(0xff << 8)
++#include "ti-k3-clk.h"
++
++/* 16FFT register offsets */
++#define PLL_16FFT_CFG			0x08
++#define PLL_KICK0			0x10
++#define PLL_KICK1			0x14
++#define PLL_16FFT_CTRL			0x20
++#define PLL_16FFT_STAT			0x24
++#define PLL_16FFT_FREQ_CTRL0		0x30
++#define PLL_16FFT_FREQ_CTRL1		0x34
++#define PLL_16FFT_DIV_CTRL		0x38
++#define PLL_16FFT_CAL_CTRL		0x60
++#define PLL_16FFT_CAL_STAT		0x64
++
++/* CAL STAT register bits */
++#define PLL_16FFT_CAL_STAT_CAL_LOCK	BIT(31)
++
++/* CFG register bits */
++#define PLL_16FFT_CFG_PLL_TYPE_SHIFT	(0)
++#define PLL_16FFT_CFG_PLL_TYPE_MASK	(0x3 << 0)
++#define PLL_16FFT_CFG_PLL_TYPE_FRACF	1
++
++/* CAL CTRL register bits */
++#define PLL_16FFT_CAL_CTRL_CAL_EN               BIT(31)
++#define PLL_16FFT_CAL_CTRL_FAST_CAL             BIT(20)
++#define PLL_16FFT_CAL_CTRL_CAL_BYP              BIT(15)
++#define PLL_16FFT_CAL_CTRL_CAL_CNT_SHIFT        16
++#define PLL_16FFT_CAL_CTRL_CAL_CNT_MASK         (0x7 << 16)
++
++/* CTRL register bits */
++#define PLL_16FFT_CTRL_BYPASS_EN	BIT(31)
++#define PLL_16FFT_CTRL_PLL_EN		BIT(15)
++#define PLL_16FFT_CTRL_DSM_EN		BIT(1)
++
++/* STAT register bits */
++#define PLL_16FFT_STAT_LOCK		BIT(0)
++
++/* FREQ_CTRL0 bits */
++#define PLL_16FFT_FREQ_CTRL0_FB_DIV_INT_MASK	0xfff
++
++/* DIV CTRL register bits */
++#define PLL_16FFT_DIV_CTRL_REF_DIV_MASK		0x3f
++
++/* HSDIV register bits*/
++#define PLL_16FFT_HSDIV_CTRL_CLKOUT_EN          BIT(15)
++
++/* FREQ_CTRL1 bits */
++#define PLL_16FFT_FREQ_CTRL1_FB_DIV_FRAC_BITS	24
++#define PLL_16FFT_FREQ_CTRL1_FB_DIV_FRAC_MASK	0xffffff
++#define PLL_16FFT_FREQ_CTRL1_FB_DIV_FRAC_SHIFT	0
++
++/* KICK register magic values */
++#define PLL_KICK0_VALUE				0x68ef3490
++#define PLL_KICK1_VALUE				0xd172bc5a
 +
 +/**
-+ * Note:
-+ * The Memory Protection Unit(MPU) allows to partition memory into regions
-+ * and set individual protection attributes for each region. In absence
-+ * of MPU a default map[1] will take effect. make sure to run this code
-+ * from a region which has execution permissions by default.
-+ * [1] http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0460d/I1002400.html
++ * struct ti_pll_clk - TI PLL clock data info structure
++ * @clk: core clock structure
++ * @reg: memory address of the PLL controller
 + */
++struct ti_pll_clk {
++	struct clk_hw hw;
++	void __iomem *reg;
++	const char *parent;
++};
 +
-+void armv7r_mpu_disable(void)
++static inline struct ti_pll_clk *to_pll(struct clk_hw *hw)
 +{
-+	u32 reg;
-+
-+	reg = get_cr();
-+	reg &= ~CR_M;
-+	dsb();
-+	set_cr(reg);
-+	isb();
++	return container_of(hw, struct ti_pll_clk, hw);
 +}
 +
-+void armv7r_mpu_enable(void)
++static int ti_pll_wait_for_lock(struct ti_pll_clk *pll)
 +{
-+	u32 reg;
++	u32 stat;
++	u32 cfg;
++	u32 cal;
++	u32 freq_ctrl1;
++	int i;
++	u32 pllfm;
++	u32 pll_type;
++	int success;
 +
-+	reg = get_cr();
-+	reg |= CR_M;
-+	dsb();
-+	set_cr(reg);
-+	isb();
++	for (i = 0; i < 100000; i++) {
++		stat = readl(pll->reg + PLL_16FFT_STAT);
++		if (stat & PLL_16FFT_STAT_LOCK) {
++			success = 1;
++			break;
++		}
++	}
++
++	/* Enable calibration if not in fractional mode of the FRACF PLL */
++	freq_ctrl1 = readl(pll->reg + PLL_16FFT_FREQ_CTRL1);
++	pllfm = freq_ctrl1 & PLL_16FFT_FREQ_CTRL1_FB_DIV_FRAC_MASK;
++	pllfm >>= PLL_16FFT_FREQ_CTRL1_FB_DIV_FRAC_SHIFT;
++	cfg = readl(pll->reg + PLL_16FFT_CFG);
++	pll_type = (cfg & PLL_16FFT_CFG_PLL_TYPE_MASK) >> PLL_16FFT_CFG_PLL_TYPE_SHIFT;
++
++	if (success && pll_type == PLL_16FFT_CFG_PLL_TYPE_FRACF && pllfm == 0) {
++		cal = readl(pll->reg + PLL_16FFT_CAL_CTRL);
++
++		/* Enable calibration for FRACF */
++		cal |= PLL_16FFT_CAL_CTRL_CAL_EN;
++
++		/* Enable fast cal mode */
++		cal |= PLL_16FFT_CAL_CTRL_FAST_CAL;
++
++		/* Disable calibration bypass */
++		cal &= ~PLL_16FFT_CAL_CTRL_CAL_BYP;
++
++		/* Set CALCNT to 2 */
++		cal &= ~PLL_16FFT_CAL_CTRL_CAL_CNT_MASK;
++		cal |= 2 << PLL_16FFT_CAL_CTRL_CAL_CNT_SHIFT;
++
++		/* Note this register does not readback the written value. */
++		writel(cal, pll->reg + PLL_16FFT_CAL_CTRL);
++
++		success = 0;
++		for (i = 0; i < 100000; i++) {
++			stat = readl(pll->reg + PLL_16FFT_CAL_STAT);
++			if (stat & PLL_16FFT_CAL_STAT_CAL_LOCK) {
++				success = 1;
++				break;
++			}
++		}
++	}
++
++	if (success == 0) {
++		pr_err("%s: pll (%s) failed to lock\n", __func__,
++		       pll->hw.clk.name);
++		return -EBUSY;
++	} else {
++		return 0;
++	}
 +}
 +
-+int armv7r_mpu_enabled(void)
++static unsigned long ti_pll_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
 +{
-+	return get_cr() & CR_M;
++	struct ti_pll_clk *pll = to_pll(hw);
++	u64 current_freq;
++	u64 parent_freq = parent_rate;
++	u32 pllm;
++	u32 plld;
++	u32 pllfm;
++	u32 ctrl;
++
++	/* Check if we are in bypass */
++	ctrl = readl(pll->reg + PLL_16FFT_CTRL);
++	if (ctrl & PLL_16FFT_CTRL_BYPASS_EN)
++		return parent_freq;
++
++	pllm = readl(pll->reg + PLL_16FFT_FREQ_CTRL0);
++	pllfm = readl(pll->reg + PLL_16FFT_FREQ_CTRL1);
++
++	plld = readl(pll->reg + PLL_16FFT_DIV_CTRL) &
++		PLL_16FFT_DIV_CTRL_REF_DIV_MASK;
++
++	current_freq = parent_freq * pllm;
++
++	do_div(current_freq, plld);
++
++	if (pllfm) {
++		u64 tmp;
++
++		tmp = parent_freq * pllfm;
++		do_div(tmp, plld);
++		tmp >>= PLL_16FFT_FREQ_CTRL1_FB_DIV_FRAC_BITS;
++		current_freq += tmp;
++	}
++
++	return current_freq;
 +}
 +
-+void armv7r_mpu_config(struct mpu_region_config *rgn)
++static int ti_pll_clk_set_rate(struct ti_pll_clk *pll, unsigned long rate,
++			       unsigned long parent_rate)
 +{
-+	u32 attr, val;
++	u64 parent_freq = parent_rate;
++	int ret;
++	u32 ctrl;
++	unsigned long pllm;
++	u32 pllfm = 0;
++	unsigned long plld;
++	u32 div_ctrl;
++	u32 rem;
++	int shift;
 +
-+	attr = get_attr_encoding(rgn->mr_attr);
++	if (rate != parent_freq)
++		/*
++		 * Attempt with higher max multiplier value first to give
++		 * some space for fractional divider to kick in.
++		 */
++		for (shift = 8; shift >= 0; shift -= 8) {
++			rational_best_approximation(rate, parent_freq,
++				((PLL_16FFT_FREQ_CTRL0_FB_DIV_INT_MASK + 1) << shift) - 1,
++				PLL_16FFT_DIV_CTRL_REF_DIV_MASK, &pllm, &plld);
++			if (pllm / plld <= PLL_16FFT_FREQ_CTRL0_FB_DIV_INT_MASK)
++				break;
++		}
 +
-+	/* MPU Region Number Register */
-+	asm volatile ("mcr p15, 0, %0, c6, c2, 0" : : "r" (rgn->region_no));
++	/* Put PLL to bypass mode */
++	ctrl = readl(pll->reg + PLL_16FFT_CTRL);
++	ctrl |= PLL_16FFT_CTRL_BYPASS_EN;
++	writel(ctrl, pll->reg + PLL_16FFT_CTRL);
 +
-+	/* MPU Region Base Address Register */
-+	asm volatile ("mcr p15, 0, %0, c6, c1, 0" : : "r" (rgn->start_addr));
++	if (rate == parent_freq)
++		return 0;
 +
-+	/* MPU Region Size and Enable Register */
-+	if (rgn->reg_size)
-+		val = (rgn->reg_size << REGION_SIZE_SHIFT) | ENABLE_REGION;
++	pr_debug("%s: pre-frac-calc: rate=%u, parent_freq=%u, plld=%u, pllm=%u\n",
++	      __func__, (u32)rate, (u32)parent_freq, (u32)plld, (u32)pllm);
++
++	/* Check if we need fractional config */
++	if (plld > 1) {
++		pllfm = pllm % plld;
++		pllfm <<= PLL_16FFT_FREQ_CTRL1_FB_DIV_FRAC_BITS;
++		rem = pllfm % plld;
++		pllfm /= plld;
++		if (rem)
++			pllfm++;
++		pllm /= plld;
++		plld = 1;
++	}
++
++	if (pllfm)
++		ctrl |= PLL_16FFT_CTRL_DSM_EN;
 +	else
-+		val = DISABLE_REGION;
-+	asm volatile ("mcr p15, 0, %0, c6, c1, 2" : : "r" (val));
++		ctrl &= ~PLL_16FFT_CTRL_DSM_EN;
 +
-+	/* MPU Region Access Control Register */
-+	val = rgn->xn << XN_SHIFT | rgn->ap << AP_SHIFT | attr;
-+	asm volatile ("mcr p15, 0, %0, c6, c1, 4" : : "r" (val));
-+}
++	writel(pllm, pll->reg + PLL_16FFT_FREQ_CTRL0);
++	writel(pllfm, pll->reg + PLL_16FFT_FREQ_CTRL1);
 +
-+void armv7r_mpu_setup_regions(struct mpu_region_config *rgns, u32 num_rgns)
-+{
-+	u32 num, i;
-+
-+	asm volatile ("mrc p15, 0, %0, c0, c0, 4" : "=r" (num));
-+	num = (num & MPUIR_DREGION_MASK) >> MPUIR_DREGION_SHIFT;
-+	/* Regions to be configured cannot be greater than available regions */
-+	if (num < num_rgns)
-+		num_rgns = num;
-+	/**
-+	 * Assuming dcache might not be enabled at this point, disabling
-+	 * and invalidating only icache.
-+	 */
-+	icache_disable();
-+	icache_invalidate();
-+
-+	armv7r_mpu_disable();
-+
-+	for (i = 0; i < num_rgns; i++)
-+		armv7r_mpu_config(&rgns[i]);
-+
-+	armv7r_mpu_enable();
-+
-+	icache_enable();
-+}
-+
-+#if 0
-+void enable_caches(void)
-+{
 +	/*
-+	 * setup_mpu_regions() might have enabled Icache. So add a check
-+	 * before enabling Icache
++	 * div_ctrl register contains other divider values, so rmw
++	 * only plld and leave existing values alone
 +	 */
-+	if (!icache_status())
-+		icache_enable();
-+	dcache_enable();
++	div_ctrl = readl(pll->reg + PLL_16FFT_DIV_CTRL);
++	div_ctrl &= ~PLL_16FFT_DIV_CTRL_REF_DIV_MASK;
++	div_ctrl |= plld;
++	writel(div_ctrl, pll->reg + PLL_16FFT_DIV_CTRL);
++
++	ctrl &= ~PLL_16FFT_CTRL_BYPASS_EN;
++	ctrl |= PLL_16FFT_CTRL_PLL_EN;
++	writel(ctrl, pll->reg + PLL_16FFT_CTRL);
++
++	ret = ti_pll_wait_for_lock(pll);
++	if (ret)
++		return ret;
++
++	pr_debug("%s: pllm=%u, plld=%u, pllfm=%u, parent_freq=%u\n",
++		 __func__, (u32)pllm, (u32)plld, (u32)pllfm, (u32)parent_freq);
++
++	return 0;
 +}
-+#endif
-diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-index b00e9e51e5..800d6b3cab 100644
---- a/arch/arm/cpu/cpu.c
-+++ b/arch/arm/cpu/cpu.c
-@@ -52,6 +52,8 @@ int icache_status(void)
- 	return (get_cr () & CR_I) != 0;
- }
- 
-+#ifndef __PBL__
 +
- /*
-  * SoC like the ux500 have the l2x0 always enable
-  * with or without MMU enable
-@@ -108,3 +110,4 @@ static int arm_request_stack(void)
- 	return 0;
- }
- coredevice_initcall(arm_request_stack);
-+#endif
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index ac1462b7b1..4657a4828e 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -65,6 +65,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 
- 	if (IS_ENABLED(CONFIG_MMU))
- 		mmu_early_enable(membase, memsize);
-+	else if (IS_ENABLED(CONFIG_ARMV7R_MPU))
-+		set_cr(get_cr() | CR_C);
- 
- 	/* Add handoff data now, so arm_mem_barebox_image takes it into account */
- 	if (boarddata)
-diff --git a/arch/arm/include/asm/armv7r-mpu.h b/arch/arm/include/asm/armv7r-mpu.h
-new file mode 100644
-index 0000000000..1bbaeed66c
---- /dev/null
-+++ b/arch/arm/include/asm/armv7r-mpu.h
-@@ -0,0 +1,134 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (C) 2017, STMicroelectronics - All Rights Reserved
-+ * Author(s): Vikas Manocha, <vikas.manocha@st.com> for STMicroelectronics.
-+ */
-+
-+#ifndef _ASM_ARMV7_MPU_H
-+#define _ASM_ARMV7_MPU_H
-+
-+#ifndef __ASSEMBLY__
-+#include <linux/bitops.h>
-+#endif
-+
-+#ifdef CONFIG_CPU_V7M
-+#define AP_SHIFT			24
-+#define XN_SHIFT			28
-+#define TEX_SHIFT			19
-+#define S_SHIFT				18
-+#define C_SHIFT				17
-+#define B_SHIFT				16
-+#else /* CONFIG_CPU_V7R */
-+#define XN_SHIFT			12
-+#define AP_SHIFT			8
-+#define TEX_SHIFT			3
-+#define S_SHIFT				2
-+#define C_SHIFT				1
-+#define B_SHIFT				0
-+#endif /* CONFIG_CPU_V7R */
-+
-+#define CACHEABLE			BIT(C_SHIFT)
-+#define BUFFERABLE			BIT(B_SHIFT)
-+#define SHAREABLE			BIT(S_SHIFT)
-+#define REGION_SIZE_SHIFT		1
-+#define ENABLE_REGION			BIT(0)
-+#define DISABLE_REGION			0
-+
-+enum region_number {
-+	REGION_0 = 0,
-+	REGION_1,
-+	REGION_2,
-+	REGION_3,
-+	REGION_4,
-+	REGION_5,
-+	REGION_6,
-+	REGION_7,
-+};
-+
-+enum ap {
-+	NO_ACCESS = 0,
-+	PRIV_RW_USR_NO,
-+	PRIV_RW_USR_RO,
-+	PRIV_RW_USR_RW,
-+	UNPREDICTABLE,
-+	PRIV_RO_USR_NO,
-+	PRIV_RO_USR_RO,
-+};
-+
-+enum mr_attr {
-+	STRONG_ORDER = 0,
-+	SHARED_WRITE_BUFFERED,
-+	O_I_WT_NO_WR_ALLOC,
-+	O_I_WB_NO_WR_ALLOC,
-+	O_I_NON_CACHEABLE,
-+	O_I_WB_RD_WR_ALLOC,
-+	DEVICE_NON_SHARED,
-+};
-+enum size {
-+	REGION_8MB = 22,
-+	REGION_16MB,
-+	REGION_32MB,
-+	REGION_64MB,
-+	REGION_128MB,
-+	REGION_256MB,
-+	REGION_512MB,
-+	REGION_1GB,
-+	REGION_2GB,
-+	REGION_4GB,
-+};
-+
-+enum xn {
-+	XN_DIS = 0,
-+	XN_EN,
-+};
-+
-+struct mpu_region_config {
-+	uint32_t start_addr;
-+	enum region_number region_no;
-+	enum xn xn;
-+	enum ap ap;
-+	enum mr_attr mr_attr;
-+	enum size reg_size;
-+};
-+
-+void armv7r_mpu_disable(void);
-+void armv7r_mpu_enable(void);
-+int armv7r_mpu_enabled(void);
-+void armv7r_mpu_config(struct mpu_region_config *rgn);
-+void armv7r_mpu_setup_regions(struct mpu_region_config *rgns, u32 num_rgns);
-+
-+static inline u32 get_attr_encoding(u32 mr_attr)
++static int __ti_pll_clk_set_rate(struct clk_hw *hw, unsigned long rate,
++				 unsigned long parent_rate)
 +{
-+	u32 attr;
++	struct ti_pll_clk *pll = to_pll(hw);
 +
-+	switch (mr_attr) {
-+	case STRONG_ORDER:
-+		attr = SHAREABLE;
-+		break;
-+	case SHARED_WRITE_BUFFERED:
-+		attr = BUFFERABLE;
-+		break;
-+	case O_I_WT_NO_WR_ALLOC:
-+		attr = CACHEABLE;
-+		break;
-+	case O_I_WB_NO_WR_ALLOC:
-+		attr = CACHEABLE | BUFFERABLE;
-+		break;
-+	case O_I_NON_CACHEABLE:
-+		attr = 1 << TEX_SHIFT;
-+		break;
-+	case O_I_WB_RD_WR_ALLOC:
-+		attr = (1 << TEX_SHIFT) | CACHEABLE | BUFFERABLE;
-+		break;
-+	case DEVICE_NON_SHARED:
-+		attr = (2 << TEX_SHIFT) | BUFFERABLE;
-+		break;
-+	default:
-+		attr = 0; /* strongly ordered */
-+		break;
++	return ti_pll_clk_set_rate(pll, rate, parent_rate);
++}
++
++static long ti_pll_clk_round_rate(struct clk_hw *hw, unsigned long rate,
++				  unsigned long *prate)
++{
++	return rate; /* FIXME */
++}
++
++static int ti_pll_clk_enable(struct clk_hw *hw)
++{
++	struct ti_pll_clk *pll = to_pll(hw);
++	u32 ctrl;
++
++	ctrl = readl(pll->reg + PLL_16FFT_CTRL);
++	ctrl &= ~PLL_16FFT_CTRL_BYPASS_EN;
++	ctrl |= PLL_16FFT_CTRL_PLL_EN;
++	writel(ctrl, pll->reg + PLL_16FFT_CTRL);
++
++	return ti_pll_wait_for_lock(pll);
++}
++
++static void ti_pll_clk_disable(struct clk_hw *hw)
++{
++	struct ti_pll_clk *pll = to_pll(hw);
++	u32 ctrl;
++
++	ctrl = readl(pll->reg + PLL_16FFT_CTRL);
++	ctrl |= PLL_16FFT_CTRL_BYPASS_EN;
++	writel(ctrl, pll->reg + PLL_16FFT_CTRL);
++}
++
++static const struct clk_ops ti_pll_clk_ops = {
++	.recalc_rate = ti_pll_clk_recalc_rate,
++	.round_rate = ti_pll_clk_round_rate,
++	.set_rate = __ti_pll_clk_set_rate,
++	.enable = ti_pll_clk_enable,
++	.disable = ti_pll_clk_disable,
++};
++
++void ti_k3_pll_init(void __iomem *reg)
++{
++	u32 cfg, ctrl, hsdiv_presence_bit, hsdiv_ctrl_offs;
++	int i;
++
++	/* Unlock the PLL registers */
++	writel(PLL_KICK0_VALUE, reg + PLL_KICK0);
++	writel(PLL_KICK1_VALUE, reg + PLL_KICK1);
++
++	/* Enable all HSDIV outputs */
++	cfg = readl(reg + PLL_16FFT_CFG);
++	for (i = 0; i < 16; i++) {
++		hsdiv_presence_bit = BIT(16 + i);
++		hsdiv_ctrl_offs = 0x80 + (i * 4);
++		/* Enable HSDIV output if present */
++		if ((hsdiv_presence_bit & cfg) != 0UL) {
++			ctrl = readl(reg + hsdiv_ctrl_offs);
++			ctrl |= PLL_16FFT_HSDIV_CTRL_CLKOUT_EN;
++			writel(ctrl, reg + hsdiv_ctrl_offs);
++		}
++	}
++}
++
++int ti_k3_pll_set_rate(void __iomem *reg, unsigned long rate, unsigned long parent_rate)
++{
++	struct ti_pll_clk pll = {
++		.reg = reg,
++		.hw.clk.name = "PBL",
 +	};
 +
-+	return attr;
++	return ti_pll_clk_set_rate(&pll, rate, parent_rate);
 +}
 +
-+#endif /* _ASM_ARMV7_MPU_H */
++struct clk *clk_register_ti_k3_pll(const char *name, const char *parent_name,
++				   void __iomem *reg)
++{
++	struct ti_pll_clk *pll;
++	int ret;
++
++	pll = kzalloc(sizeof(*pll), GFP_KERNEL);
++	if (!pll)
++		return ERR_PTR(-ENOMEM);
++
++	pll->reg = reg;
++
++	pll->parent = parent_name;
++	pll->hw.clk.ops = &ti_pll_clk_ops;
++	pll->hw.clk.name = name;
++	pll->hw.clk.parent_names = &pll->parent;
++	pll->hw.clk.num_parents = 1;
++
++	ti_k3_pll_init(pll->reg);
++
++	ret = bclk_register(&pll->hw.clk);
++	if (ret) {
++		kfree(pll);
++		return ERR_PTR(ret);
++	}
++
++	return &pll->hw.clk;
++}
+diff --git a/drivers/clk/k3/ti-k3-clk.h b/drivers/clk/k3/ti-k3-clk.h
+new file mode 100644
+index 0000000000..88980412bf
+--- /dev/null
++++ b/drivers/clk/k3/ti-k3-clk.h
+@@ -0,0 +1,8 @@
++#ifndef __TI_K3_CLK_H
++#define __TI_K3_CLK_H
++
++struct clk *clk_register_ti_k3_pll(const char *name, const char *parent_name,
++				   void __iomem *reg);
++
++#endif
++
+diff --git a/include/soc/k3/clk.h b/include/soc/k3/clk.h
+new file mode 100644
+index 0000000000..a9921f5a9c
+--- /dev/null
++++ b/include/soc/k3/clk.h
+@@ -0,0 +1,7 @@
++#ifndef __SOC_K3_CLK_H
++#define __SOC_K3_CLK_H
++
++void ti_k3_pll_init(void __iomem *reg);
++int ti_k3_pll_set_rate(void __iomem *reg, unsigned long rate, unsigned long parent_rate);
++
++#endif /* __SOC_K3_CLK_H */
 
 -- 
 2.39.5
