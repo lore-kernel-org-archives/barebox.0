@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tGzR1-001qAJ-34
+	id 1tGzR2-001qAK-09
 	for lore@lore.pengutronix.de;
 	Fri, 29 Nov 2024 12:45:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tGzR0-0005k0-S3
+	id 1tGzR0-0005jj-Ou
 	for lore@pengutronix.de; Fri, 29 Nov 2024 12:45:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,72 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zqp5SXQRDWx6KWw21YNv/u9SjKP3pZbgPd9AvM1t3TM=; b=Dg7GgvZKn5hyWPN/NssL9LvJof
-	O9FYTC1HLbPUp/U4AHUnJLZtpJc4ct5zayi8d4CsYaCL1qh/lPS/Fx0goQ2T3PeRArMo/+uHmWqVI
-	3vmLAbuHhuujE/ahUDScZeyXSloHMfWZsMuvnhNwP+U2zLAzHFT7LRgEthT/P+O3I8KrPdAf1uedf
-	5UoTDYSD5+XKA7aFdJ2N6qwU54HWrbHghJuwLVSnq3OeWfN7+4dXy01AW/6Nlc7BXK6+4rIhzzH1+
-	xOudSNYh4QM3hOY2QnsYOJfGpiieftSTgeczYTeYt5RvTXrSW3znhlNjAe2s+2uW9Y0gePCdcHmvL
-	68UpwHdA==;
+	bh=d49hhv+C1L3wgOQxQsVC02gnN+eQxA7is39qE2tY6ec=; b=4r1mIPAJD/PY23Gr0zZzG5PC4Y
+	r4LkLkxd7yNcrmm8tRLNVv94BJmHsflZlcOj0C0EACpqZmlF8psHdUnggaDQP80FBm67UwOGFNUkt
+	tav/DPPn/lOJojmZ/RYSAtQ+dCrImBgIbFmh6xQa4KBqZu7JME2uMz72pNvPbIHfyns4sKy3SoStn
+	tNGy3wKjzkR5qjnYxuiB4uY2wKCCZpyKmA14d42h94wSDbC1l0qTRw1Kwh/7KwTPVztty88R1K9OU
+	IoeYQKBo9MEr5EqxEkHZgwUt8Ii+vfHzWlvvwhghwSdB9SkX1zaI0iSbHiYTR9yQKQAFWMTriwcqw
+	3sMb6C+A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzQP-0000000HaFx-2Csh;
-	Fri, 29 Nov 2024 11:44:41 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzQM-0000000HaCj-3HQR
-	for barebox@bombadil.infradead.org;
-	Fri, 29 Nov 2024 11:44:38 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=zqp5SXQRDWx6KWw21YNv/u9SjKP3pZbgPd9AvM1t3TM=; b=g5Dc++p7nvGNOPLpUU9reF1kqD
-	BL9rKCDXpbu9d9Oi1V7nw5pQiqTAL2EYtuq1q80tc9vB+mYQrrExDAyP7/R9LqrkX3Wy9fWVFRJRL
-	nKwg5VsKG5bNAljnEX3vI+FYe+6NKcy6J1mdl6000U9gYOBRu+dByW7XNEJWjVybsXT1XbqvOtkXW
-	POEefbD0657npQadERu+KMPeXno9RvB/tynlw4N6hOXbRspkPaSFzLJR3LTVPa6lVupPRh0tvyPU2
-	EUmIJFAlEXke86Z2StDd6z3KBjvQpYSTlqw7K4nCy2t4STKHkC0TnTXNQv4DIlMes/6Khk11J0dkD
-	dsTet1LA==;
+	id 1tGzQK-0000000HaBH-0DZj;
+	Fri, 29 Nov 2024 11:44:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzQI-00000001jPW-2Jml
+	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
+	id 1tGzQD-0000000Ha7F-38bc
 	for barebox@lists.infradead.org;
-	Fri, 29 Nov 2024 11:44:37 +0000
+	Fri, 29 Nov 2024 11:44:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQA-0005C9-6J; Fri, 29 Nov 2024 12:44:26 +0100
+	id 1tGzQ9-0005C6-Vt; Fri, 29 Nov 2024 12:44:26 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQ9-000mJO-07;
+	id 1tGzQ8-000mJG-2v;
 	Fri, 29 Nov 2024 12:44:25 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQ9-000vyS-2G;
+	id 1tGzQ9-000vyS-20;
 	Fri, 29 Nov 2024 12:44:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Nov 2024 12:44:24 +0100
+Date: Fri, 29 Nov 2024 12:44:16 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241129-k3-r5-v1-9-67c4bb42a5c7@pengutronix.de>
+Message-Id: <20241129-k3-r5-v1-1-67c4bb42a5c7@pengutronix.de>
 References: <20241129-k3-r5-v1-0-67c4bb42a5c7@pengutronix.de>
 In-Reply-To: <20241129-k3-r5-v1-0-67c4bb42a5c7@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732880665; l=13781;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732880662; l=8555;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=YYScInhiLwJvlUvhqNF2DtKbQYkcY30ankaz9odqDBE=;
- b=mYkJsRxtDz3WyZKqOYligihKp/lLdAeshbRHaWx7il+xMavHg0isIH2GzKHOFVDvBXS49n3En
- 6EI+fdtXQrXAWZjs4d8Dl7YGpcC7V4m2eZqrBlj7oQq344DLlKgZJa+
+ bh=hxa4S/rfwv+1X22tOnmQ9fZ9zjoHZAlfBgmei6WUUN0=;
+ b=LxgRDpFRteJcUPZmXHMq7e2Uc4O/1u3Q+Z+p1jrqwsW1qFmhhOQZn9/mb9Zz66aOHp298N1JY
+ rtF2+e5X2TeBr7zjwWMos4waxeEppfFd893VLP+aeoETramQ/CBtE/j
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241129_114434_709242_D54C47B9 
-X-CRM114-Status: GOOD (  24.71  )
+X-CRM114-CacheID: sfid-20241129_034429_942914_AD3C5242 
+X-CRM114-Status: GOOD (  23.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,529 +90,349 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/20] pmdomain: add K3 driver
+Subject: [PATCH 01/20] ARM: add ARMv7R MPU support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The power domain support for K3 SoCs is implemented on the Cortex-R5
-boot processor by the ti-dm firmware binary. The A53 cores access the
-power domains via mailboxes. However, during early boot we are running
-barebox on the Cortex-R5 processor and the ti-dm firmware is not yet
-running, so we must implement our own driver for the power domains.
+This adds MPU (memory protection unit) support for ARMv7R cores.
 Code is based on U-Boot-2025.01-rc1.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pmdomain/ti/Kconfig  |   4 +
- drivers/pmdomain/ti/Makefile |   1 +
- drivers/pmdomain/ti/ti-k3.c  | 479 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 484 insertions(+)
+ arch/arm/cpu/Kconfig              |   7 ++
+ arch/arm/cpu/Makefile             |   3 +-
+ arch/arm/cpu/armv7r-mpu.c         | 117 +++++++++++++++++++++++++++++++++
+ arch/arm/cpu/cpu.c                |   3 +
+ arch/arm/cpu/uncompress.c         |   2 +
+ arch/arm/include/asm/armv7r-mpu.h | 134 ++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 265 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pmdomain/ti/Kconfig b/drivers/pmdomain/ti/Kconfig
-index f34a5146c1..fc65e34118 100644
---- a/drivers/pmdomain/ti/Kconfig
-+++ b/drivers/pmdomain/ti/Kconfig
-@@ -6,3 +6,7 @@ config TI_SCI_PM_DOMAINS
- 	help
- 	  Generic power domain implementation for TI device implementing
- 	  the TI SCI protocol.
-+
-+config TI_K3_PM_DOMAINS
-+	bool "TI K3 PM Domains Driver"
-+	depends on MACH_K3_CORTEX_R5 || COMPILE_TEST
-diff --git a/drivers/pmdomain/ti/Makefile b/drivers/pmdomain/ti/Makefile
-index ab582e04a8..e5d56da052 100644
---- a/drivers/pmdomain/ti/Makefile
-+++ b/drivers/pmdomain/ti/Makefile
-@@ -1,2 +1,3 @@
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 6563394a7a..737586b826 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -156,3 +156,10 @@ config CACHE_L2X0
+ 	bool "Enable L2x0 PrimeCell"
+ 	depends on MMU && ARCH_HAS_L2X0
+ 
++config ARMV7R_MPU
++	bool
++	depends on CPU_V7
++	help
++	  Some ARM systems without an MMU have instead a Memory Protection
++	  Unit (MPU) that defines the type and permissions for regions of
++	  memory.
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index 999cc375da..1769249645 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -1,6 +1,6 @@
  # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_TI_SCI_PM_DOMAINS) += ti_sci_pm_domains.o
-+obj-$(CONFIG_TI_K3_PM_DOMAINS) += ti-k3.o
-diff --git a/drivers/pmdomain/ti/ti-k3.c b/drivers/pmdomain/ti/ti-k3.c
+ 
+-obj-y += cpu.o
++obj-pbl-y += cpu.o
+ 
+ obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_$(S64_32).o interrupts_$(S64_32).o
+ obj-$(CONFIG_MMU) += mmu-common.o
+@@ -62,3 +62,4 @@ pbl-$(CONFIG_ARM_ATF) += atf.o
+ 
+ obj-pbl-y += common.o sections.o
+ KASAN_SANITIZE_common.o := n
++obj-pbl-$(CONFIG_ARMV7R_MPU) += armv7r-mpu.o
+diff --git a/arch/arm/cpu/armv7r-mpu.c b/arch/arm/cpu/armv7r-mpu.c
 new file mode 100644
-index 0000000000..33bffeaca0
+index 0000000000..e28a7b3c5e
 --- /dev/null
-+++ b/drivers/pmdomain/ti/ti-k3.c
-@@ -0,0 +1,479 @@
++++ b/arch/arm/cpu/armv7r-mpu.c
+@@ -0,0 +1,117 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Texas Instruments power domain driver
++ * Cortex-R Memory Protection Unit specific code
 + *
-+ * Copyright (C) 2020-2021 Texas Instruments Incorporated - https://www.ti.com/
-+ *	Tero Kristo <t-kristo@ti.com>
++ * Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com/
++ *	Lokesh Vutla <lokeshvutla@ti.com>
 + */
 +
-+#define pr_fmt(fmt)     "ti-k3-pm-domain: " fmt
++#include <asm/armv7r-mpu.h>
++#include <asm/system.h>
++#include <cache.h>
++#include <asm/cache.h>
 +
-+#include <io.h>
-+#include <of_device.h>
-+#include <malloc.h>
-+#include <init.h>
-+#include <pm_domain.h>
-+#include <linux/iopoll.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+
-+#define PSC_PTCMD		0x120
-+#define PSC_PTCMD_H		0x124
-+#define PSC_PTSTAT		0x128
-+#define PSC_PTSTAT_H		0x12C
-+#define PSC_PDSTAT		0x200
-+#define PSC_PDCTL		0x300
-+#define PSC_MDSTAT		0x800
-+#define PSC_MDCTL		0xa00
-+
-+#define PDCTL_STATE_MASK		0x1
-+#define PDCTL_STATE_OFF			0x0
-+#define PDCTL_STATE_ON			0x1
-+
-+#define MDSTAT_STATE_MASK		0x3f
-+#define MDSTAT_BUSY_MASK		0x30
-+#define MDSTAT_STATE_SWRSTDISABLE	0x0
-+#define MDSTAT_STATE_ENABLE		0x3
-+
-+#define LPSC_TIMEOUT		1000
-+#define PD_TIMEOUT		1000
-+
-+#define LPSC_MODULE_EXISTS      BIT(0)
-+#define LPSC_NO_CLOCK_GATING    BIT(1)
-+#define LPSC_DEPENDS            BIT(2)
-+#define LPSC_HAS_RESET_ISO      BIT(3)
-+#define LPSC_HAS_LOCAL_RESET    BIT(4)
-+#define LPSC_NO_MODULE_RESET    BIT(5)
-+
-+#define PSC_PD_EXISTS           BIT(0)
-+#define PSC_PD_ALWAYSON         BIT(1)
-+#define PSC_PD_DEPENDS          BIT(2)
-+
-+#define MDSTAT_STATE_MASK		0x3f
-+#define MDSTAT_BUSY_MASK		0x30
-+#define MDSTAT_STATE_SWRSTDISABLE	0x0
-+#define MDSTAT_STATE_ENABLE		0x3
-+
-+struct ti_psc {
-+	int id;
-+	void __iomem *base;
-+};
-+
-+struct ti_pd;
-+
-+struct ti_pd {
-+	int id;
-+	int usecount;
-+	struct ti_psc *psc;
-+	struct ti_pd *depend;
-+};
-+
-+struct ti_lpsc;
-+
-+struct ti_lpsc {
-+	int id;
-+	int usecount;
-+	struct ti_psc *psc;
-+	struct ti_pd *pd;
-+	struct ti_lpsc *depend;
-+};
-+
-+struct ti_dev {
-+	int lpsc;
-+	int id;
-+};
++/* MPU Type register definitions */
++#define MPUIR_S_SHIFT		0
++#define MPUIR_S_MASK		BIT(MPUIR_S_SHIFT)
++#define MPUIR_DREGION_SHIFT	8
++#define MPUIR_DREGION_MASK	(0xff << 8)
 +
 +/**
-+ * struct ti_k3_pd_platdata - pm domain controller information structure
++ * Note:
++ * The Memory Protection Unit(MPU) allows to partition memory into regions
++ * and set individual protection attributes for each region. In absence
++ * of MPU a default map[1] will take effect. make sure to run this code
++ * from a region which has execution permissions by default.
++ * [1] http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0460d/I1002400.html
 + */
-+struct ti_k3_pd_platdata {
-+	struct ti_psc *psc;
-+	struct ti_pd *pd;
-+	struct ti_lpsc *lpsc;
-+	struct ti_dev *devs;
-+	int num_psc;
-+	int num_pd;
-+	int num_lpsc;
-+	int num_devs;
-+};
 +
-+struct ti_k3_pm_domain {
-+	struct generic_pm_domain genpd;
-+	struct ti_lpsc *lpsc;
-+};
-+
-+struct ti_k3_priv {
-+	const struct ti_k3_pd_platdata *data;
-+	struct genpd_onecell_data pd_data;
-+	struct ti_k3_pm_domain *pd;
-+};
-+
-+static u32 psc_read(struct ti_psc *psc, u32 reg)
++void armv7r_mpu_disable(void)
 +{
-+	return readl(psc->base + reg);
++	u32 reg;
++
++	reg = get_cr();
++	reg &= ~CR_M;
++	dsb();
++	set_cr(reg);
++	isb();
 +}
 +
-+static void psc_write(u32 val, struct ti_psc *psc, u32 reg)
++void armv7r_mpu_enable(void)
 +{
-+	writel(val, psc->base + reg);
++	u32 reg;
++
++	reg = get_cr();
++	reg |= CR_M;
++	dsb();
++	set_cr(reg);
++	isb();
 +}
 +
-+static u32 pd_read(struct ti_pd *pd, u32 reg)
++int armv7r_mpu_enabled(void)
 +{
-+	return psc_read(pd->psc, reg + 4 * pd->id);
++	return get_cr() & CR_M;
 +}
 +
-+static void pd_write(u32 val, struct ti_pd *pd, u32 reg)
++void armv7r_mpu_config(struct mpu_region_config *rgn)
 +{
-+	psc_write(val, pd->psc, reg + 4 * pd->id);
-+}
++	u32 attr, val;
 +
-+static u32 lpsc_read(struct ti_lpsc *lpsc, u32 reg)
-+{
-+	return psc_read(lpsc->psc, reg + 4 * lpsc->id);
-+}
++	attr = get_attr_encoding(rgn->mr_attr);
 +
-+static void lpsc_write(u32 val, struct ti_lpsc *lpsc, u32 reg)
-+{
-+	psc_write(val, lpsc->psc, reg + 4 * lpsc->id);
-+}
++	/* MPU Region Number Register */
++	asm volatile ("mcr p15, 0, %0, c6, c2, 0" : : "r" (rgn->region_no));
 +
-+static int ti_pd_wait(struct ti_pd *pd)
-+{
-+	u32 ptstat;
-+	u32 pdoffset = 0;
-+	u32 ptstatreg = PSC_PTSTAT;
-+	int ret;
++	/* MPU Region Base Address Register */
++	asm volatile ("mcr p15, 0, %0, c6, c1, 0" : : "r" (rgn->start_addr));
 +
-+	if (pd->id > 31) {
-+		pdoffset = 32;
-+		ptstatreg = PSC_PTSTAT_H;
-+	}
-+
-+	ret = readl_poll_timeout(pd->psc->base + ptstatreg, ptstat,
-+				 !(ptstat & BIT(pd->id - pdoffset)), PD_TIMEOUT);
-+
-+	if (ret)
-+		pr_err("%s: psc%d, pd%d failed to transition.\n", __func__,
-+		       pd->psc->id, pd->id);
-+
-+	return ret;
-+}
-+
-+static void ti_pd_transition(struct ti_pd *pd)
-+{
-+	u32 pdoffset = 0;
-+	u32 ptcmdreg = PSC_PTCMD;
-+
-+	if (pd->id > 31) {
-+		pdoffset = 32;
-+		ptcmdreg = PSC_PTCMD_H;
-+	}
-+
-+	psc_write(BIT(pd->id - pdoffset), pd->psc, ptcmdreg);
-+}
-+
-+static int ti_pd_get(struct ti_pd *pd)
-+{
-+	u32 pdctl;
-+	int ret;
-+
-+	pd->usecount++;
-+
-+	if (pd->usecount > 1)
-+		return 0;
-+
-+	if (pd->depend) {
-+		ret = ti_pd_get(pd->depend);
-+		if (ret)
-+			return ret;
-+		ti_pd_transition(pd->depend);
-+		ret = ti_pd_wait(pd->depend);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	pdctl = pd_read(pd, PSC_PDCTL);
-+
-+	if ((pdctl & PDCTL_STATE_MASK) == PDCTL_STATE_ON)
-+		return 0;
-+
-+	pr_debug("%s: enabling psc:%d, pd:%d\n", __func__, pd->psc->id, pd->id);
-+
-+	pdctl &= ~PDCTL_STATE_MASK;
-+	pdctl |= PDCTL_STATE_ON;
-+
-+	pd_write(pdctl, pd, PSC_PDCTL);
-+
-+	return 0;
-+}
-+
-+static int ti_pd_put(struct ti_pd *pd)
-+{
-+	u32 pdctl;
-+	int ret;
-+
-+	pd->usecount--;
-+
-+	if (pd->usecount > 0)
-+		return 0;
-+
-+	pdctl = pd_read(pd, PSC_PDCTL);
-+	if ((pdctl & PDCTL_STATE_MASK) == PDCTL_STATE_OFF)
-+		return 0;
-+
-+	pdctl &= ~PDCTL_STATE_MASK;
-+	pdctl |= PDCTL_STATE_OFF;
-+
-+	pr_debug("%s: disabling psc:%d, pd:%d\n", __func__, pd->psc->id, pd->id);
-+
-+	pd_write(pdctl, pd, PSC_PDCTL);
-+
-+	if (pd->depend) {
-+		ti_pd_transition(pd);
-+		ret = ti_pd_wait(pd);
-+		if (ret)
-+			return ret;
-+
-+		ret = ti_pd_put(pd->depend);
-+		if (ret)
-+			return ret;
-+		ti_pd_transition(pd->depend);
-+		ret = ti_pd_wait(pd->depend);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ti_lpsc_wait(struct ti_lpsc *lpsc)
-+{
-+	u32 mdstat;
-+	int ret;
-+
-+	ret = readl_poll_timeout(lpsc->psc->base + PSC_MDSTAT + lpsc->id * 4,
-+				 mdstat,
-+				 !(mdstat & MDSTAT_BUSY_MASK), LPSC_TIMEOUT);
-+
-+	if (ret)
-+		pr_err("%s: module %d failed to transition.\n", __func__,
-+		       lpsc->id);
-+
-+	return ret;
-+}
-+
-+static int ti_lpsc_transition(struct ti_lpsc *lpsc, u8 state)
-+{
-+	struct ti_pd *psc_pd;
-+	int ret;
-+	u32 mdctl;
-+
-+	psc_pd = lpsc->pd;
-+
-+	if (state == MDSTAT_STATE_ENABLE) {
-+		lpsc->usecount++;
-+		if (lpsc->usecount > 1)
-+			return 0;
-+	} else {
-+		lpsc->usecount--;
-+		if (lpsc->usecount >= 1)
-+			return 0;
-+	}
-+
-+	pr_debug("%s: transitioning psc:%d, lpsc:%d to %x\n", __func__,
-+		 lpsc->psc->id, lpsc->id, state);
-+
-+	if (lpsc->depend)
-+		ti_lpsc_transition(lpsc->depend, state);
-+
-+	mdctl = lpsc_read(lpsc, PSC_MDCTL);
-+	if ((mdctl & MDSTAT_STATE_MASK) == state)
-+		return 0;
-+
-+	if (state == MDSTAT_STATE_ENABLE)
-+		ti_pd_get(psc_pd);
++	/* MPU Region Size and Enable Register */
++	if (rgn->reg_size)
++		val = (rgn->reg_size << REGION_SIZE_SHIFT) | ENABLE_REGION;
 +	else
-+		ti_pd_put(psc_pd);
++		val = DISABLE_REGION;
++	asm volatile ("mcr p15, 0, %0, c6, c1, 2" : : "r" (val));
 +
-+	mdctl &= ~MDSTAT_STATE_MASK;
-+	mdctl |= state;
-+
-+	lpsc_write(mdctl, lpsc, PSC_MDCTL);
-+
-+	ti_pd_transition(psc_pd);
-+
-+	ret = ti_pd_wait(psc_pd);
-+	if (ret)
-+		return ret;
-+
-+	return ti_lpsc_wait(lpsc);
++	/* MPU Region Access Control Register */
++	val = rgn->xn << XN_SHIFT | rgn->ap << AP_SHIFT | attr;
++	asm volatile ("mcr p15, 0, %0, c6, c1, 4" : : "r" (val));
 +}
 +
-+static inline struct ti_k3_pm_domain *to_ti_k3_pd(struct generic_pm_domain *gpd)
++void armv7r_mpu_setup_regions(struct mpu_region_config *rgns, u32 num_rgns)
 +{
-+	return container_of(gpd, struct ti_k3_pm_domain, genpd);
++	u32 num, i;
++
++	asm volatile ("mrc p15, 0, %0, c0, c0, 4" : "=r" (num));
++	num = (num & MPUIR_DREGION_MASK) >> MPUIR_DREGION_SHIFT;
++	/* Regions to be configured cannot be greater than available regions */
++	if (num < num_rgns)
++		num_rgns = num;
++	/**
++	 * Assuming dcache might not be enabled at this point, disabling
++	 * and invalidating only icache.
++	 */
++	icache_disable();
++	icache_invalidate();
++
++	armv7r_mpu_disable();
++
++	for (i = 0; i < num_rgns; i++)
++		armv7r_mpu_config(&rgns[i]);
++
++	armv7r_mpu_enable();
++
++	icache_enable();
 +}
 +
-+static int ti_k3_pm_domain_on(struct generic_pm_domain *domain)
++#if 0
++void enable_caches(void)
 +{
-+	struct ti_k3_pm_domain *pd = to_ti_k3_pd(domain);
++	/*
++	 * setup_mpu_regions() might have enabled Icache. So add a check
++	 * before enabling Icache
++	 */
++	if (!icache_status())
++		icache_enable();
++	dcache_enable();
++}
++#endif
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index b00e9e51e5..800d6b3cab 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -52,6 +52,8 @@ int icache_status(void)
+ 	return (get_cr () & CR_I) != 0;
+ }
+ 
++#ifndef __PBL__
 +
-+	return ti_lpsc_transition(pd->lpsc, MDSTAT_STATE_ENABLE);
-+}       
-+        
-+static int ti_k3_pm_domain_off(struct generic_pm_domain *domain)
-+{       
-+	struct ti_k3_pm_domain *pd = to_ti_k3_pd(domain);
+ /*
+  * SoC like the ux500 have the l2x0 always enable
+  * with or without MMU enable
+@@ -108,3 +110,4 @@ static int arm_request_stack(void)
+ 	return 0;
+ }
+ coredevice_initcall(arm_request_stack);
++#endif
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index ac1462b7b1..4657a4828e 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -65,6 +65,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	if (IS_ENABLED(CONFIG_MMU))
+ 		mmu_early_enable(membase, memsize);
++	else if (IS_ENABLED(CONFIG_ARMV7R_MPU))
++		set_cr(get_cr() | CR_C);
+ 
+ 	/* Add handoff data now, so arm_mem_barebox_image takes it into account */
+ 	if (boarddata)
+diff --git a/arch/arm/include/asm/armv7r-mpu.h b/arch/arm/include/asm/armv7r-mpu.h
+new file mode 100644
+index 0000000000..1bbaeed66c
+--- /dev/null
++++ b/arch/arm/include/asm/armv7r-mpu.h
+@@ -0,0 +1,134 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright (C) 2017, STMicroelectronics - All Rights Reserved
++ * Author(s): Vikas Manocha, <vikas.manocha@st.com> for STMicroelectronics.
++ */
 +
-+	return ti_lpsc_transition(pd->lpsc, MDSTAT_STATE_SWRSTDISABLE);
-+}       
++#ifndef _ASM_ARMV7_MPU_H
++#define _ASM_ARMV7_MPU_H
 +
-+static struct ti_psc am625_psc[] = {
-+	[0] = { .id = 0, .base = (void *)0x04000000 },
-+	[1] = { .id = 1, .base = (void *)0x00400000 },
++#ifndef __ASSEMBLY__
++#include <linux/bitops.h>
++#endif
++
++#ifdef CONFIG_CPU_V7M
++#define AP_SHIFT			24
++#define XN_SHIFT			28
++#define TEX_SHIFT			19
++#define S_SHIFT				18
++#define C_SHIFT				17
++#define B_SHIFT				16
++#else /* CONFIG_CPU_V7R */
++#define XN_SHIFT			12
++#define AP_SHIFT			8
++#define TEX_SHIFT			3
++#define S_SHIFT				2
++#define C_SHIFT				1
++#define B_SHIFT				0
++#endif /* CONFIG_CPU_V7R */
++
++#define CACHEABLE			BIT(C_SHIFT)
++#define BUFFERABLE			BIT(B_SHIFT)
++#define SHAREABLE			BIT(S_SHIFT)
++#define REGION_SIZE_SHIFT		1
++#define ENABLE_REGION			BIT(0)
++#define DISABLE_REGION			0
++
++enum region_number {
++	REGION_0 = 0,
++	REGION_1,
++	REGION_2,
++	REGION_3,
++	REGION_4,
++	REGION_5,
++	REGION_6,
++	REGION_7,
 +};
 +
-+static struct ti_pd am625_pd[] = {
-+	[0] = { .id = 0, .psc = &am625_psc[1], },
-+	[1] = { .id = 2, .psc = &am625_psc[1], .depend = &am625_pd[0] },
-+	[2] = { .id = 3, .psc = &am625_psc[1], .depend = &am625_pd[0] },
-+	[3] = { .id = 4, .psc = &am625_psc[1], .depend = &am625_pd[2] },
-+	[4] = { .id = 5, .psc = &am625_psc[1], .depend = &am625_pd[2] },
++enum ap {
++	NO_ACCESS = 0,
++	PRIV_RW_USR_NO,
++	PRIV_RW_USR_RO,
++	PRIV_RW_USR_RW,
++	UNPREDICTABLE,
++	PRIV_RO_USR_NO,
++	PRIV_RO_USR_RO,
 +};
 +
-+static struct ti_lpsc am625_lpsc[] = {
-+	[0] = { .id = 0, .psc = &am625_psc[1], .pd = &am625_pd[0], },
-+	[1] = { .id = 9, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[11] },
-+	[2] = { .id = 10, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[1] },
-+	[3] = { .id = 11, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[2] },
-+	[4] = { .id = 12, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[8] },
-+	[5] = { .id = 13, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[9] },
-+	[6] = { .id = 20, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[11] },
-+	[7] = { .id = 21, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[11] },
-+	[8] = { .id = 23, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[11] },
-+	[9] = { .id = 24, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[11] },
-+	[10] = { .id = 28, .psc = &am625_psc[1], .pd = &am625_pd[0], .depend = &am625_lpsc[11] },
-+	[11] = { .id = 34, .psc = &am625_psc[1], .pd = &am625_pd[0], },
-+	[12] = { .id = 41, .psc = &am625_psc[1], .pd = &am625_pd[1], .depend = &am625_lpsc[11] },
-+	[13] = { .id = 42, .psc = &am625_psc[1], .pd = &am625_pd[2], .depend = &am625_lpsc[11] },
-+	[14] = { .id = 45, .psc = &am625_psc[1], .pd = &am625_pd[3], .depend = &am625_lpsc[13] },
-+	[15] = { .id = 46, .psc = &am625_psc[1], .pd = &am625_pd[4], .depend = &am625_lpsc[13] },
++enum mr_attr {
++	STRONG_ORDER = 0,
++	SHARED_WRITE_BUFFERED,
++	O_I_WT_NO_WR_ALLOC,
++	O_I_WB_NO_WR_ALLOC,
++	O_I_NON_CACHEABLE,
++	O_I_WB_RD_WR_ALLOC,
++	DEVICE_NON_SHARED,
++};
++enum size {
++	REGION_8MB = 22,
++	REGION_16MB,
++	REGION_32MB,
++	REGION_64MB,
++	REGION_128MB,
++	REGION_256MB,
++	REGION_512MB,
++	REGION_1GB,
++	REGION_2GB,
++	REGION_4GB,
 +};
 +
-+static struct ti_dev am625_dev[] = {
-+	{ .id = 16,  .lpsc = 0 },
-+	{ .id = 77,  .lpsc = 0 },
-+	{ .id = 61,  .lpsc = 0 },
-+	{ .id = 95,  .lpsc = 0 },
-+	{ .id = 107, .lpsc = 0 },
-+	{ .id = 170, .lpsc = 1 },
-+	{ .id = 177, .lpsc = 2 },
-+	{ .id = 55,  .lpsc = 3 },
-+	{ .id = 178, .lpsc = 4 },
-+	{ .id = 179, .lpsc = 5 },
-+	{ .id = 57,  .lpsc = 6 },
-+	{ .id = 58,  .lpsc = 7 },
-+	{ .id = 161, .lpsc = 8 },
-+	{ .id = 162, .lpsc = 9 },
-+	{ .id = 75,  .lpsc = 10 },
-+	{ .id = 36,  .lpsc = 11 },
-+	{ .id = 102, .lpsc = 11 },
-+	{ .id = 146, .lpsc = 11 },
-+	{ .id = 13,  .lpsc = 12 },
-+	{ .id = 166, .lpsc = 13 },
-+	{ .id = 135, .lpsc = 14 },
-+	{ .id = 136, .lpsc = 15 },
++enum xn {
++	XN_DIS = 0,
++	XN_EN,
 +};
 +
-+const struct ti_k3_pd_platdata am62x_pd_platdata = {
-+	.psc = am625_psc,
-+	.pd = am625_pd,
-+	.lpsc = am625_lpsc,
-+	.devs = am625_dev,
-+	.num_psc = ARRAY_SIZE(am625_psc),
-+	.num_pd = ARRAY_SIZE(am625_pd),
-+	.num_lpsc = ARRAY_SIZE(am625_lpsc),
-+	.num_devs = ARRAY_SIZE(am625_dev),
++struct mpu_region_config {
++	uint32_t start_addr;
++	enum region_number region_no;
++	enum xn xn;
++	enum ap ap;
++	enum mr_attr mr_attr;
++	enum size reg_size;
 +};
 +
-+static struct generic_pm_domain *ti_k3_pd_xlate(struct of_phandle_args *args,
-+						void *data)
++void armv7r_mpu_disable(void);
++void armv7r_mpu_enable(void);
++int armv7r_mpu_enabled(void);
++void armv7r_mpu_config(struct mpu_region_config *rgn);
++void armv7r_mpu_setup_regions(struct mpu_region_config *rgns, u32 num_rgns);
++
++static inline u32 get_attr_encoding(u32 mr_attr)
 +{
-+	struct genpd_onecell_data *genpd_data = data;
-+	struct ti_k3_priv *priv = container_of(genpd_data, struct ti_k3_priv, pd_data);
-+	unsigned int idx = args->args[0];
-+	int i;
++	u32 attr;
 +
-+	for (i = 0; i < priv->data->num_devs; i++)
-+		if (priv->data->devs[i].id == idx) {
-+			unsigned int lpsc = priv->data->devs[i].lpsc;
-+			pr_debug("Translate: %d -> %d\n", idx, lpsc);
-+			return &priv->pd[lpsc].genpd;
-+		}
++	switch (mr_attr) {
++	case STRONG_ORDER:
++		attr = SHAREABLE;
++		break;
++	case SHARED_WRITE_BUFFERED:
++		attr = BUFFERABLE;
++		break;
++	case O_I_WT_NO_WR_ALLOC:
++		attr = CACHEABLE;
++		break;
++	case O_I_WB_NO_WR_ALLOC:
++		attr = CACHEABLE | BUFFERABLE;
++		break;
++	case O_I_NON_CACHEABLE:
++		attr = 1 << TEX_SHIFT;
++		break;
++	case O_I_WB_RD_WR_ALLOC:
++		attr = (1 << TEX_SHIFT) | CACHEABLE | BUFFERABLE;
++		break;
++	case DEVICE_NON_SHARED:
++		attr = (2 << TEX_SHIFT) | BUFFERABLE;
++		break;
++	default:
++		attr = 0; /* strongly ordered */
++		break;
++	};
 +
-+	return 0;
++	return attr;
 +}
 +
-+static int ti_k3_pm_domain_probe(struct device *dev)
-+{
-+	struct ti_k3_priv *priv;
-+	const struct ti_k3_pd_platdata *data;
-+	struct ti_k3_pm_domain *pd;
-+	struct generic_pm_domain **domains;
-+	struct genpd_onecell_data *pd_data;
-+	int num_domains;
-+	int i;
-+
-+	priv = xzalloc(sizeof(*priv));
-+
-+	if (of_machine_is_compatible("ti,am625"))
-+		data = &am62x_pd_platdata;
-+	else
-+		return dev_err_probe(dev, -EINVAL, "Unknown SoC\n");
-+
-+	priv->data = data;
-+
-+	num_domains = data->num_lpsc;
-+
-+	pd = devm_kcalloc(dev, num_domains, sizeof(*pd), GFP_KERNEL);
-+	if (!pd)
-+		return -ENOMEM;
-+
-+	domains = devm_kcalloc(dev, num_domains, sizeof(*domains), GFP_KERNEL);
-+	if (!domains)
-+		return -ENOMEM;
-+
-+	priv->pd = pd;
-+
-+	for (i = 0; i < num_domains; i++, pd++) {
-+		pd->genpd.name = basprintf("pd:%d", i);
-+		pd->lpsc = &data->lpsc[i];
-+		pd->genpd.power_off = ti_k3_pm_domain_off;
-+		pd->genpd.power_on = ti_k3_pm_domain_on;
-+
-+		pm_genpd_init(&pd->genpd, NULL, true);
-+
-+		domains[i] = &pd->genpd;
-+	}
-+
-+	pd_data = &priv->pd_data;
-+
-+	pd_data->domains = domains;
-+	pd_data->num_domains = num_domains;
-+	pd_data->xlate = ti_k3_pd_xlate;
-+
-+	return of_genpd_add_provider_onecell(dev->of_node, pd_data);
-+}
-+
-+static const struct of_device_id ti_k3_power_domain_of_match[] = {
-+	{ .compatible = "ti,sci-pm-domain" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver ti_k3_pm_domains_driver = {
-+        .probe = ti_k3_pm_domain_probe,
-+        .name = "ti_k3_pm_domains",
-+        .of_match_table = ti_k3_power_domain_of_match,
-+};
-+core_platform_driver(ti_k3_pm_domains_driver);
++#endif /* _ASM_ARMV7_MPU_H */
 
 -- 
 2.39.5
