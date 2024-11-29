@@ -1,89 +1,89 @@
-Delivery-date: Fri, 29 Nov 2024 13:03:01 +0100
+Delivery-date: Fri, 29 Nov 2024 13:03:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tGzi8-001qQu-2h
+	id 1tGziK-001qRW-1w
 	for lore@lore.pengutronix.de;
-	Fri, 29 Nov 2024 13:03:01 +0100
+	Fri, 29 Nov 2024 13:03:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tGzi6-00024j-OG
-	for lore@pengutronix.de; Fri, 29 Nov 2024 13:03:01 +0100
+	id 1tGziJ-0002DY-H8
+	for lore@pengutronix.de; Fri, 29 Nov 2024 13:03:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yCCLg3ImuN59iGUpAdtTRMrC00rpAU6nzGN4IkkCQZI=; b=HSpaP01mII0KuXTlII+Dxd8GhT
-	BmOvMEFPiMNi4WMtgPAhBrxj4WpMyC9+Z36yBk+HukvlMGuvDC6hCgejHjc8ISmNO3EuKtzMs5ft/
-	T/DMQ05+sFz6isgFPQFEcRV0/LFOaLHTh1nrU3sAcTPgQ7Oc2ewcINH11PLPT2XwppfUjET5d1lby
-	CuU/VkdtVml9hddEyxssaVomfIqO9ibq2PEEtICkEOs5dMixHzigHBVVer2clX82ev6uJt65fwe41
-	uBujEYJza/Fj7q0jM94UcZ5t8wHo1D5LyyH8fhZzRXxYDyNknrsXf2Wx3Vdb76mkkFw/zytBp81h5
-	6CToz1zg==;
+	bh=l6bXrdLk/ujfUjbYpKZOXuk9Bcpcw9+dk9LblUSbPB8=; b=hHqWpnRvqPxCftFaNEnDvE/9/1
+	xACz3YOfSEnpKVWmeXLvRMJEC8NF/s4PgNZ9TeAq/2Ozoq+9mGHuumi3uxRvE1rWLBCd9cYtWd7ep
+	GoyxwvO3QAwoZM+aTYglw5YucQhFWNUqSHRnciVeHu3QEpXPeLrXX8cpdU+hq/mpbrz5ZbcJ9fdTQ
+	IVy9qfRFI7Xc96YVi4DVU/Kst+OClhzD2e2Og3vV9fx6ClbHw6OiF1jjLjMJYOE9lGWQa4FwbhED3
+	rFQJQVRGi3h5Q9tQW8gBpOUh8JktYyxqitAErudMW4R7vvUCHwaY5eneJAl1zrgutbEJoV8zUC1MO
+	QG9X14Rg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzhT-000000001XF-1xmY;
-	Fri, 29 Nov 2024 12:02:19 +0000
+	id 1tGzhS-000000001Vr-0A8L;
+	Fri, 29 Nov 2024 12:02:18 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzhO-000000001Rl-46XQ
+	id 1tGzhO-000000001Rc-3HFN
 	for barebox@bombadil.infradead.org;
-	Fri, 29 Nov 2024 12:02:15 +0000
+	Fri, 29 Nov 2024 12:02:14 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=yCCLg3ImuN59iGUpAdtTRMrC00rpAU6nzGN4IkkCQZI=; b=CIaANnKB9umrA9wvWnpiqNLfwt
-	/88t5be77uye5PqG5CatPHwgH/eFPkoT8KScubmtX7+RPPITmBAPfVfNz7e9fwzI8tbkkN8Pgoaar
-	HgWnnDFEgLNOLmYkpwmCwyrlosS9zK+nLHaTmTLs8C8tjGOtKaIehUOhBFy9HS8YtRytVOdSBC1xS
-	+kvfufwMj2BWUmoZL8DkafGKqMwsD+9FjNoDghlc2Ah9pa9yFUqLcTdeOyR89XwVAnV1YP+7go2H5
-	GQp9HlCOvhDfUab25qyyPIfL9d2Jspn/ObWdzNvDI9Z+4y43JyCO4xStE4KxXxLjk9aGfgU9VlmkQ
-	6JRLc6Ew==;
+	bh=l6bXrdLk/ujfUjbYpKZOXuk9Bcpcw9+dk9LblUSbPB8=; b=kTH000X/Pu5dfBf5dIk2iCtAo1
+	iUUB84d2D/4Qj6EyPxj2ZxJjiyZ/X8RUAgTAAKLkI3YdxOgHYASIzE901El6WInicHITclJNjg9Q3
+	538RgvJlMj6JUACtGMKpr61wWxi+A3560IYArpDjhx1AJ7wo7uw1dUqROfLkxWVg5m5WWqSfc6yUX
+	rp2FlLuRde90ZC2+a/o2rXVanm6nMrEQ2NAO0QU9X8SuKIc3nyOGqNbcp52eNGDRW8sZ0XJNtkWfp
+	/bLv+fJi55UTXve1oDYpuw07bqihbzTEBe8bKUmOMwZD+dwf4Be+fQLxd0Y9Hs7qNMdnYi49nW0xN
+	QvsIl/bw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tGzhK-00000001jXq-1syT
+	id 1tGzhK-00000001jXo-1spO
 	for barebox@lists.infradead.org;
 	Fri, 29 Nov 2024 12:02:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzhJ-0001Ml-EM; Fri, 29 Nov 2024 13:02:09 +0100
+	id 1tGzhJ-0001MS-AY; Fri, 29 Nov 2024 13:02:09 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzhI-000mLx-16;
-	Fri, 29 Nov 2024 13:02:09 +0100
+	id 1tGzhI-000mLq-0W;
+	Fri, 29 Nov 2024 13:02:08 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tGzQ9-000vyS-2H;
+	id 1tGzQ9-000vyS-2O;
 	Fri, 29 Nov 2024 12:44:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Nov 2024 12:44:25 +0100
+Date: Fri, 29 Nov 2024 12:44:32 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241129-k3-r5-v1-10-67c4bb42a5c7@pengutronix.de>
+Message-Id: <20241129-k3-r5-v1-17-67c4bb42a5c7@pengutronix.de>
 References: <20241129-k3-r5-v1-0-67c4bb42a5c7@pengutronix.de>
 In-Reply-To: <20241129-k3-r5-v1-0-67c4bb42a5c7@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732880665; l=11040;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732880665; l=5702;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=UGf5UxnWVwcoqsip9Y0l97tFT/VK4Czufsn1I3I0C2k=;
- b=V6zfPRl/1SayUZrMXZsSuOkw+2vMGYy6Xbd8JCZF46vg5DvRIJjIISQyR2kLjaU6ittEj9+G8
- FpcGq4PUzhJCuvRS9jfmGrs1L5lZGNt9rXgtR3QUXoTzvCy2RH/60nb
+ bh=p2STlQ6oZFcRlJ0qmIGr2oTPPHhG1PBMc853/FK6SNA=;
+ b=u6I+CrshqjIHL9RtpWwrJDiIU4KwPUfP+hb6q1UAVz8bl38eDbxZJokoHaNjxRG0yJmIDdeuH
+ ZUDSu/yND2/D7ObBEZBST72TtJkOv27/fXQT//zsdEHLKnajlFe+C/d
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241129_120210_683775_3DF5CCDF 
-X-CRM114-Status: GOOD (  21.71  )
+X-CRM114-CacheID: sfid-20241129_120210_682836_8305D4FE 
+X-CRM114-Status: GOOD (  13.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,405 +105,220 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 10/20] rproc: add K3 arm64 rproc driver
+Subject: [PATCH 17/20] ARM: k3: Add k3img tool
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds support for starting the A53 cores from the Cortex-R5 core.
+The image format for the TI K3 SoCs is basically a x509 certificate
+file. In U-Boot this image is generated with binman. This patch adds
+a simple shell script using openssl directly. This is by far not so
+sophisticated as the U-Boot variant, but is enough for now to get a
+beagleplay up and running.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/remoteproc/ti_k3_arm64_rproc.c | 226 +++++++++++++++++++++++++++++++++
- drivers/remoteproc/ti_sci_proc.h       | 149 ++++++++++++++++++++++
- 2 files changed, 375 insertions(+)
+ arch/arm/mach-k3/ti-degenerate-key.pem |  10 +++
+ images/Makefile.k3                     |   7 ++
+ scripts/k3img                          | 160 +++++++++++++++++++++++++++++++++
+ 3 files changed, 177 insertions(+)
 
-diff --git a/drivers/remoteproc/ti_k3_arm64_rproc.c b/drivers/remoteproc/ti_k3_arm64_rproc.c
+diff --git a/arch/arm/mach-k3/ti-degenerate-key.pem b/arch/arm/mach-k3/ti-degenerate-key.pem
 new file mode 100644
-index 0000000000..47fe570408
+index 0000000000..bd7d3745ad
 --- /dev/null
-+++ b/drivers/remoteproc/ti_k3_arm64_rproc.c
-@@ -0,0 +1,226 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Texas Instruments' K3 ARM64 Remoteproc driver
-+ *
-+ * Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com/
-+ *	Lokesh Vutla <lokeshvutla@ti.com>
-+ *
-+ */
++++ b/arch/arm/mach-k3/ti-degenerate-key.pem
+@@ -0,0 +1,10 @@
++-----BEGIN RSA PRIVATE KEY-----
++MIIBWwIBAAKBgQDRfrnXQaP0k6vRK/gZ+bDflSU6y1JagGeQ/b+QYuiDz14japog
++8fRSu5WBsAxaSaySAUwS3L9Ppw+hGMecmyIJ494aMfZTtk1g49gU58joduiRnu7e
++QSZHMnehhuNlfD7A2tAAKnxIYuabs8zHYM/SS9Ne7t3kIQMbKfUSzNy6qQIBAQIB
++AQJBAOelUA376o6w3HkShXfN+shaOZYqFuTJ9exLMwsLp7DZKXB5F9I4JJ+Vkvho
++k6QWs7vkhleLSYUZknXHYm26ZE0CQQDnhTtd4PTBoZPjPXOeYMJFtEdMNy0XP6ey
++bcce389ugoY7BEkvASrd8PHgJQHziepgWOG4DGp33c64Hfq4zI3NAgEBAgEBAkA0
++RbK4uqoLciQluesTPU6lBy7Se3Dw0F9xBqlF5SR4KI6q+zQrHpBKyFOofMHZgizR
++iCrL55cxEM146zMw3AnF
++-----END RSA PRIVATE KEY-----
+diff --git a/images/Makefile.k3 b/images/Makefile.k3
+index f7acd78014..f2857791c8 100644
+--- a/images/Makefile.k3
++++ b/images/Makefile.k3
+@@ -11,3 +11,10 @@ $(obj)/k3-am625-beagleplay.fit: $(obj)/barebox-beagleplay.img
+ FILE_barebox-beagleplay-fit.img = k3-am625-beagleplay.fit
+ image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay-fit.img
+ 
++quiet_cmd_k3_image = K3IMG   $@
++      cmd_k3_image = $(srctree)/scripts/k3img --sysfw $(SYSFW_$(@F)) \
++		--sysfwdata $(SYSFWDATA_$(@F)) --dmdata $(DMDATA_$(@F)) \
++		--key $(KEY_$(@F)) --sbl $< --out $@
 +
-+#include <driver.h>
-+#include <linux/remoteproc.h>
-+#include <linux/printk.h>
-+#include <errno.h>
-+#include <linux/clk.h>
-+#include <io.h>
-+#include <of.h>
-+#include <soc/ti/ti_sci_protocol.h>
-+#include <pm_domain.h>
-+#include <mach/k3/r5.h>
-+
-+#include "ti_sci_proc.h"
-+
-+#define INVALID_ID	0xffff
-+
-+#define GTC_CNTCR_REG	0x0
-+#define GTC_CNTFID0_REG	0x20
-+#define GTC_CNTR_EN	0x3
-+
-+/**
-+ * struct k3_arm64_privdata - Structure representing Remote processor data.
-+ * @rproc_pwrdmn:	rproc power domain data
-+ * @rproc_rst:		rproc reset control data
-+ * @sci:		Pointer to TISCI handle
-+ * @tsp:		TISCI processor control helper structure
-+ * @gtc_clk:		GTC clock description
-+ * @gtc_base:		Timer base address.
-+ */
-+struct k3_arm64_privdata {
-+	struct device *dev;
-+	struct reset_control *rproc_rst;
-+	struct ti_sci_proc tsp;
-+	struct clk *gtc_clk;
-+	void *gtc_base;
-+	struct rproc *rproc;
-+	struct device *cluster_pwrdmn;
-+	struct device *rproc_pwrdmn;
-+	struct device *gtc_pwrdmn;
-+};
-+
-+/**
-+ * k3_arm64_load() - Load up the Remote processor image
-+ * @dev:	rproc device pointer
-+ * @addr:	Address at which image is available
-+ * @size:	size of the image
-+ *
-+ * Return: 0 if all goes good, else appropriate error message.
-+ */
-+static int k3_arm64_load(struct rproc *rproc, const struct firmware *fw)
-+{
-+	struct k3_arm64_privdata *priv = rproc->priv;
-+	ulong gtc_rate;
-+	int ret;
-+
-+	dev_dbg(priv->dev, "%s\n", __func__);
-+
-+	/* request for the processor */
-+	ret = ti_sci_proc_request(&priv->tsp);
-+	if (ret)
-+		return ret;
-+
-+	ret = pm_runtime_resume_and_get_genpd(priv->gtc_pwrdmn);
-+	if (ret)
-+		return ret;
-+
-+	gtc_rate = clk_get_rate(priv->gtc_clk);
-+	dev_dbg(priv->dev, "GTC RATE= %lu\n", gtc_rate);
-+
-+	/* Store the clock frequency down for GTC users to pick  up */
-+	writel((u32)gtc_rate, priv->gtc_base + GTC_CNTFID0_REG);
-+
-+	/* Enable the timer before starting remote core */
-+	writel(GTC_CNTR_EN, priv->gtc_base + GTC_CNTCR_REG);
-+
-+	/*
-+	 * Setting the right clock frequency would have taken care by
-+	 * assigned-clock-rates during the device probe. So no need to
-+	 * set the frequency again here.
-+	 */
-+	if (priv->cluster_pwrdmn) {
-+		ret = pm_runtime_resume_and_get_genpd(priv->cluster_pwrdmn);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return ti_sci_proc_set_config(&priv->tsp, (unsigned long)fw->data, 0, 0);
-+}
-+
-+/**
-+ * k3_arm64_start() - Start the remote processor
-+ * @dev:	rproc device pointer
-+ *
-+ * Return: 0 if all went ok, else return appropriate error
-+ */
-+static int k3_arm64_start(struct rproc *rproc)
-+{
-+	struct k3_arm64_privdata *priv = rproc->priv;
-+	int ret;
-+
-+	dev_dbg(priv->dev, "%s\n", __func__);
-+	ret = pm_runtime_resume_and_get_genpd(priv->rproc_pwrdmn);
-+	if (ret)
-+		return ret;
-+
-+	return ti_sci_proc_release(&priv->tsp);
-+}
-+
-+static const struct rproc_ops k3_arm64_ops = {
-+	.load = k3_arm64_load,
-+	.start = k3_arm64_start,
-+};
-+
-+static int ti_sci_proc_of_to_priv(struct k3_arm64_privdata *priv, struct ti_sci_proc *tsp)
-+{
-+	u32 val;
-+	int ret;
-+
-+	tsp->sci = ti_sci_get_by_phandle(priv->dev, "ti,sci");
-+	if (IS_ERR(tsp->sci)) {
-+		dev_err(priv->dev, "ti_sci get failed: %ld\n", PTR_ERR(tsp->sci));
-+		return PTR_ERR(tsp->sci);
-+	}
-+
-+	ret = of_property_read_u32(priv->dev->of_node, "ti,sci-proc-id", &val);
-+	if (ret) {
-+		dev_err(priv->dev, "proc id not populated\n");
-+		return -ENOENT;
-+	}
-+	tsp->proc_id = val;
-+
-+	ret = of_property_read_u32(priv->dev->of_node, "ti,sci-host-id", &val);
-+	if (ret)
-+		val = INVALID_ID;
-+
-+	tsp->host_id = val;
-+
-+	tsp->ops = &tsp->sci->ops.proc_ops;
-+
-+	return 0;
-+}
-+
-+static struct rproc *ti_k3_am64_rproc;
-+
-+struct rproc *ti_k3_am64_get_handle(void)
-+{
-+	struct device_node *np;
-+
-+	np = of_find_compatible_node(NULL, NULL, "ti,am654-rproc");
-+	if (!np)
-+		return ERR_PTR(-ENODEV);
-+        of_device_ensure_probed(np);
-+
-+	return ti_k3_am64_rproc;
-+}
-+
-+
-+static int ti_k3_rproc_probe(struct device *dev)
-+{
-+	struct k3_arm64_privdata *priv;
-+	struct rproc *rproc;
-+	int ret;
-+
-+	dev_dbg(dev, "%s\n", __func__);
-+
-+	rproc = rproc_alloc(dev, dev_name(dev), &k3_arm64_ops, sizeof(*priv));
-+	if (!rproc)
-+		return -ENOMEM;
-+
-+	priv = rproc->priv;
-+	priv->dev = dev;
-+
-+	priv->cluster_pwrdmn = dev_pm_domain_attach_by_id(dev, 2);
-+	if (IS_ERR(priv->cluster_pwrdmn))
-+		priv->cluster_pwrdmn = NULL;
-+
-+	priv->rproc_pwrdmn = dev_pm_domain_attach_by_id(dev, 1);
-+	if (IS_ERR(priv->rproc_pwrdmn))
-+		return dev_err_probe(dev, PTR_ERR(priv->rproc_pwrdmn), "no rproc pm domain\n");
-+
-+	priv->gtc_pwrdmn = dev_pm_domain_attach_by_id(dev, 0);
-+	if (IS_ERR(priv->gtc_pwrdmn))
-+		return dev_err_probe(dev, PTR_ERR(priv->gtc_pwrdmn), "no gtc pm domain\n");
-+
-+	priv->gtc_clk = clk_get(dev, 0);
-+	if (IS_ERR(priv->gtc_clk))
-+		return dev_err_probe(dev, PTR_ERR(priv->gtc_clk), "No clock\n");
-+
-+	ret = ti_sci_proc_of_to_priv(priv, &priv->tsp);
-+	if (ret)
-+		return ret;
-+
-+	priv->gtc_base = dev_request_mem_region(dev, 0);
-+	if (IS_ERR(priv->gtc_base))
-+		return dev_err_probe(dev, PTR_ERR(priv->gtc_base), "No iomem\n");
-+
-+	ret = rproc_add(rproc);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "rproc_add failed\n");
-+
-+	ti_k3_am64_rproc = rproc;
-+
-+	dev_dbg(dev, "Remoteproc successfully probed\n");
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id k3_arm64_ids[] = {
-+	{ .compatible = "ti,am654-rproc"},
-+	{}
-+};
-+
-+static struct driver ti_k3_arm64_rproc_driver = {
-+        .name = "ti-k3-rproc",
-+        .probe = ti_k3_rproc_probe,
-+        .of_compatible = DRV_OF_COMPAT(k3_arm64_ids),
-+};
-+device_platform_driver(ti_k3_arm64_rproc_driver);
-diff --git a/drivers/remoteproc/ti_sci_proc.h b/drivers/remoteproc/ti_sci_proc.h
-new file mode 100644
-index 0000000000..980f5188dd
++$(obj)/%.k3img: $(obj)/% scripts/k3img FORCE
++	$(call if_changed,k3_image)
+diff --git a/scripts/k3img b/scripts/k3img
+new file mode 100755
+index 0000000000..5a94576275
 --- /dev/null
-+++ b/drivers/remoteproc/ti_sci_proc.h
-@@ -0,0 +1,149 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Texas Instruments TI-SCI Processor Controller Helper Functions
-+ *
-+ * Copyright (C) 2018-2019 Texas Instruments Incorporated - https://www.ti.com/
-+ *	Lokesh Vutla <lokeshvutla@ti.com>
-+ *	Suman Anna <s-anna@ti.com>
-+ */
++++ b/scripts/k3img
+@@ -0,0 +1,160 @@
++#!/bin/bash
 +
-+#ifndef REMOTEPROC_TI_SCI_PROC_H
-+#define REMOTEPROC_TI_SCI_PROC_H
++TEMP=$(getopt -o '' --long 'sysfw:,sysfwdata:,dmdata:,out:,sbl:,key:' -n 'k3img' -- "$@")
 +
-+#include <linux/printk.h>
-+#define TISCI_INVALID_HOST 0xff
++if [ $? -ne 0 ]; then
++	echo 'Terminating...' >&2
++	exit 1
++fi
 +
-+/**
-+ * struct ti_sci_proc - structure representing a processor control client
-+ * @sci: cached TI-SCI protocol handle
-+ * @ops: cached TI-SCI proc ops
-+ * @proc_id: processor id for the consumer remoteproc device
-+ * @host_id: host id to pass the control over for this consumer remoteproc
-+ *	     device
-+ * @dev_id: Device ID as identified by system controller.
-+ */
-+struct ti_sci_proc {
-+	const struct ti_sci_handle *sci;
-+	const struct ti_sci_proc_ops *ops;
-+	u8 proc_id;
-+	u8 host_id;
-+	u16 dev_id;
-+};
++# Note the quotes around "$TEMP": they are essential!
++eval set -- "$TEMP"
++unset TEMP
 +
-+static inline int ti_sci_proc_request(struct ti_sci_proc *tsp)
-+{
-+	int ret;
++while true; do
++        case "$1" in
++        '--sysfw')
++		sysfw="$2"
++		shift 2
++		continue
++	;;
++        '--sysfwdata')
++		sysfwdata="$2"
++		shift 2
++		continue
++	;;
++        '--sysfw')
++		sysfw="$2"
++		shift 2
++		continue
++	;;
++        '--dmdata')
++		dmdata="$2"
++		shift 2
++		continue
++	;;
++	'--out')
++		out="$2"
++		shift 2
++		continue
++	;;
++	'--sbl')
++		sbl="$2"
++		shift 2
++		continue
++	;;
++	'--key')
++		key="$2"
++		shift 2
++		continue
++	;;
++	'--')
++		shift
++		break
++	;;
++	*)
++		echo 'Internal error!' >&2
++		echo $1 ficken
++		exit 1
++	;;
++	esac
++done
 +
-+	pr_debug("%s: proc_id = %d\n", __func__, tsp->proc_id);
++shasbl=$(sha512sum $sbl | sed 's/ .*//')
++shasysfw=$(sha512sum $sysfw | sed 's/ .*//')
++shasysfwdata=$(sha512sum $sysfwdata | sed 's/ .*//')
++shadmdata=$(sha512sum $dmdata | sed 's/ .*//')
 +
-+	ret = tsp->ops->proc_request(tsp->sci, tsp->proc_id);
-+	if (ret)
-+		pr_err("ti-sci processor request failed: %d\n", ret);
-+	return ret;
-+}
++sblsize=$(stat -c%s $sbl)
++sysfwsize=$(stat -c%s $sysfw)
++sysfwdatasize=$(stat -c%s $sysfwdata)
++dmdatasize=$(stat -c%s $dmdata)
 +
-+static inline int ti_sci_proc_release(struct ti_sci_proc *tsp)
-+{
-+	int ret;
++total=$(($sblsize + sysfwsize + $sysfwdatasize + dmdatasize))
 +
-+	pr_debug("%s: proc_id = %d\n", __func__, tsp->proc_id);
++certcfg=$(mktemp k3img.XXXXXXX)
++cert=$(mktemp k3img.XXXXXXX)
 +
-+	if (tsp->host_id != TISCI_INVALID_HOST)
-+		ret = tsp->ops->proc_handover(tsp->sci, tsp->proc_id,
-+					      tsp->host_id);
-+	else
-+		ret = tsp->ops->proc_release(tsp->sci, tsp->proc_id);
++cat > $certcfg <<EndOfHereDocument
++[ req ]
++distinguished_name     = req_distinguished_name
++x509_extensions        = v3_ca
++prompt                 = no
++dirstring_type         = nobmp
 +
-+	if (ret)
-+		pr_err("ti-sci processor release failed: %d\n", ret);
-+	return ret;
-+}
++[ req_distinguished_name ]
++C                      = US
++ST                     = TX
++L                      = Dallas
++O                      = Texas Instruments Incorporated
++OU                     = Processors
++CN                     = TI Support
++emailAddress           = support@ti.com
 +
-+static inline int ti_sci_proc_handover(struct ti_sci_proc *tsp)
-+{
-+	int ret;
++[ v3_ca ]
++basicConstraints = CA:true
++1.3.6.1.4.1.294.1.3=ASN1:SEQUENCE:swrv
++1.3.6.1.4.1.294.1.9=ASN1:SEQUENCE:ext_boot_info
++1.3.6.1.4.1.294.1.8=ASN1:SEQUENCE:debug
 +
-+	pr_debug("%s: proc_id = %d\n", __func__, tsp->proc_id);
++[swrv]
++swrv=INTEGER:1
 +
-+	ret = tsp->ops->proc_handover(tsp->sci, tsp->proc_id, tsp->host_id);
-+	if (ret)
-+		pr_err("ti-sci processor handover of %d to %d failed: %d\n",
-+		       tsp->proc_id, tsp->host_id, ret);
-+	return ret;
-+}
++[ext_boot_info]
++extImgSize=INTEGER:$total
++numComp=INTEGER:4
++sbl=SEQUENCE:sbl
++sysfw=SEQUENCE:sysfw
++sysfw_data=SEQUENCE:sysfw_data
 +
-+static inline int ti_sci_proc_get_status(struct ti_sci_proc *tsp,
-+					 u64 *boot_vector, u32 *cfg_flags,
-+					 u32 *ctrl_flags, u32 *status_flags)
-+{
-+	int ret;
++dm_data=SEQUENCE:dm_data
 +
-+	ret = tsp->ops->get_proc_boot_status(tsp->sci, tsp->proc_id,
-+					     boot_vector, cfg_flags, ctrl_flags,
-+					     status_flags);
-+	if (ret)
-+		pr_err("ti-sci processor get_status failed: %d\n", ret);
++[sbl]
++compType = INTEGER:1
++bootCore = INTEGER:16
++compOpts = INTEGER:0
++destAddr = FORMAT:HEX,OCT:43c00000
++compSize = INTEGER:$sblsize
++shaType  = OID:2.16.840.1.101.3.4.2.3
++shaValue = FORMAT:HEX,OCT:$shasbl
 +
-+	pr_debug("%s: proc_id = %d, boot_vector = 0x%llx, cfg_flags = 0x%x, ctrl_flags = 0x%x, sts = 0x%x\n",
-+	      __func__, tsp->proc_id, *boot_vector, *cfg_flags, *ctrl_flags,
-+	      *status_flags);
-+	return ret;
-+}
++[sysfw]
++compType = INTEGER:2
++bootCore = INTEGER:0
++compOpts = INTEGER:0
++destAddr = FORMAT:HEX,OCT:00040000
++compSize = INTEGER:$sysfwsize
++shaType  = OID:2.16.840.1.101.3.4.2.3
++shaValue = FORMAT:HEX,OCT:$shasysfw
 +
-+static inline int ti_sci_proc_set_config(struct ti_sci_proc *tsp,
-+					 u64 boot_vector,
-+					 u32 cfg_set, u32 cfg_clr)
-+{
-+	int ret;
++[sysfw_data]
++compType = INTEGER:18
++bootCore = INTEGER:0
++compOpts = INTEGER:0
++destAddr = FORMAT:HEX,OCT:00067000
++compSize = INTEGER:$sysfwdatasize
++shaType  = OID:2.16.840.1.101.3.4.2.3
++shaValue = FORMAT:HEX,OCT:$shasysfwdata
 +
-+	pr_debug("%s: proc_id = %d, boot_vector = 0x%llx, cfg_set = 0x%x, cfg_clr = 0x%x\n",
-+	      __func__, tsp->proc_id, boot_vector, cfg_set, cfg_clr);
++[ debug ]
++debugUID = FORMAT:HEX,OCT:0000000000000000000000000000000000000000000000000000000000000000
++debugType = INTEGER:4
++coreDbgEn = INTEGER:0
++coreDbgSecEn = INTEGER:0
 +
-+	ret = tsp->ops->set_proc_boot_cfg(tsp->sci, tsp->proc_id, boot_vector,
-+					  cfg_set, cfg_clr);
-+	if (ret)
-+		pr_err("ti-sci processor set_config failed: %d\n", ret);
-+	return ret;
-+}
 +
-+static inline int ti_sci_proc_set_control(struct ti_sci_proc *tsp,
-+					  u32 ctrl_set, u32 ctrl_clr)
-+{
-+	int ret;
 +
-+	pr_debug("%s: proc_id = %d, ctrl_set = 0x%x, ctrl_clr = 0x%x\n", __func__,
-+	      tsp->proc_id, ctrl_set, ctrl_clr);
++[dm_data]
++compType = INTEGER:17
++bootCore = INTEGER:16
++compOpts = INTEGER:0
++destAddr = FORMAT:HEX,OCT:43c3a800
++compSize = INTEGER:$dmdatasize
++shaType  = OID:2.16.840.1.101.3.4.2.3
++shaValue = FORMAT:HEX,OCT:$shadmdata
 +
-+	ret = tsp->ops->set_proc_boot_ctrl(tsp->sci, tsp->proc_id, ctrl_set,
-+					   ctrl_clr);
-+	if (ret)
-+		pr_err("ti-sci processor set_control failed: %d\n", ret);
-+	return ret;
-+}
++EndOfHereDocument
 +
-+static inline int ti_sci_proc_power_domain_on(struct ti_sci_proc *tsp)
-+{
-+	int ret;
++openssl req -new -x509 -key $key -nodes -outform DER -out $cert -config $certcfg -sha512
 +
-+	pr_debug("%s: dev_id = %d\n", __func__, tsp->dev_id);
-+
-+	ret = tsp->sci->ops.dev_ops.get_device_exclusive(tsp->sci, tsp->dev_id);
-+	if (ret)
-+		pr_err("Power-domain on failed for dev = %d\n", tsp->dev_id);
-+
-+	return ret;
-+}
-+
-+static inline int ti_sci_proc_power_domain_off(struct ti_sci_proc *tsp)
-+{
-+	int ret;
-+
-+	pr_debug("%s: dev_id = %d\n", __func__, tsp->dev_id);
-+
-+	ret = tsp->sci->ops.dev_ops.put_device(tsp->sci, tsp->dev_id);
-+	if (ret)
-+		pr_err("Power-domain off failed for dev = %d\n", tsp->dev_id);
-+
-+	return ret;
-+}
-+#endif /* REMOTEPROC_TI_SCI_PROC_H */
++cat $cert $sbl $sysfw $sysfwdata $dmdata > $out
 
 -- 
 2.39.5
