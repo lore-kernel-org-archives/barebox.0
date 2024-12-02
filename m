@@ -1,72 +1,66 @@
-Delivery-date: Mon, 02 Dec 2024 09:05:05 +0100
+Delivery-date: Mon, 02 Dec 2024 09:08:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tI1QW-0030JU-2R
+	id 1tI1U9-0030Le-0I
 	for lore@lore.pengutronix.de;
-	Mon, 02 Dec 2024 09:05:05 +0100
+	Mon, 02 Dec 2024 09:08:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tI1QW-00071b-Gf
-	for lore@pengutronix.de; Mon, 02 Dec 2024 09:05:05 +0100
+	id 1tI1U8-0007dE-Sv
+	for lore@pengutronix.de; Mon, 02 Dec 2024 09:08:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HE36PuHAV25Mcr0RqUOum8Dih6dCJxi/swUqAdwyXk8=; b=gmtfp7kr3lo0Rxjpco/s7V68Y1
-	ifZIcjm5N5c8dOC7jcSl1ErowBX6lNrrDaBW0MUlJj0FTZNB+raUCmh+rHACCVuMEuxEuwWgpAWzN
-	7L409Xbgxi7h0PWpuJv2YSeqyymFYFM+W5r80P8w4AC894N2aukj8IyGuywgVeH+65A/gvsHWpK21
-	Tb2ZWbqvWRuI4W2G2TAtcvP9OvSMSSXO5hVwUxPCaTnH9KWkepr2uMOJSn60q9+SiCDn2ILunT7u/
-	mclmn3qzQ1bEXx2eoGCBsgpTB1jz9e0GcS3jV9jcwZdPZk9scYpgCrzwep29TUz0n4w5pNWtqNx6W
-	s4fiFclA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=YtziIdy355gCjkOM2DibOeoA86AZl3iuy+IODg9TT8s=; b=Lxsl4OiqCQNzLDcyalrfvFFrtx
+	qkv91qJamV9S68WbtA3QUj+3LFQwNajTMnylQsMjKcX1vY1AxHdN8cZ4zzOu1rdKee44tnE8CaOsf
+	I445dpdqJHaqWShRxNmu5IWZZtSnHnsmd2DLmZViuzmVZX5Fo+jPEZb2C4vwhA6y0p3767tfC5vTA
+	xAHEpTOBUeGdwZaRcuA08ttrVyFQpkmTzbR0zPdPwN9T/90NVZicTXZSNlCbSn2Sf+5llGCXn8Yw6
+	XU6MYD/EaBkEMoNHa0DZqMZXLxhIhPAGWZP2/YIZqCV+YzrKYGmZBUZile5dv20v/2AbeEfp7F0Tp
+	ncmd6vsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tI1Q3-00000005Moh-1wXK;
-	Mon, 02 Dec 2024 08:04:35 +0000
+	id 1tI1Tj-00000005NLS-3uaD;
+	Mon, 02 Dec 2024 08:08:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tI1PN-00000005Ml9-0gcM
+	id 1tI1Th-00000005NKU-0rtx
 	for barebox@lists.infradead.org;
-	Mon, 02 Dec 2024 08:03:54 +0000
+	Mon, 02 Dec 2024 08:08:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tI1PK-0006pG-6p; Mon, 02 Dec 2024 09:03:50 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tI1Tf-0007U2-Rj; Mon, 02 Dec 2024 09:08:19 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tI1PH-001GEZ-1g;
-	Mon, 02 Dec 2024 09:03:48 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tI1PI-00AVUY-0e;
-	Mon, 02 Dec 2024 09:03:48 +0100
-Date: Mon, 2 Dec 2024 09:03:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org,
-	sohaib.radwan@loytec.com
-Message-ID: <Z01p5PgQEkGLunyX@pengutronix.de>
-References: <20241201212959.3196255-1-a.fatoum@pengutronix.de>
- <y3ggfeytlihua6m5dar7r6qmanmsw4kbqxgxaschrn6mcdwxis@6zdxuzv733s3>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tI1Te-001GJZ-2q;
+	Mon, 02 Dec 2024 09:08:19 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tI1Tf-00EZ80-1o;
+	Mon, 02 Dec 2024 09:08:19 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Sohaib Mohamed <sohaib.amhmd@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  2 Dec 2024 09:08:17 +0100
+Message-Id: <20241202080818.3471605-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <y3ggfeytlihua6m5dar7r6qmanmsw4kbqxgxaschrn6mcdwxis@6zdxuzv733s3>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241202_000353_201286_26238A7F 
-X-CRM114-Status: GOOD (  40.35  )
+X-CRM114-CacheID: sfid-20241202_000821_241399_AFD548F9 
+X-CRM114-Status: GOOD (  11.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,146 +82,157 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] ARM: omap: add two smaller MLO defconfigs for
- AM335x
+Subject: [PATCH master v2 1/2] crc: crc-itu-t: generate lookup table on first use
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Sun, Dec 01, 2024 at 11:53:59PM +0100, Sohaib Mohamed wrote:
-> Hi,
-> 
-> On Sun, Dec 01, 2024 at 10:29:59PM +0100, Ahmad Fatoum wrote:
-> > The Beaglebone Black remains a popular board and it's not a good look to
-> > have it not compile by default due to barebox getting too big.
-> >
-> > As we keep running into size issues with the MLO defconfig, let's accept
-> > that we die bite off more than we could chew and split off the defconfigs
-> > into one for SD/MMC and another for NOR/NAND and document that users
-> > should prefer those instead.
-> >
-> > Reported-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > ---
-> >  Documentation/boards/am335x.rst    | 28 +++++++++++++++++++++++++---
-> >  arch/arm/Makefile                  |  6 ++++++
-> >  common/boards/configs/nomci.config |  1 +
-> >  common/boards/configs/nomtd.config |  1 +
-> >  4 files changed, 33 insertions(+), 3 deletions(-)
-> >  create mode 100644 common/boards/configs/nomci.config
-> >  create mode 100644 common/boards/configs/nomtd.config
-> >
-> > diff --git a/Documentation/boards/am335x.rst b/Documentation/boards/am335x.rst
-> > index f54611428bb3..ec7322a0acdf 100644
-> > --- a/Documentation/boards/am335x.rst
-> > +++ b/Documentation/boards/am335x.rst
-> > @@ -8,9 +8,15 @@ loader from the same medium.
-> >  Building barebox
-> >  ----------------
-> >
-> > -The TI AM335x boards in barebox are covered by the ``am335x_mlo_defconfig``
-> > -for the MLO and ``omap_defconfig`` for the regular barebox image. The
-> > -resulting images will be placed under ``images/``:
-> > +Booting with barebox on the TI AM335x is a two-stage process and unlike
-> > +more recently added SoCs, requires building barebox twice, each time
-> > +with a different defconfig:
-> > +
-> > +* ``omap_defconfig`` for the regular (second-stage) barebox image
-> > +* For the MLO first-stage, either ``am335x_mlo_sdmmc_defconfig`` for
-> > +  SD/eMMC or ``am335x_mlo_rawflash_defconfig`` for raw NOR/NAND.
-> > +
-> > +The resulting images will be placed under ``images/``:
-> >
-> >  ::
-> >
-> > @@ -30,6 +36,22 @@ resulting images will be placed under ``images/``:
-> >
-> >  Some boards come in different variants, make sure to pick the correct one.
-> >
-> > +Size Constraints
-> > +^^^^^^^^^^^^^^^^
-> > +
-> > +As the MLO needs to setup DRAM first, it must fit into the 109KiB
-> > +of available on-Chip SRAM. Depending on the boards, drivers and general
-> > +features enabled by your config, barebox may exceed this size resulting
-> > +in an error message during build, e.g.::
-> > +
-> > +  images/start_am33xx_myirtech_sram.pblb size 111800 > maximum size 111616
-> > +
-> > +If you run into this issue, consider disabling some unneeded config options
-> > +for the MLO via ``make menuconfig`` and try again.
-> > +The ``am335x_mlo_sdmmc_defconfig`` and ``am335x_mlo_rawflash_defconfig``
-> > +defconfigs do just that by disabling ``CONFIG_MTD`` and ``CONFIG_MCI``,
-> > +respectively.
-> > +
-> >  Starting and updating barebox
-> >  -----------------------------
-> >
-> > diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> > index 6785432c52ca..7138f638651e 100644
-> > --- a/arch/arm/Makefile
-> > +++ b/arch/arm/Makefile
-> > @@ -2,6 +2,12 @@
-> >
-> >  KBUILD_DEFCONFIG := multi_v8_defconfig
-> >
-> > +generated_configs += $(patsubst %, %_defconfig, sdmmc rawflash)
-> > +am335x_mlo_sdmmc_defconfig:
-> > +	$(call merge_into_defconfig,am335x_mlo_defconfig,nomtd)
-> > +am335x_mlo_rawflash_defconfig:
-> > +	$(call merge_into_defconfig,am335x_mlo_defconfig,nomci)
-> > +
-> >  KBUILD_CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
-> >  # Explicitly specifiy 32-bit ARM ISA since toolchain default can be -mthumb:
-> >  ifeq ($(CONFIG_CPU_64),y)
-> > diff --git a/common/boards/configs/nomci.config b/common/boards/configs/nomci.config
-> > new file mode 100644
-> > index 000000000000..f541645cccfc
-> > --- /dev/null
-> > +++ b/common/boards/configs/nomci.config
-> > @@ -0,0 +1 @@
-> > +# CONFIG_MCI is not set
-> > diff --git a/common/boards/configs/nomtd.config b/common/boards/configs/nomtd.config
-> > new file mode 100644
-> > index 000000000000..f29845573ae6
-> > --- /dev/null
-> > +++ b/common/boards/configs/nomtd.config
-> > @@ -0,0 +1 @@
-> > +# CONFIG_MTD is not set
-> 
-> Is it possible to remove also CONFIG_MACH_MYIRTECH_X335X by default, I
-> still get this error:
+Unlike CRC32, CRC16 enjoys only limited use in barebox:
 
-With Ahamds patch you have to use either am335x_mlo_sdmmc_defconfig
-or am335x_mlo_rawflash_defconfig depending on where you are booting
-from. Did you use one of them? Even with Ahmads patch the old
-am335x_mlo_defconfig is still there and still leads to an image
-exceeding the size limit.
+  - RATP
+  - DDR SPD EEPROM
+  - TQ EEPROM
+  - SD over SPI
+  - XYMODEM
 
-Sascha
+Nevertheless, once one of these is enabled, a lookup table of 512 bytes
+is generated, which is, by definition, badly compressible.
 
-> 
->   OBJCOPYB images/start_am33xx_myirtech_sram.pblb
->   CHKFILESIZE images/start_am33xx_myirtech_sram.pblb
->   OBJCOPYB images/start_am33xx_phytec_phycore_r2_sram.pblb
-> images/start_am33xx_myirtech_sram.pblb size 111856 > maximum size 111616
-> make[1]: *** [/home/smalinux/repos/bbb/barebox_standalone/barebox/images/Makefile:82: images/start_am33xx_myirtech_sram.pblb] Error 1
-> make[1]: *** Deleting file 'images/start_am33xx_myirtech_sram.pblb'
-> make[1]: *** Waiting for unfinished jobs....
->   CHKFILESIZE images/start_am33xx_phytec_phycore_r2_sram.pblb
-> make: *** [Makefile:736: images] Error 2
-> 
-> 
-> 
-> > --
-> > 2.39.5
-> >
-> 
-> 
+Let's do what CRC32 is doing and generate the lookup table anew on first
+access instead.
 
+This saves us 404 bytes for a XZ-compressed THUMB2 barebox.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ crypto/crc-itu-t.c | 69 ++++++++++++++++++++++------------------------
+ include/crc.h      | 23 ----------------
+ 2 files changed, 33 insertions(+), 59 deletions(-)
+
+diff --git a/crypto/crc-itu-t.c b/crypto/crc-itu-t.c
+index 64bccfb7420d..837a6464b6aa 100644
+--- a/crypto/crc-itu-t.c
++++ b/crypto/crc-itu-t.c
+@@ -7,41 +7,36 @@
+ 
+ #include <crc.h>
+ 
+-/** CRC table for the CRC ITU-T V.41 0x1021 (x^16 + x^12 + x^15 + 1) */
+-const u16 crc_itu_t_table[256] = {
+-	0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7,
+-	0x8108, 0x9129, 0xa14a, 0xb16b, 0xc18c, 0xd1ad, 0xe1ce, 0xf1ef,
+-	0x1231, 0x0210, 0x3273, 0x2252, 0x52b5, 0x4294, 0x72f7, 0x62d6,
+-	0x9339, 0x8318, 0xb37b, 0xa35a, 0xd3bd, 0xc39c, 0xf3ff, 0xe3de,
+-	0x2462, 0x3443, 0x0420, 0x1401, 0x64e6, 0x74c7, 0x44a4, 0x5485,
+-	0xa56a, 0xb54b, 0x8528, 0x9509, 0xe5ee, 0xf5cf, 0xc5ac, 0xd58d,
+-	0x3653, 0x2672, 0x1611, 0x0630, 0x76d7, 0x66f6, 0x5695, 0x46b4,
+-	0xb75b, 0xa77a, 0x9719, 0x8738, 0xf7df, 0xe7fe, 0xd79d, 0xc7bc,
+-	0x48c4, 0x58e5, 0x6886, 0x78a7, 0x0840, 0x1861, 0x2802, 0x3823,
+-	0xc9cc, 0xd9ed, 0xe98e, 0xf9af, 0x8948, 0x9969, 0xa90a, 0xb92b,
+-	0x5af5, 0x4ad4, 0x7ab7, 0x6a96, 0x1a71, 0x0a50, 0x3a33, 0x2a12,
+-	0xdbfd, 0xcbdc, 0xfbbf, 0xeb9e, 0x9b79, 0x8b58, 0xbb3b, 0xab1a,
+-	0x6ca6, 0x7c87, 0x4ce4, 0x5cc5, 0x2c22, 0x3c03, 0x0c60, 0x1c41,
+-	0xedae, 0xfd8f, 0xcdec, 0xddcd, 0xad2a, 0xbd0b, 0x8d68, 0x9d49,
+-	0x7e97, 0x6eb6, 0x5ed5, 0x4ef4, 0x3e13, 0x2e32, 0x1e51, 0x0e70,
+-	0xff9f, 0xefbe, 0xdfdd, 0xcffc, 0xbf1b, 0xaf3a, 0x9f59, 0x8f78,
+-	0x9188, 0x81a9, 0xb1ca, 0xa1eb, 0xd10c, 0xc12d, 0xf14e, 0xe16f,
+-	0x1080, 0x00a1, 0x30c2, 0x20e3, 0x5004, 0x4025, 0x7046, 0x6067,
+-	0x83b9, 0x9398, 0xa3fb, 0xb3da, 0xc33d, 0xd31c, 0xe37f, 0xf35e,
+-	0x02b1, 0x1290, 0x22f3, 0x32d2, 0x4235, 0x5214, 0x6277, 0x7256,
+-	0xb5ea, 0xa5cb, 0x95a8, 0x8589, 0xf56e, 0xe54f, 0xd52c, 0xc50d,
+-	0x34e2, 0x24c3, 0x14a0, 0x0481, 0x7466, 0x6447, 0x5424, 0x4405,
+-	0xa7db, 0xb7fa, 0x8799, 0x97b8, 0xe75f, 0xf77e, 0xc71d, 0xd73c,
+-	0x26d3, 0x36f2, 0x0691, 0x16b0, 0x6657, 0x7676, 0x4615, 0x5634,
+-	0xd94c, 0xc96d, 0xf90e, 0xe92f, 0x99c8, 0x89e9, 0xb98a, 0xa9ab,
+-	0x5844, 0x4865, 0x7806, 0x6827, 0x18c0, 0x08e1, 0x3882, 0x28a3,
+-	0xcb7d, 0xdb5c, 0xeb3f, 0xfb1e, 0x8bf9, 0x9bd8, 0xabbb, 0xbb9a,
+-	0x4a75, 0x5a54, 0x6a37, 0x7a16, 0x0af1, 0x1ad0, 0x2ab3, 0x3a92,
+-	0xfd2e, 0xed0f, 0xdd6c, 0xcd4d, 0xbdaa, 0xad8b, 0x9de8, 0x8dc9,
+-	0x7c26, 0x6c07, 0x5c64, 0x4c45, 0x3ca2, 0x2c83, 0x1ce0, 0x0cc1,
+-	0xef1f, 0xff3e, 0xcf5d, 0xdf7c, 0xaf9b, 0xbfba, 0x8fd9, 0x9ff8,
+-	0x6e17, 0x7e36, 0x4e55, 0x5e74, 0x2e93, 0x3eb2, 0x0ed1, 0x1ef0
+-};
++static u16 crc_itu_t_table[256];
++
++/*
++ * Implements the standard CRC ITU-T V.41:
++ *   Width 16
++ *   Poly  0x1021 (x^16 + x^12 + x^15 + 1)
++ *   Init  0
++ */
++static u16 crc_itu_t_byte(u16 crc, const u8 data)
++{
++	int i;
++
++	crc = crc ^ data << 8;
++	for (i = 0; i < 8; ++i) {
++		if (crc & 0x8000)
++			crc = crc << 1 ^ 0x1021;
++		else
++			crc = crc << 1;
++	}
++	return crc;
++}
++
++static void make_crc_table(void)
++{
++	if (crc_itu_t_table[1])
++		return;
++
++	for (int n = 0; n < 256; n++)
++		crc_itu_t_table[n] = crc_itu_t_byte(0, n);
++}
+ 
+ /**
+  * crc_itu_t - Compute the CRC-ITU-T for the data buffer
+@@ -54,7 +49,9 @@ const u16 crc_itu_t_table[256] = {
+  */
+ u16 crc_itu_t(u16 crc, const u8 *buffer, size_t len)
+ {
++	make_crc_table();
++
+ 	while (len--)
+-		crc = crc_itu_t_byte(crc, *buffer++);
++		crc = (crc << 8) ^ crc_itu_t_table[((crc >> 8) ^ *buffer++) & 0xff];
+ 	return crc;
+ }
+diff --git a/include/crc.h b/include/crc.h
+index a5204aaabb9c..3eba635dbaa4 100644
+--- a/include/crc.h
++++ b/include/crc.h
+@@ -10,31 +10,8 @@
+  *   Poly  0x1021 (x^16 + x^12 + x^15 + 1)
+  *   Init  0
+  */
+-extern u16 const crc_itu_t_table[256];
+-
+ extern u16 crc_itu_t(u16 crc, const u8 *buffer, size_t len);
+ 
+-#ifdef __PBL__
+-static inline u16 crc_itu_t_byte(u16 crc, const u8 data)
+-{
+-	int i;
+-
+-	crc = crc ^ data << 8;
+-	for (i = 0; i < 8; ++i) {
+-		if (crc & 0x8000)
+-			crc = crc << 1 ^ 0x1021;
+-		else
+-			crc = crc << 1;
+-	}
+-	return crc;
+-}
+-#else
+-static inline u16 crc_itu_t_byte(u16 crc, const u8 data)
+-{
+-	return (crc << 8) ^ crc_itu_t_table[((crc >> 8) ^ data) & 0xff];
+-}
+-#endif
+-
+ uint32_t crc32(uint32_t, const void *, unsigned int);
+ uint32_t crc32_be(uint32_t, const void *, unsigned int);
+ uint32_t crc32_no_comp(uint32_t, const void *, unsigned int);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
