@@ -1,67 +1,67 @@
-Delivery-date: Mon, 02 Dec 2024 09:18:50 +0100
+Delivery-date: Mon, 02 Dec 2024 09:18:51 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tI1dq-0030ni-0p
+	id 1tI1dq-0030o6-2J
 	for lore@lore.pengutronix.de;
-	Mon, 02 Dec 2024 09:18:50 +0100
+	Mon, 02 Dec 2024 09:18:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tI1dp-000169-6c
-	for lore@pengutronix.de; Mon, 02 Dec 2024 09:18:50 +0100
+	id 1tI1dp-00016p-TN
+	for lore@pengutronix.de; Mon, 02 Dec 2024 09:18:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VAnvvT4rkuktqHPr7llOvlOBRsecorsCZN/Et/Yc8L8=; b=uC5LvxNA0daezGsaUAiLpCNAeo
-	/mpNCQBQnCPBZEzIv9CW8aWo9w3fBCPyQ5doUHS6wVkpKuihVIBK93GNHtQLOkCvlUKA2HpIpqtDF
-	5kWhWw1g+pstsB4/rELS+FFjPaIDVOmOKwQvGCMScihNn2zgb0i4lmEDijskBHeRELcBt3CAsc77m
-	JiGrjTqsp44f6/JM/hvgH4kGRDBdXhQ17LnHmWn5zIsqBoOXXNSc2RxP/ZAhOsCH1uLBKO7P9viiv
-	bZMTZfzcPoBuwqwMhCQqlG1uZElcZqXLjxINQWf71UONexO8TMBt55dZtNOyRXCArw/5TDA4i3PTy
-	WagFOiuA==;
+	bh=05UmQs7Ull3PtWbrPKG0L3uW/UEIDxY5zvnM0HnE0XU=; b=z/4UF4JV1uWPG5g6JqVN78nM9f
+	tRaO+0MGyZg3+mdJ6PD1786SY90lLbdCvyXIgLM3n+zsRccOEn598z0Jd6odYDiKYX2OXrZKTIsyn
+	bKFdkvHQJP0eHH4oVeJbJwy6Jhd5ncj0ZZhSU8oRJHYFanGVb9bQ6UPfnGvHQOHSdxhGgwp8DeBUv
+	X2H2qUmdw2cGOgZBAA79Z3ZD9+CIAtaI7gVtZzinGC+njMdoor2uyJELCzcZW+SA/xIJed+x4cyca
+	el+jgxJHsgcUZmF0Ru+T1J7YAIgry0qb0tXWmLF8CvtQMumXXiMKz2D+1ES/LhLz8lj6tV5lXqHWY
+	Mz9K/F1A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tI1dN-00000005P2O-3xoJ;
-	Mon, 02 Dec 2024 08:18:21 +0000
+	id 1tI1dP-00000005P36-08Zi;
+	Mon, 02 Dec 2024 08:18:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tI1dK-00000005P08-08sd
+	id 1tI1dK-00000005P0A-0K7n
 	for barebox@lists.infradead.org;
-	Mon, 02 Dec 2024 08:18:19 +0000
+	Mon, 02 Dec 2024 08:18:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tI1dI-0000le-Nm; Mon, 02 Dec 2024 09:18:16 +0100
+	id 1tI1dI-0000ld-MX; Mon, 02 Dec 2024 09:18:16 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tI1dH-001GL2-2T;
+	id 1tI1dH-001GKz-2J;
 	Mon, 02 Dec 2024 09:18:16 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tI1dI-00EaGv-1S;
+	id 1tI1dI-00EaGv-1I;
 	Mon, 02 Dec 2024 09:18:16 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  2 Dec 2024 09:18:12 +0100
-Message-Id: <20241202081815.3475994-3-a.fatoum@pengutronix.de>
+Date: Mon,  2 Dec 2024 09:18:11 +0100
+Message-Id: <20241202081815.3475994-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241202081815.3475994-1-a.fatoum@pengutronix.de>
 References: <20241202081815.3475994-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241202_001818_083120_B50A708F 
-X-CRM114-Status: GOOD (  13.14  )
+X-CRM114-CacheID: sfid-20241202_001818_265678_0C1B7D7D 
+X-CRM114-Status: GOOD (  24.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,164 +83,273 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/5] hardening: support zeroing all malloc buffers by default
+Subject: [PATCH v2 1/5] dlmalloc: add aliases with dl as prefix
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-dummy malloc doesn't free and all allocations are in freshly sbrk()'d
-memory, which already zero.
+tlsf function already have tlsf_ as prefix. Let's add dl as prefix for
+the dlmalloc functions.
+
+The point of this is that we can at a later time start compiling in more
+than one allocator into barebox: An allocator that's being fuzzed and
+one for everything else (normally libc malloc).
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/calloc.c       |  7 +++----
- common/dlmalloc.c     |  7 +++++++
- common/tlsf.c         |  6 ++++++
- include/malloc.h      | 10 ++++++++++
- lib/Kconfig.hardening | 23 +++++++++++++++++++++++
- 5 files changed, 49 insertions(+), 4 deletions(-)
+ common/dlmalloc.c  | 66 ++++++++++++++++++++++++----------------------
+ include/dlmalloc.h | 15 +++++++++++
+ 2 files changed, 49 insertions(+), 32 deletions(-)
+ create mode 100644 include/dlmalloc.h
 
-diff --git a/common/calloc.c b/common/calloc.c
-index 12f18474a4c8..17cbd9beefee 100644
---- a/common/calloc.c
-+++ b/common/calloc.c
-@@ -2,6 +2,7 @@
- 
- #include <common.h>
- #include <malloc.h>
-+#include <memory.h>
- #include <linux/overflow.h>
- 
- /*
-@@ -12,10 +13,8 @@ void *calloc(size_t n, size_t elem_size)
- 	size_t size = size_mul(elem_size, n);
- 	void *r = malloc(size);
- 
--	if (!r)
--		return r;
--
--	memset(r, 0x0, size);
-+	if (r && !want_init_on_alloc())
-+		memset(r, 0x0, size);
- 
- 	return r;
- }
 diff --git a/common/dlmalloc.c b/common/dlmalloc.c
-index 821a193af6bc..731c46b584b0 100644
+index 0ec7114c89d7..821a193af6bc 100644
 --- a/common/dlmalloc.c
 +++ b/common/dlmalloc.c
-@@ -7,6 +7,7 @@
- #include <dlmalloc.h>
+@@ -4,6 +4,7 @@
+ #include <malloc.h>
+ #include <string.h>
+ #include <memory.h>
++#include <dlmalloc.h>
  #include <linux/overflow.h>
  #include <linux/build_bug.h>
-+#include <linux/compiler.h>
  
- #include <stdio.h>
- #include <module.h>
-@@ -1368,6 +1369,8 @@ void dlfree(void *mem)
- 	p = mem2chunk(mem);
- 	hd = p->size;
+@@ -34,38 +35,29 @@
  
-+	if (want_init_on_free())
-+		memzero_explicit(mem, chunksize(p));
+   (Much fuller descriptions are contained in the program documentation below.)
  
- 	sz = hd & ~PREV_INUSE;
- 	next = chunk_at_offset(p, sz);
-@@ -1952,7 +1955,11 @@ void malloc_stats(void)
+-  malloc(size_t n);
++  dlmalloc(size_t n);
+      Return a pointer to a newly allocated chunk of at least n bytes, or null
+      if no space is available.
+-  free(Void_t* p);
++  dlfree(Void_t* p);
+      Release the chunk of memory pointed to by p, or no effect if p is null.
+-  realloc(Void_t* p, size_t n);
++  dlrealloc(Void_t* p, size_t n);
+      Return a pointer to a chunk of size n that contains the same data
+      as does chunk p up to the minimum of (n, p's size) bytes, or null
+      if no space is available. The returned pointer may or may not be
+      the same as p. If p is null, equivalent to malloc.  Unless the
+      #define REALLOC_ZERO_BYTES_FREES below is set, realloc with a
+      size argument of zero (re)allocates a minimum-sized chunk.
+-  memalign(size_t alignment, size_t n);
++  dlmemalign(size_t alignment, size_t n);
+      Return a pointer to a newly allocated chunk of n bytes, aligned
+      in accord with the alignment argument, which must be a power of
+      two.
+-  valloc(size_t n);
+-     Equivalent to memalign(pagesize, n), where pagesize is the page
+-     size of the system (or as near to this as can be figured out from
+-     all the includes/defines below.)
+-  pvalloc(size_t n);
+-     Equivalent to valloc(minimum-page-that-holds(n)), that is,
+-     round up n to nearest pagesize.
+-  calloc(size_t unit, size_t quantity);
++  dlcalloc(size_t unit, size_t quantity);
+      Returns a pointer to quantity * unit bytes, with all locations
+      set to zero.
+-  cfree(Void_t* p);
+-     Equivalent to free(p).
+   malloc_trim(size_t pad);
+      Release all but pad bytes of freed top-most memory back
+      to the system. Return 1 if successful, else 0.
+-  malloc_usable_size(Void_t* p);
++  dlmalloc_usable_size(Void_t* p);
+      Report the number usable allocated bytes associated with allocated
+      chunk p. This may or may not report more bytes than were requested,
+      due to alignment and minimum size constraints.
+@@ -1083,7 +1075,7 @@ static void malloc_extend_top(INTERNAL_SIZE_T nb)
+ 				SIZE_SZ | PREV_INUSE;
+ 			/* If possible, release the rest. */
+ 			if (old_top_size >= MINSIZE)
+-				free(chunk2mem (old_top));
++				dlfree(chunk2mem (old_top));
+ 		}
+ 	}
+ 
+@@ -1152,7 +1144,7 @@ static void malloc_extend_top(INTERNAL_SIZE_T nb)
+       chunk borders either a previously allocated and still in-use chunk,
+       or the base of its memory arena.)
+ */
+-void *malloc(size_t bytes)
++void *dlmalloc(size_t bytes)
+ {
+ 	mchunkptr victim;	/* inspected/selected chunk */
+ 	INTERNAL_SIZE_T victim_size;	/* its size */
+@@ -1357,7 +1349,7 @@ void *malloc(size_t bytes)
+ 	  placed in corresponding bins. (This includes the case of
+ 	  consolidating with the current `last_remainder').
+ */
+-void free(void *mem)
++void dlfree(void *mem)
+ {
+ 	mchunkptr p;		/* chunk corresponding to mem */
+ 	INTERNAL_SIZE_T hd;	/* its head field */
+@@ -1432,7 +1424,7 @@ void free(void *mem)
+ 		frontlink(p, sz, idx, bck, fwd);
+ }
+ 
+-size_t malloc_usable_size(void *mem)
++size_t dlmalloc_usable_size(void *mem)
+ {
+ 	mchunkptr p;
+ 
+@@ -1474,7 +1466,7 @@ size_t malloc_usable_size(void *mem)
+     and allowing it would also allow too many other incorrect
+     usages of realloc to be sensible.
+ */
+-void *realloc(void *oldmem, size_t bytes)
++void *dlrealloc(void *oldmem, size_t bytes)
+ {
+ 	INTERNAL_SIZE_T nb;	/* padded request size */
+ 
+@@ -1499,7 +1491,7 @@ void *realloc(void *oldmem, size_t bytes)
+ 
+ #ifdef REALLOC_ZERO_BYTES_FREES
+ 	if (bytes == 0) {
+-		free(oldmem);
++		dlfree(oldmem);
+ 		return NULL;
+ 	}
+ #endif
+@@ -1511,7 +1503,7 @@ void *realloc(void *oldmem, size_t bytes)
+ 
+ 	/* realloc of null is supposed to be same as malloc */
+ 	if (!oldmem)
+-		return malloc(bytes);
++		return dlmalloc(bytes);
+ 
+ 	newp = oldp = mem2chunk(oldmem);
+ 	newsize = oldsize = chunksize(oldp);
+@@ -1608,7 +1600,7 @@ void *realloc(void *oldmem, size_t bytes)
+ 
+ 		/* Must allocate */
+ 
+-		newmem = malloc(bytes);
++		newmem = dlmalloc(bytes);
+ 
+ 		if (!newmem)	/* propagate failure */
+ 			return NULL;
+@@ -1624,7 +1616,7 @@ void *realloc(void *oldmem, size_t bytes)
+ 
+ 		/* Otherwise copy, free, and exit */
+ 		memcpy(newmem, oldmem, oldsize - SIZE_SZ);
+-		free(oldmem);
++		dlfree(oldmem);
+ 		return newmem;
+ 	}
+ 
+@@ -1637,7 +1629,7 @@ void *realloc(void *oldmem, size_t bytes)
+ 		set_head_size(newp, nb);
+ 		set_head(remainder, remainder_size | PREV_INUSE);
+ 		set_inuse_bit_at_offset(remainder, remainder_size);
+-		free (chunk2mem(remainder)); /* let free() deal with it */
++		dlfree(chunk2mem(remainder)); /* let free() deal with it */
+ 	} else {
+ 		set_head_size(newp, newsize);
+ 		set_inuse_bit_at_offset(newp, newsize);
+@@ -1661,7 +1653,7 @@ void *realloc(void *oldmem, size_t bytes)
+ 
+     Overreliance on memalign is a sure way to fragment space.
+ */
+-void *memalign(size_t alignment, size_t bytes)
++void *dlmemalign(size_t alignment, size_t bytes)
+ {
+ 	INTERNAL_SIZE_T nb;	/* padded  request size */
+ 	char *m;		/* memory returned by malloc call */
+@@ -1681,7 +1673,7 @@ void *memalign(size_t alignment, size_t bytes)
+ 	/* If need less alignment than we give anyway, just relay to malloc */
+ 
+ 	if (alignment <= MALLOC_ALIGNMENT)
+-		return malloc(bytes);
++		return dlmalloc(bytes);
+ 
+ 	/* Otherwise, ensure that it is at least a minimum chunk size */
+ 
+@@ -1691,7 +1683,7 @@ void *memalign(size_t alignment, size_t bytes)
+ 	/* Call malloc with worst case padding to hit alignment. */
+ 
+ 	nb = request2size(bytes);
+-	m = (char*)(malloc (nb + alignment + MINSIZE));
++	m = (char*)(dlmalloc(nb + alignment + MINSIZE));
+ 
+ 	if (!m)
+ 		return NULL;	/* propagate failure */
+@@ -1724,7 +1716,7 @@ void *memalign(size_t alignment, size_t bytes)
+ 		set_head(newp, newsize | PREV_INUSE);
+ 		set_inuse_bit_at_offset(newp, newsize);
+ 		set_head_size(p, leadsize);
+-		free(chunk2mem(p));
++		dlfree(chunk2mem(p));
+ 		p = newp;
+ 	}
+ 
+@@ -1736,7 +1728,7 @@ void *memalign(size_t alignment, size_t bytes)
+ 		remainder = chunk_at_offset(p, nb);
+ 		set_head(remainder, remainder_size | PREV_INUSE);
+ 		set_head_size(p, nb);
+-		free (chunk2mem(remainder));
++		dlfree(chunk2mem(remainder));
+ 	}
+ 
+ 	return chunk2mem(p);
+@@ -1747,7 +1739,7 @@ void *memalign(size_t alignment, size_t bytes)
+  * calloc calls malloc, then zeroes out the allocated chunk.
+  *
+  */
+-void *calloc(size_t n, size_t elem_size)
++void *dlcalloc(size_t n, size_t elem_size)
+ {
+ 	mchunkptr p;
+ 	INTERNAL_SIZE_T csz;
+@@ -1763,7 +1755,7 @@ void *calloc(size_t n, size_t elem_size)
+ 		return NULL;
+ 	}
+ 
+-	mem = malloc(sz);
++	mem = dlmalloc(sz);
+ 
+ 	if (!mem)
+ 		return NULL;
+@@ -1959,7 +1951,17 @@ void malloc_stats(void)
+ 
  */
  
- #ifdef CONFIG_MALLOC_DLMALLOC
-+#ifdef CONFIG_INIT_ON_ALLOC_DEFAULT_ON
-+void *malloc(size_t bytes) { return dlcalloc(1, bytes); }
-+#else
- void *malloc(size_t) __alias(dlmalloc);
-+#endif
++#ifdef CONFIG_MALLOC_DLMALLOC
++void *malloc(size_t) __alias(dlmalloc);
  EXPORT_SYMBOL(malloc);
- void *calloc(size_t, size_t) __alias(dlcalloc);
++void *calloc(size_t, size_t) __alias(dlcalloc);
  EXPORT_SYMBOL(calloc);
-diff --git a/common/tlsf.c b/common/tlsf.c
-index ba2ed367c0b9..4cd90e150de2 100644
---- a/common/tlsf.c
-+++ b/common/tlsf.c
-@@ -3,6 +3,7 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <malloc.h>
- #include <tlsf.h>
- #include "tlsfbits.h"
- #include <linux/kasan.h>
-@@ -615,6 +616,9 @@ static void* block_prepare_used(control_t* control, block_header_t* block,
- 		kasan_poison_shadow(&block->size, size + 2 * sizeof(size_t),
- 			    KASAN_KMALLOC_REDZONE);
- 		kasan_unpoison_shadow(p, used);
++void free(void *) __alias(dlfree);
+ EXPORT_SYMBOL(free);
++void *realloc(void *, size_t) __alias(dlrealloc);
+ EXPORT_SYMBOL(realloc);
++void *memalign(size_t, size_t) __alias(dlmemalign);
++EXPORT_SYMBOL(memalign);
++size_t malloc_usable_size(void *) __alias(dlmalloc_usable_size);
++EXPORT_SYMBOL(malloc_usable_size);
++#endif
+diff --git a/include/dlmalloc.h b/include/dlmalloc.h
+new file mode 100644
+index 000000000000..90b647314230
+--- /dev/null
++++ b/include/dlmalloc.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __DLMALLOC_H
++#define __DLMALLOC_H
 +
-+		if (want_init_on_alloc())
-+			memzero_explicit(p, size);
- 	}
- 	return p;
- }
-@@ -1023,6 +1027,8 @@ void tlsf_free(tlsf_t tlsf, void* ptr)
- 		control_t* control = tlsf_cast(control_t*, tlsf);
- 		block_header_t* block = block_from_ptr(ptr);
- 		tlsf_assert(!block_is_free(block) && "block already marked as free");
-+		if (want_init_on_free())
-+			memzero_explicit(ptr, block_size(block));
- 		kasan_poison_shadow(ptr, block_size(block), 0xff);
- 		block_mark_as_free(block);
- 		block = block_merge_prev(control, block);
-diff --git a/include/malloc.h b/include/malloc.h
-index a823ce8c8462..7bee03dab236 100644
---- a/include/malloc.h
-+++ b/include/malloc.h
-@@ -54,4 +54,14 @@ static inline int mem_malloc_is_initialized(void)
- }
- #endif
- 
-+static inline bool want_init_on_alloc(void)
-+{
-+	return IS_ENABLED(CONFIG_INIT_ON_ALLOC_DEFAULT_ON);
-+}
++#include <linux/compiler.h>
++#include <types.h>
 +
-+static inline bool want_init_on_free(void)
-+{
-+	return IS_ENABLED(CONFIG_INIT_ON_FREE_DEFAULT_ON);
-+}
++void *dlmalloc(size_t) __alloc_size(1);
++size_t dlmalloc_usable_size(void *);
++void dlfree(void *);
++void *dlrealloc(void *, size_t) __realloc_size(2);
++void *dlmemalign(size_t, size_t) __alloc_size(2);
++void *dlcalloc(size_t, size_t) __alloc_size(1, 2);
 +
- #endif /* __MALLOC_H */
-diff --git a/lib/Kconfig.hardening b/lib/Kconfig.hardening
-index 28be42a27465..7a177840a5a1 100644
---- a/lib/Kconfig.hardening
-+++ b/lib/Kconfig.hardening
-@@ -10,6 +10,29 @@ config BUG_ON_DATA_CORRUPTION
- 
- 	  If unsure, say N.
- 
-+menu "Memory initialization"
-+
-+config INIT_ON_ALLOC_DEFAULT_ON
-+	bool "Enable heap memory zeroing on allocation by default"
-+	depends on !MALLOC_LIBC
-+	help
-+	  When this is enabled, all allocator memory will be zeroed
-+	  when allocated, eliminating many kinds of "uninitialized
-+	  heap memory" flaws, especially heap content exposures.
-+
-+config INIT_ON_FREE_DEFAULT_ON
-+	bool "Enable heap memory zeroing on free by default"
-+	depends on !MALLOC_DUMMY && !MALLOC_LIBC
-+	help
-+	  When this is enabled, all allocator memory will be zeroed
-+	  when freed, eliminating many kinds of "uninitialized heap memory"
-+	  flaws, especially heap content exposures. The primary difference
-+	  is that data lifetime in memory is reduced, as anything freed is
-+	  wiped immediately, making live forensics or cold boot memory
-+	  attacks unable to recover freed memory contents.
-+
-+endmenu
-+
- config STACK_GUARD_PAGE
- 	bool "Place guard page to catch stack overflows"
- 	depends on ARM && MMU
++#endif /* __DLMALLOC_H */
 -- 
 2.39.5
 
