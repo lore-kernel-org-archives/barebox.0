@@ -1,70 +1,61 @@
-Delivery-date: Mon, 02 Dec 2024 13:45:40 +0100
+Delivery-date: Mon, 02 Dec 2024 13:45:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tI5o3-0035Tg-2R
+	id 1tI5o6-0035U2-0v
 	for lore@lore.pengutronix.de;
-	Mon, 02 Dec 2024 13:45:40 +0100
+	Mon, 02 Dec 2024 13:45:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tI5o3-0006a4-Ni
-	for lore@pengutronix.de; Mon, 02 Dec 2024 13:45:40 +0100
+	id 1tI5o6-0006bm-8e
+	for lore@pengutronix.de; Mon, 02 Dec 2024 13:45:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=l8AotDIzJKRrKVUXwVo428wHeeEFtnaxmNrzbXFpsQY=; b=tCGfxaOxsl5fFeD5GomnmI0F61
-	8noy4MiuqnXzyr4srckfjgixPM8SY1BygcALpMRtKa9fne9GblDMUr0elpHaXV3WzYMsAxY4kWtXm
-	KDlXOo7OCGgIJVVDsOSrY+uXnfMNI3QfzrjWNNxX6QPN2/qpZEaXIBCLwFY0R49B+LunQWLKRBFks
-	nW6lKonLBaAsPGZPbGUGU0lLLOh77A/ScpYKzqyA9IZieUh2DFxDlIfa1nqksuX/8273Rvk2v/Ll1
-	JmUwwclymsmht9qbO0lqFylh1n8K98MwLN+BvkGBfxzV+kk8JP4YgT9ugRq9KKJy6CKt6YKyFQXOA
-	a8f4N/+w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=lJyT+v743plLR9zE/B1A/AcpZijgnE4V3fd7WqVBp50=; b=f7LxE9C90YDLRx0L6CyxD9QJbO
+	MCw35oJNJKrfloXlhHEWrLVZ0GG1srNJQMTrcAhIEPmCKcYXimbFFlPn0zLD21jXx2ksVx9qNElsb
+	OKN7Nggi+NITsT/3VhEa5Cjc32twMpr38IwS9cJlt0y/jf0YqM+2vgHC9goDUBJt5O3nMu7N5O8LD
+	z/PRa2nXk7NMBz5KwMGya84ovrlL9/hRDuh05KRc6DcQT9QP+birsylpKNWZ4s091d/nQZa7NhgMu
+	Ahlx4LvLMsKTK4U+tUS6Ig/uUQHbFs0HBt33N6G8dU/iQJx7fIcW/6RSIaz7H0tRZ7bkgTD1MZjCg
+	gbBv8vBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tI5nW-000000067SW-22uZ;
-	Mon, 02 Dec 2024 12:45:06 +0000
+	id 1tI5nX-000000067TD-2XsP;
+	Mon, 02 Dec 2024 12:45:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tI5ge-000000066MV-0xrG
+	id 1tI5k1-000000066s3-3bnK
 	for barebox@lists.infradead.org;
-	Mon, 02 Dec 2024 12:38:01 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tI5gc-0005F7-O9; Mon, 02 Dec 2024 13:37:58 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tI5gb-001Iaw-2Z;
-	Mon, 02 Dec 2024 13:37:58 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tI5gc-00AaG7-1Y;
-	Mon, 02 Dec 2024 13:37:58 +0100
-Date: Mon, 2 Dec 2024 13:37:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z02qJkAKxY246Knm@pengutronix.de>
-References: <20241202113729.599540-1-a.fatoum@pengutronix.de>
+	Mon, 02 Dec 2024 12:41:31 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tI5k0-0005lk-8o; Mon, 02 Dec 2024 13:41:28 +0100
+Message-ID: <b91eaf6c-9559-466a-bd20-297647401c63@pengutronix.de>
+Date: Mon, 2 Dec 2024 13:41:26 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241202113729.599540-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+Cc: barebox@lists.infradead.org
+References: <Z0gywL2hLcIDoLQ8@hephaistos>
+ <fc008e94-9a80-4c01-8c4c-3c926721c2b1@pengutronix.de>
+ <Z0g74s98_Pz98tC5@hephaistos>
+ <83e0f4b3-c558-48dc-b867-f88376d73bc2@pengutronix.de>
+ <Z0hbuZBvK2aLd5s1@hephaistos>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <Z0hbuZBvK2aLd5s1@hephaistos>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241202_043800_262209_7E90F476 
-X-CRM114-Status: GOOD (  19.24  )
+X-CRM114-CacheID: sfid-20241202_044129_902667_A199BE4B 
+X-CRM114-Status: GOOD (  13.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,54 +77,43 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] fixup! stdio: stub out basprintf and friends when
- built for PBL
+Subject: Re: Reset on Beaglebone Black has become unreliable/broken
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Dec 02, 2024 at 12:37:28PM +0100, Ahmad Fatoum wrote:
-> asprintf and vasprintf return only -1 as error code, so have the stub
-> follow suit for symmetry.
-> 
-> No functional change expected.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  include/stdio.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Hello Konstantin,
 
-Applied, thanks
+On 28.11.24 13:02, Konstantin Kletschke wrote:
+> On Thu, Nov 28, 2024 at 12:18:45PM +0100, Ahmad Fatoum wrote:
+>>
+>> Are you still building with the same toolchain?
+> Checked out current barebox git: barebox 2024.10.0-00150-g7a3cb7e6fd63 #2 Thu Nov 28 12:37:15 CET 2024
+> Changed CONFIG_BAREBOX_MAX_IMAGE_SIZE from 0x1b400 to 0x2b400
 
-Sascha
+Why do you do this step? 0x1b400 == 109KiB, which is chosen, because the MLO
+needs to fit into the On-Chip SRAM of the AM335x.
 
+Increasing the size won't magically increase RAM size, but it may result
+in a truncated MLO being loaded into memory or worse: barebox overwriting
+memory and MMIO that it shouldn't be touching.
+
+Do you also change this when compiling your normal image?
+
+Cheers,
+Ahmad
+
+> Did am335x_mlo_defconfig and omap_defconfig and copied those images.
+> I used another crosscompiler toolchain for this: gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf
 > 
-> diff --git a/include/stdio.h b/include/stdio.h
-> index 03cd3d281890..883b06529fdc 100644
-> --- a/include/stdio.h
-> +++ b/include/stdio.h
-> @@ -32,7 +32,7 @@ static inline char *basprintf(const char *fmt, ...)
->  }
->  static inline int asprintf(char **strp, const char *fmt, ...)
->  {
-> -	return -ENOMEM;
-> +	return -1;
->  }
->  static inline char *bvasprintf(const char *fmt, va_list ap)
->  {
-> @@ -40,7 +40,7 @@ static inline char *bvasprintf(const char *fmt, va_list ap)
->  }
->  static inline int vasprintf(char **strp, const char *fmt, va_list ap)
->  {
-> -	return -ENOMEM;
-> +	return -1;
->  }
->  #endif
->  
-> -- 
-> 2.39.5
+> Same error behaviour: Power up -> S1 or "reset" produce freeze.
+> 
+> Will test CONFIG_DEBUG_LL and/or move those lines around.
+> 
+> Regards
+> Konsti
 > 
 > 
-> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
