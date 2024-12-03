@@ -1,58 +1,88 @@
-Delivery-date: Mon, 02 Dec 2024 18:34:52 +0100
+Delivery-date: Tue, 03 Dec 2024 09:18:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIAJv-003Aj8-1w
+	id 1tIO7F-003QZR-24
 	for lore@lore.pengutronix.de;
-	Mon, 02 Dec 2024 18:34:52 +0100
+	Tue, 03 Dec 2024 09:18:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIAJv-0000Vi-C1
-	for lore@pengutronix.de; Mon, 02 Dec 2024 18:34:52 +0100
+	id 1tIO7F-0007g9-HR
+	for lore@pengutronix.de; Tue, 03 Dec 2024 09:18:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LjgS8wtVXUACrnAvdE/U28S9caygLpoargHJF7OpMjg=; b=icJUPqil2xgevBm2/6kKFwvoNi
-	PwYCPQkXmIGd43JhX2mp2kYIov2tZ7iVHCQ4cqtngd3VJCpACwMxSnr9jdBIy/r5jNw8nSEPt/eYO
-	rYABwFOeH5yj6gcSJnpUt3BotPz4ntKgt57BnI0MnW2BsNazz6AniqogJknETP3YxdaCNio5GWqf4
-	6TOPA5kF5CJGMY6TvV74hgHSwEAoCTBTDe/kgY6vCDt4BCTOS/B6sZ3XyOOv0hggBhr8CtyNINsjO
-	e5DRYDgcTD4PrKvPKz0rfFbJJrOY2jovsXjAs1gza+Jcnk9N1QvNfh/Jz0rfbRWdgjcMsTl+9TdJ+
-	gWpdiL9g==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=m+Jn6B/Rw5Vm1+Zj7IaLMeAHYU926PHcuJS//SBaa7k=; b=gtXr5X3PpBOETlp8X/6HLKsGBe
+	dpHHVv+cRwjUvIWddolIPEfMiwKwDwEzmcUbluvvu16q+Z0WBiAUrccEKh3xM708Ll/hZY3r8MKf8
+	rmA7dRPNVMuOqykuolaXLYngVNZuZBkjpOnc97gq+L/OnqOJu+QSxeKccAR2EZO6qLQ+ZRQa2D4Zy
+	Y4FAGsEri2NaLI0SpUX8QaYHBOA+sd/Khrk22vSRb/qMhQz6gGZAcYLNprQQDSM+9LMjzLVgIc9yV
+	M/L9c8VsSmrkyCl82ZfPtH9e1OqVPhhbFtpfvSJtpnjMrJ18KVBZBxT/05h7iNqU3Spo5uky80bJj
+	fukXo6tw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIAJN-000000071oj-0NIv;
-	Mon, 02 Dec 2024 17:34:17 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tIO6W-00000008fIB-3Fg5;
+	Tue, 03 Dec 2024 08:17:56 +0000
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIADC-000000070ol-0dAx
+	id 1tIO6U-00000008fHY-1Lwq
 	for barebox@lists.infradead.org;
-	Mon, 02 Dec 2024 17:27:55 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tIADA-0007Lv-Ru; Mon, 02 Dec 2024 18:27:52 +0100
-Message-ID: <55706027-0392-4431-acdc-394f056a0f52@pengutronix.de>
-Date: Mon, 2 Dec 2024 18:27:51 +0100
+	Tue, 03 Dec 2024 08:17:55 +0000
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2ffc380b1d0so51385721fa.0
+        for <barebox@lists.infradead.org>; Tue, 03 Dec 2024 00:17:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733213872; x=1733818672; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m+Jn6B/Rw5Vm1+Zj7IaLMeAHYU926PHcuJS//SBaa7k=;
+        b=dCU7fHgLgeDC4v3DRPtkNdmGvqGmfNHTAQafGYSov7SjtarxuZqfecGLxq+GXSt/Ln
+         ana1gXClR4ZsEWKuLqkjVgihC8IhLXjnLxqIY6Cnrk2KPV1sax1QKmjnoOH11o3Rzxl7
+         SVF/XfZ4p72dzOVpZQLUp4UzCKL4r22KZUBdL2RWPM36W95xTajAuiYyynDWCk9re7x9
+         TsUI+MKraUOOCNus5IL3yz1EUDPE4iVOKgMHErZeRdiT17f1LC7FMHBLf6+j+TilmNIq
+         gU/vkFHxCDSnfj++H1I66v9VEcgQhZgDEnbll+2EVZzoozsJflZKXYj88ic70JXL93D7
+         qWMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733213872; x=1733818672;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m+Jn6B/Rw5Vm1+Zj7IaLMeAHYU926PHcuJS//SBaa7k=;
+        b=GSIPlf/U1K+Y474nEYTO/Exi0B5uubP8j3BEiX4wenqx9HCJmQzcx4mxRW8pLMJOQn
+         kiynSEg9QEtpc1SWNvqaXpRehaQ+Jda4ZEJDtAq0safS2Gz7r8kdWhmSlBx/zASrKPId
+         xlUTFKFn4Mo3sqoIT7GK0afZt3wRStrYG9KWuSQCKFpUZK7sDOLRKO25uOv6476MYYDd
+         k4bC7jyBAzbkXEzN38B4Gq9Q+khHTdIUeuthcNC3n7XKygQ85dmzbQmzoaXOB3K0L8dR
+         mW1qsISmm8fZFb58YTUAVTwYCfMaTDALTZSlBjf+aCYReIpF8k8rGNafmCAS9As5OF33
+         x7+A==
+X-Gm-Message-State: AOJu0Yzqp2mU8FRDvB6VPZwdgQJ1V0+gs+KMu0kdPM4CkkGLA+ZiXlIe
+	yNGApNG5VPx4Cx/60UnHHOx08op5XgOjF8CamAGsHUDgvSXctfDP0s76TA==
+X-Gm-Gg: ASbGnctJLY/Ql8N2+VtQcJpEZjIyoKaD25YbIsETLyg5SZop9WUt8wfXTyKfHBeX+pQ
+	JIO4GuvcRwX4qn90Lox9ApTsIJcs8z3fv8tBr0TfTn/orA/y1/6VRGlbiiO1fvKNVi+q2jcoh+l
+	5+8sW3I+tY2W97MEHKK121JwyD9WhfulDajss7GFLlMyJ4OBYNuldIzyAWWmCr9hkEPLjeKmypq
+	CDulkTvhnex7nKSTgwaBJ4I8F59L/WPSDJNWA2aymPrk9STSXjeSjDVCvZPH893Vb0u8la9eA==
+X-Google-Smtp-Source: AGHT+IG6LZE4b/8uKgEn9aNEwYfh4xotBoiTUA4rIstoevLYW984gbW3vHmv8gCyOkn1mtjgp92Xkw==
+X-Received: by 2002:a05:651c:994:b0:2ff:e527:5331 with SMTP id 38308e7fff4ca-3000a26065fmr4362991fa.9.1733213871388;
+        Tue, 03 Dec 2024 00:17:51 -0800 (PST)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ffdfbb8dbbsm15597881fa.23.2024.12.03.00.17.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 00:17:49 -0800 (PST)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Tue,  3 Dec 2024 11:17:37 +0300
+Message-Id: <20241203081737.11962-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Dang Huynh <danct12@riseup.net>, Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-Cc: Michael Riesch <michael.riesch@wolfvision.net>
-References: <20241202-pt2-init-v1-1-bd1ebdc747e0@riseup.net>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241202-pt2-init-v1-1-bd1ebdc747e0@riseup.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241202_092754_193308_2B96C62E 
-X-CRM114-Status: GOOD (  22.95  )
+X-CRM114-CacheID: sfid-20241203_001754_362663_4BB96E46 
+X-CRM114-Status: UNSURE (   9.85  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,136 +100,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: rockchip: Add support for Pine64 PineTab 2
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] pci: pcie-designware: Do not consider missing PCI device as an error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Dang,
+The PCI device may not be present on the target board.
 
-Thanks for your patch. It looks good, but some minor comments below.
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ drivers/pci/pcie-designware.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 02.12.24 17:35, Dang Huynh wrote:
-> The Pine64 PineTab 2 tablet is basically the Quartz64 but as
-> a finished product.
-> 
-> There are (currently) two revisions, v0.1 and v2.0.
-> 
-> v0.1 was sent to developers and there are a few units around
-> (probably less than 10?)
-> 
-> v2.0 is the consumer available version, this version changed the
-> display reset pin and hooked WLAN/BT chip to a GPIO.
-> 
-> There are currently no easy way to detect both revisions. For now,
-> we'll only support v2.0.
-
-This is outdated. The patch supports both, but not with the same image.
-
-> +	barebox_set_hostname(model->shortname);
-
-Good idea, otherwise the hostname autogenerated from DT would
-contain a period (invalid character for hostnames).
-
-> +	if (bootsource == BOOTSOURCE_MMC && instance == 0)
-> +		of_device_enable_path("/chosen/environment-sd");
-> +	else
-> +		of_device_enable_path("/chosen/environment-emmc");
-> +
-> +	rockchip_bbu_mmc_register("sd", 0, "/dev/mmc0");
-> +	rockchip_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/mmc1");
-
-Don't you want to set BBU_HANDLER_FLAG_DEFAULT depending on whether you
-booted from SD or eMMC?
-
-> +#include <arm64/rockchip/rk3566-pinetab2.dtsi>
-> +#include "rk356x.dtsi"
-> +
-> +/ {
-> +	chosen: chosen {
-> +		environment-sd {
-> +			compatible = "barebox,environment";
-> +			device-path = &environment_sd;
-> +			status = "disabled";
-> +		};
-> +
-> +		environment-emmc {
-> +			compatible = "barebox,environment";
-> +			device-path = &environment_emmc;
-> +			status = "disabled";
-> +		};
-> +	};
-> +
-> +	memory@a00000 {
-> +		device_type = "memory";
-> +		reg = <0x0 0x00a00000 0x0 0x7f600000>;
-> +	};
-
-barebox can autodetect this at runtime. I think you can safely drop this.
-
-> +&sdhci {
-> +	no-sd;
-
-This property is already in the upstream kernel DT.
-
-> +
-> +	partitions {
-> +		compatible = "fixed-partitions";
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +
-> +		environment_emmc: partition@408000 {
-
-Why did you choose address 0x408000 in particular?
-
-> +			label = "barebox-environment";
-> +			reg = <0x0 0x408000 0x0 0x8000>;
-> +		};
-> +	};
-> +};
-
-> +config MACH_PINE64_PINETAB2
-> +	select ARCH_RK3568
-> +	bool "Pine64 PineTab 2"
-> +	help
-> +	  Say Y here if you are using a Pine64 PineTab 2
-
-One config option is enough and just generate both images always
-and merge the help text from the old options.
-
-> --- a/images/Makefile.rockchip
-> +++ b/images/Makefile.rockchip
-> @@ -31,6 +31,8 @@ image-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += barebox-rk3288-phycore-som.img
->  
->  $(call build_rockchip_image, CONFIG_MACH_RK3568_EVB, start_rk3568_evb, rockchip-rk3568-evb/sdram-init.bin, rk3568-evb)
->  $(call build_rockchip_image, CONFIG_MACH_RK3568_BPI_R2PRO, start_rk3568_bpi_r2pro, rockchip-rk3568-bpi-r2pro/sdram-init.bin, rk3568-bpi-r2pro)
-> +$(call build_rockchip_image, CONFIG_MACH_PINE64_PINETAB2_V0, start_pinetab2_v0, pine64-pinetab2/sdram-init.bin, pinetab2-v0)
-> +$(call build_rockchip_image, CONFIG_MACH_PINE64_PINETAB2_V2, start_pinetab2_v2, pine64-pinetab2/sdram-init.bin, pinetab2-v2)
-
-Just use CONFIG_MACH_PINE64_PINETAB2 here. Also please enable in multi_v8_defconfig
-and rockchip_v8_defconfig for CI coverage.
-
-Thanks,
-Ahmad
-
->  $(call build_rockchip_image, CONFIG_MACH_PINE64_QUARTZ64, start_quartz64a, pine64-quartz64/sdram-init.bin, quartz64a)
->  $(call build_rockchip_image, CONFIG_MACH_PROTONIC_MECSBC, start_mecsbc, protonic-mecsbc/sdram-init.bin, mecsbc)
->  $(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK3, start_rock3a, radxa-rock3/sdram-init.bin, rock3a)
-> 
-> ---
-> base-commit: 7a3cb7e6fd6338144972b7c83675fb5c709ea6f8
-> change-id: 20241202-pt2-init-7122fe34f0d6
-> 
-> Best regards,
-
-
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 72820de282..b9bac9c4f2 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -250,7 +250,7 @@ int dw_pcie_wait_for_link(struct dw_pcie *pci)
+ 			break;
+ 	}
+ 
+-	dev_err(pci->dev, "Phy link never came up\n");
++	dev_info(pci->dev, "Phy link never came up\n");
+ 
+ 	return -ETIMEDOUT;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.1
+
 
 
