@@ -1,64 +1,63 @@
-Delivery-date: Tue, 03 Dec 2024 15:02:20 +0100
+Delivery-date: Tue, 03 Dec 2024 19:29:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tITTo-003WOd-0c
+	id 1tIXe1-003bFP-0d
 	for lore@lore.pengutronix.de;
-	Tue, 03 Dec 2024 15:02:20 +0100
+	Tue, 03 Dec 2024 19:29:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tITTo-0001DF-0O
-	for lore@pengutronix.de; Tue, 03 Dec 2024 15:02:20 +0100
+	id 1tIXe1-00041S-4E
+	for lore@pengutronix.de; Tue, 03 Dec 2024 19:29:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Ds4LQAsCSP7c7+lbwXWFwG2TGGETsmTP8u8i8cWlEKs=; b=qbr2OYmZ4txeFM3vJuA7or8Ryb
-	jOPVntUyWPJ8KdJMA7m2FJRZtlIn3mow+fk7zucssTS32OUwA12m9gZ/Tr9IHVGZWsjhmDsD8fuo1
-	ggtdlSAiX3xfoNjI4Ymu3Wml+J7R/AoIiaRz8BHCfUNpImen9LeHBHiQqknUeEKHFGgXY5lF6VXeF
-	+VMaxWKLs3Wh5T0j3hU+8qBJMEBhjaTI9bXoXAoTpKS6ZhMMWbHau+/pKx8SBXUa2VLfQycCC3Mb+
-	7Tanj2S+zpwGE7QIBjso1rYUlVr/NpP09R9yu4fLZUOPRafaiO8Jbcfbjj3KG5/oxgdeIFR1JtBRR
-	EVQLdmSg==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=NjV+wQhlmRo2qV4un31eYWj36WRKaa3l2WcgSZS21GQ=; b=bh2zQ2GTDZnPyv8GPdxOU3lWYm
+	nzFhfxhy2ebCzpl5NR6P6pSqjh93uFfibYL6P30X3EvQ7Oupi8Ffrs19rM1gBCg0IgOjWnp8WZCtt
+	SRKP8L3rUvEwa0dT/bop7XvX4VMUt+35ynKOnQHWs73SLBl4WGMqeRFlj7LPQAwzyuCmEv3QME3Bg
+	YwB2JufglWC+5AenYjuKBvEujQGOVnXdYwvEhqUX1GmKmByvVwyXeZ3cUAoOfMEzbe+HrW9OePztV
+	uB0elqWp4qGTUChx/NHcrYW4RQCS2zEOr7qXzP4+JQ8hR2dnVQF/xtkTyIrjCzysHHpTS3OWGl6Ds
+	jWx/+coQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tITT4-00000009iQr-3O9t;
-	Tue, 03 Dec 2024 14:01:34 +0000
+	id 1tIXdQ-0000000AN5F-2rVf;
+	Tue, 03 Dec 2024 18:28:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tITT1-00000009iP0-2M7t
+	id 1tIXdN-0000000AN4r-24JQ
 	for barebox@lists.infradead.org;
-	Tue, 03 Dec 2024 14:01:33 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tITSy-000114-01; Tue, 03 Dec 2024 15:01:28 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tITSx-001UHV-08;
-	Tue, 03 Dec 2024 15:01:27 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tITSx-00BBvh-2R;
-	Tue, 03 Dec 2024 15:01:27 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue,  3 Dec 2024 15:01:25 +0100
-Message-Id: <20241203140125.2667446-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Tue, 03 Dec 2024 18:28:30 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tIXdL-0003ma-PX; Tue, 03 Dec 2024 19:28:27 +0100
+Message-ID: <19923329-f254-435d-9557-5e1b6835b8ec@pengutronix.de>
+Date: Tue, 3 Dec 2024 19:28:24 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+Cc: barebox@lists.infradead.org
+References: <Z0gywL2hLcIDoLQ8@hephaistos>
+ <fc008e94-9a80-4c01-8c4c-3c926721c2b1@pengutronix.de>
+ <Z0g74s98_Pz98tC5@hephaistos>
+ <83e0f4b3-c558-48dc-b867-f88376d73bc2@pengutronix.de>
+ <Z0hbuZBvK2aLd5s1@hephaistos>
+ <b91eaf6c-9559-466a-bd20-297647401c63@pengutronix.de>
+ <Z03A9rr21q320J0t@hephaistos>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <Z03A9rr21q320J0t@hephaistos>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241203_060131_600398_D7BE6DD5 
-X-CRM114-Status: GOOD (  17.52  )
+X-CRM114-CacheID: sfid-20241203_102829_527844_017ABC03 
+X-CRM114-Status: GOOD (  23.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,195 +75,78 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1] net: designware: eqos: stm32: add stm32mp13 support
+Subject: Re: Reset on Beaglebone Black has become unreliable/broken
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add support for STM32MP13x variants. Tested on STM32MP133.
+On 02.12.24 15:15, Konstantin Kletschke wrote:
+> On Mon, Dec 02, 2024 at 01:41:26PM +0100, Ahmad Fatoum wrote:
+> I thought about the PMIC handling. I see barebox does not do anything
+> with it, relies on reset default and sets CPU speed to 500MHz in
+> lowlevel.c:
+> 
+> am33xx_pll_init(MPUPLL_M_500, DDRPLL_M_400);
+> 
+> Which is totally reasonable, the voltage is 1,1V then in this mode after
+> powerup.
+> 
+> u-boot seems (I am not 100% sure) to set 1,3V but goes 1000MHz, which is
+> reasonable too. So there is a difference but not a fatal one.
+> 
+> May I kindly aask how to properly enable the LL debugging?
+> 
+> I do "make am335x_mlo_defconfig", disable CONFIG_MTD and set 
+> 
+> CONFIG_DEBUG_LL=y
+> CONFIG_DEBUG_OMAP_UART=y
+> CONFIG_DEBUG_AM33XX_UART=y
+> CONFIG_DEBUG_OMAP_UART_PORT=0
+> 
+> and compile a new MLO and copy it over. Does the other part barebox.bin
+> need to be handled the same?
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/net/designware_stm32.c | 94 +++++++++++++++++++++++++++++-----
- 1 file changed, 80 insertions(+), 14 deletions(-)
+You can enable it for barebox.bin too, but enabling it for MLO only
+should work too.
 
-diff --git a/drivers/net/designware_stm32.c b/drivers/net/designware_stm32.c
-index 54dabcc8d32a..b21cb5cb13ac 100644
---- a/drivers/net/designware_stm32.c
-+++ b/drivers/net/designware_stm32.c
-@@ -8,10 +8,11 @@
- 
- #include <common.h>
- #include <init.h>
--#include <net.h>
- #include <linux/clk.h>
--#include <mfd/syscon.h>
- #include <linux/regmap.h>
-+#include <mfd/syscon.h>
-+#include <net.h>
-+#include <of_device.h>
- 
- #include "designware_eqos.h"
- 
-@@ -44,13 +45,21 @@
- #define SYSCFG_MP1_ETH_MASK		GENMASK(23, 16)
- #define SYSCFG_PMCCLRR_OFFSET		0x40
- 
-+struct stm32_ops {
-+	const struct eqos_ops *eqos_ops;
-+	bool is_mp13;
-+	u32 syscfg_clr_off;
-+};
-+
- struct eqos_stm32 {
- 	struct clk_bulk_data *clks;
- 	int num_clks;
- 	struct regmap *regmap;
- 	u32 mode_reg;
-+	u32 mode_mask;
- 	int eth_clk_sel_reg;
- 	int eth_ref_clk_sel_reg;
-+	const struct stm32_ops *ops;
- };
- 
- static inline struct eqos_stm32 *to_stm32(struct eqos *eqos)
-@@ -72,12 +81,20 @@ static unsigned long eqos_get_csr_clk_rate_stm32(struct eqos *eqos)
- 
- static int eqos_set_mode_stm32(struct eqos_stm32 *priv, phy_interface_t interface)
- {
--	u32 val, reg = priv->mode_reg;
-+	u32 reg = priv->mode_reg;
-+	u32 val = 0;
- 	int ret;
- 
- 	switch (interface) {
- 	case PHY_INTERFACE_MODE_MII:
--		val = SYSCFG_PMCR_ETH_SEL_MII;
-+		/*
-+		 * STM32MP15xx supports both MII and GMII, STM32MP13xx MII only.
-+		 * SYSCFG_PMCSETR ETH_SELMII is present only on STM32MP15xx and
-+		 * acts as a selector between 0:GMII and 1:MII. As STM32MP13xx
-+		 * supports only MII, ETH_SELMII is not present.
-+		 */
-+		if (!priv->ops->is_mp13)  /* Select MII mode on STM32MP15xx */
-+			val |= SYSCFG_PMCR_ETH_SEL_MII;
- 		break;
- 	case PHY_INTERFACE_MODE_GMII:
- 		val = SYSCFG_PMCR_ETH_SEL_GMII;
-@@ -101,16 +118,16 @@ static int eqos_set_mode_stm32(struct eqos_stm32 *priv, phy_interface_t interfac
- 		return -EINVAL;
- 	}
- 
-+	/* Shift value at correct ethernet MAC offset in SYSCFG_PMCSETR */
-+	val <<= ffs(priv->mode_mask) - ffs(SYSCFG_MP1_ETH_MASK);
-+
- 	/* Need to update PMCCLRR (clear register) */
--	ret = regmap_write(priv->regmap, reg + SYSCFG_PMCCLRR_OFFSET,
--			   SYSCFG_MP1_ETH_MASK);
-+	ret = regmap_write(priv->regmap, priv->ops->syscfg_clr_off,
-+			   priv->mode_mask);
- 	if (ret)
--		return -EIO;
--
--	/* Update PMCSETR (set register) */
--	regmap_update_bits(priv->regmap, reg, GENMASK(23, 16), val);
-+		return ret;
- 
--	return 0;
-+	return regmap_update_bits(priv->regmap, reg, priv->mode_mask, val);
- }
- 
- static int eqos_init_stm32(struct device *dev, struct eqos *eqos)
-@@ -142,6 +159,18 @@ static int eqos_init_stm32(struct device *dev, struct eqos *eqos)
- 		return -EINVAL;
- 	}
- 
-+	priv->mode_mask = SYSCFG_MP1_ETH_MASK;
-+	ret = of_property_read_u32_index(np, "st,syscon", 2, &priv->mode_mask);
-+	if (ret) {
-+		if (priv->ops->is_mp13) {
-+			dev_err(dev, "Sysconfig register mask must be set (%pe)\n",
-+				ERR_PTR(ret));
-+		} else {
-+			dev_dbg(dev, "Warning sysconfig register mask not set (%pe)\n",
-+				ERR_PTR(ret));
-+		}
-+	}
-+
- 	ret = eqos_set_mode_stm32(priv, eqos->interface);
- 	if (ret)
- 		dev_warn(dev, "Configuring syscfg failed: %s\n", strerror(-ret));
-@@ -167,7 +196,18 @@ static int eqos_init_stm32(struct device *dev, struct eqos *eqos)
- 	return clk_bulk_enable(priv->num_clks, priv->clks);
- }
- 
--static struct eqos_ops stm32_ops = {
-+static struct eqos_ops stm32mp13_ops = {
-+	.init = eqos_init_stm32,
-+	.get_ethaddr = eqos_get_ethaddr,
-+	.set_ethaddr = eqos_set_ethaddr,
-+	.adjust_link = eqos_adjust_link,
-+	.get_csr_clk_rate = eqos_get_csr_clk_rate_stm32,
-+
-+	.clk_csr = EQOS_MDIO_ADDR_CR_250_300,
-+	.config_mac = EQOS_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB,
-+};
-+
-+static struct eqos_ops stm32mp15_ops = {
- 	.init = eqos_init_stm32,
- 	.get_ethaddr = eqos_get_ethaddr,
- 	.set_ethaddr = eqos_set_ethaddr,
-@@ -178,9 +218,34 @@ static struct eqos_ops stm32_ops = {
- 	.config_mac = EQOS_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_AV,
- };
- 
-+static struct stm32_ops stm32mp13_dwmac_data = {
-+	.eqos_ops = &stm32mp13_ops,
-+	.syscfg_clr_off = 0x08,
-+	.is_mp13 = true,
-+};
-+
-+static struct stm32_ops stm32mp15_dwmac_data = {
-+	.eqos_ops = &stm32mp15_ops,
-+	.syscfg_clr_off = 0x44,
-+	.is_mp13 = false,
-+};
-+
- static int eqos_probe_stm32(struct device *dev)
- {
--	return eqos_probe(dev, &stm32_ops, xzalloc(sizeof(struct eqos_stm32)));
-+	const struct stm32_ops *data;
-+	struct eqos_stm32 *priv;
-+
-+	priv = xzalloc(sizeof(*priv));
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	data = of_device_get_match_data(dev);
-+	if (!data)
-+		return -EINVAL;
-+
-+	priv->ops = data;
-+
-+	return eqos_probe(dev, data->eqos_ops, priv);
- }
- 
- static void eqos_remove_stm32(struct device *dev)
-@@ -194,7 +259,8 @@ static void eqos_remove_stm32(struct device *dev)
- }
- 
- static const struct of_device_id eqos_stm32_ids[] = {
--	{ .compatible = "st,stm32mp1-dwmac" },
-+	{ .compatible = "st,stm32mp1-dwmac", .data = &stm32mp15_dwmac_data},
-+	{ .compatible = "st,stm32mp13-dwmac", .data = &stm32mp13_dwmac_data},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, eqos_stm32_ids);
+> The normal serial console I use is attached to UART0, is it save to use
+> UART_PORT 0 here also?
+
+Yes, that would be my expectation.
+
+> This starts well on cold boot, I get some additional non readable chars
+> at startup, like this:
+> 
+> 2~�W-�,-H]
+>           ���k׋�ҫ�.LWC�C�C��arebox 2024.10.0-00152-g53c99b9f550b-dirty #15 Mon Dec 2 15:07:37 CET 2024
+
+Hmm, CONFIG_BAUDRATE is set correctly?
+
+> On "reset" or S1 I get no output at all, like without LL debug.
+> 
+> I will try to move the 4 lines in lowlevel.c like you suggested...
+
+If it doesn't work at a later place, it won't work when you move it
+earlier. I have a BBB here, so I can give enabling DEBUG_LL a try
+too if you get stuck.
+
+Cheers,
+Ahmad
+
+> 
+> Regards
+> Konstantin
+> 
+> 
+
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
