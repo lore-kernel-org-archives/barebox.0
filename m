@@ -1,74 +1,66 @@
-Delivery-date: Tue, 03 Dec 2024 20:03:44 +0100
+Delivery-date: Tue, 03 Dec 2024 21:26:01 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIYBT-003c0i-2O
+	id 1tIZT7-003dLw-1B
 	for lore@lore.pengutronix.de;
-	Tue, 03 Dec 2024 20:03:44 +0100
+	Tue, 03 Dec 2024 21:26:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIYBT-0003AH-KP
-	for lore@pengutronix.de; Tue, 03 Dec 2024 20:03:44 +0100
+	id 1tIZT7-0003OH-8t
+	for lore@pengutronix.de; Tue, 03 Dec 2024 21:26:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TatSxRiuGaUnpEEiGByYCcpgFvlhRiH9BoRNENFH/24=; b=PZbfnCKyQkwJC95ON0CVt5T3zn
-	TTJMXkD5TzKtTV2l6mZv9cT26hH9W4ZMmSZLKikFUXC1lvMBJtEncXIafrE5IVsscuM9I6a10cYBE
-	WwYilyYVXLxgowkKsojQwrlCSyysLyNRczK11fpfahUB93ScqL5+uzjzSvTTCqljJ/t/02lfgoKrE
-	cBkaPQXqU6yzikfpFIpaz9LqQPqVTRwugCL2KNEaqAIOXQgtycQd6SgdFRqTQeFxo3gxJHbXa+o9g
-	Wi/rTKaL80pJrmKOx9QA4OrDpsKTmOYAo4NNP3Wq7/Dazz7TVqW+UzBckeep95QthEM06pGfedJYR
-	Tmi9DKRA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=jtmM4st+GpjfPuIxUPlEq49eP6A9VaAkK/3H1O3oK4I=; b=o31HdahHoip3t3YVIB3AXCJGFQ
+	qKs252XSikQsd3X77SiW+rnhMyRmVmLveREZFVFy5H+xf8yZccFp7Yho310odNjT1paffZW+bxY56
+	Q+n14Zci0cUCWspDuoCuHmNYiVKL3+G9W7cRXzArCEp24zkXNOsIC2shtr5zGW9RPYofBDaRHGuTk
+	ion0u1fYPpT97M20PU88tkfbSF3970kBRU++Ap3VeQSfh5X97WkJ/VgHhdzVR6nZHuDwhD516MXFa
+	8JPnLRvIjq3zfuYbrN2s4drleX0gyolu9fUNT0ih90P9gT9L0Yh5KmPXy4TQ9egPPWjej4ahlaBox
+	6jNPh5ag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIYAz-0000000AQrE-2osq;
-	Tue, 03 Dec 2024 19:03:13 +0000
-Received: from mail.inside-m2m.de ([188.68.57.244])
+	id 1tIZSX-0000000AcoW-10Pu;
+	Tue, 03 Dec 2024 20:25:25 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIYAx-0000000AQqZ-12TZ
+	id 1tIZS0-0000000Acks-10wj
 	for barebox@lists.infradead.org;
-	Tue, 03 Dec 2024 19:03:12 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
-	s=default; t=1733252589;
-	bh=eY6VanZ+MMrbqgQYrpdNYSiIeTdsg7zUj8rSW/K6JGI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LV5OUewbOgKWDnIDEbK27CiZTjFKy4xN+H++zpufgG/PHJxA2EFwC+7NW9d9EHPfD
-	 PFCRabrwSUBoG44QCqseKcWO9/2jxx9Pf3AlDp+F8Yx1wp76a4nN/bP9I/Gaz2Guf6
-	 r4IK+L51zS9BKrX69PCc4hsAzrhOf5MC+RYUv1emPAxpcNpLh6mCA3+0CiUvnFj+Sf
-	 CiKIyXwcHRPo4wPQ7x9dBS+Ix3IRQ9D+KKiVb8iTRlTQaC7r5YVovBgBgsLCLK7QHF
-	 bgWJsmLtNYoWCvglkY4A4sy2bz8pfRfHRzAy0KlTSgV2U9zFOwr4Lh6CoDTWShkbdv
-	 5W0hqJqvHcs4g==
-Received: from hephaistos (unknown [94.31.103.219])
-	(Authenticated sender: konstantin.kletschke@inside-m2m.de)
-	by mail.inside-m2m.de (Postfix) with ESMTPSA id CB60C40002;
-	Tue,  3 Dec 2024 20:03:09 +0100 (CET)
-Date: Tue, 3 Dec 2024 20:03:08 +0100
-From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z09V7DScnJE16I0v@hephaistos>
-References: <Z0gywL2hLcIDoLQ8@hephaistos>
- <fc008e94-9a80-4c01-8c4c-3c926721c2b1@pengutronix.de>
- <Z0g74s98_Pz98tC5@hephaistos>
- <83e0f4b3-c558-48dc-b867-f88376d73bc2@pengutronix.de>
- <Z0hbuZBvK2aLd5s1@hephaistos>
- <b91eaf6c-9559-466a-bd20-297647401c63@pengutronix.de>
- <Z03A9rr21q320J0t@hephaistos>
- <Z09PNnu8AgghB8wF@hephaistos>
- <653f9b1e-2044-41c9-b87c-0d9804c9a6cb@pengutronix.de>
+	Tue, 03 Dec 2024 20:24:53 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tIZRw-00037y-Jx; Tue, 03 Dec 2024 21:24:48 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tIZRv-001XBW-23;
+	Tue, 03 Dec 2024 21:24:48 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tIZRw-002Ssl-11;
+	Tue, 03 Dec 2024 21:24:48 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  3 Dec 2024 21:24:47 +0100
+Message-Id: <20241203202447.587667-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <653f9b1e-2044-41c9-b87c-0d9804c9a6cb@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241203_110311_425421_EBCAA447 
-X-CRM114-Status: GOOD (  17.78  )
+X-CRM114-CacheID: sfid-20241203_122452_280788_89120237 
+X-CRM114-Status: GOOD (  12.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,74 +78,66 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Reset on Beaglebone Black has become unreliable/broken
+Subject: [PATCH master] ARM: omap: fix NS16550 UART setup in omap_debug_ll_init
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Dec 03, 2024 at 07:46:56PM +0100, Ahmad Fatoum wrote:
+The NS16550 on the OMAP SoCs has a special mode register that contains a
+disable bit. In order to use the peripheral, this bit needs to be
+cleared.
 
-> > I can simulate this with "mw 0x44e00f00 0x1" which shows the freeze 
-> > I see (upon restart) on affected BBBs.
-> 
-> This happens without Linux first starting, right? So that invalidates
-> my theory of Linux reconfiguring the PMIC to something invalid.
+We do that in ns16550_omap_init_port() and used to it for the DEBUG_LL
+case in omap_uart_lowlevel_init().
 
-Yesthis is all reproducible without linux being involved.
-Applies to S1 connected to NRESET_INOUT (warm restart) and barebox too
-(reste cmd, watchdog triggering).
+Commit 89094b2a299b ("ARM: omap: Use ns16550 debug_ll helper") removed
+this mode register write for the DEBUG_LL case, thereby rendering
+DEBUG_LL on the BeagleBone Black non-functional.
 
-> Nice. Do you know about https://barebox.org/doc/latest/user/system-reset.html ?
-> 
-> TL;DR: Cold reset is usually the preferred way to reset as it comes
-> with the least amount of surprises.
+Add back the missing register write to fix this.
 
-No, not yet. I will investigate.
-One could change this for BBB, but the ugly part is, the Hardware on
-the BBB forreset, S1, triggers warm restart. Hardwired, if I read
-correct.
+This has not been tested on AM6xx, but the barebox proper driver also
+writes a zero (after writing 0x80), so it's assumed that this write
+would be a no-op there, because either the POR default or a previous
+boot stage does already configure the peripheral this way.
 
-> What does a cold reset do on an electrical level? Does it tell the PMIC
-> to do a reset?
+Fixes: 89094b2a299b ("ARM: omap: Use ns16550 debug_ll helper")
+Reported-by: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/debug_ll/ns16550.h   | 1 +
+ include/mach/omap/debug_ll.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-I am not shure, I will investigate.
-There is a circle CPU PMIC_PWR_EN connected to PMIC and PMIC WAKEUP
-connected to CPU. PMIC's reset input is not connected.
-
-> Anther thing, I wonder about is what configuration the PMIC has on affected
-> boards and boards not affected. Can you use the I2C commands in barebox
-> to read the PMIC register set and compare it between the affected and
-> unaffected boards? Maybe they have different mask defaults?
-
-This is a good idea, I will do this tomorrow. Have to get used to read
-that out of the PMIC. May be a difference to u-boot is from interest in
-a second step too, but the idea about differen mask defaults is
-interesting since the error is so darn hitting 100% on affected boards
-and 0% on not affected ones.
-Could it be different RAM chips, whichsettings causes them to be on the edge?
-
-Regards
-Konsti
-
-
+diff --git a/include/debug_ll/ns16550.h b/include/debug_ll/ns16550.h
+index 2bad7a43ca91..64cb9cd102df 100644
+--- a/include/debug_ll/ns16550.h
++++ b/include/debug_ll/ns16550.h
+@@ -19,6 +19,7 @@
+ #define NS16550_LCR	0x3
+ #define NS16550_MCR	0x4
+ #define NS16550_LSR	0x5
++#define NS16550_MDR	0x8	/* TI OMAP Mode register */
+ 
+ #define NS16550_LCR_VAL		0x3 /* 8 data, 1 stop, no parity */
+ #define NS16550_MCR_VAL		0x3 /* RTS/DTR */
+diff --git a/include/mach/omap/debug_ll.h b/include/mach/omap/debug_ll.h
+index b0650abf2daa..a95c1bf140ac 100644
+--- a/include/mach/omap/debug_ll.h
++++ b/include/mach/omap/debug_ll.h
+@@ -57,6 +57,7 @@ static inline void omap_debug_ll_init(void)
+ 
+ 	divisor = debug_ll_ns16550_calc_divisor(48000000);
+ 	debug_ll_ns16550_init(base, divisor);
++	debug_ll_write_reg(base, NS16550_MDR, 0);
+ }
+ 
+ static inline void PUTC_LL(int c)
 -- 
-INSIDE M2M GmbH
-Konstantin Kletschke
-Berenbosteler Straße 76 B
-30823 Garbsen
-
-Telefon: +49 (0) 5137 90950136
-Mobil: +49 (0) 151 15256238
-Fax: +49 (0) 5137 9095010
-
-konstantin.kletschke@inside-m2m.de
-http://www.inside-m2m.de 
-
-Geschäftsführung: Michael Emmert, Derek Uhlig
-HRB: 111204, AG Hannover
+2.39.5
 
 
 
