@@ -1,69 +1,65 @@
-Delivery-date: Tue, 03 Dec 2024 11:58:21 +0100
+Delivery-date: Tue, 03 Dec 2024 11:58:22 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIQbk-003TAc-2H
+	id 1tIQbm-003TAx-0c
 	for lore@lore.pengutronix.de;
-	Tue, 03 Dec 2024 11:58:21 +0100
+	Tue, 03 Dec 2024 11:58:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIQbk-0004zt-3Z
-	for lore@pengutronix.de; Tue, 03 Dec 2024 11:58:21 +0100
+	id 1tIQbl-00050H-Lo
+	for lore@pengutronix.de; Tue, 03 Dec 2024 11:58:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JjD4Eja9QHufLLFMAaIYW9jOX3C2XnggSg+FlmF7ScQ=; b=O6q1v0/JRxnM7T55wD9EUnGLE1
-	aKpFVoS9O518GMfSA1c/iIYrLCEte+XJnEgpRK7vUhnZeP4+dHxvsewLQs1LaddNDdgc+q9OdHjnA
-	4aZ4aPkGPP0VBlbz8HXG4bDSVVoozjWEkG4OeIiB2qAsJX1SLfD4jKAD25y/0buTE+aXE3y3u7+ai
-	ICMldWXSOZpNwU+K5ydf2PgdakeSNJKkMHsxqqYOx4ZrRE1wDELTdHC/eMMbou9zyVa6LEuwbtE8s
-	jTH3aH1l8APueYcAWJCh6U+Xh2vdoasMEVRnUekBU9oMjgqIuOnw9SrGox04IjlWhbTjG8nOUu1ET
-	2VHW7d6A==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=R5PwHuhv9tm9EX4ThsmDLmAwvrm4VYq8BwhBv4YRq+M=; b=wcyt1fNVDAJsAPL5T1VjXeLBvs
+	PM34ymbskXd67HJKat8bpBijjEuJQnmajw6GgJxeMnF7+7TJnthz4VZ1XCInMgeZdtXlxt+GFdQGi
+	li7FsKXg322eGRfOPL0kT/tsh9HKp6uqyxxLD63Jz79JJIeQyZSY2SaLI4bEKmKUuAgt03y2YyKK8
+	h0GyzEKUVeySRzjC9cd4w5wcJTNm+WZKAge6ETfFzTaqv2m75gx+kkwciE0Re8dCFx1Xwlx6VAUkp
+	28Tt+cS7oPD6mz9EVyF+36lXjqRF6iwef2MNMidF8icwy774VpAbbrQaf6uNphljtIMb9/CxoLPnu
+	3AOR0w+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIQbG-00000009AB5-47aN;
-	Tue, 03 Dec 2024 10:57:50 +0000
+	id 1tIQbH-00000009ABG-1xCV;
+	Tue, 03 Dec 2024 10:57:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIQMN-000000096v4-3QGS
+	id 1tIQMP-000000096vr-18PJ
 	for barebox@lists.infradead.org;
-	Tue, 03 Dec 2024 10:42:29 +0000
+	Tue, 03 Dec 2024 10:42:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tIQMM-0001rF-NA
-	for barebox@lists.infradead.org; Tue, 03 Dec 2024 11:42:26 +0100
+	id 1tIQMM-0001rE-M0; Tue, 03 Dec 2024 11:42:26 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tIQML-001SbO-2S
-	for barebox@lists.infradead.org;
+	id 1tIQML-001SbN-2K;
 	Tue, 03 Dec 2024 11:42:26 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tIQMM-00G9yg-1R
-	for barebox@lists.infradead.org;
+	id 1tIQMM-00G9yg-1H;
 	Tue, 03 Dec 2024 11:42:26 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue,  3 Dec 2024 11:42:25 +0100
-Message-Id: <20241203104225.3851406-2-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  3 Dec 2024 11:42:24 +0100
+Message-Id: <20241203104225.3851406-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241203104225.3851406-1-a.fatoum@pengutronix.de>
-References: <20241203104225.3851406-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241203_024228_007488_32261337 
-X-CRM114-Status: GOOD (  26.30  )
+X-CRM114-CacheID: sfid-20241203_024229_463480_5FD21610 
+X-CRM114-Status: GOOD (  15.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,274 +81,232 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] kbuild: sync scripts/Kbuild.include with Linux
+Subject: [PATCH 1/2] kbuild: split off compiler helpers into separate Makefile.compiler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The scripts/Kbuild.include file has a collection of helpers for use
-across in Kbuild. Let's bring up our version in-sync with Linux
-v6.13-rc1 by importing the following Linux commits:
+Linux has split the compile-specific helpers into a separate file, so
+let's do the same for barebox to make it easier to sync
+scripts/Kbuild.include in the follow-up commit.
 
-  875ef1a57f kbuild: use .NOTINTERMEDIATE for future GNU Make versions
-  174a1dcc96 kbuild: sink stdout from cmd for silent build
-  a7f3257da8 kbuild: remove the target in signal traps when interrupted
-  6768fa4bcb kbuild: add read-file macro
-  fccb3d3eda kbuild: add test-{ge,gt,le,lt} macros
-  8402ee182c kbuild: remove leftover comment for filechk utility
-  12fec3d601 kbuild: replace $(dot-target).tmp in filechk with $(tmp-target)
-  e1f86d7b4b kbuild: warn if FORCE is missing for filechk
-  8962b6b475 kbuild: print short log in addition to the whole command with V=1
-  6ae4b9868a kbuild: allow to combine multiple V= levels
-  214c0eea43 kbuild: add $(objtree)/ prefix to some in-kernel build artifacts
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Makefile               |  19 ++++---
- scripts/Kbuild.include | 109 ++++++++++++++++++++++++++++++++++-------
- scripts/tags.sh        |   2 +-
- 3 files changed, 102 insertions(+), 28 deletions(-)
+ Makefile                  |  1 +
+ scripts/Kbuild.include    | 83 ---------------------------------------
+ scripts/Makefile.build    |  1 +
+ scripts/Makefile.compiler | 78 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 80 insertions(+), 83 deletions(-)
+ create mode 100644 scripts/Makefile.compiler
 
 diff --git a/Makefile b/Makefile
-index 0b61d2875471..1516e5685cbf 100644
+index bc75c6335177..0b61d2875471 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -66,9 +66,8 @@ unexport GREP_OPTIONS
- #
- #	$(Q)ln $@ :<
- #
--# If KBUILD_VERBOSE equals 0 then the above command will be hidden.
--# If KBUILD_VERBOSE equals 1 then the above command is displayed.
--# If KBUILD_VERBOSE equals 2 then give the reason why each target is rebuilt.
-+# If KBUILD_VERBOSE contains 1, the whole command is echoed.
-+# If KBUILD_VERBOSE contains 2, the reason for rebuilding is printed.
- #
- # To put more focus on warnings, be less verbose as default
- # Use 'make V=1' to see the full commands
-@@ -80,12 +79,11 @@ ifndef KBUILD_VERBOSE
-   KBUILD_VERBOSE = 0
- endif
+@@ -314,6 +314,7 @@ __build_one_by_one:
+ else # !mixed-build
  
--ifeq ($(KBUILD_VERBOSE),1)
-+quiet = quiet_
-+Q = @
-+ifneq ($(findstring 1, $(KBUILD_VERBOSE)),)
-   quiet =
-   Q =
--else
--  quiet=quiet_
--  Q = @
- endif
- 
- # If the user is running make -s (silent mode), suppress echoing of
-@@ -317,7 +315,7 @@ include scripts/Kbuild.include
- include scripts/Makefile.compiler
+ include scripts/Kbuild.include
++include scripts/Makefile.compiler
  
  # Read KERNELRELEASE from include/config/kernel.release (if it exists)
--KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
-+KERNELRELEASE = $(call read-file, include/config/kernel.release)
- KERNELVERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(SUBLEVEL)))$(EXTRAVERSION)
- BUILDSYSTEM_VERSION =
- export VERSION PATCHLEVEL SUBLEVEL KERNELRELEASE KERNELVERSION BUILDSYSTEM_VERSION
-@@ -1326,8 +1324,9 @@ help:
- 		printf "  %-24s - Build for %s\\n" $(b) $(subst _defconfig,,$(b));) \
- 		echo '')
- 
--	@echo  '  make V=0|1 [targets] 0 => quiet build (default), 1 => verbose build'
--	@echo  '  make V=2   [targets] 2 => give reason for rebuild of target'
-+	@echo  '  make V=n   [targets] 0: quiet build (default), 1: verbose build'
-+	@echo  '                       2: give reason for rebuild of target'
-+	@echo  '                       V=1 and V=2 can be combined with V=12'
- 	@echo  '  make O=dir [targets] Locate all output files in "dir", including .config'
- 	@echo  '  make C=1   [targets] Check all c source with $$CHECK (sparse by default)'
- 	@echo  '  make C=2   [targets] Force check of all c source with $$CHECK'
+ KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
 diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index 72c6a3c5d7d1..8c311b997e24 100644
+index 315e50a2f709..72c6a3c5d7d1 100644
 --- a/scripts/Kbuild.include
 +++ b/scripts/Kbuild.include
-@@ -10,13 +10,37 @@ empty   :=
- space   := $(empty) $(empty)
- space_escape := _-_SPACE_-_
- pound := \#
-+define newline
-+
-+
-+endef
-+
-+###
-+# Comparison macros.
-+# Usage: $(call test-lt, $(CONFIG_LLD_VERSION), 150000)
-+#
-+# Use $(intcmp ...) if supported. (Make >= 4.4)
-+# Otherwise, fall back to the 'test' shell command.
-+ifeq ($(intcmp 1,0,,,y),y)
-+test-ge = $(intcmp $(strip $1)0, $(strip $2)0,,y,y)
-+test-gt = $(intcmp $(strip $1)0, $(strip $2)0,,,y)
-+else
-+test-ge = $(shell test $(strip $1)0 -ge $(strip $2)0 && echo y)
-+test-gt = $(shell test $(strip $1)0 -gt $(strip $2)0 && echo y)
-+endif
-+test-le = $(call test-ge, $2, $1)
-+test-lt = $(call test-gt, $2, $1)
- 
- ###
- # Name of target with a '.' as filename prefix. foo/bar.o => foo/.bar.o
- dot-target = $(dir $@).$(notdir $@)
- 
- ###
--# The temporary file to save gcc -MD generated dependencies must not
-+# Name of target with a '.tmp_' as filename prefix. foo/bar.o => foo/.tmp_bar.o
-+tmp-target = $(dir $@).tmp_$(notdir $@)
-+
-+###
-+# The temporary file to save gcc -MMD generated dependencies must not
- # contain a comma
- depfile = $(subst $(comma),_,$(dot-target).d)
- 
-@@ -36,6 +60,20 @@ escsq = $(subst $(squote),'\$(squote)',$1)
- # Quote a string to pass it to C files. foo => '"foo"'
- stringify = $(squote)$(quote)$1$(quote)$(squote)
- 
-+###
-+# The path to Kbuild or Makefile. Kbuild has precedence over Makefile.
-+kbuild-file = $(or $(wildcard $(src)/Kbuild),$(src)/Makefile)
-+
-+###
-+# Read a file, replacing newlines with spaces
-+#
-+# Make 4.2 or later can read a file by using its builtin function.
-+ifneq ($(filter-out 4.0 4.1, $(MAKE_VERSION)),)
-+read-file = $(subst $(newline),$(space),$(file < $1))
-+else
-+read-file = $(shell cat $1 2>/dev/null)
-+endif
-+
- ###
- # Easy method for doing a status message
-        kecho := :
-@@ -56,16 +94,15 @@ kecho := $($(quiet)kecho)
- # - If no file exist it is created
- # - If the content differ the new file is used
- # - If they are equal no change, and no timestamp update
--# - stdin is piped in from the first prerequisite ($<) so one has
--#   to specify a valid file as first prerequisite (often the kbuild file)
- define filechk
-+	$(check-FORCE)
- 	$(Q)set -e;						\
- 	mkdir -p $(dir $@);					\
--	trap "rm -f $(dot-target).tmp" EXIT;			\
--	{ $(filechk_$(1)); } > $(dot-target).tmp;		\
--	if [ ! -r $@ ] || ! cmp -s $@ $(dot-target).tmp; then	\
-+	trap "rm -f $(tmp-target)" EXIT;			\
-+	{ $(filechk_$(1)); } > $(tmp-target);			\
-+	if [ ! -r $@ ] || ! cmp -s $@ $(tmp-target); then	\
- 		$(kecho) '  UPD     $@';			\
--		mv -f $(dot-target).tmp $@;			\
-+		mv -f $(tmp-target) $@;				\
+@@ -69,81 +69,6 @@ define filechk
  	fi
  endef
  
-@@ -81,13 +118,39 @@ build := -f $(srctree)/scripts/Makefile.build obj
+-######
+-# gcc support functions
+-# See documentation in Documentation/kbuild/makefiles.rst
+-
+-# cc-cross-prefix
+-# Usage: CROSS_COMPILE := $(call cc-cross-prefix, m68k-linux-gnu- m68k-linux-)
+-# Return first <prefix> where a <prefix>gcc is found in PATH.
+-# If no gcc found in PATH with listed prefixes return nothing
+-#
+-# Note: '2>/dev/null' is here to force Make to invoke a shell. Otherwise, it
+-# would try to directly execute the shell builtin 'command'. This workaround
+-# should be kept for a long time since this issue was fixed only after the
+-# GNU Make 4.2.1 release.
+-cc-cross-prefix = $(firstword $(foreach c, $(1), \
+-			$(if $(shell command -v -- $(c)gcc 2>/dev/null), $(c))))
+-
+-# output directory for tests below
+-TMPOUT := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/)
+-
+-# try-run
+-# Usage: option = $(call try-run, $(CC)...-o "$$TMP",option-ok,otherwise)
+-# Exit code chooses option. "$$TMP" is can be used as temporary file and
+-# is automatically cleaned up.
+-try-run = $(shell set -e;		\
+-	TMP="$(TMPOUT).$$$$.tmp";	\
+-	TMPO="$(TMPOUT).$$$$.o";	\
+-	if ($(1)) >/dev/null 2>&1;	\
+-	then echo "$(2)";		\
+-	else echo "$(3)";		\
+-	fi;				\
+-	rm -f "$$TMP" "$$TMPO")
+-
+-# as-option
+-# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
+-
+-as-option = $(call try-run,\
+-	$(CC) $(KBUILD_CFLAGS) $(1) -c -xassembler /dev/null -o "$$TMP",$(1),$(2))
+-
+-# as-instr
+-# Usage: cflags-y += $(call as-instr,instr,option1,option2)
+-
+-as-instr = $(call try-run,\
+-	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -xassembler -o "$$TMP" -,$(2),$(3))
+-
+-# cc-option
+-# Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
+-
+-cc-option = $(call try-run,\
+-	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",$(1),$(2))
+-
+-# cc-option-yn
+-# Usage: flag := $(call cc-option-yn,-march=winchip-c6)
+-cc-option-yn = $(call try-run,\
+-	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",y,n)
+-
+-# cc-disable-warning
+-# Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
+-cc-disable-warning = $(call try-run,\
+-	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -xc /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+-
+-# cc-version
+-# Usage gcc-ver := $(call cc-version)
+-cc-version = $(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-version.sh $(CC))
+-
+-# cc-ifversion
+-# Usage:  EXTRA_CFLAGS += $(call cc-ifversion, -lt, 0402, -O1)
+-cc-ifversion = $(shell [ $(call cc-version, $(CC)) $(1) $(2) ] && echo $(3))
+-
+-# ld-option
+-# Usage: KBUILD_LDFLAGS += $(call ld-option, -X)
+-ld-option = $(call try-run,\
+-	$(CC) -x c /dev/null -c -o "$$TMPO" ; $(LD) $(1) "$$TMPO" -o "$$TMP",$(1),$(2))
+-
+-######
+-
+ ###
+ # Shorthand for $(Q)$(MAKE) -f scripts/Makefile.build obj=
+ # Usage:
+@@ -156,14 +81,6 @@ build := -f $(srctree)/scripts/Makefile.build obj
  # $(Q)$(MAKE) $(clean)=dir
  clean := -f $(srctree)/scripts/Makefile.clean obj
  
--# echo command.
--# Short version is used, if $(quiet) equals `quiet_', otherwise full one.
--echo-cmd = $(if $($(quiet)cmd_$(1)),\
--	echo '  $(call escsq,$($(quiet)cmd_$(1)))$(echo-why)';)
-+# pring log
-+#
-+# If quiet is "silent_", print nothing and sink stdout
-+# If quiet is "quiet_", print short log
-+# If quiet is empty, print short log and whole command
-+silent_log_print = exec >/dev/null;
-+ quiet_log_print = $(if $(quiet_cmd_$1), echo '  $(call escsq,$(quiet_cmd_$1)$(why))';)
-+       log_print = echo '$(pound) $(call escsq,$(or $(quiet_cmd_$1),cmd_$1 $@)$(why))'; \
-+                   echo '  $(call escsq,$(cmd_$1))';
+-# Prefix -I with $(srctree) if it is not an absolute path.
+-# skip if -I has no parameter
+-addtree = $(if $(patsubst -I%,%,$(1)), \
+-$(if $(filter-out -I/%,$(1)),$(patsubst -I%,-I$(srctree)/%,$(1))) $(1),$(1))
+-
+-# Find all -I options and call addtree
+-flags = $(foreach o,$($(1)),$(if $(filter -I%,$(o)),$(call addtree,$(o)),$(o)))
+-
+ # echo command.
+ # Short version is used, if $(quiet) equals `quiet_', otherwise full one.
+ echo-cmd = $(if $($(quiet)cmd_$(1)),\
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 6b67ad17634b..1c511d38a12b 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -37,6 +37,7 @@ subdir-ccflags-y :=
+ -include include/config/auto.conf
  
--# printing commands
--cmd = @set -e; $(echo-cmd) $(cmd_$(1))
-+# Delete the target on interruption
-+#
-+# GNU Make automatically deletes the target if it has already been changed by
-+# the interrupted recipe. So, you can safely stop the build by Ctrl-C (Make
-+# will delete incomplete targets), and resume it later.
-+#
-+# However, this does not work when the stderr is piped to another program, like
-+#  $ make >&2 | tee log
-+# Make dies with SIGPIPE before cleaning the targets.
-+#
-+# To address it, we clean the target in signal traps.
-+#
-+# Make deletes the target when it catches SIGHUP, SIGINT, SIGQUIT, SIGTERM.
-+# So, we cover them, and also SIGPIPE just in case.
-+#
-+# Of course, this is unneeded for phony targets.
-+delete-on-interrupt = \
-+	$(if $(filter-out $(PHONY), $@), \
-+		$(foreach sig, HUP INT QUIT TERM PIPE, \
-+			trap 'rm -f $@; trap - $(sig); kill -s $(sig) $$$$' $(sig);))
+ include scripts/Kbuild.include
++include scripts/Makefile.compiler
+ 
+ # The filename Kbuild has precedence over Makefile
+ kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+new file mode 100644
+index 000000000000..1d34239b3bba
+--- /dev/null
++++ b/scripts/Makefile.compiler
+@@ -0,0 +1,78 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+# print and execute commands
-+cmd = @$(if $(cmd_$(1)),set -e; $($(quiet)log_print) $(delete-on-interrupt) $(cmd_$(1)),:)
- 
- ###
- # if_changed      - execute command if any prerequisite is newer than
-@@ -142,7 +205,7 @@ if_changed_dep = $(if $(if-changed-cond),$(cmd_and_fixdep),@:)
- 
- cmd_and_fixdep =                                                             \
- 	$(cmd);                                                              \
--	scripts/basic/fixdep $(depfile) $@ '$(make-cmd)' > $(dot-target).cmd;\
-+	$(objtree)/scripts/basic/fixdep $(depfile) $@ '$(make-cmd)' > $(dot-target).cmd;\
- 	rm -f $(depfile)
- 
- # Usage: $(call if_changed_rule,foo)
-@@ -169,8 +232,8 @@ if_changed_rule = $(if $(if-changed-cond),$(rule_$(1)),@:)
- # (5) No dir/.target.cmd file (used to store command line)
- # (6) No dir/.target.cmd file and target not listed in $(targets)
- #     This is a good hint that there is a bug in the kbuild file
--ifeq ($(KBUILD_VERBOSE),2)
--why =                                                                        \
-+ifneq ($(findstring 2, $(KBUILD_VERBOSE)),)
-+_why =                                                                        \
-     $(if $(filter $@, $(PHONY)),- due to target is PHONY,                    \
-         $(if $(wildcard $@),                                                 \
-             $(if $(newer-prereqs),- due to: $(newer-prereqs),                \
-@@ -187,11 +250,23 @@ why =                                                                        \
-          )                                                                   \
-      )
- 
--echo-why = $(call escsq, $(strip $(why)))
-+why = $(space)$(strip $(_why))
- endif
- 
-+###############################################################################
-+
- # delete partially updated (i.e. corrupted) files on error
- .DELETE_ON_ERROR:
- 
- # do not delete intermediate files automatically
++# cc-cross-prefix
++# Usage: CROSS_COMPILE := $(call cc-cross-prefix, m68k-linux-gnu- m68k-linux-)
++# Return first <prefix> where a <prefix>gcc is found in PATH.
++# If no gcc found in PATH with listed prefixes return nothing
 +#
-+# .NOTINTERMEDIATE is more correct, but only available on newer Make versions.
-+# Make 4.4 introduced .NOTINTERMEDIATE, and it appears in .FEATURES, but the
-+# global .NOTINTERMEDIATE does not work. We can use it on Make > 4.4.
-+# Use .SECONDARY for older Make versions, but "newer-prereq" cannot detect
-+# deleted files.
-+ifneq ($(and $(filter notintermediate, $(.FEATURES)),$(filter-out 4.4,$(MAKE_VERSION))),)
-+.NOTINTERMEDIATE:
-+else
- .SECONDARY:
-+endif
-diff --git a/scripts/tags.sh b/scripts/tags.sh
-index 4e18ae5282a6..6e0e0a7c2270 100755
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -8,7 +8,7 @@
- # Uses the following environment variables:
- # SUBARCH, SRCARCH, srctree
- 
--if [ "$KBUILD_VERBOSE" = "1" ]; then
-+if [[ "$KBUILD_VERBOSE" =~ "1" ]]; then
- 	set -x
- fi
- 
++# Note: '2>/dev/null' is here to force Make to invoke a shell. Otherwise, it
++# would try to directly execute the shell builtin 'command'. This workaround
++# should be kept for a long time since this issue was fixed only after the
++# GNU Make 4.2.1 release.
++cc-cross-prefix = $(firstword $(foreach c, $(1), \
++			$(if $(shell command -v -- $(c)gcc 2>/dev/null), $(c))))
++
++# output directory for tests below
++TMPOUT := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/)
++
++# try-run
++# Usage: option = $(call try-run, $(CC)...-o "$$TMP",option-ok,otherwise)
++# Exit code chooses option. "$$TMP" is can be used as temporary file and
++# is automatically cleaned up.
++try-run = $(shell set -e;		\
++	TMP="$(TMPOUT).$$$$.tmp";	\
++	TMPO="$(TMPOUT).$$$$.o";	\
++	if ($(1)) >/dev/null 2>&1;	\
++	then echo "$(2)";		\
++	else echo "$(3)";		\
++	fi;				\
++	rm -f "$$TMP" "$$TMPO")
++
++# as-option
++# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
++
++as-option = $(call try-run,\
++	$(CC) $(KBUILD_CFLAGS) $(1) -c -xassembler /dev/null -o "$$TMP",$(1),$(2))
++
++# as-instr
++# Usage: cflags-y += $(call as-instr,instr,option1,option2)
++
++as-instr = $(call try-run,\
++	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -xassembler -o "$$TMP" -,$(2),$(3))
++
++# cc-option
++# Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
++
++cc-option = $(call try-run,\
++	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",$(1),$(2))
++
++# cc-option-yn
++# Usage: flag := $(call cc-option-yn,-march=winchip-c6)
++cc-option-yn = $(call try-run,\
++	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",y,n)
++
++# cc-disable-warning
++# Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
++cc-disable-warning = $(call try-run,\
++	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -xc /dev/null -o "$$TMP",-Wno-$(strip $(1)))
++
++# cc-version
++# Usage gcc-ver := $(call cc-version)
++cc-version = $(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-version.sh $(CC))
++
++# cc-ifversion
++# Usage:  EXTRA_CFLAGS += $(call cc-ifversion, -lt, 0402, -O1)
++cc-ifversion = $(shell [ $(call cc-version, $(CC)) $(1) $(2) ] && echo $(3))
++
++# ld-option
++# Usage: KBUILD_LDFLAGS += $(call ld-option, -X)
++ld-option = $(call try-run,\
++	$(CC) -x c /dev/null -c -o "$$TMPO" ; $(LD) $(1) "$$TMPO" -o "$$TMP",$(1),$(2))
++
++# Prefix -I with $(srctree) if it is not an absolute path.
++# skip if -I has no parameter
++addtree = $(if $(patsubst -I%,%,$(1)), \
++$(if $(filter-out -I/%,$(1)),$(patsubst -I%,-I$(srctree)/%,$(1))) $(1),$(1))
++
++# Find all -I options and call addtree
++flags = $(foreach o,$($(1)),$(if $(filter -I%,$(o)),$(call addtree,$(o)),$(o)))
 -- 
 2.39.5
 
