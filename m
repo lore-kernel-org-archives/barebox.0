@@ -1,71 +1,69 @@
-Delivery-date: Tue, 03 Dec 2024 11:25:02 +0100
+Delivery-date: Tue, 03 Dec 2024 11:58:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIQ5V-003Sim-2a
+	id 1tIQbk-003TAc-2H
 	for lore@lore.pengutronix.de;
-	Tue, 03 Dec 2024 11:25:02 +0100
+	Tue, 03 Dec 2024 11:58:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIQ5V-0007Bq-5J
-	for lore@pengutronix.de; Tue, 03 Dec 2024 11:25:02 +0100
+	id 1tIQbk-0004zt-3Z
+	for lore@pengutronix.de; Tue, 03 Dec 2024 11:58:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=jJfWSK8OkgEuQ/3KCPOlDaRFAh5LOc3EpvNOu8L1JiQ=; b=cwuduVM4rHOioDP4ZV8Dp9SjgU
-	8PaI/o2Q5m8d2x1unQmmSjrFlAenNBfB9SXaAr8P5INQ0Tv8w5ktZxGHODnTRmGtqFNd3B1vpYnrD
-	OD9TJGcyWR2TcqxwBRNSFcGF3JHNl4f9y4+X38TTXM622AmiCiX3tjno7un57mq5GDedlOAGK3UEk
-	7YexndUblwSXBVe2uNhNaK3oEL33iutXD6RLci1ZVHwRk/08EOgtplb70p5UlaFVEn/+zCxf41Jdx
-	zeSZVDr4i07y2QXwXut0iXOtDL57mVJbz0KP2XmGlexFOAED5PGkEDB2FZdcWQVQrTgTvt/fdxQBv
-	aDjTPc1w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=JjD4Eja9QHufLLFMAaIYW9jOX3C2XnggSg+FlmF7ScQ=; b=O6q1v0/JRxnM7T55wD9EUnGLE1
+	aKpFVoS9O518GMfSA1c/iIYrLCEte+XJnEgpRK7vUhnZeP4+dHxvsewLQs1LaddNDdgc+q9OdHjnA
+	4aZ4aPkGPP0VBlbz8HXG4bDSVVoozjWEkG4OeIiB2qAsJX1SLfD4jKAD25y/0buTE+aXE3y3u7+ai
+	ICMldWXSOZpNwU+K5ydf2PgdakeSNJKkMHsxqqYOx4ZrRE1wDELTdHC/eMMbou9zyVa6LEuwbtE8s
+	jTH3aH1l8APueYcAWJCh6U+Xh2vdoasMEVRnUekBU9oMjgqIuOnw9SrGox04IjlWhbTjG8nOUu1ET
+	2VHW7d6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIQ4q-000000093fA-3kTM;
-	Tue, 03 Dec 2024 10:24:20 +0000
-Received: from mx1.riseup.net ([198.252.153.129])
+	id 1tIQbG-00000009AB5-47aN;
+	Tue, 03 Dec 2024 10:57:50 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIQ4n-000000093eZ-3iIB
+	id 1tIQMN-000000096v4-3QGS
 	for barebox@lists.infradead.org;
-	Tue, 03 Dec 2024 10:24:19 +0000
-Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx1.riseup.net (Postfix) with ESMTPS id 4Y2cFr4h9LzDqWs;
-	Tue,  3 Dec 2024 10:24:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-	t=1733221456; bh=5zzDHTrm4nGzIfl8szfN1XVQNwYA3TLjDH5uZQsB2Bw=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Go5pFeCsc3uSenBAIshfqXrbE1sY3O9emQO+lWZzg/ryqHA7CduwogKCxd2ACvKhk
-	 xMpJcUx1Uzl2Dbp033EFCPibrC1xIv8d3tmqWlvQEoN9s/CAMcy7J66e3xDsHLybKl
-	 H4PLq+xUBegMLSkqsuZtSN2ogbmcTaBL7soiQeak=
-X-Riseup-User-ID: F7765CB33A17CF79335059B1390A62D4EFFF559621D247F7B24F9E8DCAD5356C
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4Y2cFq12fpzJqfj;
-	Tue,  3 Dec 2024 10:24:14 +0000 (UTC)
-From: Dang Huynh <danct12@riseup.net>
-Date: Tue, 03 Dec 2024 17:24:09 +0700
+	Tue, 03 Dec 2024 10:42:29 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tIQMM-0001rF-NA
+	for barebox@lists.infradead.org; Tue, 03 Dec 2024 11:42:26 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tIQML-001SbO-2S
+	for barebox@lists.infradead.org;
+	Tue, 03 Dec 2024 11:42:26 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tIQMM-00G9yg-1R
+	for barebox@lists.infradead.org;
+	Tue, 03 Dec 2024 11:42:26 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Tue,  3 Dec 2024 11:42:25 +0100
+Message-Id: <20241203104225.3851406-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241203104225.3851406-1-a.fatoum@pengutronix.de>
+References: <20241203104225.3851406-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-pt2-init-v2-1-d6c625e1e455@riseup.net>
-X-B4-Tracking: v=1; b=H4sIAEjcTmcC/22MQQ7CIBBFr9LMWgwzEklceQ/ThS2DnQ0lQImm4
- e5i125+8n5e3g6Zk3CG27BD4ipZ1tCBTgPMyzO8WInrDKTJYB8VCykJUpRFIs8X47W7QtdjYi/
- vI/UYOy+Sy5o+R7ni7/0TqahQTQ55crM1lvU9SeYtngMXGFtrX8pD7oShAAAA
-X-Change-ID: 20241202-pt2-init-7122fe34f0d6
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Michael Riesch <michael.riesch@wolfvision.net>, 
- Dang Huynh <danct12@riseup.net>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241203_022417_992629_3D8E88AA 
-X-CRM114-Status: GOOD (  19.32  )
+X-CRM114-CacheID: sfid-20241203_024228_007488_32261337 
+X-CRM114-Status: GOOD (  26.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,337 +81,280 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2] ARM: rockchip: Add support for Pine64 PineTab 2
+Subject: [PATCH 2/2] kbuild: sync scripts/Kbuild.include with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Pine64 PineTab 2 tablet is basically the Quartz64 but as
-a finished product.
+The scripts/Kbuild.include file has a collection of helpers for use
+across in Kbuild. Let's bring up our version in-sync with Linux
+v6.13-rc1 by importing the following Linux commits:
 
-There are (currently) two revisions, v0.1 and v2.0.
-
-v0.1 was sent to developers and there are a few units around
-(probably less than 10?)
-
-v2.0 is the consumer available version, this version changed the
-display reset pin and hooked WLAN/BT chip to a GPIO.
-
-Signed-off-by: Dang Huynh <danct12@riseup.net>
+  875ef1a57f kbuild: use .NOTINTERMEDIATE for future GNU Make versions
+  174a1dcc96 kbuild: sink stdout from cmd for silent build
+  a7f3257da8 kbuild: remove the target in signal traps when interrupted
+  6768fa4bcb kbuild: add read-file macro
+  fccb3d3eda kbuild: add test-{ge,gt,le,lt} macros
+  8402ee182c kbuild: remove leftover comment for filechk utility
+  12fec3d601 kbuild: replace $(dot-target).tmp in filechk with $(tmp-target)
+  e1f86d7b4b kbuild: warn if FORCE is missing for filechk
+  8962b6b475 kbuild: print short log in addition to the whole command with V=1
+  6ae4b9868a kbuild: allow to combine multiple V= levels
+  214c0eea43 kbuild: add $(objtree)/ prefix to some in-kernel build artifacts
 ---
-Changes in v2:
-- Apply changes requested by Ahmad Fatoum
-- Unsplit relocation function as it doesn't seem to work correctly
-- Link to v1: https://lore.kernel.org/r/20241202-pt2-init-v1-1-bd1ebdc747e0@riseup.net
----
- arch/arm/boards/Makefile                   |  1 +
- arch/arm/boards/pine64-pinetab2/.gitignore |  1 +
- arch/arm/boards/pine64-pinetab2/Makefile   |  3 ++
- arch/arm/boards/pine64-pinetab2/board.c    | 54 ++++++++++++++++++++++++++++++
- arch/arm/boards/pine64-pinetab2/lowlevel.c | 37 ++++++++++++++++++++
- arch/arm/configs/multi_v8_defconfig        |  1 +
- arch/arm/configs/rockchip_v8_defconfig     |  1 +
- arch/arm/dts/Makefile                      |  1 +
- arch/arm/dts/rk3566-pinetab2-v0-1.dts      |  6 ++++
- arch/arm/dts/rk3566-pinetab2-v2-0.dts      |  6 ++++
- arch/arm/dts/rk3566-pinetab2.dtsi          | 46 +++++++++++++++++++++++++
- arch/arm/mach-rockchip/Kconfig             | 15 +++++++++
- images/Makefile.rockchip                   |  2 ++
- 13 files changed, 174 insertions(+)
+ Makefile               |  19 ++++---
+ scripts/Kbuild.include | 109 ++++++++++++++++++++++++++++++++++-------
+ scripts/tags.sh        |   2 +-
+ 3 files changed, 102 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 67d91616f623be9eddd370485707eeb25d3ebe40..b6b3894c6b40eb1c4129a55145fd8a2e77efe066 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -172,6 +172,7 @@ obj-$(CONFIG_MACH_MNT_REFORM)			+= mnt-reform/
- obj-$(CONFIG_MACH_SKOV_ARM9CPU)			+= skov-arm9cpu/
- obj-$(CONFIG_MACH_RK3568_EVB)			+= rockchip-rk3568-evb/
- obj-$(CONFIG_MACH_RK3568_BPI_R2PRO)			+= rockchip-rk3568-bpi-r2pro/
-+obj-$(CONFIG_MACH_PINE64_PINETAB2)		+= pine64-pinetab2/
- obj-$(CONFIG_MACH_PINE64_QUARTZ64)		+= pine64-quartz64/
- obj-$(CONFIG_MACH_RADXA_ROCK3)			+= radxa-rock3/
- obj-$(CONFIG_MACH_RADXA_ROCK5)			+= radxa-rock5/
-diff --git a/arch/arm/boards/pine64-pinetab2/.gitignore b/arch/arm/boards/pine64-pinetab2/.gitignore
-new file mode 100644
-index 0000000000000000000000000000000000000000..f458f794b54c96b74489d368cb9f44955db11126
---- /dev/null
-+++ b/arch/arm/boards/pine64-pinetab2/.gitignore
-@@ -0,0 +1 @@
-+sdram-init.bin
-diff --git a/arch/arm/boards/pine64-pinetab2/Makefile b/arch/arm/boards/pine64-pinetab2/Makefile
-new file mode 100644
-index 0000000000000000000000000000000000000000..b37b6c870bb4d88cbc6f45435caa0a4a8a3d12d6
---- /dev/null
-+++ b/arch/arm/boards/pine64-pinetab2/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-y += board.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/pine64-pinetab2/board.c b/arch/arm/boards/pine64-pinetab2/board.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..29f81adb4d34e542d188dac91b0c1d38b87e3c02
---- /dev/null
-+++ b/arch/arm/boards/pine64-pinetab2/board.c
-@@ -0,0 +1,54 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <bootsource.h>
-+#include <common.h>
-+#include <init.h>
-+#include <mach/rockchip/bbu.h>
-+
-+struct pinetab2_model {
-+	const char *name;
-+	const char *shortname;
-+};
-+
-+static int pinetab2_probe(struct device *dev)
-+{
-+	const struct pinetab2_model *model = device_get_match_data(dev);
-+	enum bootsource bootsource = bootsource_get();
-+	int instance = bootsource_get_instance();
-+
-+	barebox_set_model(model->name);
-+	barebox_set_hostname(model->shortname);
-+
-+	if (bootsource == BOOTSOURCE_MMC && instance == 0)
-+		of_device_enable_path("/chosen/environment-sd");
-+	else
-+		of_device_enable_path("/chosen/environment-emmc");
-+
-+	rockchip_bbu_mmc_register("sd", 0, "/dev/mmc0");
-+	rockchip_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/mmc1");
-+
-+	return 0;
-+}
-+
-+static const struct pinetab2_model pinetab2_v01 = {
-+	.name = "Pine64 PineTab 2 v0.1",
-+	.shortname = "pinetab2-v01",
-+};
-+
-+static const struct pinetab2_model pinetab2_v20 = {
-+	.name = "Pine64 PineTab 2 v2.0",
-+	.shortname = "pinetab2-v20",
-+};
-+
-+static const struct of_device_id pinetab2_of_match[] = {
-+	{ .compatible = "pine64,pinetab2-v0.1", .data = &pinetab2_v01, },
-+	{ .compatible = "pine64,pinetab2-v2.0", .data = &pinetab2_v20, },
-+	{ /* sentinel */ },
-+};
-+BAREBOX_DEEP_PROBE_ENABLE(pinetab2_of_match);
-+
-+static struct driver pinetab2_board_driver = {
-+	.name = "board-pinetab2",
-+	.probe = pinetab2_probe,
-+	.of_compatible = pinetab2_of_match,
-+};
-+coredevice_platform_driver(pinetab2_board_driver);
-diff --git a/arch/arm/boards/pine64-pinetab2/lowlevel.c b/arch/arm/boards/pine64-pinetab2/lowlevel.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..73ca6866f082c096c21accde0a27c511f55bc7dd
---- /dev/null
-+++ b/arch/arm/boards/pine64-pinetab2/lowlevel.c
-@@ -0,0 +1,37 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <common.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/rockchip/hardware.h>
-+#include <mach/rockchip/atf.h>
-+#include <debug_ll.h>
-+
-+extern char __dtb_rk3566_pinetab2_v0_1_start[];
-+extern char __dtb_rk3566_pinetab2_v2_0_start[];
-+
-+ENTRY_FUNCTION(start_pinetab2_v0, r0, r1, r2)
-+{
-+	putc_ll('>');
-+
-+	if (current_el() == 3)
-+		relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
-+	else
-+		relocate_to_current_adr();
-+
-+	setup_c();
-+
-+	rk3568_barebox_entry(__dtb_rk3566_pinetab2_v0_1_start);
-+}
-+
-+ENTRY_FUNCTION(start_pinetab2_v2, r0, r1, r2)
-+{
-+	putc_ll('>');
-+
-+	if (current_el() == 3)
-+		relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
-+	else
-+		relocate_to_current_adr();
-+
-+	setup_c();
-+
-+	rk3568_barebox_entry(__dtb_rk3566_pinetab2_v2_0_start);
-+}
-diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-index 39d5dd3fc1678f6a7a719f6ebcabc16b3d02f7ee..fc32ab5a06e4e19eac116369d9dad7dcf990d284 100644
---- a/arch/arm/configs/multi_v8_defconfig
-+++ b/arch/arm/configs/multi_v8_defconfig
-@@ -29,6 +29,7 @@ CONFIG_MACH_TQMLS1046A=y
- CONFIG_MACH_BEAGLEPLAY=y
- CONFIG_MACH_RK3568_EVB=y
- CONFIG_MACH_RK3568_BPI_R2PRO=y
-+CONFIG_MACH_PINE64_PINETAB2=y
- CONFIG_MACH_PINE64_QUARTZ64=y
- CONFIG_MACH_RADXA_ROCK3=y
- CONFIG_MACH_RADXA_ROCK5=y
-diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
-index 216a88e82457e2c928eb85f739134fda3f36c7c8..e000a1d4ee5746d5b6fe53489249469b1a2b887a 100644
---- a/arch/arm/configs/rockchip_v8_defconfig
-+++ b/arch/arm/configs/rockchip_v8_defconfig
-@@ -1,6 +1,7 @@
- CONFIG_ARCH_ROCKCHIP=y
- CONFIG_MACH_RK3568_EVB=y
- CONFIG_MACH_RK3568_BPI_R2PRO=y
-+CONFIG_MACH_PINE64_PINETAB2=y
- CONFIG_MACH_PINE64_QUARTZ64=y
- CONFIG_MACH_PROTONIC_MECSBC=y
- CONFIG_MACH_RADXA_ROCK3=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index fe32b812f6037f382954a84f9ab40cfc8715e367..b9727fd5f91bc7681c910df7e8f18d694fd9f0e4 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -83,6 +83,7 @@ lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) += imx7d-phyboard-zeta.dtb.o
- lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1) += stm32mp157c-phycore-stm32mp1-3.dtb.o
- lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX8MM) += imx8mm-phyboard-polis-rdk.dtb.o
- lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) += imx8mq-phytec-phycore-som.dtb.o
-+lwl-$(CONFIG_MACH_PINE64_PINETAB2) += rk3566-pinetab2-v0-1.dtb.o rk3566-pinetab2-v2-0.dtb.o
- lwl-$(CONFIG_MACH_PINE64_QUARTZ64) += rk3566-quartz64-a.dtb.o
- lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
- lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += kirkwood-openblocks_a6-bb.dtb.o
-diff --git a/arch/arm/dts/rk3566-pinetab2-v0-1.dts b/arch/arm/dts/rk3566-pinetab2-v0-1.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..2b89d69775df637f663c257295335db878d28442
---- /dev/null
-+++ b/arch/arm/dts/rk3566-pinetab2-v0-1.dts
-@@ -0,0 +1,6 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+
-+/dts-v1/;
-+
-+#include <arm64/rockchip/rk3566-pinetab2-v0.1.dts>
-+#include "rk3566-pinetab2.dtsi"
-diff --git a/arch/arm/dts/rk3566-pinetab2-v2-0.dts b/arch/arm/dts/rk3566-pinetab2-v2-0.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..404ada593c5ca970fb3144f1829cef4e3ce5160d
---- /dev/null
-+++ b/arch/arm/dts/rk3566-pinetab2-v2-0.dts
-@@ -0,0 +1,6 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+
-+/dts-v1/;
-+
-+#include <arm64/rockchip/rk3566-pinetab2-v2.0.dts>
-+#include "rk3566-pinetab2.dtsi"
-diff --git a/arch/arm/dts/rk3566-pinetab2.dtsi b/arch/arm/dts/rk3566-pinetab2.dtsi
-new file mode 100644
-index 0000000000000000000000000000000000000000..47ac12384d37016cd5912d552e2cb9c817c80475
---- /dev/null
-+++ b/arch/arm/dts/rk3566-pinetab2.dtsi
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+
-+#include <arm64/rockchip/rk3566-pinetab2.dtsi>
-+#include "rk356x.dtsi"
-+
-+/ {
-+	chosen: chosen {
-+		environment-sd {
-+			compatible = "barebox,environment";
-+			device-path = &environment_sd;
-+			status = "disabled";
-+		};
-+
-+		environment-emmc {
-+			compatible = "barebox,environment";
-+			device-path = &environment_emmc;
-+			status = "disabled";
-+		};
-+	};
-+};
-+
-+&sdhci {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		environment_emmc: partition@408000 {
-+			label = "barebox-environment";
-+			reg = <0x0 0x408000 0x0 0x8000>;
-+		};
-+	};
-+};
-+
-+&sdmmc0 {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		environment_sd: partition@408000 {
-+			label = "barebox-environment";
-+			reg = <0x0 0x408000 0x0 0x8000>;
-+		};
-+	};
-+};
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index ddaab7c2841481ff10a59becf011c0762ee54b27..7042506f2b13ed8662d47baf07c71703ad174535 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -79,6 +79,21 @@ config MACH_RK3568_BPI_R2PRO
- 	help
- 	  Say Y here if you are using a RK3568 Bananpi R2 Pro
+diff --git a/Makefile b/Makefile
+index 0b61d2875471..1516e5685cbf 100644
+--- a/Makefile
++++ b/Makefile
+@@ -66,9 +66,8 @@ unexport GREP_OPTIONS
+ #
+ #	$(Q)ln $@ :<
+ #
+-# If KBUILD_VERBOSE equals 0 then the above command will be hidden.
+-# If KBUILD_VERBOSE equals 1 then the above command is displayed.
+-# If KBUILD_VERBOSE equals 2 then give the reason why each target is rebuilt.
++# If KBUILD_VERBOSE contains 1, the whole command is echoed.
++# If KBUILD_VERBOSE contains 2, the reason for rebuilding is printed.
+ #
+ # To put more focus on warnings, be less verbose as default
+ # Use 'make V=1' to see the full commands
+@@ -80,12 +79,11 @@ ifndef KBUILD_VERBOSE
+   KBUILD_VERBOSE = 0
+ endif
  
-+config MACH_PINE64_PINETAB2
-+	select ARCH_RK3568
-+	bool "Pine64 PineTab 2"
-+	help
-+	  Say Y here if you are using a Pine64 PineTab 2
-+
-+	  This will build Barebox for two revisions of PineTab 2:
-+
-+	  - v0.1: distributed to several OS developers for early OS bring
-+	          up. Not many of them are available and was superseded
-+	          by rev 2.0.
-+
-+	  - v2.0: distributed to consumers. Use this if you intend to ship
-+	          Barebox to the general public.
-+
- config MACH_PINE64_QUARTZ64
- 	select ARCH_RK3568
- 	bool "Pine64 Quartz64"
-diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
-index 6619beae73e2a527b9b9343c229001c8b46a7642..761c6b81498931e5f51b185ed9b2e4ebe16f78bc 100644
---- a/images/Makefile.rockchip
-+++ b/images/Makefile.rockchip
-@@ -31,6 +31,8 @@ image-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += barebox-rk3288-phycore-som.img
+-ifeq ($(KBUILD_VERBOSE),1)
++quiet = quiet_
++Q = @
++ifneq ($(findstring 1, $(KBUILD_VERBOSE)),)
+   quiet =
+   Q =
+-else
+-  quiet=quiet_
+-  Q = @
+ endif
  
- $(call build_rockchip_image, CONFIG_MACH_RK3568_EVB, start_rk3568_evb, rockchip-rk3568-evb/sdram-init.bin, rk3568-evb)
- $(call build_rockchip_image, CONFIG_MACH_RK3568_BPI_R2PRO, start_rk3568_bpi_r2pro, rockchip-rk3568-bpi-r2pro/sdram-init.bin, rk3568-bpi-r2pro)
-+$(call build_rockchip_image, CONFIG_MACH_PINE64_PINETAB2, start_pinetab2_v0, pine64-pinetab2/sdram-init.bin, pinetab2-v0)
-+$(call build_rockchip_image, CONFIG_MACH_PINE64_PINETAB2, start_pinetab2_v2, pine64-pinetab2/sdram-init.bin, pinetab2-v2)
- $(call build_rockchip_image, CONFIG_MACH_PINE64_QUARTZ64, start_quartz64a, pine64-quartz64/sdram-init.bin, quartz64a)
- $(call build_rockchip_image, CONFIG_MACH_PROTONIC_MECSBC, start_mecsbc, protonic-mecsbc/sdram-init.bin, mecsbc)
- $(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK3, start_rock3a, radxa-rock3/sdram-init.bin, rock3a)
-
----
-base-commit: 7a3cb7e6fd6338144972b7c83675fb5c709ea6f8
-change-id: 20241202-pt2-init-7122fe34f0d6
-
-Best regards,
+ # If the user is running make -s (silent mode), suppress echoing of
+@@ -317,7 +315,7 @@ include scripts/Kbuild.include
+ include scripts/Makefile.compiler
+ 
+ # Read KERNELRELEASE from include/config/kernel.release (if it exists)
+-KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
++KERNELRELEASE = $(call read-file, include/config/kernel.release)
+ KERNELVERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(SUBLEVEL)))$(EXTRAVERSION)
+ BUILDSYSTEM_VERSION =
+ export VERSION PATCHLEVEL SUBLEVEL KERNELRELEASE KERNELVERSION BUILDSYSTEM_VERSION
+@@ -1326,8 +1324,9 @@ help:
+ 		printf "  %-24s - Build for %s\\n" $(b) $(subst _defconfig,,$(b));) \
+ 		echo '')
+ 
+-	@echo  '  make V=0|1 [targets] 0 => quiet build (default), 1 => verbose build'
+-	@echo  '  make V=2   [targets] 2 => give reason for rebuild of target'
++	@echo  '  make V=n   [targets] 0: quiet build (default), 1: verbose build'
++	@echo  '                       2: give reason for rebuild of target'
++	@echo  '                       V=1 and V=2 can be combined with V=12'
+ 	@echo  '  make O=dir [targets] Locate all output files in "dir", including .config'
+ 	@echo  '  make C=1   [targets] Check all c source with $$CHECK (sparse by default)'
+ 	@echo  '  make C=2   [targets] Force check of all c source with $$CHECK'
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index 72c6a3c5d7d1..8c311b997e24 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -10,13 +10,37 @@ empty   :=
+ space   := $(empty) $(empty)
+ space_escape := _-_SPACE_-_
+ pound := \#
++define newline
++
++
++endef
++
++###
++# Comparison macros.
++# Usage: $(call test-lt, $(CONFIG_LLD_VERSION), 150000)
++#
++# Use $(intcmp ...) if supported. (Make >= 4.4)
++# Otherwise, fall back to the 'test' shell command.
++ifeq ($(intcmp 1,0,,,y),y)
++test-ge = $(intcmp $(strip $1)0, $(strip $2)0,,y,y)
++test-gt = $(intcmp $(strip $1)0, $(strip $2)0,,,y)
++else
++test-ge = $(shell test $(strip $1)0 -ge $(strip $2)0 && echo y)
++test-gt = $(shell test $(strip $1)0 -gt $(strip $2)0 && echo y)
++endif
++test-le = $(call test-ge, $2, $1)
++test-lt = $(call test-gt, $2, $1)
+ 
+ ###
+ # Name of target with a '.' as filename prefix. foo/bar.o => foo/.bar.o
+ dot-target = $(dir $@).$(notdir $@)
+ 
+ ###
+-# The temporary file to save gcc -MD generated dependencies must not
++# Name of target with a '.tmp_' as filename prefix. foo/bar.o => foo/.tmp_bar.o
++tmp-target = $(dir $@).tmp_$(notdir $@)
++
++###
++# The temporary file to save gcc -MMD generated dependencies must not
+ # contain a comma
+ depfile = $(subst $(comma),_,$(dot-target).d)
+ 
+@@ -36,6 +60,20 @@ escsq = $(subst $(squote),'\$(squote)',$1)
+ # Quote a string to pass it to C files. foo => '"foo"'
+ stringify = $(squote)$(quote)$1$(quote)$(squote)
+ 
++###
++# The path to Kbuild or Makefile. Kbuild has precedence over Makefile.
++kbuild-file = $(or $(wildcard $(src)/Kbuild),$(src)/Makefile)
++
++###
++# Read a file, replacing newlines with spaces
++#
++# Make 4.2 or later can read a file by using its builtin function.
++ifneq ($(filter-out 4.0 4.1, $(MAKE_VERSION)),)
++read-file = $(subst $(newline),$(space),$(file < $1))
++else
++read-file = $(shell cat $1 2>/dev/null)
++endif
++
+ ###
+ # Easy method for doing a status message
+        kecho := :
+@@ -56,16 +94,15 @@ kecho := $($(quiet)kecho)
+ # - If no file exist it is created
+ # - If the content differ the new file is used
+ # - If they are equal no change, and no timestamp update
+-# - stdin is piped in from the first prerequisite ($<) so one has
+-#   to specify a valid file as first prerequisite (often the kbuild file)
+ define filechk
++	$(check-FORCE)
+ 	$(Q)set -e;						\
+ 	mkdir -p $(dir $@);					\
+-	trap "rm -f $(dot-target).tmp" EXIT;			\
+-	{ $(filechk_$(1)); } > $(dot-target).tmp;		\
+-	if [ ! -r $@ ] || ! cmp -s $@ $(dot-target).tmp; then	\
++	trap "rm -f $(tmp-target)" EXIT;			\
++	{ $(filechk_$(1)); } > $(tmp-target);			\
++	if [ ! -r $@ ] || ! cmp -s $@ $(tmp-target); then	\
+ 		$(kecho) '  UPD     $@';			\
+-		mv -f $(dot-target).tmp $@;			\
++		mv -f $(tmp-target) $@;				\
+ 	fi
+ endef
+ 
+@@ -81,13 +118,39 @@ build := -f $(srctree)/scripts/Makefile.build obj
+ # $(Q)$(MAKE) $(clean)=dir
+ clean := -f $(srctree)/scripts/Makefile.clean obj
+ 
+-# echo command.
+-# Short version is used, if $(quiet) equals `quiet_', otherwise full one.
+-echo-cmd = $(if $($(quiet)cmd_$(1)),\
+-	echo '  $(call escsq,$($(quiet)cmd_$(1)))$(echo-why)';)
++# pring log
++#
++# If quiet is "silent_", print nothing and sink stdout
++# If quiet is "quiet_", print short log
++# If quiet is empty, print short log and whole command
++silent_log_print = exec >/dev/null;
++ quiet_log_print = $(if $(quiet_cmd_$1), echo '  $(call escsq,$(quiet_cmd_$1)$(why))';)
++       log_print = echo '$(pound) $(call escsq,$(or $(quiet_cmd_$1),cmd_$1 $@)$(why))'; \
++                   echo '  $(call escsq,$(cmd_$1))';
+ 
+-# printing commands
+-cmd = @set -e; $(echo-cmd) $(cmd_$(1))
++# Delete the target on interruption
++#
++# GNU Make automatically deletes the target if it has already been changed by
++# the interrupted recipe. So, you can safely stop the build by Ctrl-C (Make
++# will delete incomplete targets), and resume it later.
++#
++# However, this does not work when the stderr is piped to another program, like
++#  $ make >&2 | tee log
++# Make dies with SIGPIPE before cleaning the targets.
++#
++# To address it, we clean the target in signal traps.
++#
++# Make deletes the target when it catches SIGHUP, SIGINT, SIGQUIT, SIGTERM.
++# So, we cover them, and also SIGPIPE just in case.
++#
++# Of course, this is unneeded for phony targets.
++delete-on-interrupt = \
++	$(if $(filter-out $(PHONY), $@), \
++		$(foreach sig, HUP INT QUIT TERM PIPE, \
++			trap 'rm -f $@; trap - $(sig); kill -s $(sig) $$$$' $(sig);))
++
++# print and execute commands
++cmd = @$(if $(cmd_$(1)),set -e; $($(quiet)log_print) $(delete-on-interrupt) $(cmd_$(1)),:)
+ 
+ ###
+ # if_changed      - execute command if any prerequisite is newer than
+@@ -142,7 +205,7 @@ if_changed_dep = $(if $(if-changed-cond),$(cmd_and_fixdep),@:)
+ 
+ cmd_and_fixdep =                                                             \
+ 	$(cmd);                                                              \
+-	scripts/basic/fixdep $(depfile) $@ '$(make-cmd)' > $(dot-target).cmd;\
++	$(objtree)/scripts/basic/fixdep $(depfile) $@ '$(make-cmd)' > $(dot-target).cmd;\
+ 	rm -f $(depfile)
+ 
+ # Usage: $(call if_changed_rule,foo)
+@@ -169,8 +232,8 @@ if_changed_rule = $(if $(if-changed-cond),$(rule_$(1)),@:)
+ # (5) No dir/.target.cmd file (used to store command line)
+ # (6) No dir/.target.cmd file and target not listed in $(targets)
+ #     This is a good hint that there is a bug in the kbuild file
+-ifeq ($(KBUILD_VERBOSE),2)
+-why =                                                                        \
++ifneq ($(findstring 2, $(KBUILD_VERBOSE)),)
++_why =                                                                        \
+     $(if $(filter $@, $(PHONY)),- due to target is PHONY,                    \
+         $(if $(wildcard $@),                                                 \
+             $(if $(newer-prereqs),- due to: $(newer-prereqs),                \
+@@ -187,11 +250,23 @@ why =                                                                        \
+          )                                                                   \
+      )
+ 
+-echo-why = $(call escsq, $(strip $(why)))
++why = $(space)$(strip $(_why))
+ endif
+ 
++###############################################################################
++
+ # delete partially updated (i.e. corrupted) files on error
+ .DELETE_ON_ERROR:
+ 
+ # do not delete intermediate files automatically
++#
++# .NOTINTERMEDIATE is more correct, but only available on newer Make versions.
++# Make 4.4 introduced .NOTINTERMEDIATE, and it appears in .FEATURES, but the
++# global .NOTINTERMEDIATE does not work. We can use it on Make > 4.4.
++# Use .SECONDARY for older Make versions, but "newer-prereq" cannot detect
++# deleted files.
++ifneq ($(and $(filter notintermediate, $(.FEATURES)),$(filter-out 4.4,$(MAKE_VERSION))),)
++.NOTINTERMEDIATE:
++else
+ .SECONDARY:
++endif
+diff --git a/scripts/tags.sh b/scripts/tags.sh
+index 4e18ae5282a6..6e0e0a7c2270 100755
+--- a/scripts/tags.sh
++++ b/scripts/tags.sh
+@@ -8,7 +8,7 @@
+ # Uses the following environment variables:
+ # SUBARCH, SRCARCH, srctree
+ 
+-if [ "$KBUILD_VERBOSE" = "1" ]; then
++if [[ "$KBUILD_VERBOSE" =~ "1" ]]; then
+ 	set -x
+ fi
+ 
 -- 
-Dang Huynh <danct12@riseup.net>
+2.39.5
 
 
 
