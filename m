@@ -1,66 +1,65 @@
-Delivery-date: Tue, 03 Dec 2024 21:26:01 +0100
+Delivery-date: Tue, 03 Dec 2024 21:29:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIZT7-003dLw-1B
+	id 1tIZWC-003dNx-2h
 	for lore@lore.pengutronix.de;
-	Tue, 03 Dec 2024 21:26:01 +0100
+	Tue, 03 Dec 2024 21:29:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tIZT7-0003OH-8t
-	for lore@pengutronix.de; Tue, 03 Dec 2024 21:26:01 +0100
+	id 1tIZWC-00046z-Op
+	for lore@pengutronix.de; Tue, 03 Dec 2024 21:29:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=jtmM4st+GpjfPuIxUPlEq49eP6A9VaAkK/3H1O3oK4I=; b=o31HdahHoip3t3YVIB3AXCJGFQ
-	qKs252XSikQsd3X77SiW+rnhMyRmVmLveREZFVFy5H+xf8yZccFp7Yho310odNjT1paffZW+bxY56
-	Q+n14Zci0cUCWspDuoCuHmNYiVKL3+G9W7cRXzArCEp24zkXNOsIC2shtr5zGW9RPYofBDaRHGuTk
-	ion0u1fYPpT97M20PU88tkfbSF3970kBRU++Ap3VeQSfh5X97WkJ/VgHhdzVR6nZHuDwhD516MXFa
-	8JPnLRvIjq3zfuYbrN2s4drleX0gyolu9fUNT0ih90P9gT9L0Yh5KmPXy4TQ9egPPWjej4ahlaBox
-	6jNPh5ag==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Q0K+6FTmZWP0oMzlTit/hWbt2Wgu929xHWVDo6jvwoE=; b=UI1Cwt/IgjxgMSu2qiAg7m+vW0
+	af6AunJVOGwfC5/yDhdmwL2RHxki7P8YNX/4eDzC7w5ZMS/OZZyHRPkLerYM1VeGkLUr8dOWShIjV
+	rAPehVQmUipYqOZv3tq+YCtycaQ2GTbyspbozWUreCNYU+udI0kAgGVrolATbgC2E0oWWAXhHPdM0
+	5nhnTX572/357jGaeOABut5iLX+dxecU6Gd0bFu+DsTWKhQ70WFU1nq8Dcf99MZSyXnaZivotlyTp
+	43S2cSq9Od5xPDN+/x5akaBv/ARlepPBHRRSlhrGiAytWKaJNPb3bNROs3fN+kbzws2pXXPOjaKPl
+	hx3gz0Hg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIZSX-0000000AcoW-10Pu;
-	Tue, 03 Dec 2024 20:25:25 +0000
+	id 1tIZVk-0000000AdIy-08gQ;
+	Tue, 03 Dec 2024 20:28:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIZS0-0000000Acks-10wj
+	id 1tIZVh-0000000AdHt-2Q9o
 	for barebox@lists.infradead.org;
-	Tue, 03 Dec 2024 20:24:53 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Tue, 03 Dec 2024 20:28:42 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tIZRw-00037y-Jx; Tue, 03 Dec 2024 21:24:48 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tIZRv-001XBW-23;
-	Tue, 03 Dec 2024 21:24:48 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tIZRw-002Ssl-11;
-	Tue, 03 Dec 2024 21:24:48 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  3 Dec 2024 21:24:47 +0100
-Message-Id: <20241203202447.587667-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	id 1tIZVg-0003xg-Dl; Tue, 03 Dec 2024 21:28:40 +0100
+Message-ID: <49df1ec9-aca8-49b0-95fe-d577c5b615db@pengutronix.de>
+Date: Tue, 3 Dec 2024 21:28:39 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+Cc: barebox@lists.infradead.org
+References: <Z0gywL2hLcIDoLQ8@hephaistos>
+ <fc008e94-9a80-4c01-8c4c-3c926721c2b1@pengutronix.de>
+ <Z0g74s98_Pz98tC5@hephaistos>
+ <83e0f4b3-c558-48dc-b867-f88376d73bc2@pengutronix.de>
+ <Z0hbuZBvK2aLd5s1@hephaistos>
+ <b91eaf6c-9559-466a-bd20-297647401c63@pengutronix.de>
+ <Z03A9rr21q320J0t@hephaistos>
+ <19923329-f254-435d-9557-5e1b6835b8ec@pengutronix.de>
+ <Z09TKeFZaT6InuPX@hephaistos>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <Z09TKeFZaT6InuPX@hephaistos>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241203_122452_280788_89120237 
-X-CRM114-Status: GOOD (  12.18  )
+X-CRM114-CacheID: sfid-20241203_122841_617105_DD257F53 
+X-CRM114-Status: GOOD (  27.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,62 +81,75 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] ARM: omap: fix NS16550 UART setup in omap_debug_ll_init
+Subject: Re: Reset on Beaglebone Black has become unreliable/broken
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The NS16550 on the OMAP SoCs has a special mode register that contains a
-disable bit. In order to use the peripheral, this bit needs to be
-cleared.
+On 03.12.24 19:51, Konstantin Kletschke wrote:
+> On Tue, Dec 03, 2024 at 07:28:24PM +0100, Ahmad Fatoum wrote:
+> 
+>> You can enable it for barebox.bin too, but enabling it for MLO only
+>> should work too.
+> 
+> Okay.
+> 
+>>> 2~�W-�,-H]
+>>>           ���k׋�ҫ�.LWC�C�C��arebox 2024.10.0-00152-g53c99b9f550b-dirty #15 Mon Dec 2 15:07:37 CET 2024
+>>
+>> Hmm, CONFIG_BAUDRATE is set correctly?
+> 
+> CONFIG_BAUDRATE=115200, never changed that.
+> 
+>> If it doesn't work at a later place, it won't work when you move it
+>> earlier. I have a BBB here, so I can give enabling DEBUG_LL a try
+> 
+> Ou, then I have misunderstood one of your intial mails where I thought
+> moving it earlier should change something, if RAM setup fails getting an
+> output eventually despite of that.
 
-We do that in ns16550_omap_init_port() and used to it for the DEBUG_LL
-case in omap_uart_lowlevel_init().
+- Try it first on a correctly working system an see that you get a >
+  at the usual place.
 
-Commit 89094b2a299b ("ARM: omap: Use ns16550 debug_ll helper") removed
-this mode register write for the DEBUG_LL case, thereby rendering
-DEBUG_LL on the BeagleBone Black non-functional.
+- Try it on a broken system and see if you get a >
 
-Add back the missing register write to fix this.
+- If you don't, try on correct working system if you see > if you
+  move it earlier
 
-This has not been tested on AM6xx, but the barebox proper driver also
-writes a zero (after writing 0x80), so it's assumed that this write
-would be a no-op there, because either the POR default or a previous
-boot stage does already configure the peripheral this way.
+- Then try on broken system
 
-Fixes: 89094b2a299b ("ARM: omap: Use ns16550 debug_ll helper")
-Reported-by: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- include/debug_ll/ns16550.h   | 1 +
- include/mach/omap/debug_ll.h | 1 +
- 2 files changed, 2 insertions(+)
+>> too if you get stuck.
+> 
+> I manage to get DEBUG_LL on and run it, but the only difference is the
+> scrambled output in my terminal on powerup boot or when resetting with 
+> "my cold restart" modification. 
+> But wait, I do not know if it as glitch, when CONFIG_LL_DEBUG is on and
+> I power on, I see a "2" immediately put out in terminal prepended first.
+> When the system gets stuck it does it in a way I do not see anything with
+> or without enabled in stuck case.
 
-diff --git a/include/debug_ll/ns16550.h b/include/debug_ll/ns16550.h
-index 2bad7a43ca91..64cb9cd102df 100644
---- a/include/debug_ll/ns16550.h
-+++ b/include/debug_ll/ns16550.h
-@@ -19,6 +19,7 @@
- #define NS16550_LCR	0x3
- #define NS16550_MCR	0x4
- #define NS16550_LSR	0x5
-+#define NS16550_MDR	0x8	/* TI OMAP Mode register */
+See the patch I just Cc'd you on.
  
- #define NS16550_LCR_VAL		0x3 /* 8 data, 1 stop, no parity */
- #define NS16550_MCR_VAL		0x3 /* RTS/DTR */
-diff --git a/include/mach/omap/debug_ll.h b/include/mach/omap/debug_ll.h
-index b0650abf2daa..a95c1bf140ac 100644
---- a/include/mach/omap/debug_ll.h
-+++ b/include/mach/omap/debug_ll.h
-@@ -57,6 +57,7 @@ static inline void omap_debug_ll_init(void)
- 
- 	divisor = debug_ll_ns16550_calc_divisor(48000000);
- 	debug_ll_ns16550_init(base, divisor);
-+	debug_ll_write_reg(base, NS16550_MDR, 0);
- }
- 
- static inline void PUTC_LL(int c)
+> I extremely appreciate your help getting CONFIG_LL_DEBUG run.> I can support with a dozen of BBBs within a day to your office, its
+> nearly on my way from my home to my work :-D
+
+I was particularly interested in DEBUG_LL, because that was a regression
+as I know that it used to work.
+
+I wish you best luck with debugging the actual issue you have now. :-)
+
+Let me know how it goes,
+Ahmad
+
+> 
+> Regards
+> Konsti
+> 
+
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
