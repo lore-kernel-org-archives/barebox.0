@@ -1,64 +1,59 @@
-Delivery-date: Thu, 05 Dec 2024 09:57:53 +0100
+Delivery-date: Thu, 05 Dec 2024 14:41:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tJ7gH-004GEu-0f
+	id 1tJC6V-004LJ5-2Y
 	for lore@lore.pengutronix.de;
-	Thu, 05 Dec 2024 09:57:53 +0100
+	Thu, 05 Dec 2024 14:41:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tJ7gH-0002EH-24
-	for lore@pengutronix.de; Thu, 05 Dec 2024 09:57:53 +0100
+	id 1tJC6V-0006Rh-NQ
+	for lore@pengutronix.de; Thu, 05 Dec 2024 14:41:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-Type:Subject:From:Cc:To:MIME-Version:Date:Message-ID:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=HjbB+0vA71GvAvjfG/xgx+AdHQf9WBF1qlbCosBoHYY=; b=p0a6O8PgxdPXEzzUFzkcqLEzIz
-	xJF+JC0oCUAbcgyXca2tdZLAGprWdN/kvpzel0odiCqN4puy770oB5427O95MZLxFJMfgvtofdzld
-	937+epJ3h0bU+s8BK7Hz+wL7OmSzihHM6VR+PXeRyLkvvZ4lKwkloGzhZJEbmMPkTXt/VogHAIKNC
-	6LBvNgDzPTDvr9dyiZzGI3rdFOB/ZRPra66BPdRd3Cb8xT2hIyj2KtCE+YlNJzSCSUnxUskMhSdxK
-	FI9JdNcUsYQpW0uSPf6XaYYcx2IxkKEkoCntOf/roKLL6PLNT5EHoEKYg2C9v5aECCfrW6dfrn+jr
-	BLNt/BUw==;
+	bh=2sz9nSdiCvTVqMQZQNxusWHZRuUFCBFXPCeg4n1FqSU=; b=THbYEjZJzdTLIDjSUBo6C8KKs5
+	pDTGbCA/j+3l0WmswWK2fCyLOhx027ytkmvlx9yiU1VVOZEPbnJwGXZGq7TuxvzdNZ+nBTu1d51dn
+	p739JmKF4j38Y6+5rALKSyvQxOidcJcexwHD2Oc4FCbpHPg79ZsJVTYFrszITIJhO6ivjA/HWgT25
+	N4/6jT1P1f20yOColuR3RdcUeqN0p8j1wbkdDvp9ZvFQD/dvBEz4cNILJsWpsueQFnbD6S8O7HoyL
+	cnx1gQuJaVF9qJ2+pp/9tQ27BVugwK1VY3ECdBfA3s/dNIxHOY5FAJHlXedcwJOHh14Z/iRRLZGrF
+	aEjBKDMw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tJ7fe-0000000FFn8-1fjq;
-	Thu, 05 Dec 2024 08:57:14 +0000
+	id 1tJC5v-0000000GC0Z-1Iis;
+	Thu, 05 Dec 2024 13:40:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tJ7e7-0000000FFRv-1TXK
+	id 1tJC5s-0000000GC08-2CLH
 	for barebox@lists.infradead.org;
-	Thu, 05 Dec 2024 08:55:41 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tJ7e4-0001vQ-3U; Thu, 05 Dec 2024 09:55:36 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tJ7e3-001nHz-0V;
-	Thu, 05 Dec 2024 09:55:35 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tJ7e3-00GLtK-2b;
-	Thu, 05 Dec 2024 09:55:35 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  5 Dec 2024 09:55:29 +0100
-Message-Id: <20241205085530.3897385-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Thu, 05 Dec 2024 13:40:37 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tJC5q-00064N-4F; Thu, 05 Dec 2024 14:40:34 +0100
+Message-ID: <e81f5b48-02e9-423c-984e-b7dfa7753f27@pengutronix.de>
+Date: Thu, 5 Dec 2024 14:40:32 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-stm32@st-md-mailman.stormreply.com"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Oleksij Rempel <ore@pengutronix.de>,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241205_005539_392477_48D9B6C3 
-X-CRM114-Status: GOOD (  16.77  )
+X-CRM114-CacheID: sfid-20241205_054036_564457_09632270 
+X-CRM114-Status: GOOD (  12.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,130 +75,58 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] mci: parse upstream boot/gp partition binding
+Subject: AXI ID 0x5c8 on STM32MP13
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Linux recently added support for device tree partition binding for
-SD/eMMC devices. Linux supports partitioning the main area as well as
-the boot and gp areas. This adds support for the same binding to
-barebox.
+Hello,
 
-barebox already had support for partitioning the eMMC boot partitions,
-unfortunately with different node names. Try the upstream binding first
-and fall back to the barebox binding if upstream compatible nodes are
-not found.
+After a kernel update to v6.13-rc1, we have been increasingly seeing
+following occasional OP-TEE (v4.2.0) panic:
 
-Note that not only the node names for the boot partitions differ in
-both bindings, but also the numbering. "boot0-partitions" in the
-barebox binding matches "partitions-boot1" in the upstream binding.
+  E/TC:0   dump_fail_filter:425 Violation @0xce01b000, non-secure privileged read, AXI ID 5c8
+  E/TC:0   Panic at core/arch/arm/plat-stm32mp1/plat_tzc400.c:30 <tzc_it_handler>
+  E/TC:0   TEE load address @ 0xce000000
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- .../devicetree/bindings/mtd/partition.rst     |  3 +
- drivers/mci/mci-core.c                        | 62 ++++++++++++-------
- 2 files changed, 43 insertions(+), 22 deletions(-)
+This happens at kernel boot time, when loaded by barebox. The probability that
+this happens, seems to be inversely proportional to how long the system
+was powered off prior to Power-on reset...
 
-diff --git a/Documentation/devicetree/bindings/mtd/partition.rst b/Documentation/devicetree/bindings/mtd/partition.rst
-index 0ba117dffc..fb228c63a3 100644
---- a/Documentation/devicetree/bindings/mtd/partition.rst
-+++ b/Documentation/devicetree/bindings/mtd/partition.rst
-@@ -23,6 +23,9 @@ the partition table node is named appropriately:
- * ``boot0-partitions`` : boot0 partition
- * ``boot1-partitions`` : boot1 partition
- 
-+``boot0-partitions`` and ``boot1-partitions`` are deprecated. Use ``partitions-boot1``
-+and ``partitions-boot2`` instead which is supported under Linux as well.
-+
- Examples:
- 
- .. code-block:: none
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 48a3df9ec9..eb723a2711 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -2582,11 +2582,49 @@ static const char *mci_boot_names[] = {
- 	"user",
- };
- 
-+static struct device_node *mci_get_partition_node(struct device_node *hwnode,
-+						  unsigned int type,
-+						  unsigned int index)
-+{
-+	struct device_node *np;
-+	char partnodename[sizeof("bootx-partitions")];
-+
-+	if (index > 8)
-+		return NULL;
-+
-+	switch (type) {
-+	case MMC_BLK_DATA_AREA_BOOT:
-+		sprintf(partnodename, "partitions-boot%u", index + 1);
-+		break;
-+	case MMC_BLK_DATA_AREA_MAIN:
-+		return hwnode;
-+	case MMC_BLK_DATA_AREA_GP:
-+		sprintf(partnodename, "partitions-gp%u", index + 1);
-+		break;
-+	default:
-+		return NULL;
-+	}
-+
-+	np = of_get_child_by_name(hwnode, partnodename);
-+	if (np)
-+		return np;
-+
-+	if (type != MMC_BLK_DATA_AREA_BOOT)
-+		return NULL;
-+
-+	/*
-+	 * barebox historically understands "bootx-partitions" with x starting
-+	 * at zero.
-+	 */
-+	sprintf(partnodename, "boot%u-partitions", index);
-+
-+	return of_get_child_by_name(hwnode, partnodename);
-+}
-+
- static int mci_register_partition(struct mci_part *part)
- {
- 	struct mci *mci = part->mci;
- 	struct mci_host *host = mci->host;
--	const char *partnodename = NULL;
- 	struct device_node *np;
- 	int rc;
- 
-@@ -2605,27 +2643,7 @@ static int mci_register_partition(struct mci_part *part)
- 	}
- 	dev_info(&mci->dev, "registered %s\n", part->blk.cdev.name);
- 
--	np = host->hw_dev->of_node;
--
--	/* create partitions on demand */
--	switch (part->area_type) {
--	case MMC_BLK_DATA_AREA_BOOT:
--		if (part->idx == 0)
--			partnodename = "boot0-partitions";
--		else
--			partnodename = "boot1-partitions";
--
--		np = of_get_child_by_name(host->hw_dev->of_node,
--					  partnodename);
--		break;
--	case MMC_BLK_DATA_AREA_MAIN:
--		break;
--	case MMC_BLK_DATA_AREA_GP:
--		break;
--	default:
--		return 0;
--	}
--
-+	np = mci_get_partition_node(host->hw_dev->of_node, part->area_type, part->idx);
- 	if (np) {
- 		of_parse_partitions(&part->blk.cdev, np);
- 
+The kernel /reserved-memory entry has a no-map entry for OP-TEE, so this
+looks correct.
+
+barebox maps the OP-TEE range as uncached and with eXecute Never set.
+Indeed, if we jump to the OP-TEE memory directly, we get a prefetch error
+from within barebox without hitting the firewall as expected.
+
+If the barebox MMU is disabled and we try to execute from 0xce000000, we
+get an expected panic from OP-TEE:
+
+  E/TC:0   tzc_it_handler:26 TZC permission failure
+  E/TC:0   dump_fail_filter:420 Permission violation on filter 0
+  E/TC:0   dump_fail_filter:425 Violation @0xce000000, non-secure privileged read, AXI ID 4c0
+  E/TC:0   Panic at core/arch/arm/plat-stm32mp1/plat_tzc400.c:30 <tzc_it_handler>
+  E/TC:0   TEE load address @ 0xce000000
+
+Note that this is a different AXI ID (0x4c0) than the one we see related
+to the spurious read (0x5c8).
+
+In order to further debug this, it would be useful to know which AXI master
+has ID 0x5c8. The reference manual (RM0475) has Table 20. "NSAID and AXI_ID
+mapping" in RM0475 but it contains no 0x5c8. 0x4c0 is expectedly the CA7
+itself.
+
+Can someone from ST please chime in with the information what AXI master
+ID 0x5c8 maps to?
+
+Thanks,
+Ahmad
+
 -- 
-2.39.5
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
