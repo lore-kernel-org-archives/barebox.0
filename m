@@ -1,67 +1,81 @@
-Delivery-date: Fri, 06 Dec 2024 11:52:17 +0100
+Delivery-date: Fri, 06 Dec 2024 14:11:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tJVwW-004i5D-2d
+	id 1tJY7K-004kaN-2n
 	for lore@lore.pengutronix.de;
-	Fri, 06 Dec 2024 11:52:17 +0100
+	Fri, 06 Dec 2024 14:11:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tJVwW-00062a-4k
-	for lore@pengutronix.de; Fri, 06 Dec 2024 11:52:17 +0100
+	id 1tJY7K-000846-M1
+	for lore@pengutronix.de; Fri, 06 Dec 2024 14:11:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
-	Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:Subject:
+	Message-ID:Date:From:MIME-Version:Reply-To:Cc:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=m1Je5DZDr5kf+HXgb7zd5KMKNLmv5cPB2jTIw/qqQEY=; b=K8ZzX71jgmP7RIkNW/MNvfmJe/
-	CMYG8NqhcMdX4bdfO5IuU8Nw6h0WqUujvbIAoTEpyoSi7drizgbrl95+aNrg9656YulNvhO2hFhBy
-	ZXr5uK+oN2v1nOl8eWOYjKH3rIS4yJaWIgCtTzfcMT47azOS+c9k1CwJQqQa+QAnZIfdbsBFYSFeZ
-	oPA+/eh0NUsiNBhkOwSoLFPwb2RmyL1/4bUrfX/s3JLern1sfXZjkDi7/XGrFGsQzAC3M1u+/X0Wx
-	t2nqXYtC6TMZqwFEMJDNWB2CJfyLEtmFmXrAslqdon6A7BaS63EC35bDmu1dFPAL0TBDr2Pw2QPrA
-	lJneti1w==;
+	bh=MS+/UInMaN40/Ka8SX++gNoOkMFJVff4drAW9GNHCLQ=; b=bFb54zNQb0sf7IQN8+bRP1Hu/U
+	lRNxQCK01UqVrEuOJVD1uslojTa6C2VCB8B8z5g1zzv0rofSevr0kJBBtQAjbxwYmHtKUiz/FtLkt
+	P3a/U5wEianKpX9DFh/US3aZS9cKeHrLx8HObq3VGiLIa2VSs5Es/y+GGnugsnUf3gsM0+AByKNWt
+	axkkdF22RAK3PSL/MHZlt+q2lHwCWeQ3piPa+BI4s52BgCn8+LCHdGrSr5oVXazGRJm7EJ34RkvfP
+	oxs8jFnnpjrHQBZIWdmUSigQx2uWznurgzrBHKcGjDQjeIxYTeo+56KfgtHvtMkLRblP7su7Fiu24
+	T5tFctcg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tJVvy-00000001Mpp-34Vi;
-	Fri, 06 Dec 2024 10:51:42 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tJY6k-00000001h98-1wkL;
+	Fri, 06 Dec 2024 13:10:58 +0000
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tJVuC-00000001MS2-3sQO
+	id 1tJY6i-00000001h8e-0Is9
 	for barebox@lists.infradead.org;
-	Fri, 06 Dec 2024 10:49:54 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tJVuB-0005bc-JN; Fri, 06 Dec 2024 11:49:51 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tJVuA-001z6w-1z;
-	Fri, 06 Dec 2024 11:49:51 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tJVuB-000mjO-0u;
-	Fri, 06 Dec 2024 11:49:51 +0100
-Date: Fri, 6 Dec 2024 11:49:51 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <Z1LWzzW3pa2ZM8XZ@pengutronix.de>
+	Fri, 06 Dec 2024 13:10:57 +0000
+Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-2ee50ffcf14so2578638a91.0
+        for <barebox@lists.infradead.org>; Fri, 06 Dec 2024 05:10:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733490654; x=1734095454; darn=lists.infradead.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MS+/UInMaN40/Ka8SX++gNoOkMFJVff4drAW9GNHCLQ=;
+        b=FC/w3PcMcQ/mDyr8eaqQFhd42Be/Rztk2AtY/hHeNdd+NvlBmUBShjMFF+usRLhk7A
+         YfDd0M0r/g7IJrXH2b0Ytd2f7BoLd8H7DIUJnaXcpzMoIe9LGwo1cvbETg56hG6pS9TD
+         +sd5gWds6Muu+ulZIRTygmzpAc6ahkGgaVa81Dg0md3f/uqQh2d45ExeI2qyVkizcSp8
+         aHKkVnauETk2xbBMyDg+01Tl6QUW2nHq9IGrIp63EDS/o+dzwTP7y92q8XI3p91G5ped
+         vqBQ8G9r8hqzoWIjRqMGhOhCVad4bKeU5RkXU7O8Ggr5mMFlOcuM4+cChHGYqnxwX4eS
+         80bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733490654; x=1734095454;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MS+/UInMaN40/Ka8SX++gNoOkMFJVff4drAW9GNHCLQ=;
+        b=dHms2WOOLypJvlkbjUzCeX83a0Z1YbP6XOofvBaKf0xIshu1wDi5SGHn3HHx4SI7JV
+         nEEq2fskenbSAMfXPtcR6VqBifkS1QUF/9nTnidYwqfKMubDpj+IhGPM7EFz1jYjRw9a
+         5j1QW4Hw1hPrNKPB7Fz5+f288HeCYQeWZ9p/yb52QJw/YPU2QNGe8gRIlKk7BTfkixUU
+         FuekjjN7BWzve/Ra2iL5bCauGNFbXTuffrieSkTiWmrklBYU1Q4RtXWoMWJnoz7w+gRi
+         rkgxX0F4+ubQbsQAjb5C5+4uKHm/3QH6ch+s9W1tzgeM8+ANDimFgvLcJIEjwdc9FBEz
+         8B4w==
+X-Gm-Message-State: AOJu0Yw6HrdJFSm01lfg7h8a0tpaCJs3Qk6qTSu5gEhkrj4nFcF+j5g0
+	7VRJr0pnnLJEl3gOcIYMUtlg+RD8HTXqBZKnrIsCXPhSFr1+W4MDpYZ2+WtwA1ZZDvfFQqaUgkf
+	3vsWD/78+96TXwjrgqz/nMY9wzWQa7/a1
+X-Gm-Gg: ASbGncsogTdOrspU98aJb8SEhV3eyjJFnwpozpxIatgebzd/vspHKk75voqZ2au3467
+	ucUJvG3l5hUd/GVP+oDnTcxGweyq+Oa3C
+X-Google-Smtp-Source: AGHT+IEN+cjpy5VEyCmOkws7atQgpOZsbnxgYez10aaYAPITLhkeQZGYhDoe9aYkwY4CGqXRIT2MrErF4VxF51s/6CI=
+X-Received: by 2002:a17:90b:1344:b0:2ee:5c9b:35c0 with SMTP id
+ 98e67ed59e1d1-2ef68dc2160mr5422204a91.9.1733490653653; Fri, 06 Dec 2024
+ 05:10:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Fri, 6 Dec 2024 16:10:42 +0300
+Message-ID: <CAP1tNvQXh3sQz8exOva9oY-XFUh0ULrSuuAA5fNrCREdw8cxAA@mail.gmail.com>
+To: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241206_024953_119434_A00EE280 
-X-CRM114-Status: GOOD (  17.99  )
+X-CRM114-CacheID: sfid-20241206_051056_168276_B6FFBA30 
+X-CRM114-Status: UNSURE (   5.49  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,218 +93,100 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: v2024.12.0
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: memtest failed for rk3588
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi All,
+Hello all!
 
-I am happy to announce barebox-2024.12.0!
+When testing a board with a RK3588 CPU, I get a stable crash on memtest.
+This is the first sample of the board on this CPU and of course it is possible
+that something is really not soldered correctly, but should the
+bootloader crash in this case?
 
-This release brings us some Rockchip updates. We have a new board
-supported, the OrangePI 5 plus. Also we have VOP2 graphics output on
-RK356x SoCs. This comes with a few updates to the fbconsole which now
-supports changing the orientation and fonts with transparent background
-so that we can nicely put a console on a background image.
 
-Also new in this release is ECDSA support for verifying FIT images.
+barebox 2024.12.0-00352-g41ed6686c3d4-dirty #69 Fri Dec 6 15:45:18 MSK 2024
 
-Ahmad has continued to cleanup include/common.h. It's now nearly empty
-so everything is moved to more dedicated headers.
+Board: Diasom DS-RK3588-BTB-EVB
+deep-probe: supported due to diasom,ds-rk3588-btb
+rockchip-dmc memory-controller.of: Detected memory size: 0x400000000
+netconsole: registered as netconsole-1
+arm-scmi firmware:scmi.of: SCMI Protocol v2.0 'rockchip:' Firmware version 0x0
+psci psci.of: detected version 1.1
+fan53555-regulator rk86020: FAN53555 Option[10] Rev[1] Detected!
+fan53555-regulator rk86030: FAN53555 Option[10] Rev[1] Detected!
+dw_mmc fe2c0000.mmc@fe2c0000.of: registered as mmc1
+mmc1: detected SD card version 2.0
+mmc1: registered mmc1
+rk3568-dwcmshc-sdhci fe2e0000.mmc@fe2e0000.of: registered as mmc0
+mmc0: detected MMC card version 5.1
+mmc0: registered mmc0.boot0
+mmc0: registered mmc0.boot1
+mmc0: registered mmc0
+fan53555-regulator rk86021: FAN53555 Option[10] Rev[1] Detected!
+malloc space: 0xafd00000 -> 0xefcfffff (size 1 GiB)
+environment load /dev/env0: No such file or directory
+Maybe you have to create the partition.
 
-As usual, see below for all patches that went into this release.
+Hit any to stop autoboot:    3
+barebox@Diasom DS-RK3588-BTB-EVB:/ memtest
+Start iteration 1 of 1.
+Testing memory space: 0x0000000100000000 -> 0x00000003ffffffff:
+Starting data line test.
+Check for address bits stuck high.
+Check for address bits stuck low or shorted.
+Starting moving inversions test of RAM:
+Fill with address, compare, fill with inverted address, compare again
+        [##########################################DABT (current EL)
+exception (ESR 0x96000010) at 0x00000003fc000200
+elr: 00000000efd07064 lr : 00000000efd07058
+x0 : 00000002fc000200 x1 : 0000000000000001
+x2 : 000000005fffffff x3 : 0000000000000002
+x4 : 0000000000000002 x5 : 0000000000000020
+x6 : 00000000ffffffd8 x7 : 00000000efff76ae
+x8 : 00000000efff79c8 x9 : 0000000000000078
+x10: 0000000000000001 x11: 0000000000000011
+x12: 0000000000000010 x13: 00000000efdaf076
+x14: 0000000000000000 x15: 0000000000000003
+x16: 00000000efff73f8 x17: 0000000000000003
+x18: 00000000efff7b20 x19: 0000000100000000
+x20: 0000000000000001 x21: 0000000000000001
+x22: fffffffffffffffe x23: 0000000000000000
+x24: 0000000000000001 x25: 0000000000000000
+x26: 00000000efd9e5de x27: 00000000efd9e5f1
+x28: 0000000000000000 x29: 00000000efff7a60
 
-Have Fun!
-  Sascha
-
-----------------------------------------------------------------
-Abdelrahman Youssef (7):
-      include: Include <linux/math.h> to resolve implicit declaration of do_div()
-      common: buffer access out-of-bounds
-      partitions: efi: fix GPT header size exceeding allocation size
-      partitions: efi: fix overflow issues while allocating gpt entries
-      of: fdt: fix overflow caused by fdt_prop extending beyond fdt
-      of: fdt: fix possible overflow during parsing of fdt
-      partitions: efi: Check GPT header size against minimum limit
-
-Ahmad Fatoum (65):
-      Revert "dma: debug: detect repeated DMA sync"
-      KASan: implement non-warning kasan_is_poisoned_shadow
-      dma: debug: poison DMA buffers with KASAN while owned by device
-      dma: debug: detect repeated DMA sync using KASAN
-      efi: payload: image use new CONFIG_ARM64 symbol
-      video: mipi-dbi: reword Kconfig prompt
-      mdio_bus: add NULL check to mdiobus_read/mdiobus_write
-      crypto: reorder ECDSA Kconfig entries
-      keytoc: return error on failure to set PKCS#11 pin
-      test: self: jwt: regenerate jwt_test.pem.c_shipped
-      test: self: rename REGENERATE_RSATOC to REGNERATE_KEYTOC
-      FIT: improve error message when uncompressing non-compressed files
-      ARM64: mmuinfo: comment the if clauses decoding PAR_ELx
-      ARM64: asm: mark assembly entry points as functions
-      ARM64: io: implement I/O accessors in assembly
-      ARM64: board-dt-2nd: grow stack down from start of binary
-      mtd: cfi-flash: use I/O accessors for reads/writes of MMIO regions
-      ARM64: mmu: flush cacheable regions prior to remapping
-      virtio: don't use DMA API unless required
-      clk: add stub definition for of_clk_get_from_provider
-      tee: add missing header for BIT macro definition
-      tee: shm: include missing header for basprintf
-      net: dsa: realtek: fix CONFIG_SANDBOX build
-      pmdomain: imx8mp-blk-ctrl: add missing definition of ARRAY_SIZE
-      PWM: rockchip: fix compile testing with CONFIG_SANDBOX
-      watchdog: imxulp: drop unused include of asm/system.h
-      include: import uapi/linux/kernel.h header from Linux
-      usb: typec: fix compile test with CONFIG_SANDBOX
-      bitops: fix missing defintion for DIV_ROUND_UP definitions
-      mci: am654-sdhci: drop dummy redefinition of MMC_CAP2_HS200/400
-      hw_random: fix compilation with 64-bit size_t
-      optee: make OP-TEE OF fixup ARM-specific
-      include: common.h: move barebox startup functions into separate header
-      include: common.h: move ctrlc() functions into stdio.h
-      include: common.h: move out integer string parsing functions
-      include: common.h: move out endianness macro sanity check
-      include: common.h: move out user interface functions into stdio.h
-      include: common.h: move out memory option parsing prototypes
-      include: common.h: move out RW_BUF_SIZE definition
-      usb: gadget: fix static analysis false positive
-      ARM: SMCCC: make header usable for compile test
-      net: r8169: use lower/upper_32_bits for clarity
-      keytoc: check for memory allocation failures
-      crypto: fix compile with empty CONFIG_CRYPTO_PUBLIC_KEYS
-      FIT: add dependency on CRYPTO_BUILTIN_KEYS for signature verification
-      dma: make DMA_ADDRESS_BROKEN type-safe
-      video: stm: use DMA_ADDRESS_BROKEN instead of NULL
-      crypto: caam - pbl-init: use DMA_ADDRESS_BROKEN instead of NULL
-      net: designware: don't use dma_mapping_error for non-streaming DMA
-      net: macb: fix DMA_ADDRESS_BROKEN in the coherent ring allocations
-      i2c: lpi2c: fix potential read of uninitialized variable
-      dma: give dma_alloc_coherent a device parameter
-      video: Rockchip: add missing dma_alloc_coherent a device parameter
-      ARM: i.MX9: tqma93xx: workaround warning in variant detection
-      clk: rockchip: make it compile again
-      sandbox: noshell_defconfig: set CONFIG_CONSOLE_DISABLE_INPUT=y
-      startup: do not bring up networking if console input disabled
-      usb: typec: fix freeing uninitialized memory
-      remoteproc: imx: add support for loading ELF data sections into DRAM
-      remoteproc: use I/O memory variants of memcpy/memset
-      crc: crc-itu-t: generate lookup table on first use
-      ARM: omap: add two smaller MLO defconfigs for AM335x
-      checkpatch: fix detection of barebox root directory
-      Documentation: imd: update information on barebox_update
-      ARM: omap: fix NS16550 UART setup in omap_debug_ll_init
-
-Holger Assmann (1):
-      ARM: dts: i.MX8MP: disable NPU node if hardware is missing
-
-Jonas Rebmann (1):
-      test: pytest: introduce pytest for network, test tftp notfound
-
-Jules Maselbas (1):
-      clk: clk-composite: fix callback guard in clk_composite_round_rate
-
-Justin Bronder (1):
-      lib: lz4: use lz4 instead of lz4c
-
-Michael Grzeschik (1):
-      commands: mmc: write_reliability: bail out early if already set
-
-Michael Riesch (1):
-      arm: rockchip: add support for the xulong orangepi 5 plus
-
-Peng Fan (1):
-      remoteproc: elf_loader: skip segment with memsz as zero
-
-Richard Weinberger (1):
-      dlmalloc: Fix integer overflow in request2size()
-
-Sascha Hauer (77):
-      dts: update to v6.11
-      graphic_utils: Clip to screen boundaries
-      commands: splash: honour line_length
-      gui: fix alpha blend
-      fbconsole: make background pixels transparent
-      fbconsole: actually store rows/cols
-      ARM: Use optimized reads[bwl] and writes[bwl] functions
-      ARM: rename logical shift macros push pull into lspush lspull
-      ARM: convert all "mov.* pc, reg" to "bx reg" for ARMv6+
-      ARM: update lib1funcs.S from Linux
-      ARM: update findbit.S from Linux
-      ARM: update io-* from Linux
-      ARM: always assume the unified syntax for assembly code
-      ARM: update memcpy.S and memset.S from Linux
-      lib/string.c: export non optimized memmove as __default_memmove
-      ARM: add optimized memmove
-      of: fix of_get_next_child() for prev->parent != node
-      of: fix of_graph_get_next_endpoint()
-      of: of_graph: honour ports subnode
-      of: of_graph: fix of_graph_get_next_endpoint()
-      of: of_graph: add missing functions
-      spi: spi-gpio: actually delay in spidelay()
-      spi: spi-gpio: support different word widths
-      spi: spi-gpio: switch to new gpio binding
-      spi: spi-gpio: deassert CS during setup
-      spi: spi-gpio: switch to gpiod api
-      clk: imx: improve precision of AV PLL to 1 Hz
-      keytoc: remove ECDSA dts support
-      keytoc: fail in case gen_key() fails
-      keytoc: fix ECDSA endianess problems
-      keytoc: remove duplicate __ENV__ check
-      crypto: Makefile: make simpler
-      crypto/Makefile: Drop unnecessary dependencies
-      keytoc: make key name hint optional
-      crypto: rsa: include key name hint into CONFIG_CRYPTO_RSA_KEY
-      crypto: rsa: encapsulate rsa keys in public keys struct
-      clk: rockchip: rk3288: Drop CLK_NR_CLKS usage
-      dts: update to v6.12-rc1
-      clk: rockchip: rk3568: Fix HDMI clocks
-      video: add videomode helpers
-      media-bus-format: update from kernel
-      regmap: add regfield support
-      video: add include/video/drm/drm_connector.h
-      fb: add fb_rect functions
-      video: Add Sitronix st7789v panel driver
-      ARM: wolfvision PF5: Use upstream IO expander dtso
-      ARM: Wolfvision PF5: of_probe only once
-      ARM: Wolfvision PF5: add display overlay
-      video: add dw-hdmi driver
-      video: i.MX ipuv3: switch to upstream hdmi driver
-      fb: Accept overlay framebuffers without modes
-      fb: print more information on devinfo
-      fbconsole: Adjust fbconsole names for overlays
-      ARM: ARM64: implement dma_alloc_writecombine()
-      vpl: make vpl deep probe aware
-      video: Rockchip: Add VOP2 driver
-      fbconsole: implement panel orientation support
-      crypto: add public_key functions
-      crypto: builtin_keys: Allow to specify multiple keys in CONFIG_CRYPTO_PUBLIC_KEYS
-      crypto: public-keys: use array of public_keys
-      crypto: rsa: create static inline wrapper for rsa_verify()
-      Add elliptic curve cryptography (ECC) helper functions
-      rsa: move header to include/crypto/rsa.h
-      crypto: add ECDSA support
-      crypto: make RSA a visible option
-      dts: update to v6.12-rc2
-      Merge branch 'for-next/arm-memcpy'
-      Merge branch 'for-next/dma'
-      Merge branch 'for-next/dma-debug'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/ecdsa'
-      Merge branch 'for-next/master-compile-fixes'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/vop2'
-      Merge tag 'v2024.10.0'
-      ARM: i.MX: ele: fix forward_lifecycle
-      Release v2024.12.0
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Call trace:
+[<efd07064>] (mem_test_moving_inversions+0xfc/0x244) from [<efd6375c>]
+(do_test_one_area+0x74/0x98)
+[<efd6375c>] (do_test_one_area+0x74/0x98) from [<efd63808>]
+(do_memtest_biggest+0x28/0x3c)
+[<efd63808>] (do_memtest_biggest+0x28/0x3c) from [<efd63a18>]
+(do_memtest+0x1fc/0x218)
+[<efd63a18>] (do_memtest+0x1fc/0x218) from [<efd073cc>]
+(execute_command+0x44/0x8c)
+[<efd073cc>] (execute_command+0x44/0x8c) from [<efd042c0>]
+(execute_binfmt+0x68/0xa0)
+[<efd042c0>] (execute_binfmt+0x68/0xa0) from [<efd11430>]
+(run_list_real+0x8cc/0x978)
+[<efd11430>] (run_list_real+0x8cc/0x978) from [<efd109b8>]
+(parse_stream_outer+0x140/0x1ec)
+[<efd109b8>] (parse_stream_outer+0x140/0x1ec) from [<efd11734>]
+(run_shell+0x64/0xac)
+[<efd11734>] (run_shell+0x64/0xac) from [<efd019f4>] (run_init+0x114/0x258)
+[<efd019f4>] (run_init+0x114/0x258) from [<efd01b88>] (start_barebox+0x50/0x8c)
+[<efd01b88>] (start_barebox+0x50/0x8c) from [<efd8a6b8>]
+(psci_driver_register+0x0/0x1c)
+[<efd8a6b8>] (psci_driver_register+0x0/0x1c) from [<efd0000c>]
+(__bare_init_start+0x0/0x14)
+[<efd0000c>] (__bare_init_start+0x0/0x14) from [<00b01bc8>] (0xb01bc8)
+[<00b01bc8>] (0xb01bc8) from [<00b013ac>] (0xb013ac)
+panic: unhandled exception
+### ERROR ### Please RESET the board ###
 
 
