@@ -1,67 +1,68 @@
-Delivery-date: Fri, 06 Dec 2024 11:01:36 +0100
+Delivery-date: Fri, 06 Dec 2024 11:02:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tJV9U-004gxY-0q
+	id 1tJVAU-004hBn-0e
 	for lore@lore.pengutronix.de;
-	Fri, 06 Dec 2024 11:01:36 +0100
+	Fri, 06 Dec 2024 11:02:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tJV9U-0007b9-85
-	for lore@pengutronix.de; Fri, 06 Dec 2024 11:01:36 +0100
+	id 1tJVAU-0007mI-74
+	for lore@pengutronix.de; Fri, 06 Dec 2024 11:02:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SuCmCbPjoeP44mUZ1jSHW0Vdqz7gYcd7QHyHnC43Zbc=; b=YECdBemTE+AV3nPF4dQm3Frc+6
-	0om1G12I6KZmjOeRN5lqXHUdkyGmy/1mlhBOIItWqRUGEryAlJ3LFBh+LmOLygihSaDC7U2l9r4a8
-	cC5pYEiweCgTDnJ3xcduEiNeINSmGtFh/FGWgZ4B9L5PnPAk1JD/apbbgR3l/Q30LAwYvpJDVssYz
-	XEsCvLzKWEveEALEwUARc+ZkUyKWcCmCDf6PUObnuv6yzsWbGUhHDL/nddx/nB4FpurAcwlV9NJ8u
-	R1mGsuSmWiuus9oTG/Q73VhJ/KinEzDHAAsGHcstFCi3R3wPLVk35emNUq9QRIqOMDYSMvz8ExT7n
-	eMMr5kfw==;
+	bh=mMYsaKPbMBnAO0++3sYi9f7mPUXPAWDHi10Yeb1tYEo=; b=R1evc9LW6VY5sX5ZNmkzL+ObDX
+	lSIQezKaPKSguwevklHnht7+cjPNZvNNurvZEd9CDyGO+wf1WOxQUDSWFaxES6TYST5UaAw6kUCRT
+	tr4M0L3WiJI2swxg9cp3g40Q271sjvbY34y9oLnKjao7io0O/tCM0rulfWzigmALcRm+Nan1fQLow
+	ADQAsPULA8prh9myfmoCVqFGo3g1d+SijiwKoRUTv9Ki0+hSIAmI9zIXdisol5wYHDLN9aCUTmq1u
+	gNLu3QoQPsf17MpGn8hTHdFGAtZdsa9JJn3rcyTd64D03HbSoETgrNIeE45smpr1fA84IZlZ6yIsF
+	ZF8AhZbg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tJV97-00000001BR7-1J6i;
-	Fri, 06 Dec 2024 10:01:13 +0000
+	id 1tJVA5-00000001BYG-3l23;
+	Fri, 06 Dec 2024 10:02:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tJV92-00000001BQX-3BiZ
+	id 1tJVA3-00000001BXu-42Qy
 	for barebox@lists.infradead.org;
-	Fri, 06 Dec 2024 10:01:10 +0000
+	Fri, 06 Dec 2024 10:02:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tJV91-0007Ux-9n; Fri, 06 Dec 2024 11:01:07 +0100
+	id 1tJVA2-0007h4-Rq; Fri, 06 Dec 2024 11:02:10 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tJV90-001yZ3-16;
-	Fri, 06 Dec 2024 11:01:07 +0100
+	id 1tJVA1-001yZG-2O;
+	Fri, 06 Dec 2024 11:02:10 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tJV91-000Y1U-0A;
-	Fri, 06 Dec 2024 11:01:07 +0100
+	id 1tJVA2-000ZJt-1R;
+	Fri, 06 Dec 2024 11:02:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241204062352.758284-1-a.fatoum@pengutronix.de>
-References: <20241204062352.758284-1-a.fatoum@pengutronix.de>
-Message-Id: <173347926704.130769.5510763270901994498.b4-ty@pengutronix.de>
-Date: Fri, 06 Dec 2024 11:01:07 +0100
+To: barebox@lists.infradead.org, 
+ Alexander Shiyan <eagle.alexander923@gmail.com>
+In-Reply-To: <20241204051312.433022-1-eagle.alexander923@gmail.com>
+References: <20241204051312.433022-1-eagle.alexander923@gmail.com>
+Message-Id: <173347933044.135756.4032447854041693931.b4-ty@pengutronix.de>
+Date: Fri, 06 Dec 2024 11:02:10 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241206_020108_800452_5147F6C4 
-X-CRM114-Status: UNSURE (   6.16  )
+X-CRM114-CacheID: sfid-20241206_020212_006520_919F3ECF 
+X-CRM114-Status: UNSURE (   4.59  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,24 +85,19 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] Documentation: imd: update information on
- barebox_update
+Subject: Re: [PATCH] ARM: cpu: dtb: Drop unnecessary check
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 04 Dec 2024 07:23:52 +0100, Ahmad Fatoum wrote:
-> The documentation was added in 2014 and support for checking IMD on
-> barebox_update came 2 years later, but the docs were never updated.
+On Wed, 04 Dec 2024 08:13:12 +0300, Alexander Shiyan wrote:
 > 
-> Bring it up-to-date now.
-> 
-> 
+
 
 Applied, thanks!
 
-[1/1] Documentation: imd: update information on barebox_update
-      https://git.pengutronix.de/cgit/barebox/commit/?id=dfc1ed8adf17 (link may not be stable)
+[1/1] ARM: cpu: dtb: Drop unnecessary check
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3aafa6bf8f71 (link may not be stable)
 
 Best regards,
 -- 
