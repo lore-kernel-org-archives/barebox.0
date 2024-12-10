@@ -1,59 +1,87 @@
-Delivery-date: Tue, 10 Dec 2024 09:27:30 +0100
+Delivery-date: Tue, 10 Dec 2024 12:31:08 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tKvac-006J2A-0n
+	id 1tKySK-006MFC-10
 	for lore@lore.pengutronix.de;
-	Tue, 10 Dec 2024 09:27:30 +0100
+	Tue, 10 Dec 2024 12:31:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tKvab-0001p5-Nv
-	for lore@pengutronix.de; Tue, 10 Dec 2024 09:27:30 +0100
+	id 1tKySK-00015m-6r
+	for lore@pengutronix.de; Tue, 10 Dec 2024 12:31:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
+	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8Gn+1LjXNwYHW07LvUIrQFlPCX+t4Kqut/1e3e7vLAA=; b=0Pl3lh6Szjyi49VEUwZrAi97qd
-	jWGX7c1jdMWd9Tf2xxRHhnu6PC1DrjCXgvXEBE9/IhPJvuCvrxzjKrawV0KxeNv8Y7eOy9WIe0QCn
-	W4X0Rjj51D9IzNtMi8yL9GQy520dA5m9mIxzBgyt+Up/2bu+NFINU+eh7oZQcVUBs1xdgPARhNbeC
-	DxvJRatFUyurm0ZpmouDUXUoWOjxOY+tIVjNfDNIcdu1ra9IMkLxHOX3F40TMfKSbYi0GAjzhpntC
-	fYrh5YlgMgLv/7UhQac7jFRlubKbfJfP3w2zsbNOwanTxAM9Z+IHwI9S3nMHdEq2ERqaKXVMaEN/P
-	ad9KWGGQ==;
+	bh=xlt23zmJZymmzMIaAYSVnC1klznYyqH21Nxf1w/1kB0=; b=qTg2VS7FE1/FApPyzhVnIR91Om
+	RM14Wv0SLHv5HcdzPvavHOatslML07RkcRHoF5zr/2+boDqpUSK3iNWDeUdJl2ROVx911y14u7VET
+	mpzokKwIjJWi+A+yev4SasCXnhJxKUkD0INlqXlhbL2sMYRIyqbz7LVaa7BU1PeWkaKNQ9ahYa7L/
+	2FiMN5H+3L7sDT/s/dSIY1b2osIJNcfl/22VZHRQ9CpgCJ0GASpvOD2D9iESBnk/VnB+Bon8TySy/
+	oc5ldJpCmFCcEpXAew/MqzQN2sOOx6v+mF0VU6cMOdph0fe1W5/vQteQ49STonAbrfNjLctXviqDJ
+	rplzRgYw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tKvaA-0000000AhaR-28em;
-	Tue, 10 Dec 2024 08:27:02 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tKyRc-0000000BJit-0zK4;
+	Tue, 10 Dec 2024 11:30:24 +0000
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tKva7-0000000AhZb-0xI2
+	id 1tKyRQ-0000000BJhk-1ldm
 	for barebox@lists.infradead.org;
-	Tue, 10 Dec 2024 08:27:00 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tKva5-0001kZ-TM; Tue, 10 Dec 2024 09:26:58 +0100
-Message-ID: <f549ee1e-1ecf-420d-b52d-8ee9cf687c01@pengutronix.de>
-Date: Tue, 10 Dec 2024 09:26:57 +0100
+	Tue, 10 Dec 2024 11:30:13 +0000
+Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-7f4325168c8so2728035a12.1
+        for <barebox@lists.infradead.org>; Tue, 10 Dec 2024 03:30:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733830211; x=1734435011; darn=lists.infradead.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xlt23zmJZymmzMIaAYSVnC1klznYyqH21Nxf1w/1kB0=;
+        b=mcTadCP/vzqoz7E+WMPH/QywYd2Zx3UQRoHJGIHslezUdwHnZRFhfWRI7ptN4Rgu6k
+         mjnyeE5MVSM+l9oMAehEqgpPo37lbcT4m8ylR2+U5SmCUOKPgMWJypDMw6+WSdFhA16C
+         3ZJlPBY1cp1HJjr4Kt4XpCBcIYWWrjHeGeUeNe9xxLAWGvsitz4ogqfcjC57cNwGY31i
+         NNA2yMbqQ9shZW4eWwa2/tRHsD0PzgIrtT9Rt21RdGiow7G9CTajZhUy35WXkBUFjQqk
+         CNWpP4kHM3mYGwNMdaSaJlW8VuzpxRlzYeFxq7Kc1Rh1PzkSir4/rt9SXbbX5RHor7m6
+         FkHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733830211; x=1734435011;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xlt23zmJZymmzMIaAYSVnC1klznYyqH21Nxf1w/1kB0=;
+        b=avbtcFB1Vdi8T/qIANF4snuKbJFzB1P//TKVEuO1n4yfZENf60kUrSmy9sqgcC3bJ8
+         KPEiiCFwFI6dI2b2MAChOhsHrncm583mSOr3JJTs38DwBSR3iFXkaeoXGf06776a917x
+         wLGkLJ4UCnc3UwsJorNwRuba4ASPVGBy0IpBlH0kf4tnl+pSVQjllHfWeCLhNjwxeAlP
+         4ydsGZZhSKNhZ2B1lhCqLNeP2HkAQDNJLFVsEC2FMgHaGFU0h4EaaKzigSU1GipJxb1E
+         tzYAJuEyoMitBMQfR4JPNVcqG/8/lECOIKRw9hvQdnP2jMAbxcwePZ+2vmBmNv2VLQCA
+         dSKw==
+X-Gm-Message-State: AOJu0Yxl/qwdb2nU7yDadZYDDizhodVb3oP4Y/95Eh5Vv/ixV4qaz2FY
+	gl2B42d8rNG/ECjHxrs5JrVvCUHJI/aWFSm5DvokHWgGHaDdzlE2YzD1H+So27C3+kNFa5DtURo
+	NU1n6eG2Ey+SRqnAkc4XJGvy79xdhik5Z
+X-Gm-Gg: ASbGnctnGxHoyopyqwoN0lFixYUN7Jkaj6mr3a5SXnqZ6i7HLryGtM/n+KQE5auqmpP
+	ZW3IFEy6luMCkdthHY5qUfAgS27VnbtY94J42
+X-Google-Smtp-Source: AGHT+IEqUYpyDX0kkpRJs7Ux+SCmC6lwY597s00WVNTjZGCc42T14kPqI3g4L1zC0VnyDnnoLDWtlEYxb57scPjL1aE=
+X-Received: by 2002:a17:90b:1812:b0:2ee:a4f2:b311 with SMTP id
+ 98e67ed59e1d1-2efcf10a203mr6491224a91.8.1733830210963; Tue, 10 Dec 2024
+ 03:30:10 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <CAP1tNvQXh3sQz8exOva9oY-XFUh0ULrSuuAA5fNrCREdw8cxAA@mail.gmail.com>
+ <Z1MJPVfJY7v2vEgL@pengutronix.de>
+In-Reply-To: <Z1MJPVfJY7v2vEgL@pengutronix.de>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Tue, 10 Dec 2024 14:29:59 +0300
+Message-ID: <CAP1tNvSEpZ_==v4o0Om_vCBoN3iuGGu8Qr1SxGxRy4NqCzOB4A@mail.gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20241125153523.1411849-1-a.fatoum@pengutronix.de>
- <20241125153523.1411849-8-a.fatoum@pengutronix.de>
- <Z1f69d0mTW7yd1DV@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z1f69d0mTW7yd1DV@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Cc: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241210_002659_439464_8CA797D3 
-X-CRM114-Status: GOOD (  26.39  )
+X-CRM114-CacheID: sfid-20241210_033012_463595_8BCE1391 
+X-CRM114-Status: GOOD (  17.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,254 +99,124 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 7/9] bthread: move asan fiber API into header
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: memtest failed for rk3588
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 10.12.24 09:25, Sascha Hauer wrote:
-> On Mon, Nov 25, 2024 at 04:35:21PM +0100, Ahmad Fatoum wrote:
->> Using the ASAN fibre API is essential, so the cooperative scheduling we
->> implement on top isn't flagged by AddressSanitizer.
->>
->> To prepare using that code elsewhere later, move it to a common header.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  arch/Kconfig                       |  3 ++
->>  arch/arm/include/asm/setjmp.h      |  2 +
->>  arch/kvx/include/asm/setjmp.h      |  2 +
->>  arch/mips/include/asm/setjmp.h     |  2 +
->>  arch/openrisc/include/asm/setjmp.h |  2 +
->>  arch/powerpc/include/asm/setjmp.h  |  2 +
->>  arch/riscv/include/asm/setjmp.h    |  2 +
->>  arch/sandbox/Kconfig               |  1 +
->>  arch/sandbox/include/asm/setjmp.h  | 42 ++++++++++++++++++++
->>  arch/x86/include/asm/setjmp.h      |  2 +
->>  common/bthread.c                   | 64 ++++++++----------------------
->>  include/asm-generic/setjmp.h       | 27 +++++++++++++
->>  12 files changed, 104 insertions(+), 47 deletions(-)
->>  create mode 100644 include/asm-generic/setjmp.h
->>
->> diff --git a/arch/Kconfig b/arch/Kconfig
->> index ad47dbf78d6c..671e6a0e979d 100644
->> --- a/arch/Kconfig
->> +++ b/arch/Kconfig
->> @@ -18,3 +18,6 @@ config ARCH_HAS_CTRLC
->>  #
->>  config ARCH_DMA_DEFAULT_COHERENT
->>  	bool
->> +
->> +config ARCH_HAS_ASAN_FIBER_API
->> +	bool
->> diff --git a/arch/arm/include/asm/setjmp.h b/arch/arm/include/asm/setjmp.h
->> index 0cee5bfdda60..d28235e56c36 100644
->> --- a/arch/arm/include/asm/setjmp.h
->> +++ b/arch/arm/include/asm/setjmp.h
->> @@ -28,4 +28,6 @@ void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
->>  
->>  int initjmp(jmp_buf jmp, void __attribute__((noreturn)) (*func)(void), void *stack_top);
->>  
->> +#include <asm-generic/setjmp.h>
->> +
->>  #endif /* _SETJMP_H_ */
->> diff --git a/arch/kvx/include/asm/setjmp.h b/arch/kvx/include/asm/setjmp.h
->> index 3c23576e6e82..7a09b182f251 100644
->> --- a/arch/kvx/include/asm/setjmp.h
->> +++ b/arch/kvx/include/asm/setjmp.h
->> @@ -12,4 +12,6 @@ int initjmp(jmp_buf jmp, void __attribute__((noreturn)) (*func)(void), void *sta
->>  int setjmp(jmp_buf jmp) __attribute__((returns_twice));
->>  void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
->>  
->> +#include <asm-generic/setjmp.h>
->> +
->>  #endif /* _ASM_KVX_SETJMP_H_ */
->> diff --git a/arch/mips/include/asm/setjmp.h b/arch/mips/include/asm/setjmp.h
->> index 39e01e27dfc0..af25678573e7 100644
->> --- a/arch/mips/include/asm/setjmp.h
->> +++ b/arch/mips/include/asm/setjmp.h
->> @@ -29,4 +29,6 @@ int setjmp(jmp_buf jmp) __attribute__((returns_twice));
->>  void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
->>  int initjmp(jmp_buf jmp, void __attribute__((noreturn)) (*func)(void), void *stack_top);
->>  
->> +#include <asm-generic/setjmp.h>
->> +
->>  #endif /* _MIPS_BITS_SETJMP_H */
->> diff --git a/arch/openrisc/include/asm/setjmp.h b/arch/openrisc/include/asm/setjmp.h
->> index ee73306d189d..d652e8a3cbcc 100644
->> --- a/arch/openrisc/include/asm/setjmp.h
->> +++ b/arch/openrisc/include/asm/setjmp.h
->> @@ -14,4 +14,6 @@ int setjmp(jmp_buf jmp) __attribute__((returns_twice));
->>  void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
->>  int initjmp(jmp_buf jmp, void __attribute__((noreturn)) (*func)(void), void *stack_top);
->>  
->> +#include <asm-generic/setjmp.h>
->> +
->>  #endif /* _OR1K_BITS_SETJMP_H */
->> diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
->> index 91bfcdb7f442..1ece16bb7ea7 100644
->> --- a/arch/powerpc/include/asm/setjmp.h
->> +++ b/arch/powerpc/include/asm/setjmp.h
->> @@ -18,4 +18,6 @@ void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
->>  
->>  int initjmp(jmp_buf jmp, void __attribute__((noreturn)) (*func)(void), void *stack_top);
->>  
->> +#include <asm-generic/setjmp.h>
->> +
->>  #endif /* _SETJMP_H_ */
->> diff --git a/arch/riscv/include/asm/setjmp.h b/arch/riscv/include/asm/setjmp.h
->> index 468fc4b10aaf..6604ba402bd9 100644
->> --- a/arch/riscv/include/asm/setjmp.h
->> +++ b/arch/riscv/include/asm/setjmp.h
->> @@ -24,4 +24,6 @@ void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
->>  
->>  int initjmp(jmp_buf jmp, void __attribute__((noreturn)) (*func)(void), void *stack_top);
->>  
->> +#include <asm-generic/setjmp.h>
->> +
->>  #endif /* _SETJMP_H_ */
->> diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
->> index d4379c4d68db..932bfd15d212 100644
->> --- a/arch/sandbox/Kconfig
->> +++ b/arch/sandbox/Kconfig
->> @@ -43,6 +43,7 @@ config 64BIT
->>  	default CC_IS_64BIT
->>  	select ARCH_DMA_ADDR_T_64BIT
->>  	select PHYS_ADDR_T_64BIT
->> +	select ARCH_HAS_ASAN_FIBER_API if ASAN
->>  
->>  config 32BIT
->>  	def_bool !64BIT
->> diff --git a/arch/sandbox/include/asm/setjmp.h b/arch/sandbox/include/asm/setjmp.h
->> index dcc3b4e86712..65a6d5aafa87 100644
->> --- a/arch/sandbox/include/asm/setjmp.h
->> +++ b/arch/sandbox/include/asm/setjmp.h
->> @@ -1,4 +1,9 @@
->>  /* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * This file is included both in arch/sandbox/os along with
->> + * system headers and outside with barebox headers, so we avoid
->> + * including any other headers here.
->> + */
->>  
->>  #ifndef __SETJMP_H_
->>  #define __SETJMP_H_
->> @@ -14,4 +19,41 @@ void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
->>  
->>  int initjmp(jmp_buf jmp, void __attribute__((noreturn)) (*func)(void), void *stack_top);
->>  
->> +#define start_switch_fiber start_switch_fiber
->> +#define finish_switch_fiber finish_switch_fiber
->> +
->> +void __sanitizer_start_switch_fiber(void **fake_stack_save,
->> +                                    const void *bottom, size_t size)
->> +    __attribute__((visibility("default")));
->> +
->> +void __sanitizer_finish_switch_fiber(void *fake_stack_save,
->> +                                     const void **bottom_old, size_t *size_old)
->> +    __attribute__((visibility("default")));
->> +
->> +static inline void finish_switch_fiber(void *fake_stack_save,
->> +                                       void **initial_bottom,
->> +                                       unsigned *initial_stack_size)
->> +{
->> +#ifdef CONFIG_ARCH_HAS_ASAN_FIBER_API
->> +    const void *bottom_old;
->> +    size_t size_old;
->> +
->> +    __sanitizer_finish_switch_fiber(fake_stack_save,
->> +                                    &bottom_old, &size_old);
->> +
->> +    if (initial_bottom && !*initial_bottom) {
->> +        *initial_bottom = (void *)bottom_old;
->> +        *initial_stack_size = size_old;
->> +    }
->> +#endif
->> +}
->> +
->> +static inline void start_switch_fiber(void **fake_stack_save,
->> +                                      const void *bottom, unsigned size)
->> +{
->> +#ifdef CONFIG_ARCH_HAS_ASAN_FIBER_API
->> +    __sanitizer_start_switch_fiber(fake_stack_save, bottom, size);
->> +#endif
->> +}
->> +
->>  #endif
->> diff --git a/arch/x86/include/asm/setjmp.h b/arch/x86/include/asm/setjmp.h
->> index 5af5e624895c..e0f5771b06ba 100644
->> --- a/arch/x86/include/asm/setjmp.h
->> +++ b/arch/x86/include/asm/setjmp.h
->> @@ -41,4 +41,6 @@ void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn)) __sjlj_attr;
->>  
->>  int initjmp(jmp_buf jmp, void __attribute__((noreturn)) (*func)(void), void *stack_top) __sjlj_attr;
->>  
->> +#include <asm-generic/setjmp.h>
->> +
->>  #endif
->> diff --git a/common/bthread.c b/common/bthread.c
->> index d40c0b0f9e3a..943f4c22b346 100644
->> --- a/common/bthread.c
->> +++ b/common/bthread.c
->> @@ -15,10 +15,6 @@
->>  #include <asm/setjmp.h>
->>  #include <linux/overflow.h>
->>  
->> -#if defined CONFIG_ASAN && !defined CONFIG_32BIT
->> -#define HAVE_FIBER_SANITIZER
->> -#endif
->> -
->>  static struct bthread {
->>  	void (*threadfn)(void *);
->>  	void *data;
->> @@ -27,7 +23,7 @@ static struct bthread {
->>  	void *stack;
->>  	u32 stack_size;
->>  	struct list_head list;
->> -#ifdef HAVE_FIBER_SANITIZER
->> +#ifdef CONFIG_ARCH_HAS_ASAN_FIBER_API
->>  	void *fake_stack_save;
->>  #endif
-> 
-> This breaks compilation of multi_v8_defconfig. Before this change usage
-> of fake_stack_save depended on #ifdef HAVE_FIBER_SANITIZER, ...
-> 
->>  	u8 awake :1;
->> @@ -45,12 +41,22 @@ struct bthread *current = &main_thread;
->>  /*
->>   * When using ASAN, it needs to be told when we switch stacks.
->>   */
->> -static void start_switch_fiber(struct bthread *, bool terminate_old);
->> -static void finish_switch_fiber(struct bthread *);
->> +static void bthread_finish_switch_fiber(struct bthread *bthread)
->> +{
->> +	finish_switch_fiber(bthread->fake_stack_save,
->> +			    &main_thread.stack, &main_thread.stack_size);
->> +}
-> 
-> ... but now it's used unconditionally.
-> 
-> For now I'll just drop the ifdef around void *fake_stack_save. I don't
-> know if that's the correct solution, but maybe it doesn't matter as
-> fake_stack_save is removed in a later commit anyway.
+Hello.
 
-Yes, it doesn't matter.
+The dump does not cause a crash, but the output is very strange:
 
-Thanks,
-Ahmad
+barebox@Diasom DS-RK3588-BTB-EVB:/ md 0x3fc000100
+3fc000100: 940033fd b0000060 39477ea1 91274c00               .3..`....~G9.L=
+'.
+3fc000110: 17ffffe2 91404001 b9428020 37f80180               .....@@. .B...=
+.7
+3fc000120: b9428020 32010000 b9028020 52800020                .B....2 ... .=
+.R
+3fc000130: b9420822 32000042 b9020822 b9420822               ".B.B..2"...".=
+B.
+3fc000140: 521c0042 b9020822 d65f03c0 52800000               B..R"....._...=
+.R
+3fc000150: 17fffff8 91404000 34000081 b9428001               .....@@....4..=
+B.
+3fc000160: 12007821 b9028001 b9420801 121f7821               !x........B.!x=
+..
+3fc000170: b9020801 b9420801 521c0021 b9020801               ......B.!..R..=
+..
+3fc000180: d65f03c0 d37b7c21 71000c5f 8b010000               .._.!|{._..q..=
+..
+3fc000190: 528aaaa1 72bdddc1 f9400400 b900ac01               ...R...r..@...=
+..
+3fc0001a0: 529dddc1 72aaaaa1 b90a7c01 b94a2401               ...R...r.|...$=
+J.
+3fc0001b0: 321c0021 b90a2401 b94a2403 12147463               !..2.$...$J.ct=
+..
+3fc0001c0: 54000300 52808001 1ac22022 2a030042               ...T...R" ..B.=
+.*
+3fc0001d0: b90a2402 b94a2401 32000021 b90a2401               .$...$J.!..2.$=
+..
+3fc0001e0: b94a2401 360fffe1 b94a2401 121f7821               .$J....6.$J.!x=
+..
+3fc0001f0: b90a2401 b94a2401 12147421 b90a2401               .$...$J.!t...$=
+..
+barebox@Diasom DS-RK3588-BTB-EVB:/ md 0x3fc000200
+3fc000200: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000210: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000220: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000230: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000240: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000250: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000260: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000270: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000280: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc000290: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc0002a0: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc0002b0: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc0002c0: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc0002d0: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc0002e0: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+3fc0002f0: xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx               ..............=
+..
+barebox@Diasom DS-RK3588-BTB-EVB:/
 
-> 
+=D0=BF=D1=82, 6 =D0=B4=D0=B5=D0=BA. 2024=E2=80=AF=D0=B3. =D0=B2 17:25, Sasc=
+ha Hauer <s.hauer@pengutronix.de>:
+>
+> Hi Alexander,
+>
+> On Fri, Dec 06, 2024 at 04:10:42PM +0300, Alexander Shiyan wrote:
+> > Hello all!
+> >
+> > When testing a board with a RK3588 CPU, I get a stable crash on memtest=
+.
+> > This is the first sample of the board on this CPU and of course it is p=
+ossible
+> > that something is really not soldered correctly, but should the
+> > bootloader crash in this case?
+> >
+> >
+> > Testing memory space: 0x0000000100000000 -> 0x00000003ffffffff:
+> > Starting data line test.
+> > Check for address bits stuck high.
+> > Check for address bits stuck low or shorted.
+> > Starting moving inversions test of RAM:
+> > Fill with address, compare, fill with inverted address, compare again
+> >         [##########################################DABT (current EL)
+> > exception (ESR 0x96000010) at 0x00000003fc000200
+>
+> Can you access 0x3fc000200 using md/mw?
+>
 > Sascha
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+> --
+> Pengutronix e.K.                           |                             =
+|
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
+|
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
+|
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
+|
 
 
