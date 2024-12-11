@@ -1,67 +1,81 @@
-Delivery-date: Tue, 10 Dec 2024 22:52:55 +0100
+Delivery-date: Wed, 11 Dec 2024 07:15:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tL8A3-006X3u-0y
+	id 1tLG0T-006fqV-1m
 	for lore@lore.pengutronix.de;
-	Tue, 10 Dec 2024 22:52:55 +0100
+	Wed, 11 Dec 2024 07:15:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tL8A3-0005pe-86
-	for lore@pengutronix.de; Tue, 10 Dec 2024 22:52:55 +0100
+	id 1tLG0T-0001jv-GX
+	for lore@pengutronix.de; Wed, 11 Dec 2024 07:15:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9hE4vzt8w/n4Ds7twOY2CQMkcp18arxV2l2icpReetk=; b=h9Bjv4QgR1IE57W6ZpA69MfEU0
-	klTGeS0aVC4TmXd+lq3gHUl7UQvKiqDduIysNXv70TmqFtEar9rXUex0hakCPEWRy7Yfy162LZ3L+
-	52X9IKu9BeOhl75Lne2FIekKYtGVJITDoDSkQmwrmjXSw4+OBeIBknY64oSTlnWuLhVUS7SwIUAVv
-	rz87RWNKWgO+jynFh8UK9OXL3YCLSfYcEsXfP6LkeaDJrRPaD4G3xKM8BWxI5TWe51A0TcV/xGZlz
-	FPWy8NYB9azrU/+68OrFOpgj+rJWfudiqKY2tHHGq/CCzREyFKQS2xpZXN051usQK+p6U9eWAhbpi
-	P771rXjA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:Subject:
+	Message-ID:Date:From:MIME-Version:Reply-To:Cc:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Z8w9RMaOPS1Re7d8xtI7PHEKuXfoOg8ClxKr9Cgi2Js=; b=itgJE8MyhfaA/6c+HHta6cW/8e
+	fWvOJmi4OZoT0IXupA50zPDRca5cvHeXcRZUNi+IHzhckDtw+HY/VD9FnywcC0oaPBGwJD8Cwgp9i
+	P0xIU+LK5rgziXvGNv3qTkuK2X60hD7D1MeYSzGFsowywGvuBSeB8oFgxCGI4W90HjCmhHdsUP0t4
+	D27yMNRT41gguGgVHCMTBfY2bEl9LxRN3s4DTJ31ATClE3aC8e9aS8/+pQ5EybUsvB2xp9rtpvUyJ
+	6SiNPFzBCNFD74bXOT8FAUh+HaFNyHr499qm7Uf+sTTWygg4jFukYbSb9G36Is04dLIfnBc04CIrd
+	bTXc2y+A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tL89K-0000000CrhZ-3oKD;
-	Tue, 10 Dec 2024 21:52:10 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tLFzk-0000000DuNH-2ySh;
+	Wed, 11 Dec 2024 06:14:48 +0000
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tL89G-0000000Crgh-3ilB
+	id 1tLFzh-0000000DuMV-2J2H
 	for barebox@lists.infradead.org;
-	Tue, 10 Dec 2024 21:52:08 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tL89E-0005g4-Vk; Tue, 10 Dec 2024 22:52:05 +0100
-Message-ID: <0125561a-a868-43da-a7d3-4b85540cc78d@pengutronix.de>
-Date: Tue, 10 Dec 2024 22:52:04 +0100
+	Wed, 11 Dec 2024 06:14:46 +0000
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-2ee67e9287fso5691445a91.0
+        for <barebox@lists.infradead.org>; Tue, 10 Dec 2024 22:14:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733897684; x=1734502484; darn=lists.infradead.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Z8w9RMaOPS1Re7d8xtI7PHEKuXfoOg8ClxKr9Cgi2Js=;
+        b=LvlAlv9IDSwNUQDbrbwjC06bi80UpFM1Tno3rD7uWq5NhPwDFCTW/A9WAQP006ARVA
+         Kqga2CevotuF2I2bd0MhZXbxxiTgOx+cAbhZKueq9KXnI/pqlx11avQuCXEn41s/HiUt
+         yGMhylXJfZwTR6xZ9Go80JJa6t3UXJ/T56+dRixM0+1po2S/FUEVgIob0cFurewitalw
+         t52c8N2poL/CkIpbs9sEAzDG2nrEi4PNAww1nE6WZeoZL/+TqYuMSMiqcgegd7akRz6O
+         JMj4AGy8SQAkCnFss0w91jyVd72YfxEWINe7WVpRchjH/M5mln0IMQsG0lysYH9NYYUu
+         eC6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733897684; x=1734502484;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Z8w9RMaOPS1Re7d8xtI7PHEKuXfoOg8ClxKr9Cgi2Js=;
+        b=YrriPlrrlIcYUhgEIEp97ZtSSshi6WNXnMq4KvTEsgKP3DNf+8+grOwJr7meP2m9dg
+         o6Di5ciYkmpDj4LHTAleWiM0Azh+b+WtbB3W5p5OG6gqzr9I2SP0jbwBXmVjBuI+dANJ
+         U7dEdl2HYSQJZtPMws7+Y6IiK9cmt7byak/98bDVj2L/obOkPhyVXVtP//NJaBvlPlZv
+         F7SDyO7BM+8TdQmrfFa23vfm4z2EZsal4mifeJXmci9C8mBxN2nNa0RvQTucejVcYfPM
+         oUPVPgHgKYQBhQdForOSOCVUS54VSf7+RH2OeD4Z6pJnvpyBMN7+XE1sj1+bB0yMGGsz
+         /TUg==
+X-Gm-Message-State: AOJu0Ywd0gAXlz8MX4FEXFZiid3KM+0tVYVcuN+AN4wJoI2McC3nvmN7
+	j49HdW+SnNQbSk19NZZx6eUGUT3BU5n9EHDpMu7Ypkad4BxvrtT5K4c0ahrFGVrDYv5sHaCDVhd
+	QHR9C42TSSK2a/DXagqPbqUwCbj7WBQD2
+X-Gm-Gg: ASbGncugkI9NDE5yo8W7NOYrTk2EAIpUERxoxhSCOJTckvB7BQj21eDpROZto5Kvlla
+	S0mNrQ5+hQWeCx/8gkxS34UBjsg8h0rPlCAmHuQ==
+X-Google-Smtp-Source: AGHT+IE4fVGZB3lOn5W4CSt4U2HnouBmcHu7Mr4UQAP4QNYcCWkdoYeKErZzoKy9ENwmsA+S0Xsaei2gcipUqL4zeZ4=
+X-Received: by 2002:a17:90b:17c5:b0:2ee:cfba:734b with SMTP id
+ 98e67ed59e1d1-2f127fd8ccamr2584529a91.21.1733897684228; Tue, 10 Dec 2024
+ 22:14:44 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-Cc: barebox@lists.infradead.org
-References: <Z0g74s98_Pz98tC5@hephaistos>
- <83e0f4b3-c558-48dc-b867-f88376d73bc2@pengutronix.de>
- <Z0hbuZBvK2aLd5s1@hephaistos>
- <b91eaf6c-9559-466a-bd20-297647401c63@pengutronix.de>
- <Z03A9rr21q320J0t@hephaistos>
- <19923329-f254-435d-9557-5e1b6835b8ec@pengutronix.de>
- <Z09TKeFZaT6InuPX@hephaistos>
- <49df1ec9-aca8-49b0-95fe-d577c5b615db@pengutronix.de>
- <Z098Eor4bedpsol9@hephaistos>
- <f7b92750-f3ec-42d1-aacb-deaa6fb408d9@pengutronix.de>
- <Z1CDcFAPdlDBkGJ5@hephaistos>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z1CDcFAPdlDBkGJ5@hephaistos>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Wed, 11 Dec 2024 09:14:32 +0300
+Message-ID: <CAP1tNvQoUsjRNKMr-CZ_Q67-PKGfj_ZsoePeT3pgOe_DefriMg@mail.gmail.com>
+To: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241210_135206_931296_B308C0DF 
-X-CRM114-Status: GOOD (  20.76  )
+X-CRM114-CacheID: sfid-20241210_221445_586438_21C60297 
+X-CRM114-Status: UNSURE (   3.99  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,75 +93,27 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Reset on Beaglebone Black has become unreliable/broken
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.2
+Subject: Possible regression 2024.12.0 in parsing "aliases"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Hello.
 
-On 04.12.24 17:29, Konstantin Kletschke wrote:
-> On Wed, Dec 04, 2024 at 07:14:17AM +0100, Ahmad Fatoum wrote:
-> 
->> Very interesting. You can now try to move the 4 putc_ll`s to a later point in the
->> startup code and then see which line of barebox code needed the delay in front of
->> it.
+After updating barebox to version 2024.12.0, an error message appeared
+when loading
+the RK3568 board. Accordingly, the I2C1 interface does not work.
+In the previous version (2024.10.0), everything worked as it should. I did not
+understand what the problem is, but I suspect that aliases are now
+parsed incorrectly.
+The system has an alias i2c1 (this is the basic SOC i2c1 interface)
+and an alias i2c10 for the GPIO expander. Perhaps the problem is somewhere here?
 
+ERROR: rk3x-i2c fe5a0000.i2c@fe5a0000.of: probe failed: Device or resource busy
 
-> I _think_ this is the critical path, I have more putc_ll() inserted, but
-> they are not important.
-> If by any chance it is better readable for anyone I could provide a
-> complete diff, of course.
-> 
-> So, when I power up, I get:
-> 
-> 2>6ABCDEF%G-%|!_H-%|!_I-%|!_%%%%JKLMNOPQZSwitch to console [cs0]
-> 
-> before the banner.
-> 
-> When I reset, S1, blabla, I get:
-> 
->> 6ABCDEF%G-%|
-> 
-> So I assume it dies at 
-> 
-> BUG_ON(!IS_ALIGNED(virt_addr, PAGE_SIZE));
-
-You can print hex numbers with puthex_ll(), although by now you are
-already relocated, so you can add
-
-  pbl_set_putc((void (*)(void *, int))debug_ll_ns16550_putc, uart0);
-
-after omap_debug_ll_init(), enable CONFIG_DEBUG_PBL and then you can
-use normal printf and also see the panic message if the BUG() indeed
-triggers.
-
-> So each warm restart method gives me a proper reboot. 
-> With an additional putc_ll() in lowlevel.c in beaglebone_sram_init().
-> The later debug putc_ll() have no influence on starting not starting.
-
-Getting stuck inside the BUG_ON doesn't make much sense. It may be interesting
-to find out what the value of virt_addr is.
-
-I suspect the RAM controller itself may be acting funky after a warm reboot
-and letting some time go by fixes that :/
-
-Cheers,
-Ahmad
-
-> 
-> Kind regards
-> Konsti
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks!
 
 
