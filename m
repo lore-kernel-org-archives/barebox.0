@@ -1,88 +1,75 @@
-Delivery-date: Wed, 11 Dec 2024 15:33:50 +0100
+Delivery-date: Wed, 11 Dec 2024 15:53:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tLNmg-006oQw-0y
+	id 1tLO5t-006oiC-39
 	for lore@lore.pengutronix.de;
-	Wed, 11 Dec 2024 15:33:50 +0100
+	Wed, 11 Dec 2024 15:53:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tLNmf-0008WQ-Kw
-	for lore@pengutronix.de; Wed, 11 Dec 2024 15:33:50 +0100
+	id 1tLO5t-0003oO-QX
+	for lore@pengutronix.de; Wed, 11 Dec 2024 15:53:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zQ0X1LLQ97rxjtX15sHdolKUIi5U2Eo5/0oJ7OT17ws=; b=41BoQHk9byByjrzfXQuOq/RC1h
-	nN631pxJkkl4mbcMN1fjV29yiCpO2sC+cQBxIWBI/mNMiRpx4eQVpHLdsvSOu/sPRlb5AENcpRPSB
-	jSgSMyk4+9F1iDGMb2rd6wDV5U0eypseJC0MxWxgMaIdjeXkxjwj2Mo1U31L2XzMA+sXemsp6NBkI
-	ewh1SOxVYbM15mDv70d31/Jrvb2Cp1o/G6A/vHaviy+f/zCB/dJxylNoWfwY/cgtPdidaisRXYprz
-	FhumHKgrT2sC3K+CO5Rks+mpbpgS2j/ANCmYmdOw1joQTRD2owC0Vm8Ch4vIIYqZt5QIL/bzIql+6
-	g5Y/pAmg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=u4MMojShK4DhI4YpGLeyWLnuuGI+aQN3XsTuS2fZ9v8=; b=zaADvvNy0a+dUA4PUpZ+cN2W7w
+	w0UBqmd5QEutKHvpMf+UkaXE++UkXZjIiPe+IrH8qRFz9h4MEvtUqMzDZIGylz4Gmvj08PcTpk0Uy
+	1ZASEEfEnhxMZ7Dkqmhou2UeuAZHDhCzaZ491YxJaGHHCydSme6hpfHqU5dlM5unHG1C0KT7mXaoZ
+	kDUSIDqeDbLLYcoyEWuxieKwQbV77O/Cxj0uftKX+O2FUIjG7Zzu5Dix7Uc3y+Db5Xs/IiegKlQ2P
+	RtUs6Dgo7QM4ielTD8OI4Vc8QnCXQbqIJXsg0IHkrPa0j2NwNnEaBJ7Lq90xnMvuhA51vYq+viCwA
+	Hm+X/HQQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tLNlu-0000000F9mB-0fu7;
-	Wed, 11 Dec 2024 14:33:02 +0000
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+	id 1tLO5I-0000000FCQb-2ZHl;
+	Wed, 11 Dec 2024 14:53:04 +0000
+Received: from mail.inside-m2m.de ([188.68.57.244])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tLNkm-0000000F9Gf-1aFQ
+	id 1tLO5E-0000000FCOY-0RC0
 	for barebox@lists.infradead.org;
-	Wed, 11 Dec 2024 14:31:53 +0000
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-385dece873cso3297473f8f.0
-        for <barebox@lists.infradead.org>; Wed, 11 Dec 2024 06:31:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733927509; x=1734532309; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zQ0X1LLQ97rxjtX15sHdolKUIi5U2Eo5/0oJ7OT17ws=;
-        b=LaSXhATVzE46wn0yTKLs/5+2B43HVMhR285dratS90P281nDce7s44uKS/xInRD2Ei
-         CMcNtca3SGQah6O3RoeWgBtyR7opu5n+8VRQD14v5R/jGs5zbnEj8lEYd0id+R9zR1s8
-         6L+4on0rdKGyOren1btZQhscY1HQhLvUgGSEiErj+dA+wKhAQPgTvQ3r1BOAC8jJ/IvL
-         xwHI4xjyMo9N4QP/nazUPJsDo6g6QlWkHDs6b92z9GIQGs5Iw7GIrr/433h0xJfToif+
-         5gqqxT9ovRxV1VBnO0bAooBhNQXEdssdlvS9M/f9ATDffKCBKmj9isQcQfbFbuXWeKGS
-         ozHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733927509; x=1734532309;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zQ0X1LLQ97rxjtX15sHdolKUIi5U2Eo5/0oJ7OT17ws=;
-        b=MZVuROWgvj7thkIrnrDaLTQDkseRLxhIOF1Owdm7MO+ZY9Bjhp0BmMTghslopkdNKp
-         wi5rwkf43eUicO809aHkGCAOVfdVZZrVZ/lLJzEIgO2NteVR/VcFLjWowmZ9V6DvSA74
-         AlWOt9X2/F4Btd65NW6NwdMBmQBBpYrSHdgOMqSjWE2sbB4Mh85xFDCLhfhyXDu6AkeC
-         Nw+X7W7mxd4Qk6W/vXB6SQYYkIrOegtE4TCO2qE0SW3WMwU6YapzW2VK+0s1UJrSNBN7
-         xpEg1+0yEIjTSzHVoRFONDrlTEDIlOzxXFaXxSsO64CGvDh/Zxsnt8YLbzzHTD+/p6Wj
-         /otQ==
-X-Gm-Message-State: AOJu0YxvxX+WU3daLPoZA6Fi57MH6sEIqdH/ZxUd3yaa5WutqexhZ3r9
-	9N4oiOYtxLrOS/OdfpOFkCDgTmMHeaWpi5WSiLGzCQ+ZOwPSe8yd4vgSBQ==
-X-Gm-Gg: ASbGncu2U4XMPfYFSC5RfEkvCaqaYmW26waDFBRMTVlH4lFv/sPEcGNmTjA7QoMaoPQ
-	th8WwXLXKQGvnu0w7x2Gq+0Y4WTlaDeTzPHwkXjU2/WHMgPK1o6q10Uby9zFdVt72+RFY/vZyp2
-	ffY6jyhrMrKtauezeTKe4c4aTbSZYky5KjoTv6yEXyXV3mHMWEJFDRUEfxabWhPoUL+UoAgoHpa
-	fNUor49I3hVn94pxUn43bCxjuYO/6BK/EQiV1S9b7K+IBx8Aoub/KESRlSmWvPGTnJ9qU4PR88Q
-	nSo=
-X-Google-Smtp-Source: AGHT+IFiatlu7FcxTb5yMIeP15NKuqDvbYNKzRPkYhk8Qh0+GWNenQHKrweCvhKBVYKfZ7hjJxEbIA==
-X-Received: by 2002:a5d:5f47:0:b0:382:6f3:a20f with SMTP id ffacd0b85a97d-3864ce8956dmr2922458f8f.11.1733927507757;
-        Wed, 11 Dec 2024 06:31:47 -0800 (PST)
-Received: from localhost.localdomain ([95.161.223.172])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3878248e633sm1448842f8f.4.2024.12.11.06.31.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 06:31:47 -0800 (PST)
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 11 Dec 2024 17:31:32 +0300
-Message-Id: <20241211143132.2990471-1-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.38.2
+	Wed, 11 Dec 2024 14:53:02 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
+	s=default; t=1733928742;
+	bh=qV99gCee0RnnYB2HyeUUgbYDlrrG32LCC31NlPcKbek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WYHpKr8XpYS1xzCjgfVG3wZoSBAXCYj2Eqc196LzUOYWqcDxU/90atr1rgEBN/kG0
+	 isF3KmAHpJcrdKT6pKL9qUUJYBHoem3I+QNrP39i2gdNNflewGtM9tzYLiOZO5pYl4
+	 OjmDEhshN1TZNcXQlUa9nwq9yuk1UbYTdLOvU8nYxEEfszWG+24abAYZXQljjhXBSc
+	 taFG1Z/a2G3wR+xuAmdeJ45ADJRFUcH5k5mpuGiDy8tU7w3PIvOrmNezXhuWzMgauE
+	 qehwKGOnCiO6dvhL50wHc1l/zC3hyfxKNWZiD6Y4z56RuB4Ddz9WXXKVOghsJUNUMG
+	 mGMt+8pPD6V2w==
+Received: from hephaistos (business-90-187-159-109.pool2.vodafone-ip.de [90.187.159.109])
+	(Authenticated sender: konstantin.kletschke@inside-m2m.de)
+	by mail.inside-m2m.de (Postfix) with ESMTPSA id 03D0F40153;
+	Wed, 11 Dec 2024 15:52:21 +0100 (CET)
+Date: Wed, 11 Dec 2024 15:52:20 +0100
+From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <Z1mnJB8Suz3SNWbI@hephaistos>
+References: <Z0hbuZBvK2aLd5s1@hephaistos>
+ <b91eaf6c-9559-466a-bd20-297647401c63@pengutronix.de>
+ <Z03A9rr21q320J0t@hephaistos>
+ <19923329-f254-435d-9557-5e1b6835b8ec@pengutronix.de>
+ <Z09TKeFZaT6InuPX@hephaistos>
+ <49df1ec9-aca8-49b0-95fe-d577c5b615db@pengutronix.de>
+ <Z098Eor4bedpsol9@hephaistos>
+ <f7b92750-f3ec-42d1-aacb-deaa6fb408d9@pengutronix.de>
+ <Z1CDcFAPdlDBkGJ5@hephaistos>
+ <0125561a-a868-43da-a7d3-4b85540cc78d@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <0125561a-a868-43da-a7d3-4b85540cc78d@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241211_063152_416269_61CA3F08 
-X-CRM114-Status: GOOD (  15.06  )
+X-CRM114-CacheID: sfid-20241211_065300_582137_5A8F9C7B 
+X-CRM114-Status: GOOD (  13.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,201 +87,140 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] clk: rk3588: sync with kernel
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: Reset on Beaglebone Black has become unreliable/broken
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This updates the RK3588 clk driver to the one from Linux.
+Hi ;)
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
----
- drivers/clk/rockchip/clk-rk3588.c | 91 +++++++++++++++++--------------
- 1 file changed, 49 insertions(+), 42 deletions(-)
+On Tue, Dec 10, 2024 at 10:52:04PM +0100, Ahmad Fatoum wrote:
 
-diff --git a/drivers/clk/rockchip/clk-rk3588.c b/drivers/clk/rockchip/clk-rk3588.c
-index 9fcee08738..736ce4a543 100644
---- a/drivers/clk/rockchip/clk-rk3588.c
-+++ b/drivers/clk/rockchip/clk-rk3588.c
-@@ -16,16 +16,25 @@
- #include "clk.h"
- 
- /*
-- * GATE with additional linked clock. Downstream enables the linked clock
-- * (via runtime PM) whenever the gate is enabled. The downstream implementation
-- * does this via separate clock nodes for each of the linked gate clocks,
-- * which leaks parts of the clock tree into DT. It is unclear why this is
-- * actually needed and things work without it for simple use cases. Thus
-- * the linked clock is ignored for now.
-+ * Recent *Rockchip SoCs have a new hardware block called Native Interface
-+ * Unit (NIU), which gates clocks to devices behind them. These effectively
-+ * need two parent clocks.
-+ *
-+ * Downstream enables the linked clock via runtime PM whenever the gate is
-+ * enabled. This implementation uses separate clock nodes for each of the
-+ * linked gate clocks, which leaks parts of the clock tree into DT.
-+ *
-+ * The GATE_LINK macro instead takes the second parent via 'linkname', but
-+ * ignores the information. Once the clock framework is ready to handle it, the
-+ * information should be passed on here. But since these clocks are required to
-+ * access multiple relevant IP blocks, such as PCIe or USB, we mark all linked
-+ * clocks critical until a better solution is available. This will waste some
-+ * power, but avoids leaking implementation details into DT or hanging the
-+ * system.
-  */
--#define GATE_LINK(_id, cname, pname, linkname, f, o, b, gf) \
-+#define GATE_LINK(_id, cname, pname, linkedclk, f, o, b, gf) \
- 	GATE(_id, cname, pname, f, o, b, gf)
--
-+#define RK3588_LINKED_CLK		CLK_IS_CRITICAL
- 
- #define RK3588_GRF_SOC_STATUS0		0x600
- #define RK3588_PHYREF_ALT_GATE		0xc38
-@@ -997,7 +1006,7 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 	GATE(PCLK_MAILBOX1, "pclk_mailbox1", "pclk_top_root", 0,
- 			RK3588_CLKGATE_CON(16), 12, GFLAGS),
- 	GATE(PCLK_MAILBOX2, "pclk_mailbox2", "pclk_top_root", 0,
--		RK3588_CLKGATE_CON(16), 13, GFLAGS),
-+			RK3588_CLKGATE_CON(16), 13, GFLAGS),
- 	GATE(PCLK_PMU2, "pclk_pmu2", "pclk_top_root", CLK_IS_CRITICAL,
- 			RK3588_CLKGATE_CON(19), 3, GFLAGS),
- 	GATE(PCLK_PMUCM0_INTMUX, "pclk_pmucm0_intmux", "pclk_top_root", CLK_IS_CRITICAL,
-@@ -1449,7 +1458,7 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 	COMPOSITE_NODIV(HCLK_NVM_ROOT,  "hclk_nvm_root", mux_200m_100m_50m_24m_p, 0,
- 			RK3588_CLKSEL_CON(77), 0, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(31), 0, GFLAGS),
--	COMPOSITE(ACLK_NVM_ROOT, "aclk_nvm_root", gpll_cpll_p, 0,
-+	COMPOSITE(ACLK_NVM_ROOT, "aclk_nvm_root", gpll_cpll_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(77), 7, 1, MFLAGS, 2, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(31), 1, GFLAGS),
- 	GATE(ACLK_EMMC, "aclk_emmc", "aclk_nvm_root", 0,
-@@ -1678,13 +1687,13 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 			RK3588_CLKGATE_CON(42), 9, GFLAGS),
- 
- 	/* vdpu */
--	COMPOSITE(ACLK_VDPU_ROOT, "aclk_vdpu_root", gpll_cpll_aupll_p, 0,
-+	COMPOSITE(ACLK_VDPU_ROOT, "aclk_vdpu_root", gpll_cpll_aupll_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(98), 5, 2, MFLAGS, 0, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(44), 0, GFLAGS),
- 	COMPOSITE_NODIV(ACLK_VDPU_LOW_ROOT, "aclk_vdpu_low_root", mux_400m_200m_100m_24m_p, 0,
- 			RK3588_CLKSEL_CON(98), 7, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(44), 1, GFLAGS),
--	COMPOSITE_NODIV(HCLK_VDPU_ROOT, "hclk_vdpu_root", mux_200m_100m_50m_24m_p, 0,
-+	COMPOSITE_NODIV(HCLK_VDPU_ROOT, "hclk_vdpu_root", mux_200m_100m_50m_24m_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(98), 9, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(44), 2, GFLAGS),
- 	COMPOSITE(ACLK_JPEG_DECODER_ROOT, "aclk_jpeg_decoder_root", gpll_cpll_aupll_spll_p, 0,
-@@ -1735,9 +1744,9 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 	COMPOSITE(ACLK_RKVENC0_ROOT, "aclk_rkvenc0_root", gpll_cpll_npll_p, 0,
- 			RK3588_CLKSEL_CON(102), 7, 2, MFLAGS, 2, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(47), 1, GFLAGS),
--	GATE(HCLK_RKVENC0, "hclk_rkvenc0", "hclk_rkvenc0_root", 0,
-+	GATE(HCLK_RKVENC0, "hclk_rkvenc0", "hclk_rkvenc0_root", RK3588_LINKED_CLK,
- 			RK3588_CLKGATE_CON(47), 4, GFLAGS),
--	GATE(ACLK_RKVENC0, "aclk_rkvenc0", "aclk_rkvenc0_root", 0,
-+	GATE(ACLK_RKVENC0, "aclk_rkvenc0", "aclk_rkvenc0_root", RK3588_LINKED_CLK,
- 			RK3588_CLKGATE_CON(47), 5, GFLAGS),
- 	COMPOSITE(CLK_RKVENC0_CORE, "clk_rkvenc0_core", gpll_cpll_aupll_npll_p, 0,
- 			RK3588_CLKSEL_CON(102), 14, 2, MFLAGS, 9, 5, DFLAGS,
-@@ -1747,10 +1756,10 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 			RK3588_CLKGATE_CON(48), 6, GFLAGS),
- 
- 	/* vi */
--	COMPOSITE(ACLK_VI_ROOT, "aclk_vi_root", gpll_cpll_npll_aupll_spll_p, 0,
-+	COMPOSITE(ACLK_VI_ROOT, "aclk_vi_root", gpll_cpll_npll_aupll_spll_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(106), 5, 3, MFLAGS, 0, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(49), 0, GFLAGS),
--	COMPOSITE_NODIV(HCLK_VI_ROOT, "hclk_vi_root", mux_200m_100m_50m_24m_p, 0,
-+	COMPOSITE_NODIV(HCLK_VI_ROOT, "hclk_vi_root", mux_200m_100m_50m_24m_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(106), 8, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(49), 1, GFLAGS),
- 	COMPOSITE_NODIV(PCLK_VI_ROOT, "pclk_vi_root", mux_100m_50m_24m_p, 0,
-@@ -1844,8 +1853,6 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 			RK3588_CLKGATE_CON(56), 0, GFLAGS),
- 	GATE(PCLK_TRNG0, "pclk_trng0", "pclk_vo0_root", 0,
- 			RK3588_CLKGATE_CON(56), 1, GFLAGS),
--	GATE(PCLK_VO0GRF, "pclk_vo0grf", "pclk_vo0_root", CLK_IGNORE_UNUSED,
--			RK3588_CLKGATE_CON(55), 10, GFLAGS),
- 	COMPOSITE(CLK_I2S4_8CH_TX_SRC, "clk_i2s4_8ch_tx_src", gpll_aupll_p, 0,
- 			RK3588_CLKSEL_CON(118), 5, 1, MFLAGS, 0, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(56), 11, GFLAGS),
-@@ -1922,10 +1929,10 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 	COMPOSITE(ACLK_VOP_ROOT, "aclk_vop_root", gpll_cpll_dmyaupll_npll_spll_p, 0,
- 			RK3588_CLKSEL_CON(110), 5, 3, MFLAGS, 0, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(52), 0, GFLAGS),
--	COMPOSITE_NODIV(ACLK_VOP_LOW_ROOT, "aclk_vop_low_root", mux_400m_200m_100m_24m_p, 0,
-+	COMPOSITE_NODIV(ACLK_VOP_LOW_ROOT, "aclk_vop_low_root", mux_400m_200m_100m_24m_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(110), 8, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(52), 1, GFLAGS),
--	COMPOSITE_NODIV(HCLK_VOP_ROOT, "hclk_vop_root", mux_200m_100m_50m_24m_p, 0,
-+	COMPOSITE_NODIV(HCLK_VOP_ROOT, "hclk_vop_root", mux_200m_100m_50m_24m_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(110), 10, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(52), 2, GFLAGS),
- 	COMPOSITE_NODIV(PCLK_VOP_ROOT, "pclk_vop_root", mux_100m_50m_24m_p, 0,
-@@ -1991,8 +1998,6 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 			RK3588_CLKGATE_CON(60), 9, GFLAGS),
- 	GATE(PCLK_TRNG1, "pclk_trng1", "pclk_vo1_root", 0,
- 			RK3588_CLKGATE_CON(60), 10, GFLAGS),
--	GATE(0, "pclk_vo1grf", "pclk_vo1_root", CLK_IGNORE_UNUSED,
--			RK3588_CLKGATE_CON(59), 12, GFLAGS),
- 	GATE(PCLK_S_EDP0, "pclk_s_edp0", "pclk_vo1_s_root", 0,
- 			RK3588_CLKGATE_CON(59), 14, GFLAGS),
- 	GATE(PCLK_S_EDP1, "pclk_s_edp1", "pclk_vo1_s_root", 0,
-@@ -2426,26 +2431,28 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 	GATE(ACLK_AV1, "aclk_av1", "aclk_av1_pre", 0,
- 			RK3588_CLKGATE_CON(68), 2, GFLAGS),
- 
--	GATE_LINK(ACLK_ISP1_PRE, "aclk_isp1_pre", "aclk_isp1_root", "aclk_vi_root", 0, RK3588_CLKGATE_CON(26), 6, GFLAGS),
--	GATE_LINK(HCLK_ISP1_PRE, "hclk_isp1_pre", "hclk_isp1_root", "hclk_vi_root", 0, RK3588_CLKGATE_CON(26), 8, GFLAGS),
--	GATE_LINK(HCLK_NVM, "hclk_nvm", "hclk_nvm_root", "aclk_nvm_root", 0, RK3588_CLKGATE_CON(31), 2, GFLAGS),
--	GATE_LINK(ACLK_USB, "aclk_usb", "aclk_usb_root", "aclk_vo1usb_top_root", 0, RK3588_CLKGATE_CON(42), 2, GFLAGS),
--	GATE_LINK(HCLK_USB, "hclk_usb", "hclk_usb_root", "hclk_vo1usb_top_root", 0, RK3588_CLKGATE_CON(42), 3, GFLAGS),
--	GATE_LINK(ACLK_JPEG_DECODER_PRE, "aclk_jpeg_decoder_pre", "aclk_jpeg_decoder_root", "aclk_vdpu_root", 0, RK3588_CLKGATE_CON(44), 7, GFLAGS),
--	GATE_LINK(ACLK_VDPU_LOW_PRE, "aclk_vdpu_low_pre", "aclk_vdpu_low_root", "aclk_vdpu_root", 0, RK3588_CLKGATE_CON(44), 5, GFLAGS),
--	GATE_LINK(ACLK_RKVENC1_PRE, "aclk_rkvenc1_pre", "aclk_rkvenc1_root", "aclk_rkvenc0", 0, RK3588_CLKGATE_CON(48), 3, GFLAGS),
--	GATE_LINK(HCLK_RKVENC1_PRE, "hclk_rkvenc1_pre", "hclk_rkvenc1_root", "hclk_rkvenc0", 0, RK3588_CLKGATE_CON(48), 2, GFLAGS),
--	GATE_LINK(HCLK_RKVDEC0_PRE, "hclk_rkvdec0_pre", "hclk_rkvdec0_root", "hclk_vdpu_root", 0, RK3588_CLKGATE_CON(40), 5, GFLAGS),
--	GATE_LINK(ACLK_RKVDEC0_PRE, "aclk_rkvdec0_pre", "aclk_rkvdec0_root", "aclk_vdpu_root", 0, RK3588_CLKGATE_CON(40), 6, GFLAGS),
--	GATE_LINK(HCLK_RKVDEC1_PRE, "hclk_rkvdec1_pre", "hclk_rkvdec1_root", "hclk_vdpu_root", 0, RK3588_CLKGATE_CON(41), 4, GFLAGS),
--	GATE_LINK(ACLK_RKVDEC1_PRE, "aclk_rkvdec1_pre", "aclk_rkvdec1_root", "aclk_vdpu_root", 0, RK3588_CLKGATE_CON(41), 5, GFLAGS),
--	GATE_LINK(ACLK_HDCP0_PRE, "aclk_hdcp0_pre", "aclk_vo0_root", "aclk_vop_low_root", 0, RK3588_CLKGATE_CON(55), 9, GFLAGS),
--	GATE_LINK(HCLK_VO0, "hclk_vo0", "hclk_vo0_root", "hclk_vop_root", 0, RK3588_CLKGATE_CON(55), 5, GFLAGS),
--	GATE_LINK(ACLK_HDCP1_PRE, "aclk_hdcp1_pre", "aclk_hdcp1_root", "aclk_vo1usb_top_root", 0, RK3588_CLKGATE_CON(59), 6, GFLAGS),
--	GATE_LINK(HCLK_VO1, "hclk_vo1", "hclk_vo1_root", "hclk_vo1usb_top_root", 0, RK3588_CLKGATE_CON(59), 9, GFLAGS),
--	GATE_LINK(ACLK_AV1_PRE, "aclk_av1_pre", "aclk_av1_root", "aclk_vdpu_root", 0, RK3588_CLKGATE_CON(68), 1, GFLAGS),
--	GATE_LINK(PCLK_AV1_PRE, "pclk_av1_pre", "pclk_av1_root", "hclk_vdpu_root", 0, RK3588_CLKGATE_CON(68), 4, GFLAGS),
--	GATE_LINK(HCLK_SDIO_PRE, "hclk_sdio_pre", "hclk_sdio_root", "hclk_nvm", 0, RK3588_CLKGATE_CON(75), 1, GFLAGS),
-+	GATE_LINK(ACLK_ISP1_PRE, "aclk_isp1_pre", "aclk_isp1_root", ACLK_VI_ROOT, 0, RK3588_CLKGATE_CON(26), 6, GFLAGS),
-+	GATE_LINK(HCLK_ISP1_PRE, "hclk_isp1_pre", "hclk_isp1_root", HCLK_VI_ROOT, 0, RK3588_CLKGATE_CON(26), 8, GFLAGS),
-+	GATE_LINK(HCLK_NVM, "hclk_nvm", "hclk_nvm_root", ACLK_NVM_ROOT, RK3588_LINKED_CLK, RK3588_CLKGATE_CON(31), 2, GFLAGS),
-+	GATE_LINK(ACLK_USB, "aclk_usb", "aclk_usb_root", ACLK_VO1USB_TOP_ROOT, 0, RK3588_CLKGATE_CON(42), 2, GFLAGS),
-+	GATE_LINK(HCLK_USB, "hclk_usb", "hclk_usb_root", HCLK_VO1USB_TOP_ROOT, 0, RK3588_CLKGATE_CON(42), 3, GFLAGS),
-+	GATE_LINK(ACLK_JPEG_DECODER_PRE, "aclk_jpeg_decoder_pre", "aclk_jpeg_decoder_root", ACLK_VDPU_ROOT, 0, RK3588_CLKGATE_CON(44), 7, GFLAGS),
-+	GATE_LINK(ACLK_VDPU_LOW_PRE, "aclk_vdpu_low_pre", "aclk_vdpu_low_root", ACLK_VDPU_ROOT, 0, RK3588_CLKGATE_CON(44), 5, GFLAGS),
-+	GATE_LINK(ACLK_RKVENC1_PRE, "aclk_rkvenc1_pre", "aclk_rkvenc1_root", ACLK_RKVENC0, 0, RK3588_CLKGATE_CON(48), 3, GFLAGS),
-+	GATE_LINK(HCLK_RKVENC1_PRE, "hclk_rkvenc1_pre", "hclk_rkvenc1_root", HCLK_RKVENC0, 0, RK3588_CLKGATE_CON(48), 2, GFLAGS),
-+	GATE_LINK(HCLK_RKVDEC0_PRE, "hclk_rkvdec0_pre", "hclk_rkvdec0_root", HCLK_VDPU_ROOT, 0, RK3588_CLKGATE_CON(40), 5, GFLAGS),
-+	GATE_LINK(ACLK_RKVDEC0_PRE, "aclk_rkvdec0_pre", "aclk_rkvdec0_root", ACLK_VDPU_ROOT, 0, RK3588_CLKGATE_CON(40), 6, GFLAGS),
-+	GATE_LINK(HCLK_RKVDEC1_PRE, "hclk_rkvdec1_pre", "hclk_rkvdec1_root", HCLK_VDPU_ROOT, 0, RK3588_CLKGATE_CON(41), 4, GFLAGS),
-+	GATE_LINK(ACLK_RKVDEC1_PRE, "aclk_rkvdec1_pre", "aclk_rkvdec1_root", ACLK_VDPU_ROOT, 0, RK3588_CLKGATE_CON(41), 5, GFLAGS),
-+	GATE_LINK(ACLK_HDCP0_PRE, "aclk_hdcp0_pre", "aclk_vo0_root", ACLK_VOP_LOW_ROOT, 0, RK3588_CLKGATE_CON(55), 9, GFLAGS),
-+	GATE_LINK(HCLK_VO0, "hclk_vo0", "hclk_vo0_root", HCLK_VOP_ROOT, RK3588_LINKED_CLK, RK3588_CLKGATE_CON(55), 5, GFLAGS),
-+	GATE_LINK(ACLK_HDCP1_PRE, "aclk_hdcp1_pre", "aclk_hdcp1_root", ACLK_VO1USB_TOP_ROOT, 0, RK3588_CLKGATE_CON(59), 6, GFLAGS),
-+	GATE_LINK(HCLK_VO1, "hclk_vo1", "hclk_vo1_root", HCLK_VO1USB_TOP_ROOT, RK3588_LINKED_CLK, RK3588_CLKGATE_CON(59), 9, GFLAGS),
-+	GATE_LINK(ACLK_AV1_PRE, "aclk_av1_pre", "aclk_av1_root", ACLK_VDPU_ROOT, 0, RK3588_CLKGATE_CON(68), 1, GFLAGS),
-+	GATE_LINK(PCLK_AV1_PRE, "pclk_av1_pre", "pclk_av1_root", HCLK_VDPU_ROOT, 0, RK3588_CLKGATE_CON(68), 4, GFLAGS),
-+	GATE_LINK(HCLK_SDIO_PRE, "hclk_sdio_pre", "hclk_sdio_root", HCLK_NVM, 0, RK3588_CLKGATE_CON(75), 1, GFLAGS),
-+	GATE_LINK(PCLK_VO0GRF, "pclk_vo0grf", "pclk_vo0_root", HCLK_VO0, CLK_IGNORE_UNUSED, RK3588_CLKGATE_CON(55), 10, GFLAGS),
-+	GATE_LINK(PCLK_VO1GRF, "pclk_vo1grf", "pclk_vo1_root", HCLK_VO1, CLK_IGNORE_UNUSED, RK3588_CLKGATE_CON(59), 12, GFLAGS),
- };
- 
- static void __init rk3588_clk_init(struct device_node *np)
+> You can print hex numbers with puthex_ll(), although by now you are
+> already relocated, so you can add
+> 
+>   pbl_set_putc((void (*)(void *, int))debug_ll_ns16550_putc, uart0);
+> 
+> after omap_debug_ll_init(), enable CONFIG_DEBUG_PBL and then you can
+> use normal printf and also see the panic message if the BUG() indeed
+> triggers.
+
+I did enable CONFIG_PBL_CONSOLE and CONFIG_DEBUG_PBL in both barebox.bin
+and MLO.
+
+I get this:
+
+2>6ABCuncompress.c: memory at 0x80000000, size 0x20000000
+Dmmu: enabling MMU, ttb @ 0x9ffe0000
+EF%G-%|!_H-%|!_I-%|!_%%%%JKLMendmem                = 0xa0000000
+arm_mem_scratch       = 0x9fff8000+0x00008000
+arm_mem_stack         = 0x9fff0000+0x00008000
+arm_mem_ttb           = 0x9ffe0000+0x00010000
+arm_mem_barebox_image = 0x9fe00000+0x00200000
+arm_mem_early_malloc  = 0x9fde0000+0x00020000
+membase               = 0x80000000+0x20000000
+uncompress.c: uncompressing barebox binary at 0x402f65a0 (size 0x0000e3c8) to 0x9fe00000 (uncompressed size: 0x00018310)
+NOPuncompress.c: jumping to uncompressed image at 0x9fe00001
+QZSwitch to console [cs0]
+[...] normal startup with more debug output continuiung.
+
+
+I left the single char debug sequence char output stuff I inserted as it
+was last time.
+
+Warm restart gives me this:
+
+barebox@TI AM335x BeagleBone black:/ reset
+>6ABCuncompress.c: memory at 0x8f001b00, size 0x9f00b500
+Dmmu: enabling MMU, ttb @ 0x2dfe0000
+EF%
+[DEAD]
+
+This looks like a tiny bit different than last time without the new PBL
+CONFIG options enabled. It reaches 
+
+static inline uint32_t *get_ttb(void)
+{
+        putc_ll('%');
+        /* Clear unpredictable bits [13:0] */
+        return (uint32_t *)(get_ttbr() & ~0x3fff);
+}
+
+but not 
+
+        uint32_t *ttb = get_ttb();
+
+        putc_ll('|');
+
+the line after this.
+Last time looked like it hit the BUG_ON which I thout stopped the
+execution because of messed up addresses.
+
+Here one sees addresses are totallfy messed up in uncompress.c already.
+
+Still it is possible to make soft start working by adding an additional
+char in lowlevel.c:
+
+        putc_ll('>');
+        putc_ll('6');
+        putc_ll('5');
+
+makes it work,
+
+        putc_ll('>');
+        putc_ll('6');
+
+or less gives the error.
+
+I replaced all three chars with a hand crafted __udelay in lowlevel.c
+(but left debugging enabled), makes everything working fine, too.
+
+
+
+I was not able to add the line 
+pbl_set_putc((void (*)(void *, int))debug_ll_ns16550_putc, uart0);
+to lowlevel.c. I admit I asked chatgpt to explain to me, if this
+still is valid C, wow! :-) 
+Adding it gives an error:
+
+arch/arm/boards/beaglebone/lowlevel.c:161:2: error: implicit declaration of function `pbl_set_putc´; did you mean `__set_bit´? [-Werror=implicit-function-declaration]
+  pbl_set_putc((void (*)(void *, int))debug_ll_ns16550_putc, uart0);
+  ^~~~~~~~~~~~
+  __set_bit
+arch/arm/boards/beaglebone/lowlevel.c:161:61: error: `uart0´ undeclared (first use in this function)
+  pbl_set_putc((void (*)(void *, int))debug_ll_ns16550_putc, uart0);
+
+
+> I suspect the RAM controller itself may be acting funky after a warm reboot
+> and letting some time go by fixes that :/
+
+
+Yes. But the PLL lock bits are properly set I checked already and the
+barebox code does that to...
+
+Regards
+Konsti
+
+
+
 -- 
-2.38.2
+INSIDE M2M GmbH
+Konstantin Kletschke
+Berenbosteler Straße 76 B
+30823 Garbsen
+
+Telefon: +49 (0) 5137 90950136
+Mobil: +49 (0) 151 15256238
+Fax: +49 (0) 5137 9095010
+
+konstantin.kletschke@inside-m2m.de
+http://www.inside-m2m.de 
+
+Geschäftsführung: Michael Emmert, Derek Uhlig
+HRB: 111204, AG Hannover
 
 
 
