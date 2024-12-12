@@ -3,65 +3,66 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tLegH-0077Pb-2D
+	id 1tLegI-0077Pt-0H
 	for lore@lore.pengutronix.de;
 	Thu, 12 Dec 2024 09:36:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tLegH-000461-Kc
+	id 1tLegG-00045E-Oy
 	for lore@pengutronix.de; Thu, 12 Dec 2024 09:36:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8NRx9JI8QxpB0oKC31N7vfuMC/NlhbcszB9haBBny9Q=; b=gk2H6LuTqVXQMV0GVRdFRZU927
-	gx2RJXWqs48DdYRdYUz9uldjnyg8Xh5JM+71pvVLLjhZ2nS5ackgNlWQPKmrsoWoSfzKyPYrC2w5v
-	sRc0K1b+4HgduagI10O9unQaR+wik6DhIoJgHYVdOCCyoHk/Cx3jG+lL0FNrVkt6tpEEuYi1qYpe5
-	8h8fdVU9+x9q9NPlok1sRTquWZVvMm1if9ec/3xU/KVrUom96E2nudIguHEDg1Gw7Bxnd6AXAmA6y
-	qAt2qsGUpg1ud9NVjPt27rVqA0AaS9f7mDSOpPuMoAcNW6e2cLyeKa4Nk8+hIfUgwpncipsbiayBh
-	z6DYk36Q==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=F8bN9y0GZdR9HbBJTNPld55u16ZzA89porz6kDrBSac=; b=j2aK0F5Zzyo/KHeoeFRNNXhOv9
+	r8hQZPKTSgX5KgSl+AtpM4qN5dlsmteBQ4+qjJI9lW2CR9lc/1eBESQsyJidbSz/w/5qFPUL9ajmp
+	OFMHyCZcHFmhsKIfW3+kTLjtlLv/Dopv9YvVp1dscKBleS1Cd7xuny8H9QbDxI5UoV0x0ZXHLXk9+
+	D6sBmDyYlWWpL8kOWHIIjgOv5LwfyqTNXfc8KURePrhaQJlo4hLLqOr55UZovXq/zeVK9JMVODNLq
+	4aJYt+J4Oq2bJiD3GP9G4tSIctP7yXhZ6i9+jhY72E9b1Q4iR2lJU1u1Cewh1RxSjDsS/fbco8ZyT
+	OvF09jkw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tLeft-0000000HKL8-1piy;
-	Thu, 12 Dec 2024 08:35:57 +0000
+	id 1tLefp-0000000HKFy-1yy9;
+	Thu, 12 Dec 2024 08:35:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tLeaq-0000000HJFt-1n4o
+	id 1tLeai-0000000HJDA-0xTr
 	for barebox@lists.infradead.org;
-	Thu, 12 Dec 2024 08:30:45 +0000
+	Thu, 12 Dec 2024 08:30:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tLeah-00034a-7V; Thu, 12 Dec 2024 09:30:35 +0100
+	id 1tLeah-00034Y-4U
+	for barebox@lists.infradead.org; Thu, 12 Dec 2024 09:30:35 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tLeag-0030En-0r;
-	Thu, 12 Dec 2024 09:30:35 +0100
+	id 1tLeag-0030Ej-0Z
+	for barebox@lists.infradead.org;
+	Thu, 12 Dec 2024 09:30:34 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tLeag-00AkAx-34;
+	id 1tLeag-00AkAx-2n
+	for barebox@lists.infradead.org;
 	Thu, 12 Dec 2024 09:30:34 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Dec 2024 09:30:30 +0100
-Message-Id: <20241212083033.2560690-3-a.fatoum@pengutronix.de>
+Date: Thu, 12 Dec 2024 09:30:28 +0100
+Message-Id: <20241212083033.2560690-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241212083033.2560690-1-a.fatoum@pengutronix.de>
-References: <20241212083033.2560690-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241212_003044_471873_817DCD95 
-X-CRM114-Status: GOOD (  11.58  )
+X-CRM114-CacheID: sfid-20241212_003036_270073_6EA05755 
+X-CRM114-Status: UNSURE (   6.35  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,54 +84,28 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/5] images: don't check for missing FW if file didn't change
+Subject: [PATCH v2 0/5] images: fix issues around misuse of FORCE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The information about the missing firmware is contained in an ELF
-section and the ELF file is dependency to the $(obj)/%.pblb: $(obj)/%.pbl
-rule.
+v1 was here: https://lore.barebox.org/barebox/20241202124404.1814203-1-a.fatoum@pengutronix.de/
 
-We can thus don't need to rerun the missing firmware check if the
-input file hasn't been changed since the last time.
+This series only adapts the commit message titles compared to v1.
+Since v1 however, changes to scripts/Kbuild.include have been merged,
+which are required to avoid a build error when no BAREBOX_MAX_IMAGE_SIZE
+is specified.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- images/Makefile      | 3 +--
- scripts/Makefile.lib | 6 ++++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+Ahmad Fatoum (5):
+  images: don't compare filesizes if file didn't change
+  images: don't check for missing FW if file didn't change
+  images: fix missing FORCE prerequisite
+  images: don't prelink if input file didn't change
+  images: don't compute size if input file didn't change
 
-diff --git a/images/Makefile b/images/Makefile
-index 80ea582728a5..f781ecb59ccb 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -76,8 +76,7 @@ $(obj)/%.elf: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(obj)/piggy.o $(obj)/sha_sum.o FOR
- 
- $(obj)/%.pblb: $(obj)/%.pbl FORCE
- 	$(call if_changed,objcopy_bin,$(*F))
--	$(Q)$(OBJCOPY) -O binary --only-section=.missing_fw $< $@.missing-firmware
--	$(Q)[ -s $@.missing-firmware ] || rm -f $@.missing-firmware
-+	$(call if_changed,check_missing_fw,$@,$<)
- 	$(call if_changed,check_file_size,$@,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
- 
- #
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index b698161f43f6..e2d0168550f8 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -533,6 +533,12 @@ quiet_cmd_check_file_size = CHKFILESIZE $2
- 		exit 1 ;						\
- 	fi
- 
-+# Check for missing firmware
-+quiet_cmd_check_missing_fw = # no message as we collect info for later
-+      cmd_check_missing_fw = set -e;						    \
-+	$(OBJCOPY) -O binary --only-section=.missing_fw	$3 $2.missing-firmware;	    \
-+	[ -s $2.missing-firmware ] || rm -f $2.missing-firmware
-+
- quiet_cmd_imximage__S_dcd= DCD_S   $@
- cmd_imximage_S_dcd=						\
- (								\
+ images/Makefile      | 23 ++++++++++++-----------
+ scripts/Makefile.lib | 12 +++++++++---
+ 2 files changed, 21 insertions(+), 14 deletions(-)
+
 -- 
 2.39.5
 
