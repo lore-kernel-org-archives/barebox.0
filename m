@@ -1,70 +1,69 @@
-Delivery-date: Thu, 12 Dec 2024 10:04:26 +0100
+Delivery-date: Thu, 12 Dec 2024 10:05:58 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tLf7S-0077xM-0b
+	id 1tLf8v-0077yg-1s
 	for lore@lore.pengutronix.de;
-	Thu, 12 Dec 2024 10:04:26 +0100
+	Thu, 12 Dec 2024 10:05:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tLf7S-0008PX-3r
-	for lore@pengutronix.de; Thu, 12 Dec 2024 10:04:26 +0100
+	id 1tLf8v-0000C2-Ib
+	for lore@pengutronix.de; Thu, 12 Dec 2024 10:05:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ia4rYw/XCmVa3BwDyz3kP6tqVdgQ4h2wpiMpMm6hkuw=; b=V8vgs1Dc8AtQ6Ta807Kg3hBWL6
-	lESKW7wRYrFRndPmwZ3PS5HR9AHnnZFrxMX4QhwslstlBmmp41cDWaCYF28d8/HvwDs0izAH+sOA9
-	UMRuVZ9LW6KY2auC4webAMUGqbmuiZlUJidC3bDGQuGlL1A7OGeedgbyEBIPZSx28B5MUxCWrXyqQ
-	IKC7oo3uXPv0omjjS4VnnYcXP0JeWykE20S9jEHCHmybtTitQPFGuXanlLayCX5fkqyAT0jS1aZ2l
-	tGDj0RaBMemoJHjBE1h9z++XXH0+TZqx5YBwxu94K1JdI/IINeUEPhSoARkWZvl/90SnrSFBdq6lC
-	QbOoSlbA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=qdeK55RPca6RUf8rPuWLhbx5XMS+/kA9V89Zq7Q//BE=; b=RwM93aWyimahy8IVmK8sGXwV14
+	vt2ZgNJf30sRT8Hhshssdku775SX4w0Oqxp51blTSqIMhlzyRECTDatpi4Fsmx2D+cn/jII7ni9PE
+	CNPRzbpDQD5nWohboxGEdHogJdGXU9Hp4MEZIus1ejCOQJ/f73O4f6mSEmABnSywdNAKUYvIkf7Af
+	DKeSyboGhNIlNlUbk/vLSeE+EyOnMl9amAKT1qC9AXaH4TSGi6H2kfgwzbjdbijAVFgQHh7RE6cj7
+	nm102ZPuW9UWLyE4TMIcIlZFAu3ScmAvbYoJskvt8vtcJZW/RmDux9OpD37bvKIx1Lts10xyf2nGC
+	iEBP9h2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tLf6s-0000000HQ79-0myA;
-	Thu, 12 Dec 2024 09:03:50 +0000
+	id 1tLf8R-0000000HQFs-3Mtm;
+	Thu, 12 Dec 2024 09:05:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tLf6q-0000000HQ6k-1oFe
+	id 1tLf8P-0000000HQFE-1cqJ
 	for barebox@lists.infradead.org;
-	Thu, 12 Dec 2024 09:03:49 +0000
+	Thu, 12 Dec 2024 09:05:26 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tLf6n-0008JJ-SH; Thu, 12 Dec 2024 10:03:45 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tLf8O-00004y-8g; Thu, 12 Dec 2024 10:05:24 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tLf6m-0030Ma-2T;
-	Thu, 12 Dec 2024 10:03:45 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tLf6n-00CNDE-1G;
-	Thu, 12 Dec 2024 10:03:45 +0100
-Date: Thu, 12 Dec 2024 10:03:45 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tLf8N-0030R0-10;
+	Thu, 12 Dec 2024 10:05:24 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tLf8O-00GBGz-04;
+	Thu, 12 Dec 2024 10:05:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <Z1qm8cXe6SmEGxvM@pengutronix.de>
-References: <CAP1tNvQoUsjRNKMr-CZ_Q67-PKGfj_ZsoePeT3pgOe_DefriMg@mail.gmail.com>
+To: barebox@lists.infradead.org, 
+ =?utf-8?q?Sven_P=C3=BCschel?= <s.pueschel@pengutronix.de>
+In-Reply-To: <20241210080519.1236134-1-s.pueschel@pengutronix.de>
+References: <20241210080519.1236134-1-s.pueschel@pengutronix.de>
+Message-Id: <173399432402.3856173.6509556428304033200.b4-ty@pengutronix.de>
+Date: Thu, 12 Dec 2024 10:05:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAP1tNvQoUsjRNKMr-CZ_Q67-PKGfj_ZsoePeT3pgOe_DefriMg@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241212_010348_469374_6F88E27E 
-X-CRM114-Status: GOOD (  17.16  )
+X-CRM114-CacheID: sfid-20241212_010525_425576_45FB2270 
+X-CRM114-Status: UNSURE (   5.56  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,42 +85,27 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Possible regression 2024.12.0 in parsing "aliases"
+Subject: Re: [PATCH] video: mipi_dbi: fix swapped width and height in
+ mipi_dbi_blank
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Alexander,
 
-On Wed, Dec 11, 2024 at 09:14:32AM +0300, Alexander Shiyan wrote:
-> Hello.
+On Tue, 10 Dec 2024 09:05:19 +0100, Sven Püschel wrote:
+> Fix swapped width and height values in the mipi_dbi_blank function. This
+> caused a non quadratic display not being cleared entirely when disabling
+> the framebuffer device.
 > 
-> After updating barebox to version 2024.12.0, an error message appeared
-> when loading
-> the RK3568 board. Accordingly, the I2C1 interface does not work.
-> In the previous version (2024.10.0), everything worked as it should. I did not
-> understand what the problem is, but I suspect that aliases are now
-> parsed incorrectly.
-> The system has an alias i2c1 (this is the basic SOC i2c1 interface)
-> and an alias i2c10 for the GPIO expander. Perhaps the problem is somewhere here?
 > 
-> ERROR: rk3x-i2c fe5a0000.i2c@fe5a0000.of: probe failed: Device or resource busy
 
-The culprit is likely somewhere in these commits:
+Applied, thanks!
 
-79357f8b96 i2c: start dynamic I2C bus numbers at 32
-b474672545 i2c: get adapter.nr from device tree
-5b167ad520 i2c: set adapter.nr explicitly to -1
+[1/1] video: mipi_dbi: fix swapped width and height in mipi_dbi_blank
+      https://git.pengutronix.de/cgit/barebox/commit/?id=947af7032a73 (link may not be stable)
 
-We now use of_alias_get_id() to get the i2c adapter nr. Which adapter
-number does fe5a0000.i2c@fe5a0000.of get and which i2c bus device has
-already occupied that number?
-
-Sascha
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
