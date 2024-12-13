@@ -3,52 +3,53 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMCml-007jK3-29
+	id 1tMCml-007jKD-2Y
 	for lore@lore.pengutronix.de;
 	Fri, 13 Dec 2024 22:01:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMCml-0000pA-If
+	id 1tMCml-0000pV-Om
 	for lore@pengutronix.de; Fri, 13 Dec 2024 22:01:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dJxgz9xTnZwBgBVrmqsD5QqqyvAsiOAMrU5x+kDYPrc=; b=yqQeujeDn7TrGLjsWDhwCeWdZy
-	rpexcdlcZbClJ37IRDJ+/Bvce9cE8IpEzplkCZlWfvBk7ha8pYM8aqouTTgygito50+ue16Czxuno
-	mGW0E9ROT627gmFbMzPnz4SfPQVXsLLt8b1/q73gs/pXXmyPmrgAsdqcPVrHvZS/TmT1iKRri5tY4
-	1QxlYAoHKsVep3rzBf3laDs9fcVdEQr+xBE5fdSKzmVXovN+wP4iNCobywkHcWmQJNnKC0pJGJOh9
-	3XeorC6oKVDXW9JKei7btUio4XGOAE6KvCBHYQRHL9S33NsKh4rQuyUYc4o9vLREsFzdl8K2wiWOY
-	I1I7XoOg==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=RLGJr4CLanNMinwKlwFEaXcKWXsTqvdTZ8nltX/KBt0=; b=wVP1nuZRqRFlDXEgDQVKpN8HMI
+	UYwHG0pfKntZ25r1/iI8nJz2SZUj2AiBCj3yslwk38em9bNZ+3RT2Yv8+w20H/nZeNFXn9WtCZmB7
+	xOoat3WtqLue6HBaAb6ipjYTsIEFdK7s5aGRzXOR4SMDmoR2i3T9fUXLxw95h4HOcIvlukdOf0uIW
+	ts1OfzFsUrWlFWduQJOHjLjhQyhxLij/ckCoCR2mmm5Is1aN/6MtNnnPhtBKeYkMwUZB2DI9mTjtN
+	f557JelzDAX0fvXQb2DahEeyNl9+NW/NmHvLqlAV4h9eL+RmvQxvdplkgYFy60fou5Ovj05DtDbGP
+	m4jxmCTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMCmL-000000051YW-2BM9;
-	Fri, 13 Dec 2024 21:00:53 +0000
+	id 1tMCmN-000000051ZC-025y;
+	Fri, 13 Dec 2024 21:00:55 +0000
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMCmI-000000051XL-38pI
+	id 1tMCmJ-000000051Xd-2Jf6
 	for barebox@lists.infradead.org;
-	Fri, 13 Dec 2024 21:00:51 +0000
+	Fri, 13 Dec 2024 21:00:52 +0000
 Received: by lynxeye.de (Postfix, from userid 501)
-	id 11402E74012; Fri, 13 Dec 2024 22:00:19 +0100 (CET)
+	id E98D6E7408D; Fri, 13 Dec 2024 22:00:20 +0100 (CET)
 Received: from astat.fritz.box (a89-182-99-197.net-htp.de [89.182.99.197])
-	by lynxeye.de (Postfix) with ESMTPA id D1171E74012
-	for <barebox@lists.infradead.org>; Fri, 13 Dec 2024 22:00:18 +0100 (CET)
+	by lynxeye.de (Postfix) with ESMTPA id 56D53E74071
+	for <barebox@lists.infradead.org>; Fri, 13 Dec 2024 22:00:19 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
 To: barebox@lists.infradead.org
-Date: Fri, 13 Dec 2024 22:00:07 +0100
-Message-ID: <20241213210015.357249-1-dev@lynxeye.de>
+Date: Fri, 13 Dec 2024 22:00:09 +0100
+Message-ID: <20241213210015.357249-3-dev@lynxeye.de>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241213210015.357249-1-dev@lynxeye.de>
+References: <20241213210015.357249-1-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241213_130050_931680_BE19A847 
-X-CRM114-Status: UNSURE (   8.02  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241213_130051_732737_4BB455C8 
+X-CRM114-Status: GOOD (  10.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,34 +71,32 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/9] ARM: zynq: add MMC aliases
+Subject: [PATCH 3/9] ARM: zynq: zed: guard board initcall
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The upstream DT doesn't include those, yet. Make sure
-MMC controllers end up with a deterministic numbering.
+Make sure the board initcall is only executed on a
+compatible board.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/dts/zynq-7000.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/boards/avnet-zedboard/board.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/dts/zynq-7000.dtsi b/arch/arm/dts/zynq-7000.dtsi
-index f7a0d70babef..90b0c098fc82 100644
---- a/arch/arm/dts/zynq-7000.dtsi
-+++ b/arch/arm/dts/zynq-7000.dtsi
-@@ -1,4 +1,11 @@
+diff --git a/arch/arm/boards/avnet-zedboard/board.c b/arch/arm/boards/avnet-zedboard/board.c
+index 15332189ca09..faa0bacf0ce1 100644
+--- a/arch/arm/boards/avnet-zedboard/board.c
++++ b/arch/arm/boards/avnet-zedboard/board.c
+@@ -12,6 +12,9 @@
  
-+/ {
-+	aliases {
-+		mmc0 = &sdhci0;
-+		mmc1 = &sdhci1;
-+	};
-+};
+ static int zedboard_console_init(void)
+ {
++	if (!of_machine_is_compatible("avnet,zynq-zed"))
++		return 0;
 +
- &amba {
- 	qspi: spi@e000d000 {
- 		compatible = "xlnx,zynq-qspi-1.0";
+ 	barebox_set_hostname("zedboard");
+ 
+ 	return 0;
 -- 
 2.47.1
 
