@@ -1,55 +1,55 @@
-Delivery-date: Fri, 13 Dec 2024 22:01:54 +0100
+Delivery-date: Fri, 13 Dec 2024 22:01:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMCnJ-007jN2-1m
+	id 1tMCnK-007jNO-2Z
 	for lore@lore.pengutronix.de;
-	Fri, 13 Dec 2024 22:01:54 +0100
+	Fri, 13 Dec 2024 22:01:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMCnJ-0001Rr-91
-	for lore@pengutronix.de; Fri, 13 Dec 2024 22:01:53 +0100
+	id 1tMCnK-0001WO-Ow
+	for lore@pengutronix.de; Fri, 13 Dec 2024 22:01:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OyZ+yRWmAxPZk+l86jAcFOZfPCm7mg5pKGzosJJKmmQ=; b=jOX0yteoiN2sbIHA5nZMFRn0hE
-	z+j5oy7fT6tRoTjMTl6GGrKRKaaZofddh1K6og+7G5gYCyz8SiI6IdW+oiB5TQpNwf+l+nWHTNvvD
-	m38nc0U24BFuEY6TcbrAjr5M8Dy5WAsaZbZQ2uQXy28dw3vdh9r5a/nUTwFePbwLeLCAEFYldWjg6
-	KTi+1bv6ebOji1TP4cgwcswqVUB2dEFQUozP3+pSy3ZN5/K7c6OW/QCKZicthsaunrv2bbwqzNkTt
-	qnY5mfRF+ZBvr8yP/wIo+EiSQLFXVyeMraQm1psGN2nWOTysyTCmiM//d+L5F+DLdiOEgVooazf58
-	/Ulwsg3Q==;
+	bh=Opc4eHHs8P4Wlx9W//9oaxQ3hu6gUvDInRz15IUlhY0=; b=glWoae8fJlvAKiRk73zRCJLJ+F
+	uXlqmOYKxf4DD2aIss5ufzdlf7bZunX6xtUIRRBi6FRTkSmNh/+/TAF42BifnVGQRN5XX/eCDvrq0
+	9F8Tb9Zo0+iBH2cvuaV0VQx2gz6ckPjRL5ovZqGQgopZTDyWXFxRXBX9sO+nDu1Nm9F2fsS4UnL3F
+	kjYSIO9ooRARoFXXliR89bpWR4zCkCn4Ums1x4VRoNKiKhuRO9lfsxrixESDFxHOy19cQkbDB1XvA
+	JF/WQQdyy5Mn0IdJk2e/C/RJ1UlqSSUU9oi11bqWA+QF5OFVDcx4geFoUU0wuyG3fau5FHJx3iIHD
+	Tp4wEs6g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMCmu-000000051tL-0mAE;
-	Fri, 13 Dec 2024 21:01:28 +0000
+	id 1tMCmv-000000051uX-14BF;
+	Fri, 13 Dec 2024 21:01:29 +0000
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMCmo-000000051oW-3cZm
+	id 1tMCmp-000000051pI-2gMg
 	for barebox@lists.infradead.org;
 	Fri, 13 Dec 2024 21:01:25 +0000
 Received: by lynxeye.de (Postfix, from userid 501)
-	id 0E006E74081; Fri, 13 Dec 2024 22:00:24 +0100 (CET)
+	id 138CEE74086; Fri, 13 Dec 2024 22:00:26 +0100 (CET)
 Received: from astat.fritz.box (a89-182-99-197.net-htp.de [89.182.99.197])
-	by lynxeye.de (Postfix) with ESMTPA id 2E2D7E74073
+	by lynxeye.de (Postfix) with ESMTPA id F1D1AE74071
 	for <barebox@lists.infradead.org>; Fri, 13 Dec 2024 22:00:20 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
 To: barebox@lists.infradead.org
-Date: Fri, 13 Dec 2024 22:00:11 +0100
-Message-ID: <20241213210015.357249-5-dev@lynxeye.de>
+Date: Fri, 13 Dec 2024 22:00:15 +0100
+Message-ID: <20241213210015.357249-9-dev@lynxeye.de>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241213210015.357249-1-dev@lynxeye.de>
 References: <20241213210015.357249-1-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241213_130123_041543_EF9052BA 
-X-CRM114-Status: GOOD (  10.07  )
+X-CRM114-CacheID: sfid-20241213_130123_862701_A04A56D9 
+X-CRM114-Status: GOOD (  10.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,39 +71,58 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/9] ARM: zynq: zed: add Barebox update handler
+Subject: [PATCH 9/9] ARM: zynq: zed: always relocate in PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add a BBU handler for easy updating.
+The PBL console is currently broken, as the setup relocates the
+running code, invalidating the previously computed FDT address.
+Relocate always to avoid those differences in behavior.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/avnet-zedboard/board.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boards/avnet-zedboard/lowlevel.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/avnet-zedboard/board.c b/arch/arm/boards/avnet-zedboard/board.c
-index faa0bacf0ce1..b19b26bfb307 100644
---- a/arch/arm/boards/avnet-zedboard/board.c
-+++ b/arch/arm/boards/avnet-zedboard/board.c
-@@ -2,6 +2,7 @@
- // SPDX-FileCopyrightText: 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
+diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
+index 1ecddf24085f..026a03d04be8 100644
+--- a/arch/arm/boards/avnet-zedboard/lowlevel.c
++++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
+@@ -276,10 +276,6 @@ static void avnet_zedboard_ps7_init(void)
  
- #include <asm/armlinux.h>
-+#include <bbu.h>
- #include <common.h>
- #include <environment.h>
- #include <asm/mach-types.h>
-@@ -17,6 +18,9 @@ static int zedboard_console_init(void)
+ static void avnet_zedboard_pbl_console_init(void)
+ {
+-	relocate_to_current_adr();
+-	setup_c();
+-	barrier();
+-
+ 	cadence_uart_init((void *)ZYNQ_UART1_BASE_ADDR);
+ 	pbl_set_putc(cadence_uart_putc, (void *)ZYNQ_UART1_BASE_ADDR);
  
- 	barebox_set_hostname("zedboard");
+@@ -288,9 +284,6 @@ static void avnet_zedboard_pbl_console_init(void)
  
-+	bbu_register_std_file_update("SD", BBU_HANDLER_FLAG_DEFAULT,
-+				     "/boot/BOOT.bin", filetype_zynq_image);
+ ENTRY_FUNCTION_WITHSTACK(start_avnet_zedboard, 0xfffff000, r0, r1, r2)
+ {
+-
+-	void *fdt = __dtb_z_zynq_zed_start + get_runtime_offset();
+-
+ 	/* MIO_07 in GPIO Mode 3.3V VIO, can be uncomented because it is the default value */
+ 	writel(0x0000DF0D, ZYNQ_SLCR_UNLOCK);
+ 	writel(0x00000600, 0xF800071C );
+@@ -305,8 +298,12 @@ ENTRY_FUNCTION_WITHSTACK(start_avnet_zedboard, 0xfffff000, r0, r1, r2)
+ 
+ 	avnet_zedboard_ps7_init();
+ 
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
 +
- 	return 0;
+ 	if (IS_ENABLED(CONFIG_PBL_CONSOLE))
+ 		avnet_zedboard_pbl_console_init();
+ 
+-	barebox_arm_entry(0, SZ_512M, fdt);
++	barebox_arm_entry(0, SZ_512M, __dtb_z_zynq_zed_start);
  }
- console_initcall(zedboard_console_init);
 -- 
 2.47.1
 
