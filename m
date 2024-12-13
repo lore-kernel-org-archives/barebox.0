@@ -1,53 +1,54 @@
-Delivery-date: Fri, 13 Dec 2024 21:59:41 +0100
+Delivery-date: Fri, 13 Dec 2024 22:01:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMClB-007jIg-03
+	id 1tMCml-007jK3-29
 	for lore@lore.pengutronix.de;
-	Fri, 13 Dec 2024 21:59:41 +0100
+	Fri, 13 Dec 2024 22:01:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMClB-00007F-0y
-	for lore@pengutronix.de; Fri, 13 Dec 2024 21:59:41 +0100
+	id 1tMCml-0000pA-If
+	for lore@pengutronix.de; Fri, 13 Dec 2024 22:01:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=qe1aKs6SftWfHNu017NrkBsvnLpQzK/JxvqA/oLFauE=; b=jtDmgcvUDmqYYJxBv0O5Yr2lYq
-	obttDNsDudfZJiN/Hh6/0l3gBAQbaYHX/e0br/jtdqoBT6R/zZqLY7DGy97tY76dksRa4ymMiaPHp
-	AvXM3M11OaKxoOn/CGUd1itfkGtp/GSieheFkgR2YAc+iBBrHeXpklbVHQ2t2vbXSCfoWQvec700Q
-	y0KckRvCc5jIcr4xmoA2NMLsiCwyASnNlrZoMjhy/A/jqNTJotfw80xDE/cRK0d9S33HmZoutWAL/
-	BTuFOYsleP/Cp9/W65xP6FKxFyKtqBxLe6sUkjssk3fdlq2TbUJGotFMzMAmfbCDt5TvUFms9NmxT
-	Ha7L7GnA==;
+	bh=dJxgz9xTnZwBgBVrmqsD5QqqyvAsiOAMrU5x+kDYPrc=; b=yqQeujeDn7TrGLjsWDhwCeWdZy
+	rpexcdlcZbClJ37IRDJ+/Bvce9cE8IpEzplkCZlWfvBk7ha8pYM8aqouTTgygito50+ue16Czxuno
+	mGW0E9ROT627gmFbMzPnz4SfPQVXsLLt8b1/q73gs/pXXmyPmrgAsdqcPVrHvZS/TmT1iKRri5tY4
+	1QxlYAoHKsVep3rzBf3laDs9fcVdEQr+xBE5fdSKzmVXovN+wP4iNCobywkHcWmQJNnKC0pJGJOh9
+	3XeorC6oKVDXW9JKei7btUio4XGOAE6KvCBHYQRHL9S33NsKh4rQuyUYc4o9vLREsFzdl8K2wiWOY
+	I1I7XoOg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMCkQ-000000051LX-3sEF;
-	Fri, 13 Dec 2024 20:58:54 +0000
+	id 1tMCmL-000000051YW-2BM9;
+	Fri, 13 Dec 2024 21:00:53 +0000
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMCkO-000000051L1-0Z7A
+	id 1tMCmI-000000051XL-38pI
 	for barebox@lists.infradead.org;
-	Fri, 13 Dec 2024 20:58:53 +0000
+	Fri, 13 Dec 2024 21:00:51 +0000
 Received: by lynxeye.de (Postfix, from userid 501)
-	id 73593E74071; Fri, 13 Dec 2024 21:58:19 +0100 (CET)
+	id 11402E74012; Fri, 13 Dec 2024 22:00:19 +0100 (CET)
 Received: from astat.fritz.box (a89-182-99-197.net-htp.de [89.182.99.197])
-	by lynxeye.de (Postfix) with ESMTPA id C318AE74012
-	for <barebox@lists.infradead.org>; Fri, 13 Dec 2024 21:58:18 +0100 (CET)
+	by lynxeye.de (Postfix) with ESMTPA id D1171E74012
+	for <barebox@lists.infradead.org>; Fri, 13 Dec 2024 22:00:18 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
 To: barebox@lists.infradead.org
-Date: Fri, 13 Dec 2024 21:58:15 +0100
-Message-ID: <20241213205815.356903-1-dev@lynxeye.de>
+Date: Fri, 13 Dec 2024 22:00:07 +0100
+Message-ID: <20241213210015.357249-1-dev@lynxeye.de>
 X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241213_125852_318187_4B164487 
-X-CRM114-Status: GOOD (  13.62  )
+X-CRM114-CacheID: sfid-20241213_130050_931680_BE19A847 
+X-CRM114-Status: UNSURE (   8.02  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,39 +70,34 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mci: sdhci: initialize dma state on non-data commands
+Subject: [PATCH 1/9] ARM: zynq: add MMC aliases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Commands without data will leave the dma parameter uninitialized
-in sdhci_setup_data_dma(). Drivers then decide whether to set
-SDHCI_DMA_EN based on this uninitialized data. This seems to be
-mostly harmless as the host controllers seem to ignore this bit
-on non-data commands, but it's still a bit confusing. Make sure
-to always return a valid state.
+The upstream DT doesn't include those, yet. Make sure
+MMC controllers end up with a deterministic numbering.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/sdhci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/dts/zynq-7000.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-index f1bb7f45d810..2c12f00ab967 100644
---- a/drivers/mci/sdhci.c
-+++ b/drivers/mci/sdhci.c
-@@ -478,8 +478,11 @@ void sdhci_setup_data_dma(struct sdhci *sdhci, struct mci_data *data,
- 	struct device *dev = sdhci_dev(sdhci);
- 	int nbytes;
+diff --git a/arch/arm/dts/zynq-7000.dtsi b/arch/arm/dts/zynq-7000.dtsi
+index f7a0d70babef..90b0c098fc82 100644
+--- a/arch/arm/dts/zynq-7000.dtsi
++++ b/arch/arm/dts/zynq-7000.dtsi
+@@ -1,4 +1,11 @@
  
--	if (!data)
-+	if (!data) {
-+		if (dma)
-+			*dma = SDHCI_NO_DMA;
- 		return;
-+	}
- 
- 	sdhci_setup_data_pio(sdhci, data);
- 
++/ {
++	aliases {
++		mmc0 = &sdhci0;
++		mmc1 = &sdhci1;
++	};
++};
++
+ &amba {
+ 	qspi: spi@e000d000 {
+ 		compatible = "xlnx,zynq-qspi-1.0";
 -- 
 2.47.1
 
