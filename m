@@ -1,55 +1,66 @@
-Delivery-date: Fri, 13 Dec 2024 22:01:55 +0100
+Delivery-date: Sat, 14 Dec 2024 09:49:28 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMCnK-007jNO-2Z
+	id 1tMNq3-007vtv-2N
 	for lore@lore.pengutronix.de;
-	Fri, 13 Dec 2024 22:01:55 +0100
+	Sat, 14 Dec 2024 09:49:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMCnK-0001WO-Ow
-	for lore@pengutronix.de; Fri, 13 Dec 2024 22:01:55 +0100
+	id 1tMNq3-00013O-KZ
+	for lore@pengutronix.de; Sat, 14 Dec 2024 09:49:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Opc4eHHs8P4Wlx9W//9oaxQ3hu6gUvDInRz15IUlhY0=; b=glWoae8fJlvAKiRk73zRCJLJ+F
-	uXlqmOYKxf4DD2aIss5ufzdlf7bZunX6xtUIRRBi6FRTkSmNh/+/TAF42BifnVGQRN5XX/eCDvrq0
-	9F8Tb9Zo0+iBH2cvuaV0VQx2gz6ckPjRL5ovZqGQgopZTDyWXFxRXBX9sO+nDu1Nm9F2fsS4UnL3F
-	kjYSIO9ooRARoFXXliR89bpWR4zCkCn4Ums1x4VRoNKiKhuRO9lfsxrixESDFxHOy19cQkbDB1XvA
-	JF/WQQdyy5Mn0IdJk2e/C/RJ1UlqSSUU9oi11bqWA+QF5OFVDcx4geFoUU0wuyG3fau5FHJx3iIHD
-	Tp4wEs6g==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=pV6Q6Am+GAhLOBsUrsv4w1c1fVGsWcY8dLLL16WYF9g=; b=Fhs0VvQJhZzdGDwkUNt4uYbIpl
+	WGxf+RaDtBtO6pqtM6IbOJbkmkowhjM8Jakx0eVkb1Qr3htQXNsWC4RoxKG2Tpiy/qEBSMF4hA2Iy
+	XRb2wBIiA4DeO+g9SKSdk5D0ozMut9gJnh35dnglPMGz4SjXXPV+C/vyPGIuMSiE7W4E+ESEX74PB
+	MXANCbaN0VfX16MMfXmEStFhnUTtTzUjatZWEKLsCsLIPqz/gIwp6gbtV53ibVQCtRD0qDviAT11m
+	rm9NDFX5/1UZq6+/TAFo7bEWLTiFFZ4YPifZwDZdTVhZsVl+WWrazyOXBJpqAUUEcu1VOy41+8SNY
+	EmxfIUrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMCmv-000000051uX-14BF;
-	Fri, 13 Dec 2024 21:01:29 +0000
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
-	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMCmp-000000051pI-2gMg
+	id 1tMNpJ-000000063BV-2kad;
+	Sat, 14 Dec 2024 08:48:41 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
+	id 1tMNpG-000000063Ay-34w1
 	for barebox@lists.infradead.org;
-	Fri, 13 Dec 2024 21:01:25 +0000
-Received: by lynxeye.de (Postfix, from userid 501)
-	id 138CEE74086; Fri, 13 Dec 2024 22:00:26 +0100 (CET)
-Received: from astat.fritz.box (a89-182-99-197.net-htp.de [89.182.99.197])
-	by lynxeye.de (Postfix) with ESMTPA id F1D1AE74071
-	for <barebox@lists.infradead.org>; Fri, 13 Dec 2024 22:00:20 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
+	Sat, 14 Dec 2024 08:48:40 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tMNpD-0000pI-Da; Sat, 14 Dec 2024 09:48:35 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tMNpC-003L01-1V;
+	Sat, 14 Dec 2024 09:48:35 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tMNpD-0041Zf-0Q;
+	Sat, 14 Dec 2024 09:48:35 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 13 Dec 2024 22:00:15 +0100
-Message-ID: <20241213210015.357249-9-dev@lynxeye.de>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241213210015.357249-1-dev@lynxeye.de>
-References: <20241213210015.357249-1-dev@lynxeye.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Sat, 14 Dec 2024 09:48:34 +0100
+Message-Id: <20241214084834.959213-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241213_130123_862701_A04A56D9 
-X-CRM114-Status: GOOD (  10.73  )
+X-CRM114-CacheID: sfid-20241214_004838_795503_63E2F6B9 
+X-CRM114-Status: UNSURE (   9.97  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,64 +78,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 9/9] ARM: zynq: zed: always relocate in PBL
+Subject: [PATCH master] optee: fix i.MX8M link error when loading OP-TEE without CONFIG_TEE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The PBL console is currently broken, as the setup relocates the
-running code, invalidating the previously computed FDT address.
-Relocate always to avoid those differences in behavior.
+CONFIG_TEE is not required for barebox to load OP-TEE, just for
+communicating with it.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+The Kconfig option for OF_FIXUP_OPTEE, which guards a symbol that is
+used by imx8_soc_imx8m_init() whenever CONFIG_PBL_OPTEE is defined is
+made conditional on CONFIG_TEE though, leading to alink error whenever
+CONFIG_TEE is undefined:
+
+  ld: ./drivers/soc/imx/soc-imx8m.c:219: undefined reference to
+      `of_optee_fixup'
+
+Fix this by making the symbol not depend on CONFIG_TEE again.
+
+Fixes: 56535d9cb0fc ("optee: make OP-TEE OF fixup ARM-specific")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/avnet-zedboard/lowlevel.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/tee/Kconfig       | 4 ----
+ drivers/tee/optee/Kconfig | 5 +++++
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
-index 1ecddf24085f..026a03d04be8 100644
---- a/arch/arm/boards/avnet-zedboard/lowlevel.c
-+++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
-@@ -276,10 +276,6 @@ static void avnet_zedboard_ps7_init(void)
+diff --git a/drivers/tee/Kconfig b/drivers/tee/Kconfig
+index 6644ebce49d5..aa15f5e9cfb7 100644
+--- a/drivers/tee/Kconfig
++++ b/drivers/tee/Kconfig
+@@ -10,8 +10,4 @@ menuconfig TEE
+ 	  secure co-processor etc. See also:
+ 	  https://en.wikipedia.org/wiki/Trusted_execution_environment
  
- static void avnet_zedboard_pbl_console_init(void)
- {
--	relocate_to_current_adr();
--	setup_c();
--	barrier();
+-if TEE
 -
- 	cadence_uart_init((void *)ZYNQ_UART1_BASE_ADDR);
- 	pbl_set_putc(cadence_uart_putc, (void *)ZYNQ_UART1_BASE_ADDR);
- 
-@@ -288,9 +284,6 @@ static void avnet_zedboard_pbl_console_init(void)
- 
- ENTRY_FUNCTION_WITHSTACK(start_avnet_zedboard, 0xfffff000, r0, r1, r2)
- {
+ source "drivers/tee/optee/Kconfig"
 -
--	void *fdt = __dtb_z_zynq_zed_start + get_runtime_offset();
--
- 	/* MIO_07 in GPIO Mode 3.3V VIO, can be uncomented because it is the default value */
- 	writel(0x0000DF0D, ZYNQ_SLCR_UNLOCK);
- 	writel(0x00000600, 0xF800071C );
-@@ -305,8 +298,12 @@ ENTRY_FUNCTION_WITHSTACK(start_avnet_zedboard, 0xfffff000, r0, r1, r2)
- 
- 	avnet_zedboard_ps7_init();
- 
-+	relocate_to_current_adr();
-+	setup_c();
-+	barrier();
+-endif
+diff --git a/drivers/tee/optee/Kconfig b/drivers/tee/optee/Kconfig
+index 179b7c2ba8f3..045be3cca4e5 100644
+--- a/drivers/tee/optee/Kconfig
++++ b/drivers/tee/optee/Kconfig
+@@ -1,5 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ # OP-TEE Trusted Execution Environment Configuration
 +
- 	if (IS_ENABLED(CONFIG_PBL_CONSOLE))
- 		avnet_zedboard_pbl_console_init();
++if TEE
++
+ config OPTEE
+ 	tristate "OP-TEE communication"
+ 	select HAVE_OPTEE
+@@ -28,6 +31,8 @@ config OPTEE_DEVFS
+ 	  but it's useful for compiling libteeclient + optee_tests for
+ 	  use inside barebox to verify proper operation of CONFIG_OPTEE.
  
--	barebox_arm_entry(0, SZ_512M, fdt);
-+	barebox_arm_entry(0, SZ_512M, __dtb_z_zynq_zed_start);
- }
++endif
++
+ config OF_FIXUP_OPTEE
+ 	def_bool y
+ 	depends on HAVE_OPTEE && ARM
 -- 
-2.47.1
+2.39.5
 
 
 
