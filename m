@@ -1,66 +1,68 @@
-Delivery-date: Sat, 14 Dec 2024 09:49:28 +0100
+Delivery-date: Sun, 15 Dec 2024 10:55:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMNq3-007vtv-2N
+	id 1tMlLB-008MW9-18
 	for lore@lore.pengutronix.de;
-	Sat, 14 Dec 2024 09:49:28 +0100
+	Sun, 15 Dec 2024 10:55:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMNq3-00013O-KZ
-	for lore@pengutronix.de; Sat, 14 Dec 2024 09:49:28 +0100
+	id 1tMlLB-0005pA-6k
+	for lore@pengutronix.de; Sun, 15 Dec 2024 10:55:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=pV6Q6Am+GAhLOBsUrsv4w1c1fVGsWcY8dLLL16WYF9g=; b=Fhs0VvQJhZzdGDwkUNt4uYbIpl
-	WGxf+RaDtBtO6pqtM6IbOJbkmkowhjM8Jakx0eVkb1Qr3htQXNsWC4RoxKG2Tpiy/qEBSMF4hA2Iy
-	XRb2wBIiA4DeO+g9SKSdk5D0ozMut9gJnh35dnglPMGz4SjXXPV+C/vyPGIuMSiE7W4E+ESEX74PB
-	MXANCbaN0VfX16MMfXmEStFhnUTtTzUjatZWEKLsCsLIPqz/gIwp6gbtV53ibVQCtRD0qDviAT11m
-	rm9NDFX5/1UZq6+/TAFo7bEWLTiFFZ4YPifZwDZdTVhZsVl+WWrazyOXBJpqAUUEcu1VOy41+8SNY
-	EmxfIUrA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=eDoE6mX3npKuRmHnYITe7rzDcW82n1tmwgCdvqiwdaI=; b=aKUPAz4Hc+PKIlK9/tBDuMuLQf
+	xdP9Fa1Dxt7Wf4jTRg7YhEyzkaAat0K+Rd959/jDmbfy9JfkynuBj9tFTPTAnG7PYw85o8fV57B2S
+	UVMKQANcZlqMEYO8vCdxtESziKBBLeFr1HE0ikQC30rEYdB/gmKJ4hr+YsJgVfPraCGhY8CJtzUMB
+	pXKLItTCo0ObBW7YOXTNclVD+sp9bv8YBcvkv0DJ/ssKLC+R6N0fh0TupaWyLOFgHFoNxbHwmsAkn
+	O0iIwf9WT3i237a/nVzUTTmLdwvf6mBbPgLL7is9cpYbfQu/nRJTCdctV3p1YljiM7+xWxW5rtrhv
+	EUOnuvQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMNpJ-000000063BV-2kad;
-	Sat, 14 Dec 2024 08:48:41 +0000
+	id 1tMlKd-00000007iGf-1v0a;
+	Sun, 15 Dec 2024 09:54:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMNpG-000000063Ay-34w1
+	id 1tMlKa-00000007iFz-2VyI
 	for barebox@lists.infradead.org;
-	Sat, 14 Dec 2024 08:48:40 +0000
+	Sun, 15 Dec 2024 09:54:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tMNpD-0000pI-Da; Sat, 14 Dec 2024 09:48:35 +0100
+	id 1tMlKJ-0005ck-42; Sun, 15 Dec 2024 10:54:15 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tMNpC-003L01-1V;
-	Sat, 14 Dec 2024 09:48:35 +0100
+	id 1tMlKG-003VUg-1K;
+	Sun, 15 Dec 2024 10:54:13 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tMNpD-0041Zf-0Q;
-	Sat, 14 Dec 2024 09:48:35 +0100
+	id 1tMlKH-00FlD9-0K;
+	Sun, 15 Dec 2024 10:54:13 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sat, 14 Dec 2024 09:48:34 +0100
-Message-Id: <20241214084834.959213-1-a.fatoum@pengutronix.de>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Sun, 15 Dec 2024 10:54:11 +0100
+Message-Id: <20241215095412.3756337-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241215095412.3756337-1-a.fatoum@pengutronix.de>
+References: <20241215095412.3756337-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241214_004838_795503_63E2F6B9 
-X-CRM114-Status: UNSURE (   9.97  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241215_015432_637578_264F0A95 
+X-CRM114-Status: GOOD (  11.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,69 +80,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] optee: fix i.MX8M link error when loading OP-TEE without CONFIG_TEE
+Subject: [PATCH master 2/3] i2c: i2c: fix getting adapter.nr for I2C muxes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-CONFIG_TEE is not required for barebox to load OP-TEE, just for
-communicating with it.
+When probed from device tree, "real" I2C controllers are virtual
+devices that have the OF device as parent.
 
-The Kconfig option for OF_FIXUP_OPTEE, which guards a symbol that is
-used by imx8_soc_imx8m_init() whenever CONFIG_PBL_OPTEE is defined is
-made conditional on CONFIG_TEE though, leading to alink error whenever
-CONFIG_TEE is undefined:
+For those the current logic of using the alias of the parent
+device's of_node works.
 
-  ld: ./drivers/soc/imx/soc-imx8m.c:219: undefined reference to
-      `of_optee_fixup'
+I2C muxes are different, because their parent device is the virtual
+device of their controller. Using that controller's alias is often
+destined to result in an -EBUSY:
 
-Fix this by making the symbol not depend on CONFIG_TEE again.
+  pca9450-i2c pca9450b0: PMIC Chip ID: 0x3
+  ERROR: i2c1: failed to add mux-adapter (error=-16)
+  ERROR: pca954x pca95450: failed to register multiplexed adapter0
 
-Fixes: 56535d9cb0fc ("optee: make OP-TEE OF fixup ARM-specific")
+As a single I2C mux can have multiple channels, there may also be just
+one OF device for multiple virtual adapters. As all I2C adapters being
+registered in barebox also have the of_node of the virtual device
+populated, let's just consult that.
+
+Fixes: b4746725454c ("i2c: get adapter.nr from device tree")
+Reported-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/tee/Kconfig       | 4 ----
- drivers/tee/optee/Kconfig | 5 +++++
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/i2c/i2c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tee/Kconfig b/drivers/tee/Kconfig
-index 6644ebce49d5..aa15f5e9cfb7 100644
---- a/drivers/tee/Kconfig
-+++ b/drivers/tee/Kconfig
-@@ -10,8 +10,4 @@ menuconfig TEE
- 	  secure co-processor etc. See also:
- 	  https://en.wikipedia.org/wiki/Trusted_execution_environment
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index d19506af2627..017842f026dd 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -705,8 +705,8 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
+ 	struct device *hw_dev;
+ 	int ret;
  
--if TEE
--
- source "drivers/tee/optee/Kconfig"
--
--endif
-diff --git a/drivers/tee/optee/Kconfig b/drivers/tee/optee/Kconfig
-index 179b7c2ba8f3..045be3cca4e5 100644
---- a/drivers/tee/optee/Kconfig
-+++ b/drivers/tee/optee/Kconfig
-@@ -1,5 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0-only
- # OP-TEE Trusted Execution Environment Configuration
-+
-+if TEE
-+
- config OPTEE
- 	tristate "OP-TEE communication"
- 	select HAVE_OPTEE
-@@ -28,6 +31,8 @@ config OPTEE_DEVFS
- 	  but it's useful for compiling libteeclient + optee_tests for
- 	  use inside barebox to verify proper operation of CONFIG_OPTEE.
+-	if (adapter->nr < 0 && adapter->dev.parent && adapter->dev.parent->of_node)
+-		adapter->nr = of_alias_get_id(adapter->dev.parent->of_node, "i2c");
++	if (adapter->nr < 0 && dev_of_node(&adapter->dev))
++		adapter->nr = of_alias_get_id(adapter->dev.of_node, "i2c");
  
-+endif
-+
- config OF_FIXUP_OPTEE
- 	def_bool y
- 	depends on HAVE_OPTEE && ARM
+ 	if (adapter->nr < 0) {
+ 		int nr;
 -- 
 2.39.5
 
