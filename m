@@ -3,64 +3,65 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMlLB-008MWQ-2p
+	id 1tMlLC-008MWg-1K
 	for lore@lore.pengutronix.de;
 	Sun, 15 Dec 2024 10:55:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tMlLB-0005pC-Rm
+	id 1tMlLC-0005pY-8l
 	for lore@pengutronix.de; Sun, 15 Dec 2024 10:55:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=b8L1+2WrrXJUBFbL/bICsbIxcBayzrc808b2W3t1F4Q=; b=qVwvJTnigxoi+rPdK2M6vsaVyx
-	5FCobnTEl35izDKxZji7qJVdHke146Mckp36ABORgFVO5Sf55y9nPEFi94cy9t9ZgNjb6BNIeBRWB
-	IKluvy63g285VsnOxpTepXnMlzzMz8w6CP86xwnTmCG7+ECgg31TucBnWcatFDdifNZNjYKnsxVob
-	3bivdGzZW7Xz83ckx7dsvhtVLY+PoZUY1AW3EZSEniuVDzxepUHYPwa+XdV7YQJGWc3BV8fsUJhd+
-	9dT2eLaFdVU7syDPN3l4Cte18B6lDiD9H53/dj4ZzP6qnL6cCy3NV4/jFtqqFcxGrxuQyXMye9JHF
-	a0pEY4Kg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Jndj0lyejrS+23t/9EEhtdey7IA2ZG1aW8/t4oc5JDw=; b=K7KQEQtoldTElyfPD3mqCfqJTv
+	uu8jI5/ICVSsTgyR1QTseBw1/twtBw83p3TlZS+vHPvEvRphQ0Yx+ovb/e04fd8XZ2NiYSwjnPXuV
+	w/tyCWfiy9eXop5pnjYkATbfDpShJxZPqGmRn4xdl0hpsVR+8BqDwbVH4Z4EMV5K4peTMgabtWYlq
+	t6fpCGiEyR4pHVs+gqPUYoCi3U0+tdi8SxpUFBL9qrRBv8holcvdD++QCG+kuzqsiycshLFraKvtD
+	yoUjMcZYbfrPfYkJtDv/Q0jrFacG+8lNG9qAt6+XCGjkTAwWwau7ZPg3e7O06iIrt5HQO1iqsBeUb
+	aIBmPPIA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMlKR-00000007iEA-1vyl;
-	Sun, 15 Dec 2024 09:54:23 +0000
+	id 1tMlKU-00000007iF7-3yUa;
+	Sun, 15 Dec 2024 09:54:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tMlKO-00000007iDW-1MF4
+	id 1tMlKS-00000007iEJ-2EmK
 	for barebox@lists.infradead.org;
-	Sun, 15 Dec 2024 09:54:21 +0000
+	Sun, 15 Dec 2024 09:54:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tMlKJ-0005cj-3v; Sun, 15 Dec 2024 10:54:15 +0100
+	id 1tMlKJ-0005cl-3v; Sun, 15 Dec 2024 10:54:15 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tMlKG-003VUf-1C;
+	id 1tMlKG-003VUj-1T;
 	Sun, 15 Dec 2024 10:54:13 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tMlKH-00FlD9-0B;
+	id 1tMlKH-00FlD9-0S;
 	Sun, 15 Dec 2024 10:54:13 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sun, 15 Dec 2024 10:54:10 +0100
-Message-Id: <20241215095412.3756337-1-a.fatoum@pengutronix.de>
+Date: Sun, 15 Dec 2024 10:54:12 +0100
+Message-Id: <20241215095412.3756337-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241215095412.3756337-1-a.fatoum@pengutronix.de>
+References: <20241215095412.3756337-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241215_015420_359554_373C253E 
-X-CRM114-Status: UNSURE (   7.63  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241215_015424_569197_443BA5FA 
+X-CRM114-Status: GOOD (  14.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,31 +83,122 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 1/3] video: dw-hdmi: populate missing I2C adapter device node
+Subject: [PATCH master 3/3] i2c: order dynamically numbered adapter after highest alias id
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-By recording the correct device tree node, it's possible to use OF
-aliases for deterministic numbering of the I2C adapter.
+Instead of assuming there is at most 32 aliased adapters, let's
+determine at runtime how many aliases we have and assign unaliased
+adapters IDs directly following the highest aliased id.
 
-Fixes: aea9e8bac578 ("video: add dw-hdmi driver")
+This has the added benefit that we may avoid moving around adapter
+numbers for many boards.
+
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/video/dw-hdmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/i2c.c | 21 ++++++++++++++++++---
+ drivers/of/base.c | 24 ++++++++++++++++++++++++
+ include/of.h      |  6 ++++++
+ 3 files changed, 48 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/dw-hdmi.c b/drivers/video/dw-hdmi.c
-index 73201836b7e5..cd5de17e9bd7 100644
---- a/drivers/video/dw-hdmi.c
-+++ b/drivers/video/dw-hdmi.c
-@@ -433,6 +433,7 @@ static struct i2c_adapter *dw_hdmi_i2c_adapter(struct dw_hdmi *hdmi)
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 017842f026dd..0d11a61593d8 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -685,6 +685,20 @@ void i2c_parse_fw_timings(struct device *dev, struct i2c_timings *t,
+ }
+ EXPORT_SYMBOL_GPL(i2c_parse_fw_timings);
  
- 	adap = &i2c->adap;
- 	adap->dev.parent = hdmi->dev;
-+	adap->dev.of_node = hdmi->dev->of_node;
- 	adap->master_xfer = dw_hdmi_i2c_xfer;
- 	adap->nr = -1;
++/**
++ * i2c_first_nonreserved_index() - get the first index that is not reserved
++ */
++static int i2c_first_nonreserved_index(void)
++{
++	int max;
++
++	max = of_alias_get_highest_id("i2c");
++	if (max < 0)
++		return 0;
++
++	return max + 1;
++}
++
+ /**
+  * i2c_add_numbered_adapter - declare i2c adapter, use static bus number
+  * @adapter: the adapter to register (with adap->nr initialized)
+@@ -711,9 +725,10 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
+ 	if (adapter->nr < 0) {
+ 		int nr;
  
+-		for (nr = 32;; nr++)
+-			if (!i2c_get_adapter(nr))
+-				break;
++		for (nr = i2c_first_nonreserved_index();
++		     i2c_get_adapter(nr); nr++)
++			;
++
+ 		adapter->nr = nr;
+ 	} else {
+ 		if (i2c_get_adapter(adapter->nr))
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 97b2306a75b1..125f24056eec 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -270,6 +270,30 @@ int of_alias_get_id(struct device_node *np, const char *stem)
+ }
+ EXPORT_SYMBOL_GPL(of_alias_get_id);
+ 
++/**
++ * of_alias_get_highest_id - Get highest alias id for the given stem
++ * @stem:	Alias stem to be examined
++ *
++ * The function travels the lookup table to get the highest alias id for the
++ * given alias stem.  It returns the alias id if found.
++ */
++int of_alias_get_highest_id(const char *stem)
++{
++	struct alias_prop *app;
++	int id = -ENODEV;
++
++	list_for_each_entry(app, &aliases_lookup, link) {
++		if (strcmp(app->stem, stem) != 0)
++			continue;
++
++		if (app->id > id)
++			id = app->id;
++	}
++
++	return id;
++}
++EXPORT_SYMBOL_GPL(of_alias_get_highest_id);
++
+ int of_alias_get_id_from(struct device_node *root, struct device_node *np,
+ 			 const char *stem)
+ {
+diff --git a/include/of.h b/include/of.h
+index c0577404c320..bc8afd9cf540 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -311,6 +311,7 @@ extern void of_alias_scan(void);
+ extern int of_alias_get_id(struct device_node *np, const char *stem);
+ extern int of_alias_get_id_from(struct device_node *root, struct device_node *np,
+ 				const char *stem);
++extern int of_alias_get_highest_id(const char *stem);
+ extern const char *of_alias_get(struct device_node *np);
+ extern int of_modalias_node(struct device_node *node, char *modalias, int len);
+ 
+@@ -941,6 +942,11 @@ static inline int of_alias_get_id_from(struct device_node *root, struct device_n
+ 	return -ENOSYS;
+ }
+ 
++static inline int of_alias_get_highest_id(const char *stem)
++{
++	return -ENOSYS;
++}
++
+ static inline const char *of_alias_get(struct device_node *np)
+ {
+ 	return NULL;
 -- 
 2.39.5
 
