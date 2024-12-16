@@ -1,69 +1,70 @@
-Delivery-date: Mon, 16 Dec 2024 08:55:30 +0100
+Delivery-date: Mon, 16 Dec 2024 09:20:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tN5ww-008jxe-1I
+	id 1tN6L0-008kUU-2E
 	for lore@lore.pengutronix.de;
-	Mon, 16 Dec 2024 08:55:30 +0100
+	Mon, 16 Dec 2024 09:20:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tN5ww-0003jC-CT
-	for lore@pengutronix.de; Mon, 16 Dec 2024 08:55:30 +0100
+	id 1tN6L0-0007lL-Kk
+	for lore@pengutronix.de; Mon, 16 Dec 2024 09:20:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JG/4o489BSBW0mjFFFSlyHKoDXms3tJdU7EDEqydALk=; b=q+F24YdmFCz7xWKwCC8KO5QNMd
-	HSSMErlBYMYQb4miaDWH0uC+S2MBWKMVWVVX9QdJeZoyqQ9JH0QM93vXZ/6X1mqmKjxkkOiKkT1SB
-	7YE+5VjpbrNF/QWx4RnttftTdjgtggJ5NcLJX7t/dFEDBs8AH5tIx//NQNxFx7NqMLX42udFLncLp
-	PoTJMIVFrW/oyic8tq0L6Vy8i69dh4A8VG2vCeHYNBLr2bJFYQJaJnV1cPyvAeAnr3pS2ytEPFXRm
-	kUUtu3crEyaS55zJ5zqlp0Dv/hBV43knqQtGH5hwGxVuJp46PA02h7alx+vSzaOAcepJpzsByAyMz
-	csQ6fsdw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=IQVqseuHZlOQbR78fxvRyvDXLVuOwV5yBhWeivlCM90=; b=cjm+4qfgDxTMIgd6TRJwcyUxZP
+	MdmtMaDMhq5WblKtHO+J/t401Y8Dg2kzqUTWXAhuVrBU1Kkc0tFX25o9Xo33ywCljEJLAtWQSmu0u
+	7H2UhIKgSi4194hfABtOLBSeQNb1NjsjUvk70eL0IbHNFPXhL+lEXXwXUV9ElVvFCFQcQR6JT5rNF
+	VMHvkR+Cn232wqCkmJKqDDBdnOsGvEJh7At2n9U3mfbHxzKF7lrZj6lyJGX+6xESBVweg3sX2FyuW
+	z6bqHlgHBnSS79hhriK6n2ZEXyc4LrRuAELzEuFxWTLi/DGKTxSoyDyMbV2kaLo237RDchexKp/Ro
+	LWEfc40Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tN5wT-00000009JkR-0UTj;
-	Mon, 16 Dec 2024 07:55:01 +0000
+	id 1tN6KP-00000009N3n-1yj5;
+	Mon, 16 Dec 2024 08:19:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tN5wR-00000009Jj2-0iSw
+	id 1tN6JN-00000009MvC-0rTl
 	for barebox@lists.infradead.org;
-	Mon, 16 Dec 2024 07:55:00 +0000
+	Mon, 16 Dec 2024 08:18:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tN5wP-0003di-TP; Mon, 16 Dec 2024 08:54:57 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1tN6JK-0007TU-2H; Mon, 16 Dec 2024 09:18:38 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tN5wO-003emr-35;
-	Mon, 16 Dec 2024 08:54:57 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tN5wP-0068rF-29;
-	Mon, 16 Dec 2024 08:54:57 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1tN6JJ-003f5Y-0N;
+	Mon, 16 Dec 2024 09:18:37 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tN6JJ-002WE2-2Z;
+	Mon, 16 Dec 2024 09:18:37 +0100
+Date: Mon, 16 Dec 2024 09:18:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <20241213-mx6-remove-mac-v1-1-e2b9fd8c2b06@pengutronix.de>
-References: <20241213-mx6-remove-mac-v1-1-e2b9fd8c2b06@pengutronix.de>
-Message-Id: <173433569766.1463900.13846287659955130965.b4-ty@pengutronix.de>
-Date: Mon, 16 Dec 2024 08:54:57 +0100
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <Z1_iXdYw8Hpx9uZ6@pengutronix.de>
+References: <20241213-toradex-colibri-imx6-v1-1-afb618cbf25b@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241213-toradex-colibri-imx6-v1-1-afb618cbf25b@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241215_235459_211251_E29896A6 
-X-CRM114-Status: UNSURE (   7.64  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241216_001841_245043_66A865A7 
+X-CRM114-Status: GOOD (  17.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,27 +86,77 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: dts: i.MX6: drop OCOTP MAC address provider
+Subject: Re: [PATCH] ARM: boards: Add support for todarex colibri imx6 on iris
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi Jonas,
 
-On Fri, 13 Dec 2024 15:06:36 +0100, Jonas Rebmann wrote:
-> Now that the MAC address can be read properly through the NVMEM
-> framework, there is no need for the custom Barebox MAC address provider
-> anymore. As <0x20 0x6> is defined in the nvmem-layout for imx6 to hold
-> the mac, the definitions in the legacy format can safely be dropped.
-> 
-> 
+On Fri, Dec 13, 2024 at 03:06:59PM +0100, Jonas Rebmann wrote:
+> +static void eth_init(void)
+> +{
+> +        void __iomem *iomux = (void *)MX6_IOMUXC_BASE_ADDR;
 
-Applied, thanks!
+IOMEM() instead of casting to void *.
 
-[1/1] ARM: dts: i.MX6: drop OCOTP MAC address provider
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c7ecc80c9fe5 (link may not be stable)
+> +ENTRY_FUNCTION(start_imx6dl_colibri_iris, r0, r1, r2)
+> +{
+> +	void *fdt;
+> +
+> +	imx6_cpu_lowlevel_init();
+> +
+> +	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
+> +		setup_uart();
+> +	}
+> +
+> +	fdt = __dtb_z_imx6dl_colibri_iris_start + get_runtime_offset();
+> +	barebox_arm_entry(0x10000000, SZ_512M, fdt);
+> +}
 
-Best regards,
+Rather do a:
+
+	relocate_to_current_adr();
+	setup_c();
+
+Then jump to a noinline function to continue startup.
+
+Additionally to setting up the UART for _ll access you can do
+a
+
+	pbl_set_putc(imx_uart_putc, uart1base);
+
+The advantage is that you no longer have to enable CONFIG_DEBUG_LL to
+get early console output, but only CONFIG_PBL_CONSOLE.
+
+You can do the UART setup unconditionally, no need to hide that behind
+CONFIG_DEBUG_LL.
+
+> +
+> +ENTRY_FUNCTION(start_imx6s_colibri_iris, r0, r1, r2)
+> +{
+> +	void *fdt;
+> +
+> +	imx6_cpu_lowlevel_init();
+> +
+> +	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
+> +		setup_uart();
+> +	}
+> +
+> +	fdt = __dtb_z_imx6dl_colibri_iris_start + get_runtime_offset();
+> +	barebox_arm_entry(0x10000000, SZ_256M, fdt);
+> +}
+
+You should be able to call imx6q_barebox_entry() instead here. This
+will read the amount of DRAM back from the controller. No need to
+distinguish between both board anymore and you can merge both images
+into one.
+
+Sascha
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
