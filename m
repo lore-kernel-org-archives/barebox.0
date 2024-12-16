@@ -1,55 +1,56 @@
-Delivery-date: Mon, 16 Dec 2024 14:04:16 +0100
+Delivery-date: Mon, 16 Dec 2024 14:04:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNAlk-008pM5-0v
+	id 1tNAlk-008pMI-32
 	for lore@lore.pengutronix.de;
-	Mon, 16 Dec 2024 14:04:16 +0100
+	Mon, 16 Dec 2024 14:04:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNAlh-0005Bk-UE
-	for lore@pengutronix.de; Mon, 16 Dec 2024 14:04:16 +0100
+	id 1tNAli-0005CB-86
+	for lore@pengutronix.de; Mon, 16 Dec 2024 14:04:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YYEst6bKeX1O999ArWzIH8cKAGBPab52gXqpur4txA4=; b=y7ONFf0OqMbVHWkx845drDTf/A
-	zHmzZVboI0G8IGnk5LlNDED71W8K9uHG4hIi6zNGWyQHwYiJOCkRmeW8TEfPKF1tQHXSbwGXim8qC
-	8tPpSreowPWmF57IIYUC53E5ZH5bhGPFX+Pb1LTirs1ILzJOfhJjrcTCwv7cDvMaJeoYj/Z69TRoy
-	AJogDemX/k7N7T6gnxR93ZmaE7FXz0P99U72UrFWU2Zgu4nxLBIC1ZUr5b1bgMO7s61SUr6L9D+0M
-	dN/oe1ut4WtLE0O0wwhG9mx5D/4cup5sek7dFmDbLEOt+35YwhhmftE/ra5BoSczFjLia9NBqscNz
-	PPsBWgQw==;
+	bh=y2JRjt2Xjefrt2plQXvWCPOX7MqHU7D0Ik475f7wjfs=; b=od7uYHPsXj+EeeNaYNXuBqKusZ
+	joCECxBHXB41EnyHXb6R5yOzyn+9w8Dtpl0F9C5XXzv5+BWeVqKbdeLofuawhO3EhVXUGgU3tN38L
+	gnBxaopj+oUkyUtxc6gSraYS4rRiMRsE5bTtojQ6aQXIvFoE58ZQ/hUzgEQekQpTPh7NtNdcNTA24
+	VX+QUhKJajAPISsdjg52iTkbiU/ITw0qGWWeHRrqBNVSK43E0I1cFdR5o5rWwhK0aq++TkmBgduVy
+	JwGgaF30kSiqXXbkJE6H+kBaZxWWzY/m6lMDIvdMp10Wmefv0MJqVJXT39oiVkrLbrkU0UKS8IsCA
+	Xz/8Nffw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNAlA-0000000A1zJ-3aEF;
-	Mon, 16 Dec 2024 13:03:40 +0000
+	id 1tNAlC-0000000A216-3DUD;
+	Mon, 16 Dec 2024 13:03:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNAl6-0000000A1ut-2gVk
+	id 1tNAl6-0000000A1ur-2Zhj
 	for barebox@lists.infradead.org;
-	Mon, 16 Dec 2024 13:03:38 +0000
+	Mon, 16 Dec 2024 13:03:39 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1tNAl3-0004cI-FN
+	id 1tNAl3-0004cI-Bz
 	for barebox@lists.infradead.org; Mon, 16 Dec 2024 14:03:33 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 16 Dec 2024 14:03:17 +0100
-Message-Id: <20241216130324.1592755-5-m.felsch@pengutronix.de>
+Date: Mon, 16 Dec 2024 14:03:14 +0100
+Message-Id: <20241216130324.1592755-2-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241216130324.1592755-1-m.felsch@pengutronix.de>
 References: <20241216130324.1592755-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241216_050336_706503_1DC1C675 
-X-CRM114-Status: GOOD (  11.24  )
+X-CRM114-CacheID: sfid-20241216_050336_701366_D9B7F2AD 
+X-CRM114-Status: UNSURE (   9.56  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,13 +72,14 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 05/12] gpiolib: add support for gpiod_set_consumer_name
+Subject: [PATCH v2 02/12] spi: fix spi_message init during __spi_validate
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add support for the Linux gpiod_set_consumer_name() API to make it
-easier to port drivers. Compared to Linux the function itself is very
-different.
+Set the spi_device pointer accordingly to allow drivers to use it.
+
+While on it, set the actual_length to 0 before passing the message to
+the .transfer() hook as well.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
@@ -85,67 +87,29 @@ Changelog:
 v2:
  - no changes
 
- drivers/gpio/gpiolib.c        | 19 +++++++++++++++++++
- include/linux/gpio/consumer.h | 10 ++++++++++
- 2 files changed, 29 insertions(+)
+ drivers/spi/spi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 55beaba6acbc..ec4d8e889bb1 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1223,6 +1223,25 @@ int gpiod_set_array_value(unsigned int array_size,
- }
- EXPORT_SYMBOL_GPL(gpiod_set_array_value);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c627d88954a7..36d0653a191c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -321,6 +321,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 	if (list_empty(&message->transfers))
+ 		return -EINVAL;
  
-+/**
-+ * gpiod_set_consumer_name() - set the consumer name for the descriptor
-+ * @desc: gpio to set the consumer name on
-+ * @name: the new consumer name
-+ *
-+ * Returns:
-+ * 0 on success, or negative errno on failure.
-+ */
-+int gpiod_set_consumer_name(struct gpio_desc *desc, const char *name)
-+{
-+	VALIDATE_DESC(desc);
++	message->spi = spi;
 +
-+	free(desc->label);
-+	desc->label = xstrdup(name);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(gpiod_set_consumer_name);
-+
- int gpiochip_add(struct gpio_chip *chip)
- {
- 	int i;
-diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
-index 34e5795cbc07..d411c3aa3608 100644
---- a/include/linux/gpio/consumer.h
-+++ b/include/linux/gpio/consumer.h
-@@ -84,6 +84,8 @@ int gpiod_get_value(const struct gpio_desc *desc);
+ 	list_for_each_entry(xfer, &message->transfers, transfer_list) {
+ 		if (!xfer->bits_per_word)
+ 			xfer->bits_per_word = spi->bits_per_word;
+@@ -347,6 +349,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 			return -EINVAL;
+ 	}
  
- void gpiod_put(struct gpio_desc *desc);
++	message->actual_length = 0;
+ 	message->status = -EINPROGRESS;
  
-+int gpiod_set_consumer_name(struct gpio_desc *desc, const char *name);
-+
- int gpiod_count(struct device *dev, const char *con_id);
- 
- struct gpio_desc *__must_check gpiod_get_index(struct device *dev,
-@@ -172,6 +174,14 @@ static inline void gpiod_put(struct gpio_desc *desc)
- 	WARN_ON(desc);
- }
- 
-+static inline int gpiod_set_consumer_name(struct gpio_desc *desc,
-+					  const char *name)
-+{
-+	/* GPIO can never have been requested */
-+	WARN_ON(desc);
-+	return -EINVAL;
-+}
-+
- static inline int gpiod_count(struct device *dev, const char *con_id)
- {
  	return 0;
 -- 
 2.39.5
