@@ -1,67 +1,67 @@
-Delivery-date: Mon, 16 Dec 2024 08:18:15 +0100
+Delivery-date: Mon, 16 Dec 2024 08:25:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tN5Mt-008jN9-1J
+	id 1tN5Tl-008jVD-0h
 	for lore@lore.pengutronix.de;
-	Mon, 16 Dec 2024 08:18:15 +0100
+	Mon, 16 Dec 2024 08:25:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tN5Mt-0007AM-Cu
-	for lore@pengutronix.de; Mon, 16 Dec 2024 08:18:15 +0100
+	id 1tN5Tl-0008Dh-5J
+	for lore@pengutronix.de; Mon, 16 Dec 2024 08:25:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sSUhe+KUFIofG4T66wAL8sB48ipXRI4dwDj91XUY9t4=; b=1tVxuUzssV8hK8wOJI7YjTVG8x
-	WxcWyb85pNXseRExVRZXwl8vN5r8+WEJLlW2lsrJhscHCJ3IFBID7zxqvdz9OGwYP4sEXqzITTTEl
-	fVqZfXU1itkYAEYYf29o+ZlrOdZnwCMeDSppAkDIrA9mcKP2AZljQm06jBXCgtN6dCX1caK63SLC4
-	VnMigrynR2npHQ5hrFA2AW/lFNrreK93q4iOsvN0sMQDKWqFe8kQHL0WK28mjP2gO1WDH9YdRmMi/
-	dVOm3jB6+3xtkMKu+4pqr8hL4NZf2EPXSBAFrbByV0jUMrV+F1GRd4LXL7bLWUuMz7vkP0TFhkzPu
-	LyF6wQbw==;
+	bh=DVBYa/HzlK0v4I0HA84IJ6lxJy/kAXHLOUL00xk2iqI=; b=uCGqIUqTNnnHGL0L0EjCNVPZD7
+	hyzplXqsMqejq3eDnTeXoMUN3saVld4PWOC/kKTd8Tv4TUlaV1X0uef3ySudDjvsbXnf3qbTjBCTA
+	e+JraYh15KU3HrP1Zu/MEOsIYWTG2NO4hP3mXPij16uMmZ1OGRWfCr86++cnCW9WWDK+j8xPEC1zs
+	FAe/0OEpCLxJmTDsUbwOIKdb2F6lpQ9aCZVXpwcMC1kcFqZVWPFzU0FYXzSc0J3awpu/+/66hQqr9
+	3ExNf6cvqDzVqK0YCLd7g0K57bh8VMUyYlqbiK2XdE/tx1+6uwh7xo25QyPkNhIyM17unY+15cAyR
+	yAztx2VQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tN5MH-00000009Fxr-0vVm;
-	Mon, 16 Dec 2024 07:17:37 +0000
+	id 1tN5TK-00000009GxS-1drj;
+	Mon, 16 Dec 2024 07:24:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tN5LM-00000009FtR-1ny3
+	id 1tN5TH-00000009Gx7-2R8R
 	for barebox@lists.infradead.org;
-	Mon, 16 Dec 2024 07:16:42 +0000
+	Mon, 16 Dec 2024 07:24:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tN5LJ-0006tt-48; Mon, 16 Dec 2024 08:16:37 +0100
+	id 1tN5TG-00088K-Ci; Mon, 16 Dec 2024 08:24:50 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tN5LI-003ef1-0X;
-	Mon, 16 Dec 2024 08:16:36 +0100
+	id 1tN5TF-003efu-1B;
+	Mon, 16 Dec 2024 08:24:50 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tN5LI-0066sL-2o;
-	Mon, 16 Dec 2024 08:16:36 +0100
+	id 1tN5TG-0067VW-0F;
+	Mon, 16 Dec 2024 08:24:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241215095412.3756337-1-a.fatoum@pengutronix.de>
-References: <20241215095412.3756337-1-a.fatoum@pengutronix.de>
-Message-Id: <173433339686.1456302.67373242722160253.b4-ty@pengutronix.de>
-Date: Mon, 16 Dec 2024 08:16:36 +0100
+To: barebox@lists.infradead.org, Lucas Stach <dev@lynxeye.de>
+In-Reply-To: <20241213210015.357249-1-dev@lynxeye.de>
+References: <20241213210015.357249-1-dev@lynxeye.de>
+Message-Id: <173433389007.1458711.11059882433237337815.b4-ty@pengutronix.de>
+Date: Mon, 16 Dec 2024 08:24:50 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241215_231640_469255_98F59F98 
-X-CRM114-Status: UNSURE (   5.80  )
+X-CRM114-CacheID: sfid-20241215_232451_645897_E13E231A 
+X-CRM114-Status: UNSURE (   5.66  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,26 +84,37 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/3] video: dw-hdmi: populate missing I2C
- adapter device node
+Subject: Re: [PATCH 1/9] ARM: zynq: add MMC aliases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Sun, 15 Dec 2024 10:54:10 +0100, Ahmad Fatoum wrote:
-> By recording the correct device tree node, it's possible to use OF
-> aliases for deterministic numbering of the I2C adapter.
+On Fri, 13 Dec 2024 22:00:07 +0100, Lucas Stach wrote:
+> The upstream DT doesn't include those, yet. Make sure
+> MMC controllers end up with a deterministic numbering.
 > 
 > 
 
 Applied, thanks!
 
-[1/3] video: dw-hdmi: populate missing I2C adapter device node
-      https://git.pengutronix.de/cgit/barebox/commit/?id=474b6cb42ea5 (link may not be stable)
-[2/3] i2c: i2c: fix getting adapter.nr for I2C muxes
-      https://git.pengutronix.de/cgit/barebox/commit/?id=699a132c8de4 (link may not be stable)
-[3/3] i2c: order dynamically numbered adapter after highest alias id
-      https://git.pengutronix.de/cgit/barebox/commit/?id=90129a1e4b45 (link may not be stable)
+[1/9] ARM: zynq: add MMC aliases
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2382be74da92 (link may not be stable)
+[2/9] ARM: zynq: zed: define SDHCI bus-width
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b3e5d422c70a (link may not be stable)
+[3/9] ARM: zynq: zed: guard board initcall
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d07d89b423fd (link may not be stable)
+[4/9] ARM: zynq: zed: add environment
+      https://git.pengutronix.de/cgit/barebox/commit/?id=745d8db539f8 (link may not be stable)
+[5/9] ARM: zynq: zed: add Barebox update handler
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3a33d49dafe2 (link may not be stable)
+[6/9] ARM: zynq: enable some useful things in defconfig
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8651c3304b9a (link may not be stable)
+[7/9] ARM: zynq: zed: switch to entry function with stack
+      https://git.pengutronix.de/cgit/barebox/commit/?id=5d9d50da97de (link may not be stable)
+[8/9] ARM: zynq: call common arm lowlevel init from zynq lowlevel init
+      https://git.pengutronix.de/cgit/barebox/commit/?id=33582abd435c (link may not be stable)
+[9/9] ARM: zynq: zed: always relocate in PBL
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4cd14313773e (link may not be stable)
 
 Best regards,
 -- 
