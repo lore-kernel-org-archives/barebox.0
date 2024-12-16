@@ -1,55 +1,55 @@
-Delivery-date: Mon, 16 Dec 2024 14:04:14 +0100
+Delivery-date: Mon, 16 Dec 2024 14:04:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNAlh-008pLD-2Z
+	id 1tNAlj-008pLZ-2Y
 	for lore@lore.pengutronix.de;
-	Mon, 16 Dec 2024 14:04:14 +0100
+	Mon, 16 Dec 2024 14:04:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNAlg-0005Az-H8
-	for lore@pengutronix.de; Mon, 16 Dec 2024 14:04:14 +0100
+	id 1tNAlh-0005BQ-MD
+	for lore@pengutronix.de; Mon, 16 Dec 2024 14:04:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/eFpTYszdUTututDb7w25Ck037Nhex4cUmnldhegz5g=; b=S5Y6c+4RXDCO+hKVN5Kwz3cC85
-	Pnr1WO5fq7sJsoCv2acJVSBVM9wzAYZ6Y4RlnyWN4JxunkPvbtiKuCSWkdQphlzBOFK8wX71pRHPu
-	1FkYglJFLhP/KIQbWw0tBFmuGWGl2FXaSK4T57I5bb7UYXMOmywTu5gGP/UVSC0gtLUKxPBBImFXi
-	VfhlZBLKIlyxHu3CFNJ3bWRT2EQJ+jZ6YYjkccOI1BxZUVKu0g9LJIVFU7MmxGljufWokjOrPtSPF
-	YNXa1O56Vy4d7plAyM3IAowMcKgUbg6eovEH8DnHvN8PPL57aupzHhXWuFR9OCqawLgdjumPC6NI8
-	7gc0bVXg==;
+	bh=AJf5eCKLAmicVLzO/sI1kIa9kAp47ubQpLV7N8No17s=; b=PDihhQC6VGv/svXFeXy6xHClIc
+	yMyj63P0YDVNH/vmksfE0P26OoBxmaTjkcrI1K7rNFv9rKDOPj+2muC+UFTD+Xe9GDVyX3wH1jNog
+	UVza1mDB8jcy20mD/BSeupVNQdNmmpucp7OYwpUnfViWosfSvwvSdqjRcJsNJr+RX5Zh+9dpbWOZ9
+	jDxAymSDSrJYRF6h0KF/85MQO5WT8MMRtHToGOZQsC+Y8MRpWjJMBBRpJcaGXwv0B0LDO8XdwRYQU
+	gzGvRXKbPEYU5Zxrfb6PteWYFcCRmvzW/Krs3V5h+5dVNaG1ZnReRHCyC+bCClG95gLcmUKKtpXNS
+	/CywCNMg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNAlD-0000000A21X-1Kiy;
-	Mon, 16 Dec 2024 13:03:43 +0000
+	id 1tNAlE-0000000A22V-1rh6;
+	Mon, 16 Dec 2024 13:03:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNAl6-0000000A1uy-2Zp1
+	id 1tNAl6-0000000A1uv-2dyo
 	for barebox@lists.infradead.org;
-	Mon, 16 Dec 2024 13:03:39 +0000
+	Mon, 16 Dec 2024 13:03:40 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1tNAl3-0004cI-Kq
+	id 1tNAl3-0004cI-HW
 	for barebox@lists.infradead.org; Mon, 16 Dec 2024 14:03:33 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 16 Dec 2024 14:03:22 +0100
-Message-Id: <20241216130324.1592755-10-m.felsch@pengutronix.de>
+Date: Mon, 16 Dec 2024 14:03:19 +0100
+Message-Id: <20241216130324.1592755-7-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241216130324.1592755-1-m.felsch@pengutronix.de>
 References: <20241216130324.1592755-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241216_050336_702870_F9FB0A52 
-X-CRM114-Status: GOOD (  14.89  )
+X-CRM114-CacheID: sfid-20241216_050336_711943_88978CDA 
+X-CRM114-Status: GOOD (  13.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,91 +71,123 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 10/12] spi: add support for spi_controller::set_cs_timing
+Subject: [PATCH v2 07/12] spi: add support to setup spi-cs-{setup,hold,inactive}-delay-ns
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Import the spi_controller set_cs_timing() hook to make it easier to port
-Linux spi drivers.
+Add support to parse and setup the common OF properties. The parsing is
+quite confusing since the kernel driver API decided to use a u16 for the
+value. I kept it this way to be closer to the Linux code.
+
+This prepares the core for the upcoming core based message handling.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
 Changelog:
 v2:
- - add spi_set_cs_timing()
+ - no changes
 
- drivers/spi/spi.c | 20 ++++++++++++++++++++
- include/spi/spi.h | 12 ++++++++++++
- 2 files changed, 32 insertions(+)
+ drivers/spi/spi.c | 25 +++++++++++++++++++++++++
+ include/spi/spi.h | 22 ++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 78569301776f..425c35759045 100644
+index c239de9d8549..e8a0b1b84be5 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -34,6 +34,22 @@ struct boardinfo {
- static LIST_HEAD(board_list);
- static LIST_HEAD(spi_controller_list);
+@@ -70,6 +70,9 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
+ 		proxy->cs_gpiod = ctrl->cs_gpiods[chip->chip_select];
+ 	proxy->max_speed_hz = chip->max_speed_hz;
+ 	proxy->mode = chip->mode;
++	proxy->cs_setup = chip->cs_setup;
++	proxy->cs_hold = chip->cs_hold;
++	proxy->cs_inactive = chip->cs_inactive;
+ 	proxy->bits_per_word = chip->bits_per_word ? chip->bits_per_word : 8;
+ 	proxy->dev.platform_data = chip->platform_data;
+ 	proxy->dev.bus = &spi_bus;
+@@ -111,6 +114,22 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
+ }
+ EXPORT_SYMBOL(spi_new_device);
  
-+/**
-+ * spi_set_cs_timing - configure CS setup, hold, and inactive delays
-+ * @spi: the device that requires specific CS timing configuration
-+ *
-+ * Return: zero on success, else a negative error code.
-+ */
-+static int spi_set_cs_timing(struct spi_device *spi)
++static void of_spi_parse_dt_cs_delay(struct device_node *nc,
++				     struct spi_delay *delay, const char *prop)
 +{
-+	int status = 0;
++	u32 value;
 +
-+	if (spi->controller->set_cs_timing && !spi->cs_gpiod)
-+		status = spi->controller->set_cs_timing(spi);
-+
-+	return status;
++	if (!of_property_read_u32(nc, prop, &value)) {
++		if (value > U16_MAX) {
++			delay->value = DIV_ROUND_UP(value, 1000);
++			delay->unit = SPI_DELAY_UNIT_USECS;
++		} else {
++			delay->value = value;
++			delay->unit = SPI_DELAY_UNIT_NSECS;
++		}
++	}
 +}
 +
- /**
-  * spi_new_device - instantiate one new SPI device
-  * @master: Controller to which device is connected
-@@ -101,6 +117,10 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
- 		goto fail;
- 	}
- 
-+	status = spi_set_cs_timing(proxy);
-+	if (status)
-+		goto fail;
+ static void spi_of_register_slaves(struct spi_controller *ctrl)
+ {
+ 	struct device_node *n;
+@@ -145,6 +164,12 @@ static void spi_of_register_slaves(struct spi_controller *ctrl)
+ 			chip.mode |= SPI_3WIRE;
+ 		of_property_read_u32(n, "spi-max-frequency",
+ 				&chip.max_speed_hz);
 +
- 	status = register_device(&proxy->dev);
- 	if (status)
- 		goto fail;
++		/* Device CS delays */
++		of_spi_parse_dt_cs_delay(n, &chip.cs_setup, "spi-cs-setup-delay-ns");
++		of_spi_parse_dt_cs_delay(n, &chip.cs_hold, "spi-cs-hold-delay-ns");
++		of_spi_parse_dt_cs_delay(n, &chip.cs_inactive, "spi-cs-inactive-delay-ns");
++
+ 		reg = of_find_property(n, "reg", NULL);
+ 		if (!reg)
+ 			continue;
 diff --git a/include/spi/spi.h b/include/spi/spi.h
-index a8bbf55e0a5a..106cca664068 100644
+index d643b83a7dbb..2061a44134d0 100644
 --- a/include/spi/spi.h
 +++ b/include/spi/spi.h
-@@ -179,6 +179,9 @@ static inline void spi_set_ctldata(struct spi_device *spi, void *state)
-  *	must fail if an unrecognized or unsupported mode is requested.
-  *	It's always safe to call this unless transfers are pending on
-  *	the device whose settings are being modified.
-+ * @set_cs_timing: optional hook for SPI devices to request SPI master
-+ * controller for configuring specific CS setup time, hold time and inactive
-+ * delay interms of clock counts
-  * @transfer: adds a message to the controller's transfer queue.
-  * @cleanup: frees controller-specific state
-  * @cs_gpiods: Array of GPIO descriptors to use as chip select lines; one per CS
-@@ -249,6 +252,15 @@ struct spi_controller {
- 	/* setup mode and clock, etc (spi driver may call many times) */
- 	int			(*setup)(struct spi_device *spi);
+@@ -13,6 +13,19 @@
+ struct spi_controller_mem_ops;
+ struct spi_message;
  
-+	/*
-+	 * set_cs_timing() method is for SPI controllers that supports
-+	 * configuring CS timing.
-+	 *
-+	 * This hook allows SPI client drivers to request SPI controllers
-+	 * to configure specific CS timing through spi_set_cs_timing().
-+	 */
-+	int (*set_cs_timing)(struct spi_device *spi);
++/**
++ * struct spi_delay - SPI delay information
++ * @value: Value for the delay
++ * @unit: Unit for the delay
++ */
++struct spi_delay {
++#define SPI_DELAY_UNIT_USECS	0
++#define SPI_DELAY_UNIT_NSECS	1
++#define SPI_DELAY_UNIT_SCK	2
++	u16	value;
++	u8	unit;
++};
 +
- 	/* bidirectional bulk transfers
- 	 *
- 	 * + The transfer() method may not sleep; its main role is
+ struct spi_board_info {
+ 	char	*name;
+ 	int	max_speed_hz;
+@@ -26,6 +39,11 @@ struct spi_board_info {
+ 	u8	bits_per_word;
+ 	void	*platform_data;
+ 	struct device_node *device_node;
++
++	/* CS delays */
++	struct spi_delay	cs_setup;
++	struct spi_delay	cs_hold;
++	struct spi_delay	cs_inactive;
+ };
+ 
+ /**
+@@ -101,6 +119,10 @@ struct spi_device {
+ 	void			*controller_data;
+ 	const char		*modalias;
+ 	struct gpio_desc	*cs_gpiod;	/* Chip select gpio desc */
++	/* CS delays */
++	struct spi_delay	cs_setup;
++	struct spi_delay	cs_hold;
++	struct spi_delay	cs_inactive;
+ 
+ 	/*
+ 	 * likely need more hooks for more protocol options affecting how
 -- 
 2.39.5
 
