@@ -1,66 +1,66 @@
-Delivery-date: Wed, 18 Dec 2024 07:09:44 +0100
+Delivery-date: Wed, 18 Dec 2024 07:09:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNnFf-009WS2-39
+	id 1tNnFg-009WSN-2g
 	for lore@lore.pengutronix.de;
-	Wed, 18 Dec 2024 07:09:44 +0100
+	Wed, 18 Dec 2024 07:09:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNnFf-0003LD-Kg
-	for lore@pengutronix.de; Wed, 18 Dec 2024 07:09:44 +0100
+	id 1tNnFf-0003Lc-T5
+	for lore@pengutronix.de; Wed, 18 Dec 2024 07:09:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yFZ0pOtTCtl0ClYbMVEdN7WJ/TqoaFshLcrtbA6A43E=; b=WdL9ZB0WWnzoVr8GeZ+RHMzt4k
-	9AwlGph9n4n+cwJYg/lgGzRgcHq9X66UR4SkzK58urEjKjWzG6Mo6qTqApq/BS2+NFuShCaew0p10
-	eZI/khpcZmyPhui92GShUDST7PMkgLoziExnQD7a0vhwBQUE/PWKQS+2g+lxPgNMPk4jCJTrZPA6x
-	3TvPccZEK/w9739hEBO+m33b+tYSUk2vYQlj3nZfsGrqyvCFy2fPUvSpQa7OCHSm/0d28nsv1DmlA
-	WKq2HhKi1Vp7aPZQPyyn4y1XSVQNk3ARI4v8udyj59s7xWnrjb76VcFm7S7AwyBfsja30BCbUayOj
-	HNTfeusA==;
+	bh=jbWi/WRz4wppOZkWlIMt694KvVs3zvMxNpSYy5SSpLw=; b=37kv7ESR8dsayK8xl/+JiN9CSf
+	alWswmgaFSLqO80MpBe30hnr2v5abtd4ldruGV3RlEwmOCaFObu+pH17arq12vjBJLZi+bYQ8W1rf
+	NcP43zrnrtLJy/JNDieH6+kJEJ7wZpR8qdbXNVXJpabtKaQ1xgmzIc+Bflqz8CJvYoGHr4ZaBAfy0
+	P1ZPYfAxbtOkVDblfQ+h0b1znI9Ir7trayxC8hmJDDbJjCbYFzcFmBnoI/e+SzGPbOI53pKUWPhWR
+	KzErGP+XqaO/JPpjI1fklvT5KK9Sm6d+2ZcBhg5Lj2YqX++Vg/UiSPeUcy4/Elz/yjmJYk1ycXcYl
+	B7QTPqcg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNnF5-0000000Fg6T-1WyE;
-	Wed, 18 Dec 2024 06:09:07 +0000
+	id 1tNnF8-0000000Fg7J-1G7R;
+	Wed, 18 Dec 2024 06:09:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNnF2-0000000Fg5J-2zdF
+	id 1tNnF2-0000000Fg5K-359P
 	for barebox@lists.infradead.org;
-	Wed, 18 Dec 2024 06:09:06 +0000
+	Wed, 18 Dec 2024 06:09:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEz-00036s-Hy; Wed, 18 Dec 2024 07:09:01 +0100
+	id 1tNnEz-00036t-IU; Wed, 18 Dec 2024 07:09:01 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEy-003z4V-1f;
+	id 1tNnEy-003z4W-1h;
 	Wed, 18 Dec 2024 07:09:01 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEz-00FG9K-0m;
+	id 1tNnEz-00FG9O-0o;
 	Wed, 18 Dec 2024 07:09:01 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 18 Dec 2024 07:08:58 +0100
-Message-Id: <20241218060900.3636980-2-o.rempel@pengutronix.de>
+Date: Wed, 18 Dec 2024 07:08:59 +0100
+Message-Id: <20241218060900.3636980-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241218060900.3636980-1-o.rempel@pengutronix.de>
 References: <20241218060900.3636980-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241217_220904_748066_82582E1F 
-X-CRM114-Status: UNSURE (   9.11  )
+X-CRM114-CacheID: sfid-20241217_220904_949578_998C3C4D 
+X-CRM114-Status: UNSURE (   9.81  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,23 +83,23 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] ARM: stm32mp151-mecio1: use kernel dts
+Subject: [PATCH 2/3] ARM: stm32mp151-mect1s: use kernel dts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 This devicetree is in kernel upstream now. We can drop the barebox
-version now.
+version.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/dts/stm32mp151-mecio1.dts | 213 +----------------------------
- 1 file changed, 2 insertions(+), 211 deletions(-)
+ arch/arm/dts/stm32mp151-mect1s.dts | 319 +----------------------------
+ 1 file changed, 1 insertion(+), 318 deletions(-)
 
-diff --git a/arch/arm/dts/stm32mp151-mecio1.dts b/arch/arm/dts/stm32mp151-mecio1.dts
-index 6b50bdd4eff2..124f3079f256 100644
---- a/arch/arm/dts/stm32mp151-mecio1.dts
-+++ b/arch/arm/dts/stm32mp151-mecio1.dts
-@@ -1,214 +1,5 @@
+diff --git a/arch/arm/dts/stm32mp151-mect1s.dts b/arch/arm/dts/stm32mp151-mect1s.dts
+index b0dc1cfaa8b6..1f5b5bdba6df 100644
+--- a/arch/arm/dts/stm32mp151-mect1s.dts
++++ b/arch/arm/dts/stm32mp151-mect1s.dts
+@@ -1,322 +1,5 @@
  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 -/*
 - * Copyright (C) Protonic Holland
@@ -114,9 +114,12 @@ index 6b50bdd4eff2..124f3079f256 100644
 -#include <dt-bindings/gpio/gpio.h>
 -#include <dt-bindings/input/input.h>
 -
++#include <arm/st/stm32mp151c-mect1s.dts>
+ #include "stm32mp151.dtsi"
+-
 -/ {
--	model = "Protonic MECIO1";
--	compatible = "prt,mecio1", "st,stm32mp151";
+-	model = "Protonic MECT1S";
+-	compatible = "prt,mect1s", "st,stm32mp151";
 -
 -	chosen {
 -		stdout-path = "serial0:1500000n8";
@@ -142,24 +145,41 @@ index 6b50bdd4eff2..124f3079f256 100644
 -		regulator-always-on;
 -	};
 -
+-	clock_sja1105: clock-sja1105 {
+-		compatible = "fixed-clock";
+-		#clock-cells = <0>;
+-		clock-frequency = <25000000>;
+-	};
+-
 -	led {
 -		compatible = "gpio-leds";
 -
 -		led-0 {
 -			label = "debug:red";
--			gpios = <&gpioa 13 GPIO_ACTIVE_HIGH>;
+-			gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
 -		};
 -
 -		led-1 {
 -			label = "debug:green";
--			gpios = <&gpioa 14 GPIO_ACTIVE_HIGH>;
+-			gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
 -			linux,default-trigger = "heartbeat";
 -		};
+-	};
+-
+-	spi_gpio: spi-gpio-0 {
+-		compatible = "spi-gpio";
+-		sck-gpios = <&gpioi 1 GPIO_ACTIVE_HIGH>;
+-		mosi-gpios = <&gpioi 3 GPIO_ACTIVE_HIGH>;
+-		miso-gpios = <&gpioi 2 GPIO_ACTIVE_HIGH>;
+-		cs-gpios = <&gpioj 3 GPIO_ACTIVE_LOW>;
+-		num-chipselects = <1>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
 -	};
 -};
 -
 -&clk_hse {
--	clock-frequency = <25000000>;
+-	clock-frequency = <24000000>;
 -};
 -
 -&clk_lse {
@@ -199,24 +219,126 @@ index 6b50bdd4eff2..124f3079f256 100644
 -	pinctrl-0 = <&ethernet0_rgmii_pins_x>;
 -	pinctrl-1 = <&ethernet0_rgmii_sleep_pins_x>;
 -	pinctrl-names = "default", "sleep";
--	phy-mode = "rgmii-id";
--	phy-handle = <&phy0>;
--	assigned-clocks = <&rcc ETHCK_K>, <&rcc PLL3_Q>;
--	assigned-clock-parents = <&rcc PLL3_Q>;
--	assigned-clock-rates = <125000000>; /* Clock PLL4 to 750Mhz in ATF/U-Boot */
+-	phy-mode = "rgmii";
 -	st,eth-clk-sel;
 -
--	mdio {
+-	fixed-link {
+-		speed = <1000>;
+-		full-duplex;
+-	};
+-
+-	mdio0: mdio {
 -		#address-cells = <1>;
 -		#size-cells = <0>;
 -		compatible = "snps,dwmac-mdio";
+-	};
+-};
 -
--		phy0: ethernet-phy@8 {
--			reg = <8>;
--			interrupts-extended = <&gpiog 7 IRQ_TYPE_LEVEL_LOW>;
--			reset-gpios = <&gpiog 10 GPIO_ACTIVE_LOW>;
--			reset-assert-us = <10>;
--			reset-deassert-us = <35>;
+-&mdio0 {
+-	/* All this DP83TG720R PHYs can't be probed before switch@0 is
+-	 * probed so we need to use compatible with PHYid
+-	 */
+-	/* TI DP83TG720R */
+-	t1_phy0: ethernet-phy@8 {
+-		compatible = "ethernet-phy-id2000.a284";
+-		reg = <8>;
+-		interrupts-extended = <&gpioi 5 IRQ_TYPE_LEVEL_LOW>;
+-		reset-gpios = <&gpioh 13 GPIO_ACTIVE_LOW>;
+-		reset-assert-us = <10>;
+-		reset-deassert-us = <35>;
+-	};
+-
+-	/* TI DP83TG720R */
+-	t1_phy1: ethernet-phy@c {
+-		compatible = "ethernet-phy-id2000.a284";
+-		reg = <12>;
+-		interrupts-extended = <&gpioj 0 IRQ_TYPE_LEVEL_LOW>;
+-		reset-gpios = <&gpioh 14 GPIO_ACTIVE_LOW>;
+-		reset-assert-us = <10>;
+-		reset-deassert-us = <35>;
+-	};
+-
+-	/* TI DP83TG720R */
+-	t1_phy2: ethernet-phy@4 {
+-		compatible = "ethernet-phy-id2000.a284";
+-		reg = <4>;
+-		interrupts-extended = <&gpioi 7 IRQ_TYPE_LEVEL_LOW>;
+-		reset-gpios = <&gpioh 15 GPIO_ACTIVE_LOW>;
+-		reset-assert-us = <10>;
+-		reset-deassert-us = <35>;
+-	};
+-
+-	/* TI DP83TG720R */
+-	t1_phy3: ethernet-phy@d {
+-		compatible = "ethernet-phy-id2000.a284";
+-		reg = <13>;
+-		interrupts-extended = <&gpioi 15 IRQ_TYPE_LEVEL_LOW>;
+-		reset-gpios = <&gpioi 13 GPIO_ACTIVE_LOW>;
+-		reset-assert-us = <10000>;
+-		reset-deassert-us = <1000>;
+-	};
+-};
+-
+-&spi_gpio {
+-	switch@0 {
+-		compatible = "nxp,sja1105q";
+-		reg = <0>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		spi-max-frequency = <1000000>;
+-		spi-rx-delay-us = <1>;
+-		spi-tx-delay-us = <1>;
+-		spi-cpha;
+-
+-		reset-gpios = <&gpioi 0 GPIO_ACTIVE_LOW>;
+-
+-		clocks = <&clock_sja1105>;
+-
+-		ports {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			port@0 {
+-				reg = <0>;
+-				label = "t10";
+-				phy-mode = "rgmii-id";
+-				phy-handle = <&t1_phy0>;
+-			};
+-
+-			port@1 {
+-				reg = <1>;
+-				label = "t11";
+-				phy-mode = "rgmii-id";
+-				phy-handle = <&t1_phy1>;
+-			};
+-
+-			port@2 {
+-				reg = <2>;
+-				label = "t12";
+-				phy-mode = "rgmii-id";
+-				phy-handle = <&t1_phy2>;
+-			};
+-
+-			port@3 {
+-				reg = <3>;
+-				label = "t13";
+-				phy-mode = "rgmii-id";
+-				phy-handle = <&t1_phy3>;
+-			};
+-
+-			port@4 {
+-				reg = <4>;
+-				label = "cpu";
+-				ethernet = <&ethernet0>;
+-				phy-mode = "rgmii-id";
+-				rx-internal-delay-ps = <2000>;
+-				tx-internal-delay-ps = <2000>;
+-
+-				fixed-link {
+-					speed = <1000>;
+-					full-duplex;
+-				};
+-			};
 -		};
 -	};
 -};
@@ -247,19 +369,6 @@ index 6b50bdd4eff2..124f3079f256 100644
 -	/delete-property/dmas;
 -	/delete-property/dma-names;
 -	status = "okay";
--};
--
--&uart4_pins_a {
--	pins1 {
--		pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
--		bias-disable;
--		drive-push-pull;
--		slew-rate = <0>;
--	};
--	pins2 {
--		pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
--		bias-pull-up;
--	};
 -};
 -
 -&pinctrl {
@@ -314,8 +423,6 @@ index 6b50bdd4eff2..124f3079f256 100644
 -		};
 -	};
 -};
-+#include <arm/st/stm32mp151c-mecio1r0.dts>
-+#include "stm32mp151.dtsi"
 -- 
 2.39.5
 
