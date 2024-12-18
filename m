@@ -1,68 +1,68 @@
-Delivery-date: Wed, 18 Dec 2024 07:09:49 +0100
+Delivery-date: Wed, 18 Dec 2024 15:10:07 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNnFk-009WSu-1T
+	id 1tNukY-009epn-32
 	for lore@lore.pengutronix.de;
-	Wed, 18 Dec 2024 07:09:48 +0100
+	Wed, 18 Dec 2024 15:10:07 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNnFj-0003WE-8U
-	for lore@pengutronix.de; Wed, 18 Dec 2024 07:09:48 +0100
+	id 1tNukY-0003pd-0u
+	for lore@pengutronix.de; Wed, 18 Dec 2024 15:10:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VNB0dp3r0sMYkivjDqlm65tl3qTbWmP4R3cUPpN2yLY=; b=0YxfTNyTJuUcnEKDp7+uZJHfnZ
-	ipbkn/roNVOvDUKchZJU9kLDa28cmE8tF5EXuJuGuDpB94lEGbQRtujPbOY1ZjjUSgWr0rBNXcpGp
-	4yOxIls6JjJj55MSaw8y8TTwHvsV71k3MKt68sp0acGOCx4wZWff01HyFGSw+QxHvGRo3FQPhwDpE
-	L4LKKfRmqMagYfiDT0yfKIA8MdDVSHNWq8qKGHWyjEMKwnwufqr9N6xw1Oh3JkhMXcbPa6v5B4Ynx
-	/UW4a6srWGkO61gvRe/ZGmeSL4McFLYowCug9HXjl2gL4ycl6DYFX5VJMue/OOn636NU/cuIp2CPr
-	zWJ4DVmA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Ha6g7nvU4ONo+PtST5lnGKbdzGyzLoSMb6QqYRFlAZQ=; b=1MLKMmAl3e6fMPoMADZJTgENdE
+	Zw5dWgin67zbBvScPAVMJRqxLZAQ4b+xxYvoMONm/dPPoXegFXhj5WZUKUgFCxyQ6o2Y9Xj8SL85V
+	MXPeCv6C8ifZ7+jA4Ez5e2LbA6EE3TOl6zyWfoaXqTlJAcreEGVcGyY2LLk6+NwpWJ7yb00yLJzAe
+	B7ZBz58ezRvS7gsV+fvlBRJ4/gwIY23XuzwhxrJYj4Ytl7QxvDhvbh2yRAqlrup2yxDs83/HfxFQB
+	jHi9gFyB51FiU4hm5y4sYb5qv+ZnSpCh8ZAK2rf7FdmWrFTOQdJj3dsd+h+azr2ckPAhVvOdEU5bq
+	EOL+1oTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNnF8-0000000Fg7k-3SgU;
-	Wed, 18 Dec 2024 06:09:10 +0000
+	id 1tNuje-0000000Gnfn-2v0a;
+	Wed, 18 Dec 2024 14:09:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNnF2-0000000Fg5L-35jL
+	id 1tNujb-0000000GnfQ-1BHe
 	for barebox@lists.infradead.org;
-	Wed, 18 Dec 2024 06:09:07 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEz-00036u-N5; Wed, 18 Dec 2024 07:09:01 +0100
+	Wed, 18 Dec 2024 14:09:09 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEy-003z4X-1l;
-	Wed, 18 Dec 2024 07:09:01 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEz-00FG9S-0r;
-	Wed, 18 Dec 2024 07:09:01 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Roan van Dijk <roan@protonic.nl>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 18 Dec 2024 07:09:00 +0100
-Message-Id: <20241218060900.3636980-4-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241218060900.3636980-1-o.rempel@pengutronix.de>
-References: <20241218060900.3636980-1-o.rempel@pengutronix.de>
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1tNujX-0003aK-8s; Wed, 18 Dec 2024 15:09:03 +0100
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Wed, 18 Dec 2024 15:08:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241218-toradex-colibri-imx6-v2-1-a5e810ef7a5b@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAFLXYmcC/4WNQQ6CMBBFr0Jm7RinKggr72FYtDDAJNqSFkkN6
+ d2tXMDl+8l7f4PAXjhAU2zgeZUgzmZQhwK6SduRUfrMoE7qQorOuDive47YuacYLyivWGKluTI
+ 1VWWtNGR19jxI3LOPNvMkIXuf/WWl3/onuBIS6sGUdOvMoK7mPrMd34t3VuKxZ2hTSl+OGyaZv
+ QAAAA==
+X-Change-ID: 20241213-toradex-colibri-imx6-7ae7b917692a
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=20350; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=ktRaPW9fVTRBOG/RNfYsnpQPu0SAsqXDrAFKsxeuVKk=;
+ b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYkhPul538eWnKcJ1O4VPLmH7ZHPqZJfR0gAFRpO6nMquX
+ cpmk0KudpSyMIhxMMiKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACaSv4CRYVrXlv8xQY9iL5zm
+ ZnJ8kv0o6WLw8Sh2tlfzY7b/ePQz/xrD/9RDb6dvnsMid2LLn9oJs/a8evmpyK1jS+HfCLFDj1P
+ 0HPgB
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241217_220905_094063_95A9E008 
-X-CRM114-Status: GOOD (  28.16  )
+X-CRM114-CacheID: sfid-20241218_060907_641862_F056FEE1 
+X-CRM114-Status: GOOD (  16.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,1054 +80,594 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] ARM: protonic-stm32mp1: Add Add Priva E-Measuringbox board support
+Subject: [PATCH v2] ARM: boards: Add support for todarex colibri imx6 on
+ iris
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Roan van Dijk <roan@protonic.nl>
+This patch adds support for the toradex colibri imx6 on the carrier
+board toradex iris. Both imx6dl and imx6s variants are supported but
+only the imx6dl was available for testing.
 
-Add support for the Priva E-Measuringbox ('pri,prihmb') board based on
-the ST STM32MP133 SoC.
+Tested was:
+ - UART console
+ - Boot via USB loader
+ - Boot via eMMC
+ - Ethernet/tftp/nfs
 
-Signed-off-by: Roan van Dijk <roan@protonic.nl>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- arch/arm/boards/Makefile                      |   1 +
- arch/arm/boards/protonic-stm32mp13/Makefile   |   4 +
- arch/arm/boards/protonic-stm32mp13/board.c    | 285 ++++++++++
- arch/arm/boards/protonic-stm32mp13/lowlevel.c |  28 +
- arch/arm/configs/stm32mp_defconfig            |   1 +
- arch/arm/dts/Makefile                         |   1 +
- arch/arm/dts/stm32mp131.dtsi                  |   4 +
- arch/arm/dts/stm32mp133c-prihmb.dts           |  90 ++++
- arch/arm/dts/stm32mp133c-prihmb.dtsi          | 494 ++++++++++++++++++
- arch/arm/mach-stm32mp/Kconfig                 |   7 +
- images/Makefile.stm32mp                       |   1 +
- 11 files changed, 916 insertions(+)
- create mode 100644 arch/arm/boards/protonic-stm32mp13/Makefile
- create mode 100644 arch/arm/boards/protonic-stm32mp13/board.c
- create mode 100644 arch/arm/boards/protonic-stm32mp13/lowlevel.c
- create mode 100644 arch/arm/dts/stm32mp133c-prihmb.dts
- create mode 100644 arch/arm/dts/stm32mp133c-prihmb.dtsi
+Changes in v2:
+- comment on the use of the IMX6Q_GPR1_ENET_CLK_SEL_ANATOP bit
+- use imx6q_barebox_entry in start_imx6dl_colibri_iris
+- alias start_imx6dl_colibri_iris to start_imx6s_colibri_iris
+- lowlevel.c: Don't double-check CONFIG_DEBUG_LL for early uart setup
+- board.c: Use IOMEM macro instead of bare void pointer cast
+- Link to v1: https://lore.kernel.org/r/20241213-toradex-colibri-imx6-v1-1-afb618cbf25b@pengutronix.de
+---
+ arch/arm/boards/Makefile                           |   1 +
+ arch/arm/boards/toradex-colibri-imx6/Makefile      |   4 +
+ arch/arm/boards/toradex-colibri-imx6/board.c       |  47 +++++++
+ .../flash-header-colibri-imx6dl.imxcfg             | 144 ++++++++++++++++++++
+ .../flash-header-colibri-imx6s.imxcfg              | 145 +++++++++++++++++++++
+ arch/arm/boards/toradex-colibri-imx6/lowlevel.c    |  46 +++++++
+ arch/arm/configs/imx_v7_defconfig                  |   1 +
+ arch/arm/configs/multi_v7_defconfig                |   1 +
+ arch/arm/dts/Makefile                              |   1 +
+ arch/arm/dts/imx6dl-colibri-iris.dts               |  37 ++++++
+ arch/arm/mach-imx/Kconfig                          |   5 +
+ images/Makefile.imx                                |   3 +
+ 12 files changed, 435 insertions(+)
 
 diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index b6b3894c6b40..e7574c1e29c2 100644
+index 67d91616f623be9eddd370485707eeb25d3ebe40..593774d1d80c074899ce2d15b2064c00087c4d2f 100644
 --- a/arch/arm/boards/Makefile
 +++ b/arch/arm/boards/Makefile
-@@ -89,6 +89,7 @@ obj-$(CONFIG_MACH_PROTONIC_IMX6)		+= protonic-imx6/
- obj-$(CONFIG_MACH_PROTONIC_IMX8M)		+= protonic-imx8m/
- obj-$(CONFIG_MACH_PROTONIC_MECSBC)		+= protonic-mecsbc/
- obj-$(CONFIG_MACH_PROTONIC_STM32MP1)		+= protonic-stm32mp1/
-+obj-$(CONFIG_MACH_PROTONIC_STM32MP13)		+= protonic-stm32mp13/
- obj-$(CONFIG_MACH_QIL_A9260)			+= qil-a926x/
- obj-$(CONFIG_MACH_QIL_A9G20)			+= qil-a926x/
- obj-$(CONFIG_MACH_RADXA_ROCK)			+= radxa-rock/
-diff --git a/arch/arm/boards/protonic-stm32mp13/Makefile b/arch/arm/boards/protonic-stm32mp13/Makefile
+@@ -34,6 +34,7 @@ obj-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK)		+= efika-mx-smartbook/
+ obj-$(CONFIG_MACH_EMBEDSKY_E9)			+= embedsky-e9/
+ obj-$(CONFIG_MACH_EMBEST_MARSBOARD)		+= embest-marsboard/
+ obj-$(CONFIG_MACH_EMBEST_RIOTBOARD)		+= embest-riotboard/
++obj-$(CONFIG_MACH_TORADEX_COLIBRI_IMX6)		+= toradex-colibri-imx6/
+ obj-$(CONFIG_MACH_ELTEC_HIPERCAM)		+= eltec-hipercam/
+ obj-y						+= freescale-mx51-babbage/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_LOCO)		+= freescale-mx53-qsb/
+diff --git a/arch/arm/boards/toradex-colibri-imx6/Makefile b/arch/arm/boards/toradex-colibri-imx6/Makefile
 new file mode 100644
-index 000000000000..5678718188b9
+index 0000000000000000000000000000000000000000..da63d2625f7a36f45f32a07d601fb48afd19c978
 --- /dev/null
-+++ b/arch/arm/boards/protonic-stm32mp13/Makefile
++++ b/arch/arm/boards/toradex-colibri-imx6/Makefile
 @@ -0,0 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
-+lwl-y += lowlevel.o
 +obj-y += board.o
-diff --git a/arch/arm/boards/protonic-stm32mp13/board.c b/arch/arm/boards/protonic-stm32mp13/board.c
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/toradex-colibri-imx6/board.c b/arch/arm/boards/toradex-colibri-imx6/board.c
 new file mode 100644
-index 000000000000..199da2496486
+index 0000000000000000000000000000000000000000..561b8fb8cd567eab50c5c84c02552e24076501b3
 --- /dev/null
-+++ b/arch/arm/boards/protonic-stm32mp13/board.c
-@@ -0,0 +1,285 @@
++++ b/arch/arm/boards/toradex-colibri-imx6/board.c
+@@ -0,0 +1,47 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: 2021 David Jander, Protonic Holland
-+// SPDX-FileCopyrightText: 2021 Oleksij Rempel, Pengutronix
 +
-+#include <bootsource.h>
++#include <asm/armlinux.h>
 +#include <common.h>
-+#include <init.h>
-+#include <mach/stm32mp/bbu.h>
-+#include <mach/stm32mp/bsec.h>
-+#include <of_device.h>
-+#include <gpio.h>
-+#include <soc/stm32/gpio.h>
-+#include <deep-probe.h>
++#include <environment.h>
++#include <mach/imx/bbu.h>
++#include <mach/imx/generic.h>
++#include <mach/imx/imx6-regs.h>
++#include <mach/imx/imx6.h>
++#include <mfd/imx6q-iomuxc-gpr.h>
 +
-+#include "../../drivers/nvmem/stm32-bsec-optee-ta.h"
-+
-+/* board specific flags */
-+#define PRT_STM32_BOOTSRC_SD		BIT(2)
-+#define PRT_STM32_BOOTSRC_EMMC		BIT(1)
-+#define PRT_STM32_BOOTSRC_SPI_NOR	BIT(0)
-+
-+
-+#define PRT_STM32_GPIO_HWID_PL_N	13 /* PA13 */
-+#define PRT_STM32_GPIO_HWID_CP		14 /* PA14 */
-+#define PRT_STM32_GPIO_HWID_Q7		45 /* PC13 */
-+
-+struct prt_stm32_machine_data {
-+	u32 flags;
-+};
-+
-+struct bsec_priv {
-+	struct tee_context *ctx;
-+};
-+
-+struct prt_stm32_boot_dev {
-+	char *name;
-+	char *env;
-+	char *dev;
-+	int flags;
-+	int boot_idx;
-+	enum bootsource boot_src;
-+};
-+
-+static const struct prt_stm32_boot_dev prt_stm32_boot_devs[] = {
-+	{
-+		.name = "emmc",
-+		.env = "/chosen/environment-emmc",
-+		.dev = "/dev/mmc1.ssbl",
-+		.flags = PRT_STM32_BOOTSRC_EMMC,
-+		.boot_src = BOOTSOURCE_MMC,
-+		.boot_idx = 1,
-+	}, {
-+		.name = "qspi",
-+		.env = "/chosen/environment-qspi",
-+		.dev = "/dev/flash.ssbl",
-+		.flags = PRT_STM32_BOOTSRC_SPI_NOR,
-+		.boot_src = BOOTSOURCE_SPI_NOR,
-+		.boot_idx = -1,
-+	}, {
-+		/* SD is optional boot source and should be last device in the
-+		 * list.
-+		 */
-+		.name = "sd",
-+		.env = "/chosen/environment-sd",
-+		.dev = "/dev/mmc0.ssbl",
-+		.flags = PRT_STM32_BOOTSRC_SD,
-+		.boot_src = BOOTSOURCE_MMC,
-+		.boot_idx = 0,
-+	},
-+};
-+
-+static int prt_stm32_set_serial(struct device *dev, char *serial)
++static void eth_init(void)
 +{
-+	dev_info(dev, "Serial number: %s\n", serial);
-+	barebox_set_serial_number(serial);
++        void __iomem *iomux = IOMEM(MX6_IOMUXC_BASE_ADDR);
++        uint32_t val;
++
++	/* get enet tx reference clk from internal clock */
++        val = readl(iomux + IOMUXC_GPR1);
++        val |= IMX6Q_GPR1_ENET_CLK_SEL_ANATOP;
++        writel(val, iomux + IOMUXC_GPR1);
++}
++
++static int colibri_imx6_probe(struct device *dev)
++{
++	imx6_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc0",
++			BBU_HANDLER_FLAG_DEFAULT);
++	imx6_bbu_internal_mmc_register_handler("sd", "/dev/mmc1", 0);
++
++	barebox_set_hostname("colibri-imx6");
++
++	eth_init();
 +
 +	return 0;
 +}
 +
-+static int stm32_bsec_pta_read(void *context, unsigned int offset,
-+			       unsigned int *val)
-+{
-+	struct bsec_priv *priv = context;
-+
-+	return stm32_bsec_optee_ta_read(priv->ctx, offset * 4, val,
-+					sizeof(val));
-+}
-+
-+static int prt_stm32_read_serial(struct device *dev)
-+{
-+	u32 ser_high, ser_mid, ser_low;
-+	struct bsec_priv *priv;
-+	char serial[11];
-+	int ret;
-+
-+	priv = xzalloc(sizeof(*priv));
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	ret = stm32_bsec_optee_ta_open(&priv->ctx);
-+	if (ret) {
-+		dev_err(dev, "Failed to open BSEC TA: %pe\n", ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	ret = stm32_bsec_pta_read(&priv->ctx, 60, &ser_high);
-+	if (ret)
-+		goto exit_pta_read;
-+
-+	ret = stm32_bsec_pta_read(&priv->ctx, 61, &ser_mid);
-+	if (ret)
-+		goto exit_pta_read;
-+
-+	ret = stm32_bsec_pta_read(&priv->ctx, 62, &ser_low);
-+	if (ret)
-+		goto exit_pta_read;
-+
-+	stm32_bsec_optee_ta_close(&priv->ctx);
-+
-+	ser_low = ser_low & 0xff;
-+	memcpy(serial, &ser_high, 4);
-+	memcpy(serial+4, &ser_mid, 4);
-+	memcpy(serial+8, &ser_low, 4);
-+	serial[10] = 0; /* Failsafe */
-+
-+	return prt_stm32_set_serial(dev, serial);
-+
-+exit_pta_read:
-+	stm32_bsec_optee_ta_close(&priv->ctx);
-+	dev_err(dev, "Failed to read serial: %pe\n", ERR_PTR(ret));
-+	return ret;
-+}
-+
-+static int prt_stm32_init_shift_reg(struct device *dev)
-+{
-+	int ret;
-+
-+	ret = gpio_direction_output(PRT_STM32_GPIO_HWID_PL_N, 1);
-+	if (ret)
-+		goto error_out;
-+
-+	ret = gpio_direction_output(PRT_STM32_GPIO_HWID_CP, 1);
-+	if (ret)
-+		goto error_out;
-+
-+	ret = gpio_direction_input(PRT_STM32_GPIO_HWID_Q7);
-+	if (ret)
-+		goto error_out;
-+
-+	__stm32_pmx_set_output_type((void __iomem *)0x50002000, 13,
-+					       STM32_PIN_OUT_PUSHPULL);
-+	__stm32_pmx_set_output_type((void __iomem *)0x50002000, 14,
-+					       STM32_PIN_OUT_PUSHPULL);
-+
-+	return 0;
-+
-+error_out:
-+	dev_err(dev, "Failed to init shift register: %pe\n", ERR_PTR(ret));
-+	return ret;
-+}
-+
-+static int prt_stm32_of_fixup_hwrev(struct device *dev, uint8_t bid,
-+				    uint8_t rid)
-+{
-+	const char *compat;
-+	char *buf;
-+
-+	compat = of_device_get_match_compatible(dev);
-+
-+	buf = xasprintf("%s-m%u-r%u", compat, bid, rid);
-+	barebox_set_of_machine_compatible(buf);
-+
-+	free(buf);
-+
-+	return 0;
-+}
-+
-+static void prt_stm32_read_shift_reg(struct device *dev)
-+{
-+	uint8_t rid, bid;
-+	uint8_t data = 0;
-+	int i;
-+
-+	/* Initial state */
-+	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
-+	gpio_set_value(PRT_STM32_GPIO_HWID_CP, 0);
-+	mdelay(1);
-+
-+	/* latch */
-+	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 0);
-+	mdelay(1);
-+	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
-+
-+	for (i = 7; i >= 0; i--) {
-+		data += (gpio_get_value(PRT_STM32_GPIO_HWID_Q7) << i);
-+
-+		/* shift */
-+		gpio_set_value(PRT_STM32_GPIO_HWID_CP, 1);
-+		mdelay(1);
-+		gpio_set_value(PRT_STM32_GPIO_HWID_CP, 0);
-+	}
-+
-+	rid = data & ((1<<3) - 1);
-+	bid = (data>>3) & ((1<<5) - 1);
-+
-+	pr_info("  Board ID:    %d\n", bid);
-+	pr_info("  HW revision: %d\n", rid);
-+	prt_stm32_of_fixup_hwrev(dev, bid, rid);
-+
-+	/* Turn off LEDs */
-+	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
-+	gpio_set_value(PRT_STM32_GPIO_HWID_CP, 1);
-+}
-+
-+static int prt_stm32_probe(struct device *dev)
-+{
-+	const struct prt_stm32_machine_data *dcfg;
-+	char *env_path_back = NULL, *env_path = NULL;
-+	int ret, i;
-+
-+	dcfg = of_device_get_match_data(dev);
-+	if (!dcfg) {
-+		ret = -EINVAL;
-+		goto exit_get_dcfg;
-+	}
-+
-+	prt_stm32_read_serial(dev);
-+	prt_stm32_init_shift_reg(dev);
-+	prt_stm32_read_shift_reg(dev);
-+
-+	for (i = 0; i < ARRAY_SIZE(prt_stm32_boot_devs); i++) {
-+		const struct prt_stm32_boot_dev *bd = &prt_stm32_boot_devs[i];
-+		int bbu_flags = 0;
-+
-+		/* skip not supported boot sources */
-+		if (!(bd->flags & dcfg->flags))
-+			continue;
-+
-+		/* first device is build-in device */
-+		if (!env_path_back)
-+			env_path_back = bd->env;
-+
-+		if (bd->boot_src == bootsource_get() && (bd->boot_idx == -1 ||
-+		    bd->boot_idx  == bootsource_get_instance())) {
-+			bbu_flags = BBU_HANDLER_FLAG_DEFAULT;
-+			env_path = bd->env;
-+		}
-+
-+		ret = stm32mp_bbu_mmc_register_handler(bd->name, bd->dev,
-+						       bbu_flags);
-+		if (ret < 0)
-+			dev_warn(dev, "Failed to enable %s bbu (%pe)\n",
-+				 bd->name, ERR_PTR(ret));
-+	}
-+
-+	if (!env_path)
-+		env_path = env_path_back;
-+	ret = of_device_enable_path(env_path);
-+	if (ret < 0)
-+		dev_warn(dev, "Failed to enable environment partition '%s' (%pe)\n",
-+			 env_path, ERR_PTR(ret));
-+
-+	return 0;
-+
-+exit_get_dcfg:
-+	dev_err(dev, "Failed to get dcfg: %pe\n", ERR_PTR(ret));
-+	return ret;
-+}
-+
-+static const struct prt_stm32_machine_data prt_stm32_prihmb = {
-+	.flags = PRT_STM32_BOOTSRC_SD | PRT_STM32_BOOTSRC_EMMC,
-+};
-+
-+static const struct of_device_id prt_stm32_of_match[] = {
-+	{ .compatible = "pri,prihmb", .data = &prt_stm32_prihmb },
++static const struct of_device_id colibri_imx6_match[] = {
++	{ .compatible = "toradex,colibri_imx6dl"},
 +	{ /* sentinel */ },
 +};
-+BAREBOX_DEEP_PROBE_ENABLE(prt_stm32_of_match);
++BAREBOX_DEEP_PROBE_ENABLE(colibri_imx6_match);
 +
-+static struct driver prt_stm32_board_driver = {
-+	.name = "board-protonic-stm32",
-+	.probe = prt_stm32_probe,
-+	.of_compatible = prt_stm32_of_match,
++static struct driver colibri_imx6_board_driver = {
++	.name = "board-colibri-imx6",
++	.probe = colibri_imx6_probe,
++	.of_compatible = DRV_OF_COMPAT(colibri_imx6_match),
 +};
-+postcore_platform_driver(prt_stm32_board_driver);
-diff --git a/arch/arm/boards/protonic-stm32mp13/lowlevel.c b/arch/arm/boards/protonic-stm32mp13/lowlevel.c
++device_platform_driver(colibri_imx6_board_driver);
+diff --git a/arch/arm/boards/toradex-colibri-imx6/flash-header-colibri-imx6dl.imxcfg b/arch/arm/boards/toradex-colibri-imx6/flash-header-colibri-imx6dl.imxcfg
 new file mode 100644
-index 000000000000..f463685568e1
+index 0000000000000000000000000000000000000000..d5ebaec3606864982a4b222370ee7d2f41aefb44
 --- /dev/null
-+++ b/arch/arm/boards/protonic-stm32mp13/lowlevel.c
-@@ -0,0 +1,28 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: 2021 David Jander, Protonic Holland
++++ b/arch/arm/boards/toradex-colibri-imx6/flash-header-colibri-imx6dl.imxcfg
+@@ -0,0 +1,144 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2010-2013 Freescale Semiconductor, Inc.
++ * Copyright (C) 2013, Boundary Devices <info@boundarydevices.com>
++ * Copyright (C) 2014-2019, Toradex AG
++ */
 +
-+#include <common.h>
++loadaddr 0x20000000
++soc imx6
++ivtofs 0x400
++
++#include <mach/imx/imx6-ddr-regs.h>
++#include <mach/imx/imx6dl-ddr-regs.h>
++
++/* mx6dl_dcd_table */
++
++/* ddr-setup.cfg */
++
++wm 32 MX6_IOM_DRAM_SDQS0 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS1 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS2 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS3 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS4 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS5 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS6 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS7 0x00000030
++
++wm 32 MX6_IOM_GRP_B0DS 0x00000030
++wm 32 MX6_IOM_GRP_B1DS 0x00000030
++wm 32 MX6_IOM_GRP_B2DS 0x00000030
++wm 32 MX6_IOM_GRP_B3DS 0x00000030
++wm 32 MX6_IOM_GRP_B4DS 0x00000030
++wm 32 MX6_IOM_GRP_B5DS 0x00000030
++wm 32 MX6_IOM_GRP_B6DS 0x00000030
++wm 32 MX6_IOM_GRP_B7DS 0x00000030
++wm 32 MX6_IOM_GRP_ADDDS 0x00000030
++/* 40 Ohm drive strength for cs0/1,sdba2,cke0/1,sdwe */
++wm 32 MX6_IOM_GRP_CTLDS 0x00000030
++
++wm 32 MX6_IOM_DRAM_DQM0 0x00020030
++wm 32 MX6_IOM_DRAM_DQM1 0x00020030
++wm 32 MX6_IOM_DRAM_DQM2 0x00020030
++wm 32 MX6_IOM_DRAM_DQM3 0x00020030
++wm 32 MX6_IOM_DRAM_DQM4 0x00020030
++wm 32 MX6_IOM_DRAM_DQM5 0x00020030
++wm 32 MX6_IOM_DRAM_DQM6 0x00020030
++wm 32 MX6_IOM_DRAM_DQM7 0x00020030
++
++wm 32 MX6_IOM_DRAM_CAS 0x00020030
++wm 32 MX6_IOM_DRAM_RAS 0x00020030
++wm 32 MX6_IOM_DRAM_SDCLK_0 0x00020030
++wm 32 MX6_IOM_DRAM_SDCLK_1 0x00020030
++
++wm 32 MX6_IOM_DRAM_RESET 0x00020030
++wm 32 MX6_IOM_DRAM_SDCKE0 0x00003000
++wm 32 MX6_IOM_DRAM_SDCKE1 0x00003000
++
++wm 32 MX6_IOM_DRAM_SDODT0 0x00003030
++wm 32 MX6_IOM_DRAM_SDODT1 0x00003030
++
++/* (differential input) */
++wm 32 MX6_IOM_DDRMODE_CTL 0x00020000
++/* (differential input) */
++wm 32 MX6_IOM_GRP_DDRMODE 0x00020000
++/* disable ddr pullups */
++wm 32 MX6_IOM_GRP_DDRPKE 0x00000000
++wm 32 MX6_IOM_DRAM_SDBA2 0x00000000
++/* 40 Ohm drive strength for cs0/1,sdba2,cke0/1,sdwe */
++wm 32 MX6_IOM_GRP_DDR_TYPE 0x000C0000
++
++/* Read data DQ Byte0-3 delay */
++wm 32 MX6_MMDC_P0_MPRDDQBY0DL 0x33333333
++wm 32 MX6_MMDC_P0_MPRDDQBY1DL 0x33333333
++wm 32 MX6_MMDC_P0_MPRDDQBY2DL 0x33333333
++wm 32 MX6_MMDC_P0_MPRDDQBY3DL 0x33333333
++wm 32 MX6_MMDC_P1_MPRDDQBY0DL 0x33333333
++wm 32 MX6_MMDC_P1_MPRDDQBY1DL 0x33333333
++wm 32 MX6_MMDC_P1_MPRDDQBY2DL 0x33333333
++wm 32 MX6_MMDC_P1_MPRDDQBY3DL 0x33333333
++
++/*
++ * MDMISC	mirroring	interleaved (row/bank/col)
++ */
++wm 32 MX6_MMDC_P0_MDMISC 0x000b17c0
++
++/*
++ * MDSCR	con_req
++ */
++wm 32 MX6_MMDC_P0_MDSCR 0x00008000
++
++/* 800mhz_2x64mx16.cfg */
++
++wm 32 MX6_MMDC_P0_MDPDC 0x0002002D
++wm 32 MX6_MMDC_P0_MDCFG0 0x2C305503
++wm 32 MX6_MMDC_P0_MDCFG1 0xB66D8D63
++wm 32 MX6_MMDC_P0_MDCFG2 0x01FF00DB
++wm 32 MX6_MMDC_P0_MDRWD 0x000026D2
++wm 32 MX6_MMDC_P0_MDOR 0x00301023
++wm 32 MX6_MMDC_P0_MDOTC 0x00333030
++wm 32 MX6_MMDC_P0_MDPDC 0x0002556D
++/* CS0 End: 7MSB of ((0x10000000, + 512M) -1) >> 25 */
++wm 32 MX6_MMDC_P0_MDASP 0x00000017
++/* DDR3 DATA BUS SIZE: 64BIT */
++wm 32 MX6_MMDC_P0_MDCTL 0x821A0000
++/* DDR3 DATA BUS SIZE: 32BIT */
++/* MX6_MMDC_P0_MDCTL, 0x82190000, */
++
++/* Write commands to DDR */
++/* Load Mode Registers */
++/* TODO Use Auto Self-Refresh mode (Extended Temperature)*/
++/* MX6_MMDC_P0_MDSCR, 0x04408032, */
++wm 32 MX6_MMDC_P0_MDSCR 0x04008032
++wm 32 MX6_MMDC_P0_MDSCR 0x00008033
++wm 32 MX6_MMDC_P0_MDSCR 0x00048031
++wm 32 MX6_MMDC_P0_MDSCR 0x13208030
++/* ZQ calibration */
++wm 32 MX6_MMDC_P0_MDSCR 0x04008040
++
++wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xA1390003
++wm 32 MX6_MMDC_P1_MPZQHWCTRL 0xA1390003
++wm 32 MX6_MMDC_P0_MDREF 0x00005800
++
++wm 32 MX6_MMDC_P0_MPODTCTRL 0x00000000
++wm 32 MX6_MMDC_P1_MPODTCTRL 0x00000000
++
++wm 32 MX6_MMDC_P0_MPDGCTRL0 0x42360232
++wm 32 MX6_MMDC_P0_MPDGCTRL1 0x021F022A
++wm 32 MX6_MMDC_P1_MPDGCTRL0 0x421E0224
++wm 32 MX6_MMDC_P1_MPDGCTRL1 0x02110218
++
++wm 32 MX6_MMDC_P0_MPRDDLCTL 0x41434344
++wm 32 MX6_MMDC_P1_MPRDDLCTL 0x4345423E
++wm 32 MX6_MMDC_P0_MPWRDLCTL 0x39383339
++wm 32 MX6_MMDC_P1_MPWRDLCTL 0x3E363930
++
++wm 32 MX6_MMDC_P0_MPWLDECTRL0 0x00340039
++wm 32 MX6_MMDC_P0_MPWLDECTRL1 0x002C002D
++wm 32 MX6_MMDC_P1_MPWLDECTRL0 0x00120019
++wm 32 MX6_MMDC_P1_MPWLDECTRL1 0x0012002D
++
++wm 32 MX6_MMDC_P0_MPMUR0 0x00000800
++wm 32 MX6_MMDC_P1_MPMUR0 0x00000800
++wm 32 MX6_MMDC_P0_MDSCR 0x00000000
++wm 32 MX6_MMDC_P0_MAPSR 0x00011006
+diff --git a/arch/arm/boards/toradex-colibri-imx6/flash-header-colibri-imx6s.imxcfg b/arch/arm/boards/toradex-colibri-imx6/flash-header-colibri-imx6s.imxcfg
+new file mode 100644
+index 0000000000000000000000000000000000000000..75febb0b7759b02a64522420aafdc7ee1cbd0667
+--- /dev/null
++++ b/arch/arm/boards/toradex-colibri-imx6/flash-header-colibri-imx6s.imxcfg
+@@ -0,0 +1,145 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2010-2013 Freescale Semiconductor, Inc.
++ * Copyright (C) 2013, Boundary Devices <info@boundarydevices.com>
++ * Copyright (C) 2014-2019, Toradex AG
++ */
++
++loadaddr 0x20000000
++soc imx6
++ivtofs 0x400
++
++#include <mach/imx/imx6-ddr-regs.h>
++#include <mach/imx/imx6dl-ddr-regs.h>
++
++/* mx6s_dcd_table */
++
++/* ddr-setup.cfg */
++
++wm 32 MX6_IOM_DRAM_SDQS0 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS1 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS2 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS3 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS4 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS5 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS6 0x00000030
++wm 32 MX6_IOM_DRAM_SDQS7 0x00000030
++
++wm 32 MX6_IOM_GRP_B0DS 0x00000030
++wm 32 MX6_IOM_GRP_B1DS 0x00000030
++wm 32 MX6_IOM_GRP_B2DS 0x00000030
++wm 32 MX6_IOM_GRP_B3DS 0x00000030
++wm 32 MX6_IOM_GRP_B4DS 0x00000030
++wm 32 MX6_IOM_GRP_B5DS 0x00000030
++wm 32 MX6_IOM_GRP_B6DS 0x00000030
++wm 32 MX6_IOM_GRP_B7DS 0x00000030
++wm 32 MX6_IOM_GRP_ADDDS 0x00000030
++/* 40 Ohm drive strength for cs0/1,sdba2,cke0/1,sdwe */
++wm 32 MX6_IOM_GRP_CTLDS 0x00000030
++
++wm 32 MX6_IOM_DRAM_DQM0 0x00020030
++wm 32 MX6_IOM_DRAM_DQM1 0x00020030
++wm 32 MX6_IOM_DRAM_DQM2 0x00020030
++wm 32 MX6_IOM_DRAM_DQM3 0x00020030
++wm 32 MX6_IOM_DRAM_DQM4 0x00020030
++wm 32 MX6_IOM_DRAM_DQM5 0x00020030
++wm 32 MX6_IOM_DRAM_DQM6 0x00020030
++wm 32 MX6_IOM_DRAM_DQM7 0x00020030
++
++wm 32 MX6_IOM_DRAM_CAS 0x00020030
++wm 32 MX6_IOM_DRAM_RAS 0x00020030
++wm 32 MX6_IOM_DRAM_SDCLK_0 0x00020030
++wm 32 MX6_IOM_DRAM_SDCLK_1 0x00020030
++
++wm 32 MX6_IOM_DRAM_RESET 0x00020030
++wm 32 MX6_IOM_DRAM_SDCKE0 0x00003000
++wm 32 MX6_IOM_DRAM_SDCKE1 0x00003000
++
++wm 32 MX6_IOM_DRAM_SDODT0 0x00003030
++wm 32 MX6_IOM_DRAM_SDODT1 0x00003030
++
++/* (differential input) */
++wm 32 MX6_IOM_DDRMODE_CTL 0x00020000
++/* (differential input) */
++wm 32 MX6_IOM_GRP_DDRMODE 0x00020000
++/* disable ddr pullups */
++wm 32 MX6_IOM_GRP_DDRPKE 0x00000000
++wm 32 MX6_IOM_DRAM_SDBA2 0x00000000
++/* 40 Ohm drive strength for cs0/1,sdba2,cke0/1,sdwe */
++wm 32 MX6_IOM_GRP_DDR_TYPE 0x000C0000
++
++/* Read data DQ Byte0-3 delay */
++wm 32 MX6_MMDC_P0_MPRDDQBY0DL 0x33333333
++wm 32 MX6_MMDC_P0_MPRDDQBY1DL 0x33333333
++wm 32 MX6_MMDC_P0_MPRDDQBY2DL 0x33333333
++wm 32 MX6_MMDC_P0_MPRDDQBY3DL 0x33333333
++wm 32 MX6_MMDC_P1_MPRDDQBY0DL 0x33333333
++wm 32 MX6_MMDC_P1_MPRDDQBY1DL 0x33333333
++wm 32 MX6_MMDC_P1_MPRDDQBY2DL 0x33333333
++wm 32 MX6_MMDC_P1_MPRDDQBY3DL 0x33333333
++
++/*
++ * MDMISC	mirroring	interleaved (row/bank/col)
++ */
++wm 32 MX6_MMDC_P0_MDMISC 0x000b17c0
++
++/*
++ * MDSCR	con_req
++ */
++wm 32 MX6_MMDC_P0_MDSCR 0x00008000
++
++
++/* 800mhz_2x64mx16.cfg */
++
++wm 32 MX6_MMDC_P0_MDPDC 0x0002002D
++wm 32 MX6_MMDC_P0_MDCFG0 0x2C305503
++wm 32 MX6_MMDC_P0_MDCFG1 0xB66D8D63
++wm 32 MX6_MMDC_P0_MDCFG2 0x01FF00DB
++wm 32 MX6_MMDC_P0_MDRWD 0x000026D2
++wm 32 MX6_MMDC_P0_MDOR 0x00301023
++wm 32 MX6_MMDC_P0_MDOTC 0x00333030
++wm 32 MX6_MMDC_P0_MDPDC 0x0002556D
++/* CS0 End: 7MSB of ((0x10000000, + 512M) -1) >> 25 */
++wm 32 MX6_MMDC_P0_MDASP 0x00000017
++/* DDR3 DATA BUS SIZE: 64BIT */
++/* MX6_MMDC_P0_MDCTL, 0x821A0000, */
++/* DDR3 DATA BUS SIZE: 32BIT */
++wm 32 MX6_MMDC_P0_MDCTL 0x82190000
++
++/* Write commands to DDR */
++/* Load Mode Registers */
++/* TODO Use Auto Self-Refresh mode (Extended Temperature)*/
++/* MX6_MMDC_P0_MDSCR, 0x04408032, */
++wm 32 MX6_MMDC_P0_MDSCR 0x04008032
++wm 32 MX6_MMDC_P0_MDSCR 0x00008033
++wm 32 MX6_MMDC_P0_MDSCR 0x00048031
++wm 32 MX6_MMDC_P0_MDSCR 0x13208030
++/* ZQ calibration */
++wm 32 MX6_MMDC_P0_MDSCR 0x04008040
++
++wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xA1390003
++wm 32 MX6_MMDC_P1_MPZQHWCTRL 0xA1390003
++wm 32 MX6_MMDC_P0_MDREF 0x00005800
++
++wm 32 MX6_MMDC_P0_MPODTCTRL 0x00000000
++wm 32 MX6_MMDC_P1_MPODTCTRL 0x00000000
++
++wm 32 MX6_MMDC_P0_MPDGCTRL0 0x42360232
++wm 32 MX6_MMDC_P0_MPDGCTRL1 0x021F022A
++wm 32 MX6_MMDC_P1_MPDGCTRL0 0x421E0224
++wm 32 MX6_MMDC_P1_MPDGCTRL1 0x02110218
++
++wm 32 MX6_MMDC_P0_MPRDDLCTL 0x41434344
++wm 32 MX6_MMDC_P1_MPRDDLCTL 0x4345423E
++wm 32 MX6_MMDC_P0_MPWRDLCTL 0x39383339
++wm 32 MX6_MMDC_P1_MPWRDLCTL 0x3E363930
++
++wm 32 MX6_MMDC_P0_MPWLDECTRL0 0x00340039
++wm 32 MX6_MMDC_P0_MPWLDECTRL1 0x002C002D
++wm 32 MX6_MMDC_P1_MPWLDECTRL0 0x00120019
++wm 32 MX6_MMDC_P1_MPWLDECTRL1 0x0012002D
++
++wm 32 MX6_MMDC_P0_MPMUR0 0x00000800
++wm 32 MX6_MMDC_P1_MPMUR0 0x00000800
++wm 32 MX6_MMDC_P0_MDSCR 0x00000000
++wm 32 MX6_MMDC_P0_MAPSR 0x00011006
+diff --git a/arch/arm/boards/toradex-colibri-imx6/lowlevel.c b/arch/arm/boards/toradex-colibri-imx6/lowlevel.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..eb43aa2bc3fbe26e263e4afb6c8ebe2b2a012726
+--- /dev/null
++++ b/arch/arm/boards/toradex-colibri-imx6/lowlevel.c
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <asm/barebox-arm.h>
 +#include <debug_ll.h>
-+#include <mach/stm32mp/entry.h>
++#include <mach/imx/debug_ll.h>
++#include <mach/imx/esdctl.h>
++#include <mach/imx/imx6.h>
++#include <mach/imx/iomux-mx6.h>
 +
-+extern char __dtb_z_stm32mp133c_prihmb_start[];
++#define UART_DT_IOMUX_PAD(_mux_ctrl_ofs, _pad_ctrl_ofs, _sel_input_ofs, _mux_mode, _sel_input) \
++	IOMUX_PAD(_pad_ctrl_ofs, _mux_ctrl_ofs, _mux_mode, _sel_input_ofs, \
++		  _sel_input, MX6Q_UART_PAD_CTRL)
++
++/* We only have C defines for MX6Q_ */
++#define MX6DL_PAD_CSI0_DAT11__UART1_TX_DATA        UART_DT_IOMUX_PAD(0x050, 0x364, 0x000, 0x3, 0x0)
 +
 +static void setup_uart(void)
 +{
-+	/* first stage has set up the UART, so nothing to do here */
++	void __iomem *uart1base = IOMEM(MX6_UART1_BASE_ADDR);
++	void __iomem *iomuxbase = IOMEM(MX6_IOMUXC_BASE_ADDR);
++
++	imx6_uart_setup(uart1base);
++	imx_uart_set_dte(uart1base);
++
++	imx_setup_pad(iomuxbase, MX6DL_PAD_CSI0_DAT11__UART1_TX_DATA);
++
 +	putc_ll('>');
 +}
 +
-+ENTRY_FUNCTION(start_stm32mp133c_prihmb, r0, r1, r2)
++extern char __dtb_z_imx6dl_colibri_iris_start[];
++
++ENTRY_FUNCTION(start_imx6dl_colibri_iris, r0, r1, r2)
 +{
 +	void *fdt;
 +
-+	stm32mp_cpu_lowlevel_init();
++	imx6_cpu_lowlevel_init();
 +
 +	if (IS_ENABLED(CONFIG_DEBUG_LL))
 +		setup_uart();
 +
-+	fdt = __dtb_z_stm32mp133c_prihmb_start + get_runtime_offset();
-+
-+	stm32mp1_barebox_entry(fdt);
++	fdt = __dtb_z_imx6dl_colibri_iris_start + get_runtime_offset();
++	imx6q_barebox_entry(fdt);
 +}
-diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
-index df73102ba1c0..6ca11e5c2d7a 100644
---- a/arch/arm/configs/stm32mp_defconfig
-+++ b/arch/arm/configs/stm32mp_defconfig
-@@ -5,6 +5,7 @@ CONFIG_MACH_LXA_MC1=y
- CONFIG_MACH_SEEED_ODYSSEY=y
- CONFIG_MACH_STM32MP15X_EV1=y
- CONFIG_MACH_PROTONIC_STM32MP1=y
-+CONFIG_MACH_PROTONIC_STM32MP13=y
- CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1=y
- CONFIG_BOARD_ARM_GENERIC_DT=y
- CONFIG_THUMB2_BAREBOX=y
++
++void __noreturn start_imx6s_colibri_iris(ulong, ulong, ulong)
++	__alias(start_imx6dl_colibri_iris);
+diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
+index 72833eb09fe8be4cc14f099c8785d04dc1a100e7..eaddb98319a26648f6901bfa03a0c0168ab1330b 100644
+--- a/arch/arm/configs/imx_v7_defconfig
++++ b/arch/arm/configs/imx_v7_defconfig
+@@ -20,6 +20,7 @@ CONFIG_MACH_ELTEC_HIPERCAM=y
+ CONFIG_MACH_EMBEDSKY_E9=y
+ CONFIG_MACH_EMBEST_MARSBOARD=y
+ CONFIG_MACH_EMBEST_RIOTBOARD=y
++CONFIG_MACH_TORADEX_COLIBRI_IMX6=y
+ CONFIG_MACH_SABRELITE=y
+ CONFIG_MACH_SABRESD=y
+ CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB=y
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index 8acbb287164bce3449a597a4037b7cc99a2fb4bd..a95342dda6262de51d69119f2a6b59ae5ebf9179 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -30,6 +30,7 @@ CONFIG_MACH_ELTEC_HIPERCAM=y
+ CONFIG_MACH_EMBEDSKY_E9=y
+ CONFIG_MACH_EMBEST_MARSBOARD=y
+ CONFIG_MACH_EMBEST_RIOTBOARD=y
++CONFIG_MACH_TORADEX_COLIBRI_IMX6=y
+ CONFIG_MACH_SABRELITE=y
+ CONFIG_MACH_SABRESD=y
+ CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB=y
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index b9727fd5f91b..bb5017c54336 100644
+index fe32b812f6037f382954a84f9ab40cfc8715e367..a7be3262a45023599567ef52653510c3f31cbac2 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -115,6 +115,7 @@ lwl-$(CONFIG_MACH_PROTONIC_STM32MP1) += \
- 	stm32mp151-prtt1s.dtb.o \
- 	stm32mp151-mecio1.dtb.o \
- 	stm32mp151-mect1s.dtb.o
-+lwl-$(CONFIG_MACH_PROTONIC_STM32MP13) += stm32mp133c-prihmb.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK3) += rk3568-rock-3a.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK5) += rk3588-rock-5b.dtb.o
-diff --git a/arch/arm/dts/stm32mp131.dtsi b/arch/arm/dts/stm32mp131.dtsi
-index 89a7ffcb814f..b5d5d20d252b 100644
---- a/arch/arm/dts/stm32mp131.dtsi
-+++ b/arch/arm/dts/stm32mp131.dtsi
-@@ -13,6 +13,10 @@ memory-controller@5a003000 {
- 	};
- };
- 
-+&bsec {
-+	barebox,provide-mac-address = <&ethernet1 0x39>;
-+};
-+
- &iwdg2 {
- 	barebox,restart-warm-bootrom;
- };
-diff --git a/arch/arm/dts/stm32mp133c-prihmb.dts b/arch/arm/dts/stm32mp133c-prihmb.dts
+@@ -161,6 +161,7 @@ lwl-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += imx8mq-evk.dtb.o
+ lwl-$(CONFIG_MACH_INNOCOMM_WB15) += imx8mm-innocomm-wb15-evk.dtb.o
+ lwl-$(CONFIG_MACH_TQ_MBA8MPXL) += imx8mp-tqma8mpql-mba8mpxl.dtb.o
+ lwl-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
++lwl-$(CONFIG_MACH_TORADEX_COLIBRI_IMX6) += imx6dl-colibri-iris.dtb.o
+ lwl-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
+ lwl-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
+ lwl-$(CONFIG_MACH_TQMA6UL) += imx6ul-tqma6ul2-mba6ulx.dtb.o \
+diff --git a/arch/arm/dts/imx6dl-colibri-iris.dts b/arch/arm/dts/imx6dl-colibri-iris.dts
 new file mode 100644
-index 000000000000..ca3a8f2650c1
+index 0000000000000000000000000000000000000000..0e10b34cf71c5014287491f8a40ca5323f64eaa3
 --- /dev/null
-+++ b/arch/arm/dts/stm32mp133c-prihmb.dts
-@@ -0,0 +1,90 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-3-Clause)
-+// SPDX-FileCopyrightText: 2024 Roan van Dijk, Protonic Holland
-+/dts-v1/;
++++ b/arch/arm/dts/imx6dl-colibri-iris.dts
+@@ -0,0 +1,37 @@
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License version 2.
++ */
 +
-+#include "stm32mp133c-prihmb.dtsi"
-+#include "stm32mp131.dtsi"
-+
-+#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
-+#include CONFIG_BOOTM_FITIMAGE_PUBKEY
-+#endif
++#include <arm/nxp/imx/imx6dl-colibri-iris.dts>
++#include "imx6qdl.dtsi"
 +
 +/ {
-+	aliases {
-+		state = &state_emmc;
-+	};
-+
 +	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	state_emmc: state {
-+		magic = <0x72766467>;
-+		compatible = "barebox,state";
-+		backend-type = "raw";
-+		backend = <&state_backend_emmc>;
-+		backend-stridesize = <0x400>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		bootstate {
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			last_chosen {
-+				reg = <0x0 0x4>;
-+				type = "uint32";
-+			};
-+
-+			system0 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				remaining_attempts {
-+					reg = <0x50 0x4>;
-+					type = "uint32";
-+					default = <3>;
-+				};
-+
-+				priority {
-+					reg = <0x54 0x4>;
-+					type = "uint32";
-+					default = <21>;
-+				};
-+			};
-+
-+			system1 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				remaining_attempts {
-+					reg = <0x100 0x4>;
-+					type = "uint32";
-+					default = <3>;
-+				};
-+
-+				priority {
-+					reg = <0x104 0x4>;
-+					type = "uint32";
-+					default = <20>;
-+				};
-+			};
-+		};
-+
-+		priva-serial@1b0 {
-+			reg = <0x1b0 0xa>;
-+			type = "string";
++		barebox-environment {
++			compatible = "barebox,environment";
++			device-path = &bbenv_emmc;
 +		};
 +	};
 +};
 +
-+&sdmmc2 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
++&usdhc3 {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <2>;
++		#size-cells = <2>;
 +
-+	state_backend_emmc: partition@c0000 {
-+		label = "state";
-+		reg = <0xf0000 0x10000>;
-+	};
-+};
-diff --git a/arch/arm/dts/stm32mp133c-prihmb.dtsi b/arch/arm/dts/stm32mp133c-prihmb.dtsi
-new file mode 100644
-index 000000000000..eefd34c25fe4
---- /dev/null
-+++ b/arch/arm/dts/stm32mp133c-prihmb.dtsi
-@@ -0,0 +1,494 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/dts-v1/;
-+
-+// this file will be dropped after kernel upstreaming is done
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/leds/common.h>
-+#include <dt-bindings/regulator/st,stm32mp13-regulator.h>
-+#include <arm/st/stm32mp133.dtsi>
-+#include <arm/st/stm32mp13xc.dtsi>
-+#include <arm/st/stm32mp13-pinctrl.dtsi>
-+
-+/ {
-+	model = "Priva E-Measuringbox board";
-+	compatible = "pri,prihmb", "st,stm32mp133";
-+
-+	aliases {
-+		ethernet0 = &ethernet1;
-+		mdio-gpio0 = &mdio0;
-+		mmc0 = &sdmmc1;
-+		mmc1 = &sdmmc2;
-+		serial0 = &uart4;
-+		serial1 = &usart6;
-+		serial2 = &uart7;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	counter-0 {
-+		compatible = "interrupt-counter";
-+		gpios = <&gpioa 11 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		autorepeat;
-+
-+		button-reset {
-+			label = "reset-button";
-+			linux,code = <BTN_1>;
-+			gpios = <&gpioi 7 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		led-blue {
-+			function = LED_FUNCTION_HEARTBEAT;
-+			color = <LED_COLOR_ID_BLUE>;
-+			gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
-+			linux,default-trigger = "heartbeat";
-+			default-state = "off";
-+		};
-+	};
-+
-+	led-controller-0 {
-+		compatible = "pwm-leds-multicolor";
-+
-+		multi-led {
-+			color = <LED_COLOR_ID_RGB>;
-+			function = LED_FUNCTION_STATUS;
-+			max-brightness = <255>;
-+
-+			led-red {
-+				active-low;
-+				color = <LED_COLOR_ID_RED>;
-+				pwms = <&pwm2 2 1000000 1>;
-+			};
-+
-+			led-green {
-+				active-low;
-+				color = <LED_COLOR_ID_GREEN>;
-+				pwms = <&pwm1 1 1000000 1>;
-+			};
-+
-+			led-blue {
-+				active-low;
-+				color = <LED_COLOR_ID_BLUE>;
-+				pwms = <&pwm1 2 1000000 1>;
-+			};
-+		};
-+	};
-+
-+	led-controller-1 {
-+		compatible = "pwm-leds-multicolor";
-+
-+		multi-led {
-+			color = <LED_COLOR_ID_RGB>;
-+			function = LED_FUNCTION_STATUS;
-+			max-brightness = <255>;
-+
-+			led-red {
-+				active-low;
-+				color = <LED_COLOR_ID_RED>;
-+				pwms = <&pwm1 0 1000000 1>;
-+			};
-+
-+			led-green {
-+				active-low;
-+				color = <LED_COLOR_ID_GREEN>;
-+				pwms = <&pwm2 0 1000000 1>;
-+			};
-+
-+			led-blue {
-+				active-low;
-+				color = <LED_COLOR_ID_BLUE>;
-+				pwms = <&pwm2 1 1000000 1>;
-+			};
-+		};
-+	};
-+
-+	/* DP83TD510E PHYs have max MDC rate of 1.75MHz. Since we can't reduce
-+	 * stmmac MDC clock without reducing system bus rate, we need to use
-+	 * gpio based MDIO bus.
-+	 */
-+	mdio0: mdio {
-+		compatible = "virtual,mdio-gpio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		gpios = <&gpiog 2 GPIO_ACTIVE_HIGH
-+			 &gpioa 2 GPIO_ACTIVE_HIGH>;
-+
-+		/* TI DP83TD510E */
-+		phy0: ethernet-phy@0 {
-+			compatible = "ethernet-phy-id2000.0181";
-+			reg = <0>;
-+			interrupts-extended = <&gpioa 4 IRQ_TYPE_LEVEL_LOW>;
-+			reset-gpios = <&gpioa 3 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10>;
-+			reset-deassert-us = <35>;
-+		};
-+	};
-+
-+	memory@c0000000 {
-+		device_type = "memory";
-+		reg = <0xc0000000 0x10000000>;
-+	};
-+
-+	reg_3v3: regulator-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	reserved-memory {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		optee@ce000000 {
-+			reg = <0xce000000 0x02000000>;
-+			no-map;
++		bbenv_emmc: partition@e0000 {
++			label = "barebox-environment";
++			reg = <0 0xe0000 0 0x20000>;
 +		};
 +	};
 +};
 +
-+&adc_1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&adc_1_pins_a>;
-+	vdda-supply = <&reg_3v3>;
-+	vref-supply = <&reg_3v3>;
-+	status = "okay";
++&clks {
++	fsl,pmic-stby-poweroff;
 +};
 +
-+&adc1 {
-+	status = "okay";
-+
-+	channel@0 { /* Fan current PC0*/
-+		reg = <0>;
-+		st,min-sample-time-ns = <10000>;  /* 10µs sampling time */
-+	};
-+	channel@11 { /* Fan voltage */
-+		reg = <11>;
-+		st,min-sample-time-ns = <10000>;  /* 10µs sampling time */
-+	};
-+	channel@15 { /* Supply voltage */
-+		reg = <15>;
-+		st,min-sample-time-ns = <10000>;  /* 10µs sampling time */
-+	};
++&pmic {
++	fsl,pmic-stby-poweroff;
 +};
-+
-+&ethernet1 {
-+	status = "okay";
-+	pinctrl-0 = <&ethernet1_rmii_pins_a>;
-+	pinctrl-1 = <&ethernet1_rmii_sleep_pins_a>;
-+	pinctrl-names = "default", "sleep";
-+	phy-mode = "rmii";
-+	phy-handle = <&phy0>;
-+};
-+
-+&i2c1 {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&i2c1_pins_a>;
-+	pinctrl-1 = <&i2c1_sleep_pins_a>;
-+	clock-frequency = <100000>;
-+	/delete-property/dmas;
-+	/delete-property/dma-names;
-+	status = "okay";
-+
-+	board-sensor@48 {
-+		compatible = "ti,tmp1075";
-+		reg = <0x48>;
-+		vs-supply = <&reg_3v3>;
-+	};
-+};
-+
-+&{i2c1_pins_a/pins} {
-+	pinmux = <STM32_PINMUX('D', 3, AF5)>, /* I2C1_SCL */
-+		 <STM32_PINMUX('B', 8, AF4)>; /* I2C1_SDA */
-+	bias-disable;
-+	drive-open-drain;
-+	slew-rate = <0>;
-+};
-+
-+&{i2c1_sleep_pins_a/pins} {
-+	pinmux = <STM32_PINMUX('D', 3, ANALOG)>, /* I2C1_SCL */
-+		 <STM32_PINMUX('B', 8, ANALOG)>; /* I2C1_SDA */
-+};
-+
-+&iwdg2 {
-+	timeout-sec = <32>;
-+	status = "okay";
-+};
-+
-+/* SD card without Card-detect */
-+&sdmmc1 {
-+	pinctrl-names = "default", "opendrain", "sleep";
-+	pinctrl-0 = <&sdmmc1_b4_pins_a &sdmmc1_clk_pins_a>;
-+	pinctrl-1 = <&sdmmc1_b4_od_pins_a &sdmmc1_clk_pins_a>;
-+	pinctrl-2 = <&sdmmc1_b4_sleep_pins_a>;
-+	broken-cd;
-+	no-sdio;
-+	no-1-8-v;
-+	st,neg-edge;
-+	bus-width = <4>;
-+	vmmc-supply = <&reg_3v3>;
-+	status = "okay";
-+};
-+
-+/* EMMC */
-+&sdmmc2 {
-+	pinctrl-names = "default", "opendrain", "sleep";
-+	pinctrl-0 = <&sdmmc2_b4_pins_a &sdmmc2_d47_pins_a &sdmmc2_clk_pins_a>;
-+	pinctrl-1 = <&sdmmc2_b4_od_pins_a &sdmmc2_d47_pins_a &sdmmc2_clk_pins_a>;
-+	pinctrl-2 = <&sdmmc2_b4_sleep_pins_a &sdmmc2_d47_sleep_pins_a>;
-+	non-removable;
-+	no-sd;
-+	no-sdio;
-+	no-1-8-v;
-+	st,neg-edge;
-+	mmc-ddr-3_3v;
-+	bus-width = <8>;
-+	vmmc-supply = <&reg_3v3>;
-+	status = "okay";
-+};
-+
-+&timers1 {
-+	status = "okay";
-+	/delete-property/dmas;
-+	/delete-property/dma-names;
-+
-+	pwm1: pwm {
-+		pinctrl-0 = <&pwm1_pins_a>;
-+		pinctrl-1 = <&pwm1_sleep_pins_a>;
-+		pinctrl-names = "default", "sleep";
-+		status = "okay";
-+	};
-+};
-+
-+&timers4 {
-+	status = "okay";
-+	/delete-property/dmas;
-+	/delete-property/dma-names;
-+
-+	pwm2: pwm {
-+		pinctrl-0 = <&pwm4_pins_a>;
-+		pinctrl-1 = <&pwm4_sleep_pins_a>;
-+		pinctrl-names = "default", "sleep";
-+		status = "okay";
-+	};
-+};
-+
-+/* Fan PWM */
-+&timers5 {
-+	status = "okay";
-+
-+	pwm3: pwm {
-+		pinctrl-0 = <&pwm5_pins_a>;
-+		pinctrl-1 = <&pwm5_sleep_pins_a>;
-+		pinctrl-names = "default", "sleep";
-+		status = "okay";
-+	};
-+};
-+
-+&timers2 {
-+	status = "okay";
-+
-+	timer@1 {
-+		status = "okay";
-+	};
-+};
-+
-+&uart4 {
-+	pinctrl-names = "default", "sleep", "idle";
-+	pinctrl-0 = <&uart4_pins_a>;
-+	pinctrl-1 = <&uart4_sleep_pins_a>;
-+	pinctrl-2 = <&uart4_idle_pins_a>;
-+	/delete-property/dmas;
-+	/delete-property/dma-names;
-+	status = "okay";
-+};
-+
-+&uart7 {
-+	pinctrl-names = "default", "sleep", "idle";
-+	pinctrl-0 = <&uart7_pins_a>;
-+	pinctrl-1 = <&uart7_sleep_pins_a>;
-+	pinctrl-2 = <&uart7_idle_pins_a>;
-+	/delete-property/dmas;
-+	/delete-property/dma-names;
-+	status = "okay";
-+};
-+
-+&usart6 {
-+	pinctrl-names = "default", "sleep", "idle";
-+	pinctrl-0 = <&usart6_pins_a>;
-+	pinctrl-1 = <&usart6_sleep_pins_a>;
-+	pinctrl-2 = <&usart6_idle_pins_a>;
-+	linux,rs485-enabled-at-boot-time;
-+	/delete-property/dmas;
-+	/delete-property/dma-names;
-+	status = "okay";
-+};
-+
-+&pinctrl {
-+	adc_1_pins_a: adc1-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('C', 0, ANALOG)>, /* ADC1 in0 */
-+				 <STM32_PINMUX('C', 2, ANALOG)>, /* ADC1 in15 */
-+				 <STM32_PINMUX('F', 13, ANALOG)>; /* ADC1 in11 */
-+		};
-+	};
-+
-+	ethernet1_rmii_pins_a: rmii-0 {
-+		pins1 {
-+			pinmux = <STM32_PINMUX('G', 13, AF11)>, /* ETH1_RMII_TXD0 */
-+				 <STM32_PINMUX('G', 14, AF11)>, /* ETH1_RMII_TXD1 */
-+				 <STM32_PINMUX('B', 11, AF11)>, /* ETH1_RMII_TX_EN */
-+				 <STM32_PINMUX('A', 1, AF11)>;   /* ETH1_RMII_REF_CLK */
-+			bias-disable;
-+			drive-push-pull;
-+			slew-rate = <2>;
-+		};
-+		pins2 {
-+			pinmux = <STM32_PINMUX('C', 4, AF11)>,  /* ETH1_RMII_RXD0 */
-+				 <STM32_PINMUX('C', 5, AF11)>,  /* ETH1_RMII_RXD1 */
-+				 <STM32_PINMUX('A', 7, AF11)>;  /* ETH1_RMII_CRS_DV */
-+			bias-disable;
-+		};
-+	};
-+
-+	ethernet1_rmii_sleep_pins_a: rmii-sleep-0 {
-+		pins1 {
-+			pinmux = <STM32_PINMUX('G', 13, ANALOG)>, /* ETH1_RMII_TXD0 */
-+				 <STM32_PINMUX('G', 14, ANALOG)>, /* ETH1_RMII_TXD1 */
-+				 <STM32_PINMUX('B', 11, ANALOG)>, /* ETH1_RMII_TX_EN */
-+				 <STM32_PINMUX('C', 4, ANALOG)>,  /* ETH1_RMII_RXD0 */
-+				 <STM32_PINMUX('C', 5, ANALOG)>,  /* ETH1_RMII_RXD1 */
-+				 <STM32_PINMUX('A', 1, ANALOG)>,  /* ETH1_RMII_REF_CLK */
-+				 <STM32_PINMUX('A', 7, ANALOG)>;  /* ETH1_RMII_CRS_DV */
-+		};
-+	};
-+
-+	pwm1_pins_a: pwm1-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('E', 9, AF1)>, /* TIM1_CH1 */
-+				 <STM32_PINMUX('E', 11, AF1)>, /* TIM1_CH2 */
-+				 <STM32_PINMUX('E', 13, AF1)>; /* TIM1_CH3 */
-+			bias-pull-down;
-+			drive-push-pull;
-+			slew-rate = <0>;
-+		};
-+	};
-+
-+	pwm1_sleep_pins_a: pwm1-sleep-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('E', 9, ANALOG)>, /* TIM1_CH1 */
-+				 <STM32_PINMUX('E', 11, ANALOG)>, /* TIM1_CH2 */
-+				 <STM32_PINMUX('E', 13, ANALOG)>; /* TIM1_CH3 */
-+		};
-+	};
-+
-+	pwm4_pins_a: pwm4-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('D', 12, AF2)>, /* TIM4_CH1 */
-+				 <STM32_PINMUX('B', 7, AF2)>, /* TIM4_CH2 */
-+				 <STM32_PINMUX('D', 14, AF2)>; /* TIM4_CH3 */
-+			bias-pull-down;
-+			drive-push-pull;
-+			slew-rate = <0>;
-+		};
-+	};
-+
-+	pwm4_sleep_pins_a: pwm4-sleep-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('D', 12, ANALOG)>, /* TIM4_CH1 */
-+				 <STM32_PINMUX('B', 7, ANALOG)>, /* TIM4_CH2 */
-+				 <STM32_PINMUX('D', 14, ANALOG)>; /* TIM4_CH3 */
-+		};
-+	};
-+	pwm5_pins_a: pwm5-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('A', 0, AF2)>; /* TIM5_CH1 */
-+		};
-+	};
-+
-+	pwm5_sleep_pins_a: pwm5-sleep-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('A', 0, ANALOG)>; /* TIM5_CH1 */
-+		};
-+	};
-+
-+	uart7_pins_a: uart7-0 {
-+		pins1 {
-+			pinmux = <STM32_PINMUX('E', 8, AF7)>; /* UART_TX */
-+			bias-disable;
-+			drive-push-pull;
-+			slew-rate = <0>;
-+		};
-+		pins2 {
-+			pinmux = <STM32_PINMUX('E', 10, AF7)>; /* UART7_RX */
-+			bias-pull-up;
-+		};
-+	};
-+
-+	uart7_idle_pins_a: uart7-idle-0 {
-+		pins1 {
-+			pinmux = <STM32_PINMUX('E', 8, ANALOG)>; /* UART7_TX */
-+		};
-+		pins2 {
-+			pinmux = <STM32_PINMUX('E', 10, AF7)>; /* UART7_RX */
-+			bias-pull-up;
-+		};
-+	};
-+
-+	uart7_sleep_pins_a: uart7-sleep-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('E', 8, ANALOG)>, /* UART7_TX */
-+				 <STM32_PINMUX('E', 10, ANALOG)>; /* UART7_RX */
-+		};
-+	};
-+
-+	usart6_pins_a: usart6-0 {
-+		pins1 {
-+			pinmux = <STM32_PINMUX('F', 8, AF7)>, /* USART6_TX */
-+				 <STM32_PINMUX('F', 10, AF7)>; /* USART6_DE */
-+			bias-disable;
-+			drive-push-pull;
-+			slew-rate = <0>;
-+		};
-+		pins2 {
-+			pinmux = <STM32_PINMUX('H', 11, AF7)>; /* USART6_RX */
-+			bias-disable;
-+		};
-+	};
-+
-+	usart6_idle_pins_a: usart6-idle-0 {
-+		pins1 {
-+			pinmux = <STM32_PINMUX('F', 8, ANALOG)>; /* USART6_TX */
-+		};
-+		pins2 {
-+			pinmux = <STM32_PINMUX('F', 10, AF7)>; /* USART6_DE */
-+			bias-disable;
-+			drive-push-pull;
-+			slew-rate = <0>;
-+		};
-+		pins3 {
-+			pinmux = <STM32_PINMUX('H', 11, AF7)>; /* USART6_RX */
-+			bias-disable;
-+		};
-+	};
-+
-+	usart6_sleep_pins_a: usart6-sleep-0 {
-+		pins {
-+			pinmux = <STM32_PINMUX('F', 8, ANALOG)>, /* USART6_TX */
-+				 <STM32_PINMUX('F', 10, ANALOG)>, /* USART6_DE */
-+				 <STM32_PINMUX('H', 11, ANALOG)>; /* USART6_RX */
-+		};
-+	};
-+};
-diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
-index 5d60c7996786..7015a38bc121 100644
---- a/arch/arm/mach-stm32mp/Kconfig
-+++ b/arch/arm/mach-stm32mp/Kconfig
-@@ -48,6 +48,13 @@ config MACH_PROTONIC_STM32MP1
- 	  Builds all barebox-*.stm32 that can be deployed as SSBL
- 	  on the respective PRTT1L/MECIOx/MECT1S family board
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index d1f8dc795b578fafd2bd2b4c1e59b85430668af7..ce1c5a80d568ce1076f4dd02161b589f501c7a78 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -389,6 +389,11 @@ config MACH_EMBEST_RIOTBOARD
+ 	select ARCH_IMX6
+ 	imply AT803X_PHY
  
-+config MACH_PROTONIC_STM32MP13
-+	select ARCH_STM32MP13
-+	bool "Protonic-Holland stm32mp13x based boards"
-+	help
-+	  Builds all barebox-*.stm32 that can be deployed as SSBL
-+	  on the respective stm32mp13x board
++config MACH_TORADEX_COLIBRI_IMX6
++	bool "Toradex Colibri iMX6"
++	select ARCH_IMX6
++	select ARM_USE_COMPRESSED_DTB
 +
- config MACH_PHYTEC_PHYCORE_STM32MP1
- 	select ARCH_STM32MP157
- 	bool "phyCORE-STM32MP1"
-diff --git a/images/Makefile.stm32mp b/images/Makefile.stm32mp
-index cb01eb2555e8..8c41b8b74567 100644
---- a/images/Makefile.stm32mp
-+++ b/images/Makefile.stm32mp
-@@ -40,6 +40,7 @@ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1s, prtt1s)
- $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1c, prtt1c)
- $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mecio1, mecio1)
- $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mect1s, mect1s)
-+$(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP13, start_stm32mp133c_prihmb, stm32mp133c-prihmb)
+ config MACH_SABRELITE
+ 	bool "Freescale i.MX6 Sabre Lite"
+ 	select ARCH_IMX6
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index d0f1f156ea6c9c8ca3298970fa2c3886e9302212..c3f1bd5f05a008321944cf68659c146f8cd25ce1 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -298,6 +298,9 @@ $(call build_imx_habv4img, CONFIG_MACH_EMBEST_MARSBOARD, start_imx6q_marsboard,
  
- $(call build_stm32mp_image, CONFIG_MACH_SEEED_ODYSSEY, start_stm32mp157c_seeed_odyssey, stm32mp157c-seeed-odyssey)
+ $(call build_imx_habv4img, CONFIG_MACH_EMBEST_RIOTBOARD, start_imx6s_riotboard, embest-riotboard/flash-header-embest-riotboard, embest-imx6s-riotboard)
  
++$(call build_imx_habv4img, CONFIG_MACH_TORADEX_COLIBRI_IMX6, start_imx6dl_colibri_iris, toradex-colibri-imx6/flash-header-colibri-imx6dl, toradex-imx6dl-colibri-iris)
++$(call build_imx_habv4img, CONFIG_MACH_TORADEX_COLIBRI_IMX6,  start_imx6s_colibri_iris,  toradex-colibri-imx6/flash-header-colibri-imx6s,  toradex-imx6s-colibri-iris)
++
+ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycard_imx6q_1gib, phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib, phytec-phycard-imx6q-1gib)
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycard_imx6q_1gib_1bank, phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank, phytec-phycard-imx6q-1gib-1bank)
+
+---
+base-commit: a7ae043343c89e8b75904a41174b9b4cf2df35a0
+change-id: 20241213-toradex-colibri-imx6-7ae7b917692a
+
+Best regards,
 -- 
-2.39.5
+Jonas Rebmann <jre@pengutronix.de>
 
 
 
