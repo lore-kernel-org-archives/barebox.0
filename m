@@ -1,67 +1,68 @@
-Delivery-date: Wed, 18 Dec 2024 07:09:45 +0100
+Delivery-date: Wed, 18 Dec 2024 07:09:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNnFg-009WSN-2g
+	id 1tNnFk-009WSu-1T
 	for lore@lore.pengutronix.de;
-	Wed, 18 Dec 2024 07:09:45 +0100
+	Wed, 18 Dec 2024 07:09:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tNnFf-0003Lc-T5
-	for lore@pengutronix.de; Wed, 18 Dec 2024 07:09:45 +0100
+	id 1tNnFj-0003WE-8U
+	for lore@pengutronix.de; Wed, 18 Dec 2024 07:09:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jbWi/WRz4wppOZkWlIMt694KvVs3zvMxNpSYy5SSpLw=; b=37kv7ESR8dsayK8xl/+JiN9CSf
-	alWswmgaFSLqO80MpBe30hnr2v5abtd4ldruGV3RlEwmOCaFObu+pH17arq12vjBJLZi+bYQ8W1rf
-	NcP43zrnrtLJy/JNDieH6+kJEJ7wZpR8qdbXNVXJpabtKaQ1xgmzIc+Bflqz8CJvYoGHr4ZaBAfy0
-	P1ZPYfAxbtOkVDblfQ+h0b1znI9Ir7trayxC8hmJDDbJjCbYFzcFmBnoI/e+SzGPbOI53pKUWPhWR
-	KzErGP+XqaO/JPpjI1fklvT5KK9Sm6d+2ZcBhg5Lj2YqX++Vg/UiSPeUcy4/Elz/yjmJYk1ycXcYl
-	B7QTPqcg==;
+	bh=VNB0dp3r0sMYkivjDqlm65tl3qTbWmP4R3cUPpN2yLY=; b=0YxfTNyTJuUcnEKDp7+uZJHfnZ
+	ipbkn/roNVOvDUKchZJU9kLDa28cmE8tF5EXuJuGuDpB94lEGbQRtujPbOY1ZjjUSgWr0rBNXcpGp
+	4yOxIls6JjJj55MSaw8y8TTwHvsV71k3MKt68sp0acGOCx4wZWff01HyFGSw+QxHvGRo3FQPhwDpE
+	L4LKKfRmqMagYfiDT0yfKIA8MdDVSHNWq8qKGHWyjEMKwnwufqr9N6xw1Oh3JkhMXcbPa6v5B4Ynx
+	/UW4a6srWGkO61gvRe/ZGmeSL4McFLYowCug9HXjl2gL4ycl6DYFX5VJMue/OOn636NU/cuIp2CPr
+	zWJ4DVmA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNnF8-0000000Fg7J-1G7R;
+	id 1tNnF8-0000000Fg7k-3SgU;
 	Wed, 18 Dec 2024 06:09:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tNnF2-0000000Fg5K-359P
+	id 1tNnF2-0000000Fg5L-35jL
 	for barebox@lists.infradead.org;
 	Wed, 18 Dec 2024 06:09:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEz-00036t-IU; Wed, 18 Dec 2024 07:09:01 +0100
+	id 1tNnEz-00036u-N5; Wed, 18 Dec 2024 07:09:01 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEy-003z4W-1h;
+	id 1tNnEy-003z4X-1l;
 	Wed, 18 Dec 2024 07:09:01 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tNnEz-00FG9O-0o;
+	id 1tNnEz-00FG9S-0r;
 	Wed, 18 Dec 2024 07:09:01 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 18 Dec 2024 07:08:59 +0100
-Message-Id: <20241218060900.3636980-3-o.rempel@pengutronix.de>
+Cc: Roan van Dijk <roan@protonic.nl>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 18 Dec 2024 07:09:00 +0100
+Message-Id: <20241218060900.3636980-4-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241218060900.3636980-1-o.rempel@pengutronix.de>
 References: <20241218060900.3636980-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241217_220904_949578_998C3C4D 
-X-CRM114-Status: UNSURE (   9.81  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241217_220905_094063_95A9E008 
+X-CRM114-Status: GOOD (  28.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,346 +84,1048 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] ARM: stm32mp151-mect1s: use kernel dts
+Subject: [PATCH 3/3] ARM: protonic-stm32mp1: Add Add Priva E-Measuringbox board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This devicetree is in kernel upstream now. We can drop the barebox
-version.
+From: Roan van Dijk <roan@protonic.nl>
 
+Add support for the Priva E-Measuringbox ('pri,prihmb') board based on
+the ST STM32MP133 SoC.
+
+Signed-off-by: Roan van Dijk <roan@protonic.nl>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/dts/stm32mp151-mect1s.dts | 319 +----------------------------
- 1 file changed, 1 insertion(+), 318 deletions(-)
+ arch/arm/boards/Makefile                      |   1 +
+ arch/arm/boards/protonic-stm32mp13/Makefile   |   4 +
+ arch/arm/boards/protonic-stm32mp13/board.c    | 285 ++++++++++
+ arch/arm/boards/protonic-stm32mp13/lowlevel.c |  28 +
+ arch/arm/configs/stm32mp_defconfig            |   1 +
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/stm32mp131.dtsi                  |   4 +
+ arch/arm/dts/stm32mp133c-prihmb.dts           |  90 ++++
+ arch/arm/dts/stm32mp133c-prihmb.dtsi          | 494 ++++++++++++++++++
+ arch/arm/mach-stm32mp/Kconfig                 |   7 +
+ images/Makefile.stm32mp                       |   1 +
+ 11 files changed, 916 insertions(+)
+ create mode 100644 arch/arm/boards/protonic-stm32mp13/Makefile
+ create mode 100644 arch/arm/boards/protonic-stm32mp13/board.c
+ create mode 100644 arch/arm/boards/protonic-stm32mp13/lowlevel.c
+ create mode 100644 arch/arm/dts/stm32mp133c-prihmb.dts
+ create mode 100644 arch/arm/dts/stm32mp133c-prihmb.dtsi
 
-diff --git a/arch/arm/dts/stm32mp151-mect1s.dts b/arch/arm/dts/stm32mp151-mect1s.dts
-index b0dc1cfaa8b6..1f5b5bdba6df 100644
---- a/arch/arm/dts/stm32mp151-mect1s.dts
-+++ b/arch/arm/dts/stm32mp151-mect1s.dts
-@@ -1,322 +1,5 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
--/*
-- * Copyright (C) Protonic Holland
-- * Author: David Jander <david@protonic.nl>
-- */
- /dts-v1/;
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index b6b3894c6b40..e7574c1e29c2 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -89,6 +89,7 @@ obj-$(CONFIG_MACH_PROTONIC_IMX6)		+= protonic-imx6/
+ obj-$(CONFIG_MACH_PROTONIC_IMX8M)		+= protonic-imx8m/
+ obj-$(CONFIG_MACH_PROTONIC_MECSBC)		+= protonic-mecsbc/
+ obj-$(CONFIG_MACH_PROTONIC_STM32MP1)		+= protonic-stm32mp1/
++obj-$(CONFIG_MACH_PROTONIC_STM32MP13)		+= protonic-stm32mp13/
+ obj-$(CONFIG_MACH_QIL_A9260)			+= qil-a926x/
+ obj-$(CONFIG_MACH_QIL_A9G20)			+= qil-a926x/
+ obj-$(CONFIG_MACH_RADXA_ROCK)			+= radxa-rock/
+diff --git a/arch/arm/boards/protonic-stm32mp13/Makefile b/arch/arm/boards/protonic-stm32mp13/Makefile
+new file mode 100644
+index 000000000000..5678718188b9
+--- /dev/null
++++ b/arch/arm/boards/protonic-stm32mp13/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++lwl-y += lowlevel.o
++obj-y += board.o
+diff --git a/arch/arm/boards/protonic-stm32mp13/board.c b/arch/arm/boards/protonic-stm32mp13/board.c
+new file mode 100644
+index 000000000000..199da2496486
+--- /dev/null
++++ b/arch/arm/boards/protonic-stm32mp13/board.c
+@@ -0,0 +1,285 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: 2021 David Jander, Protonic Holland
++// SPDX-FileCopyrightText: 2021 Oleksij Rempel, Pengutronix
++
++#include <bootsource.h>
++#include <common.h>
++#include <init.h>
++#include <mach/stm32mp/bbu.h>
++#include <mach/stm32mp/bsec.h>
++#include <of_device.h>
++#include <gpio.h>
++#include <soc/stm32/gpio.h>
++#include <deep-probe.h>
++
++#include "../../drivers/nvmem/stm32-bsec-optee-ta.h"
++
++/* board specific flags */
++#define PRT_STM32_BOOTSRC_SD		BIT(2)
++#define PRT_STM32_BOOTSRC_EMMC		BIT(1)
++#define PRT_STM32_BOOTSRC_SPI_NOR	BIT(0)
++
++
++#define PRT_STM32_GPIO_HWID_PL_N	13 /* PA13 */
++#define PRT_STM32_GPIO_HWID_CP		14 /* PA14 */
++#define PRT_STM32_GPIO_HWID_Q7		45 /* PC13 */
++
++struct prt_stm32_machine_data {
++	u32 flags;
++};
++
++struct bsec_priv {
++	struct tee_context *ctx;
++};
++
++struct prt_stm32_boot_dev {
++	char *name;
++	char *env;
++	char *dev;
++	int flags;
++	int boot_idx;
++	enum bootsource boot_src;
++};
++
++static const struct prt_stm32_boot_dev prt_stm32_boot_devs[] = {
++	{
++		.name = "emmc",
++		.env = "/chosen/environment-emmc",
++		.dev = "/dev/mmc1.ssbl",
++		.flags = PRT_STM32_BOOTSRC_EMMC,
++		.boot_src = BOOTSOURCE_MMC,
++		.boot_idx = 1,
++	}, {
++		.name = "qspi",
++		.env = "/chosen/environment-qspi",
++		.dev = "/dev/flash.ssbl",
++		.flags = PRT_STM32_BOOTSRC_SPI_NOR,
++		.boot_src = BOOTSOURCE_SPI_NOR,
++		.boot_idx = -1,
++	}, {
++		/* SD is optional boot source and should be last device in the
++		 * list.
++		 */
++		.name = "sd",
++		.env = "/chosen/environment-sd",
++		.dev = "/dev/mmc0.ssbl",
++		.flags = PRT_STM32_BOOTSRC_SD,
++		.boot_src = BOOTSOURCE_MMC,
++		.boot_idx = 0,
++	},
++};
++
++static int prt_stm32_set_serial(struct device *dev, char *serial)
++{
++	dev_info(dev, "Serial number: %s\n", serial);
++	barebox_set_serial_number(serial);
++
++	return 0;
++}
++
++static int stm32_bsec_pta_read(void *context, unsigned int offset,
++			       unsigned int *val)
++{
++	struct bsec_priv *priv = context;
++
++	return stm32_bsec_optee_ta_read(priv->ctx, offset * 4, val,
++					sizeof(val));
++}
++
++static int prt_stm32_read_serial(struct device *dev)
++{
++	u32 ser_high, ser_mid, ser_low;
++	struct bsec_priv *priv;
++	char serial[11];
++	int ret;
++
++	priv = xzalloc(sizeof(*priv));
++	if (!priv)
++		return -ENOMEM;
++
++	ret = stm32_bsec_optee_ta_open(&priv->ctx);
++	if (ret) {
++		dev_err(dev, "Failed to open BSEC TA: %pe\n", ERR_PTR(ret));
++		return ret;
++	}
++
++	ret = stm32_bsec_pta_read(&priv->ctx, 60, &ser_high);
++	if (ret)
++		goto exit_pta_read;
++
++	ret = stm32_bsec_pta_read(&priv->ctx, 61, &ser_mid);
++	if (ret)
++		goto exit_pta_read;
++
++	ret = stm32_bsec_pta_read(&priv->ctx, 62, &ser_low);
++	if (ret)
++		goto exit_pta_read;
++
++	stm32_bsec_optee_ta_close(&priv->ctx);
++
++	ser_low = ser_low & 0xff;
++	memcpy(serial, &ser_high, 4);
++	memcpy(serial+4, &ser_mid, 4);
++	memcpy(serial+8, &ser_low, 4);
++	serial[10] = 0; /* Failsafe */
++
++	return prt_stm32_set_serial(dev, serial);
++
++exit_pta_read:
++	stm32_bsec_optee_ta_close(&priv->ctx);
++	dev_err(dev, "Failed to read serial: %pe\n", ERR_PTR(ret));
++	return ret;
++}
++
++static int prt_stm32_init_shift_reg(struct device *dev)
++{
++	int ret;
++
++	ret = gpio_direction_output(PRT_STM32_GPIO_HWID_PL_N, 1);
++	if (ret)
++		goto error_out;
++
++	ret = gpio_direction_output(PRT_STM32_GPIO_HWID_CP, 1);
++	if (ret)
++		goto error_out;
++
++	ret = gpio_direction_input(PRT_STM32_GPIO_HWID_Q7);
++	if (ret)
++		goto error_out;
++
++	__stm32_pmx_set_output_type((void __iomem *)0x50002000, 13,
++					       STM32_PIN_OUT_PUSHPULL);
++	__stm32_pmx_set_output_type((void __iomem *)0x50002000, 14,
++					       STM32_PIN_OUT_PUSHPULL);
++
++	return 0;
++
++error_out:
++	dev_err(dev, "Failed to init shift register: %pe\n", ERR_PTR(ret));
++	return ret;
++}
++
++static int prt_stm32_of_fixup_hwrev(struct device *dev, uint8_t bid,
++				    uint8_t rid)
++{
++	const char *compat;
++	char *buf;
++
++	compat = of_device_get_match_compatible(dev);
++
++	buf = xasprintf("%s-m%u-r%u", compat, bid, rid);
++	barebox_set_of_machine_compatible(buf);
++
++	free(buf);
++
++	return 0;
++}
++
++static void prt_stm32_read_shift_reg(struct device *dev)
++{
++	uint8_t rid, bid;
++	uint8_t data = 0;
++	int i;
++
++	/* Initial state */
++	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
++	gpio_set_value(PRT_STM32_GPIO_HWID_CP, 0);
++	mdelay(1);
++
++	/* latch */
++	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 0);
++	mdelay(1);
++	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
++
++	for (i = 7; i >= 0; i--) {
++		data += (gpio_get_value(PRT_STM32_GPIO_HWID_Q7) << i);
++
++		/* shift */
++		gpio_set_value(PRT_STM32_GPIO_HWID_CP, 1);
++		mdelay(1);
++		gpio_set_value(PRT_STM32_GPIO_HWID_CP, 0);
++	}
++
++	rid = data & ((1<<3) - 1);
++	bid = (data>>3) & ((1<<5) - 1);
++
++	pr_info("  Board ID:    %d\n", bid);
++	pr_info("  HW revision: %d\n", rid);
++	prt_stm32_of_fixup_hwrev(dev, bid, rid);
++
++	/* Turn off LEDs */
++	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
++	gpio_set_value(PRT_STM32_GPIO_HWID_CP, 1);
++}
++
++static int prt_stm32_probe(struct device *dev)
++{
++	const struct prt_stm32_machine_data *dcfg;
++	char *env_path_back = NULL, *env_path = NULL;
++	int ret, i;
++
++	dcfg = of_device_get_match_data(dev);
++	if (!dcfg) {
++		ret = -EINVAL;
++		goto exit_get_dcfg;
++	}
++
++	prt_stm32_read_serial(dev);
++	prt_stm32_init_shift_reg(dev);
++	prt_stm32_read_shift_reg(dev);
++
++	for (i = 0; i < ARRAY_SIZE(prt_stm32_boot_devs); i++) {
++		const struct prt_stm32_boot_dev *bd = &prt_stm32_boot_devs[i];
++		int bbu_flags = 0;
++
++		/* skip not supported boot sources */
++		if (!(bd->flags & dcfg->flags))
++			continue;
++
++		/* first device is build-in device */
++		if (!env_path_back)
++			env_path_back = bd->env;
++
++		if (bd->boot_src == bootsource_get() && (bd->boot_idx == -1 ||
++		    bd->boot_idx  == bootsource_get_instance())) {
++			bbu_flags = BBU_HANDLER_FLAG_DEFAULT;
++			env_path = bd->env;
++		}
++
++		ret = stm32mp_bbu_mmc_register_handler(bd->name, bd->dev,
++						       bbu_flags);
++		if (ret < 0)
++			dev_warn(dev, "Failed to enable %s bbu (%pe)\n",
++				 bd->name, ERR_PTR(ret));
++	}
++
++	if (!env_path)
++		env_path = env_path_back;
++	ret = of_device_enable_path(env_path);
++	if (ret < 0)
++		dev_warn(dev, "Failed to enable environment partition '%s' (%pe)\n",
++			 env_path, ERR_PTR(ret));
++
++	return 0;
++
++exit_get_dcfg:
++	dev_err(dev, "Failed to get dcfg: %pe\n", ERR_PTR(ret));
++	return ret;
++}
++
++static const struct prt_stm32_machine_data prt_stm32_prihmb = {
++	.flags = PRT_STM32_BOOTSRC_SD | PRT_STM32_BOOTSRC_EMMC,
++};
++
++static const struct of_device_id prt_stm32_of_match[] = {
++	{ .compatible = "pri,prihmb", .data = &prt_stm32_prihmb },
++	{ /* sentinel */ },
++};
++BAREBOX_DEEP_PROBE_ENABLE(prt_stm32_of_match);
++
++static struct driver prt_stm32_board_driver = {
++	.name = "board-protonic-stm32",
++	.probe = prt_stm32_probe,
++	.of_compatible = prt_stm32_of_match,
++};
++postcore_platform_driver(prt_stm32_board_driver);
+diff --git a/arch/arm/boards/protonic-stm32mp13/lowlevel.c b/arch/arm/boards/protonic-stm32mp13/lowlevel.c
+new file mode 100644
+index 000000000000..f463685568e1
+--- /dev/null
++++ b/arch/arm/boards/protonic-stm32mp13/lowlevel.c
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: 2021 David Jander, Protonic Holland
++
++#include <common.h>
++#include <debug_ll.h>
++#include <mach/stm32mp/entry.h>
++
++extern char __dtb_z_stm32mp133c_prihmb_start[];
++
++static void setup_uart(void)
++{
++	/* first stage has set up the UART, so nothing to do here */
++	putc_ll('>');
++}
++
++ENTRY_FUNCTION(start_stm32mp133c_prihmb, r0, r1, r2)
++{
++	void *fdt;
++
++	stm32mp_cpu_lowlevel_init();
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	fdt = __dtb_z_stm32mp133c_prihmb_start + get_runtime_offset();
++
++	stm32mp1_barebox_entry(fdt);
++}
+diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
+index df73102ba1c0..6ca11e5c2d7a 100644
+--- a/arch/arm/configs/stm32mp_defconfig
++++ b/arch/arm/configs/stm32mp_defconfig
+@@ -5,6 +5,7 @@ CONFIG_MACH_LXA_MC1=y
+ CONFIG_MACH_SEEED_ODYSSEY=y
+ CONFIG_MACH_STM32MP15X_EV1=y
+ CONFIG_MACH_PROTONIC_STM32MP1=y
++CONFIG_MACH_PROTONIC_STM32MP13=y
+ CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1=y
+ CONFIG_BOARD_ARM_GENERIC_DT=y
+ CONFIG_THUMB2_BAREBOX=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index b9727fd5f91b..bb5017c54336 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -115,6 +115,7 @@ lwl-$(CONFIG_MACH_PROTONIC_STM32MP1) += \
+ 	stm32mp151-prtt1s.dtb.o \
+ 	stm32mp151-mecio1.dtb.o \
+ 	stm32mp151-mect1s.dtb.o
++lwl-$(CONFIG_MACH_PROTONIC_STM32MP13) += stm32mp133c-prihmb.dtb.o
+ lwl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
+ lwl-$(CONFIG_MACH_RADXA_ROCK3) += rk3568-rock-3a.dtb.o
+ lwl-$(CONFIG_MACH_RADXA_ROCK5) += rk3588-rock-5b.dtb.o
+diff --git a/arch/arm/dts/stm32mp131.dtsi b/arch/arm/dts/stm32mp131.dtsi
+index 89a7ffcb814f..b5d5d20d252b 100644
+--- a/arch/arm/dts/stm32mp131.dtsi
++++ b/arch/arm/dts/stm32mp131.dtsi
+@@ -13,6 +13,10 @@ memory-controller@5a003000 {
+ 	};
+ };
  
--#include "arm/st/stm32mp151.dtsi"
--#include "arm/st/stm32mp15xc.dtsi"
--#include "arm/st/stm32mp15-pinctrl.dtsi"
--#include "arm/st/stm32mp15xxaa-pinctrl.dtsi"
--#include <dt-bindings/gpio/gpio.h>
--#include <dt-bindings/input/input.h>
--
-+#include <arm/st/stm32mp151c-mect1s.dts>
- #include "stm32mp151.dtsi"
--
--/ {
--	model = "Protonic MECT1S";
--	compatible = "prt,mect1s", "st,stm32mp151";
--
--	chosen {
--		stdout-path = "serial0:1500000n8";
--	};
--
--	aliases {
--		serial0 = &uart4;
--		ethernet0 = &ethernet0;
--	};
--
--	v3v3: fixed-regulator-v3v3 {
--		compatible = "regulator-fixed";
--		regulator-name = "v3v3";
--		regulator-min-microvolt = <3300000>;
--		regulator-max-microvolt = <3300000>;
--	};
--
--	v5v: fixed-regulator-v5v {
--		compatible = "regulator-fixed";
--		regulator-name = "v5v";
--		regulator-min-microvolt = <5000000>;
--		regulator-max-microvolt = <5000000>;
--		regulator-always-on;
--	};
--
--	clock_sja1105: clock-sja1105 {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <25000000>;
--	};
--
--	led {
--		compatible = "gpio-leds";
--
--		led-0 {
--			label = "debug:red";
--			gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
--		};
--
--		led-1 {
--			label = "debug:green";
--			gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
--			linux,default-trigger = "heartbeat";
--		};
--	};
--
--	spi_gpio: spi-gpio-0 {
--		compatible = "spi-gpio";
--		sck-gpios = <&gpioi 1 GPIO_ACTIVE_HIGH>;
--		mosi-gpios = <&gpioi 3 GPIO_ACTIVE_HIGH>;
--		miso-gpios = <&gpioi 2 GPIO_ACTIVE_HIGH>;
--		cs-gpios = <&gpioj 3 GPIO_ACTIVE_LOW>;
--		num-chipselects = <1>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--	};
--};
--
--&clk_hse {
--	clock-frequency = <24000000>;
--};
--
--&clk_lse {
--	status = "disabled";
--};
--
--&qspi {
--	pinctrl-names = "default", "sleep";
--	pinctrl-0 = <&qspi_clk_pins_a
--		     &qspi_bk1_pins_a
--		     &qspi_cs1_pins_a>;
--	pinctrl-1 = <&qspi_clk_sleep_pins_a
--		     &qspi_bk1_sleep_pins_a
--		     &qspi_cs1_sleep_pins_a>;
--	status = "okay";
--
--	flash@0 {
--		compatible = "spi-nor";
--		reg = <0>;
--		spi-rx-bus-width = <4>;
--		spi-max-frequency = <104000000>;
--		#address-cells = <1>;
--		#size-cells = <1>;
--	};
--};
--
--&qspi_bk1_pins_a {
--	pins1 {
--		bias-pull-up;
--		drive-push-pull;
--		slew-rate = <1>;
--	};
--};
--
--&ethernet0 {
--	status = "okay";
--	pinctrl-0 = <&ethernet0_rgmii_pins_x>;
--	pinctrl-1 = <&ethernet0_rgmii_sleep_pins_x>;
--	pinctrl-names = "default", "sleep";
--	phy-mode = "rgmii";
--	st,eth-clk-sel;
--
--	fixed-link {
--		speed = <1000>;
--		full-duplex;
--	};
--
--	mdio0: mdio {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		compatible = "snps,dwmac-mdio";
--	};
--};
--
--&mdio0 {
--	/* All this DP83TG720R PHYs can't be probed before switch@0 is
--	 * probed so we need to use compatible with PHYid
--	 */
--	/* TI DP83TG720R */
--	t1_phy0: ethernet-phy@8 {
--		compatible = "ethernet-phy-id2000.a284";
--		reg = <8>;
--		interrupts-extended = <&gpioi 5 IRQ_TYPE_LEVEL_LOW>;
--		reset-gpios = <&gpioh 13 GPIO_ACTIVE_LOW>;
--		reset-assert-us = <10>;
--		reset-deassert-us = <35>;
--	};
--
--	/* TI DP83TG720R */
--	t1_phy1: ethernet-phy@c {
--		compatible = "ethernet-phy-id2000.a284";
--		reg = <12>;
--		interrupts-extended = <&gpioj 0 IRQ_TYPE_LEVEL_LOW>;
--		reset-gpios = <&gpioh 14 GPIO_ACTIVE_LOW>;
--		reset-assert-us = <10>;
--		reset-deassert-us = <35>;
--	};
--
--	/* TI DP83TG720R */
--	t1_phy2: ethernet-phy@4 {
--		compatible = "ethernet-phy-id2000.a284";
--		reg = <4>;
--		interrupts-extended = <&gpioi 7 IRQ_TYPE_LEVEL_LOW>;
--		reset-gpios = <&gpioh 15 GPIO_ACTIVE_LOW>;
--		reset-assert-us = <10>;
--		reset-deassert-us = <35>;
--	};
--
--	/* TI DP83TG720R */
--	t1_phy3: ethernet-phy@d {
--		compatible = "ethernet-phy-id2000.a284";
--		reg = <13>;
--		interrupts-extended = <&gpioi 15 IRQ_TYPE_LEVEL_LOW>;
--		reset-gpios = <&gpioi 13 GPIO_ACTIVE_LOW>;
--		reset-assert-us = <10000>;
--		reset-deassert-us = <1000>;
--	};
--};
--
--&spi_gpio {
--	switch@0 {
--		compatible = "nxp,sja1105q";
--		reg = <0>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--		spi-max-frequency = <1000000>;
--		spi-rx-delay-us = <1>;
--		spi-tx-delay-us = <1>;
--		spi-cpha;
--
--		reset-gpios = <&gpioi 0 GPIO_ACTIVE_LOW>;
--
--		clocks = <&clock_sja1105>;
--
--		ports {
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			port@0 {
--				reg = <0>;
--				label = "t10";
--				phy-mode = "rgmii-id";
--				phy-handle = <&t1_phy0>;
--			};
--
--			port@1 {
--				reg = <1>;
--				label = "t11";
--				phy-mode = "rgmii-id";
--				phy-handle = <&t1_phy1>;
--			};
--
--			port@2 {
--				reg = <2>;
--				label = "t12";
--				phy-mode = "rgmii-id";
--				phy-handle = <&t1_phy2>;
--			};
--
--			port@3 {
--				reg = <3>;
--				label = "t13";
--				phy-mode = "rgmii-id";
--				phy-handle = <&t1_phy3>;
--			};
--
--			port@4 {
--				reg = <4>;
--				label = "cpu";
--				ethernet = <&ethernet0>;
--				phy-mode = "rgmii-id";
--				rx-internal-delay-ps = <2000>;
--				tx-internal-delay-ps = <2000>;
--
--				fixed-link {
--					speed = <1000>;
--					full-duplex;
--				};
--			};
--		};
--	};
--};
--
--&usbotg_hs {
--	dr_mode = "host";
--	pinctrl-0 = <&usbotg_hs_pins_a>;
--	pinctrl-names = "default";
--	phys = <&usbphyc_port1 0>;
--	phy-names = "usb2-phy";
--	vbus-supply = <&v5v>;
--	status = "okay";
--};
--
--&usbphyc {
--	status = "okay";
--};
--
--&usbphyc_port1 {
--	phy-supply = <&v3v3>;
--};
--
--&uart4 {
--	pinctrl-names = "default", "sleep", "idle";
--	pinctrl-0 = <&uart4_pins_a>;
--	pinctrl-1 = <&uart4_sleep_pins_a>;
--	pinctrl-2 = <&uart4_idle_pins_a>;
--	/delete-property/dmas;
--	/delete-property/dma-names;
--	status = "okay";
--};
--
--&pinctrl {
--	ethernet0_rgmii_pins_x: rgmii-0 {
--		pins1 {
--			pinmux = <STM32_PINMUX('G', 5, AF11)>, /* ETH_RGMII_CLK125 */
--				 <STM32_PINMUX('G', 4, AF11)>, /* ETH_RGMII_GTX_CLK */
--				 <STM32_PINMUX('B', 12, AF11)>, /* ETH_RGMII_TXD0 */
--				 <STM32_PINMUX('B', 13, AF11)>, /* ETH_RGMII_TXD1 */
--				 <STM32_PINMUX('C', 2, AF11)>, /* ETH_RGMII_TXD2 */
--				 <STM32_PINMUX('B', 8, AF11)>, /* ETH_RGMII_TXD3 */
--				 <STM32_PINMUX('B', 11, AF11)>, /* ETH_RGMII_TX_CTL */
--				 <STM32_PINMUX('C', 1, AF11)>; /* ETH_MDC */
--			bias-disable;
--			drive-push-pull;
--			slew-rate = <3>;
--		};
--		pins2 {
--			pinmux = <STM32_PINMUX('A', 2, AF11)>; /* ETH_MDIO */
--			bias-disable;
--			drive-push-pull;
--			slew-rate = <0>;
--		};
--		pins3 {
--			pinmux = <STM32_PINMUX('C', 4, AF11)>, /* ETH_RGMII_RXD0 */
--				 <STM32_PINMUX('C', 5, AF11)>, /* ETH_RGMII_RXD1 */
--				 <STM32_PINMUX('H', 6, AF11)>, /* ETH_RGMII_RXD2 */
--				 <STM32_PINMUX('H', 7, AF11)>, /* ETH_RGMII_RXD3 */
--				 <STM32_PINMUX('A', 1, AF11)>, /* ETH_RGMII_RX_CLK */
--				 <STM32_PINMUX('A', 7, AF11)>; /* ETH_RGMII_RX_CTL */
--			bias-disable;
--		};
--	};
--
--	ethernet0_rgmii_sleep_pins_x: rgmii-sleep-0 {
--		pins1 {
--			pinmux = <STM32_PINMUX('G', 5, ANALOG)>, /* ETH_RGMII_CLK125 */
--				 <STM32_PINMUX('G', 4, ANALOG)>, /* ETH_RGMII_GTX_CLK */
--				 <STM32_PINMUX('B', 12, ANALOG)>, /* ETH_RGMII_TXD0 */
--				 <STM32_PINMUX('B', 13, ANALOG)>, /* ETH_RGMII_TXD1 */
--				 <STM32_PINMUX('C', 2, ANALOG)>, /* ETH_RGMII_TXD2 */
--				 <STM32_PINMUX('B', 8, ANALOG)>, /* ETH_RGMII_TXD3 */
--				 <STM32_PINMUX('B', 11, ANALOG)>, /* ETH_RGMII_TX_CTL */
--				 <STM32_PINMUX('A', 2, ANALOG)>, /* ETH_MDIO */
--				 <STM32_PINMUX('C', 1, ANALOG)>, /* ETH_MDC */
--				 <STM32_PINMUX('C', 4, ANALOG)>, /* ETH_RGMII_RXD0 */
--				 <STM32_PINMUX('C', 5, ANALOG)>, /* ETH_RGMII_RXD1 */
--				 <STM32_PINMUX('H', 6, ANALOG)>, /* ETH_RGMII_RXD2 */
--				 <STM32_PINMUX('H', 7, ANALOG)>, /* ETH_RGMII_RXD3 */
--				 <STM32_PINMUX('A', 1, ANALOG)>, /* ETH_RGMII_RX_CLK */
--				 <STM32_PINMUX('A', 7, ANALOG)>; /* ETH_RGMII_RX_CTL */
--		};
--	};
--};
++&bsec {
++	barebox,provide-mac-address = <&ethernet1 0x39>;
++};
++
+ &iwdg2 {
+ 	barebox,restart-warm-bootrom;
+ };
+diff --git a/arch/arm/dts/stm32mp133c-prihmb.dts b/arch/arm/dts/stm32mp133c-prihmb.dts
+new file mode 100644
+index 000000000000..ca3a8f2650c1
+--- /dev/null
++++ b/arch/arm/dts/stm32mp133c-prihmb.dts
+@@ -0,0 +1,90 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-3-Clause)
++// SPDX-FileCopyrightText: 2024 Roan van Dijk, Protonic Holland
++/dts-v1/;
++
++#include "stm32mp133c-prihmb.dtsi"
++#include "stm32mp131.dtsi"
++
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
++
++/ {
++	aliases {
++		state = &state_emmc;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	state_emmc: state {
++		magic = <0x72766467>;
++		compatible = "barebox,state";
++		backend-type = "raw";
++		backend = <&state_backend_emmc>;
++		backend-stridesize = <0x400>;
++
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		bootstate {
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			last_chosen {
++				reg = <0x0 0x4>;
++				type = "uint32";
++			};
++
++			system0 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				remaining_attempts {
++					reg = <0x50 0x4>;
++					type = "uint32";
++					default = <3>;
++				};
++
++				priority {
++					reg = <0x54 0x4>;
++					type = "uint32";
++					default = <21>;
++				};
++			};
++
++			system1 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				remaining_attempts {
++					reg = <0x100 0x4>;
++					type = "uint32";
++					default = <3>;
++				};
++
++				priority {
++					reg = <0x104 0x4>;
++					type = "uint32";
++					default = <20>;
++				};
++			};
++		};
++
++		priva-serial@1b0 {
++			reg = <0x1b0 0xa>;
++			type = "string";
++		};
++	};
++};
++
++&sdmmc2 {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	state_backend_emmc: partition@c0000 {
++		label = "state";
++		reg = <0xf0000 0x10000>;
++	};
++};
+diff --git a/arch/arm/dts/stm32mp133c-prihmb.dtsi b/arch/arm/dts/stm32mp133c-prihmb.dtsi
+new file mode 100644
+index 000000000000..eefd34c25fe4
+--- /dev/null
++++ b/arch/arm/dts/stm32mp133c-prihmb.dtsi
+@@ -0,0 +1,494 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/dts-v1/;
++
++// this file will be dropped after kernel upstreaming is done
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/leds/common.h>
++#include <dt-bindings/regulator/st,stm32mp13-regulator.h>
++#include <arm/st/stm32mp133.dtsi>
++#include <arm/st/stm32mp13xc.dtsi>
++#include <arm/st/stm32mp13-pinctrl.dtsi>
++
++/ {
++	model = "Priva E-Measuringbox board";
++	compatible = "pri,prihmb", "st,stm32mp133";
++
++	aliases {
++		ethernet0 = &ethernet1;
++		mdio-gpio0 = &mdio0;
++		mmc0 = &sdmmc1;
++		mmc1 = &sdmmc2;
++		serial0 = &uart4;
++		serial1 = &usart6;
++		serial2 = &uart7;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	counter-0 {
++		compatible = "interrupt-counter";
++		gpios = <&gpioa 11 GPIO_ACTIVE_HIGH>;
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++		autorepeat;
++
++		button-reset {
++			label = "reset-button";
++			linux,code = <BTN_1>;
++			gpios = <&gpioi 7 GPIO_ACTIVE_LOW>;
++		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		led-blue {
++			function = LED_FUNCTION_HEARTBEAT;
++			color = <LED_COLOR_ID_BLUE>;
++			gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
++			linux,default-trigger = "heartbeat";
++			default-state = "off";
++		};
++	};
++
++	led-controller-0 {
++		compatible = "pwm-leds-multicolor";
++
++		multi-led {
++			color = <LED_COLOR_ID_RGB>;
++			function = LED_FUNCTION_STATUS;
++			max-brightness = <255>;
++
++			led-red {
++				active-low;
++				color = <LED_COLOR_ID_RED>;
++				pwms = <&pwm2 2 1000000 1>;
++			};
++
++			led-green {
++				active-low;
++				color = <LED_COLOR_ID_GREEN>;
++				pwms = <&pwm1 1 1000000 1>;
++			};
++
++			led-blue {
++				active-low;
++				color = <LED_COLOR_ID_BLUE>;
++				pwms = <&pwm1 2 1000000 1>;
++			};
++		};
++	};
++
++	led-controller-1 {
++		compatible = "pwm-leds-multicolor";
++
++		multi-led {
++			color = <LED_COLOR_ID_RGB>;
++			function = LED_FUNCTION_STATUS;
++			max-brightness = <255>;
++
++			led-red {
++				active-low;
++				color = <LED_COLOR_ID_RED>;
++				pwms = <&pwm1 0 1000000 1>;
++			};
++
++			led-green {
++				active-low;
++				color = <LED_COLOR_ID_GREEN>;
++				pwms = <&pwm2 0 1000000 1>;
++			};
++
++			led-blue {
++				active-low;
++				color = <LED_COLOR_ID_BLUE>;
++				pwms = <&pwm2 1 1000000 1>;
++			};
++		};
++	};
++
++	/* DP83TD510E PHYs have max MDC rate of 1.75MHz. Since we can't reduce
++	 * stmmac MDC clock without reducing system bus rate, we need to use
++	 * gpio based MDIO bus.
++	 */
++	mdio0: mdio {
++		compatible = "virtual,mdio-gpio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		gpios = <&gpiog 2 GPIO_ACTIVE_HIGH
++			 &gpioa 2 GPIO_ACTIVE_HIGH>;
++
++		/* TI DP83TD510E */
++		phy0: ethernet-phy@0 {
++			compatible = "ethernet-phy-id2000.0181";
++			reg = <0>;
++			interrupts-extended = <&gpioa 4 IRQ_TYPE_LEVEL_LOW>;
++			reset-gpios = <&gpioa 3 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <10>;
++			reset-deassert-us = <35>;
++		};
++	};
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x10000000>;
++	};
++
++	reg_3v3: regulator-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "3v3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		optee@ce000000 {
++			reg = <0xce000000 0x02000000>;
++			no-map;
++		};
++	};
++};
++
++&adc_1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&adc_1_pins_a>;
++	vdda-supply = <&reg_3v3>;
++	vref-supply = <&reg_3v3>;
++	status = "okay";
++};
++
++&adc1 {
++	status = "okay";
++
++	channel@0 { /* Fan current PC0*/
++		reg = <0>;
++		st,min-sample-time-ns = <10000>;  /* 10µs sampling time */
++	};
++	channel@11 { /* Fan voltage */
++		reg = <11>;
++		st,min-sample-time-ns = <10000>;  /* 10µs sampling time */
++	};
++	channel@15 { /* Supply voltage */
++		reg = <15>;
++		st,min-sample-time-ns = <10000>;  /* 10µs sampling time */
++	};
++};
++
++&ethernet1 {
++	status = "okay";
++	pinctrl-0 = <&ethernet1_rmii_pins_a>;
++	pinctrl-1 = <&ethernet1_rmii_sleep_pins_a>;
++	pinctrl-names = "default", "sleep";
++	phy-mode = "rmii";
++	phy-handle = <&phy0>;
++};
++
++&i2c1 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&i2c1_pins_a>;
++	pinctrl-1 = <&i2c1_sleep_pins_a>;
++	clock-frequency = <100000>;
++	/delete-property/dmas;
++	/delete-property/dma-names;
++	status = "okay";
++
++	board-sensor@48 {
++		compatible = "ti,tmp1075";
++		reg = <0x48>;
++		vs-supply = <&reg_3v3>;
++	};
++};
++
++&{i2c1_pins_a/pins} {
++	pinmux = <STM32_PINMUX('D', 3, AF5)>, /* I2C1_SCL */
++		 <STM32_PINMUX('B', 8, AF4)>; /* I2C1_SDA */
++	bias-disable;
++	drive-open-drain;
++	slew-rate = <0>;
++};
++
++&{i2c1_sleep_pins_a/pins} {
++	pinmux = <STM32_PINMUX('D', 3, ANALOG)>, /* I2C1_SCL */
++		 <STM32_PINMUX('B', 8, ANALOG)>; /* I2C1_SDA */
++};
++
++&iwdg2 {
++	timeout-sec = <32>;
++	status = "okay";
++};
++
++/* SD card without Card-detect */
++&sdmmc1 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc1_b4_pins_a &sdmmc1_clk_pins_a>;
++	pinctrl-1 = <&sdmmc1_b4_od_pins_a &sdmmc1_clk_pins_a>;
++	pinctrl-2 = <&sdmmc1_b4_sleep_pins_a>;
++	broken-cd;
++	no-sdio;
++	no-1-8-v;
++	st,neg-edge;
++	bus-width = <4>;
++	vmmc-supply = <&reg_3v3>;
++	status = "okay";
++};
++
++/* EMMC */
++&sdmmc2 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc2_b4_pins_a &sdmmc2_d47_pins_a &sdmmc2_clk_pins_a>;
++	pinctrl-1 = <&sdmmc2_b4_od_pins_a &sdmmc2_d47_pins_a &sdmmc2_clk_pins_a>;
++	pinctrl-2 = <&sdmmc2_b4_sleep_pins_a &sdmmc2_d47_sleep_pins_a>;
++	non-removable;
++	no-sd;
++	no-sdio;
++	no-1-8-v;
++	st,neg-edge;
++	mmc-ddr-3_3v;
++	bus-width = <8>;
++	vmmc-supply = <&reg_3v3>;
++	status = "okay";
++};
++
++&timers1 {
++	status = "okay";
++	/delete-property/dmas;
++	/delete-property/dma-names;
++
++	pwm1: pwm {
++		pinctrl-0 = <&pwm1_pins_a>;
++		pinctrl-1 = <&pwm1_sleep_pins_a>;
++		pinctrl-names = "default", "sleep";
++		status = "okay";
++	};
++};
++
++&timers4 {
++	status = "okay";
++	/delete-property/dmas;
++	/delete-property/dma-names;
++
++	pwm2: pwm {
++		pinctrl-0 = <&pwm4_pins_a>;
++		pinctrl-1 = <&pwm4_sleep_pins_a>;
++		pinctrl-names = "default", "sleep";
++		status = "okay";
++	};
++};
++
++/* Fan PWM */
++&timers5 {
++	status = "okay";
++
++	pwm3: pwm {
++		pinctrl-0 = <&pwm5_pins_a>;
++		pinctrl-1 = <&pwm5_sleep_pins_a>;
++		pinctrl-names = "default", "sleep";
++		status = "okay";
++	};
++};
++
++&timers2 {
++	status = "okay";
++
++	timer@1 {
++		status = "okay";
++	};
++};
++
++&uart4 {
++	pinctrl-names = "default", "sleep", "idle";
++	pinctrl-0 = <&uart4_pins_a>;
++	pinctrl-1 = <&uart4_sleep_pins_a>;
++	pinctrl-2 = <&uart4_idle_pins_a>;
++	/delete-property/dmas;
++	/delete-property/dma-names;
++	status = "okay";
++};
++
++&uart7 {
++	pinctrl-names = "default", "sleep", "idle";
++	pinctrl-0 = <&uart7_pins_a>;
++	pinctrl-1 = <&uart7_sleep_pins_a>;
++	pinctrl-2 = <&uart7_idle_pins_a>;
++	/delete-property/dmas;
++	/delete-property/dma-names;
++	status = "okay";
++};
++
++&usart6 {
++	pinctrl-names = "default", "sleep", "idle";
++	pinctrl-0 = <&usart6_pins_a>;
++	pinctrl-1 = <&usart6_sleep_pins_a>;
++	pinctrl-2 = <&usart6_idle_pins_a>;
++	linux,rs485-enabled-at-boot-time;
++	/delete-property/dmas;
++	/delete-property/dma-names;
++	status = "okay";
++};
++
++&pinctrl {
++	adc_1_pins_a: adc1-0 {
++		pins {
++			pinmux = <STM32_PINMUX('C', 0, ANALOG)>, /* ADC1 in0 */
++				 <STM32_PINMUX('C', 2, ANALOG)>, /* ADC1 in15 */
++				 <STM32_PINMUX('F', 13, ANALOG)>; /* ADC1 in11 */
++		};
++	};
++
++	ethernet1_rmii_pins_a: rmii-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('G', 13, AF11)>, /* ETH1_RMII_TXD0 */
++				 <STM32_PINMUX('G', 14, AF11)>, /* ETH1_RMII_TXD1 */
++				 <STM32_PINMUX('B', 11, AF11)>, /* ETH1_RMII_TX_EN */
++				 <STM32_PINMUX('A', 1, AF11)>;   /* ETH1_RMII_REF_CLK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 4, AF11)>,  /* ETH1_RMII_RXD0 */
++				 <STM32_PINMUX('C', 5, AF11)>,  /* ETH1_RMII_RXD1 */
++				 <STM32_PINMUX('A', 7, AF11)>;  /* ETH1_RMII_CRS_DV */
++			bias-disable;
++		};
++	};
++
++	ethernet1_rmii_sleep_pins_a: rmii-sleep-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('G', 13, ANALOG)>, /* ETH1_RMII_TXD0 */
++				 <STM32_PINMUX('G', 14, ANALOG)>, /* ETH1_RMII_TXD1 */
++				 <STM32_PINMUX('B', 11, ANALOG)>, /* ETH1_RMII_TX_EN */
++				 <STM32_PINMUX('C', 4, ANALOG)>,  /* ETH1_RMII_RXD0 */
++				 <STM32_PINMUX('C', 5, ANALOG)>,  /* ETH1_RMII_RXD1 */
++				 <STM32_PINMUX('A', 1, ANALOG)>,  /* ETH1_RMII_REF_CLK */
++				 <STM32_PINMUX('A', 7, ANALOG)>;  /* ETH1_RMII_CRS_DV */
++		};
++	};
++
++	pwm1_pins_a: pwm1-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 9, AF1)>, /* TIM1_CH1 */
++				 <STM32_PINMUX('E', 11, AF1)>, /* TIM1_CH2 */
++				 <STM32_PINMUX('E', 13, AF1)>; /* TIM1_CH3 */
++			bias-pull-down;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	pwm1_sleep_pins_a: pwm1-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 9, ANALOG)>, /* TIM1_CH1 */
++				 <STM32_PINMUX('E', 11, ANALOG)>, /* TIM1_CH2 */
++				 <STM32_PINMUX('E', 13, ANALOG)>; /* TIM1_CH3 */
++		};
++	};
++
++	pwm4_pins_a: pwm4-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 12, AF2)>, /* TIM4_CH1 */
++				 <STM32_PINMUX('B', 7, AF2)>, /* TIM4_CH2 */
++				 <STM32_PINMUX('D', 14, AF2)>; /* TIM4_CH3 */
++			bias-pull-down;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	pwm4_sleep_pins_a: pwm4-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 12, ANALOG)>, /* TIM4_CH1 */
++				 <STM32_PINMUX('B', 7, ANALOG)>, /* TIM4_CH2 */
++				 <STM32_PINMUX('D', 14, ANALOG)>; /* TIM4_CH3 */
++		};
++	};
++	pwm5_pins_a: pwm5-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 0, AF2)>; /* TIM5_CH1 */
++		};
++	};
++
++	pwm5_sleep_pins_a: pwm5-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 0, ANALOG)>; /* TIM5_CH1 */
++		};
++	};
++
++	uart7_pins_a: uart7-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 8, AF7)>; /* UART_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 10, AF7)>; /* UART7_RX */
++			bias-pull-up;
++		};
++	};
++
++	uart7_idle_pins_a: uart7-idle-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 8, ANALOG)>; /* UART7_TX */
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 10, AF7)>; /* UART7_RX */
++			bias-pull-up;
++		};
++	};
++
++	uart7_sleep_pins_a: uart7-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 8, ANALOG)>, /* UART7_TX */
++				 <STM32_PINMUX('E', 10, ANALOG)>; /* UART7_RX */
++		};
++	};
++
++	usart6_pins_a: usart6-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 8, AF7)>, /* USART6_TX */
++				 <STM32_PINMUX('F', 10, AF7)>; /* USART6_DE */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('H', 11, AF7)>; /* USART6_RX */
++			bias-disable;
++		};
++	};
++
++	usart6_idle_pins_a: usart6-idle-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 8, ANALOG)>; /* USART6_TX */
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('F', 10, AF7)>; /* USART6_DE */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('H', 11, AF7)>; /* USART6_RX */
++			bias-disable;
++		};
++	};
++
++	usart6_sleep_pins_a: usart6-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 8, ANALOG)>, /* USART6_TX */
++				 <STM32_PINMUX('F', 10, ANALOG)>, /* USART6_DE */
++				 <STM32_PINMUX('H', 11, ANALOG)>; /* USART6_RX */
++		};
++	};
++};
+diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
+index 5d60c7996786..7015a38bc121 100644
+--- a/arch/arm/mach-stm32mp/Kconfig
++++ b/arch/arm/mach-stm32mp/Kconfig
+@@ -48,6 +48,13 @@ config MACH_PROTONIC_STM32MP1
+ 	  Builds all barebox-*.stm32 that can be deployed as SSBL
+ 	  on the respective PRTT1L/MECIOx/MECT1S family board
+ 
++config MACH_PROTONIC_STM32MP13
++	select ARCH_STM32MP13
++	bool "Protonic-Holland stm32mp13x based boards"
++	help
++	  Builds all barebox-*.stm32 that can be deployed as SSBL
++	  on the respective stm32mp13x board
++
+ config MACH_PHYTEC_PHYCORE_STM32MP1
+ 	select ARCH_STM32MP157
+ 	bool "phyCORE-STM32MP1"
+diff --git a/images/Makefile.stm32mp b/images/Makefile.stm32mp
+index cb01eb2555e8..8c41b8b74567 100644
+--- a/images/Makefile.stm32mp
++++ b/images/Makefile.stm32mp
+@@ -40,6 +40,7 @@ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1s, prtt1s)
+ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1c, prtt1c)
+ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mecio1, mecio1)
+ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mect1s, mect1s)
++$(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP13, start_stm32mp133c_prihmb, stm32mp133c-prihmb)
+ 
+ $(call build_stm32mp_image, CONFIG_MACH_SEEED_ODYSSEY, start_stm32mp157c_seeed_odyssey, stm32mp157c-seeed-odyssey)
+ 
 -- 
 2.39.5
 
