@@ -1,60 +1,67 @@
-Delivery-date: Thu, 19 Dec 2024 11:28:40 +0100
+Delivery-date: Thu, 19 Dec 2024 12:16:37 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tODln-00A06A-3A
+	id 1tOEWC-00A0zP-2q
 	for lore@lore.pengutronix.de;
-	Thu, 19 Dec 2024 11:28:40 +0100
+	Thu, 19 Dec 2024 12:16:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tODln-000107-RJ
-	for lore@pengutronix.de; Thu, 19 Dec 2024 11:28:40 +0100
+	id 1tOEWC-0001sA-PA
+	for lore@pengutronix.de; Thu, 19 Dec 2024 12:16:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ib2p7Nbbsj7xOceOPdYwLgcR+CRmF1QUwaRJ7fTZ5wI=; b=iw1JXp5a1aZa6xgUrXiwm0/0q5
-	qSZ/t7lxVU3ou0mcg+91Ax5CZjl9XNxxzyByx70WVkNye6lGulLf3696ajkY57T/g0Li9jArMPrNS
-	b1vAg/tx6hQytyuLEy57LG5LE5ya7zKJJvV+K64OifU91MwbQrOOHP2c9taLJwdnXcJ+zMRRrsXDM
-	RihPaBnvIk9+w/SuTdnCpJqzSNoqXuhIMnie8q1TeUb+3HzBCM9ZpxNUooAmGbc4z1VwDH6sgSjZ+
-	W2miuprF3nB9kMR45KmJH1SZtfyWVw2hZt1GwDZ2b/3narxWUFEWdEkStYReRy5Lr2Mx4w3JDWec5
-	LV6B7bdQ==;
+	bh=tOW5Mrc8xOZwE6fCzE5dlP5ZzqqMuI4IS+apvIFbtk0=; b=SxmJ/IgvnHI9FZks6tNagHjXgL
+	LQeIjMYViDKoEqW08ULB6NBEUAl7IO7E5szMa8CmZwUYnWS4fLNjEDBuj+ciWxHse5gCMVppAZtPO
+	6NS/orjxAGRaIDkUofioUOlrnlxiMlMp8AYcK8/0LvNXfdE+CuOB87KoEm7n+p6PyZ1B+FufKhdW1
+	g4zIVdwvajh6r2hGU/WzVpm2SCLtlGjsw4jMhTxUd83c9J9FG8kCSnD+TyltwlNz71SwWdT7YasU0
+	DKLJTWt7jXaCbK0fQg0H93llpkFheD//a14Yknc8NrtII5r28v2mOzXNJ8u/if/ju+7hPSeNJP10U
+	tRVVlxRw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tODlA-00000001XxW-1S99;
-	Thu, 19 Dec 2024 10:28:00 +0000
+	id 1tOEVo-00000001dQX-2rfn;
+	Thu, 19 Dec 2024 11:16:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tODl6-00000001Xwm-30ir
+	id 1tOEVh-00000001dNQ-3OTl
 	for barebox@lists.infradead.org;
-	Thu, 19 Dec 2024 10:27:58 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Thu, 19 Dec 2024 11:16:10 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tODl3-0000n4-4d; Thu, 19 Dec 2024 11:27:53 +0100
-Message-ID: <2200ece8-593b-4ac3-be3e-b05570165e5e@pengutronix.de>
-Date: Thu, 19 Dec 2024 11:27:52 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: U-Boot Mailing List <u-boot@lists.denx.de>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>,
- dl-uboot-imx <uboot-imx@nxp.com>, Steffen Trumtrar <str@pengutronix.de>
-References: <8074530f-720b-4aea-934b-c0643c356617@pengutronix.de>
- <PAXPR04MB8459A8BB89FAB50D6871EA9388762@PAXPR04MB8459.eurprd04.prod.outlook.com>
-Content-Language: en-US
+	id 1tOEVg-0001dh-EK; Thu, 19 Dec 2024 12:16:04 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tOEVf-004CBD-1Y;
+	Thu, 19 Dec 2024 12:16:04 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tOEVg-004HTI-0X;
+	Thu, 19 Dec 2024 12:16:04 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <PAXPR04MB8459A8BB89FAB50D6871EA9388762@PAXPR04MB8459.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 19 Dec 2024 12:16:03 +0100
+Message-Id: <20241219111603.1020442-3-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241219111603.1020442-1-a.fatoum@pengutronix.de>
+References: <20241219111603.1020442-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241219_022756_759877_9FDB2CB3 
-X-CRM114-Status: GOOD (  19.62  )
+X-CRM114-CacheID: sfid-20241219_031605_844638_A19E663F 
+X-CRM114-Status: GOOD (  13.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,72 +83,76 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: i.MX8/9: question about unused DDR PHY trained CSR board array
+Subject: [PATCH 3/3] FIT: cache uncompressed data
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Peng,
+If we decompress the FIT FDT once to check the compatible, it makes
+sense to keep the decompressed data around as not to decompress the FIT
+again later.
 
-On 30.09.24 08:38, Peng Fan wrote:
->> Subject: i.MX8/9: question about unused DDR PHY trained CSR board
->> array
->> Looking at the DDR setup code for i.MX8M and i.MX9 that you had
->> contributed, I am wondering about struct
->> dram_cfg_param::ddrphy_trained_csr and the global
->> ddrphy_trained_csr array.
->>
->> struct dram_cfg_param::ddrphy_trained_csr is presumably generated
->> by the i.MX DDR tool and it seems populated by all the i.MX8M/9
->> boards in U-Boot.
->>
->> This struct member is wholly unused though and instead a global
->> ddrphy_trained_csr is used.
->>
->> What I wonder about is whether it's possible for the DDR tool to
->> generate a different ddrphy_trained_csr than the default:
->>
->>   1) If yes, we should drop the global ddrphy_trained_csr and actually
->> use
->>      the board-specific array
->>
->>   2) If not, we should drop the board-specific array and perhaps ask for
->>     the DDR tool to be changed
->>
->> I initially assumed 1) and because all boards supported by barebox had
->> a board-specific ddrphy_trained_csr that's identical to the global
->> ddrphy_trained_csr, I dropped the unused array[1][2].
->>
->> I now have the DDR settings for an i.MX9 LPDDR4 board in front of me
->> that has different contents for struct
->> dram_cfg_param::ddrphy_trained_csr than the default.
->>
->> I will inquire how that came about, but in parallel I wanted to ask you if
->> this is supposed to happen and to alert you to this issue.
-> 
-> Thanks for raising this issue. I think board specific csr should be used.
-> 
-> I will check with DDR TOOL owners on this.
+Do this by not directly deleting the uncompressed-data property again and
+give it a $ prefix, so FIT images can't provide this data themselves.
 
-Did you hear back in the meantime?
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/image-fit.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-Thanks,
-Ahmad
-
-> 
->>
->> The way things are, this is either a bug or a missed space saving
->> opportunity for U-Boot.
-> 
-> Thanks,
-> Peng.
-> 
-> 
-
-
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 9e3dbe9ae054..58ce461623e6 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -576,6 +576,7 @@ static int fit_handle_decompression(struct device_node *image,
+ 				    int *data_len)
+ {
+ 	const char *compression = NULL;
++	struct property *pp;
+ 	void *uc_data;
+ 	int ret;
+ 
+@@ -595,18 +596,21 @@ static int fit_handle_decompression(struct device_node *image,
+ 		return -ENOSYS;
+ 	}
+ 
+-	ret = uncompress_buf_to_buf(*data, *data_len, &uc_data,
+-				    fit_uncompress_error_fn);
+-	if (ret < 0) {
+-		pr_err("%s data couldn't be decompressed\n", compression);
+-		return ret;
++	pp = of_find_property(image, "$uncompressed-data", NULL);
++	if (!pp) {
++		ret = uncompress_buf_to_buf(*data, *data_len, &uc_data,
++					    fit_uncompress_error_fn);
++		if (ret < 0) {
++			pr_err("%s data couldn't be decompressed\n", compression);
++			return ret;
++		}
++
++		/* associate buffer with FIT, so it's not leaked */
++		pp = __of_new_property(image, "$uncompressed-data", uc_data, ret);
+ 	}
+ 
+-	*data = uc_data;
+-	*data_len = ret;
+-
+-	/* associate buffer with FIT, so it's not leaked */
+-	__of_new_property(image, "uncompressed-data", uc_data, *data_len);
++	*data = of_property_get_value(pp);
++	*data_len = pp->length;
+ 
+ 	return 0;
+ }
+@@ -762,7 +766,6 @@ static int fit_find_compatible_unit(struct fit_handle *handle,
+ 
+ 			score = fdt_machine_is_compatible(data, data_len, machine);
+ 
+-			of_delete_property_by_name(image, "uncompressed-data");
+ next:
+ 			if (ret)
+ 				pr_warn("skipping malformed configuration: %pOF (%pe)\n",
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
