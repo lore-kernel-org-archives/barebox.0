@@ -1,69 +1,71 @@
-Delivery-date: Fri, 20 Dec 2024 10:22:46 +0100
+Delivery-date: Fri, 20 Dec 2024 12:12:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOZDa-00AOST-0B
+	id 1tOavr-00AQTT-1I
 	for lore@lore.pengutronix.de;
-	Fri, 20 Dec 2024 10:22:46 +0100
+	Fri, 20 Dec 2024 12:12:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOZDa-0003pI-1P
-	for lore@pengutronix.de; Fri, 20 Dec 2024 10:22:46 +0100
+	id 1tOavr-0006vk-8s
+	for lore@pengutronix.de; Fri, 20 Dec 2024 12:12:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7AEe+tlGWqKhdVgWaIpw+XMccp36NMegDT3goow4J2Q=; b=Z9HXlCOg8RorYaSiw/l9ymga7Z
-	tQQgDKagvOqQToP5uAR+uPm7P5x6eM9C1BAlazDYo4Jj5rg8rBgZqU5I50w2gSXmy4JRHfLAampfY
-	ddvmwP2VKFPdeuIBzjO/2BhN26onCLmFdWne0lMHrzxjrHz8K2tr3u8V/TmnXt4mRLxIpHWT9IKeD
-	GrUCMiXez8gKQGogeouCOpuIu5iCFzVH0MuUKasqxD/MICjb1r3z/pPNzFscWXiux6EIgd/YPu/DH
-	AhpYXLkxUEeYSU2YiIQ+UNnnbE3QAWDr3+E5gUKT4qqdPnzsnxcoL0pbFWth7GhDWMNIM0CBTd8YW
-	tMfkTM4Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=IADRAQJq4Ac5BSLVb8hVRjZNn5YvAbc5TTuXTCgh2Aw=; b=seG7MFvFvOJp57B0DJembTlC+E
+	rm+G0+Gdae0tcrWeEnz+r1rkWbsT8DO5JSpmovOj+CVqGH6hrEnbf3idInAFW4DSKW/WwZnFVZucN
+	1zsfLgh2x+JHQx+2uxKZdgvcqvDLBQm5i0gy/l+sQFR6zMIvvafUfgekCa0sc/KyD0w9mL0nYzlRt
+	hfcuR8XLtgOJfd4llcnQTJg+XmQRtD8erx4zjRMdX5bZHFGzv4uPbBmbTvSjtaJI/99TGttzU8Kut
+	EcEJPPyEXN4HApLb4oLDF+bdXL1wr66n3fH0Doj/n+kvcjk5ch69sOspy79ZP5wgihmpdznFV7I9w
+	dvsj9OnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOZD3-00000004PTJ-09Hk;
-	Fri, 20 Dec 2024 09:22:13 +0000
+	id 1tOavZ-00000004g2r-1ZIW;
+	Fri, 20 Dec 2024 11:12:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOZD0-00000004PSx-0tpf
+	id 1tOZfH-00000004TnJ-2dUX
 	for barebox@lists.infradead.org;
-	Fri, 20 Dec 2024 09:22:11 +0000
+	Fri, 20 Dec 2024 09:51:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOZCy-0003eU-Uv; Fri, 20 Dec 2024 10:22:08 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1tOZfG-0008Nf-9g; Fri, 20 Dec 2024 10:51:22 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOZCy-004Lsm-00;
-	Fri, 20 Dec 2024 10:22:08 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOZCy-00DKXP-2I;
-	Fri, 20 Dec 2024 10:22:08 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1tOZfF-004M0F-16;
+	Fri, 20 Dec 2024 10:51:22 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tOZfG-00APCq-05;
+	Fri, 20 Dec 2024 10:51:22 +0100
+Date: Fri, 20 Dec 2024 10:51:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20241209103025.359093-1-s.hauer@pengutronix.de>
-References: <20241209103025.359093-1-s.hauer@pengutronix.de>
-Message-Id: <173468652870.3177176.18312500057979380925.b4-ty@pengutronix.de>
-Date: Fri, 20 Dec 2024 10:22:08 +0100
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <Z2U-GS_4Yc_CxuwK@pengutronix.de>
+References: <20241216130324.1592755-1-m.felsch@pengutronix.de>
+ <20241216130324.1592755-6-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241216130324.1592755-6-m.felsch@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241220_012210_260668_140E59E6 
-X-CRM114-Status: UNSURE (   9.89  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20241220_015123_669615_DE8792D2 
+X-CRM114-Status: GOOD (  28.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,30 +87,83 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: psci-client: better search for existing psci node
+Subject: Re: [PATCH v2 06/12] spi: add support to handle cs-gpios
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Mon, 09 Dec 2024 11:30:25 +0100, Sascha Hauer wrote:
-> The PSCI fixup code assumes the psci node is at /psci. This is not the
-> case for all boards. TI AM62x upstream dtsi files have the psci node at
-> /firmware/psci where the current code doesn't find it and creates a new
-> node, so on this SoC we end up with two PSCI nodes.
+On Mon, Dec 16, 2024 at 02:03:18PM +0100, Marco Felsch wrote:
+> At the moment all drivers have to parse the cs-gpios on their own and
+> have to implement the mapping. By this commit we add the support to
+> handle this within the core and if there is valid CS GPIO for a device
+> we assign it accordingly.
 > 
-> Fix this by searching for a node compatible to "arm,psci-0.2" or
-> "arm,psci-1.0" instead of assuming a fixed location.
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+> Changelog:
+> v2:
+>  - add missing 'use_gpio_descriptor' member documentation
 > 
-> [...]
+>  drivers/spi/spi.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++
+>  include/spi/spi.h | 12 +++++++++
+>  2 files changed, 78 insertions(+)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 36d0653a191c..c239de9d8549 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -8,6 +8,8 @@
+>   */
+>  
+>  #include <common.h>
+> +#include <linux/device.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/spi/spi-mem.h>
+>  #include <spi/spi.h>
+>  #include <xfuncs.h>
+> @@ -64,6 +66,8 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
+>  	proxy = xzalloc(sizeof *proxy);
+>  	proxy->master = ctrl;
+>  	proxy->chip_select = chip->chip_select;
+> +	if (ctrl->cs_gpiods)
+> +		proxy->cs_gpiod = ctrl->cs_gpiods[chip->chip_select];
+>  	proxy->max_speed_hz = chip->max_speed_hz;
+>  	proxy->mode = chip->mode;
+>  	proxy->bits_per_word = chip->bits_per_word ? chip->bits_per_word : 8;
+> @@ -215,6 +219,62 @@ static void scan_boardinfo(struct spi_controller *ctrl)
+>  	}
+>  }
+>  
+> +/**
+> + * spi_get_gpio_descs() - grab chip select GPIOs for the master
+> + * @ctlr: The SPI master to grab GPIO descriptors for
+> + */
+> +static int spi_get_gpio_descs(struct spi_controller *ctlr)
+> +{
+> +	int nb, i;
+> +	struct gpio_desc **cs;
+> +	struct device *dev = ctlr->dev;
+> +
+> +	nb = gpiod_count(dev, "cs");
+> +	if (nb < 0) {
+> +		/* No GPIOs at all is fine, else return the error */
+> +		if (nb == -ENOENT)
+> +			return 0;
+> +		return nb;
+> +	}
 
-Applied, thanks!
+This breaks a number of non device tree defconfigs:
 
-[1/1] ARM: psci-client: better search for existing psci node
-      https://git.pengutronix.de/cgit/barebox/commit/?id=cf7bdbf85bf8 (link may not be stable)
+drivers/spi/spi.o: in function `spi_get_gpio_descs':
+/__w/barebox/barebox/drivers/spi/spi.c:277:(.text.spi_register_controller+0x15c): undefined reference to `gpiod_count'
 
-Best regards,
+I haven't looked into it yet what we can best do about it.
+
+Sascha
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
