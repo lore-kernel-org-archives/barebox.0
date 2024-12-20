@@ -1,63 +1,68 @@
-Delivery-date: Fri, 20 Dec 2024 07:13:12 +0100
+Delivery-date: Fri, 20 Dec 2024 09:19:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOWG7-00AL7E-21
+	id 1tOYEm-00ANHf-15
 	for lore@lore.pengutronix.de;
-	Fri, 20 Dec 2024 07:13:12 +0100
+	Fri, 20 Dec 2024 09:19:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOWG7-0000jr-Jv
-	for lore@pengutronix.de; Fri, 20 Dec 2024 07:13:12 +0100
+	id 1tOYEm-0000mb-95
+	for lore@pengutronix.de; Fri, 20 Dec 2024 09:19:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=q2rCcF7Dp821ryiBQc9g7uqt5ug2l/BPGfiIADEe3kc=; b=SnpFvMZInAFvxPEKIJMPAfN+1S
-	Ogqa8LXQD/zR2ruVXBCOJ0IQRkzS10zZ4ixXkmNbwgpcO7LTZAjkfmPTpjj7p5lnEP9kohp3mz+/Q
-	ghyx9ryip1R26psRNXikPZ6XKgHfnQ8SDnL9TheO9cr4R+USYmU2LolKuo5cYy38greq565aPJDG4
-	O7U58RSSA9JTHYHebdYLvZ5BvRh+ZJrcLZmHj3R4ZyTDA62H7iqU5DuTZOYgeYpaQL2+Kk0h+WE7k
-	qqNzxAlgWWEac1KF8mfm0h81zxAzuiJEdyjO1QAmWaqHwnKy6o3pLBJHdNlClXVQ2YhVPM4HQhBGo
-	9KsDpB7Q==;
+	bh=QT4sFSHbpg+gYMEkrw214LAXKuNOG7yuOy9DNqLXkuE=; b=b5ZLJblBPTr8Cq0W+855O1G8Ye
+	4RSnaRl9+1ZZMWcdB6lhXxlsOTqF3TyWWLgpScFVkMdjGsVnrkJalSERnxT8M1uV5H1zEjEsXb8H9
+	pitL1ZQi+1Kub9RRI/Wb4fCRHg66KLRjt3j5HcuK8FcnOotM7t51WUbcduqEvgir+fDi4EwUD/F+X
+	Jk89LKh8C0ebpl+ufxtq0kyyqJk8ypDDBo7TAdVeI9pRnqZO1WQzg1ZasQvNXHdIj391XwqwEYoNn
+	83iqia9MkRx+4OChmdDNgqsG7R/gIU+FkRMgiXvFgWL3gDM92PI+DI3TmylVsFCzSajg3bmJvK0s9
+	I839ciXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOWFY-000000043PG-3vBI;
-	Fri, 20 Dec 2024 06:12:36 +0000
+	id 1tOYEC-00000004G10-0nIM;
+	Fri, 20 Dec 2024 08:19:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOWFX-000000043Oq-0B7w
+	id 1tOYE9-00000004G0c-2DlE
 	for barebox@lists.infradead.org;
-	Fri, 20 Dec 2024 06:12:36 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOWFT-0000WU-TS; Fri, 20 Dec 2024 07:12:31 +0100
-Message-ID: <30375711-d4a8-4e53-a804-a721d45e0ac1@pengutronix.de>
-Date: Fri, 20 Dec 2024 07:12:31 +0100
+	Fri, 20 Dec 2024 08:19:18 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tOYE6-0000eG-LR; Fri, 20 Dec 2024 09:19:14 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tOYE5-004LPD-2G;
+	Fri, 20 Dec 2024 09:19:14 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tOYE6-00DCZ2-1L;
+	Fri, 20 Dec 2024 09:19:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20241219111603.1020442-1-a.fatoum@pengutronix.de>
+References: <20241219111603.1020442-1-a.fatoum@pengutronix.de>
+Message-Id: <173468275440.3146545.3520942967642931694.b4-ty@pengutronix.de>
+Date: Fri, 20 Dec 2024 09:19:14 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Ye Li <ye.li@oss.nxp.com>, Peng Fan <peng.fan@nxp.com>,
- "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: U-Boot Mailing List <u-boot@lists.denx.de>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>,
- dl-uboot-imx <uboot-imx@nxp.com>, Steffen Trumtrar <str@pengutronix.de>
-References: <8074530f-720b-4aea-934b-c0643c356617@pengutronix.de>
- <PAXPR04MB8459A8BB89FAB50D6871EA9388762@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <2200ece8-593b-4ac3-be3e-b05570165e5e@pengutronix.de>
- <d4acb710-7c80-4b71-862e-cee0a16d8cba@oss.nxp.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <d4acb710-7c80-4b71-862e-cee0a16d8cba@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241219_221235_084930_A9DD4B87 
-X-CRM114-Status: GOOD (  12.41  )
+X-CRM114-CacheID: sfid-20241220_001917_574390_73BC2DD0 
+X-CRM114-Status: UNSURE (   9.64  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,43 +84,36 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: i.MX8/9: question about unused DDR PHY trained CSR board array
+Subject: Re: [PATCH 1/3] of: fdt: reserve properties and nodes starting
+ with $ for barebox use
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Ye Li,
 
-On 20.12.24 02:58, Ye Li wrote:
-> On 12/19/2024 6:27 PM, Ahmad Fatoum wrote:
->> On 30.09.24 08:38, Peng Fan wrote:
->>>> I now have the DDR settings for an i.MX9 LPDDR4 board in front of me
->>>> that has different contents for struct
->>>> dram_cfg_param::ddrphy_trained_csr than the default.
->>>>
->>>> I will inquire how that came about, but in parallel I wanted to ask you if
->>>> this is supposed to happen and to alert you to this issue.
->>> Thanks for raising this issue. I think board specific csr should be used.
->>>
->>> I will check with DDR TOOL owners on this.
->> Did you hear back in the meantime?
+On Thu, 19 Dec 2024 12:16:01 +0100, Ahmad Fatoum wrote:
+> We have at least two places, where we associate extra information with a
+> device tree, either to consult this information later or to make sure
+> that an extra allocated buffer is free'd along with the device tree is
+> tacked onto.
 > 
-> We have discussed this internally. The DDR tool may generate different board specific csr. Currently in DDR retention, because we load csr + ddr_phy_pie, so it is safe to use this global csr.
+> For robustness, we will move such extra nodes and properties into their
+> own namespace by prefixing them with a '$'. This character is disallowed
+> by the device tree specification and we have no DTs making use of it.
+> 
+> [...]
 
-So ddr_phy_pie contains the firmware to the DDR PHY µC and it will
-train the PHY and thus will iron over any missing entries in the
-stored CSR? Is my understanding correct?
+Applied, thanks!
 
-> But we agree this global csr is confused and waste some memory. It is better to switch to the board csr.
+[1/3] of: fdt: reserve properties and nodes starting with $ for barebox use
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a3efebe91423 (link may not be stable)
+[2/3] of: fdt: rename /memreserve special node to /$memreserve
+      https://git.pengutronix.de/cgit/barebox/commit/?id=703c04191b65 (link may not be stable)
+[3/3] FIT: cache uncompressed data
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b1babdb15cf0 (link may not be stable)
 
-Thanks for the confirmation.
-
-Cheers,
-Ahmad
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
