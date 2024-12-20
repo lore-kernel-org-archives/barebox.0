@@ -1,71 +1,66 @@
-Delivery-date: Fri, 20 Dec 2024 12:12:35 +0100
+Delivery-date: Fri, 20 Dec 2024 12:14:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOavr-00AQTT-1I
+	id 1tOay6-00AQXH-2O
 	for lore@lore.pengutronix.de;
-	Fri, 20 Dec 2024 12:12:35 +0100
+	Fri, 20 Dec 2024 12:14:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOavr-0006vk-8s
-	for lore@pengutronix.de; Fri, 20 Dec 2024 12:12:35 +0100
+	id 1tOay6-0007hB-Ke
+	for lore@pengutronix.de; Fri, 20 Dec 2024 12:14:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IADRAQJq4Ac5BSLVb8hVRjZNn5YvAbc5TTuXTCgh2Aw=; b=seG7MFvFvOJp57B0DJembTlC+E
-	rm+G0+Gdae0tcrWeEnz+r1rkWbsT8DO5JSpmovOj+CVqGH6hrEnbf3idInAFW4DSKW/WwZnFVZucN
-	1zsfLgh2x+JHQx+2uxKZdgvcqvDLBQm5i0gy/l+sQFR6zMIvvafUfgekCa0sc/KyD0w9mL0nYzlRt
-	hfcuR8XLtgOJfd4llcnQTJg+XmQRtD8erx4zjRMdX5bZHFGzv4uPbBmbTvSjtaJI/99TGttzU8Kut
-	EcEJPPyEXN4HApLb4oLDF+bdXL1wr66n3fH0Doj/n+kvcjk5ch69sOspy79ZP5wgihmpdznFV7I9w
-	dvsj9OnQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=a2KZf0P010SZT0k0Wwc5QINLmaYdZUTwA37A24a3kJs=; b=HnWgW54x2pPYpImZA7Yh1px6Ed
+	Zij036X+SzIPalR2QhjmARJ82WcLaJf8Ym4SdqBVxmp46kwuXWOgPwC9ydtRy4KjpQJ5w1ZjOTOQw
+	wXpzeQs36KvMpd/ciT/UcoIthETYDG7j4rlegaZrrKC85Bh6yNONX+54p0T0V+M3CWzbA0e3hKufF
+	QV2HqXN7T+TO0DvFjmoIy8mkW/4BhH2cEJClLxtxsrNCdD2yqI+w0E3/Q65+mVtw0WI6w2vnzH66I
+	Qi/KwFOs/tXsbXZqfcY0HHJjOjLcoC8IzR9EesGXAlAFGGOI7Eotvqyc8rWS5Cbl3txwbAqNcQRUh
+	GUhBnueA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOavZ-00000004g2r-1ZIW;
-	Fri, 20 Dec 2024 11:12:17 +0000
+	id 1tOaxb-00000004iTH-2WDR;
+	Fri, 20 Dec 2024 11:14:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOZfH-00000004TnJ-2dUX
+	id 1tOacC-00000004eCf-0LCJ
 	for barebox@lists.infradead.org;
-	Fri, 20 Dec 2024 09:51:25 +0000
+	Fri, 20 Dec 2024 10:52:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tOZfG-0008Nf-9g; Fri, 20 Dec 2024 10:51:22 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tOacA-0002W4-KD; Fri, 20 Dec 2024 11:52:14 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tOZfF-004M0F-16;
-	Fri, 20 Dec 2024 10:51:22 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tOZfG-00APCq-05;
-	Fri, 20 Dec 2024 10:51:22 +0100
-Date: Fri, 20 Dec 2024 10:51:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z2U-GS_4Yc_CxuwK@pengutronix.de>
-References: <20241216130324.1592755-1-m.felsch@pengutronix.de>
- <20241216130324.1592755-6-m.felsch@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tOac9-004MSg-27;
+	Fri, 20 Dec 2024 11:52:14 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tOacA-001FPQ-16;
+	Fri, 20 Dec 2024 11:52:14 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: ejo@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 20 Dec 2024 11:52:12 +0100
+Message-Id: <20241220105213.297539-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241216130324.1592755-6-m.felsch@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241220_015123_669615_DE8792D2 
-X-CRM114-Status: GOOD (  28.52  )
+X-CRM114-CacheID: sfid-20241220_025216_121929_ACB3E6AF 
+X-CRM114-Status: GOOD (  13.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,83 +82,98 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 06/12] spi: add support to handle cs-gpios
+Subject: [PATCH RESEND 1/2] cdev: allow overriding partition overlap check
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Dec 16, 2024 at 02:03:18PM +0100, Marco Felsch wrote:
-> At the moment all drivers have to parse the cs-gpios on their own and
-> have to implement the mapping. By this commit we add the support to
-> handle this within the core and if there is valid CS GPIO for a device
-> we assign it accordingly.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
-> Changelog:
-> v2:
->  - add missing 'use_gpio_descriptor' member documentation
-> 
->  drivers/spi/spi.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++
->  include/spi/spi.h | 12 +++++++++
->  2 files changed, 78 insertions(+)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 36d0653a191c..c239de9d8549 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -8,6 +8,8 @@
->   */
->  
->  #include <common.h>
-> +#include <linux/device.h>
-> +#include <linux/gpio/consumer.h>
->  #include <linux/spi/spi-mem.h>
->  #include <spi/spi.h>
->  #include <xfuncs.h>
-> @@ -64,6 +66,8 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
->  	proxy = xzalloc(sizeof *proxy);
->  	proxy->master = ctrl;
->  	proxy->chip_select = chip->chip_select;
-> +	if (ctrl->cs_gpiods)
-> +		proxy->cs_gpiod = ctrl->cs_gpiods[chip->chip_select];
->  	proxy->max_speed_hz = chip->max_speed_hz;
->  	proxy->mode = chip->mode;
->  	proxy->bits_per_word = chip->bits_per_word ? chip->bits_per_word : 8;
-> @@ -215,6 +219,62 @@ static void scan_boardinfo(struct spi_controller *ctrl)
->  	}
->  }
->  
-> +/**
-> + * spi_get_gpio_descs() - grab chip select GPIOs for the master
-> + * @ctlr: The SPI master to grab GPIO descriptors for
-> + */
-> +static int spi_get_gpio_descs(struct spi_controller *ctlr)
-> +{
-> +	int nb, i;
-> +	struct gpio_desc **cs;
-> +	struct device *dev = ctlr->dev;
-> +
-> +	nb = gpiod_count(dev, "cs");
-> +	if (nb < 0) {
-> +		/* No GPIOs at all is fine, else return the error */
-> +		if (nb == -ENOENT)
-> +			return 0;
-> +		return nb;
-> +	}
+barebox will refuse to create overlapping partitions that are not
+completely identical to an existing one.
 
-This breaks a number of non device tree defconfigs:
+The user on the shell may still want to allocate partitions that are
+known to overlap, e.g. because they place multiple fixed partition into
+one MBR partition or because we want to operate as a part of a cdev
+interactively as if it were once device.
 
-drivers/spi/spi.o: in function `spi_get_gpio_descs':
-/__w/barebox/barebox/drivers/spi/spi.c:277:(.text.spi_register_controller+0x15c): undefined reference to `gpiod_count'
+Don't preclude such use cases by adding a flag that just disables
+overlap checks.
 
-I haven't looked into it yet what we can best do about it.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v0 -> v1 RESEND:
+  - actually send out both patches
+---
+ fs/devfs-core.c  | 23 +++++++++++++++--------
+ include/driver.h |  1 +
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-Sascha
-
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 0651be3d8fc4..b143620ba2a0 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -493,11 +493,11 @@ static struct cdev *check_overlap(struct cdev *cdev, const char *name, loff_t of
+ static struct cdev *__devfs_add_partition(struct cdev *cdev,
+ 		const struct devfs_partition *partinfo, loff_t *end)
+ {
++	unsigned inherited_flags = partinfo->flags;
+ 	loff_t offset, size;
+ 	loff_t _end = end ? *end : 0;
+ 	static struct cdev *new;
+ 	struct cdev *overlap;
+-	unsigned inherited_flags = 0;
+ 
+ 	if (cdev_by_name(partinfo->name))
+ 		return ERR_PTR(-EEXIST);
+@@ -530,14 +530,21 @@ static struct cdev *__devfs_add_partition(struct cdev *cdev,
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	overlap = check_overlap(cdev, partinfo->name, offset, size);
+-	if (overlap) {
+-		if (!IS_ERR(overlap)) {
+-			/* only fails with -EEXIST, which is fine */
+-			(void)devfs_create_link(overlap, partinfo->name);
++	/* DEVFS_PARTITION_CAN_OVERLAP is only allowed for partitions that have
++	 * a defined offset. Everything else must pass the overlap check
++	 */
++	if (!(partinfo->offset > 0 && (inherited_flags & DEVFS_PARTITION_CAN_OVERLAP))) {
++		overlap = check_overlap(cdev, partinfo->name, offset, size);
++		if (overlap) {
++			if (!IS_ERR(overlap)) {
++				/* only fails with -EEXIST, which is fine */
++				(void)devfs_create_link(overlap, partinfo->name);
++			}
++
++			return overlap;
+ 		}
+ 
+-		return overlap;
++		inherited_flags &= ~DEVFS_PARTITION_CAN_OVERLAP;
+ 	}
+ 
+ 	/* Filter flags that we want to pass along to children */
+@@ -547,7 +554,7 @@ static struct cdev *__devfs_add_partition(struct cdev *cdev,
+ 		struct mtd_info *mtd;
+ 
+ 		mtd = mtd_add_partition(cdev->mtd, offset, size,
+-				partinfo->flags | inherited_flags, partinfo->name);
++				inherited_flags, partinfo->name);
+ 		if (IS_ERR(mtd))
+ 			return (void *)mtd;
+ 
+diff --git a/include/driver.h b/include/driver.h
+index 3aef385bc837..267e34294511 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -583,6 +583,7 @@ extern struct list_head cdev_list;
+ #define DEVFS_PARTITION_BOOTABLE_ESP	(1U << 12)
+ #define DEVFS_PARTITION_FOR_FIXUP	(1U << 13)
+ #define DEVFS_WRITE_AUTOERASE		(1U << 14)
++#define DEVFS_PARTITION_CAN_OVERLAP	(1U << 15)
+ 
+ /**
+  * cdev_write_requires_erase - Check whether writes must be done to erased blocks
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
