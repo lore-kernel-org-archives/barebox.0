@@ -1,67 +1,68 @@
-Delivery-date: Fri, 20 Dec 2024 09:52:49 +0100
+Delivery-date: Fri, 20 Dec 2024 09:52:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOYkb-00ANlm-0N
+	id 1tOYkg-00ANmH-1R
 	for lore@lore.pengutronix.de;
-	Fri, 20 Dec 2024 09:52:49 +0100
+	Fri, 20 Dec 2024 09:52:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOYkb-00060t-3W
-	for lore@pengutronix.de; Fri, 20 Dec 2024 09:52:49 +0100
+	id 1tOYkg-00062y-E3
+	for lore@pengutronix.de; Fri, 20 Dec 2024 09:52:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=A08PM/9kpWwRzfabuLeO8wh1MW3vbqnyRxGHVg0QLlY=; b=luTLRb2r/+0R/4id0uJcOjFemu
-	O3ECyFD3jQ3xzk8PoQ1+DdrqqPL94o3eTeJ0TZHK7N16vSBOsSj2jIWhHQaHKBxKCA9v2LWUi4IXs
-	a6lsaQyHodGaCGKw62ZUs/puBr7G4O9VhqIDcfi4WmoC3A8wrdzL3/L2UaleRzZlUE6pBdzNeOrxG
-	zZhryocdUMISUtbQ0eS4OB06bYqDM5FU3qsCtArHISmALavOoJ1tc6WIPPX+Mc2/7LieKwmV92lH1
-	UrklQnsMVMeykARIAVDGS/TQcLN2W1xNvrDNdJzRlZaLopjTB0gw1iUqdbMXrNP0xYw5pFA0e3N0c
-	bdwziTpA==;
+	bh=s0lc+zj6IL5GFgU/jUuN8noLU1j8oi0PO6J9rdzEM0M=; b=N+hDlTdhz2EGMGg0SIzArtEEQI
+	1i00wVuVU4XQngIu3Z+dNm9zKQ58V4uVPxgSAFrq5f6BJyBSVlKjrLlHgjqVHdR/upTkVULo48sw8
+	l+15Z1tTovl4rO99o0zdd1QYe0613MTMtZCu+BVKxblgCtg1cHd9arKsC92gbBYj0dYmQd9n5Ujqo
+	Vo9+DbRPLgIOjtIXOb8UVxq7mv0Vm0zu7iHd1jjtgXf1+Hku139CBLY4rHORfbFsFV5ahidDhYfoD
+	G2X9FdhuNTR+db5T48JsfAL0X/bDhIrregWZ74YkOues9jm8VSKqJbDbMGfOPk6aYl5qRy6LSmoit
+	cqorAEFg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOYkA-00000004KnG-1MCZ;
-	Fri, 20 Dec 2024 08:52:22 +0000
+	id 1tOYkJ-00000004Kqe-3Lyi;
+	Fri, 20 Dec 2024 08:52:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOYjH-00000004Kdy-1ltL
+	id 1tOYkG-00000004Kpe-30Yf
 	for barebox@lists.infradead.org;
-	Fri, 20 Dec 2024 08:51:28 +0000
+	Fri, 20 Dec 2024 08:52:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOYjF-0005eV-VU; Fri, 20 Dec 2024 09:51:25 +0100
+	id 1tOYkF-0005q9-IF; Fri, 20 Dec 2024 09:52:27 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOYjF-004LX4-02;
-	Fri, 20 Dec 2024 09:51:25 +0100
+	id 1tOYkE-004LXA-1w;
+	Fri, 20 Dec 2024 09:52:27 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOYjF-00DDwd-2K;
-	Fri, 20 Dec 2024 09:51:25 +0100
+	id 1tOYkF-00DE0m-0y;
+	Fri, 20 Dec 2024 09:52:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241217115253.3211836-1-a.fatoum@pengutronix.de>
-References: <20241217115253.3211836-1-a.fatoum@pengutronix.de>
-Message-Id: <173468468571.3151844.6436759867454614595.b4-ty@pengutronix.de>
-Date: Fri, 20 Dec 2024 09:51:25 +0100
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Jonas Rebmann <jre@pengutronix.de>
+In-Reply-To: <20241218-toradex-colibri-imx6-v2-1-a5e810ef7a5b@pengutronix.de>
+References: <20241218-toradex-colibri-imx6-v2-1-a5e810ef7a5b@pengutronix.de>
+Message-Id: <173468474729.3152094.9455792557747088421.b4-ty@pengutronix.de>
+Date: Fri, 20 Dec 2024 09:52:27 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241220_005127_461498_95954392 
-X-CRM114-Status: UNSURE (   7.08  )
+X-CRM114-CacheID: sfid-20241220_005228_757724_E7246DE2 
+X-CRM114-Status: UNSURE (   9.07  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,26 +85,29 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] rtc: pcf85063: fix potential OOB write in
- PCF85063 NVMEM read
+Subject: Re: [PATCH v2] ARM: boards: Add support for todarex colibri imx6
+ on iris
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 17 Dec 2024 12:52:52 +0100, Ahmad Fatoum wrote:
-> The nvmem interface supports variable buffer sizes, while the regmap
-> interface operates with fixed-size storage. If an nvmem client uses a
-> buffer size less than 4 bytes, regmap_read will write out of bounds
-> as it expects the buffer to point at an unsigned int.
+On Wed, 18 Dec 2024 15:08:19 +0100, Jonas Rebmann wrote:
+> This patch adds support for the toradex colibri imx6 on the carrier
+> board toradex iris. Both imx6dl and imx6s variants are supported but
+> only the imx6dl was available for testing.
 > 
-> Fix this by using an intermediary unsigned int to hold the value.
+> Tested was:
+>  - UART console
+>  - Boot via USB loader
+>  - Boot via eMMC
+>  - Ethernet/tftp/nfs
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] rtc: pcf85063: fix potential OOB write in PCF85063 NVMEM read
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e3de867716e9 (link may not be stable)
+[1/1] ARM: boards: Add support for todarex colibri imx6 on iris
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9581980c4241 (link may not be stable)
 
 Best regards,
 -- 
