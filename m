@@ -1,68 +1,67 @@
-Delivery-date: Fri, 20 Dec 2024 09:49:01 +0100
+Delivery-date: Fri, 20 Dec 2024 09:52:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOYgu-00ANjZ-28
+	id 1tOYkb-00ANlm-0N
 	for lore@lore.pengutronix.de;
-	Fri, 20 Dec 2024 09:49:01 +0100
+	Fri, 20 Dec 2024 09:52:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOYgu-0005Is-LC
-	for lore@pengutronix.de; Fri, 20 Dec 2024 09:49:01 +0100
+	id 1tOYkb-00060t-3W
+	for lore@pengutronix.de; Fri, 20 Dec 2024 09:52:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XGW1bAOtB7ZtSPmMXOWJVcgA+AxypS5Hjd2M9KEFpFw=; b=mv69rz4LGze/6zIKwHk7tzzkbu
-	pq66bBp1A9LRLOQlrTShsBHEm0r+a/UHPVfe3i97bZ4KIofGPhOfdkF8uNTujgdWdbPBiIrU6cyOF
-	RM6UZk2IHoPF86IJybWScrgyo3/GtercjYEi0lTFOBNhGZkrttpQLBNJK4UiF00P3D40SpJ0uZdSR
-	yT1e21Q5tHGAVmNx+apoKQu/ufDRi8XLqREFcpcs0fpNkoMoBycb6W/nqgSi7qvq52IRT1DQyFXmv
-	aDAxBMA/kr4L6k9vj0ofzR4PdZfYWOFUPB8He7vMUBbWjfUrRSmwVg5BiGe6bfKRtldTQdUN/BO50
-	slhDtjVQ==;
+	bh=A08PM/9kpWwRzfabuLeO8wh1MW3vbqnyRxGHVg0QLlY=; b=luTLRb2r/+0R/4id0uJcOjFemu
+	O3ECyFD3jQ3xzk8PoQ1+DdrqqPL94o3eTeJ0TZHK7N16vSBOsSj2jIWhHQaHKBxKCA9v2LWUi4IXs
+	a6lsaQyHodGaCGKw62ZUs/puBr7G4O9VhqIDcfi4WmoC3A8wrdzL3/L2UaleRzZlUE6pBdzNeOrxG
+	zZhryocdUMISUtbQ0eS4OB06bYqDM5FU3qsCtArHISmALavOoJ1tc6WIPPX+Mc2/7LieKwmV92lH1
+	UrklQnsMVMeykARIAVDGS/TQcLN2W1xNvrDNdJzRlZaLopjTB0gw1iUqdbMXrNP0xYw5pFA0e3N0c
+	bdwziTpA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOYgT-00000004KGf-2toi;
-	Fri, 20 Dec 2024 08:48:33 +0000
+	id 1tOYkA-00000004KnG-1MCZ;
+	Fri, 20 Dec 2024 08:52:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOYgR-00000004KGJ-3DAe
+	id 1tOYjH-00000004Kdy-1ltL
 	for barebox@lists.infradead.org;
-	Fri, 20 Dec 2024 08:48:32 +0000
+	Fri, 20 Dec 2024 08:51:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOYgQ-0005AS-D3; Fri, 20 Dec 2024 09:48:30 +0100
+	id 1tOYjF-0005eV-VU; Fri, 20 Dec 2024 09:51:25 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOYgP-004LWq-0f;
-	Fri, 20 Dec 2024 09:48:29 +0100
+	id 1tOYjF-004LX4-02;
+	Fri, 20 Dec 2024 09:51:25 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tOYgP-00DDr8-2w;
-	Fri, 20 Dec 2024 09:48:29 +0100
+	id 1tOYjF-00DDwd-2K;
+	Fri, 20 Dec 2024 09:51:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-In-Reply-To: <20241217140833.3693113-1-a.fatoum@pengutronix.de>
-References: <20241217140833.3693113-1-a.fatoum@pengutronix.de>
-Message-Id: <173468450991.3151505.6137373893262263392.b4-ty@pengutronix.de>
-Date: Fri, 20 Dec 2024 09:48:29 +0100
+In-Reply-To: <20241217115253.3211836-1-a.fatoum@pengutronix.de>
+References: <20241217115253.3211836-1-a.fatoum@pengutronix.de>
+Message-Id: <173468468571.3151844.6436759867454614595.b4-ty@pengutronix.de>
+Date: Fri, 20 Dec 2024 09:51:25 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241220_004831_809145_18B308D3 
-X-CRM114-Status: UNSURE (   6.97  )
+X-CRM114-CacheID: sfid-20241220_005127_461498_95954392 
+X-CRM114-Status: UNSURE (   7.08  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,26 +84,26 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] video: dw-hdmi: fix I2C controller probe
- breakage
+Subject: Re: [PATCH master] rtc: pcf85063: fix potential OOB write in
+ PCF85063 NVMEM read
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 17 Dec 2024 15:08:33 +0100, Ahmad Fatoum wrote:
-> The dw-hdmi I2C controller binding doesn't support listing I2C slaves
-> as child nodes in the device tree. This is fine as the EDID I2C address
-> is well-known, but trying to parse the dw-hdmi device tree node as if it
-> were a normal I2C controller will fail:
+On Tue, 17 Dec 2024 12:52:52 +0100, Ahmad Fatoum wrote:
+> The nvmem interface supports variable buffer sizes, while the regmap
+> interface operates with fixed-size storage. If an nvmem client uses a
+> buffer size less than 4 bytes, regmap_read will write out of bounds
+> as it expects the buffer to point at an unsigned int.
 > 
->   ERROR: i2c11: of_i2c: invalid reg on /hdmi@fe0a0000/ports
+> Fix this by using an intermediary unsigned int to hold the value.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] video: dw-hdmi: fix I2C controller probe breakage
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a1f21c191888 (link may not be stable)
+[1/1] rtc: pcf85063: fix potential OOB write in PCF85063 NVMEM read
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e3de867716e9 (link may not be stable)
 
 Best regards,
 -- 
