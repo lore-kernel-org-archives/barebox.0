@@ -1,68 +1,47 @@
-Delivery-date: Fri, 20 Dec 2024 02:59:42 +0100
+Delivery-date: Fri, 20 Dec 2024 07:13:12 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOSIo-00AGS3-0C
+	id 1tOWG7-00AL7E-21
 	for lore@lore.pengutronix.de;
-	Fri, 20 Dec 2024 02:59:42 +0100
+	Fri, 20 Dec 2024 07:13:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOSIn-0006yu-Qj
-	for lore@pengutronix.de; Fri, 20 Dec 2024 02:59:42 +0100
+	id 1tOWG7-0000jr-Jv
+	for lore@pengutronix.de; Fri, 20 Dec 2024 07:13:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:
-	Subject:Date:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UFb1udy6xT5bFcJqoKpd1Kw7nA9pyu7FskAsrkuvS1I=; b=dYWgRONwRycbtSW8IQi7RYpUEp
-	lJRcrF8kE0oJ5Sumoo2JlxxpZtm+Rp5Jw+kHkvhVEVObuGvLrAuMfGIJj1Vqfyz8dUXOlTXPtoOA9
-	oBtMbgAbNXahi3npmZ3Guuq0pF8uc8rcHOfOudmqf8aZyXIvq96M9PN5mpxTrCeNtqhYwU5jcJSnE
-	DhOLv5Y4Mzm1LpRo2+DCuPIZMW+yhGULxuQ6iZGZaUn7Hh6m+h3z3to9ZoGFPqC5NBckVD+jChFVs
-	2ZU3gnXHYPjNWZWJ5DYVJFmhdyGvnLwA68WMExXMn0OSmUWaDNWdM+H5EfBCe/dUum83tPcK/M/la
-	a81qm5/g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=q2rCcF7Dp821ryiBQc9g7uqt5ug2l/BPGfiIADEe3kc=; b=SnpFvMZInAFvxPEKIJMPAfN+1S
+	Ogqa8LXQD/zR2ruVXBCOJ0IQRkzS10zZ4ixXkmNbwgpcO7LTZAjkfmPTpjj7p5lnEP9kohp3mz+/Q
+	ghyx9ryip1R26psRNXikPZ6XKgHfnQ8SDnL9TheO9cr4R+USYmU2LolKuo5cYy38greq565aPJDG4
+	O7U58RSSA9JTHYHebdYLvZ5BvRh+ZJrcLZmHj3R4ZyTDA62H7iqU5DuTZOYgeYpaQL2+Kk0h+WE7k
+	qqNzxAlgWWEac1KF8mfm0h81zxAzuiJEdyjO1QAmWaqHwnKy6o3pLBJHdNlClXVQ2YhVPM4HQhBGo
+	9KsDpB7Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOSI1-00000003gNW-3fSd;
-	Fri, 20 Dec 2024 01:58:53 +0000
-Received: from mail-am6eur05on20625.outbound.protection.outlook.com ([2a01:111:f403:2612::625] helo=EUR05-AM6-obe.outbound.protection.outlook.com)
+	id 1tOWFY-000000043PG-3vBI;
+	Fri, 20 Dec 2024 06:12:36 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOSHy-00000003gME-0q0X
+	id 1tOWFX-000000043Oq-0B7w
 	for barebox@lists.infradead.org;
-	Fri, 20 Dec 2024 01:58:52 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OIH0GJgJ3yuqU5p+aY9Cuttm4GexZW2NTclJ1WHGy4L/oPDwVAU7VolGLIwgyUKzhneeztG9z8CP8c7Tpy92A2iseJvCxDKMnbsr+3pYQdz0pxJu43J3gIVKOPN9+wt9BH2gw61IPcJNVHPBZrddVNjMhZgceR2ZRCYLy7HX2ldjj5zoyGnqtYYw/Gxtu33vPWwZjOBTmv0wXH0h4LanXLD30Rdwqhil4LtdUyS90610bILqIsqWGe/AZ+5TGYbNXXksh+uaQkW1tlWXetAA5OFz53IB5dtke9W5ZNV2DP86VWCOmgwgZoMrGp775sFCq1fWQtudBVa9nXtCICM6vA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UFb1udy6xT5bFcJqoKpd1Kw7nA9pyu7FskAsrkuvS1I=;
- b=OjhkkQXDxm/VD8Aw2K2r5ep0tzdloL8PrBYHQWednhUjvaMqBZf0i8jU9+fx71Wqs3e4wXxexb9RI4S8STHhO0S4f9LquPYtLxznaTss1I0GrWXxGYSnlxpd7gRW7jrN3R0z0t68b6Syl0IpbcN7el3DJNCaEhprHd0pHoqk3IU5TpJ1JLS8BTj3fVwp61aHqFlKTBgLhY5C9lxM0xwphqEz/Q6+ke7R0SfP7yPlQNpNUwHQ3OSbX20MayWkN/FVMcL9yQBrOWU8/I9rZQRpgeTPw4iPQrgYkyqFI3fpvto2yYMSiVOzXhA2NFa9SWWecfNiWMNsbCRVvvUMF8OSdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UFb1udy6xT5bFcJqoKpd1Kw7nA9pyu7FskAsrkuvS1I=;
- b=OgLH0XgFrWD+WZcy74axs5Sy7ouerPsnmY+cBBJke6C67KslmmU0e0PhiX7uB8b0Tb0tomemsyja+8EjS9MQOv7zZq1g3CH1bK9/08uWVg3PpsNmpvHpgRwJo/iQUB7TrS//ko2Na3qGzfpsBW/aIWj+uQJMQ7InANVeu3hG+UuYg9i4yA2qYfk0D+HWBPjDePEFlHyoAiq3ZfChN5hz1F+oXIXc73NI1vh50qlswCTKM7IAs1TfzfPnhV8AavzSQcpa39uXsfPQNxhqdGPiL9iQM268cqlgweGMD9tnvnJUp3XZ20fDks4nDcCXE4Ru5RI4rXMoolJN2Zj92sB/TQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS4PR04MB9436.eurprd04.prod.outlook.com (2603:10a6:20b:4ec::5)
- by PA1PR04MB10179.eurprd04.prod.outlook.com (2603:10a6:102:460::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.16; Fri, 20 Dec
- 2024 01:58:44 +0000
-Received: from AS4PR04MB9436.eurprd04.prod.outlook.com
- ([fe80::afae:fb35:fc8:5c90]) by AS4PR04MB9436.eurprd04.prod.outlook.com
- ([fe80::afae:fb35:fc8:5c90%5]) with mapi id 15.20.8272.005; Fri, 20 Dec 2024
- 01:58:44 +0000
-Message-ID: <d4acb710-7c80-4b71-862e-cee0a16d8cba@oss.nxp.com>
-Date: Fri, 20 Dec 2024 09:58:38 +0800
+	Fri, 20 Dec 2024 06:12:36 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tOWFT-0000WU-TS; Fri, 20 Dec 2024 07:12:31 +0100
+Message-ID: <30375711-d4a8-4e53-a804-a721d45e0ac1@pengutronix.de>
+Date: Fri, 20 Dec 2024 07:12:31 +0100
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+To: Ye Li <ye.li@oss.nxp.com>, Peng Fan <peng.fan@nxp.com>,
  "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
 Cc: U-Boot Mailing List <u-boot@lists.denx.de>,
  "barebox@lists.infradead.org" <barebox@lists.infradead.org>,
@@ -70,107 +49,15 @@ Cc: U-Boot Mailing List <u-boot@lists.denx.de>,
 References: <8074530f-720b-4aea-934b-c0643c356617@pengutronix.de>
  <PAXPR04MB8459A8BB89FAB50D6871EA9388762@PAXPR04MB8459.eurprd04.prod.outlook.com>
  <2200ece8-593b-4ac3-be3e-b05570165e5e@pengutronix.de>
+ <d4acb710-7c80-4b71-862e-cee0a16d8cba@oss.nxp.com>
 Content-Language: en-US
-From: Ye Li <ye.li@oss.nxp.com>
-In-Reply-To: <2200ece8-593b-4ac3-be3e-b05570165e5e@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2PR03CA0127.apcprd03.prod.outlook.com
- (2603:1096:4:91::31) To AS4PR04MB9436.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ec::5)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9436:EE_|PA1PR04MB10179:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f7fb16e-6661-4e7d-a764-08dd2099d5c3
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?VlRsVU1DL2lyK09EaXRxM2pQa0wrSERvV0ROZXdXVmpRTXdXdlVYYkRGTGZM?=
- =?utf-8?B?VVJZTFZKM1hrOW4xcXI2bjVXcm83VE5GTmNKeWhqSnRSRGNxdTZJMmpkZDNk?=
- =?utf-8?B?Sml5cDhUUDN1cFBJWEhuNTBTWjVJVEhyYkxscXdhcWdHSlo4dlVqRmJaKytG?=
- =?utf-8?B?eVEyQkR3SFBtNzErUmJlU2F3QUl4bFlpSGZGMlI2RmdGRnRqa3FQOW0xaGlq?=
- =?utf-8?B?VE8wdU5rVEZqTGJjckFVZkkweVlNUEZvOFpTSS8wUUtSYlBmbzFqd0dWa2la?=
- =?utf-8?B?bk8wZ2tsbHRheDZzcGN6UjFBMCtWdFIyMkZYRkk4b21hSE5VYXBWUEVpWjVh?=
- =?utf-8?B?ZXljUEVTbHBkU3cxdjkyeHZDbDYrWE11WSt0ZmNPZXErWlExYndZTVZPZFhy?=
- =?utf-8?B?QVBJeWcvc1dreTNtRjE4SHZieW5VMzdDUHEyZHArNDExQW9WMlFBOGRDTUNX?=
- =?utf-8?B?S1BjUkZlTTErcG9FeDAxa3U4VXlqTjZNc2NNTWdUTk4yd3BiczQxYW9hcnc0?=
- =?utf-8?B?ZDBSSTdSTGNQOEVNVFVLWmFQWDdGWVc2ZTNYL3JRYUNKVFpVa0U5QllRRC9z?=
- =?utf-8?B?bXgydEsxZW11TjhEVjZmeldrbVVNcTlkK2plKzE0SVllZEhkY21ZcE91T3A5?=
- =?utf-8?B?T1VZUXdHdk0rTjZPa1dIZXNlNlNyRGltVnZrY0pYTzEvcTFBN3BncUxKZnpF?=
- =?utf-8?B?enNXcWIwcU5BY3hPNHp3cWxoUHBmSXRJVHZVVkFFY3ZhTlFVV1FCV3pvbGNr?=
- =?utf-8?B?dUdKSnl5ZUJ6SUhpZEJjanYyS3NTanUyWTAzQlE2cHJuazc2Y0EzZTBpWEcw?=
- =?utf-8?B?cGx4UXI2bVN4VHRxZUFQKzNtRXQ1R2pENGZYczFadVZZN1FISFRZY2EvYTE2?=
- =?utf-8?B?a0NHU1ZIbjlFTEpIKytzYWlnRjAzeWhoVzhlVjBLb2k5OWJ1WURGcUdRUTl0?=
- =?utf-8?B?UFZyaTd0WFNaMFlKQXh0YzNUc0RDNkxKUDYvMDZsODhubkFOOFBVdHBqY2d3?=
- =?utf-8?B?MS9yTTFuUUZSa0drMmJUdit5VlBvSjluRGxWRnhUb3M0bDZYeWJpMnBkcUYx?=
- =?utf-8?B?cFVXdlZhRzVuRjZMM3N3a3ZnS0tuRUdIR2hJN3R5Q3RLUDBLRDQrRE8wWnNw?=
- =?utf-8?B?NXBYR1FhZVBld0RXNWJsVGE4ZGRXQ3l2aTN0ZVB4OGNSTXQ4aWJXWS96amZn?=
- =?utf-8?B?bTl6MVhQQWlGMmFydjJ1UVNzNk01UytkNGFPZ0VZSVZPRko4U2hlWmZsU2Js?=
- =?utf-8?B?c1ZjNzVsTmhRWG5NZkFoaVVIOS9sN2xrK1duK09UVFJ4aW5NQ1Y4c2txRTFp?=
- =?utf-8?B?YW1BT2x2ZjZhUEpGUjhRUVhxdTNoMWdrQkt5enNueTZvaGRqakpzTTlRSGo3?=
- =?utf-8?B?VWN6VDNSdUlBWmNYcXRqTVdLV1IxaExTazNnR2swaTlWK1pSTUdDcUN1aklm?=
- =?utf-8?B?NzUzQzNzK21tbjFOS29nNS9EaHpKdXR5RUE5Z3RJRmNmeUJ4MjYxLzc4UG45?=
- =?utf-8?B?YlNjTmcvQThoeVMxb0NENzBLT1hCNWhuQUE4UUd2TGV4K3JveGpQd3pHb2U4?=
- =?utf-8?B?ZlduL0ZzQ0w3M056Z3RMTnhsMTFtQUtoeEpPNWZ1Z3ZZY05iM0NSQm5aSzQz?=
- =?utf-8?B?b0xWSnBOaGJ0YlRraVNnUzc1MjBjazFpREMyeW9semRyV1FTVFBUYkFBQXVl?=
- =?utf-8?B?dlVta2RPdHFoT2wzM3lEUkxhQmV2Ky9qb2NncHNWR3g5TGdHWG5rbklBRWRS?=
- =?utf-8?B?bkNlamRjeXVxbTRXRW14TWMrRTlGUXlaTXhqMEdVUGJtbWJxaTJvYkk0dS9a?=
- =?utf-8?B?RWx3OXZsekdMQU9OOXpzYXBnV1lNd3FCZFFtVWZhRHFnaVFoc09IQnQzcW83?=
- =?utf-8?Q?jHkp2fzqugv78?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9436.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WUZHSyt0YkhSNlFBQjl2aFNZNlM4Uk9qSWd5TUtZajMyUlBINVRiL3RwVm96?=
- =?utf-8?B?OWdscXB6MSsvdCtHeG9tcWFhZmk0Qmk5aTdLUTRXZEc0OXVnZjVyYnpoMXZI?=
- =?utf-8?B?ZS85Vys5R1FRVzZ3TUw4b3ZYUkpPaDBDdnFRd05MMHN6OUxaUlRsMmN5UEdQ?=
- =?utf-8?B?MHU3SVhtYUlrSk8wdlRiVEhRazc4NUhZcEViVEV1M1ZuK0MzU3BEVWhLSzVl?=
- =?utf-8?B?dVViV3hzQzF1WktMeThFK2lEelhEVUh3WUxJRytLaXlaS0FlNDNjS1hKaTZD?=
- =?utf-8?B?bjk0bVF0Qm5BSEF3Nk9acW9lVU51MDd5ZkdBRmNxSVByNEtWUkRLMGYvakdT?=
- =?utf-8?B?WjFyNUhGbTl5TloySFR2NmRZZlNOOWFVdVFEa1lpUXhRZ3dUUkw1Uk1GSmpZ?=
- =?utf-8?B?TXVDTVlhaFdPbE93UEFjM21lZnNKZVB0NUg3TjFLZUJHRFlsUHVUUjhvM3Z5?=
- =?utf-8?B?NkUwb0pRSGxsalRFRit1NWMvRjlsQTRlSTJPc3N0RUhhSnBpUkh3eGprNHk5?=
- =?utf-8?B?WHVUKytXY1E0RW9lQlZnbWNlWjlBMlBMeDZHaDRXdlVyYXMwdWZsVFE2Q2tU?=
- =?utf-8?B?ZnRYejNrOVhQbWh2M210YzI3emNJeHhLNngxZGpGUEZTZTFOMEFjVFN2NGth?=
- =?utf-8?B?ZlVCUGNRT2dJbGtDc3d4aWZBclQxQWRzVGIwZEdPTW5QVWZILzFqZ3NlRmY2?=
- =?utf-8?B?aTR6dDVhblIzZVo3TXUvdlRENmZPbHpEQ2VpV0pjZ0JCR09SRzlpbklvWmhH?=
- =?utf-8?B?ZTlWMG9LMzRsTXBKV3lSck1zSUVKb2h0Tm1SQmFKaWdCNU1RSnFkWlJaNDZF?=
- =?utf-8?B?YU01TTM2Tm8yRnB5UERIUVNpR1J4NTF1RDJlK1ZZN0tIdHVJUWx6RENsR2NG?=
- =?utf-8?B?UGY4NmpyWm5lQmovZk11a0R4SElmRzZDWWNvRUs1S2x3eWdVUmQ4b2EyRTlP?=
- =?utf-8?B?K09UTmpRMUYxc1ExdE9JUkJxTVRabm5BcERMb1VvUnJNTVlpYjZ4ZUZuN2VY?=
- =?utf-8?B?TEpiaEZub1EvbHRMdFR1dEt3TiswN2lMRVNXc05QZ3dhZUd0Y3pNLzdZZEN2?=
- =?utf-8?B?eG9wT3FOVTVWa1lMZHk4ekZ2R3ZuanREZER4YzcrMERNSlF0T0Q1WFp6NmEw?=
- =?utf-8?B?eXVUa0dQaU00OHJKMEh1TXhpN2VzeGcycURsOEFtcnNLdzFjN3RCempHYnpu?=
- =?utf-8?B?OUx6OVN2Tk1aMGtKVE43K0RtWjVYTTZYdlVrcFExNkE2czZJRTV2Rzlzclp5?=
- =?utf-8?B?ZVRDYnRWQm1uWmVLRm9CdFNGSEhOcHY2SlVyTVpkNEFqOG5mTkp3bDk2YmdT?=
- =?utf-8?B?R1VaYzF6bm9URnhVcTM3MlVFcloyYmFpdThLUDZaOExSVnZza0xuZlJxcGRV?=
- =?utf-8?B?dlBFb2F3MmwvODBLNkZZWWQzMHVtVjA4bTY3MisyZ3hpRHdiZkpyQWZwZGxw?=
- =?utf-8?B?SVhVYnZwUlFYbzFNQVJRZzdDYktrZmtXTG5sc0JJVk53WVUrRnhJMnQ4R3lS?=
- =?utf-8?B?N0ZkSGJKekl5cHFaRVJITG9NQU9wME5DTWM5Ykd6bHpaMTIwV3RFWFpWMU9J?=
- =?utf-8?B?ZitzNFJaU1hQYzh5dGFLbzVIdldDVnpEQm5VaWFrRXlOUjNWa0NaRXdYU2p2?=
- =?utf-8?B?QW1Xamg3WDc4WUwrekFvNXV5ZTExTkpJK0NVVEU1Y1c5UjhsbytsTll5a3Fa?=
- =?utf-8?B?ZEw3eDRQemV1KzFLekt1ejEzK3lRR3pRSGZnYU5vcHpQMFlRamV1N3BUN0xD?=
- =?utf-8?B?Y3NIOEY4YjA2UGVrS3Vkc3VmSnJyVnRsVW1oQ204d1YxVTVXZUdhbTZ0eW80?=
- =?utf-8?B?VENKSDZBTjNleWY3T05OWjVhVGdXb2QxRUptbi9jNlU0NFRxcW91YTRzSEhz?=
- =?utf-8?B?RjdURzVLeHZjN1hxand3Rk9wL3VxWmNPK1EzR2dKb0J3czNiLzhZdVRpSHJx?=
- =?utf-8?B?cUxXRmpWdk1TcTVOeTgydkdiVWcwMFlla1diSkNlWUI0SkdXc0pybXZEaXB3?=
- =?utf-8?B?QjJwN3gvNjR4MHBFbkRSOHdJUHhIZW5qQlJzUlZEUEJVTDI0Y01qYlVKc3FY?=
- =?utf-8?B?K1ZGRlljS3JESWt1U1F6YUE1SGdEd25kTmRneTZQaWg3bXRJcFh0aklLMGtT?=
- =?utf-8?Q?om4Ujvi8jNdzZW0N8TLV9lth6?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f7fb16e-6661-4e7d-a764-08dd2099d5c3
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9436.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2024 01:58:44.8804
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Oz5v7sqqlC/hcypgljhIr0d5yHkVj1lNElP5QAtMkv/0o66t49fgGjCFLKyTB4X4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10179
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <d4acb710-7c80-4b71-862e-cee0a16d8cba@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241219_175850_259293_FD07EC8F 
-X-CRM114-Status: GOOD (  12.10  )
+X-CRM114-CacheID: sfid-20241219_221235_084930_A9DD4B87 
+X-CRM114-Status: GOOD (  12.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -188,80 +75,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
 Subject: Re: i.MX8/9: question about unused DDR PHY trained CSR board array
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+Hello Ye Li,
 
-On 12/19/2024 6:27 PM, Ahmad Fatoum wrote:
-> Hello Peng,
->
-> On 30.09.24 08:38, Peng Fan wrote:
->>> Subject: i.MX8/9: question about unused DDR PHY trained CSR board
->>> array
->>> Looking at the DDR setup code for i.MX8M and i.MX9 that you had
->>> contributed, I am wondering about struct
->>> dram_cfg_param::ddrphy_trained_csr and the global
->>> ddrphy_trained_csr array.
+On 20.12.24 02:58, Ye Li wrote:
+> On 12/19/2024 6:27 PM, Ahmad Fatoum wrote:
+>> On 30.09.24 08:38, Peng Fan wrote:
+>>>> I now have the DDR settings for an i.MX9 LPDDR4 board in front of me
+>>>> that has different contents for struct
+>>>> dram_cfg_param::ddrphy_trained_csr than the default.
+>>>>
+>>>> I will inquire how that came about, but in parallel I wanted to ask you if
+>>>> this is supposed to happen and to alert you to this issue.
+>>> Thanks for raising this issue. I think board specific csr should be used.
 >>>
->>> struct dram_cfg_param::ddrphy_trained_csr is presumably generated
->>> by the i.MX DDR tool and it seems populated by all the i.MX8M/9
->>> boards in U-Boot.
->>>
->>> This struct member is wholly unused though and instead a global
->>> ddrphy_trained_csr is used.
->>>
->>> What I wonder about is whether it's possible for the DDR tool to
->>> generate a different ddrphy_trained_csr than the default:
->>>
->>>    1) If yes, we should drop the global ddrphy_trained_csr and actually
->>> use
->>>       the board-specific array
->>>
->>>    2) If not, we should drop the board-specific array and perhaps ask for
->>>      the DDR tool to be changed
->>>
->>> I initially assumed 1) and because all boards supported by barebox had
->>> a board-specific ddrphy_trained_csr that's identical to the global
->>> ddrphy_trained_csr, I dropped the unused array[1][2].
->>>
->>> I now have the DDR settings for an i.MX9 LPDDR4 board in front of me
->>> that has different contents for struct
->>> dram_cfg_param::ddrphy_trained_csr than the default.
->>>
->>> I will inquire how that came about, but in parallel I wanted to ask you if
->>> this is supposed to happen and to alert you to this issue.
->> Thanks for raising this issue. I think board specific csr should be used.
->>
->> I will check with DDR TOOL owners on this.
-> Did you hear back in the meantime?
->
-> Thanks,
-> Ahmad
+>>> I will check with DDR TOOL owners on this.
+>> Did you hear back in the meantime?
+> 
+> We have discussed this internally. The DDR tool may generate different board specific csr. Currently in DDR retention, because we load csr + ddr_phy_pie, so it is safe to use this global csr.
 
-We have discussed this internally. The DDR tool may generate different 
-board specific csr. Currently in DDR retention, because we load csr + 
-ddr_phy_pie, so it is safe to use this global csr.
+So ddr_phy_pie contains the firmware to the DDR PHY µC and it will
+train the PHY and thus will iron over any missing entries in the
+stored CSR? Is my understanding correct?
 
-But we agree this global csr is confused and waste some memory. It is 
-better to switch to the board csr.
+> But we agree this global csr is confused and waste some memory. It is better to switch to the board csr.
 
+Thanks for the confirmation.
 
-Best regards,
+Cheers,
+Ahmad
 
-Ye Li
-
->>> The way things are, this is either a bug or a missed space saving
->>> opportunity for U-Boot.
->> Thanks,
->> Peng.
->>
->>
->
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
