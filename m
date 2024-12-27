@@ -1,66 +1,89 @@
-Delivery-date: Fri, 20 Dec 2024 13:25:46 +0100
+Delivery-date: Fri, 27 Dec 2024 08:16:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOc4g-00ARnQ-13
+	id 1tR4a6-00DEnW-3D
 	for lore@lore.pengutronix.de;
-	Fri, 20 Dec 2024 13:25:46 +0100
+	Fri, 27 Dec 2024 08:16:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tOc4g-0003i7-6b
-	for lore@pengutronix.de; Fri, 20 Dec 2024 13:25:46 +0100
+	id 1tR4a6-0008Lg-Un
+	for lore@pengutronix.de; Fri, 27 Dec 2024 08:16:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=CHttRh8tMhHfJ5GyEFPPJnQV0M+URQj8Buw3p/n1jCA=; b=cyuAoAkPP9XrPocca3wTBaxmes
-	F4KDQL4N+lwUrZmmbQrif8jBhGi7mnvgRdmkeXs0kNye/+sRW1bRkQlO9PYs88a97vurVuFItWiVd
-	zDjZoc1xyhQBWP4mLQlSo+JthytTn4s94sRfO2Kk5JQGWFr7WZXcKte/dhs8ZdfHC7F1Sm/Ox7vjW
-	vn8zbvkp29lNEyP76RgQWcku3qOEj2zfdI05qlEWkRNF0IcpvT+9/GEex9qbm22/UaP96QRnlHlAF
-	C1QIcEEzpID/fj8OmE9BucuXUgQetozx2zFsnu7ZwcDlkLzF4WZ2W/lftDx943gOJEvYOcTKwaciT
-	dYioD8wA==;
+	bh=6YD/Y5bdi9Pu/KeGaF9Wna2uS3hhFkldiOuGg0cO8Hg=; b=3oNdGVcgl4FCXMClJBaQdzXR/g
+	Y8UKSuVYdZdfdygWW/tIM8aduLGcgk8LxBvTBWHCxhDcv7tiujR+hMmQ76MRFwv8Xo3EicUvWIiQg
+	wmQl+kvEX1Hu4zwPbL31ojhlRG9ctBVmICAJhWMxxV+R+l/NJs5qDcVmo59ijSY5NySzKadHUvMSR
+	fOhhhayS/NvGoZsL9BdblweTsEfUNWrtyB3iN1KycLq312FTzAMRKU1DZqvur5OUdg9GaYx9g92rs
+	/27rhY7lyKmYvvUYklH57EjPDWAGbbOyy7mZTEs8x/zRAe7enmhaNFcsYEmrdeVWOcDO6LfAes6d3
+	Ds0DdA2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOc4P-00000004suP-3DhF;
-	Fri, 20 Dec 2024 12:25:29 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tR4ZS-0000000HDpv-2z2T;
+	Fri, 27 Dec 2024 07:15:42 +0000
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOaWq-00000004dLo-2GgU
+	id 1tR4Z5-0000000HDn7-2P1u
 	for barebox@lists.infradead.org;
-	Fri, 20 Dec 2024 10:46:45 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOaWp-0001Rg-2i; Fri, 20 Dec 2024 11:46:43 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOaWo-004MRw-0P;
-	Fri, 20 Dec 2024 11:46:42 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOaWo-001EZU-2b;
-	Fri, 20 Dec 2024 11:46:42 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Fri, 27 Dec 2024 07:15:20 +0000
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-30225b2586cso86745401fa.0
+        for <barebox@lists.infradead.org>; Thu, 26 Dec 2024 23:15:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1735283717; x=1735888517; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6YD/Y5bdi9Pu/KeGaF9Wna2uS3hhFkldiOuGg0cO8Hg=;
+        b=cOwuGlaOJ8mIiUkrC1wUYEKrM2xS1hYkre0d26m5QJOd+yqbg5BeHf8PqrXxybYfUp
+         yPq0q3hvrS+iAvAxl2xxFjtgZ0AqXahFkKA/+4FbcRL+HPFNz6RXj4Nknw2Rd+cnzKin
+         BYXn7aFv0Gcb9k7xA7MzBbnISe/D/rbiu/GJGwmf4DRxp8nEVpvVO4Xt/nyHX5Db8CTg
+         vHDPSN0JzSAeZXYkBhKAcypn+gwLZOjvjhrxTWxqe04CxUJfBrgAHqlgd05W0+0Z1R+B
+         g4n+N2HgExQ/+k+jyr2LL1sEEkwVuiAAATZkqAy3c75wqrwGv6OKwhkvmp44cWy27mAO
+         tcqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735283717; x=1735888517;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6YD/Y5bdi9Pu/KeGaF9Wna2uS3hhFkldiOuGg0cO8Hg=;
+        b=Rqen9epT5cvmRjdLmHtfbFLuaj8m5kfMN8492HVk+GLi6JNFfcvUTBR0X8GLKRH54j
+         jPFylQSw8Lx8ZZ8ESnrzEX8hPvVhPqC2Iog+kCbT6Nyxnn79Xhk+OZSiDJJteonpGDuq
+         mdr6pVfWphPRTPxEqORkDtpG5jT8m9Goz1iq73jH4RMDCLVP66N3SIXWtA4eoF1xpRQe
+         41TEYWRkU55JksN468q2vbgJiDAA0YjeWNtAipZQauGzC5dRFSZ5q2ZEGXEZHlwdM2gK
+         DM6Rmfxt1NjEVflDeeyb6LqQ2yB/3BN9f51Q3JfWb5jCXktj/Jk2A4TAqr3ar8gJrDDa
+         Go4Q==
+X-Gm-Message-State: AOJu0YzVbNMdJjkvl1YYswzhinE/UjdKKbEZ2FmqqrsaZlGY9sGFNtaH
+	hP97FAis1HmwPeGyCmqg6tKmyZLxphXY5WniTtb+F/ij0AVb96ScoE7+6VA6J4g=
+X-Gm-Gg: ASbGncvidfOVGHmV68q3kJsgAdf++WbfQFwqh8noiE/TSLWIXjWI0X78MXEAajSWnNv
+	iBk6iH6GfUNXPq2FwQLtqQbtjb2buz8U3sqjSXJgv3KM9NkQTWlLRNA30ZoBmxFS3HPH+qsnJtj
+	ytLWbc0UeCOJiRp0VQ1HmFHD9Xd6HRD2trrdBVseYujTPy5XvC67YaZY06le/BzPxLX+D1yRv0t
+	7ziHMLCfDSLZboL0dKK3hfuchG41S6T7TmDDluWQJDzMJf+YaaTpKzuuCeTMgJFMKD/wiD5mhuS
+	D3Q=
+X-Google-Smtp-Source: AGHT+IHMd2iQoNdCZDR3XKNmnS9qnXfGfLclOFX6oX90cQ+uSLHLxL/myeN0WyE71WJWLenwkIaECQ==
+X-Received: by 2002:a2e:b887:0:b0:300:1f5f:e24f with SMTP id 38308e7fff4ca-30469bfda0cmr76856471fa.15.1735283716602;
+        Thu, 26 Dec 2024 23:15:16 -0800 (PST)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3045b083b4asm24472001fa.112.2024.12.26.23.15.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Dec 2024 23:15:14 -0800 (PST)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
-Cc: ejo@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 20 Dec 2024 11:46:41 +0100
-Message-Id: <20241220104641.294328-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Fri, 27 Dec 2024 10:15:02 +0300
+Message-Id: <20241227071502.18967-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241220_024644_576909_08F85894 
-X-CRM114-Status: GOOD (  13.87  )
+X-CRM114-CacheID: sfid-20241226_231519_614979_9FB5D702 
+X-CRM114-Status: UNSURE (   8.67  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,101 +101,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH] commands: addpart: allow force creation of overlapping partition
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] ARM: at91: Remove AT91SAM9_SMC dependency for SAMA5D2
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-While we have the guard rails for good reason, a user on the shell
-should be able to override them and create partitions as they see fit,
-e.g. if they have a MBR they don't care about anyway, it should still
-be possible to force create a new fixed partition that overlaps it
-and pass that to Fastboot for example.
+AT91SAM9_SMC driver is not used for the Atmel/Microchip SAMA5D2 SOC family.
 
-Let's add a new -f (force) parameter that enables this.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- commands/Kconfig      | 3 ++-
- commands/partition.c  | 8 ++++++--
- include/cmdlinepart.h | 1 +
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ arch/arm/mach-at91/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 7d45a13becd9..67116ec9fcf0 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -612,7 +612,7 @@ config CMD_PARTITION
- 	help
- 	  addpart - add a partition description to a device
- 
--	  Usage: addpart [-n] DEVICE PART
-+	  Usage: addpart [-nf] DEVICE PART
- 
- 	  The size and the offset can be given in decimal (without any prefix) and
- 	  in hex (prefixed with 0x). Both can have an optional suffix K, M or G.
-@@ -622,6 +622,7 @@ config CMD_PARTITION
- 
- 	  Options:
- 		  -n	do not use the device name as prefix of the partition name
-+		  -f	force partition creation, even if it overlaps existing ones
- 		  DEVICE	device being worked on
- 		  PART	SIZE1[@OFFSET1](NAME1)[RO],SIZE2[@OFFSET2](NAME2)[RO],...
- 
-diff --git a/commands/partition.c b/commands/partition.c
-index 1b655f853b3b..3176398497dc 100644
---- a/commands/partition.c
-+++ b/commands/partition.c
-@@ -33,11 +33,14 @@ static int do_addpart(int argc, char *argv[])
- 	int opt;
- 	unsigned int flags = CMDLINEPART_ADD_DEVNAME;
- 
--	while ((opt = getopt(argc, argv, "n")) > 0) {
-+	while ((opt = getopt(argc, argv, "nf")) > 0) {
- 		switch (opt) {
- 		case 'n':
- 			flags &= ~CMDLINEPART_ADD_DEVNAME;
- 			break;
-+		case 'f':
-+			flags |= CMDLINEPART_FORCE;
-+			break;
- 		}
- 	}
- 
-@@ -59,6 +62,7 @@ BAREBOX_CMD_HELP_START(addpart)
- 
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-n", "do not use the device name as prefix of the partition name")
-+BAREBOX_CMD_HELP_OPT ("-f", "force partition creation, even if it overlaps existing ones")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Create partitions on device DEVICE using the partition description")
- BAREBOX_CMD_HELP_TEXT("from PART.")
-@@ -74,7 +78,7 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(addpart)
- 	.cmd = do_addpart,
- 	BAREBOX_CMD_DESC("add a partition description to a device")
--	BAREBOX_CMD_OPTS("[-n] DEVICE PART")
-+	BAREBOX_CMD_OPTS("[-nf] DEVICE PART")
- 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
- 	BAREBOX_CMD_HELP(cmd_addpart_help)
- BAREBOX_CMD_END
-diff --git a/include/cmdlinepart.h b/include/cmdlinepart.h
-index 9f5bdf610a11..1f9af22d3b76 100644
---- a/include/cmdlinepart.h
-+++ b/include/cmdlinepart.h
-@@ -3,6 +3,7 @@
- #define __CMD_LINE_PART_H
- 
- #define CMDLINEPART_ADD_DEVNAME (1 << 0)
-+#define CMDLINEPART_FORCE	(1 << 1)
- 
- int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
- 				 const char **endp, loff_t *offset,
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 2cc64d72c5..8e0529dce7 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -92,7 +92,6 @@ config SOC_SAMA5_MULTI
+ config SOC_SAMA5D2
+ 	bool
+ 	select SOC_SAMA5
+-	select AT91SAM9_SMC
+ 	select CLOCKSOURCE_ATMEL_PIT
+ 	select HAVE_AT91_H32MX
+ 	select HAVE_AT91_UTMI
 -- 
-2.39.5
+2.39.1
 
 
 
