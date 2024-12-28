@@ -1,88 +1,89 @@
-Delivery-date: Fri, 27 Dec 2024 08:41:13 +0100
+Delivery-date: Sat, 28 Dec 2024 07:38:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tR4y9-00DF7X-0e
+	id 1tRQTB-00De6X-0c
 	for lore@lore.pengutronix.de;
-	Fri, 27 Dec 2024 08:41:13 +0100
+	Sat, 28 Dec 2024 07:38:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tR4y9-00036f-4s
-	for lore@pengutronix.de; Fri, 27 Dec 2024 08:41:13 +0100
+	id 1tRQTB-00047l-3E
+	for lore@pengutronix.de; Sat, 28 Dec 2024 07:38:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=xi1S0uPnnsFRHBO5IC6lF1gSXAm7rKJ26ky085fi9z0=; b=m421+2eDBeMSA03A1A1akGNlVg
-	YdsDKooWB8vhc4l09XNSkJj0sRuiyBeFzpMF+1u2fwzNjQOmxWgeMaGYdbIqfA2M2Azcp/R4qe9Ac
-	DgXDlaHhm7BBu473KUEE696SXtPrsaIOiMpWd2Cq161SNFXnynhNjjTLIc0DRDqIw+z9Gme9K5Znx
-	pSdN26U0K18qlxoB5vvLrri/84SDIXb0eRHeZT265nbwq8r3UZ1tgSxc1N7vPIAoKCzmaVwmZKfJy
-	0NpIlVA8oVUUElMJpUtTaocnGsUxxK3atlozISTWpfYnQwcaswQ8Xp9MhQUrtSw4DtpXtBgOknx3I
-	8Sw8Mr3w==;
+	bh=9WhpZmbS9fvoo7fTDk6I+oWxtjYwwKkPO09jwv0rZzM=; b=po3c1yn0cmxQbGCPWkth7z+Hyr
+	V5y7WsaxQa2TUXhWWQ7RyqBdkJS2viRfZm94UjVRAvQ8veWg9CtH+DgdamM25+NXYqwKvg6EKbs2J
+	nPDkLfkwQIbJw+1IQ8DxfRYBmxzwxPgyszx3W5uK8veN32nhMyRTNptiwlxZfjkOy159qb9s/oqA/
+	FG5fYu7mq50N3NltlDo838X70VUYB76t/CwRUbvocTar5rmLEY6OGjMl8dekGtNktNl48lhEd89nf
+	XViqj/jLBg9mHldXxzEeXjT3jT8MQKAbKI8UhPzFVi+d/T5TRXJVC8S3+BcGn6xXueDB1MspGN2M0
+	HBQiZ/1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tR4xf-0000000HHJ8-0NwV;
-	Fri, 27 Dec 2024 07:40:43 +0000
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+	id 1tRQSP-00000001Ug2-062H;
+	Sat, 28 Dec 2024 06:37:53 +0000
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tR4x6-0000000HHE9-18d2
+	id 1tRQRg-00000001UdD-3lCZ
 	for barebox@lists.infradead.org;
-	Fri, 27 Dec 2024 07:40:09 +0000
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-3022598e213so367961fa.0
-        for <barebox@lists.infradead.org>; Thu, 26 Dec 2024 23:40:07 -0800 (PST)
+	Sat, 28 Dec 2024 06:37:10 +0000
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-3003d7ca01cso84388851fa.0
+        for <barebox@lists.infradead.org>; Fri, 27 Dec 2024 22:37:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735285206; x=1735890006; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1735367826; x=1735972626; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xi1S0uPnnsFRHBO5IC6lF1gSXAm7rKJ26ky085fi9z0=;
-        b=FlYU/5OHe1Bf+lIxekYPXUyvg3Q+sDlM9/jynhw6AmmzsJ5Y9XwoXQ1cnwaYdykTln
-         ysEY4wgHyOTmWAswDT3n7IShFuHxtPUzvmsqxzsC/txm13JiJ6AGN8IfyKDuYBGoXr5+
-         KxZs4n/J2FlzcrfFtifjv8LrXXoE44QkjRpf+hYhT+a4u0U9Xwlq5GtAb9MujxUp8l4T
-         4D6bLcMT1jLaCPmcO8kmQZeRsa7+uhV9+S7TUiLnN+XDVc/0xeeBVX4Rbih+ltRB658l
-         c4/eegMigWojVi3sDx6aFoqX/RZn4BFJ6hryXb+jlcqfPd+ajgjW7k/3wCw51jWGaFa8
-         XnCg==
+        bh=9WhpZmbS9fvoo7fTDk6I+oWxtjYwwKkPO09jwv0rZzM=;
+        b=nPs1ioCI0A+2nQ7KhMMdEdNEfPAxcepLMk/1W6Eb7u6KVIF5ORCgvJqAt+F93SSewT
+         RPIaorkeiQYtQq3IXL0Ocfo6WxOYq4c/52immW6H9zmX4RvfPt8ktZMrI3pPcfAeNfU5
+         1FJBOjVeSHO+tFF9ECa03q7D+CB/s8tq4fOyYG5ffaoV7oF1cQtFUbyRwl5GIb2zcUNG
+         Fk0ljxFlYb38IyKSiGmMgYUYR1hWyZAnKhIKv6g6ZjukkoIYh3cBKZxMZ9S4bHu0oCGq
+         jRBSF3F9VTbLyJMxxPltDyUD2pJA8cn7rZKVE6lKQR+GL3qLW63Mic56FA8ElWHeor7x
+         86jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735285206; x=1735890006;
+        d=1e100.net; s=20230601; t=1735367826; x=1735972626;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xi1S0uPnnsFRHBO5IC6lF1gSXAm7rKJ26ky085fi9z0=;
-        b=WsHfLx6J3yw49B/tvduZLabmA6/vZzGMmETe1JB386juWDxcFkIHt6E3Gdi0n1Ower
-         YV5g/DU9uRS6A/XBFJk+SoS/XC9KlwobPDdYc+sv6bFUU9vOl7CyEBQIZKjzrYYqWC16
-         iDXYFZdjmSuYQSA4RpTkdgnFcwl8LEMos//YgWNZGDWv0YOMGRQosybjuJj9V0x0S/Vk
-         B1biBd//L12gV/CTM4eW/OVa9CrUKnyCywP7i1pI1owczBU3cl1th/BFG49R0yR4A0bT
-         ZEVlk4aJ3DT6C6YRlC269BY+0Y2i9UOzl1gEUuFbf1giGk31CFOLLA/O10zrPEJqc7GW
-         7otQ==
-X-Gm-Message-State: AOJu0Yzn27ph4dx7P7r6r3DvLTWqxvH5/WIB0SA7Fn1hrMRkVb7k7BvD
-	JlsivWZhAgTsmx9HmmUeALd1mfPoKgTkipMxABfMiCCGSBXWpX9CJZ8jfrOfyjo=
-X-Gm-Gg: ASbGncvfezH0RAEekyWIWVUCvsb9QXdhBM8OKcuLEWb0CDVRDb4FR8IKAT0Cd4xRrxJ
-	/s9VagGgD7tIprnGr1la9gMOGf0tWU6gV8xaXhEL8eLUuYu3oI9Gei1MWgWIEoHgDOf6iGuFmYX
-	EwlOqfpd3Q0pp7Xcijg2sFYCJjfkJZoJVH7XGnP/5rpykNG7gAgJWlOkmADUqCVEPHhIgic9OkZ
-	I5to9F0PvaPLdRSxxIzYzhnt9VhQzB9B34kp0eSQMA0ZaFD1jKbHES1l2QlUStRwUbxK3ef6qL9
-	rLI=
-X-Google-Smtp-Source: AGHT+IEFr0L+ZzwTjgjLNYQL4CYAv6wtmzQgTnI1NruWGw94mMlW7C0hWdmPFTvAK8rA7l9uknj2GQ==
-X-Received: by 2002:a2e:be05:0:b0:300:31db:a77c with SMTP id 38308e7fff4ca-304685c0febmr93285011fa.29.1735285205564;
-        Thu, 26 Dec 2024 23:40:05 -0800 (PST)
-Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3045ad9b9c4sm25243541fa.31.2024.12.26.23.40.02
+        bh=9WhpZmbS9fvoo7fTDk6I+oWxtjYwwKkPO09jwv0rZzM=;
+        b=CU5trUNkz4K2FGAifvg4t7yDarhs7EEVwjiCtbznpJlut8pmAtftJ3xtK1alza3ieO
+         IRe1dGmIywsX10YfgiJckKy/Jv132bAtoK+wbEieUcg19mSRgpt+g0aXpMAFaXmTMlLU
+         SwW6hSUl7672gnImc8Zp5LHNFMAx/FqHe4QIdFwnnNEXY0jECflP/8cN9G2km4aSyv+H
+         9LrDVS5iNxZxNTRFzQ6p8XHmcfNmM5aMDBQIuGjBNAXTwo3eWjVPvgYKXScHwFQTSFsy
+         Wy48MKmzHk+gvIckQ8OcqMt3mRf1P9jNb10QGS7YF7GyHoCAr9J50uEJ8xUF46ZCCFMj
+         T6Jg==
+X-Gm-Message-State: AOJu0YyhWrSbrYNYBDvHxvOwW+asavwFHNyW5skNIvdbx3Z4TUAzXCvb
+	+cvVj98BgdplIc1QsTlGg4gh29yq3TIL2mYq4o1fVphkQqh0YvaPZzghZr9n
+X-Gm-Gg: ASbGncuMA7noYnmQozE3pPZ1a12qyPrMjfQ3YLvmcgbO/21kmCa3pK6dyjOhnyzbMgu
+	dc2tgI7yk9nI/cwId1MVwDjlcZM2jfYD+enWx/rvP8wk9QbAABoh4hGFLBSW/4/Wvf/52w9Uqpw
+	X3jRlGvGjVXcopHVaGdoLyLVoP/eicXImpxea3nh++dvEtTVVMC4Rfb/jLmmKYY8/MLb1gQXo1s
+	O/jL8p+yr9FwtomOEQKIpyBw5M2Ls8if9TZcnMuDKeEcsjKSz386LnpVOaoK9hrRIIrn8o7T7kM
+	llcDgQ==
+X-Google-Smtp-Source: AGHT+IHP4dNHQzj8nCvW8mtv9tMN1bJJUynhtKusuvWMQwmhI0rd4rRqrzcVWScDFyvU315WW4giiQ==
+X-Received: by 2002:a05:6512:4024:b0:540:3581:64d8 with SMTP id 2adb3069b0e04-542295246d2mr7016877e87.9.1735367826198;
+        Fri, 27 Dec 2024 22:37:06 -0800 (PST)
+Received: from localhost.localdomain ([95.161.223.172])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223600724sm2605251e87.90.2024.12.27.22.37.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Dec 2024 23:40:03 -0800 (PST)
+        Fri, 27 Dec 2024 22:37:04 -0800 (PST)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 27 Dec 2024 10:39:52 +0300
-Message-Id: <20241227073952.26221-1-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.39.1
+Date: Sat, 28 Dec 2024 09:36:51 +0300
+Message-Id: <20241228063651.3487846-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.38.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20241226_234008_317030_1D245493 
-X-CRM114-Status: GOOD (  12.19  )
+X-CRM114-CacheID: sfid-20241227_223708_957355_71752D78 
+X-CRM114-Status: UNSURE (   7.00  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,71 +101,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] mfd: atmel-flexcom: Driver refresh
+Subject: [PATCH] ARM: at91: Compile at91sam9g45_reset handler only for affected SOCs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Replace dev_request_mem_resource() with dev_platform_get_and_ioremap_resource(),
-clk_get() + clk_enable() with clk_get_enabled()
-and use dev_err_probe() as driver refresh.
-
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/mfd/atmel-flexcom.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ arch/arm/mach-at91/Makefile | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mfd/atmel-flexcom.c b/drivers/mfd/atmel-flexcom.c
-index 58e94c4889..11daeafc5f 100644
---- a/drivers/mfd/atmel-flexcom.c
-+++ b/drivers/mfd/atmel-flexcom.c
-@@ -22,7 +22,7 @@
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 7d7f27749f..b7389579b8 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -12,7 +12,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP)	+= bootstrap.o
+ obj-$(CONFIG_BOOTM) += bootm-barebox.o
  
- static int atmel_flexcom_probe(struct device *dev)
- {
--	struct resource *res;
-+	void __iomem *base;
- 	struct clk *clk;
- 	u32 opmode;
- 	int err;
-@@ -35,17 +35,13 @@ static int atmel_flexcom_probe(struct device *dev)
- 	if (opmode < ATMEL_FLEXCOM_MODE_USART || opmode > ATMEL_FLEXCOM_MODE_TWI)
- 		return -EINVAL;
- 
--	res = dev_request_mem_resource(dev, 0);
--	if (IS_ERR(res))
--		return PTR_ERR(res);
-+	base = dev_platform_get_and_ioremap_resource(dev, 0, NULL);
-+	if (IS_ERR(base))
-+		return dev_err_probe(dev, PTR_ERR(base), "Could not get memory region\n");
- 
--	clk = clk_get(dev, NULL);
-+	clk = clk_get_enabled(dev, NULL);
- 	if (IS_ERR(clk))
--		return PTR_ERR(clk);
--
--	err = clk_enable(clk);
--	if (err)
--		return err;
-+		return dev_err_probe(dev, PTR_ERR(clk), "Can't get clk\n");
- 
- 	/*
- 	 * Set the Operating Mode in the Mode Register: only the selected device
-@@ -53,7 +49,7 @@ static int atmel_flexcom_probe(struct device *dev)
- 	 * inaccessible and are read as zero. Also the external I/O lines of the
- 	 * Flexcom are muxed to reach the selected device.
- 	 */
--	writel(FLEX_MR_OPMODE(opmode), IOMEM(res->start) + FLEX_MR);
-+	writel(FLEX_MR_OPMODE(opmode), base + FLEX_MR);
- 
- 	clk_disable(clk);
- 
+ obj-y += at91sam9_reset.o
+-obj-y += at91sam9g45_reset.o
+ obj-pbl-$(CONFIG_HAVE_AT91_DDRAMC) += ddramc.o
+ obj-pbl-$(CONFIG_HAVE_AT91_SDRAMC) += sdramc.o
+ pbl-$(CONFIG_AT91_MCI_PBL) +=  xload-mmc.o
+@@ -35,8 +34,10 @@ lwl-$(CONFIG_SOC_AT91SAM9263)	+= sam9263_ll.o
+ lwl-$(CONFIG_SOC_SAMA5D2)	+= sama5d2_ll.o
+ obj-$(CONFIG_SOC_SAMA5D2)	+= sama5d2.o
+ lwl-$(CONFIG_SOC_SAMA5D3)	+= sama5d3_ll.o
+-obj-$(CONFIG_SOC_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
+-obj-$(CONFIG_SOC_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
+-obj-$(CONFIG_SOC_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
+-obj-$(CONFIG_SOC_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o
++obj-$(CONFIG_SOC_SAMA5D3)	+= at91sam9g45_reset.o
++obj-$(CONFIG_SOC_SAMA5D4)	+= at91sam9g45_reset.o
++obj-$(CONFIG_SOC_AT91SAM9G20)	+= at91sam9260.o at91sam9260_devices.o
++obj-$(CONFIG_SOC_AT91SAM9G45)	+= at91sam9g45.o at91sam9g45_devices.o at91sam9g45_reset.o
++obj-$(CONFIG_SOC_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o at91sam9g45_reset.o
++obj-$(CONFIG_SOC_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o at91sam9g45_reset.o
+ obj-$(CONFIG_SOC_SAMA5_MULTI)	+= sama5_bootsource.o
 -- 
-2.39.1
+2.38.2
 
 
 
