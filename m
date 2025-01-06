@@ -1,67 +1,67 @@
-Delivery-date: Mon, 06 Jan 2025 14:38:04 +0100
+Delivery-date: Mon, 06 Jan 2025 14:38:05 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tUnIx-00HVUn-1s
+	id 1tUnIy-00HVVB-32
 	for lore@lore.pengutronix.de;
-	Mon, 06 Jan 2025 14:38:04 +0100
+	Mon, 06 Jan 2025 14:38:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tUnIx-0003xF-IW
-	for lore@pengutronix.de; Mon, 06 Jan 2025 14:38:04 +0100
+	id 1tUnIy-0003xe-Tm
+	for lore@pengutronix.de; Mon, 06 Jan 2025 14:38:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GbckWwkBUas11TUKTO2xgf3GDkZ2KDkS9vvZNJeb0NA=; b=cXgZH4E1/jk9qwF3abBNmnNfEA
-	x0LiTSI5/EXtFwvFQ2AWaUgAfauhgYC/7G4Rrpf7xL3JiP9GqaL3tKrc/KAc0Ie+bXOGziDCJbTlM
-	aMf97OWlv5rlcWzBampPksnxpFtVwjStYQxNMqj5GoXdiLi7SMzR31QcUuz8n8cQ52VQoK4uNKLD+
-	6TaDhMW9WNJL0Efu7xHDnJCiHq0iwU+tOwfnanN4DMs/Fcta6nMcEBXLBl2g4DFmf8Yeu5LqgbZJd
-	es2aWXzMr0FvCPv/AQQitddeM21EwySDIC1nEBjgijcSaPFrR6fbP2Ky1PL7BSvkLNscanRyiKiEs
-	Ji7PaHjw==;
+	bh=H6lSaxDNVBhi7cojqnlmdjZ5km1zSbpZ2keVicvHiHI=; b=ZXP3FM6HjaqRaxz3vMJgAiDEBt
+	KEA0reVBKYfTY5EcDKErt4inRV4USa71dqK/mfhmIRvkAJU40W4WnRi0qn4A4sG54OwIKooV18pUb
+	p/WZ+AYELMNGQXA0Rn8y+j9EhcbLUfutIloR2jc4FQsl4nSy2FPjMfs/W6pFOacsl019wFEdcDUIE
+	qrfJ0rEgbKUFwemY6oRn6J6Ei2St+ahqxikysWSRSDtbZun/170lMMiNIzuu+/fPgxXp4wUMcShDt
+	Os939EWJb54p+rD6lbgOkrBehDxL7O8a8dIjnwagfZwAItUMYk2oZ2t1LjhWKgN+AB70mOa74SWgq
+	+ePlzqlA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUnIX-00000001QCE-0IGP;
-	Mon, 06 Jan 2025 13:37:37 +0000
+	id 1tUnIW-00000001QBh-2B2k;
+	Mon, 06 Jan 2025 13:37:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUnHf-00000001Q4I-1Gk4
+	id 1tUnGo-00000001Pty-2qRC
 	for barebox@lists.infradead.org;
-	Mon, 06 Jan 2025 13:36:44 +0000
+	Mon, 06 Jan 2025 13:35:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUnHe-0003fH-5w; Mon, 06 Jan 2025 14:36:42 +0100
+	id 1tUnGm-0003YP-3t; Mon, 06 Jan 2025 14:35:48 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUnHd-007B1z-0j;
-	Mon, 06 Jan 2025 14:36:42 +0100
+	id 1tUnGl-007B1p-0W;
+	Mon, 06 Jan 2025 14:35:47 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUnHd-00C7TO-33;
-	Mon, 06 Jan 2025 14:36:41 +0100
+	id 1tUnGl-00C35z-2o;
+	Mon, 06 Jan 2025 14:35:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
-In-Reply-To: <20250106114953.1278352-1-bst@pengutronix.de>
-References: <20250106114953.1278352-1-bst@pengutronix.de>
-Message-Id: <173617060194.2888174.6918711186538322979.b4-ty@pengutronix.de>
-Date: Mon, 06 Jan 2025 14:36:41 +0100
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250106091935.3435710-1-a.fatoum@pengutronix.de>
+References: <20250106091935.3435710-1-a.fatoum@pengutronix.de>
+Message-Id: <173617054787.2871670.11013892498070526975.b4-ty@pengutronix.de>
+Date: Mon, 06 Jan 2025 14:35:47 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250106_053643_347014_680D2279 
-X-CRM114-Status: UNSURE (   7.71  )
+X-CRM114-CacheID: sfid-20250106_053550_744108_BC35FBAB 
+X-CRM114-Status: UNSURE (   6.63  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,22 +84,23 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] keytoc: check for memory allocation failures in
- print_bignum()
+Subject: Re: [PATCH] images: rename k3-am625-beagleplay extension from fit
+ to itb
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 06 Jan 2025 12:49:53 +0100, Bastian Krause wrote:
-> These failures are already detected in print_bignum(), so we should pass
-> them on as well for good measure.
+On Mon, 06 Jan 2025 10:19:35 +0100, Ahmad Fatoum wrote:
+> In preparation for generating FIT images without an input ITS (what
+> mkimage calls automatic mode), let's rename the existing .fit extension
+> to .itb, so .fit is usable for images that have no its.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] keytoc: check for memory allocation failures in print_bignum()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f86829544e76 (link may not be stable)
+[1/1] images: rename k3-am625-beagleplay extension from fit to itb
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6dc66c619d0e (link may not be stable)
 
 Best regards,
 -- 
