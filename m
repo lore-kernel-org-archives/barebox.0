@@ -1,68 +1,67 @@
-Delivery-date: Mon, 06 Jan 2025 10:15:26 +0100
+Delivery-date: Mon, 06 Jan 2025 10:19:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tUjCn-00HQWy-2k
+	id 1tUjGJ-00HQdE-2a
 	for lore@lore.pengutronix.de;
-	Mon, 06 Jan 2025 10:15:26 +0100
+	Mon, 06 Jan 2025 10:19:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tUjCn-0002fE-RX
-	for lore@pengutronix.de; Mon, 06 Jan 2025 10:15:26 +0100
+	id 1tUjGJ-0003MK-LV
+	for lore@pengutronix.de; Mon, 06 Jan 2025 10:19:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=o1DDQqi/DboGtq8YZ58w8Jy+J+Wxe/NLaJCbPj5i+ek=; b=hK0RgtMxqCh/FevEFokzonf5Zy
-	THjx5waeDFBaDsQzLzwaEQ2FwjINlNXKOO+Z5qcCZOukgmxtZL7DrTFz5SxWDicR9D4XIKJZ6HI4P
-	t2/jfy9T8S/LTZuaOdkzWw3QRUJICjGlZu9AzTOOWYxW/0XAhNMwrOIT4gq2k2jZIogT3Ey5oYdAL
-	a8nNiUIhSLPUoWtXxZUh43wNJJ5sU7TXLOa+8PEIolyC4nsFlmS7R2mwBS30TPsxrQgZBF3iYRHhg
-	9jF4j2SdKGgXoFtsR7Ic8fSvMFMCBCOx7Yq+5VkcBrDGaRaMxMI6GOaVoxzQcgCv2Kb1SNPeD/ybj
-	tpszc+5g==;
+	bh=LlajKoSrcFOodGlYofSqsU3PF5jvo4/Ymmyl7dCMDt0=; b=j0XpsEH+jxC/4sOHln8SkZBO+u
+	kMTcHYR+X1XDQiZL1vlwQO3R12J0Xj8GbuLhgFaF9HHdxukM+RYYJ42A04917UqWe+gsJpURkHtPD
+	Ai6A3mT1d0iDoSrh3TBaxYmmxcpy6pkBOMn1vz5WAMRZzEj7kYs13fqHrcug2RcphjQWYo0yv6MLr
+	ner2tZWXJx5HD+SINPD8d93RDt7x6ayxxQMzP9sc23qf2qECMERL09/h6MdRQGDIapoNTdFDMKKW3
+	1XKa/QAt3R6hqkCblNC/svBW7EbN+gc3bO8O/egjWlD9W581nR5W63dsiKZCZkTT6dncIBEMgY2xW
+	42LwPenA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUjCM-00000000dHL-3wOP;
-	Mon, 06 Jan 2025 09:14:58 +0000
+	id 1tUjFs-00000000doh-3BrK;
+	Mon, 06 Jan 2025 09:18:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUjCJ-00000000dGX-3sec
+	id 1tUjFq-00000000do6-2dv3
 	for barebox@lists.infradead.org;
-	Mon, 06 Jan 2025 09:14:57 +0000
+	Mon, 06 Jan 2025 09:18:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUjCI-0002XI-Qt; Mon, 06 Jan 2025 10:14:54 +0100
+	id 1tUjFp-00030N-5Y; Mon, 06 Jan 2025 10:18:33 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUjCH-0078pu-2o;
-	Mon, 06 Jan 2025 10:14:54 +0100
+	id 1tUjFo-0078qK-0f;
+	Mon, 06 Jan 2025 10:18:32 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUjCI-008rfh-1t;
-	Mon, 06 Jan 2025 10:14:54 +0100
+	id 1tUjFo-0098FY-2w;
+	Mon, 06 Jan 2025 10:18:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- Alexander Shiyan <eagle.alexander923@gmail.com>
-In-Reply-To: <20241227073952.26221-1-eagle.alexander923@gmail.com>
-References: <20241227073952.26221-1-eagle.alexander923@gmail.com>
-Message-Id: <173615489458.2112859.18325113662173936813.b4-ty@pengutronix.de>
-Date: Mon, 06 Jan 2025 10:14:54 +0100
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250106090048.3420243-1-a.fatoum@pengutronix.de>
+References: <20250106090048.3420243-1-a.fatoum@pengutronix.de>
+Message-Id: <173615511290.2176590.14513935501621694074.b4-ty@pengutronix.de>
+Date: Mon, 06 Jan 2025 10:18:32 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250106_011455_967611_A14BD2ED 
-X-CRM114-Status: UNSURE (   6.48  )
+X-CRM114-CacheID: sfid-20250106_011834_697856_A1FBDAB2 
+X-CRM114-Status: UNSURE (   8.13  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,22 +84,28 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mfd: atmel-flexcom: Driver refresh
+Subject: Re: [PATCH v2 1/2] cdev: allow overriding partition overlap check
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 27 Dec 2024 10:39:52 +0300, Alexander Shiyan wrote:
-> Replace dev_request_mem_resource() with dev_platform_get_and_ioremap_resource(),
-> clk_get() + clk_enable() with clk_get_enabled()
-> and use dev_err_probe() as driver refresh.
+On Mon, 06 Jan 2025 10:00:47 +0100, Ahmad Fatoum wrote:
+> barebox will refuse to create overlapping partitions that are not
+> completely identical to an existing one.
 > 
+> The user on the shell may still want to allocate partitions that are
+> known to overlap, e.g. because they place multiple fixed partition into
+> one MBR partition or because we want to operate as a part of a cdev
+> interactively as if it were once device.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] mfd: atmel-flexcom: Driver refresh
-      https://git.pengutronix.de/cgit/barebox/commit/?id=7097a5e5bb52 (link may not be stable)
+[1/2] cdev: allow overriding partition overlap check
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c87254a2fd50 (link may not be stable)
+[2/2] commands: addpart: allow force creation of overlapping partition
+      https://git.pengutronix.de/cgit/barebox/commit/?id=80128b38547e (link may not be stable)
 
 Best regards,
 -- 
