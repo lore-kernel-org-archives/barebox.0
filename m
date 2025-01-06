@@ -1,74 +1,74 @@
-Delivery-date: Mon, 06 Jan 2025 15:05:52 +0100
+Delivery-date: Mon, 06 Jan 2025 15:05:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tUnjs-00HVyb-0V
+	id 1tUnjv-00HVz6-35
 	for lore@lore.pengutronix.de;
-	Mon, 06 Jan 2025 15:05:52 +0100
+	Mon, 06 Jan 2025 15:05:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tUnjp-0000pn-Od
-	for lore@pengutronix.de; Mon, 06 Jan 2025 15:05:52 +0100
+	id 1tUnjs-0000si-OO
+	for lore@pengutronix.de; Mon, 06 Jan 2025 15:05:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XwqJ9Tl0PmlSxZls0peLkLi8j+Wxm6WTlfLoBlAKi+A=; b=AcqCqNKXHURCueJDAgcxVQTy0j
-	I2dfG0BKEPkYonoGMb8/GmVwTMIQX2rmPZxFxdhEfvwDDEvhuuYXPA8z1JJQ3U7fYUR6vls7mxklr
-	kkiI36+Dq5O6mRUI2KxeKObgUu9yjkLOQhm89/B2mM1qrY8R/quT4fk1OH5V1zTFCmfOVQn+Knm+C
-	TgjgJuY/v/euuJD9NvEWjQCBBd9kVYKRoJyEfnoO/OweeyEv2j1UnnfPuVbQ5LrOBlhuw/7+wbFc/
-	fTUjDmerHiWxwvt/aWWQ8FWJ4dAS+byGSxU3gC7oNP6JMtQGcfQ0r037bpva5D5PfFKM9OSTQhv6J
-	uECMsDIQ==;
+	bh=XUSkPo/Q7CCgMgSEVjQSf0vCd/SPYkVsOxIMlfuE+oM=; b=tZoF3bJabfQEjuLw0LWJtHj33h
+	oFqJ+XoqqRBZDO8SvhDzjjeoKtlIRQWzfmf6DvpEsY0NAtLq+l7bO4wtyc4zI+qGYJ6HaYm8XDduW
+	KINFjO0/xA7yf0gK+MToxkmnVVnOAVqz6Y37PGIYlgxN+pjzM5nFMH9Y+VLP7MzR2w2v7SZI3VzxC
+	onCa1NTAfiKMZdNufRQqEeOH/shW3EvR3XnSPxtsuwvmF5ME+clUC4mlLJ4PNvdJHd0AyogXi5h+a
+	fh0+uGruIiPuczKqB51U2Q/Cu494f9L3rE1NOUhCcN4cF/92eO8Dt6WSVD9Dm639+w5QaMHzJE41A
+	EPTB85WA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUnjB-00000001V4D-3qrE;
-	Mon, 06 Jan 2025 14:05:09 +0000
+	id 1tUnjD-00000001V5m-0h6V;
+	Mon, 06 Jan 2025 14:05:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUngV-00000001UYE-33HB
+	id 1tUngW-00000001UYM-0xlc
 	for barebox@lists.infradead.org;
-	Mon, 06 Jan 2025 14:02:26 +0000
+	Mon, 06 Jan 2025 14:02:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUngU-00089c-KA; Mon, 06 Jan 2025 15:02:22 +0100
+	id 1tUngV-0008AY-3h; Mon, 06 Jan 2025 15:02:23 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUngT-007B6M-29;
+	id 1tUngU-007B6g-0L;
 	Mon, 06 Jan 2025 15:02:22 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tUnRd-00CsVv-1x;
+	id 1tUnRd-00CsVv-1w;
 	Mon, 06 Jan 2025 14:47:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 06 Jan 2025 14:47:14 +0100
+Date: Mon, 06 Jan 2025 14:47:13 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250106-k3-r5-v2-17-9de6270089ef@pengutronix.de>
+Message-Id: <20250106-k3-r5-v2-16-9de6270089ef@pengutronix.de>
 References: <20250106-k3-r5-v2-0-9de6270089ef@pengutronix.de>
 In-Reply-To: <20250106-k3-r5-v2-0-9de6270089ef@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1736171221; l=10084;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736171221; l=13285;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=rHT7lTo2G9ZkCVo/5qd07EgB8sgZv3sMknEi5TNVVfw=;
- b=B9B5Ty8G1/h6x/3+kSsxnCFF7gbyRBl27qHmYMNSXp82FvKFqeEpxWoeM7snWsRa6ULGQ2jdC
- O1uvLeWpBE4BIwexDFWlqDKJR8o5oMNnhmcBL6cCNCJobSF1FJnxQWv
+ bh=Re6SglOAFn++zFKiFPnTpLNGBLsn4OtJ6nzEOMig0/Y=;
+ b=Kj64A0hqesuffZMpp9t2fcFeQFXh74eGKbUw+hDTiQ62CT12ajqyRh3m8tJj/cN46lTOZWLp3
+ lqZd3TaOJAiBtHbr6pXuQSOTpmrMR4QFmJqGBnaWlGQntBFOquChJGb
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250106_060223_959321_FD90F5AD 
-X-CRM114-Status: GOOD (  14.44  )
+X-CRM114-CacheID: sfid-20250106_060224_582252_ECB3EF93 
+X-CRM114-Status: GOOD (  25.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,308 +90,484 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 17/22] ARM: k3: Add k3img tool
+Subject: [PATCH v2 16/22] ARM: k3: Add initial r5 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The image format for the TI K3 SoCs is basically a x509 certificate
-file. In U-Boot this image is generated with binman. This patch adds
-a simple shell script using openssl directly. This is by far not so
-sophisticated as the U-Boot variant, but is enough for now to get a
-beagleplay up and running.
+K3 SoCs initially boot from a Cortex-R5 processor. This patch adds
+initial support for this processor along with a dtsi file to make some
+adjustments to the regular device trees needed to describe the
+differences between the A53 and the R5 processors.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-k3/custMpk.pem           |  51 +++++++++
- arch/arm/mach-k3/ti-degenerate-key.pem |  10 ++
- images/Makefile.k3                     |  10 ++
- scripts/k3img                          | 187 +++++++++++++++++++++++++++++++++
- 4 files changed, 258 insertions(+)
+ arch/arm/Kconfig              |   2 -
+ arch/arm/dts/k3-am625-r5.dtsi | 103 ++++++++++++++++
+ arch/arm/mach-k3/Kconfig      |  21 ++++
+ arch/arm/mach-k3/Makefile     |   1 +
+ arch/arm/mach-k3/r5.c         | 277 ++++++++++++++++++++++++++++++++++++++++++
+ include/mach/k3/r5.h          |   9 ++
+ 6 files changed, 411 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-k3/custMpk.pem b/arch/arm/mach-k3/custMpk.pem
-new file mode 100644
-index 0000000000..adba378c80
---- /dev/null
-+++ b/arch/arm/mach-k3/custMpk.pem
-@@ -0,0 +1,51 @@
-+-----BEGIN RSA PRIVATE KEY-----
-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
-+-----END RSA PRIVATE KEY-----
-diff --git a/arch/arm/mach-k3/ti-degenerate-key.pem b/arch/arm/mach-k3/ti-degenerate-key.pem
-new file mode 100644
-index 0000000000..bd7d3745ad
---- /dev/null
-+++ b/arch/arm/mach-k3/ti-degenerate-key.pem
-@@ -0,0 +1,10 @@
-+-----BEGIN RSA PRIVATE KEY-----
-+MIIBWwIBAAKBgQDRfrnXQaP0k6vRK/gZ+bDflSU6y1JagGeQ/b+QYuiDz14japog
-+8fRSu5WBsAxaSaySAUwS3L9Ppw+hGMecmyIJ494aMfZTtk1g49gU58joduiRnu7e
-+QSZHMnehhuNlfD7A2tAAKnxIYuabs8zHYM/SS9Ne7t3kIQMbKfUSzNy6qQIBAQIB
-+AQJBAOelUA376o6w3HkShXfN+shaOZYqFuTJ9exLMwsLp7DZKXB5F9I4JJ+Vkvho
-+k6QWs7vkhleLSYUZknXHYm26ZE0CQQDnhTtd4PTBoZPjPXOeYMJFtEdMNy0XP6ey
-+bcce389ugoY7BEkvASrd8PHgJQHziepgWOG4DGp33c64Hfq4zI3NAgEBAgEBAkA0
-+RbK4uqoLciQluesTPU6lBy7Se3Dw0F9xBqlF5SR4KI6q+zQrHpBKyFOofMHZgizR
-+iCrL55cxEM146zMw3AnF
-+-----END RSA PRIVATE KEY-----
-diff --git a/images/Makefile.k3 b/images/Makefile.k3
-index f7acd78014..315ec47bb2 100644
---- a/images/Makefile.k3
-+++ b/images/Makefile.k3
-@@ -11,3 +11,13 @@ $(obj)/k3-am625-beagleplay.fit: $(obj)/barebox-beagleplay.img
- FILE_barebox-beagleplay-fit.img = k3-am625-beagleplay.fit
- image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay-fit.img
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 516cc721a5..7abd3720ab 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -160,8 +160,6 @@ config ARCH_IMX
  
-+quiet_cmd_k3_image = K3IMG   $@
-+      cmd_k3_image = if [ -n "$(INNERDATA_$(@F))" ]; then \
-+		inner="--innerdata $(INNERDATA_$(@F))"; \
-+		fi; \
-+		$(srctree)/scripts/k3img --sysfw $(SYSFW_$(@F)) \
-+		--sysfwdata $(SYSFWDATA_$(@F)) --dmdata $(DMDATA_$(@F)) \
-+		--key $(KEY_$(@F)) $$inner --sbl $< --out $@
-+
-+$(obj)/%.k3img: $(obj)/% scripts/k3img FORCE
-+	$(call if_changed,k3_image)
-diff --git a/scripts/k3img b/scripts/k3img
-new file mode 100755
-index 0000000000..048da82b92
+ config ARCH_K3
+ 	bool "Texas Instruments Inc. K3 multicore SoC architecture"
+-	depends on 64BIT
+-	select CPU_V8
+ 	select GPIOLIB
+ 	select COMMON_CLK
+ 	select HAS_DEBUG_LL
+diff --git a/arch/arm/dts/k3-am625-r5.dtsi b/arch/arm/dts/k3-am625-r5.dtsi
+new file mode 100644
+index 0000000000..e6e9d135b4
 --- /dev/null
-+++ b/scripts/k3img
-@@ -0,0 +1,187 @@
-+#!/bin/bash
++++ b/arch/arm/dts/k3-am625-r5.dtsi
+@@ -0,0 +1,103 @@
 +
-+TEMP=$(getopt -o '' --long 'sysfw:,sysfwdata:,dmdata:,out:,sbl:,key:,innerdata:' -n 'k3img' -- "$@")
++&a53_timer0 {
++	status = "disabled";
++};
 +
-+if [ $? -ne 0 ]; then
-+	echo 'Terminating...' >&2
-+	exit 1
-+fi
++&main_timer0 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+# Note the quotes around "$TEMP": they are essential!
-+eval set -- "$TEMP"
-+unset TEMP
++&main_timer1 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+while true; do
-+        case "$1" in
-+        '--sysfw')
-+		sysfw="$2"
-+		shift 2
-+		continue
-+	;;
-+        '--sysfwdata')
-+		sysfwdata="$2"
-+		shift 2
-+		continue
-+	;;
-+        '--sysfw')
-+		sysfw="$2"
-+		shift 2
-+		continue
-+	;;
-+        '--dmdata')
-+		dmdata="$2"
-+		shift 2
-+		continue
-+	;;
-+	'--out')
-+		out="$2"
-+		shift 2
-+		continue
-+	;;
-+	'--sbl')
-+		sbl="$2"
-+		shift 2
-+		continue
-+	;;
-+	'--key')
-+		key="$2"
-+		shift 2
-+		continue
-+	;;
-+	'--innerdata')
-+		innerdata="$2"
-+		shift 2
-+		continue
-+	;;
-+	'--')
-+		shift
-+		break
-+	;;
-+	*)
-+		echo 'Internal error!' >&2
-+		exit 1
-+	;;
-+	esac
-+done
++&main_timer2 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+shasbl=$(sha512sum $sbl | sed 's/ .*//')
-+shasysfw=$(sha512sum $sysfw | sed 's/ .*//')
-+shasysfwdata=$(sha512sum $sysfwdata | sed 's/ .*//')
-+shadmdata=$(sha512sum $dmdata | sed 's/ .*//')
++&main_timer3 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+sblsize=$(stat -c%s $sbl)
-+sysfwsize=$(stat -c%s $sysfw)
-+sysfwdatasize=$(stat -c%s $sysfwdata)
-+dmdatasize=$(stat -c%s $dmdata)
++&main_timer4 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+total=$(($sblsize + $sysfwsize + $sysfwdatasize + $dmdatasize))
++&main_timer5 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+certcfg=$(mktemp k3img.XXXXXXX)
-+cert=$(mktemp k3img.XXXXXXX)
++&main_timer6 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+num_comp=4
++&main_timer7 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+if [ -n "${innerdata}" ]; then
-+	shainnerdata=$(sha512sum $innerdata | sed 's/ .*//')
-+	innerdatasize=$(stat -c%s $innerdata)
++&cbass_main {
++	sysctrler: sysctrler {
++		compatible = "ti,am654-system-controller";
++		mboxes= <&secure_proxy_main 1>, <&secure_proxy_main 0>, <&secure_proxy_sa3 0>;
++		mbox-names = "tx", "rx", "boot_notify";
++	};
++};
 +
-+	innercert=$(cat <<EOF
-+[sysfw_inner_cert]
-+compType = INTEGER:3
-+bootCore = INTEGER:0
-+compOpts = INTEGER:0
-+destAddr = FORMAT:HEX,OCT:00000000
-+compSize = INTEGER:$innerdatasize
-+shaType  = OID:2.16.840.1.101.3.4.2.3
-+shaValue = FORMAT:HEX,OCT:$shainnerdata
-+EOF
-+)
++&secure_proxy_sa3 {
++	/* We require this for boot handshake */
++	status = "okay";
++};
 +
-+	num_comp=$((num_comp + 1))
-+	total=$((total + innerdatasize))
-+	sysfw_inner_cert="sysfw_inner_cert=SEQUENCE:sysfw_inner_cert"
-+fi
++/ {
++	a53_0: a53@0 {
++		compatible = "ti,am654-rproc";
++		reg = <0x00 0x00a90000 0x00 0x10>;
++		power-domains = <&k3_pds 61 TI_SCI_PD_EXCLUSIVE>,
++				<&k3_pds 135 TI_SCI_PD_EXCLUSIVE>;
++		resets = <&k3_reset 135 0>;
++		clocks = <&k3_clks 61 0>, <&k3_clks 135 0>;
++		clock-names = "gtc", "core";
++		assigned-clocks = <&k3_clks 61 0>, <&k3_clks 135 0>;
++		assigned-clock-parents = <&k3_clks 61 2>;
++		assigned-clock-rates = <200000000>, <1250000000>;
++		ti,sci = <&dmsc>;
++		ti,sci-proc-id = <32>;
++		ti,sci-host-id = <10>;
++	};
 +
-+cat > $certcfg <<EndOfHereDocument
-+[ req ]
-+distinguished_name     = req_distinguished_name
-+x509_extensions        = v3_ca
-+prompt                 = no
-+dirstring_type         = nobmp
++	dm_tifs: dm-tifs {
++		compatible = "ti,j721e-dm-sci";
++		ti,host-id = <36>;
++		ti,secure-host;
++		mbox-names = "rx", "tx";
++		mboxes= <&secure_proxy_main 22>,
++			<&secure_proxy_main 23>;
++	};
++};
 +
-+[ req_distinguished_name ]
-+C                      = US
-+ST                     = TX
-+L                      = Dallas
-+O                      = Texas Instruments Incorporated
-+OU                     = Processors
-+CN                     = TI Support
-+emailAddress           = support@ti.com
++&dmsc {
++	mboxes = <&secure_proxy_main 0>,
++		 <&secure_proxy_main 1>,
++		 <&secure_proxy_main 0>;
++	mbox-names = "rx", "tx", "notify";
++	ti,host-id = <35>;
++	ti,secure-host;
++};
 +
-+[ v3_ca ]
-+basicConstraints = CA:true
-+1.3.6.1.4.1.294.1.3=ASN1:SEQUENCE:swrv
-+1.3.6.1.4.1.294.1.9=ASN1:SEQUENCE:ext_boot_info
-+1.3.6.1.4.1.294.1.8=ASN1:SEQUENCE:debug
++&sdhci2 {
++	/* Doesn't work currently, no clocks defined */
++	status = "disabled";
++};
 +
-+[swrv]
-+swrv=INTEGER:1
++&dss_vp1_clk {
++	/* Doesn't work, no support for input clock */
++	status = "disabled";
++};
+diff --git a/arch/arm/mach-k3/Kconfig b/arch/arm/mach-k3/Kconfig
+index 152d231a56..2ea9f32696 100644
+--- a/arch/arm/mach-k3/Kconfig
++++ b/arch/arm/mach-k3/Kconfig
+@@ -3,6 +3,27 @@
+ menu "K3 boards"
+         depends on ARCH_K3
+ 
++config MACH_K3_CORTEX_R5
++	bool
++	select CPU_V7
++	select CLOCKSOURCE_TI_DM
++	select REMOTEPROC
++	select REMOTEPROC_TI_K3_ARM64
++	select REMOTEPROC_K3_SYSTEM_CONTROLLER
++	select PM_GENERIC_DOMAINS
++	select TI_K3_PM_DOMAINS
++	select ARMV7R_MPU
++	select ELF
++	select K3_DDRSS
++	depends on 32BIT
++	default y
 +
-+[ext_boot_info]
-+extImgSize=INTEGER:$total
-+numComp=INTEGER:$num_comp
-+sbl=SEQUENCE:sbl
-+sysfw=SEQUENCE:sysfw
-+sysfw_data=SEQUENCE:sysfw_data
-+$sysfw_inner_cert
-+dm_data=SEQUENCE:dm_data
++config MACH_K3_CORTEX_A
++	bool
++	select CPU_V8
++	depends on 64BIT
++	default y
 +
-+[sbl]
-+compType = INTEGER:1
-+bootCore = INTEGER:16
-+compOpts = INTEGER:0
-+destAddr = FORMAT:HEX,OCT:43c00000
-+compSize = INTEGER:$sblsize
-+shaType  = OID:2.16.840.1.101.3.4.2.3
-+shaValue = FORMAT:HEX,OCT:$shasbl
+ config MACH_BEAGLEPLAY
+ 	bool "BeagleBoard BeaglePlay"
+ 	help
+diff --git a/arch/arm/mach-k3/Makefile b/arch/arm/mach-k3/Makefile
+index f95691b59a..0efc1e0239 100644
+--- a/arch/arm/mach-k3/Makefile
++++ b/arch/arm/mach-k3/Makefile
+@@ -1 +1,2 @@
+ obj-y += common.o
++obj-pbl-$(CONFIG_MACH_K3_CORTEX_R5) += r5.o
+diff --git a/arch/arm/mach-k3/r5.c b/arch/arm/mach-k3/r5.c
+new file mode 100644
+index 0000000000..6fc1bdf661
+--- /dev/null
++++ b/arch/arm/mach-k3/r5.c
+@@ -0,0 +1,277 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <io.h>
++#include <linux/kernel.h>
++#include <mach/k3/r5.h>
++#include <asm/armv7r-mpu.h>
++#include <init.h>
++#include <libfile.h>
++#include <fs.h>
++#include <firmware.h>
++#include <linux/remoteproc.h>
++#include <soc/ti/ti_sci_protocol.h>
++#include <linux/clk.h>
++#include <elf.h>
++#include <asm/cache.h>
++#include <linux/sizes.h>
++#include <barebox.h>
 +
-+[sysfw]
-+compType = INTEGER:2
-+bootCore = INTEGER:0
-+compOpts = INTEGER:0
-+destAddr = FORMAT:HEX,OCT:00040000
-+compSize = INTEGER:$sysfwsize
-+shaType  = OID:2.16.840.1.101.3.4.2.3
-+shaValue = FORMAT:HEX,OCT:$shasysfw
++#define CTRLMMR_LOCK_KICK0_UNLOCK_VAL	0x68ef3490
++#define CTRLMMR_LOCK_KICK1_UNLOCK_VAL	0xd172bc5a
++#define CTRLMMR_LOCK_KICK0		0x1008
++#define CTRLMMR_LOCK_KICK1		0x100c
++#define CTRL_MMR0_PARTITION_SIZE	0x4000
++#define WKUP_CTRL_MMR0_BASE		0x43000000
++#define CTRL_MMR0_BASE			0x00100000
++#define MCU_CTRL_MMR0_BASE		0x04500000
++#define PADCFG_MMR0_BASE		0x04080000
++#define PADCFG_MMR1_BASE		0x000f0000
 +
-+[sysfw_data]
-+compType = INTEGER:18
-+bootCore = INTEGER:0
-+compOpts = INTEGER:0
-+destAddr = FORMAT:HEX,OCT:00067000
-+compSize = INTEGER:$sysfwdatasize
-+shaType  = OID:2.16.840.1.101.3.4.2.3
-+shaValue = FORMAT:HEX,OCT:$shasysfwdata
++static void mmr_unlock(uintptr_t base, u32 partition)
++{
++	/* Translate the base address */
++	uintptr_t part_base = base + partition * CTRL_MMR0_PARTITION_SIZE;
 +
-+[ debug ]
-+debugUID = FORMAT:HEX,OCT:0000000000000000000000000000000000000000000000000000000000000000
-+debugType = INTEGER:4
-+coreDbgEn = INTEGER:0
-+coreDbgSecEn = INTEGER:0
++	/* Unlock the requested partition if locked using two-step sequence */
++	writel(CTRLMMR_LOCK_KICK0_UNLOCK_VAL, part_base + CTRLMMR_LOCK_KICK0);
++	writel(CTRLMMR_LOCK_KICK1_UNLOCK_VAL, part_base + CTRLMMR_LOCK_KICK1);
++}
 +
-+$innercert
++void k3_ctrl_mmr_unlock(void)
++{
++	/* Unlock all WKUP_CTRL_MMR0 module registers */
++	mmr_unlock(WKUP_CTRL_MMR0_BASE, 0);
++	mmr_unlock(WKUP_CTRL_MMR0_BASE, 1);
++	mmr_unlock(WKUP_CTRL_MMR0_BASE, 2);
++	mmr_unlock(WKUP_CTRL_MMR0_BASE, 3);
++	mmr_unlock(WKUP_CTRL_MMR0_BASE, 4);
++	mmr_unlock(WKUP_CTRL_MMR0_BASE, 5);
++	mmr_unlock(WKUP_CTRL_MMR0_BASE, 6);
++	mmr_unlock(WKUP_CTRL_MMR0_BASE, 7);
 +
-+[dm_data]
-+compType = INTEGER:17
-+bootCore = INTEGER:16
-+compOpts = INTEGER:0
-+destAddr = FORMAT:HEX,OCT:43c3a800
-+compSize = INTEGER:$dmdatasize
-+shaType  = OID:2.16.840.1.101.3.4.2.3
-+shaValue = FORMAT:HEX,OCT:$shadmdata
++	/* Unlock all CTRL_MMR0 module registers */
++	mmr_unlock(CTRL_MMR0_BASE, 0);
++	mmr_unlock(CTRL_MMR0_BASE, 1);
++	mmr_unlock(CTRL_MMR0_BASE, 2);
++	mmr_unlock(CTRL_MMR0_BASE, 4);
++	mmr_unlock(CTRL_MMR0_BASE, 6);
 +
-+EndOfHereDocument
++	/* Unlock all MCU_CTRL_MMR0 module registers */
++	mmr_unlock(MCU_CTRL_MMR0_BASE, 0);
++	mmr_unlock(MCU_CTRL_MMR0_BASE, 1);
++	mmr_unlock(MCU_CTRL_MMR0_BASE, 2);
++	mmr_unlock(MCU_CTRL_MMR0_BASE, 3);
++	mmr_unlock(MCU_CTRL_MMR0_BASE, 4);
++	mmr_unlock(MCU_CTRL_MMR0_BASE, 6);
 +
-+openssl req -new -x509 -key $key -nodes -outform DER -out $cert -config $certcfg -sha512
++	/* Unlock PADCFG_CTRL_MMR padconf registers */
++	mmr_unlock(PADCFG_MMR0_BASE, 1);
++	mmr_unlock(PADCFG_MMR1_BASE, 1);
++}
 +
-+cat $cert $sbl $sysfw $sysfwdata $innerdata $dmdata > $out
++#define CONFIG_SPL_TEXT_BASE	0x43c00000 /* FIXME */
++#define CFG_SYS_SDRAM_BASE	0x80000000 /* FIXME */
++
++static struct mpu_region_config k3_mpu_regions[16] = {
++	/*
++	 * Make all 4GB as Device Memory and not executable. We are overriding
++	 * it with next region for any requirement.
++	 */
++	{0x00000000, REGION_0, XN_EN, PRIV_RW_USR_RW, SHARED_WRITE_BUFFERED,
++	 REGION_4GB},
++
++	/* SPL code area marking it as WB and Write allocate. */
++	{CONFIG_SPL_TEXT_BASE, REGION_1, XN_DIS, PRIV_RW_USR_RW,
++	 O_I_WB_RD_WR_ALLOC, REGION_8MB},
++
++	/* U-Boot's code area marking it as WB and Write allocate */
++	{CFG_SYS_SDRAM_BASE, REGION_2, XN_DIS, PRIV_RW_USR_RW,
++	 O_I_WB_RD_WR_ALLOC, REGION_2GB},
++	/* mcu_r5fss0_core0 BTCM area marking it as WB and Write allocate. */
++	{0x41010000, 3, XN_DIS, PRIV_RW_USR_RW, O_I_WB_RD_WR_ALLOC,
++	 REGION_8MB},
++	{0x0, 4, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 5, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 6, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 7, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 8, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 9, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 10, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 11, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 12, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 13, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 14, 0x0, 0x0, 0x0, 0x0},
++	{0x0, 15, 0x0, 0x0, 0x0, 0x0},
++};
++
++void k3_mpu_setup_regions(void)
++{
++	armv7r_mpu_setup_regions(k3_mpu_regions, ARRAY_SIZE(k3_mpu_regions));
++}
++
++#include <soc/k3/clk.h>
++
++#define PSC_PTCMD               0x120
++#define PSC_PTCMD_H             0x124
++#define PSC_PTSTAT              0x128
++#define PSC_PTSTAT_H            0x12C
++#define PSC_PDSTAT              0x200
++#define PSC_PDCTL               0x300
++#define PSC_MDSTAT              0x800
++#define PSC_MDCTL               0xa00
++
++#define MDSTAT_STATE_MASK               0x3f
++#define MDSTAT_BUSY_MASK                0x30
++#define MDSTAT_STATE_SWRSTDISABLE       0x0
++#define MDSTAT_STATE_ENABLE             0x3
++
++static void ti_pd_wait(void __iomem *base, int id)
++{
++	u32 pdoffset = 0;
++	u32 ptstatreg = PSC_PTSTAT;
++
++	if (id > 31) {
++		pdoffset = 32;
++		ptstatreg = PSC_PTSTAT_H;
++	}
++
++	while (readl(base + ptstatreg) & BIT(id - pdoffset));
++}
++
++void am625_early_init(void)
++{
++	void __iomem *pd_base = (void *)0x400000;
++	u32 val;
++	volatile int i;
++
++	ti_k3_pll_init((void *)0x68c000);
++
++	/* hsdiv0_16fft_main_12_hsdivout0_clk divide by 2 */
++	val = readl(0x68c080);
++	val &= ~0xff;
++	val |= 31;
++	writel(val, 0x68c080);
++
++	/* PLL needs a rest, barebox would hang during PLL setup without this delay */
++	for (i = 0; i < 1000000; i++);
++
++	/*
++	 * configure PLL to 800MHz, with the above divider DDR frequency
++	 * results in 400MHz.
++	 */
++	ti_k3_pll_set_rate((void *)0x68c000, 800000000, 25000000);
++
++	/* Enable DDR controller power domains */
++	writel(0x103, pd_base + 0x00000a24);
++	writel(0x1, pd_base + 0x00000120);
++	ti_pd_wait(pd_base, 0);
++	writel(0x103, pd_base + 0x00000a28);
++	writel(0x1, pd_base + 0x00000120);
++	ti_pd_wait(pd_base, 0);
++	writel(0x103, pd_base + 0x00000a2c);
++	writel(0x1, pd_base + 0x00000120);
++	ti_pd_wait(pd_base, 0);
++}
++
++/*
++ * The bl31 and optee binaries are relocatable, but these addresses
++ * are hardcoded as reserved mem regions in the upstream device trees.
++ */
++#define BL31_ADDRESS 0x9e780000
++#define OPTEE_ADDRESS 0x9e800000
++
++static int k3_r5_start_image(void)
++{
++	int err;
++	void *ti_dm_buf;
++	ssize_t size;
++	struct firmware fw;
++	const struct ti_sci_handle *ti_sci;
++	void *bl31 = (void *)BL31_ADDRESS;
++	void *barebox = (void *)0x80080000;
++	void *optee = (void *)OPTEE_ADDRESS;
++	struct elf_image *elf;
++	void __noreturn (*ti_dm)(void);
++	struct rproc *arm64_rproc;
++
++	ti_sci = ti_sci_get_handle(NULL);
++	if (IS_ERR(ti_sci))
++		return -EINVAL;
++
++	arm64_rproc = ti_k3_am64_get_handle();
++	if (!arm64_rproc) {
++		pr_err("Cannot get rproc handle\n");
++		return -EINVAL;
++	}
++
++	size = read_file_into_buf("/boot/optee.bin", optee, SZ_32M);
++	if (size < 0) {
++		pr_err("Cannot load optee.bin: %pe\n", ERR_PTR(size));
++		return size;
++	}
++	pr_debug("Loaded optee.bin (size %u) to 0x%p\n", size, optee);
++
++	size = read_file_into_buf("/boot/barebox.bin", barebox, optee - barebox);
++	if (size < 0) {
++		pr_err("Cannot load barebox.bin: %pe\n", ERR_PTR(size));
++		return size;
++	}
++	pr_debug("Loaded barebox.bin (size %u) to 0x%p\n", size, barebox);
++
++	size = read_file_into_buf("/boot/bl31.bin", bl31, barebox - optee);
++	if (size < 0) {
++		pr_err("Cannot load bl31.bin: %pe\n", ERR_PTR(size));
++		return size;
++	}
++	pr_debug("Loaded bl31.bin (size %u) to 0x%p\n", size, bl31);
++
++	err = read_file_2("/boot/ti-dm.bin", &size, &ti_dm_buf, FILESIZE_MAX);
++	if (err) {
++		pr_err("Cannot load ti-dm.bin: %pe\n", ERR_PTR(err));
++		return err;
++	}
++	pr_debug("Loaded ti-dm.bin (size %u)\n", size);
++
++	elf = elf_open_binary(ti_dm_buf);
++	if (IS_ERR(elf)) {
++		pr_err("Cannot open ELF image %pe\n", elf);
++		return PTR_ERR(elf);
++	}
++
++	err = elf_load(elf);
++	if (err) {
++		pr_err("Cannot load ELF image %pe\n", ERR_PTR(err));
++		elf_close(elf);
++	}
++
++	free(ti_dm_buf);
++
++	fw.data = bl31;
++
++	/* Release all the exclusive devices held by SPL before starting ATF */
++	pr_info("Starting TF-A on A53 core\n");
++
++	ti_sci->ops.dev_ops.release_exclusive_devices(ti_sci);
++	arm64_rproc->ops->load(arm64_rproc, &fw);
++	arm64_rproc->ops->start(arm64_rproc);
++
++	pr_debug("Starting ti-dm at 0x%08llx\n", elf->entry);
++
++	sync_caches_for_execution();
++
++	ti_dm = (void *)(unsigned long)elf->entry;
++
++	ti_dm();
++}
++
++static int xload(void)
++{
++	int ret;
++
++	ret = k3_r5_start_image();
++
++	pr_crit("Starting image failed with: %pe\n", ERR_PTR(ret));
++	pr_crit("Nothing left to do\n");
++
++	hang();
++}
++postenvironment_initcall(xload);
+diff --git a/include/mach/k3/r5.h b/include/mach/k3/r5.h
+new file mode 100644
+index 0000000000..f40639ed5b
+--- /dev/null
++++ b/include/mach/k3/r5.h
+@@ -0,0 +1,9 @@
++#ifndef __MACH_K3_R5_H
++#define __MACH_K3_R5_H
++
++void k3_ctrl_mmr_unlock(void);
++void k3_mpu_setup_regions(void);
++void am625_early_init(void);
++struct rproc *ti_k3_am64_get_handle(void);
++
++#endif /* __MACH_K3_R5_H */
 
 -- 
 2.39.5
