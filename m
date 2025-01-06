@@ -1,58 +1,74 @@
-Delivery-date: Mon, 06 Jan 2025 15:49:30 +0100
+Delivery-date: Mon, 06 Jan 2025 15:52:05 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tUoQ6-00HWrg-0j
+	id 1tUoSa-00HWtB-21
 	for lore@lore.pengutronix.de;
-	Mon, 06 Jan 2025 15:49:30 +0100
+	Mon, 06 Jan 2025 15:52:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tUoQ5-0001oh-KJ
-	for lore@pengutronix.de; Mon, 06 Jan 2025 15:49:30 +0100
+	id 1tUoSa-0002Nd-I4
+	for lore@pengutronix.de; Mon, 06 Jan 2025 15:52:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yM/t+ikGCJAww2j+XLji5O9+4MSBQY7K7PPtUnUVVrM=; b=YK1WdhPLWKZxhabXdsYQeZDRxD
-	S5Ip4IkV7wGK01rQcYiLenEHJkU/0Jhk86i/ZcOJhL+BdhcGd6AtnP32b0uXszOzBLpCZ/2WVLSAZ
-	gchKjd1YIsW7mU6Si7YeXuzRT6zX3ejt+36T/uXvLSUktFIVJWk45pGn6S+A+Z/OmgMDNZbI2RPJh
-	K2u7yF9uK3v1zsLJFelwiMBOQPuYaYCIw0AvPekmsllFaFT9HnvhPUp9S+nli0nSfRbXU4JhOCr57
-	mN+coAG+A/vSn5fQzQhae7ee9GyBQrZjREZmcHenRKpwnU3Vq1tjCxCifGobfGS29PBjyIrH7YRUF
-	pqe8EkcQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Iv7GvmGNdOqezj3QRSomnrPHc28AzRFK8cVn21DF4hY=; b=QQus8+7prXa+C77BptTr4VyRze
+	bf4D/hqIqb1pl4sQJCnNrDYSQtaXCWnrwaFsAu15PYRRez/Tlq26lF1kjpbBm6P/9WEPIDOUKF8kg
+	7dyKSefqSnNHSGXspGR76YHSrNzKNIfDJssphFVYr/ngfsplQIhR4PGvlgFYOO/KUBdeF5qnS6N0+
+	e2sqs96zROoSlUCP/RemAQDUFSLF15Y3Og8RCgYRL8blKNmDNafeELCybAgd672prUnBnttJx9YFV
+	vR3SFpEDzB6uF0PHWxYMOgHWA8/f3wHF/cwfpSXTn9RZjHztmXw5VJoFuY5N44IcJHvUw/mJN6Tdm
+	PcTHeZnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUoPZ-00000001dsb-1Zqq;
-	Mon, 06 Jan 2025 14:48:57 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tUoSR-00000001efP-3hSX;
+	Mon, 06 Jan 2025 14:51:55 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUoBB-00000001aft-1A4v
+	id 1tUnRf-00000001S5W-3T4S
 	for barebox@lists.infradead.org;
-	Mon, 06 Jan 2025 14:34:06 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUoBA-0006nR-43; Mon, 06 Jan 2025 15:34:04 +0100
-Message-ID: <5c28eb7f-252a-4b7f-97f7-033b5224df44@pengutronix.de>
-Date: Mon, 6 Jan 2025 15:34:03 +0100
+	Mon, 06 Jan 2025 13:47:04 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tUnRe-0005lH-0i; Mon, 06 Jan 2025 14:47:02 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tUnRc-007B3o-2r;
+	Mon, 06 Jan 2025 14:47:01 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tUnRd-00CsVv-1j;
+	Mon, 06 Jan 2025 14:47:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 06 Jan 2025 14:47:01 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- "open list:BAREBOX" <barebox@lists.infradead.org>
-References: <20250106-k3-r5-v2-0-9de6270089ef@pengutronix.de>
- <20250106-k3-r5-v2-17-9de6270089ef@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250106-k3-r5-v2-17-9de6270089ef@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250106-k3-r5-v2-4-9de6270089ef@pengutronix.de>
+References: <20250106-k3-r5-v2-0-9de6270089ef@pengutronix.de>
+In-Reply-To: <20250106-k3-r5-v2-0-9de6270089ef@pengutronix.de>
+To: "open list:BAREBOX" <barebox@lists.infradead.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736171221; l=1974;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=fx/NQB3v6H9K+NPAKX7S9rFnQQGF590nrZURalXdRaw=;
+ b=qH8zTfPFhpWKJUw+n6e3DYA5y4VCdFJp70nDxKUw3kbauxbjInpkjjDU4g3kMpXqHtE1N1ko+
+ J36xjPpyAxDDk5oo4Faklm5en473E4r0NfS0ZQWDSorhb3ToBsHdEol
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250106_063405_479920_04F1B52F 
-X-CRM114-Status: GOOD (  23.13  )
+X-CRM114-CacheID: sfid-20250106_054703_870147_A96B7FFE 
+X-CRM114-Status: GOOD (  11.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,326 +86,75 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 17/22] ARM: k3: Add k3img tool
+Subject: [PATCH v2 04/22] ARM: move ARM_CPU_PART_* defines to header
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 06.01.25 14:47, Sascha Hauer wrote:
-> The image format for the TI K3 SoCs is basically a x509 certificate
-> file. In U-Boot this image is generated with binman. This patch adds
-> a simple shell script using openssl directly. This is by far not so
-> sophisticated as the U-Boot variant, but is enough for now to get a
-> beagleplay up and running.
+Move the ARM_CPU_PART_* defines to arch/arm/include/asm/cputype.h where
+they are located in Linux as well so they become reusable by other code.
 
-Can you add some information where the key material comes from?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/cpuinfo.c         | 11 +----------
+ arch/arm/include/asm/cputype.h | 11 +++++++++++
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-Thanks,
-Ahmad
-
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/mach-k3/custMpk.pem           |  51 +++++++++
->  arch/arm/mach-k3/ti-degenerate-key.pem |  10 ++
->  images/Makefile.k3                     |  10 ++
->  scripts/k3img                          | 187 +++++++++++++++++++++++++++++++++
->  4 files changed, 258 insertions(+)
-> 
-> diff --git a/arch/arm/mach-k3/custMpk.pem b/arch/arm/mach-k3/custMpk.pem
-> new file mode 100644
-> index 0000000000..adba378c80
-> --- /dev/null
-> +++ b/arch/arm/mach-k3/custMpk.pem
-> @@ -0,0 +1,51 @@
-> +-----BEGIN RSA PRIVATE KEY-----
-> +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
-> +-----END RSA PRIVATE KEY-----
-> diff --git a/arch/arm/mach-k3/ti-degenerate-key.pem b/arch/arm/mach-k3/ti-degenerate-key.pem
-> new file mode 100644
-> index 0000000000..bd7d3745ad
-> --- /dev/null
-> +++ b/arch/arm/mach-k3/ti-degenerate-key.pem
-> @@ -0,0 +1,10 @@
-> +-----BEGIN RSA PRIVATE KEY-----
-> +MIIBWwIBAAKBgQDRfrnXQaP0k6vRK/gZ+bDflSU6y1JagGeQ/b+QYuiDz14japog
-> +8fRSu5WBsAxaSaySAUwS3L9Ppw+hGMecmyIJ494aMfZTtk1g49gU58joduiRnu7e
-> +QSZHMnehhuNlfD7A2tAAKnxIYuabs8zHYM/SS9Ne7t3kIQMbKfUSzNy6qQIBAQIB
-> +AQJBAOelUA376o6w3HkShXfN+shaOZYqFuTJ9exLMwsLp7DZKXB5F9I4JJ+Vkvho
-> +k6QWs7vkhleLSYUZknXHYm26ZE0CQQDnhTtd4PTBoZPjPXOeYMJFtEdMNy0XP6ey
-> +bcce389ugoY7BEkvASrd8PHgJQHziepgWOG4DGp33c64Hfq4zI3NAgEBAgEBAkA0
-> +RbK4uqoLciQluesTPU6lBy7Se3Dw0F9xBqlF5SR4KI6q+zQrHpBKyFOofMHZgizR
-> +iCrL55cxEM146zMw3AnF
-> +-----END RSA PRIVATE KEY-----
-> diff --git a/images/Makefile.k3 b/images/Makefile.k3
-> index f7acd78014..315ec47bb2 100644
-> --- a/images/Makefile.k3
-> +++ b/images/Makefile.k3
-> @@ -11,3 +11,13 @@ $(obj)/k3-am625-beagleplay.fit: $(obj)/barebox-beagleplay.img
->  FILE_barebox-beagleplay-fit.img = k3-am625-beagleplay.fit
->  image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay-fit.img
->  
-> +quiet_cmd_k3_image = K3IMG   $@
-> +      cmd_k3_image = if [ -n "$(INNERDATA_$(@F))" ]; then \
-> +		inner="--innerdata $(INNERDATA_$(@F))"; \
-> +		fi; \
-> +		$(srctree)/scripts/k3img --sysfw $(SYSFW_$(@F)) \
-> +		--sysfwdata $(SYSFWDATA_$(@F)) --dmdata $(DMDATA_$(@F)) \
-> +		--key $(KEY_$(@F)) $$inner --sbl $< --out $@
-> +
-> +$(obj)/%.k3img: $(obj)/% scripts/k3img FORCE
-> +	$(call if_changed,k3_image)
-> diff --git a/scripts/k3img b/scripts/k3img
-> new file mode 100755
-> index 0000000000..048da82b92
-> --- /dev/null
-> +++ b/scripts/k3img
-> @@ -0,0 +1,187 @@
-> +#!/bin/bash
-> +
-> +TEMP=$(getopt -o '' --long 'sysfw:,sysfwdata:,dmdata:,out:,sbl:,key:,innerdata:' -n 'k3img' -- "$@")
-> +
-> +if [ $? -ne 0 ]; then
-> +	echo 'Terminating...' >&2
-> +	exit 1
-> +fi
-> +
-> +# Note the quotes around "$TEMP": they are essential!
-> +eval set -- "$TEMP"
-> +unset TEMP
-> +
-> +while true; do
-> +        case "$1" in
-> +        '--sysfw')
-> +		sysfw="$2"
-> +		shift 2
-> +		continue
-> +	;;
-> +        '--sysfwdata')
-> +		sysfwdata="$2"
-> +		shift 2
-> +		continue
-> +	;;
-> +        '--sysfw')
-> +		sysfw="$2"
-> +		shift 2
-> +		continue
-> +	;;
-> +        '--dmdata')
-> +		dmdata="$2"
-> +		shift 2
-> +		continue
-> +	;;
-> +	'--out')
-> +		out="$2"
-> +		shift 2
-> +		continue
-> +	;;
-> +	'--sbl')
-> +		sbl="$2"
-> +		shift 2
-> +		continue
-> +	;;
-> +	'--key')
-> +		key="$2"
-> +		shift 2
-> +		continue
-> +	;;
-> +	'--innerdata')
-> +		innerdata="$2"
-> +		shift 2
-> +		continue
-> +	;;
-> +	'--')
-> +		shift
-> +		break
-> +	;;
-> +	*)
-> +		echo 'Internal error!' >&2
-> +		exit 1
-> +	;;
-> +	esac
-> +done
-> +
-> +shasbl=$(sha512sum $sbl | sed 's/ .*//')
-> +shasysfw=$(sha512sum $sysfw | sed 's/ .*//')
-> +shasysfwdata=$(sha512sum $sysfwdata | sed 's/ .*//')
-> +shadmdata=$(sha512sum $dmdata | sed 's/ .*//')
-> +
-> +sblsize=$(stat -c%s $sbl)
-> +sysfwsize=$(stat -c%s $sysfw)
-> +sysfwdatasize=$(stat -c%s $sysfwdata)
-> +dmdatasize=$(stat -c%s $dmdata)
-> +
-> +total=$(($sblsize + $sysfwsize + $sysfwdatasize + $dmdatasize))
-> +
-> +certcfg=$(mktemp k3img.XXXXXXX)
-> +cert=$(mktemp k3img.XXXXXXX)
-> +
-> +num_comp=4
-> +
-> +if [ -n "${innerdata}" ]; then
-> +	shainnerdata=$(sha512sum $innerdata | sed 's/ .*//')
-> +	innerdatasize=$(stat -c%s $innerdata)
-> +
-> +	innercert=$(cat <<EOF
-> +[sysfw_inner_cert]
-> +compType = INTEGER:3
-> +bootCore = INTEGER:0
-> +compOpts = INTEGER:0
-> +destAddr = FORMAT:HEX,OCT:00000000
-> +compSize = INTEGER:$innerdatasize
-> +shaType  = OID:2.16.840.1.101.3.4.2.3
-> +shaValue = FORMAT:HEX,OCT:$shainnerdata
-> +EOF
-> +)
-> +
-> +	num_comp=$((num_comp + 1))
-> +	total=$((total + innerdatasize))
-> +	sysfw_inner_cert="sysfw_inner_cert=SEQUENCE:sysfw_inner_cert"
-> +fi
-> +
-> +cat > $certcfg <<EndOfHereDocument
-> +[ req ]
-> +distinguished_name     = req_distinguished_name
-> +x509_extensions        = v3_ca
-> +prompt                 = no
-> +dirstring_type         = nobmp
-> +
-> +[ req_distinguished_name ]
-> +C                      = US
-> +ST                     = TX
-> +L                      = Dallas
-> +O                      = Texas Instruments Incorporated
-> +OU                     = Processors
-> +CN                     = TI Support
-> +emailAddress           = support@ti.com
-> +
-> +[ v3_ca ]
-> +basicConstraints = CA:true
-> +1.3.6.1.4.1.294.1.3=ASN1:SEQUENCE:swrv
-> +1.3.6.1.4.1.294.1.9=ASN1:SEQUENCE:ext_boot_info
-> +1.3.6.1.4.1.294.1.8=ASN1:SEQUENCE:debug
-> +
-> +[swrv]
-> +swrv=INTEGER:1
-> +
-> +[ext_boot_info]
-> +extImgSize=INTEGER:$total
-> +numComp=INTEGER:$num_comp
-> +sbl=SEQUENCE:sbl
-> +sysfw=SEQUENCE:sysfw
-> +sysfw_data=SEQUENCE:sysfw_data
-> +$sysfw_inner_cert
-> +dm_data=SEQUENCE:dm_data
-> +
-> +[sbl]
-> +compType = INTEGER:1
-> +bootCore = INTEGER:16
-> +compOpts = INTEGER:0
-> +destAddr = FORMAT:HEX,OCT:43c00000
-> +compSize = INTEGER:$sblsize
-> +shaType  = OID:2.16.840.1.101.3.4.2.3
-> +shaValue = FORMAT:HEX,OCT:$shasbl
-> +
-> +[sysfw]
-> +compType = INTEGER:2
-> +bootCore = INTEGER:0
-> +compOpts = INTEGER:0
-> +destAddr = FORMAT:HEX,OCT:00040000
-> +compSize = INTEGER:$sysfwsize
-> +shaType  = OID:2.16.840.1.101.3.4.2.3
-> +shaValue = FORMAT:HEX,OCT:$shasysfw
-> +
-> +[sysfw_data]
-> +compType = INTEGER:18
-> +bootCore = INTEGER:0
-> +compOpts = INTEGER:0
-> +destAddr = FORMAT:HEX,OCT:00067000
-> +compSize = INTEGER:$sysfwdatasize
-> +shaType  = OID:2.16.840.1.101.3.4.2.3
-> +shaValue = FORMAT:HEX,OCT:$shasysfwdata
-> +
-> +[ debug ]
-> +debugUID = FORMAT:HEX,OCT:0000000000000000000000000000000000000000000000000000000000000000
-> +debugType = INTEGER:4
-> +coreDbgEn = INTEGER:0
-> +coreDbgSecEn = INTEGER:0
-> +
-> +$innercert
-> +
-> +[dm_data]
-> +compType = INTEGER:17
-> +bootCore = INTEGER:16
-> +compOpts = INTEGER:0
-> +destAddr = FORMAT:HEX,OCT:43c3a800
-> +compSize = INTEGER:$dmdatasize
-> +shaType  = OID:2.16.840.1.101.3.4.2.3
-> +shaValue = FORMAT:HEX,OCT:$shadmdata
-> +
-> +EndOfHereDocument
-> +
-> +openssl req -new -x509 -key $key -nodes -outform DER -out $cert -config $certcfg -sha512
-> +
-> +cat $cert $sbl $sysfw $sysfwdata $innerdata $dmdata > $out
-> 
-
+diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
+index 7dca57248b..3137b9924f 100644
+--- a/arch/arm/cpu/cpuinfo.c
++++ b/arch/arm/cpu/cpuinfo.c
+@@ -10,6 +10,7 @@
+ #include <memory.h>
+ #include <asm/system.h>
+ #include <asm/barebox-arm.h>
++#include <asm/cputype.h>
+ 
+ #define CPU_ARCH_UNKNOWN	0
+ #define CPU_ARCH_ARMv3		1
+@@ -23,16 +24,6 @@
+ #define CPU_ARCH_ARMv7		9
+ #define CPU_ARCH_ARMv8		10
+ 
+-#define ARM_CPU_PART_CORTEX_A5	0xC050
+-#define ARM_CPU_PART_CORTEX_A7	0xC070
+-#define ARM_CPU_PART_CORTEX_A8	0xC080
+-#define ARM_CPU_PART_CORTEX_A9	0xC090
+-#define ARM_CPU_PART_CORTEX_A15	0xC0F0
+-#define ARM_CPU_PART_CORTEX_A53	0xD030
+-#define ARM_CPU_PART_CORTEX_A55	0xD050
+-#define ARM_CPU_PART_CORTEX_A57	0xD070
+-#define ARM_CPU_PART_CORTEX_A72	0xD080
+-
+ static void decode_cache(unsigned long size)
+ {
+ 	int linelen = 1 << ((size & 0x3) + 3);
+diff --git a/arch/arm/include/asm/cputype.h b/arch/arm/include/asm/cputype.h
+index c3fc057650..38012fb1ec 100644
+--- a/arch/arm/include/asm/cputype.h
++++ b/arch/arm/include/asm/cputype.h
+@@ -117,4 +117,15 @@ static inline int cpu_is_xsc3(void)
+ #define	cpu_is_xscale()	1
+ #endif
+ 
++#define ARM_CPU_PART_CORTEX_A5  0xC050
++#define ARM_CPU_PART_CORTEX_A7  0xC070
++#define ARM_CPU_PART_CORTEX_A8  0xC080
++#define ARM_CPU_PART_CORTEX_A9  0xC090
++#define ARM_CPU_PART_CORTEX_A15 0xC0F0
++#define ARM_CPU_PART_CORTEX_A53 0xD030
++#define ARM_CPU_PART_CORTEX_A55 0xD050
++#define ARM_CPU_PART_CORTEX_A57 0xD070
++#define ARM_CPU_PART_CORTEX_A72 0xD080
++#define ARM_CPU_PART_CORTEX_R5  0xc150
++
+ #endif
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
