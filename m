@@ -1,65 +1,69 @@
-Delivery-date: Tue, 07 Jan 2025 12:10:21 +0100
+Delivery-date: Tue, 07 Jan 2025 12:14:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tV7TY-000I9j-1f
+	id 1tV7XP-000IG9-0D
 	for lore@lore.pengutronix.de;
-	Tue, 07 Jan 2025 12:10:21 +0100
+	Tue, 07 Jan 2025 12:14:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tV7TU-0005cu-OB
-	for lore@pengutronix.de; Tue, 07 Jan 2025 12:10:20 +0100
+	id 1tV7XL-0006ZP-MT
+	for lore@pengutronix.de; Tue, 07 Jan 2025 12:14:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=EGFc4s7hvt8drtEKerTOGgX1aN8ujV9540I4W7iclGU=; b=ldzgAt0S8HBYdnC6LDlWOtYPqo
-	JBs9U6Bwx0I6viP996F7fIGNx4HvYse/qFklNFWSJj7KYcOdb2UMRdGUAYmFZXz5rE9LNUlahG5QL
-	J0DpR7U3xTQEMjlUh0VlRH3OAPPh9tgkWTA5OnPqPp0j3uohL0Ayt6Z1qEQC4Md0wLptWpEN80N1R
-	dQPcY1/CJscrssPyhNll4hSkXH5hR2Qnsef0tM8jB7xggQgwdNKZmxlDgBiC+T2tG6xCE1fRPB31e
-	hbA4SSJJeQF+6HyD94+aqRl5qXwDlhdBHFnsORqzuVjAw8vzvwddxbeavwljE0QZMzgmfMF761Szc
-	qlHVbfyg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CaIuBVVOu+PreUZLvKzbMFecy2p19JY0W7V+/PVMMSc=; b=Ja/3TruNuBXg5I8bU7IN0kEx7K
+	fUdnoXujfbnqmpyda6aUdBboaRHGBYLriP67OT1GEsmsf/beMItjOV3yug9cyu7nQaGVFRhPVljdL
+	gAx20rk1ZAHZ1oV0vY2m2xtyy8JptvZlHA/QZeveDIROOTB9RNXwJa4FoL89rs3VWNDciAFyTeskq
+	ZZm00pBUppFoaXU1fVM3x8INFei9Y08FlC3R6/8gvhaDW7k06AaB+Me4hgqh6mawB9Pc6ZhqYV8GJ
+	ILWlW/JN0UlsixyllYzT7u0FSQy7mPi8bRUkQKT+i/r74XlGS1uHygCDYn6MZk6DZOvMR1Luni+uy
+	lGCJZWYA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tV7Sa-00000004Uw0-0sOK;
-	Tue, 07 Jan 2025 11:09:20 +0000
+	id 1tV7Wk-00000004VXI-20OR;
+	Tue, 07 Jan 2025 11:13:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tV7Rl-00000004Uml-1vY8
+	id 1tV7WB-00000004VU3-2u72
 	for barebox@lists.infradead.org;
-	Tue, 07 Jan 2025 11:08:31 +0000
+	Tue, 07 Jan 2025 11:13:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tV7Rh-0005BR-Ve; Tue, 07 Jan 2025 12:08:25 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tV7WA-0006J5-IS; Tue, 07 Jan 2025 12:13:02 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tV7Rh-007Kpb-03;
-	Tue, 07 Jan 2025 12:08:25 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tV7Rh-00CvWE-2F;
-	Tue, 07 Jan 2025 12:08:25 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  7 Jan 2025 12:08:25 +0100
-Message-Id: <20250107110825.3081026-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tV7W9-007Kpy-1P;
+	Tue, 07 Jan 2025 12:13:02 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tV7WA-009Wlt-0Q;
+	Tue, 07 Jan 2025 12:13:02 +0100
+Date: Tue, 7 Jan 2025 12:13:02 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Sebastian =?utf-8?B?R3Jvw58=?= <sebastian.gross@emlix.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <20250107111302.642ikgjfqmm3qgth@pengutronix.de>
+References: <92d4dd39-529d-4e4c-b231-76c3ba1790a7@emlix.com>
+ <20250107073718.67626a7dq3afqjaz@pengutronix.de>
+ <08eeaf77-9771-4dd4-9249-9ae788ef8265@emlix.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <08eeaf77-9771-4dd4-9249-9ae788ef8265@emlix.com>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250107_030829_493054_E29B2DED 
-X-CRM114-Status: GOOD (  12.12  )
+X-CRM114-CacheID: sfid-20250107_031303_728491_1468E01E 
+X-CRM114-Status: GOOD (  20.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,49 +85,47 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] startup: fix infinite loop falling into menu without /env/menu/mainmenu
+Subject: Re: bootm: fit-image: hash node name too strict
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-If MENUFILE (/env/menu/mainmenu) doesn't exist, an infinite loop will
-keep executing this non-existent file.
+On 25-01-07, Sebastian Groß wrote:
+> Hi Marco,
+> 
+> On 2025-01-07 8:37 AM, Marco Felsch wrote:
+> > > Since the image is build by uboot's mkimage I would expect the itb's to be
+> > > compatible. Or am I missing something?
+> > > 
+> > > Changing the following line in the `its`, ie. its build script
+> > > ```
+> > > - hash { algo = "${FIT_HASH_ALG}"; };
+> > > + hash@1 { algo = "${FIT_HASH_ALG}"; };
+> > > ```
+> > > made the fit-image work.
+> > I can't find this line within the U-Boot src code. Can you provide a
+> > link please?
+> Sorry for the confusion. I meant the build script within yocto that
+> generates the `its` and then the `itb`
 
-If this happens, let's exit the infinite loop and hang barebox instead.
+Can you give me some pointers please? I've checked the
+kernel-fitimage.bbclass in oe-core and which used hash@1 during the
+initial commit which was changed to hash-1 later on.
 
-Previously we dropped to a shell in this situation, but this was changed
-as menu-only boots should not be circumventable and drop to a shell due
-to errors.
+> > > Perhaps another if-clause is required. Or some error message that states
+> > > which property/string was searched for,
+> > > since there were hashes in the image, but not where barebox expected them.
+> > We could search for the legacy single 'hash' node name as well and print
+> > a warning that this should be changed.
+> I concur!
 
-Fixes: 96852a962d0c ("startup: don't fallback to shell from menu")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/startup.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+If we can find a valid source which still uses the old style :)
 
-diff --git a/common/startup.c b/common/startup.c
-index 723d4f1ecc3b..3debb6668be7 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -344,10 +344,15 @@ static int run_init(void)
- 		run_shell();
- 	}
- 
--	while (1)
-+	do {
-+		/*
-+		 * Let's run the command once at least, so an error
-+		 * message is printed if the file doesn't exist
-+		 */
- 		run_command(MENUFILE);
-+	} while (stat(MENUFILE, &s) == 0);
- 
--	unreachable();
-+	hang();
- }
- 
- typedef void (*ctor_fn_t)(void);
--- 
-2.39.5
+> Looking at `fit_image_verify_signature` this change might be necessary too
+> for `signature`
 
+Same here.
+
+Regards,
+  Marco
 
 
