@@ -1,75 +1,95 @@
-Delivery-date: Tue, 07 Jan 2025 14:19:53 +0100
+Delivery-date: Tue, 07 Jan 2025 14:19:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tV9Uu-000KSZ-2s
+	id 1tV9Uw-000KSy-1c
 	for lore@lore.pengutronix.de;
-	Tue, 07 Jan 2025 14:19:53 +0100
+	Tue, 07 Jan 2025 14:19:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tV9Uq-0007RM-13
-	for lore@pengutronix.de; Tue, 07 Jan 2025 14:19:53 +0100
+	id 1tV9Us-0007SJ-VB
+	for lore@pengutronix.de; Tue, 07 Jan 2025 14:19:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ouru8YZJiTU/KSdU+uDj9PCWTg0/Op+7vBGiH6fNRWI=; b=OojYO0ePlg/7OPvAC7XDspq+Ai
-	jOm9YzlwXkQfQYY90Nv1YFV15UBsGj/wzPfIRwqP+xDewtEmPPn4ueCoS75d0qqoDRUOdjgP5djro
-	nVXQwD7DpsuGnkde+Uc14BQ0w5M55TXOPvBeCFOggM/UPGeNnlGVbBhVnnfhPga60GXN0DrUVbyGt
-	0ASMMYoZ7L06KhY4APH81FITF3T9EdzpskX9WTFri889+iwu5HhBaSxJfQ7TvmzpdaAoB/NtQvH8b
-	ISz3jwxc3w8j00qN1RQ43BFP94Tmj9cHwaPN+TKx8/AvQxnMo6rH4gJYVsPg6bMyTp2dZ6RzaPynf
-	Tetz2hHA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=PFdUhnmAkJclsIkJ12ZLPLIBhEkM5fdMqstpcPy3oUU=; b=F8o0AS1/LZ4ydCXs/E/5bolvHf
+	twOolmnnZ+aHcrBlBsz6hErHroKmSic8Phzoe6qydDxRz3rrUAbIHjdwTfOfa+iIFYLTsgIKe9qvu
+	Fb+FIl3buKpx6PwTBn6nlJCSNfQ6qrEGdEiUvpatthi7yErmIgSH4zhBqmmZV5zz7AquEkoZRxGSB
+	UInIfZxk6wOuO3pX+0zwnPhX6XZSSW/gnfMlrAS4tL6mDvMveQXi2a8OBCfuAJOxfgnhVedqZzSBz
+	XtytvbQ9AyYD1pIIty9aFc9r6+ql3o8HAWs1TF4h9W6ZztlVr7RFfyKqIFvpWx2I74iXFxH77BAJ+
+	9Klljpog==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tV9U9-00000004ycN-2p28;
+	id 1tV9U9-00000004ybu-0X5q;
 	Tue, 07 Jan 2025 13:19:05 +0000
-Received: from mail.inside-m2m.de ([188.68.57.244])
+Received: from mx1.emlix.com ([178.63.209.131])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tV9Or-00000004xJv-1ULO
+	id 1tV9ON-00000004xFC-3ms8
 	for barebox@lists.infradead.org;
-	Tue, 07 Jan 2025 13:13:41 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
-	s=default; t=1736255580;
-	bh=8RYnaFG+92154l85tb3CWY539A/z2FyN+18zP+h0/2I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G8BOoTYbq5nUev98I7wOxyv7M8m8f5Oi+H/m42c0xrZO+TCeGT88rrtytnUugkiFx
-	 5vNfxIydqw0gulTFlLttQYbT0de40RY9t8UIy+Afs4yfNk+KKC9CvVdu70k6lNBSjN
-	 pRtOVKvu+C+614FgLxKLtPgfANNCvSyIjuQbostY9Zp2OTnXS2xHSOkIlYXEX6vPsP
-	 MoKTSMkNCjW83kJDukGS03AkI6jOfKqR0EiZiNYcpd8pKh+eaUQ6pJFiHxjTOvf2U5
-	 KMWa3qpXSVWZ4BXcnCXwEuRJEadVQEIOdMGTxeClqw82TX6qQ7ecFfblTx38KZJpgP
-	 qZi6LTMJhnVdQ==
-Received: from hephaistos (business-90-187-159-109.pool2.vodafone-ip.de [90.187.159.109])
-	(Authenticated sender: konstantin.kletschke@inside-m2m.de)
-	by mail.inside-m2m.de (Postfix) with ESMTPSA id 01B0A401A1;
-	Tue,  7 Jan 2025 14:12:59 +0100 (CET)
-Date: Tue, 7 Jan 2025 14:12:58 +0100
-From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z30oWivcXTQmw9ZO@hephaistos>
-References: <19923329-f254-435d-9557-5e1b6835b8ec@pengutronix.de>
- <Z09TKeFZaT6InuPX@hephaistos>
- <49df1ec9-aca8-49b0-95fe-d577c5b615db@pengutronix.de>
- <Z098Eor4bedpsol9@hephaistos>
- <f7b92750-f3ec-42d1-aacb-deaa6fb408d9@pengutronix.de>
- <Z1CDcFAPdlDBkGJ5@hephaistos>
- <0125561a-a868-43da-a7d3-4b85540cc78d@pengutronix.de>
- <Z1mnJB8Suz3SNWbI@hephaistos>
- <Z2VPgRnxah5lc09X@hephaistos>
- <76532287-74b7-42ca-860c-b2e6bda8484e@pengutronix.de>
+	Tue, 07 Jan 2025 13:13:12 +0000
+Received: from mailer.emlix.com (p5098be52.dip0.t-ipconnect.de [80.152.190.82])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.emlix.com (Postfix) with ESMTPS id 27D4E5F89A;
+	Tue,  7 Jan 2025 14:13:04 +0100 (CET)
+Message-ID: <5c957c04-6ee6-4e7f-9385-899ac05a9593@emlix.com>
+Date: Tue, 7 Jan 2025 14:13:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <92d4dd39-529d-4e4c-b231-76c3ba1790a7@emlix.com>
+ <20250107073718.67626a7dq3afqjaz@pengutronix.de>
+ <08eeaf77-9771-4dd4-9249-9ae788ef8265@emlix.com>
+ <20250107111302.642ikgjfqmm3qgth@pengutronix.de>
+From: =?UTF-8?Q?Sebastian_Gro=C3=9F?= <sebastian.gross@emlix.com>
+Autocrypt: addr=sebastian.gross@emlix.com; keydata=
+ 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
+ ZlrLrSHrCdYwzhLk7OyivQ==
+In-Reply-To: <20250107111302.642ikgjfqmm3qgth@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <76532287-74b7-42ca-860c-b2e6bda8484e@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250107_051337_837286_39B74BBA 
-X-CRM114-Status: GOOD (  13.57  )
+X-CRM114-CacheID: sfid-20250107_051308_085626_47FC8F33 
+X-CRM114-Status: GOOD (  19.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,136 +107,78 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Reset on Beaglebone Black has become unreliable/broken
+Subject: Re: bootm: fit-image: hash node name too strict
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jan 07, 2025 at 12:17:03PM +0100, Ahmad Fatoum wrote:
-
-> Thanks for the follow-up.
-
-Of course, my pleasure :)
-
-I used "pio device monitor" from platformio and added a custom filter
-searching for ">" in the reveived stream and if true adds
-seconds.microseconds timestamp.
-
-With this:
-
-diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
-index 5dc49dfaaf..db1c464a27 100644
---- a/arch/arm/boards/beaglebone/lowlevel.c
-+++ b/arch/arm/boards/beaglebone/lowlevel.c
-@@ -97,6 +97,12 @@ extern char __dtb_z_am335x_boneblack_start[];
- extern char __dtb_z_am335x_bone_common_start[];
- extern char __dtb_z_am335x_bone_start[];
-
-+static void __udelay(int us)
-+{
-+        volatile int i;
-+       for (i = 0; i < us * 3; i++);
-+}
-+
- /**
-  * @brief The basic entry point for board initialization.
-  *
-@@ -111,6 +117,8 @@ static noinline int beaglebone_sram_init(void)
-        uint32_t sdram_size;
-        void *fdt;
-
-+       int k;
-+
-        fdt = __dtb_z_am335x_bone_common_start;
-
-        if (is_beaglebone_black())
-@@ -134,6 +142,11 @@ static noinline int beaglebone_sram_init(void)
-        am33xx_uart_soft_reset((void *)AM33XX_UART0_BASE);
-        am33xx_enable_uart0_pin_mux();
-        omap_debug_ll_init();
-+
-+       putc_ll('>');
-+       for (k = 0; k < 1000; k++) {
-+               __udelay(1000);
-+       }
-        putc_ll('>');
-
-        barebox_arm_entry(0x80000000, sdram_size, fdt);
-
-This gives me this:
-
-44.412429
+On 2025-01-07 12:13 PM, Marco Felsch wrote:
+> On 25-01-07, Sebastian GroÃŸ wrote:
+>> Hi Marco,
+>>
+>> On 2025-01-07 8:37 AM, Marco Felsch wrote:
+>>>> Since the image is build by uboot's mkimage I would expect the itb's to be
+>>>> compatible. Or am I missing something?
+>>>>
+>>>> Changing the following line in the `its`, ie. its build script
+>>>> ```
+>>>> - hash { algo = "${FIT_HASH_ALG}"; };
+>>>> + hash@1 { algo = "${FIT_HASH_ALG}"; };
+>>>> ```
+>>>> made the fit-image work.
+>>> I can't find this line within the U-Boot src code. Can you provide a
+>>> link please?
+>> Sorry for the confusion. I meant the build script within yocto that
+>> generates the `its` and then the `itb`
+> Can you give me some pointers please? I've checked the
+> kernel-fitimage.bbclass in oe-core and which used hash@1 during the
+> initial commit which was changed to hash-1 later on.
+Maybe that was my mistake in the first place. I used some custom class I 
+found from an older BSP that used u-boot as bootloader.
+I should switch to kernel-fitimage or the pengutronix fitimage class.
 >
-46.284478
+>>>> Perhaps another if-clause is required. Or some error message that states
+>>>> which property/string was searched for,
+>>>> since there were hashes in the image, but not where barebox expected them.
+>>> We could search for the legacy single 'hash' node name as well and print
+>>> a warning that this should be changed.
+>> I concur!
+> If we can find a valid source which still uses the old style :)
+Agreed. But I find it likely to stumble upon such old thingis in the 
+wild and would appreciate a warning in this case.
+This would spare future-me and other devs the trouble =)
+Plus the fix would not increase the complexity of the code.
+
+I could provide a patch and you might decide on this basis
 >
+>> Looking at `fit_image_verify_signature` this change might be necessary too
+>> for `signature`
+> Same here.
+>
+> Regards,
+>    Marco
 
-If I calculated correct this are 1.8 seconds.
-So without the surrounding 1000 loop this final result here:
+Regards
 
-diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
-index 5dc49dfaaf..ccae1d1122 100644
---- a/arch/arm/boards/beaglebone/lowlevel.c
-+++ b/arch/arm/boards/beaglebone/lowlevel.c
-@@ -97,6 +97,12 @@ extern char __dtb_z_am335x_boneblack_start[];
- extern char __dtb_z_am335x_bone_common_start[];
- extern char __dtb_z_am335x_bone_start[];
-
-+static void __udelay(int us)
-+{
-+        volatile int i;
-+       for (i = 0; i < us * 3; i++);
-+}
-+
- /**
-  * @brief The basic entry point for board initialization.
-  *
-@@ -135,6 +141,7 @@ static noinline int beaglebone_sram_init(void)
-        am33xx_enable_uart0_pin_mux();
-        omap_debug_ll_init();
-        putc_ll('>');
-+       __udelay(1000); // Adding delay of 1.8ms
-
-        barebox_arm_entry(0x80000000, sdram_size, fdt);
- }
-
-Should add a delay of 1.8ms. Is this feasible?
-
-
-> If it's indeed just a millisecond, I am in favor of adding this to
-> barebox upstream with a comment explaining what this fixes, even
-> if we don't fully understand it yet.
-
-Yes, I agree to the not fully yet understood part.
-What me holds back from lowering the speed is the following:
-
-I went into production with the final result part above and reflashe all
-our BBB devices which failed warm start without the additional delay and
-all passed 100% flawlessly after the modficication. So it is tested upon
-roughly 30 devices which failed before.
-
-Kind Regards
-Konstantin
-
-
+Sebastian
 
 -- 
-INSIDE M2M GmbH
-Konstantin Kletschke
-Berenbosteler Straße 76 B
-30823 Garbsen
+Sebastian GroÃŸ, B.Sc.
 
-Telefon: +49 (0) 5137 90950136
-Mobil: +49 (0) 151 15256238
-Fax: +49 (0) 5137 9095010
+emlix GmbH
+Headquarters: Berliner Str. 12, 37073 Goettingen, Germany
+Phone +49 (0)551 30664-0, e-mail info@emlix.com
+District Court of Goettingen, Registry Number HR B 3160
+Managing Directors: Heike Jordan, Dr. Uwe Kracke
+VAT ID No. DE 205 198 055
+Office Berlin: Panoramastr. 1, 10178 Berlin, Germany
+Office Bonn: Bachstr. 6, 53115 Bonn, Germany
+http://www.emlix.com
 
-konstantin.kletschke@inside-m2m.de
-http://www.inside-m2m.de 
-
-Geschäftsführung: Michael Emmert, Derek Uhlig
-HRB: 111204, AG Hannover
+emlix - your embedded Linux partner
 
 
 
