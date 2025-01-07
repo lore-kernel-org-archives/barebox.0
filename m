@@ -1,67 +1,67 @@
-Delivery-date: Tue, 07 Jan 2025 09:03:46 +0100
+Delivery-date: Tue, 07 Jan 2025 09:03:58 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tV4Yz-000Eot-25
+	id 1tV4ZB-000Epa-2p
 	for lore@lore.pengutronix.de;
-	Tue, 07 Jan 2025 09:03:46 +0100
+	Tue, 07 Jan 2025 09:03:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tV4YY-0001kq-Nz
-	for lore@pengutronix.de; Tue, 07 Jan 2025 09:03:46 +0100
+	id 1tV4Yj-0001pB-95
+	for lore@pengutronix.de; Tue, 07 Jan 2025 09:03:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Vh9Yg4bAq9gD/eR4DpIt+GG4klTOQ07eEYmoVX/XGVE=; b=sVvBAAlcMWLpr8sBBsmLcu0Vtj
-	crhXbqdWSUOfA4YIVWxVKd6qNsBomMNRBjtIgqdVQp87c3p8th9pkpbguclWwLXNCBcF7o4w/JPdV
-	nX7zluJYuMkgLSwE8IRnnmhv1BD5C62TaS/V0ZCT2gfLPtV+RsEZKjHhYxgajDm+OFfVAWykvRsey
-	tIMHsKB/nPdCZ+ybSbtBFNA3PGOgI+Vp1vo3FCpW1nOHDEaHQcbg2FJX32CGZl6z7Apw3QlD1iRL2
-	d104JR+A+oz95gzdbhigRn3/4JVt39F0weV4BpDpCxmyBZf6ctxMQFmk0sFvHQUthTj6xMFfr4Imx
-	TQVSIifA==;
+	bh=NVcHb3VWp201XJJz1/ciV16G1POFXwG++0eOzECiqVc=; b=RjEcZntk/WDequ/3K7pH/IIMz2
+	7W6bEkJRAiiVz8pdL3Y37rdZ+jmqZkVI3ecf5+nG/jLt18PdHUxxJOdPUXErBf+WURhxeJhg/idCb
+	+SCi/g/l8Ffn0KXXI+KDcuIVCc8XT4oAVuhOQtJlDUlVCK/Cy+xMa7HtV5aRtCL2CXVSkFAVra8L1
+	RFcJC+plf7Uh51syI/irjNZUHqYG+VY9Kn0B6dRwyQrwC49VaiPy8/BNN1QWzGc+/E2XHqoZdxs5B
+	r+JkAYRwxaDm17Ati8piW+k0kcIu6v550bpDkiBBcKRdj474zJrRnpl1pfzmhMHWoUXDTg+wffjLT
+	qRXMSBWQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tV4XI-00000003q0P-1uVK;
-	Tue, 07 Jan 2025 08:02:00 +0000
+	id 1tV4XJ-00000003q1V-2sMz;
+	Tue, 07 Jan 2025 08:02:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tV4VI-00000003pVH-21TE
+	id 1tV4VI-00000003pVJ-2BK0
 	for barebox@lists.infradead.org;
 	Tue, 07 Jan 2025 07:59:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tV4VH-0000rO-8E; Tue, 07 Jan 2025 08:59:55 +0100
+	id 1tV4VH-0000rM-4W; Tue, 07 Jan 2025 08:59:55 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tV4VG-007Iqc-0r;
-	Tue, 07 Jan 2025 08:59:55 +0100
+	id 1tV4VG-007IqW-0Y;
+	Tue, 07 Jan 2025 08:59:54 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tV4VG-00Bv76-32;
+	id 1tV4VG-00Bv76-2k;
 	Tue, 07 Jan 2025 08:59:54 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  7 Jan 2025 08:59:34 +0100
-Message-Id: <20250107075939.2841119-4-a.fatoum@pengutronix.de>
+Date: Tue,  7 Jan 2025 08:59:32 +0100
+Message-Id: <20250107075939.2841119-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250107075939.2841119-1-a.fatoum@pengutronix.de>
 References: <20250107075939.2841119-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250106_235956_525568_7F451FB1 
-X-CRM114-Status: GOOD (  14.86  )
+X-CRM114-CacheID: sfid-20250106_235956_562323_F22E47B4 
+X-CRM114-Status: GOOD (  15.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,113 +83,109 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/8] fs: retire FILE.in_use member
+Subject: [PATCH 1/8] fs: derive file descriptor number by pointer arithmetic
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The upstream struct file doesn't have an in_use member. As we already
-have an fsdev member in struct filep, we can just use that to mark that
-the file descriptor is already in use.
+In preparation for merging struct file and struct filep, we are going to
+remove struct filep specific members that are not in the upstream struct
+file. The .no member is an easy one, because it's just the index
+relative to the base of the file descriptor array and can thus be
+simply replaced by a subtraction.
+
+While at it, we move the array to static storage as there is no extra
+initialization being done.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c      | 21 +++++++++------------
- include/fs.h |  1 -
- 2 files changed, 9 insertions(+), 13 deletions(-)
+ fs/fs.c      | 19 ++++++++++++-------
+ include/fs.h |  2 --
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/fs/fs.c b/fs/fs.c
-index 57d173beb737..2adce54a61b6 100644
+index 57bd781025f9..57d173beb737 100644
 --- a/fs/fs.c
 +++ b/fs/fs.c
-@@ -304,14 +304,14 @@ char *get_mounted_path(const char *path)
- 	return fdev->path;
+@@ -221,7 +221,7 @@ static char *cwd;
+ static struct dentry *cwd_dentry;
+ static struct vfsmount *cwd_mnt;
+ 
+-static FILE *files;
++static FILE files[MAX_FILES];
+ static struct dentry *d_root;
+ static struct vfsmount *mnt_root;
+ 
+@@ -232,8 +232,6 @@ static int init_fs(void)
+ 	cwd = xzalloc(PATH_MAX);
+ 	*cwd = '/';
+ 
+-	files = xzalloc(sizeof(FILE) * MAX_FILES);
+-
+ 	return 0;
  }
  
--static FILE *get_file(void)
-+static FILE *get_file(struct fs_device *fsdev)
- {
- 	int i;
- 
- 	for (i = 3; i < MAX_FILES; i++) {
--		if (!files[i].in_use) {
-+		if (!files[i].fsdev) {
+@@ -314,13 +312,20 @@ static FILE *get_file(void)
+ 		if (!files[i].in_use) {
  			memset(&files[i], 0, sizeof(FILE));
--			files[i].in_use = 1;
-+			files[i].fsdev = fsdev;
+ 			files[i].in_use = 1;
+-			files[i].no = i;
  			return &files[i];
  		}
  	}
-@@ -330,14 +330,14 @@ static void put_file(FILE *f)
- {
- 	free(f->path);
- 	f->path = NULL;
--	f->in_use = 0;
-+	f->fsdev = NULL;
- 	iput(f->f_inode);
- 	dput(f->dentry);
+ 	return NULL;
  }
  
- static FILE *fd_to_file(int fd, bool o_path_ok)
++static int file_to_fd(FILE *f)
++{
++	int fd = f - files;
++	if (fd < 0 || fd >= ARRAY_SIZE(files))
++		return -EBADFD;
++	return fd;
++}
++
+ static void put_file(FILE *f)
  {
--	if (fd < 0 || fd >= MAX_FILES || !files[fd].in_use) {
-+	if (fd < 0 || fd >= MAX_FILES || !files[fd].fsdev) {
- 		errno = EBADF;
- 		return ERR_PTR(-errno);
- 	}
-@@ -2564,7 +2564,7 @@ int openat(int dirfd, const char *pathname, int flags)
- 			return -errno;
- 		}
- 
--		f = get_file();
-+		f = get_file(fsdev);
- 		if (!f) {
- 			errno = EMFILE;
- 			return -errno;
-@@ -2576,7 +2576,6 @@ int openat(int dirfd, const char *pathname, int flags)
- 		f->f_inode->i_mode = S_IFREG;
- 		f->flags = flags;
+ 	free(f->path);
+@@ -2573,7 +2578,7 @@ int openat(int dirfd, const char *pathname, int flags)
  		f->size = 0;
--		f->fsdev = fsdev;
+ 		f->fsdev = fsdev;
  
- 		return file_to_fd(f);
+-		return f->no;
++		return file_to_fd(f);
  	}
-@@ -2647,8 +2646,10 @@ int openat(int dirfd, const char *pathname, int flags)
- 	}
  
- 	inode = d_inode(dentry);
-+	sb = inode->i_sb;
-+	fsdev = container_of(sb, struct fs_device, sb);
+ 	filename = getname(pathname);
+@@ -2662,7 +2667,7 @@ int openat(int dirfd, const char *pathname, int flags)
+ 	f->fsdev = fsdev;
  
--	f = get_file();
-+	f = get_file(fsdev);
- 	if (!f) {
- 		error = -EMFILE;
- 		goto out1;
-@@ -2660,12 +2661,8 @@ int openat(int dirfd, const char *pathname, int flags)
- 	f->flags = flags;
- 	f->size = inode->i_size;
- 
--	sb = inode->i_sb;
--	fsdev = container_of(sb, struct fs_device, sb);
- 	fsdrv = fsdev->driver;
- 
--	f->fsdev = fsdev;
--
  	if (flags & O_PATH)
- 		return file_to_fd(f);
+-		return f->no;
++		return file_to_fd(f);
  
+ 	if (fsdrv->open) {
+ 		char *pathname = dpath(dentry, fsdev->vfsmount.mnt_root);
+@@ -2684,7 +2689,7 @@ int openat(int dirfd, const char *pathname, int flags)
+ 	if (flags & O_APPEND)
+ 		f->pos = f->size;
+ 
+-	return f->no;
++	return file_to_fd(f);
+ 
+ out:
+ 	put_file(f);
 diff --git a/include/fs.h b/include/fs.h
-index 5525dc1c9f17..1deb1a87bb7f 100644
+index 137eb2d2863e..5525dc1c9f17 100644
 --- a/include/fs.h
 +++ b/include/fs.h
-@@ -29,7 +29,6 @@ typedef struct filep {
+@@ -29,8 +29,6 @@ typedef struct filep {
  
  	void *priv;         /* private to the filesystem driver              */
  
--	char in_use;
+-	/* private fields. Mapping between FILE and filedescriptor number     */
+-	int no;
+ 	char in_use;
  
  	struct inode *f_inode;
- 	struct dentry *dentry;
 -- 
 2.39.5
 
