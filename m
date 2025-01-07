@@ -1,66 +1,66 @@
-Delivery-date: Tue, 07 Jan 2025 15:36:41 +0100
+Delivery-date: Tue, 07 Jan 2025 15:38:53 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tVAhE-000LkU-2q
+	id 1tVAjM-000Lpy-1e
 	for lore@lore.pengutronix.de;
-	Tue, 07 Jan 2025 15:36:41 +0100
+	Tue, 07 Jan 2025 15:38:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tVAhA-0007JP-SD
-	for lore@pengutronix.de; Tue, 07 Jan 2025 15:36:41 +0100
+	id 1tVAjI-0007pn-Pp
+	for lore@pengutronix.de; Tue, 07 Jan 2025 15:38:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NbmLFDaQkmE9kK2DlLMI/JougyExhUp0eLTvyrU3RwE=; b=Q9xg4BSYkqq9ILgYMaKYf0ov98
-	GDgC96j2n0aFFH/eacW0yEzFPa7thmEr0uFUXIOevJV0nh6sGqhh0q+GIWgCjnJfuMM6GLEo1e7yp
-	8v/5/R12Lf9gO1n4UV2ksT20y+l9sdphuFg0r0oQT1pTW7M40DQo/S+h/Fuje0WNmrwR1wEObFOt3
-	rCKUHSp9yfWoPAtmdHn3Dya0qTgk8LwcSTaOY0KZYbjXODg1A2irtSUN81x5jZT8t4nZ+pzLSfRHH
-	yC7EJFC9e7Mp6N68gGtSMDfNo/bNh63K0T51R4ps3rZMnniOjzmTbstjyk2a7gm/2lGlDSnsosWTi
-	4S6Ilkxg==;
+	bh=/2/L4GBSKcp2AjWtzuhF3RGNlFblgNOy+7AZbett1j4=; b=BzAZCMj+ITbYRwUxfxaNxfxRDs
+	qV3+n1LdzvgxaybUTutT6uBb08W4NMbvCxTsL8cE+SXFxKYk3rX46JvrS3YsMHXxt/2L1EGz1cGL5
+	WJ1iEPL0JdA/bcI9QeXs/XyZFc6IcIk0XGBo2ARiDzGiJReFagWKIrUqDN7aNiCfoVJmBRCA8gGM/
+	pWc2f0tbPkS34k2Rnpz9ceEKL4XzBbzABdDUoP47aaMY7G6B/fAgFfOVNlZb9Wb3On3ygYd8gjnsN
+	gOiiN2+TZ8tg9rDMNeBZOy0n9TdFUjarN8B9Y0y7r76pum+jkypEwEug9Rw+5id7qqliCfH4UalcO
+	55vHG86A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tVAgX-00000005Exf-43Jl;
-	Tue, 07 Jan 2025 14:35:57 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tVAie-00000005FMY-1k1s;
+	Tue, 07 Jan 2025 14:38:08 +0000
+Received: from zdiv.net ([46.226.106.130])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tVAfi-00000005Eqc-3JaX
+	id 1tVAiY-00000005FEx-1ot9
 	for barebox@lists.infradead.org;
-	Tue, 07 Jan 2025 14:35:10 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tVAfg-00071N-Jf; Tue, 07 Jan 2025 15:35:04 +0100
-Message-ID: <9c8d6171-c228-4e4a-97da-f1ce93e14aed@pengutronix.de>
-Date: Tue, 7 Jan 2025 15:35:04 +0100
+	Tue, 07 Jan 2025 14:38:06 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
+	t=1736260669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/2/L4GBSKcp2AjWtzuhF3RGNlFblgNOy+7AZbett1j4=;
+	b=ibnCEawkI0DH4pW5n6lkJ3xNAMXPYmW/FBHVM4dNb+cB1002RxRk7XupVd/yxMIXp7R/cs
+	e1lSO1iRt8ae683PGgCscv50lCIneLix89R4uf8bLtTU/+fGtmVUGzfTfldIkSgv/Kerr+
+	oKnJ0u00j2vDYJHDepCHP0z5U1JHaaunjf4T2lVkpxekC1uArw7Zjf4EO5v/plWPNiqzvO
+	focEJuhwJopdDMNDywgZVdt7sjtwGGfyNPNAK1wUWOD3a9CLBIFK79VdU3KqezfuIjJtRj
+	K4JQVKp+Kjs4a8MpRnVcarTXyvd6/DvbIcB5gOzMlQbeszMADc4Y85igaSnxnQ==
+Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:cfea:c4a:f4aa:bbd])
+	by zdiv.net (OpenSMTPD) with ESMTPSA id 410580db (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 7 Jan 2025 15:37:49 +0100 (CET)
+From: Jules Maselbas <jmaselbas@zdiv.net>
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@zdiv.net>
+Date: Tue,  7 Jan 2025 15:37:39 +0100
+Message-ID: <20250107143740.16903-6-jmaselbas@zdiv.net>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250107143740.16903-1-jmaselbas@zdiv.net>
+References: <20250107143740.16903-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-Cc: barebox@lists.infradead.org
-References: <19923329-f254-435d-9557-5e1b6835b8ec@pengutronix.de>
- <Z09TKeFZaT6InuPX@hephaistos>
- <49df1ec9-aca8-49b0-95fe-d577c5b615db@pengutronix.de>
- <Z098Eor4bedpsol9@hephaistos>
- <f7b92750-f3ec-42d1-aacb-deaa6fb408d9@pengutronix.de>
- <Z1CDcFAPdlDBkGJ5@hephaistos>
- <0125561a-a868-43da-a7d3-4b85540cc78d@pengutronix.de>
- <Z1mnJB8Suz3SNWbI@hephaistos> <Z2VPgRnxah5lc09X@hephaistos>
- <76532287-74b7-42ca-860c-b2e6bda8484e@pengutronix.de>
- <Z30oWivcXTQmw9ZO@hephaistos>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z30oWivcXTQmw9ZO@hephaistos>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250107_063506_830907_C5DF576C 
-X-CRM114-Status: GOOD (  17.47  )
+X-CRM114-CacheID: sfid-20250107_063802_744330_97C01445 
+X-CRM114-Status: GOOD (  14.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,55 +78,126 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Reset on Beaglebone Black has become unreliable/broken
+Subject: [PATCH v2 5/6] ARM: sunxi: Introduce mach-sunxi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Konstantin,
+Add some boilerplate, Makefiles, Kbuild.
+A generic barebox-dt-2nd.img image can be build for A64 SoC using
+the sunxi_v8_defconfig.
 
-On 07.01.25 14:12, Konstantin Kletschke wrote:
-> On Tue, Jan 07, 2025 at 12:17:03PM +0100, Ahmad Fatoum wrote:
-> Should add a delay of 1.8ms. Is this feasible?
+This image can be booted from u-boot and has been tested on Pine64+,
+it should work on other A64 SoC such as the pinephone, and other Pine64
+boards, it might also work on H6 SoC which uses the same sd/mmc controler.
 
-Sounds ok to me. Please send a patch to that effect with an explanatory
-comment, summarizing what hardware was observed to have what issues.
+Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+---
+v1->v2:
+ - removed RELOCATABLE and HAVE_PBL_MULTI_IMAGES from Kconfig (Ahmad)
+ - used __dummy__.o insead of an empty file (Ahmad)
+ - removed include/mach/sunxi/barebox-arm.h (Ahmad)
 
->> If it's indeed just a millisecond, I am in favor of adding this to
->> barebox upstream with a comment explaining what this fixes, even
->> if we don't fully understand it yet.
-> 
-> Yes, I agree to the not fully yet understood part.
-> What me holds back from lowering the speed is the following:
-> 
-> I went into production with the final result part above and reflashe all
-> our BBB devices which failed warm start without the additional delay and
-> all passed 100% flawlessly after the modficication. So it is tested upon
-> roughly 30 devices which failed before.
+ arch/arm/Kconfig                    | 12 ++++++++++++
+ arch/arm/Makefile                   |  1 +
+ arch/arm/configs/sunxi_v8_defconfig | 12 ++++++++++++
+ arch/arm/mach-sunxi/Kconfig         | 12 ++++++++++++
+ arch/arm/mach-sunxi/Makefile        |  1 +
+ 5 files changed, 38 insertions(+)
+ create mode 100644 arch/arm/configs/sunxi_v8_defconfig
+ create mode 100644 arch/arm/mach-sunxi/Kconfig
+ create mode 100644 arch/arm/mach-sunxi/Makefile
 
-I am surprised you are still shipping new products with a Beaglebone Black,
-but anyhow, we need to be pragmatic and a ~2ms delay, even if not completely
-understood is an acceptable price to pay for barebox reliably starting up
-on newly produced BBBs.
-
-Cheers,
-Ahmad
-
-> 
-> Kind Regards
-> Konstantin
-> 
-> 
-> 
-
-
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 0251f2dcef..83adfaddf7 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -109,6 +109,17 @@ config ARCH_SOCFPGA
+ 	select CPU_V7
+ 	select COMMON_CLK
+ 
++config ARCH_SUNXI
++	bool "Allwinner SoCs"
++	depends on 64BIT
++	select CLKDEV_LOOKUP
++	select COMMON_CLK
++	select COMMON_CLK_OF_PROVIDER
++	select GPIOLIB
++	select OFDEVICE
++	select OFTREE
++	select PINCTRL
++
+ config ARCH_TEGRA
+ 	bool "NVIDIA Tegra"
+ 	depends on 32BIT
+@@ -256,6 +267,7 @@ source "arch/arm/mach-omap/Kconfig"
+ source "arch/arm/mach-pxa/Kconfig"
+ source "arch/arm/mach-rockchip/Kconfig"
+ source "arch/arm/mach-socfpga/Kconfig"
++source "arch/arm/mach-sunxi/Kconfig"
+ source "arch/arm/mach-stm32mp/Kconfig"
+ source "arch/arm/mach-versatile/Kconfig"
+ source "arch/arm/mach-vexpress/Kconfig"
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 270f5dfdc1..e4041cf715 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -102,6 +102,7 @@ machine-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip
+ machine-$(CONFIG_ARCH_SAMSUNG)		+= samsung
+ machine-$(CONFIG_ARCH_SOCFPGA)		+= socfpga
+ machine-$(CONFIG_ARCH_STM32MP)		+= stm32mp
++machine-$(CONFIG_ARCH_SUNXI)		+= sunxi
+ machine-$(CONFIG_ARCH_VERSATILE)	+= versatile
+ machine-$(CONFIG_ARCH_VEXPRESS)		+= vexpress
+ machine-$(CONFIG_ARCH_TEGRA)		+= tegra
+diff --git a/arch/arm/configs/sunxi_v8_defconfig b/arch/arm/configs/sunxi_v8_defconfig
+new file mode 100644
+index 0000000000..ebadd1c950
+--- /dev/null
++++ b/arch/arm/configs/sunxi_v8_defconfig
+@@ -0,0 +1,12 @@
++CONFIG_ARCH_SUNXI=y
++CONFIG_64BIT=y
++CONFIG_BOARD_ARM_GENERIC_DT=y
++CONFIG_ARCH_SUN50I_A64=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_MCI=y
++CONFIG_MCI_SUNXI_SMHC=y
++CONFIG_CMD_DMESG=y
++CONFIG_MCI_STARTUP=y
++CONFIG_FS_FAT=y
++CONFIG_IMAGE_COMPRESSION_XZKERN=y
++CONFIG_MMU=y
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+new file mode 100644
+index 0000000000..e8d23772c2
+--- /dev/null
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -0,0 +1,12 @@
++if ARCH_SUNXI
++
++config ARCH_SUN50I_A64
++	bool "Allwinner A64 SoC"
++	select CPU_V8
++	select CPU_SUPPORTS_64BIT_KERNEL
++	select CLOCKSOURCE_ARM_ARCHITECTED_TIMER
++	select PINCTRL_SUN50I_A64
++	help
++	  Allwinner A64 (sun50iw1) SoC
++
++endif
+diff --git a/arch/arm/mach-sunxi/Makefile b/arch/arm/mach-sunxi/Makefile
+new file mode 100644
+index 0000000000..16a218658a
+--- /dev/null
++++ b/arch/arm/mach-sunxi/Makefile
+@@ -0,0 +1 @@
++obj- := __dummy__.o
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.1
+
 
 
