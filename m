@@ -1,68 +1,68 @@
-Delivery-date: Sun, 12 Jan 2025 09:35:12 +0100
+Delivery-date: Sun, 12 Jan 2025 09:35:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tWtRA-0007fM-0s
+	id 1tWtRG-0007fv-3C
 	for lore@lore.pengutronix.de;
-	Sun, 12 Jan 2025 09:35:12 +0100
+	Sun, 12 Jan 2025 09:35:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tWtR9-00071Y-Bz
-	for lore@pengutronix.de; Sun, 12 Jan 2025 09:35:12 +0100
+	id 1tWtRG-00077Y-CQ
+	for lore@pengutronix.de; Sun, 12 Jan 2025 09:35:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/LSACbCBslx2ZvO6lra4iFTDwYXMHH7kI97/qRlzJIA=; b=T8BqlKG1NefGlNDr6g+tCMxCbG
-	G8SfG+NqzcXqcm05wOhnVGchLpkykwIzqGqxtHRIxGVZ1STmUjkAFQSGxuC9JTtrP1U43xx+jeovB
-	qXG8/NSwNL0ZoCm7BUvlqlEJwPr3FDCSV2s3PKduUQktomTZ2ydUC+kzwtmGfYHd7jTFK0LYg/5zd
-	aPLDsUXHxOTPXnQ0KbcgD0rKbI/R0efBpwELNKOPcAYjX3Po8uxEHvv1qMSrmYm/IccYm/nW5s2E6
-	ddvfHTbpGEnnbspPtuZ254yRwjSWEoSlMIn0EBqb96XuTVisMEuB4RVQ/JloyN7Ac0eajq/tQIZmw
-	FWoCpAGA==;
+	bh=IxBoplwUgVtCNRP2HxE5yd0ZtM0UxNtxSvO0VhR810M=; b=WKuZgssk+3gywLacgu2vxnDqFJ
+	t6sZWv/Y8zfbqNViWcz+bEZRjorefKvJqQ66HAVVth9Ja1jjjhic4IvLHPevc0gCHPwEM35BQprs8
+	7pW3ywNxZ1pDgKE2g4F8sj0toViUwDvzqvKrmShzVxw6FLRS5uNmsEl9PhMnr2LzNQMwtBU07fJ/d
+	7NIfNoLqRb0UTnbIBtESxAI/NLQzn9n0h4ZgN4coj7SVH46j6tWmlF6bq+o9aEbdcobkuahUe71h7
+	Mu9Rw2kekF8fOFI9Red0lhLz2e9swTy5A4t/fhLya0weK1XIxNcqMYvydGCEs9pgQuINv5p/jGR9J
+	/VlZ5WsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tWtQl-00000002KzL-0Oo8;
-	Sun, 12 Jan 2025 08:34:47 +0000
+	id 1tWtQt-00000002L4U-0rJs;
+	Sun, 12 Jan 2025 08:34:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tWtQi-00000002KxW-3LnN
+	id 1tWtQq-00000002L2r-3QAb
 	for barebox@lists.infradead.org;
-	Sun, 12 Jan 2025 08:34:45 +0000
+	Sun, 12 Jan 2025 08:34:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tWtQZ-0006gK-Ht; Sun, 12 Jan 2025 09:34:35 +0100
+	id 1tWtQZ-0006gM-Hs; Sun, 12 Jan 2025 09:34:35 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tWtQX-0003Nw-0q;
+	id 1tWtQX-0003O2-19;
 	Sun, 12 Jan 2025 09:34:33 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tWtQY-001LPJ-1H;
+	id 1tWtQY-001LPJ-1b;
 	Sun, 12 Jan 2025 09:34:33 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Felix Singer <felixsinger@posteo.net>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sun, 12 Jan 2025 09:34:22 +0100
-Message-Id: <20250112083432.320215-4-a.fatoum@pengutronix.de>
+Date: Sun, 12 Jan 2025 09:34:24 +0100
+Message-Id: <20250112083432.320215-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250112083432.320215-1-a.fatoum@pengutronix.de>
 References: <20250112083432.320215-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250112_003444_845971_0CD15142 
-X-CRM114-Status: GOOD (  13.74  )
+X-CRM114-CacheID: sfid-20250112_003452_852538_436D8363 
+X-CRM114-Status: GOOD (  14.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,113 +84,92 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/13] kbuild: collect available device trees in dtbs-list
+Subject: [PATCH 05/13] kbuild: restrict dtbs target to enabled DTs by default
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that we have a dtb-y variable containing all board device trees,
-let's import some Linux Kbuild code, so barebox can also maintain a list
-of built device trees in arch/$ARCH/dts/dtbs-list.
+Our existing dtbs target is fairly primitive and builds just all device
+trees in the architecture folder without regard to whether they are even
+wired in the Makefile or not.
+
+Now that we have a list of all device trees in the form of dtbs-list,
+let's rework the dtbs target to make use of it. The old behavior of
+building all device trees can still be achieved by enabling
+CONFIG_OF_ALL_DTBS.
+
+In order to have dtbs-list updated always, it's also added to the
+dependencies of the images target. That way, a FIT image target that
+will be added in a later commit can reliably depend on that file to be
+available.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .gitignore             |  1 +
- Makefile               |  1 +
- scripts/Makefile.build | 11 +++++++++++
- scripts/Makefile.dtbs  | 32 ++++++++++++++++++++++++++++++++
- 4 files changed, 45 insertions(+)
- create mode 100644 scripts/Makefile.dtbs
+ Makefile           | 22 +++++++++++++++++-----
+ drivers/of/Kconfig | 11 +++++++++++
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index 5e1b0c2b68ff..0bee67af4881 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -36,6 +36,7 @@
- *.tab.[ch]
- binary.0
- Module.symvers
-+dtbs-list
- *.dtb
- *.dtb.*
- *.dtbo
 diff --git a/Makefile b/Makefile
-index d5d02f4efe15..5f5f830af5d2 100644
+index 82f90373cbbd..75e994e5ac1a 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -1238,6 +1238,7 @@ clean: archclean $(clean-dirs)
- 		\( -name '*.[oas]' -o -name '*.ko' -o -name '.*.cmd' \
- 		-o -name '.*.d' -o -name '.*.tmp' -o -name '*.mod.c' \
- 		-o -name '*lex.c' -o -name '.tab.[ch]' \
-+		-o -name 'dtbs-list' \
- 		-o -name '*.symtypes' -o -name '*.bbenv.*' -o -name "*.bbenv" \) \
- 		-type f -print | xargs rm -f
+@@ -1114,10 +1114,22 @@ endif
  
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 1c511d38a12b..591da3d750ec 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -56,12 +56,23 @@ ifneq ($(userprogs),)
- include scripts/Makefile.userprogs
- endif
+ ifneq ($(dtstree),)
  
-+ifneq ($(need-dtbslist)$(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
-+include $(srctree)/scripts/Makefile.dtbs
+-PHONY += dtbs
+-all_dtbs += $(patsubst $(srctree)/%.dts,$(objtree)/%.dtb,$(wildcard $(srctree)/$(dtstree)/*.dts))
+-targets += $(all_dtbs)
+-dtbs: $(all_dtbs)
++%.dtb: dtbs_prepare
++	$(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
++
++%.dtbo: dtbs_prepare
++	$(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
++
++PHONY += dtbs dtbs_prepare
++dtbs: dtbs_prepare
++	$(Q)$(MAKE) $(build)=$(dtstree) need-dtbslist=1
++
++dtbs_prepare: include/config/kernel.release scripts_dtc
++
++ifdef CONFIG_OFDEVICE
++images: dtbs
++images/%: dtbs
 +endif
-+
- ifndef obj
- $(warning kbuild: Makefile.build is included improperly)
+ 
  endif
  
- # ===========================================================================
+@@ -1322,7 +1334,7 @@ help:
+ 	@echo  ''
+ 	@$(if $(dtstree), \
+ 		echo '  Devicetree:'; \
+-		echo '    * dtbs             - Build device tree blobs for all boards'; \
++		echo '    * dtbs             - Build device tree blobs for enabled boards'; \
+ 		echo '')
+ 	@$(if $(boards), \
+ 		$(foreach b, $(boards), \
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 6c9aedf355b4..ebc8842f5e38 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -3,6 +3,17 @@ config OFTREE
+ 	select DTC
+ 	bool
  
-+# This is a list of build artifacts from the current Makefile and its
-+# sub-directories. The timestamp should be updated when any of the member files.
++config OF_ALL_DTBS
++	bool "Build all Device Tree Blobs"
++	depends on OFTREE && COMPILE_TEST
++	select DTC
++	help
++	  This option builds all possible Device Tree Blobs (DTBs) for the
++	  current architecture.
 +
-+cmd_gen_order = { $(foreach m, $(real-prereqs), \
-+	$(if $(filter %/$(notdir $@), $m), cat $m, echo $m);) :; } \
-+	> $@
++	  If unsure, say N here, but this option is safe to enable.
 +
- ifneq ($(strip $(lib-y) $(lib-m) $(lib-n) $(lib-)),)
- lib-target := $(obj)/lib.a
- endif
-diff --git a/scripts/Makefile.dtbs b/scripts/Makefile.dtbs
-new file mode 100644
-index 000000000000..046361c20a6a
---- /dev/null
-+++ b/scripts/Makefile.dtbs
-@@ -0,0 +1,32 @@
-+# SPDX-License-Identifier: GPL-2.0-only
 +
-+# If CONFIG_OF_ALL_DTBS is enabled, all DT blobs are built
-+dtb-$(CONFIG_OF_ALL_DTBS) += $(dtb-)
-+
-+# Composite DTB (i.e. DTB constructed by overlay)
-+multi-dtb-y := $(call multi-search, $(dtb-y), .dtb, -dtbs)
-+# Primitive DTB compiled from *.dts
-+real-dtb-y := $(call real-search, $(dtb-y), .dtb, -dtbs)
-+# Base DTB that overlay is applied onto
-+base-dtb-y := $(filter %.dtb, $(call real-search, $(multi-dtb-y), .dtb, -dtbs))
-+
-+dtb-y           := $(addprefix $(obj)/, $(dtb-y))
-+multi-dtb-y     := $(addprefix $(obj)/, $(multi-dtb-y))
-+real-dtb-y      := $(addprefix $(obj)/, $(real-dtb-y))
-+
-+always-y        += $(dtb-y)
-+targets         += $(real-dtb-y)
-+
-+# dtbs-list
-+# ---------------------------------------------------------------------------
-+
-+ifdef need-dtbslist
-+subdir-dtbslist := $(addsuffix /dtbs-list, $(subdir-ym))
-+dtb-y           += $(subdir-dtbslist)
-+always-y        += $(obj)/dtbs-list
-+endif
-+
-+$(subdir-dtbslist): $(obj)/%/dtbs-list: $(obj)/% ;
-+
-+$(obj)/dtbs-list: $(dtb-y) FORCE
-+	$(call if_changed,gen_order)
+ config OFTREE_MEM_GENERIC
+ 	depends on OFTREE
+ 	depends on PPC || ARM || EFI_PAYLOAD || OPENRISC || SANDBOX || RISCV || KVX
 -- 
 2.39.5
 
