@@ -1,61 +1,66 @@
-Delivery-date: Fri, 10 Jan 2025 18:37:53 +0100
+Delivery-date: Sun, 12 Jan 2025 09:22:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tWIxE-000S7a-0q
+	id 1tWtFH-0007T2-0b
 	for lore@lore.pengutronix.de;
-	Fri, 10 Jan 2025 18:37:53 +0100
+	Sun, 12 Jan 2025 09:22:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tWIxE-0004eL-Ea
-	for lore@pengutronix.de; Fri, 10 Jan 2025 18:37:52 +0100
+	id 1tWtFG-0006Pz-M6
+	for lore@pengutronix.de; Sun, 12 Jan 2025 09:22:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iOP9B+I60KLK9weqVqa7+cx4d3N96Y3tBL75Md8ICV8=; b=Fwrjh/g84rsR2dGhmFxvkFcveJ
-	xE2bFmsU0tDpKECRaUf7sjkFOVhomGXqPtJ70ugXhLAp0kl4HVDJ0lT33Rl8oA5O9eH340mTOM4KX
-	UOB69uMdXP3XmYHugvUXPK64A9/JgkQfaZPe5S2IjBSy6EUnzq84XSvapzkHAqW/2TABFbMOQxhzx
-	F8qiGBxNJjw9a3F050koZw7eXlcg/1odxzaqOSXiBN/QaaFXsQzd2ZuEIk/LIoPSKvYGTzdO961EY
-	27/neQgwRXn9NdYzOeM1PW2YFW82Fmvla7YqGyHhtsmS/r+oIWTK2lBc147hrjb3Kkyy5/+SDmEKm
-	4kGToBmQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=UWS3fKjY+e56zrtIYEJiFRLvT7+otoGgXg0XA+BX8Do=; b=4S4EVmYRZ5+RIZJOnZnRmhe519
+	lwmebAA22jbqm9bTbig3R+jKIaKZGuALtygpYXi6ckmfqGw4uvLmtgSqH2KgCmfGJ8ukERILWDzBG
+	NdZF5dWYqteC5ZUww2+mxEQKae4Q6xnuc6VyiP/5b+5VRdEUvlepcFe9+QLOLeJ7Boy9AnOZVEnY7
+	5uK+N1XozST55F/cwWc0Dom3Tbf8mBi33J51MQwte6m//Gg+SmmevK7N5+YwNvxqLwgbYZWt1He2z
+	7Fb6xKkgio5nXnIBp3+Erp6U4Oe1rK8/aa5GdMh9IErocqZimA4I1b65AcYHw5uJMoConXZsdkEvL
+	uwl9CgNg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tWIwv-0000000GSYf-265K;
-	Fri, 10 Jan 2025 17:37:33 +0000
+	id 1tWtEf-00000002JQr-2IAB;
+	Sun, 12 Jan 2025 08:22:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tWHip-0000000GCnC-0IT8
+	id 1tWtDi-00000002JL5-35ae
 	for barebox@lists.infradead.org;
-	Fri, 10 Jan 2025 16:18:56 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <bst@pengutronix.de>)
-	id 1tWHim-0007BQ-AP; Fri, 10 Jan 2025 17:18:52 +0100
-Message-ID: <fc432540-ec96-461b-9660-80b5b66aee17@pengutronix.de>
-Date: Fri, 10 Jan 2025 17:18:51 +0100
+	Sun, 12 Jan 2025 08:21:21 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tWtDe-0006Fm-M5; Sun, 12 Jan 2025 09:21:14 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tWtDd-0003I0-3B;
+	Sun, 12 Jan 2025 09:21:14 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tWtDf-001Jah-0P;
+	Sun, 12 Jan 2025 09:21:14 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Sun, 12 Jan 2025 09:21:11 +0100
+Message-Id: <20250112082113.313620-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org,
- Rouven Czerwinski <r.czerwinski@pengutronix.de>,
- Marco Felsch <m.felsch@pengutronix.de>,
- Stefan Kerkmann <s.kerkmann@pengutronix.de>
-References: <20250106113340.1224335-1-bst@pengutronix.de>
- <Z4EFE3V2FGUCRVBn@pengutronix.de>
-From: Bastian Krause <bst@pengutronix.de>
-In-Reply-To: <Z4EFE3V2FGUCRVBn@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250110_081855_110538_4314B240 
-X-CRM114-Status: GOOD (  14.01  )
+X-CRM114-CacheID: sfid-20250112_002118_769341_5B778AE6 
+X-CRM114-Status: UNSURE (   7.87  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,69 +78,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts: imx: pass semicolons as substitute chars to
- compiler macros for CSF templating
+Subject: [PATCH 1/3] fixup! usb: add static inline wrapper for of_usb_get_phy_mode()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Sascha,
+Other callsites of this function were fixed, but one was missed,
+causing CI breakage.
 
-On 1/10/25 12:31 PM, Sascha Hauer wrote:
-> On Mon, Jan 06, 2025 at 12:33:40PM +0100, Bastian Krause wrote:
->> With CONFIG_HAB_CERTS_ENV=y, paths and PKCS#11 URIs to the HAB
->> certificates are taken from environment variables (allowing for better
->> integration with build systems). In this case these values are passed
->> internally via compiler macros (-D) to the imx-image host tool. PKCS#11
->> URIs usually contain semicolons. Semicolons, however, cannot be passed
->> via compiler macros and cannot be escaped.
-> 
-> Try harder.
-> 
-> gcc -DFOO='"bar;baz"' test.c
-> 
-> #include <stdio.h>
-> 
-> int main(void)
-> {
-> 	printf(FOO);
-> }
-> 
-> Works as expected, so does it work when you add single quotes around the
-> URI?
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/usb/imx/chipidea-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This actually works:
-
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -570,8 +570,8 @@ imxcfg_cpp_flags  = -Wp,-MD,$(depfile) -nostdinc -x 
-assembler-with-cpp \
-        $(call overwrite-hab-env,CONFIG_HABV3_CSF_CRT_DER) \
-        $(call overwrite-hab-env,CONFIG_HABV3_IMG_CRT_DER) \
-        $(call overwrite-hab-env,CONFIG_HABV4_TABLE_BIN) \
--      $(call overwrite-hab-env,CONFIG_HABV4_CSF_CRT_PEM) \
--      $(call overwrite-hab-env,CONFIG_HABV4_IMG_CRT_PEM) \
-+      -DCONFIG_HABV4_CSF_CRT_PEM='"$(CONFIG_HABV4_CSF_CRT_PEM)"' \
-+      -DCONFIG_HABV4_IMG_CRT_PEM='"$(CONFIG_HABV4_IMG_CRT_PEM)"' \
-        $(call overwrite-fit-env,CONFIG_BOOTM_FITIMAGE_PUBKEY) \
-
-  dcd-tmp = $(subst $(comma),_,$(dot-target).dcd.tmp)
-
-
-But I had no luck integrating the single quote approach in overwrite-
-hab-env. Maybe my quoting/escaping fu is not strong enough. Could you
-take a look?
-
-Regards,
-Bastian
-
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index c5e6ce61e957..9597acef4240 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -18,6 +18,7 @@
+ #include <linux/usb/fsl_usb2.h>
+ #include <linux/err.h>
+ #include <linux/phy/phy.h>
++#include <linux/usb/of.h>
+ #include <linux/clk.h>
+ 
+ #define MXC_EHCI_PORTSC_MASK ((0xf << 28) | (1 << 25))
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
