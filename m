@@ -1,57 +1,57 @@
-Delivery-date: Tue, 14 Jan 2025 09:39:28 +0100
+Delivery-date: Tue, 14 Jan 2025 09:39:31 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tXcSO-000wka-0Z
+	id 1tXcSR-000wl8-2S
 	for lore@lore.pengutronix.de;
-	Tue, 14 Jan 2025 09:39:28 +0100
+	Tue, 14 Jan 2025 09:39:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tXcSN-00066K-G5
-	for lore@pengutronix.de; Tue, 14 Jan 2025 09:39:28 +0100
+	id 1tXcSQ-00069t-UQ
+	for lore@pengutronix.de; Tue, 14 Jan 2025 09:39:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EXz7gEwKfaquYx1CMS5KoZiU/AWQpSspQ6B+Wlt4oHk=; b=EvNVL/US342Bh11pUASlK4xtgz
-	LeG2gMOcON32i6ZrtzbPIN3EN+meFe7c1kUR0pTVLXxsIXmTmXRjU5nyiT9obNgA1pGX/KW21jCHK
-	HCyU+VRfvARTqCasqrvN6o8BG7g5Dtgjcm86qWaJe8m9xsIQUkHPviyR18srMCxzhgIsOXYvo1zmc
-	pChebrBVBo5irS71M0tktj2XMuc5w0cw3b5xDmBkMdvtXaKhJuRWl9X5HqjjA+FMfryQXbq+IkYBQ
-	W+TbXLyj5fSPaXyATvmW8Zs0dFQevFTsE5MaYbVCV1zpeyhrosJDMlOmhs8Eq5ZYQwzibc24F+L5Y
-	VQOv0S2A==;
+	bh=wcrXHnfLlX09hkRaFBLQNsAQKjuOvi+peaLhS71Uo/U=; b=Lc3TxTotem5OS3z4rKqAX1wUH8
+	X2Dx6A076v+2qHV5umbf/jyRhQHrgaCTwXNRQvnUR2FEKfH66oSvo6ZheDG+JNywkqa+dir72QuXN
+	XmUolYUyR3W4dLQqQ+wp2Dsw25sMbw42HMg4pjzdl/zhWkahDn62M1TqAL5tiSPmTNU4CgUvju5TG
+	BmrT2V6gU29E3auZOh10hxyjzymMafHcwQbCLzssheVQ3rliwQ6e3ZQa5AOCi+KPSKt6b7ySSXEd4
+	qIA1vUQySf33lXYelpvn0y2khKSOAtWBNS+y5b9AVAoGy9sVJgkTAUC1ApLYjDtzCol0zqc9Aae5v
+	o3bujEZQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tXcS0-00000007qko-2EOz;
-	Tue, 14 Jan 2025 08:39:04 +0000
+	id 1tXcS2-00000007qnN-0Odo;
+	Tue, 14 Jan 2025 08:39:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tXcRw-00000007qgL-42Z5
+	id 1tXcRz-00000007qio-2H2M
 	for barebox@lists.infradead.org;
-	Tue, 14 Jan 2025 08:39:02 +0000
+	Tue, 14 Jan 2025 08:39:04 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tXcRv-0005m6-Sd; Tue, 14 Jan 2025 09:38:59 +0100
-Message-ID: <a17b5684-9f0a-4e6b-a10d-a88448963d63@pengutronix.de>
-Date: Tue, 14 Jan 2025 09:38:59 +0100
+	id 1tXcRy-0005m6-EZ; Tue, 14 Jan 2025 09:39:02 +0100
+Message-ID: <cf5862b9-3c9b-48b4-b2da-d6349d90d105@pengutronix.de>
+Date: Tue, 14 Jan 2025 09:39:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Jules Maselbas <jmaselbas@zdiv.net>, barebox@lists.infradead.org
 References: <20250107143740.16903-1-jmaselbas@zdiv.net>
- <20250107143740.16903-6-jmaselbas@zdiv.net>
+ <20250107143740.16903-7-jmaselbas@zdiv.net>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250107143740.16903-6-jmaselbas@zdiv.net>
+In-Reply-To: <20250107143740.16903-7-jmaselbas@zdiv.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250114_003901_009579_6099D35A 
-X-CRM114-Status: GOOD (  21.49  )
+X-CRM114-CacheID: sfid-20250114_003903_588932_3E5A5E43 
+X-CRM114-Status: GOOD (  35.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,131 +73,158 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 5/6] ARM: sunxi: Introduce mach-sunxi
+Subject: Re: [PATCH v2 6/6] Documentation: sunxi: Add some documentation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Hi Jules,
 
 On 07.01.25 15:37, Jules Maselbas wrote:
-> Add some boilerplate, Makefiles, Kbuild.
-> A generic barebox-dt-2nd.img image can be build for A64 SoC using
-> the sunxi_v8_defconfig.
-> 
-> This image can be booted from u-boot and has been tested on Pine64+,
-> it should work on other A64 SoC such as the pinephone, and other Pine64
-> boards, it might also work on H6 SoC which uses the same sd/mmc controler.
+> Add some informations about Allwinner sunxi boardsupport: the general
+> boot process, how to use sunxi-fel tool, and how to create a bootable
+> image disk.
 > 
 > Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 
-After addition to MULTIARCH (really MULTIPLATFORM):
-
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+with changes suggested below:
+
+> ---
+>  Documentation/boards/sunxi.rst | 132 +++++++++++++++++++++++++++++++++
+>  1 file changed, 132 insertions(+)
+>  create mode 100644 Documentation/boards/sunxi.rst
+> 
+> diff --git a/Documentation/boards/sunxi.rst b/Documentation/boards/sunxi.rst
+> new file mode 100644
+> index 0000000000..46832559c9
+> --- /dev/null
+> +++ b/Documentation/boards/sunxi.rst
+> @@ -0,0 +1,132 @@
+> +..
+> +  SPDX-License-Identifier: GPL-2.0+
+> +
+> +  Copyright (C) 2022, Jules Maselbas
+> +
+> +Allwinner sunxi
+> +===============
+> +
+> +Because of size constraints Barebox proper cannot boot directly, the uses
+> +of :doc:`PBL` allows to compress the Barebox image and it's device-tree.
+
+s/it's/its/
+
+> +However this is not enough, and two images are acctually needed. The first
+
+s/acctually/actually/
+
+> +image is suffixed *_xload* and it only consist of the PBL with a special
+> +entry point that looks for ``barebox.bin`` the root of a FAT partition.
+> +Only the SD card is currently searched, but this could also be in eMMC.
+> +The second image is your standard Barebox plus PBL image (suffixed ``.pblb``).
+
+The pblb image is just an intermediate artifact. There's usually an .img
+that's either 1:1 the pblb or the pblb with a SoC-specific header in front
+(or size patched in), so users need not mess with the pblb at all.
+
+Also, to avoid confusion, please add a note here that xload support isn't
+available yet or remove that part for now?
+
+> +eGON header
+> +-----------
+> +
+> +The eGON header structure is described in the file ``include/mach/sunxi/egon.h``.
+
+This file doesn't exist yet.
+
+> +This is also documented on https://linux-sunxi.org/EGON .
+> +
+> +The eGON header, followed by the actual image, must be located at the fixed
+> +offset of 8192 bytes (8KB) from the start of the disk (sector 16), either
+> +from SD card; or from eMMC.
+> +
+> +.. code-block:: sh
+> +
+> +  # copy the "pine64_xload" eGON image into disk sdX
+> +  dd if=images/start_pine64_pine64_xload.pblb.egonimg of=/dev/sdX bs=512 seek=16
+> +
+> +The above will write the entire "pine64_xload" Barebox PBL plus the eGON
+> +header into the disk "/dev/sdX".
+> +
+> +The boot ROM will load, at most, the first 32KB of the image into SRAM,
+> +including the header itself! The eGON header starts with a jump instruction
+> +to jump over the header, this jump instruction needs to be patched accordingly
+> +with the header size.
+> +
+> +.. note::
+> +
+> +  On sunxi platforms the boot ROM loads the entire image **including**
+> +  the eGON header. The actual base address will be offset by the eGON header
+> +  (currently 96 bytes), this bad because arm instructions used for relocation
+
+s/this bad/this is bad/
+
+> +  expect the base address to be aligned on 4K boundary.
+> +  As a workaround, a eGON header is included and linked into the Barebox
+> +  PBL image, this dummy header will be filled later by egon_mkimage.
+
+Nice.
+
+> +Board images are defined in ``images/Makefile.sunxi``, here is an example::
+> +
+> +.. code-block:: none
+> +
+> +  pblb-$(CONFIG_MACH_PINE64_PINE64) += start_pine64_pine64_xload
+> +  MAX_PBL_IMAGE_SIZE_start_pine64_pine64_xload = 0x8000
+> +  FILE_barebox-pine64-pine64_xload.img = start_pine64_pine64_xload.pblb.egonimg
+> +  image-$(CONFIG_MACH_PINE64_PINE64) += barebox-pine64-pine64_xload.img
+
+While useful to have, I think the docs should start with user documentation
+first, i.e. a Building section that points out what defconfig to use, what
+images result and that only second stage is currently supported.
+See for example:
+
+https://www.barebox.org/doc/latest/boards/rockchip.html#id1
+
+> +RMR aarch64 switch
+> +------------------
+> +
+> +Aarch64 capable SoC (A64/sun50i) boot by default in 32-bit mode. A special header
+> +is added to the start of the PBL image in order to switch to aarch64 mode as soon
+> +as possible. This must be done very early in the boot process since both ISA are
+> +not compatible. The code to switch mode is already assembled (mostly arm 32bit)
+> +and is documented in the header file ``include/mach/sunxi/rmr_switch.h``.
+
+Likewise file doesn't exist yes.
+
+> +More documentation about FEL_ and how to use the sunxi-fel tool can be
+> +found on https://linux-sunxi.org/FEL/USBBoot .
+
+Is this already a clickable link?
+
+> +Arm Trusted Firmware (TF-A)
+> +---------------------------
+> +
+> +Boards using a 64-bit Soc (A64, H5, H6, H616, R329) require the BL31 stage of
+> +the `Arm Trusted Firmware-A`_ firmware. This provides the reference
+> +implementation of secure software for Armv8-A, offering PSCI and SMCCC
+> +services. Allwinner support is fully mainlined. To build bl31.bin::
+> +
+> +.. code-block:: sh
+> +
+> +  git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+> +  cd trusted-firmware-a
+> +  make CROSS_COMPILE=aarch64-linux-gnu- PLAT=sun50i_a64 DEBUG=1
+> +  cp build/sun50i_a64/debug/bl31.bin ${barebox_dir}/firmware/sun50i-a64-bl31.bin
+> +
+> +The target platform (``PLAT=``) for A64 and H5 SoCs is sun50i_a64, for the H6
+> +sun50i_h6, for the H616 sun50i_h616, and for the R329 sun50i_r329.
+
+
+Thanks for taking the time to write such useful docs. :-)
 
 Cheers,
 Ahmad
-
-> ---
-> v1->v2:
->  - removed RELOCATABLE and HAVE_PBL_MULTI_IMAGES from Kconfig (Ahmad)
->  - used __dummy__.o insead of an empty file (Ahmad)
->  - removed include/mach/sunxi/barebox-arm.h (Ahmad)
-> 
->  arch/arm/Kconfig                    | 12 ++++++++++++
->  arch/arm/Makefile                   |  1 +
->  arch/arm/configs/sunxi_v8_defconfig | 12 ++++++++++++
->  arch/arm/mach-sunxi/Kconfig         | 12 ++++++++++++
->  arch/arm/mach-sunxi/Makefile        |  1 +
->  5 files changed, 38 insertions(+)
->  create mode 100644 arch/arm/configs/sunxi_v8_defconfig
->  create mode 100644 arch/arm/mach-sunxi/Kconfig
->  create mode 100644 arch/arm/mach-sunxi/Makefile
-> 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 0251f2dcef..83adfaddf7 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -109,6 +109,17 @@ config ARCH_SOCFPGA
->  	select CPU_V7
->  	select COMMON_CLK
->  
-> +config ARCH_SUNXI
-> +	bool "Allwinner SoCs"
-> +	depends on 64BIT
-> +	select CLKDEV_LOOKUP
-> +	select COMMON_CLK
-> +	select COMMON_CLK_OF_PROVIDER
-> +	select GPIOLIB
-> +	select OFDEVICE
-> +	select OFTREE
-> +	select PINCTRL
-> +
->  config ARCH_TEGRA
->  	bool "NVIDIA Tegra"
->  	depends on 32BIT
-> @@ -256,6 +267,7 @@ source "arch/arm/mach-omap/Kconfig"
->  source "arch/arm/mach-pxa/Kconfig"
->  source "arch/arm/mach-rockchip/Kconfig"
->  source "arch/arm/mach-socfpga/Kconfig"
-> +source "arch/arm/mach-sunxi/Kconfig"
->  source "arch/arm/mach-stm32mp/Kconfig"
->  source "arch/arm/mach-versatile/Kconfig"
->  source "arch/arm/mach-vexpress/Kconfig"
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 270f5dfdc1..e4041cf715 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -102,6 +102,7 @@ machine-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip
->  machine-$(CONFIG_ARCH_SAMSUNG)		+= samsung
->  machine-$(CONFIG_ARCH_SOCFPGA)		+= socfpga
->  machine-$(CONFIG_ARCH_STM32MP)		+= stm32mp
-> +machine-$(CONFIG_ARCH_SUNXI)		+= sunxi
->  machine-$(CONFIG_ARCH_VERSATILE)	+= versatile
->  machine-$(CONFIG_ARCH_VEXPRESS)		+= vexpress
->  machine-$(CONFIG_ARCH_TEGRA)		+= tegra
-> diff --git a/arch/arm/configs/sunxi_v8_defconfig b/arch/arm/configs/sunxi_v8_defconfig
-> new file mode 100644
-> index 0000000000..ebadd1c950
-> --- /dev/null
-> +++ b/arch/arm/configs/sunxi_v8_defconfig
-> @@ -0,0 +1,12 @@
-> +CONFIG_ARCH_SUNXI=y
-> +CONFIG_64BIT=y
-> +CONFIG_BOARD_ARM_GENERIC_DT=y
-> +CONFIG_ARCH_SUN50I_A64=y
-> +CONFIG_DRIVER_SERIAL_NS16550=y
-> +CONFIG_MCI=y
-> +CONFIG_MCI_SUNXI_SMHC=y
-> +CONFIG_CMD_DMESG=y
-> +CONFIG_MCI_STARTUP=y
-> +CONFIG_FS_FAT=y
-> +CONFIG_IMAGE_COMPRESSION_XZKERN=y
-> +CONFIG_MMU=y
-> diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-> new file mode 100644
-> index 0000000000..e8d23772c2
-> --- /dev/null
-> +++ b/arch/arm/mach-sunxi/Kconfig
-> @@ -0,0 +1,12 @@
-> +if ARCH_SUNXI
-> +
-> +config ARCH_SUN50I_A64
-> +	bool "Allwinner A64 SoC"
-> +	select CPU_V8
-> +	select CPU_SUPPORTS_64BIT_KERNEL
-> +	select CLOCKSOURCE_ARM_ARCHITECTED_TIMER
-> +	select PINCTRL_SUN50I_A64
-> +	help
-> +	  Allwinner A64 (sun50iw1) SoC
-> +
-> +endif
-> diff --git a/arch/arm/mach-sunxi/Makefile b/arch/arm/mach-sunxi/Makefile
-> new file mode 100644
-> index 0000000000..16a218658a
-> --- /dev/null
-> +++ b/arch/arm/mach-sunxi/Makefile
-> @@ -0,0 +1 @@
-> +obj- := __dummy__.o
 
 
 -- 
