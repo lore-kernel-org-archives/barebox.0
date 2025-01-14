@@ -1,89 +1,71 @@
-Delivery-date: Tue, 14 Jan 2025 06:35:12 +0100
+Delivery-date: Tue, 14 Jan 2025 06:49:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tXZa4-000tYE-16
+	id 1tXZoJ-000tnS-1E
 	for lore@lore.pengutronix.de;
-	Tue, 14 Jan 2025 06:35:12 +0100
+	Tue, 14 Jan 2025 06:49:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tXZa3-0003AQ-Pl
-	for lore@pengutronix.de; Tue, 14 Jan 2025 06:35:12 +0100
+	id 1tXZoI-00041N-Oz
+	for lore@pengutronix.de; Tue, 14 Jan 2025 06:49:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=7M/uynfdOKl/KfG9P1IuTZKA3bFPVEkc0aqkFCKcOB4=; b=wZltvTaw1qCKEc7yIdXdLR3KkO
-	s3dxbQrMWG4NBR0DE1sanjQHYHustn1qloJQuB4BDMRQdQRV5r3EokOGlj48LSWcrm/907rWvZdfm
-	o+lXKaM1DDQueQ8IKr3fH7u3hbSGKd2CanxjyZGnK+oLRnfX9pcgVtJ42IFA88hxszxLG2oaQEoqa
-	SON4VLJg0JygUcOQTImHvT931XJKBV4j9Tr0T46jw9Hofe3+G7eFYVNpyfXJ1sVpS9fclCGj+sG2w
-	48unqfRr2gEGTwfaW9eB7FuTetVLT53n5HDG/AIvJPFy3mCv1mSXf3oaQrB01lbOfuQg+ovj9Kgfc
-	1AoEQ56A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=tqUtvbZsCUyK5NtK5+BcgInEFYDb73oZfVRGGZ84Y8M=; b=Z+NSL//lKaR5DjV6ObWVMekcyb
+	Gt9/V2eA3pcvWYZ8wM+pFibrjUjXSiOVuKAXtzzGvoYcIExyeSRSi2/d6T/kBm5w2ytgcousdT02L
+	tz5gqY8T7cCeMbhdnVuQl7GEH7aYQq5xy2ejZfs7ToPdKxG3mlzf0RF4jBPeonjtYKh76bjcmlh43
+	XmOa/IoXKNOG5+F9Wo3D44R/YEoMJmabzeVVWvnyepgBoznp3yIwogHoueaL8y6+duhuysSfgje4m
+	K+2dguMuejrNCpvkS8WXkMLrsmNG82fwdWYRiAOc2pRUBw9+5/XOA4BakFotVV0dxV+5bsANWz9nS
+	WUPVfSCQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tXZZQ-00000007VMJ-1srb;
-	Tue, 14 Jan 2025 05:34:32 +0000
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+	id 1tXZns-00000007Xi0-0udJ;
+	Tue, 14 Jan 2025 05:49:28 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tXZZN-00000007VL4-2aKv
+	id 1tXZnp-00000007Xhb-3Qi4
 	for barebox@lists.infradead.org;
-	Tue, 14 Jan 2025 05:34:30 +0000
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-54287a3ba3cso5101605e87.0
-        for <barebox@lists.infradead.org>; Mon, 13 Jan 2025 21:34:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736832866; x=1737437666; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7M/uynfdOKl/KfG9P1IuTZKA3bFPVEkc0aqkFCKcOB4=;
-        b=Uc/QbBTFwOkZmS3FeC3Ex/V6mKOKAdwTGb5uJCtvCNcWjJJ/ipwgPkrtxONmrr703r
-         F+aQBISPK5f0zXedjnqtI7m2dqLdT2gwh/gPOuuklMgm9KcU1M0Z2RACWUQugzn8UDR8
-         M2Q4QLnUJm1QvpmAMHTl3rk4Ukk3VH1NPVnXe0uzLnbexKkQlT/TdEYbcvZE085xLKyE
-         N5JSD4/SHhOA8Jlxrtw72LG01JzCB8MygJSl57N/oINoRos6xP8Ou4SfOkkvvcnJvLUG
-         bN7uHZX329eyNlZ7IhyDV8tcrrDaphJGiGlRvbAjrQMFZDnn4VIjPOIPB/Ialf/pYodK
-         43/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736832866; x=1737437666;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7M/uynfdOKl/KfG9P1IuTZKA3bFPVEkc0aqkFCKcOB4=;
-        b=WvhbxJtyX6FFU/qeh0y47r0i4lcXIcZuKJqKTa+eS87QRcAXUmpGOWtYFvmpcRVEO4
-         MP3HtbXg963xxIROqUcNwt37fXf1R7Fn37ymhdNa1yQMwSbMURg2mhrtDVgeQOHQFATe
-         t1y29z2YkyQ6iVtdaG/+JmSwrSPvaZodt4MNM61/C5hHoJ+2CL3y0BVwmSaWFqX72jYM
-         YSjJiFRLMD5zlUFgWGIxrxAKwMXtWXnGmNC0tARya79Jjgk4LajCUkDsghSFXoZ3FiX0
-         7kRshU6oLuwGBUfX2pfpurGUU6ddKZ/CgIWyFt5GjeIpzHl512/NRQHwMnPTWSZkWROO
-         Zvrg==
-X-Gm-Message-State: AOJu0Yztb6jbwmlktxFLxTLjzCIlU4rMLK6AGPrwFlOozLpqREwOFowa
-	4vP0DJA2R7p8aOML6e6XjY9o8M68s2icvSvEB6olfGK1WIOE6YP1Ul6Jn0qzUlM=
-X-Gm-Gg: ASbGncug6Yw3inqFpKofaqrf6JLVdZKnATD2KX0vc25oReic7v/xWBdYiTj4YfIZWpE
-	NR/Ul5qC/fc0MWS+NEEqpMuW0lmh4+6ZgEUM4WLAbug5aXJJtBZWoLvNywgZB30foeUSaOVIXMG
-	cX7KX5UiBQLJ0NKXLb8Yef/W1xNyWr0JQ6CuylFf75dEIXw8EN4g/ZClz34yhN7ASs+hoLo7sej
-	PX4xz2cSTErYJLv3kUmkcJfYnUhb/k3hrFIIxL2QWJKRWv4ME4SRVjnbUTfie3+XrABOqafvdRu
-	2x5G
-X-Google-Smtp-Source: AGHT+IFZtnTgWBJVnKpWnWxTIRdtQujgQGmuj+6EuLWugJcS6MygF/GbDdqrFCgTNmwDA7PYC/E9PA==
-X-Received: by 2002:a05:6512:e95:b0:542:223c:30f5 with SMTP id 2adb3069b0e04-5428c2dfc4fmr5632720e87.24.1736832866180;
-        Mon, 13 Jan 2025 21:34:26 -0800 (PST)
-Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428be49a28sm1531680e87.42.2025.01.13.21.34.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 21:34:23 -0800 (PST)
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 14 Jan 2025 08:34:12 +0300
-Message-Id: <20250114053412.6923-1-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.39.1
+	Tue, 14 Jan 2025 05:49:27 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tXZnm-0003xB-IB; Tue, 14 Jan 2025 06:49:22 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tXZnl-000Njo-2d;
+	Tue, 14 Jan 2025 06:49:22 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tXZnm-009jWr-0h;
+	Tue, 14 Jan 2025 06:49:22 +0100
+Date: Tue, 14 Jan 2025 06:49:22 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jules Maselbas <jmaselbas@zdiv.net>
+Cc: barebox@lists.infradead.org
+Message-ID: <Z4X64t7ft77fV9Db@pengutronix.de>
+References: <20250107143740.16903-1-jmaselbas@zdiv.net>
+ <20250107143740.16903-6-jmaselbas@zdiv.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250107143740.16903-6-jmaselbas@zdiv.net>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250113_213429_663502_D67911E0 
-X-CRM114-Status: UNSURE (   8.69  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250113_214925_859015_83AD2BCF 
+X-CRM114-Status: GOOD (  25.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,45 +83,77 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] mtd: Remove orphan symbol MTD_SST25L
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 5/6] ARM: sunxi: Introduce mach-sunxi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The MTD_SST25L KConfig option does nothing, so let's remove it.
+Hi Jules,
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
----
- drivers/mtd/devices/Kconfig | 10 ----------
- 1 file changed, 10 deletions(-)
+On Tue, Jan 07, 2025 at 03:37:39PM +0100, Jules Maselbas wrote:
+> Add some boilerplate, Makefiles, Kbuild.
+> A generic barebox-dt-2nd.img image can be build for A64 SoC using
+> the sunxi_v8_defconfig.
+> 
+> This image can be booted from u-boot and has been tested on Pine64+,
+> it should work on other A64 SoC such as the pinephone, and other Pine64
+> boards, it might also work on H6 SoC which uses the same sd/mmc controler.
+> 
+> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+> ---
+> v1->v2:
+>  - removed RELOCATABLE and HAVE_PBL_MULTI_IMAGES from Kconfig (Ahmad)
+>  - used __dummy__.o insead of an empty file (Ahmad)
+>  - removed include/mach/sunxi/barebox-arm.h (Ahmad)
+> 
+>  arch/arm/Kconfig                    | 12 ++++++++++++
+>  arch/arm/Makefile                   |  1 +
+>  arch/arm/configs/sunxi_v8_defconfig | 12 ++++++++++++
+>  arch/arm/mach-sunxi/Kconfig         | 12 ++++++++++++
+>  arch/arm/mach-sunxi/Makefile        |  1 +
+>  5 files changed, 38 insertions(+)
+>  create mode 100644 arch/arm/configs/sunxi_v8_defconfig
+>  create mode 100644 arch/arm/mach-sunxi/Kconfig
+>  create mode 100644 arch/arm/mach-sunxi/Makefile
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 0251f2dcef..83adfaddf7 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -109,6 +109,17 @@ config ARCH_SOCFPGA
+>  	select CPU_V7
+>  	select COMMON_CLK
+>  
+> +config ARCH_SUNXI
+> +	bool "Allwinner SoCs"
+> +	depends on 64BIT
+> +	select CLKDEV_LOOKUP
+> +	select COMMON_CLK
+> +	select COMMON_CLK_OF_PROVIDER
+> +	select GPIOLIB
+> +	select OFDEVICE
+> +	select OFTREE
+> +	select PINCTRL
 
-diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
-index 447d478133..3b8a83b301 100644
---- a/drivers/mtd/devices/Kconfig
-+++ b/drivers/mtd/devices/Kconfig
-@@ -39,16 +39,6 @@ config MTD_M25P80
- 	  if you want to specify device partitioning or to use a device which
- 	  doesn't support the JEDEC ID instruction.
- 
--config MTD_SST25L
--	tristate "Support SST25L (non JEDEC) SPI Flash chips"
--	depends on MTD_M25P80
--	help
--	  This enables access to the non JEDEC SST25L SPI flash chips, used
--	  for program and data storage.
--
--	  Set up your spi devices with the right board-specific platform data,
--	  if you want to specify device partitioning.
--
- config MTD_DOCG3
- 	bool "M-Systems Disk-On-Chip G3"
- 	select BCH
+Can you put this into the multiarch section, i.e. outside the "ARM
+system type" choice?
+
+That way we can compile sunxi along with other SoCs.
+
+> diff --git a/arch/arm/configs/sunxi_v8_defconfig b/arch/arm/configs/sunxi_v8_defconfig
+
+With this separate config shouldn't be necessary anymore. Just enable
+the sunxi specific drivers in multi_v8_defconfig.
+
+Sascha
+
 -- 
-2.39.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
