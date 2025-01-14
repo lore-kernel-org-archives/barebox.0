@@ -1,57 +1,57 @@
-Delivery-date: Tue, 14 Jan 2025 09:39:27 +0100
+Delivery-date: Tue, 14 Jan 2025 09:39:28 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tXcSN-000wkG-2R
+	id 1tXcSO-000wka-0Z
 	for lore@lore.pengutronix.de;
-	Tue, 14 Jan 2025 09:39:27 +0100
+	Tue, 14 Jan 2025 09:39:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tXcSN-000662-0O
-	for lore@pengutronix.de; Tue, 14 Jan 2025 09:39:27 +0100
+	id 1tXcSN-00066K-G5
+	for lore@pengutronix.de; Tue, 14 Jan 2025 09:39:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CImAF3XCPNXAJqODpOgRSXPBDMBe7J3GKUcv8feyVyo=; b=2dI/bCgxiZ+uVLIiatZQ+kfamO
-	hBGDuRMRq1ZLdXIwK2ADbROPeKYSTye1fZ6MhgBRbDuyYxGw4+Slfw6bs9oRBtCBB2BZxzZ3ACues
-	wYw2+nS8g8Cpb9eypUyyafmWxTTARejLaZRdZqWu8d7Jk2Gi75wSIlvZNRAYML634RR/EBNi+xU5H
-	M8VtgvDczLFJYtSkxtmeHJ5jFQDcetHzKSwGOErq7a7Zmj2xJpzkQ77nHXkYl8783Uqbo1DYMQMvx
-	MXIkoGuIDrhD4TBHJJme2mhChW6t4gdc0MiKZSexQDu2Nne48EczKXbFJLb+xjbnt2vcJrItO6lhW
-	rHFnNtzg==;
+	bh=EXz7gEwKfaquYx1CMS5KoZiU/AWQpSspQ6B+Wlt4oHk=; b=EvNVL/US342Bh11pUASlK4xtgz
+	LeG2gMOcON32i6ZrtzbPIN3EN+meFe7c1kUR0pTVLXxsIXmTmXRjU5nyiT9obNgA1pGX/KW21jCHK
+	HCyU+VRfvARTqCasqrvN6o8BG7g5Dtgjcm86qWaJe8m9xsIQUkHPviyR18srMCxzhgIsOXYvo1zmc
+	pChebrBVBo5irS71M0tktj2XMuc5w0cw3b5xDmBkMdvtXaKhJuRWl9X5HqjjA+FMfryQXbq+IkYBQ
+	W+TbXLyj5fSPaXyATvmW8Zs0dFQevFTsE5MaYbVCV1zpeyhrosJDMlOmhs8Eq5ZYQwzibc24F+L5Y
+	VQOv0S2A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tXcRy-00000007qi9-3a9w;
-	Tue, 14 Jan 2025 08:39:02 +0000
+	id 1tXcS0-00000007qko-2EOz;
+	Tue, 14 Jan 2025 08:39:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tXcRu-00000007qec-45Cp
+	id 1tXcRw-00000007qgL-42Z5
 	for barebox@lists.infradead.org;
-	Tue, 14 Jan 2025 08:39:01 +0000
+	Tue, 14 Jan 2025 08:39:02 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tXcRt-0005m6-Rq; Tue, 14 Jan 2025 09:38:57 +0100
-Message-ID: <cb5ea9c1-044c-46e2-a519-2dcfc3819605@pengutronix.de>
-Date: Tue, 14 Jan 2025 09:38:57 +0100
+	id 1tXcRv-0005m6-Sd; Tue, 14 Jan 2025 09:38:59 +0100
+Message-ID: <a17b5684-9f0a-4e6b-a10d-a88448963d63@pengutronix.de>
+Date: Tue, 14 Jan 2025 09:38:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Jules Maselbas <jmaselbas@zdiv.net>, barebox@lists.infradead.org
 References: <20250107143740.16903-1-jmaselbas@zdiv.net>
- <20250107143740.16903-5-jmaselbas@zdiv.net>
+ <20250107143740.16903-6-jmaselbas@zdiv.net>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250107143740.16903-5-jmaselbas@zdiv.net>
+In-Reply-To: <20250107143740.16903-6-jmaselbas@zdiv.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250114_003859_018248_A050CDA1 
-X-CRM114-Status: GOOD (  21.85  )
+X-CRM114-CacheID: sfid-20250114_003901_009579_6099D35A 
+X-CRM114-Status: GOOD (  21.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,83 +73,132 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 4/6] mci: Add sunxi-mmc driver
+Subject: Re: [PATCH v2 5/6] ARM: sunxi: Introduce mach-sunxi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hi,
 
 On 07.01.25 15:37, Jules Maselbas wrote:
-> This driver is adapted from different sources: Linux, u-boot and p-boot.
-> The latter, p-boot (forked from u-boot), is a bootloader for pinephones.
+> Add some boilerplate, Makefiles, Kbuild.
+> A generic barebox-dt-2nd.img image can be build for A64 SoC using
+> the sunxi_v8_defconfig.
 > 
-> It currently only support PIO xfer but could be further improved to also
-> support DMA xfer. This driver is split in three files so it can be used
-> by the PBL and barebox proper.
+> This image can be booted from u-boot and has been tested on Pine64+,
+> it should work on other A64 SoC such as the pinephone, and other Pine64
+> boards, it might also work on H6 SoC which uses the same sd/mmc controler.
 > 
 > Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 
+After addition to MULTIARCH (really MULTIPLATFORM):
+
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-> +	ret = sdxc_xfer_complete(host, 1000 * MSECOND, SDXC_INT_COMMAND_DONE);
-
-That's
-
-> +		ret = sdxc_xfer_complete(host, 1000 * MSECOND, data->blocks > 1 ?
-> +					 SDXC_INT_AUTO_COMMAND_DONE :
-> +					 SDXC_INT_DATA_OVER);
-
-a lot
-
-> +	if (cmd->resp_type & MMC_RSP_BUSY) {
-> +		u32 status;
-> +		u64 start;
-> +		start = get_time_ns();
-> +		do {
-> +			status = sdxc_readl(host, SDXC_REG_STAS);
-> +			if (is_timeout(start, 2000 * MSECOND)) {
-
-of timeouts :o
-
-> +				err_why = "resp timeout";
-> +				ret = -ETIMEDOUT;
-> +				goto err;
-> +			}
-> +		} while (status & SDXC_STATUS_BUSY);
-> +	}
-> +
-> +	if (wait_on_timeout(1000 * MSECOND, !sdxc_is_card_busy(host))) {
-
-There's mci_cmd::busy_timeout in ms now. Could you use it and fallback to
-1000 * MSECOND only if it's zero?
-
-This is ging to be useful down the line when we do longer operations
-in barebox like large erases.
-
-> +static int sunxi_mmc_read_block(struct sunxi_mmc_host *host,
-> +				void *dst, unsigned int blocknum,
-> +				unsigned int blocks)
-> +{
-> +	struct mci_data data;
-> +	struct mci_cmd cmd = {
-> +		.cmdidx = (blocks > 1) ? MMC_CMD_READ_MULTIPLE_BLOCK : MMC_CMD_READ_SINGLE_BLOCK,
-> +		 /* mci->high_capacity ? blocknum : blocknum * mci->read_bl_len, */
-> +		 /* TODO: detect if card is high-capacity */
-
-I had an idea about that, but haven't come around to give it a try.
-Quoting myself from IRC 2 years back:
-
-"ye, that's what is used normally, but the problem is doing it while in transmission state
-I looked into Part1_Physical_Layer_Simplified_Specification_Ver9.00.pdf again and for the
-first time I see "Figure 4-13 : SD Memory Card State Diagram (data transfer mode)"
-Apparently,  you don't necessarily need CMD0 (Go idle) to be able to get to a state where
-you can execute CMD9 (SEND CSD), but one could also execute CMD7 (SELECT CARD) to deselect
-card and then run CMD9 and get back to transmission mode One would need to issue a CMD3
-(SEND_RELATIVE_ADDR) to get the RCA to communicate with the correct SD (it's argument to
-CMD9), but this might work"
 
 Cheers,
 Ahmad
+
+> ---
+> v1->v2:
+>  - removed RELOCATABLE and HAVE_PBL_MULTI_IMAGES from Kconfig (Ahmad)
+>  - used __dummy__.o insead of an empty file (Ahmad)
+>  - removed include/mach/sunxi/barebox-arm.h (Ahmad)
+> 
+>  arch/arm/Kconfig                    | 12 ++++++++++++
+>  arch/arm/Makefile                   |  1 +
+>  arch/arm/configs/sunxi_v8_defconfig | 12 ++++++++++++
+>  arch/arm/mach-sunxi/Kconfig         | 12 ++++++++++++
+>  arch/arm/mach-sunxi/Makefile        |  1 +
+>  5 files changed, 38 insertions(+)
+>  create mode 100644 arch/arm/configs/sunxi_v8_defconfig
+>  create mode 100644 arch/arm/mach-sunxi/Kconfig
+>  create mode 100644 arch/arm/mach-sunxi/Makefile
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 0251f2dcef..83adfaddf7 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -109,6 +109,17 @@ config ARCH_SOCFPGA
+>  	select CPU_V7
+>  	select COMMON_CLK
+>  
+> +config ARCH_SUNXI
+> +	bool "Allwinner SoCs"
+> +	depends on 64BIT
+> +	select CLKDEV_LOOKUP
+> +	select COMMON_CLK
+> +	select COMMON_CLK_OF_PROVIDER
+> +	select GPIOLIB
+> +	select OFDEVICE
+> +	select OFTREE
+> +	select PINCTRL
+> +
+>  config ARCH_TEGRA
+>  	bool "NVIDIA Tegra"
+>  	depends on 32BIT
+> @@ -256,6 +267,7 @@ source "arch/arm/mach-omap/Kconfig"
+>  source "arch/arm/mach-pxa/Kconfig"
+>  source "arch/arm/mach-rockchip/Kconfig"
+>  source "arch/arm/mach-socfpga/Kconfig"
+> +source "arch/arm/mach-sunxi/Kconfig"
+>  source "arch/arm/mach-stm32mp/Kconfig"
+>  source "arch/arm/mach-versatile/Kconfig"
+>  source "arch/arm/mach-vexpress/Kconfig"
+> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> index 270f5dfdc1..e4041cf715 100644
+> --- a/arch/arm/Makefile
+> +++ b/arch/arm/Makefile
+> @@ -102,6 +102,7 @@ machine-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip
+>  machine-$(CONFIG_ARCH_SAMSUNG)		+= samsung
+>  machine-$(CONFIG_ARCH_SOCFPGA)		+= socfpga
+>  machine-$(CONFIG_ARCH_STM32MP)		+= stm32mp
+> +machine-$(CONFIG_ARCH_SUNXI)		+= sunxi
+>  machine-$(CONFIG_ARCH_VERSATILE)	+= versatile
+>  machine-$(CONFIG_ARCH_VEXPRESS)		+= vexpress
+>  machine-$(CONFIG_ARCH_TEGRA)		+= tegra
+> diff --git a/arch/arm/configs/sunxi_v8_defconfig b/arch/arm/configs/sunxi_v8_defconfig
+> new file mode 100644
+> index 0000000000..ebadd1c950
+> --- /dev/null
+> +++ b/arch/arm/configs/sunxi_v8_defconfig
+> @@ -0,0 +1,12 @@
+> +CONFIG_ARCH_SUNXI=y
+> +CONFIG_64BIT=y
+> +CONFIG_BOARD_ARM_GENERIC_DT=y
+> +CONFIG_ARCH_SUN50I_A64=y
+> +CONFIG_DRIVER_SERIAL_NS16550=y
+> +CONFIG_MCI=y
+> +CONFIG_MCI_SUNXI_SMHC=y
+> +CONFIG_CMD_DMESG=y
+> +CONFIG_MCI_STARTUP=y
+> +CONFIG_FS_FAT=y
+> +CONFIG_IMAGE_COMPRESSION_XZKERN=y
+> +CONFIG_MMU=y
+> diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+> new file mode 100644
+> index 0000000000..e8d23772c2
+> --- /dev/null
+> +++ b/arch/arm/mach-sunxi/Kconfig
+> @@ -0,0 +1,12 @@
+> +if ARCH_SUNXI
+> +
+> +config ARCH_SUN50I_A64
+> +	bool "Allwinner A64 SoC"
+> +	select CPU_V8
+> +	select CPU_SUPPORTS_64BIT_KERNEL
+> +	select CLOCKSOURCE_ARM_ARCHITECTED_TIMER
+> +	select PINCTRL_SUN50I_A64
+> +	help
+> +	  Allwinner A64 (sun50iw1) SoC
+> +
+> +endif
+> diff --git a/arch/arm/mach-sunxi/Makefile b/arch/arm/mach-sunxi/Makefile
+> new file mode 100644
+> index 0000000000..16a218658a
+> --- /dev/null
+> +++ b/arch/arm/mach-sunxi/Makefile
+> @@ -0,0 +1 @@
+> +obj- := __dummy__.o
+
 
 -- 
 Pengutronix e.K.                           |                             |
