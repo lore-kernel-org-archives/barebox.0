@@ -1,65 +1,65 @@
-Delivery-date: Thu, 16 Jan 2025 15:11:02 +0100
+Delivery-date: Thu, 16 Jan 2025 15:11:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYQaL-000ca8-0n
+	id 1tYQaM-000caV-2D
 	for lore@lore.pengutronix.de;
-	Thu, 16 Jan 2025 15:11:01 +0100
+	Thu, 16 Jan 2025 15:11:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYQaK-0002ji-Bt
-	for lore@pengutronix.de; Thu, 16 Jan 2025 15:11:01 +0100
+	id 1tYQaM-0002mW-HS
+	for lore@pengutronix.de; Thu, 16 Jan 2025 15:11:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=I0/3tUGArt/9q76pPgzakam7QBq577cF9J5V0L+mW5M=; b=Uhh2Apw487TA+kRn/rUTooY+Wu
-	b2XqicbUw8jnzmz+Y9GhsYHf/cYv6FzqKaVTabdBpyY6eq5izqkUYZuf6HBCPrg3hBIjSb2cdEfXr
-	ReI+JJk9aSEpBSJ4xrq8IvaxivNRJQOekcekwzof4ri/8vh1h4R9NJRuLOTnCiTdBNZk53R123gO/
-	p4pwqxlZZHVDNQddUmd86p/59MGy/1WXGGIu3cdNPerP2t5mv9oi80vIQ1gIXvcaOEJ/BWA2Ku6yH
-	JMmcj6apMW5gIAJgqHqztq+9jgwZYmFYtA+OPiVxedVljXFX7OrQN93imCQ2f+t60i8xwVE6nGZxK
-	I6qkyJyg==;
+	bh=OVY0SzxK9ZQWbXnivW/UxZh3a56hqYPKloOEQFw+aGs=; b=uNYubxhFRxCmQrrvoxuo01wEE2
+	vwt3/TfCatfG884Lec0tcMApQ/TbV6ufs+Ptgp4sbgz0EmVgBzWcE414/hstzm2Ra0tv7J/6ajU72
+	X6iqULBzLan46Wnpq6zlR+TnLk3AZ8sc4CiyjYQlxFpUl78yViYanpM12ymXi2YCcmd8Evsb3Uvb4
+	XSr9aY+VF+zgPcO0l01HYoG/OGSllKqDrtPgHO/gvsKShQtdaLGFZF1ZgrlFh3Ccw1a186EOjS3YW
+	UIg63bwLbk1Tuu+y3m725H9V5wmjdQY5enKcvliKkSLDWduprLOZr44kQtLKR/NptlSaHJwNPEjad
+	KmYNVCBg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYQZm-0000000F6k5-2fg5;
-	Thu, 16 Jan 2025 14:10:26 +0000
+	id 1tYQZl-0000000F6jQ-2csA;
+	Thu, 16 Jan 2025 14:10:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYQXy-0000000F6BO-1yFW
+	id 1tYQX9-0000000F5zL-24yS
 	for barebox@lists.infradead.org;
-	Thu, 16 Jan 2025 14:08:35 +0000
+	Thu, 16 Jan 2025 14:07:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tYQXx-0002Dr-6w; Thu, 16 Jan 2025 15:08:33 +0100
+	id 1tYQX7-00028o-7q; Thu, 16 Jan 2025 15:07:41 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tYQXx-000GZz-06;
-	Thu, 16 Jan 2025 15:08:33 +0100
+	id 1tYQX7-000GZp-07;
+	Thu, 16 Jan 2025 15:07:41 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tYQXx-001Ff0-29;
-	Thu, 16 Jan 2025 15:08:32 +0100
+	id 1tYQX7-001FV8-28;
+	Thu, 16 Jan 2025 15:07:40 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 16 Jan 2025 15:08:31 +0100
-Message-Id: <20250116140831.298514-1-a.fatoum@pengutronix.de>
+Date: Thu, 16 Jan 2025 15:07:40 +0100
+Message-Id: <20250116140740.297902-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250116_060834_505741_D8FAD56A 
-X-CRM114-Status: GOOD (  12.37  )
+X-CRM114-CacheID: sfid-20250116_060743_530861_2DF12948 
+X-CRM114-Status: GOOD (  16.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,101 +81,140 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] booti: sanity check image magic before parsing header
+Subject: [PATCH] commands: add varinfo command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-booti_load_image is called directly for kernels in FIT images.
-Let's have a simple check that the payload is indeed a booti
-image before parsing it.
+Tab completion is very helpful, but it's not sufficient for enum-typed
+global variables. To know what the permissible values are, devinfo
+global must be consulted, which can have a lot of output.
+
+As alternative, let's add a varinfo command that can be used together
+with parameter tab completion and that will just print out the
+parameters that start with the specified string.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/booti.c     | 11 +++++++++--
- common/filetype.c  |  6 +++---
- include/filetype.h | 11 +++++++++++
- 3 files changed, 23 insertions(+), 5 deletions(-)
+ commands/Kconfig   | 12 ++++++++
+ commands/Makefile  |  1 +
+ commands/varinfo.c | 73 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 86 insertions(+)
+ create mode 100644 commands/varinfo.c
 
-diff --git a/common/booti.c b/common/booti.c
-index e745ff696376..4c2033b7de0e 100644
---- a/common/booti.c
-+++ b/common/booti.c
-@@ -4,6 +4,7 @@
- #define pr_fmt(fmt) "booti: " fmt
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 7aa4101f06c0..448a6e240cad 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -286,6 +286,18 @@ config CMD_LSPCI
+ 	help
+ 	  The lspci command allows to list all PCI devices.
  
- #include <common.h>
-+#include <filetype.h>
- #include <memory.h>
- #include <bootm.h>
- #include <linux/sizes.h>
-@@ -38,13 +39,19 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
- 	int ret;
- 	void *fdt;
- 
-+	print_hex_dump_bytes("header ", DUMP_PREFIX_OFFSET, kernel_header, 80);
++config CMD_VARINFO
++	tristate
++	prompt "varinfo"
++	help
++	  Show information about variables
 +
-+	if ((IS_ENABLED(CONFIG_RISCV) && !is_riscv_linux_bootimage(kernel_header)) ||
-+	    (IS_ENABLED(CONFIG_ARM64) && !is_arm64_linux_bootimage(kernel_header))) {
-+		pr_err("Unexpected magic at offset 0x38!\n");
-+		return ERR_PTR(-EINVAL);
++	  varinfo VAR
++
++	  Shows information about the variable in its argument. This doesn't
++	  provide more information that what's available with devinfo, but
++	  it can be useful for devices with many parameters (e.g. global).
++
+ config CMD_VERSION
+ 	tristate
+ 	default y
+diff --git a/commands/Makefile b/commands/Makefile
+index 0dfa0a33a465..7ea0ab4d87f7 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -57,6 +57,7 @@ obj-$(CONFIG_CMD_MEMTEST)	+= memtest.o
+ obj-$(CONFIG_CMD_MEMTESTER)	+= memtester/
+ obj-$(CONFIG_CMD_TRUE)		+= true.o
+ obj-$(CONFIG_CMD_FALSE)		+= false.o
++obj-$(CONFIG_CMD_VARINFO)	+= varinfo.o
+ obj-$(CONFIG_CMD_VERSION)	+= version.o
+ obj-$(CONFIG_CMD_HELP)		+= help.o
+ obj-$(CONFIG_CMD_LSMOD)		+= lsmod.o
+diff --git a/commands/varinfo.c b/commands/varinfo.c
+new file mode 100644
+index 000000000000..2867c47363ed
+--- /dev/null
++++ b/commands/varinfo.c
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#include <command.h>
++#include <common.h>
++#include <complete.h>
++#include <driver.h>
++#include <environment.h>
++#include <fnmatch.h>
++
++static int do_varinfo(int argc, char *argv[])
++{
++	struct device *dev;
++	struct param_d *param;
++	const char *prefix = NULL, *val;
++	char *arg, *dot;
++	bool found = false;
++
++	if (argc != 2)
++		return COMMAND_ERROR_USAGE;
++
++	arg = argv[1];
++
++	dot = strchr(arg, '.');
++	if (dot) {
++		*dot = '\0';
++		if (dot[1])
++			prefix = &dot[1];
++	} else {
++		val = getenv(arg);
++		if (!val)
++			goto not_found;
++
++		printf("%s: %s (environment variable)\n", arg, val);
++		return 0;
 +	}
 +
- 	text_offset = le64_to_cpup(kernel_header + 8);
- 	image_size = le64_to_cpup(kernel_header + 16);
- 
- 	kernel = get_kernel_address(data->os_address, text_offset);
- 
--	print_hex_dump_bytes("header ", DUMP_PREFIX_OFFSET,
--			     kernel_header, 80);
- 	pr_debug("Kernel to be loaded to %lx+%lx\n", kernel, image_size);
- 
- 	if (kernel == UIMAGE_INVALID_ADDRESS)
-diff --git a/common/filetype.c b/common/filetype.c
-index 73ea17e19bd7..2a68879ee5de 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -365,11 +365,11 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (bufsize < 64)
- 		return filetype_unknown;
- 
--	if (le32_to_cpu(buf[14]) == 0x644d5241)
-+	if (is_arm64_linux_bootimage(buf))
- 		return is_dos_exe(buf8) ? filetype_arm64_efi_linux_image : filetype_arm64_linux_image;
--	if (le32_to_cpu(buf[14]) == 0x05435352)
-+	if (is_riscv_linux_bootimage(buf))
- 		return is_dos_exe(buf8) ? filetype_riscv_efi_linux_image : filetype_riscv_linux_image;
--	if (le32_to_cpu(buf[14]) == 0x56435352 && !memcmp(&buf[12], "barebox", 8))
-+	if (is_riscv_linux_bootimage(buf) && !memcmp(&buf[12], "barebox", 8))
- 		return filetype_riscv_barebox_image;
- 
- 	if (le32_to_cpu(buf[5]) == 0x504d5453)
-diff --git a/include/filetype.h b/include/filetype.h
-index c24d061e8ffa..d445140edba1 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/string.h>
- #include <linux/types.h>
-+#include <asm/byteorder.h>
- 
- /*
-  * List of file types we know
-@@ -134,4 +135,14 @@ static inline int is_barebox_head(const char *head)
- 	return is_barebox_arm_head(head) || is_barebox_mips_head(head);
- }
- 
-+static inline bool is_arm64_linux_bootimage(const void *header)
-+{
-+	return le32_to_cpup(header + 56) == 0x644d5241;
++	dev = get_device_by_name(arg);
++	if (!dev)
++		return -ENODEV;
++
++	list_for_each_entry(param, &dev->parameters, list) {
++		if (prefix && !strstarts(param->name, prefix))
++			continue;
++
++		printf("%s: %s (type: %s)", param->name,
++		       dev_get_param(dev, param->name), get_param_type(param));
++		if (param->info)
++			param->info(param);
++		printf("\n");
++		found = true;
++	}
++
++	if (!found)
++		goto not_found;
++
++	return 0;
++not_found:
++	printf("%s: no matching variable found\n", arg);
++	return 1;
 +}
 +
-+static inline bool is_riscv_linux_bootimage(const void *header)
-+{
-+	return le32_to_cpup(header + 56) == 0x05435352;
-+}
++BAREBOX_CMD_HELP_START(varinfo)
++BAREBOX_CMD_HELP_TEXT("shows information about the variable in its argument")
++BAREBOX_CMD_HELP_END
 +
- #endif /* __FILE_TYPE_H */
++BAREBOX_CMD_START(varinfo)
++	.cmd		= do_varinfo,
++	BAREBOX_CMD_DESC("show information about variables")
++	BAREBOX_CMD_OPTS("VAR")
++	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
++	BAREBOX_CMD_HELP(cmd_varinfo_help)
++	BAREBOX_CMD_COMPLETE(env_param_noeval_complete)
++BAREBOX_CMD_END
 -- 
 2.39.5
 
