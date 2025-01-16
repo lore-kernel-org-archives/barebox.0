@@ -1,70 +1,58 @@
-Delivery-date: Thu, 16 Jan 2025 12:08:21 +0100
+Delivery-date: Thu, 16 Jan 2025 12:12:31 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYNjY-000Zfa-1Q
+	id 1tYNnb-000ZiE-0D
 	for lore@lore.pengutronix.de;
-	Thu, 16 Jan 2025 12:08:21 +0100
+	Thu, 16 Jan 2025 12:12:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYNjY-0006uL-Jj
-	for lore@pengutronix.de; Thu, 16 Jan 2025 12:08:21 +0100
+	id 1tYNnb-0007DO-6h
+	for lore@pengutronix.de; Thu, 16 Jan 2025 12:12:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=j/mHMu+brvz8dOi7314RqxU6lb/+eqE0QYudT71XMHg=; b=4KW5klsy3P5MvrMKQXxUMkWt/L
-	9sxEC7v0TIeLecUq/I6V7guUHfUI0aV4+c5MufZp0aLwTcE1Ar+NtcbWWyaiUxjeWApRw5CDJXnlM
-	3s1QV9wOiGNTd5VHkqBCQD//aWMD7pypYiu/BRXcgYtSVv4bKYFjSmNeStFH2Hh2d7+kJrM3LNdET
-	uVWqayDZaOzSzSIYaaK3EZ9XEUszBSz+3v1yhqeFaVHsRWX5VgSaer9IngRx2SIFUliB8rfB2Wdrh
-	zzdR4GQKUyRt6m+OvwuaVwHq6H21k7qlTs+jbDA2gXZuxjg4P66v2ePmS27fx7UO1A8GEigF4dDwb
-	YVJWzN5w==;
+	bh=pFyUAitpnkumNiM5bSGN7NiTbJDv+PIsyaZc/dsj5MA=; b=uK//M6vMEB8ZjDxtA8Rf0GQTfa
+	P3D1d+8bkap3a/uHeJVv6w10Le5vjGWxKZNMR7fFQbau3W8U1yO4URW/50H23l9vjLCujqds8FUjl
+	mHyx/GW4Gjt2SlRcN4PeBxrDMCZa1gDIaEWwtHlmktQHvnHdGArT80dPXLg9aLIpXyNJEeBgbhq/9
+	bC0SFP/MkntEwMBhmJDOyw3V4kQuKRWooZC2clRi28Rva5PW5BEmTVBEkDpV92pm+aySyJvHhwywj
+	TrdfA/RfHN+qNTQD3b2+vbjlOSVZN4OAhES/sPLwpbzS88/zKo+ypBI5xgaLXVFS3TEGvVPzCpRel
+	JgdWs+DA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYNjD-0000000EgaH-0Xtl;
-	Thu, 16 Jan 2025 11:07:59 +0000
+	id 1tYNnF-0000000EhZW-3JAf;
+	Thu, 16 Jan 2025 11:12:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYNjA-0000000EgZM-33MF
+	id 1tYNnC-0000000EhYN-2cfo
 	for barebox@lists.infradead.org;
-	Thu, 16 Jan 2025 11:07:57 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tYNj9-0006ni-Hd; Thu, 16 Jan 2025 12:07:55 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tYNj9-000F5f-19;
-	Thu, 16 Jan 2025 12:07:55 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tYNj9-0076Kr-0w;
-	Thu, 16 Jan 2025 12:07:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Bastian Krause <bst@pengutronix.de>
-In-Reply-To: <20250116093859.1676220-1-s.hauer@pengutronix.de>
-References: <20250116093859.1676220-1-s.hauer@pengutronix.de>
-Message-Id: <173702567529.1692634.9313599368082889033.b4-ty@pengutronix.de>
-Date: Thu, 16 Jan 2025 12:07:55 +0100
+	Thu, 16 Jan 2025 11:12:07 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tYNn9-00079h-U2; Thu, 16 Jan 2025 12:12:03 +0100
+Message-ID: <8fe69a9e-65e9-4746-87ec-005a55658d37@pengutronix.de>
+Date: Thu, 16 Jan 2025 12:12:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+Cc: Bastian Krause <bst@pengutronix.de>
+References: <20250116093859.1676220-1-s.hauer@pengutronix.de>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250116093859.1676220-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250116_030756_771036_F2064200 
-X-CRM114-Status: UNSURE (   8.05  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250116_031206_667258_CB38AAE7 
+X-CRM114-Status: GOOD (  18.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,13 +74,12 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX: HAB: Allow for semicolons in HAB
- environment variables
+Subject: Re: [PATCH] ARM: i.MX: HAB: Allow for semicolons in HAB environment
+ variables
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Thu, 16 Jan 2025 10:38:59 +0100, Sascha Hauer wrote:
+On 16.01.25 10:38, Sascha Hauer wrote:
 > With CONFIG_HAB_CERTS_ENV=y, paths and PKCS#11 URIs to the HAB
 > certificates are taken from environment variables (allowing for better
 > integration with build systems). In this case these values are passed
@@ -101,16 +88,33 @@ On Thu, 16 Jan 2025 10:38:59 +0100, Sascha Hauer wrote:
 > to the imx-image configuration file due to wrong escapes. Fix this by
 > expanding the environment variables using make rather than shell.
 > 
-> [...]
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  scripts/Makefile.lib | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index f195ddb7e8..7dcd8c9892 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -579,7 +579,7 @@ cmd_imximage_S_dcd=						\
+>  overwrite-hab-env = $(shell set -e; \
+>        test -n "$(CONFIG_HAB_CERTS_ENV)"; \
+>        test -n "$$$(1)"; \
+> -      echo -D$(1)=\\\"$(shell echo $$$(1))\\\")
+> +      echo -D$(1)=\''"${${1}}"'\')
 
-Applied, thanks!
+Does {} and () make a difference here?
 
-[1/1] ARM: i.MX: HAB: Allow for semicolons in HAB environment variables
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e6a4f1f25a76 (link may not be stable)
+>  
+>  overwrite-fit-env = $(shell set -e; \
+>        test -n "$(CONFIG_BOOTM_FITIMAGE_PUBKEY_ENV)"; \
 
-Best regards,
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
