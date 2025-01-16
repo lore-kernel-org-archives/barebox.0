@@ -1,57 +1,68 @@
-Delivery-date: Thu, 16 Jan 2025 15:16:58 +0100
+Delivery-date: Thu, 16 Jan 2025 15:21:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYQg6-000cvd-06
+	id 1tYQkG-000cy0-1z
 	for lore@lore.pengutronix.de;
-	Thu, 16 Jan 2025 15:16:58 +0100
+	Thu, 16 Jan 2025 15:21:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYQg6-0003bN-3Q
-	for lore@pengutronix.de; Thu, 16 Jan 2025 15:16:58 +0100
+	id 1tYQkG-0003t2-N3
+	for lore@pengutronix.de; Thu, 16 Jan 2025 15:21:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HFwOKNvecqfxW8uMQ13nJO70GYZxR4Ruz1sxS5AhGIA=; b=fOmdv9+bpylq+f/Voz+yAam+L3
-	mjh6dtB2KLrpgiBde68ElE+Ji0Rl6juCN/J2oFv77JssvOkkapegI6c/md/iu2ztcYUuhu9cJkjNa
-	tTvqvkwVb0fZjoFb6crv0EXsOSStUqysUzn2YDmz0kpsBY9E7iR7oKJ+96MMxRpz2+pa1CetH4CF2
-	IEKmzJ2CVI1J/Fuaqe8zoUFib3oriDPRV75e+BXjSrxoiPJH38CF4QQLh2nLgUkcJvkGr3n4ur467
-	UIOuz1Mg1tXNx9bjNf6twnZIA5ACLqeLKd3WqEz1iLSKX60YWNIyGXeZOiy+Uy2FvLCvvxGdkHooB
-	NE76RFZA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:
+	From:Subject:Message-Id:Date:Content-Type:Content-Transfer-Encoding:
+	Mime-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ULbCr/MJWmWMnMqfrEUfIjMVYGNH/QLKx9g/YM50gp8=; b=oSkb35D4tN/cR5PTomRGkx4L3w
+	W+Lt2uZjX5j2Pxc3cZruMULc2PNgwN8KQb35sqzX+o8adfkk2Qt4czUki0/FEc9zn7coCDSgWq6Qp
+	aai/gUsvx5oNvkGpoHNjjk8RR+X7EyvUFsB3/wry7u72yjhaRf6HIvXlLVT3KkNr2dqQBkaQ1Xhyk
+	C1NCON/lZH2aU3w0ubuSakwH2rHc9KoOnzbd3gA/ViXdSkv0FqvVVB3SNWy+PS/EFUNXUfY9IettL
+	b9Yn8zgWyb/cvs82HdDTlvk1fHMuqLY+ocDic2QaaJAX8fueoWhf+btFUatG/Fdq6LZ8Cw7bxKK76
+	R+TktBOg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYQfg-0000000F8Js-3b1J;
-	Thu, 16 Jan 2025 14:16:32 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tYQjo-0000000F8hn-2M4Y;
+	Thu, 16 Jan 2025 14:20:48 +0000
+Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYQfd-0000000F8JO-4475
+	id 1tYQjk-0000000F8eg-02Le
 	for barebox@lists.infradead.org;
-	Thu, 16 Jan 2025 14:16:31 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tYQfc-0003YI-Nz
-	for barebox@lists.infradead.org; Thu, 16 Jan 2025 15:16:28 +0100
-Message-ID: <61646609-a2a6-4cda-82c9-09e6681cb005@pengutronix.de>
-Date: Thu, 16 Jan 2025 15:16:28 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20250116140831.298514-1-a.fatoum@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250116140831.298514-1-a.fatoum@pengutronix.de>
+	Thu, 16 Jan 2025 14:20:45 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
+	t=1737037233;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ULbCr/MJWmWMnMqfrEUfIjMVYGNH/QLKx9g/YM50gp8=;
+	b=QFoY9UD9JT0eJ+qLzReP25ihldYlcEPdQO0cB64qMF55UQz4XuLcdpPQ0aYe2H0ontQNN0
+	xnjcxx6Xt0PFePIInaMdS07afDTvBCuvaFDIz7PJbT2U52I52DHfCwPsCV25yqQ/vFp+UF
+	0X88zxarsIKtNE1PQwicP2gjAyahA3T1Q/yZPuMuIVVHmcZJr7XOHCEWvdenM++N/jE3GZ
+	LUCkNOBgiOkxJ7YY4VobvvKBddpS6PlklZEtCpjm27ZpTStvW/KvR0b1w5cAXUlTKv9a/6
+	Cpjvr3hvHI6HYqNAUeH0iRBDQVZ3u1JYZqQzZX0r+qFnIf/NWXJPxty+7M8bKw==
+Received: from localhost (<unknown> [2a01:e0a:12:d860:b3d:d71c:eca8:7e24])
+	by zdiv.net (OpenSMTPD) with ESMTPSA id 3d41947e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 16 Jan 2025 15:20:33 +0100 (CET)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 16 Jan 2025 15:20:33 +0100
+Message-Id: <D73KB4PN5LPG.1CIQYZNKG3U5J@zdiv.net>
+From: "Jules Maselbas" <jmaselbas@zdiv.net>
+To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>, <barebox@lists.infradead.org>
+X-Mailer: aerc 0.19.0
+References: <20250107143740.16903-1-jmaselbas@zdiv.net>
+ <20250107143740.16903-3-jmaselbas@zdiv.net>
+ <801d9231-2563-405e-bcbf-a0ae8d38857e@pengutronix.de>
+In-Reply-To: <801d9231-2563-405e-bcbf-a0ae8d38857e@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250116_061630_015620_083A61EE 
-X-CRM114-Status: GOOD (  21.12  )
+X-CRM114-CacheID: sfid-20250116_062044_333701_CA6B67C4 
+X-CRM114-Status: GOOD (  21.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,116 +80,91 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] booti: sanity check image magic before parsing header
+Subject: Re: [PATCH v2 2/6] clk: Add clock driver for sun50i-a64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 16.01.25 15:08, Ahmad Fatoum wrote:
-> booti_load_image is called directly for kernels in FIT images.
-> Let's have a simple check that the payload is indeed a booti
-> image before parsing it.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Hi,
+On Tue Jan 14, 2025 at 9:38 AM CET, Ahmad Fatoum wrote:
+> Hi,
+>
+> On 07.01.25 15:37, Jules Maselbas wrote:
+>> Adds a "one-size fit all" clock driver to be used for complex
+>> "composite" clock, composed of: a gate, a mux and severals dividers.
+>> This clk driver could be used to make SoC specific drivers easier
+>> to port from linux sources, but this is not the case yet.
+>
+> Just curious: Here you say tha this driver can make porting kernel
+> drivers easier, but at the end you say this one-size fits all is
+> barebox-specific?
 
-filetype.h is also included from imx-image leading to warning there.
-I will fix this in v2.
+Yes it is barebox specific.
+The linux drivers (clk/sunxi-ng) use SUNXI_CCU_* macros to define clks,
+such macros could be reimplemented using the one-size fits all driver.
+I think i'll try to do this for the H6 SoC.
 
-> ---
->  common/booti.c     | 11 +++++++++--
->  common/filetype.c  |  6 +++---
->  include/filetype.h | 11 +++++++++++
->  3 files changed, 23 insertions(+), 5 deletions(-)
-> 
-> diff --git a/common/booti.c b/common/booti.c
-> index e745ff696376..4c2033b7de0e 100644
-> --- a/common/booti.c
-> +++ b/common/booti.c
-> @@ -4,6 +4,7 @@
->  #define pr_fmt(fmt) "booti: " fmt
->  
->  #include <common.h>
-> +#include <filetype.h>
->  #include <memory.h>
->  #include <bootm.h>
->  #include <linux/sizes.h>
-> @@ -38,13 +39,19 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
->  	int ret;
->  	void *fdt;
->  
-> +	print_hex_dump_bytes("header ", DUMP_PREFIX_OFFSET, kernel_header, 80);
-> +
-> +	if ((IS_ENABLED(CONFIG_RISCV) && !is_riscv_linux_bootimage(kernel_header)) ||
-> +	    (IS_ENABLED(CONFIG_ARM64) && !is_arm64_linux_bootimage(kernel_header))) {
-> +		pr_err("Unexpected magic at offset 0x38!\n");
-> +		return ERR_PTR(-EINVAL);
-> +	}
-> +
->  	text_offset = le64_to_cpup(kernel_header + 8);
->  	image_size = le64_to_cpup(kernel_header + 16);
->  
->  	kernel = get_kernel_address(data->os_address, text_offset);
->  
-> -	print_hex_dump_bytes("header ", DUMP_PREFIX_OFFSET,
-> -			     kernel_header, 80);
->  	pr_debug("Kernel to be loaded to %lx+%lx\n", kernel, image_size);
->  
->  	if (kernel == UIMAGE_INVALID_ADDRESS)
-> diff --git a/common/filetype.c b/common/filetype.c
-> index 73ea17e19bd7..2a68879ee5de 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -365,11 +365,11 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
->  	if (bufsize < 64)
->  		return filetype_unknown;
->  
-> -	if (le32_to_cpu(buf[14]) == 0x644d5241)
-> +	if (is_arm64_linux_bootimage(buf))
->  		return is_dos_exe(buf8) ? filetype_arm64_efi_linux_image : filetype_arm64_linux_image;
-> -	if (le32_to_cpu(buf[14]) == 0x05435352)
-> +	if (is_riscv_linux_bootimage(buf))
->  		return is_dos_exe(buf8) ? filetype_riscv_efi_linux_image : filetype_riscv_linux_image;
-> -	if (le32_to_cpu(buf[14]) == 0x56435352 && !memcmp(&buf[12], "barebox", 8))
-> +	if (is_riscv_linux_bootimage(buf) && !memcmp(&buf[12], "barebox", 8))
->  		return filetype_riscv_barebox_image;
->  
->  	if (le32_to_cpu(buf[5]) == 0x504d5453)
-> diff --git a/include/filetype.h b/include/filetype.h
-> index c24d061e8ffa..d445140edba1 100644
-> --- a/include/filetype.h
-> +++ b/include/filetype.h
-> @@ -4,6 +4,7 @@
->  
->  #include <linux/string.h>
->  #include <linux/types.h>
-> +#include <asm/byteorder.h>
->  
->  /*
->   * List of file types we know
-> @@ -134,4 +135,14 @@ static inline int is_barebox_head(const char *head)
->  	return is_barebox_arm_head(head) || is_barebox_mips_head(head);
->  }
->  
-> +static inline bool is_arm64_linux_bootimage(const void *header)
-> +{
-> +	return le32_to_cpup(header + 56) == 0x644d5241;
-> +}
-> +
-> +static inline bool is_riscv_linux_bootimage(const void *header)
-> +{
-> +	return le32_to_cpup(header + 56) == 0x05435352;
-> +}
-> +
->  #endif /* __FILE_TYPE_H */
+>> The pll-cpux is set to 816MHz and pll-periph0-2x is set to 1.2GHz.
+>>=20
+>> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+>
+> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>
+> As I read through the code, some nitpicks below, but nothing critical.
+thanks
 
+>> ---
+>
+>> +#define MHZ (1000UL * 1000UL)
+>
+> There is linux/units.h with HZ_PER_MHZ.
+>
+>> +static struct clk_div_table div_apb1[] =3D {
+>> +	{ .val =3D 0, .div =3D 2 },
+>> +	{ .val =3D 1, .div =3D 2 },
+>> +	{ .val =3D 2, .div =3D 4 },
+>> +	{ .val =3D 3, .div =3D 8 },
+>> +	{ /* Sentinel */ },
+>
+> If comma is removed, it's less likely to add a member after it by mistake=
+.
+ack
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+>> +static void sun50i_a64_resets_init(void __iomem *regs)
+>> +{
+>> +	u32 rst;
+>> +
+>> +	rst =3D 0 |
+>> +		/* RST_USB_PHY0 */ BIT(0) |
+>> +		/* RST_USB_PHY1 */ BIT(1) |
+>> +		/* RST_USB_HSIC */ BIT(2);
+>
+> Why not name this ${REG}_RST_USB_PHY0 and so on instead of the comments?
+Not really worth the effort i think. This file is already too much differen=
+t from
+its Linux source. This is barebox specific.
+
+>> +static inline void nop_delay(u32 cnt)
+>> +{
+>> +	while (cnt--)
+>> +		barrier();
+>
+> While we use GCC by default, first clang support was recently added and
+> clang is known to do optimizations that would reorder cnt over a memory
+> clobber if cnt is held in a register. Better make cnt volatile here.
+ok
+
+>
+>> +}
+>> +
+>> +/* a "one size fit all" clk for barebox */
+>
+> Cheers,
+> Ahmad
+
 
 
