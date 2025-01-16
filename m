@@ -1,68 +1,91 @@
-Delivery-date: Thu, 16 Jan 2025 15:37:50 +0100
+Delivery-date: Thu, 16 Jan 2025 18:03:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYR0I-000dBG-0h
+	id 1tYTH2-000fw1-2h
 	for lore@lore.pengutronix.de;
-	Thu, 16 Jan 2025 15:37:50 +0100
+	Thu, 16 Jan 2025 18:03:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYR0I-0007h2-20
-	for lore@pengutronix.de; Thu, 16 Jan 2025 15:37:50 +0100
+	id 1tYTH2-0004UA-QH
+	for lore@pengutronix.de; Thu, 16 Jan 2025 18:03:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:
-	From:Subject:Message-Id:Date:Content-Type:Content-Transfer-Encoding:
-	Mime-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=R0wMy4UIQ6CL0abYGOyb09Axc3RAPtIR1BjzhOd/mMM=; b=izMlpQED1YiNdtMidybpuFssGf
-	+cog12efTXMgHhM1K6j0JeGLo/H5PCoE1mSf5tBraSS1U+MvNvhQDJRB1Bfj7Bn/24aYuxcZwliC6
-	vf987qALrNxyeFDAz1v84OKcD8Qb7LSaRjTAQaUog8huz/4rFEVFHA5Hi8owOABk0DRMcLb2GzX1V
-	+Blh7/L9G7koL8UPg7jVoFRRgJRN814igBfaUVfIXU3qOJd4PAztZiUl5B9k7rxEqTJvaNUb3dP9X
-	xcgqwE/6IVvhnb6qE3qW59TJ5pxZhJ/tpoGYoDe6gcNC2xYUWc7035PwvvEAJEA61XZ22VI+Yi/I3
-	1f5GQ6Zg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Q6I7pt9AB6kf/4uOcQCvSQNT+YWu13CHhuVq21XIwvs=; b=HnawAJT8V3eQRNbOV0URtvZDXc
+	0aLG8l1qUo78fbK0oyoxUWwPDnx2JzQXRJYkalR9iA4jOfP8WghsWA6FHbaHPAQ70WZPfcdXv9lYo
+	0WmCMKm8/XLyFsGmNJ4L+XQHJZjwHlbsW4kSBVA2JhIbd2OVYEDWQXAJyfkyKWGxnftgRI/uNZzrg
+	RON5ODaPqPhoLsRVcMJNeOQjeZqZQhnS3eTIkIC/LnEosqniNiKtuiT7AV4So6LTV0fwI2fwgzpVe
+	7BYY5Uv0/xSMW08nz3smiNL6UXv64plj8hdaEfkL1t7xT0VqHpwQUbhY+MrZjaDmSbFuvQizhlvTr
+	UqJHogag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYQzs-0000000FCKR-46p7;
-	Thu, 16 Jan 2025 14:37:24 +0000
-Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
+	id 1tYTGP-0000000Fbc1-2Mip;
+	Thu, 16 Jan 2025 17:02:37 +0000
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYQzq-0000000FCJN-3YBS
+	id 1tYTGE-0000000FbYv-38pd
 	for barebox@lists.infradead.org;
-	Thu, 16 Jan 2025 14:37:24 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
-	t=1737038241;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R0wMy4UIQ6CL0abYGOyb09Axc3RAPtIR1BjzhOd/mMM=;
-	b=KDfkMWSf3JnYtFeaAqUhJERekSljkNMpVN7BnnkVhN7DDaGiI6L9euBrluvntwCxfke+De
-	k6yHva98EpJ/vj0HVSQ1jc09VCPj7r9tdMyJSCtAdmc5dj/60mV2o6AvxIioVFiCaFteC8
-	g5hVXUoux976zx9B4KfY6V/ajQPLilsrrUxU62tVHeqUBRJkMlkd5uHzhpboWM0vSrzid0
-	9q7Up2QRVm7EdADQyMOXMPpYaVSCkZ6KETtIfxIfie/w1vdZIJ0RZURCqgR5cf/ncX7tv+
-	6uBZxde/osEi3obbeEu4ZA8/PIh1Md+JeFH7KKyFX7nP+q52hG1dbvX414ONDw==
-Received: from localhost (<unknown> [2a01:e0a:12:d860:b3d:d71c:eca8:7e24])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id d7ad4b49 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 16 Jan 2025 15:37:21 +0100 (CET)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Jan 2025 15:37:20 +0100
-Message-Id: <D73KNZKIVWNY.20IOAFZXQYF32@zdiv.net>
-From: "Jules Maselbas" <jmaselbas@zdiv.net>
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>, <barebox@lists.infradead.org>
-X-Mailer: aerc 0.19.0
-References: <20250107143740.16903-1-jmaselbas@zdiv.net>
- <20250107143740.16903-7-jmaselbas@zdiv.net>
- <cf5862b9-3c9b-48b4-b2da-d6349d90d105@pengutronix.de>
-In-Reply-To: <cf5862b9-3c9b-48b4-b2da-d6349d90d105@pengutronix.de>
+	Thu, 16 Jan 2025 17:02:28 +0000
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-3061513d353so12319201fa.2
+        for <barebox@lists.infradead.org>; Thu, 16 Jan 2025 09:02:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737046944; x=1737651744; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q6I7pt9AB6kf/4uOcQCvSQNT+YWu13CHhuVq21XIwvs=;
+        b=CWtVSJeJ0UZwvsZRp7ysS2BicqiuwBXuf6GrPK1DSR6BaJ73sXlwXkBIp9VcuCj3HY
+         D1ZhHxsEM3hR2tlOn8QsARLcXyiYI3eD2E5sJ0YOB9EwvCFvKzVsLPQAPXHwuP3pp8XE
+         V4tDK22fpDwAYdr4gL5Wt8+ZKajyoMUn/0WxwyC5jEcT3G5GBK2KQNnCRpEXJ5Atg75R
+         ybY7/3M9AOKEvRD8uhy2qbtnWWbkDzJj0vnnwNu88HyC1e1hEEDSa8loNdMPJfiXyzxl
+         ekI62B4/eKS11d7IQjOYnw5rH2BGiGrJu6FvXZYBmyNDQr8Bb2JSo+dGpg98StH0HPnt
+         h6Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737046944; x=1737651744;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q6I7pt9AB6kf/4uOcQCvSQNT+YWu13CHhuVq21XIwvs=;
+        b=uK2TX1PrvoAkI157pjDJZ6YfbXR3/zGQ3tATwsKcwMZIoR5UptgMfeYB/8G49jvJC1
+         SJvP1ZUchutVawmJwZey7KTl4bLHetbxdtxjgHOOUkWzwv+pRmfagXciU4wdKh4D1Fto
+         g0nBGAINgdHtFsgmLraffbUksLc3QjEMbgMErsJxI5qQxl+gVhDYNn/ZpcW2egnp2qM4
+         QbwNIolbkGNQawiYAALR3uSasOaaqrEUgYP+F51dAA6T/2tqcw42q8JvAzwpEAbD6kMY
+         o+JECqB4qojbwtBGzg3b+9FoqgCfEN/ZnkA8XGf8Qf2EMO/TpMIio2ErHMZ6fqHCw9nL
+         p3nQ==
+X-Gm-Message-State: AOJu0YzW/tSMipmeUwscUANYGYwAw4mnF3I/uqk5KdqBGbbQ8LD0Afr6
+	hbAOd08DZAFxysfobHJBJCh3fSHnhthELfQVNAHjHF9OajJjJVJCB5Je0Q==
+X-Gm-Gg: ASbGncuw/MtvAle78teLO9fZz0f5MQckhjXDJMK/ylG3napizDF2SOq1rBSJXeAq8iE
+	wwQ0Q51zJJgMuj9MHhEWVL7oXLeKyQHw9s0Br0y/6rgmtkPO6sfGaJCjYzKln7c0zcr83+Kq8ZV
+	N3Dh3Mek/hdGZwVzJDkgf3wyjcwwoiA/s+j1MjZSawivj74yBndJ1J9DL8/dBWqSUBAGbDlyn2b
+	u9phAIxnu6OSuAs5Vbxs4nxYbuS+9v3AqjKuSSXvP5djGzIjivMhLBa2hFAY7j1X92/Whg++giS
+	A0KWKg==
+X-Google-Smtp-Source: AGHT+IG+yrH/zRFvWYAEbDt2UkiCTDjS6QR/UOEPdoBpK8JE6MRgoevpInPS6ffDjvZ8VjDgMBeCkg==
+X-Received: by 2002:a05:6512:3e28:b0:53e:3aaa:5c7c with SMTP id 2adb3069b0e04-542845d1687mr12260683e87.51.1737046942324;
+        Thu, 16 Jan 2025 09:02:22 -0800 (PST)
+Received: from localhost.localdomain ([95.161.223.172])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5439af7390dsm41795e87.200.2025.01.16.09.02.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 09:02:20 -0800 (PST)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu, 16 Jan 2025 20:01:54 +0300
+Message-Id: <20250116170154.104253-3-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.38.2
+In-Reply-To: <20250116170154.104253-1-eagle.alexander923@gmail.com>
+References: <20250116170154.104253-1-eagle.alexander923@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250116_063723_167925_682FC4BC 
-X-CRM114-Status: GOOD (  32.75  )
+X-CRM114-CacheID: sfid-20250116_090226_784420_52E057EE 
+X-CRM114-Status: GOOD (  15.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,199 +103,142 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 6/6] Documentation: sunxi: Add some documentation
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH 3/3] aiodev: rockchip_saradc: Add support for RK3588
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue Jan 14, 2025 at 9:39 AM CET, Ahmad Fatoum wrote:
-> Hi Jules,
->
-> On 07.01.25 15:37, Jules Maselbas wrote:
->> Add some informations about Allwinner sunxi boardsupport: the general
->> boot process, how to use sunxi-fel tool, and how to create a bootable
->> image disk.
->>=20
->> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
->
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->
-> with changes suggested below:
->
->> ---
->>  Documentation/boards/sunxi.rst | 132 +++++++++++++++++++++++++++++++++
->>  1 file changed, 132 insertions(+)
->>  create mode 100644 Documentation/boards/sunxi.rst
->>=20
->> diff --git a/Documentation/boards/sunxi.rst b/Documentation/boards/sunxi=
-.rst
->> new file mode 100644
->> index 0000000000..46832559c9
->> --- /dev/null
->> +++ b/Documentation/boards/sunxi.rst
->> @@ -0,0 +1,132 @@
->> +..
->> +  SPDX-License-Identifier: GPL-2.0+
->> +
->> +  Copyright (C) 2022, Jules Maselbas
->> +
->> +Allwinner sunxi
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +
->> +Because of size constraints Barebox proper cannot boot directly, the us=
-es
->> +of :doc:`PBL` allows to compress the Barebox image and it's device-tree=
-.
->
-> s/it's/its/
->
->> +However this is not enough, and two images are acctually needed. The fi=
-rst
->
-> s/acctually/actually/
->
->> +image is suffixed *_xload* and it only consist of the PBL with a specia=
-l
->> +entry point that looks for ``barebox.bin`` the root of a FAT partition.
->> +Only the SD card is currently searched, but this could also be in eMMC.
->> +The second image is your standard Barebox plus PBL image (suffixed ``.p=
-blb``).
->
-> The pblb image is just an intermediate artifact. There's usually an .img
-> that's either 1:1 the pblb or the pblb with a SoC-specific header in fron=
-t
-> (or size patched in), so users need not mess with the pblb at all.
->
-> Also, to avoid confusion, please add a note here that xload support isn't
-> available yet or remove that part for now?
-Yeah i think it's better to remove irrelevant part for now.
+This adds RK3588 SARADC support to the driver.
 
->
->> +eGON header
->> +-----------
->> +
->> +The eGON header structure is described in the file ``include/mach/sunxi=
-/egon.h``.
->
-> This file doesn't exist yet.
-only relevant for the PBL
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ drivers/aiodev/rockchip_saradc.c | 81 +++++++++++++++++++++++++++-----
+ 1 file changed, 69 insertions(+), 12 deletions(-)
 
->> +This is also documented on https://linux-sunxi.org/EGON .
->> +
->> +The eGON header, followed by the actual image, must be located at the f=
-ixed
->> +offset of 8192 bytes (8KB) from the start of the disk (sector 16), eith=
-er
->> +from SD card; or from eMMC.
->> +
->> +.. code-block:: sh
->> +
->> +  # copy the "pine64_xload" eGON image into disk sdX
->> +  dd if=3Dimages/start_pine64_pine64_xload.pblb.egonimg of=3D/dev/sdX b=
-s=3D512 seek=3D16
->> +
->> +The above will write the entire "pine64_xload" Barebox PBL plus the eGO=
-N
->> +header into the disk "/dev/sdX".
->> +
->> +The boot ROM will load, at most, the first 32KB of the image into SRAM,
->> +including the header itself! The eGON header starts with a jump instruc=
-tion
->> +to jump over the header, this jump instruction needs to be patched acco=
-rdingly
->> +with the header size.
->> +
->> +.. note::
->> +
->> +  On sunxi platforms the boot ROM loads the entire image **including**
->> +  the eGON header. The actual base address will be offset by the eGON h=
-eader
->> +  (currently 96 bytes), this bad because arm instructions used for relo=
-cation
->
-> s/this bad/this is bad/
->
->> +  expect the base address to be aligned on 4K boundary.
->> +  As a workaround, a eGON header is included and linked into the Barebo=
-x
->> +  PBL image, this dummy header will be filled later by egon_mkimage.
->
-> Nice.
->
->> +Board images are defined in ``images/Makefile.sunxi``, here is an examp=
-le::
->> +
->> +.. code-block:: none
->> +
->> +  pblb-$(CONFIG_MACH_PINE64_PINE64) +=3D start_pine64_pine64_xload
->> +  MAX_PBL_IMAGE_SIZE_start_pine64_pine64_xload =3D 0x8000
->> +  FILE_barebox-pine64-pine64_xload.img =3D start_pine64_pine64_xload.pb=
-lb.egonimg
->> +  image-$(CONFIG_MACH_PINE64_PINE64) +=3D barebox-pine64-pine64_xload.i=
-mg
->
-> While useful to have, I think the docs should start with user documentati=
-on
-> first, i.e. a Building section that points out what defconfig to use, wha=
-t
-> images result and that only second stage is currently supported.
-> See for example:
->
-> https://www.barebox.org/doc/latest/boards/rockchip.html#id1
-Thanks, i'll take a look
-
->> +RMR aarch64 switch
->> +------------------
->> +
->> +Aarch64 capable SoC (A64/sun50i) boot by default in 32-bit mode. A spec=
-ial header
->> +is added to the start of the PBL image in order to switch to aarch64 mo=
-de as soon
->> +as possible. This must be done very early in the boot process since bot=
-h ISA are
->> +not compatible. The code to switch mode is already assembled (mostly ar=
-m 32bit)
->> +and is documented in the header file ``include/mach/sunxi/rmr_switch.h`=
-`.
->
-> Likewise file doesn't exist yes.
-yep, only relevant for PBL.
-
->> +More documentation about FEL_ and how to use the sunxi-fel tool can be
->> +found on https://linux-sunxi.org/FEL/USBBoot .
->
-> Is this already a clickable link?
->
->> +Arm Trusted Firmware (TF-A)
->> +---------------------------
->> +
->> +Boards using a 64-bit Soc (A64, H5, H6, H616, R329) require the BL31 st=
-age of
->> +the `Arm Trusted Firmware-A`_ firmware. This provides the reference
->> +implementation of secure software for Armv8-A, offering PSCI and SMCCC
->> +services. Allwinner support is fully mainlined. To build bl31.bin::
->> +
->> +.. code-block:: sh
->> +
->> +  git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
->> +  cd trusted-firmware-a
->> +  make CROSS_COMPILE=3Daarch64-linux-gnu- PLAT=3Dsun50i_a64 DEBUG=3D1
->> +  cp build/sun50i_a64/debug/bl31.bin ${barebox_dir}/firmware/sun50i-a64=
--bl31.bin
->> +
->> +The target platform (``PLAT=3D``) for A64 and H5 SoCs is sun50i_a64, fo=
-r the H6
->> +sun50i_h6, for the H616 sun50i_h616, and for the R329 sun50i_r329.
->
->
-> Thanks for taking the time to write such useful docs. :-)
-Thanks for reading it :)
-
-> Cheers,
-> Ahmad
+diff --git a/drivers/aiodev/rockchip_saradc.c b/drivers/aiodev/rockchip_saradc.c
+index d7a67bc97c..61079b8110 100644
+--- a/drivers/aiodev/rockchip_saradc.c
++++ b/drivers/aiodev/rockchip_saradc.c
+@@ -9,18 +9,30 @@
+ #include <common.h>
+ #include <aiodev.h>
+ #include <regulator.h>
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/reset.h>
+ 
+-#define SARADC_DATA	       0x00
+-
+-#define SARADC_CTRL	       0x08
+-#define SARADC_CTRL_IRQ_STATUS (1 << 6)
+-#define SARADC_CTRL_IRQ_ENABLE (1 << 5)
+-#define SARADC_CTRL_POWER_CTRL (1 << 3)
+-#define SARADC_CTRL_CHN_MASK   0x07
+-
+-#define SARADC_DLY_PU_SOC      0x0c
++/* v1 registers */
++#define SARADC_DATA	    		0x00
++#define SARADC_CTRL			0x08
++#	define SARADC_CTRL_IRQ_STATUS	(1 << 6)
++#	define SARADC_CTRL_IRQ_ENABLE	(1 << 5)
++#	define SARADC_CTRL_POWER_CTRL	(1 << 3)
++#define SARADC_CTRL_CHN_MASK		0x07
++#define SARADC_DLY_PU_SOC		0x0c
++
++/* v2 registers */
++#define SARADC2_CONV_CON		0x000
++#	define SARADC2_CONV_CHANNELS	GENMASK(3, 0)
++#	define SARADC2_START		BIT(4)
++#	define SARADC2_SINGLE_MODE	BIT(5)
++#define SARADC_T_PD_SOC			0x004
++#define SARADC_T_DAS_SOC		0x00c
++#define SARADC2_END_INT_EN		0x104
++#	define SARADC2_EN_END_INT	BIT(0)
++#define SARADC2_END_INT_ST		0x110
++#define SARADC2_DATA_BASE		0x120
+ 
+ #define SARADC_TIMEOUT_NS      (100 * MSECOND)
+ 
+@@ -72,9 +84,7 @@ static void rockchip_saradc_init_v1(struct rockchip_saradc_data *data)
+ static int rockchip_saradc_read_v1(struct aiochannel *chan, int *val)
+ {
+ 	struct rockchip_saradc_data *data;
+-	u32 value = 0;
+-	u32 control = 0;
+-	u32 mask;
++	u32 value, control, mask;
+ 	u64 start;
+ 
+ 	data = container_of(chan->aiodev, struct rockchip_saradc_data, aiodev);
+@@ -103,6 +113,46 @@ static int rockchip_saradc_read_v1(struct aiochannel *chan, int *val)
+ 	return 0;
+ }
+ 
++static int rockchip_saradc_read_v2(struct aiochannel *chan, int *val)
++{
++	struct rockchip_saradc_data *data;
++	u32 value, status, mask;
++	u64 start;
++
++	data = container_of(chan->aiodev, struct rockchip_saradc_data, aiodev);
++
++	rockchip_saradc_reset_controller(data->reset);
++
++	rockchip_saradc_reg_wr(data, 0xc, SARADC_T_DAS_SOC);
++	rockchip_saradc_reg_wr(data, 0x20, SARADC_T_PD_SOC);
++	value = FIELD_PREP(SARADC2_EN_END_INT, 1);
++	value |= SARADC2_EN_END_INT << 16;
++	rockchip_saradc_reg_wr(data, value, SARADC2_END_INT_EN);
++	value = FIELD_PREP(SARADC2_START, 1) |
++		FIELD_PREP(SARADC2_SINGLE_MODE, 1) |
++		FIELD_PREP(SARADC2_CONV_CHANNELS, chan->index);
++	value |= (SARADC2_START | SARADC2_SINGLE_MODE | SARADC2_CONV_CHANNELS) << 16;
++	rockchip_saradc_reg_wr(data, value, SARADC2_CONV_CON);
++
++	start = get_time_ns();
++	do {
++		status = rockchip_saradc_reg_rd(data, SARADC2_END_INT_ST);
++
++		if (is_timeout(start, SARADC_TIMEOUT_NS))
++			return -ETIMEDOUT;
++	} while (!(status & SARADC2_EN_END_INT));
++
++	mask = (1 << data->config->num_bits) - 1;
++	value = rockchip_saradc_reg_rd(data, SARADC2_DATA_BASE + chan->index * 4);
++	value &= mask;
++
++	rockchip_saradc_reg_wr(data, SARADC2_EN_END_INT, SARADC2_END_INT_ST);
++
++	*val = (value * data->ref_voltage_mv) / mask;
++
++	return 0;
++}
++
+ static int rockchip_saradc_probe(struct device *dev)
+ {
+ 	struct rockchip_saradc_data *data;
+@@ -211,8 +261,15 @@ static const struct rockchip_saradc_cfg rk3568_saradc_cfg = {
+ 	.read = rockchip_saradc_read_v1,
+ };
+ 
++static const struct rockchip_saradc_cfg rk3588_saradc_cfg = {
++	.num_bits = 12,
++	.num_channels = 8,
++	.read = rockchip_saradc_read_v2,
++};
++
+ static const struct of_device_id of_rockchip_saradc_match[] = {
+ 	{ .compatible = "rockchip,rk3568-saradc", .data = &rk3568_saradc_cfg },
++	{ .compatible = "rockchip,rk3588-saradc", .data = &rk3588_saradc_cfg },
+ 	{ /* end */ }
+ };
+ MODULE_DEVICE_TABLE(of, of_rockchip_saradc_match);
+-- 
+2.38.2
 
 
 
