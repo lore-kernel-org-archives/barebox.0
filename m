@@ -1,68 +1,69 @@
-Delivery-date: Thu, 16 Jan 2025 15:21:17 +0100
+Delivery-date: Thu, 16 Jan 2025 15:33:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYQkG-000cy0-1z
+	id 1tYQwE-000d84-0e
 	for lore@lore.pengutronix.de;
-	Thu, 16 Jan 2025 15:21:17 +0100
+	Thu, 16 Jan 2025 15:33:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYQkG-0003t2-N3
-	for lore@pengutronix.de; Thu, 16 Jan 2025 15:21:17 +0100
+	id 1tYQwE-0006U8-Bz
+	for lore@pengutronix.de; Thu, 16 Jan 2025 15:33:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:
 	From:Subject:Message-Id:Date:Content-Type:Content-Transfer-Encoding:
 	Mime-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ULbCr/MJWmWMnMqfrEUfIjMVYGNH/QLKx9g/YM50gp8=; b=oSkb35D4tN/cR5PTomRGkx4L3w
-	W+Lt2uZjX5j2Pxc3cZruMULc2PNgwN8KQb35sqzX+o8adfkk2Qt4czUki0/FEc9zn7coCDSgWq6Qp
-	aai/gUsvx5oNvkGpoHNjjk8RR+X7EyvUFsB3/wry7u72yjhaRf6HIvXlLVT3KkNr2dqQBkaQ1Xhyk
-	C1NCON/lZH2aU3w0ubuSakwH2rHc9KoOnzbd3gA/ViXdSkv0FqvVVB3SNWy+PS/EFUNXUfY9IettL
-	b9Yn8zgWyb/cvs82HdDTlvk1fHMuqLY+ocDic2QaaJAX8fueoWhf+btFUatG/Fdq6LZ8Cw7bxKK76
-	R+TktBOg==;
+	bh=mTvG0c1LXGKvrE0SqPIGPyJh8VWbPMOHuM5v7D73p8w=; b=243Wcj28DidW/oriizBEXiiTXJ
+	LfwM3ub5sexdAyS+OZjTl5CS+nPeEe7nRu2gqi4RK3Y8DqEPbhdVeEzNb7kGR22HiXuniJ7HBOps2
+	plJa68j5sr/whoD42X+zsknjDdaS/DLR8AlS3FybS4TDskkjZjr/o75Hry26in2OsVd0BcrcBpzmG
+	OrtNpzJjO4HwVX2n68Bu3IljUTb39RKkvXE40hmBc0FJSgvjRoJuBhtWRqVZpWRYiRPavK7SFjjQH
+	BCm3o9j3YTjM/PNbF2Lwtihs+hZZIrY1ZPHbYipPdnZfbGvTV45nivc9VmCYQto63e8aPs0KaEbla
+	6FnM8tMA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYQjo-0000000F8hn-2M4Y;
-	Thu, 16 Jan 2025 14:20:48 +0000
+	id 1tYQvj-0000000FBFn-2Ck1;
+	Thu, 16 Jan 2025 14:33:07 +0000
 Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYQjk-0000000F8eg-02Le
+	id 1tYQr4-0000000FAK0-0eQZ
 	for barebox@lists.infradead.org;
-	Thu, 16 Jan 2025 14:20:45 +0000
+	Thu, 16 Jan 2025 14:28:19 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
-	t=1737037233;
+	t=1737037696;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ULbCr/MJWmWMnMqfrEUfIjMVYGNH/QLKx9g/YM50gp8=;
-	b=QFoY9UD9JT0eJ+qLzReP25ihldYlcEPdQO0cB64qMF55UQz4XuLcdpPQ0aYe2H0ontQNN0
-	xnjcxx6Xt0PFePIInaMdS07afDTvBCuvaFDIz7PJbT2U52I52DHfCwPsCV25yqQ/vFp+UF
-	0X88zxarsIKtNE1PQwicP2gjAyahA3T1Q/yZPuMuIVVHmcZJr7XOHCEWvdenM++N/jE3GZ
-	LUCkNOBgiOkxJ7YY4VobvvKBddpS6PlklZEtCpjm27ZpTStvW/KvR0b1w5cAXUlTKv9a/6
-	Cpjvr3hvHI6HYqNAUeH0iRBDQVZ3u1JYZqQzZX0r+qFnIf/NWXJPxty+7M8bKw==
+	bh=mTvG0c1LXGKvrE0SqPIGPyJh8VWbPMOHuM5v7D73p8w=;
+	b=pBzc6WRqqrXAhs81lVW4DfvJruGW3C94UNnsw6Bzv1hdSm61zEJfZ19m/Pv99ibAOjAFms
+	+ahQrdMwwFNnLLE2FRjvBO2IMMVTbl97o3oIVjFovKGxTqvdS0QKUcQxdqdKbQQ7ZSZ/AY
+	3BWj7bBIJD/8iJpE7xyG71srCN1u818j3RzMjzjgXLX2x0PqjUlN/T7sp6o51p3miVZbHP
+	GiUklAH9gMDuGixmagcwLARvNaVJ59CXhuaKzSV8K4MtxYZ/9y70/jxpVkODusmewfaIdG
+	FxVhSvNghc1jrzd9HhThIuwxhR9ClQndMT0P4iGq9St5SOCI+GDlK15NLaQzvA==
 Received: from localhost (<unknown> [2a01:e0a:12:d860:b3d:d71c:eca8:7e24])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id 3d41947e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 16 Jan 2025 15:20:33 +0100 (CET)
+	by zdiv.net (OpenSMTPD) with ESMTPSA id 1b31da70 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 16 Jan 2025 15:28:16 +0100 (CET)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Jan 2025 15:20:33 +0100
-Message-Id: <D73KB4PN5LPG.1CIQYZNKG3U5J@zdiv.net>
+Date: Thu, 16 Jan 2025 15:28:16 +0100
+Message-Id: <D73KH1ETF4PN.2QO1M9J9XVZN6@zdiv.net>
 From: "Jules Maselbas" <jmaselbas@zdiv.net>
 To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>, <barebox@lists.infradead.org>
 X-Mailer: aerc 0.19.0
 References: <20250107143740.16903-1-jmaselbas@zdiv.net>
- <20250107143740.16903-3-jmaselbas@zdiv.net>
- <801d9231-2563-405e-bcbf-a0ae8d38857e@pengutronix.de>
-In-Reply-To: <801d9231-2563-405e-bcbf-a0ae8d38857e@pengutronix.de>
+ <20250107143740.16903-4-jmaselbas@zdiv.net>
+ <8290a410-2d0b-4d0e-a5a6-fefcfac2c6c7@pengutronix.de>
+In-Reply-To: <8290a410-2d0b-4d0e-a5a6-fefcfac2c6c7@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250116_062044_333701_CA6B67C4 
-X-CRM114-Status: GOOD (  21.44  )
+X-CRM114-CacheID: sfid-20250116_062818_466848_E884FF89 
+X-CRM114-Status: UNSURE (   7.61  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,84 +85,41 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/6] clk: Add clock driver for sun50i-a64
+Subject: Re: [PATCH v2 3/6] pinctrl: Add sun50i-a64 pinctrl driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
-On Tue Jan 14, 2025 at 9:38 AM CET, Ahmad Fatoum wrote:
-> Hi,
->
+On Tue Jan 14, 2025 at 9:39 AM CET, Ahmad Fatoum wrote:
 > On 07.01.25 15:37, Jules Maselbas wrote:
->> Adds a "one-size fit all" clock driver to be used for complex
->> "composite" clock, composed of: a gate, a mux and severals dividers.
->> This clk driver could be used to make SoC specific drivers easier
->> to port from linux sources, but this is not the case yet.
->
-> Just curious: Here you say tha this driver can make porting kernel
-> drivers easier, but at the end you say this one-size fits all is
-> barebox-specific?
-
-Yes it is barebox specific.
-The linux drivers (clk/sunxi-ng) use SUNXI_CCU_* macros to define clks,
-such macros could be reimplemented using the one-size fits all driver.
-I think i'll try to do this for the H6 SoC.
-
->> The pll-cpux is set to 816MHz and pll-periph0-2x is set to 1.2GHz.
+>> sunxi pinctrl driver, adapted from Linux, is split in two parts:
+>>  - pinctrl-sunxi.c that implements gpio, pinctrl and pinmux functions
+>>  - pinctrl-sun50i-a64.c that declare sun50i pins and their functions.
+>>    This file only require minor adaptations and be easily copied from Li=
+nux.
 >>=20
->> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+>> The pin functions are needed for uart, SD/MMC, and likely for other
+>> controllers too.
+>>=20
+>> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>]
 >
 > Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 >
-> As I read through the code, some nitpicks below, but nothing critical.
-thanks
-
 >> ---
+>> v1->v2:
+>>  - removed `!IS_ENABLED(CONFIG_PINCTRL)` (Ahmad)
 >
->> +#define MHZ (1000UL * 1000UL)
+> Sascha suggested that of his own volition ;)
+oopsy
 >
-> There is linux/units.h with HZ_PER_MHZ.
+>> +	func_name =3D sunxi_pinctrl_parse_function_prop(np);
+>> +	if (!func_name) {
+>> +		dev_err(dev, "%s: missing 'function' property\n", np->full_name);
 >
->> +static struct clk_div_table div_apb1[] =3D {
->> +	{ .val =3D 0, .div =3D 2 },
->> +	{ .val =3D 1, .div =3D 2 },
->> +	{ .val =3D 2, .div =3D 4 },
->> +	{ .val =3D 3, .div =3D 8 },
->> +	{ /* Sentinel */ },
->
-> If comma is removed, it's less likely to add a member after it by mistake=
-.
-ack
+> Nitpick: %pOF
+Ack
 
->
->> +static void sun50i_a64_resets_init(void __iomem *regs)
->> +{
->> +	u32 rst;
->> +
->> +	rst =3D 0 |
->> +		/* RST_USB_PHY0 */ BIT(0) |
->> +		/* RST_USB_PHY1 */ BIT(1) |
->> +		/* RST_USB_HSIC */ BIT(2);
->
-> Why not name this ${REG}_RST_USB_PHY0 and so on instead of the comments?
-Not really worth the effort i think. This file is already too much differen=
-t from
-its Linux source. This is barebox specific.
-
->> +static inline void nop_delay(u32 cnt)
->> +{
->> +	while (cnt--)
->> +		barrier();
->
-> While we use GCC by default, first clang support was recently added and
-> clang is known to do optimizations that would reorder cnt over a memory
-> clobber if cnt is held in a register. Better make cnt volatile here.
-ok
-
->
->> +}
->> +
->> +/* a "one size fit all" clk for barebox */
+>> +		return -EINVAL;
+>> +	}
 >
 > Cheers,
 > Ahmad
