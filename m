@@ -1,71 +1,59 @@
-Delivery-date: Fri, 17 Jan 2025 09:33:12 +0100
+Delivery-date: Fri, 17 Jan 2025 10:03:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYhmx-000wSk-1n
+	id 1tYiGf-000wuF-3A
 	for lore@lore.pengutronix.de;
-	Fri, 17 Jan 2025 09:33:12 +0100
+	Fri, 17 Jan 2025 10:03:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tYhmu-0007Oy-Bt
-	for lore@pengutronix.de; Fri, 17 Jan 2025 09:33:12 +0100
+	id 1tYiGg-0002eR-4d
+	for lore@pengutronix.de; Fri, 17 Jan 2025 10:03:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0VZJ6k4bM6G5ef4vgqhKVnCECbcks7OB4iUvAxBDqkA=; b=hmEb6aJKEFt79IbwTX/q/Xp7Lz
-	qXbP1BtZKOLSkqQfPurJpiZ2VgZMLA7dm4AWiLzGoLRfXu/CdlVEA2LWsyfYSPu32Nf64m7H7Hz4O
-	1SgZKpzvOsqfZufzU6ujFvpP+biuTa9KA4eAtN+AfrWEg+/uRc61UJD3iF+5tYyuyqOg4yw2VS3Sk
-	qRlPujsKfLUx/wMfruP8FqETGlr/2LmmG4bVflV2w54/e1gpXxSIHcuoXW9+s6/fkM0wR5NvYWSRT
-	1WS7MJM9BdR87h4RhhPnj9pVnTETTsYRgFBNJp3igYJT+duTS+1zaCsAUwrVIf1VTB+wRZUBpIWVj
-	KulKXWnA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=bNUaXrRmrbQi6VDWuKCAki0ZYVJYZIpLCu/eif1XbpA=; b=jDQJys9lkycfv7jPz8JKwluc5h
+	UAhBtFdqW92o+0sGfaH/C1M/76tZoImYKtT0R4cCcD1p+3NPxjIyv8sFsdGKiiy3hSP43gHe4SphY
+	S1dDlEv09E268xckLFSoRjJgoCs/hqmxwppthVmolVMcSochd9Nr85hNkGKqyhV97QjoAPbgYD2BD
+	FosXscTTrPXOVAEIAprBkjmCTe5wvnN7jCiT3HrxJpQH78vyacBtVDALStSrGZzHbgWlaFYjRLp2i
+	W0fiMOq6WUc+WIFPlp71e6f5L4kkCMInTdtl477GlantA1OFSIfhn2NcvkqvARri7TqLvCiTLItjb
+	ECpzh+fg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYhmW-0000000HLDw-1UsL;
-	Fri, 17 Jan 2025 08:32:44 +0000
+	id 1tYiGE-0000000HOwZ-2Oaw;
+	Fri, 17 Jan 2025 09:03:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYhmT-0000000HLDO-0HnO
+	id 1tYiGC-0000000HOwF-0SbN
 	for barebox@lists.infradead.org;
-	Fri, 17 Jan 2025 08:32:42 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tYhmR-0007Ip-JH; Fri, 17 Jan 2025 09:32:39 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tYhmP-000OYu-1z;
-	Fri, 17 Jan 2025 09:32:37 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tYhmP-00FeeN-1i;
-	Fri, 17 Jan 2025 09:32:37 +0100
-Date: Fri, 17 Jan 2025 09:32:37 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Fri, 17 Jan 2025 09:03:25 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tYiGA-0002Xa-RO; Fri, 17 Jan 2025 10:03:22 +0100
+Message-ID: <b5506841-68f9-496b-9b59-8c9d5fbe0d77@pengutronix.de>
+Date: Fri, 17 Jan 2025 10:03:20 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, Felix Singer <felixsinger@posteo.net>
-Message-ID: <Z4oVpYra9gKbDoGM@pengutronix.de>
 References: <20250112083432.320215-1-a.fatoum@pengutronix.de>
  <20250112083432.320215-11-a.fatoum@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250112083432.320215-11-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+ <Z4oVpYra9gKbDoGM@pengutronix.de>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <Z4oVpYra9gKbDoGM@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250117_003241_104660_392C25E0 
-X-CRM114-Status: GOOD (  14.92  )
+X-CRM114-CacheID: sfid-20250117_010324_151114_20FF2293 
+X-CRM114-Status: GOOD (  16.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,7 +71,7 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
@@ -91,29 +79,41 @@ Subject: Re: [PATCH 10/13] images: add barebox FIT image target
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+Hello Sascha,
 
-On Sun, Jan 12, 2025 at 09:34:29AM +0100, Ahmad Fatoum wrote:
-> +MAKE_FIT := $(srctree)/scripts/make_fit.py
-> +
-> +# Use this to override the compression algorithm of the DTBs
-> +FIT_COMPRESSION ?= none
-> +
-> +quiet_cmd_fit = FIT     $@
-> +      cmd_fit = $(MAKE_FIT) -o $@ --arch $(CONFIG_ARCH_MKIMAGE_NAME) --os linux \
-> +		--name 'barebox-$(KERNELRELEASE)' \
-> +		$(if $(findstring 1,$(KBUILD_VERBOSE)),-v) \
-> +		$(if $(FIT_DECOMPOSE_DTBS),--decompose-dtbs) \
-> +		--dtb-compress $(FIT_COMPRESSION) -k $< @$(word 2,$^)
+On 17.01.25 09:32, Sascha Hauer wrote:
+> Hi Ahmad,
+> 
+> On Sun, Jan 12, 2025 at 09:34:29AM +0100, Ahmad Fatoum wrote:
+>> +MAKE_FIT := $(srctree)/scripts/make_fit.py
+>> +
+>> +# Use this to override the compression algorithm of the DTBs
+>> +FIT_COMPRESSION ?= none
+>> +
+>> +quiet_cmd_fit = FIT     $@
+>> +      cmd_fit = $(MAKE_FIT) -o $@ --arch $(CONFIG_ARCH_MKIMAGE_NAME) --os linux \
+>> +		--name 'barebox-$(KERNELRELEASE)' \
+>> +		$(if $(findstring 1,$(KBUILD_VERBOSE)),-v) \
+>> +		$(if $(FIT_DECOMPOSE_DTBS),--decompose-dtbs) \
+>> +		--dtb-compress $(FIT_COMPRESSION) -k $< @$(word 2,$^)
+> 
+> I had to drop this and the following patches from this series.
+> 
+> barebox already has a cmd_fit which you are overwriting with this patch.
+> The existing FIT target is used for the beagleplay board to build an
+> image to be started from U-Boot. I suspect we can just replace existing
+> FIT target with your version.
 
-I had to drop this and the following patches from this series.
+I renamed it to cmd_itb in this patch that you picked:
+https://lore.kernel.org/all/20250106091935.3435710-1-a.fatoum@pengutronix.de/
 
-barebox already has a cmd_fit which you are overwriting with this patch.
-The existing FIT target is used for the beagleplay board to build an
-image to be started from U-Boot. I suspect we can just replace existing
-FIT target with your version.
+Cheers,
+Ahmad
 
-Sascha
+> 
+> Sascha
+> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
