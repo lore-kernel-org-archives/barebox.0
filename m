@@ -1,73 +1,64 @@
-Delivery-date: Mon, 20 Jan 2025 08:23:08 +0100
+Delivery-date: Mon, 20 Jan 2025 14:32:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tZm7n-0029ZX-0z
+	id 1tZrt5-002Frx-04
 	for lore@lore.pengutronix.de;
-	Mon, 20 Jan 2025 08:23:08 +0100
+	Mon, 20 Jan 2025 14:32:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tZm7n-00054O-Ds
-	for lore@pengutronix.de; Mon, 20 Jan 2025 08:23:07 +0100
+	id 1tZrt5-0000oL-6K
+	for lore@pengutronix.de; Mon, 20 Jan 2025 14:32:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3N5n05Y0eLWv9Smz+0r+0Id7GvJ6F6BOnXSU+uqIuQc=; b=mrCpr0Llxuc94aNKTfamfgUu26
-	dkqCHUV9don/IDSAKJL4kgWiYf5U8VaLWGhTdumEFI+cfPcPL20paXPfNlS8u0gTkX1+AUQ4AhWqe
-	IrQfHsgi33b8GXvFP7LIvtcqood/gu/dGA5sYApWSfylwZri6YkB1WgdBsdUAwjPJAzR8ikuqUMPJ
-	Pp2YEm/0gAT14IR7NZVgNaktfdKJBWEkntGBjJhEnHKggejo6EC+o5UBkiCUlKjJefmbCCPLePSZp
-	CwgOEzJjnRT83SHMXCLNOCwOMWwtKFD/liGJH8b6Pe8pBmdGeJFa4nzoeA+F3EuTAi0e4XVmBXns+
-	Dsjh8Vvw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=20JKkQTh6PDyB6dyz4N7l1jEkW6uCO5xrk0ogsoboMY=; b=20AsH2/JH07uwkRmsrjaW2+n/v
+	+TSe9mEuKdGXzCvKFYyCNv6Cq6CZeVOQK1AN+uOidXj7xsn8dcLjmVEozP+EMuzxdr/uZWdQZeubw
+	PE6RL65rFgI/E0Zfe2bcfgfL4UajjbQZKGj6A+fSwy6LiGNvDxAbD2lTRW2ysuWnY6otSbi/UON9G
+	GQcckmLNBu0fen4wrIYE9B0+gIB9VI3VBd1B1IIG+OCpBOWVmNuYJw7dSxW3fjNKrGThu3HdizwHo
+	WVMu6CLndF/4wWAviUhKTEpkT5zC6tg7jFl66CERghr9FtYfqzCHXkGAm3+rkoXVq4vr3OvA09hCW
+	ZbLYP7xg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tZm7L-00000004ucn-3XuC;
-	Mon, 20 Jan 2025 07:22:39 +0000
+	id 1tZrsW-00000005ftV-48uK;
+	Mon, 20 Jan 2025 13:31:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tZm4k-00000004uAu-3N77
+	id 1tZrpP-00000005fQ4-22yR
 	for barebox@lists.infradead.org;
-	Mon, 20 Jan 2025 07:20:00 +0000
+	Mon, 20 Jan 2025 13:28:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tZm4i-0004hv-1m; Mon, 20 Jan 2025 08:19:56 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tZrpO-0000On-AG; Mon, 20 Jan 2025 14:28:30 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tZm4g-000tbr-0A;
-	Mon, 20 Jan 2025 08:19:54 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tZm4f-003mEL-36;
-	Mon, 20 Jan 2025 08:19:53 +0100
-Date: Mon, 20 Jan 2025 08:19:53 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tZrpO-000wVD-0Q;
+	Mon, 20 Jan 2025 14:28:30 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tZrpO-00HWTb-03;
+	Mon, 20 Jan 2025 14:28:30 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Felix Singer <felixsinger@posteo.net>
-Message-ID: <Z435GYDuBypAQrZx@pengutronix.de>
-References: <20250112083432.320215-1-a.fatoum@pengutronix.de>
- <20250112083432.320215-11-a.fatoum@pengutronix.de>
- <Z4oVpYra9gKbDoGM@pengutronix.de>
- <b5506841-68f9-496b-9b59-8c9d5fbe0d77@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 20 Jan 2025 14:28:29 +0100
+Message-Id: <20250120132829.4176408-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5506841-68f9-496b-9b59-8c9d5fbe0d77@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250119_231958_869106_47409A7B 
-X-CRM114-Status: GOOD (  23.01  )
+X-CRM114-CacheID: sfid-20250120_052831_525631_2D763845 
+X-CRM114-Status: GOOD (  10.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,48 +80,34 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 10/13] images: add barebox FIT image target
+Subject: [PATCH] usb: gadget: dfu: detect devices when necessary
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Jan 17, 2025 at 10:03:20AM +0100, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 17.01.25 09:32, Sascha Hauer wrote:
-> > Hi Ahmad,
-> > 
-> > On Sun, Jan 12, 2025 at 09:34:29AM +0100, Ahmad Fatoum wrote:
-> >> +MAKE_FIT := $(srctree)/scripts/make_fit.py
-> >> +
-> >> +# Use this to override the compression algorithm of the DTBs
-> >> +FIT_COMPRESSION ?= none
-> >> +
-> >> +quiet_cmd_fit = FIT     $@
-> >> +      cmd_fit = $(MAKE_FIT) -o $@ --arch $(CONFIG_ARCH_MKIMAGE_NAME) --os linux \
-> >> +		--name 'barebox-$(KERNELRELEASE)' \
-> >> +		$(if $(findstring 1,$(KBUILD_VERBOSE)),-v) \
-> >> +		$(if $(FIT_DECOMPOSE_DTBS),--decompose-dtbs) \
-> >> +		--dtb-compress $(FIT_COMPRESSION) -k $< @$(word 2,$^)
-> > 
-> > I had to drop this and the following patches from this series.
-> > 
-> > barebox already has a cmd_fit which you are overwriting with this patch.
-> > The existing FIT target is used for the beagleplay board to build an
-> > image to be started from U-Boot. I suspect we can just replace existing
-> > FIT target with your version.
-> 
-> I renamed it to cmd_itb in this patch that you picked:
-> https://lore.kernel.org/all/20250106091935.3435710-1-a.fatoum@pengutronix.de/
+the DFU file list might refer to devices which are not yet detected.
+Call detect on the devices on the list to make sure they are present
+when DFU is started.
 
-I see. This patch was not on the branch I currently tested. I applied
-10-13 on master now and it compiles fine.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/gadget/function/dfu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Sascha
-
+diff --git a/drivers/usb/gadget/function/dfu.c b/drivers/usb/gadget/function/dfu.c
+index 44a6ec1aa6..893dcc7f70 100644
+--- a/drivers/usb/gadget/function/dfu.c
++++ b/drivers/usb/gadget/function/dfu.c
+@@ -372,6 +372,8 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
+ 		dfu_files = opts->files;
+ 	}
+ 
++	file_list_detect_all(dfu_files);
++
+ 	n_entries = list_count_nodes(&dfu_files->list);
+ 
+ 	dfu_string_defs = xzalloc(sizeof(struct usb_string) * (n_entries + 2));
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
