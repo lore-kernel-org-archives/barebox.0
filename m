@@ -1,68 +1,70 @@
-Delivery-date: Tue, 21 Jan 2025 09:22:46 +0100
+Delivery-date: Tue, 21 Jan 2025 09:28:01 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ta9X3-002ZrW-17
+	id 1ta9c9-002ZuP-0G
 	for lore@lore.pengutronix.de;
-	Tue, 21 Jan 2025 09:22:46 +0100
+	Tue, 21 Jan 2025 09:28:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ta9X3-00084v-Gd
-	for lore@pengutronix.de; Tue, 21 Jan 2025 09:22:45 +0100
+	id 1ta9c9-0000bT-5i
+	for lore@pengutronix.de; Tue, 21 Jan 2025 09:28:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=k5o5VbMIDzT2oX2xtm0B61c34ZzG0ifQjk6pp1xt9i8=; b=Zxx1c5TwKwsH6UQGhdLs9kfMb9
-	vTYj36ibX0Hb1jP6uhrWkPPArByUhEYXCAX3egeI/n0/ca5GDXs8r3Ea1g0moL0nc34gG7OgiWTEK
-	MlDCw6xcMUYTFJ3+0Aeb62IoetueN5n8WfN3t7gTeWuq8MFOBNnaBF+M3bD9HNTcs7x/1kQuQ1DBn
-	YJb84yGWuidrTmDUaf3Bj4myDk+pcbSBTFVS3NntNVsepVvS+oxoHnZ6N4XLsdn+UL1PQS2IQf5LI
-	LexnpKVKUg+e3J/MmL1JHzUrfaJwyCVXdzouTYPTuWQjjv70xEtKtcPLnE6+vtKEsI9WNbP9D2PqY
-	DEwxtKzw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=E6hLtui1kfzSra0z7b6Rai2S6uIdNRv9tka8oVNy7Gs=; b=AYdfr65CXllXnc4RfahnuWQaPm
+	X5dowXhI4r3Sl0v5dJ4G+wsx2ldOeZQw3aS22xwjCWbg/1ZkLkspXL/wL8M8AifRcuzwomqMWoawo
+	j/hx3Hz6HrB3RTUDjzJm8cFbaxpfhuIpvhleZvHcTCqwlc/QDW6jt7fj72948dQ9c27iq8Q1uJ5L0
+	8RgsoosPBmf/QzMUCpeBwNki3mgc6bqpPsLgHRWiDgaxAGKAlxoHakYnYg5a+gqg+y4eXUj+eDPZm
+	4ksfGeimyJ9mxPIU15buokF1jddaV3KIGsap8gLrS9eWYtKtYg66irWxkp0fNkDyFAdjJGHjegMYw
+	7RMrT6qA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1ta9Wg-00000007Fbb-1cIN;
-	Tue, 21 Jan 2025 08:22:22 +0000
+	id 1ta9bk-00000007G7S-2Ijk;
+	Tue, 21 Jan 2025 08:27:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1ta9Wd-00000007FbE-3e16
+	id 1ta9bh-00000007G6M-2NDb
 	for barebox@lists.infradead.org;
-	Tue, 21 Jan 2025 08:22:21 +0000
+	Tue, 21 Jan 2025 08:27:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ta9Wc-0007w8-HH; Tue, 21 Jan 2025 09:22:18 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1ta9bg-0000TA-B4; Tue, 21 Jan 2025 09:27:32 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ta9Wc-0014lH-18;
-	Tue, 21 Jan 2025 09:22:18 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ta9Wc-0013eU-0v;
-	Tue, 21 Jan 2025 09:22:18 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1ta9bg-0014m2-0T;
+	Tue, 21 Jan 2025 09:27:32 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ta9bg-005pB3-0B;
+	Tue, 21 Jan 2025 09:27:32 +0100
+Date: Tue, 21 Jan 2025 09:27:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250116141148.301230-1-a.fatoum@pengutronix.de>
-References: <20250116141148.301230-1-a.fatoum@pengutronix.de>
-Message-Id: <173744773828.252265.8162965528675452631.b4-ty@pengutronix.de>
-Date: Tue, 21 Jan 2025 09:22:18 +0100
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <Z49adH9-d8oiHrRK@pengutronix.de>
+References: <20250116170154.104253-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250116170154.104253-1-eagle.alexander923@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250121_002219_937576_71331A5C 
-X-CRM114-Status: UNSURE (   6.93  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250121_002733_605685_CA2328A1 
+X-CRM114-Status: GOOD (  25.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,32 +86,72 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/2] dma: fix fixup warning for SoCs without
- /soc node
+Subject: Re: [PATCH 1/3] aiodev: rockchip_saradc: Add reset control support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi Alexander,
 
-On Thu, 16 Jan 2025 15:11:47 +0100, Ahmad Fatoum wrote:
-> For SoCs without a /soc node, any DMA coherency fixups happen at the
-> device tree root. The root's full name is an empty string in barebox, so
-> this expectedly fails.
+On Thu, Jan 16, 2025 at 08:01:52PM +0300, Alexander Shiyan wrote:
+> This adds reset control support for the Rockchip ADC driver.
 > 
-> Handle this case specially.
+> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> ---
+>  drivers/aiodev/rockchip_saradc.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 > 
-> 
-> [...]
+> diff --git a/drivers/aiodev/rockchip_saradc.c b/drivers/aiodev/rockchip_saradc.c
+> index 3c5c0e94da..b31804fc39 100644
+> --- a/drivers/aiodev/rockchip_saradc.c
+> +++ b/drivers/aiodev/rockchip_saradc.c
+> @@ -8,8 +8,9 @@
+>  
+>  #include <common.h>
+>  #include <aiodev.h>
+> -#include <linux/clk.h>
+>  #include <regulator.h>
+> +#include <linux/clk.h>
+> +#include <linux/reset.h>
+>  
+>  #define SARADC_DATA	       0x00
+>  
+> @@ -37,6 +38,7 @@ struct rockchip_saradc_data {
+>  	struct clk *pclk;
+>  	struct aiodevice aiodev;
+>  	struct aiochannel *channels;
+> +	struct reset_control *reset;
+>  };
+>  
+>  static inline void rockchip_saradc_reg_wr(struct rockchip_saradc_data *data,
+> @@ -51,6 +53,13 @@ static inline u32 rockchip_saradc_reg_rd(struct rockchip_saradc_data *data,
+>  	return readl(data->base + reg);
+>  }
+>  
+> +static void rockchip_saradc_reset_controller(struct reset_control *reset)
+> +{
+> +	reset_control_assert(reset);
+> +	udelay(20);
+> +	reset_control_deassert(reset);
+> +}
+> +
+>  static int rockchip_saradc_read(struct aiochannel *chan, int *val)
+>  {
+>  	struct rockchip_saradc_data *data;
+> @@ -163,14 +172,20 @@ static int rockchip_saradc_probe(struct device *dev)
+>  
+>  	rockchip_saradc_reg_wr(data, 0, SARADC_CTRL);
+>  
+> +	data->reset = reset_control_get(dev, "saradc-apb");
 
-Applied, thanks!
+reset_control_get() might return an error pointer. You need to check
+that before passing it to reset_control_assert().
 
-[1/2] dma: fix fixup warning for SoCs without /soc node
-      https://git.pengutronix.de/cgit/barebox/commit/?id=599fac02a837 (link may not be stable)
-[2/2] kbuild: remove stale references to README
-      https://git.pengutronix.de/cgit/barebox/commit/?id=da7191a3fd74 (link may not be stable)
+Sascha
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
