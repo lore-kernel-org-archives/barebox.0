@@ -1,88 +1,91 @@
-Delivery-date: Tue, 21 Jan 2025 13:01:09 +0100
+Delivery-date: Tue, 21 Jan 2025 13:18:48 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1taCwP-002dU8-09
+	id 1taDDU-002dwN-0d
 	for lore@lore.pengutronix.de;
-	Tue, 21 Jan 2025 13:01:09 +0100
+	Tue, 21 Jan 2025 13:18:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1taCwN-0001iW-Gu
-	for lore@pengutronix.de; Tue, 21 Jan 2025 13:01:09 +0100
+	id 1taDDU-0005Ys-78
+	for lore@pengutronix.de; Tue, 21 Jan 2025 13:18:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=6aY5//Fa3kXwIVRhJJjIJmB9EqPHewfvM8EewZ+TGbA=; b=M0GUuttbJgQYTL/1QhroRFjX/l
-	w8oxvZ7+/J2bC0TYeJI3Pobz3iH7a7l2sBFyvZYtFH21wtK0ggUIvoZvELSOE279iJab2hPkI21LO
-	dr9GnEGQWE700OCx2HR3ZMkZHY0JOZXzobkNlH0av+d4M1nVqTNpdm21giSb2Qfx0WHrxN6psR5qy
-	Vm71uEsx8DMBBpl07V8eN0S3QALTvlt+IpxGEDR392M9o+u6TB5ufY64kJ0yueC6Ep8EfMLH90Ce8
-	GLSwcPvBLmYTGmHCEePjI3il4hl/eGFjdsaCGjuPoH/GkooeVPRurj3yvZtLDXiiTJF4vMcrTbvzd
-	7i1r/zLg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3kZu9h1ZTMnmFWSiBxFI41RmF5KaE42prOuPtdI6Cwc=; b=YonmOxh2KxIN9lUcEXOWtrsff7
+	bcexcLlq20joGtiSWh1pg5e5T/emz76zLm1e67zZuDFMvUPuEYmFD6yQ3rBqMjC6OAlTNFMvieXbV
+	OdbWhnFiU7a0ZGQz9vb7dXhP1yaux+sstczC2ofjG7k4Zzx+saL9/2l6U40WnIUUtfboRRfZMmAFF
+	hp+PVX4C6jBvg4dRfrk70tUGmKa08EQFANk0ZGU8dghXnoYpIVPUPOdIWFx33PysQyzPsg/UQZDIa
+	moYszWF0h8CU3IN3RM6CcRBWMhmwaQWqDvfcb/u6uvY8gZ5pwjbh/6+JuDyAxeedJ72gbq4na3pt+
+	E4RtQsRQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1taCvY-00000007oHk-38fg;
-	Tue, 21 Jan 2025 12:00:16 +0000
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+	id 1taDD4-00000007qQA-1J0G;
+	Tue, 21 Jan 2025 12:18:22 +0000
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1taCvW-00000007oHN-0JAN
+	id 1taDD1-00000007qPK-1vto
 	for barebox@lists.infradead.org;
-	Tue, 21 Jan 2025 12:00:15 +0000
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-303548a9361so44606111fa.0
-        for <barebox@lists.infradead.org>; Tue, 21 Jan 2025 04:00:13 -0800 (PST)
+	Tue, 21 Jan 2025 12:18:20 +0000
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-53e3c47434eso5641605e87.3
+        for <barebox@lists.infradead.org>; Tue, 21 Jan 2025 04:18:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737460811; x=1738065611; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6aY5//Fa3kXwIVRhJJjIJmB9EqPHewfvM8EewZ+TGbA=;
-        b=IBxTREivoIm20FqsBYJwY4uAXJMOBuzPknDG2ogWcLeqOCRadPztnqrKxSUyziwYQq
-         R5MP3atFXJWNUxHBaxwwAziXfM01ufa09fyLla8SD1N5GW9iVghUyYxxWOwe+nDprUTr
-         PCS13Pbx9QyK4Z3VuB7L7NlZQJlwpJLN+vl8z4ilDDUEmkldVcPvZwfnbo/zfb6TNpKj
-         H38EjdmjVQpiychb8URRPAAL/dfEcxtAyCV4QE5H9qwKqFak30oaPr1VSarbp6Ulpqca
-         VkDwyMu9Q7hvWC4qV5L5BlOj7Za8p6WVfZIYbatMJm+L/7vZYt3aAoD/DMBWql2cJLEV
-         mzew==
+        d=gmail.com; s=20230601; t=1737461897; x=1738066697; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3kZu9h1ZTMnmFWSiBxFI41RmF5KaE42prOuPtdI6Cwc=;
+        b=H3kOsEjkXszywbQLZ7xCYopNupBrFVqdrPiw/xMtgzadRFAvlnT1hXDqF2Lpe0zNrA
+         IWXzfieUb3wUA+ms0DDI0UPDHtHua1B4dJPiB9K2VdJTR6zqc3mPxi/HO5Ujl9l5V6FO
+         82L5JrOOCD96giqyk57rbLKk7GcfQmfeg6HDaki41wIqe1AhC605hiv5bXoQh3IRFICM
+         i4qfsZn3i3/y7jXZgjwK7l8+zYC0C2pWX9wj2zdRXeq8bFkf934tM8Wj8BZlJLwRsl3h
+         5ixfzXGWo1/wDMR2nl0XK45s6nBq/++38uaVn1+nQ/+cVRsYQVGXzIA7cTBakNiL8i0x
+         OHkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737460811; x=1738065611;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6aY5//Fa3kXwIVRhJJjIJmB9EqPHewfvM8EewZ+TGbA=;
-        b=QNPamqAp10pSh9Jc1l57SUKpfuvwrYo5RXmO2pPuxX2eWkuRHBCp213E8/h2NGq19L
-         cmviEE+3Yo1dt4Aum4y5dEGhOMdAJ48HkpK7aRZEFV5LZ7J206/Qe/Xw3KEzAfKcc3ZA
-         2OhYRJA3T9dd9DuwGVTBeMNsI4OnB5Er9sV1Akc0ZH4NLJsyq5taR/3qSuL3RF7KLk/l
-         PlAweRkzQPOUGaQhYudtA6cG9qTtLyfYsD3BIHscui69cexcNGwINkqrpxLc7Rm8KbhI
-         MHVejdptooU6QxllC7lAxuYyxnaOjLFoT4pnkS7fJ77aph7ZgOLAI/rDXTNxNNorGNpy
-         HT+A==
-X-Gm-Message-State: AOJu0YwXuvHkxhXfDYOEnQYll89hLWFu5Ky7ij6NMOATG+FQle082wCQ
-	JuEqIRKDeagb3nJDoWWOEby9LN9e7C6ug72zH5TFp+1YFfcMNcRX1XKbJg==
-X-Gm-Gg: ASbGncuskNFLnqCXEnk6XD8qTwXjvcMZtl4ck1ZPmChDCLDIX4cKFtHRKf0D8r5qZZ2
-	2XfQxFURnoyrPZhiwyHImq0B7pO8BhNPd9HOOXs8uDmD8W1V8oQ+EtQGlyO8vS3pL4QaCp8758m
-	goXYUhCrmvyhtztVzlgYDp8Fe8mVyIHXqHcq9Nv5i2YBwoxZ6Q4YssNWFY4b3bTRy5Xj9YJiphN
-	DtFjAEQ27tUMv1KywxSzj+4suVra3r45eP+QztUg0NMrQoMQcKdZelXxAJt0YJFbYPJIC4CjvCb
-	Gy6w9W+JeL3vETLT/Ks=
-X-Google-Smtp-Source: AGHT+IFTl9U/8uDniuzyomvRnk+8GjvXjVHQxGc1tJ164rwI3xISaBwZqRQrF95D1p8ZF+j0F2Mirw==
-X-Received: by 2002:a05:651c:508:b0:304:4e03:f9d9 with SMTP id 38308e7fff4ca-3072cb137e2mr69439231fa.28.1737460810620;
-        Tue, 21 Jan 2025 04:00:10 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737461897; x=1738066697;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3kZu9h1ZTMnmFWSiBxFI41RmF5KaE42prOuPtdI6Cwc=;
+        b=pRkDD/1AR7aLsd/JFjq4RtvEhbtBFe3AnuYKFyWRFwAxUyFxpxWSAS3Wnl9+wYQvGv
+         kKx5fj5xwnEThbplGMe7dTDj90JK8x8hXyd6RtqUGGqFTwbMzi3YLTAiNpPUH/SCwo5W
+         eHB/1tG0/XjdrWzNWzCIKM7FTsuY+8ok/foNNN7u5n/bSpKnMGdz5F1T57tHCUcUabUN
+         ki+Jc5EFCLAFqSxct8HiJMAsDZTGEgBGn6h30aZ6iuECOoLI824vvIrjYPz/X7myFvuL
+         e22Vk/4qBWEp4maxW8HWqM7lHWMVoSftCP6+LlOK+XDcqeX7qchoN2GPdxVwC/gJCQNV
+         e0xg==
+X-Gm-Message-State: AOJu0YxBXyZlwexRGMgz99RKGhc0UUNczFOfa+0iCeXmyHLclYXLXphH
+	KuylijUegVyD8cuLVJrmRsMuomzGv8huZ38PvJBjRb1uh9CTKzo3udv5/Q==
+X-Gm-Gg: ASbGncuYlxlfMQTNz35BZeEM2lECsW3AFjaibVzrzB7P36+boDeYjabBeDIfcX9psCz
+	wflAcn08IHVhfmwLlLKV1hZInHeugOcv/it+Td2Z6+nQ4v60F0hZHnvBKLPMEtJx5MeGamhULw1
+	dPk3p3l28Vmw4AdD6a/LSsY7K8JaiEe2Scy3fw+0jt56PpgKaLipA+MkMQ/BBd0hOqr/3T0WFEb
+	fbotVmC+53lTRrTiHIn3qr+9NZ5EOD+22sL11UECDHFmYedzpsznhdVqXCqvH81lH1HARJJnD+t
+	TRukWda2oYTncjD2m9c=
+X-Google-Smtp-Source: AGHT+IFVC2Dj7NnLuLqaTmDzPiPYCzzp4kWcPE3Sj04am2KHL1qwhqawWwKlrgG/EtZP9eIeaoTFGQ==
+X-Received: by 2002:ac2:490a:0:b0:540:25a6:c342 with SMTP id 2adb3069b0e04-5439c216c3emr4949016e87.4.1737461896868;
+        Tue, 21 Jan 2025 04:18:16 -0800 (PST)
 Received: from localhost.localdomain ([95.161.223.172])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3072a330180sm20893601fa.23.2025.01.21.04.00.06
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5439af074b1sm1815419e87.16.2025.01.21.04.18.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 04:00:08 -0800 (PST)
+        Tue, 21 Jan 2025 04:18:14 -0800 (PST)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 21 Jan 2025 14:59:56 +0300
-Message-Id: <20250121115956.2803184-1-eagle.alexander923@gmail.com>
+Date: Tue, 21 Jan 2025 15:17:59 +0300
+Message-Id: <20250121121800.2806881-2-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.38.2
+In-Reply-To: <20250121121800.2806881-1-eagle.alexander923@gmail.com>
+References: <20250121121800.2806881-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250121_040014_149984_8A0376D2 
-X-CRM114-Status: GOOD (  19.70  )
+X-CRM114-CacheID: sfid-20250121_041819_498664_F8C35E62 
+X-CRM114-Status: GOOD (  12.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,1313 +108,78 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] phy: rockchip: add usbdp combo phy driver
+Subject: [PATCH v2 2/3] aiodev: rockchip_saradc: Prepare driver to add support for other SARADC variants
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds a new USBDP combo PHY with Samsung IP block driver.
-The driver has been taken from Kernel driver and adopted for using
-in barebox.
+Let's make separate hardware-dependent calls to allow adding
+different SARADC variants.
 
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/phy/rockchip/Kconfig              |    8 +
- drivers/phy/rockchip/Makefile             |    1 +
- drivers/phy/rockchip/phy-rockchip-usbdp.c | 1222 +++++++++++++++++++++
- include/linux/bitfield.h                  |   26 +
- 4 files changed, 1257 insertions(+)
- create mode 100644 drivers/phy/rockchip/phy-rockchip-usbdp.c
+ drivers/aiodev/rockchip_saradc.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/rockchip/Kconfig b/drivers/phy/rockchip/Kconfig
-index 8a10190f8e..013c738c6d 100644
---- a/drivers/phy/rockchip/Kconfig
-+++ b/drivers/phy/rockchip/Kconfig
-@@ -18,3 +18,11 @@ config PHY_ROCKCHIP_SNPS_PCIE3
- 	depends on ARCH_ROCKCHIP || COMPILE_TEST
- 	help
- 	  Enable this to support the Rockchip snps PCIe3 PHY.
-+
-+config PHY_ROCKCHIP_USBDP
-+	bool "Rockchip USBDP COMBO PHY Driver"
-+	depends on ARCH_ROCKCHIP
-+	select TYPEC
-+	help
-+	  Enable this to support the Rockchip USB3.0/DP combo PHY with
-+	  Samsung IP block. This is required for USB3 support on RK3588.
-diff --git a/drivers/phy/rockchip/Makefile b/drivers/phy/rockchip/Makefile
-index 1eaee4cbee..96775a9930 100644
---- a/drivers/phy/rockchip/Makefile
-+++ b/drivers/phy/rockchip/Makefile
-@@ -2,3 +2,4 @@
- obj-$(CONFIG_PHY_ROCKCHIP_INNO_USB2) += phy-rockchip-inno-usb2.o
- obj-$(CONFIG_PHY_ROCKCHIP_NANENG_COMBO_PHY) += phy-rockchip-naneng-combphy.o
- obj-$(CONFIG_PHY_ROCKCHIP_SNPS_PCIE3) += phy-rockchip-snps-pcie3.o
-+obj-$(CONFIG_PHY_ROCKCHIP_USBDP) += phy-rockchip-usbdp.o
-diff --git a/drivers/phy/rockchip/phy-rockchip-usbdp.c b/drivers/phy/rockchip/phy-rockchip-usbdp.c
-new file mode 100644
-index 0000000000..9b08e60bbf
---- /dev/null
-+++ b/drivers/phy/rockchip/phy-rockchip-usbdp.c
-@@ -0,0 +1,1222 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Rockchip USBDP Combo PHY with Samsung IP block driver
-+ *
-+ * Copyright (C) 2021-2024 Rockchip Electronics Co., Ltd
-+ * Copyright (C) 2024 Collabora Ltd
-+ */
-+
-+#include <common.h>
-+#include <dt-bindings/phy/phy.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/clk.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/phy/phy.h>
-+#include <linux/regmap.h>
-+#include <linux/reset.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/usb.h>
-+#include <mfd/syscon.h>
-+
-+/* USBDP PHY Register Definitions */
-+#define UDPHY_PCS				0x4000
-+#define UDPHY_PMA				0x8000
-+
-+/* VO0 GRF Registers */
-+#define DP_SINK_HPD_CFG				BIT(11)
-+#define DP_SINK_HPD_SEL				BIT(10)
-+#define DP_AUX_DIN_SEL				BIT(9)
-+#define DP_AUX_DOUT_SEL				BIT(8)
-+#define DP_LANE_SEL_N(n)			GENMASK(2 * (n) + 1, 2 * (n))
-+#define DP_LANE_SEL_ALL				GENMASK(7, 0)
-+
-+/* PMA CMN Registers */
-+#define CMN_LANE_MUX_AND_EN_OFFSET		0x0288	/* cmn_reg00A2 */
-+#define CMN_DP_LANE_MUX_N(n)			BIT((n) + 4)
-+#define CMN_DP_LANE_EN_N(n)			BIT(n)
-+#define CMN_DP_LANE_MUX_ALL			GENMASK(7, 4)
-+#define CMN_DP_LANE_EN_ALL			GENMASK(3, 0)
-+
-+#define CMN_DP_LINK_OFFSET			0x28c	/* cmn_reg00A3 */
-+#define CMN_DP_TX_LINK_BW			GENMASK(6, 5)
-+#define CMN_DP_TX_LANE_SWAP_EN			BIT(2)
-+
-+#define CMN_SSC_EN_OFFSET			0x2d0	/* cmn_reg00B4 */
-+#define CMN_ROPLL_SSC_EN			BIT(1)
-+#define CMN_LCPLL_SSC_EN			BIT(0)
-+
-+#define CMN_ANA_LCPLL_DONE_OFFSET		0x0350	/* cmn_reg00D4 */
-+#define CMN_ANA_LCPLL_LOCK_DONE			BIT(7)
-+#define CMN_ANA_LCPLL_AFC_DONE			BIT(6)
-+
-+#define CMN_ANA_ROPLL_DONE_OFFSET		0x0354	/* cmn_reg00D5 */
-+#define CMN_ANA_ROPLL_LOCK_DONE			BIT(1)
-+#define CMN_ANA_ROPLL_AFC_DONE			BIT(0)
-+
-+#define CMN_DP_RSTN_OFFSET			0x038c	/* cmn_reg00E3 */
-+#define CMN_DP_INIT_RSTN			BIT(3)
-+#define CMN_DP_CMN_RSTN				BIT(2)
-+#define CMN_CDR_WTCHDG_EN			BIT(1)
-+#define CMN_CDR_WTCHDG_MSK_CDR_EN		BIT(0)
-+
-+#define TRSV_ANA_TX_CLK_OFFSET_N(n)		(0x854 + (n) * 0x800)	/* trsv_reg0215 */
-+#define LN_ANA_TX_SER_TXCLK_INV			BIT(1)
-+
-+#define TRSV_LN0_MON_RX_CDR_DONE_OFFSET		0x0b84	/* trsv_reg02E1 */
-+#define TRSV_LN0_MON_RX_CDR_LOCK_DONE		BIT(0)
-+
-+#define TRSV_LN2_MON_RX_CDR_DONE_OFFSET		0x1b84	/* trsv_reg06E1 */
-+#define TRSV_LN2_MON_RX_CDR_LOCK_DONE		BIT(0)
-+
-+#define BIT_WRITEABLE_SHIFT			16
-+#define PHY_AUX_DP_DATA_POL_NORMAL		0
-+#define PHY_AUX_DP_DATA_POL_INVERT		1
-+#define PHY_LANE_MUX_USB			0
-+#define PHY_LANE_MUX_DP				1
-+
-+enum {
-+	DP_BW_RBR,
-+	DP_BW_HBR,
-+	DP_BW_HBR2,
-+	DP_BW_HBR3,
-+};
-+
-+enum {
-+	UDPHY_MODE_NONE		= 0,
-+	UDPHY_MODE_USB		= BIT(0),
-+	UDPHY_MODE_DP		= BIT(1),
-+	UDPHY_MODE_DP_USB	= BIT(1) | BIT(0),
-+};
-+
-+struct rk_udphy_grf_reg {
-+	unsigned int	offset;
-+	unsigned int	disable;
-+	unsigned int	enable;
-+};
-+
-+#define _RK_UDPHY_GEN_GRF_REG(offset, mask, disable, enable) \
-+{\
-+	offset, \
-+	FIELD_PREP_CONST(mask, disable) | (mask << BIT_WRITEABLE_SHIFT), \
-+	FIELD_PREP_CONST(mask, enable) | (mask << BIT_WRITEABLE_SHIFT), \
-+}
-+
-+#define RK_UDPHY_GEN_GRF_REG(offset, bitend, bitstart, disable, enable) \
-+	_RK_UDPHY_GEN_GRF_REG(offset, GENMASK(bitend, bitstart), disable, enable)
-+
-+struct rk_udphy_grf_cfg {
-+	/* u2phy-grf */
-+	struct rk_udphy_grf_reg	bvalid_phy_con;
-+	struct rk_udphy_grf_reg	bvalid_grf_con;
-+
-+	/* usb-grf */
-+	struct rk_udphy_grf_reg	usb3otg0_cfg;
-+	struct rk_udphy_grf_reg	usb3otg1_cfg;
-+
-+	/* usbdpphy-grf */
-+	struct rk_udphy_grf_reg	low_pwrn;
-+	struct rk_udphy_grf_reg	rx_lfps;
-+};
-+
-+struct rk_udphy_vogrf_cfg {
-+	/* vo-grf */
-+	struct rk_udphy_grf_reg hpd_trigger;
-+	u32 dp_lane_reg;
-+};
-+
-+struct rk_udphy_dp_tx_drv_ctrl {
-+	u32 trsv_reg0204;
-+	u32 trsv_reg0205;
-+	u32 trsv_reg0206;
-+	u32 trsv_reg0207;
-+};
-+
-+struct rk_udphy_cfg {
-+	unsigned int num_phys;
-+	unsigned int phy_ids[2];
-+	/* resets to be requested */
-+	const char * const *rst_list;
-+	int num_rsts;
-+
-+	struct rk_udphy_grf_cfg grfcfg;
-+	struct rk_udphy_vogrf_cfg vogrfcfg[2];
-+	const struct rk_udphy_dp_tx_drv_ctrl (*dp_tx_ctrl_cfg[4])[4];
-+	const struct rk_udphy_dp_tx_drv_ctrl (*dp_tx_ctrl_cfg_typec[4])[4];
-+};
-+
-+struct rk_udphy {
-+	struct device *dev;
-+	struct regmap *pma_regmap;
-+	struct regmap *u2phygrf;
-+	struct regmap *udphygrf;
-+	struct regmap *usbgrf;
-+	struct regmap *vogrf;
-+	struct typec_switch_dev *sw;
-+	struct typec_mux_dev *mux;
-+
-+	/* clocks and rests */
-+	int num_clks;
-+	struct clk_bulk_data *clks;
-+	struct clk *refclk;
-+	int num_rsts;
-+	struct reset_control_bulk_data *rsts;
-+
-+	/* PHY status management */
-+	bool flip;
-+	bool mode_change;
-+	u8 mode;
-+	u8 status;
-+
-+	/* utilized for USB */
-+	bool hs; /* flag for high-speed */
-+
-+	/* utilized for DP */
-+	struct gpio_desc *sbu1_dc_gpio;
-+	struct gpio_desc *sbu2_dc_gpio;
-+	u32 lane_mux_sel[4];
-+	u32 dp_lane_sel[4];
-+	u32 dp_aux_dout_sel;
-+	u32 dp_aux_din_sel;
-+	bool dp_sink_hpd_sel;
-+	bool dp_sink_hpd_cfg;
-+	u8 bw;
-+	int id;
-+
-+	bool dp_in_use;
-+
-+	/* PHY const config */
-+	const struct rk_udphy_cfg *cfgs;
-+
-+	/* PHY devices */
-+	struct phy *phy_dp;
-+	struct phy *phy_u3;
-+};
-+
-+static const struct rk_udphy_dp_tx_drv_ctrl rk3588_dp_tx_drv_ctrl_rbr_hbr[4][4] = {
-+	/* voltage swing 0, pre-emphasis 0->3 */
-+	{
-+		{ 0x20, 0x10, 0x42, 0xe5 },
-+		{ 0x26, 0x14, 0x42, 0xe5 },
-+		{ 0x29, 0x18, 0x42, 0xe5 },
-+		{ 0x2b, 0x1c, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 1, pre-emphasis 0->2 */
-+	{
-+		{ 0x23, 0x10, 0x42, 0xe7 },
-+		{ 0x2a, 0x17, 0x43, 0xe7 },
-+		{ 0x2b, 0x1a, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 2, pre-emphasis 0->1 */
-+	{
-+		{ 0x27, 0x10, 0x42, 0xe7 },
-+		{ 0x2b, 0x17, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 3, pre-emphasis 0 */
-+	{
-+		{ 0x29, 0x10, 0x43, 0xe7 },
-+	},
-+};
-+
-+static const struct rk_udphy_dp_tx_drv_ctrl rk3588_dp_tx_drv_ctrl_rbr_hbr_typec[4][4] = {
-+	/* voltage swing 0, pre-emphasis 0->3 */
-+	{
-+		{ 0x20, 0x10, 0x42, 0xe5 },
-+		{ 0x26, 0x14, 0x42, 0xe5 },
-+		{ 0x29, 0x18, 0x42, 0xe5 },
-+		{ 0x2b, 0x1c, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 1, pre-emphasis 0->2 */
-+	{
-+		{ 0x23, 0x10, 0x42, 0xe7 },
-+		{ 0x2a, 0x17, 0x43, 0xe7 },
-+		{ 0x2b, 0x1a, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 2, pre-emphasis 0->1 */
-+	{
-+		{ 0x27, 0x10, 0x43, 0x67 },
-+		{ 0x2b, 0x17, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 3, pre-emphasis 0 */
-+	{
-+		{ 0x29, 0x10, 0x43, 0xe7 },
-+	},
-+};
-+
-+static const struct rk_udphy_dp_tx_drv_ctrl rk3588_dp_tx_drv_ctrl_hbr2[4][4] = {
-+	/* voltage swing 0, pre-emphasis 0->3 */
-+	{
-+		{ 0x21, 0x10, 0x42, 0xe5 },
-+		{ 0x26, 0x14, 0x42, 0xe5 },
-+		{ 0x26, 0x16, 0x43, 0xe5 },
-+		{ 0x2a, 0x19, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 1, pre-emphasis 0->2 */
-+	{
-+		{ 0x24, 0x10, 0x42, 0xe7 },
-+		{ 0x2a, 0x17, 0x43, 0xe7 },
-+		{ 0x2b, 0x1a, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 2, pre-emphasis 0->1 */
-+	{
-+		{ 0x28, 0x10, 0x42, 0xe7 },
-+		{ 0x2b, 0x17, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 3, pre-emphasis 0 */
-+	{
-+		{ 0x28, 0x10, 0x43, 0xe7 },
-+	},
-+};
-+
-+static const struct rk_udphy_dp_tx_drv_ctrl rk3588_dp_tx_drv_ctrl_hbr3[4][4] = {
-+	/* voltage swing 0, pre-emphasis 0->3 */
-+	{
-+		{ 0x21, 0x10, 0x42, 0xe5 },
-+		{ 0x26, 0x14, 0x42, 0xe5 },
-+		{ 0x26, 0x16, 0x43, 0xe5 },
-+		{ 0x29, 0x18, 0x43, 0xe7 },
-+	},
-+
-+	/* voltage swing 1, pre-emphasis 0->2 */
-+	{
-+		{ 0x24, 0x10, 0x42, 0xe7 },
-+		{ 0x2a, 0x18, 0x43, 0xe7 },
-+		{ 0x2b, 0x1b, 0x43, 0xe7 }
-+	},
-+
-+	/* voltage swing 2, pre-emphasis 0->1 */
-+	{
-+		{ 0x27, 0x10, 0x42, 0xe7 },
-+		{ 0x2b, 0x18, 0x43, 0xe7 }
-+	},
-+
-+	/* voltage swing 3, pre-emphasis 0 */
-+	{
-+		{ 0x28, 0x10, 0x43, 0xe7 },
-+	},
-+};
-+
-+static const struct reg_sequence rk_udphy_24m_refclk_cfg[] = {
-+	{0x0090, 0x68}, {0x0094, 0x68},
-+	{0x0128, 0x24}, {0x012c, 0x44},
-+	{0x0130, 0x3f}, {0x0134, 0x44},
-+	{0x015c, 0xa9}, {0x0160, 0x71},
-+	{0x0164, 0x71}, {0x0168, 0xa9},
-+	{0x0174, 0xa9}, {0x0178, 0x71},
-+	{0x017c, 0x71}, {0x0180, 0xa9},
-+	{0x018c, 0x41}, {0x0190, 0x00},
-+	{0x0194, 0x05}, {0x01ac, 0x2a},
-+	{0x01b0, 0x17}, {0x01b4, 0x17},
-+	{0x01b8, 0x2a}, {0x01c8, 0x04},
-+	{0x01cc, 0x08}, {0x01d0, 0x08},
-+	{0x01d4, 0x04}, {0x01d8, 0x20},
-+	{0x01dc, 0x01}, {0x01e0, 0x09},
-+	{0x01e4, 0x03}, {0x01f0, 0x29},
-+	{0x01f4, 0x02}, {0x01f8, 0x02},
-+	{0x01fc, 0x29}, {0x0208, 0x2a},
-+	{0x020c, 0x17}, {0x0210, 0x17},
-+	{0x0214, 0x2a}, {0x0224, 0x20},
-+	{0x03f0, 0x0a}, {0x03f4, 0x07},
-+	{0x03f8, 0x07}, {0x03fc, 0x0c},
-+	{0x0404, 0x12}, {0x0408, 0x1a},
-+	{0x040c, 0x1a}, {0x0410, 0x3f},
-+	{0x0ce0, 0x68}, {0x0ce8, 0xd0},
-+	{0x0cf0, 0x87}, {0x0cf8, 0x70},
-+	{0x0d00, 0x70}, {0x0d08, 0xa9},
-+	{0x1ce0, 0x68}, {0x1ce8, 0xd0},
-+	{0x1cf0, 0x87}, {0x1cf8, 0x70},
-+	{0x1d00, 0x70}, {0x1d08, 0xa9},
-+	{0x0a3c, 0xd0}, {0x0a44, 0xd0},
-+	{0x0a48, 0x01}, {0x0a4c, 0x0d},
-+	{0x0a54, 0xe0}, {0x0a5c, 0xe0},
-+	{0x0a64, 0xa8}, {0x1a3c, 0xd0},
-+	{0x1a44, 0xd0}, {0x1a48, 0x01},
-+	{0x1a4c, 0x0d}, {0x1a54, 0xe0},
-+	{0x1a5c, 0xe0}, {0x1a64, 0xa8}
-+};
-+
-+static const struct reg_sequence rk_udphy_26m_refclk_cfg[] = {
-+	{0x0830, 0x07}, {0x085c, 0x80},
-+	{0x1030, 0x07}, {0x105c, 0x80},
-+	{0x1830, 0x07}, {0x185c, 0x80},
-+	{0x2030, 0x07}, {0x205c, 0x80},
-+	{0x0228, 0x38}, {0x0104, 0x44},
-+	{0x0248, 0x44}, {0x038c, 0x02},
-+	{0x0878, 0x04}, {0x1878, 0x04},
-+	{0x0898, 0x77}, {0x1898, 0x77},
-+	{0x0054, 0x01}, {0x00e0, 0x38},
-+	{0x0060, 0x24}, {0x0064, 0x77},
-+	{0x0070, 0x76}, {0x0234, 0xe8},
-+	{0x0af4, 0x15}, {0x1af4, 0x15},
-+	{0x081c, 0xe5}, {0x181c, 0xe5},
-+	{0x099c, 0x48}, {0x199c, 0x48},
-+	{0x09a4, 0x07}, {0x09a8, 0x22},
-+	{0x19a4, 0x07}, {0x19a8, 0x22},
-+	{0x09b8, 0x3e}, {0x19b8, 0x3e},
-+	{0x09e4, 0x02}, {0x19e4, 0x02},
-+	{0x0a34, 0x1e}, {0x1a34, 0x1e},
-+	{0x0a98, 0x2f}, {0x1a98, 0x2f},
-+	{0x0c30, 0x0e}, {0x0c48, 0x06},
-+	{0x1c30, 0x0e}, {0x1c48, 0x06},
-+	{0x028c, 0x18}, {0x0af0, 0x00},
-+	{0x1af0, 0x00}
-+};
-+
-+static const struct reg_sequence rk_udphy_init_sequence[] = {
-+	{0x0104, 0x44}, {0x0234, 0xe8},
-+	{0x0248, 0x44}, {0x028c, 0x18},
-+	{0x081c, 0xe5}, {0x0878, 0x00},
-+	{0x0994, 0x1c}, {0x0af0, 0x00},
-+	{0x181c, 0xe5}, {0x1878, 0x00},
-+	{0x1994, 0x1c}, {0x1af0, 0x00},
-+	{0x0428, 0x60}, {0x0d58, 0x33},
-+	{0x1d58, 0x33}, {0x0990, 0x74},
-+	{0x0d64, 0x17}, {0x08c8, 0x13},
-+	{0x1990, 0x74}, {0x1d64, 0x17},
-+	{0x18c8, 0x13}, {0x0d90, 0x40},
-+	{0x0da8, 0x40}, {0x0dc0, 0x40},
-+	{0x0dd8, 0x40}, {0x1d90, 0x40},
-+	{0x1da8, 0x40}, {0x1dc0, 0x40},
-+	{0x1dd8, 0x40}, {0x03c0, 0x30},
-+	{0x03c4, 0x06}, {0x0e10, 0x00},
-+	{0x1e10, 0x00}, {0x043c, 0x0f},
-+	{0x0d2c, 0xff}, {0x1d2c, 0xff},
-+	{0x0d34, 0x0f}, {0x1d34, 0x0f},
-+	{0x08fc, 0x2a}, {0x0914, 0x28},
-+	{0x0a30, 0x03}, {0x0e38, 0x03},
-+	{0x0ecc, 0x27}, {0x0ed0, 0x22},
-+	{0x0ed4, 0x26}, {0x18fc, 0x2a},
-+	{0x1914, 0x28}, {0x1a30, 0x03},
-+	{0x1e38, 0x03}, {0x1ecc, 0x27},
-+	{0x1ed0, 0x22}, {0x1ed4, 0x26},
-+	{0x0048, 0x0f}, {0x0060, 0x3c},
-+	{0x0064, 0xf7}, {0x006c, 0x20},
-+	{0x0070, 0x7d}, {0x0074, 0x68},
-+	{0x0af4, 0x1a}, {0x1af4, 0x1a},
-+	{0x0440, 0x3f}, {0x10d4, 0x08},
-+	{0x20d4, 0x08}, {0x00d4, 0x30},
-+	{0x0024, 0x6e},
-+};
-+
-+static inline int rk_udphy_grfreg_write(struct regmap *base,
-+					const struct rk_udphy_grf_reg *reg, bool en)
-+{
-+	return regmap_write(base, reg->offset, en ? reg->enable : reg->disable);
-+}
-+
-+static int rk_udphy_clk_init(struct rk_udphy *udphy, struct device *dev)
-+{
-+	int i;
-+
-+	udphy->num_clks = clk_bulk_get_all(dev, &udphy->clks);
-+	if (udphy->num_clks < 1)
-+		return -ENODEV;
-+
-+	/* used for configure phy reference clock frequency */
-+	for (i = 0; i < udphy->num_clks; i++) {
-+		if (!strncmp(udphy->clks[i].id, "refclk", 6)) {
-+			udphy->refclk = udphy->clks[i].clk;
-+			break;
-+		}
-+	}
-+
-+	if (!udphy->refclk)
-+		return dev_err_probe(udphy->dev, -EINVAL, "no refclk found\n");
-+
-+	return 0;
-+}
-+
-+static int rk_udphy_reset_assert_all(struct rk_udphy *udphy)
-+{
-+	struct reset_control_bulk_data *list = udphy->rsts;
-+	int ret, i;
-+
-+	for (i = 0; i < udphy->num_rsts; i++) {
-+		ret = reset_control_assert(list[i].rstc);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+static int rk_udphy_reset_deassert_all(struct rk_udphy *udphy)
-+{
-+	struct reset_control_bulk_data *list = udphy->rsts;
-+	int ret, i;
-+
-+	for (i = 0; i < udphy->num_rsts; i++) {
-+		ret = reset_control_deassert(list[i].rstc);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+static int rk_udphy_reset_deassert(struct rk_udphy *udphy, char *name)
-+{
-+	struct reset_control_bulk_data *list = udphy->rsts;
-+	int idx;
-+
-+	for (idx = 0; idx < udphy->num_rsts; idx++) {
-+		if (!strcmp(list[idx].id, name))
-+			return reset_control_deassert(list[idx].rstc);
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int rk_udphy_reset_init(struct rk_udphy *udphy, struct device *dev)
-+{
-+	const struct rk_udphy_cfg *cfg = udphy->cfgs;
-+	int idx;
-+
-+	udphy->num_rsts = cfg->num_rsts;
-+	udphy->rsts = kcalloc(udphy->num_rsts, sizeof(*udphy->rsts), GFP_KERNEL);
-+	if (!udphy->rsts)
-+		return -ENOMEM;
-+
-+	for (idx = 0; idx < cfg->num_rsts; idx++)
-+		udphy->rsts[idx].id = cfg->rst_list[idx];
-+
-+	return __reset_control_bulk_get(dev, cfg->num_rsts, udphy->rsts, false);
-+}
-+
-+static void rk_udphy_u3_port_disable(struct rk_udphy *udphy, u8 disable)
-+{
-+	const struct rk_udphy_cfg *cfg = udphy->cfgs;
-+	const struct rk_udphy_grf_reg *preg;
-+
-+	preg = udphy->id ? &cfg->grfcfg.usb3otg1_cfg : &cfg->grfcfg.usb3otg0_cfg;
-+	rk_udphy_grfreg_write(udphy->usbgrf, preg, disable);
-+}
-+
-+static void rk_udphy_dplane_select(struct rk_udphy *udphy)
-+{
-+	const struct rk_udphy_cfg *cfg = udphy->cfgs;
-+	u32 value = 0;
-+
-+	switch (udphy->mode) {
-+	case UDPHY_MODE_DP:
-+		value |= 2 << udphy->dp_lane_sel[2] * 2;
-+		value |= 3 << udphy->dp_lane_sel[3] * 2;
-+		fallthrough;
-+
-+	case UDPHY_MODE_DP_USB:
-+		value |= 0 << udphy->dp_lane_sel[0] * 2;
-+		value |= 1 << udphy->dp_lane_sel[1] * 2;
-+		break;
-+
-+	case UDPHY_MODE_USB:
-+		break;
-+
-+	default:
-+		break;
-+	}
-+
-+	regmap_write(udphy->vogrf, cfg->vogrfcfg[udphy->id].dp_lane_reg,
-+		     ((DP_AUX_DIN_SEL | DP_AUX_DOUT_SEL | DP_LANE_SEL_ALL) << 16) |
-+		     FIELD_PREP(DP_AUX_DIN_SEL, udphy->dp_aux_din_sel) |
-+		     FIELD_PREP(DP_AUX_DOUT_SEL, udphy->dp_aux_dout_sel) | value);
-+}
-+
-+static int rk_udphy_dplane_get(struct rk_udphy *udphy)
-+{
-+	int dp_lanes;
-+
-+	switch (udphy->mode) {
-+	case UDPHY_MODE_DP:
-+		dp_lanes = 4;
-+		break;
-+
-+	case UDPHY_MODE_DP_USB:
-+		dp_lanes = 2;
-+		break;
-+
-+	case UDPHY_MODE_USB:
-+	default:
-+		dp_lanes = 0;
-+		break;
-+	}
-+
-+	return dp_lanes;
-+}
-+
-+static void rk_udphy_dplane_enable(struct rk_udphy *udphy, int dp_lanes)
-+{
-+	u32 val = 0;
-+	int i;
-+
-+	for (i = 0; i < dp_lanes; i++)
-+		val |= BIT(udphy->dp_lane_sel[i]);
-+
-+	regmap_update_bits(udphy->pma_regmap, CMN_LANE_MUX_AND_EN_OFFSET, CMN_DP_LANE_EN_ALL,
-+			   FIELD_PREP(CMN_DP_LANE_EN_ALL, val));
-+
-+	if (!dp_lanes)
-+		regmap_update_bits(udphy->pma_regmap, CMN_DP_RSTN_OFFSET,
-+				   CMN_DP_CMN_RSTN, FIELD_PREP(CMN_DP_CMN_RSTN, 0x0));
-+}
-+
-+static void rk_udphy_dp_hpd_event_trigger(struct rk_udphy *udphy, bool hpd)
-+{
-+	const struct rk_udphy_cfg *cfg = udphy->cfgs;
-+
-+	udphy->dp_sink_hpd_sel = true;
-+	udphy->dp_sink_hpd_cfg = hpd;
-+
-+	if (!udphy->dp_in_use)
-+		return;
-+
-+	rk_udphy_grfreg_write(udphy->vogrf, &cfg->vogrfcfg[udphy->id].hpd_trigger, hpd);
-+}
-+
-+static int rk_udphy_refclk_set(struct rk_udphy *udphy)
-+{
-+	unsigned long rate;
-+	int ret;
-+
-+	/* configure phy reference clock */
-+	rate = clk_get_rate(udphy->refclk);
-+	dev_dbg(udphy->dev, "refclk freq %ld\n", rate);
-+
-+	switch (rate) {
-+	case 24000000:
-+		ret = regmap_multi_reg_write(udphy->pma_regmap, rk_udphy_24m_refclk_cfg,
-+					     ARRAY_SIZE(rk_udphy_24m_refclk_cfg));
-+		if (ret)
-+			return ret;
-+		break;
-+
-+	case 26000000:
-+		/* register default is 26MHz */
-+		ret = regmap_multi_reg_write(udphy->pma_regmap, rk_udphy_26m_refclk_cfg,
-+					     ARRAY_SIZE(rk_udphy_26m_refclk_cfg));
-+		if (ret)
-+			return ret;
-+		break;
-+
-+	default:
-+		dev_err(udphy->dev, "unsupported refclk freq %ld\n", rate);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int rk_udphy_status_check(struct rk_udphy *udphy)
-+{
-+	unsigned int val;
-+	int ret;
-+
-+	/* LCPLL check */
-+	if (udphy->mode & UDPHY_MODE_USB) {
-+		ret = regmap_read_poll_timeout(udphy->pma_regmap, CMN_ANA_LCPLL_DONE_OFFSET,
-+					       val, (val & CMN_ANA_LCPLL_AFC_DONE) &&
-+					       (val & CMN_ANA_LCPLL_LOCK_DONE), 100000);
-+		if (ret) {
-+			dev_err(udphy->dev, "cmn ana lcpll lock timeout\n");
-+			/*
-+			 * If earlier software (U-Boot) enabled USB once already
-+			 * the PLL may have problems locking on the first try.
-+			 * It will be successful on the second try, so for the
-+			 * time being a -EPROBE_DEFER will solve the issue.
-+			 *
-+			 * This requires further investigation to understand the
-+			 * root cause, especially considering that the driver is
-+			 * asserting all reset lines at probe time.
-+			 */
-+			return -EPROBE_DEFER;
-+		}
-+
-+		if (!udphy->flip) {
-+			ret = regmap_read_poll_timeout(udphy->pma_regmap,
-+						       TRSV_LN0_MON_RX_CDR_DONE_OFFSET, val,
-+						       val & TRSV_LN0_MON_RX_CDR_LOCK_DONE,
-+						       100000);
-+			if (ret)
-+				dev_err(udphy->dev, "trsv ln0 mon rx cdr lock timeout\n");
-+		} else {
-+			ret = regmap_read_poll_timeout(udphy->pma_regmap,
-+						       TRSV_LN2_MON_RX_CDR_DONE_OFFSET, val,
-+						       val & TRSV_LN2_MON_RX_CDR_LOCK_DONE,
-+						       100000);
-+			if (ret)
-+				dev_err(udphy->dev, "trsv ln2 mon rx cdr lock timeout\n");
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int rk_udphy_init(struct rk_udphy *udphy)
-+{
-+	const struct rk_udphy_cfg *cfg = udphy->cfgs;
-+	int ret;
-+
-+	rk_udphy_reset_assert_all(udphy);
-+	udelay(11000);
-+
-+	/* enable rx lfps for usb */
-+	if (udphy->mode & UDPHY_MODE_USB)
-+		rk_udphy_grfreg_write(udphy->udphygrf, &cfg->grfcfg.rx_lfps, true);
-+
-+	/* Step 1: power on pma and deassert apb rstn */
-+	rk_udphy_grfreg_write(udphy->udphygrf, &cfg->grfcfg.low_pwrn, true);
-+
-+	rk_udphy_reset_deassert(udphy, "pma_apb");
-+	rk_udphy_reset_deassert(udphy, "pcs_apb");
-+
-+	/* Step 2: set init sequence and phy refclk */
-+	ret = regmap_multi_reg_write(udphy->pma_regmap, rk_udphy_init_sequence,
-+				     ARRAY_SIZE(rk_udphy_init_sequence));
-+	if (ret) {
-+		dev_err(udphy->dev, "init sequence set error %d\n", ret);
-+		goto assert_resets;
-+	}
-+
-+	ret = rk_udphy_refclk_set(udphy);
-+	if (ret) {
-+		dev_err(udphy->dev, "refclk set error %d\n", ret);
-+		goto assert_resets;
-+	}
-+
-+	/* Step 3: configure lane mux */
-+	regmap_update_bits(udphy->pma_regmap, CMN_LANE_MUX_AND_EN_OFFSET,
-+			   CMN_DP_LANE_MUX_ALL | CMN_DP_LANE_EN_ALL,
-+			   FIELD_PREP(CMN_DP_LANE_MUX_N(3), udphy->lane_mux_sel[3]) |
-+			   FIELD_PREP(CMN_DP_LANE_MUX_N(2), udphy->lane_mux_sel[2]) |
-+			   FIELD_PREP(CMN_DP_LANE_MUX_N(1), udphy->lane_mux_sel[1]) |
-+			   FIELD_PREP(CMN_DP_LANE_MUX_N(0), udphy->lane_mux_sel[0]) |
-+			   FIELD_PREP(CMN_DP_LANE_EN_ALL, 0));
-+
-+	/* Step 4: deassert init rstn and wait for 200ns from datasheet */
-+	if (udphy->mode & UDPHY_MODE_USB)
-+		rk_udphy_reset_deassert(udphy, "init");
-+
-+	if (udphy->mode & UDPHY_MODE_DP) {
-+		regmap_update_bits(udphy->pma_regmap, CMN_DP_RSTN_OFFSET,
-+				   CMN_DP_INIT_RSTN,
-+				   FIELD_PREP(CMN_DP_INIT_RSTN, 0x1));
-+	}
-+
-+	udelay(1);
-+
-+	/*  Step 5: deassert cmn/lane rstn */
-+	if (udphy->mode & UDPHY_MODE_USB) {
-+		rk_udphy_reset_deassert(udphy, "cmn");
-+		rk_udphy_reset_deassert(udphy, "lane");
-+	}
-+
-+	/*  Step 6: wait for lock done of pll */
-+	ret = rk_udphy_status_check(udphy);
-+	if (ret)
-+		goto assert_resets;
-+
-+	return 0;
-+
-+assert_resets:
-+	rk_udphy_reset_assert_all(udphy);
-+	return ret;
-+}
-+
-+static int rk_udphy_setup(struct rk_udphy *udphy)
-+{
-+	int ret;
-+
-+	ret = clk_bulk_prepare_enable(udphy->num_clks, udphy->clks);
-+	if (ret) {
-+		dev_err(udphy->dev, "failed to enable clk\n");
-+		return ret;
-+	}
-+
-+	ret = rk_udphy_init(udphy);
-+	if (ret) {
-+		dev_err(udphy->dev, "failed to init combophy\n");
-+		clk_bulk_disable_unprepare(udphy->num_clks, udphy->clks);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void rk_udphy_disable(struct rk_udphy *udphy)
-+{
-+	clk_bulk_disable_unprepare(udphy->num_clks, udphy->clks);
-+	rk_udphy_reset_assert_all(udphy);
-+}
-+
-+static int rk_udphy_parse_lane_mux_data(struct rk_udphy *udphy)
-+{
-+	struct property *prop;
-+	int ret, i, num_lanes, len;
-+
-+	prop = of_find_property(udphy->dev->of_node, "rockchip,dp-lane-mux", &len);
-+	if (!prop) {
-+		dev_dbg(udphy->dev, "no dp-lane-mux, following dp alt mode\n");
-+		udphy->mode = UDPHY_MODE_USB;
-+		return 0;
-+	}
-+	num_lanes = len / sizeof(u32);
-+
-+	if (num_lanes != 2 && num_lanes != 4)
-+		return dev_err_probe(udphy->dev, -EINVAL,
-+				     "invalid number of lane mux\n");
-+
-+	ret = of_property_read_u32_array(udphy->dev->of_node, "rockchip,dp-lane-mux",
-+					 udphy->dp_lane_sel, num_lanes);
-+	if (ret)
-+		return dev_err_probe(udphy->dev, ret, "get dp lane mux failed\n");
-+
-+	for (i = 0; i < num_lanes; i++) {
-+		int j;
-+
-+		if (udphy->dp_lane_sel[i] > 3)
-+			return dev_err_probe(udphy->dev, -EINVAL,
-+					     "lane mux between 0 and 3, exceeding the range\n");
-+
-+		udphy->lane_mux_sel[udphy->dp_lane_sel[i]] = PHY_LANE_MUX_DP;
-+
-+		for (j = i + 1; j < num_lanes; j++) {
-+			if (udphy->dp_lane_sel[i] == udphy->dp_lane_sel[j])
-+				return dev_err_probe(udphy->dev, -EINVAL,
-+						"set repeat lane mux value\n");
-+		}
-+	}
-+
-+	udphy->mode = UDPHY_MODE_DP;
-+	if (num_lanes == 2) {
-+		udphy->mode |= UDPHY_MODE_USB;
-+		udphy->flip = (udphy->lane_mux_sel[0] == PHY_LANE_MUX_DP);
-+	}
-+
-+	return 0;
-+}
-+
-+static int rk_udphy_get_initial_status(struct rk_udphy *udphy)
-+{
-+	int ret;
-+	u32 value;
-+
-+	ret = clk_bulk_prepare_enable(udphy->num_clks, udphy->clks);
-+	if (ret) {
-+		dev_err(udphy->dev, "failed to enable clk\n");
-+		return ret;
-+	}
-+
-+	rk_udphy_reset_deassert_all(udphy);
-+
-+	regmap_read(udphy->pma_regmap, CMN_LANE_MUX_AND_EN_OFFSET, &value);
-+	if (FIELD_GET(CMN_DP_LANE_MUX_ALL, value) && FIELD_GET(CMN_DP_LANE_EN_ALL, value))
-+		udphy->status = UDPHY_MODE_DP;
-+	else
-+		rk_udphy_disable(udphy);
-+
-+	return 0;
-+}
-+
-+static int rk_udphy_parse_dt(struct rk_udphy *udphy)
-+{
-+	struct device *dev = udphy->dev;
-+	struct device_node *np = dev_of_node(dev);
-+	enum usb_device_speed maximum_speed;
-+	int ret;
-+
-+	udphy->u2phygrf = syscon_regmap_lookup_by_phandle(np, "rockchip,u2phy-grf");
-+	if (IS_ERR(udphy->u2phygrf))
-+		return dev_err_probe(dev, PTR_ERR(udphy->u2phygrf), "failed to get u2phy-grf\n");
-+
-+	udphy->udphygrf = syscon_regmap_lookup_by_phandle(np, "rockchip,usbdpphy-grf");
-+	if (IS_ERR(udphy->udphygrf))
-+		return dev_err_probe(dev, PTR_ERR(udphy->udphygrf), "failed to get usbdpphy-grf\n");
-+
-+	udphy->usbgrf = syscon_regmap_lookup_by_phandle(np, "rockchip,usb-grf");
-+	if (IS_ERR(udphy->usbgrf))
-+		return dev_err_probe(dev, PTR_ERR(udphy->usbgrf), "failed to get usb-grf\n");
-+
-+	udphy->vogrf = syscon_regmap_lookup_by_phandle(np, "rockchip,vo-grf");
-+	if (IS_ERR(udphy->vogrf))
-+		return dev_err_probe(dev, PTR_ERR(udphy->vogrf), "failed to get vo-grf\n");
-+
-+	ret = rk_udphy_parse_lane_mux_data(udphy);
-+	if (ret)
-+		return ret;
-+
-+	udphy->sbu1_dc_gpio = gpiod_get_optional(dev, "sbu1-dc", GPIOD_OUT_LOW);
-+	if (IS_ERR(udphy->sbu1_dc_gpio))
-+		return PTR_ERR(udphy->sbu1_dc_gpio);
-+
-+	udphy->sbu2_dc_gpio = gpiod_get_optional(dev, "sbu2-dc", GPIOD_OUT_LOW);
-+	if (IS_ERR(udphy->sbu2_dc_gpio))
-+		return PTR_ERR(udphy->sbu2_dc_gpio);
-+
-+	if (of_property_present(np, "maximum-speed")) {
-+		maximum_speed = of_usb_get_maximum_speed(np, NULL);
-+		udphy->hs = maximum_speed <= USB_SPEED_HIGH ? true : false;
-+	}
-+
-+	ret = rk_udphy_clk_init(udphy, dev);
-+	if (ret)
-+		return ret;
-+
-+	return rk_udphy_reset_init(udphy, dev);
-+}
-+
-+static int rk_udphy_power_on(struct rk_udphy *udphy, u8 mode)
-+{
-+	int ret;
-+
-+	if (!(udphy->mode & mode)) {
-+		dev_info(udphy->dev, "mode 0x%02x is not support\n", mode);
-+		return 0;
-+	}
-+
-+	if (udphy->status == UDPHY_MODE_NONE) {
-+		udphy->mode_change = false;
-+		ret = rk_udphy_setup(udphy);
-+		if (ret)
-+			return ret;
-+
-+		if (udphy->mode & UDPHY_MODE_USB)
-+			rk_udphy_u3_port_disable(udphy, false);
-+	} else if (udphy->mode_change) {
-+		udphy->mode_change = false;
-+		udphy->status = UDPHY_MODE_NONE;
-+		if (udphy->mode == UDPHY_MODE_DP)
-+			rk_udphy_u3_port_disable(udphy, true);
-+
-+		rk_udphy_disable(udphy);
-+		ret = rk_udphy_setup(udphy);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	udphy->status |= mode;
-+
-+	return 0;
-+}
-+
-+static void rk_udphy_power_off(struct rk_udphy *udphy, u8 mode)
-+{
-+	if (!(udphy->mode & mode)) {
-+		dev_info(udphy->dev, "mode 0x%02x is not support\n", mode);
-+		return;
-+	}
-+
-+	if (!udphy->status)
-+		return;
-+
-+	udphy->status &= ~mode;
-+
-+	if (udphy->status == UDPHY_MODE_NONE)
-+		rk_udphy_disable(udphy);
-+}
-+
-+static int rk_udphy_dp_phy_init(struct phy *phy)
-+{
-+	struct rk_udphy *udphy = phy_get_drvdata(phy);
-+
-+	udphy->dp_in_use = true;
-+	rk_udphy_dp_hpd_event_trigger(udphy, udphy->dp_sink_hpd_cfg);
-+
-+	return 0;
-+}
-+
-+static int rk_udphy_dp_phy_exit(struct phy *phy)
-+{
-+	struct rk_udphy *udphy = phy_get_drvdata(phy);
-+
-+	udphy->dp_in_use = false;
-+
-+	return 0;
-+}
-+
-+static int rk_udphy_dp_phy_power_on(struct phy *phy)
-+{
-+	struct rk_udphy *udphy = phy_get_drvdata(phy);
-+	int ret, dp_lanes;
-+
-+	dp_lanes = rk_udphy_dplane_get(udphy);
-+	phy_set_bus_width(phy, dp_lanes);
-+
-+	ret = rk_udphy_power_on(udphy, UDPHY_MODE_DP);
-+	if (ret)
-+		goto out;
-+
-+	rk_udphy_dplane_enable(udphy, dp_lanes);
-+
-+	rk_udphy_dplane_select(udphy);
-+
-+out:
-+	/*
-+	 * If data send by aux channel too fast after phy power on,
-+	 * the aux may be not ready which will cause aux error. Adding
-+	 * delay to avoid this issue.
-+	 */
-+	udelay(11000);
-+	return ret;
-+}
-+
-+static int rk_udphy_dp_phy_power_off(struct phy *phy)
-+{
-+	struct rk_udphy *udphy = phy_get_drvdata(phy);
-+
-+	rk_udphy_dplane_enable(udphy, 0);
-+	rk_udphy_power_off(udphy, UDPHY_MODE_DP);
-+
-+	return 0;
-+}
-+
-+static const struct phy_ops rk_udphy_dp_phy_ops = {
-+	.init		= rk_udphy_dp_phy_init,
-+	.exit		= rk_udphy_dp_phy_exit,
-+	.power_on	= rk_udphy_dp_phy_power_on,
-+	.power_off	= rk_udphy_dp_phy_power_off,
-+};
-+
-+static int rk_udphy_usb3_phy_init(struct phy *phy)
-+{
-+	struct rk_udphy *udphy = phy_get_drvdata(phy);
-+
-+	/* DP only or high-speed, disable U3 port */
-+	if (!(udphy->mode & UDPHY_MODE_USB) || udphy->hs) {
-+		rk_udphy_u3_port_disable(udphy, true);
-+		return 0;
-+	}
-+
-+	return rk_udphy_power_on(udphy, UDPHY_MODE_USB);
-+}
-+
-+static int rk_udphy_usb3_phy_exit(struct phy *phy)
-+{
-+	struct rk_udphy *udphy = phy_get_drvdata(phy);
-+
-+	/* DP only or high-speed */
-+	if (!(udphy->mode & UDPHY_MODE_USB) || udphy->hs)
-+		return 0;
-+
-+	rk_udphy_power_off(udphy, UDPHY_MODE_USB);
-+
-+	return 0;
-+}
-+
-+static const struct phy_ops rk_udphy_usb3_phy_ops = {
-+	.init		= rk_udphy_usb3_phy_init,
-+	.exit		= rk_udphy_usb3_phy_exit,
-+};
-+
-+static const struct regmap_config rk_udphy_pma_regmap_cfg = {
-+	.reg_bits = 32,
-+	.reg_stride = 4,
-+	.val_bits = 32,
-+	.max_register = 0x20dc,
-+};
-+
-+static struct phy *rk_udphy_phy_xlate(struct device *dev, const struct of_phandle_args *args)
-+{
-+	struct rk_udphy *udphy = dev->priv;
-+
-+	if (args->args_count == 0)
-+		return ERR_PTR(-EINVAL);
-+
-+	switch (args->args[0]) {
-+	case PHY_TYPE_USB3:
-+		return udphy->phy_u3;
-+	case PHY_TYPE_DP:
-+		return udphy->phy_dp;
-+	}
-+
-+	return ERR_PTR(-EINVAL);
-+}
-+
-+static int rk_udphy_probe(struct device *dev)
-+{
-+	struct phy_provider *phy_provider;
-+	struct resource *res;
-+	struct rk_udphy *udphy;
-+	void __iomem *base;
-+	int id, ret;
-+
-+	udphy = kzalloc(sizeof(*udphy), GFP_KERNEL);
-+	if (!udphy)
-+		return -ENOMEM;
-+
-+	udphy->cfgs = device_get_match_data(dev);
-+	if (!udphy->cfgs)
-+		return dev_err_probe(dev, -EINVAL, "missing match data\n");
-+
-+	base = dev_platform_get_and_ioremap_resource(dev, 0, &res);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	/* find the phy-id from the io address */
-+	udphy->id = -ENODEV;
-+	for (id = 0; id < udphy->cfgs->num_phys; id++) {
-+		if (res->start == udphy->cfgs->phy_ids[id]) {
-+			udphy->id = id;
-+			break;
-+		}
-+	}
-+
-+	if (udphy->id < 0)
-+		return dev_err_probe(dev, -ENODEV, "no matching device found\n");
-+
-+	udphy->pma_regmap = regmap_init_mmio(dev, base + UDPHY_PMA,
-+					     &rk_udphy_pma_regmap_cfg);
-+	if (IS_ERR(udphy->pma_regmap))
-+		return PTR_ERR(udphy->pma_regmap);
-+
-+	udphy->dev = dev;
-+	ret = rk_udphy_parse_dt(udphy);
-+	if (ret)
-+		return ret;
-+
-+	ret = rk_udphy_get_initial_status(udphy);
-+	if (ret)
-+		return ret;
-+
-+	dev->priv = udphy;
-+
-+	udphy->phy_u3 = phy_create(dev, dev->of_node, &rk_udphy_usb3_phy_ops);
-+	if (IS_ERR(udphy->phy_u3)) {
-+		ret = PTR_ERR(udphy->phy_u3);
-+		return dev_err_probe(dev, ret, "failed to create USB3 phy\n");
-+	}
-+	phy_set_drvdata(udphy->phy_u3, udphy);
-+
-+	udphy->phy_dp = phy_create(dev, dev->of_node, &rk_udphy_dp_phy_ops);
-+	if (IS_ERR(udphy->phy_dp)) {
-+		ret = PTR_ERR(udphy->phy_dp);
-+		return dev_err_probe(dev, ret, "failed to create DP phy\n");
-+	}
-+
-+	phy_set_bus_width(udphy->phy_dp, rk_udphy_dplane_get(udphy));
-+	phy_set_drvdata(udphy->phy_dp, udphy);
-+
-+	phy_provider = of_phy_provider_register(dev, rk_udphy_phy_xlate);
-+	if (IS_ERR(phy_provider)) {
-+		ret = PTR_ERR(phy_provider);
-+		return dev_err_probe(dev, ret, "failed to register phy provider\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static const char * const rk_udphy_rst_list[] = {
-+	"init", "cmn", "lane", "pcs_apb", "pma_apb"
-+};
-+
-+static const struct rk_udphy_cfg rk3576_udphy_cfgs = {
-+	.num_phys = 1,
-+	.phy_ids = { 0x2b010000 },
-+	.num_rsts = ARRAY_SIZE(rk_udphy_rst_list),
-+	.rst_list = rk_udphy_rst_list,
-+	.grfcfg	= {
-+		/* u2phy-grf */
-+		.bvalid_phy_con		= RK_UDPHY_GEN_GRF_REG(0x0010, 1, 0, 0x2, 0x3),
-+		.bvalid_grf_con		= RK_UDPHY_GEN_GRF_REG(0x0000, 15, 14, 0x1, 0x3),
-+
-+		/* usb-grf */
-+		.usb3otg0_cfg		= RK_UDPHY_GEN_GRF_REG(0x0030, 15, 0, 0x1100, 0x0188),
-+
-+		/* usbdpphy-grf */
-+		.low_pwrn		= RK_UDPHY_GEN_GRF_REG(0x0004, 13, 13, 0, 1),
-+		.rx_lfps		= RK_UDPHY_GEN_GRF_REG(0x0004, 14, 14, 0, 1),
-+	},
-+	.vogrfcfg = {
-+		{
-+			.hpd_trigger	= RK_UDPHY_GEN_GRF_REG(0x0000, 11, 10, 1, 3),
-+			.dp_lane_reg    = 0x0000,
-+		},
-+	},
-+	.dp_tx_ctrl_cfg = {
-+		rk3588_dp_tx_drv_ctrl_rbr_hbr_typec,
-+		rk3588_dp_tx_drv_ctrl_rbr_hbr_typec,
-+		rk3588_dp_tx_drv_ctrl_hbr2,
-+		rk3588_dp_tx_drv_ctrl_hbr3,
-+	},
-+	.dp_tx_ctrl_cfg_typec = {
-+		rk3588_dp_tx_drv_ctrl_rbr_hbr_typec,
-+		rk3588_dp_tx_drv_ctrl_rbr_hbr_typec,
-+		rk3588_dp_tx_drv_ctrl_hbr2,
-+		rk3588_dp_tx_drv_ctrl_hbr3,
-+	},
-+};
-+
-+static const struct rk_udphy_cfg rk3588_udphy_cfgs = {
-+	.num_phys = 2,
-+	.phy_ids = {
-+		0xfed80000,
-+		0xfed90000,
-+	},
-+	.num_rsts = ARRAY_SIZE(rk_udphy_rst_list),
-+	.rst_list = rk_udphy_rst_list,
-+	.grfcfg	= {
-+		/* u2phy-grf */
-+		.bvalid_phy_con		= RK_UDPHY_GEN_GRF_REG(0x0008, 1, 0, 0x2, 0x3),
-+		.bvalid_grf_con		= RK_UDPHY_GEN_GRF_REG(0x0010, 3, 2, 0x2, 0x3),
-+
-+		/* usb-grf */
-+		.usb3otg0_cfg		= RK_UDPHY_GEN_GRF_REG(0x001c, 15, 0, 0x1100, 0x0188),
-+		.usb3otg1_cfg		= RK_UDPHY_GEN_GRF_REG(0x0034, 15, 0, 0x1100, 0x0188),
-+
-+		/* usbdpphy-grf */
-+		.low_pwrn		= RK_UDPHY_GEN_GRF_REG(0x0004, 13, 13, 0, 1),
-+		.rx_lfps		= RK_UDPHY_GEN_GRF_REG(0x0004, 14, 14, 0, 1),
-+	},
-+	.vogrfcfg = {
-+		{
-+			.hpd_trigger	= RK_UDPHY_GEN_GRF_REG(0x0000, 11, 10, 1, 3),
-+			.dp_lane_reg	= 0x0000,
-+		},
-+		{
-+			.hpd_trigger	= RK_UDPHY_GEN_GRF_REG(0x0008, 11, 10, 1, 3),
-+			.dp_lane_reg	= 0x0008,
-+		},
-+	},
-+	.dp_tx_ctrl_cfg = {
-+		rk3588_dp_tx_drv_ctrl_rbr_hbr,
-+		rk3588_dp_tx_drv_ctrl_rbr_hbr,
-+		rk3588_dp_tx_drv_ctrl_hbr2,
-+		rk3588_dp_tx_drv_ctrl_hbr3,
-+	},
-+	.dp_tx_ctrl_cfg_typec = {
-+		rk3588_dp_tx_drv_ctrl_rbr_hbr_typec,
-+		rk3588_dp_tx_drv_ctrl_rbr_hbr_typec,
-+		rk3588_dp_tx_drv_ctrl_hbr2,
-+		rk3588_dp_tx_drv_ctrl_hbr3,
-+	},
-+};
-+
-+static const struct of_device_id rk_udphy_dt_match[] = {
-+	{
-+		.compatible = "rockchip,rk3576-usbdp-phy",
-+		.data = &rk3576_udphy_cfgs
-+	},
-+	{
-+		.compatible = "rockchip,rk3588-usbdp-phy",
-+		.data = &rk3588_udphy_cfgs
-+	},
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, rk_udphy_dt_match);
-+
-+static struct driver rk_udphy_driver = {
-+	.probe	= rk_udphy_probe,
-+	.name	= "rockchip-usbdp-phy",
-+	.of_compatible = rk_udphy_dt_match,
-+};
-+coredevice_platform_driver(rk_udphy_driver);
-+
-+MODULE_AUTHOR("Frank Wang <frank.wang@rock-chips.com>");
-+MODULE_AUTHOR("Zhang Yubing <yubing.zhang@rock-chips.com>");
-+MODULE_DESCRIPTION("Rockchip USBDP Combo PHY driver");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
-index 44e8cb3a7d..4682273411 100644
---- a/include/linux/bitfield.h
-+++ b/include/linux/bitfield.h
-@@ -90,6 +90,32 @@
- 		((typeof(_mask))(_val) << __bf_shf(_mask)) & (_mask);	\
- 	})
+diff --git a/drivers/aiodev/rockchip_saradc.c b/drivers/aiodev/rockchip_saradc.c
+index 2e77d79290..aac4a65218 100644
+--- a/drivers/aiodev/rockchip_saradc.c
++++ b/drivers/aiodev/rockchip_saradc.c
+@@ -24,9 +24,13 @@
  
-+#define __BF_CHECK_POW2(n)	BUILD_BUG_ON_ZERO(((n) & ((n) - 1)) != 0)
+ #define SARADC_TIMEOUT_NS      (100 * MSECOND)
+ 
++struct rockchip_saradc_data;
 +
-+/**
-+ * FIELD_PREP_CONST() - prepare a constant bitfield element
-+ * @_mask: shifted mask defining the field's length and position
-+ * @_val:  value to put in the field
-+ *
-+ * FIELD_PREP_CONST() masks and shifts up the value.  The result should
-+ * be combined with other fields of the bitfield using logical OR.
-+ *
-+ * Unlike FIELD_PREP() this is a constant expression and can therefore
-+ * be used in initializers. Error checking is less comfortable for this
-+ * version, and non-constant masks cannot be used.
-+ */
-+#define FIELD_PREP_CONST(_mask, _val)					\
-+	(								\
-+		/* mask must be non-zero */				\
-+		BUILD_BUG_ON_ZERO((_mask) == 0) +			\
-+		/* check if value fits */				\
-+		BUILD_BUG_ON_ZERO(~((_mask) >> __bf_shf(_mask)) & (_val)) + \
-+		/* check if mask is contiguous */			\
-+		__BF_CHECK_POW2((_mask) + (1ULL << __bf_shf(_mask))) +	\
-+		/* and create the value */				\
-+		(((typeof(_mask))(_val) << __bf_shf(_mask)) & (_mask))	\
-+	)
+ struct rockchip_saradc_cfg {
+ 	unsigned int num_bits;
+ 	unsigned int num_channels;
++	void (*init)(struct rockchip_saradc_data *data);
++	int (*read)(struct aiochannel *chan, int *val);
+ };
+ 
+ struct rockchip_saradc_data {
+@@ -60,7 +64,12 @@ static void rockchip_saradc_reset_controller(struct reset_control *reset)
+ 	reset_control_deassert(reset);
+ }
+ 
+-static int rockchip_saradc_read(struct aiochannel *chan, int *val)
++static void rockchip_saradc_init_v1(struct rockchip_saradc_data *data)
++{
++	rockchip_saradc_reg_wr(data, 0, SARADC_CTRL);
++};
 +
- /**
-  * FIELD_GET() - extract a bitfield element
-  * @_mask: shifted mask defining the field's length and position
++static int rockchip_saradc_read_v1(struct aiochannel *chan, int *val)
+ {
+ 	struct rockchip_saradc_data *data;
+ 	u32 value = 0;
+@@ -103,7 +112,7 @@ static int rockchip_saradc_probe(struct device *dev)
+ 
+ 	data->config = device_get_match_data(dev);
+ 	data->aiodev.hwdev = dev;
+-	data->aiodev.read = rockchip_saradc_read;
++	data->aiodev.read = data->config->read;
+ 
+ 	data->base = dev_request_mem_region(dev, 0);
+ 	if (IS_ERR(data->base)) {
+@@ -170,7 +179,8 @@ static int rockchip_saradc_probe(struct device *dev)
+ 		data->channels[i].unit = "mV";
+ 	}
+ 
+-	rockchip_saradc_reg_wr(data, 0, SARADC_CTRL);
++	if (data->config->init)
++		 data->config->init(data);
+ 
+ 	data->reset = reset_control_get(dev, "saradc-apb");
+ 	if (IS_ERR(data->reset))
+@@ -199,6 +209,8 @@ static int rockchip_saradc_probe(struct device *dev)
+ static const struct rockchip_saradc_cfg rk3568_saradc_cfg = {
+ 	.num_bits = 10,
+ 	.num_channels = 8,
++	.init = rockchip_saradc_init_v1,
++	.read = rockchip_saradc_read_v1,
+ };
+ 
+ static const struct of_device_id of_rockchip_saradc_match[] = {
 -- 
 2.38.2
 
