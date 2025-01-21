@@ -1,68 +1,68 @@
-Delivery-date: Tue, 21 Jan 2025 09:33:13 +0100
+Delivery-date: Tue, 21 Jan 2025 09:33:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ta9hA-002a1D-1A
+	id 1ta9hD-002a1Y-0D
 	for lore@lore.pengutronix.de;
-	Tue, 21 Jan 2025 09:33:13 +0100
+	Tue, 21 Jan 2025 09:33:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ta9hA-0001To-HF
-	for lore@pengutronix.de; Tue, 21 Jan 2025 09:33:12 +0100
+	id 1ta9hD-0001US-7n
+	for lore@pengutronix.de; Tue, 21 Jan 2025 09:33:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7lnS+KMsSWZPFO+uzkQ7VmHKbMrn9azKUCOR7CwUqu0=; b=j38M4Lce0wbY/K0tsx0GHGtX4a
-	fwvywW/ZJdoWndrEEH3nY3ML/rtuvo+0XVBrRRQyUtDEG3wCqMbHg+CkPOxN1XBT5benU52X6ujeO
-	/oWwDcNKziH1cqyyk3RO2n43AfWYED7A9D5N/7Thd3pmODOenAcpBGEJgjZ7ru4ArreWCGP3mVaht
-	Ybw2KTLd7slRf+vW4KoGOMpJycnNBHvGaGJjcL4JdYFiBk6rA7Z3j4VBemhcyvS8/p//4ebi8NCR/
-	8yUaYmL2EjOYrdok0zipIhsqzS4hGHy1oZB9O2Zqs1Z3AARmxibgbv9PO0nAjlZC0bgJhhWSLL19L
-	gFQVheeg==;
+	bh=790q5QOQWYIf8oKcQgFyoaZ2aQEmKA46USJ12vVNMSc=; b=lAJKcTV3VtyoGlvsQ54ofePpj9
+	2YnWOo9ggaoRfjMfGFnRmFPeoeeRxP6hXg0gA5KXn92TYa70m+BoL4NRpE6sKhlTpLjUrrTKnRgJ5
+	g797TNGqfNBMRih82t4lP6rjYReEn/Z8nVHPo5HEm6IXW8RRIxLsFKTBnODkvK6NP6/TNrVCchnpW
+	f4J3yiujtRCEBTOMkP7ergy15CPAthEm1UQ51kJB08u+1CFYl2cuVf05PTd2DwzBU7lybdw/vyzKZ
+	iKqP1Qfrn49I91crwTZdtM0zePysU5RC/zznGkdAsR2BO3znG42l9zXTEBW0qHyrmE+ePPgMFaRn2
+	3qHo0qzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1ta9gZ-00000007GTu-2T47;
-	Tue, 21 Jan 2025 08:32:35 +0000
+	id 1ta9gc-00000007GUS-0ydi;
+	Tue, 21 Jan 2025 08:32:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1ta9gX-00000007GTL-1e3x
+	id 1ta9gX-00000007GTO-3J0x
 	for barebox@lists.infradead.org;
-	Tue, 21 Jan 2025 08:32:34 +0000
+	Tue, 21 Jan 2025 08:32:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ta9gW-0001I5-3u; Tue, 21 Jan 2025 09:32:32 +0100
+	id 1ta9gW-0001I6-Mt; Tue, 21 Jan 2025 09:32:32 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ta9gV-0014mw-2x;
+	id 1ta9gV-0014mx-2z;
 	Tue, 21 Jan 2025 09:32:31 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ta9gV-0013wQ-2k;
+	id 1ta9gV-0013wQ-2n;
 	Tue, 21 Jan 2025 09:32:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20250120132829.4176408-1-s.hauer@pengutronix.de>
-References: <20250120132829.4176408-1-s.hauer@pengutronix.de>
-Message-Id: <173744835184.253407.8003711908058786618.b4-ty@pengutronix.de>
+ Renaud Barbier <Renaud.Barbier@ametek.com>
+In-Reply-To: <DM5PR07MB3532EA1B89A0848CE2A14C53EC1A2@DM5PR07MB3532.namprd07.prod.outlook.com>
+References: <DM5PR07MB3532EA1B89A0848CE2A14C53EC1A2@DM5PR07MB3532.namprd07.prod.outlook.com>
+Message-Id: <173744835186.253407.18356610908334968991.b4-ty@pengutronix.de>
 Date: Tue, 21 Jan 2025 09:32:31 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250121_003233_437960_AD3EAEB4 
-X-CRM114-Status: UNSURE (   7.91  )
+X-CRM114-CacheID: sfid-20250121_003234_062663_AE6748E1 
+X-CRM114-Status: UNSURE (   6.98  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,22 +85,23 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] usb: gadget: dfu: detect devices when necessary
+Subject: Re: Subject: [PATCH 1/1] nvme: add erase operation through
+ sanitize command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 20 Jan 2025 14:28:29 +0100, Sascha Hauer wrote:
-> the DFU file list might refer to devices which are not yet detected.
-> Call detect on the devices on the list to make sure they are present
-> when DFU is started.
+On Thu, 16 Jan 2025 10:52:02 +0000, Renaud Barbier wrote:
+> Based on Linux nvme sanitize command and kernel driver, add the storage
+> low level block erase. This operation erases the entire device, any
+> user-specified size smaller than the storage size will result in an error.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] usb: gadget: dfu: detect devices when necessary
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1bb11029384d (link may not be stable)
+[1/1] Subject: [PATCH 1/1] nvme: add erase operation through sanitize command
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3fd6cf7ca245 (link may not be stable)
 
 Best regards,
 -- 
