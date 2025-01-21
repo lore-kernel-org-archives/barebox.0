@@ -1,69 +1,72 @@
-Delivery-date: Tue, 21 Jan 2025 17:50:22 +0100
+Delivery-date: Tue, 21 Jan 2025 17:50:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1taHSH-002igX-1N
+	id 1taHSL-002ihI-2o
 	for lore@lore.pengutronix.de;
-	Tue, 21 Jan 2025 17:50:22 +0100
+	Tue, 21 Jan 2025 17:50:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1taHSH-0003YH-Gn
-	for lore@pengutronix.de; Tue, 21 Jan 2025 17:50:22 +0100
+	id 1taHSM-0003ax-0t
+	for lore@pengutronix.de; Tue, 21 Jan 2025 17:50:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PyXl++KEnZboBKu3eUF4GK7OHccBZSr4uFfyeg9FOtE=; b=lN2gEk3fUNmr/HwAzZJrdR33K6
-	xcP6+E5MS7a3WnlXFqJo/mmZGfoSm0db50e8bFypPOOiw+cRRr6BP/gM8Kbxgejbr/pYMXhu51l3N
-	VX3jqNfZkLJd13hfrm5d29/mal9RKVcnGVMH/wz8wLSgkGxQq8rvCfcX0lxIyFb4brwV92V1c6Z7w
-	MxOUABWOMo9sNFgQYuSbhP7aVSVfzkM09VCBdRA6jQpGhLDv5INbVPg+wZ+GsK9uB9x8cuQ97nM1B
-	dmv1i9Xs8MZ6QKLUoHpm1Tly68FlxG5qzOztdjzCQJtLLFVQCgz3WhDuSn6JufC05FYY7lOpphmQm
-	ZHLeyQGA==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=s6SQO1KEqeRSZ9YUqK9g3Pq8a2L7TxxSHjhrJvlqj3o=; b=lVry+fU8WOR/lM
+	owKNOFecRk7Dn+fb67a4o1h/HJgZX5v1dPDZqhlNT+jrWPRB7jJ/G+tMh7QnUZTIxVgiNC/F2v8FE
+	FFY0al+8GcpRAH0UpC0Msbb/zwlEm4S4XXt7cXTnCSb5zfeWJspm4NK40zhWs9qmzweJZjG4cRvbd
+	nc7ZAtfVLGDEud9PQ/CrxNwbY/yfvwOU6Pz0OT6Glpi9uvkVZkyn+f3hcIaBuGXfA8SUlfUhMdbtK
+	zdts2V37yOunI8MbC+Wo14GCGq84yDDAfDJNh/nf1N/wz7KCfWuRPcRCXawROKyQOhxu67MAYp62A
+	Wqs+l6nBvijDeIfaZRtg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1taHRj-00000008Oew-2KxQ;
-	Tue, 21 Jan 2025 16:49:47 +0000
+	id 1taHRz-00000008OoJ-2LMh;
+	Tue, 21 Jan 2025 16:50:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1taHRh-00000008Ocm-0DlD
+	id 1taHRx-00000008OmQ-0JcM
 	for barebox@lists.infradead.org;
-	Tue, 21 Jan 2025 16:49:46 +0000
+	Tue, 21 Jan 2025 16:50:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1taHRX-0003EW-Sd; Tue, 21 Jan 2025 17:49:35 +0100
+	id 1taHRX-0003EV-Sd; Tue, 21 Jan 2025 17:49:35 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1taHRX-0018z5-2B;
+	id 1taHRX-0018z2-28;
 	Tue, 21 Jan 2025 17:49:35 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1taHRY-008WS6-16;
+	id 1taHRY-008WS6-13;
 	Tue, 21 Jan 2025 17:49:35 +0100
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Tue, 21 Jan 2025 17:49:28 +0100
+Date: Tue, 21 Jan 2025 17:49:25 +0100
+Message-Id: <20250121-feature-pbl-get-time-ns-v1-0-c3d493397846@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250121-feature-pbl-get-time-ns-v1-3-c3d493397846@pengutronix.de>
-References: <20250121-feature-pbl-get-time-ns-v1-0-c3d493397846@pengutronix.de>
-In-Reply-To: <20250121-feature-pbl-get-time-ns-v1-0-c3d493397846@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIABXQj2cC/x3MSwqEMBBF0a1IjbvABD9pt9I4UPPUAjtKEkUQ9
+ 25weAb3XhTgBYGa7CKPQ4KsLkF9Mhrmzk1gscmkc13mSise0cXdg7d+4QmRo/zBLnBlvzCmLmx
+ pNKV68xjlfM+/9r4f6LALZWkAAAA=
+X-Change-ID: 20250121-feature-pbl-get-time-ns-6d9e8874d582
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250121_084945_102855_12933E36 
-X-CRM114-Status: GOOD (  14.60  )
+X-CRM114-CacheID: sfid-20250121_085001_118585_8FAC7D3A 
+X-CRM114-Status: UNSURE (   8.14  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,100 +88,36 @@ X-Spam-Status: No, score=-6.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] pbl: introduce HAS_PBL_CLOCKSOURCE marker
+Subject: [PATCH 0/3] PBL: enable timeouts in read_poll_timeout macros
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This finally enables the usage of the polled timeout functions in the
-barebox pbl with real timeouts for supported architectures. Currently
-only ARMv7 and ARMv8 are enabled.
+Without a time source the read_poll_timeout functions will deadlock in the PBL
+if the break condition is never met. This series introduces the necessary
+timing functions in the PBL for ARMv7 and ARMv8 based on the ARM architected
+timer and enable their usage if available.
 
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- arch/arm/cpu/Kconfig    | 2 ++
- arch/arm/lib32/Makefile | 2 +-
- include/linux/iopoll.h  | 8 ++++----
- pbl/Kconfig             | 3 +++
- 4 files changed, 10 insertions(+), 5 deletions(-)
+Stefan Kerkmann (3):
+      ARM64: lib64: pbl: implement get_time_ns and is_timeout
+      ARM: lib32: pbl: implement get_time_ns and is_timeout
+      pbl: introduce HAS_PBL_CLOCKSOURCE marker
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index 84fe770b6da892723528eeea89ae2b0eda122d07..3569f3d3483a6289d7a6eca3d1715e06144df8d4 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -84,6 +84,7 @@ config CPU_V6
- config CPU_V7
- 	bool
- 	select CPU_32v7
-+	select HAS_PBL_CLOCKSOURCE
- 
- # ARMv8
- config CPU_V8
-@@ -125,6 +126,7 @@ config CPU_32v7
- config CPU_64v8
- 	bool
- 	select CPU_64
-+	select HAS_PBL_CLOCKSOURCE
- 
- comment "processor features"
- 
-diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
-index a139a80fb84973e01e24b063eb6b1d774a60a056..4509d483b27ec7da038b17729f552d6f09fd39ec 100644
---- a/arch/arm/lib32/Makefile
-+++ b/arch/arm/lib32/Makefile
-@@ -31,7 +31,7 @@ extra-y += barebox.lds
- pbl-y	+= lib1funcs.o
- pbl-y	+= ashldi3.o
- pbl-y	+= div0.o
--pbl-$(CONFIG_CPU_32v7)	+= arm_architected_timer.o
-+pbl-$(CONFIG_HAS_PBL_CLOCKSOURCE)	+= arm_architected_timer.o
- CFLAGS_arm_architected_timer.o := -march=armv7-a
- 
- obj-pbl-y	+= setjmp.o
-diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-index 9350a3d05007fbf760e2dea2a981cb86641343fd..df7fdbfa4ae0aec825cc02afa8f14d1ea1f1e535 100644
---- a/include/linux/iopoll.h
-+++ b/include/linux/iopoll.h
-@@ -26,19 +26,19 @@
-  * When available, you'll probably want to use one of the specialized
-  * macros defined below rather than this macro directly.
-  *
-- * We do not have timing functions in the PBL, so ignore the timeout value and
-- * loop infinitely here.
-+ * In the PBL the timeout is ignored if timing functions are not implemented.
-+ * This potentially means looping infinitely!
-  */
- #define read_poll_timeout(op, val, cond, timeout_us, args...)	\
- ({ \
- 	uint64_t start = 0; \
--	if (IN_PROPER && (timeout_us) != 0) \
-+	if ((IN_PROPER || IS_ENABLED(CONFIG_HAS_PBL_CLOCKSOURCE)) && (timeout_us) != 0) \
- 		start = get_time_ns(); \
- 	for (;;) { \
- 		(val) = op(args); \
- 		if (cond) \
- 			break; \
--		if (IN_PROPER && (timeout_us) != 0 && \
-+		if ((IN_PROPER || IS_ENABLED(CONFIG_HAS_PBL_CLOCKSOURCE)) && (timeout_us) != 0 && \
- 		    is_timeout(start, ((timeout_us) * USECOND))) { \
- 			(val) = op(args); \
- 			break; \
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index 98d71791454b1a31f315ca3fdffa675e6d3dcb50..c2697a2bd00d807a78ac6bc9f0bcf7b28d150c59 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -26,6 +26,9 @@ config PBL_SINGLE_IMAGE
- 	depends on !HAVE_PBL_MULTI_IMAGES
- 	default y
- 
-+config HAS_PBL_CLOCKSOURCE
-+	bool
-+
- if PBL_IMAGE
- 
- config USE_COMPRESSED_DTB
+ arch/arm/cpu/Kconfig                   |  2 ++
+ arch/arm/lib32/Makefile                |  2 +-
+ arch/arm/lib32/arm_architected_timer.c | 15 ++++++++++++++-
+ arch/arm/lib64/pbl.c                   | 17 +++++++++++++++--
+ include/linux/iopoll.h                 |  8 ++++----
+ pbl/Kconfig                            |  3 +++
+ 6 files changed, 39 insertions(+), 8 deletions(-)
+---
+base-commit: 5acd59882f02d8f8da002b939756c1739d917ac2
+change-id: 20250121-feature-pbl-get-time-ns-6d9e8874d582
 
+Best regards,
 -- 
-2.39.5
+Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
 
 
