@@ -1,68 +1,68 @@
-Delivery-date: Wed, 22 Jan 2025 08:44:01 +0100
+Delivery-date: Wed, 22 Jan 2025 08:44:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1taVP6-002xvn-1t
+	id 1taVP8-002xw8-1Q
 	for lore@lore.pengutronix.de;
-	Wed, 22 Jan 2025 08:44:01 +0100
+	Wed, 22 Jan 2025 08:44:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1taVP6-0007f9-Od
-	for lore@pengutronix.de; Wed, 22 Jan 2025 08:44:01 +0100
+	id 1taVP8-0007fw-JL
+	for lore@pengutronix.de; Wed, 22 Jan 2025 08:44:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZQqhByEAB20uZsGUdwm3OkuV83GFJ79NSYKvxwJs7Gc=; b=DGYHk4GKe6mn9CRPLEETuqjLfB
-	/ApxkNVZgcrpOqsTzzQ8XWVakne9tElqMHRgatmtO0zML9sYfedabFWA1dBGIHVtnGTklWLIo0x+g
-	zNoBdV5aUIcB+3G46k/strrOBydFqkg9cObE77SJuNRD8GJeUwo80e+xPcfSXHiPUdYHSPelwKklC
-	Va5WWuqEXKnaJhXnwjxo/Bf5RkWw6M3+HOTPZ6pBkrqeRuaVT9wujLTbE4j+Ru6lGrruhdfxRO5iW
-	IkjLl7yUybycZwCAdj5a7pwF4yPkQKrmGaVBiqsIQB2AllcRNNQ+TYHHkKs2rdJQNvRDRmNKMsJK6
-	AMch34iA==;
+	bh=zCwGTmozAETOjFGIBxn6geCKdngqfAMn3f31rF3k1xc=; b=G1akZ/u0kULe/GrBSL1ETb8pV0
+	LtJ2C7EfYU3o3pwHa+FfLCSt2zA3XOAWN1Nbl0CYH1ex0r/AzS/6O6HOvzZRiEBUinD4HyHX8knJk
+	LaSG0WGSJG3j7Xo7vseVunbF1HnIq1crnUaOySQ8cz//stEQa7q6Uh+/YvBk3p4NO0pww5XUfCR7z
+	lhBvdOdq/ln0fyDhLsWfoZnNU8Q7SF2h+3VSbejVw2cyKYErutHnzj+U/OsnuYUTpHISFVaRKRhz9
+	MkyDDcC7VQaxvb82f9BNOV8TBqUn/QpNrWXGxGhyzwE21mylGL+jNAaqDmUF6XB7lbf8uFVsTCAZh
+	AA9jpOPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1taVOj-00000009ciG-3EdK;
+	id 1taVOj-00000009ci8-0gKZ;
 	Wed, 22 Jan 2025 07:43:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1taVMz-00000009cVQ-2RUC
+	id 1taVMz-00000009cVP-2Rla
 	for barebox@lists.infradead.org;
 	Wed, 22 Jan 2025 07:41:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1taVMy-0007Dc-97; Wed, 22 Jan 2025 08:41:48 +0100
+	id 1taVMy-0007Dd-9L; Wed, 22 Jan 2025 08:41:48 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1taVMy-001FTo-0G;
+	id 1taVMy-001FTp-0K;
 	Wed, 22 Jan 2025 08:41:48 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1taVMy-00AQnj-06;
+	id 1taVMy-00AQnj-08;
 	Wed, 22 Jan 2025 08:41:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20250120132625.4176071-1-s.hauer@pengutronix.de>
-References: <20250120132625.4176071-1-s.hauer@pengutronix.de>
-Message-Id: <173753170802.2486177.1456805603116475076.b4-ty@pengutronix.de>
+To: barebox@lists.infradead.org, 
+ Alexander Shiyan <eagle.alexander923@gmail.com>
+In-Reply-To: <20250121121800.2806881-1-eagle.alexander923@gmail.com>
+References: <20250121121800.2806881-1-eagle.alexander923@gmail.com>
+Message-Id: <173753170803.2486177.187424371149243867.b4-ty@pengutronix.de>
 Date: Wed, 22 Jan 2025 08:41:48 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250121_234149_623574_9D682F65 
-X-CRM114-Status: UNSURE (   6.54  )
+X-CRM114-CacheID: sfid-20250121_234149_623686_711C817F 
+X-CRM114-Status: UNSURE (   7.95  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,21 +85,25 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] file-list: fix file_list_detect_all()
+Subject: Re: [PATCH v2 1/3] aiodev: rockchip_saradc: Add reset control
+ support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 20 Jan 2025 14:26:25 +0100, Sascha Hauer wrote:
-> Call detect on a device file when it doesn't exist, not when already
-> exists.
+On Tue, 21 Jan 2025 15:17:58 +0300, Alexander Shiyan wrote:
+> This adds reset control support for the Rockchip ADC driver.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] file-list: fix file_list_detect_all()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1a3be5bdf632 (link may not be stable)
+[1/3] aiodev: rockchip_saradc: Add reset control support
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9a46a5f4c4f0 (link may not be stable)
+[2/3] aiodev: rockchip_saradc: Prepare driver to add support for other SARADC variants
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7aef44578689 (link may not be stable)
+[3/3] aiodev: rockchip_saradc: Add support for RK3588
+      https://git.pengutronix.de/cgit/barebox/commit/?id=68f64b4571b8 (link may not be stable)
 
 Best regards,
 -- 
