@@ -1,65 +1,67 @@
-Delivery-date: Thu, 23 Jan 2025 17:19:34 +0100
+Delivery-date: Thu, 23 Jan 2025 18:09:58 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tazva-003W3Y-0L
+	id 1tb0iL-003X80-20
 	for lore@lore.pengutronix.de;
-	Thu, 23 Jan 2025 17:19:34 +0100
+	Thu, 23 Jan 2025 18:09:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tazva-00027b-2P
-	for lore@pengutronix.de; Thu, 23 Jan 2025 17:19:34 +0100
+	id 1tb0iL-0003F6-O4
+	for lore@pengutronix.de; Thu, 23 Jan 2025 18:09:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=v0sdLO7BP77vvoClzPXEOD1v49aWlB9jAWdK0sCTckA=; b=M6MKeIji4d/Hh8WiNfewanNp6f
-	lvQZC6qI3HUbx98AXwHjjlsVhbrRHoqbQ0tlQYjqza2WGUjxo8u3yf0EHttWWy/8+gilwMF0TCWi7
-	AbFHxvGgSwVAXXHpnobdbnEpW8k2U3tFfSD6Q1SICHBWqjopSlb+KUl5cTmfZlc2iVKC6e+QUOgKI
-	uO0IL/cvWTOa3TmNWi+szMOV/9/r72FpxQo3B7xL9OmgDkQvdfjk0N7koygLqHu0vUqJTM4BbOSz3
-	YghZsm/ptSrZP/eGDjj1tAzQqc4uiYLpfy7wFC3UaCRi3ITFcL0I2rGo/iOl68uIOINC7g6ILA5sd
-	qoy9ktaw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=pmylqfkWrt1eo/4TeKzzhOAydXofSCdlKbjjZiGWzc4=; b=gf2dIwixSPPLhufxuA2hhu8nlJ
+	I869BtSsS7BlQdUUybapqMuUcC613BYe+jAtXYhiEP6wKh/h/phZzchWoQFR24/LcZoq71pVENqm/
+	Gs5DJvkF7Ov1HNnSgPEKFpZ5uATkDxGfddozyqexFaTX/2L3Hbrsclrxh+5y2amRTtaGfb6aLtasC
+	DOnrfkhZng6JvvzMblIUqfoFATG/Qg7LqasHK6cKtWqdWQWb6savL+LBaMYhuk/tAc2hpZ/EAfo1f
+	2y5oyPO2T7VIxgvIgZBMWtZZbDZPZCj9wqygq6dWqMCkpPfiD0xmcvYkAIHicwUOY94peTM+pPxQb
+	VxxLS65Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tazuy-0000000CoFY-2UXA;
-	Thu, 23 Jan 2025 16:18:56 +0000
+	id 1tb0hm-0000000CtFW-3QT9;
+	Thu, 23 Jan 2025 17:09:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tazuw-0000000CoF7-0uDo
+	id 1tb0hk-0000000CtF2-2HtK
 	for barebox@lists.infradead.org;
-	Thu, 23 Jan 2025 16:18:55 +0000
+	Thu, 23 Jan 2025 17:09:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tazus-0001wQ-Nc; Thu, 23 Jan 2025 17:18:50 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tb0hh-00035E-JQ; Thu, 23 Jan 2025 18:09:17 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tazus-001URQ-1i;
-	Thu, 23 Jan 2025 17:18:50 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tazus-0087Gi-1Q;
-	Thu, 23 Jan 2025 17:18:50 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 23 Jan 2025 17:18:49 +0100
-Message-Id: <20250123161849.1933987-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tb0hh-001Uej-1K;
+	Thu, 23 Jan 2025 18:09:17 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tb0hh-009cU3-11;
+	Thu, 23 Jan 2025 18:09:17 +0100
+Date: Thu, 23 Jan 2025 18:09:17 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20250123170917.oyeja5kb4azadh4a@pengutronix.de>
+References: <20250123161849.1933987-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250123161849.1933987-1-a.fatoum@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250123_081854_257015_7884081E 
-X-CRM114-Status: GOOD (  16.51  )
+X-CRM114-CacheID: sfid-20250123_090920_579391_C8DB0245 
+X-CRM114-Status: UNSURE (   8.86  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,105 +83,33 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] environment: autoprobe environment only when CONFIG_INSECURE=y
+Subject: Re: [PATCH master] environment: autoprobe environment only when
+ CONFIG_INSECURE=y
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-As things are, secure booting systems are expected to disable
-CONFIG_ENV_HANDLING to avoid their behavior changing due to a barebox
-environment loaded at runtime.
+Hi Ahmad,
 
-Still, some users may want to keep CONFIG_ENV_HANDLING enabled, but
-activated only selectively. For those users, barebox autoprobing block
-devices for a GPT partition with the matching UUID is undesirable.
+On 25-01-23, Ahmad Fatoum wrote:
+> As things are, secure booting systems are expected to disable
+> CONFIG_ENV_HANDLING to avoid their behavior changing due to a barebox
+> environment loaded at runtime.
+> 
+> Still, some users may want to keep CONFIG_ENV_HANDLING enabled, but
+> activated only selectively. For those users, barebox autoprobing block
+> devices for a GPT partition with the matching UUID is undesirable.
 
-Therefore, allow disabling this autoprobe behavior via a globalvar.
-To balance convenience against security, the default for the globalvar
-will depend on whether the CONFIG_INSECURE option is set.
+Good catch!
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-I intentionally went with a generic CONFIG_INSECURE name as I intend
-to extend it in future, e.g., CONFIG_INSECURE would drop from a
-misbehaving menu script to shell instead of looping indefinitely.
+> Therefore, allow disabling this autoprobe behavior via a globalvar.
+> To balance convenience against security, the default for the globalvar
+> will depend on whether the CONFIG_INSECURE option is set.
 
-Additionally, I'll add a CONFIG_HAS_INSECURE_DEFAULT option that will
-be select by "dual-use" options that can be used safely if care
-is taken (e.g. fastboot OEM exec commands, if fastboot is only enabled
-after JSON web token verification), but that's not master material.
----
- common/Kconfig       | 11 +++++++++++
- common/environment.c | 15 ++++++++++++++-
- 2 files changed, 25 insertions(+), 1 deletion(-)
+A global INSECURE option like OP-TEE does seems reasonable to avoid
+flooding the Kconfig.
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 2d55903c365b..b5fba72390d8 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -149,6 +149,17 @@ config LOCALVERSION_AUTO
- 
- 	  which is done within the script "scripts/setlocalversion".)
- 
-+config INSECURE
-+	bool "enable convenient defaults that are unsuitable for secure-booting systems"
-+	default y
-+	help
-+	  Say n here when barebox is part of a secure boot chain and you
-+	  want to disable defaults that may compromise the boot chain.
-+
-+	  This option is a moving target. Currently it:
-+
-+	    - changes the default of global.env.autoprobe to 1
-+
- config BANNER
- 	bool "display banner"
- 	default y
-diff --git a/common/environment.c b/common/environment.c
-index dbf4c2f52365..37adb5d67870 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -29,6 +29,7 @@
- #include <block.h>
- #include <efi/partition.h>
- #include <bootsource.h>
-+#include <magicvar.h>
- #else
- #define EXPORT_SYMBOL(x)
- #endif
-@@ -51,6 +52,7 @@ struct action_data {
- 
- #define TMPDIR "/.defaultenv"
- 
-+static int global_env_autoprobe = IS_ENABLED(CONFIG_INSECURE);
- static char *default_environment_path;
- 
- void default_environment_path_set(const char *path)
-@@ -80,7 +82,7 @@ static struct cdev *default_environment_path_search(void)
- 	struct cdev *env_cdev = NULL;
- 	struct block_device *blk;
- 
--	if (!IS_ENABLED(CONFIG_BLOCK))
-+	if (!IS_ENABLED(CONFIG_BLOCK) || !global_env_autoprobe)
- 		return NULL;
- 
- 	boot_node = bootsource_of_node_get(NULL);
-@@ -526,3 +528,14 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
- 
- 	return ret;
- }
-+
-+#ifdef __BAREBOX__
-+static int register_env_vars(void)
-+{
-+	globalvar_add_simple_bool("env.autoprobe", &global_env_autoprobe);
-+	return 0;
-+}
-+postcore_initcall(register_env_vars);
-+BAREBOX_MAGICVAR(global.env.autoprobe,
-+                 "Automatically probe known block devices for environment");
-+#endif
--- 
-2.39.5
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 
 
