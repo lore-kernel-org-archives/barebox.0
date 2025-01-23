@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tayiM-003UTo-0a
+	id 1tayiM-003UU4-1S
 	for lore@lore.pengutronix.de;
-	Thu, 23 Jan 2025 16:01:50 +0100
+	Thu, 23 Jan 2025 16:01:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tayiI-00032q-IO
+	id 1tayiI-00032t-HL
 	for lore@pengutronix.de; Thu, 23 Jan 2025 16:01:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,43 +18,43 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DQOdBtIgehU7t3Pats+9s5uvC2mYhRXesjh4Y0IR1Q4=; b=WqJXDwtU7/0DYrdXIYTP1w3XTY
-	SvUtS66rixUe81rIVyUTYRpYHW7Ovi4VOF8T08Y1h5bBCI6+SENJQ/XblnGA54Q8rD5dqSbCeSLyW
-	y8S8+W/BagA0+Jo8p8I2N31l5g5C8J8vef+nAEHeAbNK8Q+9a7+bILGgv3Gsy+w/klQlBTVL3RkdA
-	+vrhgSkNK/4lYo6/RCGjgGKdEGqYQW9psjxnXjlXy80hSo7/IsFUlkZi0HbPiVSPPInfWYL3Lx2tc
-	Gxf0VmcLwuyzf4u/kMkYVyduiAtNHReOvIWndljhwv6P/CQnRMiSeo0PYXG8/1vJQlpwftLOmNmC8
-	ztMl+3fw==;
+	bh=Di38S1bVKRmH9i8WzGf7BdOj4diKLMkXZA6f0VCI0nw=; b=EdutDqrrXvuQcBytXe+AUhMfUw
+	OzUJHrh9tIuXVZJhFajhczUprOncyZhUN6IBQ42/ry4LXmhlBvNXCTp6P5q1MNDna01vXpxoZ/sbn
+	yUmwcClWJgMP517P4oCHt1GTVpq8RVNvmg5lb7UwaHF5ZA2MqVRgKG8W3bNmlp5fme9tmqqYiSqeR
+	36DX9VgWri8B/qz4NsHlYUV1t7AT/iMvdLASzWH7M2taEq2LLpoZK5QKF6Bz/hoS52JBsNPlw5fJw
+	aq2Y6OFjbiTN7X9IrN8AzO7CGCVpUXWJ7kjeNXLGqLnQ8gvfJB74XcbSfiVQHxHzz5Gizesp6zHxI
+	Mt5pKhNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tayhj-0000000Cedw-2nov;
-	Thu, 23 Jan 2025 15:01:11 +0000
+	id 1tayhl-0000000Cefu-3Pkm;
+	Thu, 23 Jan 2025 15:01:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tayhb-0000000CeZF-2THC
+	id 1tayhh-0000000Cec9-3u7s
 	for barebox@lists.infradead.org;
-	Thu, 23 Jan 2025 15:01:08 +0000
+	Thu, 23 Jan 2025 15:01:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tayhY-0002Hw-Kw; Thu, 23 Jan 2025 16:01:00 +0100
+	id 1tayhY-0002Hy-Kl; Thu, 23 Jan 2025 16:01:00 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tayhY-001Thm-0M;
+	id 1tayhY-001Thl-0C;
 	Thu, 23 Jan 2025 16:01:00 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tayhY-006Chv-01;
+	id 1tayhY-006Chv-00;
 	Thu, 23 Jan 2025 16:01:00 +0100
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Thu, 23 Jan 2025 15:56:07 +0100
+Date: Thu, 23 Jan 2025 15:56:06 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250123-v2024-05-0-topic-hab-v3-2-e90d0e43c2de@pengutronix.de>
+Message-Id: <20250123-v2024-05-0-topic-hab-v3-1-e90d0e43c2de@pengutronix.de>
 References: <20250123-v2024-05-0-topic-hab-v3-0-e90d0e43c2de@pengutronix.de>
 In-Reply-To: <20250123-v2024-05-0-topic-hab-v3-0-e90d0e43c2de@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -63,8 +63,8 @@ Cc: Marco Felsch <m.felsch@pengutronix.de>,
  Stefan Kerkmann <s.kerkmann@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250123_070103_642453_0EC6FD13 
-X-CRM114-Status: GOOD (  13.16  )
+X-CRM114-CacheID: sfid-20250123_070109_977997_38362C05 
+X-CRM114-Status: GOOD (  13.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,62 +86,80 @@ X-Spam-Status: No, score=-7.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 02/10] nvmem: ocotp: add support to query the
- field-return sticky bit
+Subject: [PATCH v3 01/10] nvmem: ocotp: add support to get/set srk_revoke
+ sticky bit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Marco Felsch <m.felsch@pengutronix.de>
 
 The i.MX8M* devices do have an sticky bit which indicates if the
-field-return fuse can be written. Add support to query the lock bit.
-
-To make it easy to read align the STICKY bit definitions as well.
+srk_revoke fuse can be written. Add support to query and to set the lock
+bit.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c    | 24 ++++++++++++++++++++++++
- include/mach/imx/ocotp.h |  1 +
- 2 files changed, 25 insertions(+)
+ drivers/nvmem/ocotp.c    | 55 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/mach/imx/ocotp.h |  2 ++
+ 2 files changed, 57 insertions(+)
 
 diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index c0517980fb18870002be01ca3240d41d662e0231..87cc95a636f3d0127e401edb6ec99d206cac561b 100644
+index c282efefa82422dc16839c52b65d9dd829edd358..c0517980fb18870002be01ca3240d41d662e0231 100644
 --- a/drivers/nvmem/ocotp.c
 +++ b/drivers/nvmem/ocotp.c
-@@ -91,6 +91,7 @@
+@@ -52,6 +52,7 @@
+ #define OCOTP_DATA			0x20
+ #define OCOTP_READ_CTRL			0x30
+ #define OCOTP_READ_FUSE_DATA		0x40
++#define OCOTP_SW_STICKY			0x50
+ 
+ #define MX7_OCOTP_DATA0			0x20
+ #define MX7_OCOTP_DATA1			0x30
+@@ -89,6 +90,8 @@
+ #define OCOTP_TIMING_STROBE_PROG	GENMASK(11, 0)
  #define OCOTP_TIMING_WAIT		GENMASK(27, 22)
  
- #define OCOTP_SW_STICKY_SRK_REVOKE_LOCK		BIT(1)
-+#define OCOTP_SW_STICKY_FIELD_RETURN_LOCK	BIT(2)
- 
++#define OCOTP_SW_STICKY_SRK_REVOKE_LOCK		BIT(1)
++
  #define OCOTP_READ_CTRL_READ_FUSE	BIT(1)
  
-@@ -152,6 +153,7 @@ struct imx_ocotp_data {
+ #define OCOTP_OFFSET_TO_ADDR(o) (OCOTP_OFFSET_TO_INDEX(o) * 4)
+@@ -147,6 +150,8 @@ struct imx_ocotp_data {
+ 	int (*set_timing)(struct ocotp_priv *priv);
+ 	int (*fuse_read)(struct ocotp_priv *priv, u32 addr, u32 *pdata);
  	int (*fuse_blow)(struct ocotp_priv *priv, u32 addr, u32 value);
- 	bool (*srk_revoke_locked)(struct ocotp_priv *priv);
- 	void (*lock_srk_revoke)(struct ocotp_priv *priv);
-+	bool (*field_return_locked)(struct ocotp_priv *priv);
++	bool (*srk_revoke_locked)(struct ocotp_priv *priv);
++	void (*lock_srk_revoke)(struct ocotp_priv *priv);
  	u8  mac_offsets[MAX_MAC_OFFSETS];
  	u8  mac_offsets_num;
  	struct imx8m_featctrl_data *feat;
-@@ -292,6 +294,11 @@ static void imx8m_lock_srk_revoke(struct ocotp_priv *priv)
- 	writel(val, priv->base + OCOTP_SW_STICKY);
+@@ -273,6 +278,20 @@ static int imx6_ocotp_prepare(struct ocotp_priv *priv)
+ 	return 0;
  }
  
-+static bool imx8m_field_return_locked(struct ocotp_priv *priv)
++static bool imx8m_srk_revoke_locked(struct ocotp_priv *priv)
 +{
-+	return readl(priv->base + OCOTP_SW_STICKY) & OCOTP_SW_STICKY_FIELD_RETURN_LOCK;
++	return readl(priv->base + OCOTP_SW_STICKY) & OCOTP_SW_STICKY_SRK_REVOKE_LOCK;
++}
++
++static void imx8m_lock_srk_revoke(struct ocotp_priv *priv)
++{
++	u32 val;
++
++	val = readl(priv->base + OCOTP_SW_STICKY);
++	val |= OCOTP_SW_STICKY_SRK_REVOKE_LOCK;
++	writel(val, priv->base + OCOTP_SW_STICKY);
 +}
 +
  static int imx6_fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
  {
  	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
-@@ -674,6 +681,20 @@ int imx_ocotp_lock_srk_revoke(void)
- 	return -ENOSYS;
+@@ -625,6 +644,36 @@ int imx_ocotp_sense_enable(bool enable)
+ 	return old_value;
  }
  
-+int imx_ocotp_field_return_locked(void)
++int imx_ocotp_srk_revoke_locked(void)
 +{
 +	int ret;
 +
@@ -149,8 +167,24 @@ index c0517980fb18870002be01ca3240d41d662e0231..87cc95a636f3d0127e401edb6ec99d20
 +	if (ret)
 +		return ret;
 +
-+	if (imx_ocotp->data->field_return_locked)
-+		return imx_ocotp->data->field_return_locked(imx_ocotp);
++	if (imx_ocotp->data->srk_revoke_locked)
++		return imx_ocotp->data->srk_revoke_locked(imx_ocotp);
++
++	return -ENOSYS;
++}
++
++int imx_ocotp_lock_srk_revoke(void)
++{
++	int ret;
++
++	ret = imx_ocotp_ensure_probed();
++	if (ret)
++		return ret;
++
++	if (imx_ocotp->data->lock_srk_revoke) {
++		imx_ocotp->data->lock_srk_revoke(imx_ocotp);
++		return 0;
++	}
 +
 +	return -ENOSYS;
 +}
@@ -158,39 +192,43 @@ index c0517980fb18870002be01ca3240d41d662e0231..87cc95a636f3d0127e401edb6ec99d20
  static void imx_ocotp_format_mac(u8 *dst, const u8 *src,
  				 enum imx_ocotp_format_mac_direction dir)
  {
-@@ -1036,6 +1057,7 @@ static struct imx_ocotp_data imx8mp_ocotp_data = {
+@@ -985,6 +1034,8 @@ static struct imx_ocotp_data imx8mp_ocotp_data = {
+ 	.set_timing = imx6_ocotp_set_timing,
+ 	.fuse_blow = imx6_fuse_blow_addr,
  	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
-+	.field_return_locked = imx8m_field_return_locked,
++	.srk_revoke_locked = imx8m_srk_revoke_locked,
++	.lock_srk_revoke = imx8m_lock_srk_revoke,
  	.ctrl = &ocotp_ctrl_reg_8mp,
  };
  
-@@ -1067,6 +1089,7 @@ static struct imx_ocotp_data imx8mm_ocotp_data = {
+@@ -1014,6 +1065,8 @@ static struct imx_ocotp_data imx8mm_ocotp_data = {
+ 	.set_timing = imx6_ocotp_set_timing,
+ 	.fuse_blow = imx6_fuse_blow_addr,
  	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
-+	.field_return_locked = imx8m_field_return_locked,
++	.srk_revoke_locked = imx8m_srk_revoke_locked,
++	.lock_srk_revoke = imx8m_lock_srk_revoke,
  	.feat = &imx8mm_featctrl_data,
  	.ctrl = &ocotp_ctrl_reg_default,
  };
-@@ -1087,6 +1110,7 @@ static struct imx_ocotp_data imx8mn_ocotp_data = {
+@@ -1032,6 +1085,8 @@ static struct imx_ocotp_data imx8mn_ocotp_data = {
+ 	.set_timing = imx6_ocotp_set_timing,
+ 	.fuse_blow = imx6_fuse_blow_addr,
  	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
-+	.field_return_locked = imx8m_field_return_locked,
++	.srk_revoke_locked = imx8m_srk_revoke_locked,
++	.lock_srk_revoke = imx8m_lock_srk_revoke,
  	.feat = &imx8mn_featctrl_data,
  	.ctrl = &ocotp_ctrl_reg_default,
  };
 diff --git a/include/mach/imx/ocotp.h b/include/mach/imx/ocotp.h
-index 7a516ff789b962b741782c888a47aaff8cb6e902..e6f62a9da48ccc38818777e2e7c3f445fe880b3e 100644
+index 5f7b88f716a71544c9db919e3ef7b1d9917dc80b..7a516ff789b962b741782c888a47aaff8cb6e902 100644
 --- a/include/mach/imx/ocotp.h
 +++ b/include/mach/imx/ocotp.h
-@@ -38,6 +38,7 @@ int imx_ocotp_permanent_write(int enable);
+@@ -36,6 +36,8 @@ int imx_ocotp_read_field(uint32_t field, unsigned *value);
+ int imx_ocotp_write_field(uint32_t field, unsigned value);
+ int imx_ocotp_permanent_write(int enable);
  int imx_ocotp_sense_enable(bool enable);
- int imx_ocotp_srk_revoke_locked(void);
- int imx_ocotp_lock_srk_revoke(void);
-+int imx_ocotp_field_return_locked(void);
++int imx_ocotp_srk_revoke_locked(void);
++int imx_ocotp_lock_srk_revoke(void);
  
  static inline u64 imx_ocotp_read_uid(void __iomem *ocotp)
  {
