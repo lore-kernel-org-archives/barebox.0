@@ -1,67 +1,67 @@
-Delivery-date: Sun, 26 Jan 2025 22:44:59 +0100
+Delivery-date: Sun, 26 Jan 2025 22:46:47 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcAR9-004qLE-0g
+	id 1tcASs-004qMi-1l
 	for lore@lore.pengutronix.de;
-	Sun, 26 Jan 2025 22:44:59 +0100
+	Sun, 26 Jan 2025 22:46:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcAR9-0006fk-B0
-	for lore@pengutronix.de; Sun, 26 Jan 2025 22:44:59 +0100
+	id 1tcASs-0006zO-LP
+	for lore@pengutronix.de; Sun, 26 Jan 2025 22:46:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=R74h3bR6F/KWwo8rxqdjXpXl3RibxFiJHHHIcKDdOEk=; b=PCbko5wRk5KKivG31U8NzoOiVF
-	dCqoKRivaqkATT5ipMw6HWGI1ndxCq5P/abFHVL+OncBxGcLUhRqUuumimwt3P7OwuCBzvYGB8zEj
-	Y/8DcT2CpxQWcke3h9CL6+NV5DdD+stAPBKCVorjaWFrfw5nc1A7CGr5O0B+zbgmcGzbJzUGzIrbw
-	WEqU6FiF5O+ddthNfcUoC8sTHIbzDlDTZm4uesaWyZmsgFQfHW9RvY0m98s3Gi7VRLDh7tsjLiNmW
-	m1JQfFAVXuK5u6JfhkTR9+M1SKnzwNRRpUOgrXn+vL87k6PUkr4TmBOggfYQwoIcjJ5FTRz7vl0Pl
-	jKXZMPHw==;
+	bh=VKr4/Fc8GkE7XfTVKmeyVMH2E13PRSo2IAgoeLtbP+c=; b=VFt1gHteZz8NCJpQKIJyMpYs/l
+	OfdjRRqUNsb29ghs9tZF5084HU2AfSATHoh0gaNsYQA5C6T9nfC4K6Ar3OGfWTnbBrqf2KK2WUQWx
+	98qfrc+fYyiFjkYYE8PUMLCFa0wcL7wbRT7gUSRN3+CUG7BafPA5qr3zfDMrTq1DIRXGhVlt3zSao
+	mRI3zO3vBX53qHgGqE3FoM/5b9y3VpKwCmc+owlJmKz7KBMXSGEm7WE3Lx9w7bVz/UwhPRk+r7fNj
+	1BadHo8xNGLcDx6gwW0mmloMNTjysCOW6oYIHt4lMrXVQ8uU0qZR3WGQs/rnjvR/Yx6EpQP37mzcn
+	eGORWq9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcAQj-000000017qt-0aVe;
-	Sun, 26 Jan 2025 21:44:33 +0000
+	id 1tcASS-000000018R0-3OUw;
+	Sun, 26 Jan 2025 21:46:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcAQg-000000017qV-3Vql
+	id 1tcASP-000000018QY-3zTJ
 	for barebox@lists.infradead.org;
-	Sun, 26 Jan 2025 21:44:31 +0000
+	Sun, 26 Jan 2025 21:46:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcAQf-0006Yh-NY
-	for barebox@lists.infradead.org; Sun, 26 Jan 2025 22:44:29 +0100
+	id 1tcASO-0006rj-OY
+	for barebox@lists.infradead.org; Sun, 26 Jan 2025 22:46:16 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcAQf-0021CR-1i
+	id 1tcASO-0021Cg-1q
 	for barebox@lists.infradead.org;
-	Sun, 26 Jan 2025 22:44:29 +0100
+	Sun, 26 Jan 2025 22:46:16 +0100
 Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
 	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcAQf-001507-2v
+	id 1tcASO-0015Ax-33
 	for barebox@lists.infradead.org;
-	Sun, 26 Jan 2025 22:44:29 +0100
+	Sun, 26 Jan 2025 22:46:16 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Sun, 26 Jan 2025 22:44:28 +0100
-Message-Id: <20250126214428.257543-1-m.grzeschik@pengutronix.de>
+Date: Sun, 26 Jan 2025 22:46:14 +0100
+Message-Id: <20250126214614.258154-1-m.grzeschik@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250126_134430_877428_5E0AFC81 
-X-CRM114-Status: GOOD (  10.53  )
+X-CRM114-CacheID: sfid-20250126_134617_991858_AD2281B7 
+X-CRM114-Status: GOOD (  10.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,11 +84,14 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] simple-panel: add regulator support
+Subject: [PATCH v2] video: simple-panel: add regulator support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
+v1 -> v2: added the missging signed-off-by
+
  drivers/video/simple-panel.c | 10 ++++++++++
  1 file changed, 10 insertions(+)
 
