@@ -1,68 +1,67 @@
-Delivery-date: Sun, 26 Jan 2025 22:40:38 +0100
+Delivery-date: Sun, 26 Jan 2025 22:44:59 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcAMv-004qEN-2v
+	id 1tcAR9-004qLE-0g
 	for lore@lore.pengutronix.de;
-	Sun, 26 Jan 2025 22:40:38 +0100
+	Sun, 26 Jan 2025 22:44:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcAMv-0005yh-BF
-	for lore@pengutronix.de; Sun, 26 Jan 2025 22:40:38 +0100
+	id 1tcAR9-0006fk-B0
+	for lore@pengutronix.de; Sun, 26 Jan 2025 22:44:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=RjtqLkXLDFNDbE3UiNQiUv5xUsiMd5d2sZwAaXEju3g=; b=1uzKlELNSeAA7ak9flheyq+iPh
-	RtS6vQQxrmq4En2uvXm3Xlde94X12EaZmeo58eqGqSSnXUOfxBWA1cmWLG4JRBu13CZYcm8d7Eo3p
-	+LPI1jpTE4FMXB8vod+a4rATJa7AcxyP3nuF8dDXUmj4+Zm5cirK+t7gxzZAV9/Y9u8J6zGb1Bi4T
-	A2oueaWEw2raXpFscjTEyuljkHMqpc0jkzJ/Y7AzopJeGdNpDvcnJZ/lhv1iEpToiz8ewenw47BtW
-	xMVQ6DdOozdXcO5IyWtF2AfS10nkY/SdpEy7cWDXKjRDkWzgb7/d+HBjpiqEF+S8P1Pl1NAd3R8Ba
-	j/nblrrg==;
+	bh=R74h3bR6F/KWwo8rxqdjXpXl3RibxFiJHHHIcKDdOEk=; b=PCbko5wRk5KKivG31U8NzoOiVF
+	dCqoKRivaqkATT5ipMw6HWGI1ndxCq5P/abFHVL+OncBxGcLUhRqUuumimwt3P7OwuCBzvYGB8zEj
+	Y/8DcT2CpxQWcke3h9CL6+NV5DdD+stAPBKCVorjaWFrfw5nc1A7CGr5O0B+zbgmcGzbJzUGzIrbw
+	WEqU6FiF5O+ddthNfcUoC8sTHIbzDlDTZm4uesaWyZmsgFQfHW9RvY0m98s3Gi7VRLDh7tsjLiNmW
+	m1JQfFAVXuK5u6JfhkTR9+M1SKnzwNRRpUOgrXn+vL87k6PUkr4TmBOggfYQwoIcjJ5FTRz7vl0Pl
+	jKXZMPHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcAM1-0000000179I-0Ic5;
-	Sun, 26 Jan 2025 21:39:41 +0000
+	id 1tcAQj-000000017qt-0aVe;
+	Sun, 26 Jan 2025 21:44:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcALx-0000000178t-1wmO
+	id 1tcAQg-000000017qV-3Vql
 	for barebox@lists.infradead.org;
-	Sun, 26 Jan 2025 21:39:39 +0000
+	Sun, 26 Jan 2025 21:44:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcALs-0005lt-Ps
-	for barebox@lists.infradead.org; Sun, 26 Jan 2025 22:39:32 +0100
+	id 1tcAQf-0006Yh-NY
+	for barebox@lists.infradead.org; Sun, 26 Jan 2025 22:44:29 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcALs-0021By-1c
+	id 1tcAQf-0021CR-1i
 	for barebox@lists.infradead.org;
-	Sun, 26 Jan 2025 22:39:32 +0100
+	Sun, 26 Jan 2025 22:44:29 +0100
 Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
 	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcALs-0014iA-2o
+	id 1tcAQf-001507-2v
 	for barebox@lists.infradead.org;
-	Sun, 26 Jan 2025 22:39:32 +0100
+	Sun, 26 Jan 2025 22:44:29 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Sun, 26 Jan 2025 22:39:30 +0100
-Message-Id: <20250126213930.256425-1-m.grzeschik@pengutronix.de>
+Date: Sun, 26 Jan 2025 22:44:28 +0100
+Message-Id: <20250126214428.257543-1-m.grzeschik@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250126_133937_816620_11D8015F 
-X-CRM114-Status: GOOD (  34.67  )
+X-CRM114-CacheID: sfid-20250126_134430_877428_5E0AFC81 
+X-CRM114-Status: GOOD (  10.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,464 +84,63 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] PWM: imx: pwm-imx-tpm: Add driver support
+Subject: [PATCH] simple-panel: add regulator support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Import the Linux v6.12 state of the driver to enable barebox control of PWM
-LEDs, backlights and other peripherals.
-
-This has been tested on the IMX93.
-
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- drivers/pwm/Kconfig       |   6 +
- drivers/pwm/Makefile      |   1 +
- drivers/pwm/pwm-imx-tpm.c | 406 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 413 insertions(+)
- create mode 100644 drivers/pwm/pwm-imx-tpm.c
+ drivers/video/simple-panel.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index eb04f92c6f..85cde63bf6 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -29,6 +29,12 @@ config PWM_IMX
- 	help
- 	  This enables PWM support for Freescale i.MX SoCs
+diff --git a/drivers/video/simple-panel.c b/drivers/video/simple-panel.c
+index 7048e2f51b..d4c6874987 100644
+--- a/drivers/video/simple-panel.c
++++ b/drivers/video/simple-panel.c
+@@ -10,6 +10,7 @@
+ #include <linux/err.h>
+ #include <of.h>
+ #include <fb.h>
++#include <regulator.h>
+ #include <gpio.h>
+ #include <of_gpio.h>
+ #include <video/backlight.h>
+@@ -25,6 +26,7 @@ struct simple_panel {
+ 	struct device_node *backlight_node;
+ 	struct backlight_device *backlight;
+ 	struct device_node *ddc_node;
++	struct regulator *power;
+ 	int enable_delay;
+ };
  
-+config PWM_TPM
-+	bool "i.MX TPM Support"
-+	depends on ARCH_IMX || COMPILE_TEST
-+	help
-+	  This enables PWM support for Freescale i.MX SoCs
-+
- config PWM_MXS
- 	bool "i.MXs PWM Support"
- 	depends on ARCH_MXS
-diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-index 4adc083e6c..d0cd4318e8 100644
---- a/drivers/pwm/Makefile
-+++ b/drivers/pwm/Makefile
-@@ -3,6 +3,7 @@ obj-$(CONFIG_PWM)		+= core.o
- obj-$(CONFIG_PWM_PXA)		+= pxa_pwm.o
- obj-$(CONFIG_PWM_ATMEL)		+= pwm-atmel.o
- obj-$(CONFIG_PWM_IMX)		+= pwm-imx.o
-+obj-$(CONFIG_PWM_TPM)		+= pwm-imx-tpm.o
- obj-$(CONFIG_PWM_MXS)		+= pwm-mxs.o
- obj-$(CONFIG_PWM_STM32)		+= pwm-stm32.o
- obj-$(CONFIG_PWM_ROCKCHIP)	+= pwm-rockchip.o
-diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-new file mode 100644
-index 0000000000..b68826f9e4
---- /dev/null
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -0,0 +1,406 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2018-2019 NXP.
-+ *
-+ * Limitations:
-+ * - The TPM counter and period counter are shared between
-+ *   multiple channels, so all channels should use same period
-+ *   settings.
-+ * - Changes to polarity cannot be latched at the time of the
-+ *   next period start.
-+ * - Changing period and duty cycle together isn't atomic,
-+ *   with the wrong timing it might happen that a period is
-+ *   produced with old duty cycle but new period settings.
-+ */
-+
-+#include <common.h>
-+#include <linux/bitfield.h>
-+#include <linux/bitops.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/io.h>
-+#include <linux/time.h>
-+#include <linux/log2.h>
-+#include <linux/module.h>
-+#include <clock.h>
-+#include <of.h>
-+#include <pwm.h>
-+#include <init.h>
-+#include <linux/barebox-wrapper.h>
-+#include <linux/pinctrl/consumer.h>
-+#include <linux/slab.h>
-+#include <linux/device.h>
-+
-+#define PWM_IMX_TPM_PARAM	0x4
-+#define PWM_IMX_TPM_GLOBAL	0x8
-+#define PWM_IMX_TPM_SC		0x10
-+#define PWM_IMX_TPM_CNT		0x14
-+#define PWM_IMX_TPM_MOD		0x18
-+#define PWM_IMX_TPM_CnSC(n)	(0x20 + (n) * 0x8)
-+#define PWM_IMX_TPM_CnV(n)	(0x24 + (n) * 0x8)
-+
-+#define PWM_IMX_TPM_PARAM_CHAN			GENMASK(7, 0)
-+
-+#define PWM_IMX_TPM_SC_PS			GENMASK(2, 0)
-+#define PWM_IMX_TPM_SC_CMOD			GENMASK(4, 3)
-+#define PWM_IMX_TPM_SC_CMOD_INC_EVERY_CLK	FIELD_PREP(PWM_IMX_TPM_SC_CMOD, 1)
-+#define PWM_IMX_TPM_SC_CPWMS			BIT(5)
-+
-+#define PWM_IMX_TPM_CnSC_CHF	BIT(7)
-+#define PWM_IMX_TPM_CnSC_MSB	BIT(5)
-+#define PWM_IMX_TPM_CnSC_MSA	BIT(4)
-+
-+/*
-+ * The reference manual describes this field as two separate bits. The
-+ * semantic of the two bits isn't orthogonal though, so they are treated
-+ * together as a 2-bit field here.
-+ */
-+#define PWM_IMX_TPM_CnSC_ELS	GENMASK(3, 2)
-+#define PWM_IMX_TPM_CnSC_ELS_INVERSED	FIELD_PREP(PWM_IMX_TPM_CnSC_ELS, 1)
-+#define PWM_IMX_TPM_CnSC_ELS_NORMAL	FIELD_PREP(PWM_IMX_TPM_CnSC_ELS, 2)
-+
-+
-+#define PWM_IMX_TPM_MOD_WIDTH	16
-+#define PWM_IMX_TPM_MOD_MOD	GENMASK(PWM_IMX_TPM_MOD_WIDTH - 1, 0)
-+
-+struct imx_tpm_pwm;
-+
-+struct imx_tpm_pwm_chip {
-+	struct pwm_chip chip;
-+	struct imx_tpm_pwm *tpm;
-+	u32 user_count;
-+	u32 enable_count;
-+	u32 real_period;
-+};
-+
-+struct imx_tpm_pwm {
-+	struct imx_tpm_pwm_chip pwm[8];
-+	struct clk *clk;
-+	void __iomem *base;
-+};
-+
-+struct imx_tpm_pwm_param {
-+	u8 prescale;
-+	u32 mod;
-+	u32 val;
-+};
-+
-+#define to_imx_tpm_pwm_chip(_chip) container_of(_chip, struct imx_tpm_pwm_chip, chip)
-+
-+/*
-+ * This function determines for a given pwm_state *state that a consumer
-+ * might request the pwm_state *real_state that eventually is implemented
-+ * by the hardware and the necessary register values (in *p) to achieve
-+ * this.
-+ */
-+static int pwm_imx_tpm_round_state(struct pwm_chip *chip,
-+				   struct imx_tpm_pwm_param *p,
-+				   struct pwm_state *real_state,
-+				   const struct pwm_state *state)
-+{
-+	struct imx_tpm_pwm_chip *tpm = to_imx_tpm_pwm_chip(chip);
-+	u32 rate, prescale, period_count, clock_unit;
-+	u64 tmp;
-+
-+	rate = clk_get_rate(tpm->tpm->clk);
-+	tmp = (u64)state->period * rate;
-+	clock_unit = DIV_ROUND_CLOSEST_ULL(tmp, NSEC_PER_SEC);
-+	if (clock_unit <= PWM_IMX_TPM_MOD_MOD)
-+		prescale = 0;
-+	else
-+		prescale = ilog2(clock_unit) + 1 - PWM_IMX_TPM_MOD_WIDTH;
-+
-+	if ((!FIELD_FIT(PWM_IMX_TPM_SC_PS, prescale)))
-+		return -ERANGE;
-+	p->prescale = prescale;
-+
-+	period_count = (clock_unit + ((1 << prescale) >> 1)) >> prescale;
-+	if (period_count == 0)
-+		return -EINVAL;
-+	p->mod = period_count - 1;
-+
-+	/* calculate real period HW can support */
-+	tmp = (u64)period_count << prescale;
-+	tmp *= NSEC_PER_SEC;
-+	real_state->period = DIV_ROUND_CLOSEST_ULL(tmp, rate);
-+
-+	/*
-+	 * if eventually the PWM output is inactive, either
-+	 * duty cycle is 0 or status is disabled, need to
-+	 * make sure the output pin is inactive.
-+	 */
-+	if (!state->enabled)
-+		real_state->duty_cycle = 0;
-+	else
-+		real_state->duty_cycle = state->duty_cycle;
-+
-+	tmp = (u64)p->mod * real_state->duty_cycle;
-+	p->val = DIV64_U64_ROUND_CLOSEST(tmp, real_state->period);
-+
-+	real_state->polarity = state->polarity;
-+	real_state->enabled = state->enabled;
-+
-+	return 0;
-+}
-+
-+static int pwm_imx_tpm_get_state(struct pwm_chip *chip,
-+				 struct pwm_device *pwm,
-+				 struct pwm_state *state)
-+{
-+	struct imx_tpm_pwm_chip *tpm = to_imx_tpm_pwm_chip(chip);
-+	u32 rate, val, prescale;
-+	u64 tmp;
-+
-+	/* get period */
-+	state->period = tpm->real_period;
-+
-+	/* get duty cycle */
-+	rate = clk_get_rate(tpm->tpm->clk);
-+	val = readl(tpm->tpm->base + PWM_IMX_TPM_SC);
-+	prescale = FIELD_GET(PWM_IMX_TPM_SC_PS, val);
-+	tmp = readl(tpm->tpm->base + PWM_IMX_TPM_CnV(chip->id));
-+	tmp = (tmp << prescale) * NSEC_PER_SEC;
-+	state->duty_cycle = DIV_ROUND_CLOSEST_ULL(tmp, rate);
-+
-+	/* get polarity */
-+	val = readl(tpm->tpm->base + PWM_IMX_TPM_CnSC(chip->id));
-+	if ((val & PWM_IMX_TPM_CnSC_ELS) == PWM_IMX_TPM_CnSC_ELS_INVERSED)
-+		state->polarity = PWM_POLARITY_INVERSED;
-+	else
-+		/*
-+		 * Assume reserved values (2b00 and 2b11) to yield
-+		 * normal polarity.
-+		 */
-+		state->polarity = PWM_POLARITY_NORMAL;
-+
-+	/* get channel status */
-+	state->enabled = FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val) ? true : false;
-+
-+	return 0;
-+}
-+
-+/* this function is supposed to be called with mutex hold */
-+static int pwm_imx_tpm_apply_hw(struct pwm_chip *chip,
-+				struct imx_tpm_pwm_param *p,
-+				struct pwm_state *state,
-+				struct pwm_device *pwm)
-+{
-+	struct imx_tpm_pwm_chip *tpm = to_imx_tpm_pwm_chip(chip);
-+	bool period_update = false;
-+	bool duty_update = false;
-+	u32 val, cmod, cur_prescale;
-+	unsigned long timeout_ms;
-+	struct pwm_state c;
-+	uint64_t start;
-+
-+	if (state->period != tpm->real_period) {
-+		/*
-+		 * TPM counter is shared by multiple channels, so
-+		 * prescale and period can NOT be modified when
-+		 * there are multiple channels in use with different
-+		 * period settings.
-+		 */
-+		if (tpm->user_count > 1)
-+			return -EBUSY;
-+
-+		val = readl(tpm->tpm->base + PWM_IMX_TPM_SC);
-+		cmod = FIELD_GET(PWM_IMX_TPM_SC_CMOD, val);
-+		cur_prescale = FIELD_GET(PWM_IMX_TPM_SC_PS, val);
-+		if (cmod && cur_prescale != p->prescale)
-+			return -EBUSY;
-+
-+		/* set TPM counter prescale */
-+		val &= ~PWM_IMX_TPM_SC_PS;
-+		val |= FIELD_PREP(PWM_IMX_TPM_SC_PS, p->prescale);
-+		writel(val, tpm->tpm->base + PWM_IMX_TPM_SC);
-+
-+		/*
-+		 * set period count:
-+		 * if the PWM is disabled (CMOD[1:0] = 2b00), then MOD register
-+		 * is updated when MOD register is written.
-+		 *
-+		 * if the PWM is enabled (CMOD[1:0] ≠ 2b00), the period length
-+		 * is latched into hardware when the next period starts.
-+		 */
-+		writel(p->mod, tpm->tpm->base + PWM_IMX_TPM_MOD);
-+		tpm->real_period = state->period;
-+		period_update = true;
-+	}
-+
-+	pwm_imx_tpm_get_state(chip, pwm, &c);
-+
-+	/* polarity is NOT allowed to be changed if PWM is active */
-+	if (c.enabled && c.polarity != state->polarity)
-+		return -EBUSY;
-+
-+	if (state->duty_cycle != c.duty_cycle) {
-+		/*
-+		 * set channel value:
-+		 * if the PWM is disabled (CMOD[1:0] = 2b00), then CnV register
-+		 * is updated when CnV register is written.
-+		 *
-+		 * if the PWM is enabled (CMOD[1:0] ≠ 2b00), the duty length
-+		 * is latched into hardware when the next period starts.
-+		 */
-+		writel(p->val, tpm->tpm->base + PWM_IMX_TPM_CnV(chip->id));
-+		duty_update = true;
-+	}
-+
-+	/* make sure MOD & CnV registers are updated */
-+	if (period_update || duty_update) {
-+		start = get_time_ns();
-+		timeout_ms = (tpm->real_period / NSEC_PER_MSEC + 1);
-+		while (readl(tpm->tpm->base + PWM_IMX_TPM_MOD) != p->mod
-+		       || readl(tpm->tpm->base + PWM_IMX_TPM_CnV(chip->id))
-+		       != p->val) {
-+			if (is_timeout(start, timeout_ms))
-+				return -ETIME;
-+			cpu_relax();
-+		}		udelay(10);
-+	}
-+
-+	/*
-+	 * polarity settings will enabled/disable output status
-+	 * immediately, so if the channel is disabled, need to
-+	 * make sure MSA/MSB/ELS are set to 0 which means channel
-+	 * disabled.
-+	 */
-+	val = readl(tpm->tpm->base + PWM_IMX_TPM_CnSC(chip->id));
-+	val &= ~(PWM_IMX_TPM_CnSC_ELS | PWM_IMX_TPM_CnSC_MSA |
-+		 PWM_IMX_TPM_CnSC_MSB);
-+	if (state->enabled) {
-+		/*
-+		 * set polarity (for edge-aligned PWM modes)
-+		 *
-+		 * ELS[1:0] = 2b10 yields normal polarity behaviour,
-+		 * ELS[1:0] = 2b01 yields inversed polarity.
-+		 * The other values are reserved.
-+		 */
-+		val |= PWM_IMX_TPM_CnSC_MSB;
-+		val |= (state->polarity == PWM_POLARITY_NORMAL) ?
-+			PWM_IMX_TPM_CnSC_ELS_NORMAL :
-+			PWM_IMX_TPM_CnSC_ELS_INVERSED;
-+	}
-+	writel(val, tpm->tpm->base + PWM_IMX_TPM_CnSC(chip->id));
-+
-+	/* control the counter status */
-+	if (state->enabled != c.enabled) {
-+		val = readl(tpm->tpm->base + PWM_IMX_TPM_SC);
-+		if (state->enabled) {
-+			if (++tpm->enable_count == 1)
-+				val |= PWM_IMX_TPM_SC_CMOD_INC_EVERY_CLK;
-+		} else {
-+			if (--tpm->enable_count == 0)
-+				val &= ~PWM_IMX_TPM_SC_CMOD;
-+		}
-+		writel(val, tpm->tpm->base + PWM_IMX_TPM_SC);
-+	}
-+
-+	return 0;
-+}
-+
-+static int pwm_imx_tpm_apply(struct pwm_chip *chip,
-+			     struct pwm_device *pwm,
-+			     const struct pwm_state *state)
-+{
-+	struct imx_tpm_pwm_param param;
-+	struct pwm_state real_state;
-+	int ret;
-+
-+	ret = pwm_imx_tpm_round_state(chip, &param, &real_state, state);
-+	if (ret)
-+		return ret;
-+
-+	ret = pwm_imx_tpm_apply_hw(chip, &param, &real_state, pwm);
-+
-+	return ret;
-+}
-+
-+static int pwm_imx_tpm_request(struct pwm_chip *chip)
-+{
-+	struct imx_tpm_pwm_chip *tpm = to_imx_tpm_pwm_chip(chip);
-+
-+	tpm->user_count++;
-+
-+	return 0;
-+}
-+
-+static void pwm_imx_tpm_free(struct pwm_chip *chip)
-+{
-+	struct imx_tpm_pwm_chip *tpm = to_imx_tpm_pwm_chip(chip);
-+
-+	tpm->user_count--;
-+}
-+
-+static const struct pwm_ops imx_tpm_pwm_ops = {
-+	.request = pwm_imx_tpm_request,
-+	.free = pwm_imx_tpm_free,
-+	.apply = pwm_imx_tpm_apply,
-+};
-+
-+static int pwm_imx_tpm_probe(struct device *dev)
-+{
-+	struct pwm_chip *chip;
-+	struct imx_tpm_pwm *tpm;
-+	struct clk *clk;
-+	void __iomem *base;
-+	int ret;
-+	unsigned int npwm;
-+	u32 val;
-+	int i;
-+
-+	base = dev_platform_ioremap_resource(dev, 0);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	clk = clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk),
-+				     "failed to get PWM clock\n");
-+
-+	/* get number of channels */
-+	val = readl(base + PWM_IMX_TPM_PARAM);
-+	npwm = FIELD_GET(PWM_IMX_TPM_PARAM_CHAN, val);
-+
-+	tpm = xzalloc(sizeof(*tpm));
-+	if (IS_ERR(tpm))
-+		return PTR_ERR(tpm);
-+
-+	for (i = 0; i < npwm; i++) {
-+		struct imx_tpm_pwm_chip *tpmc = &tpm->pwm[i];
-+
-+		chip = &tpmc->chip;
-+
-+		tpmc->tpm = tpm;
-+		tpmc->tpm->base = base;
-+		tpmc->tpm->clk = clk;
-+
-+		chip->ops = &imx_tpm_pwm_ops;
-+		chip->devname = basprintf("pwm%d", i);
-+		chip->id = i;
-+		chip->dev = dev;
-+
-+		ret = pwmchip_add(chip);
-+		if (ret)
-+			return dev_err_probe(dev, ret, "failed to add PWM chip\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id imx_tpm_pwm_dt_ids[] = {
-+	{ .compatible = "fsl,imx7ulp-pwm", },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, imx_tpm_pwm_dt_ids);
-+
-+static struct driver imx_tpm_pwm_driver = {
-+	.name = "imx7ulp-tpm-pwm",
-+	.probe	= pwm_imx_tpm_probe,
-+	.of_compatible = imx_tpm_pwm_dt_ids,
-+};
-+coredevice_platform_driver(imx_tpm_pwm_driver);
-+
-+MODULE_AUTHOR("Anson Huang <Anson.Huang@nxp.com>");
-+MODULE_DESCRIPTION("i.MX TPM PWM Driver");
-+MODULE_LICENSE("GPL v2");
+@@ -49,6 +51,8 @@ static int simple_panel_enable(struct simple_panel *panel)
+ 	if (panel->enable_delay)
+ 		mdelay(panel->enable_delay);
+ 
++	regulator_enable(panel->power);
++
+ 	if (panel->backlight) {
+ 		ret = backlight_set_brightness_default(panel->backlight);
+ 		if (ret)
+@@ -65,6 +69,8 @@ static int simple_panel_disable(struct simple_panel *panel)
+ 	if (panel->backlight)
+ 		backlight_set_brightness(panel->backlight, 0);
+ 
++	regulator_disable(panel->power);
++
+ 	if (gpio_is_valid(panel->enable_gpio))
+ 		gpio_direction_output(panel->enable_gpio,
+ 			!panel->enable_active_high);
+@@ -154,6 +160,10 @@ static int simple_panel_probe(struct device *dev)
+ 
+ 	panel->backlight_node = of_parse_phandle(node, "backlight", 0);
+ 
++	panel->power = regulator_get(dev, "power");
++	if (IS_ERR(panel->power))
++		dev_warn(dev, "Cannot find regulator\n");
++
+ 	ret = vpl_register(&panel->vpl);
+ 	if (ret)
+ 		return ret;
 -- 
 2.39.5
 
