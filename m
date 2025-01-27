@@ -1,56 +1,68 @@
-Delivery-date: Mon, 27 Jan 2025 16:24:54 +0100
+Delivery-date: Mon, 27 Jan 2025 20:52:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcQys-0059cK-0G
+	id 1tcV9N-005EI7-2v
 	for lore@lore.pengutronix.de;
-	Mon, 27 Jan 2025 16:24:54 +0100
+	Mon, 27 Jan 2025 20:52:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcQys-0003Bk-5d
-	for lore@pengutronix.de; Mon, 27 Jan 2025 16:24:54 +0100
+	id 1tcV9N-00054e-Sn
+	for lore@pengutronix.de; Mon, 27 Jan 2025 20:52:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UnkuJ+g574KmqdN1vMBsVfQmUAXS3j4N04hV9jThM2Y=; b=hrNY6mUU63rAZkT2Q3uHppwIpV
-	hLBgjBP+Ps0vLDw9LHFoc7X6MwTdJ9ApfBLimi/w/ultzGh3R4HT9hnxCF4ktxkBDjacNXX+nV4WY
-	jtb0AVUGxWAx3Utd2SCTC8NwtrxCLKVb00j5F7LnXrH9OfZgmDHRDcAayBXKyt8h0VKw5TigCLmGE
-	FxqQUBClqhUjOAlUKhgQoeZJWunIbuTmGvjk1+o4vrvCELvEudp8/lBuca286Xt1QjYEcdeovrD0d
-	GZJR0tFaLIejOGr+GamjYKvQg+/6wFV0ioPNBcO36qYZaA5CwZoaIm2gkrvTcjOZRkF4UkKHu4Hd4
-	Y3knfvoA==;
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=lRC8QkjUkeYhkgzL9dz0JxSf8gaSk0azG5M2QBludIA=; b=zOlFl97Z7RcgHkAcoFvkGxI2vk
+	BVhIQE+UyxoIGRfFDXq6EAkn5dv4R0TPaAI+I+dERcHZCMqUg3F7op97kC4pgZrXq9BWdImbkhjmJ
+	2Dq/2aGrVN2zdThMxqmqJP6Jfe5G5gQSnNS2JLo4m3cLSUPMLweFMqV7EYxDrmBcBpdVm9vdA8poV
+	6wW41XTXyfA5bE055/b3VcX8iWxk6HMMphr0qDso3XlqSE4RBrd7UqsWJFyvbsRvDmnOzTJrHveFy
+	k5AyYYZjGa4mwct/U4dmcsnGHWauETRX92AtTzZ4okG6hOYrmjQDEW5aZPGNxzFZpkZuWHXgGnrGs
+	FgbPns0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcQyP-00000002aQ6-1itY;
-	Mon, 27 Jan 2025 15:24:25 +0000
+	id 1tcV8g-000000039KM-0F4r;
+	Mon, 27 Jan 2025 19:51:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcQyM-00000002aP0-2re4
+	id 1tcV8c-000000039Im-0zQT
 	for barebox@lists.infradead.org;
-	Mon, 27 Jan 2025 15:24:23 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1tcQyJ-00030Y-Pb; Mon, 27 Jan 2025 16:24:19 +0100
-Message-ID: <72a19f3e-fb25-43bd-aba8-72ad37a580b6@pengutronix.de>
-Date: Mon, 27 Jan 2025 16:24:50 +0100
+	Mon, 27 Jan 2025 19:51:16 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tcV8a-0004vI-3K; Mon, 27 Jan 2025 20:51:12 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tcV8Z-002Azo-2T;
+	Mon, 27 Jan 2025 20:51:11 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tcV8Z-00GTrL-2B;
+	Mon, 27 Jan 2025 20:51:11 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Khem Raj <raj.khem@gmail.com>,
+	=?UTF-8?q?Enrico=20J=C3=B6rns?= <ejo@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 27 Jan 2025 20:51:09 +0100
+Message-Id: <20250127195109.3928003-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-References: <20250127110252.735402-1-a.fatoum@pengutronix.de>
-Content-Language: en-US
-From: Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <20250127110252.735402-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250127_072422_728874_46BF7AEE 
-X-CRM114-Status: GOOD (  20.37  )
+X-CRM114-CacheID: sfid-20250127_115114_274250_D85FCE20 
+X-CRM114-Status: GOOD (  12.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,83 +80,137 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ARM: boards: colibri-imx6: make BBU setting independent
- of DT alias
+Subject: [PATCH RFT v3] scripts: define _GNU_SOURCE for all source files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+musl doesn't define loff_t, unless _GNU_SOURCE is defined, which
+we don't do everywhere and glibc didn't mind.
 
-On 1/27/25 12:02 PM, Ahmad Fatoum wrote:
-> Different baseboards may shuffle around the eMMC/SD aliases differently
-> and thus the barebox update handler registration may not be correct
-> across all of them.
-> 
-> Instead of hardcoding the eMMC device and SD device, let's derive the
-> correct index dynamically at runtime using the mapping that the barebox
-> bootsource code is already using.
-> 
-> Reported-by: Jonas Rebmann <jre@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+This led to build errors with musl when code makes it into
+scripts/ that uses loff_t. This was already fixed once e.g. in commit
+c0d065fb0aa0 ("scripts: bareboximd: remove usage of loff_t").
 
-Reviewed-by: Jonas Rebmann <jre@pengutronix.de>
+To fix this issue for good, let's define _GNU_SOURCE globally for all files.
 
-> ---
-> Jonas, can you give this a test and see if it works for you?
+Link: https://lore.kernel.org/all/CAMKF1sqX7gFCEH78fHS+jkUSieL5crAU_RwAUO-daJL0u+fj0g@mail.gmail.com/
+Fixes: 5171f4d0696f ("scripts: implement read_fd and pread_full for tools")
+Suggested-by: Khem Raj <raj.khem@gmail.com>
+Reported-by: Enrico Jörns <ejo@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+@Enrico, please give this a test. I only tested against glibc.
 
-Works as it should, thank you!
+v2 -> v3:
+  - set _GNU_SOURCE instead of defining loff_t (Khem)
+v1 -> v2:
+  - include <linux/types.h> from scripts/common.h (Enrico)
+v2 was here:
+  https://lore.barebox.org/barebox/20250127143146.2965544-1-a.fatoum@pengutronix.de/T/#u
+---
+ scripts/Makefile         | 4 ++++
+ scripts/imx/imx-image.c  | 1 -
+ scripts/imx/imx.c        | 1 -
+ scripts/imx9image.c      | 1 -
+ scripts/kernel-install.c | 1 -
+ scripts/keytoc.c         | 1 -
+ scripts/kwbimage.c       | 1 -
+ 7 files changed, 4 insertions(+), 6 deletions(-)
 
-> ---
->   arch/arm/boards/toradex-colibri-imx6/board.c | 24 +++++++++++++++++---
->   1 file changed, 21 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/boards/toradex-colibri-imx6/board.c b/arch/arm/boards/toradex-colibri-imx6/board.c
-> index f3a6173e5064..5771b08cbacb 100644
-> --- a/arch/arm/boards/toradex-colibri-imx6/board.c
-> +++ b/arch/arm/boards/toradex-colibri-imx6/board.c
-> @@ -9,6 +9,14 @@
->   #include <mach/imx/imx6.h>
->   #include <mfd/imx6q-iomuxc-gpr.h>
->   
-> +/*
-> + * The upstream device tree shuffles around the eMMC/SD indices, so the
-> + * board code here takes care to use the numbering of the SoC reference
-> + * manual
-> + */
-> +#define COLIBRI_MMC_INSTANCE_SD		0
-> +#define COLIBRI_MMC_INSTANCE_EMMC	2
-> +
->   static void eth_init(void)
->   {
->   	void __iomem *iomux = IOMEM(MX6_IOMUXC_BASE_ADDR);
-> @@ -22,9 +30,19 @@ static void eth_init(void)
->   
->   static int colibri_imx6_probe(struct device *dev)
->   {
-> -	imx6_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc0",
-> -			BBU_HANDLER_FLAG_DEFAULT);
-> -	imx6_bbu_internal_mmc_register_handler("sd", "/dev/mmc1", 0);
-> +	int emmc_alias, sd_alias;
-> +
-> +	emmc_alias = bootsource_of_alias_xlate(BOOTSOURCE_MMC, COLIBRI_MMC_INSTANCE_EMMC);
-> +	if (emmc_alias >= 0)
-> +		imx6_bbu_internal_mmcboot_register_handler("emmc",
-> +							   basprintf("/dev/mmc%u", emmc_alias),
-> +							   BBU_HANDLER_FLAG_DEFAULT);
-> +
-> +	sd_alias = bootsource_of_alias_xlate(BOOTSOURCE_MMC, COLIBRI_MMC_INSTANCE_SD);
-> +	if (sd_alias >= 0)
-> +		imx6_bbu_internal_mmc_register_handler("sd",
-> +						       basprintf("/dev/mmc%u", sd_alias),
-> +						       0);
->   
->   	barebox_set_hostname("colibri-imx6");
->   
+diff --git a/scripts/Makefile b/scripts/Makefile
+index a780f05bd90f..c1a5b4b74775 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -60,6 +60,10 @@ rk-usb-loader-target-userldlibs += `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
+ 
+ userccflags += -I $(srctree)/$(src)/include -isystem $(srctree)/scripts/include
+ 
++# We need to explicitly set the macro to empty, otherwise it's defined to =1
++userccflags += -D_GNU_SOURCE=""
++KBUILD_HOSTCFLAGS += -D_GNU_SOURCE=""
++
+ subdir-y			+= mod
+ subdir-y			+= imx
+ subdir-$(CONFIG_DTC)		+= dtc
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 9ba60dbc5b4c..a8ac34091fc0 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ // SPDX-FileCopyrightText: 2013 Sascha Hauer, Pengutronix
+ 
+-#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <getopt.h>
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 5ccc116cfe3c..26027f0f3548 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ // SPDX-FileCopyrightText: 2016 Sascha Hauer, Pengutronix
+ 
+-#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+diff --git a/scripts/imx9image.c b/scripts/imx9image.c
+index 53fb879882e8..61b7cc943f00 100644
+--- a/scripts/imx9image.c
++++ b/scripts/imx9image.c
+@@ -8,7 +8,6 @@
+  *
+  */
+ 
+-#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+diff --git a/scripts/kernel-install.c b/scripts/kernel-install.c
+index d943f0288f39..240122f2d224 100644
+--- a/scripts/kernel-install.c
++++ b/scripts/kernel-install.c
+@@ -72,7 +72,6 @@
+  *
+  */
+ 
+-#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+diff --git a/scripts/keytoc.c b/scripts/keytoc.c
+index c60df8a5f017..2a0d7c415bf0 100644
+--- a/scripts/keytoc.c
++++ b/scripts/keytoc.c
+@@ -9,7 +9,6 @@
+  *
+  */
+ #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+-#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <string.h>
+ #include <time.h>
+diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
+index 370c54c983b5..c58c80e5415f 100644
+--- a/scripts/kwbimage.c
++++ b/scripts/kwbimage.c
+@@ -30,7 +30,6 @@
+  * headers in v1 images
+  */
+ 
+-#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdint.h>
+ #include <sys/types.h>
+-- 
+2.39.5
 
 
 
