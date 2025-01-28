@@ -1,68 +1,68 @@
-Delivery-date: Tue, 28 Jan 2025 11:30:38 +0100
+Delivery-date: Tue, 28 Jan 2025 11:36:58 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcird-005U24-11
+	id 1tcixl-005U5R-1g
 	for lore@lore.pengutronix.de;
-	Tue, 28 Jan 2025 11:30:38 +0100
+	Tue, 28 Jan 2025 11:36:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcird-0004uj-BF
-	for lore@pengutronix.de; Tue, 28 Jan 2025 11:30:37 +0100
+	id 1tcixl-0005nV-Lf
+	for lore@pengutronix.de; Tue, 28 Jan 2025 11:36:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EtdSZ4G5W/D2/dPCCOP/rXsfZPArVDMK4ciPfv7nYQQ=; b=j/7Mhm4Q2e+ls5InXbPxN3KKkL
-	w0tE62Ucr3UL0PiRtfx2zVwqJQtCt6ikTPUcOsZqyZOELoxFVeOv1q52jY+bCq6Frfb1pTLV3BxoN
-	2A0/ZMuZCLGXTHU3E7I+UtgvpUjH5NDjz5DCPVSIbnhOw1oFrJTt008dp42PLNQsaBra+weT9QaOq
-	7s0W9nv3FmtKecIe3J5O/FfYJrRPUIVE5moA6/SwJbaQtnPtSXwuaDM/npI7urnaQ6LAQmGb6bHtN
-	G6LNEKB9cjHgOVz77Zq5YnhAESeRhfc0sicqQE/4LyrsMiza4E0aZ2xjWP9XQzj6g8SYCnLHf/zfW
-	RDm8dXUA==;
+	bh=2+hGaW2bsiSOTPQ5HuSBJDokPirRWgjwmZZL7pmBnYM=; b=FsnofShJLxIRP9K0tV+ITjE3xr
+	vpABwWypzR0wyLGkXRkeEIKRZt2g7vdwF5mMR6awR/nCEc109SU22qs+ddsrSJKhNxVrSMQYS5fL1
+	q7YcyaB7/XonvUJ7lzXhsqEF54j7j3NQRfXgvGm2ZHpbj+Nxvg3iYsoL1RNc2VzL3VBH92IQJy6zK
+	PbTUF+hSB8UjRthk8HTzMqvC3dJYfGjs4fns/WgpHVobyef2uqUT50IkNB5pW/dZ5wDfSu680w8i9
+	xQqihJqAA8bel8kr9gCRvajzsd8jpZxyGsfhUFyHgEN/abzjkvdVsF+Wt1HzQco1H8NIOpkVf2Zig
+	iiFvckcA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcirC-00000004eFi-3nUw;
-	Tue, 28 Jan 2025 10:30:10 +0000
+	id 1tcixK-00000004f9T-0Yz0;
+	Tue, 28 Jan 2025 10:36:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcirA-00000004eFG-220G
+	id 1tcixI-00000004f97-1Kis
 	for barebox@lists.infradead.org;
-	Tue, 28 Jan 2025 10:30:09 +0000
+	Tue, 28 Jan 2025 10:36:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tcir9-0004l8-BW; Tue, 28 Jan 2025 11:30:07 +0100
+	id 1tcixH-0005hl-3X; Tue, 28 Jan 2025 11:36:27 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tcir9-002HK6-0T;
-	Tue, 28 Jan 2025 11:30:07 +0100
+	id 1tcixG-002HP6-2V;
+	Tue, 28 Jan 2025 11:36:26 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tcir9-0029hj-0F;
-	Tue, 28 Jan 2025 11:30:07 +0100
+	id 1tcixG-0029sb-2H;
+	Tue, 28 Jan 2025 11:36:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20250123131131.4038998-1-s.hauer@pengutronix.de>
-References: <20250123131131.4038998-1-s.hauer@pengutronix.de>
-Message-Id: <173806020707.513940.17360930923585457598.b4-ty@pengutronix.de>
-Date: Tue, 28 Jan 2025 11:30:07 +0100
+To: barebox@lists.infradead.org, 
+ Alexander Shiyan <eagle.alexander923@gmail.com>
+In-Reply-To: <20250122074104.25675-1-eagle.alexander923@gmail.com>
+References: <20250122074104.25675-1-eagle.alexander923@gmail.com>
+Message-Id: <173806058670.514618.2188352838973487049.b4-ty@pengutronix.de>
+Date: Tue, 28 Jan 2025 11:36:26 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250128_023008_525061_2576888F 
-X-CRM114-Status: UNSURE (   6.57  )
+X-CRM114-CacheID: sfid-20250128_023628_357553_D07AE4CB 
+X-CRM114-Status: UNSURE (   9.59  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -86,21 +86,25 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] console: print countdown aborted message only once
+Subject: Re: [PATCH] gpio: add driver for SAMA5D2 PIOBU pins
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 23 Jan 2025 14:11:31 +0100, Sascha Hauer wrote:
-> console_countdown_abort() can be called multiple times. Print the
-> message only the first time it is called.
+On Wed, 22 Jan 2025 10:41:04 +0300, Alexander Shiyan wrote:
+> PIOBU pins do not lose their voltage during Backup/Self-refresh.
+> This patch adds a simple GPIO controller for them and a
+> maintainer for the driver.
+> This driver adds support for using the pins as GPIO
+> offering the possibility to read/set the voltage.
 > 
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] console: print countdown aborted message only once
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b2a15c383ddc (link may not be stable)
+[1/1] gpio: add driver for SAMA5D2 PIOBU pins
+      https://git.pengutronix.de/cgit/barebox/commit/?id=80d57fd2d3df (link may not be stable)
 
 Best regards,
 -- 
