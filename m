@@ -1,67 +1,67 @@
-Delivery-date: Tue, 28 Jan 2025 16:22:07 +0100
+Delivery-date: Tue, 28 Jan 2025 16:22:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcnPi-005ZEL-2a
+	id 1tcnQL-005ZF7-1E
 	for lore@lore.pengutronix.de;
-	Tue, 28 Jan 2025 16:22:07 +0100
+	Tue, 28 Jan 2025 16:22:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tcnPi-0005wg-Th
-	for lore@pengutronix.de; Tue, 28 Jan 2025 16:22:07 +0100
+	id 1tcnQL-000666-C4
+	for lore@pengutronix.de; Tue, 28 Jan 2025 16:22:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=1SKNNRhgKQ3lP6I/hoXJdiXTT4TlU9nt6wh2r412uhE=; b=zAZCWlpoZbBRX+7xW14U9iNZm7
-	5R+TW4CpazhfBYa24Qc184oZuqDEK8RloyEXP+CeZM5un0TmhqEXPkdyXGYelgvw0ja5JRxGixM/T
-	LjCaSDBTFXq9E1vX7g1BVUJq3dFzaKZHPK5LxpIAllu0USZ2srrRs4pyFsUzQXqISSEZwlcxR3Jw7
-	YX1pl1z1noCFEN/92w8slW2NbxQ0rG6LA35fHO/OnfIXe3DYFctxnfkIfoK0cA+sX9/b1QjhP8+Kc
-	ZWg6lek6yKXmVZSDShky7uNcYggtFFzEvXpBtT6pkrCNv6LBRBsYUsprH4eF0daWDtDZIqpkCwsvL
-	AZ51JH8Q==;
+	bh=ONyFCtWyllC3dWKhjJqRBQqKRZiCJbKXNJpEsEFejTg=; b=1XrT7VZRmR/VsXj+rlV60km5mO
+	FqoAW2hY/deizpG/Gb7ohX1me7280L7N6pXCgYtDaZX4Pf1I4TZHrgFys6QSPnNBjXMRwoO3FsL37
+	DKjMl5NX6oasvRA5timT+GTQXKCZlewNKe8WXZGMkCV3amjdkmcOR2Fxx17sdgtxSKXvd8JFXtTxE
+	8AB5T7hZzuHMyr/ZKmIJIM0NAm8FCSdwmzj4HQ9dnehA+upFsk34H2ZZbMpkJw1HgPrgbS+u+ujEV
+	zrXCwkEa+TP+F5eWK8Rn+ua9M8ih5aUPj5zx2wBJIFpcMLZX0QckwJzAsJmXizbmN++g7BJGJSYdd
+	7S+Bas9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcnPH-000000057sy-2hKl;
-	Tue, 28 Jan 2025 15:21:39 +0000
+	id 1tcnPw-00000005803-0hJg;
+	Tue, 28 Jan 2025 15:22:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcnPE-000000057s6-2h9r
+	id 1tcnPt-000000057zT-1qJ9
 	for barebox@lists.infradead.org;
-	Tue, 28 Jan 2025 15:21:37 +0000
+	Tue, 28 Jan 2025 15:22:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcnPD-0005qK-EP
-	for barebox@lists.infradead.org; Tue, 28 Jan 2025 16:21:35 +0100
+	id 1tcnPs-0005yp-Ah
+	for barebox@lists.infradead.org; Tue, 28 Jan 2025 16:22:16 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcnPD-002Jep-0m
+	id 1tcnPs-002Jev-0P
 	for barebox@lists.infradead.org;
-	Tue, 28 Jan 2025 16:21:35 +0100
+	Tue, 28 Jan 2025 16:22:16 +0100
 Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
 	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1tcnPD-004o7m-1y
+	id 1tcnPs-004o9t-1d
 	for barebox@lists.infradead.org;
-	Tue, 28 Jan 2025 16:21:35 +0100
+	Tue, 28 Jan 2025 16:22:16 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 28 Jan 2025 16:21:24 +0100
-Message-Id: <20250128152124.1145868-1-m.grzeschik@pengutronix.de>
+Date: Tue, 28 Jan 2025 16:22:11 +0100
+Message-Id: <20250128152211.1146024-1-m.grzeschik@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250128_072136_675362_9C2CB8F7 
-X-CRM114-Status: GOOD (  11.53  )
+X-CRM114-CacheID: sfid-20250128_072217_474074_941CAC31 
+X-CRM114-Status: GOOD (  15.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,70 +84,82 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3] video: simple-panel: add regulator support
+Subject: [PATCH] ARM: i.MX93: allow board code to configure the bl33 loadaddr
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Add parameterized __imx93_load_and_start_image_via_tfa function to
+load_and_start the image on arbitrary load addresses. This should be
+taken with caution since it requires to configure the TF-A correctly as
+well, therefore the function is prefixt with '__'.
+
+One use case of the new helper is to place OP-TEE at the very beginning
+of the DRAM and barebox afterwards.
+
+It has shown that the OPTEE can only operate with the ELE device if
+it uses the MU wih messages that are addressed after 0xE0000000.
+
+If OPTEE will be linked to the upper end of the memory layout on systems
+with more then 3.5GB the ELE device can therefor not be used anymore.
+
+So moving the layout is crucial for these platforms to properly operate
+with OPTEE that is including ELE support.
+
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-
 ---
-v2 -> v3: - reset regulator->power to NULL in case nothing was found
-v1 -> v2: - added the missing signed-off-by
+ arch/arm/mach-imx/atf.c  | 10 +++++++---
+ include/mach/imx/xload.h |  1 +
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
- drivers/video/simple-panel.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/video/simple-panel.c b/drivers/video/simple-panel.c
-index 7048e2f51b..0973e84056 100644
---- a/drivers/video/simple-panel.c
-+++ b/drivers/video/simple-panel.c
-@@ -10,6 +10,7 @@
- #include <linux/err.h>
- #include <of.h>
- #include <fb.h>
-+#include <regulator.h>
- #include <gpio.h>
- #include <of_gpio.h>
- #include <video/backlight.h>
-@@ -25,6 +26,7 @@ struct simple_panel {
- 	struct device_node *backlight_node;
- 	struct backlight_device *backlight;
- 	struct device_node *ddc_node;
-+	struct regulator *power;
- 	int enable_delay;
- };
+diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
+index 4e7a548340..6dc80cb700 100644
+--- a/arch/arm/mach-imx/atf.c
++++ b/arch/arm/mach-imx/atf.c
+@@ -386,12 +386,16 @@ __noreturn void __imx8mq_load_and_start_image_via_tfa(void *bl33)
+ }
  
-@@ -49,6 +51,8 @@ static int simple_panel_enable(struct simple_panel *panel)
- 	if (panel->enable_delay)
- 		mdelay(panel->enable_delay);
- 
-+	regulator_enable(panel->power);
+ void __noreturn imx93_load_and_start_image_via_tfa(void)
++{
++	__imx93_load_and_start_image_via_tfa((void *)MX93_ATF_BL33_BASE_ADDR);
++}
 +
- 	if (panel->backlight) {
- 		ret = backlight_set_brightness_default(panel->backlight);
- 		if (ret)
-@@ -65,6 +69,8 @@ static int simple_panel_disable(struct simple_panel *panel)
- 	if (panel->backlight)
- 		backlight_set_brightness(panel->backlight, 0);
++void __noreturn __imx93_load_and_start_image_via_tfa(void *bl33)
+ {
+ 	unsigned long atf_dest = MX93_ATF_BL31_BASE_ADDR;
+ 	void __noreturn (*bl31)(void) = (void *)atf_dest;
+ 	const void *tfa;
+ 	size_t tfa_size;
+-	void *bl33 = (void *)MX93_ATF_BL33_BASE_ADDR;
+ 	unsigned long endmem = MX9_DDR_CSD1_BASE_ADDR + imx9_ddrc_sdram_size();
  
-+	regulator_disable(panel->power);
-+
- 	if (gpio_is_valid(panel->enable_gpio))
- 		gpio_direction_output(panel->enable_gpio,
- 			!panel->enable_active_high);
-@@ -154,6 +160,12 @@ static int simple_panel_probe(struct device *dev)
+ 	imx_set_cpu_type(IMX_CPU_IMX93);
+@@ -434,12 +438,12 @@ void __noreturn imx93_load_and_start_image_via_tfa(void)
+ 	 * it there. The USB protocol transfers data in chunks of 1024 bytes,
+ 	 * so align the copy size up to the next 1KiB boundary.
+ 	 */
+-	memcpy((void *)MX93_ATF_BL33_BASE_ADDR, __image_start, ALIGN(barebox_pbl_size, 1024));
++	memcpy(bl33, __image_start, ALIGN(barebox_pbl_size, 1024));
  
- 	panel->backlight_node = of_parse_phandle(node, "backlight", 0);
+ 	memcpy(bl31, tfa, tfa_size);
  
-+	panel->power = regulator_get(dev, "power");
-+	if (IS_ERR(panel->power)) {
-+		dev_warn(dev, "Cannot find regulator\n");
-+		panel->power = NULL;
-+	}
-+
- 	ret = vpl_register(&panel->vpl);
- 	if (ret)
- 		return ret;
+ 	asm volatile("msr sp_el2, %0" : :
+-		     "r" (MX93_ATF_BL33_BASE_ADDR - 16) :
++		     "r" (bl33 - 16) :
+ 		     "cc");
+ 	bl31();
+ 	__builtin_unreachable();
+diff --git a/include/mach/imx/xload.h b/include/mach/imx/xload.h
+index 3a396ac453..62b853f585 100644
+--- a/include/mach/imx/xload.h
++++ b/include/mach/imx/xload.h
+@@ -38,6 +38,7 @@ void __noreturn __imx8mp_load_and_start_image_via_tfa(void *bl33);
+ void __noreturn __imx8mq_load_and_start_image_via_tfa(void *bl33);
+ 
+ void __noreturn imx93_load_and_start_image_via_tfa(void);
++void __noreturn __imx93_load_and_start_image_via_tfa(void *bl33);
+ 
+ int imx_load_image(ptrdiff_t address, ptrdiff_t entry, u32 offset,
+ 		   u32 ivt_offset, bool start, unsigned int alignment,
 -- 
 2.39.5
 
