@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1td7tS-005wJn-1c
+	id 1td7tS-005wJo-1l
 	for lore@lore.pengutronix.de;
 	Wed, 29 Jan 2025 14:14:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1td7tS-0007Sk-G0
+	id 1td7tS-0007Sj-8I
 	for lore@pengutronix.de; Wed, 29 Jan 2025 14:14:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=z3bpSnMYPtesDhpJV0kqygTjW2KrV93ehS2GzGMagvk=; b=mGIWHHse/4MNe2qNVRWuuzx2Hm
-	78tFkP8SQZrJBLY+U3oYQCEGcWAh1QGjvXEM93yKjYc73MQQtuPoRSEz2sa//M+JAQKzlCxVo4hW5
-	1K5yUJXENY9LoqMW5WGPJ1ddcXdPEgx4evfE4KKc5zDa2Qs9T70fwguMa/Sfxxyr8ogtXE6bjPrfZ
-	qwx06PZrYgvYyK3NBY8DcdkHLHkS8ty5iZ1ObmVJAT9RDL80fgPIpWtGNQTNdwnO0Ua38Mm0r/wN7
-	JP/jwVeKpnZgcMkfKTHyiRYdLQXHi4rKZv3qkm/qc46vDYLpCRBmXs+EGdAWa7Z2Lm96qYXwdf0ct
-	5V3yvTHQ==;
+	bh=xmCVuhpiXxY8dDONQ97WlJzqecGhZ18i4QKmrnUWwCc=; b=ZbrI0oi0tgiy/u/VCYVS1bEH42
+	ETUhZIcXPwZJFQLj6pX1j7dd5EJAiUZgiCveli12u8V5Ktqz1uPW6GXkvIaqWj4yDEqdbKWvLGdt4
+	MRaEAzHtJgZkW8YQuQumSU/1/CTnk1jiQboHiIqifTp08Yb1Tiq1S/s2wi+DO9HOsNmJHIcnwk6vq
+	2LF8elRz1lBOT4N585NbKfTEBNCmHWV5gVS0pAhTaD7yLuIh44b/EA/i+SXzhqjxisZhxVObFLVWO
+	U9+b3at1+m8LW98IBcqd7CZW7dT3d6mVbJqF/NkbSDL6NadrBXHzf/wokuVOZ0LYECfgeN9k3hUVh
+	Tb1EtZ6Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1td7sr-00000006z9p-16uz;
+	id 1td7sr-00000006zA8-30ck;
 	Wed, 29 Jan 2025 13:13:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1td7so-00000006z7d-1xuC
+	id 1td7so-00000006z7f-1xnU
 	for barebox@lists.infradead.org;
-	Wed, 29 Jan 2025 13:13:31 +0000
+	Wed, 29 Jan 2025 13:13:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1td7sl-0007GS-Sw; Wed, 29 Jan 2025 14:13:27 +0100
+	id 1td7sl-0007GU-Sx; Wed, 29 Jan 2025 14:13:27 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1td7sl-002TBl-1s;
+	id 1td7sl-002TBm-1v;
 	Wed, 29 Jan 2025 14:13:27 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1td7sl-00Caz7-1i;
+	id 1td7sl-00CazB-1l;
 	Wed, 29 Jan 2025 14:13:27 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Michiel Schelfhout <michiel.schelfhout@protonic.nl>,
 	Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 29 Jan 2025 14:13:25 +0100
-Message-Id: <20250129131326.3002089-2-o.rempel@pengutronix.de>
+Date: Wed, 29 Jan 2025 14:13:26 +0100
+Message-Id: <20250129131326.3002089-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250129131326.3002089-1-o.rempel@pengutronix.de>
 References: <20250129131326.3002089-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250129_051330_508055_BE602714 
-X-CRM114-Status: GOOD (  18.83  )
+X-CRM114-CacheID: sfid-20250129_051330_659574_25E5388E 
+X-CRM114-Status: GOOD (  23.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,117 +83,215 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1 2/3] ARM: protonic-stm32mp1: Add support for reading serial from BSEC
+Subject: [PATCH v1 3/3] ARM: protonic-stm32mp1: Add shift register support for board ID and revision
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Michiel Schelfhout <michiel.schelfhout@protonic.nl>
 
-Introduce support for retrieving the board-specific serial number from
-BSEC registers via the OP-TEE interface. The serial number is stored
-across three 4-byte registers (58, 59, 60), with only the lower 16 bits
-of register 58 being relevant.
+Introduce support for reading the board ID and hardware revision using a
+74HC165BQ shift register.
+
+Since all new designs are expected to include this shift register, support
+is enabled by default. Boards that lack the shift register explicitly set
+PRT_STM32_NO_SHIFT_REG to skip read of IDs
 
 Signed-off-by: Michiel Schelfhout <michiel.schelfhout@protonic.nl>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boards/protonic-stm32mp1/board.c | 61 +++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ arch/arm/boards/protonic-stm32mp1/board.c | 134 +++++++++++++++++++++-
+ 1 file changed, 129 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/boards/protonic-stm32mp1/board.c b/arch/arm/boards/protonic-stm32mp1/board.c
-index 0b46dccb3247..cafdc20c2b42 100644
+index cafdc20c2b42..86cda1676b48 100644
 --- a/arch/arm/boards/protonic-stm32mp1/board.c
 +++ b/arch/arm/boards/protonic-stm32mp1/board.c
-@@ -6,14 +6,20 @@
+@@ -4,22 +4,40 @@
+ 
+ #include <bootsource.h>
  #include <common.h>
++#include <deep-probe.h>
++#include <gpio.h>
  #include <init.h>
++#include <linux/bitfield.h>
  #include <mach/stm32mp/bbu.h>
-+#include <mach/stm32mp/bsec.h>
+ #include <mach/stm32mp/bsec.h>
  #include <of_device.h>
- #include <deep-probe.h>
-+#include <soc/stm32/stm32-bsec-optee-ta.h>
+-#include <deep-probe.h>
++#include <soc/stm32/gpio.h>
+ #include <soc/stm32/stm32-bsec-optee-ta.h>
  
  /* board specific flags */
++/* PRT_STM32_NO_SHIFT_REG: Board does not have a shift register,
++ * this register is used to read board ID and hardware revision, and
++ * expected to be on all new boards.
++ */
++#define PRT_STM32_NO_SHIFT_REG		BIT(3)
  #define PRT_STM32_BOOTSRC_SD		BIT(2)
  #define PRT_STM32_BOOTSRC_EMMC		BIT(1)
  #define PRT_STM32_BOOTSRC_SPI_NOR	BIT(0)
  
-+/* board specific serial number length is 10 characters without '\0' */
-+#define PRT_STM32_SERIAL_LEN		10
-+#define PRT_STM32_SERIAL_OFFSET		58
++#define PRT_STM32_GPIO_HWID_PL_N	13 /* PA13 */
++#define PRT_STM32_GPIO_HWID_CP		14 /* PA14 */
++#define PRT_STM32_GPIO_HWID_Q7		45 /* PC13 */
++
+ /* board specific serial number length is 10 characters without '\0' */
+ #define PRT_STM32_SERIAL_LEN		10
+ #define PRT_STM32_SERIAL_OFFSET		58
+ 
++#define PRT_STM32_REVISION_ID_MASK	GENMASK(2, 0)
++#define PRT_STM32_BOARD_ID_MASK		GENMASK(7, 3)
++
++/* defines for 74HC165BQ 8-bit parallel-in/serial out shift register */
++#define PRT_STM32_SHIFT_REG_SIZE	8
 +
  struct prt_stm32_machine_data {
  	u32 flags;
  };
-@@ -54,6 +60,59 @@ static const struct prt_stm32_boot_dev prt_stm32_boot_devs[] = {
- 	},
- };
+@@ -113,6 +131,105 @@ static int prt_stm32_read_serial(struct device *dev)
+ 	return ret;
+ }
  
-+static int prt_stm32_set_serial(struct device *dev, char *serial)
++static int prt_stm32_init_shift_reg(struct device *dev)
 +{
-+	dev_info(dev, "Serial number: %s\n", serial);
-+	barebox_set_serial_number(serial);
++	int ret;
++
++	ret = gpio_direction_output(PRT_STM32_GPIO_HWID_PL_N, 1);
++	if (ret)
++		goto error_out;
++
++	ret = gpio_direction_output(PRT_STM32_GPIO_HWID_CP, 1);
++	if (ret)
++		goto error_out;
++
++	ret = gpio_direction_input(PRT_STM32_GPIO_HWID_Q7);
++	if (ret)
++		goto error_out;
++
++	__stm32_pmx_set_output_type((void __iomem *)0x50002000, 13,
++					       STM32_PIN_OUT_PUSHPULL);
++	__stm32_pmx_set_output_type((void __iomem *)0x50002000, 14,
++					       STM32_PIN_OUT_PUSHPULL);
++
++	return 0;
++
++error_out:
++	dev_err(dev, "Failed to init shift register: %pe\n", ERR_PTR(ret));
++	return ret;
++}
++
++static int prt_stm32_of_fixup_hwrev(struct device *dev, uint8_t bid,
++				    uint8_t rid)
++{
++	const char *compat;
++	char *buf;
++
++	compat = of_device_get_match_compatible(dev);
++
++	buf = xasprintf("%s-m%u-r%u", compat, bid, rid);
++	barebox_set_of_machine_compatible(buf);
++
++	free(buf);
 +
 +	return 0;
 +}
 +
-+static int prt_stm32_read_serial(struct device *dev)
++/**
++ * prt_stm32_read_shift_reg - Reads board ID and hardware revision
++ * @dev: The device structure for logging and potential device-specific
++ *       operations.
++ *
++ * This function reads an 8-bit value from a 74HC165BQ parallel-in/serial-out
++ * shift register to extract the board ID and hardware revision.
++ *
++ * GPIO pins used:
++ * - PRT_STM32_GPIO_HWID_PL_N: Controls the latch operation.
++ * - PRT_STM32_GPIO_HWID_CP: Controls the clock pulses for shifting data.
++ * - PRT_STM32_GPIO_HWID_Q7: Reads the serial data output from the shift
++ *   register.
++ */
++static void prt_stm32_read_shift_reg(struct device *dev)
 +{
-+	/* including first 2 non-serial bytes */
-+	char raw_serial[PRT_STM32_SERIAL_LEN + 2];
-+	/* board specific serial number + one char for '\0' */
-+	char serial[PRT_STM32_SERIAL_LEN + 1];
-+	struct tee_context *ctx;
-+	int ret;
++	uint8_t rid, bid;
++	uint8_t data = 0;
++	int i;
 +
-+	/* the ctx pointer will be set in the stm32_bsec_optee_ta_open */
-+	ret = stm32_bsec_optee_ta_open(&ctx);
-+	if (ret) {
-+		dev_err(dev, "Failed to open BSEC TA: %pe\n", ERR_PTR(ret));
-+		return ret;
++	/* Initial state. PL (Parallel Load) is set in inactive state */
++	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
++	gpio_set_value(PRT_STM32_GPIO_HWID_CP, 0);
++	mdelay(1);
++
++	/* Activate PL to latch parallel interface */
++	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 0);
++	/* Wait for the data to be stable. Works for me type of delay */
++	mdelay(1);
++	/* Deactivate PL */
++	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
++
++	/* Read data from the shift register using serial interface */
++	for (i = PRT_STM32_SHIFT_REG_SIZE - 1; i >= 0; i--) {
++		/* Shift the data */
++		data += (gpio_get_value(PRT_STM32_GPIO_HWID_Q7) << i);
++
++		/* Toggle the clock line */
++		gpio_set_value(PRT_STM32_GPIO_HWID_CP, 1);
++		mdelay(1);
++		gpio_set_value(PRT_STM32_GPIO_HWID_CP, 0);
 +	}
 +
-+	ret = stm32_bsec_optee_ta_read(ctx, PRT_STM32_SERIAL_OFFSET * 4,
-+				       &raw_serial, sizeof(raw_serial));
-+	if (ret)
-+		goto exit_pta_read;
++	rid = FIELD_GET(PRT_STM32_REVISION_ID_MASK, data);
++	bid = FIELD_GET(PRT_STM32_BOARD_ID_MASK, data);
 +
-+	/*
-+	 * Shift the serial data left by 2 bytes to remove the non-serial data.
-+	 * The serial number is stored across three 4-byte BSEC registers:
-+	 *   - Register 58 (4 bytes): Only the lower 16 bits contain serial data.
-+	 *   - Register 59 (4 bytes): Fully part of the serial number.
-+	 *   - Register 60 (4 bytes): Fully part of the serial number.
-+	 * Since we read all three registers as a continuous block (12 bytes),
-+	 * the first 2 bytes of Register 58 contain irrelevant data and must
-+	 * be discarded.
-+	 */
-+	memmove(serial, raw_serial + 2, sizeof(serial) - 1);
++	pr_info("  Board ID:    %d\n", bid);
++	pr_info("  HW revision: %d\n", rid);
++	prt_stm32_of_fixup_hwrev(dev, bid, rid);
 +
-+	serial[PRT_STM32_SERIAL_LEN] = 0;
-+
-+	stm32_bsec_optee_ta_close(&ctx);
-+
-+	return prt_stm32_set_serial(dev, serial);
-+
-+exit_pta_read:
-+	stm32_bsec_optee_ta_close(&ctx);
-+	dev_err(dev, "Failed to read serial: %pe\n", ERR_PTR(ret));
-+	return ret;
++	/* PL and CP pins are shared with LEDs. Make sure LEDs are turned off */
++	gpio_set_value(PRT_STM32_GPIO_HWID_PL_N, 1);
++	gpio_set_value(PRT_STM32_GPIO_HWID_CP, 1);
 +}
 +
  static int prt_stm32_probe(struct device *dev)
  {
  	const struct prt_stm32_machine_data *dcfg;
-@@ -66,6 +125,8 @@ static int prt_stm32_probe(struct device *dev)
- 		goto exit_get_dcfg;
- 	}
+@@ -127,6 +244,11 @@ static int prt_stm32_probe(struct device *dev)
  
-+	prt_stm32_read_serial(dev);
+ 	prt_stm32_read_serial(dev);
+ 
++	if (!(dcfg->flags & PRT_STM32_NO_SHIFT_REG)) {
++		prt_stm32_init_shift_reg(dev);
++		prt_stm32_read_shift_reg(dev);
++	}
 +
  	for (i = 0; i < ARRAY_SIZE(prt_stm32_boot_devs); i++) {
  		const struct prt_stm32_boot_dev *bd = &prt_stm32_boot_devs[i];
  		int bbu_flags = 0;
+@@ -167,19 +289,21 @@ static int prt_stm32_probe(struct device *dev)
+ }
+ 
+ static const struct prt_stm32_machine_data prt_stm32_prtt1a = {
+-	.flags = PRT_STM32_BOOTSRC_SD | PRT_STM32_BOOTSRC_SPI_NOR,
++	.flags = PRT_STM32_BOOTSRC_SD | PRT_STM32_BOOTSRC_SPI_NOR |
++		 PRT_STM32_NO_SHIFT_REG,
+ };
+ 
+ static const struct prt_stm32_machine_data prt_stm32_prtt1c = {
+-	.flags = PRT_STM32_BOOTSRC_SD | PRT_STM32_BOOTSRC_EMMC,
++	.flags = PRT_STM32_BOOTSRC_SD | PRT_STM32_BOOTSRC_EMMC |
++		 PRT_STM32_NO_SHIFT_REG,
+ };
+ 
+ static const struct prt_stm32_machine_data prt_stm32_mecio1 = {
+-	.flags = PRT_STM32_BOOTSRC_SPI_NOR,
++	.flags = PRT_STM32_BOOTSRC_SPI_NOR | PRT_STM32_NO_SHIFT_REG,
+ };
+ 
+ static const struct prt_stm32_machine_data prt_stm32_mect1s = {
+-	.flags = PRT_STM32_BOOTSRC_SPI_NOR,
++	.flags = PRT_STM32_BOOTSRC_SPI_NOR | PRT_STM32_NO_SHIFT_REG,
+ };
+ 
+ static const struct prt_stm32_machine_data prt_stm32_plyaqm = {
 -- 
 2.39.5
 
