@@ -1,66 +1,64 @@
-Delivery-date: Thu, 30 Jan 2025 13:08:58 +0100
+Delivery-date: Thu, 30 Jan 2025 13:29:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tdTLu-006Kc6-0S
+	id 1tdTgB-006Kuh-1j
 	for lore@lore.pengutronix.de;
-	Thu, 30 Jan 2025 13:08:58 +0100
+	Thu, 30 Jan 2025 13:29:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tdTLt-0002dj-NC
-	for lore@pengutronix.de; Thu, 30 Jan 2025 13:08:58 +0100
+	id 1tdTgB-0004pA-2o
+	for lore@pengutronix.de; Thu, 30 Jan 2025 13:29:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HhkenplpfHWYyKjDv3eiKfWgKzbgQNDlF13u4Ruw160=; b=AVg1dAB6s6oLOnyYcvXulvn8SU
-	4+rDxrbzyJi0BCi6R6guAOUnzTZc9ywcbEkWKLMyHA6cOdnLwvxf40+cjG5NKAaj7G7efzLBr//NS
-	L9Tmzt599br4WZyH7/6u0jyb9cRew/DFuXSGK7H8ASKAGc67BKSVfjsMNw/Ta1xlhsIirIHGJUUbI
-	qy/zu35cdZXwiWSQ4oMfltCw2g6tK0MNURHVn4qXgwRn5oVQUO1dcnLJQU8Z3C2KCiOeOrWubgMYX
-	rs0w3M8MRyPhE/jpmGITrPU89uT90c370gO6J9v0v52+VLHfF/IlkCqVaN6/6gwmCA+byhpY4erov
-	EZe899KA==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=uIuLSbigt/0CPVCFycB0H8eTim0ZxHMClYby9QBEm1A=; b=yI8A9Uua4tdMEcTP0ClPGPGYs2
+	VPyZliuusibQqy11R0g1XUWneVV/JZubKMiwhNQnsgtMhCEa98kadlV7JUgSCGXhv7ZwCDOKoudvv
+	6RO1DGGp8pxInEmkeqp6PTAb3PsMuU8rj/CJ40UHZwWhiNdBJRSy6J8OSedlLkc0aUPql28ONQXg7
+	/SIEYr/IGEn/70Wom6RXNFJaDDUdZVcC8/rWBcU4DG8EJv6YBmBpD+4e5EupAqg6U8bJQbUsbG/QZ
+	rFyLYWNaBX/ZwqVVGpoh+tDnMHxy2doLNlMD9AOiYIzdiMPfVNTrCbOusgJSzmpmz80KEJFA1WK+1
+	KrUMvBkA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tdTLJ-00000008kbZ-0mUb;
-	Thu, 30 Jan 2025 12:08:21 +0000
+	id 1tdTfh-00000008lgM-2UVv;
+	Thu, 30 Jan 2025 12:29:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tdTLF-00000008kah-3qW0
+	id 1tdTfe-00000008lfy-1EVg
 	for barebox@lists.infradead.org;
-	Thu, 30 Jan 2025 12:08:19 +0000
+	Thu, 30 Jan 2025 12:29:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tdTLD-0002VD-Hf; Thu, 30 Jan 2025 13:08:15 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tdTfd-0004k1-1O; Thu, 30 Jan 2025 13:29:21 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tdTLD-002csc-13;
-	Thu, 30 Jan 2025 13:08:15 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tdTLD-004Q2O-0r;
-	Thu, 30 Jan 2025 13:08:15 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 30 Jan 2025 13:08:14 +0100
-Message-Id: <20250130120814.1053382-2-o.rempel@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tdTfc-002d7D-2i;
+	Thu, 30 Jan 2025 13:29:20 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tdTfc-00Fz9Q-2F;
+	Thu, 30 Jan 2025 13:29:20 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 30 Jan 2025 13:29:17 +0100
+Message-Id: <20250130122917.3809977-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250130120814.1053382-1-o.rempel@pengutronix.de>
-References: <20250130120814.1053382-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250130_040818_105570_DD56A555 
-X-CRM114-Status: GOOD (  23.11  )
+X-CRM114-CacheID: sfid-20250130_042922_489880_3FD9EA44 
+X-CRM114-Status: GOOD (  27.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,240 +76,374 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1 2/2] Documentation: user: Add OTP support and parameter descriptions
+Subject: [PATCH] ARM: k3: r5: add USB DFU support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Provide an overview of OTP support in Barebox.
+This patch adds USB support for the k3 SoCs. DFU mode is entered when
+the SoC is booted from USB. For continuing the boot we need several
+binaries (bl31, OP-TEE, barebox, ti-dm firmware), these can be uploaded
+as distinct files or combined together as a FIP image. This patch
+also adds the possibility to put a FIP image on the SD/eMMC card which
+is then preferred over the distinct files which were previously expected
+on SD/eMMC cards.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/otp.rst         | 199 +++++++++++++++++++++++++++++
- Documentation/user/user-manual.rst |   1 +
- 2 files changed, 200 insertions(+)
- create mode 100644 Documentation/user/otp.rst
+ Documentation/boards/ti-k3.rst |  35 +++++
+ arch/arm/mach-k3/r5.c          | 231 ++++++++++++++++++++++++++++-----
+ 2 files changed, 236 insertions(+), 30 deletions(-)
 
-diff --git a/Documentation/user/otp.rst b/Documentation/user/otp.rst
-new file mode 100644
-index 000000000000..24a1f81fa449
---- /dev/null
-+++ b/Documentation/user/otp.rst
-@@ -0,0 +1,199 @@
-+OTP (One-Time Programmable) Support
-+====================================
+diff --git a/Documentation/boards/ti-k3.rst b/Documentation/boards/ti-k3.rst
+index a1bf0b92e8..7962491e41 100644
+--- a/Documentation/boards/ti-k3.rst
++++ b/Documentation/boards/ti-k3.rst
+@@ -69,6 +69,9 @@ OP-TEE is built from https://github.com/OP-TEE/optee_os.git::
+         PLATFORM=k3-am62x
+   cp out/arm-plat-k3/core/tee-raw.bin $TI_BOOT/optee.bin
+ 
++OP-TEE is optional. barebox will continue without ``optee.bin`` when the file
++does not exist.
 +
-+Overview
-+========
+ Copying ti-dm.bin
+ -----------------
+ 
+@@ -77,3 +80,35 @@ copied to the eMMC/SD as well::
+ 
+   cp $TI_LINUX_FIRMWARE/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f $TI_BOOT/ti-dm.bin
+ 
++Combining binaries into a FIP image
++-----------------------------------
 +
-+One-Time Programmable (OTP) memory is a type of non-volatile storage that
-+allows data to be written only once. After programming, the data cannot be
-+changed, or in some cases, only certain bits can transition from `0` to `1`.
-+OTP is commonly used for:
++Alternatively to putting the different binaries (``barebox.bin``, ``bl31.bin``, ``optee.bin``
++and ``ti-dm.bin``) into the FAT image the files can be combined into a FIP image named
++``k3.fip``.::
 +
-+- Storing unique device identifiers (serial numbers, MAC addresses, etc.).
-+- Configuring security settings (keys, fuses, hardware feature locks).
-+- Setting permanent device configurations.
++  fiptool create --soc-fw bl31.bin \
++    --tos-fw optee.bin \
++    --nt-fw barebox-beagleplay.img \
++    --blob uuid=9e8c2017-8b94-4e2b-a7b3-a0f88eabb8ae,file=ti-dm.bin k3.fip
 +
-+In Barebox, most OTP drivers are implemented on top of the `nvmem` framework.
-+Each specific driver may introduce device-specific parameters, but developers
-+are encouraged to follow a common pattern when implementing OTP access.
-+
-+Supported Parameters
-+====================
-+
-+Several parameters are used in different OTP drivers to provide consistent
-+access to the hardware. These include:
-+
-+permanent_write_enable
-+----------------------
-+Controls whether OTP programming is done directly or via shadow memory.
-+
-+- This is a global setting per OTP device.
-+- permanent_write_enable=1 -> All writes go directly to OTP fuses
-+  (permanent)
-+- permanent_write_enable=0 -> All writes go to shadow memory (volatile)
-+  if supported.
-+- Toggling `permanent_write_enable` does not automatically commit shadow
-+  memory.
-+- If shadow memory is not supported, writes always go directly to OTP.
-+
-+Understanding Shadow Memory
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+- Shadow memory acts as a volatile cache that holds OTP values temporarily.
-+- Shadow values are lost on power cycle unless explicitly committed.
-+- On some SoCs, shadow memory can be used for testing. The system can
-+  reboot (without power cycling) and use shadow values temporarily before
-+  committing them.
-+
-+Writing to OTP with and without Shadow Memory
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Example 1: Immediate Permanent Write (Bypassing Shadow Memory)
-+::
-+
-+    # Enable direct OTP write mode (all writes will be permanent)
-+    bsec0.permanent_write_enable=1
-+
-+    # Write directly to an OTP register (bypasses shadow)
-+    mw -l -d /dev/stm32-bsec 0x00000170+4 0x12345678
-+
-+    # Disable OTP write mode (future writes go to shadow, if available)
-+    bsec0.permanent_write_enable=0
-+
-+Example 2: Using Shadow Memory Without Committing
-+::
-+
-+    # Ensure shadow writes are enabled
-+    bsec0.permanent_write_enable=0
-+
-+    # Write to shadow memory (not permanent yet)
-+    mw -l -d /dev/imx-ocotp 0x20+4 0xAABBCCDD
-+
-+    # On power cycle, this data will be lost
-+    # After reboot, OTP value remains unchanged
-+
-+Example 3: Using Shadow Memory for Testing Before Committing
-+::
-+
-+    # Ensure shadow writes are enabled
-+    ocotp0.permanent_write_enable=0
-+
-+    # Write to the shadow memory (not yet permanent)
-+    mw -l -d /dev/imx-ocotp 0x20+4 0xAABBCCDD
-+
-+    # Perform a warm reboot (shadow memory is still active)
-+    reset -w
-+
-+    # If configuration works as expected, commit shadow to OTP
-+    ocotp0.permanent_write_enable=1
-+    mw -l -d /dev/imx-ocotp 0x20+4 0xAABBCCDD
-+    ocotp0.permanent_write_enable=0
-+
-+    # Now the value is permanently written to OTP fuses
-+
-+**Caution**
-+^^^^^^^^^^^
-+
-+- Setting `permanent_write_enable=1` makes all writes permanent
-+  immediately.
-+- Setting `permanent_write_enable=0` does not commit shadow memory
-+  automatically.
-+- Shadow memory is lost on power cycle unless explicitly committed.
-+
-+writelock
-+---------
-+
-+Permanently locks an OTP word after it is written.
-+
-+- writelock=1 -> Any OTP word written while this is enabled will be
-+  permanently locked after writing.
-+- writelock=0 -> Writes remain modifiable unless explicitly locked later.
-+- Only the OTP words written while `writelock=1` is active will be locked.
-+- Not all hardware or drivers support this functionality, or they may
-+  implement locking differently.
-+
-+How OTP Word Locking Works
-+^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+- Some OTP technologies allow bitwise OR-ing (changing `0` bits to `1` but
-+  not back to `0`).
-+- Without `writelock=1`, an attacker could modify certain bits after
-+  provisioning (e.g., enabling additional security features but keeping a
-+  backdoor open).
-+- Setting `writelock=1` ensures that only the OTP words written while it is
-+  active are locked, preventing further modification.
-+
-+Usage Example: Permanently Locking an OTP Word
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+::
-+
-+    # Enable OTP write mode (writes will be permanent)
-+    bsec0.permanent_write_enable=1
-+    bsec0.writelock=1
-+
-+    # Write data to OTP (this specific word will be permanently locked)
-+    mw -l -d /dev/stm32-bsec 0x00000170+4 0x12345678
-+
-+    # Disable write mode and writelock (future writes will not be locked)
-+    bsec0.permanent_write_enable=0
-+    bsec0.writelock=0
-+
-+**Caution**
-+^^^^^^^^^^^
-+
-+- Only the OTP words written while `writelock=1` is active will be locked.
-+- Other OTP words remain modifiable unless explicitly written and locked.
-+- Not all hardware or drivers support this functionality, or they may
-+  implement locking differently.
-+- If shadow memory is used (`permanent_write_enable=0`), writelock does not
-+  apply.
-+- Ensure all OTP values are correct before enabling `writelock=1`.
-+
-+sense_enable
++USB DFU boot
 +------------
++K3 Boards can be booted via USB DFU. When in USB boot mode the initial stage can be uploaded
++using ``dfu-util``::
 +
-+Controls whether OTP values are read from shadow memory or directly from the
-+fuses.
++  dfu-util -D barebox-beagleplay-r5.img -a bootloader
 +
-+- sense_enable=1 -> Reads are performed directly from the OTP fuses.
-+- sense_enable=0 -> Reads are performed from shadow memory (if supported).
-+- If shadow memory is supported, `sense_enable=0` may return outdated values
-+  if the shadow memory has not been updated.
-+- If shadow memory is not supported, reads always come from OTP fuses, making
-+  `sense_enable` ineffective.
++This will start the initial stage which then expects the following stages which can
++be uploaded with ``dfu-util`` as well, either as FIP image::
 +
-+Use Cases
-+^^^^^^^^^
++  dfu-util -D k3.fip -a fip
 +
-+- Ensuring accuracy: Reading directly from the OTP fuses (`sense_enable=1`)
-+  guarantees that the retrieved value reflects the actual state of the OTP
-+  memory.
-+- Avoiding outdated values: If `sense_enable=0` is used and the shadow
-+  memory has not been refreshed, the read value may differ from the true OTP
-+  fuse state.
-+- Debugging & Validation: Direct OTP fuse reads can be used to confirm
-+  whether a value has been successfully programmed.
++or as separate files::
 +
-+Usage Example
-+^^^^^^^^^^^^^
++  dfu-util -D blb31.bin -a tfa
++  dfu-util -D optee.bin -a optee
++  dfu-util -D ti-dm.bin -a ti-dm
++  dfu-util -D barebox-beagleplay.img -a barebox
 +
-+::
++Uploading optee.bin can be skipped in case it's not needed.
+diff --git a/arch/arm/mach-k3/r5.c b/arch/arm/mach-k3/r5.c
+index ae2c8607e5..9bb2aeb6b6 100644
+--- a/arch/arm/mach-k3/r5.c
++++ b/arch/arm/mach-k3/r5.c
+@@ -6,6 +6,7 @@
+ #include <init.h>
+ #include <libfile.h>
+ #include <fs.h>
++#include <fip.h>
+ #include <firmware.h>
+ #include <linux/remoteproc.h>
+ #include <soc/ti/ti_sci_protocol.h>
+@@ -14,6 +15,8 @@
+ #include <asm/cache.h>
+ #include <linux/sizes.h>
+ #include <barebox.h>
++#include <bootsource.h>
++#include <linux/usb/gadget-multi.h>
+ 
+ #define CTRLMMR_LOCK_KICK0_UNLOCK_VAL	0x68ef3490
+ #define CTRLMMR_LOCK_KICK1_UNLOCK_VAL	0xd172bc5a
+@@ -179,34 +182,175 @@ void am625_early_init(void)
+  * The bl31 and optee binaries are relocatable, but these addresses
+  * are hardcoded as reserved mem regions in the upstream device trees.
+  */
+-#define BL31_ADDRESS 0x9e780000
+-#define OPTEE_ADDRESS 0x9e800000
++#define BL31_ADDRESS (void *)0x9e780000
++#define BL32_ADDRESS (void *)0x9e800000
++#define BAREBOX_ADDRESS (void *)0x80080000
+ 
+-static int k3_r5_start_image(void)
++static void *k3_ti_dm;
 +
-+    # Read OTP directly from fuses (ensures accuracy)
-+    ocotp0.sense_enable=1
-+    md -l /dev/nvmem/imx-ocotp
++static bool have_bl31;
++static bool have_bl32;
++static bool have_bl33;
 +
-+    # Read OTP from shadow memory (may return outdated values if not refreshed)
-+    ocotp0.sense_enable=0
-+    md -l /dev/nvmem/imx-ocotp
++#define UUID_TI_DM_FW \
++        UUID_INIT(0x9e8c2017, 0x8b94, 0x4e2b, 0xa7, 0xb3, 0xa0, 0xf8, 0x8e, 0xab, 0xb8, 0xae)
 +
-+**Caution**
-+^^^^^^^^^^^
++static uuid_t uuid_bl31 = UUID_EL3_RUNTIME_FIRMWARE_BL31;
++static uuid_t uuid_ti_dm_fw = UUID_TI_DM_FW;
++static uuid_t uuid_bl33 = UUID_NON_TRUSTED_FIRMWARE_BL33;
++static uuid_t uuid_bl32 = UUID_SECURE_PAYLOAD_BL32;
 +
-+- If `sense_enable=0`, values may not reflect the actual OTP state until the
-+  shadow memory is refreshed.
-+- If `sense_enable=1`, the read is guaranteed to return the true OTP fuse
-+  value.
-+- Not all hardware supports shadow memory, making `sense_enable` ineffective
-+  on some devices.
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 565e6c11f82f..9f53f3aa449b 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -34,6 +34,7 @@ Contents:
-    state
-    random
-    optee
-+   otp
-    debugging
-    watchdog
-    reboot-mode
++static int load_fip(const char *filename)
+ {
+-	int err;
+-	void *ti_dm_buf;
+-	ssize_t size;
+-	struct firmware fw;
+-	const struct ti_sci_handle *ti_sci;
+-	void *bl31 = (void *)BL31_ADDRESS;
+-	void *barebox = (void *)0x80080000;
+-	void *optee = (void *)OPTEE_ADDRESS;
+-	struct elf_image *elf;
+-	void __noreturn (*ti_dm)(void);
+-	struct rproc *arm64_rproc;
++	void *buf, *bufend;
++	fip_toc_header_t *toc_header;
++	fip_toc_entry_t *toc_entry;
++	size_t st_size;
++	int ret;
+ 
+-	ti_sci = ti_sci_get_handle(NULL);
+-	if (IS_ERR(ti_sci))
+-		return -EINVAL;
++	ret = read_file_2(filename, &st_size, &buf, FILESIZE_MAX);
++	if (ret)
++		return ret;
+ 
+-	arm64_rproc = ti_k3_am64_get_handle();
+-	if (!arm64_rproc) {
+-		pr_err("Cannot get rproc handle\n");
++	bufend = buf + st_size;
++
++	if (st_size < sizeof(fip_toc_header_t)) {
++		pr_err("FIP %s is truncated\n", filename);
++		return -ENODATA;
++	}
++
++	toc_header = (fip_toc_header_t *)buf;
++	toc_entry = (fip_toc_entry_t *)(toc_header + 1);
++
++	if (toc_header->name != TOC_HEADER_NAME) {
++		pr_err("%s is not a FIP file: unknown magic = 0x%08x\n",
++		       filename, toc_header->name);
+ 		return -EINVAL;
+ 	}
+ 
+-	size = read_file_into_buf("/boot/optee.bin", optee, SZ_32M);
++	while ((void *)toc_entry + sizeof(*toc_entry) - 1 < bufend) {
++		/* Found the ToC terminator, we are done. */
++		if (memcmp(&toc_entry->uuid, &uuid_null, sizeof(uuid_t)) == 0)
++			break;
++
++		/* Overflow checks before memory copy. */
++		if (toc_entry->size > (uint64_t)-1 - toc_entry->offset_address) {
++			pr_err("FIP %s is corrupted: entry size exceeds 64 bit address space\n",
++			       filename);
++			ret = -EINVAL;
++			break;
++		}
++		if (toc_entry->size + toc_entry->offset_address > st_size) {
++			pr_err("FIP %s is corrupted: entry size (0x%llx) exceeds FIP file size (0x%zx)\n",
++				filename, toc_entry->size + toc_entry->offset_address, st_size);
++			ret = -EINVAL;
++			break;
++		}
++
++		if (!memcmp(&toc_entry->uuid, &uuid_bl31, sizeof(uuid_t))) {
++			memcpy(BL31_ADDRESS, buf + toc_entry->offset_address, toc_entry->size);
++			have_bl31 = true;
++		}
++
++		if (!memcmp(&toc_entry->uuid, &uuid_bl33, sizeof(uuid_t))) {
++			memcpy(BAREBOX_ADDRESS, buf + toc_entry->offset_address, toc_entry->size);
++			have_bl33 = true;
++		}
++
++		if (!memcmp(&toc_entry->uuid, &uuid_bl32, sizeof(uuid_t))) {
++			memcpy(BL32_ADDRESS, buf + toc_entry->offset_address, toc_entry->size);
++			have_bl32 = true;
++		}
++
++		if (!memcmp(&toc_entry->uuid, &uuid_ti_dm_fw, sizeof(uuid_t))) {
++			k3_ti_dm = xmemdup(buf + toc_entry->offset_address, toc_entry->size);
++		}
++
++		toc_entry++;
++	}
++
++	free(buf);
++
++	return ret;
++}
++
++static void do_dfu(void)
++{
++	struct usbgadget_funcs funcs = {};
++	int ret;
++	struct stat s;
++	ssize_t size;
++
++	funcs.flags |= USBGADGET_DFU;
++	funcs.dfu_opts = "/optee.bin(optee)c,"
++			 "/bl31.bin(tfa)c,"
++			 "/ti-dm.bin(ti-dm)c,"
++			 "/barebox.bin(barebox)cs,"
++			 "/fip.img(fip)cs";
++
++	ret = usbgadget_prepare_register(&funcs);
++	if (ret)
++		goto err;
++
++	while (1) {
++		if (!have_bl32) {
++			size = read_file_into_buf("/optee.bin", BL32_ADDRESS, SZ_32M);
++			if (size > 0) {
++				printf("Downloaded OP-TEE\n");
++				have_bl32 = true;
++			}
++		}
++
++		if (!have_bl31) {
++			size = read_file_into_buf("/bl31.bin", BL31_ADDRESS, SZ_32M);
++			if (size > 0) {
++				printf("Downloaded TF-A\n");
++				have_bl31 = true;
++			}
++		}
++
++		if (!k3_ti_dm) {
++			ret = read_file_2("/ti-dm.bin", &size, &k3_ti_dm, FILESIZE_MAX);
++			if (!ret) {
++				printf("Downloaded TI-DM\n");
++			}
++		}
++
++		size = read_file_into_buf("/barebox.bin", BAREBOX_ADDRESS, SZ_32M);
++		if (size > 0) {
++			have_bl33 = true;
++			printf("Downloaded barebox image, DFU done\n");
++			break;
++		}
++
++		ret = stat("/fip.img", &s);
++		if (!ret) {
++			printf("Downloaded FIP image, DFU done\n");
++			load_fip("/fip.img");
++			break;
++		}
++
++		command_slice_release();
++		mdelay(50);
++		command_slice_acquire();
++	};
++
++	return;
++
++err:
++	pr_err("DFU failed with: %pe\n", ERR_PTR(ret));
++}
++
++static int load_images(void)
++{
++	ssize_t size;
++	int err;
++
++	err = load_fip("/boot/k3.fip");
++	if (!err)
++		return 0;
++
++	size = read_file_into_buf("/boot/optee.bin", BL32_ADDRESS, SZ_32M);
+ 	if (size < 0) {
+ 		if (size != -ENOENT) {
+ 			pr_err("Cannot load optee.bin: %pe\n", ERR_PTR(size));
+@@ -214,31 +358,58 @@ static int k3_r5_start_image(void)
+ 		}
+ 		pr_info("optee.bin not found, continue without\n");
+ 	} else {
+-		pr_debug("Loaded optee.bin (size %u) to 0x%p\n", size, optee);
++		pr_debug("Loaded optee.bin (size %u) to 0x%p\n", size, BL32_ADDRESS);
+ 	}
+ 
+-	size = read_file_into_buf("/boot/barebox.bin", barebox, optee - barebox);
++	size = read_file_into_buf("/boot/barebox.bin", BAREBOX_ADDRESS, SZ_32M);
+ 	if (size < 0) {
+ 		pr_err("Cannot load barebox.bin: %pe\n", ERR_PTR(size));
+ 		return size;
+ 	}
+-	pr_debug("Loaded barebox.bin (size %u) to 0x%p\n", size, barebox);
++	pr_debug("Loaded barebox.bin (size %u) to 0x%p\n", size, BAREBOX_ADDRESS);
+ 
+-	size = read_file_into_buf("/boot/bl31.bin", bl31, barebox - optee);
++	size = read_file_into_buf("/boot/bl31.bin", BL31_ADDRESS, SZ_32M);
+ 	if (size < 0) {
+ 		pr_err("Cannot load bl31.bin: %pe\n", ERR_PTR(size));
+ 		return size;
+ 	}
+-	pr_debug("Loaded bl31.bin (size %u) to 0x%p\n", size, bl31);
++	pr_debug("Loaded bl31.bin (size %u) to 0x%p\n", size, BL31_ADDRESS);
+ 
+-	err = read_file_2("/boot/ti-dm.bin", &size, &ti_dm_buf, FILESIZE_MAX);
++	err = read_file_2("/boot/ti-dm.bin", &size, &k3_ti_dm, FILESIZE_MAX);
+ 	if (err) {
+ 		pr_err("Cannot load ti-dm.bin: %pe\n", ERR_PTR(err));
+ 		return err;
+ 	}
+ 	pr_debug("Loaded ti-dm.bin (size %u)\n", size);
+ 
+-	elf = elf_open_binary(ti_dm_buf);
++	return 0;
++}
++
++static int k3_r5_start_image(void)
++{
++	int err;
++	struct firmware fw;
++	const struct ti_sci_handle *ti_sci;
++	struct elf_image *elf;
++	void __noreturn (*ti_dm)(void);
++	struct rproc *arm64_rproc;
++
++	if (IS_ENABLED(CONFIG_USB_GADGET_DFU) && bootsource_get() == BOOTSOURCE_SERIAL)
++		do_dfu();
++	else
++		load_images();
++
++	ti_sci = ti_sci_get_handle(NULL);
++	if (IS_ERR(ti_sci))
++		return -EINVAL;
++
++	arm64_rproc = ti_k3_am64_get_handle();
++	if (!arm64_rproc) {
++		pr_err("Cannot get rproc handle\n");
++		return -EINVAL;
++	}
++
++	elf = elf_open_binary(k3_ti_dm);
+ 	if (IS_ERR(elf)) {
+ 		pr_err("Cannot open ELF image %pe\n", elf);
+ 		return PTR_ERR(elf);
+@@ -250,9 +421,9 @@ static int k3_r5_start_image(void)
+ 		elf_close(elf);
+ 	}
+ 
+-	free(ti_dm_buf);
++	free(k3_ti_dm);
+ 
+-	fw.data = bl31;
++	fw.data = BL31_ADDRESS;
+ 
+ 	/* Release all the exclusive devices held by SPL before starting ATF */
+ 	pr_info("Starting TF-A on A53 core\n");
 -- 
 2.39.5
 
