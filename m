@@ -1,88 +1,65 @@
-Delivery-date: Thu, 30 Jan 2025 09:07:19 +0100
+Delivery-date: Thu, 30 Jan 2025 13:08:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tdPa0-006GB1-0n
+	id 1tdTLs-006Kbl-1s
 	for lore@lore.pengutronix.de;
-	Thu, 30 Jan 2025 09:07:19 +0100
+	Thu, 30 Jan 2025 13:08:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tdPa0-0001f8-7H
-	for lore@pengutronix.de; Thu, 30 Jan 2025 09:07:16 +0100
+	id 1tdTLs-0002dV-I7
+	for lore@pengutronix.de; Thu, 30 Jan 2025 13:08:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=egOMqrEIpI7pf+XCoFS+mcIpuzuEprXWZyGm/74V+UY=; b=ehsEhSP/PrNkKw/BlaBjnoMYQw
-	cgAva0TC8XsYXwQ44l8A8ETzbNnujrmTJeGOUJJLDByOW0CF9XlOR8SI4O8be/+xxqfJxA0nsKY/2
-	NDJMuRdZstOCVtAPGK2qQBzU3h4+V+8f/jFlSP5YZbTYQjSEwHPrp3+H1PzF97ju2awUH8NeCd/ZL
-	BKAuXzFghb9zS9Tv/Nqn5MsAAn01v5W34kJ3K7Zj1tOlj0nAtTYjomclikSojU1DEz2gxraaZsiB2
-	7877qaskX/P4dxNrixXy+a0l1JsqNjCv2LhumvYK7IPmgSSBTVzggwlfmyeAI86Lze9iLg6kviOig
-	d7XTJl5Q==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ipYxy8Unex9oZbVnF4/+GODAOsIDHPrmlr5Qr420Zkg=; b=jGuv+raIEHSC98A6Kdu7fF/vZp
+	IHiUxtDrmLYPhRpB0SeAzOXV4TWlFaHhkRC1CfNh+vnlJzX9+nEoZXwtxnyydE4RlO7Skej6t58An
+	tDLne5moE1FPUu+EdzuBmGSi/TZw9eKsCcALcCrA4HIqRtMAzQD10Fu5zQ/3FXeqO9qDb7ji+p91y
+	569J6fmdEmchsokJPGFDMt2rSdG5hqrBZNYgzIrzpYLNDGnGvx86aP4/7b7sckPzNmB5yo+0uWicX
+	YZDUh8Mp69NTuVDh3AroWtMwZlof9mVT1zYXzR1HIet3ELVlePypLR50Koqk23kGUuXMhjnXtt+lA
+	0we8Iibw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tdPZJ-00000008OTY-1jcU;
-	Thu, 30 Jan 2025 08:06:33 +0000
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+	id 1tdTLJ-00000008kbf-2hRz;
+	Thu, 30 Jan 2025 12:08:21 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tdPZH-00000008OTA-1wpE
+	id 1tdTLF-00000008kai-3qaC
 	for barebox@lists.infradead.org;
-	Thu, 30 Jan 2025 08:06:32 +0000
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-21636268e43so10140575ad.2
-        for <barebox@lists.infradead.org>; Thu, 30 Jan 2025 00:06:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738224390; x=1738829190; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=egOMqrEIpI7pf+XCoFS+mcIpuzuEprXWZyGm/74V+UY=;
-        b=UFQSMle+32dltvIvCzpzgkN8sjSeytLsNwFBV6VjXgl7SkLJVHmNS471uOEciIx5Q7
-         mpeRqIQ+6uybO+M4hOyO+3Ygv5vv1OZVAwbhVA9qm7S/WGJc97QRsEOUOCKH9S1STQ/T
-         j5ggq0nQrv4p+JlqeaQMvDS1DaSW1jIO9+XX6BTBCIOnxhvGmeEM8GYBz2P5YAL6CYI3
-         1ZGZKQGhTmjfZYtTpo1oabGpvgItCgNOEOBAthC0SDKi+Sq9TBuhcLt81dsFsQ7Ye3Q6
-         Oi9KHcxhlI/1qK9JGwTQy0rk88kD1XHQgbv+GyvvYNuT2rCy6Q+4GdpMHtPI7pca6sSa
-         /QTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738224390; x=1738829190;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=egOMqrEIpI7pf+XCoFS+mcIpuzuEprXWZyGm/74V+UY=;
-        b=OrvMSdY0AcvAwop0tAqiDfADXYzl7E29FKYNHiNB2oTS82gnMQJllScxkBEeWb97PH
-         9ACDlFtw0k21KtWqDV03DvVQi6l8vS8S/fl3sjuCBv10nxUj4YjUIbBTjghskFmwS0jd
-         ZNBDyCtx+FuUlWQA7Vj7FMFBkAKtodajpL9/p/MVQEOycEFVSCAhMO9TF1KFBz/65Eab
-         xRRoen1SYPMoRZCYvdvkhEIMY0y8NFMIdbrdVwC+B/q1C2DaN5oyg4YyFa5Rr5JcQLxc
-         qPzrdheL4tM3w47tbOzYv2hTLlLAo2HSX9rCZjDPOhgN3T4yXjmZnFcO0cF+cUHQ050r
-         IeeQ==
-X-Gm-Message-State: AOJu0YzmN/v5+zXcRJ2STu9DWMszd0i1RhI9mrjXrovCB0/6uu6/37Vm
-	sizll21BQkiJ4kOkyxIvoNjvkeM23UzqPrsmXINNN/tQthww46kJx58wW+srtpu3dyRUMoNGu+9
-	YJ3UQzoLJm9dfFT8KwGUnBHQnx8oIOUtxbQ8=
-X-Gm-Gg: ASbGnctCCVtHpwc9aL64W+tK7WtcSYjwsC7+31OM/GZXssskxujJhC6rmxixj21qceE
-	e2C6AAa6y9Eh1S5MpKNFqKA8eidMQ3tE2NXTWw6OD3LBkJaUD78Yr674Vd2ltpzgOm++5jbEj
-X-Google-Smtp-Source: AGHT+IHfYhNE/wgKW7RPEn0XSYJVG+YkkZ0apgajq0+wTtDw3HcRmeJKmB67Pvl6OUwwNMR2JY8amNPf6taWjvBRt7Q=
-X-Received: by 2002:a17:902:cf0a:b0:215:a80b:f6f9 with SMTP id
- d9443c01a7336-21dd7c449ffmr78276755ad.8.1738224389877; Thu, 30 Jan 2025
- 00:06:29 -0800 (PST)
+	Thu, 30 Jan 2025 12:08:20 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tdTLD-0002VC-IS; Thu, 30 Jan 2025 13:08:15 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tdTLD-002csb-13;
+	Thu, 30 Jan 2025 13:08:15 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tdTLD-004Q2I-0o;
+	Thu, 30 Jan 2025 13:08:15 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Robin van der Gracht <robin@protonic.nl>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 30 Jan 2025 13:08:13 +0100
+Message-Id: <20250130120814.1053382-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <CAP1tNvRa-1XPm087pzti1XmqvRDqchKOWZgvgYmcAQh+uOayBg@mail.gmail.com>
- <20250129085028.rd6xep2tjdffynna@pengutronix.de>
-In-Reply-To: <20250129085028.rd6xep2tjdffynna@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Thu, 30 Jan 2025 11:06:18 +0300
-X-Gm-Features: AWEUYZnCNk5D95aH2VxvcSBqqrY7uAHjnkISx8_xgrnTPB8Zg7dR1XOoTVGdCls
-Message-ID: <CAP1tNvQacfmq4oL1-ptT-XTfmoFWwAU6E-m5+cHuPgdEZ=EhOQ@mail.gmail.com>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250130_000631_509349_B06631F5 
-X-CRM114-Status: GOOD (  17.63  )
+X-CRM114-CacheID: sfid-20250130_040817_958023_4F9F309F 
+X-CRM114-Status: GOOD (  14.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,93 +77,112 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: Devicetree add-on
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v1 1/2] nvmem: bsec: Add support for OTP permanent write lock
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello.
+From: Robin van der Gracht <robin@protonic.nl>
 
-Yes, I know about such an implementation.
-But it seems a bit complicated to me compared to if it were possible to loa=
-d
-the full devicetree.
-Also, the overlay is a bit limiting functionality, for example I can't use
-new aliases in the overlay. There are also difficulties with writing endpoi=
-nts.
+Introduce a mechanism to permanently lock OTP eFuses after programming by
+adding a new `writelock` parameter. When `writelock` is enabled, the
+driver:
 
-Thanks!
+- Programs the OTP fuse using `BSEC_SMC_PROG_OTP`.
+- If successful, triggers `BSEC_SMC_WRLOCK_OTP` (OP-TEE:
+  `STM32_SIP_SVC_BSEC_WRLOCK_OTP`) to permanently disable further
+  modifications to the OTP word.
 
-=D1=81=D1=80, 29 =D1=8F=D0=BD=D0=B2. 2025=E2=80=AF=D0=B3. =D0=B2 11:50, Mar=
-co Felsch <m.felsch@pengutronix.de>:
->
-> Hi Alexander,
->
-> thanks for reaching out to the ML.
->
-> On 25-01-29, Alexander Shiyan wrote:
-> > Hello All.
-> >
-> > The question arose whether it is possible to load an add-on into
-> > devicetree, but NOT through an overlay,
->
-> Why not dt-overlays?
->
-> > i.e. as a full-fledged dtb?
-> > Ideally, it should look like this: the main ENTRY_FUNCTION() loads the
-> > base tree, then,
-> > after initialization in device_initcall(), the board modification is
-> > determined and the full devicetree
-> > written for this variant is loaded.
->
-> Sounds exactly like a dt-overlay use-case. As it sounds to me you do
-> have common base for your platform/product family. This would be your
-> base-dtb loaded for every product. Later on you need to apply the
-> overlays accordingly.
->
-> E.g. for the platform family I'm currently working with we do the
-> following:
->
-> base-dt:
-> --------
-> / {
->         feat_a: feature-device-a {
->                 compatible =3D "xyz,feature-device-a";
->                 ...
->                 ...
->                 status =3D "disabled";
->         };
->
->         feat_b: feature-device-b {
->                 compatible =3D "foo,feature-device-b";
->                 ...
->                 ...
->                 status =3D "disabled";
->         };
-> };
->
-> feat-a-dto:
-> -----------
-> &feat_a {
->         status =3D "okay";
-> };
->
-> feat-b-dto:
-> -----------
-> &feat_b {
->         status =3D "okay";
-> };
->
-> This way we define the whole node within the base-dt and the overlays
-> only enable it. This makes the overlays very straightforwward and you
-> still have the opportunity to reconfigure the device-node if you really
-> have to.
->
-> Regards,
->   Marco
+Security Concern:
+Without this lock mechanism, an OTP word can still be altered by OR-ing
+additional bits onto the existing value, as STM32 BSEC OTP fuses only
+allow one-way bit transitions from 0 to 1. This is a potential security
+risk when dealing with keys or sensitive configuration values, as an
+attacker could modify certain OTP bits without fully replacing the
+original value.
+
+Warning! Write lock is enabled globally per BSEC device:
+- While `writelock=1`, all writes via the BSEC device will be
+  permanently locked.
+- The user must avoid writing unintended values during this period,
+  as they will become irrevocable.
+
+Example Use Case:
+To program and permanently lock an OTP word:
+bsec0.permanent_write_enable=1
+bsec0.writelock=1
+mw -l -d /dev/stm32-bsec 0x00000170+4 $some_data
+bsec0.permanent_write_enable=0
+bsec0.writelock=0
+
+After execution, the OTP at address `0x170` will be permanently
+write-locked.
+
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/nvmem/bsec.c        | 14 +++++++++++---
+ include/mach/stm32mp/bsec.h |  1 +
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/nvmem/bsec.c b/drivers/nvmem/bsec.c
+index b92d925956ee..c0ca0a2ab6a4 100644
+--- a/drivers/nvmem/bsec.c
++++ b/drivers/nvmem/bsec.c
+@@ -27,6 +27,7 @@ struct bsec_priv {
+ 	int permanent_write_enable;
+ 	u8 lower;
+ 	struct tee_context *ctx;
++	int writelock;
+ };
+
+ struct stm32_bsec_data {
+@@ -67,11 +68,16 @@ static int stm32_bsec_read_shadow(void *ctx, unsigned reg, unsigned *val)
+ static int stm32_bsec_reg_write(void *ctx, unsigned reg, unsigned val)
+ {
+ 	struct bsec_priv *priv = ctx;
++	int ret;
+
+-	if (priv->permanent_write_enable)
+-		return bsec_smc(BSEC_SMC_PROG_OTP, reg, val, NULL);
+-	else
++	if (!priv->permanent_write_enable)
+ 		return bsec_smc(BSEC_SMC_WRITE_SHADOW, reg, val, NULL);
++
++	ret = bsec_smc(BSEC_SMC_PROG_OTP, reg, val, NULL);
++	if (!ret && priv->writelock)
++		ret = bsec_smc(BSEC_SMC_WRLOCK_OTP, reg, 0, NULL);
++
++	return ret;
+ }
+
+ static struct regmap_bus stm32_bsec_regmap_bus = {
+@@ -245,6 +251,8 @@ static int stm32_bsec_probe(struct device *dev)
+ 	if (IS_ENABLED(CONFIG_STM32_BSEC_WRITE)) {
+ 		dev_add_param_bool(&priv->dev, "permanent_write_enable",
+ 				NULL, NULL, &priv->permanent_write_enable, NULL);
++		dev_add_param_bool(&priv->dev, "writelock",
++				NULL, NULL, &priv->writelock, NULL);
+ 	}
+
+ 	nvmem = nvmem_regmap_register(map, "stm32-bsec");
+diff --git a/include/mach/stm32mp/bsec.h b/include/mach/stm32mp/bsec.h
+index 45eb0a3f4523..be8cec536a40 100644
+--- a/include/mach/stm32mp/bsec.h
++++ b/include/mach/stm32mp/bsec.h
+@@ -26,6 +26,7 @@ enum bsec_op {
+ 	BSEC_SMC_READ_OTP	= 4,
+ 	BSEC_SMC_READ_ALL	= 5,
+ 	BSEC_SMC_WRITE_ALL	= 6,
++	BSEC_SMC_WRLOCK_OTP	= 7,
+ };
+
+ static inline enum bsec_smc bsec_read_field(unsigned field, unsigned *val)
+--
+2.39.5
+
 
 
