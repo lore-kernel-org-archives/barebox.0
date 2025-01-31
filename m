@@ -1,68 +1,68 @@
-Delivery-date: Fri, 31 Jan 2025 13:31:21 +0100
+Delivery-date: Fri, 31 Jan 2025 13:36:39 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tdqB7-006k7h-0J
+	id 1tdqGE-006kAi-1F
 	for lore@lore.pengutronix.de;
-	Fri, 31 Jan 2025 13:31:21 +0100
+	Fri, 31 Jan 2025 13:36:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tdqB7-0001Nr-7x
-	for lore@pengutronix.de; Fri, 31 Jan 2025 13:31:21 +0100
+	id 1tdqGE-0001re-Hu
+	for lore@pengutronix.de; Fri, 31 Jan 2025 13:36:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+yYSj+I0kJPe1+4vf6D2ossMsOFkvrlizaw2QjsLmyk=; b=3t+8pN1VIDIZ3xKqU1kpRgdtIX
-	sDztEIE8kqQoEpAVnG36du9vuYKqH3LFDfMNWunhpwfq3LbC7Rj8fxPfZdmeKD/88FIV3kBiMclsQ
-	pN8Vh7gO8RWX8KoWaQsAYv9TEbw+517F8zQ9dSqn/9U0zjjfjT9rRkKA2z2riPBl1WMeREX6cBrVI
-	xJgk1ylVJ3qeH579Ch2lP+r5arMqn68DIcj4LaQvpzXL05unitmQBJl0hn/Omty8l3dqRBYnjfG0K
-	jZUa9Hs8RXwlSkbybnv7beb8rMIhRFynEq1zdB+sipUNaWOypQhZO6a1eXW0rNEdB6Mfj4CSPfPnP
-	TK214xmg==;
+	bh=cjsjJAv4RYi/AVLdBZB/4nlQvtswv93AP9HSfcQ3nQo=; b=agxK7K2t50TbTAv2SINf+GGvil
+	K8Szsc49ESgn5WTjathXIh63dFYbIlF4WklGTkfGYkdmTwrD8M6Gb4+Y9TSoHgCFKEtw0JlZvighQ
+	7WTFYOIiBEwtmkOxKR7M1FQuy1CATJw2hFL7Ex4qaCr/pv9gY5dtnM1zn9wu+KRxk79io8ZYkwdbN
+	ACeidmr2J+Gztmpqu/qBPDLSc5vHznBuCjZeWJumTJ+yJX6AyvnFHuEG01kBs+eUIzKX2tCMCPEdT
+	jBNcHy6FCG1iXVHEKvDjOpdBLbpncJfFkCHmVDfmD6suncx5XadpsAwMFBlNmweOz1+Ykdn7RvXAl
+	1C4m4NTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tdqAS-0000000Abmj-3el8;
-	Fri, 31 Jan 2025 12:30:40 +0000
+	id 1tdqFm-0000000AcER-3cVD;
+	Fri, 31 Jan 2025 12:36:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tdqAO-0000000Ably-3WXd
+	id 1tdqFk-0000000AcE7-00ij
 	for barebox@lists.infradead.org;
-	Fri, 31 Jan 2025 12:30:38 +0000
+	Fri, 31 Jan 2025 12:36:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tdqAL-0001HR-33; Fri, 31 Jan 2025 13:30:33 +0100
+	id 1tdqFi-0001nD-KX; Fri, 31 Jan 2025 13:36:06 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tdqAJ-002nR9-3B;
-	Fri, 31 Jan 2025 13:30:32 +0100
+	id 1tdqFi-002nfe-1R;
+	Fri, 31 Jan 2025 13:36:06 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tdqAJ-00HWHL-2w;
-	Fri, 31 Jan 2025 13:30:31 +0100
+	id 1tdqFi-00HWXg-1E;
+	Fri, 31 Jan 2025 13:36:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, 
  Michael Grzeschik <m.grzeschik@pengutronix.de>
-In-Reply-To: <20250128165212.1783219-1-m.grzeschik@pengutronix.de>
-References: <20250128165212.1783219-1-m.grzeschik@pengutronix.de>
-Message-Id: <173832663190.4175634.8202724870864075342.b4-ty@pengutronix.de>
-Date: Fri, 31 Jan 2025 13:30:31 +0100
+In-Reply-To: <20250128154531.1172019-1-m.grzeschik@pengutronix.de>
+References: <20250128154531.1172019-1-m.grzeschik@pengutronix.de>
+Message-Id: <173832696638.4176645.17690943856871557819.b4-ty@pengutronix.de>
+Date: Fri, 31 Jan 2025 13:36:06 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250131_043036_882653_21B97508 
-X-CRM114-Status: UNSURE (   7.72  )
+X-CRM114-CacheID: sfid-20250131_043608_054501_E345B86D 
+X-CRM114-Status: UNSURE (   9.87  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,23 +85,23 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3] PWM: imx: pwm-imx-tpm: Add driver support
+Subject: Re: [PATCH] ARM: i.MX93: ele: make A0 firmware optional
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 28 Jan 2025 17:52:12 +0100, Michael Grzeschik wrote:
-> Import the Linux v6.12 state of the driver to enable barebox control of PWM
-> LEDs, backlights and other peripherals.
-> 
-> This has been tested on the IMX93.
+On Tue, 28 Jan 2025 16:45:31 +0100, Michael Grzeschik wrote:
+> Since the A0 firmare is not located in the firmware-ele-imx-0.1.0.bin
+> anymore it is better to make it optional. We add a reference to where
+> to find the latest version of the firmware in case someone still
+> uses it.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] PWM: imx: pwm-imx-tpm: Add driver support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b485517cb4b7 (link may not be stable)
+[1/1] ARM: i.MX93: ele: make A0 firmware optional
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e9886b5f373c (link may not be stable)
 
 Best regards,
 -- 
