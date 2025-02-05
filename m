@@ -1,64 +1,64 @@
-Delivery-date: Wed, 05 Feb 2025 10:49:14 +0100
+Delivery-date: Wed, 05 Feb 2025 11:27:06 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tfc1y-008kZy-0N
+	id 1tfccb-008lIy-1O
 	for lore@lore.pengutronix.de;
-	Wed, 05 Feb 2025 10:49:14 +0100
+	Wed, 05 Feb 2025 11:27:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tfc1x-0004tG-O8
-	for lore@pengutronix.de; Wed, 05 Feb 2025 10:49:14 +0100
+	id 1tfccb-0001pi-JD
+	for lore@pengutronix.de; Wed, 05 Feb 2025 11:27:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=x85qORuqrU9idMFNC+s2mo1dkpfTfLRf7IJVN94JV/k=; b=ctvlwC/mSvEhcAfvUijUORoHUA
-	6K7jRaCYvyGo4HkB0QVBZcMhvC2dY5dIx+OlkqQ3ngvq6y8vPbncqusPFALxyqpa6obs77SceInID
-	rlsgvpfpofop3gjVaS46JOWI0+McUuZBNoV5izTIxJE355Jv73WzxzKfGNmhztgVZFH0n1KBV4zg9
-	t6OL8airvoeUcPPqSYT8h3pDodGzSeO6H923gUnZaQwTALrK7es5SPmjwPqRFm+RULnYJ1zlYAaVr
-	cI+bqmWmWliu6RJeomPh9KPcJVbdjh3yGhbexwYjqIWKdItjZd8r4469qLfIQ44BOWD3nM8dia9QE
-	GF6n13ag==;
+	bh=ke8hjNGsPbD8ES8AWGRlAtLaT54q2bA/4HRG87UqEdw=; b=0mwfqlO/t5dSzgz4ahqZVzbe6N
+	qqxc+NaiMBVJyoAlM/4DYs0FwYhKdLOsGUdZYlKTv29WM2jD9fjUh1W0m1ewvEVlBRYS4WwOE5mex
+	ZYpmcDsDtBJs7YIaepG1pMYZFHlLXw404/1enZYqiacU9z21EDXSAKf9bwfgz3f+oa/kLLFNvhG0Z
+	u8k0/fIFL/75MmHByPMVZSW0b9EtcLnWr+jsJj+aGeEgVIW/8fssDukSqd1Gr3GL3D8lk84LfSOjV
+	uzQyfPkp55OpuIX3Rt3cm8XMU9vUuU+Y0ifn/iIpJpsq92SpDHptb036WIImn9zlJKBhJaJfxnAAx
+	xg2Op/jQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tfc1Y-00000002kgS-3QII;
-	Wed, 05 Feb 2025 09:48:48 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tfcc2-00000002s9i-0VUh;
+	Wed, 05 Feb 2025 10:26:30 +0000
+Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tfc1W-00000002keK-3WMw
+	id 1tfcbz-00000002s70-16Hk
 	for barebox@lists.infradead.org;
-	Wed, 05 Feb 2025 09:48:47 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tfc1V-0004V4-JN; Wed, 05 Feb 2025 10:48:45 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tfc1V-003c3I-0s;
-	Wed, 05 Feb 2025 10:48:45 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tfc1V-00F0Qc-0W;
-	Wed, 05 Feb 2025 10:48:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed,  5 Feb 2025 10:48:32 +0100
-Message-Id: <20250205094832.3576556-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Wed, 05 Feb 2025 10:26:28 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
+	t=1738751179;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ke8hjNGsPbD8ES8AWGRlAtLaT54q2bA/4HRG87UqEdw=;
+	b=xJZKDYVTQu4MjnDEWwsInMAWWPSxpdVZo+jIfQupZui1fwP6JFyX+6AkpTqtrhH6L5qLsd
+	clTtkHwNAlpRug9uX/x9geUxcazc42I3gbM3qdzBNNKFxwzRh32i9MaLTtlKt4Uo8E81qE
+	VSPXY/j75+7M2Bg/U8lErqqTpxhUv3a9xtudiNKtvFnXUtfZbdfcmfZB5n5vsj24TQ7Xgi
+	/w5boG9uyN10dtkSzw1bEGhxDCueo7G57bgADKV86jfH0EmGxyf1hKqsucmcbdtOpXn0K7
+	q2DAo6K3MzrT5fLe7FQ8E7uyQ7x22bqIEoRZE0jRbU7dukVbinfDJ5PemeApIw==
+Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:671e:1939:7a9a:a2ba])
+	by zdiv.net (OpenSMTPD) with ESMTPSA id e3a5bc63 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 5 Feb 2025 11:26:19 +0100 (CET)
+From: Jules Maselbas <jmaselbas@zdiv.net>
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@zdiv.net>
+Date: Wed,  5 Feb 2025 11:25:49 +0100
+Message-ID: <20250205102549.27015-1-jmaselbas@zdiv.net>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250205_014846_874414_74C9C946 
-X-CRM114-Status: GOOD (  10.98  )
+X-CRM114-CacheID: sfid-20250205_022627_768343_7B7A1418 
+X-CRM114-Status: UNSURE (   5.20  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,37 +76,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] environment: fix free() of unitialized variable
+Subject: [PATCH] scripts: include: rename printk.h to printf.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-of_find_path() doesn't initialize the outpath on error. In order to
-free() it in the error path we have to initialize devpath.
+The include scripts/include/asm-generic/bug.h relied on a printk.h
+compatible header which is located in the scripts/include/ and was
+not updated when printk.h was renamed to printf.h.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: d8ea946bcf ("include: rename printk.h to printf.h")
+Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 ---
- drivers/of/barebox.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/include/{printk.h => printf.h} | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+ rename scripts/include/{printk.h => printf.h} (54%)
 
-diff --git a/drivers/of/barebox.c b/drivers/of/barebox.c
-index 9b8da679e2..e6bcff7116 100644
---- a/drivers/of/barebox.c
-+++ b/drivers/of/barebox.c
-@@ -34,7 +34,7 @@ static char *environment_probe_1node_binding(struct device *dev)
- static char *environment_probe_2node_binding(struct device *dev)
- {
- 	const char *filepath;
--	char *devpath;
-+	char *devpath = NULL;
- 	int ret;
+diff --git a/scripts/include/printk.h b/scripts/include/printf.h
+similarity index 54%
+rename from scripts/include/printk.h
+rename to scripts/include/printf.h
+index 363d32f2e5..2ce99c2fa8 100644
+--- a/scripts/include/printk.h
++++ b/scripts/include/printf.h
+@@ -1,9 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+-#ifndef __PRINTK_H
+-#define __PRINTK_H
++#ifndef __PRINTF_H
++#define __PRINTF_H
  
- 	ret = of_find_path(dev->of_node, "device-path", &devpath,
+ #include <stdio.h>
+ 
+-#define printk printf
+-
+ #endif
 -- 
-2.39.5
+2.48.1
 
 
 
