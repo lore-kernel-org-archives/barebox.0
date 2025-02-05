@@ -1,90 +1,74 @@
-Delivery-date: Tue, 04 Feb 2025 16:37:43 +0100
+Delivery-date: Wed, 05 Feb 2025 10:48:59 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tfKze-008R78-2W
+	id 1tfc1j-008kWH-02
 	for lore@lore.pengutronix.de;
-	Tue, 04 Feb 2025 16:37:43 +0100
+	Wed, 05 Feb 2025 10:48:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tfKze-00083X-TU
-	for lore@pengutronix.de; Tue, 04 Feb 2025 16:37:43 +0100
+	id 1tfc1i-0004dG-F7
+	for lore@pengutronix.de; Wed, 05 Feb 2025 10:48:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iSmKjjKlRnKie/h/1LzNmKMzSyR+XPmMRIW8o79qFag=; b=n8g92mNHcAvy8SCDQnU1NsOqnE
-	54rtV3oHfNysSuWRKprAYA4zXg9+7COY8+KY1SbFm80eet+xiU6ytk5lX18BlbhByZJpNNWt9ZHXA
-	J/1Opp3pHX9XtXEiURPdXJ9WqEhlvZ/ELJnY5syVypvxhAV9gffXoS69GUQR5i5/h9TJQn/bXheSI
-	Z81Ze9HcJT0s0CMHJ9uct74WDfCvM/YOOyyd5TD7gOKRfhvdBfdUL9KDplK/M4vo5yTiOH1LtLE8W
-	B07/OHtN3/o6D/Pw/0M0bkkYMcFBjDtGGyaha+c7AOdXOtK/XExxztgmd0iRvbxeZKu/Bgue65n7z
-	JTxgwE5g==;
+	bh=eF44FQnnsn1KUTqlzAPUGqLzGdnPWW/WteL0i5KOn/w=; b=REWCGZ2Cn7Ivs5dFYfMxbZHCLx
+	4BJcTKXtY81G763Ygqi9hmqtbigwXl1X64Xbf0LzriYDfZSDd96JR1jceoeK1IDgFF83lyOjJHU1t
+	Glp0NhtQhr5AF1Q8VN/FKnUrm7jpv3ZUP49HyVPo1c7+iA0JnvSgXy0OEQJBuPSahZaI7dAx1dt7n
+	8IvIeltyS4hgpwbOmdA+Wn47HQFM+mJoutolAyNhHtCWUWptvqO6dYZrg7YNQHxgAUZBWJxDPDcju
+	Vajy7AWQ/USBTsXxlfhf5NqcDUNurizRD83DxECRbcyZXx6cbfrnZEcU0hODBp5BAn5YRom570+4x
+	jcpvGl7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tfKz2-00000000qJm-3e8P;
-	Tue, 04 Feb 2025 15:37:04 +0000
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+	id 1tfc16-00000002kGQ-1ZKQ;
+	Wed, 05 Feb 2025 09:48:20 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tfKtO-00000000p3T-2io2
+	id 1tfc13-00000002kDY-06cp
 	for barebox@lists.infradead.org;
-	Tue, 04 Feb 2025 15:31:16 +0000
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2f13acbe29bso10422015a91.1
-        for <barebox@lists.infradead.org>; Tue, 04 Feb 2025 07:31:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738683073; x=1739287873; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iSmKjjKlRnKie/h/1LzNmKMzSyR+XPmMRIW8o79qFag=;
-        b=SncqGTB3Ik1Qbi3Xb2X+DyBWEtFvAgV2/oA2ZzSCsHAZ5a3Gm4/TKNQWqrqHN6ZxMX
-         pjmIdGwFIvZAAdagPEo9Kt9KCKcocdL8S9wjuOcjOB22KvxWQXKPoVd43SZJoFXmb46r
-         wGV1C8e3NeO2m/HWJQs28ZeE6DExanfyU51UhltyisuzF1I7+2feaRTGJtfUTau1llLz
-         m9gWtYwfrYA6c9nP1ZNfDbJ3KOGlg6FTycjUltWQmmH2zdwLnevgfNJ8N7kJo+QTgskL
-         stdfMrCmqIBHnoGo5drXXuCGHgCkjFNnecRrO1WYIByGc92zquEsccbZdm/jMni/C/Hk
-         CkPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738683073; x=1739287873;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iSmKjjKlRnKie/h/1LzNmKMzSyR+XPmMRIW8o79qFag=;
-        b=XMiyRZvRa5XiwmcnudWVaRm/t9lzK0KjwbatGWzIKHxxwpM2yRrZOGg4NYdvHZPZ8P
-         dntnt1rNhkqovM2jGd97T+yiEok4SrDCTcUWS53WO9n8r9Yd5TtvRAw4BD2TMZuMz7iE
-         VNWi6C5bqtlsLngW6HAwVM/OBlbCE53DYgZ4PLvKdWbFfdpfwQZCjU8hNObgoB+AK1VY
-         ZpI7yC3cjJrGQopTWWJZ6TlbWvpvxoFdLjvct3cHrBKgDhQTCEd/tAL2HOKeKiZ8yDp0
-         tjNmGJBSaaP52l5X5CII/Oz+bL9ZbMs2VcnR6WNFb60nLu5G682NYhzIuMDOHU2m3WXh
-         MDlA==
-X-Gm-Message-State: AOJu0YxsQWOoZTn0MgFlfPuMxVvkAkGz8/ZIGtwU9w7Rt6EQSmheqwoH
-	BG/vqIEjYr2HItHpfdATWR9OnBwrSP2AFObDARWOS2Sjy2Q1478ZJ07tUgJIBSTw+RA3pOXihSH
-	cRutxCYnxTdiyz5CwVTVYUAM9VO3z/rwuKiM=
-X-Gm-Gg: ASbGncuNlSThpBRz3RxEjIsCJBzsKWz6ExrQkxm1vrcw3qFpmlkm+FR10kcM5htuLq8
-	og8mnVJJlcyk4SakIJtBWXY6/K1awfKhzyGjCEDPbBmqH1ZU0+voFILXH/z4+KqMKqI4nWzzQ4A
-	==
-X-Google-Smtp-Source: AGHT+IEj7/sx/glQoC/28Iyp8GEGyg4uuhHnrMdDWuffoJqFpJTvAHmMxxjQHIiNRqGs14qOnRJVKz2Y0hHTQs1zlbI=
-X-Received: by 2002:a17:90b:2884:b0:2f9:9c3a:ed3 with SMTP id
- 98e67ed59e1d1-2f9ba73e992mr5609467a91.16.1738683073421; Tue, 04 Feb 2025
- 07:31:13 -0800 (PST)
+	Wed, 05 Feb 2025 09:48:18 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tfc0z-00048J-Q4; Wed, 05 Feb 2025 10:48:13 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tfc0z-003c2k-1H;
+	Wed, 05 Feb 2025 10:48:13 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tfc0z-00F0Mw-10;
+	Wed, 05 Feb 2025 10:48:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 05 Feb 2025 10:48:17 +0100
 MIME-Version: 1.0
-References: <CAP1tNvRa-1XPm087pzti1XmqvRDqchKOWZgvgYmcAQh+uOayBg@mail.gmail.com>
- <Z5uBCoIy69dB3QH_@pengutronix.de> <CAP1tNvR3SwMo2b1kUMzdL6BQM85yVYaK2YwxnHSKm53vg0aZow@mail.gmail.com>
- <Z5zNy19vd_13rRsY@pengutronix.de>
-In-Reply-To: <Z5zNy19vd_13rRsY@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 4 Feb 2025 18:31:00 +0300
-X-Gm-Features: AWEUYZnf9s3XIenmCTnWBG3c-H2ocA7OeKSrqLIlS9FhP2JGSMQ2XdDWFMQGifI
-Message-ID: <CAP1tNvSnOaCbW9qFt34JX_L5Ljiz2cxd1A4cgtOiiHmHjzd2ag@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250205-k3-emmc-v1-9-06679246be41@pengutronix.de>
+References: <20250205-k3-emmc-v1-0-06679246be41@pengutronix.de>
+In-Reply-To: <20250205-k3-emmc-v1-0-06679246be41@pengutronix.de>
+To: "open list:BAREBOX" <barebox@lists.infradead.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738748893; l=1090;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=a0LyGsExPouzBgxz3NPVOyutSYdUAmDes9y89e1KSvk=;
+ b=aGUVJrn17UM634yxXaW6gr+bw94K4tgVvsCWXB0ryMeozZ66tlDbkzaGhTsE7fFTWJl+ljBVY
+ 3kv6ONkb21QDiAAnVKeB/9a6zzdKvqX6W8dsNLYkp8i0fAJod7hyLeK
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250204_073114_686763_C594482B 
-X-CRM114-Status: GOOD (  19.40  )
+X-CRM114-CacheID: sfid-20250205_014817_073214_86A49754 
+X-CRM114-Status: GOOD (  12.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,62 +86,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: Devicetree add-on
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 9/9] serial: omap: Use ttyS as Linux console name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello All!
+Traditionally Linux used ttyO as console name for Omap devices. This has
+been changed to ttyS in 2014. Since then ttyO gets translated to ttyS by
+the Kernel. Use ttyS directly to avoid the translation in the Kernel.
 
-Eventually I switched to using overlays.
-Of course, there are some unsolved problems, such as already occupied alias=
-es
-if they are specified in the overlay, or, for example, using
-"assigned-clocks" in
-overlays for already probed devices. I will give two examples from my
-current projects,
-criticize them if it is not difficult, maybe an idea will arise on how
-to do it better.
-The first link with two overlays [1], the third with three [2]:)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/serial/serial_ns16550.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-[1] https://github.com/MacroGroup/barebox/blob/macro/arch/arm/boards/diasom=
--rk3568/board.c
-[2] https://github.com/shcgit/barebox-github/blob/milas/arch/arm/boards/mm-=
-sm-sama5d2/board.c
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 45341d1c9b..56a1c6c6b9 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -402,13 +402,13 @@ static struct ns16550_drvdata ns16550_drvdata = {
+ 
+ static __maybe_unused struct ns16550_drvdata omap_drvdata = {
+ 	.init_port = ns16550_omap_init_port,
+-	.linux_console_name = "ttyO",
++	.linux_console_name = "ttyS",
+ 	.linux_earlycon_name = "omap8250",
+ };
+ 
+ static __maybe_unused struct ns16550_drvdata omap_clk48m_drvdata = {
+ 	.init_port = ns16550_omap_init_port,
+-	.linux_console_name = "ttyO",
++	.linux_console_name = "ttyS",
+ 	.clk_default = 48000000,
+ };
+ 
 
-Thanks!
+-- 
+2.39.5
 
-=D0=BF=D1=82, 31 =D1=8F=D0=BD=D0=B2. 2025=E2=80=AF=D0=B3. =D0=B2 16:19, Sas=
-cha Hauer <s.hauer@pengutronix.de>:
->
-> On Thu, Jan 30, 2025 at 04:45:48PM +0300, Alexander Shiyan wrote:
-> > Hello.
-> >
-> > Yes, I understand that.
-> > But maybe we can make another entry point to start from scratch,
-> > but with another tree, roughly the same way we do with pbl?
->
-> It's not universally possible to jump into the currently running image.
-> Static variables in the data section might be modified already.
->
-> Of course you can load the barebox image from the boot device again
-> manually and jump into it, with a device tree passed in a pointer this
-> time.
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             =
-|
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
-|
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
 
 
