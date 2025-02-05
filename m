@@ -1,74 +1,75 @@
-Delivery-date: Wed, 05 Feb 2025 10:49:03 +0100
+Delivery-date: Wed, 05 Feb 2025 10:49:05 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tfc1m-008kYM-1Y
+	id 1tfc1o-008kZ2-1l
 	for lore@lore.pengutronix.de;
-	Wed, 05 Feb 2025 10:49:03 +0100
+	Wed, 05 Feb 2025 10:49:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tfc1m-0004i7-Jj
-	for lore@pengutronix.de; Wed, 05 Feb 2025 10:49:03 +0100
+	id 1tfc1o-0004k2-Hh
+	for lore@pengutronix.de; Wed, 05 Feb 2025 10:49:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YXw5VNTURssX+BQPn7rNuHxnbL8qaYFnqp2BTQcSf3g=; b=X3c8TEn8925aBmeNhlxbaML+GN
-	5WNuZZNZvD4ek6xEw8xqwIhLWG4D8FWK45VcCdiklrHaG5sw44JbdhxkLIKwx5SikqjmE/wGOwU7Q
-	euuQoJDa8blw10ehXW1W/4env3qvoylUQcnwnMzrUZiOBSvngUNjQU021nxjBnQyKqmNFXa7Ym2Km
-	Z4iY6uC4JKxq8DeqQvSkXYWh+0C+UMhvmrz574dgo0HZIH9BRvOhjvup+il8ol1GVGZgK8lnBCVkZ
-	7oC/eI7BhMfe2W1lZcjptFgmWxEcffz+YmBmihkytQEj4KPKrgh1jzomG+l8E6KLrqB0FKNR5w06V
-	2XtiwFhw==;
+	bh=+PTAwcRnEuskxD1V139vFUnZi87or1MicuYT7l1OkMs=; b=bz0xvUIJO7GEl4kmlhnxd+jcG3
+	qTLBheVe4LJwvU6Fsfu3v8zboXl12yEalccoQxSDxPHnvznaap+vLDn7Li65C0aH2qLm8nrXUDvvE
+	WG/qLbKzFLx/3gkKdgTSQqB2kvMzsTK7qgrjkU2FzpmoYRZGY3g4N1ImtIkp0cA74ryMa+jL9sjt8
+	AesjWS7uxWftDGWwOUJCHFmrbOcY56asMmLKXrD2GgRIJCW+67PyHU+GvuFhvargAh1IXM2F+Edu0
+	JqgRc4nt4PPpF267cVYnoffBaa4dX9vlDYkqp1ot3yfOOPHnqSsql+W2v2ONr+tUWHwyjxjWUVgiF
+	7NqjIHzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tfc1E-00000002kNC-0oJa;
-	Wed, 05 Feb 2025 09:48:28 +0000
+	id 1tfc1J-00000002kSS-3Ak8;
+	Wed, 05 Feb 2025 09:48:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tfc19-00000002kHu-050H
+	id 1tfc1H-00000002kPX-0HWn
 	for barebox@lists.infradead.org;
-	Wed, 05 Feb 2025 09:48:24 +0000
+	Wed, 05 Feb 2025 09:48:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tfc0z-00048N-QW; Wed, 05 Feb 2025 10:48:13 +0100
+	id 1tfc0z-00048M-RI; Wed, 05 Feb 2025 10:48:13 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tfc0z-003c2j-1I;
+	id 1tfc0z-003c2h-1H;
 	Wed, 05 Feb 2025 10:48:13 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tfc0z-00F0Mw-0z;
+	id 1tfc0z-00F0Mw-0x;
 	Wed, 05 Feb 2025 10:48:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 05 Feb 2025 10:48:16 +0100
+Date: Wed, 05 Feb 2025 10:48:14 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250205-k3-emmc-v1-8-06679246be41@pengutronix.de>
+Message-Id: <20250205-k3-emmc-v1-6-06679246be41@pengutronix.de>
 References: <20250205-k3-emmc-v1-0-06679246be41@pengutronix.de>
 In-Reply-To: <20250205-k3-emmc-v1-0-06679246be41@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738748893; l=1460;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738748893; l=745;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Zk1dbaNVu9VWD+5rBWIDAt6G1K8Io4UhU5Z4QDAq0Ho=;
- b=vPgZCtFVOw7Cfja99PzfqJHhOWLKakyH2Pbr2QNitRL2I5uVzHDKS8XLPcLGmfOzpYsL/UtZt
- lPmAASwB3bDDP8+BBivA+/AWUI4hK34b/mPMqzqBYIRGkpOkgcCeQUV
+ bh=ayXc6BFzxKBgjVesyzydgnYEY96EZa5dgIaiD6oyRlg=;
+ b=ZJUmFjQrx2WMp1QZCyL5Mn03axedTcVrJwdZK4xT4fFthNOP3vvqP/0As/bgYJ8iIDY2SXXjX
+ egH4JKg7m6kAwYTPwKHkKwp8YmUhsLlSF7XMCPsKluN2KDNB7qvJmuA
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250205_014823_059913_9121CEBB 
-X-CRM114-Status: GOOD (  11.42  )
+X-CRM114-CacheID: sfid-20250205_014831_111084_55E97B2E 
+X-CRM114-Status: UNSURE (   8.84  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,66 +91,30 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 8/9] ARM: am625-sk: put environment on eMMC when booting
- from it
+Subject: [PATCH 6/9] mci: am654: parse generic mmc node properties
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When booting from eMMC put the environment on the eMMC as well.
+Call mci_of_parse_node() to parse generic node properties like
+max-frequency to lower the maximum allowed frequency.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/am625-sk/board.c |  5 +++++
- arch/arm/dts/k3-am625-sk.dts     | 15 +++++++++++++++
- 2 files changed, 20 insertions(+)
+ drivers/mci/am654-sdhci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boards/am625-sk/board.c b/arch/arm/boards/am625-sk/board.c
-index fd3bcdeac6..c716f30e69 100644
---- a/arch/arm/boards/am625-sk/board.c
-+++ b/arch/arm/boards/am625-sk/board.c
-@@ -11,6 +11,11 @@ static int am625_sk_probe(struct device *dev)
- {
- 	am625_enable_32k_crystal();
+diff --git a/drivers/mci/am654-sdhci.c b/drivers/mci/am654-sdhci.c
+index 9787642011..2c1fa5d804 100644
+--- a/drivers/mci/am654-sdhci.c
++++ b/drivers/mci/am654-sdhci.c
+@@ -594,6 +594,7 @@ static int am654_sdhci_probe(struct device *dev)
+ 	mci = &plat->mci;
+ 	mci->f_max = clk_get_rate(plat->clk);
+ 	mci->f_min = 50000000 / 256;
++	mci_of_parse_node(mci, np);
  
-+	k3_bbu_emmc_register("emmc", "/dev/mmc0", BBU_HANDLER_FLAG_DEFAULT);
-+
-+	if (k3_boot_is_emmc())
-+		of_device_enable_path("/chosen/environment-emmc");
-+
- 	return 0;
- }
- 
-diff --git a/arch/arm/dts/k3-am625-sk.dts b/arch/arm/dts/k3-am625-sk.dts
-index 56d5681519..8d7a73babf 100644
---- a/arch/arm/dts/k3-am625-sk.dts
-+++ b/arch/arm/dts/k3-am625-sk.dts
-@@ -3,6 +3,16 @@
- #include <arm64/ti/k3-am625-sk.dts>
- #include "k3-am625.dtsi"
- 
-+/ {
-+	chosen {
-+		environment-emmc {
-+			compatible = "barebox,environment";
-+			device-path = &env_emmc;
-+			status = "disabled";
-+		};
-+	};
-+};
-+
- /*
-  * DRAM size differs between board variants. Real size is read from DDRSS
-  */
-@@ -10,4 +20,9 @@
- 
- &sdhci0 {
- 	max-frequency = <26000000>;
-+
-+	env_emmc: partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0x0 0xe0000 0x0 0x20000>;
-+	};
- };
+ 	if (plat->soc_data->flags & DLL_PRESENT) {
+ 		ret = of_property_read_u32(np, "ti,trm-icp", &plat->trm_icp);
 
 -- 
 2.39.5
