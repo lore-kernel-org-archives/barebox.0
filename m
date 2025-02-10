@@ -1,70 +1,65 @@
-Delivery-date: Mon, 10 Feb 2025 10:12:09 +0100
+Delivery-date: Mon, 10 Feb 2025 13:18:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1thPpq-000Xdn-1N
+	id 1thSk7-000axH-2u
 	for lore@lore.pengutronix.de;
-	Mon, 10 Feb 2025 10:12:09 +0100
+	Mon, 10 Feb 2025 13:18:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1thPpp-0003AV-92
-	for lore@pengutronix.de; Mon, 10 Feb 2025 10:12:09 +0100
+	id 1thSk6-0000sG-Ny
+	for lore@pengutronix.de; Mon, 10 Feb 2025 13:18:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XoLQl0liXRbrB6iDjClHtEtYjhjnqSeMw4Za29akEXo=; b=AEGUwTymFeyoa3AI5lPoMTCouZ
-	oMLPzWgTpnYjGXElsIAEQbi4gbj19L2NFdGdo+/bz3z7k+yJKzEwwWjXmGUr3xwC3k7Qhd4Z5dSE8
-	MdYjV5/T11B+FyB7jvBl0B7id/t7I4EK2pLHpziQs7pqGd/FF4/R9lkiRN4T8jD/oLUy9ONoczkxJ
-	vpilCjiXtwAkR5OGcTTVkLL1JqktC0FnfppGnM3kxavS+oAjwJBRRKQ2+wAN7jEyWWRwKdSzty60q
-	NeCN8HFJp1mDLnXURd9yKrzEmhbBCEOjLxINs6XJ6dSOnYOzxPfWT47WUkwHUyUkHvFN8PPbcduVr
-	WEl1ukAw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=0B2duUyG6G+qBfw+lr51KJ7G+BVy+J84UuddRyNJRZs=; b=QQAcfOh3te8DXIWskfmDNN7RIM
+	D0Yc/gfuWPOMAztbbENVrgaIn1WFzdgHyIpUIJ+SgRP3JTCJR7FavdI6H2np7VbBrds5aYMA6SCkj
+	ue1BlNO4j2tWftcspW4kC3Cvv2Avm6BcOxd6Id6dfDoaKjUr2BFyg6gIm2sxFf1ot/U/T+t3ung9a
+	C3sMlKkPgk6L0eDWpjMW8DMTluaJQkw5M1yThiPF7lMm7J1m6ybtCcM9t1Os5LsfXfGcrbKo9ZjLR
+	jGJypRTF19Q6b3sM2QB1nGaJxl6CHEjvIsczynT6gsUaBrru7UNVu8BkFboXxz/ycY8PCuEg+OZXL
+	98TLmKFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1thPpC-0000000GmJW-0xuo;
-	Mon, 10 Feb 2025 09:11:30 +0000
+	id 1thSjQ-0000000HN8p-2KtK;
+	Mon, 10 Feb 2025 12:17:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1thPhp-0000000Gksm-255X
+	id 1thSjG-0000000HMrh-1ByI
 	for barebox@lists.infradead.org;
-	Mon, 10 Feb 2025 09:03:55 +0000
+	Mon, 10 Feb 2025 12:17:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1thPhl-0000OW-My; Mon, 10 Feb 2025 10:03:49 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1thSjC-0000bz-Dp; Mon, 10 Feb 2025 13:17:30 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1thPhl-000DXM-1C;
-	Mon, 10 Feb 2025 10:03:49 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1thPhl-007CSm-0u;
-	Mon, 10 Feb 2025 10:03:49 +0100
-Date: Mon, 10 Feb 2025 10:03:49 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Jonathan Bar Or <jonathanbaror@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z6nA9ce6j7wMCJJv@pengutronix.de>
-References: <CABMsoEEwH4Nch6bVqd+8QSMOCzMTN9LVZcSe6yJ=+Rf54sAVDg@mail.gmail.com>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1thSjC-000F5D-0n;
+	Mon, 10 Feb 2025 13:17:30 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1thSjC-001ZuY-0V;
+	Mon, 10 Feb 2025 13:17:30 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 10 Feb 2025 13:17:26 +0100
+Message-Id: <20250210121726.376306-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABMsoEEwH4Nch6bVqd+8QSMOCzMTN9LVZcSe6yJ=+Rf54sAVDg@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250210_010353_535767_1A45D90D 
-X-CRM114-Status: GOOD (  12.84  )
+X-CRM114-CacheID: sfid-20250210_041734_325435_0892C5BA 
+X-CRM114-Status: GOOD (  10.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,33 +77,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Reporting security issues preferred method?
+Subject: [PATCH master] SECURITY.md: add security policy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Jonathan,
+We prefer coordinated vulnerability disclosures, so users can be provided
+patch instructions for security issues alongside the vulnerabilities report.
 
-On Sun, Feb 09, 2025 at 06:39:14PM -0800, Jonathan Bar Or wrote:
-> Hi Barebox mailing list!
-> 
-> What's the best way to report security issues?
+Github handles a top-level SECURITY.md file specially and shows it in
+the security tab. Unlike other documentation, this can't be written
+in reST, so write it in markdown and adopt this convention.
 
-This question comes up from time to time. We don't have an official
-answer yet, but I see we should work on one.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ SECURITY.md | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+ create mode 100644 SECURITY.md
 
-For now you can write to me and Ahmad afa@pengutronix.de
-
-Regards,
- Sascha
-
+diff --git a/SECURITY.md b/SECURITY.md
+new file mode 100644
+index 000000000000..476ab3186e04
+--- /dev/null
++++ b/SECURITY.md
+@@ -0,0 +1,14 @@
++# Security Policy
++
++## Supported Versions
++
++The barebox project does not, at the moment, maintain any longer term
++support branches.
++Please update to new [barebox releases](https://github.com/barebox/barebox/releases)
++as they become available.
++Compatibility with old kernels is maintained over barebox releases.
++
++## Reporting a Vulnerability
++
++Please report security vulnerabilities to security@barebox.org.
++We will work with the reporter to create a fix and to coordinate the disclosure.
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
