@@ -1,82 +1,67 @@
-Delivery-date: Tue, 11 Feb 2025 14:16:12 +0100
+Delivery-date: Wed, 12 Feb 2025 11:57:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1thq7Y-00118c-1x
+	id 1tiAQO-001OWB-2T
 	for lore@lore.pengutronix.de;
-	Tue, 11 Feb 2025 14:16:12 +0100
+	Wed, 12 Feb 2025 11:57:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1thq7X-0003zH-G8
-	for lore@pengutronix.de; Tue, 11 Feb 2025 14:16:11 +0100
+	id 1tiAQN-0000Dy-Gf
+	for lore@pengutronix.de; Wed, 12 Feb 2025 11:57:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:Subject:
-	Message-ID:Date:From:MIME-Version:Reply-To:Cc:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=6cDAaLYuRJ8C/adebcDjwkmb4rUpKWSPJ5PeQozLM0M=; b=NAt93CD3+QUH/eF7ylEtyL3KgN
-	Fz4L6LY/5fuKpD8UHFp6muqxn18884NxhQdYFyWpykFUMqV13vO/Xt62TW0zSZ+p0JSZPP3U4ldk6
-	vhlCwzeyIA7D/Z0PPliHwEW8ZHYsmG2WypIu3l7kE8MeVyeKlLzOrJizJR+Fevza91ASFxOgiDLUM
-	dzbHggbEhzBl1ThKMJ8tJV+mNgFRsCFjRlucsERoz8e9azEE/mclaxw6G8RwNsBLOn+KAv4OGz+ph
-	fT9lgVn+kXcWFONs8xQNsr1Bs6A4j+ZPWrFdXkT0PQoADMkGTjVMFrFTDco2d5fNOoMA4ek2LflB+
-	uriYX8Cw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=G/fvyE/9v95mX8for+J1rI7BPApjoFetAjd0voG7Piw=; b=JyGPO2GP5JJ2GTdOPvlynWi5Dw
+	ZyTe1Nuc+L7tjYYU7Pi6GW7Oahz7vHKHOfg8y2UOCkI/gX3NjxrnfX7SP+3rHntYTibo208I65yzA
+	yOSvMNQW9ZC6+fRtiUlBZeQEJ3hVNhuh1oznA0U8HcDVT9Y0LCkInCnKjJpjJ3jXQG+fNffdBG6hT
+	wmHBX2OdjoR2sVFRpRefpEttx0caLOXPgsLOqV/CcrC0zrsgOLBizymqI6khyAnogpwGU1xcLySHp
+	NTg1rf/y7B/lWRClYxJO72ThZ8DcBHBWvY0XGgTds7vZtgG1yryEBuS2Gya9tJEWgmRiCGd+M8l3T
+	IjdJyuag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1thq6x-00000003ur2-3v5J;
-	Tue, 11 Feb 2025 13:15:35 +0000
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+	id 1tiAPf-000000074Lk-0ujG;
+	Wed, 12 Feb 2025 10:56:15 +0000
+Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1thppa-00000003rB4-2E22
+	id 1tiAJB-0000000734j-0Cjt
 	for barebox@lists.infradead.org;
-	Tue, 11 Feb 2025 12:57:39 +0000
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-ab7cc0c1a37so300365766b.0
-        for <barebox@lists.infradead.org>; Tue, 11 Feb 2025 04:57:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739278656; x=1739883456; darn=lists.infradead.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6cDAaLYuRJ8C/adebcDjwkmb4rUpKWSPJ5PeQozLM0M=;
-        b=e0vjJ+9m5NClcME0/YFTmLlOQuEvtt/RpaPJq0ZaOpxi0iRwsDSPkHGp7oQxlBHQdO
-         NzqHSMCX5dNGdnuMncAWSWUXdESSWzXPzL/9aD09YiQdiBxghPlA3S4Vb4Hnjm500lYz
-         VOei9ur9QUaDCeVvaZDLygXE6b+ydj9YbYq1Fx7lb0LMAt+7u7OAOOMIgClAAHKo/qrY
-         5iKl5Ihub2ReYjzQWvywP0g+DgR9MTlsqxunnlt/c6TnQACvyDCYvQFjGzu4es8zVwJF
-         Kq8EzZpTaU/0a/zD9knetIe2Icxow9RXn7H6pzGowrlAQibZq8TtoMLo1eBclBR4Lqd0
-         EU2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739278656; x=1739883456;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6cDAaLYuRJ8C/adebcDjwkmb4rUpKWSPJ5PeQozLM0M=;
-        b=RqqNFiiLvBAMIZBnpL5FNDgx5ZHSAgLhUoFpiO9zVDSFUHs51Ez5G27KSncWoBpqMU
-         5/WIAkalPkXJC5np2PF2jHz+KqoK90HlUfqimCdrv9LU+k4/VpHp9qWkhECF4/zUHipp
-         mphCZNoIfnRQL4VdW90Fg9YTrHVBwAzhUo2c12EBJ+mEzyXLmTxISbeCJKsnLpDcUGtf
-         VhRYXpKnLQUCwbNG43U7sWiYZszfv8W/WrFj1daFqZNRJZDzru75ZNeBvIyYrWeFkOwj
-         5rHZ6E2QFWKhEOQ5fu29J1GT6jkcPEQpXpLStY3xCnzxIiN4xDwtMg0ysWzrln6tbJ6p
-         /J/g==
-X-Gm-Message-State: AOJu0YzcwJ70qemcLZvN8+BZGpdgdv9ElRR9xa8UCdtqMglb7tkbwNKG
-	0G1Mv91wEMB//+sy1Rhwz2niwWKnvpUvrpl01FXrRuOXN+BD5KFJJ3spE6BpQlppmN16evRU0q2
-	Eq7jH0GRLn0LA2HsRJRkWcYaJ41dVpA==
-X-Gm-Gg: ASbGncuf9h25YZCgrCoMrI8KsKc2bISFIVQFXrAI92PjRnMhRjs6iWyjrFbYIrj88ta
-	bmX7IiYQQvfUF+y6Ugb+gEJe2EzKP4RTmiN0YWj8iSVBdPQf1EH6H62R6akJzRzPNb7+RvIPd
-X-Google-Smtp-Source: AGHT+IFBBB0OsIICfHRKSZLKW4t4N8adScPS1DAhB6Hh+hWaB33t3bJuA5Hf4+tQUUUKxnWFzXk+R1kDxWg8SRjj42Q=
-X-Received: by 2002:a17:907:6eab:b0:ab7:dfd3:51aa with SMTP id
- a640c23a62f3a-ab7dfd354dcmr227185866b.41.1739278655994; Tue, 11 Feb 2025
- 04:57:35 -0800 (PST)
+	Wed, 12 Feb 2025 10:49:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
+	t=1739357364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G/fvyE/9v95mX8for+J1rI7BPApjoFetAjd0voG7Piw=;
+	b=oI4F7/RouExTwSD0BaWsfEvM86o4Gf6ZZMRX0RzCqrK4hTJ7ppO4XXEpYf+9X1+cYj3t1q
+	wJEsGMfnMWckewa+ZCWOS7nXE98wsvZsnU3Wdb68/jdfrmIX6i/mKMedjsmRK1VT41Zx1g
+	Ivbds7D3NO5YaspbZ9QhAD8HrGxGoQSZhlxsWlW07jd20t9qM6kWPUSkfkW/xSDMdooDT+
+	54DVtf89OasG0aw41d6bAM+6kJRwmXOwjRnK3Jee3HDTcZicK7vYCMIvXDreiuhycDAmSE
+	lAAMae4/LZnJbwKQ+m3mhDF7e9Bvu8o9rM+XWESVXA3uS2XhS2PsHFXw+bdv9A==
+Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:6f02:8f71:b5f4:2800])
+	by zdiv.net (OpenSMTPD) with ESMTPSA id 51b950df (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 12 Feb 2025 11:49:24 +0100 (CET)
+From: Jules Maselbas <jmaselbas@zdiv.net>
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@zdiv.net>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 12 Feb 2025 11:48:37 +0100
+Message-ID: <20250212104842.504-2-jmaselbas@zdiv.net>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250212104842.504-1-jmaselbas@zdiv.net>
+References: <20250212104842.504-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
-From: Martin Wege <martin.l.wege@gmail.com>
-Date: Tue, 11 Feb 2025 13:56:58 +0100
-X-Gm-Features: AWEUYZlYZPX-pZ38WglCkqBrNhyH_WubEvQeYfG0veF009j43H1dqjcMsCOyU0Q
-Message-ID: <CANH4o6Njc3uHE=NbasRJrRr0W5B89R8MTM_BwGwab7t5fNWuaA@mail.gmail.com>
-To: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250211_045738_572213_B460E169 
-X-CRM114-Status: UNSURE (   2.25  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250212_024933_555550_62B4DA27 
+X-CRM114-Status: GOOD (  10.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,19 +79,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.2
-Subject: Mount NFSv4.2 filesystem in barebox?
+X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v3 1/6] clk: divider: add error code propagation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello!
+divider_get_val can return a negative error code and should not be used
+as a valid divider.
 
-Does barebox have support to mount a NFSv.2 filesystem?
+Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1->v2:
+  - changed value to int and removed ret variable (Ahmad)
+v2->v3: no change
 
-Thanks,
-Martin
+ drivers/clk/clk-divider.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
+index ccab70aecc..b0df34e858 100644
+--- a/drivers/clk/clk-divider.c
++++ b/drivers/clk/clk-divider.c
+@@ -307,7 +307,7 @@ static int clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
+ {
+ 	struct clk *clk = clk_hw_to_clk(hw);
+ 	struct clk_divider *divider = to_clk_divider(hw);
+-	unsigned int value;
++	int value;
+ 	u32 val;
+ 
+ 	if (divider->flags & CLK_DIVIDER_READ_ONLY)
+@@ -322,6 +322,8 @@ static int clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
+ 
+ 	value = divider_get_val(rate, parent_rate, divider->table,
+ 				divider->width, divider->flags);
++	if (value < 0)
++		return value;
+ 
+ 	val = readl(divider->reg);
+ 	val &= ~(clk_div_mask(divider->width) << divider->shift);
+-- 
+2.48.1
+
 
 
