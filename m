@@ -1,68 +1,65 @@
-Delivery-date: Fri, 14 Feb 2025 15:28:21 +0100
+Delivery-date: Fri, 14 Feb 2025 16:48:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tiwg1-002IXA-2h
+	id 1tixvW-002JwA-2t
 	for lore@lore.pengutronix.de;
-	Fri, 14 Feb 2025 15:28:21 +0100
+	Fri, 14 Feb 2025 16:48:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tiwg0-0000q1-NP
-	for lore@pengutronix.de; Fri, 14 Feb 2025 15:28:21 +0100
+	id 1tixvU-0007WC-9M
+	for lore@pengutronix.de; Fri, 14 Feb 2025 16:48:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MDtdRakSQwZSuofMEwQ24oLu2atqkCB4MGF6LF0vRrs=; b=4dcSGbQtgZYM8I0iXZ0B390+eD
-	fKSwLGl4yekB2HE30sfJqeUEh9vGCPm/1Gjd61flZj+XPIo7FriOw/iTJsfyhGCebh+3V20oizisv
-	j25RrXAcj41uTDmFcpIk088BrzoepCGaY5Nu5PEm6lsWajpuNKu7mxo2R3pEwuOukdDGEOP7HUBUh
-	zvmgFtyZLLtj282eAJGlxgwCFrvG4E3f+iX2nvp/8eOYqScZrXgd/QEwyydWrbCAZJ6B3sCxwZcGc
-	HwXq5ZpsTwyzrSCvrugGYeCh5a8eJgGTKtkoBG2W8kKJGeoZp5JGYUifUVu+WFvPPpiDv1GE88kOX
-	nepipEEw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=a0NQC5rpTXQQZkBdJ6JZg3jH78qfgk70WB9TKQwY5RA=; b=eQ7l+BAOdUPAsPkeVtExiCbkQM
+	NKo9L1Z5zord25RLxJZUTNcatiOX6GjUx+fTTR6gcC15Fy9mfw41Fezqgx9Lktsz/uFKNZHidVGMn
+	VXcPMIcUKcValPf7Yzu/CI5S86gR9FKG3ZD2AUBnRRZIHp7aG7lxlBuTk4PU2aieEhOia8KoZYdMM
+	PklQFQ9uU3w7rJP+1Gxdxv3CVGlzw+Gv+Fj49nD9thiqvsChHpVBw3j990pi5MEL9V1QqcK9TMgWM
+	eaXe35CKYKRJJAWqaGPUVnwSYQcyJDD9sJmpqzuxJOE1WRE1i2pv73dtsunfmdR+ikgq1JKtjxI/+
+	5SL2aKew==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tiwfb-0000000F9Kt-2xqg;
-	Fri, 14 Feb 2025 14:27:55 +0000
+	id 1tixuz-0000000FONV-2hI8;
+	Fri, 14 Feb 2025 15:47:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tiwfZ-0000000F9Jt-3Fek
+	id 1tixtY-0000000FNxa-2UD0
 	for barebox@lists.infradead.org;
-	Fri, 14 Feb 2025 14:27:54 +0000
+	Fri, 14 Feb 2025 15:46:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tiwfY-0000ip-9M; Fri, 14 Feb 2025 15:27:52 +0100
+	id 1tixtW-00076F-WC; Fri, 14 Feb 2025 16:46:23 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tiwfY-000vrM-0K;
-	Fri, 14 Feb 2025 15:27:52 +0100
+	id 1tixtW-000wPd-2Z;
+	Fri, 14 Feb 2025 16:46:22 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tiwfY-00FEGW-03;
-	Fri, 14 Feb 2025 15:27:52 +0100
+	id 1tixtW-000zP9-2I;
+	Fri, 14 Feb 2025 16:46:22 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Feb 2025 15:27:51 +0100
-Message-Id: <20250214142751.3629723-1-a.fatoum@pengutronix.de>
+Date: Fri, 14 Feb 2025 16:46:22 +0100
+Message-Id: <20250214154622.235998-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250214142356.3624561-3-a.fatoum@pengutronix.de>
-References: <20250214142356.3624561-3-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250214_062753_805506_3DDE1408 
-X-CRM114-Status: UNSURE (   6.91  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250214_074624_627208_AF864749 
+X-CRM114-Status: GOOD (  10.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,29 +81,38 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! Documentation: user: add security consideration for using barebox
+Subject: [PATCH] bootm: change default verification mode from hash to available
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Actually reference the file...
+The default of global.bootm.verify=hash means that barebox will refuse
+to boot images without hashes, but won't bother verifying the signature.
+
+For verified boot setups, this parameter needs to be set to signature,
+preferably enforced via CONFIG_BOOTM_FORCE_SIGNED_IMAGES.
+
+For everything else, it's better user experience if barebox would just
+verify what's available instead of refusing to boot images without hashes,
+like the image.fit that Linux can now generate as part of its build.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/user/user-manual.rst | 1 +
- 1 file changed, 1 insertion(+)
+ common/bootm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 565e6c11f82f..83ba9e4c3505 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -28,6 +28,7 @@ Contents:
-    booting-linux
-    bootchooser
-    remote-control
-+   security
-    system-setup
-    reset-reason
-    system-reset
+diff --git a/common/bootm.c b/common/bootm.c
+index 80905d4cf1ce..dd9ba2eae3b2 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -87,7 +87,7 @@ void bootm_data_restore_defaults(const struct bootm_data *data)
+ 	bootm_dryrun = data->dryrun;
+ }
+ 
+-static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_HASH;
++static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_AVAILABLE;
+ 
+ enum bootm_verify bootm_get_verify_mode(void)
+ {
 -- 
 2.39.5
 
