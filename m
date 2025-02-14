@@ -1,82 +1,82 @@
-Delivery-date: Fri, 14 Feb 2025 11:01:55 +0100
+Delivery-date: Fri, 14 Feb 2025 11:01:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tisWC-002Dii-0x
+	id 1tisWD-002Dj3-0S
 	for lore@lore.pengutronix.de;
-	Fri, 14 Feb 2025 11:01:55 +0100
+	Fri, 14 Feb 2025 11:01:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tisWA-0005r2-Ol
-	for lore@pengutronix.de; Fri, 14 Feb 2025 11:01:55 +0100
+	id 1tisWB-0005re-T9
+	for lore@pengutronix.de; Fri, 14 Feb 2025 11:01:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rVrxitSeTb46lbO57TMs6C1Sy+mgDPnv6c/qJ+HTBq0=; b=i8rG2Gu3zqnOHGib25Td4C+HIO
-	HQt7ujptrIlmbCrbjdm3Zevgrm7pVG5Ykc46sRGcKy6PyVqit/8tGwtHFWR5aG3P6/K/cqC3Vj63g
-	/jw1Lss3Zb7K9XMYhDw1/VG0UxqdYn01vzPUPX5hll48efVFy8N2nfmM/2v7IS6vANqmnbd2Ke1W/
-	FVQaKwODSx6in7w/EA3qjy+aaod4hkZCWcR3Dr9w5Pg020LwP3hNUVkNOf6MJTbI0FWF3Ijmqncaw
-	Eoh++QeavXTiDA1RHt9NW1TwdrjIlTt0r6heFTlawwuV2GUr4a6aItAOf57TYQGkGPi4RZ3hbjcMJ
-	yzQ34nOw==;
+	bh=WSIRdlDlHrPiL1FvymFdeIDI6kH5N35B7CrgcEYGqgE=; b=kdu9XGJAgFbL8ZLw8vK4o8VnE+
+	1IEXG0PW0ZlX94QoDW2RYlf//rEMZTcCMFWikNNyOm57u5VXfW7UzoLTTyLJEze1JTaif3NUcJAlh
+	BzMl3nsZ6qa9V4uXxN25wp/3YQ78DfwAKtm00NTdwgdnjmwUWac0XC5PAvXPAg8WcZwWbB4Et3aGu
+	fNPY1QqQ5kUQLrPrkBg97WWeacZHc3T3q8YgedQZCkmv5eJgnVdqMKos38QKt0rc91T4doe2eiBI4
+	El7kV5gPfbsSYBsRUdcdUiIHSqpR/zS1klR0Qf0JLhHcwd92a+o+gxx6ieeHo3LhSAJNU6IJk+7DV
+	3RigNaSA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tisVk-0000000EQJ7-2fJ9;
+	id 1tisVk-0000000EQIU-080A;
 	Fri, 14 Feb 2025 10:01:28 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tisMd-0000000EOck-09nY
+	id 1tisMd-0000000EOcj-07Ek
 	for barebox@bombadil.infradead.org;
 	Fri, 14 Feb 2025 09:52:03 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=rVrxitSeTb46lbO57TMs6C1Sy+mgDPnv6c/qJ+HTBq0=; b=b+3Ea2lmOXuoJLQfY3+PQCLBYw
-	LdxeYp+Jq8Rxtn2SMvv0aNiQEKPaeAJe23250Yobu/m+pX5PNPMunjTAsi5yCk1a9vt/311TMvS6C
-	eTe7vozfNCYj/U84R1rNcbn55kZz5NTjf2qHCA44TjjcUq6NNvP8mGnuZX5Ckr9IQLed6Sv2pwP9R
-	YRDT2sQoS5LcEjRIo7MqnHEiLcnEQHpJkKqh+HuySdlO3N36YTqkFpA99p66tuWrTA5ss+obP0503
-	8g5og9UaGZbbTNnajb0yTX2k6plwog2BYTSDgUkRSswz/ZjuozkUocsZ4EaPI4GE4sH9vD8Fgwawy
-	2Ws4rHiA==;
+	bh=WSIRdlDlHrPiL1FvymFdeIDI6kH5N35B7CrgcEYGqgE=; b=bJo1cUUGQQ5vQPn94H0vLW84sb
+	1mXvu4ILXczjjCclLuBscrGzChz03pt+W0MijZQT8cxJIQ5fAbJmQJGBqfGzY0NcFmDnRDBrWBxOC
+	wj8c4Cnf+0v1xmTr9F8fqerNvQtHuo05WRT8EPs3U/A+36ymVmoKG1F4DD0LOi9IK9hNJ+XvnJ0ye
+	GSMBl/ppyI3ik+h2QatcXwjTBN7q2AGNHnzLb20/TVjzYZn4HzmYf1AmmB6aGkDCYiFPWeJ4Vb2ss
+	s1edXrSzQ654pZ4+n/no7xu7bBQXb/QphbGfOm0gFc/OvHo00xqRcp738XIQOoig6ZpnAuzvFt97L
+	/cd9fcig==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tisMa-00000001Drp-0pDI
+	id 1tisMa-00000001Drq-0q6p
 	for barebox@lists.infradead.org;
 	Fri, 14 Feb 2025 09:52:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tisMZ-0003bY-Li; Fri, 14 Feb 2025 10:51:59 +0100
+	id 1tisMZ-0003bT-Gx; Fri, 14 Feb 2025 10:51:59 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tisMZ-000ta4-1D;
+	id 1tisMZ-000ta1-14;
 	Fri, 14 Feb 2025 10:51:59 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tisMZ-00BxeG-0v;
+	id 1tisMZ-00BxeG-0m;
 	Fri, 14 Feb 2025 10:51:59 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Feb 2025 10:51:57 +0100
-Message-Id: <20250214095157.2850839-3-a.fatoum@pengutronix.de>
+Date: Fri, 14 Feb 2025 10:51:56 +0100
+Message-Id: <20250214095157.2850839-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250214095157.2850839-1-a.fatoum@pengutronix.de>
 References: <20250214095157.2850839-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250214_095200_495340_EB7E0437 
-X-CRM114-Status: GOOD (  10.29  )
+X-CRM114-CacheID: sfid-20250214_095200_449703_609CEAF1 
+X-CRM114-Status: GOOD (  13.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,222 +98,65 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] fs: drop unused FS_DRIVER_NO_DEV flag
+Subject: [PATCH 2/3] fs: remove unused members in struct file_operations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The flag used to have an effect, but does so no longer, so let's just
-drop it.
+Eventually, we want to actually use these members in struct file_operations,
+but until we do so, having them there without effect only causes
+confusion.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/bpkfs.c            | 1 -
- fs/devfs.c            | 1 -
- fs/ext4/ext_barebox.c | 1 -
- fs/fat/fat.c          | 1 -
- fs/jffs2/fs.c         | 1 -
- fs/nfs.c              | 1 -
- fs/omap4_usbbootfs.c  | 1 -
- fs/pstore/fs.c        | 1 -
- fs/ramfs.c            | 1 -
- fs/ratpfs.c           | 1 -
- fs/smhfs.c            | 1 -
- fs/tftp.c             | 1 -
- fs/ubifs/ubifs.c      | 1 -
- fs/uimagefs.c         | 1 -
- include/fs.h          | 4 ----
- 15 files changed, 18 deletions(-)
+ fs/jffs2/dir.c     | 1 -
+ fs/ubifs/dir.c     | 2 +-
+ include/linux/fs.h | 8 ++++----
+ 3 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/bpkfs.c b/fs/bpkfs.c
-index 26ce73ce6bcf..fe6154c555a4 100644
---- a/fs/bpkfs.c
-+++ b/fs/bpkfs.c
-@@ -504,7 +504,6 @@ static struct fs_driver bpkfs_driver = {
- 	.read      = bpkfs_read,
- 	.lseek     = bpkfs_lseek,
- 	.legacy_ops = &bpkfs_ops,
--	.flags     = 0,
- 	.type = filetype_bpk,
- 	.drv = {
- 		.probe  = bpkfs_probe,
-diff --git a/fs/devfs.c b/fs/devfs.c
-index 1bc64676b24d..38a85bac3c49 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -312,7 +312,6 @@ static struct fs_driver devfs_driver = {
- 	.protect   = devfs_protect,
- 	.discard_range = devfs_discard_range,
- 	.memmap    = devfs_memmap,
--	.flags     = FS_DRIVER_NO_DEV,
- 	.drv = {
- 		.probe  = devfs_probe,
- 		.remove = devfs_delete,
-diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
-index 163c4d2fe1b7..b1888bc4a954 100644
---- a/fs/ext4/ext_barebox.c
-+++ b/fs/ext4/ext_barebox.c
-@@ -301,7 +301,6 @@ static void ext_remove(struct device *dev)
- static struct fs_driver ext_driver = {
- 	.read      = ext_read,
- 	.type      = filetype_ext,
--	.flags     = 0,
- 	.drv = {
- 		.probe  = ext_probe,
- 		.remove = ext_remove,
-diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index d5eade165f1a..15a7b2a96927 100644
---- a/fs/fat/fat.c
-+++ b/fs/fat/fat.c
-@@ -397,7 +397,6 @@ static struct fs_driver fat_driver = {
- #endif
- 	.legacy_ops = &fat_ops,
- 	.type = filetype_fat,
--	.flags     = 0,
- 	.drv = {
- 		.probe  = fat_probe,
- 		.remove = fat_remove,
-diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-index 3514b0fb3b5a..5952ea9e904f 100644
---- a/fs/jffs2/fs.c
-+++ b/fs/jffs2/fs.c
-@@ -461,7 +461,6 @@ static void jffs2_remove(struct device *dev)
- static struct fs_driver jffs2_driver = {
- 	.read = jffs2_read,
- 	.type = filetype_jffs2,
--	.flags     = 0,
- 	.drv = {
- 		.probe  = jffs2_probe,
- 		.remove = jffs2_remove,
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 51bf15196c4e..530d9c6672d8 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1555,7 +1555,6 @@ static struct fs_driver nfs_driver = {
- 	.lseek     = nfs_lseek,
- 	.write     = nfs_write,
- 	.truncate  = nfs_truncate,
--	.flags     = 0,
- 	.drv = {
- 		.probe  = nfs_probe,
- 		.remove = nfs_remove,
-diff --git a/fs/omap4_usbbootfs.c b/fs/omap4_usbbootfs.c
-index ad40e9b2c5aa..9c1524c56cc5 100644
---- a/fs/omap4_usbbootfs.c
-+++ b/fs/omap4_usbbootfs.c
-@@ -160,7 +160,6 @@ static const struct fs_legacy_ops omap4_usbbootfs_ops = {
- static struct fs_driver omap4_usbbootfs_driver = {
- 	.read    = omap4_usbbootfs_read,
- 	.legacy_ops = &omap4_usbbootfs_ops,
--	.flags	 = 0,
- 	.drv = {
- 		.probe	= omap4_usbbootfs_probe,
- 		.remove	= omap4_usbbootfs_remove,
-diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
-index 157f24aaaf72..b77d238ade73 100644
---- a/fs/pstore/fs.c
-+++ b/fs/pstore/fs.c
-@@ -287,7 +287,6 @@ static const struct fs_legacy_ops pstore_ops = {
- static struct fs_driver pstore_driver = {
- 	.read      = pstore_read,
- 	.lseek     = pstore_lseek,
--	.flags     = FS_DRIVER_NO_DEV,
- 	.legacy_ops = &pstore_ops,
- 	.type = filetype_uimage,
- 	.drv = {
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 6a824f56fdae..ab3c44270d43 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -444,7 +444,6 @@ static struct fs_driver ramfs_driver = {
- 	.write     = ramfs_write,
- 	.memmap    = ramfs_memmap,
- 	.truncate  = ramfs_truncate,
--	.flags     = FS_DRIVER_NO_DEV,
- 	.drv = {
- 		.probe  = ramfs_probe,
- 		.remove = ramfs_remove,
-diff --git a/fs/ratpfs.c b/fs/ratpfs.c
-index 5a1f8febd219..c3c3a248b681 100644
---- a/fs/ratpfs.c
-+++ b/fs/ratpfs.c
-@@ -456,7 +456,6 @@ static struct fs_driver ratpfs_driver = {
- 	.write     = ratpfs_write,
- 	.truncate  = ratpfs_truncate,
- 	.legacy_ops = &ratpfs_ops,
--	.flags     = FS_DRIVER_NO_DEV,
- 	.drv = {
- 		.probe  = ratpfs_probe,
- 		.remove = ratpfs_remove,
-diff --git a/fs/smhfs.c b/fs/smhfs.c
-index 425055d98ba8..e0e98f5213e9 100644
---- a/fs/smhfs.c
-+++ b/fs/smhfs.c
-@@ -150,7 +150,6 @@ static struct fs_driver smhfs_driver = {
- 	.write     = smhfs_write,
- 	.truncate  = smhfs_truncate,
- 	.legacy_ops = &smhfs_ops,
--	.flags     = FS_DRIVER_NO_DEV,
- 	.drv = {
- 		.probe  = smhfs_probe,
- 		.remove = smhfs_remove,
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 81b87dfcf9e0..b2d5df4aa384 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -1115,7 +1115,6 @@ static struct fs_driver tftp_driver = {
- 	.lseek     = tftp_lseek,
- 	.write     = tftp_write,
- 	.truncate  = tftp_truncate,
--	.flags     = 0,
- 	.drv = {
- 		.probe  = tftp_probe,
- 		.remove = tftp_remove,
-diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index ef30ae3554f8..45b41ed7541d 100644
---- a/fs/ubifs/ubifs.c
-+++ b/fs/ubifs/ubifs.c
-@@ -504,7 +504,6 @@ static void ubifs_remove(struct device *dev)
- static struct fs_driver ubifs_driver = {
- 	.read      = ubifs_read,
- 	.type = filetype_ubifs,
--	.flags     = 0,
- 	.drv = {
- 		.probe  = ubifs_probe,
- 		.remove = ubifs_remove,
-diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-index 7ce1a15e0cbe..be268d3679d9 100644
---- a/fs/uimagefs.c
-+++ b/fs/uimagefs.c
-@@ -530,7 +530,6 @@ static struct fs_driver uimagefs_driver = {
- 	.lseek     = uimagefs_lseek,
- 	.ioctl	   = uimagefs_ioctl,
- 	.legacy_ops = &uimagefs_ops,
--	.flags     = 0,
- 	.type = filetype_uimage,
- 	.drv = {
- 		.probe  = uimagefs_probe,
-diff --git a/include/fs.h b/include/fs.h
-index 3b8dd93d41d6..fafd91343b5c 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -19,8 +19,6 @@ struct partition;
- struct node_d;
- struct stat;
+diff --git a/fs/jffs2/dir.c b/fs/jffs2/dir.c
+index 94ef51f77881..48584466724d 100644
+--- a/fs/jffs2/dir.c
++++ b/fs/jffs2/dir.c
+@@ -26,7 +26,6 @@ static struct dentry *jffs2_lookup (struct inode *,struct dentry *,
  
--#define FS_DRIVER_NO_DEV	1
--
- /**
-  * enum erase_type - Type of erase operation
-  * @ERASE_TO_WRITE: Conduct low-level erase operation to prepare for a write
-@@ -86,8 +84,6 @@ struct fs_driver {
- 	struct driver drv;
- 
- 	enum filetype type;
--
--	unsigned long flags;
+ const struct file_operations jffs2_dir_operations =
+ {
+-	.read 	 = NULL,
+ 	.iterate = jffs2_readdir,
  };
  
- #define dev_to_fs_device(d) container_of(d, struct fs_device, dev)
+diff --git a/fs/ubifs/dir.c b/fs/ubifs/dir.c
+index a16546e615b7..98a4ec6b81e8 100644
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -492,7 +492,7 @@ const struct inode_operations ubifs_dir_inode_operations = {
+ const struct file_operations ubifs_dir_operations = {
+ /* 	.llseek         = NULL, not present in barebox */
+ /* 	.release        = NULL, not present in barebox */
+-	.read           = NULL, /* not present in barebox */
++/*	.read           = NULL, not present in barebox */
+ 	.iterate	= ubifs_readdir,
+ /* 	.fsync          = NULL, not present in barebox */
+ /*	.unlocked_ioctl = NULL, not present in barebox */
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 28d3146516a6..7461eb367d07 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -456,10 +456,10 @@ struct file_operations {
+ 	int (*open) (struct inode *, struct file *);
+ 	int (*release) (struct inode *, struct file *);
+ 	int (*iterate) (struct file *, struct dir_context *);
+-	ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
+-	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+-	int (*ioctl) (struct file *, unsigned int request, void *buf);
+-	int (*truncate) (struct file *, loff_t);
++	/*
++	 * TODO: move the remaining callbacks in struct fs_driver
++	 * here with Linux semantics
++	 */
+ };
+ 
+ void drop_nlink(struct inode *inode);
 -- 
 2.39.5
 
