@@ -1,65 +1,68 @@
-Delivery-date: Fri, 14 Feb 2025 11:32:37 +0100
+Delivery-date: Fri, 14 Feb 2025 11:32:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tiszt-002EOc-2b
+	id 1tiszu-002EOx-1W
 	for lore@lore.pengutronix.de;
 	Fri, 14 Feb 2025 11:32:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tiszs-0002FO-Ip
+	id 1tiszt-0002Fm-AG
 	for lore@pengutronix.de; Fri, 14 Feb 2025 11:32:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=1fyxVjFX6CctRyKikTXnqXA0NYPxiRTGP7k0CwKIe6Y=; b=cWXtztnyLMHau7WccMOft0P+Lk
-	Sb9rr3cxg+ljJCI8RksfgQnKcmt0v/8TyIsuoNgKGvDUKXgVuD+cf8IwHEcKtdTqB+auX0ZWNC0GT
-	mGE0+4Wp133IYWAYppNQYsQLUIj/2JSUhgS4R1qOu+Vd8PXKzAg/F/OHxYTLQgRjI8lkN5x5Q6psv
-	xPo8VhJongWkKW6FbQlnN/B9VeSrj4EuI3fWx2+gwro0Qs2rqjLrGNsdB2DO5nDVt1Hj47tMEAHko
-	Rl2idlvcy+0+KP//bGgN6VCR8QBOryuinBpxHnHqN3P9mM+wCgkXUQdH9lzLNbiSDhqcu5sx/NV9j
-	17oknR5g==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=sydgYGgCqVoGDkKzT9g1yEy7gX70uK8gWeRTqSRbjM4=; b=BqKp84IAZzdBUDE44CLt5v/iw1
+	J/j747gSePFlIWy+NRrvo1XUDnVYCwAUV3ziuTNSUV43zxu2kTcPFU9E+LZye7nGPxqVYIG+2jTt9
+	mPpf6wVTSclKmlbWyZH83e5Bc9hGNA4pa+61OBFg7R4KdFZP5stpygVZXourpHVlSIirbfPiNxBb3
+	jW5BuCRB5yG40qI+wk1SAT6PsRh2mlq8wdJcT++om4y8TQoLFXG2tusATZ5mKqzFwsY4pDazdjCEx
+	ieI3hGFSWfzvBR4LHEjwPZt2gHi3+Inuaok6lPp+dflrrCWSSexRSxI9v6N32apzODF8A6M1umHm+
+	23F40tHQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tiszR-0000000EWC8-2Iaj;
-	Fri, 14 Feb 2025 10:32:09 +0000
+	id 1tiszQ-0000000EWBH-0brL;
+	Fri, 14 Feb 2025 10:32:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tisya-0000000EW4B-43Nr
+	id 1tisyN-0000000EW0V-2QiD
 	for barebox@lists.infradead.org;
-	Fri, 14 Feb 2025 10:31:18 +0000
+	Fri, 14 Feb 2025 10:31:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tisyZ-0001yf-GR; Fri, 14 Feb 2025 11:31:15 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tisyK-0001wT-Vn; Fri, 14 Feb 2025 11:31:00 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tisyZ-000twS-11;
-	Fri, 14 Feb 2025 11:31:15 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tisyZ-00CAez-0j;
-	Fri, 14 Feb 2025 11:31:15 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Feb 2025 11:31:14 +0100
-Message-Id: <20250214103114.2900899-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tisyK-000twL-2D;
+	Fri, 14 Feb 2025 11:31:00 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tisyK-006TU7-20;
+	Fri, 14 Feb 2025 11:31:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Jules Maselbas <jmaselbas@zdiv.net>
+In-Reply-To: <20250212104842.504-1-jmaselbas@zdiv.net>
+References: <20250212104842.504-1-jmaselbas@zdiv.net>
+Message-Id: <173952906062.1543284.10772766948007639190.b4-ty@pengutronix.de>
+Date: Fri, 14 Feb 2025 11:31:00 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250214_023117_007628_EDA3C1B4 
-X-CRM114-Status: GOOD (  14.74  )
+X-CRM114-CacheID: sfid-20250214_023103_624785_4A111D64 
+X-CRM114-Status: UNSURE (   9.79  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,123 +84,39 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mount: support specifying mount -o options more than once
+Subject: Re: [PATCH v3 0/6] Initial support for Allwinner A64 SoC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Specifying -o more than once is useful for scripts: A mount.9P script
-for example can specify some default options and the caller of the
-script can specify an extra -o to add extra options.
 
-This is supported by normal mount(1), but wasn't so far in the barebox
-variant. Remedy that.
+On Wed, 12 Feb 2025 11:48:36 +0100, Jules Maselbas wrote:
+> This series adds an initial support for Allwinner, currently only
+> targetting the Pine64+ board, based on the A64 SoC.
+> 
+> This first series is intented as a second boot image only, that can
+> be started from u-boot. This series provides the bare minimal for
+> barebox to load the next OS from sd/mmc.
+> 
+> [...]
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- commands/mount.c | 41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+Applied, thanks!
 
-diff --git a/commands/mount.c b/commands/mount.c
-index 81a40e951076..002a38e1959f 100644
---- a/commands/mount.c
-+++ b/commands/mount.c
-@@ -9,14 +9,18 @@
- #include <errno.h>
- #include <getopt.h>
- #include <linux/err.h>
-+#include <stringlist.h>
- 
- static int do_mount(int argc, char *argv[])
- {
--	int opt, verbose = 0;
-+	int ret = 0, opt, verbose = 0;
- 	struct driver *drv;
- 	const char *type = NULL;
- 	const char *mountpoint, *devstr;
--	const char *fsoptions = NULL;
-+	struct string_list fsoption_list;
-+	char *fsoptions = NULL;
-+
-+	string_list_init(&fsoption_list);
- 
- 	while ((opt = getopt(argc, argv, "ao:t:v")) > 0) {
- 		switch (opt) {
-@@ -27,7 +31,7 @@ static int do_mount(int argc, char *argv[])
- 			type = optarg;
- 			break;
- 		case 'o':
--			fsoptions = optarg;
-+			string_list_add(&fsoption_list, optarg);
- 			break;
- 		case 'v':
- 			verbose++;
-@@ -56,11 +60,22 @@ static int do_mount(int argc, char *argv[])
- 			}
- 		}
- 
--		return 0;
-+		goto out;
-+	}
-+
-+	if (argc == 0) {
-+		ret = COMMAND_ERROR_USAGE;
-+		goto out;
- 	}
- 
- 	devstr = argv[0];
- 
-+	fsoptions = string_list_join(&fsoption_list, " ");
-+	if (!fsoptions) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
- 	if (argc == 1) {
- 		struct cdev *cdev;
- 		const char *path;
-@@ -70,8 +85,10 @@ static int do_mount(int argc, char *argv[])
- 		device_detect_by_name(devstr);
- 
- 		cdev = cdev_by_name(devstr);
--		if (!cdev)
--			return -ENOENT;
-+		if (!cdev) {
-+			ret = -ENOENT;
-+			goto out;
-+		}
- 
- 		path = cdev_mount_default(cdev, fsoptions);
- 		if (IS_ERR(path))
-@@ -79,12 +96,9 @@ static int do_mount(int argc, char *argv[])
- 
- 		printf("mounted /dev/%s on %s\n", devstr, path);
- 
--		return 0;
-+		goto out;
- 	}
- 
--	if (argc < 2)
--		return COMMAND_ERROR_USAGE;
--
- 	if (argc == 3) {
- 		/*
- 		 * Old behaviour: mount <dev> <type> <mountpoint>
-@@ -95,7 +109,12 @@ static int do_mount(int argc, char *argv[])
- 		mountpoint = argv[1];
- 	}
- 
--	return mount(devstr, type, mountpoint, fsoptions);
-+	ret = mount(devstr, type, mountpoint, fsoptions);
-+
-+out:
-+	free(fsoptions);
-+	string_list_free(&fsoption_list);
-+	return ret;
- }
- 
- BAREBOX_CMD_HELP_START(mount)
+[1/6] clk: divider: add error code propagation
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2faf9ac88f41 (link may not be stable)
+[2/6] clk: Add clock driver for sun50i-a64
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8a8afdc9afe0 (link may not be stable)
+[3/6] pinctrl: Add sun50i-a64 pinctrl driver
+      https://git.pengutronix.de/cgit/barebox/commit/?id=199f3e78b059 (link may not be stable)
+[4/6] mci: Add sunxi-mmc driver
+      https://git.pengutronix.de/cgit/barebox/commit/?id=085180b15e4c (link may not be stable)
+[5/6] ARM: sunxi: Introduce mach-sunxi
+      https://git.pengutronix.de/cgit/barebox/commit/?id=da8c77923696 (link may not be stable)
+[6/6] Documentation: sunxi: Add some documentation
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0429625f4d83 (link may not be stable)
+
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
