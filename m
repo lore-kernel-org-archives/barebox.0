@@ -1,65 +1,67 @@
-Delivery-date: Fri, 14 Feb 2025 15:24:43 +0100
+Delivery-date: Fri, 14 Feb 2025 15:24:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tiwcW-002IUc-1T
+	id 1tiwcZ-002IUz-0F
 	for lore@lore.pengutronix.de;
-	Fri, 14 Feb 2025 15:24:43 +0100
+	Fri, 14 Feb 2025 15:24:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tiwcU-0008WG-OZ
-	for lore@pengutronix.de; Fri, 14 Feb 2025 15:24:43 +0100
+	id 1tiwcX-00006S-F7
+	for lore@pengutronix.de; Fri, 14 Feb 2025 15:24:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=QTQ91gPqbOtT0CJI/fk50koEAr0fFPOO6mkZW0mxd6M=; b=4ZikP71vKjlZy5AbjOrHUpRi3l
-	CRQVi4q2B5EZPrk1WheBoo9UNzTuBW/Aoj7kZO+SxTOmamfZ1K7l61/LzbM2/t/LooE7uwLVqrRKZ
-	kk4rXeYapWOQ2OIBIi9LYvCn8y0WglPtLRBgmBoSEYrN/F1LuycIe1tCmLUvdOrh5Fg8g/6I9huf0
-	uK/HcR1+7a+tlBXaoCOiVxYxuEWaiTlLCJMDODm/9tFCP43tC0W9Qm8k5D65myb8193Z8Gc6oXiOP
-	UnefwPYft6ClwkWnXkEnLDFrS5RO02W00BavIqEMtq3Cerk/ccksMP1Mvkdqzi1mnFwCBA2U6mmSY
-	HDKjAhVw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=MF4ARp9dkEsLGYkhvs9/d1m74kuwKsZmIYZXi3XT3sc=; b=gdYCGunGv9AJnMoWBfMSzfmexY
+	Zlb8UMg2s3OPFcZCCjgtSN0DMn65XuE5pk7w6u2/ih+7rP69PUnwTzwQM20l2rZceJNUIOgpNsY1k
+	g2emHmxIsmGX+jItNch5bZXKXkl7LXqhP01Y3G2MmGS+DP3n7HRPaYNTiqYN0gzYZ1ggk4f1Fd5Fu
+	9LF6BXqEd9Xo1IW2JXfgCEBheKdSp9VJsr3cdiJUfBKVBUfFK55cj6+KlbAX7WgFF1UAqYSkjkC90
+	KaPHag4McDFcOnDcQCw1OB3Tj6Yobt3iaysM2p3VsEJD5EVglV9ndSzlF8NON9vr9iaI5epya59Ta
+	hQo3nVjg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tiwbq-0000000F8e9-21gs;
-	Fri, 14 Feb 2025 14:24:02 +0000
+	id 1tiwbs-0000000F8eU-1pKL;
+	Fri, 14 Feb 2025 14:24:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tiwbn-0000000F8dB-3ko5
+	id 1tiwbn-0000000F8dA-3kjU
 	for barebox@lists.infradead.org;
-	Fri, 14 Feb 2025 14:24:01 +0000
+	Fri, 14 Feb 2025 14:24:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tiwbl-0008FY-Rk; Fri, 14 Feb 2025 15:23:57 +0100
+	id 1tiwbl-0008Fa-UE; Fri, 14 Feb 2025 15:23:57 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tiwbl-000vqE-29;
+	id 1tiwbl-000vqI-2Q;
 	Fri, 14 Feb 2025 15:23:57 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tiwbl-00FCw2-1q;
+	id 1tiwbl-00FCw2-28;
 	Fri, 14 Feb 2025 15:23:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Feb 2025 15:23:54 +0100
-Message-Id: <20250214142356.3624561-1-a.fatoum@pengutronix.de>
+Date: Fri, 14 Feb 2025 15:23:56 +0100
+Message-Id: <20250214142356.3624561-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250214142356.3624561-1-a.fatoum@pengutronix.de>
+References: <20250214142356.3624561-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250214_062359_931731_DAF99A1F 
-X-CRM114-Status: GOOD (  22.08  )
+X-CRM114-CacheID: sfid-20250214_062400_085111_9CA1FCAD 
+X-CRM114-Status: GOOD (  29.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,184 +83,202 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 1/3] common: introduce CONFIG_HAS_INSECURE_DEFAULT
+Subject: [PATCH master 3/3] Documentation: user: add security consideration for using barebox
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Unlike the functionality controlled by CONFIG_INSECURE, most
-functionality in barebox is not as clear-cut: In secure systems, it's
-better to turn off the option, but with enough care, board code may
-disable the option later on.
+There are implicit assumptions around use of barebox in secure systems,
+which isn't spelt out anywhere, e.g. that FIT images should be located
+in raw partitions.
 
-To help with securing barebox, let's identify these options that need a
-more thorough look by having them select HAS_INSECURE_DEFAULT.
-
-In the future, we will start selecting HAS_INSECURE_DEFAULT when
-hardening options are missing. We may also drop HAS_INSECURE_DEFAULT
-again from options that are changed to minimize potential for abuse.
+Let's start by writing down these security considerations.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/Kconfig        | 49 ++++++++++++++++++++++++++++++++++++++++---
- lib/Kconfig.hardening |  6 ++++++
- net/Kconfig           |  4 ++++
- 3 files changed, 56 insertions(+), 3 deletions(-)
+ Documentation/boards/imx.rst    |   2 +
+ Documentation/user/security.rst | 160 ++++++++++++++++++++++++++++++++
+ 2 files changed, 162 insertions(+)
+ create mode 100644 Documentation/user/security.rst
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 0ce99e98286c..fc29d1ca9427 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -149,9 +149,20 @@ config LOCALVERSION_AUTO
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 13246599838b..b4adb55d1bea 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -119,6 +119,8 @@ correspond directly to the boot fusemap settings.
  
- 	  which is done within the script "scripts/setlocalversion".)
+ See the section on :ref:`Reboot modes<reboot_mode>` for general information.
  
-+config HAS_INSECURE_DEFAULT
-+	bool
-+	help
-+	  This is selected by options that have potentially insecure defaults.
-+	  Extra care needs to be taken when these options are not disabled
-+	  in secure booted systems.
++.. _hab:
 +
-+	  Any option selecting this should include in its help text
-+	  an explanation of the security considerations.
-+
- config INSECURE
- 	bool "enable convenient defaults that are unsuitable for secure-booting systems"
- 	default y
-+	select HAS_INSECURE_DEFAULT
- 	help
- 	  Say n here when barebox is part of a secure boot chain and you
- 	  want to disable defaults that may compromise the boot chain.
-@@ -344,13 +355,17 @@ endchoice
- config MODULES
- 	depends on HAS_MODULES
- 	depends on EXPERIMENTAL
-+	select HAS_INSECURE_DEFAULT
- 	bool "module support"
- 	modules
- 	help
- 	  This option enables support for loadable modules via insmod. Module
- 	  support is quite experimental at the moment. There is no convenient
- 	  way to compile modules and the list of exported symbols to actually
--	  make use of modules is short to nonexistent
-+	  make use of modules is short to nonexistent.
-+
-+	  As modules aren't be signed, loading external modules is not
-+	  recommended for secure systems.
+ High Assurance Boot
+ ^^^^^^^^^^^^^^^^^^^
  
- config HAVE_MOD_ARCH_SPECIFIC
- 	bool
-@@ -750,6 +765,15 @@ config BOOTM_FORCE_SIGNED_IMAGES
- 	  are refused to boot. Effectively this means only FIT images can be booted
- 	  since they are the only supported image type that support signing.
- 
-+config BOOTM_OPTIONAL_SIGNED_IMAGES
-+	def_bool !BOOTM_FORCE_SIGNED_IMAGES
-+	select HAS_INSECURE_DEFAULT
-+	help
-+	  With this option enabled, barebox can be reconfigured to not verify signed
-+	  images. It's the board code's responsibility to call the function
-+	  bootm_force_signed_images() when secure booted to ensure that runtime
-+	  reconfiguration is no longer possible.
+diff --git a/Documentation/user/security.rst b/Documentation/user/security.rst
+new file mode 100644
+index 000000000000..507df9a79e84
+--- /dev/null
++++ b/Documentation/user/security.rst
+@@ -0,0 +1,160 @@
++.. _security:
 +
- config BLSPEC
- 	depends on FLEXIBLE_BOOTARGS
- 	depends on !SHELL_NONE
-@@ -964,6 +988,7 @@ source "common/partitions/Kconfig"
- 
- config ENV_HANDLING
- 	select CRC32
-+	select HAS_INSECURE_DEFAULT
- 	bool "Support environment files storage"
- 	default y if !SHELL_NONE
- 	help
-@@ -972,6 +997,17 @@ config ENV_HANDLING
- 	  the persistent environment, the "loadenv" command (also executed during
- 	  startup) will bring them back. If unsure, say yes.
- 
-+	  As the environment is not cryptographically verified, an attacker with
-+	  raw access to the environment storage may set any nv variable and
-+	  inject shell scripts to be run by barebox.
++Security Considerations
++=======================
 +
-+	  In general, secure systems should rely exclusively on the barebox
-+	  built-in environment, disable the mutable environment and use the
-+	  barebox-state framework for persisting a fixed set of variables.
++As bootloader, barebox is often used as part of a cryptographically verified
++boot chain. Such a boot chain is only as secure as its weakest link and
++special care needs to be taken while configuring and deploying barebox.
 +
-+	  A safe use of the mutable environment may be possible if board code only
-+	  mounts it after verifying a JSON Web Token that enables a debug mode.
++Verified Boot
++-------------
 +
- config DEFAULT_ENVIRONMENT
- 	select CRC32
- 	bool
-@@ -1271,8 +1307,9 @@ config OPTEE_SHM_SIZE
- config BOOTM_OPTEE
- 	bool
- 	prompt "support booting OP-TEE"
--	depends on BOOTM && ARM && 32BIT
-+	depends on BOOTM && ARM32
- 	select HAVE_OPTEE
-+	select HAS_INSECURE_DEFAULT
- 	help
- 	  OP-TEE is a trusted execution environment (TEE). With this option
- 	  enabled barebox supports starting optee_os as part of the bootm command.
-@@ -1280,6 +1317,11 @@ config BOOTM_OPTEE
- 	  the kernel in nonsecure mode. Pass the optee_os binary with the -t option
- 	  or in the global.bootm.tee variable.
- 
-+	  This mode of late loading OP-TEE just before the kernel is deprecated
-+	  in favor of early loading OP-TEE in the PBL (CONFIG_PBL_OPTEE).
-+	  Early-loading greatly reduces the attack surface and is the only mode
-+	  supported outside of ARMv7.
++In a cryptographically verified boot chain (henceforth termed "Verified Boot"),
++each boot stage must be verified by the previous boot stage before execution.
 +
- config PBL_OPTEE
- 	bool "Enable OP-TEE early start"
- 	depends on ARM
-@@ -1307,9 +1349,10 @@ config FASTBOOT_SPARSE
- config FASTBOOT_CMD_OEM
- 	bool
- 	prompt "Enable OEM commands"
-+	select HAS_INSECURE_DEFAULT
- 	help
- 	  This option enables the fastboot "oem" group of commands. They allow to
--	  executing arbitrary barebox commands and may be disabled in secure
-+	  executing arbitrary barebox commands and should be disabled in secure
- 	  environments.
- 
- endmenu
-diff --git a/lib/Kconfig.hardening b/lib/Kconfig.hardening
-index 6457d24c7382..53d824af7615 100644
---- a/lib/Kconfig.hardening
-+++ b/lib/Kconfig.hardening
-@@ -1,5 +1,11 @@
- menu "Hardening options"
- 
-+if HAS_INSECURE_DEFAULT
-+comment "This barebox configuration has CONFIG_HAS_INSECURE_DEFAULT=y indicating"
-+comment "that some of the configured options have potentially insecure defaults."
-+comment "Extra care needs to be in secure booted systems."
-+endif
++At the start of the verification chain lies some hardware root of trust, most
++often a public key (or its hash) that's programmed into one-time-programmable
++(OTP) eFuses while the board is still in the factory.
 +
- config BUG_ON_DATA_CORRUPTION
- 	bool "Trigger a BUG when data corruption is detected"
- 	select DEBUG_LIST
-diff --git a/net/Kconfig b/net/Kconfig
-index 2491c497bdfc..fc70efb97aa8 100644
---- a/net/Kconfig
-+++ b/net/Kconfig
-@@ -31,9 +31,13 @@ config NET_NETCONSOLE
- 	bool
- 	depends on !CONSOLE_NONE
- 	prompt "network console support"
-+	select HAS_INSECURE_DEFAULT
- 	help
- 	  This option adds support for a simple udp based network console.
- 
-+	  This console's communication is not encrypted and is thus not
-+	  suitable for use in untrusted networks.
++The SoC's mask ROM (sometime called BootROM) will consult the eFuses and
++use them to verify the first stage bootloader image. From there on, it's
++expected that every boot stage will only boot the next one after verification.
 +
- config NET_RESOLV
- 	bool
- 	prompt "dns support"
++Verification can take many forms:
++
++- The mask ROM provides an API to verify later images against the same key
++  used to verify the first boot stage.
++
++- If both first stage and second stage result from the same build, the first
++  stage can embed the hash of the second stage.
++
++- The boot stage has an embedded public key which is used to verify the
++  signature of the later boot stage.
++
++Verifying barebox itself
++------------------------
++
++The way that barebox is verified is highly SoC-specific as it's usually done
++by the SoC mask ROM and in some cases by a different first stage bootloader
++like ARM Trusted Firmware.
++
++For some SoCs, like i.MX :ref:`High Assurance Boot <hab>`, the barebox
++build system has built-in support for invoking the necessary external tools
++to sign the boot images.  In the general case however, the signing happens
++outside the barebox build system and the integrator needs to ensure that
++the images are signed with the correct keys.
++
++In any case, each individual board must be locked down, i.e., configured to
++only boot correctly signed images.
++
++The latter is often done by writing a different set of eFuses, see for
++example the barebox :ref:`hab command <command_hab>` which does the necessary
++fusing for both HABv4 and AHAB.
++
++.. warning:: barebox commands likes :ref:`hab command <command_hab>` do only
++   touch the subset of fuses relevant to most users. It's up to the integrators
++   to fuse away unneeded functionality like USB recovery or JTAG as needed.
++
++Loading firmware
++----------------
++
++In systems utilizing the ARM TrustZone, barebox is often tasked with loading
++the secure OS (Usually OP-TEE). After OP-TEE is loaded, the rest of the
++software runs in a less-privileged non-secure or "normal" world.
++
++The installation of OP-TEE (and any higher privileged firmware like ARM Trusted
++Firmware) should happen as early as possible, i.e., within the barebox
++:ref:`prebootloader <pbl>`. Delaying installation of OP-TEE means that most of
++barebox will run with elevated permission, which greatly increases the attack
++surface.
++
++In concrete terms, the deprecated ``CONFIG_BOOTM_OPTEE`` option should be
++disabled in favor of :ref:`loading OP-TEE early <optee_early_loading>`.
++
++Verifying the kernel by barebox
++-------------------------------
++
++barebox can embed one or more RSA or ECDSA public keys that it will use to
++verify signed FIT images. In a verified boot system, barebox should not
++be allowed to boot any images that have not been signed by the correct key.
++This can be enforced by setting ``CONFIG_BOOTM_FORCE_SIGNED_IMAGES=y``
++and disabling any ways that could use used to override this, e.g.:
++
++- While useful for development, the barebox shell can be used in creative
++  ways to circumvent boot restrictions. It's thus advisable to disable
++  the shell completely (``CONFIG_SHELL_NONE=y``) or make it non-interactive
++  (``CONSOLE_DISABLE_INPUT=y``). This may be coupled with muxing UART RX
++  pin as GPIO for maximum effectiveness.
++
++- Anything done interactively by the shell can also be done automatically by
++  means of init scripts in the environment. A secure barebox should only
++  consult the environment that it has built in and not parse an externally
++  located environment.
++  This can be enforced by disabling ``CONFIG_ENV_HANDLING``.
++  This does not preclude the use of :ref:`Bootchooser` as the
++  :ref:`barebox-state framework <state_framework>` can be used independently.
++
++- There are alternative methods of accessing the shell like netconsole,
++  or fastboot. These should preferably be disabled or at least not activated
++  by default.
++
++Note that any list here is bound to be incomplete. The barebox configuration
++needs to be vetted individually according to threat model.
++
++Use of file systems
++^^^^^^^^^^^^^^^^^^^
++
++File systems are among the most complex parser code in barebox and a common
++source of bugs.
++Unlike Linux with its dm-verity support, barebox currently has no way to
++verify a file system before mounting it.
++
++The consequence is that in a verified boot setup, barebox should **never**
++be allowed to mount file systems.
++Especially, :ref:`bootloader spec files <bootloader_spec>` should not be used
++in verified boot setups and signed FIT images **must** be located outside
++a file system and directly in a raw partition.
++
++Configuring barebox
++-------------------
++
++To aid identification of security impact of config options, barebox provides
++two top-level security-related options:
++
++- ``CONFIG_INSECURE``: This enables convenient, but insecure, defaults.
++  Any secure system should disable this option.
++
++- ``CONFIG_HAS_INSECURE_DEFAULT``: This is selected by options that have
++  an outsized potential of compromising security. It's recommended that
++  all configuration options that select ``CONFIG_HAS_INSECURE_DEFAULT``
++  are disabled.
++  If not possible, special care needs to be taken in vetting the insecure
++  defaults in question.
++
++Compile-time configuration
++^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++Any code that's eliminated at compile-time is code that can't be exploited by
++an attacker. It's thus strongly advisable to keep a separate secure
++configuration that disables all features that are used for development and
++are not absolutely necessary for booting in the field.
++
++Run-time configuration
++^^^^^^^^^^^^^^^^^^^^^^
++
++It's sometimes desirable to retain some ability to debug locked down systems.
++While attractive, it's not recommended to retain an insecure bootloader for
++the purposes of debugging due to the risk of this bootloader being leaked.
++
++Instead, it's recommended that debugging images are signed specifically to
++target only a specific board.
++
++This is sometimes supported out-of-the-box by the SoC like with the HABv4
++field return feature.
++
++In the generic case, barebox supports verification of JSON Web Tokens against
++a compiled-in RSA public key. Board code should read the JSON Web Token
++(e.g., from a raw partition on a USB mass storage device), verify the
++serial number claim within against the board's actual serial number and only
++then unlock any debugging functionality.
 -- 
 2.39.5
 
