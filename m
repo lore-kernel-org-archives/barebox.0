@@ -1,67 +1,82 @@
-Delivery-date: Fri, 14 Feb 2025 11:49:55 +0100
+Delivery-date: Fri, 14 Feb 2025 11:49:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1titGd-002EjA-2d
+	id 1titGf-002EjW-11
 	for lore@lore.pengutronix.de;
-	Fri, 14 Feb 2025 11:49:55 +0100
+	Fri, 14 Feb 2025 11:49:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1titGc-00059C-60
-	for lore@pengutronix.de; Fri, 14 Feb 2025 11:49:55 +0100
+	id 1titGd-0005Ak-Hi
+	for lore@pengutronix.de; Fri, 14 Feb 2025 11:49:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=igOOaI6GXXHbadV0FhB0fZ0nUHCL9DakYW93Ub+fwRA=; b=pF55eMUUQ4Y3GrufMHaq0uTd43
-	O0m5H7eiacKjWd2ZvVg47hQ6iPkdmkuhQ+BEv57ujSpE9nYLFUaQWOkuSD4vLKTVjjUu9XicW7AI2
-	Tzf4ze05eXag0aBqNGY2B8zBNrYca/U1jlByijnXw0ojI8XDl59/rFgce0r9BT+6qlfCcMT/x6Ihr
-	/dqd0GLK1AyA74sazMKvQ7wgQSMmrkhYFG1U2Mi/+8cLaAxWSOrAYf8NpORnxLZ7ktsGmNjmRLylu
-	chfIv2Mf9MRYbttwh9ULdrgU982JM0tqpVhmf/UwMB6i99kYOLePqY+HU1iwyOoQURlJImPMYAdh9
-	UgWrrkUA==;
+	bh=SPQs+ttywwX/Ps6BuwiJaAvWt1wbKSPJ2l/tgsS+SNE=; b=ldOAtkGOL3y5AQe6nVbvZQZlsb
+	7Ys5T0Dt++lt0ZP79zNAeoK2rM/Pe2Qj30+VKjWAzmmek911qRzwX3ZKwf3bdZL7OO2PRENq5/6cM
+	MSlVPDz3oUx8oYPPQh4mvJsTsVVqKtyn8Ujqw+yDJAxqRaURiYIk0i9nyi2nQ5ctvHOztcirB0mzv
+	piTFfClhMPNkbs70AW14IDbLKtIupGdQm1q0uG3mPwF4Kceq7lJEW0nW16P05a0AOHo1v8zRKtzEK
+	zujbHIcD3KslltsXKWtI/Xdz7HA2xUbHI7UODOnx98apRsO7k6qt5EW9I97EW7tm4jv4alM2FqB8A
+	7sqvfANA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1titG1-0000000EYLz-3cWN;
-	Fri, 14 Feb 2025 10:49:17 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1titG2-0000000EYMn-2PKx;
+	Fri, 14 Feb 2025 10:49:18 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1titF8-0000000EYES-1AV3
-	for barebox@lists.infradead.org;
+	id 1titFB-0000000EYGh-2avg
+	for barebox@bombadil.infradead.org;
 	Fri, 14 Feb 2025 10:48:25 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=SPQs+ttywwX/Ps6BuwiJaAvWt1wbKSPJ2l/tgsS+SNE=; b=Jvt7qx2qOKFyjVyaoRBHt2v5iN
+	gntXCIoHw4s4lNWl5fZAAFy5gfL9G7P2B26fzyHJ8TegeMZBbgeP3JWcIMStNCbwImK3M7qIecDB3
+	VReOwnqCary/nYYiLbpKt1prOuO+wejG/gvOQDW08Znzv9CarP4En/L6I4FECnGkxzjGIpjyy95fD
+	Lakvckax7oi6Sw4TOJHXh/hnEw6aXmExFb+JvkormA0wN38RnrrNuKL3gkf7N0Umhkh6cE1sqWVc7
+	4QCeiu2SIOLc7OLzTB4Bz5aFcsvRaPHnxHzRxlMTX1AaOL+OsuLOQh9oPlHj/XhwP1SOefMGQVtdP
+	VHQTtyUg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
+	id 1titF8-00000001EXL-13O0
+	for barebox@lists.infradead.org;
+	Fri, 14 Feb 2025 10:48:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1titF7-0004Uy-2B; Fri, 14 Feb 2025 11:48:21 +0100
+	id 1titF7-0004VB-5a; Fri, 14 Feb 2025 11:48:21 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1titF6-000u3i-2k;
+	id 1titF6-000u3m-2u;
 	Fri, 14 Feb 2025 11:48:20 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1titF6-00CVIo-2T;
+	id 1titF6-00CVIo-2b;
 	Fri, 14 Feb 2025 11:48:20 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Feb 2025 11:48:16 +0100
-Message-Id: <20250214104817.2975052-7-a.fatoum@pengutronix.de>
+Date: Fri, 14 Feb 2025 11:48:17 +0100
+Message-Id: <20250214104817.2975052-8-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250214104817.2975052-1-a.fatoum@pengutronix.de>
 References: <20250214104817.2975052-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250214_024822_470757_A62E0489 
-X-CRM114-Status: GOOD (  16.30  )
+X-CRM114-CacheID: sfid-20250214_104822_516390_9F15C4D2 
+X-CRM114-Status: GOOD (  23.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,253 +98,391 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 6/7] bootm: retire bootm_has_initrd
+Subject: [PATCH 7/7] commands: boot: add support for overriding boot artifacts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-All what's done by bootm_has_initrd can be folded into bootm_load_initrd
-by having it return a special value (NULL) to indicate that no initrd
-is available.
+Replacing part of the boot artifacts is a common development use case,
+e.g. to load the kernel from the network, but otherwise boot the
+bootloader spec file as-is or to inject an initrd into an existing boot
+flow (e.g. rsinit to enable usb9pfs boot).
 
-The advantage of doing it in one function is that it simplifies
-overriding the initrd in a follow-up commit
+Add a simple to use way to achieve that.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/lib32/bootm.c | 18 ++++++++----------
- arch/kvx/lib/bootm.c   | 23 +++++++++++------------
- common/booti.c         | 10 +++++-----
- common/bootm.c         | 35 ++++++++++++++---------------------
- include/bootm.h        |  4 ++--
- 5 files changed, 40 insertions(+), 50 deletions(-)
+ Documentation/user/booting-linux.rst |   8 ++
+ commands/boot.c                      |  53 +++++++++++++-
+ common/Kconfig                       |   7 ++
+ common/bootm.c                       | 106 +++++++++++++++++++++------
+ include/bootm.h                      |  18 +++++
+ 5 files changed, 169 insertions(+), 23 deletions(-)
 
-diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-index aeb873a3a723..d3a4d99a5828 100644
---- a/arch/arm/lib32/bootm.c
-+++ b/arch/arm/lib32/bootm.c
-@@ -241,6 +241,7 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
- {
- 	unsigned long kernel;
- 	unsigned long initrd_start = 0, initrd_size = 0, initrd_end = 0;
-+	const struct resource *initrd_res;
- 	void *tee;
- 	enum arm_security_state state = bootm_arm_security_state();
- 	void *fdt_load_address = NULL;
-@@ -259,16 +260,13 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
- 		}
- 	}
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index b26ada943a59..b49b2c93b1f3 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -161,6 +161,14 @@ This entry can be booted with ``boot mmc``. It can also be made the default by
+ setting the ``global.boot.default`` variable to ``mmc`` and then calling
+ ``boot`` without arguments.
  
--	if (bootm_has_initrd(data)) {
--		ret = bootm_load_initrd(data, initrd_start);
--		if (ret)
--			return ret;
--	}
--
--	if (data->initrd_res) {
--		initrd_start = data->initrd_res->start;
--		initrd_end = data->initrd_res->end;
--		initrd_size = resource_size(data->initrd_res);
-+	initrd_res = bootm_load_initrd(data, initrd_start);
-+	if (IS_ERR(initrd_res)) {
-+		return PTR_ERR(initrd_res);
-+	} else if (initrd_res) {
-+		initrd_start = initrd_res->start;
-+		initrd_end = initrd_res->end;
-+		initrd_size = resource_size(initrd_res);
- 		free_mem = PAGE_ALIGN(initrd_end + 1);
- 	}
++Especially for development, it can be useful to override only parts of
++the images used in a boot. To do so, set ``CONFIG_BOOT_OVERRIDE=y``
++and configure the overrides as arguments to the ``boot`` command::
++
++.. code-block:: sh
++
++  boot -o bootm.image=/mnt/tftp/oftree mmc
++
+ .. _bootloader_spec:
  
-diff --git a/arch/kvx/lib/bootm.c b/arch/kvx/lib/bootm.c
-index 4c77f676ec0b..6c35b68f3d5d 100644
---- a/arch/kvx/lib/bootm.c
-+++ b/arch/kvx/lib/bootm.c
-@@ -54,6 +54,7 @@ static int do_boot_entry(struct image_data *data, boot_func_entry entry,
+ Boot Loader Specification
+diff --git a/commands/boot.c b/commands/boot.c
+index e4699520e8f5..820708380191 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -6,6 +6,7 @@
+ #include <getopt.h>
+ #include <malloc.h>
+ #include <boot.h>
++#include <bootm.h>
+ #include <complete.h>
  
- static int do_boot_elf(struct image_data *data, struct elf_image *elf)
- {
-+	const struct resource *initrd_res;
- 	int ret;
- 	void *fdt;
- 	boot_func_entry entry;
-@@ -61,21 +62,19 @@ static int do_boot_elf(struct image_data *data, struct elf_image *elf)
- 
- 	/* load initrd after the elf */
- 	load_addr = PAGE_ALIGN((unsigned long) elf->high_addr);
--	if (bootm_has_initrd(data)) {
--		if (data->initrd_address != UIMAGE_INVALID_ADDRESS)
--			initrd_address = data->initrd_address;
--		else
--			initrd_address = load_addr;
-+	if (data->initrd_address != UIMAGE_INVALID_ADDRESS)
-+		initrd_address = data->initrd_address;
-+	else
-+		initrd_address = load_addr;
- 
-+	initrd_res = bootm_load_initrd(data, initrd_address);
-+	if (IS_ERR(initrd_res)) {
-+		printf("Failed to load initrd\n");
-+		return ret;
-+	} else if (initrd_res) {
- 		printf("Loading initrd at 0x%lx\n", initrd_address);
--		ret = bootm_load_initrd(data, initrd_address);
--		if (ret) {
--			printf("Failed to load initrd\n");
--			return ret;
--		}
--
- 		if (data->initrd_address == UIMAGE_INVALID_ADDRESS) {
--			load_addr += resource_size(data->initrd_res);
-+			load_addr += resource_size(initrd_res);
- 			load_addr = PAGE_ALIGN(load_addr);
- 		}
- 	}
-diff --git a/common/booti.c b/common/booti.c
-index e745ff696376..5efd4f97bbc2 100644
---- a/common/booti.c
-+++ b/common/booti.c
-@@ -58,12 +58,12 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
- 
- 	if (oftree) {
- 		unsigned long devicetree;
-+		const struct resource *initrd_res;
- 
--		if (bootm_has_initrd(data)) {
--			ret = bootm_load_initrd(data, image_end);
--			if (ret)
--				return ERR_PTR(ret);
--
-+		initrd_res = bootm_load_initrd(data, image_end);
-+		if (IS_ERR(initrd_res)) {
-+			return ERR_CAST(initrd_res);
-+		} else if (initrd_res) {
- 			image_end += resource_size(data->initrd_res);
- 			image_end = PAGE_ALIGN(image_end);
- 		}
-diff --git a/common/bootm.c b/common/bootm.c
-index d24b18b41cb2..d2373f321c19 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -213,14 +213,6 @@ static bool fitconfig_has_ramdisk(struct image_data *data)
- 	return fit_has_image(data->os_fit, data->fit_config, "ramdisk");
+ #include <linux/stat.h>
+@@ -23,6 +24,42 @@ static char *next_word(void *context)
+ 	return strsep(context, " ");
  }
  
--bool bootm_has_initrd(struct image_data *data)
--{
--	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
--		return false;
--
--	return fitconfig_has_ramdisk(data) || data->initrd_file;
--}
--
- static int bootm_open_initrd_uimage(struct image_data *data)
++static int boot_add_override(struct bootm_overrides *overrides, char *var)
++{
++	const char *val;
++
++	if (!IS_ENABLED(CONFIG_BOOT_OVERRIDE))
++		return -ENOSYS;
++
++	var += str_has_prefix(var, "global.");
++
++	val = parse_assignment(var);
++	if (!val) {
++		val = globalvar_get(var);
++		if (isempty(val))
++			val = NULL;
++	}
++
++	if (!strcmp(var, "bootm.image")) {
++		if (isempty(val))
++			return -EINVAL;
++		overrides->os_file = val;
++	} else if (!strcmp(var, "bootm.oftree")) {
++		overrides->oftree_file = val;
++	} else if (!strcmp(var, "bootm.initrd")) {
++		overrides->initrd_file = val;
++	} else {
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static inline bool boot_has_overrides(const struct bootm_overrides *overrides)
++{
++	return overrides->os_file || overrides->oftree_file || overrides->initrd_file;
++}
++
+ static int do_boot(int argc, char *argv[])
  {
- 	int ret;
-@@ -262,19 +254,17 @@ static int bootm_open_initrd_uimage(struct image_data *data)
+ 	char *freep = NULL;
+@@ -31,11 +68,12 @@ static int do_boot(int argc, char *argv[])
+ 	unsigned default_menu_entry = 0;
+ 	struct bootentries *entries;
+ 	struct bootentry *entry;
++	struct bootm_overrides overrides = {};
+ 	void *handle;
+ 	const char *name;
+ 	char *(*next)(void *);
+ 
+-	while ((opt = getopt(argc, argv, "vldmM:t:w:")) > 0) {
++	while ((opt = getopt(argc, argv, "vldmM:t:w:o:")) > 0) {
+ 		switch (opt) {
+ 		case 'v':
+ 			verbose++;
+@@ -65,6 +103,11 @@ static int do_boot(int argc, char *argv[])
+ 		case 'w':
+ 			boot_set_watchdog_timeout(simple_strtoul(optarg, NULL, 0));
+ 			break;
++		case 'o':
++			ret = boot_add_override(&overrides, optarg);
++			if (ret)
++				return ret;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -85,6 +128,8 @@ static int do_boot(int argc, char *argv[])
+ 	}
+ 
+ 	entries = bootentries_alloc();
++	if (boot_has_overrides(&overrides))
++		bootm_set_overrides(&overrides);
+ 
+ 	while ((name = next(&handle)) != NULL) {
+ 		if (!*name)
+@@ -119,6 +164,8 @@ static int do_boot(int argc, char *argv[])
+ 
+ 	ret = 0;
+ out:
++	if (boot_has_overrides(&overrides))
++		bootm_unset_overrides();
+ 	bootentries_free(entries);
+ 	free(freep);
+ 
+@@ -150,6 +197,10 @@ BAREBOX_CMD_HELP_OPT ("-l","List available boot sources")
+ BAREBOX_CMD_HELP_OPT ("-m","Show a menu with boot options")
+ BAREBOX_CMD_HELP_OPT ("-M INDEX","Show a menu with boot options with entry INDEX preselected")
+ BAREBOX_CMD_HELP_OPT ("-w SECS","Start watchdog with timeout SECS before booting")
++#ifdef CONFIG_BOOT_OVERRIDE
++BAREBOX_CMD_HELP_OPT ("-o VAR[=VAL]","override VAR (bootm.{image,oftree,initrd}) with VAL")
++BAREBOX_CMD_HELP_OPT ("            ","if VAL is not specified, the value of VAR is taken")
++#endif
+ BAREBOX_CMD_HELP_OPT ("-t SECS","specify timeout in SECS")
+ BAREBOX_CMD_HELP_END
+ 
+diff --git a/common/Kconfig b/common/Kconfig
+index b5fba72390d8..0ce99e98286c 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -599,6 +599,13 @@ menuconfig BOOTM
+ 	default y if COMMAND_SUPPORT
+ 	bool "bootm support"
+ 
++config BOOT_OVERRIDE
++	bool "Support partial override of boot entries"
++	depends on BOOTM
++	help
++	  Allow overriding of bootm image, oftree and initrd by passing
++	  -o as an argument to the boot command.
++
+ config BOOTM_SHOW_TYPE
+ 	bool
+ 	depends on BOOTM && UIMAGE
+diff --git a/common/bootm.c b/common/bootm.c
+index d2373f321c19..80905d4cf1ce 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -17,6 +17,8 @@
+ 
+ static LIST_HEAD(handler_list);
+ 
++static __maybe_unused struct bootm_overrides bootm_overrides;
++
+ int register_image_handler(struct image_handler *handler)
+ {
+ 	list_add_tail(&handler->list, &handler_list);
+@@ -141,6 +143,23 @@ static inline bool image_is_uimage(struct image_data *data)
+ 	return IS_ENABLED(CONFIG_BOOTM_UIMAGE) && data->os;
+ }
+ 
++static bool bootm_get_override(char **oldpath, const char *newpath)
++{
++	if (!IS_ENABLED(CONFIG_BOOT_OVERRIDE))
++		return false;
++	if (bootm_signed_images_are_forced())
++		return false;
++	if (!newpath)
++		return false;
++
++	if (oldpath && strcmp(*oldpath, newpath)) {
++		free(*oldpath);
++		*oldpath = *newpath ? xstrdup(newpath) : NULL;
++	}
++
++	return true;
++}
++
+ /*
+  * bootm_load_os() - load OS to RAM
   *
-  * Return: 0 on success, negative error code otherwise
+@@ -155,6 +174,12 @@ static inline bool image_is_uimage(struct image_data *data)
   */
--int bootm_load_initrd(struct image_data *data, unsigned long load_address)
-+const struct resource *
-+bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ int bootm_load_os(struct image_data *data, unsigned long load_address)
  {
- 	enum filetype type;
- 	int ret;
++	if (bootm_get_override(&data->os_file, bootm_overrides.os_file)) {
++		if (load_address == UIMAGE_INVALID_ADDRESS)
++			return -EINVAL;
++		goto os_file;
++	}
++
+ 	if (data->os_res)
+ 		return 0;
  
- 	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
--		return -ENOSYS;
--
--	if (!bootm_has_initrd(data))
--		return -EINVAL;
-+		return NULL;
+@@ -194,15 +219,15 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 	if (IS_ENABLED(CONFIG_ELF) && data->elf)
+ 		return elf_load(data->elf);
  
- 	if (data->initrd_res)
--		return 0;
-+		return data->initrd_res;
- 
- 	if (fitconfig_has_ramdisk(data)) {
- 		const void *initrd;
-@@ -285,7 +275,7 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
- 		if (ret) {
- 			pr_err("Cannot open ramdisk image in FIT image: %s\n",
- 					strerror(-ret));
--			return ret;
-+			return ERR_PTR(ret);
- 		}
- 		data->initrd_res = request_sdram_region("initrd",
- 				load_address,
-@@ -295,17 +285,20 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
- 					" 0x%08llx-0x%08llx\n",
- 				(unsigned long long)load_address,
- 				(unsigned long long)load_address + initrd_size - 1);
+-	if (data->os_file) {
+-		data->os_res = file_to_sdram(data->os_file, load_address);
+-		if (!data->os_res)
 -			return -ENOMEM;
-+			return ERR_PTR(-ENOMEM);
- 		}
- 		memcpy((void *)load_address, initrd, initrd_size);
- 		pr_info("Loaded initrd from FIT image\n");
++os_file:
++	if (!data->os_file)
++		return -EINVAL;
+ 
+-		return 0;
+-	}
++	data->os_res = file_to_sdram(data->os_file, load_address);
++	if (!data->os_res)
++		return -ENOMEM;
+ 
+-	return -EINVAL;
++	return 0;
+ }
+ 
+ static bool fitconfig_has_ramdisk(struct image_data *data)
+@@ -263,6 +288,9 @@ bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
+ 		return NULL;
+ 
++	if (bootm_get_override(&data->initrd_file, bootm_overrides.initrd_file))
++		goto initrd_file;
++
+ 	if (data->initrd_res)
+ 		return data->initrd_res;
+ 
+@@ -292,6 +320,7 @@ bootm_load_initrd(struct image_data *data, unsigned long load_address)
  		goto done1;
  	}
  
-+	if (!data->initrd_file)
-+		return NULL;
++initrd_file:
+ 	if (!data->initrd_file)
+ 		return NULL;
+ 
+@@ -404,12 +433,17 @@ void *bootm_get_devicetree(struct image_data *data)
+ {
+ 	enum filetype type;
+ 	struct fdt_header *oftree;
++	bool from_fit = false;
+ 	int ret;
+ 
+ 	if (!IS_ENABLED(CONFIG_OFTREE))
+ 		return ERR_PTR(-ENOSYS);
+ 
+-	if (fitconfig_has_fdt(data)) {
++	from_fit = fitconfig_has_fdt(data);
++	if (bootm_get_override(&data->oftree_file, bootm_overrides.oftree_file))
++		from_fit = false;
 +
- 	ret = file_name_detect_type(data->initrd_file, &type);
- 	if (ret) {
- 		pr_err("could not open initrd \"%s\": %s\n", data->initrd_file, strerror(-ret));
--		return ret;
-+		return ERR_PTR(ret);
- 	}
++	if (from_fit) {
+ 		const void *of_tree;
+ 		unsigned long of_size;
  
- 	if (type == filetype_uimage) {
-@@ -314,7 +307,7 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
- 		if (ret) {
- 			pr_err("loading initrd failed with %s\n",
- 			       strerror(-ret));
+@@ -530,24 +564,29 @@ int bootm_load_devicetree(struct image_data *data, void *fdt,
+ 
+ int bootm_get_os_size(struct image_data *data)
+ {
++	const char *os_file;
++	struct stat s;
+ 	int ret;
+ 
+-	if (data->elf)
+-		return elf_get_mem_size(data->elf);
+-	if (image_is_uimage(data))
+-		return uimage_get_size(data->os, uimage_part_num(data->os_part));
+-	if (data->os_fit)
+-		return data->fit_kernel_size;
+-
+-	if (data->os_file) {
+-		struct stat s;
+-		ret = stat(data->os_file, &s);
+-		if (ret)
 -			return ret;
-+			return ERR_PTR(ret);
- 		}
- 
- 		num = uimage_part_num(data->initrd_part);
-@@ -322,14 +315,14 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
- 		data->initrd_res = uimage_load_to_sdram(data->initrd,
- 			num, load_address);
- 		if (!data->initrd_res)
--			return -ENOMEM;
-+			return ERR_PTR(-ENOMEM);
- 
- 		goto done;
+-		return s.st_size;
++	if (bootm_get_override(NULL, bootm_overrides.os_file)) {
++		os_file = bootm_overrides.os_file;
++	} else {
++		if (data->elf)
++			return elf_get_mem_size(data->elf);
++		if (image_is_uimage(data))
++			return uimage_get_size(data->os, uimage_part_num(data->os_part));
++		if (data->os_fit)
++			return data->fit_kernel_size;
++		if (!data->os_file)
++			return -EINVAL;
++		os_file = data->os_file;
  	}
  
- 	data->initrd_res = file_to_sdram(data->initrd_file, load_address);
- 	if (!data->initrd_res)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- done:
- 
-@@ -343,7 +336,7 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
- 		&data->initrd_res->start,
- 		&data->initrd_res->end);
- 
--	return 0;
-+	return data->initrd_res;
+-	return -EINVAL;
++	ret = stat(os_file, &s);
++	if (ret)
++		return ret;
++
++	return s.st_size;
  }
  
- static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
+ static int bootm_open_os_uimage(struct image_data *data)
+@@ -909,6 +948,22 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		printf("Passing control to %s handler\n", handler->name);
+ 	}
+ 
++	if (bootm_get_override(&data->os_file, bootm_overrides.os_file)) {
++		if (data->os_res) {
++			release_sdram_region(data->os_res);
++			data->os_res = NULL;
++		}
++	}
++
++	bootm_get_override(&data->oftree_file, bootm_overrides.oftree_file);
++
++	if (bootm_get_override(&data->initrd_file, bootm_overrides.initrd_file)) {
++		if (data->initrd_res) {
++			release_sdram_region(data->initrd_res);
++			data->initrd_res = NULL;
++		}
++	}
++
+ 	ret = handler->bootm(data);
+ 	if (data->dryrun)
+ 		pr_info("Dryrun. Aborted\n");
+@@ -946,6 +1001,13 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_BOOT_OVERRIDE
++void bootm_set_overrides(const struct bootm_overrides *overrides)
++{
++	bootm_overrides = *overrides;
++}
++#endif
++
+ static int do_bootm_compressed(struct image_data *img_data)
+ {
+ 	struct bootm_data bootm_data = {
 diff --git a/include/bootm.h b/include/bootm.h
-index fdec137771f0..b86d06b0f55d 100644
+index b86d06b0f55d..0e5e99773a26 100644
 --- a/include/bootm.h
 +++ b/include/bootm.h
-@@ -142,8 +142,8 @@ void bootm_data_restore_defaults(const struct bootm_data *data);
+@@ -160,4 +160,22 @@ void bootm_force_signed_images(void);
  
- int bootm_load_os(struct image_data *data, unsigned long load_address);
+ void *booti_load_image(struct image_data *data, phys_addr_t *oftree);
  
--bool bootm_has_initrd(struct image_data *data);
--int bootm_load_initrd(struct image_data *data, unsigned long load_address);
-+const struct resource *
-+bootm_load_initrd(struct image_data *data, unsigned long load_address);
- 
- void *bootm_get_devicetree(struct image_data *data);
- int bootm_load_devicetree(struct image_data *data, void *fdt,
++struct bootm_overrides {
++	const char *os_file;
++	const char *oftree_file;
++	const char *initrd_file;
++};
++
++#ifdef CONFIG_BOOT_OVERRIDE
++void bootm_set_overrides(const struct bootm_overrides *overrides);
++#else
++static inline void bootm_set_overrides(const struct bootm_overrides *overrides) {}
++#endif
++
++static inline void bootm_unset_overrides(void)
++{
++	struct bootm_overrides overrides = {};
++	bootm_set_overrides(&overrides);
++}
++
+ #endif /* __BOOTM_H */
 -- 
 2.39.5
 
