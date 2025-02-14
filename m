@@ -1,67 +1,67 @@
-Delivery-date: Fri, 14 Feb 2025 12:43:45 +0100
+Delivery-date: Fri, 14 Feb 2025 15:24:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tiu6j-002Ffh-2V
+	id 1tiwcV-002IUH-2o
 	for lore@lore.pengutronix.de;
-	Fri, 14 Feb 2025 12:43:45 +0100
+	Fri, 14 Feb 2025 15:24:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tiu6i-0006Dq-Fn
-	for lore@pengutronix.de; Fri, 14 Feb 2025 12:43:45 +0100
+	id 1tiwcU-0008W6-IE
+	for lore@pengutronix.de; Fri, 14 Feb 2025 15:24:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ExNd6213jsur4MY6aJoZLMWjakC25WS9lX9YeoiX2Mk=; b=y6riL9+110xDkaPsFGDit4com4
-	FjR1xd1ZkbiNjB7CcHImvSOsIJ4ajLg7eB6ZOFt0GS+Ff58bmyQ1su8AcrVndFkizKDKws8anPL13
-	v64BcOOKEiTOzYcVnx1Hr1MuYBaftHyOH/BGu1M6h/t3IjfZM/UDxYS2qj2Fs9/BAyRvzgRTpAABO
-	O6j9iUTaxRt6X06JeoEdqyZfhwLDYzxImM3D2lmnYhV8Z9IGsQc2YHiPin6ykKrbs59kMk3VzSlxG
-	sZ4N/Xpq/rFgaEhOlDZUffiymqm0MPYt/wVK4WAE3UQ6ECY8Egm+2hRNCqvVuuLxmlWv1sk71+3q7
-	5R3Q6gUg==;
+	bh=3qmLloRGLY2U+oOMPYgt7sQ+iP+QueI80tfMENqvNE4=; b=BtkT9YH4jAGutZ0HNP9xQBzaa7
+	+IrLc5rVuZJXh9Zhih7g9qu1tRgsgBc3pjhzs0AlcbFr0OVMzuT9sqag76VZ4rQp5zxIgkWDPTJt6
+	R2SQekXqoY9OFlcnLEbUHAVLXVlBl3dOqF9nOscsey4qYBzEKc7N6sh0n8/PeW1E63kUUcQMqUOvb
+	hGEz+Dsox8Edtrf+MoGw8tTQnw+4kiC2OrNgYdlZFz8aoXyMLPSk7h+UH4NuIzga/dHKAfLOnBxCl
+	o12BlPOMIbm61maVx5JIt+uC2pIGLPu1LSBYFmxfqTBCweR8ro69aFmppFHauq1qhCotOOwkz/vKV
+	9ifQFA6Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tiu6C-0000000EidO-2DyD;
-	Fri, 14 Feb 2025 11:43:12 +0000
+	id 1tiwbr-0000000F8eM-41Oy;
+	Fri, 14 Feb 2025 14:24:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1titnO-0000000Ef0N-2uOh
+	id 1tiwbn-0000000F8dC-3kfz
 	for barebox@lists.infradead.org;
-	Fri, 14 Feb 2025 11:23:47 +0000
+	Fri, 14 Feb 2025 14:24:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1titnN-000399-6X; Fri, 14 Feb 2025 12:23:45 +0100
+	id 1tiwbl-0008FZ-TA; Fri, 14 Feb 2025 15:23:57 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1titnN-000uO4-04;
-	Fri, 14 Feb 2025 12:23:45 +0100
+	id 1tiwbl-000vqF-2H;
+	Fri, 14 Feb 2025 15:23:57 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1titnM-00Cul5-31;
-	Fri, 14 Feb 2025 12:23:44 +0100
+	id 1tiwbl-00FCw2-20;
+	Fri, 14 Feb 2025 15:23:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Feb 2025 12:23:43 +0100
-Message-Id: <20250214112343.3076535-2-a.fatoum@pengutronix.de>
+Date: Fri, 14 Feb 2025 15:23:55 +0100
+Message-Id: <20250214142356.3624561-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250214112343.3076535-1-a.fatoum@pengutronix.de>
-References: <20250214112343.3076535-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20250214142356.3624561-1-a.fatoum@pengutronix.de>
+References: <20250214142356.3624561-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250214_032346_729733_E0379BF3 
-X-CRM114-Status: GOOD (  13.69  )
+X-CRM114-CacheID: sfid-20250214_062359_931638_00DBCE00 
+X-CRM114-Status: GOOD (  15.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,95 +83,83 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 2/2] FIT: do not decompress device trees to find compatible
+Subject: [PATCH master 2/3] Documentation: user: optee: bring up-to-date
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Uncompressing all FDTs just to look up the compatible is detrimental to
-boot speed and negatively impacts security. Let's thus throw an error
-and expect users to specify a compatible property in the configuration
-or just refrain from compressing their DTs.
+Most platforms now use OP-TEE early loading and we have gained support
+to communicate with OP-TEE and not only loading it.
+
+Reflect that in the docs.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/image-fit.c | 37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
+ Documentation/user/optee.rst | 45 +++++++++++++++++++++++++++---------
+ 1 file changed, 34 insertions(+), 11 deletions(-)
 
-diff --git a/common/image-fit.c b/common/image-fit.c
-index e05161379d04..959384abd275 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -570,18 +570,29 @@ static void fit_uncompress_error_fn(char *x)
- 	pr_err("%s\n", x);
- }
+diff --git a/Documentation/user/optee.rst b/Documentation/user/optee.rst
+index 950917b446ad..2729d21d2e44 100644
+--- a/Documentation/user/optee.rst
++++ b/Documentation/user/optee.rst
+@@ -4,20 +4,20 @@
+ OP-TEE
+ ======
  
-+static const char *get_compression_type(struct device_node *image)
-+{
-+	const char *compression = NULL;
+-Barebox is able to start the Open Portable Trusted Execution Environment
+-(OP-TEE) either before starting the linux kernel or during lowlevel board
+-initialization in the Pre Bootloader ``PBL``.
++barebox has support for loading and communicating with the Open Portable Trusted
++Execution Environment (OP-TEE).
+ 
+-Before Linux start
+-------------------
+-Enable the `CONFIG_BOOTM_OPTEE` configuration variable and configure the
+-`CONFIG_OPTEE_SIZE` variable. This will reserve a memory area at the end
+-of memory for OP-TEE to run, usually Barebox would relocate itself there. To
+-load OP-TEE before the kernel is started, configure the global ``bootm.tee``
+-variable to point to a valid OPTEE v1 binary.
++Loading OP-TEE
++--------------
 +
-+	of_property_read_string(image, "compression", &compression);
-+	if (!compression || !strcmp(compression, "none"))
-+		return NULL;
++barebox can start OP-TEE either during lowlevel board initialization
++in the :ref:`prebootloader <pbl>` or prior to starting the linux kernel.
 +
-+	return compression;
-+}
++.. _optee_early_loading:
+ 
+ During the PBL
+---------------
++^^^^^^^^^^^^^^
 +
- static int fit_handle_decompression(struct device_node *image,
- 				    const char *type,
- 				    const void **data,
- 				    int *data_len)
- {
--	const char *compression = NULL;
-+	const char *compression;
- 	struct property *pp;
- 	void *uc_data;
- 	int ret;
- 
--	of_property_read_string(image, "compression", &compression);
--	if (!compression || !strcmp(compression, "none"))
-+	compression = get_compression_type(image);
-+	if (!compression)
- 		return 0;
- 
- 	if (!strcmp(type, "ramdisk")) {
-@@ -723,6 +734,7 @@ static int fit_fdt_is_compatible(struct fit_handle *handle,
- 				 struct device_node *child,
- 				 const char *machine)
- {
-+	const char *reason = "malformed";
- 	struct device_node *image;
- 	const char *unit = "fdt";
- 	int data_len;
-@@ -742,14 +754,25 @@ static int fit_fdt_is_compatible(struct fit_handle *handle,
- 	if (!data)
- 		goto err;
- 
--	ret = fit_handle_decompression(image, "fdt", &data, &data_len);
--	if (ret)
-+	/* We have three options here:
-+	 *
-+	 * 1) Increase our attack surface by all supported compression algos
-+	 * 2) Verify all configurations in the image as we search for best
-+	 *    OF match score
-+	 * 3) Blame the user and expect them to supply a compatible property
-+	 *    in the configuration node if they want to compress their FDTs
-+	 *
-+	 * We go for option 3.
-+	 */
-+	if (get_compression_type(image)) {
-+		reason = "compressed";
- 		goto err;
-+	}
- 
- 	return fdt_machine_is_compatible(data, data_len, machine);
- err:
--	pr_warn("skipping malformed configuration \"%pOF\"\n",
--		child);
-+	pr_warn("skipping %s configuration \"%pOF\"\n",
-+		reason, child);
- 	return 0;
- }
- 
+ To start OP-TEE during the lowlevel initialization of your board in the ``PBL``,
+ enable the ``CONFIG_PBL_OPTEE`` configuration variable. your board should then
+ call the function ``start_optee_early(void* tee, void* fdt)`` with a valid tee
+@@ -27,3 +27,26 @@ Since OP-TEE in the default configuration also modifies the device tree, don't
+ pass the barebox internal device tree, instead copy it into a different memory
+ location and pass it to OP-TEE afterwards.
+ The modified device tree can then be passed to the main barebox start function.
++
++Before Linux start
++^^^^^^^^^^^^^^^^^^
++
++.. warning:: Late loading of OP-TEE is deprecated, greatly increases the
++   attack surface and is only supported on 32-bit ARM systems.
++   Systems should prefer early loading OP-TEE whenever possible.
++
++Enable the `CONFIG_BOOTM_OPTEE` configuration variable and configure the
++`CONFIG_OPTEE_SIZE` variable. This will reserve a memory area at the end
++of memory for OP-TEE to run, usually Barebox would relocate itself there. To
++load OP-TEE before the kernel is started, configure the global ``bootm.tee``
++variable to point to a valid OPTEE v1 binary.
++
++Communication with OP-TEE
++-------------------------
++
++Controlled by the ``CONFIG_OPTEE`` option, barebox has support for
++communicating with OP-TEE via secure monitor calls and dynamic shared memory.
++This is possible independently of whether OP-TEE was loaded by barebox or not.
++
++The primary use cases currently is SCMI-over-OP-TEE, which is required on
++the STM32MP13.
 -- 
 2.39.5
 
