@@ -1,65 +1,68 @@
-Delivery-date: Sun, 16 Feb 2025 16:08:16 +0100
+Delivery-date: Sun, 16 Feb 2025 16:08:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tjgFl-00374q-0L
+	id 1tjgFl-003757-1u
 	for lore@lore.pengutronix.de;
-	Sun, 16 Feb 2025 16:08:16 +0100
+	Sun, 16 Feb 2025 16:08:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tjgFj-0002F5-PN
+	id 1tjgFk-0002FQ-Ex
 	for lore@pengutronix.de; Sun, 16 Feb 2025 16:08:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=hA3+xwGI+1wcmXUSmlgMmWEVFamtg+ueXDfTWPFro0Q=; b=JiqNDffGdCA1SkpENwfO4z3Scs
-	KZspJB3dgRial2gSPH2Y0CIMLFknr5Ila3rsJ89Cm25KczGiLE+p+3BSjgbXHtOzUhakWj9jI8NRU
-	pUnIhKYphLf0L9VO+PsfC/Q+9Qx3S2gMylFts7detDJmruPLBkB30Crvh9iX2d5VzjfZJ5KAMEf1B
-	J58/FsOw7uuaUeG4ABSuR3Pa9bMjuGfsmXcsswD4LUGdUwaB3lx+HBpZ1vv8QJeKcnsHe1hZ8F674
-	TiZ6c/zVl2cxrENBdhVdx0ERDFFGDq+vtE8RwdikXtb+V2GZqvTMc88s4KaSUinVPk27Fodx6p+Sz
-	KDXq5DNg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=HP/HNfq3ujZqsDrRVI13adrEMxUq4ib+mx1K2x5ddAc=; b=uRJgyzAPoH+KI0/AxfuX6C70mT
+	jn7D5ttxrh1qlhN2q4ZpuupEWPW6DMsDE2LVlEDkfwCvzX7kQY4xPSHIq8lqLjXJTwOP/f/yBs8BT
+	bkyq8bYDW2fTqHHx9DQJJQMv3fOKJuFL5Z8HmuNXYz+Yfukdz1+sO2uLXc/7WcnVFFyxnMJtZhezt
+	HMjOrMySCHOWRRDy3rZQnItntqUr5otBK1Tg5Ypz5E5KiA7YZ62z8Jfvslc8RNLyycjIMLw/rQgvU
+	89X6O4C5yTKIVrAV81SQ4dCoryC5/YWqaY8NbLzbYhwSz9WASUWIv/TSsT/ySCTBal/2nkqyKOo2r
+	XzvFW+GQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tjgEy-00000001zL9-3fPU;
-	Sun, 16 Feb 2025 15:07:28 +0000
+	id 1tjgF3-00000001zLs-1UGb;
+	Sun, 16 Feb 2025 15:07:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tjgEv-00000001zKl-3a1I
+	id 1tjgF0-00000001zLF-2u1O
 	for barebox@lists.infradead.org;
-	Sun, 16 Feb 2025 15:07:27 +0000
+	Sun, 16 Feb 2025 15:07:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjgEr-00023F-B6; Sun, 16 Feb 2025 16:07:21 +0100
+	id 1tjgEr-00023G-BC; Sun, 16 Feb 2025 16:07:21 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjgEp-001GBi-1O;
+	id 1tjgEp-001GBj-1X;
 	Sun, 16 Feb 2025 16:07:19 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjgEp-009qxd-16;
+	id 1tjgEp-009qxd-1F;
 	Sun, 16 Feb 2025 16:07:19 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sun, 16 Feb 2025 16:07:17 +0100
-Message-Id: <20250216150718.2348520-1-a.fatoum@pengutronix.de>
+Date: Sun, 16 Feb 2025 16:07:18 +0100
+Message-Id: <20250216150718.2348520-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250216150718.2348520-1-a.fatoum@pengutronix.de>
+References: <20250216150718.2348520-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250216_070725_918164_51042EBC 
-X-CRM114-Status: GOOD (  13.53  )
+X-CRM114-CacheID: sfid-20250216_070730_775699_F5F2179D 
+X-CRM114-Status: UNSURE (   9.67  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,87 +84,52 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] cdev: merge identical partitions despite DEVFS_PARTITION_CAN_OVERLAP
+Subject: [PATCH 2/2] cmdlinepart: refuse partitions with empty name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When a partition is created that's exactly the same size and offset as
-an existing partition, barebox will create the new partition as link to
-the existing partition.
-
-Maintain this behavior, even if DEVFS_PARTITION_CAN_OVERLAP is set.
+Running addpart /dev/mmc3 0xe0000@0 currently creates a partition with a
+zero-sized name. Check for this condition and throw an error.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/devfs-core.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ lib/cmdlinepart.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 133fd9ec026a..c9313ed73167 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -440,7 +440,7 @@ int devfs_remove(struct cdev *cdev)
- /**
-  * check_overlap() - check overlap with existing partitions
-  * @cdev: parent cdev
-- * @name: partition name for informational purposes on conflict
-+ * @partinfo: partition information
-  * @offset: offset of new partition to be added
-  * @size: size of new partition to be added
-  *
-@@ -448,7 +448,9 @@ int devfs_remove(struct cdev *cdev)
-  *         partition if and only if it's identical in offset and size
-  *         to an existing partition. Otherwise, PTR_ERR(-EINVAL).
-  */
--static struct cdev *check_overlap(struct cdev *cdev, const char *name, loff_t offset, loff_t size)
-+static struct cdev *check_overlap(struct cdev *cdev,
-+				  const struct devfs_partition *partinfo,
-+				  loff_t offset, loff_t size)
- {
- 	struct cdev *cpart;
- 	loff_t cpart_offset;
-@@ -471,6 +473,8 @@ static struct cdev *check_overlap(struct cdev *cdev, const char *name, loff_t of
- 		}
+diff --git a/lib/cmdlinepart.c b/lib/cmdlinepart.c
+index afba544965b4..3e8c415c7ea6 100644
+--- a/lib/cmdlinepart.c
++++ b/lib/cmdlinepart.c
+@@ -30,6 +30,7 @@ int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
+ 	char *end;
+ 	char buf[PATH_MAX] = {};
+ 	unsigned long flags = DEVFS_PARTITION_FOR_FIXUP;
++	size_t partname_len = 0;
+ 	struct cdev *cdev;
  
- 		if (region_overlap_size(cpart_offset, cpart->size, offset, size)) {
-+			if (partinfo->flags & DEVFS_PARTITION_CAN_OVERLAP)
-+				return NULL;
- 			ret = -EINVAL;
- 			goto conflict;
- 		}
-@@ -483,7 +487,7 @@ static struct cdev *check_overlap(struct cdev *cdev, const char *name, loff_t of
- 	__pr_printk(ret ? MSG_WARNING : MSG_DEBUG,
- 		    "New partition %s (0x%08llx-0x%08llx) on %s "
- 		    "%s with partition %s (0x%08llx-0x%08llx), not creating it\n",
--		    name, offset, offset + size - 1, cdev->name,
-+		    partinfo->name, offset, offset + size - 1, cdev->name,
- 		    ret ? "conflicts" : "identical",
- 		    cpart->name, cpart_offset, cpart_offset + cpart->size - 1);
+ 	memset(buf, 0, PATH_MAX);
+@@ -60,7 +61,8 @@ int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
+ 		if ((partition_flags & CMDLINEPART_ADD_DEVNAME) &&
+ 				strncmp(devname, partstr, strlen(devname)))
+ 			sprintf(buf, "%s.", devname);
+-		memcpy(buf + strlen(buf), partstr, end - partstr);
++		partname_len = end - partstr;
++		memcpy(buf + strlen(buf), partstr, partname_len);
  
-@@ -530,16 +534,14 @@ static struct cdev *__devfs_add_partition(struct cdev *cdev,
- 		return ERR_PTR(-EINVAL);
+ 		end++;
  	}
+@@ -85,6 +87,11 @@ int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
  
--	if (!(partinfo->flags & DEVFS_PARTITION_CAN_OVERLAP)) {
--		overlap = check_overlap(cdev, partinfo->name, offset, size);
--		if (overlap) {
--			if (!IS_ERR(overlap)) {
--				/* only fails with -EEXIST, which is fine */
--				(void)devfs_create_link(overlap, partinfo->name);
--			}
--
--			return overlap;
-+	overlap = check_overlap(cdev, partinfo, offset, size);
-+	if (overlap) {
-+		if (!IS_ERR(overlap)) {
-+			/* only fails with -EEXIST, which is fine */
-+			(void)devfs_create_link(overlap, partinfo->name);
- 		}
+ 	*retsize = size;
+ 
++	if (!partname_len) {
++		printf("partition name can't be empty\n");
++		return -EINVAL;
++	}
 +
-+		return overlap;
- 	}
- 
- 	/* Filter flags that we want to pass along to children */
+ 	cdev = devfs_add_partition(devname, *offset, size, flags, buf);
+ 	if (IS_ERR(cdev)) {
+ 		printf("cannot create %s: %pe\n", buf, cdev);
 -- 
 2.39.5
 
