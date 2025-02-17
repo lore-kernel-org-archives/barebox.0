@@ -1,67 +1,67 @@
-Delivery-date: Sun, 16 Feb 2025 16:08:17 +0100
+Delivery-date: Mon, 17 Feb 2025 08:39:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tjgFl-003757-1u
+	id 1tjvio-003OQg-1r
 	for lore@lore.pengutronix.de;
-	Sun, 16 Feb 2025 16:08:17 +0100
+	Mon, 17 Feb 2025 08:39:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tjgFk-0002FQ-Ex
-	for lore@pengutronix.de; Sun, 16 Feb 2025 16:08:16 +0100
+	id 1tjvin-0002Dg-EX
+	for lore@pengutronix.de; Mon, 17 Feb 2025 08:39:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HP/HNfq3ujZqsDrRVI13adrEMxUq4ib+mx1K2x5ddAc=; b=uRJgyzAPoH+KI0/AxfuX6C70mT
-	jn7D5ttxrh1qlhN2q4ZpuupEWPW6DMsDE2LVlEDkfwCvzX7kQY4xPSHIq8lqLjXJTwOP/f/yBs8BT
-	bkyq8bYDW2fTqHHx9DQJJQMv3fOKJuFL5Z8HmuNXYz+Yfukdz1+sO2uLXc/7WcnVFFyxnMJtZhezt
-	HMjOrMySCHOWRRDy3rZQnItntqUr5otBK1Tg5Ypz5E5KiA7YZ62z8Jfvslc8RNLyycjIMLw/rQgvU
-	89X6O4C5yTKIVrAV81SQ4dCoryC5/YWqaY8NbLzbYhwSz9WASUWIv/TSsT/ySCTBal/2nkqyKOo2r
-	XzvFW+GQ==;
+	bh=0SNyFyiExzxsAIL4p0j0KABKa3Iy3OMP3251sItciqw=; b=GI2ulstc33r2ZTZrWDQzktBhnm
+	/T/ooUDrW7WyF17kyQBRoOSu99LLxoq+0zUttAwkHb1B0YarAP3Wp4+g9OSWO8Eybm+GetTA+nBTZ
+	Y1g9St9G5M/Z3G9tfjZdyqr5GaNe55WCBCiCJ7ZQun3xzd4elf7Qs2t6t7N70aJZ2Yk4Tkv9a053C
+	uou73MkXBVcZZnPjWbVfmqgzrmFZFsayccWRfiufud2+VHuUzbM79SlzRUCTLbIa8E1rsIK4b5nrz
+	95RvLKUMm9d8lj0vyYcbgL12dTlZXsQ8y4HqyK8bnv9Z78I0mSfdRI+TsMAhWbtz+bByFeF2xi1k5
+	1BwnYhcQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tjgF3-00000001zLs-1UGb;
-	Sun, 16 Feb 2025 15:07:33 +0000
+	id 1tjviC-00000003crj-3AtV;
+	Mon, 17 Feb 2025 07:38:40 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tjgF0-00000001zLF-2u1O
+	id 1tjvgA-00000003cbS-2Flu
 	for barebox@lists.infradead.org;
-	Sun, 16 Feb 2025 15:07:31 +0000
+	Mon, 17 Feb 2025 07:36:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjgEr-00023G-BC; Sun, 16 Feb 2025 16:07:21 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tjvg6-0001p5-8k; Mon, 17 Feb 2025 08:36:30 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjgEp-001GBj-1X;
-	Sun, 16 Feb 2025 16:07:19 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjgEp-009qxd-1F;
-	Sun, 16 Feb 2025 16:07:19 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sun, 16 Feb 2025 16:07:18 +0100
-Message-Id: <20250216150718.2348520-2-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tjvg6-001MwO-0H;
+	Mon, 17 Feb 2025 08:36:30 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tjvg6-009KcJ-04;
+	Mon, 17 Feb 2025 08:36:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 In-Reply-To: <20250216150718.2348520-1-a.fatoum@pengutronix.de>
 References: <20250216150718.2348520-1-a.fatoum@pengutronix.de>
+Message-Id: <173977779001.2224086.13654280587771881132.b4-ty@pengutronix.de>
+Date: Mon, 17 Feb 2025 08:36:30 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250216_070730_775699_F5F2179D 
-X-CRM114-Status: UNSURE (   9.67  )
+X-CRM114-CacheID: sfid-20250216_233634_621231_D8079DF3 
+X-CRM114-Status: UNSURE (   7.75  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,58 +80,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] cmdlinepart: refuse partitions with empty name
+Subject: Re: [PATCH 1/2] cdev: merge identical partitions despite
+ DEVFS_PARTITION_CAN_OVERLAP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Running addpart /dev/mmc3 0xe0000@0 currently creates a partition with a
-zero-sized name. Check for this condition and throw an error.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- lib/cmdlinepart.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+On Sun, 16 Feb 2025 16:07:17 +0100, Ahmad Fatoum wrote:
+> When a partition is created that's exactly the same size and offset as
+> an existing partition, barebox will create the new partition as link to
+> the existing partition.
+> 
+> Maintain this behavior, even if DEVFS_PARTITION_CAN_OVERLAP is set.
+> 
+> 
+> [...]
 
-diff --git a/lib/cmdlinepart.c b/lib/cmdlinepart.c
-index afba544965b4..3e8c415c7ea6 100644
---- a/lib/cmdlinepart.c
-+++ b/lib/cmdlinepart.c
-@@ -30,6 +30,7 @@ int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
- 	char *end;
- 	char buf[PATH_MAX] = {};
- 	unsigned long flags = DEVFS_PARTITION_FOR_FIXUP;
-+	size_t partname_len = 0;
- 	struct cdev *cdev;
- 
- 	memset(buf, 0, PATH_MAX);
-@@ -60,7 +61,8 @@ int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
- 		if ((partition_flags & CMDLINEPART_ADD_DEVNAME) &&
- 				strncmp(devname, partstr, strlen(devname)))
- 			sprintf(buf, "%s.", devname);
--		memcpy(buf + strlen(buf), partstr, end - partstr);
-+		partname_len = end - partstr;
-+		memcpy(buf + strlen(buf), partstr, partname_len);
- 
- 		end++;
- 	}
-@@ -85,6 +87,11 @@ int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
- 
- 	*retsize = size;
- 
-+	if (!partname_len) {
-+		printf("partition name can't be empty\n");
-+		return -EINVAL;
-+	}
-+
- 	cdev = devfs_add_partition(devname, *offset, size, flags, buf);
- 	if (IS_ERR(cdev)) {
- 		printf("cannot create %s: %pe\n", buf, cdev);
+Applied, thanks!
+
+[1/2] cdev: merge identical partitions despite DEVFS_PARTITION_CAN_OVERLAP
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f7c38bec5baf (link may not be stable)
+[2/2] cmdlinepart: refuse partitions with empty name
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1d81df84033c (link may not be stable)
+
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
