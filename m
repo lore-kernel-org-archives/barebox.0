@@ -3,77 +3,81 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tk0GF-003Tpf-0Q
+	id 1tk0GF-003Tpg-0Z
 	for lore@lore.pengutronix.de;
 	Mon, 17 Feb 2025 13:30:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tk0GD-0000F6-T5
+	id 1tk0GD-0000F4-RJ
 	for lore@pengutronix.de; Mon, 17 Feb 2025 13:30:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=Psh8gy3S7gepuf/oSP40PdKVn6xpYATCeLVtBXz1WVk=; b=zxwBuEWwFibtHz
-	NHxbIULRLhfEXb7IYOtMUp95DO3ea8DXT1b5X273zbrh/kDE6a9TeV8xKJ9mJuZoKldPg2z+JJsDp
-	iQ8BBfVR3jUpRvm/V1sBC2krPeXUejtVv5Pg+ddDVxeHAj9tH/X9CbV/DepLaeORL4e53DObJNnxO
-	oLmuJzaCtOTpuiKfgar5+XV5HqzNi69ZAbRGvOABisfQ469FaB4fLI/55yNPC2cMv7mdaq0PRmVua
-	7ZWHXB+wuA20MWqp+HK0zt/XICJWr3n40LKWfEa4XAyLVX7AX9vWq1ZFsPN4zClj2IlpIFdNiDHa9
-	f++hzyYDlRbZjZvaSDDA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=cPFXc8L9ZK7byjeegav7lS+CTu9GDMpB3oEWxAvbiiI=; b=fZXAl20xbhOsFWXVWFUpQKEDuc
+	6nSrW8jbPyIpyaRG5wpASsitYFIddvh09w15eoQF60j66BHygjdb6a/kgE0hBbB/IHxe/uxibG44G
+	yfNNPBj95VO4PNhhu+BnKP6+C3RyXyFvZ/YRR1kDOT48AP0ln2Fg3AOC12eEx9oNvCFbUDZ3Kt6H9
+	Gr9/YK2KosuQHOz6bUrXvruwVUG8u2Q4qiqceANAefvK9hiqhddhcKaANoWvL1amAkRlspwd3ZRRP
+	xQ6blukWNPbHwx8Wirj6W3sXbjXpD2OIUltuVL4BHxKTKAYCFtoFOXQISKTFFu+Tlvh5z23O0Gt77
+	O2c7voqQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tk0Fz-00000004SHR-1oTb;
-	Mon, 17 Feb 2025 12:29:51 +0000
+	id 1tk0Fx-00000004SFi-3FZh;
+	Mon, 17 Feb 2025 12:29:49 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tjywi-00000004FvQ-3qrV
+	id 1tjynr-00000004E7Y-3dvf
 	for barebox@bombadil.infradead.org;
-	Mon, 17 Feb 2025 11:05:52 +0000
+	Mon, 17 Feb 2025 10:56:43 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=Psh8gy3S7gepuf/oSP40PdKVn6xpYATCeLVtBXz1WVk=; b=XhnscIp4YPKR+g+5zdXD+rUF7n
-	yii8wAZ1C+HTIjaoWDDtDHQ1nboGGZXnwKtAwFMO9XFvXEZdjZ+ujo12cYAlQS6YJoZl7hXgMmG7j
-	53bK15GGDfmZ30lvR9gzTuL3QmuQBZtBJUdCcxheYmB/QvZdLZXbFUqUEJfsjEgCZwfARVwzdbwxJ
-	gpsjw6nsqb3NuJUIq4319UP4KqyEdTakhOWwU2mJtHtpQ15D5c/YFnvQ4jwmYUUMODS/apFMSgMqd
-	TfcC5pLGTyPYkEnI9aHiSXBPLDmH3nbqyLxESWFcIco/VF78HzwKupKhD+AttG3AiWbweHUk5x0y4
-	SYGFIjKg==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
+	Reply-To:Cc:Content-ID:Content-Description;
+	bh=cPFXc8L9ZK7byjeegav7lS+CTu9GDMpB3oEWxAvbiiI=; b=d4kpauYh0ONKa+lT/VdbqnkG58
+	sxBvTm2Y2vgFXogGZHBHrDf+/95+KQTCS5VME2FuX+DtzA4oIR74upAUYb5J8acT2+LwgIC+sMw/h
+	aXlFQB1bjRkwqXJkt9WdnR2GD8zbcWJ8e4AewLk2xaM7UaTivVO3TcR3H3YN4+Coci4AqKtpvREIC
+	6uyZpjNAF8XHL5/TPMwRJcjfK0B8O7Jo2rD8qqXThK1F5CZtX8z2mFpCcsWIzR3aECBaZewfo6QuW
+	LhL6BIZIS+bvzxSepS6aTY6SrpJOKH1UkWeB9zDlIJItnaCCM+MIwAZN1Q4deExNUjPtwwPub7lxA
+	9XY52hgw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tjywg-00000001n54-0Vhz
+	id 1tjyno-00000001mYg-2bWK
 	for barebox@lists.infradead.org;
-	Mon, 17 Feb 2025 11:05:51 +0000
+	Mon, 17 Feb 2025 10:56:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tjywf-0003EH-Ii; Mon, 17 Feb 2025 12:05:49 +0100
+	id 1tjyno-0000fp-1o; Mon, 17 Feb 2025 11:56:40 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tjywf-001OVW-0m;
-	Mon, 17 Feb 2025 12:05:49 +0100
+	id 1tjynn-001OPt-2n;
+	Mon, 17 Feb 2025 11:56:39 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tjywf-0077FN-0Q;
-	Mon, 17 Feb 2025 12:05:49 +0100
+	id 1tjynn-006MwM-2b;
+	Mon, 17 Feb 2025 11:56:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 17 Feb 2025 12:05:48 +0100
-Message-Id: <20250217110548.1695938-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250217100213.1637911-1-a.fatoum@pengutronix.de>
+References: <20250217100213.1637911-1-a.fatoum@pengutronix.de>
+Message-Id: <173978979980.1518006.3734495929155437641.b4-ty@pengutronix.de>
+Date: Mon, 17 Feb 2025 11:56:39 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250217_110550_347732_32ECDDB7 
-X-CRM114-Status: GOOD (  10.97  )
+X-CRM114-CacheID: sfid-20250217_105640_892851_80740783 
+X-CRM114-Status: UNSURE (   7.99  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,7 +89,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -96,36 +99,31 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] net: Fix DRIVER_NET_TI_DAVINCI_MDIO dependency
+Subject: Re: [PATCH] kbuild: export HOSTPKG_CONFIG like Linux does
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The davinci-mdio driver was factored out from DRIVER_NET_CPSW which
-depends on ARCH_OMAP, so DRIVER_NET_TI_DAVINCI_MDIO should depend
-on the same symbol, not ARCH_OMAP3.
 
-Fixes: f703666dd1 ("net: davinci_mdio: separate driver")
-Reported-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, 17 Feb 2025 11:02:13 +0100, Ahmad Fatoum wrote:
+> Since Linux commit d5ea4fece450 ("kbuild: Allow kernel installation packaging
+> to override pkg-config"), Linux supports overriding the pkg-config
+> executable via the HOSTPKG_CONFIG variable.
+> 
+> barebox already had that support, but with a differently named PKG_CONFIG
+> variable. For compatibility with build systems assuming Linux Kbuild and
+> to allow easier sharing of code (e.g. scripts/kconfig), define
+> HOSTPKG_CONFIG for barebox as well.
+> 
+> [...]
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 0e78579250..5c436a05cc 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -58,7 +58,7 @@ config DRIVER_NET_CPSW
- 
- config DRIVER_NET_TI_DAVINCI_MDIO
- 	bool "TI Davinci MDIO driver"
--	depends on ARCH_OMAP3 || ARCH_K3 || COMPILE_TEST
-+	depends on ARCH_OMAP || ARCH_K3 || COMPILE_TEST
- 
- config DRIVER_NET_DAVINCI_EMAC
- 	bool "TI Davinci/OMAP EMAC ethernet driver"
+Applied, thanks!
+
+[1/1] kbuild: export HOSTPKG_CONFIG like Linux does
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4e48ddac370c (link may not be stable)
+
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
