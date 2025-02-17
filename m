@@ -1,71 +1,67 @@
-Delivery-date: Mon, 17 Feb 2025 15:56:52 +0100
+Delivery-date: Mon, 17 Feb 2025 19:23:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tk2YG-003WUG-2N
+	id 1tk5m0-003aNZ-1U
 	for lore@lore.pengutronix.de;
-	Mon, 17 Feb 2025 15:56:52 +0100
+	Mon, 17 Feb 2025 19:23:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tk2YF-0001lx-Ih
-	for lore@pengutronix.de; Mon, 17 Feb 2025 15:56:52 +0100
+	id 1tk5ly-0003Sr-VB
+	for lore@pengutronix.de; Mon, 17 Feb 2025 19:23:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8n2RIIAlpbJAzP+UEbgoCZ9wNw4xU3cXJIHbIEZJwZk=; b=tAtu8V7JDruFQJeEeaVKlLNVtx
-	SpScik+iEXtQJExkeetkkt3sBsrJVrkfDrC1yZOOKWs4FiAEumjeVdQySCjWX9y3DTEwZUEkaoxOY
-	LhegwknLXeCAt5NU75KvwCzLbAn2Ws1DMH018YbvYZWHzeE4SVkDvsAL6srKPDgdjbPDZbFmtTXMO
-	yTU6H/28Pyq5YWT+0RhFt1IMtvm21GGDR+Ir1DzVTlrl3z0lcu2m/n0COGue2Gobwn3JbyDwjiijl
-	PC5w3nbd/EWwOioszsNo79Y6fhXAv70OkWrdahnhnnLPNKWbbIyMrs/7NwaElzelPaih/vda0H7eC
-	FQvYbFpg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=jtY3yzYnWZe9xqvgYO0Bq0JmDAUryyrZ7q+BauJz4ME=; b=zYuZCV1S66bdCj9TYlZWPt33dd
+	oOmUrR2giwmAYWjobLkh1Sot1iOsMwrWj6RUSpmFYswrw2jeeDp+K2JDiq80x6hRZ9SQenv2KEKS2
+	NwrXZCeCHdR5czhauSeVb27fW5fQ8MOvYdDUo/iyW+n89SFA2nEIBKPYuEKEvqUK3yaFMHTlsxg4c
+	j3nN0/8Hr3cnGZylhaD7Wc2YJtttg3VSU7GCi4BJuuZ8r3+HVTay/v5c8oAi2dtG/gd3psQXwagGu
+	bSiJf21+xG9seJLM4TyxsOBj9tQ8R0/kVy3GCr4b9yw04aU2ENyj3vh/78Qk6BuLH5KwU4RAUmxVh
+	CWi5RaoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tk2Xo-00000004wxx-3WEb;
-	Mon, 17 Feb 2025 14:56:24 +0000
+	id 1tk5lJ-00000005aa4-2DMf;
+	Mon, 17 Feb 2025 18:22:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tk2O8-00000004uui-22CX
+	id 1tk5Xq-00000005YxL-07qm
 	for barebox@lists.infradead.org;
-	Mon, 17 Feb 2025 14:46:25 +0000
+	Mon, 17 Feb 2025 18:08:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tk2O7-0008QC-2K; Mon, 17 Feb 2025 15:46:23 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tk5Xm-00011D-8t; Mon, 17 Feb 2025 19:08:34 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tk2O6-001Qdg-2q;
-	Mon, 17 Feb 2025 15:46:22 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tk2O6-002YjO-2Z;
-	Mon, 17 Feb 2025 15:46:22 +0100
-Date: Mon, 17 Feb 2025 15:46:22 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <Z7NLvn7piJFNmuqz@pengutronix.de>
-References: <20250108153216.484573-1-s.hauer@pengutronix.de>
- <a06cfea0-5584-4173-ae9b-aafa2f5d0142@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tk5Xm-001S7b-0E;
+	Mon, 17 Feb 2025 19:08:34 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tk5Xl-00Gc9q-3B;
+	Mon, 17 Feb 2025 19:08:34 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 17 Feb 2025 19:08:29 +0100
+Message-Id: <20250217180833.3955657-3-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250217180833.3955657-1-a.fatoum@pengutronix.de>
+References: <20250217180833.3955657-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a06cfea0-5584-4173-ae9b-aafa2f5d0142@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250217_064624_525906_672EECCD 
-X-CRM114-Status: GOOD (  24.50  )
+X-CRM114-CacheID: sfid-20250217_100838_072684_E5F0C83C 
+X-CRM114-Status: GOOD (  12.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,56 +79,64 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] usb: dwc3: add am62 support
+Subject: [PATCH 2/6] of: of_path: support barebox,fixed-partitions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Feb 17, 2025 at 03:34:16PM +0100, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 08.01.25 16:32, Sascha Hauer wrote:
-> > This adds the glue code necessary for the DWC3 controller on TI AM62x
-> > SoCs. The code is based on the corresponding Linux driver as of
-> > Linux-6.13-rc1.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Sorry for the late review, but I have a question.
-> 
-> > +	/* Calculate the rate code */
-> > +	rate = clk_get_rate(am62->usb2_refclk);
-> > +	rate /= 1000;	// To KHz
-> 
-> Nitpick: We have HZ_PER_KHZ, which would save you a comment.
-> 
-> > +	ret = of_platform_populate(node, NULL, dev);
-> > +	if (ret) {
-> > +		dev_err_probe(dev, ret, "failed to create dwc3 core\n");
-> > +		goto err_pm_disable;
-> > +	}
-> > +
-> > +	/* Set mode valid bit to indicate role is valid */
-> > +	reg = dwc3_ti_readl(am62, USBSS_MODE_CONTROL);
-> > +	reg |= USBSS_MODE_VALID;
-> > +	dwc3_ti_writel(am62, USBSS_MODE_CONTROL, reg);
-> 
-> It's odd to do this after of_platform_populate. A deep probe
-> system would always try to initialize DWC3 without this
-> set, wouldn't it?
+barebox has for many years supported a superset of the upstream OF
+partitions binding by parsing partitions out of SD/eMMC and EEPROM
+in addition to MTD.
 
-Copied from the Kernel driver. But right, I just sent a patch to change
-it.
+Unfortunately, we didn't upstream our binding and a different binding
+went upstream into Linux v6.13-rc1 along with Linux commit
+2e3a191e89f9 ("block: add support for partition table defined in OF").
 
-Sascha
+Since then, if CONFIG_OF_PARTITION, which is disabled by default, is
+enabled, Linux will ignore any GPT/MBR if an SD/eMMC node has a
+fixed-partitions compatible subnode.
 
+This is different from the barebox behavior, which allows both OF
+partitions and GPT/MBR to co-exist as long as they don't conflict.
+
+As many barebox boards:
+
+  - Place the environment in non-partitioned space prior to the first
+    partition
+
+  - Fixup all fixed-partitions into the kernel device tree by default
+
+this results in breakage if a newer kernel is booted with
+CONFIG_OF_PARTITION enabled.
+
+As first step towards resolving this, teach barebox to parse
+barebox,fixed-partitions the same way it parses fixed-partitions.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/of/of_path.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
+index b3feaa07e39d..57bd82a741ba 100644
+--- a/drivers/of/of_path.c
++++ b/drivers/of/of_path.c
+@@ -14,7 +14,9 @@
+ 
+ bool of_node_is_fixed_partitions(const struct device_node *np)
+ {
+-	return of_device_is_compatible(np, "fixed-partitions");
++	return of_device_is_compatible(np, "fixed-partitions") ||
++		of_device_is_compatible(np, "barebox,fixed-partitions");
++
+ }
+ 
+ struct device *of_find_device_by_node_path(const char *path)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
