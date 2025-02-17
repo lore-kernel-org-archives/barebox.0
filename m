@@ -1,67 +1,70 @@
-Delivery-date: Mon, 17 Feb 2025 11:55:20 +0100
+Delivery-date: Mon, 17 Feb 2025 11:55:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tjymW-003S0r-2U
+	id 1tjymc-003S1J-0n
 	for lore@lore.pengutronix.de;
-	Mon, 17 Feb 2025 11:55:20 +0100
+	Mon, 17 Feb 2025 11:55:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tjymV-0000M9-Ih
-	for lore@pengutronix.de; Mon, 17 Feb 2025 11:55:20 +0100
+	id 1tjyma-0000PN-Uo
+	for lore@pengutronix.de; Mon, 17 Feb 2025 11:55:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HpDm9ydaVuZ8peqcGw2Vu562kXHdk7imDX0ofOQgYKg=; b=hGavvIlWkQVOMYz+RjTNo3e/YT
-	R2ZjzE00n0DaVK07PzJSE1o0knbrKWPCpsfwSTrXlsQ7Yc6VXByIAHlkSCkMSIOLFouXHztL5UrjA
-	80sySM/Vu11i/6pDxQVxzJaeVDznVAnoBBh+NKyphehL+hYMRZIuwQaGzG51LPtbCu9HconqZ3lGY
-	Rfia40yEQGLuv6wGG+mUcWiTrQduJuYfcjHzKl4KoUbePPSszELUXtOZSD3g+K9G6gRDFBkNrs+o6
-	iQLrKeaY4jbhKSADm6UR6K5R7r4QB5n/4Hfbd89DvQPMGtTLU4srlP3TWlCeR4xX3oHzJSJhHhjY2
-	mn3UL1dA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=nuKGZRNvkqhfmWWIiu9cy6rOhFyhxnI7p25a25L1/HI=; b=pRxC7rHGgC7bVmRYLkjBNtpNkx
+	8qUmUue/1UL5HqanBehgRlUfUtZ/0nOZL7VtUbX7Eb3AFeN+U+Sh4SE6rz76XxEOPrLphuO5jR18U
+	gse2Wqkt7Y85cv6SJuCcUnUXxFx6sOQbVaSPaLU7gVnEfSV8MdWr0CCRjE2iTNNhw7h/NiE2evx+h
+	Jvky/AaQ6Tcj9o/80Ata0CmGNzElIh03RUMgYud8xbqPXbK5h7h/znyWt6zs2LIL9dVu3GTzMTjnk
+	wKMIDb4AGekJIVTRdL0RWX1fL5qdOg+gYvE5cboD8SM2ArJSSyJS472/CXmPNiCzrnFYnE5QonOLQ
+	FwY7ltfQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tjym4-00000004D9g-11Mn;
-	Mon, 17 Feb 2025 10:54:52 +0000
+	id 1tjymA-00000004DHM-0irm;
+	Mon, 17 Feb 2025 10:54:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tjydq-000000049qo-15Fk
+	id 1tjyky-00000004BJE-2bcv
 	for barebox@lists.infradead.org;
-	Mon, 17 Feb 2025 10:46:23 +0000
+	Mon, 17 Feb 2025 10:53:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjydh-0006b1-0e; Mon, 17 Feb 2025 11:46:13 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <sha@pengutronix.de>)
+	id 1tjykx-0007gX-0u; Mon, 17 Feb 2025 11:53:43 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjydg-001OO5-2d;
-	Mon, 17 Feb 2025 11:46:12 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tjydg-007huG-2L;
-	Mon, 17 Feb 2025 11:46:12 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 17 Feb 2025 11:46:10 +0100
-Message-Id: <20250217104611.1836442-3-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250217104611.1836442-1-a.fatoum@pengutronix.de>
-References: <20250217104611.1836442-1-a.fatoum@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1tjykw-001OPF-2i;
+	Mon, 17 Feb 2025 11:53:42 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tjykw-002UNf-2Q;
+	Mon, 17 Feb 2025 11:53:42 +0100
+Date: Mon, 17 Feb 2025 11:53:42 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <Z7MVNjkJiDazmLpc@pengutronix.de>
+References: <20250214094850.2847143-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250214094850.2847143-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250217_024622_294656_AC3A3F52 
-X-CRM114-Status: GOOD (  10.10  )
+X-CRM114-CacheID: sfid-20250217_025344_741299_D71BC9CA 
+X-CRM114-Status: GOOD (  35.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,57 +82,117 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/4] kbuild: actually include Makefile.clang for clang builds
+Subject: Re: [PATCH 1/2] mci: core: import Linux logic for higher preferred
+ erase size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Makefile.clang is included depending on CONFIG_CC_IS_CLANG, but its
-location in the Makefile was before the config variables are included.
+On Fri, Feb 14, 2025 at 10:48:49AM +0100, Ahmad Fatoum wrote:
+> As a comment in the file notes, doing too small a granularity for erases
+> has considerable effect on performance:
+> 
+>   > Example Samsung eMMC 8GTF4:
+>   >
+>   >   time erase /dev/mmc2.part_of_512m # 1024 trims
+>   >   time: 2849ms
+>   >
+>   >   time erase /dev/mmc2.part_of_512m # single trim
+>   >   time: 56ms
+> 
+> This was deemed acceptable at first, because 3 seconds is still
+> tolerable.
+> 
+> On a SkyHigh S40004, an erase of the whole 3728 MiB ended up
+> taking longer than 400s in barebox, but only 4s in Linux, which
+> dwarfs the time actually needed for writing.
+> 
+> Linux has some rather complicated logic to compute a higher erase size
+> granularity, which still fits in the max busy timeout that a controller
+> may require. Until that's support in barebox, we import a simpler
+> heuristic that Linux uses to compute
+> 
+>   /sys/class/mmc_host/*/*/preferred_erase_size
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/mci/mci-core.c | 105 ++++++++++++++++++++++++++---------------
+>  include/mci.h          |   1 +
+>  2 files changed, 69 insertions(+), 37 deletions(-)
+> 
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index cc3c6fba3653..6d55eb8305b9 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -1774,6 +1774,70 @@ static int mci_startup_mmc(struct mci *mci)
+>  	return ret >= MMC_BUS_WIDTH_1 ? 0 : ret;
+>  }
+>  
+> +static void mci_init_erase(struct mci *card)
+> +{
+> +	unsigned int sz;
+> +
+> +	if (!IS_ENABLED(CONFIG_MCI_ERASE))
+> +		return;
+> +
+> +	/* TODO: While it's possible to clear many erase groups at once
+> +	 * and it greatly improves throughput, drivers need adjustment:
+> +	 *
+> +	 * Many drivers hardcode a maximal wait time before aborting
+> +	 * the wait for R1b and returning -ETIMEDOUT. With long
+> +	 * erases/trims, we are bound to run into this timeout, so for now
+> +	 * we just split into sufficiently small erases that are unlikely
+> +	 * to trigger the timeout.
+> +	 *
+> +	 * What Linux does and what we should be doing in barebox is:
+> +	 *
+> +	 *  - add a struct mci_cmd::busy_timeout member that drivers should
+> +	 *    use instead of hardcoding their own timeout delay. The busy
+> +	 *    timeout length can be calculated by the MCI core after
+> +	 *    consulting the appropriate CSD/EXT_CSD/SSR registers.
+> +	 *
+> +	 *  - add a struct mci_host::max_busy_timeout member, where drivers
+> +	 *    can indicate the maximum timeout they are able to support.
+> +	 *    The MCI core will never set a busy_timeout that exceeds this
+> +	 *    value.
+> +	 *
+> +	 *  Example Samsung eMMC 8GTF4:
+> +	 *
+> +	 *    time erase /dev/mmc2.part_of_512m # 1024 trims
+> +	 *    time: 2849ms
+> +	 *
+> +	 *    time erase /dev/mmc2.part_of_512m # single trim
+> +	 *    time: 56ms
+> +	 */
+> +	if (IS_SD(card) && card->ssr.au) {
+> +		card->pref_erase = card->ssr.au;
+> +	} else if (card->erase_grp_size) {
+> +		sz = card->capacity >> 11;
+> +		if (sz < 128)
+> +			card->pref_erase = 512 * 1024 / 512;
+> +		else if (sz < 512)
+> +			card->pref_erase = 1024 * 1024 / 512;
+> +		else if (sz < 1024)
+> +			card->pref_erase = 2 * 1024 * 1024 / 512;
+> +		else
+> +			card->pref_erase = 4 * 1024 * 1024 / 512;
 
-Instead of moving it farther down and risk it being included too late,
-let's do as Linux does and consult CC_VERSION_TEXT instead of any
-config variables.
+card->capacity is in bytes, so you are falling into the last case for
+cards bigger than 512Kib. Did you mean to right shift by 21 or even 31
+instead?
 
-Fixes: f41c4d7c5649 ("Makefile: add LLVM/clang support")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- Makefile | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+I would prefer using SZ_* and SECTOR_SIZE/SHIFT defines to make this more
+readable.
 
-diff --git a/Makefile b/Makefile
-index b5a7d0b9918b..a80e1b60d534 100644
---- a/Makefile
-+++ b/Makefile
-@@ -563,7 +563,13 @@ ifdef building_out_of_srctree
- 	{ echo "# this is build directory, ignore it"; echo "*"; } > .gitignore
- endif
- 
--ifeq ($(CONFIG_CC_IS_CLANG),y)
-+# The expansion should be delayed until arch/$(SRCARCH)/Makefile is included.
-+# Some architectures define CROSS_COMPILE in arch/$(SRCARCH)/Makefile.
-+# CC_VERSION_TEXT is referenced from Kconfig (so it needs export),
-+# and from include/config/auto.conf.cmd to detect the compiler upgrade.
-+CC_VERSION_TEXT = $(subst $(pound),,$(shell LC_ALL=C $(CC) --version 2>/dev/null | head -n 1))
-+
-+ifneq ($(findstring clang,$(CC_VERSION_TEXT)),)
- include $(srctree)/scripts/Makefile.clang
- endif
- 
-@@ -578,7 +584,7 @@ include $(srctree)/scripts/Makefile.defconf
- # KBUILD_DEFCONFIG may point out an alternative default configuration
- # used for 'make defconfig'
- include $(srctree)/arch/$(SRCARCH)/Makefile
--export KBUILD_DEFCONFIG
-+export KBUILD_DEFCONFIG CC_VERSION_TEXT
- 
- config: outputmakefile scripts_basic FORCE
- 	$(Q)$(MAKE) $(build)=scripts/kconfig $@
+Sascha
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
