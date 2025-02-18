@@ -1,69 +1,68 @@
-Delivery-date: Tue, 18 Feb 2025 15:06:40 +0100
+Delivery-date: Tue, 18 Feb 2025 15:08:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tkOFE-003w7J-2t
+	id 1tkOGg-003w8R-0u
 	for lore@lore.pengutronix.de;
-	Tue, 18 Feb 2025 15:06:40 +0100
+	Tue, 18 Feb 2025 15:08:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tkOFD-0000cZ-5G
-	for lore@pengutronix.de; Tue, 18 Feb 2025 15:06:40 +0100
+	id 1tkOGf-0000vT-1o
+	for lore@pengutronix.de; Tue, 18 Feb 2025 15:08:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wgQArFZBa59oCoePXVINoIhtg//ndCcjvIcDgNYpGuQ=; b=JPRUnW7ewy0ckTL2WDbIj083/x
-	z7CCiRK+M0G8tQihaiSmeYZSvaXADzvrVZKIsmg6V2DgCrMI2cKi1iMB31tr/V7R+eON6fRpN7vxP
-	xbT2vvHk9dTMvQHuLNcRNnxFYIW3lXznt0wBhBBJMM24UJvW3OeqbEatppH3wxCpLVIBgp+lVtPTF
-	SifcO9EKLRzGHbCseYr1X1blD+hOe0Dm7qNheCxswTVyYlv6doPQg1aEJIuR2e0Pnf1NyO2xn0Vji
-	rrrOrKafinwuBfvXDVTDAUcF7WWkUNNRs90vr3fuium2v4ZAjJTMQq+gCSz5NrynsbfRZXkQJIAm7
-	CxK8p8vg==;
+	bh=snzvR6q0/3Pl281N4T8yje4Qd5yotYYDQDeS+5u2NdI=; b=husP2ye9zenUsM9Z3A6ita1bfb
+	KwFr/sRFu4VR6NueInarmOSbWsG3TiMAFBG2ahHtYsEzjnMUiZOkpMzpldhzFugGpi7CKkLJoIygD
+	SyDPjYecSilt9/MarW7WibjI5M2uKQcmPYs3l66SfOjDOeflOEnlHL5tdTT9eBeNaj1ofpmSauFBl
+	tEx88czxJEK3aQhr5JUWolBJlZVoZQu44hySbPqMSByEmza0xxMhkDd+aYYQuP8u/EKYIawrf1kpF
+	dRGZe3MJ2NTNFS5ZJ6UP13Pvxc6XvYqQymiQ/Z9yZVOmEqTJSmPeAMYArOLYe7E3TYf05kSR8NZx1
+	pVd9JunA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tkOEo-00000008Qom-1MAn;
-	Tue, 18 Feb 2025 14:06:14 +0000
+	id 1tkOGF-00000008R9R-1udL;
+	Tue, 18 Feb 2025 14:07:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tkODX-00000008QXE-05m6
+	id 1tkOEN-00000008QjY-2bEE
 	for barebox@lists.infradead.org;
-	Tue, 18 Feb 2025 14:04:56 +0000
+	Tue, 18 Feb 2025 14:05:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tkODV-0000CN-Rp; Tue, 18 Feb 2025 15:04:53 +0100
+	id 1tkOEM-0000TB-G0; Tue, 18 Feb 2025 15:05:46 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tkODV-001bVc-1e;
-	Tue, 18 Feb 2025 15:04:53 +0100
+	id 1tkOEM-001bVj-0z;
+	Tue, 18 Feb 2025 15:05:46 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tkODV-005Bm6-1R;
-	Tue, 18 Feb 2025 15:04:53 +0100
+	id 1tkOEM-005Fcj-0n;
+	Tue, 18 Feb 2025 15:05:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-In-Reply-To: <20250217110548.1695938-1-s.hauer@pengutronix.de>
-References: <20250217110548.1695938-1-s.hauer@pengutronix.de>
-Message-Id: <173988749344.1236839.10077501423754980798.b4-ty@pengutronix.de>
-Date: Tue, 18 Feb 2025 15:04:53 +0100
+In-Reply-To: <20250217144543.1777605-1-s.hauer@pengutronix.de>
+References: <20250217144543.1777605-1-s.hauer@pengutronix.de>
+Message-Id: <173988754624.1251614.15029751625924782411.b4-ty@pengutronix.de>
+Date: Tue, 18 Feb 2025 15:05:46 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250218_060455_071634_DA97E8F0 
-X-CRM114-Status: UNSURE (   7.46  )
+X-CRM114-CacheID: sfid-20250218_060547_662447_8F25C9B0 
+X-CRM114-Status: UNSURE (   5.60  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,23 +84,23 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: Fix DRIVER_NET_TI_DAVINCI_MDIO dependency
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/2] usb: dwc3: am62: Use HZ_PER_KHZ
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 17 Feb 2025 12:05:48 +0100, Sascha Hauer wrote:
-> The davinci-mdio driver was factored out from DRIVER_NET_CPSW which
-> depends on ARCH_OMAP, so DRIVER_NET_TI_DAVINCI_MDIO should depend
-> on the same symbol, not ARCH_OMAP3.
+On Mon, 17 Feb 2025 15:45:42 +0100, Sascha Hauer wrote:
+> Use HZ_PER_KHZ to make intention clear and drop now unnecessary comment.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] net: Fix DRIVER_NET_TI_DAVINCI_MDIO dependency
-      https://git.pengutronix.de/cgit/barebox/commit/?id=38332a5b15f7 (link may not be stable)
+[1/2] usb: dwc3: am62: Use HZ_PER_KHZ
+      https://git.pengutronix.de/cgit/barebox/commit/?id=5dd32e5531b5 (link may not be stable)
+[2/2] usb: dwc3: am62: set mode valid bit before probing children
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a2e46da015a4 (link may not be stable)
 
 Best regards,
 -- 
