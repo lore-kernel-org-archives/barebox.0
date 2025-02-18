@@ -1,65 +1,67 @@
-Delivery-date: Tue, 18 Feb 2025 13:43:45 +0100
+Delivery-date: Tue, 18 Feb 2025 15:05:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tkMx0-003uXA-0h
+	id 1tkODu-003w5h-1i
 	for lore@lore.pengutronix.de;
-	Tue, 18 Feb 2025 13:43:45 +0100
+	Tue, 18 Feb 2025 15:05:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tkMwz-0002ua-1a
-	for lore@pengutronix.de; Tue, 18 Feb 2025 13:43:45 +0100
+	id 1tkODt-0000JT-DB
+	for lore@pengutronix.de; Tue, 18 Feb 2025 15:05:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=xpwbxnVkK5Sx6BfPlZOcEmg/TiPFpVDID2ZTpV2xfV8=; b=ao2K5Km1UB5795oetcMPRtXQOl
-	eCWoJmZ9y2vzTUTSqKKmgzm8jk6pTsOvPhlCnIJynn6aSF122JlgTkq5DGD0N2ViSZXoJrVnG/ii8
-	kwhuYmObnwf2QCXirLZFOfmTbS3NqPYEzPC+ecdNkaMKFqSbp8fEihGdkdLwebpjo/jJ5UYPWaAqH
-	/Fy0pdo/0xPZnzM3Jnev4eLayu1fQ0VMVo8D/sTDaxvTBYacpH7ffexH55Ibm3jpC4Zg2qyZ6s9nS
-	tZGzbjvlMjsxW8uvys3kNXlyncwF+68DsLZXz5tkqUWmVrtsEiQK0kacm0+aE0kNX+T27XsQ4cfQr
-	Ucczlvkg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=RzDKQJ+2UueBO9lfykwn9QwZMLSbxFvEI0AFDioMUxI=; b=MlQIhcBM+Q+2QB4oXE2+Z3JTPM
+	j6FMZGvTOMrT5Ff1+6PjmmtClUHNSNmxKai1NbrXXvfPsqtzqOqh2bTrNTbknM6A49g/9xHYyestM
+	fWkfqy1anEdPfnnHVuEyg86ABNVLAowkiU/3CEiZ1syRvFxMlsLpjI8KgDjq4Y6XluFkwwQC9xcHD
+	8WuQXU0nIBo1GGdGt+iCvmmGCzXLsJ3aY2cIYsjQY19P3l8hOdY7AJFM4Ih1eJTvl3m2KyMEw3G42
+	JBLab1QQQqMs5ApogrszuwcnUsOxmoDDlV6LoNk9iGL1XmKF00pjXyLKxztHIE64SS2etDIzCRu2z
+	0iQvaZvw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tkMwL-00000008BpD-23L3;
-	Tue, 18 Feb 2025 12:43:05 +0000
+	id 1tkODM-00000008QT7-2dD2;
+	Tue, 18 Feb 2025 14:04:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tkMwJ-00000008Bon-0e5w
+	id 1tkOCo-00000008QLk-2JaG
 	for barebox@lists.infradead.org;
-	Tue, 18 Feb 2025 12:43:04 +0000
+	Tue, 18 Feb 2025 14:04:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tkMwG-0002nU-Tq; Tue, 18 Feb 2025 13:43:00 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tkOCn-0008Sy-Ae; Tue, 18 Feb 2025 15:04:09 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tkMwG-001axd-2M;
-	Tue, 18 Feb 2025 13:43:00 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tkMwG-00GCpa-23;
-	Tue, 18 Feb 2025 13:43:00 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 18 Feb 2025 13:43:00 +0100
-Message-Id: <20250218124300.3862498-1-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tkOCn-001bR1-0S;
+	Tue, 18 Feb 2025 15:04:09 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tkOCn-0058nj-07;
+	Tue, 18 Feb 2025 15:04:09 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue, 18 Feb 2025 15:04:07 +0100
+Message-Id: <20250218140407.1224499-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250218140407.1224499-1-s.hauer@pengutronix.de>
+References: <20250218140407.1224499-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250218_044303_190546_AEC81225 
-X-CRM114-Status: GOOD (  13.46  )
+X-CRM114-CacheID: sfid-20250218_060410_590250_F5104E36 
+X-CRM114-Status: UNSURE (   9.00  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,66 +83,31 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] dmesg: add support for dumping log into file
+Subject: [PATCH 2/2] ARM: i.MX9: Enable PBL_VERIFY_PIGGY with non INSECURE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We already have a log_writefile() helper for dumping the log into a
-file. Make it easily accessible via the shell by having a new
-dmesg -o option call it.
+i.MX93 boards load barebox proper in the PBL. In a verified boot
+scenario this binary must be verified before executing it, so
+enable PBL_VERIFY_PIGGY when INSECURE is disabled.
 
-There is nothing keeping us from extending the function to support flags
-and levels like log_print does, but this can follow later if needed.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/dmesg.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/commands/dmesg.c b/commands/dmesg.c
-index 8a60f075076e..7982188cda6d 100644
---- a/commands/dmesg.c
-+++ b/commands/dmesg.c
-@@ -76,13 +76,17 @@ static unsigned dmesg_get_levels(const char *__args)
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 424c7d71a6..239ad674b5 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -190,6 +190,7 @@ config ARCH_IMX93
+ 	select PINCTRL_IMX_IOMUX_V3
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select ARCH_HAS_FEC_IMX
++	select PBL_VERIFY_PIGGY if !INSECURE
  
- static int do_dmesg(int argc, char *argv[])
- {
-+	const char *outputfile = NULL;
- 	int opt, ret, i;
- 	int delete_buf = 0, emit = 0;
- 	unsigned flags = 0, levels = 0;
- 	char *set = NULL;
- 
--	while ((opt = getopt(argc, argv, "ctderl:n:")) > 0) {
-+	while ((opt = getopt(argc, argv, "o:ctderl:n:")) > 0) {
- 		switch (opt) {
-+		case 'o':
-+			outputfile = optarg;
-+			break;
- 		case 'c':
- 			delete_buf = 1;
- 			break;
-@@ -111,6 +115,12 @@ static int do_dmesg(int argc, char *argv[])
- 		}
- 	}
- 
-+	if (outputfile) {
-+		if (flags || levels)
-+			return COMMAND_ERROR_USAGE;
-+		return log_writefile(outputfile);
-+	}
-+
- 	if (set) {
- 		int level = str_to_loglevel(set);
- 
-@@ -166,6 +176,7 @@ BAREBOX_CMD_HELP_TEXT("Known debug loglevels are: emerg, alert, crit, err, warn,
- BAREBOX_CMD_HELP_TEXT("vdebug")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-o <file>",	"Output all log to given file (conflicts with -tdlr)")
- BAREBOX_CMD_HELP_OPT ("-c",		"Delete messages after printing them")
- BAREBOX_CMD_HELP_OPT ("-d",		"Show a time delta to the last message")
- BAREBOX_CMD_HELP_OPT ("-e <msg>",	"Emit a log message")
+ config ARCH_VF610
+ 	bool
 -- 
 2.39.5
 
