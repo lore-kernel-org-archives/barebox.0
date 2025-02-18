@@ -1,58 +1,87 @@
-Delivery-date: Mon, 17 Feb 2025 20:58:14 +0100
+Delivery-date: Tue, 18 Feb 2025 06:25:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tk7Fv-003c2F-1V
+	id 1tkG6o-003mYS-0m
 	for lore@lore.pengutronix.de;
-	Mon, 17 Feb 2025 20:58:14 +0100
+	Tue, 18 Feb 2025 06:25:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tk7Fu-0001I7-5q
-	for lore@pengutronix.de; Mon, 17 Feb 2025 20:58:14 +0100
+	id 1tkG6n-0000z0-22
+	for lore@pengutronix.de; Tue, 18 Feb 2025 06:25:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
+	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X5jdoOBLwS3xy1d1UB1CHsHDlG1aNswfcl6oOjfWG30=; b=jP8DqANluxH+fwC5qeCfCppJfG
-	JOOOkDmKXnhpSvklP7uaLUsEkiN0NO2OKkOutq4SGm2Lk8qG1YTxefCJReeZREBcMirVvL3y/GbvK
-	Blp8fdjh4iIuuOuVEgJCEp5tWSRHEYVjeYGoG0KCTanmRtUSSa+rQZmgeBAj+DcZyibBTv+2sIWdd
-	yp8YS4Kg1nedVVBAZnJg0GMz68GKVgqYFiIky4c59lRX23kXLsN/hF+pph88xd591LdhX5JzqIusD
-	fkltYSNN4dA1fCST4IQklh9vxdugInxeRNAkAR48Jo0EB9iyUefRzb1alBVQXstJxBhxcvu/noHEH
-	qf+W/Fig==;
+	bh=77hd5k3XJd6ftbqvlKJqIC1/+NTFcevW7tTlYSXJq9Y=; b=M5Xmk7MbZMAi636GEHW72g7WoO
+	T73dm8TTi1A9Nr9HKCLjoZerKPpIbZF69FE9RcCZ1/zkXG9cryJ4B+2gikcoBLYpVKUYX1j3Vh1Wp
+	UFGJo1pxCBJjt7X9QBXMYKiIKDIywwRhdCV3Jr7fjl6v8jXxK1yp1T2km0xajR5PhRTXY7sV+bNOz
+	L3gjyNaLD1GbqRHq2hc+phEbhHrDq3cskqPbuGcNs6/er0Dul2bIWlwoC9Scx+Q6cpWjWCDVL/rRB
+	5b7Gq48mOkmeVIeOa54rzhRy+wzNJtF5oTCmDQtOV/QdtOlMdIz+ZGt+YQauljWGJNurlnrZIJOas
+	pFOuQQwg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tk7F9-00000005oPs-12xn;
-	Mon, 17 Feb 2025 19:57:27 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tkG5v-00000006qR9-3JAb;
+	Tue, 18 Feb 2025 05:24:31 +0000
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tk7F6-00000005oPV-3V5m
+	id 1tkG0J-00000006pek-2m9l
 	for barebox@lists.infradead.org;
-	Mon, 17 Feb 2025 19:57:26 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tk7F5-00017e-Ew; Mon, 17 Feb 2025 20:57:23 +0100
-Message-ID: <87a7379e-8b95-4639-a100-8efe2e070fba@pengutronix.de>
-Date: Mon, 17 Feb 2025 20:57:23 +0100
+	Tue, 18 Feb 2025 05:18:44 +0000
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-22128b7d587so31852605ad.3
+        for <barebox@lists.infradead.org>; Mon, 17 Feb 2025 21:18:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739855923; x=1740460723; darn=lists.infradead.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=77hd5k3XJd6ftbqvlKJqIC1/+NTFcevW7tTlYSXJq9Y=;
+        b=Y4bz0Dbuwg3JMFDmKBFo9xlg2BVFiytAcF0uSyi7vobwB7LXPQ2XQLzT21vCCd5M+1
+         6ObKAbUIqIprrGh3NWC9X949NcFDaTOjAFyHFQ5WrEhpBrcnyV/fCTWff4umgsmf4wUI
+         IZFmqAtQ5B+15mHZY1E50WJYEIcM4wA7OS9sAxOgh97I0w+59tpk7oeaHSkI2KRY7J2W
+         gji/sCGslxLUFtjuAbMDbUfWmKAvrq1nOpyRldMAbo4Usl3gvNonrGVTzY63nhBy3NuA
+         LG8V3UMAfHUCT7qZr4pnVrfDwcjOhEgAbdP36TqjNitv5puA04tksxf1wO+nmbnERHdx
+         ZDNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739855923; x=1740460723;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=77hd5k3XJd6ftbqvlKJqIC1/+NTFcevW7tTlYSXJq9Y=;
+        b=S8kAmgZpJUwOM4JwHMHfPwR+oYImz6TChMYOf/R2jMiuHRtG/OJTqXT0Z+vJSENR3P
+         Mc3zey6qPqsUZEixGGkmzAu8iszCc1w38zTuCfYldJ5bjltBA8b5x/RrhukqJn0j9VL6
+         bow4BHmNUT0vdhbiMCI9SkPDRSN/G9obDLzt0n+C0h2DMjz0zm3ZKyOK89nKRUrFRbmn
+         ekp4OoiiDiexQZeMZJ7K/klv7/t2xp2EFaf5q9AzSpxRa/m0r/3S4+zgo8kNss/Cqnzp
+         mCkG6MaBMyFfLBJjWRLSK3TdUzSD2WY5codiJTkdyEY3jZRRrCLuCY5vCdmntLqG8GId
+         RjSg==
+X-Gm-Message-State: AOJu0YyYjMEJBBYAXDoECn2G0+zFi6MjDfRHYyoh+o1BkZaEnQIjbfZY
+	1UKnHaIey+20IXundxrVHf9DylXjIvWXMx0Dno1Q49i8cTGi7TC65w6E7wNeznG6wmb+L1S1Ls1
+	5gIZNbM+sYiCozmKO+Xb3UB5uStg=
+X-Gm-Gg: ASbGncsTBhrMD5EdlcBxTG/sZz4RddOmJ21nLfwWIHxYqd5PsAm1Jnp+/UM91GAncrC
+	MlODlzWJBnm89pj04qRThle1kYM4abrqln3kHtDXY5PomvjB9ywY42VpEy32fLfMAgV2XyapI
+X-Google-Smtp-Source: AGHT+IGShbLatl6JbZhJlu12jX2S+Zi4f4uosJRkhc/ON/Pm/fmcU+HZdBQgFpRloXcQ7suP5FJZpXHmjZU+tSxqQwY=
+X-Received: by 2002:a17:902:d48b:b0:21f:4649:fd49 with SMTP id
+ d9443c01a7336-221040c0a58mr176894325ad.49.1739855921056; Mon, 17 Feb 2025
+ 21:18:41 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20250217180833.3955657-1-a.fatoum@pengutronix.de>
- <20250217192523.crgvcg2phxhce46d@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250217192523.crgvcg2phxhce46d@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250217110548.1695938-1-s.hauer@pengutronix.de>
+In-Reply-To: <20250217110548.1695938-1-s.hauer@pengutronix.de>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Tue, 18 Feb 2025 08:18:29 +0300
+X-Gm-Features: AWEUYZkRe5zTsB8rslZEFSaC5xu-7acHNYl5P_Su8e6XHAu99pKvZhDe0bcP9sQ
+Message-ID: <CAP1tNvTY53UDtd4gzkeQkiZxnh-hsvcpAd=RaiLKm_FWBXJ+_Q@mail.gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250217_115724_877228_C1CA4BF8 
-X-CRM114-Status: GOOD (  24.36  )
+X-CRM114-CacheID: sfid-20250217_211843_702323_B1D5F90F 
+X-CRM114-Status: GOOD (  14.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,137 +99,48 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/6] of: partition: add Linux
- CONFIG_OF_PARTITION-compatible adaptive fixup mode
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] net: Fix DRIVER_NET_TI_DAVINCI_MDIO dependency
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Thanks, Sascha!
 
-On 17.02.25 20:25, Marco Felsch wrote:
-> Hi Ahmad,
-> 
-> thanks for working on this!
-> 
-> On 25-02-17, Ahmad Fatoum wrote:
->> barebox has for many years supported a superset of the upstream OF
->> partitions binding by parsing partitions out of SD/eMMC and EEPROM
->> in addition to MTD.
->>
->> Unfortunately, we didn't upstream our binding and a different binding
->> went upstream into Linux v6.13-rc1 along with Linux commit
->> 2e3a191e89f9 ("block: add support for partition table defined in OF").
->>
->> Since then, if CONFIG_OF_PARTITION, which is disabled by default, is
->> enabled, Linux will ignore any GPT/MBR if an SD/eMMC node has a
->> fixed-partitions compatible subnode.
->>
->> This is different from the barebox behavior, which allows both OF
->> partitions and GPT/MBR to co-exist as long as they don't conflict.
->>
->> As many barebox boards:
->>
->>   - Place the environment in non-partitioned space prior to the first
->>     partition
->>
->>   - Fixup all fixed-partitions into the kernel device tree by default
-> 
-> Could we add a warning/notice that the board should be converted to make
-> use of the barebox GPT parttype-uuid? It's 2025 and IMHO there is no
-> reason for not using the GPT with the barebox state part-type UUID in
-> place. This is of course not related to this patchset.
+Tested-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 
-There's no partition type UUID solution for barebox on EFI systems yet
-and for many systems in the field, switching to partition type UUID
-would mean a migration step, where a rollback to a system with an old
-barebox-state version is not possible...
-
-Cheers,
-Ahmad
-
-> 
-> Regards,
->   Marco
-> 
->> this can result in breakage if a newer kernel is booted with
->> CONFIG_OF_PARTITION enabled.
->>
->> To resolve this, this series introduces the barebox,fixed-partitions
->> compatible and uses that in Linux device tree fixups for SD/eMMC
->> by default.
->>
->> Ahmad Fatoum (6):
->>   of: factor out of_node_is_fixed_partitions check
->>   of: of_path: support barebox,fixed-partitions
->>   ARM: IMX8MP: var-dart-dt8mcustomboard.dts: use new-style partition
->>     binding
->>   ARM: dts: prefix all non-MTD fixed-partitions with barebox,
->>   of: partition: refactor of_partition_binding checks into switch
->>   of: partition: add Linux CONFIG_OF_PARTITION-compatible adaptive fixup
->>     mode
->>
->>  .../devicetree/bindings/mtd/partition.rst     | 27 +++++++-
->>  Documentation/user/state.rst                  |  4 +-
->>  arch/arm/dts/am335x-phytec-state.dtsi         |  2 +-
->>  .../dts/fsl-ls1046a-tqmls1046a-mbls10xxa.dts  |  2 +-
->>  arch/arm/dts/imx50-kindle-common.dtsi         |  2 +-
->>  arch/arm/dts/imx51-zii-rdu1.dts               |  2 +-
->>  arch/arm/dts/imx6dl-colibri-iris.dts          |  2 +-
->>  arch/arm/dts/imx6qdl-phytec-mira.dtsi         |  2 +-
->>  arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi  |  2 +-
->>  arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi  |  2 +-
->>  arch/arm/dts/imx6qdl-phytec-state.dtsi        |  2 +-
->>  arch/arm/dts/imx6qdl-zii-rdu2.dtsi            |  2 +-
->>  arch/arm/dts/imx6ul-liteboard.dts             |  4 +-
->>  arch/arm/dts/imx6ul-phytec-state.dtsi         |  2 +-
->>  arch/arm/dts/imx6ul-tqma6ul-common.dtsi       |  4 +-
->>  arch/arm/dts/imx6ul-webasto-ccbv2.dts         |  2 +-
->>  arch/arm/dts/imx6ul-webasto-marvel.dts        |  2 +-
->>  arch/arm/dts/imx7d-ac-sxb.dtsi                |  4 +-
->>  arch/arm/dts/imx7d-flex-concentrator-mfg.dts  |  2 +-
->>  arch/arm/dts/imx7d-gome-e143_01.dts           |  2 +-
->>  arch/arm/dts/imx7d-phyboard-zeta.dts          |  2 +-
->>  arch/arm/dts/imx7s-warp.dts                   |  2 +-
->>  arch/arm/dts/imx8mm-innocomm-wb15-evk.dts     |  4 +-
->>  arch/arm/dts/imx8mm-phyboard-polis-rdk.dts    |  4 +-
->>  arch/arm/dts/imx8mp-debix-model-a.dts         |  4 +-
->>  arch/arm/dts/imx8mp-debix-som-a-bmb-08.dts    |  4 +-
->>  arch/arm/dts/imx8mp-karo-qsxp-ml81.dtsi       |  2 +-
->>  .../dts/imx8mp-var-dart-dt8mcustomboard.dts   | 25 ++++----
->>  arch/arm/dts/rk3566-cm3-io.dts                |  4 +-
->>  arch/arm/dts/rk3566-pinetab2.dtsi             |  4 +-
->>  arch/arm/dts/rk3568-bpi-r2-pro.dts            |  4 +-
->>  arch/arm/dts/rk3568-evb1-v10.dts              |  4 +-
->>  arch/arm/dts/rk3568-mecsbc.dts                |  4 +-
->>  arch/arm/dts/rk3568-rock-3a.dts               |  4 +-
->>  arch/arm/dts/rk3568-wolfvision-pf5.dts        |  2 +-
->>  arch/arm/dts/rk3588-orangepi-5-plus.dts       |  4 +-
->>  arch/arm/dts/rk3588-rock-5b.dts               |  4 +-
->>  arch/arm/dts/socfpga_arria10_achilles.dts     |  2 +-
->>  arch/arm/dts/socfpga_arria10_mercury_aa1.dts  |  2 +-
->>  arch/arm/dts/state-example.dtsi               |  4 +-
->>  drivers/of/base.c                             |  6 +-
->>  drivers/of/of_path.c                          |  9 ++-
->>  drivers/of/partition.c                        | 62 ++++++++++++-------
->>  include/of.h                                  |  6 ++
->>  44 files changed, 149 insertions(+), 96 deletions(-)
->>
->> -- 
->> 2.39.5
->>
->>
->>
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+=D0=BF=D0=BD, 17 =D1=84=D0=B5=D0=B2=D1=80. 2025=E2=80=AF=D0=B3. =D0=B2 14:0=
+5, Sascha Hauer <s.hauer@pengutronix.de>:
+>
+> The davinci-mdio driver was factored out from DRIVER_NET_CPSW which
+> depends on ARCH_OMAP, so DRIVER_NET_TI_DAVINCI_MDIO should depend
+> on the same symbol, not ARCH_OMAP3.
+>
+> Fixes: f703666dd1 ("net: davinci_mdio: separate driver")
+> Reported-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/net/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+> index 0e78579250..5c436a05cc 100644
+> --- a/drivers/net/Kconfig
+> +++ b/drivers/net/Kconfig
+> @@ -58,7 +58,7 @@ config DRIVER_NET_CPSW
+>
+>  config DRIVER_NET_TI_DAVINCI_MDIO
+>         bool "TI Davinci MDIO driver"
+> -       depends on ARCH_OMAP3 || ARCH_K3 || COMPILE_TEST
+> +       depends on ARCH_OMAP || ARCH_K3 || COMPILE_TEST
+>
+>  config DRIVER_NET_DAVINCI_EMAC
+>         bool "TI Davinci/OMAP EMAC ethernet driver"
+> --
+> 2.39.5
+>
 
 
