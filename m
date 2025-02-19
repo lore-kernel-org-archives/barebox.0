@@ -1,59 +1,59 @@
-Delivery-date: Wed, 19 Feb 2025 17:54:41 +0100
+Delivery-date: Wed, 19 Feb 2025 17:55:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tknLN-004NvZ-2W
+	id 1tknLy-004NwO-1b
 	for lore@lore.pengutronix.de;
-	Wed, 19 Feb 2025 17:54:41 +0100
+	Wed, 19 Feb 2025 17:55:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tknLM-0006f7-I3
-	for lore@pengutronix.de; Wed, 19 Feb 2025 17:54:41 +0100
+	id 1tknLx-0006nc-C8
+	for lore@pengutronix.de; Wed, 19 Feb 2025 17:55:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SlxucvqpBDmT304SphAFr7uXzwiux3G/hLATBZQvojY=; b=OgU4f+HwLpuJrulaM1woGTLXNm
-	WPSURAWHEtOY+GIpueGU0HjQP2EsbeMcFOY4yqj+bb+tCPxktkhoUdo3xpBy2eQHLC3gNYhLgjvWQ
-	WUGThs+5cv51OL43xTeLnOUrEly9RMoway5AlV8t8Tpx0j+4VKqP2Z+VcPQn2NqB12LpauhBrPfzY
-	ZrYt7GExqMPXYcTBue1cVtT+7JgIQYUvev+clOyn0LzpyuOt1QUqSYdT9pBr6387xHB8L07sD6mW0
-	w4RQ/e7dxMc5J/KTZUfKDq+mGFppeOp4P6bzyr8CYqqyhy9igcZ7B1KuwBeGdhka1IkO4wk7+Y5Wn
-	EUfovcQg==;
+	bh=MEfsma8Uo3vyQVJUzForykjakuMMVllOoE2wliEC3s0=; b=NHJhb7mYAx6jR0V2CpYYmqTthv
+	n7LSoBkNY7aV4sAHib/D3ITLlTBmhw+iHkWCIX4tewU1T8rPCOWs7ACljcWcNq1P8aNRkbWFF6P5Q
+	1t5VOP3/eURLGgUidhBjxO2Spl9KTPgAuCmILrbD646EJxTgi4kjMX376n2fgw5rF6JNKQE/4LI1b
+	YnkdL3QxrPW149hHdC3yg+JfR4W097sZQXFSXXMp3f4dY31liaRlzpx8ODZFcrmIrcIIpGFymIJch
+	mjCNWW2PPB5X1+nNZyAGAxSQRn5IGcS7FTxDf6yFIHZ9nsCKc5MBe4DrSHDrsKVJkNyj0U06SMCJP
+	lSq2cz+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tknKw-0000000Dx49-1Vf3;
-	Wed, 19 Feb 2025 16:54:14 +0000
+	id 1tknLZ-0000000DxGv-1dqN;
+	Wed, 19 Feb 2025 16:54:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tknKt-0000000Dx39-1DYN
+	id 1tknLW-0000000DxFr-1RJl
 	for barebox@lists.infradead.org;
-	Wed, 19 Feb 2025 16:54:12 +0000
+	Wed, 19 Feb 2025 16:54:51 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tknKs-0006YU-1R; Wed, 19 Feb 2025 17:54:10 +0100
-Message-ID: <26e93d34-4278-4f72-a5bf-2bd8170d7418@pengutronix.de>
-Date: Wed, 19 Feb 2025 17:54:09 +0100
+	id 1tknLV-0006hS-5s; Wed, 19 Feb 2025 17:54:49 +0100
+Message-ID: <53d279f3-7cca-48e0-b688-b1ceb7d013fc@pengutronix.de>
+Date: Wed, 19 Feb 2025 17:54:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  Barebox List <barebox@lists.infradead.org>
 Cc: Jonathan Bar Or <jonathanbaror@gmail.com>
 References: <20250219141844.1912413-1-s.hauer@pengutronix.de>
- <20250219141844.1912413-5-s.hauer@pengutronix.de>
+ <20250219141844.1912413-6-s.hauer@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250219141844.1912413-5-s.hauer@pengutronix.de>
+In-Reply-To: <20250219141844.1912413-6-s.hauer@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250219_085411_333448_4A25190F 
-X-CRM114-Status: GOOD (  21.25  )
+X-CRM114-CacheID: sfid-20250219_085450_384580_20B161F4 
+X-CRM114-Status: GOOD (  18.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,12 +75,10 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/5] CVE-2025-26725: fs: jffs2: fix malloc(size +
+Subject: Re: [PATCH 5/5] CVE-2025-26721: fs: pstore: fix malloc(size +
  constant) buffer overflow issues
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
-
-Hi Sascha,
 
 On 19.02.25 15:18, Sascha Hauer wrote:
 > The pattern malloc(size + constant) is dangerous when size can be
@@ -88,73 +86,30 @@ On 19.02.25 15:18, Sascha Hauer wrote:
 > in a way that 'size + constant' is 0 due to integer overflow. The
 > result is a zero sized buffer to which is then data written to.
 > 
-> Avoid this by using size_add() and struct_size() instead.
+> Avoid this by using struct_size() instead.
 > 
 > Reported-by: Jonathan Bar Or <jonathanbaror@gmail.com>
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-With below comment addressed:
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  fs/jffs2/malloc.c    | 4 ++--
->  fs/jffs2/nodelist.h  | 2 +-
->  fs/jffs2/readinode.c | 2 +-
->  3 files changed, 4 insertions(+), 4 deletions(-)
+>  fs/pstore/fs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/fs/jffs2/malloc.c b/fs/jffs2/malloc.c
-> index e0e29fa648..61c2430c18 100644
-> --- a/fs/jffs2/malloc.c
-> +++ b/fs/jffs2/malloc.c
-> @@ -15,10 +15,10 @@
->  #include <linux/jffs2.h>
->  #include "nodelist.h"
->  
-> -struct jffs2_full_dirent *jffs2_alloc_full_dirent(int namesize)
-> +struct jffs2_full_dirent *jffs2_alloc_full_dirent(size_t namesize)
->  {
->  	struct jffs2_full_dirent *ret;
-> -	ret = kmalloc(sizeof(*ret) + namesize, GFP_KERNEL);
-> +	ret = kmalloc(struct_size(ret, name, namesize), GFP_KERNEL);
-
-I was under the impression that struct_size requires the last argument to be
-the name of a C99 flexible array member[] and not that of a zero-sized array.
-
-Could you squash a change from struct jffs2_full_dirent::name[0] to ::name[] in 
-fs/jffs2/nodelist.h into this commit?
-
-Thanks,
-Ahmad
-
->  	dbg_memalloc("%p\n", ret);
->  	return ret;
->  }
-> diff --git a/fs/jffs2/nodelist.h b/fs/jffs2/nodelist.h
-> index d8687319c7..28b35d6d58 100644
-> --- a/fs/jffs2/nodelist.h
-> +++ b/fs/jffs2/nodelist.h
-> @@ -440,7 +440,7 @@ void jffs2_do_clear_inode(struct jffs2_sb_info *c, struct jffs2_inode_info *f);
->  
->  /* malloc.c */
->  
-> -struct jffs2_full_dirent *jffs2_alloc_full_dirent(int namesize);
-> +struct jffs2_full_dirent *jffs2_alloc_full_dirent(size_t namesize);
->  void jffs2_free_full_dirent(struct jffs2_full_dirent *);
->  struct jffs2_full_dnode *jffs2_alloc_full_dnode(void);
->  void jffs2_free_full_dnode(struct jffs2_full_dnode *dnode);
-> diff --git a/fs/jffs2/readinode.c b/fs/jffs2/readinode.c
-> index 605130d60c..4634ee5818 100644
-> --- a/fs/jffs2/readinode.c
-> +++ b/fs/jffs2/readinode.c
-> @@ -601,7 +601,7 @@ static inline int read_direntry(struct jffs2_sb_info *c, struct jffs2_raw_node_r
->  		spin_unlock(&c->erase_completion_lock);
+> diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
+> index 24b0fa5c9d..706c2d4684 100644
+> --- a/fs/pstore/fs.c
+> +++ b/fs/pstore/fs.c
+> @@ -62,7 +62,7 @@ int pstore_mkfile(struct pstore_record *record)
+>  			return -EEXIST;
 >  	}
 >  
-> -	fd = jffs2_alloc_full_dirent(rd->nsize + 1);
-> +	fd = jffs2_alloc_full_dirent(size_add(rd->nsize, 1));
->  	if (unlikely(!fd))
->  		return -ENOMEM;
->  
+> -	private = xzalloc(sizeof(*private) + size);
+> +	private = xzalloc(struct_size(private, data, size));
+>  	private->type = record->type;
+>  	private->id = record->id;
+>  	private->count = record->count;
 
 
 -- 
