@@ -1,68 +1,64 @@
-Delivery-date: Thu, 20 Feb 2025 09:27:11 +0100
+Delivery-date: Thu, 20 Feb 2025 10:18:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tl1tn-004dzm-2h
+	id 1tl2ha-004etF-26
 	for lore@lore.pengutronix.de;
-	Thu, 20 Feb 2025 09:27:11 +0100
+	Thu, 20 Feb 2025 10:18:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tl1tm-0001l3-M3
-	for lore@pengutronix.de; Thu, 20 Feb 2025 09:27:11 +0100
+	id 1tl2hZ-0001pu-H4
+	for lore@pengutronix.de; Thu, 20 Feb 2025 10:18:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EU4a8vJafdBMcRvvVhZudtdwnBFDizN+elV+2P8mZWA=; b=A0Mz/RVJan5uB4w1ZrHALaR/ct
-	4bwtidiXUhoylnHofmQjG0z6YmkKFTOS8+Y0jZiq0fKlWcj2mUgmVuEJkCrp3A7GoyNYGxU4gUwR4
-	nT4sxyKO44RBndCQtt7OlnuCQXterzXg9JjzDKDJsX+lU+XLUbtxG12qoIUsSJU03/EZMaHD+fpaN
-	fXVD2/WCii8oVVC9VtmRB4W7XUHDRZAVETaFRydH2Pnu5/Y9jnbZalw9Oa2xOMETgN5kO0uRV4uoI
-	kgxARypjgqwQtOK5Nup8uVGaia7fYLm963pDuh/cPIlt02rcR+/9ZZ0qbCuHLoB/m6DNM8ErOjU0F
-	Q+xzVgOA==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=XjT2xTTbnvGSHd+Nk8WAWVDRvfj5KQupoRVtM511Jn8=; b=ydmEqnlr3kTlYwIkqiVgpbs6BX
+	poFa2uhmui6AdUDrVPV2m4BgQIpqO2NBe0/JLLAErJjFCgQnWKOyBZgOHfI81jIIWhLrtwz2kRZiH
+	I90NOSs/QlPx/3NM6RYcyGFeGMJxc7+heOHXDCK3/ClX54QzuzyS66MBDav+ozu5DYUH67B1YF8sl
+	dbKlSNUfsiovdB2L4dG6dkJjZFro6Vk545lVQ1Lz+qYId7Jj+9kGjwzLLhuXIP86zC1NhWFx0SiiU
+	Zxm5o9Ln2WgFYri+lDUzCVMOckcOG1Hc7ZUd3BPO6aZxNk12DyJzlrGkN06xciN74jFFYQcIZTquS
+	RSY1Qg0g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tl1t5-0000000HMNg-2gNe;
-	Thu, 20 Feb 2025 08:26:27 +0000
+	id 1tl2h4-0000000HZM9-0bO4;
+	Thu, 20 Feb 2025 09:18:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tl1t2-0000000HMMd-0VLd
+	id 1tl2gk-0000000HZHV-15Ir
 	for barebox@lists.infradead.org;
-	Thu, 20 Feb 2025 08:26:25 +0000
+	Thu, 20 Feb 2025 09:17:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tl1t0-0001dZ-BQ; Thu, 20 Feb 2025 09:26:22 +0100
+	id 1tl2gj-0001fz-1E; Thu, 20 Feb 2025 10:17:45 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tl1t0-001uAZ-0X;
-	Thu, 20 Feb 2025 09:26:22 +0100
+	id 1tl2gi-001uaY-2k;
+	Thu, 20 Feb 2025 10:17:44 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tl1t0-00AAy5-0J;
-	Thu, 20 Feb 2025 09:26:22 +0100
+	id 1tl2gi-00Edkb-2O;
+	Thu, 20 Feb 2025 10:17:44 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250217180833.3955657-1-a.fatoum@pengutronix.de>
-References: <20250217180833.3955657-1-a.fatoum@pengutronix.de>
-Message-Id: <174003998208.2425412.5151355715286141072.b4-ty@pengutronix.de>
-Date: Thu, 20 Feb 2025 09:26:22 +0100
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 20 Feb 2025 10:17:43 +0100
+Message-Id: <20250220091743.3489127-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250220_002624_159316_53782D41 
-X-CRM114-Status: UNSURE (   8.03  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250220_011746_294915_B66E1AC7 
+X-CRM114-Status: GOOD (  10.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,41 +80,36 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/6] of: partition: add Linux
- CONFIG_OF_PARTITION-compatible adaptive fixup mode
+Subject: [PATCH] boot: fix systemd watchdog command line argument
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+The kernel command line option to specify the watchdog to use is
+"systemd.watchdog_device" as specified in [1], not
+"systemd.watchdog-device"
 
-On Mon, 17 Feb 2025 19:08:27 +0100, Ahmad Fatoum wrote:
-> barebox has for many years supported a superset of the upstream OF
-> partitions binding by parsing partitions out of SD/eMMC and EEPROM
-> in addition to MTD.
-> 
-> Unfortunately, we didn't upstream our binding and a different binding
-> went upstream into Linux v6.13-rc1 along with Linux commit
-> 2e3a191e89f9 ("block: add support for partition table defined in OF").
-> 
-> [...]
+[1] https://www.freedesktop.org/software/systemd/man/latest/kernel-command-line.html#systemd.watchdog_sec=
 
-Applied, thanks!
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/oftree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[1/6] of: factor out of_node_is_fixed_partitions check
-      https://git.pengutronix.de/cgit/barebox/commit/?id=45c5c9c807e4 (link may not be stable)
-[2/6] of: of_path: support barebox,fixed-partitions
-      https://git.pengutronix.de/cgit/barebox/commit/?id=deb18a4be9cd (link may not be stable)
-[3/6] ARM: IMX8MP: var-dart-dt8mcustomboard.dts: use new-style partition binding
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c19cbce92960 (link may not be stable)
-[4/6] ARM: dts: prefix all non-MTD fixed-partitions with barebox,
-      https://git.pengutronix.de/cgit/barebox/commit/?id=cf4cf9997a3b (link may not be stable)
-[5/6] of: partition: refactor of_partition_binding checks into switch
-      https://git.pengutronix.de/cgit/barebox/commit/?id=162884adec56 (link may not be stable)
-[6/6] of: partition: add Linux CONFIG_OF_PARTITION-compatible adaptive fixup mode
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f0d91d7ba6cb (link may not be stable)
-
-Best regards,
+diff --git a/common/oftree.c b/common/oftree.c
+index 4afe955719..2ebde791c7 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -172,7 +172,7 @@ static void watchdog_build_bootargs(struct watchdog *watchdog, struct device_nod
+ 	if (alias_id < 0)
+ 		return;
+ 
+-	buf = basprintf("systemd.watchdog-device=/dev/watchdog%d", alias_id);
++	buf = basprintf("systemd.watchdog_device=/dev/watchdog%d", alias_id);
+ 	if (!buf)
+ 		return;
+ 
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.5
 
 
 
