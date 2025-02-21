@@ -1,68 +1,90 @@
-Delivery-date: Fri, 21 Feb 2025 15:22:24 +0100
+Delivery-date: Fri, 21 Feb 2025 18:09:58 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tlTv7-0058vG-0y
+	id 1tlWXG-005C0r-1w
 	for lore@lore.pengutronix.de;
-	Fri, 21 Feb 2025 15:22:24 +0100
+	Fri, 21 Feb 2025 18:09:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tlTv5-0005jM-Gk
-	for lore@pengutronix.de; Fri, 21 Feb 2025 15:22:24 +0100
+	id 1tlWXF-0003o9-1x
+	for lore@pengutronix.de; Fri, 21 Feb 2025 18:09:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Subject:To:From:Date:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=q8yi13SOfyBA6EDqjPLCRY1N7MQJUhHoanuSCs0YMtg=; b=Izx/KWZxiL1ua3sFCy1CfXzqDU
-	yWGO/T00BgQp9i9aCCo1qWm7rHT6OEPfGTky2RRmooBkz1s5SXNWqM1QOM8UzbdB8jQXAcPpBHgEb
-	YcOAtf1UCUKEuzIojPkjXxYBbgSxc0ZolCJsomyaAkk6HBqbBdi1wVq+LR3jA2llj3oFjAKmlVzcm
-	AzC3FDya6sgs5mRl13USD1Nf2BYn4XnyolAMrGEzOXzVlxgRvECisKGUuVo0QkQ7xmr/89yhCT1Ud
-	+E7Xg/7Y33o+j4hgvOIyYXwiv2i2dfD7OC6K/oi451hcb2nHpE7hJlnkudXKeDRw43vRvS5jVibcp
-	WJc6leOg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-Id:Cc:To:Subject:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3pJrrB7TzyOkpVRmx17tfhXD6cODeJXfpnmNr9QWtZg=; b=2NqBbYCLXJ7b11MG3qhpGJ20K9
+	KDOdVtEVflG5+Dl1p7vergSuXJbrMXabwkQels1cxgONx/2SVmBkTYWaQ+EIZ8B8mcyTlXlt4+U4i
+	JdVNXrV47cQ1rj0WKXDvLbZqT6vqfk9v3hLtrayTnfwxsM9Gi3lXyA+Yk9DLn3v5CWROq5A6/sghC
+	zMZY7JGJZ+BGwZaM1Ry5vL7POm26HRj3uyeo+7qqpIxOsN1qv/JExqUnlOB5pFXURK4IV58DWxk7w
+	MmW86M76vT2vPMGWz2O1DMciXgMGXinPB+6qmYWxe9Rb/i45RcrDOV5OQqhH6wBpWkM5vv3dZDaPx
+	G001RoAw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tlTuN-00000005o0U-4247;
-	Fri, 21 Feb 2025 14:21:39 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tlWWY-00000006JoP-3x9j;
+	Fri, 21 Feb 2025 17:09:14 +0000
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tlTil-00000005lIS-33hb
+	id 1tlWMj-00000006Hbw-1keb
 	for barebox@lists.infradead.org;
-	Fri, 21 Feb 2025 14:09:41 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tlTij-0001k4-Qx; Fri, 21 Feb 2025 15:09:37 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tlTij-0027FQ-25;
-	Fri, 21 Feb 2025 15:09:37 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tlTij-009zeF-1n;
-	Fri, 21 Feb 2025 15:09:37 +0100
-Date: Fri, 21 Feb 2025 15:09:37 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <Z7iJIYuoxZAja_F7@pengutronix.de>
+	Fri, 21 Feb 2025 16:59:06 +0000
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-4397dff185fso20382175e9.2
+        for <barebox@lists.infradead.org>; Fri, 21 Feb 2025 08:59:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740157143; x=1740761943; darn=lists.infradead.org;
+        h=mime-version:references:in-reply-to:message-id:cc:to:subject:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3pJrrB7TzyOkpVRmx17tfhXD6cODeJXfpnmNr9QWtZg=;
+        b=ellEa18CwWBHEFvlM8XCCW0OllukF3HC5pnRvMF7Iykyvr7KMgxkTg3wYvCq6BNLrt
+         Cdnov9jmgBXouEHdpW8YurnFV+BztzuJLgUgiM6aDgEKlFtRVrPHMMCarF2LcgsEC1Uf
+         fndN1uW/x5UXiHWpHrEjPUJsvF9KrGCXtCL+8v+qliRQuF5KGo5lcDniC3ZsmwdAxuxP
+         eV6E0gfBwbbyInvBF2tQczEvfKt4Iq4F1qNC6wqgqMZzaxRoTDvngnBRRCBRkXU4gn8R
+         1v8SIPM1ijGM2Y2b36+1dXqNjNbvaAAeejdp3P/683yzNOCcH70qSmZ/u5NnlM8k3sYJ
+         AHRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740157143; x=1740761943;
+        h=mime-version:references:in-reply-to:message-id:cc:to:subject:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3pJrrB7TzyOkpVRmx17tfhXD6cODeJXfpnmNr9QWtZg=;
+        b=ngeWYC9jcvk+1LGc/jbEfqrKSr2GQomHH3yZU3grwigBM/EDEOhvwxgZ2lXZMgyBCI
+         j85qPUSS96rU1wm4nMofwkPoDp2OoQq0N7VyURvPt8OE4wr79khKdzxepRhDEMfRXnt7
+         5SrthLl7gE2B07fo9FzllpoSglx/U/0ERQSxfGOWa8tlYYQlvZGb2goPKMIKrF72/52V
+         1QQNvyIvmu2Q/Xc/DZqCewS9X7zD3M7FDwAwQ8iYzYcG16oC0c+4ia+8SYvRErj1q+fT
+         cFIRoimWvMfyKEXZFVkALPyW1UBB/OcyU2HR55WbeYyzqtr/JGUxpZDuP7ZKK8BCRb5I
+         s/Ow==
+X-Gm-Message-State: AOJu0Yx4syadAQnJgAPgQg2Xk+2GvWZF98aOHMy7OgVjQQuqn0aEbz3h
+	FH9asZIhf3vYnxV+Ye6ZTDZiTofN93ojXCg00tMLwbzdQJoXpPYSS7/VAA==
+X-Gm-Gg: ASbGnctKzNgz/uTzwx8Z86fj1W9vLNXNujXBWnOCcjru55PWy7T4CQqDbDeP6XLuNPe
+	1JTiXI0z86HCArfKb7CpSrpqIzbCp3igdfImLJ5lt1QjYRhdAuiW/oWQeCOOr7b66WV2Q/cW+5m
+	HMTF/dGNlomHLgQ06TbmjrReLpDgi00T3BHtZVWqLYHKNHWYON2AxICAD9R4lCQkDk6f2CIevwT
+	PZW2giTpesRk2MmrQ87mE35l7SA+ZH6Q89Hyv/T0SzYs4jfFItAtn4UbDimU1uRA/4mY8PO6soi
+	h17SkXq3/BWD1N5WeD7LCSo+fsW67J24lTPOkMwBsEXYkC4ZypiZqz5AtlL4DL1sAGz30f4=
+X-Google-Smtp-Source: AGHT+IG9n45LdXCGrhxkIgGdh7EmmERBCJAzwJojWEXpukMfpt1PSMyS+Nh69kga3EULKKu8f7KeCg==
+X-Received: by 2002:a5d:5254:0:b0:38e:65d8:b677 with SMTP id ffacd0b85a97d-38f6f05183bmr3577850f8f.33.1740157142925;
+        Fri, 21 Feb 2025 08:59:02 -0800 (PST)
+Received: from [192.168.47.169] (93-38-135-177.ip70.fastwebnet.it. [93.38.135.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259d9be9sm24225922f8f.79.2025.02.21.08.59.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Feb 2025 08:59:02 -0800 (PST)
+Date: Fri, 21 Feb 2025 18:47:23 +0100
+From: Stefano Manni <stefano.manni@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-Id: <Z2O1SS.LY1P1MZAEMZ02@gmail.com>
+In-Reply-To: <Z7hXohthRBbG9XIf@pengutronix.de>
+References: <J2TZRS.AUAITN7RW0RJ1@gmail.com>
+	<Z7hXohthRBbG9XIf@pengutronix.de>
+X-Mailer: geary/46.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii; format=flowed
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250221_060940_078939_FB58791A 
-X-CRM114-Status: GOOD (  24.37  )
+X-CRM114-CacheID: sfid-20250221_085905_457229_AFE93937 
+X-CRM114-Status: GOOD (  24.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,270 +102,223 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: barebox-2025.02.0
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 1/2] imx-bbu-nand-fcb: do not use hardcoded devicefile
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi All,
+Hi Sasha,
 
-barebox-2025.02.0 is out.
+sorry but I changed my workstation recently and did not restore 
+send-email as on the old one. I thought the mail client geary would be 
+enough but it is not.
+I will send a new patch series in these days.
 
-Topic of the month is security. This release has several memory overflow
-fixes for different filesystems.  barebox has a history of being a great
-bring-up and development tool for embedded hardware. While barebox can
-be used in a secure boot environment, doing so requires many of the
-features being disabled. So far we've never written that up explicitly,
-but this changed recently. Have a look at [1], thanks Ahmad.
+Best,
+Stefano
 
-A common way to start barebox development on a new hardware often is to
-start barebox from U-Boot. We now have a FIT image target for this
-purpose.  the FIT image build target that can be activated with
-CONFIG_BOARD_GENERIC_FIT. The resulting FIT image contains a 2nd stage
-barebox binary along with all device trees that the barebox binary has
-support for and can be started from U-Boot with the regular bootm
-command.
-
-The AM625 support continues to evolve. This release brings us 1st stage
-support including DDR, clock and power domain drivers. Also with the
-AM625-SK we have a new board supported.
-
-For Rockchip we have a new board as well, the Pine64 PineTab 2.
-
-As usual, for a detailed list of patches that went into this release see
-below.
-
-Have Fun!
- Sascha
-
-[1] https://www.barebox.org/doc/latest/user/security.html
-
-
-----------------------------------------------------------------
-Ahmad Fatoum (71):
-      bbremote: fix 'NoneType' object has no attribute 'encode'
-      bbremote: decode bytes output of getenv and md on command line
-      images: don't compare filesizes if file didn't change
-      images: don't check for missing FW if file didn't change
-      images: fix missing FORCE prerequisite
-      images: don't prelink if input file didn't change
-      images: don't compute size if input file didn't change
-      bbu: fix bbu_register_std_file_update regression for file systems
-      ARM: beaglebone: register bbu handlers for FAT partition
-      of: fdt: reserve properties and nodes starting with $ for barebox use
-      of: fdt: rename /memreserve special node to /$memreserve
-      FIT: cache uncompressed data
-      Documentation: devel: project-ideas: add SDL input support
-      sandbox: add support for --loglevel option
-      sandbox: add support for architecture-specific debug options
-      sandbox: move CONFIG_ASAN to architecture Kconfig
-      startup: set barebox_main in data section
-      cdev: allow overriding partition overlap check
-      commands: addpart: allow force creation of overlapping partition
-      ARM: ep93xx: delete unused drivers
-      compiler: drop intel compiler support
-      fs: ramfs: drop unneeded indirection during unlink
-      fs: squashfs: delete unreferenced source file
-      fs: collect legacy file system operation in new struct fs_legacy_ops
-      fs: return error pointer not NULL from cdev_mount_default
-      commands: stat: fix size display for FILE_SIZE_STREAM
-      commands: stat: print mode in octal if type unknown
-      include: rename printk.h to printf.h
-      vsprintf: document %JP format specifier as being barebox-specific
-      driver: replace single info callbacks with stack
-      virtio: allow inlining of trivial virtio_find_vqs function
-      test: pytest: add support for --dump-dtb
-      images: rename k3-am625-beagleplay extension from fit to itb
-      sandbox: os: define referenced config symbols
-      fs: derive file descriptor number by pointer arithmetic
-      fs: drop ifdefs in linux/fs.h
-      fs: retire FILE.in_use member
-      fs: align FILE struct member names with upstream struct file
-      fs: fat: rename f_size to f_len
-      fs: replace FILE.size by f_inode.i_size
-      fs: merge struct file and struct filep
-      fs: retire FILE typdef
-      fs: introduce hidden CONFIG_FS_WRITABLE option
-      ARM: ep93xx: delete unused drivers
-      ARM: dts: add device trees for the QEMU Virt machine
-      treewide: collect the name of all board device trees
-      kbuild: collect available device trees in dtbs-list
-      scripts: add new scripts_dtc target
-      kbuild: restrict dtbs target to enabled DTs by default
-      kbuild: improve make help description
-      kbuild: allow dependency on any file in images/
-      arch: maintain Linux kernel and mkimage ARCH mapping in Kconfig
-      arch: make BOARD_GENERIC_DT a user-selectable option across archs
-      Import ARM Trusted Firmware fiptool utility
-      MAKEALL: rename target in symbols to more appropiate defconfig
-      MAKEALL: add support for building arbitrary targets
-      ci: container: add python3-libfdt dependency for barebox.fit
-      images: add barebox FIT image target
-      dma: fix fixup warning for SoCs without /soc node
-      kbuild: remove stale references to README
-      scripts: define _GNU_SOURCE for all source files
-      ARM: boards: colibri-imx6: make BBU setting independent of DT alias
-      partitions: efi: update warning message after addition of parted command
-      environment: autoprobe environment only when CONFIG_INSECURE=y
-      SECURITY.md: add security policy
-      ARM: zii-imx8mq-dev: fix warnings about missing #address-/#size-cells
-      common: introduce CONFIG_HAS_INSECURE_DEFAULTS
-      Documentation: user: optee: bring up-to-date
-      Documentation: user: add security consideration for using barebox
-      scripts: define _GNU_SOURCE for every user tool build
-      scripts: common.h: define loff_t on musl
-
-Alexander Shiyan (12):
-      ARM: dts: rk356x: Use RNG node from upstream DTSI
-      clk: rk3588: Add reset line for HDMI Receiver
-      ARM: rockchip: dmc fix LPDDR5 bank info for sys_reg version 3
-      clk: rk3588: sync with kernel
-      ARM: at91: Compile at91sam9g45_reset handler only for affected SOCs
-      ARM: at91: Remove AT91SAM9_SMC dependency for SAMA5D2
-      mfd: atmel-flexcom: Driver refresh
-      spi: Fix hang on spi_sync() when driver does not support transfer() call
-      spi: at91: Use the SPI alias from devicetre
-      usb: host: ehci-atmel: Add HSIC mode support
-      mtd: Remove orphan symbol MTD_SST25L
-      i2c: at91: Fix driver for SAMA5D2 SoC
-
-Bastian Krause (4):
-      keytoc: check for memory allocation failures in print_bignum()
-      keytoc: move __ENV__ resolving to dedicated function
-      keytoc: allow __ENV__ lookup for keyname hint
-      crypto: document __ENV__ lookup in CRYPTO_PUBLIC_KEYS
-
-Dang Huynh (1):
-      ARM: rockchip: Add support for Pine64 PineTab 2
-
-David Dgien (1):
-      macb: Fix tx completion check
-
-Jonas Rebmann (3):
-      ARM: i.MX6: correct UART IOMUX_PADs
-      ARM: dts: i.MX6: drop OCOTP MAC address provider
-      ARM: boards: Add support for todarex colibri imx6 on iris
-
-Jules Maselbas (1):
-      scripts: include: rename printk.h to printf.h
-
-Lucas Stach (10):
-      ARM: zynq: add MMC aliases
-      ARM: zynq: zed: define SDHCI bus-width
-      ARM: zynq: zed: guard board initcall
-      ARM: zynq: zed: add environment
-      ARM: zynq: zed: add Barebox update handler
-      ARM: zynq: enable some useful things in defconfig
-      ARM: zynq: zed: switch to entry function with stack
-      ARM: zynq: call common arm lowlevel init from zynq lowlevel init
-      ARM: zynq: zed: always relocate in PBL
-      environment: don't return raw device when file-path is specified
-
-Marco Felsch (12):
-      spi: cosmetic style fixes
-      spi: fix spi_message init during __spi_validate
-      spi: add spi_{set,get}_ctldata accessors
-      gpiolib: add support for gpiod_get_index and gpiod_get_index_optional
-      gpiolib: add support for gpiod_set_consumer_name
-      spi: add support to handle cs-gpios
-      spi: add support to setup spi-cs-{setup,hold,inactive}-delay-ns
-      spi: allow reporting the effectivly used speed_hz for a transfer
-      spi: import spi_controller::flags
-      spi: add support for spi_controller::set_cs_timing
-      spi: Provide common spi_message processing loop
-      spi: add support for BCM2835 SPI controller
-
-Oleksij Rempel (3):
-      ARM: stm32mp151-mecio1: use kernel dts
-      ARM: stm32mp151-mect1s: use kernel dts
-      ARM: stm32: move stm32-bsec-optee-ta.h to include/soc/stm32
-
-Roan van Dijk (1):
-      ARM: protonic-stm32mp1: Add Add Priva E-Measuringbox board support
-
-Sascha Hauer (66):
-      ARM: dts: i.MX51 babbage: use upstream FEC pinctrl group
-      dts: update to v6.13-rc1
-      dts: update to v6.13-rc2
-      fdt: Add function to check if a pointer contains a fdt
-      store external device tree as file
-      ARM: beagleplay: put external device tree into handoff data
-      ARM: psci-client: better search for existing psci node
-      dts: update to v6.13-rc3
-      dts: update to v6.13-rc4
-      dts: update to v6.13-rc5
-      dts: update to v6.13-rc6
-      gpio: fix static inline stub selection
-      commands: add config option for dfu command
-      common: always compile usbgadget.c when USB_GADGET is enabled
-      usb: dwc3: add am62 support
-      i2c: omap: add ti,am64-i2c compatible
-      mfd: add tps65219 support
-      ARM: enable CONFIG_USE_COMPRESSED_DTB by default
-      usb: add static inline wrapper for of_usb_get_phy_mode()
-      regulator: add tps65219 regulator support
-      ARM: add ARMv7R MPU support
-      lib/rationale: compile for pbl
-      DDR: Add k3 DDR driver
-      ARM: move ARM_CPU_PART_* defines to header
-      nommu_v7_vectors_init: disable for r5
-      clocksource: timer-ti-dm: add support for K3 SoCs
-      ARM: K3: mount /boot even with env handling disabled
-      clk: add K3 clk driver
-      pmdomain: add K3 driver
-      rproc: add K3 arm64 rproc driver
-      ARM: k3: add k3_debug_ll_init()
-      ARM: K3: use debug_ll code for regular PBL console
-      elf: use iomem regions as fallback when loading to non-sdram memory
-      rproc: add K3 system_controller
-      firmware: ti_sci: add function to get global handle
-      ARM: k3: Add initial r5 support
-      dts: update to v6.13-rc7
-      scripts: k3: add script to generate cfg files from yaml
-      ARM: k3: Add k3img tool
-      ARM: beagleplay: add Cortex-R5 boot support
-      Documentation: add build documentation for TI K3 SoCs
-      ARM: am625: disable secondary watchdogs
-      ARM: k3: Add DRAM size detection
-      ARM: k3: am625-sk board support
-      ARM: k3: fix bootsource detection
-      Merge branch 'for-next/arm'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/fit'
-      Merge branch 'for-next/fs'
-      Merge branch 'for-next/images'
-      Merge branch 'for-next/k3'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/spi'
-      ARM: k3: beagleplay: Use correct file for GP device
-      ARM: beagleplay: Add missing DRAM frequencies
-      file-list: fix file_list_detect_all()
-      console: print countdown aborted message only once
-      partitions: efi: Fix position of alternate gpt when writing
-      environment: fix free() of unitialized variable
-      net: Fix DRIVER_NET_TI_DAVINCI_MDIO dependency
-      fs: squashfs: Ensure positive inode length
-      fs: cramfs: fix malloc(size + constant) buffer overflow issues
-      fs: ext4: fix malloc(size + constant) buffer overflow issues
-      fs: jffs2: fix malloc(size + constant) buffer overflow issues
-      CVE-2025-26721: fs: pstore: fix malloc(size + constant) buffer overflow issues
-      Release v2025.02.0
-
-Stefan Kerkmann (1):
-      ARM: i.MX8MM: Phytec i.MX8MM SoC: change ddr_fsp0_cfg to static struct
-
-Ulrich Ölmann (1):
-      partitions: efi: fix error message in mkpart
+On ven, feb 21 2025 at 11:38:26 +01:00:00, Sascha Hauer 
+<s.hauer@pengutronix.de> wrote:
+> Hi Stefano,
+> 
+> The patch is mangled. Could you send it using git send-email? Using a
+> web endpoint for b4 would be another possibility if git send-email
+> doesn't work for you.
+> 
+> The two patches should be sent as one to avoid intermediate breakage
+> between the patches.
+> 
+> Regards
+>   Sascha
+> 
+> On Thu, Feb 20, 2025 at 06:39:55PM +0100, Stefano Manni wrote:
+>>  Device file was hardcoded to "nand0.barebox".
+>>  This patch harmonize the signature of
+>> 
+>>  imx6_bbu_nand_register_handler()
+>>  imx7_bbu_nand_register_handler()
+>>  imx28_bbu_nand_register_handler()
+>> 
+>>  with the other bbu register functions in order to take
+>>  the devicefile as parameter.
+>> 
+>>  Signed-off-by: Stefano Manni <stefano.manni@gmail.com>
+>>  ---
+>>  common/imx-bbu-nand-fcb.c | 23 ++++++++++++++++-------
+>>  include/bbu.h | 18 ++++++++++++------
+>>  2 files changed, 28 insertions(+), 13 deletions(-)
+>> 
+>>  diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+>>  index d0261140cf..0d17a7bf6a 100644
+>>  --- a/common/imx-bbu-nand-fcb.c
+>>  +++ b/common/imx-bbu-nand-fcb.c
+>>  @@ -1219,6 +1219,7 @@ static int imx_bbu_nand_update(struct 
+>> bbu_handler
+>>  *handler, struct bbu_data *dat
+>>   int used = 0;
+>>   int fw_orig_len = 0;
+>>   int used_refresh = 0, unused_refresh = 0;
+>>  + const char *devname = handler->devicefile;
+>> 
+>>   if (data->image) {
+>>    filetype = file_detect_type(data->image, data->len);
+>>  @@ -1230,7 +1231,12 @@ static int imx_bbu_nand_update(struct 
+>> bbu_handler
+>>  *handler, struct bbu_data *dat
+>>     return -EINVAL;
+>>   }
+>> 
+>>  - bcb_cdev = cdev_by_name(handler->devicefile);
+>>  + /* Support both boot /dev/nand0.barebox and boot nand0.barebox */
+>>  + devname += str_has_prefix(devname, "/dev/");
+>>  +
+>>  + device_detect_by_name(devname);
+>>  +
+>>  + bcb_cdev = cdev_by_name(devname);
+>>   if (!bcb_cdev) {
+>>    pr_err("%s: No FCB device!\n", __func__);
+>>    return -ENODEV;
+>>  @@ -1432,7 +1438,8 @@ static void imx6_fcb_create(struct
+>>  imx_nand_fcb_bbu_handler *imx_handler,
+>>   fcb->MetadataBytes = 10;
+>>  }
+>> 
+>>  -int imx6_bbu_nand_register_handler(const char *name, unsigned long 
+>> flags)
+>>  +int imx6_bbu_nand_register_handler(const char *name,
+>>  + const char *devicefile, unsigned long flags)
+>>  {
+>>   struct imx_nand_fcb_bbu_handler *imx_handler;
+>>   struct bbu_handler *handler;
+>>  @@ -1451,7 +1458,7 @@ int imx6_bbu_nand_register_handler(const char 
+>> *name,
+>>  unsigned long flags)
+>>   }
+>> 
+>>   handler = &imx_handler->handler;
+>>  - handler->devicefile = "nand0.barebox";
+>>  + handler->devicefile = devicefile;
+>>   handler->name = name;
+>>   handler->flags = flags | BBU_HANDLER_CAN_REFRESH;
+>>   handler->handler = imx_bbu_nand_update;
+>>  @@ -1526,7 +1533,8 @@ static void imx28_fcb_create(struct
+>>  imx_nand_fcb_bbu_handler *imx_handler,
+>>   fcb->EraseThreshold = readl(bch_regs + BCH_MODE);
+>>  }
+>> 
+>>  -int imx28_bbu_nand_register_handler(const char *name, unsigned 
+>> long flags)
+>>  +int imx28_bbu_nand_register_handler(const char *name,
+>>  + const char *devicefile, unsigned long flags)
+>>  {
+>>   struct imx_nand_fcb_bbu_handler *imx_handler;
+>>   struct bbu_handler *handler;
+>>  @@ -1540,7 +1548,7 @@ int imx28_bbu_nand_register_handler(const 
+>> char *name,
+>>  unsigned long flags)
+>>   imx_handler->filetype = filetype_mxs_bootstream;
+>> 
+>>   handler = &imx_handler->handler;
+>>  - handler->devicefile = "nand0.barebox";
+>>  + handler->devicefile = devicefile;
+>>   handler->name = name;
+>>   handler->flags = flags | BBU_HANDLER_CAN_REFRESH;
+>>   handler->handler = imx_bbu_nand_update;
+>>  @@ -1599,7 +1607,8 @@ static int imx7_fcb_write(struct mtd_info 
+>> *mtd, int
+>>  block, struct fcb_block *fcb
+>>   return mxs_nand_write_fcb_bch62(block, fcb, sizeof(*fcb));
+>>  }
+>> 
+>>  -int imx7_bbu_nand_register_handler(const char *name, unsigned long 
+>> flags)
+>>  +int imx7_bbu_nand_register_handler(const char *name
+>>  + const char *devicefile, unsigned long flags)
+>>  {
+>>   struct imx_nand_fcb_bbu_handler *imx_handler;
+>>   struct bbu_handler *handler;
+>>  @@ -1612,7 +1621,7 @@ int imx7_bbu_nand_register_handler(const char 
+>> *name,
+>>  unsigned long flags)
+>>   imx_handler->filetype = filetype_arm_barebox;
+>> 
+>>   handler = &imx_handler->handler;
+>>  - handler->devicefile = "nand0.barebox";
+>>  + handler->devicefile = devicefile;
+>>   handler->name = name;
+>>   handler->flags = flags | BBU_HANDLER_CAN_REFRESH;
+>>   handler->handler = imx_bbu_nand_update;
+>>  diff --git a/include/bbu.h b/include/bbu.h
+>>  index 5105d2ac70..087d3ee827 100644
+>>  --- a/include/bbu.h
+>>  +++ b/include/bbu.h
+>>  @@ -98,19 +98,25 @@ static inline int 
+>> bbu_mmcboot_register_handler(const
+>>  char *name,
+>>  #endif
+>> 
+>>  #if defined(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB)
+>>  -int imx6_bbu_nand_register_handler(const char *name, unsigned long 
+>> flags);
+>>  -int imx7_bbu_nand_register_handler(const char *name, unsigned long 
+>> flags);
+>>  -int imx28_bbu_nand_register_handler(const char *name, unsigned 
+>> long flags);
+>>  +int imx6_bbu_nand_register_handler(const char *name, const char
+>>  *devicefile, unsigned long flags);
+>>  +int imx7_bbu_nand_register_handler(const char *name, const char
+>>  *devicefile, unsigned long flags);
+>>  +int imx28_bbu_nand_register_handler(const char *name, const char
+>>  *devicefile, unsigned long flags);
+>>  #else
+>>  -static inline int imx6_bbu_nand_register_handler(const char *name, 
+>> unsigned
+>>  long flags)
+>>  +static inline int imx6_bbu_nand_register_handler(const char *name,
+>>  + const char *devicefile,
+>>  + unsigned long flags)
+>>  {
+>>   return -ENOSYS;
+>>  }
+>>  -static inline int imx7_bbu_nand_register_handler(const char *name, 
+>> unsigned
+>>  long flags)
+>>  +static inline int imx7_bbu_nand_register_handler(const char *name,
+>>  + const char *devicefile,
+>>  + unsigned long flags)
+>>  {
+>>   return -ENOSYS;
+>>  }
+>>  -static inline int imx28_bbu_nand_register_handler(const char *name,
+>>  unsigned long flags)
+>>  +static inline int imx28_bbu_nand_register_handler(const char *name,
+>>  + const char *devicefile,
+>>  + unsigned long flags)
+>>  {
+>>   return -ENOSYS;
+>>  }
+>>  --
+>>  2.25.1
+>> 
+>> 
+>> 
+>> 
+>> 
+> 
+> --
+> Pengutronix e.K.                           |                          
+>    |
+> Steuerwalder Str. 21                       | 
+> http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0 
+>    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   
+> +49-5121-206917-5555 |
 
 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
