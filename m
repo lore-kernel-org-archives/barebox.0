@@ -1,88 +1,91 @@
-Delivery-date: Fri, 21 Feb 2025 18:14:45 +0100
+Delivery-date: Fri, 21 Feb 2025 18:14:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tlWbt-005CBc-39
+	id 1tlWbz-005CC3-1G
 	for lore@lore.pengutronix.de;
-	Fri, 21 Feb 2025 18:14:45 +0100
+	Fri, 21 Feb 2025 18:14:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tlWbs-0006B1-HA
-	for lore@pengutronix.de; Fri, 21 Feb 2025 18:14:45 +0100
+	id 1tlWby-0006H3-4f
+	for lore@pengutronix.de; Fri, 21 Feb 2025 18:14:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=/Vcqxv7tVD57iVj17p+UQ14g3kGOCh6GzUVEcwKMxYk=; b=q+ribioQn0boN5racOHKjXdTBN
-	cP5M6lFAY5lGMvVx2t9vigI5NjFyb4seZcFu4ApLJZOyIaFD2NREY0ViwDMdclWVm76+8SjFhiiT5
-	CWCnK5pZsXxgZuqq+vx2y8dK+LNO05C87y28qQoVy1Y2tCIY9GuE6fBMW9v4RotfZ3wYy2dUIAwIQ
-	gv2zNjmhAFgMcNe6BpplyQXUTMNeRo9J74pA9NmPGbDlO0x81NuySlDKWo2kApzsPlxoGulWp0zdL
-	L3mqfMOT5jQhm3bNUunNdF3xQ2OXYcv9v1++Yk80o0+4H+vGdluyiN+opC0b12nCgRP5pkt4zmMB6
-	B7E1UOVg==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GFrv/honQFeSFXuoxlCkLJ1wuWZl53Uqceeaf9nbWPE=; b=nYqoEp8c4pz3nQNuZ+XPrwNaAk
+	mTpZDOD3RtOqWX8IMlVR3NlzJ0kU6cPyzQ1fng768t3oL24DlL+4gStJ+9nguhMY1zjZzRNVr0pDw
+	uW7jIGaDM1C29k8mGOyNN3wwLCnck6YGSVM5lA3JwcZrmb26Hhevi2BzESK74Lvr5uV82mXyPtd1x
+	uVsbpC91a8okpzt8xjgomsXH6PRoKJ0hdKDTVL0XzhIY+1twOSyV6VYk7pVXSPlCB54bSCbctmerR
+	pNQvwhGYzAluF2W+F/SpboDJzAfd0kcgevWU1Dab5Fez9pXUCMoUe3tGYe8KRgg69sQ4TE/L0hQYe
+	r2UsozPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tlWbP-00000006L8y-39go;
-	Fri, 21 Feb 2025 17:14:15 +0000
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+	id 1tlWbR-00000006L9s-0w0b;
+	Fri, 21 Feb 2025 17:14:17 +0000
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tlWbN-00000006L7J-0qPw
+	id 1tlWbO-00000006L7p-1RxC
 	for barebox@lists.infradead.org;
-	Fri, 21 Feb 2025 17:14:14 +0000
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so16614185e9.3
-        for <barebox@lists.infradead.org>; Fri, 21 Feb 2025 09:14:12 -0800 (PST)
+	Fri, 21 Feb 2025 17:14:15 +0000
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-43984e9cc90so20696665e9.1
+        for <barebox@lists.infradead.org>; Fri, 21 Feb 2025 09:14:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740158051; x=1740762851; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Vcqxv7tVD57iVj17p+UQ14g3kGOCh6GzUVEcwKMxYk=;
-        b=ja7cEtz2QH3YyrhNOZj933wwxej38qVK7vJMJc2L6GEXGMQVaZuHDfBstLKEeh9rM0
-         ljdPBr3jZhvWiGPk2ma0d303bH4xjwnOxGXe9wa09SgxHFh4jOgEcpAEY+fD4MxHhY+W
-         iWg5SIhuEd+239+J/VlrVlwLEtlWZhG+z0WnbmjakXwoUjeTydXZord6YmpYk3Ve/Y10
-         pnT3834ZtPiI1geMyn1DJYhP11aMn1+Uaw7xxMTJPjahjIPeRGoT7BPh9JXkrHoYHMOA
-         MjpJ7qwDdn88fvVyn8rKDYioQ5JuJVFxSLQkhZNos86wzlbmt/2JrRtsv4noOwZA9N3K
-         6fdQ==
+        d=gmail.com; s=20230601; t=1740158052; x=1740762852; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GFrv/honQFeSFXuoxlCkLJ1wuWZl53Uqceeaf9nbWPE=;
+        b=HBDIJ/zisPNmDgDJnk+/+kvpqT+hj3pfIY0oDCPAqqywOO8mBHubH+evvrLiwODkfC
+         OUfKH60OjmYpfxoFSagVJRrEh/GPAOy0Lngg87m526MkP4tDwlrZJ/AXBqtbZaHBeMJv
+         Gd8k3aMO5C/fEt++CfaJbigJGYVa5JSH2fZyDqDeimvVKtwLpi+0rwvIPr20rVfceXIL
+         oyqx1vAaICL8F5HTh3hz0Q4PEl48kwn1QF2Q4gXyTXUiHzPOJNdKDZoZpkj6WBLIlXMb
+         GK8PlaJ9SCQW70XlfrkKVgd9wPQZyivR7H4vbQV1Q4gaOE9VbH4EgXzxpBisivDvunHW
+         2eZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740158051; x=1740762851;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/Vcqxv7tVD57iVj17p+UQ14g3kGOCh6GzUVEcwKMxYk=;
-        b=RRnHP4Acw5rpHwjdAnxhz1e5jqYoFabGBlH/fg6kB64U3VWpDwB1nQYXf1zSL1BWgE
-         uzo5i/gj+GmQVe9bjJEllXm/NL6U5ourMpQHtv4sxsqChcLEVCZlea0gOXdoMECIaDrY
-         5lvECjKVmNhxlQ5i9padtrECCylrI2+00iCmIPDeTYuVYOOf+Fn3mH0UEXbFdULjsjuc
-         aT+keIAC7KfIXn2i/u3XptE3b/vPp0JV5jjj9mvLR1MvWNqn7kaEUyb228x6sjNyc4o2
-         XLa/MOgsQpalnGoT4z3dVUrXKr4s/hGqM5U4igGu7wOh2N/8weMvOY7vWu6Pl2TR8Fdf
-         gEGg==
-X-Gm-Message-State: AOJu0YzahLG99YV6C118/nyppg3dT6piPqA3VWLJwv8Q1a2kkTXAjYrW
-	e8tpnMrmOSKHN/baJ/JoxiQBhFjzQUANenAHrmvib5+coyieS6fCJvYedg==
-X-Gm-Gg: ASbGncs5NVwKoubqi+iFu6vCmXjkKi6UsJzeG90nu9kBLtn+F2b07QV+TDsvhSNP37W
-	sWqfcoN7no8leTrCDrmagdjoB4FxoQ+ANuAuE45m2Buuqr4Q1aIfo6ncOphBks7YgcuidRWOk2k
-	Ij3KTzKiNxfWQN0zwI1ZfsucZJwSxHDkQcSBk9Bo+0YwMbIDYGlHqHNX6w/g2s6mi+9URvT8onX
-	RoAAch7CPkDzfGIMT9GaJH4cg18ygRroP2iiT0Qy2WBi7Tff6XIyfGz23wdpnDowi3o9c7YR0sH
-	+zqNVn3vGsK234GOl8ApC2DacxEFfFTAAAb5sTUjYMGOK52GzZAVC5JKZt3q
-X-Google-Smtp-Source: AGHT+IHqA3cHCIKCvQo31iKsA95l52ch7ehM0VX8Ao8cgGP4/SU1ihjBR1ct/xhUDtt04xZRhDjBzg==
-X-Received: by 2002:adf:fa82:0:b0:38f:2f88:b034 with SMTP id ffacd0b85a97d-38f6f085dd5mr3057635f8f.42.1740158049705;
-        Fri, 21 Feb 2025 09:14:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740158052; x=1740762852;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GFrv/honQFeSFXuoxlCkLJ1wuWZl53Uqceeaf9nbWPE=;
+        b=acKf32+BCfb2JCvtYDSvCBYot+GKUNkRcLarlqkzgrkzraMR82SteF1MVUYaNsmimS
+         OLKDegnZUOr0CrfFOSRHrm0SrxigB6jS7IxFLexJPQqBLatjGU9l5XZjPFtZPlm6oTBt
+         AZ4JGTAe+1CY5/qdEG+wSVf8JUsQoacCLMGcmUfK+vS2+0/mogD3PFqKeS6MDlcR5kpr
+         8MhIaugmqvJL0MXMY9MpsTjSHD9tel2jpyYAPOAXvTAHHvgNF2kTcpM5iWfBEXJ8Pm+p
+         +kqD/bh8hSU6+3oOZhn3w7Z8TjzUKy9lcDtrXchWxR8e+StnSLctr3l+1IJzykK+9dST
+         kJkA==
+X-Gm-Message-State: AOJu0YyZTXRecPrsUOJUw23vkrUQYqVEfwCBexO4R3R5LAg75xy3hSxX
+	jshEVw3G63TTjiNyaa1JCyIe9GjmliLMm4iOuKDvwfzRffxICNYZtUeR1A==
+X-Gm-Gg: ASbGncs6HQ1UlwFYqbgnRqsxfPnmQpJdSozsdoejv/Acjtg1suDlvCzUAnrh49K/l8I
+	Mf2l/j8P4NcQuNstyxIvR4eSlRmXmJ95FILmSlZEEwlq1Z6Efo7C/fStP3JNk3saIzqy+azUYvs
+	iR46kcFcr/JSigzkmAF+Ny+KUeBIKxKsrYvs/AebVsWTrHgf9/glN3DMavJ0TyWrb6/Icd7Yyy6
+	vTG3XhS6mcCWjACJeReXIW0ovnAtHnjoQ8A0eDXkwNTJ6cQxDaM4R4SoYaEHv09rfcWK/IdsDH3
+	YgWxSGKp3O3m3iJx7dvA45poUBehVTDipCngmPAwkXzDlnuGBfAwTbPGL4tX
+X-Google-Smtp-Source: AGHT+IH+GL2+ndZEwCepHKca97T9hSAc/phZfy0YIjvgtk2ncT+qQ28ZksfPmoTex+FY7Tt5WSwAwQ==
+X-Received: by 2002:a5d:47a9:0:b0:38e:dcd1:3366 with SMTP id ffacd0b85a97d-38f61611206mr7044601f8f.20.1740158052347;
+        Fri, 21 Feb 2025 09:14:12 -0800 (PST)
 Received: from fedora.. (93-38-135-177.ip70.fastwebnet.it. [93.38.135.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f561bee3esm9240313f8f.21.2025.02.21.09.14.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f561bee3esm9240313f8f.21.2025.02.21.09.14.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 09:14:09 -0800 (PST)
+        Fri, 21 Feb 2025 09:14:12 -0800 (PST)
 From: Stefano Manni <stefano.manni@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Stefano Manni <stefano.manni@gmail.com>
-Date: Fri, 21 Feb 2025 19:01:08 +0100
-Message-ID: <20250221180109.14129-1-stefano.manni@gmail.com>
+Date: Fri, 21 Feb 2025 19:01:09 +0100
+Message-ID: <20250221180109.14129-2-stefano.manni@gmail.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250221180109.14129-1-stefano.manni@gmail.com>
+References: <20250221180109.14129-1-stefano.manni@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250221_091413_238570_7554EB84 
-X-CRM114-Status: GOOD (  11.93  )
+X-CRM114-CacheID: sfid-20250221_091414_382946_69291046 
+X-CRM114-Status: GOOD (  10.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,145 +108,82 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/2] imx-bbu-nand-fcb: do not use hardcoded devicefile
+Subject: [PATCH 2/2] ARM: boards: fix nand bbu_handler device paths
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Device file was hardcoded to "nand0.barebox".
-This patch harmonize the signature of
-
-imx6_bbu_nand_register_handler()
-imx7_bbu_nand_register_handler()
-imx28_bbu_nand_register_handler()
-
-with the other bbu register functions in order to take
-the devicefile as parameter.
+The bbu handler for nand now takes the device
+path as parameter and no longer use the hardcoded
+value.
+Make the change accordingly to all the boards
+using it.
 
 Signed-off-by: Stefano Manni <stefano.manni@gmail.com>
 ---
- common/imx-bbu-nand-fcb.c | 23 ++++++++++++++++-------
- include/bbu.h             | 18 ++++++++++++------
- 2 files changed, 28 insertions(+), 13 deletions(-)
+ arch/arm/boards/digi-ccimx6ulsom/board.c  | 3 ++-
+ arch/arm/boards/gateworks-ventana/board.c | 4 +++-
+ arch/arm/boards/karo-tx6x/board.c         | 3 ++-
+ arch/arm/boards/phytec-som-imx6/board.c   | 4 +++-
+ 4 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index d0261140cf..0d17a7bf6a 100644
---- a/common/imx-bbu-nand-fcb.c
-+++ b/common/imx-bbu-nand-fcb.c
-@@ -1219,6 +1219,7 @@ static int imx_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *dat
- 	int used = 0;
- 	int fw_orig_len = 0;
- 	int used_refresh = 0, unused_refresh = 0;
-+	const char *devname = handler->devicefile;
+diff --git a/arch/arm/boards/digi-ccimx6ulsom/board.c b/arch/arm/boards/digi-ccimx6ulsom/board.c
+index ef6828c02c..9765c65839 100644
+--- a/arch/arm/boards/digi-ccimx6ulsom/board.c
++++ b/arch/arm/boards/digi-ccimx6ulsom/board.c
+@@ -11,7 +11,8 @@ static int digi_ccimx6ulsbcpro_device_init(void)
+ 	if (!of_machine_is_compatible("digi,ccimx6ulsbcpro"))
+ 		return 0;
  
- 	if (data->image) {
- 		filetype = file_detect_type(data->image, data->len);
-@@ -1230,7 +1231,12 @@ static int imx_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *dat
- 			return -EINVAL;
+-	imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
++	imx6_bbu_nand_register_handler("nand", "/dev/nand0.barebox",
++			BBU_HANDLER_FLAG_DEFAULT);
+ 
+ 	barebox_set_hostname("ccimx6ulsbcpro");
+ 
+diff --git a/arch/arm/boards/gateworks-ventana/board.c b/arch/arm/boards/gateworks-ventana/board.c
+index aa2137a971..9c0012b359 100644
+--- a/arch/arm/boards/gateworks-ventana/board.c
++++ b/arch/arm/boards/gateworks-ventana/board.c
+@@ -72,7 +72,9 @@ static int gw54xx_devices_init(void)
+ 	if (gsc_get_rev(&client) < 'E')
+ 		of_register_fixup(gw54xx_wdog_of_fixup, NULL);
+ 
+-	imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
++	imx6_bbu_nand_register_handler("nand",
++			"/dev/nand0.barebox",
++			BBU_HANDLER_FLAG_DEFAULT);
+ 
+ 	barebox_set_hostname("gw54xx");
+ 
+diff --git a/arch/arm/boards/karo-tx6x/board.c b/arch/arm/boards/karo-tx6x/board.c
+index f964ddefd1..1e14a75272 100644
+--- a/arch/arm/boards/karo-tx6x/board.c
++++ b/arch/arm/boards/karo-tx6x/board.c
+@@ -110,7 +110,8 @@ static int tx6x_devices_init(void)
+ 	 * this board has eMMC or NAND.
+ 	 */
+ 	if (sbmr1 & (1 << 7)) {
+-		imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
++		imx6_bbu_nand_register_handler("nand", "/dev/nand0.barebox",
++								BBU_HANDLER_FLAG_DEFAULT);
+ 		of_device_enable_and_register_by_name("environment-nand");
+ 		of_device_enable_and_register_by_alias("nand");
+ 	} else {
+diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
+index 2db3fa1db8..7e6f61bc36 100644
+--- a/arch/arm/boards/phytec-som-imx6/board.c
++++ b/arch/arm/boards/phytec-som-imx6/board.c
+@@ -259,7 +259,9 @@ static int physom_imx6_probe(struct device *dev)
+ 		imx6_bbu_internal_mmcboot_register_handler("mmc1-boot",
+ 						"mmc1", 0);
+ 	} else {
+-		imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
++		imx6_bbu_nand_register_handler("nand",
++						"/dev/nand0.barebox",
++						BBU_HANDLER_FLAG_DEFAULT);
  	}
  
--	bcb_cdev = cdev_by_name(handler->devicefile);
-+	/* Support both boot /dev/nand0.barebox and boot nand0.barebox */
-+	devname += str_has_prefix(devname, "/dev/");
-+
-+	device_detect_by_name(devname);
-+
-+	bcb_cdev = cdev_by_name(devname);
- 	if (!bcb_cdev) {
- 		pr_err("%s: No FCB device!\n", __func__);
- 		return -ENODEV;
-@@ -1432,7 +1438,8 @@ static void imx6_fcb_create(struct imx_nand_fcb_bbu_handler *imx_handler,
- 	fcb->MetadataBytes = 10;
- }
- 
--int imx6_bbu_nand_register_handler(const char *name, unsigned long flags)
-+int imx6_bbu_nand_register_handler(const char *name,
-+		const char *devicefile, unsigned long flags)
- {
- 	struct imx_nand_fcb_bbu_handler *imx_handler;
- 	struct bbu_handler *handler;
-@@ -1451,7 +1458,7 @@ int imx6_bbu_nand_register_handler(const char *name, unsigned long flags)
- 	}
- 
- 	handler = &imx_handler->handler;
--	handler->devicefile = "nand0.barebox";
-+	handler->devicefile = devicefile;
- 	handler->name = name;
- 	handler->flags = flags | BBU_HANDLER_CAN_REFRESH;
- 	handler->handler = imx_bbu_nand_update;
-@@ -1526,7 +1533,8 @@ static void imx28_fcb_create(struct imx_nand_fcb_bbu_handler *imx_handler,
- 	fcb->EraseThreshold = readl(bch_regs + BCH_MODE);
- }
- 
--int imx28_bbu_nand_register_handler(const char *name, unsigned long flags)
-+int imx28_bbu_nand_register_handler(const char *name,
-+		const char *devicefile, unsigned long flags)
- {
- 	struct imx_nand_fcb_bbu_handler *imx_handler;
- 	struct bbu_handler *handler;
-@@ -1540,7 +1548,7 @@ int imx28_bbu_nand_register_handler(const char *name, unsigned long flags)
- 	imx_handler->filetype = filetype_mxs_bootstream;
- 
- 	handler = &imx_handler->handler;
--	handler->devicefile = "nand0.barebox";
-+	handler->devicefile = devicefile;
- 	handler->name = name;
- 	handler->flags = flags | BBU_HANDLER_CAN_REFRESH;
- 	handler->handler = imx_bbu_nand_update;
-@@ -1599,7 +1607,8 @@ static int imx7_fcb_write(struct mtd_info *mtd, int block, struct fcb_block *fcb
- 	return mxs_nand_write_fcb_bch62(block, fcb, sizeof(*fcb));
- }
- 
--int imx7_bbu_nand_register_handler(const char *name, unsigned long flags)
-+int imx7_bbu_nand_register_handler(const char *name
-+	   const char *devicefile, unsigned long flags)
- {
- 	struct imx_nand_fcb_bbu_handler *imx_handler;
- 	struct bbu_handler *handler;
-@@ -1612,7 +1621,7 @@ int imx7_bbu_nand_register_handler(const char *name, unsigned long flags)
- 	imx_handler->filetype = filetype_arm_barebox;
- 
- 	handler = &imx_handler->handler;
--	handler->devicefile = "nand0.barebox";
-+	handler->devicefile = devicefile;
- 	handler->name = name;
- 	handler->flags = flags | BBU_HANDLER_CAN_REFRESH;
- 	handler->handler = imx_bbu_nand_update;
-diff --git a/include/bbu.h b/include/bbu.h
-index 5105d2ac70..087d3ee827 100644
---- a/include/bbu.h
-+++ b/include/bbu.h
-@@ -98,19 +98,25 @@ static inline int bbu_mmcboot_register_handler(const char *name,
- #endif
- 
- #if defined(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB)
--int imx6_bbu_nand_register_handler(const char *name, unsigned long flags);
--int imx7_bbu_nand_register_handler(const char *name, unsigned long flags);
--int imx28_bbu_nand_register_handler(const char *name, unsigned long flags);
-+int imx6_bbu_nand_register_handler(const char *name, const char *devicefile, unsigned long flags);
-+int imx7_bbu_nand_register_handler(const char *name, const char *devicefile, unsigned long flags);
-+int imx28_bbu_nand_register_handler(const char *name, const char *devicefile, unsigned long flags);
- #else
--static inline int imx6_bbu_nand_register_handler(const char *name, unsigned long flags)
-+static inline int imx6_bbu_nand_register_handler(const char *name,
-+					       const char *devicefile,
-+					       unsigned long flags)
- {
- 	return -ENOSYS;
- }
--static inline int imx7_bbu_nand_register_handler(const char *name, unsigned long flags)
-+static inline int imx7_bbu_nand_register_handler(const char *name,
-+					       const char *devicefile,
-+					       unsigned long flags)
- {
- 	return -ENOSYS;
- }
--static inline int imx28_bbu_nand_register_handler(const char *name, unsigned long flags)
-+static inline int imx28_bbu_nand_register_handler(const char *name,
-+					       const char *devicefile,
-+					       unsigned long flags)
- {
- 	return -ENOSYS;
- }
+ 	defaultenv_append_directory(defaultenv_physom_imx6);
 -- 
 2.25.1
 
