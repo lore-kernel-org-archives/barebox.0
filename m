@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tnudu-007xqu-0h
+	id 1tnudu-007xr4-1N
 	for lore@lore.pengutronix.de;
 	Fri, 28 Feb 2025 08:18:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tnudr-0004G0-6L
+	id 1tnudr-0004GK-GN
 	for lore@pengutronix.de; Fri, 28 Feb 2025 08:18:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,57 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sH/nDnHMhl9xuD7W2cOdR/iUV5kf75fHsHJ8G4wmfVA=; b=iQm4Z3WW21Al4qgDDrIUjNdQrY
-	/X+BHwC3GbVnXRnZkQY8aT10MJY18yrr9lxcaN6Ls92f3IiLUX4u04xiR/tVkyxtBlr/bZKQgh+Yk
-	rntcGW3Dz+VSlTBg4ZjshW+1PGPSz/0AWlhLjqSefKA4wIn6syOIsQgdpijIwdPNsyi2T8KdLNbQy
-	yW67cl6CDv3wk1sWvasthFBX5u76QyIwY2zIcDxn4jelYaJzsvPefynl6jK7Ci/D6SRq5Jpuxv9b0
-	ZKiwkFIBEhuxtpqQ3N0vOYI14uUiur+4iU9XutT8nvtOiNE/kxEBO1gmboBMVtsFtu4yilIyr/8ZE
-	qYW7t8VQ==;
+	bh=pnGUBnyKr+YerXx2Eqa2wUcaOY7BXPUc8DCn8t0k4qA=; b=c5ssMXiFR7efYGNkO5aEJeCtym
+	rb41PlCi7q0jg/qe2XY0mu9NXGtSbeRZ+y1gYKadQN4U2kZLrKqpOjaKH06FGJ3hMGyXHI6CdZfDT
+	md3VysY8C40qdK9HJXT/9drjTHU6Drxlb5gLOHUTECCe40oj+KEAqyvk3t2KOATvBgiE9Zos2mO2Z
+	CtVqfePfxfRulD+2tNDiVselguViluvMoicwpGzCSWwii//BmbtdlyKfzH/JfvZNGAF+RVcmDe2NK
+	HhiSEbELT/ZEpI74/R3k6FTxE9VSLtbXmnYatwJ21cqbQlU1RYdX+8Bq2Qgea2EIYeB9H8ORmUshy
+	vrZz2QMw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tnudG-00000009xk5-36Xl;
-	Fri, 28 Feb 2025 07:18:02 +0000
+	id 1tnudE-00000009xiN-1s2O;
+	Fri, 28 Feb 2025 07:18:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tnuc9-00000009xZe-3W3l
+	id 1tnuc9-00000009xZd-3USW
 	for barebox@lists.infradead.org;
-	Fri, 28 Feb 2025 07:16:57 +0000
+	Fri, 28 Feb 2025 07:16:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnuc6-0003kC-Fv; Fri, 28 Feb 2025 08:16:50 +0100
+	id 1tnuc6-0003kE-Gy; Fri, 28 Feb 2025 08:16:50 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnuc6-003FtK-0Y;
+	id 1tnuc6-003FtR-0f;
 	Fri, 28 Feb 2025 08:16:50 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnuc6-005CL4-0I;
+	id 1tnuc6-005CL4-0P;
 	Fri, 28 Feb 2025 08:16:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Feb 2025 08:16:50 +0100
+Date: Fri, 28 Feb 2025 08:16:57 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250228-am625-secure-v1-2-4002488ff5ed@pengutronix.de>
+Message-Id: <20250228-am625-secure-v1-9-4002488ff5ed@pengutronix.de>
 References: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
 In-Reply-To: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740727009; l=4549;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740727010; l=4319;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Ms1nnyUc6iU3Nr3nUtrI9URLbL16Em22ITXlNSkp8rU=;
- b=P1XatWoGepno8T1HiRvyf+Afx5AxHOR/0KGeHTfCAVZHXctJvXJNoyFVuLQ5a/WlI0vOXeogD
- byRU07dzraeA6p1B3+q0RrUQxGuT/Ig3EPskgEWeMN3IyEw5ZyiI5j7
+ bh=zeu0ZysGzdpj70NRU4tt1avbvygiJ1Fa/AmLdxBLvCE=;
+ b=spkbEUFuGAaT/qZg10Fct3bC0HVw8aL8MFMj3UCSqn3lIzbL+ekEFYODn0wD7V4J2ZLDq8+VL
+ 12hKYB0evkFCz8mX3tIJgVfTYtVd3zDbiEMKVOLF5yP8oQq9DDaHpGO
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250227_231653_940096_55FF14E0 
-X-CRM114-Status: GOOD (  23.63  )
+X-CRM114-CacheID: sfid-20250227_231653_905617_416113FC 
+X-CRM114-Status: GOOD (  17.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,126 +90,176 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 02/13] firmware: add function to verify next image
+Subject: [PATCH 09/13] ARM: k3: add support for authenticating images
+ against the ROM API
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Some SoCs use a startup sequence that includes multiple stages where a
-full barebox is loaded by an early small barebox that fits into the
-SoC's SRAM. This is commonly referred to as xload. In a secure boot
-environment it's necessary to load only trusted barebox images. One
-way to accomplish this is to compile a sha256 into the first stage
-barebox and to verify the full barebox against this hash.
-
-This patch adds the generic parts for this. The full barebox binary
-can be put into the first stage build as a firmware file. The firmware
-itself won't be used, only the hash is compiled into the image. SoC
-code can then check the full barebox image against the hash. As this
-requires SoC code to check the hash, the option is hidden behind
-CONFIG_HAVE_FIRMWARE_VERIFY_NEXT_IMAGE. SoC code can select this option
-when it implements the required hash checking.
-
-It's worth noting that using a hash for verification has one advantage
-over cryptographicaly signing followup images: It ties first stage
-and full barebox stages together effectively avoiding mix-and-match
-attacks.
+This adds support for authenticating an image against the K3 ROM API.
+Also included in this patch is a new command for testing the
+authentication.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- firmware/Kconfig   | 23 +++++++++++++++++++++++
- firmware/Makefile  |  2 ++
- include/firmware.h | 28 ++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
+ arch/arm/mach-k3/Kconfig  |  7 ++++
+ arch/arm/mach-k3/common.c | 99 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/mach/k3/common.h  |  1 +
+ 3 files changed, 107 insertions(+)
 
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index ba005976c5..bdb71321bc 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -108,4 +108,27 @@ config FIRMWARE_LS1028A_ATF
- config FIRMWARE_LS1046A_ATF
- 	bool
+diff --git a/arch/arm/mach-k3/Kconfig b/arch/arm/mach-k3/Kconfig
+index 561ad1dac4..37d5155577 100644
+--- a/arch/arm/mach-k3/Kconfig
++++ b/arch/arm/mach-k3/Kconfig
+@@ -37,4 +37,11 @@ config MACH_BEAGLEPLAY
+ 	help
+ 	  Say Y here if you are using a TI AM62x based BeaglePlay board
  
-+config HAVE_FIRMWARE_VERIFY_NEXT_IMAGE
-+	bool
-+
-+config FIRMWARE_VERIFY_NEXT_IMAGE
-+	depends on HAVE_FIRMWARE_VERIFY_NEXT_IMAGE
-+	bool "verify next image to load"
++config ARCH_K3_COMMAND_AUTHENTICATE
++	bool "k3_authenticate_image command"
++	depends on COMMAND_SUPPORT
 +	help
-+	  The boot process of some SoCs uses multiple stages where the first stage is
-+	  a stripped down barebox loaded by the SoC's ROM and the next state is a full
-+	  barebox loaded by the first stage. In a trusted boot scenario the next stage
-+	  has to be verified by the first stage,
-+
-+	  This option allows to specify the next image to be loaded. Put the next stage
-+	  image to firmware/next-image.bin. The image itself is not used, but a sha256
-+	  hash of the image will be generated and compiled into the first stage which
-+	  can be used to verify the next stage.
-+
-+	  Note that this option only enabled generation of the sha256 hash. Loading and
-+	  starting the next stage is highly SoC dependent and it's the SoC code's
-+	  responsibility to actually verify the hash and to only start successfully
-+	  verified images. The function to check the next stage image hash is
-+	  firmware_next_image_verify(), make sure your SoC code uses it.
++	  Add k3_authenticate_image command to test authenticating images
++	  against the K3 ROM API.
 +
  endmenu
-diff --git a/firmware/Makefile b/firmware/Makefile
-index 095d6f0e31..67fd898890 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -34,6 +34,8 @@ pbl-firmware-$(CONFIG_ARCH_RK3588) += rk3588-bl32.bin
- pbl-firmware-$(CONFIG_ARCH_RK3399) += rk3399-bl32.bin
- endif
+diff --git a/arch/arm/mach-k3/common.c b/arch/arm/mach-k3/common.c
+index 8dc9d3bc9e..a324e2d5f6 100644
+--- a/arch/arm/mach-k3/common.c
++++ b/arch/arm/mach-k3/common.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include <of.h>
+ #include <io.h>
++#include <dma.h>
+ #include <deep-probe.h>
+ #include <init.h>
+ #include <envfs.h>
+@@ -8,11 +9,15 @@
+ #include <stdio.h>
+ #include <xfuncs.h>
+ #include <malloc.h>
++#include <command.h>
++#include <getopt.h>
++#include <libfile.h>
+ #include <pm_domain.h>
+ #include <bootsource.h>
+ #include <linux/bits.h>
+ #include <linux/bitfield.h>
+ #include <mach/k3/common.h>
++#include <soc/ti/ti_sci_protocol.h>
  
-+firmware-$(CONFIG_FIRMWARE_NEXT_IMAGE) += next-image.bin
+ static const struct of_device_id k3_of_match[] = {
+ 	{
+@@ -334,3 +339,97 @@ static int omap_env_init(void)
+ 	return 0;
+ }
+ late_initcall(omap_env_init);
 +
- firmware-$(CONFIG_DRIVER_NET_FSL_FMAN) += fsl_fman_ucode_ls1046_r1.0_106_4_18.bin
- 
- fw-external-$(CONFIG_FIRMWARE_LS1028A_ATF) += ls1028a-bl31.bin
-diff --git a/include/firmware.h b/include/firmware.h
-index d7feae1371..7225b55e4f 100644
---- a/include/firmware.h
-+++ b/include/firmware.h
-@@ -13,6 +13,8 @@
- #include <debug_ll.h>
- #include <linux/kernel.h>
- #include <asm/sections.h>
-+#include <crypto/sha.h>
-+#include <crypto.h>
- 
- struct firmware {
- 	size_t size;
-@@ -113,4 +115,30 @@ static inline void firmware_ext_verify(const void *data_start, size_t data_size,
- #define get_builtin_firmware_ext(name, base, start, size)		\
- 	__get_builtin_firmware(name, (long)base - (long)_text, start, size)
- 
-+static inline int firmware_next_image_verify(const void *hash_start, size_t hash_size, bool verbose)
++int k3_authenticate_image(void **buf, size_t *size)
 +{
-+	extern char _fw_next_image_bin_sha_start[];
++	const struct ti_sci_handle *ti_sci;
++	u64 image_addr;
 +	int ret;
++	unsigned int s = *size;
 +
-+	if (!IS_ENABLED(CONFIG_FIRMWARE_NEXT_IMAGE))
++	ti_sci = ti_sci_get_handle(NULL);
++	if (IS_ERR(ti_sci))
 +		return -EINVAL;
 +
-+	if (hash_size != SHA256_DIGEST_SIZE)
-+		return -EINVAL;
++	image_addr = dma_map_single(NULL, *buf, *size, DMA_BIDIRECTIONAL);
 +
-+	ret = crypto_memneq(hash_start, _fw_next_image_bin_sha_start, hash_size);
++	ret = ti_sci->ops.proc_ops.proc_auth_boot_image(ti_sci, &image_addr, &s);
 +
-+	if (verbose) {
-+		if (ret) {
-+			pr_err("next image hash mismatch!\n");
-+			pr_err("expected: sha256=%*phN\n", hash_size, _fw_next_image_bin_sha_start);
-+			pr_err("found:    sha256=%*phN\n", hash_size, hash_start);
-+		} else {
-+			pr_info("hash sha256=%*phN OK\n", hash_size, _fw_next_image_bin_sha_start);
-+		}
-+	}
++	dma_unmap_single(NULL, image_addr, *size, DMA_BIDIRECTIONAL);
++
++	if (ret)
++		*size = 0;
++	else
++		*size = s;
 +
 +	return ret;
 +}
 +
- #endif /* FIRMWARE_H */
++#ifdef CONFIG_ARCH_K3_COMMAND_AUTHENTICATE
++static int do_k3_authenticate_image(int argc, char *argv[])
++{
++	void *buf;
++	size_t size;
++	int ret;
++	int opt;
++	const char *outfile = NULL;
++	const char *filename;
++
++	while ((opt = getopt(argc, argv, "o:")) > 0) {
++		switch (opt) {
++		case 'o':
++			outfile = optarg;
++			break;
++		}
++	}
++
++	argc -= optind;
++
++	if (argc == 0)
++		return COMMAND_ERROR_USAGE;
++
++	filename = argv[0];
++
++	ret = read_file_2(filename, &size, &buf, FILESIZE_MAX);
++	if (ret)
++		return ret;
++
++	ret = k3_authenticate_image(&buf, &size);
++	if (ret) {
++		printf("authenticating %s failed: %pe\n", filename, ERR_PTR(ret));
++		ret = COMMAND_ERROR;
++		goto err;
++	}
++
++	printf("%s successfully authenticated\n", filename);
++
++	if (outfile) {
++		ret = write_file(outfile, buf, size);
++		if (ret) {
++			printf("Failed to write output file: %pe\n", ERR_PTR(ret));
++			goto err;
++		}
++	}
++
++	ret = 0;
++err:
++	free(buf);
++
++	return ret;
++}
++
++BAREBOX_CMD_HELP_START(k3_authenticate_image)
++BAREBOX_CMD_HELP_TEXT("Authenticate image with K3 ROM API")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-o <out>",  "store unpacked authenticated image in <out>")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(k3_authenticate_image)
++	.cmd = do_k3_authenticate_image,
++	BAREBOX_CMD_DESC("authenticate file with K3 ROM API")
++	BAREBOX_CMD_OPTS("[-o <out>] file")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(k3_authenticate_image)
++BAREBOX_CMD_END
++#endif
+diff --git a/include/mach/k3/common.h b/include/mach/k3/common.h
+index 871e9f39e3..94c5fba19d 100644
+--- a/include/mach/k3/common.h
++++ b/include/mach/k3/common.h
+@@ -13,6 +13,7 @@ bool k3_boot_is_emmc(void);
+ u64 am625_sdram_size(void);
+ void am625_register_dram(void);
+ void am625_enable_32k_crystal(void);
++int k3_authenticate_image(void **buf, size_t *size);
+ 
+ #define K3_EMMC_BOOTPART_TIBOOT3_BIN_SIZE	SZ_1M
+ 
 
 -- 
 2.39.5
