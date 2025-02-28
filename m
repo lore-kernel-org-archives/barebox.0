@@ -1,69 +1,64 @@
-Delivery-date: Fri, 28 Feb 2025 10:47:42 +0100
+Delivery-date: Fri, 28 Feb 2025 10:50:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tnwy7-0080Wx-08
+	id 1tnx0e-0080Yk-20
 	for lore@lore.pengutronix.de;
-	Fri, 28 Feb 2025 10:47:42 +0100
+	Fri, 28 Feb 2025 10:50:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tnwy5-0004UW-TX
-	for lore@pengutronix.de; Fri, 28 Feb 2025 10:47:42 +0100
+	id 1tnx0d-0004se-FX
+	for lore@pengutronix.de; Fri, 28 Feb 2025 10:50:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9ZXCdZCvixaj9YKHvW/TVqT5fQCVzVLFxIVnNgTO5ec=; b=1E1ZdfMG/JgOC4EmQSO81LwV1z
-	2fcGAMUGWeezThdecHbVe0zB2N+f/NImsM1Y2yeJiI5rs91tIjenxTr3HDiabLIrxuVm/AS5tls5j
-	TRIJhEKBdlmX3FmForQFaA2X12GzV7lH1/wijAZN6mBbSgmXuHmRnjnFMcu8eHBHHMG3fc/h8/jzE
-	+pwb5AiKOR0SKl3AimvYd57xO92yP2FNk9YM6+qMtP83VOQRpp0SO8AWxh12Ymu/13rXnuhDe8an1
-	D1sR7QWDdiMwKJof1tfgaFUZCrhCMuu57g8Az4zyECF9gtLC5Nsm3vN62KT9J33HOMm7qRGURiJHi
-	zJuGnNZA==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=qyTuNjaKqSXPCXypyRD8Sg4M9cqXwaI0AaQycj8ZZJU=; b=OHlf1frb15oaVXJ7OQawDyDg3w
+	/CKnZQC9NDROIQ8rvI9FYEJobJpkb2TyUYnsY2aqPGaVSuWM0AGe0FLxAajWFZ0IIQit6lxje6UcO
+	BEp/Kb10YJozllvVi8QjoT3UZqnuKjEmHDN+CqgVjcR+I+gSXKkHq9d7dGIkb1NxalN7bS++951eL
+	O0w/v6RJzBcBumxywvATutV3EBKLOUOVOaB2FfrdCuDvQ57UzUJghxvWIdCpo6WREzcUTVc8FFGDN
+	Em3xNnH6hF6JKEHsjutfsOlu2fwclHdDdFQPio6ktHnbM6lQyrqxnae0NbVRzt1uU36XyUQh/mdii
+	NZpfi8Ng==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tnwxe-0000000AR1B-1pnd;
-	Fri, 28 Feb 2025 09:47:14 +0000
+	id 1tnx0E-0000000ARaF-2Znn;
+	Fri, 28 Feb 2025 09:49:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tnwxb-0000000AR0G-36l9
+	id 1tnwz0-0000000ARJ5-1UX4
 	for barebox@lists.infradead.org;
-	Fri, 28 Feb 2025 09:47:12 +0000
+	Fri, 28 Feb 2025 09:48:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnwxa-0004NP-6B; Fri, 28 Feb 2025 10:47:10 +0100
+	id 1tnwyz-0004cX-72; Fri, 28 Feb 2025 10:48:37 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnwxa-003GuG-01;
-	Fri, 28 Feb 2025 10:47:10 +0100
+	id 1tnwyz-003GuM-06;
+	Fri, 28 Feb 2025 10:48:37 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnwxZ-005sVk-32;
-	Fri, 28 Feb 2025 10:47:09 +0100
+	id 1tnwyy-005sYR-2y;
+	Fri, 28 Feb 2025 10:48:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Stefan Kerkmann <s.kerkmann@pengutronix.de>
-In-Reply-To: <20250225-imx8-ocotp-gp-defines-v1-1-344b291675a7@pengutronix.de>
-References: <20250225-imx8-ocotp-gp-defines-v1-1-344b291675a7@pengutronix.de>
-Message-Id: <174073602993.1401123.3995544501767465635.b4-ty@pengutronix.de>
-Date: Fri, 28 Feb 2025 10:47:09 +0100
+To: Barebox List <barebox@lists.infradead.org>
+Date: Fri, 28 Feb 2025 10:48:36 +0100
+Message-Id: <20250228094836.1401338-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250228_014711_780236_E1D383D8 
-X-CRM114-Status: UNSURE (   7.55  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250228_014838_388928_B34FFCCA 
+X-CRM114-Status: GOOD (  10.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,32 +80,33 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] i.mx8: ocotp: add GPx defines
+Subject: [PATCH] parted: add partition type msdos to help text
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Partition type can be either "gpt" or "msdos", but only the former was
+listed in the help text. Add the latter.
 
-On Tue, 25 Feb 2025 11:56:40 +0100, Stefan Kerkmann wrote:
-> The general purpose GPx registers changed position in the fuse map from
-> the i.MX6 series and derivates to the i.MX8 series. The i.MX8MP has 4
-> additional 128-bit wide fuse banks which have been added as well.
-> 
-> The defines have been derived from:
-> 
-> IMX8MNRM Rev. 2 (i.MX8MN)
-> IMX8MPRM Rev. 3 (i.MX8MP)
-> IMX8MMRM Rev. 3 (i.MX8MM)
-> 
-> [...]
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/parted.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks!
-
-[1/1] i.mx8: ocotp: add GPx defines
-      https://git.pengutronix.de/cgit/barebox/commit/?id=13019e9b6a49 (link may not be stable)
-
-Best regards,
+diff --git a/commands/parted.c b/commands/parted.c
+index 6af18cdc57..68b056a075 100644
+--- a/commands/parted.c
++++ b/commands/parted.c
+@@ -359,7 +359,7 @@ BAREBOX_CMD_HELP_OPT ("refresh", "refresh a partition table")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("<unit> can be one of \"s\" (sectors), \"B\" (bytes), \"kB\", \"MB\", \"GB\", \"TB\",")
+ BAREBOX_CMD_HELP_TEXT("\"KiB\", \"MiB\", \"GiB\" or \"TiB\"")
+-BAREBOX_CMD_HELP_TEXT("<type> must be \"gpt\"")
++BAREBOX_CMD_HELP_TEXT("<type> must be \"gpt\" or \"msdos\"")
+ BAREBOX_CMD_HELP_TEXT("<fstype> can be one of  \"ext2\", \"ext3\", \"ext4\", \"fat16\", \"fat32\" or \"bbenv\"")
+ BAREBOX_CMD_HELP_TEXT("<name> for MBR partition tables can be one of \"primary\", \"extended\" or")
+ BAREBOX_CMD_HELP_TEXT("\"logical\". For GPT this is a name string.")
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.5
 
 
 
