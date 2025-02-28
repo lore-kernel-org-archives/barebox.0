@@ -1,89 +1,74 @@
-Delivery-date: Fri, 28 Feb 2025 07:08:00 +0100
+Delivery-date: Fri, 28 Feb 2025 08:18:37 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tntXU-007wLo-2U
+	id 1tnudq-007xol-0t
 	for lore@lore.pengutronix.de;
-	Fri, 28 Feb 2025 07:08:00 +0100
+	Fri, 28 Feb 2025 08:18:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tntXT-0006sn-GS
-	for lore@pengutronix.de; Fri, 28 Feb 2025 07:08:00 +0100
+	id 1tnudo-0004DN-4u
+	for lore@pengutronix.de; Fri, 28 Feb 2025 08:18:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GfKOTGqXiUh5GemHQaoTOY2O5+B57vXcMr57jQjhtuE=; b=hguuGk/eCgtTLL7mCEKnZ1DEfC
-	t6I8ulEankDv0xmlmKC+QinG6FPxRVLwW5z61fl/PN4GaWrLSyYRAjZk6bGhFQmbTWXleHFgTMYGy
-	gk508zLOuazohQ+fVNXd1kQRz67L4vXsog5RtrhmMCxkaEpb8qHie2Fm6CeJiu0ASDz9mooRxN//o
-	zmBaISxRTEazg17Umoj0BSEoSSG4u288r4kQWGQgmuhe8m6azZPTGTa0uZXpHC8nI2i+j8uu1HoLl
-	Cy0nPq+MPUFqlgJmCVxUcegDNB0QJDAXJ5Uvk4HzyqUjqIPhWM80O2UZ1T9oEW8HAYTekqrCa1n4D
-	j4ZDhWgw==;
+	bh=KPj+D5Y+Dh6TwPdMaFeTwy2RZvBUMzeR9ouykYiJl+Q=; b=jvepuMiWc5UB7UZlycOQnQoKUE
+	wWaoizEjTkwn5c2nkzQM8DdtKj6pQwS6aQL+etJ2jqSkNKXHeLzpOVBeWCfFcPGFGap1UcdWlkFUm
+	2wwlbDgqWqy90pfyc4IrvGMppAL/06OOY+g9m7OMFVQbhska3mgq7+02emXGfLPnEldd+9xT4hgcD
+	+r5TTsyP4iK3ZuiI6HmgryZTyIJjAzAgHq0zJkQgB7z/Q/JONbDn58K37iQUdoWEPXbsHQjPcH5jG
+	yrXPmU+9I3bilM98N4SF1JGzRdrkfKNt86jt4+mAqOukM+cQghORhuqBkRbSlMDa/qQmZrx1nuNrf
+	rED3s5TA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tntWh-00000009qQo-0GWt;
-	Fri, 28 Feb 2025 06:07:11 +0000
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+	id 1tnudI-00000009xli-2AoO;
+	Fri, 28 Feb 2025 07:18:04 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tntWe-00000009qPz-0bKt
+	id 1tnucF-00000009xcX-39uy
 	for barebox@lists.infradead.org;
-	Fri, 28 Feb 2025 06:07:09 +0000
-Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-2fa5af6d743so2729126a91.3
-        for <barebox@lists.infradead.org>; Thu, 27 Feb 2025 22:07:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740722827; x=1741327627; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GfKOTGqXiUh5GemHQaoTOY2O5+B57vXcMr57jQjhtuE=;
-        b=EDgYjm1YNVLiMUN54T2vLRoZiHPhW616EJYv/CMx2a1J1siVZN3gmevsQeiJwPKEHS
-         VgRT9dDto5a1yV1WFppg5dkQjbe2a9oM+ewBeXA8n1fenhJFXKMWs1lJeP1os/UjfVCJ
-         VZtiZhKdLLS3q6TPoqDPu8lI6q/IiipD8fDiILTDeuVfFv5RxF20XBqbZ9cg06YGQroO
-         KxfVkuectGar4qlX+AieayozfJrT4F/BGKZn0nTEBQcdSKZnE3NmcRV3QjrCsuhNjUdJ
-         RivTnFF9IG2giTS+o7WCIV/rLjjuhbjXu7zSCk8iAukFZ8MCnOo/r5KIZC85pDd9e3nK
-         qm1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740722827; x=1741327627;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GfKOTGqXiUh5GemHQaoTOY2O5+B57vXcMr57jQjhtuE=;
-        b=M8FxfnpAVC8gtVO5epif6/zY0ZNOgj93FupipM94oWQIbhhDLBSMvc2rgXqeajB+lR
-         B/Oi7NTBte5PkPkjdqkT+QTNcGGzyNa/G72BKL43traUowoNbwWj7x2QbdVgioplnnK+
-         MF13PO2ELzr6Y1dbdhDj8fNg0qfcW21g1A2cBhKoUc3Pp77B/vIxUj+KBgzBL1WQul04
-         xRLnaa1OHCDKVmKNqBVX+9HGA72tbIhthfkzN3a+LInL6rAnztATrKaY32QYOVBsTlW5
-         L5LHtw5Bk3RJxcDeoUSERKGSoMi/Cs6cfA3I3K+a9jJsjmsI7yeZMzyCy3tW6y3aLIYS
-         qYCw==
-X-Gm-Message-State: AOJu0YzAQq6/BEPWt2tgk45jrOBN6uDhiYQJNDdBkuN1qnhnbTW/mFsU
-	TQFlwgxGsBQvYoXQ/fiDiEw9AeNyvgMgkKYi07Q1qeNK0c0fkT+9VRy/USj3HkyY6N9aLjkab1K
-	qkPjDQKcEVcFQofDkP0ynQ+kk03673HHP
-X-Gm-Gg: ASbGncvqWjgNgCB7gddryVCbbb/2xPRmKjWugllggyQWc0liXKlSOocRIJFFfOSvPGX
-	A2ROU+7cMJwDRWMlPNLg2w0CIkagMbDtSaE2V/te2Ifh7iIbE0BDl03roWywNvmSgPnXj8HM5L9
-	607WDZjSQ=
-X-Google-Smtp-Source: AGHT+IGr+OiayZpinzr+4+jHmPZsdg0zzBofnPQvQGsoglAbipTy1TWUfOi8Mp0z8PrUtcM3rsKmQ2NzWAIMKtu4fAE=
-X-Received: by 2002:a17:90b:4acb:b0:2ee:e518:c1cb with SMTP id
- 98e67ed59e1d1-2febab2ed94mr3909868a91.7.1740722827023; Thu, 27 Feb 2025
- 22:07:07 -0800 (PST)
+	Fri, 28 Feb 2025 07:17:01 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tnuc6-0003kJ-Iz; Fri, 28 Feb 2025 08:16:50 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tnuc6-003FtQ-0i;
+	Fri, 28 Feb 2025 08:16:50 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tnuc6-005CL4-0O;
+	Fri, 28 Feb 2025 08:16:50 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 28 Feb 2025 08:16:56 +0100
 MIME-Version: 1.0
-References: <CAP1tNvToG8WGLUo4_e2dSdovFZBAbcdOFUqm+F+W4gWoaVnrgQ@mail.gmail.com>
- <Z8CaS4gLesWjG81q@pengutronix.de>
-In-Reply-To: <Z8CaS4gLesWjG81q@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 28 Feb 2025 09:06:55 +0300
-X-Gm-Features: AQ5f1JoKzFLmBMt6M96t1iyDLe93xm9lr1gvxBsOwm1hDevb2i502FrpEIGhopU
-Message-ID: <CAP1tNvQFhZHobkaYL_v9aQ8FAqEtd--pkGxW3C6v81zMUaM-PQ@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250228-am625-secure-v1-8-4002488ff5ed@pengutronix.de>
+References: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
+In-Reply-To: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
+To: "open list:BAREBOX" <barebox@lists.infradead.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740727010; l=1612;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=Agh2j7PP1q3tNaV2FQ623A1UkzEonW25bN/gdWdT0lU=;
+ b=wjchSU6gWPGaeoRBFIasqfsxNxVxc1oWbK2S8T4DJK3I1LVGA8U6B3MdQtY3eTK2Z0xYyKsKH
+ L0gSuWVa0OsDlESj7jsMhbzvUhjbTAYYUFvvMydyXBq7BRFN3PXRMW+
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250227_220708_181908_A1A93A55 
-X-CRM114-Status: GOOD (  22.51  )
+X-CRM114-CacheID: sfid-20250227_231659_805265_B8D39C49 
+X-CRM114-Status: GOOD (  11.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,81 +86,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: automount doesn't work without GPT table
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 08/13] ARM: am625: support hash verification of full
+ barebox
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha.
+This implements the necessary SoC code to check the full barebox against
+a sha256 compiled into the first stage barebox.
 
-The error occurs in the cdev_mount_default() function.
-cdev_get_mount_path() returns "/boot".
-And indeed, the partition is mounted here for some reason...
-I don't understand yet why this happens.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-k3/Kconfig |  1 +
+ arch/arm/mach-k3/r5.c    | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
-barebox@Mega-Milas Informer SAMA5D2:/ mount
-none on / type ramfs
-none on /dev type devfs
-/dev/mmc1.0 on /boot type fat
+diff --git a/arch/arm/mach-k3/Kconfig b/arch/arm/mach-k3/Kconfig
+index 50919dc7e3..561ad1dac4 100644
+--- a/arch/arm/mach-k3/Kconfig
++++ b/arch/arm/mach-k3/Kconfig
+@@ -16,6 +16,7 @@ config MACH_K3_CORTEX_R5
+ 	select ELF
+ 	select K3_DDRSS
+ 	select FIP
++	select HAVE_FIRMWARE_VERIFY_NEXT_IMAGE
+ 	depends on 32BIT
+ 	select ARM_USE_COMPRESSED_DTB
+ 	default y
+diff --git a/arch/arm/mach-k3/r5.c b/arch/arm/mach-k3/r5.c
+index e12c888afa..cb52ff364d 100644
+--- a/arch/arm/mach-k3/r5.c
++++ b/arch/arm/mach-k3/r5.c
+@@ -248,6 +248,8 @@ static int load_fip(const char *filename, off_t offset)
+ {
+ 	struct fip_state *fip;
+ 	struct fip_image_desc *desc;
++	unsigned char shasum[SHA256_DIGEST_SIZE];
++	int ret;
+ 
+ 	fip = fip_image_open(filename, offset);
+ 	if (IS_ERR(fip)) {
+@@ -255,6 +257,18 @@ static int load_fip(const char *filename, off_t offset)
+ 		return PTR_ERR(fip);
+ 	}
+ 
++	if (IS_ENABLED(CONFIG_FIRMWARE_VERIFY_NEXT_IMAGE)) {
++		ret = fip_sha256(fip, shasum);
++		if (ret) {
++			pr_err("Cannot calc fip sha256: %pe\n", ERR_PTR(ret));
++			return ret;
++		}
++
++		ret = firmware_next_image_verify(shasum, SHA256_DIGEST_SIZE, true);
++		if (ret)
++			return ret;
++	}
++
+ 	fip_for_each_desc(fip, desc) {
+ 		struct fip_toc_entry *toc_entry = &desc->image->toc_e;
+ 
 
-Update:
-I found that this happens if the CONFIG_OF_BAREBOX_ENV_IN_FS option is used=
-.
-When disabled, mounting occurs as expected, but in this case I cannot
-use environments from a file from a partition on the SD card.
-It is not yet clear how to get out of this situation...
+-- 
+2.39.5
 
-Thanks!
-
-=D1=87=D1=82, 27 =D1=84=D0=B5=D0=B2=D1=80. 2025=E2=80=AF=D0=B3. =D0=B2 20:0=
-1, Sascha Hauer <s.hauer@pengutronix.de>:
->
-> Hi ALexander,
->
-> On Thu, Feb 27, 2025 at 09:37:37AM +0300, Alexander Shiyan wrote:
-> > Hello All.
-> >
-> > I found that automounting does not work without a GPT table.
->
-> So you mean it doesn't work when the device has a MBR instead of a GPT?
->
-> > In the example below, it is not possible to automatically mount a
-> > partition from an MMC card.
-> > However, if I add the full paths to the command manually, everything wo=
-rks.
-> >
-> > barebox 2025.02.0-00690-ga6a0a0ba4f61 #12 Thu Feb 27 08:27:56 MSK 2025
-> > Board: Mega-Milas MM-SM-SAMA5D2
-> > AT91: Detected soc type: sama5d2
-> > AT91: Detected soc subtype: sama5d27c_d1g
-> > ...
-> > sdhci-at91 b0000000.sdio-host@b0000000.of: registered as mmc1
-> > mmc1: detected SD card version 2.0
-> > mmc1: registered mmc1
-> > ...
-> > barebox@Mega-Milas Informer SAMA5D2:/ ls /mnt/mmc1.0
-> > mount: Device or resource busy
->
-> -EBUSY is a strange error code from mount(). Can you follow where it
-> comes from?
->
-> I can't reproduce it here. I tried both with a MBR and a GPT.
->
-> Sascha
->
->
-> --
-> Pengutronix e.K.                           |                             =
-|
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
-|
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
 
 
