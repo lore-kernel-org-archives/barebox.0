@@ -1,16 +1,16 @@
-Delivery-date: Fri, 28 Feb 2025 08:18:40 +0100
+Delivery-date: Fri, 28 Feb 2025 08:18:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tnudt-007xqA-1M
+	id 1tnudt-007xqU-24
 	for lore@lore.pengutronix.de;
-	Fri, 28 Feb 2025 08:18:40 +0100
+	Fri, 28 Feb 2025 08:18:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tnudq-0004F5-Gr
+	id 1tnudr-0004Fj-2D
 	for lore@pengutronix.de; Fri, 28 Feb 2025 08:18:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,57 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4NdY1Rk7ppN8iP7IE+Psg0ai4sxabvsSGTAUsw1AChU=; b=ekzX7ePW9Z8G3itOt8GdUVwE+7
-	ioU/vn0zC6Aa6FBQ0Vl17z/UIFQUJ/F69WXZKDqIed82euzRv1CwC2jd5qmiDkUN1isgjyXXFYaB1
-	K1C2nbeGMZ13G4KpJtGRd/WbUsIPmtnvRJs941nf8a9s6OrBTCxGkdktWIcIhpgZuEnSWhEeX48ip
-	/fTaFoxS4eSoHbc+a245LoIqHXE43K1kuC7TTGVI3HORJS4DHD3I2khaDybFWFaYD41268D5hRY2B
-	1LzHst0aX+bTxuQlm/wS3+k4i/oIWapYiqRumWUzWsEiwrKR79nYbg+BmKfpdiCWKao+UwZe+lq6l
-	+hbTKuvQ==;
+	bh=iTLd3gtd3Kq4t35F2zzrz8mnj2NI1kXdDxSaVmh3V6M=; b=s3ukO1BnTIiUJxSUywhnvoQtC5
+	ML6fXPJ0XRLu7XV1fjxjUdI8e2Q28Fs2v7BkkeXclyoGLGGjYtBgA9D8pehjhOlvUFVnpGqscZ23c
+	ZXleM/9If0GlDCUaLYKJKTaMoYwW+OXdYJcvTQjF6Z4DydjCYKl3vDM4oebwD7nlQtqX6MW8KUYob
+	j/kK1NaPx9ERQIIqExUBSh4pAWNDUwJdPjg+/nV3hAnEmsaBN+EqmBeHoFhDggZyWC/D8H3PLRpsk
+	tzn6juzd2AgYp9OkPJ8gxUecmQO/eIK0MsH8sE7YU7dfag6CJxXKZD++J7zN3xVZjPmMXBVJTfYbR
+	iFdhEdlw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tnudD-00000009xiD-3bTC;
-	Fri, 28 Feb 2025 07:17:59 +0000
+	id 1tnudG-00000009xjm-0T6a;
+	Fri, 28 Feb 2025 07:18:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tnuc9-00000009xZi-3JFl
+	id 1tnuc9-00000009xZj-3UMA
 	for barebox@lists.infradead.org;
-	Fri, 28 Feb 2025 07:16:55 +0000
+	Fri, 28 Feb 2025 07:16:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnuc6-0003kH-KN; Fri, 28 Feb 2025 08:16:50 +0100
+	id 1tnuc6-0003kG-Kq; Fri, 28 Feb 2025 08:16:50 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnuc6-003FtN-0i;
+	id 1tnuc6-003FtL-0g;
 	Fri, 28 Feb 2025 08:16:50 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tnuc6-005CL4-0L;
+	id 1tnuc6-005CL4-0J;
 	Fri, 28 Feb 2025 08:16:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Feb 2025 08:16:53 +0100
+Date: Fri, 28 Feb 2025 08:16:51 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250228-am625-secure-v1-5-4002488ff5ed@pengutronix.de>
+Message-Id: <20250228-am625-secure-v1-3-4002488ff5ed@pengutronix.de>
 References: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
 In-Reply-To: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740727010; l=5032;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740727009; l=3467;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=hOHo4iLPUOj8S6vZyOmxyYoc4Xj2VgHXiKklMPI+ryQ=;
- b=RD2u+wO/EU3SQKIH/j306hYKrQ04cZFZb/qR0y5+UoN30V8KWaamSwBnS0Jupcv2pErdh91vy
- ARTJiHPgGP7Cxf/j6UQjl/zDplPiIVUi0nSOc8v8fIhM2wmgIhQK8CU
+ bh=IMtdm9t+mvjLRXQncuWvxYQczAhgPks/auLegIozc5s=;
+ b=FWO6/4O5uoO/hRWiXYKvwp4uh8orDS4Ve1edJugYLkF0I0VTAm4pxxAoa1C3dFvTeR8OozxGv
+ PYvmYUpx7D6A9NSGhJTdaej/JIXsZzsgKG5qru0FN/fdzFqUpNh3DJP
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250227_231653_846675_D90F29F6 
-X-CRM114-Status: GOOD (  23.78  )
+X-CRM114-CacheID: sfid-20250227_231653_931165_874A566F 
+X-CRM114-Status: GOOD (  13.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,176 +90,126 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/13] fip: rework fip_image_open()
+Subject: [PATCH 03/13] ARM: k3: r5: drop loading of separate binaries
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-fip_image_open() used to do all the parsing into a struct fip_state
-itself. Instead, only load the FIP image into a buffer and call
-fip_do_parse_buf() with this buffer. This has the advantage that we
-have all parsing of the FIP image in a single place. Also this helps
-with a followup patch which calculates a sha256 over a FIP image
-which can easily done when we have the whole FIP image in a contiguous
-buffer.
+For starting the A52 cores we need TFA, OP-TEE, barebox and ti-dm
+binaries. These can be loaded as separate files from SD/eMMC/DFU or
+alternatively combined into a single FIP image.
+FIP images are convenient to handle, they can easily be generated on the
+command line and fiptool also has support for replacing blobs in images.
+This makes handling of separate binaries rather unnecessary and support
+for it only makes the loading code more complex. Drop it and make FIP
+images the only option which also faciliates integrating of secure boot.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- lib/fip.c | 78 +++++++++++++++++++++++++++++++++------------------------------
- 1 file changed, 41 insertions(+), 37 deletions(-)
+ arch/arm/mach-k3/r5.c | 70 +--------------------------------------------------
+ 1 file changed, 1 insertion(+), 69 deletions(-)
 
-diff --git a/lib/fip.c b/lib/fip.c
-index 23e82098da..aab2795476 100644
---- a/lib/fip.c
-+++ b/lib/fip.c
-@@ -23,6 +23,7 @@
- #include <string.h>
- #include <libfile.h>
- #include <fs.h>
-+#include <linux/kernel.h>
+diff --git a/arch/arm/mach-k3/r5.c b/arch/arm/mach-k3/r5.c
+index ced1eb2856..2418e9ae73 100644
+--- a/arch/arm/mach-k3/r5.c
++++ b/arch/arm/mach-k3/r5.c
+@@ -288,50 +288,15 @@ static void do_dfu(void)
+ 	struct usbgadget_funcs funcs = {};
+ 	int ret;
+ 	struct stat s;
+-	ssize_t size;
  
- #include <fip.h>
- #include <fiptool.h>
-@@ -447,22 +448,17 @@ int fip_update(struct fip_state *fip)
+ 	funcs.flags |= USBGADGET_DFU;
+-	funcs.dfu_opts = "/optee.bin(optee)c,"
+-			 "/bl31.bin(tfa)c,"
+-			 "/ti-dm.bin(ti-dm)c,"
+-			 "/barebox.bin(barebox)cs,"
+-			 "/fip.img(fip)cs";
++	funcs.dfu_opts = "/fip.img(fip)cs";
+ 
+ 	ret = usbgadget_prepare_register(&funcs);
+ 	if (ret)
+ 		goto err;
+ 
+ 	while (1) {
+-		if (!have_bl32) {
+-			size = read_file_into_buf("/optee.bin", BL32_ADDRESS, SZ_32M);
+-			if (size > 0) {
+-				printf("Downloaded OP-TEE\n");
+-				have_bl32 = true;
+-			}
+-		}
+-
+-		if (!have_bl31) {
+-			size = read_file_into_buf("/bl31.bin", BL31_ADDRESS, SZ_32M);
+-			if (size > 0) {
+-				printf("Downloaded TF-A\n");
+-				have_bl31 = true;
+-			}
+-		}
+-
+-		if (!k3_ti_dm) {
+-			ret = read_file_2("/ti-dm.bin", &size, &k3_ti_dm, FILESIZE_MAX);
+-			if (!ret) {
+-				printf("Downloaded TI-DM\n");
+-			}
+-		}
+-
+-		size = read_file_into_buf("/barebox.bin", BAREBOX_ADDRESS, SZ_32M);
+-		if (size > 0) {
+-			have_bl33 = true;
+-			printf("Downloaded barebox image, DFU done\n");
+-			break;
+-		}
+-
+ 		ret = stat("/fip.img", &s);
+ 		if (!ret) {
+ 			printf("Downloaded FIP image, DFU done\n");
+@@ -352,45 +317,12 @@ static void do_dfu(void)
+ 
+ static int load_images(void)
+ {
+-	ssize_t size;
+ 	int err;
+ 
+ 	err = load_fip("/boot/k3.fip", 0);
+ 	if (!err)
+ 		return 0;
+ 
+-	size = read_file_into_buf("/boot/optee.bin", BL32_ADDRESS, SZ_32M);
+-	if (size < 0) {
+-		if (size != -ENOENT) {
+-			pr_err("Cannot load optee.bin: %pe\n", ERR_PTR(size));
+-			return size;
+-		}
+-		pr_info("optee.bin not found, continue without\n");
+-	} else {
+-		pr_debug("Loaded optee.bin (size %u) to 0x%p\n", size, BL32_ADDRESS);
+-	}
+-
+-	size = read_file_into_buf("/boot/barebox.bin", BAREBOX_ADDRESS, SZ_32M);
+-	if (size < 0) {
+-		pr_err("Cannot load barebox.bin: %pe\n", ERR_PTR(size));
+-		return size;
+-	}
+-	pr_debug("Loaded barebox.bin (size %u) to 0x%p\n", size, BAREBOX_ADDRESS);
+-
+-	size = read_file_into_buf("/boot/bl31.bin", BL31_ADDRESS, SZ_32M);
+-	if (size < 0) {
+-		pr_err("Cannot load bl31.bin: %pe\n", ERR_PTR(size));
+-		return size;
+-	}
+-	pr_debug("Loaded bl31.bin (size %u) to 0x%p\n", size, BL31_ADDRESS);
+-
+-	err = read_file_2("/boot/ti-dm.bin", &size, &k3_ti_dm, FILESIZE_MAX);
+-	if (err) {
+-		pr_err("Cannot load ti-dm.bin: %pe\n", ERR_PTR(err));
+-		return err;
+-	}
+-	pr_debug("Loaded ti-dm.bin (size %u)\n", size);
+-
+ 	return 0;
  }
  
- /*
-- * fip_image_open - open a FIP image for readonly access
-+ * fip_image_open - open a FIP image
-  * @filename: The filename of the FIP image
-  * @offset: The offset of the FIP image in the file
-  *
-- * This opens a FIP image for readonly access. This is an alternative
-- * implementation for fip_parse() with these differences:
-+ * This opens a FIP image. This is an alternative implementation for
-+ * fip_parse() with these differences:
-  * - suitable for reading FIP images from raw partitions. This function
-  *   only reads the FIP image, even when the partition is bigger than the
-  *   image
-  * - Allows to specify an offset within the partition where the FIP image
-  *   starts
-- * - Do not memdup the images from the full FIP image
-- *
-- * This function is for easy readonly access to the images within the FIP
-- * image. Do not call any of the above FIP manipulation functions other than
-- * fip_free() on an image opened with this function.
-  */
- struct fip_state *fip_image_open(const char *filename, size_t offset)
- {
-@@ -470,11 +466,13 @@ struct fip_state *fip_image_open(const char *filename, size_t offset)
- 	int ret;
- 	int fd;
- 	struct fip_state *fip_state;
--	LIST_HEAD(entries);
- 	size_t fip_headers_size, total = 0;
--	struct fip_image_desc *desc;
- 	off_t pos;
- 	int n_entries = 0;
-+	struct fip_toc_entry toc_entries[16];
-+	void *buf, *ptr;
-+	int i;
-+	struct fip_toc_entry *toc_entry;
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0)
-@@ -506,11 +504,9 @@ struct fip_state *fip_image_open(const char *filename, size_t offset)
- 
- 	/* read all toc entries */
- 	while (1) {
--		struct fip_image_desc *desc = xzalloc(sizeof(*desc));
--		struct fip_image *image = xzalloc(sizeof(*image));
--		struct fip_toc_entry *toc_entry = &image->toc_e;
-+		uint64_t this_end;
- 
--		desc->image = image;
-+		toc_entry = &toc_entries[n_entries];
- 
- 		ret = read_full(fd, toc_entry, sizeof(*toc_entry));
- 		if (ret < 0)
-@@ -520,53 +516,61 @@ struct fip_state *fip_image_open(const char *filename, size_t offset)
- 			goto err;
- 		}
- 
--		list_add_tail(&desc->list, &fip_state->descs);
--
- 		pr_debug("Read TOC entry %pU %llu %llu\n", &toc_entry->uuid,
- 			 toc_entry->offset_address, toc_entry->size);
- 
--		/* Found the ToC terminator, we are done. */
--		if (uuid_is_null(&toc_entry->uuid))
--			break;
--	}
--
--	/* determine buffer size */
--	fip_for_each_desc(fip_state, desc) {
--		uint64_t this_end = desc->image->toc_e.offset_address + desc->image->toc_e.size;
-+		this_end = toc_entry->offset_address + toc_entry->size;
- 
- 		if (this_end > total)
- 			total = this_end;
-+
- 		n_entries++;
--	}
- 
--	fip_headers_size = n_entries * sizeof(struct fip_toc_entry) + sizeof(fip_toc_header_t);
-+		if (n_entries >= ARRAY_SIZE(toc_entries)) {
-+			ret = -ENOSPC;
-+			goto err;
-+		}
- 
--	total -= fip_headers_size;
-+		/* Found the ToC terminator, we are done. */
-+		if (uuid_is_null(&toc_entry->uuid))
-+			break;
-+	}
- 
--	fip_state->buffer = malloc(total);
--	if (!fip_state->buffer) {
-+	buf = malloc(total);
-+	if (!buf) {
- 		ret = -ENOMEM;
- 		goto err;
- 	}
- 
--	ret = read_full(fd, fip_state->buffer, total);
-+	ptr = buf;
-+
-+	memcpy(ptr, &toc_header, sizeof(toc_header));
-+	ptr += sizeof(toc_header);
-+
-+	for (i = 0; i < n_entries; i++) {
-+		memcpy(ptr, &toc_entries[i], sizeof(*toc_entry));
-+		ptr += sizeof(*toc_entry);
-+	}
-+
-+	fip_headers_size = n_entries * sizeof(struct fip_toc_entry) + sizeof(fip_toc_header_t);
-+
-+	ret = read_full(fd, ptr, total - fip_headers_size);
- 	if (ret < 0)
- 		goto err;
- 
--	if (ret < total) {
-+	if (ret < total - fip_headers_size) {
- 		ret = -ENODATA;
- 		goto err;
- 	}
- 
--	close(fd);
-+	ret = fip_do_parse_buf(fip_state, buf, total, NULL);
-+	if (ret)
-+		goto err;
- 
--	fip_for_each_desc(fip_state, desc) {
--		desc->image->buffer = fip_state->buffer +
--			desc->image->toc_e.offset_address - fip_headers_size;
--		desc->image->buf_no_free = true;
--	}
-+	close(fd);
- 
- 	return fip_state;
-+
- err:
- 	close(fd);
- 	fip_free(fip_state);
 
 -- 
 2.39.5
