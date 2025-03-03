@@ -1,59 +1,61 @@
-Delivery-date: Mon, 03 Mar 2025 09:55:38 +0100
+Delivery-date: Mon, 03 Mar 2025 09:58:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tp1aM-009Gjj-2M
+	id 1tp1dN-009Gln-2j
 	for lore@lore.pengutronix.de;
-	Mon, 03 Mar 2025 09:55:38 +0100
+	Mon, 03 Mar 2025 09:58:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tp1aL-0002hB-Jr
-	for lore@pengutronix.de; Mon, 03 Mar 2025 09:55:38 +0100
+	id 1tp1dM-00037e-JU
+	for lore@pengutronix.de; Mon, 03 Mar 2025 09:58:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IPrKV4Q9pV9QC8D7yJzpOBkgosUI3HIo9Sr4r+L/kwc=; b=nOj8uy71ixiBQkZASlQaJrLos2
-	vREiNIHi17HnmGv2hn2rsMNP1Y4T2bNtHdAoRGqBHoLfYw5oBPcZjsQZ1WzwvWFbRD8HdZ9FtKKWv
-	8uFz+Qb8ymBbuNCI3/WjwJU+qYF+AX88pUkdHULcmHSf7pWWCjDpC94RVmnThjmOYv2cuDuofirRw
-	YAPMw/cPKTCF1upGi6qBji4DByWC8WlOtSvS9Vwap0/xRAjekTjJOu/z9FmVqx+e8NrV0INkzoJCj
-	zF61ceyb9xGRH/Mg4Enca2veGdRvk+vuuG/ZHtYsEH81V3HsWjJVgLZTsDsXhUK4idZl+01O2NyfX
-	Kqm2ZUKw==;
+	bh=BMJKAyge6+HxqcEKc9jUx7TIibv3VVpvdUJaU2lR1y4=; b=UIYYVjskgKMG65BagL/vcJIevV
+	7t4PWCzosTah8vGja4TsYSrymdPdvBt9dS6Hpn1yEo/7v9xTZvT1r9ffl7I6gKM0hy5eY3UnatTtz
+	b89n2RkrtHe1Utj7rW/GTkpIGAGzPs8sHeD9LZZY/FMcCzuwML1WiyxPXb2Zwm0YQ97lYvKvuYx+R
+	otzOslpzUeyB3JDGfxT3XIaMXDZwWiGR0+PxbKxqnnnxC43iu1MqRA+9GMzIdG2AWwCmPZYY8EVuu
+	zwBhq1lJXYnO1U+em9+PFR4TbO7HawlqygTaSZt9Frkxrs3l9qqV8nVlsIF9rPEQMEqI3Up9ijOo7
+	2uRUcTug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tp1Zs-000000000kx-0LuR;
-	Mon, 03 Mar 2025 08:55:08 +0000
+	id 1tp1cx-000000001v1-1Jpk;
+	Mon, 03 Mar 2025 08:58:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tp1N5-0000000HZJN-1RKA
+	id 1tp1W6-0000000Hb7O-28gY
 	for barebox@lists.infradead.org;
-	Mon, 03 Mar 2025 08:41:56 +0000
+	Mon, 03 Mar 2025 08:51:15 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tp1N4-0000vX-4Y; Mon, 03 Mar 2025 09:41:54 +0100
-Message-ID: <3a8afe4a-f7e7-4158-b302-09f67dc11d8f@pengutronix.de>
-Date: Mon, 3 Mar 2025 09:41:53 +0100
+	id 1tp1W5-0002C2-49; Mon, 03 Mar 2025 09:51:13 +0100
+Message-ID: <0febcf92-f6b9-4717-a374-da93c1b4c205@pengutronix.de>
+Date: Mon, 3 Mar 2025 09:51:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Stefano Manni <stefano.manni@gmail.com>
-Cc: barebox@lists.infradead.org
-References: <20250221180109.14129-1-stefano.manni@gmail.com>
- <06d40295-264c-4119-a201-f6e045def59d@pengutronix.de>
- <6N27SS.D8B9D3CEGOUH3@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Jonathan Bar Or <jonathanbaror@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
+References: <20250219141844.1912413-1-s.hauer@pengutronix.de>
+ <174012323334.2354255.16758545638294107895.b4-ty@pengutronix.de>
+ <CABMsoEGDcxSCSfdnV0B1dKvvJaQYBYhpAu2R_t31j5g_Q8fVBg@mail.gmail.com>
+ <Z8AyD_cHzW_Wxcqz@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <6N27SS.D8B9D3CEGOUH3@gmail.com>
+In-Reply-To: <Z8AyD_cHzW_Wxcqz@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250303_004155_378665_5360B37F 
-X-CRM114-Status: GOOD (  13.10  )
+X-CRM114-CacheID: sfid-20250303_005114_546622_C3F5C29C 
+X-CRM114-Status: GOOD (  18.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,45 +77,81 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] imx-bbu-nand-fcb: do not use hardcoded devicefile
+Subject: Re: [PATCH 0/5] Filesystem memory corruption fixes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 24.02.25 16:49, Stefano Manni wrote:
-> Hello Ahmad,
-> 
-> On ven, feb 21 2025 at 18:33:04 +01:00:00, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->> Hello Stefano,
->>
->> On 21.02.25 19:01, Stefano Manni wrote:
->>>  Device file was hardcoded to "nand0.barebox".
->>>  This patch harmonize the signature of
->>>
->>>  imx6_bbu_nand_register_handler()
->>>  imx7_bbu_nand_register_handler()
->>>  imx28_bbu_nand_register_handler()
->>>
->>>  with the other bbu register functions in order to take
->>>  the devicefile as parameter.
->>
->> Is this this the sole motivation behind the patch or do you
->> intend to actually make use of the ability of varying
->> the devicefile?
-> 
-> my purpose is to let people use a device/partition different from the hardcoded one.
+Hi,
 
-Can you have multiple NANDs? But yes, customizing partition name can
-be useful.
+On 27.02.25 10:36, Sascha Hauer wrote:
+> On Sat, Feb 22, 2025 at 12:46:18PM -0800, Jonathan Bar Or wrote:
+>> Those are awesome, thank you.
+>> We intend to publicly disclose March 19th, is that okay?
+> 
+> Well, this is a public list, so they are already disclosed...
 
-Thanks,
+In a way, yes, but most users will probably only find out about this
+once their CVE tooling reports that they are using a barebox version
+that doesn't fix e.g. CVE-2025-26722.
+
+CVE-2025-26722 (and I assume the others) are reserved right now, but
+lack a description of the issue and its possible security implications.
+
+We should probably write down some extra policy here:
+
+  - Should CVE numbers even be mentioned for yet-undisclosed issues?
+
+  - An explicit policy about disclosure timeline. Bugs are fixed all the
+    time and I think, it's desirable that disclosure is postponed until
+    after a release, so users informed of the issue directly know
+    what to do about it. For critical security issues, a point release
+    can be done on short notice
+
+@Jonathan, March 19th is ok for us, but we don't object to any earlier
+date.
+
+Cheers,
 Ahmad
 
+> Sascha
 > 
 >>
->> Thanks,
->> Ahmad
-> 
-> 
+>> Jonathan
+>>
+>> On Thu, Feb 20, 2025 at 11:33 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>>>
+>>>
+>>> On Wed, 19 Feb 2025 15:18:39 +0100, Sascha Hauer wrote:
+>>>> These are some fixes for memory corruptions that can occur on corrupted
+>>>> or manipulated filesystems.
+>>>>
+>>>> In case you use one of the affected filesystems in a secure boot chain
+>>>> you should apply these patches.
+>>>>
+>>>> Normally you shouldn't use a barebox filesystem in a secure boot chain,
+>>>> but instead use FIT images on a raw partition. We never made this explicit
+>>>> though. Ahmad has done this recently:
+>>>>
+>>>> [...]
+>>>
+>>> Applied, thanks!
+>>>
+>>> [1/5] CVE-2025-26722: fs: squashfs: Ensure positive inode length
+>>>       https://git.pengutronix.de/cgit/barebox/commit/?id=6281a871e2c6 (link may not be stable)
+>>> [2/5] CVE-2025-26724: fs: cramfs: fix malloc(size + constant) buffer overflow issues
+>>>       https://git.pengutronix.de/cgit/barebox/commit/?id=f86e528c8fba (link may not be stable)
+>>> [3/5] CVE-2025-26723: fs: ext4: fix malloc(size + constant) buffer overflow issues
+>>>       https://git.pengutronix.de/cgit/barebox/commit/?id=51eea5c16fd2 (link may not be stable)
+>>> [4/5] CVE-2025-26725: fs: jffs2: fix malloc(size + constant) buffer overflow issues
+>>>       https://git.pengutronix.de/cgit/barebox/commit/?id=e7397340359d (link may not be stable)
+>>> [5/5] CVE-2025-26721: fs: pstore: fix malloc(size + constant) buffer overflow issues
+>>>       https://git.pengutronix.de/cgit/barebox/commit/?id=7563f5722dfd (link may not be stable)
+>>>
+>>> Best regards,
+>>> --
+>>> Sascha Hauer <s.hauer@pengutronix.de>
+>>>
+>>
 > 
 
 
