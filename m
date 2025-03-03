@@ -1,66 +1,54 @@
-Delivery-date: Mon, 03 Mar 2025 14:50:08 +0100
+Delivery-date: Mon, 03 Mar 2025 15:34:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tp6BM-009MDE-1f
+	id 1tp6sV-009N4E-1r
 	for lore@lore.pengutronix.de;
-	Mon, 03 Mar 2025 14:50:07 +0100
+	Mon, 03 Mar 2025 15:34:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tp6BL-0007hu-Bs
-	for lore@pengutronix.de; Mon, 03 Mar 2025 14:50:07 +0100
+	id 1tp6sU-0004WP-Cm
+	for lore@pengutronix.de; Mon, 03 Mar 2025 15:34:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=8y/QhsBtwybkK1ep6umv83GKaaj/Z5dxskNN6+iw9os=; b=0Z7K+4bJpIdPuoby+qpdqC9WlG
-	qH3U5MV092Bv82/I0qdEOBZor/YRaY+9EzPiO7nj1ML2hrHkhQYI94p1U+UTBquzATUdimqUCulu3
-	p2rZJfH6h02+Ums2mX67tWbKwwqbRcoilMcjAcH6RdB9w7bwRWso4EGvTRhEa/N0GJmgwoyzuosUA
-	YUEutO7FlPsGOc53Fr1pr4MAVSJhtC1B1tA7ALETn4BnPdKoAonaqH7cH4QKxpLfYOz/8pYPyeTkz
-	uXN4BTNyKmtcbhqIK2M2Lpb6ZthHm45N+rwQUaxrY/jThzZ9MKtiMZav1pcFsJ7KjcsU8YI4+qv9D
-	3lHHYZJg==;
+	bh=mMNI82oWZXivybKhHeEwmAH5FtSYa4N88ZrBgrFHnmc=; b=WpIDaut7EO1o1+/oIdwlASwSzw
+	7apqMgkHki6asSXaKuGKY2Tk2gwNUNpJLutAR7sDbh/HvtRwf/OclNhcUUSKDmp1zrlOjkF0U1tnj
+	i0p69h9k3g4XiTiYiZq8XKCp0cWDhtb9YAlEYJKwxNQ2RXmSrytx6NP+SAar8a7+TIiKqy4BUlnck
+	du8gnu0KYxYLfy4skR6rrhR3cJgvly4PT0nJGgWLik9MeYfvpWcw42qube7KIZHw2HL+iicjq0iqI
+	sfUqjFAldkkYlTk+hwidwLN0wYsgra8QqD6U7p5rGIXeTSJPJaYk2G5118p5YbZ+cPBR69upPI3+O
+	qENvksxQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tp6Ag-00000000ypW-2BuD;
-	Mon, 03 Mar 2025 13:49:26 +0000
+	id 1tp6rx-000000017P5-0XSY;
+	Mon, 03 Mar 2025 14:34:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tp5pz-00000000uuO-1SXS
+	id 1tp6pl-0000000176X-1sCB
 	for barebox@lists.infradead.org;
-	Mon, 03 Mar 2025 13:28:04 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tp5px-0004eX-RI; Mon, 03 Mar 2025 14:28:01 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tp5px-003o2y-28;
-	Mon, 03 Mar 2025 14:28:01 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tp5px-00DHMM-1q;
-	Mon, 03 Mar 2025 14:28:01 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Mon, 03 Mar 2025 14:31:55 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <bst@pengutronix.de>)
+	id 1tp6ph-0004Ej-S2; Mon, 03 Mar 2025 15:31:49 +0100
+From: Bastian Krause <bst@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  3 Mar 2025 14:28:00 +0100
-Message-Id: <20250303132800.3164782-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Bastian Krause <bst@pengutronix.de>
+Date: Mon,  3 Mar 2025 15:31:44 +0100
+Message-Id: <20250303143144.2953662-1-bst@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250303_052803_387746_5FA3A7B1 
-X-CRM114-Status: UNSURE (   9.95  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250303_063153_480678_54D97BB8 
+X-CRM114-Status: GOOD (  10.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,40 +66,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] sandbox: libc_malloc: multiply, not add, args in calloc overflow check
+Subject: [PATCH] mfd: rn5t568: add priority to reset_source_set_device()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-libc_malloc is built without access to barebox headers, so instead of
-size_mul it's using GCC builtins directly.
+30322f4b565 ("reset_source: give reset_source_set_device a priority
+parameter") introduced a reset source priority parameter, but forgot
+applying a priority the Ricoh RN5T568 PMIC driver's
+reset_source_set_device() call.
 
-The check against BAREBOX_MALLOC_MAX_SIZE should've been done using the
-product as indicated by the variable name, but erroneously
-__builtin_add_overflow was used instead of __builtin_mul_overflow.
+So apply the default priority 200 here, too.
 
-Fixes: 8839004152f7 ("sandbox: libc_malloc: fail allocations exceeding MALLOC_MAX_SIZE")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Fixes this build error:
+
+  drivers/mfd/rn5t568.c: In function 'rn5t568_reset_reason_detect':
+  drivers/mfd/rn5t568.c:82:9: error: too few arguments to function 'reset_source_set_device'
+     82 |         reset_source_set_device(dev, type);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~
+  In file included from drivers/mfd/rn5t568.c:17:
+  include/reset_source.h:31:6: note: declared here
+     31 | void reset_source_set_device(struct device *dev, enum reset_src_type st,
+        |      ^~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: 30322f4b565 ("reset_source: give reset_source_set_device a priority parameter")
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
 ---
- arch/sandbox/os/libc_malloc.c | 2 +-
+ drivers/mfd/rn5t568.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/os/libc_malloc.c b/arch/sandbox/os/libc_malloc.c
-index ac97fc37eee5..dd0f8670ff71 100644
---- a/arch/sandbox/os/libc_malloc.c
-+++ b/arch/sandbox/os/libc_malloc.c
-@@ -67,7 +67,7 @@ void *barebox_calloc(size_t n, size_t elem_size)
- 	size_t product;
- 	void *mem = NULL;
+diff --git a/drivers/mfd/rn5t568.c b/drivers/mfd/rn5t568.c
+index 7468338a2d5..e140cea03b0 100644
+--- a/drivers/mfd/rn5t568.c
++++ b/drivers/mfd/rn5t568.c
+@@ -79,7 +79,7 @@ static int rn5t568_reset_reason_detect(struct device *dev,
+ 			return -EINVAL;
+ 	}
  
--	if (!__builtin_add_overflow(n, elem_size, &product) &&
-+	if (!__builtin_mul_overflow(n, elem_size, &product) &&
- 	    product <= BAREBOX_MALLOC_MAX_SIZE)
- 		mem = calloc(n, elem_size);
- 	if (!mem)
+-	reset_source_set_device(dev, type);
++	reset_source_set_device(dev, type, 200);
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
