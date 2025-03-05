@@ -1,92 +1,91 @@
-Delivery-date: Tue, 04 Mar 2025 22:54:23 +0100
+Delivery-date: Wed, 05 Mar 2025 07:22:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tpaDY-009vhY-0R
+	id 1tpi8w-00A4sj-0J
 	for lore@lore.pengutronix.de;
-	Tue, 04 Mar 2025 22:54:23 +0100
+	Wed, 05 Mar 2025 07:22:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tpaDW-0004tn-T1
-	for lore@pengutronix.de; Tue, 04 Mar 2025 22:54:23 +0100
+	id 1tpi8u-0000OH-Pg
+	for lore@pengutronix.de; Wed, 05 Mar 2025 07:22:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7N/wij7i8DtZZsxC9tJnsNtPT9PqDVzr0R4ZHJOwUnM=; b=Th3DRVvrsfmx71kg6pvcQShHAX
-	bFCHqS//dlx7NGKUYJ7uu7IEaqvIa6HfrTsL3p6ZwFoJxJa/CAKkehrl/nRPY56K4MzMu821vH3A5
-	rZBM7jSIbNS4m9LS6ct8z284L7+WclhhMDNWo1GWtASnA5mthHcFtKUH/oDjMyIHIPzWk4kiapgO9
-	2057xbc3TXMTmBLK6l1nVica6uZqsnSBM1Q922fNGOMP1wm+uQLgDKV4pWAen9+wQE+tVIZZoQroz
-	H+8l+3cTh/VoZqVUAtCK98REYH8Luu5Kw3+DYrF4lMPlEReokNSjoPyDacPQ2kj6YOsoTL8CAeG2W
-	+rHyD0Hg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=y5n4dgo4zX9jQh0tjeKyDW/n+308lMK5ez4c87E4ebI=; b=ILuk9OWByPlYSBj5lpG0Yp5e28
+	7x32zbwvwZV90HUUkJrhZhZW7iECkoG5JAa3Z+WOcUIGIHRfZH7q+IbpivGLVMxS7vakrOCRrALFt
+	PlImEWOzkfLLDI5WDO5K6CpMXJoVGPaSfjfy1IQ7lskQfpbjF6RRcQenYNUlx28LQi7Gb1UDcOZAn
+	u2evj4lhSpTxQqcdU75bglTS+J7RQxswWJAZbJ3OHhqdvhn14ryPDJZ0SFur6VQJjpceW8k20SzJ4
+	IlQ7a5ialpqc2Y1QxQzCuWW1XpObwOd5M6ehW3CBfxSMWDZvHf3hZeQeVfBqrk+GR/oRzIV9NXfFN
+	zoYHWRTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tpaCv-00000006LFk-1HVM;
-	Tue, 04 Mar 2025 21:53:45 +0000
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+	id 1tpi8H-000000076p9-0X0X;
+	Wed, 05 Mar 2025 06:21:29 +0000
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tpa9X-00000006KpR-1Ror
+	id 1tpi88-000000076nn-3UXx
 	for barebox@lists.infradead.org;
-	Tue, 04 Mar 2025 21:50:16 +0000
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-5e04cb346eeso10584079a12.2
-        for <barebox@lists.infradead.org>; Tue, 04 Mar 2025 13:50:14 -0800 (PST)
+	Wed, 05 Mar 2025 06:21:22 +0000
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-549681574e0so3232163e87.2
+        for <barebox@lists.infradead.org>; Tue, 04 Mar 2025 22:21:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741125013; x=1741729813; darn=lists.infradead.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741155678; x=1741760478; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7N/wij7i8DtZZsxC9tJnsNtPT9PqDVzr0R4ZHJOwUnM=;
-        b=G08sqLRupGKC2scC7Kwjnj4rlZ7B3gKo0MYS+ww1+1QMDwNJqnodvhDsk3ZaL8q6KH
-         cBZyLSzwWIcbnznWINE+KUi2R/4gjacMS3bXzQiR5L93TfPSYXPFRxywXfRUnzTg6DuV
-         T6hmA1tYtIOCXUOUo91aKAJRnM3xmsxbxA9WZmnP5QNIeNey6LH+SLIUfgxL8BwD3ern
-         c93vRM1nV7N60blsJbbtcW2o1RcQN5OeeVpzGrmEvjvRbCU3buE6Dkszk3xutYBpFi7g
-         l6LH6PMkB0Qvo44/Fk49rZ6CPKm+turwmlh2RyVZvuJj/HpkTN8MhXC5/dpi6mChby+w
-         hPpw==
+        bh=y5n4dgo4zX9jQh0tjeKyDW/n+308lMK5ez4c87E4ebI=;
+        b=JIsihEtWrQwCE5wZyJ4fuiiFQfcTI2pYzQm1YoOGmFQiowMeJBk30K/NjuCWvVX29y
+         SeyoPmfCzFX9BXzAQV7HAzQdkQSuSbfadIZF51a8FnFTVW5LiNSX268XXWAlSPIm1VK/
+         nwomVpNr/6FP451gCLpd1JSLJEuLaGeEbdFsMTOAkm/fgwMw78sTQIB1ItNHLqTPxck4
+         4SGRMNby1WtsX3Tvfs5327B9a+ApUdjlXT+uYhjugPbWgq3uqIsKVvAHoqfer4Ns0hkx
+         fyYxIbZg4Mhfn2Bbwj/zz0GoNeuaWuta+DkxI+fEbqo8FOBgT+7x9BWM40np8FTWLDd/
+         zBwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741125013; x=1741729813;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741155678; x=1741760478;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7N/wij7i8DtZZsxC9tJnsNtPT9PqDVzr0R4ZHJOwUnM=;
-        b=YyVuwZIT8tAj4xInRsjWATpxXQ8Fl7m7AzPGPTRhosC65lGGPDl6av8JqM81UFC4hN
-         l8pJ1LZKyPnc2kMK5qqucYVFar6lfEHF6Gu0P5PEDklz2oWbGEpG8JIt1hN0XagnH/ci
-         uEkOTjsxNx0p4AtcfgPGgCpOT4ebR7IB8+I8vnzPi7e90MsoGVeulnL84zxpXkreQGzD
-         w+f6skIYzTRbdMhZnw2AjHdtFUX6vDn+wm61hDe7rCsCFhPtIDSnb4If4uISo5MV1KlL
-         63yS9NrmPC6oXQVRtRyMfT62ObEgYSluyXzOoYItODCzfZOb+/EcZDoRfvGhurHh/Ggx
-         ve5w==
-X-Forwarded-Encrypted: i=1; AJvYcCUyMNLFKUos4fephqb4WGrVbDYeGhErGjR6H/iVKC9alOXl1JK75kJVezbKRq2F27yhP2r4voaQ@lists.infradead.org
-X-Gm-Message-State: AOJu0YyPTGwCRYsMzAj0demz3mvgjRRd4AVOAAB/j8yz/sd7Up1EI2xZ
-	Z1IbNeuDUWOv+5+se1Lhp4IytyzFgdywPjyQ1V/4YowZURr7Va1P25jjzHk6geFPuSkOeNJmM6V
-	+vcMq5IxqhVVQ/D9pK50VLFnPR+CzaB7B
-X-Gm-Gg: ASbGnctavnCTI/UQ+WuCxQ7ZjVWRKSS6OGtkE0PcLj7voPFQkJ7hWmUHiwrGH9PcP/b
-	BtK9L/8BjmK0pXw9bSmQu5Gavkcx91Xz+DpXG6U71wxZNSJs5mJCT9Q6vnV3uniP5l4MbuXnEIx
-	4aQ2Nt178ldx9KZISdx0WvvPnScA==
-X-Google-Smtp-Source: AGHT+IEJAswJvdj5lHaiJUHvb4y+C2EC7soBOnbhX5XmjLFedse3EbLrrY8gP8VauQ4MYjdOjZtY5ugoTQOTuaMhQqI=
-X-Received: by 2002:a17:907:3f29:b0:ac1:e889:c2a with SMTP id
- a640c23a62f3a-ac20da47762mr80097566b.11.1741125012918; Tue, 04 Mar 2025
- 13:50:12 -0800 (PST)
+        bh=y5n4dgo4zX9jQh0tjeKyDW/n+308lMK5ez4c87E4ebI=;
+        b=MnrPOMdObNblxK6w4a+KhlijQBd0OzrA7N/9sLUmheOxfoJ/p2JGiW4VY/pPGWazaH
+         JwcBqfAgya04DThWEWsoy91cyYkrx3aqK0uFDXcZzPZR2BRbmy+ibkAMfa11SHtX6g3E
+         oxCvqX60bDnuGsrpaLpJDVifri/jb0sDyb+BANs/V7BOPUxYPMAG9TySX8qLt9zFrmwH
+         oLcaLIaBbu9IuWZM9CDe0IieXYbKmPEhzCINp8qsbJ+D+rLpbipK3nlwhD3V49N7zYH7
+         4U6Wz5tb7FsP1tApk+ufZ7aoh6Is79KcrDL5nFbaZz/HdLR9CEQa4xYK13tOziaZf2Hn
+         GGvQ==
+X-Gm-Message-State: AOJu0YwU9BmJM48dTDRt2d+UqZsA/0zSGwpsRN4OfVXaqoH8cBppD5BW
+	EBK4jt4RvZ79w7HbPE18+r95sm/+PxiJftk7hNO6EWX5rtkD9bGltCzpod7osUI=
+X-Gm-Gg: ASbGncsjkmP4oUpQ7Sg0iDN0ec9iYT3Mk1T1pPzbhjh84+MxXIo/UrI1I0maBboEKzi
+	sC8sKfNPfnFWoDMT0lyzLNBos16F+k004h3RTr73CMtA5vdMgi0wL3Ayo+wiHJOqcL3WJ8KZh0J
+	57SXNPMtJWxxfjOAOV12zH/VgDDI+ARr8mKkLQ1nDlH6ZnHucF8NjL6Yg3qXJppezfx/vdH8Sxu
+	Fbtx2t+ZpQjHSKz64LYVQ3KuLsO5ZOxE9SXNGzP1yDkAqkBgpTJBiVe2Iog30gvD18mCsObmtah
+	hPai2k4N7hMAfUtqUelV9fS4rXSUmi8ydfzDSDU1Md24p6rrPWN66Og/entbJu3tooQ=
+X-Google-Smtp-Source: AGHT+IEJnC/IDrKprVDXdJvicqsdhZyCVlaPeElgJ5yM08H53t2HiApas/tkniW5pYYh+7ANmSkFbQ==
+X-Received: by 2002:a05:6512:3ca8:b0:549:5769:6afd with SMTP id 2adb3069b0e04-5497d32f67emr659932e87.5.1741155678232;
+        Tue, 04 Mar 2025 22:21:18 -0800 (PST)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54973942f2esm526279e87.58.2025.03.04.22.21.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 22:21:16 -0800 (PST)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Wed,  5 Mar 2025 09:20:59 +0300
+Message-Id: <20250305062101.25588-2-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20250305062101.25588-1-eagle.alexander923@gmail.com>
+References: <20250305062101.25588-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
-References: <CANH4o6Njc3uHE=NbasRJrRr0W5B89R8MTM_BwGwab7t5fNWuaA@mail.gmail.com>
- <Z6yxUVTp0vGWqs7Q@pengutronix.de> <CANH4o6NRK2+ekNe_LrUaoAi8PVbi-MC3hWerv4g6F-WmXmyK5w@mail.gmail.com>
- <Z8GWfv4oIhB7CDSU@pengutronix.de> <3ba4d5f3-9679-4a32-a3e7-a8c958107df9@pengutronix.de>
-In-Reply-To: <3ba4d5f3-9679-4a32-a3e7-a8c958107df9@pengutronix.de>
-From: Martin Wege <martin.l.wege@gmail.com>
-Date: Tue, 4 Mar 2025 22:50:00 +0100
-X-Gm-Features: AQ5f1JohgCTa3TYxRp_ZAavCXwBfXYIgjny7UEEsDjveqN7K5vOdP47PQBKMF4w
-Message-ID: <CANH4o6PN3tJC+zLt_eLeKzJ6BVFnGo+vYFDF+9Hjp9x6oz626g@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Dan Shelton <dan.f.shelton@gmail.com>, 
-	Cedric Blancher <cedric.blancher@gmail.com>, Barebox List <barebox@lists.infradead.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250304_135015_387794_D63E12C1 
-X-CRM114-Status: GOOD (  23.23  )
+X-CRM114-CacheID: sfid-20250304_222120_870252_A17EA14A 
+X-CRM114-Status: GOOD (  12.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -104,77 +103,127 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: Mount NFSv4.2 filesystem in barebox?
+Subject: [PATCH 2/4] at91: Use the ddramc driver for all boards whose architecture uses it
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Mar 3, 2025 at 9:40=E2=80=AFAM Ahmad Fatoum <a.fatoum@pengutronix.d=
-e> wrote:
->
-> Hi,
->
-> On 28.02.25 11:57, Sascha Hauer wrote:
-> > On Fri, Feb 21, 2025 at 12:54:00PM +0100, Martin Wege wrote:
-> >> On Wed, Feb 12, 2025 at 3:33=E2=80=AFPM Sascha Hauer <s.hauer@pengutro=
-nix.de> wrote:
-> >>>
-> >>> Hi Martin,
-> >>>
-> >>> On Tue, Feb 11, 2025 at 01:56:58PM +0100, Martin Wege wrote:
-> >>>> Hello!
-> >>>>
-> >>>> Does barebox have support to mount a NFSv.2 filesystem?
-> >>>
-> >>> No, not yet. For NFSv4 we would first need TCP support. While we star=
-ted
-> >>> to integrate a TCP stack we are not there yet unfortunately.
-> >>
-> >> How long is this going to take?
-> >
-> > I don't think this will happen anytime soon. It's quite some work and
-> > our bandwidth for adding such a feature without (paying) customer
-> > demand is limited.
-> >
-> > That said, the lack of NFSv4 support is nagging me personally as well.
->
-> We had a discussion about this last year, but it didn't result in any
-> upstream code yet:
-> https://lore.barebox.org/barebox/CAAvCNcCZhS8mkvdgcJ2L-eiur+OxgWEXRLnadO_=
-HFyHfSi7WFA@mail.gmail.com/
->
-> One question that I still have, is what do you use NFSv4 for?
-> Is it just for development and your IT is disabling NFSv3?
+Reuse ddramc driver for all SAMA5D2/3/4 boards.
 
-No, NFSv4.1 (NFSv4.0 is obsolete due to bugs) offers better
-performance, more flexibility, smaller footprint, better caching
-(delegations), ACLs, SELinux support, and can be tunneled through
-firewalls because it only uses TCP port 2049 and nothing else.
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ arch/arm/boards/sama5d4_xplained/lowlevel.c |  4 ++--
+ arch/arm/mach-at91/ddramc.c                 |  4 ++--
+ arch/arm/mach-at91/sama5d3_devices.c        |  7 +++----
+ arch/arm/mach-at91/sama5d4_devices.c        |  7 +++----
+ include/mach/at91/at91_ddrsdrc.h            | 11 -----------
+ 5 files changed, 10 insertions(+), 23 deletions(-)
 
->
-> Do you use it in the field?
+diff --git a/arch/arm/boards/sama5d4_xplained/lowlevel.c b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+index 183bd9c5a9..5763333f39 100644
+--- a/arch/arm/boards/sama5d4_xplained/lowlevel.c
++++ b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+@@ -10,7 +10,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ 
+-#include <mach/at91/at91_ddrsdrc.h>
++#include <mach/at91/ddramc.h>
+ #include <mach/at91/hardware.h>
+ 
+ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+@@ -19,5 +19,5 @@ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint
+ 
+ 	arm_setup_stack(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE);
+ 
+-	barebox_arm_entry(SAMA5_DDRCS, at91sama5d4_get_ddram_size(), NULL);
++	sama5d4_barebox_entry(0, NULL);
+ }
+diff --git a/arch/arm/mach-at91/ddramc.c b/arch/arm/mach-at91/ddramc.c
+index 4d0637b487..ca77889ecc 100644
+--- a/arch/arm/mach-at91/ddramc.c
++++ b/arch/arm/mach-at91/ddramc.c
+@@ -30,14 +30,14 @@ void __noreturn sama5d3_barebox_entry(unsigned int r4, void *boarddata)
+ {
+ 	__sama5d3_stashed_bootrom_r4 = r4;
+ 
+-	barebox_arm_entry(SAMA5_DDRCS, at91sama5d3_get_ddram_size(),
++	barebox_arm_entry(SAMA5_DDRCS, sama5_ramsize(IOMEM(SAMA5D3_BASE_MPDDRC)),
+ 			  boarddata);
+ }
+ void __noreturn sama5d4_barebox_entry(unsigned int r4, void *boarddata)
+ {
+ 	__sama5d4_stashed_bootrom_r4 = r4;
+ 
+-	barebox_arm_entry(SAMA5_DDRCS, at91sama5d4_get_ddram_size(),
++	barebox_arm_entry(SAMA5_DDRCS, sama5_ramsize(IOMEM(SAMA5D4_BASE_MPDDRC)),
+ 			  boarddata);
+ }
+ 
+diff --git a/arch/arm/mach-at91/sama5d3_devices.c b/arch/arm/mach-at91/sama5d3_devices.c
+index f6d5617e5f..4871c2bd69 100644
+--- a/arch/arm/mach-at91/sama5d3_devices.c
++++ b/arch/arm/mach-at91/sama5d3_devices.c
+@@ -21,10 +21,9 @@
+ 
+ void at91_add_device_sdram(u32 size)
+ {
+-	if (!size)
+-		size = at91sama5d3_get_ddram_size();
+-
+-	arm_add_mem_device("ram0", SAMA5_DDRCS, size);
++	add_generic_device("sama5-ddramc", DEVICE_ID_SINGLE, NULL,
++			   SAMA5D3_BASE_MPDDRC, SZ_512,
++			   IORESOURCE_MEM, NULL);
+ 	add_mem_device("sram0", SAMA5D3_SRAM_BASE,
+ 			SAMA5D3_SRAM_SIZE, IORESOURCE_MEM_WRITEABLE);
+ }
+diff --git a/arch/arm/mach-at91/sama5d4_devices.c b/arch/arm/mach-at91/sama5d4_devices.c
+index e438bd0d10..4a81e7cd40 100644
+--- a/arch/arm/mach-at91/sama5d4_devices.c
++++ b/arch/arm/mach-at91/sama5d4_devices.c
+@@ -21,10 +21,9 @@
+ 
+ void at91_add_device_sdram(u32 size)
+ {
+-	if (!size)
+-		size = at91sama5d4_get_ddram_size();
+-
+-	arm_add_mem_device("ram0", SAMA5_DDRCS, size);
++	add_generic_device("sama5-ddramc", DEVICE_ID_SINGLE, NULL,
++			   SAMA5D4_BASE_MPDDRC, SZ_512,
++			   IORESOURCE_MEM, NULL);
+ 	add_mem_device("sram0", SAMA5D4_SRAM_BASE,
+ 		       SAMA5D4_SRAM_SIZE, IORESOURCE_MEM_WRITEABLE);
+ }
+diff --git a/include/mach/at91/at91_ddrsdrc.h b/include/mach/at91/at91_ddrsdrc.h
+index b9b0eb20b3..d511e157b2 100644
+--- a/include/mach/at91/at91_ddrsdrc.h
++++ b/include/mach/at91/at91_ddrsdrc.h
+@@ -357,17 +357,6 @@ static inline u32 at91sam9n12_get_ddram_size(void)
+ 	return at91_get_ddram_size(IOMEM(AT91SAM9N12_BASE_DDRSDRC0), true);
+ }
+ 
+-static inline u32 at91sama5d3_get_ddram_size(void)
+-{
+-	return at91_get_ddram_size(IOMEM(SAMA5D3_BASE_MPDDRC), true);
+-}
+-
+-static inline u32 at91sama5d4_get_ddram_size(void)
+-{
+-	return at91_get_ddram_size(IOMEM(SAMA5D4_BASE_MPDDRC), true);
+-}
+-
+-
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif	/* #ifndef __AT91_DDRSDRC_H__ */
+-- 
+2.39.1
 
-Yes, we do
-
->
-> Knowing about the use case helps with prioritizing future work.
-> As it stands, NFS is mostly understood as development feature and
-> it's expected so far that interested users will be able to provide
-> a NFSv3 UDP server in their development network.
-
-No, NFS is not only a development feature. For example CERN uses NFS
-boot (with patched NFSv4.1 stack) in radiation environments - that
-saves a SSD per embedded machine, which is typically one of the most
-affected pieces from radiation. AIRBUS also uses nfsboot in their
-equipment and flight deck systems.
-
-So yes, you would have customers for NFSv4.1 support in barebox.
-
-Thanks,
-Martin
 
 
