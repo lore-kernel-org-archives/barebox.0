@@ -1,57 +1,88 @@
-Delivery-date: Wed, 05 Mar 2025 15:05:57 +0100
+Delivery-date: Thu, 06 Mar 2025 06:40:37 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tppNm-00AD53-1m
+	id 1tq3yI-00ATDe-1J
 	for lore@lore.pengutronix.de;
-	Wed, 05 Mar 2025 15:05:57 +0100
+	Thu, 06 Mar 2025 06:40:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tppNi-0000NW-S4
-	for lore@pengutronix.de; Wed, 05 Mar 2025 15:05:57 +0100
+	id 1tq3yG-000219-Pc
+	for lore@pengutronix.de; Thu, 06 Mar 2025 06:40:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mZH2ebaSHvc3OGWXP2KF/U9AUBnQZSPN1IITQk8aOZo=; b=TsY+cLmDZjHYrryNvBJECV9jL5
-	ftIke4fFlBWu/45o/spyqok25cauibmYM38KAVAdU3F14o+2Ymww2q/XMnlBxtDdwioOfaXwSZRf2
-	oTjo4ndC7qO6uUfTcS4+fMAym/sbAzMXMTD46EyKLvuM5dg2Vx/F6zigj+Y2/wVrAvWkK40ihCt6W
-	7Op53/RQw+Fp69HFEvRruuImEiyrbWOKZ++TxU8kaA+QIvyGVJ68jQMrA+3UUEKyeeLQXsHxH1y6g
-	Zsa3RnS+YkBAVu+yaROqQL+CTQOri2fV+1o/4MONZExkOcQjFWnngkZ//Rvxv5tEBv8v1sHaX70+q
-	aRq3XJ8A==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=i9LrbhSwC95/WnVHpFdFQpAtufTBvIrYSUH4tZPbyFM=; b=TOWm0TSlT0GmCdMqHTsqhRqf+o
+	/bEZ8Zb0VXFaVBJjmixayfMQBefN6hE/WF5HMzgCmPL1j1ASvn1XQOuzZz177ayeaDGyUEJn0UG2w
+	kIC6qRwIXOpssh8a4MA9JP03KI64KVujNKusrXBzPSHS30UwVd+GWUzEAZPeSTm6LMvJJu9/qz5ig
+	0qFfCj8y18gN8TdFzNvVUisdguEAuZJVJxGCkFuyG89/A2CFYlWLYIxjAgEZYrXJbiBEWS2RRszDd
+	YazoZFj6w3sQzct5rIQYKDbPWrYf3Izekv292btIxrhSpLJlarWVMflIQ2vPJqGVDSiJVCnz9yBbG
+	VrD4q/MQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tppN9-00000008Hid-3paZ;
-	Wed, 05 Mar 2025 14:05:20 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tq3xM-0000000A3nv-1KIf;
+	Thu, 06 Mar 2025 05:39:40 +0000
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tppKN-00000008H5K-2nG5
+	id 1tq3xI-0000000A3nL-2S9K
 	for barebox@lists.infradead.org;
-	Wed, 05 Mar 2025 14:02:30 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <bst@pengutronix.de>)
-	id 1tppKM-0008I0-CN; Wed, 05 Mar 2025 15:02:26 +0100
-Message-ID: <93d21a21-02f8-45c1-91bf-034c4ed08d30@pengutronix.de>
-Date: Wed, 5 Mar 2025 15:02:25 +0100
+	Thu, 06 Mar 2025 05:39:37 +0000
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-30b8f0c514cso2338121fa.2
+        for <barebox@lists.infradead.org>; Wed, 05 Mar 2025 21:39:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741239574; x=1741844374; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i9LrbhSwC95/WnVHpFdFQpAtufTBvIrYSUH4tZPbyFM=;
+        b=h6DM3ktqgcazfenk4sVAi+UjsVBZ3an0pd2HIA2M06HLWowxLsv4Vaz88CPEirr4TR
+         Q23/Msn086RiG+28bkatbpGdd32CRPeaxn3bIUqhWKJyCg6LuPoLIiXvu7Ixod96mGuM
+         H0iQRpr7mvT/ZYpLus/+b1F3kzAjNiscBVZbk6pj7DfhvC9ljG7FQuoka8g8Fh2upAz6
+         kx3sRpgiYC956ese5TPbRgk2Dq0j7S9T0g80N4+KI6McUgSTk0TPaY7UafYWz2viMULE
+         +oEhJba6EZc3I5E/T3Z+8hkgKz03FOi2y4kbjryFzgE+NRDdv58JSPRczOzriArG9NNf
+         P6uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741239574; x=1741844374;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i9LrbhSwC95/WnVHpFdFQpAtufTBvIrYSUH4tZPbyFM=;
+        b=Bu1MLPQw7FMQ5IB4BSEpXdKvlftZYX+ZvoxQXAiW/cvzzbqgUGmowYDbBG3ga/xpDN
+         VyGvBz3snwlI0QjMsGqdrZUubd5pzkhGEvBBqIlMkxwA85rq45LbZAIdESf+TZkEtSlA
+         iJn5v9Cucoi9llWnCFJn4Mj+T9cN25bFQo/dAcMadVEdZgzXe6+4F4IUTaVbCzVPIpz7
+         58UNsaJ+swn9WJkluAOmCB+p7HO0TWMKKXkUYDTjoMOcKVlLAUMyamE+coPrKkB8ifA8
+         ziYK7H56Gbq2B9Ospjh2ScOIgov7v9Kpwt9Lw63hdaCxy1C35DulEMC9SWopsHQseq8C
+         +Icg==
+X-Gm-Message-State: AOJu0Yx6hory9yEBjkh+1RD+fA9PAeiRMgljDxJ1+6plG0JiGVh9Sm0S
+	Jdy3YZo/9VlTP5s8GYnlWXyfIUOHHcMszM+JgNakOUV4o/U+VeEIKEZ2jnzv
+X-Gm-Gg: ASbGncs9Ze9l0Mwb5t8wW1ud2YsF6Z8l9mCO2ej45I93BKfrzHoUIpQ2M/6StzDxVP5
+	p3Y12zsTAv0BnaPl2W/kZ2223PYVDVXfkZvIcz+95pA+7XhBq2fcz7TytOmq+KQm9XtlqZreVW7
+	JR+NCwvwC3p/8bAqfuxHzR/aQmVeyoVCeH5jPi+HLMeItAgJH2rrp3MY3y79wjzgDuwgNKvWwrO
+	5ojJBS0NCHbFddQ8DbLpPcupk3BxZPCVvqK4bJlFm2v6AY+5tZIBX2WkwXeczo4g9Co4OOdkOt1
+	lDXO+8TatM3ZzZGseWNFxaDwDLs2vn2tgUJsDnYzbbircBNwM7yQwl0CYdYrXU00rSI=
+X-Google-Smtp-Source: AGHT+IGopCRVIl83DHW7BTvJyulVBzijY6XpYmSTZ1snwdRyp2SmIXlfog9G+2FiDIAponpvPX3rYg==
+X-Received: by 2002:a2e:b1cf:0:b0:302:48fd:6922 with SMTP id 38308e7fff4ca-30bd7b324c0mr19717691fa.37.1741239573703;
+        Wed, 05 Mar 2025 21:39:33 -0800 (PST)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30be99c8324sm884261fa.81.2025.03.05.21.39.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 21:39:31 -0800 (PST)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu,  6 Mar 2025 08:39:20 +0300
+Message-Id: <20250306053920.7544-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20250304-phyboard-segin-imx93-v1-1-8677740a79de@pengutronix.de>
-From: Bastian Krause <bst@pengutronix.de>
-In-Reply-To: <20250304-phyboard-segin-imx93-v1-1-8677740a79de@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250305_060228_184247_0097E2DC 
-X-CRM114-Status: GOOD (  31.03  )
+X-CRM114-CacheID: sfid-20250305_213936_655132_BDC1D595 
+X-CRM114-Status: GOOD (  17.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,2148 +100,254 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: boards: Add support for phyBOARD-Segin i.MX 93
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH RFC] at91: Remove AT91_LOAD_BAREBOX_SRAM option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Jonas,
+This patch removes the AT91_LOAD_BAREBOX_SRAM option.
+The option was introduced over 12 years ago and is now misleading.
+The functionality of loading a stage into SRAM can now be implemented
+via PBL in a low-level board-specific call.
+For boot sources (other than MMC), BOOTRom expects the size of the
+image to boot into SRAM in exception vector 6, so let's fix
+barebox-arm-head to always use the correct value here.
 
-On 3/4/25 5:24 PM, Jonas Rebmann wrote:
-> This patch adds support for the phyBOARD-Segin i.MX 93 and the phyCORE
-> i.MX 93 SoM it is based upon.
-> 
-> Note that support is only provided for the standard configuration
-> featuring 1GB RAM as testing was only possible on that variant and only
-> the single-configuration lpddr4_timing.c as initially committed to
-> u-boot in 7c1f8ce3956 worked.
-> 
-> The 1GB configuration from later revisions results in a freeze during
-> dram setup.
-> 
-> The following functionality has been tested:
->   - barebox starts via imxusbloader, tftp and emmc
->   - both ethertnet interfaces work
->   - barebox_update to emmc
->   - boot kernel via network
->   - USB OTG
->   - USB mass storage on USB Host Port
->   - reset
-> 
-> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-> ---
->   arch/arm/boards/Makefile                           |    1 +
->   arch/arm/boards/phytec-phycore-imx93/Makefile      |    2 +
->   arch/arm/boards/phytec-phycore-imx93/board.c       |   56 +
->   arch/arm/boards/phytec-phycore-imx93/lowlevel.c    |   60 +
->   .../boards/phytec-phycore-imx93/lpddr4_timing.c    | 1546 ++++++++++++++++++++
->   arch/arm/configs/imx_v8_defconfig                  |    1 +
->   arch/arm/configs/multi_v8_defconfig                |    1 +
->   arch/arm/dts/Makefile                              |    1 +
->   arch/arm/dts/imx93-phyboard-segin-downstream.dtsi  |  269 ++++
->   arch/arm/dts/imx93-phyboard-segin.dts              |   28 +
->   arch/arm/mach-imx/Kconfig                          |    9 +
->   images/Makefile.imx                                |    4 +
->   12 files changed, 1978 insertions(+)
-> 
-> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-> index c6104d04329774655712db5aaf6df671fd74142e..1e67b304f1855df2c32305638c3d9029ed0994c6 100644
-> --- a/arch/arm/boards/Makefile
-> +++ b/arch/arm/boards/Makefile
-> @@ -78,6 +78,7 @@ obj-$(CONFIG_MACH_PCM038)			+= phytec-phycore-imx27/
->   obj-$(CONFIG_MACH_PHYTEC_SOM_AM335X)		+= phytec-som-am335x/
->   obj-$(CONFIG_MACH_PHYTEC_SOM_IMX6)		+= phytec-som-imx6/
->   obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
-> +obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX93)		+= phytec-phycore-imx93/
->   obj-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1)	+= phytec-phycore-stm32mp1/
->   obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MM)		+= phytec-som-imx8mm/
->   obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ)		+= phytec-som-imx8mq/
-> diff --git a/arch/arm/boards/phytec-phycore-imx93/Makefile b/arch/arm/boards/phytec-phycore-imx93/Makefile
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..ae29bb9249e62cb649e21e580559383fa9d18386
-> --- /dev/null
-> +++ b/arch/arm/boards/phytec-phycore-imx93/Makefile
-> @@ -0,0 +1,2 @@
-> +lwl-y += lowlevel.o lpddr4_timing.o
-> +obj-y += board.o
-> diff --git a/arch/arm/boards/phytec-phycore-imx93/board.c b/arch/arm/boards/phytec-phycore-imx93/board.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..149248ca654624826d0e8f6fe0f1f42c2747e248
-> --- /dev/null
-> +++ b/arch/arm/boards/phytec-phycore-imx93/board.c
-> @@ -0,0 +1,56 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#define pr_fmt(fmt) "phyCORE imx93: " fmt
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <linux/kernel.h>
-> +#include <environment.h>
-> +#include <mfd/pca9450.h>
-> +#include <deep-probe.h>
-> +#include <mach/imx/bbu.h>
-> +#include <linux/pinctrl/consumer.h>
-> +
-> +static void phycore_imx93_init_pmic(struct regmap *map)
-> +{
-> +	/* set WDOG_B_CFG to cold reset */
-> +	regmap_write(map, PCA9450_RESET_CTRL, 0xA1);
-> +}
-> +
-> +static int phycore_imx93_probe(struct device *dev)
-> +{
-> +	struct device_node *np;
-> +
-> +	pca9450_register_init_callback(phycore_imx93_init_pmic);
-> +
-> +	/*
-> +	 * The phy on the EQOS has its MDIO lines connected to the FEC. The phy
-> +	 * registers can only be successfully read when the EQOS pinctrl setup
-> +	 * has been done. The phys on the FEC MDIO bus are probed during the
-> +	 * FEC driver probe, so do the EQOS pinctrl setup here to make sure it's
-> +	 * done before the FEC probes.
-> +	 */
-> +	np = of_find_compatible_node(dev->of_node, NULL, "nxp,imx93-dwmac-eqos");
-> +	BUG_ON(!np);
-> +	of_pinctrl_select_state_default(np);
-> +
-> +	imx9_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id phycore_imx93_of_match[] = {
-> +	{
-> +		.compatible = "phytec,imx93-phyboard-segin",
-> +	},
-> +	{ /* sentinel */ },
-> +};
-> +
-> +static struct driver phycore_imx93_board_driver = {
-> +	.name = "board-phycore_imx93",
-> +	.probe = phycore_imx93_probe,
-> +	.of_compatible = phycore_imx93_of_match,
-> +};
-> +coredevice_platform_driver(phycore_imx93_board_driver);
-> +
-> +BAREBOX_DEEP_PROBE_ENABLE(phycore_imx93_of_match);
-> diff --git a/arch/arm/boards/phytec-phycore-imx93/lowlevel.c b/arch/arm/boards/phytec-phycore-imx93/lowlevel.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..7678d2f2633ea07e532684f999b62ddecc2b79dc
-> --- /dev/null
-> +++ b/arch/arm/boards/phytec-phycore-imx93/lowlevel.c
-> @@ -0,0 +1,60 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <common.h>
-> +#include <debug_ll.h>
-> +#include <mach/imx/debug_ll.h>
-> +#include <mach/imx/generic.h>
-> +#include <mach/imx/xload.h>
-> +#include <asm/barebox-arm.h>
-> +#include <soc/imx9/ddr.h>
-> +#include <mach/imx/atf.h>
-> +#include <mach/imx/xload.h>
-> +#include <mach/imx/romapi.h>
+This partially reverts commits:
+41d3371741: at91: introduce AT91_LOAD_BAREBOX_SRAM to specifcy which size load for external boot
+4bd5ceee72: at91sam9261ek: add first stage support
 
-This shouldn't be needed.
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ .../boards/at91/microchip-at91sam9263-ek.rst  |  7 --
+ .../defaultenv-at91sam9261ek/config           | 10 +--
+ arch/arm/boards/at91sam9261ek/init.c          | 16 +----
+ .../at91sam9261ek_first_stage_defconfig       | 65 -------------------
+ arch/arm/mach-at91/Kconfig                    | 10 ---
+ include/mach/at91/barebox-arm.h               | 11 +---
+ 6 files changed, 6 insertions(+), 113 deletions(-)
+ delete mode 100644 arch/arm/configs/at91sam9261ek_first_stage_defconfig
 
-Regards,
-Bastian
-
-> +#include <mach/imx/esdctl.h>
-> +#include <pbl/i2c.h>
-> +
-> +extern char __dtb_z_imx93_phyboard_segin_start[];
-> +extern struct dram_timing_info dram_timing;
-> +
-> +static noinline void phycore_imx93_continue(void)
-> +{
-> +	void *base = IOMEM(MX9_UART1_BASE_ADDR);
-> +	void *muxbase = IOMEM(MX9_IOMUXC_BASE_ADDR);
-> +	void *fdt;
-> +
-> +	/* uart iomux-setup */
-> +	writel(0x0, muxbase + 0x0184); /* TX */
-> +	writel(0x0, muxbase + 0x0180); /* RX */
-> +
-> +	imx9_uart_setup(IOMEM(base));
-> +	pbl_set_putc(lpuart32_putc, base + 0x10);
-> +
-> +	if (current_el() == 3) {
-> +
-> +		/*
-> +		 * Current u-boot master has two dram variants but neither
-> +		 * where found to work here. As a workaround, lpddr4_timing.c
-> +		 * is based on the initial single config version
-> +		 */
-> +
-> +		imx93_ddr_init(&dram_timing, DRAM_TYPE_LPDDR4);
-> +		imx93_load_and_start_image_via_tfa();
-> +	}
-> +
-> +	fdt = __dtb_z_imx93_phyboard_segin_start;
-> +
-> +	imx93_barebox_entry(fdt);
-> +
-> +	__builtin_unreachable();
-> +}
-> +
-> +ENTRY_FUNCTION(start_imx93_phyboard_segin, r0, r1, r2)
-> +{
-> +	if (current_el() == 3)
-> +		imx93_cpu_lowlevel_init();
-> +
-> +	relocate_to_current_adr();
-> +	setup_c();
-> +
-> +	phycore_imx93_continue();
-> +}
-> diff --git a/arch/arm/boards/phytec-phycore-imx93/lpddr4_timing.c b/arch/arm/boards/phytec-phycore-imx93/lpddr4_timing.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..6ff5dc158ee1135d8024223f7c672ecde6cfc6c1
-> --- /dev/null
-> +++ b/arch/arm/boards/phytec-phycore-imx93/lpddr4_timing.c
-> @@ -0,0 +1,1546 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2023 NXP
-> + * Copyright (C) 2023 PHYTEC Messtechnik GmbH
-> + * Christoph Stoidner <c.stoidner@phytec.de>
-> + *
-> + * Code generated with DDR Tool v1.0.0.
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <soc/imx9/ddr.h>
-> +
-> +static struct dram_cfg_param ddr_ddrc_cfg[] = {
-> +	/** Initialize DDRC registers **/
-> +	{0x4e300110, 0x44100001},
-> +	{0x4e300000, 0x8000bf},
-> +	{0x4e300008, 0x0},
-> +	{0x4e300080, 0x80000412},
-> +	{0x4e300084, 0x0},
-> +	{0x4e300114, 0x1002},
-> +	{0x4e300260, 0x4080},
-> +	{0x4e300f04, 0x80},
-> +	{0x4e300800, 0x43b30002},
-> +	{0x4e300804, 0x1f1f1f1f},
-> +	{0x4e301000, 0x0},
-> +	{0x4e301240, 0x0},
-> +	{0x4e301244, 0x0},
-> +	{0x4e301248, 0x0},
-> +	{0x4e30124c, 0x0},
-> +	{0x4e301250, 0x0},
-> +	{0x4e301254, 0x0},
-> +	{0x4e301258, 0x0},
-> +	{0x4e30125c, 0x0},
-> +
-> +};
-> +
-> +/* dram fsp cfg */
-> +static struct dram_fsp_cfg ddr_dram_fsp_cfg[] = {
-> +	{
-> +		{
-> +			{0x4e300100, 0x24A0421B},
-> +			{0x4e300104, 0xF8EE001B},
-> +			{0x4e300108, 0x2F263233},
-> +			{0x4e30010C, 0x0005E18B},
-> +			{0x4e300124, 0x1C770000},
-> +			{0x4e300160, 0x00009102},
-> +			{0x4e30016C, 0x35F00000},
-> +			{0x4e300170, 0x8B0B0608},
-> +			{0x4e300250, 0x00000028},
-> +			{0x4e300254, 0x00FE00FE},
-> +			{0x4e300258, 0x00000008},
-> +			{0x4e30025C, 0x00000400},
-> +			{0x4e300300, 0x224F2215},
-> +			{0x4e300304, 0x00FE2213},
-> +			{0x4e300308, 0x0A3C0E3C},
-> +		},
-> +		{
-> +			{0x01, 0xE4},
-> +			{0x02, 0x36},
-> +			{0x03, 0xF2},
-> +			{0x0b, 0x46},
-> +			{0x0c, 0x11},
-> +			{0x0e, 0x11},
-> +			{0x16, 0x04},
-> +		},
-> +		0,
-> +	},
-> +
-> +};
-> +
-> +/* PHY Initialize Configuration */
-> +static struct dram_cfg_param ddr_ddrphy_cfg[] = {
-> +	{0x100a0, 0x0},
-> +	{0x100a1, 0x1},
-> +	{0x100a2, 0x2},
-> +	{0x100a3, 0x3},
-> +	{0x100a4, 0x4},
-> +	{0x100a5, 0x5},
-> +	{0x100a6, 0x6},
-> +	{0x100a7, 0x7},
-> +	{0x110a0, 0x0},
-> +	{0x110a1, 0x1},
-> +	{0x110a2, 0x2},
-> +	{0x110a3, 0x3},
-> +	{0x110a4, 0x4},
-> +	{0x110a5, 0x5},
-> +	{0x110a6, 0x6},
-> +	{0x110a7, 0x7},
-> +	{0x1005f, 0x5ff},
-> +	{0x1015f, 0x5ff},
-> +	{0x1105f, 0x5ff},
-> +	{0x1115f, 0x5ff},
-> +	{0x55, 0x1ff},
-> +	{0x1055, 0x1ff},
-> +	{0x2055, 0x1ff},
-> +	{0x200c5, 0x19},
-> +	{0x2002e, 0x2},
-> +	{0x90204, 0x0},
-> +	{0x20024, 0x1e3},
-> +	{0x2003a, 0x2},
-> +	{0x2007d, 0x212},
-> +	{0x2007c, 0x61},
-> +	{0x20056, 0x3},
-> +	{0x1004d, 0x600},
-> +	{0x1014d, 0x600},
-> +	{0x1104d, 0x600},
-> +	{0x1114d, 0x600},
-> +	{0x10049, 0xe00},
-> +	{0x10149, 0xe00},
-> +	{0x11049, 0xe00},
-> +	{0x11149, 0xe00},
-> +	{0x43, 0x60},
-> +	{0x1043, 0x60},
-> +	{0x2043, 0x60},
-> +	{0x20018, 0x1},
-> +	{0x20075, 0x4},
-> +	{0x20050, 0x0},
-> +	{0x2009b, 0x2},
-> +	{0x20008, 0x3a5},
-> +	{0x20088, 0x9},
-> +	{0x200b2, 0x10c},
-> +	{0x10043, 0x5a1},
-> +	{0x10143, 0x5a1},
-> +	{0x11043, 0x5a1},
-> +	{0x11143, 0x5a1},
-> +	{0x200fa, 0x2},
-> +	{0x20019, 0x1},
-> +	{0x200f0, 0x600},
-> +	{0x200f1, 0x0},
-> +	{0x200f2, 0x4444},
-> +	{0x200f3, 0x8888},
-> +	{0x200f4, 0x5655},
-> +	{0x200f5, 0x0},
-> +	{0x200f6, 0x0},
-> +	{0x200f7, 0xf000},
-> +	{0x20025, 0x0},
-> +	{0x2002d, 0x1},
-> +	{0x2002c, 0x0},
-> +	{0x20021, 0x0},
-> +	{0x200c7, 0x21},
-> +	{0x1200c7, 0x21},
-> +	{0x200ca, 0x24},
-> +	{0x1200ca, 0x24},
-> +
-> +};
-> +
-> +/* ddr phy trained csr */
-> +static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
-> +	{0x1005f, 0x0},
-> +	{0x1015f, 0x0},
-> +	{0x1105f, 0x0},
-> +	{0x1115f, 0x0},
-> +	{0x55, 0x0},
-> +	{0x1055, 0x0},
-> +	{0x2055, 0x0},
-> +	{0x200c5, 0x0},
-> +	{0x2002e, 0x0},
-> +	{0x90204, 0x0},
-> +	{0x20024, 0x0},
-> +	{0x2003a, 0x0},
-> +	{0x2007d, 0x0},
-> +	{0x2007c, 0x0},
-> +	{0x20056, 0x0},
-> +	{0x1004d, 0x0},
-> +	{0x1014d, 0x0},
-> +	{0x1104d, 0x0},
-> +	{0x1114d, 0x0},
-> +	{0x10049, 0x0},
-> +	{0x10149, 0x0},
-> +	{0x11049, 0x0},
-> +	{0x11149, 0x0},
-> +	{0x43, 0x0},
-> +	{0x1043, 0x0},
-> +	{0x2043, 0x0},
-> +	{0x20018, 0x0},
-> +	{0x20075, 0x0},
-> +	{0x20050, 0x0},
-> +	{0x2009b, 0x0},
-> +	{0x20008, 0x0},
-> +	{0x20088, 0x0},
-> +	{0x200b2, 0x0},
-> +	{0x10043, 0x0},
-> +	{0x10143, 0x0},
-> +	{0x11043, 0x0},
-> +	{0x11143, 0x0},
-> +	{0x200fa, 0x0},
-> +	{0x20019, 0x0},
-> +	{0x200f0, 0x0},
-> +	{0x200f1, 0x0},
-> +	{0x200f2, 0x0},
-> +	{0x200f3, 0x0},
-> +	{0x200f4, 0x0},
-> +	{0x200f5, 0x0},
-> +	{0x200f6, 0x0},
-> +	{0x200f7, 0x0},
-> +	{0x20025, 0x0},
-> +	{0x2002d, 0x0},
-> +	{0x2002c, 0x0},
-> +	{0xd0000, 0x0},
-> +	{0x90000, 0x0},
-> +	{0x90001, 0x0},
-> +	{0x90002, 0x0},
-> +	{0x90003, 0x0},
-> +	{0x90004, 0x0},
-> +	{0x90005, 0x0},
-> +	{0x90029, 0x0},
-> +	{0x9002a, 0x0},
-> +	{0x9002b, 0x0},
-> +	{0x9002c, 0x0},
-> +	{0x9002d, 0x0},
-> +	{0x9002e, 0x0},
-> +	{0x9002f, 0x0},
-> +	{0x90030, 0x0},
-> +	{0x90031, 0x0},
-> +	{0x90032, 0x0},
-> +	{0x90033, 0x0},
-> +	{0x90034, 0x0},
-> +	{0x90035, 0x0},
-> +	{0x90036, 0x0},
-> +	{0x90037, 0x0},
-> +	{0x90038, 0x0},
-> +	{0x90039, 0x0},
-> +	{0x9003a, 0x0},
-> +	{0x9003b, 0x0},
-> +	{0x9003c, 0x0},
-> +	{0x9003d, 0x0},
-> +	{0x9003e, 0x0},
-> +	{0x9003f, 0x0},
-> +	{0x90040, 0x0},
-> +	{0x90041, 0x0},
-> +	{0x90042, 0x0},
-> +	{0x90043, 0x0},
-> +	{0x90044, 0x0},
-> +	{0x90045, 0x0},
-> +	{0x90046, 0x0},
-> +	{0x90047, 0x0},
-> +	{0x90048, 0x0},
-> +	{0x90049, 0x0},
-> +	{0x9004a, 0x0},
-> +	{0x9004b, 0x0},
-> +	{0x9004c, 0x0},
-> +	{0x9004d, 0x0},
-> +	{0x9004e, 0x0},
-> +	{0x9004f, 0x0},
-> +	{0x90050, 0x0},
-> +	{0x90051, 0x0},
-> +	{0x90052, 0x0},
-> +	{0x90053, 0x0},
-> +	{0x90054, 0x0},
-> +	{0x90055, 0x0},
-> +	{0x90056, 0x0},
-> +	{0x90057, 0x0},
-> +	{0x90058, 0x0},
-> +	{0x90059, 0x0},
-> +	{0x9005a, 0x0},
-> +	{0x9005b, 0x0},
-> +	{0x9005c, 0x0},
-> +	{0x9005d, 0x0},
-> +	{0x9005e, 0x0},
-> +	{0x9005f, 0x0},
-> +	{0x90060, 0x0},
-> +	{0x90061, 0x0},
-> +	{0x90062, 0x0},
-> +	{0x90063, 0x0},
-> +	{0x90064, 0x0},
-> +	{0x90065, 0x0},
-> +	{0x90066, 0x0},
-> +	{0x90067, 0x0},
-> +	{0x90068, 0x0},
-> +	{0x90069, 0x0},
-> +	{0x9006a, 0x0},
-> +	{0x9006b, 0x0},
-> +	{0x9006c, 0x0},
-> +	{0x9006d, 0x0},
-> +	{0x9006e, 0x0},
-> +	{0x9006f, 0x0},
-> +	{0x90070, 0x0},
-> +	{0x90071, 0x0},
-> +	{0x90072, 0x0},
-> +	{0x90073, 0x0},
-> +	{0x90074, 0x0},
-> +	{0x90075, 0x0},
-> +	{0x90076, 0x0},
-> +	{0x90077, 0x0},
-> +	{0x90078, 0x0},
-> +	{0x90079, 0x0},
-> +	{0x9007a, 0x0},
-> +	{0x9007b, 0x0},
-> +	{0x9007c, 0x0},
-> +	{0x9007d, 0x0},
-> +	{0x9007e, 0x0},
-> +	{0x9007f, 0x0},
-> +	{0x90080, 0x0},
-> +	{0x90081, 0x0},
-> +	{0x90082, 0x0},
-> +	{0x90083, 0x0},
-> +	{0x90084, 0x0},
-> +	{0x90085, 0x0},
-> +	{0x90086, 0x0},
-> +	{0x90087, 0x0},
-> +	{0x90088, 0x0},
-> +	{0x90089, 0x0},
-> +	{0x9008a, 0x0},
-> +	{0x9008b, 0x0},
-> +	{0x9008c, 0x0},
-> +	{0x9008d, 0x0},
-> +	{0x9008e, 0x0},
-> +	{0x9008f, 0x0},
-> +	{0x90090, 0x0},
-> +	{0x90091, 0x0},
-> +	{0x90092, 0x0},
-> +	{0x90093, 0x0},
-> +	{0x90094, 0x0},
-> +	{0x90095, 0x0},
-> +	{0x90096, 0x0},
-> +	{0x90097, 0x0},
-> +	{0x90098, 0x0},
-> +	{0x90099, 0x0},
-> +	{0x9009a, 0x0},
-> +	{0x9009b, 0x0},
-> +	{0x9009c, 0x0},
-> +	{0x9009d, 0x0},
-> +	{0x9009e, 0x0},
-> +	{0x9009f, 0x0},
-> +	{0x900a0, 0x0},
-> +	{0x900a1, 0x0},
-> +	{0x900a2, 0x0},
-> +	{0x900a3, 0x0},
-> +	{0x900a4, 0x0},
-> +	{0x900a5, 0x0},
-> +	{0x900a6, 0x0},
-> +	{0x900a7, 0x0},
-> +	{0x900a8, 0x0},
-> +	{0x900a9, 0x0},
-> +	{0x40000, 0x0},
-> +	{0x40020, 0x0},
-> +	{0x40040, 0x0},
-> +	{0x40060, 0x0},
-> +	{0x40001, 0x0},
-> +	{0x40021, 0x0},
-> +	{0x40041, 0x0},
-> +	{0x40061, 0x0},
-> +	{0x40002, 0x0},
-> +	{0x40022, 0x0},
-> +	{0x40042, 0x0},
-> +	{0x40062, 0x0},
-> +	{0x40003, 0x0},
-> +	{0x40023, 0x0},
-> +	{0x40043, 0x0},
-> +	{0x40063, 0x0},
-> +	{0x40004, 0x0},
-> +	{0x40024, 0x0},
-> +	{0x40044, 0x0},
-> +	{0x40064, 0x0},
-> +	{0x40005, 0x0},
-> +	{0x40025, 0x0},
-> +	{0x40045, 0x0},
-> +	{0x40065, 0x0},
-> +	{0x40006, 0x0},
-> +	{0x40026, 0x0},
-> +	{0x40046, 0x0},
-> +	{0x40066, 0x0},
-> +	{0x40007, 0x0},
-> +	{0x40027, 0x0},
-> +	{0x40047, 0x0},
-> +	{0x40067, 0x0},
-> +	{0x40008, 0x0},
-> +	{0x40028, 0x0},
-> +	{0x40048, 0x0},
-> +	{0x40068, 0x0},
-> +	{0x40009, 0x0},
-> +	{0x40029, 0x0},
-> +	{0x40049, 0x0},
-> +	{0x40069, 0x0},
-> +	{0x4000a, 0x0},
-> +	{0x4002a, 0x0},
-> +	{0x4004a, 0x0},
-> +	{0x4006a, 0x0},
-> +	{0x4000b, 0x0},
-> +	{0x4002b, 0x0},
-> +	{0x4004b, 0x0},
-> +	{0x4006b, 0x0},
-> +	{0x4000c, 0x0},
-> +	{0x4002c, 0x0},
-> +	{0x4004c, 0x0},
-> +	{0x4006c, 0x0},
-> +	{0x4000d, 0x0},
-> +	{0x4002d, 0x0},
-> +	{0x4004d, 0x0},
-> +	{0x4006d, 0x0},
-> +	{0x4000e, 0x0},
-> +	{0x4002e, 0x0},
-> +	{0x4004e, 0x0},
-> +	{0x4006e, 0x0},
-> +	{0x4000f, 0x0},
-> +	{0x4002f, 0x0},
-> +	{0x4004f, 0x0},
-> +	{0x4006f, 0x0},
-> +	{0x40010, 0x0},
-> +	{0x40030, 0x0},
-> +	{0x40050, 0x0},
-> +	{0x40070, 0x0},
-> +	{0x40011, 0x0},
-> +	{0x40031, 0x0},
-> +	{0x40051, 0x0},
-> +	{0x40071, 0x0},
-> +	{0x40012, 0x0},
-> +	{0x40032, 0x0},
-> +	{0x40052, 0x0},
-> +	{0x40072, 0x0},
-> +	{0x40013, 0x0},
-> +	{0x40033, 0x0},
-> +	{0x40053, 0x0},
-> +	{0x40073, 0x0},
-> +	{0x40014, 0x0},
-> +	{0x40034, 0x0},
-> +	{0x40054, 0x0},
-> +	{0x40074, 0x0},
-> +	{0x40015, 0x0},
-> +	{0x40035, 0x0},
-> +	{0x40055, 0x0},
-> +	{0x40075, 0x0},
-> +	{0x40016, 0x0},
-> +	{0x40036, 0x0},
-> +	{0x40056, 0x0},
-> +	{0x40076, 0x0},
-> +	{0x40017, 0x0},
-> +	{0x40037, 0x0},
-> +	{0x40057, 0x0},
-> +	{0x40077, 0x0},
-> +	{0x40018, 0x0},
-> +	{0x40038, 0x0},
-> +	{0x40058, 0x0},
-> +	{0x40078, 0x0},
-> +	{0x40019, 0x0},
-> +	{0x40039, 0x0},
-> +	{0x40059, 0x0},
-> +	{0x40079, 0x0},
-> +	{0x4001a, 0x0},
-> +	{0x4003a, 0x0},
-> +	{0x4005a, 0x0},
-> +	{0x4007a, 0x0},
-> +	{0x900aa, 0x0},
-> +	{0x900ab, 0x0},
-> +	{0x900ac, 0x0},
-> +	{0x900ad, 0x0},
-> +	{0x900ae, 0x0},
-> +	{0x900af, 0x0},
-> +	{0x900b0, 0x0},
-> +	{0x900b1, 0x0},
-> +	{0x900b2, 0x0},
-> +	{0x900b3, 0x0},
-> +	{0x900b4, 0x0},
-> +	{0x900b5, 0x0},
-> +	{0x900b6, 0x0},
-> +	{0x900b7, 0x0},
-> +	{0x900b8, 0x0},
-> +	{0x900b9, 0x0},
-> +	{0x900ba, 0x0},
-> +	{0x900bb, 0x0},
-> +	{0x900bc, 0x0},
-> +	{0x900bd, 0x0},
-> +	{0x900be, 0x0},
-> +	{0x900bf, 0x0},
-> +	{0x900c0, 0x0},
-> +	{0x900c1, 0x0},
-> +	{0x900c2, 0x0},
-> +	{0x900c3, 0x0},
-> +	{0x900c4, 0x0},
-> +	{0x900c5, 0x0},
-> +	{0x900c6, 0x0},
-> +	{0x900c7, 0x0},
-> +	{0x900c8, 0x0},
-> +	{0x900c9, 0x0},
-> +	{0x900ca, 0x0},
-> +	{0x900cb, 0x0},
-> +	{0x900cc, 0x0},
-> +	{0x900cd, 0x0},
-> +	{0x900ce, 0x0},
-> +	{0x900cf, 0x0},
-> +	{0x900d0, 0x0},
-> +	{0x900d1, 0x0},
-> +	{0x900d2, 0x0},
-> +	{0x900d3, 0x0},
-> +	{0x900d4, 0x0},
-> +	{0x900d5, 0x0},
-> +	{0x900d6, 0x0},
-> +	{0x900d7, 0x0},
-> +	{0x900d8, 0x0},
-> +	{0x900d9, 0x0},
-> +	{0x900da, 0x0},
-> +	{0x900db, 0x0},
-> +	{0x900dc, 0x0},
-> +	{0x900dd, 0x0},
-> +	{0x900de, 0x0},
-> +	{0x900df, 0x0},
-> +	{0x900e0, 0x0},
-> +	{0x900e1, 0x0},
-> +	{0x900e2, 0x0},
-> +	{0x900e3, 0x0},
-> +	{0x900e4, 0x0},
-> +	{0x900e5, 0x0},
-> +	{0x900e6, 0x0},
-> +	{0x900e7, 0x0},
-> +	{0x900e8, 0x0},
-> +	{0x900e9, 0x0},
-> +	{0x900ea, 0x0},
-> +	{0x900eb, 0x0},
-> +	{0x900ec, 0x0},
-> +	{0x900ed, 0x0},
-> +	{0x900ee, 0x0},
-> +	{0x900ef, 0x0},
-> +	{0x900f0, 0x0},
-> +	{0x900f1, 0x0},
-> +	{0x900f2, 0x0},
-> +	{0x900f3, 0x0},
-> +	{0x900f4, 0x0},
-> +	{0x900f5, 0x0},
-> +	{0x900f6, 0x0},
-> +	{0x900f7, 0x0},
-> +	{0x900f8, 0x0},
-> +	{0x900f9, 0x0},
-> +	{0x900fa, 0x0},
-> +	{0x900fb, 0x0},
-> +	{0x900fc, 0x0},
-> +	{0x900fd, 0x0},
-> +	{0x900fe, 0x0},
-> +	{0x900ff, 0x0},
-> +	{0x90100, 0x0},
-> +	{0x90101, 0x0},
-> +	{0x90102, 0x0},
-> +	{0x90103, 0x0},
-> +	{0x90104, 0x0},
-> +	{0x90105, 0x0},
-> +	{0x90106, 0x0},
-> +	{0x90107, 0x0},
-> +	{0x90108, 0x0},
-> +	{0x90109, 0x0},
-> +	{0x9010a, 0x0},
-> +	{0x9010b, 0x0},
-> +	{0x9010c, 0x0},
-> +	{0x9010d, 0x0},
-> +	{0x9010e, 0x0},
-> +	{0x9010f, 0x0},
-> +	{0x90110, 0x0},
-> +	{0x90111, 0x0},
-> +	{0x90112, 0x0},
-> +	{0x90113, 0x0},
-> +	{0x90114, 0x0},
-> +	{0x90115, 0x0},
-> +	{0x90116, 0x0},
-> +	{0x90117, 0x0},
-> +	{0x90118, 0x0},
-> +	{0x90119, 0x0},
-> +	{0x9011a, 0x0},
-> +	{0x9011b, 0x0},
-> +	{0x9011c, 0x0},
-> +	{0x9011d, 0x0},
-> +	{0x9011e, 0x0},
-> +	{0x9011f, 0x0},
-> +	{0x90120, 0x0},
-> +	{0x90121, 0x0},
-> +	{0x90122, 0x0},
-> +	{0x90123, 0x0},
-> +	{0x90124, 0x0},
-> +	{0x90125, 0x0},
-> +	{0x90126, 0x0},
-> +	{0x90127, 0x0},
-> +	{0x90128, 0x0},
-> +	{0x90129, 0x0},
-> +	{0x9012a, 0x0},
-> +	{0x9012b, 0x0},
-> +	{0x9012c, 0x0},
-> +	{0x9012d, 0x0},
-> +	{0x9012e, 0x0},
-> +	{0x9012f, 0x0},
-> +	{0x90130, 0x0},
-> +	{0x90131, 0x0},
-> +	{0x90132, 0x0},
-> +	{0x90133, 0x0},
-> +	{0x90134, 0x0},
-> +	{0x90135, 0x0},
-> +	{0x90136, 0x0},
-> +	{0x90137, 0x0},
-> +	{0x90138, 0x0},
-> +	{0x90139, 0x0},
-> +	{0x9013a, 0x0},
-> +	{0x9013b, 0x0},
-> +	{0x9013c, 0x0},
-> +	{0x9013d, 0x0},
-> +	{0x9013e, 0x0},
-> +	{0x9013f, 0x0},
-> +	{0x90140, 0x0},
-> +	{0x90141, 0x0},
-> +	{0x90142, 0x0},
-> +	{0x90143, 0x0},
-> +	{0x90144, 0x0},
-> +	{0x90145, 0x0},
-> +	{0x90146, 0x0},
-> +	{0x90147, 0x0},
-> +	{0x90148, 0x0},
-> +	{0x90149, 0x0},
-> +	{0x9014a, 0x0},
-> +	{0x9014b, 0x0},
-> +	{0x9014c, 0x0},
-> +	{0x9014d, 0x0},
-> +	{0x9014e, 0x0},
-> +	{0x9014f, 0x0},
-> +	{0x90150, 0x0},
-> +	{0x90151, 0x0},
-> +	{0x90152, 0x0},
-> +	{0x90153, 0x0},
-> +	{0x90154, 0x0},
-> +	{0x90155, 0x0},
-> +	{0x90156, 0x0},
-> +	{0x90157, 0x0},
-> +	{0x90158, 0x0},
-> +	{0x90159, 0x0},
-> +	{0x9015a, 0x0},
-> +	{0x9015b, 0x0},
-> +	{0x9015c, 0x0},
-> +	{0x9015d, 0x0},
-> +	{0x9015e, 0x0},
-> +	{0x9015f, 0x0},
-> +	{0x90160, 0x0},
-> +	{0x90161, 0x0},
-> +	{0x90162, 0x0},
-> +	{0x90163, 0x0},
-> +	{0x90164, 0x0},
-> +	{0x90165, 0x0},
-> +	{0x90166, 0x0},
-> +	{0x90167, 0x0},
-> +	{0x90168, 0x0},
-> +	{0x90169, 0x0},
-> +	{0x9016a, 0x0},
-> +	{0x9016b, 0x0},
-> +	{0x9016c, 0x0},
-> +	{0x9016d, 0x0},
-> +	{0x9016e, 0x0},
-> +	{0x9016f, 0x0},
-> +	{0x90170, 0x0},
-> +	{0x90171, 0x0},
-> +	{0x90172, 0x0},
-> +	{0x90173, 0x0},
-> +	{0x90174, 0x0},
-> +	{0x90175, 0x0},
-> +	{0x90176, 0x0},
-> +	{0x90177, 0x0},
-> +	{0x90178, 0x0},
-> +	{0x90179, 0x0},
-> +	{0x9017a, 0x0},
-> +	{0x9017b, 0x0},
-> +	{0x9017c, 0x0},
-> +	{0x9017d, 0x0},
-> +	{0x9017e, 0x0},
-> +	{0x9017f, 0x0},
-> +	{0x90180, 0x0},
-> +	{0x90181, 0x0},
-> +	{0x90182, 0x0},
-> +	{0x90183, 0x0},
-> +	{0x90184, 0x0},
-> +	{0x90006, 0x0},
-> +	{0x90007, 0x0},
-> +	{0x90008, 0x0},
-> +	{0x90009, 0x0},
-> +	{0x9000a, 0x0},
-> +	{0x9000b, 0x0},
-> +	{0xd00e7, 0x0},
-> +	{0x90017, 0x0},
-> +	{0x9001f, 0x0},
-> +	{0x90026, 0x0},
-> +	{0x400d0, 0x0},
-> +	{0x400d1, 0x0},
-> +	{0x400d2, 0x0},
-> +	{0x400d3, 0x0},
-> +	{0x400d4, 0x0},
-> +	{0x400d5, 0x0},
-> +	{0x400d6, 0x0},
-> +	{0x400d7, 0x0},
-> +	{0x200be, 0x0},
-> +	{0x2000b, 0x0},
-> +	{0x2000c, 0x0},
-> +	{0x2000d, 0x0},
-> +	{0x2000e, 0x0},
-> +	{0x9000c, 0x0},
-> +	{0x9000d, 0x0},
-> +	{0x9000e, 0x0},
-> +	{0x9000f, 0x0},
-> +	{0x90010, 0x0},
-> +	{0x90011, 0x0},
-> +	{0x90012, 0x0},
-> +	{0x90013, 0x0},
-> +	{0x20010, 0x0},
-> +	{0x20011, 0x0},
-> +	{0x40080, 0x0},
-> +	{0x40081, 0x0},
-> +	{0x40082, 0x0},
-> +	{0x40083, 0x0},
-> +	{0x40084, 0x0},
-> +	{0x40085, 0x0},
-> +	{0x400fd, 0x0},
-> +	{0x400f1, 0x0},
-> +	{0x10011, 0x0},
-> +	{0x10012, 0x0},
-> +	{0x10013, 0x0},
-> +	{0x10018, 0x0},
-> +	{0x10002, 0x0},
-> +	{0x100b2, 0x0},
-> +	{0x101b4, 0x0},
-> +	{0x102b4, 0x0},
-> +	{0x103b4, 0x0},
-> +	{0x104b4, 0x0},
-> +	{0x105b4, 0x0},
-> +	{0x106b4, 0x0},
-> +	{0x107b4, 0x0},
-> +	{0x108b4, 0x0},
-> +	{0x11011, 0x0},
-> +	{0x11012, 0x0},
-> +	{0x11013, 0x0},
-> +	{0x11018, 0x0},
-> +	{0x11002, 0x0},
-> +	{0x110b2, 0x0},
-> +	{0x111b4, 0x0},
-> +	{0x112b4, 0x0},
-> +	{0x113b4, 0x0},
-> +	{0x114b4, 0x0},
-> +	{0x115b4, 0x0},
-> +	{0x116b4, 0x0},
-> +	{0x117b4, 0x0},
-> +	{0x118b4, 0x0},
-> +	{0x20089, 0x0},
-> +	{0xc0080, 0x0},
-> +	{0x200cb, 0x0},
-> +	{0x10068, 0x0},
-> +	{0x10069, 0x0},
-> +	{0x10168, 0x0},
-> +	{0x10169, 0x0},
-> +	{0x10268, 0x0},
-> +	{0x10269, 0x0},
-> +	{0x10368, 0x0},
-> +	{0x10369, 0x0},
-> +	{0x10468, 0x0},
-> +	{0x10469, 0x0},
-> +	{0x10568, 0x0},
-> +	{0x10569, 0x0},
-> +	{0x10668, 0x0},
-> +	{0x10669, 0x0},
-> +	{0x10768, 0x0},
-> +	{0x10769, 0x0},
-> +	{0x10868, 0x0},
-> +	{0x10869, 0x0},
-> +	{0x100aa, 0x0},
-> +	{0x10062, 0x0},
-> +	{0x10001, 0x0},
-> +	{0x100a0, 0x0},
-> +	{0x100a1, 0x0},
-> +	{0x100a2, 0x0},
-> +	{0x100a3, 0x0},
-> +	{0x100a4, 0x0},
-> +	{0x100a5, 0x0},
-> +	{0x100a6, 0x0},
-> +	{0x100a7, 0x0},
-> +	{0x11068, 0x0},
-> +	{0x11069, 0x0},
-> +	{0x11168, 0x0},
-> +	{0x11169, 0x0},
-> +	{0x11268, 0x0},
-> +	{0x11269, 0x0},
-> +	{0x11368, 0x0},
-> +	{0x11369, 0x0},
-> +	{0x11468, 0x0},
-> +	{0x11469, 0x0},
-> +	{0x11568, 0x0},
-> +	{0x11569, 0x0},
-> +	{0x11668, 0x0},
-> +	{0x11669, 0x0},
-> +	{0x11768, 0x0},
-> +	{0x11769, 0x0},
-> +	{0x11868, 0x0},
-> +	{0x11869, 0x0},
-> +	{0x110aa, 0x0},
-> +	{0x11062, 0x0},
-> +	{0x11001, 0x0},
-> +	{0x110a0, 0x0},
-> +	{0x110a1, 0x0},
-> +	{0x110a2, 0x0},
-> +	{0x110a3, 0x0},
-> +	{0x110a4, 0x0},
-> +	{0x110a5, 0x0},
-> +	{0x110a6, 0x0},
-> +	{0x110a7, 0x0},
-> +	{0x80, 0x0},
-> +	{0x1080, 0x0},
-> +	{0x2080, 0x0},
-> +	{0x10020, 0x0},
-> +	{0x10080, 0x0},
-> +	{0x10081, 0x0},
-> +	{0x100d0, 0x0},
-> +	{0x100d1, 0x0},
-> +	{0x1008c, 0x0},
-> +	{0x1008d, 0x0},
-> +	{0x10180, 0x0},
-> +	{0x10181, 0x0},
-> +	{0x101d0, 0x0},
-> +	{0x101d1, 0x0},
-> +	{0x1018c, 0x0},
-> +	{0x1018d, 0x0},
-> +	{0x100c0, 0x0},
-> +	{0x100c1, 0x0},
-> +	{0x101c0, 0x0},
-> +	{0x101c1, 0x0},
-> +	{0x102c0, 0x0},
-> +	{0x102c1, 0x0},
-> +	{0x103c0, 0x0},
-> +	{0x103c1, 0x0},
-> +	{0x104c0, 0x0},
-> +	{0x104c1, 0x0},
-> +	{0x105c0, 0x0},
-> +	{0x105c1, 0x0},
-> +	{0x106c0, 0x0},
-> +	{0x106c1, 0x0},
-> +	{0x107c0, 0x0},
-> +	{0x107c1, 0x0},
-> +	{0x108c0, 0x0},
-> +	{0x108c1, 0x0},
-> +	{0x100ae, 0x0},
-> +	{0x100af, 0x0},
-> +	{0x11020, 0x0},
-> +	{0x11080, 0x0},
-> +	{0x11081, 0x0},
-> +	{0x110d0, 0x0},
-> +	{0x110d1, 0x0},
-> +	{0x1108c, 0x0},
-> +	{0x1108d, 0x0},
-> +	{0x11180, 0x0},
-> +	{0x11181, 0x0},
-> +	{0x111d0, 0x0},
-> +	{0x111d1, 0x0},
-> +	{0x1118c, 0x0},
-> +	{0x1118d, 0x0},
-> +	{0x110c0, 0x0},
-> +	{0x110c1, 0x0},
-> +	{0x111c0, 0x0},
-> +	{0x111c1, 0x0},
-> +	{0x112c0, 0x0},
-> +	{0x112c1, 0x0},
-> +	{0x113c0, 0x0},
-> +	{0x113c1, 0x0},
-> +	{0x114c0, 0x0},
-> +	{0x114c1, 0x0},
-> +	{0x115c0, 0x0},
-> +	{0x115c1, 0x0},
-> +	{0x116c0, 0x0},
-> +	{0x116c1, 0x0},
-> +	{0x117c0, 0x0},
-> +	{0x117c1, 0x0},
-> +	{0x118c0, 0x0},
-> +	{0x118c1, 0x0},
-> +	{0x110ae, 0x0},
-> +	{0x110af, 0x0},
-> +	{0x90201, 0x0},
-> +	{0x90202, 0x0},
-> +	{0x90203, 0x0},
-> +	{0x90205, 0x0},
-> +	{0x90206, 0x0},
-> +	{0x90207, 0x0},
-> +	{0x90208, 0x0},
-> +	{0x20020, 0x0},
-> +	{0x20077, 0x0},
-> +	{0x20072, 0x0},
-> +	{0x20073, 0x0},
-> +	{0x400c0, 0x0},
-> +	{0x10040, 0x0},
-> +	{0x10140, 0x0},
-> +	{0x10240, 0x0},
-> +	{0x10340, 0x0},
-> +	{0x10440, 0x0},
-> +	{0x10540, 0x0},
-> +	{0x10640, 0x0},
-> +	{0x10740, 0x0},
-> +	{0x10840, 0x0},
-> +	{0x11040, 0x0},
-> +	{0x11140, 0x0},
-> +	{0x11240, 0x0},
-> +	{0x11340, 0x0},
-> +	{0x11440, 0x0},
-> +	{0x11540, 0x0},
-> +	{0x11640, 0x0},
-> +	{0x11740, 0x0},
-> +	{0x11840, 0x0},
-> +
-> +};
-> +
-> +/* P0 message block parameter for training firmware */
-> +static struct dram_cfg_param ddr_fsp0_cfg[] = {
-> +	{0xd0000, 0x0},
-> +	{0x54003, 0xe94},
-> +	{0x54004, 0x4},
-> +	{0x54006, 0x15},
-> +	{0x54008, 0x131f},
-> +	{0x54009, 0xc8},
-> +	{0x5400b, 0x4},
-> +	{0x5400d, 0x100},
-> +	{0x5400f, 0x100},
-> +	{0x54012, 0x110},
-> +	{0x54019, 0x36e4},
-> +	{0x5401a, 0xf2},
-> +	{0x5401b, 0x1146},
-> +	{0x5401c, 0x1108},
-> +	{0x5401e, 0x4},
-> +	{0x5401f, 0x36e4},
-> +	{0x54020, 0xf2},
-> +	{0x54021, 0x1146},
-> +	{0x54022, 0x1108},
-> +	{0x54024, 0x4},
-> +	{0x54032, 0xe400},
-> +	{0x54033, 0xf236},
-> +	{0x54034, 0x4600},
-> +	{0x54035, 0x811},
-> +	{0x54036, 0x11},
-> +	{0x54037, 0x400},
-> +	{0x54038, 0xe400},
-> +	{0x54039, 0xf236},
-> +	{0x5403a, 0x4600},
-> +	{0x5403b, 0x811},
-> +	{0x5403c, 0x11},
-> +	{0x5403d, 0x400},
-> +	{0xd0000, 0x1}
-> +};
-> +
-> +/* P0 2D message block parameter for training firmware */
-> +static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
-> +	{0xd0000, 0x0},
-> +	{0x54003, 0xe94},
-> +	{0x54004, 0x4},
-> +	{0x54006, 0x15},
-> +	{0x54008, 0x61},
-> +	{0x54009, 0xc8},
-> +	{0x5400b, 0x4},
-> +	{0x5400d, 0x100},
-> +	{0x5400f, 0x100},
-> +	{0x54010, 0x2080},
-> +	{0x54012, 0x110},
-> +	{0x54019, 0x36e4},
-> +	{0x5401a, 0xf2},
-> +	{0x5401b, 0x1146},
-> +	{0x5401c, 0x1108},
-> +	{0x5401e, 0x4},
-> +	{0x5401f, 0x36e4},
-> +	{0x54020, 0xf2},
-> +	{0x54021, 0x1146},
-> +	{0x54022, 0x1108},
-> +	{0x54024, 0x4},
-> +	{0x54032, 0xe400},
-> +	{0x54033, 0xf236},
-> +	{0x54034, 0x4600},
-> +	{0x54035, 0x811},
-> +	{0x54036, 0x11},
-> +	{0x54037, 0x400},
-> +	{0x54038, 0xe400},
-> +	{0x54039, 0xf236},
-> +	{0x5403a, 0x4600},
-> +	{0x5403b, 0x811},
-> +	{0x5403c, 0x11},
-> +	{0x5403d, 0x400},
-> +	{0xd0000, 0x1}
-> +};
-> +
-> +/* DRAM PHY init engine image */
-> +static struct dram_cfg_param ddr_phy_pie[] = {
-> +	{0xd0000, 0x0},
-> +	{0x90000, 0x10},
-> +	{0x90001, 0x400},
-> +	{0x90002, 0x10e},
-> +	{0x90003, 0x0},
-> +	{0x90004, 0x0},
-> +	{0x90005, 0x8},
-> +	{0x90029, 0xb},
-> +	{0x9002a, 0x480},
-> +	{0x9002b, 0x109},
-> +	{0x9002c, 0x8},
-> +	{0x9002d, 0x448},
-> +	{0x9002e, 0x139},
-> +	{0x9002f, 0x8},
-> +	{0x90030, 0x478},
-> +	{0x90031, 0x109},
-> +	{0x90032, 0x0},
-> +	{0x90033, 0xe8},
-> +	{0x90034, 0x109},
-> +	{0x90035, 0x2},
-> +	{0x90036, 0x10},
-> +	{0x90037, 0x139},
-> +	{0x90038, 0xb},
-> +	{0x90039, 0x7c0},
-> +	{0x9003a, 0x139},
-> +	{0x9003b, 0x44},
-> +	{0x9003c, 0x633},
-> +	{0x9003d, 0x159},
-> +	{0x9003e, 0x14f},
-> +	{0x9003f, 0x630},
-> +	{0x90040, 0x159},
-> +	{0x90041, 0x47},
-> +	{0x90042, 0x633},
-> +	{0x90043, 0x149},
-> +	{0x90044, 0x4f},
-> +	{0x90045, 0x633},
-> +	{0x90046, 0x179},
-> +	{0x90047, 0x8},
-> +	{0x90048, 0xe0},
-> +	{0x90049, 0x109},
-> +	{0x9004a, 0x0},
-> +	{0x9004b, 0x7c8},
-> +	{0x9004c, 0x109},
-> +	{0x9004d, 0x0},
-> +	{0x9004e, 0x1},
-> +	{0x9004f, 0x8},
-> +	{0x90050, 0x30},
-> +	{0x90051, 0x65a},
-> +	{0x90052, 0x9},
-> +	{0x90053, 0x0},
-> +	{0x90054, 0x45a},
-> +	{0x90055, 0x9},
-> +	{0x90056, 0x0},
-> +	{0x90057, 0x448},
-> +	{0x90058, 0x109},
-> +	{0x90059, 0x40},
-> +	{0x9005a, 0x633},
-> +	{0x9005b, 0x179},
-> +	{0x9005c, 0x1},
-> +	{0x9005d, 0x618},
-> +	{0x9005e, 0x109},
-> +	{0x9005f, 0x40c0},
-> +	{0x90060, 0x633},
-> +	{0x90061, 0x149},
-> +	{0x90062, 0x8},
-> +	{0x90063, 0x4},
-> +	{0x90064, 0x48},
-> +	{0x90065, 0x4040},
-> +	{0x90066, 0x633},
-> +	{0x90067, 0x149},
-> +	{0x90068, 0x0},
-> +	{0x90069, 0x4},
-> +	{0x9006a, 0x48},
-> +	{0x9006b, 0x40},
-> +	{0x9006c, 0x633},
-> +	{0x9006d, 0x149},
-> +	{0x9006e, 0x0},
-> +	{0x9006f, 0x658},
-> +	{0x90070, 0x109},
-> +	{0x90071, 0x10},
-> +	{0x90072, 0x4},
-> +	{0x90073, 0x18},
-> +	{0x90074, 0x0},
-> +	{0x90075, 0x4},
-> +	{0x90076, 0x78},
-> +	{0x90077, 0x549},
-> +	{0x90078, 0x633},
-> +	{0x90079, 0x159},
-> +	{0x9007a, 0xd49},
-> +	{0x9007b, 0x633},
-> +	{0x9007c, 0x159},
-> +	{0x9007d, 0x94a},
-> +	{0x9007e, 0x633},
-> +	{0x9007f, 0x159},
-> +	{0x90080, 0x441},
-> +	{0x90081, 0x633},
-> +	{0x90082, 0x149},
-> +	{0x90083, 0x42},
-> +	{0x90084, 0x633},
-> +	{0x90085, 0x149},
-> +	{0x90086, 0x1},
-> +	{0x90087, 0x633},
-> +	{0x90088, 0x149},
-> +	{0x90089, 0x0},
-> +	{0x9008a, 0xe0},
-> +	{0x9008b, 0x109},
-> +	{0x9008c, 0xa},
-> +	{0x9008d, 0x10},
-> +	{0x9008e, 0x109},
-> +	{0x9008f, 0x9},
-> +	{0x90090, 0x3c0},
-> +	{0x90091, 0x149},
-> +	{0x90092, 0x9},
-> +	{0x90093, 0x3c0},
-> +	{0x90094, 0x159},
-> +	{0x90095, 0x18},
-> +	{0x90096, 0x10},
-> +	{0x90097, 0x109},
-> +	{0x90098, 0x0},
-> +	{0x90099, 0x3c0},
-> +	{0x9009a, 0x109},
-> +	{0x9009b, 0x18},
-> +	{0x9009c, 0x4},
-> +	{0x9009d, 0x48},
-> +	{0x9009e, 0x18},
-> +	{0x9009f, 0x4},
-> +	{0x900a0, 0x58},
-> +	{0x900a1, 0xb},
-> +	{0x900a2, 0x10},
-> +	{0x900a3, 0x109},
-> +	{0x900a4, 0x1},
-> +	{0x900a5, 0x10},
-> +	{0x900a6, 0x109},
-> +	{0x900a7, 0x5},
-> +	{0x900a8, 0x7c0},
-> +	{0x900a9, 0x109},
-> +	{0x40000, 0x811},
-> +	{0x40020, 0x880},
-> +	{0x40040, 0x0},
-> +	{0x40060, 0x0},
-> +	{0x40001, 0x4008},
-> +	{0x40021, 0x83},
-> +	{0x40041, 0x4f},
-> +	{0x40061, 0x0},
-> +	{0x40002, 0x4040},
-> +	{0x40022, 0x83},
-> +	{0x40042, 0x51},
-> +	{0x40062, 0x0},
-> +	{0x40003, 0x811},
-> +	{0x40023, 0x880},
-> +	{0x40043, 0x0},
-> +	{0x40063, 0x0},
-> +	{0x40004, 0x720},
-> +	{0x40024, 0xf},
-> +	{0x40044, 0x1740},
-> +	{0x40064, 0x0},
-> +	{0x40005, 0x16},
-> +	{0x40025, 0x83},
-> +	{0x40045, 0x4b},
-> +	{0x40065, 0x0},
-> +	{0x40006, 0x716},
-> +	{0x40026, 0xf},
-> +	{0x40046, 0x2001},
-> +	{0x40066, 0x0},
-> +	{0x40007, 0x716},
-> +	{0x40027, 0xf},
-> +	{0x40047, 0x2800},
-> +	{0x40067, 0x0},
-> +	{0x40008, 0x716},
-> +	{0x40028, 0xf},
-> +	{0x40048, 0xf00},
-> +	{0x40068, 0x0},
-> +	{0x40009, 0x720},
-> +	{0x40029, 0xf},
-> +	{0x40049, 0x1400},
-> +	{0x40069, 0x0},
-> +	{0x4000a, 0xe08},
-> +	{0x4002a, 0xc15},
-> +	{0x4004a, 0x0},
-> +	{0x4006a, 0x0},
-> +	{0x4000b, 0x625},
-> +	{0x4002b, 0x15},
-> +	{0x4004b, 0x0},
-> +	{0x4006b, 0x0},
-> +	{0x4000c, 0x4028},
-> +	{0x4002c, 0x80},
-> +	{0x4004c, 0x0},
-> +	{0x4006c, 0x0},
-> +	{0x4000d, 0xe08},
-> +	{0x4002d, 0xc1a},
-> +	{0x4004d, 0x0},
-> +	{0x4006d, 0x0},
-> +	{0x4000e, 0x625},
-> +	{0x4002e, 0x1a},
-> +	{0x4004e, 0x0},
-> +	{0x4006e, 0x0},
-> +	{0x4000f, 0x4040},
-> +	{0x4002f, 0x80},
-> +	{0x4004f, 0x0},
-> +	{0x4006f, 0x0},
-> +	{0x40010, 0x2604},
-> +	{0x40030, 0x15},
-> +	{0x40050, 0x0},
-> +	{0x40070, 0x0},
-> +	{0x40011, 0x708},
-> +	{0x40031, 0x5},
-> +	{0x40051, 0x0},
-> +	{0x40071, 0x2002},
-> +	{0x40012, 0x8},
-> +	{0x40032, 0x80},
-> +	{0x40052, 0x0},
-> +	{0x40072, 0x0},
-> +	{0x40013, 0x2604},
-> +	{0x40033, 0x1a},
-> +	{0x40053, 0x0},
-> +	{0x40073, 0x0},
-> +	{0x40014, 0x708},
-> +	{0x40034, 0xa},
-> +	{0x40054, 0x0},
-> +	{0x40074, 0x2002},
-> +	{0x40015, 0x4040},
-> +	{0x40035, 0x80},
-> +	{0x40055, 0x0},
-> +	{0x40075, 0x0},
-> +	{0x40016, 0x60a},
-> +	{0x40036, 0x15},
-> +	{0x40056, 0x1200},
-> +	{0x40076, 0x0},
-> +	{0x40017, 0x61a},
-> +	{0x40037, 0x15},
-> +	{0x40057, 0x1300},
-> +	{0x40077, 0x0},
-> +	{0x40018, 0x60a},
-> +	{0x40038, 0x1a},
-> +	{0x40058, 0x1200},
-> +	{0x40078, 0x0},
-> +	{0x40019, 0x642},
-> +	{0x40039, 0x1a},
-> +	{0x40059, 0x1300},
-> +	{0x40079, 0x0},
-> +	{0x4001a, 0x4808},
-> +	{0x4003a, 0x880},
-> +	{0x4005a, 0x0},
-> +	{0x4007a, 0x0},
-> +	{0x900aa, 0x0},
-> +	{0x900ab, 0x790},
-> +	{0x900ac, 0x11a},
-> +	{0x900ad, 0x8},
-> +	{0x900ae, 0x7aa},
-> +	{0x900af, 0x2a},
-> +	{0x900b0, 0x10},
-> +	{0x900b1, 0x7b2},
-> +	{0x900b2, 0x2a},
-> +	{0x900b3, 0x0},
-> +	{0x900b4, 0x7c8},
-> +	{0x900b5, 0x109},
-> +	{0x900b6, 0x10},
-> +	{0x900b7, 0x10},
-> +	{0x900b8, 0x109},
-> +	{0x900b9, 0x10},
-> +	{0x900ba, 0x2a8},
-> +	{0x900bb, 0x129},
-> +	{0x900bc, 0x8},
-> +	{0x900bd, 0x370},
-> +	{0x900be, 0x129},
-> +	{0x900bf, 0xa},
-> +	{0x900c0, 0x3c8},
-> +	{0x900c1, 0x1a9},
-> +	{0x900c2, 0xc},
-> +	{0x900c3, 0x408},
-> +	{0x900c4, 0x199},
-> +	{0x900c5, 0x14},
-> +	{0x900c6, 0x790},
-> +	{0x900c7, 0x11a},
-> +	{0x900c8, 0x8},
-> +	{0x900c9, 0x4},
-> +	{0x900ca, 0x18},
-> +	{0x900cb, 0xe},
-> +	{0x900cc, 0x408},
-> +	{0x900cd, 0x199},
-> +	{0x900ce, 0x8},
-> +	{0x900cf, 0x8568},
-> +	{0x900d0, 0x108},
-> +	{0x900d1, 0x18},
-> +	{0x900d2, 0x790},
-> +	{0x900d3, 0x16a},
-> +	{0x900d4, 0x8},
-> +	{0x900d5, 0x1d8},
-> +	{0x900d6, 0x169},
-> +	{0x900d7, 0x10},
-> +	{0x900d8, 0x8558},
-> +	{0x900d9, 0x168},
-> +	{0x900da, 0x1ff8},
-> +	{0x900db, 0x85a8},
-> +	{0x900dc, 0x1e8},
-> +	{0x900dd, 0x50},
-> +	{0x900de, 0x798},
-> +	{0x900df, 0x16a},
-> +	{0x900e0, 0x60},
-> +	{0x900e1, 0x7a0},
-> +	{0x900e2, 0x16a},
-> +	{0x900e3, 0x8},
-> +	{0x900e4, 0x8310},
-> +	{0x900e5, 0x168},
-> +	{0x900e6, 0x8},
-> +	{0x900e7, 0xa310},
-> +	{0x900e8, 0x168},
-> +	{0x900e9, 0xa},
-> +	{0x900ea, 0x408},
-> +	{0x900eb, 0x169},
-> +	{0x900ec, 0x6e},
-> +	{0x900ed, 0x0},
-> +	{0x900ee, 0x68},
-> +	{0x900ef, 0x0},
-> +	{0x900f0, 0x408},
-> +	{0x900f1, 0x169},
-> +	{0x900f2, 0x0},
-> +	{0x900f3, 0x8310},
-> +	{0x900f4, 0x168},
-> +	{0x900f5, 0x0},
-> +	{0x900f6, 0xa310},
-> +	{0x900f7, 0x168},
-> +	{0x900f8, 0x1ff8},
-> +	{0x900f9, 0x85a8},
-> +	{0x900fa, 0x1e8},
-> +	{0x900fb, 0x68},
-> +	{0x900fc, 0x798},
-> +	{0x900fd, 0x16a},
-> +	{0x900fe, 0x78},
-> +	{0x900ff, 0x7a0},
-> +	{0x90100, 0x16a},
-> +	{0x90101, 0x68},
-> +	{0x90102, 0x790},
-> +	{0x90103, 0x16a},
-> +	{0x90104, 0x8},
-> +	{0x90105, 0x8b10},
-> +	{0x90106, 0x168},
-> +	{0x90107, 0x8},
-> +	{0x90108, 0xab10},
-> +	{0x90109, 0x168},
-> +	{0x9010a, 0xa},
-> +	{0x9010b, 0x408},
-> +	{0x9010c, 0x169},
-> +	{0x9010d, 0x58},
-> +	{0x9010e, 0x0},
-> +	{0x9010f, 0x68},
-> +	{0x90110, 0x0},
-> +	{0x90111, 0x408},
-> +	{0x90112, 0x169},
-> +	{0x90113, 0x0},
-> +	{0x90114, 0x8b10},
-> +	{0x90115, 0x168},
-> +	{0x90116, 0x1},
-> +	{0x90117, 0xab10},
-> +	{0x90118, 0x168},
-> +	{0x90119, 0x0},
-> +	{0x9011a, 0x1d8},
-> +	{0x9011b, 0x169},
-> +	{0x9011c, 0x80},
-> +	{0x9011d, 0x790},
-> +	{0x9011e, 0x16a},
-> +	{0x9011f, 0x18},
-> +	{0x90120, 0x7aa},
-> +	{0x90121, 0x6a},
-> +	{0x90122, 0xa},
-> +	{0x90123, 0x0},
-> +	{0x90124, 0x1e9},
-> +	{0x90125, 0x8},
-> +	{0x90126, 0x8080},
-> +	{0x90127, 0x108},
-> +	{0x90128, 0xf},
-> +	{0x90129, 0x408},
-> +	{0x9012a, 0x169},
-> +	{0x9012b, 0xc},
-> +	{0x9012c, 0x0},
-> +	{0x9012d, 0x68},
-> +	{0x9012e, 0x9},
-> +	{0x9012f, 0x0},
-> +	{0x90130, 0x1a9},
-> +	{0x90131, 0x0},
-> +	{0x90132, 0x408},
-> +	{0x90133, 0x169},
-> +	{0x90134, 0x0},
-> +	{0x90135, 0x8080},
-> +	{0x90136, 0x108},
-> +	{0x90137, 0x8},
-> +	{0x90138, 0x7aa},
-> +	{0x90139, 0x6a},
-> +	{0x9013a, 0x0},
-> +	{0x9013b, 0x8568},
-> +	{0x9013c, 0x108},
-> +	{0x9013d, 0xb7},
-> +	{0x9013e, 0x790},
-> +	{0x9013f, 0x16a},
-> +	{0x90140, 0x1f},
-> +	{0x90141, 0x0},
-> +	{0x90142, 0x68},
-> +	{0x90143, 0x8},
-> +	{0x90144, 0x8558},
-> +	{0x90145, 0x168},
-> +	{0x90146, 0xf},
-> +	{0x90147, 0x408},
-> +	{0x90148, 0x169},
-> +	{0x90149, 0xd},
-> +	{0x9014a, 0x0},
-> +	{0x9014b, 0x68},
-> +	{0x9014c, 0x0},
-> +	{0x9014d, 0x408},
-> +	{0x9014e, 0x169},
-> +	{0x9014f, 0x0},
-> +	{0x90150, 0x8558},
-> +	{0x90151, 0x168},
-> +	{0x90152, 0x8},
-> +	{0x90153, 0x3c8},
-> +	{0x90154, 0x1a9},
-> +	{0x90155, 0x3},
-> +	{0x90156, 0x370},
-> +	{0x90157, 0x129},
-> +	{0x90158, 0x20},
-> +	{0x90159, 0x2aa},
-> +	{0x9015a, 0x9},
-> +	{0x9015b, 0x8},
-> +	{0x9015c, 0xe8},
-> +	{0x9015d, 0x109},
-> +	{0x9015e, 0x0},
-> +	{0x9015f, 0x8140},
-> +	{0x90160, 0x10c},
-> +	{0x90161, 0x10},
-> +	{0x90162, 0x8138},
-> +	{0x90163, 0x104},
-> +	{0x90164, 0x8},
-> +	{0x90165, 0x448},
-> +	{0x90166, 0x109},
-> +	{0x90167, 0xf},
-> +	{0x90168, 0x7c0},
-> +	{0x90169, 0x109},
-> +	{0x9016a, 0x0},
-> +	{0x9016b, 0xe8},
-> +	{0x9016c, 0x109},
-> +	{0x9016d, 0x47},
-> +	{0x9016e, 0x630},
-> +	{0x9016f, 0x109},
-> +	{0x90170, 0x8},
-> +	{0x90171, 0x618},
-> +	{0x90172, 0x109},
-> +	{0x90173, 0x8},
-> +	{0x90174, 0xe0},
-> +	{0x90175, 0x109},
-> +	{0x90176, 0x0},
-> +	{0x90177, 0x7c8},
-> +	{0x90178, 0x109},
-> +	{0x90179, 0x8},
-> +	{0x9017a, 0x8140},
-> +	{0x9017b, 0x10c},
-> +	{0x9017c, 0x0},
-> +	{0x9017d, 0x478},
-> +	{0x9017e, 0x109},
-> +	{0x9017f, 0x0},
-> +	{0x90180, 0x1},
-> +	{0x90181, 0x8},
-> +	{0x90182, 0x8},
-> +	{0x90183, 0x4},
-> +	{0x90184, 0x0},
-> +	{0x90006, 0x8},
-> +	{0x90007, 0x7c8},
-> +	{0x90008, 0x109},
-> +	{0x90009, 0x0},
-> +	{0x9000a, 0x400},
-> +	{0x9000b, 0x106},
-> +	{0xd00e7, 0x400},
-> +	{0x90017, 0x0},
-> +	{0x9001f, 0x2b},
-> +	{0x90026, 0x69},
-> +	{0x400d0, 0x0},
-> +	{0x400d1, 0x101},
-> +	{0x400d2, 0x105},
-> +	{0x400d3, 0x107},
-> +	{0x400d4, 0x10f},
-> +	{0x400d5, 0x202},
-> +	{0x400d6, 0x20a},
-> +	{0x400d7, 0x20b},
-> +	{0x2003a, 0x2},
-> +	{0x200be, 0x3},
-> +	{0x2000b, 0x75},
-> +	{0x2000c, 0xe9},
-> +	{0x2000d, 0x91c},
-> +	{0x2000e, 0x2c},
-> +	{0x9000c, 0x0},
-> +	{0x9000d, 0x173},
-> +	{0x9000e, 0x60},
-> +	{0x9000f, 0x6110},
-> +	{0x90010, 0x2152},
-> +	{0x90011, 0xdfbd},
-> +	{0x90012, 0x2060},
-> +	{0x90013, 0x6152},
-> +	{0x20010, 0x5a},
-> +	{0x20011, 0x3},
-> +	{0x40080, 0xe0},
-> +	{0x40081, 0x12},
-> +	{0x40082, 0xe0},
-> +	{0x40083, 0x12},
-> +	{0x40084, 0xe0},
-> +	{0x40085, 0x12},
-> +	{0x400fd, 0xf},
-> +	{0x400f1, 0xe},
-> +	{0x10011, 0x1},
-> +	{0x10012, 0x1},
-> +	{0x10013, 0x180},
-> +	{0x10018, 0x1},
-> +	{0x10002, 0x6209},
-> +	{0x100b2, 0x1},
-> +	{0x101b4, 0x1},
-> +	{0x102b4, 0x1},
-> +	{0x103b4, 0x1},
-> +	{0x104b4, 0x1},
-> +	{0x105b4, 0x1},
-> +	{0x106b4, 0x1},
-> +	{0x107b4, 0x1},
-> +	{0x108b4, 0x1},
-> +	{0x11011, 0x1},
-> +	{0x11012, 0x1},
-> +	{0x11013, 0x180},
-> +	{0x11018, 0x1},
-> +	{0x11002, 0x6209},
-> +	{0x110b2, 0x1},
-> +	{0x111b4, 0x1},
-> +	{0x112b4, 0x1},
-> +	{0x113b4, 0x1},
-> +	{0x114b4, 0x1},
-> +	{0x115b4, 0x1},
-> +	{0x116b4, 0x1},
-> +	{0x117b4, 0x1},
-> +	{0x118b4, 0x1},
-> +	{0x20089, 0x1},
-> +	{0x20088, 0x19},
-> +	{0xc0080, 0x0},
-> +	{0xd0000, 0x1},
-> +
-> +};
-> +
-> +static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
-> +	{
-> +		/* P0 3733mts 1D */
-> +		.drate = 3733,
-> +		.fw_type = FW_1D_IMAGE,
-> +		.fsp_cfg = ddr_fsp0_cfg,
-> +		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
-> +
-> +	},
-> +
-> +	{
-> +		/* P0 3733mts 2D */
-> +		.drate = 3733,
-> +		.fw_type = FW_2D_IMAGE,
-> +		.fsp_cfg = ddr_fsp0_2d_cfg,
-> +		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
-> +	},
-> +
-> +};
-> +
-> +/* ddr timing config params */
-> +struct dram_timing_info dram_timing = {
-> +	.ddrc_cfg = ddr_ddrc_cfg,
-> +	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
-> +	.ddrphy_cfg = ddr_ddrphy_cfg,
-> +	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
-> +	.fsp_msg = ddr_dram_fsp_msg,
-> +	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
-> +	.ddrphy_trained_csr = ddr_ddrphy_trained_csr,
-> +	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
-> +	.ddrphy_pie = ddr_phy_pie,
-> +	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
-> +	.fsp_table = { 3733, },
-> +	.fsp_cfg = ddr_dram_fsp_cfg,
-> +	.fsp_cfg_num = ARRAY_SIZE(ddr_dram_fsp_cfg),
-> +};
-> diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
-> index e58a2ca13d7a7f4767b680cceefed27fb6950f9b..445f20a303cc7f31f574125d38b34b9bdffd74da 100644
-> --- a/arch/arm/configs/imx_v8_defconfig
-> +++ b/arch/arm/configs/imx_v8_defconfig
-> @@ -16,6 +16,7 @@ CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP=y
->   CONFIG_MACH_ZII_IMX8MQ_DEV=y
->   CONFIG_64BIT=y
->   CONFIG_MACH_TQMA93XX=y
-> +CONFIG_MACH_PHYTEC_PHYCORE_IMX93=y
->   CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
->   CONFIG_MMU=y
->   CONFIG_MALLOC_SIZE=0x0
-> diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-> index b1e66e85f4607752efd79bdda6648b750bf872a1..c66b8a0be803a1f3c243e7ec3da5169e3d5451a1 100644
-> --- a/arch/arm/configs/multi_v8_defconfig
-> +++ b/arch/arm/configs/multi_v8_defconfig
-> @@ -22,6 +22,7 @@ CONFIG_MACH_TQ_MBA8MPXL=y
->   CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP=y
->   CONFIG_MACH_ZII_IMX8MQ_DEV=y
->   CONFIG_MACH_TQMA93XX=y
-> +CONFIG_MACH_PHYTEC_PHYCORE_IMX93=y
->   CONFIG_IMX_IIM=y
->   CONFIG_ARCH_LAYERSCAPE_PPA=y
->   CONFIG_MACH_LS1028ARDB=y
-> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-> index d3462858523067d68cd41112daaa81d72a072957..3423115b4b447a14d9755ecd63c05a36328c158a 100644
-> --- a/arch/arm/dts/Makefile
-> +++ b/arch/arm/dts/Makefile
-> @@ -81,6 +81,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
->   				imx6ull-phytec-phycore-som-nand.dtb.o \
->   				imx6ull-phytec-phycore-som-emmc.dtb.o
->   lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) += imx7d-phyboard-zeta.dtb.o
-> +lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX93) += imx93-phyboard-segin.dtb.o
->   lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1) += stm32mp157c-phycore-stm32mp1-3.dtb.o
->   lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX8MM) += imx8mm-phyboard-polis-rdk.dtb.o
->   lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) += imx8mq-phytec-phycore-som.dtb.o
-> diff --git a/arch/arm/dts/imx93-phyboard-segin-downstream.dtsi b/arch/arm/dts/imx93-phyboard-segin-downstream.dtsi
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..d2a81069e335c12933cdf48bbc1b7c13e937a6c3
-> --- /dev/null
-> +++ b/arch/arm/dts/imx93-phyboard-segin-downstream.dtsi
-> @@ -0,0 +1,269 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright (C) 2023 PHYTEC Messtechnik GmbH
-> + * Author: Wadim Egorov <w.egorov@phytec.de>, Christoph Stoidner <c.stoidner@phytec.de>
-> + */
-> +
-> +/*
-> + * Contents of this file are copied from the linux-phytec-imx downstream and
-> + * can be removed once mainlined.
-> + */
-> +
-> +/ {
-> +	reg_vcc_1v8_audio: regulator-vcc1v8-audio {
-> +		compatible = "regulator-fixed";
-> +		regulator-max-microvolt = <1800000>;
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-name = "VCC1V8_AUDIO";
-> +	};
-> +	reg_vcc_3v3: regulator-vcc-3v3 {
-> +		compatible = "regulator-fixed";
-> +		regulator-max-microvolt = <3300000>;
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-name = "VCC3V3";
-> +	};
-> +};
-> +
-> +&reg_usdhc2_vmmc {
-> +	compatible = "regulator-fixed";
-> +	gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
-> +	enable-active-high;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
-> +	regulator-max-microvolt = <3300000>;
-> +	regulator-min-microvolt = <3300000>;
-> +	regulator-name = "VCC_SD";
-> +};
-> +
-> +/* I2C3 */
-> +&lpi2c3 {
-> +	clock-frequency = <400000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_lpi2c3>;
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	status = "okay";
-> +
-> +	pmic@25 {
-> +		compatible = "nxp,pca9451a";
-> +		reg = <0x25>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_pmic>;
-> +		interrupt-parent = <&gpio4>;
-> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +		regulators {
-> +			buck1: BUCK1 {
-> +				regulator-name = "VDD_SOC";
-> +				regulator-min-microvolt = <610000>;
-> +				regulator-max-microvolt = <950000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +				regulator-ramp-delay = <3125>;
-> +			};
-> +
-> +			buck2: BUCK2 {
-> +				regulator-name = "VDDQ_0V6";
-> +				regulator-min-microvolt = <600000>;
-> +				regulator-max-microvolt = <600000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			buck4: BUCK4 {
-> +				regulator-name = "VDD_3V3_BUCK";
-> +				regulator-min-microvolt = <3300000>;
-> +				regulator-max-microvolt = <3300000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			buck5: BUCK5 {
-> +				regulator-name = "VDD_1V8";
-> +				regulator-min-microvolt = <1800000>;
-> +				regulator-max-microvolt = <1800000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			buck6: BUCK6 {
-> +				regulator-name = "VDD_1V1";
-> +				regulator-min-microvolt = <1100000>;
-> +				regulator-max-microvolt = <1100000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			ldo1: LDO1 {
-> +				regulator-name = "PMIC_SNVS_1V8";
-> +				regulator-min-microvolt = <1800000>;
-> +				regulator-max-microvolt = <1800000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			ldo4: LDO4 {
-> +				regulator-name = "VDD_0V8";
-> +				regulator-min-microvolt = <800000>;
-> +				regulator-max-microvolt = <800000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			ldo5: LDO5 {
-> +				regulator-name = "NVCC_SD2";
-> +				regulator-min-microvolt = <1800000>;
-> +				regulator-max-microvolt = <3300000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +		};
-> +	};
-> +
-> +	eeprom@50 {
-> +		compatible = "atmel,24c32";
-> +		reg = <0x50>;
-> +		pagesize = <32>;
-> +		vcc-supply = <&buck4>;
-> +	};
-> +
-> +	eepromid@58 {
-> +		compatible = "atmel,24c32";
-> +		pagesize = <32>;
-> +		reg = <0x58>;
-> +		size = <32>;
-> +		vcc-supply = <&buck4>;
-> +	};
-> +};
-> +
-> +/* Ethernet */
-> +&eqos {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_eqos>;
-> +	phy-mode = "rmii";
-> +	phy-handle = <&ethphy2>;
-> +	assigned-clocks = <&clk IMX93_CLK_ENET_TIMER2>,
-> +			  <&clk IMX93_CLK_ENET>;
-> +	assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-> +				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
-> +	assigned-clock-rates = <100000000>, <50000000>;
-> +	status = "okay";
-> +};
-> +
-> +/* ENET2 MDIO */
-> +&mdio {
-> +	ethphy2: ethernet-phy@2 {
-> +		reg = <2>;
-> +		micrel,led-mode = <1>;
-> +		compatible = "ethernet-phy-id0022.1561";
-> +
-> +		/*
-> +		 * HACK:
-> +		 * IMX93_CLK_ENET is the ref clock and should be running at 50Mhz.
-> +		 * Using it here to tell the PHY we are running at 50MHz is not working.
-> +		 * Let us simply use another clock here.
-> +		 */
-> +		/* clocks = <&clk IMX93_CLK_ENET>; */
-> +		clocks = <&clk IMX93_CLK_ENET_REF_PHY>;
-> +		clock-names = "rmii-ref";
-> +	};
-> +};
-> +
-> +/* USB  */
-> +&usbotg1 {
-> +	disable-over-current;
-> +	dr_mode = "otg";
-> +	status = "okay";
-> +};
-> +
-> +&usbotg2 {
-> +	disable-over-current;
-> +	dr_mode = "host";
-> +	status = "okay";
-> +};
-> +
-> +/* SD-Card */
-> +&usdhc2 {
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 = <&pinctrl_usdhc2_default>, <&pinctrl_usdhc2_cd>;
-> +	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_cd>;
-> +	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_cd>;
-> +	cd-gpios = <&gpio3 00 GPIO_ACTIVE_LOW>;
-> +	vmmc-supply = <&reg_usdhc2_vmmc>;
-> +	bus-width = <4>;
-> +	disable-wp;
-> +	no-sdio;
-> +	no-mmc;
-> +	status = "okay";
-> +};
-> +
-> +/* need to config the SION for data and cmd pad, refer to ERR052021 */
-> +&pinctrl_usdhc2_default {
-> +	fsl,pins = <
-> +		MX93_PAD_SD2_CLK__USDHC2_CLK		0x159e
-> +		MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
-> +		MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000138e
-> +		MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000138e
-> +		MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000138e
-> +		MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
-> +		MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
-> +	>;
-> +};
-> +
-> +/* need to config the SION for data and cmd pad, refer to ERR052021 */
-> +&pinctrl_usdhc2_100mhz {
-> +	fsl,pins = <
-> +		MX93_PAD_SD2_CLK__USDHC2_CLK            0x159e
-> +		MX93_PAD_SD2_CMD__USDHC2_CMD            0x4000139e
-> +		MX93_PAD_SD2_DATA0__USDHC2_DATA0        0x4000138e
-> +		MX93_PAD_SD2_DATA1__USDHC2_DATA1        0x4000138e
-> +		MX93_PAD_SD2_DATA2__USDHC2_DATA2        0x4000139e
-> +		MX93_PAD_SD2_DATA3__USDHC2_DATA3        0x4000139e
-> +		MX93_PAD_SD2_VSELECT__USDHC2_VSELECT    0x51e
-> +	>;
-> +};
-> +
-> +/* need to config the SION for data and cmd pad, refer to ERR052021 */
-> +&pinctrl_usdhc2_200mhz {
-> +	fsl,pins = <
-> +		MX93_PAD_SD2_CLK__USDHC2_CLK            0x158e
-> +		MX93_PAD_SD2_CMD__USDHC2_CMD            0x4000139e
-> +		MX93_PAD_SD2_DATA0__USDHC2_DATA0        0x4000139e
-> +		MX93_PAD_SD2_DATA1__USDHC2_DATA1        0x4000139e
-> +		MX93_PAD_SD2_DATA2__USDHC2_DATA2        0x4000139e
-> +		MX93_PAD_SD2_DATA3__USDHC2_DATA3        0x4000139e
-> +		MX93_PAD_SD2_VSELECT__USDHC2_VSELECT    0x51e
-> +	>;
-> +};
-> +
-> +
-> +&iomuxc {
-> +	pinctrl_eqos: eqosgrp {
-> +		fsl,pins = <
-> +			MX93_PAD_ENET1_TD2__CCM_ENET_QOS_CLOCK_GENERATE_REF_CLK 0x4000050e
-> +			MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0			0x57e
-> +			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1			0x57e
-> +			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0			0x50e
-> +			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1			0x50e
-> +			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL		0x57e
-> +			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x50e
-> +			MX93_PAD_ENET1_RXC__ENET_QOS_RX_ER			0x57e
-> +		>;
-> +	};
-> +	pinctrl_lpi2c3: lpi2c3grp {
-> +		fsl,pins = <
-> +			MX93_PAD_GPIO_IO28__LPI2C3_SDA			0x40000b9e
-> +			MX93_PAD_GPIO_IO29__LPI2C3_SCL			0x40000b9e
-> +		>;
-> +	};
-> +	pinctrl_pmic: pmicgrp {
-> +		fsl,pins = <
-> +			MX93_PAD_ENET2_RD3__GPIO4_IO27			0x31e
-> +		>;
-> +	};
-> +	pinctrl_rtc: rtcgrp {
-> +		fsl,pins = <
-> +			MX93_PAD_ENET2_RD2__GPIO4_IO26		0x31e
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/dts/imx93-phyboard-segin.dts b/arch/arm/dts/imx93-phyboard-segin.dts
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..0fc69b8789661eaa3c904efbe3e439170a83adb6
-> --- /dev/null
-> +++ b/arch/arm/dts/imx93-phyboard-segin.dts
-> @@ -0,0 +1,28 @@
-> +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-> +
-> +#include <arm64/freescale/imx93-phyboard-segin.dts>
-> +#include "imx93.dtsi"
-> +#include "imx93-phyboard-segin-downstream.dtsi"
-> +
-> +/ {
-> +	chosen {
-> +		environment-emmc {
-> +			compatible = "barebox,environment";
-> +			device-path = &environment_emmc;
-> +		};
-> +	};
-> +};
-> +
-> +&usdhc1 {
-> +	partitions {
-> +		compatible = "fixed-partitions";
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +
-> +		environment_emmc: partition@80000 {
-> +			label = "barebox-environment";
-> +			reg = <0x0 0x80000 0x0 0x80000>;
-> +		};
-> +	};
-> +
-> +};
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 5ae7ab12ee94f4fab3fe446904ea785c5cd51193..552e7227a0221fee8232dfba5dcdd60de923ff0c 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -746,6 +746,15 @@ config MACH_ZII_IMX8MQ_DEV
->   
->   comment "i.MX93 boards"
->   
-> +config MACH_PHYTEC_PHYCORE_IMX93
-> +	bool "phyCORE i.MX93 SoM based devices"
-> +	select ARCH_IMX93
-> +	select IMX9_DRAM
-> +	select I2C
-> +	select I2C_IMX_LPI2C
-> +	select FIRMWARE_IMX93_ATF
-> +	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
-> +
->   config MACH_TQMA93XX
->   	bool "TQ i.MX93 on TQMA93XX Board"
->   	select ARCH_IMX93
-> diff --git a/images/Makefile.imx b/images/Makefile.imx
-> index c3f1bd5f05a008321944cf68659c146f8cd25ce1..93264254e9e4cda3969bf7bf4812f2d1c5b59c09 100644
-> --- a/images/Makefile.imx
-> +++ b/images/Makefile.imx
-> @@ -521,3 +521,7 @@ $(obj)/%.imx9img: $(obj)/% FORCE
->   pblb-$(CONFIG_MACH_TQMA93XX) += start_imx93_tqma93xx
->   FILE_barebox-tqma93xx.img = start_imx93_tqma93xx.pblb.imx9img
->   image-$(CONFIG_MACH_TQMA93XX) += barebox-tqma93xx.img
-> +
-> +pblb-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX93) += start_imx93_phyboard_segin
-> +FILE_barebox-phyboard_segin.img = start_imx93_phyboard_segin.pblb.imx9img
-> +image-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX93) += barebox-phyboard_segin.img
-> 
-> ---
-> base-commit: 75296e2aa356f6fbd680aa2204545732ac49e37d
-> change-id: 20250304-phyboard-segin-imx93-257c1809d4f8
-> 
-> Best regards,
-
-
+diff --git a/Documentation/boards/at91/microchip-at91sam9263-ek.rst b/Documentation/boards/at91/microchip-at91sam9263-ek.rst
+index 8022cdd678..557e2040cb 100644
+--- a/Documentation/boards/at91/microchip-at91sam9263-ek.rst
++++ b/Documentation/boards/at91/microchip-at91sam9263-ek.rst
+@@ -123,10 +123,3 @@ This is the reset vector and exception vectors. Must be the very first in the fi
+ ``.text_bare_init*:``
+ Everything in this section, and , is checked at link time.
+ Size most be less than BAREBOX_MAX_BARE_INIT_SIZE / ARCH_BAREBOX_MAX_BARE_INIT_SIZE
+-
+-at91 specify the size of the two sections in exception vector 6 (see above),
+-if CONFIG_AT91_LOAD_BAREBOX_SRAM is defined.
+-I think this is because some at91 variants have only very limited SRAM size,
+-and we copy only a minimal part to the SRAM. The remaining part is then
+-executed in-place.
+-For at91sam9263 we have a large SRAM so there is room for the full bootstrap binary.
+diff --git a/arch/arm/boards/at91sam9261ek/defaultenv-at91sam9261ek/config b/arch/arm/boards/at91sam9261ek/defaultenv-at91sam9261ek/config
+index cb3e847f54..7d855779ca 100644
+--- a/arch/arm/boards/at91sam9261ek/defaultenv-at91sam9261ek/config
++++ b/arch/arm/boards/at91sam9261ek/defaultenv-at91sam9261ek/config
+@@ -34,14 +34,8 @@ kernelimage=zImage
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+-if [ x$borebox_first_stage = x1 ]
+-then
+-	nand_parts="384k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),4M(kernel),120M(rootfs),-(data)"
+-	rootfs_mtdblock_nand=5
+-else
+-	nand_parts="128k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),4M(kernel),120M(rootfs),-(data)"
+-	rootfs_mtdblock_nand=6
+-fi
++nand_parts="128k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),4M(kernel),120M(rootfs),-(data)"
++rootfs_mtdblock_nand=6
+ 
+ autoboot_timeout=3
+ 
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index da305fe9ed..799466d655 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -319,9 +319,6 @@ mem_initcall(at91sam9261ek_mem_init);
+ 
+ static int at91sam9261ek_devices_init(void)
+ {
+-	u32 barebox_part_start;
+-	u32 barebox_part_size;
+-
+ 	ek_add_device_nand();
+ 	ek_add_device_dm9000();
+ 	ek_add_device_udc();
+@@ -330,17 +327,8 @@ static int at91sam9261ek_devices_init(void)
+ 	ek_add_device_lcdc();
+ 	ek_add_device_spi();
+ 
+-	if (IS_ENABLED(CONFIG_AT91_LOAD_BAREBOX_SRAM)) {
+-		barebox_part_start = 0;
+-		barebox_part_size = SZ_256K + SZ_128K;
+-		export_env_ull("borebox_first_stage", 1);
+-	} else {
+-		devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
+-		barebox_part_start = SZ_128K;
+-		barebox_part_size = SZ_256K;
+-	}
+-	devfs_add_partition("nand0", barebox_part_start, barebox_part_size,
+-			    DEVFS_PARTITION_FIXED, "self_raw");
++	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
++	devfs_add_partition("nand0", SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
+ 	devfs_add_partition("nand0", SZ_256K + SZ_128K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+diff --git a/arch/arm/configs/at91sam9261ek_first_stage_defconfig b/arch/arm/configs/at91sam9261ek_first_stage_defconfig
+deleted file mode 100644
+index 8e6065de34..0000000000
+--- a/arch/arm/configs/at91sam9261ek_first_stage_defconfig
++++ /dev/null
+@@ -1,65 +0,0 @@
+-CONFIG_ARCH_AT91=y
+-CONFIG_ARCH_AT91SAM9261=y
+-CONFIG_AT91_LOAD_BAREBOX_SRAM=y
+-CONFIG_AEABI=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_MMU=y
+-CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x27000
+-CONFIG_EXPERIMENTAL=y
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_PROMPT="9261-EK:"
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_MENU=y
+-CONFIG_BOOTM_SHOW_TYPE=y
+-CONFIG_BOOTM_INITRD=y
+-CONFIG_CONSOLE_ACTIVATE_ALL=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
+-# CONFIG_CMD_ARM_CPUINFO is not set
+-CONFIG_LONGHELP=y
+-CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_AT91_BOOT_TEST=y
+-# CONFIG_CMD_BOOTU is not set
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_LOADB=y
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_UIMAGE=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_LOGIN=y
+-CONFIG_CMD_MENU=y
+-CONFIG_CMD_MENU_MANAGEMENT=y
+-CONFIG_CMD_PASSWD=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_FLASH=y
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_LED=y
+-CONFIG_CMD_LED_TRIGGER=y
+-CONFIG_NET=y
+-CONFIG_NET_NFS=y
+-CONFIG_NET_RESOLV=y
+-CONFIG_DRIVER_NET_DM9K=y
+-CONFIG_DRIVER_SPI_ATMEL=y
+-CONFIG_MTD=y
+-# CONFIG_MTD_OOB_DEVICE is not set
+-CONFIG_MTD_DATAFLASH=y
+-CONFIG_NAND=y
+-CONFIG_NAND_ATMEL=y
+-CONFIG_USB_GADGET=y
+-CONFIG_USB_GADGET_DFU=y
+-CONFIG_USB_GADGET_SERIAL=y
+-CONFIG_LED=y
+-CONFIG_LED_GPIO=y
+-CONFIG_LED_TRIGGERS=y
+-CONFIG_KEYBOARD_GPIO=y
+-CONFIG_FS_TFTP=y
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 0b3a4ac44c..5bc5cacb7c 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -152,9 +152,6 @@ config HAVE_NAND_ATMEL_BUSWIDTH_16
+ config HAVE_AT91_DATAFLASH_CARD
+ 	bool
+ 
+-config HAVE_AT91_LOAD_BAREBOX_SRAM
+-	bool
+-
+ comment "Atmel AT91 System-on-Chip"
+ 
+ config SOC_AT91RM9200
+@@ -177,7 +174,6 @@ config SOC_AT91SAM9261
+ 	bool
+ 	select SOC_AT91SAM9
+ 	select PINCTRL_AT91
+-	select HAVE_AT91_LOAD_BAREBOX_SRAM
+ 	help
+ 	  Select this if you are using one of Atmel's AT91SAM9261 or AT91SAM9G10 SoC.
+ 
+@@ -185,7 +181,6 @@ config SOC_AT91SAM9263
+ 	bool
+ 	select SOC_AT91SAM9
+ 	select HAS_MACB
+-	select HAVE_AT91_LOAD_BAREBOX_SRAM
+ 	select PINCTRL_AT91
+ 
+ config SOC_AT91SAM9G45
+@@ -707,9 +702,4 @@ config AT91_BOOTSTRAP
+ 	depends on HAVE_AT91_BOOTSTRAP
+ 	select BOOTSTRAP
+ 
+-config AT91_LOAD_BAREBOX_SRAM
+-	bool "at91 load barebox in sram"
+-	depends on SHELL_NONE || HAVE_AT91_LOAD_BAREBOX_SRAM
+-	default y if SHELL_NONE
+-
+ endif
+diff --git a/include/mach/at91/barebox-arm.h b/include/mach/at91/barebox-arm.h
+index 652fd283a0..3a041b4557 100644
+--- a/include/mach/at91/barebox-arm.h
++++ b/include/mach/at91/barebox-arm.h
+@@ -4,18 +4,11 @@
+ 
+ #include <asm/barebox-arm.h>
+ #include <asm/common.h>
++#include <linux/compiler.h>
+ #include <mach/at91/sama5d3.h>
+ #include <mach/at91/sama5d4.h>
+ #include <mach/at91/at91sam9261.h>
+ 
+-#ifdef CONFIG_AT91_LOAD_BAREBOX_SRAM
+-#define AT91_EXV6	".word _barebox_image_size\n"
+-#else
+-#define AT91_EXV6	".word _barebox_bare_init_size\n"
+-#endif
+-
+-#include <linux/compiler.h>
+-
+ static __always_inline void __barebox_at91_head(void)
+ {
+ 	__asm__ __volatile__ (
+@@ -27,7 +20,7 @@ static __always_inline void __barebox_at91_head(void)
+ 		"1: b 1b\n"
+ 		"1: b 1b\n"
+ 		"1: b 1b\n"
+-		AT91_EXV6				/* image size to load by the bootrom */
++		".word _barebox_image_size\n"		/* image size to load by the bootrom */
+ 		"1: b 1b\n"
+ 		"1: b 1b\n"
+ #endif
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.1
+
 
 
