@@ -1,64 +1,67 @@
-Delivery-date: Fri, 07 Mar 2025 09:00:08 +0100
+Delivery-date: Fri, 07 Mar 2025 09:00:40 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tqScq-00AvVe-2M
+	id 1tqSdN-00AvWS-1k
 	for lore@lore.pengutronix.de;
-	Fri, 07 Mar 2025 09:00:08 +0100
+	Fri, 07 Mar 2025 09:00:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tqScp-0005kS-Hf
-	for lore@pengutronix.de; Fri, 07 Mar 2025 09:00:08 +0100
+	id 1tqSdL-0005sp-9A
+	for lore@pengutronix.de; Fri, 07 Mar 2025 09:00:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=5iso7lGYpppQoNjWt7Q4ccFmyKSD+nfEbMiF2XSH1mk=; b=cMAo/z9edNIw3Qh2zoZ7D9/tPN
-	zPQZerVQqemgx0EYIU8drXXxHbvoK3/jmnKATpAshNCvTegyZl0lnRes+i9B3VODTUDt9JQGhmH1o
-	/pFv8EKsZUciDPqVTgztXEKl9MSsPe5KV2dVjRXrGQsioqZ2ESmxW0gm+tqrXTNEz5vTxuEd8ap4Z
-	0VN48QbFRMZMevnTj9w5grZIS9SeJsnP4OtR90w6zXPTWwAGnVpEVpgTYzoQl1V8g7xVOU8orbA5b
-	fgH/SPhsRcOCKOqP8XuHBXyyUAuTsrNPx1G5J6tjyPIC5h+SZrfO9NUtqph1nrVSqh+a5J9GL0o1R
-	ZijD/HiQ==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Nbp2KdgcaotOHj1jBl2/w94ZstzwSekqyuKMdG4v+DI=; b=pTf+VOvJc6IcliJIq5o9KVFin3
+	yUPCGwASDdHFSl+jPZeoInefIXgySe6+TqgisPY2lxOHJYkZUeP/VEkxQATDF5HcYaY5XUd+clmIu
+	JhQbvBzdp43aL9kPsqnlLX6hBeEOF+toFA7bQP1xGFOITUoZZehKszitDdf6EAwlY5nxr0vbdzGlf
+	CuvD8MoRjE0jCf/4UuLGxvb1TWpoeQ5foRtIWa0xt+4/KdCvlILTXN0H75ArQ7SfiGvIfZZlqc1cx
+	rUvHMv4S0HQ4NBGgI/RH3Zcwrcfh5B22vQPXe1IOwB9ujARaef3LR7xllLbwl3kv2ug9xizLNuSUx
+	WTX+iaHg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tqScH-0000000DUB7-3EF1;
-	Fri, 07 Mar 2025 07:59:33 +0000
+	id 1tqSct-0000000DUGW-1N8b;
+	Fri, 07 Mar 2025 08:00:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tqScF-0000000DUAp-0XC2
+	id 1tqScr-0000000DUFX-0toP
 	for barebox@lists.infradead.org;
-	Fri, 07 Mar 2025 07:59:32 +0000
+	Fri, 07 Mar 2025 08:00:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tqScD-0005fs-O6; Fri, 07 Mar 2025 08:59:29 +0100
+	id 1tqScp-0005ke-T5; Fri, 07 Mar 2025 09:00:07 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tqScD-004RwY-1o;
-	Fri, 07 Mar 2025 08:59:29 +0100
+	id 1tqScp-004Rwc-2J;
+	Fri, 07 Mar 2025 09:00:07 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tqScD-0045Fr-1S;
-	Fri, 07 Mar 2025 08:59:29 +0100
+	id 1tqScp-0045IL-25;
+	Fri, 07 Mar 2025 09:00:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  7 Mar 2025 08:59:27 +0100
-Message-Id: <20250307075927.973504-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250305131121.3985854-1-a.fatoum@pengutronix.de>
+References: <20250305131121.3985854-1-a.fatoum@pengutronix.de>
+Message-Id: <174133440764.973644.18378279852503854528.b4-ty@pengutronix.de>
+Date: Fri, 07 Mar 2025 09:00:07 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250306_235931_165389_7099FBAF 
-X-CRM114-Status: UNSURE (   9.42  )
+X-CRM114-CacheID: sfid-20250307_000009_258738_C144E06D 
+X-CRM114-Status: UNSURE (   8.55  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -79,117 +82,33 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: at91: remove obsolete defconfig
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH master] nfs: rename global.net.nfsport to
+ global.nfs.port
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-sama5d3xek_defconfig is obsolete. The sama5d3xek is now covered by
-at91_multi_defconfig. It currently falls back for building for
-the AT91RM9200-EK instead of the sama5d3xek, so just drop it.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/sama5d3xek_defconfig | 87 ---------------------------
- 1 file changed, 87 deletions(-)
- delete mode 100644 arch/arm/configs/sama5d3xek_defconfig
+On Wed, 05 Mar 2025 14:11:21 +0100, Ahmad Fatoum wrote:
+> There's already precedence in global.tftp.windowsize, so global.nfs.port
+> is probably a better name than squeezing it into global.net.
+> 
+> This parameter is not yet in any release, so the fallout is fairly
+> limited.
+> 
+> While at it, mention it in the documentation.
+> 
+> [...]
 
-diff --git a/arch/arm/configs/sama5d3xek_defconfig b/arch/arm/configs/sama5d3xek_defconfig
-deleted file mode 100644
-index c868bd0daf..0000000000
---- a/arch/arm/configs/sama5d3xek_defconfig
-+++ /dev/null
-@@ -1,87 +0,0 @@
--CONFIG_TEXT_BASE=0x26f00000
--CONFIG_ARCH_AT91=y
--CONFIG_ARCH_SAMA5D3=y
--CONFIG_AEABI=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_MMU=y
--CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x60000
--CONFIG_MALLOC_SIZE=0xA00000
--CONFIG_EXPERIMENTAL=y
--CONFIG_MALLOC_TLSF=y
--CONFIG_PROMPT="A5D3X-EK:"
--CONFIG_PROMPT_HUSH_PS2="y"
--CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_CMDLINE_EDITING=y
--CONFIG_AUTO_COMPLETE=y
--CONFIG_BOOTM_SHOW_TYPE=y
--CONFIG_BOOTM_VERBOSE=y
--CONFIG_BOOTM_INITRD=y
--CONFIG_BOOTM_OFTREE=y
--CONFIG_BOOTM_OFTREE_UIMAGE=y
--CONFIG_CONSOLE_ACTIVATE_ALL=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
--# CONFIG_CMD_ARM_CPUINFO is not set
--CONFIG_LONGHELP=y
--CONFIG_CMD_MEMINFO=y
--# CONFIG_CMD_BOOTU is not set
--CONFIG_CMD_GO=y
--CONFIG_CMD_LOADB=y
--CONFIG_CMD_RESET=y
--CONFIG_CMD_UIMAGE=y
--CONFIG_CMD_PARTITION=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_FILETYPE=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_MIITOOL=y
--CONFIG_CMD_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SPLASH=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_FLASH=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_I2C=y
--CONFIG_CMD_LED=y
--CONFIG_CMD_SPI=y
--CONFIG_CMD_LED_TRIGGER=y
--CONFIG_CMD_OFTREE=y
--CONFIG_NET=y
--CONFIG_NET_NFS=y
--CONFIG_NET_NETCONSOLE=y
--CONFIG_DRIVER_NET_MACB=y
--CONFIG_MICREL_PHY=y
--CONFIG_DRIVER_SPI_ATMEL=y
--CONFIG_I2C=y
--CONFIG_I2C_GPIO=y
--CONFIG_MTD=y
--# CONFIG_MTD_OOB_DEVICE is not set
--CONFIG_MTD_M25P80=y
--CONFIG_NAND=y
--CONFIG_NAND_ATMEL=y
--CONFIG_NAND_ATMEL_PMECC=y
--CONFIG_VIDEO=y
--CONFIG_DRIVER_VIDEO_ATMEL_HLCD=y
--CONFIG_MCI=y
--CONFIG_MCI_STARTUP=y
--CONFIG_MCI_ATMEL=y
--CONFIG_LED=y
--CONFIG_LED_GPIO=y
--CONFIG_LED_TRIGGERS=y
--CONFIG_KEYBOARD_GPIO=y
--CONFIG_KEYBOARD_QT1070=y
--CONFIG_W1=y
--CONFIG_W1_MASTER_GPIO=y
--CONFIG_W1_SLAVE_DS2431=y
--CONFIG_W1_SLAVE_DS2433=y
--CONFIG_W1_DUAL_SEARCH=y
--CONFIG_FS_EXT4=y
--CONFIG_FS_TFTP=y
--CONFIG_FS_FAT=y
--CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
--CONFIG_PNG=y
+Applied, thanks!
+
+[1/1] nfs: rename global.net.nfsport to global.nfs.port
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1b2126866258 (link may not be stable)
+
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
