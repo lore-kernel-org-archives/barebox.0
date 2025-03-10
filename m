@@ -1,67 +1,67 @@
-Delivery-date: Mon, 10 Mar 2025 19:52:47 +0100
+Delivery-date: Mon, 10 Mar 2025 20:23:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1triF6-00CMNx-0n
+	id 1triiN-00CN0M-11
 	for lore@lore.pengutronix.de;
-	Mon, 10 Mar 2025 19:52:47 +0100
+	Mon, 10 Mar 2025 20:23:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1triF5-0003QL-18
-	for lore@pengutronix.de; Mon, 10 Mar 2025 19:52:47 +0100
+	id 1triiM-0007by-3g
+	for lore@pengutronix.de; Mon, 10 Mar 2025 20:23:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dQiD2wYahwgfe96yYWJNcAxd8lmFECzLFtEv9uyDyfQ=; b=EkoWOtqZeLkMct1BGUMoy0WvRo
-	yai7see5nncX0JMIdc4HK6yq6N4rYsNQ/UqfEhs/JMHUuphF7Pq9yOfBF04mkozcejVVJdJmESqJT
-	+7bzBipY1YxxkRazMIeVznZwTkxOsbr8wOBQ56XPLLqTVOfT0AHq51qPkQD5S3fdbYqH1cWllv+k2
-	dRqfn5FIFG9idmrGFfBvTFkKM7Kz+OZ+sA5VL9xYNcjwRt85kVJGY6/GwZ0kl9WUAy9SBmj4wswP7
-	MuFC63McV4stHddP7jG+nScUu5UD8SDJt+aU0KE1el2nBakxTWmSgiA5GJ/CfJQP/3MEvpUDKqNkX
-	dgZXrHuQ==;
+	bh=Ve19ZwkCb1l1RpqYJsU+7/haWJdU5yI7qrej04qhamA=; b=gl9e9v/KTb3uGlDseF9u1gnivu
+	xWaeXISRFk69T90Mx+2Jsay+eFbVIPyUmsSfBePmjL0sIw1wqYTt0V+jKBCO8Ohc7T3ujGWIvYcu6
+	3WWaJjSAjEo9iEvwI8y+qhmldogPRgQ3NAvSaRLs80eJOQmz/0rxBj9CC5JooHU3SbbZLl42/406B
+	Dz2R5vKx4FrNC/gvldeMYT6CTtmSWx7LevRm1bT/nog7ZeVUg83Z3c4O+pGIe5Al7w+Hn3MR4krFA
+	vs8ckSMhpqw13/3jEEE3AMpk87yM3BnHJtkr6x16rq7fg1/fJzfHiDc2uXSOXFYoOH/dY0XyK352/
+	NlBM9SQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1triEf-00000003g4I-3WB8;
-	Mon, 10 Mar 2025 18:52:21 +0000
+	id 1trihq-00000003jBl-2LC2;
+	Mon, 10 Mar 2025 19:22:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1triEd-00000003g3q-1EUx
+	id 1triho-00000003jBO-13Zf
 	for barebox@lists.infradead.org;
-	Mon, 10 Mar 2025 18:52:20 +0000
+	Mon, 10 Mar 2025 19:22:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1triEc-0003LF-1a; Mon, 10 Mar 2025 19:52:18 +0100
+	id 1trihn-0007We-0I; Mon, 10 Mar 2025 20:22:27 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1triEb-0053DE-2l;
-	Mon, 10 Mar 2025 19:52:17 +0100
+	id 1trihm-0053WO-2d;
+	Mon, 10 Mar 2025 20:22:26 +0100
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1triEb-0060u0-2T;
-	Mon, 10 Mar 2025 19:52:17 +0100
-Date: Mon, 10 Mar 2025 19:52:17 +0100
+	id 1trihm-0061MB-2J;
+	Mon, 10 Mar 2025 20:22:26 +0100
+Date: Mon, 10 Mar 2025 20:22:26 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Message-ID: <20250310185217.4bmple2ygkrcl3gp@pengutronix.de>
+Message-ID: <20250310192226.x7g2jq6vf5rx4c7c@pengutronix.de>
 References: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
- <20250228-am625-secure-v1-4-4002488ff5ed@pengutronix.de>
+ <20250228-am625-secure-v1-8-4002488ff5ed@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250228-am625-secure-v1-4-4002488ff5ed@pengutronix.de>
+In-Reply-To: <20250228-am625-secure-v1-8-4002488ff5ed@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250310_115219_338452_7BAC6638 
-X-CRM114-Status: GOOD (  19.23  )
+X-CRM114-CacheID: sfid-20250310_122228_288186_BC0E26CD 
+X-CRM114-Status: GOOD (  20.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,146 +83,83 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 04/13] ARM: k3: r5: add proper error handling
+Subject: Re: [PATCH 08/13] ARM: am625: support hash verification of full
+ barebox
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 25-02-28, Sascha Hauer wrote:
-> Add missing error handling in the image loading code. Properly check for
-> errors and panic when mandatory binaries are missing instead of blindly
-> continuing.
+> This implements the necessary SoC code to check the full barebox against
+> a sha256 compiled into the first stage barebox.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  arch/arm/mach-k3/r5.c | 57 ++++++++++++++++++++++++++++-----------------------
->  1 file changed, 31 insertions(+), 26 deletions(-)
+>  arch/arm/mach-k3/Kconfig |  1 +
+>  arch/arm/mach-k3/r5.c    | 14 ++++++++++++++
+>  2 files changed, 15 insertions(+)
 > 
+> diff --git a/arch/arm/mach-k3/Kconfig b/arch/arm/mach-k3/Kconfig
+> index 50919dc7e3..561ad1dac4 100644
+> --- a/arch/arm/mach-k3/Kconfig
+> +++ b/arch/arm/mach-k3/Kconfig
+> @@ -16,6 +16,7 @@ config MACH_K3_CORTEX_R5
+>  	select ELF
+>  	select K3_DDRSS
+>  	select FIP
+> +	select HAVE_FIRMWARE_VERIFY_NEXT_IMAGE
+>  	depends on 32BIT
+>  	select ARM_USE_COMPRESSED_DTB
+>  	default y
 > diff --git a/arch/arm/mach-k3/r5.c b/arch/arm/mach-k3/r5.c
-> index 2418e9ae73..e12c888afa 100644
+> index e12c888afa..cb52ff364d 100644
 > --- a/arch/arm/mach-k3/r5.c
 > +++ b/arch/arm/mach-k3/r5.c
-> @@ -283,7 +283,7 @@ static int load_fip(const char *filename, off_t offset)
->  	return 0;
->  }
->  
-> -static void do_dfu(void)
-> +static int do_dfu(void)
+> @@ -248,6 +248,8 @@ static int load_fip(const char *filename, off_t offset)
 >  {
->  	struct usbgadget_funcs funcs = {};
->  	int ret;
-> @@ -293,37 +293,24 @@ static void do_dfu(void)
->  	funcs.dfu_opts = "/fip.img(fip)cs";
->  
->  	ret = usbgadget_prepare_register(&funcs);
-> -	if (ret)
-> -		goto err;
-> +	if (ret) {
-> +		pr_err("DFU failed with: %pe\n", ERR_PTR(ret));
-> +		return ret;
-> +	}
->  
->  	while (1) {
->  		ret = stat("/fip.img", &s);
->  		if (!ret) {
->  			printf("Downloaded FIP image, DFU done\n");
-> -			load_fip("/fip.img", 0);
-> -			break;
-> +			ret = load_fip("/fip.img", 0);
-> +			if (!ret)
-> +				return 0;
->  		}
->  
->  		command_slice_release();
->  		mdelay(50);
->  		command_slice_acquire();
->  	};
-> -
-> -	return;
-> -
-> -err:
-> -	pr_err("DFU failed with: %pe\n", ERR_PTR(ret));
-> -}
-> -
-> -static int load_images(void)
-> -{
-> -	int err;
-> -
-> -	err = load_fip("/boot/k3.fip", 0);
-> -	if (!err)
-> -		return 0;
-> -
-> -	return 0;
->  }
-
-Removing load_images should go into patch-3.
-
->  
->  static int load_fip_emmc(void)
-> @@ -332,6 +319,7 @@ static int load_fip_emmc(void)
->  	struct mci *mci;
->  	char *fname;
->  	const char *mmcdev = "mmc0";
+>  	struct fip_state *fip;
+>  	struct fip_image_desc *desc;
+> +	unsigned char shasum[SHA256_DIGEST_SIZE];
 > +	int ret;
+>  
+>  	fip = fip_image_open(filename, offset);
+>  	if (IS_ERR(fip)) {
+> @@ -255,6 +257,18 @@ static int load_fip(const char *filename, off_t offset)
+>  		return PTR_ERR(fip);
+>  	}
+>  
+> +	if (IS_ENABLED(CONFIG_FIRMWARE_VERIFY_NEXT_IMAGE)) {
+> +		ret = fip_sha256(fip, shasum);
+> +		if (ret) {
+> +			pr_err("Cannot calc fip sha256: %pe\n", ERR_PTR(ret));
+> +			return ret;
+> +		}
+> +
+> +		ret = firmware_next_image_verify(shasum, SHA256_DIGEST_SIZE, true);
+> +		if (ret)
+> +			return ret;
 
-Nit: Sometimes you do use ret, sometimes err. I would like to align it
-if possible.
+Albeit it would involve way more effort, I would like to see that the
+FIP image format does have support for signatures within their "struct
+image_desc" for each image.
+This way it would be far easier for us to verify each image separately
+and in a common way. Also it wouldn't require to rebuild the "r5"
+tiboot3.bin to include the the updated sha256sum each time.
 
-Rest LGTM.
-
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+I do see why we can't use the externa-firmware mechanism now but I
+wouldn't call it firmware_next_image_verify(). Maybe limit the scope to
+fip and extent it later or remove/deprecate it once we managed to add
+signatures to the FIP format.
+Also the shasum size seems like the user would have a choice to choose
+other sha-sums which he hasn't, therefore I would drop it.
 
 Regards,
   Marco
 
->  
->  	device_detect_by_name(mmcdev);
->  
-> @@ -348,11 +336,11 @@ static int load_fip_emmc(void)
->  
->  	fname = xasprintf("/dev/%s.boot%d", mmcdev, bootpart - 1);
->  
-> -	load_fip(fname, K3_EMMC_BOOTPART_TIBOOT3_BIN_SIZE);
-> +	ret = load_fip(fname, K3_EMMC_BOOTPART_TIBOOT3_BIN_SIZE);
->  
->  	free(fname);
->  
-> -	return 0;
-> +	return ret;
->  }
->  
->  static int k3_r5_start_image(void)
-> @@ -365,11 +353,28 @@ static int k3_r5_start_image(void)
->  	struct rproc *arm64_rproc;
->  
->  	if (IS_ENABLED(CONFIG_USB_GADGET_DFU) && bootsource_get() == BOOTSOURCE_SERIAL)
-> -		do_dfu();
-> +		err = do_dfu();
->  	else if (k3_boot_is_emmc())
-> -		load_fip_emmc();
-> +		err = load_fip_emmc();
->  	else
-> -		load_images();
-> +		err = load_fip("/boot/k3.fip", 0);
-> +
-> +	if (err) {
-> +		pr_crit("Unable to load FIP image\n");
-> +		panic("Stop booting\n");
 > +	}
 > +
-> +	if (!have_bl31)
-> +		panic("No TFA found in FIP image\n");
-> +
-> +	if (!have_bl32)
-> +		pr_info("No OP-TEE found. Continuing without\n");
-> +
-> +	if (!have_bl33)
-> +		panic("No bl33 found in FIP image\n");
-> +
-> +	if (!k3_ti_dm)
-> +		panic("No ti-dm binary found\n");
+>  	fip_for_each_desc(fip, desc) {
+>  		struct fip_toc_entry *toc_entry = &desc->image->toc_e;
 >  
->  	ti_sci = ti_sci_get_handle(NULL);
->  	if (IS_ERR(ti_sci))
 > 
 > -- 
 > 2.39.5
