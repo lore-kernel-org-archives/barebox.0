@@ -1,60 +1,75 @@
-Delivery-date: Tue, 11 Mar 2025 12:46:11 +0100
+Delivery-date: Tue, 11 Mar 2025 13:42:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1try3o-00Cf1O-1R
+	id 1tryw4-00CfzT-1X
 	for lore@lore.pengutronix.de;
-	Tue, 11 Mar 2025 12:46:11 +0100
+	Tue, 11 Mar 2025 13:42:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1try3n-0005xS-6V
-	for lore@pengutronix.de; Tue, 11 Mar 2025 12:46:11 +0100
+	id 1tryw2-0006Hy-FQ
+	for lore@pengutronix.de; Tue, 11 Mar 2025 13:42:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tdMbF6V49uGl6+PQ+Q4mOVQC+a/IbUWoPpzs8yN+WoI=; b=VBS+ZFWmaFe7ArhbBLIBmQ4qKi
-	H1VdKyreyyNBrl/o45U9St5mYnv6dRUA1A/KPIe20axAYdu+FPGC5XIj8PcadhiYqqjAgb6dHfB9G
-	PKtLSpVPs0BCDw9QusO65hNIQcnEM0DtUrJUfneVQ8XZjVS6lfjEMqtvr0mrVEm5CFc6VOdfcj3d1
-	i5pcyxhp0KvUo5V9jOW7qVLPvF0t+Wl3lT3S00fyoABo6eStjgeZwrklJfd1M0z+F3p8zurFI7Vwj
-	QKS0n5ZDcicS/pnpEXFNv3jzj6iFwSQS54ngd/+Swu6PjZw6s+Y/Lcv2VorXor6QWY6sVWShnnHyC
-	V6RdADxg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=JIynSvoQpj6gGPShIAKjZaIfqfmOLBOkIEqtfsyUd3o=; b=it9e4kNDqAK7t/oevqnKSeSRlJ
+	n4tFnLVS1GKTAAnCRTpctzEAP2+sLB93UjJ323BHg2nKLlS7e0hr0ZU7ZcKTUa9+gJ1LJEXA9Mn90
+	sGjC+AKnQMdagAT5R1hw2j4MMmkiRh5Sa4355eAdoBVCwwcEJYisPqD42ClE1gSflAiqql4tQrmDT
+	l8lecQfddWeWrnPhk9/bz1bqfl8So6unbD/iaRBpyM22kDy0L6IynI6uI1hpcYr4vamOevH4FLl3M
+	HRALCUNhu65rBEmKaOKSSkVEpf3+d3cD89TNY10GmmmZu1ikRsrjTQF5IRqez9DBcJ6nixOmEczKG
+	Sp7vDlig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1try3L-00000005WGD-1DY6;
-	Tue, 11 Mar 2025 11:45:43 +0000
+	id 1tryvT-00000005gt8-48Ai;
+	Tue, 11 Mar 2025 12:41:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1try0P-00000005VfX-48Gi
+	id 1tryfd-00000005d1Y-0NcT
 	for barebox@lists.infradead.org;
-	Tue, 11 Mar 2025 11:42:43 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1try0O-0005Pf-P3; Tue, 11 Mar 2025 12:42:40 +0100
-Message-ID: <7e01458c-d25f-4f74-a864-a85fe86c02f3@pengutronix.de>
-Date: Tue, 11 Mar 2025 12:42:40 +0100
+	Tue, 11 Mar 2025 12:25:18 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tryfb-0003B3-L4; Tue, 11 Mar 2025 13:25:15 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tryfb-005B6K-1Q;
+	Tue, 11 Mar 2025 13:25:15 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tryfb-000oVs-16;
+	Tue, 11 Mar 2025 13:25:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 11 Mar 2025 13:25:14 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20250311-pca9450-wdog-v1-0-45120abeae00@pengutronix.de>
- <20250311-pca9450-wdog-v1-2-45120abeae00@pengutronix.de>
- <f6277af8-56a9-4327-a299-d2e2d39cbc1a@pengutronix.de>
- <2a97c0f8-f9fd-47f0-8ac6-a0c5b7499dc1@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <2a97c0f8-f9fd-47f0-8ac6-a0c5b7499dc1@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250311-am625-secure-v2-1-3cbbfa092346@pengutronix.de>
+References: <20250311-am625-secure-v2-0-3cbbfa092346@pengutronix.de>
+In-Reply-To: <20250311-am625-secure-v2-0-3cbbfa092346@pengutronix.de>
+To: "open list:BAREBOX" <barebox@lists.infradead.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741695915; l=1097;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=bm+tAeebW/A9IjyfBt1Zh3b6ACvHsoH8xK2Lvbykm2k=;
+ b=AaisdyCydbqRdd7poZMyjYcNy7hgbcfQqHBA9L9t98/PIL5HL2xOGR7lpzTp7fVnYnspIX2uu
+ IH/SpFBqvKCBhUGUZGoP7egqB38nfXb9nSu650uAA6CTrc2YYlwsPmq
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250311_044242_020941_F3B0BB9F 
-X-CRM114-Status: GOOD (  17.99  )
+X-CRM114-CacheID: sfid-20250311_052517_142286_30A1A785 
+X-CRM114-Status: UNSURE (   9.14  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,111 +91,48 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] ARM: boards: remove obsolete PCA9450_RESET_CTRL setup
+Subject: [PATCH v2 01/14] firmware: always generate sha256sum
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Jonas,
+Right now we only generate the sha256 for firmware files that are
+loaded from an external binary. Instead, always generate the sha256
+which helps with upcoming support for checking the next image hash.
 
-On 3/11/25 12:21, Jonas Rebmann wrote:
-> Hi Ahmad,
-> 
-> Not so much. As mentioned in the cover, the imx8 boards routinely
-> configure a larger array of pca9450 registers. As I didn't give the rest
-> of that setup a closer look, I did not change the code.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ firmware/Makefile | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Ah, should've read the cover letter, my bad.
+diff --git a/firmware/Makefile b/firmware/Makefile
+index 4cf61587d6..095d6f0e31 100644
+--- a/firmware/Makefile
++++ b/firmware/Makefile
+@@ -76,9 +76,6 @@ filechk_fwbin = { \
+ 	echo "_fwname_$(FWSTR):"				;\
+ 	printf '.ascii "%s"\n' 'firmware/$(FWNAME)\n'		;\
+ 	echo "\#endif" 						;\
+-}
+-
+-__fwbin_sha = { \
+ 	echo "    .section .rodata.$(FWSTR).sha"		;\
+ 	echo "    .p2align ASM_LGPTR"				;\
+ 	echo ".global _fw_$(FWSTR)_sha_start"			;\
+@@ -90,10 +87,9 @@ __fwbin_sha = { \
+ 
+ filechk_fwbin_ext = { \
+ 	$(filechk_fwbin)					;\
+-	$(__fwbin_sha)						;\
+ }
+ 
+-$(obj)/%.gen.S: FORCE
++$(obj)/%.gen.S: $(obj)/%.sha.bin FORCE
+ 	$(call filechk,fwbin,.rodata.$(FWSTR),)
+ 
+ $(obj)/%.extgen.S: $(obj)/%.sha.bin FORCE
 
-Please add that information into the commit messages, so it becomes
-part of the git history.
-
-> I have only tested this series on the phyboard segin imx93.
-> 
-> Just like with the imx93 boards, after application of the driver patch,
-> the { PCA9450_RESET_CTRL, 0xA1 } lines in lowlevel.c should no more have
-> an effect (as no board currently uses nxp,wdog_b-warm-reset).
-> 
-> Should I remove all { PCA9450_RESET_CTRL, 0xA1 } configuration in v2?
-
-An explanation in the commit message why this wasn't done is enough.
-
-Cheers,
-Ahmad
-
-> 
->  - Jonas
-> 
-> On 2025-03-11 12:03, Ahmad Fatoum wrote:
->> Hi,
->>
->> On 3/11/25 11:50, Jonas Rebmann wrote:
->>> Since a previous commit, PCA9450_RESET_CTRL is initialized to 0xA1 in
->>> pca9450_probe; explicitly setting this in board.c has no effect anymore.
->>
->> Note that there is a number of i.MX8M boards that also use the PCA9450
->> and configure 0xA1 into PCA9450_RESET_CTRL in their lowlevel.c.
->>
->> Any particular reason against or for dropping the configuration there?
->>
->> Thanks,
->> Ahmad
->>
->>> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
->>> ---
->>>   arch/arm/boards/phytec-phycore-imx93/board.c | 9 ---------
->>>   arch/arm/boards/tqma93xx/board.c             | 3 ---
->>>   2 files changed, 12 deletions(-)
->>>
->>> diff --git a/arch/arm/boards/phytec-phycore-imx93/board.c b/arch/arm/
->>> boards/phytec-phycore-imx93/board.c
->>> index
->>> 149248ca654624826d0e8f6fe0f1f42c2747e248..03ba8cb5026d2a9eaa054fcfc69e18872fcd658e 100644
->>> --- a/arch/arm/boards/phytec-phycore-imx93/board.c
->>> +++ b/arch/arm/boards/phytec-phycore-imx93/board.c
->>> @@ -6,23 +6,14 @@
->>>   #include <init.h>
->>>   #include <linux/kernel.h>
->>>   #include <environment.h>
->>> -#include <mfd/pca9450.h>
->>>   #include <deep-probe.h>
->>>   #include <mach/imx/bbu.h>
->>>   #include <linux/pinctrl/consumer.h>
->>>   -static void phycore_imx93_init_pmic(struct regmap *map)
->>> -{
->>> -    /* set WDOG_B_CFG to cold reset */
->>> -    regmap_write(map, PCA9450_RESET_CTRL, 0xA1);
->>> -}
->>> -
->>>   static int phycore_imx93_probe(struct device *dev)
->>>   {
->>>       struct device_node *np;
->>>   -    pca9450_register_init_callback(phycore_imx93_init_pmic);
->>> -
->>>       /*
->>>        * The phy on the EQOS has its MDIO lines connected to the FEC.
->>> The phy
->>>        * registers can only be successfully read when the EQOS
->>> pinctrl setup
->>> diff --git a/arch/arm/boards/tqma93xx/board.c b/arch/arm/boards/
->>> tqma93xx/board.c
->>> index
->>> b181784079cf12e5a112d13f95c87c2cf5ebeba6..b4de6c2f6c347cb255537a3784a667a9c2607de3 100644
->>> --- a/arch/arm/boards/tqma93xx/board.c
->>> +++ b/arch/arm/boards/tqma93xx/board.c
->>> @@ -27,9 +27,6 @@ static void tqma93xx_init_pmic(struct regmap *map)
->>>         /* I2C_LT_EN*/
->>>       regmap_write(map, 0xa, 0x3);
->>> -
->>> -    /* set WDOG_B_CFG to cold reset */
->>> -    regmap_write(map, PCA9450_RESET_CTRL, 0xA1);
->>>   }
->>>     static int tqma93xx_probe(struct device *dev)
->>>
->>
->>
->>
-> 
-> 
+-- 
+2.39.5
 
 
 
