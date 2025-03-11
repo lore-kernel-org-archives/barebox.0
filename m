@@ -1,71 +1,72 @@
-Delivery-date: Tue, 11 Mar 2025 09:15:56 +0100
+Delivery-date: Tue, 11 Mar 2025 09:24:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1trumL-00CbBP-1a
+	id 1truuz-00CbGV-0G
 	for lore@lore.pengutronix.de;
-	Tue, 11 Mar 2025 09:15:56 +0100
+	Tue, 11 Mar 2025 09:24:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1trumK-000809-BD
-	for lore@pengutronix.de; Tue, 11 Mar 2025 09:15:56 +0100
+	id 1truux-0000ea-RC
+	for lore@pengutronix.de; Tue, 11 Mar 2025 09:24:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NUIWbDbBaFnS7vSrPQoXRy+KMm2NpOKRt+7P0iAgIsE=; b=MQG8BOiVaGIW0PMl+udPQmCHh/
-	+8zCD5bUkxXREtJczeTJcWsmAVapto46Tuo59zlyi7V/g3Zu4AqWNfe1qCznF9fzNiwgiEOrEw4R0
-	znDccdB3v0Wn6rBTukjbI5En1d78otoLmKpgc34aJ4mka6LNF1xpwvWE4SbeKZdcIILIYpxEaOo6G
-	SxggvSEkzofPuBpvJM/Si7JWeU0sddEg6lPImCdHF0+qliv5l0GVWwMjN4TWriWdETL6c9xnlK25/
-	S8QC7IxPjrteYVqH+r+nn+zju6JAQJZnrxCl5SVi8Aof3ZDLTCx/xUmj734f9ptnkfC0xnrkRz7GF
-	H6pcxAlg==;
+	bh=6Y8o5gN8trt6qjjbSdhasz1lmU+/8Tv29SzVGFya+SA=; b=o8H+pwNgqK1wfYg1+wN8Go6rQk
+	DVg7YLv7UYTIK2aYt1U65cGokygChpNblpDvNXS5SFjc7bjKBtyls7dgJFhHDEigSVVoZMbti7Cfp
+	6I0Rorv9O8SV9OrM3YYPHfPR81jhbjVrfKeD2x2LXvYCUp33kqtECs/ktKgo4fd/TERt0F28glCdN
+	azCUS8jNNc9jsUiQVTcToh9+c5KRXpU8WQEU6QxWTMnBgVrVgbjIYQFy72HrbbBPv86ABbOC25GZo
+	g25JrUe05kP6Rx4KNgZvqBk2IrQfTYqgDfclCn53EDPhm/SMHGZFw0QwEUDEQqNX0xDCWPaLV3QtR
+	NFW4wzSg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1trulq-00000004ybS-29sC;
-	Tue, 11 Mar 2025 08:15:26 +0000
+	id 1truuV-00000004zlH-46jf;
+	Tue, 11 Mar 2025 08:24:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1trujM-00000004y5S-3P8X
+	id 1truu9-00000004zjz-3BLS
 	for barebox@lists.infradead.org;
-	Tue, 11 Mar 2025 08:12:54 +0000
+	Tue, 11 Mar 2025 08:24:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1trujL-0007Wg-En; Tue, 11 Mar 2025 09:12:51 +0100
+	id 1truu8-0000Ue-FQ; Tue, 11 Mar 2025 09:24:00 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1trujL-0059C6-0r;
-	Tue, 11 Mar 2025 09:12:51 +0100
+	id 1truu8-0059D3-0u;
+	Tue, 11 Mar 2025 09:24:00 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1trujL-007fzI-0U;
-	Tue, 11 Mar 2025 09:12:51 +0100
-Date: Tue, 11 Mar 2025 09:12:51 +0100
+	id 1truu8-007g2W-0X;
+	Tue, 11 Mar 2025 09:24:00 +0100
+Date: Tue, 11 Mar 2025 09:24:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Message-ID: <Z8_wg9fWKN4s0vrd@pengutronix.de>
+Message-ID: <Z8_zIC2f7n3-_sVn@pengutronix.de>
 References: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
- <20250310174058.t3rsxws6syxz2rqp@pengutronix.de>
+ <20250228-am625-secure-v1-4-4002488ff5ed@pengutronix.de>
+ <20250310185217.4bmple2ygkrcl3gp@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250310174058.t3rsxws6syxz2rqp@pengutronix.de>
+In-Reply-To: <20250310185217.4bmple2ygkrcl3gp@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250311_011252_849083_02D9E872 
-X-CRM114-Status: GOOD (  19.92  )
+X-CRM114-CacheID: sfid-20250311_012401_799069_BBEA5C88 
+X-CRM114-Status: GOOD (  25.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,34 +88,99 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 00/13] am625: support secure loading of full barebox
+Subject: Re: [PATCH 04/13] ARM: k3: r5: add proper error handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Mar 10, 2025 at 06:40:58PM +0100, Marco Felsch wrote:
-> Hi Sascha,
-> 
+On Mon, Mar 10, 2025 at 07:52:17PM +0100, Marco Felsch wrote:
 > On 25-02-28, Sascha Hauer wrote:
-> > On K3 SoCs only a small barebox is loaded by the ROM into SRAM. This
-> > barebox then loads the full barebox from SD/eMMC or USB DFU. In a secure
-> > boot environment the full barebox must be authenticated. This series
-> > implements two ways for accomplishing this.
+> > Add missing error handling in the image loading code. Properly check for
+> > errors and panic when mandatory binaries are missing instead of blindly
+> > continuing.
 > > 
-> > First way is to utilize the ROM API to authenticate images. The other
-> > way is to compile a secure hash into the first stage binary and check
-> > if the full barebox image matches the hash. Using the ROM API means
-> > different first stage and second stage images can be combined whereas
-> > hashing binds specific builds together avoiding mix and match attacks.
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/mach-k3/r5.c | 57 ++++++++++++++++++++++++++++-----------------------
+> >  1 file changed, 31 insertions(+), 26 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-k3/r5.c b/arch/arm/mach-k3/r5.c
+> > index 2418e9ae73..e12c888afa 100644
+> > --- a/arch/arm/mach-k3/r5.c
+> > +++ b/arch/arm/mach-k3/r5.c
+> > @@ -283,7 +283,7 @@ static int load_fip(const char *filename, off_t offset)
+> >  	return 0;
+> >  }
+> >  
+> > -static void do_dfu(void)
+> > +static int do_dfu(void)
+> >  {
+> >  	struct usbgadget_funcs funcs = {};
+> >  	int ret;
+> > @@ -293,37 +293,24 @@ static void do_dfu(void)
+> >  	funcs.dfu_opts = "/fip.img(fip)cs";
+> >  
+> >  	ret = usbgadget_prepare_register(&funcs);
+> > -	if (ret)
+> > -		goto err;
+> > +	if (ret) {
+> > +		pr_err("DFU failed with: %pe\n", ERR_PTR(ret));
+> > +		return ret;
+> > +	}
+> >  
+> >  	while (1) {
+> >  		ret = stat("/fip.img", &s);
+> >  		if (!ret) {
+> >  			printf("Downloaded FIP image, DFU done\n");
+> > -			load_fip("/fip.img", 0);
+> > -			break;
+> > +			ret = load_fip("/fip.img", 0);
+> > +			if (!ret)
+> > +				return 0;
+> >  		}
+> >  
+> >  		command_slice_release();
+> >  		mdelay(50);
+> >  		command_slice_acquire();
+> >  	};
+> > -
+> > -	return;
+> > -
+> > -err:
+> > -	pr_err("DFU failed with: %pe\n", ERR_PTR(ret));
+> > -}
+> > -
+> > -static int load_images(void)
+> > -{
+> > -	int err;
+> > -
+> > -	err = load_fip("/boot/k3.fip", 0);
+> > -	if (!err)
+> > -		return 0;
+> > -
+> > -	return 0;
+> >  }
 > 
-> before having a closer look on your patchset, do we really want to have
-> the 2nd case to be available?
+> Removing load_images should go into patch-3.
 
-Yes, as explained to avoid mix-and-match attacks.
+I deliberately did it in this patch because load_images already does
+error checking, but up to now the return value of load_images() wasn't
+checked. By doing it like you suggest I would either end up calling
+load_fip() without checking the error, or I would introduce an
+incomplete error checking in k3_r5_start_image() where the return value
+of load_fip() is checked, but not the return values of do_dfu and
+load_fip_emmc().
 
-> If we really want the 2nd case to be
-> available we should bound it to CONFIG_INSECURE (if not already done).
+> >  static int load_fip_emmc(void)
+> > @@ -332,6 +319,7 @@ static int load_fip_emmc(void)
+> >  	struct mci *mci;
+> >  	char *fname;
+> >  	const char *mmcdev = "mmc0";
+> > +	int ret;
+> 
+> Nit: Sometimes you do use ret, sometimes err. I would like to align it
+> if possible.
 
-Ok, will do.
+Changed to 'ret' consistently.
 
 Sascha
 
