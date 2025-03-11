@@ -1,68 +1,68 @@
-Delivery-date: Tue, 11 Mar 2025 09:49:13 +0100
+Delivery-date: Tue, 11 Mar 2025 09:49:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1trvIX-00Cbha-2L
+	id 1trvIz-00CbiI-1t
 	for lore@lore.pengutronix.de;
-	Tue, 11 Mar 2025 09:49:13 +0100
+	Tue, 11 Mar 2025 09:49:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1trvIW-0003hf-HU
-	for lore@pengutronix.de; Tue, 11 Mar 2025 09:49:13 +0100
+	id 1trvIy-0003qB-Eu
+	for lore@pengutronix.de; Tue, 11 Mar 2025 09:49:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tUQiRakKtKAQxjzTZnDDlL/Rq5+Nbw5KSwqQ9+di3Js=; b=luA/1zMx0OVOHOSeWhA7YNw7zh
-	dB/QlW4fdLZKSRhoCg+VVwUdwUDFozj9DKd63kPTARU/kZbrgdplatUuEvWETDWJOdvjijWSCPWWE
-	x8LeZJ3EU1oKPh2zLwLA3r6W+/SvstLi9ZsORaXEjzSxmZSN1mdNmG5D6iE1F3xbiJTmTMr2bKkl4
-	wbqPh+bugx7L6cJVggAVzDx0fLIYQt4w8kNzu2i+xNk4EixAj0YkmMOa9PlWvysTll9/zMD83WYwL
-	xWCxs5XQ0jyGN/K+04J50F6AEacWZbZaww8viNsAZCN8TATsLodky4Vdgyp51Os1maD45BQnO/WrX
-	3SKwRl5w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=z3uOpMFWkrMQEQhNAu7PZVmJn27UNzG10wu4IBWHWqM=; b=QSzJFTf5hpB6iGPDVScsmtxKSW
+	E3mJrwxaCJITkElNGQUDli6n94s4XzulvDI3nZVPwFR/hRVhqzFxHkRGRV5caevpKGJzeN05TFpD/
+	N8oFrWXu0nDfMt4X+2Q4n7NBNUnY5e8FaX8IxvkMd1aDUxYJq/CKQgxhrG6itAMEVRsg+hIZNEWxj
+	k+GstbqCP/3GqY741/NqI9kLrZVzvx1TB4pgXr0RAvbGFnYIG1D9+3XaAVZNJzTzBid/MoKOp8Lpc
+	JLIrz2zaVsM3wxV6TlTpbMSaR/8yZNHr7C7ggQOc3i64SYnNZsrenWoq+5myMPhyHOcoiQFjZ5AJ9
+	pXnsY7Ng==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1trvHx-0000000523a-3kaG;
-	Tue, 11 Mar 2025 08:48:37 +0000
+	id 1trvIY-0000000529Q-24ek;
+	Tue, 11 Mar 2025 08:49:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1trvHu-0000000522K-3DOJ
+	id 1trvIV-0000000527y-1Gue
 	for barebox@lists.infradead.org;
-	Tue, 11 Mar 2025 08:48:36 +0000
+	Tue, 11 Mar 2025 08:49:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1trvHt-0003ZQ-HD; Tue, 11 Mar 2025 09:48:33 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1trvIU-0003h9-5H; Tue, 11 Mar 2025 09:49:10 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1trvHt-0059KV-16;
-	Tue, 11 Mar 2025 09:48:33 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1trvHt-007gGb-0k;
-	Tue, 11 Mar 2025 09:48:33 +0100
-Date: Tue, 11 Mar 2025 09:48:33 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Message-ID: <20250311084833.5h32rntkvk6ggi5i@pengutronix.de>
-References: <20250228-am625-secure-v1-0-4002488ff5ed@pengutronix.de>
- <20250310174058.t3rsxws6syxz2rqp@pengutronix.de>
- <Z8_wg9fWKN4s0vrd@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1trvIT-0059Kd-38;
+	Tue, 11 Mar 2025 09:49:09 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1trvIT-00663m-2v;
+	Tue, 11 Mar 2025 09:49:09 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Jonas Rebmann <jre@pengutronix.de>
+In-Reply-To: <20250304-phyboard-segin-imx93-v1-1-8677740a79de@pengutronix.de>
+References: <20250304-phyboard-segin-imx93-v1-1-8677740a79de@pengutronix.de>
+Message-Id: <174168294990.1453253.10483274415863259109.b4-ty@pengutronix.de>
+Date: Tue, 11 Mar 2025 09:49:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8_wg9fWKN4s0vrd@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250311_014834_803358_924E5CAC 
-X-CRM114-Status: GOOD (  20.72  )
+X-CRM114-CacheID: sfid-20250311_014911_341750_ECCFC77B 
+X-CRM114-Status: GOOD (  10.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,50 +84,30 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 00/13] am625: support secure loading of full barebox
+Subject: Re: [PATCH] ARM: boards: Add support for phyBOARD-Segin i.MX 93
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-03-11, Sascha Hauer wrote:
-> On Mon, Mar 10, 2025 at 06:40:58PM +0100, Marco Felsch wrote:
-> > Hi Sascha,
-> > 
-> > On 25-02-28, Sascha Hauer wrote:
-> > > On K3 SoCs only a small barebox is loaded by the ROM into SRAM. This
-> > > barebox then loads the full barebox from SD/eMMC or USB DFU. In a secure
-> > > boot environment the full barebox must be authenticated. This series
-> > > implements two ways for accomplishing this.
-> > > 
-> > > First way is to utilize the ROM API to authenticate images. The other
-> > > way is to compile a secure hash into the first stage binary and check
-> > > if the full barebox image matches the hash. Using the ROM API means
-> > > different first stage and second stage images can be combined whereas
-> > > hashing binds specific builds together avoiding mix and match attacks.
-> > 
-> > before having a closer look on your patchset, do we really want to have
-> > the 2nd case to be available?
-> 
-> Yes, as explained to avoid mix-and-match attacks.
 
-Argh.. sorry, I meant the first case, the ROM API one. If the ROM API
-allows mix-and-match attacks, we need to mark it as INSECURE. Sorry for
-the confusion.
+On Tue, 04 Mar 2025 17:24:15 +0100, Jonas Rebmann wrote:
+> This patch adds support for the phyBOARD-Segin i.MX 93 and the phyCORE
+> i.MX 93 SoM it is based upon.
+> 
+> Note that support is only provided for the standard configuration
+> featuring 1GB RAM as testing was only possible on that variant and only
+> the single-configuration lpddr4_timing.c as initially committed to
+> u-boot in 7c1f8ce3956 worked.
+> 
+> [...]
 
-Regards,
-  Marco
+Applied, thanks!
 
-> > If we really want the 2nd case to be
-> > available we should bound it to CONFIG_INSECURE (if not already done).
-> 
-> Ok, will do.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+[1/1] ARM: boards: Add support for phyBOARD-Segin i.MX 93
+      https://git.pengutronix.de/cgit/barebox/commit/?id=41c53621ac0b (link may not be stable)
+
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
