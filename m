@@ -1,74 +1,74 @@
-Delivery-date: Wed, 12 Mar 2025 14:06:43 +0100
+Delivery-date: Wed, 12 Mar 2025 14:06:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsLnI-00D8Cl-0K
+	id 1tsLnT-00D8Dc-10
 	for lore@lore.pengutronix.de;
-	Wed, 12 Mar 2025 14:06:43 +0100
+	Wed, 12 Mar 2025 14:06:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsLnC-00023Z-Lv
-	for lore@pengutronix.de; Wed, 12 Mar 2025 14:06:43 +0100
+	id 1tsLnQ-0002Gy-PL
+	for lore@pengutronix.de; Wed, 12 Mar 2025 14:06:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AZAwfdHO4SxRldz8ghEo3ciK+3k10iEaWbRo/aGJyAY=; b=wDElvIF6rI+lNNuwKgCbq+O5Es
-	kHX8XJsf4HbvSUk/MJI4F8nYHAG/VoWITzXcRzayq9TnY65ejoHd40hdhWkxywNL1MoG7V/RDJRf0
-	IgbMm4mWJ8SnScTYon3T2sHUSD3FExmSomx0mz/MO3faVeE4ZSEdzpmyzbS5QFnr1tL7D3MVplERy
-	uJvdI41QySYQJ9SMM0atEO9EB+W4yCowbn+ei5mSpX3QnFOE2YXoi8XmlBQYmmK19IIGCOIxmgOgO
-	fgqrKuaiif7EY/8g/JuTMzXS522u7y7fBsVnAuMN0AT/BEUlvT5uYugVPV5Hz4li6zTF9fRD6piMg
-	bcw2+f1Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=7QC8Xuv3h0+GMPHtHJJj6fTwcxp0ptUFvtfZKTMLukc=; b=b77sjPKUESCbrG9xHqJ7PgniPO
+	/3C8h7+8LxaZHdXWda7iI+XGpWYd98n0IMyvFzru8ATrWJq1lTOCVlP6VQwSyHthg0/2XrGNJ2vcZ
+	C9M9ssc99venGM4sm02Gvs7SCTTrmUhZi9nY6W8ZL8AZsnG2pm2Ns6GjHgWPJW0GFjtWaqeX0+prH
+	hhRohusfH1X9icy+iaF7gOBQDS2ukoWlPWmDcDUe0LLLAoGO7LLyxMrlp4jjtFRsBqIEi0VjbKibI
+	xHbZE7Ze8UqeEvQLrmZG7HBI+A5ZhYTS3l419jzWbX+fxa0Z/vmNd4e/jRGvYq31XILasvkQZOPxa
+	xUdiqf5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsLmd-00000008UqE-2aE4;
-	Wed, 12 Mar 2025 13:06:03 +0000
+	id 1tsLmw-00000008VAp-43hz;
+	Wed, 12 Mar 2025 13:06:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsL0W-00000008NQh-0qXd
+	id 1tsLFG-00000008PRj-0dTk
 	for barebox@lists.infradead.org;
-	Wed, 12 Mar 2025 12:16:23 +0000
+	Wed, 12 Mar 2025 12:31:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0U-0003sM-W8; Wed, 12 Mar 2025 13:16:19 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1tsLFE-0005Pd-CC; Wed, 12 Mar 2025 13:31:32 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0U-005M8b-1y;
-	Wed, 12 Mar 2025 13:16:18 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0U-00AdfG-1f;
-	Wed, 12 Mar 2025 13:16:18 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1tsLFE-005MAd-0b;
+	Wed, 12 Mar 2025 13:31:32 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tsLFE-009X6Q-0D;
+	Wed, 12 Mar 2025 13:31:32 +0100
+Date: Wed, 12 Mar 2025 13:31:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Mar 2025 13:16:19 +0100
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+	BAREBOX <barebox@lists.infradead.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <Z9F-pB6dHxuzvkb6@pengutronix.de>
+References: <20250311-pca9450-wdog-v1-0-45120abeae00@pengutronix.de>
+ <a2b2fd98bb4d5f5597b55587ddc9f6b6e4da8fcb.camel@pengutronix.de>
+ <cbb86516-6337-44ba-a957-5620e5eb5015@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250312-rpmb-v1-4-0f213382a3f3@pengutronix.de>
-References: <20250312-rpmb-v1-0-0f213382a3f3@pengutronix.de>
-In-Reply-To: <20250312-rpmb-v1-0-0f213382a3f3@pengutronix.de>
-To: "open list:BAREBOX" <barebox@lists.infradead.org>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741781778; l=9884;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=tMWiOv8qDv4eMp52WTtkoTcK9M2Sst1j18xsOjwAriY=;
- b=9AVuo+wM2Lqaw5Kom4BSK2w78b5d2uQYjbZ8ted+qRc4twSDaD/AZ4dHzj6a4mJlftv2Kiv5j
- fao8dvwT9bdC0goepZUMjeQoycj9Hg7gNFwtX4/AzLqO7k/HvOYsNjP
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cbb86516-6337-44ba-a957-5620e5eb5015@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250312_051620_418750_E8B6E10B 
-X-CRM114-Status: GOOD (  31.28  )
+X-CRM114-CacheID: sfid-20250312_053134_188124_3F65DD90 
+X-CRM114-Status: GOOD (  24.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,331 +86,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/9] mci: add RPMB support
+Subject: Re: [PATCH 0/2] Move pca9450 RESET_CTRL configuration to driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This implements the MMC specific part to access RPMB partitions:
+On Tue, Mar 11, 2025 at 12:40:03PM +0100, Jonas Rebmann wrote:
+> Hi Rouven,
+> 
+> On 2025-03-11 12:05, Rouven Czerwinski wrote:
+> > Does it make sense to select the pcs9450 in the board kconfig symbols?
+> > This way users retain the behaviour after an update even if the pca9450
+> > driver was not selected before.
+> 
+> Are you referring to a scenario where removal of an explicit initialization
+> of PCA9450_RESET_CTRL in favor of the setup in the driver would lead to an
+> unitialized PCA9450_RESET_CTRL if the driver is not enabled?
+> 
+> For the imx93 boards, behaviour remains unchanged same as those two boards
+> configure PCA9450_RESET_CTRL in pca9450_register_init_callback, which is
+> called by the driver. So change in behavior with those.
+> 
+> Not so on the imx8 boards where pmic_configure is called unconditionally in
+> the power-on routine.
+> 
+> Given this, I'm not sure if we should remove the explicit register config
+> for the imx8 boards as Ahmad mentioned. I think I remember Sasha mentioning
+> a reason why board kconfig doesn't select the pmic driver?..
 
-- Provide a function to find a RPMB capable eMMC
-- partition switching to the RPMB partition
-- Dissecting the OP-TEE requests into the correspnding MMC read/write
-  multiblock commands
+Yes. We can't select the PMIC driver from the board Kconfig because we
+would also have to select all direct dependencies like I2C. Although not
+a direct dependency we would also have to select the I2C hardware bus
+driver, because without it we also could not access the PMIC. All this
+is cumbersome to do, so better avoided. If necessary we could issue a
+warning message at runtime and leave it up to the user to select the
+missing pieces.
 
-For now we only support a single eMMC RPMB partition per board. This is
-the 99% case, but there might be systems with multiple eMMCs. The OP-TEE
-protocol has a dev_id field to support multiple eMMCs, but OP-TEE itself
-currently only supports a single RPMB. This means we really only need to
-support one eMMC, but should there be multiple eMMCs on a system we will
-need a way for the user to specify which one shall be used. As of now
-the first one found will be used.
+Sascha
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/Kconfig    |   3 +
- drivers/mci/Makefile   |   1 +
- drivers/mci/mci-core.c |  24 +++++-
- drivers/mci/rpmb.c     | 206 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/mci.h          |   3 +
- 5 files changed, 236 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 4641e9cdcd..09648aa771 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -68,6 +68,9 @@ config MCI_MMC_GPP_PARTITIONS
- 	  Note: by default, 'MMC' devices have no 'general purpose partitions',
- 	  it requires a special one-time configuration step to enable them.
- 
-+config MCI_MMC_RPMB
-+	bool "Support eMMC replay protected memory block (RPMB)"
-+
- comment "--- MCI host drivers ---"
- 
- config MCI_DWC_MSHC
-diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
-index 5e951d695f..d3df4c1bb6 100644
---- a/drivers/mci/Makefile
-+++ b/drivers/mci/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_MCI)		+= mci-core.o
-+obj-$(CONFIG_MCI_MMC_RPMB)	+= rpmb.o
- obj-$(CONFIG_MCI_AM654)		+= am654-sdhci.o
- obj-$(CONFIG_MCI_ARASAN)	+= arasan-sdhci.o
- obj-$(CONFIG_MCI_ATMEL)		+= atmel_mci.o atmel_mci_common.o
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 18c910c4c3..9c3b35c23f 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -2068,7 +2068,9 @@ int mci_blk_part_switch(struct mci_part *part)
- 	struct mci *mci = part->mci;
- 	int ret;
- 
--	if (!IS_ENABLED(CONFIG_MCI_MMC_BOOT_PARTITIONS) && !IS_ENABLED(CONFIG_MCI_MMC_GPP_PARTITIONS))
-+	if (!IS_ENABLED(CONFIG_MCI_MMC_BOOT_PARTITIONS) &&
-+	    !IS_ENABLED(CONFIG_MCI_MMC_GPP_PARTITIONS) &&
-+	    !IS_ENABLED(CONFIG_MCI_MMC_RPMB))
- 		return 0; /* no need */
- 
- 	if (mci->part_curr == part)
-@@ -3067,3 +3069,23 @@ struct mci *mci_get_device_by_name(const char *name)
- 
- 	return NULL;
- }
-+
-+struct mci *mci_get_rpmb_dev(void)
-+{
-+	struct mci *mci;
-+
-+	if (rpmb_partition)
-+		return rpmb_partition->mci;
-+
-+	list_for_each_entry(mci, &mci_list, list) {
-+		if (mci->host->caps2 & MMC_CAP2_NO_MMC)
-+			continue;
-+
-+		mci_detect_card(mci->host);
-+
-+		if (rpmb_partition)
-+			return rpmb_partition->mci;
-+	}
-+
-+	return NULL;
-+}
-diff --git a/drivers/mci/rpmb.c b/drivers/mci/rpmb.c
-new file mode 100644
-index 0000000000..5c98222bad
---- /dev/null
-+++ b/drivers/mci/rpmb.c
-@@ -0,0 +1,206 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright 2014, Staubli Faverges
-+ * Pierre Aubert
-+ *
-+ * eMMC- Replay Protected Memory Block
-+ * According to JEDEC Standard No. 84-A441
-+ */
-+
-+#include <mci.h>
-+#include <malloc.h>
-+#include <dma.h>
-+
-+int mmc_rpmb_route_frames(struct mci *mci, void *req, unsigned long reqlen,
-+			  void *rsp, unsigned long rsplen);
-+
-+/**
-+ * struct rpmb_frame - rpmb frame as defined by eMMC 5.1 (JESD84-B51)
-+ *
-+ * @stuff        : stuff bytes
-+ * @key_mac      : The authentication key or the message authentication
-+ *                 code (MAC) depending on the request/response type.
-+ *                 The MAC will be delivered in the last (or the only)
-+ *                 block of data.
-+ * @data         : Data to be written or read by signed access.
-+ * @nonce        : Random number generated by the host for the requests
-+ *                 and copied to the response by the RPMB engine.
-+ * @write_counter: Counter value for the total amount of the successful
-+ *                 authenticated data write requests made by the host.
-+ * @addr         : Address of the data to be programmed to or read
-+ *                 from the RPMB. Address is the serial number of
-+ *                 the accessed block (half sector 256B).
-+ * @block_count  : Number of blocks (half sectors, 256B) requested to be
-+ *                 read/programmed.
-+ * @result       : Includes information about the status of the write counter
-+ *                 (valid, expired) and result of the access made to the RPMB.
-+ * @req_resp     : Defines the type of request and response to/from the memory.
-+ *
-+ * The stuff bytes and big-endian properties are modeled to fit to the spec.
-+ */
-+struct rpmb_frame {
-+	u8 stuff[196];
-+	u8 key_mac[32];
-+	u8 data[256];
-+	u8 nonce[16];
-+	__be32 write_counter;
-+	__be16 addr;
-+	__be16 block_count;
-+	__be16 result;
-+	__be16 req_resp;
-+} __packed;
-+
-+#define RPMB_PROGRAM_KEY	0x1	/* Program RPMB Authentication Key */
-+#define RPMB_GET_WRITE_COUNTER	0x2	/* Read RPMB write counter */
-+#define RPMB_WRITE_DATA		0x3	/* Write data to RPMB partition */
-+#define RPMB_READ_DATA		0x4	/* Read data from RPMB partition */
-+#define RPMB_RESULT_READ	0x5	/* Read result request  (Internal) */
-+
-+static int mci_read_write_blocks(struct mci *mci, u32 opcode, int write_flag, void *buf,
-+				 unsigned int buf_bytes)
-+{
-+	int blocks = buf_bytes / 512;
-+	struct mci_cmd cmd = {
-+		.cmdidx = opcode,
-+		.resp_type = MMC_RSP_R1,
-+	};
-+	struct mci_data data = {
-+		.blocks = blocks,
-+		.blocksize = sizeof(struct rpmb_frame),
-+	};
-+	int ret;
-+
-+	if (write_flag) {
-+		data.src = buf;
-+		data.flags = MMC_DATA_WRITE;
-+	} else {
-+		data.dest = buf;
-+		data.flags = MMC_DATA_READ;
-+	}
-+
-+	ret = mci_set_blockcount(mci, blocks | (write_flag & MMC_CMD23_ARG_REL_WR));
-+	if (ret)
-+		return ret;
-+
-+	return mci_send_cmd(mci, &cmd, &data);
-+}
-+
-+static int rpmb_route_frames(struct mci *mci, void *req,
-+			     unsigned int req_len, void *resp,
-+			     unsigned int resp_len)
-+{
-+	struct rpmb_frame *frm = req;
-+	unsigned int cmd_count;
-+	u16 req_type;
-+	bool write;
-+	int ret;
-+
-+	if (req_len < sizeof(*frm))
-+		return -EINVAL;
-+
-+	req_type = be16_to_cpu(frm->req_resp);
-+	switch (req_type) {
-+	case RPMB_PROGRAM_KEY:
-+		if (req_len != sizeof(struct rpmb_frame) ||
-+		    resp_len != sizeof(struct rpmb_frame))
-+			return -EINVAL;
-+		write = true;
-+		break;
-+	case RPMB_GET_WRITE_COUNTER:
-+		if (req_len != sizeof(struct rpmb_frame) ||
-+		    resp_len != sizeof(struct rpmb_frame))
-+			return -EINVAL;
-+		write = false;
-+		break;
-+	case RPMB_WRITE_DATA:
-+		if (req_len % sizeof(struct rpmb_frame) ||
-+		    resp_len != sizeof(struct rpmb_frame))
-+			return -EINVAL;
-+		write = true;
-+		break;
-+	case RPMB_READ_DATA:
-+		if (req_len != sizeof(struct rpmb_frame) ||
-+		    resp_len % sizeof(struct rpmb_frame))
-+			return -EINVAL;
-+		write = false;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (write)
-+		cmd_count = 3;
-+	else
-+		cmd_count = 2;
-+
-+	if (write) {
-+		struct rpmb_frame *frm = resp;
-+
-+		/* Send write request frame(s) */
-+		ret = mci_read_write_blocks(mci, MMC_CMD_WRITE_MULTIPLE_BLOCK,
-+			  1 | MMC_CMD23_ARG_REL_WR, req, req_len);
-+		if (ret)
-+			goto out;
-+
-+		/* Send result request frame */
-+		memset(frm, 0, sizeof(*frm));
-+		frm->req_resp = cpu_to_be16(RPMB_RESULT_READ);
-+		ret = mci_read_write_blocks(mci, MMC_CMD_WRITE_MULTIPLE_BLOCK, 1,
-+					    resp, resp_len);
-+		if (ret)
-+			goto out;
-+
-+		/* Read response frame */
-+		ret = mci_read_write_blocks(mci, MMC_CMD_READ_MULTIPLE_BLOCK, 0,
-+					    resp, resp_len);
-+		if (ret)
-+			goto out;
-+	} else {
-+		/* Send write request frame(s) */
-+		ret = mci_read_write_blocks(mci, MMC_CMD_WRITE_MULTIPLE_BLOCK, 1,
-+					    req, req_len);
-+		if (ret)
-+			goto out;
-+
-+		/* Read response frame */
-+		ret = mci_read_write_blocks(mci, MMC_CMD_READ_MULTIPLE_BLOCK, 0,
-+					    resp, resp_len);
-+		if (ret)
-+			goto out;
-+	}
-+out:
-+	return ret;
-+}
-+
-+int mci_rpmb_route_frames(struct mci *mci, void *req, unsigned long reqlen,
-+			  void *rsp, unsigned long rsplen)
-+{
-+	/*
-+	 * Whoever crafted the data supplied to this function knows how to
-+	 * format the PRMB frames and which response is expected. If
-+	 * there's some unexpected mismatch it's more helpful to report an
-+	 * error immediately than trying to guess what was the intention
-+	 * and possibly just delay an eventual error which will be harder
-+	 * to track down.
-+	 */
-+	void *rpmb_data = NULL;
-+	int ret;
-+
-+	mci_blk_part_switch(mci->rpmb_part);
-+
-+	if (!IS_ALIGNED((uintptr_t)req, ARCH_DMA_MINALIGN)) {
-+		/* Memory alignment is required by MMC driver */
-+		rpmb_data = dma_alloc(reqlen);
-+		if (!rpmb_data)
-+			return -ENOMEM;
-+
-+		memcpy(rpmb_data, req, reqlen);
-+		req = rpmb_data;
-+	}
-+
-+	ret = rpmb_route_frames(mci, req, reqlen, rsp, rsplen);
-+
-+	free(rpmb_data);
-+
-+	return ret;
-+}
-diff --git a/include/mci.h b/include/mci.h
-index 08a3e46f7d..ec0390eedf 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -736,6 +736,9 @@ int mmc_select_timing(struct mci *mci);
- int mci_set_blockcount(struct mci *mci, unsigned int cmdarg);
- int mci_blk_part_switch(struct mci_part *part);
- int mci_send_cmd(struct mci *mci, struct mci_cmd *cmd, struct mci_data *data);
-+struct mci *mci_get_rpmb_dev(void);
-+int mci_rpmb_route_frames(struct mci *mci, void *req, unsigned long reqlen,
-+			  void *rsp, unsigned long rsplen);
- 
- static inline bool mmc_card_hs200(struct mci *mci)
- {
 
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
