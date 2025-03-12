@@ -3,72 +3,72 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsLnE-00D8An-1h
+	id 1tsLnE-00D8Az-37
 	for lore@lore.pengutronix.de;
 	Wed, 12 Mar 2025 14:06:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsLnB-00021z-4i
-	for lore@pengutronix.de; Wed, 12 Mar 2025 14:06:39 +0100
+	id 1tsLnB-000223-DO
+	for lore@pengutronix.de; Wed, 12 Mar 2025 14:06:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AMsHm9zyQ3iXyRsHoyuzWny3N0VUbAehh8LpMZNeQ94=; b=CDlsBNd1csxsFGMlhoiryI8VAP
-	0PZq66SYGgR7NPt7KUvUfv/9nFkRf1mJ5tq9fIe6VJ/rmo81tAsVUw6jIpapArbZBdz/mZZx2+P0q
-	LwhoH6GN2O5IhCTkmB8W9XVM0fxLsuGoCLtaz8W2OKF8ntY6PsDzYE4Ei7/KcnZ8bmXMqPClrBpBf
-	9XW54xwX3Gx3aRAp1EaxaMt2s9BifWihlIqOUXiA8IWLgnO9O/9Tn2H9um6BRe8WdaP+D8KEBAvR1
-	CISRzkNXzUSoNkcMsmZGRAvo3ux4Ktr7PvJRSEzZMK/FShsQkCivR+mc3gvn4d1mm7zT+hB1M/78R
-	HLGb/NaQ==;
+	bh=RJnD52eMYZYzYeCXahOk5dyvGpGsP5vrYFezTEkzmQo=; b=ZVbcWgoeV0dHbPdLG1omZoTxxU
+	Gf4uEQzUuObulCkQ9t6nKJLKEDX6rjkQefRH5Le5M7xjAq62xA8k6yIVshDuuOLKTrk6Xp4Iau8Sd
+	eHZ+utviEFXYbqyxy7RtctgJ7rYyzcCi36Su9rNNOHf+UX0acW+x643aT2jLy47j4R+wjVr/EPiK1
+	yo1qllcNvp0hNhQVhCtnexKm5InF9D4IYgEuGZrfN8tR6NUwghjQBwg84aKhyq1RDQ808hphGUVxf
+	HqsVCSzVFD+TZpo9zQgWRd4bOCSZpfLJUyVq4e1CjbSjdofSFkT1AwSDhaesPgMYE+zi3NRhgZYRW
+	h/yD5/WQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsLmf-00000008Urf-29Vl;
-	Wed, 12 Mar 2025 13:06:05 +0000
+	id 1tsLmg-00000008UsZ-0PHI;
+	Wed, 12 Mar 2025 13:06:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsL0e-00000008NSx-0kg1
+	id 1tsL0m-00000008NVh-0tQY
 	for barebox@lists.infradead.org;
-	Wed, 12 Mar 2025 12:16:30 +0000
+	Wed, 12 Mar 2025 12:16:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0V-0003sL-0R; Wed, 12 Mar 2025 13:16:19 +0100
+	id 1tsL0V-0003sN-0Y; Wed, 12 Mar 2025 13:16:19 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0U-005M8Z-1z;
+	id 1tsL0U-005M8c-24;
 	Wed, 12 Mar 2025 13:16:18 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0U-00AdfG-1e;
+	id 1tsL0U-00AdfG-1k;
 	Wed, 12 Mar 2025 13:16:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Mar 2025 13:16:18 +0100
+Date: Wed, 12 Mar 2025 13:16:22 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250312-rpmb-v1-3-0f213382a3f3@pengutronix.de>
+Message-Id: <20250312-rpmb-v1-7-0f213382a3f3@pengutronix.de>
 References: <20250312-rpmb-v1-0-0f213382a3f3@pengutronix.de>
 In-Reply-To: <20250312-rpmb-v1-0-0f213382a3f3@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741781778; l=4314;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741781778; l=5702;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=NXN8mgGqA3/c8w37/F2C9k1WIfWmkpyO/fLQQdCOa3w=;
- b=AiOSBSElt1ZqPjqBpXaf1OzMdNJ+7xN9TDT1RxS9HXlwTCSDrZFGYzYI6zX95R+PFB9SQuOKV
- g1VOXJAGMFFCSOA1dptvaoeHuRxBDP2+YMdpQgNUeU2PVXNSv7MIjiW
+ bh=v0JwUVsF6wd2V4ECysGMV2lMAfWaD1+YjGM0exBtVeU=;
+ b=mup3JuqRq/D5Yq7W0uVK19yYAWqZ6rLj6zP5+uubPRjJEOYw1QgauT7SxPzd41nNigj/iDrsO
+ ls+fcO/E0Z8DA0N8cIdw4RKlxuMTcYPxj5otj44+aCrWG0eSjAHZVaJ
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250312_051628_227746_89E82A53 
-X-CRM114-Status: GOOD (  19.50  )
+X-CRM114-CacheID: sfid-20250312_051636_260241_5C4BC66A 
+X-CRM114-Status: GOOD (  21.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,128 +90,197 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/9] mci: detect RPMB partitions
+Subject: [PATCH 7/9] tee: optee: implement RPMB support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Detect RPMB partitions and initialize a struct mci_part for them. We do
-not actually register the RPMB partitions as we can't access them with
-regular mci_do_block_op() and we would only access encrypted data anyway.
-
-Right now we assume that only one RPMB is present in a system which
-covers the 99% case. Should there be multiple RPMBs found we issue a
-warning message as there is no way to specify which one shall be used,
-the first one found will be used which may vary depending on probe
-order.
+This implements the OPTEE_RPC_CMD_RPMB RPC call. For data requests we
+call into the MMC specific RPMB implementation.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mci-core.c | 36 ++++++++++++++++++++++++++++++++++++
- include/mci.h          |  7 ++++++-
- 2 files changed, 42 insertions(+), 1 deletion(-)
+ drivers/tee/optee/Makefile        |   1 +
+ drivers/tee/optee/optee_private.h |  10 +++
+ drivers/tee/optee/rpc.c           |   3 +
+ drivers/tee/optee/rpmb.c          | 128 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 142 insertions(+)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index b7ea0df3cb..18c910c4c3 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -647,6 +647,15 @@ static blkcnt_t mci_calc_blk_cnt(blkcnt_t cap, unsigned shift)
- 	return ret;
- }
+diff --git a/drivers/tee/optee/Makefile b/drivers/tee/optee/Makefile
+index 5e71af77ee..f68352aa4e 100644
+--- a/drivers/tee/optee/Makefile
++++ b/drivers/tee/optee/Makefile
+@@ -6,3 +6,4 @@ optee-objs += call.o
+ optee-objs += rpc.o
+ optee-objs += device.o
+ optee-objs += smc_abi.o
++obj-$(CONFIG_MCI_MMC_RPMB) += rpmb.o
+diff --git a/drivers/tee/optee/optee_private.h b/drivers/tee/optee/optee_private.h
+index d739a6c609..bb9ac1b068 100644
+--- a/drivers/tee/optee/optee_private.h
++++ b/drivers/tee/optee/optee_private.h
+@@ -179,4 +179,14 @@ static inline void reg_pair_from_64(u32 *reg0, u32 *reg1, u64 val)
+ /* Registration of the ABIs */
+ int optee_smc_abi_register(void);
  
-+/*
-+ * We currently only support a single RPMB partition. Most systems only have a
-+ * single eMMC and thus only one RPMB partition, so we are fine on most systems.
-+ * When multiple RPMB partitions are found we issue a warning message as the
-+ * first RPMB found will be used. There currently is no way to specify which one
-+ * shall be used.
-+ */
-+static struct mci_part *rpmb_partition;
++#ifdef CONFIG_MCI_MMC_RPMB
++void optee_suppl_cmd_rpmb(struct tee_context *ctx, struct optee_msg_arg *arg);
++#else
++static inline void optee_suppl_cmd_rpmb(struct tee_context *ctx, struct optee_msg_arg *arg)
++{
++	pr_debug("OPTEE_MSG_RPC_CMD_RPMB not implemented\n");
++	arg->ret = TEEC_ERROR_NOT_IMPLEMENTED;
++}
++#endif
 +
- static void mci_part_add(struct mci *mci, uint64_t size,
-                         unsigned int part_cfg, char *name, char *partname, int idx, bool ro,
-                         int area_type)
-@@ -671,6 +680,16 @@ static void mci_part_add(struct mci *mci, uint64_t size,
- 	part->part_cfg = part_cfg;
- 	part->idx = idx;
- 
-+	if (area_type == MMC_BLK_DATA_AREA_RPMB) {
-+		mci->rpmb_part = part;
-+		if (rpmb_partition) {
-+			dev_warn(&mci->dev, "Multiple RPMB partitions found. Only %s will be used\n",
-+				 rpmb_partition->mci->host->devname);
-+		} else {
-+			rpmb_partition = mci->rpmb_part;
-+		}
-+	}
-+
- 	if (area_type == MMC_BLK_DATA_AREA_MAIN) {
- 		cdev_set_of_node(&part->blk.cdev, mci->host->hw_dev->of_node);
- 		part->blk.cdev.flags |= DEVFS_IS_MCI_MAIN_PART_DEV;
-@@ -822,6 +841,20 @@ static int mmc_change_freq(struct mci *mci)
- 		mci->boot_ack_enable = (mci->ext_csd_part_config >> 6) & 0x1;
+ #endif /*OPTEE_PRIVATE_H*/
+diff --git a/drivers/tee/optee/rpc.c b/drivers/tee/optee/rpc.c
+index bdb2a9da74..182a06ec91 100644
+--- a/drivers/tee/optee/rpc.c
++++ b/drivers/tee/optee/rpc.c
+@@ -64,6 +64,9 @@ void optee_rpc_cmd(struct tee_context *ctx, struct optee *optee,
+ 	case OPTEE_RPC_CMD_SHM_FREE:
+ 		cmd_shm_free(arg);
+ 		break;
++	case OPTEE_RPC_CMD_RPMB:
++		optee_suppl_cmd_rpmb(ctx, arg);
++		break;
+ 	default:
+ 		arg->ret = TEEC_ERROR_NOT_IMPLEMENTED;
  	}
- 
-+	if (mci->ext_csd[EXT_CSD_REV] >= 5) {
-+		if (mci->ext_csd[EXT_CSD_RPMB_SIZE_MULT]) {
-+			char *name, *partname;
+diff --git a/drivers/tee/optee/rpmb.c b/drivers/tee/optee/rpmb.c
+new file mode 100644
+index 0000000000..da115796f4
+--- /dev/null
++++ b/drivers/tee/optee/rpmb.c
+@@ -0,0 +1,128 @@
++// SPDX-License-Identifier: BSD-2-Clause
++/*
++ * Copyright (c) 2018 Linaro Limited
++ */
 +
-+			partname = basprintf("rpmb");
-+			name = basprintf("%s.%s", mci->cdevname, partname);
++#define pr_fmt(fmt)     "optee-rpmb: " fmt
 +
-+			mci_part_add(mci, mci->ext_csd[EXT_CSD_RPMB_SIZE_MULT] << 17,
-+				EXT_CSD_PART_CONFIG_ACC_RPMB,
-+				name, partname, 0, false,
-+				MMC_BLK_DATA_AREA_RPMB);
++#include <mci.h>
++
++#include "optee_msg.h"
++#include "optee_private.h"
++
++/*
++ * Request and response definitions must be in sync with the secure side of
++ * OP-TEE.
++ */
++
++/* Request */
++struct rpmb_req {
++	u16 cmd;
++#define RPMB_CMD_DATA_REQ      0x00
++#define RPMB_CMD_GET_DEV_INFO  0x01
++	u16 dev_id;
++	u16 block_count;
++	/* Optional data frames (rpmb_data_frame) follow */
++};
++
++#define RPMB_REQ_DATA(req) ((void *)((struct rpmb_req *)(req) + 1))
++
++/* Response to device info request */
++struct rpmb_dev_info {
++	u8 cid[16];
++	u8 rpmb_size_mult;	/* EXT CSD-slice 168: RPMB Size */
++	u8 rel_wr_sec_c;	/* EXT CSD-slice 222: Reliable Write Sector */
++				/*                    Count */
++	u8 ret_code;
++#define RPMB_CMD_GET_DEV_INFO_RET_OK     0x00
++#define RPMB_CMD_GET_DEV_INFO_RET_ERROR  0x01
++};
++
++static u32 rpmb_get_dev_info(struct mci *mci, struct rpmb_dev_info *info)
++{
++	int i;
++
++	if (!mci->ext_csd)
++		return TEEC_ERROR_GENERIC;
++
++	for (i = 0; i < ARRAY_SIZE(mci->raw_cid); i++)
++		((u32 *) info->cid)[i] = cpu_to_be32(mci->raw_cid[i]);
++
++	info->rel_wr_sec_c = mci->ext_csd[222];
++	info->rpmb_size_mult = mci->ext_csd[168];
++	info->ret_code = RPMB_CMD_GET_DEV_INFO_RET_OK;
++
++	return TEEC_SUCCESS;
++}
++
++static u32 rpmb_process_request(struct tee_context *ctx, void *req,
++				ulong req_size, void *rsp, ulong rsp_size)
++{
++	struct rpmb_req *sreq = req;
++	struct mci *mci = mci_get_rpmb_dev();
++
++	if (req_size < sizeof(*sreq))
++		return TEEC_ERROR_BAD_PARAMETERS;
++
++	if (!mci)
++		return TEEC_ERROR_ITEM_NOT_FOUND;
++
++	switch (sreq->cmd) {
++	case RPMB_CMD_DATA_REQ:
++		if (mci_rpmb_route_frames(mci, RPMB_REQ_DATA(req),
++					  req_size - sizeof(struct rpmb_req),
++					  rsp, rsp_size))
++			return TEEC_ERROR_BAD_PARAMETERS;
++		return TEEC_SUCCESS;
++
++	case RPMB_CMD_GET_DEV_INFO:
++		if (rsp_size != sizeof(struct rpmb_dev_info)) {
++			pr_debug("Invalid req/rsp size\n");
++			return TEEC_ERROR_BAD_PARAMETERS;
 +		}
++
++		/*
++		 * We do not have any way in barebox to associate a dev_id with a
++		 * corresponding eMMC device. For now we assume that only a single
++		 * eMMC is present in the system which is assumed to have dev_id 0.
++		 */
++		if (sreq->dev_id != 0) {
++			pr_err("Unexpected RPMB dev_id %u\n", sreq->dev_id);
++			return TEEC_ERROR_ITEM_NOT_FOUND;
++		}
++
++		return rpmb_get_dev_info(mci, rsp);
++
++	default:
++		pr_debug("Unsupported RPMB command: %d\n", sreq->cmd);
++		return TEEC_ERROR_BAD_PARAMETERS;
++	}
++}
++
++void optee_suppl_cmd_rpmb(struct tee_context *ctx, struct optee_msg_arg *arg)
++{
++	struct tee_shm *req_shm;
++	struct tee_shm *rsp_shm;
++	void *req_buf;
++	void *rsp_buf;
++	ulong req_size;
++	ulong rsp_size;
++
++	if (arg->num_params != 2 ||
++	    arg->params[0].attr != OPTEE_MSG_ATTR_TYPE_RMEM_INPUT ||
++	    arg->params[1].attr != OPTEE_MSG_ATTR_TYPE_RMEM_OUTPUT) {
++		arg->ret = TEEC_ERROR_BAD_PARAMETERS;
++		return;
 +	}
 +
- 	if (IS_ENABLED(CONFIG_MCI_MMC_GPP_PARTITIONS))
- 		mmc_extract_gpp_partitions(mci);
- 
-@@ -2601,6 +2634,9 @@ static int mci_register_partition(struct mci_part *part)
- 	part->blk.ops = &mci_ops;
- 	part->blk.type = IS_SD(mci) ? BLK_TYPE_SD : BLK_TYPE_MMC;
- 
-+	if (part->area_type == MMC_BLK_DATA_AREA_RPMB)
-+		return 0;
++	req_shm = (struct tee_shm *)(ulong)arg->params[0].u.rmem.shm_ref;
++	req_buf = (u8 *)req_shm->kaddr + arg->params[0].u.rmem.offs;
++	req_size = arg->params[0].u.rmem.size;
 +
- 	rc = blockdevice_register(&part->blk);
- 	if (rc != 0) {
- 		dev_err(&mci->dev, "Failed to register MCI/SD blockdevice\n");
-diff --git a/include/mci.h b/include/mci.h
-index 8084df813a..08a3e46f7d 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -347,6 +347,7 @@
-  */
- #define EXT_CSD_PART_CONFIG_ACC_MASK	(0x7)
- #define EXT_CSD_PART_CONFIG_ACC_BOOT0	(0x1)
-+#define EXT_CSD_PART_CONFIG_ACC_RPMB	(0x3)
- #define EXT_CSD_PART_CONFIG_ACC_GPP0	(0x4)
- 
- #define EXT_CSD_CMD_SET_NORMAL		(1<<0)
-@@ -606,9 +607,11 @@ struct mci_host {
- #define MMC_NUM_BOOT_PARTITION	2
- #define MMC_NUM_GP_PARTITION	4
- #define MMC_NUM_USER_PARTITION	1
-+#define MMC_NUM_RPMB_PARTITION	1
- #define MMC_NUM_PHY_PARTITION	(MMC_NUM_BOOT_PARTITION + \
-                                  MMC_NUM_GP_PARTITION + \
--                                 MMC_NUM_USER_PARTITION)
-+                                 MMC_NUM_USER_PARTITION + \
-+                                 MMC_NUM_RPMB_PARTITION)
- 
- struct mci_part {
- 	struct block_device	blk;		/**< the blockdevice for the card */
-@@ -674,6 +677,8 @@ struct mci {
- 	int boot_ack_enable;
- 
- 	struct mci_part part[MMC_NUM_PHY_PARTITION];
-+	struct mci_part *rpmb_part;
++	rsp_shm = (struct tee_shm *)(ulong)arg->params[1].u.rmem.shm_ref;
++	rsp_buf = (u8 *)rsp_shm->kaddr + arg->params[1].u.rmem.offs;
++	rsp_size = arg->params[1].u.rmem.size;
 +
- 	int nr_parts;
- 	char *cdevname;
- 
++	arg->ret = rpmb_process_request(ctx, req_buf, req_size,
++					rsp_buf, rsp_size);
++}
 
 -- 
 2.39.5
