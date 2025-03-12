@@ -1,64 +1,66 @@
-Delivery-date: Wed, 12 Mar 2025 12:58:46 +0100
+Delivery-date: Wed, 12 Mar 2025 12:58:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsKjW-00D6tX-2M
+	id 1tsKjZ-00D6tt-1r
 	for lore@lore.pengutronix.de;
-	Wed, 12 Mar 2025 12:58:46 +0100
+	Wed, 12 Mar 2025 12:58:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsKjV-0001w2-Hv
-	for lore@pengutronix.de; Wed, 12 Mar 2025 12:58:46 +0100
+	id 1tsKjY-0001xF-AB
+	for lore@pengutronix.de; Wed, 12 Mar 2025 12:58:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=wZqchqZF6/iyGSN7uX6HRmcTqay/cuPMJtEtxYHx4GI=; b=zNgZzEuj2oTjsbUXlK026oqfli
-	ERqo2IuMraI4upCt+3ttfyQ1VADB/INAQ10Zcx0vmw81Nq499qFSkspjhgGOUYV88d0wP2l2nwlve
-	sp0GmEZmbYBH8WLvdNYUfGsYJbFJtdeiIun1gCyWaEzPRm30SG9UB9sxHia8+Y9fsP+8qVpqs9UE8
-	9FqnOiSVjFj7aVYdq/8h0KD6iEEhc9nd6OIY0pQe7fZ3v3t6gpu1HVNynWhqzGh2FdxaqyNXR5BaV
-	6mzqdq2l3fVRAu9AcaxgRTyZVa6JEbh6wxBpWi/vPMmL/v3qJbHZb5tMwbmhIOSk+KXO/JHtcEBjG
-	KkG66u5Q==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=zxdL2LxmAvixie5tVh/ekMZsD+j81AjcBeD3RDbU/q0=; b=KaMwMPPPU5Gdn2IGlSWLPrUgxh
+	QEGapDyJE0bophhfUGD/RLK5oYDSyDmFOGGyCjDnhP7GW01Ys9kd8LZGsINocDI9r6t0mVHhn2jWc
+	uhbaw1Eyf/uG6S3a9btjRUniRxdgT4/P5hhWRcZz304+AL8vckAipbuZRcBn3yAdYiMcvVfhD5LwX
+	GsfCLBhKDDsDII+X2PodqXzrommnF/F4LqM/LYPojX3+LmGqwxbYYLFVKehXlu5FOgH8m3GamaxDL
+	HHg0gtox7383hR8sNRyoPgXsoB3u9Q4tUK2RX8b0RwqhNcl2+JHvNAdiScP8oC2HHAKI/fHn3s83j
+	Glk95KpA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsKix-00000008Kfn-1y6i;
-	Wed, 12 Mar 2025 11:58:11 +0000
+	id 1tsKiw-00000008Kfh-45lF;
+	Wed, 12 Mar 2025 11:58:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsK8z-00000008Eqy-0GTu
+	id 1tsK8z-00000008Er0-0BzP
 	for barebox@lists.infradead.org;
 	Wed, 12 Mar 2025 11:21:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tsK8w-0006He-Ed; Wed, 12 Mar 2025 12:20:58 +0100
+	id 1tsK8w-0006Hf-F1; Wed, 12 Mar 2025 12:20:58 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tsK8w-005Lia-0n;
+	id 1tsK8w-005Lib-0p;
 	Wed, 12 Mar 2025 12:20:58 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tsK8w-002OHq-0b;
+	id 1tsK8w-002OHt-0e;
 	Wed, 12 Mar 2025 12:20:58 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 12 Mar 2025 12:20:55 +0100
-Message-Id: <20250312112057.570001-1-o.rempel@pengutronix.de>
+Date: Wed, 12 Mar 2025 12:20:56 +0100
+Message-Id: <20250312112057.570001-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250312112057.570001-1-o.rempel@pengutronix.de>
+References: <20250312112057.570001-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250312_042101_100032_5DFCE158 
-X-CRM114-Status: GOOD (  11.93  )
+X-CRM114-CacheID: sfid-20250312_042101_086341_515B8959 
+X-CRM114-Status: GOOD (  10.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,85 +80,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1 1/3] net: dsa: Add global forwarding mode support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	WEIRD_QUOTING autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v1 2/3] Documentation: networking: Add DSA switch support documentation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This patch introduces a global forwarding mode control for DSA switches
-in Barebox.  It adds a new `forwarding` parameter that allows enabling
-or disabling forwarding  between all ports on a DSA switch.
-
-This enables users to configure global forwarding dynamically via:
-dev.switch0.forwarding=1  # Enable forwarding
-dev.switch0.forwarding=0  # Disable forwarding (isolated mode)
+Add documentation for Distributed Switch Architecture (DSA) support in
+Barebox. It introduces the `forwarding` parameter, which allows
+configuring a DSA switch to operate in either isolated mode (default) or
+forwarding mode.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/dsa.c | 12 ++++++++++++
- include/dsa.h     |  4 ++++
- 2 files changed, 16 insertions(+)
+ Documentation/user/networking.rst | 74 +++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
-diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
-index a451a1a35e8b..537e9dd72ac6 100644
---- a/drivers/net/dsa.c
-+++ b/drivers/net/dsa.c
-@@ -4,6 +4,7 @@
- #include <dma.h>
- #include <dsa.h>
- #include <of_net.h>
-+#include <param.h>
- 
- u32 dsa_user_ports(struct dsa_switch *ds)
- {
-@@ -431,6 +432,13 @@ static int dsa_switch_parse_ports_of(struct dsa_switch *ds,
- 	return ret;
- }
- 
-+static int dsa_set_forwarding(struct param_d *p, void *priv)
-+{
-+	struct dsa_switch *ds = priv;
+diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
+index 2306cb6a60d1..71703f064bee 100644
+--- a/Documentation/user/networking.rst
++++ b/Documentation/user/networking.rst
+@@ -186,3 +186,77 @@ barebox:
+ The netconsole can be used just like any other console. Note, however, that the
+ simple console protocol is UDP based, so there is no guarantee about packet
+ loss.
 +
-+	return ds->ops->set_forwarding(ds, ds->forwarding_enable);
-+}
++DSA (Distributed Switch Architecture) Support in Barebox
++--------------------------------------------------------
 +
- int dsa_register_switch(struct dsa_switch *ds)
- {
- 	int ret;
-@@ -448,6 +456,10 @@ int dsa_register_switch(struct dsa_switch *ds)
- 		return -EINVAL;
- 	}
- 
-+	if (ds->ops->set_forwarding)
-+		dev_add_param_bool(ds->dev, "forwarding", dsa_set_forwarding,
-+				   NULL, &ds->forwarding_enable, ds);
++Barebox includes support for DSA (Distributed Switch Architecture), allowing
++for basic configuration and management of network switches within the
++bootloader.
 +
- 	ret = dsa_switch_parse_ports_of(ds, ds->dev->of_node);
- 	if (ret)
- 		return ret;
-diff --git a/include/dsa.h b/include/dsa.h
-index 527941c26949..ecf7c4f429f3 100644
---- a/include/dsa.h
-+++ b/include/dsa.h
-@@ -56,6 +56,9 @@ struct dsa_switch_ops {
- 	int (*phy_read)(struct dsa_switch *ds, int port, int regnum);
- 	int (*phy_write)(struct dsa_switch *ds, int port, int regnum, u16 val);
- 	void (*adjust_link)(struct eth_device *dev);
++DSA enables network devices to use a switch framework where each port of the
++switch is treated as a separate network interface, while still allowing packet
++forwarding between ports when enabled.
 +
-+	/* enable/disable forwarding between all ports on the switch */
-+	int (*set_forwarding)(struct dsa_switch *ds, bool enable);
- };
- 
- struct dsa_port {
-@@ -84,6 +87,7 @@ struct dsa_switch {
- 	struct mii_bus *slave_mii_bus;
- 	u32 phys_mii_mask;
- 	void *priv;
-+	u32 forwarding_enable;
- };
- 
- static inline struct dsa_port *dsa_to_port(struct dsa_switch *ds, int p)
++DSA Configuration
++^^^^^^^^^^^^^^^^^
++
++DSA switches are managed through device parameters, similar to network
++interfaces. Each switch is identified as a separate device, typically named
++``switch0`` or ``switch@00`` depending on the bus address.
++
++Global Forwarding Control
++"""""""""""""""""""""""""
++
++A parameter, ``forwarding``, allows configuring whether a switch operates
++in **isolated mode** (default) or **forwarding mode**:
++
++- **Isolated Mode** (default): Each port is treated as an independent interface,
++  with no forwarding between ports.
++
++- **Forwarding Mode**: The switch allows forwarding of packets between ports,
++  acting as a traditional non-managed switch.
++
++To check the current DSA switch settings, use:
++
++.. code-block:: sh
++
++  barebox:/ devinfo switch0
++  Parameters:
++    forwarding: 0 (type: bool)
++
++To enable forwarding mode:
++
++.. code-block:: sh
++
++  dev.switch0.forwarding=1
++
++To disable forwarding and revert to isolated mode:
++
++.. code-block:: sh
++
++  dev.switch0.forwarding=0
++
++Persisting Configuration
++""""""""""""""""""""""""
++
++To ensure that the forwarding mode setting persists across reboots,
++it can be stored as a nonvolatile (nv) variable:
++
++.. code-block:: sh
++
++  nv dev.switch0.forwarding=1
++
++This will configure the switch to always boot in forwarding mode.
++
++Integration with Network Interfaces
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++Each port of the DSA switch is exposed as an independent network interface in
++Barebox. However, when forwarding is enabled, packets can be forwarded between
++these interfaces without requiring intervention from the CPU.
++
++To configure network settings for individual ports, use standard network
++configuration variables (e.g., ``eth0.ipaddr``, ``eth0.mode``, etc.). These
++settings are applied per port and are independent of the global switch
++forwarding configuration.
 -- 
 2.39.5
 
