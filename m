@@ -1,72 +1,64 @@
-Delivery-date: Wed, 12 Mar 2025 12:17:06 +0100
+Delivery-date: Wed, 12 Mar 2025 12:58:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsK5D-00D6IS-10
+	id 1tsKjW-00D6tX-2M
 	for lore@lore.pengutronix.de;
-	Wed, 12 Mar 2025 12:17:06 +0100
+	Wed, 12 Mar 2025 12:58:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsK5B-0005v1-N7
-	for lore@pengutronix.de; Wed, 12 Mar 2025 12:17:06 +0100
+	id 1tsKjV-0001w2-Hv
+	for lore@pengutronix.de; Wed, 12 Mar 2025 12:58:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8B/8qyHJSerWaSYF6BcycdEpZnli8p+lG6UCANzzj4s=; b=Ly1EV3RNHCnhIqVsXO9AYfL0wn
-	Ono6c3n2YDjYwZ265crajAHrtRE4/YinBwtCYESfYIais7r9L3+mlFh5r/xFSLF8S8Z5kmsgLodhL
-	HXCjVd0FyhxzeOgAOmitC1A+/z05vtp97FvPvSWNBgnXOhObLTuFpsauc4np6bHX6y3bYLMTu5C4K
-	WtIo97TfBY//94CwDO+XMCwq9pqgpp33CQ3v8OW5ZPpKiPTH9GAo4j2IJMY9OVKcVWKt8POT2mSRB
-	G+cdCkzrDLEGWDi28E7Odzmf5MDNGnQRxeT8u6Zqgv2P8e/DUwoH8UOZJlAJUJsURVB/e/9waK7o7
-	gOQMXAOg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=wZqchqZF6/iyGSN7uX6HRmcTqay/cuPMJtEtxYHx4GI=; b=zNgZzEuj2oTjsbUXlK026oqfli
+	ERqo2IuMraI4upCt+3ttfyQ1VADB/INAQ10Zcx0vmw81Nq499qFSkspjhgGOUYV88d0wP2l2nwlve
+	sp0GmEZmbYBH8WLvdNYUfGsYJbFJtdeiIun1gCyWaEzPRm30SG9UB9sxHia8+Y9fsP+8qVpqs9UE8
+	9FqnOiSVjFj7aVYdq/8h0KD6iEEhc9nd6OIY0pQe7fZ3v3t6gpu1HVNynWhqzGh2FdxaqyNXR5BaV
+	6mzqdq2l3fVRAu9AcaxgRTyZVa6JEbh6wxBpWi/vPMmL/v3qJbHZb5tMwbmhIOSk+KXO/JHtcEBjG
+	KkG66u5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsK4c-00000008EEv-2Nyi;
-	Wed, 12 Mar 2025 11:16:30 +0000
+	id 1tsKix-00000008Kfn-1y6i;
+	Wed, 12 Mar 2025 11:58:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsJrD-00000008CUD-3Vis
+	id 1tsK8z-00000008Eqy-0GTu
 	for barebox@lists.infradead.org;
-	Wed, 12 Mar 2025 11:02:41 +0000
+	Wed, 12 Mar 2025 11:21:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tsJrB-0004QV-5H; Wed, 12 Mar 2025 12:02:37 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <ore@pengutronix.de>)
+	id 1tsK8w-0006He-Ed; Wed, 12 Mar 2025 12:20:58 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tsJrA-005LO9-38;
-	Wed, 12 Mar 2025 12:02:36 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tsJrA-009WBb-2l;
-	Wed, 12 Mar 2025 12:02:36 +0100
-Date: Wed, 12 Mar 2025 12:02:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Message-ID: <Z9FpzJGBShGoi0Ji@pengutronix.de>
-References: <20250311-am625-secure-v2-0-3cbbfa092346@pengutronix.de>
- <20250311-am625-secure-v2-5-3cbbfa092346@pengutronix.de>
- <20250311134207.x4o2ccin3jx6pdpj@pengutronix.de>
+	(envelope-from <ore@pengutronix.de>)
+	id 1tsK8w-005Lia-0n;
+	Wed, 12 Mar 2025 12:20:58 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tsK8w-002OHq-0b;
+	Wed, 12 Mar 2025 12:20:58 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 12 Mar 2025 12:20:55 +0100
+Message-Id: <20250312112057.570001-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311134207.x4o2ccin3jx6pdpj@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250312_040240_034602_8861FD77 
-X-CRM114-Status: GOOD (  32.27  )
+X-CRM114-CacheID: sfid-20250312_042101_100032_5DFCE158 
+X-CRM114-Status: GOOD (  11.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,232 +76,89 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 05/14] fip: rework fip_image_open()
+Subject: [PATCH v1 1/3] net: dsa: Add global forwarding mode support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Mar 11, 2025 at 02:42:07PM +0100, Marco Felsch wrote:
-> >  struct fip_state *fip_image_open(const char *filename, size_t offset)
-> >  {
-> > @@ -470,11 +466,13 @@ struct fip_state *fip_image_open(const char *filename, size_t offset)
-> >  	int ret;
-> >  	int fd;
-> >  	struct fip_state *fip_state;
-> > -	LIST_HEAD(entries);
-> >  	size_t fip_headers_size, total = 0;
-> > -	struct fip_image_desc *desc;
-> >  	off_t pos;
-> >  	int n_entries = 0;
-> > +	struct fip_toc_entry toc_entries[16];
-> 				 	 ^
-> Why did you used 16?
+This patch introduces a global forwarding mode control for DSA switches
+in Barebox.  It adds a new `forwarding` parameter that allows enabling
+or disabling forwarding  between all ports on a DSA switch.
 
-Okay okay, I allocated the entries dynamically now to support an
-arbitrary number of toc entries.
+This enables users to configure global forwarding dynamically via:
+dev.switch0.forwarding=1  # Enable forwarding
+dev.switch0.forwarding=0  # Disable forwarding (isolated mode)
 
-Sascha
-
--------------------------------8<------------------------------
-
->From 87bc7468e698e3404345ee601885ec186de7f4fa Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 11 Mar 2025 13:25:18 +0100
-Subject: [PATCH] fip: rework fip_image_open()
-
-fip_image_open() used to do all the parsing into a struct fip_state
-itself. Instead, only load the FIP image into a buffer and call
-fip_do_parse_buf() with this buffer. This has the advantage that we
-have all parsing of the FIP image in a single place. Also this helps
-with a followup patch which calculates a sha256 over a FIP image
-which can easily done when we have the whole FIP image in a contiguous
-buffer.
-
-Link: https://lore.kernel.org/r/20250311-am625-secure-v2-5-3cbbfa092346@pengutronix.de
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- lib/fip.c | 90 ++++++++++++++++++++++++++++++++-----------------------
- 1 file changed, 53 insertions(+), 37 deletions(-)
+ drivers/net/dsa.c | 12 ++++++++++++
+ include/dsa.h     |  4 ++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/lib/fip.c b/lib/fip.c
-index 23e82098da..0d4ea54605 100644
---- a/lib/fip.c
-+++ b/lib/fip.c
-@@ -23,6 +23,8 @@
- #include <string.h>
- #include <libfile.h>
- #include <fs.h>
-+#include <linux/kernel.h>
-+#include <linux/list.h>
+diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
+index a451a1a35e8b..537e9dd72ac6 100644
+--- a/drivers/net/dsa.c
++++ b/drivers/net/dsa.c
+@@ -4,6 +4,7 @@
+ #include <dma.h>
+ #include <dsa.h>
+ #include <of_net.h>
++#include <param.h>
  
- #include <fip.h>
- #include <fiptool.h>
-@@ -446,23 +448,23 @@ int fip_update(struct fip_state *fip)
- 	return 0;
+ u32 dsa_user_ports(struct dsa_switch *ds)
+ {
+@@ -431,6 +432,13 @@ static int dsa_switch_parse_ports_of(struct dsa_switch *ds,
+ 	return ret;
  }
  
-+struct toc_entry_list {
-+	struct fip_toc_entry toc;
-+	struct list_head list;
-+};
++static int dsa_set_forwarding(struct param_d *p, void *priv)
++{
++	struct dsa_switch *ds = priv;
 +
- /*
-- * fip_image_open - open a FIP image for readonly access
-+ * fip_image_open - open a FIP image
-  * @filename: The filename of the FIP image
-  * @offset: The offset of the FIP image in the file
-  *
-- * This opens a FIP image for readonly access. This is an alternative
-- * implementation for fip_parse() with these differences:
-+ * This opens a FIP image. This is an alternative implementation for
-+ * fip_parse() with these differences:
-  * - suitable for reading FIP images from raw partitions. This function
-  *   only reads the FIP image, even when the partition is bigger than the
-  *   image
-  * - Allows to specify an offset within the partition where the FIP image
-  *   starts
-- * - Do not memdup the images from the full FIP image
-- *
-- * This function is for easy readonly access to the images within the FIP
-- * image. Do not call any of the above FIP manipulation functions other than
-- * fip_free() on an image opened with this function.
-  */
- struct fip_state *fip_image_open(const char *filename, size_t offset)
++	return ds->ops->set_forwarding(ds, ds->forwarding_enable);
++}
++
+ int dsa_register_switch(struct dsa_switch *ds)
  {
-@@ -470,11 +472,13 @@ struct fip_state *fip_image_open(const char *filename, size_t offset)
  	int ret;
- 	int fd;
- 	struct fip_state *fip_state;
--	LIST_HEAD(entries);
- 	size_t fip_headers_size, total = 0;
--	struct fip_image_desc *desc;
- 	off_t pos;
- 	int n_entries = 0;
-+	void *buf, *ptr;
-+	struct fip_toc_entry *toc_entry;
-+	struct toc_entry_list *toc_entry_list, *tmp;
-+	LIST_HEAD(toc_entries);
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0)
-@@ -506,11 +510,10 @@ struct fip_state *fip_image_open(const char *filename, size_t offset)
- 
- 	/* read all toc entries */
- 	while (1) {
--		struct fip_image_desc *desc = xzalloc(sizeof(*desc));
--		struct fip_image *image = xzalloc(sizeof(*image));
--		struct fip_toc_entry *toc_entry = &image->toc_e;
-+		uint64_t this_end;
- 
--		desc->image = image;
-+		toc_entry_list = xzalloc(sizeof(*toc_entry_list));
-+		toc_entry = &toc_entry_list->toc;
- 
- 		ret = read_full(fd, toc_entry, sizeof(*toc_entry));
- 		if (ret < 0)
-@@ -520,54 +523,67 @@ struct fip_state *fip_image_open(const char *filename, size_t offset)
- 			goto err;
- 		}
- 
--		list_add_tail(&desc->list, &fip_state->descs);
--
- 		pr_debug("Read TOC entry %pU %llu %llu\n", &toc_entry->uuid,
- 			 toc_entry->offset_address, toc_entry->size);
- 
--		/* Found the ToC terminator, we are done. */
--		if (uuid_is_null(&toc_entry->uuid))
--			break;
--	}
--
--	/* determine buffer size */
--	fip_for_each_desc(fip_state, desc) {
--		uint64_t this_end = desc->image->toc_e.offset_address + desc->image->toc_e.size;
-+		this_end = toc_entry->offset_address + toc_entry->size;
- 
- 		if (this_end > total)
- 			total = this_end;
-+
- 		n_entries++;
--	}
- 
--	fip_headers_size = n_entries * sizeof(struct fip_toc_entry) + sizeof(fip_toc_header_t);
-+		list_add_tail(&toc_entry_list->list, &toc_entries);
- 
--	total -= fip_headers_size;
-+		/* Found the ToC terminator, we are done. */
-+		if (uuid_is_null(&toc_entry->uuid))
-+			break;
-+	}
- 
--	fip_state->buffer = malloc(total);
--	if (!fip_state->buffer) {
-+	buf = malloc(total);
-+	if (!buf) {
- 		ret = -ENOMEM;
- 		goto err;
+@@ -448,6 +456,10 @@ int dsa_register_switch(struct dsa_switch *ds)
+ 		return -EINVAL;
  	}
  
--	ret = read_full(fd, fip_state->buffer, total);
-+	ptr = buf;
-+	fip_state->buffer = buf;
++	if (ds->ops->set_forwarding)
++		dev_add_param_bool(ds->dev, "forwarding", dsa_set_forwarding,
++				   NULL, &ds->forwarding_enable, ds);
 +
-+	memcpy(ptr, &toc_header, sizeof(toc_header));
-+	ptr += sizeof(toc_header);
+ 	ret = dsa_switch_parse_ports_of(ds, ds->dev->of_node);
+ 	if (ret)
+ 		return ret;
+diff --git a/include/dsa.h b/include/dsa.h
+index 527941c26949..ecf7c4f429f3 100644
+--- a/include/dsa.h
++++ b/include/dsa.h
+@@ -56,6 +56,9 @@ struct dsa_switch_ops {
+ 	int (*phy_read)(struct dsa_switch *ds, int port, int regnum);
+ 	int (*phy_write)(struct dsa_switch *ds, int port, int regnum, u16 val);
+ 	void (*adjust_link)(struct eth_device *dev);
 +
-+	list_for_each_entry_safe(toc_entry_list, tmp, &toc_entries, list) {
-+		memcpy(ptr, &toc_entry_list->toc, sizeof(*toc_entry));
-+		ptr += sizeof(*toc_entry);
-+
-+		list_del(&toc_entry_list->list);
-+		free(toc_entry_list);
-+	}
-+
-+	fip_headers_size = n_entries * sizeof(struct fip_toc_entry) + sizeof(fip_toc_header_t);
-+
-+	ret = read_full(fd, ptr, total - fip_headers_size);
-+	ret = -EINVAL;
- 	if (ret < 0)
- 		goto err;
++	/* enable/disable forwarding between all ports on the switch */
++	int (*set_forwarding)(struct dsa_switch *ds, bool enable);
+ };
  
--	if (ret < total) {
-+	if (ret < total - fip_headers_size) {
- 		ret = -ENODATA;
- 		goto err;
- 	}
+ struct dsa_port {
+@@ -84,6 +87,7 @@ struct dsa_switch {
+ 	struct mii_bus *slave_mii_bus;
+ 	u32 phys_mii_mask;
+ 	void *priv;
++	u32 forwarding_enable;
+ };
  
--	close(fd);
-+	ret = fip_do_parse_buf(fip_state, buf, total, NULL);
-+	if (ret)
-+		goto err;
- 
--	fip_for_each_desc(fip_state, desc) {
--		desc->image->buffer = fip_state->buffer +
--			desc->image->toc_e.offset_address - fip_headers_size;
--		desc->image->buf_no_free = true;
--	}
-+	close(fd);
- 
- 	return fip_state;
-+
- err:
-+	list_for_each_entry_safe(toc_entry_list, tmp, &toc_entries, list)
-+		free(toc_entry_list);
-+
- 	close(fd);
- 	fip_free(fip_state);
- 
+ static inline struct dsa_port *dsa_to_port(struct dsa_switch *ds, int p)
 -- 
 2.39.5
 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
