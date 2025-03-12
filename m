@@ -1,74 +1,74 @@
-Delivery-date: Wed, 12 Mar 2025 14:06:41 +0100
+Delivery-date: Wed, 12 Mar 2025 14:06:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsLnG-00D8Bh-0S
+	id 1tsLnH-00D8CE-24
 	for lore@lore.pengutronix.de;
-	Wed, 12 Mar 2025 14:06:41 +0100
+	Wed, 12 Mar 2025 14:06:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsLnB-00022P-Tc
-	for lore@pengutronix.de; Wed, 12 Mar 2025 14:06:41 +0100
+	id 1tsLnF-00025d-7W
+	for lore@pengutronix.de; Wed, 12 Mar 2025 14:06:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pKwZP7uYMLow+comFdrFE7sqARfGk4YW+ahAWf+psE4=; b=zvSek/GD3E2EmduxNnm8JC+8z7
-	yJA/WFGFLjazufWJoeQ7Ug8vBVeuFWkmqVX8O6ifXLFj/C3oyhYDNO5WnG6YGzKKPS8tmmQnTvPlb
-	MhXBBKSdD0H2D+3AzFe3AGDlwGBQ39xEfFHHcrYfeStILsMW4CpEsOtV1jVjZxzRhAzlFodf2ohCE
-	17/fl55J0q+wtMYJmqehrr9NSflm/sZAb3OEeksMdXbmkA22OfAHjkWTOfP86hhXi7KkAArFtkNqG
-	KSGxVnXkxLCXkB70JwgaWXNlYUeqeutSdC/8uhA7zjAs13zj4VpoBis1lvTON3iuykDIL0U+ZreX5
-	iRdAv1Yw==;
+	bh=dUAqGHtpBzCxfdImtRQFc1Vs/iBliP6Nq16u6Z+W4tI=; b=IZlpC1Ii5Nd407YtQxO3RRq8e4
+	MicRB+9C/4JIEcky5FzJ0JYjC8xO8nR4dzfb3Hj3srMT4ryeRsH+79zH/uxopf0vpBVGZeLZinNco
+	WUlBK5Pdf5Zilf+Uc8lD3eYa+F2mBPzjze2tZD5WYO161pqWRa/1ROjrgJ4zGVRBXqbDviXEY8Z9Q
+	XzijTfdRLp2cMKTs1QqjVayAugPG8N9RIYbwJOJ+9jCuRDoRZskgnI/mEJE+2n4X011F8iVpH43PF
+	AiuyTXlIbmH5L4uKAZG60i1FGg98Gbi5eCcds0Y89j9XDEY6YOAmoqPecHcVc1EE/E6wu8vYXJ77a
+	tXE7rbtQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsLmd-00000008Upo-068k;
-	Wed, 12 Mar 2025 13:06:03 +0000
+	id 1tsLmg-00000008Utm-47z9;
+	Wed, 12 Mar 2025 13:06:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsL0W-00000008NQi-0r6T
+	id 1tsL0u-00000008NYR-0rTd
 	for barebox@lists.infradead.org;
-	Wed, 12 Mar 2025 12:16:22 +0000
+	Wed, 12 Mar 2025 12:16:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0V-0003sQ-03; Wed, 12 Mar 2025 13:16:19 +0100
+	id 1tsL0V-0003sO-01; Wed, 12 Mar 2025 13:16:19 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0U-005M8d-27;
+	id 1tsL0U-005M8e-24;
 	Wed, 12 Mar 2025 13:16:18 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tsL0U-00AdfG-1o;
+	id 1tsL0U-00AdfG-1m;
 	Wed, 12 Mar 2025 13:16:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Mar 2025 13:16:24 +0100
+Date: Wed, 12 Mar 2025 13:16:23 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250312-rpmb-v1-9-0f213382a3f3@pengutronix.de>
+Message-Id: <20250312-rpmb-v1-8-0f213382a3f3@pengutronix.de>
 References: <20250312-rpmb-v1-0-0f213382a3f3@pengutronix.de>
 In-Reply-To: <20250312-rpmb-v1-0-0f213382a3f3@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741781778; l=5343;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741781778; l=7471;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=LoZZV3tz9DYm+gb8mV7KaSP+8X7FMS51KshZsOBdvUU=;
- b=gFXq8/LVBYoXAecM2mn5ysLV9cTKr190iAQDjtLOa5vB9oPYt2rsLCG05JO3GexGtgDDDYYIU
- +vm0BC3En8uBOdkc9Eyy+HcXgqOh1UxvU+nYot0WNxNZ4XVYFjOZONG
+ bh=PYYPjYOQfvV0TciicZrYCo+ZlvwDeJbMtI19r2P8H3s=;
+ b=+TyMB9IFASmGZ0d8Jq/qZMRaeQRoLUcrXpp+4alEgP0ZK8H95qviilvRWdWC6OqRdYDZ5REAH
+ wbmoJt+ZJM2BZmcCWC/htEcjyLKxoAXUJjl6erjdRmColIOyxxhNpTs
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250312_051620_252624_14472142 
-X-CRM114-Status: GOOD (  19.53  )
+X-CRM114-CacheID: sfid-20250312_051644_430154_77D63302 
+X-CRM114-Status: GOOD (  20.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,206 +90,266 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 9/9] commands: add avb_pvalue command
+Subject: [PATCH 8/9] tee: optee: implement AVB named persistent values
+ support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Android Verified Boot (AVB( 2.0 spec. revision 1.1 introduces support
+Android Verified Boot (AVB) 2.0 spec. revision 1.1 introduces support
 for named persistent values that must be tamper evident and allows AVB
 to store arbitrary key-value pairs.
 
-This patch introduces a command to access this variable store. Variables
-can be read into a file or an environment variable or printed as
-hexdump. Variables can be written from file content or a string from the
-command line.
+While AVB itself is not implemented in barebox. this patch allows
+barebox to access the persistent value store. This is useful on its
+own and can also be used to test the RPMB access in barebox.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig      |  13 +++++
- commands/Makefile     |   1 +
- commands/avb_pvalue.c | 138 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 152 insertions(+)
+ drivers/tee/optee/Kconfig  |   9 +++
+ drivers/tee/optee/Makefile |   1 +
+ drivers/tee/optee/avb.c    | 189 +++++++++++++++++++++++++++++++++++++++++++++
+ include/tee/avb.h          |   9 +++
+ 4 files changed, 208 insertions(+)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index e41625e294..3d87ba5e09 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2254,6 +2254,19 @@ config CMD_2048
- 	help
- 	  Console version of the game "2048" for GNU/Linux
+diff --git a/drivers/tee/optee/Kconfig b/drivers/tee/optee/Kconfig
+index 045be3cca4..805aba65ed 100644
+--- a/drivers/tee/optee/Kconfig
++++ b/drivers/tee/optee/Kconfig
+@@ -31,6 +31,15 @@ config OPTEE_DEVFS
+ 	  but it's useful for compiling libteeclient + optee_tests for
+ 	  use inside barebox to verify proper operation of CONFIG_OPTEE.
  
-+config CMD_AVB_PVALUE
-+	depends on OPTEE_AVB_PERSISTENT_VALUES
-+	tristate
-+	prompt "avb_pvalue"
++config OPTEE_AVB_PERSISTENT_VALUES
++	bool "Android Verified Boot (AVB) persistent values support"
++	depends on OPTEE
 +	help
-+	  The avb_pvalue command provides access to the Android Verified Boot (AVB)
-+	  persistent value store.
-+
 +	  AVB 2.0 spec. revision 1.1 introduces support for named persistent values
 +	  that must be tamper evident and allows AVB to store arbitrary key-value
-+	  pairs.
++	  pairs. AVB itself is not implemented in barebox, but enabling this option
++	  allows barebox to use the AVB persistent value store.
 +
-+
- config CMD_BAREBOX_UPDATE
- 	tristate
- 	select BAREBOX_UPDATE
-diff --git a/commands/Makefile b/commands/Makefile
-index e152e4148b..7a635e8791 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -3,6 +3,7 @@
- obj-$(CONFIG_STDDEV)		+= stddev.o
- obj-$(CONFIG_CMD_DIGEST)	+= digest.o
- obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
-+obj-$(CONFIG_CMD_AVB_PVALUE)	+= avb_pvalue.o
- obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
- obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
- obj-$(CONFIG_CMD_LOADB)		+= loadb.o
-diff --git a/commands/avb_pvalue.c b/commands/avb_pvalue.c
+ endif
+ 
+ config OF_FIXUP_OPTEE
+diff --git a/drivers/tee/optee/Makefile b/drivers/tee/optee/Makefile
+index f68352aa4e..1fbeb39fb8 100644
+--- a/drivers/tee/optee/Makefile
++++ b/drivers/tee/optee/Makefile
+@@ -7,3 +7,4 @@ optee-objs += rpc.o
+ optee-objs += device.o
+ optee-objs += smc_abi.o
+ obj-$(CONFIG_MCI_MMC_RPMB) += rpmb.o
++obj-$(CONFIG_OPTEE_AVB_PERSISTENT_VALUES) += avb.o
+diff --git a/drivers/tee/optee/avb.c b/drivers/tee/optee/avb.c
 new file mode 100644
-index 0000000000..adc44321fb
+index 0000000000..0adbee6258
 --- /dev/null
-+++ b/commands/avb_pvalue.c
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <command.h>
-+#include <getopt.h>
-+#include <libfile.h>
-+#include <fs.h>
-+#include <xfuncs.h>
-+#include <linux/sizes.h>
++++ b/drivers/tee/optee/avb.c
+@@ -0,0 +1,189 @@
++#include <linux/types.h>
 +#include <tee/avb.h>
-+#include <linux/ctype.h>
-+#include <environment.h>
++#include <linux/tee_drv.h>
 +
-+static int do_avb_pvalue(int argc, char *argv[])
++#include "optee_private.h"
++
++#define TA_AVB_UUID UUID_INIT(0x023f8f1a, 0x292a, 0x432b, \
++                      0x8f, 0xc4, 0xde, 0x84, 0x71, 0x35, 0x80, 0x67)
++#define TEE_PARAM_ATTR_TYPE_MEMREF_INOUT       7       /* input and output */
++#define TA_AVB_CMD_READ_PERSIST_VALUE     4
++#define TEE_PARAM_ATTR_TYPE_MEMREF_INPUT       5
++#define TA_AVB_CMD_WRITE_PERSIST_VALUE    5
++
++static int optee_ctx_match(struct tee_ioctl_version_data *ver, const void *data)
 +{
-+	size_t out = 0x13;
-+	void *buf = NULL;
-+	int ret = 0, rc = COMMAND_ERROR;
-+	int opt;
-+	const char *write_varname = NULL, *read_varname = NULL;
-+	void *val = NULL;
-+	size_t size;
-+	const char *filename = NULL;
-+	const char *varname = NULL;
-+	const int bufsize = SZ_8K;
++	if (ver->impl_id == TEE_IMPL_ID_OPTEE)
++		return 1;
++	else
++		return 0;
++}
 +
-+	while ((opt = getopt(argc, argv, "r:w:f:")) > 0) {
-+		switch(opt) {
-+		case 'r':
-+			read_varname = optarg;
-+			break;
-+		case 'w':
-+			write_varname = optarg;
-+			break;
-+		case 'f':
-+			filename = optarg;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
++int avb_read_persistent_value(const char *name, size_t buffer_size,
++			      u8 *out_buffer, size_t *out_num_bytes_read)
++{
++	const uuid_t avb_uuid = TA_AVB_UUID;
++	int rc = 0;
++	struct tee_shm *shm_name;
++	struct tee_shm *shm_buf;
++	struct tee_param param[2];
++	size_t name_size = strlen(name) + 1;
++	struct tee_ioctl_open_session_arg sess_arg = {};
++	struct tee_context *ctx = NULL;
++	struct tee_ioctl_invoke_arg arg;
++
++	ctx = tee_client_open_context(NULL, optee_ctx_match, NULL, NULL);
++	if (IS_ERR(ctx))
++		return -ENODEV;
++
++	export_uuid(sess_arg.uuid, &avb_uuid);
++	sess_arg.clnt_login = TEE_IOCTL_LOGIN_PUBLIC;
++	sess_arg.num_params = 0;
++
++	rc = tee_client_open_session(ctx, &sess_arg, NULL);
++	if ((rc < 0) || (sess_arg.ret != TEEC_SUCCESS)) {
++		pr_debug("%s device enumeration pseudo TA not found\n", __func__);
++		rc = 0;
++		goto out_ctx;
 +	}
 +
-+	argc -= optind;
-+	argv += optind;
-+
-+	if (!read_varname && !write_varname)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (read_varname && write_varname)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (write_varname) {
-+		if (argc >= 1)
-+			val = argv[0];
-+
-+		if (filename) {
-+			ret = read_file_2(filename, &size, &buf, FILESIZE_MAX);
-+			if (ret) {
-+				printf("Cannot read %s: %pe\n", read_varname, ERR_PTR(ret));
-+				return COMMAND_ERROR;
-+			}
-+		} else {
-+			if (!val)
-+				return COMMAND_ERROR_USAGE;
-+			size = strlen(val) + 1;
-+			buf = xstrdup(val);
-+
-+		}
-+		ret = avb_write_persistent_value(write_varname, size, buf);
-+		if (ret) {
-+			printf("Cannot write variable %s: %pe\n", read_varname, ERR_PTR(ret));
-+			goto err;
-+		}
++	shm_name = tee_shm_alloc_kernel_buf(ctx, name_size);
++	if (IS_ERR(shm_name)) {
++		rc = -ENOMEM;
++		goto close_session;
 +	}
 +
-+	if (read_varname) {
-+		if (argc >= 1)
-+			varname = argv[0];
-+
-+		buf = xzalloc(bufsize);
-+
-+		ret = avb_read_persistent_value(read_varname, SZ_8K, buf, &out);
-+		if (ret) {
-+			printf("Cannot read variable %s: %pe\n", read_varname, ERR_PTR(ret));
-+			rc = COMMAND_ERROR;
-+			goto err;
-+		}
-+
-+		if (filename) {
-+			ret = write_file(filename, buf, out);
-+			if (ret) {
-+				printf("Cannot write %s: %pe\n", filename, ERR_PTR(ret));
-+				rc = COMMAND_ERROR;
-+				goto err;
-+			}
-+		} else if (varname) {
-+			unsigned char *str = buf;
-+			int i;
-+
-+			str[bufsize - 1] = 0;
-+	
-+			for (i = 0; i < out; i++)
-+				if (!isprint(str[i]))
-+					break;
-+
-+			str[i] = 0;
-+
-+			setenv(varname, buf);
-+		} else {
-+			memory_display(buf, 0, out, 1, 0);
-+		}
++	shm_buf = tee_shm_alloc_kernel_buf(ctx, buffer_size);
++	if (IS_ERR(shm_buf)) {
++		rc = -ENOMEM;
++		goto free_name;
 +	}
 +
-+	rc = 0;
++	memcpy(shm_name->kaddr, name, name_size);
 +
-+err:
-+	free(buf);
++	memset(param, 0, sizeof(param));
++	param[0].attr = TEE_PARAM_ATTR_TYPE_MEMREF_INPUT;
++	param[0].u.memref.shm = shm_name;
++	param[0].u.memref.size = name_size;
++	param[1].attr = TEE_PARAM_ATTR_TYPE_MEMREF_INOUT;
++	param[1].u.memref.shm = shm_buf;
++	param[1].u.memref.size = buffer_size;
++
++	arg.func = TA_AVB_CMD_READ_PERSIST_VALUE;
++	arg.session = sess_arg.session;
++	arg.num_params = 2;
++
++	rc = tee_client_invoke_func(ctx, &arg, param);
++	if (rc)
++		goto out;
++	switch (arg.ret) {
++	case TEEC_SUCCESS:
++		rc = 0;
++		break;
++	case TEEC_ERROR_ITEM_NOT_FOUND:
++		rc = -ENOENT;
++		break;
++	default:
++		rc = -EINVAL;
++		break;
++	}
++	if (rc)
++		goto out;
++
++	if (param[1].u.memref.size > buffer_size) {
++		rc = -EINVAL;
++		goto out;
++	}
++
++	*out_num_bytes_read = param[1].u.memref.size;
++
++	memcpy(out_buffer, shm_buf->kaddr, *out_num_bytes_read);
++
++out:
++	tee_shm_free(shm_buf);
++free_name:
++	tee_shm_free(shm_name);
++close_session:
++	tee_client_close_session(ctx, sess_arg.session);
++out_ctx:
++	tee_client_close_context(ctx);
 +
 +	return rc;
 +}
 +
-+BAREBOX_CMD_HELP_START(avb_pvalue)
-+BAREBOX_CMD_HELP_TEXT("This command provides access to the AVB persistent variable store.")
-+BAREBOX_CMD_HELP_TEXT("usage:")
-+BAREBOX_CMD_HELP_TEXT("avb_pvalue [OPTION]... [VARNAME/VALUE]")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-r <varname>",  "read variable <varname>. read value into [VARNAME] if given")
-+BAREBOX_CMD_HELP_OPT ("-w <varname>",  "write variable <varname>. Set to [VALUE] if given")
-+BAREBOX_CMD_HELP_OPT ("-f <file>",  "read/write value from/to file")
-+BAREBOX_CMD_HELP_END
++int avb_write_persistent_value(const char *name, size_t value_size,
++			       const u8 *value)
++{
++	const uuid_t avb_uuid = TA_AVB_UUID;
++	int rc = 0;
++	struct tee_shm *shm_name;
++	struct tee_shm *shm_buf;
++	struct tee_param param[2];
++	struct tee_ioctl_open_session_arg sess_arg = {};
++	struct tee_context *ctx = NULL;
++	size_t name_size = strlen(name) + 1;
++	struct tee_ioctl_invoke_arg inv_arg;
 +
-+BAREBOX_CMD_START(avb_pvalue)
-+	.cmd            = do_avb_pvalue,
-+	BAREBOX_CMD_DESC("AVB persistent variable store")
-+	BAREBOX_CMD_OPTS("[-rwf] [VARNAME/VALUE]")
-+	BAREBOX_CMD_HELP(cmd_avb_pvalue_help)
-+	BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
-+BAREBOX_CMD_END
++	if (!value_size)
++		return -EINVAL;
++
++	ctx = tee_client_open_context(NULL, optee_ctx_match, NULL, NULL);
++	if (IS_ERR(ctx))
++		return -ENODEV;
++
++	export_uuid(sess_arg.uuid, &avb_uuid);
++	sess_arg.clnt_login = TEE_IOCTL_LOGIN_PUBLIC;
++	sess_arg.num_params = 0;
++
++	rc = tee_client_open_session(ctx, &sess_arg, NULL);
++	if ((rc < 0) || (sess_arg.ret != TEEC_SUCCESS)) {
++		pr_err("%s AVB TA not found\n", __func__);
++		goto out_ctx;
++	}
++
++	shm_name = tee_shm_alloc_kernel_buf(ctx, name_size);
++	if (IS_ERR(shm_name)) {
++		rc = -ENOMEM;
++		goto close_session;
++	}
++
++	shm_buf = tee_shm_alloc_kernel_buf(ctx, value_size);
++	if (IS_ERR(shm_buf)) {
++		rc = -ENOMEM;
++		goto free_name;
++	}
++
++	memcpy(shm_name->kaddr, name, name_size);
++	memcpy(shm_buf->kaddr, value, value_size);
++
++	memset(param, 0, sizeof(param));
++	param[0].attr = TEE_PARAM_ATTR_TYPE_MEMREF_INPUT;
++	param[0].u.memref.shm = shm_name;
++	param[0].u.memref.size = name_size;
++	param[1].attr = TEE_PARAM_ATTR_TYPE_MEMREF_INPUT;
++	param[1].u.memref.shm = shm_buf;
++	param[1].u.memref.size = value_size;
++
++	inv_arg.func = TA_AVB_CMD_WRITE_PERSIST_VALUE;
++	inv_arg.session = sess_arg.session;
++	inv_arg.num_params = 2;
++
++	rc = tee_client_invoke_func(ctx, &inv_arg, param);
++	if (rc)
++		goto out;
++	if (inv_arg.ret) {
++		pr_err("invoke func failed with 0x%08x\n", inv_arg.ret);
++		rc = -EIO;
++	}
++
++out:
++	tee_shm_free(shm_buf);
++free_name:
++	tee_shm_free(shm_name);
++close_session:
++	tee_client_close_session(ctx, sess_arg.session);
++out_ctx:
++	tee_client_close_context(ctx);
++
++	return rc;
++}
+diff --git a/include/tee/avb.h b/include/tee/avb.h
+new file mode 100644
+index 0000000000..3873b5c59b
+--- /dev/null
++++ b/include/tee/avb.h
+@@ -0,0 +1,9 @@
++#ifndef TEE_AVB_H
++#define TEE_AVB_H
++
++int avb_write_persistent_value(const char *name, size_t value_size,
++			       const u8 *value);
++int avb_read_persistent_value(const char *name, size_t buffer_size,
++			      u8 *out_buffer, size_t *out_num_bytes_read);
++
++#endif /* TEE_AVB_H */
 
 -- 
 2.39.5
