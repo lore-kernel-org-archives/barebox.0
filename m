@@ -1,67 +1,67 @@
-Delivery-date: Thu, 13 Mar 2025 08:55:05 +0100
+Delivery-date: Thu, 13 Mar 2025 08:55:07 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsdPF-00DToR-3D
+	id 1tsdPH-00DTop-2u
 	for lore@lore.pengutronix.de;
-	Thu, 13 Mar 2025 08:55:05 +0100
+	Thu, 13 Mar 2025 08:55:07 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsdPE-00024i-LG
-	for lore@pengutronix.de; Thu, 13 Mar 2025 08:55:05 +0100
+	id 1tsdPG-00026d-Ju
+	for lore@pengutronix.de; Thu, 13 Mar 2025 08:55:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3kupSvR+kxJ1PzZsi4eYq2JLZD8+9z5s3QRlNTKuqUc=; b=FU9PriQYHxI4xbMHI3tdYAQkFs
-	7ll0YRPOZlZeb6HRKWXC90QhQSymP2zG9srUYJVibMN7MhL9zC05NHhEm8Canz5G9r44Bj0oI2OER
-	qK4oBtVQftSjJThuPs8Ul2jAvqh/dDtip9FiTm/47qxEKNaI1owDqXSbOjdHgdx9cO0mcy7NLojAy
-	hXSRxmGTU7eLEIMWvS36NWWb6geXgvjylCEaWIjeyb3abimJK6rLAJFf1RsgNY9Z4Gn+zRL5rRcz2
-	7QaqmeHWLvKl469W/4T/7C8GjT/9xlUiZVQHKtS3kOY7PWgTHTqEMbe4xk3BlFKqbn7DOjKUYTUET
-	cYqtz7Gw==;
+	bh=7vPi6njTUaAhqbUdOd/kRuEg6ThQufr062i83H+c26Y=; b=wC6n7mL3xpzWUlAOqeBlBaIWEe
+	3+tHxoYVBqX+Feq5/2TfD8CVshvyzB0h2CiSOVJc08M5iuKkKffl4N1Y1LpDwhFvQcJbKIyKA0ihc
+	AEuQZP/nkBwLzsenjX0nMWmtvi8yKDh3FpwguAC89jRtYMprXa3fhnJ/mR1TicVbXWaYdYKCpYSUn
+	6EqMOtzIvpGAKziQTXkdzkjuhH9s/5maz8boLMJv8yf2yiNOKy0wQ6bfwoITXlLL/6LncEVdjCHmY
+	1HuXhQBWd9FY+PmULV0qNFQVummDgUSOsaFay04dwvstONBM+70F+b/BOUeO1/hRJt/LnAa9Twh8I
+	hjkJw1BA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsdOr-0000000ATEv-0eXK;
-	Thu, 13 Mar 2025 07:54:41 +0000
+	id 1tsdOt-0000000ATGO-2C7W;
+	Thu, 13 Mar 2025 07:54:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsdOY-0000000ATA8-11b1
+	id 1tsdOY-0000000ATAB-1Dnn
 	for barebox@lists.infradead.org;
 	Thu, 13 Mar 2025 07:54:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsdOW-0001ju-UW; Thu, 13 Mar 2025 08:54:20 +0100
+	id 1tsdOX-0001k7-1v; Thu, 13 Mar 2025 08:54:21 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsdOW-005Uyt-2O;
+	id 1tsdOW-005Uyz-2g;
 	Thu, 13 Mar 2025 08:54:20 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsdOW-00DRHH-24;
+	id 1tsdOW-00DRHH-2M;
 	Thu, 13 Mar 2025 08:54:20 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 13 Mar 2025 08:54:14 +0100
-Message-Id: <20250313075416.3202194-4-a.fatoum@pengutronix.de>
+Date: Thu, 13 Mar 2025 08:54:16 +0100
+Message-Id: <20250313075416.3202194-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313075416.3202194-1-a.fatoum@pengutronix.de>
 References: <20250313075416.3202194-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250313_005422_314402_BE4F139D 
-X-CRM114-Status: GOOD (  13.22  )
+X-CRM114-CacheID: sfid-20250313_005422_368609_71B424E6 
+X-CRM114-Status: GOOD (  10.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,195 +79,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/6] arch: move hidden arch options to arch/Kconfig
+Subject: [PATCH v2 6/6] x86: move CONFIG_PHYS_ADDR_T_64BIT setting into Kconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We have a number of Kconfig symbols that are exclusively selected from
-architecture Kconfig files, but are defined all over.
+sizeof(phys_addr_t) depends on whether CONFIG_PHYS_ADDR_T_64BIT is
+enabled, which we so far defined depending on __x86_64__ in a header
+file.
 
-Move the definition of these symbols into arch/Kconfig, where they
-are supposed to be.
+Given that we have a 64BIT symbol already in Kconfig that's selected
+when building for 64-bit, let's have it select PHYS_ADDR_T_64BIT.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - no change
+  - drop CONFIG_PHYS_ADDR_T_64BIT assignment in header file
+  - reword commit message accordingly
 ---
- arch/Kconfig            | 42 +++++++++++++++++++++++++++++++++++++++++
- common/Kconfig          | 21 ---------------------
- common/Kconfig.debug_ll |  3 ---
- lib/Kconfig             | 12 ------------
- lib/Kconfig.ubsan       |  2 --
- lib/kasan/Kconfig       |  3 ---
- 6 files changed, 42 insertions(+), 41 deletions(-)
+ arch/x86/Kconfig             | 1 +
+ arch/x86/include/asm/types.h | 6 ------
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 21175b90a076..b1200184678f 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -62,5 +62,47 @@ config ARCH_DMA_DEFAULT_COHERENT
- config ARCH_HAS_ASAN_FIBER_API
- 	bool
- 
-+config ARCH_HAS_STACK_DUMP
-+	bool
-+
-+config ARCH_HAS_DATA_ABORT_MASK
-+	bool
-+
-+config ARCH_HAS_ZERO_PAGE
-+	bool
-+
-+config HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	bool
-+
- config HAVE_ARCH_BOARD_GENERIC_DT
- 	bool
-+
-+config HAVE_MOD_ARCH_SPECIFIC
-+	bool
-+	help
-+	  The arch uses struct mod_arch_specific to store data.  Many arches
-+	  just need a simple module loader without arch specific data - those
-+	  should not enable this.
-+
-+config ARCH_HAS_SJLJ
-+	bool
-+	help
-+	  Architecture has support implemented for setjmp()/longjmp()/initjmp()
-+
-+config ARCH_DMA_ADDR_T_64BIT
-+	bool
-+
-+config ARCH_USE_SYM_ANNOTATIONS
-+	bool
-+	help
-+	  This is selected by architectures that exclusively use the new SYM_
-+	  macros in their assembly code and not the deprecated ENTRY/PROC.
-+
-+config HAS_DEBUG_LL
-+	bool
-+
-+config HAVE_ARCH_KASAN
-+	bool
-+
-+config ARCH_HAS_UBSAN_SANITIZE_ALL
-+	bool
-diff --git a/common/Kconfig b/common/Kconfig
-index 6e5fba33ea4a..de66f0461cf1 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -35,11 +35,6 @@ config HAS_DMA
- 	  Drivers that depend on a DMA implementation can depend on this
- 	  config, so that you don't get a compilation error.
- 
--config ARCH_HAS_SJLJ
--	bool
--	help
--	  Architecture has support implemented for setjmp()/longjmp()/initjmp()
--
- config GENERIC_GPIO
- 	bool
- 
-@@ -84,9 +79,6 @@ config MENUTREE
- 	select GLOB
- 	select GLOB_SORT
- 
--config ARCH_DMA_ADDR_T_64BIT
--	bool
--
- config BAREBOX_UPDATE_IMX_NAND_FCB
- 	bool
- 	depends on ARCH_IMX7 || ARCH_IMX6 || ARCH_IMX28
-@@ -359,13 +351,6 @@ config MODULES
- 	  As modules can't be signed, loading external modules is not
- 	  recommended for secure systems.
- 
--config HAVE_MOD_ARCH_SPECIFIC
--	bool
--	help
--	  The arch uses struct mod_arch_specific to store data.  Many arches
--	  just need a simple module loader without arch specific data - those
--	  should not enable this.
--
- config KALLSYMS
- 	depends on HAS_KALLSYMS
- 	bool "kallsyms"
-@@ -1359,9 +1344,3 @@ source "common/boards/Kconfig"
- config DDR_SPD
- 	bool
- 	select CRC_ITU_T
--
--config ARCH_USE_SYM_ANNOTATIONS
--	bool
--	help
--	  This is selected by architectures that exclusively use the new SYM_
--	  macros in their assembly code and not the deprecated ENTRY/PROC.
-diff --git a/common/Kconfig.debug_ll b/common/Kconfig.debug_ll
-index 1f9255b1a45b..8c49f5b72882 100644
---- a/common/Kconfig.debug_ll
-+++ b/common/Kconfig.debug_ll
-@@ -1,8 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
--config HAS_DEBUG_LL
--	bool
--
- config DEBUG_LL
- 	bool
- 	depends on HAS_DEBUG_LL
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 40c7b2cb5d65..8e1d8086fbb6 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -213,18 +213,6 @@ config BLOBGEN
- 	select BASE64
- 	bool "include blob encode/decode support"
- 
--config ARCH_HAS_STACK_DUMP
--	bool
--
--config ARCH_HAS_DATA_ABORT_MASK
--	bool
--
--config ARCH_HAS_ZERO_PAGE
--	bool
--
--config HAVE_EFFICIENT_UNALIGNED_ACCESS
--	bool
--
- config GENERIC_ALLOCATOR
- 	bool
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index cea8e25b81f0..b453890f022b 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -28,6 +28,7 @@ menu "ARCH specific settings"
+ config 64BIT
+ 	def_bool y if X86_EFI
+ 	select ARCH_DMA_ADDR_T_64BIT
++	select PHYS_ADDR_T_64BIT
  	help
-diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
-index c04ff3cbb6fd..063563536be1 100644
---- a/lib/Kconfig.ubsan
-+++ b/lib/Kconfig.ubsan
-@@ -1,6 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
--config ARCH_HAS_UBSAN_SANITIZE_ALL
--	bool
+ 	  Say yes to build a 64-bit binary - formerly known as x86_64
+ 	  Say no to build a 32-bit binary - formerly known as i386.
+diff --git a/arch/x86/include/asm/types.h b/arch/x86/include/asm/types.h
+index 52a6e51fd4b1..feb5843b9c92 100644
+--- a/arch/x86/include/asm/types.h
++++ b/arch/x86/include/asm/types.h
+@@ -14,12 +14,6 @@
+  */
+ #define INTERNAL_SIZE_T unsigned long
  
- config UBSAN
- 	bool "Undefined behaviour sanity checker"
-diff --git a/lib/kasan/Kconfig b/lib/kasan/Kconfig
-index 895a62d88439..532412953ba5 100644
---- a/lib/kasan/Kconfig
-+++ b/lib/kasan/Kconfig
-@@ -1,8 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
--config HAVE_ARCH_KASAN
--	bool
+-/*
+- * This is a Kconfig variable in the Kernel, but we want to detect
+- * this during compile time, so we set it here.
+- */
+-#define CONFIG_PHYS_ADDR_T_64BIT
 -
- config CC_HAS_KASAN_GENERIC
- 	def_bool $(cc-option, -fsanitize=kernel-address)
+ #endif
  
+ #endif
 -- 
 2.39.5
 
