@@ -1,16 +1,16 @@
-Delivery-date: Thu, 13 Mar 2025 08:52:32 +0100
+Delivery-date: Thu, 13 Mar 2025 08:52:33 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsdMn-00DTil-17
+	id 1tsdMn-00DTiy-1a
 	for lore@lore.pengutronix.de;
 	Thu, 13 Mar 2025 08:52:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsdMl-00016c-5I
+	id 1tsdMl-000179-FO
 	for lore@pengutronix.de; Thu, 13 Mar 2025 08:52:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gv8rK9WLA+0ffpluBcFjM87TogooozGx6pR/kOSbkm8=; b=AkJPEvRdqiipn5WhJJiwoaRPi2
-	mZpfVDXYP79kAnISH39Ldxd95kv0Nr7qE/O71127Bwbrl2lpGk7DvnGOW/lmZN5y/fwRfbA4nNWSH
-	B3Ock0DGMUxOQv+F0IGkms7tLj7FrOKRQ1GEQiP8dCQjvVKb2+UtgV/e+Z6cDDFuRdtV/lLWjXq8Q
-	CVZFVVxIadjiRRThFwzUuNY0qlaQTyc6d2BIYPHAq8+dvsWhYO0brxLhL3pUiJVcf5qWfNitXvstU
-	AbKUHLKxomY7yn2EhK7/MGVILZyh92eYE3REjD/+fnQYw3z/QHoeH24xjkqzUbO+JMu1fJi2OQyDg
-	4+Tk2f6w==;
+	bh=rbMSU4UVu4d7LqLI+WqIR2PWliPaPeX9LWgumnaVlnI=; b=gaiP5fPSiZRGYk0WMPMl2M/hEK
+	GhsdqccJCn8laraMwBhsweBTducmkaMD7dgIm3kdgeboPsTXcYIQti6s+T+m+g8SKrXv0Df/iDBWJ
+	0vdlVyb9z/0vERXEwfF/0eoIXi/OkC9HjWw5f36+9ijfpH+Rz1XhgCvJdGtZwH+AeacE5+k5qQx4B
+	pKgnFV54kX1cqIdBX5FaHowOTTY97D98ohWwbwZGwvp9gmwPON9uo/MTC6nKudbpjBJvBp7FilWfM
+	7D9f/17FJJNHcPypj+8rgZ0Csxb/nvEtUsJbCik/vvcSp02eSKdFUHg/rhfCdfxpkOIx+/PcC3ofH
+	Xa7G65qg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsdMH-0000000ARdL-1bID;
-	Thu, 13 Mar 2025 07:52:01 +0000
+	id 1tsdMI-0000000AReA-0BXE;
+	Thu, 13 Mar 2025 07:52:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsd6h-0000000AOlz-0X6O
+	id 1tsd6h-0000000AOm2-1MP9
 	for barebox@lists.infradead.org;
 	Thu, 13 Mar 2025 07:35:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsd6f-00060O-Sb; Thu, 13 Mar 2025 08:35:53 +0100
+	id 1tsd6g-00060s-3p; Thu, 13 Mar 2025 08:35:54 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsd6f-005UwQ-26;
+	id 1tsd6f-005Uwc-2t;
 	Thu, 13 Mar 2025 08:35:53 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsd5i-003pwb-2G;
+	id 1tsd5i-003pwb-2Q;
 	Thu, 13 Mar 2025 08:34:54 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 13 Mar 2025 08:34:40 +0100
-Message-Id: <20250313073445.764875-18-a.fatoum@pengutronix.de>
+Date: Thu, 13 Mar 2025 08:34:41 +0100
+Message-Id: <20250313073445.764875-19-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313073445.764875-1-a.fatoum@pengutronix.de>
 References: <20250313073445.764875-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250313_003555_175657_15A60A8F 
-X-CRM114-Status: GOOD (  10.72  )
+X-CRM114-CacheID: sfid-20250313_003555_366909_F446DDC2 
+X-CRM114-Status: GOOD (  11.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,35 +83,49 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 17/22] ubi: workaround zero division on malformed input in ubi_assert
+Subject: [PATCH 18/22] video: Rockchip: fix zero division in rk3588_calc_cru_cfg
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A zero hdrs_min_io_size is a bug and will trigger a ubi_assert.
-These are critical events, but don't panic the system.
+This was detected by clang-analyzer and I don't understand how that
+function could have ever worked, because it's running into the zero
+division in the "successful" code path.
 
-The last ubi_assert will trigger a division by zero. Add a zero check
-into it, so it doesn't overlap with the first assert.
+Peeking at rk3568_set_intf_mux, the CRTC clock is passed by the caller
+in barebox, so let's do the same for rk3588_calc_cru_cfg.
 
+Fixes: c8c0833beb77 ("video: Rockchip: Add VOP2 driver")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mtd/ubi/build.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/rockchip/rockchip_drm_vop2.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 94b4231aadc4..8bb1f0cbb901 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -320,7 +320,8 @@ static int io_init(struct ubi_device *ubi, int max_beb_per1024)
+diff --git a/drivers/video/rockchip/rockchip_drm_vop2.c b/drivers/video/rockchip/rockchip_drm_vop2.c
+index 3a1c951ec7e4..f15ef1b57bf5 100644
+--- a/drivers/video/rockchip/rockchip_drm_vop2.c
++++ b/drivers/video/rockchip/rockchip_drm_vop2.c
+@@ -743,10 +743,10 @@ static unsigned long rk3588_calc_dclk(unsigned long child_clk, unsigned long max
+  */
+ static unsigned long rk3588_calc_cru_cfg(struct vop2_video_port *vp, int id,
+ 					 int *dclk_core_div, int *dclk_out_div,
+-					 int *if_pixclk_div, int *if_dclk_div)
++					 int *if_pixclk_div, int *if_dclk_div,
++					 u32 crtc_clock)
+ {
+ 	struct vop2 *vop2 = vp->vop2;
+-	u32 crtc_clock = 0;
+ 	unsigned long v_pixclk = crtc_clock * 1000LL; /* video timing pixclk */
+ 	unsigned long dclk_core_rate = v_pixclk >> 2;
+ 	unsigned long dclk_rate = v_pixclk;
+@@ -856,7 +856,7 @@ static unsigned long rk3588_set_intf_mux(struct vop2_video_port *vp, int id, u32
+ 	u32 die, dip, div, vp_clk_div, val;
  
- 	ubi_assert(ubi->hdrs_min_io_size > 0);
- 	ubi_assert(ubi->hdrs_min_io_size <= ubi->min_io_size);
--	ubi_assert(ubi->min_io_size % ubi->hdrs_min_io_size == 0);
-+	ubi_assert(ubi->hdrs_min_io_size &&
-+		   ubi->min_io_size % ubi->hdrs_min_io_size == 0);
+ 	clock = rk3588_calc_cru_cfg(vp, id, &dclk_core_div, &dclk_out_div,
+-				    &if_pixclk_div, &if_dclk_div);
++				    &if_pixclk_div, &if_dclk_div, clock);
+ 	if (!clock)
+ 		return 0;
  
- 	ubi->max_write_size = ubi->mtd->writebufsize;
- 	/*
 -- 
 2.39.5
 
