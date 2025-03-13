@@ -3,63 +3,65 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsgru-00DY8i-02
+	id 1tsgru-00DY8t-0g
 	for lore@lore.pengutronix.de;
 	Thu, 13 Mar 2025 12:36:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tsgrs-0003eF-RG
+	id 1tsgrt-0003eH-1S
 	for lore@pengutronix.de; Thu, 13 Mar 2025 12:36:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=y4gGUSa/gDJlKbdid7sA19Yp6j697uxFrdGIdZV6hyg=; b=VF22nRb0jlcvGZ6OsKQKVdQDyE
-	up0GZKdHPDLrdRxXDrJSdOFiWxjwNcZ5Y4V8p8htIqjUsEGqUdlnt9caBdEOR6B2KH+QRWumFNPIx
-	gK+punQZ0ZsVQ/dJ6aL4IlX8WWCynRuZRSgoNTbi4IoKKmzfU5jf5z5lU2ZfJ56MTH46odzmng5XK
-	nQQjjKJabMNNDJMQrx9VLPj05ryOEsyahC+8weA97yzLbhZsE1IM9zC166Va3+Zwi1ZviPU3HqEfx
-	QPrBx1mGKaFyBnKVY9tNkSUpa6qduNAkYROIWIg1dmdZa9HNYDJOKjmH5Bv6+Bku/GWjWkpG5H2Wl
-	/Zzb8KZA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=v9KOs8gjYkuuiYMfwGT71MszodLWjSVrkM+q6EJ1cy4=; b=JKLa3cyopqh6bhfL8gwvg5YltY
+	sIX5JNPPPyRbVLitQftgyKJ60HhfLyEg/SPpzWtphQX1+BLDyCMMtx0ytWwqLdgoqEAr2CllxHkPi
+	V1Sq8U619JOa3Qhyw/HZAjDsmgyEQxKoXn9ap1pKjdyFGkdSyGFrMQEZ0EZksE9MQCvhU9uHGq+oB
+	wiJM5y9d1q247JocKxHOAjqVcGDXmWp0e+bpi/IKr+W/24SvqHdC1wuWZ0SgLSzyMI4l9x8+9CI4N
+	ZxtBoldVkeRCCG7X7DggDVkRYzyYJUz0GtKJXPJ8tTB0Pd7D5u0mVbdQllyBXwiM3NQbtpKxrff/A
+	i0stwDJw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsgrF-0000000B3sE-1axy;
+	id 1tsgrF-0000000B3sK-3Xvh;
 	Thu, 13 Mar 2025 11:36:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tsgrC-0000000B3rV-1Xim
+	id 1tsgrC-0000000B3rX-1Xmy
 	for barebox@lists.infradead.org;
 	Thu, 13 Mar 2025 11:36:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsgr7-0003Rj-Tq; Thu, 13 Mar 2025 12:36:05 +0100
+	id 1tsgr8-0003Rk-0o; Thu, 13 Mar 2025 12:36:06 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsgr7-005Wkk-2M;
+	id 1tsgr7-005Wkn-2i;
 	Thu, 13 Mar 2025 12:36:05 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tsgr7-003qbL-20;
+	id 1tsgr7-003qbL-2M;
 	Thu, 13 Mar 2025 12:36:05 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 13 Mar 2025 12:36:03 +0100
-Message-Id: <20250313113604.915474-1-a.fatoum@pengutronix.de>
+Date: Thu, 13 Mar 2025 12:36:04 +0100
+Message-Id: <20250313113604.915474-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250313113604.915474-1-a.fatoum@pengutronix.de>
+References: <20250313113604.915474-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250313_043610_404489_0E414F45 
-X-CRM114-Status: UNSURE (   8.37  )
+X-CRM114-CacheID: sfid-20250313_043610_406936_331B289F 
+X-CRM114-Status: UNSURE (   9.08  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,58 +84,57 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] MAKEALL: support direct options for KCONFIG_ADD
+Subject: [PATCH 2/2] MAKEALL: parse kconfig_add out of YAML files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-KCONFIG_ADD currently expects a list of files to be merged.
-As MAKEALL is a bash script, let's make use of process substitution
-to create temporary files out of -k CONFIG_foo=bar options.
+Now that MAKEALL supports direct options in KCONFIG_ADD, teach it to
+read runner kconfig_add keys out of the labgrid environment YAML files.
+
+This is a further step towards removal of test/emulate.pl.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- MAKEALL | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ MAKEALL            | 13 +++++++++++++
+ test/Containerfile |  1 +
+ 2 files changed, 14 insertions(+)
 
 diff --git a/MAKEALL b/MAKEALL
-index 1966eedb4673..b0967b8ae340 100755
+index b0967b8ae340..636621d9faec 100755
 --- a/MAKEALL
 +++ b/MAKEALL
-@@ -56,7 +56,7 @@ usage() {
- 	echo "BUILDDIR    -O      build dir"
- 	echo "LOGDIR      -l      log dir"
- 	echo "REGEX       -e      regex"
--	echo "KCONFIG_ADD -k      kconfig fragment"
-+	echo "KCONFIG_ADD -k      kconfig fragment or option"
- 	echo "TARGET      -t      Makefile target"
- 	echo "V           -v      verbosity"
- 	echo "INCREMENTAL -i"
-@@ -116,6 +116,11 @@ report() {
- 	fi
- }
- 
-+merge_config() {
-+	with_logs_collected ./scripts/kconfig/merge_config.sh -m -O \
-+		${BUILDDIR} "$@"
-+}
+@@ -422,6 +422,19 @@ else
+ 		if [[ $i =~ ^.*/([^/]+)/([^@]*@|)([^.]+).yaml$ ]]; then
+ 			arch=${BASH_REMATCH[1]}
+ 			defconfig=${BASH_REMATCH[3]}
 +
- do_build_defconfig() {
- 	local arch=$1
- 	local defconfig=$2
-@@ -156,8 +161,11 @@ do_build_defconfig() {
- 	MAKE="${MAKE} $silent_flag CROSS_COMPILE=${cross_compile}"
- 	with_logs_collected ${MAKE} ${defconfig}
- 	for i in ${KCONFIG_ADD}; do
--		with_logs_collected ./scripts/kconfig/merge_config.sh -m -O \
--			${BUILDDIR} ${BUILDDIR}/.config $i
-+		if [[ $i =~ ^CONFIG_* ]]; then
-+			merge_config ${BUILDDIR}/.config <(echo $i)
-+		else
-+			merge_config ${BUILDDIR}/.config $i
-+		fi
- 	done
- 	with_logs_collected ${MAKE} $silent_flag olddefconfig
++			if grep -q "^\s\+kconfig_add:" $i; then
++				if command -v yq 2>&1 >/dev/null; then
++					KCONFIG_ADD="${KCONFIG_ADD} $(yq -M -r \
++					'.targets.main.runner.kconfig_add |
++					keys[] as $k | .[$k]' < $i)"
++				else
++					echo "WARNING: yq command not found in path" >&2
++					echo "WARNING: ignoring kconfig_add in $i" >&2
++					echo
++				fi
++			fi
++
+ 			do_build_defconfig $arch $defconfig
+ 			if [ $? -eq 0 ]; then
+ 				do_test_defconfig $config $defconfig "${pytest_opts[@]}"
+diff --git a/test/Containerfile b/test/Containerfile
+index db43d039b922..53a5443e48fe 100644
+--- a/test/Containerfile
++++ b/test/Containerfile
+@@ -51,6 +51,7 @@ RUN apt-get update && apt-get install -y \
+ 	sudo \
+ 	u-boot-tools \
+ 	yamllint \
++	yq \
+ 	&& rm -rf /var/lib/apt/lists/*
  
+ ENV GCC_VERSION=14.2.0
 -- 
 2.39.5
 
