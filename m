@@ -1,65 +1,67 @@
-Delivery-date: Thu, 13 Mar 2025 10:22:03 +0100
+Delivery-date: Thu, 13 Mar 2025 10:56:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tselP-00DVda-2m
+	id 1tsfJA-00DW87-1F
 	for lore@lore.pengutronix.de;
-	Thu, 13 Mar 2025 10:22:03 +0100
+	Thu, 13 Mar 2025 10:56:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tselO-0007Br-L2
-	for lore@pengutronix.de; Thu, 13 Mar 2025 10:22:03 +0100
+	id 1tsfJ9-0003LH-7B
+	for lore@pengutronix.de; Thu, 13 Mar 2025 10:56:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mTIAATftNF7+MioTXBhCZGLAX93NRdIqi0tXs+hvHm8=; b=eDpa4DKb3wv424j/ww8ZWTzptf
-	EiMEmnkKn3GbyIRYr1hgHC5pS339rBbZopgrAqLs5AlPdPqho23f5gNBoUkTMmB4Uc2tiN0yanrZD
-	ngW7WvCQw2kqqMYn/x/to5gYFengfQZDpZX76HMeRX0ZkxJCvTddESrvpeuxXdaKAf+2rbez8Q13G
-	B9mbHAAiDuSurXjGafMG1sVeZEjzcEnwh3S4BCiVdZd5Gsj3eqVse8P6CUu1Ey3E+u8NYLV5a3Muk
-	fiVAYvqDPsWUqmZO3Ay8OrTmorCWoQajrOrD8f9R/CwbT2NXAHc82VQhCozMjp3Xl7Ve9vvKU0ewp
-	VUt4lQ2A==;
+	bh=GZoNdxe2ZJcaHmAK1RmEJUDF6Aq1Lu7C7QOlaZ2Y8Kc=; b=bu+C9D3Srw16mz0UZOQKbu6gh4
+	+lumNVmhTAIv8S7R/4k58LrYfz/WsHMZRKnW77X9wtMouCI4giQxRCaqExHGJaFUyIMaIK7mPpWwd
+	Gugt5HTe3fuXdLEB40drFxFEUOfYObLOfzskGnEmQV5JHzc+kBK+ancd74jadCbnyQHFr1WA1gpD2
+	pn706Gy6KdVKrSKYEQzeCleyF9rPPtU5jNlt6QKXBW0vH7kc7iD4ePBjQSIrny1GYlvTrPYpBfjSY
+	zw0dx3XsDROeZo1bnXJNZOim1b9lfh1DHstHgFlddp1dKpyX4DRJZ36jYvwP2N20Wmu9wlA+bloXz
+	nHI3sCmg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tseku-0000000AiQ6-3qdp;
-	Thu, 13 Mar 2025 09:21:32 +0000
+	id 1tsfIT-0000000Amjk-2CJV;
+	Thu, 13 Mar 2025 09:56:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tseks-0000000AiOn-0kg2
+	id 1tsfH6-0000000AmfW-3bSr
 	for barebox@lists.infradead.org;
-	Thu, 13 Mar 2025 09:21:31 +0000
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1tsekp-00070K-Kh; Thu, 13 Mar 2025 10:21:27 +0100
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Thu, 13 Mar 2025 10:21:19 +0100
+	Thu, 13 Mar 2025 09:54:50 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tsfH4-000329-Ui; Thu, 13 Mar 2025 10:54:46 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tsfH4-005Vsk-2S;
+	Thu, 13 Mar 2025 10:54:46 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tsfH4-00BoSA-27;
+	Thu, 13 Mar 2025 10:54:46 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 13 Mar 2025 10:54:42 +0100
+Message-Id: <20250313095442.2812937-2-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250313095442.2812937-1-s.hauer@pengutronix.de>
+References: <20250313095442.2812937-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-pca9450-wdog-v2-2-28e97e7da480@pengutronix.de>
-References: <20250313-pca9450-wdog-v2-0-28e97e7da480@pengutronix.de>
-In-Reply-To: <20250313-pca9450-wdog-v2-0-28e97e7da480@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2372; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=mv4oxdceHn2YXp/pcLZOndhoZu8KKkHS0aIOBHb1/JE=;
- b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYki/tHg66zFrf4fQxOtBVZue/ennfvDrV1y2c+IbxyJ/0
- 259240rO0pZGMQ4GGTFFFli1eQUhIz9r5tV2sXCzGFlAhnCwMUpABPZk8XIsDnhmcXto8fZt+dd
- Y43jlz90b/G8uJTUMHvlYz0cLA92CzP8FVaZ114W03lP6Pk0+7sbd9lumO2nvnfznNobNbMeWT5
- ZywYA
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250313_022130_219284_A6960706 
-X-CRM114-Status: GOOD (  10.42  )
+X-CRM114-CacheID: sfid-20250313_025448_966243_5A0E08EA 
+X-CRM114-Status: UNSURE (   9.51  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,78 +79,67 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/2] ARM: boards: remove obsolete PCA9450_RESET_CTRL
- setup
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 2/2] ARM: multi_v8_defconfig: enable k3 drivers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Since a previous commit, PCA9450_RESET_CTRL is initialized to 0xA1 in
-pca9450_probe; explicitly setting this in board.c has no effect anymore.
+The K3 architecture is enabled in multi_v8_defconfig. Enable the K3
+specific drivers to make it more usable.
 
-Remove the setup of this register from the
-pca9450_register_init_callback of the two imx93 boards we currently
-have.
-
-Configuration of this register in power_init_board() in lowlevel.c of
-the imx8 boards remains untouched for now. This is because there, the
-register is configured even if the pca9450 driver is not enabled.
-Furthermore, the power_init_board() functions initialize a larger array
-of pmic registers which I haven't compared against other pmic and
--driver defaults.
-
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/phytec-phycore-imx93/board.c | 9 ---------
- arch/arm/boards/tqma93xx/board.c             | 3 ---
- 2 files changed, 12 deletions(-)
+ arch/arm/configs/multi_v8_defconfig | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/phytec-phycore-imx93/board.c b/arch/arm/boards/phytec-phycore-imx93/board.c
-index 149248ca654624826d0e8f6fe0f1f42c2747e248..03ba8cb5026d2a9eaa054fcfc69e18872fcd658e 100644
---- a/arch/arm/boards/phytec-phycore-imx93/board.c
-+++ b/arch/arm/boards/phytec-phycore-imx93/board.c
-@@ -6,23 +6,14 @@
- #include <init.h>
- #include <linux/kernel.h>
- #include <environment.h>
--#include <mfd/pca9450.h>
- #include <deep-probe.h>
- #include <mach/imx/bbu.h>
- #include <linux/pinctrl/consumer.h>
- 
--static void phycore_imx93_init_pmic(struct regmap *map)
--{
--	/* set WDOG_B_CFG to cold reset */
--	regmap_write(map, PCA9450_RESET_CTRL, 0xA1);
--}
--
- static int phycore_imx93_probe(struct device *dev)
- {
- 	struct device_node *np;
- 
--	pca9450_register_init_callback(phycore_imx93_init_pmic);
--
- 	/*
- 	 * The phy on the EQOS has its MDIO lines connected to the FEC. The phy
- 	 * registers can only be successfully read when the EQOS pinctrl setup
-diff --git a/arch/arm/boards/tqma93xx/board.c b/arch/arm/boards/tqma93xx/board.c
-index b181784079cf12e5a112d13f95c87c2cf5ebeba6..b4de6c2f6c347cb255537a3784a667a9c2607de3 100644
---- a/arch/arm/boards/tqma93xx/board.c
-+++ b/arch/arm/boards/tqma93xx/board.c
-@@ -27,9 +27,6 @@ static void tqma93xx_init_pmic(struct regmap *map)
- 
- 	/* I2C_LT_EN*/
- 	regmap_write(map, 0xa, 0x3);
--
--	/* set WDOG_B_CFG to cold reset */
--	regmap_write(map, PCA9450_RESET_CTRL, 0xA1);
- }
- 
- static int tqma93xx_probe(struct device *dev)
-
+diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
+index b1e66e85f4..78964990a9 100644
+--- a/arch/arm/configs/multi_v8_defconfig
++++ b/arch/arm/configs/multi_v8_defconfig
+@@ -155,6 +155,7 @@ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_CADENCE=y
+ CONFIG_DRIVER_SERIAL_LPUART32=y
+ CONFIG_VIRTIO_CONSOLE=y
++CONFIG_DRIVER_NET_TI_K3_AM65_CPSW_NUSS=y
+ CONFIG_DRIVER_NET_DESIGNWARE_IMX8=y
+ CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+@@ -180,6 +181,7 @@ CONFIG_DRIVER_SPI_IMX=y
+ CONFIG_SPI_NXP_FLEXSPI=y
+ CONFIG_I2C_GPIO=y
+ CONFIG_I2C_IMX=y
++CONFIG_I2C_OMAP=y
+ CONFIG_I2C_RK3X=y
+ CONFIG_I2C_MUX=y
+ CONFIG_I2C_MUX_PCA954x=y
+@@ -207,10 +209,11 @@ CONFIG_SOUND=y
+ CONFIG_MCI=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+ CONFIG_MCI_DW=y
+-CONFIG_MCI_ROCKCHIP_DWCMSHC=y
+ CONFIG_MCI_SUNXI_SMHC=y
++CONFIG_MCI_ROCKCHIP_DWCMSHC=y
+ CONFIG_MCI_IMX_ESDHC=y
+ CONFIG_MCI_ARASAN=y
++CONFIG_MCI_AM654=y
+ CONFIG_COMMON_CLK_SCMI=y
+ CONFIG_MFD_ACT8846=y
+ CONFIG_RAVE_SP_CORE=y
+@@ -230,8 +233,11 @@ CONFIG_WATCHDOG_DW=y
+ CONFIG_WATCHDOG_IMX=y
+ CONFIG_WATCHDOG_IMXULP=y
+ CONFIG_RAVE_SP_WATCHDOG=y
++CONFIG_K3_RTI_WDT=y
+ CONFIG_HWRNG=y
+ CONFIG_HW_RANDOM_VIRTIO=y
++CONFIG_DMADEVICES=y
++CONFIG_TI_K3_UDMA=y
+ CONFIG_GPIO_PCA953X=y
+ CONFIG_GPIO_ZYNQ=y
+ CONFIG_PINCTRL_SINGLE=y
 -- 
 2.39.5
 
