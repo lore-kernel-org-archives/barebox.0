@@ -1,64 +1,63 @@
-Delivery-date: Fri, 14 Mar 2025 16:17:24 +0100
+Delivery-date: Fri, 14 Mar 2025 16:26:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tt6mr-00E3TP-0Q
+	id 1tt6vj-00E3cb-1Z
 	for lore@lore.pengutronix.de;
-	Fri, 14 Mar 2025 16:17:24 +0100
+	Fri, 14 Mar 2025 16:26:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tt6mp-0003cm-V6
-	for lore@pengutronix.de; Fri, 14 Mar 2025 16:17:24 +0100
+	id 1tt6vi-0005C8-7Q
+	for lore@pengutronix.de; Fri, 14 Mar 2025 16:26:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=VbUDxiuG54bFxPFHg8riN9wz+DQKRm6e748gIlcwZEc=; b=yCIntukybZTKDrt55AvR0N4ro/
-	F/n9JRTT+TsMn6SH2h60rDcOSarQpGcLlKLQh4vFXabL7x9VVtfaM8nKSWFdide45nodHJrHIBS9k
-	1iWD6JB62SVDkrhAP86vcE49za74yoBpeJdBD+aABI8ncAoOsgZbWimQe2EoKNOZ4hSeMGO/Wizvv
-	4W6z9xsZnLn61NmH2KYIeSCg3MLQGFM+ceIIJA3KMSDxTeLXBLJUb59CPxTLbi8M24kkET8zhxnmc
-	bpAJja0V+DXurb4SdcYUKmtlKdhFGmoTV0ivINGOcTbg3PGUeyEpKTvhWxHPOp96GcpBWNWMKFJul
-	OdiOHM/g==;
+	bh=xSonBl/rteaQ+Hk0rWdTmHfikT9c9t6Hmd5iCxr4wKM=; b=x7eiXzaUAI+6kC0b+Mt763xcVn
+	wQY7v3OPlbp5S+/096es9wu3BgK1T10FosBAEmgEFjPSHpArIT5xqPHCFXvWvW0Gk5/c4Vvvcf2Xx
+	m1L0AW2ruk44Q0m3kamz957rxGwHPc6Xe3m9+N2cAfskaXhQjcBKNY05wR5avCOvg9qjiR5xCCkN7
+	mjavVzwVXv0C/PXYt3frv0IgFC7TgmDjHTDCGbouOoVDp+v13V4WD2eRo0PpO5MsV+XlHkxNm4VT4
+	MJ48xXlYHi6+DbVY3vekVU2eGVTLRItOLGSjtXOeFDAn9LCnsDyEZDbFRQox5SYJxy8dCR/3DIty5
+	tv5Qw2uQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tt6mQ-0000000EWsH-0XBu;
-	Fri, 14 Mar 2025 15:16:58 +0000
+	id 1tt6vG-0000000EYai-2uVA;
+	Fri, 14 Mar 2025 15:26:06 +0000
 Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tt6kK-0000000EWQz-3w6A
+	id 1tt6ty-0000000EYMv-2MDG
 	for barebox@lists.infradead.org;
-	Fri, 14 Mar 2025 15:14:50 +0000
+	Fri, 14 Mar 2025 15:24:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
-	t=1741965287;
+	t=1741965884;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=VbUDxiuG54bFxPFHg8riN9wz+DQKRm6e748gIlcwZEc=;
-	b=nsqWGrM6rls5OyWa+6nXIj65qt+YU1ZxWW4u3E2HZc6kGG4OdbOEXfn/pQxxzJRnr0kXmo
-	f55PlbtYJZ3WGpCHY2iMOrvUbQTidV9bdnzRpt137JCFr/vlmgLVMjlS5FjQMm/6iZnQdW
-	XNQf+FKaVjRGsxmL4MVs2lISsxBYvpUc3lDzpXmgAMhAn316lTM165wWGCSHYJIRrFclHh
-	fD+71Z83mGKAmhMC9bPZATkGbC0DzLx9cqRGRfNU1BIfmQk9e2Nl3I7myxSz6hnOhwP2CU
-	Z/10t8CsE8qBGgWkozRoMDP55Y7Dunc7JTAezKuFp7PavZEGNmo9AV85PMCgyw==
+	bh=xSonBl/rteaQ+Hk0rWdTmHfikT9c9t6Hmd5iCxr4wKM=;
+	b=Xaa61x90tOTqdhf1aaZ0gZ1I8sVuSbuDnqT/irNBV7ZSp22/v1E0CRRF3v1cj0dIHGkIci
+	C7U4v3hQBUJDadBkKZg4jjnGRBQ5zS1r5tCm3mbn6HrewOr7hd8doOJstluHLRgmks+aZu
+	9EDuF5rOZ5warPTbXpuVlSdIum9RzN1JyVjG91jusL+XFR7kW6BWdTJ1JrYBy/0uEd6mjt
+	5DvBii2ouMYR0/VWzHZzfdWmnQBLnMC2RFfNNE7zqdccxHmI+1yKhLrGDefafas722RFWI
+	Mwbi90OgbbkakKaf2BQBOPeYn2bxDkM8sQdxEiiWt+fXLouz2jHd11ns3IRz6g==
 Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:4866:44ad:6a94:b4e])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id 938c90af (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 14 Mar 2025 16:14:47 +0100 (CET)
+	by zdiv.net (OpenSMTPD) with ESMTPSA id 5cb1da1d (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Fri, 14 Mar 2025 16:24:44 +0100 (CET)
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Fri, 14 Mar 2025 16:14:40 +0100
-Message-ID: <20250314151441.23223-1-jmaselbas@zdiv.net>
+Date: Fri, 14 Mar 2025 16:24:37 +0100
+Message-ID: <20250314152437.25675-1-jmaselbas@zdiv.net>
 X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250314_081449_274402_5327AD1D 
-X-CRM114-Status: UNSURE (   6.44  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250314_082446_884687_78C9C7D3 
+X-CRM114-Status: GOOD (  11.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,34 +79,35 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] sandbox: sdl: fix compilation on musl-libc
+Subject: [PATCH] regulator: fan53555: suppress warning about uninitialized variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-fails to compile with "unknown type name 'loff_t'; did you mean 'off_t'"
-error, add missing include and also define _GNU_SOURCE
+In function 'fan53555_device_setup', a call to 'regmap_update_bits' is
+made with the mode_mask variable potentially uninitialized.
+
+This can be the case if di->vendor is FAN53526_VENDOR_FAIRCHILD and
+di->sleep_vsel_id is not handled by the case (neither FAN53555_VSEL_ID_0 nor FAN53555_VSEL_ID_1).
+I am not sure how likely it is to happen.
 
 Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 ---
- arch/sandbox/os/sdl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/regulator/fan53555.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/os/sdl.c b/arch/sandbox/os/sdl.c
-index 87c8265ea9..0c31b6ce87 100644
---- a/arch/sandbox/os/sdl.c
-+++ b/arch/sandbox/os/sdl.c
-@@ -3,8 +3,11 @@
-  * Copyright (c) 2021 Ahmad Fatoum
-  */
+diff --git a/drivers/regulator/fan53555.c b/drivers/regulator/fan53555.c
+index 2df0d2410a..2dcc6f5394 100644
+--- a/drivers/regulator/fan53555.c
++++ b/drivers/regulator/fan53555.c
+@@ -238,7 +238,7 @@ static const struct regulator_ops fan53555_regulator_ops = {
  
-+#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdbool.h>
-+#include <stdint.h>
-+#include <fcntl.h>
- #include <SDL.h>
- #include <mach/linux.h>
+ static int fan53555_device_setup(struct fan53555_device_info *di)
+ {
+-	unsigned int mode_reg, mode_mask;
++	unsigned int mode_reg, mode_mask = 0;
+ 	int ret = 0;
  
+ 	/* Setup voltage control register */
 -- 
 2.48.1
 
