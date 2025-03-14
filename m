@@ -1,63 +1,66 @@
-Delivery-date: Fri, 14 Mar 2025 12:02:52 +0100
+Delivery-date: Fri, 14 Mar 2025 12:04:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tt2oX-00DyMy-12
+	id 1tt2q3-00DyOT-0A
 	for lore@lore.pengutronix.de;
-	Fri, 14 Mar 2025 12:02:52 +0100
+	Fri, 14 Mar 2025 12:04:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tt2oW-0002PA-2w
-	for lore@pengutronix.de; Fri, 14 Mar 2025 12:02:52 +0100
+	id 1tt2q1-00031t-Sv
+	for lore@pengutronix.de; Fri, 14 Mar 2025 12:04:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Unpfe8pIlORI0vbXcHer8iMHx+7VAbmOvhjWtXkjM80=; b=vql5H5ytEi1jsc1iOhvZvtuDk9
-	CrfeEQphtPvBIJYRqTp+O9DpaQUDLI4kdIgxbV9KBx+W0eSSlLf+aS8OkStqsPIm7XWNH2MuOXPAb
-	JGXDUtsFHl7t6Xv20LudqQk11U+DgUUeHe0ZIhz4/O3EWwWmuQ0e1cYtTn64ZG9uhBq5i8xXnkUo/
-	ulLXljMYHtJDIflJ+4vOvxx10AyhDusHhArkMgMNCGAjFhmRPrCRiju9eF/wG5ZVIfQvScFvt+kIu
-	ZznZ7z0NKC3DWbjhOc8wEgQUTWrGZCORUuZu+Q2GuXRPwwWrhf/s4WFqongLQSOId5phVVWiCXE27
-	y59N02kA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=lncb/OBDCfemT35ofukLZLLs+6B1iyS6NIxcvo+ougM=; b=3HKa1hTWpAwcbs8mtd0FOQsajm
+	iZRrXEHJruI7cZ8bll3OhaRb4UcnMKGX9cNL3HR298U2UVXfVDGbXSFOxgHTUaCpfzh2F6ioRP2br
+	/feMFMC6U99mQdzaVhSCdlLQHqWK1ePrZlO0RHBh1s2HBw0ym3Jbs/mvichWwVq/wNm2W0Ys+TZ/6
+	tpALBVZACr4tM/VBsoX1aJuJQnT84qG/0zi4UFB6c9QN3RheAenin5WhANyiJjV58fxxiyQbf0POV
+	LDaOOeh+VRFdYPVEIAjGYR+GpSHKGBAfxCJjjdnAaoKf5oytIIDXvz0DShghcK2g+x4pYLe6duaCX
+	unq21oZg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tt2nx-0000000Dvou-3Qcm;
-	Fri, 14 Mar 2025 11:02:17 +0000
+	id 1tt2pb-0000000Dw9w-3ldb;
+	Fri, 14 Mar 2025 11:03:59 +0000
 Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tt2TH-0000000DsoR-3W0S
+	id 1tt2TJ-0000000Dsoy-35gg
 	for barebox@lists.infradead.org;
-	Fri, 14 Mar 2025 10:40:57 +0000
+	Fri, 14 Mar 2025 10:40:59 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
 	t=1741948849;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Unpfe8pIlORI0vbXcHer8iMHx+7VAbmOvhjWtXkjM80=;
-	b=Ya5GnhKmAmBWuVVBWnbz/7ursg/TQRRV/vb93UsKz8qeDD1Bw5MLq/HmjjnG2erlMFkqk1
-	qNRyfp6ZczjCpat1uGgSe/3/Cti267iIdW5GEjmM45PZVFYnnt+s4V9MBrsMyjbFbhfKwu
-	hjKQISoy4F2RA1kHhlhZoHhJOybVkJztGs2xnsGbbahUQb0sUF0OXExgHl+cBUBFlIazK4
-	bB2xRJUd+AOqpt38sx1BXjIwTzP/K9Uc2Oj7+aSaaaIXVdymArwyDK3fQjEiKGMPAu1EtF
-	UlLFIaW0Ex1HpJ14PR5deTDLVBL5PflDmikkjZYN0mc8TxsfypcFH2GPt52ILg==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lncb/OBDCfemT35ofukLZLLs+6B1iyS6NIxcvo+ougM=;
+	b=kiz8bqT1divencGQbHTMmlkecKhmc0hDqThtxONmRGvPlAOx/Kb+YVumYkvwNHW1xcEU3m
+	k8RLwvQNUqVhzHE0iguZ+E56OWCJzPPd6GpZtczieYG3LxdIMmZiIjlFxQhJOih1sBl3Fn
+	pUkkWJ5q2Q7IYO49LSeTUxcwPcSbszbMrZSUMnWFjxv/n88+GnLbKRo7IwuaXGIGqdICnP
+	tfYbqTBgYPgvIXi+jg7z5w50jqPlwgY/Ejs9ygYvPXb18fTSjG/PwWkirc1koKSmllalau
+	HU1wUJKSceDCXQWtwM0Gg7v4vYEpbBmfP0/96Hy+CyS43EkVTw5P4cCDlquNCQ==
 Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:4866:44ad:6a94:b4e])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id 401eec1d (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	by zdiv.net (OpenSMTPD) with ESMTPSA id f9e6c2f8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
 	Fri, 14 Mar 2025 11:40:49 +0100 (CET)
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Fri, 14 Mar 2025 11:40:28 +0100
-Message-ID: <20250314104034.13637-1-jmaselbas@zdiv.net>
+Date: Fri, 14 Mar 2025 11:40:30 +0100
+Message-ID: <20250314104034.13637-3-jmaselbas@zdiv.net>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250314104034.13637-1-jmaselbas@zdiv.net>
+References: <20250314104034.13637-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250314_034056_329049_948100EE 
-X-CRM114-Status: UNSURE (   6.69  )
+X-CRM114-CacheID: sfid-20250314_034058_059708_4B14DF6E 
+X-CRM114-Status: UNSURE (   9.40  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -76,32 +79,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/6] compile test fixes
+Subject: [PATCH 2/6] dma-devices: k3-udma: use snprintf instead of sprintf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Small patches series of fixes discovered with a compile test on sandbox (x86_64)
-The compile test has been against the next branch but all the patches applies on
-commits that are already in the master branch.
+Replace the use of sprintf by snprintf, in this case sprintf could not
+overflow because the size of uc::name is well chosen to be able to fit
+the largest u32 integer.
 
-Jules Maselbas (6):
-  dma-devices: k3-udma: cleanup headers
-  dma-devices: k3-udma: use snprintf instead of sprintf
-  mfd: tps65219: add missing include
-  pmdomain: ti-k3: add missing include
-  pmdomain: ti-k3: remove trailing whitespace
-  regulator: tps65219: add missing include
+Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+---
+ drivers/dma/ti/k3-udma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/dma/ti/k3-udma.c               | 5 ++---
- drivers/mfd/tps65219.c                 | 1 +
- drivers/pmdomain/ti/ti-k3.c            | 9 +++++----
- drivers/regulator/tps65219-regulator.c | 1 +
- 4 files changed, 9 insertions(+), 7 deletions(-)
-
+diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+index 8f46364145..d32ed46b0f 100644
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -2678,7 +2678,7 @@ static int k3_udma_probe(struct device *dev)
+ 		uc->config.mapped_channel_id = -1;
+ 		uc->config.default_flow_id = -1;
+ 		uc->config.dir = DMA_MEM_TO_MEM;
+-		sprintf(uc->name, "UDMA chan%d\n", i);
++		snprintf(uc->name, sizeof(uc->name), "UDMA chan%d\n", i);
+ 		if (!i)
+ 			uc->in_use = true;
+ 	}
 -- 
 2.48.1
 
