@@ -1,68 +1,68 @@
-Delivery-date: Fri, 14 Mar 2025 17:17:19 +0100
+Delivery-date: Fri, 14 Mar 2025 17:18:59 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tt7ip-00E4eC-2b
+	id 1tt7kR-00E4fe-2X
 	for lore@lore.pengutronix.de;
-	Fri, 14 Mar 2025 17:17:19 +0100
+	Fri, 14 Mar 2025 17:18:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tt7io-00062t-LZ
-	for lore@pengutronix.de; Fri, 14 Mar 2025 17:17:19 +0100
+	id 1tt7kQ-0006RS-He
+	for lore@pengutronix.de; Fri, 14 Mar 2025 17:18:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1mptAPtjWRsibCaxqSBx0ixdUGzj0IyqyqaTezFgfUw=; b=Vfv1dCY5ekUAfUVoaetICJzoZ/
-	2lpQK9gKgV5XPiQ0Ao4LREND+Px7qGjkorwEod6Byyu2jY4ol6gNskcDAzgkyDViSnBaPOQCtbNvB
-	9RBJwuS0EceuV6yGdedDX0wGpvTOk3eIT2jdg45v235l7NP4LOd2zka6osXZf7Zr3winpsww9J1bF
-	gGEcEd9LmXWOPjQ9t5GBSq8gtCdLt6lzeH2TXAByVXDrdZ0z5bWBumv40ktJ9pNz05SCedPZ5Mcwe
-	9rWFsvw00oimuqnuaylc4KFMc57bH2c8Wdc5IhONzyHwofxihoz08KAdNqT8z03yvSQn2EYI0SRQ7
-	Rvmhji0g==;
+	bh=oX6/2tCVE9ZZjRfnGR3bzaYk3LVijoIfcXsE52n5rmU=; b=Q1G2pXB3G7NXz48jRz7Z7A9bfW
+	QVBf8wHyrahgzf+9+F6Ojqe3IHo7motDAhV20C504N+8hrhnNyTWc60suLzE7skpB+LPChOwLjqyv
+	n2IUKoQtYYN+JplubWb3ZqB3TEssESotSSM1nNR/pSs0D5ZNBBlgOlrQy0++87MjaD1l0u5ojGdtj
+	aBAgxu4IKYKILVLANWEFTAPoYUT1iLfvwDqdzZvNQU6HJWL3dLxQTYkSmGJPCMcOZOux92om/H772
+	Dt2NmaHqwi41eCrn9Llz4BjxvS/A0+ioc/ro4NaWkZiGjlKXd4cz8BsZfmLE7eA619ArBFZ4xxIsP
+	yaUrrKsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tt7iP-0000000EinP-394l;
-	Fri, 14 Mar 2025 16:16:53 +0000
+	id 1tt7k2-0000000EjHT-250V;
+	Fri, 14 Mar 2025 16:18:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tt7h3-0000000EiKe-2YRU
+	id 1tt7hz-0000000EifI-2LzC
 	for barebox@lists.infradead.org;
-	Fri, 14 Mar 2025 16:15:30 +0000
+	Fri, 14 Mar 2025 16:16:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tt7h2-0005TZ-D2; Fri, 14 Mar 2025 17:15:28 +0100
+	id 1tt7hy-0005iu-Df; Fri, 14 Mar 2025 17:16:26 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tt7h2-005jSK-0D;
-	Fri, 14 Mar 2025 17:15:28 +0100
+	id 1tt7hy-005jSY-0l;
+	Fri, 14 Mar 2025 17:16:26 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tt7h2-00HIXN-01;
-	Fri, 14 Mar 2025 17:15:28 +0100
+	id 1tt7hy-00HIb3-0Y;
+	Fri, 14 Mar 2025 17:16:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- Alexander Shiyan <eagle.alexander923@gmail.com>
-In-Reply-To: <20250307114739.3680956-1-eagle.alexander923@gmail.com>
-References: <20250307114739.3680956-1-eagle.alexander923@gmail.com>
-Message-Id: <174196892800.4122820.6862295502856355866.b4-ty@pengutronix.de>
-Date: Fri, 14 Mar 2025 17:15:28 +0100
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20250314144247.4074473-1-s.hauer@pengutronix.de>
+References: <20250314144247.4074473-1-s.hauer@pengutronix.de>
+Message-Id: <174196898617.4123020.3348261402469330658.b4-ty@pengutronix.de>
+Date: Fri, 14 Mar 2025 17:16:26 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250314_091529_656458_13892B87 
-X-CRM114-Status: UNSURE (   7.28  )
+X-CRM114-CacheID: sfid-20250314_091627_599977_29747B47 
+X-CRM114-Status: UNSURE (   6.09  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,22 +85,21 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: at91: Remove SAMA5D2 handling from sam9_smc
- driver
+Subject: Re: [PATCH] ARM: k3-r5_defconfig: enable eMMC boot partitions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 07 Mar 2025 14:47:39 +0300, Alexander Shiyan wrote:
-> SAMA5D2 SOC does not use sam9_smc driver.
-> Let's remove handling of this SOC from driver code.
+On Fri, 14 Mar 2025 15:42:47 +0100, Sascha Hauer wrote:
+> Support for eMMC boot partition is needed to boot from eMMCs, enable
+> it.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] ARM: at91: Remove SAMA5D2 handling from sam9_smc driver
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6a825b7cfb7a (link may not be stable)
+[1/1] ARM: k3-r5_defconfig: enable eMMC boot partitions
+      https://git.pengutronix.de/cgit/barebox/commit/?id=45b4345cdfc9 (link may not be stable)
 
 Best regards,
 -- 
