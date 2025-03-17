@@ -1,86 +1,64 @@
-Delivery-date: Mon, 17 Mar 2025 10:42:06 +0100
+Delivery-date: Mon, 17 Mar 2025 11:46:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tu6z1-000Yv1-06
+	id 1tu7zV-000a9A-2d
 	for lore@lore.pengutronix.de;
-	Mon, 17 Mar 2025 10:42:06 +0100
+	Mon, 17 Mar 2025 11:46:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tu6yz-0003LI-UD
-	for lore@pengutronix.de; Mon, 17 Mar 2025 10:42:06 +0100
+	id 1tu7zU-0000Fy-JD
+	for lore@pengutronix.de; Mon, 17 Mar 2025 11:46:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
-	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TRz/p3+XxZJQZ0zUzCVF2R0ZE4ReB6G+7BNQkDyzRho=; b=4Yu1u1r8kAtERuly2q7cEellI5
-	uOcyzlB8cgv8AE9GqRkMM+ZSUlFmuI3ccn8tQnTG2Mf//CGryMMAFUHBjrhT5wj4K3NDyYMIzwGUx
-	f2SK7tf67KLHe4Fowad+3dDXxUcuN+hGvp7LUv74muKDq6+Y36+Ke/FzxSIpFMF/otOobtwE+Q1+q
-	HsVRLEuNmYQbZLLC4O1o6u79DuYCRDx/Q9VupapmAnYeDO7RwA4bNbYCwx/Sfoopr4SJrYCVXUVPi
-	2wtzWFADtINe2cgPX2/nZ4fWFD3ME37XhXfKy/WrXMpbuNcVW5yprOXO9BV+3is2lsuxh6knDyo9E
-	egJTzRSw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=uFgNr8WUmrXznTrBwosno6mjb40Ub5Blc0XPLd9H8Zo=; b=IEoeFjJ7JiGOWESiu8o5HH4XE5
+	JNtFitQiaISALB3wnHwPtnj63RJepQSUL34e/X5Sd4+l1/mI+7uqmQZlmn2tegVkeSh5Xatm9Qrqg
+	WcueP4WLhEVLOCwCt/elvsXosJjoAlZETiiT42luDZfh7GtB3nsShVZu1Ve+OMKipGfTT1XOzW62i
+	JsngvJeQ4KisfU7DQ+T3PMDQkxsSqS7zaIxufgfYpJ1Uv026btOT77LAEVF9lyriEOiKWbJvd6set
+	ijwlwczehSpOzEoUGC6OIDRg3SDSk2X2XdJYatdmMOzpHEgHTP+3V/XixTJM1Vfa0hhyo+97KrlRH
+	AdxrOdVg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tu6yY-00000001yZj-0UMW;
-	Mon, 17 Mar 2025 09:41:38 +0000
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+	id 1tu7yu-00000002EVB-1aOC;
+	Mon, 17 Mar 2025 10:46:04 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tu6yV-00000001yYC-23lV
+	id 1tu7tR-00000002D0Q-0cz3
 	for barebox@lists.infradead.org;
-	Mon, 17 Mar 2025 09:41:36 +0000
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-2ff80290debso2750561a91.3
-        for <barebox@lists.infradead.org>; Mon, 17 Mar 2025 02:41:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742204494; x=1742809294; darn=lists.infradead.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TRz/p3+XxZJQZ0zUzCVF2R0ZE4ReB6G+7BNQkDyzRho=;
-        b=IhRF9f+z7Kr1fM4pYY+pTza/r6vevLjVmrcj+dR/z3loqBGk4YzF7ZYuAhz+ZoJGij
-         ciTF/CpHhx4QjZpWLPvTYbd2sgmWflbfVYJqkbcc+vUdFaRz5KWJuv26r1hWHBAANpb7
-         sWigYDD0ut3NEKVZgarJJUnYQxcwDTlLfW/Xw2UaM09VhJRSiP0uQ+BjYd1B5rQ4uEcr
-         QLBozgBgpIO37L+rpfe2FP/YfeMvY/I/+WPIi6TBGWZ4ea9cTfyRZvHQLZBkZI98LHrJ
-         Um8CcBCfyQkiyJctOTpPl6+aI8kHiIZuZWw0mEYWveDrwgI3dBdTT5Jq7Wre8Xj/LIE1
-         bmgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742204494; x=1742809294;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TRz/p3+XxZJQZ0zUzCVF2R0ZE4ReB6G+7BNQkDyzRho=;
-        b=Fg675BQmpIUdUllH7+Sbwd2NYWIdqCUnOeHDO92OUTtY1multdh5u8t3pDD8CNfo1M
-         kJYIELjhYRPBFeE7bYczEnPG4sC7q0115KgwJ3QsECAnt6JkJX2VZD4vnpWlC7qzsNHo
-         NuuQHv6ETJq4O+uVrBfu6eXq3t4qEq8R59q8y2TxPNjzDUFL1fDgHvj+fenfqbh7DSGS
-         LVIujne/4echacvnedJtc/dES1NPRyFA+3/5vsd5o5d9sXmKnkfTfZBV+RLCUDO9hMGt
-         emDj4Vg5lgg/BpSYAf9ap8leHt/m43kxaP9wbOiumicZLehGJ+hum/NEFPq23Hn5uaOO
-         bxWQ==
-X-Gm-Message-State: AOJu0YxMdbqYmVYe6KwaAdWj5NfEHFfcwn//1nSkF4AzrvG/8kD62dJr
-	jFfP4ruNnc6zwPBN1iiYkR365ARiHKzE4VhjPGnkzVL2Yvh3pErzE3zUHeO1anFKjE0TgG3gmV6
-	Xx3qsm9SYoWG4rDIH8EMDBuIsWHPORarh
-X-Gm-Gg: ASbGncusheel38wHlpv6s2idgrpZ5amLjEunfLw24RQozenMPdliCLgt2xRzgl1eTmO
-	xbn2fDPZkMd28pDjH8Fo3gUlHzSEFwedraOQGu972RqNmlaVPBCxu3GE3xSYufVsK1t7STGOjOq
-	6S22yW/NnJleLHUGSodzDs/zJAfA==
-X-Google-Smtp-Source: AGHT+IFIwkoIi4SwEGWa4QFYOnl2Rgmrr6t6cCRFNtduCy0RZ1IWe6ZcH798ltu1vbLkT8N8B1+xUFrQ4MNr3aSZZ3I=
-X-Received: by 2002:a17:90b:1fcd:b0:2ff:58b8:5c46 with SMTP id
- 98e67ed59e1d1-30151c7eb62mr14473472a91.8.1742204494211; Mon, 17 Mar 2025
- 02:41:34 -0700 (PDT)
+	Mon, 17 Mar 2025 10:40:26 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tu7tP-0007F5-TZ; Mon, 17 Mar 2025 11:40:23 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tu7tP-000ELj-0y;
+	Mon, 17 Mar 2025 11:40:23 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tu7tP-004O92-1z;
+	Mon, 17 Mar 2025 11:40:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 17 Mar 2025 11:40:22 +0100
+Message-Id: <20250317104022.1046085-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20250317-mci-misc-cleanup-v1-0-24b4d6f5d31a@pengutronix.de> <20250317-mci-misc-cleanup-v1-1-24b4d6f5d31a@pengutronix.de>
-In-Reply-To: <20250317-mci-misc-cleanup-v1-1-24b4d6f5d31a@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Mon, 17 Mar 2025 12:41:22 +0300
-X-Gm-Features: AQ5f1Jpnb2gzxbgcfQhgriprvsAaA4LfW-XKOGHAdohMODB9FM2hyi9mMz_CN2I
-Message-ID: <CAP1tNvTCxfq7wnfwhmvMhKga67h4YUw4RebJYGxcb4o2Yw2btQ@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250317_024135_530142_B2E4A450 
-X-CRM114-Status: GOOD (  15.08  )
+X-CRM114-CacheID: sfid-20250317_034025_186960_695E559B 
+X-CRM114-Status: GOOD (  12.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,59 +76,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 1/6] mci: use struct cid
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] watchdog: rti_wdt: return 0 even when not ready for ping
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello.
+The rti_wdt is a windowed watchdog which means we are not allowed to
+ping the watchdog outside a certain timing window. When pinging the
+watchdog too early the watchdog will trigger.
 
-> Linux has a struct mmc_cid where the CID data is parsed into whereas
-> in barebox we call the UNSTUFF_BITS macro whenever we need a field
-> from the CID data. Do it like Linux and parse the CID data into the
-> same struct. While at it convert the UNSTUFF_BITS macro into a
-> unstuff_bits static inline function.
-...
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 7ec2643b8d..34ea775813 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -26,19 +26,19 @@
->
->  #define MAX_BUFFER_NUMBER 0xffffffff
->
-> -#define UNSTUFF_BITS(resp,start,size)                                  \
-> -       ({                                                              \
-> -               const int __size = size;                                \
-> -               const u32 __mask = (__size < 32 ? 1 << __size : 0) - 1; \
-> -               const int __off = 3 - ((start) / 32);                   \
-> -               const int __shft = (start) & 31;                        \
-> -               u32 __res;                                              \
-> -                                                                       \
-> -               __res = resp[__off] >> __shft;                          \
-> -               if (__size + __shft > 32)                               \
-> -                       __res |= resp[__off-1] << ((32 - __shft) % 32); \
-> -               __res & __mask;                                         \
-> -       })
-> +static inline u32 unstuff_bits(const u32 *resp, int start, int size)
-> +{
-> +       const int __size = size;
-> +       const u32 __mask = (__size < 32 ? 1 << __size : 0) - 1;
-> +       const int __off = 3 - (start / 32);
-> +       const int __shft = start & 31;
-> +       u32 __res = resp[__off] >> __shft;
-> +
-> +       if (__size + __shft > 32)
-> +               __res |= resp[__off - 1] << ((32 - __shft) % 32);
-> +
-> +       return __res & __mask;
-> +}
+We used to return -EBUSY from the watchdogs ping callback when
+pinging outside the timing window. We may ping the watchdog multiple
+times in boot_entry() which then results in
 
-For board specific code where the eMMC ID is used as a unique identifier,
-it would be useful to have this function in the header.
+Failed to enable watchdog: Device or resource busy
+
+Avoid these messages by returning successfully even when pinged too
+early.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/watchdog/rti_wdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
+index f5ca6683db..ffc4427059 100644
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -56,7 +56,7 @@ static int rti_wdt_ping(struct watchdog *wdt)
+ 	halftime = wdt->timeout_cur / 2 + 1;
+ 
+ 	if (!is_timeout_non_interruptible(wdt->last_ping, halftime * SECOND))
+-		return -EBUSY;
++		return 0;
+ 
+ 	writel(WDKEY_SEQ0, priv->regs + RTIWDKEY);
+ 	writel(WDKEY_SEQ1, priv->regs + RTIWDKEY);
+-- 
+2.39.5
+
 
 
