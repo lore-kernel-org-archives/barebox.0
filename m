@@ -1,66 +1,67 @@
-Delivery-date: Mon, 17 Mar 2025 12:33:30 +0100
+Delivery-date: Mon, 17 Mar 2025 12:33:31 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tu8io-000b0b-2L
+	id 1tu8ip-000b0y-1z
 	for lore@lore.pengutronix.de;
-	Mon, 17 Mar 2025 12:33:30 +0100
+	Mon, 17 Mar 2025 12:33:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tu8in-0003si-II
+	id 1tu8io-0003tc-EW
 	for lore@pengutronix.de; Mon, 17 Mar 2025 12:33:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=N2od3XKcFY33sTIwmirmdj9c6ard1yhWVNeds8RUldY=; b=nqYpt27yAfkdPStN+BH0GuPU9m
-	mXvhVhxYud5kDVWeJyJlvrD/QEf1mugSLF8czcMbkI90LQOEwek58l9Byfp0e+bE39j0KqT471Iir
-	r4AHw3JcGVGYnMuwRGhU0R8BU1nDl3H8AT+ZIX53458wc5JzTV21ALuYBgDpW6tC/PpDzR9Eby1Kj
-	BO8P9YL0zIg7qwgNAK1W2BGOX2aBKk2mOMi1B8AHj2OWWuosoJCFcea5Z9HS0ZEzgFDYPsgAbTKAb
-	O+YZ9rF6bOYOWibJpUvzYz3CVTD5Xs0H37L1ag1kTHbLaYvWGr4sxgi48EFJkKD7NpUwtom5Y8Oyz
-	JLFYNGpQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=I82+jQYPx3LQwdlBWVnlnr7NHj1QD83OkO2IzJ7XmSY=; b=OoFspMqrFtLS8v/WeYzWQQkBL9
+	TbqWo/1Ci0jlKyWUOUX39vka1jwmtnsBWYyNGI0foZH0lRIw/m6eP6BlPisuJEy4EtGvOQkemD3fR
+	XbZNLj8UYBcO6T6JWoWyl0Uq+J9OzcGKIDya0iC9Bz3IDwKPAJ38FtT3ARSYi1KFOVpROuQOjtxmy
+	Xfb+nobzf8cYCbAvlsWipk16V6CCQH9pfkX0Im6HKTFgq3MPrJ/qnHTKFWTQCAXVeuY1JnDf1uP9y
+	lI7IIaK0/NutLc4cviMUvvfm15Tq/4Njon90vB6Q3M0qvfVUsXp3lxNy8ZOJLJbQ7/qtW5tHI66q/
+	w3LFoepQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tu8iI-00000002PTz-3PhB;
-	Mon, 17 Mar 2025 11:32:58 +0000
+	id 1tu8iJ-00000002PUL-44wF;
+	Mon, 17 Mar 2025 11:32:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tu8h8-00000002PIs-3uQa
+	id 1tu8hX-00000002PP0-3BLg
 	for barebox@lists.infradead.org;
-	Mon, 17 Mar 2025 11:31:48 +0000
+	Mon, 17 Mar 2025 11:32:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tu8h7-0002zC-D7; Mon, 17 Mar 2025 12:31:45 +0100
+	id 1tu8hW-0003K0-G7; Mon, 17 Mar 2025 12:32:10 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tu8h6-000Eiw-2Z;
-	Mon, 17 Mar 2025 12:31:45 +0100
+	id 1tu8hV-000Ej3-2r;
+	Mon, 17 Mar 2025 12:32:10 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tu8h7-007oaP-0Q;
-	Mon, 17 Mar 2025 12:31:45 +0100
+	id 1tu8hW-007orl-0i;
+	Mon, 17 Mar 2025 12:32:10 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 17 Mar 2025 12:31:42 +0100
-Message-Id: <20250317113142.1862481-1-a.fatoum@pengutronix.de>
+Date: Mon, 17 Mar 2025 12:32:08 +0100
+Message-Id: <20250317113208.1863258-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250317113208.1863258-1-a.fatoum@pengutronix.de>
+References: <20250317113208.1863258-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250317_043146_969163_94717664 
-X-CRM114-Status: GOOD (  10.40  )
+X-CRM114-CacheID: sfid-20250317_043211_792328_57AB85DB 
+X-CRM114-Status: GOOD (  10.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,65 +83,60 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] net: am65-cpsw-nuss: fix out-of-bounds access
+Subject: [PATCH v2 2/2] MAKEALL: parse kconfig_add out of YAML files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-GCC 12.2.0 complains about am65_cpsw_recv:
+Now that MAKEALL supports direct options in KCONFIG_ADD, teach it to
+read runner kconfig_add keys out of the labgrid environment YAML files.
 
-drivers/net/am65-cpsw-nuss.c: In function ‘am65_cpsw_recv’:
-drivers/net/am65-cpsw-nuss.c:495:30: warning: array subscript 9 is
-  above array bounds of ‘struct am65_cpsw_port[9]’ [-Warray-bounds]
-  495 |         port = &common->ports[port_id];
-      |                 ~~~~~~~~~~~~~^~~~~~~~~
-drivers/net/am65-cpsw-nuss.c:115:33: note: while referencing ‘ports’
-  115 |         struct am65_cpsw_port  ports[AM65_CPSW_CPSWNU_MAX_PORTS];
-      |                                 ^~~~~
-
-port_id is read from the hardware and used unsanitized to index into an
-array. Rework the code, so out-of-bound access leads to an error, but
-no out of bound access.
+This is a further step towards removal of test/emulate.pl.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/am65-cpsw-nuss.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+v1 -> v2:
+  - no change
+---
+ MAKEALL            | 13 +++++++++++++
+ test/Containerfile |  1 +
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/net/am65-cpsw-nuss.c b/drivers/net/am65-cpsw-nuss.c
-index f6dc811bd982..6b9432e2d4e7 100644
---- a/drivers/net/am65-cpsw-nuss.c
-+++ b/drivers/net/am65-cpsw-nuss.c
-@@ -466,7 +466,6 @@ static void am65_cpsw_recv(struct eth_device *edev)
- 	dma_addr_t pkt;
- 	int ret;
- 	u32 num, port_id;
--	bool valid = true;
+diff --git a/MAKEALL b/MAKEALL
+index bc612b45561f..a9409fbf7b07 100755
+--- a/MAKEALL
++++ b/MAKEALL
+@@ -422,6 +422,19 @@ else
+ 		if [[ $i =~ ^.*/([^/]+)/([^@]*@|)([^.]+).yaml$ ]]; then
+ 			arch=${BASH_REMATCH[1]}
+ 			defconfig=${BASH_REMATCH[3]}
++
++			if grep -q "^\s\+kconfig_add:" $i; then
++				if command -v yq 2>&1 >/dev/null; then
++					KCONFIG_ADD="${KCONFIG_ADD} $(yq -M -r \
++					'.targets.main.runner.kconfig_add |
++					keys[] as $k | .[$k]' < $i)"
++				else
++					echo "WARNING: yq command not found in path" >&2
++					echo "WARNING: ignoring kconfig_add in $i" >&2
++					echo
++				fi
++			fi
++
+ 			do_build_defconfig $arch $defconfig
+ 			if [ $? -eq 0 ]; then
+ 				do_test_defconfig $config $defconfig "${pytest_opts[@]}"
+diff --git a/test/Containerfile b/test/Containerfile
+index db43d039b922..53a5443e48fe 100644
+--- a/test/Containerfile
++++ b/test/Containerfile
+@@ -51,6 +51,7 @@ RUN apt-get update && apt-get install -y \
+ 	sudo \
+ 	u-boot-tools \
+ 	yamllint \
++	yq \
+ 	&& rm -rf /var/lib/apt/lists/*
  
- 	if (!common->started)
- 		return;
-@@ -489,18 +488,17 @@ static void am65_cpsw_recv(struct eth_device *edev)
- 	port_id = packet_data.src_tag;
- 	if (port_id >= AM65_CPSW_CPSWNU_MAX_PORTS) {
- 		dev_err(common->dev, "received pkt on invalid port_id %d\n", port_id);
--		valid = false;
-+		goto out;
- 	}
- 
- 	port = &common->ports[port_id];
- 	if (!port->enabled) {
- 		dev_err(common->dev, "received pkt on disabled port_id %d\n", port_id);
--		valid = false;
-+		goto out;
- 	}
- 
--	if (valid)
--		net_receive(&port->edev, (void *)pkt, ret);
--
-+	net_receive(&port->edev, (void *)pkt, ret);
-+out:
- 	num = common->rx_next % UDMA_RX_DESC_NUM;
- 
- 	dma_sync_single_for_device(common->dev, pkt, ret, DMA_FROM_DEVICE);
+ ENV GCC_VERSION=14.2.0
 -- 
 2.39.5
 
