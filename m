@@ -1,68 +1,71 @@
-Delivery-date: Mon, 17 Mar 2025 10:06:27 +0100
+Delivery-date: Mon, 17 Mar 2025 10:07:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tu6QW-000YNJ-0P
+	id 1tu6Rm-000YOX-2t
 	for lore@lore.pengutronix.de;
-	Mon, 17 Mar 2025 10:06:27 +0100
+	Mon, 17 Mar 2025 10:07:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tu6QV-0003cK-1j
-	for lore@pengutronix.de; Mon, 17 Mar 2025 10:06:27 +0100
+	id 1tu6Rl-0004CM-P6
+	for lore@pengutronix.de; Mon, 17 Mar 2025 10:07:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=U3iRM4Xw1DWWWIZwtBtiodEPJFfWn5JlnKiFl3rFxs4=; b=zF6RgpXkeWde99ASe3riKJ4Mww
-	S9sW3H3TS3Y2w4NSiVqQal5phFQOrZAwzS1lz8kl7Hs49c/5tDb/aVt/MKOt1HrItPdgA+S7T5no8
-	J/JDN5YLEFoKq8wKdbTkS6wi4pe2meZGQbX0doQjpx7uz7rrLsNuQcsd2rtTJDo/WxQXEQCatvMAT
-	Q+QdshwxVelsVtp6KNonESpj7uvCt4bBMYrxNBBDeaf4HKy2mFYLM53+35Tu2zx7rHEfKxhq7P3wA
-	mt6WhXzj2IyLgyBaODiHhaI5uOmeOOdWwwEC3KWgzOFJzX97v3ic1S4SKht0rHNKU1C/QhP3zVwt/
-	2JbZ4C4g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=vS3AjZEf+5ZHTM86QFeOwmVkFDZK9qg5l/4zCCOJDEA=; b=3mI4C5G3BNItaXLEJGYgRm97Tc
+	Ea2fqTxso+UR8G+KXzIaLqDsOrXAjL2gU3bExXQwjGlvCqh9qnR9TMRV/g6cU68qjXsV4seRAbihi
+	cwifPJO+KwvmXIU/OjERagY01MLXchSKTmQ3iZflrq5n4OzYVjYReswW9gGDJ5s1Is3a2JWqZpqJA
+	KOGnBgiVPxJsWESD8jKWJTZRultch02kFw0x5FWwhgvT0zP1HSYBq4CDBX+x7BvMEPtB9AUdAXrLc
+	Xx2Hq69uo9vQbREwPZcPRylTSHjehucUIEcR3vFlHUjbv1yblLlc87dL+oq50z1os4RWbS8Xppr/F
+	4HiSET6w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tu6Q3-00000001rR6-33jO;
-	Mon, 17 Mar 2025 09:05:59 +0000
+	id 1tu6RN-00000001rdM-1bPc;
+	Mon, 17 Mar 2025 09:07:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tu6Q0-00000001rQV-2JaX
+	id 1tu6RL-00000001rd0-1M4R
 	for barebox@lists.infradead.org;
-	Mon, 17 Mar 2025 09:05:57 +0000
+	Mon, 17 Mar 2025 09:07:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tu6Py-0003S1-W8; Mon, 17 Mar 2025 10:05:55 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1tu6RK-0003ud-4L; Mon, 17 Mar 2025 10:07:18 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tu6Py-000Dgo-1F;
-	Mon, 17 Mar 2025 10:05:54 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tu6Py-00H3la-2P;
-	Mon, 17 Mar 2025 10:05:54 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1tu6RJ-000DhE-1e;
+	Mon, 17 Mar 2025 10:07:17 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tu6RJ-0017ly-2c;
+	Mon, 17 Mar 2025 10:07:17 +0100
+Date: Mon, 17 Mar 2025 10:07:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
-In-Reply-To: <20250315135245.2729171-1-o.rempel@pengutronix.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <Z9fmReMijNznh7FK@pengutronix.de>
 References: <20250315135245.2729171-1-o.rempel@pengutronix.de>
-Message-Id: <174220235474.4066001.6991372267478942347.b4-ty@pengutronix.de>
-Date: Mon, 17 Mar 2025 10:05:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.3
+In-Reply-To: <20250315135245.2729171-1-o.rempel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250317_020556_603527_76E0BF85 
-X-CRM114-Status: UNSURE (   7.67  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250317_020719_361794_212AAD00 
+X-CRM114-Status: GOOD (  21.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,8 +92,7 @@ Subject: Re: [PATCH v2] commands: Add `ip` command for listing interfaces,
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Sat, 15 Mar 2025 14:52:45 +0100, Oleksij Rempel wrote:
+On Sat, Mar 15, 2025 at 02:52:45PM +0100, Oleksij Rempel wrote:
 > This patch introduces the `ip` command, providing functionality similar
 > to Linux’s `ip` tool, catering to users with strong Linux muscle memory.
 > It supports:
@@ -100,16 +102,41 @@ On Sat, 15 Mar 2025 14:52:45 +0100, Oleksij Rempel wrote:
 > - `ip r` / `ip route`  - Show routing table, including default gateway,
 >                          interface-specific routes, DNS, and server IP.
 > 
-> [...]
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+> changes v2:
+> - add SPDX
+> - fix help in Kconfig
+> - add support for range of commands
+> - use COMMAND_ERROR_USAGE
+> ---
+>  commands/Kconfig  |   9 +++
+>  commands/Makefile |   1 +
+>  commands/ip.c     | 159 ++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 169 insertions(+)
+>  create mode 100644 commands/ip.c
+> 
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index fe459fa862f5..466afa7fa479 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -1397,6 +1397,15 @@ config CMD_TFTP
+>  	  Options:
+>  		  -p	push to TFTP server
+>  
+> +config CMD_IP
+> +	tristate
+> +	prompt "ip"
+> +	default y
 
-Applied, thanks!
+Dropped the default y while applying.
 
-[1/1] commands: Add `ip` command for listing interfaces, addresses, and routes
-      https://git.pengutronix.de/cgit/barebox/commit/?id=35e565ec63ab (link may not be stable)
+Sascha
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
