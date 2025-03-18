@@ -1,91 +1,67 @@
-Delivery-date: Tue, 18 Mar 2025 08:44:32 +0100
+Delivery-date: Tue, 18 Mar 2025 09:25:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuRcm-000x0Y-2y
+	id 1tuSGG-000xoN-31
 	for lore@lore.pengutronix.de;
-	Tue, 18 Mar 2025 08:44:32 +0100
+	Tue, 18 Mar 2025 09:25:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuRcl-0007OQ-PX
-	for lore@pengutronix.de; Tue, 18 Mar 2025 08:44:32 +0100
+	id 1tuSGF-0004Uc-PF
+	for lore@pengutronix.de; Tue, 18 Mar 2025 09:25:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=85pV1LuB1xXwTZiTW+8O9LQpE9Hfppd60Cj7dzGFk+4=; b=3ol6nRDhUIlnPpdQ9NndPG27UH
-	RiH/nCsmLyxVrtAOtT49Pyo450yqd5w7NMgApirNy4h3hIiQqPv28D+3G7KSzxZPAC+xH/2tG3SKX
-	cut5k2YnRe8sLNVtaHtNHqkRW1Wvo4lzPsGko3SnzKR5tVbJsfEldamg9NfR6gx8OdjJgwdQxkjq6
-	XDrwfC+QKEgurqutFR9jgBB/8anczAhXNbCNN37P4LoG4bomhOHV8cRWFW0/0HOxY0czo5g5jJsQt
-	RmgPDhv4qrMaHqY+EfTF2e6kmMYJjin42iH/J8L5NVlUlw5VbwBy2yTHvn5UZJjvMyq30TsuLUi5d
-	IZpXivwQ==;
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=92rI/FG0crMNEVUmuerarUOCdIJSo+JAoh2b23Fj5Bc=; b=dXVgrFzRkbuZKptSO0Im2SjMgT
+	NtnNApQCkOrojJ4k0DHRPmZ86uREtPxAAhqnGVg5IdqbFAYlrXbLgGjK4XAoD2NbS4CbQtNcvYY8H
+	jAV9nPGpxjNjyFzbQ2SrB6O825gWkehnTBaKLaCUODSnMKlb4js7O+ibrNCQ3ECQVB2d9pqaVzkFp
+	8QyRnazt7Ybe0DGdKwdjmKHOR127qGTjLRcWRYW5Y0gt0JU+gn/nhai5b9/kFiFDo4ZEG26sQyhj+
+	cur+SCRuv8DKzAMI5XwiViM2QZcJeEYUFL+P76xDkkrX27m6x3vTxT15594kHwWAXKRPMXB9wO7Ul
+	dwpqtxMg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuRc8-00000004yy7-0U9s;
-	Tue, 18 Mar 2025 07:43:52 +0000
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+	id 1tuSFf-000000059re-0Lch;
+	Tue, 18 Mar 2025 08:24:43 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuRc5-00000004ywV-14wj
+	id 1tuSFb-000000059rA-48p3
 	for barebox@lists.infradead.org;
-	Tue, 18 Mar 2025 07:43:50 +0000
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-5498c742661so5828733e87.1
-        for <barebox@lists.infradead.org>; Tue, 18 Mar 2025 00:43:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742283827; x=1742888627; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=85pV1LuB1xXwTZiTW+8O9LQpE9Hfppd60Cj7dzGFk+4=;
-        b=KrFB5csijobCnnLrqbP1Dioci3AaMvZ3rXcsTmfGx9q+r3bPeriLCdxmipAaewcY91
-         xMUDYN+1nlDhEVVfUuPNrrw8AYEuTSRmoFO7TtHeYvJNJ5Blx8tfqH1oUVJ74xECJge7
-         L4ZyWa3V5gxxPiCCTcsF+0nC1rA7bTozuVGyBOJBtmZmACm2nFbs7ERyvNHu4CWS3LL9
-         MXPPor0bxZ7i/26bO692dKGXWw002s13Fd4TxsdFgdmDt31j9bzt7eyF9ULxma9S0ZGr
-         w5zo8QhLMXHhxdBhqdkW/q+ERkATC8f60XQZozT8m7zjf+3xhhZoUQRcaLS+FQacwx65
-         nDTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742283827; x=1742888627;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=85pV1LuB1xXwTZiTW+8O9LQpE9Hfppd60Cj7dzGFk+4=;
-        b=Qxo6uH1xwVAE28kkBu8MH7zGYO5Zrc5UPMrIA98eQqIfyHMTB9z0eKOJTPn2iOvleG
-         9a8etPDVZsgiy4cHjsTiolIgjyXU7RVqvqCGkoNPVOd2iSa48zYH4PBlAx2/pOziOvJQ
-         qXVDZTARv5SXaT2jEjcXhCTTgaLKxD0CTHD+27TMNgryuWGdqDJPG4YQFnm4NBzkhC39
-         HlhmSh+TmRNCC8Z5DKEX6hs+jkiV/1aXdfYf4xPUEoRsFiM00YQozL/ZgQxHW17Fr8Qt
-         lLUNRYhrxciTOsU5NcTOSrX6Qg1giL8reML/ovVKlPeNnoPuPiH9IT8JJAMjLBOjrhGS
-         p4fA==
-X-Gm-Message-State: AOJu0Yyg5honvhJUhIxiRomhRC0xwk26byRs00C88eoSNdZJBc1LpSh3
-	n76iJKz2ssk4EpxNfTjLN3rv0dwefRx0mn1E9EIMOjoVuoxOQHR/0MtjUQ==
-X-Gm-Gg: ASbGncsk3kmtao4fs3Jr3hDxqMsFWejxQFvsrDG+ms0l0FGYTNRYVr6RhQdBKZSFEV5
-	ORA5JcEiKXlPPwytZJN/oWjnVT79lroD2eUU+dW1vjA8dyAOVI0zCMM3TRWYbHEzB9IBem99j7Y
-	QWfaqrri20nDv5hGueRpvlr1GVq+YDXIaKlGOr38mcaCsoJEoXxdcZENCvtf6/sUdji1pFb4G6n
-	vhNnwHm3cT93O8Rq76t71vHbG4f4hcOzi+nXpTzRhpDSXdItzDWJBAs2BxmrBMspBSqFCTSy9kX
-	Knj4n0R1RK+p8TDyDWjCgDJPt2PwVkUNE9GFlwPsiANzaUC/Jf7GQGnr/7ezMySy6Qco
-X-Google-Smtp-Source: AGHT+IFPZEE9ry9y83nOiuOde4OhSWo+TSmXCtOpAqaTDETQ+7QehtGchhiL8gcubCYacvF5xr6PLw==
-X-Received: by 2002:ac2:4f11:0:b0:54a:c517:9456 with SMTP id 2adb3069b0e04-54ac5179741mr410260e87.45.1742283826670;
-        Tue, 18 Mar 2025 00:43:46 -0700 (PDT)
-Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba8a9525sm1571286e87.238.2025.03.18.00.43.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 00:43:44 -0700 (PDT)
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+	Tue, 18 Mar 2025 08:24:41 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tuSFZ-0004L9-6n; Tue, 18 Mar 2025 09:24:37 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tuSFY-000OTN-1v;
+	Tue, 18 Mar 2025 09:24:37 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tuSFY-001l6V-30;
+	Tue, 18 Mar 2025 09:24:36 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 18 Mar 2025 10:43:25 +0300
-Message-Id: <20250318074327.37730-3-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250318074327.37730-1-eagle.alexander923@gmail.com>
-References: <20250318074327.37730-1-eagle.alexander923@gmail.com>
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 18 Mar 2025 09:24:35 +0100
+Message-Id: <20250318082435.419053-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250318_004349_295014_71A9ECDE 
-X-CRM114-Status: GOOD (  10.11  )
+X-CRM114-CacheID: sfid-20250318_012440_021505_99F6F104 
+X-CRM114-Status: GOOD (  12.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,61 +79,43 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 3/5] ARM: at91: Rename xload-mmc.c
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH master] partition: fix reference to wrong cdev in warning message
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This will rename xload-mmc.c to the simpler name xload.c indicating
-support for booting from more than just MMC for the first stage of
-the bootloader.
-Also rename the hidden helper configuration option for this.
+For MBR and GPT, barebox creates links to the partitions, so they can be
+referenced both by index and partition label.
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Failing to create a link is not an error, but results in a warning
+message. The current message claims that the link was pointing at the
+parent block device's cdev, but it actually was pointing at the child
+partition. Fix that.
+
+Reported-by: Uwe Kleine-König <uwe@kleine-koenig.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Kconfig                  | 2 +-
- arch/arm/mach-at91/Makefile                 | 3 +--
- arch/arm/mach-at91/{xload-mmc.c => xload.c} | 0
- 3 files changed, 2 insertions(+), 3 deletions(-)
- rename arch/arm/mach-at91/{xload-mmc.c => xload.c} (100%)
+ common/partitions.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 2f70e4aac3..bb04c1267e 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -52,7 +52,7 @@ config HAVE_AT91_SDRAMC
- config HAVE_AT91_DDRAMC
- 	bool
+diff --git a/common/partitions.c b/common/partitions.c
+index 7562536cf9b8..bc90f51f6112 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -63,7 +63,7 @@ static int register_one_partition(struct block_device *blk, struct partition *pa
+ 	ret = devfs_create_link(cdev, partition_name);
+ 	if (ret)
+ 		dev_warn(blk->dev, "Failed to create link from %s to %s\n",
+-			 partition_name, blk->cdev.name);
++			 partition_name, cdev->name);
+ 	free(partition_name);
  
--config AT91_MCI_PBL
-+config AT91_PBL
- 	def_bool MCI_ATMEL_PBL || MCI_ATMEL_SDHCI_PBL
- 
- # Select if board uses the common at91sam926x_board_init
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 556e46f181..1c87cab5bb 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -14,8 +14,7 @@ obj-$(CONFIG_BOOTM) += bootm-barebox.o
- obj-y += at91sam9_reset.o
- obj-pbl-$(CONFIG_HAVE_AT91_DDRAMC) += ddramc.o
- obj-pbl-$(CONFIG_HAVE_AT91_SDRAMC) += sdramc.o
--pbl-$(CONFIG_AT91_MCI_PBL) +=  xload-mmc.o
--pbl-$(CONFIG_AT91_MCI_PBL) +=  at91sam9_xload_mmc.o
-+pbl-$(CONFIG_AT91_PBL) += at91sam9_xload_mmc.o xload.o
- 
- obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
- obj-$(CONFIG_HAVE_AT91SAM9_RST) += at91sam9_rst.o
-diff --git a/arch/arm/mach-at91/xload-mmc.c b/arch/arm/mach-at91/xload.c
-similarity index 100%
-rename from arch/arm/mach-at91/xload-mmc.c
-rename to arch/arm/mach-at91/xload.c
+ 	return 0;
 -- 
-2.39.1
+2.39.5
 
 
 
