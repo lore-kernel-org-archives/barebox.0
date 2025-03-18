@@ -1,74 +1,74 @@
-Delivery-date: Tue, 18 Mar 2025 15:47:26 +0100
+Delivery-date: Tue, 18 Mar 2025 15:47:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuYE3-0014fo-0Z
+	id 1tuYE4-0014gU-07
 	for lore@lore.pengutronix.de;
-	Tue, 18 Mar 2025 15:47:26 +0100
+	Tue, 18 Mar 2025 15:47:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuYE1-0007r6-S3
-	for lore@pengutronix.de; Tue, 18 Mar 2025 15:47:26 +0100
+	id 1tuYE2-0007sH-Hx
+	for lore@pengutronix.de; Tue, 18 Mar 2025 15:47:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VL9yrN7e1RVnRTOCwUZOzH2elL+Ay/34R5ewEdXUyAg=; b=fMTLdV9y96Tvnm09EjGsAL6seJ
-	xJlNTJdJaae2FVLRTviGiUU2/EKmiaI04R0BVqgtoqDKa7WTd7vKwFG84pPR0iTn+6yxCU7P8rP+j
-	CPH9hSLXJNKvtW6XruRvTV9MIa5HdZPYKmoLWFkbJiSzkhlIMhitqlIHWU8Mm+fRPyv+7xNsRONn+
-	IZ37M+k0uQeerz1iNe2nkPgHZpqfAhQDtObMQWVe+p8//aZWUbRxUWfb99/NwsNKU8Z5EfPgDKaMc
-	l9NgBPn6h0cY+QAb7EPGYZuKNwDjMfH4C4cOKkdFa186k7+LT1o9xpX702x2IA5fHDLSaOIQfpNoE
-	kSfJ0Iwg==;
+	bh=1FZ5Ljh11OYvQ5Sts0UkgqnAr4bfXIaIGwC7OwLnY7w=; b=1heGymwnM+kbPsBfDpmtsoNCln
+	q6pr2q7lp3eMvoAXJ++7HVtAWN0NYUXRYikSOjhEPXm9gqG9bq24wvQ5XQ8L9Q+pHi/00uRjWyuom
+	TmEEMGRaaRxXfwIoldEo5/Tq1ZgrZBbRviKkp+2Zfjjc/gaRChdbapR3a1pnG6rFhGOD+/OaiybHt
+	INoOBwURQqFhZmiFXdgGUNWeUG7UNZtzXYF7vUV8vbFWuVO4hAwLhD0Q3B9jdRtrkjGrnN4Yar/XK
+	39PCq4oyOFKCzm0jaaSW89bMRPotPm7CQ+EoHGMxNL1411P54TBx2ZFP3lJHPpWrNlzimYjtMSz9E
+	TdwxuOBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuYDQ-00000006E2O-2E4Q;
-	Tue, 18 Mar 2025 14:46:48 +0000
+	id 1tuYDS-00000006E4E-3v0V;
+	Tue, 18 Mar 2025 14:46:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuY8X-00000006DKV-1JQi
+	id 1tuY8e-00000006DOi-2nam
 	for barebox@lists.infradead.org;
-	Tue, 18 Mar 2025 14:41:48 +0000
+	Tue, 18 Mar 2025 14:41:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuY8V-0006nG-AA; Tue, 18 Mar 2025 15:41:43 +0100
+	id 1tuY8V-0006nJ-H7; Tue, 18 Mar 2025 15:41:43 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuY8U-000Rab-21;
+	id 1tuY8U-000Rad-2A;
 	Tue, 18 Mar 2025 15:41:43 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuY8U-00F87i-38;
+	id 1tuY8U-00F87i-37;
 	Tue, 18 Mar 2025 15:41:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 18 Mar 2025 15:41:43 +0100
+Date: Tue, 18 Mar 2025 15:41:42 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250318-filetype-size-reduction-v1-2-4f463ffae7d0@pengutronix.de>
+Message-Id: <20250318-filetype-size-reduction-v1-1-4f463ffae7d0@pengutronix.de>
 References: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
 In-Reply-To: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1742308902; l=4532;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1742308902; l=4885;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=lNBpyHL97DNt1omBlk+3NqeDkLSnObI+ZLn+D/N1sD4=;
- b=Tc2g3185aqrWqYWqHSUhVJkpyO492unSdWRxf4kQq5Ktd9/Rd/mDWEq3M55ya0XZt7WjCbR4o
- Eh4API7KiSdDf5JwosoHovkLk6FM6OPDvWpBr0K6cvuw+IKx/0iBnMu
+ bh=zR9aYbdqNgJV+ccGsoq80PSf/Gsv0fREn4nSX9a5GI8=;
+ b=0SEKUAg23AQqvqZo8Ats11qBXdFnY6N7TsLyh5M1NAxFWt5HwNt/4DWpVPCtwqAXi5HAxuXlk
+ vXoz1jUdK/dB2lx+BSBqGxRk/bdUhRXU6U6P/xmKqWtlrYT4dzzB/4f
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250318_074145_398976_F3828EED 
-X-CRM114-Status: GOOD (  16.94  )
+X-CRM114-CacheID: sfid-20250318_074152_709909_E7BF7C81 
+X-CRM114-Status: GOOD (  15.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,142 +90,140 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/7] filetype: add file_detect_fs_type()
+Subject: [PATCH 1/7] filetype: add file_detect_compression_type()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-add file_detect_fs_type() which only tests if the buffer contains one of
-the supported filesystems without testing for other binary formats.
+Add file_detect_compression_type() and use that in the uncompression
+code which is only interested if the file is one of the supported
+compression formats.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/filetype.c  | 59 ++++++++++++++++++++++++++++++++++++------------------
+ common/filetype.c  | 48 ++++++++++++++++++++++++++++++++----------------
  include/filetype.h |  1 +
- 2 files changed, 41 insertions(+), 19 deletions(-)
+ lib/uncompress.c   |  4 ++--
+ 3 files changed, 35 insertions(+), 18 deletions(-)
 
 diff --git a/common/filetype.c b/common/filetype.c
-index 9916b63b80..2a55d5f4ea 100644
+index 73ea17e19b..9916b63b80 100644
 --- a/common/filetype.c
 +++ b/common/filetype.c
-@@ -198,29 +198,39 @@ int is_fat_boot_sector(const void *sect)
- 	return 0;
- }
+@@ -261,6 +261,34 @@ static bool is_dos_exe(const u8 *buf8)
  
--enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec)
-+static enum filetype file_detect_fs_fat(const void *_buf, size_t bufsize)
- {
--	/*
--	 * bootsec can be used to return index of the first sector in the
--	 * first partition
--	 */
--	if (bootsec)
--		*bootsec = 0;
-+	const u8 *buf8 = _buf;
+ #define CH_TOC_section_name     0x14
  
- 	/*
- 	 * Check record signature (always placed at offset 510 even if the
- 	 * sector size is > 512)
- 	 */
--	if (get_unaligned_le16(&sector[BS_55AA]) != 0xAA55)
-+	if (get_unaligned_le16(&buf8[BS_55AA]) != 0xAA55)
- 		return filetype_unknown;
- 
- 	/* Check "FAT" string */
--	if ((get_unaligned_le32(&sector[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
-+	if ((get_unaligned_le32(&buf8[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
- 		return filetype_fat;
- 
--	if ((get_unaligned_le32(&sector[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
-+	if ((get_unaligned_le32(&buf8[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
- 		return filetype_fat;
- 
-+	return filetype_unknown;
-+}
-+
-+enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec)
-+{
-+	/*
-+	 * bootsec can be used to return index of the first sector in the
-+	 * first partition
-+	 */
-+	if (bootsec)
-+		*bootsec = 0;
-+
-+	if (file_detect_fs_fat(sector, 512) != filetype_fat)
-+		return filetype_unknown;
-+
- 	if (bootsec)
- 		/*
- 		 * This must be an MBR, so return the starting sector of the
-@@ -289,12 +299,31 @@ enum filetype file_detect_compression_type(const void *_buf, size_t bufsize)
- 	return filetype_unknown;
- }
- 
-+enum filetype file_detect_fs_type(const void *_buf, size_t bufsize)
++enum filetype file_detect_compression_type(const void *_buf, size_t bufsize)
 +{
 +	const u32 *buf = _buf;
-+	const u16 *buf16 = _buf;
 +	const u8 *buf8 = _buf;
 +
 +	if (bufsize < 16)
 +		return filetype_unknown;
 +
-+	if (buf8[0] == 'h' && buf8[1] == 's' && buf8[2] == 'q' &&
-+			buf8[3] == 's')
-+		return filetype_squashfs;
-+	if (bufsize >= 1536 && buf16[512 + 28] == le16_to_cpu(0xef53))
-+		return filetype_ext;
-+	if (buf[0] == le32_to_cpu(0x06101831))
-+		return filetype_ubifs;
++	if (buf8[0] == 0x89 && buf8[1] == 0x4c && buf8[2] == 0x5a &&
++			buf8[3] == 0x4f)
++		return filetype_lzo_compressed;
++	if (buf8[0] == 0x02 && buf8[1] == 0x21 && buf8[2] == 0x4c &&
++			buf8[3] == 0x18)
++		return filetype_lz4_compressed;
++	if (buf8[0] == 0x1f && buf8[1] == 0x8b && buf8[2] == 0x08)
++		return filetype_gzip;
++	if (buf8[0] == 'B' && buf8[1] == 'Z' && buf8[2] == 'h' &&
++			buf8[3] > '0' && buf8[3] <= '9')
++                return filetype_bzip2;
++	if (buf8[0] == 0xfd && buf8[1] == 0x37 && buf8[2] == 0x7a &&
++			buf8[3] == 0x58 && buf8[4] == 0x5a && buf8[5] == 0x00)
++		return filetype_xz_compressed;
++	if (le32_to_cpu(buf[0]) == le32_to_cpu(ZSTD_MAGICNUMBER))
++		return filetype_zstd_compressed;
 +
-+	return file_detect_fs_fat(_buf, bufsize);
++	return filetype_unknown;
 +}
 +
  enum filetype file_detect_type(const void *_buf, size_t bufsize)
  {
  	const u32 *buf = _buf;
- 	const u64 *buf64 = _buf;
- 	const u8 *buf8 = _buf;
--	const u16 *buf16 = _buf;
- 	const struct imx_flash_header *imx_flash_header = _buf;
- 	enum filetype type;
+@@ -278,17 +306,15 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 	if (buf[0] == ENVFS_32(ENVFS_MAGIC))
+ 		return filetype_barebox_env;
  
-@@ -319,13 +348,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
++	type = file_detect_compression_type(_buf, bufsize);
++	if (type != filetype_unknown)
++		return type;
++
+ 	if (bufsize < 32)
+ 		return filetype_unknown;
+ 
+ 	if (strncmp(buf8, "BM", 2) == 0)
+ 		return filetype_bmp;
+-	if (buf8[0] == 0x89 && buf8[1] == 0x4c && buf8[2] == 0x5a &&
+-			buf8[3] == 0x4f)
+-		return filetype_lzo_compressed;
+-	if (buf8[0] == 0x02 && buf8[1] == 0x21 && buf8[2] == 0x4c &&
+-			buf8[3] == 0x18)
+-		return filetype_lz4_compressed;
+ 	if (buf[0] == be32_to_cpu(0x27051956))
  		return filetype_uimage;
  	if (buf[0] == 0x23494255)
- 		return filetype_ubi;
--	if (buf[0] == le32_to_cpu(0x06101831))
--		return filetype_ubifs;
+@@ -297,14 +323,6 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 		return filetype_ubifs;
  	if (buf[0] == 0x20031985)
  		return filetype_jffs2;
--	if (buf8[0] == 'h' && buf8[1] == 's' && buf8[2] == 'q' &&
--			buf8[3] == 's')
--		return filetype_squashfs;
- 	if (buf[0] == be32_to_cpu(0xd00dfeed))
- 		return filetype_oftree;
- 	if (strncmp(buf8, "ANDROID!", 8) == 0)
-@@ -423,9 +447,6 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (type != filetype_unknown)
- 		return type;
+-	if (buf8[0] == 0x1f && buf8[1] == 0x8b && buf8[2] == 0x08)
+-		return filetype_gzip;
+-	if (buf8[0] == 'B' && buf8[1] == 'Z' && buf8[2] == 'h' &&
+-			buf8[3] > '0' && buf8[3] <= '9')
+-                return filetype_bzip2;
+-	if (buf8[0] == 0xfd && buf8[1] == 0x37 && buf8[2] == 0x7a &&
+-			buf8[3] == 0x58 && buf8[4] == 0x5a && buf8[5] == 0x00)
+-		return filetype_xz_compressed;
+ 	if (buf8[0] == 'h' && buf8[1] == 's' && buf8[2] == 'q' &&
+ 			buf8[3] == 's')
+ 		return filetype_squashfs;
+@@ -325,8 +343,6 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 		return filetype_rockchip_rkns_image;
+ 	if (le32_to_cpu(buf[0]) == le32_to_cpu(0xaa640001))
+ 		return filetype_fip;
+-	if (le32_to_cpu(buf[0]) == le32_to_cpu(ZSTD_MAGICNUMBER))
+-		return filetype_zstd_compressed;
  
--	if (bufsize >= 1536 && buf16[512 + 28] == le16_to_cpu(0xef53))
--		return filetype_ext;
--
- 	if (strncmp(buf8 + CH_TOC_section_name, "CHSETTINGS", 10) == 0)
- 		return filetype_ch_image;
- 
+ 	if ((buf8[0] == 0x5a || buf8[0] == 0x69 || buf8[0] == 0x78 ||
+ 	     buf8[0] == 0x8b || buf8[0] == 0x9c) &&
 diff --git a/include/filetype.h b/include/filetype.h
-index b8c0105bf2..329ebc9e8b 100644
+index c24d061e8f..b8c0105bf2 100644
 --- a/include/filetype.h
 +++ b/include/filetype.h
-@@ -75,6 +75,7 @@ const char *file_type_to_string(enum filetype f);
+@@ -74,6 +74,7 @@ struct cdev;
+ const char *file_type_to_string(enum filetype f);
  const char *file_type_to_short_string(enum filetype f);
  enum filetype file_detect_partition_table(const void *_buf, size_t bufsize);
- enum filetype file_detect_compression_type(const void *_buf, size_t bufsize);
-+enum filetype file_detect_fs_type(const void *_buf, size_t bufsize);
++enum filetype file_detect_compression_type(const void *_buf, size_t bufsize);
  enum filetype file_detect_type(const void *_buf, size_t bufsize);
  int file_name_detect_type(const char *filename, enum filetype *type);
  int file_name_detect_type_offset(const char *filename, loff_t pos, enum filetype *type);
+diff --git a/lib/uncompress.c b/lib/uncompress.c
+index 0aaeb066b6..c284bcc6ba 100644
+--- a/lib/uncompress.c
++++ b/lib/uncompress.c
+@@ -79,7 +79,7 @@ int uncompress(unsigned char *inbuf, long len,
+ 	char *err;
+ 
+ 	if (inbuf) {
+-		ft = file_detect_type(inbuf, len);
++		ft = file_detect_compression_type(inbuf, len);
+ 		uncompress_buf = NULL;
+ 		uncompress_size = 0;
+ 	} else {
+@@ -94,7 +94,7 @@ int uncompress(unsigned char *inbuf, long len,
+ 		if (ret < 0)
+ 			goto err;
+ 
+-		ft = file_detect_type(uncompress_buf, 32);
++		ft = file_detect_compression_type(uncompress_buf, 32);
+ 	}
+ 
+ 	pr_debug("Filetype detected: %s\n", file_type_to_string(ft));
 
 -- 
 2.39.5
