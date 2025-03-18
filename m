@@ -1,88 +1,72 @@
-Delivery-date: Tue, 18 Mar 2025 16:02:27 +0100
+Delivery-date: Tue, 18 Mar 2025 16:07:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuYSa-0014tp-0S
+	id 1tuYXJ-00150n-34
 	for lore@lore.pengutronix.de;
-	Tue, 18 Mar 2025 16:02:27 +0100
+	Tue, 18 Mar 2025 16:07:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuYSY-0002Nr-W3
-	for lore@pengutronix.de; Tue, 18 Mar 2025 16:02:27 +0100
+	id 1tuYXI-0003ZY-Ra
+	for lore@pengutronix.de; Tue, 18 Mar 2025 16:07:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TWBu3Q4+BUec1r+4au7MjS17nnmWw88G0w86HxpltKY=; b=yBynbk81xvysdCe8LjAiyNl+AL
-	CzQwcZcClqMx+2i5suvD9Lmt7ba/We8bA7z67akBnlVzI5G05prnsuYqmmrfiFMVRS+4yH9c8hJ9D
-	EJCjSsUQzhDpgfGXPhX3+Cjv3OMgczonbE80J5d7AJOuNF7Qr4/lZKw/D26+MDSIoZlpnVIoeuFJP
-	9iHfuHDLCThJnmIbUF92xgDLIITcYrdhgTlc6y+N71aW8/bFXA4CwySexEnuvLEsQYlrTXxr9Bgt7
-	tcbT7/W9SjnyH/Syy/D0tWluswF0Iadw7LO/sGXwweou6cjUNjRXETSkErsuuqjfljf2rnf2d3VcA
-	nWFAOvdA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=OvDgR4mqNX7GHxZhfIYfb94sU3BQHCY46dDMoH8Ov0k=; b=klsyWu7R79kjZJEtiWo94XWLkV
+	kUplGY5GgdLCFBz102eeDe5yC4uG6NQZdQkOw/ZQTIEGKY7oN3tEkE7Sxjmp54Li8BWx6ezstq0lb
+	6hthDsk8E6aFzC+vs13shlDynyVn4XvmWwi9E58bp+oWx6WXqv9p8SbtbkD9jiecBlKgMHMMpdv+q
+	Zd1XTh/GggDmvLJX32w7QI8+H8KpwcvS/NIs7xaX29N7gtUl97VJzyaC/dmAnMBHsqPqMDrC4JGrC
+	v4QSgL2Z887sBDAaUNKGefPBOvbVnVMV2Dlr3FNiMXfZyQTYkc1rvf7N6fdcvLXv8doGAJ3XYRD9j
+	Xjzvk1QA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuYRz-00000006HhF-3jlU;
-	Tue, 18 Mar 2025 15:01:51 +0000
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+	id 1tuYWq-00000006Iw0-1N5f;
+	Tue, 18 Mar 2025 15:06:52 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuYRg-00000006Hbb-46Fw
+	id 1tuYWn-00000006Iue-2yAN
 	for barebox@lists.infradead.org;
-	Tue, 18 Mar 2025 15:01:34 +0000
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-2ff6e91cff5so5151018a91.2
-        for <barebox@lists.infradead.org>; Tue, 18 Mar 2025 08:01:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742310092; x=1742914892; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TWBu3Q4+BUec1r+4au7MjS17nnmWw88G0w86HxpltKY=;
-        b=Sai5RvgPOaDYFSQPyKpM1l1yypTHt7ctuIluTaR6Mu9ukkcT1lp+fXE+LOtKCcWSJu
-         Raz5UT0DeTLTaU09yAcSEHOjoMrCW5E3jerN8rsbjqqwkiFJIquxv6cF3Mt5zI2UAGNQ
-         fGV9GABoC2N09UvAtU4VmNGU+SnqDGTKplEQ+f+9ReFpDseznxW20zTgdk2EItseY/qB
-         cy14tq6o27z3dpAk0Bkm85vNDgoDpLqKDy6F+kYmLoAr8B8MKfW588uj0jWy2Z3hIO0q
-         RXGKswcuWhHOlQPiGb9xKPMpcxSMEdgISEv+0JR52XEAbqNYjcAbFmV/VLgXrwKaYl3r
-         PnZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742310092; x=1742914892;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TWBu3Q4+BUec1r+4au7MjS17nnmWw88G0w86HxpltKY=;
-        b=iJ2Ril7cJXkrgsESkauNwHi7+ajgzEILNn6MWgN4qYM+R2ebbRl0QyCH0RiNS/qAFf
-         n4Pjmr6wB5KggG0AV8+cB2+TP0UMrFAY2HZ7n6S2qq1z4XKW93YprJFVaTWfQSAlh6bc
-         iHPSMmu3FPQpsALAmkRIFB6M3MiyAWVyA/OEsBkgGF4ohGtd39zc/YOO+T1P+6ZDroFX
-         MA6wP9EByufOgPqHPxrlPZjMI6wbCmW/jJUbzmLe7/S0aXpHcclks6N8nVRNU1e5TKca
-         794yvgKeRP3hzHz2FoGYCYLGVYMikv5JStnMPFK2GsCZiHA8Mn4Q9KeslEeZ8dMzl71B
-         blpg==
-X-Gm-Message-State: AOJu0YxDaSUUuxDzQyEh87UINTXfwqF/mnkEz/2Ya3b0G2KDpIy4EMdt
-	hMugKTNyaP544nrE2p/99bb3qxP+E24XHpezU/MuWYJ3DVNrPi7JCcD1O+PDqsFZVoyYZTv88bw
-	KAkzoSn8LecAfaadlPJg5q1QPs+qNcXS6G8Y=
-X-Gm-Gg: ASbGncuTVlft1fZ4cOzNcv5ViMTKcQiDyfpuptaVLHcDm7eIxWGCUEg8hDH5ZQ9dmKi
-	QMV5DrEcqR/LLrNMPhDXVkEdsrg37e0sZsMdbYtE3R/Q00jLNyBRAHeAFDtCiaHhNXhkwAyuZEN
-	zxq/eElU8FaQv2Jc8aCdngKVH6XP8=
-X-Google-Smtp-Source: AGHT+IGzWiRGC++8pp3vg41XSkAETQ+w1KXfNyfJ1vojtUNjJP9Sg1h/wtZ5ByOI/rxgUxg0ZvUQlGHS463P9WTOjHA=
-X-Received: by 2002:a17:90b:38c8:b0:2ee:863e:9ffc with SMTP id
- 98e67ed59e1d1-301a5b22aa0mr2992019a91.21.1742310091818; Tue, 18 Mar 2025
- 08:01:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
-In-Reply-To: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 18 Mar 2025 18:01:19 +0300
-X-Gm-Features: AQ5f1Jp1MQJUJ7KIn67Rwivp-Fdsbda-71oh5dy-6HavHFWaGI4QWW9TI1ag1sI
-Message-ID: <CAP1tNvQokH9TTSANKNADzo5Nie2SzjAyM08ix0D8gbL6TPxBuw@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
+	Tue, 18 Mar 2025 15:06:50 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuYWl-0003RL-Nz; Tue, 18 Mar 2025 16:06:47 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuYWl-000Rtb-05;
+	Tue, 18 Mar 2025 16:06:47 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuYWl-0034sI-18;
+	Tue, 18 Mar 2025 16:06:47 +0100
+Date: Tue, 18 Mar 2025 16:06:47 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <Z9mMB8_1LV_YmcxN@pengutronix.de>
+References: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
+ <20250318-filetype-size-reduction-v1-2-4f463ffae7d0@pengutronix.de>
+ <f7975f67-d659-48c3-bf1b-498331fc5401@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f7975f67-d659-48c3-bf1b-498331fc5401@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250318_080133_015213_41F34749 
-X-CRM114-Status: GOOD (  16.58  )
+X-CRM114-CacheID: sfid-20250318_080649_743102_EEAB0A13 
+X-CRM114-Status: GOOD (  15.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,71 +84,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 0/7] filetype: Some size reduction patches
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/7] filetype: add file_detect_fs_type()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha!
+On Tue, Mar 18, 2025 at 03:51:44PM +0100, Ahmad Fatoum wrote:
+> Hi,
+> 
+> On 3/18/25 15:41, Sascha Hauer wrote:
+> > add file_detect_fs_type() which only tests if the buffer contains one of
+> > the supported filesystems without testing for other binary formats.
+> 
+> 
+> > +enum filetype file_detect_fs_type(const void *_buf, size_t bufsize)
+> 
+> [snip]
+> 
+> >  enum filetype file_detect_type(const void *_buf, size_t bufsize)
+> > -	if (bufsize >= 1536 && buf16[512 + 28] == le16_to_cpu(0xef53))
+> > -		return filetype_ext;
+> > -
+> >  	if (strncmp(buf8 + CH_TOC_section_name, "CHSETTINGS", 10) == 0)
+> >  		return filetype_ch_image
+> 
+> Shouldn't file_detec_type() still call file_detect_fs_type()?
 
-I've been using a separate config for this board for a long time :)
-Maybe you can take something from my working configuration that
-has been working for several years:
-https://github.com/shcgit/barebox/blob/milas/arch/arm/configs/mm_am335x_mlo=
-_defconfig
+Sure, that was the intention at least.
 
-Thanks!
+Thanks for catching, fixed this.
 
-=D0=B2=D1=82, 18 =D0=BC=D0=B0=D1=80. 2025=E2=80=AF=D0=B3. =D0=B2 17:46, Sas=
-cha Hauer <s.hauer@pengutronix.de>:
->
-> The am335x_mlo_defconfig is very size constrained and doesn't build
-> within these constraint anymore for some time. The filetype detection
-> code has become quite big and offers some opportunities for size
-> reduction. Specifically file_detect_type() is quite big, but many
-> callers are only interested in some specific file types like supported
-> file systems or supported compressed binary formats. This series
-> introduces some more specific smaller file detection functions so that
-> we can get rid of the big file_detect_type() in the binary.
->
-> Also included some patches for the myirtech-mid board to use a stripped
-> down device tree for the MLO. The same is already done for the other
-> boards supported in am335x_mlo_defconfig
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> Sascha Hauer (7):
->       filetype: add file_detect_compression_type()
->       filetype: add file_detect_fs_type()
->       filetype: add function pointer to file_name_detect_type_offset()
->       filetype: let cdev_detect_type() only detect filesystems
->       filetype: make file type strings optional
->       ARM: am33xx: myirtech-myd: add MLO specific device tree
->       ARM: am335x_mlo_defconfig: disable file type strings
->
->  arch/arm/boards/myirtech-x335x/lowlevel.c |   6 +-
->  arch/arm/configs/am335x_mlo_defconfig     |   1 +
->  arch/arm/dts/Makefile                     |   2 +-
->  arch/arm/dts/am335x-myirtech-myd-mlo.dts  |  10 +++
->  common/Kconfig                            |   8 ++
->  common/filetype.c                         | 132 +++++++++++++++++++++---=
-------
->  fs/fs.c                                   |   3 +-
->  include/filetype.h                        |   5 +-
->  lib/uncompress.c                          |   4 +-
->  9 files changed, 125 insertions(+), 46 deletions(-)
-> ---
-> base-commit: a0ba27e06535570e8e4653f5f92a607f8b99022e
-> change-id: 20250318-filetype-size-reduction-0cbf74281e2e
->
-> Best regards,
-> --
-> Sascha Hauer <s.hauer@pengutronix.de>
->
->
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
