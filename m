@@ -1,75 +1,61 @@
-Delivery-date: Wed, 19 Mar 2025 16:45:02 +0100
+Delivery-date: Wed, 19 Mar 2025 16:46:32 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuvbL-001Vkh-0J
+	id 1tuvcm-001VmO-25
 	for lore@lore.pengutronix.de;
-	Wed, 19 Mar 2025 16:45:02 +0100
+	Wed, 19 Mar 2025 16:46:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuvbJ-0004Bh-6f
-	for lore@pengutronix.de; Wed, 19 Mar 2025 16:45:02 +0100
+	id 1tuvcl-0004m0-GX
+	for lore@pengutronix.de; Wed, 19 Mar 2025 16:46:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
-	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EQ7eVuD4L5OMXZ2tvOiKWq7w9N2TyxWHAw/jHXNTRso=; b=eKBejRKiaWSMlBGZPGFFXh8+ds
-	0mg9pgQGWDlwUbaVPwIL1gzE5hochB3DJ0WGJpWa8JCFlXxCo+PThchhzBVu3Tze0E7W2cd53i+2j
-	//9AeohhHn8CNsbpAXYEQeFebMx67coDjONtw5aZ/WjRhY+/cwZPiQey3oETL0z8fUBTNfPcMDGDm
-	PPEYPNxUHqMRAicsmKE3K6ZlYs0CV1PefLKi83YNUnyaMkC9CT6wzBjC7x0IriLC/TE9vqwD3WOns
-	mbXYvOsqvilf5wpJqFgh0qsJk08aOa7jpic95n91vBG34it0Xxzdv0O/nCorPihVJwbeNorx85wyA
-	u9HgvmAw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=MYGfnr8sYTJkPtDux0Ll8QiV1YGj09E8iuoAIbpACPY=; b=TV6EG/MdrXnudlQKBsIEy55Zuo
+	MUhS69/2gwHpKKFKI3M1qODY6yFXr5bR5mZY9vYrgC7CCo2GNu1/65W6idGzHSKpWRo3/dpxCV1sb
+	w0UVe+c09P4mrVPB49jtjSVle9KXdJgzOdtx5foV+vFr37eAevFwb/POAn3AsdUSruidHW5DGpmC6
+	wkQ8V6OvTHOQ1QGrbnHs5rfi2Cf5RKpwpdvMAs+YjWhuuM8GmKXE6Ux5sScqhCXjYuChEgrBpqfeu
+	vbyJwQFyISFMOgvNJndGD/W0lOTsNWeR7mqYEqk58Ibn7hGN+nK1DwJMQ2NqFWNWzlv3hQ8e18MZF
+	SDF9bXlw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuvam-00000009QgN-1lO0;
-	Wed, 19 Mar 2025 15:44:28 +0000
+	id 1tuvcN-00000009RXS-1Ty0;
+	Wed, 19 Mar 2025 15:46:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuvQx-00000009OrF-18Gb
+	id 1tuvXb-00000009Q32-43M5
 	for barebox@lists.infradead.org;
-	Wed, 19 Mar 2025 15:34:20 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuvQw-0001cJ-1K; Wed, 19 Mar 2025 16:34:18 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuvQv-000cBb-1O;
-	Wed, 19 Mar 2025 16:34:17 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuvNk-00Awy1-2W;
-	Wed, 19 Mar 2025 16:31:00 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Mar 2025 16:31:01 +0100
+	Wed, 19 Mar 2025 15:41:13 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tuvXa-0002yP-Mw; Wed, 19 Mar 2025 16:41:10 +0100
+Message-ID: <d8abf87b-2cda-4b21-ad76-f51ac888e300@pengutronix.de>
+Date: Wed, 19 Mar 2025 16:41:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
+References: <20250312-rpmb-v1-0-0f213382a3f3@pengutronix.de>
+ <20250312-rpmb-v1-4-0f213382a3f3@pengutronix.de>
+ <9c66b31b-a79c-4a07-a03f-119c7c3dadc7@pengutronix.de>
+ <Z9lZ8Q4bhUnuur1X@pengutronix.de> <Z9riy3YWmESSdii7@pengutronix.de>
+ <29edc564-8919-40d3-b4ac-d0e622a92bcd@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <29edc564-8919-40d3-b4ac-d0e622a92bcd@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250319-rpmb-v2-10-a8801fb35cd4@pengutronix.de>
-References: <20250319-rpmb-v2-0-a8801fb35cd4@pengutronix.de>
-In-Reply-To: <20250319-rpmb-v2-0-a8801fb35cd4@pengutronix.de>
-To: "open list:BAREBOX" <barebox@lists.infradead.org>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1742398260; l=3163;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Mjj5kgwSEzTTBykhA8JjY9kEW+DgtALNl/KySaABxvw=;
- b=G1N12tuE00eNAxoNefZcEiIoKOq8GaCKSzP2k35ARQGfEzFHh7DL8sEVJSgsrRcARlhPCdD+S
- 3fxefNQ0uXMBdr2Wdd6I1usb/wLndgvJTVRttI6DF4cdjg9tX3/6F4/
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_083419_316714_B55A9C2B 
-X-CRM114-Status: UNSURE (   8.71  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250319_084112_005095_0E239851 
+X-CRM114-Status: GOOD (  16.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,7 +67,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -92,117 +77,71 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 10/10] ARM: omap: remove unused file
+Subject: Re: [PATCH 4/9] mci: add RPMB support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/mach/omap/omap4-devices.h | 93 ---------------------------------------
- 1 file changed, 93 deletions(-)
 
-diff --git a/include/mach/omap/omap4-devices.h b/include/mach/omap/omap4-devices.h
-deleted file mode 100644
-index de73062bc5..0000000000
---- a/include/mach/omap/omap4-devices.h
-+++ /dev/null
-@@ -1,93 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--
--#ifndef __MACH_OMAP4_DEVICES_H
--#define __MACH_OMAP4_DEVICES_H
--
--#include <driver.h>
--#include <linux/sizes.h>
--#include <mach/omap/devices.h>
--#include <mach/omap/omap4-silicon.h>
--#include <mach/omap/mcspi.h>
--#include <mach/omap/omap_hsmmc.h>
--
--static inline void omap44xx_add_sram0(void)
--{
--	return omap_add_sram0(OMAP44XX_SRAM_BASE, 48 * SZ_1K);
--}
--
--static inline struct device *omap44xx_add_uart1(void)
--{
--	return omap_add_uart(0, OMAP44XX_UART1_BASE);
--}
--
--static inline struct device *omap44xx_add_uart2(void)
--{
--	return omap_add_uart(1, OMAP44XX_UART2_BASE);
--}
--
--static inline struct device *omap44xx_add_uart3(void)
--{
--	return omap_add_uart(2, OMAP44XX_UART3_BASE);
--}
--
--static inline struct device *omap44xx_add_mmc1(struct omap_hsmmc_platform_data *pdata)
--{
--	return add_generic_device("omap4-hsmmc", 0, NULL,
--			OMAP44XX_MMC1_BASE, SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_mmc2(struct omap_hsmmc_platform_data *pdata)
--{
--	return add_generic_device("omap4-hsmmc", 1, NULL,
--			OMAP44XX_MMC2_BASE, SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_mmc3(struct omap_hsmmc_platform_data *pdata)
--{
--	return add_generic_device("omap4-hsmmc", 2, NULL,
--			OMAP44XX_MMC3_BASE, SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_mmc4(struct omap_hsmmc_platform_data *pdata)
--{
--	return add_generic_device("omap4-hsmmc", 3, NULL,
--			OMAP44XX_MMC4_BASE, SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_mmc5(struct omap_hsmmc_platform_data *pdata)
--{
--	return add_generic_device("omap4-hsmmc", 4, NULL,
--			OMAP44XX_MMC5_BASE, SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_i2c1(void *pdata)
--{
--	return add_generic_device("i2c-omap4", 0, NULL, OMAP44XX_I2C1_BASE,
--			SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_i2c2(void *pdata)
--{
--	return add_generic_device("i2c-omap4", 1, NULL, OMAP44XX_I2C2_BASE,
--			SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_i2c3(void *pdata)
--{
--	return add_generic_device("i2c-omap4", 2, NULL, OMAP44XX_I2C3_BASE,
--			SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_i2c4(void *pdata)
--{
--	return add_generic_device("i2c-omap4", 3, NULL, OMAP44XX_I2C4_BASE,
--			SZ_4K, IORESOURCE_MEM, pdata);
--}
--
--static inline struct device *omap44xx_add_ehci(void *pdata)
--{
--	return add_usb_ehci_device(DEVICE_ID_DYNAMIC, OMAP44XX_EHCI_BASE,
--				OMAP44XX_EHCI_BASE + 0x10, pdata);
--}
--
--#endif /* __MACH_OMAP4_DEVICES_H */
 
--- 
-2.39.5
+On 3/19/25 16:34, Ahmad Fatoum wrote:
+> 
+> 
+> On 3/19/25 16:29, Sascha Hauer wrote:
+>> On Tue, Mar 18, 2025 at 12:33:05PM +0100, Sascha Hauer wrote:
+>>> On Mon, Mar 17, 2025 at 04:18:32PM +0100, Ahmad Fatoum wrote:
+>>>> Hello Sascha,
+>>>>
+>>>> On 3/12/25 13:16, Sascha Hauer wrote:
+>>>>> +
+>>>>> +int mci_rpmb_route_frames(struct mci *mci, void *req, unsigned long reqlen,
+>>>>> +			  void *rsp, unsigned long rsplen)
+>>>>> +{
+>>>>> +	/*
+>>>>> +	 * Whoever crafted the data supplied to this function knows how to
+>>>>> +	 * format the PRMB frames and which response is expected. If
+>>>>> +	 * there's some unexpected mismatch it's more helpful to report an
+>>>>> +	 * error immediately than trying to guess what was the intention
+>>>>> +	 * and possibly just delay an eventual error which will be harder
+>>>>> +	 * to track down.
+>>>>> +	 */
+>>>>> +	void *rpmb_data = NULL;
+>>>>> +	int ret;
+>>>>> +
+>>>>> +	mci_blk_part_switch(mci->rpmb_part);
+>>>>> +
+>>>>> +	if (!IS_ALIGNED((uintptr_t)req, ARCH_DMA_MINALIGN)) {
+>>>>
+>>>> Even if alignment happens to be correct, there is no guarantee that
+>>>> there is no other data sharing a cache line.
+>>>
+>>> reqlen is expected to be a single block of 512 bytes, so indeed when req
+>>> is aligned then the end is cacheline aligned as well. We could check
+>>> reqlen as well, but I actually never ran into this case, so we can just
+>>> return an error for now as you suggested.
+>>
+>> I was wrong here. the request is placed directly behind a 6 byte struct,
+>> so it's guaranteed to be unaligned. We always have to copy it.
+>>
+>> The response might be unaligned as well, but must be aligned to pass it
+>> to the mmc layer. In my tests the response was always aligned, but
+>> better safe than sorry, so I'll add an alignment check here as well,
+>> this time including a check for the length.
+
+Sorry about the empty mail. Can we have a generic helper for this?
+
+Maybe dma_map_buf_is_aligned or something like that, preferably with a
+device argument from the outset.
+
+Cheers,
+Ahmad
+
+> 
+> 
+> 
+>>
+>> Sascha
+>>
+> 
 
 
 
