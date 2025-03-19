@@ -1,71 +1,69 @@
-Delivery-date: Wed, 19 Mar 2025 09:42:24 +0100
+Delivery-date: Wed, 19 Mar 2025 10:14:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tup0L-001O13-0b
+	id 1tupVa-001Oii-10
 	for lore@lore.pengutronix.de;
-	Wed, 19 Mar 2025 09:42:24 +0100
+	Wed, 19 Mar 2025 10:14:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tup0K-0007Lh-25
-	for lore@pengutronix.de; Wed, 19 Mar 2025 09:42:24 +0100
+	id 1tupVZ-0004qi-6V
+	for lore@pengutronix.de; Wed, 19 Mar 2025 10:14:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lySv8SSvLRZTVkKoQbmPVPdo5YpveNSihLV0T5aihO4=; b=rZO1eHI5xCG3zpb8s2d3RCMyOM
-	HpybAgcdFSZ4YCFKsc0ki8J5ahO9hvru+JrAll1r9rJbButu5s3R6CYf0AYxnBWOznwof7RR2rdRQ
-	1rKEr4+acZoLuTTyBOwcvqKTZHShOX4ivDQqC/RLccTccY5d00SPh9f8zMcMWeqgSJlflc5GD6cQP
-	PveVylRZd7nwMLums8JAODHVCHI4ZjbB4LGA+6Y9s3khfTdbxESSuOHo8oBT6T1xwYc6ftKbZSk4Y
-	bRw9f3SuHQKhK5nZR8HFLl4+F7bAwx3aNNfjh2DadyvGqKNJgT+l79t9kvIf8TqKNoU8W60TbaAt/
-	iek6VMzA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=cWzMQKTQZPGwTVieyLvXaHDzaE7zVdiKBz9TYZO0Cf0=; b=OBRXfIAi08GEBPS1n8j+0yhuRF
+	iEb2TyyuoaBNyqPvKHslmSDe9Y96C9blDqW14nq9Vss4qfkK8WLDLGVNpPBYK+yhycuKoIqf+3735
+	ZGivbseJ/q2If3djrnVgUNmoYhF04FMFgUUjwS5H3BdHCn9QcM1iOiB1nTLfC2de1heFTDNuYN4Sf
+	i86fBHZR3iFSD1diQqh2oQs7Ez53fD4goAFLYibE1abIRiISwcjGnr/1brbvd1znfYTGAgmngtq/+
+	pWOLHeaj5J4vWPQtu3R8diLLNNzRsYP6BIuhMZozs0q9ZDpvYIipbnsbcT+4yu/ENCFzPQMbvYOoD
+	qsZQIY/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuozr-00000008NhY-2IrD;
-	Wed, 19 Mar 2025 08:41:55 +0000
+	id 1tupUz-00000008Rxo-0P0Q;
+	Wed, 19 Mar 2025 09:14:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuozo-00000008Ngx-2eTT
+	id 1tupUK-00000008RrL-1uTV
 	for barebox@lists.infradead.org;
-	Wed, 19 Mar 2025 08:41:53 +0000
+	Wed, 19 Mar 2025 09:13:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tuozn-0007GN-A2; Wed, 19 Mar 2025 09:41:51 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tupUJ-0004bi-88; Wed, 19 Mar 2025 10:13:23 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tuozm-000Z3Q-1m;
-	Wed, 19 Mar 2025 09:41:50 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tuozm-004pJ5-2o;
-	Wed, 19 Mar 2025 09:41:50 +0100
-Date: Wed, 19 Mar 2025 09:41:50 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tupUI-000ZNR-24;
+	Wed, 19 Mar 2025 10:13:23 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tupUI-009sgG-3B;
+	Wed, 19 Mar 2025 10:13:22 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Message-ID: <Z9qDTuzVEeRNHRqn@pengutronix.de>
-References: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
- <CAP1tNvQokH9TTSANKNADzo5Nie2SzjAyM08ix0D8gbL6TPxBuw@mail.gmail.com>
+To: "open list:BAREBOX" <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20250317-mci-misc-cleanup-v1-0-24b4d6f5d31a@pengutronix.de>
+References: <20250317-mci-misc-cleanup-v1-0-24b4d6f5d31a@pengutronix.de>
+Message-Id: <174237560298.2355103.5957017931407817475.b4-ty@pengutronix.de>
+Date: Wed, 19 Mar 2025 10:13:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAP1tNvQokH9TTSANKNADzo5Nie2SzjAyM08ix0D8gbL6TPxBuw@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_014152_669750_FA762794 
-X-CRM114-Status: GOOD (  17.65  )
+X-CRM114-CacheID: sfid-20250319_021324_494906_958C6F1F 
+X-CRM114-Status: UNSURE (   6.68  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,40 +85,34 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/7] filetype: Some size reduction patches
+Subject: Re: [PATCH 0/6] mci: some cleanups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Alexander,
 
-On Tue, Mar 18, 2025 at 06:01:19PM +0300, Alexander Shiyan wrote:
-> Hello Sascha!
+On Mon, 17 Mar 2025 10:34:32 +0100, Sascha Hauer wrote:
+> This cleans up some stuff in the mci layer and its drivers.
 > 
-> I've been using a separate config for this board for a long time :)
-> Maybe you can take something from my working configuration that
-> has been working for several years:
-> https://github.com/shcgit/barebox/blob/milas/arch/arm/configs/mm_am335x_mlo_defconfig
+> 
 
-Thanks, I extracted some more unneeded options from that. You disabled
-the board support which we want to keep. Also you disabled SPI boot
-which I think we'll need for some boards. However, these are indeed
-not needed:
+Applied, thanks!
 
-- CONFIG_BOARD_GENERIC_DT
-- CONFIG_MTD_NAND_ECC_SW_HAMMING.
-- CONFIG_BANNER
+[1/6] mci: use struct cid
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a4a78c4f321a (link may not be stable)
+[2/6] mmc: merge block read/write functions
+      https://git.pengutronix.de/cgit/barebox/commit/?id=38543119546f (link may not be stable)
+[3/6] mci: cleanup code around ready_for_use flag
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8c7710fdf1c0 (link may not be stable)
+[4/6] mci: mci_spi: remove stray return 0
+      https://git.pengutronix.de/cgit/barebox/commit/?id=52ea3c5986cf (link may not be stable)
+[5/6] mci: mci_spi: fix warning message
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6c0dcb67f65a (link may not be stable)
+[6/6] mci: mci_spi: use mci_of_parse()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=82a681eb1889 (link may not be stable)
 
-With my series and these options disabled the beaglebone MLO is now down
-to 108836 bytes from originally 111956 bytes. The maximim size is 111616
-bytes so we now have another 2780 bytes for future bloat before we are
-in the same situation again ;)
-
-Sascha
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
