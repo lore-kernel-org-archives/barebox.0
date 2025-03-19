@@ -1,59 +1,73 @@
-Delivery-date: Wed, 19 Mar 2025 12:04:01 +0100
+Delivery-date: Wed, 19 Mar 2025 12:16:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1turDO-001QU5-1A
+	id 1turPm-001Qv1-0w
 	for lore@lore.pengutronix.de;
-	Wed, 19 Mar 2025 12:04:01 +0100
+	Wed, 19 Mar 2025 12:16:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1turDN-0005rg-88
-	for lore@pengutronix.de; Wed, 19 Mar 2025 12:04:01 +0100
+	id 1turPl-0007fK-5U
+	for lore@pengutronix.de; Wed, 19 Mar 2025 12:16:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HIi10dc7r2FFDVUh31I0dSe82R+f95Z5EZDZ66nnZEw=; b=U/uHBauwRT+h4NJ7JtiHjfyXiM
-	uXEARWb13eHRY6AslfPOe9O6Ol0LAji1pg3PD+n/5D52T915mcjYfF3kODS3HQd9SO4f9wxdSj+AO
-	ds6RZhcY3I9YBoZ1pVq/uK4WiTvVEjK8sJQOVcTVox1aa9Tl0U4jNOFbK8neWYmx0Y5ZDBefNrKgy
-	Fk52gCAA3BHyJw5zd/yN+HKH/kZc8wbWyC/a+RERU6GiWW6raduIZ5tVwoJYboNdj0hFv/lFFijWE
-	lsnT/Hd86By8NAPAF1JVHSU04ElTnYBTBc4auspDpf2P/dS9yjuumnKRvoihGYN8qS5teLO3sUjBK
-	99aTTEPA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=xil8jHV+qWOs3tK78/bYxtJ6oRwvsC7OFHlUzoZBmRQ=; b=g/nFvPhrlf/6fVRM+OFcvZrfix
+	TqKHHyh2n7h5lgMGGz7PBrhR2Sdu+degF0u4j7Ua0U7fDZaXn2SNKvJX38qNwyQqOrOvzuXhZlpyh
+	nFFLUbjS0PsVOFxAkVWma4Wwzi0CYAbWNjDVIBMQmVeqSZoEJwGZ6hP8GaDlIWANTdLl03K8YtbH2
+	AEC7sRpp8xe6NFbGKcL6YzfJmuK5pDZ1vR+FAnz0tWdKtCqaJ1uynZ9IKC96FmoPan3hn3vkh7FTo
+	6aryGwiLUiVKfYV45qLcyByK7hcF03BmBF4So0GatJMZAW1azcgqhaMv+lruwNXKhsqeISOI5sZbT
+	wWrTbgzQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1turCx-00000008jug-0eml;
-	Wed, 19 Mar 2025 11:03:35 +0000
+	id 1turPF-00000008mi3-1d4G;
+	Wed, 19 Mar 2025 11:16:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1turCu-00000008jsb-2GIt
+	id 1turPD-00000008mgp-23ov
 	for barebox@lists.infradead.org;
-	Wed, 19 Mar 2025 11:03:33 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1turCt-0005lQ-BF; Wed, 19 Mar 2025 12:03:31 +0100
-Message-ID: <92d6e357-4620-4c3e-ac28-48804d74d192@pengutronix.de>
-Date: Wed, 19 Mar 2025 12:03:31 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
+	Wed, 19 Mar 2025 11:16:16 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1turPB-0007WQ-ME; Wed, 19 Mar 2025 12:16:13 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1turPB-000aHF-0E;
+	Wed, 19 Mar 2025 12:16:13 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1turPB-004rod-1A;
+	Wed, 19 Mar 2025 12:16:13 +0100
+Date: Wed, 19 Mar 2025 12:16:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <Z9qnfYtxQ_LZtRYw@pengutronix.de>
 References: <20250319102228.2401563-1-s.hauer@pengutronix.de>
  <50522640-eedf-4c34-81ad-9238aa6d39b9@pengutronix.de>
  <Z9qkCsnzeOjtnJkh@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z9qkCsnzeOjtnJkh@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <92d6e357-4620-4c3e-ac28-48804d74d192@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92d6e357-4620-4c3e-ac28-48804d74d192@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_040332_581011_16C4D264 
-X-CRM114-Status: GOOD (  11.31  )
+X-CRM114-CacheID: sfid-20250319_041615_526424_1873AF9B 
+X-CRM114-Status: GOOD (  20.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,40 +93,43 @@ Subject: Re: [PATCH] serial: omap: make Linux console name configurable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-
-On 3/19/25 12:01, Sascha Hauer wrote:
-> On Wed, Mar 19, 2025 at 11:55:53AM +0100, Ahmad Fatoum wrote:
->> Hello Sascha,
->>
->> On 3/19/25 11:22, Sascha Hauer wrote:
->>> Depending on the configuration Linux on OMAP SoCs either needs ttyO or
->>> ttyS as console name. We used to pass ttyO, but c1c0d18973
->>> ("serial: omap: Use ttyS as Linux console name") recently changed this
->>> to ttyS which breaks setups that used to work earlier. Make the
->>> name configurable to allow for setups requiring ttyS and use ttyO
->>> as default to keep existing setups working.
->>>
->>> Note that with ti,am4372-uart we used to pass ttyO as well, but this
->>> specific compatible is only supported by the 8250 based driver which
->>> needs ttyS as console name. 
->>
->> This reads as if 8250_omap supports only ttyS, but it has logic to
->> support ttyO as well.
+On Wed, Mar 19, 2025 at 12:03:31PM +0100, Ahmad Fatoum wrote:
 > 
-> s/needs/prefers/ maybe
-
-Ye, further below there is also 'will also have no effect', which is not
-true as it hides an ugly error message.
-
-Can you reword these two parts and make the option default ARCH_K3?
-
-Thanks,
-Ahmad
-
 > 
-> Sascha
+> On 3/19/25 12:01, Sascha Hauer wrote:
+> > On Wed, Mar 19, 2025 at 11:55:53AM +0100, Ahmad Fatoum wrote:
+> >> Hello Sascha,
+> >>
+> >> On 3/19/25 11:22, Sascha Hauer wrote:
+> >>> Depending on the configuration Linux on OMAP SoCs either needs ttyO or
+> >>> ttyS as console name. We used to pass ttyO, but c1c0d18973
+> >>> ("serial: omap: Use ttyS as Linux console name") recently changed this
+> >>> to ttyS which breaks setups that used to work earlier. Make the
+> >>> name configurable to allow for setups requiring ttyS and use ttyO
+> >>> as default to keep existing setups working.
+> >>>
+> >>> Note that with ti,am4372-uart we used to pass ttyO as well, but this
+> >>> specific compatible is only supported by the 8250 based driver which
+> >>> needs ttyS as console name. 
+> >>
+> >> This reads as if 8250_omap supports only ttyS, but it has logic to
+> >> support ttyO as well.
+> > 
+> > s/needs/prefers/ maybe
 > 
+> Ye, further below there is also 'will also have no effect', which is not
+> true as it hides an ugly error message.
+> 
+> Can you reword these two parts and make the option default ARCH_K3?
 
+ARCH_K3 doesn't need this option.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
