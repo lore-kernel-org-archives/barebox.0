@@ -1,64 +1,71 @@
-Delivery-date: Wed, 19 Mar 2025 09:37:21 +0100
+Delivery-date: Wed, 19 Mar 2025 09:42:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuovS-001NuE-1Z
+	id 1tup0L-001O13-0b
 	for lore@lore.pengutronix.de;
-	Wed, 19 Mar 2025 09:37:21 +0100
+	Wed, 19 Mar 2025 09:42:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuovR-0006gE-CE
-	for lore@pengutronix.de; Wed, 19 Mar 2025 09:37:21 +0100
+	id 1tup0K-0007Lh-25
+	for lore@pengutronix.de; Wed, 19 Mar 2025 09:42:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=bqCbDNtNbGpuwnFcqbb8bAJMIRgUtKjAPihYZX7mx6s=; b=mWwpFo4FVSycl1
-	0dlxeExNtxJgypZhfEkZZx0R7ngDkYcKmoQjcxfK9OlySnQabLacBFcz3lGkvHIqClpl/u1MOVRMi
-	HpGTB17NABqVANKptOyxdhZcqc/fqMtxecpVk2CBGmVK7mA3c8RoojMM/IgLarCChiDF20fT2GGw/
-	ibuHLR9POaq71LYV2mdssGPxZTEKFpYfZnH2Bis9LmmQJHSAWJyXGjc3DwWgdl2vwj0cuJPXegmj0
-	hysd56oy2wvqlmLSO3z/Hk/0APlRaHSSUxagFqVouNxpd3nIkKLdpFdsTgKOvTjrWa/B7Fk4pG34N
-	qnQyAK1/dAfqVAINTMMQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=lySv8SSvLRZTVkKoQbmPVPdo5YpveNSihLV0T5aihO4=; b=rZO1eHI5xCG3zpb8s2d3RCMyOM
+	HpybAgcdFSZ4YCFKsc0ki8J5ahO9hvru+JrAll1r9rJbButu5s3R6CYf0AYxnBWOznwof7RR2rdRQ
+	1rKEr4+acZoLuTTyBOwcvqKTZHShOX4ivDQqC/RLccTccY5d00SPh9f8zMcMWeqgSJlflc5GD6cQP
+	PveVylRZd7nwMLums8JAODHVCHI4ZjbB4LGA+6Y9s3khfTdbxESSuOHo8oBT6T1xwYc6ftKbZSk4Y
+	bRw9f3SuHQKhK5nZR8HFLl4+F7bAwx3aNNfjh2DadyvGqKNJgT+l79t9kvIf8TqKNoU8W60TbaAt/
+	iek6VMzA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuouc-00000008MrY-2nPv;
-	Wed, 19 Mar 2025 08:36:30 +0000
+	id 1tuozr-00000008NhY-2IrD;
+	Wed, 19 Mar 2025 08:41:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuouZ-00000008Mqd-0NlY
+	id 1tuozo-00000008Ngx-2eTT
 	for barebox@lists.infradead.org;
-	Wed, 19 Mar 2025 08:36:28 +0000
+	Wed, 19 Mar 2025 08:41:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuouW-0006WV-MK; Wed, 19 Mar 2025 09:36:24 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuozn-0007GN-A2; Wed, 19 Mar 2025 09:41:51 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuouV-000Z2n-31;
-	Wed, 19 Mar 2025 09:36:24 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuouW-009FCP-0n;
-	Wed, 19 Mar 2025 09:36:24 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuozm-000Z3Q-1m;
+	Wed, 19 Mar 2025 09:41:50 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuozm-004pJ5-2o;
+	Wed, 19 Mar 2025 09:41:50 +0100
+Date: Wed, 19 Mar 2025 09:41:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 19 Mar 2025 09:36:23 +0100
-Message-Id: <20250319083623.2203370-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
+Message-ID: <Z9qDTuzVEeRNHRqn@pengutronix.de>
+References: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
+ <CAP1tNvQokH9TTSANKNADzo5Nie2SzjAyM08ix0D8gbL6TPxBuw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP1tNvQokH9TTSANKNADzo5Nie2SzjAyM08ix0D8gbL6TPxBuw@mail.gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_013627_129561_8A1C8767 
-X-CRM114-Status: GOOD (  10.03  )
+X-CRM114-CacheID: sfid-20250319_014152_669750_FA762794 
+X-CRM114-Status: GOOD (  17.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,7 +77,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -79,63 +85,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: am335x_mlo_defconfig: disable unnecessary options
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 0/7] filetype: Some size reduction patches
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-- disable CONFIG_BOARD_GENERIC_DT which is not needed for the MLO
-  defconfig
-- disable CONFIG_MTD_NAND_ECC_SW_HAMMING. AM335x uses hardware ECC
-- disable CONFIG_BANNER. Saves another few bytes
+Hi Alexander,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/am335x_mlo_defconfig | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+On Tue, Mar 18, 2025 at 06:01:19PM +0300, Alexander Shiyan wrote:
+> Hello Sascha!
+> 
+> I've been using a separate config for this board for a long time :)
+> Maybe you can take something from my working configuration that
+> has been working for several years:
+> https://github.com/shcgit/barebox/blob/milas/arch/arm/configs/mm_am335x_mlo_defconfig
 
-diff --git a/arch/arm/configs/am335x_mlo_defconfig b/arch/arm/configs/am335x_mlo_defconfig
-index 4a9ce6cfb7..e9d9f93edf 100644
---- a/arch/arm/configs/am335x_mlo_defconfig
-+++ b/arch/arm/configs/am335x_mlo_defconfig
-@@ -6,19 +6,18 @@ CONFIG_MACH_BEAGLEBONE=y
- CONFIG_MACH_MYIRTECH_X335X=y
- CONFIG_MACH_PHYTEC_SOM_AM335X=y
- CONFIG_THUMB2_BAREBOX=y
-+# CONFIG_BOARD_GENERIC_DT is not set
-+# CONFIG_BANNER is not set
- # CONFIG_MEMINFO is not set
- CONFIG_IMAGE_COMPRESSION_XZKERN=y
- CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x1b400
- CONFIG_MALLOC_SIZE=0x0
- CONFIG_MALLOC_TLSF=y
--CONFIG_RELOCATABLE=y
- CONFIG_PROMPT="MLO>"
- CONFIG_SHELL_NONE=y
- # CONFIG_ERRNO_MESSAGES is not set
--# CONFIG_TIMESTAMP is not set
- CONFIG_CONSOLE_ACTIVATE_NONE=y
--CONFIG_OFDEVICE=y
- # CONFIG_FILETYPE_STRING is not set
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_SPI_OMAP3=y
-@@ -28,10 +27,12 @@ CONFIG_MTD=y
- CONFIG_MTD_M25P80=y
- CONFIG_NAND=y
- CONFIG_NAND_OMAP_GPMC=y
-+# CONFIG_MTD_NAND_ECC_SW_HAMMING is not set
- CONFIG_MCI=y
- # CONFIG_MCI_WRITE is not set
- CONFIG_MCI_OMAP_HSMMC=y
- CONFIG_PINCTRL_SINGLE=y
- CONFIG_BUS_OMAP_GPMC=y
-+# CONFIG_VIRTIO_MENU is not set
- # CONFIG_FS_DEVFS is not set
- CONFIG_FS_FAT=y
+Thanks, I extracted some more unneeded options from that. You disabled
+the board support which we want to keep. Also you disabled SPI boot
+which I think we'll need for some boards. However, these are indeed
+not needed:
+
+- CONFIG_BOARD_GENERIC_DT
+- CONFIG_MTD_NAND_ECC_SW_HAMMING.
+- CONFIG_BANNER
+
+With my series and these options disabled the beaglebone MLO is now down
+to 108836 bytes from originally 111956 bytes. The maximim size is 111616
+bytes so we now have another 2780 bytes for future bloat before we are
+in the same situation again ;)
+
+Sascha
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
