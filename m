@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuvbK-001Vjz-0E
+	id 1tuvbK-001Vjy-07
 	for lore@lore.pengutronix.de;
 	Wed, 19 Mar 2025 16:45:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuvbG-00049Z-Vb
+	id 1tuvbG-00049B-IE
 	for lore@pengutronix.de; Wed, 19 Mar 2025 16:45:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,57 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=A5hNMUFEEuTB33Fh0UD4lYsegKfWlHqVxVJwNUqIvyo=; b=SZu1v9503axW56vl9ad5oxotUG
-	veS2b3iw6LbYeEiCbminr2wy99Qo5/8ZJLssubEKfY7kGq3uy1A6GX/qBmxAcKYkFDBOhnBHUGNwF
-	DskB3p52zkd0/wYZ5GzSDKOKMYo7WlTm6jgOOuq8WyTmHtbLTvpkuDgMl8RHr6ax1cqbYHTrGpSJ+
-	6vuXDvJ3M+acQHngQ0Fxc5dD4r14pn0WRTzD5mmmxAC2UMZ2oT2WeNblmYussLUb6Oa7FwTJuLaES
-	spXohvgK4QPzA3BaO4ADDbuduzRCTIrGKrODjfKslDAIZizjgOyTYV3aZJFn04T9w0a4gWSrw445E
-	qvE5oC1g==;
+	bh=yLBblb2rhJjvpjawebKAs9egrYeSobGJZDqx40+mhhg=; b=NgnjcaPVk9Z/Xz99iIUtIhVhmQ
+	00iCE3a6EdZ19yISalwmzlEN16wnGlW+F1ddyjgHAAIej1v2zH+VzijIJNrEtn4qowvljh3fVmvy9
+	wlrQBCMdDpbJ52B0AWL2y6cLXvMPxdYVZzg2lGU5IzzpKZiKtm3GMyN/hydOzkMsJFS2udANZJm0N
+	WyIxbfFyrUbNjAFSmmQxt/8nZa7syXn26bztZf8ADPiW+7rMFeGtDCXY2Q2RDNgry/icjeQyT1RYK
+	LtPa9x0terrdRaNvk/fefvdgeowc6LmjHTXW+RqoP2LOcDTzBZ9Awq50DYOAbmX8S8PVsoXOQLHxL
+	bYYnvHWg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuvag-00000009QZ5-0zhL;
-	Wed, 19 Mar 2025 15:44:22 +0000
+	id 1tuvah-00000009Qa6-1N8w;
+	Wed, 19 Mar 2025 15:44:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuvNm-00000009OA8-27dc
+	id 1tuvNm-00000009OAB-2NcH
 	for barebox@lists.infradead.org;
-	Wed, 19 Mar 2025 15:31:04 +0000
+	Wed, 19 Mar 2025 15:31:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuvNl-0000zC-72; Wed, 19 Mar 2025 16:31:01 +0100
+	id 1tuvNl-0000zA-Aw; Wed, 19 Mar 2025 16:31:01 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuvNk-000cAj-1T;
+	id 1tuvNk-000cAi-1P;
 	Wed, 19 Mar 2025 16:31:00 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tuvNk-00Awy1-2T;
+	id 1tuvNk-00Awy1-2S;
 	Wed, 19 Mar 2025 16:31:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Mar 2025 16:30:58 +0100
+Date: Wed, 19 Mar 2025 16:30:57 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250319-rpmb-v2-7-a8801fb35cd4@pengutronix.de>
+Message-Id: <20250319-rpmb-v2-6-a8801fb35cd4@pengutronix.de>
 References: <20250319-rpmb-v2-0-a8801fb35cd4@pengutronix.de>
 In-Reply-To: <20250319-rpmb-v2-0-a8801fb35cd4@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1742398260; l=5528;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1742398260; l=12019;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=R+Np7quk5qJpBblKOKwB5WQpy9iWjVqhim1gpoS/soA=;
- b=ynQRtVvQJcxwJq5a2MqyeaLSuBP4Au0xCTkjMWOdgE1xZ5ZM47xJY2ET01T7+dVZhaq6G+a26
- v4deAfp32ZSAvP4JD9H67Jv81vGIomdtNP1HZz2cYQGMYIHFIUivajo
+ bh=L4cEkKLtUqeomLcyvEkOB0vF8fRQWIqfp0Np1eogdf0=;
+ b=i1RmPnMw09F+/OGt0ad38xLhr7lVnZ9lKZ09U8MmVUmxNPkNmRDaH9B5Q5aTVdoGSe062ztEE
+ Kk3+1LqhDkGCiX6SDtUV6SMiRNeE2qt4atxnjRo28M0ICwEugbrbSr6
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_083102_581915_735493BB 
-X-CRM114-Status: GOOD (  18.88  )
+X-CRM114-CacheID: sfid-20250319_083102_967569_9A43A7C3 
+X-CRM114-Status: GOOD (  32.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,196 +87,380 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-1.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 07/10] tee: optee: implement RPMB support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH v2 06/10] tee: optee: implement shared mem alloc/free RPC
+ commands
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This implements the OPTEE_RPC_CMD_RPMB RPC call. For data requests we
-call into the MMC specific RPMB implementation.
+This implements the OPTEE_RPC_CMD_SHM_ALLOC and OPTEE_RPC_CMD_SHM_FREE
+commands to let the secure world allocate and free shared memory.
+
+When OP-TEE calls into the nonsecure world in order to allocate shared
+memory we'll need a list of pages returned to the secure world. This
+is needed in two cases: once when we call into OP-TEE to register the
+shared memory with OP-TEE and once in the return parameters of the
+OPTEE_RPC_CMD_SHM_ALLOC RPC call. The U-Boot code this code is based on
+allocates two separate page lists. In barebox we attach the page list
+to the shared memory object instead so that we have to allocate and
+initialize it only once.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/tee/optee/Makefile        |   1 +
- drivers/tee/optee/optee_private.h |  10 ++++
- drivers/tee/optee/rpc.c           |   4 ++
- drivers/tee/optee/rpmb.c          | 121 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 136 insertions(+)
+ drivers/tee/optee/optee_private.h |   3 +
+ drivers/tee/optee/optee_rpc_cmd.h | 144 ++++++++++++++++++++++++++++++++++++++
+ drivers/tee/optee/rpc.c           |  60 +++++++++++++++-
+ drivers/tee/optee/smc_abi.c       |  26 ++++---
+ drivers/tee/tee_shm.c             |   1 +
+ include/linux/tee_drv.h           |   1 +
+ 6 files changed, 222 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/tee/optee/Makefile b/drivers/tee/optee/Makefile
-index 5e71af77ee..f68352aa4e 100644
---- a/drivers/tee/optee/Makefile
-+++ b/drivers/tee/optee/Makefile
-@@ -6,3 +6,4 @@ optee-objs += call.o
- optee-objs += rpc.o
- optee-objs += device.o
- optee-objs += smc_abi.o
-+obj-$(CONFIG_MCI_MMC_RPMB) += rpmb.o
 diff --git a/drivers/tee/optee/optee_private.h b/drivers/tee/optee/optee_private.h
-index d739a6c609..bb9ac1b068 100644
+index 637d3195be..d739a6c609 100644
 --- a/drivers/tee/optee/optee_private.h
 +++ b/drivers/tee/optee/optee_private.h
-@@ -179,4 +179,14 @@ static inline void reg_pair_from_64(u32 *reg0, u32 *reg1, u64 val)
- /* Registration of the ABIs */
- int optee_smc_abi_register(void);
+@@ -17,7 +17,10 @@
  
-+#ifdef CONFIG_MCI_MMC_RPMB
-+void optee_suppl_cmd_rpmb(struct tee_context *ctx, struct optee_msg_arg *arg);
-+#else
-+static inline void optee_suppl_cmd_rpmb(struct tee_context *ctx, struct optee_msg_arg *arg)
-+{
-+	pr_debug("OPTEE_MSG_RPC_CMD_RPMB not implemented\n");
-+	arg->ret = TEEC_ERROR_NOT_IMPLEMENTED;
-+}
-+#endif
+ /* Some Global Platform error codes used in this driver */
+ #define TEEC_SUCCESS			0x00000000
++#define TEEC_ERROR_GENERIC		0xffff0000
+ #define TEEC_ERROR_BAD_PARAMETERS	0xFFFF0006
++#define TEEC_ERROR_ITEM_NOT_FOUND	0xffff0008
++#define TEEC_ERROR_NOT_IMPLEMENTED	0xFFFF0009
+ #define TEEC_ERROR_NOT_SUPPORTED	0xFFFF000A
+ #define TEEC_ERROR_COMMUNICATION	0xFFFF000E
+ #define TEEC_ERROR_OUT_OF_MEMORY	0xFFFF000C
+diff --git a/drivers/tee/optee/optee_rpc_cmd.h b/drivers/tee/optee/optee_rpc_cmd.h
+new file mode 100644
+index 0000000000..3ef5672be7
+--- /dev/null
++++ b/drivers/tee/optee/optee_rpc_cmd.h
+@@ -0,0 +1,144 @@
++/* SPDX-License-Identifier: BSD-2-Clause */
++/*
++ * Copyright (c) 2016-2021, Linaro Limited
++ */
 +
- #endif /*OPTEE_PRIVATE_H*/
++#ifndef __OPTEE_RPC_CMD_H
++#define __OPTEE_RPC_CMD_H
++
++/*
++ * All RPC is done with a struct optee_msg_arg as bearer of information,
++ * struct optee_msg_arg::arg holds values defined by OPTEE_RPC_CMD_* below.
++ * Only the commands handled by the kernel driver are defined here.
++ *
++ * RPC communication with tee-supplicant is reversed compared to normal
++ * client communication described above. The supplicant receives requests
++ * and sends responses.
++ */
++
++#define OPTEE_RPC_CMD_RPMB		1
++
++/*
++ * Get time
++ *
++ * Returns number of seconds and nano seconds since the Epoch,
++ * 1970-01-01 00:00:00 +0000 (UTC).
++ *
++ * [out]    value[0].a	    Number of seconds
++ * [out]    value[0].b	    Number of nano seconds.
++ */
++#define OPTEE_RPC_CMD_GET_TIME		3
++
++/*
++ * Notification from/to secure world.
++ *
++ * If secure world needs to wait for something, for instance a mutex, it
++ * does a notification wait request instead of spinning in secure world.
++ * Conversely can a synchronous notification can be sent when a secure
++ * world mutex with a thread waiting thread is unlocked.
++ *
++ * This interface can also be used to wait for a asynchronous notification
++ * which instead is sent via a non-secure interrupt.
++ *
++ * Waiting on notification
++ * [in]    value[0].a	    OPTEE_RPC_NOTIFICATION_WAIT
++ * [in]    value[0].b	    notification value
++ * [in]    value[0].c	    timeout in milliseconds or 0 if no timeout
++ *
++ * Sending a synchronous notification
++ * [in]    value[0].a	    OPTEE_RPC_NOTIFICATION_SEND
++ * [in]    value[0].b	    notification value
++ */
++#define OPTEE_RPC_CMD_NOTIFICATION	4
++#define OPTEE_RPC_NOTIFICATION_WAIT	0
++#define OPTEE_RPC_NOTIFICATION_SEND	1
++
++/*
++ * Suspend execution
++ *
++ * [in]    value[0].a	Number of milliseconds to suspend
++ */
++#define OPTEE_RPC_CMD_SUSPEND		5
++
++/*
++ * Allocate a piece of shared memory
++ *
++ * [in]    value[0].a	    Type of memory one of
++ *			    OPTEE_RPC_SHM_TYPE_* below
++ * [in]    value[0].b	    Requested size
++ * [in]    value[0].c	    Required alignment
++ * [out]   memref[0]	    Buffer
++ */
++#define OPTEE_RPC_CMD_SHM_ALLOC		6
++/* Memory that can be shared with a non-secure user space application */
++#define OPTEE_RPC_SHM_TYPE_APPL		0
++/* Memory only shared with non-secure kernel */
++#define OPTEE_RPC_SHM_TYPE_KERNEL	1
++
++/*
++ * Free shared memory previously allocated with OPTEE_RPC_CMD_SHM_ALLOC
++ *
++ * [in]     value[0].a	    Type of memory one of
++ *			    OPTEE_RPC_SHM_TYPE_* above
++ * [in]     value[0].b	    Value of shared memory reference or cookie
++ */
++#define OPTEE_RPC_CMD_SHM_FREE		7
++
++/*
++ * Issue master requests (read and write operations) to an I2C chip.
++ *
++ * [in]     value[0].a	    Transfer mode (OPTEE_RPC_I2C_TRANSFER_*)
++ * [in]     value[0].b	    The I2C bus (a.k.a adapter).
++ *				16 bit field.
++ * [in]     value[0].c	    The I2C chip (a.k.a address).
++ *				16 bit field (either 7 or 10 bit effective).
++ * [in]     value[1].a	    The I2C master control flags (ie, 10 bit address).
++ *				16 bit field.
++ * [in/out] memref[2]	    Buffer used for data transfers.
++ * [out]    value[3].a	    Number of bytes transferred by the REE.
++ */
++#define OPTEE_RPC_CMD_I2C_TRANSFER	21
++
++/* I2C master transfer modes */
++#define OPTEE_RPC_I2C_TRANSFER_RD	0
++#define OPTEE_RPC_I2C_TRANSFER_WR	1
++
++/* I2C master control flags */
++#define OPTEE_RPC_I2C_FLAGS_TEN_BIT	BIT(0)
++
++/*
++ * Reset RPMB probing
++ *
++ * Releases an eventually already used RPMB devices and starts over searching
++ * for RPMB devices. Returns the kind of shared memory to use in subsequent
++ * OPTEE_RPC_CMD_RPMB_PROBE_NEXT and OPTEE_RPC_CMD_RPMB calls.
++ *
++ * [out]    value[0].a	    OPTEE_RPC_SHM_TYPE_*, the parameter for
++ *			    OPTEE_RPC_CMD_SHM_ALLOC
++ */
++#define OPTEE_RPC_CMD_RPMB_PROBE_RESET	22
++
++/*
++ * Probe next RPMB device
++ *
++ * [out]    value[0].a	    Type of RPMB device, OPTEE_RPC_RPMB_*
++ * [out]    value[0].b	    EXT CSD-slice 168 "RPMB Size"
++ * [out]    value[0].c	    EXT CSD-slice 222 "Reliable Write Sector Count"
++ * [out]    memref[1]       Buffer with the raw CID
++ */
++#define OPTEE_RPC_CMD_RPMB_PROBE_NEXT	23
++
++/* Type of RPMB device */
++#define OPTEE_RPC_RPMB_EMMC		0
++#define OPTEE_RPC_RPMB_UFS		1
++#define OPTEE_RPC_RPMB_NVME		2
++
++/*
++ * Replay Protected Memory Block access
++ *
++ * [in]     memref[0]	    Frames to device
++ * [out]    memref[1]	    Frames from device
++ */
++#define OPTEE_RPC_CMD_RPMB_FRAMES	24
++
++#endif /*__OPTEE_RPC_CMD_H*/
 diff --git a/drivers/tee/optee/rpc.c b/drivers/tee/optee/rpc.c
-index bdb2a9da74..bc398a625b 100644
+index 3d0a7f2980..bdb2a9da74 100644
 --- a/drivers/tee/optee/rpc.c
 +++ b/drivers/tee/optee/rpc.c
-@@ -64,7 +64,11 @@ void optee_rpc_cmd(struct tee_context *ctx, struct optee *optee,
- 	case OPTEE_RPC_CMD_SHM_FREE:
- 		cmd_shm_free(arg);
- 		break;
-+	case OPTEE_RPC_CMD_RPMB:
-+		optee_suppl_cmd_rpmb(ctx, arg);
-+		break;
- 	default:
-+		pr_notice_once("optee: No supplicant or RPC handler for command 0x%x\n", arg->cmd);
- 		arg->ret = TEEC_ERROR_NOT_IMPLEMENTED;
- 	}
+@@ -7,10 +7,66 @@
  
-diff --git a/drivers/tee/optee/rpmb.c b/drivers/tee/optee/rpmb.c
-new file mode 100644
-index 0000000000..cdc8afc1a4
---- /dev/null
-+++ b/drivers/tee/optee/rpmb.c
-@@ -0,0 +1,121 @@
-+// SPDX-License-Identifier: BSD-2-Clause
-+/*
-+ * Copyright (c) 2018 Linaro Limited
-+ */
+ #include <linux/tee_drv.h>
+ #include "optee_private.h"
++#include "optee_rpc_cmd.h"
 +
-+#define pr_fmt(fmt)     "optee-rpmb: " fmt
-+
-+#include <mci.h>
-+
-+#include "optee_msg.h"
-+#include "optee_private.h"
-+
-+/*
-+ * Request and response definitions must be in sync with the secure side of
-+ * OP-TEE.
-+ */
-+
-+/* Request */
-+struct rpmb_req {
-+	u16 cmd;
-+#define RPMB_CMD_DATA_REQ      0x00
-+#define RPMB_CMD_GET_DEV_INFO  0x01
-+	u16 dev_id;
-+	u16 block_count;
-+	/* Optional data frames (rpmb_data_frame) follow */
-+};
-+
-+#define RPMB_REQ_DATA(req) ((void *)((struct rpmb_req *)(req) + 1))
-+
-+/* Response to device info request */
-+struct rpmb_dev_info {
-+	u8 cid[16];
-+	u8 rpmb_size_mult;	/* EXT CSD-slice 168: RPMB Size */
-+	u8 rel_wr_sec_c;	/* EXT CSD-slice 222: Reliable Write Sector */
-+				/*                    Count */
-+	u8 ret_code;
-+#define RPMB_CMD_GET_DEV_INFO_RET_OK     0x00
-+#define RPMB_CMD_GET_DEV_INFO_RET_ERROR  0x01
-+};
-+
-+static u32 rpmb_get_dev_info(struct mci *mci, struct rpmb_dev_info *info)
++static void cmd_shm_alloc(struct tee_context *ctx, struct optee_msg_arg *arg)
 +{
-+	int i;
++	struct tee_shm *shm;
 +
-+	if (!mci->ext_csd)
-+		return TEEC_ERROR_GENERIC;
++	arg->ret_origin = TEEC_ORIGIN_COMMS;
 +
-+	for (i = 0; i < ARRAY_SIZE(mci->raw_cid); i++)
-+		((u32 *) info->cid)[i] = cpu_to_be32(mci->raw_cid[i]);
-+
-+	info->rel_wr_sec_c = mci->ext_csd[222];
-+	info->rpmb_size_mult = mci->ext_csd[168];
-+	info->ret_code = RPMB_CMD_GET_DEV_INFO_RET_OK;
-+
-+	return TEEC_SUCCESS;
-+}
-+
-+static u32 rpmb_process_request(struct tee_context *ctx, void *req,
-+				ulong req_size, void *rsp, ulong rsp_size)
-+{
-+	struct rpmb_req *sreq = req;
-+	struct mci *mci;
-+
-+	if (req_size < sizeof(*sreq))
-+		return TEEC_ERROR_BAD_PARAMETERS;
-+
-+	mci = mci_get_rpmb_dev(sreq->dev_id);
-+	if (!mci) {
-+		pr_err_once("Cannot find RPMB MMC with id %u\n", sreq->dev_id);
-+		return TEEC_ERROR_ITEM_NOT_FOUND;
-+	}
-+
-+	switch (sreq->cmd) {
-+	case RPMB_CMD_DATA_REQ:
-+		if (mci_rpmb_route_frames(mci, RPMB_REQ_DATA(req),
-+					  req_size - sizeof(struct rpmb_req),
-+					  rsp, rsp_size))
-+			return TEEC_ERROR_BAD_PARAMETERS;
-+		return TEEC_SUCCESS;
-+
-+	case RPMB_CMD_GET_DEV_INFO:
-+		if (rsp_size != sizeof(struct rpmb_dev_info)) {
-+			pr_debug("Invalid req/rsp size\n");
-+			return TEEC_ERROR_BAD_PARAMETERS;
-+		}
-+
-+		return rpmb_get_dev_info(mci, rsp);
-+
-+	default:
-+		pr_debug("Unsupported RPMB command: %d\n", sreq->cmd);
-+		return TEEC_ERROR_BAD_PARAMETERS;
-+	}
-+}
-+
-+void optee_suppl_cmd_rpmb(struct tee_context *ctx, struct optee_msg_arg *arg)
-+{
-+	struct tee_shm *req_shm;
-+	struct tee_shm *rsp_shm;
-+	void *req_buf;
-+	void *rsp_buf;
-+	ulong req_size;
-+	ulong rsp_size;
-+
-+	if (arg->num_params != 2 ||
-+	    arg->params[0].attr != OPTEE_MSG_ATTR_TYPE_RMEM_INPUT ||
-+	    arg->params[1].attr != OPTEE_MSG_ATTR_TYPE_RMEM_OUTPUT) {
++	if (arg->num_params != 1 ||
++	    arg->params[0].attr != OPTEE_MSG_ATTR_TYPE_VALUE_INPUT) {
 +		arg->ret = TEEC_ERROR_BAD_PARAMETERS;
 +		return;
 +	}
 +
-+	req_shm = (struct tee_shm *)(ulong)arg->params[0].u.rmem.shm_ref;
-+	req_buf = (u8 *)req_shm->kaddr + arg->params[0].u.rmem.offs;
-+	req_size = arg->params[0].u.rmem.size;
++	shm = tee_shm_alloc_kernel_buf(ctx, arg->params[0].u.value.b);
++	if (IS_ERR(shm)) {
++		if (PTR_ERR(shm) == -ENOMEM)
++			arg->ret = TEEC_ERROR_OUT_OF_MEMORY;
++		else
++			arg->ret = TEEC_ERROR_GENERIC;
++		return;
++	}
 +
-+	rsp_shm = (struct tee_shm *)(ulong)arg->params[1].u.rmem.shm_ref;
-+	rsp_buf = (u8 *)rsp_shm->kaddr + arg->params[1].u.rmem.offs;
-+	rsp_size = arg->params[1].u.rmem.size;
-+
-+	arg->ret = rpmb_process_request(ctx, req_buf, req_size,
-+					rsp_buf, rsp_size);
++	arg->params[0].attr = OPTEE_MSG_ATTR_TYPE_TMEM_OUTPUT |
++			      OPTEE_MSG_ATTR_NONCONTIG;
++	arg->params[0].u.tmem.buf_ptr = virt_to_phys(shm->pages_list);
++	arg->params[0].u.tmem.size = shm->size;
++	arg->params[0].u.tmem.shm_ref = (ulong)shm;
++	arg->ret = TEEC_SUCCESS;
 +}
++
++static void cmd_shm_free(struct optee_msg_arg *arg)
++{
++	arg->ret_origin = TEEC_ORIGIN_COMMS;
++
++	if (arg->num_params != 1 ||
++	    arg->params[0].attr != OPTEE_MSG_ATTR_TYPE_VALUE_INPUT) {
++		arg->ret = TEEC_ERROR_BAD_PARAMETERS;
++		return;
++	}
++
++	tee_shm_free((struct tee_shm *)(ulong)arg->params[0].u.value.b);
++	arg->ret = TEEC_SUCCESS;
++}
+ 
+ void optee_rpc_cmd(struct tee_context *ctx, struct optee *optee,
+ 		   struct optee_msg_arg *arg)
+ {
+-	pr_notice_once("optee: No supplicant or RPC handler for command 0x%x\n", arg->cmd);
+-	arg->ret = TEEC_ERROR_NOT_SUPPORTED;
++	pr_debug("%s: receive RPC CMD: %d\n", __func__, arg->cmd);
++
++	switch (arg->cmd) {
++	case OPTEE_RPC_CMD_SHM_ALLOC:
++		cmd_shm_alloc(ctx, arg);
++		break;
++	case OPTEE_RPC_CMD_SHM_FREE:
++		cmd_shm_free(arg);
++		break;
++	default:
++		arg->ret = TEEC_ERROR_NOT_IMPLEMENTED;
++	}
++
++	arg->ret_origin = TEEC_ORIGIN_COMMS;
+ }
+diff --git a/drivers/tee/optee/smc_abi.c b/drivers/tee/optee/smc_abi.c
+index 354a94a2f2..aab8ebb186 100644
+--- a/drivers/tee/optee/smc_abi.c
++++ b/drivers/tee/optee/smc_abi.c
+@@ -301,7 +301,7 @@ static int optee_shm_register(struct tee_context *ctx, struct tee_shm *shm)
+ 	struct tee_shm *shm_arg;
+ 	u64 *pages_list;
+ 	u64 ph_ptr;
+-	int rc = 0;
++	int rc;
+ 
+ 	pages_list = optee_alloc_and_init_page_list(shm->kaddr, shm->size, &ph_ptr);
+ 	if (!pages_list)
+@@ -314,7 +314,7 @@ static int optee_shm_register(struct tee_context *ctx, struct tee_shm *shm)
+ 	msg_arg = optee_get_msg_arg(ctx, 1, &shm_arg);
+ 	if (IS_ERR(msg_arg)) {
+ 		rc = PTR_ERR(msg_arg);
+-		goto free_pages_list;
++		goto err_free;
+ 	}
+ 
+ 	msg_arg->num_params = 1;
+@@ -326,11 +326,20 @@ static int optee_shm_register(struct tee_context *ctx, struct tee_shm *shm)
+ 	msg_arg->params->u.tmem.size = tee_shm_get_size(shm);
+ 
+ 	if (optee->ops->do_call_with_arg(ctx, msg_arg) ||
+-	    msg_arg->ret != TEEC_SUCCESS)
++	    msg_arg->ret != TEEC_SUCCESS) {
+ 		rc = -EINVAL;
++		goto err_free_msg_arg;
++	}
++
++	optee_free_msg_arg(ctx, shm_arg);
++
++	shm->pages_list = pages_list;
+ 
++	return 0;
++
++err_free_msg_arg:
+ 	optee_free_msg_arg(ctx, shm_arg);
+-free_pages_list:
++err_free:
+ 	free(pages_list);
+ 
+ 	return rc;
+@@ -383,8 +392,7 @@ static int optee_shm_unregister(struct tee_context *ctx, struct tee_shm *shm)
+  *
+  * Result of RPC is written back into @param.
+  */
+-static void optee_handle_rpc(struct tee_context *ctx, struct optee_rpc_param *param,
+-			     void *page_list)
++static void optee_handle_rpc(struct tee_context *ctx, struct optee_rpc_param *param)
+ {
+ 	struct tee_device *teedev = ctx->teedev;
+ 	struct optee *optee = tee_get_drvdata(teedev);
+@@ -448,7 +456,6 @@ static int optee_smc_do_call_with_arg(struct tee_context *ctx,
+ {
+ 	struct optee *optee = tee_get_drvdata(ctx->teedev);
+ 	struct optee_rpc_param param = { .a0 = OPTEE_SMC_CALL_WITH_ARG };
+-	void *page_list = NULL;
+ 
+ 	reg_pair_from_64(&param.a1, &param.a2, virt_to_phys(arg));
+ 	while (true) {
+@@ -461,15 +468,12 @@ static int optee_smc_do_call_with_arg(struct tee_context *ctx,
+ 		optee->smc.invoke_fn(param.a0, param.a1, param.a2, param.a3,
+ 				     param.a4, param.a5, param.a6, param.a7, &res);
+ 
+-		free(page_list);
+-		page_list = NULL;
+-
+ 		if (OPTEE_SMC_RETURN_IS_RPC(res.a0)) {
+ 			param.a0 = res.a0;
+ 			param.a1 = res.a1;
+ 			param.a2 = res.a2;
+ 			param.a3 = res.a3;
+-			optee_handle_rpc(ctx, &param, &page_list);
++			optee_handle_rpc(ctx, &param);
+ 		} else {
+ 			return res.a0;
+ 		}
+diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
+index 9952608435..50ed086d0e 100644
+--- a/drivers/tee/tee_shm.c
++++ b/drivers/tee/tee_shm.c
+@@ -32,6 +32,7 @@ static void tee_shm_release(struct tee_device *teedev, struct tee_shm *shm)
+ 
+ 	teedev_ctx_put(shm->ctx);
+ 
++	kfree(shm->pages_list);
+ 	kfree(shm);
+ 
+ 	tee_device_put(teedev);
+diff --git a/include/linux/tee_drv.h b/include/linux/tee_drv.h
+index 7289c3057a..e2c1042deb 100644
+--- a/include/linux/tee_drv.h
++++ b/include/linux/tee_drv.h
+@@ -194,6 +194,7 @@ struct tee_shm {
+ 	struct tee_context *ctx;
+ 	phys_addr_t paddr;
+ 	void *kaddr;
++	u64 *pages_list;
+ 	size_t size;
+ 	refcount_t refcount;
+ 	u32 flags;
 
 -- 
 2.39.5
