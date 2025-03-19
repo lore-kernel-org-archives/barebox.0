@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuvyC-001W2r-2C
+	id 1tuvyD-001W3C-0w
 	for lore@lore.pengutronix.de;
 	Wed, 19 Mar 2025 17:08:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuvyB-0000H7-GP
+	id 1tuvyC-0000Hd-57
 	for lore@pengutronix.de; Wed, 19 Mar 2025 17:08:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=e8G5Vauwb+0cmivFfGQTbzJjPqhB3DuqCT7ADtC/3R0=; b=NnzVYh9LG3UU6+sxLWolUH0YdI
-	G6pAPjGHvKBDItF0nQXe3IGcaXln7fIKIZ2DxiLyVPyh1kq3d/rDnnCrqqzyV0t9HX+Tg1OhEP4Wp
-	VB+raHnPxJvjqeMlMzsY5v69lnkQMp8jA/jg/VGEmZoyxZ3muRilXmolJSFWxtM/ObcK2PAe6H3kG
-	61mDWrotcQ87B9vbo/zX2bwKuULdtd8RD+G6J0iQ2oCLUAWvnXt2IqF5GtWhGXagzKrUQcUFd8z5q
-	daGisyegDMnyaT3SzhAB2R2yKKVWnuPKMhwa0tLZZ4Z2yVfHPoY4fT+fVukNOMDDP2OWXJh0pCJTk
-	H6mmTUog==;
+	bh=X4sUiJB42O8Gr2rcTonxfpS+PdlNZaQ7kMML8YSIOPY=; b=dNIjEmNu5N0SGBdYMugIsZRhdr
+	xcozLKcrjhxKPnQ44IN/bUW4sv8Bl9/3exSZ0shZz9hoKo2QUdLxMvCVXzhzaFTlJr6A9G5uMjR7J
+	Lt/F8WXdCkt5Icc1fQeEOLb8YKoo2H7X/L3hsHRnR6AE0zjhKqfSFHgsVsqubBueuUNOC/pW8Mipa
+	rqctl8D2zKAHjPvTz0Gg2iho60UOapXHUZVQwrxZGusJhpdKDsGjsF7nOx22LJhwTb8g4Afc74fAc
+	8f0aryrSjZ4MSZaqMjMoh1YdHMv5ZOe2IdiwDEM13QXzcqW0v9zNOHox6tguKI8+QlJUBPeD4sgRj
+	s9aN5rxA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuvxh-00000009Ugi-1GS4;
-	Wed, 19 Mar 2025 16:08:09 +0000
+	id 1tuvxi-00000009UhJ-3NFD;
+	Wed, 19 Mar 2025 16:08:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tuvxe-00000009Uf3-0M5y
+	id 1tuvxe-00000009Uf2-0MAa
 	for barebox@lists.infradead.org;
-	Wed, 19 Mar 2025 16:08:07 +0000
+	Wed, 19 Mar 2025 16:08:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tuvxc-0008V1-Nz; Wed, 19 Mar 2025 17:08:04 +0100
+	id 1tuvxc-0008V0-MU; Wed, 19 Mar 2025 17:08:04 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tuvxc-000cZL-0O;
+	id 1tuvxc-000cZI-0G;
 	Wed, 19 Mar 2025 17:08:04 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tuvxc-008j38-1T;
+	id 1tuvxc-008j38-1J;
 	Wed, 19 Mar 2025 17:08:04 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 19 Mar 2025 17:08:03 +0100
-Message-Id: <20250319160803.2079550-3-a.fatoum@pengutronix.de>
+Date: Wed, 19 Mar 2025 17:08:02 +0100
+Message-Id: <20250319160803.2079550-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250319160803.2079550-1-a.fatoum@pengutronix.de>
 References: <20250319160803.2079550-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_090806_121368_AA574471 
-X-CRM114-Status: GOOD (  12.76  )
+X-CRM114-CacheID: sfid-20250319_090806_122545_A9AC620C 
+X-CRM114-Status: GOOD (  10.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,60 +83,57 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 3/3] Documentation: devicetree: fix Sphinx warnings
+Subject: [PATCH master 2/3] sandbox: do not enable SANDBOX_LINUX_I386 in allyesconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Building the barebox documentation results in an number of warnings
-predominantly in the autogenerated docs from command help text.
+On sandbox, CONFIG_32BIT and CONFIG_64BIT are determined by the used
+compiler. As special case, building sandbox on x86_64 allows
+selecting a 32-bit build via CONFIG_SANDBOX_LINUX_I386 if the compiler
+supports it.
 
-Outside of that, there is warnings only in the DT bindings:
+This option is disabled by default, but allyesconfig turns it on,
+alongside drivers requiring host libraries like FTDI and SDL, which
+are usually not required.
 
-  bindings/barebox/virtual-reg.rst:25:
-  WARNING: Inline emphasis start-string without end-string.
-
-  bindings/barebox/virtual-reg.rst:28:
-  WARNING: Definition list ends without a blank line; unexpected unindent.
-
-  bindings/barebox/virtual-reg.rst:29:
-  WARNING: Block quote ends without a blank line; unexpected unindent.
-
-  bindings/clocks/xlnx,ps7-clkc.rst:
-  WARNING: document isn't included in any toctree
-
-Fix the devicetree binding warnings.
+To make allyesconfig work out-of-the-box, restructure the config
+symbols and give 64BIT a prompt only if i386 support is possible.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/devicetree/bindings/barebox/virtual-reg.rst | 2 +-
- Documentation/devicetree/index.rst                        | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/sandbox/Kconfig | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/barebox/virtual-reg.rst b/Documentation/devicetree/bindings/barebox/virtual-reg.rst
-index 7d576d0cef6f..a69d23144755 100644
---- a/Documentation/devicetree/bindings/barebox/virtual-reg.rst
-+++ b/Documentation/devicetree/bindings/barebox/virtual-reg.rst
-@@ -13,7 +13,7 @@ by subtracting ``virtual-reg`` from the first address in ``reg``.
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index c1a51d4f021d..7c568f9ddb29 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -44,17 +44,23 @@ config CC_HAS_LINUX_I386_SUPPORT
  
- This is normally used to map I/O memory away from the zero page, so it
- can be used again to trap null pointer dereferences, while allowing
--full access to the device memory::
-+full access to the device memory.
+ config 64BIT
+ 	bool
+-	default n if SANDBOX_LINUX_I386
++	prompt "64-bit barebox" if CC_HAS_LINUX_I386_SUPPORT
+ 	default CC_IS_64BIT
+ 	select ARCH_DMA_ADDR_T_64BIT
+ 	select PHYS_ADDR_T_64BIT
+ 	select ARCH_HAS_ASAN_FIBER_API if ASAN
++	help
++	  Say n here if you want to build a 32-bit barebox, either
++	  to be more similar to a target platform or to reduce
++	  memory usage when fuzzing for example.
++
++	  If unsure, say y.
  
- .. code-block:: none
+ config 32BIT
+ 	def_bool !64BIT
  
-diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
-index cd9270da1d21..2ca8b72be1ac 100644
---- a/Documentation/devicetree/index.rst
-+++ b/Documentation/devicetree/index.rst
-@@ -143,6 +143,7 @@ Contents:
-    :maxdepth: 1
+ config SANDBOX_LINUX_I386
+-	bool "32-bit x86 barebox" if CC_HAS_LINUX_I386_SUPPORT
++	def_bool 32_BIT && CC_HAS_LINUX_I386_SUPPORT
  
-    bindings/barebox/*
-+   bindings/clocks/*
-    bindings/firmware/*
-    bindings/leds/*
-    bindings/misc/*
+ config SANDBOX_REEXEC
+ 	prompt "exec(2) reset handler"
 -- 
 2.39.5
 
