@@ -1,69 +1,73 @@
-Delivery-date: Wed, 19 Mar 2025 13:36:14 +0100
+Delivery-date: Wed, 19 Mar 2025 16:30:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tusec-001SEq-1p
+	id 1tuvNV-001VRQ-2J
 	for lore@lore.pengutronix.de;
-	Wed, 19 Mar 2025 13:36:14 +0100
+	Wed, 19 Mar 2025 16:30:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tuseb-00043n-DS
-	for lore@pengutronix.de; Wed, 19 Mar 2025 13:36:13 +0100
+	id 1tuvNU-0000uo-I8
+	for lore@pengutronix.de; Wed, 19 Mar 2025 16:30:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gNp1Ek9mIZWI1esm+dSFNLbRr9IjzwKqOuZSO9bzIrA=; b=HSH80Fo/TBS/Y5967SDli/i0kG
-	SCfeSYj64CWLIAQ3+/ftmsdi3RhrPG7/WokF9Fa4s0i2moGMHr47ncnjRgjBT+V/nI+htyizT0dSP
-	scl5M+LdQaY/SIOF2QRfr/chwpT8Im9WU/nARw5qVZ+SZ1WWfpLuonX1OTKgNwd6Qs3auESGhdhb1
-	XNgGqmS3tmIbeTzQzAe7TlYLffYcd3FiSHyuxlJO5Ud2h+aogA30JULM8IiCV4JKNcz30LCCpM2Zf
-	ziJoqMxm3gJ0DOiWSzFCKlirnPji2YeM9UUYLU/FBj70LZp/40tsb0T09d4wPK1IpSfsEg5v+pEFs
-	jw/C2LFA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=qHTRDujXFrI593a0t5H/oHcKejn7ddcUYAbyBktqEQ4=; b=sBhtv/vFLb/epyoP2paXIsfsHd
+	ScUOrCAYupe+bvuplDCanB8K2Hr/vN+OD5YsPlbuvjGu8oQcFFlsrZFgAjscpr8tGASGQpR7bq9tl
+	CS+g1RUMlsKD+yRLRBlffLaZaYIQdwgSpmIg2pIL4DkT/2SOdzOwcsOU0QiMreS1aOzuP95bgrYjH
+	qzGP8S2y/BI+QdBfaALkCuNPJY2XXE/SunGb5h1AbmGTckN+CLApvW97SzWHT3c6k4QHdH0yXZRfd
+	W9h9BtZEDf11P4ckicnQ7BkoO/bGiXmnxk5tg9jzbBySaO19iRMpb4yB+RExEnrWxrJbzEXHjSuHD
+	7vcRWlFQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tusdy-00000008zYn-31tP;
-	Wed, 19 Mar 2025 12:35:34 +0000
+	id 1tuvMj-00000009Nlb-2fUX;
+	Wed, 19 Mar 2025 15:29:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tusb4-00000008z0Z-2ArZ
+	id 1tuvM5-00000009Nec-0ndg
 	for barebox@lists.infradead.org;
-	Wed, 19 Mar 2025 12:32:36 +0000
+	Wed, 19 Mar 2025 15:29:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tusb2-0003H7-L0; Wed, 19 Mar 2025 13:32:32 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuvM3-0000bN-M8; Wed, 19 Mar 2025 16:29:15 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tusb2-000air-09;
-	Wed, 19 Mar 2025 13:32:32 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tusb2-00APV5-1I;
-	Wed, 19 Mar 2025 13:32:32 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuvM3-000cAP-0D;
+	Wed, 19 Mar 2025 16:29:15 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1tuvM3-004vBs-1G;
+	Wed, 19 Mar 2025 16:29:15 +0100
+Date: Wed, 19 Mar 2025 16:29:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: "open list:BAREBOX" <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
-References: <20250318-filetype-size-reduction-v1-0-4f463ffae7d0@pengutronix.de>
-Message-Id: <174238755239.2481153.12007766666223606397.b4-ty@pengutronix.de>
-Date: Wed, 19 Mar 2025 13:32:32 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
+Message-ID: <Z9riy3YWmESSdii7@pengutronix.de>
+References: <20250312-rpmb-v1-0-0f213382a3f3@pengutronix.de>
+ <20250312-rpmb-v1-4-0f213382a3f3@pengutronix.de>
+ <9c66b31b-a79c-4a07-a03f-119c7c3dadc7@pengutronix.de>
+ <Z9lZ8Q4bhUnuur1X@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9lZ8Q4bhUnuur1X@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_053234_559267_37038912 
-X-CRM114-Status: UNSURE (   8.21  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250319_082917_226427_752ECEA9 
+X-CRM114-Status: GOOD (  24.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,43 +89,56 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/7] filetype: Some size reduction patches
+Subject: Re: [PATCH 4/9] mci: add RPMB support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Tue, 18 Mar 2025 15:41:41 +0100, Sascha Hauer wrote:
-> The am335x_mlo_defconfig is very size constrained and doesn't build
-> within these constraint anymore for some time. The filetype detection
-> code has become quite big and offers some opportunities for size
-> reduction. Specifically file_detect_type() is quite big, but many
-> callers are only interested in some specific file types like supported
-> file systems or supported compressed binary formats. This series
-> introduces some more specific smaller file detection functions so that
-> we can get rid of the big file_detect_type() in the binary.
+On Tue, Mar 18, 2025 at 12:33:05PM +0100, Sascha Hauer wrote:
+> On Mon, Mar 17, 2025 at 04:18:32PM +0100, Ahmad Fatoum wrote:
+> > Hello Sascha,
+> > 
+> > On 3/12/25 13:16, Sascha Hauer wrote:
+> > > +
+> > > +int mci_rpmb_route_frames(struct mci *mci, void *req, unsigned long reqlen,
+> > > +			  void *rsp, unsigned long rsplen)
+> > > +{
+> > > +	/*
+> > > +	 * Whoever crafted the data supplied to this function knows how to
+> > > +	 * format the PRMB frames and which response is expected. If
+> > > +	 * there's some unexpected mismatch it's more helpful to report an
+> > > +	 * error immediately than trying to guess what was the intention
+> > > +	 * and possibly just delay an eventual error which will be harder
+> > > +	 * to track down.
+> > > +	 */
+> > > +	void *rpmb_data = NULL;
+> > > +	int ret;
+> > > +
+> > > +	mci_blk_part_switch(mci->rpmb_part);
+> > > +
+> > > +	if (!IS_ALIGNED((uintptr_t)req, ARCH_DMA_MINALIGN)) {
+> > 
+> > Even if alignment happens to be correct, there is no guarantee that
+> > there is no other data sharing a cache line.
 > 
-> [...]
+> reqlen is expected to be a single block of 512 bytes, so indeed when req
+> is aligned then the end is cacheline aligned as well. We could check
+> reqlen as well, but I actually never ran into this case, so we can just
+> return an error for now as you suggested.
 
-Applied, thanks!
+I was wrong here. the request is placed directly behind a 6 byte struct,
+so it's guaranteed to be unaligned. We always have to copy it.
 
-[1/7] filetype: add file_detect_compression_type()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=519153fd74cb (link may not be stable)
-[2/7] filetype: add file_detect_fs_type()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b25680a9c995 (link may not be stable)
-[3/7] filetype: add function pointer to file_name_detect_type_offset()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=834d9b644638 (link may not be stable)
-[4/7] filetype: let cdev_detect_type() only detect filesystems
-      https://git.pengutronix.de/cgit/barebox/commit/?id=dcf835a983c9 (link may not be stable)
-[5/7] filetype: make file type strings optional
-      https://git.pengutronix.de/cgit/barebox/commit/?id=09702e4a00ec (link may not be stable)
-[6/7] ARM: am33xx: myirtech-myd: add MLO specific device tree
-      https://git.pengutronix.de/cgit/barebox/commit/?id=75914e1c1983 (link may not be stable)
-[7/7] ARM: am335x_mlo_defconfig: disable file type strings
-      https://git.pengutronix.de/cgit/barebox/commit/?id=285d88922cad (link may not be stable)
+The response might be unaligned as well, but must be aligned to pass it
+to the mmc layer. In my tests the response was always aligned, but
+better safe than sorry, so I'll add an alignment check here as well,
+this time including a check for the length.
 
-Best regards,
+Sascha
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
