@@ -1,67 +1,68 @@
-Delivery-date: Thu, 20 Mar 2025 13:06:24 +0100
+Delivery-date: Thu, 20 Mar 2025 13:13:08 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tvEfJ-001sYY-14
+	id 1tvElp-001st8-0l
 	for lore@lore.pengutronix.de;
-	Thu, 20 Mar 2025 13:06:24 +0100
+	Thu, 20 Mar 2025 13:13:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tvEfI-00067j-7v
-	for lore@pengutronix.de; Thu, 20 Mar 2025 13:06:24 +0100
+	id 1tvElo-0008Dg-4w
+	for lore@pengutronix.de; Thu, 20 Mar 2025 13:13:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3rp6is2UUQzIh+PPpqVQsMsaJcN3FZrnM8ajjndnARI=; b=cngweeGOE15ibP4qzsM2khN+g5
-	LmmWbYHiN2fwljGeb2JLolIjZstS4IcWFHB/Ra9exMdlXzgAH2PE1hjuJ+WNByThkyK6VA2pQGL7Y
-	jKZcpkJBMxoleRMfyOoyF4ntxe7g9O3dJ2A+HIzdl8p7ziLGkanmxhmX/D4cqh4vIzB20k+WyRo87
-	Qahs+O+uIo2hypNkoyPkbKtUZ/Gf26XjYls8wviuFYqkQ5gxWrZ2w4pkO/SFVETgCfiH3/Yt2onby
-	Jt8J9bJk6aJIRwbWr33d7fdWeM/u58otoTMdDQfRACVVtouGohhjpU98FsBBQaYa8v+lUIu8T4Zxs
-	lIflIkPg==;
+	bh=W5FFmePUnGMSm6k9dC57mrPTDZRPTNe+i9rBBbYj8gw=; b=X3yPg/MJeLnNBLfBNF0VQ4PwwS
+	AO77uNhJEmR7tIXsvOBOvcUwTfRp78JqFK9gk3u4TjHYI5Pb6qAEn6T7UHyolDrq2dd5wAtUpQuVY
+	qCJXf8eXArEJ0jNygVMJh3YYZdEIqZ9kMIUscvH6tEfL94OKEO6oLEAfVXQ584qHrVAQHAJhXFjHt
+	wo6ZMT4YH9GljnqxNwqtkSx6OON+iPFbisvytdyWMB12zZ8ZlbVnNjrpcMQPuayFCcFqjv+zOb8Ob
+	lmx+Mf42Boha6T9mpQ3rKc+4OiOBHii39NTj/A/hTaB1PkCZ4lpcmIaAKRAGEUVWHQcUSCWTSz/mo
+	FnVl/ziw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tvEeg-0000000C33q-1fd0;
-	Thu, 20 Mar 2025 12:05:46 +0000
+	id 1tvElN-0000000C4j2-3UgY;
+	Thu, 20 Mar 2025 12:12:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tvELJ-0000000Bz6A-2WMx
+	id 1tvEf1-0000000C3BI-3WQe
 	for barebox@lists.infradead.org;
-	Thu, 20 Mar 2025 11:45:46 +0000
+	Thu, 20 Mar 2025 12:06:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvELI-0000lp-7q; Thu, 20 Mar 2025 12:45:44 +0100
+	id 1tvEf0-0005zE-Ih; Thu, 20 Mar 2025 13:06:06 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvELH-000kdF-20;
-	Thu, 20 Mar 2025 12:45:44 +0100
+	id 1tvEez-000kvg-2x;
+	Thu, 20 Mar 2025 13:06:06 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tvELH-000pMT-38;
-	Thu, 20 Mar 2025 12:45:43 +0100
+	id 1tvEf0-000qty-0t;
+	Thu, 20 Mar 2025 13:06:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250320082426.2124644-1-a.fatoum@pengutronix.de>
-References: <20250320082426.2124644-1-a.fatoum@pengutronix.de>
-Message-Id: <174247114397.197218.14617516113831604302.b4-ty@pengutronix.de>
-Date: Thu, 20 Mar 2025 12:45:43 +0100
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20250320110521.190945-1-s.hauer@pengutronix.de>
+References: <20250320110521.190945-1-s.hauer@pengutronix.de>
+Message-Id: <174247236627.203123.4982940980055752702.b4-ty@pengutronix.de>
+Date: Thu, 20 Mar 2025 13:06:06 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250320_044545_640003_ABBC787D 
-X-CRM114-Status: UNSURE (   6.65  )
+X-CRM114-CacheID: sfid-20250320_050607_885936_CB42076E 
+X-CRM114-Status: UNSURE (   5.29  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,26 +85,20 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/2] Documentation: user: intro: update feedback
- section on ML
+Subject: Re: [PATCH] linux/printk.h: fix typos
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 20 Mar 2025 09:24:25 +0100, Ahmad Fatoum wrote:
-> Now that kernel.org also mirrors barebox, we don't require the midmask,
-> linkmask configuration we had before.
-> 
-> Adapt the docs accordingly and explain shazam -H a bit.
+On Thu, 20 Mar 2025 12:05:21 +0100, Sascha Hauer wrote:
+> Fix typos in dev_*_once macros to make them usable.
 > 
 > 
 
 Applied, thanks!
 
-[1/2] Documentation: user: intro: update feedback section on ML
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ee743b4a9786 (link may not be stable)
-[2/2] Revert "Documentation: remove info about bridging to matrix"
-      https://git.pengutronix.de/cgit/barebox/commit/?id=9cac80ac7b32 (link may not be stable)
+[1/1] linux/printk.h: fix typos
+      https://git.pengutronix.de/cgit/barebox/commit/?id=60ea85061eac (link may not be stable)
 
 Best regards,
 -- 
