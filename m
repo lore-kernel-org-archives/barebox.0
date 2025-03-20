@@ -1,16 +1,16 @@
-Delivery-date: Thu, 20 Mar 2025 06:20:54 +0100
+Delivery-date: Thu, 20 Mar 2025 06:20:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tv8Ks-001l5u-2R
+	id 1tv8Kt-001l6G-27
 	for lore@lore.pengutronix.de;
-	Thu, 20 Mar 2025 06:20:54 +0100
+	Thu, 20 Mar 2025 06:20:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tv8Kr-0003fQ-4C
+	id 1tv8Ks-0003gS-Ac
 	for lore@pengutronix.de; Thu, 20 Mar 2025 06:20:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8lUZ2yrLFOFsP/NAzdcD+49ic1LXkot59Ib5U0EmKHA=; b=c1Onj2ADNFuLlc3USkLfSaokJw
-	eDxRPQNHR+OCZJO/zaPrwS+QPpVMw29Rf0u7+PqKrbZZ/GockgbqW3Zq+q8MtOzdGPM686kzeIRVc
-	jeKf2efs11VSF3tJyeb7mYh1Ey/zB8y8eh2qKc2xm9/Aij/9aqkC0mI0FBEAJ4Oed5FQY165wIGGe
-	uZcWL/PSobJXtbYm8GJ6F9KDv+YrqN0f2Tlo9qP0nz878COozu7raSCK6oGRIBHMLqFTV3mnrFip+
-	PMfoN6fpQyImBzbo2gbdLmasInilhJvXod7e7tp+L8Wf0HhSSxlnppTt7Jy1K+TKKo9DIs8QQX96A
-	KBQTQNKQ==;
+	bh=v5K2jONe6lrff1Kgx4bK6hiInGMorhKyNvlh6lRQWVM=; b=qQyN3l6oEZTCT/6+2tUrggzUxO
+	RT5Qal6y1c9nzy1JZ9qphX4RRE5Qqskn1omZ6LUsEVlkJUEONOy0XHgDwLqfJ3l5Ev39rwwXLEgN8
+	Mj0Ba2AlZLYuv//roSqj/9TVhzEQ0x/xr5fC+JAhEvqjGO2o3W3MnSilRUON3HFM21RAwL3MQpC2X
+	qEfK7Ufqffs3XezLeOA7V5SshGJxWOM/x1ekNirSIxAi65OTMT6PzRrIx/VzKEPKZFbglielifIPD
+	Kjz+TEMRkWaKyDOJAJh0m6WJVu1i4yIKzaaspoAwrLqXRB5+h6Z+vtkkP5XwSZOGCkUCzoIY135mP
+	pXWJx3gg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tv8KR-0000000BCWC-2MBl;
-	Thu, 20 Mar 2025 05:20:27 +0000
+	id 1tv8KS-0000000BCXd-32oP;
+	Thu, 20 Mar 2025 05:20:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tv8KL-0000000BCS5-3wXz
+	id 1tv8KM-0000000BCSA-07cx
 	for barebox@lists.infradead.org;
 	Thu, 20 Mar 2025 05:20:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8KK-0003Dy-NE; Thu, 20 Mar 2025 06:20:20 +0100
+	id 1tv8KK-0003E5-QS; Thu, 20 Mar 2025 06:20:20 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8KK-000hvL-0H;
+	id 1tv8KK-000hvR-0a;
 	Thu, 20 Mar 2025 06:20:20 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8KK-007GGZ-1M;
+	id 1tv8KK-007GGZ-1e;
 	Thu, 20 Mar 2025 06:20:20 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 20 Mar 2025 06:20:16 +0100
-Message-Id: <20250320052019.1726331-4-a.fatoum@pengutronix.de>
+Date: Thu, 20 Mar 2025 06:20:18 +0100
+Message-Id: <20250320052019.1726331-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250320052019.1726331-1-a.fatoum@pengutronix.de>
 References: <20250320052019.1726331-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_222021_988106_06E36167 
-X-CRM114-Status: GOOD (  18.42  )
+X-CRM114-CacheID: sfid-20250319_222022_071355_46F9D019 
+X-CRM114-Status: GOOD (  20.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,214 +83,165 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/6] fs: implement opendir in terms of fdopendir
+Subject: [PATCH 5/6] commands: add new truncate command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-While struct filep (FILE) and struct file have been merged, we still
-have two different ways the files are created: Regularly in open and
-irregularly in an incomplete manner inside opendir.
-
-This breaks file systems that expect the struct file passed to iterate
-to have been opened before.
-
-To allow porting such filesystems more easily, let's go all in on
-directory FDs and implement opendir using it.
+The truncate command offers an easy way to exercise a file system's
+truncate operation.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c          | 114 +++++++++++++++--------------------------------
- include/dirent.h |   2 -
- 2 files changed, 35 insertions(+), 81 deletions(-)
+ commands/Kconfig    |  15 +++++++
+ commands/Makefile   |   1 +
+ commands/truncate.c | 100 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 116 insertions(+)
+ create mode 100644 commands/truncate.c
 
-diff --git a/fs/fs.c b/fs/fs.c
-index fd5818c36c20..0c698981227f 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -2660,20 +2660,6 @@ int openat(int dirfd, const char *pathname, int flags)
- }
- EXPORT_SYMBOL(openat);
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 8a7a6e94f025..8c05b8eff606 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1904,6 +1904,21 @@ config CMD_DETECT
+ 		  -e	bail out if one device fails to detect
+ 		  -a	detect all devices
  
--static const char *fd_getpath(int fd)
--{
--	struct file *f;
--
--	if (fd < 0)
--		return ERR_PTR(errno_set(fd));
--
--	f = fd_to_file(fd, true);
--	if (IS_ERR(f))
--		return ERR_CAST(f);
--
--	return f->path;
--}
--
- int unlinkat(int dirfd, const char *pathname, int flags)
- {
- 	int ret;
-@@ -2758,107 +2744,77 @@ static void __release_dir(DIR *d)
- static int __opendir(DIR *d)
- {
- 	int ret;
--	struct file file = {};
--	struct path *path = &d->path;
--	struct dentry *dir = path->dentry;
-+	struct file *file = fd_to_file(d->fd, true);
- 	struct readdir_callback rd = {
- 		.ctx = {
- 			.actor = fillonedir,
- 		},
- 	};
- 
--	file.f_path.dentry = dir;
--	file.f_inode = d_inode(dir);
--	file.f_op = dir->d_inode->i_fop;
--
- 	INIT_LIST_HEAD(&d->entries);
- 	rd.dir = d;
- 
--	ret = file.f_op->iterate(&file, &rd.ctx);
-+	ret = file->f_inode->i_fop->iterate(file, &rd.ctx);
- 	if (ret)
- 		__release_dir(d);
- 
- 	return ret;
- }
- 
--DIR *opendir(const char *pathname)
--{
--	int ret;
--	struct dentry *dir;
--	struct inode *inode;
--	DIR *d;
--	struct path path = {};
--
--	ret = filename_lookup(AT_FDCWD, getname(pathname),
--			      LOOKUP_FOLLOW | LOOKUP_DIRECTORY, &path);
--	if (ret)
--		goto out;
--
--	dir = path.dentry;
--
--	if (d_is_negative(dir)) {
--		ret = -ENOENT;
--		goto out_put;
--	}
--
--	inode = d_inode(dir);
--
--	if (!S_ISDIR(inode->i_mode)) {
--		ret = -ENOTDIR;
--		goto out_put;
--	}
--
--	d = xzalloc(sizeof(*d));
--	d->path = path;
--	d->fd = -ENOENT;
--
--	ret = __opendir(d);
--	if (ret)
--		goto out_free;
--
--	return d;
--
--out_free:
--	free(d);
--out_put:
--	path_put(&path);
--out:
--	errno_set(ret);
--
--	return NULL;
--}
--EXPORT_SYMBOL(opendir);
--
- DIR *fdopendir(int fd)
- {
--	const char *path;
-+	struct stat st;
- 	DIR *dir;
-+	int ret;
- 
--	path = fd_getpath(fd);
--	if (IS_ERR(path))
-+	ret = fstat(fd, &st);
-+	if (ret)
- 		return NULL;
- 
--	dir = opendir(path);
--	if (!dir)
--		return NULL;
-+	if (!S_ISDIR(st.st_mode)) {
-+		ret = -ENOTDIR;
-+		goto err;
-+	}
++config CMD_TRUNCATE
++	tristate
++	prompt "truncate"
++	help
 +
-+	dir = xzalloc(sizeof(*dir));
- 
- 	/* we intentionally don't increment the reference count,
- 	 * as POSIX specifies that fd ownership is transferred
- 	 */
- 	dir->fd = fd;
++	truncate [-c] -s [+]SIZE FILE...
 +
-+	ret = __opendir(dir);
-+	if (ret)
-+		goto err;
++	truncate truncates files to a given size. If a file does
++	not exist, it is created unless told otherwise.
++	Options:
++	-c		Do not create files
++	-s [+]SIZE	truncate file to SIZE, or increase by +SIZE
 +
- 	return dir;
-+err:
-+	errno_set(ret);
-+	return NULL;
- }
- EXPORT_SYMBOL(fdopendir);
- 
-+DIR *opendir(const char *pathname)
++	This command is mainly useful for VFS development.
++
+ config CMD_SYNC
+ 	tristate
+ 	prompt "sync"
+diff --git a/commands/Makefile b/commands/Makefile
+index fa7de443cc13..36ef59b38759 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -41,6 +41,7 @@ obj-$(CONFIG_CMD_FINDMNT)	+= findmnt.o
+ obj-$(CONFIG_CMD_CRC)		+= crc.o
+ obj-$(CONFIG_CMD_CLEAR)		+= clear.o
+ obj-$(CONFIG_CMD_TEST)		+= test.o
++obj-$(CONFIG_CMD_TRUNCATE)	+= truncate.o
+ obj-$(CONFIG_CMD_SYNC)		+= sync.o
+ obj-$(CONFIG_CMD_FLASH)		+= flash.o
+ obj-$(CONFIG_CMD_MEMINFO)	+= meminfo.o
+diff --git a/commands/truncate.c b/commands/truncate.c
+new file mode 100644
+index 000000000000..5c6d74257da1
+--- /dev/null
++++ b/commands/truncate.c
+@@ -0,0 +1,100 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2015 by Ari Sundholm <ari@tuxera.com>
++ */
++
++#include <common.h>
++#include <command.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <fs.h>
++
++static int do_truncate(int argc, char *argv[])
 +{
-+	int fd;
++	int flags = O_CREAT | O_WRONLY;
++	int opt, modify = 0, ret = 0;
++	const char *size_str;
++	off_t size = -1;
 +
-+	fd = open(pathname, O_DIRECTORY);
-+	if (fd < 0) {
-+		errno_set(fd);
-+		return NULL;
++	while((opt = getopt(argc, argv, "cs:")) > 0) {
++		switch(opt) {
++		case 'c':
++			flags &= ~O_CREAT;
++			break;
++		case 's':
++			size_str = optarg;
++			if (!size_str)
++				return COMMAND_ERROR_USAGE;
++			switch (*size_str) {
++			case '+':
++				modify = 1;
++				size_str++;
++				break;
++			case '-':
++				return COMMAND_ERROR_USAGE;
++			}
++			size = strtoull_suffix(size_str, NULL, 10);
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
 +	}
 +
-+	return fdopendir(fd);
-+}
-+EXPORT_SYMBOL(opendir);
++	argv += optind;
++	argc -= optind;
 +
- int closedir(DIR *dir)
- {
- 	if (!dir)
- 		return errno_set(-EBADF);
- 
--	path_put(&dir->path);
- 	__release_dir(dir);
--	if (dir->fd >= 0)
--		close(dir->fd);
-+	close(dir->fd);
- 	free(dir);
- 
- 	return 0;
-diff --git a/include/dirent.h b/include/dirent.h
-index 4f7ff2a5f91f..f74541d83d26 100644
---- a/include/dirent.h
-+++ b/include/dirent.h
-@@ -3,7 +3,6 @@
- #define __DIRENT_H
- 
- #include <linux/list.h>
--#include <linux/path.h>
- 
- struct dirent {
- 	char d_name[256];
-@@ -15,7 +14,6 @@ typedef struct dir {
- 	struct dirent d;
- 	void *priv; /* private data for the fs driver */
- 	int fd;
--	struct path path;
- 	struct list_head entries;
- } DIR;
- 
++	if (size == -1 || argc == 0)
++		return COMMAND_ERROR_USAGE;
++
++	for (int i = 0; i < argc; i++) {
++		int fd = open(argv[i], flags, 0666);
++		if (fd < 0) {
++			if (errno != ENOENT || !(flags & O_CREAT)) {
++				perror("open");
++				ret = 1;
++			}
++			/* else: ENOENT && OPT_NOCREATE:
++			 * do not report error, exitcode is also 0.
++			 */
++			continue;
++		}
++
++		if (modify) {
++			struct stat st;
++
++			if (fstat(fd, &st) == -1) {
++				perror("fstat");
++				ret = 1;
++				goto close;
++			}
++
++			size = st.st_size + modify * size;
++		}
++
++		if (ftruncate(fd, size) == -1) {
++			perror("truncate");
++			ret = 1;
++		}
++close:
++		close(fd);
++	}
++
++	return ret;
++}
++
++BAREBOX_CMD_HELP_START(truncate)
++BAREBOX_CMD_HELP_TEXT("truncate truncates files to a given size. If a file does")
++BAREBOX_CMD_HELP_TEXT("not exist, it is created unless told otherwise.")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-c",     "Do not create files")
++BAREBOX_CMD_HELP_OPT ("-s [+]SIZE", "truncate file to SIZE, or increase by +SIZE")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(truncate)
++	.cmd		= do_truncate,
++	BAREBOX_CMD_DESC("truncate files to size")
++	BAREBOX_CMD_OPTS("[-c] -s [+]SIZE FILE...")
++	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
++	BAREBOX_CMD_HELP(cmd_truncate_help)
++BAREBOX_CMD_END
 -- 
 2.39.5
 
