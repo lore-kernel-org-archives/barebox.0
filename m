@@ -1,65 +1,67 @@
-Delivery-date: Thu, 20 Mar 2025 06:21:28 +0100
+Delivery-date: Thu, 20 Mar 2025 06:21:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tv8LR-001l89-1E
+	id 1tv8LT-001l8V-09
 	for lore@lore.pengutronix.de;
-	Thu, 20 Mar 2025 06:21:28 +0100
+	Thu, 20 Mar 2025 06:21:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tv8LQ-000487-3V
-	for lore@pengutronix.de; Thu, 20 Mar 2025 06:21:28 +0100
+	id 1tv8LR-00049j-O9
+	for lore@pengutronix.de; Thu, 20 Mar 2025 06:21:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=09lkI9mzpZ/uj/tsTxYUzIol2f308ZuF/q9CTaQ29D0=; b=Q53aowqH5kpyPstgL/YpTLvk/O
-	PHBwxl9M9yvvxfdcGJRKznGRb5oM8vxon4WF9q9ozDcdw23k8kOJbSfPOv1K/QpVsGAcSv1iyhqJt
-	bpC9f8NiUDwy/cfuu/LUoe9LVw/L+p1DgOKZPv4LCMAiOqoIuRoHVQc1yaCDDv2/EDdRTZeN67UmK
-	dCk+9d/60as2niaIa43lxTaO/ZCq1EFAcpaDaBMJTF/Pblfuww6DS1bmh0o0xHBDdgZqK1ZX1IVua
-	GBV6xy9f83TtGB4X1yvlsI6fNWOUxmG35EzT15sSqEGcsKsAwXR2wjUO/rJhcPE/yQ+3piMQakieE
-	0d2mI8zA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Go76qk9gbgaNxOmeQNckbE6DIOTeoqqCSa/bOSl0Wis=; b=X14vjz5/8jCXum7dqvBkRIC/WC
+	gfz369nQMIZAW9dV9q7TIw895JBe/7bbTrxgnlPCqtryDDcUeGUCoHBljPp+mm6toD2q2oAIo1nqs
+	aXp1MA7/Nn+VbsWaTELrO3m1lubFbs8RVeBlRhj2nZxuCQ334h8wpA9ovMjmeuP0VPiAilIldsfqk
+	E3rsuBoMWfFbF7Tf4ERpE5Dq9oM3IzFGLpFFXqJNznJWFBE2oFWT3dmbY4wQ9TNIKOYhENrrnH23Z
+	di77VaK26JNSQVE2dnaqGk8bGxqVgrX1ygie/xSsUQFB0bqdhu+yZn50sEZFcWM1biieo0Uv2XL7j
+	9ot5ol3A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tv8L2-0000000BCv0-1vbN;
-	Thu, 20 Mar 2025 05:21:04 +0000
+	id 1tv8L4-0000000BCvx-0Age;
+	Thu, 20 Mar 2025 05:21:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tv8Kz-0000000BCtL-3o6D
+	id 1tv8L0-0000000BCtP-0WHy
 	for barebox@lists.infradead.org;
-	Thu, 20 Mar 2025 05:21:03 +0000
+	Thu, 20 Mar 2025 05:21:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8Ky-0003mW-Lg; Thu, 20 Mar 2025 06:21:00 +0100
+	id 1tv8Ky-0003mY-OI; Thu, 20 Mar 2025 06:21:00 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8Ky-000hvn-06;
+	id 1tv8Ky-000hvr-0O;
 	Thu, 20 Mar 2025 06:21:00 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8Ky-007GdX-1A;
+	id 1tv8Ky-007GdX-1T;
 	Thu, 20 Mar 2025 06:21:00 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 20 Mar 2025 06:20:57 +0100
-Message-Id: <20250320052059.1732184-1-a.fatoum@pengutronix.de>
+Date: Thu, 20 Mar 2025 06:20:59 +0100
+Message-Id: <20250320052059.1732184-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250320052059.1732184-1-a.fatoum@pengutronix.de>
+References: <20250320052059.1732184-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_222101_950110_9BFBFFDA 
-X-CRM114-Status: GOOD (  13.14  )
+X-CRM114-CacheID: sfid-20250319_222102_167622_651F5DBA 
+X-CRM114-Status: GOOD (  19.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,135 +83,193 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/3] complete: give device_param_complete a flags parameter
+Subject: [PATCH v2 3/3] commands: add varinfo command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently always complete device parameters with either a dollar sign
-in front or an equal sign after. In preparation for allowing completions
-with neither, give env_param_complete() a flag.
+Tab completion is very helpful, but it's not sufficient for enum-typed
+global variables. To know what the permissible values are, devinfo
+global must be consulted, which can have a lot of output.
+
+As alternative, let's add a varinfo command that can be used together
+with parameter tab completion and that will just print out the
+parameters that start with the specified string.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - new patch
+  - lookup shell environment variables by prefix as well (Sascha)
+  - completio without trailing equal sign (Sascha)
 ---
- common/complete.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ commands/Kconfig   | 12 ++++++
+ commands/Makefile  |  1 +
+ commands/varinfo.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++
+ common/complete.c  |  6 +++
+ include/complete.h |  1 +
+ 5 files changed, 111 insertions(+)
+ create mode 100644 commands/varinfo.c
 
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 8c05b8eff606..4cce4b24cc98 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -286,6 +286,18 @@ config CMD_LSPCI
+ 	help
+ 	  The lspci command allows to list all PCI devices.
+ 
++config CMD_VARINFO
++	tristate
++	prompt "varinfo"
++	help
++	  Show information about variables
++
++	  varinfo VAR
++
++	  Shows information about the variable in its argument. This doesn't
++	  provide more information that what's available with devinfo, but
++	  it can be useful for devices with many parameters (e.g. global).
++
+ config CMD_VERSION
+ 	tristate
+ 	default y
+diff --git a/commands/Makefile b/commands/Makefile
+index 36ef59b38759..f97b77c7cc16 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -59,6 +59,7 @@ obj-$(CONFIG_CMD_MEMTEST)	+= memtest.o
+ obj-$(CONFIG_CMD_MEMTESTER)	+= memtester/
+ obj-$(CONFIG_CMD_TRUE)		+= true.o
+ obj-$(CONFIG_CMD_FALSE)		+= false.o
++obj-$(CONFIG_CMD_VARINFO)	+= varinfo.o
+ obj-$(CONFIG_CMD_VERSION)	+= version.o
+ obj-$(CONFIG_CMD_HELP)		+= help.o
+ obj-$(CONFIG_CMD_LSMOD)		+= lsmod.o
+diff --git a/commands/varinfo.c b/commands/varinfo.c
+new file mode 100644
+index 000000000000..5965c60159ca
+--- /dev/null
++++ b/commands/varinfo.c
+@@ -0,0 +1,91 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#include <command.h>
++#include <common.h>
++#include <complete.h>
++#include <driver.h>
++#include <environment.h>
++#include <fnmatch.h>
++
++struct iter_ctx {
++	const char *prefix;
++	bool found;
++};
++
++static int printenv_by_prefix(struct variable_d *v, void *data)
++{
++	struct iter_ctx *ctx = data;
++
++	if (strstarts(var_name(v), ctx->prefix)) {
++		printf("%s: %s (environment variable)\n", var_name(v), var_val(v));
++		ctx->found = true;
++	}
++
++	return 0;
++}
++
++static int do_varinfo(int argc, char *argv[])
++{
++	struct device *dev;
++	struct param_d *param;
++	const char *prefix = NULL;
++	char *arg, *dot;
++	bool found = false;
++
++	if (argc != 2)
++		return COMMAND_ERROR_USAGE;
++
++	arg = argv[1];
++
++	dot = strchr(arg, '.');
++	if (dot) {
++		*dot = '\0';
++		if (dot[1])
++			prefix = &dot[1];
++	} else {
++		struct iter_ctx ctx = { arg };
++
++		envvar_for_each(printenv_by_prefix, &ctx);
++		if (!ctx.found)
++			goto not_found;
++
++		return 0;
++	}
++
++	dev = get_device_by_name(arg);
++	if (!dev)
++		return -ENODEV;
++
++	list_for_each_entry(param, &dev->parameters, list) {
++		if (prefix && !strstarts(param->name, prefix))
++			continue;
++
++		printf("%s: %s (type: %s)", param->name,
++		       dev_get_param(dev, param->name), get_param_type(param));
++		if (param->info)
++			param->info(param);
++		printf("\n");
++		found = true;
++	}
++
++	if (!found)
++		goto not_found;
++
++	return 0;
++not_found:
++	printf("%s: no matching variable found\n", arg);
++	return 1;
++}
++
++BAREBOX_CMD_HELP_START(varinfo)
++BAREBOX_CMD_HELP_TEXT("shows information about the variable in its argument")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(varinfo)
++	.cmd		= do_varinfo,
++	BAREBOX_CMD_DESC("show information about variables")
++	BAREBOX_CMD_OPTS("VAR")
++	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
++	BAREBOX_CMD_HELP(cmd_varinfo_help)
++	BAREBOX_CMD_COMPLETE(env_param_plain_complete)
++BAREBOX_CMD_END
 diff --git a/common/complete.c b/common/complete.c
-index 5b8b499ed38f..6061c8ba6ecb 100644
+index 6061c8ba6ecb..6cb674a0cc9c 100644
 --- a/common/complete.c
 +++ b/common/complete.c
-@@ -9,11 +9,15 @@
- #include <complete.h>
- #include <xfuncs.h>
- #include <fs.h>
-+#include <linux/bits.h>
- #include <linux/stat.h>
- #include <libgen.h>
- #include <command.h>
- #include <environment.h>
- 
-+#define DEVPARAM_COMPLETE_ASSIGNMENT	BIT(0)
-+#define DEVPARAM_COMPLETE_DOLLAR	BIT(1)
-+
- static bool is_valid_escape(const char *str)
- {
- 	return str[0] == '\\' && (str[1] == ' ' || str[1] == '\\');
-@@ -170,7 +174,8 @@ int device_complete(struct string_list *sl, char *instr)
- EXPORT_SYMBOL(device_complete);
- 
- static int device_param_complete(struct device *dev, const char *devname,
--				 struct string_list *sl, char *instr, int eval)
-+				 struct string_list *sl, char *instr,
-+				 unsigned flags)
- {
- 	struct param_d *param;
- 
-@@ -179,8 +184,8 @@ static int device_param_complete(struct device *dev, const char *devname,
- 			continue;
- 
- 		string_list_add_asprintf(sl, "%s%s.%s%c",
--			eval ? "$" : "", devname, param->name,
--			eval ? ' ' : '=');
-+			flags & DEVPARAM_COMPLETE_DOLLAR ? "$" : "", devname, param->name,
-+			flags & DEVPARAM_COMPLETE_ASSIGNMENT ? '=' : ' ');
- 	}
- 
- 	return 0;
-@@ -292,21 +297,22 @@ int tutorial_complete(struct string_list *sl, char *instr)
- }
- EXPORT_SYMBOL(tutorial_complete);
- 
--static int env_param_complete(struct string_list *sl, char *instr, int eval)
-+static int env_param_complete(struct string_list *sl, char *instr, unsigned flags)
- {
- 	struct device *dev;
- 	struct variable_d *var;
- 	struct env_context *c;
- 	int len;
--	char end = '=', *pos, *dot;
-+	char end = ' ', *pos, *dot;
- 	char *begin = "";
- 
- 	if (!instr)
- 		instr = "";
- 
--	if (eval) {
-+	if (flags & DEVPARAM_COMPLETE_DOLLAR) {
- 		begin = "$";
--		end = ' ';
-+	} else if (flags & DEVPARAM_COMPLETE_ASSIGNMENT) {
-+		end = '=';
- 	}
- 
- 	len = strlen(instr);
-@@ -338,7 +344,7 @@ static int env_param_complete(struct string_list *sl, char *instr, int eval)
- 		dev = get_device_by_name(devname);
- 
- 		if (dev)
--			device_param_complete(dev, devname, sl, dot + 1, eval);
-+			device_param_complete(dev, devname, sl, dot + 1, flags);
- 
- 		free(devname);
- 		pos = dot + 1;
-@@ -348,7 +354,7 @@ static int env_param_complete(struct string_list *sl, char *instr, int eval)
- 
- 	for_each_device(dev) {
- 		if (!strncmp(instr, dev_name(dev), len))
--			device_param_complete(dev, dev_name(dev), sl, "", eval);
-+			device_param_complete(dev, dev_name(dev), sl, "", flags);
- 	}
- 
- 	return 0;
-@@ -356,7 +362,7 @@ static int env_param_complete(struct string_list *sl, char *instr, int eval)
- 
- int env_param_noeval_complete(struct string_list *sl, char *instr)
- {
--	return env_param_complete(sl, instr, 0);
-+	return env_param_complete(sl, instr, DEVPARAM_COMPLETE_ASSIGNMENT);
+@@ -366,6 +366,12 @@ int env_param_noeval_complete(struct string_list *sl, char *instr)
  }
  EXPORT_SYMBOL(env_param_noeval_complete);
  
-@@ -415,7 +421,7 @@ static char* cmd_complete_lookup(struct string_list *sl, char *instr)
++int env_param_plain_complete(struct string_list *sl, char *instr)
++{
++	return env_param_complete(sl, instr, 0);
++}
++EXPORT_SYMBOL(env_param_plain_complete);
++
+ static int tab_pressed = 0;
  
- end:
- 	if (ret == COMPLETE_CONTINUE && *instr == '$')
--		env_param_complete(sl, instr + 1, 1);
-+		env_param_complete(sl, instr + 1, DEVPARAM_COMPLETE_DOLLAR);
+ void complete_reset(void)
+diff --git a/include/complete.h b/include/complete.h
+index 2068760ac235..21d3c0430f64 100644
+--- a/include/complete.h
++++ b/include/complete.h
+@@ -24,6 +24,7 @@ int devicetree_nodepath_complete(struct string_list *sl, char *instr);
+ int devicetree_complete(struct string_list *sl, char *instr);
+ int devicetree_file_complete(struct string_list *sl, char *instr);
+ int env_param_noeval_complete(struct string_list *sl, char *instr);
++int env_param_plain_complete(struct string_list *sl, char *instr);
+ int tutorial_complete(struct string_list *sl, char *instr);
  
- 	return res;
- }
-@@ -460,7 +466,7 @@ int complete(char *instr, char **outstr)
- 			env_param_complete(&sl, instr, 0);
- 		}
- 		if (*instr == '$')
--			env_param_complete(&sl, instr + 1, 1);
-+			env_param_complete(&sl, instr + 1, DEVPARAM_COMPLETE_DOLLAR);
- 	}
- 
- 	pos = strlen_escaped(instr);
+ #endif /* __COMPLETE_ */
 -- 
 2.39.5
 
