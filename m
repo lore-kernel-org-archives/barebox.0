@@ -1,67 +1,91 @@
-Delivery-date: Thu, 20 Mar 2025 10:22:56 +0100
+Delivery-date: Thu, 20 Mar 2025 10:24:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tvC77-001pgd-0i
+	id 1tvC8C-001phq-1E
 	for lore@lore.pengutronix.de;
-	Thu, 20 Mar 2025 10:22:56 +0100
+	Thu, 20 Mar 2025 10:24:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tvC75-0001EC-J1
-	for lore@pengutronix.de; Thu, 20 Mar 2025 10:22:56 +0100
+	id 1tvC8A-0001Vp-Pg
+	for lore@pengutronix.de; Thu, 20 Mar 2025 10:24:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
-	Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=NH83CzBlH8nIxFmrCju31scsTrSp3QXT5ZNI9EfFolI=; b=I0a0GqMbWKAuokTIRtl6ZNaEjV
-	O671UFFPVH/Idn10X0pv6PY8sp9ZUBjN0fiWAZguJah6iXCL6ZT8E9ruZxbBF/2ThQ5bYkQtUFZX9
-	IL3PF7vpDIQqXcQ4VlJYFhaK6F4ynuoIgsgUxEmKlc/pdRDWQNCbNvpFQMJrrB9fpLZmncjGTzJju
-	opj6/6Hpnqw0ctyy7XCBQ0+Dxl/KCHvAB0CEi1+WD30Iz/s2fj6TtM+RCA0CzuVg5TrPhFIUV6gYB
-	G8MQkXPzryAVv0E0lXCPksYWrMwqHF+k21+ciNDQ1HhZr0ZfNg/WektA+0aZtSaOfiPWOjYpIeZII
-	Tk40hyxw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=QrS9oJXqYpjDUXgoJxT3d3uaHOIeca5Tv0QrtovxGTA=; b=u1pkx96ghg9WoAc8e90hT1ZJWM
+	rdcbWvQinS5hZ0BXoIdexK5ZiUp089n/Tsmm4ZVRE8324WRgcHdCcPsI9EL4hs8Xk4rwFWKXQfyAu
+	88N/PYzfOmEGcih7POBIO6PGpbttKch5Lc+3EqwjgGIZmIpVrQSPv8Sp/g7E9Nt5Gxow2pJJ8gXGk
+	NQsto49hBc3aOAHqaIuOF7dkhVyIUnEjNvYJ2kqi9w+2wsXrn6V6+EC/rTnD5RQHdG/sOlkd5/bXe
+	uBg4k0HgECO8EMqvQz+TchRY6GtyqQXBLgbN5M0XWuS6fTYcGz5N3h10UXUwf4Y+fizdcy5k7GzCe
+	6K7XjLiA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tvC6X-0000000Bg2J-1oHS;
-	Thu, 20 Mar 2025 09:22:21 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tvC7k-0000000BgCh-09af;
+	Thu, 20 Mar 2025 09:23:36 +0000
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tvC6T-0000000Bg1d-3GIU
+	id 1tvC7h-0000000BgBR-2DSN
 	for barebox@lists.infradead.org;
-	Thu, 20 Mar 2025 09:22:19 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tvC6S-00014J-1C; Thu, 20 Mar 2025 10:22:16 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tvC6R-000jeR-1L;
-	Thu, 20 Mar 2025 10:22:15 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tvC6R-006ggL-2K;
-	Thu, 20 Mar 2025 10:22:15 +0100
-Date: Thu, 20 Mar 2025 10:22:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <Z9veR3N6puizrAT8@pengutronix.de>
+	Thu, 20 Mar 2025 09:23:34 +0000
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-38f2f391864so260108f8f.3
+        for <barebox@lists.infradead.org>; Thu, 20 Mar 2025 02:23:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742462611; x=1743067411; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QrS9oJXqYpjDUXgoJxT3d3uaHOIeca5Tv0QrtovxGTA=;
+        b=Fg3jOGcu+TS9QPI5i/h1QppLZ4D69WldxZvbsCxnGrJrG3oUqkqjW56CQ+w9TEiUKx
+         fstqWNZ1tQNlh39vUsqQK1SCYEmqbp8Moui3h+AU+mdIivV3SLXFAqraYSMcbPUopnoF
+         og2HefuYdGp+qAtFUswnCemrbKtVnIW5FRlt/AvvGfJsIK4Xi7ccegyfTYdF4qLQ8VMG
+         nhD8/XaC30oBbh9hdSklVoSwcYLfz/6RHZgvuLebdUhHL44gOSXf0xqRPmMqxorOmxZr
+         W3q4K1PEXId2ztkjSf99fhYgGsMgxT+/68HucKJhm2GbA/vxyLqWXgGbXBvPprkC1Aca
+         aLVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742462611; x=1743067411;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QrS9oJXqYpjDUXgoJxT3d3uaHOIeca5Tv0QrtovxGTA=;
+        b=r04MKD/uDw/ZmwQW+VUOCee6WtnLtnCeYXKIw5kls9y3VcGbJFV3Kqlv8E8xJA6q6/
+         6ENJDHBukGmG3nvBr+dMZRH9iLhqpvg9/papgRnGQV81JJisNdtO/Q0GohraoJIiN17+
+         stSHuyy/y8TTHA1S8bLAW8TJobDFiW/uIYEvKLyjKxhO3qRdTnhAhnLAS53GUd5aDT+R
+         DBuBPukv/k7JSbJlKs8UXjZo6zOYZd9wbrwOkN5IvvoCt8GtIDHVM30ehzQwRtpQhoEJ
+         ac5E2OpMiE18QodzYYpP5B9XNTYFzVC45R4F8Y9MJAbPifoUZzDjO7PeDtVm2U1qdiO1
+         XQiw==
+X-Gm-Message-State: AOJu0YwiyMqxiDf0HFr4QHGZMcLJLXlZOyE4nJKqXlrGRxEZSWwR1dC3
+	bR2aR+vRdipP//9lu1Siat8YfSnx27GxZUOfX7qLgpZ5QMLp5ypervYviw==
+X-Gm-Gg: ASbGncs9A5fndFu0wrmsGhz1oU8LCdYYeaTl58fAiydUCb5q0+R9+QLBVLaveNev4nt
+	47vXnQx6sLWCeWYOoHcNMutss7p0e9w/Us9p6gmULqhQmtaYR4On/znRxDCcVAM5tBxrvi7NVJV
+	OWHlJDsh5UoLMib1bXfwkSzBKHYGRaSsZoTd9YLe4YJWN2HHIcTCMSwJ5iDPcQeHYbN/0odapse
+	Ec74HiAtx2SaNVhqTST6dIUjGFHUdjkloMNM3gwcKVBf4Yy0K/jjzogQfCbuyjNrU+JsH/hUXeE
+	4eAH0+OGNPqQ6OnLQH0Z4jHNz57SS6zf0Fe8kXItVNsWWEe/j9TYSVE21+uIih0=
+X-Google-Smtp-Source: AGHT+IGNsfTW43crImGsLBkfqaucwVXBBRbcVLjHFjmrejYSxqxQdIfpJcUAzlmIthmh03Y5nFo+Dw==
+X-Received: by 2002:a05:6000:2d0f:b0:391:40b8:e890 with SMTP id ffacd0b85a97d-399795a9b9amr1414536f8f.22.1742462611068;
+        Thu, 20 Mar 2025 02:23:31 -0700 (PDT)
+Received: from WUP-WIL0422.riedel.net ([213.240.144.190])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3978ef9a23bsm19025022f8f.15.2025.03.20.02.23.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Mar 2025 02:23:30 -0700 (PDT)
+From: Jonas Licht <jonas.licht@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Jonas Licht <jonas.licht@gmail.com>
+Date: Thu, 20 Mar 2025 10:22:27 +0100
+Message-ID: <20250320092300.21427-2-jonas.licht@gmail.com>
+X-Mailer: git-send-email 2.45.3
+In-Reply-To: <20250311141713.30947-1-jonas.licht@gmail.com>
+References: <20250311141713.30947-1-jonas.licht@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250320_022217_975508_602DF0D0 
-X-CRM114-Status: GOOD (  24.58  )
+X-CRM114-CacheID: sfid-20250320_022333_570184_4A96CBA2 
+X-CRM114-Status: GOOD (  22.63  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,235 +103,264 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: v2025.03.0
+X-Spam-Status: No, score=-5.3 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH v3] environment: support reading and writing of efivar
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi All,
+scripts/bareboxenv: skip file creation to allow reading the destination
+file, when existing.
 
-I am happy to announce barebox-2025.02.0.
+In envfs_load before reading the superblock, we check if our superblock
+magic exists after an EFIVAR_ATTR_SIZE offset. This is necessary because
+linux kernel adds four byte variable attributes in front of each efi
+variable in sysfs. When the magic is found after EFIVAR_ATTR_SIZE, we
+skip reading the four bytes variable attributes.
+For envfs_save detection of an efi var is done the same way. But we need
+to keep the attributes, as they are required for writing as well.
 
-This release introduces support for Sunxi SoCs. barebox can now run on a
-Pine64+ as a generic barebox-dt-2nd.img image. Thanks Jules for working
-on this.
+In order to write to efivars, you still need to remove immutable flag
+from the file with 'chattr -i' .
 
-MMCs are now much faster to erase, reportedly up 60x faster.
+Signed-off-by: Jonas Licht <jonas.licht@gmail.com>
+Fixes: #29
+Link: https://github.com/barebox/barebox/issues/29
+---
+Skip the detect code when __BAREBOX__ is defined as well.
+I've noticed that the first pread in detect_efi_vars never comes back
+in __BAREBOX__ , when the efivar file don't exists, but doing this on a
+file at /tmp works.
 
-Linux now has support for the fixed partition device tree binding for
-block devices. barebox had the same for a long time, but differently. In
-barebox we register both partitions from the partition table and the
-device tree. In Linux both are used exclusively, once a device tree
-partitioning is found the partition table on the disk is ignored. For
-this reason barebox now uses barebox,fixed-partitions as compatible.
+ common/environment.c | 84 ++++++++++++++++++++++++++++++++++++++++----
+ scripts/Makefile     |  2 ++
+ scripts/bareboxenv.c | 11 +-----
+ 3 files changed, 80 insertions(+), 17 deletions(-)
 
-The i.MX HAB support now supports revoking keys and burning the field
-return fuse.
-
-The K3 support continues to evolve as well, with this release we can
-boot from eMMC boot partitions and fully bootstrap the SoC over USB DFU.
-
-One nice thing worth noting is the support for overriding boot
-artifacts. With this we can boot regular bootspec entries or scripts,
-but replace Kernel, device tree or initrd with one specified on the
-command line. This is good for "injecting" an artifact into the regular
-boot flow.
-
-See below for a full list of changes for this release.
-
-Have Fun!
- Sascha
-
-----------------------------------------------------------------
-Ahmad Fatoum (52):
-      commands: readlink: print to stdout if variable is missing
-      startup: add new AUTOBOOT_HALT state
-      kbuild: allow overriding mkimage
-      kbuild: allow overriding compression tools
-      cdev: merge identical partitions despite DEVFS_PARTITION_CAN_OVERLAP
-      cmdlinepart: refuse partitions with empty name
-      bootm: change default verification mode from hash to available
-      FIT: factor out fit_fdt_is_compatible for readability
-      FIT: do not decompress device trees to find compatible
-      bootm: add helper functions for checking if FIT image is used
-      boot: move global.linux.bootargs.dyn. to common code
-      blspec: don't clobber bootm.image on boot attempt
-      fastboot: drop useless bootm.image clobber
-      bootm: don't clobber global.bootm. variables after script boot fails
-      bootm: retire bootm_has_initrd
-      commands: boot: add support for overriding boot artifacts
-      mount: support specifying mount -o options more than once
-      lib: add scatterlist abstraction
-      virtio: replace virtio_sg with common scatterlist
-      virtio: add token data parameter to virtqueue_add_sgs
-      boot: omit menu freeing loop when CONFIG_MENU is disabled
-      fs: move fs_driver open/close into struct file_operations
-      fs: remove unused members in struct file_operations
-      fs: drop unused FS_DRIVER_NO_DEV flag
-      nfs: add $global.net.nfsport override
-      usb: dwc3: fix use of bool for prompt choice
-      kbuild: export HOSTPKG_CONFIG like Linux does
-      sandbox: make CC_HAS_LINUX_I386_SUPPORT depend on GCC
-      Makefile: clang: fix typo in -Wno-typdef-redefinition flag
-      kbuild: actually include Makefile.clang for clang builds
-      Makefile: clang: fail non-sandbox LLVM builds early
-      mci: core: import Linux logic for higher preferred erase size
-      mci: core: reset ERASE_GRP_DEF on startup
-      of: factor out of_node_is_fixed_partitions check
-      of: of_path: support barebox,fixed-partitions
-      ARM: IMX8MP: var-dart-dt8mcustomboard.dts: use new-style partition binding
-      ARM: dts: prefix all non-MTD fixed-partitions with barebox,
-      of: partition: refactor of_partition_binding checks into switch
-      of: partition: add Linux CONFIG_OF_PARTITION-compatible adaptive fixup mode
-      sandbox: configs: disable CONFIG_NET_NETCONSOLE in sandbox_defconfig
-      malloc: define a maximum malloc size
-      tlsf: fail allocations exceeding MALLOC_MAX_SIZE
-      dlmalloc: fail allocations exceeding MALLOC_MAX_SIZE
-      sandbox: libc_malloc: fail allocations exceeding MALLOC_MAX_SIZE
-      dummy_malloc: fail allocations exceeding MALLOC_MAX_SIZE
-      test: self: malloc: adapt to addition of MALLOC_MAX_SIZE
-      sandbox: libc_malloc: multiply, not add, args in calloc overflow check
-      nfs: rename global.net.nfsport to global.nfs.port
-      Documentation: user: networking: fix trivial typo
-      FIT: early exit if digest fails
-      net: am65-cpsw-nuss: fix out-of-bounds access
-      partition: fix reference to wrong cdev in warning message
-
-Alexander Shiyan (9):
-      phy: rockchip-inno-usb2: Add support for RK3588 PHY
-      phy: rockchip: add usbdp combo phy driver
-      aiodev: rockchip_saradc: Add reset control support
-      aiodev: rockchip_saradc: Prepare driver to add support for other SARADC variants
-      aiodev: rockchip_saradc: Add support for RK3588
-      gpio: add driver for SAMA5D2 PIOBU pins
-      arch: treewide: Cleanup generated devicetree overlay objects
-      i2c: Remove dead link to struct i2c_algorithm
-      i2c: rockchip: Replace driver from kernel repository
-
-Bastian Krause (3):
-      mfd: rn5t568: add priority to reset_source_set_device()
-      ARM: i.MX9: tqma93xx: remove mach/imx/romapi.h include
-      commands: fix typo in CMD_AUTOMOUNT
-
-David Dgien (1):
-      kbuild: Use uname for BAREBOX_COMPILE_HOST
-
-Jonas Rebmann (3):
-      ci: add workflow for coverity analysis
-      ci: add workflow for CodeQL analysis
-      ci: add workflow for CodeQL analysis
-
-Jules Maselbas (7):
-      scripts: include: rename printk.h to printf.h
-      clk: divider: add error code propagation
-      clk: Add clock driver for sun50i-a64
-      pinctrl: Add sun50i-a64 pinctrl driver
-      mci: Add sunxi-mmc driver
-      ARM: sunxi: Introduce mach-sunxi
-      Documentation: sunxi: Add some documentation
-
-Marco Felsch (9):
-      nvmem: ocotp: add support to get/set srk_revoke sticky bit
-      nvmem: ocotp: add support to query the field-return sticky bit
-      hab: convert flags to use BIT() macro
-      i.MX: HAB: add imx_hab_revoke_key support
-      i.MX: HABv4: add more i.MX8M fuse defines
-      i.MX8M: HABv4: add an option to allow key revocation
-      i.MX8M: HABv4: add option to allow burning the field-return fuse
-      i.MX: HAB: add imx_hab_field_return support
-      i.MX: HAB: fix i.MX8MP field-return fuse
-
-Michael Grzeschik (4):
-      PWM: imx: pwm-imx-tpm: Add driver support
-      ARM: i.MX93: ele: make A0 firmware optional
-      video: simple-panel: add regulator support
-      ARM: i.MX93: allow board code to configure the bl33 loadaddr
-
-Michiel Schelfhout (3):
-      ARM: protonic-stm32mp1: Add support for Plymovent AMQ board
-      ARM: protonic-stm32mp1: Add support for reading serial from BSEC
-      ARM: protonic-stm32mp1: Add shift register support for board ID and revision
-
-Oliver ROHE (1):
-      partition: msdos: fix partuuid format
-
-Renaud Barbier (1):
-      nvme: add erase operation through sanitize command
-
-Sascha Hauer (58):
-      usb: gadget: dfu: detect devices when necessary
-      ARM: k3: am625: fixup Linux device tree
-      ARM: k3: am625: apply RTC i2327 erratum fixup
-      dts: update to v6.14-rc1
-      soc: k3: Add support for Texas Instruments K3 ESM driver
-      mfd: tps65219: register regmap cdev
-      dts: update to v6.14-rc2
-      ARM: k3: Add function to enable 32k crystal
-      ARM: k3: add function to detect eMMC boot
-      ARM: k3: do not mount /boot when booting from eMMC
-      fip: drop typedefs
-      fip: use linux list implementation
-      fip: use uuid_equal() and uuid_is_null()
-      fiptool: do not typedef structs
-      fip: add fip_ prefix
-      fip: add fip_image_open()
-      ARM: k3: r5: add USB DFU and eMMC boot support
-      ARM: am625-sk: enable 32k crystal
-      mci: am654: parse generic mmc node properties
-      ARM: k3: limit eMMC frequency to 26MHz
-      ARM: k3: add eMMC barebox update handler
-      dts: update to v6.14-rc3
-      ARM: am625-sk: put environment on eMMC when booting from it
-      serial: omap: Use ttyS as Linux console name
-      ARM: k3: remove beagleplay FIT image
-      ARM: am625-sk: cleanup board entry
-      ARM: beagleplay: cleanup board entry
-      test: create K3 dummy firmware files
-      ci: container: add python3-yaml for K3
-      ddr: k3: fix includes
-      ARM: k3: Add k3-r5_defconfig
-      usb: dwc3: am62: Use HZ_PER_KHZ
-      usb: dwc3: am62: set mode valid bit before probing children
-      boot: fix systemd watchdog command line argument
-      Merge branch 'for-next/allwinner'
-      Merge branch 'for-next/bootm-override'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/imx'
-      Merge branch 'for-next/imx-hab'
-      Merge branch 'for-next/k3'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/of-partition'
-      Merge branch 'for-next/rockchip'
-      Merge branch 'for-next/stm32mp1'
-      fip: Store image data in single buffer
-      fip: add function to parse FIP from a buffer
-      parted: add partition type msdos to help text
-      ARM: i.MX6: Enable PBL_VERIFY_PIGGY with HABV4 support
-      ARM: i.MX9: Enable PBL_VERIFY_PIGGY with non INSECURE
-      bootm: let BOOTM_OPTIONAL_SIGNED_IMAGES depend on BOOTM
-      firmware: export firmware directory
-      ARM: k3r5: Honour CONFIG_EXTRA_FIRMWARE_DIR
-      Revert "ci: add workflow for CodeQL analysis"
-      watchdog: rti_wdt: return 0 even when not ready for ping
-      net: am65-cpsw-nuss: remove unused variables
-      ARM: am335x_mlo_defconfig: disable unnecessary options
-      serial: omap: make Linux console name configurable
-      Release v2025.03.0
-
-Stefan Kerkmann (2):
-      i.mx8: ocotp: add GPx_LOCK defines
-      hab: lock GP5 on i.MX8MP socs
-
-Steffen Trumtrar (1):
-      ARM: Layerscape: LS1046a: select early i2c
-
+diff --git a/common/environment.c b/common/environment.c
+index 37adb5d678..70639e4037 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -32,8 +32,11 @@
+ #include <magicvar.h>
+ #else
+ #define EXPORT_SYMBOL(x)
++#include <autoconf.h>
+ #endif
+ 
++#define EFIVAR_ATTR_SIZE 4
++
+ struct envfs_entry {
+ 	char *name;
+ 	void *buf;
+@@ -290,6 +293,41 @@ static int file_remove_action(const char *filename, struct stat *statbuf,
+ }
+ #endif
+ 
++static int detect_efi_vars(int fd, void* buf_with_efi, void** wbuf, int *size) {
++	uint32_t magic;
++	int ret;
++
++	*wbuf = buf_with_efi + EFIVAR_ATTR_SIZE;
++#if !defined CONFIG_EFI || defined __BAREBOX__
++		return 0;
++#endif
++
++	ret = pread(fd, &magic, sizeof(uint32_t),
++		EFIVAR_ATTR_SIZE);
++	if (ret == -1 && errno == ENOENT) {
++		perror("pread");
++		// skip as file don't exist
++		return 0;
++	}
++	if (ret < sizeof(u_int32_t)) {
++		perror("pread");
++		return 0;
++	}
++
++	if (ENVFS_32(magic) == ENVFS_MAGIC) {
++		pr_info("Assuming EFI variable. Keeping attributes\n");
++		ret = pread(fd, buf_with_efi, EFIVAR_ATTR_SIZE, 0);
++		if (ret < EFIVAR_ATTR_SIZE) {
++			ret = -errno;
++			perror("read of efi attributes failed");
++			return ret;
++		}
++		*size += EFIVAR_ATTR_SIZE;
++		*wbuf = buf_with_efi;
++	}
++	return 0;
++}
++
+ /**
+  * Make the current environment persistent
+  * @param[in] filename where to store
+@@ -305,7 +343,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 	struct envfs_super *super;
+ 	int envfd, size, ret;
+ 	struct action_data data = {};
+-	void *buf = NULL, *wbuf;
++	void *buf = NULL, *wbuf = NULL, *buf_with_efi;
+ 	struct envfs_entry *env;
+ 	const char *defenv_path = default_environment_path_get();
+ 
+@@ -342,7 +380,9 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 		}
+ 	}
+ 
+-	buf = xzalloc(size + sizeof(struct envfs_super));
++	buf_with_efi = xzalloc(size + sizeof(struct envfs_super) +
++	EFIVAR_ATTR_SIZE);
++	buf = buf_with_efi + EFIVAR_ATTR_SIZE;
+ 	data.writep = buf + sizeof(struct envfs_super);
+ 
+ 	super = buf;
+@@ -370,7 +410,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 	super->crc = ENVFS_32(crc32(0, buf + sizeof(struct envfs_super), size));
+ 	super->sb_crc = ENVFS_32(crc32(0, buf, sizeof(struct envfs_super) - 4));
+ 
+-	envfd = open(filename, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
++	envfd = open(filename, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+ 	if (envfd < 0) {
+ 		printf("could not open %s: %m\n", filename);
+ 		ret = -errno;
+@@ -385,6 +425,12 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 		goto out;
+ 	}
+ 
++	/* check if we writing efi vars */
++	ret = detect_efi_vars(envfd, buf_with_efi, &wbuf, &size);
++	if (ret != 0) {
++		goto out;
++	}
++
+ 	ret = erase(envfd, ERASE_SIZE_ALL, 0, ERASE_TO_WRITE);
+ 
+ 	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
+@@ -395,12 +441,11 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 
+ 	size += sizeof(struct envfs_super);
+ 
+-	wbuf = buf;
+-
+ 	while (size) {
+ 		ssize_t now = write(envfd, wbuf, size);
+ 		if (now < 0) {
+ 			ret = -errno;
++			perror("write");
+ 			goto out;
+ 		}
+ 
+@@ -418,14 +463,14 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 
+ 	ret = 0;
+ 
+-#ifdef CONFIG_NVVAR
++#if defined CONFIG_NVVAR && defined __BAREBOX__
+ 	if (defenv_path && !strcmp(filename, defenv_path))
+ 	    nv_var_set_clean();
+ #endif
+ out:
+ 	close(envfd);
+ out1:
+-	free(buf);
++	free(buf_with_efi);
+ #ifdef __BAREBOX__
+ 	unlink_recursive(TMPDIR, NULL);
+ #endif
+@@ -449,6 +494,9 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
+ 	int envfd;
+ 	int ret = 0;
+ 	size_t size, rsize;
++#if defined CONFIG_EFI && !defined __BAREBOX__
++	uint32_t magic;
++#endif
+ 
+ 	if (!filename)
+ 		filename = default_environment_path_get();
+@@ -466,6 +514,28 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
+ 		return -1;
+ 	}
+ 
++#if defined CONFIG_EFI && !defined __BAREBOX__
++	/* check if we reading efi vars */
++	ret = pread(envfd, &magic, sizeof(uint32_t),
++		    EFIVAR_ATTR_SIZE);
++	if (ret < sizeof(u_int32_t)) {
++		perror("read");
++		ret = -errno;
++		goto out;
++	}
++
++	if (ENVFS_32(magic) == ENVFS_MAGIC) {
++		pr_info("Assuming EFI variable. Skip attributes\n");
++		ret = read(envfd, &magic,
++			   sizeof(uint32_t)); // simply reuse the memory
++		if (ret < sizeof(uint32_t)) {
++			perror("read");
++			ret = -errno;
++			goto out;
++		}
++	}
++#endif
++
+ 	/* read superblock */
+ 	ret = read(envfd, &super, sizeof(struct envfs_super));
+ 	if ( ret < sizeof(struct envfs_super)) {
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 6d89af7d4f..57d8ddb54d 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -30,6 +30,7 @@ hostprogs-always-$(CONFIG_RK_IMAGE)			+= rkimage
+ HOSTCFLAGS_rkimage.o = `$(PKG_CONFIG) --cflags openssl`
+ HOSTLDLIBS_rkimage = `$(PKG_CONFIG) --libs openssl`
+ KBUILD_HOSTCFLAGS += -I$(srctree)/scripts/include/
++KBUILD_HOSTCFLAGS += -I$(objtree)/include/generated/
+ HOSTCFLAGS_mxsimage.o = `$(PKG_CONFIG) --cflags openssl`
+ HOSTLDLIBS_mxsimage  = `$(PKG_CONFIG) --libs openssl`
+ HOSTCFLAGS_omap3-usb-loader.o = `$(PKG_CONFIG) --cflags libusb-1.0`
+@@ -57,6 +58,7 @@ omap4_usbboot-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
+ omap4_usbboot-target-userldlibs += -lpthread `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
+ rk-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
+ rk-usb-loader-target-userldlibs += `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
++bareboxenv-target-userccflags += -I$(objtree)/include/generated/
+ 
+ userccflags += -I $(srctree)/$(src)/include -isystem $(srctree)/scripts/include
+ 
+diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
+index e954447015..6b9b8d90c4 100644
+--- a/scripts/bareboxenv.c
++++ b/scripts/bareboxenv.c
+@@ -117,7 +117,7 @@ static void usage(char *prgname)
+ int main(int argc, char *argv[])
+ {
+ 	int opt;
+-	int save = 0, load = 0, pad = 0, err = 0, fd;
++	int save = 0, load = 0, pad = 0, err = 0;
+ 	char *filename = NULL, *dirname = NULL;
+ 	unsigned envfs_flags = 0;
+ 	int verbose = 0;
+@@ -156,15 +156,6 @@ int main(int argc, char *argv[])
+ 		exit(1);
+ 	}
+ 
+-	if (save) {
+-		fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+-		if (fd < 0) {
+-			perror("open");
+-			exit(1);
+-		}
+-		close(fd);
+-	}
+-
+ 	if (save && pad) {
+ 		if (truncate(filename, pad)) {
+ 			perror("truncate");
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.45.3
+
 
 
