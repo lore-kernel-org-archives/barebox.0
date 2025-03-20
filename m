@@ -3,65 +3,66 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tv8Hc-001kzJ-1f
+	id 1tv8Hc-001kzd-2m
 	for lore@lore.pengutronix.de;
-	Thu, 20 Mar 2025 06:17:31 +0100
+	Thu, 20 Mar 2025 06:17:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tv8Ha-0002Vz-RB
-	for lore@pengutronix.de; Thu, 20 Mar 2025 06:17:31 +0100
+	id 1tv8Hb-0002WJ-8u
+	for lore@pengutronix.de; Thu, 20 Mar 2025 06:17:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EgebcJsxF4aiA5j644MD0s0cgDOzHplatQmyyiWVYM4=; b=D4bJkgwpgVkz5f/r24w4qNBo1j
-	2wW/ZHT0kbwZCexZMYk2GDlCstoisdnvs6h2srBWCwD2aaorZYC21tSXei2PMbBeY45yOmUMeGqJj
-	kTy7n9lx2f25Ze18vIdcmugUBubGBvGlwz4+csrir+i2y/PcMbdwl68DYzSL3jZ3eCn7WFSbEdzxi
-	ZLUPJmzhbUILRyYzaDki6BlNmeqj0IZsC0Vi3NITU2Onz92yk2DgBH3ji8hKnuRfw5k7yu3692utX
-	qwYUE0TlBRxmr8JfKTvl1dA1cC8il233QpTNkSP0dW/NQh5Wsi6zmQAkZRuRM4Z7vGOcUQrQmmt3Q
-	ty22m+EQ==;
+	bh=a3U2WAMWuAQGGgjgfRGGnglscxje8tQQL9Md07zWddA=; b=gS+KLIG+4v5zz0CUYFA8mK0WYY
+	VO9K+aqh/xDxyJGbBGPbd2jqXKkDyyKLoM5Ya9iujV06Kb4Lq92hAPoRKLbuH0lj+amb85BOIugdM
+	+RNh0pLen0PantMJ7h89STHMcZT3S9bySIwC15KZ6EWPzFuAWCIdvHPz+FrENhYt4z51adfX/F4LW
+	YS+mT7G4fD2XGxNDN8Xs/lFJvKMAzYJ55tGaekkAEzXPEed8lsZTypSYB+9bpxU33YG/1tkAcOEbU
+	qUQSVwqyjh3JM+zktcCD9VwL9dlALa3SEiDBfQhFmoCo04S+QjC/jhIGV5AZ+x34nweZ3mHM+3ho+
+	s9VyISbQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1tv8Gy-0000000BBga-01aT;
-	Thu, 20 Mar 2025 05:16:52 +0000
+	id 1tv8H3-0000000BBjQ-27Pe;
+	Thu, 20 Mar 2025 05:16:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1tv8Gt-0000000BBeh-0prN
+	id 1tv8H0-0000000BBhC-0hGa
 	for barebox@lists.infradead.org;
-	Thu, 20 Mar 2025 05:16:49 +0000
+	Thu, 20 Mar 2025 05:16:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8Gq-0001yW-Sk; Thu, 20 Mar 2025 06:16:44 +0100
+	id 1tv8Gq-0001yX-Sk; Thu, 20 Mar 2025 06:16:44 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8Go-000huR-1p;
+	id 1tv8Go-000huW-1w;
 	Thu, 20 Mar 2025 06:16:43 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tv8Go-007EvV-2s;
+	id 1tv8Go-007EvV-31;
 	Thu, 20 Mar 2025 06:16:42 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 20 Mar 2025 06:16:37 +0100
-Message-Id: <20250320051641.1721377-5-a.fatoum@pengutronix.de>
+Date: Thu, 20 Mar 2025 06:16:38 +0100
+Message-Id: <20250320051641.1721377-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250320051641.1721377-1-a.fatoum@pengutronix.de>
 References: <20250320051641.1721377-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250319_221647_248192_1C7AE560 
-X-CRM114-Status: GOOD (  12.59  )
+X-CRM114-CacheID: sfid-20250319_221654_201724_3A59E075 
+X-CRM114-Status: UNSURE (   8.91  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,63 +84,35 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 4/8] Documentation: devicetree: fix Sphinx warnings
+Subject: [PATCH master 5/8] ARM: mvebu: kwb_bbu: add missing header
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Building the barebox documentation results in an number of warnings
-predominantly in the autogenerated docs from command help text.
+The file uses xzalloc, but it's not defined any longer in the currently
+included headers.
 
-Outside of that, there is warnings only in the DT bindings:
-
-  bindings/barebox/virtual-reg.rst:25:
-  WARNING: Inline emphasis start-string without end-string.
-
-  bindings/barebox/virtual-reg.rst:28:
-  WARNING: Definition list ends without a blank line; unexpected unindent.
-
-  bindings/barebox/virtual-reg.rst:29:
-  WARNING: Block quote ends without a blank line; unexpected unindent.
-
-  bindings/clocks/xlnx,ps7-clkc.rst:
-  WARNING: document isn't included in any toctree
-
-Fix the devicetree binding warnings.
+Include the relevant header to fix this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - no change
+  - new patch
 ---
- Documentation/devicetree/bindings/barebox/virtual-reg.rst | 2 +-
- Documentation/devicetree/index.rst                        | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mach-mvebu/kwb_bbu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/barebox/virtual-reg.rst b/Documentation/devicetree/bindings/barebox/virtual-reg.rst
-index 7d576d0cef6f..a69d23144755 100644
---- a/Documentation/devicetree/bindings/barebox/virtual-reg.rst
-+++ b/Documentation/devicetree/bindings/barebox/virtual-reg.rst
-@@ -13,7 +13,7 @@ by subtracting ``virtual-reg`` from the first address in ``reg``.
+diff --git a/arch/arm/mach-mvebu/kwb_bbu.c b/arch/arm/mach-mvebu/kwb_bbu.c
+index 0fde9abb5709..b706edac6dc1 100644
+--- a/arch/arm/mach-mvebu/kwb_bbu.c
++++ b/arch/arm/mach-mvebu/kwb_bbu.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
- This is normally used to map I/O memory away from the zero page, so it
- can be used again to trap null pointer dereferences, while allowing
--full access to the device memory::
-+full access to the device memory.
+ #include <bbu.h>
++#include <xfuncs.h>
+ #include <libfile.h>
+ #include <linux/printk.h>
  
- .. code-block:: none
- 
-diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
-index cd9270da1d21..2ca8b72be1ac 100644
---- a/Documentation/devicetree/index.rst
-+++ b/Documentation/devicetree/index.rst
-@@ -143,6 +143,7 @@ Contents:
-    :maxdepth: 1
- 
-    bindings/barebox/*
-+   bindings/clocks/*
-    bindings/firmware/*
-    bindings/leds/*
-    bindings/misc/*
 -- 
 2.39.5
 
