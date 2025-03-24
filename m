@@ -1,71 +1,64 @@
-Delivery-date: Mon, 24 Mar 2025 11:39:49 +0100
+Delivery-date: Mon, 24 Mar 2025 12:18:29 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1twfDh-003YIa-2Y
+	id 1twfp7-003Z9G-2F
 	for lore@lore.pengutronix.de;
-	Mon, 24 Mar 2025 11:39:49 +0100
+	Mon, 24 Mar 2025 12:18:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1twfDg-0002S3-LZ
-	for lore@pengutronix.de; Mon, 24 Mar 2025 11:39:49 +0100
+	id 1twfp6-0007CY-JM
+	for lore@pengutronix.de; Mon, 24 Mar 2025 12:18:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iRCYEedbF5erDRmZtNOW622JskNz+HOIkWo5EMhBNK0=; b=vxluJBrSrfxqLslxTVB1+UlwOc
-	nQEk9NUsZRrzObQ6aUtnA8eMjKpmF3acBYD8YoeQjCUv7lyrSJrV6n7Rc0RdPrOagbduI9TsU2k4z
-	vXUfwkQAwUnXaoo1ECZ5jKKVHJfQJ0hQ5l8TIf8qujw6fkcz/E9PZvx/KxIyZaVPymdYymeqlDqyV
-	j2GLpoibFFFm05QYemcB30nOSs4l8SCppxx9m+p2pK0ez5k2QDo1oOobaz23/77d+bJkmvJtvU2Zu
-	XGSi898vETQaq2qBNDgJfMDbArWRVmFGHdXKGHt2CitMH9BCGlMV6/GW1XjGJusr/JqgejY4g+URJ
-	FyZdEIjQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=K9lO2I+0ovHkSheCCoiS8W2wwDeQ8h03Z94a6i7lR3k=; b=1XsSjjTtejlW1unRS6vAiYkerS
+	1hsWK7ED/0J+M5OX/etmqz0TE7kTmhTJuObqNchAZIBZ6u0RPK7G2ucqAPd4yqTbV4t8PMlb2kal7
+	mJdxwjdXP8zZZlyKPpsA1MOVUhOTA3raxsA7BbgM7lvcPpWxSGLIllDwg1VEi7P6BJi+Z7yui171h
+	VS4FpZrfbei8F9JCfJ6Lx5RPOWNmF6YaZmkOz0G1Q9F3UsmpPSwUfgA8kxNQ9VixXNNWELGIKlmyy
+	97PET/9ki057qO0UKsewypOK2uk3QRhPp/8Xvd00CkKk+CHvyzksHqrdpmbP2rkVDzhCbIIPMul90
+	h/EGXiew==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1twfDE-00000002qkS-0J2h;
-	Mon, 24 Mar 2025 10:39:20 +0000
+	id 1twfoY-00000002vhy-0j5o;
+	Mon, 24 Mar 2025 11:17:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1twfBG-00000002qZB-0gJI
+	id 1twfoV-00000002vhc-48H7
 	for barebox@lists.infradead.org;
-	Mon, 24 Mar 2025 10:37:19 +0000
+	Mon, 24 Mar 2025 11:17:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1twfBE-0002BK-Q2; Mon, 24 Mar 2025 11:37:16 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1twfoT-00077T-Tf; Mon, 24 Mar 2025 12:17:49 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1twfBE-001OWW-0c;
-	Mon, 24 Mar 2025 11:37:16 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1twfBE-00DvZk-1f;
-	Mon, 24 Mar 2025 11:37:16 +0100
-Date: Mon, 24 Mar 2025 11:37:16 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1twfoT-001Oti-0y;
+	Mon, 24 Mar 2025 12:17:49 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1twfoT-00BUl4-1z;
+	Mon, 24 Mar 2025 12:17:49 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z-E13HJbzqRv9eEi@pengutronix.de>
-References: <cover.1742405341.git.uwe@kleine-koenig.org>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 24 Mar 2025 12:17:49 +0100
+Message-Id: <20250324111749.2739671-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1742405341.git.uwe@kleine-koenig.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250324_033718_202377_2A94D21E 
-X-CRM114-Status: GOOD (  14.20  )
+X-CRM114-CacheID: sfid-20250324_041752_022212_BEB6B5CF 
+X-CRM114-Status: GOOD (  10.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,36 +76,44 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/2] arm64: rockchip: Two more additions to
- rockchip_v8_defconfig
+Subject: [PATCH] mci: fix data write
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Mar 19, 2025 at 06:32:37PM +0100, Uwe Kleine-König wrote:
-> Hello,
-> 
-> while working to support the Qnap TS-433 NAS I found the config items
-> enabled here quite useful. I'm not entirely sure that enabling generic
-> fit image is useful in general (also because it comes with a build
-> dependency on python3-libfdt), still here comes a suggestion to enable
-> it.
+The dest and src fields in struct mci_data are a union, so we cannot not
+set them both to different values. Only set one of them to make write
+support operational again.
 
-I agree that this can be quite convenient, but indeed adding more python
-build dependencies is not so nice.
+Fixes: 3854311954 ("mmc: merge block read/write functions")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/mci-core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-If Kconfig could check if scripts/make_fit.py --help can be successfully
-executed then might even by default build FIT images.
-
-Sascha
-
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 5b892e8570..947fe44c08 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -360,8 +360,11 @@ static int mci_do_block_op(struct mci *mci, const void *src, void *dst, int bloc
+ 		mci->high_capacity != 0 ? blocknum : blocknum * mci->read_bl_len,
+ 		MMC_RSP_R1);
+ 
+-	data.src = src;
+-	data.dest = dst;
++	if (dst)
++		data.dest = dst;
++	else
++		data.src = src;
++
+ 	data.blocks = blocks;
+ 	data.blocksize = mci->read_bl_len;
+ 	data.flags = flags;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
