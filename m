@@ -1,69 +1,70 @@
-Delivery-date: Tue, 25 Mar 2025 08:23:10 +0100
+Delivery-date: Tue, 25 Mar 2025 08:31:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1twycx-003v48-0l
+	id 1twylG-003v96-0i
 	for lore@lore.pengutronix.de;
-	Tue, 25 Mar 2025 08:23:10 +0100
+	Tue, 25 Mar 2025 08:31:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1twycw-0002Qb-4l
-	for lore@pengutronix.de; Tue, 25 Mar 2025 08:23:10 +0100
+	id 1twylF-0003Fd-2V
+	for lore@pengutronix.de; Tue, 25 Mar 2025 08:31:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XB4aBzYzEuDFURxpHjvZX8lzwhvcHuHNRThez+gggOw=; b=uJgbgy+5/YqQJXuSDvzXnZVGYq
-	Gu7b+V3WW/aNq0T+gNdD5P3DVWXyoZH7Su8XxX18kDZNEPjbefqhh4yT27OmhXGdN7oFEOv2kzl1k
-	mYGj0j3c28eKje/qjgqydZUa5k8Eai69JbDq2Ow438QS1MLQH3GB/X3sjM+zg2vmZKoTUzIoFV+bY
-	I3qSEBcwXj5LdYU6e0fxBF0IzoyUK4ennfmcozCAzdpkBVn7LpfbSjRKfCKy0SbZioElzMsfMRHR7
-	+LE3Wtb6D/7GteOflr0UQdXm93t7NXYCoQNpyMVhxsnw+b6Y96itxt5pafb5UopNFHhETPq4IsHkX
-	IHBacn8w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=D+aloYlIWKlv8zHmMMS6J99Eqe4pyENENuDUSojTdzw=; b=vD43lq6h8okQ4ZflOsXTucGa89
+	kCJ4n+hAtKC1v6/SxGpsAyCW9NlN6cC9zOSIAcuBAkUzV/jHiBSe5rQZusn33Kq7B6Q93egiKMCT8
+	HxNKWzFumg7IigbaRHet32lE7rwQYqE98jBYfNCdutchlf+TRSNcNul5drX9tYt/CDhIbN1FVRA56
+	Dp3QixrBFD9uZP7ZbT89eVwAQWm698IK/NObglSDazwrymXIIQ7GHMGRRoRCM+uVyeDAfLF0JP99M
+	ozIChY2IQxpxsjTu2rJn8sricoaCRGyB3Yfnp7lU8YOLIidLn+iWIzVykWaT3cuXJSD3l/XBu4Swm
+	4Pm/HRJw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1twycH-000000054Pz-1AIN;
-	Tue, 25 Mar 2025 07:22:29 +0000
+	id 1twykk-000000055ik-0Ebh;
+	Tue, 25 Mar 2025 07:31:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1twyWK-000000053Tn-02Cp
+	id 1twybq-000000054Mv-3XAn
 	for barebox@lists.infradead.org;
-	Tue, 25 Mar 2025 07:16:21 +0000
+	Tue, 25 Mar 2025 07:22:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1twyWA-0001as-Sl; Tue, 25 Mar 2025 08:16:10 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1twybp-0002Ef-EH; Tue, 25 Mar 2025 08:22:01 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1twyWA-001XbQ-0s;
-	Tue, 25 Mar 2025 08:16:10 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1twyWA-006Z3q-1y;
-	Tue, 25 Mar 2025 08:16:10 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1twybo-001Xcc-2d;
+	Tue, 25 Mar 2025 08:22:01 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1twybp-00FlGB-0P;
+	Tue, 25 Mar 2025 08:22:01 +0100
+Date: Tue, 25 Mar 2025 08:22:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20250324111749.2739671-1-s.hauer@pengutronix.de>
-References: <20250324111749.2739671-1-s.hauer@pengutronix.de>
-Message-Id: <174288697060.1564623.13188596761991649994.b4-ty@pengutronix.de>
-Date: Tue, 25 Mar 2025 08:16:10 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <Z-JZmexeu-CvQXU6@pengutronix.de>
+References: <20250320052114.1732651-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250320052114.1732651-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250325_001620_048789_2C1F5B68 
-X-CRM114-Status: UNSURE (   7.07  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250325_002202_877740_CD0745F9 
+X-CRM114-Status: GOOD (  21.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,30 +82,93 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: fix data write
+Subject: Re: [PATCH v2 1/2] scripts: define le32_to_cpup and friends for
+ host/target tools
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On Thu, Mar 20, 2025 at 06:21:13AM +0100, Ahmad Fatoum wrote:
+> We already define le32_to_cpu and friends, but were missing so far the
+> p-suffixed variant, which accepts a pointer.
+> 
+> This is easily implemented with a bit of macro boilerplate, so let's do
+> that.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> v1 -> v2:
+>   - new patch
+> ---
+>  scripts/compiler.h | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 
-On Mon, 24 Mar 2025 12:17:49 +0100, Sascha Hauer wrote:
-> The dest and src fields in struct mci_data are a union, so we cannot not
-> set them both to different values. Only set one of them to make write
-> support operational again.
+This breaks compilation on riscv:
+
+scripts/compiler.h:182:1: note: in expansion of macro 'DEFINE_CONV_P'
+  182 | DEFINE_CONV_P(be, 64)
+      | ^~~~~~~~~~~~~
+scripts/compiler.h:170:55: error: unknown type name  __be64'
+  170 |  static inline u##bits cpu_to_##endian##bits##p(const __##endian##bits *p) \
+      |                                                       ^~
+scripts/compiler.h:182:1: note: in expansion of macro 'DEFINE_CONV_P'
+  182 | DEFINE_CONV_P(be, 64)
+      | ^~~~~~~~~~~~~
+
+I added a
+
+#include <linux/types.h>
+
+to scripts/compiler.h
+
+Sascha
+
+> 
+> diff --git a/scripts/compiler.h b/scripts/compiler.h
+> index d8d0e1b906df..d6807b027e03 100644
+> --- a/scripts/compiler.h
+> +++ b/scripts/compiler.h
+> @@ -160,6 +160,27 @@ typedef uint32_t __u32;
+>  # define be64_to_cpu(x)		(x)
+>  #endif
+>  
+> +#define DEFINE_CONV_P(endian, bits) \
+> +	static inline __##endian##bits endian##bits##_to_cpup(const u##bits *p) \
+> +	{ \
+> +		u##bits val; \
+> +		memmove(&val, p, sizeof(val)); \
+> +		return endian##bits##_to_cpu(val); \
+> +	} \
+> +	static inline u##bits cpu_to_##endian##bits##p(const __##endian##bits *p) \
+> +	{ \
+> +		__##endian##bits val; \
+> +		memmove(&val, p, sizeof(val)); \
+> +		return cpu_to_##endian##bits(val); \
+> +	}
+> +
+> +DEFINE_CONV_P(le, 16)
+> +DEFINE_CONV_P(le, 32)
+> +DEFINE_CONV_P(le, 64)
+> +DEFINE_CONV_P(be, 16)
+> +DEFINE_CONV_P(be, 32)
+> +DEFINE_CONV_P(be, 64)
+> +
+>  #ifndef min
+>  #define min(x, y) ({                            \
+>  	typeof(x) _min1 = (x);                  \
+> -- 
+> 2.39.5
 > 
 > 
+> 
 
-Applied, thanks!
-
-[1/1] mci: fix data write
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f646ed68434f (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
