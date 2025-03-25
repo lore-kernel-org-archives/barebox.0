@@ -1,63 +1,63 @@
-Delivery-date: Tue, 25 Mar 2025 17:04:52 +0100
+Delivery-date: Tue, 25 Mar 2025 17:04:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tx6lo-0044hy-2p
+	id 1tx6lq-0044iM-1y
 	for lore@lore.pengutronix.de;
-	Tue, 25 Mar 2025 17:04:52 +0100
+	Tue, 25 Mar 2025 17:04:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tx6ln-0007Co-Or
-	for lore@pengutronix.de; Tue, 25 Mar 2025 17:04:52 +0100
+	id 1tx6lp-0007DZ-GY
+	for lore@pengutronix.de; Tue, 25 Mar 2025 17:04:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=RVeFRMT5Zjun9tXfG2aiVHKGeljWx5dpz6sL6WcaXPs=; b=Zj7F1zusJ4ydo4keJMA4b3Z1+g
-	nEhT9h4MoHTknQeiOk9QCi7YhzVlj1EBeDAXZcbEsf+5rOKkeC48okPvKzMeMQ+ZX5aceYVaMS7EO
-	yDpGGb1j6Yo3Um0Y7cML2VGpOQek98rowA3BZcTBCZH4maA/Qkh119NFpxuhBgBzSnlEyjF3GLgP/
-	/yh6UxrgNVvtBmczeUwGQDttU3SModJ3bsUw/1rp3pCR1k0UAJEqiWLqkjy/6zZX+JgaxTMivWGHo
-	ISSYwzDhJRh0G3hw5kn/DpGjpkwWLsQ87TRZ02/X2M/YKHFo9EW8QgyVMb/K7Ff5dyOlu/TWVK9Mi
-	qbFnMFTA==;
+	bh=h461KiSan+p4I8jv5xA4UJMZMTsTno37N237Tk0xjo0=; b=chAtvfrLkPfo2MjhviTXa6NrBh
+	bCmwyrldwc/GueKKHTUjEGNhcH5+TmMhYR8164v2wcIkayWRQUz2mmpO4XhwbCDsOdfTYm63rV8AI
+	UbacoXZS92GIwB6WwLHhEB99kqT/AHfl46i4GVUzUXSNDTVuUCy0SKaebqCr0k8QGzRUYgtqaFm23
+	xdphVOYdo6aRMEjYpTJR3DSnHie0bFpIf0cgbj4TcEKCmjlFUjOLSlfXD5dxZzefXv1jSKPW7iD+M
+	zPTqx1i5n6Pw9HsTiRHV3mj4+7vrlbv7cBq2B0os1ByYw7HW0XyGOg03Ionl2XtZpMfSYjaOBmpj5
+	5wQ4jxIw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tx6lJ-00000006QGM-3512;
-	Tue, 25 Mar 2025 16:04:21 +0000
+	id 1tx6lK-00000006QGw-3Drt;
+	Tue, 25 Mar 2025 16:04:22 +0000
 Received: from zdiv.net ([46.226.106.130])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tx6d8-00000006Oo8-1GKW
+	id 1tx6hN-00000006PZs-2Y71
 	for barebox@lists.infradead.org;
-	Tue, 25 Mar 2025 15:55:55 +0000
+	Tue, 25 Mar 2025 16:00:19 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
-	t=1742918150;
+	t=1742918414;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=RVeFRMT5Zjun9tXfG2aiVHKGeljWx5dpz6sL6WcaXPs=;
-	b=WK0Zh/iVz1HthkcR1DdooxGdWwdSgn1vcrmdLeTAyfIOpkFco9TLvX7eUv88swjcw2Ns+A
-	9CDVnE2m7o+pNanV4YIMYz0e0sX5lcMxIpcZ/crplrK9HHIGH1Mt4eAq3ZodASrBE6eTzm
-	628gSu2r/ZyN74PqD527pzvT0Pf1Zcnf/MSw/eGUGOPoP2gmf01mxT3wOpxvKFBvfnJyZg
-	7jCA1a4X/twccloXmux8CEpf1CMYJt9WEJHaOQAwsDFCErbh5dNTV2pdXsL9b4Rsu7dnDG
-	3XWwA+B569K9aJE7aMUpdOoBglwk+eeMr6DYpYOVtIZoH4Wk2QTARhe2xvheqw==
+	bh=h461KiSan+p4I8jv5xA4UJMZMTsTno37N237Tk0xjo0=;
+	b=VfI9XL5ayaVAZfGbN26HrPrekdd3+BQHbsEFkEnGESrfG96Ive/LgI15nrMQ4CGxk3OTkt
+	CI00qI/55QTFuWTSGpACjBix4v6aw6MpXJ0BH/GvW3XKN40A3SspMksKrAufKByxdN+nXR
+	S+Rp78BmEGj0kzcYaMxQyS4X7w4E7hYueBV46gMp5omkSWpguYmgzG9G8jkqf2fNfcS+An
+	F/r6iI5v7BaSz4KZVI5engZSdxCtHBJ97gBORxfaXj3Slev1Sh/I42o4cK+jHO/DWYtkWW
+	G1JJD5v6fHIHfYh3+9ANEGP6ECtfW9RzP5r0r931fcIsLD8Kafam1Yh1UGp55Q==
 Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:cc87:df5e:1bf7:9f4c])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id 7161c0c8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 25 Mar 2025 16:55:50 +0100 (CET)
+	by zdiv.net (OpenSMTPD) with ESMTPSA id d607f3b6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 25 Mar 2025 17:00:14 +0100 (CET)
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Tue, 25 Mar 2025 16:55:39 +0100
-Message-ID: <20250325155539.32501-1-jmaselbas@zdiv.net>
+Date: Tue, 25 Mar 2025 17:00:08 +0100
+Message-ID: <20250325160008.1076-1-jmaselbas@zdiv.net>
 X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250325_085554_595702_255BCFC7 
-X-CRM114-Status: UNSURE (   7.11  )
+X-CRM114-CacheID: sfid-20250325_090017_904247_DA0C4390 
+X-CRM114-Status: UNSURE (   9.44  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,30 +80,36 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mtd: spi-nor: add explicit fallthrough
+Subject: [RFC PATCH] fbconsole: add missing break
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add the fallthrough pseudo keyword: the case sets `need_wren = true;`
-which is used (only read and never written) in the case below.
+The cursor move CSI has nothing to do with the clear-screen CSI.
+The existing fallthrough looks like a bug, add the missing break.
 
+Fixes: 27f79c05ab ("video: implement framebuffer console")
 Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 1 +
+
+ I am not 100% sure if this is a bug or not, it feels like it sould not
+ fallthrough, an extra look would be nice.
+
+
+ drivers/video/fbconsole.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index b9b2c7f6e5..6fcb8f38fa 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -316,6 +316,7 @@ static inline int set_4byte(struct spi_nor *nor, struct flash_info *info,
- 	case CFI_MFR_ST: /* Micron, actually */
- 		/* Some Micron need WREN command; all will accept it */
- 		need_wren = true;
-+		fallthrough;
- 	case CFI_MFR_MACRONIX:
- 	case 0xEF /* winbond */:
- 		if (need_wren)
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+index 24592d00ed..7462e34778 100644
+--- a/drivers/video/fbconsole.c
++++ b/drivers/video/fbconsole.c
+@@ -576,6 +576,7 @@ static void fbc_parse_csi(struct fbc_priv *priv)
+ 		priv->x = clamp(pos - 1, 0, (int) priv->cols - 1);
+ 
+ 		show_cursor(priv, priv->x, priv->y);
++		break;
+ 	case 'K':
+ 		pos = simple_strtoul(priv->csi, &end, 10);
+ 		video_invertchar(priv, priv->x, priv->y);
 -- 
 2.48.1
 
