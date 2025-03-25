@@ -1,56 +1,67 @@
-Delivery-date: Tue, 25 Mar 2025 17:58:34 +0100
+Delivery-date: Tue, 25 Mar 2025 18:08:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tx7bm-0045eS-29
+	id 1tx7lp-004605-2D
 	for lore@lore.pengutronix.de;
-	Tue, 25 Mar 2025 17:58:34 +0100
+	Tue, 25 Mar 2025 18:08:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tx7bk-0006dx-VI
-	for lore@pengutronix.de; Tue, 25 Mar 2025 17:58:34 +0100
+	id 1tx7lo-0000PK-Gh
+	for lore@pengutronix.de; Tue, 25 Mar 2025 18:08:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=o8r3lzavUlRxrT5iAu8kSVHJ8mgDgJkpwPYPlaefTqo=; b=oRZMvYlQD0eH0E0sIeb5PTF+ZU
-	CwgsBdofqqJQeigPF/kRUY4PFZn8Wal57p1oIJ5sCdkkhGM+MLy2rQ3Ud2yjV2li6ycqVdFA9pVVa
-	quwBmBUO5pDbi4f1M73BG+iPjTyovldcNaPp9NuUAClolhU5KIJ4/Q2Bt5fDQ9DtA5FKbi8rAyJaP
-	KVLjKD40Pj9bj4m/ETxb7cWgw1ha0AtOm7ByJudNHNDusK09fUAFYdPHoRSd10U50M/iH9AZ4k7v8
-	FcJA9FK5VyIZXUYHCHxtrBI45YBC8ohu5EQQkldueyR/TTjzqUyWulQPMgGpzDiDAlUNBa08pUdoR
-	CWCo4FWg==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=AaV5MImzKxnX8BuJdFQxk8V3TN0U33EDgMH4gN3lJSk=; b=LISYybsCtJYaNxIbCkuWtUKGrL
+	+XB9xko2LW3JV5zKThPIXxHW8r7AOA/b6xrcvRNYvZnS+H1FtPnTz0mY3OpPbeUYA0uPq5XUCJztI
+	FrEVQ/DxOO2IB/syoIyRiWGDCwpzfJ/QBZV5W5ff3OYql70rs53wnNJLmjSf/jQ9W4OgMt2/pERje
+	00xFMTzbWavgDOomyV3lworPMNA0i1L+sF7VEIiRFxJQMrufidViAWEHIHZ7yk3UUI5yCJQIuKDYs
+	gR93MC/HKvMYHAzbNcoK82N2XokjaGIgw1bJE4a9/KodOXe/b7ZZ66PD4PG3kUH/kNm9+M/JUZmsq
+	DfutSROQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tx7bL-00000006YT5-1dc0;
-	Tue, 25 Mar 2025 16:58:07 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1tx7lc-00000006ZdX-1vvP;
+	Tue, 25 Mar 2025 17:08:44 +0000
+Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tx7bI-00000006YSj-0q7Y
+	id 1tx6av-00000006ORp-41Km
 	for barebox@lists.infradead.org;
-	Tue, 25 Mar 2025 16:58:05 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tx7bG-0006YP-8l; Tue, 25 Mar 2025 17:58:02 +0100
-Message-ID: <13bee917-8783-456f-9426-71e77747f050@pengutronix.de>
-Date: Tue, 25 Mar 2025 17:58:02 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jules Maselbas <jmaselbas@zdiv.net>, barebox@lists.infradead.org
-References: <20250325155327.31981-1-jmaselbas@zdiv.net>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+	Tue, 25 Mar 2025 15:53:39 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
+	t=1742918016;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AaV5MImzKxnX8BuJdFQxk8V3TN0U33EDgMH4gN3lJSk=;
+	b=Ei3BREacHvnnJuffG7JCXEOXIN52tdsngU61dPI9qdvbiqjGguUAv/2epZQSxjQ6yNGgGX
+	fRyLLFyp1I3nXCbvn5oL8PU6AgxJ/wqYmji5nz1wvWfoVVORqIr844V6f14z/zc+56hHkd
+	a6vZ/Ij9ug51R075rJBB/WLdMnjFW+cg3O+cK/spt5oXxCQutRt52en2b4d4LcnWvKn/mh
+	dyE9Uyft2uxyCAngKBKojJNdtL9sI0miMgcvo+Hx+vo32mmZv5d8oVhXkjvd9wtwUB8AOX
+	Z8Dw051Gxk3NdKLkJ0esakSdD6FENx+2hllaqNIHpSXgwFEC/32Y/8ksEWg1BQ==
+Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:cc87:df5e:1bf7:9f4c])
+	by zdiv.net (OpenSMTPD) with ESMTPSA id 6b2ebf9b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 25 Mar 2025 16:53:36 +0100 (CET)
+From: Jules Maselbas <jmaselbas@zdiv.net>
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@zdiv.net>
+Date: Tue, 25 Mar 2025 16:53:27 +0100
+Message-ID: <20250325155327.31981-2-jmaselbas@zdiv.net>
+X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250325155327.31981-1-jmaselbas@zdiv.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250325155327.31981-1-jmaselbas@zdiv.net>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250325_095804_239913_1C8FABF2 
-X-CRM114-Status: GOOD (  12.69  )
+X-CRM114-CacheID: sfid-20250325_085338_283184_31DDEDB5 
+X-CRM114-Status: UNSURE (   5.96  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,48 +79,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] vsprintf: fix missing break when printing %pJP
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH 2/2] vsprintf: add explicit fallthrough
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Jules,
+Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+---
+ lib/vsprintf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On 3/25/25 16:53, Jules Maselbas wrote:
-> When the format `%pJP` was introduced the new switch case didn't had a
-> break at the end, it was last case in the switch. However subsequent
-> commit didn't add a break either, creating a potential fallthrough.
-> Add the missing break.
-> 
-> Fixes: 107eeef8f2 ("vsprintf: add support for printing MAC addresses")
-> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
-
-Ouch, Good catch.
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Thanks,
-Ahmad
-
-> ---
->  lib/vsprintf.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index f553662ce8..0656ba3620 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -561,6 +561,7 @@ static char *pointer(const char *fmt, char *buf, const char *end, const void *pt
->  	case 'J':
->  		if (fmt[1] == 'P' && IS_ENABLED(CONFIG_JSMN))
->  			return jsonpath_string(buf, end, ptr, field_width, precision, flags, fmt);
-> +		break;
->          case 'M':
->  		/* Colon separated: 00:01:02:03:04:05 */
->  		return mac_address_string(buf, end, ptr, field_width, precision, flags, fmt);
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 0656ba3620..32429dd76c 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -775,6 +775,7 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args)
+ 
+ 			case 'x':
+ 				flags |= SMALL;
++				fallthrough;
+ 			case 'X':
+ 				base = 16;
+ 				break;
+@@ -782,6 +783,7 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args)
+ 			case 'd':
+ 			case 'i':
+ 				flags |= SIGN;
++				fallthrough;
+ 			case 'u':
+ 				break;
+ 
+-- 
+2.48.1
 
 
 
