@@ -1,67 +1,57 @@
-Delivery-date: Tue, 25 Mar 2025 18:08:57 +0100
+Delivery-date: Wed, 26 Mar 2025 07:53:31 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tx7lp-004605-2D
+	id 1txKdn-004KZe-2p
 	for lore@lore.pengutronix.de;
-	Tue, 25 Mar 2025 18:08:57 +0100
+	Wed, 26 Mar 2025 07:53:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tx7lo-0000PK-Gh
-	for lore@pengutronix.de; Tue, 25 Mar 2025 18:08:57 +0100
+	id 1txKdm-00055u-NY
+	for lore@pengutronix.de; Wed, 26 Mar 2025 07:53:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AaV5MImzKxnX8BuJdFQxk8V3TN0U33EDgMH4gN3lJSk=; b=LISYybsCtJYaNxIbCkuWtUKGrL
-	+XB9xko2LW3JV5zKThPIXxHW8r7AOA/b6xrcvRNYvZnS+H1FtPnTz0mY3OpPbeUYA0uPq5XUCJztI
-	FrEVQ/DxOO2IB/syoIyRiWGDCwpzfJ/QBZV5W5ff3OYql70rs53wnNJLmjSf/jQ9W4OgMt2/pERje
-	00xFMTzbWavgDOomyV3lworPMNA0i1L+sF7VEIiRFxJQMrufidViAWEHIHZ7yk3UUI5yCJQIuKDYs
-	gR93MC/HKvMYHAzbNcoK82N2XokjaGIgw1bJE4a9/KodOXe/b7ZZ66PD4PG3kUH/kNm9+M/JUZmsq
-	DfutSROQ==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=9iHjUkyeyfndWx2JTGDggDtjEcRt98xLM+6libYB3/0=; b=xx0NZ7OeOucKQ7h8B2SsfEz1nJ
+	PIq/+bIqQEqSSb6wiJIgLMSiCFRLWQZIXUeozJTbnRpFltyKBGFgoz+QA/YWTP9Sz6nwGg5EHBF8z
+	mjGr7z/OgOSfRvmC/I6rsFhFWNoI0CuuLyFKolM7QG2ro0dufwZv5ukk+ZM7In9gITY5NM/icGetv
+	CoR0g7IPuv04hIGQrUvfynuhKzeY1Lnbu0odD1oyPVrEFV9wBNH3aZb9KEHeS8jpf9+SUXieyRYTF
+	Jhv0QQS3wgCiX7NTvtKcxZf5nKMDVuV6n5eNoP1JKklSC98mnQoCILU+vXkZSn24ODp4dufWbdzW2
+	tD/YqQvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tx7lc-00000006ZdX-1vvP;
-	Tue, 25 Mar 2025 17:08:44 +0000
-Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
+	id 1txKd5-00000007h57-28qv;
+	Wed, 26 Mar 2025 06:52:47 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tx6av-00000006ORp-41Km
+	id 1txKd1-00000007h4i-3PcQ
 	for barebox@lists.infradead.org;
-	Tue, 25 Mar 2025 15:53:39 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
-	t=1742918016;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AaV5MImzKxnX8BuJdFQxk8V3TN0U33EDgMH4gN3lJSk=;
-	b=Ei3BREacHvnnJuffG7JCXEOXIN52tdsngU61dPI9qdvbiqjGguUAv/2epZQSxjQ6yNGgGX
-	fRyLLFyp1I3nXCbvn5oL8PU6AgxJ/wqYmji5nz1wvWfoVVORqIr844V6f14z/zc+56hHkd
-	a6vZ/Ij9ug51R075rJBB/WLdMnjFW+cg3O+cK/spt5oXxCQutRt52en2b4d4LcnWvKn/mh
-	dyE9Uyft2uxyCAngKBKojJNdtL9sI0miMgcvo+Hx+vo32mmZv5d8oVhXkjvd9wtwUB8AOX
-	Z8Dw051Gxk3NdKLkJ0esakSdD6FENx+2hllaqNIHpSXgwFEC/32Y/8ksEWg1BQ==
-Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:cc87:df5e:1bf7:9f4c])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id 6b2ebf9b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 25 Mar 2025 16:53:36 +0100 (CET)
-From: Jules Maselbas <jmaselbas@zdiv.net>
-To: barebox@lists.infradead.org
-Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Tue, 25 Mar 2025 16:53:27 +0100
-Message-ID: <20250325155327.31981-2-jmaselbas@zdiv.net>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250325155327.31981-1-jmaselbas@zdiv.net>
-References: <20250325155327.31981-1-jmaselbas@zdiv.net>
+	Wed, 26 Mar 2025 06:52:45 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1txKcz-000502-GE; Wed, 26 Mar 2025 07:52:41 +0100
+Message-ID: <579eeb04-43ef-4665-99c8-dd9d19cdbb3b@pengutronix.de>
+Date: Wed, 26 Mar 2025 07:52:41 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Jules Maselbas <jmaselbas@zdiv.net>, barebox@lists.infradead.org
+References: <20250312-rpmb-v1-7-0f213382a3f3@pengutronix.de>
+ <20250325143650.29433-1-jmaselbas@zdiv.net>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250325143650.29433-1-jmaselbas@zdiv.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250325_085338_283184_31DDEDB5 
-X-CRM114-Status: UNSURE (   5.96  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250325_235243_856907_334F4B8D 
+X-CRM114-Status: GOOD (  12.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,41 +69,53 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] vsprintf: add explicit fallthrough
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] fixup! tee: optee: implement RPMB support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
----
- lib/vsprintf.c | 2 ++
- 1 file changed, 2 insertions(+)
+Hello Jules,
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 0656ba3620..32429dd76c 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -775,6 +775,7 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args)
- 
- 			case 'x':
- 				flags |= SMALL;
-+				fallthrough;
- 			case 'X':
- 				base = 16;
- 				break;
-@@ -782,6 +783,7 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args)
- 			case 'd':
- 			case 'i':
- 				flags |= SIGN;
-+				fallthrough;
- 			case 'u':
- 				break;
- 
+On 25.03.25 15:36, Jules Maselbas wrote:
+> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+> ---
+>  drivers/tee/optee/rpmb.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/tee/optee/rpmb.c b/drivers/tee/optee/rpmb.c
+> index cdc8afc1a4..ca60f3cf3d 100644
+> --- a/drivers/tee/optee/rpmb.c
+> +++ b/drivers/tee/optee/rpmb.c
+> @@ -5,6 +5,7 @@
+>  
+>  #define pr_fmt(fmt)     "optee-rpmb: " fmt
+>  
+> +#include <common.h>
+
+Is this only for ARRAY_SIZE? Then I'd prefer we include <linux/kernel.h> or
+<linux/array_size.h>, because we generally want to cut down on use of
+<common.h>, if only to reduce compile time a bit.
+
+Also, please send fixups without a reply-to for patches that are already applied.
+This makes it less likely to be missed IMO.
+
+Cheers,
+Ahmad
+
+
+
+>  #include <mci.h>
+>  
+>  #include "optee_msg.h"
+
+
 -- 
-2.48.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
