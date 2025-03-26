@@ -1,57 +1,69 @@
-Delivery-date: Wed, 26 Mar 2025 07:53:31 +0100
+Delivery-date: Wed, 26 Mar 2025 09:00:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txKdn-004KZe-2p
+	id 1txLgI-004LjR-26
 	for lore@lore.pengutronix.de;
-	Wed, 26 Mar 2025 07:53:31 +0100
+	Wed, 26 Mar 2025 09:00:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txKdm-00055u-NY
-	for lore@pengutronix.de; Wed, 26 Mar 2025 07:53:31 +0100
+	id 1txLgH-0005jI-A2
+	for lore@pengutronix.de; Wed, 26 Mar 2025 09:00:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9iHjUkyeyfndWx2JTGDggDtjEcRt98xLM+6libYB3/0=; b=xx0NZ7OeOucKQ7h8B2SsfEz1nJ
-	PIq/+bIqQEqSSb6wiJIgLMSiCFRLWQZIXUeozJTbnRpFltyKBGFgoz+QA/YWTP9Sz6nwGg5EHBF8z
-	mjGr7z/OgOSfRvmC/I6rsFhFWNoI0CuuLyFKolM7QG2ro0dufwZv5ukk+ZM7In9gITY5NM/icGetv
-	CoR0g7IPuv04hIGQrUvfynuhKzeY1Lnbu0odD1oyPVrEFV9wBNH3aZb9KEHeS8jpf9+SUXieyRYTF
-	Jhv0QQS3wgCiX7NTvtKcxZf5nKMDVuV6n5eNoP1JKklSC98mnQoCILU+vXkZSn24ODp4dufWbdzW2
-	tD/YqQvQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=eYvcXuvhuAL7FTO+DgHmRVUBHh+ettwnLonzsciU8k8=; b=rVDsU93fBSLmghKV8G33zMGaJ3
+	VbDOLTn15H8/2u4Afa7p6+dJ2t4Qiw0tLvP4JmTP/ANNRERUL7LoulBFHU8rGbK/aYa622RQRWc9F
+	Npj6ZVMXLMv6EKk4PaQzyEmThmfZ5iBdTRHBOu7Bu/7hvpl1Pwvf/8xk+deTEo1M+2TK8wsSmfcAV
+	wnfzi58v7Q4vje+SdZSu6TpmN5YeCt8oWsB7DjK4dhQek+gMP0zKZqeMA2pgrFyF72IHXWxHCavJ+
+	ms0LoYsNTHfNt2j1mky7Sp19f1U9MR0s4sYzO4jQrc6ew9uLI5yJHPtIU+0iO2lnP6UTxI3UQX60b
+	/xG06+MQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txKd5-00000007h57-28qv;
-	Wed, 26 Mar 2025 06:52:47 +0000
+	id 1txLfn-00000007qZn-1I0q;
+	Wed, 26 Mar 2025 07:59:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txKd1-00000007h4i-3PcQ
+	id 1txLfW-00000007qSe-227m
 	for barebox@lists.infradead.org;
-	Wed, 26 Mar 2025 06:52:45 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Wed, 26 Mar 2025 07:59:24 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1txKcz-000502-GE; Wed, 26 Mar 2025 07:52:41 +0100
-Message-ID: <579eeb04-43ef-4665-99c8-dd9d19cdbb3b@pengutronix.de>
-Date: Wed, 26 Mar 2025 07:52:41 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jules Maselbas <jmaselbas@zdiv.net>, barebox@lists.infradead.org
-References: <20250312-rpmb-v1-7-0f213382a3f3@pengutronix.de>
- <20250325143650.29433-1-jmaselbas@zdiv.net>
-Content-Language: en-US
+	id 1txLfV-0005KR-1n; Wed, 26 Mar 2025 08:59:21 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1txLfU-001iAj-1Q;
+	Wed, 26 Mar 2025 08:59:20 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1txLfU-00EZsX-2T;
+	Wed, 26 Mar 2025 08:59:20 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250325143650.29433-1-jmaselbas@zdiv.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@zdiv.net>,
+	jre@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 26 Mar 2025 08:59:14 +0100
+Message-Id: <20250326075919.3448789-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250326075919.3448789-1-a.fatoum@pengutronix.de>
+References: <20250326075919.3448789-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250325_235243_856907_334F4B8D 
-X-CRM114-Status: GOOD (  12.92  )
+X-CRM114-CacheID: sfid-20250326_005922_535708_308EAE89 
+X-CRM114-Status: GOOD (  11.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,49 +85,60 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! tee: optee: implement RPMB support
+Subject: [PATCH 1/6] sandbox: use CROSS_PKG_CONFIG when compiling sandbox arch code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Jules,
+sandbox only means that we run under Linux as host operating system
+(as opposed to before). It can still be cross compiled and indeed that's
+what barebox-tools in OE-core does to build the target tools.
 
-On 25.03.25 15:36, Jules Maselbas wrote:
-> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
-> ---
->  drivers/tee/optee/rpmb.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/tee/optee/rpmb.c b/drivers/tee/optee/rpmb.c
-> index cdc8afc1a4..ca60f3cf3d 100644
-> --- a/drivers/tee/optee/rpmb.c
-> +++ b/drivers/tee/optee/rpmb.c
-> @@ -5,6 +5,7 @@
->  
->  #define pr_fmt(fmt)     "optee-rpmb: " fmt
->  
-> +#include <common.h>
+OE-core doesn't yet build barebox for sandbox itself (only the scripts),
+but nonetheless, if it did, SDL and libftdi need to be usable with the
+cross toolchain, not with the host toolchain, so let's use
+CROSS_PKG_CONFIG accordingly.
 
-Is this only for ARRAY_SIZE? Then I'd prefer we include <linux/kernel.h> or
-<linux/array_size.h>, because we generally want to cut down on use of
-<common.h>, if only to reduce compile time a bit.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/sandbox/Makefile    | 4 ++--
+ arch/sandbox/os/Makefile | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Also, please send fixups without a reply-to for patches that are already applied.
-This makes it less likely to be missed IMO.
-
-Cheers,
-Ahmad
-
-
-
->  #include <mci.h>
->  
->  #include "optee_msg.h"
-
-
+diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+index 157e856c59b1..dbdf8a6e8117 100644
+--- a/arch/sandbox/Makefile
++++ b/arch/sandbox/Makefile
+@@ -62,11 +62,11 @@ archprepare: maketools
+ PHONY += maketools
+ 
+ ifeq ($(CONFIG_SDL),y)
+-SDL_LIBS := $(shell $(PKG_CONFIG) sdl2 --libs)
++SDL_LIBS := $(shell $(CROSS_PKG_CONFIG) sdl2 --libs)
+ endif
+ 
+ ifeq ($(CONFIG_GPIO_LIBFTDI1),y)
+-FTDI1_LIBS := $(shell $(PKG_CONFIG) libftdi1 --libs)
++FTDI1_LIBS := $(shell $(CROSS_PKG_CONFIG) libftdi1 --libs)
+ endif
+ 
+ ifeq ($(CONFIG_ASAN),y)
+diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
+index 7a76fb0290e8..c77702bb0c1d 100644
+--- a/arch/sandbox/os/Makefile
++++ b/arch/sandbox/os/Makefile
+@@ -23,8 +23,8 @@ endif
+ obj-y = common.o tap.o setjmp.o
+ obj-$(CONFIG_MALLOC_LIBC) += libc_malloc.o
+ 
+-CFLAGS_sdl.o = $(shell $(PKG_CONFIG) sdl2 --cflags)
++CFLAGS_sdl.o = $(shell $(CROSS_PKG_CONFIG) sdl2 --cflags)
+ obj-$(CONFIG_SDL) += sdl.o
+ 
+-CFLAGS_ftdi.o = $(shell $(PKG_CONFIG) libftdi1 --cflags)
++CFLAGS_ftdi.o = $(shell $(CROSS_PKG_CONFIG) libftdi1 --cflags)
+ obj-$(CONFIG_GPIO_LIBFTDI1) += ftdi.o
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
