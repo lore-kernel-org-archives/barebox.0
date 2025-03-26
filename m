@@ -3,65 +3,67 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txLgL-004Lkw-2Z
+	id 1txLgM-004LlF-0U
 	for lore@lore.pengutronix.de;
 	Wed, 26 Mar 2025 09:00:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txLgK-0005mH-Hj
+	id 1txLgK-0005mM-MN
 	for lore@pengutronix.de; Wed, 26 Mar 2025 09:00:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=3pu1lw9KhxpD/g+94ejGuAnyHcxeIeioMWbS6hY4D1o=; b=XB4/FqmcvxPbTccRs2yqAmGByD
-	eGh2XVZydiPwQnzMsJukANscQCIstUy0a3Jn8u4Cb0EAN7dPII4rv1zbbovsCGvEjEbb0Ff5wipxS
-	wsLa9VmWOXUZ1DvazZ/BS6PEUyEQLlqqlsVynsBkKBVqTODqcgeClFUK7fUvAcO7mvYQ9PYUS5KMz
-	PVwhTiak8owubg+6jYNiUkePK5JMtHIFTyTYIuYompdWuVpfeEc7ZhErvg3EwTdmE51IZDp8bOGMV
-	ApDNST+8NZ4Y1v/uXfz2LvlSVFAodnTypeGpcB8kYhrw/iC57azEEB4KtHv/udxDA0jpf/ktsCyRw
-	kVS+ILhw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=FxiJmcDNSVk/qb0V1twTNA03SqKUUSTFfV2zhrfyyU4=; b=sx+xzch+poIj/VzVIXTCSYXhgA
+	ur5N++2yMlzzn6dvPoMtGW676Eg7qR9D0qvt6qVHO6PCre33A7Gmj7SJhCXGuMTuB7by1HGttIYcP
+	rbOsTHqTBhNl9TcS6LbL3PKMKXTdoXSdnWpKpgwlZ/bkQYDGFydmRw7P/okK5yLiRP5pNNVO9/NCD
+	SJEK1mWXsnCtzqF6L4ZjC69h+7uTNfL3fdkI/9l97u9x9E6dI54rTbd0PuQAg1vRmngcDBrh1/wXK
+	VS6u90oIXaFhVpKV+mCmyHcbRC8hgXs2PRXJNsXNRKPXND3Qq5KO9L2GzsY4hn2cJg85WPlOZ6w0y
+	UBYDQq+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txLfl-00000007qYv-24Gj;
-	Wed, 26 Mar 2025 07:59:37 +0000
+	id 1txLfn-00000007qaJ-4Ahx;
+	Wed, 26 Mar 2025 07:59:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txLfW-00000007qSZ-1EBZ
+	id 1txLfW-00000007qSg-2PIx
 	for barebox@lists.infradead.org;
-	Wed, 26 Mar 2025 07:59:23 +0000
+	Wed, 26 Mar 2025 07:59:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1txLfV-0005KQ-0g; Wed, 26 Mar 2025 08:59:21 +0100
+	id 1txLfV-0005Kd-97; Wed, 26 Mar 2025 08:59:21 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1txLfU-001iAi-1I;
-	Wed, 26 Mar 2025 08:59:20 +0100
+	id 1txLfU-001iAv-21;
+	Wed, 26 Mar 2025 08:59:21 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1txLfU-00EZsX-2J;
+	id 1txLfU-00EZsX-34;
 	Wed, 26 Mar 2025 08:59:20 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>,
-	jre@pengutronix.de
-Date: Wed, 26 Mar 2025 08:59:13 +0100
-Message-Id: <20250326075919.3448789-1-a.fatoum@pengutronix.de>
+	jre@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 26 Mar 2025 08:59:18 +0100
+Message-Id: <20250326075919.3448789-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250326075919.3448789-1-a.fatoum@pengutronix.de>
+References: <20250326075919.3448789-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250326_005922_333988_ED7D7EAC 
-X-CRM114-Status: UNSURE (   7.82  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250326_005922_642595_30E1763D 
+X-CRM114-Status: GOOD (  11.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,42 +85,64 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/6] ci: run tests and static analysis on allyesconfig
+Subject: [PATCH 5/6] ci: pytest: run test suite on sandbox allyesconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With a one-liner fix remaining[1], sandbox now builds allyesconfig sans
-SDL/libftdi to completion. Let's seize the opportunity and add it to CI,
-so we easily detect breakage around allyesconfig in future.
+Building allyesconfig in CI allows us to catch early compile-time
+breakage when changes are done treewide. Running pytest over it
+will ensure that compile-tested drivers don't break normal startup
+when unused.
 
-This series also switches the recently added Coverity and CodeQL Github
-Actions to use allyesconfig to extend coverage to non-sandbox related
-drivers as well.
+Additionally, allyesconfig also enables ASAN/UBSAN, which is a nice side
+effect. A future change would be adding KASAN for other architectures as
+well.
 
-[1]: https://lore.barebox.org/barebox/20250312-rpmb-v1-7-0f213382a3f3@pengutronix.de/T/#m4e6fcf916dd9461bbef25a93439ad8fdb36c8217
-
-Ahmad Fatoum (6):
-  sandbox: use CROSS_PKG_CONFIG when compiling sandbox arch code
-  sandbox: hide sdl/libftdi symbols if libraries not found
-  MAKEALL: fix check_pipe_status usage
-  MAKEALL: remove use of alias in script
-  ci: pytest: run test suite on sandbox allyesconfig
-  ci: run static analysis on allyesconfig
-
- .github/workflows/codeql.yml              |  2 +-
- .github/workflows/coverity.sh             |  2 +-
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
  .github/workflows/test-labgrid-pytest.yml |  4 ++++
- MAKEALL                                   | 14 +++++++-------
- arch/sandbox/Kconfig                      |  6 ++++++
- arch/sandbox/Makefile                     |  4 ++--
- arch/sandbox/os/Makefile                  |  4 ++--
- drivers/gpio/Kconfig                      |  2 +-
- drivers/sound/Kconfig                     |  2 +-
- drivers/video/Kconfig                     |  2 +-
  test/sandbox/allyesconfig.yaml            | 17 +++++++++++++++++
- 11 files changed, 43 insertions(+), 16 deletions(-)
+ 2 files changed, 21 insertions(+)
  create mode 100644 test/sandbox/allyesconfig.yaml
 
+diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
+index 2a9f7a53aced..c43649e85fec 100644
+--- a/.github/workflows/test-labgrid-pytest.yml
++++ b/.github/workflows/test-labgrid-pytest.yml
+@@ -55,6 +55,10 @@ jobs:
+             lgenv: 'test/sandbox/sandbox_defconfig.yaml'
+             defconfig: sandbox_defconfig
+ 
++          - ARCH: sandbox
++            lgenv: 'test/sandbox/allyesconfig.yaml'
++            defconfig: sandbox_defconfig
++
+     steps:
+     - name: Checkout code
+       uses: actions/checkout@v4
+diff --git a/test/sandbox/allyesconfig.yaml b/test/sandbox/allyesconfig.yaml
+new file mode 100644
+index 000000000000..76b995127651
+--- /dev/null
++++ b/test/sandbox/allyesconfig.yaml
+@@ -0,0 +1,17 @@
++targets:
++  main:
++    drivers:
++      ExternalConsoleDriver:
++        cmd: !template "$LG_BUILDDIR/barebox"
++      ExternalPowerDriver:
++        cmd_on: 'true'
++        cmd_off: 'true'
++      BareboxDriver:
++        prompt: "barebox@[^:]+:[^ ]+ "
++      BareboxTestStrategy: {}
++    runner:
++      kconfig_add:
++        - CONFIG_CONSOLE_DISABLE_INPUT=n
++        - CONFIG_MALLOC_LIBC=y # for ASAN integration
++imports:
++  -  ../strategy.py
 -- 
 2.39.5
 
