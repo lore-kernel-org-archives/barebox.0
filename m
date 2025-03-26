@@ -1,68 +1,64 @@
-Delivery-date: Wed, 26 Mar 2025 10:48:54 +0100
+Delivery-date: Wed, 26 Mar 2025 10:50:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txNNX-004Nop-1W
+	id 1txNP9-004NqH-36
 	for lore@lore.pengutronix.de;
-	Wed, 26 Mar 2025 10:48:54 +0100
+	Wed, 26 Mar 2025 10:50:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txNNW-0003Tb-6D
-	for lore@pengutronix.de; Wed, 26 Mar 2025 10:48:54 +0100
+	id 1txNP8-0003h7-QZ
+	for lore@pengutronix.de; Wed, 26 Mar 2025 10:50:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:
-	From:Subject:Message-Id:Date:Content-Type:Content-Transfer-Encoding:
-	Mime-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mNRQ/kiCbiRu4S2cggk54U6pc3N6n3UVkrQEBezQXwU=; b=dU0snkVEwrUzYYgSXEhNwy5aB1
-	+oAjqa5lmjKhNrmJSzIDFdSt8KWPEk8roYOFZHfvcVKo3maa84zjJfCSC3vYJfTIGrblobFLcDJXu
-	bnOk4oMOWHeRoRHp3/9MjDp7AfwPnVPKpA0M0KjorXxFj3AnN0ilWG69cVshRAM/OjSKLUwJozzws
-	8dzBpE6jJivqSOtqBu+hqB+9F6lRDVFWU0eW0HadbDIoeSnslj1CRWGwSan1A4Nq6+3GtnIZgCT1C
-	tHbaTS2qEO4rWvxHcFKVv2KHebVz2FPy14J8QIfOlBi5KKaNM5pCShiO/WIg1QSY7jNR5n2tP+q4s
-	Isys0dTA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=SneK3k8wGH4TCUqdHJj0lTD/Gky7onjm+QpNS510N+U=; b=iWcqS1w58HdkqsHRIsaNoTa1v0
+	dUOho19M4kK0AiVQ2u1jMBHavGa8F4ttO3iOAT7WhQAdXaZknldLv4vsrBfGkM6hq8R3ffrRBjfNT
+	DDgZmeYGtXI8Qk7tUFzHfOawNElQu+jeS8dS1meatzECzrINv4pfdW6eTBvtnasYU774hisk5c0lY
+	QsqPUMDwiBsXPVTuMrfAZggv8L+GSP+u3bvFv63GRo6+y6B6CPKtFvdt5BLCiyWQvXCdXbkl/7kUe
+	ripTbcW5jJFhRwD8AKveqNC2WnEmzGVe/9dhNo36BLnBQknwsXa84igEChip/z/73JZ1WZBZycJNU
+	EgMJPXbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txNMs-000000084bV-3X3R;
-	Wed, 26 Mar 2025 09:48:14 +0000
+	id 1txNOi-000000084ss-1qvF;
+	Wed, 26 Mar 2025 09:50:08 +0000
 Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txNKP-000000084Gz-3wPH
+	id 1txNOf-000000084sW-0eZy
 	for barebox@lists.infradead.org;
-	Wed, 26 Mar 2025 09:45:43 +0000
+	Wed, 26 Mar 2025 09:50:06 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
-	t=1742982337;
+	t=1742982603;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mNRQ/kiCbiRu4S2cggk54U6pc3N6n3UVkrQEBezQXwU=;
-	b=TOZhcEXzJRY54VCLwP6PGJVUrOAKIhNkfDS0CqAyAVEd6tgdlWul/tLsnX1MX/i6xrwO/6
-	AwtJHj309Csyp/eMEVu1fmGa5v83+79bRnMyTXkRmTmPj47u37MWIs7U4STZFm3EWsNxWo
-	IjHc7yAGegMczaUzF4osIIW6Tq8utoKt33sFwH+CqbulkGLCpF2EasMeg6O/lZeUesaPqb
-	4T2cGdI5D8kWhf488VOUsqmJWetmEw/oM9g7sVkN/a/R7dA19VXTZ3osMVz8i7Szh4jfVb
-	x8mTZ+mjHOUplLNMQvhiOx7yURGc/bcibinbf1n61kHuc20RXyQ9Q5t6A57vNA==
-Received: from localhost (<unknown> [2a01:e0a:12:d860:da62:e926:7042:9dc0])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id f7f08116 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 26 Mar 2025 10:45:37 +0100 (CET)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 26 Mar 2025 10:45:37 +0100
-Message-Id: <D8Q3O7QT2HAC.AQCADSVOMV2U@zdiv.net>
-From: "Jules Maselbas" <jmaselbas@zdiv.net>
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>, <barebox@lists.infradead.org>
-X-Mailer: aerc 0.20.1
-References: <20250312-rpmb-v1-7-0f213382a3f3@pengutronix.de>
- <20250325143650.29433-1-jmaselbas@zdiv.net>
- <579eeb04-43ef-4665-99c8-dd9d19cdbb3b@pengutronix.de>
-In-Reply-To: <579eeb04-43ef-4665-99c8-dd9d19cdbb3b@pengutronix.de>
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SneK3k8wGH4TCUqdHJj0lTD/Gky7onjm+QpNS510N+U=;
+	b=UfQy/ijP68qVVntPDtqFDwZbdZZ8eMfKL6zUUK7LosjNyr+Y/MJOTLbzeHa0ynlGzhhlua
+	AfW2FP+KSQUhhLFP14pjkJ2DtDrh36ELtZrZJG6RZV6gUTzV0gTDgu/OvvTQ2If9FhZpk6
+	QDG+ct8fWXsK5mQnQoY6gmRsRjKe7gdUGVUPnixUPwH6/d6AUuvNA8Z2s/j5npDKEIgHo8
+	bRlf4aqSdUuND6F2GYAY5MAz4YWXwkdCbrKDvn52AbINEVsQJs1+EmVzryr40+Yt/UmQ2/
+	zaivhaumnCr6nTNfY24QJP8ZqcgEtuXTk8jAYlwNLY9zeQWOtl9zE388IaRWTQ==
+Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:da62:e926:7042:9dc0])
+	by zdiv.net (OpenSMTPD) with ESMTPSA id d52c435b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <barebox@lists.infradead.org>;
+	Wed, 26 Mar 2025 10:50:03 +0100 (CET)
+From: Jules Maselbas <jmaselbas@zdiv.net>
+To: barebox@lists.infradead.org
+Date: Wed, 26 Mar 2025 10:49:43 +0100
+Message-ID: <20250326094943.9586-1-jmaselbas@zdiv.net>
+X-Mailer: git-send-email 2.48.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250326_024542_433051_9007EFD7 
-X-CRM114-Status: GOOD (  10.04  )
+X-CRM114-CacheID: sfid-20250326_025005_485415_677CEBB6 
+X-CRM114-Status: UNSURE (   5.47  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,51 +80,29 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! tee: optee: implement RPMB support
+Subject: [PATCH v2] fixup! tee: optee: implement RPMB support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+---
+ drivers/tee/optee/rpmb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Wed Mar 26, 2025 at 7:52 AM CET, Ahmad Fatoum wrote:
-> Hello Jules,
->
-> On 25.03.25 15:36, Jules Maselbas wrote:
->> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
->> ---
->>  drivers/tee/optee/rpmb.c | 1 +
->>  1 file changed, 1 insertion(+)
->>=20
->> diff --git a/drivers/tee/optee/rpmb.c b/drivers/tee/optee/rpmb.c
->> index cdc8afc1a4..ca60f3cf3d 100644
->> --- a/drivers/tee/optee/rpmb.c
->> +++ b/drivers/tee/optee/rpmb.c
->> @@ -5,6 +5,7 @@
->> =20
->>  #define pr_fmt(fmt)     "optee-rpmb: " fmt
->> =20
->> +#include <common.h>
->
-> Is this only for ARRAY_SIZE? Then I'd prefer we include <linux/kernel.h> =
-or
-Yes, this is for ARRAY_SIZE
-> <linux/array_size.h>, because we generally want to cut down on use of
-> <common.h>, if only to reduce compile time a bit.
-okay
-
-> Also, please send fixups without a reply-to for patches that are already =
-applied.
-> This makes it less likely to be missed IMO.
-ack
-
-> Cheers,
-> Ahmad
->
->
->
->>  #include <mci.h>
->> =20
->>  #include "optee_msg.h"
+diff --git a/drivers/tee/optee/rpmb.c b/drivers/tee/optee/rpmb.c
+index cdc8afc1a4..813c48efd8 100644
+--- a/drivers/tee/optee/rpmb.c
++++ b/drivers/tee/optee/rpmb.c
+@@ -5,6 +5,7 @@
+ 
+ #define pr_fmt(fmt)     "optee-rpmb: " fmt
+ 
++#include <linux/array_size.h>
+ #include <mci.h>
+ 
+ #include "optee_msg.h"
+-- 
+2.48.1
 
 
 
