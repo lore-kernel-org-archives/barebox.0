@@ -1,68 +1,61 @@
-Delivery-date: Thu, 27 Mar 2025 10:24:55 +0100
+Delivery-date: Thu, 27 Mar 2025 11:01:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txjTr-004onH-14
+	id 1txk3f-004pL7-1F
 	for lore@lore.pengutronix.de;
-	Thu, 27 Mar 2025 10:24:55 +0100
+	Thu, 27 Mar 2025 11:01:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txjTq-0004Vn-Pf
-	for lore@pengutronix.de; Thu, 27 Mar 2025 10:24:55 +0100
+	id 1txk3e-0003hW-Rn
+	for lore@pengutronix.de; Thu, 27 Mar 2025 11:01:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rb08A1fzb6Zft9OOxqY0scgVxf6sLvHG4TGvIJj1nf8=; b=aa7SIHUFqr/PPEQFYKI2P6eURJ
-	oSAwUkzM2pl+EZmiUYBfhar7Uiq8mJBxrKHgHKyVr3J4TODnPhhFAAsSGdPAyuVzHTALhSUt/NMuF
-	m8DzqbsFDNdsN3JuCacNezCp98Zb3GJZhrGd78H5gLyJks4WPp82gHAdQSZ7l0zsH259p9XfVtdrn
-	2AV0XmiwUlQvfHgUEEpTK4+hzfyVcuqbXW5y9RLy1lxCL45auWRgxX89erMAGUQ79/Aa7ml9+bMnp
-	caPbG8SOZUSQuesuKWTodHH07XZcZ5wsJtOL1s8N78QqFJ4qXOwS5PPi0Ar1E1PQhMj1pt/F8490+
-	Gi9QvtyA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=RLO+VHurin0htgKbnepZ66eaeGhEUjv0nne072hjf+w=; b=eaHb+REggyUm5vrGdN8qOjhI4P
+	IsswCWcRpo0T7G1LNbICJwWkFRlwoXAfBk9UH0MeqEm4n3H0WMUshnoZWxsEPJVqmbodNwBg9wgEO
+	lsgCv5HUj2n7vKQihzb86L1Q58Vh2zWOZs5DJZiuLZTUG8j1K052nk+tSOfk70mHN0JbjJB6nKw/8
+	NKqKphI1/DWVzQlgebha+QXIXg52rnQk6pp5y00CoSVhwhHB/9WKuR051CFx+hnvL3qfj1L2FdsbB
+	4yRkDCnn9b+G9WUeFfJfGzFFyaoXlwAWqHYkovB2PxuqO/4cC5TKr/b0heq2nVJ4bbw0cejG80WVL
+	blobhzUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txjTN-0000000AZ0a-2G5F;
-	Thu, 27 Mar 2025 09:24:25 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1txk2z-0000000Advg-3fau;
+	Thu, 27 Mar 2025 10:01:13 +0000
+Received: from smtp16.bhosted.nl ([2a02:9e0:8000::27])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txjTL-0000000AZ0A-1XQZ
+	id 1txk2v-0000000Adta-2utU
 	for barebox@lists.infradead.org;
-	Thu, 27 Mar 2025 09:24:24 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txjTJ-0004Nj-SX; Thu, 27 Mar 2025 10:24:21 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txjTJ-001u8w-2F;
-	Thu, 27 Mar 2025 10:24:21 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txjTJ-004Qxp-21;
-	Thu, 27 Mar 2025 10:24:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Jules Maselbas <jmaselbas@zdiv.net>, jre@pengutronix.de
-In-Reply-To: <20250326075919.3448789-1-a.fatoum@pengutronix.de>
-References: <20250326075919.3448789-1-a.fatoum@pengutronix.de>
-Message-Id: <174306746162.1056706.7758893365524562090.b4-ty@pengutronix.de>
-Date: Thu, 27 Mar 2025 10:24:21 +0100
+	Thu, 27 Mar 2025 10:01:12 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=RLO+VHurin0htgKbnepZ66eaeGhEUjv0nne072hjf+w=;
+	b=vzYHEwYj3KNbJhjC5BIu+kKt3dkCREPKLvwUdm215TqMzLsPyeO1c8lfy1j9ctjsb80BWNhgbVgju
+	 C45gBMy67HTe8axkEmmrJKODjo7RCgUg7/p6CeVLrp3QSjlsEoQFDGcUPrMZ9DlQmvNfm3XnD+se9L
+	 SKUkbbQcG/BKNjisKPORpnaKmjLHSxmmJ0frEHV+tm5MnIM4PZ2lymCMLtiCH5C5+5XICfqz0c4aD4
+	 riFq1GLGKoEQVjflxX4mv1Dotklw+aN6QxTlqIN8wBNzI92dqvYP2aXt8yibDhWJtJyts1vath5Ooy
+	 pCZr4V7ZcLkuhZfNRSKOEbmO6iZM51w==
+X-MSG-ID: 63ec34ec-0af2-11f0-abc5-005056817704
+From: Robin van der Gracht <robin@protonic.nl>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org,
+	Robin van der Gracht <robin@protonic.nl>
+Date: Thu, 27 Mar 2025 11:00:44 +0100
+Message-ID: <20250327100044.654042-1-robin@protonic.nl>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250327_022423_408840_35A9AA18 
-X-CRM114-Status: UNSURE (   8.90  )
+X-CRM114-CacheID: sfid-20250327_030110_156340_17D749B3 
+X-CRM114-Status: UNSURE (   9.42  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -81,44 +74,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/6] ci: run tests and static analysis on allyesconfig
+Subject: [PATCH] ARM: boards: protonic-imx6: Add prt-usb as fallback preferred boot target
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+If i.e. the bootchooser target fails because of missing or broken follow-up
+software, instead of doing nothing, we try to boot from usb.
 
-On Wed, 26 Mar 2025 08:59:13 +0100, Ahmad Fatoum wrote:
-> With a one-liner fix remaining[1], sandbox now builds allyesconfig sans
-> SDL/libftdi to completion. Let's seize the opportunity and add it to CI,
-> so we easily detect breakage around allyesconfig in future.
-> 
-> This series also switches the recently added Coverity and CodeQL Github
-> Actions to use allyesconfig to extend coverage to non-sandbox related
-> drivers as well.
-> 
-> [...]
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+---
+ arch/arm/boards/protonic-imx6/board.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks!
-
-[1/6] sandbox: use CROSS_PKG_CONFIG when compiling sandbox arch code
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1026d6df3db8 (link may not be stable)
-[2/6] sandbox: hide sdl/libftdi symbols if libraries not found
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3763b996fac0 (link may not be stable)
-[3/6] MAKEALL: fix check_pipe_status usage
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b88a1d166575 (link may not be stable)
-[4/6] MAKEALL: remove use of alias in script
-      https://git.pengutronix.de/cgit/barebox/commit/?id=61f240e31659 (link may not be stable)
-[5/6] ci: pytest: run test suite on sandbox allyesconfig
-      https://git.pengutronix.de/cgit/barebox/commit/?id=18bf3d40253c (link may not be stable)
-[6/6] ci: run static analysis on allyesconfig
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a886cc803dfa (link may not be stable)
-
-Best regards,
+diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
+index 4585ca4730..19e58627c6 100644
+--- a/arch/arm/boards/protonic-imx6/board.c
++++ b/arch/arm/boards/protonic-imx6/board.c
+@@ -496,7 +496,7 @@ static int prt_imx6_env_init(struct prt_imx6_priv *priv)
+ 	if (!priv->no_usb_check)
+ 		boot_targets = xasprintf("prt-usb %s", bootsrc);
+ 	else
+-		boot_targets = xstrdup(bootsrc);
++		boot_targets = xasprintf("%s prt-usb", bootsrc);
+ 
+ 	ret = setenv("global.boot.default", boot_targets);
+ 	free(boot_targets);
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.43.0
 
 
 
