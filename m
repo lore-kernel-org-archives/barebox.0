@@ -1,67 +1,67 @@
-Delivery-date: Thu, 27 Mar 2025 08:26:41 +0100
+Delivery-date: Thu, 27 Mar 2025 08:37:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txhdR-004m3d-24
+	id 1txhoI-004m9k-35
 	for lore@lore.pengutronix.de;
-	Thu, 27 Mar 2025 08:26:41 +0100
+	Thu, 27 Mar 2025 08:37:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txhdR-0005MA-3j
-	for lore@pengutronix.de; Thu, 27 Mar 2025 08:26:41 +0100
+	id 1txhoI-0007DJ-E0
+	for lore@pengutronix.de; Thu, 27 Mar 2025 08:37:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KkDXGqEqIfzn12WIaKXmNRfTX4MDZFIZWos+WHNcVns=; b=JqgR2JWUikoxR4uo4wuoCClGHf
-	H0tWw7gtBKHQHB5I15gCyz+AhYee4lIibfX1sK/dbG6lLDfG8msztom02mrC8vusEJUkjhqagd+Oj
-	tAqS10gCCmuiQLcAVHZkAhb8VIsVymltTXlye2Pl+9eY3A4iLEdgb1mNNS5Z7Y1WTrgDozxfSvC4i
-	Hf00fPO19IE+OVn564OeDiz5nS16jP1vJW52IPDuT0wCWraNKkLoIlDhHw2afuYaZqJoTV9kHpNpf
-	rprNY/4jYA5II+lEjELrFpi4cTp6jfjsBh1QK4TVEemhcEnwd5yVLzLlvA/d96JD4boYrHXf0e+Ll
-	QAlKUQyQ==;
+	bh=R9M6bv/QhImCnBc2Y3AIfUECIekCzoAeouxQ8BTN9E0=; b=xVFtG/Al0h91iRPDQfyRH17Ebk
+	99+yH/VmpqDKYzB+tEjYG8Ij2yM62V2gUQFQO0W58b3GhNf3Z3ZaVrCgDnmd76Nztf2xFfhuuVg9Q
+	vJheHw3YHlyQ5xYAUOawt77eXZZy+Bvo2JL1075vCRVMKr91ZGQPfQH/gMpAacueMuI2+4/HjObpg
+	sqtmA+91wnbmNqtdnzeJ7bvLLP/p2ujlNug7arvB4WaUHASkj0JsBJJu/VSSRiGfSSyrUSx2tHACn
+	2FaOAgn+Tao7C+m2u98JxxhE5syKUHENaNZ9Jqz/nmewhZxkSoFEdiNqGOCx0Vkoo1r8qaJjwLAVG
+	iQm+T2DQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txhcv-0000000AKWO-09oP;
-	Thu, 27 Mar 2025 07:26:09 +0000
+	id 1txhnn-0000000ALPu-08MJ;
+	Thu, 27 Mar 2025 07:37:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txhcs-0000000AKVl-04rz
+	id 1txhnZ-0000000ALNR-4Bff
 	for barebox@lists.infradead.org;
-	Thu, 27 Mar 2025 07:26:07 +0000
+	Thu, 27 Mar 2025 07:37:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txhcp-000592-FM; Thu, 27 Mar 2025 08:26:03 +0100
+	id 1txhnY-00071X-DN; Thu, 27 Mar 2025 08:37:08 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txhcp-001t0x-0k;
-	Thu, 27 Mar 2025 08:26:03 +0100
+	id 1txhnY-001t6n-0k;
+	Thu, 27 Mar 2025 08:37:08 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txhcp-003L6W-0X;
-	Thu, 27 Mar 2025 08:26:03 +0100
+	id 1txhnY-003Ljm-0V;
+	Thu, 27 Mar 2025 08:37:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Jules Maselbas <jmaselbas@zdiv.net>
-In-Reply-To: <20250326094943.9586-1-jmaselbas@zdiv.net>
-References: <20250326094943.9586-1-jmaselbas@zdiv.net>
-Message-Id: <174306036316.796053.6527779182975818765.b4-ty@pengutronix.de>
-Date: Thu, 27 Mar 2025 08:26:03 +0100
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250326165949.669187-1-a.fatoum@pengutronix.de>
+References: <20250326165949.669187-1-a.fatoum@pengutronix.de>
+Message-Id: <174306102815.798497.17801663221164934626.b4-ty@pengutronix.de>
+Date: Thu, 27 Mar 2025 08:37:08 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250327_002606_064891_35D86CF6 
-X-CRM114-Status: UNSURE (   4.88  )
+X-CRM114-CacheID: sfid-20250327_003710_038965_55B9491E 
+X-CRM114-Status: UNSURE (   9.48  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,19 +84,27 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] fixup! tee: optee: implement RPMB support
+Subject: Re: [PATCH master] fs: smhfs: fix crash when stat'ing file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 26 Mar 2025 10:49:43 +0100, Jules Maselbas wrote:
+On Wed, 26 Mar 2025 17:59:49 +0100, Ahmad Fatoum wrote:
+> Starting with commit 7d91d564361e ("fs: replace FILE.size by f_inode.i_size"),
+> struct file no longer had a size member, but instead the inode's i_size
+> member is used. The inode is populated by the file system core when a
+> file is first opened.
 > 
-
+> However, the semihosting file system creates a fake struct file to pass
+> to smhfs_open, which duly fails, because the inode member is
+> uninitialized.
+> 
+> [...]
 
 Applied, thanks!
 
-[1/1] fixup! tee: optee: implement RPMB support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a902a2258647 (link may not be stable)
+[1/1] fs: smhfs: fix crash when stat'ing file
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3c57263db03b (link may not be stable)
 
 Best regards,
 -- 
