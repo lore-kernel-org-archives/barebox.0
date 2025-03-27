@@ -1,66 +1,57 @@
-Delivery-date: Thu, 27 Mar 2025 11:34:29 +0100
+Delivery-date: Thu, 27 Mar 2025 11:38:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txkZB-004q1f-2h
+	id 1txkcl-004q3o-0b
 	for lore@lore.pengutronix.de;
-	Thu, 27 Mar 2025 11:34:29 +0100
+	Thu, 27 Mar 2025 11:38:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txkZB-0002U4-8k
-	for lore@pengutronix.de; Thu, 27 Mar 2025 11:34:29 +0100
+	id 1txkck-0003CJ-Ja
+	for lore@pengutronix.de; Thu, 27 Mar 2025 11:38:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=XV+ao8vu7gvTXqK5CRg5eCu4C/3ynAv+4yPn0NENhcA=; b=JMKhJc/SbrU7CxNM5HWin0/aIX
-	4gg/fJagCgQrBmjkFz/lO+iQ6J2gWIgYrzFaT7RTXxTTFg4HFgbI4H0CsH2yXPccU99qZsbMfNizM
-	T+ndackm/VPN/jZdAH1tK/4PX7uAyFjqNo2r4eZvYbs86zG022LujdIoOjkBOnCl9VUaY5eYjbGb5
-	JWohLnegJwJP2nsXyITA9Dk0JbBd9WCJKcWyU9vgiqh65eSssR9v8+Ah/fLgOos8IoRYP9AFpvYvT
-	eZqCKseWRy13ax5K6SyYTbIdOV12gkdwXL+R1YjZNFdw+yjRZYpzXbUfyB2mizzgzxdGtrnmK4zNe
-	BkmUnloQ==;
+	Content-Type:In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3D94mMv1oWlZSE/H8h8UcBJ111WvFyHXX29gQ0vOBrQ=; b=gBltvQaS7H9g9II9IdnNhdON9E
+	+o29fIRM19arXP6ep1PlTNYnyrtlUQBU9aV7iRgT+qUTnle4ug1jL7pzh56r+hrOrJV+JHJhPs6kX
+	8bTQth6CDI1RRMOrqfDIcjxsunfbF13YbjqxDE64ZOLQhZDDCMHo7BBJucDlHOYl8uOqhPpaMWQOG
+	sGOSVI3Cy1EAEDKg9sjganFMQl2Jm2PsDcYf0T6wItUpVyVsYqJEO3O8Y2O168RPIeGahnYCDY7ik
+	n+AEHQUv+ro11STwyXHne8N/9uSDlWPtzysL+gnpzV42WDZetiwwV5fSSrfYiGAZl0Zscv4OLR3Rd
+	IASsx/Qw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txkYi-0000000AiT2-39KN;
-	Thu, 27 Mar 2025 10:34:00 +0000
+	id 1txkcG-0000000Air2-2v1e;
+	Thu, 27 Mar 2025 10:37:40 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txkYf-0000000AiS8-3uFC
+	id 1txkcE-0000000AiqY-3RXD
 	for barebox@lists.infradead.org;
-	Thu, 27 Mar 2025 10:33:58 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Thu, 27 Mar 2025 10:37:39 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1txkYe-0002HD-76; Thu, 27 Mar 2025 11:33:56 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1txkYe-001ugU-07;
-	Thu, 27 Mar 2025 11:33:56 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1txkYd-000LLW-31;
-	Thu, 27 Mar 2025 11:33:55 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 27 Mar 2025 11:33:53 +0100
-Message-Id: <20250327103353.81841-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	id 1txkcD-00032q-A3; Thu, 27 Mar 2025 11:37:37 +0100
+Message-ID: <ea7831f3-fe10-4145-8fd1-37c83f67d111@pengutronix.de>
+Date: Thu, 27 Mar 2025 11:37:37 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <sha@pengutronix.de>
+References: <20250317113208.1863258-1-a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+In-Reply-To: <20250317113208.1863258-1-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250327_033357_964211_A8244774 
-X-CRM114-Status: UNSURE (   9.17  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250327_033738_864951_0B523CC5 
+X-CRM114-Status: GOOD (  14.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,34 +73,71 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! Revert "ci: container: downgrade OpenRISC toolchain from 14.2.0 to 13.1.0"
+Subject: Re: [PATCH v2 1/2] MAKEALL: support direct options for KCONFIG_ADD
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Effectively revert 18a154ce19 ("ci: container: fix CROSS_COMPILE_openrisc
-to point at correct version"), because the correct version is no longer
-13.1.0..
+Hello Sascha,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- test/Containerfile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 3/17/25 12:32, Ahmad Fatoum wrote:
+> KCONFIG_ADD currently expects a list of files to be merged.
+> As MAKEALL is a bash script, let's make use of process substitution
+> to create temporary files out of -k CONFIG_foo=bar options.
 
-diff --git a/test/Containerfile b/test/Containerfile
-index 20402c384b6f..2da786c69925 100644
---- a/test/Containerfile
-+++ b/test/Containerfile
-@@ -97,7 +97,7 @@ RUN pip3 install -q --no-cache-dir --break-system-packages \
- ENV CROSS_COMPILE_arm=/opt/gcc-${GCC_VERSION}-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-
- ENV CROSS_COMPILE_arm64=/opt/gcc-${GCC_VERSION}-nolibc/aarch64-linux/bin/aarch64-linux-
- ENV CROSS_COMPILE_mips=/opt/gcc-${GCC_VERSION}-nolibc/mips-linux/bin/mips-linux-
--ENV CROSS_COMPILE_openrisc=/opt/gcc-13.1.0-nolibc/or1k-linux/bin/or1k-linux-
-+ENV CROSS_COMPILE_openrisc=/opt/gcc-${GCC_VERSION}-nolibc/or1k-linux/bin/or1k-linux-
- ENV CROSS_COMPILE_powerpc=/opt/gcc-${GCC_VERSION}-nolibc/powerpc-linux/bin/powerpc-linux-
- ENV CROSS_COMPILE_riscv=/opt/gcc-${GCC_VERSION}-nolibc/riscv64-linux/bin/riscv64-linux-
- ENV CROSS_COMPILE_kvx=/opt/gcc-kalray-kvx-v5.0.0/bin/kvx-elf-
--- 
-2.39.5
+Please pick these two patches to the ci branch to workaround the build
+breakage there.
+
+Thanks,
+Ahmad
+
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> v1 -> v2:
+>   - fix Regex (Sascha)
+> ---
+>  MAKEALL | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/MAKEALL b/MAKEALL
+> index 1966eedb4673..bc612b45561f 100755
+> --- a/MAKEALL
+> +++ b/MAKEALL
+> @@ -56,7 +56,7 @@ usage() {
+>  	echo "BUILDDIR    -O      build dir"
+>  	echo "LOGDIR      -l      log dir"
+>  	echo "REGEX       -e      regex"
+> -	echo "KCONFIG_ADD -k      kconfig fragment"
+> +	echo "KCONFIG_ADD -k      kconfig fragment or option"
+>  	echo "TARGET      -t      Makefile target"
+>  	echo "V           -v      verbosity"
+>  	echo "INCREMENTAL -i"
+> @@ -116,6 +116,11 @@ report() {
+>  	fi
+>  }
+>  
+> +merge_config() {
+> +	with_logs_collected ./scripts/kconfig/merge_config.sh -m -O \
+> +		${BUILDDIR} "$@"
+> +}
+> +
+>  do_build_defconfig() {
+>  	local arch=$1
+>  	local defconfig=$2
+> @@ -156,8 +161,11 @@ do_build_defconfig() {
+>  	MAKE="${MAKE} $silent_flag CROSS_COMPILE=${cross_compile}"
+>  	with_logs_collected ${MAKE} ${defconfig}
+>  	for i in ${KCONFIG_ADD}; do
+> -		with_logs_collected ./scripts/kconfig/merge_config.sh -m -O \
+> -			${BUILDDIR} ${BUILDDIR}/.config $i
+> +		if [[ $i =~ ^CONFIG_.*=.* ]]; then
+> +			merge_config ${BUILDDIR}/.config <(echo $i)
+> +		else
+> +			merge_config ${BUILDDIR}/.config $i
+> +		fi
+>  	done
+>  	with_logs_collected ${MAKE} $silent_flag olddefconfig
+>  
 
 
 
