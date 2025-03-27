@@ -1,67 +1,67 @@
-Delivery-date: Thu, 27 Mar 2025 08:39:49 +0100
+Delivery-date: Thu, 27 Mar 2025 08:41:59 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txhq9-004mB7-31
+	id 1txhsF-004mGn-2z
 	for lore@lore.pengutronix.de;
-	Thu, 27 Mar 2025 08:39:49 +0100
+	Thu, 27 Mar 2025 08:41:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1txhq9-0007Yz-CJ
-	for lore@pengutronix.de; Thu, 27 Mar 2025 08:39:49 +0100
+	id 1txhsF-00081S-D0
+	for lore@pengutronix.de; Thu, 27 Mar 2025 08:41:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yVc8KCPclCRuAsZWHvvfPyMctBtPItwnwh7ydhSp+1E=; b=oP+NJ6SXyIbGXbFF4vDopVhR70
-	p8xMYWh64CDNlrD1udk78wXd0k1qJfMg5OTewRfDvw2c2pnmbEt+LrUmPQ1Qx3W7WkImOK0Z69tXB
-	3Tfznh7Fo9vCyN0LEsuZ9Et9yEX+MamZXdOsiprQWqwQHy9OnU5oq9Eveq7kalejUJuWa48DkMSgI
-	nsUdDw/kE8xEg2JnGDpmfHN8056WHELC1+FVWAQ6nhcXJ0ncYklAuy2gnFp2C2hdOH3YJLlBhQFHt
-	lBz5Nx6fu+A50JUXFq1AAALaDjBFPtr6EHdqtvFcfFaCyf4jmO1RFBR5d/QLqTBEVwOkjYgLW5XXf
-	wQ3ooaOw==;
+	bh=vvMUB7LHZ5zftFz+M/OadNHAQQvoQg13eAb73WWX5ZQ=; b=HMwyyn82tDvUMZUGu7vxEOjBmn
+	zR2aQHo7Po7E1xmkRin57gYDlhPr/bKxFtLm+VOuRZf+IfSzLwkE40YLUrXY8oE7UTMuHoQMr88jB
+	RAY9SZo6ivpESUDMNJMsqGTfsURh/4SgBy7j7AUPNgzwrNp+kuchXmurkeR+x6AmZpguoFJMt5hfW
+	I+W2PrurCR0or5SZn/tkrwuA4qsaMRUl/vjQZG2lzq5aLX8lkljbbbm3P24sXfn9iKeO8FoDKj0s8
+	4f1zTaBk+s3qX0UQdUh2rV/9dIwBDSIYGubKYLI02eUhPf+we84r/8wAgmG/e2wLcP88zcsv2vr7u
+	BSGUQrpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txhpS-0000000ALaJ-0XPc;
-	Thu, 27 Mar 2025 07:39:06 +0000
+	id 1txhrp-0000000ALsV-3ERU;
+	Thu, 27 Mar 2025 07:41:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1txhpM-0000000ALZj-2x2C
+	id 1txhrm-0000000ALrx-2e1Z
 	for barebox@lists.infradead.org;
-	Thu, 27 Mar 2025 07:39:05 +0000
+	Thu, 27 Mar 2025 07:41:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txhpL-0007Ou-JN; Thu, 27 Mar 2025 08:38:59 +0100
+	id 1txhrl-0007th-Fv; Thu, 27 Mar 2025 08:41:29 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txhpL-001t6y-1J;
-	Thu, 27 Mar 2025 08:38:59 +0100
+	id 1txhrl-001t7O-0y;
+	Thu, 27 Mar 2025 08:41:29 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1txhpL-003LmJ-15;
-	Thu, 27 Mar 2025 08:38:59 +0100
+	id 1txhrl-003Lpj-0l;
+	Thu, 27 Mar 2025 08:41:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Jules Maselbas <jmaselbas@zdiv.net>
-In-Reply-To: <20250325155327.31981-1-jmaselbas@zdiv.net>
-References: <20250325155327.31981-1-jmaselbas@zdiv.net>
-Message-Id: <174306113933.798650.17246505145151646265.b4-ty@pengutronix.de>
-Date: Thu, 27 Mar 2025 08:38:59 +0100
+In-Reply-To: <20250325155258.31869-1-jmaselbas@zdiv.net>
+References: <20250325155258.31869-1-jmaselbas@zdiv.net>
+Message-Id: <174306128923.798860.14713686011962678386.b4-ty@pengutronix.de>
+Date: Thu, 27 Mar 2025 08:41:29 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250327_003900_746669_CCFECC59 
-X-CRM114-Status: UNSURE (   7.64  )
+X-CRM114-CacheID: sfid-20250327_004130_671570_B45E52F5 
+X-CRM114-Status: UNSURE (   8.70  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,25 +84,22 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] vsprintf: fix missing break when printing %pJP
+Subject: Re: [PATCH] treewide: add explicit fallthrough and break
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 25 Mar 2025 16:53:26 +0100, Jules Maselbas wrote:
-> When the format `%pJP` was introduced the new switch case didn't had a
-> break at the end, it was last case in the switch. However subsequent
-> commit didn't add a break either, creating a potential fallthrough.
-> Add the missing break.
+On Tue, 25 Mar 2025 16:52:58 +0100, Jules Maselbas wrote:
+> Replace existing fallthrough comments with the `fallthrough;` pseudo-keyword.
+> Add a few break statement when the last case of a switch is not empty, so it
+> will not be forgot when a new case is added at the end.
 > 
 > 
 
 Applied, thanks!
 
-[1/2] vsprintf: fix missing break when printing %pJP
-      https://git.pengutronix.de/cgit/barebox/commit/?id=fe9805bfe283 (link may not be stable)
-[2/2] vsprintf: add explicit fallthrough
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b2be41d98bbe (link may not be stable)
+[1/1] treewide: add explicit fallthrough and break
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b1eeb46d1d6a (link may not be stable)
 
 Best regards,
 -- 
