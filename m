@@ -1,65 +1,68 @@
-Delivery-date: Fri, 28 Mar 2025 09:36:40 +0100
+Delivery-date: Fri, 28 Mar 2025 09:36:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ty5Ci-005DWr-1y
+	id 1ty5Cj-005DXN-2U
 	for lore@lore.pengutronix.de;
-	Fri, 28 Mar 2025 09:36:40 +0100
+	Fri, 28 Mar 2025 09:36:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ty5Ci-0000jq-0w
-	for lore@pengutronix.de; Fri, 28 Mar 2025 09:36:40 +0100
+	id 1ty5Cj-0000ka-1N
+	for lore@pengutronix.de; Fri, 28 Mar 2025 09:36:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=1Gj+32n6iK7Pmj3hXZLDOuVBQ8quxhgeRj+XZ7ZTil0=; b=eU6YN+j7JLvdGjYXMRRG4ipiv1
-	yNxBC/UE5AGv4hwY81uDS5I35A8zs+2kgzlCWZxPpyfRlgn71Chs2ggYb2F1+tsWDEdjpO/+olslM
-	kGCjFEQzPWDZ07cNKNy4D58ZbMkWJod4/OISaVGBKx1VgtHAV7QdKANEQWtPZ38c2z/7yyAlwp6uG
-	hreTY5ztuxBB8P1sEMj8nNjyED7fg57jqB2+ZQzG/8famrLA2oFbetC93NQjHjZLsZXo0YdHv9dzU
-	ZTsxck9wHkR8NUi8zqMcjwgCBBVgMevImFZ1TmHlB1qfkF1QoFq1E87H2pu+tTWZi5tX6pavO4hYH
-	Z3sBU8Pw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=en9kwMv3iAWjcGZWORDeKaAFilJIPOIb2nEkdBgGE7Y=; b=tmraCdEFqs4vLiSakXZSlvBbqa
+	Xxl5RysNjITXRv8zXZQXJ4P9X/9QHQ6mgRH3M14UZdhYX5RYv5QLRaKsLIBeDQ5yYr9Et3k6yR8D0
+	u+o2Sf1NcpQjj43BqTttpnXdYwACfiG+Ak0+4dfH3xQOvw/PQWxoFETisXdA6Ll5d2+qKrhN6dR7t
+	JLG/VEy1IzHj512C3pry3DjBMjwXTE38DL5EWaS+euD2NK6KJqpo+BfxBWB1XymxNCFxAERlYAEx6
+	9h1cuUbwxxI+kijY4+COgconEtw32XZ97h/Ki0GOP7dCzbIPV+OGO7sAmieAbzxjO1HPOT28Zln5V
+	krl2NUcA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1ty5CE-0000000CwAc-14EB;
-	Fri, 28 Mar 2025 08:36:10 +0000
+	id 1ty5CD-0000000CwAK-3GZ0;
+	Fri, 28 Mar 2025 08:36:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1ty5Bv-0000000Cw7r-3LSp
+	id 1ty5Bv-0000000Cw7p-3Fvj
 	for barebox@lists.infradead.org;
-	Fri, 28 Mar 2025 08:35:53 +0000
+	Fri, 28 Mar 2025 08:35:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ty5Bu-0000SI-Fz; Fri, 28 Mar 2025 09:35:50 +0100
+	id 1ty5Bu-0000SK-JF; Fri, 28 Mar 2025 09:35:50 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ty5Bu-0024MQ-0z;
+	id 1ty5Bu-0024MU-1H;
 	Fri, 28 Mar 2025 09:35:50 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ty5Bu-0029u6-0g;
+	id 1ty5Bu-0029u6-0z;
 	Fri, 28 Mar 2025 09:35:50 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 28 Mar 2025 09:35:47 +0100
-Message-Id: <20250328083549.514506-1-a.fatoum@pengutronix.de>
+Cc: David Dgien <dgienda125@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 28 Mar 2025 09:35:49 +0100
+Message-Id: <20250328083549.514506-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250328083549.514506-1-a.fatoum@pengutronix.de>
+References: <20250328083549.514506-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250328_013551_840603_CEE7761A 
-X-CRM114-Status: GOOD (  10.07  )
+X-CRM114-CacheID: sfid-20250328_013551_819317_C3C60970 
+X-CRM114-Status: GOOD (  10.63  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,43 +84,37 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] i2c: muxes: pca954x: switch to device_get_match_data
+Subject: [PATCH 3/3] kbuild: compile *.mod.c files with -fshort-wchar
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-dev_get_drvdata has other semantics in barebox than in Linux and should
-be removed eventually. Drop it in favor of device_get_match_data, which
-avoids common bugs with pointer width difference casts.
+We use wchar_t in USB and EFI code, both of which expect 2-byte wide
+strings. Thus, like Linux, we set -fshort-wchar in KBUILD_CFLAGS.
 
+This flag is not passed through to the build of *.mod.c files that are
+generated in a module build, leading to a linker warning.
+
+Add it to fix this.
+
+Cc: David Dgien <dgienda125@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/i2c/muxes/i2c-mux-pca954x.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
-index 6c21b92860f0..4a926fb92b17 100644
---- a/drivers/i2c/muxes/i2c-mux-pca954x.c
-+++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
-@@ -186,7 +186,6 @@ static int pca954x_probe(struct device *dev)
- 	struct i2c_adapter *adap = to_i2c_adapter(client->dev.parent);
- 	int num;
- 	struct pca954x *data;
--	uintptr_t tmp;
- 	int ret = -ENODEV;
- 	int gpio;
- 	bool idle_disconnect;
-@@ -210,10 +209,7 @@ static int pca954x_probe(struct device *dev)
- 	if (i2c_smbus_write_byte(client, 0) < 0)
- 		goto exit_free;
+diff --git a/Makefile b/Makefile
+index 5c9fce83123c..4ee9780abeac 100644
+--- a/Makefile
++++ b/Makefile
+@@ -459,7 +459,7 @@ XZ		= xz
+ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ -Wbitwise $(CF)
+ CFLAGS_KERNEL	=
+ AFLAGS_KERNEL	=
+-CFLAGS_MODULE	=
++CFLAGS_MODULE	= -fshort-wchar
+ AFLAGS_MODULE	=
  
--	ret = dev_get_drvdata(dev, (const void **)&tmp);
--	data->type = tmp;
--	if (ret)
--		goto exit_free;
-+	data->type = (uintptr_t)device_get_match_data(dev);
- 
- 	idle_disconnect = of_property_read_bool(dev->of_node,
- 						"i2c-mux-idle-disconnect");
+ LDFLAGS_MODULE  = -T common/module.lds
 -- 
 2.39.5
 
