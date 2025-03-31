@@ -1,65 +1,65 @@
-Delivery-date: Mon, 31 Mar 2025 14:31:12 +0200
+Delivery-date: Mon, 31 Mar 2025 14:31:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tzEIK-006Z73-2e
+	id 1tzEIN-006Z7U-1f
 	for lore@lore.pengutronix.de;
-	Mon, 31 Mar 2025 14:31:12 +0200
+	Mon, 31 Mar 2025 14:31:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tzEIJ-0005AB-JU
-	for lore@pengutronix.de; Mon, 31 Mar 2025 14:31:12 +0200
+	id 1tzEIL-0005BW-Oa
+	for lore@pengutronix.de; Mon, 31 Mar 2025 14:31:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=QkCqNaWt18/EIj4jYjV6NjY/s4gl2cwSZ3sczI9oZ3E=; b=YU1zG90qUDYiN6+6XwuSuNSPFl
-	r9hR1sSefoR5clLyJEZhPK1tplOVWiOJ6msUpkdkJwN6oKyAru/iooqnLgT6TA+r3w9po2ihDpxRP
-	ovHKsLCLCUUB65WxhivhHb1c6qT9/D7AiFv2HQmZVd2Cj7STqgAXYxYd7UhsCfP1bTOCbMbJDTRzO
-	5UV/OpbeWfkEIcEZApvlgU2Fcy2/Bun7M3Qb1VjeYlKGQrSpQuwRR9p0hPRjZq5tTlLrrIFXhFXW8
-	g/witPSwjUwCrfxlTRoZElO8FUlkyEzAnBa5Mbs7ekVN5Hhr9FhLLYPJ6nG2TvlSxykMmu12EbgDS
-	hX5ag29A==;
+	bh=mEnb8jU6os99Bzq8T/pudKqSMH9WoP98lnPeypZQNmY=; b=fLuxywV3nUxvNt65VUtiFiJzc0
+	RI092i8qf62pElHr7rRnoy5+U2QTn7Gq8/hDgr2f/T5LOT92w6hIJJB1//mjkgq8Wq0vNPys+z7zz
+	ovjj56MC8BjZoYNbhWW4HdHojz1PF+byXYNgpuENKTmOTPXf6mlphW5W0EjUDDzbrPpb6BHuOE0jd
+	XiNw5PdsAARIeH9jsNq4pF57pLL45owPLJ6Ndoe4SlMESppk8iMUzIflZrLNLzWCiqzsLhAdY4Fet
+	JXMcKhtd7J9Lx4hhcWFvz2O3aAYLddmOlYVymumuDFDUcQG9jzQSuJL3DbAFwh3zkuA615ftlR5KS
+	Y1N9omCA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzEHq-00000000LEg-1mFK;
-	Mon, 31 Mar 2025 12:30:42 +0000
+	id 1tzEHd-00000000L4T-1cmD;
+	Mon, 31 Mar 2025 12:30:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzEHj-00000000L7Y-0CMi
+	id 1tzEGZ-00000000Kso-0pzZ
 	for barebox@lists.infradead.org;
-	Mon, 31 Mar 2025 12:30:38 +0000
+	Mon, 31 Mar 2025 12:29:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tzEHh-0004pw-To; Mon, 31 Mar 2025 14:30:33 +0200
+	id 1tzEGV-0004cO-Kc; Mon, 31 Mar 2025 14:29:19 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tzEHh-002asV-2C;
-	Mon, 31 Mar 2025 14:30:33 +0200
+	id 1tzEGV-002asI-1Q;
+	Mon, 31 Mar 2025 14:29:19 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tzEHh-002dB9-1z;
-	Mon, 31 Mar 2025 14:30:33 +0200
+	id 1tzEGV-002NCI-1D;
+	Mon, 31 Mar 2025 14:29:19 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: David Jander <david@protonic.nl>,
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 31 Mar 2025 14:30:29 +0200
-Message-Id: <20250331123032.626219-1-o.rempel@pengutronix.de>
+Date: Mon, 31 Mar 2025 14:29:18 +0200
+Message-Id: <20250331122918.564304-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250331_053035_396213_AFD39825 
-X-CRM114-Status: GOOD (  18.83  )
+X-CRM114-CacheID: sfid-20250331_052923_548797_CEF3F579 
+X-CRM114-Status: GOOD (  27.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,525 +81,560 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1 1/4] arm: boards: protonic-stm32mp13: Add support for MECT1S board
+Subject: [PATCH v1] spi: add STM32F7 QSPI controller driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: David Jander <david@protonic.nl>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Introduce support for the Protonic MECT1S r1 board based on STM32MP133.
+Introduce support for the STM32F7 QSPI controller, compatible with
+"st,stm32f469-qspi".
 
-Signed-off-by: David Jander <david@protonic.nl>
+Validated on STM32MP133-based MECT1S r1 board, which includes an
+F7-compatible QSPI peripheral
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boards/protonic-stm32mp13/board.c    |   5 +
- arch/arm/boards/protonic-stm32mp13/lowlevel.c |  14 +
- arch/arm/dts/Makefile                         |   4 +-
- arch/arm/dts/stm32mp133c-mect1s.dts           |  52 +++
- arch/arm/dts/stm32mp133c-mect1s.dtsi          | 360 ++++++++++++++++++
- images/Makefile.stm32mp                       |   1 +
- 6 files changed, 435 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/dts/stm32mp133c-mect1s.dts
- create mode 100644 arch/arm/dts/stm32mp133c-mect1s.dtsi
+ drivers/spi/Kconfig          |   8 +
+ drivers/spi/Makefile         |   1 +
+ drivers/spi/spi-stm32-qspi.c | 496 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 505 insertions(+)
+ create mode 100644 drivers/spi/spi-stm32-qspi.c
 
-diff --git a/arch/arm/boards/protonic-stm32mp13/board.c b/arch/arm/boards/protonic-stm32mp13/board.c
-index ca035cc6773c..0173e3628dc3 100644
---- a/arch/arm/boards/protonic-stm32mp13/board.c
-+++ b/arch/arm/boards/protonic-stm32mp13/board.c
-@@ -273,8 +273,13 @@ static const struct prt_stm32_machine_data prt_stm32_prihmb = {
- 	.flags = PRT_STM32_BOOTSRC_SD | PRT_STM32_BOOTSRC_EMMC,
- };
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index aebfe30a1343..d6e8bea13c9c 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -114,6 +114,14 @@ config SPI_ZYNQ_QSPI
+ 	  This enables support for the Zynq Quad SPI controller in master mode.
+ 	  This controller only supports SPI memory interface.
  
-+static const struct prt_stm32_machine_data prt_stm32_mect1sr1 = {
-+	.flags = PRT_STM32_BOOTSRC_SPI_NOR,
++config STM32_QSPI
++	bool "STM32F7 QSPI driver"
++	depends on ARCH_STM32
++	help
++	  Enable the STM32F7 Quad-SPI (QSPI) driver. This driver can be
++	  used to access the SPI NOR flash chips on platforms embedding
++	  this ST IP core.
++
+ config DRIVER_SPI_STM32
+ 	bool "STM32 SPI driver"
+ 	depends on ARCH_STM32MP || COMPILE_TEST
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index d0df0f136729..a9151286ab47 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -16,6 +16,7 @@ obj-$(CONFIG_DRIVER_SPI_DSPI) += dspi_spi.o
+ obj-$(CONFIG_SPI_BCM2835) += spi-bcm2835.o
+ obj-$(CONFIG_SPI_ZYNQ_QSPI) += zynq_qspi.o
+ obj-$(CONFIG_SPI_NXP_FLEXSPI) += spi-nxp-fspi.o
++obj-$(CONFIG_STM32_QSPI) += spi-stm32-qspi.o
+ obj-$(CONFIG_DRIVER_SPI_STM32) += stm32_spi.o
+ obj-$(CONFIG_SPI_SIFIVE) += spi-sifive.o
+ obj-$(CONFIG_SPI_ROCKCHIP) += spi-rockchip.o
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+new file mode 100644
+index 000000000000..d38874fd6ef6
+--- /dev/null
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -0,0 +1,496 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) STMicroelectronics 2018 - All Rights Reserved
++ * Author: Ludovic Barre <ludovic.barre@st.com> for STMicroelectronics.
++ */
++#include <linux/bitfield.h>
++#include <linux/clk.h>
++#include <linux/device.h>
++#include <linux/reset.h>
++#include <linux/sizes.h>
++#include <linux/spi/spi-mem.h>
++
++#define QSPI_CR			0x00
++#define CR_EN			BIT(0)
++#define CR_ABORT		BIT(1)
++#define CR_DMAEN		BIT(2)
++#define CR_TCEN			BIT(3)
++#define CR_SSHIFT		BIT(4)
++#define CR_DFM			BIT(6)
++#define CR_FSEL			BIT(7)
++#define CR_FTHRES_SHIFT		8
++#define CR_TEIE			BIT(16)
++#define CR_TCIE			BIT(17)
++#define CR_FTIE			BIT(18)
++#define CR_SMIE			BIT(19)
++#define CR_TOIE			BIT(20)
++#define CR_APMS			BIT(22)
++#define CR_PRESC_MASK		GENMASK(31, 24)
++
++#define QSPI_DCR		0x04
++#define DCR_FSIZE_MASK		GENMASK(20, 16)
++
++#define QSPI_SR			0x08
++#define SR_TEF			BIT(0)
++#define SR_TCF			BIT(1)
++#define SR_FTF			BIT(2)
++#define SR_SMF			BIT(3)
++#define SR_TOF			BIT(4)
++#define SR_BUSY			BIT(5)
++#define SR_FLEVEL_MASK		GENMASK(13, 8)
++
++#define QSPI_FCR		0x0c
++#define FCR_CTEF		BIT(0)
++#define FCR_CTCF		BIT(1)
++#define FCR_CSMF		BIT(3)
++
++#define QSPI_DLR		0x10
++
++#define QSPI_CCR		0x14
++#define CCR_INST_MASK		GENMASK(7, 0)
++#define CCR_IMODE_MASK		GENMASK(9, 8)
++#define CCR_ADMODE_MASK		GENMASK(11, 10)
++#define CCR_ADSIZE_MASK		GENMASK(13, 12)
++#define CCR_DCYC_MASK		GENMASK(22, 18)
++#define CCR_DMODE_MASK		GENMASK(25, 24)
++#define CCR_FMODE_MASK		GENMASK(27, 26)
++#define CCR_FMODE_INDW		(0U << 26)
++#define CCR_FMODE_INDR		(1U << 26)
++#define CCR_FMODE_APM		(2U << 26)
++#define CCR_FMODE_MM		(3U << 26)
++#define CCR_BUSWIDTH_0		0x0
++#define CCR_BUSWIDTH_1		0x1
++#define CCR_BUSWIDTH_2		0x2
++#define CCR_BUSWIDTH_4		0x3
++
++#define QSPI_AR			0x18
++#define QSPI_DR			0x20
++
++#define STM32_QSPI_MAX_MMAP_SZ	SZ_256M
++#define STM32_QSPI_MAX_NORCHIP	2
++
++#define STM32_FIFO_TIMEOUT_US	30000
++#define STM32_BUSY_TIMEOUT_US	100000
++#define STM32_ABT_TIMEOUT_US	100000
++
++struct stm32_qspi_flash {
++	u32 cs;
++	u32 presc;
 +};
 +
- static const struct of_device_id prt_stm32_of_match[] = {
- 	{ .compatible = "pri,prihmb", .data = &prt_stm32_prihmb },
-+	{ .compatible = "prt,mect1sr1", .data = &prt_stm32_mect1sr1 },
- 	{ /* sentinel */ },
- };
- BAREBOX_DEEP_PROBE_ENABLE(prt_stm32_of_match);
-diff --git a/arch/arm/boards/protonic-stm32mp13/lowlevel.c b/arch/arm/boards/protonic-stm32mp13/lowlevel.c
-index 9de02402f518..71e658934383 100644
---- a/arch/arm/boards/protonic-stm32mp13/lowlevel.c
-+++ b/arch/arm/boards/protonic-stm32mp13/lowlevel.c
-@@ -6,6 +6,7 @@
- #include <mach/stm32mp/entry.h>
- 
- extern char __dtb_z_stm32mp133c_prihmb_start[];
-+extern char __dtb_z_stm32mp133c_mect1s_start[];
- 
- ENTRY_FUNCTION(start_stm32mp133c_prihmb, r0, r1, r2)
- {
-@@ -20,3 +21,16 @@ ENTRY_FUNCTION(start_stm32mp133c_prihmb, r0, r1, r2)
- 
- 	stm32mp1_barebox_entry(fdt);
- }
++struct stm32_qspi {
++	struct spi_controller ctrl;
++	struct device *dev;
++	void __iomem *io_base;
++	void __iomem *mm_base;
++	resource_size_t mm_size;
++	struct clk *clk;
++	u32 clk_rate;
++	struct stm32_qspi_flash flash[STM32_QSPI_MAX_NORCHIP];
++	u32 fmode;
 +
-+ENTRY_FUNCTION(start_stm32mp133c_mect1s, r0, r1, r2)
++	u32 dcr_reg;
++};
++
++static void stm32_qspi_read_fifo(u8 *val, void __iomem *addr)
 +{
-+	void *fdt;
-+
-+	stm32mp_cpu_lowlevel_init();
-+
-+	putc_ll('>');
-+
-+	fdt = __dtb_z_stm32mp133c_mect1s_start + get_runtime_offset();
-+
-+	stm32mp1_barebox_entry(fdt);
++	*val = readb_relaxed(addr);
 +}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index b3ff2e738b48..3922e0fb5c86 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -118,7 +118,9 @@ lwl-$(CONFIG_MACH_PROTONIC_STM32MP1) += \
- 	stm32mp151-mecio1.dtb.o \
- 	stm32mp151-mect1s.dtb.o \
- 	stm32mp151c-plyaqm.dtb.o
--lwl-$(CONFIG_MACH_PROTONIC_STM32MP13) += stm32mp133c-prihmb.dtb.o
-+lwl-$(CONFIG_MACH_PROTONIC_STM32MP13) += \
-+	stm32mp133c-mect1s.dtb.o \
-+	stm32mp133c-prihmb.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK3) += rk3568-rock-3a.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK5) += rk3588-rock-5b.dtb.o
-diff --git a/arch/arm/dts/stm32mp133c-mect1s.dts b/arch/arm/dts/stm32mp133c-mect1s.dts
-new file mode 100644
-index 000000000000..9cc971b5d4ca
---- /dev/null
-+++ b/arch/arm/dts/stm32mp133c-mect1s.dts
-@@ -0,0 +1,52 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-3-Clause)
-+// SPDX-FileCopyrightText: 2025 David Jander, Protonic Holland
-+/dts-v1/;
 +
-+#include "stm32mp133c-mect1s.dtsi"
-+#include "stm32mp131.dtsi"
++static void stm32_qspi_write_fifo(u8 *val, void __iomem *addr)
++{
++	writeb_relaxed(*val, addr);
++}
 +
-+#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
-+#include CONFIG_BOOTM_FITIMAGE_PUBKEY
-+#endif
++static int stm32_qspi_tx_poll(struct stm32_qspi *qspi,
++			      const struct spi_mem_op *op)
++{
++	void (*tx_fifo)(u8 *val, void __iomem *addr);
++	u32 len = op->data.nbytes, sr;
++	u8 *buf;
++	int ret;
 +
-+/ {
-+	chosen {
-+		stdout-path = "serial0:1500000n8";
++	if (op->data.dir == SPI_MEM_DATA_IN) {
++		tx_fifo = stm32_qspi_read_fifo;
++		buf = op->data.buf.in;
 +
-+		environment-qspi {
-+			compatible = "barebox,environment";
-+			device-path = &barebox_env;
-+			status = "disabled";
-+		};
-+	};
-+};
++	} else {
++		tx_fifo = stm32_qspi_write_fifo;
++		buf = (u8 *)op->data.buf.out;
++	}
 +
-+&qspi {
-+	flash@0 {
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
++	while (len--) {
++		ret = readl_relaxed_poll_timeout(qspi->io_base + QSPI_SR,
++						 sr, (sr & SR_FTF),
++						 STM32_FIFO_TIMEOUT_US);
++		if (ret) {
++			dev_err(qspi->dev, "fifo timeout (len:%d stat:%#x)\n",
++				len, sr);
++			return ret;
++		}
++		tx_fifo(buf++, qspi->io_base + QSPI_DR);
++	}
 +
-+			tf-a@0 {
-+				label = "tf-a-primary";
-+				reg = <0x000000 0x40000>; /* 256 KiB */
-+			};
++	return 0;
++}
 +
-+			tf-a@40000 {
-+				label = "tf-a-secondary";
-+				reg = <0x40000 0x40000>; /* 256 KiB */
-+			};
++static int stm32_qspi_tx_mm(struct stm32_qspi *qspi,
++			    const struct spi_mem_op *op)
++{
++	memcpy_fromio(op->data.buf.in, qspi->mm_base + op->addr.val,
++		      op->data.nbytes);
++	return 0;
++}
 +
-+			barebox@80000 {
-+				label = "barebox-fip";
-+				reg = <0x80000 0x170000>;
-+			};
++static int stm32_qspi_tx(struct stm32_qspi *qspi, const struct spi_mem_op *op)
++{
++	if (!op->data.nbytes)
++		return 0;
 +
-+			barebox_env: barebox-env@1F0000 {
-+				label = "barebox-environment";
-+				reg = <0x1f0000 0x10000>; /* 64 KiB */
-+			};
-+		};
-+	};
-+};
-diff --git a/arch/arm/dts/stm32mp133c-mect1s.dtsi b/arch/arm/dts/stm32mp133c-mect1s.dtsi
-new file mode 100644
-index 000000000000..ca179a636374
---- /dev/null
-+++ b/arch/arm/dts/stm32mp133c-mect1s.dtsi
-@@ -0,0 +1,360 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/dts-v1/;
++	if (qspi->fmode == CCR_FMODE_MM)
++		return stm32_qspi_tx_mm(qspi, op);
 +
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/leds/common.h>
-+#include <dt-bindings/regulator/st,stm32mp13-regulator.h>
-+#include <arm/st/stm32mp133.dtsi>
-+#include <arm/st/stm32mp131.dtsi>
-+#include <arm/st/stm32mp13xc.dtsi>
-+#include <arm/st/stm32mp13-pinctrl.dtsi>
++	return stm32_qspi_tx_poll(qspi, op);
++}
 +
-+/ {
-+	model = "Protonic MECT1S r1 board";
-+	compatible = "prt,mect1sr1", "st,stm32mp133";
++static int stm32_qspi_wait_nobusy(struct stm32_qspi *qspi)
++{
++	u32 sr;
 +
-+	aliases {
-+		mdio-gpio0 = &mdio0;
-+		ethernet0 = &ethernet1;
-+		serial0 = &uart4;
-+	};
++	return readl_relaxed_poll_timeout(qspi->io_base + QSPI_SR, sr,
++					  !(sr & SR_BUSY),
++					  STM32_BUSY_TIMEOUT_US);
++}
 +
-+	memory@c0000000 {
-+		device_type = "memory";
-+		reg = <0xc0000000 0x10000000>;
-+	};
++static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi)
++{
++	u32 sr;
++	int err;
 +
-+	reserved-memory {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
++	err = readl_poll_timeout(qspi->io_base + QSPI_SR,
++				 sr, (sr & SR_TCF),
++				 STM32_FIFO_TIMEOUT_US);
 +
-+		optee@ce000000 {
-+			reg = <0xce000000 0x02000000>;
-+			no-map;
-+		};
-+	};
++	if (!err) {
++		sr = readl_relaxed(qspi->io_base + QSPI_SR);
++		if (sr & SR_TEF)
++			err = -EIO;
++	}
 +
-+	chosen {
-+		stdout-path = "serial0:1500000n8";
-+	};
++	/* clear flags */
++	writel_relaxed(FCR_CTCF | FCR_CTEF, qspi->io_base + QSPI_FCR);
++	if (!err)
++		err = stm32_qspi_wait_nobusy(qspi);
 +
-+	clock_sja1105: clock-sja1105 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <25000000>;
-+	};
++	return err;
++}
 +
-+	leds {
-+		compatible = "gpio-leds";
++static int stm32_qspi_get_mode(u8 buswidth)
++{
++	if (buswidth >= 4)
++		return CCR_BUSWIDTH_4;
 +
-+		led-green {
-+			function = LED_FUNCTION_HEARTBEAT;
-+			gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
-+			linux,default-trigger = "heartbeat";
-+			default-state = "off";
-+		};
-+	};
++	return buswidth;
++}
 +
-+	reg_3v3: regulator-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
++static int stm32_qspi_send(struct spi_device *spi, const struct spi_mem_op *op)
++{
++	struct stm32_qspi *qspi = spi_controller_get_devdata(spi->controller);
++	struct stm32_qspi_flash *flash = &qspi->flash[spi_get_chipselect(spi, 0)];
++	u32 ccr, cr;
++	int timeout, err = 0, err_poll_status = 0;
 +
-+	spi_gpio: spi-gpio-0 {
-+		compatible = "spi-gpio";
-+		sck-gpios = <&gpiob 10 GPIO_ACTIVE_HIGH>;
-+		mosi-gpios = <&gpioa 8 GPIO_ACTIVE_HIGH>;
-+		miso-gpios = <&gpiob 5 GPIO_ACTIVE_HIGH>;
-+		cs-gpios = <&gpioa 11 GPIO_ACTIVE_LOW>;
-+		num-chipselects = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
-+};
++	dev_dbg(qspi->dev, "cmd:%#x mode:%d.%d.%d.%d addr:%#llx len:%#x\n",
++		op->cmd.opcode, op->cmd.buswidth, op->addr.buswidth,
++		op->dummy.buswidth, op->data.buswidth,
++		op->addr.val, op->data.nbytes);
 +
-+&iwdg2 {
-+	timeout-sec = <32>;
-+	status = "okay";
-+};
++	cr = readl_relaxed(qspi->io_base + QSPI_CR);
++	cr &= ~CR_PRESC_MASK & ~CR_FSEL;
++	cr |= FIELD_PREP(CR_PRESC_MASK, flash->presc);
++	cr |= FIELD_PREP(CR_FSEL, flash->cs);
++	writel_relaxed(cr, qspi->io_base + QSPI_CR);
 +
-+&ethernet1 {
-+	status = "okay";
-+	pinctrl-0 = <&ethernet0_rgmii_pins_x>;
-+	pinctrl-1 = <&ethernet0_rgmii_sleep_pins_x>;
-+	pinctrl-names = "default", "sleep";
-+	phy-mode = "rmii";
-+	max-speed = <100>;
-+	st,eth-clk-sel;
++	setbits_le32(qspi->io_base + QSPI_CR, CR_EN);
 +
-+	fixed-link {
-+		speed = <100>;
-+		full-duplex;
-+	};
++	if (op->data.nbytes)
++		writel_relaxed(op->data.nbytes - 1,
++			       qspi->io_base + QSPI_DLR);
 +
-+	mdio0: mdio {
-+		 #address-cells = <1>;
-+		 #size-cells = <0>;
-+		 compatible = "snps,dwmac-mdio";
-+	};
-+};
++	ccr = qspi->fmode;
++	ccr |= FIELD_PREP(CCR_INST_MASK, op->cmd.opcode);
++	ccr |= FIELD_PREP(CCR_IMODE_MASK,
++			  stm32_qspi_get_mode(op->cmd.buswidth));
 +
-+&mdio0 {
-+	/* All this DP83TG720R PHYs can't be probed before switch@0 is
-+	 * probed so we need to use compatible with PHYid
++	if (op->addr.nbytes) {
++		ccr |= FIELD_PREP(CCR_ADMODE_MASK,
++				  stm32_qspi_get_mode(op->addr.buswidth));
++		ccr |= FIELD_PREP(CCR_ADSIZE_MASK, op->addr.nbytes - 1);
++	}
++
++	if (op->dummy.nbytes)
++		ccr |= FIELD_PREP(CCR_DCYC_MASK,
++				  op->dummy.nbytes * 8 / op->dummy.buswidth);
++
++	if (op->data.nbytes) {
++		ccr |= FIELD_PREP(CCR_DMODE_MASK,
++				  stm32_qspi_get_mode(op->data.buswidth));
++	}
++
++	writel_relaxed(ccr, qspi->io_base + QSPI_CCR);
++
++	if (op->addr.nbytes && qspi->fmode != CCR_FMODE_MM)
++		writel_relaxed(op->addr.val, qspi->io_base + QSPI_AR);
++
++	err = stm32_qspi_tx(qspi, op);
++
++	/*
++	 * Abort in:
++	 * -error case
++	 * -read memory map: prefetching must be stopped if we read the last
++	 *  byte of device (device size - fifo size). like device size is not
++	 *  knows, the prefetching is always stop.
 +	 */
-+	/* TI DP83TG720R */
-+	t1_phy0: ethernet-phy@8 {
-+		compatible = "ethernet-phy-id2000.a284";
-+		reg = <8>;
-+		interrupts-extended = <&gpioc 10 IRQ_TYPE_LEVEL_LOW>;
-+		reset-gpios = <&gpiof 0 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <10>;
-+		reset-deassert-us = <35>;
-+	};
++	if (err || err_poll_status || qspi->fmode == CCR_FMODE_MM)
++		goto abort;
 +
-+	/* TI DP83TG720R */
-+	t1_phy1: ethernet-phy@c {
-+		compatible = "ethernet-phy-id2000.a284";
-+		reg = <12>;
-+		interrupts-extended = <&gpioa 4 IRQ_TYPE_LEVEL_LOW>;
-+		reset-gpios = <&gpioa 3 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <10>;
-+		reset-deassert-us = <35>;
-+	};
++	/* wait end of tx in indirect mode */
++	err = stm32_qspi_wait_cmd(qspi);
++	if (err)
++		goto abort;
 +
-+	/* TI DP83TG720R */
-+	t1_phy2: ethernet-phy@4 {
-+		compatible = "ethernet-phy-id2000.a284";
-+		reg = <4>;
-+		interrupts-extended = <&gpiog 12 IRQ_TYPE_LEVEL_LOW>;
-+		reset-gpios = <&gpioa 0 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <10>;
-+		reset-deassert-us = <35>;
-+	};
++	clrbits_le32(qspi->io_base + QSPI_CR, CR_EN);
 +
-+	/* TI DP83TG720R */
-+	t1_phy3: ethernet-phy@d {
-+		compatible = "ethernet-phy-id2000.a284";
-+		reg = <13>;
-+		interrupts-extended = <&gpiog 3 IRQ_TYPE_LEVEL_LOW>;
-+		reset-gpios = <&gpiod 7 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <1000>;
-+	};
++	return 0;
++
++abort:
++	cr = readl_relaxed(qspi->io_base + QSPI_CR) | CR_ABORT;
++	writel_relaxed(cr, qspi->io_base + QSPI_CR);
++
++	/* wait clear of abort bit by hw */
++	timeout = readl_relaxed_poll_timeout(qspi->io_base + QSPI_CR,
++					     cr, !(cr & CR_ABORT),
++					     STM32_ABT_TIMEOUT_US);
++
++	writel_relaxed(FCR_CTCF | FCR_CSMF, qspi->io_base + QSPI_FCR);
++
++	if (err || err_poll_status || timeout)
++		dev_err(qspi->dev, "%s err:%d err_poll_status:%d abort timeout:%d\n",
++			__func__, err, err_poll_status, timeout);
++
++	clrbits_le32(qspi->io_base + QSPI_CR, CR_EN);
++
++	return err;
++}
++
++static int stm32_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
++{
++	struct stm32_qspi *qspi = spi_controller_get_devdata(mem->spi->controller);
++	int ret;
++
++	if (op->data.dir == SPI_MEM_DATA_IN && op->data.nbytes)
++		qspi->fmode = CCR_FMODE_INDR;
++	else
++		qspi->fmode = CCR_FMODE_INDW;
++
++	ret = stm32_qspi_send(mem->spi, op);
++
++	return ret;
++}
++
++static int stm32_qspi_dirmap_create(struct spi_mem_dirmap_desc *desc)
++{
++	struct stm32_qspi *qspi = spi_controller_get_devdata(desc->mem->spi->controller);
++
++	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_OUT)
++		return -EOPNOTSUPP;
++
++	/* should never happen, as mm_base == null is an error probe exit condition */
++	if (!qspi->mm_base && desc->info.op_tmpl.data.dir == SPI_MEM_DATA_IN)
++		return -EOPNOTSUPP;
++
++	if (!qspi->mm_size)
++		return -EOPNOTSUPP;
++
++	return 0;
++}
++
++static ssize_t stm32_qspi_dirmap_read(struct spi_mem_dirmap_desc *desc,
++				      u64 offs, size_t len, void *buf)
++{
++	struct stm32_qspi *qspi = spi_controller_get_devdata(desc->mem->spi->controller);
++	struct spi_mem_op op;
++	u32 addr_max;
++	int ret;
++
++	/* make a local copy of desc op_tmpl and complete dirmap rdesc
++	 * spi_mem_op template with offs, len and *buf in  order to get
++	 * all needed transfer information into struct spi_mem_op
++	 */
++	memcpy(&op, &desc->info.op_tmpl, sizeof(struct spi_mem_op));
++	dev_dbg(qspi->dev, "%s len = 0x%zx offs = 0x%llx buf = 0x%p\n", __func__, len, offs, buf);
++
++	op.data.nbytes = len;
++	op.addr.val = desc->info.offset + offs;
++	op.data.buf.in = buf;
++
++	addr_max = op.addr.val + op.data.nbytes + 1;
++	if (addr_max < qspi->mm_size && op.addr.buswidth)
++		qspi->fmode = CCR_FMODE_MM;
++	else
++		qspi->fmode = CCR_FMODE_INDR;
++
++	ret = stm32_qspi_send(desc->mem->spi, &op);
++
++	return ret ?: len;
++}
++
++static int stm32_qspi_setup(struct spi_device *spi)
++{
++	struct spi_controller *ctrl = spi->controller;
++	struct stm32_qspi *qspi = spi_controller_get_devdata(ctrl);
++	struct stm32_qspi_flash *flash;
++	u32 presc, mode;
++
++	if (!spi->max_speed_hz)
++		return -EINVAL;
++
++	mode = spi->mode & (SPI_TX_OCTAL | SPI_RX_OCTAL);
++	if (mode && gpiod_count(qspi->dev, "cs") == -ENOENT) {
++		dev_err(qspi->dev, "spi-rx-bus-width\\/spi-tx-bus-width\\/cs-gpios\n");
++		dev_err(qspi->dev, "configuration not supported\n");
++
++		return -EINVAL;
++	}
++
++	presc = DIV_ROUND_UP(qspi->clk_rate, spi->max_speed_hz) - 1;
++
++	flash = &qspi->flash[spi_get_chipselect(spi, 0)];
++	flash->cs = spi_get_chipselect(spi, 0);
++	flash->presc = presc;
++
++	setbits_le32(qspi->io_base + QSPI_CR, CR_SSHIFT);
++
++	/* set dcr fsize to max address */
++	qspi->dcr_reg = DCR_FSIZE_MASK;
++	writel_relaxed(qspi->dcr_reg, qspi->io_base + QSPI_DCR);
++
++	return 0;
++}
++
++static const struct spi_controller_mem_ops stm32_qspi_mem_ops = {
++	.exec_op	= stm32_qspi_exec_op,
++	.dirmap_create	= stm32_qspi_dirmap_create,
++	.dirmap_read	= stm32_qspi_dirmap_read,
 +};
 +
-+&spi_gpio {
-+	switch@0 {
-+		compatible = "nxp,sja1105q";
-+		reg = <0>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		spi-max-frequency = <1000000>;
-+		spi-rx-delay-us = <1>;
-+		spi-tx-delay-us = <1>;
-+		spi-cpha;
++static int stm32_qspi_probe(struct device *dev)
++{
++	struct spi_controller *ctrl;
++	struct reset_control *rstc;
++	struct stm32_qspi *qspi;
++	struct resource *res;
++	int ret;
 +
-+		reset-gpios = <&gpioa 10 GPIO_ACTIVE_LOW>;
++	qspi = xzalloc(sizeof(*qspi));
 +
-+		clocks = <&clock_sja1105>;
++	ctrl = &qspi->ctrl;
 +
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
++	res = dev_request_mem_resource_by_name(dev, "qspi");
++	if (IS_ERR(res))
++		return PTR_ERR(res);
 +
-+			port@0 {
-+				reg = <0>;
-+				label = "t10";
-+				phy-mode = "rgmii-id";
-+				phy-handle = <&t1_phy0>;
-+			};
++	qspi->io_base = IOMEM(res->start);
 +
-+			port@1 {
-+				reg = <1>;
-+				label = "t11";
-+				phy-mode = "rgmii-id";
-+				phy-handle = <&t1_phy1>;
-+			};
++	res = dev_request_mem_resource_by_name(dev, "qspi_mm");
++	if (IS_ERR(res))
++		return PTR_ERR(res);
 +
-+			port@2 {
-+				reg = <2>;
-+				label = "t12";
-+				phy-mode = "rgmii-id";
-+				phy-handle = <&t1_phy2>;
-+			};
++	qspi->mm_base = IOMEM(res->start);
 +
-+			port@3 {
-+				reg = <3>;
-+				label = "t13";
-+				phy-mode = "rgmii-id";
-+				phy-handle = <&t1_phy3>;
-+			};
++	qspi->mm_size = resource_size(res);
++	if (qspi->mm_size > STM32_QSPI_MAX_MMAP_SZ)
++		return -EINVAL;
 +
-+			port@4 {
-+				reg = <4>;
-+				label = "cpu";
-+				ethernet = <&ethernet1>;
-+				phy-mode = "rmii";
++	qspi->clk = clk_get(dev, NULL);
++	if (IS_ERR(qspi->clk))
++		return PTR_ERR(qspi->clk);
 +
-+				/* RGMII mode is not working properly, using
-+				 * RMII instead. */
-+				fixed-link {
-+					speed = <100>;
-+					full-duplex;
-+				};
-+			};
-+		};
-+	};
++	qspi->clk_rate = clk_get_rate(qspi->clk);
++	if (!qspi->clk_rate)
++		return -EINVAL;
++
++	ret = clk_prepare_enable(qspi->clk);
++	if (ret) {
++		dev_err(dev, "can not enable the clock\n");
++		return ret;
++	}
++
++	rstc = reset_control_get(dev, NULL);
++	if (IS_ERR(rstc)) {
++		ret = PTR_ERR(rstc);
++		if (ret == -EPROBE_DEFER)
++			goto err_clk_disable;
++	} else {
++		reset_control_assert(rstc);
++		udelay(2);
++		reset_control_deassert(rstc);
++	}
++
++	qspi->dev = dev;
++	dev->priv = qspi;
++
++	/* TODO: add support for multiple bits
++	 * ctrl->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD | SPI_TX_OCTAL
++	 *	| SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_OCTAL;
++	 */
++	ctrl->setup = stm32_qspi_setup;
++	ctrl->bus_num = -1;
++	ctrl->mem_ops = &stm32_qspi_mem_ops;
++	ctrl->use_gpio_descriptors = true;
++	ctrl->num_chipselect = STM32_QSPI_MAX_NORCHIP;
++	ctrl->dev = dev;
++
++	spi_controller_set_devdata(ctrl, qspi);
++
++	ret = spi_register_controller(ctrl);
++	if (ret)
++		goto err_pm_runtime_free;
++
++	return 0;
++
++err_pm_runtime_free:
++	/* disable qspi */
++	writel_relaxed(0, qspi->io_base + QSPI_CR);
++err_clk_disable:
++	clk_disable_unprepare(qspi->clk);
++
++	return ret;
++}
++
++static void stm32_qspi_remove(struct device *dev)
++{
++	struct stm32_qspi *qspi = dev->priv;
++
++	/* disable qspi */
++	writel_relaxed(0, qspi->io_base + QSPI_CR);
++	clk_disable_unprepare(qspi->clk);
++}
++
++static const struct of_device_id stm32_qspi_match[] = {
++	{.compatible = "st,stm32f469-qspi"},
++	{}
 +};
++MODULE_DEVICE_TABLE(of, stm32_qspi_match);
 +
-+&qspi {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&qspi_clk_pins_a
-+		     &qspi_bk1_pins_a
-+		     &qspi_cs1_pins_a>;
-+	pinctrl-1 = <&qspi_clk_sleep_pins_a
-+		     &qspi_bk1_sleep_pins_a
-+		     &qspi_cs1_sleep_pins_a>;
-+	status = "okay";
-+
-+	flash@0 {
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		spi-rx-bus-width = <4>;
-+		spi-max-frequency = <1000000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+	};
++static struct driver stm32_qspi_driver = {
++	.probe	= stm32_qspi_probe,
++	.remove = stm32_qspi_remove,
++	.name = "stm32-qspi",
++	.of_match_table = stm32_qspi_match,
 +};
++device_platform_driver(stm32_qspi_driver);
 +
-+&{qspi_bk1_pins_a/pins} {
-+	/delete-property/ bias-disable;
-+	bias-pull-up;
-+	drive-push-pull;
-+	slew-rate = <1>;
-+};
-+
-+&uart4 {
-+	pinctrl-names = "default", "sleep", "idle";
-+	pinctrl-0 = <&uart4_pins_a>;
-+	pinctrl-1 = <&uart4_sleep_pins_a>;
-+	pinctrl-2 = <&uart4_idle_pins_a>;
-+	/delete-property/dmas;
-+	/delete-property/dma-names;
-+	status = "okay";
-+};
-+
-+&usbh_ehci {
-+	status = "okay";
-+};
-+
-+&usbotg_hs {
-+	phys = <&usbphyc_port1 0>;
-+	phy-names = "usb2-phy";
-+	status = "okay";
-+	dr_mode = "host";
-+	g-tx-fifo-size = <128 128 128 16>;
-+};
-+
-+&usbphyc {
-+	status = "okay";
-+};
-+
-+&usbphyc_port1 {
-+	phy-supply = <&reg_3v3>;
-+	st,current-boost-microamp = <1000>;
-+	st,decrease-hs-slew-rate;
-+	st,tune-hs-dc-level = <2>;
-+	st,enable-hs-rftime-reduction;
-+	st,trim-hs-current = <11>;
-+	st,trim-hs-impedance = <2>;
-+	st,tune-squelch-level = <1>;
-+	st,enable-hs-rx-gain-eq;
-+	st,no-hs-ftime-ctrl;
-+	st,no-lsfs-sc;
-+};
-+
-+&pinctrl {
-+	ethernet0_rgmii_pins_x: rgmii-0 {
-+		pins1 {
-+			/* ETH_RGMII_CLK125 */
-+			pinmux = <STM32_PINMUX('F', 7, AF10)>,
-+				/* ETH_RGMII_GTX_CLK */
-+				<STM32_PINMUX('C', 1, AF11)>,
-+				/* ETH_RGMII_TXD0 */
-+				<STM32_PINMUX('G', 13, AF11)>,
-+				/* ETH_RGMII_TXD1 */
-+				<STM32_PINMUX('G', 14, AF11)>,
-+				/* ETH_RGMII_TXD2 */
-+				<STM32_PINMUX('C', 2, AF11)>,
-+				/* ETH_RGMII_TXD3 */
-+				<STM32_PINMUX('E', 5, AF10)>,
-+				/* ETH_RGMII_TX_CTL */
-+				<STM32_PINMUX('B', 11, AF11)>,
-+				/* ETH_MDIO */
-+				<STM32_PINMUX('A', 2, AF11)>,
-+				/* ETH_MDC */
-+				<STM32_PINMUX('G', 2, AF11)>;
-+
-+			bias-disable;
-+			drive-push-pull;
-+			slew-rate = <3>;
-+		};
-+
-+		pins2 {
-+			/* ETH_RGMII_RXD0 */
-+			pinmux = <STM32_PINMUX('C', 4, AF11)>,
-+				/* ETH_RGMII_RXD1 */
-+				<STM32_PINMUX('C', 5, AF11)>,
-+				/* ETH_RGMII_RXD2 */
-+				<STM32_PINMUX('B', 0, AF11)>,
-+				/* ETH_RGMII_RXD3 */
-+				<STM32_PINMUX('B', 1, AF11)>,
-+				/* ETH_RGMII_RX_CLK */
-+				<STM32_PINMUX('A', 1, AF11)>,
-+				/* ETH_RGMII_RX_CTL */
-+				<STM32_PINMUX('A', 7, AF11)>;
-+
-+			bias-disable;
-+		};
-+	};
-+
-+	ethernet0_rgmii_sleep_pins_x: rgmii-sleep-0 {
-+		pins1 {
-+			/* ETH_RGMII_CLK125 */
-+			pinmux = <STM32_PINMUX('F', 7, ANALOG)>,
-+				/* ETH_RGMII_GTX_CLK */
-+				<STM32_PINMUX('C', 1, ANALOG)>,
-+				/* ETH_RGMII_TXD0 */
-+				<STM32_PINMUX('G', 13, ANALOG)>,
-+				/* ETH_RGMII_TXD1 */
-+				<STM32_PINMUX('G', 14, ANALOG)>,
-+				/* ETH_RGMII_TXD2 */
-+				<STM32_PINMUX('C', 2, ANALOG)>,
-+				/* ETH_RGMII_TXD3 */
-+				<STM32_PINMUX('E', 5, ANALOG)>,
-+				/* ETH_RGMII_TX_CTL */
-+				<STM32_PINMUX('B', 11, ANALOG)>,
-+				/* ETH_MDIO */
-+				<STM32_PINMUX('A', 2, ANALOG)>,
-+				/* ETH_MDC */
-+				<STM32_PINMUX('G', 2, ANALOG)>,
-+				/* ETH_RGMII_RXD0 */
-+				<STM32_PINMUX('C', 4, ANALOG)>,
-+				/* ETH_RGMII_RXD1 */
-+				<STM32_PINMUX('C', 5, ANALOG)>,
-+				/* ETH_RGMII_RXD2 */
-+				<STM32_PINMUX('B', 0, ANALOG)>,
-+				/* ETH_RGMII_RXD3 */
-+				<STM32_PINMUX('B', 2, ANALOG)>,
-+				/* ETH_RGMII_RX_CLK */
-+				<STM32_PINMUX('A', 1, ANALOG)>,
-+				/* ETH_RGMII_RX_CTL */
-+				<STM32_PINMUX('A', 7, ANALOG)>;
-+		};
-+	};
-+};
-diff --git a/images/Makefile.stm32mp b/images/Makefile.stm32mp
-index ba18714c69d8..4727bb093783 100644
---- a/images/Makefile.stm32mp
-+++ b/images/Makefile.stm32mp
-@@ -42,6 +42,7 @@ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mecio1, mecio1)
- $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mect1s, mect1s)
- $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_stm32mp151c_plyaqm, stm32mp151c-plyaqm)
- $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP13, start_stm32mp133c_prihmb, stm32mp133c-prihmb)
-+$(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP13, start_stm32mp133c_mect1s, stm32mp133c-mect1s)
- 
- $(call build_stm32mp_image, CONFIG_MACH_SEEED_ODYSSEY, start_stm32mp157c_seeed_odyssey, stm32mp157c-seeed-odyssey)
- 
++MODULE_AUTHOR("Ludovic Barre <ludovic.barre@st.com>");
++MODULE_DESCRIPTION("STMicroelectronics STM32 quad spi driver");
++MODULE_LICENSE("GPL v2");
 -- 
 2.39.5
 
