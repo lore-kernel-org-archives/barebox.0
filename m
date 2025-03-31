@@ -1,70 +1,70 @@
-Delivery-date: Mon, 31 Mar 2025 09:24:13 +0200
+Delivery-date: Mon, 31 Mar 2025 09:29:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tz9VF-006TTK-0o
+	id 1tz9af-006TaV-2h
 	for lore@lore.pengutronix.de;
-	Mon, 31 Mar 2025 09:24:13 +0200
+	Mon, 31 Mar 2025 09:29:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tz9VE-0004WO-Mh
-	for lore@pengutronix.de; Mon, 31 Mar 2025 09:24:13 +0200
+	id 1tz9af-0005J1-Ay
+	for lore@pengutronix.de; Mon, 31 Mar 2025 09:29:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Cs6Oxmkk25FwWqoA6qDzm1pG0+QwX0xqcr8HcyVGGmA=; b=QGhhvdtcl8ogMbW+/3hP4SwqV7
-	MTALfw4IdZ2tl/wmw2Gl2UWPBPy1DGwrGB5TA3o61OAgoqHo4OwIfSw9hKsxwY2+nFH3M+ajn0EAI
-	UL3n5y2gsa4wt0c8WEilkxluE0aiurTZs0PBBGyPtWejCqwegUJhYU45ut6yc5RdYsyWqlb2Lgi8K
-	mCveVNL1JMmedD8eoaEljq+fP8U4ATBBXx/7MQTKNTRU3XN8sHpYDiHZa2iVnD38ljmqqV3Bi1XLI
-	jkBFU2LaR4UML2Ys0oCmW7o0Q5a7cgBJOjl6cq7XnqrrHfEf9YhGt/YCbtN/LvdngWuas3n2+fgXf
-	VEMbKE/g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=q3tHNSN6a2hEzr/Fo0QNmIx0mZIXtu+cLnBoFcoXoWY=; b=YAgQ8RFGB49cTls2j5uV067KFM
+	PsKt/GtdqUcJm+qHEzfgiPhMmL4iB0Sjlq+Mk9SdC+uNKq0IUkI2xMFx9jXfSBHOW/iqiN0mOHekJ
+	Ch+V4nB1JaK2ynqjPeD6hjKaaa6PTYmiN9VVrjebjVeNrG8s1kVhP3V9N5i5wzy0OQeaXLHF8UEDU
+	oPCotLaaAeGlyIjw/L7/ZDy+br7BqDtIxuninOq50fzDiTliw+/R53fdCLe/VX3wXFzVjkhsV8oeZ
+	thyE+ZrEhzk6aE7BXcUPWCE8ynmiXk1FoHMZPc6xkUBs7POh4olOrxr/6dlBPmjIik92Y2FaZWMUr
+	NBq/qfwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tz9Ul-0000000HBuZ-1f88;
-	Mon, 31 Mar 2025 07:23:43 +0000
+	id 1tz9aC-0000000HCcb-2txi;
+	Mon, 31 Mar 2025 07:29:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tz9Tm-0000000HBph-1RqX
+	id 1tz9a9-0000000HCcF-20mT
 	for barebox@lists.infradead.org;
-	Mon, 31 Mar 2025 07:22:43 +0000
+	Mon, 31 Mar 2025 07:29:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tz9Tl-0004Mh-04; Mon, 31 Mar 2025 09:22:41 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tz9a8-0005E1-83; Mon, 31 Mar 2025 09:29:16 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tz9Tk-002YTU-2a;
-	Mon, 31 Mar 2025 09:22:40 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tz9Tk-009A0t-2I;
-	Mon, 31 Mar 2025 09:22:40 +0200
-Date: Mon, 31 Mar 2025 09:22:40 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tz9a7-002YU2-2x;
+	Mon, 31 Mar 2025 09:29:15 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tz9a7-001IZx-2j;
+	Mon, 31 Mar 2025 09:29:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <Z-pCwM8Y9GmsEs7D@pengutronix.de>
-References: <7a4edaef-a606-4b9d-bdf5-c7b5f896daae@pengutronix.de>
+To: barebox@lists.infradead.org, 
+ Alexander Shiyan <eagle.alexander923@gmail.com>
+In-Reply-To: <20250327053801.52356-2-eagle.alexander923@gmail.com>
+References: <20250327053801.52356-1-eagle.alexander923@gmail.com>
+ <20250327053801.52356-2-eagle.alexander923@gmail.com>
+Message-Id: <174340615584.309738.18206662439774489848.b4-ty@pengutronix.de>
+Date: Mon, 31 Mar 2025 09:29:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7a4edaef-a606-4b9d-bdf5-c7b5f896daae@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250331_002242_459343_B45BE569 
-X-CRM114-Status: GOOD (  16.62  )
+X-CRM114-CacheID: sfid-20250331_002917_524508_587CC11D 
+X-CRM114-Status: UNSURE (   4.88  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,42 +82,27 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Removal of dlmalloc?
+Subject: Re: [PATCH] reset: Fix name of exported symbol
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Mar 27, 2025 at 12:51:31PM +0100, Ahmad Fatoum wrote:
-> Hi,
-> 
-> We have a TLSF implemenation in barebox for >= 13 years now and it has
-> more features than dlmalloc like multiple pools and KASAN integration.
-> 
-> I think it's thus time to retire the dlmalloc we inherited from U-Boot.
-> 
-> Unfortunately, TLSF was not the default in the config, even though the
-> most common configs select it. I'd thus suggest we remove dlmalloc
-> altogether after v2025.06.0 is tagged.
-> 
-> Thoughts? Objections?
 
-No objections from my side.
+On Thu, 27 Mar 2025 08:38:01 +0300, Alexander Shiyan wrote:
+> 
 
-The only reason for me to enable dlmalloc from time to time was that I
-suspected some bug in the allocator, but it never actually turned out to
-be a bug in the allocator. Now with Kasan we have far better memory
-debugging facilities than back in those days, so yes, I think it's time
-to schedule removal of dlmalloc.
 
-Sascha
+Applied, thanks!
 
+[1/1] reset: Fix name of exported symbol
+      https://git.pengutronix.de/cgit/barebox/commit/?id=48f7eba7e463 (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
