@@ -1,72 +1,67 @@
-Delivery-date: Tue, 01 Apr 2025 11:17:42 +0200
+Delivery-date: Tue, 01 Apr 2025 12:01:34 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tzXkc-006w0B-1A
+	id 1tzYR4-006wX5-07
 	for lore@lore.pengutronix.de;
-	Tue, 01 Apr 2025 11:17:42 +0200
+	Tue, 01 Apr 2025 12:01:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tzXkb-0004Ku-O6
-	for lore@pengutronix.de; Tue, 01 Apr 2025 11:17:42 +0200
+	id 1tzYR3-0002IU-Gh
+	for lore@pengutronix.de; Tue, 01 Apr 2025 12:01:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OrwalM16DBbWLmDX9aYyUB23JTczdZf8rs96TJE/JSM=; b=hwD5A0fgViYu4KeqcPTO8dnyob
-	6o4yHOWgV4knkX+R/H5cDH+Fydeu1SOGDGV9glmb6bQuYBcqlMxhL/NAMKCjWJMfvPBi0WMPX4EDr
-	pZllbdIZONHwut5iniXpr75//xMMIa7efYGCio/YhX9G2LfPJ1YkrKCVyO+GZW56ItrcMZo6++eZw
-	D/T3Bu93gmlhNgvhi8XcXOMZ5yqfjq5ZnOKjj4qw8GZPglCKBX7YF2Lsa6lZx4rYYc25fUJ7ZFd7Q
-	Lks98DqdGL0PVCRUKOhCK4Iht41ni/ZGO3C6queQjCn7CFzPSzvYBAX1nGdthehcg7Bqn/hH3jZah
-	3bmi7PtA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=H/gSPvkPIwZd6NfzCLGXTSr7a4iWBLsBdLbxg3OFLtQ=; b=MoZV5Q+FP2vJOs79XOTm/1VBDI
+	4KSAKzAjtlABplxm3/+Quo1IlLzhANZFDYDx7PpeUeBd6KZ8+5sOQC+Qm5Fs5bWuN+3KokYJ6ANPC
+	NuezDjxmkegLQmNdfGZN8VnIzbMExQx4XCLfSL6BBsuwC3xBghzxZtC605p3MXnW1RcrqIP6eyuh1
+	ZciospQ0sTDf8xBEWgWQscOsn0+tZ+gN2SASUzvMoG4RQjtGrdoESCBLOKocFxTesu2B41ZuG8BUt
+	51VcCmfQtDmFhfhzlf0i/lgjx3Jid+9up8SbnrNhBiajq1mIdH8TcaT1UB7nFfa/MSW2VoTvryi9O
+	jjampiIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzXk7-00000002RV3-1IQ5;
-	Tue, 01 Apr 2025 09:17:11 +0000
+	id 1tzYQI-00000002Y83-1g2Q;
+	Tue, 01 Apr 2025 10:00:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzXYk-00000002PVK-2cO7
+	id 1tzXnK-00000002SRR-1A3h
 	for barebox@lists.infradead.org;
-	Tue, 01 Apr 2025 09:05:28 +0000
+	Tue, 01 Apr 2025 09:20:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tzXYj-0002OJ-3M; Tue, 01 Apr 2025 11:05:25 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tzXnI-0004yZ-Qh; Tue, 01 Apr 2025 11:20:28 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tzXYi-002juo-2x;
-	Tue, 01 Apr 2025 11:05:24 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tzXYi-00B4Gf-2e;
-	Tue, 01 Apr 2025 11:05:24 +0200
-Date: Tue, 1 Apr 2025 11:05:24 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z-usVI_cB6bgsiRy@pengutronix.de>
-References: <20250331122918.564304-1-o.rempel@pengutronix.de>
- <6f67de1f-b159-4190-bd31-ed2ef990f290@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tzXnI-002jwn-24;
+	Tue, 01 Apr 2025 11:20:28 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tzXnI-00AGrm-1k;
+	Tue, 01 Apr 2025 11:20:28 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Bastian Krause <bst@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  1 Apr 2025 11:20:27 +0200
+Message-Id: <20250401092027.2436393-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6f67de1f-b159-4190-bd31-ed2ef990f290@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250401_020526_859674_DDAD340C 
-X-CRM114-Status: GOOD (  20.04  )
+X-CRM114-CacheID: sfid-20250401_022030_459112_167E4A5C 
+X-CRM114-Status: UNSURE (   9.32  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,60 +79,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1] spi: add STM32F7 QSPI controller driver
+Subject: [PATCH] fixup! test: bthread: change comparison condition for switches vs. yields
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Apr 01, 2025 at 10:53:44AM +0200, Ahmad Fatoum wrote:
-> Hello Oleksij,
-> 
-> On 3/31/25 14:29, Oleksij Rempel wrote:
-> > From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > 
-> > Introduce support for the STM32F7 QSPI controller, compatible with
-> > "st,stm32f469-qspi".
-> > 
-> > Validated on STM32MP133-based MECT1S r1 board, which includes an
-> > F7-compatible QSPI peripheral
-> > 
-> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > ---
-> 
-> [snip]
-> 
-> > +static int stm32_qspi_get_mode(u8 buswidth)
-> 
-> Is this ever called with a buswidth > 1? I think the spi_mem core in
-> barebox never uses higher buswidths. Given that you are adding QSPI
-> support, you will surely want to see quad buswidth actually working,
-> right? :D
+As Bastian correctly notes, the asserts should have different
+conditions.
 
-Sure :) I get it - every maintainer dreams of getting the most out of
-each patch, and full QSPI support with quad buswidth would definitely be
-nice to have.
+Reported-by: Bastian Krause <bst@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ test/py/test_bthread.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-But with this patch, we're going from “doesn't work at all” to “works,
-just not at full speed yet.” That’s already a big step forward,
-especially for bring-up and flashing use cases.
-
-If we judged everything in Barebox by full performance, we’d probably
-have to drop most of the networking drivers too - since Barebox usually
-isn’t about maxing out throughput anyway ;)
-
-So yes, proper quad support would be great - but for now, this patch
-gets us something working, and that’s a solid starting point.
-
-Best Regards,
-Oleksij
+diff --git a/test/py/test_bthread.py b/test/py/test_bthread.py
+index 84fb9f830b0c..6bd1032a53dd 100644
+--- a/test/py/test_bthread.py
++++ b/test/py/test_bthread.py
+@@ -20,5 +20,5 @@ def test_bthread(barebox, barebox_config):
+     switches = int(barebox.run_check("bthread -c")[0].split()[0])
+     yields   = int(barebox.run_check("bthread -t")[0].split()[0])
+ 
+-    assert yields > 1000
++    assert switches > 1000
+     assert yields > 1000
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
