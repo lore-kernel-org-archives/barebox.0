@@ -1,63 +1,68 @@
-Delivery-date: Mon, 31 Mar 2025 19:41:42 +0200
+Delivery-date: Tue, 01 Apr 2025 07:37:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tzJ8o-006eqC-1S
+	id 1tzUJC-006rrH-2u
 	for lore@lore.pengutronix.de;
-	Mon, 31 Mar 2025 19:41:42 +0200
+	Tue, 01 Apr 2025 07:37:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tzJ8n-0000xF-Ty
-	for lore@pengutronix.de; Mon, 31 Mar 2025 19:41:42 +0200
+	id 1tzUJC-0002Qi-B6
+	for lore@pengutronix.de; Tue, 01 Apr 2025 07:37:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=I5Q5IcUnqYgzoIKdXaVV9bI3WjaPCA2I1Qhh5nFRbiE=; b=eHPAnQ8AEbGI1Rj7rRAqJh/Q0L
-	piK1YrMuv+U4B9G1vkb7qr/wd5hy40LZrO6Q+WY22Yat3lHCedn632xMpLOXIJBzrZJjgyGznK9q+
-	aDWgP6BT8zWT/u9rUOqMVHDDvdI2ZC8eQs4e5ucfVwzdYiNsPPeFMora/mpN46fzWody3YnTMmtiv
-	ZDMqKIVberFOJaTHJkZNiy1BSDgxHb1fpD8XAZYczy25RQFmSTAgBaNl/C1MOPTsl20Vd67JR8VOa
-	8KQU8QrbDtDEye2txFaLVg/jQFPhlEFdcmRzO4HxKVixQ1hveMf8O1poYfc1/bBJNwq50x+QsW+d4
-	kbkGsFWQ==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=uLqqzPaGo011Scl3zdNObjBMGX/iiJ++xJl0zbc4BgQ=; b=DoIHT8OCS0PIYZsF2/NtiDKf1R
+	2Z6ZZhDJQ9ekt3q27HJrXYmCk1dc8zUl91Ld6lZyoozMr72XDPQtX7ImVVCnTn14udGwzG+A2rDLF
+	7OYFw+oL5AdcnRcr32UB4oqLuUJYOXqqnkpgIE9oQJoyoVFzmxfIHaiHxLHPkR1Ue+0h90hhpen/C
+	3Bqz/atqo0FVfADGXN3ZYrzxCEx6TKyn1xKzWyK+joVVGCm+t0HdgxwBxtsln8DLe/8PLifu6WEOx
+	dnKua3d6VQn8DPSUnPT7XES3Ml15b9BKja9oeWbjaYWoo4CTGUSq0SOk4dIasTFJbCFfKoDYitSky
+	lKpPzY5A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzJ8F-000000015WW-3wMI;
-	Mon, 31 Mar 2025 17:41:07 +0000
-Received: from zdiv.net ([2001:4b98:dc0:43:f816:3eff:fee4:1d8c])
+	id 1tzUIQ-000000020JP-3R0L;
+	Tue, 01 Apr 2025 05:36:22 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzJ8C-000000015Vm-0RhX
+	id 1tzUIM-000000020IK-4C3u
 	for barebox@lists.infradead.org;
-	Mon, 31 Mar 2025 17:41:06 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=24;
-	t=1743442859;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=I5Q5IcUnqYgzoIKdXaVV9bI3WjaPCA2I1Qhh5nFRbiE=;
-	b=XuEqIIFS9k/mGoLtSQ/WDMhgPwqx/tPjeItcv0qFaUdPCwzborCHOprQf6d8sy8ZIufeey
-	RmNZ/iEkyNwWrhFpXHh7z9KVsZBM5ma+g6mvrTY448Ex/DkIdkxzoGDuaaTwUwEJZHy8Rs
-	4tFoMXHkCsNuRE62E19SbfBJ/SuQJ7dcLrssSIuq3ByTyzGx/sysFDE8fZZfQFfPmV6EpV
-	lF9U9x5SBo7iyNTAacKTG0fO5RRbkT8YfGJr7g/Hl1zmd90IkzKDxAVMY/VRCM9sCMvUyJ
-	QMO0E1h0GBPBUEy2zoESMi++TKLdxnOA+VaNTI1wMggBM2okfa+MX+K84f+rVA==
-Received: from mini.my.domain (<unknown> [2a01:e0a:12:d860:7db3:a294:8571:f831])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id caa6d143 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <barebox@lists.infradead.org>;
-	Mon, 31 Mar 2025 19:40:59 +0200 (CEST)
-From: Jules Maselbas <jmaselbas@zdiv.net>
-To: barebox@lists.infradead.org
-Date: Mon, 31 Mar 2025 19:40:49 +0200
-Message-ID: <20250331174050.2606-1-jmaselbas@zdiv.net>
-X-Mailer: git-send-email 2.48.1
+	Tue, 01 Apr 2025 05:36:20 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tzUIL-0002KL-5H; Tue, 01 Apr 2025 07:36:17 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tzUIJ-002iI9-0m;
+	Tue, 01 Apr 2025 07:36:15 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1tzUIJ-00CoLe-0X;
+	Tue, 01 Apr 2025 07:36:15 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Robin van der Gracht <robin@protonic.nl>
+Cc: barebox@lists.infradead.org
+In-Reply-To: <20250331143343.3252321-1-robin@protonic.nl>
+References: <20250331143343.3252321-1-robin@protonic.nl>
+Message-Id: <174348577516.3053429.1918774994486876062.b4-ty@pengutronix.de>
+Date: Tue, 01 Apr 2025 07:36:15 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250331_104104_450791_15AC64E5 
-X-CRM114-Status: UNSURE (   9.98  )
+X-CRM114-CacheID: sfid-20250331_223619_043523_A8C09F99 
+X-CRM114-Status: UNSURE (   6.21  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -76,45 +81,29 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] commands: edit: Fix potential out-of-bound access
+Subject: Re: [PATCH v2] ARM: boards: protonic-imx6: Re-introduce generic
+ boot target board string
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The local lbuf can potentially be left not nul-terminated,
-and the tab expension can potentially write out-of-bound.
 
-Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
----
- commands/edit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon, 31 Mar 2025 16:33:43 +0200, Robin van der Gracht wrote:
+> This allows using a single bootable usb drive for multiple boards.
+> 
+> 
 
-diff --git a/commands/edit.c b/commands/edit.c
-index fcf8ad90f5..3bbe60fdbf 100644
---- a/commands/edit.c
-+++ b/commands/edit.c
-@@ -53,14 +53,14 @@ static char *screenline(char *line, int *pos)
- 		return lbuf;
- 	}
- 
--	for (i = 0; outpos < 1024; i++) {
-+	for (i = 0; outpos < sizeof(lbuf) - 1; i++) {
- 		if (i == textx && pos)
- 			*pos = outpos;
- 		if (!line[i])
- 			break;
- 		if (line[i] == '\t') {
- 			lbuf[outpos++] = ' ';
--			while (outpos % TABSPACE)
-+			while (outpos < sizeof(lbuf) - 1 && outpos % TABSPACE)
- 				lbuf[outpos++] = ' ';
- 			continue;
- 		}
+Applied, thanks!
+
+[1/1] ARM: boards: protonic-imx6: Re-introduce generic boot target board string
+      https://git.pengutronix.de/cgit/barebox/commit/?id=68c0cc7e0eec (link may not be stable)
+
+Best regards,
 -- 
-2.48.1
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
