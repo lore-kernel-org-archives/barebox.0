@@ -1,89 +1,92 @@
-Delivery-date: Wed, 02 Apr 2025 07:42:18 +0200
+Delivery-date: Wed, 02 Apr 2025 07:42:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tzqri-007HUT-10
+	id 1tzqrj-007HUo-1W
 	for lore@lore.pengutronix.de;
-	Wed, 02 Apr 2025 07:42:18 +0200
+	Wed, 02 Apr 2025 07:42:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1tzqrh-0007q3-O1
-	for lore@pengutronix.de; Wed, 02 Apr 2025 07:42:18 +0200
+	id 1tzqri-0007qD-AN
+	for lore@pengutronix.de; Wed, 02 Apr 2025 07:42:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=qPRD3Rg9JcYK4sa7a6iZw4Si4H7+QuadzxmROXsyRto=; b=VBB+AiF1ak/MxA3cAbv7UKkxT6
-	HFsAelnzREGxlbtUpEfN0inr/Q9Ltb74pYRSLnpln9i6G57PMp7XBX7KV5TtPAczmDAD2ahLkuJI4
-	kLGUnMCmfhPdOCXbV0g9pktYs+pvdFP6ala9vIXw0mxq+iiOTb5fA2Iou6SjZSLvhlaFPGrza+GQG
-	uA1yiDZP3IijJALLn83yFIpAHJqOcWitwKg8stGQvV/rhBBcF4tqAWDLE3V84w6t0jgiv5/CMPQGn
-	Wvg7SFlycmTPpkinTh/4TFyp1AdznCpN97BwCSFzry9WIFgrZuUJWAaEPCuWS6BGuDXzTv6QuZyiM
-	Zcsn4o9g==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=jS8qb5NTlTQs/3DCczjygOc3cgFP3AO2nBDwLfYbmEU=; b=06Ya/yXC99W+SxTDJI/LVzu2Cr
+	3JeX/+dlipH7p6cafJ5KC+ZYQ6kcP3++gZPkPcC+OeyUtIguYAP4w2MKB3qFeVWMghA8AdBGwLYBm
+	wiOOABcSqBiPgAT1rroDN+4V+/OnqaLmTiDJBYbOPYCLoKlYlDj0SYLabnb2e4ndakf7H/cSSJlNV
+	To6FUbDME30+vNHnLTASXaP7qr/oOJ0LE/qXFw3NsrIGZc2x9sFcAipLMWlj6foQy+/4O3d+LlGdo
+	VL+Vg7u+x+RLURnXoTOo/ymzDCaL4Crlu1WzfhUR9tFInYy7ZrMLLM20goBtTuGN8X916xIxgWrUK
+	j0Tjq/4g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzqqx-00000005Ben-3Ziw;
-	Wed, 02 Apr 2025 05:41:31 +0000
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+	id 1tzqqz-00000005BfW-1Yhq;
+	Wed, 02 Apr 2025 05:41:33 +0000
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzqqu-00000005BdB-3y7e
+	id 1tzqqx-00000005Be2-018u
 	for barebox@lists.infradead.org;
-	Wed, 02 Apr 2025 05:41:30 +0000
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-54addb5a139so6995191e87.0
-        for <barebox@lists.infradead.org>; Tue, 01 Apr 2025 22:41:28 -0700 (PDT)
+	Wed, 02 Apr 2025 05:41:32 +0000
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-5497590ffbbso7550670e87.1
+        for <barebox@lists.infradead.org>; Tue, 01 Apr 2025 22:41:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743572486; x=1744177286; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qPRD3Rg9JcYK4sa7a6iZw4Si4H7+QuadzxmROXsyRto=;
-        b=UEieZ/jzes6yWb98EKVlf2C8r63TfWlCh7nv9ZQHbFsZl+WCAC+TOvzUzBUkfs+Kin
-         0LRTVU0CbhZHYAbmW+PYwbqQVcHc9Yw6P8wCmHatFJ0KN733sPgHI5JpbOa/lYHcchMf
-         GSTF31Nen6Iqx8XERu7OJtEHTy6flMTDkUaj6tNHbxyKdT0BmXx9wl+64EcJIR7XiZr/
-         QqsgRUt0+2VJ4Bb3ly/tpksuv6qDRCWXp1DFnS4WXCA4uzBXxRwbdYCnshpfZPa1MtdD
-         xBUPZ5K5DBmvHptRUZCe7XrRVX6fkpwVd0x37R0Ypxwwy0kKm3Qw1+bTACWMSqJwOozL
-         rWew==
+        d=gmail.com; s=20230601; t=1743572489; x=1744177289; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jS8qb5NTlTQs/3DCczjygOc3cgFP3AO2nBDwLfYbmEU=;
+        b=GHlZn4bUaFmQhzA6b9DP5TuVHAgadeDXMTbvpwZ7KOG7JEhFa6TSIHw2lB1nTgZOHZ
+         Uy6/HkwJWFARJqy9Mlw8TmUWYzotXkJkEOqS6egkWbdqyJM6+n5HOHLWLM39IlCiNfb6
+         oZubK4cxxo9dUoKsY/cJJIxuIBr5aZwVLmSxOhsa+v7WcbVU7n3oCMKPFhcN75Sh0l0m
+         T7laSOoj8CmkdJtPLcv1JhKGAX+8FtDxIa3NV/E4aRvnIAPcAHH+00vjcL/uhW5idTqF
+         xyp5EO61aWaWMpOYsW7I45LLQJ8dJWZc0rhgnHPE1A8b8tdLzoPAjYFaxK0OcGph8MLw
+         H4NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743572486; x=1744177286;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qPRD3Rg9JcYK4sa7a6iZw4Si4H7+QuadzxmROXsyRto=;
-        b=BuzYFWbndsJmUDU92oR3El0ah1j2J/1ePpseWCOoKJeZ+VERDgzkdiGDtL3k9xbM1h
-         D4WBeLRWLhH1zyiTeUAtTKRU0doPLXCz52AVyJ/gbspJ7+8VhbUspWZGwtj/VQrkCzxm
-         HAvUyFlmwMeCKWxVAWAJyupCV5kykUuKpZwgOV3tucxlftPqmwyNmb8D+2iwXWPNqqJV
-         s8Pw5VTpALJhlFxQzLgwQcJDRAqhv9HOBrGdzZ3ZJk1o4uOmePCh/wsodeY5TwC26whr
-         RsMqLm0agWmMd9IHYJYa5CnNsARIpKb5gVES5j6zH2igI/B7ZEBClGgNgsCH8uKdLfXV
-         60uA==
-X-Gm-Message-State: AOJu0Yy/occHEELT2hxrmCZAjkdw5oigGPT/8kQnofZJxr4JH+cMUNje
-	tXz7xqtnw8ruZ2XYGQ7QCdgCD6c6yaoshdXOac6o1xa0jYTpOpU6CFcGMkU4
-X-Gm-Gg: ASbGncsEwNAscdDwxUI3330kEFZ9VvIv+dYYj+REooNdym5qZ9lKCjZq0KwkiDGgm6w
-	eCGvdkiRVVzsfYRhd4/yy9xgBoa0gHyZqlfgXd/3kyPmL1YepDe/FXgCI041iH13euW3fQYEV7f
-	c6X82UzC+F5vZnpPLGtuDI7MVezoM/sVobLitcyxISfFr1VBKOoO8Os6Vo+k+3pvYWGX44sbswv
-	nYHacMF3Ip1bc7nlLZkLoN8nneBNhdn1jgI56kavCC+a5CkZTXdgcjxPTbPATTp8/x/a1DAMf8Y
-	5rOerAv0x+mpDuwoqpwvzMA0fWFJ85uvU5gG0klGa56K6ZBCd04/DjTco29L0oXU+wo=
-X-Google-Smtp-Source: AGHT+IGcHQjY4lMTToZlFga8LzTLHuxOb70DPFzrhpRPwcXrcozrFBtt3ylhQpRktU0EvudzUxT/MQ==
-X-Received: by 2002:a05:6512:110d:b0:545:5a5:b69d with SMTP id 2adb3069b0e04-54b10ec9177mr4200809e87.31.1743572485936;
-        Tue, 01 Apr 2025 22:41:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743572489; x=1744177289;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jS8qb5NTlTQs/3DCczjygOc3cgFP3AO2nBDwLfYbmEU=;
+        b=sfXjqHP9nFewA90KtCXR4JuWuIXsZLIdUt3hByiIW73h6rdDpLrwdWcKsM+GA/Wdan
+         be8ilZIvpjBeONZEevY8L3TodzxwKS4YHdz8KlIPpw6WK2SihnJUZIiAakHK1mGy6Q7o
+         gdLGiYDdoqwtkCxfOBkJ2b7H2737ESPmE4/x3qjwkhsmZ7yc2hu3dV1/Ww3yyb98Ti2P
+         tpwIYlQ8ZB7grxBnyCKUcyNHfO1Yoj2RYLAU0OPKag0ty4kXVVGiDr4p7yMfZy6CvINW
+         czeEKs6CHndPefkT8gVqgG5BM1GPfqX6h0a8G/PWf4QCnX4DONetmPxdblVjJxTMvyAh
+         21ZA==
+X-Gm-Message-State: AOJu0YzT5WP9tVQ3pLqIwK9UaKVXSm8OzTpnfRtzIMpWUBldKiBFIGqe
+	vp4UH3shVMHWgB3+8qJLWHN1V4DL5lE2iyGkDaWS/x8AcWgsKfx45ilhWP8T
+X-Gm-Gg: ASbGncuxdYhgfw17Iv3pQBazhyic0OoJc5Aik8YK7t0opoMvyKxpOfgH3px+ghFR0YG
+	+InJC1dLV0aixKVO+7nPLIMsxqWYfNLfP5u6H/QgXogriOV2tw48l/ZQTkqF+jC9dHpZspQgScl
+	jKCv2Dn51uLjODbZEbvP0w2lD1JyVSEgdSw+ZnHmnl1wiEmJ48HWZneto6jrDDKC7WMvYdWApcZ
+	DYhR6TmKXIrkmRZ7JuckRyWUVYfRUH26iRDTlJxmNEBpmuFZkBFozyB9fnLAQh3NkMRGJRZGxqk
+	gK0y0q9RN534tZvggvk7FkSuwh3//bdp7TbtY4Cede/VRvp3Ig+srTayRxEZ6+iK5uud8nYw5/V
+	b0g==
+X-Google-Smtp-Source: AGHT+IG9qXGkIM3/5OjypXUAUePKQXfKU133Yiqe2uUObBny6KLhcy+w1R8gJ/eh8s+/94+D7QDDsQ==
+X-Received: by 2002:a05:6512:15a6:b0:545:1104:617d with SMTP id 2adb3069b0e04-54b10dbc708mr4231259e87.11.1743572488355;
+        Tue, 01 Apr 2025 22:41:28 -0700 (PDT)
 Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54b094bb0cbsm1540143e87.44.2025.04.01.22.41.22
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54b094bb0cbsm1540143e87.44.2025.04.01.22.41.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 22:41:23 -0700 (PDT)
+        Tue, 01 Apr 2025 22:41:26 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed,  2 Apr 2025 08:41:08 +0300
-Message-Id: <20250402054109.20688-1-eagle.alexander923@gmail.com>
+Date: Wed,  2 Apr 2025 08:41:09 +0300
+Message-Id: <20250402054109.20688-2-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20250402054109.20688-1-eagle.alexander923@gmail.com>
+References: <20250402054109.20688-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250401_224129_020023_AAE89F85 
-X-CRM114-Status: UNSURE (   9.79  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250401_224131_047413_5D09B1F2 
+X-CRM114-Status: GOOD (  25.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -106,65 +109,408 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 1/2] regulator: core: Implement regulator_is_enabled() call
+Subject: [PATCH v2 2/2] gpio: clk-gpio: Updating the driver from the kernel repository
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+This patch replaces the driver code from the Linux kernel repository,
+to add new driver variants gpio-mux-clock and gated-fixed-clock.
+
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/regulator/core.c | 14 ++++++++++++++
- include/regulator.h      |  6 ++++++
- 2 files changed, 20 insertions(+)
+ drivers/clk/clk-gpio.c | 337 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 264 insertions(+), 73 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 2c3b009ea6..be98f4a279 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -610,6 +610,20 @@ int regulator_disable(struct regulator *r)
- 	return regulator_disable_rdev(r->rdev);
- }
+diff --git a/drivers/clk/clk-gpio.c b/drivers/clk/clk-gpio.c
+index 940a20523e..dc61c88b9f 100644
+--- a/drivers/clk/clk-gpio.c
++++ b/drivers/clk/clk-gpio.c
+@@ -1,121 +1,312 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-License-Identifier: GPL-2.0
+ /*
+- * clk-gpio.c - clock that can be enabled and disabled via GPIO output
+- * Based on Linux clk support
++ * Copyright (C) 2013 - 2014 Texas Instruments Incorporated - https://www.ti.com
+  *
+- * Copyright (c) 2018 Nikita Yushchenko <nikita.yoush@cogentembedded.com>
++ * Authors:
++ *    Jyri Sarha <jsarha@ti.com>
++ *    Sergej Sawazki <ce3a@gmx.de>
++ *
++ * Gpio controlled clock implementation
+  */
++
+ #include <common.h>
+-#include <malloc.h>
++#include <regulator.h>
+ #include <linux/clk.h>
++#include <linux/clk-provider.h>
+ #include <linux/err.h>
+-#include <gpio.h>
+-#include <of_gpio.h>
+-#include <init.h>
++#include <linux/gpio/consumer.h>
  
-+int regulator_is_enabled(struct regulator *r)
-+{
-+	if (!r)
-+		return 0;
++/**
++ * struct clk_gpio - gpio gated clock
++ *
++ * @hw:		handle between common and hardware-specific interfaces
++ * @gpiod:	gpio descriptor
++ *
++ * Clock with a gpio control for enabling and disabling the parent clock
++ * or switching between two parents by asserting or deasserting the gpio.
++ *
++ * Implements .enable, .disable and .is_enabled or
++ * .get_parent, .set_parent and .determine_rate depending on which clk_ops
++ * is used.
++ */
+ struct clk_gpio {
+-	struct clk_hw hw;
+-	const char *parent;
+-	int gpio;
++	struct clk_hw	hw;
++	struct gpio_desc *gpiod;
+ };
 +
-+	if (r->rdev->always_on)
-+		return 1;
-+
-+	if (r->rdev->desc->ops->is_enabled)
-+		return r->rdev->desc->ops->is_enabled(r->rdev);
-+
-+	return r->rdev->enable_count;
-+}
-+
- int regulator_set_voltage(struct regulator *r, int min_uV, int max_uV)
+ #define to_clk_gpio(_hw) container_of(_hw, struct clk_gpio, hw)
+ 
+-static int clk_gpio_enable(struct clk_hw *hw)
++static int clk_gpio_gate_enable(struct clk_hw *hw)
  {
- 	if (!r)
-diff --git a/include/regulator.h b/include/regulator.h
-index 9785b8ac07..cb542b05c6 100644
---- a/include/regulator.h
-+++ b/include/regulator.h
-@@ -217,6 +217,7 @@ void regulator_put(struct regulator *r);
- struct regulator *regulator_get_name(const char *name);
- int regulator_enable(struct regulator *);
- int regulator_disable(struct regulator *);
-+int regulator_is_enabled(struct regulator *);
- int regulator_is_enabled_regmap(struct regulator_dev *);
- int regulator_enable_regmap(struct regulator_dev *);
- int regulator_disable_regmap(struct regulator_dev *);
-@@ -285,6 +286,11 @@ static inline int regulator_disable(struct regulator *r)
+-	struct clk_gpio *clk_gpio = to_clk_gpio(hw);
++	struct clk_gpio *clk = to_clk_gpio(hw);
++
++	gpiod_set_value(clk->gpiod, 1);
+ 
+-	gpio_set_active(clk_gpio->gpio, true);
  	return 0;
  }
  
-+static inline int regulator_is_enabled(struct regulator *r)
+-static void clk_gpio_disable(struct clk_hw *hw)
++static void clk_gpio_gate_disable(struct clk_hw *hw)
 +{
-+	return 1;
++	struct clk_gpio *clk = to_clk_gpio(hw);
++
++	gpiod_set_value(clk->gpiod, 0);
 +}
 +
- static inline int regulator_set_voltage(struct regulator *regulator,
- 					int min_uV, int max_uV)
++static int clk_gpio_gate_is_enabled(struct clk_hw *hw)
  {
+-	struct clk_gpio *clk_gpio = to_clk_gpio(hw);
++	struct clk_gpio *clk = to_clk_gpio(hw);
+ 
+-	gpio_set_active(clk_gpio->gpio, false);
++	return gpiod_get_value(clk->gpiod);
+ }
+ 
+-static int clk_gpio_is_enabled(struct clk_hw *hw)
++static const struct clk_ops clk_gpio_gate_ops = {
++	.enable = clk_gpio_gate_enable,
++	.disable = clk_gpio_gate_disable,
++	.is_enabled = clk_gpio_gate_is_enabled,
++};
++
++static int clk_gpio_mux_get_parent(struct clk_hw *hw)
++{
++	struct clk_gpio *clk = to_clk_gpio(hw);
++
++	return gpiod_get_value(clk->gpiod);
++}
++
++static int clk_gpio_mux_set_parent(struct clk_hw *hw, u8 index)
+ {
+-	struct clk_gpio *clk_gpio = to_clk_gpio(hw);
++	struct clk_gpio *clk = to_clk_gpio(hw);
+ 
+-	return gpio_is_active(clk_gpio->gpio);
++	gpiod_set_value(clk->gpiod, index);
++
++	return 0;
+ }
+ 
+-static struct clk_ops clk_gpio_ops = {
++static const struct clk_ops clk_gpio_mux_ops = {
++	.get_parent = clk_gpio_mux_get_parent,
++	.set_parent = clk_gpio_mux_set_parent,
+ 	.set_rate = clk_parent_set_rate,
+ 	.round_rate = clk_parent_round_rate,
+-	.enable = clk_gpio_enable,
+-	.disable = clk_gpio_disable,
+-	.is_enabled = clk_gpio_is_enabled,
+ };
+ 
+-static int of_gpio_clk_probe(struct device *dev)
++static struct clk_hw *clk_register_gpio(struct device *dev, u8 num_parents,
++					struct gpio_desc *gpiod,
++					const struct clk_ops *clk_gpio_ops)
+ {
+-	struct device_node *node = dev->device_node;
+ 	struct clk_gpio *clk_gpio;
+-	enum of_gpio_flags of_flags;
+-	unsigned long flags;
+-	int ret;
++	struct clk_hw *hw;
++	struct clk_init_data init = {};
++	const char *parent_names[2];
++	int err;
+ 
+ 	clk_gpio = xzalloc(sizeof(*clk_gpio));
+ 	if (!clk_gpio)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
+ 
+-	clk_gpio->parent = of_clk_get_parent_name(node, 0);
+-	if (!clk_gpio->parent) {
+-		ret = -EINVAL;
+-		goto no_parent;
+-	}
++	if (of_clk_parent_fill(dev->of_node, parent_names, num_parents) != num_parents)
++		return ERR_PTR(-EINVAL);
+ 
+-	clk_gpio->hw.clk.ops = &clk_gpio_ops;
+-	clk_gpio->hw.clk.parent_names = &clk_gpio->parent;
+-	clk_gpio->hw.clk.num_parents = 1;
+-
+-	clk_gpio->hw.clk.name = node->name;
+-	of_property_read_string(node, "clock-output-names",
+-			&clk_gpio->hw.clk.name);
+-
+-	ret = of_get_named_gpio_flags(node, "enable-gpios", 0,
+-			&of_flags);
+-	if (ret >= 0 && !gpio_is_valid(ret))
+-		ret = -EINVAL;
+-	if (ret < 0)
+-		goto no_gpio;
+-	clk_gpio->gpio = ret;
+-
+-	flags = GPIOF_OUT_INIT_ACTIVE;
+-	if (of_flags & OF_GPIO_ACTIVE_LOW)
+-		flags |= GPIOF_ACTIVE_LOW;
+-	ret = gpio_request_one(clk_gpio->gpio, flags, clk_gpio->hw.clk.name);
+-	if (ret)
+-		goto no_request;
++	init.name = dev->of_node->name;
++	of_property_read_string(dev->of_node, "clock-output-names", &init.name);
++	init.ops = clk_gpio_ops;
++	init.parent_names = parent_names;
++	init.num_parents = num_parents;
++	init.flags = CLK_SET_RATE_PARENT;
+ 
+-	ret = bclk_register(&clk_gpio->hw.clk);
+-	if (ret)
+-		goto no_register;
++	clk_gpio->gpiod = gpiod;
++	clk_gpio->hw.init = &init;
+ 
+-	return of_clk_add_provider(node, of_clk_src_simple_get, &clk_gpio->hw.clk);
++	hw = &clk_gpio->hw;
++	err =  bclk_register(&clk_gpio->hw.clk);
++	if (err)
++		return ERR_PTR(err);
+ 
+-no_register:
+-	gpio_free(clk_gpio->gpio);
+-no_request:
+-no_gpio:
+-no_parent:
+-	free(clk_gpio);
+-	return ret;
++	return hw;
++}
++
++static struct clk_hw *clk_hw_register_gpio_gate(struct device *dev,
++						int num_parents,
++						struct gpio_desc *gpiod)
++{
++	return clk_register_gpio(dev, num_parents, gpiod, &clk_gpio_gate_ops);
++}
++
++static struct clk_hw *clk_hw_register_gpio_mux(struct device *dev,
++					       struct gpio_desc *gpiod)
++{
++	return clk_register_gpio(dev, 2, gpiod, &clk_gpio_mux_ops);
+ }
+ 
+-static const struct of_device_id clk_gpio_device_id[] = {
+-	{ .compatible = "gpio-gate-clock", },
+-	{}
++static int gpio_clk_driver_probe(struct device *dev)
++{
++	struct device_node *node = dev->of_node;
++	const char *gpio_name;
++	unsigned int num_parents;
++	struct gpio_desc *gpiod;
++	struct clk_hw *hw;
++	bool is_mux;
++
++	is_mux = of_device_is_compatible(node, "gpio-mux-clock");
++
++	num_parents = of_clk_get_parent_count(node);
++	if (is_mux && num_parents != 2)
++		return dev_err_probe(dev, -EINVAL,
++				     "mux-clock must have 2 parents\n");
++
++	gpio_name = is_mux ? "select" : "enable";
++	gpiod = gpiod_get(dev, gpio_name, GPIOD_OUT_LOW);
++	if (IS_ERR(gpiod))
++		return dev_err_probe(dev, PTR_ERR(gpiod),
++				     "Can't get '%s' named GPIO property\n", gpio_name);
++
++	if (is_mux)
++		hw = clk_hw_register_gpio_mux(dev, gpiod);
++	else
++		hw = clk_hw_register_gpio_gate(dev, num_parents, gpiod);
++	if (IS_ERR(hw))
++		return PTR_ERR(hw);
++
++	return of_clk_add_provider(node, of_clk_src_simple_get, &hw->clk);
++}
++
++static __maybe_unused const struct of_device_id clk_gpio_device_id[] = {
++	{ .compatible = "gpio-mux-clock" },
++	{ .compatible = "gpio-gate-clock" },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, clk_gpio_device_id);
+ 
+ static struct driver gpio_gate_clock_driver = {
+-	.probe = of_gpio_clk_probe,
++	.probe = gpio_clk_driver_probe,
+ 	.name = "gpio-gate-clock",
+ 	.of_compatible = DRV_OF_COMPAT(clk_gpio_device_id),
+ };
+-
+ core_platform_driver(gpio_gate_clock_driver);
++
++/**
++ * DOC: gated fixed clock, controlled with a gpio output and a regulator
++ * Traits of this clock:
++ * prepare - clk_prepare and clk_unprepare are function & control regulator
++ *           optionally a gpio that can sleep
++ * enable - clk_enable and clk_disable are functional & control gpio
++ * rate - rate is fixed and set on clock registration
++ * parent - fixed clock is a root clock and has no parent
++ */
++
++/**
++ * struct clk_gated_fixed - Gateable fixed rate clock
++ * @clk_gpio:	instance of clk_gpio for gate-gpio
++ * @supply:	supply regulator
++ * @rate:	fixed rate
++ */
++struct clk_gated_fixed {
++	struct clk_gpio clk_gpio;
++	struct regulator *supply;
++	unsigned long rate;
++};
++
++#define to_clk_gated_fixed(_clk_gpio) container_of(_clk_gpio, struct clk_gated_fixed, clk_gpio)
++
++static unsigned long clk_gated_fixed_recalc_rate(struct clk_hw *hw,
++						 unsigned long parent_rate)
++{
++	return to_clk_gated_fixed(to_clk_gpio(hw))->rate;
++}
++
++static int clk_gated_fixed_enable(struct clk_hw *hw)
++{
++	struct clk_gated_fixed *clk = to_clk_gated_fixed(to_clk_gpio(hw));
++	int ret;
++
++	ret = regulator_enable(clk->supply);
++	if (!ret)
++		gpiod_set_value(clk->clk_gpio.gpiod, 1);
++
++	return ret;
++}
++
++static void clk_gated_fixed_disable(struct clk_hw *hw)
++{
++	struct clk_gated_fixed *clk = to_clk_gated_fixed(to_clk_gpio(hw));
++
++	gpiod_set_value(clk->clk_gpio.gpiod, 0);
++
++	regulator_disable(clk->supply);
++}
++
++static int clk_gated_fixed_is_enabled(struct clk_hw *hw)
++{
++	struct clk_gated_fixed *clk = to_clk_gated_fixed(to_clk_gpio(hw));
++
++	if (!regulator_is_enabled(clk->supply))
++		return 0;
++
++	return clk->clk_gpio.gpiod ? gpiod_get_value(clk->clk_gpio.gpiod) : 1;
++}
++
++static const struct clk_ops clk_gated_fixed_ops = {
++	.enable = clk_gated_fixed_enable,
++	.disable = clk_gated_fixed_disable,
++	.is_enabled = clk_gated_fixed_is_enabled,
++	.recalc_rate = clk_gated_fixed_recalc_rate,
++};
++
++static int clk_gated_fixed_probe(struct device *dev)
++{
++	struct clk_gated_fixed *clk;
++	const char *clk_name;
++	u32 rate;
++	int ret;
++
++	clk = xzalloc(sizeof(*clk));
++	if (!clk)
++		return -ENOMEM;
++
++	ret = of_property_read_u32(dev->of_node, "clock-frequency", &rate);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to get clock-frequency\n");
++	clk->rate = rate;
++
++	clk_name = dev->of_node->name;
++	of_property_read_string(dev->of_node, "clock-output-names", &clk_name);
++
++	clk->supply = regulator_get_optional(dev, "vdd");
++	if (IS_ERR(clk->supply)) {
++		if (PTR_ERR(clk->supply) != -ENODEV)
++			return dev_err_probe(dev, PTR_ERR(clk->supply),
++					     "Failed to get regulator\n");
++		clk->supply = NULL;
++	}
++
++	clk->clk_gpio.gpiod = gpiod_get_optional(dev, "enable", GPIOD_OUT_LOW);
++	if (IS_ERR(clk->clk_gpio.gpiod))
++		return dev_err_probe(dev, PTR_ERR(clk->clk_gpio.gpiod),
++				     "Failed to get gpio\n");
++
++
++	clk->clk_gpio.hw.init = CLK_HW_INIT_NO_PARENT(clk_name, &clk_gated_fixed_ops, 0);
++
++	ret = clk_hw_register(dev, &clk->clk_gpio.hw);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to register clock\n");
++
++	ret = of_clk_add_hw_provider(dev->of_node, of_clk_hw_simple_get,
++				     &clk->clk_gpio.hw);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Failed to register clock provider\n");
++
++	return 0;
++}
++
++static __maybe_unused const struct of_device_id gated_fixed_clk_match_table[] = {
++	{ .compatible = "gated-fixed-clock" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, gated_fixed_clk_match_table);
++
++static struct driver gated_fixed_clk_driver = {
++	.probe = clk_gated_fixed_probe,
++	.name = "gated-fixed-clk",
++	.of_compatible = DRV_OF_COMPAT(gated_fixed_clk_match_table),
++};
++core_platform_driver(gated_fixed_clk_driver);
 -- 
 2.39.1
 
