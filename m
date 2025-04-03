@@ -1,90 +1,88 @@
-Delivery-date: Thu, 03 Apr 2025 04:24:50 +0200
+Delivery-date: Thu, 03 Apr 2025 10:33:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u0AGA-007dpm-1J
+	id 1u0G1F-007kUO-0l
 	for lore@lore.pengutronix.de;
-	Thu, 03 Apr 2025 04:24:50 +0200
+	Thu, 03 Apr 2025 10:33:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u0AG9-0001mQ-Fi
-	for lore@pengutronix.de; Thu, 03 Apr 2025 04:24:50 +0200
+	id 1u0G1E-0003ke-CW
+	for lore@pengutronix.de; Thu, 03 Apr 2025 10:33:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=j2Sr69Eu7d5ydYyb8Eu8/dsV6JGZuXx4tyUww3+SC4w=; b=0NMNONF9sKR5vWL4IhGSif0o3D
-	n1pQNRVTiHLKDLAYrIuDGRYoqMhsbH3zj8N/bLdg79qFULJfb42PrqFqXkswbSbzYe92y7ndsTrxo
-	0/ZGbFUjNUB3XQG1m9zhldY4TqhsSe3h0mwc8tYqUlg8knBTJ8xweJPBnQV8XhnLfNd7p5vPdDlKd
-	IPIwcWHAzsXsefy+H02W5jsjSwlxkKOr+SuQ4dZPzj7h3FvtNeftXMrghoLR4L/W/2TA+hS7AUb1P
-	oOR2ehXddKTo5YK3bHOGKljU1g+wRmr2HOtLr+svzFxTMyhm1a9BXNkkTE1H/INORWuCSVvxLcD09
-	G+iqJ5UQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=U7vLfpjrPK6uKqp2rmVS5uh1cOQpMegqvKzOdK1K8Ko=; b=e5tpZ3FTjDCFe38FnF3ResqpSz
+	gB2VVir72f99oIW1PSQpZMIUnz2Ohzn3pzcoOokwoHCfgYwxRoh4isERRgT7I4W6hnP5KZsIbjza8
+	WSJkwzXR7Wvj0eQhseVB1/pJTyVu62iB5eLUdgj1x4hr3pdY+YMZ9XjdiukZmG7BmSIwzm4Sf3zGo
+	TNQ1yvWtCXFbUa/4fzTyv87asR5Xo0Mm74RvNs4wnTxYK+OMbsle57StKLvwCpbDT1q/vhN98SwSe
+	FZebqLEBOQM3gdt0dvPeAz5L0kvTl+8+QN+WPcFGYWl2SyOeheXpE4ZW0NA+FK2RcUqFy5zGvIPGa
+	mT3yDlbg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u0AFI-00000007b7i-2Jy5;
-	Thu, 03 Apr 2025 02:23:56 +0000
-Received: from mail-qv1-xf35.google.com ([2607:f8b0:4864:20::f35])
+	id 1u0G0T-00000008Gzw-3xRi;
+	Thu, 03 Apr 2025 08:33:01 +0000
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u0AFF-00000007b73-118v
+	id 1u0G0Q-00000008GyN-3Nu6
 	for barebox@lists.infradead.org;
-	Thu, 03 Apr 2025 02:23:54 +0000
-Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-6ed0cc5eca4so16043156d6.1
-        for <barebox@lists.infradead.org>; Wed, 02 Apr 2025 19:23:52 -0700 (PDT)
+	Thu, 03 Apr 2025 08:33:00 +0000
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-54b1095625dso750384e87.0
+        for <barebox@lists.infradead.org>; Thu, 03 Apr 2025 01:32:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743647031; x=1744251831; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j2Sr69Eu7d5ydYyb8Eu8/dsV6JGZuXx4tyUww3+SC4w=;
-        b=VUS0zinlyK0kdbdoiOAztTK0QRkwRH3ceTQ4rR0f+sJhoKq0qzSyi71EEkrscfn3XL
-         V1e/3FEEYZH1ZNFQFHyebKOtLBmTcEDicppF2YPHSO0neKGfT1u2jBRhySGxDRbH/BWV
-         22l6NozQZI34corovWDB2ZEFiRWwrGevY2h4fbmeE5T9CtVwIWauIDU2e5nzkHpwYxKc
-         s74VkoKBeQ/u9aVSYFLjlTRM0oNb9nkPEEVd5kU7TP1FhWZBMZJftg538OrVd6g99lTM
-         F2P14ZwZXbNemCwDjgbZAePZdY3gUcGxdZIzJVpeAO+UtYcsmPV3Y54q+XJlzHAv2lcV
-         ggiQ==
+        d=gmail.com; s=20230601; t=1743669176; x=1744273976; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U7vLfpjrPK6uKqp2rmVS5uh1cOQpMegqvKzOdK1K8Ko=;
+        b=hiniDqLvE/RwAJ3Jnc4Wa7rRbrdo2EfrPvyQ1NKH1gyJ2DZOMD3+YiraZms05owZCO
+         dTD6Ytj+HUaqjnafSHJdc7AEYORKxoPMFDGIdtuqPJt8ZkkMyCmPjaWeVC43rehvnQ1h
+         TsB7/qjmMU+OMCnyzhuBpsv+zdcgG3mlTq52mCHtPPz9Zm1ARk7K9Qq+byc8F0A9h4PS
+         JwJ2POszLzRQaM91iJSy17TFC25hTyZFp9zebOMhdPNcBhN6ueJkAKmNCUDlAt5zv16L
+         T7aPGndl0NHJNZy8DXltzXcP1h9IVVugiWUnpuOy917r0TtfMyX0BSGOiD/7vwlYcvy1
+         KK0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743647031; x=1744251831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j2Sr69Eu7d5ydYyb8Eu8/dsV6JGZuXx4tyUww3+SC4w=;
-        b=OzGWCwNqAWdOaRjMYjJLsZB0I4Ss7nk2RHxDJJlPYlhz4whPlFWgDyk17BtA8UmILQ
-         vFp0yFKqdYpJ6aYEOjhSvnGFEBmFex6xF3sN7vmN+Es0LxjhKnEIckHWQBMuOouaWgRU
-         7/VzL9Ro+3L7Ca/GtPSYJSa5VD0LiaO3iG3+ODHVpaCvsGjjiO76fRkCL2JvUIrgAyIC
-         WE7co1bCZVLq1/IRrpIpu5fxgx15d637Z6RDOC3ul32wDWYXse89b0p1dTHAAuheYKt+
-         hreGhkQ6kJj2piVdqAdTLa3mHMIvsKEM4pnmeqdgdmxMD5z0UaZ5YwrBrCjZU9o9sK9p
-         2yjw==
-X-Forwarded-Encrypted: i=1; AJvYcCV01wX8jTw5d3TgTqmiC80M/iGGMbPbiBjFdHpdALTUqtevX6inWtdejuvbgstznCKKQFHR8Bce@lists.infradead.org
-X-Gm-Message-State: AOJu0YyaBH5hvvxw3o3aKwZ6Fr8Ne2pphhljdPg35d+fjC1HU2fU0z8d
-	z/d5q2oOZlLF1n2NOVYZPeYoVfY0g3LAi5sohoPViqiFWPCE23qjY9O2FFHX3qOcrr1xrjDBmIa
-	a7Y/mi/wqW1DU7FbyXII1BF5KI98=
-X-Gm-Gg: ASbGncsd66dwBYrh2tTTngU3GwTRxqJlHBzhFcKieRxg+jpR4wTSTXdQbQgoR/IOJTu
-	bdF13/DAA3NVsk1GoCj2uqYaLIjlfQKsNVBnv+ihKmbwNdyzm81tkAE2jWLDJZ/MzJ9NEqEWYDm
-	eaPTFAEGnsdkUWfbp7EtUHrAI7LxXyy7q5hDNEv4BP/7cGLQlyQ0HUM4fVPA==
-X-Google-Smtp-Source: AGHT+IEyfwWl17T6iIjV7cIm69+K0pQg9pIPNmF771+/eqYE0oXbRrjkz/pKmZpKFWGuCsk/fm3lFSu7ggL70jd00Uo=
-X-Received: by 2002:ad4:5ecb:0:b0:6ea:d503:6cfd with SMTP id
- 6a1803df08f44-6ef0bf2b38cmr32519276d6.19.1743647031434; Wed, 02 Apr 2025
- 19:23:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743669176; x=1744273976;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U7vLfpjrPK6uKqp2rmVS5uh1cOQpMegqvKzOdK1K8Ko=;
+        b=Zo1ilITcTBzst3eg8dqGd/Jhw4ttFul7rQaD5jbxE+ijEgpbzVNGfcctvFB9RNHfre
+         VcR5/o+1Vf2GzNK5I8RnvyO4id/qE8mwEN3icl7hBACrK++bxIxt67w65OAWJQcsUM1K
+         9ypfoXvxnKR5E1DUQx0DKicQZ+WVnUe/01t8gNgfOOLKWbYl1TJhWGYCB8BAfIRuv2h7
+         y5M45yo7+FrHjwJH19MDmhM8B6/gAU3jLv4nbk+oHIaAv6bYeF+Rcr0NbGrDvgJjmkNZ
+         cqS2PRVGQPn180NZwBzWi1Iwj433OWFkLAvZHrJ5BvFUwAj+7msrwyr+U2Kx5tGuo/ra
+         MrZg==
+X-Gm-Message-State: AOJu0YwB8hjQZe9qM9Wlveyo4Q2EFtT7keCWzOwHxf0eA0bfyrxdum1N
+	cOmrK4tdps/2aNFToPkoYvDTmbc6a/xmGZjNOLz0EBghtgjXYNqxK+CSkw==
+X-Gm-Gg: ASbGncuScFqFoHzksMp5Yjk8vywEpCmDk2+QLDn/2hGLPbHYuQXECjdVKni9ZlepGSM
+	LxsxvnLt99gDR/84LlRg+ClstkNqGNEAsZI1IrxV6rJOy5UiumzRLF2pTT0WbPN9nzLmOzIVAS7
+	4HJjXqJQtJiKf+pvg8So2hvH4XdPXPZIjPUka7cAN05GR6l7lpneuM3bmewOmTVbb7JsUtd1UX3
+	Htr3Ni8b1oQOksbMn/e/lMNKHpZqFZth/hiHCuQtLvf0y3n8miye924Pjea8M6QVF1mOME9RcyH
+	0+LiCO4CYW7aKUAskWKWxEMxddFMcoqjuhm3NEk8y9uRCNXwo8XsmuqBHV5tiFfzRqg=
+X-Google-Smtp-Source: AGHT+IGQjhMXHgDPfoj9PJUKv6zYuE4i8twYY8zFVLyLnmP4pnsM3b/36di/LGqe85Qum9tgz6mbnA==
+X-Received: by 2002:a05:6512:130e:b0:54b:e49:6274 with SMTP id 2adb3069b0e04-54c1e322ef4mr315943e87.1.1743669175656;
+        Thu, 03 Apr 2025 01:32:55 -0700 (PDT)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54c1e65d767sm81181e87.202.2025.04.03.01.32.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Apr 2025 01:32:54 -0700 (PDT)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu,  3 Apr 2025 11:32:35 +0300
+Message-Id: <20250403083236.29221-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <20250328-tlsf-addpool-v1-1-25fd0b060356@gmail.com> <Z-z-XAl1EkRbCmdl@pengutronix.de>
-In-Reply-To: <Z-z-XAl1EkRbCmdl@pengutronix.de>
-From: David Dgien <dgienda125@gmail.com>
-Date: Wed, 2 Apr 2025 22:23:44 -0400
-X-Gm-Features: ATxdqUH9LRepk5cLOsThsibGjH9KXsjo-F0TE55vIA7ED4X6bFvhAAAfGtpwDdE
-Message-ID: <CALTtyOq17hAECRN4xfHGYfe_UrzvfgpVDsAOUMgBzAL6Q5ujqA@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: David Dgien via B4 Relay <devnull+dgienda125.gmail.com@kernel.org>, 
-	BAREBOX <barebox@lists.infradead.org>, Tyler Reece <mtreece@acm.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250402_192353_282851_726135C8 
-X-CRM114-Status: GOOD (  42.37  )
+X-CRM114-CacheID: sfid-20250403_013258_847765_7D2636CD 
+X-CRM114-Status: GOOD (  16.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,174 +100,166 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] tlsf: Add tracking of added tlsf memory pools
+Subject: [PATCH 1/2] spi: spi-mem: Partially update the driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Apr 2, 2025 at 5:07=E2=80=AFAM Sascha Hauer <s.hauer@pengutronix.de=
-> wrote:
->
-> Hi David,
->
-> On Fri, Mar 28, 2025 at 11:13:40PM -0400, David Dgien via B4 Relay wrote:
-> > From: David Dgien <dgienda125@gmail.com>
-> >
-> > When configured to use the TLSF allocator, the malloc_stats function
-> > only walks the initial memory pool, as that is the only pool it is awar=
-e
-> > of, and TLSF doesn't link pools together in a way that the walker can
-> > follow.
-> >
-> > Add wrapper functions around tlsf_add_pool and tlsf_remove_pool to add
-> > additional tracking of added pools, so that they can be walked by the
-> > malloc_stats function and meminfo can report accurate heap utilization.
-> >
-> > Signed-off-by: David Dgien <dgienda125@gmail.com>
-> > Reviewed-by: Tyler Reece <mtreece@acm.org>
-> > ---
-> > For this change I put the wrapper function prototypes in malloc.h, gate=
-d
-> > by CONFIG_MALLOC_TLSF. I was split between there and memory.h, but I'm
-> > not entirely convinced malloc.h was the right decision. I also didn't
-> > provide stubs for when CONFIG_MALLOC_TLSF isn't enabled, as I did not
-> > see any upstream code that utilizes tlsf_add_pool. If the project has
-> > different preferences I can make those changes.
->
-> I think it's fine the way you did it for now. We have plans to remove
-> dlmalloc support in the near future which gives us an opportunity to
-> rework this and make malloc_add_pool() generally available.
->
-> Currently barebox only uses the initial memory. With dlmalloc removed we
-> could make use of the remaining memory banks using malloc_add_pool().
->
-> > ---
-> >  common/tlsf_malloc.c | 64 ++++++++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  include/malloc.h     |  5 ++++
-> >  2 files changed, 69 insertions(+)
-> >
-> > diff --git a/common/tlsf_malloc.c b/common/tlsf_malloc.c
-> > index 6a90ee47199fa9e8223f843cc95f52eebfec2aee..0e756a13d5a2665eccf8931=
-b19dfa4e56cad15eb 100644
-> > --- a/common/tlsf_malloc.c
-> > +++ b/common/tlsf_malloc.c
-> > @@ -12,8 +12,18 @@
-> >  #include <module.h>
-> >  #include <tlsf.h>
-> >
-> > +#include <linux/kasan.h>
-> > +#include <linux/list.h>
-> > +
-> >  extern tlsf_t tlsf_mem_pool;
-> >
-> > +struct pool_entry {
-> > +     pool_t pool;
-> > +     struct list_head list;
-> > +};
-> > +
-> > +static LIST_HEAD(mem_pool_list);
-> > +
-> >  void *malloc(size_t bytes)
-> >  {
-> >       void *mem;
-> > @@ -75,6 +85,7 @@ static void malloc_walker(void* ptr, size_t size, int=
- used, void *user)
-> >
-> >  void malloc_stats(void)
-> >  {
-> > +     struct pool_entry *cur_pool;
-> >       struct malloc_stats s;
-> >
-> >       s.used =3D 0;
-> > @@ -82,5 +93,58 @@ void malloc_stats(void)
-> >
-> >       tlsf_walk_pool(tlsf_get_pool(tlsf_mem_pool), malloc_walker, &s);
-> >
-> > +     list_for_each_entry(cur_pool, &mem_pool_list, list)
-> > +             tlsf_walk_pool(cur_pool->pool, malloc_walker, &s);
->
-> Can you create a pool_entry for the initial malloc area as well so that
-> the list contains all pools?
+The patch partially updates the driver to add the
+spi_mem_default_supports_op() function.
 
-I should be able to do that.
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ drivers/spi/atmel-quadspi.c |  3 +++
+ drivers/spi/spi-fsl-qspi.c  |  2 +-
+ drivers/spi/spi-mem.c       | 26 +++++++++++++++++---------
+ drivers/spi/spi-nxp-fspi.c  |  2 +-
+ include/linux/spi/spi-mem.h | 12 ++++++++++++
+ 5 files changed, 34 insertions(+), 11 deletions(-)
 
-Since the initial memory pool would never be able to be removed, I
-thought it would be better to not put it in the list at all. But if
-I'm removing the ability to remove pools, then I can add the initial
-malloc area to the list and simplify things.
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index c680ee15a0..7a0ecb745a 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -207,6 +207,9 @@ static int atmel_qspi_find_mode(const struct spi_mem_op *op)
+ static bool atmel_qspi_supports_op(struct spi_mem *mem,
+ 				   const struct spi_mem_op *op)
+ {
++	if (!spi_mem_default_supports_op(mem, op))
++		return false;
++
+ 	if (atmel_qspi_find_mode(op) < 0)
+ 		return false;
+ 
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index 599e5fe96a..cda0b06a54 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -355,7 +355,7 @@ static bool fsl_qspi_supports_op(struct spi_mem *mem,
+ 	    op->data.nbytes > q->devtype_data->txfifo)
+ 		return false;
+ 
+-	return true;
++	return spi_mem_default_supports_op(mem, op);
+ }
+ 
+ static void fsl_qspi_prepare_lut(struct fsl_qspi *q,
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 1e4120a2dc..71a9afac6d 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-License-Identifier: GPL-2.0+
+ /*
+  * Copyright (C) 2018 Exceet Electronics GmbH
+  * Copyright (C) 2018 Bootlin
+@@ -22,15 +22,17 @@ static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
+ 		return 0;
+ 
+ 	case 2:
+-		if ((tx && (mode & (SPI_TX_DUAL | SPI_TX_QUAD))) ||
+-		    (!tx && (mode & (SPI_RX_DUAL | SPI_RX_QUAD))))
++		if ((tx &&
++		     (mode & (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL))) ||
++		    (!tx &&
++		     (mode & (SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL))))
+ 			return 0;
+ 
+ 		break;
+ 
+ 	case 4:
+-		if ((tx && (mode & SPI_TX_QUAD)) ||
+-		    (!tx && (mode & SPI_RX_QUAD)))
++		if ((tx && (mode & (SPI_TX_QUAD | SPI_TX_OCTAL))) ||
++		    (!tx && (mode & (SPI_RX_QUAD | SPI_RX_OCTAL))))
+ 			return 0;
+ 
+ 		break;
+@@ -49,8 +51,8 @@ static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
+ 	return -ENOTSUPP;
+ }
+ 
+-static bool spi_mem_default_supports_op(struct spi_mem *mem,
+-					const struct spi_mem_op *op)
++static bool spi_mem_check_buswidth(struct spi_mem *mem,
++				   const struct spi_mem_op *op)
+ {
+ 	if (spi_check_buswidth_req(mem, op->cmd.buswidth, true))
+ 		return false;
+@@ -70,6 +72,12 @@ static bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 
+ 	return true;
+ }
++
++bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op)
++{
++	return spi_mem_check_buswidth(mem, op);
++}
+ EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
+ 
+ static bool spi_mem_buswidth_is_valid(u8 buswidth)
+@@ -172,7 +180,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (!spi_mem_internal_supports_op(mem, op))
+ 		return -ENOTSUPP;
+ 
+-	if (ctlr->mem_ops) {
++	if (ctlr->mem_ops && ctlr->mem_ops->exec_op) {
+ 		ret = spi_mem_access_start(mem);
+ 		if (ret)
+ 			return ret;
+@@ -186,7 +194,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		 * read path) and expect the core to use the regular SPI
+ 		 * interface in other cases.
+ 		 */
+-		if (!ret || ret != -ENOTSUPP)
++		if (!ret || (ret != -ENOTSUPP && ret != -EOPNOTSUPP))
+ 			return ret;
+ 	}
+ 
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index cfef5795a7..6f91e75d5e 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -453,7 +453,7 @@ static bool nxp_fspi_supports_op(struct spi_mem *mem,
+ 	    op->data.nbytes > f->devtype_data->txfifo)
+ 		return false;
+ 
+-	return true;
++	return spi_mem_default_supports_op(mem, op);
+ }
+ 
+ /* Instead of busy looping invoke readl_poll_timeout functionality. */
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index b5dfb0ca84..a2d7d5dca0 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -285,6 +285,18 @@ struct spi_mem_driver {
+ 	int (*remove)(struct spi_mem *mem);
+ };
+ 
++#if IS_ENABLED(CONFIG_SPI_MEM)
++bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op);
++#else
++static inline
++bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op)
++{
++	return false;
++}
++#endif
++
+ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
+ 
+ bool spi_mem_supports_op(struct spi_mem *mem,
+-- 
+2.39.1
 
->
-> > +
-> >       printf("used: %zu\nfree: %zu\n", s.used, s.free);
-> >  }
-> > +
-> > +void *malloc_add_pool(void *mem, size_t bytes)
-> > +{
-> > +     pool_t new_pool;
-> > +     struct pool_entry *new_pool_entry;
-> > +
-> > +     if (!mem)
-> > +             return NULL;
-> > +
-> > +     new_pool_entry =3D malloc(sizeof(struct pool_entry));
-> > +     if (!new_pool_entry)
-> > +             return NULL;
-> > +
-> > +     new_pool =3D tlsf_add_pool(tlsf_mem_pool, mem, bytes);
-> > +     if (!new_pool) {
-> > +             free(new_pool_entry);
-> > +             return NULL;
-> > +     }
-> > +
-> > +     kasan_poison_shadow(mem, bytes, KASAN_TAG_INVALID);
-> > +
-> > +     new_pool_entry->pool =3D new_pool;
-> > +     list_add(&new_pool_entry->list, &mem_pool_list);
-> > +
-> > +     return (void *)new_pool;
-> > +}
-> > +
-> > +int malloc_remove_pool(void *pool)
-> > +{
-> > +     struct pool_entry *cur_pool;
-> > +     struct malloc_stats s;
-> > +
-> > +     s.used =3D 0;
-> > +     s.free =3D 0;
-> > +
-> > +     list_for_each_entry(cur_pool, &mem_pool_list, list) {
-> > +             if (cur_pool->pool =3D=3D (pool_t)pool) {
-> > +                     tlsf_walk_pool(cur_pool->pool, malloc_walker, &s)=
-;
-> > +                     if (s.used)
-> > +                             return -EBUSY;
->
-> Do we need this function at all? We have no way to move allocations away
-> from the pool being removed, so there's no way to make this function
-> work reliably. What's the point in having it?
-
-The intent was to match the symmetry of the TLSF add/remove functions.
-I will remove it from the next version, assuming removing unused pools
-is not a useful feature.
-
--- David Dgien
-
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             =
-|
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
-|
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
 
 
