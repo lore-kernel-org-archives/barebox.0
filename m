@@ -1,57 +1,65 @@
-Delivery-date: Fri, 04 Apr 2025 16:58:14 +0200
+Delivery-date: Fri, 04 Apr 2025 17:55:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u0iUo-008I7Y-1r
+	id 1u0jOd-008JDR-0v
 	for lore@lore.pengutronix.de;
-	Fri, 04 Apr 2025 16:58:14 +0200
+	Fri, 04 Apr 2025 17:55:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u0iUn-0000BC-Iz
-	for lore@pengutronix.de; Fri, 04 Apr 2025 16:58:14 +0200
+	id 1u0jOc-0006cu-Nu
+	for lore@pengutronix.de; Fri, 04 Apr 2025 17:55:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=b9awZze/UbjnT0uUIgmlICAckMnHrdeIcP1/ei5ES+I=; b=fc/mHmVRC1qGFwleRP4yHueYfZ
-	zLmr/y/1K6VLvesxe/hhKaPtj6FFVUiSNGInDc2D7IC70qmCraWqGKBJKoxsylf2J4PeJosxaQCgu
-	XzILqdOiq+Y5zBzFfC5K9Z+rmIFhbiVM1AEqbIN6H13nfkjg34/E6Nji/QPIP/CuWuBHjs9GhP79U
-	/gu/VvHcY04OxL2gGsEvhL63NkQDoWaeklw74cdx4gNruyLc7p0GIE/vnTL3U/j74n/C/FJlHOdb7
-	Y9ZXAXvDntyJNISG1myaqej+k4dzmZZBXn97gx9e1F/JsvZNH529hvFdjG7002+zofMGXREps2fVe
-	Vv8uOIFA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=XbsApENXHI9DufZVtxWGIr8/Wf1t1CL0pnhNefWbepY=; b=FLQjRgWq4gUlpWKOqfARSmfHBq
+	FOh43MT5gBDmq8N9q39o3OFNjobqrlRea0mfcjCC5zHFVmLARlUd3vp6NmNi8dh5LJti9knXTeclz
+	XMFfNOgQ8zxaeMX0FSZGYH0dqA5X/wYnKmS5MTHcoARqZs3fOV7YC46d6vbtq4d5Dfhf2UKKi55cu
+	gnWxDzO7sqa11r1vO+hX6tL/pTayJAvBs/3qc9PyEtvot1PhBDyO+zSCX5si64EeNFvH7UJdoFLma
+	egPVkQ7FwPbcoJ1rK/uaqMaMT23QVjHxsvMap+vX6koDAULaWi0YK/KFPUnNEzKnwYLntt7FjMk2A
+	e4PqpslQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u0iU3-0000000C4Tt-12Tw;
-	Fri, 04 Apr 2025 14:57:27 +0000
+	id 1u0jOC-0000000CE1B-12Rp;
+	Fri, 04 Apr 2025 15:55:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u0iOB-0000000C33H-2Cwv
+	id 1u0jO8-0000000CDzA-12bB
 	for barebox@lists.infradead.org;
-	Fri, 04 Apr 2025 14:51:25 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Fri, 04 Apr 2025 15:55:26 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u0iO8-0007Ks-8K; Fri, 04 Apr 2025 16:51:20 +0200
-Message-ID: <67d4d49a-a558-427b-8965-4992efd74f3c@pengutronix.de>
-Date: Fri, 4 Apr 2025 16:51:19 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jonas Licht <jonas.licht@gmail.com>, barebox@lists.infradead.org
-References: <20250311141713.30947-1-jonas.licht@gmail.com>
- <20250320092300.21427-2-jonas.licht@gmail.com>
-Content-Language: en-US
+	id 1u0jO6-0006Sr-N9; Fri, 04 Apr 2025 17:55:22 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u0jO6-003I8i-1i;
+	Fri, 04 Apr 2025 17:55:22 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u0jO6-00C0rF-1P;
+	Fri, 04 Apr 2025 17:55:22 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250320092300.21427-2-jonas.licht@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri,  4 Apr 2025 17:55:19 +0200
+Message-Id: <20250404155521.2863158-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250404_075123_728755_A69B9C7D 
-X-CRM114-Status: GOOD (  34.61  )
+X-CRM114-CacheID: sfid-20250404_085524_307605_9D4EF2D2 
+X-CRM114-Status: GOOD (  11.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,254 +81,44 @@ X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3] environment: support reading and writing of efivar
+Subject: [PATCH master 1/3] fs: add only successful filesystem probes to fs_device_list
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Jonas,
+fs_init_legacy can't fail currently, but if it does in future, we can
+end up with a file system added to fs_device_list that wasn't
+successfully probed.
 
-On 20.03.25 10:22, Jonas Licht wrote:
-> scripts/bareboxenv: skip file creation to allow reading the destination
-> file, when existing.
-> 
-> In envfs_load before reading the superblock, we check if our superblock
-> magic exists after an EFIVAR_ATTR_SIZE offset. This is necessary because
-> linux kernel adds four byte variable attributes in front of each efi
-> variable in sysfs. When the magic is found after EFIVAR_ATTR_SIZE, we
-> skip reading the four bytes variable attributes.
-> For envfs_save detection of an efi var is done the same way. But we need
-> to keep the attributes, as they are required for writing as well.
-> 
-> In order to write to efivars, you still need to remove immutable flag
-> from the file with 'chattr -i' .
+Move the list_add_tail to the end to avoid this.
 
-Sorry for taking so long to get back to you.
-I agree this is a problem we want to fix, but I wasn't overly happy with
-the complexity the fix introduced.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ fs/fs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-How about this alternative:
-
-- We define in scripts/bareboxenv.c following function:
-    
-bool is_efivarfs_fd(int fd)
-{
-	struct statfs env_statfs;
-	int ret;
-
-	ret = fstatvfs(fd, &env_statfs);
-	if (ret)
-		return false;
-
-	return bundle_statfs.f_type == EFIVARFS_MAGIC;
-}
-
-In common/environment.c, in the first #ifdef __BAREBOX__ branch,
-we #define is_efivarfs_fd(fd) false.
-
-- Instead of checking the magic, we just call is_efivarfs_fd and
-then read the 4 bytes
-
-- We get rid of the #ifdefs and just let the compiler drop dead code
-  when building for __BAREBOX__.
-
-- As we limit the effect to bareboxenv as hosted tool, we don't need
-  to check for CONFIG_EFI either
-
-What do you think?
-
-Some minor comments below. 
-
-> Skip the detect code when __BAREBOX__ is defined as well.
-> I've noticed that the first pread in detect_efi_vars never comes back
-> in __BAREBOX__ , when the efivar file don't exists, but doing this on a
-> file at /tmp works.
-
-Oh, so that's a bug in the barebox efivarfs implementation?
-
-> +#include <autoconf.h>
-
-autoconf.h should be included by the buildsystem (-include option), but
-with suggested changes above we can avoid it altogether.
-
-> +	void *buf = NULL, *wbuf = NULL, *buf_with_efi;
->  	struct envfs_entry *env;
->  	const char *defenv_path = default_environment_path_get();
->  
-> @@ -342,7 +380,9 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
->  		}
->  	}
->  
-> -	buf = xzalloc(size + sizeof(struct envfs_super));
-> +	buf_with_efi = xzalloc(size + sizeof(struct envfs_super) +
-> +	EFIVAR_ATTR_SIZE);
-
-Alignment is wonky, but you can just keep it a single line here.
-
-> +	buf = buf_with_efi + EFIVAR_ATTR_SIZE;
->  	data.writep = buf + sizeof(struct envfs_super);
->  
->  	super = buf;
-> @@ -370,7 +410,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
->  	super->crc = ENVFS_32(crc32(0, buf + sizeof(struct envfs_super), size));
->  	super->sb_crc = ENVFS_32(crc32(0, buf, sizeof(struct envfs_super) - 4));
->  
-> -	envfd = open(filename, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-> +	envfd = open(filename, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
->  	if (envfd < 0) {
->  		printf("could not open %s: %m\n", filename);
->  		ret = -errno;
-> @@ -385,6 +425,12 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
->  		goto out;
->  	}
->  
-> +	/* check if we writing efi vars */
-> +	ret = detect_efi_vars(envfd, buf_with_efi, &wbuf, &size);
-> +	if (ret != 0) {
-> +		goto out;
-> +	}
-
-No braces for single line if clauses.
-
-> +
->  	ret = erase(envfd, ERASE_SIZE_ALL, 0, ERASE_TO_WRITE);
->  
->  	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
-> @@ -395,12 +441,11 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
->  
->  	size += sizeof(struct envfs_super);
->  
-> -	wbuf = buf;
-> -
->  	while (size) {
->  		ssize_t now = write(envfd, wbuf, size);
->  		if (now < 0) {
->  			ret = -errno;
-> +			perror("write");
->  			goto out;
->  		}
->  
-> @@ -418,14 +463,14 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
->  
->  	ret = 0;
->  
-> -#ifdef CONFIG_NVVAR
-> +#if defined CONFIG_NVVAR && defined __BAREBOX__
->  	if (defenv_path && !strcmp(filename, defenv_path))
->  	    nv_var_set_clean();
->  #endif
->  out:
->  	close(envfd);
->  out1:
-> -	free(buf);
-> +	free(buf_with_efi);
->  #ifdef __BAREBOX__
->  	unlink_recursive(TMPDIR, NULL);
->  #endif
-> @@ -449,6 +494,9 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
->  	int envfd;
->  	int ret = 0;
->  	size_t size, rsize;
-> +#if defined CONFIG_EFI && !defined __BAREBOX__
-> +	uint32_t magic;
-> +#endif
-
-Won't be needed with suggested rework.
-
->  
->  	if (!filename)
->  		filename = default_environment_path_get();
-> @@ -466,6 +514,28 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
->  		return -1;
->  	}
->  
-> +#if defined CONFIG_EFI && !defined __BAREBOX__
-> +	/* check if we reading efi vars */
-> +	ret = pread(envfd, &magic, sizeof(uint32_t),
-> +		    EFIVAR_ATTR_SIZE);
-
-Just make it a single line. With suggested changes above this becomes
-a normal read.
-
-Thanks,
-Ahmad
-
-
-> +	if (ret < sizeof(u_int32_t)) {
-> +		perror("read");
-> +		ret = -errno;
-> +		goto out;
-> +	}
-> +
-> +	if (ENVFS_32(magic) == ENVFS_MAGIC) {
-> +		pr_info("Assuming EFI variable. Skip attributes\n");
-> +		ret = read(envfd, &magic,
-> +			   sizeof(uint32_t)); // simply reuse the memory
-> +		if (ret < sizeof(uint32_t)) {
-> +			perror("read");
-> +			ret = -errno;
-> +			goto out;
-> +		}
-> +	}
-> +#endif
-> +
->  	/* read superblock */
->  	ret = read(envfd, &super, sizeof(struct envfs_super));
->  	if ( ret < sizeof(struct envfs_super)) {
-> diff --git a/scripts/Makefile b/scripts/Makefile
-> index 6d89af7d4f..57d8ddb54d 100644
-> --- a/scripts/Makefile
-> +++ b/scripts/Makefile
-> @@ -30,6 +30,7 @@ hostprogs-always-$(CONFIG_RK_IMAGE)			+= rkimage
->  HOSTCFLAGS_rkimage.o = `$(PKG_CONFIG) --cflags openssl`
->  HOSTLDLIBS_rkimage = `$(PKG_CONFIG) --libs openssl`
->  KBUILD_HOSTCFLAGS += -I$(srctree)/scripts/include/
-> +KBUILD_HOSTCFLAGS += -I$(objtree)/include/generated/
->  HOSTCFLAGS_mxsimage.o = `$(PKG_CONFIG) --cflags openssl`
->  HOSTLDLIBS_mxsimage  = `$(PKG_CONFIG) --libs openssl`
->  HOSTCFLAGS_omap3-usb-loader.o = `$(PKG_CONFIG) --cflags libusb-1.0`
-> @@ -57,6 +58,7 @@ omap4_usbboot-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
->  omap4_usbboot-target-userldlibs += -lpthread `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
->  rk-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
->  rk-usb-loader-target-userldlibs += `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
-> +bareboxenv-target-userccflags += -I$(objtree)/include/generated/
->  
->  userccflags += -I $(srctree)/$(src)/include -isystem $(srctree)/scripts/include
->  
-> diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
-> index e954447015..6b9b8d90c4 100644
-> --- a/scripts/bareboxenv.c
-> +++ b/scripts/bareboxenv.c
-> @@ -117,7 +117,7 @@ static void usage(char *prgname)
->  int main(int argc, char *argv[])
->  {
->  	int opt;
-> -	int save = 0, load = 0, pad = 0, err = 0, fd;
-> +	int save = 0, load = 0, pad = 0, err = 0;
->  	char *filename = NULL, *dirname = NULL;
->  	unsigned envfs_flags = 0;
->  	int verbose = 0;
-> @@ -156,15 +156,6 @@ int main(int argc, char *argv[])
->  		exit(1);
->  	}
->  
-> -	if (save) {
-> -		fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-> -		if (fd < 0) {
-> -			perror("open");
-> -			exit(1);
-> -		}
-> -		close(fd);
-> -	}
-> -
->  	if (save && pad) {
->  		if (truncate(filename, pad)) {
->  			perror("truncate");
-
-
+diff --git a/fs/fs.c b/fs/fs.c
+index 48a6e960e812..4d201d1b0db8 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -782,14 +782,14 @@ static int fs_probe(struct device *dev)
+ 
+ 	fsdev->driver = fsdrv;
+ 
+-	list_add_tail(&fsdev->list, &fs_device_list);
+-
+ 	if (IS_ENABLED(CONFIG_FS_LEGACY) && !fsdev->sb.s_root) {
+ 		ret = fs_init_legacy(fsdev);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
++	list_add_tail(&fsdev->list, &fs_device_list);
++
+ 	return 0;
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
