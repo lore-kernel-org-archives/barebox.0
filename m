@@ -1,65 +1,68 @@
-Delivery-date: Fri, 04 Apr 2025 17:59:59 +0200
+Delivery-date: Fri, 04 Apr 2025 20:15:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u0jSZ-008JH1-1J
+	id 1u0lZT-008M6L-1d
 	for lore@lore.pengutronix.de;
-	Fri, 04 Apr 2025 17:59:59 +0200
+	Fri, 04 Apr 2025 20:15:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u0jSY-0007Bm-Nx
-	for lore@pengutronix.de; Fri, 04 Apr 2025 17:59:59 +0200
+	id 1u0lZS-00078s-SX
+	for lore@pengutronix.de; Fri, 04 Apr 2025 20:15:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=b76SGUMxkzqUkbpudaeVcG35N3oGgVn5QciwJVM+gvY=; b=0LOdn1nRjyHZRgnzFq0/hGztJK
-	VpykuhPNo90Gk+UloqVhnfOT8oP/cGPaBohR1n5BaN/mSwjs778Bv7g3V+eeZO6hwsR2746qMZ3X+
-	d4d25NMtIb9f+65hjG1f8d1atJqis0vOGJ+8QgBfFXNchjV/7tswgzryk4g+CG9GrrvX2SS8V/9zV
-	+JZLuLJ9RzPW4qXiFOlClWjcOIpdr2+XIpQXN54WRPgVkyatxUfvwULsiu63NhqEXmid7M64oOzMy
-	RGbPSH5EHFy1jZ6TGij0+p+gChBcU56jxAF4C11anj1yDoV5+ToCnIS8H+5uMaNCrioNaEAP539Yx
-	APAMtOQQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ZKTXWmjcfj0/WZhLmRwL3Mbifp0VtXAK/syrcmGNNwc=; b=DtlNw0i8l25XXt0b2i7YOdMX4f
+	CUfyUh24Y7yjVmoWvo7NDMtwsCIiu2DYA3AA4uO/OmXpY0K6x22CJYjfg5sR55fsKP6GImkz0ZxQT
+	EGg5YD/CeRagbBWwV+znXPGuvJSE4XpTIpbIMSCX1ohgzMxwvhrZHmDKYcXG8Fipb2x2OYzjJFpdv
+	rrO+JrB3Bnl3BHm/z/+SOdy+GfnKJcsZlh/rqBdJWikjr3pGcNQ6f6fa4EWaP3fbDO41R///QX2HG
+	mfwsf3APwmYllt1e2tkxqvm5lSOtQO6sC0VF+fCEirVVURIwOZbIX7zIUEdETetQJXvEou6hGFDrf
+	DgYdudvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u0jS2-0000000CEpH-32D0;
-	Fri, 04 Apr 2025 15:59:26 +0000
+	id 1u0lYs-0000000CVSM-2r00;
+	Fri, 04 Apr 2025 18:14:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u0jQm-0000000CEe4-3U8k
+	id 1u0lRG-0000000CUYh-2Wgw
 	for barebox@lists.infradead.org;
-	Fri, 04 Apr 2025 15:58:09 +0000
+	Fri, 04 Apr 2025 18:06:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u0jQl-0006z3-7A; Fri, 04 Apr 2025 17:58:07 +0200
+	id 1u0lRE-00068q-Nu; Fri, 04 Apr 2025 20:06:44 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u0jQl-003I9F-05;
-	Fri, 04 Apr 2025 17:58:07 +0200
+	id 1u0lRE-003J25-1m;
+	Fri, 04 Apr 2025 20:06:44 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u0jQk-00C1T9-31;
-	Fri, 04 Apr 2025 17:58:06 +0200
+	id 1u0lRE-00CSZc-1U;
+	Fri, 04 Apr 2025 20:06:44 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  4 Apr 2025 17:58:05 +0200
-Message-Id: <20250404155805.2865565-1-a.fatoum@pengutronix.de>
+Cc: bst@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri,  4 Apr 2025 20:06:40 +0200
+Message-Id: <20250404180640.2962778-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250404180640.2962778-1-a.fatoum@pengutronix.de>
+References: <20250404180640.2962778-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250404_085808_868533_E02016E7 
-X-CRM114-Status: GOOD (  14.95  )
+X-CRM114-CacheID: sfid-20250404_110646_649494_FD43D88A 
+X-CRM114-Status: GOOD (  16.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,141 +84,120 @@ X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] banner: print out enabled sanitizers
+Subject: [PATCH 3/3] commands: findmnt: add option to print kernel root option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-KASAN and UBSAN can currently be detected only indirectly via their test
-commands or in case of KASAN by observing the MMIO reservations.
+There exists currently no way to view the kernel root option that
+barebox would generate when instructed to via global.bootm.root_dev,
+but without actually mounting the file system.
 
-Improve upon this by printing out their status on bootup if they are
-enabled.
+Add a new -K option that can print this. This can be useful in scripts
+that want to fixup the root line, so it's interpreted by the rdinit, but
+not by the kernel.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/start.c          |  2 +-
- common/version.c              | 12 ++++++++++++
- include/linux/kasan-enabled.h | 14 ++++++++++++++
- include/linux/kasan.h         |  1 +
- lib/kasan/generic.c           | 10 ++++++++++
- 5 files changed, 38 insertions(+), 1 deletion(-)
- create mode 100644 include/linux/kasan-enabled.h
+ commands/Kconfig   |  3 ++-
+ commands/findmnt.c | 29 ++++++++++++++++++++++++++---
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 0022ea768b26..aa716a10c7b0 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -118,7 +118,7 @@ EXPORT_SYMBOL_GPL(arm_mem_membase_get);
+diff --git a/commands/Kconfig b/commands/Kconfig
+index f36dcf02a8ea..58e0a8b0bfe4 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -690,7 +690,7 @@ config CMD_FINDMNT
+ 	help
+ 	  Find a file system
  
- static int barebox_memory_areas_init(void)
+-	  Usage: findmnt [ DEVICE | -T FILE ] [-v VARIABLE]
++	  Usage: findmnt [-K] [ DEVICE | -T FILE ] [-v VARIABLE]
+ 
+ 	  findmnt will list all mounted filesystems or search
+ 	  for a filesystem when given the mountpoint or the
+@@ -699,6 +699,7 @@ config CMD_FINDMNT
+ 	  Options:
+ 		-T		mount target file path
+ 		-v VARIABLE	export target to specified VARIABLE
++		-K		output kernel rootarg line
+ 
+ config CMD_PARTED
+ 	tristate
+diff --git a/commands/findmnt.c b/commands/findmnt.c
+index c64ef8760684..21868fcc0e56 100644
+--- a/commands/findmnt.c
++++ b/commands/findmnt.c
+@@ -6,6 +6,7 @@
+ #include <fs.h>
+ #include <errno.h>
+ #include <getopt.h>
++#include <block.h>
+ 
+ static void print_header(bool *header_printed)
  {
--	if (IS_ENABLED(CONFIG_KASAN))
-+	if (kasan_enabled())
- 		request_sdram_region("kasan shadow", kasan_shadow_base,
- 				     mem_malloc_start() - kasan_shadow_base);
+@@ -38,9 +39,13 @@ static int do_findmnt(int argc, char *argv[])
+ 	char *device = NULL;
+ 	int opt, dirfd = AT_FDCWD;
+ 	const char *variable = NULL;
++	bool kernelopt = false;
  
-diff --git a/common/version.c b/common/version.c
-index 0cac5ee609e6..77bc0d3396fb 100644
---- a/common/version.c
-+++ b/common/version.c
-@@ -3,6 +3,7 @@
- #include <common.h>
- #include <generated/compile.h>
- #include <generated/utsrelease.h>
-+#include <linux/kasan-enabled.h>
+-	while ((opt = getopt(argc, argv, "T:v:")) > 0) {
++	while ((opt = getopt(argc, argv, "KT:v:")) > 0) {
+ 		switch(opt) {
++		case 'K':
++			kernelopt = true;
++			break;
+ 		case 'v':
+ 			variable = optarg;
+ 			break;
+@@ -57,7 +62,8 @@ static int do_findmnt(int argc, char *argv[])
+ 	argv += optind;
+ 	argc -= optind;
  
- const char version_string[] =
- 	"barebox " UTS_RELEASE " " UTS_VERSION;
-@@ -19,11 +20,22 @@ EXPORT_SYMBOL(buildsystem_version_string);
- #ifdef CONFIG_BANNER
- void barebox_banner (void)
- {
-+	bool have_asan, have_ubsan;
+-	if ((target && argc > 0) || (!target && argc > 1))
++	if ((target && argc > 0) || (!target && argc > 1) ||
++	    (target && kernelopt) || (kernelopt && argc != 1))
+ 		return COMMAND_ERROR_USAGE;
+ 
+ 	if (variable)
+@@ -77,6 +83,22 @@ static int do_findmnt(int argc, char *argv[])
+ 		return COMMAND_ERROR_USAGE;
+ 	}
+ 
++	if (kernelopt) {
++		struct cdev *cdev;
++		char *root_arg;
++		int ret;
 +
- 	printf("\n\n");
- 	pr_info("%s\n", version_string);
- 	if (strlen(buildsystem_version_string) > 0)
- 		pr_info("Buildsystem version: %s\n", buildsystem_version_string);
- 	printf("\n\n");
- 	pr_info("Board: %s\n", barebox_get_model());
++		cdev = cdev_open_by_name(device, O_RDONLY);
++		if (!cdev)
++			return COMMAND_ERROR;;
 +
-+	have_asan = kasan_enabled();
-+	have_ubsan = IS_ENABLED(CONFIG_UBSAN);
++		root_arg = cdev_get_linux_rootarg(cdev);
++		ret = cmd_export_val(variable, root_arg);
++		free(root_arg);
 +
-+	if (have_asan || have_ubsan)
-+		pr_info("Active sanitizers:%s%s%s\n",
-+			have_asan && IS_ENABLED(CONFIG_KASAN) ? " K" : " ",
-+			have_asan ? "ASAN" : "",
-+			have_ubsan ? " UBSAN" : "");
- }
- #endif
-diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-new file mode 100644
-index 000000000000..890f6e844e1b
---- /dev/null
-+++ b/include/linux/kasan-enabled.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_KASAN_ENABLED_H
-+#define _LINUX_KASAN_ENABLED_H
++		return ret;
++	}
 +
-+#ifdef CONFIG_KASAN
-+bool kasan_enabled(void);
-+#else /* CONFIG_KASAN */
-+static inline bool kasan_enabled(void)
-+{
-+	return IS_ENABLED(CONFIG_ASAN);
-+}
-+#endif /* CONFIG_KASAN */
-+
-+#endif /* LINUX_KASAN_ENABLED_H */
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index 8afdab7c9d4b..fa5ee45d4cf3 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -3,6 +3,7 @@
- #define _LINUX_KASAN_H
+ 	for_each_fs_device(target) {
+ 		if (!device || streq_ptr(target->path, device) ||
+ 		    streq_ptr(target->backingstore, device)) {
+@@ -115,12 +137,13 @@ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-T",  "mount target file path")
+ BAREBOX_CMD_HELP_OPT ("-v VARIABLE",  "export target to specified VARIABLE")
++BAREBOX_CMD_HELP_OPT ("-K",  "output kernel rootarg line")
+ BAREBOX_CMD_HELP_END
  
- #include <linux/types.h>
-+#include <linux/kasan-enabled.h>
- 
- /*
-  * On 64bit architectures tlsf aligns all allocations to a 64bit
-diff --git a/lib/kasan/generic.c b/lib/kasan/generic.c
-index 2432f9274401..66eebac15600 100644
---- a/lib/kasan/generic.c
-+++ b/lib/kasan/generic.c
-@@ -14,6 +14,8 @@
-  *
-  */
- 
-+#define pr_fmt(fmt) "kasan: generic: " fmt
-+
- #include <common.h>
- 
- #include "kasan.h"
-@@ -149,6 +151,11 @@ static __always_inline bool memory_is_poisoned(unsigned long addr, size_t size)
- 
- static bool kasan_initialized;
- 
-+bool kasan_enabled(void)
-+{
-+	return kasan_initialized;
-+}
-+
- static __always_inline bool check_memory_region_inline(unsigned long addr,
- 						size_t size, bool write,
- 						unsigned long ret_ip)
-@@ -223,6 +230,9 @@ void kasan_init(unsigned long membase, unsigned long memsize,
- 
- 	kasan_unpoison_shadow((void *)membase, memsize);
- 	kasan_initialized = true;
-+
-+	pr_debug("initialized for 0x%08lx-0x%lx with shadow at 0x%08lx\n",
-+		 kasan_shadow_start, kasan_shadowed_end, kasan_shadow_base);
- }
- 
- bool __no_sanitize_address check_memory_region(unsigned long addr,
+ BAREBOX_CMD_START(findmnt)
+ 	.cmd		= do_findmnt,
+ 	BAREBOX_CMD_DESC("find a file system")
+-	BAREBOX_CMD_OPTS("[ DEVICE | -T FILE ] [-v VAR]")
++	BAREBOX_CMD_OPTS("[-K] [ DEVICE | -T FILE ] [-v VAR]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
+ 	BAREBOX_CMD_HELP(cmd_findmnt_help)
+ BAREBOX_CMD_END
 -- 
 2.39.5
 
