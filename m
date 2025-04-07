@@ -1,72 +1,68 @@
-Delivery-date: Mon, 07 Apr 2025 15:12:17 +0200
+Delivery-date: Mon, 07 Apr 2025 15:15:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u1mGv-009Yvt-2b
+	id 1u1mJr-009Z2J-2k
 	for lore@lore.pengutronix.de;
-	Mon, 07 Apr 2025 15:12:17 +0200
+	Mon, 07 Apr 2025 15:15:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u1mGv-0002gs-76
-	for lore@pengutronix.de; Mon, 07 Apr 2025 15:12:17 +0200
+	id 1u1mJr-0003Hc-AU
+	for lore@pengutronix.de; Mon, 07 Apr 2025 15:15:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8dCTvmpDmW1xgK4Fo6SIksVZIRClkWu9fETPnkgzfAM=; b=pDkLVW52NEKBZJuokRZvIwSkTG
-	G5JyETgtOXGPr9G5XgZj9ZQA4JZ5U/B798+DSL2ZfBqvBxzpZGkme+zBbztAIJ2ejZEBSzyI8nmEk
-	+ObGNxxq8O4jstLL4L9hNXIoFZalHK4vVW35nj0EoAxJ7jHSZFyh3qYWnADp+PfHhya1PD014A+Mg
-	wn9cCM9MOFBNDd0EwnfpiB/etUBrpkvWXtuG73VywtAWDTmYdoToYFFF2IXoYFPDQ43HItUkhOpcW
-	qkCYYR6W/AdzsL4NOhQ+BZK12gqofXowI6+hp0a3SnbW0kHXKEG5+YUqvAu1ro6dHdaHybR9vLkdz
-	QTAUYqQw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=L6lD1yYyxvmQ1Xy6ReuLTBulY9FifKw7vhgk2RXJen0=; b=IJffNBkfEaNpP/GjyMpTCVD7Wd
+	hWpmn9pdz2zcsxfYXL1ZR/7D+MnEpnd27vDaQfAQ/g/UwCUztwt9fZ5YX9Z6cIawln08KofmyulqJ
+	Zr4Kq+KI4P/mQq6qEPbEbGOjnBpXqfBrHFMXymHvDDhAfuxtRFNqeOJC4pHGNS9pPMJ5I49ivy6yp
+	fYNHEUDIUa4dbHDOeV7HKjzOJImIQV8bKfmamTXRoydE2N/zGN0TG17XXFaMof86OX67tlZ9k/Vwo
+	YUFSrJeWhWzjJINxbgav0c1llHN+HMsZgG7fr+5qVrTrzwnRAZQffGdYzqQDPTFJmHHBhrFbOUr51
+	c6R34n5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u1mGT-00000000R7E-3vB4;
-	Mon, 07 Apr 2025 13:11:49 +0000
+	id 1u1mJQ-00000000Rvw-3hhe;
+	Mon, 07 Apr 2025 13:14:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u1mEl-00000000Qja-2jNq
+	id 1u1mJO-00000000RuS-0VNa
 	for barebox@lists.infradead.org;
-	Mon, 07 Apr 2025 13:10:04 +0000
+	Mon, 07 Apr 2025 13:14:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u1mEi-0002Ie-Rs; Mon, 07 Apr 2025 15:10:00 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u1mJM-00039s-PI; Mon, 07 Apr 2025 15:14:48 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u1mEi-003lig-2C;
-	Mon, 07 Apr 2025 15:10:00 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u1mEi-004hdx-1r;
-	Mon, 07 Apr 2025 15:10:00 +0200
-Date: Mon, 7 Apr 2025 15:10:00 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u1mJM-003ljc-1q;
+	Mon, 07 Apr 2025 15:14:48 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u1mJM-00D2eC-1Z;
+	Mon, 07 Apr 2025 15:14:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: "open list:BAREBOX" <barebox@lists.infradead.org>
-Message-ID: <Z_POqHnz7VBpIqvB@pengutronix.de>
-References: <20250407-ratp-fixes-v1-0-4c2501a83bca@pengutronix.de>
- <20250407-ratp-fixes-v1-1-4c2501a83bca@pengutronix.de>
- <ef9dc94a-a756-4903-8632-e94a89d83ba6@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250403083516.1838668-1-a.fatoum@pengutronix.de>
+References: <20250403083516.1838668-1-a.fatoum@pengutronix.de>
+Message-Id: <174403168847.3105739.6289069272377089697.b4-ty@pengutronix.de>
+Date: Mon, 07 Apr 2025 15:14:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ef9dc94a-a756-4903-8632-e94a89d83ba6@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250407_061003_699646_4A2A6BEC 
-X-CRM114-Status: GOOD (  24.56  )
+X-CRM114-CacheID: sfid-20250407_061450_162978_F8585F0E 
+X-CRM114-Status: UNSURE (   6.83  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,68 +84,31 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] ratp: Drop wrong alignment annotation
+Subject: Re: [PATCH] tee: optee: of_fixup: allow static shared memory size
+ of 0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Apr 07, 2025 at 09:59:13AM +0200, Ahmad Fatoum wrote:
-> On 07.04.25 09:29, Sascha Hauer wrote:
-> > When ratp command handling was introduced in ff612b866f301 ("ratp:
-> > implement generic command support") we had an explicit 64bit alignment
-> 
-> s/64bit/64 byte/
 
-FIxed while applying, thanks
+On Thu, 03 Apr 2025 10:35:16 +0200, Ahmad Fatoum wrote:
+> We don't necessarily need a static shared memory region for
+> communication with OP-TEE. Both Linux and barebox support
+> dynamic shared memory communication and barebox doesn't even
+> support static shared memory.
+> 
+> Make this clearer in the documentation and adapt the fixup code,
+> so a shared memory size of zero is handled as one would expect.
+> 
+> [...]
 
-Sascha
+Applied, thanks!
 
-> 
-> > for the ratp command array in sandbox. This was removed in 52e5c35671
-> > ("X86: lds: remove unnecessary alignments"). With this it can happen
-> > that the ratp command section starts at a non 64bit aligned address, but
-> > the first command in that section will be placed at the first 64bit
-> > boundary. __barebox_ratp_cmd_start will no longer point to the actual
-> > command then and the array iteration fails.
-> > 
-> > Just drop the wrong alignment annotation.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  include/ratp_bb.h | 7 +------
-> >  1 file changed, 1 insertion(+), 6 deletions(-)
-> > 
-> > diff --git a/include/ratp_bb.h b/include/ratp_bb.h
-> > index 418be6fe7b..c6c7c4bc23 100644
-> > --- a/include/ratp_bb.h
-> > +++ b/include/ratp_bb.h
-> > @@ -57,12 +57,7 @@ struct ratp_command {
-> >  			       int req_len,
-> >  			       struct ratp_bb **rsp,
-> >  			       int *rsp_len);
-> > -}
-> > -#ifdef __x86_64__
-> > -/* This is required because the linker will put symbols on a 64 bit alignment */
-> > -__attribute__((aligned(64)))
-> > -#endif
-> > -;
-> > +};
-> >  
-> >  #define BAREBOX_RATP_CMD_START(_name)							\
-> >  extern const struct ratp_command __barebox_ratp_cmd_##_name;				\
-> > 
-> 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+[1/1] tee: optee: of_fixup: allow static shared memory size of 0
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7188f5156dbd (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
