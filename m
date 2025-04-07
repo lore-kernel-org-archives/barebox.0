@@ -1,65 +1,68 @@
-Delivery-date: Mon, 07 Apr 2025 12:27:11 +0200
+Delivery-date: Mon, 07 Apr 2025 12:35:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u1jh9-009VlP-03
+	id 1u1jp5-009VqF-0I
 	for lore@lore.pengutronix.de;
-	Mon, 07 Apr 2025 12:27:11 +0200
+	Mon, 07 Apr 2025 12:35:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u1jh8-0002i7-9C
-	for lore@pengutronix.de; Mon, 07 Apr 2025 12:27:10 +0200
+	id 1u1jp4-00041Y-JN
+	for lore@pengutronix.de; Mon, 07 Apr 2025 12:35:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=H5EBxCuAg9UjXHPr5II9d16/Wzuf25jVvuOzuHUlSsQ=; b=1F9H9HI/0WY+0LLpHf6Zo9i/f2
-	GD5kyfJMzAUbzlnd4/JYHr0jgRcW2ProgPcGv30MeGCwa70LRB3h4Znc9ZUAr/qQqoZQAwiHwMTw2
-	gNy6N0Ea3XaH4Qik53GWvxU+AkrFOBirZwUFWlnH07L9Z+MHJ31kb1gje56cF8rP6f7SwKb/HdoBa
-	Aes6KqS+dQmLvSX0STGR8vzG0XeA3JFspVTm//bn3v6+iNYu7X9zkfyTba1ygBvEsVBFmPgvS/79H
-	qPUOjyjaL6ws1WZ+gxkaHWM7zLAF5kMCyMqUuqYM7YNwAUFUGuwuldyvjgTH5Joe9GKu2C8PUAsek
-	NXYc3lUg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=PCdOB1F2VE6os0997wX1wZdPjW8H9GIDx1/Rf/wQcIs=; b=IOD+cd5qNPBI2e+Dlbyfw1JeG6
+	YuqtE8LqZLDokITPiIP9oUmCJzdEvjh5Y5O33gQYiwG2Sfswtz+has2bbtCUsTDIRPsKW4KZZn6mA
+	H4OBNocm+aNPPkndlAFSblRxdZ2+eAxrmENj/dfOemmygkzXP/ZQMeJWvnfAha8cCSfGcqMzun0g+
+	eodfTggJLghcUeNPjWzkrCFEf9B2BZ3RxlaKr63LPBGkX+XLUZxo1EkmG2oDNk9NQTMcZddYsZqEI
+	viN9WK2nK854ThpYQv7wwRu2cTvLAiN0JLt2SBSof3ZiJWxBOKosvOQr8gmecpQCI98d0WyAqP2sH
+	ItGGY02w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u1jgQ-0000000HN1Q-0G34;
-	Mon, 07 Apr 2025 10:26:26 +0000
+	id 1u1joe-0000000HOYN-3LTY;
+	Mon, 07 Apr 2025 10:34:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u1jfd-0000000HMui-3E0P
+	id 1u1job-0000000HOXp-41t8
 	for barebox@lists.infradead.org;
-	Mon, 07 Apr 2025 10:25:39 +0000
+	Mon, 07 Apr 2025 10:34:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u1jfc-0002N6-C3; Mon, 07 Apr 2025 12:25:36 +0200
+	id 1u1joZ-0003vg-O1; Mon, 07 Apr 2025 12:34:51 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u1jfc-003k9D-0a;
-	Mon, 07 Apr 2025 12:25:36 +0200
+	id 1u1joZ-003kH6-1o;
+	Mon, 07 Apr 2025 12:34:51 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u1jfc-00Dnp4-0I;
-	Mon, 07 Apr 2025 12:25:36 +0200
+	id 1u1joZ-00Duic-1W;
+	Mon, 07 Apr 2025 12:34:51 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  7 Apr 2025 12:25:34 +0200
-Message-Id: <20250407102535.3289549-1-a.fatoum@pengutronix.de>
+Date: Mon,  7 Apr 2025 12:34:50 +0200
+Message-Id: <20250407103450.3316029-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250407102535.3289549-2-a.fatoum@pengutronix.de>
+References: <20250407102535.3289549-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250407_032537_808985_78663D25 
-X-CRM114-Status: GOOD (  16.15  )
+X-CRM114-CacheID: sfid-20250407_033453_994019_43343004 
+X-CRM114-Status: UNSURE (   7.97  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,195 +84,27 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 1/2] bootm: associate bootm overrides with struct bootentry
+Subject: [PATCH] fixup! bootm: remove ability for late override of bootm.image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The boot override logic is currently controlled by the boot command,
-which makes it cumbersome to exercise from custom bootentry providers.
-
-A more natural place would be associating it with the boot entry logic,
-so move it there.
-
-No functional change.
-
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/boot.c           | 11 ++---------
- common/boot.c             |  4 ++++
- common/bootm.c            |  3 ++-
- include/boot.h            |  2 ++
- include/bootm-overrides.h | 30 ++++++++++++++++++++++++++++++
- include/bootm.h           | 18 ------------------
- 6 files changed, 40 insertions(+), 28 deletions(-)
- create mode 100644 include/bootm-overrides.h
+ common/bootm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/commands/boot.c b/commands/boot.c
-index 820708380191..aad01fdc6c95 100644
---- a/commands/boot.c
-+++ b/commands/boot.c
-@@ -55,11 +55,6 @@ static int boot_add_override(struct bootm_overrides *overrides, char *var)
- 	return 0;
- }
- 
--static inline bool boot_has_overrides(const struct bootm_overrides *overrides)
--{
--	return overrides->os_file || overrides->oftree_file || overrides->initrd_file;
--}
--
- static int do_boot(int argc, char *argv[])
- {
- 	char *freep = NULL;
-@@ -128,8 +123,6 @@ static int do_boot(int argc, char *argv[])
- 	}
- 
- 	entries = bootentries_alloc();
--	if (boot_has_overrides(&overrides))
--		bootm_set_overrides(&overrides);
- 
- 	while ((name = next(&handle)) != NULL) {
- 		if (!*name)
-@@ -142,6 +135,8 @@ static int do_boot(int argc, char *argv[])
- 			continue;
- 
- 		bootentries_for_each_entry(entries, entry) {
-+			bootm_merge_overrides(&entry->overrides, &overrides);
-+
- 			ret = boot_entry(entry, verbose, dryrun);
- 			if (!ret)
- 				goto out;
-@@ -164,8 +159,6 @@ static int do_boot(int argc, char *argv[])
- 
- 	ret = 0;
- out:
--	if (boot_has_overrides(&overrides))
--		bootm_unset_overrides();
- 	bootentries_free(entries);
- 	free(freep);
- 
-diff --git a/common/boot.c b/common/boot.c
-index 2530a5bbeeac..e6edb816eee0 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -162,10 +162,14 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
- 		}
- 	}
- 
-+	bootm_set_overrides(&be->overrides);
-+
- 	ret = be->boot(be, verbose, dryrun);
- 	if (ret && ret != -ENOMEDIUM)
- 		pr_err("Booting entry '%s' failed: %pe\n", be->title, ERR_PTR(ret));
- 
-+	bootm_set_overrides(NULL);
-+
- 	globalvar_set_match("linux.bootargs.dyn.", "");
- 
- 	return ret;
 diff --git a/common/bootm.c b/common/bootm.c
-index fe4d51681d73..6b63987f0900 100644
+index 3693a0e8d68a..05fb5379c8ec 100644
 --- a/common/bootm.c
 +++ b/common/bootm.c
-@@ -2,6 +2,7 @@
+@@ -257,7 +257,6 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 	if (IS_ENABLED(CONFIG_PE) && data->pe)
+ 		return pe_load(data->pe);
  
- #include <common.h>
- #include <bootm.h>
-+#include <bootm-overrides.h>
- #include <fs.h>
- #include <malloc.h>
- #include <memory.h>
-@@ -1004,7 +1005,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- #ifdef CONFIG_BOOT_OVERRIDE
- void bootm_set_overrides(const struct bootm_overrides *overrides)
- {
--	bootm_overrides = *overrides;
-+	bootm_overrides = overrides ? *overrides : (struct bootm_overrides){};
- }
- #endif
+-os_file:
+ 	if (!data->os_file)
+ 		return -EINVAL;
  
-diff --git a/include/boot.h b/include/boot.h
-index 53ad1360a5f3..9af397db5b62 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -5,6 +5,7 @@
- #include <of.h>
- #include <menu.h>
- #include <environment.h>
-+#include <bootm-overrides.h>
- 
- #ifdef CONFIG_FLEXIBLE_BOOTARGS
- const char *linux_bootargs_get(void);
-@@ -33,6 +34,7 @@ struct bootentry {
- 	char *description;
- 	int (*boot)(struct bootentry *entry, int verbose, int dryrun);
- 	void (*release)(struct bootentry *entry);
-+	struct bootm_overrides overrides;
- };
- 
- int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry);
-diff --git a/include/bootm-overrides.h b/include/bootm-overrides.h
-new file mode 100644
-index 000000000000..231c913709e2
---- /dev/null
-+++ b/include/bootm-overrides.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __BOOTM_OVERRIDES_H
-+#define __BOOTM_OVERRIDES_H
-+
-+struct bootm_overrides {
-+	const char *os_file;
-+	const char *oftree_file;
-+	const char *initrd_file;
-+};
-+
-+#ifdef CONFIG_BOOT_OVERRIDE
-+void bootm_set_overrides(const struct bootm_overrides *overrides);
-+#else
-+static inline void bootm_set_overrides(const struct bootm_overrides *overrides) {}
-+#endif
-+
-+static inline void bootm_merge_overrides(struct bootm_overrides *dst,
-+					 const struct bootm_overrides *src)
-+{
-+	if (!IS_ENABLED(CONFIG_BOOT_OVERRIDE))
-+		return;
-+	if (src->os_file)
-+		dst->os_file = src->os_file;
-+	if (src->oftree_file)
-+		dst->oftree_file = src->oftree_file;
-+	if (src->initrd_file)
-+		dst->initrd_file = src->initrd_file;
-+}
-+
-+#endif
-diff --git a/include/bootm.h b/include/bootm.h
-index 0e5e99773a26..b86d06b0f55d 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -160,22 +160,4 @@ void bootm_force_signed_images(void);
- 
- void *booti_load_image(struct image_data *data, phys_addr_t *oftree);
- 
--struct bootm_overrides {
--	const char *os_file;
--	const char *oftree_file;
--	const char *initrd_file;
--};
--
--#ifdef CONFIG_BOOT_OVERRIDE
--void bootm_set_overrides(const struct bootm_overrides *overrides);
--#else
--static inline void bootm_set_overrides(const struct bootm_overrides *overrides) {}
--#endif
--
--static inline void bootm_unset_overrides(void)
--{
--	struct bootm_overrides overrides = {};
--	bootm_set_overrides(&overrides);
--}
--
- #endif /* __BOOTM_H */
 -- 
 2.39.5
 
