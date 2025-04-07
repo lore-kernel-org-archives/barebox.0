@@ -1,64 +1,67 @@
-Delivery-date: Mon, 07 Apr 2025 11:00:36 +0200
+Delivery-date: Mon, 07 Apr 2025 12:27:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u1iLM-009U1N-2D
+	id 1u1jh5-009Vl1-2I
 	for lore@lore.pengutronix.de;
-	Mon, 07 Apr 2025 11:00:36 +0200
+	Mon, 07 Apr 2025 12:27:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u1iLM-00050V-4p
-	for lore@pengutronix.de; Mon, 07 Apr 2025 11:00:36 +0200
+	id 1u1jh5-0002hH-0q
+	for lore@pengutronix.de; Mon, 07 Apr 2025 12:27:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=XlKyjjPAq6Lbsy6VBtHsJ+hXC3ntujNQdQ2UeNS0CJU=; b=26FXxHIYdWUvkqFbxdPWRPIxU0
-	/c6eRLHzTlAh9cm8yvj2+JZNS7875bnYUk34o0yx963edpaQVCYiZjW4UpGvqarbo6htmzcxwsdQp
-	2SU2YmotQ0vaC+6GrNV03QiTnNnsAV6NDDa+/h64PQM/+OmNpvLv8cJBef7jX/d2ParenKnlr0I9m
-	Q2P2T6RgTNF2ru/EXxf1JXLZGGxUYhoZMud5CkJAnonPp4ahvT/3flZDw17Yq5o74x6YzN0G73D2q
-	0kskQfRF7i9JRo2ZHBo3XuVah+8h5dBjSeoUwlGkecCsyjm+wqIS4nvCbtgwiVUrmy6ANaqkfIipk
-	DaTkbL6A==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=I3dcbHgkXAuonJhwAgFnU+7JjmmTorwvz9xKbIj5Mro=; b=YvXyeaFL7M2+79A5tjrdNrCg2i
+	edVmYPMegf7Rw+4tgWrilO0pEy3Vgf1tLgzk22k6ClUFjG5yAzWdHZjg/zUG0KKDuetADI/6td4k4
+	4jsVN/Ckq7a8TcW1mDdVAuat+fkU7yhg4K5FR0x6OzZERrIMg+4rEbSWmmvHqF1hWO2OTyMqWiNO0
+	JqDwHM52nCKArn61HO+yeDOK973cF8Q8E74YLFJ8isyyQwYKD/RGpa93Wd7mNp/6aapNJYMVEwZqF
+	s0FeaXrr0NnKSpXckDNVXejaseln0GTsyvt9Bkf5LhZ+L3ObcueqNENHGhqthmNLFMtmGhf8eVqJS
+	ECNW7YnA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u1iKl-0000000H6wd-41yJ;
-	Mon, 07 Apr 2025 08:59:59 +0000
+	id 1u1jgQ-0000000HN1e-2KuG;
+	Mon, 07 Apr 2025 10:26:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u1iGi-0000000H5uE-2Ipw
+	id 1u1jfd-0000000HMuf-3Dig
 	for barebox@lists.infradead.org;
-	Mon, 07 Apr 2025 08:55:49 +0000
+	Mon, 07 Apr 2025 10:25:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u1iGh-00047s-9N; Mon, 07 Apr 2025 10:55:47 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u1jfc-0002N7-DY; Mon, 07 Apr 2025 12:25:36 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u1iGh-003jM8-0J;
-	Mon, 07 Apr 2025 10:55:47 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u1iGg-0054ay-3B;
-	Mon, 07 Apr 2025 10:55:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  7 Apr 2025 10:55:46 +0200
-Message-Id: <20250407085546.1209286-1-s.hauer@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u1jfc-003k9E-0j;
+	Mon, 07 Apr 2025 12:25:36 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u1jfc-00Dnp4-0R;
+	Mon, 07 Apr 2025 12:25:36 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  7 Apr 2025 12:25:35 +0200
+Message-Id: <20250407102535.3289549-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250407102535.3289549-1-a.fatoum@pengutronix.de>
+References: <20250407102535.3289549-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250407_015548_584482_9EBC30F9 
-X-CRM114-Status: GOOD (  10.77  )
+X-CRM114-CacheID: sfid-20250407_032537_806015_1696BD81 
+X-CRM114-Status: GOOD (  16.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,38 +83,130 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] blspec: fix dryrun support
+Subject: [PATCH master 2/2] bootm: remove ability for late override of bootm.image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The dryrun field set in the static initializer is immediately
-overwritten in bootm_data_init_defaults(), so the dryrun parameter ends
-up without effect. Set it after calling bootm_data_init_defaults().
+Overriding struct image_data::os_file at the location where we do it
+now is not robust as the bootm handler is chosen by then and there
+is no check if the override image is suitable for the original handler.
 
-Fixes: 491a885e721e ("bootm: make dryrun controllable via global variable")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+This can't be fixed in a straight-forward manner by moving the override
+earlier as that would break appendroot for example.
+
+To be able to do this robustly, some rework of the boot code may be in
+order, so for now allow only overriding the oftree and the initrd.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/blspec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ commands/boot.c           |  4 ++--
+ common/bootm.c            | 35 +++++++++--------------------------
+ include/bootm-overrides.h |  3 ---
+ 3 files changed, 11 insertions(+), 31 deletions(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 1cbadf8963..c35f2b670e 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -77,11 +77,10 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
- 	const char *overlays;
- 	const char *appendroot;
- 	char *old_fws, *fws;
--	struct bootm_data data = {
--		.dryrun = dryrun,
--	};
-+	struct bootm_data data = {};
+diff --git a/commands/boot.c b/commands/boot.c
+index aad01fdc6c95..07f4db4b8033 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -43,7 +43,7 @@ static int boot_add_override(struct bootm_overrides *overrides, char *var)
+ 	if (!strcmp(var, "bootm.image")) {
+ 		if (isempty(val))
+ 			return -EINVAL;
+-		overrides->os_file = val;
++		return -ENOSYS;
+ 	} else if (!strcmp(var, "bootm.oftree")) {
+ 		overrides->oftree_file = val;
+ 	} else if (!strcmp(var, "bootm.initrd")) {
+@@ -191,7 +191,7 @@ BAREBOX_CMD_HELP_OPT ("-m","Show a menu with boot options")
+ BAREBOX_CMD_HELP_OPT ("-M INDEX","Show a menu with boot options with entry INDEX preselected")
+ BAREBOX_CMD_HELP_OPT ("-w SECS","Start watchdog with timeout SECS before booting")
+ #ifdef CONFIG_BOOT_OVERRIDE
+-BAREBOX_CMD_HELP_OPT ("-o VAR[=VAL]","override VAR (bootm.{image,oftree,initrd}) with VAL")
++BAREBOX_CMD_HELP_OPT ("-o VAR[=VAL]","override VAR (bootm.{oftree,initrd}) with VAL")
+ BAREBOX_CMD_HELP_OPT ("            ","if VAL is not specified, the value of VAR is taken")
+ #endif
+ BAREBOX_CMD_HELP_OPT ("-t SECS","specify timeout in SECS")
+diff --git a/common/bootm.c b/common/bootm.c
+index 6b63987f0900..caecff7d93c8 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -175,12 +175,6 @@ static bool bootm_get_override(char **oldpath, const char *newpath)
+  */
+ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ {
+-	if (bootm_get_override(&data->os_file, bootm_overrides.os_file)) {
+-		if (load_address == UIMAGE_INVALID_ADDRESS)
+-			return -EINVAL;
+-		goto os_file;
+-	}
+-
+ 	if (data->os_res)
+ 		return 0;
  
- 	bootm_data_init_defaults(&data);
-+	data.dryrun = max(dryrun, data.dryrun);
- 	data.os_file = data.oftree_file = data.initrd_file = NULL;
- 	data.verbose = max(verbose, data.verbose);
+@@ -569,19 +563,15 @@ int bootm_get_os_size(struct image_data *data)
+ 	struct stat s;
+ 	int ret;
  
+-	if (bootm_get_override(NULL, bootm_overrides.os_file)) {
+-		os_file = bootm_overrides.os_file;
+-	} else {
+-		if (data->elf)
+-			return elf_get_mem_size(data->elf);
+-		if (image_is_uimage(data))
+-			return uimage_get_size(data->os, uimage_part_num(data->os_part));
+-		if (data->os_fit)
+-			return data->fit_kernel_size;
+-		if (!data->os_file)
+-			return -EINVAL;
+-		os_file = data->os_file;
+-	}
++	if (data->elf)
++		return elf_get_mem_size(data->elf);
++	if (image_is_uimage(data))
++		return uimage_get_size(data->os, uimage_part_num(data->os_part));
++	if (data->os_fit)
++		return data->fit_kernel_size;
++	if (!data->os_file)
++		return -EINVAL;
++	os_file = data->os_file;
+ 
+ 	ret = stat(os_file, &s);
+ 	if (ret)
+@@ -949,13 +939,6 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		printf("Passing control to %s handler\n", handler->name);
+ 	}
+ 
+-	if (bootm_get_override(&data->os_file, bootm_overrides.os_file)) {
+-		if (data->os_res) {
+-			release_sdram_region(data->os_res);
+-			data->os_res = NULL;
+-		}
+-	}
+-
+ 	bootm_get_override(&data->oftree_file, bootm_overrides.oftree_file);
+ 
+ 	if (bootm_get_override(&data->initrd_file, bootm_overrides.initrd_file)) {
+diff --git a/include/bootm-overrides.h b/include/bootm-overrides.h
+index 231c913709e2..19557f63acd9 100644
+--- a/include/bootm-overrides.h
++++ b/include/bootm-overrides.h
+@@ -3,7 +3,6 @@
+ #define __BOOTM_OVERRIDES_H
+ 
+ struct bootm_overrides {
+-	const char *os_file;
+ 	const char *oftree_file;
+ 	const char *initrd_file;
+ };
+@@ -19,8 +18,6 @@ static inline void bootm_merge_overrides(struct bootm_overrides *dst,
+ {
+ 	if (!IS_ENABLED(CONFIG_BOOT_OVERRIDE))
+ 		return;
+-	if (src->os_file)
+-		dst->os_file = src->os_file;
+ 	if (src->oftree_file)
+ 		dst->oftree_file = src->oftree_file;
+ 	if (src->initrd_file)
 -- 
 2.39.5
 
