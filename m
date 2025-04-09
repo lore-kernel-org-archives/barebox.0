@@ -1,66 +1,65 @@
-Delivery-date: Wed, 09 Apr 2025 08:57:01 +0200
+Delivery-date: Wed, 09 Apr 2025 10:32:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u2PMr-00AJTC-1d
+	id 1u2QrI-00ALCI-1X
 	for lore@lore.pengutronix.de;
-	Wed, 09 Apr 2025 08:57:01 +0200
+	Wed, 09 Apr 2025 10:32:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u2PMq-00072S-Ul
-	for lore@pengutronix.de; Wed, 09 Apr 2025 08:57:01 +0200
+	id 1u2QrH-0003m1-UR
+	for lore@pengutronix.de; Wed, 09 Apr 2025 10:32:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=RF4lbUhwxNPVfSH/HqnpDXqgJlRi9JFu1j1N8K68ftE=; b=p3ohafBHYZzUgGQhUiurq9/T9e
-	86qV2lZGFKC29B0u+JDlyD9ExchOrXCRwJ1s1oi3/kHMnuQpO6eoeNdidLUF98Z8Nb6rcQyIDdUe7
-	+whjyIt/3MnBM5MCTSBCKINnB+M6/7b694Fei680WGZFUZfm8371XbEdwJc5a9c1dXnfrwiuJZVof
-	SmPeQUJ4l2HNGiEuETFLSVEfU92nUVHAaSHNX38VUppAvqhW+6nz2mo0mP/SRVOSeI7/HVMMem0Ni
-	DyZw0wA/gzrTQtat4TtT3BuyT9GGVTI4BfPDlzNJ7u3o0P4DDrVU2bX4nLuCRkY798Jv0nBoKAR4u
-	+PVQDI8A==;
+	bh=0rtt7hrW6fhbWZjETprddwJ2gUy9hd2P+rjPrY3yneY=; b=2blqmm6mSm/u05sk4cIh/KIM5H
+	Doiaal6+8QucFOJcza8VbRUU4FPGqgkb5av948zKt+QTPJstpaPPYQnTgQ5mtpc9RD3Uh13eLCbWO
+	ixfG+MSG4RkZYzri7iZQFMi8LAe71Av1NfzfpXFZgfYV3hCvwCdxQw5u1Iplbf9XgLrOktWnxp5RF
+	m5xXQ409MMVXWpu/8B8VJBj55y3N0E2IwcDFwMVGfJiZcLRcixpP2EUDEL4AaIvSXchwPycb8Bz9m
+	mcaodjAn3F2GZWN+MJ6s0kzBo6JfaJ8+gJzQYTwawboAY7ymOQlHWwY7LzDDbk44p52LL4/SoVcJw
+	2MpK9QjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2PMB-00000006KxV-3Jv3;
-	Wed, 09 Apr 2025 06:56:19 +0000
+	id 1u2Qqi-00000006ae4-1O9q;
+	Wed, 09 Apr 2025 08:31:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2PM7-00000006Kvi-3GfF
+	id 1u2QpG-00000006aOL-0B3e
 	for barebox@lists.infradead.org;
-	Wed, 09 Apr 2025 06:56:18 +0000
+	Wed, 09 Apr 2025 08:30:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u2PM5-0006jl-Ge; Wed, 09 Apr 2025 08:56:13 +0200
+	id 1u2QpE-0002ud-0Z; Wed, 09 Apr 2025 10:30:24 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u2PM5-0043ny-13;
-	Wed, 09 Apr 2025 08:56:13 +0200
+	id 1u2QpD-0044a3-2f;
+	Wed, 09 Apr 2025 10:30:23 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u2PM5-007lip-0h;
-	Wed, 09 Apr 2025 08:56:13 +0200
+	id 1u2QpD-008seP-2K;
+	Wed, 09 Apr 2025 10:30:23 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  9 Apr 2025 08:56:12 +0200
-Message-Id: <20250409065612.1851282-1-a.fatoum@pengutronix.de>
+Date: Wed,  9 Apr 2025 10:30:23 +0200
+Message-Id: <20250409083023.2116661-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250408_235615_825717_96CF832A 
-X-CRM114-Status: UNSURE (   8.78  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250409_013026_094534_8A86AF5A 
+X-CRM114-Status: GOOD (  10.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,33 +81,34 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] include: linux/limits: add definition for RESOURCE_SIZE_MAX
+Subject: [PATCH] bootm: have bootm_open_fit return -ENOSYS if support missing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is the maximum value that can be stored in a resource_size_t
-and can be used as dummy invalid value if needed.
-
-Import it with the same definition as in Linux.
+Otherwise, os_type will be determined unconditionally for the FIT image
+buffer. As the buffer has zero size, this leads to an os_type of
+filetype_unknown. The ARM32 support has an "ARM raw image" that matches
+against filetype_unknown leading eventually to a crash trying to execute
+the FIT image's FDT header.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/limits.h | 2 ++
- 1 file changed, 2 insertions(+)
+ common/bootm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/limits.h b/include/linux/limits.h
-index 8baf8494943e..2318e4f606d5 100644
---- a/include/linux/limits.h
-+++ b/include/linux/limits.h
-@@ -22,6 +22,8 @@
- #define INTPTR_MAX	LONG_MAX
- #define UINTPTR_MAX	ULONG_MAX
+diff --git a/common/bootm.c b/common/bootm.c
+index 739be02fe571..a26ea82684a6 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -618,7 +618,7 @@ static int bootm_open_fit(struct image_data *data)
+ 	int ret;
  
-+#define RESOURCE_SIZE_MAX	((resource_size_t)~0)
-+
- #define U8_MAX		((u8)~0U)
- #define S8_MAX		((s8)(U8_MAX >> 1))
- #define S8_MIN		((s8)(-S8_MAX - 1))
+ 	if (!IS_ENABLED(CONFIG_FITIMAGE))
+-		return 0;
++		return -ENOSYS;
+ 
+ 	header = (struct fdt_header *)data->os_header;
+ 	flen = bootm_get_os_size(data);
 -- 
 2.39.5
 
