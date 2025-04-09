@@ -1,107 +1,88 @@
-Delivery-date: Wed, 09 Apr 2025 11:02:33 +0200
+Delivery-date: Wed, 09 Apr 2025 11:12:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u2RKL-00ALel-0B
+	id 1u2RTq-00ALzb-0d
 	for lore@lore.pengutronix.de;
-	Wed, 09 Apr 2025 11:02:33 +0200
+	Wed, 09 Apr 2025 11:12:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u2RKK-0004aR-Ht
-	for lore@pengutronix.de; Wed, 09 Apr 2025 11:02:32 +0200
+	id 1u2RTp-0007l0-Lx
+	for lore@pengutronix.de; Wed, 09 Apr 2025 11:12:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9dQ9hByli/fzBIaSYGGoHuhZsX5cE0jMn1o11P3vo5Q=; b=aumT4Qv+NB2sGZWm5i7vcwrXwK
-	v241zl/O+BiKtMyyKeKZDuZ22zgWIHjFlKC0qPx8eEn0dzF8EwggY/BG1vMPyuvND7MriX4RCSW2r
-	gXGBumgviAto1Eg56dpZUSgRpZVJ/38qTiFd4SUO2GFqiidDsHOVWqCPpEPBUdD/9iit5UabnvFkf
-	WQvOuQLmgrbjiL/5cYsLPIPxiPu94H0HOjWbXfhDRB9uRK5s5fNyFQY/sSWQfyooEBQxEUKb4EQlG
-	+Nhfry+sG1LYzJJUABni7rmvB32gX6Yr+2YB7eAYzIlEeksf8DZ21N+hnqOG0LG68E6QQMohO4haT
-	CmRzIyQQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=s0q/bjwBFDVMWp5WCoCs/Ae23SloFoWbOLt+6P//9ZQ=; b=WM7sJQhwwQO3B9LazZ/ck2ZkRj
+	Lxal6EmKwDXuaTLWvuzw70hxWIhlaoRxagSFMfXK5WoGcpYqwrs5QmsIEKC8/o3lKn0C+0kfNw9jS
+	f3878CgYYEZUYcABVCVEFqhtS9Z8it1fh4CXnvYvx/w65rADE7qTyZoGcaZ5HtQK5g2OZ8ZBQW+5R
+	UT6qZIYHGRZuf0rzhLFSeQkzCDeqCWb1P6QyOeghWETKwGy8f+dR1bycVSLknh45H3/+s3qaCriDc
+	diM3+wJarFmIRW4oKSRHyc7JDQ3yCNvA/6LOJdoYG6dkR4n1UA9MGXdy23xCVBPvtOtH0nMoij1V/
+	aM2vr7lA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2RJU-00000006eio-1wEL;
-	Wed, 09 Apr 2025 09:01:40 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1u2RTL-00000006fpB-34vT;
+	Wed, 09 Apr 2025 09:11:51 +0000
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2RJS-00000006eiL-1fM5
-	for barebox@bombadil.infradead.org;
-	Wed, 09 Apr 2025 09:01:38 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=9dQ9hByli/fzBIaSYGGoHuhZsX5cE0jMn1o11P3vo5Q=; b=SojJUhM2bjuwSYMsQyNCDfTOhe
-	RJB500cJeTFPXk0IgKjRfDEEVfMMlBVgwT8T3i4Tc+BXqOp7QsqdfIqKTd7KiN1ACyqEGJ0Jalij3
-	8Hm5VffGrFhkZZujhBqO/909loZbJRByZieNSZqTTj3iB5GmnXJNfpqEAUc9+rsCQgcnZTSNYjPUy
-	f5bIwohHCGJa3g/V5Ra6uLwTsmY5680gb1g9IL7aTUmQfnJQH0gOu/xXHvGhJR0cgbOuVtupjH5oj
-	GlohXEcwTy6ny9ZNeRc9YGmbSphk2ViaSb4KQmHfoUE+OPQdKC15tqEogu18qDd5PfklwfWorjlZy
-	hvyXgfpA==;
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
-	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u2RJP-00000008YbP-06Fe
+	id 1u2RTI-00000006fo2-1Fu2
 	for barebox@lists.infradead.org;
-	Wed, 09 Apr 2025 09:01:37 +0000
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-30db1bd3bebso57265801fa.2
-        for <barebox@lists.infradead.org>; Wed, 09 Apr 2025 02:01:33 -0700 (PDT)
+	Wed, 09 Apr 2025 09:11:49 +0000
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-30db3f3c907so58999191fa.1
+        for <barebox@lists.infradead.org>; Wed, 09 Apr 2025 02:11:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744189291; x=1744794091; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9dQ9hByli/fzBIaSYGGoHuhZsX5cE0jMn1o11P3vo5Q=;
-        b=f0DNYZwTb58AFx3zoZphANJvYy72HL0Qmt0FQqh0P527v86qRdtHa+OzOahrzvGmup
-         T/d/WFA45iDOpoLeGbdMz+3s8jSnD/EawC3PjsCnMOw0F/OKHSuzFX7jOpUomVLPeX9f
-         48c7Dd2GvjNOoh+4ATWZcQeqEBaCk/o9Y+5WpplFnxZCPa405xrgNFhU8Sx9sHzYjN8P
-         9aturb+RWkwrtgQCEtm0ZgCit34aVPEdXjaBis63b/DvBpAFKwjNWf3m82DeZEzhVwhb
-         FF3HHoPofxjCRYS8ra9gdFu0rP7hcTfOqtYMS0FXZzMCvLCUOcIV/IPMFOaepr7StoXp
-         pSyg==
+        d=gmail.com; s=20230601; t=1744189906; x=1744794706; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s0q/bjwBFDVMWp5WCoCs/Ae23SloFoWbOLt+6P//9ZQ=;
+        b=kd7WWi7eEUBbp4CKg7doUppVoZkRZ5Icc3qVQhPMRKezLUf+t78+ABjOsujRQLrlex
+         BmH/xCFItYDU+m4W2sCaIgQFoXSBMN2p4yiTzQLWbR4h0ErzflJljnMq1LfDN8q7xTaT
+         h0IJOv2yhfLSzlSRWzjBbcJAeEr8ZXeEvcwvg8HHyuoPuhFIaxIQPDVePl9XAvcWEG5r
+         pBgqKuPN5UZh64wUUfQ0GWLFpJ1hAaJZwZLgOK5q718VQZIaBHawOlvOpMAehIBDfa3A
+         I1nJiPHeGix4gdaw1qerEB88GfLmgM2QG56296WoFHdDfmlAUkBi86KO3xC3wNb+m3tg
+         hAiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744189291; x=1744794091;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9dQ9hByli/fzBIaSYGGoHuhZsX5cE0jMn1o11P3vo5Q=;
-        b=l47CIlemWk8YGm5BDgDFJPKDQZpSo/Q4v5M6h00oYA5JaUZyUR/K7oEVmxToh7bVCe
-         k4MexziPpOPxTRHAfzT9sEhhK3CnAPCjYcs0ROwrL/CTBfH0+ECl+dYR36NZbx8rAt7/
-         mFfwSCivV9JwUvA0DgY15SNwsS037T0O4rMDFlt20aF5krX0CTZAwr8LO48OUEFinQQl
-         BvmeIlhq8w3VfnDNd/BxXACvBbLx69iuvbApFgFaq8JWQl01kFTj23/evb+t2VEc4Q3E
-         tDEQ/q7VV7hZAYdldnC2p1oaFBdAyigQFdl+MZgjbDrTO/Lq4AEVNh/FdmjM7xVP02t7
-         h7rQ==
-X-Gm-Message-State: AOJu0YwC9V9xmIO/5VQj9X2SODUikWt2aw4WE/tTGQsKt+YzIXlNr67l
-	ZshrHKYdcuH/OOYYnZQGOzywrjoQpbdqhkh8ZVt9JQE9lgI3JM1fJIKzRQ==
-X-Gm-Gg: ASbGncuTDmBN/Qw5oPKUIBACPntzhR8AF5GmgOjRv1Buz7Vwitsp8nvqyu7gNRJr87m
-	SfRJsBT8bj40chtXMbgzXqsyMgOwDqBAl7+T/hGmAN4MBVEAJWq0hWxsIftjJ4FZH7GB8hVzABK
-	4t/yZXuWHX/cMwBYrTQXTIUZrUv9afyoq8DHL78oE8CIr0PZfLuLKKpZ3nJP39WegVAQ8obEMi3
-	A52SNa0axwLIrAPpBhrFcdvAQl9cDoj/tFTKOnqoqYIQOdJevq+RzBaQKMC3/UUE+jOoA22SPou
-	7v8SO5yLCAqFWfmPPKNje9ecpaKnilG5cHI72y+nTRO7PhIHOtfRHm4xpBBrrn57Q66Dbb/fcQ=
-	=
-X-Google-Smtp-Source: AGHT+IFRij3hnlLTjZk3AzMST9dTdP7IoqSa6NhFCL9JRK+pwEmv5hNkodFV2TeMUF6IwyKmdl0I7g==
-X-Received: by 2002:a05:651c:896:b0:30b:b9e4:13b0 with SMTP id 38308e7fff4ca-30f44f91b58mr5232031fa.12.1744189290337;
-        Wed, 09 Apr 2025 02:01:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744189906; x=1744794706;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s0q/bjwBFDVMWp5WCoCs/Ae23SloFoWbOLt+6P//9ZQ=;
+        b=J6N1Jw7tuqWpVKrjaeU0SDXwUwwvZlgV5ZT87kfB4NEoGwB060Cxsecf68ASyK0s1o
+         tdPo3sWtBjFuQoWOv9pNhrtaVKn9ZV7tsth0KWitnQJj7VAnt33dyPUZU8cuTosibHeo
+         T0uW2XUklbXN3v4qrXAVQJUJTXg32OQH5aw06svmoYTIumNgJt6lbyLXWF7BOBAzupN4
+         m1WTYJNRqF/4tl+At6kuVWOW0iM1j3YX7Y4A7IP6I60n4dxBoVhcvwCoAJasJubdy3Z5
+         7erCVvhAQZEKcCVxrnYIejQ5QGwmz8IfDMVd2l1xHwESHo7pyGskKZeJbM9G7hPQqNfI
+         zpgg==
+X-Gm-Message-State: AOJu0YzmkRMzPUuCKpUfHBd+9jsd4gasYnjr1XEWbJxgb9/EMDXWFnDt
+	IVnCjIFLHLdva+jIJVQOHNPcxSzIKZfmhUzmANQtaD6BKBdZdQZ1MtV4KA==
+X-Gm-Gg: ASbGncsJTVx71Xvp+MjHGxU29OLjzJmyxJnVwRAZQOPCNt6X2t/S3HhG12HRjFHWHe+
+	4f6B/mviTET7dJVVfXgOuADj/2ytc365spAamYu6l/DvumrMgJJ2kbGlKkTrtXfKc2lQJ1bBOSY
+	nkHizewB3/ugYjzIAHjlfjeKpG+3N3sWpxvv7p72MT/RwpUgb1Oha7Eo7urWiEERjculUkNRFg3
+	HkAb0ml3xDUp/Mb13fxRRKJyZRGLYkGtBW4QZtG6S7EQ/9LIDv/jx2NTjj+Zrqawtn1gppCAx/U
+	Ybq26NPuHEC7MEFKiY8EsSw0Yavg9GlEZ/7TpDeUOUgQLFYVCr65MCrYrnpJ2hY=
+X-Google-Smtp-Source: AGHT+IGIhMXRlSVC77BXwvMB1EV1qmCzh7AfrHLci7H7YSA6F6PQfQJ7ggBYrTezETcXu50vcnVmwg==
+X-Received: by 2002:a05:651c:886:b0:30b:9813:b00e with SMTP id 38308e7fff4ca-30f44fc286amr4716301fa.24.1744189905763;
+        Wed, 09 Apr 2025 02:11:45 -0700 (PDT)
 Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f465f779asm1015411fa.91.2025.04.09.02.01.29
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f465f836bsm1019741fa.109.2025.04.09.02.11.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 02:01:29 -0700 (PDT)
+        Wed, 09 Apr 2025 02:11:45 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed,  9 Apr 2025 12:01:16 +0300
-Message-Id: <20250409090117.32359-2-eagle.alexander923@gmail.com>
+Date: Wed,  9 Apr 2025 12:11:33 +0300
+Message-Id: <20250409091133.35145-1-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250409090117.32359-1-eagle.alexander923@gmail.com>
-References: <20250409090117.32359-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250409_100135_187038_B7C0CEE0 
-X-CRM114-Status: GOOD (  11.57  )
+X-CRM114-CacheID: sfid-20250409_021148_521466_8A55572F 
+X-CRM114-Status: GOOD (  10.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -119,36 +100,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/3] clk: rockchip: fix finding of maximum clock ID
+Subject: [PATCH] ARM: dts: rockchip: Remove extra file rk3588s.dtsi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-If an ID of a branch's child is greater than current maximum, we should
-set new maximum to the child's ID, instead of its parent's.
+All RK3588 barebox-specific devicetree nodes can be placed
+into one file. The CPU variant-specific split rk3588{s/j}.dtsi
+can be used later if needed.
 
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/clk/rockchip/clk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/dts/rk3588.dtsi  | 13 ++++++++++---
+ arch/arm/dts/rk3588s.dtsi | 12 ------------
+ 2 files changed, 10 insertions(+), 15 deletions(-)
+ delete mode 100644 arch/arm/dts/rk3588s.dtsi
 
-diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
-index d5ecf3fc13..a154495efd 100644
---- a/drivers/clk/rockchip/clk.c
-+++ b/drivers/clk/rockchip/clk.c
-@@ -393,7 +393,7 @@ unsigned long rockchip_clk_find_max_clk_id(struct rockchip_clk_branch *list,
- 		if (list->id > max)
- 			max = list->id;
- 		if (list->child && list->child->id > max)
--			max = list->id;
-+			max = list->child->id;
- 	}
+diff --git a/arch/arm/dts/rk3588.dtsi b/arch/arm/dts/rk3588.dtsi
+index 0aef30eaff..667dd0c5a8 100644
+--- a/arch/arm/dts/rk3588.dtsi
++++ b/arch/arm/dts/rk3588.dtsi
+@@ -1,7 +1,14 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
  
- 	return max;
+-#include <dt-bindings/phy/phy.h>
+-#include "rk3588s.dtsi"
+-
+ / {
++	dmc: memory-controller {
++		compatible = "rockchip,rk3588-dmc";
++		rockchip,pmu = <&pmu1grf>;
++	};
++};
++
++&scmi_clk {
++	assigned-clocks = <&scmi_clk SCMI_CLK_CPUB01>,
++			  <&scmi_clk SCMI_CLK_CPUB23>;
++	assigned-clock-rates = <816000000>, <816000000>;
+ };
+diff --git a/arch/arm/dts/rk3588s.dtsi b/arch/arm/dts/rk3588s.dtsi
+deleted file mode 100644
+index 6572588ad6..0000000000
 -- 
 2.39.1
 
