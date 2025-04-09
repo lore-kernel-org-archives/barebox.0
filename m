@@ -1,58 +1,66 @@
-Delivery-date: Tue, 08 Apr 2025 13:02:17 +0200
+Delivery-date: Wed, 09 Apr 2025 08:57:01 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u26if-009xHS-0Z
+	id 1u2PMr-00AJTC-1d
 	for lore@lore.pengutronix.de;
-	Tue, 08 Apr 2025 13:02:17 +0200
+	Wed, 09 Apr 2025 08:57:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u26ie-0008Fn-Jw
-	for lore@pengutronix.de; Tue, 08 Apr 2025 13:02:17 +0200
+	id 1u2PMq-00072S-Ul
+	for lore@pengutronix.de; Wed, 09 Apr 2025 08:57:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=b07mOK/CfY4M5Ndj1drm4Er6WMoFJlUMy+7tY30lTZM=; b=Osuh5WIzHjWXQ66KZh64bOyen0
-	uq+MO6ZrcjpT6YhU7jr5UfY8k+Z+KQZg85vpBzHAwcN6vOAVO3cmW6bUagP4itj0YdLFXBF1NN2ch
-	aqi6xBgPCZJZRkb0RPDP4yz32t1BLLz/cxIfm5UGrHYmXEKE3P+pIQYZ5qWegN0/xWuzMiXG25r2b
-	MCFKvZDvEYLxEyMJV9LtyGkOArsSm8Or5yZ+D6ochJwenpRtFf+9nNDDk1+SPyPm8JGAG2adjt4Bw
-	Ty6K+/U0kp0ByjzlP0QWkpAT0ynErGFx+0YyXDRZ0FskCy9auUHDssD29fl5PTBLWVF+YOMhvK1Mp
-	Qc18tUNQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=RF4lbUhwxNPVfSH/HqnpDXqgJlRi9JFu1j1N8K68ftE=; b=p3ohafBHYZzUgGQhUiurq9/T9e
+	86qV2lZGFKC29B0u+JDlyD9ExchOrXCRwJ1s1oi3/kHMnuQpO6eoeNdidLUF98Z8Nb6rcQyIDdUe7
+	+whjyIt/3MnBM5MCTSBCKINnB+M6/7b694Fei680WGZFUZfm8371XbEdwJc5a9c1dXnfrwiuJZVof
+	SmPeQUJ4l2HNGiEuETFLSVEfU92nUVHAaSHNX38VUppAvqhW+6nz2mo0mP/SRVOSeI7/HVMMem0Ni
+	DyZw0wA/gzrTQtat4TtT3BuyT9GGVTI4BfPDlzNJ7u3o0P4DDrVU2bX4nLuCRkY798Jv0nBoKAR4u
+	+PVQDI8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u26iB-00000003mUj-2xIP;
-	Tue, 08 Apr 2025 11:01:47 +0000
+	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u2PMB-00000006KxV-3Jv3;
+	Wed, 09 Apr 2025 06:56:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by bombadil.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u26As-00000003emg-3WoZ
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u2PM7-00000006Kvi-3GfF
 	for barebox@lists.infradead.org;
-	Tue, 08 Apr 2025 10:27:26 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Wed, 09 Apr 2025 06:56:18 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u26Ar-00056P-GK; Tue, 08 Apr 2025 12:27:21 +0200
-Message-ID: <d4fec09a-d646-4769-bde2-c38cdd10297e@pengutronix.de>
-Date: Tue, 8 Apr 2025 12:27:23 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20250407130729.2889508-1-s.hauer@pengutronix.de>
- <20250407130729.2889508-2-s.hauer@pengutronix.de>
-Content-Language: en-US
+	id 1u2PM5-0006jl-Ge; Wed, 09 Apr 2025 08:56:13 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u2PM5-0043ny-13;
+	Wed, 09 Apr 2025 08:56:13 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u2PM5-007lip-0h;
+	Wed, 09 Apr 2025 08:56:13 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250407130729.2889508-2-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  9 Apr 2025 08:56:12 +0200
+Message-Id: <20250409065612.1851282-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250408_032722_880138_19B8EA91 
-X-CRM114-Status: GOOD (  11.41  )
+X-CRM114-CacheID: sfid-20250408_235615_825717_96CF832A 
+X-CRM114-Status: UNSURE (   8.78  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,49 +78,39 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] bootm: create generic FIT image handler
+Subject: [PATCH] include: linux/limits: add definition for RESOURCE_SIZE_MAX
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Sascha,
+This is the maximum value that can be stored in a resource_size_t
+and can be used as dummy invalid value if needed.
 
-On 07.04.25 15:07, Sascha Hauer wrote:
-> -static struct image_handler arm_fit_handler = {
-> -        .name = "FIT image",
-> -        .bootm = do_bootm_linux,
-> -        .filetype = filetype_oftree,
-> -};
-> -
+Import it with the same definition as in Linux.
 
-You delete the object, but not the references to it from the initcall.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/linux/limits.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-
-> -static __maybe_unused int sandbox_fit_register(void)
-> +static int sandbox_fit_register(void)
->  {
-> -	return register_image_handler(&sandbox_fit_handler);
-> +	return register_image_handler(&fit_handler);
->  }
-> -#ifdef CONFIG_SANDBOX
->  late_initcall(sandbox_fit_register);
-
-Initcall needs to be renamed.
-
-> -#endif
-
-
-Cheers,
-Ahmad
-
-
+diff --git a/include/linux/limits.h b/include/linux/limits.h
+index 8baf8494943e..2318e4f606d5 100644
+--- a/include/linux/limits.h
++++ b/include/linux/limits.h
+@@ -22,6 +22,8 @@
+ #define INTPTR_MAX	LONG_MAX
+ #define UINTPTR_MAX	ULONG_MAX
+ 
++#define RESOURCE_SIZE_MAX	((resource_size_t)~0)
++
+ #define U8_MAX		((u8)~0U)
+ #define S8_MAX		((s8)(U8_MAX >> 1))
+ #define S8_MIN		((s8)(-S8_MAX - 1))
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
