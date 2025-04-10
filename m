@@ -1,67 +1,68 @@
-Delivery-date: Thu, 10 Apr 2025 08:57:30 +0200
+Delivery-date: Thu, 10 Apr 2025 09:12:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u2lqs-00AjIj-0I
+	id 1u2m55-00AjgY-3D
 	for lore@lore.pengutronix.de;
-	Thu, 10 Apr 2025 08:57:30 +0200
+	Thu, 10 Apr 2025 09:12:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u2lqr-0004Ke-GR
-	for lore@pengutronix.de; Thu, 10 Apr 2025 08:57:30 +0200
+	id 1u2m54-00072Q-8X
+	for lore@pengutronix.de; Thu, 10 Apr 2025 09:12:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4gcMpAGjQ+/Rziic57MVoxElOhsx12htQNU+2YnO0yA=; b=SdvYeMxBFzQDCTJo8MUE1TD7am
-	0BP7jGObnyJ6xLhK54sgIcnpa35u/8lszbPe+WuAqpc+pQFULYdQI0kwZ+6dRc85Rnh2++zqHDgaF
-	vpgLkI6B7XkaoLpRuzqi34a/oH/2FFaHNjPPQQ6u1NWYjxFrVygm9bdkBAO4HkwF3nHjHdUhm2NTj
-	Z3x9ALuSaNPanx1fSsrrmtehJAn+JXYaXp62bdYtClYaifNVA1yIRA8SLhOLpW+qL79aYre5v2NKI
-	cm33p2WCWRVFMTyxMlK1UuyInJBXXksSQF2zK26I8U3sXuvrzxy3j1yth+KfBbF7DNLIG3H7cnWgr
-	XhMNUboQ==;
+	bh=0wKj5Xm3Z8wUy+g+tKKsbCri7JuB0xfNGHHQ1eyPMJQ=; b=aTBXKO7p4zX4lSlCupcPfj41vx
+	r2VKNbBWINyCRYymuL3hyHJHgt+anbmuNbFClLvL2/GqBEQtnEUlkTM2jmnj3QKur0pvrBVFKSsPw
+	UrFyNIKq6y9e1exLxKJb6uRUeNipq2JS++5VIv+REdolfZzV5Hg8jvAoEK2g2PGC3dy1H3WLYR+B3
+	4zMmDN2Kann0WJN3cNBXo1f7L5wleVdJmYp2PMFioUT6JzZfsx/dWkDXX6PvAqMvsFUqBW2fdGlny
+	fN3NsEb0nvvROvzQ4TzsMjwzMxjoe/+f/zi5wM81ZzKE8exgctPJaBg0aKAhcCJ7TRqT4P0HEmTgN
+	ZaiyHGOw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2lqB-00000009RdB-0UoT;
-	Thu, 10 Apr 2025 06:56:47 +0000
+	id 1u2m4b-00000009UJz-0ker;
+	Thu, 10 Apr 2025 07:11:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2lXV-00000009ONb-3tQd
+	id 1u2lcY-00000009PKf-4Axy
 	for barebox@lists.infradead.org;
-	Thu, 10 Apr 2025 06:37:31 +0000
+	Thu, 10 Apr 2025 06:42:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u2lXU-0000o2-Dt; Thu, 10 Apr 2025 08:37:28 +0200
+	id 1u2lcX-0001iY-Kg; Thu, 10 Apr 2025 08:42:41 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u2lXU-004E4k-0k;
-	Thu, 10 Apr 2025 08:37:28 +0200
+	id 1u2lcX-004E5B-1S;
+	Thu, 10 Apr 2025 08:42:41 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u2lXU-004TPG-0W;
-	Thu, 10 Apr 2025 08:37:28 +0200
+	id 1u2lcX-004fiC-1F;
+	Thu, 10 Apr 2025 08:42:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250409131920.1949534-1-a.fatoum@pengutronix.de>
-References: <20250409131920.1949534-1-a.fatoum@pengutronix.de>
-Message-Id: <174426704815.1066309.6046087769883166668.b4-ty@pengutronix.de>
-Date: Thu, 10 Apr 2025 08:37:28 +0200
+To: barebox@lists.infradead.org, 
+ Alexander Shiyan <eagle.alexander923@gmail.com>
+In-Reply-To: <20250409091133.35145-1-eagle.alexander923@gmail.com>
+References: <20250409091133.35145-1-eagle.alexander923@gmail.com>
+Message-Id: <174426736138.1113605.5872994570682220812.b4-ty@pengutronix.de>
+Date: Thu, 10 Apr 2025 08:42:41 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250409_233729_972932_D194CFD0 
-X-CRM114-Status: UNSURE (   9.23  )
+X-CRM114-CacheID: sfid-20250409_234243_061080_EF0A9423 
+X-CRM114-Status: UNSURE (   7.10  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,30 +85,22 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] ARM: stm32mp: switch internal SoC code to
- hexadecimal
+Subject: Re: [PATCH] ARM: dts: rockchip: Remove extra file rk3588s.dtsi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 09 Apr 2025 15:19:19 +0200, Ahmad Fatoum wrote:
-> stm32mp_code() is used internally in SoC support code to record the
-> information what SoC we are running on per device tree.
+On Wed, 09 Apr 2025 12:11:33 +0300, Alexander Shiyan wrote:
+> All RK3588 barebox-specific devicetree nodes can be placed
+> into one file. The CPU variant-specific split rk3588{s/j}.dtsi
+> can be used later if needed.
 > 
-> By changing the information to hexadecimal, we can more easily apply
-> bitmasks to check if we are on STM32MP15 or STM32MP13.
 > 
-> Do that and while at it, rename the function as not to confuse any
-> out-of-tree users.
-> 
-> [...]
 
 Applied, thanks!
 
-[1/2] ARM: stm32mp: switch internal SoC code to hexadecimal
-      https://git.pengutronix.de/cgit/barebox/commit/?id=32c05dcac56c (link may not be stable)
-[2/2] ARM: stm32mp: init: expand bootsource logic to STM32MP13{1,3}
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2ac7fd27ec75 (link may not be stable)
+[1/1] ARM: dts: rockchip: Remove extra file rk3588s.dtsi
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9f3bbe1a3630 (link may not be stable)
 
 Best regards,
 -- 
