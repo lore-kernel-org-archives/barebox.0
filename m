@@ -1,66 +1,66 @@
-Delivery-date: Thu, 10 Apr 2025 13:31:06 +0200
+Delivery-date: Thu, 10 Apr 2025 13:40:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u2q7e-00AoM6-0X
+	id 1u2qGQ-00AoVu-0O
 	for lore@lore.pengutronix.de;
-	Thu, 10 Apr 2025 13:31:06 +0200
+	Thu, 10 Apr 2025 13:40:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u2q7d-0007H1-Km
-	for lore@pengutronix.de; Thu, 10 Apr 2025 13:31:06 +0200
+	id 1u2qGP-0000fD-Ih
+	for lore@pengutronix.de; Thu, 10 Apr 2025 13:40:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=CyibJDP3V8EOeSao14jBOb8QKPT05sg6gNjdN0c9dYU=; b=Z1bZmsSDRECwV8tR4wUeAJraWM
-	2/4Hc9jwgEPf4zPnqWsPigsEx3xygRgGxpMwPE5y4jlGPazdoN5MX9Hs/z2JexUwKNH8TnrrZuCxR
-	J57t+HvMiKCJc/zB4K7RucTlg33snLWkdOtLm9enxLI1HTZLTjhW/YuqrHho1JtH/nndhmc0vMOKG
-	3lDbvDTtWfYPJZPFU0YZeIWddicGmTKAqkaVFpZxiH7wJRMrNzk9OB3tNsl7CDBzXdp2XNwJHfZ/f
-	bvykfL9ADJl134ysufy/z9khMplju0oYBdSkUDMm0/UZDsh2XnuVmL9/zszmrgQfaI6Sax/NryDSK
-	+p03T/vQ==;
+	bh=00fqlbwPvFgYnXd3ZJfFc3V8NuVbg1OC1iwF/n3QOR8=; b=yVMjVx7AiSl08Bwou+LegVBplO
+	JeJxz3Ec3wHbo6XOIfV6j4NOe1qx5BS4EwrYI1IlQ5Ts4gdFRJm/93rYq8wnQfQGjzNb255Rk7ESB
+	AG8n72nKuINa5JrcCTgcJmPCOqxLnO7oGjUrxCs8tiNT20ShVw8wSR7YIsgTFNxJNplGoBU8sXau2
+	I3giJcM3HW/SvVxrUlOjWRJG/WIRVI+4wZvGhNGdgv8plOXFWa7AvBY7bghUQIKrVYP/1aLRsSX8o
+	ymYBXeEGScqwpm44130VVDuMCOZ9ulwxJbk3JYedjM6IrbAgcs5zp0s96YZIhq0axabzGHap8gprl
+	Ci/D0U/Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2q7B-0000000AJ34-46J1;
-	Thu, 10 Apr 2025 11:30:37 +0000
+	id 1u2qFy-0000000AKWd-1IFo;
+	Thu, 10 Apr 2025 11:39:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2pQS-0000000A8Ol-3UTK
+	id 1u2q2H-0000000AIFq-0MWf
 	for barebox@lists.infradead.org;
-	Thu, 10 Apr 2025 10:46:29 +0000
+	Thu, 10 Apr 2025 11:25:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u2pQR-0006ty-Ae; Thu, 10 Apr 2025 12:46:27 +0200
+	id 1u2q2F-0006IF-Kp; Thu, 10 Apr 2025 13:25:31 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u2pQR-004Fux-0K;
-	Thu, 10 Apr 2025 12:46:27 +0200
+	id 1u2q2F-004GEK-1R;
+	Thu, 10 Apr 2025 13:25:31 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u2pQQ-00AUbo-3D;
-	Thu, 10 Apr 2025 12:46:27 +0200
+	id 1u2q2F-00BNLu-16;
+	Thu, 10 Apr 2025 13:25:31 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: David Dgien <dgienda125@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 10 Apr 2025 12:46:25 +0200
-Message-Id: <20250410104625.2500755-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 10 Apr 2025 13:25:30 +0200
+Message-Id: <20250410112530.2711299-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250410_034628_868593_67830A26 
-X-CRM114-Status: GOOD (  10.82  )
+X-CRM114-CacheID: sfid-20250410_042533_136401_FE588ECD 
+X-CRM114-Status: UNSURE (   9.88  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,44 +82,65 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! tlsf: Add tracking of added tlsf memory pools
+Subject: [PATCH] fixup! bootsource: add optional read of /chosen/bootsource
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-tlsf: fix KASAN poisoning of TLSF pool
+bootsource: read out /chosen/bootsource earlier
 
-By poisoning all of the heap after the first malloc, new_pool_entry
-becomes a pointer to poisoned memory, which causes a KASAN error right
-away at startup.
+While late initcall is early enough for shell scripts to see a correct
+$bootsource, it's usually too late for board code.
 
-Move the kasan_poison_shadow call directly after tlsf_add_pool to
-fix this.
+As device trees are registered in core_initcall usually, let's parse the
+property at postcore time instead.
 
-Cc: David Dgien <dgienda125@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/tlsf_malloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/of/base.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/common/tlsf_malloc.c b/common/tlsf_malloc.c
-index 4acf1c1c5071..6e9d48af26bb 100644
---- a/common/tlsf_malloc.c
-+++ b/common/tlsf_malloc.c
-@@ -115,12 +115,12 @@ void *malloc_add_pool(void *mem, size_t bytes)
- 	if (!new_pool)
- 		return NULL;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 324565068771..8184b284099e 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -3592,29 +3592,28 @@ const char *of_get_machine_compatible(void)
+ }
+ EXPORT_SYMBOL(of_get_machine_compatible);
  
-+	kasan_poison_shadow(mem, bytes, KASAN_TAG_INVALID);
-+
- 	new_pool_entry = malloc(sizeof(*new_pool_entry));
- 	if (!new_pool_entry)
- 		return NULL;
+-static void of_init_bootsource(void)
++static int of_init_early_vars(void)
+ {
+ 	struct device_node *bootsource;
  
--	kasan_poison_shadow(mem, bytes, KASAN_TAG_INVALID);
+ 	if (!IS_ENABLED(CONFIG_BAREBOX_DT_2ND))
+-		return;
++		return 0;
+ 
+ 	bootsource = of_find_node_by_chosen("bootsource", NULL);
+-	if (!bootsource)
+-		return;
++	if (bootsource)
++		bootsource_of_node_set(bootsource);
+ 
+-	bootsource_of_node_set(bootsource);
++	return 0;
+ }
++postcore_initcall(of_init_early_vars);
+ 
+-static int of_init_vars(void)
++static int of_init_late_vars(void)
+ {
+ 	const char *name;
+ 
+ 	name = of_get_machine_compatible();
+ 	barebox_set_hostname_no_overwrite(name ?: "barebox");
+ 
+-	of_init_bootsource();
 -
- 	new_pool_entry->pool = new_pool;
- 	list_add(&new_pool_entry->list, &mem_pool_list);
- 
+ 	return 0;
+ }
+-late_initcall(of_init_vars);
++late_initcall(of_init_late_vars);
 -- 
 2.39.5
 
