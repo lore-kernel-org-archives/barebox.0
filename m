@@ -1,83 +1,82 @@
-Delivery-date: Fri, 11 Apr 2025 09:44:19 +0200
+Delivery-date: Fri, 11 Apr 2025 09:44:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u393j-00BA2x-0r
+	id 1u393l-00BA3J-1C
 	for lore@lore.pengutronix.de;
-	Fri, 11 Apr 2025 09:44:19 +0200
+	Fri, 11 Apr 2025 09:44:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u393i-00063k-Iz
-	for lore@pengutronix.de; Fri, 11 Apr 2025 09:44:19 +0200
+	id 1u393k-00065w-CH
+	for lore@pengutronix.de; Fri, 11 Apr 2025 09:44:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=d19g+J0VsxvJCorn1CCX+rj2GaJ88KXKi0lZtBkAhp8=; b=3uuhd/zY4fXnIP1x5liAg5mM0g
-	r6SjfX6oFdpPlaN3TN/C1MLOZim1cJVO2iXSgulvElf1kXNXRo9yhXOs6nkeuAx8AkZzrzir8hyPD
-	GHDqw9GvKG4W7EPcG3joohmSpgffpQgAUbXDGygR19T+aIXvNs2uEHEaB0cd8eqFwyoCW4WPu2yW0
-	cW4s6ra7bmWs8xwo03jXi4jFiyghDVm0XvgDA/3gKyi1JB2Aeet/EjRTA/qP+mUNuZc0FyY53Jxr/
-	O4AOyOSlj/cZo5+ZW4jUx9dXDI/3Z7RFsNU/qkcstRzx37LaSDqCN0rovGVrLoNQz2SoWwVIxtgtD
-	UB3V+K1A==;
+	bh=3sI4MPrAYjojCt3ps2pn7SzRFbb5m20ujM92g6XO7Zs=; b=SWMB6htsHH2/T3Bn/HoHuhLIHb
+	O/aLiSjFF+04NI8bDAnO7Hd1tMoe6b56FX/kTkye/gEmY0janJSHeIRwxa1snyRFTOPMWtrZ50efB
+	FeB1U3eYKpHF7ipwTJHCg73NivuGz3m3OVtM7TmMSgun4BC38nvhHYwbPW2xPji9cwfcj2R9tbCnB
+	ht0gHujK1Dj/z4VcLj/ltJr7sTX4bO9xtTYchJgRkHthycLSkOYNuZ6L0V8Xf5RQlY76D2K2tBQW1
+	bBDqOpi1vjkrdS48Y6bnXFmJSSIJfCijiZ/flfFrp4s8kXOcF7c4PbZ5/dR99UVcJSCG6QO/tKklC
+	Xb8so1Rg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u393C-0000000Cv2x-2dsJ;
-	Fri, 11 Apr 2025 07:43:46 +0000
+	id 1u393B-0000000Cv2R-199q;
+	Fri, 11 Apr 2025 07:43:45 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u390R-0000000CuKt-23R4
+	id 1u390P-0000000CuKV-48U0
 	for barebox@bombadil.infradead.org;
-	Fri, 11 Apr 2025 07:40:55 +0000
+	Fri, 11 Apr 2025 07:40:53 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=d19g+J0VsxvJCorn1CCX+rj2GaJ88KXKi0lZtBkAhp8=; b=OBhxSDgBlDD5yDg7iR4rpGHqw6
-	Y3zukh9wRru4jFvGiIpP0ArK1M3O6+BdQN2xzPTKpRX+PTvUV4dWKcmr/N7jkhnMD+3aDm/ZrznFE
-	Fz1NH+rlACbowst8TEQSoR3JDWPF5WMxtefG1mEPuFjooFvmBjiN0LuXd/7lOH69eGPRpuTWAFo0N
-	PTvm56dApNzeVcIoIZdjF4fXjMQikcxj9+bj411lbv7uLTsZyoAXD85dPNDaeEqzqpfc9Uw7Es7FQ
-	bgElyBnrLiNYsoVWMUzBd8A1wSrijWnCo91JkTn3zN9zoHEkXiKc3FmA8aysoCVCfGT2pR7awtK+2
-	+jtErPmQ==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=3sI4MPrAYjojCt3ps2pn7SzRFbb5m20ujM92g6XO7Zs=; b=VEE58DhbOmI3fIb4xL2fAGPxlr
+	fv+okWksT0FKl7gtChy/QoCOLVTGuTS0qgBFg0tEOwINMX2/dwcOh4phkZlBhN+WQrhab+U/A4LG5
+	vfTjWoZRRueqLIYO92mUNKRzHFlIp1gVJR81smEeyn2obdK+saL+xUKZK3IniSL2aHOMnjimhol09
+	Twr86zjPJAOPX811zsAQyKfwqJNPS86usr2gIE+tyL6fuRw9onTjLy5SAvLBBwEunGqhwgle7zSz+
+	4PCq6uI2ZxC/ydrc5991q21OU1Tt/HpUz9uzpxqO8Ryw5HVmhHqueo/QO719jPKulvqy5DTfxlfCx
+	///y6lkA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u390N-00000008y0x-0hLX
+	id 1u390M-00000008y0v-3mkx
 	for barebox@lists.infradead.org;
-	Fri, 11 Apr 2025 07:40:54 +0000
+	Fri, 11 Apr 2025 07:40:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390J-0004uY-0Q; Fri, 11 Apr 2025 09:40:47 +0200
+	id 1u390I-0004uT-Nf; Fri, 11 Apr 2025 09:40:46 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-004OjO-2M;
+	id 1u390I-004OjC-1l;
 	Fri, 11 Apr 2025 09:40:46 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-008WBo-24;
+	id 1u390I-008WBo-1S;
 	Fri, 11 Apr 2025 09:40:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 11 Apr 2025 09:40:40 +0200
-Message-Id: <20250411074045.2019372-6-a.fatoum@pengutronix.de>
+Date: Fri, 11 Apr 2025 09:40:36 +0200
+Message-Id: <20250411074045.2019372-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
 References: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250411_084051_546781_76B6945B 
-X-CRM114-Status: GOOD (  14.41  )
+X-CRM114-CacheID: sfid-20250411_084051_267458_DB7FD9FD 
+X-CRM114-Status: GOOD (  11.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,117 +98,94 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/10] commands: add TLV debugging command
+Subject: [PATCH 01/10] net: factor out eth_of_get_fixup_node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The TLV command does the equivalent of having a "barebox,tlv"
-compatible node point at the file. It's meant as a debugging aid.
+We only know at fixup time, which MAC addresses were actually assigned
+to interfaces. Factor out eth_of_get_fixup_node from the MAC address
+assignment code, so board code can use this to retrace which MAC
+addresses would be fixed up.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/Kconfig  | 12 +++++++++++
- commands/Makefile |  1 +
- commands/tlv.c    | 55 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+)
- create mode 100644 commands/tlv.c
+ include/net.h | 12 ++++++++++++
+ net/eth.c     | 29 +++++++++++++++++++----------
+ 2 files changed, 31 insertions(+), 10 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index ca3f13d7e0cc..229d0a634a8c 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2573,6 +2573,18 @@ config CMD_STATE
- 	depends on STATE
- 	prompt "state"
- 
-+config CMD_TLV
-+	tristate
-+	depends on TLV
-+	prompt "tlv"
-+	help
-+	  tlv - handle barebox TLV
+diff --git a/include/net.h b/include/net.h
+index a3c466784630..b742e9499434 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -128,6 +128,18 @@ static inline void of_eth_register_ethaddr(struct device_node *node,
+ void eth_register_ethaddr(int ethid, const char *ethaddr);
+ void of_eth_register_ethaddr(struct device_node *node, const char *ethaddr);
+ #endif
 +
-+	  Usage: tlv [-f] FILE
-+
-+	  The TLV command does the equivalent of having a "barebox,tlv"
-+	  compatible node point at the file. It's meant as a debugging aid.
-+
- config CMD_DHRYSTONE
- 	bool
- 	prompt "dhrystone"
-diff --git a/commands/Makefile b/commands/Makefile
-index 8c2749b5ebdd..53337dfb5c2d 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -143,6 +143,7 @@ obj-$(CONFIG_CMD_CMP)		+= cmp.o
- obj-$(CONFIG_CMD_NV)		+= nv.o
- obj-$(CONFIG_CMD_DEFAULTENV)	+= defaultenv.o
- obj-$(CONFIG_CMD_STATE)		+= state.o
-+obj-$(CONFIG_CMD_TLV)		+= tlv.o
- obj-$(CONFIG_CMD_DHCP)		+= dhcp.o
- obj-$(CONFIG_CMD_BOOTCHOOSER)	+= bootchooser.o
- obj-$(CONFIG_CMD_DHRYSTONE)	+= dhrystone.o
-diff --git a/commands/tlv.c b/commands/tlv.c
-new file mode 100644
-index 000000000000..53fbc2a29186
---- /dev/null
-+++ b/commands/tlv.c
-@@ -0,0 +1,55 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: © 2022 Ahmad Fatoum, Pengutronix
-+
-+#include <common.h>
-+#include <of.h>
-+#include <command.h>
-+#include <getopt.h>
-+#include <tlv/tlv.h>
-+
-+static int do_tlv(int argc, char *argv[])
++#ifdef CONFIG_OFTREE
++struct device_node *eth_of_get_fixup_node(struct device_node *root,
++					  const char *node_path, int ethid);
++#else
++static inline struct device_node *eth_of_get_fixup_node(struct device_node *root,
++							const char *node_path, int ethid)
 +{
-+	const char *filename;
-+	bool fixup = false;
-+	struct tlv_device *tlvdev;
-+	int opt;
++	return NULL;
++}
++#endif
 +
-+	while ((opt = getopt(argc, argv, "f")) > 0) {
-+		switch (opt) {
-+		case 'f':
-+			fixup = true;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	filename = argv[optind];
-+	if (!filename)
-+		return COMMAND_ERROR_USAGE;
-+
-+	tlvdev = tlv_register_device_by_path(argv[optind], NULL);
-+	if (IS_ERR(tlvdev))
-+		return PTR_ERR(tlvdev);
-+
-+	if (fixup)
-+		return tlv_of_register_fixup(tlvdev);
-+
-+	of_print_nodes(tlv_of_node(tlvdev), 0, ~0);
-+
-+	tlv_free_device(tlvdev);
-+	return 0;
+ /*
+  *	Ethernet header
+  */
+diff --git a/net/eth.c b/net/eth.c
+index bc2527de3670..16857ac838dd 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -319,19 +319,11 @@ static int eth_param_set_ethaddr(struct param_d *param, void *priv)
+ }
+ 
+ #ifdef CONFIG_OFTREE
+-static void eth_of_fixup_node(struct device_node *root,
+-			      const char *node_path, int ethid,
+-			      const u8 ethaddr[ETH_ALEN])
++struct device_node *eth_of_get_fixup_node(struct device_node *root,
++					  const char *node_path, int ethid)
+ {
+ 	struct device_node *bb_node, *fixup_node;
+ 	char *name;
+-	int ret;
+-
+-	if (!is_valid_ether_addr(ethaddr)) {
+-		pr_debug("%s: no valid mac address, cannot fixup\n",
+-			 __func__);
+-		return;
+-	}
+ 
+ 	if (node_path) {
+ 		bb_node = of_find_node_by_path_from(0, node_path);
+@@ -344,6 +336,23 @@ static void eth_of_fixup_node(struct device_node *root,
+ 		fixup_node = of_find_node_by_alias(root, eth);
+ 	}
+ 
++	return fixup_node;
 +}
 +
-+BAREBOX_CMD_HELP_START(tlv)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-f",  "Register device tree fixup for TLV")
-+BAREBOX_CMD_HELP_END
++static void eth_of_fixup_node(struct device_node *root,
++			      const char *node_path, int ethid,
++			      const u8 ethaddr[ETH_ALEN])
++{
++	struct device_node *fixup_node;
++	int ret;
 +
-+BAREBOX_CMD_START(tlv)
-+	.cmd		= do_tlv,
-+	BAREBOX_CMD_DESC("handle barebox TLV")
-+	BAREBOX_CMD_OPTS("[-f] FILE")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_tlv_help)
-+BAREBOX_CMD_END
++	if (!is_valid_ether_addr(ethaddr)) {
++		pr_debug("%s: no valid mac address, cannot fixup\n",
++			 __func__);
++		return;
++	}
++
++	fixup_node = eth_of_get_fixup_node(root, node_path, ethid);
+ 	if (!fixup_node) {
+ 		pr_debug("%s: no node to fixup\n", __func__);
+ 		return;
 -- 
 2.39.5
 
