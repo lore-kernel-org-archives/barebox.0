@@ -1,16 +1,16 @@
-Delivery-date: Fri, 11 Apr 2025 09:44:23 +0200
+Delivery-date: Fri, 11 Apr 2025 09:44:24 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u393n-00BA41-2E
+	id 1u393o-00BA4M-0E
 	for lore@lore.pengutronix.de;
-	Fri, 11 Apr 2025 09:44:23 +0200
+	Fri, 11 Apr 2025 09:44:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u393l-00066o-KI
+	id 1u393m-00066x-02
 	for lore@pengutronix.de; Fri, 11 Apr 2025 09:44:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,65 +18,65 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TQkGakq/+eQtqXRxLY78QTtyOOqvdZn4p9rDUd4y2rE=; b=E62PxvWNWHBLkFSfFMshAIaHC3
-	t9CJirOo7y6cc9+qOoWljOZP2UjW7zaLx0k4Pwn+1KUiWHPCF2ecDr7OogIFTOcXR0uto6N/F8YwO
-	oDUQ8DnbkijzhsJeGrpDC4d63WsxiZP8UnvlQN+S652GCMdNkJGKZrDMGl3zefBlg9560QKPulIKR
-	HVCbFJSyDDV8ADzEaYRO7yfLFBFdZ9cDypnr15cEcIOaYjoXm7JTIxTXxiW1edwz+u6mA6gDr0V6n
-	iBquRB+jHZ3bWda2PfmZ41bt5ulzOKV70YrGhw5bdRT+CHE+/30lGpz8T5CAYe5Gv5s9vHdtFHjgs
-	0ut2XmGQ==;
+	bh=fJYxdEKWZ98+AZ5LdQJxsElz9Li82nCFVkgQ5c5YWes=; b=yktbvcEJ3mLdF8knwgEja2m4Yw
+	KhNBCCzJFWxNM4zWp3UCoxoUncJhzEAxCqNxZyW0ZWwfltcnEQUTOPCVURdhZlrLP3d8Igq+uwyZf
+	WVqnlpCdjnECbqS3xxhwOaVqfnJz+vKIMhoD3GPaxi5qz8W7u45unNxBYhrlfLNyYSoT1Plf4hAGE
+	UI0MV4KLzPRPd1GC1Qvhs8W5w6hhlkx6iGcbBn0s24LOra8mwrgV9d0l22C/UkU/VGriLlGQSfQ4p
+	qyucoORyf5ZYCq1RP+7N3agEmVycjaiN6UaWl9wQKhykD+ybI7VqESCll4BCMFfTvCwlKzGOJSywV
+	+VxdrzVg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u393D-0000000Cv3x-1wZs;
-	Fri, 11 Apr 2025 07:43:47 +0000
+	id 1u393G-0000000Cv8k-4B9N;
+	Fri, 11 Apr 2025 07:43:51 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u390R-0000000CuKs-23e8
+	id 1u390U-0000000CuLb-04W0
 	for barebox@bombadil.infradead.org;
-	Fri, 11 Apr 2025 07:40:55 +0000
+	Fri, 11 Apr 2025 07:40:58 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=TQkGakq/+eQtqXRxLY78QTtyOOqvdZn4p9rDUd4y2rE=; b=mrvXRHFub8c8bEzn2x3RURlAG+
-	Kh9kT+tK4I84iUAq6q9Oeuytwn4bRW7Hty6xqXDBWKRKaFKTpU5GRyJiRxr1jOkopIZDeQHlVytBS
-	huRXea+BX1Bn4JWMYCNZbBI7JT3jj7IZIl/gMW0wXDx9KhpBYqkm+dQLCZ45otCCeWbWIhCLlv7Xp
-	cVH4ffPmkXjMN/d0E4Gp+E1xPUkNYzoQfERNfeT0lnDrnzh/JrQNmsBjAi96uLaxaf7RvY+6Pygwf
-	CLBG7QITDJo5gi/Kqg9CYaY16kOrX5asMmLJ7fCHGTSvnkT8POgk/WsE5b2Bn2u/fuQKgt6lFOqEB
-	+tJsKv7Q==;
+	bh=fJYxdEKWZ98+AZ5LdQJxsElz9Li82nCFVkgQ5c5YWes=; b=Rdii6inkXQpGt2jT8WsbfnmDQz
+	unur/ooQs+MXufCgPR+w9RRt66++IKdSqjWtCyEEc5B/Z4KHYx0Vp7vV+sY99yT21hlu+BoVKJks/
+	Jj+nwvzMRpTrisxifjg18rNQQRyuQ2WXP1k1lWBR0n6adhbnyaeROVGSDBjCziSm0RldHpAhJTsSb
+	XGzjCN/ve9lGKY8K9RetNopoiatNclVIhSAb0U3prYdZaXNLrwYNUJzwNx/7bFXZpTpf9NjTBjEvB
+	GPWJufZ5yFbbX6ADINMtTHrH5+2eHluomuwSTDMSJQcmh+2Ky4nkxBVWPJUgVi++YnkQky9ydVBxW
+	5JG5ODEA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u390N-00000008y0y-1F4s
+	id 1u390R-00000008y3C-1HR9
 	for barebox@lists.infradead.org;
-	Fri, 11 Apr 2025 07:40:54 +0000
+	Fri, 11 Apr 2025 07:40:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390J-0004uh-2O; Fri, 11 Apr 2025 09:40:47 +0200
+	id 1u390I-0004uV-RD; Fri, 11 Apr 2025 09:40:46 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-004OjR-2W;
+	id 1u390I-004OjI-23;
 	Fri, 11 Apr 2025 09:40:46 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-008WBo-2D;
+	id 1u390I-008WBo-1k;
 	Fri, 11 Apr 2025 09:40:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 11 Apr 2025 09:40:41 +0200
-Message-Id: <20250411074045.2019372-7-a.fatoum@pengutronix.de>
+Date: Fri, 11 Apr 2025 09:40:38 +0200
+Message-Id: <20250411074045.2019372-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
 References: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250411_084051_707944_1AA02C02 
-X-CRM114-Status: GOOD (  23.24  )
+X-CRM114-CacheID: sfid-20250411_084055_504586_7FCD094F 
+X-CRM114-Status: GOOD (  12.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,329 +98,68 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 06/10] scripts: add bareboxtlv host/target tool
+Subject: [PATCH 03/10] common: add optional systemd.hostname generation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In its simplest form, a barebox TLV has a 12-byte header, a sequence of
-TLV entries, where each of tags and length are 2 bytes each (in big
-endian), followed by a CRC.
-
-The TLVs are easily generated. Add a tool to allow adding, removing and
-verifying the header. A full fledged python-based tool is added in the
-follow up commit.
-
-Example uses:
-
-  hex2bin tlvs | ./scripts/bareboxtlv -m 0xcfe01001 >tlv.blob
-  ./scripts/bareboxtlv -m 0xcfe01001 -v tlv.blob && echo CRC correct
+To maintain unique hostnames, having barebox fix up its own hostname
+appended by "-${global.serial_number} is a sane default. Add a Kconfig
+option to enable this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/.gitignore                |   2 +
- scripts/Makefile                  |   2 +
- scripts/bareboxtlv-target.c       |   1 +
- scripts/bareboxtlv.c              | 183 ++++++++++++++++++++++++++++++
- scripts/include/asm/unaligned.h   |  21 ++++
- scripts/include/linux/build_bug.h |   8 ++
- scripts/include/linux/stringify.h |  14 +++
- 7 files changed, 231 insertions(+)
- create mode 100644 scripts/bareboxtlv-target.c
- create mode 100644 scripts/bareboxtlv.c
- create mode 100644 scripts/include/asm/unaligned.h
- create mode 100644 scripts/include/linux/build_bug.h
- create mode 100644 scripts/include/linux/stringify.h
+ common/Kconfig | 10 ++++++++++
+ common/bootm.c |  9 ++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index 1b760309583b..8c74d7c9f001 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -20,6 +20,8 @@ bareboxenv-target
- kernel-install-target
- bareboxcrc32-target
- bareboximd-target
-+bareboxtlv
-+bareboxtlv-target
- mk-am35xx-spi-image
- mkimage
- mxsimage
-diff --git a/scripts/Makefile b/scripts/Makefile
-index eb3884471bc9..85e081544553 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -10,6 +10,7 @@ hostprogs-always-y					+= bareboxenv
- hostprogs-always-y					+= bareboxcrc32
- hostprogs-always-y					+= kernel-install
- hostprogs-always-$(CONFIG_QOICONV)			+= qoiconv
-+hostprogs-always-$(CONFIG_TLV)				+= bareboxtlv
- hostprogs-always-$(CONFIG_KEYTOC)			+= keytoc
- HOSTCFLAGS_keytoc.o = `$(PKG_CONFIG) --cflags openssl`
- HOSTLDLIBS_keytoc = `$(PKG_CONFIG) --libs openssl`
-@@ -42,6 +43,7 @@ HOSTLDLIBS_rk-usb-loader  = `$(PKG_CONFIG) --libs libusb-1.0`
- hostprogs-always-$(CONFIG_RK_USB_LOADER)		+= rk-usb-loader
+diff --git a/common/Kconfig b/common/Kconfig
+index 1e04d0403ad0..2d2be0f7c4f6 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1254,6 +1254,16 @@ config MACHINE_ID
+ 	  Note: if no hashable information is available no machine id will be passed
+ 	  to the kernel.
  
- userprogs-always-$(CONFIG_BAREBOXENV_TARGET)		+= bareboxenv-target
-+userprogs-always-$(CONFIG_BAREBOXTLV_TARGET)		+= bareboxtlv-target
- userprogs-always-$(CONFIG_KERNEL_INSTALL_TARGET)	+= kernel-install-target
- userprogs-always-$(CONFIG_BAREBOXCRC32_TARGET)		+= bareboxcrc32-target
- userprogs-always-$(CONFIG_IMD_TARGET)			+= bareboximd-target
-diff --git a/scripts/bareboxtlv-target.c b/scripts/bareboxtlv-target.c
-new file mode 100644
-index 000000000000..52437edef634
---- /dev/null
-+++ b/scripts/bareboxtlv-target.c
-@@ -0,0 +1 @@
-+#include "bareboxtlv.c"
-diff --git a/scripts/bareboxtlv.c b/scripts/bareboxtlv.c
-new file mode 100644
-index 000000000000..7b8dbfc1e845
---- /dev/null
-+++ b/scripts/bareboxtlv.c
-@@ -0,0 +1,183 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2021 Ahmad Fatoum, Pengutronix
++config SERIAL_NUMBER_FIXUP_SYSTEMD_HOSTNAME
++	bool "append board serial number to systemd.hostname= fixup"
++	depends on FLEXIBLE_BOOTARGS
++	help
++	  When a systemd.hostname= kernel command line argument is
++	  fixed up, append a `-${global.serial_number}' suffix.
 +
-+/* bareboxtlv.c - generate a barebox TLV header */
++	  This option without effect if global.bootm.provide_hostname
++	  is unset.
 +
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <getopt.h>
-+#include <unistd.h>
+ config SYSTEMD_OF_WATCHDOG
+ 	bool "inform devicetree-enabled kernel of used watchdog"
+ 	depends on WATCHDOG && OFTREE && FLEXIBLE_BOOTARGS
+diff --git a/common/bootm.c b/common/bootm.c
+index 5370e1485bc6..a26ea82684a6 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -864,6 +864,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 
+ 	if (bootm_data->provide_hostname) {
+ 		const char *hostname = getenv_nonempty("global.hostname");
++		const char *suffix = NULL;
+ 		char *hostname_bootarg;
+ 
+ 		if (!hostname) {
+@@ -878,7 +879,13 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 			goto err_out;
+ 		}
+ 
+-		hostname_bootarg = basprintf("systemd.hostname=%s", hostname);
++		if (IS_ENABLED(CONFIG_SERIAL_NUMBER_FIXUP_SYSTEMD_HOSTNAME))
++			suffix = barebox_get_serial_number();
 +
-+#include "compiler.h"
-+#include <linux/stringify.h>
++		hostname_bootarg = basprintf("systemd.hostname=%s%s%s",
++					     hostname, suffix ? "-" : "",
++					     suffix ?: "");
 +
-+#define debug(...)
-+#define printk_once(...)
-+
-+#include "../include/tlv/format.h"
-+#include "../crypto/crc32.c"
-+
-+#include "common.h"
-+#include "common.c"
-+
-+static void usage(char *prgname)
-+{
-+	fprintf(stderr,
-+		"USAGE: %s [FILE]\n"
-+		"Manipulate barebox TLV blobs\n"
-+		"\n"
-+		"options:\n"
-+		"  -m        TLV magic to use (default: " __stringify(TLV_MAGIC_BAREBOX_V1) " or input magic for -s)\n"
-+		"  -s        strip input TLV header from output\n"
-+		"            (default is adding header to headerless input)\n"
-+		"  -@        offset to start reading at\n"
-+		"  -v        verify CRC\n",
-+		prgname);
-+}
-+
-+static inline ssize_t write_full_verbose(int fd, const void *buf, size_t len)
-+{
-+	ssize_t ret;
-+
-+	ret = write_full(fd, buf, len);
-+	if (ret < 0)
-+		perror("write");
-+	return ret;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	u32 magic = 0;
-+	struct tlv_header *inhdr = NULL;
-+	struct tlv_header hdr;
-+	size_t offset = 0, size = 0;
-+	ssize_t ret;
-+	bool strip_header = false, verify = false;
-+	int opt, ecode = EXIT_FAILURE;
-+	int infd = STDIN_FILENO;
-+	const u8 *p;
-+	char *endptr;
-+	void *buf;
-+	u32 crc = ~0;
-+
-+	while((opt = getopt(argc, argv, "svm:@:h")) != -1) {
-+		switch (opt) {
-+		case 'v':
-+			verify = true;
-+			/* fallthrough; */
-+		case 's':
-+			strip_header = true;
-+			break;
-+		case 'm':
-+			magic = strtoul(optarg, NULL, 16);
-+			if (!magic) {
-+				fprintf(stderr, "invalid magic: %s\n", optarg);
-+				return EXIT_FAILURE;
-+			}
-+			break;
-+		case '@':
-+			offset = strtoul(optarg, &endptr, 0);
-+			if (endptr == optarg) {
-+				fprintf(stderr, "invalid offset: %s\n", optarg);
-+				return EXIT_FAILURE;
-+			}
-+			break;
-+		case 'h':
-+			usage(argv[0]);
-+			return 0;
-+		}
-+	}
-+
-+	if (argc - optind > 1) {
-+		usage(argv[0]);
-+		return EXIT_FAILURE;
-+	}
-+
-+	if (argv[optind]) {
-+		infd = open(argv[optind], O_RDONLY);
-+		if (infd < 0) {
-+			perror("open");
-+			return EXIT_FAILURE;
-+		}
-+		lseek(infd, offset, SEEK_SET);
-+	} else if (offset) {
-+		fprintf(stderr, "can't combine -@ with stdin\n");
-+		return EXIT_FAILURE;
-+	}
-+
-+	p = buf = read_fd(infd, &size);
-+	if (!buf) {
-+		perror("read_fd");
-+		goto out;
-+	}
-+
-+	/* validate, but skip, if header given */
-+	if (strip_header) {
-+		inhdr = buf;
-+
-+		if (size < tlv_total_len(inhdr)) {
-+			fprintf(stderr, "short input: got %zu bytes, but header claims %zu\n",
-+			       size, tlv_total_len(inhdr));
-+			goto out;
-+		}
-+
-+		if (!magic)
-+			magic = get_unaligned_be32(p);
-+
-+		p += sizeof(struct tlv_header);
-+		size = cpu_to_be32(inhdr->length_tlv);
-+
-+		if (cpu_to_be32(inhdr->length_sig) != 0) {
-+			fprintf(stderr, "Signatures not yet supported\n");
-+			goto out;
-+		}
-+
-+	}
-+
-+	if (!magic)
-+		magic = TLV_MAGIC_BAREBOX_V1;
-+
-+	hdr.magic = cpu_to_be32(magic);
-+	hdr.length_tlv = cpu_to_be32(size);
-+	hdr.length_sig = cpu_to_be32(0);
-+
-+	if (!verify) {
-+		if (!strip_header) {
-+			ret = write_full_verbose(1, &hdr, sizeof(hdr));
-+			if (ret < 0)
-+				goto out;
-+		}
-+		ret = write_full_verbose(1, p, size);
-+		if (ret < 0)
-+			goto out;
-+	}
-+
-+	crc = crc32_be(crc, &hdr, sizeof(hdr));
-+	crc = crc32_be(crc, p, size);
-+
-+	if (verify) {
-+		u32 oldcrc;
-+
-+		oldcrc = get_unaligned_be32(p + size);
-+		if (oldcrc != crc) {
-+			fprintf(stderr, "CRC mismatch: expected %08x, but calculated %08x\n",
-+			       oldcrc, crc);
-+			goto out;
-+		}
-+	}
-+
-+	if (!strip_header) {
-+		crc = cpu_to_be32(crc);
-+
-+		ret = write_full_verbose(1, &crc, sizeof(crc));
-+		if (ret < 0)
-+			goto out;
-+	}
-+
-+	ecode = 0;
-+out:
-+	free(buf);
-+	if (argv[optind])
-+		close(infd);
-+	return ecode;
-+}
-diff --git a/scripts/include/asm/unaligned.h b/scripts/include/asm/unaligned.h
-new file mode 100644
-index 000000000000..af6ccbc1bcf5
---- /dev/null
-+++ b/scripts/include/asm/unaligned.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef _ASM_ARM_UNALIGNED_H
-+#define _ASM_ARM_UNALIGNED_H
-+
-+#include "../../../include/linux/unaligned/le_byteshift.h"
-+#include "../../../include/linux/unaligned/be_byteshift.h"
-+#include "../../../include/linux/unaligned/generic.h"
-+
-+/*
-+ * Select endianness
-+ */
-+#ifdef CONFIG_CPU_BIG_ENDIAN
-+#define get_unaligned	__get_unaligned_be
-+#define put_unaligned	__put_unaligned_be
-+#else
-+#define get_unaligned	__get_unaligned_le
-+#define put_unaligned	__put_unaligned_le
-+#endif
-+
-+#endif /* _ASM_ARM_UNALIGNED_H */
-diff --git a/scripts/include/linux/build_bug.h b/scripts/include/linux/build_bug.h
-new file mode 100644
-index 000000000000..e9bc857b15e8
---- /dev/null
-+++ b/scripts/include/linux/build_bug.h
-@@ -0,0 +1,8 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_BUILD_BUG_H
-+#define _LINUX_BUILD_BUG_H
-+
-+#define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
-+#define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-+
-+#endif	/* _LINUX_BUILD_BUG_H */
-diff --git a/scripts/include/linux/stringify.h b/scripts/include/linux/stringify.h
-new file mode 100644
-index 000000000000..55f6d04d48b1
---- /dev/null
-+++ b/scripts/include/linux/stringify.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef __LINUX_STRINGIFY_H
-+#define __LINUX_STRINGIFY_H
-+
-+/* Indirect stringification.  Doing two levels allows the parameter to be a
-+ * macro itself.  For example, compile with -DFOO=bar, __stringify(FOO)
-+ * converts to "bar".
-+ */
-+
-+#define __stringify_1(x...)	#x
-+#define __stringify(x...)	__stringify_1(x)
-+
-+#endif	/* !__LINUX_STRINGIFY_H */
+ 		globalvar_add_simple("linux.bootargs.hostname", hostname_bootarg);
+ 		free(hostname_bootarg);
+ 	}
 -- 
 2.39.5
 
