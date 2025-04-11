@@ -1,83 +1,82 @@
-Delivery-date: Fri, 11 Apr 2025 09:44:24 +0200
+Delivery-date: Fri, 11 Apr 2025 09:44:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u393o-00BA4Y-1o
+	id 1u393p-00BA4u-12
 	for lore@lore.pengutronix.de;
-	Fri, 11 Apr 2025 09:44:24 +0200
+	Fri, 11 Apr 2025 09:44:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u393m-00066y-2e
-	for lore@pengutronix.de; Fri, 11 Apr 2025 09:44:24 +0200
+	id 1u393n-00067a-4H
+	for lore@pengutronix.de; Fri, 11 Apr 2025 09:44:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=CMSDoJmnUaqKmpZJOyYX6A6Dcnx6fLNua8JdSMbA4Mk=; b=taiYGGaU4sg932JeZ4O0WjSRKf
-	YgLhYuD/kNwKP2O4wCJsHqkVXiUrBy1YILkv4QwMxu7ByKZIxlRsGd4bpoZXmlZlql326MMgjaYKA
-	CA4FigU+0GU+80tPp8EvvtrbxFjuvesToO3OOAnnw5/yEXOvcMkjEqkRRiyHPT8TSoA3Fup0Ug2Yw
-	lYomFsYLcMEMouM3pGBQpdZ7UHww7DFsMM3sI8hnYM6lnZJDOI6tGnA/JvwfHRhLaITu1uvQxbjrz
-	NpyUfdxENKO9LEdfM12TicPHZbi/tf/b6/dM16ei+4oHAMbAp27MW0EnNjiGue5xLd28Nt33CqcQO
-	danGnRGg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=p+6DkCtP0cdKC2PShE8/0eEN+In+OYSkYmoAffS/SP4=; b=RP7Ig0mH1Jxx54athi42aSZBB3
+	AlzXWS4t3BC1dHQo+WmdWV63mU6kCMkJOLmlaTcwsUqJxS85T8/Gwu2TD8JMQK/2Ax8t/GDsxGpOJ
+	B5f6WYT+ZmWGYlwTbB4zg0PENEXxyFxuJmn2fo+98B3Lx8kFMvneaXlNeGO1jmAOCwakgBuWwsQCR
+	Ims6vGt4WzPqdQ6jWDAf75SJwIcVUlgiieNPvom5lNBw9Bcl7LnP8oVGjPGfwRtptEVimOBYt0MjL
+	/YHrLgRIEHGbEpMJsPLWd/Zeu3W5KjcsMprs5sO2iko+HaBI3xVhqonvRdkfr+y+gPUmugdQDL2J9
+	SB5AEn0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u393G-0000000Cv7m-1Eae;
-	Fri, 11 Apr 2025 07:43:50 +0000
+	id 1u393H-0000000Cv9s-3B9p;
+	Fri, 11 Apr 2025 07:43:51 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u390T-0000000CuLO-07yE
+	id 1u390U-0000000CuLt-2dyk
 	for barebox@bombadil.infradead.org;
-	Fri, 11 Apr 2025 07:40:57 +0000
+	Fri, 11 Apr 2025 07:40:58 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=CMSDoJmnUaqKmpZJOyYX6A6Dcnx6fLNua8JdSMbA4Mk=; b=raIhgeXOXZcVTk618p79fclqFo
-	2nUURdctIgwqv+0joyZCGXJJvVtjcgztROerbe2AXHbYneUuVkTrePUfKa7GX4hW8GuLM0+l5h5on
-	KNK9oObIhjfck2nZJAqLDTNuiqdEb8FtEwyk4DfttF6+mqrrdaWAUwhLuzFUq2dgE8d9xPylp1zuz
-	SUAyYjWgiBjTaJShK95R27LEfx55BTYsMpveTS9BKuuRWVk8tPNlQLySNXcrFvCry6ttWqVCf+JME
-	aJqRrtumonH9TuqoFu9UHJ/oiMoKnsY9TFpw3QRCzkuQv5mxCBTQaDwceOoo8Ox9XRuA6eOCBLPMP
-	iNT1JN0w==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=p+6DkCtP0cdKC2PShE8/0eEN+In+OYSkYmoAffS/SP4=; b=ECCz8Nv7cEcUgYAh0zC/0wez3n
+	NM+UI8lUGK+YlCYGY1WMnZ4Hh9JKTr+RCg19cZxuyDfb8CRg58U++c/XCnwJN9gc6SJAQKwEPbYgL
+	t3FIJUPFa1+mZgdw0Qt4lsskayRV7SwT1zAv1VhYptyfoTDynCAIZS1Yw6rYlfT9czP4BVCcdWbaJ
+	J4RIFXTLUAQhWTnddoAkWJP92JjB0p7mU5k0dEDk76iZ3YOQmbHoyboyl45IussHa37va8EX+Qytx
+	52z5CcVTrWyJ3vOco6im5/1Gy+6HaSvRFR3nGPH88Am5XzY43x6Ni5S+DpcpdRiaGzk9lJIUGEIuy
+	ymlWWuog==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u390M-00000008y0t-3xsm
+	id 1u390R-00000008y3F-2rdz
 	for barebox@lists.infradead.org;
-	Fri, 11 Apr 2025 07:40:55 +0000
+	Fri, 11 Apr 2025 07:40:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-0004uR-M9
-	for barebox@lists.infradead.org; Fri, 11 Apr 2025 09:40:46 +0200
+	id 1u390J-0004v8-6a; Fri, 11 Apr 2025 09:40:47 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-004OjB-1b
-	for barebox@lists.infradead.org;
+	id 1u390I-004Oje-2z;
 	Fri, 11 Apr 2025 09:40:46 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-008WBo-1J
-	for barebox@lists.infradead.org;
+	id 1u390I-008WBo-2f;
 	Fri, 11 Apr 2025 09:40:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 11 Apr 2025 09:40:35 +0200
-Message-Id: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 11 Apr 2025 09:40:44 +0200
+Message-Id: <20250411074045.2019372-10-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
+References: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250411_084053_190837_9A2C1C53 
-X-CRM114-Status: GOOD (  14.33  )
+X-CRM114-CacheID: sfid-20250411_084056_005023_9FCADFE2 
+X-CRM114-Status: GOOD (  18.63  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,120 +98,136 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 00/10] Add barebox TLV infrastructure
+Subject: [PATCH 09/10] doc: Add User-Documentation for Barebox TLV
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-barebox TLV is a system to store and retrieve a device's (read-only)
-meta-data from non-volatile memory.
-It is intended to handle information that are usually only set in
-the factory - like serial number, MAC-addresses, analog calibration
-data, etc.
-Data is stored in a tag-length-value format (hence the name) and read
-from non-volatile memory during startup.
+From: Chris Fiege <cfi@pengutronix.de>
 
-Unpacked values are fixed up into the devicetree ``chosen``-node
-for consumption by the operating system.
+With this stub users can hopefully discover the Barebox TLV
+functionality.
+Additionally it discusses some key concepts of the implementation, that
+are not obvious from the actual implementations.
 
-This system has already been deployed in the field for a couple of years
-now on the LXA TAC. The feature is given a generic name though, because
-it's hoped it will be useful to a more general audience.
-
-Nowadays, this could be implemented as a NVMEM layout in Linux.
-The benefit of doing it in barebox is that, when signing is added
-in the future, we preclude an attacker from showing barebox
-and Linux different content.
-
-Nevertheless, NVMEM layout infrastructure in barebox could be
-useful, but our NVMEM support needs an overhaul to support layouts,
-so fixed-partitions is the only supported binding for now.
-
-Ahmad Fatoum (8):
-  net: factor out eth_of_get_fixup_node
-  net: export list of registered ethernet addresses
-  common: add optional systemd.hostname generation
-  common: add barebox TLV support
-  commands: add TLV debugging command
-  scripts: add bareboxtlv host/target tool
-  boards: add decoder for LXA TLV v1 format
-  ARM: stm32mp: lxa: enable TLV support for TAC & FairyTux2
-
-Chris Fiege (2):
-  scripts: Add Barebox TLV Generator Tooling
-  doc: Add User-Documentation for Barebox TLV
-
- .../bindings/nvmem/barebox,tlv.yaml           |  60 ++++
- Documentation/user/barebox-tlv.rst            |  93 +++++
- Documentation/user/user-manual.rst            |   1 +
- arch/arm/boards/lxa-fairytux2/board.c         |   8 +
- arch/arm/boards/lxa-tac/board.c               |   8 +
- .../dts/stm32mp153c-lxa-fairytux2-gen2.dts    |   1 +
- arch/arm/dts/stm32mp153c-lxa-fairytux2.dtsi   |   1 +
- arch/arm/dts/stm32mp15xc-lxa-tac.dtsi         |   2 +
- arch/arm/mach-stm32mp/Kconfig                 |   2 +
- commands/Kconfig                              |  12 +
- commands/Makefile                             |   1 +
- commands/tlv.c                                |  55 +++
- common/Kconfig                                |  34 ++
- common/Makefile                               |   1 +
- common/boards/Kconfig                         |   5 +
- common/boards/Makefile                        |   1 +
- common/boards/lxa/Makefile                    |   2 +
- common/boards/lxa/factory-data.c              | 132 +++++++
- common/bootm.c                                |   9 +-
- common/tlv/Makefile                           |   4 +
- common/tlv/barebox.c                          | 183 ++++++++++
- common/tlv/bus.c                              | 133 ++++++++
- common/tlv/drv.c                              |  49 +++
- common/tlv/parser.c                           | 211 ++++++++++++
- common/tlv/register.c                         |  94 +++++
- include/net.h                                 |  21 ++
- include/string.h                              |   7 +
- include/tlv/format.h                          |  72 ++++
- include/tlv/tlv.h                             |  99 ++++++
- lib/string.c                                  |  21 ++
- net/eth.c                                     |  40 +--
- scripts/.gitignore                            |   2 +
- scripts/Makefile                              |   2 +
- .../bareboxtlv-generator.py                   | 321 ++++++++++++++++++
- .../bareboxtlv-generator/data-example.yaml    |  12 +
- scripts/bareboxtlv-generator/requirements.txt |   2 +
- .../bareboxtlv-generator/schema-example.yaml  |  48 +++
- scripts/bareboxtlv-target.c                   |   1 +
- scripts/bareboxtlv.c                          | 183 ++++++++++
- scripts/include/asm/unaligned.h               |  21 ++
- scripts/include/linux/build_bug.h             |   8 +
- scripts/include/linux/stringify.h             |  14 +
- test/self/Kconfig                             |   7 +
- test/self/Makefile                            |   1 +
- test/self/tlv.c                               |  89 +++++
- test/self/tlv.dts                             |  27 ++
- 46 files changed, 2080 insertions(+), 20 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml
+Signed-off-by: Chris Fiege <cfi@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/user/barebox-tlv.rst | 93 ++++++++++++++++++++++++++++++
+ Documentation/user/user-manual.rst |  1 +
+ 2 files changed, 94 insertions(+)
  create mode 100644 Documentation/user/barebox-tlv.rst
- create mode 100644 commands/tlv.c
- create mode 100644 common/boards/lxa/Makefile
- create mode 100644 common/boards/lxa/factory-data.c
- create mode 100644 common/tlv/Makefile
- create mode 100644 common/tlv/barebox.c
- create mode 100644 common/tlv/bus.c
- create mode 100644 common/tlv/drv.c
- create mode 100644 common/tlv/parser.c
- create mode 100644 common/tlv/register.c
- create mode 100644 include/tlv/format.h
- create mode 100644 include/tlv/tlv.h
- create mode 100755 scripts/bareboxtlv-generator/bareboxtlv-generator.py
- create mode 100644 scripts/bareboxtlv-generator/data-example.yaml
- create mode 100644 scripts/bareboxtlv-generator/requirements.txt
- create mode 100644 scripts/bareboxtlv-generator/schema-example.yaml
- create mode 100644 scripts/bareboxtlv-target.c
- create mode 100644 scripts/bareboxtlv.c
- create mode 100644 scripts/include/asm/unaligned.h
- create mode 100644 scripts/include/linux/build_bug.h
- create mode 100644 scripts/include/linux/stringify.h
- create mode 100644 test/self/tlv.c
- create mode 100644 test/self/tlv.dts
 
+diff --git a/Documentation/user/barebox-tlv.rst b/Documentation/user/barebox-tlv.rst
+new file mode 100644
+index 000000000000..3db13ec88b22
+--- /dev/null
++++ b/Documentation/user/barebox-tlv.rst
+@@ -0,0 +1,93 @@
++barebox TLV - Non-Volatile Factory Data Storage
++===============================================
++
++barebox TLV is a system to store and retrieve a device's (read-only)
++meta-data from non-volatile memory.
++It is intended to handle information that are usually only set in
++the factory - like serial number, MAC-addresses, analog calibration
++data, etc.
++Data is stored in a tag-length-value format (hence the name) and read
++from non-volatile memory during startup.
++Unpacked values are stored in the devicetree ``chosen``-node.
++
++barebox TLV consists of two components:
++
++* The parser inside barebox (``common/tlv``).
++  This code parses the non-volatile memory during startup.
++* A Python-Tool (``scripts/bareboxtlv-generator``).
++  This script is intended to generate the TLV binaries in the factory.
++
++Data Format
++-----------
++
++The TLV binary has the following format:
++
++.. code-block:: C
++
++     struct tlv {
++         be16 tag; /* 2 bytes */
++         be16 len; /* 2 bytes */
++         u8 payload[];
++     };
++
++     struct binfile {
++         be32 magic_version;
++         be32 length_tlv; /* 4 bytes */
++         be32 length_sig; /* 4 bytes */
++         struct tlv tlvs[];
++         be32 crc32;
++     };
++
++.. note::
++  Even though the header has a ``length_sig`` field,
++  there is currently no support for cryptographic signatures.
++
++Tags
++----
++
++Tags are defined as 32-bit integers.
++A tag defines the following attributes:
++
++* **Data format:**
++  The data format can be something like ``string``, ``decimal`` or
++  ``serial-number``.
++* **Name of the entry:**
++  This is the name under which the value is stored in ``chosen``-node.
++
++The tag range ``0x0000`` to ``0x7FFF`` is intended for common tags,
++that can be used in every schema.
++These common tags are defined in ``common/tlv/barebox.c``.
++
++The tag range ``0x8000`` to ``0xFFFF`` is intended for custom extensions.
++Parsing must be handled by board-specific extensions.
++
++Data Types
++----------
++
++barebox defines a number of common data types.
++These are defined in ``common/tlv/barebox.c``.
++
++Board-specific extensions can add additional data types as needed.
++
++TLV Binary Generation
++---------------------
++
++To generate a TLV binary the schema for the specific TLV must be defined.
++Schemas are yaml-files that represent what the actual parser in barebox expects.
++
++An example schema can be found in ``srcipts/bareboxtlv-generator/schema-example.yaml``.
++This schema defines some well-known tags and two board-specific tags.
++
++Afterwards another yaml-file with the data for the TLV binary is needed.
++An example can be found in ``srcipts/bareboxtlv-generator/data-example.yaml``.
++
++With these information in place a TLV binary can be created:
++
++.. code-block:: shell
++
++   ./bareboxtlv-generator.py --input-data data-example.yaml \
++                             schema-example.yaml tlv.bin
++
++.. note::
++  The ``FactoryDataset`` class in ``bareboxtlv-generator.py``
++   is intended to be used as a library.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index 83ba9e4c3505..53a94f4e2933 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -39,6 +39,7 @@ Contents:
+    watchdog
+    reboot-mode
+    virtio
++   barebox-tlv
+ 
+ * :ref:`search`
+ * :ref:`genindex`
 -- 
 2.39.5
 
