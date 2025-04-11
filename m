@@ -3,66 +3,68 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u38qx-00B9ki-0L
+	id 1u38qx-00B9l4-2X
 	for lore@lore.pengutronix.de;
 	Fri, 11 Apr 2025 09:31:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u38qv-0002V2-SX
-	for lore@pengutronix.de; Fri, 11 Apr 2025 09:31:06 +0200
+	id 1u38qw-0002VQ-9j
+	for lore@pengutronix.de; Fri, 11 Apr 2025 09:31:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+2B8sPR1u/TDzWx099QrkVvRrajUNYRq/TxzEHQoipc=; b=chr0NWYZWhGAl0aqciy5XRUpob
-	JmFdW780zKhyNpReimDKJttx2pxlzPC7c1wOTpmo81AKrs/HulLDa1xiR23wjGRGVmu2Pfr+xFZ/N
-	NifZelOpLS65sJPotUl8mncQ01KaHfUinvfiVE7VXXNUXu/ic+igyKtHSpbn+QLMMyDzYujoH3KW2
-	gDapXEKnkAapjBx/Fr7am4Tzna9gmZiip4qCT8QFTXn0uFpbw+iI5L/du7Ow0ncGSzeiTShL3ebup
-	eVcjUrEnGyiAoHSvc3CxshB3wejQ8XBHe7PKbXHbCBHGJf7TE88qjfKqFt89bcetZoJHSmBf4UvSs
-	nVM9Iu4A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=gMueoLSvDiXbSfTRi4YOiNrhRSL4hHXYvmhR5ZYGdJs=; b=Km4im3dYqNamNbLiSNKIYU4KEM
+	bleqf2uis4Ta8SDpduyxdedoWzU7BPGZflQViDsD1F7a0GshGl7AHVS4u7/8HpompyX9GcYhofcmX
+	l0ZKYRYQ/SRYsaEjr6tbTRmKfqEmCVpiTlh0zhHJ90GAIT0oJrkeV27U0c+iCNCW+JxT15CzzC0ky
+	tonwf4Z6rbnoZWPA0MkJWqoZOodQuiZmhzO9meRiYZyM5amfkhDZ4bjtOOQMNCZUQafp0A1LlZqs4
+	nLfKQm6VmgnP4iD/t7pfMKb4+jK4bIT2CcOgx/4uT2FgKAP6ViPpYbTOjA8sIOTOcGvhDnicI+M0F
+	/uIklKFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u38qL-0000000Cs3y-0pmS;
-	Fri, 11 Apr 2025 07:30:29 +0000
+	id 1u38qJ-0000000Cs31-45op;
+	Fri, 11 Apr 2025 07:30:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u38hJ-0000000CqSz-3fuu
+	id 1u38ad-0000000Cpdo-1Bo2
 	for barebox@lists.infradead.org;
-	Fri, 11 Apr 2025 07:21:11 +0000
+	Fri, 11 Apr 2025 07:14:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u38hI-0000Ad-CN; Fri, 11 Apr 2025 09:21:08 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1u38ac-0007Co-01; Fri, 11 Apr 2025 09:14:14 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u38hI-004ObT-0c;
-	Fri, 11 Apr 2025 09:21:08 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u38hI-006Olf-0O;
-	Fri, 11 Apr 2025 09:21:08 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1u38ab-004OaN-2X;
+	Fri, 11 Apr 2025 09:14:13 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1u38ab-00CBU2-2D;
+	Fri, 11 Apr 2025 09:14:13 +0200
+Date: Fri, 11 Apr 2025 09:14:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250410095718.2258908-1-a.fatoum@pengutronix.de>
-References: <20250410095718.2258908-1-a.fatoum@pengutronix.de>
-Message-Id: <174435606811.1525118.3831156112656996064.b4-ty@pengutronix.de>
-Date: Fri, 11 Apr 2025 09:21:08 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, David Dgien <dgienda125@gmail.com>
+Message-ID: <Z_jBRTDkCMP_swb5@pengutronix.de>
+References: <20250410104625.2500755-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410104625.2500755-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250411_002109_920943_99C03B6D 
-X-CRM114-Status: UNSURE (   8.28  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250411_001415_320676_DA644BB9 
+X-CRM114-Status: GOOD (  19.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,30 +86,60 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] commands: introduce simple base64 command
+Subject: Re: [PATCH] fixup! tlsf: Add tracking of added tlsf memory pools
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Thu, 10 Apr 2025 11:57:18 +0200, Ahmad Fatoum wrote:
-> We have base64 functionality in barebox as that's used as formatting for
-> sealed blobs and JWTs. Add a simple command-line interface to the
-> functionality for aid during development and to simplify copying short
-> binary strings via the console.
+On Thu, Apr 10, 2025 at 12:46:25PM +0200, Ahmad Fatoum wrote:
+> tlsf: fix KASAN poisoning of TLSF pool
 > 
-> We do not have code to encode in barebox, so the command only supports
-> decoding for now.
+> By poisoning all of the heap after the first malloc, new_pool_entry
+> becomes a pointer to poisoned memory, which causes a KASAN error right
+> away at startup.
 > 
-> [...]
+> Move the kasan_poison_shadow call directly after tlsf_add_pool to
+> fix this.
+> 
+> Cc: David Dgien <dgienda125@gmail.com>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/tlsf_malloc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Applied, thanks!
+Applied, thanks
 
-[1/1] commands: introduce simple base64 command
-      https://git.pengutronix.de/cgit/barebox/commit/?id=41f1b8a96f59 (link may not be stable)
+Sascha
 
-Best regards,
+> 
+> diff --git a/common/tlsf_malloc.c b/common/tlsf_malloc.c
+> index 4acf1c1c5071..6e9d48af26bb 100644
+> --- a/common/tlsf_malloc.c
+> +++ b/common/tlsf_malloc.c
+> @@ -115,12 +115,12 @@ void *malloc_add_pool(void *mem, size_t bytes)
+>  	if (!new_pool)
+>  		return NULL;
+>  
+> +	kasan_poison_shadow(mem, bytes, KASAN_TAG_INVALID);
+> +
+>  	new_pool_entry = malloc(sizeof(*new_pool_entry));
+>  	if (!new_pool_entry)
+>  		return NULL;
+>  
+> -	kasan_poison_shadow(mem, bytes, KASAN_TAG_INVALID);
+> -
+>  	new_pool_entry->pool = new_pool;
+>  	list_add(&new_pool_entry->list, &mem_pool_list);
+>  
+> -- 
+> 2.39.5
+> 
+> 
+> 
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
