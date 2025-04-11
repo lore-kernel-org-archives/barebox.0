@@ -1,67 +1,67 @@
-Delivery-date: Fri, 11 Apr 2025 09:31:05 +0200
+Delivery-date: Fri, 11 Apr 2025 09:31:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u38qv-00B9kN-1h
+	id 1u38qx-00B9ki-0L
 	for lore@lore.pengutronix.de;
-	Fri, 11 Apr 2025 09:31:05 +0200
+	Fri, 11 Apr 2025 09:31:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u38qu-0002US-BT
-	for lore@pengutronix.de; Fri, 11 Apr 2025 09:31:05 +0200
+	id 1u38qv-0002V2-SX
+	for lore@pengutronix.de; Fri, 11 Apr 2025 09:31:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4SNRNfXf+EVMrUfBvY6Hr0yufFUqXZPXrJMbQ663vbg=; b=ZF9/kkpqFeicZgfv1E8biJX+2W
-	qBslsQ75iGMHlO7nr4jcT2FblkB1A3ptTNoaoLeP+RAXVLFIOsVK8IoQ187J9VH1n/bbdliHsl+vf
-	ihgFEQUb1gGTfIU7rbC6aUPRh0sRZw75TxGQtEKvAmYJ2EipPotKoCqmjy2axgShwxYBTiAj/rgDV
-	86GBU5rRGQunBr4oua2aKFoZn3ELY34uD31ymZvBP4GlmEh5oSZ6jEdWADqLxkcL45ayiDhFwVt1S
-	ZuO9P5ABW3qZO4ghHBgutHLFXzm1TrvVoB4mke6Ikrw9fq7ycrnsn1MZBNIMUm6JTDuo9sOuc4LFf
-	jB+3HTKA==;
+	bh=+2B8sPR1u/TDzWx099QrkVvRrajUNYRq/TxzEHQoipc=; b=chr0NWYZWhGAl0aqciy5XRUpob
+	JmFdW780zKhyNpReimDKJttx2pxlzPC7c1wOTpmo81AKrs/HulLDa1xiR23wjGRGVmu2Pfr+xFZ/N
+	NifZelOpLS65sJPotUl8mncQ01KaHfUinvfiVE7VXXNUXu/ic+igyKtHSpbn+QLMMyDzYujoH3KW2
+	gDapXEKnkAapjBx/Fr7am4Tzna9gmZiip4qCT8QFTXn0uFpbw+iI5L/du7Ow0ncGSzeiTShL3ebup
+	eVcjUrEnGyiAoHSvc3CxshB3wejQ8XBHe7PKbXHbCBHGJf7TE88qjfKqFt89bcetZoJHSmBf4UvSs
+	nVM9Iu4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u38qL-0000000Cs4G-3PwW;
+	id 1u38qL-0000000Cs3y-0pmS;
 	Fri, 11 Apr 2025 07:30:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u38ho-0000000CqYN-2pLo
+	id 1u38hJ-0000000CqSz-3fuu
 	for barebox@lists.infradead.org;
-	Fri, 11 Apr 2025 07:21:42 +0000
+	Fri, 11 Apr 2025 07:21:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u38hn-0000HF-AV; Fri, 11 Apr 2025 09:21:39 +0200
+	id 1u38hI-0000Ad-CN; Fri, 11 Apr 2025 09:21:08 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u38hn-004ObX-0S;
-	Fri, 11 Apr 2025 09:21:39 +0200
+	id 1u38hI-004ObT-0c;
+	Fri, 11 Apr 2025 09:21:08 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u38hn-006Ony-0F;
-	Fri, 11 Apr 2025 09:21:39 +0200
+	id 1u38hI-006Olf-0O;
+	Fri, 11 Apr 2025 09:21:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250410095958.2271159-1-a.fatoum@pengutronix.de>
-References: <20250410095958.2271159-1-a.fatoum@pengutronix.de>
-Message-Id: <174435609907.1525259.6782818480336084613.b4-ty@pengutronix.de>
-Date: Fri, 11 Apr 2025 09:21:39 +0200
+In-Reply-To: <20250410095718.2258908-1-a.fatoum@pengutronix.de>
+References: <20250410095718.2258908-1-a.fatoum@pengutronix.de>
+Message-Id: <174435606811.1525118.3831156112656996064.b4-ty@pengutronix.de>
+Date: Fri, 11 Apr 2025 09:21:08 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250411_002140_714673_478043B0 
-X-CRM114-Status: UNSURE (   5.55  )
+X-CRM114-CacheID: sfid-20250411_002109_920943_99C03B6D 
+X-CRM114-Status: UNSURE (   8.28  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,21 +84,26 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] of: use pr_ family functions to log messages
+Subject: Re: [PATCH] commands: introduce simple base64 command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 10 Apr 2025 11:59:58 +0200, Ahmad Fatoum wrote:
-> KERN_DEBUG and KERN_ERR don't work in barebox, replace them with pr_
-> family of functions and while at it simplify hexdump.
+On Thu, 10 Apr 2025 11:57:18 +0200, Ahmad Fatoum wrote:
+> We have base64 functionality in barebox as that's used as formatting for
+> sealed blobs and JWTs. Add a simple command-line interface to the
+> functionality for aid during development and to simplify copying short
+> binary strings via the console.
 > 
+> We do not have code to encode in barebox, so the command only supports
+> decoding for now.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] of: use pr_ family functions to log messages
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8508f002b397 (link may not be stable)
+[1/1] commands: introduce simple base64 command
+      https://git.pengutronix.de/cgit/barebox/commit/?id=41f1b8a96f59 (link may not be stable)
 
 Best regards,
 -- 
