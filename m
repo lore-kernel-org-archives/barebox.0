@@ -1,82 +1,82 @@
-Delivery-date: Fri, 11 Apr 2025 09:44:22 +0200
+Delivery-date: Fri, 11 Apr 2025 09:44:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u393m-00BA3f-2f
+	id 1u393n-00BA41-2E
 	for lore@lore.pengutronix.de;
-	Fri, 11 Apr 2025 09:44:22 +0200
+	Fri, 11 Apr 2025 09:44:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u393l-00066l-Eh
-	for lore@pengutronix.de; Fri, 11 Apr 2025 09:44:22 +0200
+	id 1u393l-00066o-KI
+	for lore@pengutronix.de; Fri, 11 Apr 2025 09:44:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fq3LOvSqjR9jF11n0x20SC/m3zn1ee3ahzK9/r2cvyo=; b=YPz2F57QGsduZ9DYQ4Hafq7xPA
-	vrWj4V6tKkW/raLz+CIa++FCpejeICfDTEz+Ld1C/57SFDVrZVbTYSrlr5DfL5BlEm5ChzAuVWTmm
-	b7BQdV+VYROdhG0rhSrwkO55Rdz3FCNH3+UYZPGikSENDduDPnqlRSW7RCeQNFT6T0tGYESBkCZVJ
-	CCjMoLlX51gGZHGD0PHIDh9l4C5NQHJu5x8G3KtWtGazz6ckJX18ma3ZCB9ptq/lmfCNRVtUwCJNq
-	wv3NyEqTjYgO03/xbYZ05h2m1GdCB8dLRGTatOPt2H4Rj0K5fZGpSrycGvuZYau0PQ8MgJgld3p3Z
-	xmzMatQg==;
+	bh=TQkGakq/+eQtqXRxLY78QTtyOOqvdZn4p9rDUd4y2rE=; b=E62PxvWNWHBLkFSfFMshAIaHC3
+	t9CJirOo7y6cc9+qOoWljOZP2UjW7zaLx0k4Pwn+1KUiWHPCF2ecDr7OogIFTOcXR0uto6N/F8YwO
+	oDUQ8DnbkijzhsJeGrpDC4d63WsxiZP8UnvlQN+S652GCMdNkJGKZrDMGl3zefBlg9560QKPulIKR
+	HVCbFJSyDDV8ADzEaYRO7yfLFBFdZ9cDypnr15cEcIOaYjoXm7JTIxTXxiW1edwz+u6mA6gDr0V6n
+	iBquRB+jHZ3bWda2PfmZ41bt5ulzOKV70YrGhw5bdRT+CHE+/30lGpz8T5CAYe5Gv5s9vHdtFHjgs
+	0ut2XmGQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u393B-0000000Cv2n-3MFe;
-	Fri, 11 Apr 2025 07:43:45 +0000
+	id 1u393D-0000000Cv3x-1wZs;
+	Fri, 11 Apr 2025 07:43:47 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u390P-0000000CuKW-4AQK
+	id 1u390R-0000000CuKs-23e8
 	for barebox@bombadil.infradead.org;
-	Fri, 11 Apr 2025 07:40:53 +0000
+	Fri, 11 Apr 2025 07:40:55 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=fq3LOvSqjR9jF11n0x20SC/m3zn1ee3ahzK9/r2cvyo=; b=gZtH4HKgUVzQSA1Aoaz8z8Ktgi
-	1MaWA+mKhxfbUz9nSZkPTKv5yxV/Zs7M4k15ouJVTMuRKz1NQPQ0as/etdXlIKB0Z/fTsVYYj+qTV
-	5FWy6RDcdfiKAbjJEKAfwfX5VW8UYb9o/Ykcvh6k4DW97YDTm7bar0wbq2PBScDwPyz0zH9ucGpU9
-	SYIQLkgfdQE5y+jUvzllKi0gtIe8FUvMvGK/zcDjzg5cc2cSfgNaGA0B7NNEUC5/oIhqeip0hoKK+
-	+V7JoeLXr1A9aTKqSk8TeUPjl1rKARxeH1JZDymejvhW1VOO84QvHQuCYeCb1wkguVdKctOyC+PDL
-	3V4L6WbA==;
+	bh=TQkGakq/+eQtqXRxLY78QTtyOOqvdZn4p9rDUd4y2rE=; b=mrvXRHFub8c8bEzn2x3RURlAG+
+	Kh9kT+tK4I84iUAq6q9Oeuytwn4bRW7Hty6xqXDBWKRKaFKTpU5GRyJiRxr1jOkopIZDeQHlVytBS
+	huRXea+BX1Bn4JWMYCNZbBI7JT3jj7IZIl/gMW0wXDx9KhpBYqkm+dQLCZ45otCCeWbWIhCLlv7Xp
+	cVH4ffPmkXjMN/d0E4Gp+E1xPUkNYzoQfERNfeT0lnDrnzh/JrQNmsBjAi96uLaxaf7RvY+6Pygwf
+	CLBG7QITDJo5gi/Kqg9CYaY16kOrX5asMmLJ7fCHGTSvnkT8POgk/WsE5b2Bn2u/fuQKgt6lFOqEB
+	+tJsKv7Q==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u390M-00000008y0u-3RWL
+	id 1u390N-00000008y0y-1F4s
 	for barebox@lists.infradead.org;
-	Fri, 11 Apr 2025 07:40:52 +0000
+	Fri, 11 Apr 2025 07:40:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-0004uU-Px; Fri, 11 Apr 2025 09:40:46 +0200
+	id 1u390J-0004uh-2O; Fri, 11 Apr 2025 09:40:47 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-004OjF-1t;
+	id 1u390I-004OjR-2W;
 	Fri, 11 Apr 2025 09:40:46 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u390I-008WBo-1c;
+	id 1u390I-008WBo-2D;
 	Fri, 11 Apr 2025 09:40:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 11 Apr 2025 09:40:37 +0200
-Message-Id: <20250411074045.2019372-3-a.fatoum@pengutronix.de>
+Date: Fri, 11 Apr 2025 09:40:41 +0200
+Message-Id: <20250411074045.2019372-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
 References: <20250411074045.2019372-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250411_084051_234446_E6C9FA9A 
-X-CRM114-Status: GOOD (  12.51  )
+X-CRM114-CacheID: sfid-20250411_084051_707944_1AA02C02 
+X-CRM114-Status: GOOD (  23.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,78 +98,329 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 02/10] net: export list of registered ethernet addresses
+Subject: [PATCH 06/10] scripts: add bareboxtlv host/target tool
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Network stack keeps an ethaddr_list of Ethernet addresses that were
-registered by drivers and board code.
+In its simplest form, a barebox TLV has a 12-byte header, a sequence of
+TLV entries, where each of tags and length are 2 bytes each (in big
+endian), followed by a CRC.
 
-The list currently lacks ethernet devices for which a net_device already
-existed. If a net_device is added later on, the list is consulted, but
-the element is not removed.
+The TLVs are easily generated. Add a tool to allow adding, removing and
+verifying the header. A full fledged python-based tool is added in the
+follow up commit.
 
-This means ethaddr_list is "the list of registered Ethernet addresses
-that were added before the relevant device has been probed". Make it more
-useful by genericising it to be "the list of registered Ethernet addresses".
+Example uses:
 
-This introduces no functional change (only consumer is fixup code that
-handles both cases already), but it allows future board code to consult
-the list to check which Ethernet addresses were actually assigned.
+  hex2bin tlvs | ./scripts/bareboxtlv -m 0xcfe01001 >tlv.blob
+  ./scripts/bareboxtlv -m 0xcfe01001 -v tlv.blob && echo CRC correct
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/net.h |  9 +++++++++
- net/eth.c     | 11 ++---------
- 2 files changed, 11 insertions(+), 9 deletions(-)
+ scripts/.gitignore                |   2 +
+ scripts/Makefile                  |   2 +
+ scripts/bareboxtlv-target.c       |   1 +
+ scripts/bareboxtlv.c              | 183 ++++++++++++++++++++++++++++++
+ scripts/include/asm/unaligned.h   |  21 ++++
+ scripts/include/linux/build_bug.h |   8 ++
+ scripts/include/linux/stringify.h |  14 +++
+ 7 files changed, 231 insertions(+)
+ create mode 100644 scripts/bareboxtlv-target.c
+ create mode 100644 scripts/bareboxtlv.c
+ create mode 100644 scripts/include/asm/unaligned.h
+ create mode 100644 scripts/include/linux/build_bug.h
+ create mode 100644 scripts/include/linux/stringify.h
 
-diff --git a/include/net.h b/include/net.h
-index b742e9499434..bc0c1edce0ce 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -613,4 +613,13 @@ void ifdown_all(void);
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 1b760309583b..8c74d7c9f001 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -20,6 +20,8 @@ bareboxenv-target
+ kernel-install-target
+ bareboxcrc32-target
+ bareboximd-target
++bareboxtlv
++bareboxtlv-target
+ mk-am35xx-spi-image
+ mkimage
+ mxsimage
+diff --git a/scripts/Makefile b/scripts/Makefile
+index eb3884471bc9..85e081544553 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -10,6 +10,7 @@ hostprogs-always-y					+= bareboxenv
+ hostprogs-always-y					+= bareboxcrc32
+ hostprogs-always-y					+= kernel-install
+ hostprogs-always-$(CONFIG_QOICONV)			+= qoiconv
++hostprogs-always-$(CONFIG_TLV)				+= bareboxtlv
+ hostprogs-always-$(CONFIG_KEYTOC)			+= keytoc
+ HOSTCFLAGS_keytoc.o = `$(PKG_CONFIG) --cflags openssl`
+ HOSTLDLIBS_keytoc = `$(PKG_CONFIG) --libs openssl`
+@@ -42,6 +43,7 @@ HOSTLDLIBS_rk-usb-loader  = `$(PKG_CONFIG) --libs libusb-1.0`
+ hostprogs-always-$(CONFIG_RK_USB_LOADER)		+= rk-usb-loader
  
- extern struct class eth_class;
- 
-+struct eth_ethaddr {
-+	struct list_head list;
-+	u8 ethaddr[ETH_ALEN];
-+	int ethid;
-+	struct device_node *node;
-+};
+ userprogs-always-$(CONFIG_BAREBOXENV_TARGET)		+= bareboxenv-target
++userprogs-always-$(CONFIG_BAREBOXTLV_TARGET)		+= bareboxtlv-target
+ userprogs-always-$(CONFIG_KERNEL_INSTALL_TARGET)	+= kernel-install-target
+ userprogs-always-$(CONFIG_BAREBOXCRC32_TARGET)		+= bareboxcrc32-target
+ userprogs-always-$(CONFIG_IMD_TARGET)			+= bareboximd-target
+diff --git a/scripts/bareboxtlv-target.c b/scripts/bareboxtlv-target.c
+new file mode 100644
+index 000000000000..52437edef634
+--- /dev/null
++++ b/scripts/bareboxtlv-target.c
+@@ -0,0 +1 @@
++#include "bareboxtlv.c"
+diff --git a/scripts/bareboxtlv.c b/scripts/bareboxtlv.c
+new file mode 100644
+index 000000000000..7b8dbfc1e845
+--- /dev/null
++++ b/scripts/bareboxtlv.c
+@@ -0,0 +1,183 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2021 Ahmad Fatoum, Pengutronix
 +
-+extern struct list_head ethaddr_list;
++/* bareboxtlv.c - generate a barebox TLV header */
 +
- #endif /* __NET_H__ */
-diff --git a/net/eth.c b/net/eth.c
-index 16857ac838dd..2489ed152634 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -23,14 +23,7 @@
- 
- DEFINE_DEV_CLASS(eth_class, "eth");
- 
--struct eth_ethaddr {
--	struct list_head list;
--	u8 ethaddr[ETH_ALEN];
--	int ethid;
--	struct device_node *node;
--};
--
--static LIST_HEAD(ethaddr_list);
-+LIST_HEAD(ethaddr_list);
- 
- int eth_set_promisc(struct eth_device *edev, bool enable)
- {
-@@ -102,7 +95,7 @@ void eth_register_ethaddr(int ethid, const char *ethaddr)
- 	for_each_netdev(edev) {
- 		if (edev->dev.id == ethid) {
- 			register_preset_mac_address(edev, ethaddr);
--			return;
++#include <stdio.h>
++#include <stdlib.h>
++#include <getopt.h>
++#include <unistd.h>
++
++#include "compiler.h"
++#include <linux/stringify.h>
++
++#define debug(...)
++#define printk_once(...)
++
++#include "../include/tlv/format.h"
++#include "../crypto/crc32.c"
++
++#include "common.h"
++#include "common.c"
++
++static void usage(char *prgname)
++{
++	fprintf(stderr,
++		"USAGE: %s [FILE]\n"
++		"Manipulate barebox TLV blobs\n"
++		"\n"
++		"options:\n"
++		"  -m        TLV magic to use (default: " __stringify(TLV_MAGIC_BAREBOX_V1) " or input magic for -s)\n"
++		"  -s        strip input TLV header from output\n"
++		"            (default is adding header to headerless input)\n"
++		"  -@        offset to start reading at\n"
++		"  -v        verify CRC\n",
++		prgname);
++}
++
++static inline ssize_t write_full_verbose(int fd, const void *buf, size_t len)
++{
++	ssize_t ret;
++
++	ret = write_full(fd, buf, len);
++	if (ret < 0)
++		perror("write");
++	return ret;
++}
++
++int main(int argc, char *argv[])
++{
++	u32 magic = 0;
++	struct tlv_header *inhdr = NULL;
++	struct tlv_header hdr;
++	size_t offset = 0, size = 0;
++	ssize_t ret;
++	bool strip_header = false, verify = false;
++	int opt, ecode = EXIT_FAILURE;
++	int infd = STDIN_FILENO;
++	const u8 *p;
++	char *endptr;
++	void *buf;
++	u32 crc = ~0;
++
++	while((opt = getopt(argc, argv, "svm:@:h")) != -1) {
++		switch (opt) {
++		case 'v':
++			verify = true;
++			/* fallthrough; */
++		case 's':
++			strip_header = true;
 +			break;
- 		}
- 	}
- 
++		case 'm':
++			magic = strtoul(optarg, NULL, 16);
++			if (!magic) {
++				fprintf(stderr, "invalid magic: %s\n", optarg);
++				return EXIT_FAILURE;
++			}
++			break;
++		case '@':
++			offset = strtoul(optarg, &endptr, 0);
++			if (endptr == optarg) {
++				fprintf(stderr, "invalid offset: %s\n", optarg);
++				return EXIT_FAILURE;
++			}
++			break;
++		case 'h':
++			usage(argv[0]);
++			return 0;
++		}
++	}
++
++	if (argc - optind > 1) {
++		usage(argv[0]);
++		return EXIT_FAILURE;
++	}
++
++	if (argv[optind]) {
++		infd = open(argv[optind], O_RDONLY);
++		if (infd < 0) {
++			perror("open");
++			return EXIT_FAILURE;
++		}
++		lseek(infd, offset, SEEK_SET);
++	} else if (offset) {
++		fprintf(stderr, "can't combine -@ with stdin\n");
++		return EXIT_FAILURE;
++	}
++
++	p = buf = read_fd(infd, &size);
++	if (!buf) {
++		perror("read_fd");
++		goto out;
++	}
++
++	/* validate, but skip, if header given */
++	if (strip_header) {
++		inhdr = buf;
++
++		if (size < tlv_total_len(inhdr)) {
++			fprintf(stderr, "short input: got %zu bytes, but header claims %zu\n",
++			       size, tlv_total_len(inhdr));
++			goto out;
++		}
++
++		if (!magic)
++			magic = get_unaligned_be32(p);
++
++		p += sizeof(struct tlv_header);
++		size = cpu_to_be32(inhdr->length_tlv);
++
++		if (cpu_to_be32(inhdr->length_sig) != 0) {
++			fprintf(stderr, "Signatures not yet supported\n");
++			goto out;
++		}
++
++	}
++
++	if (!magic)
++		magic = TLV_MAGIC_BAREBOX_V1;
++
++	hdr.magic = cpu_to_be32(magic);
++	hdr.length_tlv = cpu_to_be32(size);
++	hdr.length_sig = cpu_to_be32(0);
++
++	if (!verify) {
++		if (!strip_header) {
++			ret = write_full_verbose(1, &hdr, sizeof(hdr));
++			if (ret < 0)
++				goto out;
++		}
++		ret = write_full_verbose(1, p, size);
++		if (ret < 0)
++			goto out;
++	}
++
++	crc = crc32_be(crc, &hdr, sizeof(hdr));
++	crc = crc32_be(crc, p, size);
++
++	if (verify) {
++		u32 oldcrc;
++
++		oldcrc = get_unaligned_be32(p + size);
++		if (oldcrc != crc) {
++			fprintf(stderr, "CRC mismatch: expected %08x, but calculated %08x\n",
++			       oldcrc, crc);
++			goto out;
++		}
++	}
++
++	if (!strip_header) {
++		crc = cpu_to_be32(crc);
++
++		ret = write_full_verbose(1, &crc, sizeof(crc));
++		if (ret < 0)
++			goto out;
++	}
++
++	ecode = 0;
++out:
++	free(buf);
++	if (argv[optind])
++		close(infd);
++	return ecode;
++}
+diff --git a/scripts/include/asm/unaligned.h b/scripts/include/asm/unaligned.h
+new file mode 100644
+index 000000000000..af6ccbc1bcf5
+--- /dev/null
++++ b/scripts/include/asm/unaligned.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef _ASM_ARM_UNALIGNED_H
++#define _ASM_ARM_UNALIGNED_H
++
++#include "../../../include/linux/unaligned/le_byteshift.h"
++#include "../../../include/linux/unaligned/be_byteshift.h"
++#include "../../../include/linux/unaligned/generic.h"
++
++/*
++ * Select endianness
++ */
++#ifdef CONFIG_CPU_BIG_ENDIAN
++#define get_unaligned	__get_unaligned_be
++#define put_unaligned	__put_unaligned_be
++#else
++#define get_unaligned	__get_unaligned_le
++#define put_unaligned	__put_unaligned_le
++#endif
++
++#endif /* _ASM_ARM_UNALIGNED_H */
+diff --git a/scripts/include/linux/build_bug.h b/scripts/include/linux/build_bug.h
+new file mode 100644
+index 000000000000..e9bc857b15e8
+--- /dev/null
++++ b/scripts/include/linux/build_bug.h
+@@ -0,0 +1,8 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_BUILD_BUG_H
++#define _LINUX_BUILD_BUG_H
++
++#define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
++#define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
++
++#endif	/* _LINUX_BUILD_BUG_H */
+diff --git a/scripts/include/linux/stringify.h b/scripts/include/linux/stringify.h
+new file mode 100644
+index 000000000000..55f6d04d48b1
+--- /dev/null
++++ b/scripts/include/linux/stringify.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef __LINUX_STRINGIFY_H
++#define __LINUX_STRINGIFY_H
++
++/* Indirect stringification.  Doing two levels allows the parameter to be a
++ * macro itself.  For example, compile with -DFOO=bar, __stringify(FOO)
++ * converts to "bar".
++ */
++
++#define __stringify_1(x...)	#x
++#define __stringify(x...)	__stringify_1(x)
++
++#endif	/* !__LINUX_STRINGIFY_H */
 -- 
 2.39.5
 
