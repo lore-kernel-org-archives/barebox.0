@@ -1,65 +1,67 @@
-Delivery-date: Mon, 14 Apr 2025 08:59:56 +0200
+Delivery-date: Mon, 14 Apr 2025 08:59:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4DnQ-000XUW-2o
+	id 1u4DnR-000XUj-1C
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 08:59:56 +0200
+	Mon, 14 Apr 2025 08:59:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4DnQ-0000la-87
-	for lore@pengutronix.de; Mon, 14 Apr 2025 08:59:56 +0200
+	id 1u4DnQ-0000m2-RQ
+	for lore@pengutronix.de; Mon, 14 Apr 2025 08:59:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=FjxhvIZZ3+hOgUAfYHagJhx8yEaoVNx8vC/v+4p8gP0=; b=SBK5dook/VZmqDI42PzoPeX1su
-	GAU9RksT/IVMogvq9BZFQXhAZCk/lz8Pne4CnxMEb5cEG4IC0g7iETogf4qUdqYtySKKUc0cfEezC
-	E5NGhzmkDy/YfzBKpHy0IJusv4d0WhKFLFVJfIegbL9D0D8U8PYkQyBwnJaOytIkArHFeADstbs9c
-	lmDJDHmPe8pjwfSxOMDN+CRh7tc2WF6V58rbAoCNbOz1/cqX0SOBFW1Q9ENeQJ1VTvx/OjoZpY1BX
-	Xgo+DeFSZkqih/hF50Vbj5ktQBR6U88Jo605LcNs7pubkymvK7wHEFHOcrCYSeQbs5x81kfWH1flr
-	GuewhZ2g==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Od+c2W8LHWFivcsM91DhZVZeKnOKCTa51uHtcyhjMwg=; b=XaIQDBErDWhq6DLn5tiZ/777bj
+	QCIi8pErseqR49UMT0VTBvzVnKj2jW1hfWqJylw/pbkp2zMbnRSRELwyecuVKThOzf9FdjQNtVyKn
+	59X+QZxg7/ext76GYGQ1fj+IxbL8rnGbao0lYj/cGfEkIxjHGM/Ac2O7LZgTISVlpqw7dLURq1igJ
+	CXDK6pYvlbf5QX+hssF5BiP6H1H81gk3FA48phSlL8i9/164VpS0FVjLFecr57euyhJRnOhoWxtCN
+	3ctC/ZoEHP1lJctXONZtPfJbN9eap5RAG1wI8IttijDo6PGis5uQMMjiD3HlYsfKl0PdCTUhPHy7+
+	29QXm4gw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4Dmz-00000000roW-2PHp;
-	Mon, 14 Apr 2025 06:59:29 +0000
+	id 1u4Dmy-00000000ro2-2BYP;
+	Mon, 14 Apr 2025 06:59:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4De1-00000000qky-3rTp
+	id 1u4De1-00000000ql1-3u2c
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 06:50:17 +0000
+	Mon, 14 Apr 2025 06:50:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4De0-0006Uz-D7; Mon, 14 Apr 2025 08:50:12 +0200
+	id 1u4De0-0006V7-Kk; Mon, 14 Apr 2025 08:50:12 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4De0-000Cog-0c;
+	id 1u4De0-000Cot-1K;
 	Mon, 14 Apr 2025 08:50:12 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4De0-00BcuJ-0K;
+	id 1u4De0-00BcuJ-12;
 	Mon, 14 Apr 2025 08:50:12 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Apr 2025 08:50:04 +0200
-Message-Id: <20250414065009.2770749-1-a.fatoum@pengutronix.de>
+Date: Mon, 14 Apr 2025 08:50:09 +0200
+Message-Id: <20250414065009.2770749-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250414065009.2770749-1-a.fatoum@pengutronix.de>
+References: <20250414065009.2770749-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250413_235014_047227_4BC77386 
-X-CRM114-Status: UNSURE (   8.89  )
+X-CRM114-CacheID: sfid-20250413_235014_021132_8F546CE6 
+X-CRM114-Status: UNSURE (   8.85  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,74 +84,32 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/6] ARM: dts: i.MX8MP: drop now upstream imx8mp-nominal.dtsi
+Subject: [PATCH 6/6] ARM: i.MX8MP: skov: add new 7" g07017 variant support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This file is now available in Linux since v6.15-rc1, so we do not need
-to duplicate it in barebox for boards to make use of it.
+Add new 7" TIAN G07017 board variant.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx8mp-nominal.dtsi | 49 --------------------------------
- 1 file changed, 49 deletions(-)
- delete mode 100644 arch/arm/dts/imx8mp-nominal.dtsi
+ arch/arm/boards/skov-imx8mp/board.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/dts/imx8mp-nominal.dtsi b/arch/arm/dts/imx8mp-nominal.dtsi
-deleted file mode 100644
-index d675d1e5486e..000000000000
---- a/arch/arm/dts/imx8mp-nominal.dtsi
-+++ /dev/null
-@@ -1,49 +0,0 @@
--// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
--
--&clk {
--	assigned-clocks = <&clk IMX8MP_CLK_A53_SRC>,
--			  <&clk IMX8MP_CLK_A53_CORE>,
--			  <&clk IMX8MP_SYS_PLL3>,
--			  <&clk IMX8MP_CLK_NOC>,
--			  <&clk IMX8MP_CLK_NOC_IO>,
--			  <&clk IMX8MP_CLK_GIC>;
--	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
--				 <&clk IMX8MP_ARM_PLL_OUT>,
--				 <0>,
--				 <&clk IMX8MP_SYS_PLL1_800M>,
--				 <&clk IMX8MP_SYS_PLL3_OUT>,
--				 <&clk IMX8MP_SYS_PLL1_800M>;
--	assigned-clock-rates = <0>, <0>,
--			       <600000000>,
--			       <800000000>,
--			       <600000000>,
--			       <400000000>;
--};
--
--&pgc_hsiomix {
--	assigned-clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
--	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
--	assigned-clock-rates = <400000000>;
--};
--
--&pgc_gpumix {
--	assigned-clocks = <&clk IMX8MP_CLK_GPU_AXI>,
--			  <&clk IMX8MP_CLK_GPU_AHB>;
--	assigned-clock-parents = <&clk IMX8MP_SYS_PLL3_OUT>,
--				 <&clk IMX8MP_SYS_PLL3_OUT>;
--	assigned-clock-rates = <600000000>, <300000000>;
--};
--
--&media_blk_ctrl {
--	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI>,
--			  <&clk IMX8MP_CLK_MEDIA_APB>,
--			  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
--			  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
--			  <&clk IMX8MP_VIDEO_PLL1>;
--	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
--				 <&clk IMX8MP_SYS_PLL1_800M>,
--				 <&clk IMX8MP_VIDEO_PLL1_OUT>,
--				 <&clk IMX8MP_VIDEO_PLL1_OUT>;
--	assigned-clock-rates = <400000000>, <200000000>,
--			       <0>, <0>, <1039500000>;
--};
+diff --git a/arch/arm/boards/skov-imx8mp/board.c b/arch/arm/boards/skov-imx8mp/board.c
+index ce8d154a7355..0e471a3437bf 100644
+--- a/arch/arm/boards/skov-imx8mp/board.c
++++ b/arch/arm/boards/skov-imx8mp/board.c
+@@ -86,6 +86,10 @@ static const struct board_description imx8mp_variants[] = {
+ 	[2] = {
+ 		.dts_compatible = "skov,imx8mp-skov-revc-bd500",
+ 	},
++
++	[3] = {
++		.dts_compatible = "skov,imx8mp-skov-revc-tian-g07017",
++	},
+ };
+ 
+ static const struct board_description imx8mp_basic_variant = {
 -- 
 2.39.5
 
