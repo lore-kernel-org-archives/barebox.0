@@ -1,71 +1,60 @@
-Delivery-date: Mon, 14 Apr 2025 13:46:21 +0200
+Delivery-date: Mon, 14 Apr 2025 13:51:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4IGb-000cuC-2b
+	id 1u4ILv-000cxO-1A
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 13:46:21 +0200
+	Mon, 14 Apr 2025 13:51:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4IGb-0005AV-2y
-	for lore@pengutronix.de; Mon, 14 Apr 2025 13:46:21 +0200
+	id 1u4ILu-00075a-M8
+	for lore@pengutronix.de; Mon, 14 Apr 2025 13:51:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bmJRcFjsPBSk6iA0BDg852F06td686FMFl2oQYCaJRM=; b=jGnAvEtUEQMYsbyx9Pl7wPV7W1
-	99QfKv1Ikfjy73EPC44L+AfRkSHjo7v00H0lTJFd/x7/F5oUs7c+cBHLttXaNksxhYxobtQbQyhu2
-	inExMhAdOE1oHupN4aYqTMRThkc4mCYg/XAgafyL1wFstdZ5DaMjth1uMAVwkMMf269k//eS0Tbek
-	kVhrxZV0cVmAFQJ/3c7YtdFblzInDYbn4vTyS4lNpnwzP08fuOpzDtFG8/u1wNGD/It6Jl0BMdAP1
-	EuqzJsM1k/ksx9rg2tkI1KzO9kPQ/7tA3fY/NKR1jbQOCdLqMzIHQcd8kAlXbOXSCk8pQvPRY71Df
-	S6VAwc6A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=egOi/mJX5LED16NFxsrNrvXmGQjBpBl88z4pNH/Om7w=; b=mfdxXtbL+webPjQ110ere5vMYc
+	brVWalwmjEWipNAZ7EISHSZyzUt+8fB2BbGLKotmFTFl++kht3H87yeTBa/a99Urn0uIVSHrwVZxq
+	LbayltFcDnLGa5PLUkZaU/bSHoXGampSvzUzI+ttq2X7Ki9/E30x5E3N8byBohYHG9b7bExLOgbZh
+	o8oYO8jGByxTsB54ENPKD5myujVuUFH/GDrHnwfr3od8XWYPsYG9N2NzSTv2dHGriduPHqGoj7lVc
+	9AfHuLVu2+iuGNupiWtuVHCMbLQOohONi/t/tZX9u0N4Bs5nPtvIAbQ9NeryjksSjumnw8P3E3h1Q
+	qt/QwuUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4IG2-00000001ov0-1g3S;
-	Mon, 14 Apr 2025 11:45:46 +0000
+	id 1u4ILV-00000001q9t-2xVK;
+	Mon, 14 Apr 2025 11:51:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4I8d-00000001nEc-2XGN
+	id 1u4ICu-00000001oIN-0OeN
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 11:38:08 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u4I8c-0002Kq-4C; Mon, 14 Apr 2025 13:38:06 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u4I8b-000F6j-32;
-	Mon, 14 Apr 2025 13:38:05 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u4I8b-000HDm-2h;
-	Mon, 14 Apr 2025 13:38:05 +0200
-Date: Mon, 14 Apr 2025 13:38:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z_zznb872ht16gEQ@pengutronix.de>
-References: <20250414063152.2736649-1-a.fatoum@pengutronix.de>
- <20250414063152.2736649-4-a.fatoum@pengutronix.de>
+	Mon, 14 Apr 2025 11:42:33 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u4ICs-0003qD-Qk; Mon, 14 Apr 2025 13:42:30 +0200
+Message-ID: <9f905302-9a79-485f-9afa-45e98fa1aa40@pengutronix.de>
+Date: Mon, 14 Apr 2025 13:42:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250414063152.2736649-4-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, =?UTF-8?Q?Leonard_G=C3=B6hrs?=
+ <l.goehrs@pengutronix.de>
+References: <20250411072748.2017367-1-a.fatoum@pengutronix.de>
+ <20250411072748.2017367-3-a.fatoum@pengutronix.de>
+ <Z_zwJauQq7sEshIw@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <Z_zwJauQq7sEshIw@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250414_043807_648120_10755B2E 
-X-CRM114-Status: GOOD (  27.64  )
+X-CRM114-CacheID: sfid-20250414_044232_132327_244C1E4D 
+X-CRM114-Status: GOOD (  25.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,163 +72,112 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 03/18] partition: efi: respect DPS_TYPE_FLAG_NO_AUTO flag
+Subject: Re: [PATCH 2/3] ARM: stm32mp: add Linux Automation TAC board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Apr 14, 2025 at 08:31:37AM +0200, Ahmad Fatoum wrote:
-> From: Ahmad Fatoum <a.fatoum@barebox.org>
-> 
-> The DPS_TYPE_FLAG_NO_AUTO flag indicates that a partition should not be
-> automatically discovered by type UUID if not directly referenced.
-> 
-> We do auto discovery for barebox env and sate using
+Hello Sascha,
 
-In case you have to resend for other reasons:
+On 4/14/25 13:23, Sascha Hauer wrote:
+> On Fri, Apr 11, 2025 at 09:27:47AM +0200, Ahmad Fatoum wrote:
+>> Add support for the Linux Automation GmbH Test Automation
+>> Controller (TAC). The board boots from eMMC, but requires USB loading if
+>> no previous barebox has been put into the eMMC boot partition.
+>>
+>> Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
+>> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+>> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-s/sate/state/
+[snip]
 
-> cdev_find_child_by_gpt_typeuuid, so teach it to respect that flag.
+>> +static const int board_rev_pins[] = {0, 1, 2, 3, 6, 7};
+>> +
+>> +static u32 get_board_rev(void)
+>> +{
+>> +	u32 board_rev = 0;
+>> +
+>> +	/* Enable GPIOZ bank */
+>> +	setbits_le32(STM32MP15_RCC_MP_AHB5ENSETR, BIT(0));
+>> +
+>> +	for (size_t i = 0; i < ARRAY_SIZE(board_rev_pins); i++) {
+>> +		int pin = board_rev_pins[i];
+>> +
+>> +		__stm32_pmx_gpio_input(STM32MP15_GPIOZ_BASE, pin);
+>> +		board_rev |= __stm32_pmx_gpio_get(STM32MP15_GPIOZ_BASE, pin) << i;
+>> +	}
+>> +
+>> +	return board_rev;
+>> +}
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  common/blspec.c    |  4 ++--
->  common/bootscan.c  | 11 +++++++++--
->  fs/devfs-core.c    | 11 +++++++++--
->  include/bootscan.h |  5 ++++-
->  4 files changed, 24 insertions(+), 7 deletions(-)
+> Is this information available during runtime with some pr_* message or
+> variable?
+
+No. There is more extensive board revision information in the EEPROM
+though, which is indeed available at runtime via the separately
+submitted TLV series.
+
+>> +static void noinline select_fdt_and_start(void *fdt)
+>> +{
+>> +	putc_ll('>');
+>> +
+>> +	switch (get_board_rev()) {
+>> +	case BOARD_GEN1:
+>> +		fdt = runtime_address(__dtb_z_stm32mp157c_lxa_tac_gen1_start);
+>> +		break;
+>> +	case BOARD_GEN2:
+>> +		fdt = runtime_address(__dtb_z_stm32mp157c_lxa_tac_gen2_start);
+>> +		break;
+>> +	case BOARD_GEN3:
+>> +		fdt = runtime_address(__dtb_z_stm32mp153c_lxa_tac_gen3_start);
+>> +		break;
+>> +	}
 > 
-> diff --git a/common/blspec.c b/common/blspec.c
-> index 5223ac30f8a5..59fa40c9ff50 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -511,7 +511,7 @@ static int blspec_scan_disk(struct bootscanner *scanner,
->  		 * should be used as $BOOT
->  		 */
->  		if (cdev_is_mbr_partitioned(cdev) && partcdev->dos_partition_type == 0xea) {
-> -			ret = boot_scan_cdev(scanner, bootentries, partcdev);
-> +			ret = boot_scan_cdev(scanner, bootentries, partcdev, true);
->  			if (ret == 0)
->  				ret = -ENOENT;
->  
-> @@ -560,7 +560,7 @@ static int blspec_scan_device(struct bootscanner *scanner,
->  	 * by the bootblspec spec).
->  	 */
->  	list_for_each_entry(cdev, &dev->cdevs, devices_list) {
-> -		ret = boot_scan_cdev(scanner, bootentries, cdev);
-> +		ret = boot_scan_cdev(scanner, bootentries, cdev, true);
->  		if (ret > 0)
->  			found += ret;
->  	}
-> diff --git a/common/bootscan.c b/common/bootscan.c
-> index 222498c609a4..813d6d242a08 100644
-> --- a/common/bootscan.c
-> +++ b/common/bootscan.c
-> @@ -8,6 +8,7 @@
->  #include <linux/stat.h>
->  #include <linux/err.h>
->  #include <mtd/ubi-user.h>
-> +#include <uapi/spec/dps.h>
->  
->  #include <bootscan.h>
->  
-> @@ -80,7 +81,8 @@ static int boot_scan_ubi(struct bootscanner *scanner,
->   * error occurred.
->   */
->  int boot_scan_cdev(struct bootscanner *scanner,
-> -		   struct bootentries *bootentries, struct cdev *cdev)
-> +		   struct bootentries *bootentries, struct cdev *cdev,
-> +		   bool autodiscover)
->  {
->  	int ret, found = 0;
->  	void *buf = xzalloc(512);
-> @@ -89,6 +91,11 @@ int boot_scan_cdev(struct bootscanner *scanner,
->  
->  	pr_debug("%s(%s): %s\n", __func__, scanner->name, cdev->name);
->  
-> +	if (autodiscover && (cdev->typeflags & DPS_TYPE_FLAG_NO_AUTO)) {
-> +		pr_debug("auto discovery skipped\n");
-> +		return 0;
-> +	}
-> +
->  	ret = cdev_read(cdev, buf, 512, 0, 0);
->  	if (ret < 0) {
->  		free(buf);
-> @@ -144,7 +151,7 @@ static int boot_scan_devicename(struct bootscanner *scanner,
->  
->  	cdev = cdev_by_name(devname);
->  	if (cdev) {
-> -		int ret = boot_scan_cdev(scanner, bootentries, cdev);
-> +		int ret = boot_scan_cdev(scanner, bootentries, cdev, false);
->  		if (ret > 0)
->  			return ret;
->  	}
-> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-> index f84b34ea53ab..c69c38d6506e 100644
-> --- a/fs/devfs-core.c
-> +++ b/fs/devfs-core.c
-> @@ -27,6 +27,7 @@
->  #include <unistd.h>
->  #include <range.h>
->  #include <fs.h>
-> +#include <spec/dps.h>
->  
->  LIST_HEAD(cdev_list);
->  
-> @@ -135,8 +136,14 @@ cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, const guid_t *typeuuid)
->  		return ERR_PTR(-EINVAL);
->  
->  	for_each_cdev_partition(partcdev, cdev) {
-> -		if (guid_equal(&partcdev->typeuuid, typeuuid))
-> -			return partcdev;
-> +		if (!guid_equal(&partcdev->typeuuid, typeuuid))
-> +			continue;
-> +		if (cdev->typeflags & DPS_TYPE_FLAG_NO_AUTO) {
-> +			dev_dbg(cdev->dev, "auto discovery skipped\n");
-> +			continue;
-> +		}
-> +
-> +		return partcdev;
->  	}
->  
->  	return ERR_PTR(-ENOENT);
-> diff --git a/include/bootscan.h b/include/bootscan.h
-> index 99094dc09320..ffc67c4a90ab 100644
-> --- a/include/bootscan.h
-> +++ b/include/bootscan.h
-> @@ -2,6 +2,8 @@
->  #ifndef __BOOTSCAN_H
->  #define __BOOTSCAN_H
->  
-> +#include <linux/types.h>
-> +
->  struct bootentries;
->  struct device;
->  struct cdev;
-> @@ -25,7 +27,8 @@ struct bootscanner {
->  };
->  
->  int boot_scan_cdev(struct bootscanner *scanner,
-> -		   struct bootentries *bootentries, struct cdev *cdev);
-> +		   struct bootentries *bootentries, struct cdev *cdev,
-> +		   bool autodiscover);
->  
->  int bootentry_scan_generate(struct bootscanner *scanner,
->  			    struct bootentries *bootentries,
-> -- 
-> 2.39.5
+> This check only matches for minor revision 0. Shouldn't the minor
+> version rather be ignored here?
+
+I am not sure if a generation is always equal to the major version - 1.
+It seems we have no minor revisions != 0 in the field.
+
+If Leonard (Cc'd) doesn't object, I'll mask away the lower 2 bits for v2.
+
+>> +ENTRY_FUNCTION(start_stm32mp15xc_lxa_tac, r0, r1, r2)
+>> +{
+>> +	stm32mp_cpu_lowlevel_init();
+>> +
+>> +	/*
+>> +	 * stm32mp_cpu_lowlevel_init sets up a stack. Do the remaining
+>> +	 * init in a non-naked function. Register r2 points to the fdt
+>> +	 * from the FIT image which can be used as a default.
+>> +	 */
 > 
+> "the fdt from the FIT image" seems to imply that this entry is only used
+> as a 2nd state entry, but it's used as a 1st stage entry as well, isn't
+> it?
+
+s/FIT/FIP. First stage bootloader is TF-A.
+
+> I would rephrase that to something like "in case of a 2nd stage boot r2
+> points to the fdt..."
+
+There is no first stage boot.
+
+Cheers,
+Ahmad
+
 > 
+> Sascha
 > 
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
