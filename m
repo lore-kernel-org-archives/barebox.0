@@ -1,68 +1,74 @@
-Delivery-date: Mon, 14 Apr 2025 15:26:10 +0200
+Delivery-date: Mon, 14 Apr 2025 15:30:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4JpC-000eiB-0Y
+	id 1u4Jtd-000eku-2n
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 15:26:10 +0200
+	Mon, 14 Apr 2025 15:30:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4JpB-0007EN-GF
-	for lore@pengutronix.de; Mon, 14 Apr 2025 15:26:10 +0200
+	id 1u4Jtd-0000e5-88
+	for lore@pengutronix.de; Mon, 14 Apr 2025 15:30:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GsS9+OCh58hBHbOJd7ytbB7eOWKglsbtbQKpITDNNig=; b=ATncqUDDnEmEOH6bFZNhcGMjOz
-	WOrN12NVTgALc3ligf53ZuxVPu3gmg8xaa6SqW9WzBiFWlSRKA0Nntn6ntGO3Z1jyPq7NEqtT+FEY
-	yi6wk9zdXGNEaRRemI/KFcpcV6U9qfQmzSYaiMpDmBT//y0sgha7xXu6TJY199e1SxMGr2EBU/4qE
-	bR3ynrxZPOT22R3LM5Y5FKq6wPVEVdy3mMFzTnVrowRtbKMh4ax/SyFfp2sqeREUMydJEiy+hapst
-	pymtfU2Y7PTBRGpF0ccBuBsDcMKOV8j1yLXIxMkp10rNvRdpDbH6Q2LczIFw1qcNvuDoTA2EIgb+w
-	Bp8JInDA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=iHa/87ZgV+6JMKq//VAVQsj4ESlFyorimRtKtP9IOwo=; b=1m6A8IC3H+XxbeZD2toz5mTP0u
+	GZzDni+81RB69c5JxepVHf+qG4KSwGfVHdrm378w30+upCqZp3br9G0yabZgOqGjQx1Zmp0v0z6IE
+	/DHEudhyGE337nlo+dCrL3C8paGz8XSBme4GAO0CqX6pmtU68kGAnWr+rYEmcofEYKvBrxc4YPcHm
+	gdCJT2GofMgeTQmzo1pzjTEgChdG5PAsmWREpDAaCypLl1+jBiqfKtoqrxJGmXXhqiffuFZwh2kEh
+	FXELeDE3rOsnGF7nCdd3OpaYhivOm/qaVFYHS8UgljRFDWWJ7x2O/0ZLWaU48stNjyETOE6ggcJXW
+	fcDjPxrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4Joi-000000027BY-2Jir;
-	Mon, 14 Apr 2025 13:25:40 +0000
+	id 1u4JtC-000000028hx-1w0H;
+	Mon, 14 Apr 2025 13:30:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4Jof-000000027AX-0hyb
+	id 1u4JrR-000000028Dy-2aPK
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 13:25:38 +0000
+	Mon, 14 Apr 2025 13:28:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u4Jod-0006ws-Nb; Mon, 14 Apr 2025 15:25:35 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1u4JrQ-0008Fi-69; Mon, 14 Apr 2025 15:28:28 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u4Jod-000G3B-1k;
-	Mon, 14 Apr 2025 15:25:35 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u4Jod-00ArIw-1X;
-	Mon, 14 Apr 2025 15:25:35 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1u4JrQ-000G3O-00;
+	Mon, 14 Apr 2025 15:28:28 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1u4JrP-000JeU-2u;
+	Mon, 14 Apr 2025 15:28:27 +0200
+Date: Mon, 14 Apr 2025 15:28:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250414063152.2736649-1-a.fatoum@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Message-ID: <Z_0NexxMUa4quI1b@pengutronix.de>
 References: <20250414063152.2736649-1-a.fatoum@pengutronix.de>
-Message-Id: <174463713547.2587595.4999245920489710641.b4-ty@pengutronix.de>
-Date: Mon, 14 Apr 2025 15:25:35 +0200
+ <20250414063152.2736649-8-a.fatoum@pengutronix.de>
+ <20250414101715.esfc3lxmen3ez6jb@pengutronix.de>
+ <af6d8b79-f081-4e39-8dba-ce487354e76d@pengutronix.de>
+ <20250414104914.wrkszybifc2ezxbq@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414104914.wrkszybifc2ezxbq@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250414_062537_208925_8E174FA0 
-X-CRM114-Status: UNSURE (   7.14  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250414_062829_653709_820D939D 
+X-CRM114-Status: GOOD (  26.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,70 +86,85 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 00/18] boot: improve cdev alias and blspec support
+Subject: Re: [PATCH 07/18] cdev: alias: add support for partition links
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Mon, 14 Apr 2025 08:31:34 +0200, Ahmad Fatoum wrote:
-> Building on past top of past bootscan and cdev alias infrastructure in
-> next, enable the following:
+On Mon, Apr 14, 2025 at 12:49:14PM +0200, Marco Felsch wrote:
+> On 25-04-14, Ahmad Fatoum wrote:
+> > Hello Marco,
+> > 
+> > On 4/14/25 12:17, Marco Felsch wrote:
+> > > On 25-04-14, Ahmad Fatoum wrote:
+> > >> We currently support bootsource.2, but not bootsource.root-A.
+> > >> Fix this and while at it, factor out the logic for general reuse.
+> > >>
+> > >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > >> ---
+> > 
+> > [snip]
+> > 
+> > >> -static struct cdev *resolve_partition(struct cdev *cdev,
+> > >> -				      const char *partname)
+> > >> -{
+> > >> -	struct cdev *partcdev;
+> > >> -
+> > >> -	if (!partname)
+> > >> -		return cdev;
+> > >> -
+> > >> -	for_each_cdev_partition(partcdev, cdev) {
+> > >> -		if (streq_ptr(partcdev->partname, partname))
+> > >> -			return partcdev;
+> > >> -	}
+> > >> -
+> > >> -	return ERR_PTR(-ENODEV);
+> > >> -}
+> > >> -
+> > 
+> > [snip]
+> > 
+> > >> +/**
+> > >> + * cdev_find_partition - find a partition belonging to a physical device
+> > >> + *
+> > >> + * @cdev: the cdev which should be searched for partitions
+> > >> + * @name: the partition name
+> > >> + */
+> > >> +struct cdev *cdev_find_partition(struct cdev *cdevm, const char *name)
+> > >> +{
+> > >> +	struct cdev *partcdev;
+> > >> +
+> > >> +	if (!name)
+> > >> +		return cdevm;
+> > 
+> > No, I want a NULL name to expand to the parent device. This makes is a
+> > drop-in replacement for resolve_partition() removed in this same patch.
 > 
->    - Favoring entries in GPT XBOOTLDR partition and EFI system
->      partitions, like we already do for MBR XBOOTLDR partition
+> I have seen that :-) but in the end it was a local function so changes
+> shouldn't be hard to adapt.
 > 
->    - Allow state backend and other DT bindings to point at a
->      barebox,bootsource node to allow same state DT description
->      to work across different boot media
-> 
-> [...]
+> With making the function public avaiable I don't see why
+> cdev_find_partition() should return the parent device if NULL is
+> provided. IMHO this is wrong input from the user. What use-case do you
+> see with returning the parent device?
 
-Applied, thanks!
+I can follow this argument and changed the caller to:
 
-[01/18] cdev: make cdev_find_child_by_gpt_typeuuid external
-        https://git.pengutronix.de/cgit/barebox/commit/?id=a007ea23536f (link may not be stable)
-[02/18] cdev: constify cdev_find_child_by_gpt_typeuuid's guid_t pointer argument
-        https://git.pengutronix.de/cgit/barebox/commit/?id=3135334dcf4b (link may not be stable)
-[03/18] partition: efi: respect DPS_TYPE_FLAG_NO_AUTO flag
-        https://git.pengutronix.de/cgit/barebox/commit/?id=37bc13eddaea (link may not be stable)
-[04/18] blspec: iterate over all XBOOTLDR partitions
-        https://git.pengutronix.de/cgit/barebox/commit/?id=06adbb825081 (link may not be stable)
-[05/18] blspec: support GPT XBOOTLDR partition
-        https://git.pengutronix.de/cgit/barebox/commit/?id=396f3e6b4119 (link may not be stable)
-[06/18] blspec: collect bootloader spec entries from ESP
-        https://git.pengutronix.de/cgit/barebox/commit/?id=6d5595a6a3c5 (link may not be stable)
-[07/18] cdev: alias: add support for partition links
-        https://git.pengutronix.de/cgit/barebox/commit/?id=7936038edadc (link may not be stable)
-[08/18] cdev: do not dereference partname for non-partitions
-        https://git.pengutronix.de/cgit/barebox/commit/?id=1bbc03a7faa1 (link may not be stable)
-[09/18] cdev: use common cdev_free helper internally
-        https://git.pengutronix.de/cgit/barebox/commit/?id=cf3f7e562d18 (link may not be stable)
-[10/18] cdev: implement devfs_create_link in terms of devfs_create
-        https://git.pengutronix.de/cgit/barebox/commit/?id=db79238d94b8 (link may not be stable)
-[11/18] misc: storage-by-uuid: consider only first diskuuid match
-        https://git.pengutronix.de/cgit/barebox/commit/?id=838211091e0b (link may not be stable)
-[12/18] misc: storage-by-uuid: prepare for generalizing to different aliases
-        https://git.pengutronix.de/cgit/barebox/commit/?id=b82ba2a5d097 (link may not be stable)
-[13/18] misc: storage-by-uuid: rename to storage-by-alias
-        https://git.pengutronix.de/cgit/barebox/commit/?id=e957f8c82f7e (link may not be stable)
-[14/18] misc: storage-by-alias: switch over to using cdev aliases
-        https://git.pengutronix.de/cgit/barebox/commit/?id=b6d3b15b25db (link may not be stable)
-[15/18] misc: storage-by-alias: add support barebox,bootsource
-        https://git.pengutronix.de/cgit/barebox/commit/?id=f22f557b8334 (link may not be stable)
-[16/18] misc: storage-by-alias: register as link to main cdev
-        https://git.pengutronix.de/cgit/barebox/commit/?id=4c496eb9bc2c (link may not be stable)
-[17/18] cdev: constify cdev_readlink argument
-        https://git.pengutronix.de/cgit/barebox/commit/?id=f5e1996adc0c (link may not be stable)
-[18/18] cdev: follow links in cdev_find_child_by_gpt_typeuuid
-        https://git.pengutronix.de/cgit/barebox/commit/?id=f2a44cdffc32 (link may not be stable)
+	if (partname) {
+		cdev = cdev_find_partition(cdev, partname);
+		if (!cdev)
+			return -ENODEV;
+	}
 
-Best regards,
+Sascha
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
