@@ -1,61 +1,58 @@
-Delivery-date: Mon, 14 Apr 2025 11:43:46 +0200
+Delivery-date: Mon, 14 Apr 2025 12:15:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4GLy-000aW4-0z
+	id 1u4Gr5-000bDx-0Z
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 11:43:46 +0200
+	Mon, 14 Apr 2025 12:15:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4GLx-0003Vt-HW
-	for lore@pengutronix.de; Mon, 14 Apr 2025 11:43:46 +0200
+	id 1u4Gr4-0007Zq-Hx
+	for lore@pengutronix.de; Mon, 14 Apr 2025 12:15:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uIrQnw9drNYOtzz6UVHXDsvSC9oRy7tSTcu6036ZQTM=; b=pp/n7VmliykIEon+D4k3VzxmF9
-	1IUjYKmWSyaUsDmNKTsoOUgQMmwhbw7KUmqEpcxcAf0IJOdc4QdYcPhfWp43kFNsPQApMmOFdYMzG
-	8Ll51MvBUMTtGtLiyZRbJIBlYNUv6zUyameHNcvy3hY0ZuFXPsLW774Q8eFfyqlePtCexUqFQi9v6
-	mR1Jppi+m0Np+VttnmT2WlWmSrJz9otXoBRbxFXq1hsDrIg81ek4Zwbgc+svamC4Oc7LgGcwvzH9L
-	tjUzz1qSNG8GpQrYtJy3WhCk1BEMNf9Ci8iKXIHQaMMxodpCOXdIAKmK9WrRgCNG3miH1d+rEfffy
-	SglsUF0g==;
+	bh=3mjHFl3Ks519BETOT2KjEMaWCubJHKYq1wMi6ynFsy4=; b=lFCUKrc6WFFUL9gk4UwH6u4hpe
+	gHrYvO2/+NZv5tJeJzzs9G8wBLtKUYBqyvICD/x6r9gMsl6/DTvkmyksPnX1MjNth8ZBqtNBZFmsl
+	2eg+6Jy2RUarw8hHdoTWhSdP4fjNR3F3HDrDIXB4msoZirNd0XBlHYnsQDBo1Ysf5lIQgtSH7YWgr
+	CEe8owbS2tqF8rP3ff6ML5E/HqeylCe3aIfJjFP6e3BQVrFo0SFlUmQ3X+iKBLack50J0ru+ceEq7
+	dfHpRKwHhIyNyBCzjbBMY2ZRKAOtDdcozVU+vRl9/Piisq+4g/4ESUF21+A3C9m9xNrTJlw/I5qiy
+	AWR6v9FA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4GLY-00000001JRF-0tkg;
-	Mon, 14 Apr 2025 09:43:20 +0000
+	id 1u4Gqd-00000001SuQ-24sU;
+	Mon, 14 Apr 2025 10:15:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4GEV-00000001I95-0gL5
+	id 1u4GmG-00000001RAO-1eC1
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 09:36:04 +0000
+	Mon, 14 Apr 2025 10:10:57 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4GET-0000nC-4b; Mon, 14 Apr 2025 11:36:01 +0200
-Message-ID: <7161d8ec-3f19-4504-b9f5-03b512c4f84d@pengutronix.de>
-Date: Mon, 14 Apr 2025 11:36:00 +0200
+	id 1u4GmF-0005Y1-4m; Mon, 14 Apr 2025 12:10:55 +0200
+Message-ID: <45c42b7a-6b52-4862-a204-595092b39f50@pengutronix.de>
+Date: Mon, 14 Apr 2025 12:10:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, Kim Christensen <kch@skov.dk>
-References: <20250414065009.2770749-1-a.fatoum@pengutronix.de>
- <20250414065009.2770749-4-a.fatoum@pengutronix.de>
- <20250414084043.j5v2xjh2bnadoicc@pengutronix.de>
- <d7cbcac4-7465-46d6-92d9-75df6f0fa7dc@pengutronix.de>
- <20250414092134.glztg7o6nqqsxqdr@pengutronix.de>
-Content-Language: en-US
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20250414062303.2721390-1-a.fatoum@pengutronix.de>
+ <Z_zQZY-ioQUWlIt2@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250414092134.glztg7o6nqqsxqdr@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <Z_zQZY-ioQUWlIt2@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250414_023603_204891_2862295D 
-X-CRM114-Status: GOOD (  27.02  )
+X-CRM114-CacheID: sfid-20250414_031056_433205_EC66D873 
+X-CRM114-Status: GOOD (  20.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,163 +74,77 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/6] ARM: i.MX8MP: skov: halt startup until power is good
+Subject: Re: [PATCH] driver: have dev_platform_ioremap_resource return error
+ pointer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Marco,
+Hello Sascha,
 
-On 14.04.25 11:21, Marco Felsch wrote:
-> On 25-04-14, Ahmad Fatoum wrote:
->> Hello Marco,
+On 4/14/25 11:07, Sascha Hauer wrote:
+> On Mon, Apr 14, 2025 at 08:23:03AM +0200, Ahmad Fatoum wrote:
+>> From: Ahmad Fatoum <a.fatoum@barebox.org>
 >>
->> On 14.04.25 10:40, Marco Felsch wrote:
->>> Hi,
->>>
->>> On 25-04-14, Ahmad Fatoum wrote:
->>>> The 24V regulator supplying the system can indicate via a GPIO imminent
->>>> voltage loss. The board's capacitors hold enough charge to power the system
->>>> a while longer in such a state, but eventually, unless external power is
->>>> restored, the brownout detection of the PMIC will kick in.
->>>>
->>>> For the span of time between voltage drop detection and PMIC brownout,
->>>> let's detect this situation and delay startup. This way, Linux can
->>>> detect the ongoing voltage loss, power down the eMMC, reboot into
->>>> barebox and barebox will delay boot as long as the problem persists.
->>>>
->>>> Co-developed-by: Kim Christensen <kch@skov.dk>
->>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> ---
->>>>  arch/arm/boards/skov-imx8mp/lowlevel.c | 60 ++++++++++++++++++++++++++
->>>>  1 file changed, 60 insertions(+)
->>>>
->>>> diff --git a/arch/arm/boards/skov-imx8mp/lowlevel.c b/arch/arm/boards/skov-imx8mp/lowlevel.c
->>>> index 637fc50b3f30..d7bd771f259d 100644
->>>> --- a/arch/arm/boards/skov-imx8mp/lowlevel.c
->>>> +++ b/arch/arm/boards/skov-imx8mp/lowlevel.c
->>>> @@ -20,6 +20,9 @@
->>>>  
->>>>  extern char __dtb_z_imx8mp_skov_start[];
->>>>  
->>>> +#define PGOOD_PAD_CTRL  MUX_PAD_CTRL(MX8MP_PAD_CTL_PUE | \
->>>> +				     MX8MP_PAD_CTL_PE)
->>>> +
->>>>  #define UART_PAD_CTRL   MUX_PAD_CTRL(MX8MP_PAD_CTL_DSE6 | \
->>>>  				     MX8MP_PAD_CTL_FSEL | \
->>>>  				     MX8MP_PAD_CTL_PUE | \
->>>> @@ -30,6 +33,12 @@ extern char __dtb_z_imx8mp_skov_start[];
->>>>  				     MX8MP_PAD_CTL_PUE | \
->>>>  				     MX8MP_PAD_CTL_PE)
->>>>  
->>>> +static inline void led_d1_toggle(bool *on)
->>>> +{
->>>> +	imx8m_gpio_direction_output(IOMEM(MX8MP_GPIO1_BASE_ADDR), 5, *on);
->>>> +	*on = !*on;
->>>> +}
->>>> +
->>>>  static void setup_uart(void)
->>>>  {
->>>>  	void __iomem *uart = IOMEM(MX8M_UART2_BASE_ADDR);
->>>> @@ -67,6 +76,55 @@ static struct pmic_config pca9450_cfg[] = {
->>>>  	{ PCA9450_BUCK2OUT_DVS0, 0x14 },
->>>>  };
->>>>  
->>>> +static inline bool power_good(void)
->>>> +{
->>>> +	/* IMX_SHDN_MF in schematics */
->>>> +	return imx8m_gpio_val(IOMEM(MX8MP_GPIO4_BASE_ADDR), 23);
->>>> +}
->>>> +
->>>> +static void wait_for_power_good(void)
->>>> +{
->>>> +	void __iomem *gpio4 = IOMEM(MX8MP_GPIO4_BASE_ADDR);
->>>> +	int timeout_ms = 0;
->>>> +	bool led_active = true;
->>>> +
->>>> +	imx8mp_setup_pad(MX8MP_PAD_SAI2_RXD0__GPIO4_IO23 | PGOOD_PAD_CTRL);
->>>> +	imx8m_gpio_direction_input(gpio4, 23);
->>>> +
->>>> +	led_d1_toggle(&led_active);
->>>> +
->>>> +	if (power_good())
->>>> +		return;
->>>> +
->>>> +	pr_warn("\nDelaying boot until power stabilizes\n");
->>>> +
->>>> +	/* If we reach this, because Linux did a hw_protection_reboot, we don't
->>>> +	 * want to continue booting right away.
->>>> +	 *
->>>> +	 * Thus let's either wait for the condition to subscede or for voltage
->>>> +	 * to reach a low enough level for the PMIC to detect VSYS_UVLO going
->>>> +	 * lower than allowed
->>>> +	 */
->>>> +
->>>> +	while (1) {
->>>> +		if (power_good()) {
->>>> +			/* wait 10ms longer and check if it still good */
->>>> +			udelay(10000);
->>>> +			if (power_good()) {
->>>> +				pr_info("IMX_SHDN_MF stuck low for ~%ums.\n", timeout_ms);
->>>> +				break;
->>>> +			}
->>>> +		}
->>>> +		/* fast blink LED D1 */
->>>> +		if (timeout_ms % 100 == 0) {
->>>> +			pr_debug(".");
->>>> +			led_d1_toggle(&led_active);
->>>> +		}
->>>> +		udelay(1000);
->>>> +		timeout_ms++;
->>>> +	}
->>>> +}
->>>> +
->>>>  static void power_init_board(void)
->>>>  {
->>>>  	struct pbl_i2c *i2c;
->>>> @@ -77,6 +135,8 @@ static void power_init_board(void)
->>>>  	imx8mp_setup_pad(MX8MP_PAD_SAI3_TXD__GPIO5_IO01);
->>>>  	imx8m_gpio_direction_output(IOMEM(MX8MP_GPIO5_BASE_ADDR), 1, 0);
->>>>  
->>>> +	wait_for_power_good();
->>>
->>> out of curiosity, wouldn't it be more useful to do the check right
->>> before the system wants to boot the kernel and abort in that case?
+>> devm_request_mem_region doesn't return NULL on error on Linux and thus
+>> it should neither in barebox. Fix this.
 >>
->> How so?
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  drivers/base/driver.c  | 2 ++
+>>  include/linux/device.h | 2 +-
+>>  2 files changed, 3 insertions(+), 1 deletion(-)
 >>
->> When we have brownout, we usually never make it out of the PBL,
+>> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+>> index edba037fa2dd..4e361a96c9ee 100644
+>> --- a/drivers/base/driver.c
+>> +++ b/drivers/base/driver.c
+>> @@ -587,6 +587,8 @@ void __iomem *dev_request_mem_region(struct device *dev, int num)
+>>  	struct resource *res;
+>>  
+>>  	res = dev_request_mem_resource(dev, num);
+>> +	if (!IS_ERR(res) && WARN_ON(IS_ERR_VALUE(res->start)))
+>> +		return IOMEM_ERR_PTR(res->start);
 > 
-> Okay, since your backup charge is really low already.
-> 
->> so I prefer the SoC gets powered off during this loop instead
->> of during the RAM setup.
-> 
-> I understand that to wait for the power to become good again, but what
-> if the power is getting good and changes to bad again once you entered
-> barebox? Do you get notified about such an event?
-> 
-> IMHO the later point a bit more important since this ensures that the
-> system was in power-good state before we the system starts.
+> Which code can set res->start to an error value?
 
-Checking just before booting is insufficient anyway, because power good
-may fluctuate before the Linux driver starts taking care of the power
-good GPIO. Given that we need to handle this anyway, I don't think
-it makes much difference whether when we check the power good GPIO
-during barebox runtime.
+It can end up being an error value, because there is actual a MMIO
+region at a high address. In that case, I'd rather we return an
+error, so dev_request_mem_resource would need to be used instead.
 
-Cheers,
+Thanks,
 Ahmad
 
 > 
-> Regards,
->   Marco
+> Sascha
+> 
+>>  	if (IS_ERR(res))
+>>  		return ERR_CAST(res);
+>>  
+>> diff --git a/include/linux/device.h b/include/linux/device.h
+>> index 66294910abb3..661d8b24730e 100644
+>> --- a/include/linux/device.h
+>> +++ b/include/linux/device.h
+>> @@ -39,7 +39,7 @@ static inline void __iomem *dev_platform_ioremap_resource(struct device *dev,
+>>  	 * so we don't need to do anything besides requesting the regions
+>>  	 * and can leave the memory attributes unchanged.
+>>  	 */
+>> -	return dev_request_mem_region_err_null(dev, resource);
+>> +	return dev_request_mem_region(dev, resource);
+>>  }
+>>  
+>>  static inline void __iomem *devm_ioremap(struct device *dev,
+>> -- 
+>> 2.39.5
+>>
+>>
+>>
 > 
 
-
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
