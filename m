@@ -1,67 +1,67 @@
-Delivery-date: Mon, 14 Apr 2025 08:32:52 +0200
+Delivery-date: Mon, 14 Apr 2025 08:32:54 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4DNE-000Wzz-18
+	id 1u4DNG-000X0X-0J
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 08:32:52 +0200
+	Mon, 14 Apr 2025 08:32:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4DND-0001Qm-KG
-	for lore@pengutronix.de; Mon, 14 Apr 2025 08:32:52 +0200
+	id 1u4DNF-0001SV-DW
+	for lore@pengutronix.de; Mon, 14 Apr 2025 08:32:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gH631E8zm4BiF6HtHj0ROmkG4Oc7WeuV96K+eYSffHI=; b=OtY3MqLGtSSSdulf12a2GuwNL6
-	uYTGlB6Wb2kLMBu2ig+6reQGjc063tYkJyCdcPdZm221q+z8yxjuXB628M0zdoM9StMlPcje/laEc
-	3/20RQUEQTWhLbFOd/CnqTx0YAub/TGxu/wIkN0q+VVoCFBoTNDA/mg4KyNgzjBJW766l7RcA9QCY
-	g47F0zAuQDAah1biDGr3+qgQRFNOB4qtsT2OnQ5uIuQX5Rgc4pA2r7QNCE84dGiJ1nqj6+AFDg8Ic
-	lfFPAIvzzG4Ng7QR0y//HmnzXkid8HKTXZScO/fudk87Iv1ji2zkR6bpy88bpTAcGMnvTnbmpscOq
-	R3h5SFag==;
+	bh=7tjVKNSmQzKKlzyLmFqMVH6aa7ct1nAyhsSYjLK3q+o=; b=RONhVizH9jn52Kq9uHjfLLd9ok
+	K/57GbbYnqvUJHumPyaBuRk8waQpu/iflPpsbaubKXdK1oPTBrfJZdorZipLCRg5LoT1Nk1INNpl3
+	KVXOmhNg0I5mf4MsUyOlhD5hiBeVryQVkJfTjCXN1Lf6Vm21e2DE747kCtd3klCM4T6lLxRxbsX8S
+	2dObeKIyWqYUSFGm81OVjAl83oQT38ZN5ncF+NrESAq0O5luhHmu/YPRsYVaSXP38ASQZ2eGqwhcu
+	zRjhcn2cFWJSAVgNo0XPh6T1TEsFeTI+e+ZAQBqguUvFcfOm6Givt/3RtcPGadqVp0/xZqdWJKIcJ
+	pvm7K/zQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4DMj-00000000nwK-1VfM;
-	Mon, 14 Apr 2025 06:32:21 +0000
+	id 1u4DMl-00000000nzF-0wTa;
+	Mon, 14 Apr 2025 06:32:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4DMJ-00000000npl-0Sv9
+	id 1u4DMR-00000000nsQ-0MiZ
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 06:31:59 +0000
+	Mon, 14 Apr 2025 06:32:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4DMH-0000lO-Ty; Mon, 14 Apr 2025 08:31:53 +0200
+	id 1u4DMH-0000l1-NI; Mon, 14 Apr 2025 08:31:53 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4DMH-000Chm-2G;
+	id 1u4DMH-000ChZ-1g;
 	Mon, 14 Apr 2025 08:31:53 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4DMH-00BUi8-1x;
+	id 1u4DMH-00BUi8-1M;
 	Mon, 14 Apr 2025 08:31:53 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Apr 2025 08:31:41 +0200
-Message-Id: <20250414063152.2736649-8-a.fatoum@pengutronix.de>
+Date: Mon, 14 Apr 2025 08:31:37 +0200
+Message-Id: <20250414063152.2736649-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414063152.2736649-1-a.fatoum@pengutronix.de>
 References: <20250414063152.2736649-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250413_233155_179171_CC1C246D 
-X-CRM114-Status: GOOD (  14.63  )
+X-CRM114-CacheID: sfid-20250413_233203_129023_6416AAC7 
+X-CRM114-Status: GOOD (  15.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,119 +83,143 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/18] cdev: alias: add support for partition links
+Subject: [PATCH 03/18] partition: efi: respect DPS_TYPE_FLAG_NO_AUTO flag
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently support bootsource.2, but not bootsource.root-A.
-Fix this and while at it, factor out the logic for general reuse.
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+
+The DPS_TYPE_FLAG_NO_AUTO flag indicates that a partition should not be
+automatically discovered by type UUID if not directly referenced.
+
+We do auto discovery for barebox env and sate using
+cdev_find_child_by_gpt_typeuuid, so teach it to respect that flag.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/cdev-alias.c | 22 +++-------------------
- fs/devfs-core.c     | 29 +++++++++++++++++++++++++++++
- include/driver.h    |  1 +
- 3 files changed, 33 insertions(+), 19 deletions(-)
+ common/blspec.c    |  4 ++--
+ common/bootscan.c  | 11 +++++++++--
+ fs/devfs-core.c    | 11 +++++++++--
+ include/bootscan.h |  5 ++++-
+ 4 files changed, 24 insertions(+), 7 deletions(-)
 
-diff --git a/common/cdev-alias.c b/common/cdev-alias.c
-index 5c37c2e58bf3..09e6770f5dea 100644
---- a/common/cdev-alias.c
-+++ b/common/cdev-alias.c
-@@ -17,22 +17,6 @@ struct cdev_alias {
- 		       cdev_alias_processor_t fn, void *data);
- };
+diff --git a/common/blspec.c b/common/blspec.c
+index 5223ac30f8a5..59fa40c9ff50 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -511,7 +511,7 @@ static int blspec_scan_disk(struct bootscanner *scanner,
+ 		 * should be used as $BOOT
+ 		 */
+ 		if (cdev_is_mbr_partitioned(cdev) && partcdev->dos_partition_type == 0xea) {
+-			ret = boot_scan_cdev(scanner, bootentries, partcdev);
++			ret = boot_scan_cdev(scanner, bootentries, partcdev, true);
+ 			if (ret == 0)
+ 				ret = -ENOENT;
  
--static struct cdev *resolve_partition(struct cdev *cdev,
--				      const char *partname)
--{
--	struct cdev *partcdev;
--
--	if (!partname)
--		return cdev;
--
--	for_each_cdev_partition(partcdev, cdev) {
--		if (streq_ptr(partcdev->partname, partname))
--			return partcdev;
--	}
--
--	return ERR_PTR(-ENODEV);
--}
--
- static int cdev_alias_resolve_bootsource(struct cdev_alias *cdev_alias,
- 					 const char *partname,
- 					 cdev_alias_processor_t fn,
-@@ -44,9 +28,9 @@ static int cdev_alias_resolve_bootsource(struct cdev_alias *cdev_alias,
- 	if (!cdev)
- 		return -ENODEV;
- 
--	cdev = resolve_partition(cdev, partname);
--	if (IS_ERR(cdev))
--		return PTR_ERR(cdev);
-+	cdev = cdev_find_partition(cdev, partname);
-+	if (!cdev)
-+		return -ENODEV;
- 
- 	return fn(cdev, data);
- }
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index c69c38d6506e..e32bce9e307e 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -21,6 +21,7 @@
- #include <malloc.h>
- #include <ioctl.h>
- #include <nand.h>
-+#include <string.h>
+@@ -560,7 +560,7 @@ static int blspec_scan_device(struct bootscanner *scanner,
+ 	 * by the bootblspec spec).
+ 	 */
+ 	list_for_each_entry(cdev, &dev->cdevs, devices_list) {
+-		ret = boot_scan_cdev(scanner, bootentries, cdev);
++		ret = boot_scan_cdev(scanner, bootentries, cdev, true);
+ 		if (ret > 0)
+ 			found += ret;
+ 	}
+diff --git a/common/bootscan.c b/common/bootscan.c
+index 222498c609a4..813d6d242a08 100644
+--- a/common/bootscan.c
++++ b/common/bootscan.c
+@@ -8,6 +8,7 @@
+ #include <linux/stat.h>
  #include <linux/err.h>
- #include <linux/fs.h>
- #include <linux/mtd/mtd.h>
-@@ -149,6 +150,34 @@ cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, const guid_t *typeuuid)
- 	return ERR_PTR(-ENOENT);
- }
+ #include <mtd/ubi-user.h>
++#include <uapi/spec/dps.h>
  
-+/**
-+ * cdev_find_partition - find a partition belonging to a physical device
-+ *
-+ * @cdev: the cdev which should be searched for partitions
-+ * @name: the partition name
-+ */
-+struct cdev *cdev_find_partition(struct cdev *cdevm, const char *name)
-+{
-+	struct cdev *partcdev;
-+
-+	if (!name)
-+		return cdevm;
-+
-+	for_each_cdev_partition(partcdev, cdevm) {
-+		struct cdev *cdevl;
-+
-+		if (streq_ptr(partcdev->partname, name))
-+			return partcdev;
-+
-+		list_for_each_entry(cdevl, &partcdev->links, link_entry) {
-+			if (streq_ptr(cdevl->partname, name))
-+				return cdevl;
-+		}
+ #include <bootscan.h>
+ 
+@@ -80,7 +81,8 @@ static int boot_scan_ubi(struct bootscanner *scanner,
+  * error occurred.
+  */
+ int boot_scan_cdev(struct bootscanner *scanner,
+-		   struct bootentries *bootentries, struct cdev *cdev)
++		   struct bootentries *bootentries, struct cdev *cdev,
++		   bool autodiscover)
+ {
+ 	int ret, found = 0;
+ 	void *buf = xzalloc(512);
+@@ -89,6 +91,11 @@ int boot_scan_cdev(struct bootscanner *scanner,
+ 
+ 	pr_debug("%s(%s): %s\n", __func__, scanner->name, cdev->name);
+ 
++	if (autodiscover && (cdev->typeflags & DPS_TYPE_FLAG_NO_AUTO)) {
++		pr_debug("auto discovery skipped\n");
++		return 0;
 +	}
 +
-+	return NULL;
-+}
+ 	ret = cdev_read(cdev, buf, 512, 0, 0);
+ 	if (ret < 0) {
+ 		free(buf);
+@@ -144,7 +151,7 @@ static int boot_scan_devicename(struct bootscanner *scanner,
+ 
+ 	cdev = cdev_by_name(devname);
+ 	if (cdev) {
+-		int ret = boot_scan_cdev(scanner, bootentries, cdev);
++		int ret = boot_scan_cdev(scanner, bootentries, cdev, false);
+ 		if (ret > 0)
+ 			return ret;
+ 	}
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index f84b34ea53ab..c69c38d6506e 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -27,6 +27,7 @@
+ #include <unistd.h>
+ #include <range.h>
+ #include <fs.h>
++#include <spec/dps.h>
+ 
+ LIST_HEAD(cdev_list);
+ 
+@@ -135,8 +136,14 @@ cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, const guid_t *typeuuid)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	for_each_cdev_partition(partcdev, cdev) {
+-		if (guid_equal(&partcdev->typeuuid, typeuuid))
+-			return partcdev;
++		if (!guid_equal(&partcdev->typeuuid, typeuuid))
++			continue;
++		if (cdev->typeflags & DPS_TYPE_FLAG_NO_AUTO) {
++			dev_dbg(cdev->dev, "auto discovery skipped\n");
++			continue;
++		}
 +
- /**
-  * device_find_partition - find a partition belonging to a physical device
-  *
-diff --git a/include/driver.h b/include/driver.h
-index 3f2c681c0e80..ca002c5164c2 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -503,6 +503,7 @@ int devfs_create(struct cdev *);
- int devfs_create_link(struct cdev *, const char *name);
- int devfs_remove(struct cdev *);
- int cdev_find_free_index(const char *);
-+struct cdev *cdev_find_partition(struct cdev *cdevm, const char *name);
- struct cdev *device_find_partition(struct device *dev, const char *name);
- struct cdev *lcdev_by_name(const char *filename);
- struct cdev *cdev_readlink(struct cdev *cdev);
++		return partcdev;
+ 	}
+ 
+ 	return ERR_PTR(-ENOENT);
+diff --git a/include/bootscan.h b/include/bootscan.h
+index 99094dc09320..ffc67c4a90ab 100644
+--- a/include/bootscan.h
++++ b/include/bootscan.h
+@@ -2,6 +2,8 @@
+ #ifndef __BOOTSCAN_H
+ #define __BOOTSCAN_H
+ 
++#include <linux/types.h>
++
+ struct bootentries;
+ struct device;
+ struct cdev;
+@@ -25,7 +27,8 @@ struct bootscanner {
+ };
+ 
+ int boot_scan_cdev(struct bootscanner *scanner,
+-		   struct bootentries *bootentries, struct cdev *cdev);
++		   struct bootentries *bootentries, struct cdev *cdev,
++		   bool autodiscover);
+ 
+ int bootentry_scan_generate(struct bootscanner *scanner,
+ 			    struct bootentries *bootentries,
 -- 
 2.39.5
 
