@@ -1,89 +1,88 @@
-Delivery-date: Mon, 14 Apr 2025 07:17:05 +0200
+Delivery-date: Mon, 14 Apr 2025 07:21:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4CBr-000Vfb-00
+	id 1u4CG1-000ViC-2p
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 07:17:05 +0200
+	Mon, 14 Apr 2025 07:21:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4CBq-0008AF-A5
-	for lore@pengutronix.de; Mon, 14 Apr 2025 07:17:02 +0200
+	id 1u4CG1-0000eI-0I
+	for lore@pengutronix.de; Mon, 14 Apr 2025 07:21:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
 	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8zhaIdTolHgXYgWhf0ExXrUIdWZuBuxcgbr6RyG4JNs=; b=2oTYtc+rz6Up703uxUM4imxPNU
-	4HOBxt8mJiO3iYbTVZW/zoMvoiH1FP7ddSVBe+BsRGvZjB5QB9YpPnBw/2UFTaGHc1GjzlfT0BL2i
-	l3+jkQ4GSc60Tit2Px/fkM6n8EVJFGQT2ll8rvO9SyaKjQ52oMuU6I/Q0cbGhnQEjiUZHRvZxg8rR
-	x6hHlRGLazAiur9J87EpTiLGHS597W9WwRMpCLppQ7sgHq05xVYzufiAf56cBPp+3G9v4y4RXYyRp
-	mJx+ZnGl0NloILLbOd+vM8DY5XZ33RaTWhJPjy/TuUja2M3E1OYGXMzrKv0WCa8PHbJo82746YO77
-	z7aETWyA==;
+	bh=m7diHqYf1B+IhpxTNdh+WOx2JoUGbRMe82bKVpEAjD8=; b=o3OxUs4dGK6fyZjNz2aBhpEjsy
+	1PLHoxpvmRdskkZJqp66VQVBh1R/gMerM5X92VShGrEX7HZxLB/lXBnVBQ60pGo4c7Y3sfzG/xqxj
+	YnaGhvTNpn3qnZ4Ydl/twRLp6c2bjIt/pBprmzn5vcrB8zE+lmUZpcg+XTIdVNXbXYIgf7n4i7kDE
+	fga+v3FmJFxMheLsJMNPd0hauAyw4o+xC53NMO4iL4z/jW2Uo/rE+wh10kpXk0HmNv7XyFNrCJEfg
+	Vqn0lLTMHX2omU6fGHIs1GJNHPhoAf2JvTASabY95SIZQzPAHbN8BirIoR4ze5Ul8iuzI0Ur8Imtk
+	CJFRb0YA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4CAx-00000000gjT-0Dff;
-	Mon, 14 Apr 2025 05:16:07 +0000
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+	id 1u4CFY-00000000h1z-3X3O;
+	Mon, 14 Apr 2025 05:20:52 +0000
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4CAu-00000000giz-0Tnj
+	id 1u4CFV-00000000h1V-38vG
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 05:16:05 +0000
-Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-af519c159a8so3553803a12.3
-        for <barebox@lists.infradead.org>; Sun, 13 Apr 2025 22:16:03 -0700 (PDT)
+	Mon, 14 Apr 2025 05:20:51 +0000
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-301e05b90caso3869872a91.2
+        for <barebox@lists.infradead.org>; Sun, 13 Apr 2025 22:20:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744607762; x=1745212562; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1744608049; x=1745212849; darn=lists.infradead.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8zhaIdTolHgXYgWhf0ExXrUIdWZuBuxcgbr6RyG4JNs=;
-        b=expput4aQGG95Aeu1/7FcHw97VFGocDAmmUZ/oh7e9JqsFpt0nfXFIcWDXzS0h4mtj
-         KUv3kilS2O1Q+GzPNpqX3xowbq4vldMGLfcpGZbjWd8Qe8T0pvRtAVq9KlK+mSxWKrgp
-         JFdN3Y8jvSbOZnqKuVnkiaspHljCpDlPqMVvTKlHtiDcTUmFeqqqDCV9eNdNHE3dbNpR
-         wNOoaYvUgeXrBja/yWVr95CJiqpu2v0Jdlu6CRk4PH8Z8orvOKDUJZAALLVGttjTqVJV
-         jxFSOhxmUdyjCSt3KIBAAzR9+5mxXS1YBNd+c8qRYTWCGKrNqDDWX60RCsHJyoKfKH52
-         D6qQ==
+        bh=m7diHqYf1B+IhpxTNdh+WOx2JoUGbRMe82bKVpEAjD8=;
+        b=SrQyyZT15BnAhcmA2nhM/Jiv89G0CUu/o08gG78a4oA+HPhGOAcQEnTbdgZ2dT+AR6
+         1Fi+wTUDVaeHVktSDarAyGPuxASq0fXW31buI9kOHOhQALXsExTPjJk3S285n7GWwVJg
+         jTuTxpllR+eaDwIdnAlAJ9mPhss+ZOUqXOEENJUOZathrEJNRVTj7zx5kgOzLYwW5exw
+         c1eYThJN1GBm+xvCaYC7zK7Id/uwdwt2dn2a4GrpwieA2UIywwz9U35M2W324bVxTVUo
+         dG95sYsIbHuhIofMrUPUtxS1+u8ff4DfNLVlX48zy3BldlaWH9jpq08ReOJLagw2jxxV
+         NiBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744607762; x=1745212562;
+        d=1e100.net; s=20230601; t=1744608049; x=1745212849;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8zhaIdTolHgXYgWhf0ExXrUIdWZuBuxcgbr6RyG4JNs=;
-        b=Tw0BCeu7Or+2Fe8rVKX/9waVlbrZmx9K0fnbl6WIwCN2LeIYPSzNTtngwYDOdhfm8q
-         ccs8nEWZhq059SjwH/NIeG/F3BgpFE3FoxmCoDpIZUR1+u0JTABuFsiQ78HFYdInLnVM
-         tJSNXxus/5n6abIIVHiQXIm0+EttsRtSMygLaH4yxcPuB/sE3o7DSkoZJtb+17cP2Fhy
-         hii+FGHLBI/I1r19XaXy/HC7OkkDpwoYv43AkRfi+/QyQqC0w3Xa6zVhlmLGL1EzRQ0J
-         K/Dqb+yHrpq5iwLmR5s8KeDdYqpq2kk6WsX7pet/zetS7xyxZ6tLp+9ozkn/T8NFBbqu
-         XjGA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/sHYMjbpYFuz1XoygNNGKhNiy40YDzM0Lgms9wjbs/U6fWbAH1h1mYugOmbeqjAzAVaixcdI8@lists.infradead.org
-X-Gm-Message-State: AOJu0YztQDCayGZvCxou8CZfAjHzSdM7TWWSwiRoX9xl7sqFZiCBMXhO
-	uRpF6WAZwv3p0cE/gzwH1Hke4LnmsJyI3Gir/u68KWnH6rzWnGdfyP4C2UZgGbGyrysP5l4Nnud
-	1Y27f786r3hP1LN1KYPN1S+VB1wV713Y1
-X-Gm-Gg: ASbGncsvYYSDSbS1nEeaO9Ja+lYek2uW4gTT1i4G1kb5u/n/OGhfV4qvw6MDt9o+I3l
-	Dtmehuyji78KWD8w2ymrIlRuXn/n6OvArPq3BlxqFRx3kQfrtN7/MCqUCguozrIO8FYvCqubj8Z
-	JmpzuRBUOdOT6yEzrgUyphhA==
-X-Google-Smtp-Source: AGHT+IEDwKnjrh7r1kRof1Zz5++PlxZy1j34lA/Zm+/d34C/xHDS0kTg37TwANLqSTfe1foRMRAjtL3ATxK5FXzzv/s=
-X-Received: by 2002:a17:90b:17ca:b0:301:6343:1626 with SMTP id
- 98e67ed59e1d1-308236281f7mr14088800a91.1.1744607762560; Sun, 13 Apr 2025
- 22:16:02 -0700 (PDT)
+        bh=m7diHqYf1B+IhpxTNdh+WOx2JoUGbRMe82bKVpEAjD8=;
+        b=bYdf29XnhLqE/pq52Ky7RwrDTKE7U1XN8UiCqfl5XpY6418RVah4wX3hpdmYBe30pm
+         iFUzmp91eKyDAzOcHYVEMQmbD6jVkNj9hPad493Cy0vqG1hbU+jpoPXG2QWw4mlGy8HT
+         /H3U+vqxX4dn2+0bOiwfFOSGRblwwbLYfg/XuXROmlgLV0SAXCbbiglj5in7LNerwVc1
+         UJku/1Tp7xgv8khpVEb400Dy7K5Nha99rqRPx4Afe0IMcfEsvPczPZznGMa8BYIhBqyT
+         pTQqvj3GtoODbleUBL9KdQMnLRgceYvC9Wc6Zdak6nCRFeBUBv+1gZ398Sr54z+IB9Up
+         yFrw==
+X-Gm-Message-State: AOJu0YyF+QbNTWFn+nKDcY++Nk2ijO0EbZzIEP7NMyIKFobvgaj0gUlg
+	DUgabnB+65rMlZqIWhkjSYBsqa7a+mdGWN+0IhCxRofAakvaCU6Kyro8qPgPBqoVWJMWdtiL8mw
+	XontpnRJhvSj4LvRvN77dt9+W3Vc=
+X-Gm-Gg: ASbGncuSDjgqg+B9gZXlSviN/2+Fs1YHNr7mesffyl4mhUc6yJQGV93AKCxS0C/fgcZ
+	TtJb4BJDxHZvVpdlKJ6Y697z16fClFFoCioVWzvZCDPzKDGQPva4y28KXPM/MXz1s4Mk061U4fa
+	RKk1MKOBu6/QeTBoZ04xnPQw==
+X-Google-Smtp-Source: AGHT+IEAS9RJwDVz7oGkK6SR08rimkMjcGWfps9Oj9aHbGnv/Ld4AsKWOsmFHOuN2z8oyNhIWRs+quHG/QBTJERM5X0=
+X-Received: by 2002:a17:90b:3bc4:b0:2f8:49ad:4079 with SMTP id
+ 98e67ed59e1d1-3082363452cmr15023106a91.6.1744608048506; Sun, 13 Apr 2025
+ 22:20:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250411152020.2783640-1-m.tretter@pengutronix.de> <Z_lBnMOJQNNN4T6l@pengutronix.de>
-In-Reply-To: <Z_lBnMOJQNNN4T6l@pengutronix.de>
+References: <20250327053801.52356-1-eagle.alexander923@gmail.com> <03e0271b-8912-4c26-86d8-064236350268@pengutronix.de>
+In-Reply-To: <03e0271b-8912-4c26-86d8-064236350268@pengutronix.de>
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Mon, 14 Apr 2025 08:15:50 +0300
-X-Gm-Features: ATxdqUEM2oN8UzgrWZ48XD0_vpMM-eNOL5_l1EeVn-hb9l2Q1BUH3K770zBl83Y
-Message-ID: <CAP1tNvTVK-Ukt0Y4_iTEOM_gdxnU6rfJ9C08m+ZArPdZOro=5Q@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Michael Tretter <m.tretter@pengutronix.de>, barebox@lists.infradead.org
+Date: Mon, 14 Apr 2025 08:20:36 +0300
+X-Gm-Features: ATxdqUHFHIrkNoK72LgtkmgDfsg-uBA811l3VhtAeoyF7q9x2yf1YNYLVztntf8
+Message-ID: <CAP1tNvRqRypiOJbSDGNiX3wa21NCyWrJN2vVofWZpxxggphBqA@mail.gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250413_221604_159552_D270F268 
-X-CRM114-Status: GOOD (  36.09  )
+X-CRM114-CacheID: sfid-20250413_222049_793854_C6B39F9F 
+X-CRM114-Status: GOOD (  30.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -106,111 +105,150 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ARM: rockchip: dmc: fix DRAM for sizes 16+ GiB on rk3588
+Subject: Re: [PATCH] mci: atmel_mci: Merge at91_mci_bio_set_highcapacity()
+ with at91_mci_bio_init()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hello.
 
-This is probably exactly the case I encountered at the time. [1]
-For myself, I solved this problem through the device tree. [2]
-Let's see which solution to the problem will be better.
-
-[1] https://lore.pengutronix.de/barebox/CAP1tNvS_BwD_gXcDwMH61DY9Vtg1GSY7gs=
-y8Wr9vaE+KsqabAg@mail.gmail.com/T/
-[2] https://github.com/MacroGroup/barebox/blob/macro/arch/arm/dts/rk3588-di=
-asom-btb.dtsi#L234
+Unfortunately I don't have such hardware to test.
+The CPU I have (SAMA5D2) uses a different MCI driver.
 
 Thanks!
 
-=D0=BF=D1=82, 11 =D0=B0=D0=BF=D1=80. 2025=E2=80=AF=D0=B3. =D0=B2 19:22, Sas=
-cha Hauer <s.hauer@pengutronix.de>:
+=D1=87=D1=82, 27 =D0=BC=D0=B0=D1=80. 2025=E2=80=AF=D0=B3. =D0=B2 09:41, Ahm=
+ad Fatoum <a.fatoum@pengutronix.de>:
 >
-> On Fri, Apr 11, 2025 at 05:20:20PM +0200, Michael Tretter wrote:
-> > RK3588 has two known memory gaps when using 16+ GiB DRAM,
-> > [0x3fc000000, 0x3fc500000) and [0x3fff00000, 0x400000000).
+> Hello Alexander,
+>
+> On 27.03.25 06:38, Alexander Shiyan wrote:
+> > The high-capacity parameter is always set to one of the possible values
+> > at initialization, so there is no need to have a separate function to
+> > configure it.
+>
+> here's an idea from IRC by the way to get rid of the parameter:
+>
+> ye, that [checking CSD] is what is used normally, but the problem is doin=
+g it
+> while in transmission state.
+>
+>   I looked into Part1_Physical_Layer_Simplified_Specification_Ver9.00.pdf
+>   again and for the first time I see
+>   "Figure 4-13 : SD Memory Card State Diagram (data transfer mode)"
+>
+>   Apparently, you don't necessarily need CMD0 (Go idle) to be able to get=
+ to a
+>   state where you can execute CMD9 (SEND CSD), but one could also execute=
+ CMD7
+>   (SELECT CARD) to deselect card and then run CMD9 and get back to transm=
+ission mode
+>
+>   One would need to issue a CMD3 (SEND_RELATIVE_ADDR) to get the RCA to c=
+ommunicate
+>   with the correct SD (it's argument to CMD9), but this might work.
+>
+> Perhaps you're interested in trying this out :D
+>
+> Cheers,
+> Ahmad
+>
 > >
-> > Skip both gaps when initializing the DRAM on rk3588 to avoid running
-> > into an exception when running memtest on an rk3588 board with 16+ GiB
-> > DRAM.
-> >
-> > The information about the gaps is taken from a patch by Jonas Karlman t=
-o
-> > the U-Boot mailing list [0].
-> >
-> > [0] https://lore.kernel.org/all/20250405153832.1427549-5-jonas@kwiboo.s=
-e/
-> >
-> > Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> > Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 > > ---
-> > The start and end addresses of the gaps probably should be put into of
-> > rockchip_dmc_drvdata and only set for the rk3588. Any suggestion how to
-> > implement this more nicely would be very welcome.
->
-> Looks like the rk3588 currently is the only SoC that can have that much
-> memory that it hits the gaps. You could add a comment that the gaps are
-> only verified on rk3588 and need another look once the next SoC is
-> added.
->
-> Once we are there we can add a function pointer into struct rockchip_dmc_=
-drvdata
-> doing the right thing, but I think for now it's fine the way you did it.
->
-> Sascha
->
-> > ---
-> >  arch/arm/mach-rockchip/dmc.c | 20 ++++++++++++++++++--
-> >  1 file changed, 18 insertions(+), 2 deletions(-)
+> >  arch/arm/mach-at91/at91sam9_xload_mmc.c |  5 +----
+> >  arch/arm/mach-at91/xload.c              |  2 +-
+> >  drivers/mci/atmel_mci_pbl.c             | 10 +++-------
+> >  include/mach/at91/xload.h               |  4 ++--
+> >  4 files changed, 7 insertions(+), 14 deletions(-)
 > >
-> > diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.=
-c
-> > index 86e61f311661..cf63fdb5a8bb 100644
-> > --- a/arch/arm/mach-rockchip/dmc.c
-> > +++ b/arch/arm/mach-rockchip/dmc.c
-> > @@ -27,6 +27,12 @@
-> >  #define RK3568_INT_REG_START         RK3399_INT_REG_START
-> >  #define RK3588_INT_REG_START         RK3399_INT_REG_START
+> > diff --git a/arch/arm/mach-at91/at91sam9_xload_mmc.c b/arch/arm/mach-at=
+91/at91sam9_xload_mmc.c
+> > index 26f268ae91..e8cd72bd56 100644
+> > --- a/arch/arm/mach-at91/at91sam9_xload_mmc.c
+> > +++ b/arch/arm/mach-at91/at91sam9_xload_mmc.c
+> > @@ -94,15 +94,12 @@ void __noreturn sam9263_atmci_start_image(u32 mmc_i=
+d, unsigned int clock,
+> >               at91_pmc_enable_periph_clock(IOMEM(AT91SAM926X_BASE_PMC),=
+  AT91SAM9263_ID_MCI1);
+> >       }
 > >
-> > +/* RK3588 has two known memory gaps when using 16+ GiB DRAM */
-> > +#define DRAM_GAP1_START         0x3fc000000
-> > +#define DRAM_GAP1_END           0x3fc500000
-> > +#define DRAM_GAP2_START         0x3fff00000
-> > +#define DRAM_GAP2_END           0x400000000
-> > +
-> >  struct rockchip_dmc_drvdata {
-> >       unsigned int os_reg2;
-> >       unsigned int os_reg3;
-> > @@ -220,9 +226,19 @@ static int rockchip_dmc_probe(struct device *dev)
-> >       arm_add_mem_device("ram0", membase,
-> >               min_t(resource_size_t, drvdata->internal_registers_start,=
- memsize) - membase);
+> > -     ret =3D at91_mci_bio_init(&bio, base, clock, (int)slot_b);
+> > +     ret =3D at91_mci_bio_init(&bio, base, clock, (int)slot_b, false);
+> >       if (ret) {
+> >               pr_err("atmci_start_image: bio init faild: %d\n", ret);
+> >               goto out_panic;
+> >       }
 > >
-> > -     /* ram1, remaining RAM beyond 32bit space */
-> > +     /* ram1, RAM beyond 32bit space up to first gap */
-> >       if (memsize > SZ_4G)
-> > -             arm_add_mem_device("ram1", SZ_4G, memsize - SZ_4G);
-> > +             arm_add_mem_device("ram1", SZ_4G,
-> > +                     min_t(resource_size_t, DRAM_GAP1_START, memsize) =
-- SZ_4G);
-> > +
-> > +     /* ram2, RAM between first and second gap */
-> > +     if (memsize > DRAM_GAP1_END)
-> > +             arm_add_mem_device("ram2", DRAM_GAP1_END,
-> > +                     min_t(resource_size_t, DRAM_GAP2_START, memsize) =
-- DRAM_GAP1_END);
-> > +
-> > +     /* ram3, remaining RAM after second gap */
-> > +     if (memsize > DRAM_GAP2_END)
-> > +             arm_add_mem_device("ram3", DRAM_GAP2_END, memsize - DRAM_=
-GAP2_END);
+> > -     /* at91sam9x do not support high capacity */
+> > -     at91_mci_bio_set_highcapacity(false);
+> > -
+> >       ret =3D pbl_fat_load(&bio, "barebox.bin", buf, SZ_16M);
+> >       if (ret < 0) {
+> >               pr_err("pbl_fat_load: error %d\n", ret);
+> > diff --git a/arch/arm/mach-at91/xload.c b/arch/arm/mach-at91/xload.c
+> > index 5d8105f07f..effe8802ee 100644
+> > --- a/arch/arm/mach-at91/xload.c
+> > +++ b/arch/arm/mach-at91/xload.c
+> > @@ -228,7 +228,7 @@ void __noreturn sama5d3_atmci_start_image(u32 r4, u=
+nsigned int clock,
+> >
+> >       sama5d3_pmc_enable_periph_clock(instance->id);
+> >
+> > -     ret =3D at91_mci_bio_init(&bio, instance->base, clock, slot);
+> > +     ret =3D at91_mci_bio_init(&bio, instance->base, clock, slot, true=
+);
+> >       if (ret)
+> >               goto out_panic;
+> >
+> > diff --git a/drivers/mci/atmel_mci_pbl.c b/drivers/mci/atmel_mci_pbl.c
+> > index bd4faa4de5..c94a4240db 100644
+> > --- a/drivers/mci/atmel_mci_pbl.c
+> > +++ b/drivers/mci/atmel_mci_pbl.c
+> > @@ -83,7 +83,8 @@ static int at91_mci_bio_read(struct pbl_bio *bio, off=
+_t start,
+> >  }
+> >
+> >  int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
+> > -                   unsigned int clock, unsigned int slot)
+> > +                   unsigned int clock, unsigned int slot,
+> > +                   bool highcapacity_card)
+> >  {
+> >       struct atmel_mci_priv *priv =3D &atmci_sdcard;
+> >       struct atmel_mci *host =3D &priv->host;
+> > @@ -111,12 +112,7 @@ int at91_mci_bio_init(struct pbl_bio *bio, void __=
+iomem *base,
+> >
+> >       atmci_common_set_ios(host, &ios);
+> >
+> > -     priv->highcapacity_card =3D 1;
+> > +     priv->highcapacity_card =3D highcapacity_card;
 > >
 > >       return 0;
 > >  }
-> > --
-> > 2.39.5
+> > -
+> > -void at91_mci_bio_set_highcapacity(bool highcapacity_card)
+> > -{
+> > -     atmci_sdcard.highcapacity_card =3D highcapacity_card;
+> > -}
+> > diff --git a/include/mach/at91/xload.h b/include/mach/at91/xload.h
+> > index d5fc7596fd..329ccc98eb 100644
+> > --- a/include/mach/at91/xload.h
+> > +++ b/include/mach/at91/xload.h
+> > @@ -12,8 +12,8 @@ void __noreturn sama5d3_atmci_start_image(u32 r4, uns=
+igned int clock,
 > >
+> >  int at91_sdhci_bio_init(struct pbl_bio *bio, void __iomem *base);
+> >  int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
+> > -                   unsigned int clock, unsigned int slot);
+> > -void at91_mci_bio_set_highcapacity(bool highcapacity_card);
+> > +                   unsigned int clock, unsigned int slot,
+> > +                   bool highcapacity_card);
 > >
-> >
+> >  void __noreturn sam9263_atmci_start_image(u32 mmc_id, unsigned int clo=
+ck,
+> >                                         bool slot_b);
+>
 >
 > --
 > Pengutronix e.K.                           |                             =
@@ -221,6 +259,5 @@ GAP2_END);
 |
 > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
 |
->
 
 
