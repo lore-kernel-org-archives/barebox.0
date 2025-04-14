@@ -1,58 +1,67 @@
-Delivery-date: Mon, 14 Apr 2025 12:15:55 +0200
+Delivery-date: Mon, 14 Apr 2025 12:33:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4Gr5-000bDx-0Z
+	id 1u4H7g-000bSK-1A
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 12:15:55 +0200
+	Mon, 14 Apr 2025 12:33:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4Gr4-0007Zq-Hx
-	for lore@pengutronix.de; Mon, 14 Apr 2025 12:15:55 +0200
+	id 1u4H7f-0004pQ-Mw
+	for lore@pengutronix.de; Mon, 14 Apr 2025 12:33:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3mjHFl3Ks519BETOT2KjEMaWCubJHKYq1wMi6ynFsy4=; b=lFCUKrc6WFFUL9gk4UwH6u4hpe
-	gHrYvO2/+NZv5tJeJzzs9G8wBLtKUYBqyvICD/x6r9gMsl6/DTvkmyksPnX1MjNth8ZBqtNBZFmsl
-	2eg+6Jy2RUarw8hHdoTWhSdP4fjNR3F3HDrDIXB4msoZirNd0XBlHYnsQDBo1Ysf5lIQgtSH7YWgr
-	CEe8owbS2tqF8rP3ff6ML5E/HqeylCe3aIfJjFP6e3BQVrFo0SFlUmQ3X+iKBLack50J0ru+ceEq7
-	dfHpRKwHhIyNyBCzjbBMY2ZRKAOtDdcozVU+vRl9/Piisq+4g/4ESUF21+A3C9m9xNrTJlw/I5qiy
-	AWR6v9FA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=RDmFqg/fG21ypK/KK1+NNV0B1ladd5l0xCPgwGVVcIM=; b=YqBujePdJ6HJZF+HiIAaVXEx0o
+	iSn2HzeQWMj99gmvDLS2Ga9DAeH903Z5cJD4YzukoKjPKTuJBRCz07x8GV0BoyvWLHf/LhMOT4Vf6
+	ma/g0l414T2IWm2ATM7kSAgwkTogWPMELSCGdbvnKsgMswFa5SjxxPvICBS8gez5ckzS48oyMF7eT
+	FCpcRMTid5Bb75mcwHbikDSoHNeHcdSzjADM2UwBfdeRfOnmgQzyyCZfzOTRv5hHMgRWgxH8DkA6O
+	DG38CLkq3JJP4gkIpRpHn3/Jdyol7+LEozrrzh+nk2zuXiW1GLzNi+saiDOA0Eg67j3X3IOau7pw+
+	tFEGcGow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4Gqd-00000001SuQ-24sU;
-	Mon, 14 Apr 2025 10:15:27 +0000
+	id 1u4H7E-00000001YH3-0AON;
+	Mon, 14 Apr 2025 10:32:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4GmG-00000001RAO-1eC1
+	id 1u4GpL-00000001SQs-3YAI
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 10:10:57 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4GmF-0005Y1-4m; Mon, 14 Apr 2025 12:10:55 +0200
-Message-ID: <45c42b7a-6b52-4862-a204-595092b39f50@pengutronix.de>
-Date: Mon, 14 Apr 2025 12:10:54 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
+	Mon, 14 Apr 2025 10:14:08 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4GpK-0006gr-5I; Mon, 14 Apr 2025 12:14:06 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4GpJ-000EWv-39;
+	Mon, 14 Apr 2025 12:14:05 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4GpJ-000Fn3-2p;
+	Mon, 14 Apr 2025 12:14:05 +0200
+Date: Mon, 14 Apr 2025 12:14:05 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-References: <20250414062303.2721390-1-a.fatoum@pengutronix.de>
- <Z_zQZY-ioQUWlIt2@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <Z_zQZY-ioQUWlIt2@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-ID: <20250414101405.hplqfnnk7mmzzukx@pengutronix.de>
+References: <20250414063152.2736649-1-a.fatoum@pengutronix.de>
+ <20250414063152.2736649-7-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414063152.2736649-7-a.fatoum@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250414_031056_433205_EC66D873 
-X-CRM114-Status: GOOD (  20.78  )
+X-CRM114-CacheID: sfid-20250414_031407_883508_1C1E4E45 
+X-CRM114-Status: GOOD (  26.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,77 +83,89 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] driver: have dev_platform_ioremap_resource return error
- pointer
+Subject: Re: [PATCH 06/18] blspec: collect bootloader spec entries from ESP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
-
-On 4/14/25 11:07, Sascha Hauer wrote:
-> On Mon, Apr 14, 2025 at 08:23:03AM +0200, Ahmad Fatoum wrote:
->> From: Ahmad Fatoum <a.fatoum@barebox.org>
->>
->> devm_request_mem_region doesn't return NULL on error on Linux and thus
->> it should neither in barebox. Fix this.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/base/driver.c  | 2 ++
->>  include/linux/device.h | 2 +-
->>  2 files changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
->> index edba037fa2dd..4e361a96c9ee 100644
->> --- a/drivers/base/driver.c
->> +++ b/drivers/base/driver.c
->> @@ -587,6 +587,8 @@ void __iomem *dev_request_mem_region(struct device *dev, int num)
->>  	struct resource *res;
->>  
->>  	res = dev_request_mem_resource(dev, num);
->> +	if (!IS_ERR(res) && WARN_ON(IS_ERR_VALUE(res->start)))
->> +		return IOMEM_ERR_PTR(res->start);
+On 25-04-14, Ahmad Fatoum wrote:
+> The spec points out that spec entries should be collected from ESP, even
+> when XBOOTLDR partitions exist, but at a lower priority.
 > 
-> Which code can set res->start to an error value?
-
-It can end up being an error value, because there is actual a MMIO
-region at a high address. In that case, I'd rather we return an
-error, so dev_request_mem_resource would need to be used instead.
-
-Thanks,
-Ahmad
-
+> Implement this logic in barebox. As barebox as EFI payload systems have
+> an ESP, but may have the bootloader spec files in a separate partition,
+> we can't skip the walk through all partitions when we have an ESP like
+> we do for XBOOTLDR partitions.
 > 
-> Sascha
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/blspec.c | 26 +++++++++++++++++++++++++-
+>  1 file changed, 25 insertions(+), 1 deletion(-)
 > 
->>  	if (IS_ERR(res))
->>  		return ERR_CAST(res);
->>  
->> diff --git a/include/linux/device.h b/include/linux/device.h
->> index 66294910abb3..661d8b24730e 100644
->> --- a/include/linux/device.h
->> +++ b/include/linux/device.h
->> @@ -39,7 +39,7 @@ static inline void __iomem *dev_platform_ioremap_resource(struct device *dev,
->>  	 * so we don't need to do anything besides requesting the regions
->>  	 * and can leave the memory attributes unchanged.
->>  	 */
->> -	return dev_request_mem_region_err_null(dev, resource);
->> +	return dev_request_mem_region(dev, resource);
->>  }
->>  
->>  static inline void __iomem *devm_ioremap(struct device *dev,
->> -- 
->> 2.39.5
->>
->>
->>
+> diff --git a/common/blspec.c b/common/blspec.c
+> index adc3fb2e2ea2..dd3bb1c167d7 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -504,6 +504,7 @@ static int blspec_scan_disk(struct bootscanner *scanner,
+>  {
+>  	struct cdev *partcdev;
+>  	int ret, err = 0, found = 0;
+> +	bool have_esp = false;
+>  
+>  	for_each_cdev_partition(partcdev, cdev) {
+>  		struct cdev *match = NULL;
+> @@ -517,9 +518,13 @@ static int blspec_scan_disk(struct bootscanner *scanner,
+>  		 * - GPT disk label, and a partition with the GPT type GUID of
+>  		 *   bc13c2ff-59e6-4262-a352-b275fd6f7172 already exists
+>  		 *
+> +		 * - an EFI System Partition and none of the above
+> +		 *
+>  		 * it should be used as $BOOT
+>  		 */
+> -		if (cdev_is_mbr_partitioned(cdev)) {
+> +		if (partcdev->flags & DEVFS_PARTITION_BOOTABLE_ESP)
+> +			have_esp = true;
+> +		else if (cdev_is_mbr_partitioned(cdev)) {
+>  			if (partcdev->dos_partition_type == 0xea)
+>  				match = partcdev;
+>  		} else if (cdev_is_gpt_partitioned(cdev)) {
+> @@ -537,6 +542,25 @@ static int blspec_scan_disk(struct bootscanner *scanner,
+>  			err = ret ?: -ENOENT;
+>  	}
+>  
+> +	if (!have_esp)
+> +		goto out;
+> +
+> +	for_each_cdev_partition(partcdev, cdev) {
+> +		if (!(partcdev->flags & DEVFS_PARTITION_BOOTABLE_ESP))
+> +			continue;
+> +
+> +		/*
+> +		 * ESP is only a fallback. If we have an ESP, but no bootloader spec
+> +		 * files inside, this is not an error.
+> +		 */
+> +		ret = boot_scan_cdev(scanner, bootentries, partcdev, true);
+> +		if (ret >= 0)
+> +			found += ret;
+> +		else
+> +			err = ret;
+> +	}
+
+Is it allowed to have multiple ESP partitions? If not we could save us
+the additional loop and just store the ESP directly and make use of it.
+
+Regards,
+  Marco
+
+
+> +
+> +out:
+>  	return found ?: err;
+>  }
+>  
+> -- 
+> 2.39.5
 > 
-
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+> 
+> 
 
 
