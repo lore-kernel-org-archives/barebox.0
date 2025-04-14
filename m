@@ -1,58 +1,59 @@
-Delivery-date: Mon, 14 Apr 2025 11:07:23 +0200
+Delivery-date: Mon, 14 Apr 2025 11:07:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4Fml-000Ztb-0r
+	id 1u4Fmu-000Zu8-0j
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 11:07:23 +0200
+	Mon, 14 Apr 2025 11:07:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4Fmk-0007r9-LQ
-	for lore@pengutronix.de; Mon, 14 Apr 2025 11:07:23 +0200
+	id 1u4Fmt-0007tw-6k
+	for lore@pengutronix.de; Mon, 14 Apr 2025 11:07:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=U1VMdwJpvJbs/30jbfXAMPOxGbW1bSv1E95+TimiPiE=; b=c3h9LEuIaXto7qVH6wpLjUXh8g
-	P8y2dlHJYy64H0B31BOq3SgadB4cTYuF4WANkXPIa0NuG9Q3lwdrmHOiyYFOqgcsSljMnFXDXtb5V
-	A/xRO9aYyuORKwHnq5sjIO9FVTl1tj4LzlNZHHLEIkvaoSkoTXRfVgwy7ToDKLazQ3T5eYgx9e/QU
-	ZQ15UYJ6H0ScERz+64GPZa+/biVTGhThJuyRc7U5XQVgv8aLHuvy9HgiwZK6VsoCJOlfX8fm1QSBM
-	WVDBVLqwFoLbxPfrOh4QBK7GLGFoCBiRsfWhEyWchKNHIYaFFhvnTyqYlYvtIqZaJAguzdDvVwVCR
-	c4UavsBQ==;
+	bh=pVzVKk+rre0uLEaslVQB9j8h5GECh+uEjm5xmKibNro=; b=vXvubfXBuvBKHl2n1M5IiXxLdK
+	I6q0IM94RKvCYm/8PUjSbOZoZUjwg6EGCbBCjOrbj9A+f2nguAmFtttgnqm3/15WhTJNRYkhN3OCX
+	tgkq+IhsZmVDaXkUQeyRyLRSeWGJGY8Ds4kR5pCC9NqPm9z9u4i6+ZS/9cRnyxoomOPN1I5hL/nnJ
+	JPxo+rUuoSwvKyAcmj7aRPaMk3VC7C6ZUptYzX+tI4UT+Kyl68HY2w5HZz81DHJE0whvTSY496L4m
+	bRnHCMyR1cCA2kj4HItajs2ZUUDZfqcTseo0xZZUsy0Of9AjauCJ+rg8yUrUWKnAcU7k5nIyGmEbG
+	Co4YI9vQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4FmJ-00000001DQI-32UH;
-	Mon, 14 Apr 2025 09:06:55 +0000
+	id 1u4FmK-00000001DQP-0wXl;
+	Mon, 14 Apr 2025 09:06:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4FS8-000000019nv-1AZC
+	id 1u4FSr-000000019zQ-1G9b
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 08:46:05 +0000
+	Mon, 14 Apr 2025 08:46:50 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4FS6-0000ZL-Up; Mon, 14 Apr 2025 10:46:03 +0200
-Message-ID: <5003d208-f1c4-4cbc-88ec-aaa8c30bbd11@pengutronix.de>
-Date: Mon, 14 Apr 2025 10:46:02 +0200
+	id 1u4FSq-0000qF-4U; Mon, 14 Apr 2025 10:46:48 +0200
+Message-ID: <d7cbcac4-7465-46d6-92d9-75df6f0fa7dc@pengutronix.de>
+Date: Mon, 14 Apr 2025 10:46:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org, Kim Christensen <kch@skov.dk>
 References: <20250414065009.2770749-1-a.fatoum@pengutronix.de>
- <Z_zJUIijGZGEqcAu@pengutronix.de>
+ <20250414065009.2770749-4-a.fatoum@pengutronix.de>
+ <20250414084043.j5v2xjh2bnadoicc@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z_zJUIijGZGEqcAu@pengutronix.de>
+In-Reply-To: <20250414084043.j5v2xjh2bnadoicc@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250414_014604_324662_981FFDE2 
-X-CRM114-Status: GOOD (  18.75  )
+X-CRM114-CacheID: sfid-20250414_014649_342359_45292AF5 
+X-CRM114-Status: GOOD (  24.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,91 +75,142 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/6] ARM: dts: i.MX8MP: drop now upstream
- imx8mp-nominal.dtsi
+Subject: Re: [PATCH 4/6] ARM: i.MX8MP: skov: halt startup until power is good
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 14.04.25 10:37, Sascha Hauer wrote:
-> On Mon, Apr 14, 2025 at 08:50:04AM +0200, Ahmad Fatoum wrote:
->> This file is now available in Linux since v6.15-rc1, so we do not need
->> to duplicate it in barebox for boards to make use of it.
+Hello Marco,
+
+On 14.04.25 10:40, Marco Felsch wrote:
+> Hi,
+> 
+> On 25-04-14, Ahmad Fatoum wrote:
+>> The 24V regulator supplying the system can indicate via a GPIO imminent
+>> voltage loss. The board's capacitors hold enough charge to power the system
+>> a while longer in such a state, but eventually, unless external power is
+>> restored, the brownout detection of the PMIC will kick in.
 >>
+>> For the span of time between voltage drop detection and PMIC brownout,
+>> let's detect this situation and delay startup. This way, Linux can
+>> detect the ongoing voltage loss, power down the eMMC, reboot into
+>> barebox and barebox will delay boot as long as the problem persists.
+>>
+>> Co-developed-by: Kim Christensen <kch@skov.dk>
 >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 >> ---
->>  arch/arm/dts/imx8mp-nominal.dtsi | 49 --------------------------------
->>  1 file changed, 49 deletions(-)
->>  delete mode 100644 arch/arm/dts/imx8mp-nominal.dtsi
+>>  arch/arm/boards/skov-imx8mp/lowlevel.c | 60 ++++++++++++++++++++++++++
+>>  1 file changed, 60 insertions(+)
 >>
->> diff --git a/arch/arm/dts/imx8mp-nominal.dtsi b/arch/arm/dts/imx8mp-nominal.dtsi
->> deleted file mode 100644
+>> diff --git a/arch/arm/boards/skov-imx8mp/lowlevel.c b/arch/arm/boards/skov-imx8mp/lowlevel.c
+>> index 637fc50b3f30..d7bd771f259d 100644
+>> --- a/arch/arm/boards/skov-imx8mp/lowlevel.c
+>> +++ b/arch/arm/boards/skov-imx8mp/lowlevel.c
+>> @@ -20,6 +20,9 @@
+>>  
+>>  extern char __dtb_z_imx8mp_skov_start[];
+>>  
+>> +#define PGOOD_PAD_CTRL  MUX_PAD_CTRL(MX8MP_PAD_CTL_PUE | \
+>> +				     MX8MP_PAD_CTL_PE)
+>> +
+>>  #define UART_PAD_CTRL   MUX_PAD_CTRL(MX8MP_PAD_CTL_DSE6 | \
+>>  				     MX8MP_PAD_CTL_FSEL | \
+>>  				     MX8MP_PAD_CTL_PUE | \
+>> @@ -30,6 +33,12 @@ extern char __dtb_z_imx8mp_skov_start[];
+>>  				     MX8MP_PAD_CTL_PUE | \
+>>  				     MX8MP_PAD_CTL_PE)
+>>  
+>> +static inline void led_d1_toggle(bool *on)
+>> +{
+>> +	imx8m_gpio_direction_output(IOMEM(MX8MP_GPIO1_BASE_ADDR), 5, *on);
+>> +	*on = !*on;
+>> +}
+>> +
+>>  static void setup_uart(void)
+>>  {
+>>  	void __iomem *uart = IOMEM(MX8M_UART2_BASE_ADDR);
+>> @@ -67,6 +76,55 @@ static struct pmic_config pca9450_cfg[] = {
+>>  	{ PCA9450_BUCK2OUT_DVS0, 0x14 },
+>>  };
+>>  
+>> +static inline bool power_good(void)
+>> +{
+>> +	/* IMX_SHDN_MF in schematics */
+>> +	return imx8m_gpio_val(IOMEM(MX8MP_GPIO4_BASE_ADDR), 23);
+>> +}
+>> +
+>> +static void wait_for_power_good(void)
+>> +{
+>> +	void __iomem *gpio4 = IOMEM(MX8MP_GPIO4_BASE_ADDR);
+>> +	int timeout_ms = 0;
+>> +	bool led_active = true;
+>> +
+>> +	imx8mp_setup_pad(MX8MP_PAD_SAI2_RXD0__GPIO4_IO23 | PGOOD_PAD_CTRL);
+>> +	imx8m_gpio_direction_input(gpio4, 23);
+>> +
+>> +	led_d1_toggle(&led_active);
+>> +
+>> +	if (power_good())
+>> +		return;
+>> +
+>> +	pr_warn("\nDelaying boot until power stabilizes\n");
+>> +
+>> +	/* If we reach this, because Linux did a hw_protection_reboot, we don't
+>> +	 * want to continue booting right away.
+>> +	 *
+>> +	 * Thus let's either wait for the condition to subscede or for voltage
+>> +	 * to reach a low enough level for the PMIC to detect VSYS_UVLO going
+>> +	 * lower than allowed
+>> +	 */
+>> +
+>> +	while (1) {
+>> +		if (power_good()) {
+>> +			/* wait 10ms longer and check if it still good */
+>> +			udelay(10000);
+>> +			if (power_good()) {
+>> +				pr_info("IMX_SHDN_MF stuck low for ~%ums.\n", timeout_ms);
+>> +				break;
+>> +			}
+>> +		}
+>> +		/* fast blink LED D1 */
+>> +		if (timeout_ms % 100 == 0) {
+>> +			pr_debug(".");
+>> +			led_d1_toggle(&led_active);
+>> +		}
+>> +		udelay(1000);
+>> +		timeout_ms++;
+>> +	}
+>> +}
+>> +
+>>  static void power_init_board(void)
+>>  {
+>>  	struct pbl_i2c *i2c;
+>> @@ -77,6 +135,8 @@ static void power_init_board(void)
+>>  	imx8mp_setup_pad(MX8MP_PAD_SAI3_TXD__GPIO5_IO01);
+>>  	imx8m_gpio_direction_output(IOMEM(MX8MP_GPIO5_BASE_ADDR), 1, 0);
+>>  
+>> +	wait_for_power_good();
 > 
-> This is used by imx8mp-skov-reva.dtsi. Should the include be changed to
-> use <> instead of "" now?
+> out of curiosity, wouldn't it be more useful to do the check right
+> before the system wants to boot the kernel and abort in that case?
 
-imx8mp-skov-reva.dtsi is in dts/ and there is a version of that file there.
-This file here is unreferenced and the upstream version will be used
-in the follow-up commit.
+How so?
 
-Thanks,
-Ahmad
+When we have brownout, we usually never make it out of the PBL,
+so I prefer the SoC gets powered off during this loop instead
+of during the RAM setup.
+
+Cheers,
+ahmad
 
 > 
-> Sascha
+> Regards,
+>   Marco
 > 
->> index d675d1e5486e..000000000000
->> --- a/arch/arm/dts/imx8mp-nominal.dtsi
->> +++ /dev/null
->> @@ -1,49 +0,0 @@
->> -// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->> -
->> -&clk {
->> -	assigned-clocks = <&clk IMX8MP_CLK_A53_SRC>,
->> -			  <&clk IMX8MP_CLK_A53_CORE>,
->> -			  <&clk IMX8MP_SYS_PLL3>,
->> -			  <&clk IMX8MP_CLK_NOC>,
->> -			  <&clk IMX8MP_CLK_NOC_IO>,
->> -			  <&clk IMX8MP_CLK_GIC>;
->> -	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
->> -				 <&clk IMX8MP_ARM_PLL_OUT>,
->> -				 <0>,
->> -				 <&clk IMX8MP_SYS_PLL1_800M>,
->> -				 <&clk IMX8MP_SYS_PLL3_OUT>,
->> -				 <&clk IMX8MP_SYS_PLL1_800M>;
->> -	assigned-clock-rates = <0>, <0>,
->> -			       <600000000>,
->> -			       <800000000>,
->> -			       <600000000>,
->> -			       <400000000>;
->> -};
->> -
->> -&pgc_hsiomix {
->> -	assigned-clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
->> -	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
->> -	assigned-clock-rates = <400000000>;
->> -};
->> -
->> -&pgc_gpumix {
->> -	assigned-clocks = <&clk IMX8MP_CLK_GPU_AXI>,
->> -			  <&clk IMX8MP_CLK_GPU_AHB>;
->> -	assigned-clock-parents = <&clk IMX8MP_SYS_PLL3_OUT>,
->> -				 <&clk IMX8MP_SYS_PLL3_OUT>;
->> -	assigned-clock-rates = <600000000>, <300000000>;
->> -};
->> -
->> -&media_blk_ctrl {
->> -	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI>,
->> -			  <&clk IMX8MP_CLK_MEDIA_APB>,
->> -			  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
->> -			  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
->> -			  <&clk IMX8MP_VIDEO_PLL1>;
->> -	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
->> -				 <&clk IMX8MP_SYS_PLL1_800M>,
->> -				 <&clk IMX8MP_VIDEO_PLL1_OUT>,
->> -				 <&clk IMX8MP_VIDEO_PLL1_OUT>;
->> -	assigned-clock-rates = <400000000>, <200000000>,
->> -			       <0>, <0>, <1039500000>;
->> -};
+> 
+>> +
+>>  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
+>>  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
+>>  
 >> -- 
 >> 2.39.5
 >>
