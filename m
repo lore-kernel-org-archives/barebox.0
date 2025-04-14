@@ -1,16 +1,16 @@
-Delivery-date: Mon, 14 Apr 2025 08:32:50 +0200
+Delivery-date: Mon, 14 Apr 2025 08:32:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4DNC-000Wyk-2Q
+	id 1u4DNC-000Wyw-3C
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 08:32:50 +0200
+	Mon, 14 Apr 2025 08:32:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4DNB-0001O5-M0
+	id 1u4DNC-0001P0-9T
 	for lore@pengutronix.de; Mon, 14 Apr 2025 08:32:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4Cs3ZU85017oPRyQuIvJy0/IwSfpGKgvjhXBtdGGugA=; b=OR+VYN3NIbsKyhWTxrWx+4o7V4
-	yDWr8COf6nCnefzj3A4z9kk7F+DDh/L0ppP0WlcFjGklqXdzs9NsaJ0HAG1+3eez0EpK05/CvvET3
-	LmKG6A1HDHQzp16qE8zXGdtd0Wm/qp7A8T7eyx1oXG8sdQr27lROkx9aGje9ksgdhr3xCqBq8A24s
-	/SoIFmxWfpniT3sckp8FfDRG5PALgMj5qJI0tsFvSC3BU+gjpmMimMod0bMCPeUZ4s8MVQyGatY/x
-	J1zZ4jhotwGPvZOGltgvzFeNWWKmv1YqyxOI+eaeRDQR+X0L4xA9nxe7xn108GEI40k/+B3KNqcHG
-	n/7CQeKQ==;
+	bh=9LxGWqf6YJVjlLKsu5yrYEGopiCuBHTlIQ7vQGNtH8s=; b=CN63C0tghcjO4FBanBKqfl+Tql
+	HU9LdFNX5P1FvfD4czyjTERp8K9TsOBSH195FugoGYLHDHJOMAEfvI4r6FOEMbUGIneVrWoDysAit
+	qJOmHGQ7PfOCNC47H/51pzpmH+z3igrN9O1RGFXmmGyQb5bfeez8a0cQ6YGZmVDVVwz4w4j0v4Nwl
+	mgMy0L9VBj05bm9ngg/GV7oIb0P9XhstpzARTXDE+mzgx0Ms5wtgsmvq0r0ZmFHYn3o+ExJmO91jy
+	9uQ2fkwalrJ9DgUYlsd3tuG2AINAo2qI78KHCS2CEynim9E3yZLV2MagvgMoQWhDKlusfRfpBvLCy
+	m7Qw5+Ww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4DMh-00000000num-49Mw;
-	Mon, 14 Apr 2025 06:32:19 +0000
+	id 1u4DMk-00000000nxM-09Gu;
+	Mon, 14 Apr 2025 06:32:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4DMJ-00000000npj-0DJV
+	id 1u4DMJ-00000000npi-012G
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 06:31:57 +0000
+	Mon, 14 Apr 2025 06:31:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4DMH-0000l2-Pc; Mon, 14 Apr 2025 08:31:53 +0200
+	id 1u4DMH-0000kz-KN; Mon, 14 Apr 2025 08:31:53 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4DMH-000Chc-1o;
+	id 1u4DMH-000ChT-1O;
 	Mon, 14 Apr 2025 08:31:53 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4DMH-00BUi8-1V;
+	id 1u4DMH-00BUi8-14;
 	Mon, 14 Apr 2025 08:31:53 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Apr 2025 08:31:38 +0200
-Message-Id: <20250414063152.2736649-5-a.fatoum@pengutronix.de>
+Date: Mon, 14 Apr 2025 08:31:35 +0200
+Message-Id: <20250414063152.2736649-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414063152.2736649-1-a.fatoum@pengutronix.de>
 References: <20250414063152.2736649-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250413_233155_118201_2839FEDF 
-X-CRM114-Status: GOOD (  15.99  )
+X-CRM114-CacheID: sfid-20250413_233155_043711_0D9D90EA 
+X-CRM114-Status: GOOD (  11.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,81 +83,76 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 04/18] blspec: iterate over all XBOOTLDR partitions
+Subject: [PATCH 01/18] cdev: make cdev_find_child_by_gpt_typeuuid external
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently stop at the first XBOOTLDR partition when collecting
-entries, but there might be more than one XBOOTLDR partition, so we
-should really iterate over all of them.
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+
+The function is already used from two places and long enough that we
+probably don't want to duplicate it more than once in the final binary.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/blspec.c | 40 ++++++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+ fs/devfs-core.c  | 16 ++++++++++++++++
+ include/driver.h | 17 ++---------------
+ 2 files changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 59fa40c9ff50..cf9f973acd21 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -502,33 +502,41 @@ static int blspec_scan_disk(struct bootscanner *scanner,
- 			    struct bootentries *bootentries, struct cdev *cdev)
- {
- 	struct cdev *partcdev;
--	int ret;
-+	int ret, err = 0, found = 0;
- 
- 	for_each_cdev_partition(partcdev, cdev) {
-+		struct cdev *match = NULL;
-+
- 		/*
- 		 * If the OS is installed on a disk with MBR disk label, and a
- 		 * partition with the MBR type id of 0xEA already exists it
- 		 * should be used as $BOOT
- 		 */
--		if (cdev_is_mbr_partitioned(cdev) && partcdev->dos_partition_type == 0xea) {
--			ret = boot_scan_cdev(scanner, bootentries, partcdev, true);
--			if (ret == 0)
--				ret = -ENOENT;
--
--			return ret;
-+		if (cdev_is_mbr_partitioned(cdev)) {
-+			if (partcdev->dos_partition_type == 0xea)
-+				match = partcdev;
-+		} else {
-+			/*
-+			 * If the OS is installed on a disk with GPT disk label, and a
-+			 * partition with the GPT type GUID of
-+			 * bc13c2ff-59e6-4262-a352-b275fd6f7172 already exists, it
-+			 * should be used as $BOOT.
-+			 *
-+			 * Not yet implemented
-+			 */
- 		}
- 
--		/*
--		 * If the OS is installed on a disk with GPT disk label, and a
--		 * partition with the GPT type GUID of
--		 * bc13c2ff-59e6-4262-a352-b275fd6f7172 already exists, it
--		 * should be used as $BOOT.
--		 *
--		 * Not yet implemented
--		 */
-+		if (!match)
-+			continue;
-+
-+		ret = boot_scan_cdev(scanner, bootentries, partcdev, true);
-+		if (ret > 0)
-+			found += ret;
-+		else
-+			err = ret ?: -ENOENT;
- 	}
- 
--	return 0;
-+	return found ?: err;
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 2617eeea0706..f67c86b2267e 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -126,6 +126,22 @@ struct cdev *cdev_by_diskuuid(const char *diskuuid)
+ 	return NULL;
  }
  
- /*
++struct cdev *
++cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, guid_t *typeuuid)
++{
++	struct cdev *partcdev;
++
++	if (!cdev_is_gpt_partitioned(cdev))
++		return ERR_PTR(-EINVAL);
++
++	for_each_cdev_partition(partcdev, cdev) {
++		if (guid_equal(&partcdev->typeuuid, typeuuid))
++			return partcdev;
++	}
++
++	return ERR_PTR(-ENOENT);
++}
++
+ /**
+  * device_find_partition - find a partition belonging to a physical device
+  *
+diff --git a/include/driver.h b/include/driver.h
+index 094347d4577e..d01d026b687b 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -608,21 +608,8 @@ static inline bool cdev_is_gpt_partitioned(const struct cdev *master)
+ 	return master && (master->flags & DEVFS_IS_GPT_PARTITIONED);
+ }
+ 
+-static inline struct cdev *
+-cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, guid_t *typeuuid)
+-{
+-	struct cdev *partcdev;
+-
+-	if (!cdev_is_gpt_partitioned(cdev))
+-		return ERR_PTR(-EINVAL);
+-
+-	for_each_cdev_partition(partcdev, cdev) {
+-		if (guid_equal(&partcdev->typeuuid, typeuuid))
+-			return partcdev;
+-	}
+-
+-	return ERR_PTR(-ENOENT);
+-}
++struct cdev *
++cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, guid_t *typeuuid);
+ 
+ #ifdef CONFIG_FS_AUTOMOUNT
+ void cdev_create_default_automount(struct cdev *cdev);
 -- 
 2.39.5
 
