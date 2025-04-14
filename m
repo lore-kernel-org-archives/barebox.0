@@ -1,70 +1,67 @@
-Delivery-date: Mon, 14 Apr 2025 10:38:24 +0200
+Delivery-date: Mon, 14 Apr 2025 10:41:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4FKi-000ZH5-2s
+	id 1u4FNU-000ZJC-2n
 	for lore@lore.pengutronix.de;
-	Mon, 14 Apr 2025 10:38:24 +0200
+	Mon, 14 Apr 2025 10:41:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u4FKi-0006cT-91
-	for lore@pengutronix.de; Mon, 14 Apr 2025 10:38:24 +0200
+	id 1u4FNU-0007Xr-6W
+	for lore@pengutronix.de; Mon, 14 Apr 2025 10:41:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ERNgAzhPNMOwf7j7cQ8benbLMQWdKzsEQGbxh2vutnw=; b=FI+AhFceGAg/LfbmukdrFTAsKq
-	2cvKUTqULpd5pXvLWjSDnslJgeF+OFGIx1PtEMrS42A/lI/kRsyCiET8DMPvJZlOexV5GJJeKqtXc
-	asO/oCNT52aZpmZJcfLYGdeROAgqCTIQB1shTtVuQbwtUok1v8z0dvkf23xqhyUOPC4HahRPpYqHF
-	GWo2rXuiYE91Xw4ipVciz9wm4eAyPwWI32fg6Lj16JVi+ilCt4GuM6Sy1+NFmwXNEatWVxHJcHOWC
-	lC9GByJMIvmLLEiy5QSGRqQwzeFNhtba7dlYUKgUFpCpfCEGGAgno8jBun3c3pCV8kB/k9bmSIHZ+
-	xs7VZpSQ==;
+	bh=QdJfQiBjYBVVEGs/8KAqQO8QFNIy7k/c72S6RR7FPbY=; b=PDSg189T4djOSzWoOZpUYyaaJi
+	2ZU2AGiCuAIDeDYf0SDv37VCUAfTyIRtY8vOgrHBM1bWsURlHT/ZmFEdZPLQnnW+s9oe4JEpSOlvL
+	D3F150zBoBE2Ovks6J5B85xW2CZ+R808tlMmL8xmmABI5hb4tQRKnv5yiEse2OQHmUo+92oNVWyYb
+	tMVKBl5jXpBTuAz6AZk4Ob8m73mlVosiC7JsLIarhhrHNNA86MjrxuLP2f+Scc+ZNRtQxTQRxRg5u
+	MM0J347Ch9GhS/26Ef3uTXAmMOeuqp6nohD8+pGiuvOIYUZnrk9MiMlsY+dLiANC0h3w7wshFd/nk
+	JLaPNs7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4FK2-000000018JV-0cpp;
-	Mon, 14 Apr 2025 08:37:42 +0000
+	id 1u4FN3-000000018ly-3vEP;
+	Mon, 14 Apr 2025 08:40:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4FK0-000000018Hl-0Mlj
+	id 1u4FN0-000000018kD-3P0f
 	for barebox@lists.infradead.org;
-	Mon, 14 Apr 2025 08:37:41 +0000
+	Mon, 14 Apr 2025 08:40:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u4FJx-0006N9-2W; Mon, 14 Apr 2025 10:37:37 +0200
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4FMy-0007Kb-3b; Mon, 14 Apr 2025 10:40:44 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u4FJw-000Diu-2q;
-	Mon, 14 Apr 2025 10:37:36 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1u4FJw-000DbG-2T;
-	Mon, 14 Apr 2025 10:37:36 +0200
-Date: Mon, 14 Apr 2025 10:37:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4FMx-000Djg-2e;
+	Mon, 14 Apr 2025 10:40:43 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4FMx-000Dej-2I;
+	Mon, 14 Apr 2025 10:40:43 +0200
+Date: Mon, 14 Apr 2025 10:40:43 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Z_zJUIijGZGEqcAu@pengutronix.de>
+Cc: barebox@lists.infradead.org, Kim Christensen <kch@skov.dk>
+Message-ID: <20250414084043.j5v2xjh2bnadoicc@pengutronix.de>
 References: <20250414065009.2770749-1-a.fatoum@pengutronix.de>
+ <20250414065009.2770749-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250414065009.2770749-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+In-Reply-To: <20250414065009.2770749-4-a.fatoum@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250414_013740_126706_E5586935 
-X-CRM114-Status: GOOD (  21.23  )
+X-CRM114-CacheID: sfid-20250414_014046_850492_3089690F 
+X-CRM114-Status: GOOD (  27.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,96 +79,137 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/6] ARM: dts: i.MX8MP: drop now upstream
- imx8mp-nominal.dtsi
+Subject: Re: [PATCH 4/6] ARM: i.MX8MP: skov: halt startup until power is good
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Apr 14, 2025 at 08:50:04AM +0200, Ahmad Fatoum wrote:
-> This file is now available in Linux since v6.15-rc1, so we do not need
-> to duplicate it in barebox for boards to make use of it.
+Hi,
+
+On 25-04-14, Ahmad Fatoum wrote:
+> The 24V regulator supplying the system can indicate via a GPIO imminent
+> voltage loss. The board's capacitors hold enough charge to power the system
+> a while longer in such a state, but eventually, unless external power is
+> restored, the brownout detection of the PMIC will kick in.
 > 
+> For the span of time between voltage drop detection and PMIC brownout,
+> let's detect this situation and delay startup. This way, Linux can
+> detect the ongoing voltage loss, power down the eMMC, reboot into
+> barebox and barebox will delay boot as long as the problem persists.
+> 
+> Co-developed-by: Kim Christensen <kch@skov.dk>
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/dts/imx8mp-nominal.dtsi | 49 --------------------------------
->  1 file changed, 49 deletions(-)
->  delete mode 100644 arch/arm/dts/imx8mp-nominal.dtsi
+>  arch/arm/boards/skov-imx8mp/lowlevel.c | 60 ++++++++++++++++++++++++++
+>  1 file changed, 60 insertions(+)
 > 
-> diff --git a/arch/arm/dts/imx8mp-nominal.dtsi b/arch/arm/dts/imx8mp-nominal.dtsi
-> deleted file mode 100644
+> diff --git a/arch/arm/boards/skov-imx8mp/lowlevel.c b/arch/arm/boards/skov-imx8mp/lowlevel.c
+> index 637fc50b3f30..d7bd771f259d 100644
+> --- a/arch/arm/boards/skov-imx8mp/lowlevel.c
+> +++ b/arch/arm/boards/skov-imx8mp/lowlevel.c
+> @@ -20,6 +20,9 @@
+>  
+>  extern char __dtb_z_imx8mp_skov_start[];
+>  
+> +#define PGOOD_PAD_CTRL  MUX_PAD_CTRL(MX8MP_PAD_CTL_PUE | \
+> +				     MX8MP_PAD_CTL_PE)
+> +
+>  #define UART_PAD_CTRL   MUX_PAD_CTRL(MX8MP_PAD_CTL_DSE6 | \
+>  				     MX8MP_PAD_CTL_FSEL | \
+>  				     MX8MP_PAD_CTL_PUE | \
+> @@ -30,6 +33,12 @@ extern char __dtb_z_imx8mp_skov_start[];
+>  				     MX8MP_PAD_CTL_PUE | \
+>  				     MX8MP_PAD_CTL_PE)
+>  
+> +static inline void led_d1_toggle(bool *on)
+> +{
+> +	imx8m_gpio_direction_output(IOMEM(MX8MP_GPIO1_BASE_ADDR), 5, *on);
+> +	*on = !*on;
+> +}
+> +
+>  static void setup_uart(void)
+>  {
+>  	void __iomem *uart = IOMEM(MX8M_UART2_BASE_ADDR);
+> @@ -67,6 +76,55 @@ static struct pmic_config pca9450_cfg[] = {
+>  	{ PCA9450_BUCK2OUT_DVS0, 0x14 },
+>  };
+>  
+> +static inline bool power_good(void)
+> +{
+> +	/* IMX_SHDN_MF in schematics */
+> +	return imx8m_gpio_val(IOMEM(MX8MP_GPIO4_BASE_ADDR), 23);
+> +}
+> +
+> +static void wait_for_power_good(void)
+> +{
+> +	void __iomem *gpio4 = IOMEM(MX8MP_GPIO4_BASE_ADDR);
+> +	int timeout_ms = 0;
+> +	bool led_active = true;
+> +
+> +	imx8mp_setup_pad(MX8MP_PAD_SAI2_RXD0__GPIO4_IO23 | PGOOD_PAD_CTRL);
+> +	imx8m_gpio_direction_input(gpio4, 23);
+> +
+> +	led_d1_toggle(&led_active);
+> +
+> +	if (power_good())
+> +		return;
+> +
+> +	pr_warn("\nDelaying boot until power stabilizes\n");
+> +
+> +	/* If we reach this, because Linux did a hw_protection_reboot, we don't
+> +	 * want to continue booting right away.
+> +	 *
+> +	 * Thus let's either wait for the condition to subscede or for voltage
+> +	 * to reach a low enough level for the PMIC to detect VSYS_UVLO going
+> +	 * lower than allowed
+> +	 */
+> +
+> +	while (1) {
+> +		if (power_good()) {
+> +			/* wait 10ms longer and check if it still good */
+> +			udelay(10000);
+> +			if (power_good()) {
+> +				pr_info("IMX_SHDN_MF stuck low for ~%ums.\n", timeout_ms);
+> +				break;
+> +			}
+> +		}
+> +		/* fast blink LED D1 */
+> +		if (timeout_ms % 100 == 0) {
+> +			pr_debug(".");
+> +			led_d1_toggle(&led_active);
+> +		}
+> +		udelay(1000);
+> +		timeout_ms++;
+> +	}
+> +}
+> +
+>  static void power_init_board(void)
+>  {
+>  	struct pbl_i2c *i2c;
+> @@ -77,6 +135,8 @@ static void power_init_board(void)
+>  	imx8mp_setup_pad(MX8MP_PAD_SAI3_TXD__GPIO5_IO01);
+>  	imx8m_gpio_direction_output(IOMEM(MX8MP_GPIO5_BASE_ADDR), 1, 0);
+>  
+> +	wait_for_power_good();
 
-This is used by imx8mp-skov-reva.dtsi. Should the include be changed to
-use <> instead of "" now?
+out of curiosity, wouldn't it be more useful to do the check right
+before the system wants to boot the kernel and abort in that case?
 
-Sascha
+Regards,
+  Marco
 
-> index d675d1e5486e..000000000000
-> --- a/arch/arm/dts/imx8mp-nominal.dtsi
-> +++ /dev/null
-> @@ -1,49 +0,0 @@
-> -// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> -
-> -&clk {
-> -	assigned-clocks = <&clk IMX8MP_CLK_A53_SRC>,
-> -			  <&clk IMX8MP_CLK_A53_CORE>,
-> -			  <&clk IMX8MP_SYS_PLL3>,
-> -			  <&clk IMX8MP_CLK_NOC>,
-> -			  <&clk IMX8MP_CLK_NOC_IO>,
-> -			  <&clk IMX8MP_CLK_GIC>;
-> -	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
-> -				 <&clk IMX8MP_ARM_PLL_OUT>,
-> -				 <0>,
-> -				 <&clk IMX8MP_SYS_PLL1_800M>,
-> -				 <&clk IMX8MP_SYS_PLL3_OUT>,
-> -				 <&clk IMX8MP_SYS_PLL1_800M>;
-> -	assigned-clock-rates = <0>, <0>,
-> -			       <600000000>,
-> -			       <800000000>,
-> -			       <600000000>,
-> -			       <400000000>;
-> -};
-> -
-> -&pgc_hsiomix {
-> -	assigned-clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
-> -	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
-> -	assigned-clock-rates = <400000000>;
-> -};
-> -
-> -&pgc_gpumix {
-> -	assigned-clocks = <&clk IMX8MP_CLK_GPU_AXI>,
-> -			  <&clk IMX8MP_CLK_GPU_AHB>;
-> -	assigned-clock-parents = <&clk IMX8MP_SYS_PLL3_OUT>,
-> -				 <&clk IMX8MP_SYS_PLL3_OUT>;
-> -	assigned-clock-rates = <600000000>, <300000000>;
-> -};
-> -
-> -&media_blk_ctrl {
-> -	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI>,
-> -			  <&clk IMX8MP_CLK_MEDIA_APB>,
-> -			  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
-> -			  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
-> -			  <&clk IMX8MP_VIDEO_PLL1>;
-> -	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
-> -				 <&clk IMX8MP_SYS_PLL1_800M>,
-> -				 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-> -				 <&clk IMX8MP_VIDEO_PLL1_OUT>;
-> -	assigned-clock-rates = <400000000>, <200000000>,
-> -			       <0>, <0>, <1039500000>;
-> -};
+
+> +
+>  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
+>  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
+>  
 > -- 
 > 2.39.5
 > 
 > 
 > 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
