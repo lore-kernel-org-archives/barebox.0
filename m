@@ -1,54 +1,65 @@
-Delivery-date: Wed, 16 Apr 2025 12:34:46 +0200
+Delivery-date: Wed, 16 Apr 2025 12:38:20 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u506Q-001QKi-0y
+	id 1u509s-001QMo-1i
 	for lore@lore.pengutronix.de;
-	Wed, 16 Apr 2025 12:34:46 +0200
+	Wed, 16 Apr 2025 12:38:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u506P-0003AW-Od
-	for lore@pengutronix.de; Wed, 16 Apr 2025 12:34:46 +0200
+	id 1u509r-0004Qf-O6
+	for lore@pengutronix.de; Wed, 16 Apr 2025 12:38:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=nMrgP66CxpmYvwryIDwyTszFz6BU/uwVONrrycwMXSk=; b=ASqrT5ML8Cm/WlAsNthZGeaeEI
-	4k/h1Z1KJQoFY0GxxggxBbvT6bVfm4ASpTs4k0yFJLRPW8MCKN0OhoXT08J+rkQTdTJ962foZZ+rq
-	x3J+URCtYk22u6ZncqYq25aMi1wVnqbhcGlKYCQSPqPwxU039l2ulTEZyzhIq7TiiphWyptkKQfPU
-	pd9V6y4sue06Jc657NT+UTwWnLev11tnqtprJnvUI9zqqTda+9labw8taSRbHw/qdE5Cb0FAS2yWi
-	fPoaoKS7wB+3vlHW2RFK7UKRY53UROkoFuTjHEHc9NUz+p5KRgk7oZsHMIukQO5Rh1J8TO4kedimt
-	r0QaHSkA==;
+	bh=LXjecSVyhcm8Dw51Ya409xdR4xQFpLhxol3y1smeFIc=; b=ZGZnVHJ4MMPzlNvgaI5wTfFOeQ
+	RqOgmN7pmwyo4r7hmqPyJMRjKSOcBYBRnQ2VCD0tjo3mE2YvC+9068b8nDCSuVhdPcUVyyF69GYWm
+	wnofRIV7stSMd3Qd10eMDHa+RxTBN+HFvHQHUSlb2Tp4y3fNaZbsW2zQznTPROK0tWjsdtN6zzIcy
+	YzwAofEPAyL3+qQYxlNJoMO+noqoxwnLVkzqClK4B7k2aJQRbFrlflwwoA/w+3Gh5/UePvY24/XZa
+	ZZItNJC0g5JaOFZQ2568DXhvvqJhTIZisyVZeQ+Yp2xJOmYWK7DIeICqPzpewhMZbz2t5LJS9Bs6P
+	xrwoW3wQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u5061-00000009DdJ-0jPB;
-	Wed, 16 Apr 2025 10:34:21 +0000
+	id 1u509T-00000009EUO-3XaM;
+	Wed, 16 Apr 2025 10:37:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u503d-00000009AAV-2XPs
+	id 1u509P-00000009ES3-0Bqa
 	for barebox@lists.infradead.org;
-	Wed, 16 Apr 2025 10:31:55 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1u503a-0001Wz-Or
-	for barebox@lists.infradead.org; Wed, 16 Apr 2025 12:31:50 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
+	Wed, 16 Apr 2025 10:37:53 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u509N-00046r-0S; Wed, 16 Apr 2025 12:37:49 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u509M-000ZV4-2W;
+	Wed, 16 Apr 2025 12:37:48 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u509M-00174h-2D;
+	Wed, 16 Apr 2025 12:37:48 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 16 Apr 2025 12:31:44 +0200
-Message-Id: <20250416103144.2069587-1-m.felsch@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 16 Apr 2025 12:37:44 +0200
+Message-Id: <20250416103748.265415-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250416_033153_682022_382F1C8A 
-X-CRM114-Status: UNSURE (   9.01  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250416_033751_105964_B8880B04 
+X-CRM114-Status: GOOD (  11.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,54 +81,79 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: riotboard: drop static barebox-environment handling
+Subject: [PATCH 1/5] bootm: fix error reporting around optee_verify_header_request_region
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Since commit 9f868f78bc54 ("environment: use barebox environment from
-GPT partitions") barebox can try to find the barebox-environment based
-on a GPT partition GUID.
+optee_verify_header_request_region doesn't set errno, so printing it out
+and setting ret to -errno is wrong.
 
-Make use of this mechanism and drop the barebox local of-partition for
-the eMMC device and let the user-space provide the correct
-barebox-environment location if any.
-
-This also fixes environment handling if booted from a SD card since SD
-card boots make use of eMMC barebox environment at the moment.
-
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx6s-riotboard.dts | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/arm/lib32/bootm.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/dts/imx6s-riotboard.dts b/arch/arm/dts/imx6s-riotboard.dts
-index 57817c1197a7..cca34d6dba95 100644
---- a/arch/arm/dts/imx6s-riotboard.dts
-+++ b/arch/arm/dts/imx6s-riotboard.dts
-@@ -11,11 +11,6 @@
- / {
- 	chosen {
- 		stdout-path = &uart2;
--
--		environment {
--			compatible = "barebox,environment";
--			device-path = &environment_usdhc4;
--		};
- 	};
- };
+diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+index 625091ece1e9..34ce401e8fd9 100644
+--- a/arch/arm/lib32/bootm.c
++++ b/arch/arm/lib32/bootm.c
+@@ -152,21 +152,23 @@ static int get_kernel_addresses(size_t image_size,
  
-@@ -31,11 +26,6 @@ partition@0 {
- 		label = "barebox";
- 		reg = <0x0 0xe0000>;
- 	};
--
--	environment_usdhc4: partition@e0000 {
--		label = "barebox-environment";
--		reg = <0xe0000 0x20000>;
--	};
- };
+ static int optee_verify_header_request_region(struct image_data *data, struct optee_header *hdr)
+ {
+-	int ret = 0;
++	int ret;
  
- &clks {
+ 	ret = optee_verify_header(hdr);
+-	if (ret < 0)
++	if (ret < 0) {
++		pr_err("Could not verify header: %pe", ERR_PTR(ret));
+ 		return ret;
++	}
+ 
+ 	data->tee_res = request_sdram_region("TEE", hdr->init_load_addr_lo, hdr->init_size);
+ 	if (!data->tee_res) {
+-		pr_err("Cannot request SDRAM region 0x%08x-0x%08x: %s\n",
++		pr_err("Cannot request SDRAM region 0x%08x-0x%08x: %pe\n",
+ 		       hdr->init_load_addr_lo, hdr->init_load_addr_lo + hdr->init_size - 1,
+-		       strerror(-EINVAL));
++		       ERR_PTR(-EINVAL));
+ 		return -EINVAL;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int bootm_load_tee_from_fit(struct image_data *data)
+@@ -186,11 +188,9 @@ static int bootm_load_tee_from_fit(struct image_data *data)
+ 			return ret;
+ 		}
+ 		memcpy(&hdr, tee, sizeof(hdr));
+-		if (optee_verify_header_request_region(data, &hdr) < 0) {
+-			pr_err("%s", strerror(errno));
+-			ret = -errno;
++		ret = optee_verify_header_request_region(data, &hdr);
++		if (ret < 0)
+ 			goto out;
+-		}
+ 		memcpy((void *)data->tee_res->start, tee + sizeof(hdr), hdr.init_size);
+ 		printf("Read optee image to %pa, size 0x%08x\n", (void *)data->tee_res->start, hdr.init_size);
+ 	}
+@@ -214,11 +214,9 @@ static int bootm_load_tee_from_file(struct image_data *data)
+ 		goto out;
+ 	}
+ 
+-	if (optee_verify_header_request_region(data, &hdr) < 0) {
+-		pr_err("%s", strerror(errno));
+-		ret = -errno;
++	ret = optee_verify_header_request_region(data, &hdr);
++	if (ret < 0)
+ 		goto out;
+-	}
+ 
+ 	if (read_full(fd, (void *)data->tee_res->start, hdr.init_size) < 0) {
+ 		pr_err("%s", strerror(errno));
 -- 
 2.39.5
 
