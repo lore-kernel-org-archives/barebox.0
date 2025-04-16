@@ -1,64 +1,69 @@
-Delivery-date: Wed, 16 Apr 2025 12:31:27 +0200
+Delivery-date: Wed, 16 Apr 2025 12:32:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u503D-001QGD-2O
+	id 1u504W-001QHP-1R
 	for lore@lore.pengutronix.de;
-	Wed, 16 Apr 2025 12:31:27 +0200
+	Wed, 16 Apr 2025 12:32:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u503D-0001Ip-4k
-	for lore@pengutronix.de; Wed, 16 Apr 2025 12:31:27 +0200
+	id 1u504V-00022z-TE
+	for lore@pengutronix.de; Wed, 16 Apr 2025 12:32:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=obY1B6e//+SttaEanDweHNVBAyStCcRUaWIGCfU2GfM=; b=rNUaACVnyCBplq
-	+EvLcEz9W8NicBmBIIU9NbASMwpj8PID7pzCeADB+hl3WM1dnwJKcXaZDKoN8tPhu3cmej8f6qZ/L
-	PQKtOUY+ZYGo8tg/CeAP+x5OnBU9LgPRa1guMky2jY8MMGSmEfeAwowHpfA+AVuUKjeQI+lChqsFW
-	TKDjJLc9BhUxwbgKJ5FuZZD1TIIvjYX323+atBD4WZ0VCFIwR1AksehAmNcf1KnU5Zkw2FC5Bc0u5
-	6Y76UyAuC4OPDXRvqJD16GmoQMha2r5APAd3pVENWK3CpT1D8e42ga1YkcbFMxdm9PzpYs4Nj/tp6
-	gZGEVSM+xRR8jcR4/7bA==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fQ9Fn5jWcajeBVND6ifTjrur+0JxOJ8PpOq9YMgsHrw=; b=0WXIua+1Vg6WGV/D0Jj0/EOCZT
+	Doht6HrzCLvpBHdWIM+4y3eFtNwanX+ilZQbTFNZqcx7gS572E3bYUl6cXc3uBnv8CcZQYuVE85tZ
+	HH2F72mhavlsfsnLv8PjlD2DW9G3ji6ucgmmsBtPE5CveCxBPC/gJzMTP6L34jhgaaq7X+8FZ9kff
+	ZYcNdHYuZUqivdl8bJh+5JfQXEUrwReHcQ83ee7opBUgMUiYCeUvcBchVBZqSZs95K1Cv4poTvKwT
+	c5z0NTRHCr6/MjqnKKSg6Yc1nYNYCpX0sIbwm3+qykT9Dv6y8w2SiCBeYTcwSB+QJvPGJ2coENMa4
+	HNze8t4g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u502M-0000000981a-0OBx;
-	Wed, 16 Apr 2025 10:30:34 +0000
+	id 1u5041-00000009Atp-1XFT;
+	Wed, 16 Apr 2025 10:32:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4xxY-00000008mIZ-2w96
+	id 1u4zB3-00000008zfh-1r4Y
 	for barebox@lists.infradead.org;
-	Wed, 16 Apr 2025 08:17:30 +0000
+	Wed, 16 Apr 2025 09:35:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4xxU-0002gu-D7; Wed, 16 Apr 2025 10:17:24 +0200
+	id 1u4zB1-0008KG-JI; Wed, 16 Apr 2025 11:35:27 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4xxU-000YP8-0i;
-	Wed, 16 Apr 2025 10:17:24 +0200
+	id 1u4zB1-000Ywh-1J;
+	Wed, 16 Apr 2025 11:35:27 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u4xxU-009HZC-0P;
-	Wed, 16 Apr 2025 10:17:24 +0200
+	id 1u4zB1-000OPk-10;
+	Wed, 16 Apr 2025 11:35:27 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 16 Apr 2025 10:16:47 +0200
-Message-Id: <20250416081646.2201914-1-a.fatoum@pengutronix.de>
+Cc: ejo@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 16 Apr 2025 11:35:26 +0200
+Message-Id: <20250416093526.93723-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250416093526.93723-1-a.fatoum@pengutronix.de>
+References: <20250416093526.93723-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250416_011728_733073_016AE201 
-X-CRM114-Status: GOOD (  11.61  )
+X-CRM114-CacheID: sfid-20250416_023529_481485_D0AC3CF5 
+X-CRM114-Status: UNSURE (   9.36  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,7 +75,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Lars Schmidt <lsc@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -81,50 +85,35 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] net: dhcp: mention that eth0 is the default
+Subject: [PATCH 2/2] Documentation: devicetree: add of_diff hint for visualizing fixups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-dhcp has always defaulted to eth0 when called without arguments, which
-is not a good default for systems where eth0 is the management port of a
-DSA switch.
+of_diff - + is a very nifty tool, so make sure to mention it in the
+documentation.
 
-Point out that eth0 is used by default when dhcp is called without
-arguments and while at it make ignored positional arguments an error.
-
-In general, users probably should use ifup -a (or -a1) instead.
-
-Cc: Lars Schmidt <lsc@pengutronix.de>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/dhcp.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ Documentation/devicetree/index.rst | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/commands/dhcp.c b/commands/dhcp.c
-index 97e9b03e4adf..79ab546fc7a9 100644
---- a/commands/dhcp.c
-+++ b/commands/dhcp.c
-@@ -49,10 +49,17 @@ static int do_dhcp(int argc, char *argv[])
- 		}
- 	}
+diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
+index 2ca8b72be1ac..94e8d04f63c3 100644
+--- a/Documentation/devicetree/index.rst
++++ b/Documentation/devicetree/index.rst
+@@ -174,3 +174,12 @@ In the ``chosen``-node, barebox fixes up
  
--	if (optind == argc)
-+	switch (argc - optind) {
-+	case 0:
- 		edevname = "eth0";
--	else
-+		puts("Defaulting to eth0\n");
-+		break;
-+	case 1:
- 		edevname = argv[optind];
-+		break;
-+	default:
-+		return COMMAND_ERROR_USAGE;
-+	}
- 
- 	edev = eth_get_byname(edevname);
- 	if (!edev) {
+ These values can be read from the booted linux system in ``/proc/device-tree/``
+ or ``/sys/firmware/devicetree/base``.
++
++To see a dry run of what barebox would fixup, the ``of_diff`` command can be
++used::
++
++  # Diff before and after applying fixups on barebox DT
++  of_diff - +
++
++  # Diff kernel device tree before and after fixups
++  of_diff /mnt/mmc2.0/boot/imx6q-tx6q.dtb +
 -- 
 2.39.5
 
