@@ -1,67 +1,67 @@
-Delivery-date: Wed, 16 Apr 2025 12:38:22 +0200
+Delivery-date: Wed, 16 Apr 2025 12:38:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u509u-001QNW-33
+	id 1u509z-001QNz-1K
 	for lore@lore.pengutronix.de;
-	Wed, 16 Apr 2025 12:38:22 +0200
+	Wed, 16 Apr 2025 12:38:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u509u-0004T7-8s
-	for lore@pengutronix.de; Wed, 16 Apr 2025 12:38:22 +0200
+	id 1u509y-0004Ub-8Y
+	for lore@pengutronix.de; Wed, 16 Apr 2025 12:38:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VuSfAFcFhU6YfQlBEcOuuQeUk2TRfAKjffP0e+RgLnU=; b=SOHpr2fBRt0k6B2PHlEaGrjl3w
-	fOGmxfhsywkANPU4OnYPeYLtfYIyckOrXHEzxTY4z1G7y4lMijKnRA8sV8CrG0chup0SIOa7n8I0F
-	zp565aSQgthkqMToha9Nv5iFWBWI6Z6a/PPG/Y65q3UL1YlplJjlWgHoK210Nr5zk0lbvCHDhSuez
-	zs+1z0l3UBBNbzw7JcHo3e3Zqhr2jSN91YpaqCVnlPYZY3WiRuIxm+CeIF9AvdKiIlFMdsghvyQSt
-	voSV3XjqfJ7DkasAs7/Tne6cVqh8tyESvBWnsp2EXB1rdv7dXxSbNu7PynHQC5q+ioZRyBQEw0FmG
-	3y+po5yg==;
+	bh=giDwiCX8LYQ8B4MtHh77tUUOJrYdQZT/532yTDUkurc=; b=DYQmGzWQNKhdkxdb7umXVC7702
+	0u8Ztq4z2b7VJ6VHjBBaLzkodR2opS0kJWwvdErHUFPhRpL8WpOTBF/wlnJUaNVxJa9CX7DpP2Xs/
+	UERMsYWr7KkortiXQ4ObCpV37aJUHhTTZcfu8Q/perAuT2XFc8OF2yVuli/HtB2XLOScxZbgnhaF4
+	7VdyQynpi9UitirdQZ+J+8tTD37x6wrkeVLVNDLU9VQaRrAyt9C97H2XzaYa0QZbByWoyDYImlgy1
+	vZ+/qfWaEq76hvGjtEHpfoMc8hpq9WsP1KDGB1pzT0cWqvR6y3PMCFZ6GNb2M3G6vxeMKc/86+jym
+	FjvQY5uQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u509T-00000009EUG-1Un5;
-	Wed, 16 Apr 2025 10:37:55 +0000
+	id 1u509Z-00000009EYh-2D5I;
+	Wed, 16 Apr 2025 10:38:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u509P-00000009ES1-0BiL
+	id 1u509W-00000009EVi-1fMq
 	for barebox@lists.infradead.org;
-	Wed, 16 Apr 2025 10:37:53 +0000
+	Wed, 16 Apr 2025 10:37:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u509N-00046s-3I; Wed, 16 Apr 2025 12:37:49 +0200
+	id 1u509N-00046v-5O; Wed, 16 Apr 2025 12:37:49 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u509M-000ZV5-2f;
+	id 1u509M-000ZVB-2y;
 	Wed, 16 Apr 2025 12:37:48 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u509M-00174h-2N;
+	id 1u509M-00174h-2f;
 	Wed, 16 Apr 2025 12:37:48 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 16 Apr 2025 12:37:45 +0200
-Message-Id: <20250416103748.265415-2-a.fatoum@pengutronix.de>
+Date: Wed, 16 Apr 2025 12:37:47 +0200
+Message-Id: <20250416103748.265415-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250416103748.265415-1-a.fatoum@pengutronix.de>
 References: <20250416103748.265415-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250416_033751_099983_38E09BBE 
-X-CRM114-Status: GOOD (  12.06  )
+X-CRM114-CacheID: sfid-20250416_033758_601663_C668F1F8 
+X-CRM114-Status: GOOD (  11.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,123 +83,188 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/5] treewide: replace strerror of errno with %m
+Subject: [PATCH 4/5] treewide: fix wrong signed value passed to strerror
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-%m saves us some visual clutter and even some code size, so make use of
-it.
+strerror is meant for use with the positive integers stored in errno,
+but most error codes in barebox are negative. Fix instances of passing
+negative values to strerror by using %pe + ERR_PTR instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/lib32/bootm.c         |  6 +++---
- arch/sandbox/os/common.c       |  3 +--
- commands/memtester/memtester.c | 11 +++++------
- common/blspec.c                |  2 +-
- drivers/misc/jtag.c            |  2 +-
- 5 files changed, 11 insertions(+), 13 deletions(-)
+ arch/arm/boards/at91sam9m10ihd/hw_version.c      | 2 +-
+ arch/arm/boards/at91sam9x5ek/hw_version.c        | 2 +-
+ arch/arm/boards/crystalfontz-cfa10036/hwdetect.c | 2 +-
+ arch/arm/boards/haba-knx/init.c                  | 2 +-
+ drivers/aiodev/imx_thermal.c                     | 4 ++--
+ drivers/crypto/caam/rng_self_test.c              | 4 ++--
+ drivers/dma/apbh_dma.c                           | 3 +--
+ drivers/mci/arasan-sdhci.c                       | 5 ++---
+ drivers/mci/imx-esdhc.c                          | 3 +--
+ drivers/mtd/ubi/barebox.c                        | 2 +-
+ drivers/spi/imx_spi.c                            | 4 ++--
+ 11 files changed, 15 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-index 34ce401e8fd9..3d3e01aa4138 100644
---- a/arch/arm/lib32/bootm.c
-+++ b/arch/arm/lib32/bootm.c
-@@ -204,12 +204,12 @@ static int bootm_load_tee_from_file(struct image_data *data)
+diff --git a/arch/arm/boards/at91sam9m10ihd/hw_version.c b/arch/arm/boards/at91sam9m10ihd/hw_version.c
+index 0b8b7cc884eb..9ae4ccb77c75 100644
+--- a/arch/arm/boards/at91sam9m10ihd/hw_version.c
++++ b/arch/arm/boards/at91sam9m10ihd/hw_version.c
+@@ -111,7 +111,7 @@ static int at91sam9m10ihd_read_w1(const char *file, struct one_wire_info *info)
+ 	close(fd);
+ err:
+ 	if (ret)
+-		pr_err("can not read 1-wire %s (%s)\n", file, strerror(ret));
++		pr_err("can not read 1-wire %s (%pe)\n", file, ERR_PTR(ret));
+ 	return ret;
+ }
  
- 	fd = open(data->tee_file, O_RDONLY);
- 	if (fd < 0) {
--		pr_err("%s", strerror(errno));
-+		pr_err("%m\n");
- 		return -errno;
- 	}
+diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
+index 1224f4753c3b..9c6bd6866098 100644
+--- a/arch/arm/boards/at91sam9x5ek/hw_version.c
++++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
+@@ -122,7 +122,7 @@ static int at91sam9x5ek_read_w1(const char *file, struct one_wire_info *info)
+ 	close(fd);
+ err:
+ 	if (ret)
+-		pr_err("can not read 1-wire %s (%s)\n", file, strerror(ret));
++		pr_err("can not read 1-wire %s (%pe)\n", file, ERR_PTR(ret));
+ 	return ret;
+ }
  
- 	if (read_full(fd, &hdr, sizeof(hdr)) < 0) {
--		pr_err("%s", strerror(errno));
-+		pr_err("%m\n");
- 		ret = -errno;
- 		goto out;
- 	}
-@@ -219,7 +219,7 @@ static int bootm_load_tee_from_file(struct image_data *data)
- 		goto out;
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
+index fc39f0849a7d..76318b4d56f1 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
++++ b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
+@@ -50,7 +50,7 @@ static int cfa10036_read_eeprom(const char *file, struct cfa_eeprom_info *info)
+ 	close(fd);
+ err:
+ 	if (ret)
+-		pr_err("can not read eeprom %s (%s)\n", file, strerror(ret));
++		pr_err("can not read eeprom %s (%pe)\n", file, ERR_PTR(ret));
+ 	return ret;
+ }
  
- 	if (read_full(fd, (void *)data->tee_res->start, hdr.init_size) < 0) {
--		pr_err("%s", strerror(errno));
-+		pr_err("%m\n");
- 		ret = -errno;
- 		release_region(data->tee_res);
- 		goto out;
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index d44213319422..c5043160b1f9 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -447,8 +447,7 @@ int linux_open_hostfile(struct hf_info *hf)
- 				MAP_SHARED, fd, 0);
+diff --git a/arch/arm/boards/haba-knx/init.c b/arch/arm/boards/haba-knx/init.c
+index d86e84e71a3b..45bcd2c83668 100644
+--- a/arch/arm/boards/haba-knx/init.c
++++ b/arch/arm/boards/haba-knx/init.c
+@@ -139,7 +139,7 @@ static int haba_set_ethaddr(void)
+ 	close(fd);
+ err:
+ 	if (ret)
+-		pr_err("can't read eeprom /dev/eeprom0 (%s)\n", strerror(ret));
++		pr_err("can't read eeprom /dev/eeprom0 (%pe)\n", ERR_PTR(ret));
  
- 		if (hf->base == (unsigned long)MAP_FAILED)
--			printf("warning: mmapping %s failed: %s\n",
--			       hf->filename, strerror(errno));
-+			printf("warning: mmapping %s failed: %m\n", hf->filename);
- 	} else {
- 		printf("warning: %s: contiguous map failed\n", hf->filename);
- 	}
-diff --git a/commands/memtester/memtester.c b/commands/memtester/memtester.c
-index f4adbfc855cb..aacb80d80936 100644
---- a/commands/memtester/memtester.c
-+++ b/commands/memtester/memtester.c
-@@ -109,8 +109,7 @@ static int do_memtester(int argc, char **argv) {
-                 break;
-             case 'd':
-                 if (stat(optarg,&statbuf)) {
--                    printf("can not use %s as device: %s\n", optarg,
--                            strerror(errno));
-+                    printf("can not use %s as device: %m\n", optarg);
-                     return COMMAND_ERROR_USAGE;
-                 } else {
-                     if (!S_ISCHR(statbuf.st_mode) && !S_ISBLK(statbuf.st_mode)) {
-@@ -164,14 +163,14 @@ static int do_memtester(int argc, char **argv) {
-     if (memtester_use_phys) {
-         memfd = open(device_name, O_RDWR);
-         if (memfd == -1) {
--            printf("failed to open %s for physical memory: %s\n",
--                    device_name, strerror(errno));
-+            printf("failed to open %s for physical memory: %m\n",
-+                    device_name);
-             return EXIT_FAIL_NONSTARTER;
-         }
-         buf = memmap(memfd, PROT_READ | PROT_WRITE) + memtester_physaddrbase;
-         if (buf == MAP_FAILED) {
--            printf("failed to mmap %s for physical memory: %s\n",
--                    device_name, strerror(errno));
-+            printf("failed to mmap %s for physical memory: %m\n",
-+                    device_name);
-             close(memfd);
-             return EXIT_FAIL_NONSTARTER;
-         }
-diff --git a/common/blspec.c b/common/blspec.c
-index dd3bb1c167d7..80ebe256ceaf 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -472,7 +472,7 @@ static int blspec_scan_directory(struct bootscanner *bootscanner,
+ 	return ret;
+ }
+diff --git a/drivers/aiodev/imx_thermal.c b/drivers/aiodev/imx_thermal.c
+index 2693ad05e0e5..5db28d1bc51a 100644
+--- a/drivers/aiodev/imx_thermal.c
++++ b/drivers/aiodev/imx_thermal.c
+@@ -142,8 +142,8 @@ static int imx_thermal_probe(struct device *dev)
  
- 	ret = glob(abspath, 0, NULL, &globb);
+ 	ret = clk_enable(imx_thermal->clk);
  	if (ret) {
--		pr_debug("%s: %s: %s\n", __func__, abspath, strerror(errno));
-+		pr_debug("%s: %s: %m\n", __func__, abspath);
- 		ret = -errno;
- 		goto err_out;
+-		dev_err(dev, "Failed to enable clock: %s\n",
+-			  strerror(ret));
++		dev_err(dev, "Failed to enable clock: %pe\n",
++			  ERR_PTR(ret));
+ 		goto put_clock;
  	}
-diff --git a/drivers/misc/jtag.c b/drivers/misc/jtag.c
-index cca0aba2d6b5..8673fa68505b 100644
---- a/drivers/misc/jtag.c
-+++ b/drivers/misc/jtag.c
-@@ -269,7 +269,7 @@ static void jtag_info(struct device *pdev)
- 		ret = jtag_ioctl(&info->cdev, JTAG_GET_ID, &jid);
- 		printf("  Device number: %d\n", dn);
- 		if (ret == -1)
--			printf("   JTAG_GET_ID failed: %s\n", strerror(errno));
-+			printf("   JTAG_GET_ID failed: %m\n");
- 		else
- 			printf("   ID: 0x%lX\n", jid.id);
+ 
+diff --git a/drivers/crypto/caam/rng_self_test.c b/drivers/crypto/caam/rng_self_test.c
+index b6fcc3bc0947..12f5e192080f 100644
+--- a/drivers/crypto/caam/rng_self_test.c
++++ b/drivers/crypto/caam/rng_self_test.c
+@@ -194,8 +194,8 @@ int caam_rng_self_test(struct device *dev, const u8 caam_era, const u8 rngvid,
+ 	/* wait for job completion */
+ 	ret = caam_jr_enqueue(dev, desc, rng_self_test_done, &job_err);
+ 	if (ret) {
+-		pr_err("Running RNG self-test descriptor failed: %d %s\n",
+-				ret, strerror(ret));
++		pr_err("Running RNG self-test descriptor failed: %pe\n",
++		       ERR_PTR(ret));
+ 		goto err;
  	}
+ 	if (job_err) {
+diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
+index 2f19033aaf71..298f706f1bcd 100644
+--- a/drivers/dma/apbh_dma.c
++++ b/drivers/dma/apbh_dma.c
+@@ -162,8 +162,7 @@ static int apbh_dma_probe(struct device *dev)
+ 
+ 	ret = clk_enable(apbh->clk);
+ 	if (ret) {
+-		dev_err(dev, "Failed to enable clock: %s\n",
+-			strerror(ret));
++		dev_err(dev, "Failed to enable clock: %pe\n", ERR_PTR(ret));
+ 		return ret;
+ 	}
+ 
+diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+index 112fb5a669d5..e987ff654862 100644
+--- a/drivers/mci/arasan-sdhci.c
++++ b/drivers/mci/arasan-sdhci.c
+@@ -753,14 +753,13 @@ static int arasan_sdhci_probe(struct device *dev)
+ 	}
+ 	ret = clk_enable(clk_ahb);
+ 	if (ret) {
+-		dev_err(dev, "Failed to enable AHB clock: %s\n",
+-			strerror(ret));
++		dev_err(dev, "Failed to enable AHB clock: %pe\n", ERR_PTR(ret));
+ 		return ret;
+ 	}
+ 
+ 	ret = clk_enable(clk_xin);
+ 	if (ret) {
+-		dev_err(dev, "Failed to enable SD clock: %s\n", strerror(ret));
++		dev_err(dev, "Failed to enable SD clock: %pe\n", ERR_PTR(ret));
+ 		return ret;
+ 	}
+ 
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 54309aec2f74..ebc7ed539da9 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -301,8 +301,7 @@ static int fsl_esdhc_probe(struct device *dev)
+ 
+ 	ret = clk_enable(host->clk);
+ 	if (ret) {
+-		dev_err(dev, "Failed to enable clock: %s\n",
+-			strerror(ret));
++		dev_err(dev, "Failed to enable clock: %pe\n", ERR_PTR(ret));
+ 		goto err_clk_put;
+ 	}
+ 
+diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
+index 5d7bf69cc7c2..6b006dfa1de6 100644
+--- a/drivers/mtd/ubi/barebox.c
++++ b/drivers/mtd/ubi/barebox.c
+@@ -135,7 +135,7 @@ static int ubi_volume_cdev_close(struct cdev *cdev)
+ 
+ 		err = ubi_check_volume(ubi, vol->vol_id);
+ 		if (err < 0) {
+-			ubi_err(ubi, "ubi volume check failed: %s", strerror(err));
++			ubi_err(ubi, "ubi volume check failed: %pe", ERR_PTR(err));
+ 			return err;
+ 		}
+ 
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 5310a2715d8a..09893ac008e8 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -618,8 +618,8 @@ static int imx_spi_probe(struct device *dev)
+ 
+ 	ret = clk_enable(imx->clk);
+ 	if (ret) {
+-		dev_err(dev, "Failed to enable clock: %s\n",
+-			strerror(ret));
++		dev_err(dev, "Failed to enable clock: %pe\n",
++			ERR_PTR(ret));
+ 		return ret;
+ 	}
+ 
 -- 
 2.39.5
 
