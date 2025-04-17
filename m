@@ -1,65 +1,57 @@
-Delivery-date: Thu, 17 Apr 2025 11:07:10 +0200
+Delivery-date: Thu, 17 Apr 2025 11:30:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u5LDC-001oYF-2n
+	id 1u5La4-001oz9-1R
 	for lore@lore.pengutronix.de;
-	Thu, 17 Apr 2025 11:07:10 +0200
+	Thu, 17 Apr 2025 11:30:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u5LDC-0008DW-9w
-	for lore@pengutronix.de; Thu, 17 Apr 2025 11:07:10 +0200
+	id 1u5La3-0000yD-SY
+	for lore@pengutronix.de; Thu, 17 Apr 2025 11:30:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=IMTH4zb2v+ctbImu94GdFw0+kv6MJc9e9mIdHSCcjyk=; b=XqnImu+ULdlcSbIrAUZyY1IDXc
-	3Lj/zVc/pHrRlSSMYg9OQedd+Gag74ExKTBHXx5gGc+KtQKD/RUIu1rrCjjRsvg9bLOrpq84yiDvG
-	LW5c/3suP3Ws4l62cAkx1YC1VNZpGIn9vwVqcjOAuE6c0xE+PQ+dlS/NFUJPqp11EAT4gqjkq6nqO
-	RKPZAYSEtq4we4cLD7Ne99Jb9dGJycTe1q5VxmhEq8YQUiTL6qMhoybpFnUQdDSPZPQUyTu56T2PW
-	naVEncciecB7rljBlKxePfTPcwP6Gq1XQ8IpFQow5maxOYIi58hKK2Ys6ISI1heE/knG0zLy5SRWx
-	3qDOVwaA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=R60Gniw0eqxyBkvOJqdUf0rXWY/M3YTZ87lKa2LfFgI=; b=dHrFjmvUR+13rQNtltLeuecQk0
+	E+ZV9IvB4wPsX0x7EO2B+44HrED2ZESoatoehR6QqlZFsBF24TtSiB7CjMiqAomUlfe6rUh6SvMwd
+	CwHe4orDAXknC91ePODB7SRedmbki+YF67HlbjupOEsTjhYFeFj0OQGlMJJfn/94W4Y90oCANIG0D
+	XW7dUlqXwcgPTpgYLlJxR8CYQvqr3E+7qYx0JZ3+ZhTuMgrHgQWkYKoSnyNlcTDI6+0opncYKpH+x
+	g0G2It2LVEwa3J1vMXKnpNJzGETjnBkdzw2PnLbdznSXal2atMBt1mQdJ0S/p7HLzL2Bb6uV6NgvU
+	LR14/UJA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u5LCX-0000000CNlz-45DE;
-	Thu, 17 Apr 2025 09:06:29 +0000
+	id 1u5LZd-0000000CSym-3HH3;
+	Thu, 17 Apr 2025 09:30:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u5Kug-0000000CKPa-0MJ1
+	id 1u5LYr-0000000CSk5-42tg
 	for barebox@lists.infradead.org;
-	Thu, 17 Apr 2025 08:48:03 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <fpg@pengutronix.de>)
-	id 1u5Kud-0001TP-03; Thu, 17 Apr 2025 10:47:59 +0200
-Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <fpg@pengutronix.de>)
-	id 1u5Kuc-000ilO-2b;
-	Thu, 17 Apr 2025 10:47:58 +0200
-Received: from fpg by dude06.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <fpg@pengutronix.de>)
-	id 1u5Kuc-00E8Ew-2O;
-	Thu, 17 Apr 2025 10:47:58 +0200
-From: Fabian Pflug <f.pflug@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Thu, 17 Apr 2025 10:47:23 +0200
-Message-Id: <20250417084723.3368038-1-f.pflug@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Thu, 17 Apr 2025 09:29:35 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u5LYq-0000Ss-P2; Thu, 17 Apr 2025 11:29:32 +0200
+Message-ID: <501a5fd3-bafa-445a-9c92-acfe22bae763@pengutronix.de>
+Date: Thu, 17 Apr 2025 11:29:32 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Lars Schmidt <l.schmidt@pengutronix.de>, barebox@lists.infradead.org
+Cc: Lars Schmidt <lsc@pengutronix.de>
+References: <20250416153008.1898565-1-l.schmidt@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250416153008.1898565-1-l.schmidt@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250417_014802_121080_41200188 
-X-CRM114-Status: UNSURE (   9.82  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250417_022934_004287_5AA68940 
+X-CRM114-Status: GOOD (  18.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,42 +73,60 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: dts: tqma93xx add dummy supply to regulator
+Subject: Re: [PATCH] pinctrl: at91: add sama5d3 compatible after DT regression
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The regulator for the usdhc2 references the BUCK4 as its input.
-The BUCK4 is part of the pca9451, which in turn is not a regulator
-in barebox, so there is a problem during initialisation:
+Hi Lars,
 
-WARNING: imx-esdhc 42860000.mmc@42860000.of: Failed to get 'vmmc' regulator (ignored)
+On 4/16/25 17:30, Lars Schmidt wrote:
+> From: Lars Schmidt <lsc@pengutronix.de>
+> 
+> Commit f9abec74133a6 ("ARM: dts: microchip: Remove additional compatible
+> string from PIO3 pinctrl nodes") removed compatible string
+> atmel,at91sam9x5-pinctrl, which was used by pinctrl driver for sama3d3 in
+> barebox. Compatible string atmel,sama5d3-pinctrl was left in list, so
+> that needs to be included for identification.
+> 
+> The removal caused an issue during boot process. The system did still boot,
+> but no bootloader console was shown. Leaving the user without
+> possibility to interact with the bootloader.
+> 
+> The DT ABI breakage has been reported upstream:
+> 
+> https://lore.kernel.org/all/fcdb9283-07aa-4d50-ac4d-317b0a4e5f7e@pengutronix.de/
+> 
+> Signed-off-by: Lars Schmidt <lsc@pengutronix.de>
 
-Since the dependency could not be resolved, the reg_usdhc2_vmmc
-regulator is not correctly initialized, leaving the gpio in a floating
-state, which results in the GPIO being low, which in turn disables
-the SD-Card.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
----
- arch/arm/dts/imx93-tqma93xx.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+Thanks,
+Ahmad
 
-diff --git a/arch/arm/dts/imx93-tqma93xx.dtsi b/arch/arm/dts/imx93-tqma93xx.dtsi
-index 40425e39a7..aafeadc275 100644
---- a/arch/arm/dts/imx93-tqma93xx.dtsi
-+++ b/arch/arm/dts/imx93-tqma93xx.dtsi
-@@ -15,6 +15,9 @@ pca9451a: pmic@25 {
- 		reg = <0x25>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_pca9451>;
-+		regulators {
-+			barebox,allow-dummy-supply;
-+		};
- 	};
- };
- 
+> ---
+>  drivers/pinctrl/pinctrl-at91.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+> index a3372a5035..ddc725187b 100644
+> --- a/drivers/pinctrl/pinctrl-at91.c
+> +++ b/drivers/pinctrl/pinctrl-at91.c
+> @@ -370,6 +370,9 @@ static struct at91_pinctrl_mux_ops at91sam9x5_ops = {
+>  
+>  static struct of_device_id at91_pinctrl_dt_ids[] = {
+>  	{
+> +		.compatible = "atmel,sama5d3-pinctrl",
+> +		.data = &at91sam9x5_ops,
+> +	}, {
+>  		.compatible = "atmel,at91rm9200-pinctrl",
+>  		.data = &at91rm9200_ops,
+>  	}, {
+
 -- 
-2.39.5
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
