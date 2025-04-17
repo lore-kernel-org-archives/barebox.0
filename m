@@ -1,56 +1,65 @@
-Delivery-date: Thu, 17 Apr 2025 11:30:50 +0200
+Delivery-date: Thu, 17 Apr 2025 21:42:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u5La6-001ozZ-1C
+	id 1u5V7x-0020UO-2E
 	for lore@lore.pengutronix.de;
-	Thu, 17 Apr 2025 11:30:50 +0200
+	Thu, 17 Apr 2025 21:42:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u5La5-00010V-Om
-	for lore@pengutronix.de; Thu, 17 Apr 2025 11:30:50 +0200
+	id 1u5V7x-0001cM-4j
+	for lore@pengutronix.de; Thu, 17 Apr 2025 21:42:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HCvFNFb2fvbh1KtPSNiu+inSLvOLY+9UndT+dBMeB6M=; b=UGuc7tMX7YrKbahA7VpmSy4WxM
-	hd9GUEAE3FkvtBmFxSNRsiO95KqBwytTS8GLiicELNdEdVXpNblkl/zuMoLYtc0ZtuBpxTvmcWnc9
-	DTRrZASW5FJzUuiFE93wae3rao8uQDG3lWkNC/AZA+mH37H41H496xQSIN03k2a0F3PbqcKY8poQr
-	mb1azH46eZnT3jSIMBhfiRDP0sV7RSgvlbLHkIYf5aeTgmSke61On3YS+cbsOXPhFOsFQtTUwCXqk
-	Rx5Et1tjzI/2ONsUFH/b31N39kc8+55UEM2Dn5GklP8xUO4cCsnvsg4Ib7mNHCNEnFutBE0Dzhc2q
-	iXbwQpnA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=g97L3rHAudHn1OZylBgRZYT4nIH5sQYNKPHtsLvETNs=; b=2qVwzqbjogRIamYjgUrM3VNlKU
+	ZqUcAq7ptijX9Aq5xdKNUGf1/YIFmhoeYyhJp1crXfDW/gzht3OI8dtsrxto2F/hYrUs3Aq5f7Msh
+	hpAE19ujB039VflaE/dIm4cV+NoCPG4O82H3/Mdh1+/xyB+zCGQZLIdbKOlOq6P11NzjhIZX7d6pf
+	UoFlhnoYrNGuPcUbNhC+4mzq2OisQIj78/f2MPTKEELDDGDu2vWPNFAxZHqDCoym1lBsYWT4c8ge7
+	f+F5sUGDBIfGXDliFmu8VJFBKfqtc3kBN/zYY/plkdSZYaYolxIEvaQ+5eV8scZ4gQnIdvSkC1dYQ
+	QAIaSukg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u5LZd-0000000CSyR-1Hv9;
-	Thu, 17 Apr 2025 09:30:21 +0000
+	id 1u5V7B-0000000ECfb-07Zm;
+	Thu, 17 Apr 2025 19:41:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u5LW2-0000000CSD2-1H6a
+	id 1u5V78-0000000ECfF-022j
 	for barebox@lists.infradead.org;
-	Thu, 17 Apr 2025 09:26:39 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Thu, 17 Apr 2025 19:41:35 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u5LVy-0007td-TY; Thu, 17 Apr 2025 11:26:34 +0200
-Message-ID: <4cefb165-77c4-4488-86ef-4052598df9f4@pengutronix.de>
-Date: Thu, 17 Apr 2025 11:26:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Fabian Pflug <f.pflug@pengutronix.de>, barebox@lists.infradead.org
-References: <20250417084723.3368038-1-f.pflug@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+	id 1u5V75-0001Hz-Gr; Thu, 17 Apr 2025 21:41:31 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u5V75-000np4-14;
+	Thu, 17 Apr 2025 21:41:31 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u5V75-001y7h-0l;
+	Thu, 17 Apr 2025 21:41:31 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250417084723.3368038-1-f.pflug@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 17 Apr 2025 21:41:27 +0200
+Message-Id: <20250417194127.469297-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250417_022638_343209_44578742 
-X-CRM114-Status: GOOD (  18.31  )
+X-CRM114-CacheID: sfid-20250417_124134_044881_A262FCC2 
+X-CRM114-Status: GOOD (  11.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,53 +81,44 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: dts: tqma93xx add dummy supply to regulator
+Subject: [PATCH master] ARM: cpu: start: fix ramoops and OP-TEE co-existence
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 4/17/25 10:47, Fabian Pflug wrote:
-> The regulator for the usdhc2 references the BUCK4 as its input.
-> The BUCK4 is part of the pca9451, which in turn is not a regulator
-> in barebox, so there is a problem during initialisation:
-> 
-> WARNING: imx-esdhc 42860000.mmc@42860000.of: Failed to get 'vmmc' regulator (ignored)
-> 
-> Since the dependency could not be resolved, the reg_usdhc2_vmmc
-> regulator is not correctly initialized, leaving the gpio in a floating
-> state, which results in the GPIO being low, which in turn disables
-> the SD-Card.
-> 
-> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+arm_mem_ramoops is supposed to take the end of memory as argument to
+drive the ramoops region's start offset from it.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Instead, arm_stack_top was passed, which is separated from end of memory
+by the scratch area and the OP-TEE region if it exists.
 
-Thanks,
-Ahmad
+The scratch area is just 32K, which tends to be  much smaller than the
+ramoops region, so being 32K off didn't matter much. When we enable
+OP-TEE though, the offset from the correct location is so big that it
+can lead to probe errors:
 
-> ---
->  arch/arm/dts/imx93-tqma93xx.dtsi | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/arm/dts/imx93-tqma93xx.dtsi b/arch/arm/dts/imx93-tqma93xx.dtsi
-> index 40425e39a7..aafeadc275 100644
-> --- a/arch/arm/dts/imx93-tqma93xx.dtsi
-> +++ b/arch/arm/dts/imx93-tqma93xx.dtsi
-> @@ -15,6 +15,9 @@ pca9451a: pmic@25 {
->  		reg = <0x25>;
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&pinctrl_pca9451>;
-> +		regulators {
-> +			barebox,allow-dummy-supply;
-> +		};
->  	};
->  };
->  
+  ERROR: ramoops: failed to request dump mem region (0x20000@0x4bdd0000): -12
+  ERROR: ramoops 10000000.ramoops@10000000.of: probe failed: Out of memory
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/cpu/start.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index aa716a10c7b0..d6ab5a16b5bb 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -100,7 +100,7 @@ void *barebox_arm_boot_dtb(void)
+ 
+ unsigned long arm_mem_ramoops_get(void)
+ {
+-	return arm_mem_ramoops(arm_stack_top);
++	return arm_mem_ramoops(arm_endmem);
+ }
+ EXPORT_SYMBOL_GPL(arm_mem_ramoops_get);
+ 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.39.5
 
 
 
