@@ -1,59 +1,68 @@
-Delivery-date: Tue, 22 Apr 2025 13:19:27 +0200
+Delivery-date: Tue, 22 Apr 2025 13:25:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7Bex-00421A-0v
+	id 1u7BkT-00424r-1m
 	for lore@lore.pengutronix.de;
-	Tue, 22 Apr 2025 13:19:27 +0200
+	Tue, 22 Apr 2025 13:25:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7Bew-0003aJ-11
-	for lore@pengutronix.de; Tue, 22 Apr 2025 13:19:27 +0200
+	id 1u7BkS-0004ZE-R7
+	for lore@pengutronix.de; Tue, 22 Apr 2025 13:25:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1Pn9uIKh9DL6Pn+Td4EMsqpQLHhx4NUlVh6BSvit/zg=; b=g6zoME0zTMbT0pMxCkK3hzr6Hw
-	FfWsEms3BdJVGy2Rn9hYc1uRo7aFpvRCdsN5GaASAnLedQo9RVkyc9jSLcpxLvGwSzjg00rKQ9bkK
-	acEfp95G+xoQ+GHPwmagveRQJD3MdYlww5co1nZa3v6vmZIOUmSVnA2eZfFNwL+/AP8jNBKz5fXa9
-	oRbGmRbnAbtKZMjQhQuc9TnzXSum27qT8gLKbUTjGIUvuyr4xJut1YnujTj5efc04ovpIIHBFzYlW
-	fkPwbe984QBTJZ8dP+dmL5ZqvMDFToU0SxVI6fuUsKQfPM5w3Brlx2kU4PoyOXyha2XrHK/egl5iv
-	guMSoh3Q==;
+	bh=Ooslg8eJSlP3fK1zkMDcb2bV/ID2/f2iD0+VymNgeVg=; b=iq4DJsr4mAsy/0WmfmYOsQudCx
+	+rBGu+2SwItpsdUP12DM1gAOH5P1N/FBv5wse2DCe5eKrDOQjcUe2jGdakUPJlZ8+2RetHrv+wkZy
+	FCsReOR0T7uKKWwgll9xw+m4FNVbxQfllyskw4Mqmuyyr+4CDaqRBYQUxkQIAUdHPu5Lmm6ePdwWX
+	brs3NEzOL008TKHDQEj4o2/ifN1Zi8kVxgQKOyxMXCVeJa8wbkq7Gg08tenE/WtSGnrdYzBKPQqca
+	ayxxGhDZxialaTC/3lGKfYPdmf2+VMDV6+qie/4wu0iFuldzDvYhcwVvVVihvamfBB3DvyvAScsfc
+	mL5eT4Pg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u7BeS-00000006ueF-3POA;
-	Tue, 22 Apr 2025 11:18:56 +0000
+	id 1u7Bk1-00000006vpR-1bS2;
+	Tue, 22 Apr 2025 11:24:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u7B5D-00000006oV2-0dC2
+	id 1u7BI6-00000006qZR-2IaP
 	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 10:42:32 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u7B5B-0004i1-Sg; Tue, 22 Apr 2025 12:42:29 +0200
-Message-ID: <91d7bac6-cf4b-4d2d-b419-c0a109def590@pengutronix.de>
-Date: Tue, 22 Apr 2025 12:42:29 +0200
+	Tue, 22 Apr 2025 10:55:52 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u7BI5-00075O-2w; Tue, 22 Apr 2025 12:55:49 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u7BI4-001XQB-2u;
+	Tue, 22 Apr 2025 12:55:48 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u7BI4-00EQqX-2c;
+	Tue, 22 Apr 2025 12:55:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250422052635.3423961-1-a.fatoum@pengutronix.de>
+References: <20250422052635.3423961-1-a.fatoum@pengutronix.de>
+Message-Id: <174531934880.3439734.8724474704948123920.b4-ty@pengutronix.de>
+Date: Tue, 22 Apr 2025 12:55:48 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20250422075615.220139-1-a.fatoum@pengutronix.de>
- <20250422075615.220139-3-a.fatoum@pengutronix.de>
- <aAdwJKnnUD5n_y-8@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <aAdwJKnnUD5n_y-8@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250422_034231_508922_079C1890 
-X-CRM114-Status: GOOD (  22.38  )
+X-CRM114-CacheID: sfid-20250422_035550_738732_CDA98A9B 
+X-CRM114-Status: UNSURE (   9.66  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,373 +80,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/4] poweroff: give all poweroff_handler::poweroff
- callbacks a flags parameter
+Subject: Re: [PATCH 0/9] ARM: OMAP: beaglebone: add PBL SD xload support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
 
-On 4/22/25 12:32, Sascha Hauer wrote:
-> On Tue, Apr 22, 2025 at 09:56:14AM +0200, Ahmad Fatoum wrote:
->> From: Ahmad Fatoum <a.fatoum@barebox.org>
->>
->> Like done for restart handlers and the poweroff_machine function, give
->> the callbacks a parameter as well and pass the flags along.
+On Tue, 22 Apr 2025 07:26:26 +0200, Ahmad Fatoum wrote:
+> To allow for easier BSP integration, add support for generating a MLO
+> capable of SD-Card boot in the same build as barebox proper
 > 
-> What kind of flags are you anticipating for poweroff?
-
-PSCI describes both POWER_OFF and POWER_OFF2 operations for normal
-shutdown and hibernation respectively. EFI defines a platform-specific
-reset, which allows EFI firmware to define their own.
-
-I do not see myself implementing either of these any time soon,
-but if I am going to touch the APIs tree-wide anyway, I figured,
-I should do the same for poweroff as well.
-
-Note that with barebox as EFI loader, shutdown implementations in
-barebox are getting more relevant as some of them will be exposed
-to the kernel (Only PSCI for now).
-
-Cheers,
-Ahmad
-
+> For raw flash boot, the route with the separate config needs to be used.
 > 
-> Sascha
+> Ahmad Fatoum (9):
+>   clocksource: make available in PBL
+>   clocksource: ti-dm: make available in PBL
+>   mci: move mci_setup_cmd definition into header
+>   mci: add common PBL helper for chainloading after BootROM
+>     initialization
+>   mci: pbl: add autodetection of BootROM-initialized standard capacity
+>     cards
+>   mci: omap_hsmmc: split out common code
+>   ARM: OMAP: add am33xx_hsmmc_start_image for PBL
+>   mci: omap_hsmmc: add xload implementation for PBL
+>   ARM: OMAP: beaglebone: add PBL SD xload support
 > 
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
->> ---
->>  arch/arm/cpu/psci-client.c            | 3 ++-
->>  arch/arm/mach-imx/imx6.c              | 3 ++-
->>  arch/arm/mach-pxa/pxa2xx.c            | 3 ++-
->>  arch/arm/mach-pxa/pxa3xx.c            | 3 ++-
->>  arch/kvx/lib/poweroff.c               | 3 ++-
->>  arch/mips/mach-xburst/reset-jz4750.c  | 3 ++-
->>  arch/sandbox/board/power.c            | 3 ++-
->>  common/poweroff.c                     | 5 +++--
->>  drivers/mfd/axp20x.c                  | 3 ++-
->>  drivers/mfd/rk808.c                   | 3 ++-
->>  drivers/power/reset/gpio-poweroff.c   | 3 ++-
->>  drivers/power/reset/htif-poweroff.c   | 3 ++-
->>  drivers/power/reset/syscon-poweroff.c | 3 ++-
->>  drivers/regulator/pfuze.c             | 3 ++-
->>  drivers/watchdog/bcm2835_wdt.c        | 5 +++--
->>  drivers/watchdog/stpmic1_wdt.c        | 3 ++-
->>  efi/payload/init.c                    | 3 ++-
->>  include/mach/imx/imx6.h               | 3 ++-
->>  include/poweroff.h                    | 6 ++++--
->>  19 files changed, 42 insertions(+), 22 deletions(-)
->>
->> diff --git a/arch/arm/cpu/psci-client.c b/arch/arm/cpu/psci-client.c
->> index 70436bde0a3a..43293fe034e6 100644
->> --- a/arch/arm/cpu/psci-client.c
->> +++ b/arch/arm/cpu/psci-client.c
->> @@ -25,7 +25,8 @@ static void __noreturn psci_invoke_noreturn(ulong function)
->>  	hang();
->>  }
->>  
->> -static void __noreturn psci_poweroff(struct poweroff_handler *handler)
->> +static void __noreturn psci_poweroff(struct poweroff_handler *handler,
->> +				     unsigned long flags)
->>  {
->>  	psci_invoke_noreturn(ARM_PSCI_0_2_FN_SYSTEM_OFF);
->>  }
->> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
->> index b0d3d8ef2fb0..ed6cde801ec7 100644
->> --- a/arch/arm/mach-imx/imx6.c
->> +++ b/arch/arm/mach-imx/imx6.c
->> @@ -358,7 +358,8 @@ static int imx6_fixup_cpus_register(void)
->>  }
->>  device_initcall(imx6_fixup_cpus_register);
->>  
->> -void __noreturn imx6_pm_stby_poweroff(struct poweroff_handler *handler)
->> +void __noreturn imx6_pm_stby_poweroff(struct poweroff_handler *handler,
->> +				      unsigned long flags)
->>  {
->>  	void *ccm_base = IOMEM(MX6_CCM_BASE_ADDR);
->>  	void *gpc_base = IOMEM(MX6_GPC_BASE_ADDR);
->> diff --git a/arch/arm/mach-pxa/pxa2xx.c b/arch/arm/mach-pxa/pxa2xx.c
->> index 496ceb39d513..ee50dca7a9aa 100644
->> --- a/arch/arm/mach-pxa/pxa2xx.c
->> +++ b/arch/arm/mach-pxa/pxa2xx.c
->> @@ -47,7 +47,8 @@ void pxa_clear_reset_source(void)
->>  	RCSR = RCSR_GPR | RCSR_SMR | RCSR_WDR | RCSR_HWR;
->>  }
->>  
->> -static void __noreturn pxa2xx_poweroff(struct poweroff_handler *handler)
->> +static void __noreturn pxa2xx_poweroff(struct poweroff_handler *handler,
->> +				       unsigned long flags)
->>  {
->>  	shutdown_barebox();
->>  
->> diff --git a/arch/arm/mach-pxa/pxa3xx.c b/arch/arm/mach-pxa/pxa3xx.c
->> index ec4998396253..ea84efc8b046 100644
->> --- a/arch/arm/mach-pxa/pxa3xx.c
->> +++ b/arch/arm/mach-pxa/pxa3xx.c
->> @@ -49,7 +49,8 @@ void pxa_clear_reset_source(void)
->>  
->>  device_initcall(pxa_detect_reset_source);
->>  
->> -static void __noreturn pxa3xx_poweroff(struct poweroff_handler *handler)
->> +static void __noreturn pxa3xx_poweroff(struct poweroff_handler *handler,
->> +				       unsigned long flags)
->>  {
->>  	shutdown_barebox();
->>  
->> diff --git a/arch/kvx/lib/poweroff.c b/arch/kvx/lib/poweroff.c
->> index d776cb087777..324144837a18 100644
->> --- a/arch/kvx/lib/poweroff.c
->> +++ b/arch/kvx/lib/poweroff.c
->> @@ -9,7 +9,8 @@
->>  
->>  #include <asm/sfr.h>
->>  
->> -static void __noreturn kvx_poweroff(struct poweroff_handler *handler)
->> +static void __noreturn kvx_poweroff(struct poweroff_handler *handler,
->> +				    unsigned long flags)
->>  {
->>  	register int status asm("r0") = 0;
->>  
->> diff --git a/arch/mips/mach-xburst/reset-jz4750.c b/arch/mips/mach-xburst/reset-jz4750.c
->> index a1d5976fb2c2..561654f80e90 100644
->> --- a/arch/mips/mach-xburst/reset-jz4750.c
->> +++ b/arch/mips/mach-xburst/reset-jz4750.c
->> @@ -27,7 +27,8 @@ static void __noreturn jz4750d_halt(void)
->>  	unreachable();
->>  }
->>  
->> -static void __noreturn jz4750_poweroff(struct poweroff_handler *handler)
->> +static void __noreturn jz4750_poweroff(struct poweroff_handler *handler,
->> +				       unsigned long flags)
->>  {
->>  	u32 ctrl;
->>  
->> diff --git a/arch/sandbox/board/power.c b/arch/sandbox/board/power.c
->> index 546e1a518fd3..9caaea5be2f0 100644
->> --- a/arch/sandbox/board/power.c
->> +++ b/arch/sandbox/board/power.c
->> @@ -14,7 +14,8 @@ struct sandbox_power {
->>  	struct nvmem_cell *reset_source_cell;
->>  };
->>  
->> -static void sandbox_poweroff(struct poweroff_handler *poweroff)
->> +static void sandbox_poweroff(struct poweroff_handler *poweroff,
->> +			     unsigned long flags)
->>  {
->>  	struct sandbox_power *power = container_of(poweroff, struct sandbox_power, poweroff);
->>  
->> diff --git a/common/poweroff.c b/common/poweroff.c
->> index d453a9a98025..896716bb258c 100644
->> --- a/common/poweroff.c
->> +++ b/common/poweroff.c
->> @@ -43,7 +43,8 @@ int poweroff_handler_register(struct poweroff_handler *handler)
->>   *
->>   * return: 0 for success or negative error code
->>   */
->> -int poweroff_handler_register_fn(void (*poweroff_fn)(struct poweroff_handler *))
->> +int poweroff_handler_register_fn(void (*poweroff_fn)(struct poweroff_handler *,
->> +						     unsigned long flags))
->>  {
->>  	struct poweroff_handler *handler;
->>  	int ret;
->> @@ -78,7 +79,7 @@ void __noreturn poweroff_machine(unsigned long flags)
->>  	if (handler) {
->>  		pr_debug("using poweroff handler %s\n", handler->name);
->>  		console_flush();
->> -		handler->poweroff(handler);
->> +		handler->poweroff(handler, flags);
->>  	} else {
->>  		pr_err("No poweroff handler found!\n");
->>  	}
->> diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
->> index 666b9ea98cae..0f71131c9a2d 100644
->> --- a/drivers/mfd/axp20x.c
->> +++ b/drivers/mfd/axp20x.c
->> @@ -233,7 +233,8 @@ static const struct mfd_cell axp813_cells[] = {
->>  	},
->>  };
->>  
->> -static void axp20x_power_off(struct poweroff_handler *handler)
->> +static void axp20x_power_off(struct poweroff_handler *handler,
->> +			     unsigned long flags)
->>  {
->>  	struct axp20x_dev *axp20x = container_of(handler, struct axp20x_dev, poweroff);
->>  
->> diff --git a/drivers/mfd/rk808.c b/drivers/mfd/rk808.c
->> index 5b010e09ef33..1c5c705fa4fc 100644
->> --- a/drivers/mfd/rk808.c
->> +++ b/drivers/mfd/rk808.c
->> @@ -222,7 +222,8 @@ static const struct rk808_reg_data rk818_pre_init_reg[] = {
->>  						    VB_LO_SEL_3500MV },
->>  };
->>  
->> -static void rk808_poweroff(struct poweroff_handler *handler)
->> +static void rk808_poweroff(struct poweroff_handler *handler,
->> +			   unsigned long flags)
->>  {
->>  	struct rk808 *rk808 = container_of(handler, struct rk808, poweroff);
->>  	int ret;
->> diff --git a/drivers/power/reset/gpio-poweroff.c b/drivers/power/reset/gpio-poweroff.c
->> index cafa1387ce0b..1085c68b506f 100644
->> --- a/drivers/power/reset/gpio-poweroff.c
->> +++ b/drivers/power/reset/gpio-poweroff.c
->> @@ -22,7 +22,8 @@ static u32 timeout = DEFAULT_TIMEOUT_MS;
->>  static u32 active_delay = 100;
->>  static u32 inactive_delay = 100;
->>  
->> -static void gpio_poweroff_do_poweroff(struct poweroff_handler *handler)
->> +static void gpio_poweroff_do_poweroff(struct poweroff_handler *handler,
->> +				      unsigned long flags)
->>  {
->>  	/* drive it active, also inactive->active edge */
->>  	gpiod_direction_output(reset_gpio, true);
->> diff --git a/drivers/power/reset/htif-poweroff.c b/drivers/power/reset/htif-poweroff.c
->> index e24397f934dc..e193d96d9335 100644
->> --- a/drivers/power/reset/htif-poweroff.c
->> +++ b/drivers/power/reset/htif-poweroff.c
->> @@ -10,7 +10,8 @@
->>  
->>  static void __iomem *htif = IOMEM(HTIF_DEFAULT_BASE_ADDR);
->>  
->> -static void __noreturn riscvemu_poweroff(struct poweroff_handler *pwr)
->> +static void __noreturn riscvemu_poweroff(struct poweroff_handler *pwr,
->> +					 unsigned long flags)
->>  {
->>  	shutdown_barebox();
->>  
->> diff --git a/drivers/power/reset/syscon-poweroff.c b/drivers/power/reset/syscon-poweroff.c
->> index 321bd1fc7be0..0510b352d2c7 100644
->> --- a/drivers/power/reset/syscon-poweroff.c
->> +++ b/drivers/power/reset/syscon-poweroff.c
->> @@ -17,7 +17,8 @@ static u32 offset;
->>  static u32 value;
->>  static u32 mask;
->>  
->> -static void syscon_poweroff(struct poweroff_handler *handler)
->> +static void syscon_poweroff(struct poweroff_handler *handler,
->> +			    unsigned long flags)
->>  {
->>  	/* Issue the poweroff */
->>  	regmap_update_bits(map, offset, mask, value);
->> diff --git a/drivers/regulator/pfuze.c b/drivers/regulator/pfuze.c
->> index 3e8890b10cec..c9d89001f3a9 100644
->> --- a/drivers/regulator/pfuze.c
->> +++ b/drivers/regulator/pfuze.c
->> @@ -94,7 +94,8 @@ static int pfuze_i2c_reg_write(void *ctx, unsigned int reg, unsigned int val)
->>  	return ret == 1 ? 0 : ret;
->>  }
->>  
->> -static void pfuze_power_off_prepare(struct poweroff_handler *handler)
->> +static void pfuze_power_off_prepare(struct poweroff_handler *handler,
->> +				    unsigned long flags)
->>  {
->>  	dev_info(pfuze_dev->dev, "Configure standy mode for power off");
->>  
->> diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
->> index 48654780b121..233b82bbe280 100644
->> --- a/drivers/watchdog/bcm2835_wdt.c
->> +++ b/drivers/watchdog/bcm2835_wdt.c
->> @@ -44,7 +44,8 @@ static void __noreturn bcm2835_restart_soc(struct restart_handler *rst,
->>  	hang();
->>  }
->>  
->> -static void __noreturn bcm2835_poweroff_soc(struct poweroff_handler *poweroff)
->> +static void __noreturn bcm2835_poweroff_soc(struct poweroff_handler *poweroff,
->> +					    unsigned long flags)
->>  {
->>  	struct bcm2835_wd *priv = container_of(poweroff, struct bcm2835_wd, poweroff);
->>  	uint32_t val;
->> @@ -55,7 +56,7 @@ static void __noreturn bcm2835_poweroff_soc(struct poweroff_handler *poweroff)
->>  	val |= PM_PASSWORD | PM_RSTS_RASPBERRYPI_HALT;
->>  	writel_relaxed(val, priv->base + PM_RSTS);
->>  
->> -	bcm2835_restart_soc(&priv->restart);
->> +	bcm2835_restart_soc(&priv->restart, flags);
->>  }
->>  
->>  static int bcm2835_wd_set_timeout(struct watchdog *wd, unsigned timeout)
->> diff --git a/drivers/watchdog/stpmic1_wdt.c b/drivers/watchdog/stpmic1_wdt.c
->> index ba58474799fa..f25656e75c12 100644
->> --- a/drivers/watchdog/stpmic1_wdt.c
->> +++ b/drivers/watchdog/stpmic1_wdt.c
->> @@ -109,7 +109,8 @@ static void __noreturn stpmic1_restart_handler(struct restart_handler *rst,
->>  	hang();
->>  }
->>  
->> -static void __noreturn stpmic1_poweroff(struct poweroff_handler *handler)
->> +static void __noreturn stpmic1_poweroff(struct poweroff_handler *handler,
->> +					unsigned long flags)
->>  {
->>  	struct stpmic1_wdt *wdt = container_of(handler, struct stpmic1_wdt, poweroff);
->>  
->> diff --git a/efi/payload/init.c b/efi/payload/init.c
->> index 12896c065115..ae8b9203737b 100644
->> --- a/efi/payload/init.c
->> +++ b/efi/payload/init.c
->> @@ -233,7 +233,8 @@ static void __noreturn efi_restart_system(struct restart_handler *rst,
->>  	hang();
->>  }
->>  
->> -static void __noreturn efi_poweroff_system(struct poweroff_handler *handler)
->> +static void __noreturn efi_poweroff_system(struct poweroff_handler *handler,
->> +					   unsigned long flags)
->>  {
->>  	shutdown_barebox();
->>  	RT->reset_system(EFI_RESET_SHUTDOWN, EFI_SUCCESS, 0, NULL);
->> diff --git a/include/mach/imx/imx6.h b/include/mach/imx/imx6.h
->> index a67cc9df9642..f36ac6ce408c 100644
->> --- a/include/mach/imx/imx6.h
->> +++ b/include/mach/imx/imx6.h
->> @@ -10,7 +10,8 @@
->>  
->>  #include <poweroff.h>
->>  
->> -void __noreturn imx6_pm_stby_poweroff(struct poweroff_handler *handler);
->> +void __noreturn imx6_pm_stby_poweroff(struct poweroff_handler *handler,
->> +				      unsigned long flags);
->>  
->>  #define IMX6_ANATOP_SI_REV 0x260
->>  #define IMX6SL_ANATOP_SI_REV 0x280
->> diff --git a/include/poweroff.h b/include/poweroff.h
->> index 307097c01541..df2d3125a98d 100644
->> --- a/include/poweroff.h
->> +++ b/include/poweroff.h
->> @@ -5,14 +5,16 @@
->>  void __noreturn poweroff_machine(unsigned long poweroff_flags);
->>  
->>  struct poweroff_handler {
->> -	void (*poweroff)(struct poweroff_handler *);
->> +	void (*poweroff)(struct poweroff_handler *,
->> +			 unsigned long flags);
->>  	int priority;
->>  	const char *name;
->>  	struct list_head list;
->>  };
->>  
->>  int poweroff_handler_register(struct poweroff_handler *);
->> -int poweroff_handler_register_fn(void (*poweroff_fn)(struct poweroff_handler *));
->> +int poweroff_handler_register_fn(void (*poweroff_fn)(struct poweroff_handler *,
->> +						     unsigned long flags));
->>  
->>  #define POWEROFF_DEFAULT_PRIORITY 100
->>  #define POWEROFF_DEFAULT_NAME "default"
->> -- 
->> 2.39.5
->>
->>
->>
-> 
+> [...]
 
+Applied, thanks!
+
+[1/9] clocksource: make available in PBL
+      https://git.pengutronix.de/cgit/barebox/commit/?id=adfc76dd5cbc (link may not be stable)
+[2/9] clocksource: ti-dm: make available in PBL
+      https://git.pengutronix.de/cgit/barebox/commit/?id=74e2dadcd5e4 (link may not be stable)
+[3/9] mci: move mci_setup_cmd definition into header
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c8d7bb92a1e8 (link may not be stable)
+[4/9] mci: add common PBL helper for chainloading after BootROM initialization
+      https://git.pengutronix.de/cgit/barebox/commit/?id=12bf28066aed (link may not be stable)
+[5/9] mci: pbl: add autodetection of BootROM-initialized standard capacity cards
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0801b7e1612c (link may not be stable)
+[6/9] mci: omap_hsmmc: split out common code
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7a67a40d2b10 (link may not be stable)
+[7/9] ARM: OMAP: add am33xx_hsmmc_start_image for PBL
+      https://git.pengutronix.de/cgit/barebox/commit/?id=407324f655b4 (link may not be stable)
+[8/9] mci: omap_hsmmc: add xload implementation for PBL
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ccd09cb1980b (link may not be stable)
+[9/9] ARM: OMAP: beaglebone: add PBL SD xload support
+      https://git.pengutronix.de/cgit/barebox/commit/?id=69d6ac58f2cb (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
