@@ -1,67 +1,67 @@
-Delivery-date: Tue, 22 Apr 2025 12:28:30 +0200
+Delivery-date: Tue, 22 Apr 2025 12:28:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7Are-0040ui-06
+	id 1u7Arf-0040v3-0X
 	for lore@lore.pengutronix.de;
-	Tue, 22 Apr 2025 12:28:30 +0200
+	Tue, 22 Apr 2025 12:28:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7Ard-0001mG-8l
-	for lore@pengutronix.de; Tue, 22 Apr 2025 12:28:29 +0200
+	id 1u7Are-0001oC-HD
+	for lore@pengutronix.de; Tue, 22 Apr 2025 12:28:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SPRWruRZ5fPdtXfCEJKovtezXc5fXJedrAMjl7hLlWU=; b=MexQoG7Ee04Ew8zPLVLRBCN4gv
-	B9RSgg/gQhaRjc+tfaQ+rwsrJAL3O5PtX8m4YVoEbFntjQeVkLWQFtQy533zUvIH0muFFGz1inGBy
-	UuKa5muf2hhO1vNCElqFkKoA6E1rSs++CjHHaIKumdMT6RO54uyMC9oEU6i07C2iZ7bob1el2coW/
-	A7PlngKMaHmJBj/k1t/or3DF/jleHE1HFU/YZlsQeUGImUWoT8DGRDl6qy5WaiGndTbzQsVySCgFR
-	RdB1iCJbici7TDk3Fj/ruUQJCOE9tx6smnDBhyEHnp0JeVxHsQ3nB9CwPMsgFwWRM5VSdEPT2VIrA
-	7G8lpcmw==;
+	bh=WlrS7zUn4i82RdJHdY4Wid/qc0NWn9VikyW+JoqdLJw=; b=FuUzbFuf9kEjA51I3QS4utzrm6
+	QCHZcjmy40x0l9sGTmOeZcFvNIyM7Ulr2zLyq7oVWEzxsRPSYkYbRAqEpzavgXEiKvvkuXShUhJqv
+	ahp46anlIlhWSzFOZDt5GnVOIUKQ/S4+Tzy0jI/wt04R5fNdKRn/3DNP/JqMz5p99iC5lcA3ekwde
+	wNMeKR0J1KnWElv+gFmuN9hdkGW6Wh/fgCIAnenFZ6Oq40yO+isrc8QPIamUmn99t2U0X6YYmtdyC
+	pqOrXP7suKKkSercu9rl+2gd/cc0ATmC61vhBWvaaDj9D0fT6j1DW41xVjfo253HwcC/mfj6nGaOx
+	o2itjVtA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u7ArD-00000006kuF-0X4s;
-	Tue, 22 Apr 2025 10:28:03 +0000
+	id 1u7ArC-00000006ktx-2SMj;
+	Tue, 22 Apr 2025 10:28:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u79o6-00000006XLe-2M9F
+	id 1u79lT-00000006Wxo-2q3G
 	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 09:20:47 +0000
+	Tue, 22 Apr 2025 09:18:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u79o5-0004eo-3K; Tue, 22 Apr 2025 11:20:45 +0200
+	id 1u79lS-0004Ai-3q; Tue, 22 Apr 2025 11:18:02 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u79o4-001Wms-2x;
-	Tue, 22 Apr 2025 11:20:44 +0200
+	id 1u79lR-001Wm4-2z;
+	Tue, 22 Apr 2025 11:18:01 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u79o4-00CdnG-2l;
-	Tue, 22 Apr 2025 11:20:44 +0200
+	id 1u79lR-00CdkP-2m;
+	Tue, 22 Apr 2025 11:18:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250422075620.220337-1-a.fatoum@pengutronix.de>
-References: <20250422075620.220337-1-a.fatoum@pengutronix.de>
-Message-Id: <174531364485.3012857.715436240761620171.b4-ty@pengutronix.de>
-Date: Tue, 22 Apr 2025 11:20:44 +0200
+In-Reply-To: <20250422075637.220688-1-a.fatoum@pengutronix.de>
+References: <20250422075637.220688-1-a.fatoum@pengutronix.de>
+Message-Id: <174531348185.3012682.916205580272654840.b4-ty@pengutronix.de>
+Date: Tue, 22 Apr 2025 11:18:01 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250422_022046_600700_7CB364F0 
-X-CRM114-Status: UNSURE (   6.73  )
+X-CRM114-CacheID: sfid-20250422_021803_740472_EF1F88FE 
+X-CRM114-Status: UNSURE (   9.10  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,22 +84,38 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] of: address: implement dummy iounmap
+Subject: Re: [PATCH 1/7] clk: add compatibility for
+ prepare/unprepare/is_prepared
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 22 Apr 2025 09:56:20 +0200, Ahmad Fatoum wrote:
-> of_iomap doesn't do any actual mapping, just base address computation,
-> so it makes sense for iounmap to be a no-op to make porting kernel code
-> easier.
+On Tue, 22 Apr 2025 09:56:31 +0200, Ahmad Fatoum wrote:
+> Instead of having to mechanically rename prepare/unprepare operations to
+> enable/disable, let's just alias them in a union.
 > 
+> This risks code porters missing to merge both operations when they
+> exist, but this can be fixed via enforcing -Woverride-init as default
+> warning, which will be added separately.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] of: address: implement dummy iounmap
-      https://git.pengutronix.de/cgit/barebox/commit/?id=abd4f369ea2b (link may not be stable)
+[1/7] clk: add compatibility for prepare/unprepare/is_prepared
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6fea0ca457aa (link may not be stable)
+[2/7] clk: mux: replace width member with mask as in Linux
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6f5ac1a7d794 (link may not be stable)
+[3/7] clk: mux: fix mask/width confusion in clk_hw_register_mux
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2d649ed18181 (link may not be stable)
+[4/7] clk: gate: underscore-prefix barebox-specific parent member
+      https://git.pengutronix.de/cgit/barebox/commit/?id=76d9b8462bba (link may not be stable)
+[5/7] clk: gate: add bit_idx member as in Linux
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8a8c08dd1d30 (link may not be stable)
+[6/7] clk: composite: change mux/rate/gate members to clk_hw
+      https://git.pengutronix.de/cgit/barebox/commit/?id=88c47e010a65 (link may not be stable)
+[7/7] clk: move struct clk_composite definition to header
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e7fe93bd5fe2 (link may not be stable)
 
 Best regards,
 -- 
