@@ -1,67 +1,67 @@
-Delivery-date: Tue, 22 Apr 2025 07:27:17 +0200
+Delivery-date: Tue, 22 Apr 2025 07:27:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u76A9-003us3-0l
+	id 1u76AF-003usy-16
 	for lore@lore.pengutronix.de;
-	Tue, 22 Apr 2025 07:27:17 +0200
+	Tue, 22 Apr 2025 07:27:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u76A7-0004Bu-S1
-	for lore@pengutronix.de; Tue, 22 Apr 2025 07:27:17 +0200
+	id 1u76AD-0004Hh-Rr
+	for lore@pengutronix.de; Tue, 22 Apr 2025 07:27:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=D0yhLTUHELikWq9J8InR0Wi31TSytWS0eP4VIBieZHs=; b=RjuTWOcXn5qSKV9n0XSrldI+8+
-	tE94i3/LI+ZBRA7kNDb5o0Sbo/IQfKSj768B+JZwt4oEWgV4bWtmIiUjIzUrwf+zSgiVNRGfpqsgq
-	Q6Fqe5gwFKKp2Bs2I+s9FQWksYQAk1i4TOYx2cc6Jqn2yUOa0chOZ1gZS+K9+fMk3sI/Joy7CoGBh
-	IoufVP+bA4DKwVPNCLWWefNEZXzivsVGOF7SEu43P5ywMg1Wxxy5yyW2l1lD7EwkJyQKR2PUN+eei
-	gBE3O60EJ07y7DVEJlR8lduxZn09Yy1hdRzL8dEQL9L6L4dKAuWf025h6EA57xvIdgK5GKhz9NpZx
-	wtAH5pzQ==;
+	bh=KDGYJWWLfdqevl3+eNZhkDbCnM0QMx1SauJuetGG+o8=; b=1eOLVvyFbaSJcCy9lpPZKBnPrC
+	otOA/7lKayAfldvTq5c6ptdz3xtrGsaAiNl0BhD03rC/qMcOgMJNszIT4D/gLki+zy2YQzAt8lqG4
+	iH3Ap2TvnJpxGeaqSM1NlYpsuQ/tn3zW0PO9/I69z6jQpOHGryBCkTIU6M5PfsAGSPw+i0bd16BpD
+	KHoMBe/QnVURg0tHQgeWl6u4Qr/zj8/9vfjH7L4vkAOu6vuri/j/tEJ7EKYAfz2vDiDj29ehFl//m
+	a7Zw8MJPDI+rtQu5twhNRSZ7rqTfVeHA/uH4iWcbzlYSZr/HdseA24nm0bjdwtChlbT9XNOervODv
+	kLMEzABw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u769d-00000005rFg-3Fix;
-	Tue, 22 Apr 2025 05:26:45 +0000
+	id 1u769i-00000005rMh-3ltW;
+	Tue, 22 Apr 2025 05:26:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u769X-00000005r9Y-1I3t
+	id 1u769f-00000005rH9-1bzS
 	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 05:26:41 +0000
+	Tue, 22 Apr 2025 05:26:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u769W-0003jR-47; Tue, 22 Apr 2025 07:26:38 +0200
+	id 1u769W-0003je-4M; Tue, 22 Apr 2025 07:26:38 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u769V-001UvK-2g;
+	id 1u769V-001UvP-2n;
 	Tue, 22 Apr 2025 07:26:37 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u769V-00EN4R-2M;
+	id 1u769V-00EN4R-2W;
 	Tue, 22 Apr 2025 07:26:37 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 22 Apr 2025 07:26:34 +0200
-Message-Id: <20250422052635.3423961-9-a.fatoum@pengutronix.de>
+Date: Tue, 22 Apr 2025 07:26:35 +0200
+Message-Id: <20250422052635.3423961-10-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422052635.3423961-1-a.fatoum@pengutronix.de>
 References: <20250422052635.3423961-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250421_222639_344469_72BBBEE8 
-X-CRM114-Status: GOOD (  16.07  )
+X-CRM114-CacheID: sfid-20250421_222647_458511_BF3C538B 
+X-CRM114-Status: GOOD (  13.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,102 +83,106 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 8/9] mci: omap_hsmmc: add xload implementation for PBL
+Subject: [PATCH 9/9] ARM: OMAP: beaglebone: add PBL SD xload support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Luckily, the BootROM does no reset of hardware after handing over
-control to the MLO and thus SD card, host and clock/resets are all
-configured for barebox MLO to directly send MMC_CMD_READ_MULTIPLE_BLOCK.
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-Add a PBL driver that does this.
+The existing "full" MLO image supports multiple boot media at once, but
+the newcomer SD/MMC only image has the advantage of doing so in the same
+build alongside barebox second stage.
 
-This will be used to enable a single barebox build to produce both MLO
-and second stage images for the Beaglebone Black.
+This makes for easier integration in BSPs, so provide it as extra image
+if CONFIG_OMAP_BUILD_IFT is disabled.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/Kconfig             |  3 +++
- drivers/mci/Makefile            |  1 +
- drivers/mci/omap_hsmmc_common.c |  2 +-
- drivers/mci/omap_hsmmc_pbl.c    | 32 ++++++++++++++++++++++++++++++++
- 4 files changed, 37 insertions(+), 1 deletion(-)
- create mode 100644 drivers/mci/omap_hsmmc_pbl.c
+ arch/arm/boards/beaglebone/lowlevel.c | 10 ++++++----
+ arch/arm/mach-omap/Kconfig            |  8 ++++++--
+ images/Makefile.am33xx                |  4 ++++
+ 3 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 09648aa77150..44fd4716aade 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -255,3 +255,6 @@ config MCI_ATMEL_PBL
- config MCI_ATMEL_SDHCI_PBL
- 	bool
- 	select MCI_SDHCI
-+
-+config MCI_OMAP_HSMMC_PBL
-+	bool
-diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
-index b209a86d8873..f76059e7b550 100644
---- a/drivers/mci/Makefile
-+++ b/drivers/mci/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_MCI_IMX_ESDHC)	+= imx-esdhc.o imx-esdhc-common.o
- pbl-$(CONFIG_MCI_IMX_ESDHC_PBL)	+= imx-esdhc-pbl.o imx-esdhc-common.o
- obj-$(CONFIG_MCI_MXS)		+= mxs.o
- obj-$(CONFIG_MCI_OMAP_HSMMC)	+= omap_hsmmc.o omap_hsmmc_common.o
-+pbl-$(CONFIG_MCI_OMAP_HSMMC_PBL)	+= omap_hsmmc_pbl.o omap_hsmmc_common.o
- obj-$(CONFIG_MCI_PXA)		+= pxamci.o
- obj-$(CONFIG_MCI_ROCKCHIP_DWCMSHC)	+= rockchip-dwcmshc-sdhci.o
- obj-$(CONFIG_MCI_TEGRA)		+= tegra-sdmmc.o
-diff --git a/drivers/mci/omap_hsmmc_common.c b/drivers/mci/omap_hsmmc_common.c
-index 04c712460622..329908a6e4bd 100644
---- a/drivers/mci/omap_hsmmc_common.c
-+++ b/drivers/mci/omap_hsmmc_common.c
-@@ -468,7 +468,7 @@ int omap_hsmmc_send_cmd(struct omap_hsmmc *hsmmc, struct mci_cmd *cmd,
- 		return mmc_read_data(hsmmc, data->dest,
- 				     data->blocksize * data->blocks);
- 
--	if (IS_ENABLED(CONFIG_MCI_WRITE))
-+	if (IS_ENABLED(CONFIG_MCI_WRITE) && IN_PROPER)
- 		return mmc_write_data(hsmmc, data->src,
- 				      data->blocksize * data->blocks);
- 
-diff --git a/drivers/mci/omap_hsmmc_pbl.c b/drivers/mci/omap_hsmmc_pbl.c
-new file mode 100644
-index 000000000000..0e6f39859d24
---- /dev/null
-+++ b/drivers/mci/omap_hsmmc_pbl.c
-@@ -0,0 +1,32 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2008 Texas Instruments (http://www.ti.com/, Sukumar Ghorai <s-ghorai@ti.com>)
-+
-+#include <pbl/mci.h>
-+#include <pbl/bio.h>
-+#include <mci.h>
-+#include <debug_ll.h>
+diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
+index fec4f177781c..05764fc9138b 100644
+--- a/arch/arm/boards/beaglebone/lowlevel.c
++++ b/arch/arm/boards/beaglebone/lowlevel.c
+@@ -16,6 +16,7 @@
+ #include <mach/omap/syslib.h>
+ #include <mach/omap/am33xx-mux.h>
+ #include <mach/omap/am33xx-generic.h>
 +#include <mach/omap/xload.h>
+ 
+ #include "beaglebone.h"
+ 
+@@ -116,9 +117,6 @@ static void __udelay(int us)
+ static noinline int beaglebone_sram_init(void)
+ {
+ 	uint32_t sdram_size;
+-	void *fdt;
+-
+-	fdt = __dtb_z_am335x_bone_common_start;
+ 
+ 	if (is_beaglebone_black())
+ 		sdram_size = SZ_512M;
+@@ -150,7 +148,11 @@ static noinline int beaglebone_sram_init(void)
+ 	 */
+ 	__udelay(3000);
+ 
+-	barebox_arm_entry(OMAP_DRAM_ADDR_SPACE_START, sdram_size, fdt);
++	if (IS_ENABLED(CONFIG_OMAP_BUILD_IFT))
++		barebox_arm_entry(OMAP_DRAM_ADDR_SPACE_START, sdram_size,
++				  __dtb_z_am335x_bone_common_start);
++	else
++		am33xx_hsmmc_start_image();
+ }
+ 
+ ENTRY_FUNCTION(start_am33xx_beaglebone_sram, bootinfo, r1, r2)
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index e7a9b331125d..bf2ab75eaf68 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -60,12 +60,15 @@ config OMAP_GPMC
+ 	  NAND, OneNAND etc.
+ 
+ config OMAP_BUILD_IFT
+-	prompt "build ift binary (MLO)"
++	prompt "build ift binaries (MLO) only"
+ 	bool
+ 	help
+-	  Say Y here if you want to build an MLO binary. On TI SoCs, this
++	  Say Y here if you want to build only MLO binaries. On TI SoCs, this
+ 	  binary is loaded to SRAM. It is responsible for initializing
+ 	  the SDRAM and possibly chainloading a full-featured barebox.
++	  If you say n here, barebox may still generate extra MLO binaries
++	  alongside second stage barebox binaries, but these are currently
++	  limited to only specific bootmedia as indicated in their file name.
+ 
+ config OMAP_BUILD_SPI
+ 	prompt "build SPI binary"
+@@ -153,6 +156,7 @@ config MACH_BEAGLE
+ config MACH_BEAGLEBONE
+ 	bool "Texas Instrument's Beagle Bone"
+ 	select ARCH_AM33XX
++	select MCI_OMAP_HSMMC_PBL
+ 	help
+ 	  Say Y here if you are using Beagle Bone
+ 
+diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
+index a63def771ed3..2a1cf3a0c40b 100644
+--- a/images/Makefile.am33xx
++++ b/images/Makefile.am33xx
+@@ -132,6 +132,10 @@ pblb-$(CONFIG_MACH_BEAGLEBONE) += start_am33xx_beaglebone_sdram
+ FILE_barebox-am33xx-beaglebone.img = start_am33xx_beaglebone_sdram.pblb
+ am33xx-barebox-$(CONFIG_MACH_BEAGLEBONE) += barebox-am33xx-beaglebone.img
+ 
++pblb-$(CONFIG_MACH_BEAGLEBONE) += start_am33xx_beaglebone_sram
++FILE_barebox-am33xx-beaglebone-mlo.mmc.img = start_am33xx_beaglebone_sram.pblb.mlo
++am33xx-barebox-$(CONFIG_MACH_BEAGLEBONE) += barebox-am33xx-beaglebone-mlo.mmc.img
 +
-+#include "omap_hsmmc.h"
-+
-+static int pbl_omap_hsmmc_send_cmd(struct pbl_mci *mci,
-+				   struct mci_cmd *cmd,
-+				   struct mci_data *data)
-+{
-+	return omap_hsmmc_send_cmd(mci->priv, cmd, data);
-+}
-+
-+static struct omap_hsmmc hsmmc;
-+static struct pbl_mci mci;
-+
-+int omap_hsmmc_bio_init(struct pbl_bio *bio, void __iomem *iobase,
-+			unsigned reg_ofs)
-+{
-+	hsmmc.iobase = iobase;
-+	hsmmc.base = iobase + reg_ofs;
-+
-+	mci.priv = &hsmmc;
-+	mci.send_cmd = pbl_omap_hsmmc_send_cmd;
-+
-+	return pbl_mci_bio_init(&mci, bio);
-+}
+ pblb-$(CONFIG_MACH_BEAGLEBONE) += start_am33xx_beaglebone_sram
+ FILE_barebox-am33xx-beaglebone-mlo.img = start_am33xx_beaglebone_sram.pblb.mlo
+ am33xx-mlo-$(CONFIG_MACH_BEAGLEBONE) += barebox-am33xx-beaglebone-mlo.img
 -- 
 2.39.5
 
