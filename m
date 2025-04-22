@@ -3,66 +3,65 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u76A9-003us4-1H
+	id 1u76A9-003us3-0l
 	for lore@lore.pengutronix.de;
 	Tue, 22 Apr 2025 07:27:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u76A8-0004Bv-BH
+	id 1u76A7-0004Bu-S1
 	for lore@pengutronix.de; Tue, 22 Apr 2025 07:27:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6URsmfBCoy5CoVtCCuyQMHWSgWa08n3cvMQCeEDWK88=; b=wHMra9lFYhNHabQO2hpH2YiMGN
-	tNRmb1Xpjn1U95AWRztjFAjf5w6OKlBNPpXBaE5hb6gaqaOtr6yVyYmIeVhpniyxAqbNM9bi7Rnva
-	htXAbvcyCIZANUJ80SJNTwFeY43Iem44v8hTNkPx0IrDG+/+G1fz7f8RONiBT1RVGex9/wEhuep0y
-	IVUxCzTBQmNhN8iGU2lR9LUotFSUYyg0GNcP4/11cBVj00GAt5S3ssx6AZeIp+cMoKKx3Yhi1c9IJ
-	Oc2k3W/OWHeo1urWuI3orrPIB86MBvC2c2bd6dtSy+vz8b9QebpUsXS0szp2eN+SXVYV4JXlq/JDO
-	iMOs/FTA==;
+	bh=D0yhLTUHELikWq9J8InR0Wi31TSytWS0eP4VIBieZHs=; b=RjuTWOcXn5qSKV9n0XSrldI+8+
+	tE94i3/LI+ZBRA7kNDb5o0Sbo/IQfKSj768B+JZwt4oEWgV4bWtmIiUjIzUrwf+zSgiVNRGfpqsgq
+	Q6Fqe5gwFKKp2Bs2I+s9FQWksYQAk1i4TOYx2cc6Jqn2yUOa0chOZ1gZS+K9+fMk3sI/Joy7CoGBh
+	IoufVP+bA4DKwVPNCLWWefNEZXzivsVGOF7SEu43P5ywMg1Wxxy5yyW2l1lD7EwkJyQKR2PUN+eei
+	gBE3O60EJ07y7DVEJlR8lduxZn09Yy1hdRzL8dEQL9L6L4dKAuWf025h6EA57xvIdgK5GKhz9NpZx
+	wtAH5pzQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u769e-00000005rGO-1iQC;
-	Tue, 22 Apr 2025 05:26:46 +0000
+	id 1u769d-00000005rFg-3Fix;
+	Tue, 22 Apr 2025 05:26:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u769X-00000005r9W-0hxv
+	id 1u769X-00000005r9Y-1I3t
 	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 05:26:42 +0000
+	Tue, 22 Apr 2025 05:26:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u769V-0003iy-TG; Tue, 22 Apr 2025 07:26:37 +0200
+	id 1u769W-0003jR-47; Tue, 22 Apr 2025 07:26:38 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u769V-001UvA-2D;
+	id 1u769V-001UvK-2g;
 	Tue, 22 Apr 2025 07:26:37 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u769V-00EN4R-1u;
+	id 1u769V-00EN4R-2M;
 	Tue, 22 Apr 2025 07:26:37 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 22 Apr 2025 07:26:31 +0200
-Message-Id: <20250422052635.3423961-6-a.fatoum@pengutronix.de>
+Date: Tue, 22 Apr 2025 07:26:34 +0200
+Message-Id: <20250422052635.3423961-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422052635.3423961-1-a.fatoum@pengutronix.de>
 References: <20250422052635.3423961-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250421_222639_215225_2BC5C941 
-X-CRM114-Status: GOOD (  24.23  )
+X-CRM114-CacheID: sfid-20250421_222639_344469_72BBBEE8 
+X-CRM114-Status: GOOD (  16.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,183 +83,102 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/9] mci: pbl: add autodetection of BootROM-initialized standard capacity cards
+Subject: [PATCH 8/9] mci: omap_hsmmc: add xload implementation for PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We more or less manage without driver model in PBL, because we reuse
-hardware setup done by the BootROM.
+Luckily, the BootROM does no reset of hardware after handing over
+control to the MLO and thus SD card, host and clock/resets are all
+configured for barebox MLO to directly send MMC_CMD_READ_MULTIPLE_BLOCK.
 
-In case of SD/eMMC cards, this presents one annoying problem: A card in
-transfer state can't be asked whether it's standard or high capacity,
-but we require this information to know whether we need to use a byte or
-a block offset for the READ_MULTIPLE_BLOCK command.
+Add a PBL driver that does this.
 
-We had a number of workaround for that:
-
-  - On i.MX, the bootloader is located raw near the start of the SD/MMC,
-    so we just read from offset 0 onwards and then jump to the correct
-    location
-
-  - On AT91SAM9, the BootROM supports only standard capacity SD-Cards,
-    so we hardcode that
-
-  - On older platforms, we have a separate configuration for the
-    first stage that can use the normal mci-core and reinitialized
-    the card with the downside of needing two builds.
-
-  - On everything else, we assume that we have a high capacity card.
-
-Fortunately, at the modest cost of 4 commands, we can get out
-of transmission mode, ask the card for its capacity and back,
-so let's do that.
+This will be used to enable a single barebox build to produce both MLO
+and second stage images for the Beaglebone Black.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/mci-pbl.c | 108 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 105 insertions(+), 3 deletions(-)
+ drivers/mci/Kconfig             |  3 +++
+ drivers/mci/Makefile            |  1 +
+ drivers/mci/omap_hsmmc_common.c |  2 +-
+ drivers/mci/omap_hsmmc_pbl.c    | 32 ++++++++++++++++++++++++++++++++
+ 4 files changed, 37 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/mci/omap_hsmmc_pbl.c
 
-diff --git a/drivers/mci/mci-pbl.c b/drivers/mci/mci-pbl.c
-index b58cd8dafe84..610002b3d022 100644
---- a/drivers/mci/mci-pbl.c
-+++ b/drivers/mci/mci-pbl.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2025 Ahmad Fatoum
- /*
-  * This code assumes that the SD/eMMC is already in transfer mode,
-  * because it card initialization has been done by the BootROM.
-@@ -16,7 +17,6 @@
- #include <pbl/mci.h>
- #include <pbl/bio.h>
- #include <linux/minmax.h>
--#include <linux/bug.h>
- 
- #define MCI_PBL_BLOCK_LEN		512
- 
-@@ -76,6 +76,22 @@ static int pbl_bio_mci_read(struct pbl_bio *bio, off_t start,
- 	return count;
- }
- 
-+static enum pbl_mci_capacity capacity_decode(unsigned csd_struct_ver)
-+{
-+	switch (csd_struct_ver) {
-+	case 0:
-+		return PBL_MCI_STANDARD_CAPACITY;
-+	case 1:
-+		return PBL_MCI_HIGH_CAPACITY;
-+	case 2:
-+		return PBL_MCI_ULTRA_CAPACITY;
-+	case 3:
-+		return PBL_MCI_RESERVED_CAPACITY;
-+	}
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index 09648aa77150..44fd4716aade 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -255,3 +255,6 @@ config MCI_ATMEL_PBL
+ config MCI_ATMEL_SDHCI_PBL
+ 	bool
+ 	select MCI_SDHCI
 +
-+	return PBL_MCI_UNKNOWN_CAPACITY;
++config MCI_OMAP_HSMMC_PBL
++	bool
+diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+index b209a86d8873..f76059e7b550 100644
+--- a/drivers/mci/Makefile
++++ b/drivers/mci/Makefile
+@@ -16,6 +16,7 @@ obj-$(CONFIG_MCI_IMX_ESDHC)	+= imx-esdhc.o imx-esdhc-common.o
+ pbl-$(CONFIG_MCI_IMX_ESDHC_PBL)	+= imx-esdhc-pbl.o imx-esdhc-common.o
+ obj-$(CONFIG_MCI_MXS)		+= mxs.o
+ obj-$(CONFIG_MCI_OMAP_HSMMC)	+= omap_hsmmc.o omap_hsmmc_common.o
++pbl-$(CONFIG_MCI_OMAP_HSMMC_PBL)	+= omap_hsmmc_pbl.o omap_hsmmc_common.o
+ obj-$(CONFIG_MCI_PXA)		+= pxamci.o
+ obj-$(CONFIG_MCI_ROCKCHIP_DWCMSHC)	+= rockchip-dwcmshc-sdhci.o
+ obj-$(CONFIG_MCI_TEGRA)		+= tegra-sdmmc.o
+diff --git a/drivers/mci/omap_hsmmc_common.c b/drivers/mci/omap_hsmmc_common.c
+index 04c712460622..329908a6e4bd 100644
+--- a/drivers/mci/omap_hsmmc_common.c
++++ b/drivers/mci/omap_hsmmc_common.c
+@@ -468,7 +468,7 @@ int omap_hsmmc_send_cmd(struct omap_hsmmc *hsmmc, struct mci_cmd *cmd,
+ 		return mmc_read_data(hsmmc, data->dest,
+ 				     data->blocksize * data->blocks);
+ 
+-	if (IS_ENABLED(CONFIG_MCI_WRITE))
++	if (IS_ENABLED(CONFIG_MCI_WRITE) && IN_PROPER)
+ 		return mmc_write_data(hsmmc, data->src,
+ 				      data->blocksize * data->blocks);
+ 
+diff --git a/drivers/mci/omap_hsmmc_pbl.c b/drivers/mci/omap_hsmmc_pbl.c
+new file mode 100644
+index 000000000000..0e6f39859d24
+--- /dev/null
++++ b/drivers/mci/omap_hsmmc_pbl.c
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2008 Texas Instruments (http://www.ti.com/, Sukumar Ghorai <s-ghorai@ti.com>)
++
++#include <pbl/mci.h>
++#include <pbl/bio.h>
++#include <mci.h>
++#include <debug_ll.h>
++#include <mach/omap/xload.h>
++
++#include "omap_hsmmc.h"
++
++static int pbl_omap_hsmmc_send_cmd(struct pbl_mci *mci,
++				   struct mci_cmd *cmd,
++				   struct mci_data *data)
++{
++	return omap_hsmmc_send_cmd(mci->priv, cmd, data);
 +}
 +
- static const char *capacity_tostr(enum pbl_mci_capacity capacity)
- {
- 	switch (capacity) {
-@@ -94,11 +110,97 @@ static const char *capacity_tostr(enum pbl_mci_capacity capacity)
- 	return "unknown";
- }
- 
-+/**
-+ * pbl_mci_check_high_capacity() - Determine what type of card we have
-+ * @mci: already initialized MCI card
-+ *
-+ * Standard capacity cards use a byte offset for the READ_MULTIPLE_BLOCK
-+ * command argument, which high capacity uses a block offset.
-+ *
-+ * As we haven't set up the card ourselves here, we do not have
-+ * this information directly available.
-+ *
-+ * A workaround is reading from address 0 onwards, which works for raw
-+ * second stage barebox located near start of the card, but is not so
-+ * good when we need to load barebox from a file system.
-+ *
-+ * This function implements the necessary state transitions, so we
-+ * can reread the CSD and determine, which the card is high capacity
-+ * or not.
-+ *
-+ * Refer to Part1_Physical_Layer_Simplified_Specification_Ver9.00.pdf
-+ * "Figure 4-13 : SD Memory Card State Diagram (data transfer mode)"
-+ * for a visualization of how this works.
-+ *
-+ * Return: 0 when capacity type could be determined and
-+ * mci->high_capacity was updated or a negative return code upon error.
-+ */
-+static int pbl_mci_check_high_capacity(struct pbl_mci *mci)
++static struct omap_hsmmc hsmmc;
++static struct pbl_mci mci;
++
++int omap_hsmmc_bio_init(struct pbl_bio *bio, void __iomem *iobase,
++			unsigned reg_ofs)
 +{
-+	struct mci_cmd cmd = {};
-+	unsigned rca_arg = 0; /* RCA shifted up by 16 bis */
-+	int ret, ret2;
++	hsmmc.iobase = iobase;
++	hsmmc.base = iobase + reg_ofs;
 +
-+	/* CMD7: Deselect all cards and move into standby mode */
-+	mci_setup_cmd(&cmd, MMC_CMD_SELECT_CARD, 0, MMC_RSP_NONE);
-+	ret = pbl_mci_send_cmd(mci, &cmd, NULL);
-+	if (ret) {
-+		pr_debug("deselecting cards failed: %d\n", ret);
-+		return ret;
-+	}
++	mci.priv = &hsmmc;
++	mci.send_cmd = pbl_omap_hsmmc_send_cmd;
 +
-+	/*
-+	 * CMD3: Need to get RCA for SDs, so we can use it to communicate
-+	 * with the correct SD (argument to CMD9)
-+	 *
-+	 * TODO: What to do about eMMCs? These would get a
-+	 * MMC_CMD_SET_RELATIVE_ADDR here
-+	 *
-+	 * Figure 27 — e•MMC state diagram (data transfer mode) n
-+	 * JESD84-B51.pdf doesn't list CMD3 as allowed command while
-+	 * in stand-by mode
-+	 */
-+	mci_setup_cmd(&cmd, SD_CMD_SEND_RELATIVE_ADDR, 0, MMC_RSP_R6);
-+	ret = pbl_mci_send_cmd(mci, &cmd, NULL);
-+	if (ret) {
-+		pr_debug("sending relative address failed: %d\n", ret);
-+		goto out;
-+	}
-+
-+	rca_arg = cmd.response[0] & GENMASK(31, 16);
-+
-+	/* CMD9: Get the Card-Specific Data */
-+	mci_setup_cmd(&cmd, MMC_CMD_SEND_CSD, rca_arg, MMC_RSP_R2);
-+	ret = pbl_mci_send_cmd(mci, &cmd, NULL);
-+	if (ret) {
-+		pr_err("sending CSD failed: %d\n", ret);
-+		goto out;
-+	}
-+
-+	/* Check CSD version */
-+	mci->capacity = capacity_decode(cmd.response[0] >> 30);
-+	pr_debug("detect %s capacity\n", capacity_tostr(mci->capacity));
-+
-+out:
-+	/* CMD7: now let's got get back to transfer mode */
-+	mci_setup_cmd(&cmd, MMC_CMD_SELECT_CARD, rca_arg, MMC_RSP_R1b);
-+	ret2 = pbl_mci_send_cmd(mci, &cmd, NULL);
-+	if (ret2) {
-+		pr_err("reselecting card with %x failed: %d\n", rca_arg, ret2);
-+		return ret2;
-+	}
-+
-+	return ret;
++	return pbl_mci_bio_init(&mci, bio);
 +}
-+
- int pbl_mci_bio_init(struct pbl_mci *mci, struct pbl_bio *bio)
- {
--
-+	/*
-+	 * There's no useful recovery possible here, so we try to continue
-+	 * after having printed an error
-+	 */
- 	if (mci->capacity == PBL_MCI_UNKNOWN_CAPACITY)
--		BUG();
-+		(void)pbl_mci_check_high_capacity(mci);
- 	else
- 		pr_debug("assuming %s capacity card\n",
- 			 capacity_tostr(mci->capacity));
 -- 
 2.39.5
 
