@@ -1,59 +1,68 @@
-Delivery-date: Tue, 22 Apr 2025 17:49:12 +0200
+Delivery-date: Tue, 22 Apr 2025 18:36:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7Fs0-0046tc-17
+	id 1u7Gbf-0047tn-1y
 	for lore@lore.pengutronix.de;
-	Tue, 22 Apr 2025 17:49:12 +0200
+	Tue, 22 Apr 2025 18:36:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7Frz-0008Iw-PE
-	for lore@pengutronix.de; Tue, 22 Apr 2025 17:49:12 +0200
+	id 1u7Gbf-0001cp-12
+	for lore@pengutronix.de; Tue, 22 Apr 2025 18:36:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6LENJJLY0si0REjJg1YbOhcK+DcqOM5C2GAoUjNVxsw=; b=V4/wo7mcrSdJgJDwZIiXigzlvX
-	GVSNMiWQFhYKuDM+miy3EB0Pu7E+h8LztQNUGyLZjsXoKT/gYrzQCtHU0ZjflOxv9IAxUU5bNCEIb
-	HiSfUVjAkwkdxH+CZYMx7SnXE8ml0e/LedCHbte/MK0/mPM0vO431RMVwq0x7BEkd9vFA8oXoqqzQ
-	y0YcTuAjdgCHhfY1rMK1dj3FncNZScekBbehYVRhgMAc+MQ+fqNc/ya/X3+3lBQ/Vbzd+BlX5eAl4
-	BUB0e3iyzu/fKIvzQ5/GvolML/6JlgSUAdZq6+26y93m5LEg13enc1Nm6+ezddAHwWS0/CYS+3801
-	RAny9kww==;
+	bh=4llLjfegtTeN6Isk2VdnndPQAHCKv5BHdBKwnzfuPEI=; b=A7Si8nFO7ZS4ppFga1U0ASjAzn
+	TBHiQj85POGa87yp8bUZcykok+CxqhcfXZjfesk/IHozUFwarsbua2bUqI1WH1YXjK5dexdcLFLho
+	EtGVXa25c8YDXXnqP568094vZ2ATiyCZo+R/vaG1arpNdtSPPzfge0sLDqt2mXlCakU+2FA70Uejg
+	MqT18w3RgnkcypwPJU2YRDKvq8zkUkDk7thE6fNtEAX5HiVSsQdvvpu2a75+wRJJdjFMFttnVCyE9
+	OdfZTxLXTtUsOTKq2Ld9uMf4ATXXjtWtzJKN7n1hdrTewuLTL3TknV1fMNBMbg6Xc66i3H3oWbIDx
+	48NIdagQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u7FrV-00000007n0o-2LVh;
-	Tue, 22 Apr 2025 15:48:41 +0000
+	id 1u7Gb2-00000007wBv-0UAu;
+	Tue, 22 Apr 2025 16:35:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u7Ech-00000007UvZ-16Me
+	id 1u7FAZ-00000007ceD-2IfG
 	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 14:29:20 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u7Ecf-0007Zp-Ve; Tue, 22 Apr 2025 16:29:18 +0200
-Message-ID: <4f94213d-10af-4122-a16f-0e1e0a9c679e@pengutronix.de>
-Date: Tue, 22 Apr 2025 16:29:17 +0200
+	Tue, 22 Apr 2025 15:04:21 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u7FAX-0006zR-FE; Tue, 22 Apr 2025 17:04:17 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u7FAX-001ZXt-0t;
+	Tue, 22 Apr 2025 17:04:17 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u7FAX-00A2vk-0g;
+	Tue, 22 Apr 2025 17:04:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250409140134.2079552-1-a.fatoum@pengutronix.de>
+References: <20250409140134.2079552-1-a.fatoum@pengutronix.de>
+Message-Id: <174533425720.2394443.15655403946614262641.b4-ty@pengutronix.de>
+Date: Tue, 22 Apr 2025 17:04:17 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20250422075519.219029-1-a.fatoum@pengutronix.de>
- <20250422075519.219029-3-a.fatoum@pengutronix.de>
- <aAemUHavn4l7YBkY@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <aAemUHavn4l7YBkY@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250422_072919_305060_E1C86653 
-X-CRM114-Status: GOOD (  18.37  )
+X-CRM114-CacheID: sfid-20250422_080419_589021_90BA7438 
+X-CRM114-Status: UNSURE (   8.04  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,51 +84,48 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 3/4] ARM: k3: define debug_ll_write_reg only on
- CONFIG_DEBUG_AM62X_UART=y
+Subject: Re: [PATCH 0/7] ARM: add support for chainloading barebox inside
+ FIP images
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
 
-On 4/22/25 16:23, Sascha Hauer wrote:
-> On Tue, Apr 22, 2025 at 09:55:18AM +0200, Ahmad Fatoum wrote:
->> From: Ahmad Fatoum <a.fatoum@barebox.org>
->>
->> Defining debug_ll_read_reg unconditionally for K3 can clash with other
->> debug_ll implementations, so move it into the include guard.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
->> ---
->>  include/mach/k3/debug_ll.h | 37 ++++++++++++++++++-------------------
->>  1 file changed, 18 insertions(+), 19 deletions(-)
+On Wed, 09 Apr 2025 16:01:28 +0200, Ahmad Fatoum wrote:
+> For use on the STM32MP1, add a bootm handler for chainloading FIP
+> images. This removes the last remaining use case for SSBL .stm32 images,
+> after TF-A had dropped support late 2022.
 > 
-> This breaks compilation of multi_v8_defconfig:
+> Ahmad Fatoum (7):
+>   fip: add struct fip_image_desc::private_data
+>   fip: mark predefined toc_entries array const
+>   bootm: implement UIMAGE_IS_ADDRESS_VALID helper
+>   ARM: legacy: make architecture number unsigned
+>   ARM: introduce jump_to_linux helper
+>   ARM: add support for chainloading barebox inside FIP images
+>   ARM: stm32mp: retire non-FIP stm32mp_bbu_mmc_register_handler
 > 
-> arch/arm/boards/beagleplay/lowlevel.c:44:30: error:  debug_ll_ns16550_putc' undeclared (first use in this function)
->    44 |         pbl_set_putc((void *)debug_ll_ns16550_putc, (void *)AM62X_UART_UART0_BASE);
-> 
-> debug_ll_ns16550_putc() is used as the pbl putc function. This might
-> have been wrong from the start, but it is like it is.
-> 
-> Not sure what we should do about it. We would need some ns16550 putc
-> function that is independent of the debug_ll infrastructure.
+> [...]
 
-Meh. This patch was a side product of Mediatek MT8186 support, which
-also has a NS16550. Please drop it for now and I'll revisit it later.
+Applied, thanks!
 
-Cheers,
-Ahmad
+[1/7] fip: add struct fip_image_desc::private_data
+      https://git.pengutronix.de/cgit/barebox/commit/?id=5c3a7fe64fed (link may not be stable)
+[2/7] fip: mark predefined toc_entries array const
+      https://git.pengutronix.de/cgit/barebox/commit/?id=93c14dd7b326 (link may not be stable)
+[3/7] bootm: implement UIMAGE_IS_ADDRESS_VALID helper
+      https://git.pengutronix.de/cgit/barebox/commit/?id=879208beff0b (link may not be stable)
+[4/7] ARM: legacy: make architecture number unsigned
+      https://git.pengutronix.de/cgit/barebox/commit/?id=bd4a7b8edd41 (link may not be stable)
+[5/7] ARM: introduce jump_to_linux helper
+      https://git.pengutronix.de/cgit/barebox/commit/?id=26ddae22a001 (link may not be stable)
+[6/7] ARM: add support for chainloading barebox inside FIP images
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c33636a0f165 (link may not be stable)
+[7/7] ARM: stm32mp: retire non-FIP stm32mp_bbu_mmc_register_handler
+      https://git.pengutronix.de/cgit/barebox/commit/?id=df119b0af6bd (link may not be stable)
 
-> 
-> Sascha
-> 
-
+Best regards,
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
