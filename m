@@ -1,68 +1,65 @@
-Delivery-date: Tue, 22 Apr 2025 10:38:33 +0200
+Delivery-date: Tue, 22 Apr 2025 10:38:39 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u799F-003yW3-28
+	id 1u799L-003yWn-1y
 	for lore@lore.pengutronix.de;
-	Tue, 22 Apr 2025 10:38:33 +0200
+	Tue, 22 Apr 2025 10:38:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u799B-0001VB-6m
-	for lore@pengutronix.de; Tue, 22 Apr 2025 10:38:33 +0200
+	id 1u799F-0001aH-B9
+	for lore@pengutronix.de; Tue, 22 Apr 2025 10:38:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=I+ldn4FqEnfudLTVusizEFhR8GRM18CRZkgvAs8HpDM=; b=PG0kAsZVNjkDSscNm7cb5M3k7/
-	w92qJ/wtm2jmxvnn+bFbiOT9ALDzG0R3LBLhDqnX1SU5eXtP1xvQFNvCQd43vI8vuw9iqXcLXjZW+
-	7qtUW9uksZDCiIk7824XmjZh3HTTwK9VEi8j2m59bkJGVSr9PVFwEbIkU5O4wOP+ky4i+h+6ix13x
-	46Ix+FJjngihh8KjnLBDGaGsK3CUGDWSGwvAZF4RNOo00gct+Yeq6RS8zewngx3uF8WDVzzWxEhoc
-	uZze4VCkMluR19hruT7VsmnyRSqQd3LI8ygezriPA7d/gbdr0nFUn8WZvTCoaFDbxoL9vpJZsol9t
-	aQme6liA==;
+	bh=fET4Tvt83O/2cyuifdBIx3yk1souFrfeBfV04krShPg=; b=HKyCkUZmdHQm0VcTD2vHDQCXpi
+	LRl/KcBjDe8AEUFq9vot1Pb/MSGyGYRHAfwaQe6kwcjMUm88EfwiDubsw+dZwE+15Lw7KKSkE8Ssj
+	0ETCwCdDsolYJxxA0AJgsohnAfZ7MuuvtSqlYhQcnQZ2TPXT9qUQ8r9xkq21qyOP+gyBHnGBduhSE
+	oM+nmygHsGOEd8DP7437evSQRd8jHshQxP2xdoL3D99jGIu+/eWcKoGGq/Y8AM72nuCAZyupklo87
+	jLqkBtJOoPRZd362SZw7iCnBgdLbhiPevEIlz0uC79e4Tc/YvD8yXIINBpErxwUdlcFKegNhMEtXX
+	MTMV6cAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u798d-00000006M6p-0rTx;
-	Tue, 22 Apr 2025 08:37:55 +0000
+	id 1u798h-00000006MBR-21d0;
+	Tue, 22 Apr 2025 08:37:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u78Td-00000006C6C-14jU
+	id 1u78Tl-00000006CAR-23H5
 	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 07:55:34 +0000
+	Tue, 22 Apr 2025 07:55:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u78Tc-0000Wk-4s
-	for barebox@lists.infradead.org; Tue, 22 Apr 2025 09:55:32 +0200
+	id 1u78Tk-0000YA-5L; Tue, 22 Apr 2025 09:55:40 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u78Tb-001VvQ-36
-	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 09:55:31 +0200
+	id 1u78Tj-001VvY-35;
+	Tue, 22 Apr 2025 09:55:39 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u78Tb-000v3v-2o
-	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 09:55:31 +0200
+	id 1u78Tj-000v7Y-2n;
+	Tue, 22 Apr 2025 09:55:39 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 22 Apr 2025 09:55:30 +0200
-Message-Id: <20250422075531.219284-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 22 Apr 2025 09:55:38 +0200
+Message-Id: <20250422075538.219560-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250422_005533_295980_0376C8E1 
-X-CRM114-Status: UNSURE (   9.77  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250422_005541_527045_59746094 
+X-CRM114-Status: GOOD (  11.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,54 +81,68 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] mfd: syscon: make mfd/syscon.h header self-contained
+Subject: [PATCH] include: linux/iopoll.h: add optional PBL support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+While we don't have generic clocksource support in PBL, there is no
+reason to not enable read_poll_timeout for use on platforms that have
+their own get_time_ns.
 
-Including the header in new files can currently break the build if
-suitable headers aren't included beforehand.
+Allow these platforms to use read_poll_timeout by defining two macros:
+read_pol_is_timeout and read_poll_get_time_ns().
 
-Make it self-contained and while at it, switch over to SPDX.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/mfd/syscon.h | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+v1 -> v2:
+  - compare timeout_us against 0 to fix warnings when it contains
+    a multiplication.
+---
+ include/linux/iopoll.h | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
-index f22d4e620b05..288dd464b7c6 100644
---- a/include/mfd/syscon.h
-+++ b/include/mfd/syscon.h
-@@ -1,20 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* SPDX-FileCopyrightText: (C) 2012 Freescale Semiconductor, Inc. */
-+/* SPDX-FileCopyrightText: (C) (C) 2012 Linaro Ltd. */
- /* System Control Driver
-  *
-  * Based on linux driver by:
-- *  Copyright (C) 2012 Freescale Semiconductor, Inc.
-- *  Copyright (C) 2012 Linaro Ltd.
-  *  Author: Dong Aisheng <dong.aisheng@linaro.org>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-  */
+diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+index 9350a3d05007..61d8f4714e97 100644
+--- a/include/linux/iopoll.h
++++ b/include/linux/iopoll.h
+@@ -12,6 +12,18 @@
+ #include <clock.h>
+ #include <pbl.h>
  
- #ifndef __MFD_SYSCON_H__
- #define __MFD_SYSCON_H__
- 
-+#include <linux/compiler.h>
-+#include <linux/err.h>
++#if IN_PROPER
++# define read_poll_get_time_ns()	get_time_ns()
++# define read_poll_is_timeout(s, t)	is_timeout(s, t)
++#else
++# ifndef read_poll_get_time_ns
++#  define read_poll_get_time_ns()	0
++# endif
++# ifndef read_poll_is_timeout
++#  define read_poll_is_timeout(s, t)	((void)s, (void)t, 0)
++# endif
++#endif
 +
- struct regmap;
-+struct device_node;
- 
- #ifdef CONFIG_MFD_SYSCON
- void __iomem *syscon_base_lookup_by_phandle
+ /**
+  * read_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
+  * @op: accessor function (takes @addr as its only argument)
+@@ -31,15 +43,13 @@
+  */
+ #define read_poll_timeout(op, val, cond, timeout_us, args...)	\
+ ({ \
+-	uint64_t start = 0; \
+-	if (IN_PROPER && (timeout_us) != 0) \
+-		start = get_time_ns(); \
++	uint64_t start = (timeout_us) == 0 ? read_poll_get_time_ns() : 0; \
+ 	for (;;) { \
+ 		(val) = op(args); \
+ 		if (cond) \
+ 			break; \
+-		if (IN_PROPER && (timeout_us) != 0 && \
+-		    is_timeout(start, ((timeout_us) * USECOND))) { \
++		if ((timeout_us) != 0 && \
++		    read_poll_is_timeout(start, ((timeout_us) * USECOND))) { \
+ 			(val) = op(args); \
+ 			break; \
+ 		} \
 -- 
 2.39.5
 
