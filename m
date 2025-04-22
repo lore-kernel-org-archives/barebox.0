@@ -1,69 +1,67 @@
-Delivery-date: Tue, 22 Apr 2025 10:37:21 +0200
+Delivery-date: Tue, 22 Apr 2025 10:37:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7985-003yRm-2w
+	id 1u7987-003yS6-0O
 	for lore@lore.pengutronix.de;
-	Tue, 22 Apr 2025 10:37:21 +0200
+	Tue, 22 Apr 2025 10:37:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7985-0000ew-3d
-	for lore@pengutronix.de; Tue, 22 Apr 2025 10:37:21 +0200
+	id 1u7986-0000fb-H7
+	for lore@pengutronix.de; Tue, 22 Apr 2025 10:37:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VKDCKEIGrlOOV/h13Y+bhvGgcDdHYhfRO7GcxM1Rr70=; b=SQxfKuHfpGZxE2qKjDd/HlOegf
-	nug681S0ZZi1CAdh+2VlpGbRBCGNNbVnJj03jgCOduiN2yiN/h4Dnk8giegtr+08xmgqE8NCIXruI
-	CCHJGtQFD/FoNXA6Ql0NadbVx0ni38g+nnNArDGM4GeenSMSibAFGeJCCqJRAAaVFz4/vgHF5y+OQ
-	yYcNRUKmsGEdt2UK5s1jO3xDFR12KtRDaoh+kcegqtzAW4oTLa+QztGwhTXJ39IDXGIvStTFXiggi
-	qttCLGeSPYvfN3e0GiT5i6s+bWCRYjPjppo+jbESokdL3hYJL5a4eJ3aDAI5I0umI8phI2PW6dJ8R
-	93XQMS1A==;
+	bh=87MnjgV7jPlNZnCounzbarL0a4ioHpTfnqy1WhI+OAc=; b=Zt4p/Vsz0J9eXBQgUf5BpvTqKa
+	utobsY3A/f8ABWsVbmhSKS0aJUBnvIPWOKIwjWfYBL6xrdyY6+k9QIN5mloBP9rQFkSAiwomNQ0ya
+	5tgeHKEDz7HyQezESZa0GXzClawzQUHtXMZau5qo+Hj402b428nhOYCm2E7vaDxsQeOA32txH3bXQ
+	Ukr/ZttRl70B/GKv0yuq3EwRYSW3XNMKpD3cXuzXwANKrVcD5MunTEYejBrSo2+amMYu1G8aPDD70
+	V2XH/PJ6SkZuYoUgZOWNeHsjhwIljwcK7b+PQV9YujCw9hvdt6mKK6QiFOHJQC+IYYJfLvZ1BEvjL
+	skOxiaxg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u797e-00000006LP1-0WQQ;
-	Tue, 22 Apr 2025 08:36:54 +0000
+	id 1u797f-00000006LPO-0v7q;
+	Tue, 22 Apr 2025 08:36:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u78Gr-000000069xL-49jY
+	id 1u78Ie-00000006ABg-1ENi
 	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 07:42:23 +0000
+	Tue, 22 Apr 2025 07:44:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u78Gp-0006in-4J; Tue, 22 Apr 2025 09:42:19 +0200
+	id 1u78Ic-00070X-Uq; Tue, 22 Apr 2025 09:44:10 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u78Go-001Vtc-30;
-	Tue, 22 Apr 2025 09:42:18 +0200
+	id 1u78Ic-001Vtt-2T;
+	Tue, 22 Apr 2025 09:44:10 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u78Go-00CYmS-2n;
-	Tue, 22 Apr 2025 09:42:18 +0200
+	id 1u78Ic-00CYqt-2G;
+	Tue, 22 Apr 2025 09:44:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Yann Sionneau <ysionneau@kalrayinc.com>, 
- Michael Olbrich <mol@pengutronix.de>
-In-Reply-To: <20250422063910.126829-1-a.fatoum@pengutronix.de>
-References: <20250422063910.126829-1-a.fatoum@pengutronix.de>
-Message-Id: <174530773886.2993589.7402067742484019436.b4-ty@pengutronix.de>
-Date: Tue, 22 Apr 2025 09:42:18 +0200
+In-Reply-To: <20250422063733.126107-1-a.fatoum@pengutronix.de>
+References: <20250422063733.126107-1-a.fatoum@pengutronix.de>
+Message-Id: <174530785069.2993861.16911916741548751623.b4-ty@pengutronix.de>
+Date: Tue, 22 Apr 2025 09:44:10 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250422_004222_038698_F7D95E62 
-X-CRM114-Status: UNSURE (   9.90  )
+X-CRM114-CacheID: sfid-20250422_004412_339867_ADFC0ED0 
+X-CRM114-Status: UNSURE (   6.52  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -86,30 +84,26 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] kbuild: treat char as always unsigned
+Subject: Re: [PATCH] fixup! defaultenv: boot/bnet: fallback to booting
+ generic 2nd stage FIT image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 22 Apr 2025 08:39:10 +0200, Ahmad Fatoum wrote:
-> The C standard makes it implementation defined whether a plain char is
-> unsigned or signed and the architectures where barebox is compiled for
-> differ in that, e.g. chars are traditionally unsigned on ARM, but on x86
-> for example they tend to be signed.
+On Tue, 22 Apr 2025 08:37:33 +0200, Ahmad Fatoum wrote:
+> defaultenv: boot/bnet: mention fallback to FIT image
 > 
-> This caused different bugs[1][2][3] in the past, especially around
-> behavior when casted to int. Let's instruct the compiler to treat char
-> as always unsigned. This may fix some issues that flew under the radar
-> so far, but also break drivers that were compiled and used only for
-> specific architectures, which implicitly assumed char is signed, which
-> we'll have to fix.
+> When neither the normal barebox image or the FIT image exists, the error
+> message will only list the FIT image, which can confuse users.
+> 
+> Therefore print out a message when the fallback happens.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] kbuild: treat char as always unsigned
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2a6033a6610b (link may not be stable)
+[1/1] fixup! defaultenv: boot/bnet: fallback to booting generic 2nd stage FIT image
+      https://git.pengutronix.de/cgit/barebox/commit/?id=637b9d63f7c2 (link may not be stable)
 
 Best regards,
 -- 
