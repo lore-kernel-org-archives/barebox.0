@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7987-003yS6-0O
+	id 1u7987-003yS7-0a
 	for lore@lore.pengutronix.de;
 	Tue, 22 Apr 2025 10:37:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7986-0000fb-H7
+	id 1u7986-0000fc-I6
 	for lore@pengutronix.de; Tue, 22 Apr 2025 10:37:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=87MnjgV7jPlNZnCounzbarL0a4ioHpTfnqy1WhI+OAc=; b=Zt4p/Vsz0J9eXBQgUf5BpvTqKa
-	utobsY3A/f8ABWsVbmhSKS0aJUBnvIPWOKIwjWfYBL6xrdyY6+k9QIN5mloBP9rQFkSAiwomNQ0ya
-	5tgeHKEDz7HyQezESZa0GXzClawzQUHtXMZau5qo+Hj402b428nhOYCm2E7vaDxsQeOA32txH3bXQ
-	Ukr/ZttRl70B/GKv0yuq3EwRYSW3XNMKpD3cXuzXwANKrVcD5MunTEYejBrSo2+amMYu1G8aPDD70
-	V2XH/PJ6SkZuYoUgZOWNeHsjhwIljwcK7b+PQV9YujCw9hvdt6mKK6QiFOHJQC+IYYJfLvZ1BEvjL
-	skOxiaxg==;
+	bh=RC9+3u+EYQpDp3jTGLXwxCPwQmcmOuyPthe62HjjU/I=; b=Ua+RCBUwbAKJz6L6o3x+zgXuUS
+	MVtOtaW0BJ9zqaMPjn1a43YTGAnOE9o+1/6BseuSqTyLx2yJMqycm+/Er8yJicLj6NUFjT/M/DAOh
+	QPRgrVzviRkXwTj5HUEauTOMTgL+R0AN/pyAPZy5++yCJEolIuG61tbk0ww4xhyhQCx+wHHtL6NHZ
+	VwGzzyJQlwBW6o0Lys2eEWs2wm08DJoodf2TgqjxMZ0TX2dLCzpoWbWnAuFTx1JWYigXB7nAD6cl7
+	x+J0hkrKlePay8j0ZKqBTucmWr8u0GVTGNX0oLE2pN+rWYe4v7sbv+FWHC6+mwsu+tBqJazZ2YoE/
+	N7YxLy/g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u797f-00000006LPO-0v7q;
-	Tue, 22 Apr 2025 08:36:55 +0000
+	id 1u797h-00000006LQ0-0gKP;
+	Tue, 22 Apr 2025 08:36:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u78Ie-00000006ABg-1ENi
+	id 1u78Ls-00000006Afj-2Hsq
 	for barebox@lists.infradead.org;
-	Tue, 22 Apr 2025 07:44:13 +0000
+	Tue, 22 Apr 2025 07:47:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u78Ic-00070X-Uq; Tue, 22 Apr 2025 09:44:10 +0200
+	id 1u78Lr-0007Vl-2H; Tue, 22 Apr 2025 09:47:31 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u78Ic-001Vtt-2T;
-	Tue, 22 Apr 2025 09:44:10 +0200
+	id 1u78Lq-001VuI-2p;
+	Tue, 22 Apr 2025 09:47:30 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u78Ic-00CYqt-2G;
-	Tue, 22 Apr 2025 09:44:10 +0200
+	id 1u78Lq-00CYv0-2c;
+	Tue, 22 Apr 2025 09:47:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250422063733.126107-1-a.fatoum@pengutronix.de>
-References: <20250422063733.126107-1-a.fatoum@pengutronix.de>
-Message-Id: <174530785069.2993861.16911916741548751623.b4-ty@pengutronix.de>
-Date: Tue, 22 Apr 2025 09:44:10 +0200
+In-Reply-To: <20250422053740.3436389-1-a.fatoum@pengutronix.de>
+References: <20250422053740.3436389-1-a.fatoum@pengutronix.de>
+Message-Id: <174530805080.2994153.4403549115894982173.b4-ty@pengutronix.de>
+Date: Tue, 22 Apr 2025 09:47:30 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250422_004412_339867_ADFC0ED0 
-X-CRM114-Status: UNSURE (   6.52  )
+X-CRM114-CacheID: sfid-20250422_004732_588174_0DF8A8C1 
+X-CRM114-Status: UNSURE (   7.62  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,26 +84,29 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! defaultenv: boot/bnet: fallback to booting
- generic 2nd stage FIT image
+Subject: Re: [PATCH master 1/2] tlsf: hardening: unpoison trailing padding
+ before zeroing it
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 22 Apr 2025 08:37:33 +0200, Ahmad Fatoum wrote:
-> defaultenv: boot/bnet: mention fallback to FIT image
+On Tue, 22 Apr 2025 07:37:39 +0200, Ahmad Fatoum wrote:
+> The actual allocated buffer size can be bigger than what was requested
+> due to alignment.
 > 
-> When neither the normal barebox image or the FIT image exists, the error
-> message will only list the FIT image, which can confuse users.
-> 
-> Therefore print out a message when the fallback happens.
+> When KASAN is enabled, only the requested size is unpoisoned.
+> This currently leads to problems, because with
+> CONFIG_INIT_ON_ALLOC_DEFAULT_ON enabled, the whole allocated
+> buffer will be zeroed.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] fixup! defaultenv: boot/bnet: fallback to booting generic 2nd stage FIT image
-      https://git.pengutronix.de/cgit/barebox/commit/?id=637b9d63f7c2 (link may not be stable)
+[1/2] tlsf: hardening: unpoison trailing padding before zeroing it
+      https://git.pengutronix.de/cgit/barebox/commit/?id=bad633c5392d (link may not be stable)
+[2/2] tlsf: hardening: skip KASAN checks when zeroing memory
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d5c5e18f0dfe (link may not be stable)
 
 Best regards,
 -- 
