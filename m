@@ -1,86 +1,70 @@
-Delivery-date: Thu, 24 Apr 2025 18:04:06 +0200
+Delivery-date: Thu, 24 Apr 2025 18:04:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7z3W-004vzJ-30
+	id 1u7z3e-004vzu-2Y
 	for lore@lore.pengutronix.de;
-	Thu, 24 Apr 2025 18:04:06 +0200
+	Thu, 24 Apr 2025 18:04:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u7z3W-0007wa-5z
-	for lore@pengutronix.de; Thu, 24 Apr 2025 18:04:06 +0200
+	id 1u7z3e-00080F-2X
+	for lore@pengutronix.de; Thu, 24 Apr 2025 18:04:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VQIRtzMCTc826gfTqwMexkqVOIEt59N6vsxCh6r+BFg=; b=Az49/QDbvNhT1VwnmgalXuxv89
-	atsPm4SXHXMqqFHYRDt0OAMBzcPMn/eaZwuE3iDVbZ7m4q9BrZm9QdHA8DC4t+LQNhSpcSf0EF4cy
-	SDoKRRVQUo2o8zjqlc7bvKPDpdi/wE9WbC1uWEzV+vCVN7yVtzt935q4nMBAReq0OKnz9mtq/wIgy
-	L15WtC4cmQsWDacM5ZsoB2TwNBrdkUAivME7MZ0QMGGb6CjFD912mVThRb9NP5DNpa+R2BbvgpVlN
-	MVYyvvqH2+AjxevK+2vObHYUQtnIY4vTOaIPTwmWOYIfPcUjetFmLyK8C2UJRllIaSYEKIpkPdjFe
-	ITqPSneA==;
+	bh=s4qio22D1lrccsQuS4NGFl1MO3ehLpzM7sn0K+Ja/WQ=; b=0HYFFti98cUFZqOn2FlU6aqpF4
+	lwGHZ8SQwap/8YDXP/LxXf/efVzLRHjuwCwZ5hdjFzuqVx1s8RITDzn3Ri1/E4JON2UBtEZdK/Ben
+	w3HHqWGvSJCyRYMrST6vtkX5kt8F8KFpf0RfM3HHDvUwKa96IASACFHYc9qYEI6ylOIjd3KR4p7+G
+	uURYpTTdyMVFRROmiR7imOEVMzThwuOmbb58lu7vkbnpJS2a7ZydbRNLd/fX35egNCTfj0MuJhgqB
+	lFw1j1pgRCWt00osV4gQKlmExMcPJWvjKF28c/woZHXJ053rWR6ZiSVAao/I451W6w0eDZucDWA5n
+	FkMb3ifQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u7z3A-0000000EZrU-0JkJ;
-	Thu, 24 Apr 2025 16:03:44 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u7v7A-0000000Dv4d-2RbN
-	for barebox@bombadil.infradead.org;
-	Thu, 24 Apr 2025 11:51:36 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=VQIRtzMCTc826gfTqwMexkqVOIEt59N6vsxCh6r+BFg=; b=RaGofDoxUN4t99iumcoZg9ZXuo
-	k65280WteWs3V5pU/O/sN9EnBxFxWxWqYY3ljX6m4xoKXk+KOu6X5MlsjTVe3Ql+zx6u0fyhOYBdC
-	dIzNauy95X5nlEVP5FDB/bLgj8DjSXNJLlGuGmZTod1SrrlZHcF6k3d4Puv8fZ2CsNa9vs6lXkhRK
-	ptIbjMetrZnW3xc6VKt7vB6c6vPgmp+nSLp8f52UvPwbQcsLC1WChueQLC60mfQ2jarROpraDuU2L
-	gaOYE+U9sNHQXzE1t4ZDt9FNP4JBJsZxkSxPOP+idLVNH6fu/iXLfFI9nVRKR7iW6mTg/K2W6d7Jb
-	aUuoRvKA==;
+	id 1u7z3U-0000000EaR1-0ks0;
+	Thu, 24 Apr 2025 16:04:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u7v77-0000000BmQP-1IMs
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u7vNo-0000000DyEB-1Wwq
 	for barebox@lists.infradead.org;
-	Thu, 24 Apr 2025 11:51:35 +0000
+	Thu, 24 Apr 2025 12:08:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1u7v75-0000Jx-79; Thu, 24 Apr 2025 13:51:31 +0200
+	id 1u7vNk-0007Ro-Vz; Thu, 24 Apr 2025 14:08:45 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1u7v75-001sJs-05;
-	Thu, 24 Apr 2025 13:51:31 +0200
+	id 1u7vNk-001sPn-2a;
+	Thu, 24 Apr 2025 14:08:44 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1u7v74-001LAC-2x;
-	Thu, 24 Apr 2025 13:51:30 +0200
-Date: Thu, 24 Apr 2025 13:51:30 +0200
+	id 1u7vNk-001LPR-2F;
+	Thu, 24 Apr 2025 14:08:44 +0200
+Date: Thu, 24 Apr 2025 14:08:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <aAolwl3W4ReziQJ2@pengutronix.de>
+Message-ID: <aAopzC7K6bqoxunE@pengutronix.de>
 References: <20250423140913.1530237-1-m.felsch@pengutronix.de>
- <20250423140913.1530237-3-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250423140913.1530237-3-m.felsch@pengutronix.de>
+In-Reply-To: <20250423140913.1530237-1-m.felsch@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250424_125133_521665_4278755A 
-X-CRM114-Status: GOOD (  30.48  )
+X-CRM114-CacheID: sfid-20250424_050848_398756_3A4271E4 
+X-CRM114-Status: GOOD (  14.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,136 +85,48 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 3/4] defaultenv-2: add support to automatically create
- an initial GPT table
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 1/4] partitions: efi: add support to specify
+ gpt-location
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Apr 23, 2025 at 04:09:12PM +0200, Marco Felsch wrote:
-> This adds the support to automatically create a minimal GPT table.
-> 
-> gpt-add: A script to add a minimal GPT table compatible to i.MX3/5/6/7
-> devices. The initial GPT only contains a barebox-environment partition.
-> The script checks for the bootsource to decide the GPT location.
-> 
-> gpt-rm: A script to remove the GPT header and the protective MBR. The
-> script checks for the bootsource to decide which GPT should be scrubbed.
-> 
-> bbenv-gpt: An initscript which checks for a barebox-environment
-> partition if booted from MMC. If no parition was found the script
-> triggers the gpt-add script.
+On Wed, Apr 23, 2025 at 04:09:10PM +0200, Marco Felsch wrote:
+> -static __maybe_unused struct partition_desc *efi_partition_create_table(struct block_device *blk)
+> +static __maybe_unused struct partition_desc *
+> +efi_partition_create_table(struct block_device *blk, sector_t gpt_location)
+>  {
+>  	struct efi_partition_desc *epd = xzalloc(sizeof(*epd));
+>  	gpt_header *gpt;
+>  
+> +	if (gpt_location < 2) {
+> +		pr_err("Invalid starting LBA (%llu) of array of partition entries\n",
+> +		       gpt_location);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+>  	partition_desc_init(&epd->pd, blk);
+>  
+>  	epd->gpt = xzalloc(512);
+> @@ -594,10 +601,10 @@ static __maybe_unused struct partition_desc *efi_partition_create_table(struct b
+>  	gpt->header_size = cpu_to_le32(sizeof(*gpt));
+>  	gpt->my_lba = cpu_to_le64(1);
+>  	gpt->alternate_lba = cpu_to_le64(last_lba(blk));
+> -	gpt->first_usable_lba = cpu_to_le64(34);
+> +	gpt->first_usable_lba = cpu_to_le64(gpt_location + 32);
 
-Can we have a command for this rather than a script?
+Since you are changing this default you should also check against
+gpt->first_usable_lba in efi_partition_mkpart():
 
-We might want to extend this functionality and it looks like the shell
-gets to its limits quite fast here.
+	if (start_lba < 34) {
+		pr_err("invalid start LBA %lld, minimum is 34\n", start_lba);
+		return -EINVAL;
+	}
+
+We should have done that from the start, but now that you are touching
+it it's your turn ;)
 
 Sascha
-
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
-> v2:
-> - new
-> 
->  defaultenv/defaultenv-2-base/bin/gpt-add    | 40 +++++++++++++++++++++
->  defaultenv/defaultenv-2-base/bin/gpt-rm     | 10 ++++++
->  defaultenv/defaultenv-2-base/init/bbenv-gpt | 16 +++++++++
->  3 files changed, 66 insertions(+)
->  create mode 100644 defaultenv/defaultenv-2-base/bin/gpt-add
->  create mode 100644 defaultenv/defaultenv-2-base/bin/gpt-rm
->  create mode 100644 defaultenv/defaultenv-2-base/init/bbenv-gpt
-> 
-> diff --git a/defaultenv/defaultenv-2-base/bin/gpt-add b/defaultenv/defaultenv-2-base/bin/gpt-add
-> new file mode 100644
-> index 000000000000..fa61b1929e20
-> --- /dev/null
-> +++ b/defaultenv/defaultenv-2-base/bin/gpt-add
-> @@ -0,0 +1,40 @@
-> +#!/bin/sh
-> +
-> +bootdev="/dev/${bootsource}${bootsource_instance}"
-> +yesno=""
-> +
-> +if [ ${bootsource} != "mmc" ]; then
-> +	exit 0
-> +fi
-> +
-> +# If successful, there is already a GPT or MBR header
-> +# TODO: Add hush redirect support to avoid user confusion
-> +if parted ${bootdev} print; then
-> +	exit 0
-> +fi
-> +
-> +readline "Create an initial GPT for barebox? [y|N]: " yesno
-> +
-> +# No per default
-> +if [ "${yesno}" == "" ]; then
-> +	exit 0
-> +elif [ "${yesno}" == "n" ]; then
-> +	exit 0
-> +fi
-> +
-> +# Check for other user input than 'y'
-> +if [ "${yesno}" != "y" ]; then
-> +	echo "Unkown value, only 'y' and 'n' are supported"
-> +	exit 1
-> +fi
-> +
-> +# Make a default GPT table, with the GPT partition entrie array starting at 2MiB
-> +# to have enough space for barebox at the beginning and to overcome legacy
-> +# platforms like i.MX3/5/6.
-> +parted ${bootdev} mklabel gpt 2MiB || gpt-rm
-> +
-> +# Add a barebox environment partition with the size of 1MiB which should be
-> +# enough for development.
-> +parted ${bootdev} mkpart barebox-environment bbenv 3MiB 4MiB || gpt-rm
-> +
-> +parted ${bootdev} refresh
-> diff --git a/defaultenv/defaultenv-2-base/bin/gpt-rm b/defaultenv/defaultenv-2-base/bin/gpt-rm
-> new file mode 100644
-> index 000000000000..e45c79395504
-> --- /dev/null
-> +++ b/defaultenv/defaultenv-2-base/bin/gpt-rm
-> @@ -0,0 +1,10 @@
-> +#!/bin/sh
-> +
-> +bootdev="/dev/${bootsource}${bootsource_instance}"
-> +
-> +if [ ${bootsource} != "mmc" ]; then
-> +	exit 0
-> +fi
-> +
-> +# Remove protective MBR and GPT from boot device
-> +memset -d ${bootdev} 0x100 0x0 0x300
-> diff --git a/defaultenv/defaultenv-2-base/init/bbenv-gpt b/defaultenv/defaultenv-2-base/init/bbenv-gpt
-> new file mode 100644
-> index 000000000000..6756cac9885e
-> --- /dev/null
-> +++ b/defaultenv/defaultenv-2-base/init/bbenv-gpt
-> @@ -0,0 +1,16 @@
-> +#!/bin/sh
-> +
-> +bbenvpart="/dev/${bootsource}${bootsource_instance}.barebox-environment"
-> +
-> +if [ ${bootsource} != "mmc" ]; then
-> +	exit 0
-> +fi
-> +
-> +# TODO:
-> +# Add command support to search for a given GPT PartUUID on a block device to
-> +# be partition name independent.
-> +if [ -e ${bbenvpart} ]; then
-> +	exit 0
-> +fi
-> +
-> +gpt-add
-> -- 
-> 2.39.5
-> 
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
