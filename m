@@ -1,83 +1,70 @@
-Delivery-date: Thu, 24 Apr 2025 22:39:37 +0200
+Delivery-date: Fri, 25 Apr 2025 07:38:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u83M9-0050Fz-2C
+	id 1u8BlD-0058FC-37
 	for lore@lore.pengutronix.de;
-	Thu, 24 Apr 2025 22:39:37 +0200
+	Fri, 25 Apr 2025 07:38:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u83M9-0004h7-3C
-	for lore@pengutronix.de; Thu, 24 Apr 2025 22:39:37 +0200
+	id 1u8BlC-0004Pr-0f
+	for lore@pengutronix.de; Fri, 25 Apr 2025 07:38:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GdYOUfBCLq9fOjmJ9m10VpcPBdKTiExf4fEqaKobcdU=; b=0CfyuEBqrpRznoXQDHgXkPVrRy
-	Z4LdTSdNrpFoBM13Bx2ME8v+JBkEoCm2RqKx6SrOC4RS/DVI7ETlfcfmu7AZpjqds3r3B4p8eKLF7
-	niv46AzgPKcOBGNc265lkkQAg+n8fqeuvv7QUk1djZ+BOOwxQNvBc1yGsRbT14/iJ41mpZTyvlEu7
-	mygw6fWbmnbEpXlpKlPKF7Bt//zymCYtDJriulUYfA+gRLrsfW4y3cYZ0VZOSP+BvtbPR24UN2cbD
-	Bw5tpXgFrzWHj8r2lOHb7j6+4OburCNjy4+MFjqH4jBFMCS1Sh5XlHpxvRwqPRFTSfJKzWnGUzaNZ
-	x0Scb/CA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=BfXA8u9WjHUk+kP1r2/+cRw3fNVeD+bO/jliz107Joc=; b=vqAu6R5hbVUigP0pTqbWAVbhgA
+	ZzONRrqFbxAafsMRv+0o3OSpa31EtZ0xdgeSL76Q+RSM0vTSB98+i5jU5bXssr3nl+Z4dFgCuFQ7F
+	XzFeq1nFL2xak5LX0+E923DuaA7SqLQB0poRCIxOhxOoAYGs8EXh0szy+LDRX0wyp1kgejIlf/Ki6
+	S2QTJh5yq7UhqCQ1nPqbJ94j8ke6QTv65OVqYQ+tv3K5RpQaLM58gPmIRJ3jRD+oPWon67s74sLUE
+	22o2qlANAfEsM6PopJ1VzeL+zENLF6FMJE+svLhA5t5aWguj7xEISRiBvbGe4M97cw8mPIvASN1Z0
+	N4BOwLpg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u83LW-0000000FM58-3Sct;
-	Thu, 24 Apr 2025 20:38:58 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u83HI-0000000FLle-0PdR
-	for barebox@bombadil.infradead.org;
-	Thu, 24 Apr 2025 20:34:36 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GdYOUfBCLq9fOjmJ9m10VpcPBdKTiExf4fEqaKobcdU=; b=hFjR2dvvfoQX7AEYsX8sAIOTm+
-	vCwgrEV0yl+en9g6+7dMCEmhMYvPVqJTK6J5NEoSaNWT8SY//l9qKWCJ3sEf1qZXcLhRUeHPR/g7w
-	DTKCeNjMcr1H+RyHdHly7S3rHVRL6tuG3M5VkOeaIE+cuRr80YcwZG6wgqfiaP0f+A8A41wLvfqT0
-	qTt0Y10HN99FHX/tt6+Z4TXAfWv+gmrjxc5eVrcaW1COid1cCC+disRSIiQOiP/A/rCS9jhrDueAq
-	qJ+MwuWGJoeLSStoO2OWFMaA9uhX6/IcPC//HyZGBQ8vVz0gUUmpmE2klZ16XKN1RHj5yOuiF90fK
-	RiXBfTIw==;
+	id 1u8BkV-0000000FzXl-0D2u;
+	Fri, 25 Apr 2025 05:37:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u83HE-0000000Bw4l-3Ze1
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u8BkS-0000000FzXO-28V0
 	for barebox@lists.infradead.org;
-	Thu, 24 Apr 2025 20:34:34 +0000
+	Fri, 25 Apr 2025 05:37:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1u83HC-00022W-AQ; Thu, 24 Apr 2025 22:34:30 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u8BkO-0004Hm-ML; Fri, 25 Apr 2025 07:37:12 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1u83HC-001w9h-0R;
-	Thu, 24 Apr 2025 22:34:30 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1u83HC-001SBK-04;
-	Thu, 24 Apr 2025 22:34:30 +0200
-Date: Thu, 24 Apr 2025 22:34:29 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20250424203429.yfdk36fphj4j5ffq@pengutronix.de>
-References: <20250423140913.1530237-1-m.felsch@pengutronix.de>
- <20250423140913.1530237-2-m.felsch@pengutronix.de>
- <aAon8N28ujN0YTaL@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u8BkO-001zmK-15;
+	Fri, 25 Apr 2025 07:37:12 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1u8BkO-002D7S-0o;
+	Fri, 25 Apr 2025 07:37:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Yann Sionneau <ysionneau@kalrayinc.com>, 
+ Michael Olbrich <mol@pengutronix.de>
+In-Reply-To: <20250422063910.126829-1-a.fatoum@pengutronix.de>
+References: <20250422063910.126829-1-a.fatoum@pengutronix.de>
+Message-Id: <174555943224.526916.17595769821668765033.b4-ty@pengutronix.de>
+Date: Fri, 25 Apr 2025 07:37:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aAon8N28ujN0YTaL@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250424_213433_157813_91776438 
-X-CRM114-Status: GOOD (  21.20  )
+X-CRM114-CacheID: sfid-20250424_223716_553366_FE3ABF32 
+X-CRM114-Status: UNSURE (   9.73  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,81 +86,34 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/4] parted: add support for gpt-location
+Subject: Re: [PATCH] kbuild: treat char as always unsigned
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-04-24, Sascha Hauer wrote:
-> On Wed, Apr 23, 2025 at 04:09:11PM +0200, Marco Felsch wrote:
-> > Add support to place the GPT partition entries to random places instead
-> > of LBA2.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> > v2:
-> > - new
-> > 
-> >  commands/parted.c | 29 +++++++++++++++++++++++++++--
-> >  1 file changed, 27 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/commands/parted.c b/commands/parted.c
-> > index 90cee1ede10e..895c06524d4c 100644
-> > --- a/commands/parted.c
-> > +++ b/commands/parted.c
-> > @@ -224,6 +224,30 @@ static int do_mklabel(struct block_device *blk, int argc, char *argv[])
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > +	if (argc == 3) {
-> > +		uint64_t mult;
-> > +		int ret;
-> > +
-> > +		if (!strcmp(argv[1], "msdos")) {
-> > +			printf("gpt-location not supported for msdos partitions\n");
-> > +			return -EINVAL;
-> > +		}
-> > +
-> > +		ret = parted_strtoull(argv[2], &gpt_location, &mult);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		if (!mult)
-> > +			mult = gunit;
-> > +
-> > +		gpt_location *= mult;
-> > +
-> > +		/* Ensure alignment */
-> > +		gpt_location = ALIGN(gpt_location, SECTOR_SIZE);
-> > +		/* convert to LBA */
-> > +		gpt_location >>= SECTOR_SHIFT;
-> > +	}
-> > +
-> >  	pdesc = partition_table_new(blk, argv[1], gpt_location);
-> >  	if (IS_ERR(pdesc)) {
-> >  		printf("Error: Cannot create partition table: %pe\n", pdesc);
-> > @@ -236,7 +260,7 @@ static int do_mklabel(struct block_device *blk, int argc, char *argv[])
-> >  		partition_table_free(gpdesc);
-> >  	gpdesc = pdesc;
-> >  
-> > -	return 2;
-> > +	return argc > 2 ? 3 : 2;
+
+On Tue, 22 Apr 2025 08:39:10 +0200, Ahmad Fatoum wrote:
+> The C standard makes it implementation defined whether a plain char is
+> unsigned or signed and the architectures where barebox is compiled for
+> differ in that, e.g. chars are traditionally unsigned on ARM, but on x86
+> for example they tend to be signed.
 > 
-> Optional arguments are not supported by parted. You can pass multiple
-> commands to parted, e.g.
+> This caused different bugs[1][2][3] in the past, especially around
+> behavior when casted to int. Let's instruct the compiler to treat char
+> as always unsigned. This may fix some issues that flew under the radar
+> so far, but also break drivers that were compiled and used only for
+> specific architectures, which implicitly assumed char is signed, which
+> we'll have to fix.
 > 
-> parted /dev/mmc0 mklabel gpt mkpart foo ext4 4MiB 1024MiB
-> 
-> argc will contain the remaining arguments, when another command follows
-> it won't be exactly three and you can't tell if the argument belongs to
-> this command or is the start of the next one.
+> [...]
 
-Argh.. damn, I wasn't aware of such use-cases. Thanks for the hint :)
+Applied, thanks!
 
-> You could implement it as an option.
+[1/1] kbuild: treat char as always unsigned
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b2ea1b4511b9 (link may not be stable)
 
-Sure.
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
-Regards,
-  Marco
 
 
