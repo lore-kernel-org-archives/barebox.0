@@ -1,67 +1,67 @@
-Delivery-date: Mon, 28 Apr 2025 16:16:28 +0200
+Delivery-date: Mon, 28 Apr 2025 16:16:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u9PHY-000C68-0C
+	id 1u9PHZ-000C6U-0I
 	for lore@lore.pengutronix.de;
-	Mon, 28 Apr 2025 16:16:28 +0200
+	Mon, 28 Apr 2025 16:16:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u9PHX-0000Ep-GD
-	for lore@pengutronix.de; Mon, 28 Apr 2025 16:16:27 +0200
+	id 1u9PHY-0000Gw-DQ
+	for lore@pengutronix.de; Mon, 28 Apr 2025 16:16:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JqPI+PI/KMc/BvW5qDokE/YccIne2yktGjshwUY5EhY=; b=kAks+uJXVctF/BJbaTX+xG2g/i
-	n3YXtIKwrys+p5jb2PiEFsrTwVtjEKe9BEOidy9UvNocKdaFsK7LXXfCwiCAcIu9GrTDMWwPee4sv
-	sBLQReIY5MTpqBPQJz/Ol8Mse+lFpmesWFVmFBXWp0gTtvUejyoXYdSlN3JTxsRPAuO45P79aFqC0
-	ITSKUdk/vJsUyQ9IIkpEY8m9A116CEmN8jem2N+ehj/K45h+UzKywxKlS7IedA5jlvTO+damC4VYx
-	NunFHZfi09E4X5fcsqBJJenR0JvT6WwFerN5DXUMAqNYeAMuDiM0fBghh1m5mgF0fOwU9SZJY1wEC
-	jicc0r6A==;
+	bh=a61ojq20LCkknOQyte2ZaPsa7T/xY3uFRsa11Md9Atw=; b=QJotuntkK6eJRnF8Fpl376vsPG
+	5uc3BmWbBU9qFIIKxINxux9co4VO5Mv80O3F0fkavL25TbWj4SpaiHxsRicF71/Xu46Sf/fh1diMq
+	Iv7TnI5piJ0Dph5wYoM3+ci5m44qSJ12A5QTfK8DDsc5yYSP6aeXrR1zXHC0Pscn6IcEbarLG9YLN
+	+FW8/lt475Kr0iRtt4Z+xT8sjjZN3cSqfH4zLgxDQcO7/b5R7/PqXIowaJ+6BLgdDg7EjlPXrwEHF
+	hJXaZi/2zfBC2BcPacE3YTIbfDbhFh+CXCuaY9u3YUpfktP1+LPbm+5V9NU+NBOa9GiyxQeyPFN2D
+	/7xEre5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u9PHH-00000006bDW-2rUs;
-	Mon, 28 Apr 2025 14:16:11 +0000
+	id 1u9PHI-00000006bEw-1Mn7;
+	Mon, 28 Apr 2025 14:16:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u9Nyf-00000006H8l-0BmN
+	id 1u9Nym-00000006HDC-38Iv
 	for barebox@lists.infradead.org;
-	Mon, 28 Apr 2025 12:52:55 +0000
+	Mon, 28 Apr 2025 12:53:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u9Nyd-0003Un-Ek; Mon, 28 Apr 2025 14:52:51 +0200
+	id 1u9Nyd-0003Uj-DQ; Mon, 28 Apr 2025 14:52:51 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u9Nyd-00068j-0p;
+	id 1u9Nyd-00068g-0h;
 	Mon, 28 Apr 2025 14:52:51 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u9Nyd-0087Aw-24;
+	id 1u9Nyd-0087Aw-1v;
 	Mon, 28 Apr 2025 14:52:51 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Apr 2025 14:52:17 +0200
-Message-Id: <20250428125217.1931365-6-a.fatoum@pengutronix.de>
+Date: Mon, 28 Apr 2025 14:52:16 +0200
+Message-Id: <20250428125217.1931365-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250428125217.1931365-1-a.fatoum@pengutronix.de>
 References: <20250428125217.1931365-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250428_055253_124682_9F8CDEFD 
-X-CRM114-Status: GOOD (  12.76  )
+X-CRM114-CacheID: sfid-20250428_055300_782711_07EEE107 
+X-CRM114-Status: GOOD (  11.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,78 +83,75 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 5/6] fastboot: factor out fb_file_getsize
+Subject: [PATCH 4/6] fastboot: only populate variables explicitly asked for
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We'll add another user for stat on the fentry file name, so prepare for
-that by factoring out the code into a helper.
+To allow flashing an image with a partition table followed by an image
+for a specific partition, the fastboot implementation was changed to
+evaluate partitions on demand.
 
+As there are partition-specific variables and the magic "all" variable,
+which lists all variables, all partitions are evaluated in getvar
+unconditionally, when only a variable for a specific partition is needed.
+
+When one partition doesn't exist and is not marked as optional, this
+leads to an error, even if something innocuous as the general
+max-download-size is requested.
+
+Change this, so only partitions that were explicitly asked for have their
+variables populated on demand, unless "all" variables were requested.
+
+Fixes: 6a191155be4e ("fastboot: evaluate fastboot partitions when used")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/fastboot.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ common/fastboot.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/common/fastboot.c b/common/fastboot.c
-index 529d9690db79..e51a6b2027ec 100644
+index 231f49c1a6c9..529d9690db79 100644
 --- a/common/fastboot.c
 +++ b/common/fastboot.c
-@@ -80,15 +80,10 @@ static struct fb_variable *fb_addvar(struct fastboot *fb, struct list_head *list
- 	return var;
- }
- 
--static int fastboot_add_partition_variables(struct fastboot *fb, struct list_head *list,
--		struct file_list_entry *fentry)
-+static loff_t fb_file_getsize(struct file_list_entry *fentry)
+@@ -310,10 +310,15 @@ static void cb_getvar(struct fastboot *fb, const char *cmd)
  {
- 	struct stat s;
--	size_t size = 0;
--	int fd, ret;
--	struct mtd_info_user mtdinfo;
--	char *type = NULL;
--	struct fb_variable *var;
-+	int ret;
+ 	LIST_HEAD(partition_list);
+ 	struct file_list_entry *fentry;
++	const char *partition;
+ 	bool all;
  
- 	ret = stat(fentry->filename, &s);
- 	if (ret) {
-@@ -96,7 +91,20 @@ static int fastboot_add_partition_variables(struct fastboot *fb, struct list_hea
- 		ret = stat(fentry->filename, &s);
- 	}
+ 	pr_debug("getvar: \"%s\"\n", cmd);
  
--	if (ret) {
-+	return ret ? ret : s.st_size;
-+}
++	partition = strchr(cmd, ':');
++	if (partition)
++		partition++;
 +
-+static int fastboot_add_partition_variables(struct fastboot *fb, struct list_head *list,
-+		struct file_list_entry *fentry)
-+{
-+	loff_t size;
-+	int fd, ret;
-+	struct mtd_info_user mtdinfo;
-+	char *type = NULL;
-+	struct fb_variable *var;
+ 	all = !strcmp(cmd, "all");
+ 	if (all)
+ 		cmd = NULL;
+@@ -321,9 +326,15 @@ static void cb_getvar(struct fastboot *fb, const char *cmd)
+ 	if (fastboot_tx_print_var(fb, &fb->variables, cmd))
+ 		goto out;
+ 
++	if (!all && !partition)
++		goto skip_partitions;
 +
-+	size = fb_file_getsize(fentry);
-+	if (size < 0) {
- 		if (fentry->flags & FILE_LIST_FLAG_OPTIONAL) {
- 			pr_info("skipping unavailable optional partition %s for fastboot gadget\n",
- 				fentry->filename);
-@@ -111,6 +119,7 @@ static int fastboot_add_partition_variables(struct fastboot *fb, struct list_hea
- 			goto out;
- 		}
+ 	file_list_for_each_entry(fb->files, fentry) {
+ 		int ret;
  
-+		ret = size;
++		if (!all && strcmp(partition, fentry->name))
++			continue;
++
+ 		ret = fastboot_add_partition_variables(fb, &partition_list, fentry);
+ 		if (ret) {
+ 			char *msg = xasprintf("%s: Failed to add '%s' partition variables: %pe",
+@@ -338,6 +349,7 @@ static void cb_getvar(struct fastboot *fb, const char *cmd)
+ 	if (fastboot_tx_print_var(fb, &partition_list, cmd))
  		goto out;
- 	}
  
-@@ -120,7 +129,6 @@ static int fastboot_add_partition_variables(struct fastboot *fb, struct list_hea
- 		goto out;
- 	}
- 
--	size = s.st_size;
- 
- 	ret = ioctl(fd, MEMGETINFO, &mtdinfo);
- 
++skip_partitions:
+ 	fastboot_tx_print(fb, FASTBOOT_MSG_OKAY, "");
+ out:
+ 	fastboot_free_variables(&partition_list);
 -- 
 2.39.5
 
