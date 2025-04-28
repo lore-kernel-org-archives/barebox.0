@@ -1,91 +1,79 @@
-Delivery-date: Mon, 28 Apr 2025 19:36:57 +0200
+Delivery-date: Mon, 28 Apr 2025 19:56:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u9SPX-000EtH-0X
+	id 1u9Sii-000F8Y-2E
 	for lore@lore.pengutronix.de;
-	Mon, 28 Apr 2025 19:36:57 +0200
+	Mon, 28 Apr 2025 19:56:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u9SPW-0004Vv-JM
-	for lore@pengutronix.de; Mon, 28 Apr 2025 19:36:55 +0200
+	id 1u9Sii-00070x-4d
+	for lore@pengutronix.de; Mon, 28 Apr 2025 19:56:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=en6BsVPLGtjjpWiXXqO7feBYT76fjRCkeXtnsqdWSoI=; b=nRf88z6XEKI+4Qv/5SVnfvHSXd
-	JiVEQvjYKWJycWBM0hL8UmdZ+fNPKfMywLpi6WEGSNPaN5msXOzvVmA5YGEmqNp4zYCKg5MUCt7Cs
-	S6OCagEME9I4K8BWiGUXkoY8iEbu3h4iX5r9N8ayuH4lei1EawzQ3lGNt04XG3qJ+YMZnn2hLnoJo
-	f7XTlv506wGJoVzulh64neD0uZ3JPVEWjzpG9eMY+edJ2ZlDV/A+ITfK3ZOsaxp/NiJgw29mrJQIq
-	ilppxGc1NP/jYurjP9yAlTLIeYmlJzMPajzCKst7+YP25Y9OivWYFhKd9pugDSa2mdBMQXXDIqBk2
-	jvktHliQ==;
+	bh=8g9zTzw8oV+u4BvCLL7x4UxThK88esqvhgkqWr5zUXI=; b=31htuFXodTFU3KA2/bP/mdEgW/
+	D/lzvkGJ6zjSG/lsYajExP32+yXmrkYvoUxtQbTBinSLho0aMdy1g7JRWHsSTdUwTav8WFqMSq4uv
+	g3R5KrarSNMGGAyqnV20IOzStLDXBPfB3l0pNsY/mIfv1G8yZvAa7TYAnDMYpePabq7YaG0oBPxzr
+	ZyXJyCqFhAqqTciXBUqAyz3piE57KvyCR4OoV82arvQflXUbk/6Ei3cbcoEmV54HwooJQm+mTXll2
+	dvPU7alvZnzArGY4r2uUG2MG5eiUzSwLcX1HEj49VqSOpQDqi1tn5WAktEO3l//Q0XPzhMAZ8FNo8
+	AEyjSaYA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u9SOj-000000076hv-1bG2;
-	Mon, 28 Apr 2025 17:36:05 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1u9SiE-000000079Ft-32jt;
+	Mon, 28 Apr 2025 17:56:14 +0000
+Received: from mout.kundenserver.de ([217.72.192.74])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u9S9N-000000074ZV-14IP
-	for barebox@bombadil.infradead.org;
-	Mon, 28 Apr 2025 17:20:13 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=en6BsVPLGtjjpWiXXqO7feBYT76fjRCkeXtnsqdWSoI=; b=fttCaY8EdiebulHQGjktgiMYjr
-	5RDaKhV8VsDKqtpkDbwB0ymiTZerVzUsFIzplC3wbtDZ+9fiQeGTUloiZIDSiW18xeOj3JBpZSSHD
-	DeQXi4bhtuDABl3/puDc7XjocqL91QV3kvBP01Hhfl1uGof0nYJ6fLbu79IVyWWZwMUgSTJN9v10R
-	7ZRLRoQE2FU42iTsGj4zyBFxP2waZ0cOtZEuzKJ+f6mmgtj0WrG4D5ZWQpnHkT7G4tIViDGpLCYKf
-	l0oEeEppTXUIlnskA0iqz7onjGx737acA2P67wq3nKzl8afexIQW34uplHMORgycRtEOLkignB1cc
-	/6iAsuAQ==;
-Received: from mout.kundenserver.de ([212.227.126.131])
-	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u9S9K-0000000CuiY-0Kcs
+	id 1u9Sgp-0000000797T-09ek
 	for barebox@lists.infradead.org;
-	Mon, 28 Apr 2025 17:20:12 +0000
+	Mon, 28 Apr 2025 17:54:49 +0000
 Received: from InfinityCube ([95.91.233.47]) by mrelayeu.kundenserver.de
- (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id 1MjjGV-1uoFQN3un5-00p1Qh
- for <barebox@lists.infradead.org>; Mon, 28 Apr 2025 19:20:05 +0200
+ (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis) id
+ 1M3DBb-1u5tvD1Uq5-00Dp0F; Mon, 28 Apr 2025 19:54:42 +0200
 From: johannes@gnu-linux.rocks
-To: barebox@lists.infradead.org
-Date: Mon, 28 Apr 2025 19:20:01 +0200
-Message-Id: <20250428172001.6708-1-johannes@gnu-linux.rocks>
+To: barebox@lists.infradead.org,
+	s.hauer@pengutronix.de
+Cc: Johannes Roith <johannes@gnu-linux.rocks>
+Date: Mon, 28 Apr 2025 19:54:24 +0200
+Message-Id: <20250428175424.9060-1-johannes@gnu-linux.rocks>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:PKBBWVDVbzJdXLLSjn0o+JRHA2bU2dGetbFiK6wmHrbhaSwrdNo
- Q1ThiU42r2My7cOhjDFrfOH08lCFmpDUWQF+D7vhkJD6DeFuN3dc6TQ5bf9tMgDbfcLo1X9
- V79/ajDJLN0mdM6Qhgjn4B2JUH4aZjDeA1WVxGqCz6sGMk/9RTT/eUEftwF9lOXm13P8YfS
- u1bK3Q6lEgd1Lv0FPMYiQ==
-UI-OutboundReport: notjunk:1;M01:P0:oeQzb+OrOEY=;1tCd10Vl9qIylj4srcAKFjpCDiK
- 9dS1LX968j9NZiX4pKzmjOdfFPtkgUr03NdxVam4QKrOwJ74PNglta0sNqGKUPNkcv2c6sPHQ
- 4D30QtwfaHgAiHetgt+VyLKIh7nJkanhEsFfjo0y9QK024mmaa4Gfjf4fAPrkhwKhcdBHGMsU
- Mc1G445h7vWoaEGJE4n1EbESXrJU4zoZw9xt2bDCv03Hy1Ogv8ibP1EuQWKhDYFVXeXdfJI/w
- mXrI08zDamqw6tAdsNSu7JKsaUeDUWPRQ05BSylB7qwzh7z5/7EjmAjK0zdqszSyV2vpGsvYm
- +Y+NcutZcId3bubkgFeVjL59pWsAFOcbtOLq/f7UyEld3xy4kgmyEhvzSr8KLqqeogpyt3mhI
- Sazfvq3vZ5DBmJdRBOT8a14b0wyvMWZXLulMNquphOHLAGHW4Exdn7/cH4smBKQp8bIuYYmd9
- kcFTDnXEwCbJaOcERqn1JY3AhXjOLTxP0iaJuE42dMtsi+mSiTWpPgp3n3JphRvp18YY5FVQo
- H/0daZjz3ROEGXxIlT2fSrC33PxIPrOTJNXw1iTz4b5qKvh9uG2yDyiSrtjMy9shzob8dFlqH
- iYZ5NDad/96idBGwRXJ2ScuxhnCghZCyFhOmXbAKd65YOJR4j39aAaB37n5vLQorXUtqit+9E
- EPjK+XtQzxpR80fGXoYSIzXIS8iiRpLbLuTuT6tytdROG2A9rtVGlOhKJqAi2EXff5sYwTLLD
- o2Syxrm1Mb17FvskE8M008fz5jzjRMRvezBwfh05f55iYRkvBYTSb/kpV7qqic+dnKTf21c0e
- nhXeMaCBTh34JYsEWcgypEzkpvvwLgk/bBEpIsHOpHzjsal6UeV7UpoT+K/fyWV0GOYakO7aT
- p6ysqEiH4pjEYOOkOxUsC3rEEbwSa3HovdJkiftzpsnEKp8uuP8yXNEY6e+oN4TVESYL8THgf
- 0Cl0+1umbCRu2yazjndpMEcsxX3mE2uNWXcrmMFsf/ACdeYT7kQf++5m/zMJhvUwuUz/OJXP3
- qFpuxLk51PzWK9hDxTte4WTlai/Z11bmOLvOBMmHUYNDMFXhifwJ3yz6LcN40nvmB+UmjepAx
- xzfDUpm+/Dbb1khzqRAGFil6pr2hRm9aRr0i+DFdDf2eGD265Mdv0Vht817CnxGvqj9H4AZzM
- uMdXrCQxtZAEtRfoeWwwU2i3i0gRxT3myTNoSa29+i3bkQn72W3jFs1tTtHCUO92mJF83CrTQ
- mrYVWHGoo/zHeWc8sSdjcho8EgzMf+qKjgV3fyyHip2s+gudn9C3oGK5L9jlL2dy9R2GOTTKm
- ctpCTCPZIwNBEHmbXgJ5FIPzbHcc2+5NPD5eSyGDgokvsopdXqWlh3wFkUoY5D3yjTXZGHkW0
- yFX+zXIApBE7PmOpDNkVWwROHMazqB9GpvGn7nKcEjQd44HlXN1/qvh/aC
+X-Provags-ID: V03:K1:OAmzo4awgRQeMS7+e7v/akQVZrx6HBqvRirbHHI9XEhILYuhi8l
+ G4ZRepQkzSYIoV9nKWHxzNlE5b/v3jV82YQYK5HmNxfidWulo0z2qlNwEJtM5uK1PBnUmcC
+ CwQUrdMdGG6ETqNE0DItzmDj7BGBKBrc76z908DeBR1864O4vHWH/dEbYBRhnHsajx+41xF
+ Iehqlm/em7Z8bexZ9M65A==
+UI-OutboundReport: notjunk:1;M01:P0:Lo7K340fJks=;8NFVImr4S8VvDDuNCORhLfbE9q1
+ /KcNcfxTtfY6Vyi7CmrpDASnjJX83RiOey2o3L1gbG22KD3uWmySWQPnZszehYmre1USb7KlI
+ XqEEMuZooyDuqDhI4Tv7Cj/D+yu9zja3Dp03V3xaLMqQ3Glv/6ZCEBEcf3//ONelzj7OR1qkU
+ nFo7J9T8PnY0VWYEpzuySZvvaoUIGOvjN9kZY2aBJ6CtrqvzjEma62mj+XyzSfuKN1n5B0827
+ Q6nYpDeKsMZfPGx0yLQlbjd+R9u6iARW8p8hYbb6YxPwhlgQw9bvNbgeR748T8R2HwQYwm9Ih
+ 46vQNu1X9VsE+3bkWAM/8VWWuBRe8wQb7Bi9lQaXMhgI9RUfusF5+nBhsK4WzgoMqbhRROq6p
+ axYh5SBcL98zGYyFdI8oghVBjG18IAIaXU4DyDwXPqUXZ0AVB829LH9M/tCmF8teDwAhRUTcE
+ pFUe4Jp5ZAhrH7D5Rs+67xEkkMlwXeA4/5Ifff77/ZKuZxrA5lJo8+VR4HhCJGG+GWO46jhIh
+ RNzLqfAZy1t0Iwxt5jrJSL/lhg/9i3JupnZY/uV1Ce0z1Spr525EEepNtplloraUtdl8LBoIj
+ dakgIN5cZ1jdolI9rqUVUcxg4yRi8eCfFYUe6hTSnH75DFkF4OBgg2wBH3q2YyT0nakCNqRrv
+ ixm2woowsTF/u2CpvO5nRmCAxtGmCk0IYw4Zt0eQbXpn6pMym81W3RtuZCr/P+7K2dp8ZcfyT
+ HocPbHSsnpQS/KWEXp7X6I95MNG+OQL8uSjEK3CiXjJ8z12xfcnH/XjoDDPxI/8U4vgEioeg4
+ hEIBfLrbG6MCFc5OUlx32IhVUCZJCXXgBOSXSafMq6XYCrliasrO9O8rfvyf/sl174GmrKfK7
+ EdM0yaxSr1JUB0xKGiy9YMy5uo3nSDbCumrj7RjCW4dVrPydsFb+T+9qr6jmDaT3jBQ7UXaWr
+ bfzC/rcPUPFJ5YYRZEqPZPM2/HHZovWWxLY1BuEB5htUqJOWy0y0StwEPr1ZqrdtA4yV4Tfik
+ qjBOUuow+vuNYIrgCNE81ATJ/vfkIKwQqUuKDxUOKOSRnp4+JnM/obbVxf0JtaYKYGim4ueYB
+ giEZ4wF5N01eRv70CNOlTQDOq4jalypEXNZ9M1QwQ86qoTD+bu6M4A+Fv5/w/km7cZxhSTXgs
+ Oo3qxxAa2MJBwHzw6HiygxnOVm6cnXNrHOwZfqqCVxQGmCG3xNXs1IPa05F7xnkzL5nKdmYkL
+ 0VYcadSQK1QNiFwi1BxeHYj5GMMux0N8pTVkUtTwh2OjY7uoT1KV2f84MWJZUoy+2rxnt1oz8
+ aXui78dcs0VsCcf/k2NVYC24dB4a6xGeSIWtO5vmHwvneGkdLEkY6c/s1eMWKBnbqLf5DIvMp
+ gtW1hH8f/92r7qEg==
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250428_182010_316651_5DCC3854 
-X-CRM114-Status: GOOD (  10.33  )
+X-CRM114-CacheID: sfid-20250428_105447_379934_0D60C039 
+X-CRM114-Status: UNSURE (   8.73  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,37 +91,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Porting Cora Z7 Board to barebox
+Subject: [PATCH] zedboard correct comments in lowlevel.c
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-I have a Cora Z7 board which I want to port to barebox. The Cora Z7 embeds an
-Zynq 7000 SoC with a single core Cortex-A9 and 512 MB DDR3 memory. Barebox
-already supports the Zynq 7000 and the Avnet Zedboard.
+From: Johannes Roith <johannes@gnu-linux.rocks>
 
-I have some questions and maybe you can point me in the right direction:
+Signed-off-by: Johannes Roith <johannes@gnu-linux.rocks>
 
-When I am compiling barebox with the zynq_defconfig, as an output I get the file
-barebox-avnet-zedboard.img. This file contains the PBL, barebox proper and the
-device tree, right?
+According to the TRM of the Zynq 7000 the registers under 'UART1 pinmux'
+represents the pinmux for UART0. So, I fixed the comments and also
+added the pin number for the UART0, UART1 and QSPI pins to the pinctrl.
 
-The Cora Z7 uses a different memory configuration compared to the Zedboard. My
-first idea was to use Xilinx FSBL and let the FSBL start barebox. The FSBL can
-start an ELF file. But if I use just the compiled barebox file, the device tree
-is missing, right? Is there a way to hard code the UART to use for the barebox
-console for barebox proper?
+Link to TRM page for pinmux:
 
-The Zynq on the Cora Z7 only embeds a single core Cortex A9 while the SoC on the
-Zedboard embeds a dual core Cortex A9. Does this affect the cores initialization
-in arch/arm/mach_zynq? 
+https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/Register-slcr-MIO_PIN_50
 
-I am looking forward to your replies. 
+---
+ arch/arm/boards/avnet-zedboard/lowlevel.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Thank you and best regards,
-Johannes Roith
+diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
+index 026a03d04b..605aab783a 100644
+--- a/arch/arm/boards/avnet-zedboard/lowlevel.c
++++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
+@@ -223,12 +223,13 @@ static void avnet_zedboard_ps7_init(void)
+ 	writel(0x00000081, 0XF8006000);
+ 
+ 	/* poor mans pinctrl */
++	/* UART1 pinmux TxD: MIO_PIN 48, RxD: MIO_PIN 49 */
+ 	writel(0x000002E0, ZYNQ_MIO_BASE + 0xC0);
+ 	writel(0x000002E1, ZYNQ_MIO_BASE + 0xC4);
+-	/* UART1 pinmux */
++	/* UART0 pinmux TxD: MIO_PIN 50, RxD: MIO_PIN 51 */
+ 	writel(0x000002E1, ZYNQ_MIO_BASE + 0xC8);
+ 	writel(0x000002E0, ZYNQ_MIO_BASE + 0xCC);
+-	/* QSPI pinmux */
++	/* QSPI pinmux MIO_PIN 01 - 08 */
+ 	writel(0x00001602, ZYNQ_MIO_BASE + 0x04);
+ 	writel(0x00000702, ZYNQ_MIO_BASE + 0x08);
+ 	writel(0x00000702, ZYNQ_MIO_BASE + 0x0c);
+-- 
+2.39.5
+
 
 
