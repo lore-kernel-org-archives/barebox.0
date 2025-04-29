@@ -1,89 +1,89 @@
-Delivery-date: Tue, 29 Apr 2025 16:32:29 +0200
+Delivery-date: Tue, 29 Apr 2025 16:32:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u9m0b-000WMq-1z
+	id 1u9m0c-000WNE-31
 	for lore@lore.pengutronix.de;
-	Tue, 29 Apr 2025 16:32:29 +0200
+	Tue, 29 Apr 2025 16:32:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1u9m0a-00038y-Is
-	for lore@pengutronix.de; Tue, 29 Apr 2025 16:32:29 +0200
+	id 1u9m0b-0003AM-RD
+	for lore@pengutronix.de; Tue, 29 Apr 2025 16:32:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ndsh6AMGmTf6Y+G+ivdWK7opX/Dg0a0N159SpkUNtq0=; b=0NEd8rYJfIcVva6JNMYIWJ3O9D
-	1JQx0NAcZfc/5bSsqa06z/RotNPb0NCrB6gSvMOZ9p/TpSrNHP2m2iFy3Rk5jt0PcbCM5fueL2vLM
-	lp0SXzYcEcJXa03Qdx9hNUJWILla94vpBQsJ30Q2SH9PG1XsAhOlfU1ZyHdvutPBDMdf80srnP4O9
-	Um2JXpy8dske1aLkf6KkBvJL9r21ZtcbnGm2simhWj962q8JF/zTy66MZQ/5umxie7k/ZJAOzO7IP
-	AwFr871zZPJe8leHFq10KxfXiLx3Yd06MFdcPeQTIZbh0lVTGmgATMrC/Rl8+i0FjcAlWSIpPgig3
-	OUvImEhg==;
+	bh=gsmcrjnvklTL8J/jWxav5/8FbgRsRIKSnZQyyDhJXvc=; b=yywzInKP1zl1JOgVjvrmKZTCVO
+	zkzoL0oDFhxzxugFFQ04QF0wLkZYfhBW/K2BRKp1jCpF8RGYI+UsRJ6SGXpbVtbXuoapN4Tpgy8If
+	wWhHc8blPqZfYInTp4Dr/rpirAznROXy/j4QqFMNnq+yWeEsV94Q8qHBku88NYhWAg7XNS/+cWOov
+	d0bS0VcA1hL+NW86LGBkhO2NijJFGmeagCnpPIC7wSoaykmIj3wn36aPENlIEPDlrVpWeMGi6mc8x
+	ApuSI7IR4o/18tfMyBCE9fsK+SXkuIbxk1KCUBKyF4GBbUgfGmhfKmthYmXqrDMEWjrVWxhSG1iw7
+	jOY0hxTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u9m02-00000009xm9-1eG3;
-	Tue, 29 Apr 2025 14:31:54 +0000
+	id 1u9m03-00000009xmY-43jb;
+	Tue, 29 Apr 2025 14:31:55 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u9ljC-00000009uGG-1KuL
+	id 1u9ljG-00000009uNZ-2tGW
 	for barebox@bombadil.infradead.org;
-	Tue, 29 Apr 2025 14:14:30 +0000
+	Tue, 29 Apr 2025 14:14:34 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ndsh6AMGmTf6Y+G+ivdWK7opX/Dg0a0N159SpkUNtq0=; b=bzVhN7ALln1KvALYWUonl0jo9Y
-	pi+d0T4fXYdguZIDTIuP4W8VeBmHPwY6C0eVL5HChSxRo1McFEnva3I0m+kLz7yS/Vw+S+OT3NIsC
-	734BRekACsg/e+zogBJ6aoKBGwO7R/vrzwGUVJAGqASqibAU7YJBQM3ispFJMHEBOkl8AxJ4O2i8F
-	ELGPKuFtW9LMrqKVmnmpyKCm+aYzrfX/CoXUdxQReiOxJQFpKN+CGQ6IDQSwPa60CU3eY/sJ8l8v2
-	QAq62CTvayjdn4yUWiwZrxXAKDXjNDcjDJZDJFqOyRG1e96YaOl/R6UoobaqUYlFkJljQ/qBI4/5P
-	59jXu1bw==;
+	bh=gsmcrjnvklTL8J/jWxav5/8FbgRsRIKSnZQyyDhJXvc=; b=jW8ixad67o4wUuQ5AGb5Wml2nO
+	xmmPJ/48oxqxvaicA3lyFZLrvlnGi1QnjQnV4mjnN9mCNpvQGeAgCRPihSCbL2PJ3gUVYercFjm+W
+	AiHCGq7GLBj+8iUNrC50aHhT6P2GIjCntriSDnxTFX2o/1GETHTLlaR46tZmMPeh926F3hlxvYevi
+	WywkfZ4yH18GkyQi4KO/Clo6EG4RAVz1VDw/nI+B/pOvf+swDX7LAyYwv/FE1abmIQgLXuNtfgY7O
+	uwPXylrPwF2tq6i5VsMFYz1jUoUZnSlJhfgjexS51xKLFp12vmghKMsm+Ogh5sSRbqwfrc/Rot/Oy
+	mzyLJZOw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u9lj7-0000000DNLg-2xvX
+	id 1u9ljD-0000000DNPK-1PmV
 	for barebox@lists.infradead.org;
-	Tue, 29 Apr 2025 14:14:28 +0000
+	Tue, 29 Apr 2025 14:14:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u9lj4-00084Z-Nn; Tue, 29 Apr 2025 16:14:22 +0200
+	id 1u9lj4-00084c-Nt; Tue, 29 Apr 2025 16:14:22 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u9lj4-000HEm-1P;
+	id 1u9lj4-000HEo-1S;
 	Tue, 29 Apr 2025 16:14:22 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1u9lj4-00Cqw2-1A;
+	id 1u9lj4-00Cqw2-1C;
 	Tue, 29 Apr 2025 16:14:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 29 Apr 2025 16:14:21 +0200
+Date: Tue, 29 Apr 2025 16:14:23 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250429-k3-asel-v1-2-6f39afaa2dfe@pengutronix.de>
+Message-Id: <20250429-k3-asel-v1-4-6f39afaa2dfe@pengutronix.de>
 References: <20250429-k3-asel-v1-0-6f39afaa2dfe@pengutronix.de>
 In-Reply-To: <20250429-k3-asel-v1-0-6f39afaa2dfe@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1745936062; l=7677;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745936062; l=4876;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=rUNqQ4QvPDdVt2pdaqEGwlWgme5U9Y09G9TJQh++kVY=;
- b=+RtxZDdI4+8pZF2hMlUMMiYCGQRAVaXwNo2EBSm8IbFjqLws/dw8U8DgbE3DWl/NsLMh9wLVV
- 5TsXz03MWZuCqxeie67lo4IhdukusUUB/bQUbcHlAd0YRIwIsIeixaz
+ bh=RcyHmEkfmAdfzugdzBlb1Fcktrnzp46B5jgesFkwdXU=;
+ b=6ejJYhbrWRSO3dmZdRSSg0zU0DLQ1tCsOjFxCvkT2uYMYCbqAa0eXCsfAOMktX56VFPYzEI4s
+ fRNwj9QkMlfBOECvqLmA117YzCmKuZ2sDp7j01+bK+S+3/tt891eZwY
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250429_151426_095071_83245CD0 
-X-CRM114-Status: GOOD (  15.13  )
+X-CRM114-CacheID: sfid-20250429_151431_530294_072BB3E7 
+X-CRM114-Status: GOOD (  16.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,255 +105,150 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] firmware: ti_sci: pass struct to
- ti_sci_rm_ringacc_ops::config
+Subject: [PATCH 4/4] dma: k3-udma: Handle Asel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-struct ti_sci_rm_ringacc_ops::config() already takes 10 parameters and
-we have to add additional two in followup patches. Pass the data in a
-struct like the Kernel does. Also rename the op to set_cfg as that's
-how the Kernel names it.
+This adds support for the Asel aka "Address selection" bits to the
+k3-udma driver.
+
+These bits become important when the DDR firewalls are enabled. With DDR
+firewalls the buffer addresses used by the PKTDMA engine need to be
+tagged with the correct Asel value, otherwise they will be blocked by
+the firewall.
+
+The Asel values are read from the device tree and need to be placed in
+bits 48-51 of the physical DMA addresses.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/firmware/ti_sci.c         | 27 ++++++-------
- drivers/soc/ti/k3-navss-ringacc.c | 84 +++++++++++++++------------------------
- include/soc/ti/ti_sci_protocol.h  | 25 +++++++++---
- 3 files changed, 66 insertions(+), 70 deletions(-)
+ drivers/dma/ti/k3-udma.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index 638893a1ed..ddbaf0bc1f 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -2140,9 +2140,7 @@ static int ti_sci_cmd_proc_shutdown_no_wait(const struct ti_sci_handle *handle,
-  * See @ti_sci_msg_rm_ring_cfg_req for more info.
-  */
- static int ti_sci_cmd_ring_config(const struct ti_sci_handle *handle,
--				  u32 valid_params, u16 nav_id, u16 index,
--				  u32 addr_lo, u32 addr_hi, u32 count,
--				  u8 mode, u8 size, u8 order_id)
-+				  const struct ti_sci_msg_rm_ring_cfg *params)
- {
- 	struct ti_sci_msg_rm_ring_cfg_resp *resp;
- 	struct ti_sci_msg_rm_ring_cfg_req req;
-@@ -2164,22 +2162,23 @@ static int ti_sci_cmd_ring_config(const struct ti_sci_handle *handle,
- 		ret = PTR_ERR(xfer);
- 		return ret;
- 	}
--	req.valid_params = valid_params;
--	req.nav_id = nav_id;
--	req.index = index;
--	req.addr_lo = addr_lo;
--	req.addr_hi = addr_hi;
--	req.count = count;
--	req.mode = mode;
--	req.size = size;
--	req.order_id = order_id;
+diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+index dfec9f91e3..b9af13dcc0 100644
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -26,6 +26,7 @@
+ #include "k3-psil-priv.h"
+ 
+ #define K3_UDMA_MAX_RFLOWS 1024
++#define K3_ADDRESS_ASEL_SHIFT     48
+ 
+ struct udma_chan;
+ 
+@@ -195,6 +196,8 @@ struct udma_chan_config {
+ 	unsigned int enable_acc32:1;
+ 	unsigned int enable_burst:1;
+ 	unsigned int notdpkt:1; /* Suppress sending TDC packet */
 +
-+	req.valid_params = params->valid_params;
-+	req.nav_id = params->nav_id;
-+	req.index = params->index;
-+	req.addr_lo = params->addr_lo;
-+	req.addr_hi = params->addr_hi;
-+	req.count = params->count;
-+	req.mode = params->mode;
-+	req.size = params->size;
-+	req.order_id = params->order_id;
- 
- 	ret = ti_sci_do_xfer(info, xfer);
- 	if (ret)
- 		goto fail;
- 
- fail:
--	dev_dbg(info->dev, "RM_RA:config ring %u ret:%d\n", index, ret);
-+	dev_dbg(info->dev, "RM_RA:config ring %u ret:%d\n", params->index, ret);
- 	return ret;
- }
- 
-@@ -2640,7 +2639,7 @@ static void ti_sci_setup_ops(struct ti_sci_info *info)
- 	pops->get_proc_boot_status = ti_sci_cmd_get_proc_boot_status;
- 	pops->proc_shutdown_no_wait = ti_sci_cmd_proc_shutdown_no_wait;
- 
--	rops->config = ti_sci_cmd_ring_config;
-+	rops->set_cfg = ti_sci_cmd_ring_config;
- 
- 	psilops->pair = ti_sci_cmd_rm_psil_pair;
- 	psilops->unpair = ti_sci_cmd_rm_psil_unpair;
-diff --git a/drivers/soc/ti/k3-navss-ringacc.c b/drivers/soc/ti/k3-navss-ringacc.c
-index 50d5c79f91..e07cbec898 100644
---- a/drivers/soc/ti/k3-navss-ringacc.c
-+++ b/drivers/soc/ti/k3-navss-ringacc.c
-@@ -435,20 +435,16 @@ EXPORT_SYMBOL_GPL(k3_ringacc_request_rings_pair);
- 
- static void k3_ringacc_ring_reset_sci(struct k3_ring *ring)
- {
-+	struct ti_sci_msg_rm_ring_cfg ring_cfg = { 0 };
- 	struct k3_ringacc *ringacc = ring->parent;
- 	int ret;
- 
--	ret = ringacc->tisci_ring_ops->config(
--			ringacc->tisci,
--			TI_SCI_MSG_VALUE_RM_RING_COUNT_VALID,
--			ringacc->tisci_dev_id,
--			ring->ring_id,
--			0,
--			0,
--			ring->size,
--			0,
--			0,
--			0);
-+	ring_cfg.nav_id = ringacc->tisci_dev_id;
-+	ring_cfg.index = ring->ring_id;
-+	ring_cfg.valid_params = TI_SCI_MSG_VALUE_RM_RING_COUNT_VALID;
-+	ring_cfg.count = ring->size;
-+
-+	ret = ringacc->tisci_ring_ops->set_cfg(ringacc->tisci, &ring_cfg);
- 	if (ret)
- 		dev_err(ringacc->dev, "TISCI reset ring fail (%d) ring_idx %d\n",
- 			ret, ring->ring_id);
-@@ -468,20 +464,16 @@ EXPORT_SYMBOL_GPL(k3_ringacc_ring_reset);
- static void k3_ringacc_ring_reconfig_qmode_sci(struct k3_ring *ring,
- 					       enum k3_ring_mode mode)
- {
-+	struct ti_sci_msg_rm_ring_cfg ring_cfg = { 0 };
- 	struct k3_ringacc *ringacc = ring->parent;
- 	int ret;
- 
--	ret = ringacc->tisci_ring_ops->config(
--			ringacc->tisci,
--			TI_SCI_MSG_VALUE_RM_RING_MODE_VALID,
--			ringacc->tisci_dev_id,
--			ring->ring_id,
--			0,
--			0,
--			0,
--			mode,
--			0,
--			0);
-+	ring_cfg.nav_id = ringacc->tisci_dev_id;
-+	ring_cfg.index = ring->ring_id;
-+	ring_cfg.valid_params = TI_SCI_MSG_VALUE_RM_RING_MODE_VALID;
-+	ring_cfg.mode = mode;
-+
-+	ret = ringacc->tisci_ring_ops->set_cfg(ringacc->tisci, &ring_cfg);
- 	if (ret)
- 		dev_err(ringacc->dev, "TISCI reconf qmode fail (%d) ring_idx %d\n",
- 			ret, ring->ring_id);
-@@ -548,20 +540,15 @@ EXPORT_SYMBOL_GPL(k3_ringacc_ring_reset_dma);
- 
- static void k3_ringacc_ring_free_sci(struct k3_ring *ring)
- {
-+	struct ti_sci_msg_rm_ring_cfg ring_cfg = { 0 };
- 	struct k3_ringacc *ringacc = ring->parent;
- 	int ret;
- 
--	ret = ringacc->tisci_ring_ops->config(
--			ringacc->tisci,
--			TI_SCI_MSG_VALUE_RM_ALL_NO_ORDER,
--			ringacc->tisci_dev_id,
--			ring->ring_id,
--			0,
--			0,
--			0,
--			0,
--			0,
--			0);
-+	ring_cfg.nav_id = ringacc->tisci_dev_id;
-+	ring_cfg.index = ring->ring_id;
-+	ring_cfg.valid_params = TI_SCI_MSG_VALUE_RM_ALL_NO_ORDER;
-+
-+	ret = ringacc->tisci_ring_ops->set_cfg(ringacc->tisci, &ring_cfg);
- 	if (ret)
- 		dev_err(ringacc->dev, "TISCI ring free fail (%d) ring_idx %d\n",
- 			ret, ring->ring_id);
-@@ -641,32 +628,27 @@ EXPORT_SYMBOL_GPL(k3_ringacc_get_tisci_dev_id);
- 
- static int k3_ringacc_ring_cfg_sci(struct k3_ring *ring)
- {
-+	struct ti_sci_msg_rm_ring_cfg ring_cfg = { 0 };
- 	struct k3_ringacc *ringacc = ring->parent;
--	u32 ring_idx;
- 	int ret;
- 
- 	if (!ringacc->tisci)
- 		return -EINVAL;
- 
--	ring_idx = ring->ring_id;
--	ret = ringacc->tisci_ring_ops->config(
--			ringacc->tisci,
--			TI_SCI_MSG_VALUE_RM_ALL_NO_ORDER,
--			ringacc->tisci_dev_id,
--			ring_idx,
--			lower_32_bits(ring->ring_mem_dma),
--			upper_32_bits(ring->ring_mem_dma),
--			ring->size,
--			ring->mode,
--			ring->elm_size,
--			0);
--	if (ret) {
-+	ring_cfg.nav_id = ringacc->tisci_dev_id;
-+	ring_cfg.index = ring->ring_id;
-+	ring_cfg.valid_params = TI_SCI_MSG_VALUE_RM_ALL_NO_ORDER;
-+	ring_cfg.addr_lo = lower_32_bits(ring->ring_mem_dma);
-+	ring_cfg.addr_hi = upper_32_bits(ring->ring_mem_dma);
-+	ring_cfg.count = ring->size;
-+	ring_cfg.mode = ring->mode;
-+
-+	ret = ringacc->tisci_ring_ops->set_cfg(ringacc->tisci, &ring_cfg);
-+	if (ret)
- 		dev_err(ringacc->dev, "TISCI config ring fail (%d) ring_idx %d\n",
--			ret, ring_idx);
--		return ret;
--	}
-+			ret, ring->ring_id);
- 
--	return 0;
-+	return ret;
- }
- 
- static int k3_dmaring_cfg(struct k3_ring *ring, struct k3_ring_cfg *cfg)
-diff --git a/include/soc/ti/ti_sci_protocol.h b/include/soc/ti/ti_sci_protocol.h
-index e1c9956eb1..ecc23089d5 100644
---- a/include/soc/ti/ti_sci_protocol.h
-+++ b/include/soc/ti/ti_sci_protocol.h
-@@ -327,16 +327,31 @@ struct ti_sci_proc_ops {
- 	TI_SCI_MSG_VALUE_RM_RING_MODE_VALID | \
- 	TI_SCI_MSG_VALUE_RM_RING_SIZE_VALID)
- 
-+/**
-+ * struct ti_sci_msg_rm_ring_cfg - Ring configuration
-+ *
-+ * Parameters for Navigator Subsystem ring configuration
-+ * See @ti_sci_msg_rm_ring_cfg_req
-+ */
-+struct ti_sci_msg_rm_ring_cfg {
-+	u32 valid_params;
-+	u16 nav_id;
-+	u16 index;
-+	u32 addr_lo;
-+	u32 addr_hi;
-+	u32 count;
-+	u8 mode;
-+	u8 size;
-+	u8 order_id;
-+};
-+
- /**
-  * struct ti_sci_rm_ringacc_ops - Ring Accelerator Management operations
-  * @config: configure the SoC Navigator Subsystem Ring Accelerator ring
-  */
- struct ti_sci_rm_ringacc_ops {
--	int (*config)(const struct ti_sci_handle *handle,
--		      u32 valid_params, u16 nav_id, u16 index,
--		      u32 addr_lo, u32 addr_hi, u32 count, u8 mode,
--		      u8 size, u8 order_id
--	);
-+	int (*set_cfg)(const struct ti_sci_handle *handle,
-+		       const struct ti_sci_msg_rm_ring_cfg *params);
++	u8 asel;
  };
  
- /**
+ struct udma_chan {
+@@ -958,6 +961,7 @@ static int udma_alloc_tx_resources(struct udma_chan *uc)
+ 
+ 	memset(&ring_cfg, 0, sizeof(ring_cfg));
+ 	ring_cfg.size = 16;
++	ring_cfg.asel = uc->config.asel;
+ 	ring_cfg.elm_size = K3_RINGACC_RING_ELSIZE_8;
+ 	ring_cfg.mode = K3_RINGACC_RING_MODE_RING;
+ 
+@@ -1042,6 +1046,7 @@ static int udma_alloc_rx_resources(struct udma_chan *uc)
+ 	ring_cfg.size = 16;
+ 	ring_cfg.elm_size = K3_RINGACC_RING_ELSIZE_8;
+ 	ring_cfg.mode = K3_RINGACC_RING_MODE_RING;
++	ring_cfg.asel = uc->config.asel;
+ 
+ 	ret = k3_ringacc_ring_cfg(rflow->fd_ring, &ring_cfg);
+ 	ret |= k3_ringacc_ring_cfg(rflow->r_ring, &ring_cfg);
+@@ -1751,6 +1756,7 @@ static int *udma_prep_dma_memcpy(struct udma_chan *uc, dma_addr_t dest,
+ 	u16 tr0_cnt0, tr0_cnt1, tr1_cnt0;
+ 	void *tr_desc;
+ 	size_t desc_size;
++	u64 asel = (u64)uc->config.asel << K3_ADDRESS_ASEL_SHIFT;
+ 
+ 	if (len < SZ_64K) {
+ 		num_tr = 1;
+@@ -1792,6 +1798,9 @@ static int *udma_prep_dma_memcpy(struct udma_chan *uc, dma_addr_t dest,
+ 		      CPPI5_TR_EVENT_SIZE_COMPLETION, 1);
+ 	cppi5_tr_csf_set(&tr_req[0].flags, CPPI5_TR_CSF_SUPR_EVT);
+ 
++	src |= asel;
++	dest |= asel;
++
+ 	tr_req[0].addr = src;
+ 	tr_req[0].icnt0 = tr0_cnt0;
+ 	tr_req[0].icnt1 = tr0_cnt1;
+@@ -2339,6 +2348,7 @@ static int udma_send(struct dma *dma, dma_addr_t src, size_t len, void *metadata
+ 	struct udma_chan *uc;
+ 	u32 tc_ring_id;
+ 	int ret;
++	u64 asel;
+ 
+ 	if (metadata)
+ 		packet_data = *((struct ti_udma_drv_packet_data *)metadata);
+@@ -2349,6 +2359,8 @@ static int udma_send(struct dma *dma, dma_addr_t src, size_t len, void *metadata
+ 	}
+ 	uc = &ud->channels[dma->id];
+ 
++	asel = (u64)uc->config.asel << K3_ADDRESS_ASEL_SHIFT;
++
+ 	if (uc->config.dir != DMA_MEM_TO_DEV)
+ 		return -EINVAL;
+ 
+@@ -2358,6 +2370,8 @@ static int udma_send(struct dma *dma, dma_addr_t src, size_t len, void *metadata
+ 
+ 	cppi5_hdesc_reset_hbdesc(desc_tx);
+ 
++	src |= asel;
++
+ 	cppi5_hdesc_init(desc_tx,
+ 			 uc->config.needs_epib ? CPPI5_INFO0_HDESC_EPIB_PRESENT : 0,
+ 			 uc->config.psd_size);
+@@ -2421,7 +2435,8 @@ static int udma_receive(struct dma *dma, dma_addr_t *dst, void *metadata)
+ 		packet_data->src_tag = port_id;
+ 	}
+ 
+-	*dst = buf_dma;
++	*dst = buf_dma & GENMASK_ULL(K3_ADDRESS_ASEL_SHIFT - 1, 0);
++
+ 	uc->num_rx_bufs--;
+ 
+ 	return pkt_len;
+@@ -2470,6 +2485,8 @@ static int udma_of_xlate(struct dma *dma, struct of_phandle_args *args)
+ 	    ep_config->mapped_channel_id >= 0) {
+ 		ucc->mapped_channel_id = ep_config->mapped_channel_id;
+ 		ucc->default_flow_id = ep_config->default_flow_id;
++		if (args->args_count == 2)
++			ucc->asel = args->args[1];
+ 	} else {
+ 		ucc->mapped_channel_id = -1;
+ 		ucc->default_flow_id = -1;
+@@ -2498,6 +2515,7 @@ static int udma_prepare_rcv_buf(struct dma *dma, dma_addr_t dst, size_t size)
+ 	struct cppi5_host_desc_t *desc_rx;
+ 	struct udma_chan *uc;
+ 	u32 desc_num;
++	u64 asel;
+ 
+ 	if (dma->id >= (ud->rchan_cnt + ud->tchan_cnt)) {
+ 		dev_err(dma->dev, "invalid dma ch_id %lu\n", dma->id);
+@@ -2511,6 +2529,7 @@ static int udma_prepare_rcv_buf(struct dma *dma, dma_addr_t dst, size_t size)
+ 	if (uc->num_rx_bufs >= UDMA_RX_DESC_NUM)
+ 		return -EINVAL;
+ 
++	asel = (u64)uc->config.asel << K3_ADDRESS_ASEL_SHIFT;
+ 	desc_num = uc->desc_rx_cur % UDMA_RX_DESC_NUM;
+ 	desc_rx = uc->desc_rx + (desc_num * uc->config.hdesc_size);
+ 
+@@ -2520,6 +2539,7 @@ static int udma_prepare_rcv_buf(struct dma *dma, dma_addr_t dst, size_t size)
+ 			 uc->config.needs_epib ? CPPI5_INFO0_HDESC_EPIB_PRESENT : 0,
+ 			 uc->config.psd_size);
+ 	cppi5_hdesc_set_pktlen(desc_rx, size);
++	dst |= asel;
+ 	cppi5_hdesc_attach_buf(desc_rx, dst, size, dst, size);
+ 
+ 	udma_push_to_ring(uc->rflow->fd_ring, desc_rx);
 
 -- 
 2.39.5
