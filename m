@@ -1,67 +1,67 @@
-Delivery-date: Mon, 05 May 2025 08:47:47 +0200
+Delivery-date: Mon, 05 May 2025 08:47:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uBpcB-002NTz-09
+	id 1uBpcF-002NUK-24
 	for lore@lore.pengutronix.de;
-	Mon, 05 May 2025 08:47:47 +0200
+	Mon, 05 May 2025 08:47:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uBpcA-0000BJ-4t
-	for lore@pengutronix.de; Mon, 05 May 2025 08:47:46 +0200
+	id 1uBpcF-0000D3-4j
+	for lore@pengutronix.de; Mon, 05 May 2025 08:47:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X5dZORM4DVQwIwSM6434+qYVgLxWThQKh+BHqBluwXM=; b=Xxa1tHcWzhazGbWx6Lng/41d0L
-	EHlEJgQJ/kqlnzgpDJJqfpgrli/pYFLvA0D6fTrtWSMLqKg2LhFy46mljEjDxLYysKElnZ3WuW7rJ
-	CT3jblxiOshN4i1S63ZIQ6Ma9hZFeJ6QZDC+LRNUy8b75YReoxySDqsyfkVHYtyKWxMnwtcTQ3tpO
-	NkQ3z4rsUpolIYa2cT/QR16BN5Qlh3ys8fj0ktcOU9veG2u3VJfo8oRCDY+Vc7OBzBNx4GNt9UY8E
-	kJqF2Hez6FpItraaePNsUO5qymxtXXk6s2AZ+dH6he7/CDnZJUFZJiToNuuT2dkCyaG0KvW7W1P40
-	NdympoJw==;
+	bh=EwPuH3NJ37h55dh+5fNpecNt0M+QYQvCPg5ldI5wGbU=; b=0q8l/GOyzHsjMgMln8kz92IBNd
+	g9WOSRiVnyo/ajJqpiLwlhZPeeebFxcnX4n1WOfYBD+im1ZC2KrytUJzLV5hx2HRnaPqjv0EY1lXp
+	CwpFQ7N7rv+V4R7ttYXhq9C8n525pDg7GCvxYxJSh2AAxQ4SzJ0anNuWSZzPVDSRsqx8Uk9vLPmh1
+	00jq5qd/8Cz4tlVkp9CZpVg8not9pjdFLyMFAFDpUNUMXxubu2ZefIL+K0xKiIxtZ8L0/zzVeSOSK
+	Muq32EX60Ii79yqDzhOCcfwK3Hl5QmjttCNfTDf0ss+fVK6h9M4HjGN9YJ0o5PTXh6vGvP39om4Gc
+	VNTrUTEQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uBpbL-00000006YKw-3BJ4;
-	Mon, 05 May 2025 06:46:55 +0000
+	id 1uBpbn-00000006YP7-19IT;
+	Mon, 05 May 2025 06:47:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uBpbH-00000006YKI-33nK
+	id 1uBpbk-00000006YOH-25Yd
 	for barebox@lists.infradead.org;
-	Mon, 05 May 2025 06:46:53 +0000
+	Mon, 05 May 2025 06:47:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uBpbD-0008Oy-Uj; Mon, 05 May 2025 08:46:47 +0200
+	id 1uBpbj-0008Ub-AO; Mon, 05 May 2025 08:47:19 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uBpbD-001BYY-2U;
-	Mon, 05 May 2025 08:46:47 +0200
+	id 1uBpbj-001BYe-0R;
+	Mon, 05 May 2025 08:47:19 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uBpbD-002SXV-2H;
-	Mon, 05 May 2025 08:46:47 +0200
+	id 1uBpbj-002SZ5-0D;
+	Mon, 05 May 2025 08:47:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Michael Tretter <m.tretter@pengutronix.de>
-In-Reply-To: <20250430121047.2899648-1-m.tretter@pengutronix.de>
-References: <20250430121047.2899648-1-m.tretter@pengutronix.de>
-Message-Id: <174642760769.586346.16613958854350036237.b4-ty@pengutronix.de>
-Date: Mon, 05 May 2025 08:46:47 +0200
+In-Reply-To: <20250430121112.2899908-1-m.tretter@pengutronix.de>
+References: <20250430121112.2899908-1-m.tretter@pengutronix.de>
+Message-Id: <174642763906.586442.1510824704121026574.b4-ty@pengutronix.de>
+Date: Mon, 05 May 2025 08:47:19 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250504_234651_789693_3FDB191B 
-X-CRM114-Status: UNSURE (   8.48  )
+X-CRM114-CacheID: sfid-20250504_234720_564652_EC1BF85A 
+X-CRM114-Status: UNSURE (   6.00  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,25 +84,23 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: only count partitions from partition table
+Subject: Re: [PATCH] mci: fix NULL pointer dereference
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 30 Apr 2025 14:10:47 +0200, Michael Tretter wrote:
-> Linux is only aware of partitions in the partition table, but the list
-> of partitions in barebox may contain additional partitions, e.g., for
-> state or the environment.
+On Wed, 30 Apr 2025 14:11:12 +0200, Michael Tretter wrote:
+> Calling `devlookup -k` directly on an mmc device instead of an partition
+> causes a NULL pointer dereference for cdevm.
 > 
-> Ignore partitions that are not in the partition table when calculating
-> the index of the partition in Linux.
+> Return a NULL pointer in this case to signal the error.
 > 
-> [...]
+> 
 
 Applied, thanks!
 
-[1/1] mci: only count partitions from partition table
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f38d4982c94e (link may not be stable)
+[1/1] mci: fix NULL pointer dereference
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3692a2d4e323 (link may not be stable)
 
 Best regards,
 -- 
