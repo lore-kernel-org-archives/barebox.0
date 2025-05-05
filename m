@@ -1,81 +1,68 @@
-Delivery-date: Thu, 01 May 2025 15:57:48 +0200
+Delivery-date: Mon, 05 May 2025 08:47:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uAUQ8-001AOV-0m
+	id 1uBpcB-002NTz-09
 	for lore@lore.pengutronix.de;
-	Thu, 01 May 2025 15:57:48 +0200
+	Mon, 05 May 2025 08:47:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uAUQ7-0006OW-A7
-	for lore@pengutronix.de; Thu, 01 May 2025 15:57:48 +0200
+	id 1uBpcA-0000BJ-4t
+	for lore@pengutronix.de; Mon, 05 May 2025 08:47:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To
-	:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8H3eE8Vg7qQpe6NubM3B6wMCI79fOmLINqVQzQNOxd8=; b=E0DdIuzDhL38RzaNUYomM/5JGL
-	LHyeebJhCY1Bupny4sgds2UupdE5pNYxmfhUw8xBWFHQCOepLUVvO9Tw034s7cJmlGXnx+2bOv1qA
-	+Grkhg5ik+q1SsFIjMaFTePlH61iyCpjLVXTs7I8xILhOqcHCRbTsjatQyuEw4iXn6dlDPM8rVJf0
-	ds4Ht9SEaIQw0RXKyF5/m4j45RG8EpH5BD5LsKH8w25uc3x3c2YAhNXffpH2AKYvUipq3tiV6eFTM
-	7GQVAnfSADoEE1q6Zv61AzEqB76NjEBH7lgSpQSX+0JGCmoQO6ojWlnIXvlM2opQ8AOjHwUAyHE0P
-	VkQz0mmQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=X5dZORM4DVQwIwSM6434+qYVgLxWThQKh+BHqBluwXM=; b=Xxa1tHcWzhazGbWx6Lng/41d0L
+	EHlEJgQJ/kqlnzgpDJJqfpgrli/pYFLvA0D6fTrtWSMLqKg2LhFy46mljEjDxLYysKElnZ3WuW7rJ
+	CT3jblxiOshN4i1S63ZIQ6Ma9hZFeJ6QZDC+LRNUy8b75YReoxySDqsyfkVHYtyKWxMnwtcTQ3tpO
+	NkQ3z4rsUpolIYa2cT/QR16BN5Qlh3ys8fj0ktcOU9veG2u3VJfo8oRCDY+Vc7OBzBNx4GNt9UY8E
+	kJqF2Hez6FpItraaePNsUO5qymxtXXk6s2AZ+dH6he7/CDnZJUFZJiToNuuT2dkCyaG0KvW7W1P40
+	NdympoJw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uAUPZ-0000000FtWN-0CO7;
-	Thu, 01 May 2025 13:57:13 +0000
-Received: from mout.kundenserver.de ([212.227.17.24])
+	id 1uBpbL-00000006YKw-3BJ4;
+	Mon, 05 May 2025 06:46:55 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uAUOi-0000000FtOF-1MQH
+	id 1uBpbH-00000006YKI-33nK
 	for barebox@lists.infradead.org;
-	Thu, 01 May 2025 13:56:22 +0000
-Received: from InfinityCube ([95.91.232.227]) by mrelayeu.kundenserver.de
- (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis) id
- 1MF35K-1uH1pH48To-00C1QO; Thu, 01 May 2025 15:56:16 +0200
-Date: Thu, 1 May 2025 15:56:11 +0200
-From: Johannes Roith <johannes@gnu-linux.rocks>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <aBN9e+Tkq/YnKwbU@InfinityCube>
-References: <20250428172001.6708-1-johannes@gnu-linux.rocks>
- <aBCO-SSyT0BQnlek@pengutronix.de>
- <3761c82f-78ec-42ea-bf4a-d8ecbdced01d@pengutronix.de>
- <aBNmGWyUGPW/okvk@InfinityCube>
+	Mon, 05 May 2025 06:46:53 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uBpbD-0008Oy-Uj; Mon, 05 May 2025 08:46:47 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uBpbD-001BYY-2U;
+	Mon, 05 May 2025 08:46:47 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uBpbD-002SXV-2H;
+	Mon, 05 May 2025 08:46:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Michael Tretter <m.tretter@pengutronix.de>
+In-Reply-To: <20250430121047.2899648-1-m.tretter@pengutronix.de>
+References: <20250430121047.2899648-1-m.tretter@pengutronix.de>
+Message-Id: <174642760769.586346.16613958854350036237.b4-ty@pengutronix.de>
+Date: Mon, 05 May 2025 08:46:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBNmGWyUGPW/okvk@InfinityCube>
-X-Provags-ID: V03:K1:1cwAT83l361zKOoJjRFEuv+su8NIhki73e00ARv8aGRDSx1LvYj
- 1U4a9RF3D20NiqU6lBkOR+mAOb39Br1xbsoKlYf1B9mCclf3v4+NZ6/XzDkcsamMLulgR8k
- g7GJ+bFCfjLlg7XVieIr5o+jpr2W/gb1xMyoVzSfK7+BjD4MQS6qMvSMBdphs4B2jDc0Lps
- mko0M8q6b2AiL+6D4Z3tw==
-UI-OutboundReport: notjunk:1;M01:P0:0qVnLxbpl0U=;JCHkIs75hT/Yw42gczZl7LxVrIE
- 9WC3VO2ug8QdpNKuMwIcG/8733SyWQJzlUlRgp6xJjZSIQotAWS8+mci5uVyKuoZKPGzsooIH
- WohpCGusYntY42pHO6sN//+9XtRu7uvse3vFzbW+v8x5hqWN+yxZeCCt2HPIGIegYHJ+PAD5K
- zZSRRYTHXXzMCSZ03EaIh7NKGfhI+gY49BDjg7XeDgaBkdFlv/JyTa0koHO7R2QIMvNYi+gwp
- l0MZCFSv3mWpxQ/5cWqQxkbx0F7ggWy5ixUWVbEbJNRUfWs0U0qwULbbJRhD/DG/GJRfEDSFh
- A8PkErRcm5Z97lKN8om5ljeDixJc5AjhlAA4lL6pE7GAfrkX3pVIg2cyApsaLn6gAtHfq6o7Q
- 0nm/0XAT7m99GiAGev9zmnXflK6zxA++YHF1GsMywryqZ3s82ceIWLYc4RUFbWKlv0k143mLk
- 009yioqIWwLCF+qIKfHnSusAwVtgcciqAkVGRHMXtJMHIfXJ+zrntB+j3jPJfV9z27T08heI6
- 2gsWf2otAH/5GWmc9VDmsrWSG62vLKS3pXX1yawyU9CUkJnTG2hNGljg9IP1mquxky424YiD2
- yNAu/BEIVS+O/IyHN1cp30FazN1QISyRlA+dYsbYoDFrIg8I2br/msgjcSArWsKJSVyVn+fIP
- sey7JGhen6EFHeCdQUTdAzhJXrtthE9U8YRKXOZ6U8lIYUH0Tkv2k6GbmG2QeQnF9xohPQLTJ
- s1RMoyGp9ovnJz2QrVTDkvBGzu+pCVWdSOe24pa7WRuxuA9kMhpegjPPQJXIIunsCelGZjWBj
- Q0nQez8bBApMUAo8bKHQuesq0vzJ1Pd4HbYwECiZWBS/+SurMasUJyMtIAEjKHj8xNuiA+/Q7
- Y503KsBq6haw82LvyoQobDdANDS7R1zTxmO0D2I/KYyN7vb2ExfwNRABv7jV6wJtR7jVyjEUp
- Z/6sVEpSwK8O2M8sarbIdEEdyQVCWnsgfeTe6aR6OYAHebs2tLggNGnlkoPXUiv+uTn3TfG1x
- +UuZEE+u4MKs3uL+a9pSM8ErwUtrseSXaEEtgjZJ4KhbRk8VYDK5gqtJ13ugcxbLc4M0bMhaM
- KpiZflnP6b96Yd1ufEqzAP1Lib9hLkTr9lsE+UV+w+MRX2H6e/Rhtbm02BZK8wltvwaEaGq+k
- IbaJV2W2BXoJsz6L/iysz9omVC4M8J7C2B4FyOTryXsr9ONho0mekhiHiojFhhpvwDgFw257x
- QsnJcjk/jJqvY0V6OKgiApYpmnsD2qjxXKOSFmZbIiDb+gstZBTYa0VlsmNymplUyD0jnk83q
- k8wendKGKiKaU8GV+MfVYDaoHwSeS0oTqZUq1pJ7kOaWnh2xMqVjC1Y4/ImimNxi55n9C2jNF
- VrEH5tNaulrVKjuaZywyhDe72B1wuNmaHkElhT2BjGO8yUHaBrAn9WcTNq
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250501_065620_674377_94AF65EB 
-X-CRM114-Status: GOOD (  55.28  )
+X-CRM114-CacheID: sfid-20250504_234651_789693_3FDB191B 
+X-CRM114-Status: UNSURE (   8.48  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,175 +74,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Porting Cora Z7 Board to barebox
+Subject: Re: [PATCH] mci: only count partitions from partition table
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Am Thu, May 01, 2025 at 02:16:44PM +0200 schrieb Johannes Roith:
-> Hi,
-> 
-> thanks for the fast replies.
-> 
-> Am Tue, Apr 29, 2025 at 11:49:40AM +0200 schrieb Ahmad Fatoum:
-> > Hi,
-> > 
-> > On 4/29/25 10:34, Sascha Hauer wrote:
-> > > In case of the Zedboard you could take start_avnet_zedboard.pbl. This
-> > > contains all necessary components including device tree and barebox
-> > > proper.
-> > > 
-> > > However, this binary is linked to 0x0 and the FSBL will likely load it
-> > > there. I don't know where the FSBL itself is located.
-> 
-> Can I change the address to which barebox is linked to? E.g. in Vitis
-> the application is linked to 0x10000 and the FSBL starting this
-> application to 0x0.
-> 
-> > 
-> > The pbl files tend to be a bit bigger, because they are meant only
-> > as input to objcopy. You can add to images/Makefile.zynq, e.g.
-> > 
-> >   image-$(CONFIG_MACH_ZEDBOARD) += start_avnet_zedboard.elf
-> > 
-> > And it will generate a much more compact ELF file that should
-> > be interchangeable (I had tested this on ZynqMP).
-> > 
-> > >> Is there a way to hard code the UART to use for the barebox
-> > >> console for barebox proper?
-> > > 
-> > > Why do you want to hardcode it? Setting the console via device tree is
-> > > just fine.
-> > > 
-> > > For debugging your early code I recommend CONFIG_DEBUG_LL. For zynq the
-> > > UART is hardcoded to ZYNQ_UART1_BASE_ADDR in include/mach/zynq/debug_ll.h.
-> > > You can change it in this file.
-> > > 
-> > > With CONFIG_DEBUG_LL enabled you can put putc_ll() in your code.
-> > 
-> > CONFIG_DEBUG_PBL is also often useful.
-> > 
-> > >> The Zynq on the Cora Z7 only embeds a single core Cortex A9 while the SoC on the
-> > >> Zedboard embeds a dual core Cortex A9. Does this affect the cores initialization
-> > >> in arch/arm/mach_zynq?
-> > > 
-> > > I don't think so. I haven't used Zynq myself though.
-> > 
-> > Cheers,
-> > Ahmad
-> > 
-> > > 
-> > > Regards,
-> > >   Sascha
-> > > 
-> > 
-> > -- 
-> > Pengutronix e.K.                  |                             |
-> > Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-> > 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> > Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-> > 
-> 
-> The good news is, I can boot barebox (PBL and proper) now and sometimes
-> also can Linux. Here is the output of my barebox:
-> 
-> Digilent Cora Z7 PBL
-> uncompress.c: memory at 0x00000000, size 0x20000000
-> mmu: enabling MMU, ttb @ 0x1ffd0000
-> endmem                = 0x20000000
-> arm_mem_scratch       = 0x1fff8000+0x00008000
-> arm_mem_stack         = 0x1ffe9000+0x0000f000
-> arm_mem_ttb           = 0x1ffd0000+0x00010000
-> arm_mem_barebox_image = 0x1fe00000+0x00200000
-> arm_mem_early_malloc  = 0x1fde0000+0x00020000
-> membase               = 0x00000000+0x20000000
-> uncompress.c: uncompressing barebox binary at 0x00006270 (size 0x00029c0c) to 0x1fe00000 (uncompressed size: 0x0006c0e8)
-> uncompress.c: jumping to uncompressed image at 0x1fe00000
-> 
-> 
-> barebox 2025.04.0-00215-gdacb19ae3252-dirty #11 Wed Apr 30 22:22:15 CEST 2025
-> 
-> 
-> Board: Digilent Cora Z7
-> ERROR: could not get clock /axi/dma-controller@f8003000:apb_pclk(0)
-> ERROR: could not get clock /axi/etb@f8801000:apb_pclk(0)
-> ERROR: could not get clock /axi/tpiu@f8803000:apb_pclk(0)
-> ERROR: could not get clock /axi/funnel@f8804000:apb_pclk(0)
-> ERROR: could not get clock /axi/ptm@f889c000:apb_pclk(0)
-> ERROR: could not get clock /axi/ptm@f889d000:apb_pclk(0)
-> mdio_bus: miibus0: probed
-> macb e000b000.ethernet@e000b000.of: Cadence GEM at 0xe000b000
-> arasan-sdhci e0100000.mmc@e0100000.of: registered as mmc0
-> malloc space: 0x17e00000 -> 0x1fdfffff (size 128 MiB)
-> arasan-sdhci e0100000.mmc@e0100000.of: error while transferring data for command 6
-> arasan-sdhci e0100000.mmc@e0100000.of: state = 0x01f70202 , interrupt = 0x00208000
-> mmc0: Card's startup fails with -74
-> barebox-environment chosen:environment-sd.of: probe failed: No such file or directory
-> environment load /dev/env0: No such file or directory
-> Maybe you have to create the partition.
-> 
-> 
-> Do you know what to do about the "could not get clock errors"? Do I have
-> to take care about them or just ignore them?
-> 
-> The more critical error comes from the SD card. Every second boot I am
-> getting the errors shown above, sometimes the card is started correctly.
-> 
-> Also when barebox can startup the mmc0, when starting the Linux Kernel
-> sometimes the rootfs on /dev/mmcblk0p2 is not found and the SD Card is
-> not detected. So, there seems to be something wrong with the SD Card
-> interface...
 
-Maybe because I missed the rootwait argument for the Linux Kernel
-Commandline...
+On Wed, 30 Apr 2025 14:10:47 +0200, Michael Tretter wrote:
+> Linux is only aware of partitions in the partition table, but the list
+> of partitions in barebox may contain additional partitions, e.g., for
+> state or the environment.
+> 
+> Ignore partitions that are not in the partition table when calculating
+> the index of the partition in Linux.
+> 
+> [...]
 
-> 
-> In lowlevel.c I am setting the clock divider for the sdio0 interface to 10
-> and the Source for generated clock is IO PLL. Therefore, the sdio IP
-> should get a 100 MHz input clock. IS this correct? Do you know which
-> clockrate the driver expects? 
-> 
-> Or do you have any other idea what could case the error?
+Applied, thanks!
 
-Ok, I found out that maybe 100 MHz is a little bit to slow for this SD
-Card IP. When setting the clock to 200 MHz or 250 MHz, the mmc0 gets
-detected all the time by barebox.
+[1/1] mci: only count partitions from partition table
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f38d4982c94e (link may not be stable)
 
-> 
-> In case I can fix the remaining errors I would like to bring the changes
-> upstream and send a patch. Here I also have some questions:
-> 
-> I added the following files and folder:
-> 
-> 	arch/arm/boards/digilent-cora/
-> 	arch/arm/dts/zynq-cora.dts
-> 	dts/src/arm/xilinx/zynq-cora.dts
-> 
-> arch/arm/boards/digilent-cora/ is a copy of arch/arm/boards/avnet-zed/
-> with my changes applied. In the Copyright, should I keep the existing
-> name and just add mine as a second author?
-> 
-> If I understand it correctly, the files in dts/src are imported from the
-> Linux kernel git repo, right? In this case I should try to bring my
-> modified device tree mainline to Linux first and then commit my changes
-> to barebox? Or is there another file location I can drop my device tree
-> temporarily until it is available in Linux?
-> 
-> And a last question: How can I change the default boot method in barebox
-> from net to mmc0?
-> 
-> Thanks and best regards,
-> Johannes
-> 
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
