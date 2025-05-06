@@ -1,71 +1,67 @@
-Delivery-date: Tue, 06 May 2025 08:38:27 +0200
+Delivery-date: Tue, 06 May 2025 08:38:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCBwh-002i4v-00
+	id 1uCBwi-002i5I-1T
 	for lore@lore.pengutronix.de;
-	Tue, 06 May 2025 08:38:27 +0200
+	Tue, 06 May 2025 08:38:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCBwf-0001z4-Re
-	for lore@pengutronix.de; Tue, 06 May 2025 08:38:26 +0200
+	id 1uCBwh-00020r-EW
+	for lore@pengutronix.de; Tue, 06 May 2025 08:38:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7L/AcQgYz1tYOdBpoqm0n25YBu5a4tfKqSeCbTfdnPk=; b=EeyEnqawQkjAxu2ioNFLw+Aubp
-	udlAkWL+W/YGcJuAPUPnznL39OGXoFdDeysZs+lr6g2a41QLB40KbGqK+KBHk6htvHTK0/QhttzDY
-	zpk4GywAbg2YIQS/ApDGjrxPK2tmRJZAfbGsZnfbtlpisyNjb7YUKTAxyc52cuKGpxiN2aDdMy0c+
-	R3mV8yBSeSUCO5OZXBiVfxFRGpJQ1MMSsHmOFhhJnBKEKq7hQsNDetBFS4HfLluzaEuZaknck5tB9
-	8Fgd+HfRBs+Ca+yn6MBLf7UDUPZe/ZS9+azV/dwdRUoqwKWOi2VUMmqSJXFHbiyQvIYo9IZgfhfiK
-	1MldcGOg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=r3HLRLs3dXqEOWiA5q7G/z4PA9TcfTQPqZYYr2oKNVU=; b=m8TJWFdgbJ0F4rlG7KifENATOe
+	qh+PcpLFNggP53EDKqCQkO+HYZBV2awkdDXxq9sWvjqsRqUgIemgG+TAYlvwgTmdGv8meUTvkVhHE
+	7mDSdCTbB+UcwRBUgWrO0qnkGADZSWHjJRLL4SckHcMsgcp+0iT0LY5jtMRpTp90df79iAkroTLod
+	fG4B9RX5cyFE8ijixs6A6MBOwudCVm1LeQIzj6Yms0mE5VbiqzbMIr1kTxCJRZWPGbHfw+y4eNV85
+	iB9GZp9qlvCXiSfyuk9MoYZVBg4XzBHrKs8PrM4Q/8Z53Kw2hYyVleXccwjm/7K6h7KDHdZg/WEeC
+	yv+djL2g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCBwE-0000000AjWf-10jt;
-	Tue, 06 May 2025 06:37:58 +0000
+	id 1uCBwC-0000000AjTs-1Sww;
+	Tue, 06 May 2025 06:37:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCBvQ-0000000AjE6-1kjI
+	id 1uCBtA-0000000AiKL-3dqW
 	for barebox@lists.infradead.org;
-	Tue, 06 May 2025 06:37:10 +0000
+	Tue, 06 May 2025 06:34:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uCBvP-0001Lr-4V; Tue, 06 May 2025 08:37:07 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCBt9-0000TP-Ap; Tue, 06 May 2025 08:34:47 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uCBvO-001Lpv-35;
-	Tue, 06 May 2025 08:37:06 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uCBvO-006RtI-2n;
-	Tue, 06 May 2025 08:37:06 +0200
-Date: Tue, 6 May 2025 08:37:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <aBmuEkJMRx69PGJT@pengutronix.de>
-References: <20250505120633.3717186-1-a.fatoum@pengutronix.de>
- <20250505120633.3717186-19-a.fatoum@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCBt9-001LpF-0Q;
+	Tue, 06 May 2025 08:34:47 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCBt9-00D9CO-1e;
+	Tue, 06 May 2025 08:34:47 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  6 May 2025 08:34:40 +0200
+Message-Id: <20250506063446.3133582-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250506063446.3133582-1-a.fatoum@pengutronix.de>
+References: <20250506063446.3133582-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250505120633.3717186-19-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250505_233708_455252_AA49ADE6 
-X-CRM114-Status: GOOD (  33.12  )
+X-CRM114-CacheID: sfid-20250505_233449_084456_3715D071 
+X-CRM114-Status: GOOD (  12.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,130 +83,251 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 18/30] mci: imx-esdhc: add support for delay/tuning
- properties in DT
+Subject: [PATCH 2/8] ARM: i.MX: esdctl: replace dev_get_drvdata with device_get_match_data
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, May 05, 2025 at 02:06:21PM +0200, Ahmad Fatoum wrote:
-> With higher data rates, we will need to fine tune delay settings, which
-> can be supplied via the device tree. Add support for the binding to
-> barebox.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/mci/imx-esdhc.c | 70 ++++++++++++++++++++++++++++++++++++++++-
->  drivers/mci/imx-esdhc.h | 14 +++++++++
->  2 files changed, 83 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-> index 86dc6daba845..9d82c886cdcf 100644
-> --- a/drivers/mci/imx-esdhc.c
-> +++ b/drivers/mci/imx-esdhc.c
-> @@ -145,6 +145,15 @@ static void usdhc_set_timing(struct fsl_esdhc_host *host, enum mci_timing timing
->  	case MMC_TIMING_MMC_DDR52:
->  		mixctrl |= MIX_CTRL_DDREN;
->  		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
-> +		if (host->boarddata.delay_line) {
-> +			u32 v;
-> +			v = host->boarddata.delay_line <<
-> +				IMX_SDHCI_DLL_CTRL_OVERRIDE_VAL_SHIFT |
-> +				(1 << IMX_SDHCI_DLL_CTRL_OVERRIDE_EN_SHIFT);
-> +			if (cpu_is_mx53())
-> +				v <<= 1;
-> +			sdhci_write32(&host->sdhci, IMX_SDHCI_DLL_CTRL, v);
-> +		}
->  		break;
->  	default:
->  		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
-> @@ -290,7 +299,49 @@ static int esdhc_init(struct mci_host *mci, struct device *dev)
->  	esdhc_clrsetbits32(host, SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
->  			SYSCTL_TIMEOUT_MASK, 14 << 16);
->  
-> -	return ret;
-> +	if (IS_ENABLED(CONFIG_MCI_TUNING) && esdhc_is_usdhc(host) &&
-> +	    (host->socdata->flags & ESDHC_FLAG_STD_TUNING)) {
-> +		u32 tmp;
-> +
-> +		/* disable DLL_CTRL delay line settings */
-> +		sdhci_write32(&host->sdhci, ESDHC_DLL_CTRL, 0x0);
-> +
-> +		tmp = sdhci_read32(&host->sdhci, ESDHC_TUNING_CTRL);
-> +		tmp |= ESDHC_STD_TUNING_EN;
-> +
-> +		/*
-> +		 * ROM code or bootloader may config the start tap
-> +		 * and step, unmask them first.
-> +		 */
+In preparation for aligning dev_get_drvdata with Linux, use
+device_get_match_data instead. To not cast const-ness away, make all the
+match data related types const.
 
-This comment is rather pointless. It's just good style to mask out
-the current values before setting them.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-imx/esdctl.c | 65 +++++++++++++++++++-------------------
+ 1 file changed, 32 insertions(+), 33 deletions(-)
 
-> +		tmp &= ~(ESDHC_TUNING_START_TAP_MASK | ESDHC_TUNING_STEP_MASK);
-> +		if (host->boarddata.tuning_start_tap)
-> +			tmp |= host->boarddata.tuning_start_tap;
-> +		else
-> +			tmp |= ESDHC_TUNING_START_TAP_DEFAULT;
-
-You could initialize boarddata.tuning_start_tap with ESDHC_TUNING_START_TAP_DEFAULT
-in fsl_esdhc_probe_dt().
-
-> +
-> +		if (host->boarddata.tuning_step) {
-
-Same here.
-
-Sascha
-
-> +			tmp |= host->boarddata.tuning_step
-> +				<< ESDHC_TUNING_STEP_SHIFT;
-> +		} else {
-> +			tmp |= ESDHC_TUNING_STEP_DEFAULT
-> +				<< ESDHC_TUNING_STEP_SHIFT;
-> +		}
-> +
-> +		/* Disable the CMD CRC check for tuning, if not, need to
-> +		 * add some delay after every tuning command, because
-> +		 * hardware standard tuning logic will directly go to next
-> +		 * step once it detect the CMD CRC error, will not wait for
-> +		 * the card side to finally send out the tuning data, trigger
-> +		 * the buffer read ready interrupt immediately. If usdhc send
-> +		 * the next tuning command some eMMC card will stuck, can't
-> +		 * response, block the tuning procedure or the first command
-> +		 * after the whole tuning procedure always can't get any response.
-> +		 */
-> +		tmp |= ESDHC_TUNING_CMD_CRC_CHECK_DISABLE;
-> +		sdhci_write32(&host->sdhci, ESDHC_TUNING_CTRL, tmp);
-> +	}
-> +
-> +	return 0;
->  }
->  
->  static const struct mci_ops fsl_esdhc_ops = {
-> @@ -300,6 +351,21 @@ static const struct mci_ops fsl_esdhc_ops = {
->  	.card_present = esdhc_card_present,
->  };
->  
-> +static void fsl_esdhc_probe_dt(struct device *dev, struct fsl_esdhc_host *host)
-> +{
-> +	struct device_node *np = dev->of_node;
-> +	struct esdhc_platform_data *boarddata = &host->boarddata;
-> +
-> +	if (!IS_ENABLED(CONFIG_MCI_TUNING))
-> +		return;
-> +
-> +	of_property_read_u32(np, "fsl,tuning-step", &boarddata->tuning_step);
-> +	of_property_read_u32(np, "fsl,tuning-start-tap",
-> +			     &boarddata->tuning_start_tap);
-> +	if (of_property_read_u32(np, "fsl,delay-line", &boarddata->delay_line))
-> +		boarddata->delay_line = 0;
-> +}
-> +
-
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 701ca0ac1f37..4b67b52ca45e 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -35,7 +35,7 @@
+ struct imx_esdctl_data {
+ 	unsigned long base0;
+ 	unsigned long base1;
+-	int (*add_mem)(void *esdctlbase, struct imx_esdctl_data *);
++	int (*add_mem)(void *esdctlbase, const struct imx_esdctl_data *);
+ };
+ 
+ static int imx_esdctl_disabled;
+@@ -229,19 +229,19 @@ static inline void imx_esdctl_v2_disable_default(void __iomem *esdctlbase)
+ 	}
+ }
+ 
+-static int imx_esdctl_v1_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v1_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+ {
+ 	return add_mem(data->base0, imx_v1_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v1_sdram_size(esdctlbase, 1));
+ }
+ 
+-static int imx_esdctl_v2_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v2_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+ {
+ 	return add_mem(data->base0, imx_v2_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v2_sdram_size(esdctlbase, 1));
+ }
+ 
+-static int imx_esdctl_v2_bug_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v2_bug_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+ {
+ 	imx_esdctl_v2_disable_default(esdctlbase);
+ 
+@@ -249,13 +249,13 @@ static int imx_esdctl_v2_bug_add_mem(void *esdctlbase, struct imx_esdctl_data *d
+ 			data->base1, imx_v2_sdram_size(esdctlbase, 1));
+ }
+ 
+-static int imx_esdctl_v3_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v3_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+ {
+ 	return add_mem(data->base0, imx_v3_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v3_sdram_size(esdctlbase, 1));
+ }
+ 
+-static int imx_esdctl_v4_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v4_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+ {
+ 	return add_mem(data->base0, imx_v4_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v4_sdram_size(esdctlbase, 1));
+@@ -286,7 +286,7 @@ static inline resource_size_t imx6_mmdc_sdram_size(void __iomem *mmdcbase)
+ 	return size;
+ }
+ 
+-static int imx6_mmdc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int imx6_mmdc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ {
+ 	return arm_add_mem_device("ram0", data->base0,
+ 			   imx6_mmdc_sdram_size(mmdcbase));
+@@ -308,7 +308,7 @@ static inline resource_size_t vf610_ddrmc_sdram_size(void __iomem *ddrmc)
+ 	return memory_sdram_size(cols, rows, banks, width);
+ }
+ 
+-static int vf610_ddrmc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int vf610_ddrmc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ {
+ 	return arm_add_mem_device("ram0", data->base0,
+ 			   vf610_ddrmc_sdram_size(mmdcbase));
+@@ -513,7 +513,7 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswid
+ 				   reduced_adress_space, mstr);
+ }
+ 
+-static int _imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data,
++static int _imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data,
+ 			       unsigned int buswidth)
+ {
+ 	resource_size_t size = imx8m_ddrc_sdram_size(mmdcbase, buswidth);
+@@ -548,12 +548,12 @@ static int _imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data,
+ 	return ret;
+ }
+ 
+-static int imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ {
+ 	return _imx8m_ddrc_add_mem(mmdcbase, data, 32);
+ }
+ 
+-static int imx8mn_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int imx8mn_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ {
+ 	return _imx8m_ddrc_add_mem(mmdcbase, data, 16);
+ }
+@@ -592,7 +592,7 @@ resource_size_t imx9_ddrc_sdram_size(void)
+ 	return mem;
+ }
+ 
+-static int imx9_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int imx9_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ {
+ 	return arm_add_mem_device("ram0", data->base0, imx9_ddrc_sdram_size());
+ }
+@@ -637,7 +637,7 @@ static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
+ 				   reduced_adress_space, mstr);
+ }
+ 
+-static int imx7d_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int imx7d_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ {
+ 	return arm_add_mem_device("ram0", data->base0,
+ 			   imx7d_ddrc_sdram_size(mmdcbase));
+@@ -646,13 +646,12 @@ static int imx7d_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ static int imx_esdctl_probe(struct device *dev)
+ {
+ 	struct resource *iores;
+-	struct imx_esdctl_data *data;
+-	int ret;
++	const struct imx_esdctl_data *data;
+ 	void *base;
+ 
+-	ret = dev_get_drvdata(dev, (const void **)&data);
+-	if (ret)
+-		return ret;
++	data = device_get_match_data(dev);
++	if (!data)
++		return -ENODEV;
+ 
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+@@ -665,84 +664,84 @@ static int imx_esdctl_probe(struct device *dev)
+ 	return data->add_mem(base, data);
+ }
+ 
+-static __maybe_unused struct imx_esdctl_data imx1_data = {
++static __maybe_unused const struct imx_esdctl_data imx1_data = {
+ 	.base0 = MX1_CSD0_BASE_ADDR,
+ 	.base1 = MX1_CSD1_BASE_ADDR,
+ 	.add_mem = imx_esdctl_v1_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx25_data = {
++static __maybe_unused const struct imx_esdctl_data imx25_data = {
+ 	.base0 = MX25_CSD0_BASE_ADDR,
+ 	.base1 = MX25_CSD1_BASE_ADDR,
+ 	.add_mem = imx_esdctl_v2_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx27_data = {
++static __maybe_unused const struct imx_esdctl_data imx27_data = {
+ 	.base0 = MX27_CSD0_BASE_ADDR,
+ 	.base1 = MX27_CSD1_BASE_ADDR,
+ 	.add_mem = imx_esdctl_v2_bug_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx31_data = {
++static __maybe_unused const struct imx_esdctl_data imx31_data = {
+ 	.base0 = MX31_CSD0_BASE_ADDR,
+ 	.base1 = MX31_CSD1_BASE_ADDR,
+ 	.add_mem = imx_esdctl_v2_bug_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx35_data = {
++static __maybe_unused const struct imx_esdctl_data imx35_data = {
+ 	.base0 = MX35_CSD0_BASE_ADDR,
+ 	.base1 = MX35_CSD1_BASE_ADDR,
+ 	.add_mem = imx_esdctl_v2_bug_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx51_data = {
++static __maybe_unused const struct imx_esdctl_data imx51_data = {
+ 	.base0 = MX51_CSD0_BASE_ADDR,
+ 	.base1 = MX51_CSD1_BASE_ADDR,
+ 	.add_mem = imx_esdctl_v3_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx53_data = {
++static __maybe_unused const struct imx_esdctl_data imx53_data = {
+ 	.base0 = MX53_CSD0_BASE_ADDR,
+ 	.base1 = MX53_CSD1_BASE_ADDR,
+ 	.add_mem = imx_esdctl_v4_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx6q_data = {
++static __maybe_unused const struct imx_esdctl_data imx6q_data = {
+ 	.base0 = MX6_MMDC_PORT01_BASE_ADDR,
+ 	.add_mem = imx6_mmdc_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx6sx_data = {
++static __maybe_unused const struct imx_esdctl_data imx6sx_data = {
+ 	.base0 = MX6_MMDC_PORT0_BASE_ADDR,
+ 	.add_mem = imx6_mmdc_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx6ul_data = {
++static __maybe_unused const struct imx_esdctl_data imx6ul_data = {
+ 	.base0 = MX6_MMDC_PORT0_BASE_ADDR,
+ 	.add_mem = imx6_mmdc_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data vf610_data = {
++static __maybe_unused const struct imx_esdctl_data vf610_data = {
+ 	.base0 = VF610_RAM_BASE_ADDR,
+ 	.add_mem = vf610_ddrmc_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx8m_data = {
++static __maybe_unused const struct imx_esdctl_data imx8m_data = {
+ 	.base0 = MX8M_DDR_CSD1_BASE_ADDR,
+ 	.add_mem = imx8m_ddrc_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx8mn_data = {
++static __maybe_unused const struct imx_esdctl_data imx8mn_data = {
+ 	.base0 = MX8M_DDR_CSD1_BASE_ADDR,
+ 	.add_mem = imx8mn_ddrc_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx9_data = {
++static __maybe_unused const struct imx_esdctl_data imx9_data = {
+ 	.base0 = MX9_DDR_CSD1_BASE_ADDR,
+ 	.add_mem = imx9_ddrc_add_mem,
+ };
+ 
+-static __maybe_unused struct imx_esdctl_data imx7d_data = {
++static __maybe_unused const struct imx_esdctl_data imx7d_data = {
+ 	.base0 = MX7_DDR_BASE_ADDR,
+ 	.add_mem = imx7d_ddrc_add_mem,
+ };
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
