@@ -1,71 +1,68 @@
-Delivery-date: Tue, 06 May 2025 08:36:23 +0200
+Delivery-date: Tue, 06 May 2025 08:38:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCBuh-002i1L-1X
+	id 1uCBwb-002i2p-2D
 	for lore@lore.pengutronix.de;
-	Tue, 06 May 2025 08:36:23 +0200
+	Tue, 06 May 2025 08:38:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCBuf-00014d-R3
-	for lore@pengutronix.de; Tue, 06 May 2025 08:36:23 +0200
+	id 1uCBwa-0001tx-RL
+	for lore@pengutronix.de; Tue, 06 May 2025 08:38:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CyyfdnxRA/CmTUUJDTTAftQLf877Tys46kmWM8vfMog=; b=IJW9K+zKPa2SlO2FUydENraHPV
-	CQc01ygVXPFVsyzuJhTLwCyeLG9BMsFmcx3FpPZWjDflGoHA4ho8sAViiLsVmLJ/3zal5s1RFknz/
-	v668VnyF3XtlgHAcKas06HAoDVfMgnyUZGTUtIpL9qkjZurRI52rO1Z7VfyfbSL1f6M2DuC5UDiWR
-	S+FED9+0eFWJwirqclMqPhMaVwvIEQcbJ8osVWuUkGqwsDm57Je4GjwXgfvg8hVc55cZB43iLqQpq
-	hZWnefEBNhiHoJmxIDzx/XpaDhbXSVJ4vrJgg/vGfwCQV33f2zvMIoDgS0pd5RpdHqDl6W7N1EZBc
-	KHflim+g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=byIwqmVbwMA6s23bzcctGWbzYRPlf/B0HbtyTE6rOmw=; b=uIZWD2/rX54s/YIYbvOmUDCczr
+	I16pB/83X3PnnBx7gNVl05n5Aacr36TBn6NHvVuGBQ+5gdigf31yHNv3+15+W2TMejmNO3Lr9Ghu2
+	GpJAnEgcSSfliUkNljPlcn7AvWrYq3xjr+MBr+5gN0xmuZ1hdGmVW1WpnncCf1qV/QZUp/ckbb8ob
+	HAsXIQKEDhgafeyJ1Zc2F+X2eHInMMpg+b22bbNdI+x4NIe5J++eh6Tf7C7DbjNNzwZI/8hUtP5mx
+	mjtmVd/E44PMDK3RpauV4inJXNLKGXwe7XMafDzwsHbQcBVPaN0LvL9Fygmt0ozAYYWzd/HGncDfT
+	hqpbWv1w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCBuF-0000000AieB-44wW;
-	Tue, 06 May 2025 06:35:55 +0000
+	id 1uCBw9-0000000AjR1-3vdG;
+	Tue, 06 May 2025 06:37:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCBkZ-0000000AfbV-2EGS
+	id 1uCBtA-0000000AiKP-3eOO
 	for barebox@lists.infradead.org;
-	Tue, 06 May 2025 06:25:56 +0000
+	Tue, 06 May 2025 06:34:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uCBkY-0006r8-5Z; Tue, 06 May 2025 08:25:54 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCBt9-0000TT-FJ; Tue, 06 May 2025 08:34:47 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uCBkX-001Ljo-3A;
-	Tue, 06 May 2025 08:25:53 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uCBkX-006RlD-2q;
-	Tue, 06 May 2025 08:25:53 +0200
-Date: Tue, 6 May 2025 08:25:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <aBmrcf7bM9MPNlOw@pengutronix.de>
-References: <20250505120633.3717186-1-a.fatoum@pengutronix.de>
- <20250505120633.3717186-14-a.fatoum@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCBt9-001LpO-0q;
+	Tue, 06 May 2025 08:34:47 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCBt9-00D9CO-25;
+	Tue, 06 May 2025 08:34:47 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  6 May 2025 08:34:43 +0200
+Message-Id: <20250506063446.3133582-5-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250506063446.3133582-1-a.fatoum@pengutronix.de>
+References: <20250506063446.3133582-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250505120633.3717186-14-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250505_232555_565918_309F66ED 
-X-CRM114-Status: GOOD (  21.08  )
+X-CRM114-CacheID: sfid-20250505_233448_934369_E8DA2196 
+X-CRM114-Status: UNSURE (   9.95  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,57 +84,52 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 13/30] mci: imx-esdhc: implement esdhc_poll using
- sdhci_read32_poll_timeout
+Subject: [PATCH 5/8] mci: am654-sdhci: fix error code printed in error messages
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, May 05, 2025 at 02:06:16PM +0200, Ahmad Fatoum wrote:
-> esdhc_match32 is not flexible enough for use in the upcoming HS200
-> tuning code, so reimplement it in terms of sdhci_read32_poll_timeout
-> to allow custom conditions.
-> 
-> No functional change.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/mci/imx-esdhc-common.c | 65 +++++++++++-----------------------
->  drivers/mci/imx-esdhc.c        | 15 ++++----
->  drivers/mci/imx-esdhc.h        | 29 +++++++++++++--
->  3 files changed, 53 insertions(+), 56 deletions(-)
-> 
-> diff --git a/drivers/mci/imx-esdhc-common.c b/drivers/mci/imx-esdhc-common.c
-> index 7673220fe8d4..dae88bb977c6 100644
-> --- a/drivers/mci/imx-esdhc-common.c
-> +++ b/drivers/mci/imx-esdhc-common.c
-> @@ -78,49 +78,24 @@ static int esdhc_setup_data(struct fsl_esdhc_host *host, struct mci_data *data,
->  	return 0;
->  }
->  
-> -static bool esdhc_match32(struct fsl_esdhc_host *host, unsigned int off,
-> -			  unsigned int mask, unsigned int val)
-> +static u64 esdhc_compute_timeout(struct mci_cmd *cmd,
-> +				 struct mci_data *data,
-> +				 u64 default_value)
->  {
-> -	const unsigned int reg = sdhci_read32(&host->sdhci, off) & mask;
-> +	if (data && data->timeout_ns != 0)
-> +		return data->timeout_ns;
->  
-> -	return reg == val;
-> -}
-> +	if (cmd && cmd->busy_timeout != 0)
-> +		return cmd->busy_timeout * NSEC_PER_MSEC;
+The error code returned on clock failures is a stale value of ret, which
+is likely to be zero.
 
-You have the same code in "mci: sdhci: add support for struct mci_data::timeout_ns"
-already. Can this be made a generic helper?
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/am654-sdhci.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-Sascha
-
+diff --git a/drivers/mci/am654-sdhci.c b/drivers/mci/am654-sdhci.c
+index b4735952515f..3e637c56850f 100644
+--- a/drivers/mci/am654-sdhci.c
++++ b/drivers/mci/am654-sdhci.c
+@@ -575,21 +575,13 @@ static int am654_sdhci_probe(struct device *dev)
+                 return PTR_ERR(plat->base);
+         }
+ 
+-	plat->clk = clk_get(dev, "clk_xin");
+-	if (IS_ERR(plat->clk)) {
+-		dev_err(dev, "failed to get clock\n");
+-		return ret;
+-	}
++	plat->clk = clk_get_enabled(dev, "clk_xin");
++	if (IS_ERR(plat->clk))
++		return dev_errp_probe(dev, plat->clk, "failed to get clock\n");
+ 
+-	clk_enable(plat->clk);
+-
+-	plat->clk_ahb = clk_get(dev, "clk_ahb");
+-	if (IS_ERR(plat->clk_ahb)) {
+-		dev_err(dev, "failed to get ahb clock\n");
+-		return ret;
+-	}
+-
+-	clk_enable(plat->clk_ahb);
++	plat->clk_ahb = clk_get_enabled(dev, "clk_ahb");
++	if (IS_ERR(plat->clk_ahb))
++		return dev_errp_probe(dev, plat->clk, "failed to get ahb clock\n");
+ 
+ 	mci = &plat->mci;
+ 	mci->f_max = clk_get_rate(plat->clk);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
