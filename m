@@ -1,67 +1,67 @@
-Delivery-date: Tue, 06 May 2025 08:38:28 +0200
+Delivery-date: Tue, 06 May 2025 08:38:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCBwi-002i5I-1T
+	id 1uCBwm-002i5e-26
 	for lore@lore.pengutronix.de;
-	Tue, 06 May 2025 08:38:28 +0200
+	Tue, 06 May 2025 08:38:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCBwh-00020r-EW
-	for lore@pengutronix.de; Tue, 06 May 2025 08:38:28 +0200
+	id 1uCBwl-00023R-5X
+	for lore@pengutronix.de; Tue, 06 May 2025 08:38:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=r3HLRLs3dXqEOWiA5q7G/z4PA9TcfTQPqZYYr2oKNVU=; b=m8TJWFdgbJ0F4rlG7KifENATOe
-	qh+PcpLFNggP53EDKqCQkO+HYZBV2awkdDXxq9sWvjqsRqUgIemgG+TAYlvwgTmdGv8meUTvkVhHE
-	7mDSdCTbB+UcwRBUgWrO0qnkGADZSWHjJRLL4SckHcMsgcp+0iT0LY5jtMRpTp90df79iAkroTLod
-	fG4B9RX5cyFE8ijixs6A6MBOwudCVm1LeQIzj6Yms0mE5VbiqzbMIr1kTxCJRZWPGbHfw+y4eNV85
-	iB9GZp9qlvCXiSfyuk9MoYZVBg4XzBHrKs8PrM4Q/8Z53Kw2hYyVleXccwjm/7K6h7KDHdZg/WEeC
-	yv+djL2g==;
+	bh=teO7yZ+El07U3RQMwQiSIeuFiuvljUoYhMbc4lnn5iI=; b=Ymuo6H91WAMi8FoY/3+KrCos9r
+	KTkkEDfNd2+GJz8f1cqEBtUz38tj6ZJS3bii31ErsqoqibUk718qfzZhxT4KFUxflIh2bjBtu/fHS
+	PeUTFqqcpiT5KkZAtN2h+cNihGCklM+Qwj0ZHt4FB8yDuGQm5ZEYs2tGq8AZJmcDytDMWqiH7uF54
+	iluKizE6FQR3AzDmbos/mi/JAbKY0kN8f76lYRrZBSK3mc4+VEgJ1+B78F9eZyWrI+GPt/FeTPhrh
+	mZ5JIH4PB9TaVTJiuU2bOhYKsMcLQ1C4Xg3kZNLAM/RpainLOZCkk8oTXOheJnqysMgRVaFWBDBeb
+	IVXkzVnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCBwC-0000000AjTs-1Sww;
-	Tue, 06 May 2025 06:37:56 +0000
+	id 1uCBwD-0000000AjVU-2WcD;
+	Tue, 06 May 2025 06:37:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCBtA-0000000AiKL-3dqW
+	id 1uCBtI-0000000AiOg-3chu
 	for barebox@lists.infradead.org;
-	Tue, 06 May 2025 06:34:51 +0000
+	Tue, 06 May 2025 06:34:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCBt9-0000TP-Ap; Tue, 06 May 2025 08:34:47 +0200
+	id 1uCBt9-0000Tr-LC; Tue, 06 May 2025 08:34:47 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCBt9-001LpF-0Q;
+	id 1uCBt9-001LpY-1J;
 	Tue, 06 May 2025 08:34:47 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCBt9-00D9CO-1e;
+	id 1uCBt9-00D9CO-2W;
 	Tue, 06 May 2025 08:34:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  6 May 2025 08:34:40 +0200
-Message-Id: <20250506063446.3133582-2-a.fatoum@pengutronix.de>
+Date: Tue,  6 May 2025 08:34:46 +0200
+Message-Id: <20250506063446.3133582-8-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250506063446.3133582-1-a.fatoum@pengutronix.de>
 References: <20250506063446.3133582-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250505_233449_084456_3715D071 
-X-CRM114-Status: GOOD (  12.27  )
+X-CRM114-CacheID: sfid-20250505_233457_208273_1BF93106 
+X-CRM114-Status: GOOD (  25.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,249 +83,511 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/8] ARM: i.MX: esdctl: replace dev_get_drvdata with device_get_match_data
+Subject: [PATCH 8/8] driver: base: invert driver match callback for Linux compatibility
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In preparation for aligning dev_get_drvdata with Linux, use
-device_get_match_data instead. To not cast const-ness away, make all the
-match data related types const.
+Both Linux and barebox have a struct bus_type::match callback that
+checks whether a driver matches a device.
+
+In Linux, a match is indicated by a non-zero return code, but in barebox
+zero is used for that purpose.
+
+To avoid this annoying pitfall, let's switch over barebox to the Linux
+scheme. While at it, we also adapt the prototype to make the driver
+const as is the case with Linux. This gives us some extra certainty that
+all bus types have indeed been adapted.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-imx/esdctl.c | 65 +++++++++++++++++++-------------------
- 1 file changed, 32 insertions(+), 33 deletions(-)
+ drivers/amba/bus.c              |  7 +++----
+ drivers/base/bus.c              | 20 ++++++++++----------
+ drivers/base/driver.c           |  2 +-
+ drivers/bus/acpi.c              |  6 +++---
+ drivers/efi/efi-device.c        |  8 ++++----
+ drivers/firmware/arm_scmi/bus.c | 10 +++++-----
+ drivers/net/phy/mdio_bus.c      | 10 +++++-----
+ drivers/of/base.c               |  6 +++---
+ drivers/pci/bus.c               |  8 ++++----
+ drivers/tee/tee_core.c          |  6 +++---
+ drivers/usb/core/usb.c          |  8 ++++----
+ drivers/usb/gadget/udc/core.c   | 10 +++++-----
+ drivers/virtio/virtio.c         |  8 ++++----
+ drivers/w1/w1.c                 |  8 ++++----
+ fs/fs.c                         |  4 ++--
+ include/driver.h                | 12 +++++++++---
+ include/of.h                    |  2 +-
+ 17 files changed, 70 insertions(+), 65 deletions(-)
 
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index 701ca0ac1f37..4b67b52ca45e 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -35,7 +35,7 @@
- struct imx_esdctl_data {
- 	unsigned long base0;
- 	unsigned long base1;
--	int (*add_mem)(void *esdctlbase, struct imx_esdctl_data *);
-+	int (*add_mem)(void *esdctlbase, const struct imx_esdctl_data *);
- };
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index 5ed8336e6124..8d6525cca967 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -29,13 +29,12 @@ amba_lookup(const struct amba_id *table, struct amba_device *dev)
+ 	return ret ? table : NULL;
+ }
  
- static int imx_esdctl_disabled;
-@@ -229,19 +229,19 @@ static inline void imx_esdctl_v2_disable_default(void __iomem *esdctlbase)
+-static int amba_match(struct device *dev, struct driver *drv)
++static int amba_match(struct device *dev, const struct driver *drv)
+ {
+ 	struct amba_device *pcdev = to_amba_device(dev);
++	const struct amba_driver *pcdrv = to_amba_driver(drv);
+ 
+-	struct amba_driver *pcdrv = to_amba_driver(drv);
+-
+-	return amba_lookup(pcdrv->id_table, pcdev) == NULL;
++	return amba_lookup(pcdrv->id_table, pcdev) != NULL;
+ }
+ 
+ static int amba_get_enable_pclk(struct amba_device *pcdev)
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index a5c9c930da83..58fcd2e032da 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -47,7 +47,7 @@ int bus_register(struct bus_type *bus)
+ 	return 0;
+ }
+ 
+-int device_match(struct device *dev, struct driver *drv)
++int device_match(struct device *dev, const struct driver *drv)
+ {
+ 	if (IS_ENABLED(CONFIG_OFDEVICE) && dev->of_node &&
+ 	    drv->of_compatible)
+@@ -59,29 +59,29 @@ int device_match(struct device *dev, struct driver *drv)
+ 		while (id->name) {
+ 			if (!strcmp(id->name, dev->name)) {
+ 				dev->id_entry = id;
+-				return 0;
++				return true;
+ 			}
+ 			id++;
+ 		}
+ 	} else if (!strcmp(dev->name, drv->name)) {
+-		return 0;
++		return true;
  	}
+ 
+-	return -1;
++	return false;
  }
  
--static int imx_esdctl_v1_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
-+static int imx_esdctl_v1_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+-int device_match_of_modalias(struct device *dev, struct driver *drv)
++int device_match_of_modalias(struct device *dev, const struct driver *drv)
  {
- 	return add_mem(data->base0, imx_v1_sdram_size(esdctlbase, 0),
- 			data->base1, imx_v1_sdram_size(esdctlbase, 1));
+ 	const struct platform_device_id *id = drv->id_table;
+ 	const char *of_modalias = NULL, *p;
+ 	const struct property *prop;
+ 	const char *compat;
+ 
+-	if (!device_match(dev, drv))
+-		return 0;
++	if (device_match(dev, drv))
++		return true;
+ 
+ 	if (!id || !IS_ENABLED(CONFIG_OFDEVICE) || !dev->of_node)
+-		return -1;
++		return false;
+ 
+ 	of_property_for_each_string(dev->of_node, "compatible", prop, compat) {
+ 		p = strchr(compat, ',');
+@@ -90,10 +90,10 @@ int device_match_of_modalias(struct device *dev, struct driver *drv)
+ 		for (id = drv->id_table; id->name; id++) {
+ 			if (!strcmp(id->name, dev->name) || !strcmp(id->name, of_modalias)) {
+ 				dev->id_entry = id;
+-				return 0;
++				return true;
+ 			}
+ 		}
+ 	}
+ 
+-	return -1;
++	return false;
+ }
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 2160d2fd060b..2192ba9812cb 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -226,7 +226,7 @@ static int match(struct driver *drv, struct device *dev)
+ 
+ 	dev->driver = drv;
+ 
+-	if (dev->bus->match && dev->bus->match(dev, drv))
++	if (!driver_match_device(drv, dev))
+ 		goto err_out;
+ 	ret = device_probe(dev);
+ 	if (ret)
+diff --git a/drivers/bus/acpi.c b/drivers/bus/acpi.c
+index 81e37cace710..92325c16e234 100644
+--- a/drivers/bus/acpi.c
++++ b/drivers/bus/acpi.c
+@@ -199,12 +199,12 @@ static int acpi_register_devices(struct bus_type *bus)
+ 	return 0;
  }
  
--static int imx_esdctl_v2_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
-+static int imx_esdctl_v2_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+-static int acpi_bus_match(struct device *dev, struct driver *drv)
++static int acpi_bus_match(struct device *dev, const struct driver *drv)
  {
- 	return add_mem(data->base0, imx_v2_sdram_size(esdctlbase, 0),
- 			data->base1, imx_v2_sdram_size(esdctlbase, 1));
+-	struct acpi_driver *acpidrv = to_acpi_driver(drv);
++	const struct acpi_driver *acpidrv = to_acpi_driver(drv);
+ 	struct acpi_sdt *sdt = acpi_get_dev_sdt(dev);
+ 
+-	return acpi_sigcmp(acpidrv->signature, sdt->signature);
++	return !acpi_sigcmp(acpidrv->signature, sdt->signature);
  }
  
--static int imx_esdctl_v2_bug_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
-+static int imx_esdctl_v2_bug_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+ struct bus_type acpi_bus = {
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index a113dfb45f3b..6dfcf22d3baf 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -282,9 +282,9 @@ int efi_connect_all(void)
+ 	return 0;
+ }
+ 
+-static int efi_bus_match(struct device *dev, struct driver *drv)
++static int efi_bus_match(struct device *dev, const struct driver *drv)
  {
- 	imx_esdctl_v2_disable_default(esdctlbase);
+-	struct efi_driver *efidrv = to_efi_driver(drv);
++	const struct efi_driver *efidrv = to_efi_driver(drv);
+ 	struct efi_device *efidev = to_efi_device(dev);
+ 	int i;
  
-@@ -249,13 +249,13 @@ static int imx_esdctl_v2_bug_add_mem(void *esdctlbase, struct imx_esdctl_data *d
- 			data->base1, imx_v2_sdram_size(esdctlbase, 1));
+@@ -292,11 +292,11 @@ static int efi_bus_match(struct device *dev, struct driver *drv)
+ 		if (!efi_guidcmp(efidrv->guid, efidev->guids[i])) {
+ 			BS->handle_protocol(efidev->handle, &efidev->guids[i],
+ 					&efidev->protocol);
+-			return 0;
++			return true;
+ 		}
+ 	}
+ 
+-	return 1;
++	return false;
  }
  
--static int imx_esdctl_v3_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
-+static int imx_esdctl_v3_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+ static int efi_bus_probe(struct device *dev)
+diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+index 1d9a0f089b44..0d7c404ae5ed 100644
+--- a/drivers/firmware/arm_scmi/bus.c
++++ b/drivers/firmware/arm_scmi/bus.c
+@@ -139,7 +139,7 @@ static int scmi_protocol_device_request(const struct scmi_device_id *id_table)
+ }
+ 
+ static const struct scmi_device_id *
+-scmi_dev_match_id(struct scmi_device *scmi_dev, struct scmi_driver *scmi_drv)
++scmi_dev_match_id(struct scmi_device *scmi_dev, const struct scmi_driver *scmi_drv)
  {
- 	return add_mem(data->base0, imx_v3_sdram_size(esdctlbase, 0),
- 			data->base1, imx_v3_sdram_size(esdctlbase, 1));
+ 	const struct scmi_device_id *id = scmi_drv->id_table;
+ 
+@@ -157,17 +157,17 @@ scmi_dev_match_id(struct scmi_device *scmi_dev, struct scmi_driver *scmi_drv)
+ 	return NULL;
  }
  
--static int imx_esdctl_v4_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
-+static int imx_esdctl_v4_add_mem(void *esdctlbase, const struct imx_esdctl_data *data)
+-static int scmi_dev_match(struct device *dev, struct driver *drv)
++static int scmi_dev_match(struct device *dev, const struct driver *drv)
  {
- 	return add_mem(data->base0, imx_v4_sdram_size(esdctlbase, 0),
- 			data->base1, imx_v4_sdram_size(esdctlbase, 1));
-@@ -286,7 +286,7 @@ static inline resource_size_t imx6_mmdc_sdram_size(void __iomem *mmdcbase)
- 	return size;
+-	struct scmi_driver *scmi_drv = to_scmi_driver(drv);
++	const struct scmi_driver *scmi_drv = to_scmi_driver(drv);
+ 	struct scmi_device *scmi_dev = to_scmi_dev(dev);
+ 	const struct scmi_device_id *id;
+ 
+ 	id = scmi_dev_match_id(scmi_dev, scmi_drv);
+ 	if (id)
+-		return 0;
++		return true;
+ 
+-	return -1;
++	return false;
  }
  
--static int imx6_mmdc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
-+static int imx6_mmdc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ static int scmi_match_by_id_table(struct device *dev, void *data)
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 7974ca773899..a6671a2680ad 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -415,20 +415,20 @@ EXPORT_SYMBOL(of_mdio_find_bus);
+  * Description: Given a PHY device, and a PHY driver, return 0 if
+  *   the driver supports the device.  Otherwise, return 1.
+  */
+-static int mdio_bus_match(struct device *dev, struct driver *drv)
++static int mdio_bus_match(struct device *dev, const struct driver *drv)
  {
- 	return arm_add_mem_device("ram0", data->base0,
- 			   imx6_mmdc_sdram_size(mmdcbase));
-@@ -308,7 +308,7 @@ static inline resource_size_t vf610_ddrmc_sdram_size(void __iomem *ddrmc)
- 	return memory_sdram_size(cols, rows, banks, width);
+-	struct phy_device *phydev = to_phy_device(dev);
+-	struct phy_driver *phydrv = to_phy_driver(drv);
++	const struct phy_device *phydev = to_phy_device(dev);
++	const struct phy_driver *phydrv = to_phy_driver(drv);
+ 
+ 	if (phydrv->is_phy) {
+ 		if ((phydrv->phy_id & phydrv->phy_id_mask) ==
+ 		    (phydev->phy_id & phydrv->phy_id_mask))
+-		return 0;
++		return true;
+ 	} else {
+ 		return device_match(dev, drv);
+ 	}
+ 
+-	return 1;
++	return false;
  }
  
--static int vf610_ddrmc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
-+static int vf610_ddrmc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ /**
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 8184b284099e..1439e55a0aac 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -842,17 +842,17 @@ struct device_node *of_find_matching_node_and_match(struct device_node *from,
+ }
+ EXPORT_SYMBOL(of_find_matching_node_and_match);
+ 
+-int of_match(struct device *dev, struct driver *drv)
++bool of_match(struct device *dev, const struct driver *drv)
  {
- 	return arm_add_mem_device("ram0", data->base0,
- 			   vf610_ddrmc_sdram_size(mmdcbase));
-@@ -513,7 +513,7 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswid
- 				   reduced_adress_space, mstr);
- }
+ 	const struct of_device_id *id;
  
--static int _imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data,
-+static int _imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data,
- 			       unsigned int buswidth)
+ 	id = of_match_node(drv->of_compatible, dev->of_node);
+ 	if (!id)
+-		return 1;
++		return false;
+ 
+ 	dev->of_id_entry = id;
+ 
+-	return 0;
++	return true;
+ }
+ EXPORT_SYMBOL(of_match);
+ /**
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+index 37bdc9a22f43..c8f5b592428d 100644
+--- a/drivers/pci/bus.c
++++ b/drivers/pci/bus.c
+@@ -73,19 +73,19 @@ const struct pci_device_id *pci_match_id(const struct pci_device_id *ids,
+ }
+ EXPORT_SYMBOL(pci_match_id);
+ 
+-static int pci_match(struct device *dev, struct driver *drv)
++static int pci_match(struct device *dev, const struct driver *drv)
  {
- 	resource_size_t size = imx8m_ddrc_sdram_size(mmdcbase, buswidth);
-@@ -548,12 +548,12 @@ static int _imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data,
- 	return ret;
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+-	struct pci_driver *pdrv = to_pci_driver(drv);
++	const struct pci_driver *pdrv = to_pci_driver(drv);
+ 	const struct pci_device_id *id;
+ 
+ 	for (id = pdrv->id_table; id->vendor; id++)
+ 		if (pci_match_one_device(id, pdev)) {
+ 			pdev->id = id;
+-			return 0;
++			return true;
+ 		}
+ 
+-	return -1;
++	return false;
  }
  
--static int imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
-+static int imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ static int pci_probe(struct device *dev)
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index 57a1d95d90d0..593e85313b0a 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -754,7 +754,7 @@ int tee_client_invoke_func(struct tee_context *ctx,
+ EXPORT_SYMBOL_GPL(tee_client_invoke_func);
+ 
+ static int tee_client_device_match(struct device *dev,
+-				   struct device_driver *drv)
++				   const struct device_driver *drv)
  {
- 	return _imx8m_ddrc_add_mem(mmdcbase, data, 32);
+ 	const struct tee_client_device_id *id_table;
+ 	struct tee_client_device *tee_device;
+@@ -764,11 +764,11 @@ static int tee_client_device_match(struct device *dev,
+ 
+ 	while (!uuid_is_null(&id_table->uuid)) {
+ 		if (uuid_equal(&tee_device->id.uuid, &id_table->uuid))
+-			return 0;
++			return true;
+ 		id_table++;
+ 	}
+ 
+-	return -1;
++	return false;
  }
  
--static int imx8mn_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
-+static int imx8mn_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ struct bus_type tee_bus_type = {
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 6940476bb8b6..01d193d072fe 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -1178,10 +1178,10 @@ static const struct usb_device_id *usb_match_id(struct usb_device *usbdev,
+ }
+ EXPORT_SYMBOL(usb_match_id);
+ 
+-static int usb_match(struct device *dev, struct driver *drv)
++static int usb_match(struct device *dev, const struct driver *drv)
  {
- 	return _imx8m_ddrc_add_mem(mmdcbase, data, 16);
- }
-@@ -592,7 +592,7 @@ resource_size_t imx9_ddrc_sdram_size(void)
- 	return mem;
+ 	struct usb_device *usbdev = container_of(dev, struct usb_device, dev);
+-	struct usb_driver *usbdrv = container_of(dev->driver, struct usb_driver, driver);
++	const struct usb_driver *usbdrv = container_of_const(drv, struct usb_driver, driver);
+ 	const struct usb_device_id *id;
+ 
+ 	pr_debug("matching: 0x%04x 0x%04x\n", usbdev->descriptor->idVendor,
+@@ -1190,9 +1190,9 @@ static int usb_match(struct device *dev, struct driver *drv)
+ 	id = usb_match_id(usbdev, usbdrv->id_table);
+ 	if (id) {
+ 		pr_debug("match: 0x%04x 0x%04x\n", id->idVendor, id->idProduct);
+-		return 0;
++		return true;
+ 	}
+-	return 1;
++	return false;
  }
  
--static int imx9_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
-+static int imx9_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ static int usb_probe(struct device *dev)
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index e7cfa0d5d836..4416902bc143 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1344,24 +1344,24 @@ EXPORT_SYMBOL_GPL(usb_del_gadget_udc);
+ 
+ /* ------------------------------------------------------------------------- */
+ 
+-static int gadget_match_driver(struct device *dev, struct driver *drv)
++static int gadget_match_driver(struct device *dev, const struct driver *drv)
  {
- 	return arm_add_mem_device("ram0", data->base0, imx9_ddrc_sdram_size());
- }
-@@ -637,7 +637,7 @@ static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
- 				   reduced_adress_space, mstr);
+ 	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
+ 	struct usb_udc *udc = gadget->udc;
+-	struct usb_gadget_driver *driver = container_of(drv,
++	const struct usb_gadget_driver *driver = container_of_const(drv,
+ 			struct usb_gadget_driver, driver);
+ 
+ 	/* If the driver specifies a udc_name, it must match the UDC's name */
+ 	if (driver->udc_name &&
+ 			strcmp(driver->udc_name, dev_name(&udc->dev)) != 0)
+-		return -1;
++		return false;
+ 
+ 	/* If the driver is already bound to a gadget, it doesn't match */
+ 	if (driver->is_bound)
+-		return -1;
++		return false;
+ 
+ 	/* Otherwise any gadget driver matches any UDC */
+-	return 0;
++	return true;
  }
  
--static int imx7d_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
-+static int imx7d_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ static void udc_poll_driver(struct poller_struct *poller)
+diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+index a0bd147c36c4..4abf551a2834 100644
+--- a/drivers/virtio/virtio.c
++++ b/drivers/virtio/virtio.c
+@@ -47,18 +47,18 @@ static inline int virtio_id_match(const struct virtio_device *dev,
+ 
+ /* This looks through all the IDs a driver claims to support.  If any of them
+  * match, we return 1 and the kernel will call virtio_dev_probe(). */
+-static int virtio_dev_match(struct device *_dv, struct driver *_dr)
++static int virtio_dev_match(struct device *_dv, const struct driver *_dr)
  {
- 	return arm_add_mem_device("ram0", data->base0,
- 			   imx7d_ddrc_sdram_size(mmdcbase));
-@@ -646,13 +646,12 @@ static int imx7d_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
- static int imx_esdctl_probe(struct device *dev)
- {
- 	struct resource *iores;
--	struct imx_esdctl_data *data;
--	int ret;
-+	const struct imx_esdctl_data *data;
- 	void *base;
+ 	unsigned int i;
+-	struct virtio_device *dev = dev_to_virtio(_dv);
++	const struct virtio_device *dev = dev_to_virtio(_dv);
+ 	const struct virtio_device_id *ids;
  
--	ret = dev_get_drvdata(dev, (const void **)&data);
--	if (ret)
--		return ret;
-+	data = device_get_match_data(dev);
-+	if (!data)
-+		return -ENODEV;
+ 	ids = drv_to_virtio(_dr)->id_table;
+ 	for (i = 0; ids[i].device; i++)
+ 		if (virtio_id_match(dev, &ids[i]))
+-			return 0;
++			return true;
  
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
-@@ -665,84 +664,84 @@ static int imx_esdctl_probe(struct device *dev)
- 	return data->add_mem(base, data);
+-	return -1;
++	return false;
  }
  
--static __maybe_unused struct imx_esdctl_data imx1_data = {
-+static __maybe_unused const struct imx_esdctl_data imx1_data = {
- 	.base0 = MX1_CSD0_BASE_ADDR,
- 	.base1 = MX1_CSD1_BASE_ADDR,
- 	.add_mem = imx_esdctl_v1_add_mem,
+ void virtio_check_driver_offered_feature(const struct virtio_device *vdev,
+diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
+index ac5fd3898276..15ada42ef0ba 100644
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -362,12 +362,12 @@ int w1_reset_select_slave(struct w1_device *dev)
+ #define to_w1_device(d)	container_of(d, struct w1_device, dev)
+ #define to_w1_driver(d) container_of(d, struct w1_driver, drv)
+ 
+-static int w1_bus_match(struct device *_dev, struct driver *_drv)
++static int w1_bus_match(struct device *_dev, const struct driver *_drv)
+ {
+-	struct w1_device *dev = to_w1_device(_dev);
+-	struct w1_driver *drv = to_w1_driver(_drv);
++	const struct w1_device *dev = to_w1_device(_dev);
++	const struct w1_driver *drv = to_w1_driver(_drv);
+ 
+-	return !(drv->fid == dev->fid);
++	return drv->fid == dev->fid;
+ }
+ 
+ static int w1_bus_probe(struct device *_dev)
+diff --git a/fs/fs.c b/fs/fs.c
+index 400e85de102b..465fd617c2ba 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -762,9 +762,9 @@ int close(int fd)
+ }
+ EXPORT_SYMBOL(close);
+ 
+-static int fs_match(struct device *dev, struct driver *drv)
++static int fs_match(struct device *dev, const struct driver *drv)
+ {
+-	return strcmp(dev->name, drv->name) ? -1 : 0;
++	return strcmp(dev->name, drv->name) == 0;
+ }
+ 
+ static int fs_probe(struct device *dev)
+diff --git a/include/driver.h b/include/driver.h
+index b63dce84c80e..b5f4de01e424 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -354,7 +354,7 @@ int generic_memmap_rw(struct cdev *dev, void **map, int flags);
+ 
+ struct bus_type {
+ 	char *name;
+-	int (*match)(struct device *dev, struct driver *drv);
++	int (*match)(struct device *dev, const struct driver *drv);
+ 	int (*probe)(struct device *dev);
+ 	void (*remove)(struct device *dev);
+ 
+@@ -366,7 +366,13 @@ struct bus_type {
  };
  
--static __maybe_unused struct imx_esdctl_data imx25_data = {
-+static __maybe_unused const struct imx_esdctl_data imx25_data = {
- 	.base0 = MX25_CSD0_BASE_ADDR,
- 	.base1 = MX25_CSD1_BASE_ADDR,
- 	.add_mem = imx_esdctl_v2_add_mem,
- };
+ int bus_register(struct bus_type *bus);
+-int device_match(struct device *dev, struct driver *drv);
++int device_match(struct device *dev, const struct driver *drv);
++
++static inline int driver_match_device(const struct driver *drv,
++				      struct device *dev)
++{
++	return drv->bus->match ? drv->bus->match(dev, drv) : true;
++}
  
--static __maybe_unused struct imx_esdctl_data imx27_data = {
-+static __maybe_unused const struct imx_esdctl_data imx27_data = {
- 	.base0 = MX27_CSD0_BASE_ADDR,
- 	.base1 = MX27_CSD1_BASE_ADDR,
- 	.add_mem = imx_esdctl_v2_bug_add_mem,
- };
+ extern struct list_head bus_list;
  
--static __maybe_unused struct imx_esdctl_data imx31_data = {
-+static __maybe_unused const struct imx_esdctl_data imx31_data = {
- 	.base0 = MX31_CSD0_BASE_ADDR,
- 	.base1 = MX31_CSD1_BASE_ADDR,
- 	.add_mem = imx_esdctl_v2_bug_add_mem,
- };
+@@ -674,7 +680,7 @@ int cdevfs_del_partition(struct cdev *cdev);
+  */
+ const void *device_get_match_data(struct device *dev);
  
--static __maybe_unused struct imx_esdctl_data imx35_data = {
-+static __maybe_unused const struct imx_esdctl_data imx35_data = {
- 	.base0 = MX35_CSD0_BASE_ADDR,
- 	.base1 = MX35_CSD1_BASE_ADDR,
- 	.add_mem = imx_esdctl_v2_bug_add_mem,
- };
+-int device_match_of_modalias(struct device *dev, struct driver *drv);
++int device_match_of_modalias(struct device *dev, const struct driver *drv);
  
--static __maybe_unused struct imx_esdctl_data imx51_data = {
-+static __maybe_unused const struct imx_esdctl_data imx51_data = {
- 	.base0 = MX51_CSD0_BASE_ADDR,
- 	.base1 = MX51_CSD1_BASE_ADDR,
- 	.add_mem = imx_esdctl_v3_add_mem,
- };
+ struct device *device_find_child(struct device *parent, void *data,
+ 				 int (*match)(struct device *dev, void *data));
+diff --git a/include/of.h b/include/of.h
+index 5829d9d1ace0..fccb8ba7e9e1 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -73,7 +73,7 @@ struct resource;
  
--static __maybe_unused struct imx_esdctl_data imx53_data = {
-+static __maybe_unused const struct imx_esdctl_data imx53_data = {
- 	.base0 = MX53_CSD0_BASE_ADDR,
- 	.base1 = MX53_CSD1_BASE_ADDR,
- 	.add_mem = imx_esdctl_v4_add_mem,
- };
+ void of_fix_tree(struct device_node *);
  
--static __maybe_unused struct imx_esdctl_data imx6q_data = {
-+static __maybe_unused const struct imx_esdctl_data imx6q_data = {
- 	.base0 = MX6_MMDC_PORT01_BASE_ADDR,
- 	.add_mem = imx6_mmdc_add_mem,
- };
+-int of_match(struct device *dev, struct driver *drv);
++bool of_match(struct device *dev, const struct driver *drv);
  
--static __maybe_unused struct imx_esdctl_data imx6sx_data = {
-+static __maybe_unused const struct imx_esdctl_data imx6sx_data = {
- 	.base0 = MX6_MMDC_PORT0_BASE_ADDR,
- 	.add_mem = imx6_mmdc_add_mem,
- };
- 
--static __maybe_unused struct imx_esdctl_data imx6ul_data = {
-+static __maybe_unused const struct imx_esdctl_data imx6ul_data = {
- 	.base0 = MX6_MMDC_PORT0_BASE_ADDR,
- 	.add_mem = imx6_mmdc_add_mem,
- };
- 
--static __maybe_unused struct imx_esdctl_data vf610_data = {
-+static __maybe_unused const struct imx_esdctl_data vf610_data = {
- 	.base0 = VF610_RAM_BASE_ADDR,
- 	.add_mem = vf610_ddrmc_add_mem,
- };
- 
--static __maybe_unused struct imx_esdctl_data imx8m_data = {
-+static __maybe_unused const struct imx_esdctl_data imx8m_data = {
- 	.base0 = MX8M_DDR_CSD1_BASE_ADDR,
- 	.add_mem = imx8m_ddrc_add_mem,
- };
- 
--static __maybe_unused struct imx_esdctl_data imx8mn_data = {
-+static __maybe_unused const struct imx_esdctl_data imx8mn_data = {
- 	.base0 = MX8M_DDR_CSD1_BASE_ADDR,
- 	.add_mem = imx8mn_ddrc_add_mem,
- };
- 
--static __maybe_unused struct imx_esdctl_data imx9_data = {
-+static __maybe_unused const struct imx_esdctl_data imx9_data = {
- 	.base0 = MX9_DDR_CSD1_BASE_ADDR,
- 	.add_mem = imx9_ddrc_add_mem,
- };
- 
--static __maybe_unused struct imx_esdctl_data imx7d_data = {
-+static __maybe_unused const struct imx_esdctl_data imx7d_data = {
- 	.base0 = MX7_DDR_BASE_ADDR,
- 	.add_mem = imx7d_ddrc_add_mem,
- };
+ int of_add_initrd(struct device_node *root, resource_size_t start,
+ 		resource_size_t end);
 -- 
 2.39.5
 
