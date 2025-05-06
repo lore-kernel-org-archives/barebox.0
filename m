@@ -1,67 +1,71 @@
-Delivery-date: Tue, 06 May 2025 08:38:25 +0200
+Delivery-date: Tue, 06 May 2025 08:38:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCBwf-002i4N-1i
+	id 1uCBwh-002i4v-00
 	for lore@lore.pengutronix.de;
-	Tue, 06 May 2025 08:38:25 +0200
+	Tue, 06 May 2025 08:38:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCBwd-0001xY-V1
-	for lore@pengutronix.de; Tue, 06 May 2025 08:38:25 +0200
+	id 1uCBwf-0001z4-Re
+	for lore@pengutronix.de; Tue, 06 May 2025 08:38:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8WBBgeK1GyWI30+p8QYwStgTKyJ7uEJW5L0H/CoHX+E=; b=h4X0Yksxht5hycgB+UWozsVb1Y
-	R+OvBOcpnei7u448WfqG8MzdoVgwP3gXUMpWo/fuvshPl7GfiMSfCb0rRzipRdzX63t6FLw6UJecC
-	U6przE6dTv2d7dnHzMG3ugzYZVldUOu0lQ1cCfqetrU41SunjX7WtLPC31JOzvKNlpHlEFAXJIxCC
-	M+t1dSFe7of8UhW6HQgr9Zg6fNPaVDz+rHgV1sM+KW8BQXPP6vJUDib8cL6uuE5jRLfyYmYqCn7OP
-	bNRkbXhJA5IJqp7LfIAwDSZ5cRZvPnetwg8ON8xYXvo5iMpYKRiBE77qK4lbQZFIsNPy43nO6aqUz
-	XaOnjzeQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=7L/AcQgYz1tYOdBpoqm0n25YBu5a4tfKqSeCbTfdnPk=; b=EeyEnqawQkjAxu2ioNFLw+Aubp
+	udlAkWL+W/YGcJuAPUPnznL39OGXoFdDeysZs+lr6g2a41QLB40KbGqK+KBHk6htvHTK0/QhttzDY
+	zpk4GywAbg2YIQS/ApDGjrxPK2tmRJZAfbGsZnfbtlpisyNjb7YUKTAxyc52cuKGpxiN2aDdMy0c+
+	R3mV8yBSeSUCO5OZXBiVfxFRGpJQ1MMSsHmOFhhJnBKEKq7hQsNDetBFS4HfLluzaEuZaknck5tB9
+	8Fgd+HfRBs+Ca+yn6MBLf7UDUPZe/ZS9+azV/dwdRUoqwKWOi2VUMmqSJXFHbiyQvIYo9IZgfhfiK
+	1MldcGOg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCBw8-0000000AjQP-3dG9;
-	Tue, 06 May 2025 06:37:52 +0000
+	id 1uCBwE-0000000AjWf-10jt;
+	Tue, 06 May 2025 06:37:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCBtA-0000000AiKM-3e8Q
+	id 1uCBvQ-0000000AjE6-1kjI
 	for barebox@lists.infradead.org;
-	Tue, 06 May 2025 06:34:50 +0000
+	Tue, 06 May 2025 06:37:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCBt9-0000TQ-Cn; Tue, 06 May 2025 08:34:47 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <sha@pengutronix.de>)
+	id 1uCBvP-0001Lr-4V; Tue, 06 May 2025 08:37:07 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCBt9-001LpI-0a;
-	Tue, 06 May 2025 08:34:47 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCBt9-00D9CO-1n;
-	Tue, 06 May 2025 08:34:47 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  6 May 2025 08:34:41 +0200
-Message-Id: <20250506063446.3133582-3-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250506063446.3133582-1-a.fatoum@pengutronix.de>
-References: <20250506063446.3133582-1-a.fatoum@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1uCBvO-001Lpv-35;
+	Tue, 06 May 2025 08:37:06 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uCBvO-006RtI-2n;
+	Tue, 06 May 2025 08:37:06 +0200
+Date: Tue, 6 May 2025 08:37:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <aBmuEkJMRx69PGJT@pengutronix.de>
+References: <20250505120633.3717186-1-a.fatoum@pengutronix.de>
+ <20250505120633.3717186-19-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250505120633.3717186-19-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250505_233448_938675_145DBFB3 
-X-CRM114-Status: GOOD (  18.14  )
+X-CRM114-CacheID: sfid-20250505_233708_455252_AA49ADE6 
+X-CRM114-Status: GOOD (  33.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,131 +87,130 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/8] driver: switch dev_get_drvdata to Linux semantics
+Subject: Re: [PATCH 18/30] mci: imx-esdhc: add support for delay/tuning
+ properties in DT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that no users of dev_get_drvdata remain, replace it with the Linux
-version. Any out-of-tree users must be changed to use
-device_get_match_data instead. The new dev_get_drvdata is the equivalent
-of what was so far written as dev->priv.
+On Mon, May 05, 2025 at 02:06:21PM +0200, Ahmad Fatoum wrote:
+> With higher data rates, we will need to fine tune delay settings, which
+> can be supplied via the device tree. Add support for the binding to
+> barebox.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/mci/imx-esdhc.c | 70 ++++++++++++++++++++++++++++++++++++++++-
+>  drivers/mci/imx-esdhc.h | 14 +++++++++
+>  2 files changed, 83 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+> index 86dc6daba845..9d82c886cdcf 100644
+> --- a/drivers/mci/imx-esdhc.c
+> +++ b/drivers/mci/imx-esdhc.c
+> @@ -145,6 +145,15 @@ static void usdhc_set_timing(struct fsl_esdhc_host *host, enum mci_timing timing
+>  	case MMC_TIMING_MMC_DDR52:
+>  		mixctrl |= MIX_CTRL_DDREN;
+>  		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
+> +		if (host->boarddata.delay_line) {
+> +			u32 v;
+> +			v = host->boarddata.delay_line <<
+> +				IMX_SDHCI_DLL_CTRL_OVERRIDE_VAL_SHIFT |
+> +				(1 << IMX_SDHCI_DLL_CTRL_OVERRIDE_EN_SHIFT);
+> +			if (cpu_is_mx53())
+> +				v <<= 1;
+> +			sdhci_write32(&host->sdhci, IMX_SDHCI_DLL_CTRL, v);
+> +		}
+>  		break;
+>  	default:
+>  		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
+> @@ -290,7 +299,49 @@ static int esdhc_init(struct mci_host *mci, struct device *dev)
+>  	esdhc_clrsetbits32(host, SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
+>  			SYSCTL_TIMEOUT_MASK, 14 << 16);
+>  
+> -	return ret;
+> +	if (IS_ENABLED(CONFIG_MCI_TUNING) && esdhc_is_usdhc(host) &&
+> +	    (host->socdata->flags & ESDHC_FLAG_STD_TUNING)) {
+> +		u32 tmp;
+> +
+> +		/* disable DLL_CTRL delay line settings */
+> +		sdhci_write32(&host->sdhci, ESDHC_DLL_CTRL, 0x0);
+> +
+> +		tmp = sdhci_read32(&host->sdhci, ESDHC_TUNING_CTRL);
+> +		tmp |= ESDHC_STD_TUNING_EN;
+> +
+> +		/*
+> +		 * ROM code or bootloader may config the start tap
+> +		 * and step, unmask them first.
+> +		 */
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/base/driver.c  | 15 ---------------
- include/device.h       |  5 ++++-
- include/driver.h       | 12 ------------
- include/linux/device.h | 32 ++++++++++++++++++++++++++++++++
- 4 files changed, 36 insertions(+), 28 deletions(-)
+This comment is rather pointless. It's just good style to mask out
+the current values before setting them.
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 85cec7efab46..2160d2fd060b 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -709,21 +709,6 @@ static void devices_shutdown(void)
- }
- devshutdown_exitcall(devices_shutdown);
- 
--int dev_get_drvdata(struct device *dev, const void **data)
--{
--	if (dev->of_id_entry) {
--		*data = dev->of_id_entry->data;
--		return 0;
--	}
--
--	if (dev->id_entry) {
--		*data = (const void **)dev->id_entry->driver_data;
--		return 0;
--	}
--
--	return -ENODEV;
--}
--
- const void *device_get_match_data(struct device *dev)
- {
- 	if (dev->of_id_entry)
-diff --git a/include/device.h b/include/device.h
-index 8841197a0a56..bc3a348e2e15 100644
---- a/include/device.h
-+++ b/include/device.h
-@@ -54,7 +54,10 @@ struct device {
- 	/*! Devices of a particular class normaly need to store more
- 	 * information than struct device holds.
- 	 */
--	void *priv;
-+	union {
-+		void *priv;
-+		void *driver_data;
-+	};
- 	void *type_data;     /*! In case this device is a specific device, this pointer
- 			      * points to the type specific device, i.e. eth_device
- 			      */
-diff --git a/include/driver.h b/include/driver.h
-index d73c33a42a81..b63dce84c80e 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -666,18 +666,6 @@ int cdevfs_del_partition(struct cdev *cdev);
- 
- #define DRV_OF_COMPAT(compat) of_match_ptr(compat)
- 
--/**
-- * dev_get_drvdata - get driver match data associated with device
-- * @dev: device instance
-- * @data: pointer to void *, where match data is stored
-- *
-- * Returns 0 on success and error code otherwise.
-- *
-- * DEPRECATED: use device_get_match_data instead, which avoids
-- * common pitfalls due to explicit pointer casts
-- */
--int dev_get_drvdata(struct device *dev, const void **data);
--
- /**
-  * device_get_match_data - get driver match data associated with device
-  * @dev: device instance
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 661d8b24730e..d4098b85239f 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -73,4 +73,36 @@ static inline int bus_for_each_dev(const struct bus_type *bus, struct device *st
- 	return 0;
- }
- 
-+
-+/**
-+ * dev_set_drvdata - set driver private data for device
-+ * @dev: device instance
-+ * @data: driver-specific data
-+ *
-+ * Returns private driver data or NULL if none was set.
-+ *
-+ * NOTE: This does _not_ return the match data associated with
-+ * the match. For that use device_get_match_data instead.
-+ */
-+static inline void dev_set_drvdata(struct device *dev, void *data)
-+{
-+	dev->driver_data = data;
-+}
-+
-+/**
-+ * dev_get_drvdata - get driver match data associated for device
-+ * @dev: device instance
-+ * @data: driver-specific data
-+ *
-+ * Set some driver and device specific data for later retrieval
-+ * by dev_get_drvdata.
-+ *
-+ * NOTE: This does _not_ return the match data associated with
-+ * the match. For that use device_get_match_data instead.
-+ */
-+static inline void *dev_get_drvdata(const struct device *dev)
-+{
-+	return dev->driver_data;
-+}
-+
- #endif
+> +		tmp &= ~(ESDHC_TUNING_START_TAP_MASK | ESDHC_TUNING_STEP_MASK);
+> +		if (host->boarddata.tuning_start_tap)
+> +			tmp |= host->boarddata.tuning_start_tap;
+> +		else
+> +			tmp |= ESDHC_TUNING_START_TAP_DEFAULT;
+
+You could initialize boarddata.tuning_start_tap with ESDHC_TUNING_START_TAP_DEFAULT
+in fsl_esdhc_probe_dt().
+
+> +
+> +		if (host->boarddata.tuning_step) {
+
+Same here.
+
+Sascha
+
+> +			tmp |= host->boarddata.tuning_step
+> +				<< ESDHC_TUNING_STEP_SHIFT;
+> +		} else {
+> +			tmp |= ESDHC_TUNING_STEP_DEFAULT
+> +				<< ESDHC_TUNING_STEP_SHIFT;
+> +		}
+> +
+> +		/* Disable the CMD CRC check for tuning, if not, need to
+> +		 * add some delay after every tuning command, because
+> +		 * hardware standard tuning logic will directly go to next
+> +		 * step once it detect the CMD CRC error, will not wait for
+> +		 * the card side to finally send out the tuning data, trigger
+> +		 * the buffer read ready interrupt immediately. If usdhc send
+> +		 * the next tuning command some eMMC card will stuck, can't
+> +		 * response, block the tuning procedure or the first command
+> +		 * after the whole tuning procedure always can't get any response.
+> +		 */
+> +		tmp |= ESDHC_TUNING_CMD_CRC_CHECK_DISABLE;
+> +		sdhci_write32(&host->sdhci, ESDHC_TUNING_CTRL, tmp);
+> +	}
+> +
+> +	return 0;
+>  }
+>  
+>  static const struct mci_ops fsl_esdhc_ops = {
+> @@ -300,6 +351,21 @@ static const struct mci_ops fsl_esdhc_ops = {
+>  	.card_present = esdhc_card_present,
+>  };
+>  
+> +static void fsl_esdhc_probe_dt(struct device *dev, struct fsl_esdhc_host *host)
+> +{
+> +	struct device_node *np = dev->of_node;
+> +	struct esdhc_platform_data *boarddata = &host->boarddata;
+> +
+> +	if (!IS_ENABLED(CONFIG_MCI_TUNING))
+> +		return;
+> +
+> +	of_property_read_u32(np, "fsl,tuning-step", &boarddata->tuning_step);
+> +	of_property_read_u32(np, "fsl,tuning-start-tap",
+> +			     &boarddata->tuning_start_tap);
+> +	if (of_property_read_u32(np, "fsl,delay-line", &boarddata->delay_line))
+> +		boarddata->delay_line = 0;
+> +}
+> +
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
