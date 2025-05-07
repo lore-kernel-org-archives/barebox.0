@@ -3,80 +3,80 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCb7Z-0035dJ-2m
+	id 1uCb7a-0035dR-0U
 	for lore@lore.pengutronix.de;
-	Wed, 07 May 2025 11:31:21 +0200
+	Wed, 07 May 2025 11:31:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uCb7Y-0007fM-Ly
-	for lore@pengutronix.de; Wed, 07 May 2025 11:31:21 +0200
+	id 1uCb7Z-0007fj-02
+	for lore@pengutronix.de; Wed, 07 May 2025 11:31:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jkBii1md+NrEfkbo2Md9+OM+V0iBYdV1QnUd5h1tss8=; b=Ct0blBOAaYYhVyUq91L/cDFJSE
-	J01bdYF70rg3R678WT4aoe4eFg3qwCGF407mPdZ3eMl8oHEJ0ew7NZKK2ovXSaO4n/EsMYE25b+7F
-	oz2yqbgYD3AAm2wG9ApUc3zwt+VKvtsjSJJ3ErU2Tpkb1rL3KTYtACBnACHKe2nq3mhGTAFve0m1m
-	6gNC73OMCMlAo7Xvr80Xn+4lyj/4+dZPNLSgw9twCXkf3DM79P0YQllN4H+T6lXSa1WcR99kRm1tc
-	xhOpsfrG4pQqvFtgcyqHFYSWv6uwqKdVFAe8v4mgvXnjlvlwTK1MzJtLu/wFJK6tdvVY8BsfJWvHx
-	IKjdsbuQ==;
+	bh=kCfR8vUdJT+B9ez+E8AK+dwL00ERcCDCAX329LxaV5g=; b=J0FdJriTwTGOfPUPF54qkuxgla
+	OIGEC3qHF7yhfmnpwQMksiUyiN+kIAczNuKEvBlJjqXqlpmBgr5tQP59YZ+GIm++f4lALhmKJG6MK
+	ecNfxT/tZmxyZKxnucntIzIs8jZaG2/81f8e/j9tJSaLBHwQ2Ar/Z2q+Q23JLTSk77FaK1vaHCxXk
+	d9VvXaUoBhIhifBSU5xukWQk+vs7l+PkoeRizm/+rfsEUB6fqnRXdxxTOjjYfmCvf3BQgpskkcF+6
+	+w+z98It5jkXVawtzoNvpYBXarW0beBzBwlQjAuPjyItv8JA1WsTTFARqGnrs7VTha4A/ga3OFfRh
+	A/kfbPlQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCb76-0000000Ey8s-2KqN;
-	Wed, 07 May 2025 09:30:52 +0000
+	id 1uCb75-0000000Ey8N-2EaE;
+	Wed, 07 May 2025 09:30:51 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCaG7-0000000EmGC-49Lt
+	id 1uCaG3-0000000EmFJ-2gB8
 	for barebox@bombadil.infradead.org;
-	Wed, 07 May 2025 08:36:14 +0000
+	Wed, 07 May 2025 08:36:11 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=jkBii1md+NrEfkbo2Md9+OM+V0iBYdV1QnUd5h1tss8=; b=EbOCNrLyvV2V1y+e/rhhNSq3U4
-	vyaYTaAD8bdfYEl/XGuYFa/SODKz/d5aAt5kgckyKdISjgSPBfAvAja+7sHht0bx789hLXUp0ShfY
-	oZocGmdgDC2zZZkCopeWwI15CVBQVKRi0un4xl1BaPOIR2VZLmUWeruHOmVsR+IdyaaiEIT7tB7eN
-	8rkySuunidyYZqzHl3w9rf4ZIepvUPSnEzQPJNBKoS8WEOwyHHsJG1TBw17rIHXesIC3djJvu1lDu
-	MlyRVmBg/e8zTDK3B8e7dZ6NQyB4lbmyqADddN7QNXhFJZ83Jw/NrY04zidVdvnkxc5k7VI40II3t
-	0jod/5oQ==;
+	bh=kCfR8vUdJT+B9ez+E8AK+dwL00ERcCDCAX329LxaV5g=; b=O34r8Gu6AobeXGtbRZp3JGS8m7
+	snLEIR+ehcheW6w2V3ywB36TbTrxqvzCIXPrQhZutThNnyJfQ6t1em9yDb/+TzwhV1Ai+92LRP4zy
+	BEM1KUqPfqlluOmLIq0f4zwh1+ajdgeIDHJQioqSzB6LBus2ecRYH/vktW60ExcvruZhDbKGGUK0x
+	q7wYU5hFaJeGAM1GWC5TC1Cy+Soo64l4WnTbLfWFN64zaC9N4iru8/076OWKglM5arntouo/HzeqP
+	QV66Ou5/ODpf3NFOb73osuGMj0tZQROK3crd/XeTnwc5T5i6QODGPXoq2wyIsocuq5tLl307cY28I
+	ubrGQgtw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCaFq-00000001ihP-3ap9
+	id 1uCaFn-00000001ihF-4BGT
 	for barebox@lists.infradead.org;
-	Wed, 07 May 2025 08:36:02 +0000
+	Wed, 07 May 2025 08:35:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCaFA-00040v-FH; Wed, 07 May 2025 10:35:08 +0200
+	id 1uCaF9-0003zF-TQ; Wed, 07 May 2025 10:35:07 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCaFA-001WvG-0u;
-	Wed, 07 May 2025 10:35:08 +0200
+	id 1uCaF9-001Wuo-2H;
+	Wed, 07 May 2025 10:35:07 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uCa2e-00AQeI-12;
-	Wed, 07 May 2025 10:22:11 +0200
+	id 1uCa2e-00AQeI-3B;
+	Wed, 07 May 2025 10:22:12 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 May 2025 10:21:54 +0200
-Message-Id: <20250507082209.3289972-16-a.fatoum@pengutronix.de>
+Date: Wed,  7 May 2025 10:22:09 +0200
+Message-Id: <20250507082209.3289972-31-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250507082209.3289972-1-a.fatoum@pengutronix.de>
 References: <20250507082209.3289972-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250507_093551_894703_DF26EA08 
-X-CRM114-Status: GOOD (  11.09  )
+X-CRM114-CacheID: sfid-20250507_093549_077693_49DC5B1E 
+X-CRM114-Status: GOOD (  19.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,189 +98,252 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 15/30] mci: sdhci: add cmd parameter to sdhci_transfer_*
+Subject: [PATCH v2 30/30] mci: imx-esdhc: implement HS200 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With incoming tuning support, the SDHCI flags computed inside
-sdhci_transfer_* will depend on the specific MMC command that's due to
-be sent, therefore add the command as parameter to the functions.
+Now everything is in place, so we can actually implement execute_tuning
+for i.MX6SL or later. i.MX6Q would be possible as well, but that
+requires a different manual tuning scheme which was not ported here.
+
+Comparison copying 64M off a Samsung 8GTF4R eMMC on an i.MX8MP.
+Before:
+
+  imx8mp-ddr52: time cp /dev/mmc2.2 .
+  time: 884ms
+
+After:
+
+  imx8mp-hs200: time cp /dev/mmc2.2 .
+  time: 488ms
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/am654-sdhci.c            |  2 +-
- drivers/mci/arasan-sdhci.c           |  2 +-
- drivers/mci/atmel-sdhci-common.c     |  2 +-
- drivers/mci/dwcmshc-sdhci.c          |  2 +-
- drivers/mci/imx-esdhc-common.c       |  4 ++--
- drivers/mci/mci-bcm2835.c            |  2 +-
- drivers/mci/rockchip-dwcmshc-sdhci.c |  2 +-
- drivers/mci/sdhci.c                  | 14 ++++++++------
- drivers/mci/sdhci.h                  | 10 ++++++----
- 9 files changed, 22 insertions(+), 18 deletions(-)
+ drivers/mci/imx-esdhc-common.c |   8 +-
+ drivers/mci/imx-esdhc.c        | 153 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 157 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mci/am654-sdhci.c b/drivers/mci/am654-sdhci.c
-index 20dd03b83a9a..13c8876573c7 100644
---- a/drivers/mci/am654-sdhci.c
-+++ b/drivers/mci/am654-sdhci.c
-@@ -490,7 +490,7 @@ static int am654_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 	sdhci_read_response(&host->sdhci, cmd);
- 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, SDHCI_INT_CMD_COMPLETE);
- 
--	ret = sdhci_transfer_data_dma(&host->sdhci, data, dma);
-+	ret = sdhci_transfer_data_dma(&host->sdhci, cmd, data, dma);
- 
- error:
- 	if (ret) {
-diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-index 879339572b11..5774928e5a97 100644
---- a/drivers/mci/arasan-sdhci.c
-+++ b/drivers/mci/arasan-sdhci.c
-@@ -293,7 +293,7 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, SDHCI_INT_CMD_COMPLETE);
- 
- 	if (data)
--		ret = sdhci_transfer_data_dma(&host->sdhci, data, dma);
-+		ret = sdhci_transfer_data_dma(&host->sdhci, cmd, data, dma);
- 
- error:
- 	if (ret) {
-diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
-index 12b71bc2ded3..a3ed2730e527 100644
---- a/drivers/mci/atmel-sdhci-common.c
-+++ b/drivers/mci/atmel-sdhci-common.c
-@@ -128,7 +128,7 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
- 	sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
- 
- 	if (data)
--		sdhci_transfer_data_pio(sdhci, data);
-+		sdhci_transfer_data_pio(sdhci, cmd, data);
- 
- 	udelay(1000);
- 
-diff --git a/drivers/mci/dwcmshc-sdhci.c b/drivers/mci/dwcmshc-sdhci.c
-index f6d559e393d4..174cc3f76816 100644
---- a/drivers/mci/dwcmshc-sdhci.c
-+++ b/drivers/mci/dwcmshc-sdhci.c
-@@ -160,7 +160,7 @@ static int do_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 
- 	sdhci_read_response(&host->sdhci, cmd);
- 
--	ret = sdhci_transfer_data(&host->sdhci, data, dma);
-+	ret = sdhci_transfer_data(&host->sdhci, cmd, data, dma);
- error:
- 	if (ret) {
- 		sdhci_reset(&host->sdhci, SDHCI_RESET_CMD);
 diff --git a/drivers/mci/imx-esdhc-common.c b/drivers/mci/imx-esdhc-common.c
-index 18a9f3be7239..9526bcfea8c1 100644
+index caa8505ac00e..228f4a9b03fe 100644
 --- a/drivers/mci/imx-esdhc-common.c
 +++ b/drivers/mci/imx-esdhc-common.c
-@@ -159,9 +159,9 @@ int __esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd,
- 	/* Wait until all of the blocks are transferred */
- 	if (data) {
- 		if (esdhc_use_pio_mode())
--			ret = sdhci_transfer_data_pio(&host->sdhci, data);
-+			ret = sdhci_transfer_data_pio(&host->sdhci, cmd, data);
- 		else
--			ret = sdhci_transfer_data_dma(&host->sdhci, data, dma);
-+			ret = sdhci_transfer_data_dma(&host->sdhci, cmd, data, dma);
+@@ -323,7 +323,7 @@ int __esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd,
+ 		     struct mci_data *data)
+ {
+ 	u32	xfertyp, mixctrl, command;
+-	u32	val, irqstat;
++	u32	val, irqflags, irqstat;
+ 	dma_addr_t dma = SDHCI_NO_DMA;
+ 	int ret;
  
- 		if (ret)
- 			return ret;
-diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-index ff4c6d803c32..cd4c1b866ca1 100644
---- a/drivers/mci/mci-bcm2835.c
-+++ b/drivers/mci/mci-bcm2835.c
-@@ -158,7 +158,7 @@ static int bcm2835_mci_request(struct mci_host *mci, struct mci_cmd *cmd,
+@@ -363,9 +363,13 @@ int __esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd,
+ 	sdhci_write32(&host->sdhci, SDHCI_TRANSFER_MODE__COMMAND,
+ 		      command << 16 | xfertyp);
+ 
++	irqflags = SDHCI_INT_CMD_COMPLETE;
++	if (mmc_op_tuning(cmd->cmdidx))
++		irqflags = SDHCI_INT_DATA_AVAIL;
++
+ 	/* Wait for the command to complete */
+ 	ret = esdhc_poll(host, SDHCI_INT_STATUS, irqstat,
+-			 irqstat & SDHCI_INT_CMD_COMPLETE,
++			 irqstat & irqflags,
+ 			 100 * MSECOND);
+ 	if (ret) {
+ 		dev_dbg(host->dev, "timeout 1\n");
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 4f2f02cfbdbe..c6547d94a4f9 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -61,6 +61,14 @@
+ #define ESDHC_PINCTRL_STATE_100MHZ	"state_100mhz"
+ #define ESDHC_PINCTRL_STATE_200MHZ	"state_200mhz"
+ 
++/*
++ * Our interpretation of the SDHCI_HOST_CONTROL register
++ */
++#define ESDHC_CTRL_4BITBUS		(0x1 << 1)
++#define ESDHC_CTRL_8BITBUS		(0x2 << 1)
++#define ESDHC_CTRL_BUSWIDTH_MASK	(0x3 << 1)
++#define USDHC_GET_BUSWIDTH(c) (c & ESDHC_CTRL_BUSWIDTH_MASK)
++
+ #define to_fsl_esdhc(mci)	container_of(mci, struct fsl_esdhc_host, mci)
+ 
+ /*
+@@ -137,6 +145,104 @@ static void set_sysctl(struct mci_host *mci, u32 clock, bool ddr)
+ 		   10 * MSECOND);
+ }
+ 
++static inline void esdhc_clrset_le(struct fsl_esdhc_host *host,
++				   u32 mask, u32 val, int reg)
++{
++	void __iomem *base = host->sdhci.base + (reg & ~0x3);
++	u32 shift = (reg & 0x3) * 8;
++
++	writel(((readl(base) & ~(mask << shift)) | (val << shift)), base);
++}
++
++/* Enable the auto tuning circuit to check the CMD line and BUS line */
++static inline void usdhc_auto_tuning_mode_sel_and_en(struct fsl_esdhc_host *host)
++{
++	u32 buswidth, auto_tune_buswidth;
++	u32 reg;
++
++	buswidth = USDHC_GET_BUSWIDTH(sdhci_read32(&host->sdhci, SDHCI_HOST_CONTROL));
++
++	switch (buswidth) {
++	case ESDHC_CTRL_8BITBUS:
++		auto_tune_buswidth = ESDHC_VEND_SPEC2_AUTO_TUNE_8BIT_EN;
++		break;
++	case ESDHC_CTRL_4BITBUS:
++		auto_tune_buswidth = ESDHC_VEND_SPEC2_AUTO_TUNE_4BIT_EN;
++		break;
++	default:	/* 1BITBUS */
++		auto_tune_buswidth = ESDHC_VEND_SPEC2_AUTO_TUNE_1BIT_EN;
++		break;
++	}
++
++	esdhc_clrset_le(host, ESDHC_VEND_SPEC2_AUTO_TUNE_MODE_MASK,
++			auto_tune_buswidth | ESDHC_VEND_SPEC2_AUTO_TUNE_CMD_EN,
++			ESDHC_VEND_SPEC2);
++
++	reg = sdhci_read32(&host->sdhci, IMX_SDHCI_MIXCTRL);
++	reg |= MIX_CTRL_AUTO_TUNE_EN;
++	sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, reg);
++}
++
++static void esdhc_reset_tuning(struct fsl_esdhc_host *host)
++{
++	u32 ctrl;
++	int ret;
++
++	/* Reset the tuning circuit */
++	if (esdhc_is_usdhc(host)) {
++		ctrl = sdhci_read32(&host->sdhci, IMX_SDHCI_MIXCTRL);
++		ctrl &= ~MIX_CTRL_AUTO_TUNE_EN;
++		if (host->socdata->flags & ESDHC_FLAG_STD_TUNING) {
++			sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, ctrl);
++			ctrl = sdhci_read32(&host->sdhci, SDHCI_ACMD12_ERR__HOST_CONTROL2);
++			ctrl &= ~MIX_CTRL_SMPCLK_SEL;
++			ctrl &= ~MIX_CTRL_EXE_TUNE;
++			sdhci_write32(&host->sdhci, SDHCI_ACMD12_ERR__HOST_CONTROL2, ctrl);
++			/* Make sure MIX_CTRL_EXE_TUNE cleared */
++			ret = sdhci_read32_poll_timeout(&host->sdhci, SDHCI_ACMD12_ERR__HOST_CONTROL2,
++				ctrl, !(ctrl & MIX_CTRL_EXE_TUNE), 50);
++			if (ret == -ETIMEDOUT)
++				dev_warn(host->dev,
++				 "Warning! clear execute tuning bit failed\n");
++			/*
++			 * SDHCI_INT_DATA_AVAIL is W1C bit, set this bit will clear the
++			 * usdhc IP internal logic flag execute_tuning_with_clr_buf, which
++			 * will finally make sure the normal data transfer logic correct.
++			 */
++			ctrl = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
++			ctrl |= SDHCI_INT_DATA_AVAIL;
++			sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, ctrl);
++		}
++	}
++}
++
++static int usdhc_execute_tuning(struct mci_host *mci, u32 opcode)
++{
++	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
++	int err;
++
++	/*
++	 * i.MX uSDHC internally already uses a fixed optimized timing for
++	 * DDR50, normally does not require tuning for DDR50 mode.
++	 */
++	if (host->sdhci.timing == MMC_TIMING_UHS_DDR50)
++		return 0;
++
++	/*
++	 * Reset tuning circuit logic. If not, the previous tuning result
++	 * will impact current tuning, make current tuning can't set the
++	 * correct delay cell.
++	 */
++	esdhc_reset_tuning(host);
++
++	err = sdhci_execute_tuning(&host->sdhci, opcode);
++	/* If tuning done, enable auto tuning */
++	if (!err)
++		usdhc_auto_tuning_mode_sel_and_en(host);
++
++	return err;
++}
++
+ static int esdhc_change_pinstate(struct fsl_esdhc_host *host,
+ 				 unsigned int uhs)
+ {
+@@ -190,8 +296,18 @@ static void usdhc_set_timing(struct fsl_esdhc_host *host, enum mci_timing timing
+ 			sdhci_write32(&host->sdhci, IMX_SDHCI_DLL_CTRL, v);
+ 		}
+ 		break;
+-	default:
++	case MMC_TIMING_UHS_SDR12:
++	case MMC_TIMING_UHS_SDR25:
++	case MMC_TIMING_UHS_SDR50:
++	case MMC_TIMING_UHS_SDR104:
++	case MMC_TIMING_MMC_HS:
++	case MMC_TIMING_MMC_HS200:
+ 		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
++		break;
++	case MMC_TIMING_LEGACY:
++	default:
++		esdhc_reset_tuning(host);
++		break;
  	}
  
- 	if (!ret && data)
--		ret = sdhci_transfer_data_pio(&host->sdhci, data);
-+		ret = sdhci_transfer_data_pio(&host->sdhci, cmd, data);
- 
- 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, 0xFFFFFFFF);
- 	if (ret) {
-diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
-index a7da64f4d7db..2f8d5ec140b5 100644
---- a/drivers/mci/rockchip-dwcmshc-sdhci.c
-+++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
-@@ -277,7 +277,7 @@ static int rk_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 	sdhci_read_response(&host->sdhci, cmd);
- 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, SDHCI_INT_CMD_COMPLETE);
- 
--	ret = sdhci_transfer_data_dma(&host->sdhci, data, dma);
-+	ret = sdhci_transfer_data_dma(&host->sdhci, cmd, data, dma);
- 
- error:
- 	if (ret) {
-diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-index 84acb3d163b5..55709e831a28 100644
---- a/drivers/mci/sdhci.c
-+++ b/drivers/mci/sdhci.c
-@@ -524,8 +524,8 @@ void sdhci_teardown_data(struct sdhci *sdhci,
- 		dma_unmap_single(dev, dma, nbytes, DMA_TO_DEVICE);
+ 	esdhc_change_pinstate(host, timing);
+@@ -421,6 +537,39 @@ static void fsl_esdhc_probe_dt(struct device *dev, struct fsl_esdhc_host *host)
+ 	}
  }
  
--int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
--			    dma_addr_t dma)
-+int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_cmd *cmd,
-+			    struct mci_data *data, dma_addr_t dma)
++static bool usdhc_setup_tuning(struct fsl_esdhc_host *host)
++{
++	struct mci_host *mci = &host->mci;
++
++	if (!IS_ENABLED(CONFIG_MCI_TUNING) || !esdhc_is_usdhc(host))
++		return false;
++
++	/*
++	 * clear tuning bits in case ROM has set it already
++	 * We use writel, because we haven't set up SDHCI yet
++	 */
++	writel(0x0, host->sdhci.base + IMX_SDHCI_MIXCTRL);
++	writel(0x0, host->sdhci.base + SDHCI_ACMD12_ERR__HOST_CONTROL2);
++	writel(0x0, host->sdhci.base + ESDHC_TUNE_CTRL_STATUS);
++
++	if (!(host->socdata->flags & ESDHC_FLAG_HS200))
++		return false;
++
++	if (host->socdata->flags & ESDHC_FLAG_MAN_TUNING) {
++		dev_dbg(host->dev, "i.MX6Q manual tuning not supported\n");
++		return false;
++	}
++
++	/*
++	 * Link usdhc specific mmc_host_ops execute_tuning function,
++	 * to replace the standard one in sdhci_ops.
++	 */
++	mci->ops.execute_tuning = usdhc_execute_tuning;
++	mci->caps2 |= MMC_CAP2_HS200;
++
++	return true;
++}
++
+ static int fsl_esdhc_probe(struct device *dev)
  {
- 	struct device *dev = sdhci_dev(sdhci);
- 	u64 start;
-@@ -594,7 +594,8 @@ int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
- 	return ret;
- }
+ 	struct resource *iores;
+@@ -466,7 +615,7 @@ static int fsl_esdhc_probe(struct device *dev)
+ 	host->mci.hw_dev = dev;
+ 	host->sdhci.mci = &host->mci;
  
--int sdhci_transfer_data_pio(struct sdhci *sdhci, struct mci_data *data)
-+int sdhci_transfer_data_pio(struct sdhci *sdhci, struct mci_cmd *cmd,
-+			    struct mci_data *data)
- {
- 	unsigned int block = 0;
- 	u32 stat, prs;
-@@ -635,7 +636,8 @@ int sdhci_transfer_data_pio(struct sdhci *sdhci, struct mci_data *data)
- 	return 0;
- }
+-	if (!(host->socdata->flags & ESDHC_FLAG_HS200))
++	if (!usdhc_setup_tuning(host))
+ 		host->sdhci.quirks2 |= SDHCI_QUIRK2_BROKEN_HS200;
  
--int sdhci_transfer_data(struct sdhci *sdhci, struct mci_data *data, dma_addr_t dma)
-+int sdhci_transfer_data(struct sdhci *sdhci, struct mci_cmd *cmd,
-+			struct mci_data *data, dma_addr_t dma)
- {
- 	struct device *dev = sdhci_dev(sdhci);
- 
-@@ -643,9 +645,9 @@ int sdhci_transfer_data(struct sdhci *sdhci, struct mci_data *data, dma_addr_t d
- 		return 0;
- 
- 	if (dma_mapping_error(dev, dma))
--		return sdhci_transfer_data_pio(sdhci, data);
-+		return sdhci_transfer_data_pio(sdhci, cmd, data);
- 	else
--		return sdhci_transfer_data_dma(sdhci, data, dma);
-+		return sdhci_transfer_data_dma(sdhci, cmd, data, dma);
- }
- 
- int sdhci_reset(struct sdhci *sdhci, u8 mask)
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index 61058ca030a8..12ab8d148144 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -326,10 +326,12 @@ void sdhci_set_cmd_xfer_mode(struct sdhci *host, struct mci_cmd *cmd,
- void sdhci_setup_data_pio(struct sdhci *sdhci, struct mci_data *data);
- void sdhci_setup_data_dma(struct sdhci *sdhci, struct mci_data *data, dma_addr_t *dma);
- void sdhci_teardown_data(struct sdhci *sdhci, struct mci_data *data, dma_addr_t dma);
--int sdhci_transfer_data(struct sdhci *sdhci, struct mci_data *data, dma_addr_t dma);
--int sdhci_transfer_data_pio(struct sdhci *sdhci, struct mci_data *data);
--int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
--			    dma_addr_t dma);
-+int sdhci_transfer_data(struct sdhci *sdhci, struct mci_cmd *cmd,
-+			struct mci_data *data, dma_addr_t dma);
-+int sdhci_transfer_data_pio(struct sdhci *sdhci, struct mci_cmd *cmd,
-+			    struct mci_data *data);
-+int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_cmd *cmd,
-+			    struct mci_data *data, dma_addr_t dma);
- int sdhci_reset(struct sdhci *sdhci, u8 mask);
- u16 sdhci_calc_clk(struct sdhci *host, unsigned int clock,
- 		   unsigned int *actual_clock, unsigned int input_clock);
+ 	ret = sdhci_setup_host(&host->sdhci);
 -- 
 2.39.5
 
