@@ -1,64 +1,70 @@
-Delivery-date: Thu, 15 May 2025 16:42:06 +0200
+Delivery-date: Fri, 16 May 2025 08:38:40 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uFZmf-005s3o-3C
+	id 1uFoiO-0065vT-0l
 	for lore@lore.pengutronix.de;
-	Thu, 15 May 2025 16:42:05 +0200
+	Fri, 16 May 2025 08:38:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uFZmf-0006fC-FE
-	for lore@pengutronix.de; Thu, 15 May 2025 16:42:05 +0200
+	id 1uFoiN-0003h4-Mh
+	for lore@pengutronix.de; Fri, 16 May 2025 08:38:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=I8EDStS/MCCdyk44JoRS0RGJrEJdLDQNq4dhVyVJP9c=; b=jG2fHJFtB36KAf
-	SbQXQNNNbgt9rmr675ZfMLprvRGz3hhXPOiJpvcfsAheT7D9Pq6CzUejuTYst9jJlkdIGci0vY7SB
-	WC8D19I5ENa28TfZytC2B6W+tVA/cOTjKdemsgGqAAbD0jcX7Gneeh6KOzV3uuKqPZ9bmr+NgWQ4S
-	9D1o11pn/iRN+Zq+QO/NwQTLMKeRdFe/hMcJHLgxOlTslXzVPa53ggSAtJqMQDrgYU2iXUkwbkLFK
-	Wo2DjFLjemRAkrgxV/4cwuw6MpoHuenfLTBlyJNo+otd9Tn7uDrQXImmgizWsWAs0vrvev9sjO1X9
-	Dyi1llyw4zKiW99oeNrA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=C1bsBl3SgnsOWbf3dsgjHi64frlIe4EEDvThNsLYuYc=; b=3hvqMmx0rqNjHritaC50ruqC/2
+	Q8sISiVLNfkORFCtSJtn5u+nxn+XXX4kzOPobMh7L9GustFv3h0TmNWi53gnjl6IhaFyreEAAYonw
+	7CgTLBSAG8PYpz5Vbd9ZyEjOosiqcsEuJUW567qZGZ+rUOdGdULCKuzWyevAISLHVkWd342Isyyjv
+	tRM2dQC/KkMqGtllSdDQu1zawqb4ll4pntkpsSV6UGQhPLcoNB15j/cGouT/2t1JIbe+sXtnrxouM
+	fVPUJ+chXkaEvYRtHZuIOiaB2lHUQ4c5riGCUBitQumlrQWP/gA5Wofd+HvOyDAi9Jg22m3leqd3f
+	7hoY3xlQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uFZlx-00000000ul9-3JUj;
-	Thu, 15 May 2025 14:41:21 +0000
+	id 1uFohe-00000002alF-0HAM;
+	Fri, 16 May 2025 06:37:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uFZdQ-00000000tYT-2KS0
+	id 1uFoha-00000002ak0-2VaJ
 	for barebox@lists.infradead.org;
-	Thu, 15 May 2025 14:32:34 +0000
+	Fri, 16 May 2025 06:37:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uFZdM-00013o-Um; Thu, 15 May 2025 16:32:28 +0200
+	id 1uFohY-0003QP-Oh; Fri, 16 May 2025 08:37:48 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uFZdM-002tGE-12;
-	Thu, 15 May 2025 16:32:28 +0200
+	id 1uFohY-002zrN-0P;
+	Fri, 16 May 2025 08:37:48 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uFZdM-006qv7-21;
-	Thu, 15 May 2025 16:32:28 +0200
+	id 1uFohY-009yWO-1c;
+	Fri, 16 May 2025 08:37:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 15 May 2025 16:32:19 +0200
-Message-Id: <20250515143219.1633351-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: lsc@pengutronix.de
+In-Reply-To: <20250509125532.983391-1-s.hauer@pengutronix.de>
+References: <20250509125532.983391-1-s.hauer@pengutronix.de>
+Message-Id: <174737746849.2377587.1858418241063801378.b4-ty@pengutronix.de>
+Date: Fri, 16 May 2025 08:37:48 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250515_073232_594842_8240407D 
-X-CRM114-Status: GOOD (  12.47  )
+X-CRM114-CacheID: sfid-20250515_233750_641964_A59EEA1C 
+X-CRM114-Status: UNSURE (   7.74  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,7 +76,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Lars Schmidt <l.schmidt@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -81,55 +86,29 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mci: am654-sdhci: Clear SDHCI_CTRL_HISPD bit for some speed modes
+Subject: Re: [PATCH] ARM: k3: fix banks count in DRAM size detection
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Normally we would set the SDHCI_CTRL_HISPD bit for MMC_TIMING_SD_HS and
-MMC_TIMING_MMC_HS. This however doesn't seem to work on AM62x and AM62L
-SoCs.
 
-Based on U-Boot commit 27a87c834fd ("mmc: am654_sdhci: Fix HISPD bit
-configuration in some lower speed modes") clear the SDHCI_CTRL_HISPD bit
-in these modes. Unfortunately I can't find the information in the data
-sheet referenced in that commit, so I can't verify it, but it seems
-to be necessary not only on AM6548, but on other SoCs as well.
+On Fri, 09 May 2025 14:55:32 +0200, Sascha Hauer wrote:
+> We assumed that a DDR4 always has 16 banks. This is true for x4 and x8
+> devices, but not for x16 devices which only have 8 banks.
+> 
+> It seems we can read the number of banks from the BANK_DIFF_x register
+> fields, but the exact encoding of these fields is unknown. The reference
+> manual only describes them as:
+> 
+> [...]
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/am654-sdhci.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+Applied, thanks!
 
-diff --git a/drivers/mci/am654-sdhci.c b/drivers/mci/am654-sdhci.c
-index 2c1fa5d804..8d6fa9c999 100644
---- a/drivers/mci/am654-sdhci.c
-+++ b/drivers/mci/am654-sdhci.c
-@@ -520,10 +520,20 @@ static void am654_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
- 
- 	val = sdhci_read8(&plat->sdhci, SDHCI_HOST_CONTROL);
- 
--	if (ios->clock > 26000000)
--		val |= SDHCI_CTRL_HISPD;
--	else
-+	switch (ios->timing) {
-+	/*
-+	 * According to the data manual, HISPD bit
-+	 * should not be set in these speed modes.
-+	 */
-+	case MMC_TIMING_SD_HS:
-+	case MMC_TIMING_MMC_HS:
-+	case MMC_TIMING_LEGACY:
- 		val &= ~SDHCI_CTRL_HISPD;
-+		break;
-+	default:
-+		val |= SDHCI_CTRL_HISPD;
-+		break;
-+	}
- 
- 	sdhci_write8(&plat->sdhci, SDHCI_HOST_CONTROL, val);
- 
+[1/1] ARM: k3: fix banks count in DRAM size detection
+      https://git.pengutronix.de/cgit/barebox/commit/?id=98551a9d8951 (link may not be stable)
+
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
