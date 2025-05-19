@@ -1,71 +1,71 @@
-Delivery-date: Mon, 19 May 2025 09:09:42 +0200
+Delivery-date: Mon, 19 May 2025 09:15:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uGud3-000Qqu-3D
+	id 1uGuiK-000RAF-2M
 	for lore@lore.pengutronix.de;
-	Mon, 19 May 2025 09:09:42 +0200
+	Mon, 19 May 2025 09:15:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uGud3-0006gY-71
-	for lore@pengutronix.de; Mon, 19 May 2025 09:09:41 +0200
+	id 1uGuiK-0007uU-2E
+	for lore@pengutronix.de; Mon, 19 May 2025 09:15:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
 	Content-Transfer-Encoding:Content-Type:Message-ID:Date:Subject:CC:To:From:
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dVlcoTnUeHlxWH4hcpnSPQ9V9UuDloUyRIhykOA6ZPE=; b=V7T583vjykXPapSfk4py5zE8rg
-	dGe2xlGDKdb8wPXcPgW7vQIOmxAMsQnq4kCYH3NVs0Kl/LSjqhDQwgAFnen1ITHSEQr1mWyQQLA54
-	AxG/h3em3juZgwAP7XcUgOLts4Yg8RrNJsyPRmMWne+OirrDaiE8dfTRascG3vtYasDIagehL6xJU
-	PGoNHdmwu00mHOLDNPd+yLyo6NAmFpE3eByqabyR8uI4wEum04JL5cONCm6ZEh4vmWP5454HXVhvp
-	09/LsmKwk3g3wJoZjUciRs/V+VL8u7dgJyoLlBMj1FFn2n2FJhru4nPuLzQojFkClwdjkSlCsG04M
-	hedX91rg==;
+	bh=n02ALOVbV7htWp/zHCv3FP7YVOVoGiV2ng5lb/Bd+JA=; b=E+iF9dQqIveXxVzM4bwUwvAcfU
+	VRmVnpQT1pbu8W5Mep9JGz7q8lGMGYj8GtbCHcydDuE3o/+hJXkiBVdC3dRFHoD7d2UCHe0QrvtYU
+	Qr+jPD3d0ICRVhhBT/Twk+rg3DljIxNvycrK/+0W1YS7P+OW708Rv/p+7V5+VdEEgq78zQz0Xadoe
+	ExwWf4ktZPOWZf11h/Q8TCUF5LaJZkkKGqDkJbRMYw3aGBAea6iiM/kYkkHVbA/AauRuW3wtdMBfu
+	WXFIKTNo1MdQ2Ctydp9pDUZQxWc6IcOY/yR1gtRHJgciyIDNzVhWF5hZnWKYDzJSlMYUce5hMrMRY
+	ad8PSWtQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uGucb-00000008BKb-2dfT;
-	Mon, 19 May 2025 07:09:13 +0000
-Received: from mail-francesouthazolkn190110001.outbound.protection.outlook.com ([2a01:111:f403:d207::1] helo=MRWPR03CU001.outbound.protection.outlook.com)
+	id 1uGuhp-00000008CA3-0t0A;
+	Mon, 19 May 2025 07:14:37 +0000
+Received: from [2a01:111:f403:d200::] (helo=DB3PR0202CU003.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uGucY-00000008BJB-2wcj
+	id 1uGugU-00000008Bv2-0pUc
 	for barebox@lists.infradead.org;
-	Mon, 19 May 2025 07:09:11 +0000
+	Mon, 19 May 2025 07:13:15 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hgWpRB1fy0P7AOMjsL4FWHNQ/5qdVJs9tCdGQ+DFOrDXgW/9SIY4x0SCnqHOhYa6JyoCPofSojeredklahJwfjJyl9On2oMWD0mQKFi9Gc4SpV61ZacKlwFls7DXnXZ4ca21UTnTbYJNW7fcYPJv+94Thu0poRRIoIvoHcscTVT/tjcgQ3JNhhw8n8TdETE5xraUzyjIjdZW0BPpYMwJHwtL1UZqXV+RWFUSyQYirM/vAwFL2D/CfZnGJuNOzBKTCdKZardOwPpjYP9BLY0NFEAPYW5/KTWyfLf1oLf4x7T/PFlHr8rzw/ytYKXKofx9Plzyt0lwmnjPm+UiZs2cQA==
+ b=mox3ECGhkXI3SK4dxwhrwlNyZBOTXVdbOlrpef8sL/yBlUH3eGvn/hW4CogRH2PyEK3MQdbn5caXivyZGlN/LIe57GKiIrB9iaMmIpuyrc2S3CJ7j5x0nk4Yf8UxcZYqEwtpXh5e2MIIkfFtE0fgpwETSTcjDXDwPaO7FzWNs5j/3oGf4Ob9nh9mxnlfxT/UqdN919obk6TSeTZC9YNBPCToK+t6YFsYCyn8Wor7MsIDZxHlDRf64w5ZQ370GbnH1tCeYNuhRvSxacby2Cs/5ErY/Vz+WoxTefFs4Rpp5qFjMjEDIA2YBZCrXUvqliqOIx2rR/D28iXl0Wht/aV9rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dVlcoTnUeHlxWH4hcpnSPQ9V9UuDloUyRIhykOA6ZPE=;
- b=fpzT5Hb8Rzz60xDQDcWwVFCxiZGjJuTpyj9VkrlPScXL/IUdbisf68cMZgrQ4DLq7iJgzreOmuzcM9o/kN9MzD958PUVE1ATw1trXWfhiv3t1Tw7hPNNhkl8hfUMvA1vXvCf4gTlgclQHqHML4ZBlKIpLAugANjxfCn4e0or57sPzNvve7xgfLtjUbcANL1JM1MsYzApRKhSFhSr0Vh9O+e2o6BIsqTrumDeWQnNDArRaA9qAPZypgXCXJAxb3poNakuZzWXfQ6mOoZG66MLaZ7tW1kvw2xoxwL/FxkTgAPTJ5hsUYVzn5HZJJIpJN5Xiqm9D1W0iSFU7KFPNSXiOg==
+ bh=n02ALOVbV7htWp/zHCv3FP7YVOVoGiV2ng5lb/Bd+JA=;
+ b=Ql7Jhu2+XFlhWGKR9ANKPEyux385tpcW+bhQAbtmuknRr76Sa3lnpFdt90ZPkj39xxwTFOh8y8/vUtSupGjuy15g5IFcx7846rZzqw6uT5GCcgN6TugzhhaoSpvqj2qhAE0YVySQrSwefEsoqqocohaUvBLYyjtok8wdWXQETFa8/aWvbLeek6eLBRlPMeeGqci6pw9p6zfTQw3frcjFLSytgaQuuuyXDCF3uRkRasyxD2pMEphGIFnHcIB5p8WrDNYT2ycMZpEG1RjhbEnS0+RPAVOOwCU2w9CkGKpVXVmXDYql44b+VAYBajnnhM6Zxw5JSD4YmZ21n0LVmXnAPw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dVlcoTnUeHlxWH4hcpnSPQ9V9UuDloUyRIhykOA6ZPE=;
- b=Nh/JGLDljpchs4xKh/logZxZQvA4kNu7RjLoAbWgq6kEJcEATRDH/3ZwhjFsuc0vKsC9MxcdM1PIU/90T8A+Tb0mUsu2WZT2ZPgzrq8lDhTI3ReKUzEuKP/G9sPmZV5u6uqtDDGm59PYh93jtrj13dG6iRTdbLVrvhejmcxm5B++52QyxMbXBHOw0sG2GiKCzwrpVrF3/41M+Bj9dQUOWqDYz8LCUqYCrBxCMS4SswXjIZQsO6fuUz/Rgh/ndXOC9U66r00GiLqkbUwuxbZqwjT0U5zDmeeIBVtZX615rZJ6yi3XtDyOhlhaiRgL1Y4UA08bcOZ/V/42C4A403dEKQ==
+ bh=n02ALOVbV7htWp/zHCv3FP7YVOVoGiV2ng5lb/Bd+JA=;
+ b=IV4/tE7y/ZOwhnfbk/3Eiaq3YtWGJu/JGyoOutLTKLE41hzphVkp8K9io2cKxhW4ygDNuMsUH1hLwVbVBBuSXmh+k3VEjK7ZLh6hjFNzEeuW3sWMGjYEf7O8yBzC9Fbk6L+mcl+O0aWN7BiIJjIfhA8wbpnA4QRWurRd/2B3OwpVscAMZ5bCzJp7LLEOS+ekSDOEdw87fjQzoUcWCFoq0N5n0Ju5Vak81AP0aXSNuC8MhhlAcqXhjCEmoHxdkb23XUrNNU/ZreHfmCfRr3PvD3ig4bYV2G4BsUpf5+WhoKttM9vkBWWB/tLtmYRzvXxLj2IH1KDD6kEnz5hkKg69ag==
 Received: from VI1PR02MB4429.eurprd02.prod.outlook.com (2603:10a6:803:b2::14)
  by AS8PR02MB10006.eurprd02.prod.outlook.com (2603:10a6:20b:616::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.17; Mon, 19 May
- 2025 07:09:06 +0000
+ 2025 07:13:11 +0000
 Received: from VI1PR02MB4429.eurprd02.prod.outlook.com
  ([fe80::fcf4:21c7:f28e:cfb2]) by VI1PR02MB4429.eurprd02.prod.outlook.com
  ([fe80::fcf4:21c7:f28e:cfb2%5]) with mapi id 15.20.8722.027; Mon, 19 May 2025
- 07:09:06 +0000
+ 07:13:11 +0000
 From: Michael Graichen <michael.graichen@hotmail.com>
 To: "johannes@gnu-linux.rocks" <johannes@gnu-linux.rocks>,
 	"a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>, "l.stach@pengutronix.de"
 	<l.stach@pengutronix.de>, "m.tretter@pengutronix.de"
 	<m.tretter@pengutronix.de>
 CC: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH] added zynq 7000 usb support
-Thread-Index: AQHbyIyiByCNUOEO6UiND7tKRKV6Gw==
-Date: Mon, 19 May 2025 07:09:06 +0000
-Message-ID: <VI1PR02MB44291219773B2D4E4D4D2777AB9CA@VI1PR02MB4429.eurprd02.prod.outlook.com>
+Thread-Topic: [PATCH] add zynq-7000 i2c support
+Thread-Index: AQHbyI0eT7MS7hGAnkiF1my/qiMWww==
+Date: Mon, 19 May 2025 07:13:11 +0000
+Message-ID: <VI1PR02MB44299AB6784FA5F3340F6CF9AB9CA@VI1PR02MB4429.eurprd02.prod.outlook.com>
 Accept-Language: de-DE, en-US
 Content-Language: de-DE
 X-MS-Has-Attach: 
@@ -74,52 +74,52 @@ msip_labels:
 x-ms-exchange-messagesentrepresentingtype: 1
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: VI1PR02MB4429:EE_|AS8PR02MB10006:EE_
-x-ms-office365-filtering-correlation-id: 11c1440d-6302-472a-b5d9-08dd96a40b22
-x-microsoft-antispam: BCL:0;ARA:14566002|41001999006|461199028|8062599006|8060799009|7092599006|15080799009|19110799006|15030799003|102099032|440099028|3412199025;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?i4qnHw3ZnFL+oIHQx9z7UFz1lTYD3KEH2LeQ8fXUBrKGpHeAzspK2kbXMp?=
- =?iso-8859-1?Q?5jZ0/yDxfq7MtgvFJeGVpJO93IpNLgGSiOsAIkKCpn3fOxZ6XROUzrVT6j?=
- =?iso-8859-1?Q?uo5jfNTYVYxG387OB+TYl6neXOWUGkDupooNHQ2OP4GFGbOO+lr+eF8y+d?=
- =?iso-8859-1?Q?IXRIjeHjmRLLsg0ijwdDFp0kZB2G5D3sm0+NP84sfF0at7hIqBEEgO3j13?=
- =?iso-8859-1?Q?S7eGqR8c3cSgQQ2ZFDXtNfGRm12ti786YrwcdgdBfvE8nl+IFYtF49puxL?=
- =?iso-8859-1?Q?QuFqyGxci5WO//kwLdh4CW2InhF4v+1r3Hl2FhLA6/zxmFn263PwtwLE6k?=
- =?iso-8859-1?Q?HYDPr2z+ZRHrQ61BHmgKifXvJ7VUx1U71acCpX38c+LfccoeeTRBKHMi6b?=
- =?iso-8859-1?Q?4tLPbnkSCkCvx34vzfaiUZwtphjFpB8ulVmQf8UgV2Yf69FCiV88MJMkYK?=
- =?iso-8859-1?Q?p2XrkpIPij5ZkHFy2T0IIOmwv8lT+HNLmD9vTK+rfTDzpXfG7T/TbBPaZs?=
- =?iso-8859-1?Q?xw0LDhQW9pkNUizBhcphS+ZNwlDCR6B9xOdUPjJxQEvTYwXcHtWX8IjJWh?=
- =?iso-8859-1?Q?oGZIJrsYtWdOAJtYFWU9tTzoY50flPMPGjW8L45bxM/uIW32yTZx0WaQii?=
- =?iso-8859-1?Q?6D9yykKpo/0xeHrksTQTpjNX69w56BgnYhrPuPYwkprlmEetTGokZz0K58?=
- =?iso-8859-1?Q?4Q0/nmZkluSQres1irSzJowvYB/pfcFVAgc4ZYl4mdWLxl6bQfavlMRski?=
- =?iso-8859-1?Q?XAIBc+Fh0ZxAAt9oPzShINhBLchSIhL94PVJCFXmEnJhzUJLlKs3wjniMj?=
- =?iso-8859-1?Q?CvzRFpZCWs0aiGRqLkCnkWZ4BypbujZMQGwD40lJiFLvydfTtHURWeuEtF?=
- =?iso-8859-1?Q?STeX5Dik31kc65WycvA9KWTmfE5KzHKxFfmSH3nuknBGbFcunQ/4g0GelQ?=
- =?iso-8859-1?Q?vYzNIEJErpB4a+K8Q/sYRP6p2IxTIZ6zKLuVMytd2gHkvFApHdWa2gPiKf?=
- =?iso-8859-1?Q?HARS7q0lc1+aLV21h2gMasET3Kvzu+VsJin0EzaULgt0cE60LLbzapsgur?=
- =?iso-8859-1?Q?PD/rCfq4uJAaVlqZMLPe9kyFvclKMedSKSMRhq9buREnUlsq6biVG4/YJ/?=
- =?iso-8859-1?Q?QGx+gLC6KZP9HVhXKyDl7KFWAgB6MisnwxnKXWyufHOcJRdmCFq0fDjovX?=
- =?iso-8859-1?Q?zhVDb03VngsPLENy+B1HEi+AfmiSL1ffdnU=3D?=
+x-ms-office365-filtering-correlation-id: e9598796-4e41-41c2-42f8-08dd96a49d3b
+x-microsoft-antispam: BCL:0;ARA:14566002|461199028|8062599006|8060799009|7092599006|15080799009|19110799006|15030799003|102099032|440099028|3412199025;
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?WevjgFflNTnRZLXb/mjvpwAqBOboLXYcXTmhWvKuxaOhmuB5TtFHG/QsGx?=
+ =?iso-8859-1?Q?E0z8dkDfGs5TQ6y5lOjp2Ov5VRnY4sN+PlcKJrK32IsuCMYyc9LPbajzGO?=
+ =?iso-8859-1?Q?J/+d4Euzi0GyZozBDcceVG5aHPcLRYhjHGotl1M8IEa5rRsYophXDlg0Kf?=
+ =?iso-8859-1?Q?GXiANAWttvSm3Y9A241EwEQpCeqcakK7/pRBLr7bn54/2XQLtUul2kIybH?=
+ =?iso-8859-1?Q?7FqKI85VdQg0jOktgJ/Fuv2hgJBpPNwPIGjC/Tnj89ErQrd9bvZS+PMFsd?=
+ =?iso-8859-1?Q?rw02XSpIokT7bhXydqyOKeipI+nluCQPrzJG78zMcKgBZnCHv+Tdji+Gat?=
+ =?iso-8859-1?Q?x12WPVckLA+/AkHRHW6Uv5jGoBwn5LW+RonFIYPPVCzcXmGjybQsDJXX59?=
+ =?iso-8859-1?Q?4jm2dgmToHvuJn4kvnykGNKiRHp9jYziwEiA9COG5RnEr8c9TDm6qr77b+?=
+ =?iso-8859-1?Q?3/me6YLwkml55vNoWxlZISGd/1fezCR+gDSnCY60n+bXvRvhbp8M+PE0L4?=
+ =?iso-8859-1?Q?Me+ddavSjMDhY82ceEMLu0SnCguvULF1SSz+ZsN2VcRPIOX2uDxCTuNv2z?=
+ =?iso-8859-1?Q?Dt0qplto9ZN/ZviJoPGvVCrO/lEvufY0PSC5U5ReiDNhx514frYfeonvuO?=
+ =?iso-8859-1?Q?L5brkXnSsOpnfdsCd04YtXdmiV1MezyszotokrToUQlS8ZwsgfZPF28yV4?=
+ =?iso-8859-1?Q?lrBXOitBzDbmwSeV21qDSatUb69YpaeCZrEH+H8/RVE12L/7okiqreyLjn?=
+ =?iso-8859-1?Q?xjOvl/NTnOM1Ni0R09S5PjYqNgCElzRv3wKaXjlPtz7pvE05cIZrtpy7mO?=
+ =?iso-8859-1?Q?Dmk/Gsc3erhLj+/F+KnKoFYqdrEYT7O9Lr5ZM0aFNBKV0My6ZmUY3gT/Ub?=
+ =?iso-8859-1?Q?LlhxwoTrBYUeNHnXmYnuw5WrfNcxYwshulyDu/F6VyGA2MPXXSGX9q6ffC?=
+ =?iso-8859-1?Q?+6rZDFmuUg46qq3gd1DZQucpF20GmHZb1+ebsPIburcdGuOGgvzItcL0NY?=
+ =?iso-8859-1?Q?PCvc+7dhen8BH7GdySZYbgrhqZ4FS9/0uriVpMPYmpS6wBzzAhHpIIho2S?=
+ =?iso-8859-1?Q?jd7etFWoOriLFk4dtTvSE8cgoMTGsG/GocMkwPA0X/Y+hGjjsMxWyeIRZF?=
+ =?iso-8859-1?Q?dSH1oFCm+L0+fQXQS9UN036oNj/SLgw+x+GGQAVNx9DQRHtVURGPLejbU0?=
+ =?iso-8859-1?Q?KzQK9ATza1kjgA=3D=3D?=
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?pu05kxRT6kZ+vtTgAe/Mxk5uZ9PZ9ncu/hqbYbbFRqTp1zM03iYUhZRHsm?=
- =?iso-8859-1?Q?aZtN0IpQgOd4LMPYdbSx+LEhOHV9J/g1e9pOF/TXG+avTEjy9nf3A/1l1X?=
- =?iso-8859-1?Q?OyKgQtu50nFfoGACRzVX9u7iZRNfqsJSNqVZD0keL3uS+dHgJldO8ATJrO?=
- =?iso-8859-1?Q?cFu03ia5UQcXftqqIS1UIjw4gmt1si0CnZOcC2k5M7N80qcDZN9JxPY6ay?=
- =?iso-8859-1?Q?1ogaJmZtRrvn5M0uLLjNjTFu1EGwBfLaJ4BWMFUyzrpzGCMvJE/n+mKrAY?=
- =?iso-8859-1?Q?EfGN9TVz9PjJOuSgj9X5jlfuqw/hpuOme1I6W+1nL6ZwfI5Am+P7ypTlQ0?=
- =?iso-8859-1?Q?l43eXUI5lg+2mqCICNFy73eMD7RMFQO9KsNbFOEq6Pcrc5bD2+VwbutHIn?=
- =?iso-8859-1?Q?ULl2QEubIbvQCI8zZfbtajERag9AN0TR+mVAEoPtIS2JNchu/5O4HYrXML?=
- =?iso-8859-1?Q?r8dohUEqrS1NBV/Q6cuOG+YrvlF0feSNTI53p67bYEhYvKTE/8VtdtDaqk?=
- =?iso-8859-1?Q?l/U0ycF2NfnRHkg3LFBYsW3yuZQ9MEvbaEceXK/jjv0LdNE3e55ErdGZHb?=
- =?iso-8859-1?Q?ssDEuVhlBEJij78S83REBA2za8HlGsBmVvI0LG3kcw5QjCnr2oawxhgv97?=
- =?iso-8859-1?Q?+5NbNmxMXXuYi0QHQCVY1FxNiyVcw9wxxM7TejPzTjRcFKNt5hlLeeXKzz?=
- =?iso-8859-1?Q?s3OnQaMyWT6SXgsse87HakxSozjmcLI1+DbNWCKBkStctThRbdVG44+Q8l?=
- =?iso-8859-1?Q?/rms06CGHF60vCE1sQs+lOBRWE34eojqygZSkMcHIQhSbzsk1feiKNYVsK?=
- =?iso-8859-1?Q?yjMjGOCtJYDdbkM5r72cMsmEWrvntaP2tohg7tts/VkwRLoeu37U9lshl1?=
- =?iso-8859-1?Q?yVyApNt+WkLC3yn9Eavpk9nAFXbj+nzBlbcMml23e4gSILsrqniO1aLMUb?=
- =?iso-8859-1?Q?KbxfCsNarhbjH08/af6UqWYZYI2U3FWVBUxRZWByju2DfV4lMYYFVXprq2?=
- =?iso-8859-1?Q?5QK84V/DK8Ek5lFIHIo/io5FHzj3ewPIE3MPpHfDw/IWb7/Lz79Zv3lMPc?=
- =?iso-8859-1?Q?uo1Cxmsdde1/GlSrSK88rbEuFkjBa5f9SRWWVR4/cRCcS/rGZ2LaDkxOHg?=
- =?iso-8859-1?Q?E5xublFFblGNcFbn0Ix+dlNgxbWgta+bdt/KmRlBYALotzJ4GqbrXoKQbg?=
- =?iso-8859-1?Q?oOXupJSbseTo4qo3im5L8jlhPkR+S1GKGPPsc7QVvkMzhXpUOWfpvm8T6F?=
- =?iso-8859-1?Q?55aTODlZp/UAFZDhNOVQ=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Jqg/io4qA68ihBg5VfLdLkVE7+/unbj+QzCBXQdtd/IVaOumTlIS/CNdIL?=
+ =?iso-8859-1?Q?nkAJLy/q2fsUg5PRZavhg+HXH9BGp//GSVyU4uTbgHbWCVU4Fl0KzlRXyM?=
+ =?iso-8859-1?Q?ZUt+yiWpjaFp6GKcYIwq18fuQ5/7/fxODCsed17b4NIoGwgGKs5wloslyL?=
+ =?iso-8859-1?Q?ihbfFcAvgZ5XseOyT7/Ma/V+S7PoVOXt4TDnfjZtezNOR3uNMCj/g7XY9k?=
+ =?iso-8859-1?Q?UJssbbdqCxoRfdTV/ICF2GqDEJQ/kBMNr1aeL+ZGX0K3mnKnrIa0/jwwOr?=
+ =?iso-8859-1?Q?sEOcGkJYaFo9nWGcsv5PZMRPH9+IJE68RUAy3im2wAdrHYDaf01cvWtHOL?=
+ =?iso-8859-1?Q?uzhWbqqfyB3WQVEaoO5d5hHCjMDnZAugoy8Qne9SLk3qO02L4fialw9aHU?=
+ =?iso-8859-1?Q?HFeDCkij57zraGPFm3uCrh/ve318ImLhzV7+lys/6DkBn2ufc4fZz/Y2Ox?=
+ =?iso-8859-1?Q?MTFqWAp/atAgZneqRMgpOg5vbiaBjmxTPP7JVlll1W4RH+oJL1K5pmHIWd?=
+ =?iso-8859-1?Q?/+i54VaOwZf0LZq+Z2aWV/Av/hHu6REY3oYfgqsNkILZOr6T4ICs06qwJ8?=
+ =?iso-8859-1?Q?ckXyefVjlJnuwKnArTuIlJhEmasEyHLNNCyNluXF2CqVQvbjLwYe1IYYyB?=
+ =?iso-8859-1?Q?m2yZxklXxZ9YME4KTbccjZw9yG5rjAGIkl/oEpXOzsEEdXLbKZIMp1tn6N?=
+ =?iso-8859-1?Q?zbXAAskO1ZCv4Law/D48OVL53qt7xSmYr7EA+9h6umzoOUKgJBgTZrvS7X?=
+ =?iso-8859-1?Q?ghmaqMiKQU52F+nYPRo9d2rn8l4bUPz+rHInlOWL6BPUyxxilCE78zfKmV?=
+ =?iso-8859-1?Q?HPlh5SIK4374FUoWcEMkt/fQC8qa6gGSnAW91txt6QCZKjDdjSnXEPrJCH?=
+ =?iso-8859-1?Q?wCibCqB0N3I3KtraPyo6MF8Bq7mrK7qVswPArROE1SRSKsaooOqi6LFLVH?=
+ =?iso-8859-1?Q?yAHNvzmFizR8qzAGlOu0HGrp3+CZ2lqvjATs4IcKOpvo4/D5QARWhX/sTw?=
+ =?iso-8859-1?Q?Sg0q7V09XATEjnnjuuzOb2MBa0m+dxgh930xQm/dRXchPLblQo/E5YzzSg?=
+ =?iso-8859-1?Q?ufr0oiVXYb9PBTKQEf66y8p2ZS4mudBMEtPk3UChd1v4VpuKiLvyVv4Tpv?=
+ =?iso-8859-1?Q?pMiSEMH+2L/93OO85oQVRehe3EghfH1v3yj/Qr5fkyR1D3VpMJ3GlsocDN?=
+ =?iso-8859-1?Q?2vCQUkV52BymhIvZmUWXQvGQD8h52GuAx5vyiprzZ77TVsWI9Q7HVxha+A?=
+ =?iso-8859-1?Q?z6L63hVE3TBY4Na5H0yQ=3D=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
@@ -127,16 +127,16 @@ X-OriginatorOrg: sct-15-20-7828-19-msonline-outlook-12d23.templateTenant
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR02MB4429.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11c1440d-6302-472a-b5d9-08dd96a40b22
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2025 07:09:06.1983
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9598796-4e41-41c2-42f8-08dd96a49d3b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2025 07:13:11.2840
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR02MB10006
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250519_000910_739256_1E05A3F2 
-X-CRM114-Status: GOOD (  11.35  )
+X-CRM114-CacheID: sfid-20250519_001314_240356_D061B7AD 
+X-CRM114-Status: GOOD (  10.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -154,100 +154,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FORGED_HOTMAIL_RCVD2,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] added zynq 7000 usb support
+Subject: [PATCH] add zynq-7000 i2c support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds support to use the USB interface on Zynq-7000 SoC.=0A=
+This adds support to use the i2c bus on zynq-7000=0A=
 =0A=
 Signed-off-by: Michael Graichen <michael.graichen@hotmail.com>=0A=
 ---=0A=
- drivers/usb/host/Kconfig     |  8 ++++++++=0A=
- drivers/usb/host/Makefile    |  1 +=0A=
- drivers/usb/host/ehci-zynq.c | 36 ++++++++++++++++++++++++++++++++++++=0A=
- 3 files changed, 45 insertions(+)=0A=
- create mode 100644 drivers/usb/host/ehci-zynq.c=0A=
+ drivers/i2c/busses/Kconfig       | 4 ++--=0A=
+ drivers/i2c/busses/i2c-cadence.c | 1 +=0A=
+ 2 files changed, 3 insertions(+), 2 deletions(-)=0A=
 =0A=
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig=0A=
-index d38b4dcac4..812270f869 100644=0A=
---- a/drivers/usb/host/Kconfig=0A=
-+++ b/drivers/usb/host/Kconfig=0A=
-@@ -14,6 +14,14 @@ config USB_EHCI_ATMEL=0A=
- 	select USB_OHCI_AT91=0A=
- 	bool "Atmel EHCI driver"=0A=
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig=0A=
+index b7ad9e6ecf..16f039dfea 100644=0A=
+--- a/drivers/i2c/busses/Kconfig=0A=
++++ b/drivers/i2c/busses/Kconfig=0A=
+@@ -84,10 +84,10 @@ config I2C_RK3X=0A=
+ config I2C_CADENCE=0A=
+ 	bool "Cadence I2C adapter"=0A=
+ 	depends on HAVE_CLK=0A=
+-	depends on ARCH_ZYNQMP || COMPILE_TEST=0A=
++	depends on ARCH_ZYNQ || ARCH_ZYNQMP || COMPILE_TEST=0A=
+ 	help=0A=
+ 	  Say Y here to include support for the Cadence I2C host controller found=
+=0A=
+-	  in Zynq UltraScale+ MPSoCs.=0A=
++	  in Zynq-7000 or Zynq UltraScale+ MPSoCs.=0A=
  =0A=
-+config USB_EHCI_ZYNQ=0A=
-+	bool "Support for Xilinx Zynq on-chip EHCI USB controller"=0A=
-+	depends on ARCH_ZYNQ=0A=
-+	select USB_EHCI=0A=
-+	select USB_ULPI=0A=
-+	help=0A=
-+	  Enable support for Zynq on-chip EHCI USB controller=0A=
-+=0A=
- config USB_OHCI=0A=
- 	bool "OHCI driver"=0A=
- 	depends on !MMU && HAS_DMA=0A=
-diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile=0A=
-index e55dff4580..cbddfbe923 100644=0A=
---- a/drivers/usb/host/Makefile=0A=
-+++ b/drivers/usb/host/Makefile=0A=
-@@ -2,6 +2,7 @@=0A=
- obj-$(CONFIG_USB_EHCI)		+=3D ehci-hcd.o=0A=
- obj-$(CONFIG_USB_EHCI_OMAP)	+=3D ehci-omap.o=0A=
- obj-$(CONFIG_USB_EHCI_ATMEL)	+=3D ehci-atmel.o=0A=
-+obj-$(CONFIG_USB_EHCI_ZYNQ)	+=3D ehci-zynq.o=0A=
- obj-$(CONFIG_USB_OHCI)		+=3D ohci-hcd.o=0A=
- obj-$(CONFIG_USB_OHCI_AT91)	+=3D ohci-at91.o=0A=
- obj-$(CONFIG_USB_XHCI)		+=3D xhci.o xhci-mem.o xhci-ring.o=0A=
-diff --git a/drivers/usb/host/ehci-zynq.c b/drivers/usb/host/ehci-zynq.c=0A=
-new file mode 100644=0A=
-index 0000000000..f08e9a3c5c=0A=
---- /dev/null=0A=
-+++ b/drivers/usb/host/ehci-zynq.c=0A=
-@@ -0,0 +1,36 @@=0A=
-+// SPDX-License-Identifier: GPL-2.0+=0A=
-+/*=0A=
-+ * USB Low level initialization(Specific to Zynq 7000)=0A=
-+ */=0A=
-+=0A=
-+#include <common.h>=0A=
-+#include <linux/usb/ulpi.h>=0A=
-+=0A=
-+static int zynq_ehci_probe(struct device_d *dev)=0A=
-+{=0A=
-+	struct resource *res;=0A=
-+	void __iomem *base;=0A=
-+=0A=
-+	res =3D dev_get_resource(dev, IORESOURCE_MEM, 0);=0A=
-+	if (!res)=0A=
-+		return -EINVAL;=0A=
-+=0A=
-+	base =3D IOMEM(res->start);=0A=
-+=0A=
-+	ulpi_setup(base + 0x170, 1);=0A=
-+	add_generic_usb_ehci_device(DEVICE_ID_DYNAMIC, (unsigned int)base, NULL);=
-=0A=
-+=0A=
-+	return 0;=0A=
-+}=0A=
-+=0A=
-+static const struct of_device_id zynq_ehci_dt_ids[] =3D {=0A=
-+	{ .compatible =3D "xlnx,zynq-usb-2.20a" },=0A=
-+	{ /* sentinel */ }=0A=
-+};=0A=
-+=0A=
-+static struct driver_d zynq_ehci_driver =3D {=0A=
-+	.name =3D "zynq-ehci",=0A=
-+	.probe =3D zynq_ehci_probe,=0A=
-+	.of_compatible =3D DRV_OF_COMPAT(zynq_ehci_dt_ids),=0A=
-+};=0A=
-+device_platform_driver(zynq_ehci_driver);=0A=
+ config I2C_EFI=0A=
+ 	bool "EFI I2C Master driver"=0A=
+diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cade=
+nce.c=0A=
+index 8551cd05da..e8ad26c91e 100644=0A=
+--- a/drivers/i2c/busses/i2c-cadence.c=0A=
++++ b/drivers/i2c/busses/i2c-cadence.c=0A=
+@@ -441,6 +441,7 @@ static int cdns_i2c_probe(struct device *dev)=0A=
+ }=0A=
+ =0A=
+ static const struct of_device_id cdns_i2c_match[] =3D {=0A=
++	{ .compatible =3D "cdns,i2c-r1p10" },=0A=
+ 	{ .compatible =3D "cdns,i2c-r1p14" },=0A=
+ 	{},=0A=
+ };=0A=
 -- =0A=
-2.43.0=0A=
+2.43.0=
 
 
