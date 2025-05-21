@@ -1,69 +1,70 @@
-Delivery-date: Wed, 21 May 2025 09:39:54 +0200
+Delivery-date: Wed, 21 May 2025 09:45:34 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uHe3O-0015pB-2K
+	id 1uHe8r-0015x4-3C
 	for lore@lore.pengutronix.de;
-	Wed, 21 May 2025 09:39:54 +0200
+	Wed, 21 May 2025 09:45:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uHe3O-00047P-5z
-	for lore@pengutronix.de; Wed, 21 May 2025 09:39:54 +0200
+	id 1uHe8r-00055u-EV
+	for lore@pengutronix.de; Wed, 21 May 2025 09:45:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sxAGW5RQk5WSKEG5/a7mWSAhwS0dpneOCfuyG6ENb4M=; b=UCGSHbKOtTNpBAaGoLueD2h0PS
-	lTmTB5BMwv1Q3/6udqqem7+DngieWqBRJZ6fWIDT06NDEfL9ilkADicysCfBp7iDFJIUVZZCh1jsB
-	Q2Kt3RD1IKqbTqKMhNAyTIHJl/RdDthU9L9gDxdmwa+7RyaWkgzxSAenNXTiQK+N5I5q7fvTl8eO+
-	ChmhThqLcvQGLm80sfUhg5ASivVsmu+bqticHeCMJvbQBCMBACM7AqW6Q+XcdbJVw7fCfdN8yHvHl
-	w8AfuOBXeLDCdo3JSEy1AYvcpdQAGFVykK7b0KliHip2IWWIo6+2t3R5xV5+aSYGIScgmhNot18dj
-	Glfa9wmw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=sHW11dMNR8tyeHfiCgQb1PuhnOYrFV3rmVKOeVLCjv4=; b=Un+uzDnmBknMADX2yPOkt22d4a
+	b7tk91hfFxUQaiXNMgtS0Q+cI9/++o4g8KfCDvDVKyPLwl+6HcroaZ+ONo9iEw1SU3qlIKXEaVtOI
+	yypuRaun7YQsxOJdNUTSCeN0u58rqyIHofJW5ruRBitXV0DnaFCVSAS4+FEySIufl/ThU/CH9KQYr
+	ChxD3I7wWABq9LGoyZ7WgaK4kuPySUKULoWCar4WymiKr1bKFx59hQ9wEUjDWGJ7tg/6FjSNedZRr
+	dQVs0hSic/ZCZsKU/U/iImIReZZbnO8bSCARaQswQ4Mbw7NlaZuO/f0G23CYXxgjpR/EoTHmvivzL
+	OzOfsmwg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uHe2l-0000000F58k-3LoS;
-	Wed, 21 May 2025 07:39:15 +0000
+	id 1uHe8R-0000000F5mu-2mdC;
+	Wed, 21 May 2025 07:45:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uHe0O-0000000F4tI-2kc7
+	id 1uHe8O-0000000F5mQ-2Y6k
 	for barebox@lists.infradead.org;
-	Wed, 21 May 2025 07:36:50 +0000
+	Wed, 21 May 2025 07:45:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uHe0N-0003aW-E7; Wed, 21 May 2025 09:36:47 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <rsc@pengutronix.de>)
+	id 1uHe8L-0004z8-Rt; Wed, 21 May 2025 09:45:01 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uHe0M-000XH1-1N;
-	Wed, 21 May 2025 09:36:46 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uHe0M-009Lqa-1A;
-	Wed, 21 May 2025 09:36:46 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Robert Schwebel <rsc@pengutronix.de>
-In-Reply-To: <20250520124118.73783-1-a.fatoum@pengutronix.de>
+	(envelope-from <rsc@pengutronix.de>)
+	id 1uHe8L-000XJC-2A;
+	Wed, 21 May 2025 09:45:01 +0200
+Received: from rsc by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <rsc@pengutronix.de>)
+	id 1uHe8L-000kzp-1q;
+	Wed, 21 May 2025 09:45:01 +0200
+Date: Wed, 21 May 2025 09:45:01 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <aC2EfSTbtKr5VyC2@pengutronix.de>
 References: <20250520124118.73783-1-a.fatoum@pengutronix.de>
-Message-Id: <174781300635.2228909.12531117286026339436.b4-ty@pengutronix.de>
-Date: Wed, 21 May 2025 09:36:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250520124118.73783-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250521_003648_695305_E2E724D0 
-X-CRM114-Status: UNSURE (   9.55  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250521_004504_647970_B8807C55 
+X-CRM114-Status: GOOD (  17.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,7 +82,7 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
@@ -90,8 +91,7 @@ Subject: Re: [PATCH master] of: partition: overwrite arm,arm-firmware-suite
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Tue, 20 May 2025 14:41:18 +0200, Ahmad Fatoum wrote:
+On Tue, May 20, 2025 at 02:41:18PM +0200, Ahmad Fatoum wrote:
 > barebox doesn't support arm,arm-firmware-suite partitioning and if the
 > barebox device tree uses a fixed-partitions binding for a flash, it will
 > overwrite a kernel partitions node that uses arm,arm-firmware-suite with
@@ -102,16 +102,22 @@ On Tue, 20 May 2025 14:41:18 +0200, Ahmad Fatoum wrote:
 > was successful, but the compatible was neither fixed-partitions or
 > barebox,fixed-partitions.
 > 
-> [...]
+> Fix this by explicitly checking the compatibles we expect.
+> This fixes a failed of_get_reproducible_name in of_state_fixup, which
+> broke barebox-state usage on Vexpress in DistroKit.
+> 
+> Fixes: f0d91d7ba6cb ("of: partition: add Linux CONFIG_OF_PARTITION-compatible adaptive fixup mode")
+> Reported-by: Robert Schwebel <rsc@pengutronix.de>
 
-Applied, thanks!
+Thanks, works for me.
 
-[1/1] of: partition: overwrite arm,arm-firmware-suite unless donttouch
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1c9a72656f88 (link may not be stable)
+rsc
 
-Best regards,
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           | Dipl.-Ing. Robert Schwebel  |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
