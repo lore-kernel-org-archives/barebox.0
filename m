@@ -1,74 +1,74 @@
-Delivery-date: Thu, 22 May 2025 15:42:32 +0200
+Delivery-date: Thu, 22 May 2025 21:00:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uI6Bs-001XrB-2Y
+	id 1uIB9F-001cpp-1j
 	for lore@lore.pengutronix.de;
-	Thu, 22 May 2025 15:42:32 +0200
+	Thu, 22 May 2025 21:00:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uI6Bs-00060w-79
-	for lore@pengutronix.de; Thu, 22 May 2025 15:42:32 +0200
+	id 1uIB9E-0000Pi-Vv
+	for lore@pengutronix.de; Thu, 22 May 2025 21:00:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GodZlEQEdieMjryoMOHj+hfkuOlm6SDO7mColJCfJMM=; b=CDyZShQ9MQVji4OCczcCyc+jpZ
-	ROkT03JRbZ1A9fXxp+8zEvOjY3DS1w8wpTN1G9hNU+fxTYbsDBnKYcNXQPWIv5EM5JT4vKhGqp5sY
-	d0+Uim3Fi2CDbfHXQlnMY9LTJjoKMyBf03f7ZEehuY0p7ezyv+oSBcMK1YakBlBDBp4XF/GpiufV8
-	gBqkOIzpKX9vm1Z5jVwDx/ZihKf5FcF21bH47wT2oAlc9zmzQO/rXPIcxcO1nDR0DnrKuDs0NGPII
-	31HtEepovGywRnejFAAJwQSE3U/CYWl/z4mqYtKaH1346Xec67A72Uuu1U4KM2RIHEAMfpeAzYdZ7
-	VYWkSyfA==;
+	bh=7wXppzNlOZAiu7pxqMw+0Mma9wzXEDZWy9KECzLIUlg=; b=VXdL00FCpfjKt+zFIhXpvwzuRo
+	77EgwCtOQtwnVuftNzHSaV/uloPu7qOKRBcwIyADsX12hcEPEuKrPTWcoP7WouuHEsDv9KNgXQl1L
+	P+SBLLc8/o0cZlDx2uFFZmz4kyToZJG2jCIDdUSdgty7OdnnQUKRWcXqE9XSf0SOxQwUan0WTd3tO
+	S/eAqJ5ucbTum7OBaP+4aUsyyeuu0ZnOUo2RUjdL3ym8FwMpbD5bjXiv6iZhJt8N2arriPwoUAj2W
+	1h2OTxWCrEByDOiL81z/zzZZu7AyJHm1WdHDeAcKdMVUObIlWR3bUuUTyPEBzZR9QgyPqLdn/PGDX
+	oNxPimBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uI6BH-0000000197M-0ZxO;
-	Thu, 22 May 2025 13:41:55 +0000
+	id 1uIB8g-00000001vYz-0kpd;
+	Thu, 22 May 2025 18:59:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uI6A0-000000018wx-36tj
+	id 1uIB8X-00000001vXd-1blE
 	for barebox@lists.infradead.org;
-	Thu, 22 May 2025 13:40:37 +0000
+	Thu, 22 May 2025 18:59:26 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uI69r-00059u-LC; Thu, 22 May 2025 15:40:27 +0200
+	id 1uIB8G-0008Gz-7F; Thu, 22 May 2025 20:59:08 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uI69r-000kDb-1Q;
-	Thu, 22 May 2025 15:40:27 +0200
+	id 1uIB8G-000mMX-02;
+	Thu, 22 May 2025 20:59:08 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uI69r-000ybx-1B;
-	Thu, 22 May 2025 15:40:27 +0200
+	id 1uIB8F-002Agr-2z;
+	Thu, 22 May 2025 20:59:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 22 May 2025 15:40:22 +0200
+Date: Thu, 22 May 2025 20:59:05 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250522-parted-size-v1-1-369d146aa100@pengutronix.de>
-References: <20250522-parted-size-v1-0-369d146aa100@pengutronix.de>
-In-Reply-To: <20250522-parted-size-v1-0-369d146aa100@pengutronix.de>
+Message-Id: <20250522-uncompress-fixes-v1-2-18e796fa5e45@pengutronix.de>
+References: <20250522-uncompress-fixes-v1-0-18e796fa5e45@pengutronix.de>
+In-Reply-To: <20250522-uncompress-fixes-v1-0-18e796fa5e45@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747921227; l=2653;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747940347; l=1829;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=4C5S+CjDRVCY/8wZ7dFJVi8AcVGC4ZC1OFs4BGQHIeQ=;
- b=EQfYHo3JKKmm/+Oix4I56sdflg0M1PW9tz09ASGJnkuyGV+c4PY+CvID7qesNgPkXnWU0t4Mo
- GrgWIeZka1ABTlFqmNb9617+88iG7uL2f+FDNLlkV/BCVwBvvhAfJZ6
+ bh=ybk4JWI5f6ydPvEmAcWI02l1xZSHT8lKnR5M/dR7ozs=;
+ b=OXUxl66H8Fg0Yzs3e0D+E5jT7J+u8Vs7afUYqFqrMT8e16hdGvZvYtRPq062xbBfHTC2JjHZ9
+ gyyAHfFwlQHBlfRZRv3CG5H8Gy2tiXEdQ5tSA3+nUhsiNfWMHoGfK+h
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250522_064036_781673_F753C78E 
-X-CRM114-Status: GOOD (  13.57  )
+X-CRM114-CacheID: sfid-20250522_115925_422935_64611CE2 
+X-CRM114-Status: GOOD (  12.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,93 +86,69 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] partitions: add function to find free space on
- partition table
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 2/2] uncompress: fix prebuffering
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently only support creating partitions by specifying the exact
-start and end position. Add some functions to find free space in a
-partition table so that we can implement creating partitions with only
-specifying the size.
+When uncompressing from a fill function we prebuffer the first 32 bytes
+in order to detect the filetype. This prebuffer is then fed back into
+the input stream in uncompress_fill().
+
+This currently fails when uncompress_fill() crosses the prebuffered
+size and continues reading from the original fill function. Advance
+the buffer in this case to append the data to the buffer instead of
+overwriting the data we already copied from the prebuffer.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/partitions.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
- include/partitions.h |  3 ++-
- 2 files changed, 44 insertions(+), 1 deletion(-)
+ lib/uncompress.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/common/partitions.c b/common/partitions.c
-index bc90f51f611223a59a28812b0f9854b342b30ad3..25d5f15721fc5980c927863b2745c23d7149da92 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -163,6 +163,48 @@ int partition_table_write(struct partition_desc *pdesc)
- 	return pdesc->parser->write(pdesc);
+diff --git a/lib/uncompress.c b/lib/uncompress.c
+index c284bcc6ba5649419a226af14a78f42142cf5e74..6a4e5a34df8a69d22ae51b9fb7423f7a052ef480 100644
+--- a/lib/uncompress.c
++++ b/lib/uncompress.c
+@@ -45,6 +45,7 @@ static long uncompress_fill(void *buf, unsigned long len)
+ 		int now = min(len, uncompress_size);
+ 
+ 		memcpy(buf, uncompress_buf, now);
++		uncompress_buf += now;
+ 		uncompress_size -= now;
+ 		len -= now;
+ 		total = now;
+@@ -77,17 +78,17 @@ int uncompress(unsigned char *inbuf, long len,
+             void(*error)(char *x));
+ 	int ret;
+ 	char *err;
++	void *uncompress_buf_free = NULL;
+ 
+ 	if (inbuf) {
+ 		ft = file_detect_compression_type(inbuf, len);
+-		uncompress_buf = NULL;
+ 		uncompress_size = 0;
+ 	} else {
+ 		if (!fill)
+ 			return -EINVAL;
+ 
+ 		uncompress_fill_fn = fill;
+-		uncompress_buf = xzalloc(32);
++		uncompress_buf_free = uncompress_buf = xzalloc(32);
+ 		uncompress_size = 32;
+ 
+ 		ret = fill(uncompress_buf, 32);
+@@ -142,7 +143,7 @@ int uncompress(unsigned char *inbuf, long len,
+ 	ret = compfn(inbuf, len, fill ? uncompress_fill : NULL,
+ 			flush, output, pos, error_fn);
+ err:
+-	free(uncompress_buf);
++	free(uncompress_buf_free);
+ 
+ 	return ret;
  }
- 
-+bool partition_is_free(struct partition_desc *pdesc, uint64_t start, uint64_t size)
-+{
-+	struct partition *p;
-+
-+	if (start < PARTITION_ALIGN_SECTORS)
-+		return false;
-+
-+	if (start + size >= pdesc->blk->num_blocks)
-+		return false;
-+
-+	list_for_each_entry(p, &pdesc->partitions, list) {
-+		if (region_overlap_size(p->first_sec, p->size, start, size))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+int partition_find_free_space(struct partition_desc *pdesc, uint64_t sectors, uint64_t *start)
-+{
-+	struct partition *p;
-+	uint64_t min_sec = PARTITION_ALIGN_SECTORS;
-+
-+	min_sec = ALIGN(min_sec, PARTITION_ALIGN_SECTORS);
-+
-+	if (partition_is_free(pdesc, min_sec, sectors)) {
-+		*start = min_sec;
-+		return 0;
-+	}
-+
-+	list_for_each_entry(p, &pdesc->partitions, list) {
-+		uint64_t s = ALIGN(p->first_sec + p->size, PARTITION_ALIGN_SECTORS);
-+
-+		if (partition_is_free(pdesc, s, sectors)) {
-+			*start = s;
-+			return 0;
-+		}
-+	}
-+
-+	return -ENOSPC;
-+}
-+
- int partition_create(struct partition_desc *pdesc, const char *name,
- 		     const char *fs_type, uint64_t lba_start, uint64_t lba_end)
- {
-diff --git a/include/partitions.h b/include/partitions.h
-index 785fb77ab1674d92fdbac5f5df03910b1e2196af..7fd6899bd3b88f691385c330bb7900d9ec1547ac 100644
---- a/include/partitions.h
-+++ b/include/partitions.h
-@@ -64,6 +64,7 @@ int partition_create(struct partition_desc *pdesc, const char *name,
- 		     const char *fs_type, uint64_t lba_start, uint64_t lba_end);
- int partition_remove(struct partition_desc *pdesc, int num);
- void partition_table_free(struct partition_desc *pdesc);
--
-+bool partition_is_free(struct partition_desc *pdesc, uint64_t start, uint64_t size);
-+int partition_find_free_space(struct partition_desc *pdesc, uint64_t sectors, uint64_t *start);
- 
- #endif /* __PARTITIONS_PARSER_H__ */
 
 -- 
 2.39.5
