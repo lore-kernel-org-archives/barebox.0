@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uI6Bq-001Xps-0x
+	id 1uI6Bq-001XqV-2y
 	for lore@lore.pengutronix.de;
 	Thu, 22 May 2025 15:42:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uI6Bp-0005y3-MO
+	id 1uI6Bq-0005yP-A3
 	for lore@pengutronix.de; Thu, 22 May 2025 15:42:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,57 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fDcxsUTHjrfibbLO0zl/ImW5gNGZQ4juxHAG26k5VF8=; b=ClExrUIg/Lgz6csG2rOrh7BT1h
-	KwlilPHfqsC6XriC2WENcW1GHTV2thVwSXPzi7uo9D5joTUiwy+CCzIBqlCwXQSrqgLsu8Kns4wVD
-	AICjgoBCmkEE/xY9WM3L3cA/Vaq5SAMpKRIA1cVTM/Gf5eWHqocZNGkmRdbUUsRntUMP4EIn1Vzfl
-	pQv6NycKq2IMVKC8CdoCB0PGCKoL2sJ35ttn1DYl3cZ3SKhfS5lQzPO87r7mNsuhoG09EXd1l5ELX
-	M2ORqBQGqMItA6cTjMBGyIcygzTW1dnlkQY3yWXsxV5S+41j7+0fH6JnkoREuyRqf+8PMCtY2Q+SG
-	w9FQ+Z4w==;
+	bh=OOliLKSsCssdcue2XmiluUbwbdq+hvwIjD2ZJjVUfZU=; b=cPhb+Z+Pfj2B+KmNR5MlMsgJFj
+	XwhBR2eJVpznb76KOtjYzdA62x1y2LiaUAHK5GyTElGSs+tW82rqwqUSkaRoPXVGQ3S8aSDCh1K6I
+	ZKzYsmpV3bMJpZrDAoLUnGWq55ZFT6nhvLyGhZIkcQuhLqhxWhmzByFV0czDsmWGEAnJ2HBS901fe
+	C5xfdvyT19ao+MEZCYQqdL87P0q7bAkB9CPaLGq30GkEArXKxn0l6Dz5cggxjMNxC0wSgwYOIcIyJ
+	pW/YnfJ7mCdsZBMLQBSOOIkhP0SijuWxLw9P84v9Go9POXA3bB6g0bqekOWbKHj7ng+rh0AOaLHBv
+	VezFwMHQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uI6BH-0000000197X-2uZo;
-	Thu, 22 May 2025 13:41:55 +0000
+	id 1uI6BG-0000000197B-2eP7;
+	Thu, 22 May 2025 13:41:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uI6A8-000000018zo-3OYy
+	id 1uI69v-000000018vp-0S4o
 	for barebox@lists.infradead.org;
-	Thu, 22 May 2025 13:40:45 +0000
+	Thu, 22 May 2025 13:40:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uI69r-00059x-LZ; Thu, 22 May 2025 15:40:27 +0200
+	id 1uI69r-00059v-Lq; Thu, 22 May 2025 15:40:27 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uI69r-000kDe-1T;
+	id 1uI69r-000kDd-1R;
 	Thu, 22 May 2025 15:40:27 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uI69r-000ybx-1D;
+	id 1uI69r-000ybx-1C;
 	Thu, 22 May 2025 15:40:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 22 May 2025 15:40:24 +0200
+Date: Thu, 22 May 2025 15:40:23 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250522-parted-size-v1-3-369d146aa100@pengutronix.de>
+Message-Id: <20250522-parted-size-v1-2-369d146aa100@pengutronix.de>
 References: <20250522-parted-size-v1-0-369d146aa100@pengutronix.de>
 In-Reply-To: <20250522-parted-size-v1-0-369d146aa100@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747921227; l=2665;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747921227; l=2246;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=7U3fu7kcyau5zwCOmUAIl3hG00V+pYB3GisOxLz2EUM=;
- b=mFLVEnzto3qwaM3gNtPlbvB5QcXeGSQloP/FO1Gx4np8khfk02bZe6cWWufYowwIaWY59m/Cp
- 0nTQyiZ0yxdCu6dn6gYuJNg0K0ZzNRhiBVPVGeP3sYTWUGk2lElb35Q
+ bh=6ZMdcdOanjnCm/d+BPfFYVa72uIJOjt8bOorvM1iMDo=;
+ b=wUQZtwmF86TdhcYFxWXrFfobGdp5jCP+hzxaOkIoF9Ji2WISsM2xe7QuUNyttAzwzRQow3n2o
+ GKmL+8S5A8AB1LI+RX9cHlZ9ryewF97e3QNh4KJRuURPebhZ3jTUSn6
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250522_064044_851091_3984E023 
-X-CRM114-Status: GOOD (  12.37  )
+X-CRM114-CacheID: sfid-20250522_064031_154887_C989B94C 
+X-CRM114-Status: GOOD (  13.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,98 +90,75 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] parted: implement mkpart_size command
+Subject: [PATCH 2/3] parted: align partitions to 1MiB
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This creates a command which creates a partition with specified size.
-The command finds a suitable place for the partition itself.
+Common partitioning tools align partition start offsets and sizes to
+1MiB. Do likewise in barebox parted to avoid unnecessary write
+amplification due to unaligned partition starts.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/parted.c | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ commands/parted.c    | 10 ++++++++--
+ include/partitions.h |  4 ++++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/commands/parted.c b/commands/parted.c
-index 221c6fc98601f1532ea85e000d1e2147f7a5af63..6872a8414c79e8e116c9ecce864888cec542ad18 100644
+index 68b056a0758a14e597d72f76cdc4ba6781a06051..221c6fc98601f1532ea85e000d1e2147f7a5af63 100644
 --- a/commands/parted.c
 +++ b/commands/parted.c
-@@ -192,6 +192,57 @@ static int do_mkpart(struct block_device *blk, int argc, char *argv[])
- 	return ret < 0 ? ret : 5;
- }
+@@ -8,6 +8,7 @@
+ #include <linux/sizes.h>
+ #include <partitions.h>
+ #include <linux/math64.h>
++#include <range.h>
  
-+static int do_mkpart_size(struct block_device *blk, int argc, char *argv[])
-+{
-+	struct partition_desc *pdesc;
-+	uint64_t size, start;
-+	const char *name, *fs_type;
-+	int ret;
-+	uint64_t mult;
-+
-+	if (argc < 4) {
-+		printf("Error: Missing required arguments\n");
+ static struct partition_desc *gpdesc;
+ static bool table_needs_write;
+@@ -160,13 +161,18 @@ static int do_mkpart(struct block_device *blk, int argc, char *argv[])
+ 	end *= mult;
+ 
+ 	/* If not on sector boundaries move start up and end down */
+-	start = ALIGN(start, SECTOR_SIZE);
+-	end = ALIGN_DOWN(end, SECTOR_SIZE);
++	start = ALIGN(start, SZ_1M);
++	end = ALIGN_DOWN(end, SZ_1M);
+ 
+ 	/* convert to LBA */
+ 	start >>= SECTOR_SHIFT;
+ 	end >>= SECTOR_SHIFT;
+ 
++	if (end == start) {
++		printf("Error: After alignment the partition has zero size\n");
 +		return -EINVAL;
 +	}
 +
-+	name = argv[1];
-+	fs_type = argv[2];
+ 	/*
+ 	 * When unit is >= KB then substract one sector for user convenience.
+ 	 * It allows to start the next partition where the previous ends
+diff --git a/include/partitions.h b/include/partitions.h
+index 7fd6899bd3b88f691385c330bb7900d9ec1547ac..dd3e631c5aa337d752312cd94be5e7dbb4f527a5 100644
+--- a/include/partitions.h
++++ b/include/partitions.h
+@@ -11,6 +11,7 @@
+ #include <filetype.h>
+ #include <linux/uuid.h>
+ #include <linux/list.h>
++#include <linux/sizes.h>
+ 
+ #define MAX_PARTITION		128
+ #define MAX_PARTITION_NAME	38
+@@ -55,6 +56,9 @@ struct partition_parser {
+ 	const char *name;
+ };
+ 
++#define PARTITION_ALIGN_SIZE	SZ_1M
++#define PARTITION_ALIGN_SECTORS	(PARTITION_ALIGN_SIZE >> SECTOR_SHIFT)
 +
-+	ret = parted_strtoull(argv[3], &size, &mult);
-+	if (ret)
-+		return ret;
-+
-+	if (!mult)
-+		mult = gunit;
-+
-+	size *= mult;
-+
-+	/* If not on sector boundaries move start up and end down */
-+	size = ALIGN(size, PARTITION_ALIGN_SIZE);
-+
-+	/* convert to LBA */
-+	size >>= SECTOR_SHIFT;
-+
-+	pdesc = pdesc_get(blk);
-+	if (!pdesc)
-+		return -EINVAL;
-+
-+	ret = partition_find_free_space(pdesc, size, &start);
-+	if (ret) {
-+		printf("No free space for %llu sectors found\n", size);
-+		return ret;
-+	}
-+
-+	printf("%s: creating partition with %llu blocks at %llu\n", __func__, size, start);
-+
-+	ret = partition_create(pdesc, name, fs_type, start, start + size - 1);
-+
-+	if (!ret)
-+		table_needs_write = true;
-+
-+	return ret < 0 ? ret : 4;
-+}
-+
- static int do_rmpart(struct block_device *blk, int argc, char *argv[])
- {
- 	struct partition_desc *pdesc;
-@@ -267,6 +318,9 @@ struct parted_command parted_commands[] = {
- 		.name = "mkpart",
- 		.command = do_mkpart,
- 	}, {
-+		.name = "mkpart_size",
-+		.command = do_mkpart_size,
-+	},  {
- 		.name = "print",
- 		.command = do_print,
- 	}, {
-@@ -360,6 +414,7 @@ BAREBOX_CMD_HELP_OPT ("print", "print partitions")
- BAREBOX_CMD_HELP_OPT ("mklabel <type>", "create a new partition table")
- BAREBOX_CMD_HELP_OPT ("rm <num>", "remove a partition")
- BAREBOX_CMD_HELP_OPT ("mkpart <name> <fstype> <start> <end>", "create a new partition")
-+BAREBOX_CMD_HELP_OPT ("mkpart_size <name> <fstype> <size>", "create a new partition")
- BAREBOX_CMD_HELP_OPT ("unit <unit>", "change display/input units")
- BAREBOX_CMD_HELP_OPT ("refresh", "refresh a partition table")
- BAREBOX_CMD_HELP_TEXT("")
+ void partition_desc_init(struct partition_desc *pd, struct block_device *blk);
+ int partition_parser_register(struct partition_parser *p);
+ struct partition_desc *partition_table_read(struct block_device *blk);
 
 -- 
 2.39.5
