@@ -1,76 +1,65 @@
-Delivery-date: Mon, 26 May 2025 09:26:18 +0200
+Delivery-date: Mon, 26 May 2025 12:07:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJSDw-000Rut-1E
+	id 1uJUjn-000U68-27
 	for lore@lore.pengutronix.de;
-	Mon, 26 May 2025 09:26:18 +0200
+	Mon, 26 May 2025 12:07:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJSDv-0003wl-SP
-	for lore@pengutronix.de; Mon, 26 May 2025 09:26:16 +0200
+	id 1uJUjn-0001oC-2d
+	for lore@pengutronix.de; Mon, 26 May 2025 12:07:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oQmKqpFPKEaW3Z2ol6Uh3QU/STvteQxSkDazEeyzUyY=; b=kGctLaxHp6ojFwIcKBq9ttDvNr
-	3VkWuhWg+IoUWggSO7vYpqAMwuwcT8cWZgEnD5eLTE+avMaEA6K/NBn2KoyGtOYxY7PYo/qB6PzHC
-	seKStn06WV34O3KWpxC3PVJrlt5fwZU6j6KEZahkPkTD2qrZEf3LLRjcK9KwoywCINiONowEpQGBb
-	GhcooZwEewwWSlwPt91lBQ1n6Xs9TNiGiOdzNZoEr82OMLTb9SMaK/vsqfWSgVS/AJkcZsmCzAImp
-	0ebFhS+8mVkck2qIHzULofA6Hss9PgBzJ3u7fQlZz2XOMCAaAKxA6jdC9RQk442rZY3dyqCPFObZe
-	oqqGRdIQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=a2fVdb4UmFFs/BTrchDPwys8WLjomJHP+wOw9+IqxBk=; b=FUPmFH2SZeSMmDRU827+D5Lxq5
+	xoWsm/aHe8OmfnqXW9uarhV3LtD9fseu9OifJ/PGK10AtOZEl8SU6TglPhlvMaOXELqEla5HZ0UoW
+	QezBp1bZSfOv6FocTfZomYra9rqXvQca3KbSaXxmvw3zSMwVOorF81JqutVFyOtR31N0IKcYYb0Xs
+	3RbgWjVZLd1r15uYGjJllifuoHPZr/2MarQOC6Xy43vQ9/HAngaXKiWMFv96Tn+hNM8YOzZwQJuUW
+	aehXS768k3rXgfNmYq/uLvmduzQQxa9COqrCpqmJB6NhMY1t3qzCW30E0h1m48h/U8crUI2gevomb
+	bnoj/AQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJSDC-00000008H4d-42V3;
-	Mon, 26 May 2025 07:25:30 +0000
+	id 1uJUjB-00000008aWO-1qcY;
+	Mon, 26 May 2025 10:06:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJSBY-00000008GzH-1Asl
+	id 1uJUj1-00000008aUE-1mnv
 	for barebox@lists.infradead.org;
-	Mon, 26 May 2025 07:23:50 +0000
+	Mon, 26 May 2025 10:06:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mtr@pengutronix.de>)
-	id 1uJSBU-0003OZ-VO; Mon, 26 May 2025 09:23:44 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uJUiy-0001XL-O9; Mon, 26 May 2025 12:06:28 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mtr@pengutronix.de>)
-	id 1uJSBU-000D6N-2G;
-	Mon, 26 May 2025 09:23:44 +0200
-Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mtr@pengutronix.de>)
-	id 1uJSBU-00AS07-1s;
-	Mon, 26 May 2025 09:23:44 +0200
-Date: Mon, 26 May 2025 09:23:44 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-To: Johannes Roith <johannes@gnu-linux.rocks>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <aDQXAEr1fl0wgV4k@pengutronix.de>
-References: <DB7PR02MB43321CDF6386A16A725DC131ABF40@DB7PR02MB4332.eurprd02.prod.outlook.com>
- <845b2228ae93d93e331556bb983f19cf67a025b8.camel@pengutronix.de>
- <DB7PR02MB4332F692229D1F189B11EC49ABF00@DB7PR02MB4332.eurprd02.prod.outlook.com>
- <aCeMAO9MFhGJBStt@Precision-T3610>
- <9babe122-45a3-4843-a2bb-178979164339@pengutronix.de>
- <aCoTbGjxgymNPSQF@Precision-T3610>
- <933c22ee-bafe-4736-80bc-0674d7782124@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uJUiy-000EQf-1p;
+	Mon, 26 May 2025 12:06:28 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uJUiy-00DRBJ-1W;
+	Mon, 26 May 2025 12:06:28 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 26 May 2025 12:06:27 +0200
+Message-Id: <20250526100627.3202658-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <933c22ee-bafe-4736-80bc-0674d7782124@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250526_002348_335681_583614CB 
-X-CRM114-Status: GOOD (  13.78  )
+X-CRM114-CacheID: sfid-20250526_030631_464637_8BB27B8D 
+X-CRM114-Status: GOOD (  14.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,43 +77,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Barebox for Zedboard
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH] Documentation: devicetree: mention when symbols are required in base DT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, 19 May 2025 06:55:52 +0200, Ahmad Fatoum wrote:
-> On 18.05.25 19:06, Johannes Roith wrote:
-> > Am Fri, May 16, 2025 at 09:28:03PM +0200 schrieb Ahmad Fatoum:
-> >> Loading OF overlays can already load firmware that way.
-> > 
-> > Could you give me an example for an OF overlay to load a firmware?
-> 
-> Should look the same as in Linux (with overlay patches applied).
-> 
-> Michael, do you happen to have an example to share?
+The barebox error message:
 
-The overlay looks the same as in Linux and documented in
-fpga-region.yaml.
+  ERROR: of_resolver: __symbols__ missing from base devicetree
 
-For example, if your device tree contains a node with a fpga-region for
-the fpga named fpga_full and the fpga-mgr property has a phandle to the
-node of the FPGA Manager, the following overlay should instruct the FPGA
-Manager to load the bitstream.bit firmware into the FPGA.
+can be a bit cryptic if unfamiliar with how overlays work internally.
 
-	/dts-v1/;
-	/plugin/;
-	&fpga_full {
-		firmware-name = "bitstream.bin";
-	};
+Let's mention the error message in the documentation, so it turns up in
+a search and add some extra information.
 
-In the overlay you should also describe the gateware implemented in the
-bitstream. This allows Linux to detect what's actually implemented in
-the bitstream and probe the proper drivers.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/user/devicetree.rst | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Michael
+diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
+index 91afffdcda76..9f46eee4ea95 100644
+--- a/Documentation/user/devicetree.rst
++++ b/Documentation/user/devicetree.rst
+@@ -83,6 +83,14 @@ barebox has support for device tree overlays. barebox knows two different trees,
+ the live tree and the device tree the kernel is started with. Both can be applied
+ overlays to.
+ 
++.. note:: Compiling a device tree discards label information by default. To be able
++ to use phandles into the base device tree from inside an overlay, pass to dtc the
++ ``-@`` option when compiling the base device tree.
++   This will populate ``/__symbols__`` in the base device tree.
++
++ Having ``__fixups__`` in the overlay, but no ``__symbols__`` in the base device
++ tree is not allowed: ``ERROR: of_resolver: __symbols__ missing from base devicetree``.
++
+ Device tree overlays on the live tree
+ .....................................
+ 
+@@ -91,6 +99,9 @@ detect any changes to the live tree. To let the overlays have any effect, board
+ code must make sure the live tree is patched before the devices are instanciated
+ from it.
+ 
++The ``CONFIG_OF_OVERLAY_LIVE`` option will need to be enabled to generate
++``__symbols__`` into the barebox device tree.
++
+ Device tree overlays on the kernel device tree
+ ..............................................
+ 
+@@ -118,3 +129,9 @@ the kernel. The behaviour is controlled by different variables:
+   ``global.of.overlay.compatible`` above. The default is ``filepattern compatible``
+   which means the two generic filters are active. This list may be replaced or
+   supplemented by board specific filters.
++
++The kernel device trees need to be built with symbols (``dtc -@`` option) enabled.
++For upstream device trees, this is currently done on a case-by-case basis in the
++Makefiles::
++
++  DTC_FLAGS_bcm2711-rpi-4-b := -@
+-- 
+2.39.5
+
 
 
