@@ -1,67 +1,67 @@
-Delivery-date: Mon, 26 May 2025 18:34:08 +0200
+Delivery-date: Mon, 26 May 2025 18:37:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJam8-000Zw7-1K
+	id 1uJapn-000Zyy-26
 	for lore@lore.pengutronix.de;
-	Mon, 26 May 2025 18:34:08 +0200
+	Mon, 26 May 2025 18:37:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJam7-0007pX-QS
-	for lore@pengutronix.de; Mon, 26 May 2025 18:34:08 +0200
+	id 1uJapn-0000ed-0w
+	for lore@pengutronix.de; Mon, 26 May 2025 18:37:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HyTM49HwfS+oM5Bn7G42uGQUk6YEv/LJghz9cOK14wU=; b=YDGgS/bqdrtfEYuxsg3BZD+1nA
-	tEOItTzYPYqyE2Bkbu/NepA8G/NnKCmbFs33gYc4HmjkcR67VhPemmTJSQTPBv5BdBjtM39ILNHIg
-	R60d9Eaz0c5nrzg306Moh6LG7eMU4N/O0w/QV5a8OGrl+aUtRP+kiFZGR7riromsRW1kfaKqG1j5l
-	mmyJxJnOPvUpsYtakONAgWRaEhpFJMjCOKGKg0yWMyFIoYCG8GxGtJenjmVVTeNllSvRDYulQkN1e
-	gqJ88D8aCL+iY4JBERZV66XdJF0TqJW3hnddcW1rdr1p5khVKXao8Xueaic5oxFKYb4ULrLLN6AUI
-	zgpTDAKg==;
+	bh=WDpJ946I5egg5GHLQHRuKvm4SIpVnc+IX5og6q1FxLY=; b=OqrTir0rUN7xXY79cu0l0AQvTO
+	7gchDqMQ7cfRMqn4FQ1OSjE5/lTt0JnzVMQvwyHrJCFV57jlDGuxLsut12PRwcq77tOFH7OXh56/w
+	UlzHve9jKkoUhPE6Y6qZSyG6QC5kN/zdyY85Cr3lLfbpRuulQVEbX7MbtMycOgHaUTKCSFhuIm6fT
+	7k7AqFvHqYRV3LlvGiS7cEB0BIuS87BvVVcF+Zae6y/I6/rF15aYEdezTGFhbZOuV4/gBiPPDCxsS
+	2dO/H2kLUZFGEz7weoxIgRQUalRdgX39xK8lqjdjEKV0wnDHQm9tiOs/WthALjKm+5S2NImcvbw1w
+	TV7tD6yA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJalb-00000009Ewe-0wBc;
-	Mon, 26 May 2025 16:33:35 +0000
+	id 1uJapM-00000009FBz-27rf;
+	Mon, 26 May 2025 16:37:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJalY-00000009Evw-1dcT
+	id 1uJapJ-00000009FBW-1SBi
 	for barebox@lists.infradead.org;
-	Mon, 26 May 2025 16:33:33 +0000
+	Mon, 26 May 2025 16:37:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uJalV-0007Yr-D5; Mon, 26 May 2025 18:33:29 +0200
+	id 1uJapI-0000TQ-6I; Mon, 26 May 2025 18:37:24 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uJalV-000HLm-0I;
-	Mon, 26 May 2025 18:33:29 +0200
+	id 1uJapI-000HQZ-01;
+	Mon, 26 May 2025 18:37:24 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uJalV-00Acy8-01;
-	Mon, 26 May 2025 18:33:29 +0200
-Date: Mon, 26 May 2025 18:33:28 +0200
+	id 1uJapH-00AczV-2w;
+	Mon, 26 May 2025 18:37:23 +0200
+Date: Mon, 26 May 2025 18:37:23 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Michael Tretter <m.tretter@pengutronix.de>
 Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20250526163328.66vokf3qcnsrtsjz@pengutronix.de>
+Message-ID: <20250526163723.yajiylvj5lbext73@pengutronix.de>
 References: <20250526-rk3588-optee-v1-0-5004995cbd03@pengutronix.de>
- <20250526-rk3588-optee-v1-7-5004995cbd03@pengutronix.de>
+ <20250526-rk3588-optee-v1-8-5004995cbd03@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250526-rk3588-optee-v1-7-5004995cbd03@pengutronix.de>
+In-Reply-To: <20250526-rk3588-optee-v1-8-5004995cbd03@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250526_093332_431542_885EA979 
-X-CRM114-Status: GOOD (  18.35  )
+X-CRM114-CacheID: sfid-20250526_093725_391424_14F8CB5B 
+X-CRM114-Status: GOOD (  30.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,97 +83,96 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 7/9] ARM: rockchip: dmc: add rk3588_ram_sizes to get full
- ram size
+Subject: Re: [PATCH 8/9] ARM: rockchip: pass device tree to TF-A
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 25-05-26, Michael Tretter wrote:
-> The PBL has to pass a full description of the SDRAM to OP-TEE to allow
-> OP-TEE to handle dynamic shared memory in the entire SDRAM. Thus, the
-> PBL needs to read the full memory configuration.
+> The upstream OP-TEE expects a device tree to be able to initialize the
+> dynamic shared memory. Therefore, barebox should pass a device tree that
+> contains memory nodes through the TF-A to OP-TEE.
+> 
+> Unfortunately, the downstream TF-A fails to start if barebox passes its
+> device tree and it is not possible to detect if the loaded TF-A is able
+> to handle the device tree. Add a config option to pass the device tree
+> if it is possible.
 > 
 > Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 > ---
->  arch/arm/mach-rockchip/dmc.c | 37 ++++++++++++++++++++++++++++++++++---
->  include/mach/rockchip/dmc.h  |  2 ++
->  2 files changed, 36 insertions(+), 3 deletions(-)
+>  arch/arm/mach-rockchip/Kconfig | 13 +++++++++++++
+>  arch/arm/mach-rockchip/atf.c   | 15 ++++-----------
+>  pbl/Kconfig                    |  1 +
+>  3 files changed, 18 insertions(+), 11 deletions(-)
 > 
-> diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.c
-> index 62a7ef8f1e38e989e84f08f6f4a6586be3e85532..260b8be9c7da9e8f83323822eab92a439ef4e2ef 100644
-> --- a/arch/arm/mach-rockchip/dmc.c
-> +++ b/arch/arm/mach-rockchip/dmc.c
-> @@ -171,11 +171,12 @@ resource_size_t rk3568_ram0_size(void)
->  #define RK3588_PMUGRF_OS_REG4           0x210
->  #define RK3588_PMUGRF_OS_REG5           0x214
+> diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+> index 98dfd11c182b9fee6e3c958653ad4fa8a7d98d84..257c13bcf4846e805a7803105c71edeff92c534d 100644
+> --- a/arch/arm/mach-rockchip/Kconfig
+> +++ b/arch/arm/mach-rockchip/Kconfig
+> @@ -141,6 +141,19 @@ config ARCH_ROCKCHIP_ATF
+>  	  useful for debugging early startup, but for all other cases,
+>  	  say y here.
 >  
-> -resource_size_t rk3588_ram0_size(void)
-> +size_t rk3588_ram_sizes(phys_addr_t *base, resource_size_t *size, size_t n)
+> +config ARCH_ROCKCHIP_ATF_PASS_FDT
+> +	bool "Pass device tree to TF-A"
+> +	depends on ARCH_ROCKCHIP_ATF
+> +	help
+> +	  Enable this option if you are using an upstream OP-TEE that uses the
+> +	  device tree to initialize dynamic shared memory, which is passed
+> +	  through the upstream TF-A.
 
-Nit: could be void since you don't check the return value.
+Would be nice to document this within the Documentation/ dir too.
 
 Regards,
   Marco
 
->  {
->  	void __iomem *pmugrf = IOMEM(RK3588_PMUGRF_BASE);
->  	u32 sys_reg2, sys_reg3, sys_reg4, sys_reg5;
-> -	resource_size_t size, size1, size2;
-> +	resource_size_t memsize, size1, size2;
-> +	size_t i = 0;
+> +
+> +	  Disable the option if you are using a downstream TF-A since it
+> +	  doesn't always cope with device trees. Supposedly this happens if the
+> +	  device tree is too large, for example if CONFIG_OF_OVERLAY_LIVE is
+> +	  enabled.
+> +
+>  config ARCH_ROCKCHIP_OPTEE
+>  	bool "Build rockchip OP-TEE binary into barebox"
+>  	depends on ARCH_ROCKCHIP_ATF
+> diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
+> index cfa6df043b34c0f36919048237c7ecf33dfe0724..12cf13717b6972c2eafc5a044ae8d0b4de029c32 100644
+> --- a/arch/arm/mach-rockchip/atf.c
+> +++ b/arch/arm/mach-rockchip/atf.c
+> @@ -186,18 +186,11 @@ void __noreturn rk3588_barebox_entry(void *fdt)
+>  		rk3588_lowlevel_init();
+>  		rockchip_store_bootrom_iram(IOMEM(RK3588_IRAM_BASE));
 >  
->  	sys_reg2 = readl(pmugrf + RK3588_PMUGRF_OS_REG2);
->  	sys_reg3 = readl(pmugrf + RK3588_PMUGRF_OS_REG3);
-> @@ -187,7 +188,37 @@ resource_size_t rk3588_ram0_size(void)
+> -		/*
+> -		 * The downstream TF-A doesn't cope with our device tree when
+> -		 * CONFIG_OF_OVERLAY_LIVE is enabled, supposedly because it is
+> -		 * too big for some reason. Otherwise it doesn't have any visible
+> -		 * effect if we pass a device tree or not, except that the TF-A
+> -		 * fills in the ethernet MAC address into the device tree.
+> -		 * The upstream TF-A doesn't use the device tree at all.
+> -		 *
+> -		 * Pass NULL for now until we have a good reason to pass a real
+> -		 * device tree.
+> -		 */
+> +#ifdef CONFIG_ARCH_ROCKCHIP_ATF_PASS_FDT
+> +		rk3588_atf_load_bl31(fdt);
+> +#else
+>  		rk3588_atf_load_bl31(NULL);
+> +#endif
+>  		/* not reached when CONFIG_ARCH_ROCKCHIP_ATF */
+>  	}
 >  
->  	pr_info("%s() size1 = 0x%08llx, size2 = 0x%08llx\n", __func__, (u64)size1, (u64)size2);
->  
-> -	size = min_t(resource_size_t, RK3588_INT_REG_START, size1 + size2);
-> +	memsize = size1 + size2;
-> +
-> +	base[i] = 0xa00000;
-> +	size[i] = min_t(resource_size_t, RK3588_INT_REG_START, memsize) - 0xa00000;
-> +	i++;
-> +
-> +	if (i < n && memsize > SZ_4G) {
-> +		base[i] = SZ_4G;
-> +		size[i] = min_t(unsigned long, DRAM_GAP1_START, memsize) - SZ_4G;
-> +		i++;
-> +	}
-> +	if (i < n && memsize > DRAM_GAP1_END) {
-> +		base[i] = DRAM_GAP1_END;
-> +		size[i] = min_t(unsigned long, DRAM_GAP2_START, memsize) - DRAM_GAP1_END;
-> +		i++;
-> +	}
-> +	if (i < n && memsize > DRAM_GAP2_END) {
-> +		base[i] = DRAM_GAP2_END;
-> +		size[i] = memsize - DRAM_GAP2_END;
-> +		i++;
-> +	}
-> +
-> +	return i;
-> +}
-> +
-> +resource_size_t rk3588_ram0_size(void)
-> +{
-> +	phys_addr_t base;
-> +	resource_size_t size;
-> +
-> +	rk3588_ram_sizes(&base, &size, 1);
->  
->  	return size;
->  }
-> diff --git a/include/mach/rockchip/dmc.h b/include/mach/rockchip/dmc.h
-> index 3df9aa5e9c87857e9ac3994e0e40c60d8c91b0a4..bb5a5afd02417920446c729b96eeb90f1fa0ead0 100644
-> --- a/include/mach/rockchip/dmc.h
-> +++ b/include/mach/rockchip/dmc.h
-> @@ -87,4 +87,6 @@ resource_size_t rk3399_ram0_size(void);
->  resource_size_t rk3568_ram0_size(void);
->  resource_size_t rk3588_ram0_size(void);
->  
-> +size_t rk3588_ram_sizes(phys_addr_t *base, resource_size_t *size, size_t n);
-> +
->  #endif
+> diff --git a/pbl/Kconfig b/pbl/Kconfig
+> index 489b2001a855d62e11a2159311332b0e67f3a754..3dfc7de3e80da12a6313e84175275070274b9a5d 100644
+> --- a/pbl/Kconfig
+> +++ b/pbl/Kconfig
+> @@ -63,6 +63,7 @@ config PBL_CLOCKSOURCE
+>  config PBL_FDT_MIN_SIZE
+>  	hex
+>  	default 0x0
+> +	default 0x60000 if ARCH_ROCKCHIP_ATF_PASS_FDT
+>  	prompt "Minimum size of the FDT blob"
+>  	help
+>  	  The TF-A or OP-TEE may modify the FDT or add nodes to the FDT. This
 > 
 > -- 
 > 2.39.5
