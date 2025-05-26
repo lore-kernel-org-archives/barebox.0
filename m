@@ -3,52 +3,53 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJYgF-000XuG-1y
+	id 1uJYgF-000XuR-2g
 	for lore@lore.pengutronix.de;
 	Mon, 26 May 2025 16:19:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJYgE-0002JZ-CU
+	id 1uJYgE-0002JW-5Z
 	for lore@pengutronix.de; Mon, 26 May 2025 16:19:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=wPatrsj6GRQxTFrt3QrUr82pPBJ+ofqPWSipImzEmDs=; b=vvgJmxplcJ8Z06XdqC0K5dYuc/
-	+Hvete99PQ8bSj3FwnQcX6UJCeGKf5aB04WzWvmBCxf3Y5SIMOYgNwemvdrZhz93Dz1ogWvcFqJhf
-	il4qtdVt9pHTlKqzGj1SmrUxjnqROOnORwiYd71KGpp1YXsgZBkrOvDLw8p3iUsyKtFfwPiZauFvk
-	Qiet5+qLlSJbf0zID1pQjtikcj3e3NukENPWVsxZaQrvbDsR4bTk6JkMkx+Cr6WAh5z8Zo1FAC1Wn
-	nsL9ltZfH+UXZ9YmkUx7U9I7NvRWRYdlGb9Or0B331Kxgw4z/6v3qD5yZWhDsoxD6plplB6ZewIyB
-	hbqggOJQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Xe8bxOc4udKqa/NYqjgROfAr19v1dPotDb7opI9IZhk=; b=Up1h97Gcbni6cY5+LKz+J9CbFx
+	zKWASFbmoSp3u5pCzSqs4H5iZs/OslmgSlACW0iKwgpOX8P7Cs/cQY/rkzQmrqE47wltHsKET5Xci
+	6pG2e0aVSUSy/c+3tJSIrQYwEEUX2o087T9Nmt9s2YlpEUTfcwJze66sH/+S8eOESArOcPmEj/fQg
+	IVq1l/k8UWx1p8sWeAeEuJ1Ua92naugLawJIG5DynnT2E35JhuuGbwNLE0Dg/tSlcvYWZGvMRvoIF
+	F3b4k1bF2uGbGcWuyY8oFCD9r8mzB+47xTMIUVgGoTY3rOpuLTpCx4SSdj4kJOPrckv1GXGFYQLSw
+	aQ0aNiWA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJYfn-00000008zEu-22wl;
-	Mon, 26 May 2025 14:19:27 +0000
+	id 1uJYfo-00000008zFY-02QB;
+	Mon, 26 May 2025 14:19:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJYfh-00000008z93-1u0X
+	id 1uJYfh-00000008z9V-2Qoi
 	for barebox@lists.infradead.org;
-	Mon, 26 May 2025 14:19:23 +0000
+	Mon, 26 May 2025 14:19:24 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uJYfd-0001p8-PX
-	for barebox@lists.infradead.org; Mon, 26 May 2025 16:19:17 +0200
+	id 1uJYff-0001p8-1f; Mon, 26 May 2025 16:19:19 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Date: Mon, 26 May 2025 16:19:08 +0200
-Message-Id: <20250526141914.185212-1-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon, 26 May 2025 16:19:14 +0200
+Message-Id: <20250526141914.185212-7-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250526141914.185212-1-a.fatoum@barebox.org>
+References: <20250526141914.185212-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250526_071921_508463_47583FA9 
-X-CRM114-Status: UNSURE (   8.98  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250526_071921_615391_1A5509AE 
+X-CRM114-Status: GOOD (  13.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,62 +71,140 @@ X-Spam-Status: No, score=-7.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 0/6] resource: record memory type/attrs on all SDRAM
+Subject: [PATCH v2 6/6] resource: retire IORESOURCE_BUSY in favor of resource::type
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When running as EFI loader, barebox is expected to provide a virtual
-memory map that describes the memory regions known to barebox as well as
-attributes like whether regions are write-back cached (usable as normal
-memory) or reserved (e.g., for OP-TEE).
+The way we use IORESOURCE_BUSY in barebox is different than in Linux and
+was only done to have a bit that doesn't sound too off-topic.
 
->From a security point of view, it's useful to have this information
-always to inform MMU attributes, so let's make it mandatory.
+Now that we have proper memory type and attributes, let's make use of
+them and retire IORESOURCE_BUSY.
 
-v1 -> v2:
-  - replace !IS_ERR check with !NULL check for __request_sdram_region
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ commands/iomemport.c         |  2 +-
+ common/memory.c              | 22 ++++++----------------
+ common/oftree.c              |  2 +-
+ drivers/tee/optee/of_fixup.c |  2 +-
+ include/memory.h             |  6 +++---
+ 5 files changed, 12 insertions(+), 22 deletions(-)
 
-Ahmad Fatoum (6):
-  memory: export inside_barebox_area
-  resource: record EFI memory type and attributes
-  resource: add MEMATTRS_ definitions for common attribute sets
-  drivers: tee: optee: separate local variables for each resource
-  resource: supply memory type/attrs on all SDRAM requests
-  resource: retire IORESOURCE_BUSY in favor of resource::type
-
- arch/arm/cpu/armv7r-mpu.c       |  5 ++-
- arch/arm/cpu/bootm-fip.c        |  3 +-
- arch/arm/cpu/cpu.c              |  3 +-
- arch/arm/cpu/mmu_32.c           | 13 ++++--
- arch/arm/cpu/mmu_64.c           |  7 ++-
- arch/arm/cpu/start.c            |  3 +-
- arch/arm/lib32/bootm.c          | 18 +++++---
- arch/arm/lib32/bootz.c          |  4 +-
- arch/mips/lib/cpu-probe.c       |  3 +-
- arch/powerpc/mach-mpc5xxx/cpu.c |  3 +-
- arch/powerpc/mach-mpc85xx/cpu.c |  2 +-
- arch/riscv/boot/start.c         |  2 +-
- arch/riscv/cpu/core.c           |  2 +-
- commands/iomemport.c            |  2 +-
- common/bootm.c                  |  9 ++--
- common/elf.c                    |  3 +-
- common/memory.c                 | 57 +++++++++++++++++-------
- common/memtest.c                |  4 +-
- common/oftree.c                 |  2 +-
- common/pe.c                     |  4 +-
- common/uimage.c                 |  6 ++-
- drivers/tee/optee/of_fixup.c    | 33 +++++++-------
- fs/pstore/ram_core.c            |  6 ++-
- include/efi.h                   | 37 +--------------
- include/efi/memtype.h           | 79 +++++++++++++++++++++++++++++++++
- include/linux/ioport.h          | 67 +++++++++++++++++++++++++++-
- include/memory.h                | 33 +++++++++++---
- lib/Kconfig.hardening           |  7 +++
- lib/libfile.c                   | 13 +++++-
- pbl/handoff-data.c              |  3 +-
- 30 files changed, 320 insertions(+), 113 deletions(-)
- create mode 100644 include/efi/memtype.h
-
+diff --git a/commands/iomemport.c b/commands/iomemport.c
+index f2baa0e29397..bbe41f571b48 100644
+--- a/commands/iomemport.c
++++ b/commands/iomemport.c
+@@ -18,7 +18,7 @@ static void __print_resources(struct resource *res, int indent)
+ 
+ 	printf("%pa - %pa (size %pa) %s%s\n",
+ 			&res->start, &res->end, &size,
+-			res->flags & IORESOURCE_BUSY ? "[R] " : "",
++			is_reserved_resource(res) ? "[R] " : "",
+ 			res->name);
+ 
+ 	list_for_each_entry(r, &res->children, sibling) {
+diff --git a/common/memory.c b/common/memory.c
+index 684907e8e933..8c9f29ca71b2 100644
+--- a/common/memory.c
++++ b/common/memory.c
+@@ -251,25 +251,18 @@ postmem_initcall(add_mem_devices);
+ /*
+  * Request a region from the registered sdram
+  */
+-struct resource *__request_sdram_region(const char *name, unsigned flags,
+-				      resource_size_t start, resource_size_t size,
+-				      enum resource_memtype memtype, unsigned memattrs)
++struct resource *__request_sdram_region(const char *name,
++					resource_size_t start, resource_size_t size)
+ {
+ 	struct memory_bank *bank;
+ 
+-	flags |= IORESOURCE_MEM;
+-
+ 	for_each_memory_bank(bank) {
+ 		struct resource *res;
+ 
+ 		res = __request_region(bank->res, start, start + size - 1,
+-				       name, flags);
+-		if (!IS_ERR(res)) {
+-			res->type = memtype;
+-			res->attrs = memattrs;
+-			res->flags |= IORESOURCE_TYPE_VALID;
++				       name, IORESOURCE_MEM);
++		if (!IS_ERR(res))
+ 			return res;
+-		}
+ 	}
+ 
+ 	return NULL;
+@@ -291,14 +284,11 @@ struct resource *reserve_sdram_region(const char *name, resource_size_t start,
+ 		size = ALIGN(size, PAGE_SIZE);
+ 	}
+ 
+-	res = __request_sdram_region(name, IORESOURCE_BUSY, start, size);
++	res = request_sdram_region(name, start, size,
++				   MEMTYPE_RESERVED, MEMATTRS_RW_DEVICE);
+ 	if (!res)
+ 		return NULL;
+ 
+-	res->type = MEMTYPE_RESERVED;
+-	res->attrs = MEMATTRS_RW_DEVICE;
+-	res->flags |= IORESOURCE_TYPE_VALID;
+-
+ 	remap_range((void *)start, size, MAP_UNCACHED);
+ 
+ 	return res;
+diff --git a/common/oftree.c b/common/oftree.c
+index b9a854c786f6..a7479164e288 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -304,7 +304,7 @@ int of_fixup_reserved_memory(struct device_node *root, void *_res)
+ 
+ 	child = of_get_child_by_name(node, res->name) ?: of_new_node(node, res->name);
+ 
+-	if (res->flags & IORESOURCE_BUSY)
++	if (is_reserved_resource(res))
+ 		of_property_write_bool(child, "no-map", true);
+ 
+ 	of_write_number(reg, res->start, addr_n_cells);
+diff --git a/drivers/tee/optee/of_fixup.c b/drivers/tee/optee/of_fixup.c
+index 223f67e872aa..f3ccff31e68a 100644
+--- a/drivers/tee/optee/of_fixup.c
++++ b/drivers/tee/optee/of_fixup.c
+@@ -37,7 +37,7 @@ int of_optee_fixup(struct device_node *root, void *_data)
+ 		res_core.start = arm_mem_endmem_get() - OPTEE_SIZE;
+ 		res_core.end = arm_mem_endmem_get() - fixup_data->shm_size - 1;
+ 	}
+-	res_core.flags = IORESOURCE_MEM | IORESOURCE_BUSY;
++	res_core.flags = IORESOURCE_MEM;
+ 	reserve_resource(&res_core);
+ 	res_core.name = "optee_core";
+ 
+diff --git a/include/memory.h b/include/memory.h
+index 7c5b133b7693..c430375e4316 100644
+--- a/include/memory.h
++++ b/include/memory.h
+@@ -30,9 +30,9 @@ int barebox_add_memory_bank(const char *name, resource_size_t start,
+ #define for_each_memory_bank(mem)	list_for_each_entry(mem, &memory_banks, list)
+ #define for_each_reserved_region(mem, rsv) \
+ 	list_for_each_entry(rsv, &(mem)->res->children, sibling) \
+-	if (((rsv)->flags & IORESOURCE_BUSY))
++		if (is_reserved_resource(rsv))
+ 
+-struct resource *__request_sdram_region(const char *name, unsigned flags,
++struct resource *__request_sdram_region(const char *name,
+ 				      resource_size_t start, resource_size_t size);
+ 
+ static inline struct resource *request_sdram_region(const char *name,
+@@ -44,7 +44,7 @@ static inline struct resource *request_sdram_region(const char *name,
+ 	struct resource *res;
+ 
+ 	/* IORESOURCE_MEM is implicit for all SDRAM regions */
+-	res = __request_sdram_region(name, 0, start, size);
++	res = __request_sdram_region(name, start, size);
+ 	if (IS_ENABLED(CONFIG_MEMORY_ATTRIBUTES) && res) {
+ 		res->type = memtype;
+ 		res->attrs = memattrs;
 -- 
 2.39.5
 
