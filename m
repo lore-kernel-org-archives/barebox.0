@@ -1,67 +1,68 @@
-Delivery-date: Mon, 26 May 2025 15:49:47 +0200
+Delivery-date: Mon, 26 May 2025 15:50:40 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJYD5-000XNU-2G
+	id 1uJYDw-000XOP-2F
 	for lore@lore.pengutronix.de;
-	Mon, 26 May 2025 15:49:47 +0200
+	Mon, 26 May 2025 15:50:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJYD5-0007up-6D
-	for lore@pengutronix.de; Mon, 26 May 2025 15:49:47 +0200
+	id 1uJYDw-0008Je-2K
+	for lore@pengutronix.de; Mon, 26 May 2025 15:50:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DW3YnnsBdp64MWOzdgACP1JRAEhNj/PCjm9CP/H3v+w=; b=Frj9ooTTNrse8H28Fgr4fqKZKr
-	hXiOI4heXRCQLhFdbcZcEe7+7T6lHVA2k9YCoFWycmWJ4ii71mW8N1/kSm1AiVc/9FOK/tmhZmj1N
-	1Hl+asVXXw/ZTP3X5hAYTv/AYJ9YsogtKm6cKngNZtFFerFcSm+IvT+4eD2+gqX7g4yf/7/0J/KQd
-	z51qoZOobukB2gyx4MT78/GIlVQDYV/tzNxYxXaPQaChvxbIMzST/aDmEaY9kq+3oeo4czid7gsLu
-	EBMdXSitVRhexYmY5JXjEUSXJ5ZDczY3FDvzDH6y3vOHYVshTNX+0dWPEhsDhDagJtjEnLdOK7Ryw
-	lo+obqCg==;
+	bh=xaa0NYpMIW7Y2YlhNA2eKERk8nqSXmA3MQbfpX9srcY=; b=4UTWU6nTcG1Snj8poCFg5GjV8/
+	H1mA9cJGivKAifOOBI7GEwKQKf55jhrMO7RKEISSG9Lb6MT21YJezf64gu/wh3tNc4i0oBeyojLM8
+	7hZ3cI5RupSPvAVLYtY3+gofyGQJiPxBfo3tlPxEKCOvpjAZxsaXLZ4lbxQNYDm3xADWBMYeyhujG
+	OcC0IBI9qHky2apEgDdo0+M53NQM2PlOQtcCXB4LvqV7ym3kETuuZjy2grGBFuGo3QVDFOaANAti5
+	oNLun3ZrVJjXyrDWJ6yhyyoYLLiY8VfWyQvoPg4wJooYVr9I6A3v6HBCm1cRaSk/Ehc0aG84wNptH
+	aAm4QJqw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJYCe-00000008vkS-2jO3;
-	Mon, 26 May 2025 13:49:20 +0000
+	id 1uJYDW-00000008w3O-47Ww;
+	Mon, 26 May 2025 13:50:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJYAq-00000008vcK-0pDx
+	id 1uJYDU-00000008w2w-1uuv
 	for barebox@lists.infradead.org;
-	Mon, 26 May 2025 13:47:29 +0000
+	Mon, 26 May 2025 13:50:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uJYAp-0006yU-3H; Mon, 26 May 2025 15:47:27 +0200
+	id 1uJYDT-00087o-Az; Mon, 26 May 2025 15:50:11 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uJYAo-000G7i-2x;
-	Mon, 26 May 2025 15:47:26 +0200
+	id 1uJYDT-000G90-0V;
+	Mon, 26 May 2025 15:50:11 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uJYAo-0030Kv-2j;
-	Mon, 26 May 2025 15:47:26 +0200
+	id 1uJYDT-0030Y6-0I;
+	Mon, 26 May 2025 15:50:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Philipp Zabel <p.zabel@pengutronix.de>
-In-Reply-To: <20250523101535.2069540-1-p.zabel@pengutronix.de>
-References: <20250523101535.2069540-1-p.zabel@pengutronix.de>
-Message-Id: <174826724684.716234.12897634058877470774.b4-ty@pengutronix.de>
-Date: Mon, 26 May 2025 15:47:26 +0200
+To: barebox@lists.infradead.org, 
+ Alexander Shiyan <eagle.alexander923@gmail.com>
+In-Reply-To: <20250522081715.22546-1-eagle.alexander923@gmail.com>
+References: <20250522081715.22546-1-eagle.alexander923@gmail.com>
+Message-Id: <174826741108.717047.11621633710392518344.b4-ty@pengutronix.de>
+Date: Mon, 26 May 2025 15:50:11 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250526_064728_242204_120882C7 
-X-CRM114-Status: UNSURE (   8.55  )
+X-CRM114-CacheID: sfid-20250526_065012_500856_820254EE 
+X-CRM114-Status: UNSURE (   6.76  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,28 +85,23 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: imx6ull-evk: Grow barebox partition, reduce
- environment
+Subject: Re: [PATCH] i2c: at91: Using "clock-frequency" property from
+ devicetree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 23 May 2025 12:15:35 +0200, Philipp Zabel wrote:
-> Keep using the first 1 MiB on the boot uSDHC for barebox + environment,
-> but change the split from 768/256 to 896/128 KiB.
+On Thu, 22 May 2025 11:17:14 +0300, Alexander Shiyan wrote:
+> This patch allows the I2C bus frequency to be configured from
+> devicetree. This improves compatibility with AT91-based systems
+> with different I2C device clock requirements.
 > 
-> This allows to install multi-board barebox binaries that have grown past
-> the 768 KiB limit without changing GPT partitions.
 > 
-> Now i.MX6ULL is aligned with the other i.MX6 boards as of commit
-> 3fb70de496b3 ("ARM: i.MX: increase barebox partition sizes").
-> 
-> [...]
 
 Applied, thanks!
 
-[1/1] ARM: imx6ull-evk: Grow barebox partition, reduce environment
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f747c544ac30 (link may not be stable)
+[1/1] i2c: at91: Using "clock-frequency" property from devicetree
+      https://git.pengutronix.de/cgit/barebox/commit/?id=5dd7360f3b17 (link may not be stable)
 
 Best regards,
 -- 
