@@ -1,55 +1,54 @@
-Delivery-date: Mon, 26 May 2025 16:19:54 +0200
+Delivery-date: Mon, 26 May 2025 16:19:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJYgE-000Xtt-0A
+	id 1uJYgF-000XuG-1y
 	for lore@lore.pengutronix.de;
-	Mon, 26 May 2025 16:19:54 +0200
+	Mon, 26 May 2025 16:19:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJYgD-0002JF-ES
-	for lore@pengutronix.de; Mon, 26 May 2025 16:19:53 +0200
+	id 1uJYgE-0002JZ-CU
+	for lore@pengutronix.de; Mon, 26 May 2025 16:19:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gqwGusFDkIMRYU6CAth9ugKqNnxMMOb+KRzDC76HVFo=; b=f1lmNI6DgxGRdn8gWYS1CsEymq
-	yr517/lVVeL6YCwfiJm4HnQw5OkjcvFAaMhC4voHXp4p0VVzQat6CjN9g15e/ykBz7Pkq8fvPkyef
-	qP/+osttFNGz8Ky9tc/GVYAs0Lv+x5WAtbSzgFJaqNCBikYccaRDgE9gcPPZir24A13mdJj5xC3/1
-	vBhbCCE09AvKXOvKX8ZjmOAKedZgcYW4gUCGdUGMmVHNc4s5C7YphsVlXr1KsnVr1Rw1xS8b51uAj
-	q25y/xruILdt0uprhV03jfBK26DUFYlFuyeMepe4Q9sA5CPW5+9EiJU0KJUispANonvge0+PP4AEp
-	lOctkbgw==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=wPatrsj6GRQxTFrt3QrUr82pPBJ+ofqPWSipImzEmDs=; b=vvgJmxplcJ8Z06XdqC0K5dYuc/
+	+Hvete99PQ8bSj3FwnQcX6UJCeGKf5aB04WzWvmBCxf3Y5SIMOYgNwemvdrZhz93Dz1ogWvcFqJhf
+	il4qtdVt9pHTlKqzGj1SmrUxjnqROOnORwiYd71KGpp1YXsgZBkrOvDLw8p3iUsyKtFfwPiZauFvk
+	Qiet5+qLlSJbf0zID1pQjtikcj3e3NukENPWVsxZaQrvbDsR4bTk6JkMkx+Cr6WAh5z8Zo1FAC1Wn
+	nsL9ltZfH+UXZ9YmkUx7U9I7NvRWRYdlGb9Or0B331Kxgw4z/6v3qD5yZWhDsoxD6plplB6ZewIyB
+	hbqggOJQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJYfl-00000008zDA-2a6s;
-	Mon, 26 May 2025 14:19:25 +0000
+	id 1uJYfn-00000008zEu-22wl;
+	Mon, 26 May 2025 14:19:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJYfh-00000008z9C-1ghY
+	id 1uJYfh-00000008z93-1u0X
 	for barebox@lists.infradead.org;
 	Mon, 26 May 2025 14:19:23 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uJYfe-0001p8-CJ
-	for barebox@lists.infradead.org; Mon, 26 May 2025 16:19:18 +0200
+	id 1uJYfd-0001p8-PX
+	for barebox@lists.infradead.org; Mon, 26 May 2025 16:19:17 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Date: Mon, 26 May 2025 16:19:11 +0200
-Message-Id: <20250526141914.185212-4-a.fatoum@barebox.org>
+Date: Mon, 26 May 2025 16:19:08 +0200
+Message-Id: <20250526141914.185212-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250526141914.185212-1-a.fatoum@barebox.org>
-References: <20250526141914.185212-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250526_071921_437096_8D11790E 
-X-CRM114-Status: GOOD (  10.95  )
+X-CRM114-CacheID: sfid-20250526_071921_508463_47583FA9 
+X-CRM114-Status: UNSURE (   8.98  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,64 +70,62 @@ X-Spam-Status: No, score=-7.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/6] resource: add MEMATTRS_ definitions for common attribute sets
+Subject: [PATCH v2 0/6] resource: record memory type/attrs on all SDRAM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Most SDRAM mapped by barebox falls into one of these categories,
-so add some readily usable MEMATTRS_ constants.
+When running as EFI loader, barebox is expected to provide a virtual
+memory map that describes the memory regions known to barebox as well as
+attributes like whether regions are write-back cached (usable as normal
+memory) or reserved (e.g., for OP-TEE).
 
-Anything more special can OR the individual MEMATTR_ bits together.
+>From a security point of view, it's useful to have this information
+always to inform MMU attributes, so let's make it mandatory.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- include/linux/ioport.h | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+v1 -> v2:
+  - replace !IS_ERR check with !NULL check for __request_sdram_region
 
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 1e266185651f..425928df3bfe 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -133,6 +133,14 @@ enum resource_memtype {
- #define MEMATTR_RO	0x00020000	/* read-only */
- #define MEMATTR_SP	0x00040000	/* specific-purpose */
- 
-+#define MEMATTRS_CACHEABLE	(MEMATTR_WT | MEMATTR_WC | MEMATTR_WB)
-+#define MEMATTRS_RW		(MEMATTRS_CACHEABLE | MEMATTR_XP)
-+#define MEMATTRS_RO		(MEMATTRS_CACHEABLE | MEMATTR_XP | MEMATTR_RO)
-+#define MEMATTRS_RX		(MEMATTRS_CACHEABLE | MEMATTR_RO)
-+#define MEMATTRS_RWX		(MEMATTRS_CACHEABLE)	/* TODO: remove all */
-+#define MEMATTRS_RW_DEVICE	(MEMATTR_UC | MEMATTR_XP)
-+#define MEMATTRS_FAULT		(MEMATTR_UC | MEMATTR_XP | MEMATTR_RP | MEMATTR_RO)
-+
- /* PnP I/O specific bits (IORESOURCE_BITS) */
- #define IORESOURCE_IO_16BIT_ADDR	(1<<0)
- #define IORESOURCE_IO_FIXED		(1<<1)
-@@ -204,5 +212,24 @@ int release_region(struct resource *res);
- extern struct resource iomem_resource;
- extern struct resource ioport_resource;
- 
-+static inline void reserve_resource(struct resource *res)
-+{
-+	res->type = MEMTYPE_RESERVED;
-+	/* Reserved memory is used for secure memory that should
-+	 * be hardware-protected independently of MMU flags.
-+	 * We map it as device memory, so we can still test
-+	 * if it's indeed inaccessible
-+	 */
-+	res->attrs = MEMATTRS_RW_DEVICE;
-+	res->flags |= IORESOURCE_TYPE_VALID;
-+}
-+
-+static inline bool is_reserved_resource(const struct resource *res)
-+{
-+	if (res->flags & IORESOURCE_TYPE_VALID)
-+		return res->type == MEMTYPE_RESERVED;
-+	return false;
-+}
-+
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
+Ahmad Fatoum (6):
+  memory: export inside_barebox_area
+  resource: record EFI memory type and attributes
+  resource: add MEMATTRS_ definitions for common attribute sets
+  drivers: tee: optee: separate local variables for each resource
+  resource: supply memory type/attrs on all SDRAM requests
+  resource: retire IORESOURCE_BUSY in favor of resource::type
+
+ arch/arm/cpu/armv7r-mpu.c       |  5 ++-
+ arch/arm/cpu/bootm-fip.c        |  3 +-
+ arch/arm/cpu/cpu.c              |  3 +-
+ arch/arm/cpu/mmu_32.c           | 13 ++++--
+ arch/arm/cpu/mmu_64.c           |  7 ++-
+ arch/arm/cpu/start.c            |  3 +-
+ arch/arm/lib32/bootm.c          | 18 +++++---
+ arch/arm/lib32/bootz.c          |  4 +-
+ arch/mips/lib/cpu-probe.c       |  3 +-
+ arch/powerpc/mach-mpc5xxx/cpu.c |  3 +-
+ arch/powerpc/mach-mpc85xx/cpu.c |  2 +-
+ arch/riscv/boot/start.c         |  2 +-
+ arch/riscv/cpu/core.c           |  2 +-
+ commands/iomemport.c            |  2 +-
+ common/bootm.c                  |  9 ++--
+ common/elf.c                    |  3 +-
+ common/memory.c                 | 57 +++++++++++++++++-------
+ common/memtest.c                |  4 +-
+ common/oftree.c                 |  2 +-
+ common/pe.c                     |  4 +-
+ common/uimage.c                 |  6 ++-
+ drivers/tee/optee/of_fixup.c    | 33 +++++++-------
+ fs/pstore/ram_core.c            |  6 ++-
+ include/efi.h                   | 37 +--------------
+ include/efi/memtype.h           | 79 +++++++++++++++++++++++++++++++++
+ include/linux/ioport.h          | 67 +++++++++++++++++++++++++++-
+ include/memory.h                | 33 +++++++++++---
+ lib/Kconfig.hardening           |  7 +++
+ lib/libfile.c                   | 13 +++++-
+ pbl/handoff-data.c              |  3 +-
+ 30 files changed, 320 insertions(+), 113 deletions(-)
+ create mode 100644 include/efi/memtype.h
+
 -- 
 2.39.5
 
