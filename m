@@ -1,56 +1,56 @@
-Delivery-date: Mon, 26 May 2025 16:39:01 +0200
+Delivery-date: Mon, 26 May 2025 16:39:02 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJYyj-000Y6m-35
+	id 1uJYyk-000Y77-1H
 	for lore@lore.pengutronix.de;
-	Mon, 26 May 2025 16:39:01 +0200
+	Mon, 26 May 2025 16:39:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJYyi-0000y7-HS
-	for lore@pengutronix.de; Mon, 26 May 2025 16:39:01 +0200
+	id 1uJYyi-0000yN-Qu
+	for lore@pengutronix.de; Mon, 26 May 2025 16:39:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6yNHsVcdompAdLTt+4u29YVdLlbpy05mccrIgV8cEh4=; b=Aiz2pTCSy6LgptHAB9/F1Bm/se
-	kYoWvvhGzOeCwiGAKCtsE6fU5mhGCM9yge0fM+cjvaXSHGoDZ7ci/8gBK4vKpQkzrwJEuZHIRg7Bi
-	EnqlffpEy7balDGh9EnI5wJSPZu1AxhJStsWNYFMS5GkpJ8iP7pYGUTcn6EwI+3gBHLv9QBPRuihe
-	5WA4pmmiUR7JhnaUtGMgHztYfcYKJJQaHTZ/L+7g1zYSULDmwWTL6h+ra4qPLtTj00cGD0WLFkGkm
-	OYx9p4FLSuc9+rELmTBMmxs6DpgfaCD8qbb48HnRwKR+QHxWWJ1MlwSwiW66mQ247Cv2p+YBYE3XC
-	E9r9uefQ==;
+	bh=TmOTtx6yEEAn8WwiJ9rn+YYlYgkRU+A72M6E1EVTO+4=; b=iBcgwHXR5FO5Mxxx970xuryU3O
+	tjcpKuLt6dRMaVloLXEtvWO/vDOIAvyCjjvN/sIK7koHVsseJWyOW/0GdpmV9Jgh8jbyCS0B0Le5x
+	9X3GHaqpFAQi7vwCBnc1gHSUlubiKqah4KHq5G3CAYovwr9quPCldC3h6+PID/teoPfb8JqGtfxnS
+	0iJqXhIK1ebL+aSpi/X83nzGBm8eOgLKi5cYRTq8t6BuTBlZtLKU4n+VTiu0TtRln3sXyjsJS3GB/
+	31B5pQoczLMR6xhu8J+NFflDfZkpgWJ377WVuNG/A9WIJ2/IceTm/tY2yVZVDWpiNLjj6LtwWlNAp
+	/YVSe0ow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJYyH-000000092PS-0840;
-	Mon, 26 May 2025 14:38:33 +0000
+	id 1uJYyE-000000092Mv-2WJR;
+	Mon, 26 May 2025 14:38:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJYyA-000000092Jq-1bIC
+	id 1uJYyA-000000092Jp-1LRQ
 	for barebox@lists.infradead.org;
-	Mon, 26 May 2025 14:38:29 +0000
+	Mon, 26 May 2025 14:38:28 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1uJYy7-0000OJ-Vu; Mon, 26 May 2025 16:38:23 +0200
+	id 1uJYy7-0000OJ-V2; Mon, 26 May 2025 16:38:23 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Mon, 26 May 2025 16:38:13 +0200
+Date: Mon, 26 May 2025 16:38:12 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250526-rk3588-optee-v1-7-5004995cbd03@pengutronix.de>
+Message-Id: <20250526-rk3588-optee-v1-6-5004995cbd03@pengutronix.de>
 References: <20250526-rk3588-optee-v1-0-5004995cbd03@pengutronix.de>
 In-Reply-To: <20250526-rk3588-optee-v1-0-5004995cbd03@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250526_073826_480149_903F06CE 
-X-CRM114-Status: GOOD (  11.34  )
+X-CRM114-CacheID: sfid-20250526_073826_403894_E25C249F 
+X-CRM114-Status: GOOD (  15.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,90 +72,125 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 7/9] ARM: rockchip: dmc: add rk3588_ram_sizes to get full
- ram size
+Subject: [PATCH 6/9] PBL: fdt: add fdt_fixup_mem to fixup memory nodes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The PBL has to pass a full description of the SDRAM to OP-TEE to allow
-OP-TEE to handle dynamic shared memory in the entire SDRAM. Thus, the
-PBL needs to read the full memory configuration.
+Board code in the PBL may use fdt_fixup_mem() to write the base
+addresses and sizes of detected SDRAM to the fdt before passing the fdt
+to other software like the TF-A and OP-TEE.
+
+This is implemented on the fdt to avoid that the PBL needs to unpack the
+device tree, use the of function for manipulation and repack the device
+tree.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/mach-rockchip/dmc.c | 37 ++++++++++++++++++++++++++++++++++---
- include/mach/rockchip/dmc.h  |  2 ++
- 2 files changed, 36 insertions(+), 3 deletions(-)
+ include/pbl.h |  1 +
+ pbl/fdt.c     | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 72 insertions(+)
 
-diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.c
-index 62a7ef8f1e38e989e84f08f6f4a6586be3e85532..260b8be9c7da9e8f83323822eab92a439ef4e2ef 100644
---- a/arch/arm/mach-rockchip/dmc.c
-+++ b/arch/arm/mach-rockchip/dmc.c
-@@ -171,11 +171,12 @@ resource_size_t rk3568_ram0_size(void)
- #define RK3588_PMUGRF_OS_REG4           0x210
- #define RK3588_PMUGRF_OS_REG5           0x214
+diff --git a/include/pbl.h b/include/pbl.h
+index abac3458593af2cec972a54ce9fb69e344179670..b330010562c4aba5fccbb4c421bb95291fa0bea1 100644
+--- a/include/pbl.h
++++ b/include/pbl.h
+@@ -17,6 +17,7 @@ extern unsigned long free_mem_end_ptr;
+ void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len);
  
--resource_size_t rk3588_ram0_size(void)
-+size_t rk3588_ram_sizes(phys_addr_t *base, resource_size_t *size, size_t n)
- {
- 	void __iomem *pmugrf = IOMEM(RK3588_PMUGRF_BASE);
- 	u32 sys_reg2, sys_reg3, sys_reg4, sys_reg5;
--	resource_size_t size, size1, size2;
-+	resource_size_t memsize, size1, size2;
-+	size_t i = 0;
+ void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsize);
++int fdt_fixup_mem(void *fdt, unsigned long membase[], unsigned long memsize[], size_t num);
  
- 	sys_reg2 = readl(pmugrf + RK3588_PMUGRF_OS_REG2);
- 	sys_reg3 = readl(pmugrf + RK3588_PMUGRF_OS_REG3);
-@@ -187,7 +188,37 @@ resource_size_t rk3588_ram0_size(void)
+ struct fdt_device_id {
+ 	const char *compatible;
+diff --git a/pbl/fdt.c b/pbl/fdt.c
+index 3b1783152a8cb81f3eda1187b2f7bf998c4addf4..40564952acfcd88bef050966720e76b7378bc720 100644
+--- a/pbl/fdt.c
++++ b/pbl/fdt.c
+@@ -2,6 +2,7 @@
+ #include <linux/libfdt.h>
+ #include <pbl.h>
+ #include <linux/printk.h>
++#include <stdio.h>
  
- 	pr_info("%s() size1 = 0x%08llx, size2 = 0x%08llx\n", __func__, (u64)size1, (u64)size2);
+ static const __be32 *fdt_parse_reg(const __be32 *reg, uint32_t n,
+ 				   uint64_t *val)
+@@ -73,6 +74,76 @@ void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsiz
+ 	while (1);
+ }
  
--	size = min_t(resource_size_t, RK3588_INT_REG_START, size1 + size2);
-+	memsize = size1 + size2;
++int fdt_fixup_mem(void *fdt, unsigned long membase[], unsigned long memsize[], size_t num)
++{
++	int na, ns;
++	int node, root;
++	int err;
++	int i;
 +
-+	base[i] = 0xa00000;
-+	size[i] = min_t(resource_size_t, RK3588_INT_REG_START, memsize) - 0xa00000;
-+	i++;
-+
-+	if (i < n && memsize > SZ_4G) {
-+		base[i] = SZ_4G;
-+		size[i] = min_t(unsigned long, DRAM_GAP1_START, memsize) - SZ_4G;
-+		i++;
-+	}
-+	if (i < n && memsize > DRAM_GAP1_END) {
-+		base[i] = DRAM_GAP1_END;
-+		size[i] = min_t(unsigned long, DRAM_GAP2_START, memsize) - DRAM_GAP1_END;
-+		i++;
-+	}
-+	if (i < n && memsize > DRAM_GAP2_END) {
-+		base[i] = DRAM_GAP2_END;
-+		size[i] = memsize - DRAM_GAP2_END;
-+		i++;
++	err = fdt_check_header(fdt);
++	if (err != 0) {
++		pr_err("Invalid device tree blob\n");
++		return err;
 +	}
 +
-+	return i;
++	root = fdt_path_offset(fdt, "/");
++	if (root < 0) {
++		pr_err("Cannot find root node: %s\n", fdt_strerror(root));
++		return root;
++	}
++
++	na = fdt_address_cells(fdt, root);
++	if (na < 0) {
++		pr_err("Cannot find #address-cells property: %s\n",
++		       fdt_strerror(na));
++		return na;
++	}
++
++	ns = fdt_size_cells(fdt, root);
++	if (ns < 0) {
++		pr_err("Cannot find #size-cells property: %s\n",
++				fdt_strerror(ns));
++		return ns;
++	}
++
++	for (i = 0; i < num; i++) {
++		char name[32];
++
++		if (membase[i] == 0 || memsize[i] == 0)
++			continue;
++
++		snprintf(name, sizeof(name), "memory@%lx", membase[i]);
++		node = fdt_add_subnode(fdt, root, name);
++		if (node < 0) {
++			pr_err("Cannot to add node %s: %s\n",
++			       name, fdt_strerror(node));
++			err = node;
++			break;
++		}
++
++		pr_debug("Add memory node %s (0x%lx, size 0x%lx)\n",
++			 name, membase[i], memsize[i]);
++
++		err = fdt_setprop(fdt, node,
++				  "device_type", "memory", sizeof("memory"));
++		if (err < 0) {
++			pr_err("%s: Cannot set device_type: %s\n",
++			       name, fdt_strerror(err));
++			return err;
++		}
++
++		err = fdt_appendprop_addrrange(fdt, root, node, "reg", membase[i], memsize[i]);
++		if (err < 0) {
++			pr_err("Failed to fixup memory %lx %lx: %s\n",
++			       membase[i], memsize[i], fdt_strerror(err));
++			continue;
++		}
++	}
++
++	return err;
 +}
 +
-+resource_size_t rk3588_ram0_size(void)
-+{
-+	phys_addr_t base;
-+	resource_size_t size;
-+
-+	rk3588_ram_sizes(&base, &size, 1);
- 
- 	return size;
- }
-diff --git a/include/mach/rockchip/dmc.h b/include/mach/rockchip/dmc.h
-index 3df9aa5e9c87857e9ac3994e0e40c60d8c91b0a4..bb5a5afd02417920446c729b96eeb90f1fa0ead0 100644
---- a/include/mach/rockchip/dmc.h
-+++ b/include/mach/rockchip/dmc.h
-@@ -87,4 +87,6 @@ resource_size_t rk3399_ram0_size(void);
- resource_size_t rk3568_ram0_size(void);
- resource_size_t rk3588_ram0_size(void);
- 
-+size_t rk3588_ram_sizes(phys_addr_t *base, resource_size_t *size, size_t n);
-+
- #endif
+ const void *fdt_device_get_match_data(const void *fdt, const char *nodepath,
+ 				      const struct fdt_device_id ids[])
+ {
 
 -- 
 2.39.5
