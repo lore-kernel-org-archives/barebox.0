@@ -1,73 +1,67 @@
-Delivery-date: Tue, 27 May 2025 08:27:07 +0200
+Delivery-date: Tue, 27 May 2025 08:27:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJnmF-000lhb-14
+	id 1uJnmY-000liK-2p
 	for lore@lore.pengutronix.de;
-	Tue, 27 May 2025 08:27:07 +0200
+	Tue, 27 May 2025 08:27:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJnmE-00030A-MZ
-	for lore@pengutronix.de; Tue, 27 May 2025 08:27:07 +0200
+	id 1uJnmY-0003En-Aq
+	for lore@pengutronix.de; Tue, 27 May 2025 08:27:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mSJ1XBo3m/04/qIo3g0WF5HFup5M8aOBNCQL9HFk0hM=; b=boQ+yGehOelwGXiwjVQIU/I91f
-	H2QqvElx4eOqM2KmHH6EwG6dEiXr8Ho+3QPdqv6k701Aald7dohomx/IiWpHVBuATof3UT0hjkKWB
-	Zxo9m1xoyQ0q/0Q21kA9WozYPMgETFOMtUNkTcNpPi6ZeGM0WeXJGLtbkGNOFMCXPjIfe9TC/SnfE
-	/PZ43nrWVnskGQ8Ec+RMrvTwcFRca3QV4eHD018eDV3kcfSU4QE7yr+W4/VdilmfSCED3wpQWwLh5
-	mID/oqMrtaUlD5BGVBubqUg056/hxZ2mLrKIaE5KWRNsZZZSd5oiuGdLYo8OzOj+8n8xi3TS0yKwr
-	fqUmJoIA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=pH0SmNsXIYz7yW+ZIR7cRVmv/4jJssky1QyY0A7hh4E=; b=WUNgtTYlYD0z8i3BQE5EXoGgNb
+	vj/REKLHEz9Eq0STC8b1hoCQA51t8W1V6HDYdQpRZnznwA/68ifOsGVjxOk2XJD5x14HtGxLcqSX+
+	caSNyXDdsVP6oqeHxTha8x/tNLmgtPttVBkDhd7vqg2dNqid4Ikr1IJh4bJqLaavPLdoSaDf/GGuK
+	Xz6Cgk1A1+hqdC5mpV34EbtsCZYc+/4W/V1x4eZXgYB+7lJpi7Ms+ZgQLAPrPzZmtVTkW1c+quAWQ
+	TTeiPWUrUxd4tcrnodiJNXASjF92YZiMyLXvOLgALD4D2XP2yePhdQhn/RVlwL4RNg7Z3FLATMA3S
+	LX6RP1og==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJnlo-0000000A1ln-0LiB;
-	Tue, 27 May 2025 06:26:40 +0000
+	id 1uJnm9-0000000A1xc-1vJG;
+	Tue, 27 May 2025 06:27:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJnkL-0000000A1Ze-0ml2
+	id 1uJnm6-0000000A1ul-3RkT
 	for barebox@lists.infradead.org;
-	Tue, 27 May 2025 06:25:10 +0000
+	Tue, 27 May 2025 06:26:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uJnkJ-0002jA-Re; Tue, 27 May 2025 08:25:07 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <ejo@pengutronix.de>)
+	id 1uJnm4-0002wk-EL; Tue, 27 May 2025 08:26:56 +0200
+Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uJnkJ-000N9j-2A;
-	Tue, 27 May 2025 08:25:07 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uJnkJ-00CQRm-1s;
-	Tue, 27 May 2025 08:25:07 +0200
-Date: Tue, 27 May 2025 08:25:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Michael Tretter <m.tretter@pengutronix.de>,
-	BAREBOX <barebox@lists.infradead.org>
-Message-ID: <aDVaw74bwPRNohgV@pengutronix.de>
-References: <20250526-rk3588-optee-v1-0-5004995cbd03@pengutronix.de>
- <20250526-rk3588-optee-v1-7-5004995cbd03@pengutronix.de>
- <20250526163328.66vokf3qcnsrtsjz@pengutronix.de>
+	(envelope-from <ejo@pengutronix.de>)
+	id 1uJnm4-000N9y-0m;
+	Tue, 27 May 2025 08:26:56 +0200
+Received: from ejo by dude06.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ejo@pengutronix.de>)
+	id 1uJnm4-00C54X-0a;
+	Tue, 27 May 2025 08:26:56 +0200
+From: =?UTF-8?q?Enrico=20J=C3=B6rns?= <ejo@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: ejo@pengutronix.de
+Date: Tue, 27 May 2025 08:26:29 +0200
+Message-Id: <20250527062632.2879361-2-ejo@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250527062632.2879361-1-ejo@pengutronix.de>
+References: <20250527062632.2879361-1-ejo@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526163328.66vokf3qcnsrtsjz@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250526_232509_240173_CCFE2451 
-X-CRM114-Status: GOOD (  20.94  )
+X-CRM114-CacheID: sfid-20250526_232658_866228_685B5120 
+X-CRM114-Status: GOOD (  13.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,50 +79,43 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 7/9] ARM: rockchip: dmc: add rk3588_ram_sizes to get full
- ram size
+Subject: [PATCH 2/5] doc: user: devicetree: fix indentation and typo
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, May 26, 2025 at 06:33:28PM +0200, Marco Felsch wrote:
-> On 25-05-26, Michael Tretter wrote:
-> > The PBL has to pass a full description of the SDRAM to OP-TEE to allow
-> > OP-TEE to handle dynamic shared memory in the entire SDRAM. Thus, the
-> > PBL needs to read the full memory configuration.
-> > 
-> > Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> > ---
-> >  arch/arm/mach-rockchip/dmc.c | 37 ++++++++++++++++++++++++++++++++++---
-> >  include/mach/rockchip/dmc.h  |  2 ++
-> >  2 files changed, 36 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.c
-> > index 62a7ef8f1e38e989e84f08f6f4a6586be3e85532..260b8be9c7da9e8f83323822eab92a439ef4e2ef 100644
-> > --- a/arch/arm/mach-rockchip/dmc.c
-> > +++ b/arch/arm/mach-rockchip/dmc.c
-> > @@ -171,11 +171,12 @@ resource_size_t rk3568_ram0_size(void)
-> >  #define RK3588_PMUGRF_OS_REG4           0x210
-> >  #define RK3588_PMUGRF_OS_REG5           0x214
-> >  
-> > -resource_size_t rk3588_ram0_size(void)
-> > +size_t rk3588_ram_sizes(phys_addr_t *base, resource_size_t *size, size_t n)
-> 
-> Nit: could be void since you don't check the return value.
+Signed-off-by: Enrico Jörns <ejo@pengutronix.de>
+---
+ Documentation/user/devicetree.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-The return value is used in a later patch. There the array size is
-passed in 'n' and the actually used array entries are returned from
-rk3588_ram_sizes().
-
-Sascha
-
+diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
+index 9f46eee4ea..ea2945ab2b 100644
+--- a/Documentation/user/devicetree.rst
++++ b/Documentation/user/devicetree.rst
+@@ -86,7 +86,7 @@ overlays to.
+ .. note:: Compiling a device tree discards label information by default. To be able
+  to use phandles into the base device tree from inside an overlay, pass to dtc the
+  ``-@`` option when compiling the base device tree.
+-   This will populate ``/__symbols__`` in the base device tree.
++ This will populate ``/__symbols__`` in the base device tree.
+ 
+  Having ``__fixups__`` in the overlay, but no ``__symbols__`` in the base device
+  tree is not allowed: ``ERROR: of_resolver: __symbols__ missing from base devicetree``.
+@@ -96,7 +96,7 @@ Device tree overlays on the live tree
+ 
+ While the live tree can be patched by board code, barebox does not
+ detect any changes to the live tree. To let the overlays have any effect, board
+-code must make sure the live tree is patched before the devices are instanciated
++code must make sure the live tree is patched before the devices are instantiated
+ from it.
+ 
+ The ``CONFIG_OF_OVERLAY_LIVE`` option will need to be enabled to generate
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
