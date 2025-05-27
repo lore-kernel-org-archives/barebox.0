@@ -1,71 +1,73 @@
-Delivery-date: Tue, 27 May 2025 08:24:04 +0200
+Delivery-date: Tue, 27 May 2025 08:27:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJnjI-000lfa-2S
+	id 1uJnmF-000lhb-14
 	for lore@lore.pengutronix.de;
-	Tue, 27 May 2025 08:24:04 +0200
+	Tue, 27 May 2025 08:27:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uJnjI-0002Yg-2Y
-	for lore@pengutronix.de; Tue, 27 May 2025 08:24:04 +0200
+	id 1uJnmE-00030A-MZ
+	for lore@pengutronix.de; Tue, 27 May 2025 08:27:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fyxN7sVbQ2D8DcYbBZOhuebjDxbE8Del7DYPvSIzgx4=; b=U4aEzbNzVF6grmHApI9dhu5EAt
-	aFkk9sYJ58I4+iXKzDLcn6dE2Z08j10EkCSAvreZ7+zVp7kOWKxWWjT+WLbvBrfpdDjZI1nctUdEN
-	M+LMK6qm3E7GQbKpxByLYRg7D8C+V8QFbLjy6ralmruDZ776+mIEemw3/4X9lD43/NXEmhVuDqO0G
-	dMDwjTp+WcZU18NxYur2+UgSP8C0ccXZBH6zC9qQ8kVtX6NVnUaCb7s/plzbytOd0NNtLFnbhO2ci
-	bZjVIavY7g09tAVVbPXufky9hrlL7QXJSCh0niJxS6djH8e9DAZ5xeMH5FTLlF1gePLtooxtpqJzV
-	dY493JUw==;
+	bh=mSJ1XBo3m/04/qIo3g0WF5HFup5M8aOBNCQL9HFk0hM=; b=boQ+yGehOelwGXiwjVQIU/I91f
+	H2QqvElx4eOqM2KmHH6EwG6dEiXr8Ho+3QPdqv6k701Aald7dohomx/IiWpHVBuATof3UT0hjkKWB
+	Zxo9m1xoyQ0q/0Q21kA9WozYPMgETFOMtUNkTcNpPi6ZeGM0WeXJGLtbkGNOFMCXPjIfe9TC/SnfE
+	/PZ43nrWVnskGQ8Ec+RMrvTwcFRca3QV4eHD018eDV3kcfSU4QE7yr+W4/VdilmfSCED3wpQWwLh5
+	mID/oqMrtaUlD5BGVBubqUg056/hxZ2mLrKIaE5KWRNsZZZSd5oiuGdLYo8OzOj+8n8xi3TS0yKwr
+	fqUmJoIA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJnia-0000000A1J5-3z21;
-	Tue, 27 May 2025 06:23:20 +0000
+	id 1uJnlo-0000000A1ln-0LiB;
+	Tue, 27 May 2025 06:26:40 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uJnhZ-0000000A1CG-2TfR
+	id 1uJnkL-0000000A1Ze-0ml2
 	for barebox@lists.infradead.org;
-	Tue, 27 May 2025 06:22:20 +0000
+	Tue, 27 May 2025 06:25:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uJnhW-0002J4-AW; Tue, 27 May 2025 08:22:14 +0200
+	id 1uJnkJ-0002jA-Re; Tue, 27 May 2025 08:25:07 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uJnhW-000N9R-0S;
-	Tue, 27 May 2025 08:22:14 +0200
+	id 1uJnkJ-000N9j-2A;
+	Tue, 27 May 2025 08:25:07 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uJnhW-00CQNR-06;
-	Tue, 27 May 2025 08:22:14 +0200
-Date: Tue, 27 May 2025 08:22:14 +0200
+	id 1uJnkJ-00CQRm-1s;
+	Tue, 27 May 2025 08:25:07 +0200
+Date: Tue, 27 May 2025 08:25:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <aDVaFl2OFfqev_Fv@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Michael Tretter <m.tretter@pengutronix.de>,
+	BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aDVaw74bwPRNohgV@pengutronix.de>
 References: <20250526-rk3588-optee-v1-0-5004995cbd03@pengutronix.de>
- <20250526-rk3588-optee-v1-6-5004995cbd03@pengutronix.de>
+ <20250526-rk3588-optee-v1-7-5004995cbd03@pengutronix.de>
+ <20250526163328.66vokf3qcnsrtsjz@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250526-rk3588-optee-v1-6-5004995cbd03@pengutronix.de>
+In-Reply-To: <20250526163328.66vokf3qcnsrtsjz@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250526_232217_633375_2CBE9130 
-X-CRM114-Status: GOOD (  31.85  )
+X-CRM114-CacheID: sfid-20250526_232509_240173_CCFE2451 
+X-CRM114-Status: GOOD (  20.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,128 +89,39 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 6/9] PBL: fdt: add fdt_fixup_mem to fixup memory nodes
+Subject: Re: [PATCH 7/9] ARM: rockchip: dmc: add rk3588_ram_sizes to get full
+ ram size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, May 26, 2025 at 04:38:12PM +0200, Michael Tretter wrote:
-> Board code in the PBL may use fdt_fixup_mem() to write the base
-> addresses and sizes of detected SDRAM to the fdt before passing the fdt
-> to other software like the TF-A and OP-TEE.
+On Mon, May 26, 2025 at 06:33:28PM +0200, Marco Felsch wrote:
+> On 25-05-26, Michael Tretter wrote:
+> > The PBL has to pass a full description of the SDRAM to OP-TEE to allow
+> > OP-TEE to handle dynamic shared memory in the entire SDRAM. Thus, the
+> > PBL needs to read the full memory configuration.
+> > 
+> > Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> > ---
+> >  arch/arm/mach-rockchip/dmc.c | 37 ++++++++++++++++++++++++++++++++++---
+> >  include/mach/rockchip/dmc.h  |  2 ++
+> >  2 files changed, 36 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.c
+> > index 62a7ef8f1e38e989e84f08f6f4a6586be3e85532..260b8be9c7da9e8f83323822eab92a439ef4e2ef 100644
+> > --- a/arch/arm/mach-rockchip/dmc.c
+> > +++ b/arch/arm/mach-rockchip/dmc.c
+> > @@ -171,11 +171,12 @@ resource_size_t rk3568_ram0_size(void)
+> >  #define RK3588_PMUGRF_OS_REG4           0x210
+> >  #define RK3588_PMUGRF_OS_REG5           0x214
+> >  
+> > -resource_size_t rk3588_ram0_size(void)
+> > +size_t rk3588_ram_sizes(phys_addr_t *base, resource_size_t *size, size_t n)
 > 
-> This is implemented on the fdt to avoid that the PBL needs to unpack the
-> device tree, use the of function for manipulation and repack the device
-> tree.
-> 
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> ---
->  include/pbl.h |  1 +
->  pbl/fdt.c     | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 72 insertions(+)
-> 
-> diff --git a/include/pbl.h b/include/pbl.h
-> index abac3458593af2cec972a54ce9fb69e344179670..b330010562c4aba5fccbb4c421bb95291fa0bea1 100644
-> --- a/include/pbl.h
-> +++ b/include/pbl.h
-> @@ -17,6 +17,7 @@ extern unsigned long free_mem_end_ptr;
->  void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len);
->  
->  void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsize);
-> +int fdt_fixup_mem(void *fdt, unsigned long membase[], unsigned long memsize[], size_t num);
->  
->  struct fdt_device_id {
->  	const char *compatible;
-> diff --git a/pbl/fdt.c b/pbl/fdt.c
-> index 3b1783152a8cb81f3eda1187b2f7bf998c4addf4..40564952acfcd88bef050966720e76b7378bc720 100644
-> --- a/pbl/fdt.c
-> +++ b/pbl/fdt.c
-> @@ -2,6 +2,7 @@
->  #include <linux/libfdt.h>
->  #include <pbl.h>
->  #include <linux/printk.h>
-> +#include <stdio.h>
->  
->  static const __be32 *fdt_parse_reg(const __be32 *reg, uint32_t n,
->  				   uint64_t *val)
-> @@ -73,6 +74,76 @@ void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsiz
->  	while (1);
->  }
->  
-> +int fdt_fixup_mem(void *fdt, unsigned long membase[], unsigned long memsize[], size_t num)
-> +{
-> +	int na, ns;
-> +	int node, root;
-> +	int err;
-> +	int i;
-> +
-> +	err = fdt_check_header(fdt);
-> +	if (err != 0) {
-> +		pr_err("Invalid device tree blob\n");
-> +		return err;
-> +	}
-> +
-> +	root = fdt_path_offset(fdt, "/");
-> +	if (root < 0) {
-> +		pr_err("Cannot find root node: %s\n", fdt_strerror(root));
-> +		return root;
-> +	}
-> +
-> +	na = fdt_address_cells(fdt, root);
-> +	if (na < 0) {
-> +		pr_err("Cannot find #address-cells property: %s\n",
-> +		       fdt_strerror(na));
-> +		return na;
-> +	}
-> +
-> +	ns = fdt_size_cells(fdt, root);
-> +	if (ns < 0) {
-> +		pr_err("Cannot find #size-cells property: %s\n",
-> +				fdt_strerror(ns));
-> +		return ns;
-> +	}
+> Nit: could be void since you don't check the return value.
 
-fdt_appendprop_addrrange() handles #address-cells and #size-cells
-internally, consequently na and ns are not used in this function.
-
-> +
-> +	for (i = 0; i < num; i++) {
-> +		char name[32];
-> +
-> +		if (membase[i] == 0 || memsize[i] == 0)
-> +			continue;
-> +
-> +		snprintf(name, sizeof(name), "memory@%lx", membase[i]);
-> +		node = fdt_add_subnode(fdt, root, name);
-
-There are some pitfalls in this function when the device tree already
-has memory nodes. It seems fdt_add_subnode() returns -FDT_ERR_EXISTS
-in case the node already exists. You should likely check that.
-
-Some device trees have a plain "memory" node without the @address
-postfix. These should be deleted before adding other memory nodes.
-
-> +		if (node < 0) {
-> +			pr_err("Cannot to add node %s: %s\n",
-> +			       name, fdt_strerror(node));
-> +			err = node;
-> +			break;
-> +		}
-> +
-> +		pr_debug("Add memory node %s (0x%lx, size 0x%lx)\n",
-> +			 name, membase[i], memsize[i]);
-> +
-> +		err = fdt_setprop(fdt, node,
-> +				  "device_type", "memory", sizeof("memory"));
-> +		if (err < 0) {
-> +			pr_err("%s: Cannot set device_type: %s\n",
-> +			       name, fdt_strerror(err));
-> +			return err;
-> +		}
-> +
-> +		err = fdt_appendprop_addrrange(fdt, root, node, "reg", membase[i], memsize[i]);
-
-This sounds like it appends the range to ranges already existing in the
-node. Do you have to call fdt_delprop(..., "reg") beforehand?
+The return value is used in a later patch. There the array size is
+passed in 'n' and the actually used array entries are returned from
+rk3588_ram_sizes().
 
 Sascha
 
