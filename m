@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uK1tx-000yPS-1I
+	id 1uK1tx-000yPk-2Q
 	for lore@lore.pengutronix.de;
 	Tue, 27 May 2025 23:32:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uK1tv-0005rX-6b
+	id 1uK1tv-0005sh-LP
 	for lore@pengutronix.de; Tue, 27 May 2025 23:32:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,38 +18,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=P0qpbSt3I8Qe/Ec9ZfXsMiVKULZ2pyUxqxXyFMNq5XA=; b=jNedg96lUffFJ0aLL+L5wn2tNI
-	iOR98zwhZyKnwsQNbayTIZYG31xttiWN259RI6RX0ET1z2/2J24IZ2YEIeNfKbWO8KxtyiwugfzRj
-	YZ2RQLKU9KKMLOVQK6XQV9+T1YK1t5BGJmxF/854rwr9+p6z7jhb3xPSEotu0a7SWkIkAUUcs92SP
-	RybUUUtC3oxs88aC7NofHV9gBJGvosQmCYnynBK902S25tARHzM/CzTA9VGVoYGCtM4T0lFgwKqL5
-	EI3N+Swxzo7thppcuVmD5tvdSmAtzwjcYZb7yeB8XCAtihbJShI7aRz52t2jotzkR0P7duFI2+4wf
-	dcV/7TVA==;
+	bh=KjSg1jX94AiQnIl0riCRNNR97j9ExiJEMWJwrohyq0Q=; b=YupeK3aS2InHuemj4gxAz1IbPq
+	d8KpORlZ0Mg7DM44U14CeRatUV7lm+JTva7C5Ao3mhC66DlRmgz27n3C28JI5ab34N3CeEIyjRyjS
+	G5xkFCZmmcTO++4JqQK4DpO7+1oaxIryTyIliKN1wBNUinej/KULHeiq/E/SPW3ElqrXFswo+d2Kv
+	5uBvoaP0Z0syydZ8w54heVb7HNw28b2v7TfG4B/YwbYCA7LQ76RfgAkJPWoNjRJ/ymRT0kQiY1+Nx
+	byhOgb++7PqlckR5EDU7qHh1L7X7RC2Am8rbyVyOb+79FWc6Xs5egku5NsVpoYwj5YmyN5SH4mAJz
+	2f8wbNbg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uK1tO-0000000BbuN-2pJD;
-	Tue, 27 May 2025 21:31:26 +0000
+	id 1uK1tN-0000000BbsZ-3DmX;
+	Tue, 27 May 2025 21:31:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uK1lW-0000000Bb0H-0KhH
+	id 1uK1lV-0000000Bb01-118g
 	for barebox@lists.infradead.org;
-	Tue, 27 May 2025 21:23:19 +0000
+	Tue, 27 May 2025 21:23:18 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uK1lU-00015n-NK; Tue, 27 May 2025 23:23:16 +0200
+	id 1uK1lT-00015n-Re; Tue, 27 May 2025 23:23:16 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Tue, 27 May 2025 23:22:59 +0200
-Message-Id: <20250527212300.575031-15-a.fatoum@barebox.org>
+Date: Tue, 27 May 2025 23:22:58 +0200
+Message-Id: <20250527212300.575031-14-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250527212300.575031-1-a.fatoum@barebox.org>
 References: <20250527212300.575031-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250527_142318_113777_378AD6A9 
-X-CRM114-Status: GOOD (  10.54  )
+X-CRM114-CacheID: sfid-20250527_142317_279260_6DFAD213 
+X-CRM114-Status: UNSURE (   9.24  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,37 +72,49 @@ X-Spam-Status: No, score=-7.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 14/15] clocksource: efi: use DIV_ROUND_DOWN_ULL for 64-bit devision
+Subject: [PATCH 13/15] efi: payload: use efi_virt_to_phys instead of pointer to u64 casts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Ahmad Fatoum <ahmad@a3f.at>
 
-The denominator freq is 64-bit, but this worked out ok so far, because
-the driver was only used on 64-bit systems. Now that we want to start
-compiling it for 32-bit as well, make the division work there as well.
+Instead of casting pointers directly to integers, let's make use of the
+newly introduced efi_virt_to_phys helper.
 
-Note that nb_100ns is a valid result and will instruct the EFI firmware
-to expire the timer at the next tick.
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/clocksource/efi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ efi/payload/image.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
-index 1ac587a715f2..2f8bfdec489a 100644
---- a/drivers/clocksource/efi.c
-+++ b/drivers/clocksource/efi.c
-@@ -74,7 +74,7 @@ static int efi_cs_init(struct clocksource *cs)
- 			BS->close_event(efi_cs_evt);
- 			return -ENODEV;
- 		}
--		nb_100ns = 10 * 1000 * 1000 / freq;
-+		nb_100ns = DIV_ROUND_DOWN_ULL(10 * 1000 * 1000, freq);
- 		pr_warn("EFI Event timer too slow freq = %llu Hz\n", freq);
- 		efiret = BS->set_timer(efi_cs_evt, EFI_TIMER_PERIODIC, nb_100ns);
- 		if (EFI_ERROR(efiret)) {
+diff --git a/efi/payload/image.c b/efi/payload/image.c
+index fa9a3ee1026d..f039b8a8d26a 100644
+--- a/efi/payload/image.c
++++ b/efi/payload/image.c
+@@ -273,18 +273,18 @@ static int do_bootm_efi(struct image_data *data)
+ 		memcpy(initrd, tmp, size);
+ 		memset(initrd + size, 0, PAGE_ALIGN(size) - size);
+ 		free(tmp);
+-		boot_header->ramdisk_image = (uint64_t)initrd;
++		boot_header->ramdisk_image = efi_virt_to_phys(initrd);
+ 		boot_header->ramdisk_size = PAGE_ALIGN(size);
+ 	}
+ 
+ 	options = linux_bootargs_get();
+ 	if (options) {
+-		boot_header->cmd_line_ptr = (uint64_t)options;
++		boot_header->cmd_line_ptr = efi_virt_to_phys(options);
+ 		boot_header->cmdline_size = strlen(options);
+ 	}
+ 
+-	boot_header->code32_start = (uint64_t)loaded_image->image_base +
+-			(image_header->setup_sects+1) * 512;
++	boot_header->code32_start = efi_virt_to_phys(loaded_image->image_base +
++			(image_header->setup_sects+1) * 512);
+ 
+ 	if (bootm_verbose(data)) {
+ 		printf("\nStarting kernel at 0x%p", loaded_image->image_base);
 -- 
 2.39.5
 
