@@ -1,68 +1,67 @@
-Delivery-date: Wed, 28 May 2025 16:36:02 +0200
+Delivery-date: Wed, 28 May 2025 16:36:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKHsw-001Dda-12
+	id 1uKHsw-001DeB-34
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 16:36:02 +0200
+	Wed, 28 May 2025 16:36:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKHsu-0001ww-4Q
+	id 1uKHsv-0001yT-6g
 	for lore@pengutronix.de; Wed, 28 May 2025 16:36:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=I8Ri4ZNILne2hKNVQofjkS4KiO0Ox5qh7p905kYk4xw=; b=rNtjW1BpMRG06SxNoOJcOXCj8K
-	6UzKjfqfeZYOOEdziLu2r9ZSGY/lVeAcP8jP0QwSpFbxqOIeWR9WSPYJu0WW1ti0xIhb203X1LE1Z
-	faQWE3uEyiK5FDO0GphJMK0Fyyiohcw53V6akU+0iWoo3a5gOUSfDZpfr9wYUKUQIp/ZD1L1qYQo3
-	ldXSpd2QZX3Sj3Tcl302w8NKR+12ssvlzyjm0GNJ1Iw8wHJ+ahjZZnnkuEAnbciL735vH3488xZeT
-	d3nMdxFmLmR6vV77Fei8mDAQsArbl6nKQpdartb/ndwBTR/KRh/5Udw1J0teXngKd4wksONjeSl2Z
-	XziAbmUg==;
+	bh=TQkGakq/+eQtqXRxLY78QTtyOOqvdZn4p9rDUd4y2rE=; b=fT/Y/6K3A9d68yYHF41BixXKM6
+	AD9hgbCOYtIF05yvVO43fTyIoBNSkRQ6OktK/c9Eb0z/wek8GTOPVEtY4bPuOGTh+0Z+juU+8o6kx
+	n0amcKBMcDhU7BJJOLaHOgjvG5uUfz9NwdoFPw4b3/DPn7CzGvuI9sG2GezMIjGxeMsEQCOt1+teC
+	PvnTSO5YWNk2QMnhXWx5e+8V1o1mke8nnEFgTx33PvlDnfnRzFvRfbPzuPXZlgnPO0/iH4mOTkyZY
+	K9VTA9B0gg80VeqzB9fEscMH5GOqj3DfgpshhQqHJqSF4AlkO7Zh1p0tCB9Bq7Oagl1Ti/yi7Lp7L
+	uWtXxnQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKHsN-0000000DQEq-3X1T;
-	Wed, 28 May 2025 14:35:27 +0000
+	id 1uKHsO-0000000DQFl-2ADp;
+	Wed, 28 May 2025 14:35:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKHns-0000000DPDz-1x9t
+	id 1uKHns-0000000DPDy-1xGh
 	for barebox@lists.infradead.org;
 	Wed, 28 May 2025 14:30:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKHnp-0006FS-Kl; Wed, 28 May 2025 16:30:45 +0200
+	id 1uKHnp-0006FI-LK; Wed, 28 May 2025 16:30:45 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKHnp-000bXx-1O;
+	id 1uKHnp-000bXt-1E;
 	Wed, 28 May 2025 16:30:45 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKHnp-001qOC-15;
+	id 1uKHnp-001qOC-0w;
 	Wed, 28 May 2025 16:30:45 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 28 May 2025 16:30:40 +0200
-Message-Id: <20250528143043.434446-8-a.fatoum@pengutronix.de>
+Date: Wed, 28 May 2025 16:30:39 +0200
+Message-Id: <20250528143043.434446-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250528143043.434446-1-a.fatoum@pengutronix.de>
 References: <20250528143043.434446-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_073048_660218_467C5042 
-X-CRM114-Status: GOOD (  21.68  )
+X-CRM114-CacheID: sfid-20250528_073048_660066_4790AA55 
+X-CRM114-Status: GOOD (  23.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,268 +83,329 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 07/10] boards: add decoder for LXA TLV v1 format
+Subject: [PATCH v2 06/10] scripts: add bareboxtlv host/target tool
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The LXA TLV format is stored onto the EEPROM of either the Baseboard or
-Powerboard. Its contents are mainly for use in Linux userspace.
+In its simplest form, a barebox TLV has a 12-byte header, a sequence of
+TLV entries, where each of tags and length are 2 bytes each (in big
+endian), followed by a CRC.
+
+The TLVs are easily generated. Add a tool to allow adding, removing and
+verifying the header. A full fledged python-based tool is added in the
+follow up commit.
+
+Example uses:
+
+  hex2bin tlvs | ./scripts/bareboxtlv -m 0xcfe01001 >tlv.blob
+  ./scripts/bareboxtlv -m 0xcfe01001 -v tlv.blob && echo CRC correct
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
 ---
- .../bindings/nvmem/barebox,tlv.yaml           |   2 +
- common/boards/Kconfig                         |   5 +
- common/boards/Makefile                        |   1 +
- common/boards/lxa/Makefile                    |   2 +
- common/boards/lxa/factory-data.c              | 132 ++++++++++++++++++
- include/string.h                              |   2 +
- include/tlv/format.h                          |   3 +
- lib/string.c                                  |  21 +++
- 8 files changed, 168 insertions(+)
- create mode 100644 common/boards/lxa/Makefile
- create mode 100644 common/boards/lxa/factory-data.c
+ scripts/.gitignore                |   2 +
+ scripts/Makefile                  |   2 +
+ scripts/bareboxtlv-target.c       |   1 +
+ scripts/bareboxtlv.c              | 183 ++++++++++++++++++++++++++++++
+ scripts/include/asm/unaligned.h   |  21 ++++
+ scripts/include/linux/build_bug.h |   8 ++
+ scripts/include/linux/stringify.h |  14 +++
+ 7 files changed, 231 insertions(+)
+ create mode 100644 scripts/bareboxtlv-target.c
+ create mode 100644 scripts/bareboxtlv.c
+ create mode 100644 scripts/include/asm/unaligned.h
+ create mode 100644 scripts/include/linux/build_bug.h
+ create mode 100644 scripts/include/linux/stringify.h
 
-diff --git a/Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml b/Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml
-index b54ab600e309..7a77b9a0b44b 100644
---- a/Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml
-+++ b/Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml
-@@ -22,6 +22,8 @@ properties:
-     items:
-       - enum:
-         - barebox,tlv-v1        # magic: 0x61bb95f2
-+        - lxa,tlv-baseboard-v1  # magic: 0xbc288dfe
-+        - lxa,tlv-powerboard-v1 # magic: 0xdca5a870
-       - const: barebox,tlv
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 1b760309583b..8c74d7c9f001 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -20,6 +20,8 @@ bareboxenv-target
+ kernel-install-target
+ bareboxcrc32-target
+ bareboximd-target
++bareboxtlv
++bareboxtlv-target
+ mk-am35xx-spi-image
+ mkimage
+ mxsimage
+diff --git a/scripts/Makefile b/scripts/Makefile
+index eb3884471bc9..85e081544553 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -10,6 +10,7 @@ hostprogs-always-y					+= bareboxenv
+ hostprogs-always-y					+= bareboxcrc32
+ hostprogs-always-y					+= kernel-install
+ hostprogs-always-$(CONFIG_QOICONV)			+= qoiconv
++hostprogs-always-$(CONFIG_TLV)				+= bareboxtlv
+ hostprogs-always-$(CONFIG_KEYTOC)			+= keytoc
+ HOSTCFLAGS_keytoc.o = `$(PKG_CONFIG) --cflags openssl`
+ HOSTLDLIBS_keytoc = `$(PKG_CONFIG) --libs openssl`
+@@ -42,6 +43,7 @@ HOSTLDLIBS_rk-usb-loader  = `$(PKG_CONFIG) --libs libusb-1.0`
+ hostprogs-always-$(CONFIG_RK_USB_LOADER)		+= rk-usb-loader
  
-   reg:
-diff --git a/common/boards/Kconfig b/common/boards/Kconfig
-index 586a54d7ca13..74947316954b 100644
---- a/common/boards/Kconfig
-+++ b/common/boards/Kconfig
-@@ -19,3 +19,8 @@ config BOARD_WOLFVISION
- 	bool
- 	select AIODEV
- 	select ROCKCHIP_SARADC
-+
-+config BOARD_LXA
-+	bool "LXA common board support" if COMPILE_TEST
-+	select TLV
-+	select TLV_BAREBOX
-diff --git a/common/boards/Makefile b/common/boards/Makefile
-index 3f8ac57b2f82..058733522411 100644
---- a/common/boards/Makefile
-+++ b/common/boards/Makefile
-@@ -4,3 +4,4 @@ obj-$(CONFIG_BOARD_QEMU_VIRT)	+= qemu-virt/
- obj-$(CONFIG_BOARD_PHYTEC_SOM_DETECTION) += phytec/
- obj-$(CONFIG_BOARD_TQ) += tq/
- obj-$(CONFIG_BOARD_WOLFVISION) += wolfvision/
-+obj-$(CONFIG_BOARD_LXA) += lxa/
-diff --git a/common/boards/lxa/Makefile b/common/boards/lxa/Makefile
+ userprogs-always-$(CONFIG_BAREBOXENV_TARGET)		+= bareboxenv-target
++userprogs-always-$(CONFIG_BAREBOXTLV_TARGET)		+= bareboxtlv-target
+ userprogs-always-$(CONFIG_KERNEL_INSTALL_TARGET)	+= kernel-install-target
+ userprogs-always-$(CONFIG_BAREBOXCRC32_TARGET)		+= bareboxcrc32-target
+ userprogs-always-$(CONFIG_IMD_TARGET)			+= bareboximd-target
+diff --git a/scripts/bareboxtlv-target.c b/scripts/bareboxtlv-target.c
 new file mode 100644
-index 000000000000..29acfec3cb92
+index 000000000000..52437edef634
 --- /dev/null
-+++ b/common/boards/lxa/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0
-+obj-$(CONFIG_TLV) += factory-data.o
-diff --git a/common/boards/lxa/factory-data.c b/common/boards/lxa/factory-data.c
++++ b/scripts/bareboxtlv-target.c
+@@ -0,0 +1 @@
++#include "bareboxtlv.c"
+diff --git a/scripts/bareboxtlv.c b/scripts/bareboxtlv.c
 new file mode 100644
-index 000000000000..2f9a818d4d48
+index 000000000000..7b8dbfc1e845
 --- /dev/null
-+++ b/common/boards/lxa/factory-data.c
-@@ -0,0 +1,132 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/scripts/bareboxtlv.c
+@@ -0,0 +1,183 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2021 Ahmad Fatoum, Pengutronix
 +
-+#include <string.h>
-+#include <tlv/tlv.h>
-+#include <common.h>
++/* bareboxtlv.c - generate a barebox TLV header */
 +
-+static int lxa_tlv_handle_serial(struct tlv_device *dev, struct tlv_mapping *map,
-+				 u16 len, const u8 *val)
++#include <stdio.h>
++#include <stdlib.h>
++#include <getopt.h>
++#include <unistd.h>
++
++#include "compiler.h"
++#include <linux/stringify.h>
++
++#define debug(...)
++#define printk_once(...)
++
++#include "../include/tlv/format.h"
++#include "../crypto/crc32.c"
++
++#include "common.h"
++#include "common.c"
++
++static void usage(char *prgname)
 +{
-+	const char *buf;
-+	char *period;
-+
-+	buf = __tlv_format_str(dev, map, len, val);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	/* Strip /\d+\./ prefix to arrive at hostname without period */
-+	period = memrchr(buf, '.', len);
-+	barebox_set_serial_number(period ? period + 1 : buf);
-+
-+	return 0;
++	fprintf(stderr,
++		"USAGE: %s [FILE]\n"
++		"Manipulate barebox TLV blobs\n"
++		"\n"
++		"options:\n"
++		"  -m        TLV magic to use (default: " __stringify(TLV_MAGIC_BAREBOX_V1) " or input magic for -s)\n"
++		"  -s        strip input TLV header from output\n"
++		"            (default is adding header to headerless input)\n"
++		"  -@        offset to start reading at\n"
++		"  -v        verify CRC\n",
++		prgname);
 +}
 +
-+static int lxa_tlv_format_calib(struct tlv_device *dev, struct tlv_mapping *map,
-+				u16 len, const u8 *val)
++static inline ssize_t write_full_verbose(int fd, const void *buf, size_t len)
 +{
-+	return tlv_format_blob(dev, map, len, val);
++	ssize_t ret;
++
++	ret = write_full(fd, buf, len);
++	if (ret < 0)
++		perror("write");
++	return ret;
 +}
 +
-+static struct tlv_mapping lxa_tlv_baseboard_v1_mappings[] = {
-+	/* vendor-specific override */
-+	{ 0x0004, lxa_tlv_handle_serial, "serial-number"},
-+	/* vendor-specific additions */
-+	{ 0x8000, lxa_tlv_format_calib, "usb-host-curr" },
-+	{ 0x8001, lxa_tlv_format_calib, "usb-host1-curr" },
-+	{ 0x8002, lxa_tlv_format_calib, "usb-host2-curr" },
-+	{ 0x8003, lxa_tlv_format_calib, "usb-host3-curr" },
-+	{ 0x8010, lxa_tlv_format_calib, "out0-volt" },
-+	{ 0x8011, lxa_tlv_format_calib, "out1-volt" },
-+	{ 0x8020, lxa_tlv_format_calib, "iobus-curr" },
-+	{ 0x8021, lxa_tlv_format_calib, "iobus-volt" },
-+	{ /* sentintel */ },
-+};
-+
-+static struct tlv_mapping *baseboard_mappings[] = {
-+	lxa_tlv_baseboard_v1_mappings, barebox_tlv_v1_mappings, NULL
-+};
-+
-+static struct of_device_id baseboard_matches[] = {
-+	{ .compatible = "lxa,tlv-baseboard-v1" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct tlv_decoder lxa_tlv_baseboard_v1 = {
-+	.magic = TLV_MAGIC_LXA_BASEBOARD_V1,
-+	.driver.name = "lxa-tlv-baseboard-v1",
-+	.driver.of_compatible = baseboard_matches,
-+	.mappings = baseboard_mappings,
-+};
-+
-+static struct tlv_mapping lxa_tlv_powerboard_v1_mappings[] = {
-+	{ 0x0003, tlv_format_timestamp, "factory-timestamp" },
-+	{ 0x0005, tlv_format_dec, "modification" },
-+	{ 0x0006, tlv_format_str, "featureset" },
-+	{ 0x0007, tlv_format_str, "pcba-serial-number"},
-+	{ 0x0008, tlv_format_str, "pcba-hardware-release"},
-+	{ 0x9000, lxa_tlv_format_calib, "pwr-volt" },
-+	{ 0x9001, lxa_tlv_format_calib, "pwr-curr" },
-+	{ /* sentintel */ },
-+};
-+
-+static struct tlv_mapping *powerboard_mappings[] = {
-+	lxa_tlv_powerboard_v1_mappings, NULL
-+};
-+
-+static struct of_device_id powerboard_matches[] = {
-+	{ .compatible = "lxa,tlv-powerboard-v1" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct tlv_decoder lxa_tlv_powerboard_v1 = {
-+	.magic = TLV_MAGIC_LXA_POWERBOARD_V1,
-+	.driver.name = "lxa-tlv-powerboard-v1",
-+	.driver.of_compatible = powerboard_matches,
-+	.mappings = powerboard_mappings,
-+};
-+
-+
-+static struct tlv_mapping lxa_tlv_ioboard_v1_mappings[] = {
-+	{ 0x0003, tlv_format_timestamp, "factory-timestamp" },
-+	{ 0x0005, tlv_format_dec, "modification" },
-+	{ 0x0006, tlv_format_str, "featureset" },
-+	{ 0x0007, tlv_format_str, "pcba-serial-number"},
-+	{ 0x0008, tlv_format_str, "pcba-hardware-release"},
-+	{ /* sentintel */ },
-+};
-+
-+static struct tlv_mapping *ioboard_mappings[] = {
-+	lxa_tlv_ioboard_v1_mappings, NULL
-+};
-+
-+static struct of_device_id ioboard_matches[] = {
-+	{ .compatible = "lxa,tlv-ioboard-v1" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct tlv_decoder lxa_tlv_ioboard_v1 = {
-+	.magic = TLV_MAGIC_LXA_IOBOARD_V1,
-+	.driver.name = "lxa-tlv-ioboard-v1",
-+	.driver.of_compatible = ioboard_matches,
-+	.mappings = ioboard_mappings,
-+};
-+
-+static int lxa_tlv_v1_register(void)
++int main(int argc, char *argv[])
 +{
-+	struct tlv_decoder *const decoders[] = {
-+		&lxa_tlv_baseboard_v1,
-+		&lxa_tlv_powerboard_v1,
-+		&lxa_tlv_ioboard_v1,
-+		NULL
-+	};
-+	int err = 0;
++	u32 magic = 0;
++	struct tlv_header *inhdr = NULL;
++	struct tlv_header hdr;
++	size_t offset = 0, size = 0;
++	ssize_t ret;
++	bool strip_header = false, verify = false;
++	int opt, ecode = EXIT_FAILURE;
++	int infd = STDIN_FILENO;
++	const u8 *p;
++	char *endptr;
++	void *buf;
++	u32 crc = ~0;
 +
-+	for (struct tlv_decoder *const *d = decoders; *d; d++) {
-+		int ret = tlv_register_decoder(*d);
-+		if (ret)
-+			err = ret;
-+	}
-+
-+	return err;
-+}
-+postmmu_initcall(lxa_tlv_v1_register);
-diff --git a/include/string.h b/include/string.h
-index c16529c21273..004a9daece27 100644
---- a/include/string.h
-+++ b/include/string.h
-@@ -11,6 +11,8 @@ char *strsep_unescaped(char **, const char *);
- char *stpcpy(char *dest, const char *src);
- bool strends(const char *str, const char *postfix);
- 
-+void *memrchr(const void *s, int c, size_t n);
-+
- void *__default_memset(void *, int, __kernel_size_t);
- void *__nokasan_default_memset(void *, int, __kernel_size_t);
- 
-diff --git a/include/tlv/format.h b/include/tlv/format.h
-index a32ec917a434..29c8a6d42da2 100644
---- a/include/tlv/format.h
-+++ b/include/tlv/format.h
-@@ -22,6 +22,9 @@
- #include <linux/build_bug.h>
- 
- #define TLV_MAGIC_BAREBOX_V1		0x61bb95f2
-+#define TLV_MAGIC_LXA_BASEBOARD_V1	0xbc288dfe
-+#define TLV_MAGIC_LXA_POWERBOARD_V1	0xc6895c21
-+#define TLV_MAGIC_LXA_IOBOARD_V1	0xdca5a870
- 
- #define TLV_IS_VENDOR_SPECIFIC(val)	((*(u8 *)&(val) & 0x80) == 0x80)
- #define TLV_IS_GENERIC(val)		((*(u8 *)&(val) & 0x80) != 0x80)
-diff --git a/lib/string.c b/lib/string.c
-index f2272be37e76..ff3408d3249e 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -818,6 +818,27 @@ void *memchr(const void *s, int c, size_t n)
- #endif
- EXPORT_SYMBOL(memchr);
- 
-+/**
-+ * memrchr - Find last occurrence of character in an area of memory.
-+ * @s: The memory area
-+ * @c: The byte to search for
-+ * @n: The size of the area.
-+ *
-+ * returns the address of the last occurrence of @c, or %NULL
-+ * if @c is not found
-+ */
-+void *memrchr(const void *s, int c, size_t n)
-+{
-+	const unsigned char *p = s;
-+	while (n-- > 0) {
-+		if ((unsigned char)c == p[n]) {
-+			return (void *)(p+n);
++	while((opt = getopt(argc, argv, "svm:@:h")) != -1) {
++		switch (opt) {
++		case 'v':
++			verify = true;
++			/* fallthrough; */
++		case 's':
++			strip_header = true;
++			break;
++		case 'm':
++			magic = strtoul(optarg, NULL, 16);
++			if (!magic) {
++				fprintf(stderr, "invalid magic: %s\n", optarg);
++				return EXIT_FAILURE;
++			}
++			break;
++		case '@':
++			offset = strtoul(optarg, &endptr, 0);
++			if (endptr == optarg) {
++				fprintf(stderr, "invalid offset: %s\n", optarg);
++				return EXIT_FAILURE;
++			}
++			break;
++		case 'h':
++			usage(argv[0]);
++			return 0;
 +		}
 +	}
-+	return NULL;
-+}
-+EXPORT_SYMBOL(memrchr);
 +
- /**
-  * skip_spaces - Removes leading whitespace from @str.
-  * @str: The string to be stripped.
++	if (argc - optind > 1) {
++		usage(argv[0]);
++		return EXIT_FAILURE;
++	}
++
++	if (argv[optind]) {
++		infd = open(argv[optind], O_RDONLY);
++		if (infd < 0) {
++			perror("open");
++			return EXIT_FAILURE;
++		}
++		lseek(infd, offset, SEEK_SET);
++	} else if (offset) {
++		fprintf(stderr, "can't combine -@ with stdin\n");
++		return EXIT_FAILURE;
++	}
++
++	p = buf = read_fd(infd, &size);
++	if (!buf) {
++		perror("read_fd");
++		goto out;
++	}
++
++	/* validate, but skip, if header given */
++	if (strip_header) {
++		inhdr = buf;
++
++		if (size < tlv_total_len(inhdr)) {
++			fprintf(stderr, "short input: got %zu bytes, but header claims %zu\n",
++			       size, tlv_total_len(inhdr));
++			goto out;
++		}
++
++		if (!magic)
++			magic = get_unaligned_be32(p);
++
++		p += sizeof(struct tlv_header);
++		size = cpu_to_be32(inhdr->length_tlv);
++
++		if (cpu_to_be32(inhdr->length_sig) != 0) {
++			fprintf(stderr, "Signatures not yet supported\n");
++			goto out;
++		}
++
++	}
++
++	if (!magic)
++		magic = TLV_MAGIC_BAREBOX_V1;
++
++	hdr.magic = cpu_to_be32(magic);
++	hdr.length_tlv = cpu_to_be32(size);
++	hdr.length_sig = cpu_to_be32(0);
++
++	if (!verify) {
++		if (!strip_header) {
++			ret = write_full_verbose(1, &hdr, sizeof(hdr));
++			if (ret < 0)
++				goto out;
++		}
++		ret = write_full_verbose(1, p, size);
++		if (ret < 0)
++			goto out;
++	}
++
++	crc = crc32_be(crc, &hdr, sizeof(hdr));
++	crc = crc32_be(crc, p, size);
++
++	if (verify) {
++		u32 oldcrc;
++
++		oldcrc = get_unaligned_be32(p + size);
++		if (oldcrc != crc) {
++			fprintf(stderr, "CRC mismatch: expected %08x, but calculated %08x\n",
++			       oldcrc, crc);
++			goto out;
++		}
++	}
++
++	if (!strip_header) {
++		crc = cpu_to_be32(crc);
++
++		ret = write_full_verbose(1, &crc, sizeof(crc));
++		if (ret < 0)
++			goto out;
++	}
++
++	ecode = 0;
++out:
++	free(buf);
++	if (argv[optind])
++		close(infd);
++	return ecode;
++}
+diff --git a/scripts/include/asm/unaligned.h b/scripts/include/asm/unaligned.h
+new file mode 100644
+index 000000000000..af6ccbc1bcf5
+--- /dev/null
++++ b/scripts/include/asm/unaligned.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef _ASM_ARM_UNALIGNED_H
++#define _ASM_ARM_UNALIGNED_H
++
++#include "../../../include/linux/unaligned/le_byteshift.h"
++#include "../../../include/linux/unaligned/be_byteshift.h"
++#include "../../../include/linux/unaligned/generic.h"
++
++/*
++ * Select endianness
++ */
++#ifdef CONFIG_CPU_BIG_ENDIAN
++#define get_unaligned	__get_unaligned_be
++#define put_unaligned	__put_unaligned_be
++#else
++#define get_unaligned	__get_unaligned_le
++#define put_unaligned	__put_unaligned_le
++#endif
++
++#endif /* _ASM_ARM_UNALIGNED_H */
+diff --git a/scripts/include/linux/build_bug.h b/scripts/include/linux/build_bug.h
+new file mode 100644
+index 000000000000..e9bc857b15e8
+--- /dev/null
++++ b/scripts/include/linux/build_bug.h
+@@ -0,0 +1,8 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_BUILD_BUG_H
++#define _LINUX_BUILD_BUG_H
++
++#define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
++#define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
++
++#endif	/* _LINUX_BUILD_BUG_H */
+diff --git a/scripts/include/linux/stringify.h b/scripts/include/linux/stringify.h
+new file mode 100644
+index 000000000000..55f6d04d48b1
+--- /dev/null
++++ b/scripts/include/linux/stringify.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef __LINUX_STRINGIFY_H
++#define __LINUX_STRINGIFY_H
++
++/* Indirect stringification.  Doing two levels allows the parameter to be a
++ * macro itself.  For example, compile with -DFOO=bar, __stringify(FOO)
++ * converts to "bar".
++ */
++
++#define __stringify_1(x...)	#x
++#define __stringify(x...)	__stringify_1(x)
++
++#endif	/* !__LINUX_STRINGIFY_H */
 -- 
 2.39.5
 
