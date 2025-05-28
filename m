@@ -1,74 +1,76 @@
-Delivery-date: Wed, 28 May 2025 13:46:46 +0200
+Delivery-date: Wed, 28 May 2025 13:48:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFF8-001Aok-1k
+	id 1uKFGw-001AqL-33
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 13:46:46 +0200
+	Wed, 28 May 2025 13:48:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFF7-00034W-Km
-	for lore@pengutronix.de; Wed, 28 May 2025 13:46:46 +0200
+	id 1uKFGw-0004OR-8s
+	for lore@pengutronix.de; Wed, 28 May 2025 13:48:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GjMuYv0gqJVsDOb7EOprSYpLYI58hJW3bYY+nPPzQKI=; b=eCEIHCYSBMj1q8aKaX4Y+SVe5D
-	H2WE39gXTo80nXv2TsUbZNp/lC19TtfAbEdyrMo9znm3KINmLZw9c7WvKTNCdju/NMBD/8MyjfJkA
-	ZWEb5nv4IEl5nY8//Ki8aWD+iF59zUN1xQLoQMDVcyY/di/uvzR0OR5Ng554f8bznQjkr4hC5chVL
-	SKvXmxPlT/M+ryfJwtxLBMYn5t6qN7OaJ94rA0CIiMlLtAJcj0ShReJZz4jLPOu969OIBx9ZO4EAZ
-	GcZkuepQmPyaRMR6Z2N8AXZ4lv3SeyNwxqtTvRERtJhRC7j/rSuXiWgxRNcT4r3meWHGDFE+q7IXG
-	JZql6BHg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=VOf1c0yVrsJEQVcEpo43Ia8NUA641Bd1WeQpPofIaqk=; b=uZ0kB0FU7vOyuueKUbQzWqJhXT
+	XIMODrQLB1Q3upPLAhUuVIzv7TJpwH4hGTpzEZDDGLdhLnyHpfgzpQMVxCB64+QUjxJX9AGnyp6Q+
+	f+jsZypyGl21Mcts6aQTcVGtGEBCBgdA6BCfhhyeDC6/zvh7gdO4T5lTiwdDR9SY5/D8vQa35qgnP
+	y9GHSfi54uQyrHTY5U+6tXXvbbxL81u5NtWYXX3iQQXfxtZ0UqSTUr1aFg7Tql3guncRfAtIc+Um2
+	FR2WrhhIMzxv7ejINbKq3LfQHr3rdwapVjf08BThCYGYn5Sa8Jv4/CNlRLppcZF6wqIhoWvmxYseM
+	7zbFll9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFEA-0000000D0BL-1bIG;
-	Wed, 28 May 2025 11:45:46 +0000
+	id 1uKFGR-0000000D0zL-1nH5;
+	Wed, 28 May 2025 11:48:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFE4-0000000D07a-0LYe
+	id 1uKFEK-0000000D0LX-0CIC
 	for barebox@lists.infradead.org;
-	Wed, 28 May 2025 11:45:42 +0000
+	Wed, 28 May 2025 11:45:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFE2-00021U-PE; Wed, 28 May 2025 13:45:38 +0200
+	id 1uKFE2-00021S-SE; Wed, 28 May 2025 13:45:38 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFE2-000a7E-1l;
+	id 1uKFE2-000a7B-1e;
 	Wed, 28 May 2025 13:45:38 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFE2-00CB0R-1R;
+	id 1uKFE2-00CB0R-1L;
 	Wed, 28 May 2025 13:45:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 28 May 2025 13:45:15 +0200
+Date: Wed, 28 May 2025 13:45:12 +0200
+Message-Id: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250528-arm-k3-am62l-v1-3-3f88e6d10d99@pengutronix.de>
-References: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
-In-Reply-To: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAEn3NmgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDUyNz3cSiXN1sY93EXDOjHN00cwNDQ/M0Y0vzNFMloJaCotS0zAqwcdG
+ xtbUANYCoxV4AAAA=
+X-Change-ID: 20250527-arm-k3-am62l-f70117f397f5
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748432738; l=6422;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748432738; l=5835;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=wuPZ77oF/+/2FAk1a0JPwUONGZFU8aLKqnwzAD0Tmtg=;
- b=ZSwDtSf79+3sv6DPtPp8hISRT2N3MqkDIKaP2oaj3DRIHHhtutlzsatFqctRu3A3Y69avIBGw
- 5c2F+qdDdUbDY9w1PJa4IukWTMTPaEh8mV1JrBiOo69RRRiEkWIGIUw
+ bh=hF3VkrKVnX98zzBWNQtebZJC5GFluy/9k+FwrVhgWyc=;
+ b=WmpMUTjOfMkoSG5plNfvgVZED+STI19p+hj+rdxt5cy5g3u26s35f33aafsXkZpACDvwaAgkS
+ EZpZRkzMSV8Bjymkch5V0AeEk17ayYRfyqQi5kZ0zC+gRcpNbbTIo9y
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_044540_279138_84851FA5 
-X-CRM114-Status: GOOD (  10.11  )
+X-CRM114-CacheID: sfid-20250528_044556_095709_9BE6C4A6 
+X-CRM114-Status: GOOD (  17.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,178 +92,121 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/31] ARM: k3: make k3img destination addresses
- configurable
+Subject: [PATCH 00/31] ARM: K3: add support for AM62L
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The destination addresses where the binaries in the image shall be
-copied to varies across different K3 SoCs. Make the addresses
-configurable. The options that previously took a filename now
-additionally take the destination address separated by a double colon.
+The AM62L is a new SoC from TI similar to the AM625, but still needs
+some work to support it.
+
+While the peripherals are quite similar to AM625, TI restructured the
+startup process. Unlike the AM625 we no longer start on the Cortex-R5
+core, but instead directly on the first Cortex A53 core. The SDRAM setup
+is no longer part of barebox, but instead done in the TF-A. The initial
+image is composed of a BL1 and several binary-only blobs. The second
+stage is directly the BL31 image and our barebox image.
+
+The dts(i) are not yet upstream, but currently posted for review, so we
+need to import them into barebox for now. I hope this will be obsolete
+soon.
+
+The DMA driver needs some adjustments for the AM62L, patches for this
+are taken from the TI downstrem U-Boot and the TI downstream Linux
+repository.
+
+The first board supported is the AM62L EVM board.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- images/Makefile.k3 | 51 +++++++++++++++++++++++++++------------------------
- scripts/k3img      | 20 ++++++++++++--------
- 2 files changed, 39 insertions(+), 32 deletions(-)
+Sascha Hauer (31):
+      scripts: k3img: remove duplicate case value
+      ARM: K3: prepare support for other SoCs
+      ARM: k3: make k3img destination addresses configurable
+      ARM: dts: add k3-am62l dts(i) files
+      ARM: dts: am62l: Fix assigned-clock-parents
+      ARM: K3: add am62lx base support
+      ARM: Makefile: descend into mach-* for cleaning
+      ARM: k3: rename yaml files from am625 to am62x
+      scripts/ti-board-config.py: fix length
+      ARM: k3: add yaml files for AM62l
+      k3: ringacc: pass ringrt address in struct k3_ringacc_init_data
+      drivers: soc: ti: k3-ringacc: handle absence of tisci
+      drivers: soc: ti: k3-ringacc: fix k3_ringacc_ring_reset_sci
+      dma: ti: k3-psil: Add PSIL data for AM62L
+      dma: ti: k3-udma: Refactor common bits for AM62L support
+      dma: ti: k3-udma-common: Update common code for AM62L DMAs
+      dma: ti: k3-udma-am62l: Add AM62L support DMA drivers
+      ARM: dts: am62l: Add ethernet ports
+      ARM: dts: am62l evm: Add ethernet ports
+      ARM: k3: am62l: add barebox specific am62l.dtsi
+      net: davinci_mdio: Use fallback clock rate
+      firmware: arm_scmi: Add support for clock parents
+      clk: add struct clk_parent_data
+      clk: arm_scmi: implement clock parent setting
+      ARM: dts: am62l3-evm: add MMC aliases
+      dma: ti: k3-udma: limit asel to am625
+      gpio: increase ARCH_NR_GPIOS to 512
+      ARM: dts: k3-am62l: reserve memory for TF-A
+      scripts: k3img: make dmdata optional
+      scripts: k3img: handle bootcore_opts
+      ARM: k3: add AM62l3 EVM board support
 
-diff --git a/images/Makefile.k3 b/images/Makefile.k3
-index d9b0af8d67b49569283d35ce0ec1792897654c57..e31a5cd2dcdd4fdbe62f3084092b641499e404ff 100644
---- a/images/Makefile.k3
-+++ b/images/Makefile.k3
-@@ -28,47 +28,50 @@ KEY_custmpk=$(srctree)/arch/arm/mach-k3/custMpk.pem
- KEY_degenerate=$(srctree)/arch/arm/mach-k3/ti-degenerate-key.pem
- 
- ## TI am625(sip)-SK ##
--SYSFW_start_am625_sk_r5.pblb.k3img=$(SYSFW_am625_hs_fs)
--SYSFWDATA_start_am625_sk_r5.pblb.k3img=$(SYSFWDATA_am625)
--DMDATA_start_am625_sk_r5.pblb.k3img=$(DMDATA_am625)
--INNERDATA_start_am625_sk_r5.pblb.k3img=$(INNERDATA_am625)
--KEY_start_am625_sk_r5.pblb.k3img=$(KEY_custmpk)
-+SYSFW_start_am625_sk_r5.pblb.k3_am62x_img=$(SYSFW_am625_hs_fs)
-+SYSFWDATA_start_am625_sk_r5.pblb.k3_am62x_img=$(SYSFWDATA_am625)
-+DMDATA_start_am625_sk_r5.pblb.k3_am62x_img=$(DMDATA_am625)
-+INNERDATA_start_am625_sk_r5.pblb.k3_am62x_img=$(INNERDATA_am625)
-+KEY_start_am625_sk_r5.pblb.k3_am62x_img=$(KEY_custmpk)
- 
- pblb-$(CONFIG_MACH_AM625_SK) += start_am625_sk_r5
--FILE_barebox-am625-sk-r5.img = start_am625_sk_r5.pblb.k3img
-+FILE_barebox-am625-sk-r5.img = start_am625_sk_r5.pblb.k3_am62x_img
- image-$(CONFIG_MACH_AM625_SK) += barebox-am625-sk-r5.img
- 
--SYSFW_start_am625sip_sk_r5.pblb.k3img=$(SYSFW_am625_hs_fs)
--SYSFWDATA_start_am625sip_sk_r5.pblb.k3img=$(SYSFWDATA_am625)
--DMDATA_start_am625sip_sk_r5.pblb.k3img=$(DMDATA_am625)
--INNERDATA_start_am625sip_sk_r5.pblb.k3img=$(INNERDATA_am625)
--KEY_start_am625sip_sk_r5.pblb.k3img=$(KEY_custmpk)
-+SYSFW_start_am625sip_sk_r5.pblb.k3_am62x_img=$(SYSFW_am625_hs_fs)
-+SYSFWDATA_start_am625sip_sk_r5.pblb.k3_am62x_img=$(SYSFWDATA_am625)
-+DMDATA_start_am625sip_sk_r5.pblb.k3_am62x_img=$(DMDATA_am625)
-+INNERDATA_start_am625sip_sk_r5.pblb.k3_am62x_img=$(INNERDATA_am625)
-+KEY_start_am625sip_sk_r5.pblb.k3_am62x_img=$(KEY_custmpk)
- 
- pblb-$(CONFIG_MACH_AM625_SK) += start_am625sip_sk_r5
--FILE_barebox-am625sip-sk-r5.img = start_am625sip_sk_r5.pblb.k3img
-+FILE_barebox-am625sip-sk-r5.img = start_am625sip_sk_r5.pblb.k3_am62x_img
- image-$(CONFIG_MACH_AM625_SK) += barebox-am625sip-sk-r5.img
- 
- ## BeaglePlay ##
--SYSFW_start_beagleplay_r5.pblb.k3img=$(SYSFW_am625_gp)
--SYSFWDATA_start_beagleplay_r5.pblb.k3img=$(SYSFWDATA_am625)
--DMDATA_start_beagleplay_r5.pblb.k3img=$(DMDATA_am625)
--KEY_start_beagleplay_r5.pblb.k3img=$(KEY_degenerate)
-+SYSFW_start_beagleplay_r5.pblb.k3_am62x_img=$(SYSFW_am625_gp)
-+SYSFWDATA_start_beagleplay_r5.pblb.k3_am62x_img=$(SYSFWDATA_am625)
-+DMDATA_start_beagleplay_r5.pblb.k3_am62x_img=$(DMDATA_am625)
-+KEY_start_beagleplay_r5.pblb.k3_am62x_img=$(KEY_degenerate)
- 
- pblb-$(CONFIG_MACH_BEAGLEPLAY) += start_beagleplay_r5
--FILE_barebox-beagleplay-r5.img = start_beagleplay_r5.pblb.k3img
-+FILE_barebox-beagleplay-r5.img = start_beagleplay_r5.pblb.k3_am62x_img
- image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay-r5.img
- 
- endif
- 
--quiet_cmd_k3_image = K3IMG   $@
--      cmd_k3_image = \
-+quiet_cmd_k3_am62x_image = K3_am62x_IMG   $@
-+      cmd_k3_am62x_image = \
- 		if [ -n "$(INNERDATA_$(@F))" ]; then				\
- 			inner="--innerdata $(INNERDATA_$(@F))";			\
- 		fi;								\
- 										\
--		$(srctree)/scripts/k3img --sysfw $(SYSFW_$(@F))			\
--		--sysfwdata $(SYSFWDATA_$(@F)) --dmdata $(DMDATA_$(@F))		\
--		--key $(KEY_$(@F)) $$inner --sbl $< --out $@
-+		$(srctree)/scripts/k3img					\
-+			--sysfw $(SYSFW_$(@F)):00040000				\
-+			--sysfwdata $(SYSFWDATA_$(@F)):00067000			\
-+			--dmdata $(DMDATA_$(@F)):43c3a800			\
-+			--sbl $<:43c00000					\
-+			--key $(KEY_$(@F)) $$inner --out $@
- 
--$(obj)/%.k3img: $(obj)/% scripts/k3img FORCE
--	$(call if_changed,k3_image)
-+$(obj)/%.k3_am62x_img: $(obj)/% scripts/k3_am62x_img FORCE
-+	$(call if_changed,k3_am62x_image)
-diff --git a/scripts/k3img b/scripts/k3img
-index f622f877cb89ce5604b8cb7651b3c23d3a5459be..a9f7e513723b251c3605e81a97093e23850a8f4d 100755
---- a/scripts/k3img
-+++ b/scripts/k3img
-@@ -16,17 +16,20 @@ unset TEMP
- while true; do
-         case "$1" in
-         '--sysfw')
--		sysfw="$2"
-+		sysfw=$(echo "$2" | cut -d ":" -f 1)
-+		sysfw_addr=$(echo "$2" | cut -d ":" -f 2)
- 		shift 2
- 		continue
- 	;;
-         '--sysfwdata')
--		sysfwdata="$2"
-+		sysfwdata=$(echo "$2" | cut -d ":" -f 1)
-+		sysfwdata_addr=$(echo "$2" | cut -d ":" -f 2)
- 		shift 2
- 		continue
- 	;;
-         '--dmdata')
--		dmdata="$2"
-+		dmdata=$(echo "$2" | cut -d ":" -f 1)
-+		dmdata_addr=$(echo "$2" | cut -d ":" -f 2)
- 		shift 2
- 		continue
- 	;;
-@@ -36,7 +39,8 @@ while true; do
- 		continue
- 	;;
- 	'--sbl')
--		sbl="$2"
-+		sbl=$(echo "$2" | cut -d ":" -f 1)
-+		sbl_addr=$(echo "$2" | cut -d ":" -f 2)
- 		shift 2
- 		continue
- 	;;
-@@ -140,7 +144,7 @@ dm_data=SEQUENCE:dm_data
- compType = INTEGER:1
- bootCore = INTEGER:16
- compOpts = INTEGER:0
--destAddr = FORMAT:HEX,OCT:43c00000
-+destAddr = FORMAT:HEX,OCT:$sbl_addr
- compSize = INTEGER:$sblsize
- shaType  = OID:2.16.840.1.101.3.4.2.3
- shaValue = FORMAT:HEX,OCT:$shasbl
-@@ -149,7 +153,7 @@ shaValue = FORMAT:HEX,OCT:$shasbl
- compType = INTEGER:2
- bootCore = INTEGER:0
- compOpts = INTEGER:0
--destAddr = FORMAT:HEX,OCT:00040000
-+destAddr = FORMAT:HEX,OCT:$sysfw_addr
- compSize = INTEGER:$sysfwsize
- shaType  = OID:2.16.840.1.101.3.4.2.3
- shaValue = FORMAT:HEX,OCT:$shasysfw
-@@ -158,7 +162,7 @@ shaValue = FORMAT:HEX,OCT:$shasysfw
- compType = INTEGER:18
- bootCore = INTEGER:0
- compOpts = INTEGER:0
--destAddr = FORMAT:HEX,OCT:00067000
-+destAddr = FORMAT:HEX,OCT:$sysfwdata_addr
- compSize = INTEGER:$sysfwdatasize
- shaType  = OID:2.16.840.1.101.3.4.2.3
- shaValue = FORMAT:HEX,OCT:$shasysfwdata
-@@ -175,7 +179,7 @@ $innercert
- compType = INTEGER:17
- bootCore = INTEGER:16
- compOpts = INTEGER:0
--destAddr = FORMAT:HEX,OCT:43c3a800
-+destAddr = FORMAT:HEX,OCT:$dmdata_addr
- compSize = INTEGER:$dmdatasize
- shaType  = OID:2.16.840.1.101.3.4.2.3
- shaValue = FORMAT:HEX,OCT:$shadmdata
+ arch/arm/Makefile                                  |    4 +-
+ arch/arm/boards/Makefile                           |    1 +
+ arch/arm/boards/am625-sk/board.c                   |    2 +-
+ arch/arm/boards/am625-sk/lowlevel.c                |    2 +-
+ arch/arm/boards/am62lx-evm/Makefile                |    1 +
+ arch/arm/boards/am62lx-evm/lowlevel.c              |   35 +
+ arch/arm/boards/beagleplay/lowlevel.c              |    2 +-
+ arch/arm/dts/Makefile                              |    1 +
+ arch/arm/dts/k3-am62l-barebox.dtsi                 |   30 +
+ arch/arm/dts/k3-am62l-main.dtsi                    |  768 +++++++++++
+ arch/arm/dts/k3-am62l-thermal.dtsi                 |   25 +
+ arch/arm/dts/k3-am62l-wakeup.dtsi                  |  133 ++
+ arch/arm/dts/k3-am62l.dtsi                         |  121 ++
+ arch/arm/dts/k3-am62l3-evm.dts                     |  378 ++++++
+ arch/arm/dts/k3-am62l3.dtsi                        |   67 +
+ arch/arm/dts/k3-pinctrl.h                          |    7 +
+ arch/arm/mach-k3/Kconfig                           |   14 +
+ arch/arm/mach-k3/Makefile                          |   27 +-
+ arch/arm/mach-k3/am62lx.c                          |  155 +++
+ arch/arm/mach-k3/am62x.c                           |  256 ++++
+ .../{board-cfg-am625.yaml => board-cfg-am62x.yaml} |    0
+ arch/arm/mach-k3/common.c                          |  260 +---
+ arch/arm/mach-k3/ddrss.c                           |   12 +-
+ .../{pm-cfg-am625.yaml => pm-cfg-am62x.yaml}       |    0
+ .../{rm-cfg-am625.yaml => rm-cfg-am62x.yaml}       |    0
+ arch/arm/mach-k3/sec-cfg-am62l.yaml                |  379 ++++++
+ .../{sec-cfg-am625.yaml => sec-cfg-am62x.yaml}     |    0
+ drivers/clk/clk-scmi.c                             |   80 +-
+ drivers/dma/ti/Makefile                            |    2 +-
+ drivers/dma/ti/k3-psil-am62l.c                     |   50 +
+ drivers/dma/ti/k3-psil-priv.h                      |    1 +
+ drivers/dma/ti/k3-psil.c                           |    2 +
+ drivers/dma/ti/k3-udma-am62l.c                     |  593 ++++++++
+ drivers/dma/ti/k3-udma-common.c                    | 1188 ++++++++++++++++
+ drivers/dma/ti/k3-udma-hwdef.h                     |    7 +
+ drivers/dma/ti/k3-udma.c                           | 1434 +-------------------
+ drivers/dma/ti/k3-udma.h                           |  357 +++++
+ drivers/firmware/arm_scmi/clock.c                  |  179 ++-
+ drivers/net/davinci_mdio.c                         |    9 +-
+ drivers/soc/ti/k3-navss-ringacc.c                  |  161 ++-
+ images/Makefile.k3                                 |  113 +-
+ include/gpio.h                                     |    2 +-
+ include/linux/clk.h                                |   13 +
+ include/linux/scmi_protocol.h                      |    6 +
+ include/mach/k3/common.h                           |    9 +-
+ include/soc/ti/k3-navss-ringacc.h                  |    4 +
+ scripts/k3img                                      |   73 +-
+ scripts/ti-board-config.py                         |    5 +-
+ 48 files changed, 5180 insertions(+), 1788 deletions(-)
+---
+base-commit: a123526affb9bb81e9d18f1260d4df350420a389
+change-id: 20250527-arm-k3-am62l-f70117f397f5
 
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
