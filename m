@@ -1,89 +1,89 @@
-Delivery-date: Wed, 28 May 2025 14:04:31 +0200
+Delivery-date: Wed, 28 May 2025 14:04:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFWJ-001B2J-0U
+	id 1uKFWL-001B2i-0Y
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 14:04:31 +0200
+	Wed, 28 May 2025 14:04:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFWA-0006l9-2Q
-	for lore@pengutronix.de; Wed, 28 May 2025 14:04:30 +0200
+	id 1uKFWC-0006o8-9B
+	for lore@pengutronix.de; Wed, 28 May 2025 14:04:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=scA8ReYzPjxIUtK2KMgOtfpe/iQkDuwGrxWwNs+ScYE=; b=FvF6OAr1N/Vp0igDqZzNNmd+4p
-	VIP75yP58qjsNeMFdLaHulA7fNubTxqiDFI+u6fO4Q0FMezy97FYFYPP5PlFMbnePFwPQxm1gLcql
-	Jb/+5NVYg2kPAvc4sb6+VE4szQ6xSADD/wy9buprw+rBOmt/5mt6EEpLAPxhxlwYSic5CbPeLOewh
-	BMrbRlXXMcKAY+ipY5Y8tZpKK+69UWf9pNYq1hvVxAhgvzABbK+KjD0bAo8uZnQIvzVMiDO+fDW+B
-	XZEyOfzGlyk8we6xmkDLsziFZnqV9lX1v+nVLNahXMFj5S3/h71rEGjwDXo17Rvj5vQtjTbKT4622
-	ARddj05Q==;
+	bh=yT/L+DCDx/bbaCIte+T/duDjCAyp36pGQLhIc9ZSmlI=; b=gHzl+j+rurx5U4/2/PeyWC3P5R
+	bhTWEfBpssymvuK11e1zIALbRzJWlqt+WYoCQLr6pGP2Tg5dQFVz7E5X1WjVuWZd/lyPfWrAzZFks
+	RkFjrj0X76KI3jeEtWvyitBbiiIW5czPV+7pQ+HN5sfqH8ruUuLOPYG8z6kUvSntcffzqU9ixW1On
+	Y8c0GrY/J5VikeN9+VajpmfTi+KmKMWUJ/TmvPGsLFQ8wGIvLiQvu3LCUxVjecve6nU8Du/PPDw9/
+	emQtjFMlcLqKYJ9Im6S7gAM51gQ4o8caHmFI+XBbVaEhRUuhEEUiyFZWtwCy85+UXtFJe7yXfhr8R
+	/sXaY9sg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFVQ-0000000D2h9-2YIq;
-	Wed, 28 May 2025 12:03:36 +0000
+	id 1uKFVU-0000000D2lZ-3Zi7;
+	Wed, 28 May 2025 12:03:40 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFU1-0000000D2ah-0RcI
+	id 1uKFU3-0000000D2bF-1gKa
 	for barebox@bombadil.infradead.org;
-	Wed, 28 May 2025 12:02:09 +0000
+	Wed, 28 May 2025 12:02:11 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Cc:To:In-Reply-To:References:Message-Id
 	:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender
 	:Reply-To:Content-ID:Content-Description;
-	bh=scA8ReYzPjxIUtK2KMgOtfpe/iQkDuwGrxWwNs+ScYE=; b=rbm0WOPkQvLcCci3IOmQORsL7r
-	0eZgWzipZ9oj4AU2uymmlGkFRSi054lV91IgE3pQN2B7JRB/ri9cnE3O4lNM2a62RIv8eHc8Egmbp
-	U1fOiSJpe/Fs7616QLRFW1zlieEKyy0ZVhDc9g9t3HTGPbDhKC8MsZTVGkhqqL1RAxqCC5GIojMAf
-	LDswBoUDdvdFVnVco48IsHvC7dpaWy8znrbAQ/zFF8N7uCcLS4SS1VHd27T6+GgGSTMNZSkXyO0QT
-	C8MGVunjtbeJvrRzao7NxXn7xO10Hifp5yliaoo3CmZOeup1InjK9CDjAWPjf5OHm87UWd51JPMbS
-	2r8udrYQ==;
+	bh=yT/L+DCDx/bbaCIte+T/duDjCAyp36pGQLhIc9ZSmlI=; b=Yuz7wd9+xDrkdUyRYwaJYE6s5N
+	bj5ARvg0NurEUvjZJ6X2SEGXbZVbUwPn9/5NKQPjctWGCKkI5X2o+n8KAdSz/I6KgOtn31eB7T9fr
+	YHRg9pyG1dqUY74evxN+L+VkX1BgfUx2ez7XleG8aboGJnsX5lLhGA7uVaKZH7rt0wxhmdand98vC
+	l8gXlVBWWHEdKSoj8MmyWIUsHOflZ1XzZwAthFuLwU8YgmvlsMB3SF/AnB/9XD+zMZ56qecWVwHb+
+	SPJhx5V2ArKjP6vxhsWRD28crJCaj8z4BFAeeKHhAXDJgZR47eHEtWCvWhqoRhZOixy+otL35dzeU
+	sw8vzOuA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFTw-0000000Dapd-3CwN
+	id 1uKFTz-0000000DarH-3nMR
 	for barebox@lists.infradead.org;
-	Wed, 28 May 2025 12:02:08 +0000
+	Wed, 28 May 2025 12:02:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFTp-0004SJ-OR; Wed, 28 May 2025 14:01:57 +0200
+	id 1uKFTq-0004V0-Oc; Wed, 28 May 2025 14:01:58 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFTp-000a9V-1m;
-	Wed, 28 May 2025 14:01:57 +0200
+	id 1uKFTq-000aCy-1o;
+	Wed, 28 May 2025 14:01:58 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFE2-00CB0R-1j;
+	id 1uKFE2-00CB0R-1z;
 	Wed, 28 May 2025 13:45:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 28 May 2025 13:45:28 +0200
+Date: Wed, 28 May 2025 13:45:43 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250528-arm-k3-am62l-v1-16-3f88e6d10d99@pengutronix.de>
+Message-Id: <20250528-arm-k3-am62l-v1-31-3f88e6d10d99@pengutronix.de>
 References: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
 In-Reply-To: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748432738; l=7773;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748432738; l=7932;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=OWs9z3TFJMpMJHpH5vTGM3wcyRgtj8HqKp9y4GKllZ0=;
- b=ZOkaNDPlIxXOJ16IqSPdDbkNZzk2EaubXutjydNrcXf6gaJqP1FSYpxFmibxtzi4RY+Yg6HvA
- 7oPtz/XKpdnDowLRkN1zJlX4Q6H5CWiF/cs9jpd33qUoEFF9mxvTI3L
+ bh=E+UdveUaH5NUIAirk06dFkz6Ac1ZRkdUbooLeJxaqsA=;
+ b=UvpNHD0BqSAy04TvGBigDhaDIqwyk5hijpwSvx7rzkJchtTFyyURXnVGf76t3iIHfEtg6KR9T
+ Y7oHRb5uwpjD+ynJ3QjdQCVJmV++ZDq3t7d8i86t9Ss0sKXxG8cKJ3n
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_130204_844907_6ACA69CC 
-X-CRM114-Status: GOOD (  14.12  )
+X-CRM114-CacheID: sfid-20250528_130208_101902_98D72792 
+X-CRM114-Status: GOOD (  12.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,224 +105,209 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 16/31] dma: ti: k3-udma-common: Update common code for
- AM62L DMAs
+Subject: [PATCH 31/31] ARM: k3: add AM62l3 EVM board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Based on U-Boot downstream commit:
+Add support for the AM62l3 EVM board [1]. Currently supported are:
 
-| commit 8679e1f2f3cb8de0b71e72e7538f5404f7abbd2b
-| Author: Vignesh Raghavendra <vigneshr@ti.com>
-| Date:   Wed Feb 26 19:55:45 2025 +0530
-|
-|    PENDING: dma: ti: k3-udma-common: Update common code for AM62L DMAs
-|
-|     AM62L has a autopair mechanism to pair DMA and remote endpoints, and
-|     setup all the peer registers. So avoid accessing or setting up PEER
-|     registers for AM62L DMAs.
-|
-|     Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+- DRAM
+- eMMC
+- SD card
+- Ethernet
+- USB
+
+[1] https://www.ti.com/tool/TMDS62LEVM
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/dma/ti/k3-udma-common.c | 80 +++++++++++++++++++++++++++++------------
- drivers/dma/ti/k3-udma-hwdef.h  |  7 ++++
- 2 files changed, 64 insertions(+), 23 deletions(-)
+ arch/arm/boards/Makefile              |  1 +
+ arch/arm/boards/am62lx-evm/Makefile   |  1 +
+ arch/arm/boards/am62lx-evm/lowlevel.c | 35 ++++++++++++++++++++
+ arch/arm/dts/Makefile                 |  1 +
+ arch/arm/mach-k3/Kconfig              |  6 ++++
+ images/Makefile.k3                    | 60 +++++++++++++++++++++++++++++++++--
+ 6 files changed, 101 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/ti/k3-udma-common.c b/drivers/dma/ti/k3-udma-common.c
-index d2ef9cc7b83d7fe4c2845b78b05c3a0e640cc589..8661d148aa1324828a168edb5caa496bb7e6da45 100644
---- a/drivers/dma/ti/k3-udma-common.c
-+++ b/drivers/dma/ti/k3-udma-common.c
-@@ -211,20 +211,24 @@ int udma_start(struct udma_chan *uc)
- 	dev_dbg(uc->ud->dev, "%s: chan:%d dir:%s\n",
- 		 __func__, uc->id, udma_get_dir_text(uc->config.dir));
- 
--	/* Make sure that we clear the teardown bit, if it is set */
--	udma_stop_hard(uc);
- 
--	/* Reset all counters */
--	udma_reset_counters(uc);
-+	if (uc->ud->match_data->type < DMA_TYPE_BCDMA_V2) {
-+		/* Make sure that we clear the teardown bit, if it is set */
-+		udma_stop_hard(uc);
-+		/* Reset all counters */
-+		udma_reset_counters(uc);
-+	}
- 
- 	switch (uc->config.dir) {
- 	case DMA_DEV_TO_MEM:
--		udma_rchanrt_write(uc->rchan, UDMA_RCHAN_RT_CTL_REG,
--				   UDMA_CHAN_RT_CTL_EN);
-+		udma_rchanrt_update_bits(uc->rchan, UDMA_RCHAN_RT_CTL_REG,
-+					 UDMA_CHAN_RT_CTL_EN | UDMA_CHAN_RT_CTL_TDOWN,
-+					 UDMA_CHAN_RT_CTL_EN);
- 
- 		/* Enable remote */
--		udma_rchanrt_write(uc->rchan, UDMA_RCHAN_RT_PEER_RT_EN_REG,
--				   UDMA_PEER_RT_EN_ENABLE);
-+		if (uc->ud->match_data->type < DMA_TYPE_BCDMA_V2)
-+			udma_rchanrt_write(uc->rchan, UDMA_RCHAN_RT_PEER_RT_EN_REG,
-+					   UDMA_PEER_RT_EN_ENABLE);
- 
- 		dev_dbg(uc->ud->dev, "%s(rx): RT_CTL:0x%08x PEER RT_ENABLE:0x%08x\n",
- 			 __func__,
-@@ -235,11 +239,13 @@ int udma_start(struct udma_chan *uc)
- 		break;
- 	case DMA_MEM_TO_DEV:
- 		/* Enable remote */
--		udma_tchanrt_write(uc->tchan, UDMA_TCHAN_RT_PEER_RT_EN_REG,
--				   UDMA_PEER_RT_EN_ENABLE);
-+		if (uc->ud->match_data->type < DMA_TYPE_BCDMA_V2)
-+			udma_tchanrt_write(uc->tchan, UDMA_TCHAN_RT_PEER_RT_EN_REG,
-+					   UDMA_PEER_RT_EN_ENABLE);
- 
--		udma_tchanrt_write(uc->tchan, UDMA_TCHAN_RT_CTL_REG,
--				   UDMA_CHAN_RT_CTL_EN);
-+		udma_tchanrt_update_bits(uc->tchan, UDMA_TCHAN_RT_CTL_REG,
-+					 UDMA_CHAN_RT_CTL_EN | UDMA_CHAN_RT_CTL_TDOWN,
-+					 UDMA_CHAN_RT_CTL_EN);
- 
- 		dev_dbg(uc->ud->dev, "%s(tx): RT_CTL:0x%08x PEER RT_ENABLE:0x%08x\n",
- 			 __func__,
-@@ -269,9 +275,17 @@ void udma_stop_mem2dev(struct udma_chan *uc, bool sync)
- 	int i = 0;
- 	u32 val;
- 
--	udma_tchanrt_write(uc->tchan, UDMA_TCHAN_RT_CTL_REG,
--			   UDMA_CHAN_RT_CTL_EN |
--			   UDMA_CHAN_RT_CTL_TDOWN);
-+	if (uc->ud->match_data->type == DMA_TYPE_BCDMA_V2 ||
-+	    uc->ud->match_data->type == DMA_TYPE_PKTDMA_V2) {
-+		udma_tchanrt_update_bits(uc->tchan, UDMA_TCHAN_RT_CTL_REG,
-+					 UDMA_CHAN_RT_CTL_EN |
-+					 UDMA_CHAN_RT_CTL_TDOWN,
-+					 UDMA_CHAN_RT_CTL_TDOWN);
-+	} else {
-+		udma_tchanrt_write(uc->tchan, UDMA_TCHAN_RT_CTL_REG,
-+				   UDMA_CHAN_RT_CTL_EN |
-+				   UDMA_CHAN_RT_CTL_TDOWN);
-+	}
- 
- 	val = udma_tchanrt_read(uc->tchan, UDMA_TCHAN_RT_CTL_REG);
- 
-@@ -285,6 +299,12 @@ void udma_stop_mem2dev(struct udma_chan *uc, bool sync)
- 		i++;
- 	}
- 
-+	if (uc->ud->match_data->type == DMA_TYPE_BCDMA_V2 ||
-+	    uc->ud->match_data->type == DMA_TYPE_PKTDMA_V2) {
-+		udma_tchanrt_write(uc->tchan, UDMA_TCHAN_RT_CTL_REG, UDMA_CHAN_RT_CTL_PAIR_COMPLETE);
-+		return;
-+	}
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 908497cd8b0509bdca01c9ccfbb1501654051bda..ac1fa74d4c03de7a462746cb93a061017cd2b64d 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -5,6 +5,7 @@ obj-$(CONFIG_MACH_ADVANTECH_ROM_742X)		+= advantech-mx6/
+ obj-$(CONFIG_MACH_AFI_GF)			+= afi-gf/
+ obj-$(CONFIG_MACH_ANIMEO_IP)			+= animeo_ip/
+ obj-$(CONFIG_MACH_AM625_SK)			+= am625-sk/
++obj-$(CONFIG_MACH_AM62LX_EVM)			+= am62lx-evm/
+ obj-$(CONFIG_MACH_AT91RM9200EK)			+= at91rm9200ek/
+ obj-$(CONFIG_MACH_AT91SAM9260EK)		+= at91sam9260ek/
+ obj-$(CONFIG_MACH_AT91SAM9261EK)		+= at91sam9261ek/
+diff --git a/arch/arm/boards/am62lx-evm/Makefile b/arch/arm/boards/am62lx-evm/Makefile
+new file mode 100644
+index 0000000000000000000000000000000000000000..562535d391d66ae2068377967c4c84844cddd380
+--- /dev/null
++++ b/arch/arm/boards/am62lx-evm/Makefile
+@@ -0,0 +1 @@
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/am62lx-evm/lowlevel.c b/arch/arm/boards/am62lx-evm/lowlevel.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..1b57641bee71a7e83a2ac5cbe64bf6714343f468
+--- /dev/null
++++ b/arch/arm/boards/am62lx-evm/lowlevel.c
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
- 	val = udma_tchanrt_read(uc->tchan, UDMA_TCHAN_RT_PEER_RT_EN_REG);
- 	if (val & UDMA_PEER_RT_EN_ENABLE)
- 		dev_dbg(uc->ud->dev, "%s: peer not stopped TIMEOUT !\n", __func__);
-@@ -295,9 +315,15 @@ void udma_stop_dev2mem(struct udma_chan *uc, bool sync)
- 	int i = 0;
- 	u32 val;
- 
--	udma_rchanrt_write(uc->rchan, UDMA_RCHAN_RT_PEER_RT_EN_REG,
--			   UDMA_PEER_RT_EN_ENABLE |
--			   UDMA_PEER_RT_EN_TEARDOWN);
-+	if (uc->ud->match_data->type == DMA_TYPE_BCDMA_V2 ||
-+	    uc->ud->match_data->type == DMA_TYPE_PKTDMA_V2)
-+		udma_rchanrt_update_bits(uc->rchan, UDMA_RCHAN_RT_CTL_REG,
-+					 UDMA_CHAN_RT_CTL_EN | UDMA_CHAN_RT_CTL_TDOWN,
-+					 UDMA_CHAN_RT_CTL_EN | UDMA_CHAN_RT_CTL_TDOWN);
-+	else
-+		udma_rchanrt_write(uc->rchan, UDMA_RCHAN_RT_PEER_RT_EN_REG,
-+				   UDMA_PEER_RT_EN_ENABLE |
-+				   UDMA_PEER_RT_EN_TEARDOWN);
- 
- 	val = udma_rchanrt_read(uc->rchan, UDMA_RCHAN_RT_CTL_REG);
- 
-@@ -311,6 +337,10 @@ void udma_stop_dev2mem(struct udma_chan *uc, bool sync)
- 		i++;
- 	}
- 
-+	if (uc->ud->match_data->type == DMA_TYPE_BCDMA_V2 ||
-+	    uc->ud->match_data->type == DMA_TYPE_PKTDMA_V2)
-+		return;
++#include <common.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/k3/debug_ll.h>
++#include <debug_ll.h>
++#include <pbl.h>
++#include <cache.h>
++#include <pbl/handoff-data.h>
++#include <compressed-dtb.h>
++#include <mach/k3/common.h>
 +
- 	val = udma_rchanrt_read(uc->rchan, UDMA_RCHAN_RT_PEER_RT_EN_REG);
- 	if (val & UDMA_PEER_RT_EN_ENABLE)
- 		dev_dbg(uc->ud->dev, "%s: peer not stopped TIMEOUT !\n", __func__);
-@@ -625,7 +655,10 @@ int udma_alloc_rx_resources(struct udma_chan *uc)
- 	}
- 
- 	rflow = uc->rflow;
--	if (ud->tflow_cnt) {
++static noinline void am62lx_evm_continue(void)
++{
++	extern char __dtb_z_k3_am62l3_evm_start[];
 +
-+	if (ud->match_data->type >= DMA_TYPE_BCDMA_V2) {
-+		fd_ring_id = rflow->id;
-+	} else if (ud->tflow_cnt) {
- 		fd_ring_id = ud->tflow_cnt + rflow->id;
- 	} else {
- 		fd_ring_id = ud->bchan_cnt + ud->tchan_cnt + ud->echan_cnt +
-@@ -838,9 +871,10 @@ int bcdma_alloc_bchan_resources(struct udma_chan *uc)
- 	if (ret)
- 		return ret;
- 
--	ret = k3_ringacc_request_rings_pair(ud->ringacc, uc->bchan->id, -1,
--						&uc->bchan->t_ring,
--						&uc->bchan->tc_ring);
-+	ret = k3_ringacc_request_rings_pair(ud->ringacc,
-+					    ud->match_data->chan_cnt + uc->bchan->id,
-+					    -1, &uc->bchan->t_ring,
-+					    &uc->bchan->tc_ring);
- 	if (ret) {
- 		ret = -EBUSY;
- 		goto err_ring;
-@@ -1064,7 +1098,7 @@ int udma_of_xlate(struct dma *dma, struct of_phandle_args *args)
- 	ucc->notdpkt = ep_config->notdpkt;
- 	ucc->ep_type = ep_config->ep_type;
- 
--	if (ud->match_data->type == DMA_TYPE_PKTDMA &&
-+	if (ud->match_data->type >= DMA_TYPE_PKTDMA &&
- 	    ep_config->mapped_channel_id >= 0) {
- 		ucc->mapped_channel_id = ep_config->mapped_channel_id;
- 		ucc->default_flow_id = ep_config->default_flow_id;
-diff --git a/drivers/dma/ti/k3-udma-hwdef.h b/drivers/dma/ti/k3-udma-hwdef.h
-index 3d6b4d10fff1156f5d0a0a8ae8d0c940b8060236..6fbbd88e75fc8ee737a36c9f573d99a4e0c77392 100644
---- a/drivers/dma/ti/k3-udma-hwdef.h
-+++ b/drivers/dma/ti/k3-udma-hwdef.h
-@@ -37,6 +37,8 @@
- 
- #define UDMA_RFLOW_REG(x) (UDMA_RFLOW_RF##x##_REG)
- 
-+#define UDMA_RX_FLOWRT_RFA              0x8
++	pbl_set_putc((void *)debug_ll_ns16550_putc, IOMEM(AM62X_UART_UART0_BASE));
 +
- /* TX chan regs */
- #define UDMA_TCHAN_TCFG_REG		0x0
- #define UDMA_TCHAN_TCREDIT_REG		0x4
-@@ -60,6 +62,7 @@
++	putc_ll('>');
++
++	barebox_arm_entry(0x80000000 + SZ_512K, SZ_2G - SZ_512K, __dtb_z_k3_am62l3_evm_start);
++}
++
++ENTRY_FUNCTION_WITHSTACK(start_am62lx_evm, 0x80800000, r0, r1, r2)
++{
++	writel(0x00000000, 0x040841b8);
++
++	k3_debug_ll_init(IOMEM(AM62X_UART_UART0_BASE));
++
++	relocate_to_current_adr();
++	setup_c();
++
++	am62lx_evm_continue();
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 3044c9bf120f9ece9564164b3fa569f4b7be1881..6612a514523103fdaaae026527f3441ebc57d228 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -7,6 +7,7 @@ obj- += dummy.o
+ lwl-$(CONFIG_MACH_ADVANTECH_ROM_742X) += imx6dl-advantech-rom-7421.dtb.o
+ lwl-$(CONFIG_MACH_AFI_GF) += am335x-afi-gf.dtb.o
+ lwl-$(CONFIG_MACH_AM625_SK) += k3-am625-sk.dtb.o k3-am625-r5-sk.dtb.o k3-am625sip-r5-sk.dtb.o
++lwl-$(CONFIG_MACH_AM62LX_EVM) += k3-am62l3-evm.dtb.o
+ lwl-$(CONFIG_MACH_BEAGLEBONE) += am335x-bone.dtb.o am335x-boneblack.dtb.o am335x-bone-common.dtb.o
+ lwl-$(CONFIG_MACH_BEAGLEPLAY) += k3-am625-beagleplay.dtb.o k3-am625-r5-beagleplay.dtb.o
+ lwl-$(CONFIG_MACH_CLEP7212) += ep7212-clep7212.dtb.o
+diff --git a/arch/arm/mach-k3/Kconfig b/arch/arm/mach-k3/Kconfig
+index cda44807e8a1db7c2f701309948c7bd1a863d365..338421a8af1715c72a23adc41fb7a21d69091585 100644
+--- a/arch/arm/mach-k3/Kconfig
++++ b/arch/arm/mach-k3/Kconfig
+@@ -46,6 +46,12 @@ config MACH_BEAGLEPLAY
+ 	help
+ 	  Say Y here if you are using a TI AM62x based BeaglePlay board
  
- /* TX chan RT regs */
- #define UDMA_TCHAN_RT_CTL_REG		0x0
-+#define UDMA_TCHAN_RT_CFG_REG		0x4
- #define UDMA_TCHAN_RT_SWTRIG_REG	0x8
- #define UDMA_TCHAN_RT_STDATA_REG	0x80
++config MACH_AM62LX_EVM
++	bool "TI AM62Lx EVM"
++	select MACH_AM62LX
++	help
++	  Say Y here if you are using a TI AM62Lx EVM board
++
+ config ARCH_K3_AUTHENTICATE_IMAGE
+ 	bool "Force authentication of FIP image against ROM API"
+ 	help
+diff --git a/images/Makefile.k3 b/images/Makefile.k3
+index 801ffe42ca221b53ca0221e75eaa089bdf07b2b7..61ea75191910cefcc95e101559fa2717a1ae0117 100644
+--- a/images/Makefile.k3
++++ b/images/Makefile.k3
+@@ -17,6 +17,9 @@ image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay.img
  
-@@ -79,6 +82,7 @@
+ endif
  
- /* RX chan RT regs */
- #define UDMA_RCHAN_RT_CTL_REG		0x0
-+#define UDMA_RCHAN_RT_CFG_REG		0x4
- #define UDMA_RCHAN_RT_SWTRIG_REG	0x8
- #define UDMA_RCHAN_RT_STDATA_REG	0x80
++KEY_custmpk=$(srctree)/arch/arm/mach-k3/custMpk.pem
++KEY_degenerate=$(srctree)/arch/arm/mach-k3/ti-degenerate-key.pem
++
+ ifdef CONFIG_MACH_K3_CORTEX_R5
  
-@@ -132,6 +136,9 @@
- #define UDMA_CHAN_RT_CTL_TDOWN	BIT(30)
- #define UDMA_CHAN_RT_CTL_PAUSE	BIT(29)
- #define UDMA_CHAN_RT_CTL_FTDOWN	BIT(28)
-+#define UDMA_CHAN_RT_CTL_AUTOPAIR   BIT(23)
-+#define UDMA_CHAN_RT_CTL_PAIR_TIMEOUT   BIT(17)
-+#define UDMA_CHAN_RT_CTL_PAIR_COMPLETE  BIT(16)
- #define UDMA_CHAN_RT_CTL_ERROR	BIT(0)
+ SYSFWDATA_am625=$(objtree)/arch/arm/mach-k3/combined-sysfw-cfg-am62x.k3cfg
+@@ -24,8 +27,6 @@ DMDATA_am625=$(objtree)/arch/arm/mach-k3/combined-dm-cfg-am62x.k3cfg
+ SYSFW_am625_hs_fs=$(FIRMWARE_DIR)/ti-fs-firmware-am62x-hs-fs-enc.bin
+ SYSFW_am625_gp=$(FIRMWARE_DIR)/ti-fs-firmware-am62x-gp.bin
+ INNERDATA_am625=$(FIRMWARE_DIR)/ti-fs-firmware-am62x-hs-fs-cert.bin
+-KEY_custmpk=$(srctree)/arch/arm/mach-k3/custMpk.pem
+-KEY_degenerate=$(srctree)/arch/arm/mach-k3/ti-degenerate-key.pem
  
- /* UDMA_TCHAN_RT_PEER_RT_EN_REG/UDMA_RCHAN_RT_PEER_RT_EN_REG (PSI-L: 0x408) */
+ ## TI am625(sip)-SK ##
+ SYSFW_start_am625_sk_r5.pblb.k3_am62x_img=$(SYSFW_am625_hs_fs)
+@@ -60,6 +61,29 @@ image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay-r5.img
+ 
+ endif
+ 
++SYSFWDATA_am62lx=$(objtree)/arch/arm/mach-k3/combined-sysfw-cfg-am62l.k3cfg
++SYSFW_am62lx_hs_fs=$(FIRMWARE_DIR)/ti-fs-firmware-am62lx-hs-fs-enc.bin
++INNERDATA_am62lx=$(FIRMWARE_DIR)/ti-fs-firmware-am62lx-hs-fs-cert.bin
++
++## TI am62lx-EVM ##
++SYSFW_start_am62lx_evm.pblb.k3_am62lx_img=$(SYSFW_am62lx_hs_fs)
++SYSFWDATA_start_am62lx_evm.pblb.k3_am62lx_img=$(SYSFWDATA_am62lx)
++TFA_start_am62lx_evm.pblb.k3_am62lx_img=$(FIRMWARE_DIR)/am62lx-bl31.bin
++INNERDATA_start_am62lx_evm.pblb.k3_am62lx_img=$(INNERDATA_am62lx)
++KEY_start_am62lx_evm.pblb.k3_am62lx_img=$(KEY_custmpk)
++
++SYSFW_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(SYSFW_am62lx_hs_fs)
++SYSFWDATA_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(SYSFWDATA_am62lx)
++INNERDATA_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(INNERDATA_am62lx)
++TFA_BL1_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(FIRMWARE_DIR)/am62lx-bl1.bin
++KEY_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(KEY_custmpk)
++
++pblb-$(CONFIG_MACH_AM62LX_EVM) += start_am62lx_evm
++FILE_barebox-am62lx-evm.img = start_am62lx_evm.pblb.k3_am62lx_img
++image-$(CONFIG_MACH_AM62LX_EVM) += barebox-am62lx-evm.img barebox-am62lx-evm-tiboot3.img
++
++FILE_barebox-am62lx-evm-tiboot3.img = start_am62lx_evm.pblb.k3_am62lx_tiboot3_img
++
+ quiet_cmd_k3_am62x_image = K3_am62x_IMG   $@
+       cmd_k3_am62x_image = \
+ 		if [ -n "$(INNERDATA_$(@F))" ]; then				\
+@@ -73,5 +97,35 @@ quiet_cmd_k3_am62x_image = K3_am62x_IMG   $@
+ 			--sbl $<:43c00000					\
+ 			--key $(KEY_$(@F)) $$inner --out $@
+ 
+-$(obj)/%.k3_am62x_img: $(obj)/% scripts/k3_am62x_img FORCE
++quiet_cmd_k3_am62lx_image = K3_am62lx_IMG   $@
++      cmd_k3_am62lx_image = \
++		if [ -n "$(INNERDATA_$(@F))" ]; then				\
++			inner="--innerdata $(INNERDATA_$(@F))";			\
++		fi;								\
++										\
++		$(srctree)/scripts/k3img					\
++			--sysfw $(SYSFW_$(@F)):00040000				\
++			--sysfwdata $(SYSFWDATA_$(@F)):0006c000			\
++			--dmdata $<:82000000					\
++			--sbl $(TFA_$(@F)):80000000				\
++			--key $(KEY_$(@F)) $$inner --out $@
++
++quiet_cmd_k3_am62lx_tiboot3_image = K3_am62lx_tiboot3_IMG   $@
++      cmd_k3_am62lx_tiboot3_image = \
++		$(srctree)/scripts/k3img					\
++			--sysfw $(SYSFW_$(@F)):00040000				\
++			--sysfwdata $(SYSFWDATA_$(@F)):0006c000			\
++			--sbl $(TFA_BL1_$(@F)):70800000				\
++			--key $(KEY_$(@F))					\
++			--innerdata $(INNERDATA_$(@F))				\
++			--bootcore_opts 160					\
++			--out $@
++
++$(obj)/%.k3_am62x_img: $(obj)/% scripts/k3img FORCE
+ 	$(call if_changed,k3_am62x_image)
++
++$(obj)/%.k3_am62lx_img: $(obj)/% scripts/k3img FORCE
++	$(call if_changed,k3_am62lx_image)
++
++$(obj)/%.k3_am62lx_tiboot3_img: $(obj)/% scripts/k3img FORCE
++	$(call if_changed,k3_am62lx_tiboot3_image)
 
 -- 
 2.39.5
