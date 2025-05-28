@@ -3,81 +3,80 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFl6-001BZD-1u
+	id 1uKFl6-001BZC-0q
 	for lore@lore.pengutronix.de;
 	Wed, 28 May 2025 14:19:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFl5-0000dE-Pa
+	id 1uKFl4-0000cj-VC
 	for lore@pengutronix.de; Wed, 28 May 2025 14:19:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=AD4/tkT/q2U16g8NKTuxyoNovqvZY5UleEqy1aHCQx4=; b=Y9xFFXXsDT8tPEIKjQJMh1+rBY
-	a4iVej3DrVZly7iK91XtYO3ne/ImCrO7zACdji1DLupHC8Ym6OJRlqA9ueYg1Pl3Mn5IJx7TUK5Pn
-	JOcJb5rNKgvmx90bFpzhnp+7NnCnpVGjcedqRXBdAe2ZJsdIkYd53DjGGGqagJIX3NryC8Gp8X0Ki
-	XCbqKgIjdOxz5RNCOGBFQ3MN1mnyuJ/+SuqBS6taOMEwQ3L1AxUSAhn4xrqcCmuq+k3OLskmKifwW
-	olip/Ml3iU3SvaEuAcxRrDu821CeH9JvaTpdT/zGjK+zRNAepuqwuySqKOIK1Xr9ItaGXUlr5BRYr
-	xCU12tyA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=uKGtS0xthKYudpzfutmaFY7Z3BI/pwkDLpogEmOdwNE=; b=Dfo/WKFjupULALHtbd1ZWdKc6q
+	khPPmlujlhAVnbQiBaDMgOR1s9nd/KlQ7OcCfRQCn1wWAVvjYwMIuicscHEYYk2rVXscIrVadB1Z3
+	gXu05TOEQguTp23FX/dwXUlCerU4MdC0or+F3XZB0JHUDY96iwVKAx19GhFJOuHE6Dy/GWlcISbP+
+	C0OiOdY4DEDIOHedNgqXkleH+2RjiAvndZDeNqIMwP1WPtS2E/wFcgQugN5enNJ9ivfaJLh1cHBUJ
+	s7AXirXxyX7kTez9G99iS+Ih1rHIqlLCkBJsVTKKTki/MTYpOuXxHmn/7M/lhadyQYZT+4ZRXdKXj
+	POn7ftbg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFkq-0000000D5Ul-0yMV;
-	Wed, 28 May 2025 12:19:32 +0000
+	id 1uKFkp-0000000D5U1-2Ys2;
+	Wed, 28 May 2025 12:19:31 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKEY2-0000000CvzN-3JTK
+	id 1uKEY2-0000000Cvyx-23Me
 	for barebox@bombadil.infradead.org;
 	Wed, 28 May 2025 11:02:14 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=AD4/tkT/q2U16g8NKTuxyoNovqvZY5UleEqy1aHCQx4=; b=ckLI9l6hlXv4eq14uUYYqPGFcX
-	qxNfmNEgtSxPD/rJlcGm1YFjHwz8rK4XGXjc/h6r8Q4VXKNlCz45xIf4+Vklb+093gVreM3f45i3G
-	6zZtOTSvr9Kh6zgrDhPqy7AiHSmoVctn1oMJcH+xlBzAMhxV0OvRcQiOXYNn72dn4CdGVursaVlln
-	vmJsMvlsuQwHJin6bVUrzFF2AAp27qYwJmoeRtm5r0j4MuHTGU6kEaAqyfW46LVqyOwlscl0macbu
-	jzhx7KHf+D0ExTCqL0XgEI3rq+Hfave0W/t7uHabCPLjfLDD/QnwytFBX7Fe3bs4o/mrKc8IYp7iB
-	hIZEGJyQ==;
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=uKGtS0xthKYudpzfutmaFY7Z3BI/pwkDLpogEmOdwNE=; b=O8xTa9C3adKFmnQzgkr8RcM+XO
+	WBlPtbxBx9CtheKTeusgSARGR+WqjoJquNmdlGiw4/0HzKdO6ZCjZz3JSGhB3dP/Re7xnSTx/SEBQ
+	2WPzOKklcUXXzwjST0h5drdKgMUI7NEGT/RZOHgWk0+3b9B3V6gCfLPyop2JQKLpgmvJYIqU1fHAS
+	vA4YUEnT9Pc0CeeIaJxKQlFNhtQFqRUn+4cGHjN0G1XCVY2jHS0/a+4S28/vtZwhtnZQpKWBv1yc/
+	BeFHELf+7IyPvmI5Jj6yEbt2ZoLuBazIuMtXW+4Th9pSS7apzcp/lm9Ss8cTZYdctzZZKmjNz9+Nq
+	xt+bntlQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKEXy-0000000DXG1-1aeJ
+	id 1uKEXy-0000000DXFy-1ZwW
 	for barebox@lists.infradead.org;
 	Wed, 28 May 2025 11:02:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKEXm-0001p7-BW
-	for barebox@lists.infradead.org; Wed, 28 May 2025 13:01:58 +0200
+	id 1uKEXm-0001p8-Cl; Wed, 28 May 2025 13:01:58 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKEXm-000Zgs-0X
-	for barebox@lists.infradead.org;
+	id 1uKEXm-000Zgt-0g;
 	Wed, 28 May 2025 13:01:58 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKEXm-00DuY0-0F
-	for barebox@lists.infradead.org;
+	id 1uKEXm-00DuY0-0O;
 	Wed, 28 May 2025 13:01:58 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 28 May 2025 12:50:36 +0200
-Message-Id: <20250528105046.3270397-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 28 May 2025 12:50:37 +0200
+Message-Id: <20250528105046.3270397-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250528105046.3270397-1-a.fatoum@pengutronix.de>
+References: <20250528105046.3270397-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_120210_681337_1A565A42 
-X-CRM114-Status: UNSURE (   9.39  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250528_120210_680543_B8E8C04A 
+X-CRM114-Status: GOOD (  11.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,103 +98,141 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 00/10] ARM32: allow disabling ATAGS and DT fallback
+Subject: [PATCH 01/10] arch: add new HAVE_ARCH_BOOTM_OFTREE symbol
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-New platforms shouldn't use atags, but we compile the code always.
+On platforms like x86, where barebox doesn't pass a device tree to the
+kernel, it doesn't make sense to have CONFIG_BOOTM_OFTREE selectable, so
+add a hidden symbol to hide it behind.
 
-New platforms should use device tree, but there may be binding
-incompatibilities between barebox embedded device tree and device tree
-shipped with the kernel.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/Kconfig                   | 6 ++++++
+ arch/arm/Kconfig               | 1 +
+ arch/kvx/Kconfig               | 1 +
+ arch/mips/Kconfig              | 1 +
+ arch/powerpc/Kconfig           | 1 +
+ arch/riscv/Kconfig             | 1 +
+ arch/sandbox/Kconfig           | 1 +
+ arch/x86/configs/efi_defconfig | 1 -
+ common/Kconfig                 | 2 +-
+ 9 files changed, 13 insertions(+), 2 deletions(-)
 
-For that reason, this series introduces two config options:
-
- - CONFIG_BOOT_ATAGS: Now disabled by default as it has been
-   replaced by device trees
-
- - BOOTM_OFTREE_FALLBACK: Enabled by default, but should likely
-   be disabled in products, so the device tree should be explicitly
-   suppied.
-
-Ahmad Fatoum (10):
-  arch: add new HAVE_ARCH_BOOTM_OFTREE symbol
-  bootm: enable CONFIG_BOOTM_OFTREE by default
-  ARM: lib32: disable ATAGS support by default
-  kvx: bootm: enforce existence of device tree
-  bootm: booti: make device tree optional
-  filetype: add new file type for 0-sized files
-  bootm: have bootm_get_devicetree return NULL if passed empty DT
-  bootm: make fallback to barebox internal tree optional
-  commands: oftree: add option to return device tree without fixups
-  of: drop undefined fdt_get_tree declaration
-
- .../migration-guides/migration-2025.07.0.rst  |   7 +
- arch/Kconfig                                  |   6 +
- arch/arm/Kconfig                              |  13 +-
- arch/arm/configs/animeo_ip_defconfig          |   1 +
- arch/arm/configs/at91rm9200ek_defconfig       |   1 +
- arch/arm/configs/at91sam9260ek_defconfig      |   1 +
- .../configs/at91sam9261ek_bootstrap_defconfig |   1 +
- arch/arm/configs/at91sam9261ek_defconfig      |   1 +
- arch/arm/configs/at91sam9g10ek_defconfig      |   1 +
- arch/arm/configs/at91sam9g20ek_defconfig      |   1 +
- arch/arm/configs/at91sam9m10g45ek_defconfig   |   1 +
- arch/arm/configs/at91sam9m10ihd_defconfig     |   1 +
- arch/arm/configs/at91sam9n12ek_defconfig      |   1 +
- arch/arm/configs/dss11_defconfig              |   1 +
- arch/arm/configs/haba_knx_lite_defconfig      |   1 +
- arch/arm/configs/imx23_defconfig              |   1 +
- arch/arm/configs/imx28_defconfig              |   1 +
- arch/arm/configs/kindle-mx50_defconfig        |   1 +
- arch/arm/configs/multi_v5_v6_defconfig        |   1 +
- arch/arm/configs/mvebu_defconfig              |   1 +
- arch/arm/configs/omap_defconfig               |   1 +
- arch/arm/configs/pm9261_defconfig             |   1 +
- arch/arm/configs/pm9263_defconfig             |   1 +
- arch/arm/configs/pm9g45_defconfig             |   1 +
- arch/arm/configs/qil_a9260_defconfig          |   1 +
- arch/arm/configs/qil_a9g20_defconfig          |   1 +
- arch/arm/configs/rockchip_v7a_defconfig       |   1 +
- arch/arm/configs/telit_evk_pro3_defconfig     |   1 +
- arch/arm/configs/tny_a9260_defconfig          |   1 +
- .../arm/configs/tny_a9263_bootstrap_defconfig |   1 +
- arch/arm/configs/tny_a9263_defconfig          |   1 +
- arch/arm/configs/tny_a9g20_defconfig          |   1 +
- arch/arm/configs/usb_a9260_defconfig          |   1 +
- .../arm/configs/usb_a9263_bootstrap_defconfig |   1 +
- arch/arm/configs/usb_a9263_defconfig          |   1 +
- arch/arm/configs/usb_a9g20_defconfig          |   1 +
- arch/arm/include/asm/armlinux.h               |  25 +-
- arch/arm/lib32/Makefile                       |   1 +
- arch/arm/lib32/armlinux.c                     | 234 +-----------------
- arch/arm/lib32/atags.c                        | 230 +++++++++++++++++
- arch/arm/lib32/bootm.c                        |   2 +-
- arch/arm/lib32/bootu.c                        |  11 +-
- arch/arm/lib32/bootz.c                        |   9 +-
- arch/arm/lib64/armlinux.c                     |   2 +-
- arch/arm/mach-imx/Kconfig                     |   1 +
- arch/kvx/Kconfig                              |   1 +
- arch/kvx/lib/bootm.c                          |   2 +
- arch/mips/Kconfig                             |   1 +
- arch/powerpc/Kconfig                          |   1 +
- arch/powerpc/lib/ppclinux.c                   |   2 +-
- arch/riscv/Kconfig                            |   1 +
- arch/riscv/lib/bootm.c                        |   2 +-
- arch/sandbox/Kconfig                          |   1 +
- arch/x86/configs/efi_defconfig                |   1 -
- commands/Kconfig                              |   8 +-
- commands/oftree.c                             |  14 +-
- common/Kconfig                                |  22 +-
- common/booti.c                                |  14 +-
- common/bootm.c                                |  14 +-
- common/filetype.c                             |   3 +-
- common/oftree.c                               |  22 +-
- include/filetype.h                            |   1 +
- include/of.h                                  |  37 ++-
- 63 files changed, 447 insertions(+), 274 deletions(-)
- create mode 100644 arch/arm/lib32/atags.c
-
+diff --git a/arch/Kconfig b/arch/Kconfig
+index dc5d1e454df5..890923ad059c 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -77,6 +77,12 @@ config HAVE_EFFICIENT_UNALIGNED_ACCESS
+ config HAVE_ARCH_BOARD_GENERIC_DT
+ 	bool
+ 
++config HAVE_ARCH_BOOTM_OFTREE
++	bool
++	help
++	  Selected by architectures where barebox can pass a device tree to the
++	  kernel while booting with bootm.
++
+ config HAVE_MOD_ARCH_SPECIFIC
+ 	bool
+ 	help
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 0800b15d784c..0b1dbd43a8f0 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -14,6 +14,7 @@ config ARM
+ 	select PBL_RELOCATABLE
+ 	select USE_COMPRESSED_DTB
+ 	select HAVE_ARCH_BOARD_GENERIC_DT if OFDEVICE
++	select HAVE_ARCH_BOOTM_OFTREE
+ 	default y
+ 
+ config ARCH_LINUX_NAME
+diff --git a/arch/kvx/Kconfig b/arch/kvx/Kconfig
+index bb662e4fd8a5..987fdb2e1e89 100644
+--- a/arch/kvx/Kconfig
++++ b/arch/kvx/Kconfig
+@@ -4,6 +4,7 @@ config KVX
+ 	bool
+ 	select 64BIT
+ 	select BOOTM
++	select HAVE_ARCH_BOOTM_OFTREE
+ 	select BOOTM_OFTREE
+ 	select BOOTM_INITRD
+ 	select COMMON_CLK
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 43c493978c8f..44c4fc82ae5b 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -12,6 +12,7 @@ config MIPS
+ 	select ARCH_HAS_DATA_ABORT_MASK
+ 	select ARCH_HAS_SJLJ
+ 	select ELF
++	select HAVE_ARCH_BOOTM_OFTREE
+ 	default y
+ 
+ config ARCH_LINUX_NAME
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 4e282bc3ac80..49050a26d524 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -7,6 +7,7 @@ config PPC
+ 	select HAS_MODULES
+ 	select GENERIC_FIND_NEXT_BIT
+ 	select OFTREE
++	select HAVE_ARCH_BOOTM_OFTREE
+ 	select ARCH_HAS_SJLJ
+ 	default y
+ 
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 4d56e55b533f..96d013d8514a 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -18,6 +18,7 @@ config RISCV
+ 	select RISCV_TIMER if RISCV_SBI
+ 	select HW_HAS_PCI
+ 	select HAVE_ARCH_BOARD_GENERIC_DT
++	select HAVE_ARCH_BOOTM_OFTREE
+ 
+ config ARCH_LINUX_NAME
+ 	string
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index c404f73a9970..b48eb29c7db4 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -20,6 +20,7 @@ config SANDBOX
+ 	select ARCH_DMA_DEFAULT_COHERENT
+ 	select ARCH_WANT_FRAME_POINTERS
+ 	select BAREBOX_CMDLINE
++	select HAVE_ARCH_BOOTM_OFTREE
+ 	default y
+ 
+ config ARCH_LINUX_NAME
+diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defconfig
+index 57e1080195c2..c7bdbcd5640c 100644
+--- a/arch/x86/configs/efi_defconfig
++++ b/arch/x86/configs/efi_defconfig
+@@ -9,7 +9,6 @@ CONFIG_MENU=y
+ CONFIG_BOOTM_SHOW_TYPE=y
+ CONFIG_BOOTM_VERBOSE=y
+ CONFIG_BOOTM_INITRD=y
+-CONFIG_BOOTM_OFTREE=y
+ CONFIG_BLSPEC=y
+ CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_PARTITION_DISK_EFI=y
+diff --git a/common/Kconfig b/common/Kconfig
+index fe50da8f3084..86a651661c35 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -633,7 +633,7 @@ config BOOTM_INITRD
+ 
+ config BOOTM_OFTREE
+ 	bool
+-	depends on BOOTM
++	depends on BOOTM && HAVE_ARCH_BOOTM_OFTREE
+ 	select OFTREE
+ 	prompt "device tree (oftree) support"
+ 	help
 -- 
 2.39.5
 
