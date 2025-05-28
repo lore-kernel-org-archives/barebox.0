@@ -3,82 +3,80 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFl3-001BXQ-2l
+	id 1uKFl3-001BXP-2e
 	for lore@lore.pengutronix.de;
 	Wed, 28 May 2025 14:19:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFl3-0000bv-6Q
+	id 1uKFl3-0000bw-6w
 	for lore@pengutronix.de; Wed, 28 May 2025 14:19:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nyjsThr0S+jMAKjCBwZ7xvYU3mmJbAybgmqJK5h5VhY=; b=ks0+nNjI8HBk7aUJ7CAlYsiXtd
-	WszZByByfY3j5QOnG7nn/T9sYAR9ecKKP92Xe/HVyB0cH3RFWlRESzJuDgpYNFIpkyrDFK783jdYq
-	cQ/waPkncCK3aMeb0kgcGT+jxVibrui2RevuzAtkL6AzHQx71ODxHx+QDxovkkZmB/ag3W/KpFXsi
-	GlnYmXdufCjo6MohWp0MXkohvxypMBM8ozDssUlJrqpw0sQQDnHVb50GwVWFuSuRyyhFZsEDmu/EG
-	kKPyZ3Cc1wwyVhYVyAJeGH62WPDI4bXRgUarqVu++PRCfXVk9s1M4rt9ujyoVTc8Z7jwFGdULazms
-	S3lNpjOQ==;
+	bh=Y5SX4zSDgcO9OhozK+3B+2o3i9n1Jw1fEiTci/+dIK4=; b=onq0xJmW6XY1uYLQRiEX0hvDbL
+	nU1hq/P2XkcRiPKTiAHGmPQa7wAOyZgylXg8+NiD7BmxGw5y6K94GEAJ0hNf1avlru1etkt+wYiTI
+	xN5Up9WxwJDqwzdliN8PxfOWuUzza9MklohWwBHcTBdHi1LEaALKbD4QpKmL3buFbKqEZ0puU6If5
+	GjzD7sEigRj0Q1asKc41GFisNPG3BgZiMIEtlzUHIy7f2/KXNiTqE2Ff22gEexw/f99B8I/s1vvZq
+	GBNAhO51rNMXxpLAhS5rKfXJ9cuWtfR7dvIuHc+qkWCRwj89rf4XxqeLglZcJtqOykT+nGgKfkVHV
+	LZs4py+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFkj-0000000D5RA-44vb;
-	Wed, 28 May 2025 12:19:25 +0000
+	id 1uKFki-0000000D5Pw-2hR7;
+	Wed, 28 May 2025 12:19:24 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKEY1-0000000Cvyt-48Tv
+	id 1uKEY1-0000000Cvyc-0nYW
 	for barebox@bombadil.infradead.org;
 	Wed, 28 May 2025 11:02:13 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=nyjsThr0S+jMAKjCBwZ7xvYU3mmJbAybgmqJK5h5VhY=; b=dMGqVxZk8QIWn4pdTrWWlAB7jy
-	xtQdSpQ0ibUBmTymZG0KKq6RoUM0zuuTvg8u4XOeflyIUdJiwr0mucJ9efO3vBHwExXlbAarmDkaP
-	c2IXVGVZHdh5rCUIHLcYR6WMv1kw60L6q2yLyliOeB6aN/MOIHB/vwOQYrxfwSVPGCJE9agkNN9EM
-	ddffs09mxI1GczVY5Fi0YJ8Y8k3ekWIWhKSLiKA2H43PKHmIdL1h5LoGD0NdAj3kqvHM5jQ16aaJH
-	uKy3QDRhiyLkuTzbCqImbocHh1WiD40rf1nV3JHQ390llwCpQQeSSQ3RhtHbIBcJ04lVo9VfkyhNW
-	+QxJ215A==;
+	bh=Y5SX4zSDgcO9OhozK+3B+2o3i9n1Jw1fEiTci/+dIK4=; b=Ph2uqOV4UedV9WOfqkyb8CjCSs
+	JLPLgHi0rSLFghrH7TbOlRCg/hYzDKw4I4l5C6Ec5VkD+aD9x5O9hTEvhghvGDQ+3SM7eqefG4tVC
+	UnKvg7q73y81NTFGrWOVEQQ3afmwCwdP7cID9gftLfZuSR/ymdHb9+mYb8zrGuqu0zmJPxWbzLjDc
+	XqHZl0baizooE57HOL8u5cDtB4BZy1jxtvDNsYmmdCaq2UCnxbHLoMVsScDJMgfpf0VWVU9YWji45
+	5EG9bVaiM8jPY3oiLLytt+AruX8KkbDB/dgcu5+Lfmr4FZKmFZLfHZDzXVFylJHHis6USjTunlPwd
+	PCN53Ajg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKEXy-0000000DXG0-1ZhN
+	id 1uKEXw-0000000DXDo-3Ohy
 	for barebox@lists.infradead.org;
 	Wed, 28 May 2025 11:02:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKEXm-0001pM-KS
-	for barebox@lists.infradead.org; Wed, 28 May 2025 13:01:58 +0200
+	id 1uKEXm-0001pb-N8; Wed, 28 May 2025 13:01:58 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKEXm-000Zh5-1H
-	for barebox@lists.infradead.org;
+	id 1uKEXm-000Zh9-1R;
 	Wed, 28 May 2025 13:01:58 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKEXm-00DuY0-0y
-	for barebox@lists.infradead.org;
+	id 1uKEXm-00DuY0-18;
 	Wed, 28 May 2025 13:01:58 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 28 May 2025 12:50:41 +0200
-Message-Id: <20250528105046.3270397-6-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 28 May 2025 12:50:42 +0200
+Message-Id: <20250528105046.3270397-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250528105046.3270397-1-a.fatoum@pengutronix.de>
 References: <20250528105046.3270397-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_120210_679850_CCC4640B 
-X-CRM114-Status: GOOD (  12.79  )
+X-CRM114-CacheID: sfid-20250528_120208_881936_7B185A07 
+X-CRM114-Status: GOOD (  13.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,88 +98,56 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/10] bootm: booti: make device tree optional
+Subject: [PATCH 06/10] filetype: add new file type for 0-sized files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In case the user supplied a /dev/null device tree with a follow-up
-commit, we want to pass a long a NULL pointer to the booted kernel and
-skip all device tree and initrd related work.
+We have commands and functionality like the boot code that so far
+accepted either an optional argument or substituted a default in its
+place if it's missing. One example is the device tree used during boot,
+which is transparently replaced by the barebox internal device tree when
+none was specified. To allow forcing a device-tree free boot, /dev/null
+can be used in future and code can just check for filetype_empty.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/lib64/armlinux.c |  2 +-
- arch/riscv/lib/bootm.c    |  2 +-
- common/booti.c            | 14 ++++++++------
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ common/filetype.c  | 3 ++-
+ include/filetype.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
-index 13721a71236b..74922cecd9ba 100644
---- a/arch/arm/lib64/armlinux.c
-+++ b/arch/arm/lib64/armlinux.c
-@@ -11,7 +11,7 @@
- static int do_bootm_linux(struct image_data *data)
- {
- 	void *image;
--	phys_addr_t devicetree;
-+	phys_addr_t devicetree = 0;
- 	int ret;
+diff --git a/common/filetype.c b/common/filetype.c
+index a79c8ea77e45..a7bbd8f48534 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -28,6 +28,7 @@ struct filetype_str {
  
- 	image = booti_load_image(data, &devicetree);
-diff --git a/arch/riscv/lib/bootm.c b/arch/riscv/lib/bootm.c
-index 23ce3873b151..08791458f824 100644
---- a/arch/riscv/lib/bootm.c
-+++ b/arch/riscv/lib/bootm.c
-@@ -8,7 +8,7 @@
- static int do_bootm_linux(struct image_data *data)
- {
- 	void (*fn)(unsigned long a0, unsigned long dtb, unsigned long a2);
--	phys_addr_t devicetree;
-+	phys_addr_t devicetree = 0;
- 	long hartid = riscv_hartid();
- 	int ret;
+ static const struct filetype_str filetype_str[] = {
+ 	[filetype_unknown] = { "unknown", "unknown" },
++	[filetype_empty] = { "empty", "empty" },
+ 	[filetype_arm_zimage] = { "ARM Linux zImage", "arm-zimage" },
+ 	[filetype_lzo_compressed] = { "LZO compressed", "lzo" },
+ 	[filetype_lz4_compressed] = { "LZ4 compressed", "lz4" },
+@@ -510,7 +511,7 @@ int file_name_detect_type_offset(const char *filename, loff_t pos, enum filetype
+ 	if (ret < 0)
+ 		goto err_out;
  
-diff --git a/common/booti.c b/common/booti.c
-index 40611b8f7228..2d4cb3598737 100644
---- a/common/booti.c
-+++ b/common/booti.c
-@@ -66,6 +66,12 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
- 		unsigned long devicetree;
- 		const struct resource *initrd_res;
+-	*type = detect(buf, ret);
++	*type = ret ? detect(buf, ret) : filetype_empty;
  
-+		fdt = bootm_get_devicetree(data);
-+		if (IS_ERR(fdt))
-+			return fdt;
-+		if (!fdt)
-+			goto out;
-+
- 		initrd_res = bootm_load_initrd(data, image_end);
- 		if (IS_ERR(initrd_res)) {
- 			return ERR_CAST(initrd_res);
-@@ -76,12 +82,7 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
- 
- 		devicetree = image_end;
- 
--		fdt = bootm_get_devicetree(data);
--		if (IS_ERR(fdt))
--			return fdt;
--
- 		ret = bootm_load_devicetree(data, fdt, devicetree);
--
- 		free(fdt);
- 
- 		if (ret)
-@@ -90,8 +91,9 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
- 		*oftree = devicetree;
- 	}
- 
-+out:
- 	printf("Loaded kernel to 0x%08lx", kernel);
--	if (oftree)
-+	if (oftree && *oftree)
- 		printf(", devicetree at %pa", oftree);
- 	printf("\n");
- 
+ 	ret = 0;
+ err_out:
+diff --git a/include/filetype.h b/include/filetype.h
+index 5d652f952f5b..e699815975d0 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -11,6 +11,7 @@
+  */
+ enum filetype {
+ 	filetype_unknown,
++	filetype_empty,
+ 	filetype_arm_zimage,
+ 	filetype_lzo_compressed,
+ 	filetype_lz4_compressed,
 -- 
 2.39.5
 
