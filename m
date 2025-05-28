@@ -1,89 +1,89 @@
-Delivery-date: Wed, 28 May 2025 14:04:34 +0200
+Delivery-date: Wed, 28 May 2025 14:04:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFWM-001B35-04
+	id 1uKFWN-001B3S-03
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 14:04:34 +0200
+	Wed, 28 May 2025 14:04:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFWD-0006sA-U7
-	for lore@pengutronix.de; Wed, 28 May 2025 14:04:33 +0200
+	id 1uKFWC-0006pu-U5
+	for lore@pengutronix.de; Wed, 28 May 2025 14:04:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GtFaLEAq8r5x1605H2aqYNJZj5qxtl8hAA3KACYFIKg=; b=QJ6qSVAtb0DiScHBXkSTOQghQF
-	Zjr2vgZmXahaU5YG7O3SldOjEG5fg44OGmnB109E6avRuXx6GaVD9lJCW+6aMPhslVpXO9RkfZscs
-	aFrmFH5zm5KcO7nsJ6kF6Me8o+OHYLIa7YFJAJoGl0Y7OcEoq+lHNtVP6ncAhGsa+dXTNYeI6lqMv
-	bL8/jOHave2ZOGlIHrfaYKWP/WeVSlFeRrlHvAxl0+pApcaUbAJNRg4D1qw+zD9is/oAT1uDLzrmj
-	4ob8x+iQAsd8Cn6+vIIzU7o0iITrAiZ5QDvwn724YCJnHP11EcJkWMvRoyICTyHeMEMBeVxFo4fz9
-	eGz5KaOA==;
+	bh=QBR2lbGn+i1ZKlVo8ZLAmmvaoBh/rOJC2ics60TcmC0=; b=T3/RGKjZJy1x0jENGQWAcq5bkN
+	rjaL9Ap4yXsHPuWDTpTKprBq4zECyG1eGX2+hNARpo2NaedgCUfBe/Rem2GytYx6lyIIz+K7iUGmQ
+	wz3n7LpXS/Pj2veSiOaJm78a8Q7/ZpJBpNVymf6RTTLzoxTKwxEFa/Ouy/gjhmAy/xB3qrxVDgYAJ
+	Wt9uaw5404G0nQ2NHWLVX0r3xpqiJt+gOE5cSeAi0GvFm/8hIQ3WvgRzImNX9+PfVOVpdBO8fx+wL
+	rMsbIKEDPQi/aZlKQFOe0tFZy/gN8u281YOdlYCngJqZSMUR4oJUGtUZtkbedXIoZ9hh1tbyYA0Qb
+	39bH+b9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFVY-0000000D2mR-11ar;
-	Wed, 28 May 2025 12:03:44 +0000
+	id 1uKFVR-0000000D2hP-15gU;
+	Wed, 28 May 2025 12:03:37 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFU3-0000000D2bN-46cp
+	id 1uKFU1-0000000D2ao-1gFS
 	for barebox@bombadil.infradead.org;
-	Wed, 28 May 2025 12:02:12 +0000
+	Wed, 28 May 2025 12:02:09 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Cc:To:In-Reply-To:References:Message-Id
 	:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender
 	:Reply-To:Content-ID:Content-Description;
-	bh=GtFaLEAq8r5x1605H2aqYNJZj5qxtl8hAA3KACYFIKg=; b=C997B2Ght4rLpVBoAYFSAtu7OQ
-	CQvFkeDmjGATlOaFciHhBOAch1lh/+WlFMZL3zecxb4TPEWvj+WLxdAKhezLIpzIv7EB5G1Rubaai
-	d1yNhSYlQMFGB0Vz6Yj/Eu6HMxpwVF/JsT+fNoxniDmKkzo08ybtIDG4rGLqrR7l3goPFEiogzow9
-	MmhyZEjh0sXtQ3gDDON/XGWSVqG3jzyzMwMxmXbqfYatyRsPw71Hd94iEUEZ/g3/zDN1c/Td2ZhJ+
-	Nl5mWQhD4RFCFftXlpsje7PgkkvJ7tL6QweIFdp0z01uEGDbEjZPjzcSbQDMLOYFXvBpB62EJWQdB
-	F6kTGD6w==;
+	bh=QBR2lbGn+i1ZKlVo8ZLAmmvaoBh/rOJC2ics60TcmC0=; b=J5SlzxRenXwp83WPBi4lDKZGaf
+	ke6VmMHxOxyegwv5jbHdHSVjS2HNG6Ei6fv0rTHH2k9u5bjS/7LUtIRbZdtyMq40cUxOx3DmqtiBg
+	zZvf7VBPJoxE5/g5Xm3q435JiCoWH7p1XDQ1AdydMoI0I0gUycRfs/lQTDjYWuqr3k8a6sZ/sVDj/
+	ApJx17yup3DHo2BBM3VRWq/Hvu8u6phgcXBdQQJwmyDLPblDDrVQeYMMutZjxnwR+6T2wDFhLVSDF
+	vF5CJf9eLzAlgh9y4F2g1Ogh95dL6MlaNHAuCr7y/jBSrM5nAT6ijkC8XbOmz1MuFdrLAIztzDedx
+	tiDaj/cQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFTz-0000000DarF-3o3r
+	id 1uKFTw-0000000Dapa-2iPs
 	for barebox@lists.infradead.org;
-	Wed, 28 May 2025 12:02:10 +0000
+	Wed, 28 May 2025 12:02:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFTq-0004U1-CU; Wed, 28 May 2025 14:01:58 +0200
+	id 1uKFTp-0004Rm-FM; Wed, 28 May 2025 14:01:57 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFTq-000aAa-0d;
-	Wed, 28 May 2025 14:01:58 +0200
+	id 1uKFTp-000a9E-0u;
+	Wed, 28 May 2025 14:01:57 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFE2-00CB0R-1r;
+	id 1uKFE2-00CB0R-1k;
 	Wed, 28 May 2025 13:45:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 28 May 2025 13:45:36 +0200
+Date: Wed, 28 May 2025 13:45:29 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250528-arm-k3-am62l-v1-24-3f88e6d10d99@pengutronix.de>
+Message-Id: <20250528-arm-k3-am62l-v1-17-3f88e6d10d99@pengutronix.de>
 References: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
 In-Reply-To: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748432738; l=5002;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748432738; l=18084;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Ofy9jsS8PfH35+Pv7gfgMfcXJiMXBJf0vqE77TPhn+0=;
- b=i4ej1TJ4vOj+KYOd8TLnvM8SppEk7bbAfFB2z7N8ez56g/luRz4aO7NVQtNSxJdNjXUawlzEw
- SDdofHP/PvRB+nZiHmpY6dCpcngcqiURS7jCPeZkz8lflk/ys+qMDSo
+ bh=2bpQ+RfRkioyQ1Q8n5gBdqTc4VaEE6q5JHkHP8Wr7Nk=;
+ b=iJoX1SvhlHL62m9lxMQrWpLVrrm9fSXqJdRLdSCdAvsDBAD6NzgUUnhNwlUhZclrwdAQ8X/OT
+ mkUS9EdR9b+BHdTkGNmZQmpvOOU5ADXkCEiSACHgZ1CoREcDBIMVCOj
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_130208_107437_65ECD0F4 
-X-CRM114-Status: GOOD (  16.90  )
+X-CRM114-CacheID: sfid-20250528_130204_784615_0F5E6A02 
+X-CRM114-Status: GOOD (  23.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,174 +105,662 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 24/31] clk: arm_scmi: implement clock parent setting
+Subject: [PATCH 17/31] dma: ti: k3-udma-am62l: Add AM62L support DMA
+ drivers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds support for getting/setting the clk parents in the SCMI clk
-driver.
+Based on U-Boot downstream commit:
+
+| commit 63633a3ebdce1d0e6eba47a0af70779b773fd45b
+| Author: Vignesh Raghavendra <vigneshr@ti.com>
+| Date:   Wed Feb 26 19:55:46 2025 +0530
+|
+|     PENDING: dma: ti: k3-udma-am62l: Add AM62L support DMA drivers
+|
+|     AM62L has newer version of AM62x DMA with few changes:
+|     - Has a flat 1:1 channel mapping
+|     - No dependency on DM firmware, with autopairing support for PSIL
+|       pairing
+|     - Aliased registers in RT region to configure channel / rings
+|
+|     Add support for the same.
+|
+|     Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/clk-scmi.c | 80 +++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 72 insertions(+), 8 deletions(-)
+ drivers/dma/ti/Makefile        |   2 +-
+ drivers/dma/ti/k3-udma-am62l.c | 593 +++++++++++++++++++++++++++++++++++++++++
+ drivers/dma/ti/k3-udma.h       |   2 +
+ 3 files changed, 596 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
-index 5c9f61ae0b6f94da104cda682e8b399fc4f9c84e..62228d7ba2c12b6bf4ae41dff4aa4553fd3e325e 100644
---- a/drivers/clk/clk-scmi.c
-+++ b/drivers/clk/clk-scmi.c
-@@ -20,6 +20,7 @@ struct scmi_clk {
- 	struct clk_hw hw;
- 	const struct scmi_clock_info *info;
- 	const struct scmi_protocol_handle *ph;
-+	struct clk_parent_data *parent_data;
- };
- 
- #define to_scmi_clk(clk) container_of(clk, struct scmi_clk, hw)
-@@ -74,6 +75,34 @@ static int scmi_clk_set_rate(struct clk_hw *hw, unsigned long rate,
- 	return scmi_proto_clk_ops->rate_set(clk->ph, clk->id, rate);
- }
- 
-+static int scmi_clk_set_parent(struct clk_hw *hw, u8 parent_index)
-+{
-+	struct scmi_clk *clk = to_scmi_clk(hw);
+diff --git a/drivers/dma/ti/Makefile b/drivers/dma/ti/Makefile
+index f841ad0cffaf086ffbf3b5775bfad776fa5c3d73..37e6e56bd17befbbb86da5f2a6cc4492d6dea205 100644
+--- a/drivers/dma/ti/Makefile
++++ b/drivers/dma/ti/Makefile
+@@ -1 +1 @@
+-obj-$(CONFIG_TI_K3_UDMA) += k3-udma.o k3-udma-common.o k3-psil.o k3-psil-am62l.o
++obj-$(CONFIG_TI_K3_UDMA) += k3-udma.o k3-udma-common.o k3-psil.o k3-psil-am62l.o k3-udma-am62l.o
+diff --git a/drivers/dma/ti/k3-udma-am62l.c b/drivers/dma/ti/k3-udma-am62l.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..cd4a4cdf032fc377befac2de129e4b4c5a18e9b2
+--- /dev/null
++++ b/drivers/dma/ti/k3-udma-am62l.c
+@@ -0,0 +1,593 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ *  Copyright (C) 2025 Texas Instruments Incorporated - https://www.ti.com
++ */
 +
-+	return scmi_proto_clk_ops->parent_set(clk->ph, clk->id, parent_index);
++#include <io.h>
++#include <malloc.h>
++#include <stdio.h>
++#include <linux/bitops.h>
++#include <linux/sizes.h>
++#include <linux/printk.h>
++#include <dma.h>
++#include <soc/ti/ti-udma.h>
++#include <soc/ti/ti_sci_protocol.h>
++#include <dma-devices.h>
++#include <soc/ti/cppi5.h>
++#include <soc/ti/k3-navss-ringacc.h>
++#include <clock.h>
++#include <linux/bitmap.h>
++#include <driver.h>
++#include <linux/device.h>
++
++#include "k3-udma-hwdef.h"
++#include "k3-psil-priv.h"
++#include "k3-udma.h"
++
++enum am62l_udma_mmr {
++	AM62L_MMR_GCFG = 0,
++	AM62L_MMR_BCHANRT,
++	AM62L_MMR_CHANRT,
++	AM62L_MMR_RFLOWRT,
++	AM62L_MMR_LAST,
++};
++
++static const char * const am62l_mmr_names[] = {
++	[AM62L_MMR_GCFG] = "gcfg",
++	[AM62L_MMR_BCHANRT] = "bchanrt",
++	[AM62L_MMR_CHANRT] = "chanrt",
++	[AM62L_MMR_RFLOWRT] = "ringrt",
++};
++
++static int pktdma_v2_rx_channel_config(struct udma_chan *uc)
++{
++	u32 val = 0;
++
++	if (uc->config.needs_epib)
++		val |= UDMA_RFLOW_RFA_EINFO;
++	if (uc->config.psd_size)
++		val |= UDMA_RFLOW_RFA_PSINFO;
++
++	udma_rflowrt_write(uc->rflow, UDMA_RX_FLOWRT_RFA, val);
++
++	return 0;
 +}
 +
-+static int scmi_clk_get_parent(struct clk_hw *hw)
++static int bcdma_v2_alloc_chan_resources(struct udma_chan *uc)
 +{
-+	struct scmi_clk *clk = to_scmi_clk(hw);
-+	u32 parent_id, p_idx;
 +	int ret;
 +
-+	ret = scmi_proto_clk_ops->parent_get(clk->ph, clk->id, &parent_id);
++	uc->config.pkt_mode = false;
++
++	switch (uc->config.dir) {
++	case DMA_MEM_TO_MEM:
++		/* Non synchronized - mem to mem type of transfer */
++		dev_dbg(uc->ud->dev, "%s: chan%d as MEM-to-MEM\n", __func__,
++			uc->id);
++
++		ret = bcdma_alloc_bchan_resources(uc);
++		if (ret)
++			return ret;
++
++		break;
++	default:
++		/* Can not happen */
++		dev_err(uc->ud->dev, "%s: chan%d invalid direction (%u)\n",
++			__func__, uc->id, uc->config.dir);
++		return -EINVAL;
++	}
++
++	/* check if the channel configuration was successful */
 +	if (ret)
-+		return 0;
++		goto err_res_free;
 +
-+	for (p_idx = 0; p_idx < clk->info->num_parents; p_idx++) {
-+		if (clk->parent_data[p_idx].index == parent_id)
-+			break;
++	if (udma_is_chan_running(uc)) {
++		dev_warn(uc->ud->dev, "chan%d: is running!\n", uc->id);
++		udma_stop(uc);
++		if (udma_is_chan_running(uc)) {
++			dev_err(uc->ud->dev, "chan%d: won't stop!\n", uc->id);
++			goto err_res_free;
++		}
 +	}
 +
-+	if (p_idx == clk->info->num_parents)
-+		return 0;
++	udma_reset_rings(uc);
 +
-+	return p_idx;
++	return 0;
++
++err_res_free:
++	bcdma_free_bchan_resources(uc);
++	udma_free_tx_resources(uc);
++	udma_free_rx_resources(uc);
++
++	udma_reset_uchan(uc);
++
++	return ret;
 +}
 +
- static int scmi_clk_enable(struct clk_hw *hw)
- {
- 	struct scmi_clk *clk = to_scmi_clk(hw);
-@@ -121,6 +150,8 @@ static const struct clk_ops scmi_clk_ops = {
- 	.set_rate = scmi_clk_set_rate,
- 	.enable = scmi_clk_enable,
- 	.disable = scmi_clk_disable,
-+	.set_parent = scmi_clk_set_parent,
-+	.get_parent = scmi_clk_get_parent,
- };
- 
- static const struct clk_ops scmi_atomic_clk_ops = {
-@@ -129,6 +160,8 @@ static const struct clk_ops scmi_atomic_clk_ops = {
- 	.set_rate = scmi_clk_set_rate,
- 	.enable = scmi_clk_atomic_enable,
- 	.disable = scmi_clk_atomic_disable,
-+	.set_parent = scmi_clk_set_parent,
-+	.get_parent = scmi_clk_get_parent,
- };
- 
- static int scmi_clk_ops_init(struct device *dev, struct scmi_clk *sclk,
-@@ -136,12 +169,22 @@ static int scmi_clk_ops_init(struct device *dev, struct scmi_clk *sclk,
- {
- 	struct clk_init_data init = {
- 		.flags = CLK_GET_RATE_NOCACHE,
--	
--		.num_parents = 0,
-+		.num_parents = sclk->info->num_parents,
- 		.ops = scmi_ops,
- 		.name = sclk->info->name,
- 	};
- 
-+	if (sclk->info->num_parents > 0) {
-+		init.parent_hws = devm_kcalloc(dev, sclk->info->num_parents,
-+					       sizeof(void *), GFP_KERNEL);
-+		if (!init.parent_hws)
-+			return -ENOMEM;
-+
-+		for (int i = 0; i < sclk->info->num_parents; i++) {
-+			init.parent_hws[i] = sclk->parent_data[i].hw;
-+		}
-+	}
-+
- 	sclk->hw.init = &init;
- 	return clk_hw_register(dev, &sclk->hw);
- }
-@@ -157,6 +200,8 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
- 	struct device_node *np = dev->of_node;
- 	const struct scmi_handle *handle = sdev->handle;
- 	struct scmi_protocol_handle *ph;
-+	struct scmi_clk *sclks;
++static int pktdma_v2_alloc_chan_resources(struct udma_chan *uc)
++{
++	struct udma_dev *ud = uc->ud;
 +	int ret;
- 
- 	if (!handle)
- 		return -ENODEV;
-@@ -182,13 +227,17 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
- 
- 	is_atomic = handle->is_transport_atomic(handle, &atomic_threshold);
- 
-+	sclks = devm_kzalloc(dev, sizeof(*sclks) * count, GFP_KERNEL);
 +
- 	for (idx = 0; idx < count; idx++) {
--		struct scmi_clk *sclk;
--		const struct clk_ops *scmi_ops;
-+		struct scmi_clk *sclk = &sclks[idx];
- 
--		sclk = devm_kzalloc(dev, sizeof(*sclk), GFP_KERNEL);
--		if (!sclk)
--			return -ENOMEM;
-+		hws[idx] = &sclk->hw;
-+	}
++	switch (uc->config.dir) {
++	case DMA_MEM_TO_DEV:
++		/* Slave transfer synchronized - mem to dev (TX) trasnfer */
++		dev_dbg(uc->ud->dev, "%s: chan%d as MEM-to-DEV\n", __func__,
++			uc->id);
 +
-+	for (idx = 0; idx < count; idx++) {
-+		struct scmi_clk *sclk = &sclks[idx];
-+		const struct clk_ops *scmi_ops;
- 
- 		sclk->info = scmi_proto_clk_ops->info_get(ph, idx);
- 		if (!sclk->info) {
-@@ -210,9 +259,25 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
- 		else
- 			scmi_ops = &scmi_clk_ops;
- 
-+		/* Initialize clock parent data. */
-+		if (sclk->info->num_parents > 0) {
-+			u32 parent_id;
++		ret = udma_alloc_tx_resources(uc);
++		if (ret) {
++			uc->config.remote_thread_id = -1;
++			return ret;
++		}
++		break;
++	case DMA_DEV_TO_MEM:
++		/* Slave transfer synchronized - dev to mem (RX) trasnfer */
++		dev_dbg(uc->ud->dev, "%s: chan%d as DEV-to-MEM\n", __func__,
++			uc->id);
 +
-+			sclk->parent_data = devm_kcalloc(dev, sclk->info->num_parents,
-+							 sizeof(*sclk->parent_data), GFP_KERNEL);
-+			if (!sclk->parent_data)
-+				return -ENOMEM;
-+
-+			for (int i = 0; i < sclk->info->num_parents; i++) {
-+				sclk->parent_data[i].index = sclk->info->parents[i];
-+				sclk->parent_data[i].hw = hws[sclk->info->parents[i]];
-+			}
++		ret = udma_alloc_rx_resources(uc);
++		if (ret) {
++			uc->config.remote_thread_id = -1;
++			return ret;
 +		}
 +
- 		err = scmi_clk_ops_init(dev, sclk, scmi_ops);
- 		if (err) {
- 			dev_err(dev, "failed to register clock %d\n", idx);
-+			devm_kfree(dev, sclk->parent_data);
- 			devm_kfree(dev, sclk);
- 			hws[idx] = NULL;
- 		} else {
-@@ -220,7 +285,6 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
- 				sclk->info->name,
- 				scmi_ops == &scmi_atomic_clk_ops ?
- 				" (atomic ops)" : "");
--			hws[idx] = &sclk->hw;
- 		}
- 	}
++		ret = pktdma_v2_rx_channel_config(uc);
++		break;
++	default:
++		/* Can not happen */
++		dev_err(uc->ud->dev, "%s: chan%d invalid direction (%u)\n",
++			__func__, uc->id, uc->config.dir);
++		return -EINVAL;
++	}
++
++	/* check if the channel configuration was successful */
++	if (ret)
++		goto err_res_free;
++
++	if (uc->config.dir == DMA_DEV_TO_MEM)
++		udma_rchanrt_update_bits(uc->rchan, UDMA_RCHAN_RT_CTL_REG,
++					 UDMA_CHAN_RT_CTL_TDOWN | UDMA_CHAN_RT_CTL_AUTOPAIR,
++					 UDMA_CHAN_RT_CTL_AUTOPAIR);
++	else if (uc->config.dir == DMA_MEM_TO_DEV)
++		udma_tchanrt_update_bits(uc->tchan, UDMA_TCHAN_RT_CTL_REG,
++					 UDMA_CHAN_RT_CTL_TDOWN | UDMA_CHAN_RT_CTL_AUTOPAIR,
++					 UDMA_CHAN_RT_CTL_AUTOPAIR);
++
++	if (udma_is_chan_running(uc)) {
++		dev_warn(ud->dev, "chan%d: is running!\n", uc->id);
++		udma_stop(uc);
++		if (udma_is_chan_running(uc)) {
++			dev_err(ud->dev, "chan%d: won't stop!\n", uc->id);
++			goto err_res_free;
++		}
++	}
++
++	if (uc->tchan)
++		dev_dbg(ud->dev,
++			"chan%d: tchan%d, tflow%d, Remote thread: 0x%04x\n",
++			uc->id, uc->tchan->id, uc->tchan->tflow_id,
++			uc->config.remote_thread_id);
++	else if (uc->rchan)
++		dev_dbg(ud->dev,
++			"chan%d: rchan%d, rflow%d, Remote thread: 0x%04x\n",
++			uc->id, uc->rchan->id, uc->rflow->id,
++			uc->config.remote_thread_id);
++	return 0;
++
++err_res_free:
++	udma_free_tx_resources(uc);
++	udma_free_rx_resources(uc);
++
++	udma_reset_uchan(uc);
++
++	return ret;
++}
++
++static int am62l_udma_request(struct dma *dma)
++{
++	struct udma_dev *ud = dev_get_priv(dma->dev);
++	struct udma_chan_config *ucc;
++	struct udma_chan *uc;
++	int ret;
++
++	if (dma->id >= (ud->rchan_cnt + ud->tchan_cnt)) {
++		dev_err(dma->dev, "invalid dma ch_id %lu\n", dma->id);
++		return -EINVAL;
++	}
++
++	uc = &ud->channels[dma->id];
++	ucc = &uc->config;
++	switch (ud->match_data->type) {
++	case DMA_TYPE_BCDMA_V2:
++		ret = bcdma_v2_alloc_chan_resources(uc);
++		break;
++	case DMA_TYPE_PKTDMA_V2:
++		ret = pktdma_v2_alloc_chan_resources(uc);
++		break;
++	default:
++		return -EINVAL;
++	}
++	if (ret) {
++		dev_err(dma->dev, "alloc dma res failed %d\n", ret);
++		return -EINVAL;
++	}
++
++	if (uc->config.dir == DMA_MEM_TO_DEV) {
++		uc->desc_tx = dma_alloc_coherent(DMA_DEVICE_BROKEN, ucc->hdesc_size, DMA_ADDRESS_BROKEN);
++	} else {
++		uc->desc_rx = dma_alloc_coherent(DMA_DEVICE_BROKEN,
++						 ucc->hdesc_size * UDMA_RX_DESC_NUM, DMA_ADDRESS_BROKEN);
++	}
++
++	uc->in_use = true;
++	uc->desc_rx_cur = 0;
++	uc->num_rx_bufs = 0;
++
++	if (uc->config.dir == DMA_DEV_TO_MEM) {
++		uc->cfg_data.flow_id_base = uc->rflow->id;
++		uc->cfg_data.flow_id_cnt = 1;
++	}
++
++	return 0;
++}
++
++static int bcdma_v2_setup_resources(struct udma_dev *ud)
++{
++	struct device *dev = ud->dev;
++	size_t desc_size;
++
++	ud->bchan_map = devm_kmalloc_array(dev, BITS_TO_LONGS(ud->bchan_cnt),
++					   sizeof(unsigned long), GFP_KERNEL);
++	ud->bchans = devm_kcalloc(dev, ud->bchan_cnt, sizeof(*ud->bchans),
++				  GFP_KERNEL);
++	ud->tchan_map = devm_kmalloc_array(dev, BITS_TO_LONGS(ud->tchan_cnt),
++					   sizeof(unsigned long), GFP_KERNEL);
++	ud->tchans = devm_kcalloc(dev, ud->tchan_cnt, sizeof(*ud->tchans),
++				  GFP_KERNEL);
++	ud->rchan_map = devm_kmalloc_array(dev, BITS_TO_LONGS(ud->rchan_cnt),
++					   sizeof(unsigned long), GFP_KERNEL);
++	ud->rchans = devm_kcalloc(dev, ud->rchan_cnt, sizeof(*ud->rchans),
++				  GFP_KERNEL);
++	ud->rflows = devm_kcalloc(dev, ud->rchan_cnt, sizeof(*ud->rflows),
++				  GFP_KERNEL);
++
++	desc_size = cppi5_trdesc_calc_size(K3_UDMA_MAX_TR,
++					   sizeof(struct cppi5_tr_type15_t));
++	ud->bc_desc = devm_kzalloc(dev, ALIGN(desc_size, ARCH_DMA_MINALIGN), GFP_KERNEL);
++
++	if (!ud->bchan_map || !ud->tchan_map || !ud->rchan_map ||
++	    !ud->bchans || !ud->tchans || !ud->rchans ||
++	    !ud->rflows || !ud->bc_desc)
++		return -ENOMEM;
++
++	bitmap_zero(ud->bchan_map, ud->bchan_cnt);
++	bitmap_zero(ud->tchan_map, ud->tchan_cnt);
++	bitmap_zero(ud->rchan_map, ud->rchan_cnt);
++
++	return 0;
++}
++
++static int pktdma_v2_setup_resources(struct udma_dev *ud)
++{
++	struct device *dev = ud->dev;
++
++	ud->tchan_map = devm_kmalloc_array(dev, BITS_TO_LONGS(ud->tchan_cnt),
++					   sizeof(unsigned long), GFP_KERNEL);
++	ud->tchans = devm_kcalloc(dev, ud->tchan_cnt, sizeof(*ud->tchans),
++				  GFP_KERNEL);
++	ud->rchan_map = devm_kmalloc_array(dev, BITS_TO_LONGS(ud->rchan_cnt),
++					   sizeof(unsigned long), GFP_KERNEL);
++	ud->rchans = devm_kcalloc(dev, ud->rchan_cnt, sizeof(*ud->rchans),
++				  GFP_KERNEL);
++	ud->rflow_map = devm_kcalloc(dev, BITS_TO_LONGS(ud->rflow_cnt),
++				     sizeof(unsigned long),
++				     GFP_KERNEL);
++	ud->rflows = devm_kcalloc(dev, ud->rflow_cnt, sizeof(*ud->rflows),
++				  GFP_KERNEL);
++	ud->tflow_map = devm_kmalloc_array(dev, BITS_TO_LONGS(ud->tflow_cnt),
++					   sizeof(unsigned long), GFP_KERNEL);
++
++	if (!ud->tchan_map || !ud->rchan_map || !ud->tflow_map || !ud->tchans ||
++	    !ud->rchans || !ud->rflows || !ud->rflow_map)
++		return -ENOMEM;
++
++	bitmap_zero(ud->bchan_map, ud->bchan_cnt);
++	bitmap_zero(ud->tchan_map, ud->tchan_cnt);
++	bitmap_zero(ud->rchan_map, ud->rchan_cnt);
++
++	return 0;
++}
++
++static int am62l_udma_setup_resources(struct udma_dev *ud)
++{
++	struct device *dev = ud->dev;
++	int ch_count, ret;
++
++	switch (ud->match_data->type) {
++	case DMA_TYPE_BCDMA_V2:
++		ret = bcdma_v2_setup_resources(ud);
++		break;
++	case DMA_TYPE_PKTDMA_V2:
++		ret = pktdma_v2_setup_resources(ud);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	if (ret)
++		return ret;
++
++	ch_count = ud->bchan_cnt + ud->tchan_cnt + ud->rchan_cnt;
++
++	ud->channels = devm_kcalloc(dev, ch_count, sizeof(*ud->channels),
++				    GFP_KERNEL);
++	if (!ud->channels)
++		return -ENOMEM;
++
++	switch (ud->match_data->type) {
++	case DMA_TYPE_UDMA:
++		dev_dbg(dev,
++			"Channels: %d (tchan: %u, rchan: %u, gp-rflow: %u)\n",
++			ch_count, ud->tchan_cnt, ud->rchan_cnt, ud->rflow_cnt);
++		break;
++	case DMA_TYPE_BCDMA:
++	case DMA_TYPE_BCDMA_V2:
++		dev_dbg(dev,
++			"Channels: %d (bchan: %u, tchan: %u, rchan: %u)\n",
++			ch_count, ud->bchan_cnt, ud->tchan_cnt, ud->rchan_cnt);
++		break;
++	case DMA_TYPE_PKTDMA_V2:
++		dev_dbg(dev,
++			"Channels: %d (tchan: %u, rchan: %u)\n",
++			ch_count, ud->tchan_cnt, ud->rchan_cnt);
++		break;
++	default:
++		break;
++	}
++
++	return ch_count;
++}
++
++static int am62l_udma_get_mmrs(struct device *dev, struct udma_dev *ud)
++{
++	int i;
++
++	/* There are no tchan and rchan in BCDMA_V2 and PKTDMA_V2.
++	 * Duplicate chan as tchan and rchan to keep the common code
++	 * in k3-udma-common.c functional.
++	 */
++	if (ud->match_data->type == DMA_TYPE_BCDMA_V2) {
++		ud->bchan_cnt = ud->match_data->bchan_cnt;
++		ud->chan_cnt = ud->match_data->chan_cnt;
++		ud->tchan_cnt = ud->match_data->chan_cnt;
++		ud->rchan_cnt = ud->match_data->chan_cnt;
++		ud->rflow_cnt = ud->chan_cnt;
++	} else if (ud->match_data->type == DMA_TYPE_PKTDMA_V2) {
++		ud->chan_cnt = ud->match_data->chan_cnt;
++		ud->tchan_cnt = ud->match_data->tchan_cnt;
++		ud->rchan_cnt = ud->match_data->rchan_cnt;
++		ud->rflow_cnt = ud->match_data->rflow_cnt;
++	}
++
++	for (i = 1; i < AM62L_MMR_LAST; i++) {
++		if (i == AM62L_MMR_BCHANRT && ud->bchan_cnt == 0)
++			continue;
++		if (i == AM62L_MMR_CHANRT && ud->chan_cnt == 0)
++			continue;
++
++		ud->mmrs[i] = dev_request_mem_region_by_name(ud->dev, am62l_mmr_names[i]);
++		if (IS_ERR(ud->mmrs[i]))
++			return PTR_ERR(ud->mmrs[i]);
++	}
++
++	return 0;
++}
++
++static int am62l_udma_rfree(struct dma *dma)
++{
++	struct udma_dev *ud = dev_get_priv(dma->dev);
++	struct udma_chan *uc;
++
++	if (dma->id >= (ud->rchan_cnt + ud->tchan_cnt)) {
++		dev_err(dma->dev, "invalid dma ch_id %lu\n", dma->id);
++		return -EINVAL;
++	}
++	uc = &ud->channels[dma->id];
++
++	if (udma_is_chan_running(uc))
++		udma_stop(uc);
++
++	bcdma_free_bchan_resources(uc);
++	udma_free_tx_resources(uc);
++	udma_free_rx_resources(uc);
++	udma_reset_uchan(uc);
++
++	uc->in_use = false;
++
++	return 0;
++}
++
++static const struct dma_ops am62l_udma_ops = {
++	.transfer	= udma_transfer,
++	.of_xlate	= udma_of_xlate,
++	.request	= am62l_udma_request,
++	.rfree		= am62l_udma_rfree,
++	.enable		= udma_enable,
++	.disable	= udma_disable,
++	.send		= udma_send,
++	.receive	= udma_receive,
++	.prepare_rcv_buf = udma_prepare_rcv_buf,
++	.get_cfg	= udma_get_cfg,
++};
++
++static int k3_udma_am62l_probe(struct device *dev)
++{
++	struct udma_dev *ud;
++	struct udma_chan *uc;
++	int i, ret;
++	struct k3_ringacc_init_data ring_init_data = { 0 };
++	const struct udma_match_data *match_data;
++	struct dma_device *dmad;
++
++	match_data = device_get_match_data(dev);
++
++	ud = xzalloc(sizeof(*ud));
++	ud->match_data = match_data;
++	ud->dev = dev;
++
++	dev->priv = ud;
++
++	ret = am62l_udma_get_mmrs(dev, ud);
++	if (ret)
++		return ret;
++
++	if (ud->match_data->type == DMA_TYPE_BCDMA_V2)
++		ring_init_data.num_rings = ud->bchan_cnt + ud->chan_cnt;
++	else if (ud->match_data->type == DMA_TYPE_PKTDMA_V2)
++		ring_init_data.num_rings = ud->rflow_cnt;
++
++	ring_init_data.base_rt = ud->mmrs[AM62L_MMR_RFLOWRT];
++
++	ud->ringacc = k3_ringacc_dmarings_init(dev, &ring_init_data);
++	if (IS_ERR(ud->ringacc))
++		return PTR_ERR(ud->ringacc);
++
++	ret = am62l_udma_setup_resources(ud);
++	if (ret < 0)
++		return ret;
++
++	ud->ch_count = ret;
++
++	for (i = 0; i < ud->bchan_cnt; i++) {
++		struct udma_bchan *bchan = &ud->bchans[i];
++
++		bchan->id = i;
++		bchan->reg_rt = ud->mmrs[AM62L_MMR_BCHANRT] + i * 0x1000;
++	}
++
++	for (i = 0; i < ud->tchan_cnt; i++) {
++		struct udma_tchan *tchan = &ud->tchans[i];
++
++		tchan->id = i;
++		tchan->reg_rt = ud->mmrs[AM62L_MMR_CHANRT] + UDMA_CH_1000(i);
++		tchan->reg_chan = tchan->reg_rt + 0x4;
++	}
++
++	for (i = 0; i < ud->rchan_cnt; i++) {
++		struct udma_rchan *rchan = &ud->rchans[i];
++
++		rchan->id = i;
++		rchan->reg_rt = ud->mmrs[AM62L_MMR_CHANRT] + UDMA_CH_1000(i);
++		rchan->reg_chan = rchan->reg_rt + 0x4;
++	}
++
++	for (i = 0; i < ud->rflow_cnt; i++) {
++		struct udma_rflow *rflow = &ud->rflows[i];
++
++		rflow->id = i;
++		rflow->reg_rt = ud->mmrs[AM62L_MMR_RFLOWRT] + UDMA_CH_1000(2 * i);
++		rflow->reg_rflow = rflow->reg_rt;
++	}
++
++	for (i = 0; i < ud->ch_count; i++) {
++		struct udma_chan *uc = &ud->channels[i];
++
++		uc->ud = ud;
++		uc->id = i;
++		uc->config.remote_thread_id = -1;
++		uc->bchan = NULL;
++		uc->tchan = NULL;
++		uc->rchan = NULL;
++		uc->config.mapped_channel_id = -1;
++		uc->config.default_flow_id = -1;
++		uc->config.dir = DMA_MEM_TO_MEM;
++		sprintf(uc->name, "UDMA chan%d\n", i);
++		if (!i)
++			uc->in_use = true;
++	}
++
++	uc = &ud->channels[0];
++	ret = 0;
++	switch (ud->match_data->type) {
++	case DMA_TYPE_BCDMA_V2:
++		ret = bcdma_v2_alloc_chan_resources(uc);
++		break;
++	default:
++		break; /* Do nothing in any other case */
++	};
++
++	if (ret) {
++		dev_err(dev, " Channel 0 allocation failure %d\n", ret);
++		return ret;
++	}
++
++	dmad = &ud->dmad;
++
++	dmad->dev = dev;
++	dmad->ops = &am62l_udma_ops;
++
++	ret = dma_device_register(dmad);
++
++	return ret;
++}
++
++static void am62l_udma_remove(struct device *dev)
++{
++	struct udma_dev *ud = dev_get_priv(dev);
++	struct udma_chan *uc = &ud->channels[0];
++
++	switch (ud->match_data->type) {
++	case DMA_TYPE_BCDMA_V2:
++		bcdma_free_bchan_resources(uc);
++		break;
++	default:
++		break;
++	};
++}
++
++static struct udma_match_data am62l_bcdma_data = {
++	.type = DMA_TYPE_BCDMA_V2,
++	.psil_base = 0x2000, /* for tchan and rchan, not applicable to bchan */
++	.enable_memcpy_support = true, /* Supported via bchan */
++	.flags = UDMA_FLAG_PDMA_ACC32 | UDMA_FLAG_PDMA_BURST | UDMA_FLAG_TDTYPE,
++	.statictr_z_mask = GENMASK(23, 0),
++	.bchan_cnt = 16,
++	.chan_cnt = 128,
++	.tchan_cnt = 128,
++	.rchan_cnt = 128,
++};
++
++static struct udma_match_data am62l_pktdma_data = {
++	.type = DMA_TYPE_PKTDMA_V2,
++	.psil_base = 0x1000,
++	.enable_memcpy_support = false,
++	.flags = UDMA_FLAG_PDMA_ACC32 | UDMA_FLAG_PDMA_BURST | UDMA_FLAG_TDTYPE,
++	.statictr_z_mask = GENMASK(23, 0),
++	.tchan_cnt = 97,
++	.rchan_cnt = 97,
++	.chan_cnt = 97,
++	.tflow_cnt = 112,
++	.rflow_cnt = 112,
++};
++
++static struct of_device_id k3_udma_am62l_dt_ids[] = {
++	{
++		.compatible = "ti,am62l-dmss-bcdma",
++		.data = &am62l_bcdma_data,
++	}, {
++		.compatible = "ti,am62l-dmss-pktdma",
++		.data = &am62l_pktdma_data,
++	}, {
++		/* Sentinel */
++	},
++};
++
++static struct driver k3_udma_am62l_driver = {
++	.probe  = k3_udma_am62l_probe,
++	.remove = am62l_udma_remove,
++	.name   = "k3-udma-am62l",
++	.of_compatible = k3_udma_am62l_dt_ids,
++};
++
++core_platform_driver(k3_udma_am62l_driver);
+diff --git a/drivers/dma/ti/k3-udma.h b/drivers/dma/ti/k3-udma.h
+index 88325160841886af5514ae2385400e2b4156bb07..0abbb478ddb4d999cfdfc317924c4a9f2116a11d 100644
+--- a/drivers/dma/ti/k3-udma.h
++++ b/drivers/dma/ti/k3-udma.h
+@@ -143,6 +143,7 @@ struct udma_dev {
+ 	int rchan_cnt;
+ 	int rflow_cnt;
+ 	int tflow_cnt;
++	int chan_cnt;
+ 	unsigned long *bchan_map;
+ 	unsigned long *tchan_map;
+ 	unsigned long *rchan_map;
+@@ -156,6 +157,7 @@ struct udma_dev {
+ 	struct udma_rflow *rflows;
  
+ 	const struct udma_match_data *match_data;
++	void *bc_desc;
+ 
+ 	struct udma_chan *channels;
+ 	u32 psil_base;
 
 -- 
 2.39.5
