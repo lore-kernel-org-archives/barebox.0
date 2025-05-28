@@ -1,65 +1,69 @@
-Delivery-date: Wed, 28 May 2025 18:29:09 +0200
+Delivery-date: Wed, 28 May 2025 18:29:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKJeP-001FQe-2Z
+	id 1uKJeQ-001FQy-0Z
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 18:29:09 +0200
+	Wed, 28 May 2025 18:29:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKJeN-0002Eq-K8
-	for lore@pengutronix.de; Wed, 28 May 2025 18:29:09 +0200
+	id 1uKJeP-0002GG-6A
+	for lore@pengutronix.de; Wed, 28 May 2025 18:29:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=BAhXOsGHgYNTM62/00/YMi9ea2qzkp38ufB9G4BYk9c=; b=hadyiHwyz6CU//qOOf20NNOTKK
-	P+7r7sM/N57lPsodhCScccyNEjcewyqhisMgKDatAkQKtyVGQnZNdTMycieFFFitsLRSOoXLXqg7J
-	YDArKgcA9obJ2SDblvn/A0I0SelAE3fPDoqP59FdLGucYSWMnz059MCZxJrSnRe9f9HBp5TyQbdTT
-	cDap9M4RWptHrG2erhuEutArgegS0UwZ9S8IumJuPUbsupdYaOq8tO4sKddjmG3xfu0/x5dPHRkrp
-	mP/KNwkV8c5E7DreausnOta63MUKXFWasonTf1NXurBCjt0toUTilKhKPUV+9yAy4kgIiGc2V2Vvu
-	CdlNhnlg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Im41geea0BqeL0bF7M72vau3//Yq85nzrw7qurtVNuQ=; b=STQBO4KMSFjt92SqW54nJUlUsh
+	nBh/AhMyJJHM2RGoTQGcKwT06/S8OndDxjtGwczLq1/AgSkjjOgp4QHKW4OZU0ea6vM4Nmpa9eG7B
+	KmUjYyPFczDcx8uWNWqLYs/A4ElvizTVuOnHnOvBi/XSi7V58aQ9DVJwZ3vaN9jxwVev2vwRJuB57
+	PqvjwKvqxfln0Plh5CHw71ByRIcWOTyH2oYqJC44ta5jvfy1cBLMb+bp1yuq0Ff/jKn0sHEuIZ/3I
+	fBeJKzI0PYoo6yb5L5mknV03ch3sBHdEZaYxs1iQvlu/2j+zQaEAjVbbOWyhFgpDzpvd1fLiZXFg9
+	OUGoykig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKJdj-0000000DfNB-1km3;
-	Wed, 28 May 2025 16:28:27 +0000
+	id 1uKJdm-0000000DfV6-3qKo;
+	Wed, 28 May 2025 16:28:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKIxt-0000000DaNF-13XU
+	id 1uKIzU-0000000DajL-1K6o
 	for barebox@lists.infradead.org;
-	Wed, 28 May 2025 15:45:14 +0000
+	Wed, 28 May 2025 15:46:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKIxr-0002oJ-Qo; Wed, 28 May 2025 17:45:11 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uKIzS-0003wt-WE; Wed, 28 May 2025 17:46:51 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKIxr-000c3z-24;
-	Wed, 28 May 2025 17:45:11 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKIxr-002gSY-1n;
-	Wed, 28 May 2025 17:45:11 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 28 May 2025 17:45:08 +0200
-Message-Id: <20250528154508.639789-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uKIzS-000c4F-2c;
+	Wed, 28 May 2025 17:46:50 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uKIzS-00EXkp-2G;
+	Wed, 28 May 2025 17:46:50 +0200
+Date: Wed, 28 May 2025 17:46:50 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>, barebox@lists.infradead.org
+Message-ID: <20250528154650.rubzl2djaq4x6m5h@pengutronix.de>
+References: <20250528131411.935668-1-a.fatoum@barebox.org>
+ <20250528131411.935668-2-a.fatoum@barebox.org>
+ <20250528152431.db7nmbovzxkllf2u@pengutronix.de>
+ <2bde04b0-5caa-4b06-aa00-fc7b24afb2dc@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2bde04b0-5caa-4b06-aa00-fc7b24afb2dc@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_084513_301941_747EF902 
-X-CRM114-Status: GOOD (  15.46  )
+X-CRM114-CacheID: sfid-20250528_084652_353525_4D391EC1 
+X-CRM114-Status: GOOD (  23.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,109 +81,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2] net: phy: seed PRNG when PHY comes up and when generating MAC address
+Subject: Re: [PATCH 2/5] common: deep-probe: support specifying support in DT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The new Xorshift* RNG is seeded only from the cycle counter at startup,
-which is much less entropy for the MAC address generation use case,
-which used the nanosecond timestamp at generation time before the switch
-to Xorshift*.
+On 25-05-28, Ahmad Fatoum wrote:
+> Hi,
+> 
+> On 5/28/25 17:24, Marco Felsch wrote:
+> > On 25-05-28, Ahmad Fatoum wrote:
+> >> New boards should be deep probe enabled by default, which is currently
+> >> done via board code. We want to support second stage boot on new boards
+> >> without board code however, which means we need the possibility to make
+> >> deep probe opt-out instead of opt-in.
+> >>
+> >> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+> >> ---
+> 
+> [snip]
+> 
+> >> +	/* deep probe requires resources to be described in DT */
+> >> +	root = of_get_root_node();
+> >> +	if (!root)
+> >> +		return false;
+> > 
+> > 	if (!root) {
+> > 		boardstate = DEEP_PROBE_NOT_SUPPORTED;
+> 
+> No, the omission is intentional. I want to repeat the check for the
+> root node on every call to avoid issues where this function is
+> called once too early.
 
-The nice thing about our new PRNG implementation is that we can call
-srand_xor multiple times to keep adding entropy, so let's do that after
-each PHY link up and prior to generating the MAC address.
+Good point albeit I wouldn't assume that this happens.
 
-That way we should be again at least as good as we were before the
-switch to Xorshift*.
+Also what if caller-1 receives "no" does the "no-deep-probe-handling"
+accordingly and shortly after caller-2 receives "yes". Sounds like a
+source of trouble. 
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - call clocksource_srand in random_ether_addr() as well
----
- common/clock.c        | 7 +++++++
- drivers/net/phy/phy.c | 7 +++++--
- include/clock.h       | 8 ++++++++
- include/net.h         | 1 +
- 4 files changed, 21 insertions(+), 2 deletions(-)
+Anyway could we add a comment that this is intentional please?
 
-diff --git a/common/clock.c b/common/clock.c
-index 517116e3b9a3..931a96865140 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -207,6 +207,13 @@ void mdelay_non_interruptible(unsigned long msecs)
- }
- EXPORT_SYMBOL(mdelay_non_interruptible);
- 
-+#if IN_PROPER
-+void clocksource_srand(void)
-+{
-+	srand_xor(current_clock->read() & current_clock->mask);
-+}
-+#endif
-+
- int init_clock(struct clocksource *cs)
- {
- 	if (current_clock && cs->priority <= current_clock->priority)
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 2795d09918d5..d9f50f45f441 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -68,11 +68,14 @@ int phy_update_status(struct phy_device *phydev)
- 	if (phydev->adjust_link)
- 		phydev->adjust_link(edev);
- 
--	if (phydev->link)
-+	if (phydev->link) {
- 		dev_info(&edev->dev, "%dMbps %s duplex link detected\n",
- 				phydev->speed, phydev->duplex ? "full" : "half");
--	else if (oldlink)
-+		/* Add time to establish link up to RNG state */
-+		clocksource_srand();
-+	} else if (oldlink) {
- 		dev_info(&edev->dev, "link down\n");
-+	}
- 
- 	return 0;
- }
-diff --git a/include/clock.h b/include/clock.h
-index 03a38911a7a7..e28870b1e84b 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -43,6 +43,14 @@ void udelay(unsigned long usecs);
- void mdelay(unsigned long msecs);
- void mdelay_non_interruptible(unsigned long msecs);
- 
-+#if IN_PROPER
-+void clocksource_srand(void);
-+#else
-+static inline void clocksource_srand(void)
-+{
-+}
-+#endif
-+
- #define SECOND ((uint64_t)(1000 * 1000 * 1000))
- #define MSECOND ((uint64_t)(1000 * 1000))
- #define USECOND ((uint64_t)(1000))
-diff --git a/include/net.h b/include/net.h
-index 439e0a4c9b61..870497ed0944 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -423,6 +423,7 @@ int generate_ether_addr(u8 *addr, int ethid);
-  */
- static inline void random_ether_addr(u8 *addr)
- {
-+	clocksource_srand();
- 	get_noncrypto_bytes(addr, ETH_ALEN);
- 	addr[0] &= 0xfe;	/* clear multicast bit */
- 	addr[0] |= 0x02;	/* set local assignment bit (IEEE802) */
--- 
-2.39.5
+Regards,
+  Marco
 
+
+> 
+> >> -	boardstate = DEEP_PROBE_NOT_SUPPORTED;
+> >> -	pr_info("not activated\n");
+> >> -	return false;
+> > 
+> > Can we please add a comment about the below if-else, e.g. referencing
+> > the barebox,deep-probe.rst as well?
+> 
+> Yes, will do for v2.
+> 
+> Thanks for reviewing,
+> Ahmad
+> -- 
+> Pengutronix e.K.                  |                             |
+> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+> 
+> 
 
 
