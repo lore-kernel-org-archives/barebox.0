@@ -1,89 +1,90 @@
-Delivery-date: Wed, 28 May 2025 14:04:26 +0200
+Delivery-date: Wed, 28 May 2025 14:04:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFWE-001B0X-2U
+	id 1uKFWF-001B14-2y
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 14:04:26 +0200
+	Wed, 28 May 2025 14:04:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKFW7-0006i4-4f
-	for lore@pengutronix.de; Wed, 28 May 2025 14:04:26 +0200
+	id 1uKFW7-0006im-Rq
+	for lore@pengutronix.de; Wed, 28 May 2025 14:04:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7rm5C6GgBaCL2NqY9Ncympjk5oq2Pa6RldWLS3cmsJM=; b=tMGje3ykDa/a8bT7thKNysgrFW
-	9pvLGQlsWwf2niZ3RrFgalNDR/UlrPXRdzrm+wAmngNkdkD/tOTlHQ/mS3/4qHnJ+v4D2arFEyq5O
-	37QBGdOB5dwpYBx4wjOA17GkiojPt3Dzuv6wTxRUFvDc/G6/TV8Nk3AcASzqq69c942f5smDFHPa+
-	tNWdBZJ6rsPnQBAEyTpibTcQ17RvjtFS3HGSfx9oLvCQCTDH+lx7dyST5Dd2Jlu0bWflVMKqpzoaE
-	wcESGglrq5QLONWyHktRTUQEQoCgzTLLLmRrzDQtsE21sRzHms6QEa80TqUBPSMO3zTMTqmt1yrI7
-	LgqH9FXA==;
+	bh=Z+IfwZPwgpsxvaP3am38tBuslTU6kqU3XQA2dB/I7fg=; b=gMLQjImDCOAdaU1eALSXPXCQMJ
+	jkD3rDkbL2eMqAXIPpiVAkBY9j/1oUjIqlC6QVQeT6muJ3P+76eYVmNDZnTNQREtVQPggV3Zyuv1m
+	XikPSZETFeNcXEADvDzhqQ946Xv6/pf9TvT5sGkezYnmEJGIeW0xcCIYz5DzzQHV4D/rjYto8/oq3
+	CbOj1P+Kn3AFmEyIPqz5Yn1BiWR3KcWrzgGSOBxxxZvmSU6Sl7eUoo3Evb2HQP2oMO+EMsPjxl7hf
+	0NHUWNnI58GocBBUva8RDbgz4sNf0jG9uLtH4AvQ186A4lJJjirSKHShTi0I9zCo348yI2OsZ3KP7
+	sPy3KyTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFVQ-0000000D2gr-011B;
-	Wed, 28 May 2025 12:03:36 +0000
+	id 1uKFVU-0000000D2ku-0kEh;
+	Wed, 28 May 2025 12:03:40 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFU0-0000000D2ag-23j5
+	id 1uKFU3-0000000D2bK-24Vq
 	for barebox@bombadil.infradead.org;
-	Wed, 28 May 2025 12:02:08 +0000
+	Wed, 28 May 2025 12:02:11 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Cc:To:In-Reply-To:References:Message-Id
 	:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender
 	:Reply-To:Content-ID:Content-Description;
-	bh=7rm5C6GgBaCL2NqY9Ncympjk5oq2Pa6RldWLS3cmsJM=; b=A0zCpgyMKag9WWIJKxQG6kR4If
-	rPgNKXJf8ij10kR6W+AAt5xHCzaxyJH8rv3q3KB+5PeVAHjDmVieBAjopBQLCUm9kWLv944x8Qyyj
-	wE2WEabxD7dt164WGKBRjV45RVpl0EKYK+EKcRYdP7VLm+KcNUWt5g8vdch2thtEfOmOkIEr0jVeK
-	SYxBmRxbqIG/uchroysd5Am/h1Iq6s3Ji/5doZBSmwNAI9GyaH8HeTAccCPnXLMJMPPLFApWpbzBv
-	mq0V7OUexDwxDcjHM1uceqwP+13nT+HZ/uVwOhxQgqxJZsq6yxfVylQS4vR6n8jz5rkjXsmRwXguS
-	bGpsBrYQ==;
+	bh=Z+IfwZPwgpsxvaP3am38tBuslTU6kqU3XQA2dB/I7fg=; b=oHob2OyFOvCk/ETDdDOyu3u1Oo
+	4OSO1zcIIDXoGc0GqtD7+dal9q2np1MDXmwdvk21Up+TP9oCUMwlFtcIMMD3KCVgexnIoz3HR+Px3
+	LQvUrNnKDzL4/IL/39NCciFb+mLwytbE8L3Py7TNqX3BjMwXauiS5PX0C/arw9ENoTw5hfTVHCZTY
+	+JS0TG0lQBbUCgv8E9Ri7E9RxkJpy0AP9F63n5eQups2jy9jqAlIBY0NGTzIhAlIxhoMS2++Ufnye
+	V/YWOx6oLGceB/w1eBgKmm05/i6G4betDiBdF8IBseoFspgQ21VYNsNjVCd3cgIXVjckRJLudZpry
+	VLWqa/Xg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKFTw-0000000Dapf-2kZq
+	id 1uKFTz-0000000DarI-3ntu
 	for barebox@lists.infradead.org;
-	Wed, 28 May 2025 12:02:07 +0000
+	Wed, 28 May 2025 12:02:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFTp-0004SZ-RS; Wed, 28 May 2025 14:01:57 +0200
+	id 1uKFTq-0004Ul-M1; Wed, 28 May 2025 14:01:58 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFTp-000a9j-24;
-	Wed, 28 May 2025 14:01:57 +0200
+	id 1uKFTq-000aCY-1W;
+	Wed, 28 May 2025 14:01:58 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKFE2-00CB0R-1h;
+	id 1uKFE2-00CB0R-1l;
 	Wed, 28 May 2025 13:45:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 28 May 2025 13:45:26 +0200
+Date: Wed, 28 May 2025 13:45:30 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250528-arm-k3-am62l-v1-14-3f88e6d10d99@pengutronix.de>
+Message-Id: <20250528-arm-k3-am62l-v1-18-3f88e6d10d99@pengutronix.de>
 References: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
 In-Reply-To: <20250528-arm-k3-am62l-v1-0-3f88e6d10d99@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748432738; l=3781;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748432738; l=4210;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=CfyJf0mtnnPhSVKk+P8GxuBJgYEcqcqDboiJxDeSD8I=;
- b=YYBV0PktB766jAtqq4/iqpijeVwRcpwEPZO3PA/xRk4cwDMeQVu3reCr14ja6T8i8HBkInUMi
- 8I8OzsY7me+DkEoPBfFGG8Q7KQAmDyumDazl63AON9C9kKGlkcnRoRI
+ bh=AXNvJLDq6qP3hK4OSje3hWYIfwtVKXHpr0RuGy7Iwcw=;
+ b=p4ZDgliMkHnfhoCBLkwkck/IY+W9xkenXqynSr3CCUSxzsTvXsYNEI2kz2LEt0QH1Id5Px8C3
+ rQyUQCQwzPeCaSlHPH2Ti4C4Yn6YC0aaKDqOJH/HGJ9dIT5yYvFtcOY
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_130204_710759_A76C7ACD 
-X-CRM114-Status: GOOD (  16.23  )
+X-CRM114-CacheID: sfid-20250528_130208_116145_066AC7EA 
+X-CRM114-Status: UNSURE (   9.62  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,118 +106,123 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 14/31] dma: ti: k3-psil: Add PSIL data for AM62L
+Subject: [PATCH 18/31] ARM: dts: am62l: Add ethernet ports
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This introduces PSIL data specific to AM62L SoC. Based on U-Boot
-downstream commit:
-
-| commit 3e91f4443a2b01e1a313ee3ecfe2a082c88402af
-| Author: Vignesh Raghavendra <vigneshr@ti.com>
-| Date:   Wed Feb 26 19:55:43 2025 +0530
-|
-|    PENDING: dma: ti: k3-psil: Add PSIL data for AM62L
-|
-|    This introduces PSIL data specific to AM62L SoC
-|
-|    Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+The AM62l device trees are based on the upstream submission which
+currently lack the ethernet ports. Add them from the downstream Linux
+repository.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/dma/ti/Makefile        |  2 +-
- drivers/dma/ti/k3-psil-am62l.c | 50 ++++++++++++++++++++++++++++++++++++++++++
- drivers/dma/ti/k3-psil-priv.h  |  1 +
- drivers/dma/ti/k3-psil.c       |  2 ++
- 4 files changed, 54 insertions(+), 1 deletion(-)
+ arch/arm/dts/k3-am62l-main.dtsi | 95 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 95 insertions(+)
 
-diff --git a/drivers/dma/ti/Makefile b/drivers/dma/ti/Makefile
-index f449429e2a23633a7dadbda1470104d52d49e5e8..b7dfff07210537660965d235c10ea7345c22b0a6 100644
---- a/drivers/dma/ti/Makefile
-+++ b/drivers/dma/ti/Makefile
-@@ -1 +1 @@
--obj-$(CONFIG_TI_K3_UDMA) += k3-udma.o k3-psil.o
-+obj-$(CONFIG_TI_K3_UDMA) += k3-udma.o k3-psil.o k3-psil-am62l.o
-diff --git a/drivers/dma/ti/k3-psil-am62l.c b/drivers/dma/ti/k3-psil-am62l.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..972895ec56fb4278e958ffa7ec88819e8fbf23ee
---- /dev/null
-+++ b/drivers/dma/ti/k3-psil-am62l.c
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ *  Copyright (C) 2025 Texas Instruments Incorporated - https://www.ti.com
-+ */
+diff --git a/arch/arm/dts/k3-am62l-main.dtsi b/arch/arm/dts/k3-am62l-main.dtsi
+index d161df3215c35a2d3de67e8ca021b9a9a89edb80..95d387afd14e4f85df022673b8100830cbc6c410 100644
+--- a/arch/arm/dts/k3-am62l-main.dtsi
++++ b/arch/arm/dts/k3-am62l-main.dtsi
+@@ -670,4 +670,99 @@ scmi_shmem: sram@0 {
+ 			reg = <0x0 0x100>;
+ 		};
+ 	};
 +
-+#include <linux/kernel.h>
++	main_pktdma: dma-controller@485c0000 {
++		compatible = "ti,am62l-dmss-pktdma";
++		reg = <0x00 0x485c0000 0x00 0x4000>,
++			<0x00 0x48900000 0x00 0x80000>,
++			<0x00 0x47200000 0x00 0x100000>;
++		reg-names = "gcfg", "chanrt", "ringrt";
++		#address-cells = <2>;
++		#dma-cells = <2>;
++		#interrupt-cells = <1>;
++		interrupt-map = <0 0 0 &gic500 0 0 GIC_SPI 354 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 1 &gic500 0 0 GIC_SPI 355 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 2 &gic500 0 0 GIC_SPI 358 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 3 &gic500 0 0 GIC_SPI 359 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 4 &gic500 0 0 GIC_SPI 362 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 5 &gic500 0 0 GIC_SPI 363 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 6 &gic500 0 0 GIC_SPI 366 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 7 &gic500 0 0 GIC_SPI 367 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 8 &gic500 0 0 GIC_SPI 370 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 9 &gic500 0 0 GIC_SPI 371 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 10 &gic500 0 0 GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 11 &gic500 0 0 GIC_SPI 375 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 12 &gic500 0 0 GIC_SPI 378 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 13 &gic500 0 0 GIC_SPI 379 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 64 &gic500 0 0 GIC_SPI 500 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 65 &gic500 0 0 GIC_SPI 501 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 66 &gic500 0 0 GIC_SPI 502 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 67 &gic500 0 0 GIC_SPI 503 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 68 &gic500 0 0 GIC_SPI 504 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 69 &gic500 0 0 GIC_SPI 505 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 70 &gic500 0 0 GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 71 &gic500 0 0 GIC_SPI 507 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 72 &gic500 0 0 GIC_SPI 508 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 73 &gic500 0 0 GIC_SPI 509 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 74 &gic500 0 0 GIC_SPI 510 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 75 &gic500 0 0 GIC_SPI 511 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 76 &gic500 0 0 GIC_SPI 512 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 77 &gic500 0 0 GIC_SPI 513 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 78 &gic500 0 0 GIC_SPI 514 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 79 &gic500 0 0 GIC_SPI 515 IRQ_TYPE_LEVEL_HIGH>,
++			<0 0 96 &gic500 0 0 GIC_SPI 484 IRQ_TYPE_LEVEL_HIGH>;
++	};
 +
-+#include "k3-psil-priv.h"
++	cpsw3g: ethernet@8000000 {
++		compatible = "ti,am642-cpsw-nuss";
++		#address-cells = <2>;
++		#size-cells = <2>;
++		reg = <0x00 0x08000000 0x00 0x200000>;
++		reg-names = "cpsw_nuss";
++		ranges = <0x00 0x00 0x00 0x08000000 0x00 0x200000>;
++		clocks = <&scmi_clk 9>;
++		clock-names = "fck";
++		power-domains = <&scmi_pds 3>;
++		dmas = <&main_pktdma 0xc600 15>,
++			   <&main_pktdma 0xc601 15>,
++			   <&main_pktdma 0xc602 15>,
++			   <&main_pktdma 0xc603 15>,
++			   <&main_pktdma 0xc604 15>,
++			   <&main_pktdma 0xc605 15>,
++			   <&main_pktdma 0xc606 15>,
++			   <&main_pktdma 0xc607 15>,
++			   <&main_pktdma 0x4600 15>;
++		dma-names = "tx0", "tx1", "tx2", "tx3", "tx4", "tx5", "tx6",
++					"tx7", "rx";
 +
-+#define PSIL_ETHERNET(x, ch, flow_base, flow_cnt)		\
-+	{							\
-+		.thread_id = x,					\
-+		.ep_config = {					\
-+			.ep_type = PSIL_EP_NATIVE,		\
-+			.pkt_mode = 1,				\
-+			.needs_epib = 1,			\
-+			.psd_size = 16,				\
-+			.mapped_channel_id = ch,		\
-+			.flow_start = flow_base,		\
-+			.flow_num = flow_cnt,			\
-+			.default_flow_id = flow_base,		\
-+		},						\
-+	}
++		ethernet-ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
 +
-+/* PSI-L source thread IDs, used for RX (DMA_DEV_TO_MEM) */
-+static struct psil_ep am62l_src_ep_map[] = {
-+	/* CPSW3G */
-+	PSIL_ETHERNET(0x4600, 96, 96, 16),
-+};
++			cpsw_port1: port@1 {
++				reg = <1>;
++				ti,mac-only;
++				label = "port1";
++				phys = <&phy_gmii_sel 1>;
++			};
 +
-+/* PSI-L destination thread IDs, used for TX (DMA_MEM_TO_DEV) */
-+static struct psil_ep am62l_dst_ep_map[] = {
-+	/* CPSW3G */
-+	PSIL_ETHERNET(0xc600, 64, 64, 2),
-+	PSIL_ETHERNET(0xc601, 66, 66, 2),
-+	PSIL_ETHERNET(0xc602, 68, 68, 2),
-+	PSIL_ETHERNET(0xc603, 70, 70, 2),
-+	PSIL_ETHERNET(0xc604, 72, 72, 2),
-+	PSIL_ETHERNET(0xc605, 74, 74, 2),
-+	PSIL_ETHERNET(0xc606, 76, 76, 2),
-+	PSIL_ETHERNET(0xc607, 78, 78, 2),
-+};
++			cpsw_port2: port@2 {
++				reg = <2>;
++				ti,mac-only;
++				label = "port2";
++				phys = <&phy_gmii_sel 2>;
++			};
++		};
 +
-+struct psil_ep_map am62l_ep_map = {
-+	.name = "am62l",
-+	.src = am62l_src_ep_map,
-+	.src_count = ARRAY_SIZE(am62l_src_ep_map),
-+	.dst = am62l_dst_ep_map,
-+	.dst_count = ARRAY_SIZE(am62l_dst_ep_map),
-+};
-diff --git a/drivers/dma/ti/k3-psil-priv.h b/drivers/dma/ti/k3-psil-priv.h
-index b80916a7ff8fa728ca41f1dbabc1817bde69cf6e..d00ef99867a4f146621550c9eb308958ca8d182c 100644
---- a/drivers/dma/ti/k3-psil-priv.h
-+++ b/drivers/dma/ti/k3-psil-priv.h
-@@ -45,5 +45,6 @@ extern struct psil_ep_map am62_ep_map;
- extern struct psil_ep_map am62a_ep_map;
- extern struct psil_ep_map j784s4_ep_map;
- extern struct psil_ep_map am62p_ep_map;
-+extern struct psil_ep_map am62l_ep_map;
- 
- #endif /* K3_PSIL_PRIV_H_ */
-diff --git a/drivers/dma/ti/k3-psil.c b/drivers/dma/ti/k3-psil.c
-index 58f39c0453e9724ad28680fa375a031529687ed8..f517da7afcac17d502af3002494c2cd7cbf7322b 100644
---- a/drivers/dma/ti/k3-psil.c
-+++ b/drivers/dma/ti/k3-psil.c
-@@ -62,6 +62,8 @@ struct psil_endpoint_config *psil_get_ep_config(u32 thread_id)
- 	if (!soc_ep_map) {
- 		if (of_machine_is_compatible("ti,am625"))
- 			soc_ep_map = &am62_ep_map;
-+		else if (of_machine_is_compatible("ti,am62l3"))
-+			soc_ep_map = &am62l_ep_map;
- 	}
- 
- 	if (!soc_ep_map) {
++		cpsw3g_mdio: mdio@f00 {
++			compatible = "ti,cpsw-mdio","ti,davinci_mdio";
++			reg = <0x00 0xf00 0x00 0x100>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			clocks = <&scmi_clk 13 0>;
++			clock-names = "fck";
++			bus_freq = <1000000>;
++			status = "disabled";
++		};
++	};
+ };
 
 -- 
 2.39.5
