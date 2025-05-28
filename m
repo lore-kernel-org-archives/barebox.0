@@ -1,67 +1,67 @@
-Delivery-date: Wed, 28 May 2025 16:36:03 +0200
+Delivery-date: Wed, 28 May 2025 16:36:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKHsx-001DeS-13
+	id 1uKHt3-001Df9-2n
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 16:36:03 +0200
+	Wed, 28 May 2025 16:36:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKHsw-0001zz-29
-	for lore@pengutronix.de; Wed, 28 May 2025 16:36:03 +0200
+	id 1uKHt1-00025m-AO
+	for lore@pengutronix.de; Wed, 28 May 2025 16:36:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MqabMesLofLRQDDkOVRWPApAuG94yEu+GmfoLqNm54M=; b=d+Nwz5AWbbEocvhywn8s330Xd8
-	vbU46cvTMHd6UQelof7EQd1ai/tk8PjQC7r1OOmdlxg/gQYu8hipEWhab8IopQL6aNFCIQhemhgvJ
-	thgmvz2YRLdMomH65zNATyHoCAK/pGKwef18N4ho+IClhdUiG9x1Xzr+Af9csxssGUGnedwOfwOy1
-	Z4j0uHJOVjh+13abkqtPNcuFbMnn8QFXZxrtK255CrJQIkE2Xm2qpT7xqtGh45P1/rSP705+blzNe
-	WasHzOChAQ09nDeemWQGFgY/K/6ESMeG3/c/tHPwfTnQTEj9/JZBxXSnqtvG6LMWwBBn/19EmFuXm
-	nKZdCzIQ==;
+	bh=6RqB+AazhzgZ5aimImFIQLfcfvH+J/KoFKsUcg4Mhls=; b=F01vTKPVe3oDRcdqh/oI8kvKoz
+	tfGsWDff1pNlxgslfr3sgsHpKQbHBZZEDaTs0XpjsQKCDyjRUD9ai+d0TOH8gY0MW1UmHkk80Wt34
+	V3V2uqOJiQfBHam1tHsrkyNNskjMCc5R0L524Zovn80nPStmjsQyQT5wOOrv6FAMcf2WuapBiPgDq
+	Zo2pmAJKLvE8X4+QrJVBc5PA6ZmnyG2FyISdUnLkVcj9Zbr8k4PbFd52WveA+t8i5UXZ+wTrl1wAR
+	1YVVE7Lzo0f+RPa0s7k9QhsSRTlNy4wv4OurH+FYfYxesawqwYCtayAvHDd4NRMh9z0aMYsDHCMvM
+	hd25ynlQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKHsR-0000000DQIm-207U;
-	Wed, 28 May 2025 14:35:31 +0000
+	id 1uKHsP-0000000DQHZ-3RK7;
+	Wed, 28 May 2025 14:35:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKHnz-0000000DPGw-3ELP
+	id 1uKHns-0000000DPE0-1tVN
 	for barebox@lists.infradead.org;
-	Wed, 28 May 2025 14:30:57 +0000
+	Wed, 28 May 2025 14:30:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKHnp-0006Fn-On; Wed, 28 May 2025 16:30:45 +0200
+	id 1uKHnp-0006Fd-OX; Wed, 28 May 2025 16:30:45 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKHnp-000bY5-1g;
+	id 1uKHnp-000bY1-1X;
 	Wed, 28 May 2025 16:30:45 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uKHnp-001qOC-1O;
+	id 1uKHnp-001qOC-1F;
 	Wed, 28 May 2025 16:30:45 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 28 May 2025 16:30:42 +0200
-Message-Id: <20250528143043.434446-10-a.fatoum@pengutronix.de>
+Date: Wed, 28 May 2025 16:30:41 +0200
+Message-Id: <20250528143043.434446-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250528143043.434446-1-a.fatoum@pengutronix.de>
 References: <20250528143043.434446-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_073055_813890_45442FC3 
-X-CRM114-Status: GOOD (  18.89  )
+X-CRM114-CacheID: sfid-20250528_073048_807952_5EC3B424 
+X-CRM114-Status: GOOD (  25.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,136 +83,417 @@ X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 09/10] doc: Add User-Documentation for Barebox TLV
+Subject: [PATCH v2 08/10] scripts: Add Barebox TLV Generator Tooling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Chris Fiege <cfi@pengutronix.de>
 
-With this stub users can hopefully discover the Barebox TLV
-functionality.
-Additionally it discusses some key concepts of the implementation, that
-are not obvious from the actual implementations.
+This host-tooling creates binaries in the Barebox TLV format.
+It is intended to be used in the factory (either as script or library)
+and creates a tlv binary from a given schema and data.
+
+For convenience an example schema and dataset are provided.
 
 Signed-off-by: Chris Fiege <cfi@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/user/barebox-tlv.rst | 93 ++++++++++++++++++++++++++++++
- Documentation/user/user-manual.rst |  1 +
- 2 files changed, 94 insertions(+)
- create mode 100644 Documentation/user/barebox-tlv.rst
+ .../bareboxtlv-generator.py                   | 321 ++++++++++++++++++
+ .../bareboxtlv-generator/data-example.yaml    |   5 +
+ scripts/bareboxtlv-generator/requirements.txt |   2 +
+ .../bareboxtlv-generator/schema-example.yaml  |  34 ++
+ 4 files changed, 362 insertions(+)
+ create mode 100755 scripts/bareboxtlv-generator/bareboxtlv-generator.py
+ create mode 100644 scripts/bareboxtlv-generator/data-example.yaml
+ create mode 100644 scripts/bareboxtlv-generator/requirements.txt
+ create mode 100644 scripts/bareboxtlv-generator/schema-example.yaml
 
-diff --git a/Documentation/user/barebox-tlv.rst b/Documentation/user/barebox-tlv.rst
-new file mode 100644
-index 000000000000..3db13ec88b22
+diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+new file mode 100755
+index 000000000000..5f9285a80630
 --- /dev/null
-+++ b/Documentation/user/barebox-tlv.rst
-@@ -0,0 +1,93 @@
-+barebox TLV - Non-Volatile Factory Data Storage
-+===============================================
++++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+@@ -0,0 +1,321 @@
++#!/usr/bin/env python3
 +
-+barebox TLV is a system to store and retrieve a device's (read-only)
-+meta-data from non-volatile memory.
-+It is intended to handle information that are usually only set in
-+the factory - like serial number, MAC-addresses, analog calibration
-+data, etc.
-+Data is stored in a tag-length-value format (hence the name) and read
-+from non-volatile memory during startup.
-+Unpacked values are stored in the devicetree ``chosen``-node.
++import argparse
++import struct
 +
-+barebox TLV consists of two components:
++import yaml
++from crcmod.predefined import mkPredefinedCrcFun
 +
-+* The parser inside barebox (``common/tlv``).
-+  This code parses the non-volatile memory during startup.
-+* A Python-Tool (``scripts/bareboxtlv-generator``).
-+  This script is intended to generate the TLV binaries in the factory.
++_crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
 +
-+Data Format
-+-----------
 +
-+The TLV binary has the following format:
++class MaxSizeReachedException(Exception):
++    pass
 +
-+.. code-block:: C
 +
-+     struct tlv {
-+         be16 tag; /* 2 bytes */
-+         be16 len; /* 2 bytes */
-+         u8 payload[];
-+     };
++class FactoryDataset:
++    """
++    Generates TLV-encoded datasets that can be used with Barebox's
++    TLV support.
 +
-+     struct binfile {
-+         be32 magic_version;
-+         be32 length_tlv; /* 4 bytes */
-+         be32 length_sig; /* 4 bytes */
-+         struct tlv tlvs[];
-+         be32 crc32;
-+     };
++    The generated binary structure looks like this:
++    #############################################################
++    # struct tlv {                                              #
++    #     be16 tag; /* 2 bytes */                               #
++    #     be16 len; /* 2 bytes */                               #
++    #     u8 payload[];                                         #
++    # };                                                        #
++    #                                                           #
++    # struct binfile {                                          #
++    #     be32 magic_version;                                   #
++    #     be32 length_tlv; /* 4 bytes */                        #
++    #     be32 length_sig; /* 4 bytes */                        #
++    #     struct tlv tlvs[];                                    #
++    #     be32 crc32;                                           #
++    # };                                                        #
++    #############################################################
 +
-+.. note::
-+  Even though the header has a ``length_sig`` field,
-+  there is currently no support for cryptographic signatures.
++    Limitations:
++    * Signing is currently not supported and length_sig is always 0x0.
++    """
 +
-+Tags
-+----
++    def __init__(self, schema):
++        """
++        Create a new Factory Dataset Object.
 +
-+Tags are defined as 32-bit integers.
-+A tag defines the following attributes:
++        A ``schema`` is the python-world representation of the Barebox
++        ``struct tlv_mapping`` lists.
++        It describes the tags that can be used and define which
++        formatter must be used when (de-) serializing data.
 +
-+* **Data format:**
-+  The data format can be something like ``string``, ``decimal`` or
-+  ``serial-number``.
-+* **Name of the entry:**
-+  This is the name under which the value is stored in ``chosen``-node.
++        Example schema:
++        | magic: 0x0fe01fca
++        | max_size: 0x100
++        |
++        | tags:
++        |   factory-timestamp:
++        |     tag: 0x0003
++        |     format: "decimal"
++        |     length: 8
++        |   (...)
 +
-+The tag range ``0x0000`` to ``0x7FFF`` is intended for common tags,
-+that can be used in every schema.
-+These common tags are defined in ``common/tlv/barebox.c``.
++        With:
++        * magic: The magic header for the TLV-encoded data.
++        * max_size: Maximum length of the TLV-encoded data in bytes.
++                    If set the generated binary is tested to be less or equal this size after generation.
++        * tags: dict of tags that can be used for TLV-encoding.
++          * <key>: The human-readable name of this field.
++          * tag: (Mandatory) Tag-ID for use during TLV-encoding
++          * format: (Mandatory) Specifies the formatter to use
++          * length: (Mandatory for some formats) length of the field
 +
-+The tag range ``0x8000`` to ``0xFFFF`` is intended for custom extensions.
-+Parsing must be handled by board-specific extensions.
++        Some remarks:
++        * Additional keys in a tag will be ignored. This can be used to add examples or annotations
++          to an entry.
++        * Tag-IDs can be used in multiple entries inside a schema with different human-readable names.
++          This only works reasonable if the Barebox parser knows how to handle it.
++          This will work well during encoding. But: It will need the same special knowledge for decoding.
++          Otherwise, only the last occurrence will be kept.
++        * The EEPROM will be written in the order of entries in the input data.
 +
-+Data Types
-+----------
++        Supported Barebox TLV data formats:
++        * string:
++          - Arbitrary length string (up to 2^16-1 bytes)
++          - UTF-8
++          - Schema example:
++            |  device-hardware-release:
++            |    tag: 0x0002
++            |    format: "string"
++        * decimal:
++          - unsigned int
++          - length is required and must be in [1, 2, 4, 8]
++          - Schema example:
++            |  modification:
++            |    tag: 0x0005
++            |    format: decimal
++            |    length: 1
++        * mac-sequence:
++          - Describes a consecutive number of MAC addresses
++          - Contains a starting address and a count
++          - Input data must be an iterable in the following format: (first_mac: int, count: int)
++          - MAC-addresses are represented as python ints
++          - Schema example:
++            |  ethernet-address:
++            |    tag: 0x0012
++            |    format: "mac-sequence"
++        * mac-list:
++          - A list of MAC addresses
++          - Input data must be an iterable of MAC addresses: (first_mac: int, second_mac: int, ...)
++          - MAC-addresses are represented as python ints
++          - Schema example:
++            |  ethernet-address:
++            |    tag: 0x0012
++            |    format: "mac-list"
++        * linear-calibration
++          - Linear calibration data for analog channels
++          - Input data must be an iterable of floats: (c1: float, c2: float, ...)
++          - Values are stored as a 4-byte float
++          - Length-field is mandatory.
++          - Schema example:
++            |  usb-host1-curr:
++            |    tag: 0x8001
++            |    format: linear-calibration
++            |    length: 2
++        """
++        self.schema = schema
 +
-+barebox defines a number of common data types.
-+These are defined in ``common/tlv/barebox.c``.
++    def encode(self, data):
++        """
++        Generate an EEPROM image for the given data.
 +
-+Board-specific extensions can add additional data types as needed.
++        Data must be a dict using fields described in the schema.
++        """
++        # build payload of TLVs
++        tlvs = b""
 +
-+TLV Binary Generation
-+---------------------
++        for name, value in data.items():
++            if name not in self.schema["tags"]:
++                raise KeyError(f"No Schema defined for data with name '{name}'")
 +
-+To generate a TLV binary the schema for the specific TLV must be defined.
-+Schemas are yaml-files that represent what the actual parser in barebox expects.
++            tag = self.schema["tags"][name]
++            tag_format = tag["format"]
 +
-+An example schema can be found in ``srcipts/bareboxtlv-generator/schema-example.yaml``.
-+This schema defines some well-known tags and two board-specific tags.
++            if tag_format == "string":
++                bin = value.encode("UTF-8")
++                fmt = f"{len(bin)}s"
++                if len(bin) > 2**16 - 1:
++                    raise ValueError(f"String {name} is too long!")
 +
-+Afterwards another yaml-file with the data for the TLV binary is needed.
-+An example can be found in ``srcipts/bareboxtlv-generator/data-example.yaml``.
++            elif tag_format == "decimal":
++                fmtl = tag["length"]
++                if fmtl == 1:
++                    fmt = "B"
++                elif fmtl == 2:
++                    fmt = "H"
++                elif fmtl == 4:
++                    fmt = "I"
++                elif fmtl == 8:
++                    fmt = "Q"
++                else:
++                    raise ValueError(f"Decimal {name} has invalid len {fmtl}. Must be in [1, 2, 4, 8]!")
++                bin = abs(int(value))
 +
-+With these information in place a TLV binary can be created:
++            elif tag_format == "mac-sequence":
++                if len(value) != 2:
++                    raise ValueError(f"mac-sequence {name} must be in format (base_mac: int, count: int)")
++                fmt = "7s"
++                mac = struct.pack(">Q", value[0])[2:]
++                bin = struct.pack(">B6s", value[1], mac)
 +
-+.. code-block:: shell
++            elif tag_format == "mac-list":
++                bin = b""
++                for mac in value:
++                    bin += struct.pack(">Q", mac)[2:]
++                fmt = f"{len(value) * 6}s"
 +
-+   ./bareboxtlv-generator.py --input-data data-example.yaml \
-+                             schema-example.yaml tlv.bin
++            elif tag_format == "calibration":
++                bin = b""
++                if len(value) != tag["length"]:
++                    raise ValueError(f'linear-calibration {name} must have {tag["length"]} elements.')
++                for coeff in value:
++                    bin += struct.pack(">f", coeff)
++                fmt = f"{len(value) * 4}s"
 +
-+.. note::
-+  The ``FactoryDataset`` class in ``bareboxtlv-generator.py``
-+   is intended to be used as a library.
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index b8272b2235e4..a14f6905f9ee 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -40,6 +40,7 @@ Contents:
-    watchdog
-    reboot-mode
-    virtio
-+   barebox-tlv
- 
- * :ref:`search`
- * :ref:`genindex`
++            else:
++                raise Exception(f"{name}: Unknown format {tag_format}")
++
++            tlvs += struct.pack(f">HH{fmt}", tag["tag"], struct.calcsize(fmt), bin)
++
++        # Convert the framing data.
++        len_sig = 0x0  # Not implemented.
++        header = struct.pack(">3I", self.schema["magic"], len(tlvs), len_sig)
++        crc_raw = _crc32_mpeg(header + tlvs)
++        crc = struct.pack(">I", crc_raw)
++        bin = header + tlvs + crc
++
++        # Check length
++        if "max_size" in self.schema and len(bin) > self.schema["max_size"]:
++            raise MaxSizeReachedException(
++                f'Generated binary too large. Is {len(bin)} bytes but max_size is {self.schema["max_size"]}.'
++            )
++        return bin
++
++    def decode(self, bin):
++        """
++        Decode a TLV-encoded binary image.
++
++        Returns a dict with entries decoded from the binary.
++        """
++        # check minimal length
++        values = {}
++
++        if len(bin) < 16:
++            raise ValueError("Supplied binary is too small to be TLV-encoded data.")
++
++        bin_magic, bin_tlv_len, bin_sig_len = struct.unpack(">3I", bin[:12])
++        # check magic
++        if bin_magic != self.schema["magic"]:
++            raise ValueError(f'Magic missmatch. Is {hex(bin_magic)} but expected {hex(self.schema["magic"])}')
++
++        # check signature length
++        if bin_sig_len != 0:
++            raise ValueError("Signature check is not supported!")
++
++        # check crc
++        crc_offset = 12 + bin_tlv_len + bin_sig_len
++        if crc_offset > len(bin) - 4:
++            raise ValueError("crc location calculated behind binary.")
++        bin_crc = struct.unpack(">I", bin[crc_offset : crc_offset + 4])[0]  # noqa E203
++        calc_crc = _crc32_mpeg(bin[:crc_offset])
++        if bin_crc != calc_crc:
++            raise ValueError(f"CRC missmatch. Is {hex(bin_crc)} but expected {hex(calc_crc)}.")
++
++        ptr = 12
++        while ptr < crc_offset:
++            tag_id, tag_len = struct.unpack_from(">HH", bin, ptr)
++            data_ptr = ptr + 4
++            ptr += tag_len + 4
++
++            name, tag_schema = self._get_tag_by_id(tag_id)
++            if not name:
++                print(f"Skipping unknown tag-id {hex(tag_id)}.")
++                continue
++
++            if tag_schema["format"] == "decimal":
++                if tag_len == 1:
++                    fmt = ">B"
++                elif tag_len == 2:
++                    fmt = ">H"
++                elif tag_len == 4:
++                    fmt = ">I"
++                elif tag_len == 8:
++                    fmt = ">Q"
++                else:
++                    raise ValueError(f"Decimal {name} has invalid len {tag_len}. Must be in [1, 2, 4, 8]!")
++                value = struct.unpack_from(fmt, bin, data_ptr)[0]
++            elif tag_schema["format"] == "string":
++                value = bin[data_ptr : data_ptr + tag_len].decode("UTF-8")  # noqa E203
++            elif tag_schema["format"] == "mac-sequence":
++                if tag_len != 7:
++                    raise ValueError(f"Tag {name} has wrong length {hex(tag_len)} but expected 0x7.")
++                count, base_mac = struct.unpack_from(">B6s", bin, data_ptr)
++                base_mac = struct.unpack(">Q", b"\x00\x00" + base_mac)[0]
++                value = [base_mac, count]
++            elif tag_schema["format"] == "mac-list":
++                if tag_len % 6 != 0:
++                    raise ValueError(f"Tag {name} has wrong length {hex(tag_id)}. Must be multiple of 0x6.")
++                value = []
++                for i in range(int(tag_len / 6)):
++                    mac = struct.unpack_from(">6s", bin, data_ptr + int(i * 6))[0]
++                    mac = struct.unpack(">Q", b"\x00\x00" + mac)[0]
++                    value.append(mac)
++            elif tag_schema["format"] == "calibration":
++                if tag_len % 4 != 0:
++                    raise ValueError(f"Tag {name} has wrong length {hex(tag_id)}. Must be multiple of 0x4.")
++                value = []
++                for i in range(int(tag_len / 4)):
++                    coeff = struct.unpack_from(">f", bin, data_ptr + int(i * 4))[0]
++                    value.append(coeff)
++            else:
++                raise Exception(f'{name}: Unknown format {tag_schema["format"]}')
++            values[name] = value
++
++        return values
++
++    def _get_tag_by_id(self, tag_id):
++        for name, tag_schema in self.schema["tags"].items():
++            if tag_schema["tag"] == tag_id:
++                return name, tag_schema
++        return None, None
++
++
++def _main():
++    parser = argparse.ArgumentParser(description="Generate a TLV dataset for the Barebox TLV parser")
++    parser.add_argument("schema", help="YAML file describing the data.")
++    parser.add_argument("--input-data", help="YAML file containing data to write to the binary.")
++    parser.add_argument("--output-data", help="YAML file where the contents of the binary will be written to.")
++    parser.add_argument("binary", help="Path to where export data to be copied into DUT's EEPROM.")
++    args = parser.parse_args()
++
++    # load schema
++    with open(args.schema) as schema_fh:
++        schema = yaml.load(schema_fh, Loader=yaml.SafeLoader)
++    eeprom = FactoryDataset(schema)
++
++    if args.input_data:
++        with open(args.input_data) as d_fh:
++            data = yaml.load(d_fh, Loader=yaml.SafeLoader)
++        bin = eeprom.encode(data)
++        with open(args.binary, "wb+") as out_fh:
++            out_fh.write(bin)
++
++    if args.output_data:
++        with open(args.binary, "rb") as in_fh:
++            bin = in_fh.read()
++        data = eeprom.decode(bin)
++        with open(args.output_data, "w+") as out_fh:
++            yaml.dump(data, out_fh)
++
++
++if __name__ == "__main__":
++    _main()
+diff --git a/scripts/bareboxtlv-generator/data-example.yaml b/scripts/bareboxtlv-generator/data-example.yaml
+new file mode 100644
+index 000000000000..ad5878a27f5f
+--- /dev/null
++++ b/scripts/bareboxtlv-generator/data-example.yaml
+@@ -0,0 +1,5 @@
++factory-timestamp: 1636451762
++modification: 0
++featureset: "base"
++pcba-serial-number: "12345.67890"
++pcba-hardware-release: "device-S01-R02-V03-C04"
+diff --git a/scripts/bareboxtlv-generator/requirements.txt b/scripts/bareboxtlv-generator/requirements.txt
+new file mode 100644
+index 000000000000..a1f7e3b3f2a3
+--- /dev/null
++++ b/scripts/bareboxtlv-generator/requirements.txt
+@@ -0,0 +1,2 @@
++crcmod
++pyaml
+diff --git a/scripts/bareboxtlv-generator/schema-example.yaml b/scripts/bareboxtlv-generator/schema-example.yaml
+new file mode 100644
+index 000000000000..b5362ddf58ea
+--- /dev/null
++++ b/scripts/bareboxtlv-generator/schema-example.yaml
+@@ -0,0 +1,34 @@
++magic: 0x61bb95f2
++max_size: 0x100
++
++tags:
++  factory-timestamp:
++    tag: 0x0003
++    format: "decimal"
++    length: 8
++    example: 1636451762
++
++  modification:
++    tag: 0x0005
++    format: decimal
++    length: 1
++    example: 1
++    purpose: "0: Device unmodified; 1: Device has undocumented modifications"
++
++  featureset:
++    tag: 0x0006
++    format: "string"
++    example: "base"
++    purpose: For later use. May encode a set of features of this device.
++
++  pcba-serial-number:
++    tag: 0x0007
++    format: "string"
++    example: "12345.67890"
++    purpose: Serial number of device
++
++  pcba-hardware-release:
++    tag: 0x0008
++    format: "string"
++    example: "device-S01-R02-V03-C04"
++    purpose: Detailed release information for device
 -- 
 2.39.5
 
