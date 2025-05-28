@@ -1,58 +1,67 @@
-Delivery-date: Wed, 28 May 2025 16:20:38 +0200
+Delivery-date: Wed, 28 May 2025 16:35:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKHe2-001DSW-17
+	id 1uKHsr-001Dc4-2A
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 16:20:38 +0200
+	Wed, 28 May 2025 16:35:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKHe1-0007nP-1Y
-	for lore@pengutronix.de; Wed, 28 May 2025 16:20:38 +0200
+	id 1uKHsq-0001te-C0
+	for lore@pengutronix.de; Wed, 28 May 2025 16:35:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VNNf3cWGxYyQ5dXqV3Gnh5Gov4HzrpDg7KpLLMACrPA=; b=FZasm8DN26w3QYC7q/7zW70fK0
-	lwr9CbfzDAxlStPvPzuMPNWYfdlaLMzf8Y2eozIr9tGiKq7MRyp5HJpNzxscZgn77zez/o+kOllJl
-	s70Rot9i8RcRLZFTxcAZLkb3W9elSVhXi3k6dyVInUZqjbysQbShBr0zUdafwL6vxTwC7e55pDt20
-	zzfVbZJWQ+5zcSp8XMd99zedrVD4gzGGksSu/wrOgupOq2vHLLEU4dFEbYauEJYqf0KnlQ2xAwsZ5
-	DDCMWDs3ZguD4A0of/wwXalyUKv5ezVITEefgdlWHO4YwN6jmt/pcQ89bAIQRkcDl7DCGp782TR+q
-	kT0pWFBA==;
+	bh=V2OEAIfAbKr3WEvvZB35YaqMD7m23dKG5iQGy6fArAc=; b=m9uZUDht9YaaJKuxelelCVMxuG
+	axurweXp2ej77h7l4/f7NROyg1WZfVFfct72LzSIoQ/xXSpAZUxdxCzvcRvKSLjGggRotvaahSc/X
+	lWon+Bh9AdcAhfB9JG8w5YsU32WPFoUhOdU8Jpvq6bzjVMY4uAVpywWU5JVXm+F5+1Mj1UcllAgxC
+	y0a/dCDR4ku4gfSdw+QgD0W0xzVKnW8/OmGX/JXv7y111Igb3TnDJJsV7i5nikb72yTU0OJ71cizQ
+	akcZ1UH4oMfj5vtWVLyqeYOVxooPTCNV1Ry30i/dPNkJ4lLkwSNkwZMe64yCYUqnwaH9SIM2vWJX5
+	qSCk7NOg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKHdT-0000000DNFG-2Y4H;
-	Wed, 28 May 2025 14:20:03 +0000
+	id 1uKHsK-0000000DQCF-4AKV;
+	Wed, 28 May 2025 14:35:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKHVL-0000000DKyG-2hoz
+	id 1uKHns-0000000DPDV-0UeH
 	for barebox@lists.infradead.org;
-	Wed, 28 May 2025 14:11:42 +0000
+	Wed, 28 May 2025 14:30:50 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uKHnp-0006Ex-As; Wed, 28 May 2025 16:30:45 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1uKHVJ-00011O-0c; Wed, 28 May 2025 16:11:37 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Wed, 28 May 2025 16:11:27 +0200
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uKHnp-000bXd-0U;
+	Wed, 28 May 2025 16:30:45 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uKHnp-001qOC-0C;
+	Wed, 28 May 2025 16:30:45 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 28 May 2025 16:30:34 +0200
+Message-Id: <20250528143043.434446-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250528143043.434446-1-a.fatoum@pengutronix.de>
+References: <20250528143043.434446-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250528-rk3588-optee-v2-9-63070238dd13@pengutronix.de>
-References: <20250528-rk3588-optee-v2-0-63070238dd13@pengutronix.de>
-In-Reply-To: <20250528-rk3588-optee-v2-0-63070238dd13@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Marco Felsch <m.felsch@pengutronix.de>
-Cc: Michael Tretter <m.tretter@pengutronix.de>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_071139_750382_69436CCC 
-X-CRM114-Status: GOOD (  11.66  )
+X-CRM114-CacheID: sfid-20250528_073048_179190_E268A07A 
+X-CRM114-Status: GOOD (  12.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,66 +79,98 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 9/9] ARM: rockchip: fixup memory in device tree for TF-A
+Subject: [PATCH v2 01/10] net: factor out eth_of_get_fixup_node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add the memory nodes for the detected SDRAM configuration to the fdt
-before passing it to the TF-A.
+We only know at fixup time, which MAC addresses were actually assigned
+to interfaces. Factor out eth_of_get_fixup_node from the MAC address
+assignment code, so board code can use this to retrace which MAC
+addresses would be fixed up.
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Changes in v2:
-- none
----
- arch/arm/mach-rockchip/atf.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ include/net.h | 12 ++++++++++++
+ net/eth.c     | 29 +++++++++++++++++++----------
+ 2 files changed, 31 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
-index f4a71ef2dc8dffc6ceb4f97ee542f5b83858120b..c412e7adb9c93c63d0dfcc312d6a7374770ce2da 100644
---- a/arch/arm/mach-rockchip/atf.c
-+++ b/arch/arm/mach-rockchip/atf.c
-@@ -173,6 +173,26 @@ void rk3588_atf_load_bl31(void *fdt)
- 	rockchip_atf_load_bl31(RK3588, rk3588_bl31_bin, rk3588_bl32_bin, fdt);
- }
- 
-+#ifdef CONFIG_ARCH_ROCKCHIP_ATF_PASS_FDT
-+static int rk3588_fixup_mem(void *fdt)
+diff --git a/include/net.h b/include/net.h
+index 439e0a4c9b61..356f23d1d11d 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -128,6 +128,18 @@ static inline void of_eth_register_ethaddr(struct device_node *node,
+ void eth_register_ethaddr(int ethid, const char *ethaddr);
+ void of_eth_register_ethaddr(struct device_node *node, const char *ethaddr);
+ #endif
++
++#ifdef CONFIG_OFTREE
++struct device_node *eth_of_get_fixup_node(struct device_node *root,
++					  const char *node_path, int ethid);
++#else
++static inline struct device_node *eth_of_get_fixup_node(struct device_node *root,
++							const char *node_path, int ethid)
 +{
-+	/* Use 4 blocks since rk3588 has 3 gaps in the address space */
-+	unsigned long base[4];
-+	unsigned long size[ARRAY_SIZE(base)];
-+	phys_addr_t base_tmp[ARRAY_SIZE(base)];
-+	resource_size_t size_tmp[ARRAY_SIZE(base_tmp)];
-+	int i, n;
-+
-+	n = rk3588_ram_sizes(base_tmp, size_tmp, ARRAY_SIZE(base_tmp));
-+	for (i = 0; i < n; i++) {
-+		base[i] = base_tmp[i];
-+		size[i] = size_tmp[i];
-+	}
-+
-+	return fdt_fixup_mem(fdt, base, size, i);
++	return NULL;
 +}
 +#endif
 +
- void __noreturn rk3588_barebox_entry(void *fdt)
- {
- 	unsigned long membase, endmem;
-@@ -195,6 +215,8 @@ void __noreturn rk3588_barebox_entry(void *fdt)
- 			fdt_scratch = rk_scratch->fdt;
- 		else
- 			pr_warn("Failed to copy fdt to scratch: Continue without fdt\n");
-+		if (fdt_scratch && rk3588_fixup_mem(fdt_scratch) != 0)
-+			pr_warn("Failed to fixup memory nodes\n");
- #endif
+ /*
+  *	Ethernet header
+  */
+diff --git a/net/eth.c b/net/eth.c
+index cdacc5ab6b80..fedccf33db07 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -319,19 +319,11 @@ static int eth_param_set_ethaddr(struct param_d *param, void *priv)
+ }
  
- 		rk3588_atf_load_bl31(fdt_scratch);
-
+ #ifdef CONFIG_OFTREE
+-static void eth_of_fixup_node(struct device_node *root,
+-			      const char *node_path, int ethid,
+-			      const u8 ethaddr[ETH_ALEN])
++struct device_node *eth_of_get_fixup_node(struct device_node *root,
++					  const char *node_path, int ethid)
+ {
+ 	struct device_node *bb_node, *fixup_node;
+ 	char *name;
+-	int ret;
+-
+-	if (!is_valid_ether_addr(ethaddr)) {
+-		pr_debug("%s: no valid mac address, cannot fixup\n",
+-			 __func__);
+-		return;
+-	}
+ 
+ 	if (node_path) {
+ 		bb_node = of_find_node_by_path_from(0, node_path);
+@@ -344,6 +336,23 @@ static void eth_of_fixup_node(struct device_node *root,
+ 		fixup_node = of_find_node_by_alias(root, eth);
+ 	}
+ 
++	return fixup_node;
++}
++
++static void eth_of_fixup_node(struct device_node *root,
++			      const char *node_path, int ethid,
++			      const u8 ethaddr[ETH_ALEN])
++{
++	struct device_node *fixup_node;
++	int ret;
++
++	if (!is_valid_ether_addr(ethaddr)) {
++		pr_debug("%s: no valid mac address, cannot fixup\n",
++			 __func__);
++		return;
++	}
++
++	fixup_node = eth_of_get_fixup_node(root, node_path, ethid);
+ 	if (!fixup_node) {
+ 		pr_debug("%s: no node to fixup\n", __func__);
+ 		return;
 -- 
 2.39.5
 
