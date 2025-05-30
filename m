@@ -1,65 +1,66 @@
-Delivery-date: Fri, 30 May 2025 13:44:26 +0200
+Delivery-date: Fri, 30 May 2025 13:44:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKy9y-001vop-2m
+	id 1uKy9z-001vp0-0W
 	for lore@lore.pengutronix.de;
-	Fri, 30 May 2025 13:44:26 +0200
+	Fri, 30 May 2025 13:44:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKy9y-0002HS-8n
-	for lore@pengutronix.de; Fri, 30 May 2025 13:44:26 +0200
+	id 1uKy9y-0002HQ-3p
+	for lore@pengutronix.de; Fri, 30 May 2025 13:44:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=glBN5lacdcGyBxsbBSRXi3/OCg7uVBUVvi6eOa0a6bE=; b=c9n4e9d9m1dIDnaJ69S+ftCTTU
-	oVEtMXjhGF3XNGqThNazZfkg4onyR/upP4C90Qpiem5p6dD4gazBq19hTXlVwoINH/XRGj22LNr61
-	8t42T3m6H5kanywKoKqGNXFVQrIN+sGc8qMZpZGpCINWIz7NaVR1MvTZVi9d6t5wXRqw+lhoEH0J+
-	5YxPUFvRLcxdzTOc+FgmnLsaV7M1H/d9mCDm6yFnQWwDFDIv/M33AT0na6xDIpdHks0oeinJEVevT
-	9JtY9TJG9Z0P/bXbHmxLRhCmk3UMa/qTTAj3cT4Qw/rYMgKih12LeAMHR9+NUKbq/1sKFUzn88523
-	rJrZmtRw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=WgqsqDAeuJyusxpSKJHbK4Wtn+XcbKWReHe5x+t5s6Q=; b=AO2GAZiwE97uDG0SlCdpTfrG6d
+	e5X2BypWpPZUcQNTt55/BNNXzpMvlJPL+Q80LoiQPPUBo9cJZgHBXFNYCcd2hZ5L8Lai4ThAt+oYN
+	qW18rHaNVcCkej9yHBH2MFql+4CywVuMaEC4LzvVmRth7MThWQQD5PTeu2kamviQr5xW0xNV8g/sx
+	zTSRjrFy/B5RlBurs0I9kWWR3u/rizUDR5cFncrCgWjKX/4ZoB0/NLxed4533CE9+niOdx70mlQck
+	3pfZy6xQcMJcbn9HS0xZPglK73c8C44OtpmMlUqfcrQ9XNN154Ymnn6KICTKxLHdzzsuwB/M2Sgqu
+	Z2ca/TSg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKy9K-00000000Rpc-0Gz2;
-	Fri, 30 May 2025 11:43:46 +0000
+	id 1uKy9L-00000000RqN-0rzq;
+	Fri, 30 May 2025 11:43:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKy6n-00000000RbT-3PcZ
+	id 1uKy6n-00000000RbX-3QYN
 	for barebox@lists.infradead.org;
 	Fri, 30 May 2025 11:41:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uKy6l-0008Tg-SW; Fri, 30 May 2025 13:41:07 +0200
+	id 1uKy6l-0008Tj-UG; Fri, 30 May 2025 13:41:07 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uKy6l-000y4j-1u;
+	id 1uKy6l-000y4o-26;
 	Fri, 30 May 2025 13:41:07 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uKy6l-004EcA-1i;
+	id 1uKy6l-004EcT-1v;
 	Fri, 30 May 2025 13:41:07 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 30 May 2025 13:40:59 +0200
-Message-Id: <20250530114106.1009454-1-o.rempel@pengutronix.de>
+Date: Fri, 30 May 2025 13:41:04 +0200
+Message-Id: <20250530114106.1009454-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250530114106.1009454-1-o.rempel@pengutronix.de>
+References: <20250530114106.1009454-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250530_044109_903078_0AA4EF73 
-X-CRM114-Status: UNSURE (   8.78  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250530_044109_906977_98B41C15 
+X-CRM114-Status: GOOD (  18.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,42 +78,128 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1 0/7] NVMEM: Introduce write protection support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH v1 5/7] nvmem: regmap: Implement protect operation using regmap_seal
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series adds a generic protect op to NVMEM core, enabling
-standardized write protection. This makes NVMEM behave more like other
-flash interfaces (e.g., CFI block protection), which helps with common
-tooling.
+Implement the NVMEM 'protect' operation for devices registered via
+regmap. This adds a new static function, nvmem_regmap_protect, which
+acts as an adapter between the NVMEM core's reg_protect callback
+and the recently added regmap_seal() API.
 
-Oleksij Rempel (7):
-  nvmem: Add 'protect' operation to core framework
-  nvmem: rmem: add write and protect support
-  commands: nvmem: Add support for creating dynamic rmem devices
-  regmap: Add reg_seal operation for hardware protection
-  nvmem: regmap: Implement protect operation using regmap_seal
-  nvmem: bsec: Implement NVMEM protect via regmap_seal for OTP locking
-  nvmem: rmem: Use unique device name for NVMEM registration
+The nvmem_regmap_protect function:
+  - Translates the NVMEM 'prot' parameter (0 for unprotect, 1 for
+    protect) into the corresponding REGMAP_SEAL_CLEAR |
+    REGMAP_SEAL_WRITE_PROTECT or REGMAP_SEAL_WRITE_PROTECT |
+    REGMAP_SEAL_PERMANENT flags for the regmap_seal() call.
+  - Enforces that the NVMEM operation's offset and size are aligned
+    to the regmap's value byte size (obtained via
+    regmap_get_val_bytes()).
+  - Iterates over the specified byte range, calling regmap_seal() for
+    each underlying hardware word.
 
- commands/nvmem.c               | 124 +++++++++-
- drivers/base/regmap/internal.h |   2 +
- drivers/base/regmap/regmap.c   |  31 +++
- drivers/nvmem/bsec.c           |  27 ++
- drivers/nvmem/core.c           |  48 ++++
- drivers/nvmem/partition.c      |   7 +
- drivers/nvmem/regmap.c         |  65 +++++
- drivers/nvmem/rmem.c           | 438 ++++++++++++++++++++++++++++++++-
- include/linux/nvmem-provider.h |   5 +
- include/linux/regmap.h         |  33 +++
- include/mach/stm32mp/bsec.h    |   1 +
- 11 files changed, 774 insertions(+), 7 deletions(-)
+By assigning nvmem_regmap_protect to config.reg_protect within
+nvmem_regmap_register_with_pp, NVMEM devices that are backed by a
+regmap can now expose hardware-level protection capabilities. This
+is essential for drivers like the STM32 BSEC (in a subsequent patch)
+to enable features such as OTP (One-Time Programmable) memory locking
+through the standard NVMEM 'protect' cdev operation, provided their
+underlying regmap_bus implements the necessary reg_seal method.
 
---
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/nvmem/regmap.c | 65 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
+
+diff --git a/drivers/nvmem/regmap.c b/drivers/nvmem/regmap.c
+index 24712fbb0f33..681cdf313e71 100644
+--- a/drivers/nvmem/regmap.c
++++ b/drivers/nvmem/regmap.c
+@@ -63,6 +63,70 @@ static int nvmem_regmap_read(void *ctx, unsigned offset, void *buf, size_t bytes
+ 	return 0;
+ }
+ 
++static int nvmem_regmap_protect(void *ctx, unsigned int offset, size_t bytes,
++				int prot)
++{
++	unsigned int seal_flags = 0;
++	struct regmap *map = ctx;
++	size_t reg_val_bytes;
++	unsigned int i;
++	int ret = 0;
++
++	reg_val_bytes = regmap_get_val_bytes(map);
++	if (reg_val_bytes == 0) {
++		dev_err(regmap_get_device(map), "Invalid regmap value byte size (0)\n");
++		return -EINVAL;
++	}
++
++	/* NVMEM protect operations should typically be on aligned boundaries
++	 * matching the hardware's lockable unit (which is regmap's val_bytes
++	 * here).
++	 */
++	if ((offset % reg_val_bytes) != 0 || (bytes % reg_val_bytes) != 0) {
++		dev_warn(regmap_get_device(map),
++			 "NVMEM protect op for regmap: offset (0x%x) or size (0x%zx) not aligned to register size (%zu bytes).\n",
++			 offset, bytes, reg_val_bytes);
++		return -EINVAL;
++	}
++
++	switch (prot) {
++	case NVMEM_PROTECT_ENABLE_WRITE:
++		/* NVMEM protect mode 0 = Unlock/Make-writable
++		 * Attempt to clear write protection.
++		 * The underlying bus->reg_seal must support clearing.
++		 * For BSEC OTPs, this will (and should) fail with -EOPNOTSUPP
++		 * or -EPERM.
++		 */
++		seal_flags = REGMAP_SEAL_CLEAR | REGMAP_SEAL_WRITE_PROTECT;
++		break;
++	case NVMEM_PROTECT_DISABLE_WRITE:
++		/* NVMEM protect mode 1 = Lock/Write-protect */
++		/* For OTPs like BSEC, permanent is implied */
++		seal_flags = REGMAP_SEAL_WRITE_PROTECT | REGMAP_SEAL_PERMANENT;
++		break;
++	default:
++		dev_warn(regmap_get_device(map), "Unsupported NVMEM protect mode: %d\n",
++			 prot);
++		return -EOPNOTSUPP;
++	}
++
++	for (i = 0; i < bytes; i += reg_val_bytes) {
++		unsigned int current_reg_offset = offset + i;
++
++		ret = regmap_seal(map, current_reg_offset, seal_flags);
++		if (ret) {
++			dev_err(regmap_get_device(map), "regmap_seal failed for offset 0x%x: %pe\n",
++				current_reg_offset, ERR_PTR(ret));
++			/* No error handling for partial failures, we messed up
++			 * the HW state and can't recover.
++			 */
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
+ struct nvmem_device *
+ nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
+ 			      nvmem_cell_post_process_t cell_post_process)
+@@ -82,6 +146,7 @@ nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
+ 	config.cell_post_process = cell_post_process;
+ 	config.reg_write = nvmem_regmap_write;
+ 	config.reg_read = nvmem_regmap_read;
++	config.reg_protect = nvmem_regmap_protect;
+ 
+ 	return nvmem_register(&config);
+ }
+-- 
 2.39.5
 
 
