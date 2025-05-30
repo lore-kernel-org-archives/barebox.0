@@ -1,67 +1,64 @@
-Delivery-date: Wed, 28 May 2025 22:11:10 +0200
+Delivery-date: Fri, 30 May 2025 13:44:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKN7G-001Iw7-1e
+	id 1uKy9y-001vop-2m
 	for lore@lore.pengutronix.de;
-	Wed, 28 May 2025 22:11:10 +0200
+	Fri, 30 May 2025 13:44:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uKN7F-0000Yz-Vh
-	for lore@pengutronix.de; Wed, 28 May 2025 22:11:10 +0200
+	id 1uKy9y-0002HS-8n
+	for lore@pengutronix.de; Fri, 30 May 2025 13:44:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=y64CuJ21P/pGVwVcZjkWCYwj3EbbqYzfB2xQP4pVPsE=; b=XVn8ZfyjOMQAQ/0oCiq3eWu3F3
-	RrGqYD5u8P4gV+KALgdWlFjFdG5bYKuwxHR1TQICd282dGOxsaVvfe9+KZ5MZ7LUTBJ4zDoJkdDTt
-	AnNoRJIdynFVWSvrol/yBA6hqTWh0GbM3qcNorRsgSfYaaIM4HV0H0q7o1KeENhkOY8NhNkYu8VBe
-	Ks2PEK/k4GXpcJsLWnoTIHWnPrndaxiwQzHbf/fMgjLEuwhOin2hKEg6DSvZIWoVKjz3XC1md/3NB
-	zrE1lAWk4c6pDQE3dPN6oIJSBCa0851piXWl9Wf60EWnX3Lm0wLv4EYq9GxK9ln12Jt8GjzV0qQ+K
-	+lklWMWQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=glBN5lacdcGyBxsbBSRXi3/OCg7uVBUVvi6eOa0a6bE=; b=c9n4e9d9m1dIDnaJ69S+ftCTTU
+	oVEtMXjhGF3XNGqThNazZfkg4onyR/upP4C90Qpiem5p6dD4gazBq19hTXlVwoINH/XRGj22LNr61
+	8t42T3m6H5kanywKoKqGNXFVQrIN+sGc8qMZpZGpCINWIz7NaVR1MvTZVi9d6t5wXRqw+lhoEH0J+
+	5YxPUFvRLcxdzTOc+FgmnLsaV7M1H/d9mCDm6yFnQWwDFDIv/M33AT0na6xDIpdHks0oeinJEVevT
+	9JtY9TJG9Z0P/bXbHmxLRhCmk3UMa/qTTAj3cT4Qw/rYMgKih12LeAMHR9+NUKbq/1sKFUzn88523
+	rJrZmtRw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKN6a-0000000E3CO-3JjG;
-	Wed, 28 May 2025 20:10:28 +0000
+	id 1uKy9K-00000000Rpc-0Gz2;
+	Fri, 30 May 2025 11:43:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKN6W-0000000E3Bi-3Imc
+	id 1uKy6n-00000000RbT-3PcZ
 	for barebox@lists.infradead.org;
-	Wed, 28 May 2025 20:10:26 +0000
+	Fri, 30 May 2025 11:41:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKN6T-0008HY-5P; Wed, 28 May 2025 22:10:21 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <ore@pengutronix.de>)
+	id 1uKy6l-0008Tg-SW; Fri, 30 May 2025 13:41:07 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKN6S-000e2X-38;
-	Wed, 28 May 2025 22:10:20 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uKN6S-00GWLP-2w;
-	Wed, 28 May 2025 22:10:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20250528113050.827935-1-a.fatoum@barebox.org>
-References: <20250528113050.827935-1-a.fatoum@barebox.org>
-Message-Id: <174846302090.3937553.13526862967830100532.b4-ty@pengutronix.de>
-Date: Wed, 28 May 2025 22:10:20 +0200
+	(envelope-from <ore@pengutronix.de>)
+	id 1uKy6l-000y4j-1u;
+	Fri, 30 May 2025 13:41:07 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uKy6l-004EcA-1i;
+	Fri, 30 May 2025 13:41:07 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 30 May 2025 13:40:59 +0200
+Message-Id: <20250530114106.1009454-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250528_131024_826398_41135B36 
-X-CRM114-Status: UNSURE (   5.93  )
+X-CRM114-CacheID: sfid-20250530_044109_903078_0AA4EF73 
+X-CRM114-Status: UNSURE (   8.78  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,31 +77,43 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] fixup! arch: sync READ_ONCE/WRITE_ONCE with Linux
+Subject: [PATCH v1 0/7] NVMEM: Introduce write protection support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+This series adds a generic protect op to NVMEM core, enabling
+standardized write protection. This makes NVMEM behave more like other
+flash interfaces (e.g., CFI block protection), which helps with common
+tooling.
 
-On Wed, 28 May 2025 13:30:49 +0200, Ahmad Fatoum wrote:
-> The __no_kasan_or_inline attribute is already defined in <linux/compiler.h>.
-> Drop it from the header here and do the replacement in its own commit.
-> 
-> 
+Oleksij Rempel (7):
+  nvmem: Add 'protect' operation to core framework
+  nvmem: rmem: add write and protect support
+  commands: nvmem: Add support for creating dynamic rmem devices
+  regmap: Add reg_seal operation for hardware protection
+  nvmem: regmap: Implement protect operation using regmap_seal
+  nvmem: bsec: Implement NVMEM protect via regmap_seal for OTP locking
+  nvmem: rmem: Use unique device name for NVMEM registration
 
-Applied, thanks!
+ commands/nvmem.c               | 124 +++++++++-
+ drivers/base/regmap/internal.h |   2 +
+ drivers/base/regmap/regmap.c   |  31 +++
+ drivers/nvmem/bsec.c           |  27 ++
+ drivers/nvmem/core.c           |  48 ++++
+ drivers/nvmem/partition.c      |   7 +
+ drivers/nvmem/regmap.c         |  65 +++++
+ drivers/nvmem/rmem.c           | 438 ++++++++++++++++++++++++++++++++-
+ include/linux/nvmem-provider.h |   5 +
+ include/linux/regmap.h         |  33 +++
+ include/mach/stm32mp/bsec.h    |   1 +
+ 11 files changed, 774 insertions(+), 7 deletions(-)
 
-[1/2] fixup! arch: sync READ_ONCE/WRITE_ONCE with Linux
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c6b626c4eed6 (link may not be stable)
-[2/2] compiler: check for __SANITIZE_ADDRESS__ instead of CONFIG_KASAN
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0d321ab1a307 (link may not be stable)
-
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+--
+2.39.5
 
 
 
