@@ -1,58 +1,54 @@
-Delivery-date: Mon, 02 Jun 2025 15:51:40 +0200
+Delivery-date: Mon, 02 Jun 2025 15:59:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uM5Zk-002ypP-0v
+	id 1uM5gx-002yuZ-1C
 	for lore@lore.pengutronix.de;
-	Mon, 02 Jun 2025 15:51:40 +0200
+	Mon, 02 Jun 2025 15:59:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uM5Zj-0007Nz-Ii
-	for lore@pengutronix.de; Mon, 02 Jun 2025 15:51:40 +0200
+	id 1uM5gw-00022A-D5
+	for lore@pengutronix.de; Mon, 02 Jun 2025 15:59:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7pBkZpJgzMcqfekV0IM+T+qr1KBhJ5rEnxd6OiiXBA0=; b=wJrkotGmvHVTTj7yvi5awo701w
-	kMCftXsEkRpMSlBobox7fnaAAq68493SYMlav3eekuoDHDOc3msb7uRBh3Ke9Ug3KHFLXDEwV+BWw
-	MBZFHRNuBFcXRJBzv+tpoBNxLplI4xuG1Lok+FzkAshHMoGKwFCq2Yhms6JdqLqXL41wBMvqDT5F2
-	wkD1FMM4nw09aU/BUVX3rjR5FZyMyeFSbuIEq7q9M3/B18uKlUaWqBv/nyUm/evO8gGeofAjZAlHv
-	8VkK4YklRufPp/yUttRT+AFgQ8sQ/cwlV+nNdDN+Wwo0O2tNi59dgxIV6vcD+ufiK6u4BR+c4FTrQ
-	hgDd8eTg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ebrMEYWKZsGgTqHl7XXdv+7Z2dzNp2zjlTwHB6NDYF0=; b=Jk9yZ8gO4kZKLj6fdSKtOIqPOo
+	sWlblWLSO/mhpmXclyVxr4yZ4m5HQAcK4zPDrxtktVwH67b0P2aJ5j4QX9bYeluB0Mmz2Q8jRQ7ts
+	uK0iv6swNwGlvF8QPlQQOiNwqU1ANn3Q6YCXVM2DNGwMmuQazveqQdc40ebned43RUKhPwe2QwVh9
+	UU4d4mhxhbLqoxzJK+EhFmFjv+W8CEr+AwnLTg2O5e2I6gNcH8+znDP6gvg7XJDVkILc71mset2vy
+	qsNlxIP4Dzq1ITst5BmA9LuxcJyGbVw+C4/kO4Ukqg3zERKxFbWZsl1uDIzh/Qk6/Q1GZx/gOvztX
+	1BzkcS4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uM5ZE-00000007W6s-2sHM;
-	Mon, 02 Jun 2025 13:51:08 +0000
+	id 1uM5gM-00000007XQS-2WGH;
+	Mon, 02 Jun 2025 13:58:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uM5R1-00000007Uz1-32yK
+	id 1uM5eX-00000007XBF-1ymq
 	for barebox@lists.infradead.org;
-	Mon, 02 Jun 2025 13:42:41 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Mon, 02 Jun 2025 13:56:38 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uM5R0-00047k-Fw; Mon, 02 Jun 2025 15:42:38 +0200
-Message-ID: <7886d152-2f27-4a3a-bd0e-58d4a01c6f77@pengutronix.de>
-Date: Mon, 2 Jun 2025 15:42:38 +0200
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1uM5eV-0000xs-S2; Mon, 02 Jun 2025 15:56:35 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon,  2 Jun 2025 15:56:34 +0200
+Message-Id: <20250602135634.860593-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-References: <20250602-createnv-v1-0-c3239ff875d5@pengutronix.de>
- <20250602-createnv-v1-5-c3239ff875d5@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250602-createnv-v1-5-c3239ff875d5@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250602_064239_770000_F48B921F 
-X-CRM114-Status: GOOD (  34.86  )
+X-CRM114-CacheID: sfid-20250602_065637_664119_48354769 
+X-CRM114-Status: UNSURE (   8.05  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,142 +66,191 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 5/5] mci: add option to detect non-removable cards during
- startup
+Subject: [PATCH] fixup! video: give struct fb_videomode::pixclock a strong picoseconds_t type
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+The EDID code has a number of VESA timings, which includes a pixclock,
+but was missed as it did initialization of picosecond values directly
+without reference to the helper macros.
 
-On 02.06.25 15:28, Sascha Hauer wrote:
-> We can optionally detect all MMC/SD cards during startup which might
-> cost some boot time, so this is best disabled. This adds another option
-> to detect only cards that are marked non-removable in the device tree
-> during startup. The rationale is that we will likely boot from that
-> device anyway, so detecting it during startup does not add to the boot
-> time.
-> 
-> We are aiming to find a good place for the barebox environment without
-> having to explicitly add it to the device tree. Putting the environment
-> into a regular partition is a good start, but the device that has the
-> environment needs to be available when we are searching for it. Enabling
-> this new option is one way to it.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/mci/Kconfig    | 21 +++++++++++++++++++--
->  drivers/mci/mci-core.c |  6 +++++-
->  include/mci.h          |  1 +
->  3 files changed, 25 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-> index 44fd4716aade0882264d389cc08547c3f14986c9..417309cdf502cdf1c2b7e584c886dd94661bb0fb 100644
-> --- a/drivers/mci/Kconfig
-> +++ b/drivers/mci/Kconfig
-> @@ -19,14 +19,31 @@ config MCI_TUNING
->  	  higher clock speeds than 52 MHz SDR. MMC only; SD-Card max
->  	  frequency is 50MHz SDR at present.
->  
-> +choice
-> +	prompt "MMC startup behaviour"
+Add braces to fix this.
 
-"MMC detection on startup"?
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ drivers/video/edid.c | 68 ++++++++++++++++++++++----------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
-Does not having a default makes MCI_STARTUP the default now whereas before it was
-default n? I think MCI_STARTUP_NONE should be the default instead and
-MCI_STARTUP_NONREMOVABLE is what we enable in defconfigs that don't already
-have MCI_STARTUP.
-
-> +
->  config MCI_STARTUP
-> -	bool "Force probe on system start"
-> +	bool "detect cards on system start"
-
-detect all cards on system start
-
->  	help
-> -	  Say 'y' here if the MCI framework should always probe for all attached
-> +	  Choose this if the MCI framework should always probe for all attached
->  	  MCI cards on system start up. This may required for some legacy boards.
->  	  When this is 'n', probing happens on demand either with "mci*.probe=1"
->  	  or with driver/board code calling device_detect.
->  
-> +config MCI_STARTUP_NONREMOVABLE
-> +	bool "detect non removable cards on system start"
-> +	help
-> +	  Choose this if the MCI framework should detect non removable cards (i.e.
-> +	  devices which have the non-removable device tree property).
-> +
-> +config MCI_STARTUP_NONE
-> +	bool "detect not detect cards during system start"
-
-do not detect cards during system start
-
-> +	help
-> +	  Choose this if the MCI framework should never detect cards during system
-> +	  start
-
-should not detect cards on its own during system start. If this is enabled, cards
-will need to be explicitly detected by the user by calling detect or by explicit
-reference to the device.
-
-> +
-> +endchoice
-> +
->  config MCI_INFO
->  	bool "MCI Info"
->  	depends on CMD_DEVINFO
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 23cde58c0c5b1fae4e3692c9ac0989362376d06d..3984852a1d8d21226947aa59bc73a68e79f11d8c 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -3101,7 +3101,9 @@ int mci_register(struct mci_host *host)
->  		devinfo_add(&mci->dev, mci_info);
->  
->  	/* if enabled, probe the attached card immediately */
-> -	if (IS_ENABLED(CONFIG_MCI_STARTUP))
-> +	if (IS_ENABLED(CONFIG_MCI_STARTUP) ||
-> +	   (IS_ENABLED(CONFIG_MCI_STARTUP_NONREMOVABLE) &&
-> +	    (host->host_caps & MMC_CAP_NONREMOVABLE)))
->  		mci_card_probe(mci);
->  
->  	if (!(host->caps2 & MMC_CAP2_NO_SD) && dev_of_node(host->hw_dev)) {
-> @@ -3195,6 +3197,8 @@ void mci_of_parse_node(struct mci_host *host,
->  		host->caps2 |= MMC_CAP2_NO_SD;
->  	if (of_property_read_bool(np, "no-mmc"))
->  		host->caps2 |= MMC_CAP2_NO_MMC;
-> +	if (of_property_read_bool(np, "non-removable"))
-> +                host->host_caps |= MMC_CAP_NONREMOVABLE;
-
-We already have struct mci_host::non-removable. I don't mind copying the Linux flag,
-but we should then drop the duplication.
-
->  	if (IS_ENABLED(CONFIG_MCI_TUNING)) {
->  		u32 drv_type;
->  
-> diff --git a/include/mci.h b/include/mci.h
-> index 207fb9779a14495bdbed782c6d18245d95077055..05114fd72e6cc08025e86fe99021ff041e02101c 100644
-> --- a/include/mci.h
-> +++ b/include/mci.h
-> @@ -58,6 +58,7 @@
->  #define MMC_CAP_1_2V_DDR		(1 << 9)	/* Host supports eMMC DDR 1.2V */
->  #define MMC_CAP_DDR			(MMC_CAP_3_3V_DDR | MMC_CAP_1_8V_DDR | \
->  					 MMC_CAP_1_2V_DDR)
-> +#define MMC_CAP_NONREMOVABLE	(1 << 8)	/* Nonremovable e.g. eMMC */
->  #define MMC_CAP_UHS_SDR12	(1 << 16)	/* Host supports UHS SDR12 mode */
->  #define MMC_CAP_UHS_SDR25	(1 << 17)	/* Host supports UHS SDR25 mode */
->  #define MMC_CAP_UHS_SDR50	(1 << 18)	/* Host supports UHS SDR50 mode */
-> 
-
-
+diff --git a/drivers/video/edid.c b/drivers/video/edid.c
+index 21e13de73acd..4491dec547c4 100644
+--- a/drivers/video/edid.c
++++ b/drivers/video/edid.c
+@@ -443,125 +443,125 @@ static void calc_mode_timings(int xres, int yres, int refresh,
+ 
+ const struct fb_videomode vesa_modes[] = {
+ 	/* 0 640x350-85 VESA */
+-	{ NULL, 85, 640, 350, 31746,  96, 32, 60, 32, 64, 3,
++	{ NULL, 85, 640, 350, {31746},  96, 32, 60, 32, 64, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT, FB_VMODE_NONINTERLACED, 0},
+ 	/* 1 640x400-85 VESA */
+-	{ NULL, 85, 640, 400, 31746,  96, 32, 41, 01, 64, 3,
++	{ NULL, 85, 640, 400, {31746},  96, 32, 41, 01, 64, 3,
+ 	  FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 2 720x400-85 VESA */
+-	{ NULL, 85, 721, 400, 28169, 108, 36, 42, 01, 72, 3,
++	{ NULL, 85, 721, 400, {28169}, 108, 36, 42, 01, 72, 3,
+ 	  FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 3 640x480-60 VESA */
+-	{ NULL, 60, 640, 480, 39682,  48, 16, 33, 10, 96, 2,
++	{ NULL, 60, 640, 480, {39682},  48, 16, 33, 10, 96, 2,
+ 	  0, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 4 640x480-72 VESA */
+-	{ NULL, 72, 640, 480, 31746, 128, 24, 29, 9, 40, 2,
++	{ NULL, 72, 640, 480, {31746}, 128, 24, 29, 9, 40, 2,
+ 	  0, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 5 640x480-75 VESA */
+-	{ NULL, 75, 640, 480, 31746, 120, 16, 16, 01, 64, 3,
++	{ NULL, 75, 640, 480, {31746}, 120, 16, 16, 01, 64, 3,
+ 	  0, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 6 640x480-85 VESA */
+-	{ NULL, 85, 640, 480, 27777, 80, 56, 25, 01, 56, 3,
++	{ NULL, 85, 640, 480, {27777}, 80, 56, 25, 01, 56, 3,
+ 	  0, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 7 800x600-56 VESA */
+-	{ NULL, 56, 800, 600, 27777, 128, 24, 22, 01, 72, 2,
++	{ NULL, 56, 800, 600, {27777}, 128, 24, 22, 01, 72, 2,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 8 800x600-60 VESA */
+-	{ NULL, 60, 800, 600, 25000, 88, 40, 23, 01, 128, 4,
++	{ NULL, 60, 800, 600, {25000}, 88, 40, 23, 01, 128, 4,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 9 800x600-72 VESA */
+-	{ NULL, 72, 800, 600, 20000, 64, 56, 23, 37, 120, 6,
++	{ NULL, 72, 800, 600, {20000}, 64, 56, 23, 37, 120, 6,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 10 800x600-75 VESA */
+-	{ NULL, 75, 800, 600, 20202, 160, 16, 21, 01, 80, 3,
++	{ NULL, 75, 800, 600, {20202}, 160, 16, 21, 01, 80, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 11 800x600-85 VESA */
+-	{ NULL, 85, 800, 600, 17761, 152, 32, 27, 01, 64, 3,
++	{ NULL, 85, 800, 600, {17761}, 152, 32, 27, 01, 64, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+         /* 12 1024x768i-43 VESA */
+-	{ NULL, 43, 1024, 768, 22271, 56, 8, 41, 0, 176, 8,
++	{ NULL, 43, 1024, 768, {22271}, 56, 8, 41, 0, 176, 8,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_INTERLACED, 0 },
+ 	/* 13 1024x768-60 VESA */
+-	{ NULL, 60, 1024, 768, 15384, 160, 24, 29, 3, 136, 6,
++	{ NULL, 60, 1024, 768, {15384}, 160, 24, 29, 3, 136, 6,
+ 	  0, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 14 1024x768-70 VESA */
+-	{ NULL, 70, 1024, 768, 13333, 144, 24, 29, 3, 136, 6,
++	{ NULL, 70, 1024, 768, {13333}, 144, 24, 29, 3, 136, 6,
+ 	  0, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 15 1024x768-75 VESA */
+-	{ NULL, 75, 1024, 768, 12690, 176, 16, 28, 1, 96, 3,
++	{ NULL, 75, 1024, 768, {12690}, 176, 16, 28, 1, 96, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 16 1024x768-85 VESA */
+-	{ NULL, 85, 1024, 768, 10582, 208, 48, 36, 1, 96, 3,
++	{ NULL, 85, 1024, 768, {10582}, 208, 48, 36, 1, 96, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 17 1152x864-75 VESA */
+-	{ NULL, 75, 1152, 864, 9259, 256, 64, 32, 1, 128, 3,
++	{ NULL, 75, 1152, 864, {9259}, 256, 64, 32, 1, 128, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 18 1280x960-60 VESA */
+-	{ NULL, 60, 1280, 960, 9259, 312, 96, 36, 1, 112, 3,
++	{ NULL, 60, 1280, 960, {9259}, 312, 96, 36, 1, 112, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 19 1280x960-85 VESA */
+-	{ NULL, 85, 1280, 960, 6734, 224, 64, 47, 1, 160, 3,
++	{ NULL, 85, 1280, 960, {6734}, 224, 64, 47, 1, 160, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 20 1280x1024-60 VESA */
+-	{ NULL, 60, 1280, 1024, 9259, 248, 48, 38, 1, 112, 3,
++	{ NULL, 60, 1280, 1024, {9259}, 248, 48, 38, 1, 112, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 21 1280x1024-75 VESA */
+-	{ NULL, 75, 1280, 1024, 7407, 248, 16, 38, 1, 144, 3,
++	{ NULL, 75, 1280, 1024, {7407}, 248, 16, 38, 1, 144, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 22 1280x1024-85 VESA */
+-	{ NULL, 85, 1280, 1024, 6349, 224, 64, 44, 1, 160, 3,
++	{ NULL, 85, 1280, 1024, {6349}, 224, 64, 44, 1, 160, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 23 1600x1200-60 VESA */
+-	{ NULL, 60, 1600, 1200, 6172, 304, 64, 46, 1, 192, 3,
++	{ NULL, 60, 1600, 1200, {6172}, 304, 64, 46, 1, 192, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 24 1600x1200-65 VESA */
+-	{ NULL, 65, 1600, 1200, 5698, 304,  64, 46, 1, 192, 3,
++	{ NULL, 65, 1600, 1200, {5698}, 304,  64, 46, 1, 192, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 25 1600x1200-70 VESA */
+-	{ NULL, 70, 1600, 1200, 5291, 304, 64, 46, 1, 192, 3,
++	{ NULL, 70, 1600, 1200, {5291}, 304, 64, 46, 1, 192, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 26 1600x1200-75 VESA */
+-	{ NULL, 75, 1600, 1200, 4938, 304, 64, 46, 1, 192, 3,
++	{ NULL, 75, 1600, 1200, {4938}, 304, 64, 46, 1, 192, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 27 1600x1200-85 VESA */
+-	{ NULL, 85, 1600, 1200, 4357, 304, 64, 46, 1, 192, 3,
++	{ NULL, 85, 1600, 1200, {4357}, 304, 64, 46, 1, 192, 3,
+ 	  FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 	  FB_VMODE_NONINTERLACED, 0 },
+ 	/* 28 1792x1344-60 VESA */
+-	{ NULL, 60, 1792, 1344, 4882, 328, 128, 46, 1, 200, 3,
++	{ NULL, 60, 1792, 1344, {4882}, 328, 128, 46, 1, 200, 3,
+ 	  FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 29 1792x1344-75 VESA */
+-	{ NULL, 75, 1792, 1344, 3831, 352, 96, 69, 1, 216, 3,
++	{ NULL, 75, 1792, 1344, {3831}, 352, 96, 69, 1, 216, 3,
+ 	  FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 30 1856x1392-60 VESA */
+-	{ NULL, 60, 1856, 1392, 4580, 352, 96, 43, 1, 224, 3,
++	{ NULL, 60, 1856, 1392, {4580}, 352, 96, 43, 1, 224, 3,
+ 	  FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 31 1856x1392-75 VESA */
+-	{ NULL, 75, 1856, 1392, 3472, 352, 128, 104, 1, 224, 3,
++	{ NULL, 75, 1856, 1392, {3472}, 352, 128, 104, 1, 224, 3,
+ 	  FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 32 1920x1440-60 VESA */
+-	{ NULL, 60, 1920, 1440, 4273, 344, 128, 56, 1, 200, 3,
++	{ NULL, 60, 1920, 1440, {4273}, 344, 128, 56, 1, 200, 3,
+ 	  FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0 },
+ 	/* 33 1920x1440-75 VESA */
+-	{ NULL, 75, 1920, 1440, 3367, 352, 144, 56, 1, 224, 3,
++	{ NULL, 75, 1920, 1440, {3367}, 352, 144, 56, 1, 224, 3,
+ 	  FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0 },
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
