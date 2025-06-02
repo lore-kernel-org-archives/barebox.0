@@ -1,67 +1,67 @@
-Delivery-date: Mon, 02 Jun 2025 09:47:57 +0200
+Delivery-date: Mon, 02 Jun 2025 09:53:20 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uLztl-002sw5-05
+	id 1uLzyy-002szO-0d
 	for lore@lore.pengutronix.de;
-	Mon, 02 Jun 2025 09:47:57 +0200
+	Mon, 02 Jun 2025 09:53:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uLztk-0007H8-GZ
-	for lore@pengutronix.de; Mon, 02 Jun 2025 09:47:56 +0200
+	id 1uLzyx-00009o-Mh
+	for lore@pengutronix.de; Mon, 02 Jun 2025 09:53:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LjAffnriQU4nux0pFjgVwAxH1XjA9ItV9u0CvsYcwxU=; b=e41tGs+2YTkHvhjXJehJHm+5uf
-	FjAVL+MPe+Z6+OmcjSS2CGRxuTzdMY+DYP7uWiuZKB1MbP/kKoXulok8nZQrYIfgkAj1CbLFUzEnq
-	vssKVs1Ev0tQHzqsM2IUZVK2IAn2I/lUOpmDN2VFhd/yIxkC/XXrCnEPSIL95IMUdRJCMJ+zDbzsi
-	KgkOcWTzkj28PRc3ZLxEjJ/WqMijPI99LJqwDJXYH2KYhEQZf6dD5YftRmeKT7Fa0xc11ETeYc9a4
-	FTdmo/wthWdW+kK/OANgPh85pQjWv0WYKJ/p72BdjK/kMUZLfP/UkYUHiGk5J/9TlMWZaBtCokAU5
-	zAAsPQhA==;
+	bh=KuQ2f3AjUI/ccgo9cWQWGwYVMtCmI3A1QDLSiQqLhA8=; b=2vyiiS/gHrk8bfH05CXj/ETthA
+	/nRgjrYo7R69uzpCMmzbjYzesodQog4gFevaMu+ozwRpRxa53oXvUAlvStn4/DT4tk3Wc6wVR0ScA
+	uL8yRh+nq7POCodBdoQ9evDGO7N0Rg+QKFsg+cc47Wn4PdzuluaH9i7MgtKvxRZ0if0PWwi/CE6SJ
+	O5a5WpilthBjePb/Mh/fQ8UqYEIPr6e8cC7SudrzU/LHu+GXIac005U4SP/2Li5oGplu59+706h3b
+	MPN2q4NWNcVwrgCiRiRZlxDKBwXdjPaa8u71VtlqWfPUMGy7Reo6bu35pT+Stu0d9OdzFkhOZ8tT7
+	91mygxHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uLztK-00000006w2u-2Ro8;
-	Mon, 02 Jun 2025 07:47:30 +0000
+	id 1uLzyU-00000006wO8-0Lbt;
+	Mon, 02 Jun 2025 07:52:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uLztH-00000006w2Z-2hPc
+	id 1uLzyR-00000006wNm-2HDb
 	for barebox@lists.infradead.org;
-	Mon, 02 Jun 2025 07:47:28 +0000
+	Mon, 02 Jun 2025 07:52:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uLztG-00077a-E6; Mon, 02 Jun 2025 09:47:26 +0200
+	id 1uLzyP-0008Qv-K5; Mon, 02 Jun 2025 09:52:45 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uLztG-001Ptl-0m;
-	Mon, 02 Jun 2025 09:47:26 +0200
+	id 1uLzyP-001PuH-1P;
+	Mon, 02 Jun 2025 09:52:45 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uLztG-003VtM-0Y;
-	Mon, 02 Jun 2025 09:47:26 +0200
+	id 1uLzyP-003Vx1-1C;
+	Mon, 02 Jun 2025 09:52:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20250602060245.746307-1-a.fatoum@barebox.org>
-References: <20250602060245.746307-1-a.fatoum@barebox.org>
-Message-Id: <174885044616.837537.8435571420947415755.b4-ty@pengutronix.de>
-Date: Mon, 02 Jun 2025 09:47:26 +0200
+In-Reply-To: <20250601121551.343612-1-a.fatoum@barebox.org>
+References: <20250601121551.343612-1-a.fatoum@barebox.org>
+Message-Id: <174885076536.837764.16979459021752916273.b4-ty@pengutronix.de>
+Date: Mon, 02 Jun 2025 09:52:45 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250602_004727_685972_3169CD61 
-X-CRM114-Status: UNSURE (   8.56  )
+X-CRM114-CacheID: sfid-20250602_005247_584476_B6582588 
+X-CRM114-Status: UNSURE (   7.03  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,27 +84,27 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] logo: spell out CONFIG_ options for fixdep
+Subject: Re: [PATCH] gui: bmp: add support for alpha channel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 02 Jun 2025 08:02:45 +0200, Ahmad Fatoum wrote:
-> To avoid rebuilding nearly the whole project when a header changes,
-> fixdep collects referenced CONFIG_ symbols in every file and prunes the
-> dependency list accordingly. This only works when we don't hide CONFIG_
-> symbols with preprocessor text substitution shenanigans.
+On Sun, 01 Jun 2025 14:15:51 +0200, Ahmad Fatoum wrote:
+> Apparently, 32-bit bitmaps are a thing and at least Debian Bookworm's
+> ImageMagick 6.9.11-60 generates them by default, unless
+> -alpha deactivate is passed to convert.
 > 
-> logo.c does just that triggering a compile failure, when logos are
-> removed in config without touching the file. Spell out the config
-> symbols to fix this.
+> We don't pass that and thus barebox complains when asked to display them:
+> 
+>   barebox@STM32MP157C-DK2:/ splash /logo/barebox-logo-64.bmp
+>   bmp: illegal bits per pixel value: 32
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] logo: spell out CONFIG_ options for fixdep
-      https://git.pengutronix.de/cgit/barebox/commit/?id=dfd981b5808f (link may not be stable)
+[1/1] gui: bmp: add support for alpha channel
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0034d4ba36d0 (link may not be stable)
 
 Best regards,
 -- 
