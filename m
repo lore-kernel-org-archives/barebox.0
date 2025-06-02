@@ -1,73 +1,69 @@
-Delivery-date: Mon, 02 Jun 2025 14:33:02 +0200
+Delivery-date: Mon, 02 Jun 2025 14:35:05 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uM4Le-002xaP-1o
+	id 1uM4Nd-002xc1-1a
 	for lore@lore.pengutronix.de;
-	Mon, 02 Jun 2025 14:33:02 +0200
+	Mon, 02 Jun 2025 14:35:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uM4Le-0004bu-16
-	for lore@pengutronix.de; Mon, 02 Jun 2025 14:33:02 +0200
+	id 1uM4Nc-0005XT-Vo
+	for lore@pengutronix.de; Mon, 02 Jun 2025 14:35:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2PHGNsoTowGWG0n0BXNvcAEeSp6BNa8SszMXPJVViGQ=; b=D1V3rRl0JA+SFw23CDHmNBhSTf
-	S+RPA855YxoH24631HzXdPp3/T29FG6Uc5gn9r3YfHU433tIE+gQLe1/pWKsdBJGiaYGZ+RvVWwvl
-	jaHAHQjNj5++9AeLOzJKHwCBFJYioPhccNiCXfd+ou8rIwKogzabWjV9ir9SHWcVBwq0CM84hwBd4
-	y5gsLBmVoq0FpX5k6eWu9lNeyqRsO6YEYXbazge1kLWZ8dsNg6Qd8fAm+NXYyEDNmK+2h/1I4ajsR
-	DBrIrDPWxLmMxSdnbwJD9cuN5hohsmhUxRlCOHAgn46Q+o0F8/rqeBLy0xmSQ8iLr81SKbvWeVvNs
-	zo0cFR1w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=irprOwwGx9PHZvZO3XadPG8GZyIQhyFJZoQTsr2m67U=; b=LcQddpndPrSNjJfQ9o0nltgaYO
+	yOSjjY9E6/gNgdz5YdWOkLI8YHRMELt28TCuOuLn+vzYyv7coUl820flqS9fX80UWC0Qjo1JZnbpP
+	p6lQjrRJza2PIYBydm69Xy+ifZfixwq6aVSkOGPEsfSZWHhTiMBdSnpd2KdAcuFjcij7UFOxeNd9i
+	C36EUL4YHJVoDhDY3tvwZVI3xuzqn1S/vQ4uLQLzkhL027ysB3FOFGCg9gxRcK0c8UAP4BeJD10ga
+	vX4fwj/RHaAYdmJHFQRP5kT8d4notSbi0NaaXHnhDWqK8jXYch6Ndk6CQv8w06wBGWl99nQ9vbEq2
+	SGDnerIw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uM4L5-00000007MvH-1gFf;
-	Mon, 02 Jun 2025 12:32:27 +0000
+	id 1uM4NF-00000007NGZ-3Saq;
+	Mon, 02 Jun 2025 12:34:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uM4EM-00000007MKd-3ceg
+	id 1uM4I5-00000007Mnl-0PZR
 	for barebox@lists.infradead.org;
-	Mon, 02 Jun 2025 12:25:32 +0000
+	Mon, 02 Jun 2025 12:29:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uM4EL-00026Y-Gm; Mon, 02 Jun 2025 14:25:29 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uM4I3-0003Ol-VH; Mon, 02 Jun 2025 14:29:19 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uM4EL-001S9J-14;
-	Mon, 02 Jun 2025 14:25:29 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uM4EL-006e5P-0j;
-	Mon, 02 Jun 2025 14:25:29 +0200
-Date: Mon, 2 Jun 2025 14:25:29 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uM4I3-001S9n-2X;
+	Mon, 02 Jun 2025 14:29:19 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uM4I3-004BiC-2J;
+	Mon, 02 Jun 2025 14:29:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>, barebox@lists.infradead.org
-Message-ID: <aD2YOXBjq9CzASym@pengutronix.de>
-References: <20250527212300.575031-1-a.fatoum@barebox.org>
- <20250527212300.575031-8-a.fatoum@barebox.org>
- <aD2VWAhkaVs9txjY@pengutronix.de>
- <8d27b9f5-7b0d-4489-884b-38339adb0fec@pengutronix.de>
+To: barebox@lists.infradead.org, 
+ =?utf-8?q?Enrico_J=C3=B6rns?= <ejo@pengutronix.de>
+In-Reply-To: <20250527075205.2915063-1-ejo@pengutronix.de>
+References: <20250527075205.2915063-1-ejo@pengutronix.de>
+Message-Id: <174886735971.998258.6435902715279285796.b4-ty@pengutronix.de>
+Date: Mon, 02 Jun 2025 14:29:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d27b9f5-7b0d-4489-884b-38339adb0fec@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250602_052530_904068_61E28072 
-X-CRM114-Status: GOOD (  19.90  )
+X-CRM114-CacheID: sfid-20250602_052921_138884_1C505461 
+X-CRM114-Status: UNSURE (   6.96  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,44 +85,31 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 07/15] efi: types: implement
- efi_phys_to_virt/efi_virt_to_phys helpers
+Subject: Re: [PATCH] docs: conf.py: tweak SearchEnglish to be hyphen- and
+ dot-friendly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Jun 02, 2025 at 02:14:36PM +0200, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 6/2/25 14:13, Sascha Hauer wrote:
-> > On Tue, May 27, 2025 at 11:22:52PM +0200, Ahmad Fatoum wrote:
-> >> From: Ahmad Fatoum <ahmad@a3f.at>
-> >>
-> >> We shouldn't have any physical addresses exceeding 32-bit on 64-bit
-> >> systems,
-> > 
-> > Why? Aren't 64bit physical addresses normal on 64bit systems?
-> 
-> Sorry, other way round. We shouldn't have 64-bit addresses on 32-bit
-> systems.
-> 
-> > 
-> >> especially as barebox doesn't implement ARM32 LPAE.
-> > 
-> > This patch doesn't seem to be Arm specific, so why mention ARM32 LPAE
-> > here?
-> > 
-> > I think I am missing something here.
-> 
-> Sorry for the Switcharoo. Can you fixup or should I resend?
 
-Fixed it up, thanks
+On Tue, 27 May 2025 09:52:05 +0200, Enrico Jörns wrote:
+> This modifies the default indexer split() and js splitQuery()
+> methods to support searching for words with 'inner' hyphens or dots.
+> 
+> While this might not be an ideal, rock solid, and fully future-proof
+> solution, since it relies on some upstream sphinx-docs methods to exist,
+> it allows to search for strings including hyphens and dots, such as
+> 'OP-TEE', 'nv.bootchooser.last_chosen', or 'barebox-state'.
+> 
+> [...]
 
-Sascha
+Applied, thanks!
 
+[1/1] docs: conf.py: tweak SearchEnglish to be hyphen- and dot-friendly
+      https://git.pengutronix.de/cgit/barebox/commit/?id=508059d41381 (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
