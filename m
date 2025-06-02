@@ -1,68 +1,68 @@
-Delivery-date: Mon, 02 Jun 2025 14:35:05 +0200
+Delivery-date: Mon, 02 Jun 2025 14:35:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uM4Nd-002xc1-1a
+	id 1uM4Ne-002xcM-2x
 	for lore@lore.pengutronix.de;
-	Mon, 02 Jun 2025 14:35:05 +0200
+	Mon, 02 Jun 2025 14:35:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uM4Nc-0005XT-Vo
-	for lore@pengutronix.de; Mon, 02 Jun 2025 14:35:05 +0200
+	id 1uM4Ne-0005Xw-D7
+	for lore@pengutronix.de; Mon, 02 Jun 2025 14:35:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=irprOwwGx9PHZvZO3XadPG8GZyIQhyFJZoQTsr2m67U=; b=LcQddpndPrSNjJfQ9o0nltgaYO
-	yOSjjY9E6/gNgdz5YdWOkLI8YHRMELt28TCuOuLn+vzYyv7coUl820flqS9fX80UWC0Qjo1JZnbpP
-	p6lQjrRJza2PIYBydm69Xy+ifZfixwq6aVSkOGPEsfSZWHhTiMBdSnpd2KdAcuFjcij7UFOxeNd9i
-	C36EUL4YHJVoDhDY3tvwZVI3xuzqn1S/vQ4uLQLzkhL027ysB3FOFGCg9gxRcK0c8UAP4BeJD10ga
-	vX4fwj/RHaAYdmJHFQRP5kT8d4notSbi0NaaXHnhDWqK8jXYch6Ndk6CQv8w06wBGWl99nQ9vbEq2
-	SGDnerIw==;
+	bh=hAAzcPd31N4pUxpOShqT+r9P6a0rwALjjaOAH7m7fFE=; b=AZ/k1vBzOWbwPKtXLicaSL2MDO
+	hiFU6ogdBKUpqvQiayr3pcNf7v6vsLzblvIEM4sMc0dOP9p8/tzMx1xbrVhvBDr+rF9bFpqK0amzM
+	07mBl/ThnZEyuISE07a/4bEjP9/WgmAnlCL3Fn9h2M5cMg8VxG3PJGRqOsjnoGislwIhtCWH4ONSH
+	8Gtk8hRyDd6yXaWbVc1G2rqobSr/VefmgGK7qUfPYV0AlWQ7CPBjGxl5pvplLdin4ta7N8OBJMqua
+	jWSaBBG7WQUg4j7aAqXdkrV+Wd46OAr2YGOtVE1aJYK97IZeKXe4/94GIX8DBameyQbd9rZCfkjUo
+	k3pRXPHg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uM4NF-00000007NGZ-3Saq;
-	Mon, 02 Jun 2025 12:34:41 +0000
+	id 1uM4NG-00000007NGy-1nNB;
+	Mon, 02 Jun 2025 12:34:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uM4I5-00000007Mnl-0PZR
+	id 1uM4Iy-00000007MpQ-2jHS
 	for barebox@lists.infradead.org;
-	Mon, 02 Jun 2025 12:29:22 +0000
+	Mon, 02 Jun 2025 12:30:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uM4I3-0003Ol-VH; Mon, 02 Jun 2025 14:29:19 +0200
+	id 1uM4Ix-0003fn-Dt; Mon, 02 Jun 2025 14:30:15 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uM4I3-001S9n-2X;
-	Mon, 02 Jun 2025 14:29:19 +0200
+	id 1uM4Ix-001S9w-0m;
+	Mon, 02 Jun 2025 14:30:15 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uM4I3-004BiC-2J;
-	Mon, 02 Jun 2025 14:29:19 +0200
+	id 1uM4Ix-004GGy-0Z;
+	Mon, 02 Jun 2025 14:30:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- =?utf-8?q?Enrico_J=C3=B6rns?= <ejo@pengutronix.de>
-In-Reply-To: <20250527075205.2915063-1-ejo@pengutronix.de>
-References: <20250527075205.2915063-1-ejo@pengutronix.de>
-Message-Id: <174886735971.998258.6435902715279285796.b4-ty@pengutronix.de>
-Date: Mon, 02 Jun 2025 14:29:19 +0200
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20250602-cdev-part-fixes-v1-0-814d9aa195ed@pengutronix.de>
+References: <20250602-cdev-part-fixes-v1-0-814d9aa195ed@pengutronix.de>
+Message-Id: <174886741517.1015787.10040359069867169399.b4-ty@pengutronix.de>
+Date: Mon, 02 Jun 2025 14:30:15 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250602_052921_138884_1C505461 
-X-CRM114-Status: UNSURE (   6.96  )
+X-CRM114-CacheID: sfid-20250602_053016_698414_222FF628 
+X-CRM114-Status: UNSURE (   8.39  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,27 +85,27 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] docs: conf.py: tweak SearchEnglish to be hyphen- and
- dot-friendly
+Subject: Re: [PATCH 0/2] cdev partition fix
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 27 May 2025 09:52:05 +0200, Enrico Jörns wrote:
-> This modifies the default indexer split() and js splitQuery()
-> methods to support searching for words with 'inner' hyphens or dots.
+On Mon, 02 Jun 2025 10:51:30 +0200, Sascha Hauer wrote:
+> cdev partitions are cdevs themselves, but they are handled internally in
+> the devfs-core. cdev partitions should not be passed as context pointers
+> to the cdev ops though, because the drivers might do a container_of() on
+> them to retrieve their driver data. Pass the original cdev the driver
+> has registered as context to the ops
 > 
-> While this might not be an ideal, rock solid, and fully future-proof
-> solution, since it relies on some upstream sphinx-docs methods to exist,
-> it allows to search for strings including hyphens and dots, such as
-> 'OP-TEE', 'nv.bootchooser.last_chosen', or 'barebox-state'.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] docs: conf.py: tweak SearchEnglish to be hyphen- and dot-friendly
-      https://git.pengutronix.de/cgit/barebox/commit/?id=508059d41381 (link may not be stable)
+[1/2] cdev: pass master cdev to cdev ops
+      https://git.pengutronix.de/cgit/barebox/commit/?id=08e276fbe412 (link may not be stable)
+[2/2] nvmem: Drop now unnecessary partition quirk
+      https://git.pengutronix.de/cgit/barebox/commit/?id=df7bfd5b4fe4 (link may not be stable)
 
 Best regards,
 -- 
