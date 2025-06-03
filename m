@@ -1,72 +1,68 @@
-Delivery-date: Tue, 03 Jun 2025 09:47:39 +0200
+Delivery-date: Tue, 03 Jun 2025 09:55:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uMMN1-003Ehg-24
+	id 1uMMUB-003Emm-2l
 	for lore@lore.pengutronix.de;
-	Tue, 03 Jun 2025 09:47:39 +0200
+	Tue, 03 Jun 2025 09:55:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uMMN1-0001Ya-20
-	for lore@pengutronix.de; Tue, 03 Jun 2025 09:47:39 +0200
+	id 1uMMUB-0005Tk-4H
+	for lore@pengutronix.de; Tue, 03 Jun 2025 09:55:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=G+EDRs2VCi4bYWg7WDbpyCtc7zN7OR0NFpiGBoIY3Gc=; b=2TA31WsOBD/vsmCjBjxLqlMxLW
-	GR1ZLVP70T8rItNXLtXzdJ4fBSbZzh5id5N8yYmWe/pD412oXRVofUFXGxI0kTM4H2k1Bu0Y6CMnX
-	E2djsd83PnVCwY1lst/jTKY6Q+QoWZrFhfIr96Kc+mmmDO8lAGTMuNoTUJ/2cJbYDfFU9tZS1gGLs
-	A8ABPeqfbm8+qAOrIdrtpszdmVxp60AVINLguQB0NDUclkMkgzK8xd3pNQ/AhxOApYTWwIlhKH01D
-	FQg/TeYyXo7BSfD9v/o4PaJa1P0hzjLQhNalUc9CaGy7um5gIjj4gUgfuOY2E7OVQeYbg8r9mDRnU
-	JIGNkJsQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=UxW1YRCU3kD393icHegDoHd9k7aGPBZfH9Y2wE/f/9E=; b=4Ll4CZFGDlqpKa2D5ngGK0pMl/
+	wST74/cSjJ84nZ//ZOFYDU/eQ7Vt7ThJZgbRpnKNuktY3ifwASDYPL6Blxu3JCN5ONJvFJKAGs52j
+	85k817hZ0H4HU0030VH6SXmfvD4XUWGEvi7I4AezAIZswjayk+Ue8ZZE7ol5OAYX1kHrTpDCcN8yN
+	6a9yaabQ9lqhL8ryWvwnaZgUFPQ0IkAZqTLsWA2dHZ0iXYnY78UtmrVdxdXhEc6MCuMffyEqNdSEo
+	I0uZ4bDxmd1j6Rvkg8Dm5eeDemSbPY+xPWkjEGUzm80dWhprtSojdQGrGultPQ2tjGnb5nSiX53K5
+	68XWTEdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uMMMF-0000000ABsP-1fO8;
-	Tue, 03 Jun 2025 07:46:51 +0000
+	id 1uMMTj-0000000ADUL-3I9K;
+	Tue, 03 Jun 2025 07:54:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uMMMB-0000000ABs1-4787
+	id 1uMMTg-0000000ADSZ-44xF
 	for barebox@lists.infradead.org;
-	Tue, 03 Jun 2025 07:46:49 +0000
+	Tue, 03 Jun 2025 07:54:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uMMM9-00012k-Us; Tue, 03 Jun 2025 09:46:45 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uMMTe-00058j-6A; Tue, 03 Jun 2025 09:54:30 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uMMM9-001aQd-2U;
-	Tue, 03 Jun 2025 09:46:45 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uMMM9-008XdN-25;
-	Tue, 03 Jun 2025 09:46:45 +0200
-Date: Tue, 3 Jun 2025 09:46:45 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uMMTe-001aRG-02;
+	Tue, 03 Jun 2025 09:54:30 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uMMTd-00Df2E-2z;
+	Tue, 03 Jun 2025 09:54:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <aD6oZccyFXZWX2q1@pengutronix.de>
-References: <20250602-createnv-v1-0-c3239ff875d5@pengutronix.de>
- <20250602-createnv-v1-2-c3239ff875d5@pengutronix.de>
- <20250602221633.i7xvmam4jwb22vwz@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20250602135634.860593-1-a.fatoum@barebox.org>
+References: <20250602135634.860593-1-a.fatoum@barebox.org>
+Message-Id: <174893726991.3255534.10950746311440275077.b4-ty@pengutronix.de>
+Date: Tue, 03 Jun 2025 09:54:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250602221633.i7xvmam4jwb22vwz@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250603_004648_018645_20844983 
-X-CRM114-Status: GOOD (  24.31  )
+X-CRM114-CacheID: sfid-20250603_005433_020310_6A19CD8F 
+X-CRM114-Status: UNSURE (   6.91  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,59 +80,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/5] partitions: Start partitions at 8MiB offset
+Subject: Re: [PATCH] fixup! video: give struct fb_videomode::pixclock a
+ strong picoseconds_t type
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jun 03, 2025 at 12:16:33AM +0200, Marco Felsch wrote:
-> Hi Sascha,
+
+On Mon, 02 Jun 2025 15:56:34 +0200, Ahmad Fatoum wrote:
+> The EDID code has a number of VESA timings, which includes a pixclock,
+> but was missed as it did initialization of picosecond values directly
+> without reference to the helper macros.
 > 
-> On 25-06-02, Sascha Hauer wrote:
-> > There are many SoCs that store the bootloader on the raw eMMC/SD device
-> > outside of partitions. Examples are all i.MX SoCs and Rockchip SoCs.
-> > Until now the first partition starts at offset 1MiB and with this we
-> > risk conflicting with the bootloader.
-> > 
-> > It's cumbersome to sort out all SoCs that have this problem. With
-> > nowadays eMMC/SD card sizes it doesn't really matter anymore, so change
-> > the 1MiB offset to 8MiB which is still only a small fraction of the
-> > card size, but leaves enough space for putting the bootloader into.
-> > 
-> > Note the change in the GPT partition handling introduced with this
-> > change. The layout previously was:
-> > 
-> > LBA0: MBR
-> > LBA1: GPT header
-> > LBA2-33: GPT partition entries
-> > 
-> > which now becomes:
-> > 
-> > LBA0: MBR
-> > LBA1: GPT header
-> > LBA16352-16383: GPT partition entries
-> > 
-> > This means the GPT partition entries moved from LBA2 to just below the
-> > 8MiB boundary and LBA2-16351 are now free for the bootloader. This helps
-> > with with older SoCs on which the bootloader overlaps with the normal
-> > location of the GPT partition entries, like i.MX7 and earlier.
+> Add braces to fix this.
 > 
-> I know that eMMC became quite large these days but always 'wasting' 8MiB
-> on systems which utilize the eMMC-boot partitions is not very user
-> friendly.
+> 
+> [...]
 
-That's 0.78% of 1GiB SD card, it's really not much. Anyway, I can add a
-command line option for parted.
+Applied, thanks!
 
-Sascha
+[1/1] fixup! video: give struct fb_videomode::pixclock a strong picoseconds_t type
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3258ee703b67 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
