@@ -1,57 +1,61 @@
-Delivery-date: Tue, 03 Jun 2025 13:00:51 +0200
+Delivery-date: Tue, 03 Jun 2025 16:48:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uMPNz-003HZt-32
+	id 1uMSwF-003L0Z-32
 	for lore@lore.pengutronix.de;
-	Tue, 03 Jun 2025 13:00:51 +0200
+	Tue, 03 Jun 2025 16:48:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uMPNz-0007MV-CM
-	for lore@pengutronix.de; Tue, 03 Jun 2025 13:00:51 +0200
+	id 1uMSwE-0001e3-VZ
+	for lore@pengutronix.de; Tue, 03 Jun 2025 16:48:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=igZpwPq4v3eO3du/u/Vg4n62ngRu8ar4QHV1ZU9nARg=; b=MrDUisEnNH9EhBNI05MXIRj9sX
-	brxqPbQcIRt2TrKqVTijVWjfqCrBxEPF+N0cxouci1kvOjINaStcd1v2Ph2v6jgyIGGllQ8v9uc5n
-	F/w0jWI7HVDYO3SIznh5t7L0AGnNgfJSvRZHmyKMTeiFZ6a7iDIK36RGTmB9f+QYfBRL5skal4CXu
-	vdVcP0xL5KZPSi0Q+Xr/qtkkwHeTUtiSFyu20D2dtLbaoDjkMbij1DVS0BrXkyuc7fMNn9VwPUJEi
-	cH7bjg4s258z7Uk10gNR+VaL4laHFwFZ/Z40JawLcK7ovgzpowGm6mGoe3HGafVSc60xmonzslDIE
-	TNBwqeZw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
+	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4ah36eeSDxI+SC1lEdE16ijLbkMOsz57qoKcRB36PXY=; b=3SJP9mbrBVA6dKWlWbLQhEIXpz
+	nWEmj69YYB5KUesudWqehaOp6U2lYn47tIiVqThmv7djZ9dOwm3uGZM71c89HwlSiQGIWGtqz4GJe
+	zNJwH77qOxHDgf02O59xzO9/F5XOS/fM1SG1yeP4/cu67AKD0K/BhoZQ41Avq4kyn+nRszwOxV769
+	rpTfg4ApW3cykF4cwkD63Z49baeayznOdMmXncRG2Fpw4QydKLLccIAZPa444CcWdOzteiR7LgjwR
+	0bCzGJ3EC4gudlfnmzybkewKVZiYPfgoRdzk9C1dDZC5GxDnQ8AKYN+SUQfYyuCbt7hqgy+GG7Spu
+	m1ou8G4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uMPNM-0000000AjiO-331E;
-	Tue, 03 Jun 2025 11:00:12 +0000
+	id 1uMSvT-0000000BCGi-2GuP;
+	Tue, 03 Jun 2025 14:47:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uMPNI-0000000Ajhh-23nE
+	id 1uMSvP-0000000BCFP-3RZ9
 	for barebox@lists.infradead.org;
-	Tue, 03 Jun 2025 11:00:11 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uMPNH-0006uB-C2; Tue, 03 Jun 2025 13:00:07 +0200
-Message-ID: <e173690a-c1df-4103-b0ea-9294eb348220@pengutronix.de>
-Date: Tue, 3 Jun 2025 13:00:07 +0200
+	Tue, 03 Jun 2025 14:47:37 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1uMSvN-0000jv-Lp; Tue, 03 Jun 2025 16:47:33 +0200
+Message-ID: <47261d55d72a6f34618ca9d4b86214f306a91f5a.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Fabian Pflug
+	 <f.pflug@pengutronix.de>, barebox@lists.infradead.org
+Cc: rouven.czerwinski@linaro.org
+Date: Tue, 03 Jun 2025 16:47:33 +0200
+In-Reply-To: <6ce5c98c-4f8e-46f6-8dd3-7c911578feb8@pengutronix.de>
+References: <20250603092044.1464440-1-f.pflug@pengutronix.de>
+	 <20250603092044.1464440-2-f.pflug@pengutronix.de>
+	 <569963942cf35755dfdf34b240c350986fda4727.camel@pengutronix.de>
+	 <6ce5c98c-4f8e-46f6-8dd3-7c911578feb8@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: barebox@lists.infradead.org
-Cc: Fabian Pflug <fpg@pengutronix.de>
-References: <20250603105914.3068724-1-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20250603105914.3068724-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250603_040008_542136_ED3A8E04 
-X-CRM114-Status: GOOD (  22.15  )
+X-CRM114-CacheID: sfid-20250603_074736_019352_28FBA7DE 
+X-CRM114-Status: GOOD (  54.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,68 +73,188 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] common: optee: improve documentation of options
+Subject: Re: [PATCH 2/2] ARM: optee-early: invalidate caches before jump to
+ OP-TEE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Am Dienstag, dem 03.06.2025 um 12:18 +0200 schrieb Ahmad Fatoum:
+> Hello Lucas,
+>=20
+> On 6/3/25 11:57, Lucas Stach wrote:
+> > Hi Fabian,
+> >=20
+> > Am Dienstag, dem 03.06.2025 um 11:20 +0200 schrieb Fabian Pflug:
+> > > The optee-early code was initially added for i.MX6UL. Trying to naive=
+ly
+> > > enable it on an i.MX6Q boards was observed to cause spurious hangs on
+> > > return from OP-TEE to barebox.
+> > >=20
+> > > The root cause seems to be inadequate cache handling by OP-TEE: OP-TE=
+E
+> > > enables the MMU and caches with it, but didn't take care to invalidat=
+e
+> > > all cache lines before enabling the MMU, which triggered the
+> > > aforementioned hangs.
+> > >=20
+> > > To paper over this issue, let's just invalidate the cache lines on th=
+e
+> > > barebox side instead before jumping to OP-TEE. This issue did likely =
+not
+> > > affect the original i.MX6UL, because its Cortex-A7 has an architected=
+ L2
+> > > cache that's guaranteed zeroed (no dirty cache lines) on power-on res=
+et,
+> > > unlike the i.MX6Q's Cortex-A9, where the external L2 cache powers on
+> > > with unpredictable content including the dirty bits.
+> > >=20
+> > The explanation here doesn't make too much sense to me. I don't think
+> > the outer L2 cache is even enabled at this point, but even if it were
+> > arm_early_mmu_cache_invalidate() only handles architected caches, so it
+> > wouldn't affect the PL310 on the i.MX6Q/DL.
+>=20
+> You're right. I recalled issues that bit us in the past on the
+> Cortex-A9, but not on the A7 and took a wrong turn trying to rationalize
+> this change with a spotty recollection.
+>=20
+> > The real issue with the Cortex A9 caches is that the tags aren't
+> > cleared on power-up, so some sets/ways may end up in "valid" state if
+> > not explicitly invalidated.
+>=20
+> I see, thanks for the clarification. So the issue is with our handling
+> of the L1 cache instead.
+>=20
+> > Thus any write to memory may get stuck in
+> > the cache, even if caching is disabled, as this knob only turns off=20
+> > allocation in the cache, but doesn't prevent updates of such bogus
+> > valid lines.
+>=20
+> Ok, so if CR_C is unset, the cache is still used when reading/writing,
+> provided that the cache line is valid.
+>=20
+Exactly. Clearing CR_C disables cache allocation, but lookups in the
+cache still proceed as normal.
 
-On 6/3/25 12:59, Ahmad Fatoum wrote:
-> CONFIG_OPTEE_SIZE and CONFIG_OPTEE_SHM_SIZE have a correspondence to OP-TEE
-> build config options, so point that out in the help text.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
+> > If you then proceed to invalidate the cache, you may
+> > discard data that has not yet reached DRAM. So IMO this fix here seems
+> > risky, as it assumes that there have been no writes to memory that are
+> > worth keeping before calling start_optee_early(). While this might be
+> > the case in the current implementation, this assumption is quite non-
+> > obvious to someone just looking at the individual functions.
+>=20
+> Agreed. If the issue is with the valid and not the dirty bit,
+> invalidation at this location is incorrect.
+>=20
+> > The stuck writes are also why OP-TEE is unable to handle this itself:
+> > any cache invalidation there would risk discarding writes from software
+> > running before OP-TEE. So the only way to handle this properly is to
+> > invalidate the caches before issuing any writes.
+>=20
+> This makes me wonder though about the regular case without any OP-TEE as
+> we are already doing arm_early_mmu_cache_invalidate() inside
+> __barebox_arm_entry:
+>=20
+>  - low level init code writes something to handoff object or to scratch
+>    area
+>=20
+>  - The freshly written data ends up in (L1) cache as tag was valid
+>=20
+>  - arm_early_mmu_cache_invalidate() discards these writes
+>=20
+>  - The uncompressor or barebox proper ends up with corrupted data.
+>=20
+> We don't have many objects that are accessed both before and after
+> arm_early_mmu_cache_invalidate, so maybe that's why we didn't run into
+> more problems?
+>=20
+Yea, I would guess that the probability of hitting this issue with the
+handoff data, which isn't that big, is quite low. At least from the
+description above I think we can hit the same issues with the handoff
+data.
 
-v1 -> v2:
-  - fix confusion about CFG_SHMEM_SIZE erroneously not being part of
-    CONFIG_OPTEE_SIZE
+> > I guess it would be much better to simply have the
+> > arm_early_mmu_cache_invalidate() as part of the Cortex A9 lowlevel CPU
+> > initialization at the very start of the PBL entry.
+>=20
+> We don't have a dedicated Cortex-A9 lowlevel entry function
+> unfortunately, just some for specific processors, e.g. the
+> imx6_cpu_lowlevel_init.
+>=20
+> We could add CONFIG_CPU_CORTEX_A9, select it from the relevant SoC
+> options and depending on it, add the invalidation to
+> arm_cpu_lowlevel_init()? What do you think?
+>=20
+This would then trigger the invalidation even on systems that don't
+need it in case of a multiarch Barebox. There aren't that many Cortex
+A9 based SoCs supported in Barebox and all of them should have a SoC
+specific init function to apply the necessary workarounds, so I think
+it would be fine to call the cache invalidate from the SoC specific
+lowlevel init of those few SoCs?
 
-> Cc: Fabian Pflug <fpg@pengutronix.de>
-> ---
->  common/Kconfig | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index fe50da8f3084..987148847eac 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1304,9 +1304,11 @@ config OPTEE_SIZE
->  	prompt "OP-TEE Memory Size"
->  	depends on HAVE_OPTEE
->  	help
-> -	  Size to reserve in main memory for OP-TEE.
-> +	  Size to reserve in main memory for OP-TEE, including its shared memory.
->  	  Can be larger than the actual size used by OP-TEE, this is used to prevent
->  	  barebox from using or speculating into this area.
-> +	  On i.MX, this should be at least OP-TEE CFG_TZDRAM + CFG_SHMEM_SIZE.
-> +	  The name of the CFG_ options may differ on other platforms.
->  
->  config OPTEE_SHM_SIZE
->  	hex
-> @@ -1315,7 +1317,11 @@ config OPTEE_SHM_SIZE
->  	depends on HAVE_OPTEE
->  	help
->  	  Size to reserve in main memory for static OP-TEE shared memory
-> -	  communication. Can be used for fixing up the OP-TEE OF node.
-> +	  communication. The OP-TEE shared memory starts directly after
-> +	  the OPTEE TZDRAM region. It should be chosen to be equivalent
-> +	  to CFG_SHMEM_SIZE in OP-TEE.
-> +
-> +	  This value can be used for fixing up the OP-TEE OF node.
->  
->  	  A shared memory size of 0 means that only dynamic shared memory
->  	  will be supported for communication with OP-TEE. This is the only
+Regards,
+Lucas
 
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+> Thanks,
+> Ahmad
+>=20
+>=20
+> >=20
+> > Regards,
+> > Lucas
+> >=20
+> > > This means on e.g. the i.MX6UL, we will now do one extra cache invali=
+dation
+> > > that's not needed. This should be negligible and we are already had a=
+n
+> > > unconditional invalidation in __barebox_arm_entry.
+> > >=20
+> > > Note that this is a different implementation than what we do on ARM64=
+,
+> > > there we load TF-A before it jumps to OP-TEE and assuming
+> > > non-architected caches or caches with uninitialized content on power-=
+on
+> > > to be a dying breed, our ARM64 implementation is likely not affected.
+> > >=20
+> > > Co-authored-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> > > ---
+> > >  arch/arm/lib32/optee-early.c | 13 +++++++++++++
+> > >  1 file changed, 13 insertions(+)
+> > >=20
+> > > diff --git a/arch/arm/lib32/optee-early.c b/arch/arm/lib32/optee-earl=
+y.c
+> > > index 0cda0ab163..b1dba67d42 100644
+> > > --- a/arch/arm/lib32/optee-early.c
+> > > +++ b/arch/arm/lib32/optee-early.c
+> > > @@ -35,6 +35,19 @@ int start_optee_early(void *fdt, void *tee)
+> > >  	/* We use setjmp/longjmp here because OP-TEE clobbers most register=
+s */
+> > >  	ret =3D setjmp(tee_buf);
+> > >  	if (ret =3D=3D 0) {
+> > > +		/*
+> > > +		 * At least OP-TEE v4.1.0 seems to not invalidate all dirty cache
+> > > +		 * lines before enabling the MMU. This can lead to spurious hangs
+> > > +		 * on return to barebox on systems where there might be left-over
+> > > +		 * dirty cache lines, whether from BootROM or because L2 cache
+> > > +		 * is non-architected and powers on with unpredictable content
+> > > +		 * like is the case with PL310 on i.MX6Q.
+> > > +		 *
+> > > +		 * Let's invalidate the caches here, so board entry points need
+> > > +		 * not bother.
+> > > +		 */
+> > > +		arm_early_mmu_cache_invalidate();
+> > > +
+> > >  		tee_start(0, 0, fdt);
+> > >  		longjmp(tee_buf, 1);
+> > >  	}
+> >=20
+> >=20
+>=20
 
 
 
