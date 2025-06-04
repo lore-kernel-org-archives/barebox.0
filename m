@@ -1,62 +1,92 @@
-Delivery-date: Tue, 03 Jun 2025 17:58:47 +0200
+Delivery-date: Wed, 04 Jun 2025 11:58:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uMU2J-003M0K-1y
+	id 1uMkt5-003c9F-2b
 	for lore@lore.pengutronix.de;
-	Tue, 03 Jun 2025 17:58:47 +0200
+	Wed, 04 Jun 2025 11:58:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uMU2I-0000bW-TJ
-	for lore@pengutronix.de; Tue, 03 Jun 2025 17:58:47 +0200
+	id 1uMkt5-0001Z9-5b
+	for lore@pengutronix.de; Wed, 04 Jun 2025 11:58:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kZF4/VFQCJYkK2dbrBRJR0vJ+uy/zotLIPhM/Ps3RiI=; b=VxMWHuAMBKhmysGi8MVKbVzGpy
-	55AGoIfenVm0hcPaoVBOe+hBGNk+Q9wMoFungzpgUk9xcYgXStF5Aff18kuRXNKmC/QnWvrMY7+2L
-	plLximYy3W8DvQkNZ9eK3oclwxuUDUV+RYhc0rplsubH8mNVdHNBwSyPXYrF8cMf76b+PMeIHXrJj
-	Cjnxi7yWHLea4VmsFCGzK122f9XwjaeInLEcb9+Y795y3B/+jOOPQZWwSo29c4OCvqY67myI5fWi+
-	qxxybHihWPf2PWRSvFRxMb6leajFC32GM+s9gHtgSLgkEr5f0Qz7XUH8wbw2y/vxWIBecljWrgsp6
-	EMDVXiuQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
+	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=oFWzYMe9saJ1aaRkBLqAQTAotMYeIkau5YYpG9GdjRM=; b=b9mt1dTaZwBIlZxu7wf/Ow55D4
+	Xs/hGsdmvHatkxZXmSDWOIAgzmkkAoRVreW0hOaT5hf3dszIdsRAGJjLWXN0OsddB5+zSQeOGK256
+	VDWynFTKBoUfH9EDzOJQHYvmu0VMWT2WIO3fuw4opGTNYsEDL+FQ/UanVCP7EsRUStEuVls9jbNbl
+	bO5/TjKlEso4rWWFrDbY4keHtFTiqq/daMAaqcNSDWqWA9SaB3FBsbBJnGHimPSUqK9hs8JGU0VZ8
+	QDyBuSxGnT2VrrDSonToedTKoZYwrX1Gu8BqbbO25dX9JbVaU7X4zXK8pYU2QsrDN/Ol2KxTwvGZD
+	EJUpThtw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uMU23-0000000BLtD-2GrO;
-	Tue, 03 Jun 2025 15:58:31 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uMksN-0000000D5ID-1zyb;
+	Wed, 04 Jun 2025 09:57:39 +0000
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uMSzg-0000000BCvz-3kgc
+	id 1uMksL-0000000D5Ha-1OGL
 	for barebox@lists.infradead.org;
-	Tue, 03 Jun 2025 14:52:02 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uMSzf-0004ch-Nl; Tue, 03 Jun 2025 16:51:59 +0200
-Message-ID: <f3f703ea-c7e6-4635-ace6-d5ccd0418c4f@pengutronix.de>
-Date: Tue, 3 Jun 2025 16:51:59 +0200
+	Wed, 04 Jun 2025 09:57:38 +0000
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-adb5fd85996so644536866b.2
+        for <barebox@lists.infradead.org>; Wed, 04 Jun 2025 02:57:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749031055; x=1749635855; darn=lists.infradead.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=oFWzYMe9saJ1aaRkBLqAQTAotMYeIkau5YYpG9GdjRM=;
+        b=OSTmS05UV1TrrgpuXA+NlMEkUmuqrfSiO2M/rKjslVYv+z9FIr2kCStRSTa6AG9Y/Q
+         mXhNygD89NpUKOOzCbtypABLsRqMosF061XqYDKmE20yRoE7srMvQKJi7lQx/guidlYl
+         YaiSHzTnz1L/hMBxbdmDc+eHMu+eDqAA2R0FK2ZpFKNo98qpFCx95xV+rG6SBxIC6kUs
+         i9KOH+5ZoLbXWXId+pyPAbWEA7FxioylePho39n9+WZI49PyBSODjMb/D9OH6FDcl02e
+         PVZsf6HT63XVMQ0AoqA5nk4gHjfkyTff5DHg1Wq6KrrOAObYHlNIV7LEp9qLyGoh+h0P
+         aZMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749031055; x=1749635855;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oFWzYMe9saJ1aaRkBLqAQTAotMYeIkau5YYpG9GdjRM=;
+        b=ZLOLAMl5YxsVAkuewSawkRhtQ4DCciEVrU6GLxw9ELq3x9MXTaF+7JhmyuUw3tWBxN
+         BGiOuCK7F+C8oDhNI1DSp8ZKU30dF3katDwJnkKeyLbtrC3LxuQ1eFbwFtHHMdB3Tr0D
+         sDhncMSMkUtqq7MtDSK1MybYMymPI9EZg4edQh5sr1zaWtiD2lhhvwZ/0F/D1t0vUfEN
+         nl9XHtkU3lKYa4+Zqs0ERnDPlzbA1AZqovqNFQiTWbtw+illoar/us+mlbGQNYZtl6YX
+         HQdJy4zjlvSJmCSTi1JRbqsjDtPCLC0/b6RyQoZnQW5hp7pyeWU47g00qZRMHi3UJlf8
+         GB0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUzM0LlV4iug//u6d41niF9eHLAhbr7Ua5Fhy4jZZspX31/RlD51BQpfJoNR7p8aHWMuK4fTRU5@lists.infradead.org
+X-Gm-Message-State: AOJu0Yz2zB+TmrN/r2N0nkqxG4iY6iwW7WtG+aHrQID68Oo4dMLoeczn
+	jOZY5Vf1cvBTsXS+QXHi+TVfCaHkkUzWEpZHZ7KYZpb1AbaQwKTTpgCJXZsgmu74M690tNwMzVX
+	gzR1jWeE0yNN6BtO+0PnzrrupSENuWM4BhIOZAtgHow==
+X-Gm-Gg: ASbGncvwndMOBljesP9OnNG6J+tpl/Rrn5V53H7tgnkFaD682x8pjFmkSdnD6qELQr2
+	EJIfb053qu+KSAB4d0jDTle7M7EnMZPkAnRGAvR5UNfKA8AVUOcD+4vjJMYsFVr+tfrl8GIaHEj
+	/zHWmtWMw0oSKfaeQMirTYcAoDsrUJdlIYaH4ukDHQxickRTxyRoRYTT6gNwGMr/+pNLsnm+J0I
+	XfR
+X-Google-Smtp-Source: AGHT+IElUB7nGZyYz3NfcN+wY7u5wUFXf/xFt8Db+0w3haR1EZxWm8N4fYvCuSRCHo4rP28BTf0rnwmsaV1pyjFTOII=
+X-Received: by 2002:a17:907:728d:b0:adb:335b:decb with SMTP id
+ a640c23a62f3a-addf8d1d6c5mr187252566b.24.1749031054894; Wed, 04 Jun 2025
+ 02:57:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Lucas Stach <l.stach@pengutronix.de>,
- Fabian Pflug <f.pflug@pengutronix.de>, barebox@lists.infradead.org
-Cc: rouven.czerwinski@linaro.org
 References: <20250603092044.1464440-1-f.pflug@pengutronix.de>
- <20250603092044.1464440-2-f.pflug@pengutronix.de>
- <569963942cf35755dfdf34b240c350986fda4727.camel@pengutronix.de>
- <6ce5c98c-4f8e-46f6-8dd3-7c911578feb8@pengutronix.de>
- <47261d55d72a6f34618ca9d4b86214f306a91f5a.camel@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <47261d55d72a6f34618ca9d4b86214f306a91f5a.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20250603092044.1464440-2-f.pflug@pengutronix.de> <569963942cf35755dfdf34b240c350986fda4727.camel@pengutronix.de>
+ <6ce5c98c-4f8e-46f6-8dd3-7c911578feb8@pengutronix.de> <47261d55d72a6f34618ca9d4b86214f306a91f5a.camel@pengutronix.de>
+ <f3f703ea-c7e6-4635-ace6-d5ccd0418c4f@pengutronix.de> <d6a0be9631286122e56fdfd87b9911c310554baf.camel@pengutronix.de>
+In-Reply-To: <d6a0be9631286122e56fdfd87b9911c310554baf.camel@pengutronix.de>
+From: Rouven Czerwinski <rouven.czerwinski@linaro.org>
+Date: Wed, 4 Jun 2025 11:57:22 +0200
+X-Gm-Features: AX0GCFvNbKq3wZyyz3uyLQEbgn8r4GB70O6A623YaYdCgs-XUihohuWocMz1mTM
+Message-ID: <CAK8z29X9Hfco+SqQrSTifh6Tp8BBcEPQqkNewRYjKGpqOa5RGA@mail.gmail.com>
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Fabian Pflug <f.pflug@pengutronix.de>, 
+	barebox@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250603_075200_945349_A665B1AD 
-X-CRM114-Status: GOOD (  30.24  )
+X-CRM114-CacheID: sfid-20250604_025737_384373_1259BD63 
+X-CRM114-Status: GOOD (  26.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,128 +104,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] ARM: optee-early: invalidate caches before jump to
- OP-TEE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/2] ARM: optee-early: invalidate caches before jump to OP-TEE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Lucas,
+Hi,
 
-On 6/3/25 16:47, Lucas Stach wrote:
-> Am Dienstag, dem 03.06.2025 um 12:18 +0200 schrieb Ahmad Fatoum:
->> On 6/3/25 11:57, Lucas Stach wrote:
->> Ok, so if CR_C is unset, the cache is still used when reading/writing,
->> provided that the cache line is valid.
->>
-> Exactly. Clearing CR_C disables cache allocation, but lookups in the
-> cache still proceed as normal.
+On Tue, 3 Jun 2025 at 17:20, Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Am Dienstag, dem 03.06.2025 um 16:51 +0200 schrieb Ahmad Fatoum:
+> [...]
+> > > > > I guess it would be much better to simply have the
+> > > > > arm_early_mmu_cache_invalidate() as part of the Cortex A9 lowlevel CPU
+> > > > > initialization at the very start of the PBL entry.
 
-I hope to remember that this time. I am fairly sure you explained this
-to me once before already...
+To add my few cents:
+I have had customer systems where without cache invalidation,
+imx-usb-loader would
+sporadically hang. This hang was fixed by calling
+arm_early_mmu_cache_invalidate()
+in the lowlevel pbl code as well. Barebox already has i.MX6 boards
+which to call the
+invalidation early in PBL, but unfortunately none have a comment or
+commit description
+why.
 
->> We don't have many objects that are accessed both before and after
->> arm_early_mmu_cache_invalidate, so maybe that's why we didn't run into
->> more problems?
->>
-> Yea, I would guess that the probability of hitting this issue with the
-> handoff data, which isn't that big, is quite low. At least from the
-> description above I think we can hit the same issues with the handoff
-> data.
-
-Ack.
-
->>> I guess it would be much better to simply have the
->>> arm_early_mmu_cache_invalidate() as part of the Cortex A9 lowlevel CPU
->>> initialization at the very start of the PBL entry.
->>
->> We don't have a dedicated Cortex-A9 lowlevel entry function
->> unfortunately, just some for specific processors, e.g. the
->> imx6_cpu_lowlevel_init.
->>
->> We could add CONFIG_CPU_CORTEX_A9, select it from the relevant SoC
->> options and depending on it, add the invalidation to
->> arm_cpu_lowlevel_init()? What do you think?
->>
-> This would then trigger the invalidation even on systems that don't
-> need it in case of a multiarch Barebox. There aren't that many Cortex
-> A9 based SoCs supported in Barebox and all of them should have a SoC
-> specific init function to apply the necessary workarounds, so I think
-> it would be fine to call the cache invalidate from the SoC specific
-> lowlevel init of those few SoCs?
-
-Fair enough. How do we know we only need this for Cortex-A9 though?
-Couldn't e.g. the Cortex-A8 also be affected?
-
-Cheers,
-Ahmad
-
-> 
+> > > >
+> > > > We don't have a dedicated Cortex-A9 lowlevel entry function
+> > > > unfortunately, just some for specific processors, e.g. the
+> > > > imx6_cpu_lowlevel_init.
+> > > >
+> > > > We could add CONFIG_CPU_CORTEX_A9, select it from the relevant SoC
+> > > > options and depending on it, add the invalidation to
+> > > > arm_cpu_lowlevel_init()? What do you think?
+> > > >
+> > > This would then trigger the invalidation even on systems that don't
+> > > need it in case of a multiarch Barebox. There aren't that many Cortex
+> > > A9 based SoCs supported in Barebox and all of them should have a SoC
+> > > specific init function to apply the necessary workarounds, so I think
+> > > it would be fine to call the cache invalidate from the SoC specific
+> > > lowlevel init of those few SoCs?
+> >
+> > Fair enough. How do we know we only need this for Cortex-A9 though?
+> > Couldn't e.g. the Cortex-A8 also be affected?
+>
+> We can't be 100% sure without specific knowledge about each SoC
+> integration. Both the Cortex A8 [1] and Cortex A15 [2] TRMs define a
+> reset sequence that mandates the straps to be set in such a way that
+> the processor will clear all L1 and L2 memory arrays on power-on reset.
+>
+> The only odd one where the TRM doesn't even mention memory arrays in
+> the reset sequence is the Cortex A9 [3], which pretty much lines up
+> with the number of SoCs where we have seen issues due to uninitialized
+> cache content.
+>
 > Regards,
 > Lucas
-> 
->> Thanks,
->> Ahmad
->>
->>
->>>
->>> Regards,
->>> Lucas
->>>
->>>> This means on e.g. the i.MX6UL, we will now do one extra cache invalidation
->>>> that's not needed. This should be negligible and we are already had an
->>>> unconditional invalidation in __barebox_arm_entry.
->>>>
->>>> Note that this is a different implementation than what we do on ARM64,
->>>> there we load TF-A before it jumps to OP-TEE and assuming
->>>> non-architected caches or caches with uninitialized content on power-on
->>>> to be a dying breed, our ARM64 implementation is likely not affected.
->>>>
->>>> Co-authored-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
->>>> ---
->>>>  arch/arm/lib32/optee-early.c | 13 +++++++++++++
->>>>  1 file changed, 13 insertions(+)
->>>>
->>>> diff --git a/arch/arm/lib32/optee-early.c b/arch/arm/lib32/optee-early.c
->>>> index 0cda0ab163..b1dba67d42 100644
->>>> --- a/arch/arm/lib32/optee-early.c
->>>> +++ b/arch/arm/lib32/optee-early.c
->>>> @@ -35,6 +35,19 @@ int start_optee_early(void *fdt, void *tee)
->>>>  	/* We use setjmp/longjmp here because OP-TEE clobbers most registers */
->>>>  	ret = setjmp(tee_buf);
->>>>  	if (ret == 0) {
->>>> +		/*
->>>> +		 * At least OP-TEE v4.1.0 seems to not invalidate all dirty cache
->>>> +		 * lines before enabling the MMU. This can lead to spurious hangs
->>>> +		 * on return to barebox on systems where there might be left-over
->>>> +		 * dirty cache lines, whether from BootROM or because L2 cache
->>>> +		 * is non-architected and powers on with unpredictable content
->>>> +		 * like is the case with PL310 on i.MX6Q.
->>>> +		 *
->>>> +		 * Let's invalidate the caches here, so board entry points need
->>>> +		 * not bother.
->>>> +		 */
->>>> +		arm_early_mmu_cache_invalidate();
->>>> +
->>>>  		tee_start(0, 0, fdt);
->>>>  		longjmp(tee_buf, 1);
->>>>  	}
->>>
->>>
->>
-> 
-> 
+>
+> [1] https://developer.arm.com/documentation/ddi0344/k/Cihcbcgi
+> [2] https://developer.arm.com/documentation/ddi0438/i/functional-description/clocking-and-resets/resets
+> [3] https://developer.arm.com/documentation/100511/0401/functional-description/clocking-and-resets/reset
 
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Adding this to imx6_cpu_lowlevel_init() is IMO the correct way as well.
 
+- Rouven
 
 
