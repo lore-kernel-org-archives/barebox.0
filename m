@@ -1,67 +1,67 @@
-Delivery-date: Thu, 05 Jun 2025 13:39:17 +0200
+Delivery-date: Thu, 05 Jun 2025 13:39:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8wH-003zs0-03
+	id 1uN8wL-003zsM-2X
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 13:39:17 +0200
+	Thu, 05 Jun 2025 13:39:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8wD-0002fn-7C
-	for lore@pengutronix.de; Thu, 05 Jun 2025 13:39:16 +0200
+	id 1uN8wF-0002l4-Ur
+	for lore@pengutronix.de; Thu, 05 Jun 2025 13:39:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=d5+1iIxG5bGO0KJyq1jdsV3M40SAqQSE4CVeedfApXg=; b=ZJ9ffDuSOwtvAtlJUniAs5jgjK
-	CBkj8lSU+lBk4J2ZBQ9ycHlLrdhxZ2LbihSW/6kq1S3OCVC+nf8JJG4CM4qisxfSRuHHGSu6aH915
-	T/22WMqRdkrMcB0w8v4BjqvfsSALtECb8hOd0AIGhaE7FseT531Q9guO38UWH8gk9BCmyrMP40fVF
-	Nmfb46TpPSJcGI0OcCO3eiDTEDA/5YY26x/mvWkqUhdF8Lojn0fLXnQvurlj7hH/o69hBnN3Wz861
-	Y3resJIMk85UVmDZ8I4ZTgb8QLQgql6+Edir0+6uLHJHiMBIaYXZ1SjBsiJObtWGWNi9hEN0g0G90
-	uQqMSC9g==;
+	bh=WC8yhcltwI3sbW2YXINPpF3L5aX/a7jejpzyVdxs0l4=; b=hLIPN3kO03o9akZ3of3hvgnHCn
+	5kOFw/j88X74oHnBH+P0QFpzE4XnUcOi2GTKm4Zzf8mDTqVFQ2sqmiYOM7/DVKpc6BMdTEV778601
+	rD28e0zFxsOhN9Er48gtWnX8KWcKRGfsVv2nErycYoYWuSZ0Hoovj6s4JWChPDgv/ddzyp7x6SJHa
+	OMhD4e+iUEzgOMSUzRYmpd4uRm9ztLMXDidwLdb5JrqLlIedFYWbHrmv3xavS2bHoZPzlmV9VxjAz
+	H0yqIymlQsVswogB3naOpjNv1IcZa6L19Xzq1OVs4ChbByjrjLp7em+h45+DBeEljxfP3SpLIkYJZ
+	jECh6KLQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8vb-0000000FOYm-3lg8;
-	Thu, 05 Jun 2025 11:38:35 +0000
+	id 1uN8vZ-0000000FOVy-3RnH;
+	Thu, 05 Jun 2025 11:38:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8vT-0000000FOOV-1msi
+	id 1uN8vT-0000000FOOO-0DTv
 	for barebox@lists.infradead.org;
 	Thu, 05 Jun 2025 11:38:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8vS-0001ic-7U; Thu, 05 Jun 2025 13:38:26 +0200
+	id 1uN8vR-0001hz-Mb; Thu, 05 Jun 2025 13:38:25 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8vS-001x0e-05;
-	Thu, 05 Jun 2025 13:38:26 +0200
+	id 1uN8vR-001x0N-1e;
+	Thu, 05 Jun 2025 13:38:25 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8sf-008mT4-33;
+	id 1uN8sf-008mT4-2i;
 	Thu, 05 Jun 2025 13:35:33 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 Jun 2025 13:35:21 +0200
-Message-Id: <20250605113530.2076990-13-a.fatoum@pengutronix.de>
+Date: Thu,  5 Jun 2025 13:35:19 +0200
+Message-Id: <20250605113530.2076990-11-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 References: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_043827_780454_49A8E47D 
-X-CRM114-Status: GOOD (  26.41  )
+X-CRM114-CacheID: sfid-20250605_043827_567609_520D1AD1 
+X-CRM114-Status: GOOD (  32.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,841 +83,1102 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 12/21] Add fuzzing infrastructure
+Subject: [PATCH 10/21] string: add fortify source support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To aid in detection of memory safety issues in security-critical code
-add support for libfuzzer along with a first test exercising the
-hexstring format specifier of printf.
+FORTIFY_SOURCE provides lightweight support for detecting buffer overflows
+in various functions that perform operations on memory and strings.
 
-More useful tests will follow. In addition to libfuzzer, there's also a
-fuzz command that passes a fixed input to a buffer. This can be useful
-when inspecting a crashing input from the barebox command line.
-
-Note that libfuzzer is in maintenance-mode unfortunately, but it
-requiring only LLVM support makes it very convenient to use, so it's a
-good first step.
+This should be in future extended to all architectures, so let's start
+by enabling it for sandbox for use during fuzz tests.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/Kconfig              |   5 ++
- arch/sandbox/Makefile             |  11 ++-
- arch/sandbox/os/common.c          | 137 +++++++++++++++++++++++++++++-
- commands/Makefile                 |   1 +
- commands/fuzz.c                   | 118 +++++++++++++++++++++++++
- common/Kconfig                    |   5 ++
- common/startup.c                  |   1 +
- images/.gitignore                 |   1 +
- images/Makefile.sandbox           |  16 +++-
- include/asm-generic/barebox.lds.h |  13 ++-
- include/fuzz.h                    |  70 +++++++++++++++
- lib/Makefile                      |   1 +
- lib/fuzz.c                        |  79 +++++++++++++++++
- lib/vsprintf.c                    |  15 ++++
- scripts/Kconfig.include           |   1 +
- scripts/clang-runtime-dir.sh      |  19 +++++
- test/Kconfig                      |  37 ++++++++
- 17 files changed, 523 insertions(+), 7 deletions(-)
- create mode 100644 commands/fuzz.c
- create mode 100644 include/fuzz.h
- create mode 100644 lib/fuzz.c
- create mode 100755 scripts/clang-runtime-dir.sh
+ arch/Kconfig                   |   6 +
+ arch/sandbox/Kconfig           |   1 +
+ commands/stacksmash.c          |   6 +-
+ include/linux/compiler_types.h |  41 ++
+ include/linux/fortify-string.h | 804 +++++++++++++++++++++++++++++++++
+ include/linux/string.h         |  17 +
+ lib/Kconfig.hardening          |  15 +
+ lib/Makefile                   |   2 +-
+ lib/string.c                   |  16 +-
+ lib/string_helpers.c           |  30 ++
+ pbl/string.c                   |   1 +
+ 11 files changed, 925 insertions(+), 14 deletions(-)
+ create mode 100644 include/linux/fortify-string.h
+ create mode 100644 lib/string_helpers.c
 
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 890923ad059c..446c4b8fd960 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -116,3 +116,9 @@ config HAVE_ARCH_KASAN
+ 
+ config ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	bool
++
++config ARCH_HAS_FORTIFY_SOURCE
++	bool
++	help
++	  An architecture should select this when it can successfully
++	  build and run with CONFIG_FORTIFY_SOURCE.
 diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 7d8f88474781..5c7948b215cf 100644
+index 4eebca6748b3..7d8f88474781 100644
 --- a/arch/sandbox/Kconfig
 +++ b/arch/sandbox/Kconfig
-@@ -96,4 +96,9 @@ config HAVE_LIBFTDI
- config SDL
- 	bool
+@@ -7,6 +7,7 @@ config SANDBOX
+ 	select OFTREE
+ 	select GPIOLIB
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
++	select ARCH_HAS_FORTIFY_SOURCE
+ 	select HAS_DMA
+ 	select BLOCK
+ 	select BLOCK_WRITE
+diff --git a/commands/stacksmash.c b/commands/stacksmash.c
+index e200fa5a1cbb..15c925d05f37 100644
+--- a/commands/stacksmash.c
++++ b/commands/stacksmash.c
+@@ -6,6 +6,8 @@
+ #include <linux/compiler.h>
+ #include <string.h>
  
-+config SANDBOX_LINK_CXX
-+	def_bool FUZZ_EXTERNAL
-+	help
-+	  Link with CXX instead of CC to support C++ static libraries.
++#define NO_FORTIFY_SOURCE "We want to test stack protector, not FORTIFY_SOURCE"
 +
- endmenu
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 2db1cb648a2b..6566cd563ed8 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -67,6 +67,15 @@ ifeq ($(CONFIG_UBSAN),y)
- SANDBOX_LIBS += -fsanitize=undefined
- endif
- 
-+ifeq ($(CONFIG_FUZZ_EXTERNAL),y)
-+LIBARCH-y = $(UNAME_M)
-+LIBARCH-$(CONFIG_SANDBOX_LINUX_I386) = i386
-+
-+KBUILD_CPPFLAGS += -fsanitize=fuzzer-no-link
-+SANDBOX_LIBS += -Wl,-Bstatic -L"$(CONFIG_CLANG_RUNTIME_DIR)" \
-+		-lclang_rt.fuzzer_no_main-$(LIBARCH-y) -Wl,-Bdynamic
-+endif
-+
- ifeq ($(CONFIG_SANDBOX_LINUX_I386),y)
- KBUILD_CFLAGS += -m32
- KBUILD_LDFLAGS += -m elf_i386
-@@ -80,7 +89,7 @@ SANDBOX_PROPER2PBL_GLUE_SYMS := \
- 	strsep_unescaped start_barebox linux_get_stickypage_path \
- 	stickypage mem_malloc_init \
- 	barebox_register_filedev barebox_register_dtb barebox_register_console \
--	barebox_errno barebox_loglevel
-+	barebox_errno barebox_loglevel call_for_each_fuzz_test setup_external_fuzz
- 
- OBJCOPYFLAGS_barebox.o := $(addprefix --keep-global-symbol=, $(SANDBOX_PROPER2PBL_GLUE_SYMS))
- 
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index 3dbe61791ccd..86aaeb24ee3d 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -24,6 +24,7 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <stdint.h>
-+#include <stdbool.h>
- #include <termios.h>
- #include <unistd.h>
- #include <fcntl.h>
-@@ -54,6 +55,22 @@ int __attribute__((unused)) barebox_loglevel;
- extern int barebox_loglevel;
- #endif
- 
-+#ifdef CONFIG_FUZZ_EXTERNAL
-+int call_for_each_fuzz_test(int (*fn)(const char **test));
-+int setup_external_fuzz(const char *name,
-+			int *argc, char ***argv);
-+#else
-+static inline int call_for_each_fuzz_test(int (*fn)(const char **test))
-+{
-+	return 0;
-+}
-+static inline int setup_external_fuzz(const char *name,
-+				      int *argc, char ***argv)
-+{
-+	return -1;
-+}
-+#endif
-+
- #define DELETED_OFFSET (sizeof(" (deleted)") - 1)
- 
- void __sanitizer_set_death_callback(void (*callback)(void));
-@@ -514,6 +531,8 @@ const char *barebox_cmdline_get(void)
- static void print_usage(const char*);
- 
- #define OPT_LOGLEVEL		(CHAR_MAX + 1)
-+#define OPT_LIST_FUZZERS	(CHAR_MAX + 2)
-+#define OPT_FUZZ		(CHAR_MAX + 3)
- 
- static struct option long_options[] = {
- 	{"help",     0, 0, 'h'},
-@@ -529,14 +548,72 @@ static struct option long_options[] = {
- 	{"yres",     1, 0, 'y'},
- #ifndef CONFIG_CONSOLE_NONE
- 	{"loglevel", 1, 0, OPT_LOGLEVEL},
-+#endif
-+#ifdef CONFIG_FUZZ_EXTERNAL
-+	{"fuzz", 1, 0, OPT_FUZZ},
-+	{"list-fuzzers", 0, 0, OPT_LIST_FUZZERS},
- #endif
- 	{0, 0, 0, 0},
- };
- 
- static const char optstring[] = "hm:i:c:e:d:O:I:B:x:y:";
- 
--ENTRY_FUNCTION(sandbox_main, argc, argv)
-+static __attribute__((unused)) int print_fuzz_test_name(const char **test_name)
+ static noinline void stack_overflow_frame(void)
  {
-+	printf("%s\n", *test_name);
-+	return 0;
-+}
-+
-+static inline size_t str_has_prefix(const char *str, const char *prefix)
-+{
-+	size_t len = strlen(prefix);
-+	return strncmp(str, prefix, len) == 0 ? len : 0;
-+}
-+
-+static char *realpath_alloc(char *path)
-+{
-+	char *real;
-+
-+	real = malloc(PATH_MAX);
-+	if (!real) {
-+		perror("malloc");
-+		exit(3);
-+	}
-+
-+	if (!realpath(path, real)) {
-+		perror("realpath");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	return real;
-+}
-+
-+static void setup_external_fuzz_with_args(const char *fuzz, int *pargc, char **pargv[])
-+{
-+	char **argv = *pargv;
-+	char *rlpath;
-+	int ret;
-+
-+	rlpath = realpath_alloc(argv[0]);
-+
-+	asprintf(&argv[optind - 1], "%s/fuzz-%s", dirname(rlpath), fuzz);
-+
-+	free(rlpath);
-+
-+	*pargc -= optind - 1;
-+	*pargv += optind - 1;
-+
-+	ret = setup_external_fuzz(fuzz, pargc, pargv);
-+	if (ret) {
-+		printf("unknown fuzz target '%s'\n", fuzz);
-+		exit(ret);
-+	}
-+}
-+
-+static int normal_main(int argc, char *argv[])
-+{
-+	bool skip_opts = false;
-+	const char *fuzz = NULL;
- 	void *ram;
- 	int opt, ret, fd, fd2;
- 	int malloc_size = CONFIG_MALLOC_SIZE;
-@@ -548,7 +625,7 @@ ENTRY_FUNCTION(sandbox_main, argc, argv)
- 	__sanitizer_set_death_callback(prepare_exit);
- #endif
- 
--	while (1) {
-+	while (!skip_opts) {
- 		option_index = 0;
- 		opt = getopt_long(argc, argv, optstring,
- 			long_options, &option_index);
-@@ -589,10 +666,18 @@ ENTRY_FUNCTION(sandbox_main, argc, argv)
- 		case 'y':
- 			sdl_yres = strtoul(optarg, NULL, 0);
- 			break;
-+		case OPT_LIST_FUZZERS:
-+			call_for_each_fuzz_test(print_fuzz_test_name);
-+			exit(0);
-+			break;
-+		case OPT_FUZZ:
-+			skip_opts = true;
-+			break;
- 		default:
- 			break;
- 		}
- 	}
-+	skip_opts = false;
- 
- 	saved_argv = argv;
- 
-@@ -610,7 +695,7 @@ ENTRY_FUNCTION(sandbox_main, argc, argv)
+ 	volatile int length = 512;
+@@ -17,10 +19,10 @@ static noinline void stack_overflow_frame(void)
  	 */
- 	optind = 1;
+ 	OPTIMIZER_HIDE_VAR(length);
  
--	while (1) {
-+	while (!skip_opts) {
- 		option_index = 0;
- 		opt = getopt_long(argc, argv, optstring,
- 			long_options, &option_index);
-@@ -672,6 +757,10 @@ ENTRY_FUNCTION(sandbox_main, argc, argv)
+-	memset(a, 0xa5, length);
++	unsafe_memset(a, 0xa5, length, NO_FORTIFY_SOURCE);
  
- 			barebox_register_console(fd2, fd);
- 			break;
-+		case OPT_FUZZ:
-+			fuzz = optarg;
-+			skip_opts = true;
-+			break;
- 		default:
- 			break;
- 		}
-@@ -679,7 +768,10 @@ ENTRY_FUNCTION(sandbox_main, argc, argv)
- 
- 	barebox_register_console(fileno(stdin), fileno(stdout));
- 
--	rawmode();
-+	if (fuzz)
-+		setup_external_fuzz_with_args(fuzz, &argc, &argv);
-+	else
-+		rawmode();
- 
- 	if (loglevel >= 0)
- 		barebox_loglevel = loglevel;
-@@ -690,6 +782,39 @@ ENTRY_FUNCTION(sandbox_main, argc, argv)
- 	return 0;
+ 	printf("We have smashed our stack as this should not exceed 128: sizeof(a) = %zu\n",
+-	       strlen(a));
++	       unsafe_strlen(a, NO_FORTIFY_SOURCE));
  }
  
-+ENTRY_FUNCTION(sandbox_main, argc, argv)
-+{
-+	char **args;
-+	char *argv0;
-+	size_t fuzz_off;
-+	char *rlpath;
-+
-+	tcgetattr(0, &term_orig);
-+
-+	argv0 = basename(argv[0]);
-+	fuzz_off = str_has_prefix(argv0, "fuzz-");
-+	if (fuzz_off) {
-+		args = malloc((argc + 3) * sizeof(*args));
-+		if (!args)
-+			exit(3);
-+
-+		rlpath = realpath_alloc(argv[0]);
-+		asprintf(&args[0], "%s/barebox", dirname(rlpath));
-+
-+		free(rlpath);
-+
-+		args[1] = "--fuzz";
-+		args[2] = argv0 + fuzz_off;
-+
-+		memcpy(&args[3], &argv[1], argc * sizeof(*args));
-+
-+		argc += 2;
-+		argv = args;
-+	}
-+
-+	return normal_main(argc, argv);
-+}
-+
- #ifdef __PPC__
- /* HACK: we need this symbol on PPC, better ask a PPC export about this :) */
- char _SDA_BASE_[4096];
-@@ -736,6 +861,10 @@ static void print_usage(const char *prgname)
- "			  6    informational (info)\n"
- "			  7    debug-level messages (debug)\n"
- "			  8    verbose debug messages (vdebug)\n"
-+#endif
-+#ifdef CONFIG_FUZZ_EXTERNAL
-+"      --fuzz=<test>     Run libfuzzer against the <test> target.\n"
-+"      --list-fuzzers    List all available fuzzing test targets.\n"
+ static noinline void stack_overflow_region(u64 i)
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index 87ab117aca13..fcdf83cec195 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -124,6 +124,24 @@ struct ftrace_likely_data {
+ #define __has_attribute(...)		0
  #endif
- 	, prgname
- 	);
-diff --git a/commands/Makefile b/commands/Makefile
-index 53337dfb5c2d..603e1a25244c 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -157,6 +157,7 @@ obj-$(CONFIG_CMD_IP_ROUTE_GET)  += ip-route-get.o
- obj-$(CONFIG_CMD_BTHREAD)	+= bthread.o
- obj-$(CONFIG_CMD_UBSAN)		+= ubsan.o
- obj-$(CONFIG_CMD_SELFTEST)	+= selftest.o
-+obj-$(CONFIG_CMD_FUZZ)		+= fuzz.o
- obj-$(CONFIG_CMD_TUTORIAL)	+= tutorial.o
- obj-$(CONFIG_CMD_STACKSMASH)	+= stacksmash.o
- obj-$(CONFIG_CMD_PARTED)	+= parted.o
-diff --git a/commands/fuzz.c b/commands/fuzz.c
-new file mode 100644
-index 000000000000..f48032e7e1d9
---- /dev/null
-+++ b/commands/fuzz.c
-@@ -0,0 +1,118 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#define pr_fmt(fmt) "fuzz: " fmt
-+
-+#include <common.h>
-+#include <command.h>
-+#include <getopt.h>
-+#include <fuzz.h>
-+#include <libfile.h>
-+#include <fs.h>
-+
-+static const struct fuzz_test *get_fuzz_test(const char *match, bool print)
-+{
-+	const struct fuzz_test *test;
-+	unsigned matches = 0;
-+
-+	for_each_fuzz_test(test) {
-+		if (print) {
-+			printf("%s\n", test->name);
-+			matches++;
-+		}
-+
-+		if (match && !strcmp(test->name, match))
-+			return test;
-+
-+	}
-+
-+	if (!matches) {
-+		if (match)
-+			printf("No fuzz tests matching '%s' found.\n", match);
-+		else
-+			printf("No fuzz tests registered.\n");
-+	}
-+
-+	return NULL;
-+}
-+
-+static int run_fuzz_test(const char *match, bool list, const u8 *buf, size_t len)
-+{
-+	const struct fuzz_test *test;
-+
-+	test = get_fuzz_test(match, list);
-+	if (list)
-+		return 0;
-+	else if (!test)
-+		return COMMAND_ERROR;
-+
-+	return fuzz_test_once(test, buf, len);
-+}
-+
-+static int do_fuzz(int argc, char *argv[])
-+{
-+	const char *file = NULL;
-+	u64 max_size = FILESIZE_MAX;
-+	size_t size = 0;
-+	const u8 *buf = NULL;
-+	void *contents = NULL;
-+	bool list = false;
-+	int err = 0, opt;
-+
-+	while((opt = getopt(argc, argv, "ls:f:")) > 0) {
-+		switch(opt) {
-+		case 'l':
-+			list = true;
-+			break;
-+		case 's':
-+			err = kstrtou64(optarg, 0, &max_size);
-+			if (err || max_size > SIZE_MAX) {
-+				printf("invalid max size\n");
-+				return COMMAND_ERROR;
-+			}
-+			break;
-+		case 'f':
-+			file = optarg;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	argv += optind;
-+	argc -= optind;
-+
-+	if ((list && argc) || (!list && argc != 1) || (!file && !list))
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (file) {
-+		err = read_file_2(file, &size, &contents, max_size);
-+		if (err && err != -EFBIG) {
-+			printf("error reading file: %m\n");
-+			return COMMAND_ERROR;
-+		}
-+
-+		buf = contents;
-+	}
-+
-+	err = run_fuzz_test(argv[0], list, buf, size);
-+
-+	free(contents);
-+	return err;
-+}
-+
-+BAREBOX_CMD_HELP_START(fuzz)
-+BAREBOX_CMD_HELP_TEXT("Run barebox fuzz test on fixed input")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-l",      "list registered fuzz tests")
-+BAREBOX_CMD_HELP_OPT ("-f FILE", "use FILE as fuzz input")
-+BAREBOX_CMD_HELP_OPT ("-s SIZE", "read only SIZE bytes from file")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(fuzz)
-+	.cmd		= do_fuzz,
-+	BAREBOX_CMD_DESC("Run fuzz test")
-+	BAREBOX_CMD_OPTS("[-ls] -f FILE [test]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_fuzz_help)
-+BAREBOX_CMD_END
-diff --git a/common/Kconfig b/common/Kconfig
-index 6d41b7048a32..83a0717e76d6 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -18,6 +18,11 @@ config CLANG_VERSION
- 	default $(cc-version) if CC_IS_CLANG
- 	default 0
  
-+config CLANG_RUNTIME_DIR
-+	string
-+	depends on CC_IS_CLANG
-+	default "$(clang-runtime-dir)"
-+
- config GREGORIAN_CALENDER
- 	bool
- 
-diff --git a/common/startup.c b/common/startup.c
-index c9e99d47fbd7..c720664689f6 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -44,6 +44,7 @@
- #include <bselftest.h>
- #include <pbl/handoff-data.h>
- #include <libfile.h>
-+#include <fuzz.h>
- 
- extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
- 		  __barebox_initcalls_end[];
-diff --git a/images/.gitignore b/images/.gitignore
-index 20133074bf87..fc464ff2e3cb 100644
---- a/images/.gitignore
-+++ b/images/.gitignore
-@@ -42,3 +42,4 @@ barebox.sum
- *.fit
- *.missing-firmware
- *.k3img
-+fuzz-*
-diff --git a/images/Makefile.sandbox b/images/Makefile.sandbox
-index 0699a52663ef..ed5d740bc1fb 100644
---- a/images/Makefile.sandbox
-+++ b/images/Makefile.sandbox
-@@ -3,12 +3,26 @@
- SYMLINK_TARGET_barebox = sandbox_main.elf
- symlink-$(CONFIG_SANDBOX) += barebox
- 
-+fuzzer-$(CONFIG_PRINTF_HEXSTR)	+= printf
-+
- ifeq ($(CONFIG_SANDBOX),y)
- 
-+ifdef CONFIG_SANDBOX_LINK_CXX
-+linker = $(CXX)
-+else
-+linker = $(CC)
-+endif
-+
- quiet_cmd_elf__ = LD      $@
--      cmd_elf__ = $(CC) -o $@ $(BAREBOX_LDFLAGS) \
-+      cmd_elf__ = $(linker) -o $@ $(BAREBOX_LDFLAGS) \
- 	-Wl,-T,$(pbl-lds) -Wl,--defsym=main=$(2) -Wl,--whole-archive \
- 	$(obj)/../$(BAREBOX_PROPER) $(BAREBOX_PBL_OBJS) -Wl,--no-whole-archive \
- 	-lrt -pthread $(SANDBOX_LIBS) $(LDFLAGS_$(@F))
- 
-+ifeq ($(CONFIG_FUZZ_EXTERNAL),y)
-+$(foreach fuzzer, $(fuzzer-y), \
-+	$(eval SYMLINK_TARGET_fuzz-$(fuzzer) = barebox) \
-+	$(eval symlink-y += fuzz-$(fuzzer)))
-+endif
-+
- endif
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index 54817b68fc22..2c0f4da9e5d4 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -118,6 +118,16 @@
- 	KEEP(*(SORT_BY_NAME(.barebox_deep_probe*)))	\
- 	__barebox_deep_probe_end = .;
- 
-+#ifdef CONFIG_FUZZ
-+#define BAREBOX_FUZZ_TESTS			\
-+	STRUCT_ALIGN();				\
-+	__barebox_fuzz_tests_start = .;		\
-+	KEEP(*(SORT_BY_NAME(.barebox_fuzz_test*)))	\
-+	__barebox_fuzz_tests_end = .;
-+#else
-+#define BAREBOX_FUZZ_TESTS
-+#endif
-+
- 
- #ifdef CONFIG_CONSTRUCTORS
- #define KERNEL_CTORS()  . = ALIGN(8);                      \
-@@ -142,7 +152,8 @@
- 	BAREBOX_DTB				\
- 	BAREBOX_PUBLIC_KEYS			\
- 	BAREBOX_PCI_FIXUP			\
--	BAREBOX_DEEP_PROBE
-+	BAREBOX_DEEP_PROBE			\
-+	BAREBOX_FUZZ_TESTS
- 
- #if defined(CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE) && \
- CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE < CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
-diff --git a/include/fuzz.h b/include/fuzz.h
-new file mode 100644
-index 000000000000..35233f90154b
---- /dev/null
-+++ b/include/fuzz.h
-@@ -0,0 +1,70 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
-+ * Copyright (c) 2022 Google, Inc.
-+ * Written by Andrew Scull <ascull@google.com>
-+ */
-+
-+#ifndef __TEST_FUZZ_H
-+#define __TEST_FUZZ_H
-+
-+#include <linux/types.h>
-+#include <linux/list.h>
-+
-+/**
-+ * struct fuzz_test - Information about a fuzz test
++ * Note: the "type" argument should match any __builtin_object_size(p, type) usage.
 + *
-+ * @name: Name of fuzz test
-+ * @func: Function to call to perform fuzz test on an input
-+ */
-+struct fuzz_test {
-+	const char *name; /* must be first member */
-+	int (*func)(const uint8_t * data, size_t size);
-+};
-+
-+extern const struct fuzz_test __barebox_fuzz_tests_start;
-+extern const struct fuzz_test __barebox_fuzz_tests_end;
-+
-+#define for_each_fuzz_test(test) \
-+	for (test = &__barebox_fuzz_tests_start; \
-+	     test != &__barebox_fuzz_tests_end; test++)
-+
-+#if IS_ENABLED(CONFIG_FUZZ) && IN_PROPER
-+/**
-+ * fuzz_test() - register a fuzz test
++ * Optional: not supported by gcc.
 + *
-+ * The fuzz test function must return 0 as other values are reserved for future
-+ * use.
-+ *
-+ * @_name:	the name of the fuzz test function
++ * clang: https://clang.llvm.org/docs/AttributeReference.html#pass-object-size-pass-dynamic-object-size
 + */
-+#define fuzz_test(_name, _func)					\
-+	static const struct fuzz_test _func##_entry		\
-+	__ll_elem(.barebox_fuzz_tests_##_func) = {	\
-+		.name = _name,					\
-+		.func = _func,					\
-+	}
++#if __has_attribute(__pass_dynamic_object_size__)
++# define __pass_dynamic_object_size(type)	__attribute__((__pass_dynamic_object_size__(type)))
 +#else
-+#define fuzz_test(_name, _func)					\
-+	static __always_unused void * _unused##_func = _func
++# define __pass_dynamic_object_size(type)
++#endif
++#if __has_attribute(__pass_object_size__)
++# define __pass_object_size(type)	__attribute__((__pass_object_size__(type)))
++#else
++# define __pass_object_size(type)
 +#endif
 +
-+static inline int fuzz_test_once(const struct fuzz_test *test, const u8 *data, size_t len)
-+{
-+	return test->func(data, len);
-+}
-+
-+int call_for_each_fuzz_test(int (*fn)(const struct fuzz_test *test));
-+
-+int setup_external_fuzz(const char *fuzz_name,
-+			int *argc, char ***argv);
-+
-+#ifdef CONFIG_FUZZ
-+bool fuzz_external_active(void);
+ /*
+  * Add the pseudo keyword 'fallthrough' so case statement blocks
+  * must end with any of these keywords:
+@@ -161,6 +179,29 @@ struct ftrace_likely_data {
+ #define __returns_nonnull
+ #endif
+ 
++/*
++ * Optional: not supported by gcc.
++ *
++ * clang: https://clang.llvm.org/docs/AttributeReference.html#overloadable
++ */
++#if __has_attribute(__overloadable__)
++# define __overloadable			__attribute__((__overloadable__))
 +#else
-+static inline bool fuzz_external_active(void)
-+{
-+	return false;
-+}
++# define __overloadable
 +#endif
 +
-+#endif /* __TEST_FUZZ_H */
-diff --git a/lib/Makefile b/lib/Makefile
-index 370d4f31d45a..e5cd7ae9f762 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -66,6 +66,7 @@ obj-$(CONFIG_XYMODEM)	+= xymodem.o
- obj-y			+= unlink-recursive.o
- obj-$(CONFIG_STMP_DEVICE) += stmp-device.o
- obj-y			+= wchar.o
-+obj-$(CONFIG_FUZZ)	+= fuzz.o
- obj-y			+= libfile.o
- obj-y			+= bitmap.o
- obj-y			+= gcd.o
-diff --git a/lib/fuzz.c b/lib/fuzz.c
++/*
++ * Optional: not supported by gcc
++ * Optional: only supported since clang >= 14.0
++ *
++ * clang: https://clang.llvm.org/docs/AttributeReference.html#diagnose_as_builtin
++ */
++#if __has_attribute(__diagnose_as_builtin__)
++# define __diagnose_as(builtin...)	__attribute__((__diagnose_as_builtin__(builtin)))
++#else
++# define __diagnose_as(builtin...)
++#endif
++
+ #endif /* __KERNEL__ */
+ 
+ #endif /* __ASSEMBLY__ */
+diff --git a/include/linux/fortify-string.h b/include/linux/fortify-string.h
 new file mode 100644
-index 000000000000..084455e365cd
+index 000000000000..ff2618c9c339
 --- /dev/null
-+++ b/lib/fuzz.c
-@@ -0,0 +1,79 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/include/linux/fortify-string.h
+@@ -0,0 +1,804 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_FORTIFY_STRING_H_
++#define _LINUX_FORTIFY_STRING_H_
 +
-+#include <fuzz.h>
-+#include <string.h>
-+#include <common.h>
++#include <linux/bug.h>
++#include <linux/const.h>
++#include <linux/limits.h>
++#include <linux/stringify.h>
 +
-+int call_for_each_fuzz_test(int (*fn)(const struct fuzz_test *test))
-+{
-+	const struct fuzz_test *test;
-+	int ret;
++#define __FORTIFY_INLINE extern __always_inline __gnu_inline __overloadable
++#define __RENAME(x) __asm__(#x)
 +
-+	for_each_fuzz_test(test) {
-+		ret = fn(test);
-+		if (ret)
-+			return ret;
-+	}
++void fortify_panic(const char *name) __noreturn __cold;
++void __read_overflow(void) __compiletime_error("detected read beyond size of object (1st parameter)");
++void __read_overflow2(void) __compiletime_error("detected read beyond size of object (2nd parameter)");
++void __read_overflow2_field(size_t avail, size_t wanted) __compiletime_warning("detected read beyond size of field (2nd parameter); maybe use struct_group()?");
++void __write_overflow(void) __compiletime_error("detected write beyond size of object (1st parameter)");
++void __write_overflow_field(size_t avail, size_t wanted) __compiletime_warning("detected write beyond size of field (1st parameter); maybe use struct_group()?");
 +
-+	return 0;
-+}
++#define __compiletime_strlen(p)					\
++({								\
++	char *__p = (char *)(p);				\
++	size_t __ret = SIZE_MAX;				\
++	const size_t __p_size = __member_size(p);		\
++	if (__p_size != SIZE_MAX &&				\
++	    __builtin_constant_p(*__p)) {			\
++		size_t __p_len = __p_size - 1;			\
++		if (__builtin_constant_p(__p[__p_len]) &&	\
++		    __p[__p_len] == '\0')			\
++			__ret = __builtin_strlen(__p);		\
++	}							\
++	__ret;							\
++})
 +
-+#ifdef CONFIG_FUZZ_EXTERNAL
-+const u8 *fuzzer_get_data(size_t *len);
++#if defined(__SANITIZE_ADDRESS__)
++extern void *__underlying_memchr(const void *p, int c, __kernel_size_t size) __RENAME(memchr);
++extern int __underlying_memcmp(const void *p, const void *q, __kernel_size_t size) __RENAME(memcmp);
++extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(memcpy);
++extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(memmove);
++extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(memset);
++extern char *__underlying_strcat(char *p, const char *q) __RENAME(strcat);
++extern char *__underlying_strcpy(char *p, const char *q) __RENAME(strcpy);
++extern __kernel_size_t __underlying_strlen(const char *p) __RENAME(strlen);
++extern char *__underlying_strncat(char *p, const char *q, __kernel_size_t count) __RENAME(strncat);
++extern char *__underlying_strncpy(char *p, const char *q, __kernel_size_t size) __RENAME(strncpy);
 +#else
-+static inline const u8 *fuzzer_get_data(size_t *len)
-+{
-+	return NULL;
-+}
++
++#define __underlying_memcpy	__builtin_memcpy
++#define __underlying_memmove	__builtin_memmove
++#define __underlying_memset	__builtin_memset
++
++#define __underlying_memchr	__builtin_memchr
++#define __underlying_memcmp	__builtin_memcmp
++#define __underlying_strcat	__builtin_strcat
++#define __underlying_strcpy	__builtin_strcpy
++#define __underlying_strlen	__builtin_strlen
++#define __underlying_strncat	__builtin_strncat
++#define __underlying_strncpy	__builtin_strncpy
 +#endif
 +
-+extern int LLVMFuzzerRunDriver(int *argc, char ***argv,
-+			       int (*cb)(const uint8_t *, size_t));
++/**
++ * unsafe_memcpy - memcpy implementation with no FORTIFY bounds checking
++ *
++ * @dst: Destination memory address to write to
++ * @src: Source memory address to read from
++ * @bytes: How many bytes to write to @dst from @src
++ * @justification: Free-form text or comment describing why the use is needed
++ *
++ * This should be used for corner cases where the compiler cannot do the
++ * right thing, or during transitions between APIs, etc. It should be used
++ * very rarely, and includes a place for justification detailing where bounds
++ * checking has happened, and why existing solutions cannot be employed.
++ */
++#define unsafe_memcpy(dst, src, bytes, justification)		\
++	__underlying_memcpy(dst, src, bytes)
 +
-+static const struct fuzz_test *fuzz;
-+static int *saved_argc;
-+static char ***saved_argv;
++#define unsafe_memset(dst, val, size, justification)		\
++	__underlying_memset(dst, val, size)
 +
-+static int fuzzer_run(const uint8_t *buf, size_t len)
++#define unsafe_strlen(str, justification)			\
++	__underlying_strlen(str)
++
++/*
++ * Clang's use of __builtin_*object_size() within inlines needs hinting via
++ * __pass_*object_size(). The preference is to only ever use type 1 (member
++ * size, rather than struct size), but there remain some stragglers using
++ * type 0 that will be converted in the future.
++ */
++#if __has_builtin(__builtin_dynamic_object_size)
++#define POS			__pass_dynamic_object_size(1)
++#define POS0			__pass_dynamic_object_size(0)
++#define __struct_size(p)	__builtin_dynamic_object_size(p, 0)
++#define __member_size(p)	__builtin_dynamic_object_size(p, 1)
++#else
++#define POS			__pass_object_size(1)
++#define POS0			__pass_object_size(0)
++#define __struct_size(p)	__builtin_object_size(p, 0)
++#define __member_size(p)	__builtin_object_size(p, 1)
++#endif
++
++#define __compiletime_lessthan(bounds, length)	(	\
++	__builtin_constant_p((bounds) < (length)) &&	\
++	(bounds) < (length)				\
++)
++
++/**
++ * strncpy - Copy a string to memory with non-guaranteed NUL padding
++ *
++ * @p: pointer to destination of copy
++ * @q: pointer to NUL-terminated source string to copy
++ * @size: bytes to write at @p
++ *
++ * If strlen(@q) >= @size, the copy of @q will stop after @size bytes,
++ * and @p will NOT be NUL-terminated
++ *
++ * If strlen(@q) < @size, following the copy of @q, trailing NUL bytes
++ * will be written to @p until @size total bytes have been written.
++ *
++ * Do not use this function. While FORTIFY_SOURCE tries to avoid
++ * over-reads of @q, it cannot defend against writing unterminated
++ * results to @p. Using strncpy() remains ambiguous and fragile.
++ * Instead, please choose an alternative, so that the expectation
++ * of @p's contents is unambiguous:
++ *
++ * +--------------------+--------------------+------------+
++ * | **p** needs to be: | padded to **size** | not padded |
++ * +====================+====================+============+
++ * |     NUL-terminated | strscpy_pad()      | strscpy()  |
++ * +--------------------+--------------------+------------+
++ * | not NUL-terminated | strtomem_pad()     | strtomem() |
++ * +--------------------+--------------------+------------+
++ *
++ * Note strscpy*()'s differing return values for detecting truncation,
++ * and strtomem*()'s expectation that the destination is marked with
++ * __nonstring when it is a character array.
++ *
++ */
++__FORTIFY_INLINE __diagnose_as(__builtin_strncpy, 1, 2, 3)
++char *strncpy(char * const POS p, const char *q, __kernel_size_t size)
 +{
-+	return fuzz_test_once(fuzz, buf, len);
++	const size_t p_size = __member_size(p);
++
++	if (__compiletime_lessthan(p_size, size))
++		__write_overflow();
++	if (p_size < size)
++		fortify_panic(__func__);
++	return __underlying_strncpy(p, q, size);
 +}
 +
-+static int fuzz_main(void)
++extern __kernel_size_t __real_strnlen(const char *, __kernel_size_t) __RENAME(strnlen);
++/**
++ * strnlen - Return bounded count of characters in a NUL-terminated string
++ *
++ * @p: pointer to NUL-terminated string to count.
++ * @maxlen: maximum number of characters to count.
++ *
++ * Returns number of characters in @p (NOT including the final NUL), or
++ * @maxlen, if no NUL has been found up to there.
++ *
++ */
++__FORTIFY_INLINE __kernel_size_t strnlen(const char * const POS p, __kernel_size_t maxlen)
 +{
-+	int ret = -1;
++	const size_t p_size = __member_size(p);
++	const size_t p_len = __compiletime_strlen(p);
++	size_t ret;
 +
-+	if (IS_ENABLED(CONFIG_FUZZ_EXTERNAL)) {
-+		ret = LLVMFuzzerRunDriver(saved_argc, saved_argv, fuzzer_run);
-+		pr_emerg("libfuzzer unexpectedly ended: %d\n", ret);
-+	} else {
-+		pr_emerg("libfuzzer not supported in this build\n");
++	/* We can take compile-time actions when maxlen is const. */
++	if (__builtin_constant_p(maxlen) && p_len != SIZE_MAX) {
++		/* If p is const, we can use its compile-time-known len. */
++		if (maxlen >= p_size)
++			return p_len;
 +	}
 +
++	/* Do not check characters beyond the end of p. */
++	ret = __real_strnlen(p, maxlen < p_size ? maxlen : p_size);
++	if (p_size <= ret && maxlen != ret)
++		fortify_panic(__func__);
 +	return ret;
 +}
 +
-+int setup_external_fuzz(const char *fuzz_name,
-+			int *argc, char ***argv)
++/*
++ * Defined after fortified strnlen to reuse it. However, it must still be
++ * possible for strlen() to be used on compile-time strings for use in
++ * static initializers (i.e. as a constant expression).
++ */
++/**
++ * strlen - Return count of characters in a NUL-terminated string
++ *
++ * @p: pointer to NUL-terminated string to count.
++ *
++ * Do not use this function unless the string length is known at
++ * compile-time. When @p is unterminated, this function may crash
++ * or return unexpected counts that could lead to memory content
++ * exposures. Prefer strnlen().
++ *
++ * Returns number of characters in @p (NOT including the final NUL).
++ *
++ */
++#define strlen(p)							\
++	__builtin_choose_expr(__is_constexpr(__builtin_strlen(p)),	\
++		__builtin_strlen(p), __fortify_strlen(p))
++__FORTIFY_INLINE __diagnose_as(__builtin_strlen, 1)
++__kernel_size_t __fortify_strlen(const char * const POS p)
 +{
-+	const struct fuzz_test *test;
++	const size_t p_size = __member_size(p);
++	__kernel_size_t ret;
 +
-+	saved_argc = argc;
-+	saved_argv = argv;
++	/* Give up if we don't know how large p is. */
++	if (p_size == SIZE_MAX)
++		return __underlying_strlen(p);
++	ret = strnlen(p, p_size);
++	if (p_size <= ret)
++		fortify_panic(__func__);
++	return ret;
++}
 +
-+	for_each_fuzz_test(test) {
-+		if (streq_ptr(test->name, fuzz_name)) {
-+			fuzz = test;
-+			barebox_main = fuzz_main;
-+			barebox_loglevel = MSG_CRIT;
-+			return 0;
++/* Defined after fortified strlen() to reuse it. */
++extern size_t __real_strlcpy(char *, const char *, size_t) __RENAME(strlcpy);
++/**
++ * strlcpy - Copy a string into another string buffer
++ *
++ * @p: pointer to destination of copy
++ * @q: pointer to NUL-terminated source string to copy
++ * @size: maximum number of bytes to write at @p
++ *
++ * If strlen(@q) >= @size, the copy of @q will be truncated at
++ * @size - 1 bytes. @p will always be NUL-terminated.
++ *
++ * Do not use this function. While FORTIFY_SOURCE tries to avoid
++ * over-reads when calculating strlen(@q), it is still possible.
++ * Prefer strscpy(), though note its different return values for
++ * detecting truncation.
++ *
++ * Returns total number of bytes written to @p, including terminating NUL.
++ *
++ */
++__FORTIFY_INLINE size_t strlcpy(char * const POS p, const char * const POS q, size_t size)
++{
++	const size_t p_size = __member_size(p);
++	const size_t q_size = __member_size(q);
++	size_t q_len;	/* Full count of source string length. */
++	size_t len;	/* Count of characters going into destination. */
++
++	if (p_size == SIZE_MAX && q_size == SIZE_MAX)
++		return __real_strlcpy(p, q, size);
++	q_len = strlen(q);
++	len = (q_len >= size) ? size - 1 : q_len;
++	if (__builtin_constant_p(size) && __builtin_constant_p(q_len) && size) {
++		/* Write size is always larger than destination. */
++		if (len >= p_size)
++			__write_overflow();
++	}
++	if (size) {
++		if (len >= p_size)
++			fortify_panic(__func__);
++		__underlying_memcpy(p, q, len);
++		p[len] = '\0';
++	}
++	return q_len;
++}
++
++/* Defined after fortified strnlen() to reuse it. */
++extern ssize_t __real_strscpy(char *, const char *, size_t) __RENAME(strscpy);
++/**
++ * strscpy - Copy a C-string into a sized buffer
++ *
++ * @p: Where to copy the string to
++ * @q: Where to copy the string from
++ * @size: Size of destination buffer
++ *
++ * Copy the source string @q, or as much of it as fits, into the destination
++ * @p buffer. The behavior is undefined if the string buffers overlap. The
++ * destination @p buffer is always NUL terminated, unless it's zero-sized.
++ *
++ * Preferred to strlcpy() since the API doesn't require reading memory
++ * from the source @q string beyond the specified @size bytes, and since
++ * the return value is easier to error-check than strlcpy()'s.
++ * In addition, the implementation is robust to the string changing out
++ * from underneath it, unlike the current strlcpy() implementation.
++ *
++ * Preferred to strncpy() since it always returns a valid string, and
++ * doesn't unnecessarily force the tail of the destination buffer to be
++ * zero padded. If padding is desired please use strscpy_pad().
++ *
++ * Returns the number of characters copied in @p (not including the
++ * trailing %NUL) or -E2BIG if @size is 0 or the copy of @q was truncated.
++ */
++__FORTIFY_INLINE ssize_t strscpy(char * const POS p, const char * const POS q, size_t size)
++{
++	/* Use string size rather than possible enclosing struct size. */
++	const size_t p_size = __member_size(p);
++	const size_t q_size = __member_size(q);
++	size_t len;
++
++	/* If we cannot get size of p and q default to call strscpy. */
++	if (p_size == SIZE_MAX && q_size == SIZE_MAX)
++		return __real_strscpy(p, q, size);
++
++	/*
++	 * If size can be known at compile time and is greater than
++	 * p_size, generate a compile time write overflow error.
++	 */
++	if (__compiletime_lessthan(p_size, size))
++		__write_overflow();
++
++	/* Short-circuit for compile-time known-safe lengths. */
++	if (__compiletime_lessthan(p_size, SIZE_MAX)) {
++		len = __compiletime_strlen(q);
++
++		if (len < SIZE_MAX && __compiletime_lessthan(len, size)) {
++			__underlying_memcpy(p, q, len + 1);
++			return len;
 +		}
 +	}
 +
-+	return -1;
++	/*
++	 * This call protects from read overflow, because len will default to q
++	 * length if it smaller than size.
++	 */
++	len = strnlen(q, size);
++	/*
++	 * If len equals size, we will copy only size bytes which leads to
++	 * -E2BIG being returned.
++	 * Otherwise we will copy len + 1 because of the final '\O'.
++	 */
++	len = len == size ? size : len + 1;
++
++	/*
++	 * Generate a runtime write overflow error if len is greater than
++	 * p_size.
++	 */
++	if (len > p_size)
++		fortify_panic(__func__);
++
++	/*
++	 * We can now safely call vanilla strscpy because we are protected from:
++	 * 1. Read overflow thanks to call to strnlen().
++	 * 2. Write overflow thanks to above ifs.
++	 */
++	return __real_strscpy(p, q, len);
 +}
 +
-+bool fuzz_external_active(void)
++/* Defined after fortified strlen() to reuse it. */
++extern size_t __real_strlcat(char *p, const char *q, size_t avail) __RENAME(strlcat);
++/**
++ * strlcat - Append a string to an existing string
++ *
++ * @p: pointer to %NUL-terminated string to append to
++ * @q: pointer to %NUL-terminated string to append from
++ * @avail: Maximum bytes available in @p
++ *
++ * Appends %NUL-terminated string @q after the %NUL-terminated
++ * string at @p, but will not write beyond @avail bytes total,
++ * potentially truncating the copy from @q. @p will stay
++ * %NUL-terminated only if a %NUL already existed within
++ * the @avail bytes of @p. If so, the resulting number of
++ * bytes copied from @q will be at most "@avail - strlen(@p) - 1".
++ *
++ * Do not use this function. While FORTIFY_SOURCE tries to avoid
++ * read and write overflows, this is only possible when the sizes
++ * of @p and @q are known to the compiler. Prefer building the
++ * string with formatting, via scnprintf(), seq_buf, or similar.
++ *
++ * Returns total bytes that _would_ have been contained by @p
++ * regardless of truncation, similar to snprintf(). If return
++ * value is >= @avail, the string has been truncated.
++ *
++ */
++__FORTIFY_INLINE
++size_t strlcat(char * const POS p, const char * const POS q, size_t avail)
 +{
-+	return fuzz != NULL;
-+}
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index ba87f6c210d2..11be17d8cceb 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -21,6 +21,7 @@
- #include <wchar.h>
- #include <of.h>
- #include <efi.h>
-+#include <fuzz.h>
- 
- #include <common.h>
- #include <pbl.h>
-@@ -989,3 +990,17 @@ int asprintf(char **strp, const char *fmt, ...)
- 	return len;
- }
- EXPORT_SYMBOL(asprintf);
++	const size_t p_size = __member_size(p);
++	const size_t q_size = __member_size(q);
++	size_t p_len, copy_len;
++	size_t actual, wanted;
 +
-+static int __maybe_unused fuzz_printf(const uint8_t *data, size_t size)
-+{
-+	static bool initialized = false;
++	/* Give up immediately if both buffer sizes are unknown. */
++	if (p_size == SIZE_MAX && q_size == SIZE_MAX)
++		return __real_strlcat(p, q, avail);
 +
-+	if (!initialized) {
-+		printf("initializing\n");
-+		initialized = true;
++	p_len = strnlen(p, avail);
++	copy_len = strlen(q);
++	wanted = actual = p_len + copy_len;
++
++	/* Cannot append any more: report truncation. */
++	if (avail <= p_len)
++		return wanted;
++
++	/* Give up if string is already overflowed. */
++	if (p_size <= p_len)
++		fortify_panic(__func__);
++
++	if (actual >= avail) {
++		copy_len = avail - p_len - 1;
++		actual = p_len + copy_len;
 +	}
 +
-+	printf("%*ph\n", (int)size, data);
-+	return 0;
++	/* Give up if copy will overflow. */
++	if (p_size <= actual)
++		fortify_panic(__func__);
++	__underlying_memcpy(p + p_len, q, copy_len);
++	p[actual] = '\0';
++
++	return wanted;
 +}
-+fuzz_test("printf", fuzz_printf);
-diff --git a/scripts/Kconfig.include b/scripts/Kconfig.include
-index 55ec8737d0db..93c33d9485b1 100644
---- a/scripts/Kconfig.include
-+++ b/scripts/Kconfig.include
-@@ -28,6 +28,7 @@ cc-info := $(shell,$(srctree)/scripts/cc-version.sh $(CC))
- $(error-if,$(success,test -z "$(cc-info)"),Sorry$(comma) this C compiler is not supported.)
- cc-name := $(shell,set -- $(cc-info) && echo $1)
- cc-version := $(shell,set -- $(cc-info) && echo $2)
-+clang-runtime-dir = $(shell,$(srctree)/scripts/clang-runtime-dir.sh $(CC))
++
++/* Defined after fortified strlcat() to reuse it. */
++/**
++ * strcat - Append a string to an existing string
++ *
++ * @p: pointer to NUL-terminated string to append to
++ * @q: pointer to NUL-terminated source string to append from
++ *
++ * Do not use this function. While FORTIFY_SOURCE tries to avoid
++ * read and write overflows, this is only possible when the
++ * destination buffer size is known to the compiler. Prefer
++ * building the string with formatting, via scnprintf() or similar.
++ * At the very least, use strncat().
++ *
++ * Returns @p.
++ *
++ */
++__FORTIFY_INLINE __diagnose_as(__builtin_strcat, 1, 2)
++char *strcat(char * const POS p, const char *q)
++{
++	const size_t p_size = __member_size(p);
++
++	if (strlcat(p, q, p_size) >= p_size)
++		fortify_panic(__func__);
++	return p;
++}
++
++/**
++ * strncat - Append a string to an existing string
++ *
++ * @p: pointer to NUL-terminated string to append to
++ * @q: pointer to source string to append from
++ * @count: Maximum bytes to read from @q
++ *
++ * Appends at most @count bytes from @q (stopping at the first
++ * NUL byte) after the NUL-terminated string at @p. @p will be
++ * NUL-terminated.
++ *
++ * Do not use this function. While FORTIFY_SOURCE tries to avoid
++ * read and write overflows, this is only possible when the sizes
++ * of @p and @q are known to the compiler. Prefer building the
++ * string with formatting, via scnprintf() or similar.
++ *
++ * Returns @p.
++ *
++ */
++/* Defined after fortified strlen() and strnlen() to reuse them. */
++__FORTIFY_INLINE __diagnose_as(__builtin_strncat, 1, 2, 3)
++char *strncat(char * const POS p, const char * const POS q, __kernel_size_t count)
++{
++	const size_t p_size = __member_size(p);
++	const size_t q_size = __member_size(q);
++	size_t p_len, copy_len;
++
++	if (p_size == SIZE_MAX && q_size == SIZE_MAX)
++		return __underlying_strncat(p, q, count);
++	p_len = strlen(p);
++	copy_len = strnlen(q, count);
++	if (p_size < p_len + copy_len + 1)
++		fortify_panic(__func__);
++	__underlying_memcpy(p + p_len, q, copy_len);
++	p[p_len + copy_len] = '\0';
++	return p;
++}
++
++__FORTIFY_INLINE void fortify_memset_chk(__kernel_size_t size,
++					 const size_t p_size,
++					 const size_t p_size_field)
++{
++	if (__builtin_constant_p(size)) {
++		/*
++		 * Length argument is a constant expression, so we
++		 * can perform compile-time bounds checking where
++		 * buffer sizes are also known at compile time.
++		 */
++
++		/* Error when size is larger than enclosing struct. */
++		if (__compiletime_lessthan(p_size_field, p_size) &&
++		    __compiletime_lessthan(p_size, size))
++			__write_overflow();
++
++		/* Warn when write size is larger than dest field. */
++		if (__compiletime_lessthan(p_size_field, size))
++			__write_overflow_field(p_size_field, size);
++	}
++	/*
++	 * At this point, length argument may not be a constant expression,
++	 * so run-time bounds checking can be done where buffer sizes are
++	 * known. (This is not an "else" because the above checks may only
++	 * be compile-time warnings, and we want to still warn for run-time
++	 * overflows.)
++	 */
++
++	/*
++	 * Always stop accesses beyond the struct that contains the
++	 * field, when the buffer's remaining size is known.
++	 * (The SIZE_MAX test is to optimize away checks where the buffer
++	 * lengths are unknown.)
++	 */
++	if (p_size != SIZE_MAX && p_size < size)
++		fortify_panic("memset");
++}
++
++#define __fortify_memset_chk(p, c, size, p_size, p_size_field) ({	\
++	size_t __fortify_size = (size_t)(size);				\
++	fortify_memset_chk(__fortify_size, p_size, p_size_field),	\
++	__underlying_memset(p, c, __fortify_size);			\
++})
++
++/*
++ * To make sure the compiler can enforce protection against buffer overflows,
++ * memcpy(), memmove(), and memset() must not be used beyond individual
++ * struct members. If you need to copy across multiple members, please use
++ * struct_group() to create a named mirror of an anonymous struct union.
++ * (e.g. see struct sk_buff.) Read overflow checking is currently only
++ * done when a write overflow is also present, or when building with W=1.
++ *
++ * Mitigation coverage matrix
++ *					Bounds checking at:
++ *					+-------+-------+-------+-------+
++ *					| Compile time  |   Run time    |
++ * memcpy() argument sizes:		| write | read  | write | read  |
++ *        dest     source   length      +-------+-------+-------+-------+
++ * memcpy(known,   known,   constant)	|   y   |   y   |  n/a  |  n/a  |
++ * memcpy(known,   unknown, constant)	|   y   |   n   |  n/a  |   V   |
++ * memcpy(known,   known,   dynamic)	|   n   |   n   |   B   |   B   |
++ * memcpy(known,   unknown, dynamic)	|   n   |   n   |   B   |   V   |
++ * memcpy(unknown, known,   constant)	|   n   |   y   |   V   |  n/a  |
++ * memcpy(unknown, unknown, constant)	|   n   |   n   |   V   |   V   |
++ * memcpy(unknown, known,   dynamic)	|   n   |   n   |   V   |   B   |
++ * memcpy(unknown, unknown, dynamic)	|   n   |   n   |   V   |   V   |
++ *					+-------+-------+-------+-------+
++ *
++ * y = perform deterministic compile-time bounds checking
++ * n = cannot perform deterministic compile-time bounds checking
++ * n/a = no run-time bounds checking needed since compile-time deterministic
++ * B = can perform run-time bounds checking (currently unimplemented)
++ * V = vulnerable to run-time overflow (will need refactoring to solve)
++ *
++ */
++__FORTIFY_INLINE bool fortify_memcpy_chk(__kernel_size_t size,
++					 const size_t p_size,
++					 const size_t q_size,
++					 const size_t p_size_field,
++					 const size_t q_size_field,
++					 const char *func)
++{
++	if (__builtin_constant_p(size)) {
++		/*
++		 * Length argument is a constant expression, so we
++		 * can perform compile-time bounds checking where
++		 * buffer sizes are also known at compile time.
++		 */
++
++		/* Error when size is larger than enclosing struct. */
++		if (__compiletime_lessthan(p_size_field, p_size) &&
++		    __compiletime_lessthan(p_size, size))
++			__write_overflow();
++		if (__compiletime_lessthan(q_size_field, q_size) &&
++		    __compiletime_lessthan(q_size, size))
++			__read_overflow2();
++
++		/* Warn when write size argument larger than dest field. */
++		if (__compiletime_lessthan(p_size_field, size))
++			__write_overflow_field(p_size_field, size);
++		/*
++		 * Warn for source field over-read when building with W=1
++		 * or when an over-write happened, so both can be fixed at
++		 * the same time.
++		 */
++		if ((IS_ENABLED(KBUILD_EXTRA_WARN1) ||
++		     __compiletime_lessthan(p_size_field, size)) &&
++		    __compiletime_lessthan(q_size_field, size))
++			__read_overflow2_field(q_size_field, size);
++	}
++	/*
++	 * At this point, length argument may not be a constant expression,
++	 * so run-time bounds checking can be done where buffer sizes are
++	 * known. (This is not an "else" because the above checks may only
++	 * be compile-time warnings, and we want to still warn for run-time
++	 * overflows.)
++	 */
++
++	/*
++	 * Always stop accesses beyond the struct that contains the
++	 * field, when the buffer's remaining size is known.
++	 * (The SIZE_MAX test is to optimize away checks where the buffer
++	 * lengths are unknown.)
++	 */
++	if ((p_size != SIZE_MAX && p_size < size) ||
++	    (q_size != SIZE_MAX && q_size < size))
++		fortify_panic(func);
++
++	/*
++	 * Warn when writing beyond destination field size.
++	 *
++	 * We must ignore p_size_field == 0 for existing 0-element
++	 * fake flexible arrays, until they are all converted to
++	 * proper flexible arrays.
++	 *
++	 * The implementation of __builtin_*object_size() behaves
++	 * like sizeof() when not directly referencing a flexible
++	 * array member, which means there will be many bounds checks
++	 * that will appear at run-time, without a way for them to be
++	 * detected at compile-time (as can be done when the destination
++	 * is specifically the flexible array member).
++	 * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101832
++	 */
++	if (p_size_field != 0 && p_size_field != SIZE_MAX &&
++	    p_size != p_size_field && p_size_field < size)
++		return true;
++
++	return false;
++}
++
++#define __fortify_memcpy_chk(p, q, size, p_size, q_size,		\
++			     p_size_field, q_size_field, op) ({		\
++	const size_t __fortify_size = (size_t)(size);			\
++	const size_t __p_size = (p_size);				\
++	const size_t __q_size = (q_size);				\
++	const size_t __p_size_field = (p_size_field);			\
++	const size_t __q_size_field = (q_size_field);			\
++	WARN_ONCE(fortify_memcpy_chk(__fortify_size, __p_size,		\
++				     __q_size, __p_size_field,		\
++				     __q_size_field, #op),		\
++		  #op ": detected field-spanning write (size %zu) of single %s (size %zu)\n", \
++		  __fortify_size,					\
++		  "field \"" #p "\" at " __FILE__ ":" __stringify(__LINE__), \
++		  __p_size_field);					\
++	__underlying_##op(p, q, __fortify_size);			\
++})
++
++/*
++ * Notes about compile-time buffer size detection:
++ *
++ * With these types...
++ *
++ *	struct middle {
++ *		u16 a;
++ *		u8 middle_buf[16];
++ *		int b;
++ *	};
++ *	struct end {
++ *		u16 a;
++ *		u8 end_buf[16];
++ *	};
++ *	struct flex {
++ *		int a;
++ *		u8 flex_buf[];
++ *	};
++ *
++ *	void func(TYPE *ptr) { ... }
++ *
++ * Cases where destination size cannot be currently detected:
++ * - the size of ptr's object (seemingly by design, gcc & clang fail):
++ *	__builtin_object_size(ptr, 1) == SIZE_MAX
++ * - the size of flexible arrays in ptr's obj (by design, dynamic size):
++ *	__builtin_object_size(ptr->flex_buf, 1) == SIZE_MAX
++ * - the size of ANY array at the end of ptr's obj (gcc and clang bug):
++ *	__builtin_object_size(ptr->end_buf, 1) == SIZE_MAX
++ *	https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101836
++ *
++ * Cases where destination size is currently detected:
++ * - the size of non-array members within ptr's object:
++ *	__builtin_object_size(ptr->a, 1) == 2
++ * - the size of non-flexible-array in the middle of ptr's obj:
++ *	__builtin_object_size(ptr->middle_buf, 1) == 16
++ *
++ */
++
++/*
++ * __struct_size() vs __member_size() must be captured here to avoid
++ * evaluating argument side-effects further into the macro layers.
++ */
++#define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,			\
++		__struct_size(p), __struct_size(q),			\
++		__member_size(p), __member_size(q),			\
++		memcpy)
++#define memmove(p, q, s)  __fortify_memcpy_chk(p, q, s,			\
++		__struct_size(p), __struct_size(q),			\
++		__member_size(p), __member_size(q),			\
++		memmove)
++
++extern void *__real_memscan(void *, int, __kernel_size_t) __RENAME(memscan);
++__FORTIFY_INLINE void *memscan(void * const POS0 p, int c, __kernel_size_t size)
++{
++	const size_t p_size = __struct_size(p);
++
++	if (__compiletime_lessthan(p_size, size))
++		__read_overflow();
++	if (p_size < size)
++		fortify_panic(__func__);
++	return __real_memscan(p, c, size);
++}
++
++__FORTIFY_INLINE __diagnose_as(__builtin_memcmp, 1, 2, 3)
++int memcmp(const void * const POS0 p, const void * const POS0 q, __kernel_size_t size)
++{
++	const size_t p_size = __struct_size(p);
++	const size_t q_size = __struct_size(q);
++
++	if (__builtin_constant_p(size)) {
++		if (__compiletime_lessthan(p_size, size))
++			__read_overflow();
++		if (__compiletime_lessthan(q_size, size))
++			__read_overflow2();
++	}
++	if (p_size < size || q_size < size)
++		fortify_panic(__func__);
++	return __underlying_memcmp(p, q, size);
++}
++
++__FORTIFY_INLINE __diagnose_as(__builtin_memchr, 1, 2, 3)
++void *memchr(const void * const POS0 p, int c, __kernel_size_t size)
++{
++	const size_t p_size = __struct_size(p);
++
++	if (__compiletime_lessthan(p_size, size))
++		__read_overflow();
++	if (p_size < size)
++		fortify_panic(__func__);
++	return __underlying_memchr(p, c, size);
++}
++
++void *__real_memchr_inv(const void *s, int c, size_t n) __RENAME(memchr_inv);
++__FORTIFY_INLINE void *memchr_inv(const void * const POS0 p, int c, size_t size)
++{
++	const size_t p_size = __struct_size(p);
++
++	if (__compiletime_lessthan(p_size, size))
++		__read_overflow();
++	if (p_size < size)
++		fortify_panic(__func__);
++	return __real_memchr_inv(p, c, size);
++}
++
++extern void *__real_kmemdup(const void *src, size_t len, gfp_t gfp) __RENAME(kmemdup)
++								    __realloc_size(2);
++__FORTIFY_INLINE void *kmemdup(const void * const POS0 p, size_t size, gfp_t gfp)
++{
++	const size_t p_size = __struct_size(p);
++
++	if (__compiletime_lessthan(p_size, size))
++		__read_overflow();
++	if (p_size < size)
++		fortify_panic(__func__);
++	return __real_kmemdup(p, size, gfp);
++}
++
++/**
++ * strcpy - Copy a string into another string buffer
++ *
++ * @p: pointer to destination of copy
++ * @q: pointer to NUL-terminated source string to copy
++ *
++ * Do not use this function. While FORTIFY_SOURCE tries to avoid
++ * overflows, this is only possible when the sizes of @q and @p are
++ * known to the compiler. Prefer strscpy(), though note its different
++ * return values for detecting truncation.
++ *
++ * Returns @p.
++ *
++ */
++/* Defined after fortified strlen to reuse it. */
++__FORTIFY_INLINE __diagnose_as(__builtin_strcpy, 1, 2)
++char *strcpy(char * const POS p, const char * const POS q)
++{
++	const size_t p_size = __member_size(p);
++	const size_t q_size = __member_size(q);
++	size_t size;
++
++	/* If neither buffer size is known, immediately give up. */
++	if (__builtin_constant_p(p_size) &&
++	    __builtin_constant_p(q_size) &&
++	    p_size == SIZE_MAX && q_size == SIZE_MAX)
++		return __underlying_strcpy(p, q);
++	size = strlen(q) + 1;
++	/* Compile-time check for const size overflow. */
++	if (__compiletime_lessthan(p_size, size))
++		__write_overflow();
++	/* Run-time check for dynamic size overflow. */
++	if (p_size < size)
++		fortify_panic(__func__);
++	__underlying_memcpy(p, q, size);
++	return p;
++}
++
++/* Don't use these outside the FORITFY_SOURCE implementation */
++#undef __underlying_memchr
++#undef __underlying_memcmp
++#undef __underlying_strcat
++#undef __underlying_strcpy
++#undef __underlying_strncat
++#undef __underlying_strncpy
++
++#undef POS
++#undef POS0
++
++#endif /* _LINUX_FORTIFY_STRING_H_ */
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 953484ebc9f6..d796c774c4fe 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -161,6 +161,23 @@ static inline const char *kbasename(const char *path)
+ 	return tail ? tail + 1 : path;
+ }
  
- # $(cc-option,<flag>)
- # Return y if the compiler supports <flag>, n otherwise
-diff --git a/scripts/clang-runtime-dir.sh b/scripts/clang-runtime-dir.sh
-new file mode 100755
-index 000000000000..65b3028ad04d
++#if !defined(__NO_FORTIFY) && defined(__OPTIMIZE__) && defined(CONFIG_FORTIFY_SOURCE)
++#include <linux/fortify-string.h>
++#endif
++#ifndef unsafe_memcpy
++#define unsafe_memcpy(dst, src, bytes, justification)		\
++	memcpy(dst, src, bytes)
++#endif
++
++#ifndef unsafe_memset
++#define unsafe_memset(dst, val, size, justification)		\
++	memset(dst, val, size)
++#endif
++
++#ifndef unsafe_strlen
++#define unsafe_strlen(str, justification)			\
++	strlen(str)
++#endif
+ 
+ #ifdef __cplusplus
+ }
+diff --git a/lib/Kconfig.hardening b/lib/Kconfig.hardening
+index ac1acefafb2c..658de4953aa1 100644
+--- a/lib/Kconfig.hardening
++++ b/lib/Kconfig.hardening
+@@ -137,6 +137,19 @@ config ZERO_CALL_USED_REGS
+ 
+ endmenu
+ 
++menu "Buffer overflow protection"
++
++config FORTIFY_SOURCE
++	bool "Harden common str/mem functions against buffer overflows"
++	depends on ARCH_HAS_FORTIFY_SOURCE
++	# https://bugs.llvm.org/show_bug.cgi?id=41459
++	depends on !CC_IS_CLANG || CLANG_VERSION >= 120001
++	# https://github.com/llvm/llvm-project/issues/53645
++	depends on !CC_IS_CLANG || !X86_32
++	help
++	  Detect overflows of buffers in common string and memory functions
++	  where the compiler can determine and validate the buffer sizes.
++
+ config STACK_GUARD_PAGE
+ 	bool "Place guard page to catch stack overflows"
+ 	depends on ARM && MMU
+@@ -251,3 +264,5 @@ config MEMORY_ATTRIBUTES
+ 	  will in future be enforced by the MMU.
+ 
+ endmenu
++
++endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index 0d1d22c0845b..370d4f31d45a 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -6,7 +6,7 @@ obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
+ obj-pbl-y		+= ctype.o
+ obj-y			+= rbtree.o
+ obj-y			+= display_options.o
+-obj-y			+= string.o
++obj-y			+= string.o string_helpers.o
+ obj-$(CONFIG_VERSION_CMP)	+= strverscmp.o
+ obj-y			+= strtox.o
+ obj-y			+= kstrtox.o
+diff --git a/lib/string.c b/lib/string.c
+index ebce8f0073fa..96eac6d1daf6 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -6,19 +6,13 @@
+  */
+ 
+ /*
+- * stupid library routines.. The optimized versions should generally be found
+- * as inline code in <asm-xx/string.h>
+- *
+- * These are buggy as well..
+- *
+- * * Fri Jun 25 1999, Ingo Oeser <ioe@informatik.tu-chemnitz.de>
+- * -  Added strsep() which will replace strtok() soon (because strsep() is
+- *    reentrant and should be faster). Use only strsep() in new code, please.
+- * * Mon Sep 14 2020, Ahmad Fatoum <a.fatoum@pengutronix.de>
+- * -  Kissed strtok() goodbye
+- *
++ * This file should be used only for "library" routines that may have
++ * alternative implementations on specific architectures (generally
++ * found in <asm/string.h>), or get overloaded by FORTIFY_SOURCE.
++ * (Specifically, this file is built with __NO_FORTIFY.)
+  */
+ 
++#define __NO_FORTIFY
+ #include <linux/types.h>
+ #include <string.h>
+ #include <linux/ctype.h>
+diff --git a/lib/string_helpers.c b/lib/string_helpers.c
+new file mode 100644
+index 000000000000..6ddef5f78e38
 --- /dev/null
-+++ b/scripts/clang-runtime-dir.sh
-@@ -0,0 +1,19 @@
-+#!/bin/sh
++++ b/lib/string_helpers.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Helpers for formatting and printing strings
++ *
++ * Copyright 31 August 2008 James Bottomley
++ * Copyright (C) 2013, Intel Corporation
++ */
 +
-+CC=${1:-${CC}}
++#include <linux/types.h>
++#include <linux/bug.h>
++#include <linux/printk.h>
++#include <linux/linkage.h>
 +
-+if [ "${CC}" = "" ]; then
-+	echo "Error: No compiler specified." >&2
-+	printf "Usage:\n\t$0 <clang-command>\n" >&2
-+	exit 1
-+fi
++void __read_overflow2_field(size_t avail, size_t wanted);
++void __write_overflow_field(size_t avail, size_t wanted);
++void fortify_panic(const char *name);
 +
-+rundir=$("${CC}" --print-runtime-dir 2>/dev/null)
-+if [ ! -e "$rundir" ]; then
-+	# Workaround https://github.com/llvm/llvm-project/issues/112458
-+	guess=$(dirname "$rundir")/linux
-+	if [ -e "$guess" ]; then
-+		rundir="$guess"
-+	fi
-+fi
-+echo "$rundir"
-diff --git a/test/Kconfig b/test/Kconfig
-index 958b483ea946..ca2d75c6b025 100644
---- a/test/Kconfig
-+++ b/test/Kconfig
-@@ -7,4 +7,41 @@ if TEST
++#ifdef CONFIG_FORTIFY_SOURCE
++/* These are placeholders for fortify compile-time warnings. */
++void __read_overflow2_field(size_t avail, size_t wanted) { }
++EXPORT_SYMBOL(__read_overflow2_field);
++void __write_overflow_field(size_t avail, size_t wanted) { }
++EXPORT_SYMBOL(__write_overflow_field);
++
++void fortify_panic(const char *name)
++{
++	panic("detected buffer overflow in %s\n", name);
++}
++EXPORT_SYMBOL(fortify_panic);
++#endif /* CONFIG_FORTIFY_SOURCE */
+diff --git a/pbl/string.c b/pbl/string.c
+index 7c10f064dc7e..528f62ef2055 100644
+--- a/pbl/string.c
++++ b/pbl/string.c
+@@ -6,6 +6,7 @@
+  * Small subset of simple string routines
+  */
  
- source "test/self/Kconfig"
- 
-+config FUZZ
-+	bool "fuzz tests"
-+	help
-+	  Say y here to add include fuzz tests into barebox.
-+	  These need to be exercised either via command or
-+	  by libfuzzer
-+
-+config FUZZ_EXTERNAL
-+	bool "link against libfuzzer"
-+	depends on SANDBOX && CC_IS_CLANG
-+	help
-+	  LibFuzzer is an in-process, coverage-guided, evolutionary fuzzing
-+	  engine. It can be linked against barebox on the sandbox
-+	  architecture to feed fuzzed inputs into the fuzz tests.
-+
-+if FUZZ
-+
-+config CMD_FUZZ
-+	bool "fuzz command"
-+	depends on COMMAND_SUPPORT
-+	default y
-+	help
-+	  Command to run enabled barebox fuzz tests on fixed input.
-+	  If run without arguments, all tests are run.
-+
-+	  This is mostly useful for debugging, use FUZZ_EXTERNAL
-+	  to have fuzzed inputs be bed automatically .
-+
-+	  Usage: fuzz [-ls] -f FILE [test]
-+
-+	  Options:
-+	    -l        list registered fuzz tests
-+	    -f FILE   use FILE as fuzz input
-+	    -s SIZE   read only SIZE bytes from file
-+
-+endif
-+
- endif
++#define __NO_FORTIFY
+ #include <linux/types.h>
+ #include <linux/string.h>
+ #include <linux/compiler.h>
 -- 
 2.39.5
 
