@@ -1,67 +1,66 @@
-Delivery-date: Thu, 05 Jun 2025 09:49:43 +0200
+Delivery-date: Thu, 05 Jun 2025 09:49:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN5M7-003w9B-2w
+	id 1uN5M8-003w9Z-2d
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 09:49:43 +0200
+	Thu, 05 Jun 2025 09:49:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN5M6-0007mv-Dt
-	for lore@pengutronix.de; Thu, 05 Jun 2025 09:49:43 +0200
+	id 1uN5M7-0007p7-NW
+	for lore@pengutronix.de; Thu, 05 Jun 2025 09:49:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4k15DsvZl25zGfZzAraqwZOJLLTf8gB6iyE0DATfKKY=; b=thuSpFatvlFaO5A/oBbA9+ewX3
-	sqBnsatLg/Famhi8kMzzhkVuuK9ZH+lRO5ZtfcM2tRMBQfLS2EV7t8uEm9NWflEBQzGSvP+8BBNYL
-	4W674qGGpB3WhTWwAy/gAHg1CGKiiRbjsxK/j4+Vx2YRwes8cjEFI71Ml+BJGdPrWzB8fWaM7eXfw
-	oxvV6ts+79Y2cbCR8WQS9R7w7nXpoYxJ/TIQYUyhP/AIOIhU1NFIYOtB1KSpCV2iVhVbsNX4zN/Sc
-	1+Dnvw8ppBHQkOcwHJAsfcYQO6dBgN2Q88d2EQm772JJxyajCFUFV937/hhu4DJk50KJOH4/bgQ08
-	o8jZQC0Q==;
+	bh=r9rIlbV+ZXhXMKjqVrYbb+5y0lEk8AHQw+xigudPjNc=; b=ZxhTm9sqDt7242Ohi27ZPJGNSx
+	T7q3QvKgFZ7VUww+E197WEQtfyuc4mEaoIPhWzqiLgqVgJXWVLXRn+/QRitvW2d0u2Z/+K6V6hWmp
+	7hYVJsMF6S83O3VLVaSHod2V+IwllCNLiiTBX7w3nADCw7JL3W8hEaJCeGMd3QzlGGpZdb2KzxiD9
+	daHaeCCI6/Vrxk89DibXzbowQCxXTG8l5zpVU+0dqjBm0BnjrTtk5EPSGfHbZRCfTH1XG5hrt39rM
+	U4XDjKE+7tUcrYoS1PEcr/Sm4ftYP9zdNOM7UZRJ4+nKNQPLn/fZzwAuVTj77JMfKqKZL4Vc+R4fO
+	nJEnMEnA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN5Lb-0000000Ez9R-1B5e;
-	Thu, 05 Jun 2025 07:49:11 +0000
+	id 1uN5LW-0000000Ez4u-3pdj;
+	Thu, 05 Jun 2025 07:49:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN5Jk-0000000Eys5-1gPn
+	id 1uN5Jk-0000000Eys7-1hC7
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 07:47:25 +0000
+	Thu, 05 Jun 2025 07:47:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uN5Ji-00065T-Iw; Thu, 05 Jun 2025 09:47:14 +0200
+	id 1uN5Ji-00065W-JF; Thu, 05 Jun 2025 09:47:14 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uN5Ji-001v80-0F;
+	id 1uN5Ji-001v83-0N;
 	Thu, 05 Jun 2025 09:47:14 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uN5Ji-00HUuH-01;
+	id 1uN5Ji-00HUuT-06;
 	Thu, 05 Jun 2025 09:47:14 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu,  5 Jun 2025 09:47:07 +0200
-Message-Id: <20250605074713.4170334-4-o.rempel@pengutronix.de>
+Date: Thu,  5 Jun 2025 09:47:10 +0200
+Message-Id: <20250605074713.4170334-7-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605074713.4170334-1-o.rempel@pengutronix.de>
 References: <20250605074713.4170334-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_004716_517342_80B0760C 
-X-CRM114-Status: GOOD (  21.82  )
+X-CRM114-CacheID: sfid-20250605_004716_495885_CC78FB2E 
+X-CRM114-Status: GOOD (  18.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,185 +82,125 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/9] commands: nvmem: Add support for creating dynamic rmem devices
+Subject: [PATCH v2 6/9] nvmem: bsec: Implement NVMEM protect via regmap_seal for OTP locking
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The 'nvmem' command is extended to allow the creation of dynamic
-RAM-backed NVMEM devices (rmem). This functionality is useful for
-testing NVMEM operations, for scripts that require temporary, writable
-NVMEM areas, or when a persistent NVMEM device is not available or
-necessary.
+Enable the NVMEM 'protect' cdev operation for the STM32 BSEC driver.
+This allows One-Time Programmable (OTP) memory words managed by the
+BSEC driver to be permanently write-locked using the standard NVMEM
+protection mechanism.
 
-This patch introduces the following new options to the 'nvmem' command:
+This change implements the recently added `regmap_bus->reg_seal`
+interface for the BSEC driver. A new function,
+`stm32_bsec_do_reg_seal_otp`, calls the `BSEC_SMC_WRLOCK_OTP` Secure
+Monitor Call to perform the hardware OTP word lock. This function is
+triggered when `regmap_seal` is called with the
+`REGMAP_SEAL_WRITE_PROTECT | REGMAP_SEAL_PERMANENT` flags, which the
+NVMEM-regmap bridge uses for `prot=1` (protect) requests. The
+`BSEC_SMC_WRLOCK_OTP` enum value is also added.
 
--c : Creates a new rmem NVMEM device of the specified . The size can be
-given with common suffixes (e.g., K, M). The command enforces that the
-size is non-zero and does not exceed a defined maximum (NVMEM_MAX_SIZE,
-defaulting to 1MB). This option requires CONFIG_NVMEM_RMEM to be
-enabled.
+This explicit sealing via `regmap_seal` is currently implemented for
+the SMC path.
 
--v : When used in conjunction with the -c option, this stores the name
-of the newly created rmem device (e.g., "rmem0") into the environment
-variable specified by . This allows subsequent commands or scripts to
-easily reference the dynamic NVMEM device.
+Testing from Barebox CLI:
 
-If invoked without any options, the 'nvmem' command retains its original
-behavior of listing all currently available NVMEM devices.
+This functionality allows explicit locking of already programmed OTP
+words.  The following example demonstrates programming an OTP word,
+locking it, and then verifying the write protection.
+
+Assume the BSEC NVMEM device is `/dev/bsec0` and its parameters are
+accessed via `bsec0`.
+
+1. Enable permanent OTP writes:
+   bsec0.permanent_write_enable=1
+
+2. Program an OTP word (e.g., byte offset 0x170 with value 0x12345678):
+   mw -d /dev/bsec0 -l 0x170 0x12345678
+   md -s /dev/bsec0 -l 0x170+4  # Expected: Shows 0x12345678
+
+3. Lock this specific OTP word using the 'protect' command:
+   # Protects 4 bytes (one 32-bit word) starting at byte offset 0x170
+   protect /dev/bsec0 0x170+4
+   # Check dmesg for BSEC driver logs confirming the lock via SMC.
+
+4. Verify the write protection:
+   mw -d /dev/bsec0 -l 0x170 0xAABBCCDD
+   # This write should fail or have no effect on the hardware's fuses
+   # value. The mw command itself might not report an error for OTPs if
+   # the underlying hardware silently ignores writes to locked bits/words.
+
+   md -s /dev/bsec0 -l 0x170+4
+   # Expected: Should still show the original locked value (0x12345678),
+   # confirming the write attempt was blocked or ineffective.
+
+5. Verify unprotection is not possible:
+   unprotect /dev/bsec0 0x170 4
+   # This command should fail, returning an error (e.g., -EOPNOTSUPP or
+   # -EPERM) from the driver, as BSEC OTP locks are permanent.
+
+6. (Optional) Disable permanent OTP writes when done:
+   bsec0.permanent_write_enable=0
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-changes v2:
-- do not check for error after xzalloc()
-- use 'if (ret)' after nvmem_parse_and_validate_create_size()
----
- commands/nvmem.c | 121 ++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 115 insertions(+), 6 deletions(-)
+ drivers/nvmem/bsec.c        | 27 +++++++++++++++++++++++++++
+ include/mach/stm32mp/bsec.h |  1 +
+ 2 files changed, 28 insertions(+)
 
-diff --git a/commands/nvmem.c b/commands/nvmem.c
-index a0e3d092e3cf..3bfa1ff19a19 100644
---- a/commands/nvmem.c
-+++ b/commands/nvmem.c
-@@ -1,24 +1,133 @@
- // SPDX-License-Identifier: GPL-2.0
- // SPDX-FileCopyrightText: © 2021 Ahmad Fatoum, Pengutronix
+diff --git a/drivers/nvmem/bsec.c b/drivers/nvmem/bsec.c
+index 9ca98e6180f8..b67b55addfe0 100644
+--- a/drivers/nvmem/bsec.c
++++ b/drivers/nvmem/bsec.c
+@@ -74,9 +74,36 @@ static int stm32_bsec_reg_write(void *ctx, unsigned reg, unsigned val)
+ 		return bsec_smc(BSEC_SMC_WRITE_SHADOW, reg, val, NULL);
+ }
  
--#include <common.h>
- #include <command.h>
-+#include <common.h>
-+#include <environment.h>
-+#include <getopt.h>
- #include <linux/nvmem-consumer.h>
-+#include <linux/sizes.h>
- 
--static int do_nvmem(int argc, char *argv[])
-+/* Maximum size for dynamically created NVMEM devices.
-+ * This is a reasonable limit for RAM-backed devices, but can be adjusted
-+ * based on system capabilities and requirements.
-+ */
-+#define NVMEM_MAX_SIZE		SZ_1M
-+
-+/* Static counter to ensure unique device IDs for dynamically created rmem
-+ * devices
-+ */
-+static int dynamic_rmem_idx;
-+
-+/**
-+ * nvmem_create_dynamic_rmem - Creates a dynamic RAM-backed NVMEM device.
-+ * @create_size: Size of the NVMEM device to create.
-+ * @var_name: Optional environment variable name to store the created device's
-+ *            name.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+static int nvmem_create_dynamic_rmem(unsigned long create_size,
-+				     const char *var_name)
++static int stm32_bsec_do_reg_seal_otp(void *ctx, unsigned int reg,
++				      unsigned int flags)
 +{
-+	struct device *dev;
-+	void *buffer;
-+	int ret = 0;
++	struct bsec_priv *priv = ctx;
++	struct device *dev = &priv->dev;
 +
-+	buffer = xzalloc(create_size);
-+	dev = add_generic_device("rmem", dynamic_rmem_idx, NULL,
-+				 (resource_size_t)(uintptr_t)buffer,
-+				 (resource_size_t)create_size,
-+				 IORESOURCE_MEM, NULL);
++	if (!priv->permanent_write_enable) {
++		dev_warn(dev, "BSEC seal: permanent_write_enable is OFF.\n");
++		return -EACCES;
++	}
 +
-+	if (var_name)
-+		ret = setenv(var_name, dev_name(dev));
-+
-+	dynamic_rmem_idx++;
-+
-+	return ret;
-+}
-+
-+static int nvmem_parse_and_validate_create_size(const char *size_arg,
-+						unsigned long *out_size)
- {
--	nvmem_devices_print();
-+
-+	if (!IS_ENABLED(CONFIG_NVMEM_RMEM)) {
-+		printf("Error: rmem NVMEM driver (CONFIG_NVMEM_RMEM) is not enabled in this build.\n");
++	/* Only REGMAP_SEAL_WRITE_PROTECT and REGMAP_SEAL_PERMANENT
++	 * flags are supported for BSEC OTP sealing.
++	 */
++	if ((flags & (REGMAP_SEAL_WRITE_PROTECT | REGMAP_SEAL_PERMANENT)) !=
++	    (REGMAP_SEAL_WRITE_PROTECT | REGMAP_SEAL_PERMANENT)) {
++		dev_warn(dev, "BSEC seal: unsupported flags 0x%x.\n", flags);
 +		return -EINVAL;
 +	}
 +
-+	*out_size = strtoul_suffix(optarg, NULL, 0);
-+	if (!*out_size) {
-+		printf("Error: Invalid size '%s' for -c option. Must be non-zero.\n",
-+		       optarg);
-+		return COMMAND_ERROR_USAGE;
-+	}
++	dev_dbg(dev, "BSEC seal: Locking OTP word at byte offset 0x%x via SMC.\n",
++		reg);
 +
-+	if (*out_size > NVMEM_MAX_SIZE) {
-+		printf("Error: Size '%lu' exceeds maximum allowed size of %d bytes.\n",
-+		       *out_size, NVMEM_MAX_SIZE);
-+		return COMMAND_ERROR_USAGE;
-+	}
- 
- 	return 0;
- }
- 
-+static int do_nvmem(int argc, char *argv[])
-+{
-+	unsigned long create_size = 0;
-+	char *optarg_v = NULL;
-+	int ret = 0;
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "c:v:h")) != -1) {
-+		switch (opt) {
-+		case 'c':
-+			ret = nvmem_parse_and_validate_create_size(optarg,
-+								&create_size);
-+			if (ret)
-+				return ret;
-+			break;
-+		case 'v':
-+			optarg_v = optarg;
-+			break;
-+		case 'h': /* fallthrough */
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (optarg_v && !create_size) {
-+		printf("Error: -v <VARNAME> option requires -c <SIZE> to create a device.\n");
-+		return COMMAND_ERROR_USAGE;
-+	}
-+
-+	if (create_size > 0)
-+		ret = nvmem_create_dynamic_rmem(create_size, optarg_v);
-+	else
-+		nvmem_devices_print();
-+
-+	return ret;
++	return bsec_smc(BSEC_SMC_WRLOCK_OTP, reg, 0, NULL);
 +}
 +
- BAREBOX_CMD_HELP_START(nvmem)
--BAREBOX_CMD_HELP_TEXT("Usage: nvmem")
--BAREBOX_CMD_HELP_END
-+BAREBOX_CMD_HELP_TEXT("List NVMEM devices or create dynamic RAM-backed NVMEM")
-+BAREBOX_CMD_HELP_TEXT("devices. If no arguments are provided, it lists all")
-+BAREBOX_CMD_HELP_TEXT("available NVMEM devices.")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-c <size>", "Create a new RAM-backed NVMEM device of")
-+BAREBOX_CMD_HELP_OPT("         ", "<size> bytes. (Requires CONFIG_NVMEM_RMEM")
-+BAREBOX_CMD_HELP_OPT("         ", "to be enabled). <size> must be a non-zero.")
-+BAREBOX_CMD_HELP_OPT("-v <variable>", "When using -c, set environment variable")
-+BAREBOX_CMD_HELP_OPT("             ", "<variable> to the name of the created")
-+BAREBOX_CMD_HELP_OPT("             ", "NVMEM device (e.g., rmem0).")
-+BAREBOX_CMD_HELP_END;
+ static struct regmap_bus stm32_bsec_regmap_bus = {
+ 	.reg_write = stm32_bsec_reg_write,
+ 	.reg_read = stm32_bsec_read_shadow,
++	.reg_seal = stm32_bsec_do_reg_seal_otp,
+ };
  
- BAREBOX_CMD_START(nvmem)
- 	.cmd		= do_nvmem,
--	BAREBOX_CMD_DESC("list nvmem devices")
-+	BAREBOX_CMD_DESC("list or create NVMEM devices")
-+	BAREBOX_CMD_OPTS("[-c <size> [-v <varname>]]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
- 	BAREBOX_CMD_HELP(cmd_nvmem_help)
- BAREBOX_CMD_END
+ static void stm32_bsec_set_unique_machine_id(struct regmap *map)
+diff --git a/include/mach/stm32mp/bsec.h b/include/mach/stm32mp/bsec.h
+index 45eb0a3f4523..be8cec536a40 100644
+--- a/include/mach/stm32mp/bsec.h
++++ b/include/mach/stm32mp/bsec.h
+@@ -26,6 +26,7 @@ enum bsec_op {
+ 	BSEC_SMC_READ_OTP	= 4,
+ 	BSEC_SMC_READ_ALL	= 5,
+ 	BSEC_SMC_WRITE_ALL	= 6,
++	BSEC_SMC_WRLOCK_OTP	= 7,
+ };
+ 
+ static inline enum bsec_smc bsec_read_field(unsigned field, unsigned *val)
 -- 
 2.39.5
 
