@@ -1,54 +1,55 @@
-Delivery-date: Thu, 05 Jun 2025 23:14:36 +0200
+Delivery-date: Thu, 05 Jun 2025 23:14:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHv1-0049Ok-2j
+	id 1uNHv2-0049P5-2z
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 23:14:35 +0200
+	Thu, 05 Jun 2025 23:14:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHuw-0005zX-Bl
-	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:35 +0200
+	id 1uNHux-0005zz-1G
+	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=lmG7KP9EPzg8q6bVkN7MjKD5wYKFY1gDKVcsaiSCTvw=; b=GvsaoQ9BQRMGANF5TLCE66ighK
-	8AtXY/s8Umrl1yFNvR+CgWRVgduTcKy4v33NX/7DFhjfIe/WfsQAM5uhj54URoS0fNK1DGfI4uICD
-	EntnkNc4S4N3+k5vfZ0oMYu5XTNrrVnHaCe2cYaZ0hJ1kC80NHWP21A/K3FaR2aEG4ShKV9SrrM9e
-	NkGQTmdUeA3wKPKq7KZ9TMC9a3i0ckYLQEu80nyiuteyiwhxonmqTxV5JHSA/aY+quJHdEIL8V5xv
-	bqYGEV2OG6mpPON9svHfA3H+uwxf+2Po16GMiRAiLJJEOFthKDzPqyuYedTPFUr6qpb8PGg+ADQdt
-	3o3GFfRA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=BYPMHt5vMyDazKxo/yHTwYjHuIDkLhLGzuE08WB5CTQ=; b=YPwK6wuHboaxiwjEryhF90PnAi
+	V27QyYMpawJOAgXyV9bNCM86n8aMsKUouP5ff1mxEcGFn3iilGs2iNMs3k/tIf1Mr3hbUGDuHJXIJ
+	AZoQGarP5pX+itpEhu5Z7YhD5+1iiG1DtjBiFXALbmkhjZKJmAKyO8NfyCjew7sQuqyrOPvHOaE/k
+	4ww14QbCag+VyME1psXBZPVsrhGi+YFX2tqBczX2L6GS8oMZdw/nrm/k7GsPms3QC4+qza+TlMyBq
+	l0x3oYtugH1xZxOYRt1OSeZkE3PLUFfQqaOv3ajbWqPbQ+hUK2d3VwfLmt2ILN6RUvwBfheJ0db69
+	uldD/9tQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHuA-0000000Geqe-1iRt;
-	Thu, 05 Jun 2025 21:13:42 +0000
+	id 1uNHuB-0000000Geqr-24MF;
+	Thu, 05 Jun 2025 21:13:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHo8-0000000GeDh-39SA
+	id 1uNHo9-0000000GeDy-341F
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 21:07:29 +0000
+	Thu, 05 Jun 2025 21:07:30 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNHo7-00079B-GD
-	for barebox@lists.infradead.org; Thu, 05 Jun 2025 23:07:27 +0200
+	id 1uNHo8-00079B-G9; Thu, 05 Jun 2025 23:07:28 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Date: Thu,  5 Jun 2025 23:07:10 +0200
-Message-Id: <20250605210726.1916656-1-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Thu,  5 Jun 2025 23:07:14 +0200
+Message-Id: <20250605210726.1916656-5-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250605210726.1916656-1-a.fatoum@barebox.org>
+References: <20250605210726.1916656-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_140728_787190_0D273ED7 
-X-CRM114-Status: UNSURE (   8.89  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250605_140729_773275_5010ACE5 
+X-CRM114-Status: GOOD (  15.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,88 +71,166 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 00/16] ARM: stm32mp: add MIPI DSI support
+Subject: [PATCH 04/16] driver: bus: add helpers for finding devices in busses
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This enables barebox to make use of the MIPI DSI display on the DK2.
-The RK35xx also has a Designware MIPI-DSI host and there's already VOP2
-support, so that will likely follow in future.
+To make porting Linux drivers easier, let's import some bus lookup
+functions that are going to be used in later commits.
 
-Ahmad Fatoum (16):
-  driver: bus: embed bus driver node into bus
-  driver: switch busses to device class
-  driver: factor out bus definitions into separate header
-  driver: bus: add helpers for finding devices in busses
-  drive: bus: make use of new bus_find_device helper
-  of: implement of_alias_from_compatible
-  video: vpl: fix potential read of uninitialized variable
-  video: vpl: factor out vpl_for_each
-  video: vpl: handle missing struct vpl::ioctl gracefully
-  video: vpl: add vpl_bridge abstraction
-  video: factor out drm_mode_vrefresh
-  video: add base MIPI DSI support
-  video: add Designware MIPI-DSI support
-  video: add STM32 MIPI DSI video driver
-  video: add support for Orise Technology otm8009a panel
-  ARM: stm32mp: dk2: enable MIPI-DSI display by default
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ drivers/base/bus.c         | 56 ++++++++++++++++++++++++++++++++++++++
+ include/linux/device.h     | 22 ---------------
+ include/linux/device/bus.h | 38 ++++++++++++++++++++++++++
+ 3 files changed, 94 insertions(+), 22 deletions(-)
 
- arch/arm/boards/stm32mp15xx-dkx/Makefile      |    1 +
- arch/arm/boards/stm32mp15xx-dkx/board.c       |    3 +
- .../defaultenv-stm32mp15xx-dkx/init/splash    |   18 +
- arch/arm/configs/stm32mp_defconfig            |   18 +-
- commands/devinfo.c                            |    2 +-
- common/tlv/bus.c                              |    4 +-
- drivers/amba/bus.c                            |    2 +-
- drivers/base/bus.c                            |   68 +-
- drivers/base/driver.c                         |    2 +-
- drivers/efi/efi-device.c                      |   17 +-
- drivers/i2c/i2c.c                             |    6 +-
- drivers/mci/mci-core.c                        |   14 +-
- drivers/net/phy/mdio_bus.c                    |    6 +-
- drivers/net/phy/phy.c                         |    7 +-
- drivers/of/base.c                             |   31 +
- drivers/tee/tee_core.c                        |    7 +-
- drivers/tee/tee_private.h                     |    2 -
- drivers/usb/gadget/udc/core.c                 |    3 +
- drivers/video/Kconfig                         |   35 +
- drivers/video/Makefile                        |    5 +
- drivers/video/backlight.c                     |    7 +-
- drivers/video/drm/Makefile                    |    2 +
- drivers/video/drm/drm_modes.c                 |   67 +
- drivers/video/dw_mipi_dsi.c                   | 1042 ++++++++++
- drivers/video/mipi_dsi.c                      | 1730 +++++++++++++++++
- drivers/video/panel-orisetech-otm8009a.c      |  505 +++++
- drivers/video/rockchip/rockchip_drm_vop2.c    |   13 -
- drivers/video/stm32_dsi.c                     |  457 +++++
- drivers/video/vpl.c                           |   91 +-
- drivers/w1/w1.c                               |    4 +-
- include/driver.h                              |   33 +-
- include/i2c/i2c.h                             |    5 +-
- include/linux/device.h                        |   22 -
- include/linux/device/bus.h                    |   80 +
- include/linux/gpio/consumer.h                 |    3 +
- include/linux/phy.h                           |    6 +-
- include/module.h                              |   26 +
- include/of.h                                  |    1 +
- include/video/backlight.h                     |   15 +-
- include/video/drm/drm_connector.h             |    2 +
- include/video/drm/drm_modes.h                 |    2 +
- include/video/dw_mipi_dsi.h                   |   81 +
- include/video/mipi_dsi.h                      |  618 ++++++
- include/video/vpl.h                           |   15 +
- 44 files changed, 4946 insertions(+), 132 deletions(-)
- create mode 100755 arch/arm/boards/stm32mp15xx-dkx/defaultenv-stm32mp15xx-dkx/init/splash
- create mode 100644 drivers/video/drm/Makefile
- create mode 100644 drivers/video/drm/drm_modes.c
- create mode 100644 drivers/video/dw_mipi_dsi.c
- create mode 100644 drivers/video/mipi_dsi.c
- create mode 100644 drivers/video/panel-orisetech-otm8009a.c
- create mode 100644 drivers/video/stm32_dsi.c
- create mode 100644 include/linux/device/bus.h
- create mode 100644 include/video/dw_mipi_dsi.h
- create mode 100644 include/video/mipi_dsi.h
-
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index fde27dd008e8..8edd8cb01fae 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -95,3 +95,59 @@ int device_match_of_modalias(struct device *dev, const struct driver *drv)
+ 
+ 	return false;
+ }
++
++static struct device *__bus_for_each_dev(const struct bus_type *bus, struct device *start, void *data,
++					 int (*fn)(struct device *dev, void *data), int *result)
++{
++	struct device *dev;
++	int ret;
++
++	bus_for_each_device(bus, dev) {
++		if (start) {
++			if (dev == start)
++				start = NULL;
++			continue;
++		}
++
++		ret = fn(dev, data);
++		if (ret) {
++			if (result)
++				*result = ret;
++			return dev;
++		}
++	}
++
++	return NULL;
++}
++
++int bus_for_each_dev(const struct bus_type *bus, struct device *start, void *data,
++		     int (*fn)(struct device *dev, void *data))
++{
++	int ret = 0;
++	__bus_for_each_dev(bus, start, data, fn, &ret);
++	return ret;
++}
++
++struct check_match_data {
++	device_match_t match;
++};
++
++struct device *bus_find_device(const struct bus_type *bus, struct device *start,
++			       const void *data, device_match_t match)
++{
++	return __bus_for_each_dev(bus, start, (void *)data,
++				  (int (*)(struct device *dev, void *data))match,
++				  NULL);
++}
++
++int device_match_name(struct device *dev, const void *name)
++{
++	return !strcmp(dev_name(dev), name);
++}
++EXPORT_SYMBOL_GPL(device_match_name);
++
++int device_match_of_node(struct device *dev, const void *np)
++{
++	return np && dev->of_node == np;
++}
++EXPORT_SYMBOL_GPL(device_match_of_node);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index d4098b85239f..e3934b505fe0 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -52,28 +52,6 @@ static inline void __iomem *devm_ioremap(struct device *dev,
+ 	return IOMEM(start);
+ }
+ 
+-static inline int bus_for_each_dev(const struct bus_type *bus, struct device *start, void *data,
+-				   int (*fn)(struct device *dev, void *data))
+-{
+-	struct device *dev;
+-	int ret;
+-
+-	bus_for_each_device(bus, dev) {
+-		if (start) {
+-			if (dev == start)
+-				start = NULL;
+-			continue;
+-		}
+-
+-		ret = fn(dev, data);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-
+ /**
+  * dev_set_drvdata - set driver private data for device
+  * @dev: device instance
+diff --git a/include/linux/device/bus.h b/include/linux/device/bus.h
+index 8837ce3c2ed2..2364645bad4a 100644
+--- a/include/linux/device/bus.h
++++ b/include/linux/device/bus.h
+@@ -37,6 +37,44 @@ extern struct class bus_class;
+  */
+ #define bus_for_each_driver(bus, drv) list_for_each_entry(drv, &(bus)->driver_list, bus_list)
+ 
++int bus_for_each_dev(const struct bus_type *bus, struct device *start, void *data,
++		     int (*fn)(struct device *dev, void *data));
++
++/* Generic device matching functions that all busses can use to match with */
++int device_match_name(struct device *dev, const void *name);
++int device_match_of_node(struct device *dev, const void *np);
++
++/* Matching function type for drivers/base APIs to find a specific device */
++typedef int (*device_match_t)(struct device *dev, const void *data);
++
++struct device *bus_find_device(const struct bus_type *bus, struct device *start,
++			       const void *data, device_match_t match);
++/**
++ * bus_find_device_by_name - device iterator for locating a particular device
++ * of a specific name.
++ * @bus: bus type
++ * @start: Device to begin with
++ * @name: name of the device to match
++ */
++static inline struct device *bus_find_device_by_name(const struct bus_type *bus,
++						     struct device *start,
++						     const char *name)
++{
++	return bus_find_device(bus, start, name, device_match_name);
++}
++
++/**
++ * bus_find_device_by_of_node : device iterator for locating a particular device
++ * matching the of_node.
++ * @bus: bus type
++ * @np: of_node of the device to match.
++ */
++static inline struct device *
++bus_find_device_by_of_node(const struct bus_type *bus, const struct device_node *np)
++{
++	return bus_find_device(bus, NULL, np, device_match_of_node);
++}
++
+ extern struct bus_type platform_bus;
+ 
+ #endif
 -- 
 2.39.5
 
