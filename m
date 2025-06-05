@@ -1,16 +1,16 @@
-Delivery-date: Thu, 05 Jun 2025 09:49:41 +0200
+Delivery-date: Thu, 05 Jun 2025 09:49:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN5M5-003w7o-11
+	id 1uN5M6-003w8B-0S
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 09:49:41 +0200
+	Thu, 05 Jun 2025 09:49:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN5M3-0007l3-Md
+	id 1uN5M5-0007lf-0D
 	for lore@pengutronix.de; Thu, 05 Jun 2025 09:49:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,49 +18,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=f8jqkqOxpZqde9Ipk/iRIBqCRwFqFtRGG0Yx90dkAoA=; b=VTRV6fWQa9ruOA8Xh5Iuc0H2wq
-	x2jsQ4U/NbSfWZcv21K7wSiCnId9Zxjg7WmykJu74IISODkUFui60G9QbnYu5rfB2ng0zCu6SVbbQ
-	zmr76as+sl8yXeuTdLsx2B6kglNvHMkrodLtkFJuC/BPbH3BqVOTPgTsMACT8HqFbib9UoOWpPYW9
-	IBzWj6Ls1KnE/NmzR49Ueksr2ZSKeFH2TRv93kwQkvnODfX2nl/wN9I87rEU6d0u+hGkcO4z3ZIXq
-	BuRmWuxBzVb+QLxA3Qy4yYYEXGrzMtaZE3tm/iX/HbJYoIPQihRpSQ4gA+N6YL8RFGrQJ/NZqc1p+
-	EMHWi/YA==;
+	bh=3zBB0PCQ94iHzcSU1fUa8ffP9WixRFkiLAFp35JtPtA=; b=NiTTNcqjNhad0JV2/PsT53u0P1
+	I1dCKACGdM8B8bKksQe8hDgSjuef4VXJhGMunRWE10Eouq/NShlWppKnPYmAU+v7duhYk93V6SZFq
+	H7VfwfnxiKTMRilmKiP4+UCxcDrCfW3AWpBBxtg5ISea/nX0380KvjEEpkLZOU1GoEjahAmxhpYG8
+	w4QIP/EfrWgB6mvsgK1OxjnBeN2OGkRdSoLARlzfPclBbJud9XInNcOXuMDAmEXODc6N5vE4+tjv8
+	45Pag0elwvmy+9w/zFB6hpxOJE2HnMXNhTyQe/Le8UGAaa7HwNbyZE5OEfgDZkXOA1TP3uirj6f9h
+	yQu0xIuQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN5LY-0000000Ez5v-0X93;
-	Thu, 05 Jun 2025 07:49:08 +0000
+	id 1uN5LV-0000000Ez41-2zH3;
+	Thu, 05 Jun 2025 07:49:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN5Jk-0000000Eys1-1i7g
+	id 1uN5Jk-0000000Eys2-1eYu
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 07:47:22 +0000
+	Thu, 05 Jun 2025 07:47:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uN5Ji-00065V-El; Thu, 05 Jun 2025 09:47:14 +0200
+	id 1uN5Ji-00065U-Gj; Thu, 05 Jun 2025 09:47:14 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uN5Ji-001v81-0L;
+	id 1uN5Ji-001v82-0O;
 	Thu, 05 Jun 2025 09:47:14 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uN5Ji-00HUuL-03;
+	id 1uN5Ji-00HUuP-04;
 	Thu, 05 Jun 2025 09:47:14 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu,  5 Jun 2025 09:47:08 +0200
-Message-Id: <20250605074713.4170334-5-o.rempel@pengutronix.de>
+Date: Thu,  5 Jun 2025 09:47:09 +0200
+Message-Id: <20250605074713.4170334-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605074713.4170334-1-o.rempel@pengutronix.de>
 References: <20250605074713.4170334-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_004716_490351_E7A72FF8 
-X-CRM114-Status: GOOD (  22.14  )
+X-CRM114-CacheID: sfid-20250605_004716_470024_09E3E6A2 
+X-CRM114-Status: GOOD (  18.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,164 +83,122 @@ X-Spam-Status: No, score=-1.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/9] regmap: Add reg_seal operation for hardware protection
+Subject: [PATCH v2 5/9] nvmem: regmap: Implement protect operation using regmap_seal
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add a new 'reg_seal' operation to the regmap bus interface, along
-with a public API `regmap_seal()`. This is needed for drivers that
-must perform hardware-level "sealing" or permanent write-protection
-on registers/words, a capability not covered by standard regmap
-read/write ops.
+Implement the NVMEM 'protect' operation for devices registered via
+regmap. This adds a new static function, nvmem_regmap_protect, which
+acts as an adapter between the NVMEM core's reg_protect callback
+and the recently added regmap_seal() API.
 
-The initial use case is for the STM32 BSEC driver (coming in a
-follow-up patch) to lock One-Time Programmable (OTP) memory words.
-This gives explicit control to make OTP entries permanently read-only
-after programming.
+The nvmem_regmap_protect function:
+  - Translates the NVMEM 'prot' parameter (0 for unprotect, 1 for
+    protect) into the corresponding REGMAP_SEAL_CLEAR |
+    REGMAP_SEAL_WRITE_PROTECT or REGMAP_SEAL_WRITE_PROTECT |
+    REGMAP_SEAL_PERMANENT flags for the regmap_seal() call.
+  - Enforces that the NVMEM operation's offset and size are aligned
+    to the regmap's value byte size (obtained via
+    regmap_get_val_bytes()).
+  - Iterates over the specified byte range, calling regmap_seal() for
+    each underlying hardware word.
+
+By assigning nvmem_regmap_protect to config.reg_protect within
+nvmem_regmap_register_with_pp, NVMEM devices that are backed by a
+regmap can now expose hardware-level protection capabilities. This
+is essential for drivers like the STM32 BSEC (in a subsequent patch)
+to enable features such as OTP (One-Time Programmable) memory locking
+through the standard NVMEM 'protect' cdev operation, provided their
+underlying regmap_bus implements the necessary reg_seal method.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-changes v2:
-- do not check for existing 'map->reg_seal'
----
- drivers/base/regmap/internal.h |  2 ++
- drivers/base/regmap/regmap.c   | 30 ++++++++++++++++++++++++++++++
- include/linux/regmap.h         | 33 +++++++++++++++++++++++++++++++++
- 3 files changed, 65 insertions(+)
+ drivers/nvmem/regmap.c | 65 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
-index 6f6a34edc7a8..f2b95cc6361e 100644
---- a/drivers/base/regmap/internal.h
-+++ b/drivers/base/regmap/internal.h
-@@ -39,6 +39,8 @@ struct regmap {
- 			unsigned int *val);
- 	int (*reg_write)(void *context, unsigned int reg,
- 			 unsigned int val);
-+	int (*reg_seal)(void *context, unsigned int reg,
-+			unsigned int flags);
- };
- 
- struct regmap_field {
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 777636c0b319..e27ba53dec58 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -81,6 +81,17 @@ static int _regmap_bus_reg_write(void *context, unsigned int reg,
- 	return map->bus->reg_write(map->bus_context, reg, val);
+diff --git a/drivers/nvmem/regmap.c b/drivers/nvmem/regmap.c
+index 24712fbb0f33..a7b18856f0bb 100644
+--- a/drivers/nvmem/regmap.c
++++ b/drivers/nvmem/regmap.c
+@@ -63,6 +63,70 @@ static int nvmem_regmap_read(void *ctx, unsigned offset, void *buf, size_t bytes
+ 	return 0;
  }
  
-+static int _regmap_bus_reg_seal(void *context, unsigned int reg,
-+				unsigned int flags)
++static int nvmem_regmap_protect(void *ctx, unsigned int offset, size_t bytes,
++				int prot)
 +{
-+	struct regmap *map = context;
++	unsigned int seal_flags = 0;
++	struct regmap *map = ctx;
++	size_t reg_val_bytes;
++	unsigned int i;
++	int ret = 0;
 +
-+	if (!map->bus->reg_seal)
++	reg_val_bytes = regmap_get_val_bytes(map);
++	if (reg_val_bytes == 0) {
++		dev_err(regmap_get_device(map), "Invalid regmap value byte size (0)\n");
++		return -EINVAL;
++	}
++
++	/* NVMEM protect operations should typically be on aligned boundaries
++	 * matching the hardware's lockable unit (which is regmap's val_bytes
++	 * here).
++	 */
++	if ((offset % reg_val_bytes) != 0 || (bytes % reg_val_bytes) != 0) {
++		dev_warn(regmap_get_device(map),
++			 "NVMEM protect op for regmap: offset (0x%x) or size (0x%zx) not aligned to register size (%zu bytes).\n",
++			 offset, bytes, reg_val_bytes);
++		return -EINVAL;
++	}
++
++	switch (prot) {
++	case PROTECT_ENABLE_WRITE:
++		/* NVMEM protect mode 0 = Unlock/Make-writable
++		 * Attempt to clear write protection.
++		 * The underlying bus->reg_seal must support clearing.
++		 * For BSEC OTPs, this will (and should) fail with -EOPNOTSUPP
++		 * or -EPERM.
++		 */
++		seal_flags = REGMAP_SEAL_CLEAR | REGMAP_SEAL_WRITE_PROTECT;
++		break;
++	case PROTECT_DISABLE_WRITE:
++		/* NVMEM protect mode 1 = Lock/Write-protect */
++		/* For OTPs like BSEC, permanent is implied */
++		seal_flags = REGMAP_SEAL_WRITE_PROTECT | REGMAP_SEAL_PERMANENT;
++		break;
++	default:
++		dev_warn(regmap_get_device(map), "Unsupported NVMEM protect mode: %d\n",
++			 prot);
 +		return -EOPNOTSUPP;
++	}
 +
-+	return map->bus->reg_seal(map->bus_context, reg, flags);
++	for (i = 0; i < bytes; i += reg_val_bytes) {
++		unsigned int current_reg_offset = offset + i;
++
++		ret = regmap_seal(map, current_reg_offset, seal_flags);
++		if (ret) {
++			dev_err(regmap_get_device(map), "regmap_seal failed for offset 0x%x: %pe\n",
++				current_reg_offset, ERR_PTR(ret));
++			/* No error handling for partial failures, we messed up
++			 * the HW state and can't recover.
++			 */
++			return ret;
++		}
++	}
++
++	return 0;
 +}
 +
- /*
-  * regmap_init - initialize and register a regmap
-  *
-@@ -113,6 +124,8 @@ struct regmap *regmap_init(struct device *dev,
- 	map->reg_shift = config->pad_bits % 8;
- 	map->max_register = config->max_register;
+ struct nvmem_device *
+ nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
+ 			      nvmem_cell_post_process_t cell_post_process)
+@@ -82,6 +146,7 @@ nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
+ 	config.cell_post_process = cell_post_process;
+ 	config.reg_write = nvmem_regmap_write;
+ 	config.reg_read = nvmem_regmap_read;
++	config.reg_protect = nvmem_regmap_protect;
  
-+	map->reg_seal = _regmap_bus_reg_seal;
-+
- 	if (!bus->read || !bus->write) {
- 		map->reg_read = _regmap_bus_reg_read;
- 		map->reg_write = _regmap_bus_reg_write;
-@@ -186,6 +199,23 @@ int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val)
- 	return map->reg_read(map, reg, val);
+ 	return nvmem_register(&config);
  }
- 
-+/**
-+ * regmap_seal() - Seal a register in a map
-+ *
-+ * @map: Register map to seal
-+ * @reg: Register to seal
-+ * @flag: Flag to set in the register
-+ *
-+ * This function is used to seal a register, preventing further writes to it.
-+ * The flag is typically used to indicate that the register is sealed.
-+ *
-+ * Returns zero for success, a negative number on error.
-+ */
-+int regmap_seal(struct regmap *map, unsigned int reg, unsigned int flags)
-+{
-+	return map->reg_seal(map, reg, flags);
-+}
-+
- /**
-  * regmap_update_bits() - Perform a read/modify/write cycle on a register
-  *
-diff --git a/include/linux/regmap.h b/include/linux/regmap.h
-index c24b877712cd..0a460f9f541b 100644
---- a/include/linux/regmap.h
-+++ b/include/linux/regmap.h
-@@ -65,6 +65,35 @@ typedef int (*regmap_hw_reg_read)(void *context, unsigned int reg,
- 				  unsigned int *val);
- typedef int (*regmap_hw_reg_write)(void *context, unsigned int reg,
- 				   unsigned int val);
-+typedef int (*regmap_hw_reg_seal)(void *context, unsigned int reg,
-+				  unsigned int flags);
-+
-+/**
-+ * @REGMAP_SEAL_WRITE_PROTECT: Request to make the register(s) write-protected.
-+ * If this flag is set, the bus-specific seal operation should attempt to
-+ * prevent further writes to the specified register or range.
-+ */
-+#define REGMAP_SEAL_WRITE_PROTECT	BIT(0)
-+
-+/**
-+ * @REGMAP_SEAL_PERMANENT: Signifies the sealing operation is intended to be
-+ * permanent and irreversible. If this flag is not set (and REGMAP_SEAL_CLEAR
-+ * is also not set), the protection might be temporary or its permanence
-+ * is undefined by this generic flag (bus-specific behavior would dictate).
-+ * For operations like OTP locking, this flag should be used with
-+ * REGMAP_SEAL_WRITE_PROTECT.
-+ */
-+#define REGMAP_SEAL_PERMANENT		BIT(1)
-+
-+/**
-+ * @REGMAP_SEAL_CLEAR: Request to clear a previously set protection.
-+ * This flag should be used in conjunction with other flags (e.g.,
-+ * REGMAP_SEAL_WRITE_PROTECT) to specify which type of protection to attempt
-+ * to clear. The underlying hardware must support clearing the protection.
-+ * If the protection is permanent, an attempt to clear it should fail with
-+ * an appropriate error code (e.g., -EOPNOTSUPP or -EPERM).
-+ */
-+#define REGMAP_SEAL_CLEAR		BIT(2)
- 
- /**
-  * struct regmap_bus - Description of a hardware bus for the register map
-@@ -73,6 +102,8 @@ typedef int (*regmap_hw_reg_write)(void *context, unsigned int reg,
-  * @reg_write: Write a single register value to the given register address. This
-  *             write operation has to complete when returning from the function.
-  * @reg_read: Read a single register value from a given register address.
-+ * @reg_seal: Optional. Perform a hardware operation to seal or permanently
-+ *            protect a register or region (e.g., OTP write-locking).
-  * @read: Read operation.  Data is returned in the buffer used to transmit
-  *         data.
-  * @write: Write operation.
-@@ -88,6 +119,7 @@ typedef int (*regmap_hw_reg_write)(void *context, unsigned int reg,
- struct regmap_bus {
- 	regmap_hw_reg_write reg_write;
- 	regmap_hw_reg_read reg_read;
-+	regmap_hw_reg_seal reg_seal;
- 
- 	int (*read)(void *context,
- 		    const void *reg_buf, size_t reg_size,
-@@ -202,6 +234,7 @@ int regmap_multi_register_cdev(struct regmap *map8,
- 
- int regmap_write(struct regmap *map, unsigned int reg, unsigned int val);
- int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
-+int regmap_seal(struct regmap *map, unsigned int reg, unsigned int flags);
- 
- #ifndef regmap_bulk_read
- #define regmap_bulk_read regmap_bulk_read
 -- 
 2.39.5
 
