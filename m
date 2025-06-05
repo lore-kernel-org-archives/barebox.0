@@ -1,64 +1,65 @@
-Delivery-date: Thu, 05 Jun 2025 12:12:42 +0200
+Delivery-date: Thu, 05 Jun 2025 12:14:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN7aU-003yW7-2b
+	id 1uN7cW-003yYP-0L
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 12:12:42 +0200
+	Thu, 05 Jun 2025 12:14:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN7aU-0006zJ-72
-	for lore@pengutronix.de; Thu, 05 Jun 2025 12:12:42 +0200
+	id 1uN7cV-0008Le-IZ
+	for lore@pengutronix.de; Thu, 05 Jun 2025 12:14:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=KBc6PJrtMsnJVuWkX917/bhCuoJpcdjF+hUY3mKvWLM=; b=TTMFo+IMCpprLaaCj/Pb+vji8i
-	p1/Us4mCSDk5c3YWhBvDxqOi56npPEP87TN6j6Tg0aw1g89D2I7GrdSVsiA76FNLoTeCURWFnb9s4
-	K2Hx+jg1DH3lL0r1iWlIno/SEIa7SAlxmNfq72qfDrTxtw2aJUZSkjq3ahaO24P22KRhSosVrsJcX
-	gMCgMNI5D7pxsf7XIqJM2bJvNkBbN0xhQMI+08R6j2QbqQrhTxSvbDGYB7pYu66b43NrIAnEGj2ll
-	5MD396oEpzvu6DzPhZ1dxYJ1ie3d4qmjLh0124DwGv7iUfQ+x8CnktxJMy+OrMuPZPSuxBJOPCD/c
-	cWLKriig==;
+	bh=QiK6N2yntx9wJDEulcc+WRxvqMy90PVql9pS6RiIsLQ=; b=Yqawipg2mg9zqYQ7kJze8u2bKB
+	zKhdqbuF95ZfPY67VECbWxPO5Qw1tTPy3y7ypibR4vmEcQWM2D8LzW6HVzc0kLfVtvcjU/iFwdQpv
+	FVA360X4cBbno/EkQRQ1deYlYnrVeRagJ6bqZrYI3Fsc9RD5jdnIgCDHl3jY4xDiC/WfCYpeYQfsf
+	TXT64oYdTndSl2mjyL9hlvanaTGPpUKnPzuNsDY4ZRGGHw+A0mJbJ3tUez90mFmn4FVDYizZkNQtM
+	XF3byF6A82QZrP7ILeny0F+RIld3PM1yDFCSA9OGLY63vm/hvNZWNa0TuFsyiohivN+9pQz03rFp9
+	j1MTxLrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN7Zr-0000000FE7j-2L6m;
-	Thu, 05 Jun 2025 10:12:03 +0000
+	id 1uN7c6-0000000FEKA-0iOh;
+	Thu, 05 Jun 2025 10:14:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN7Zo-0000000FE7J-3Sdr
+	id 1uN7c3-0000000FEJi-0STI
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 10:12:02 +0000
+	Thu, 05 Jun 2025 10:14:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uN7Zn-0006XI-IS; Thu, 05 Jun 2025 12:11:59 +0200
+	id 1uN7c1-0007uy-VX; Thu, 05 Jun 2025 12:14:17 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uN7Zn-001wPa-1E;
-	Thu, 05 Jun 2025 12:11:59 +0200
+	id 1uN7c1-001wPn-2X;
+	Thu, 05 Jun 2025 12:14:17 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uN7Zn-001w6G-0s;
-	Thu, 05 Jun 2025 12:11:59 +0200
+	id 1uN7c1-001wZp-2A;
+	Thu, 05 Jun 2025 12:14:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  5 Jun 2025 12:11:58 +0200
-Message-Id: <20250605101158.461655-1-s.hauer@pengutronix.de>
+Date: Thu,  5 Jun 2025 12:14:16 +0200
+Message-Id: <20250605101416.463490-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_031200_885975_0A1F0951 
-X-CRM114-Status: GOOD (  11.62  )
+X-CRM114-CacheID: sfid-20250605_031419_149429_E411FAC3 
+X-CRM114-Status: UNSURE (   9.12  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,75 +81,55 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] Documentation: boards: k3: adjust to reality
+Subject: [PATCH] Documentation: boards: k3: remove obsolete k3.rst
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Using separate files for firmware binaries was removed in commit
-1bc97b7995 ("ARM: k3: r5: drop loading of separate binaries"). Adjust
-the documentation accordingly.
+k3.rst describes the initial k3 documentation when we only had second
+stage support after U-Boot. This is now obsolete and the full
+documentation is in ti-k3.rst.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/boards/ti-k3.rst | 28 +++++-----------------------
- 1 file changed, 5 insertions(+), 23 deletions(-)
+ Documentation/boards/k3.rst | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
+ delete mode 100644 Documentation/boards/k3.rst
 
-diff --git a/Documentation/boards/ti-k3.rst b/Documentation/boards/ti-k3.rst
-index 18061a9836..6cb9eb8eda 100644
---- a/Documentation/boards/ti-k3.rst
-+++ b/Documentation/boards/ti-k3.rst
-@@ -72,25 +72,16 @@ OP-TEE is built from https://github.com/OP-TEE/optee_os.git::
- OP-TEE is optional. barebox will continue without ``optee.bin`` when the file
- does not exist.
- 
--Copying ti-dm.bin
-------------------
+diff --git a/Documentation/boards/k3.rst b/Documentation/boards/k3.rst
+deleted file mode 100644
+index f675c4510c..0000000000
+--- a/Documentation/boards/k3.rst
++++ /dev/null
+@@ -1,29 +0,0 @@
+-Texas Instruments K3
+-====================
 -
--The ``ti-dm.bin`` binary is part of ti-linux-firmware.git, this needs to be
--copied to the eMMC/SD as well::
+-K3 is for Keystone 3 and denotes a family of SoCs from Texas Instruments. From these
+-SoCs the AM62x is currently supported under barebox. The boot flow needs several images,
+-only the last stage is supported by barebox. To start up the help of U-Boot is still
+-needed.
 -
--  cp firmware/ti-linux-firmware/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f $TI_BOOT/ti-dm.bin
+-The board currently supported by barebox is the BeaglePlay board, see
+-https://www.beagleboard.org/boards/beagleplay. The following examples assume
+-this board is used.
 -
- Combining binaries into a FIP image
- -----------------------------------
- 
--Alternatively to putting the different binaries (``barebox.bin``, ``bl31.bin``, ``optee.bin``
--and ``ti-dm.bin``) into the FAT image the files can be combined into a FIP image named
--``k3.fip``.::
-+The files have to be combined into a FIP image named ``k3.fip``.::
- 
-   fiptool create --soc-fw bl31.bin \
-     --tos-fw optee.bin \
-     --nt-fw barebox-beagleplay.img \
--    --blob uuid=9e8c2017-8b94-4e2b-a7b3-a0f88eabb8ae,file=ti-dm.bin k3.fip
-+    --blob uuid=9e8c2017-8b94-4e2b-a7b3-a0f88eabb8ae,file=\
-+    firmware/ti-linux-firmware/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f k3.fip
- 
- USB DFU boot
- ------------
-@@ -99,20 +90,11 @@ using ``dfu-util``::
- 
-   dfu-util -D barebox-beagleplay-r5.img -a bootloader
- 
--This will start the initial stage which then expects the following stages which can
--be uploaded with ``dfu-util`` as well, either as FIP image::
-+This will start the initial stage which then expects the following stage which can
-+be uploaded with ``dfu-util`` as well::
- 
-   dfu-util -D k3.fip -a fip
- 
--or as separate files::
+-Building barebox
+-----------------
+-.. code-block:: sh
 -
--  dfu-util -D blb31.bin -a tfa
--  dfu-util -D optee.bin -a optee
--  dfu-util -D ti-dm.bin -a ti-dm
--  dfu-util -D barebox-beagleplay.img -a barebox
+-  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> multi_v8_defconfig
 -
--Uploading optee.bin can be skipped in case it's not needed.
+-Running barebox
+----------------
 -
- eMMC boot
- ---------
- K3 boards can boot from eMMC boot partitions. In this mode the ROM reads the tiboot3.bin
+-barebox can be started from running U-Boot with:
+-
+-.. code-block:: sh
+-
+-  dhcp 0x82000000 <serverip>:barebox-beagleplay.img; bootm 0x82000000
+-
+-To start barebox from SD/eMMC replace the ``u-boot.img`` on a bootable SD/eMMC card
+-with the content of ``images/barebox-beagleplay-fit.img``
 -- 
 2.39.5
 
