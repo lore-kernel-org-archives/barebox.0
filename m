@@ -1,67 +1,67 @@
-Delivery-date: Thu, 05 Jun 2025 13:37:09 +0200
+Delivery-date: Thu, 05 Jun 2025 13:37:11 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uD-003zhA-2Z
+	id 1uN8uF-003zhV-0J
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 13:37:09 +0200
+	Thu, 05 Jun 2025 13:37:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uA-0000S0-RQ
-	for lore@pengutronix.de; Thu, 05 Jun 2025 13:37:09 +0200
+	id 1uN8uB-0000T7-Gg
+	for lore@pengutronix.de; Thu, 05 Jun 2025 13:37:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=kZ3oy+ApHs02A7VKbdhb51XKZXlDckIJyIqEpRE6ouw=; b=aoxq1vpBbKbK2QiZqmch135n5K
-	YhXMVwMwOZfHSdTW4Hcn3kzc+oRdNcm73yD5aLjcjMDcYiB0+RW3IF8qkbOFrCgnXlXBNH8PWK1yN
-	wNKQ/YdtfmPUsk+KjmN3G/4oXb39RsXSxozwLHDxX0z0aFbP6oMxILKJ3hk8fAoZoz+xer2lrhPrZ
-	PaEHOyDn/nQjlNjVS6K2d3xu4ASZaUalhEMssBv6UhqhlkwBV/C9mxrk2xUGuixdYdQwEB3htC7LF
-	VF2phzNmaGoMhzZy8icfzx8jTCRRFQ3oljxSfaRy9KRhBTkRKapBnlUwwJQTZ5fxjfzgiU43M6rH1
-	6pg89LKg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=OnU/9Uu2mVNJgeRlhK/MakDIX8dpNIgjZ9sSMrNqQOg=; b=NgTOR5yUZx8i/37598GL64PZxM
+	4sUsPFOkwvdLZJmLQ4ZuZ+vVga8pbLYwsMJRapKcGGZKDiE3luqnuV2U4Gb2CmEZsGm9dcrmJEzsd
+	ukAahShnjCpPZ/O9tLYdIXdFGJWR0Yg4fDAUmYOEyxFrzVd3hRVbPp18/BNbE0AsoLtaySVLDyMc5
+	oCmSMgrFrabP8quE8u5IbWfU49WfF/vjG4Sgm3dcSPEWzy9BBRL3ZpQ530NQoXIYyMOVnj9v2x3Yn
+	6IRDfRKa+NMsDUde4Rh8BC9tvP8StCommk+2pU+xSZ1f8JXqd+m8FKsB7YcGcyk9uVVhKez7voPSw
+	pzmaR5Yw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8tX-0000000FNIA-3RRk;
-	Thu, 05 Jun 2025 11:36:27 +0000
+	id 1uN8tZ-0000000FNKg-323e;
+	Thu, 05 Jun 2025 11:36:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8sg-0000000FN7v-0lTW
+	id 1uN8sg-0000000FN80-1sZn
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 11:35:35 +0000
+	Thu, 05 Jun 2025 11:35:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8se-0007MQ-Uo
-	for barebox@lists.infradead.org; Thu, 05 Jun 2025 13:35:32 +0200
+	id 1uN8sf-0007MY-62; Thu, 05 Jun 2025 13:35:33 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8se-001wzO-2S
-	for barebox@lists.infradead.org;
+	id 1uN8se-001wzY-39;
 	Thu, 05 Jun 2025 13:35:32 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8sf-008mT4-0x
-	for barebox@lists.infradead.org;
+	id 1uN8sf-008mT4-1f;
 	Thu, 05 Jun 2025 13:35:32 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu,  5 Jun 2025 13:35:09 +0200
-Message-Id: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  5 Jun 2025 13:35:13 +0200
+Message-Id: <20250605113530.2076990-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
+References: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_043534_233020_9CDEC0CF 
-X-CRM114-Status: GOOD (  11.04  )
+X-CRM114-CacheID: sfid-20250605_043534_488400_170075DC 
+X-CRM114-Status: GOOD (  10.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,117 +83,63 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 00/21] sandbox: add libfuzzer-based fuzzing
+Subject: [PATCH 04/21] kbuild: define and use more generic symlink command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We have a number of security-sensitive parsers in barebox that process
-untrusted input, even in secure boot systems, e.g. the FIT parser, but
-also the partition parser.
+We currently use symlinks only between files in the same directory.
+Let's make it possible to symlink across directories as well.
 
-This series adds fuzzing tests for a number of these parsers based on
-libfuzzer.
+No functional change.
 
-Ahmad Fatoum (21):
-  pbl: add provision for architectures without piggy loader
-  firmware: make Layerscape FMan firmware proper-only
-  mci: sdhci: support compiling common SDHCI code for sandbox PBL
-  kbuild: define and use more generic symlink command
-  kbuild: collect compatibility symlink creation in symlink-y
-  kbuild: allow customizing barebox proper binary
-  sandbox: make available all CONFIG_ symbols to OS glue code
-  sandbox: switch to using PBL
-  kbuild: populate non-host CXX variables
-  string: add fortify source support
-  sandbox: populate UNAME_M variable
-  Add fuzzing infrastructure
-  filetype: add fuzz target
-  block: mark underlying cdev with DEVFS_IS_BLOCK_DEV
-  block: add lightweight ramdisk support
-  fuzz: add support for passing fuzz data as r/o ramdisk
-  partitions: add partition table parser fuzz target
-  fdt: add fuzz test
-  fit: add fuzz test
-  Documentation: add LLVM libfuzzer documentation
-  sandbox: add support for coverage info generation
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Makefile             | 2 +-
+ images/Makefile      | 2 +-
+ scripts/Makefile.lib | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
- .gitignore                                    |   6 +
- Documentation/devel/devel.rst                 |   1 +
- Documentation/devel/fuzzing.rst               | 136 +++
- Makefile                                      |  72 +-
- arch/Kconfig                                  |   6 +
- arch/sandbox/Kconfig                          |  10 +
- arch/sandbox/Kconfig.debug                    |   7 +
- arch/sandbox/Makefile                         |  91 +-
- arch/sandbox/board/.gitignore                 |   3 -
- arch/sandbox/board/Makefile                   |   2 -
- arch/sandbox/include/asm/barebox-sandbox.h    |  10 +
- arch/sandbox/lib/.gitignore                   |   3 +
- arch/sandbox/lib/Makefile                     |   2 +-
- .../{board/barebox.lds.S => lib/pbl.lds.S}    |   0
- arch/sandbox/os/Makefile                      |  24 +-
- arch/sandbox/os/common.c                      | 138 ++-
- arch/sandbox/{lib => os}/unwind.c             |   3 +-
- arch/x86/um/Makefile                          |   4 +-
- commands/Makefile                             |   1 +
- commands/fuzz.c                               | 118 +++
- commands/stacksmash.c                         |   6 +-
- common/Kconfig                                |   7 +-
- common/block.c                                |   9 +-
- common/boards/configs/libfuzzer.config        |  14 +
- common/filetype.c                             |  12 +
- common/image-fit.c                            |  76 +-
- common/partitions.c                           |  56 ++
- common/startup.c                              |   1 +
- drivers/block/Kconfig                         |   6 +
- drivers/block/Makefile                        |   1 +
- drivers/block/ramdisk.c                       | 178 ++++
- drivers/of/fdt.c                              |  39 +
- firmware/Makefile                             |   3 +-
- images/.gitignore                             |   2 +
- images/Makefile                               |  26 +-
- images/Makefile.sandbox                       |  33 +
- include/asm-generic/barebox.lds.h             |  13 +-
- include/block.h                               |  13 +-
- include/dma.h                                 |  22 +-
- include/driver.h                              |   1 +
- include/filetype.h                            |   4 +-
- include/fuzz.h                                |  87 ++
- include/linux/compiler_types.h                |  41 +
- include/linux/fortify-string.h                | 804 ++++++++++++++++++
- include/linux/string.h                        |  17 +
- include/mci.h                                 |   9 +
- include/ramdisk.h                             |  24 +
- lib/Kconfig.hardening                         |  15 +
- lib/Makefile                                  |   3 +-
- lib/fuzz.c                                    |  79 ++
- lib/string.c                                  |  16 +-
- lib/string_helpers.c                          |  30 +
- lib/vsprintf.c                                |  15 +
- pbl/Kconfig                                   |  10 +-
- pbl/string.c                                  |   1 +
- scripts/Kconfig.include                       |   1 +
- scripts/Makefile.lib                          |   6 +-
- scripts/clang-runtime-dir.sh                  |  19 +
- scripts/subarch.include                       |  12 +-
- test/Kconfig                                  |  39 +
- 60 files changed, 2252 insertions(+), 135 deletions(-)
- create mode 100644 Documentation/devel/fuzzing.rst
- create mode 100644 arch/sandbox/include/asm/barebox-sandbox.h
- create mode 100644 arch/sandbox/lib/.gitignore
- rename arch/sandbox/{board/barebox.lds.S => lib/pbl.lds.S} (100%)
- rename arch/sandbox/{lib => os}/unwind.c (88%)
- create mode 100644 commands/fuzz.c
- create mode 100644 common/boards/configs/libfuzzer.config
- create mode 100644 drivers/block/ramdisk.c
- create mode 100644 images/Makefile.sandbox
- create mode 100644 include/fuzz.h
- create mode 100644 include/linux/fortify-string.h
- create mode 100644 include/ramdisk.h
- create mode 100644 lib/fuzz.c
- create mode 100644 lib/string_helpers.c
- create mode 100755 scripts/clang-runtime-dir.sh
-
+diff --git a/Makefile b/Makefile
+index 031d5bdd3e20..2abd03cb0a74 100644
+--- a/Makefile
++++ b/Makefile
+@@ -816,7 +816,7 @@ export KBUILD_BINARY ?= barebox.bin
+ # the default value.
+ 
+ barebox-flash-image: $(KBUILD_IMAGE) FORCE
+-	$(call if_changed,ln)
++	$(call if_changed,symlink)
+ 
+ barebox-flash-images: $(KBUILD_IMAGE)
+ 	@echo $^ > $@
+diff --git a/images/Makefile b/images/Makefile
+index 91123ada4744..c8ab8fc015ae 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -240,7 +240,7 @@ __images_install: images
+ PHONY += __images_install
+ 
+ $(flash-link): $(link-dest) FORCE
+-	$(call if_changed,ln)
++	$(call if_changed,symlink)
+ 
+ $(flash-list): $(image-y-path)
+ 	@for i in $^; do if [ -s $$i ]; then echo $$i; fi; done > $@
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index b10119797686..e960d62ce59e 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -529,8 +529,8 @@ cmd_comp_copy ?= cat $(filter-out FORCE,$^) > $@; \
+ quiet_cmd_disasm = DISASM  $@
+ cmd_disasm = $(OBJDUMP) -d $< > $@
+ 
+-quiet_cmd_ln = LN      $@
+-cmd_ln = ln -sf $< $@
++quiet_cmd_symlink = LN      $@
++      cmd_symlink = mkdir -p $(dir $@) ; ln -fsn --relative $< $@
+ 
+ quiet_cmd_check_size = CHKSIZE $2
+       cmd_check_size = set -e;						\
 -- 
 2.39.5
 
