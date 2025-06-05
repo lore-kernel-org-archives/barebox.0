@@ -1,55 +1,55 @@
-Delivery-date: Thu, 05 Jun 2025 23:14:38 +0200
+Delivery-date: Thu, 05 Jun 2025 23:14:39 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHv4-0049Pe-0Y
+	id 1uNHv5-0049QK-1b
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 23:14:38 +0200
+	Thu, 05 Jun 2025 23:14:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHux-000600-3j
-	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:38 +0200
+	id 1uNHuy-00061N-Rt
+	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HJtBE8q9xpiF6svgFK0fQeuvm2EhES7VNzHm6Oft/9A=; b=CS+9nHCVqMkc6EluqMUemA3XZd
-	/inPH0zRV8e+6mC/GePo1G44Vm6voTybbgBei12akBCyawp0M2NxxVn47wtbASeymtSQi8bhnZ5FH
-	vOetBF8hXXKxTmNqB6NEzOBJvhc/dJSpxC7ktf7hEUU+1wQ9qcev934SXs0XywIy/cWIJPxH5IzSC
-	3y2Qa9MmfamtSVQrT2A3HNmKFalaWJFHs3ys5Y8rHKQQj8GgUdbM9TmoIZ/kNgsCMbO0Ri+5el1NQ
-	Az3oywUfKPwOa2UU7TdwChnyXByVv2mkXOd5ZZHrtxc6DnKxeEwmq8b5HvL4DFx6Pg9Vq68DaIIb5
-	sjrqP1Uw==;
+	bh=9HJXSR3UofC0P89DhNFHrYRdWqPpAbPZh2d6k5cgKSo=; b=he8vlFAovSkX+hkMIFEH5MDsgQ
+	al+6IYUgPxoqD2TCMyeCLoYDxpSFxzH+R1fmMnIMmMTe7EpKFGBd0SR39Ma+wwEvFIGR+jM5xmNdm
+	XEcC/n6qMloMPpcoe86PP1uoJWN4UJqXDIjwSaXjwMOVzb28ZFVYUkgjAl2Cy/e+ndoi6WfSw5Bs0
+	CQ6iz31w10/mIYvpgEsU/AaEQmrZTmVoM/ZTFo8TXpeWt24PSgJpfxiXYWMRDEE52PXCI+XgERKWt
+	IAlg6oOBH7785I+LcSjj4MjoKQp2hOmealMN5lQg+ZMnlMawfBkPg3M93wgkni+ffTM3fRzqRQfhO
+	PZ7127oA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHuF-0000000Getj-1ij0;
+	id 1uNHuF-0000000GeuB-46l0;
 	Thu, 05 Jun 2025 21:13:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHoA-0000000GeFc-3eTo
+	id 1uNHoB-0000000GeFp-09p1
 	for barebox@lists.infradead.org;
 	Thu, 05 Jun 2025 21:07:32 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNHo9-00079B-Jw; Thu, 05 Jun 2025 23:07:29 +0200
+	id 1uNHo9-00079B-QR; Thu, 05 Jun 2025 23:07:29 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu,  5 Jun 2025 23:07:19 +0200
-Message-Id: <20250605210726.1916656-10-a.fatoum@barebox.org>
+Date: Thu,  5 Jun 2025 23:07:20 +0200
+Message-Id: <20250605210726.1916656-11-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605210726.1916656-1-a.fatoum@barebox.org>
 References: <20250605210726.1916656-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_140730_912358_F9430F9C 
-X-CRM114-Status: GOOD (  10.90  )
+X-CRM114-CacheID: sfid-20250605_140731_086843_7EC78DCD 
+X-CRM114-Status: GOOD (  14.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,53 +71,137 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/16] video: vpl: handle missing struct vpl::ioctl gracefully
+Subject: [PATCH 10/16] video: vpl: add vpl_bridge abstraction
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Display controllers don't usually implement the ioctl callback, because
-they are invoked via the register_framebuffer API and only need to call
-other drivers' ioctl and their own is never called.
-
-Yet, when by mistake an ioctl is directed at a display controller, we
-currently crash. Let's handle this case gracefully instead.
+Linux drivers can make use of devm_drm_of_get_bridge to get a handle on
+the next bridge. Add similar functionality to barebox as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/video/vpl.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/video/vpl.c | 60 ++++++++++++++++++++++++++++++++++++++++++---
+ include/video/vpl.h | 15 ++++++++++++
+ 2 files changed, 72 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/video/vpl.c b/drivers/video/vpl.c
-index 0b86ef9f7e81..da8bd93b7d6a 100644
+index da8bd93b7d6a..0235c1e790bd 100644
 --- a/drivers/video/vpl.c
 +++ b/drivers/video/vpl.c
-@@ -106,6 +106,7 @@ static int vpl_foreach_endpoint(struct vpl *vpl, unsigned int port,
+@@ -53,14 +53,15 @@ struct vpl *of_vpl_get(struct device_node *node, int port)
+ 	return of_find_vpl(node);
  }
  
- struct vpl_ioctl {
-+	int err;
- 	unsigned cmd;
- 	void *ptr;
- };
-@@ -114,6 +115,11 @@ static int vpl_remote_ioctl(struct vpl *vpl, unsigned port, void *_data)
+-static int vpl_foreach_endpoint(struct vpl *vpl, unsigned int port,
++static int vpl_foreach_endpoint(struct vpl *vpl, unsigned int port, int endpoint_id,
+ 				int (*fn)(struct vpl *, unsigned port, void *data),
+ 				void *data)
  {
- 	struct vpl_ioctl *data = _data;
+ 	struct device_node *node, *endpoint;
+ 	int ret;
  
-+	if (!vpl->ioctl) {
-+		data->err = -EOPNOTSUPP;
-+		return 0;
-+	}
+-	pr_debug("%s: %pOF port %d\n", __func__, vpl->node, port);
++	pr_debug("%s: %pOF port %d endpoint %d\n", __func__, vpl->node,
++		 port, endpoint_id);
+ 
+ 	node = of_graph_get_port_by_id(vpl->node, port);
+ 	if (!node) {
+@@ -73,6 +74,16 @@ static int vpl_foreach_endpoint(struct vpl *vpl, unsigned int port,
+ 		struct vpl *remote_vpl;
+ 		u32 remote_port_id = 0;
+ 
++		if (endpoint_id >= 0) {
++			u32 local_endpoint_id = 0;
++			of_property_read_u32(endpoint, "reg", &local_endpoint_id);
++			if (local_endpoint_id != endpoint_id) {
++				pr_debug("%s: skipping endpoint %pOF with id %d\n",
++					 __func__, endpoint, local_endpoint_id);
++				continue;
++			}
++		}
 +
- 	return vpl->ioctl(vpl, port, data->cmd, data->ptr);
- }
- 
-@@ -122,5 +128,5 @@ int vpl_ioctl(struct vpl *vpl, unsigned int port,
+ 		remote = of_graph_get_remote_port(endpoint);
+ 		if (!remote) {
+ 			pr_debug("%s: no remote for endpoint %pOF\n", __func__, endpoint);
+@@ -128,5 +139,48 @@ int vpl_ioctl(struct vpl *vpl, unsigned int port,
  {
  	struct vpl_ioctl data = { .cmd = cmd, .ptr = ptr };
  
--	return vpl_foreach_endpoint(vpl, port, vpl_remote_ioctl, &data);
-+	return vpl_foreach_endpoint(vpl, port, vpl_remote_ioctl, &data) ?: data.err;
+-	return vpl_foreach_endpoint(vpl, port, vpl_remote_ioctl, &data) ?: data.err;
++	return vpl_foreach_endpoint(vpl, port, -1, vpl_remote_ioctl, &data) ?: data.err;
++}
++
++static int vpl_alloc_bridge(struct vpl *vpl, unsigned port, void *_bridge)
++{
++	struct vpl_bridge **bridge = _bridge;
++
++	(*bridge) = malloc(sizeof(**bridge));
++	(*bridge)->vpl = vpl;
++	(*bridge)->port = port;
++
++	return 1;
++}
++
++struct vpl_bridge *devm_vpl_of_get_bridge(struct device *dev, struct device_node *np,
++					  unsigned int port, unsigned int endpoint)
++{
++	struct vpl_bridge *bridge = NULL;
++	struct vpl *vpl;
++	int ret;
++
++	vpl = of_find_vpl(np);
++	if (!vpl)
++		return ERR_PTR(-EPROBE_DEFER);
++
++	ret = vpl_foreach_endpoint(vpl, port, endpoint, vpl_alloc_bridge, &bridge);
++	if (ret < 0)
++		return ERR_PTR(ret);
++
++	return bridge ?: ERR_PTR(-EINVAL);
++}
++
++int vpl_bridge_ioctl(struct vpl_bridge *bridge, unsigned int cmd, void *ptr)
++{
++	struct vpl *vpl;
++
++	if (IS_ERR_OR_NULL(bridge))
++		return PTR_ERR_OR_ZERO(bridge);
++
++	vpl = bridge->vpl;
++	if (!vpl->ioctl)
++		return -EOPNOTSUPP;
++
++	return vpl->ioctl(vpl, bridge->port, cmd, ptr);
  }
+diff --git a/include/video/vpl.h b/include/video/vpl.h
+index 5ea3d6dcf202..a8fda3e6294b 100644
+--- a/include/video/vpl.h
++++ b/include/video/vpl.h
+@@ -20,9 +20,24 @@ struct vpl {
+ 	struct list_head list;
+ };
+ 
++/**
++ * struct vpl_bridge - bridge control structure
++ */
++struct vpl_bridge {
++	/** @vpl: pointer to vpl instance of bridge */
++	struct vpl *vpl;
++	/** @port: remote input port on bridge */
++	int port;
++};
++
+ int vpl_register(struct vpl *);
+ int vpl_ioctl(struct vpl *, unsigned int port,
+ 		unsigned int cmd, void *ptr);
++struct vpl_bridge;
++int vpl_bridge_ioctl(struct vpl_bridge *,
++		     unsigned int cmd, void *ptr);
++struct vpl_bridge *devm_vpl_of_get_bridge(struct device *dev, struct device_node *np,
++					  unsigned int port, unsigned int endpoint);
+ 
+ struct vpl *of_vpl_get(struct device_node *node, int port);
+ 
 -- 
 2.39.5
 
