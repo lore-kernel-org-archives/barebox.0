@@ -1,56 +1,55 @@
-Delivery-date: Thu, 05 Jun 2025 23:14:39 +0200
+Delivery-date: Thu, 05 Jun 2025 23:14:40 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHv5-0049QM-1i
+	id 1uNHv6-0049R4-1n
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 23:14:39 +0200
+	Thu, 05 Jun 2025 23:14:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHuy-00061B-OA
-	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:39 +0200
+	id 1uNHuz-00061k-7i
+	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gf6YPHBlY941yZrBB7FQnR8A/fmtFiV9FIk+dtGUoyI=; b=VxLgeBkei1AHhdUSuIM3Q9MewS
-	tW5JhZBmjpF7kk42ZovNCWJ5dOAmXUciBZ7zAYmgbneA2Swio7O1mG9iyrlPF8Z/7V45bo8EXGG+M
-	bMKj4aHGzFdn1knk7bBkBe1qYL5QzZeyssO/LU4lc7I5pIHQ6LTxKJR+bLgA2PvBtuZWz7Oo5/QFz
-	AXc/OeaKfWh28RjfjYO4vx/+o14O2UvI3f8vAl5AEfIkX6KmRcv9IbZmBiMxMIsBVqMQr5Hp8q9au
-	IvzD9ZHhR1i89nr1HoXrZY0d0XPh+5yeIglJaKs8hCvRjKE8KKgGSWOjfHvHnsf13lRz5mnNjnYUM
-	RDNNTKvQ==;
+	bh=PA3vnhHqTierU5o69p0nEg3WXNlmB54ZeA1YFRyPo2w=; b=K4NHDM+m40onKMIoSdCh3lHr4w
+	9yqPZw6bSRLn0fm1z9vGEco3/hrAOVy6K5l8YMeObSK+Vj3R4M9A7MY4pTZOLI2rG53ydQi4F/cWQ
+	i67NOzrMMUI2CaObSobdpU4681v0S2jNIIePYjoY7NzAkbmKcfR5Nge5sZCOOXqudtuG+IvZDtUdY
+	joJVmief1SeqETHck1V+tAnYPIMe003zFbYQJ49GnqMmt/5bKF4eqLRtihDFnEzwk8rDgnFJlAB8H
+	bN5uJCNmJN+0kRUI3z0PVUv4t6snMUysJLdriXgoZSwnYUCcXpw/rnli+TNjYjPnUKHDeoi6B5D0D
+	QHsOzDvw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHuG-0000000GevA-2PCP;
-	Thu, 05 Jun 2025 21:13:48 +0000
+	id 1uNHuA-0000000Geql-3rmG;
+	Thu, 05 Jun 2025 21:13:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHoB-0000000GeGG-1Kdl
+	id 1uNHo8-0000000GeDi-48Fp
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 21:07:33 +0000
+	Thu, 05 Jun 2025 21:07:30 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNHoA-00079B-17; Thu, 05 Jun 2025 23:07:30 +0200
+	id 1uNHo7-00079B-NQ; Thu, 05 Jun 2025 23:07:27 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu,  5 Jun 2025 23:07:21 +0200
-Message-Id: <20250605210726.1916656-12-a.fatoum@barebox.org>
+Date: Thu,  5 Jun 2025 23:07:11 +0200
+Message-Id: <20250605210726.1916656-2-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605210726.1916656-1-a.fatoum@barebox.org>
 References: <20250605210726.1916656-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_140731_374511_A5744BDC 
-X-CRM114-Status: GOOD (  24.04  )
+X-CRM114-CacheID: sfid-20250605_140729_020770_44686FC3 
+X-CRM114-Status: GOOD (  13.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,151 +71,119 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 11/16] video: factor out drm_mode_vrefresh
+Subject: [PATCH 01/16] driver: bus: embed bus driver node into bus
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This function is going to be used for the incoming MIPI-DSI support, so
-let's make it reusable.
+Instead of keeping the bus device in a separate allocation, fold it into
+the bus struct itself.
+
+The benefit is that this would allow us to arrive at the bus from the
+device and thus be able to chain them using device classes.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/video/Makefile                     |  1 +
- drivers/video/drm/Makefile                 |  2 +
- drivers/video/drm/drm_modes.c              | 67 ++++++++++++++++++++++
- drivers/video/rockchip/rockchip_drm_vop2.c | 13 -----
- include/video/drm/drm_modes.h              |  2 +
- 5 files changed, 72 insertions(+), 13 deletions(-)
- create mode 100644 drivers/video/drm/Makefile
- create mode 100644 drivers/video/drm/drm_modes.c
+ commands/devinfo.c    | 2 +-
+ common/tlv/bus.c      | 4 ++--
+ drivers/amba/bus.c    | 2 +-
+ drivers/base/bus.c    | 7 +++----
+ drivers/base/driver.c | 2 +-
+ include/driver.h      | 2 +-
+ 6 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index f851837ebcdb..dde1da1bb98b 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_VIDEO) += fb.o mode-helpers.o
-+obj-$(CONFIG_VIDEO) += drm/
- obj-$(CONFIG_DRIVER_VIDEO_EDID) += edid.o
- obj-$(CONFIG_OFDEVICE) += of_display_timing.o
- obj-$(CONFIG_DRIVER_VIDEO_BACKLIGHT) += backlight.o
-diff --git a/drivers/video/drm/Makefile b/drivers/video/drm/Makefile
-new file mode 100644
-index 000000000000..06d586eb2184
---- /dev/null
-+++ b/drivers/video/drm/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_VIDEO) += drm_modes.o
-diff --git a/drivers/video/drm/drm_modes.c b/drivers/video/drm/drm_modes.c
-new file mode 100644
-index 000000000000..00fcfb9070ae
---- /dev/null
-+++ b/drivers/video/drm/drm_modes.c
-@@ -0,0 +1,67 @@
-+/*
-+ * Copyright © 1997-2003 by The XFree86 Project, Inc.
-+ * Copyright © 2007 Dave Airlie
-+ * Copyright © 2007-2008 Intel Corporation
-+ *   Jesse Barnes <jesse.barnes@intel.com>
-+ * Copyright 2005-2006 Luc Verhaegen
-+ * Copyright (c) 2001, Andy Ritger  aritger@nvidia.com
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ * Except as contained in this notice, the name of the copyright holder(s)
-+ * and author(s) shall not be used in advertising or otherwise to promote
-+ * the sale, use or other dealings in this Software without prior written
-+ * authorization from the copyright holder(s) and author(s).
-+ */
-+
-+#include <linux/ctype.h>
-+#include <linux/export.h>
-+#include <linux/list.h>
-+#include <of.h>
-+
-+#include <video/drm/drm_modes.h>
-+
-+/**
-+ * drm_mode_vrefresh - get the vrefresh of a mode
-+ * @mode: mode
-+ *
-+ * Returns:
-+ * @modes's vrefresh rate in Hz, rounded to the nearest integer. Calculates the
-+ * value first if it is not yet set.
-+ */
-+int drm_mode_vrefresh(const struct drm_display_mode *mode)
-+{
-+	unsigned int num, den;
-+
-+	if (mode->htotal == 0 || mode->vtotal == 0)
-+		return 0;
-+
-+	num = mode->clock;
-+	den = mode->htotal * mode->vtotal;
-+
-+	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
-+		num *= 2;
-+	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
-+		den *= 2;
-+	if (mode->vscan > 1)
-+		den *= mode->vscan;
-+
-+	return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(num, 1000), den);
-+}
-+EXPORT_SYMBOL(drm_mode_vrefresh);
-diff --git a/drivers/video/rockchip/rockchip_drm_vop2.c b/drivers/video/rockchip/rockchip_drm_vop2.c
-index b49053c6e915..d81e0357528b 100644
---- a/drivers/video/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/video/rockchip/rockchip_drm_vop2.c
-@@ -975,19 +975,6 @@ static int us_to_vertical_line(struct drm_display_mode *mode, int us)
- 	return us * mode->clock / mode->htotal / 1000;
+diff --git a/commands/devinfo.c b/commands/devinfo.c
+index b1918787a3b6..3c791e4464ac 100644
+--- a/commands/devinfo.c
++++ b/commands/devinfo.c
+@@ -84,7 +84,7 @@ static int do_devinfo(int argc, char *argv[])
+ 
+ 		devinfo(dev);
+ 
+-		if (dev->parent && (!dev->bus || dev->bus->dev != dev->parent))
++		if (dev->parent && (!dev->bus || &dev->bus->dev != dev->parent))
+ 			printf("Parent: %s\n", dev_name(dev->parent));
+ 
+ 		first = true;
+diff --git a/common/tlv/bus.c b/common/tlv/bus.c
+index ab0f4f8b82aa..62d7b7504576 100644
+--- a/common/tlv/bus.c
++++ b/common/tlv/bus.c
+@@ -29,7 +29,7 @@ struct tlv_device *tlv_register_device(struct tlv_header *header,
+ 	devinfo_add(dev, tlv_devinfo);
+ 	dev->platform_data = header;
+ 	tlvdev->magic = be32_to_cpu(header->magic);
+-	dev->parent = parent ?: tlv_bus.dev;
++	dev->parent = parent ?: &tlv_bus.dev;
+ 	dev->id = DEVICE_ID_SINGLE;
+ 
+ 	if (parent)
+@@ -122,7 +122,7 @@ static int tlv_bus_register(void)
+ 	if (ret)
+ 		return ret;
+ 
+-	devinfo_add(tlv_bus.dev, tlv_bus_info);
++	devinfo_add(&tlv_bus.dev, tlv_bus_info);
+ 
+ 	return 0;
  }
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index 8d6525cca967..4e10dd72368f 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -143,7 +143,7 @@ int amba_device_add(struct amba_device *dev)
+ 		cid = amba_device_get_cid(tmp, size);
  
--static int drm_mode_vrefresh(const struct drm_display_mode *mode)
--{
--	unsigned int num, den;
--
--	if (mode->htotal == 0 || mode->vtotal == 0)
--		return 0;
--
--	num = mode->clock;
--	den = mode->htotal * mode->vtotal;
--
--	return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(num, 1000), den);
--}
--
- static void vop2_crtc_atomic_enable(struct vop2_video_port *vp,
- 				    struct drm_display_mode *mode,
- 				    struct rockchip_crtc_state *vcstate)
-diff --git a/include/video/drm/drm_modes.h b/include/video/drm/drm_modes.h
-index afce8a25a9c4..003c76cab6e0 100644
---- a/include/video/drm/drm_modes.h
-+++ b/include/video/drm/drm_modes.h
-@@ -406,4 +406,6 @@ struct drm_display_mode {
- 	enum drm_mode_status status;
- };
+ 		if (IS_ENABLED(CONFIG_ARM_AMBA_DABT_MASK) && data_abort_unmask()) {
+-			dev_err(amba_bustype.dev,
++			dev_err(&amba_bustype.dev,
+ 				"data abort during MMIO read of PID/CID for %pOF\n",
+ 				dev->dev.of_node);
+ 			ret = -EFAULT;
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index 58fcd2e032da..6a4e654b3cea 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -30,11 +30,10 @@ int bus_register(struct bus_type *bus)
+ 	if (get_bus_by_name(bus->name))
+ 		return -EEXIST;
  
-+int drm_mode_vrefresh(const struct drm_display_mode *mode);
-+
- #endif /* __DRM_MODES_H__ */
+-	bus->dev = xzalloc(sizeof(*bus->dev));
+-	dev_set_name(bus->dev, bus->name);
+-	bus->dev->id = DEVICE_ID_SINGLE;
++	dev_set_name(&bus->dev, bus->name);
++	bus->dev.id = DEVICE_ID_SINGLE;
+ 
+-	ret = register_device(bus->dev);
++	ret = register_device(&bus->dev);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 2192ba9812cb..21bf88a74e50 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -269,7 +269,7 @@ int register_device(struct device *new_device)
+ 
+ 	if (new_device->bus) {
+ 		if (!new_device->parent)
+-			new_device->parent = new_device->bus->dev;
++			new_device->parent = &new_device->bus->dev;
+ 
+ 		list_add_tail(&new_device->bus_list, &new_device->bus->device_list);
+ 
+diff --git a/include/driver.h b/include/driver.h
+index e9a919f9bbb5..c6b7b37aa00f 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -358,7 +358,7 @@ struct bus_type {
+ 	int (*probe)(struct device *dev);
+ 	void (*remove)(struct device *dev);
+ 
+-	struct device *dev;
++	struct device dev;
+ 
+ 	struct list_head list;
+ 	struct list_head device_list;
 -- 
 2.39.5
 
