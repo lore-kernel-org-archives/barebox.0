@@ -3,53 +3,54 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHv6-0049RQ-2m
+	id 1uNHv7-0049Ro-1R
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 23:14:40 +0200
+	Thu, 05 Jun 2025 23:14:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHuz-00061o-AE
-	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:40 +0200
+	id 1uNHv0-00063u-JK
+	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UxUTQWoIkvSiCGH4i+ldp67uTelzZCHVV/RWG+4jb2g=; b=T6Vr1VIexp3+2bmuC8P7bV/Fy6
-	lTSclYZRbnjlZ4pNWYNlb0kUOQld/PYcQ/f/vLf/MfUOyDmWm+AetR96lRkLpycTYZluz1nUmSkYA
-	FGiWbgqk2SbQSbkaLdDtZGDEXBCURDtYskYgTGzE/OgrUFLAs8SNva6GQoEXMod4AInDpZ01c+iZp
-	dkFkL+J7vlG9nDLR35IT7C/MfGODq9fZph7gAjsLJ29hc+T1OetOYOb0rDHnCta1uaIZT6b6MRBYz
-	fBaZ2Aq5guxNk01Au8rEIo2GJJUDWLEQgQtnY9U+wx41k1pY7XtHcOaCZ4UvEv7oDeynakhp89ZJ5
-	BpXdQnWA==;
+	bh=cMAxISJ1Mq4KO90X0+J6uOD/BqwpZrmCaVJH7Kess8Q=; b=J4BHEiAIArL7wIcDXlNSOsEc42
+	o32B2HhQHEackVlc6wus0x9DzY9EYxTicmxSi2wgAPu7Cjrj617GsoRqvppYPx8tXCdqXDLS7zsK+
+	P0lI+OzCqxr9wTkFOVd+ZqL3MrhS5tDd6w7WQ93sumEh/kU6WT+zYIYL4ooF4N+PBo+NjFZ0xrLw0
+	R3egX998X8AUqRKsDXvn9TXTKaC3OG0NRmRCT4eKSp7Js2WzdQw6fRgkerM9ILkfsD+RnwhSxw3eK
+	X/Bwn8U1XmBj2WwnLbmMhus9Pj8IioRH1gt2EZXh7TvLDV3ILjR9to8TH83HDJG5fLXA04C62/Y0+
+	q+Kh0u9A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHuH-0000000GewR-3c1l;
-	Thu, 05 Jun 2025 21:13:49 +0000
+	id 1uNHuE-0000000GetC-3W6E;
+	Thu, 05 Jun 2025 21:13:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHoC-0000000GeHi-2IH2
+	id 1uNHoA-0000000GeFP-2hph
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 21:07:34 +0000
+	Thu, 05 Jun 2025 21:07:32 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNHoB-00079B-9C; Thu, 05 Jun 2025 23:07:31 +0200
+	id 1uNHo9-00079B-DB; Thu, 05 Jun 2025 23:07:29 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu,  5 Jun 2025 23:07:26 +0200
-Message-Id: <20250605210726.1916656-17-a.fatoum@barebox.org>
+Date: Thu,  5 Jun 2025 23:07:18 +0200
+Message-Id: <20250605210726.1916656-9-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605210726.1916656-1-a.fatoum@barebox.org>
 References: <20250605210726.1916656-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_140732_627466_0D43DA50 
-X-CRM114-Status: GOOD (  15.19  )
+X-CRM114-CacheID: sfid-20250605_140730_688132_C3FF40D4 
+X-CRM114-Status: UNSURE (   9.36  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,154 +72,68 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 16/16] ARM: stm32mp: dk2: enable MIPI-DSI display by default
+Subject: [PATCH 08/16] video: vpl: factor out vpl_for_each
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that all drivers are in place, let's enable them in the defconfig
-and have barebox show a barebox prompt by default when run on the DK2.
-
-If logo support is enabled, the logo is shown instead, but this is not
-enabled here as not to require an imagemagick dependency for the
-defconfig.
-
-One way around that would be to have S_shipped logos checked into the
-source tree, but that's a task for another day.
+We currently resolve the video pipeline on ioctl instead of at probe
+time. In preparation for allowing resolution at probe time, provide a
+helper function for resolving the video pipeline without calling the
+ioctl right away.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/boards/stm32mp15xx-dkx/Makefile       |  1 +
- arch/arm/boards/stm32mp15xx-dkx/board.c        |  3 +++
- .../defaultenv-stm32mp15xx-dkx/init/splash     | 18 ++++++++++++++++++
- arch/arm/configs/stm32mp_defconfig             | 18 ++++++++++++------
- 4 files changed, 34 insertions(+), 6 deletions(-)
- create mode 100755 arch/arm/boards/stm32mp15xx-dkx/defaultenv-stm32mp15xx-dkx/init/splash
+ drivers/video/vpl.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/stm32mp15xx-dkx/Makefile b/arch/arm/boards/stm32mp15xx-dkx/Makefile
-index 5678718188b9..88b1faf193bc 100644
---- a/arch/arm/boards/stm32mp15xx-dkx/Makefile
-+++ b/arch/arm/boards/stm32mp15xx-dkx/Makefile
-@@ -2,3 +2,4 @@
- 
- lwl-y += lowlevel.o
- obj-y += board.o
-+bbenv-y += defaultenv-stm32mp15xx-dkx
-diff --git a/arch/arm/boards/stm32mp15xx-dkx/board.c b/arch/arm/boards/stm32mp15xx-dkx/board.c
-index d693bf2aaf68..3ef5a6f38d46 100644
---- a/arch/arm/boards/stm32mp15xx-dkx/board.c
-+++ b/arch/arm/boards/stm32mp15xx-dkx/board.c
-@@ -3,6 +3,7 @@
- #include <init.h>
- #include <mach/stm32mp/bbu.h>
- #include <deep-probe.h>
-+#include <envfs.h>
- 
- static int dkx_probe(struct device *dev)
- {
-@@ -17,6 +18,8 @@ static int dkx_probe(struct device *dev)
- 
- 	barebox_set_hostname("stm32mp15xx-dkx");
- 
-+	defaultenv_append_directory(defaultenv_stm32mp15xx_dkx);
-+
- 	return 0;
+diff --git a/drivers/video/vpl.c b/drivers/video/vpl.c
+index 6fcba0901165..0b86ef9f7e81 100644
+--- a/drivers/video/vpl.c
++++ b/drivers/video/vpl.c
+@@ -53,8 +53,9 @@ struct vpl *of_vpl_get(struct device_node *node, int port)
+ 	return of_find_vpl(node);
  }
  
-diff --git a/arch/arm/boards/stm32mp15xx-dkx/defaultenv-stm32mp15xx-dkx/init/splash b/arch/arm/boards/stm32mp15xx-dkx/defaultenv-stm32mp15xx-dkx/init/splash
-new file mode 100755
-index 000000000000..922431eb916e
---- /dev/null
-+++ b/arch/arm/boards/stm32mp15xx-dkx/defaultenv-stm32mp15xx-dkx/init/splash
-@@ -0,0 +1,18 @@
-+#!/bin/sh
+-int vpl_ioctl(struct vpl *vpl, unsigned int port,
+-		unsigned int cmd, void *ptr)
++static int vpl_foreach_endpoint(struct vpl *vpl, unsigned int port,
++				int (*fn)(struct vpl *, unsigned port, void *data),
++				void *data)
+ {
+ 	struct device_node *node, *endpoint;
+ 	int ret;
+@@ -96,10 +97,30 @@ int vpl_ioctl(struct vpl *vpl, unsigned int port,
+ 		}
+ 
+ 		pr_debug("%s: looked up %pOF: %pS\n", __func__, remote, remote_vpl->ioctl);
+-		ret = remote_vpl->ioctl(remote_vpl, remote_port_id, cmd, ptr);
++		ret = fn(remote_vpl, remote_port_id, data);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	return 0;
+ }
 +
-+if [ -e /dev/fb0 ]; then
-+        fb0.enable=1
-+fi
++struct vpl_ioctl {
++	unsigned cmd;
++	void *ptr;
++};
 +
-+if [ -d /logo ]; then
-+        for logo in /logo/*; do
-+                splash $logo
-+                exit
-+        done
-+fi
++static int vpl_remote_ioctl(struct vpl *vpl, unsigned port, void *_data)
++{
++	struct vpl_ioctl *data = _data;
 +
-+# No logo, so let's show console instead
-+if [ -e /dev/fbconsole0-1 ]; then
-+        fbconsole0.font=7x14
-+        fbconsole0.active=ioe
-+fi
-diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
-index 366c9430d551..20955b3f6b80 100644
---- a/arch/arm/configs/stm32mp_defconfig
-+++ b/arch/arm/configs/stm32mp_defconfig
-@@ -9,16 +9,13 @@ CONFIG_MACH_STM32MP15X_EV1=y
- CONFIG_MACH_PROTONIC_STM32MP1=y
- CONFIG_MACH_PROTONIC_STM32MP13=y
- CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1=y
--CONFIG_BOARD_GENERIC_DT=y
- CONFIG_THUMB2_BAREBOX=y
- CONFIG_ARM_BOARD_APPEND_ATAG=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
- CONFIG_MMU=y
- CONFIG_MALLOC_SIZE=0x0
--CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
--CONFIG_RELOCATABLE=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_MENU=y
-@@ -77,6 +74,8 @@ CONFIG_CMD_EDIT=y
- CONFIG_CMD_MENU=y
- CONFIG_CMD_MENU_MANAGEMENT=y
- CONFIG_CMD_MENUTREE=y
-+CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_FBTEST=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_CRC=y
-@@ -114,7 +113,6 @@ CONFIG_I2C=y
- CONFIG_I2C_STM32=y
- CONFIG_MTD=y
- CONFIG_MTD_M25P80=y
--CONFIG_MTD_SST25L=y
- CONFIG_USB_HOST=y
- CONFIG_USB_DWC2_HOST=y
- CONFIG_USB_DWC2_GADGET=y
-@@ -126,10 +124,13 @@ CONFIG_USB_GADGET_DFU=y
- CONFIG_USB_GADGET_SERIAL=y
- CONFIG_USB_GADGET_FASTBOOT=y
- CONFIG_VIDEO=y
-+CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_DRIVER_VIDEO_FB_SSD1307=y
- CONFIG_DRIVER_VIDEO_STM32_LTDC=y
-+CONFIG_DRIVER_VIDEO_STM32_DSI=y
- CONFIG_DRIVER_VIDEO_BACKLIGHT=y
- CONFIG_DRIVER_VIDEO_SIMPLE_PANEL=y
-+CONFIG_DRIVER_VIDEO_PANEL_ORISETECH_OTM8009A=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-@@ -173,11 +174,16 @@ CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
- CONFIG_FS_PSTORE=y
- CONFIG_FS_PSTORE_CONSOLE=y
- CONFIG_FS_PSTORE_RAMOOPS=y
- CONFIG_FS_SQUASHFS=y
- CONFIG_FS_RATP=y
--CONFIG_ZLIB=y
- CONFIG_CRC8=y
-+CONFIG_BMP=y
-+CONFIG_PNG=y
-+CONFIG_QOI=y
-+CONFIG_FONT_8x8=y
-+CONFIG_FONT_7x14=y
-+CONFIG_FONT_MINI_4x6=y
-+CONFIG_FONT_TER16x32=y
++	return vpl->ioctl(vpl, port, data->cmd, data->ptr);
++}
++
++int vpl_ioctl(struct vpl *vpl, unsigned int port,
++		unsigned int cmd, void *ptr)
++{
++	struct vpl_ioctl data = { .cmd = cmd, .ptr = ptr };
++
++	return vpl_foreach_endpoint(vpl, port, vpl_remote_ioctl, &data);
++}
 -- 
 2.39.5
 
