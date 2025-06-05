@@ -1,67 +1,69 @@
-Delivery-date: Thu, 05 Jun 2025 13:39:04 +0200
+Delivery-date: Thu, 05 Jun 2025 13:39:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8w4-003zoe-0Q
+	id 1uN8w5-003zpE-39
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 13:39:04 +0200
+	Thu, 05 Jun 2025 13:39:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8w0-0002RU-Nx
-	for lore@pengutronix.de; Thu, 05 Jun 2025 13:39:03 +0200
+	id 1uN8w2-0002T3-Tg
+	for lore@pengutronix.de; Thu, 05 Jun 2025 13:39:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xBrH5kN++jRu4a08n6Z5VGcQT9tY2/ar4c65Q9hp3yA=; b=knJSMD21cqF/FV2PoUGykoNSfW
-	u2AexbhY2MZEB3j2Az9aWh99gImlA9lwrQKC1wzQNXUB/PEMIkpaSSct1wpofGajLDuhaoEYP66ei
-	JVYTUri9L3eQQXwbWfqZLOcpe+W4Tp75mPatNat2q+Y9vbO4pRYw0NG9gffp8y0jO+tHbJjTBAqKI
-	02CWWKRr7m0534xqIOfXP5rA4w4LZ538PubcJG1dAKNPLCuSttqI64Ka2damWe6xaQ57MP4LslNpI
-	et4cW9WZANQCEuSLtDQns/vxnkKgV0j4AkVbL7790e9XSDLJVbP6OY1sC0fVswKK9HuMJNBFDFgKy
-	h/+YvYKg==;
+	bh=l+4GitLWGRJVnY2LudLP8DsP84UT3JrCb0xNrGCXwTs=; b=R+/eexny9A/PMVZzjGfPMYXBG1
+	sLhUfX7asrlj4b3Pb0R/NMw0Cbi0I8/aACXnwM4Uzs1ZMov8NLodR9lMIoHk7TKOaoQl9iDPZFrFt
+	Rd9wahfbsqRI0CuXfpjAh72dMboz+JiMp6iiYSkszMxkai5h/p0e9pI227e40P9K9e5D+jIc/+FdI
+	FvOOOzFhRQMtvM+/WmfVGbyroPiwpDeF+WaRiNh7aNkapBLzCkCEPm2AX5qygEpo7h9wY6jmdosEg
+	fiiG4Xkcl/GJ34svm8/wD4Mrcu+jrzW5/PADs/3uxkQkB/nLTznAgrT8SdvB+iHyCRTCLt/ZEBATJ
+	z1kOA16w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8vX-0000000FOSe-0A6d;
-	Thu, 05 Jun 2025 11:38:31 +0000
+	id 1uN8vY-0000000FOUQ-287g;
+	Thu, 05 Jun 2025 11:38:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8vT-0000000FOOS-0l2S
+	id 1uN8vT-0000000FOOW-2a2N
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 11:38:28 +0000
+	Thu, 05 Jun 2025 11:38:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8vS-0001iM-0l; Thu, 05 Jun 2025 13:38:26 +0200
+	id 1uN8vS-0001j2-D9; Thu, 05 Jun 2025 13:38:26 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8vR-001x0X-2e;
-	Thu, 05 Jun 2025 13:38:25 +0200
+	id 1uN8vS-001x0i-0S;
+	Thu, 05 Jun 2025 13:38:26 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8sg-008mT4-1F;
+	id 1uN8sg-008mT4-13;
 	Thu, 05 Jun 2025 13:35:33 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 Jun 2025 13:35:29 +0200
-Message-Id: <20250605113530.2076990-21-a.fatoum@pengutronix.de>
+Cc: Abdelrahman Youssef <abdelrahmanyossef12@gmail.com>,
+	Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  5 Jun 2025 13:35:28 +0200
+Message-Id: <20250605113530.2076990-20-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 References: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_043827_225594_AA5E8CA5 
-X-CRM114-Status: GOOD (  23.03  )
+X-CRM114-CacheID: sfid-20250605_043827_651975_106559B9 
+X-CRM114-Status: GOOD (  16.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,189 +85,145 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 20/21] Documentation: add LLVM libfuzzer documentation
+Subject: [PATCH 19/21] fit: add fuzz test
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that first fuzzing support is in place, add a defconfig and document
-how to use it to fuzz.
+We require FIT images on non-EFI systems to implement verified boot
+chains. Unfortunately, FIT is a relatively complex format for that use
+case, so a fuzz test exercising the parser is pretty much in order.
 
+Co-developed-by: Abdelrahman Youssef <abdelrahmanyossef12@gmail.com>
+Signed-off-by: Abdelrahman Youssef <abdelrahmanyossef12@gmail.com>
+Co-developed-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/devel/devel.rst          |   1 +
- Documentation/devel/fuzzing.rst        | 106 +++++++++++++++++++++++++
- arch/sandbox/Makefile                  |   5 +-
- common/boards/configs/libfuzzer.config |  14 ++++
- 4 files changed, 125 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/devel/fuzzing.rst
- create mode 100644 common/boards/configs/libfuzzer.config
+ common/image-fit.c      | 76 +++++++++++++++++++++++++++++++++++++++--
+ images/Makefile.sandbox |  1 +
+ 2 files changed, 75 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devel/devel.rst b/Documentation/devel/devel.rst
-index 3e9d44218334..d985bff40d42 100644
---- a/Documentation/devel/devel.rst
-+++ b/Documentation/devel/devel.rst
-@@ -12,6 +12,7 @@ Contents:
-    filesystems
-    background-execution
-    project-ideas
-+   fuzzing
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 0cc0425284c5..5006394eb7bb 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -23,6 +23,7 @@
+ #include <crypto/public_key.h>
+ #include <uncompress.h>
+ #include <image-fit.h>
++#include <fuzz.h>
  
- * :ref:`search`
- * :ref:`genindex`
-diff --git a/Documentation/devel/fuzzing.rst b/Documentation/devel/fuzzing.rst
-new file mode 100644
-index 000000000000..3151246aef1a
---- /dev/null
-+++ b/Documentation/devel/fuzzing.rst
-@@ -0,0 +1,106 @@
-+Fuzzing barebox
-+===============
-+
-+As described in the :ref:`security` chapter, some parts of barebox need to
-+deal with untrusted inputs. To aid in finding and fixing issues that might
-+be exploited, barebox can be built with LLVM's libfuzzer to exercise
-+these security-critical parsers.
-+
-+Building
-+^^^^^^^^
-+
-+The barebox sandbox architecture has support for libfuzzer when compiled with
-+LLVM. The ``libfuzzer_defconfig`` enables it as well as different hardening
-+options to crash barebox on detection of memory safety issues::
-+
-+  $ export LLVM=1 # or e.g. LLVM=-19, if clang is called clang-19
-+  $ make libfuzzer_defconfig
-+  $ make -j$(nproc)
-+  # [snip]
-+  images built:
-+  barebox
-+  fuzz-filetype
-+  fuzz-fit
-+  fuzz-fs
-+  fuzz-dtb
-+  fuzz-fdt-compatible
-+  fuzz-partitions
-+
-+All fuzzers generated are symlinks to the same barebox executable. barebox
-+will detect that it was invoked via symlink and switch to fuzzing mode.
-+
-+Fuzzing
-+^^^^^^^
-+
-+Fuzzers can be run directly or by invoked the main barebox binary with the
-+``--fuzz`` option. The latter is mostly useful for debugging.
-+
-+Examples of running the fuzzers::
-+
-+  # Just run the fuzzer with no corpus
-+  images/fuzz-filetype
-+
-+  # Multi-threaded fuzzing is recommended as is using a corpus
-+  images/fuzz-dtb -rss_limit_mb=10000 -max_len=51200 -jobs=64 \
-+	../barebox-fuzz-corpora/dtb
-+
-+  # Some fuzzers still leak, so disable leak detection till resolved
-+  images/fuzz-fit -max_total_time=600 -rss_limit_mb=20000 -max_len=128000 -detect_leaks=0
-+
-+  # Debug a crash
-+  gdb --args images/fuzz-fit crash-$HASH
-+
-+When a crash is detected, libfuzzer will create a ``crash-$HASH`` file
-+that can be passed instead of the corpus directory to run the fuzz test
-+once.
-+
-+Corpora
-+^^^^^^^
-+
-+We maintain a corpus for every fuzz test on
-+`Github <https://github.com/barebox/barebox-fuzz-corpora>`_.
-+
-+This helps bootstrap the fuzzer, so it can exercise new paths more quickly.
-+
-+Adding a fuzzer
-+^^^^^^^^^^^^^^^
-+
-+The barebox integration of libfuzzer is a bit unusual; barebox supplies
-+its own ``main()`` and calls into libfuzzer instead of the over way round.
-+
-+This allows us to write fuzz tests naturally inline without having
-+to setup things beforehand as barebox will have already executed all
-+of its initcalls for example.
-+
-+To add a new fuzz test, just add a function next to the parser that
-+parses a memory buffer::
-+
-+  #include <fuzz.h>
-+
-+  static int fuzz_dtb(const u8 *data, size_t size)
-+  {
-+  	struct device_node *np;
-+
-+  	np = of_unflatten_dtb_const(data, size);
-+  	if (!IS_ERR(np))
-+  		of_delete_node(np);
-+
-+  	return 0;
-+  }
-+  fuzz_test("dtb", fuzz_dtb);
-+
-+
-+.. note:: Fuzz tests should not leak memory, otherwise
-+ the fuzzing process may abort eventually due to memory exhaustion.
-+
-+This function than needs to be registered by name in
-+``images/Makefile.sandbox``::
-+
-+  fuzzer-$(CONFIG_OFTREE)	+= dtb
-+
-+Searching the source tree for ``fuzz_test`` will show more examples,
-+e.g. how to wrap the received buffer in a ramdisk to interface
-+with code that requires block devices.
-+
-+When adding a new fuzzing test, please also `submit a pullrequest
-+with a corpus <https://github.com/barebox/barebox-fuzz-corpora/compare>_.
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 6566cd563ed8..f33d7fa961da 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -2,13 +2,16 @@
+ #define FDT_MAX_DEPTH 32
+ #define FDT_MAX_PATH_LEN 200
+@@ -825,6 +826,26 @@ static int fit_find_compatible_unit(struct fit_handle *handle,
+ 	return -ENOENT;
+ }
  
- KBUILD_DEFCONFIG := sandbox_defconfig
++static int fit_find_last_unit(struct fit_handle *handle,
++			      const char **out_unit)
++{
++	struct device_node *conf_node = handle->configurations;
++	struct device_node *child;
++	const char *unit = NULL;
++
++	if (!conf_node)
++		return 0;
++
++	for_each_child_of_node(conf_node, child)
++		unit = child->name;
++
++	if (!unit)
++		return -ENOENT;
++
++	*out_unit = unit;
++	return 0;
++}
++
+ /**
+  * fit_open_configuration - open a FIT configuration
+  * @handle: The FIT image handle
+@@ -970,12 +991,16 @@ struct fit_handle *fit_open(const char *filename, bool verbose,
+ 	return handle;
+ }
  
--generated_configs += headless_defconfig noshell_defconfig lockdown_defconfig
-+generated_configs += headless_defconfig noshell_defconfig lockdown_defconfig \
-+		     libfuzzer_defconfig
- headless_defconfig:
- 	$(call merge_into_defconfig,sandbox_defconfig,headless)
- noshell_defconfig:
- 	$(call merge_into_defconfig,sandbox_defconfig,noshell)
- lockdown_defconfig:
- 	$(call merge_into_defconfig,sandbox_defconfig,headless noshell)
-+libfuzzer_defconfig:
-+	$(call merge_into_defconfig,sandbox_defconfig,libfuzzer)
+-void fit_close(struct fit_handle *handle)
++static void __fit_close(struct fit_handle *handle)
+ {
+ 	if (handle->root)
+ 		of_delete_node(handle->root);
+-
+ 	free(handle->fit_alloc);
++}
++
++void fit_close(struct fit_handle *handle)
++{
++	__fit_close(handle);
+ 	free(handle);
+ }
  
- KBUILD_CPPFLAGS += -D__SANDBOX__ -fno-strict-aliasing -fvisibility=hidden
+@@ -997,3 +1022,50 @@ static int bootm_fit_register(void)
+ 	return register_image_handler(&fit_handler);
+ }
+ late_initcall(bootm_fit_register);
++
++static int fuzz_fit(const u8 *data, size_t size)
++{
++	const char *unit, *imgname = "kernel";
++	struct fit_handle handle = {};
++	const void *outdata;
++	unsigned long outsize, addr;
++	int ret;
++	void *config;
++
++	handle.verbose = false;
++	handle.verify = BOOTM_VERIFY_AVAILABLE;
++
++	handle.size = size;
++	handle.fit = data;
++	handle.fit_alloc = NULL;
++
++	ret = fit_do_open(&handle);
++	if (ret)
++		goto out;
++
++	config = fit_open_configuration(&handle, NULL);
++	if (IS_ERR(config)) {
++		ret = fit_find_last_unit(&handle, &unit);
++		if (ret)
++			goto out;
++		config = fit_open_configuration(&handle, unit);
++	}
++	if (IS_ERR(config)) {
++		ret = PTR_ERR(config);
++		goto out;
++	}
++
++	ret = fit_open_image(&handle, config, imgname, &outdata, &outsize);
++	if (ret)
++		goto out;
++
++	fit_get_image_address(&handle, config, imgname, "load", &addr);
++	fit_get_image_address(&handle, config, imgname, "entry", &addr);
++
++	ret = fit_open_image(&handle, NULL, imgname, &outdata, &outsize);
++out:
++	__fit_close(&handle);
++
++	return 0;
++}
++fuzz_test("fit", fuzz_fit);
+diff --git a/images/Makefile.sandbox b/images/Makefile.sandbox
+index 87963e2f432f..b235a1195a7f 100644
+--- a/images/Makefile.sandbox
++++ b/images/Makefile.sandbox
+@@ -4,6 +4,7 @@ SYMLINK_TARGET_barebox = sandbox_main.elf
+ symlink-$(CONFIG_SANDBOX) += barebox
  
-diff --git a/common/boards/configs/libfuzzer.config b/common/boards/configs/libfuzzer.config
-new file mode 100644
-index 000000000000..df03beac0ec8
---- /dev/null
-+++ b/common/boards/configs/libfuzzer.config
-@@ -0,0 +1,14 @@
-+CONFIG_BOOTM_FITIMAGE=y
-+CONFIG_PRINTF_FULL=y
-+CONFIG_BUG_ON_DATA_CORRUPTION=y
-+CONFIG_UBSAN=y
-+CONFIG_UBSAN_NO_ALIGNMENT=y
-+CONFIG_ASAN=y
-+CONFIG_FORTIFY_SOURCE=y
-+CONFIG_HWRNG=y
-+CONFIG_HWRNG_DEV_RANDOM=y
-+CONFIG_STACKPROTECTOR_STRONG=y
-+CONFIG_TEST=y
-+CONFIG_FUZZ=y
-+CONFIG_FUZZ_EXTERNAL=y
-+CONFIG_CMD_FUZZ=y
+ fuzzer-$(CONFIG_FILETYPE)	+= filetype
++fuzzer-$(CONFIG_FITIMAGE)	+= fit
+ fuzzer-$(CONFIG_OFTREE)		+= dtb
+ fuzzer-$(CONFIG_OFTREE)		+= fdt-compatible
+ fuzzer-$(CONFIG_PARTITION)	+= partitions
 -- 
 2.39.5
 
