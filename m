@@ -1,74 +1,74 @@
-Delivery-date: Thu, 05 Jun 2025 15:13:40 +0200
+Delivery-date: Thu, 05 Jun 2025 15:13:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNAPc-0041Mj-1W
+	id 1uNAPd-0041N6-10
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 15:13:40 +0200
+	Thu, 05 Jun 2025 15:13:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNAPW-0000xB-JG
-	for lore@pengutronix.de; Thu, 05 Jun 2025 15:13:40 +0200
+	id 1uNAPX-0000xQ-0A
+	for lore@pengutronix.de; Thu, 05 Jun 2025 15:13:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cCU9MkL9Spo/Xjg9naWWMX+qMnsS+RdPnmN6vZz1gFo=; b=VOnpA8kJrXnKC4uDpfdRn7bcJm
-	iigk+UIPi2bFFsRHRIeJTtAhKH4Sg6HIa5W78LI34dTb43F80OtSGgl9NU8FqzBiZw2/aCwUpJM3A
-	93dSvXOmTirGMeT15QDpiuNmXmsEnSMK/r/8VK9n4+XQ76/n+GEpAOgFAdlwcEr7uC/tL5HbUAsXC
-	hwh0ovPxOKJN+5VLBe7SGhFeV5zSna4uz8hAFViWhh3WReWggpxtNUlNlS7xpNAZEeyrPha2bVc3g
-	x6hKx2J0mmWXbYaf6iF7P7v+QN6GavQsbVmP7XuVOnE8A6M6BVc31IF+Uh03FpXIyiKweT+AzyIzP
-	wun14Mdg==;
+	bh=CQM+9jFXg1zhV/4v9F3eLxD2RtM22OwB7FMkKTy+3dI=; b=Tp9CZbcIDpmiPWXr+9aFTJz7sT
+	hPvi3eMAarZ0QanO4KC45hmx6pAwhlffuMD+yLKnp8IlvPQxcGOGP7lZkctgiTVpP1TlvyppL56vS
+	qcN/77D/zX9afykDqlavFpqziF9h75lABOgIGU1rDFNa9uwH/s9Hx7R9+ukYAj65+Sby5NVokDU0s
+	sFLUZZRPtySIMK95UNzyVr5ZkZi7gnAQX5E6r190qI0Ke7hlLBX+cbZNBtvlvQ5k83dGoXMJ39J5t
+	6NL7RxuT+wvrF0eJg0ldmT+kf3RJVXm8QLq/caTaBOZi+7I8hR42wCiRN13YyHUworzgoRjcjlDfn
+	VWJUoLXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNAOu-0000000FZCm-2njF;
-	Thu, 05 Jun 2025 13:12:56 +0000
+	id 1uNAOs-0000000FZBR-1EG1;
+	Thu, 05 Jun 2025 13:12:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNAFE-0000000FXqA-1SOd
+	id 1uNAFD-0000000FXq5-426L
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 13:02:59 +0000
+	Thu, 05 Jun 2025 13:02:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uNAFD-00011I-8J; Thu, 05 Jun 2025 15:02:55 +0200
+	id 1uNAFC-00010F-Rq; Thu, 05 Jun 2025 15:02:54 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uNAFD-001xjI-0C;
-	Thu, 05 Jun 2025 15:02:55 +0200
+	id 1uNAFC-001xj2-2B;
+	Thu, 05 Jun 2025 15:02:54 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uN9vS-0024bQ-1u;
+	id 1uN9vS-0024bQ-1x;
 	Thu, 05 Jun 2025 14:42:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 05 Jun 2025 14:42:55 +0200
+Date: Thu, 05 Jun 2025 14:42:58 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250605-arm-k3-am62l-v2-30-53257d4b2dd2@pengutronix.de>
+Message-Id: <20250605-arm-k3-am62l-v2-33-53257d4b2dd2@pengutronix.de>
 References: <20250605-arm-k3-am62l-v2-0-53257d4b2dd2@pengutronix.de>
 In-Reply-To: <20250605-arm-k3-am62l-v2-0-53257d4b2dd2@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749127350; l=8199;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749127350; l=5072;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=cSsV+2R3/+Hh72nnWT8KgGZ4bQvPe6PYahZqICuRDiw=;
- b=t9fPizwC8ce92Fgaf1VAv4CbhhfuPr2LLCM75Mery02wAr5l2Z9Ax7Akok5gB6AGbxNjn7Fvu
- 8xpFUSd5UqyCbewRFWt7JeW2o20fP4nToA9MMeXkJ3RsTo171Qs6iN5
+ bh=stEX1CKHXivyKsOSj+ez6oQS+jJMrbvk+/6tX/+9rsI=;
+ b=3+kFZLpXNsQKC3dxXW3g3IeMs/FOpAE6Hil36aWrrXKG96843h6Kyt9khAajevF7YTbeedHEV
+ bKit2KdnO6+DAZkh9mNpkn5J9YbPky/soZZN2bXHO10UfLSuKTOqWie
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_060256_549532_51F77337 
-X-CRM114-Status: GOOD (  14.66  )
+X-CRM114-CacheID: sfid-20250605_060256_012021_7440753A 
+X-CRM114-Status: GOOD (  21.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,215 +90,131 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 30/33] ARM: k3: add AM62l3 EVM board support
+Subject: [PATCH v2 33/33] Documentation: boards: k3: add AM62lx
+ documentation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add support for the AM62l3 EVM board [1]. Currently supported are:
-
-- DRAM
-- eMMC
-- SD card
-- Ethernet
-- USB
-
-[1] https://www.ti.com/tool/TMDS62LEVM
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/Makefile              |  1 +
- arch/arm/boards/am62lx-evm/Makefile   |  1 +
- arch/arm/boards/am62lx-evm/lowlevel.c | 37 ++++++++++++++++++++
- arch/arm/dts/Makefile                 |  1 +
- arch/arm/mach-k3/Kconfig              |  6 ++++
- images/Makefile.k3                    | 63 +++++++++++++++++++++++++++++++++--
- 6 files changed, 107 insertions(+), 2 deletions(-)
+ Documentation/boards/ti-k3-am62lx.rst | 79 +++++++++++++++++++++++++++++++++++
+ Documentation/boards/ti-k3.rst        | 23 ++++++++++
+ 2 files changed, 102 insertions(+)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 908497cd8b0509bdca01c9ccfbb1501654051bda..ac1fa74d4c03de7a462746cb93a061017cd2b64d 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_MACH_ADVANTECH_ROM_742X)		+= advantech-mx6/
- obj-$(CONFIG_MACH_AFI_GF)			+= afi-gf/
- obj-$(CONFIG_MACH_ANIMEO_IP)			+= animeo_ip/
- obj-$(CONFIG_MACH_AM625_SK)			+= am625-sk/
-+obj-$(CONFIG_MACH_AM62LX_EVM)			+= am62lx-evm/
- obj-$(CONFIG_MACH_AT91RM9200EK)			+= at91rm9200ek/
- obj-$(CONFIG_MACH_AT91SAM9260EK)		+= at91sam9260ek/
- obj-$(CONFIG_MACH_AT91SAM9261EK)		+= at91sam9261ek/
-diff --git a/arch/arm/boards/am62lx-evm/Makefile b/arch/arm/boards/am62lx-evm/Makefile
+diff --git a/Documentation/boards/ti-k3-am62lx.rst b/Documentation/boards/ti-k3-am62lx.rst
 new file mode 100644
-index 0000000000000000000000000000000000000000..562535d391d66ae2068377967c4c84844cddd380
+index 0000000000000000000000000000000000000000..3cd7a6debf137c4e2eed700e7a570b0a23740f9e
 --- /dev/null
-+++ b/arch/arm/boards/am62lx-evm/Makefile
-@@ -0,0 +1 @@
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/am62lx-evm/lowlevel.c b/arch/arm/boards/am62lx-evm/lowlevel.c
++++ b/Documentation/boards/ti-k3-am62lx.rst
+@@ -0,0 +1,79 @@
++.. _ti_k3_am62lx:
++
++TI K3 AM62lx based boards
++=========================
++
++The TI AM62lx is SoC in the line of TI K3 64-bit ARM SoCs.
++
++The boot process of the TI AM62x SoCs is a two step process. The first stage boot loader
++is loaded by the ROM code and executed on the Cortex-A53 processor. This stage contains
++some firmware files and a BL1 which is responsible for setting up the initial clocks,
++power domains and DRAM. When this is done the BL1 branches back to the ROM which loads
++the second stage which contains the TF-A BL31, barebox proper and optionally OP-TEE.
++
++Building TF-A
++-------------
++
++The Arm Trusted Firmware is built from https://github.com/ARM-software/arm-trusted-firmware.git::
++
++  make CROSS_COMPILE=$CROSS_COMPILE_64 ARCH=aarch64 PLAT=k3 SPD=opteed \
++        TARGET_BOARD=am62l
++  cp build/k3/am62l/release/bl1.bin $BAREBOX_SOURCE/firmware/am62lx-bl1.bin
++  cp build/k3/am62l/release/bl31.bin $BAREBOX_SOURCE/firmware/am62lx-bl31.bin
++
++.. note::
++
++  As time of writing the AM62lx support is not yet supported in upstream TF-A. Build from
++  https://github.com/TexasInstruments/arm-trusted-firmware.git 11.00.11 instead.
++
++Bulding OP-TEE
++--------------
++
++OP-TEE is built from https://github.com/OP-TEE/optee_os.git::
++
++  make CROSS_COMPILE64=$CC64 CFG_ARM64_core=y CFG_WITH_SOFTWARE_PRNG=y \
++        PLATFORM=k3-am62lx
++  cp out/arm-plat-k3/core/tee-raw.bin $BAREBOX_SOURCE/firmware/am62lx-bl32.bin
++
++OP-TEE is optional. barebox will continue without OP-TEE when the file
++does not exist. In that case drop the ``SPD=opteed`` option above when building the TF-A
++
++.. note::
++
++  As time of writing the AM62lx OP-TEE support has not yet landed in a release. Use the
++  master branch for building OP-TEE
++
++Building barebox
++----------------
++
++The am62lx images are built as part of the ``multi_v8_defconfig``::
++
++  export ARCH=arm CROSS_COMPILE=CROSS_COMPILE_64
++  make multi_v8_defconfig
++  make
++  cp images/barebox-am62lx-evm-tiboot3.img $TI_BOOT/tiboot3.bin
++  cp images/barebox-am62lx-evm.img $TI_BOOT/tispl.bin
++
++USB DFU boot
++------------
++K3 Boards can be booted via USB DFU. When in USB boot mode the initial stage can be uploaded
++using ``dfu-util``::
++
++  dfu-util -D images/barebox-am62lx-evm-tiboot3.img -a 0
++
++This will start the initial stage which then expects the following stage which can
++be uploaded with ``dfu-util`` as well::
++
++  dfu-util -D images/barebox-am62lx-evm.img -a 0
++
++eMMC boot
++---------
++K3 boards can boot from eMMC boot partitions. In this mode the ROM reads the tiboot3.bin
++raw from the active boot partition. In this mode barebox expects the FIP image with the
++following stages in the same boot partition at offset 1MiB. There is a barebox update handler
++which takes a combined image consisting of tiboot3.bin and the FIP image to allow for a
++failsafe update. This image can't be generated by the barebox build system though. It has
++to be generated by a build system or manually::
++
++  dd if=images/barebox-am62lx-evm-tiboot3.img of=barebox-am62lx-evm-emmc.img
++  dd if=images/barebox-am62lx-evm.img of=barebox-am62lx-evm-emmc.img bs=1024 seek=512
+diff --git a/Documentation/boards/ti-k3.rst b/Documentation/boards/ti-k3.rst
 new file mode 100644
-index 0000000000000000000000000000000000000000..c2f5771dcf53fb49f3d7e1cf9fd0e8a93d0323d7
+index 0000000000000000000000000000000000000000..937752e4bb933cf0ec57f8b3411ef930d6737d24
 --- /dev/null
-+++ b/arch/arm/boards/am62lx-evm/lowlevel.c
-@@ -0,0 +1,37 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/Documentation/boards/ti-k3.rst
+@@ -0,0 +1,23 @@
++TI K3 based boards
++==================
 +
-+#include <common.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/k3/debug_ll.h>
-+#include <debug_ll.h>
-+#include <pbl.h>
-+#include <cache.h>
-+#include <pbl/handoff-data.h>
-+#include <compressed-dtb.h>
-+#include <mach/k3/common.h>
++The TI K3 is a line of 64-bit ARM SoCs. The build and boot process differs between the
++different SoC types. This document contains the general prerequisites for all K3 SoCs.
++Refer to the section for the actual SoC type for building and booting barebox.
 +
-+#define SECURE_SIZE 0x600000
++Prerequisites
++-------------
 +
-+static noinline void am62lx_evm_continue(void)
-+{
-+	extern char __dtb_z_k3_am62l3_evm_start[];
++There are several binary blobs required for building barebox for TI K3 SoCs. Find them
++in git://git.ti.com/processor-firmware/ti-linux-firmware.git. The repository is assumed
++to be checked out at ``firmware/ti-linux-firmware``. Alternatively the barebox repository
++has a ti-linux-firmware submodule which checks out at the correct place. The K3 SoCs boot
++from a FAT partition on SD/eMMC cards. During the next steps the files are copied to
++``$TI_BOOT``. This is assumed to be an empty directory. After the build process copy its
++contents to a FAT filesystem on an SD/eMMC card.
 +
-+	pbl_set_putc((void *)debug_ll_ns16550_putc, IOMEM(AM62X_UART_UART0_BASE));
++TI K3 SoC specific documentation
++================================
 +
-+	putc_ll('>');
-+
-+	barebox_arm_entry(0x80000000 + SECURE_SIZE, SZ_2G - SECURE_SIZE, __dtb_z_k3_am62l3_evm_start);
-+}
-+
-+ENTRY_FUNCTION_WITHSTACK(start_am62lx_evm, 0x80800000, r0, r1, r2)
-+{
-+	writel(0x00000000, 0x040841b8);
-+
-+	k3_debug_ll_init(IOMEM(AM62X_UART_UART0_BASE));
-+
-+	relocate_to_current_adr();
-+	setup_c();
-+
-+	am62lx_evm_continue();
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 3044c9bf120f9ece9564164b3fa569f4b7be1881..6612a514523103fdaaae026527f3441ebc57d228 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -7,6 +7,7 @@ obj- += dummy.o
- lwl-$(CONFIG_MACH_ADVANTECH_ROM_742X) += imx6dl-advantech-rom-7421.dtb.o
- lwl-$(CONFIG_MACH_AFI_GF) += am335x-afi-gf.dtb.o
- lwl-$(CONFIG_MACH_AM625_SK) += k3-am625-sk.dtb.o k3-am625-r5-sk.dtb.o k3-am625sip-r5-sk.dtb.o
-+lwl-$(CONFIG_MACH_AM62LX_EVM) += k3-am62l3-evm.dtb.o
- lwl-$(CONFIG_MACH_BEAGLEBONE) += am335x-bone.dtb.o am335x-boneblack.dtb.o am335x-bone-common.dtb.o
- lwl-$(CONFIG_MACH_BEAGLEPLAY) += k3-am625-beagleplay.dtb.o k3-am625-r5-beagleplay.dtb.o
- lwl-$(CONFIG_MACH_CLEP7212) += ep7212-clep7212.dtb.o
-diff --git a/arch/arm/mach-k3/Kconfig b/arch/arm/mach-k3/Kconfig
-index cda44807e8a1db7c2f701309948c7bd1a863d365..338421a8af1715c72a23adc41fb7a21d69091585 100644
---- a/arch/arm/mach-k3/Kconfig
-+++ b/arch/arm/mach-k3/Kconfig
-@@ -46,6 +46,12 @@ config MACH_BEAGLEPLAY
- 	help
- 	  Say Y here if you are using a TI AM62x based BeaglePlay board
- 
-+config MACH_AM62LX_EVM
-+	bool "TI AM62Lx EVM"
-+	select MACH_AM62LX
-+	help
-+	  Say Y here if you are using a TI AM62Lx EVM board
-+
- config ARCH_K3_AUTHENTICATE_IMAGE
- 	bool "Force authentication of FIP image against ROM API"
- 	help
-diff --git a/images/Makefile.k3 b/images/Makefile.k3
-index 12db9c59a96eade62679987aedb9b5433cec3c2f..ed8cdf126a9d4487e3423fcb6959c2d2a1fff3bf 100644
---- a/images/Makefile.k3
-+++ b/images/Makefile.k3
-@@ -17,6 +17,9 @@ image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay.img
- 
- endif
- 
-+KEY_custmpk=$(srctree)/arch/arm/mach-k3/custMpk.pem
-+KEY_degenerate=$(srctree)/arch/arm/mach-k3/ti-degenerate-key.pem
-+
- ifdef CONFIG_MACH_K3_CORTEX_R5
- 
- SYSFWDATA_am625=$(objtree)/arch/arm/mach-k3/combined-sysfw-cfg-am62x.k3cfg
-@@ -24,8 +27,6 @@ DMDATA_am625=$(objtree)/arch/arm/mach-k3/combined-dm-cfg-am62x.k3cfg
- SYSFW_am625_hs_fs=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62x-hs-fs-enc.bin
- SYSFW_am625_gp=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62x-gp.bin
- INNERDATA_am625=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62x-hs-fs-cert.bin
--KEY_custmpk=$(srctree)/arch/arm/mach-k3/custMpk.pem
--KEY_degenerate=$(srctree)/arch/arm/mach-k3/ti-degenerate-key.pem
- 
- ## TI am625(sip)-SK ##
- SYSFW_start_am625_sk_r5.pblb.k3_am62x_img=$(SYSFW_am625_hs_fs)
-@@ -60,6 +61,29 @@ image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay-r5.img
- 
- endif
- 
-+SYSFWDATA_am62lx=$(objtree)/arch/arm/mach-k3/combined-sysfw-cfg-am62l.k3cfg
-+SYSFW_am62lx_hs_fs=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62lx-hs-fs-enc.bin
-+INNERDATA_am62lx=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62lx-hs-fs-cert.bin
-+
-+## TI am62lx-EVM ##
-+SYSFW_start_am62lx_evm.pblb.k3_am62lx_img=$(SYSFW_am62lx_hs_fs)
-+SYSFWDATA_start_am62lx_evm.pblb.k3_am62lx_img=$(SYSFWDATA_am62lx)
-+TFA_start_am62lx_evm.pblb.k3_am62lx_img=$(FIRMWARE_DIR)/am62lx-bl31.bin
-+INNERDATA_start_am62lx_evm.pblb.k3_am62lx_img=$(INNERDATA_am62lx)
-+KEY_start_am62lx_evm.pblb.k3_am62lx_img=$(KEY_custmpk)
-+
-+SYSFW_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(SYSFW_am62lx_hs_fs)
-+SYSFWDATA_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(SYSFWDATA_am62lx)
-+INNERDATA_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(INNERDATA_am62lx)
-+TFA_BL1_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(FIRMWARE_DIR)/am62lx-bl1.bin
-+KEY_start_am62lx_evm.pblb.k3_am62lx_tiboot3_img=$(KEY_custmpk)
-+
-+pblb-$(CONFIG_MACH_AM62LX_EVM) += start_am62lx_evm
-+FILE_barebox-am62lx-evm.img = start_am62lx_evm.pblb.k3_am62lx_img
-+image-$(CONFIG_MACH_AM62LX_EVM) += barebox-am62lx-evm.img barebox-am62lx-evm-tiboot3.img
-+
-+FILE_barebox-am62lx-evm-tiboot3.img = start_am62lx_evm.pblb.k3_am62lx_tiboot3_img
-+
- quiet_cmd_k3_am62x_image = K3_am62x_IMG   $@
-       cmd_k3_am62x_image = \
- 		if [ -n "$(INNERDATA_$(@F))" ]; then				\
-@@ -74,5 +98,40 @@ quiet_cmd_k3_am62x_image = K3_am62x_IMG   $@
- 			$(DMDATA_$(@F)):17:16:0:43c3a800			\
- 			--key $(KEY_$(@F)) --out $@
- 
-+quiet_cmd_k3_am62lx_image = K3_am62lx_IMG   $@
-+      cmd_k3_am62lx_image = \
-+		if [ -n "$(INNERDATA_$(@F))" ]; then				\
-+			inner="$(INNERDATA_$(@F)):3:0:0:00000000";		\
-+		fi;								\
-+										\
-+		if [ -n "$(FIRMWARE_DIR)/am62lx-bl32.bin" ]; then		\
-+			optee=$(FIRMWARE_DIR)/am62lx-bl32.bin:17:16:0:80200000;	\
-+		fi;								\
-+										\
-+		$(srctree)/scripts/k3img					\
-+			$(TFA_$(@F)):1:16:0:80000000				\
-+			$(SYSFW_$(@F)):2:0:0:00040000				\
-+			$(SYSFWDATA_$(@F)):18:0:0:0006c000			\
-+			$$inner							\
-+			$$optee							\
-+			$<:17:16:0:82000000					\
-+			--key $(KEY_$(@F)) --out $@
-+
-+quiet_cmd_k3_am62lx_tiboot3_image = K3_am62lx_tiboot3_IMG   $@
-+      cmd_k3_am62lx_tiboot3_image = \
-+		$(srctree)/scripts/k3img					\
-+			$(TFA_BL1_$(@F)):1:16:160:70800000			\
-+			$(SYSFW_$(@F)):2:0:0:00040000				\
-+			$(SYSFWDATA_$(@F)):18:0:0:0006c000			\
-+			$(INNERDATA_$(@F)):3:0:0:00000000			\
-+			--key $(KEY_$(@F))					\
-+			--out $@
-+
- $(obj)/%.k3_am62x_img: $(obj)/% scripts/k3img FORCE
- 	$(call if_changed,k3_am62x_image)
-+
-+$(obj)/%.k3_am62lx_img: $(obj)/% scripts/k3img FORCE
-+	$(call if_changed,k3_am62lx_image)
-+
-+$(obj)/%.k3_am62lx_tiboot3_img: $(obj)/% scripts/k3img FORCE
-+	$(call if_changed,k3_am62lx_tiboot3_image)
++* :ref:`ti_k3_am62x`
++* :ref:`ti_k3_am62lx`
 
 -- 
 2.39.5
