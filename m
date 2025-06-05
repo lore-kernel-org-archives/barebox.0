@@ -1,56 +1,55 @@
-Delivery-date: Thu, 05 Jun 2025 23:14:56 +0200
+Delivery-date: Thu, 05 Jun 2025 23:15:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHvM-0049Tp-1i
+	id 1uNHvg-0049Ud-11
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 23:14:56 +0200
+	Thu, 05 Jun 2025 23:15:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNHvE-0006No-UO
-	for lore@pengutronix.de; Thu, 05 Jun 2025 23:14:56 +0200
+	id 1uNHvU-0006mO-EC
+	for lore@pengutronix.de; Thu, 05 Jun 2025 23:15:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MSru7eEQ/GzEeZ/3Uw49bUdgDgb2i9BjFVLC1/oPRno=; b=VySwHHGpsL8NndmQ79GInjydBq
-	NxnNLebBn8JykX9lkb2NvZ5MuYKC0v8sPiHv9lUf9S4FRxqfIsos1Ct/GpXYORAJCpiH3ertjlt16
-	wqWyvOotTDQxc1onCE3TE+SK0yMCVRNxQ/AeqhVge7XPL8JgGKd101l0mNOcs/kGS1O9Eo8zqeWXl
-	cmWDMaE/BbJ5/X7KeXe3qq3yJ/iHe10hhHKkBcni3tcpVjwb2cqg6TRS58sawePGMVkOBlZe8TZpW
-	cg+Hl4FYlCq/A/pvU+ZbvzpaIEblYf9ahO56gBA1Nt1SNUNrQnzuo5iQ1LSNVTJ/GUWF+Anm9G91x
-	6oQX/GZw==;
+	bh=LaTJeWH0nYAnvVEjI8ROXV9TOlSdvHVXnq1zM1Fi+yY=; b=SQSYLgZYoD4lWNRz7FfJSCLsFV
+	eqJms3xatoHBlbJ11qknhT9L0jHBNl/EyOkohF4OLfd9kIlrN+5gci/j774GCVkxUcUrtAlVwnzvf
+	iAoMsmYd/3INVhQLxwAhn8l44xavV0NsIzzcQzz17W1xuUFofOKJe2f/OARv3YjJrvHDtEuVE2/s2
+	BR0DDkcXn3eFuEGJpQdv3sgGv/ivd8PcO2Hngv156s/CnWNred5Dxgs6UbGL+UeqwQQumBif9fOuI
+	XVJjED0vt7zpoIt8m7a6X9U5ojKtwOyNFrAbC/+2uTcRSJMpqXavwC8cIaAPCmG0FBhy1t1CtVrXC
+	Cv9oQypw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHuK-0000000Gezo-2M3f;
-	Thu, 05 Jun 2025 21:13:52 +0000
+	id 1uNHuJ-0000000Geyy-3ddZ;
+	Thu, 05 Jun 2025 21:13:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNHoB-0000000GeGt-3i06
+	id 1uNHoB-0000000GeGW-2Wjd
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 21:07:36 +0000
+	Thu, 05 Jun 2025 21:07:35 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNHoA-00079B-JU; Thu, 05 Jun 2025 23:07:30 +0200
+	id 1uNHoA-00079B-9s; Thu, 05 Jun 2025 23:07:30 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu,  5 Jun 2025 23:07:23 +0200
-Message-Id: <20250605210726.1916656-14-a.fatoum@barebox.org>
+Date: Thu,  5 Jun 2025 23:07:22 +0200
+Message-Id: <20250605210726.1916656-13-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605210726.1916656-1-a.fatoum@barebox.org>
 References: <20250605210726.1916656-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_140732_345431_48B5B2D0 
-X-CRM114-Status: GOOD (  26.98  )
+X-CRM114-CacheID: sfid-20250605_140732_153293_DB64450C 
+X-CRM114-Status: GOOD (  34.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,1196 +67,2418 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 13/16] video: add Designware MIPI-DSI support
+Subject: [PATCH 12/16] video: add base MIPI DSI support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Designware MIPI-DSI controller is used on both STM32MP1 and Rockchip
-RK35x both of which already have a display controller supported in
-barebox.
-
-Port the Linux driver in preparation for enabling MIPI-DSI on the
-STM32MP1.
+The generic MIPI DSI support is very straight forward and is mostly
+helper functions to talk with a panel as well as a mipi-dsi bus to
+connect hosts with panels. Import the support from Linux v6.15.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/video/Kconfig       |   10 +
- drivers/video/Makefile      |    1 +
- drivers/video/dw_mipi_dsi.c | 1042 +++++++++++++++++++++++++++++++++++
- include/video/dw_mipi_dsi.h |   81 +++
- 4 files changed, 1134 insertions(+)
- create mode 100644 drivers/video/dw_mipi_dsi.c
- create mode 100644 include/video/dw_mipi_dsi.h
+ drivers/video/Kconfig    |    7 +
+ drivers/video/Makefile   |    1 +
+ drivers/video/mipi_dsi.c | 1730 ++++++++++++++++++++++++++++++++++++++
+ include/video/mipi_dsi.h |  618 ++++++++++++++
+ 4 files changed, 2356 insertions(+)
+ create mode 100644 drivers/video/mipi_dsi.c
+ create mode 100644 include/video/mipi_dsi.h
 
 diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 4ad7cd6b25d4..818ff4a0f1c8 100644
+index ef19948219f3..4ad7cd6b25d4 100644
 --- a/drivers/video/Kconfig
 +++ b/drivers/video/Kconfig
-@@ -215,4 +215,14 @@ config DRIVER_VIDEO_DW_HDMI
- 	  controller. To make use of this driver you need platform specific
- 	  glue code to be selected as well.
+@@ -119,6 +119,13 @@ config DRIVER_VIDEO_EDID
+ config DRIVER_VIDEO_MIPI_DBI
+ 	bool
  
-+config DRIVER_VIDEO_DW_MIPI_DSI
-+	tristate "Designware MIPI-DSI support"
-+	select DRIVER_VIDEO_MIPI_DSI
-+	select VIDEO_VPL
-+	select OFTREE
++config DRIVER_VIDEO_MIPI_DSI
++	bool
 +	help
-+	  Say Y here if you want to enable support for the Designware MIPI-DSI
-+	  controller. To make use of this driver you need platform specific
-+	  glue code to be selected as well.
++	  Support MIPI DSI interface for driving a MIPI compatible device.
++	  The MIPI Display Serial Interface (MIPI DSI) defines a high-speed
++	  serial interface between a host processor and a display module.
 +
- endif
+ config DRIVER_VIDEO_BACKLIGHT
+ 	bool "Add backlight support"
+ 	help
 diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 9a222fb370aa..73d135776102 100644
+index dde1da1bb98b..9a222fb370aa 100644
 --- a/drivers/video/Makefile
 +++ b/drivers/video/Makefile
-@@ -33,5 +33,6 @@ obj-$(CONFIG_DRIVER_VIDEO_EFI_GOP) += efi_gop.o
- obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
- obj-$(CONFIG_BACKLIGHT_RAVE_SP)	+= rave-sp-backlight.o
- obj-$(CONFIG_DRIVER_VIDEO_DW_HDMI) += dw-hdmi.o
-+obj-$(CONFIG_DRIVER_VIDEO_DW_MIPI_DSI) += dw_mipi_dsi.o
- obj-$(CONFIG_DRIVER_VIDEO_BOCHS) += bochs/
- obj-$(CONFIG_DRIVER_VIDEO_ROCKCHIP) += rockchip/
-diff --git a/drivers/video/dw_mipi_dsi.c b/drivers/video/dw_mipi_dsi.c
+@@ -11,6 +11,7 @@ obj-$(CONFIG_DRIVER_VIDEO_MTL017) += mtl017.o
+ obj-$(CONFIG_DRIVER_VIDEO_TC358767) += tc358767.o
+ obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
+ obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
++obj-$(CONFIG_DRIVER_VIDEO_MIPI_DSI) += mipi_dsi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
+diff --git a/drivers/video/mipi_dsi.c b/drivers/video/mipi_dsi.c
 new file mode 100644
-index 000000000000..5205457512f6
+index 000000000000..91dcd5b10fc0
 --- /dev/null
-+++ b/drivers/video/dw_mipi_dsi.c
-@@ -0,0 +1,1042 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/drivers/video/mipi_dsi.c
+@@ -0,0 +1,1730 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright (C) 2016, Fuzhou Rockchip Electronics Co., Ltd
-+ * Copyright (C) 2019, STMicroelectronics - All Rights Reserved
-+ * Author(s): Philippe Cornu <philippe.cornu@st.com> for STMicroelectronics.
-+ *            Yannick Fertre <yannick.fertre@st.com> for STMicroelectronics.
++ * MIPI DSI Bus
 + *
-+ * This generic Synopsys DesignWare MIPI DSI host driver is inspired from
-+ * the Linux Kernel driver drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c.
++ * Copyright (C) 2012-2013, Samsung Electronics, Co., Ltd.
++ * Copyright (C) 2019 STMicroelectronics - All Rights Reserved
++ * Andrzej Hajda <a.hajda@samsung.com>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sub license, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the
++ * next paragraph) shall be included in all copies or substantial portions
++ * of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDERS, AUTHORS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM,
++ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
++ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
++ * USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Mipi_dsi.c contains a set of dsi helpers.
++ * This file is inspired from the drm helper file drivers/gpu/drm/drm_mipi_dsi.c
++ * (kernel linux).
++ *
 + */
 +
-+#include <linux/clk.h>
-+#include <linux/printk.h>
-+#include <errno.h>
-+#include <fb.h>
-+#include <of_graph.h>
-+#include <linux/io.h>
-+#include <linux/bitops.h>
-+#include <clock.h>
-+#include <linux/iopoll.h>
-+#include <linux/time.h>
-+#include <linux/reset.h>
-+#include <video/vpl.h>
-+#include <video/videomode.h>
++#include <video/mipi_display.h>
 +#include <video/mipi_dsi.h>
-+#include <video/dw_mipi_dsi.h>
++#include <linux/export.h>
++#include <of_device.h>
 +
-+#define DRM_DEV_ERROR dev_err
-+#define DRM_DEBUG_DRIVER pr_debug
-+
-+#define HWVER_131			0x31333100	/* IP version 1.31 */
-+
-+#define DSI_VERSION			0x00
-+#define VERSION				GENMASK(31, 8)
-+
-+#define DSI_PWR_UP			0x04
-+#define RESET				0
-+#define POWERUP				BIT(0)
-+
-+#define DSI_CLKMGR_CFG			0x08
-+#define TO_CLK_DIVISION(div)		(((div) & 0xff) << 8)
-+#define TX_ESC_CLK_DIVISION(div)	((div) & 0xff)
-+
-+#define DSI_DPI_VCID			0x0c
-+#define DPI_VCID(vcid)			((vcid) & 0x3)
-+
-+#define DSI_DPI_COLOR_CODING		0x10
-+#define LOOSELY18_EN			BIT(8)
-+#define DPI_COLOR_CODING_16BIT_1	0x0
-+#define DPI_COLOR_CODING_16BIT_2	0x1
-+#define DPI_COLOR_CODING_16BIT_3	0x2
-+#define DPI_COLOR_CODING_18BIT_1	0x3
-+#define DPI_COLOR_CODING_18BIT_2	0x4
-+#define DPI_COLOR_CODING_24BIT		0x5
-+
-+#define DSI_DPI_CFG_POL			0x14
-+#define COLORM_ACTIVE_LOW		BIT(4)
-+#define SHUTD_ACTIVE_LOW		BIT(3)
-+#define HSYNC_ACTIVE_LOW		BIT(2)
-+#define VSYNC_ACTIVE_LOW		BIT(1)
-+#define DATAEN_ACTIVE_LOW		BIT(0)
-+
-+#define DSI_DPI_LP_CMD_TIM		0x18
-+#define OUTVACT_LPCMD_TIME(p)		(((p) & 0xff) << 16)
-+#define INVACT_LPCMD_TIME(p)		((p) & 0xff)
-+
-+#define DSI_DBI_VCID			0x1c
-+#define DSI_DBI_CFG			0x20
-+#define DSI_DBI_PARTITIONING_EN		0x24
-+#define DSI_DBI_CMDSIZE			0x28
-+
-+#define DSI_PCKHDL_CFG			0x2c
-+#define CRC_RX_EN			BIT(4)
-+#define ECC_RX_EN			BIT(3)
-+#define BTA_EN				BIT(2)
-+#define EOTP_RX_EN			BIT(1)
-+#define EOTP_TX_EN			BIT(0)
-+
-+#define DSI_GEN_VCID			0x30
-+
-+#define DSI_MODE_CFG			0x34
-+#define ENABLE_VIDEO_MODE		0
-+#define ENABLE_CMD_MODE			BIT(0)
-+
-+#define DSI_VID_MODE_CFG		0x38
-+#define ENABLE_LOW_POWER		(0x3f << 8)
-+#define ENABLE_LOW_POWER_MASK		(0x3f << 8)
-+#define VID_MODE_TYPE_NON_BURST_SYNC_PULSES	0x0
-+#define VID_MODE_TYPE_NON_BURST_SYNC_EVENTS	0x1
-+#define VID_MODE_TYPE_BURST			0x2
-+#define VID_MODE_TYPE_MASK			0x3
-+#define ENABLE_LOW_POWER_CMD		BIT(15)
-+#define VID_MODE_VPG_ENABLE		BIT(16)
-+#define VID_MODE_VPG_MODE		BIT(20)
-+#define VID_MODE_VPG_HORIZONTAL		BIT(24)
-+
-+#define DSI_VID_PKT_SIZE		0x3c
-+#define VID_PKT_SIZE(p)			((p) & 0x3fff)
-+
-+#define DSI_VID_NUM_CHUNKS		0x40
-+#define VID_NUM_CHUNKS(c)		((c) & 0x1fff)
-+
-+#define DSI_VID_NULL_SIZE		0x44
-+#define VID_NULL_SIZE(b)		((b) & 0x1fff)
-+
-+#define DSI_VID_HSA_TIME		0x48
-+#define DSI_VID_HBP_TIME		0x4c
-+#define DSI_VID_HLINE_TIME		0x50
-+#define DSI_VID_VSA_LINES		0x54
-+#define DSI_VID_VBP_LINES		0x58
-+#define DSI_VID_VFP_LINES		0x5c
-+#define DSI_VID_VACTIVE_LINES		0x60
-+#define DSI_EDPI_CMD_SIZE		0x64
-+
-+#define DSI_CMD_MODE_CFG		0x68
-+#define MAX_RD_PKT_SIZE_LP		BIT(24)
-+#define DCS_LW_TX_LP			BIT(19)
-+#define DCS_SR_0P_TX_LP			BIT(18)
-+#define DCS_SW_1P_TX_LP			BIT(17)
-+#define DCS_SW_0P_TX_LP			BIT(16)
-+#define GEN_LW_TX_LP			BIT(14)
-+#define GEN_SR_2P_TX_LP			BIT(13)
-+#define GEN_SR_1P_TX_LP			BIT(12)
-+#define GEN_SR_0P_TX_LP			BIT(11)
-+#define GEN_SW_2P_TX_LP			BIT(10)
-+#define GEN_SW_1P_TX_LP			BIT(9)
-+#define GEN_SW_0P_TX_LP			BIT(8)
-+#define ACK_RQST_EN			BIT(1)
-+#define TEAR_FX_EN			BIT(0)
-+
-+#define CMD_MODE_ALL_LP			(MAX_RD_PKT_SIZE_LP | \
-+					 DCS_LW_TX_LP | \
-+					 DCS_SR_0P_TX_LP | \
-+					 DCS_SW_1P_TX_LP | \
-+					 DCS_SW_0P_TX_LP | \
-+					 GEN_LW_TX_LP | \
-+					 GEN_SR_2P_TX_LP | \
-+					 GEN_SR_1P_TX_LP | \
-+					 GEN_SR_0P_TX_LP | \
-+					 GEN_SW_2P_TX_LP | \
-+					 GEN_SW_1P_TX_LP | \
-+					 GEN_SW_0P_TX_LP)
-+
-+#define DSI_GEN_HDR			0x6c
-+#define DSI_GEN_PLD_DATA		0x70
-+
-+#define DSI_CMD_PKT_STATUS		0x74
-+#define GEN_RD_CMD_BUSY			BIT(6)
-+#define GEN_PLD_R_FULL			BIT(5)
-+#define GEN_PLD_R_EMPTY			BIT(4)
-+#define GEN_PLD_W_FULL			BIT(3)
-+#define GEN_PLD_W_EMPTY			BIT(2)
-+#define GEN_CMD_FULL			BIT(1)
-+#define GEN_CMD_EMPTY			BIT(0)
-+
-+#define DSI_TO_CNT_CFG			0x78
-+#define HSTX_TO_CNT(p)			(((p) & 0xffff) << 16)
-+#define LPRX_TO_CNT(p)			((p) & 0xffff)
-+
-+#define DSI_HS_RD_TO_CNT		0x7c
-+#define DSI_LP_RD_TO_CNT		0x80
-+#define DSI_HS_WR_TO_CNT		0x84
-+#define DSI_LP_WR_TO_CNT		0x88
-+#define DSI_BTA_TO_CNT			0x8c
-+
-+#define DSI_LPCLK_CTRL			0x94
-+#define AUTO_CLKLANE_CTRL		BIT(1)
-+#define PHY_TXREQUESTCLKHS		BIT(0)
-+
-+#define DSI_PHY_TMR_LPCLK_CFG		0x98
-+#define PHY_CLKHS2LP_TIME(lbcc)		(((lbcc) & 0x3ff) << 16)
-+#define PHY_CLKLP2HS_TIME(lbcc)		((lbcc) & 0x3ff)
-+
-+#define DSI_PHY_TMR_CFG			0x9c
-+#define PHY_HS2LP_TIME(lbcc)		(((lbcc) & 0xff) << 24)
-+#define PHY_LP2HS_TIME(lbcc)		(((lbcc) & 0xff) << 16)
-+#define MAX_RD_TIME(lbcc)		((lbcc) & 0x7fff)
-+#define PHY_HS2LP_TIME_V131(lbcc)	(((lbcc) & 0x3ff) << 16)
-+#define PHY_LP2HS_TIME_V131(lbcc)	((lbcc) & 0x3ff)
-+
-+#define DSI_PHY_RSTZ			0xa0
-+#define PHY_DISFORCEPLL			0
-+#define PHY_ENFORCEPLL			BIT(3)
-+#define PHY_DISABLECLK			0
-+#define PHY_ENABLECLK			BIT(2)
-+#define PHY_RSTZ			0
-+#define PHY_UNRSTZ			BIT(1)
-+#define PHY_SHUTDOWNZ			0
-+#define PHY_UNSHUTDOWNZ			BIT(0)
-+
-+#define DSI_PHY_IF_CFG			0xa4
-+#define PHY_STOP_WAIT_TIME(cycle)	(((cycle) & 0xff) << 8)
-+#define N_LANES(n)			(((n) - 1) & 0x3)
-+
-+#define DSI_PHY_ULPS_CTRL		0xa8
-+#define DSI_PHY_TX_TRIGGERS		0xac
-+
-+#define DSI_PHY_STATUS			0xb0
-+#define PHY_STOP_STATE_CLK_LANE		BIT(2)
-+#define PHY_LOCK			BIT(0)
-+
-+#define DSI_PHY_TST_CTRL0		0xb4
-+#define PHY_TESTCLK			BIT(1)
-+#define PHY_UNTESTCLK			0
-+#define PHY_TESTCLR			BIT(0)
-+#define PHY_UNTESTCLR			0
-+
-+#define DSI_PHY_TST_CTRL1		0xb8
-+#define PHY_TESTEN			BIT(16)
-+#define PHY_UNTESTEN			0
-+#define PHY_TESTDOUT(n)			(((n) & 0xff) << 8)
-+#define PHY_TESTDIN(n)			((n) & 0xff)
-+
-+#define DSI_INT_ST0			0xbc
-+#define DSI_INT_ST1			0xc0
-+#define DSI_INT_MSK0			0xc4
-+#define DSI_INT_MSK1			0xc8
-+
-+#define DSI_PHY_TMR_RD_CFG		0xf4
-+#define MAX_RD_TIME_V131(lbcc)		((lbcc) & 0x7fff)
-+
-+#define PHY_STATUS_TIMEOUT_US		10000
-+#define CMD_PKT_STATUS_TIMEOUT_US	20000
-+
-+enum vpg_mode {
-+	VPG_DISABLED,
-+	VPG_BER,
-+	VPG_COLORS_V,
-+	VPG_COLORS_H,
-+};
-+
-+struct dw_mipi_dsi {
-+	struct mipi_dsi_host dsi_host;
-+	struct device *dev;
-+	void __iomem *base;
-+	struct vpl vpl;
-+	struct vpl_bridge *panel_bridge;
-+
-+	struct clk *pclk;
-+
-+	unsigned int lane_mbps; /* per lane */
-+	u32 channel;
-+	u32 lanes;
-+	u32 format;
-+	unsigned long mode_flags;
-+	struct fb_videomode *mode;
-+
-+	int vpg_mode;
-+
-+	const struct dw_mipi_dsi_plat_data *plat_data;
-+};
-+
-+/*
-+ * The controller should generate 2 frames before
-+ * preparing the peripheral.
++/**
++ * DOC: dsi helpers
++ *
++ * These functions contain some common logic and helpers to deal with MIPI DSI
++ * peripherals.
++ *
++ * Helpers are provided for a number of standard MIPI DSI command as well as a
++ * subset of the MIPI DCS command set.
 + */
-+static void dw_mipi_dsi_wait_for_two_frames(const struct drm_display_mode *mode)
++
++static int mipi_dsi_device_match(struct device *dev, const struct device_driver *drv)
 +{
-+	int refresh, two_frames;
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
 +
-+	refresh = drm_mode_vrefresh(mode);
-+	two_frames = DIV_ROUND_UP(MSEC_PER_SEC, refresh) * 2;
-+	mdelay(two_frames);
-+}
++	/* attempt OF style match */
++	if (of_driver_match_device(dev, drv))
++		return 1;
 +
-+static inline struct dw_mipi_dsi *host_to_dsi(struct mipi_dsi_host *host)
-+{
-+	return container_of(host, struct dw_mipi_dsi, dsi_host);
-+}
-+
-+static inline void dsi_write(struct dw_mipi_dsi *dsi, u32 reg, u32 val)
-+{
-+	writel(val, dsi->base + reg);
-+}
-+
-+static inline u32 dsi_read(struct dw_mipi_dsi *dsi, u32 reg)
-+{
-+	return readl(dsi->base + reg);
-+}
-+
-+static int dw_mipi_dsi_host_attach(struct mipi_dsi_host *host,
-+				   struct mipi_dsi_device *device)
-+{
-+	struct dw_mipi_dsi *dsi = host_to_dsi(host);
-+	const struct dw_mipi_dsi_plat_data *pdata = dsi->plat_data;
-+	struct vpl_bridge *bridge;
-+	int ret;
-+
-+	if (device->lanes > dsi->plat_data->max_data_lanes) {
-+		dev_err(dsi->dev, "the number of data lanes(%u) is too many\n",
-+			device->lanes);
-+		return -EINVAL;
-+	}
-+
-+	dsi->lanes = device->lanes;
-+	dsi->channel = device->channel;
-+	dsi->format = device->format;
-+	dsi->mode_flags = device->mode_flags;
-+
-+	bridge = devm_vpl_of_get_bridge(dsi->dev, dsi->dev->of_node, 1, 0);
-+	if (IS_ERR(bridge))
-+		return PTR_ERR(bridge);
-+
-+	dsi->panel_bridge = bridge;
-+
-+	if (pdata->host_ops && pdata->host_ops->attach) {
-+		ret = pdata->host_ops->attach(pdata->priv_data, device);
-+		if (ret < 0)
-+			return ret;
-+	}
++	/* compare DSI device and driver names */
++	if (!strcmp(dsi->name, drv->name))
++		return 1;
 +
 +	return 0;
 +}
 +
-+static void dw_mipi_message_config(struct dw_mipi_dsi *dsi,
-+				   const struct mipi_dsi_msg *msg)
-+{
-+	bool lpm = msg->flags & MIPI_DSI_MSG_USE_LPM;
-+	u32 val = 0;
-+
-+	/*
-+	 * TODO dw drv improvements
-+	 * largest packet sizes during hfp or during vsa/vpb/vfp
-+	 * should be computed according to byte lane, lane number and only
-+	 * if sending lp cmds in high speed is enable (PHY_TXREQUESTCLKHS)
-+	 */
-+	dsi_write(dsi, DSI_DPI_LP_CMD_TIM, OUTVACT_LPCMD_TIME(16)
-+		  | INVACT_LPCMD_TIME(4));
-+
-+	if (msg->flags & MIPI_DSI_MSG_REQ_ACK)
-+		val |= ACK_RQST_EN;
-+	if (lpm)
-+		val |= CMD_MODE_ALL_LP;
-+
-+	dsi_write(dsi, DSI_CMD_MODE_CFG, val);
-+
-+	val = dsi_read(dsi, DSI_VID_MODE_CFG);
-+	if (lpm)
-+		val |= ENABLE_LOW_POWER_CMD;
-+	else
-+		val &= ~ENABLE_LOW_POWER_CMD;
-+	dsi_write(dsi, DSI_VID_MODE_CFG, val);
-+}
-+
-+static int dw_mipi_dsi_gen_pkt_hdr_write(struct dw_mipi_dsi *dsi, u32 hdr_val)
-+{
-+	int ret;
-+	u32 val, mask;
-+
-+	ret = readl_poll_timeout(dsi->base + DSI_CMD_PKT_STATUS,
-+				 val, !(val & GEN_CMD_FULL),
-+				 CMD_PKT_STATUS_TIMEOUT_US);
-+	if (ret) {
-+		dev_err(dsi->dev, "failed to get available command FIFO\n");
-+		return ret;
-+	}
-+
-+	dsi_write(dsi, DSI_GEN_HDR, hdr_val);
-+
-+	mask = GEN_CMD_EMPTY | GEN_PLD_W_EMPTY;
-+	ret = readl_poll_timeout(dsi->base + DSI_CMD_PKT_STATUS,
-+				 val, (val & mask) == mask,
-+				 CMD_PKT_STATUS_TIMEOUT_US);
-+	if (ret) {
-+		dev_err(dsi->dev, "failed to write command FIFO\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int dw_mipi_dsi_write(struct dw_mipi_dsi *dsi,
-+			     const struct mipi_dsi_packet *packet)
-+{
-+	const u8 *tx_buf = packet->payload;
-+	int len = packet->payload_length, pld_data_bytes = sizeof(u32), ret;
-+	__le32 word;
-+	u32 val;
-+
-+	while (len) {
-+		if (len < pld_data_bytes) {
-+			word = 0;
-+			memcpy(&word, tx_buf, len);
-+			dsi_write(dsi, DSI_GEN_PLD_DATA, le32_to_cpu(word));
-+			len = 0;
-+		} else {
-+			memcpy(&word, tx_buf, pld_data_bytes);
-+			dsi_write(dsi, DSI_GEN_PLD_DATA, le32_to_cpu(word));
-+			tx_buf += pld_data_bytes;
-+			len -= pld_data_bytes;
-+		}
-+
-+		ret = readl_poll_timeout(dsi->base + DSI_CMD_PKT_STATUS,
-+					 val, !(val & GEN_PLD_W_FULL),
-+					 CMD_PKT_STATUS_TIMEOUT_US);
-+		if (ret) {
-+			dev_err(dsi->dev,
-+				"failed to get available write payload FIFO\n");
-+			return ret;
-+		}
-+	}
-+
-+	word = 0;
-+	memcpy(&word, packet->header, sizeof(packet->header));
-+	return dw_mipi_dsi_gen_pkt_hdr_write(dsi, le32_to_cpu(word));
-+}
-+
-+static int dw_mipi_dsi_read(struct dw_mipi_dsi *dsi,
-+			    const struct mipi_dsi_msg *msg)
-+{
-+	int i, j, ret, len = msg->rx_len;
-+	u8 *buf = msg->rx_buf;
-+	u32 val;
-+
-+	/* Wait end of the read operation */
-+	ret = readl_poll_timeout(dsi->base + DSI_CMD_PKT_STATUS,
-+				 val, !(val & GEN_RD_CMD_BUSY),
-+				 CMD_PKT_STATUS_TIMEOUT_US);
-+	if (ret) {
-+		dev_err(dsi->dev, "Timeout during read operation\n");
-+		return ret;
-+	}
-+
-+	for (i = 0; i < len; i += 4) {
-+		/* Read fifo must not be empty before all bytes are read */
-+		ret = readl_poll_timeout(dsi->base + DSI_CMD_PKT_STATUS,
-+					 val, !(val & GEN_PLD_R_EMPTY),
-+					 CMD_PKT_STATUS_TIMEOUT_US);
-+		if (ret) {
-+			dev_err(dsi->dev, "Read payload FIFO is empty\n");
-+			return ret;
-+		}
-+
-+		val = dsi_read(dsi, DSI_GEN_PLD_DATA);
-+		for (j = 0; j < 4 && j + i < len; j++)
-+			buf[i + j] = val >> (8 * j);
-+	}
-+
-+	return ret;
-+}
-+
-+static ssize_t dw_mipi_dsi_host_transfer(struct mipi_dsi_host *host,
-+					 const struct mipi_dsi_msg *msg)
-+{
-+	struct dw_mipi_dsi *dsi = host_to_dsi(host);
-+	struct mipi_dsi_packet packet;
-+	int ret, nb_bytes;
-+
-+	ret = mipi_dsi_create_packet(&packet, msg);
-+	if (ret) {
-+		dev_err(dsi->dev, "failed to create packet: %d\n", ret);
-+		return ret;
-+	}
-+
-+	dw_mipi_message_config(dsi, msg);
-+
-+	ret = dw_mipi_dsi_write(dsi, &packet);
-+	if (ret)
-+		return ret;
-+
-+	if (msg->rx_buf && msg->rx_len) {
-+		ret = dw_mipi_dsi_read(dsi, msg);
-+		if (ret)
-+			return ret;
-+		nb_bytes = msg->rx_len;
-+	} else {
-+		nb_bytes = packet.size;
-+	}
-+
-+	return nb_bytes;
-+}
-+
-+static const struct mipi_dsi_host_ops dw_mipi_dsi_host_ops = {
-+	.attach = dw_mipi_dsi_host_attach,
-+	.transfer = dw_mipi_dsi_host_transfer,
++struct bus_type mipi_dsi_bus_type = {
++	.name = "mipi-dsi",
++	.match = mipi_dsi_device_match,
 +};
 +
-+static void vpg_update(struct dw_mipi_dsi *dsi, u32 *val)
++/**
++ * of_find_mipi_dsi_device_by_node() - find the MIPI DSI device matching a
++ *    device tree node
++ * @np: device tree node
++ *
++ * Return: A pointer to the MIPI DSI device corresponding to @np or NULL if no
++ *    such device exists (or has not been registered yet).
++ */
++struct mipi_dsi_device *of_find_mipi_dsi_device_by_node(struct device_node *np)
 +{
-+	*val &= ~(VID_MODE_VPG_ENABLE | VID_MODE_VPG_HORIZONTAL |
-+		      VID_MODE_VPG_MODE);
++	struct device *dev;
 +
-+	if (dsi->vpg_mode != VPG_DISABLED) {
-+		*val |= VID_MODE_VPG_ENABLE;
-+		*val |= dsi->vpg_mode == VPG_COLORS_H ?
-+			VID_MODE_VPG_HORIZONTAL : 0;
-+		*val |= dsi->vpg_mode == VPG_BER ? VID_MODE_VPG_MODE : 0;
-+	}
++	dev = bus_find_device_by_of_node(&mipi_dsi_bus_type, np);
++
++	return dev ? to_mipi_dsi_device(dev) : NULL;
 +}
++EXPORT_SYMBOL(of_find_mipi_dsi_device_by_node);
 +
-+static void dw_mipi_dsi_video_mode_config(struct dw_mipi_dsi *dsi)
++static struct mipi_dsi_device *mipi_dsi_device_alloc(struct mipi_dsi_host *host)
 +{
-+	u32 val;
-+
-+	/*
-+	 * TODO dw drv improvements
-+	 * enabling low power is panel-dependent, we should use the
-+	 * panel configuration here...
-+	 */
-+	val = ENABLE_LOW_POWER;
-+
-+	if (dsi->mode_flags & MIPI_DSI_MODE_VIDEO_BURST)
-+		val |= VID_MODE_TYPE_BURST;
-+	else if (dsi->mode_flags & MIPI_DSI_MODE_VIDEO_SYNC_PULSE)
-+		val |= VID_MODE_TYPE_NON_BURST_SYNC_PULSES;
-+	else
-+		val |= VID_MODE_TYPE_NON_BURST_SYNC_EVENTS;
-+
-+	vpg_update(dsi, &val);
-+
-+	dsi_write(dsi, DSI_VID_MODE_CFG, val);
-+}
-+
-+static void dw_mipi_dsi_set_mode(struct dw_mipi_dsi *dsi,
-+				 unsigned long mode_flags)
-+{
-+	u32 val;
-+
-+	dsi_write(dsi, DSI_PWR_UP, RESET);
-+
-+	if (mode_flags & MIPI_DSI_MODE_VIDEO) {
-+		dsi_write(dsi, DSI_MODE_CFG, ENABLE_VIDEO_MODE);
-+		dw_mipi_dsi_video_mode_config(dsi);
-+	} else {
-+		dsi_write(dsi, DSI_MODE_CFG, ENABLE_CMD_MODE);
-+	}
-+
-+	val = PHY_TXREQUESTCLKHS;
-+	if (dsi->mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS)
-+		val |= AUTO_CLKLANE_CTRL;
-+	dsi_write(dsi, DSI_LPCLK_CTRL, val);
-+
-+	dsi_write(dsi, DSI_PWR_UP, POWERUP);
-+}
-+
-+static void dw_mipi_dsi_disable(struct dw_mipi_dsi *dsi)
-+{
-+	dsi_write(dsi, DSI_PWR_UP, RESET);
-+	dsi_write(dsi, DSI_PHY_RSTZ, PHY_RSTZ);
-+}
-+
-+static void dw_mipi_dsi_init(struct dw_mipi_dsi *dsi)
-+{
-+	const struct dw_mipi_dsi_phy_ops *phy_ops = dsi->plat_data->phy_ops;
-+	unsigned int esc_rate; /* in MHz */
-+	u32 esc_clk_division;
-+	int ret;
-+
-+	/*
-+	 * The maximum permitted escape clock is 20MHz and it is derived from
-+	 * lanebyteclk, which is running at "lane_mbps / 8".
-+	 */
-+	if (phy_ops->get_esc_clk_rate) {
-+		ret = phy_ops->get_esc_clk_rate(dsi->plat_data->priv_data,
-+						&esc_rate);
-+		if (ret)
-+			DRM_DEBUG_DRIVER("Phy get_esc_clk_rate() failed\n");
-+	} else
-+		esc_rate = 20; /* Default to 20MHz */
-+
-+	/*
-+	 * We want :
-+	 *     (lane_mbps >> 3) / esc_clk_division < X
-+	 * which is:
-+	 *     (lane_mbps >> 3) / X > esc_clk_division
-+	 */
-+	esc_clk_division = (dsi->lane_mbps >> 3) / esc_rate + 1;
-+
-+	dsi_write(dsi, DSI_PWR_UP, RESET);
-+
-+	/*
-+	 * TODO dw drv improvements
-+	 * timeout clock division should be computed with the
-+	 * high speed transmission counter timeout and byte lane...
-+	 */
-+	dsi_write(dsi, DSI_CLKMGR_CFG, TO_CLK_DIVISION(0) |
-+		  TX_ESC_CLK_DIVISION(esc_clk_division));
-+}
-+
-+static void dw_mipi_dsi_dpi_config(struct dw_mipi_dsi *dsi,
-+				   const struct drm_display_mode *mode)
-+{
-+	u32 val = 0, color = 0;
-+
-+	switch (dsi->format) {
-+	case MIPI_DSI_FMT_RGB888:
-+		color = DPI_COLOR_CODING_24BIT;
-+		break;
-+	case MIPI_DSI_FMT_RGB666:
-+		color = DPI_COLOR_CODING_18BIT_2 | LOOSELY18_EN;
-+		break;
-+	case MIPI_DSI_FMT_RGB666_PACKED:
-+		color = DPI_COLOR_CODING_18BIT_1;
-+		break;
-+	case MIPI_DSI_FMT_RGB565:
-+		color = DPI_COLOR_CODING_16BIT_1;
-+		break;
-+	}
-+
-+	if (mode->flags & DRM_MODE_FLAG_NVSYNC)
-+		val |= VSYNC_ACTIVE_LOW;
-+	if (mode->flags & DRM_MODE_FLAG_NHSYNC)
-+		val |= HSYNC_ACTIVE_LOW;
-+
-+	dsi_write(dsi, DSI_DPI_VCID, DPI_VCID(dsi->channel));
-+	dsi_write(dsi, DSI_DPI_COLOR_CODING, color);
-+	dsi_write(dsi, DSI_DPI_CFG_POL, val);
-+}
-+
-+static void dw_mipi_dsi_packet_handler_config(struct dw_mipi_dsi *dsi)
-+{
-+	u32 val = CRC_RX_EN | ECC_RX_EN | BTA_EN | EOTP_TX_EN;
-+
-+	if (dsi->mode_flags & MIPI_DSI_MODE_NO_EOT_PACKET)
-+		val &= ~EOTP_TX_EN;
-+
-+	dsi_write(dsi, DSI_PCKHDL_CFG, val);
-+}
-+
-+static void dw_mipi_dsi_video_packet_config(struct dw_mipi_dsi *dsi,
-+					    const struct drm_display_mode *mode)
-+{
-+	/*
-+	 * TODO dw drv improvements
-+	 * only burst mode is supported here. For non-burst video modes,
-+	 * we should compute DSI_VID_PKT_SIZE, DSI_VCCR.NUMC &
-+	 * DSI_VNPCR.NPSIZE... especially because this driver supports
-+	 * non-burst video modes, see dw_mipi_dsi_video_mode_config()...
-+	 */
-+	dsi_write(dsi, DSI_VID_PKT_SIZE, VID_PKT_SIZE(mode->hdisplay));
-+}
-+
-+static void dw_mipi_dsi_command_mode_config(struct dw_mipi_dsi *dsi)
-+{
-+	/*
-+	 * TODO dw drv improvements
-+	 * compute high speed transmission counter timeout according
-+	 * to the timeout clock division (TO_CLK_DIVISION) and byte lane...
-+	 */
-+	dsi_write(dsi, DSI_TO_CNT_CFG, HSTX_TO_CNT(0) | LPRX_TO_CNT(0));
-+	/*
-+	 * TODO dw drv improvements
-+	 * the Bus-Turn-Around Timeout Counter should be computed
-+	 * according to byte lane...
-+	 */
-+	dsi_write(dsi, DSI_BTA_TO_CNT, 0xd00);
-+	dsi_write(dsi, DSI_MODE_CFG, ENABLE_CMD_MODE);
-+}
-+
-+static const u32 minimum_lbccs[] = {10, 5, 4, 3};
-+
-+static inline u32 dw_mipi_dsi_get_minimum_lbcc(struct dw_mipi_dsi *dsi)
-+{
-+	return minimum_lbccs[dsi->lanes - 1];
-+}
-+
-+/* Get lane byte clock cycles. */
-+static u32 dw_mipi_dsi_get_hcomponent_lbcc(struct dw_mipi_dsi *dsi,
-+					   const struct drm_display_mode *mode,
-+					   u32 hcomponent)
-+{
-+	u32 frac, lbcc, minimum_lbcc;
-+	int bpp;
-+
-+	if (dsi->mode_flags & MIPI_DSI_MODE_VIDEO_BURST) {
-+		/* lbcc based on lane_mbps */
-+		lbcc = hcomponent * dsi->lane_mbps * MSEC_PER_SEC / 8;
-+	} else {
-+		/* lbcc based on pixel clock rate */
-+		bpp = mipi_dsi_pixel_format_to_bpp(dsi->format);
-+		if (bpp < 0) {
-+			dev_err(dsi->dev, "failed to get bpp\n");
-+			return 0;
-+		}
-+
-+		lbcc = div_u64((u64)hcomponent * mode->clock * bpp, dsi->lanes * 8);
-+	}
-+
-+	frac = lbcc % mode->clock;
-+	lbcc = lbcc / mode->clock;
-+	if (frac)
-+		lbcc++;
-+
-+	minimum_lbcc = dw_mipi_dsi_get_minimum_lbcc(dsi);
-+
-+	if (lbcc < minimum_lbcc)
-+		lbcc = minimum_lbcc;
-+
-+	return lbcc;
-+}
-+
-+static void dw_mipi_dsi_line_timer_config(struct dw_mipi_dsi *dsi,
-+					  const struct drm_display_mode *mode)
-+{
-+	u32 htotal, hsa, hbp, lbcc;
-+
-+	htotal = mode->htotal;
-+	hsa = mode->hsync_end - mode->hsync_start;
-+	hbp = mode->htotal - mode->hsync_end;
-+
-+	/*
-+	 * TODO dw drv improvements
-+	 * computations below may be improved...
-+	 */
-+	lbcc = dw_mipi_dsi_get_hcomponent_lbcc(dsi, mode, htotal);
-+	dsi_write(dsi, DSI_VID_HLINE_TIME, lbcc);
-+
-+	lbcc = dw_mipi_dsi_get_hcomponent_lbcc(dsi, mode, hsa);
-+	dsi_write(dsi, DSI_VID_HSA_TIME, lbcc);
-+
-+	lbcc = dw_mipi_dsi_get_hcomponent_lbcc(dsi, mode, hbp);
-+	dsi_write(dsi, DSI_VID_HBP_TIME, lbcc);
-+}
-+
-+static void dw_mipi_dsi_vertical_timing_config(struct dw_mipi_dsi *dsi,
-+					const struct drm_display_mode *mode)
-+{
-+	u32 vactive, vsa, vfp, vbp;
-+
-+	vactive = mode->vdisplay;
-+	vsa = mode->vsync_end - mode->vsync_start;
-+	vfp = mode->vsync_start - mode->vdisplay;
-+	vbp = mode->vtotal - mode->vsync_end;
-+
-+	dsi_write(dsi, DSI_VID_VACTIVE_LINES, vactive);
-+	dsi_write(dsi, DSI_VID_VSA_LINES, vsa);
-+	dsi_write(dsi, DSI_VID_VFP_LINES, vfp);
-+	dsi_write(dsi, DSI_VID_VBP_LINES, vbp);
-+}
-+
-+static void dw_mipi_dsi_dphy_timing_config(struct dw_mipi_dsi *dsi)
-+{
-+	const struct dw_mipi_dsi_phy_ops *phy_ops = dsi->plat_data->phy_ops;
-+	struct dw_mipi_dsi_dphy_timing timing;
-+	u32 hw_version;
-+	int ret;
-+
-+	ret = phy_ops->get_timing(dsi->plat_data->priv_data,
-+				  dsi->lane_mbps, &timing);
-+	if (ret)
-+		DRM_DEV_ERROR(dsi->dev, "Retrieving phy timings failed\n");
-+
-+	/*
-+	 * TODO dw drv improvements
-+	 * data & clock lane timers should be computed according to panel
-+	 * blankings and to the automatic clock lane control mode...
-+	 * note: DSI_PHY_TMR_CFG.MAX_RD_TIME should be in line with
-+	 * DSI_CMD_MODE_CFG.MAX_RD_PKT_SIZE_LP (see CMD_MODE_ALL_LP)
-+	 */
-+
-+	hw_version = dsi_read(dsi, DSI_VERSION) & VERSION;
-+
-+	if (hw_version >= HWVER_131) {
-+		dsi_write(dsi, DSI_PHY_TMR_CFG,
-+			  PHY_HS2LP_TIME_V131(timing.data_hs2lp) |
-+			  PHY_LP2HS_TIME_V131(timing.data_lp2hs));
-+		dsi_write(dsi, DSI_PHY_TMR_RD_CFG, MAX_RD_TIME_V131(10000));
-+	} else {
-+		dsi_write(dsi, DSI_PHY_TMR_CFG,
-+			  PHY_HS2LP_TIME(timing.data_hs2lp) |
-+			  PHY_LP2HS_TIME(timing.data_lp2hs) |
-+			  MAX_RD_TIME(10000));
-+	}
-+
-+	dsi_write(dsi, DSI_PHY_TMR_LPCLK_CFG,
-+		  PHY_CLKHS2LP_TIME(timing.clk_hs2lp) |
-+		  PHY_CLKLP2HS_TIME(timing.clk_lp2hs));
-+}
-+
-+static void dw_mipi_dsi_dphy_interface_config(struct dw_mipi_dsi *dsi)
-+{
-+	/*
-+	 * TODO dw drv improvements
-+	 * stop wait time should be the maximum between host dsi
-+	 * and panel stop wait times
-+	 */
-+	dsi_write(dsi, DSI_PHY_IF_CFG, PHY_STOP_WAIT_TIME(0x20) |
-+		  N_LANES(dsi->lanes));
-+}
-+
-+static void dw_mipi_dsi_dphy_init(struct dw_mipi_dsi *dsi)
-+{
-+	/* Clear PHY state */
-+	dsi_write(dsi, DSI_PHY_RSTZ, PHY_DISFORCEPLL | PHY_DISABLECLK
-+		  | PHY_RSTZ | PHY_SHUTDOWNZ);
-+	dsi_write(dsi, DSI_PHY_TST_CTRL0, PHY_UNTESTCLR);
-+	dsi_write(dsi, DSI_PHY_TST_CTRL0, PHY_TESTCLR);
-+	dsi_write(dsi, DSI_PHY_TST_CTRL0, PHY_UNTESTCLR);
-+}
-+
-+static void dw_mipi_dsi_dphy_enable(struct dw_mipi_dsi *dsi)
-+{
-+	u32 val;
-+	int ret;
-+
-+	dsi_write(dsi, DSI_PHY_RSTZ, PHY_ENFORCEPLL | PHY_ENABLECLK |
-+		  PHY_UNRSTZ | PHY_UNSHUTDOWNZ);
-+
-+	ret = readl_poll_timeout(dsi->base + DSI_PHY_STATUS, val,
-+				 val & PHY_LOCK, PHY_STATUS_TIMEOUT_US);
-+	if (ret)
-+		DRM_DEBUG_DRIVER("failed to wait phy lock state\n");
-+
-+	ret = readl_poll_timeout(dsi->base + DSI_PHY_STATUS,
-+				 val, val & PHY_STOP_STATE_CLK_LANE,
-+				 PHY_STATUS_TIMEOUT_US);
-+	if (ret)
-+		DRM_DEBUG_DRIVER("failed to wait phy clk lane stop state\n");
-+}
-+
-+static void dw_mipi_dsi_clear_err(struct dw_mipi_dsi *dsi)
-+{
-+	dsi_read(dsi, DSI_INT_ST0);
-+	dsi_read(dsi, DSI_INT_ST1);
-+	dsi_write(dsi, DSI_INT_MSK0, 0);
-+	dsi_write(dsi, DSI_INT_MSK1, 0);
-+}
-+
-+static void dw_mipi_dsi_bridge_post_atomic_disable(struct dw_mipi_dsi *dsi)
-+{
-+	const struct dw_mipi_dsi_phy_ops *phy_ops = dsi->plat_data->phy_ops;
-+
-+	/*
-+	 * Switch to command mode before panel-bridge post_disable &
-+	 * panel unprepare.
-+	 * Note: panel-bridge disable & panel disable has been called
-+	 * before by the drm framework.
-+	 */
-+	dw_mipi_dsi_set_mode(dsi, 0);
-+
-+	if (phy_ops->power_off)
-+		phy_ops->power_off(dsi->plat_data->priv_data);
-+
-+	dw_mipi_dsi_disable(dsi);
-+	clk_disable_unprepare(dsi->pclk);
-+}
-+
-+static unsigned int dw_mipi_dsi_get_lanes(struct dw_mipi_dsi *dsi)
-+{
-+	/* only single-dsi supported, so no other instance to consider */
-+	return dsi->lanes;
-+}
-+
-+static void dw_mipi_dsi_mode_set(struct dw_mipi_dsi *dsi,
-+				 const struct drm_display_mode *adjusted_mode)
-+{
-+	const struct dw_mipi_dsi_phy_ops *phy_ops = dsi->plat_data->phy_ops;
-+	void *priv_data = dsi->plat_data->priv_data;
-+	int ret;
-+	u32 lanes = dw_mipi_dsi_get_lanes(dsi);
-+
-+	clk_prepare_enable(dsi->pclk);
-+
-+	ret = phy_ops->get_lane_mbps(priv_data, adjusted_mode, dsi->mode_flags,
-+				     lanes, dsi->format, &dsi->lane_mbps);
-+	if (ret)
-+		DRM_DEBUG_DRIVER("Phy get_lane_mbps() failed\n");
-+
-+	dw_mipi_dsi_init(dsi);
-+	dw_mipi_dsi_dpi_config(dsi, adjusted_mode);
-+	dw_mipi_dsi_packet_handler_config(dsi);
-+	dw_mipi_dsi_video_mode_config(dsi);
-+	dw_mipi_dsi_video_packet_config(dsi, adjusted_mode);
-+	dw_mipi_dsi_command_mode_config(dsi);
-+	dw_mipi_dsi_line_timer_config(dsi, adjusted_mode);
-+	dw_mipi_dsi_vertical_timing_config(dsi, adjusted_mode);
-+
-+	dw_mipi_dsi_dphy_init(dsi);
-+	dw_mipi_dsi_dphy_timing_config(dsi);
-+	dw_mipi_dsi_dphy_interface_config(dsi);
-+
-+	dw_mipi_dsi_clear_err(dsi);
-+
-+	ret = phy_ops->init(priv_data);
-+	if (ret)
-+		DRM_DEBUG_DRIVER("Phy init() failed\n");
-+
-+	dw_mipi_dsi_dphy_enable(dsi);
-+
-+	dw_mipi_dsi_wait_for_two_frames(adjusted_mode);
-+
-+	/* Switch to cmd mode for panel-bridge pre_enable & panel prepare */
-+	dw_mipi_dsi_set_mode(dsi, 0);
-+
-+	if (phy_ops->power_on)
-+		phy_ops->power_on(dsi->plat_data->priv_data);
-+}
-+
-+static int vpg_param_set(struct param_d *param, void *data)
-+{
-+	struct dw_mipi_dsi *dsi = data;
-+	u32 mode_cfg;
-+
-+	mode_cfg = dsi_read(dsi, DSI_VID_MODE_CFG);
-+
-+	vpg_update(dsi, &mode_cfg);
-+
-+	dsi_write(dsi, DSI_VID_MODE_CFG, mode_cfg);
-+
-+	return 0;
-+}
-+
-+static int dw_mipi_dsi_ioctl(struct vpl *vpl, unsigned int port,
-+			 unsigned int cmd, void *data)
-+{
-+	struct dw_mipi_dsi *dsi = container_of(vpl, struct dw_mipi_dsi, vpl);
-+	struct drm_display_mode mode = {};
-+
-+	switch (cmd) {
-+	case VPL_ENABLE:
-+		/* Switch to video mode for panel-bridge enable & panel enable */
-+		dw_mipi_dsi_set_mode(dsi, MIPI_DSI_MODE_VIDEO);
-+		break;
-+	case VPL_DISABLE:
-+		dw_mipi_dsi_bridge_post_atomic_disable(dsi);
-+		break;
-+	case VPL_PREPARE:
-+		/*
-+		 * We store this to simplify debugging by allowing:
-+		 *   vpl->ioctl(vpl, output_port, VPL_DISABLE, NULL);
-+		 *   vpl->ioctl(vpl, output_port, VPL_PREPARE, NULL);
-+		 * to possibly get an already enabled display back into command mode.
-+		 */
-+		if (data)
-+			dsi->mode = data;
-+		if (!dsi->mode)
-+			return -EINVAL;
-+		fb_videomode_to_drm_display_mode(dsi->mode, &mode);
-+		dw_mipi_dsi_mode_set(dsi, &mode);
-+		break;
-+	}
-+
-+	/* Probes should have occured by now */
-+	WARN_ON(!dsi->panel_bridge);
-+
-+	return vpl_bridge_ioctl(dsi->panel_bridge, cmd, data);
-+}
-+
-+static const char *vpg_modes[] = {
-+	[VPG_DISABLED]	= "disabled",
-+	[VPG_BER]	= "ber",
-+	[VPG_COLORS_V]	= "colors",
-+	[VPG_COLORS_H]	= "colors-horizontal",
-+};
-+
-+static struct dw_mipi_dsi *
-+dw_mipi_dsi_probe(struct device *dev,
-+		  const struct dw_mipi_dsi_plat_data *plat_data)
-+{
-+	struct dw_mipi_dsi *dsi;
-+	struct reset_control *apb_rst;
-+	struct resource *iores;
-+	int ret;
-+
-+	dsi = xzalloc(sizeof(*dsi));
-+
-+	dsi->dev = dev;
-+	dsi->plat_data = plat_data;
-+
-+	if (!plat_data->phy_ops->init || !plat_data->phy_ops->get_lane_mbps ||
-+	    !plat_data->phy_ops->get_timing) {
-+		dev_err(dev, "Phy not properly configured\n");
-+		return ERR_PTR(-ENODEV);
-+	}
-+
-+	if (!plat_data->base) {
-+		iores = dev_request_mem_resource(dev, 0);
-+		if (IS_ERR(iores))
-+			return ERR_CAST(iores);
-+		dsi->base = IOMEM(iores->start);
-+	} else {
-+		dsi->base = plat_data->base;
-+	}
-+
-+	dsi->pclk = clk_get(dev, "pclk");
-+	if (IS_ERR(dsi->pclk))
-+		return dev_err_cast_probe(dev, dsi->pclk,
-+					  "Unable to get pclk\n");
-+
-+	/*
-+	 * Note that the reset was not defined in the initial device tree, so
-+	 * we have to be prepared for it not being found.
-+	 */
-+	apb_rst = reset_control_get_optional(dev, "apb");
-+	if (IS_ERR(apb_rst))
-+		return dev_err_cast_probe(dev, apb_rst,
-+					  "Unable to get reset control\n");
-+
-+	if (apb_rst) {
-+		ret = clk_prepare_enable(dsi->pclk);
-+		if (ret) {
-+			dev_err(dev, "%s: Failed to enable pclk\n", __func__);
-+			return ERR_PTR(ret);
-+		}
-+
-+		reset_control_assert(apb_rst);
-+		udelay(10);
-+		reset_control_deassert(apb_rst);
-+
-+		clk_disable_unprepare(dsi->pclk);
-+	}
-+
-+	dsi->vpl.node = dev->device_node;
-+	dsi->vpl.ioctl = dw_mipi_dsi_ioctl;
-+	ret = vpl_register(&dsi->vpl);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	dsi->dsi_host.ops = &dw_mipi_dsi_host_ops;
-+	dsi->dsi_host.dev = dev;
-+	ret = mipi_dsi_host_register(&dsi->dsi_host);
-+	if (ret)
-+		return dev_err_ptr_probe(dev, ret,
-+				     "Failed to register MIPI host\n");
-+
-+	/* Expose Video Pattern Generator for debug purposes */
-+	dev_add_param_enum(dev, "vpg", vpg_param_set, NULL,
-+			   &dsi->vpg_mode, vpg_modes,
-+			   ARRAY_SIZE(vpg_modes), dsi);
++	struct mipi_dsi_device *dsi;
++
++	dsi = calloc(sizeof(*dsi), 1);
++	if (!dsi)
++		return ERR_PTR(-ENOMEM);
++
++	dsi->host = host;
++	dsi->dev.bus = &mipi_dsi_bus_type;
++	dsi->dev.parent = host->dev;
 +
 +	return dsi;
 +}
 +
-+struct dw_mipi_dsi *dw_mipi_dsi_bind(struct device *dev,
-+				     const struct dw_mipi_dsi_plat_data *plat_data)
++static int mipi_dsi_device_add(struct mipi_dsi_device *dsi)
 +{
-+	return dw_mipi_dsi_probe(dev, plat_data);
-+}
-+EXPORT_SYMBOL_GPL(dw_mipi_dsi_bind);
++	dsi->dev.id = DEVICE_ID_SINGLE;
++	dev_set_name(&dsi->dev, "%s", dsi->name);
 +
-+struct device_node *dw_mipi_dsi_crtc_node(struct dw_mipi_dsi *dsi)
++	return register_device(&dsi->dev);
++}
++
++#if IS_ENABLED(CONFIG_OF)
++static struct mipi_dsi_device *
++of_mipi_dsi_device_add(struct mipi_dsi_host *host, struct device_node *node)
 +{
-+	return dsi->dsi_host.dev->of_node;
++	struct mipi_dsi_device_info info = { };
++	int ret;
++	u32 reg;
++
++	if (of_alias_from_compatible(node, info.type, sizeof(info.type)) < 0) {
++		dev_err(host->dev, "modalias failure on %pOF\n", node);
++		return ERR_PTR(-EINVAL);
++	}
++
++	ret = of_property_read_u32(node, "reg", &reg);
++	if (ret) {
++		dev_err(host->dev, "device node %pOF has no valid reg property: %d\n",
++			node, ret);
++		return ERR_PTR(-EINVAL);
++	}
++
++	info.channel = reg;
++	info.node = of_node_get(node);
++
++	return mipi_dsi_device_register_full(host, &info);
 +}
-+EXPORT_SYMBOL_GPL(dw_mipi_dsi_crtc_node);
-+
-+MODULE_AUTHOR("Chris Zhong <zyw@rock-chips.com>");
-+MODULE_AUTHOR("Philippe Cornu <philippe.cornu@st.com>");
-+MODULE_AUTHOR("Yannick Fertré <yannick.fertre@st.com>");
-+MODULE_DESCRIPTION("DW MIPI DSI host controller driver");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:dw-mipi-dsi");
-diff --git a/include/video/dw_mipi_dsi.h b/include/video/dw_mipi_dsi.h
-new file mode 100644
-index 000000000000..9e8b279bb911
---- /dev/null
-+++ b/include/video/dw_mipi_dsi.h
-@@ -0,0 +1,81 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) STMicroelectronics SA 2017
-+ *
-+ * Authors: Philippe Cornu <philippe.cornu@st.com>
-+ *          Yannick Fertre <yannick.fertre@st.com>
-+ */
-+
-+#ifndef __DW_MIPI_DSI__
-+#define __DW_MIPI_DSI__
-+
-+#include <linux/types.h>
-+#include <linux/compiler.h>
-+
-+#include <video/drm/drm_modes.h>
-+
-+struct drm_display_mode;
-+struct dw_mipi_dsi;
-+struct mipi_dsi_device;
-+struct device;
++#else
++static struct mipi_dsi_device *
++of_mipi_dsi_device_add(struct mipi_dsi_host *host, struct device_node *node)
++{
++	return ERR_PTR(-ENODEV);
++}
++#endif
 +
 +/**
-+ * struct dw_mipi_dsi_dphy_timing - DSI host phy timings
-+ * @data_hs2lp: High Speed to Low Speed Data Transition Time
-+ * @data_lp2hs: Low Speed to High Speed Data Transition Time
-+ * @clk_hs2lp: High Speed to Low Speed Clock Transition Time
-+ * @clk_lp2hs: Low Speed to High Speed Clock Transition Time
++ * mipi_dsi_device_register_full - create a MIPI DSI device
++ * @host: DSI host to which this device is connected
++ * @info: pointer to template containing DSI device information
++ *
++ * Create a MIPI DSI device by using the device information provided by
++ * mipi_dsi_device_info template
++ *
++ * Returns:
++ * A pointer to the newly created MIPI DSI device, or, a pointer encoded
++ * with an error
 + */
-+struct dw_mipi_dsi_dphy_timing {
-+	u16 data_hs2lp;
-+	u16 data_lp2hs;
-+	u16 clk_hs2lp;
-+	u16 clk_lp2hs;
++struct mipi_dsi_device *
++mipi_dsi_device_register_full(struct mipi_dsi_host *host,
++			      const struct mipi_dsi_device_info *info)
++{
++	struct mipi_dsi_device *dsi;
++	int ret;
++
++	if (!info) {
++		dev_err(host->dev, "invalid mipi_dsi_device_info pointer\n");
++		return ERR_PTR(-EINVAL);
++	}
++
++	if (info->channel > 3) {
++		dev_err(host->dev, "invalid virtual channel: %u\n", info->channel);
++		return ERR_PTR(-EINVAL);
++	}
++
++	dsi = mipi_dsi_device_alloc(host);
++	if (IS_ERR(dsi)) {
++		dev_err(host->dev, "failed to allocate DSI device %ld\n",
++			PTR_ERR(dsi));
++		return dsi;
++	}
++
++	dsi->dev.of_node = info->node;
++	dsi->channel = info->channel;
++	strscpy(dsi->name, info->type, sizeof(dsi->name));
++
++	ret = mipi_dsi_device_add(dsi);
++	if (ret) {
++		dev_err(host->dev, "failed to add DSI device %d\n", ret);
++		kfree(dsi);
++		return ERR_PTR(ret);
++	}
++
++	return dsi;
++}
++EXPORT_SYMBOL(mipi_dsi_device_register_full);
++
++static LIST_HEAD(host_list);
++
++/**
++ * of_find_mipi_dsi_host_by_node() - find the MIPI DSI host matching a
++ *				     device tree node
++ * @node: device tree node
++ *
++ * Returns:
++ * A pointer to the MIPI DSI host corresponding to @node or NULL if no
++ * such device exists (or has not been registered yet).
++ */
++struct mipi_dsi_host *of_find_mipi_dsi_host_by_node(struct device_node *node)
++{
++	struct mipi_dsi_host *host;
++
++	list_for_each_entry(host, &host_list, list) {
++		if (host->dev->of_node == node) {
++			return host;
++		}
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL(of_find_mipi_dsi_host_by_node);
++
++int mipi_dsi_host_register(struct mipi_dsi_host *host)
++{
++	struct device_node *node;
++
++	for_each_available_child_of_node(host->dev->of_node, node) {
++		/* skip nodes without reg property */
++		if (!of_property_present(node, "reg"))
++			continue;
++		of_mipi_dsi_device_add(host, node);
++	}
++
++	list_add_tail(&host->list, &host_list);
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_host_register);
++
++/**
++ * mipi_dsi_attach - attach a DSI device to its DSI host
++ * @dsi: DSI peripheral
++ */
++int mipi_dsi_attach(struct mipi_dsi_device *dsi)
++{
++	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
++	int ret;
++
++	if (!ops || !ops->attach)
++		return -ENOSYS;
++
++	ret = ops->attach(dsi->host, dsi);
++	if (ret)
++		return ret;
++
++	dsi->attached = true;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_attach);
++
++/**
++ * mipi_dsi_detach - detach a DSI device from its DSI host
++ * @dsi: DSI peripheral
++ */
++int mipi_dsi_detach(struct mipi_dsi_device *dsi)
++{
++	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
++
++	if (WARN_ON(!dsi->attached))
++		return -EINVAL;
++
++	if (!ops || !ops->detach)
++		return -ENOSYS;
++
++	dsi->attached = false;
++
++	return ops->detach(dsi->host, dsi);
++}
++EXPORT_SYMBOL(mipi_dsi_detach);
++
++/**
++ * mipi_dsi_device_transfer - transfer message to a DSI device
++ * @dsi: DSI peripheral
++ * @msg: message
++ */
++static ssize_t mipi_dsi_device_transfer(struct mipi_dsi_device *dsi,
++					struct mipi_dsi_msg *msg)
++{
++	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
++
++	if (!ops || !ops->transfer)
++		return -ENOSYS;
++
++	if (dsi->mode_flags & MIPI_DSI_MODE_LPM)
++		msg->flags |= MIPI_DSI_MSG_USE_LPM;
++
++	return ops->transfer(dsi->host, msg);
++}
++
++/**
++ * mipi_dsi_packet_format_is_short - check if a packet is of the short format
++ * @type: MIPI DSI data type of the packet
++ *
++ * Return: true if the packet for the given data type is a short packet, false
++ * otherwise.
++ */
++bool mipi_dsi_packet_format_is_short(u8 type)
++{
++	switch (type) {
++	case MIPI_DSI_V_SYNC_START:
++	case MIPI_DSI_V_SYNC_END:
++	case MIPI_DSI_H_SYNC_START:
++	case MIPI_DSI_H_SYNC_END:
++	case MIPI_DSI_COMPRESSION_MODE:
++	case MIPI_DSI_END_OF_TRANSMISSION:
++	case MIPI_DSI_COLOR_MODE_OFF:
++	case MIPI_DSI_COLOR_MODE_ON:
++	case MIPI_DSI_SHUTDOWN_PERIPHERAL:
++	case MIPI_DSI_TURN_ON_PERIPHERAL:
++	case MIPI_DSI_GENERIC_SHORT_WRITE_0_PARAM:
++	case MIPI_DSI_GENERIC_SHORT_WRITE_1_PARAM:
++	case MIPI_DSI_GENERIC_SHORT_WRITE_2_PARAM:
++	case MIPI_DSI_GENERIC_READ_REQUEST_0_PARAM:
++	case MIPI_DSI_GENERIC_READ_REQUEST_1_PARAM:
++	case MIPI_DSI_GENERIC_READ_REQUEST_2_PARAM:
++	case MIPI_DSI_DCS_SHORT_WRITE:
++	case MIPI_DSI_DCS_SHORT_WRITE_PARAM:
++	case MIPI_DSI_DCS_READ:
++	case MIPI_DSI_EXECUTE_QUEUE:
++	case MIPI_DSI_SET_MAXIMUM_RETURN_PACKET_SIZE:
++		return true;
++	}
++
++	return false;
++}
++EXPORT_SYMBOL(mipi_dsi_packet_format_is_short);
++
++/**
++ * mipi_dsi_packet_format_is_long - check if a packet is of the long format
++ * @type: MIPI DSI data type of the packet
++ *
++ * Return: true if the packet for the given data type is a long packet, false
++ * otherwise.
++ */
++bool mipi_dsi_packet_format_is_long(u8 type)
++{
++	switch (type) {
++	case MIPI_DSI_NULL_PACKET:
++	case MIPI_DSI_BLANKING_PACKET:
++	case MIPI_DSI_GENERIC_LONG_WRITE:
++	case MIPI_DSI_DCS_LONG_WRITE:
++	case MIPI_DSI_PICTURE_PARAMETER_SET:
++	case MIPI_DSI_COMPRESSED_PIXEL_STREAM:
++	case MIPI_DSI_LOOSELY_PACKED_PIXEL_STREAM_YCBCR20:
++	case MIPI_DSI_PACKED_PIXEL_STREAM_YCBCR24:
++	case MIPI_DSI_PACKED_PIXEL_STREAM_YCBCR16:
++	case MIPI_DSI_PACKED_PIXEL_STREAM_30:
++	case MIPI_DSI_PACKED_PIXEL_STREAM_36:
++	case MIPI_DSI_PACKED_PIXEL_STREAM_YCBCR12:
++	case MIPI_DSI_PACKED_PIXEL_STREAM_16:
++	case MIPI_DSI_PACKED_PIXEL_STREAM_18:
++	case MIPI_DSI_PIXEL_STREAM_3BYTE_18:
++	case MIPI_DSI_PACKED_PIXEL_STREAM_24:
++		return true;
++	}
++
++	return false;
++}
++EXPORT_SYMBOL(mipi_dsi_packet_format_is_long);
++
++/**
++ * mipi_dsi_create_packet - create a packet from a message according to the
++ *     DSI protocol
++ * @packet: pointer to a DSI packet structure
++ * @msg: message to translate into a packet
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_create_packet(struct mipi_dsi_packet *packet,
++			   const struct mipi_dsi_msg *msg)
++{
++	if (!packet || !msg)
++		return -EINVAL;
++
++	/* do some minimum sanity checking */
++	if (!mipi_dsi_packet_format_is_short(msg->type) &&
++	    !mipi_dsi_packet_format_is_long(msg->type))
++		return -EINVAL;
++
++	if (msg->channel > 3)
++		return -EINVAL;
++
++	memset(packet, 0, sizeof(*packet));
++	packet->header[0] = ((msg->channel & 0x3) << 6) | (msg->type & 0x3f);
++
++	/* TODO: compute ECC if hardware support is not available */
++
++	/*
++	 * Long write packets contain the word count in header bytes 1 and 2.
++	 * The payload follows the header and is word count bytes long.
++	 *
++	 * Short write packets encode up to two parameters in header bytes 1
++	 * and 2.
++	 */
++	if (mipi_dsi_packet_format_is_long(msg->type)) {
++		packet->header[1] = (msg->tx_len >> 0) & 0xff;
++		packet->header[2] = (msg->tx_len >> 8) & 0xff;
++
++		packet->payload_length = msg->tx_len;
++		packet->payload = msg->tx_buf;
++	} else {
++		const u8 *tx = msg->tx_buf;
++
++		packet->header[1] = (msg->tx_len > 0) ? tx[0] : 0;
++		packet->header[2] = (msg->tx_len > 1) ? tx[1] : 0;
++	}
++
++	packet->size = sizeof(packet->header) + packet->payload_length;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_create_packet);
++
++/**
++ * mipi_dsi_shutdown_peripheral() - sends a Shutdown Peripheral command
++ * @dsi: DSI peripheral device
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_shutdown_peripheral(struct mipi_dsi_device *dsi)
++{
++	struct mipi_dsi_msg msg = {
++		.channel = dsi->channel,
++		.type = MIPI_DSI_SHUTDOWN_PERIPHERAL,
++		.tx_buf = (u8 [2]) { 0, 0 },
++		.tx_len = 2,
++	};
++	int ret = mipi_dsi_device_transfer(dsi, &msg);
++
++	return (ret < 0) ? ret : 0;
++}
++EXPORT_SYMBOL(mipi_dsi_shutdown_peripheral);
++
++/**
++ * mipi_dsi_turn_on_peripheral() - sends a Turn On Peripheral command
++ * @dsi: DSI peripheral device
++ *
++ * This function is deprecated. Use mipi_dsi_turn_on_peripheral_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_turn_on_peripheral(struct mipi_dsi_device *dsi)
++{
++	struct mipi_dsi_msg msg = {
++		.channel = dsi->channel,
++		.type = MIPI_DSI_TURN_ON_PERIPHERAL,
++		.tx_buf = (u8 [2]) { 0, 0 },
++		.tx_len = 2,
++	};
++	int ret = mipi_dsi_device_transfer(dsi, &msg);
++
++	return (ret < 0) ? ret : 0;
++}
++EXPORT_SYMBOL(mipi_dsi_turn_on_peripheral);
++
++/*
++ * mipi_dsi_set_maximum_return_packet_size() - specify the maximum size of
++ *    the payload in a long packet transmitted from the peripheral back to the
++ *    host processor
++ * @dsi: DSI peripheral device
++ * @value: the maximum size of the payload
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_set_maximum_return_packet_size(struct mipi_dsi_device *dsi,
++					    u16 value)
++{
++	u8 tx[2] = { value & 0xff, value >> 8 };
++	struct mipi_dsi_msg msg = {
++		.channel = dsi->channel,
++		.type = MIPI_DSI_SET_MAXIMUM_RETURN_PACKET_SIZE,
++		.tx_len = sizeof(tx),
++		.tx_buf = tx,
++	};
++	int ret = mipi_dsi_device_transfer(dsi, &msg);
++
++	return (ret < 0) ? ret : 0;
++}
++EXPORT_SYMBOL(mipi_dsi_set_maximum_return_packet_size);
++
++/**
++ * mipi_dsi_compression_mode_ext() - enable/disable DSC on the peripheral
++ * @dsi: DSI peripheral device
++ * @enable: Whether to enable or disable the DSC
++ * @algo: Selected compression algorithm
++ * @pps_selector: Select PPS from the table of pre-stored or uploaded PPS entries
++ *
++ * Enable or disable Display Stream Compression on the peripheral.
++ * This function is deprecated. Use mipi_dsi_compression_mode_ext_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_compression_mode_ext(struct mipi_dsi_device *dsi, bool enable,
++				  enum mipi_dsi_compression_algo algo,
++				  unsigned int pps_selector)
++{
++	u8 tx[2] = { };
++	struct mipi_dsi_msg msg = {
++		.channel = dsi->channel,
++		.type = MIPI_DSI_COMPRESSION_MODE,
++		.tx_len = sizeof(tx),
++		.tx_buf = tx,
++	};
++	int ret;
++
++	if (algo > 3 || pps_selector > 3)
++		return -EINVAL;
++
++	tx[0] = (enable << 0) |
++		(algo << 1) |
++		(pps_selector << 4);
++
++	ret = mipi_dsi_device_transfer(dsi, &msg);
++
++	return (ret < 0) ? ret : 0;
++}
++EXPORT_SYMBOL(mipi_dsi_compression_mode_ext);
++
++/**
++ * mipi_dsi_compression_mode() - enable/disable DSC on the peripheral
++ * @dsi: DSI peripheral device
++ * @enable: Whether to enable or disable the DSC
++ *
++ * Enable or disable Display Stream Compression on the peripheral using the
++ * default Picture Parameter Set and VESA DSC 1.1 algorithm.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable)
++{
++	return mipi_dsi_compression_mode_ext(dsi, enable, MIPI_DSI_COMPRESSION_DSC, 0);
++}
++EXPORT_SYMBOL(mipi_dsi_compression_mode);
++
++/**
++ * mipi_dsi_generic_write() - transmit data using a generic write packet
++ * @dsi: DSI peripheral device
++ * @payload: buffer containing the payload
++ * @size: size of payload buffer
++ *
++ * This function will automatically choose the right data type depending on
++ * the payload length.
++ *
++ * Return: The number of bytes transmitted on success or a negative error code
++ * on failure.
++ */
++ssize_t mipi_dsi_generic_write(struct mipi_dsi_device *dsi, const void *payload,
++			       size_t size)
++{
++	struct mipi_dsi_msg msg = {
++		.channel = dsi->channel,
++		.tx_buf = payload,
++		.tx_len = size
++	};
++
++	switch (size) {
++	case 0:
++		msg.type = MIPI_DSI_GENERIC_SHORT_WRITE_0_PARAM;
++		break;
++
++	case 1:
++		msg.type = MIPI_DSI_GENERIC_SHORT_WRITE_1_PARAM;
++		break;
++
++	case 2:
++		msg.type = MIPI_DSI_GENERIC_SHORT_WRITE_2_PARAM;
++		break;
++
++	default:
++		msg.type = MIPI_DSI_GENERIC_LONG_WRITE;
++		break;
++	}
++
++	return mipi_dsi_device_transfer(dsi, &msg);
++}
++EXPORT_SYMBOL(mipi_dsi_generic_write);
++
++/**
++ * mipi_dsi_generic_write_chatty() - mipi_dsi_generic_write() w/ an error log
++ * @dsi: DSI peripheral device
++ * @payload: buffer containing the payload
++ * @size: size of payload buffer
++ *
++ * Like mipi_dsi_generic_write() but includes a dev_err()
++ * call for you and returns 0 upon success, not the number of bytes sent.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_generic_write_chatty(struct mipi_dsi_device *dsi,
++				  const void *payload, size_t size)
++{
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	ret = mipi_dsi_generic_write(dsi, payload, size);
++	if (ret < 0) {
++		dev_err(dev, "sending generic data %*ph failed: %zd\n",
++			(int)size, payload, ret);
++		return ret;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_generic_write_chatty);
++
++/**
++ * mipi_dsi_generic_write_multi() - mipi_dsi_generic_write_chatty() w/ accum_err
++ * @ctx: Context for multiple DSI transactions
++ * @payload: buffer containing the payload
++ * @size: size of payload buffer
++ *
++ * Like mipi_dsi_generic_write_chatty() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_generic_write_multi(struct mipi_dsi_multi_context *ctx,
++				  const void *payload, size_t size)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_generic_write(dsi, payload, size);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending generic data %*ph failed: %d\n",
++			(int)size, payload, ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_generic_write_multi);
++
++/**
++ * mipi_dsi_generic_read() - receive data using a generic read packet
++ * @dsi: DSI peripheral device
++ * @params: buffer containing the request parameters
++ * @num_params: number of request parameters
++ * @data: buffer in which to return the received data
++ * @size: size of receive buffer
++ *
++ * This function will automatically choose the right data type depending on
++ * the number of parameters passed in.
++ *
++ * Return: The number of bytes successfully read or a negative error code on
++ * failure.
++ */
++ssize_t mipi_dsi_generic_read(struct mipi_dsi_device *dsi, const void *params,
++			      size_t num_params, void *data, size_t size)
++{
++	struct mipi_dsi_msg msg = {
++		.channel = dsi->channel,
++		.tx_len = num_params,
++		.tx_buf = params,
++		.rx_len = size,
++		.rx_buf = data
++	};
++
++	switch (num_params) {
++	case 0:
++		msg.type = MIPI_DSI_GENERIC_READ_REQUEST_0_PARAM;
++		break;
++
++	case 1:
++		msg.type = MIPI_DSI_GENERIC_READ_REQUEST_1_PARAM;
++		break;
++
++	case 2:
++		msg.type = MIPI_DSI_GENERIC_READ_REQUEST_2_PARAM;
++		break;
++
++	default:
++		return -EINVAL;
++	}
++
++	return mipi_dsi_device_transfer(dsi, &msg);
++}
++EXPORT_SYMBOL(mipi_dsi_generic_read);
++
++/**
++ * mipi_dsi_dcs_write_buffer() - transmit a DCS command with payload
++ * @dsi: DSI peripheral device
++ * @data: buffer containing data to be transmitted
++ * @len: size of transmission buffer
++ *
++ * This function will automatically choose the right data type depending on
++ * the command payload length.
++ *
++ * Return: The number of bytes successfully transmitted or a negative error
++ * code on failure.
++ */
++ssize_t mipi_dsi_dcs_write_buffer(struct mipi_dsi_device *dsi,
++				  const void *data, size_t len)
++{
++	struct mipi_dsi_msg msg = {
++		.channel = dsi->channel,
++		.tx_buf = data,
++		.tx_len = len
++	};
++
++	switch (len) {
++	case 0:
++		return -EINVAL;
++
++	case 1:
++		msg.type = MIPI_DSI_DCS_SHORT_WRITE;
++		break;
++
++	case 2:
++		msg.type = MIPI_DSI_DCS_SHORT_WRITE_PARAM;
++		break;
++
++	default:
++		msg.type = MIPI_DSI_DCS_LONG_WRITE;
++		break;
++	}
++
++	return mipi_dsi_device_transfer(dsi, &msg);
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_write_buffer);
++
++/**
++ * mipi_dsi_dcs_write_buffer_chatty - mipi_dsi_dcs_write_buffer() w/ an error log
++ * @dsi: DSI peripheral device
++ * @data: buffer containing data to be transmitted
++ * @len: size of transmission buffer
++ *
++ * Like mipi_dsi_dcs_write_buffer() but includes a dev_err()
++ * call for you and returns 0 upon success, not the number of bytes sent.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_write_buffer_chatty(struct mipi_dsi_device *dsi,
++				     const void *data, size_t len)
++{
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	ret = mipi_dsi_dcs_write_buffer(dsi, data, len);
++	if (ret < 0) {
++		dev_err(dev, "sending dcs data %*ph failed: %zd\n",
++			(int)len, data, ret);
++		return ret;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_write_buffer_chatty);
++
++/**
++ * mipi_dsi_dcs_write_buffer_multi - mipi_dsi_dcs_write_buffer_chatty() w/ accum_err
++ * @ctx: Context for multiple DSI transactions
++ * @data: buffer containing data to be transmitted
++ * @len: size of transmission buffer
++ *
++ * Like mipi_dsi_dcs_write_buffer_chatty() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_write_buffer_multi(struct mipi_dsi_multi_context *ctx,
++				     const void *data, size_t len)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_write_buffer(dsi, data, len);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending dcs data %*ph failed: %d\n",
++			(int)len, data, ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_write_buffer_multi);
++
++/**
++ * mipi_dsi_dcs_write() - send DCS write command
++ * @dsi: DSI peripheral device
++ * @cmd: DCS command
++ * @data: buffer containing the command payload
++ * @len: command payload length
++ *
++ * This function will automatically choose the right data type depending on
++ * the command payload length.
++ *
++ * Return: The number of bytes successfully transmitted or a negative error
++ * code on failure.
++ */
++ssize_t mipi_dsi_dcs_write(struct mipi_dsi_device *dsi, u8 cmd,
++			   const void *data, size_t len)
++{
++	ssize_t err;
++	size_t size;
++	u8 stack_tx[8];
++	u8 *tx;
++
++	size = 1 + len;
++	if (len > ARRAY_SIZE(stack_tx) - 1) {
++		tx = kmalloc(size, GFP_KERNEL);
++		if (!tx)
++			return -ENOMEM;
++	} else {
++		tx = stack_tx;
++	}
++
++	/* concatenate the DCS command byte and the payload */
++	tx[0] = cmd;
++	if (data)
++		memcpy(&tx[1], data, len);
++
++	err = mipi_dsi_dcs_write_buffer(dsi, tx, size);
++
++	if (tx != stack_tx)
++		kfree(tx);
++
++	return err;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_write);
++
++/**
++ * mipi_dsi_dcs_read() - send DCS read request command
++ * @dsi: DSI peripheral device
++ * @cmd: DCS command
++ * @data: buffer in which to receive data
++ * @len: size of receive buffer
++ *
++ * Return: The number of bytes read or a negative error code on failure.
++ */
++ssize_t mipi_dsi_dcs_read(struct mipi_dsi_device *dsi, u8 cmd, void *data,
++			  size_t len)
++{
++	struct mipi_dsi_msg msg = {
++		.channel = dsi->channel,
++		.type = MIPI_DSI_DCS_READ,
++		.tx_buf = &cmd,
++		.tx_len = 1,
++		.rx_buf = data,
++		.rx_len = len
++	};
++
++	return mipi_dsi_device_transfer(dsi, &msg);
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_read);
++
++/**
++ * mipi_dsi_dcs_nop() - send DCS nop packet
++ * @dsi: DSI peripheral device
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_nop_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_nop(struct mipi_dsi_device *dsi)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_NOP, NULL, 0);
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_nop);
++
++/**
++ * mipi_dsi_dcs_soft_reset() - perform a software reset of the display module
++ * @dsi: DSI peripheral device
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_soft_reset_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_soft_reset(struct mipi_dsi_device *dsi)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SOFT_RESET, NULL, 0);
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_soft_reset);
++
++/**
++ * mipi_dsi_dcs_get_power_mode() - query the display module's current power
++ *    mode
++ * @dsi: DSI peripheral device
++ * @mode: return location for the current power mode
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_get_power_mode(struct mipi_dsi_device *dsi, u8 *mode)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_read(dsi, MIPI_DCS_GET_POWER_MODE, mode,
++				sizeof(*mode));
++	if (err <= 0) {
++		if (err == 0)
++			err = -ENODATA;
++
++		return err;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_get_power_mode);
++
++/**
++ * mipi_dsi_dcs_get_pixel_format() - gets the pixel format for the RGB image
++ *    data used by the interface
++ * @dsi: DSI peripheral device
++ * @format: return location for the pixel format
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_get_pixel_format(struct mipi_dsi_device *dsi, u8 *format)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_read(dsi, MIPI_DCS_GET_PIXEL_FORMAT, format,
++				sizeof(*format));
++	if (err <= 0) {
++		if (err == 0)
++			err = -ENODATA;
++
++		return err;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_get_pixel_format);
++
++/**
++ * mipi_dsi_dcs_enter_sleep_mode() - disable all unnecessary blocks inside the
++ *    display module except interface communication
++ * @dsi: DSI peripheral device
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_enter_sleep_mode_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_enter_sleep_mode(struct mipi_dsi_device *dsi)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_ENTER_SLEEP_MODE, NULL, 0);
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_enter_sleep_mode);
++
++/**
++ * mipi_dsi_dcs_exit_sleep_mode() - enable all blocks inside the display
++ *    module
++ * @dsi: DSI peripheral device
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_exit_sleep_mode_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_exit_sleep_mode(struct mipi_dsi_device *dsi)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_EXIT_SLEEP_MODE, NULL, 0);
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_exit_sleep_mode);
++
++/**
++ * mipi_dsi_dcs_set_display_off() - stop displaying the image data on the
++ *    display device
++ * @dsi: DSI peripheral device
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_set_display_off_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_display_off(struct mipi_dsi_device *dsi)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_DISPLAY_OFF, NULL, 0);
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_display_off);
++
++/**
++ * mipi_dsi_dcs_set_display_on() - start displaying the image data on the
++ *    display device
++ * @dsi: DSI peripheral device
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_set_display_on_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure
++ */
++int mipi_dsi_dcs_set_display_on(struct mipi_dsi_device *dsi)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_DISPLAY_ON, NULL, 0);
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_display_on);
++
++/**
++ * mipi_dsi_dcs_set_column_address() - define the column extent of the frame
++ *    memory accessed by the host processor
++ * @dsi: DSI peripheral device
++ * @start: first column of frame memory
++ * @end: last column of frame memory
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_set_column_address_multi()
++ * instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_column_address(struct mipi_dsi_device *dsi, u16 start,
++				    u16 end)
++{
++	u8 payload[4] = { start >> 8, start & 0xff, end >> 8, end & 0xff };
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_COLUMN_ADDRESS, payload,
++				 sizeof(payload));
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_column_address);
++
++/**
++ * mipi_dsi_dcs_set_page_address() - define the page extent of the frame
++ *    memory accessed by the host processor
++ * @dsi: DSI peripheral device
++ * @start: first page of frame memory
++ * @end: last page of frame memory
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_set_page_address_multi()
++ * instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_page_address(struct mipi_dsi_device *dsi, u16 start,
++				  u16 end)
++{
++	u8 payload[4] = { start >> 8, start & 0xff, end >> 8, end & 0xff };
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_PAGE_ADDRESS, payload,
++				 sizeof(payload));
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_page_address);
++
++/**
++ * mipi_dsi_dcs_set_tear_on() - turn on the display module's Tearing Effect
++ *    output signal on the TE signal line.
++ * @dsi: DSI peripheral device
++ * @mode: the Tearing Effect Output Line mode
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_set_tear_on_multi() instead.
++ *
++ * Return: 0 on success or a negative error code on failure
++ */
++int mipi_dsi_dcs_set_tear_on(struct mipi_dsi_device *dsi,
++			     enum mipi_dsi_dcs_tear_mode mode)
++{
++	u8 value = mode;
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_TEAR_ON, &value,
++				 sizeof(value));
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_on);
++
++/**
++ * mipi_dsi_dcs_set_pixel_format() - sets the pixel format for the RGB image
++ *    data used by the interface
++ * @dsi: DSI peripheral device
++ * @format: pixel format
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_set_pixel_format_multi()
++ * instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_pixel_format(struct mipi_dsi_device *dsi, u8 format)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_PIXEL_FORMAT, &format,
++				 sizeof(format));
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_pixel_format);
++
++/**
++ * mipi_dsi_dcs_set_tear_scanline() - set the scanline to use as trigger for
++ *    the Tearing Effect output signal of the display module
++ * @dsi: DSI peripheral device
++ * @scanline: scanline to use as trigger
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_set_tear_scanline_multi()
++ * instead.
++ *
++ * Return: 0 on success or a negative error code on failure
++ */
++int mipi_dsi_dcs_set_tear_scanline(struct mipi_dsi_device *dsi, u16 scanline)
++{
++	u8 payload[2] = { scanline >> 8, scanline & 0xff };
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_TEAR_SCANLINE, payload,
++				 sizeof(payload));
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_scanline);
++
++/**
++ * mipi_dsi_dcs_set_display_brightness() - sets the brightness value of the
++ *    display
++ * @dsi: DSI peripheral device
++ * @brightness: brightness value
++ *
++ * This function is deprecated. Use mipi_dsi_dcs_set_display_brightness_multi()
++ * instead.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_display_brightness(struct mipi_dsi_device *dsi,
++					u16 brightness)
++{
++	u8 payload[2] = { brightness & 0xff, brightness >> 8 };
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_DISPLAY_BRIGHTNESS,
++				 payload, sizeof(payload));
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_display_brightness);
++
++/**
++ * mipi_dsi_dcs_get_display_brightness() - gets the current brightness value
++ *    of the display
++ * @dsi: DSI peripheral device
++ * @brightness: brightness value
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_get_display_brightness(struct mipi_dsi_device *dsi,
++					u16 *brightness)
++{
++	ssize_t err;
++
++	err = mipi_dsi_dcs_read(dsi, MIPI_DCS_GET_DISPLAY_BRIGHTNESS,
++				brightness, sizeof(*brightness));
++	if (err <= 0) {
++		if (err == 0)
++			err = -ENODATA;
++
++		return err;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_get_display_brightness);
++
++/**
++ * mipi_dsi_dcs_set_display_brightness_large() - sets the 16-bit brightness value
++ *    of the display
++ * @dsi: DSI peripheral device
++ * @brightness: brightness value
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_display_brightness_large(struct mipi_dsi_device *dsi,
++					     u16 brightness)
++{
++	u8 payload[2] = { brightness >> 8, brightness & 0xff };
++	ssize_t err;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_DISPLAY_BRIGHTNESS,
++				 payload, sizeof(payload));
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_display_brightness_large);
++
++/**
++ * mipi_dsi_dcs_get_display_brightness_large() - gets the current 16-bit
++ *    brightness value of the display
++ * @dsi: DSI peripheral device
++ * @brightness: brightness value
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
++					     u16 *brightness)
++{
++	u8 brightness_be[2];
++	ssize_t err;
++
++	err = mipi_dsi_dcs_read(dsi, MIPI_DCS_GET_DISPLAY_BRIGHTNESS,
++				brightness_be, sizeof(brightness_be));
++	if (err <= 0) {
++		if (err == 0)
++			err = -ENODATA;
++
++		return err;
++	}
++
++	*brightness = (brightness_be[0] << 8) | brightness_be[1];
++
++	return 0;
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_get_display_brightness_large);
++
++/**
++ * mipi_dsi_compression_mode_ext_multi() - enable/disable DSC on the peripheral
++ * @ctx: Context for multiple DSI transactions
++ * @enable: Whether to enable or disable the DSC
++ * @algo: Selected compression algorithm
++ * @pps_selector: Select PPS from the table of pre-stored or uploaded PPS entries
++ *
++ * Like mipi_dsi_compression_mode_ext() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_compression_mode_ext_multi(struct mipi_dsi_multi_context *ctx,
++					 bool enable,
++					 enum mipi_dsi_compression_algo algo,
++					 unsigned int pps_selector)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_compression_mode_ext(dsi, enable, algo, pps_selector);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending COMPRESSION_MODE failed: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_compression_mode_ext_multi);
++
++/**
++ * mipi_dsi_compression_mode_multi() - enable/disable DSC on the peripheral
++ * @ctx: Context for multiple DSI transactions
++ * @enable: Whether to enable or disable the DSC
++ *
++ * Enable or disable Display Stream Compression on the peripheral using the
++ * default Picture Parameter Set and VESA DSC 1.1 algorithm.
++ */
++void mipi_dsi_compression_mode_multi(struct mipi_dsi_multi_context *ctx,
++				     bool enable)
++{
++	return mipi_dsi_compression_mode_ext_multi(ctx, enable,
++						   MIPI_DSI_COMPRESSION_DSC, 0);
++}
++EXPORT_SYMBOL(mipi_dsi_compression_mode_multi);
++
++/**
++ * mipi_dsi_dcs_nop_multi() - send DCS NOP packet
++ * @ctx: Context for multiple DSI transactions
++ *
++ * Like mipi_dsi_dcs_nop() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_nop_multi(struct mipi_dsi_multi_context *ctx)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_nop(dsi);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending DCS NOP failed: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_nop_multi);
++
++/**
++ * mipi_dsi_dcs_enter_sleep_mode_multi() - send DCS ENTER_SLEEP_MODE  packet
++ * @ctx: Context for multiple DSI transactions
++ *
++ * Like mipi_dsi_dcs_enter_sleep_mode() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_enter_sleep_mode_multi(struct mipi_dsi_multi_context *ctx)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending DCS ENTER_SLEEP_MODE failed: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_enter_sleep_mode_multi);
++
++/**
++ * mipi_dsi_dcs_exit_sleep_mode_multi() - send DCS EXIT_SLEEP_MODE packet
++ * @ctx: Context for multiple DSI transactions
++ *
++ * Like mipi_dsi_dcs_exit_sleep_mode() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_exit_sleep_mode_multi(struct mipi_dsi_multi_context *ctx)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending DCS EXIT_SLEEP_MODE failed: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_exit_sleep_mode_multi);
++
++/**
++ * mipi_dsi_dcs_set_display_off_multi() - send DCS SET_DISPLAY_OFF packet
++ * @ctx: Context for multiple DSI transactions
++ *
++ * Like mipi_dsi_dcs_set_display_off() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_set_display_off_multi(struct mipi_dsi_multi_context *ctx)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_set_display_off(dsi);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending DCS SET_DISPLAY_OFF failed: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_display_off_multi);
++
++/**
++ * mipi_dsi_dcs_set_display_on_multi() - send DCS SET_DISPLAY_ON packet
++ * @ctx: Context for multiple DSI transactions
++ *
++ * Like mipi_dsi_dcs_set_display_on() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_set_display_on_multi(struct mipi_dsi_multi_context *ctx)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_set_display_on(dsi);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending DCS SET_DISPLAY_ON failed: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_display_on_multi);
++
++/**
++ * mipi_dsi_dcs_set_tear_on_multi() - send DCS SET_TEAR_ON packet
++ * @ctx: Context for multiple DSI transactions
++ * @mode: the Tearing Effect Output Line mode
++ *
++ * Like mipi_dsi_dcs_set_tear_on() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_set_tear_on_multi(struct mipi_dsi_multi_context *ctx,
++				    enum mipi_dsi_dcs_tear_mode mode)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_set_tear_on(dsi, mode);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "sending DCS SET_TEAR_ON failed: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_on_multi);
++
++/**
++ * mipi_dsi_turn_on_peripheral_multi() - sends a Turn On Peripheral command
++ * @ctx: Context for multiple DSI transactions
++ *
++ * Like mipi_dsi_turn_on_peripheral() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_turn_on_peripheral_multi(struct mipi_dsi_multi_context *ctx)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	int ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_turn_on_peripheral(dsi);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "Failed to turn on peripheral: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_turn_on_peripheral_multi);
++
++/**
++ * mipi_dsi_dcs_set_tear_off_multi() - turn off the display module's Tearing Effect
++ *    output signal on the TE signal line
++ * @ctx: Context for multiple DSI transactions
++ */
++void mipi_dsi_dcs_set_tear_off_multi(struct mipi_dsi_multi_context *ctx)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	ssize_t err;
++
++	if (ctx->accum_err)
++		return;
++
++	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_TEAR_OFF, NULL, 0);
++	if (err < 0) {
++		ctx->accum_err = err;
++		dev_err(dev, "Failed to set tear off: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_off_multi);
++
++/**
++ * mipi_dsi_dcs_soft_reset_multi() - perform a software reset of the display module
++ * @ctx: Context for multiple DSI transactions
++ *
++ * Like mipi_dsi_dcs_soft_reset() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_soft_reset_multi(struct mipi_dsi_multi_context *ctx)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	int ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_soft_reset(dsi);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "Failed to mipi_dsi_dcs_soft_reset: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_soft_reset_multi);
++
++/**
++ * mipi_dsi_dcs_set_display_brightness_multi() - sets the brightness value of
++ *	the display
++ * @ctx: Context for multiple DSI transactions
++ * @brightness: brightness value
++ *
++ * Like mipi_dsi_dcs_set_display_brightness() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_set_display_brightness_multi(struct mipi_dsi_multi_context *ctx,
++					       u16 brightness)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	int ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_set_display_brightness(dsi, brightness);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "Failed to write display brightness: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_display_brightness_multi);
++
++/**
++ * mipi_dsi_dcs_set_pixel_format_multi() - sets the pixel format for the RGB image
++ *	data used by the interface
++ * @ctx: Context for multiple DSI transactions
++ * @format: pixel format
++ *
++ * Like mipi_dsi_dcs_set_pixel_format() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_set_pixel_format_multi(struct mipi_dsi_multi_context *ctx,
++					 u8 format)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	int ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_set_pixel_format(dsi, format);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "Failed to set pixel format: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_pixel_format_multi);
++
++/**
++ * mipi_dsi_dcs_set_column_address_multi() - define the column extent of the
++ *	frame memory accessed by the host processor
++ * @ctx: Context for multiple DSI transactions
++ * @start: first column of frame memory
++ * @end: last column of frame memory
++ *
++ * Like mipi_dsi_dcs_set_column_address() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_set_column_address_multi(struct mipi_dsi_multi_context *ctx,
++					   u16 start, u16 end)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	int ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_set_column_address(dsi, start, end);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "Failed to set column address: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_column_address_multi);
++
++/**
++ * mipi_dsi_dcs_set_page_address_multi() - define the page extent of the
++ *	frame memory accessed by the host processor
++ * @ctx: Context for multiple DSI transactions
++ * @start: first page of frame memory
++ * @end: last page of frame memory
++ *
++ * Like mipi_dsi_dcs_set_page_address() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_set_page_address_multi(struct mipi_dsi_multi_context *ctx,
++					 u16 start, u16 end)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	int ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_set_page_address(dsi, start, end);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "Failed to set page address: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_page_address_multi);
++
++/**
++ * mipi_dsi_dcs_set_tear_scanline_multi() - set the scanline to use as trigger for
++ *    the Tearing Effect output signal of the display module
++ * @ctx: Context for multiple DSI transactions
++ * @scanline: scanline to use as trigger
++ *
++ * Like mipi_dsi_dcs_set_tear_scanline() but deals with errors in a way that
++ * makes it convenient to make several calls in a row.
++ */
++void mipi_dsi_dcs_set_tear_scanline_multi(struct mipi_dsi_multi_context *ctx,
++					  u16 scanline)
++{
++	struct mipi_dsi_device *dsi = ctx->dsi;
++	struct device *dev = &dsi->dev;
++	int ret;
++
++	if (ctx->accum_err)
++		return;
++
++	ret = mipi_dsi_dcs_set_tear_scanline(dsi, scanline);
++	if (ret < 0) {
++		ctx->accum_err = ret;
++		dev_err(dev, "Failed to set tear scanline: %d\n",
++			ctx->accum_err);
++	}
++}
++EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_scanline_multi);
++
++static int mipi_dsi_drv_probe(struct device *dev)
++{
++	struct mipi_dsi_driver *drv = to_mipi_dsi_driver(dev->driver);
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
++
++	return drv->probe(dsi);
++}
++
++static void mipi_dsi_drv_remove(struct device *dev)
++{
++	struct mipi_dsi_driver *drv = to_mipi_dsi_driver(dev->driver);
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
++
++	drv->remove(dsi);
++}
++
++/**
++ * mipi_dsi_driver_register() - register a driver for DSI devices
++ * @drv: DSI driver structure
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_driver_register(struct mipi_dsi_driver *drv)
++{
++	drv->driver.bus = &mipi_dsi_bus_type;
++
++	if (drv->probe)
++		drv->driver.probe = mipi_dsi_drv_probe;
++	if (drv->remove)
++		drv->driver.remove = mipi_dsi_drv_remove;
++
++	return driver_register(&drv->driver);
++}
++EXPORT_SYMBOL(mipi_dsi_driver_register_full);
++
++/**
++ * mipi_dsi_driver_unregister() - unregister a driver for DSI devices
++ * @drv: DSI driver structure
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++void mipi_dsi_driver_unregister(struct mipi_dsi_driver *drv)
++{
++	driver_unregister(&drv->driver);
++}
++EXPORT_SYMBOL(mipi_dsi_driver_unregister);
++
++static int __init mipi_dsi_bus_init(void)
++{
++	return bus_register(&mipi_dsi_bus_type);
++}
++postcore_initcall(mipi_dsi_bus_init);
++
++MODULE_AUTHOR("Andrzej Hajda <a.hajda@samsung.com>");
++MODULE_DESCRIPTION("MIPI DSI Bus");
++MODULE_LICENSE("GPL and additional rights");
+diff --git a/include/video/mipi_dsi.h b/include/video/mipi_dsi.h
+new file mode 100644
+index 000000000000..24dadd49b40c
+--- /dev/null
++++ b/include/video/mipi_dsi.h
+@@ -0,0 +1,618 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * MIPI DSI Bus
++ *
++ * Copyright (C) 2012-2013, Samsung Electronics, Co., Ltd.
++ * Copyright (C) 2018 STMicroelectronics - All Rights Reserved
++ * Author(s): Andrzej Hajda <a.hajda@samsung.com>
++ *            Yannick Fertre <yannick.fertre@st.com>
++ *            Philippe Cornu <philippe.cornu@st.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++#ifndef MIPI_DSI_H
++#define MIPI_DSI_H
++
++#include <video/mipi_display.h>
++#include <linux/container_of.h>
++#include <linux/bitops.h>
++#include <linux/device.h>
++#include <linux/errno.h>
++
++struct mipi_dsi_host;
++struct mipi_dsi_device;
++struct drm_display_mode;
++
++/* request ACK from peripheral */
++#define MIPI_DSI_MSG_REQ_ACK	BIT(0)
++/* use Low Power Mode to transmit message */
++#define MIPI_DSI_MSG_USE_LPM	BIT(1)
++
++/**
++ * struct mipi_dsi_msg - read/write DSI buffer
++ * @channel: virtual channel id
++ * @type: payload data type
++ * @flags: flags controlling this message transmission
++ * @tx_len: length of @tx_buf
++ * @tx_buf: data to be written
++ * @rx_len: length of @rx_buf
++ * @rx_buf: data to be read, or NULL
++ */
++struct mipi_dsi_msg {
++	u8 channel;
++	u8 type;
++	u16 flags;
++
++	size_t tx_len;
++	const void *tx_buf;
++
++	size_t rx_len;
++	void *rx_buf;
 +};
 +
-+struct dw_mipi_dsi_phy_ops {
-+	int (*init)(void *priv_data);
-+	void (*power_on)(void *priv_data);
-+	void (*power_off)(void *priv_data);
-+	int (*get_lane_mbps)(void *priv_data,
-+			     const struct drm_display_mode *mode,
-+			     unsigned long mode_flags, u32 lanes, u32 format,
-+			     unsigned int *lane_mbps);
-+	int (*get_timing)(void *priv_data, unsigned int lane_mbps,
-+			  struct dw_mipi_dsi_dphy_timing *timing);
-+	int (*get_esc_clk_rate)(void *priv_data, unsigned int *esc_clk_rate);
++bool mipi_dsi_packet_format_is_short(u8 type);
++bool mipi_dsi_packet_format_is_long(u8 type);
++
++/**
++ * struct mipi_dsi_packet - represents a MIPI DSI packet in protocol format
++ * @size: size (in bytes) of the packet
++ * @header: the four bytes that make up the header (Data ID, Word Count or
++ *     Packet Data, and ECC)
++ * @payload_length: number of bytes in the payload
++ * @payload: a pointer to a buffer containing the payload, if any
++ */
++struct mipi_dsi_packet {
++	size_t size;
++	u8 header[4];
++	size_t payload_length;
++	const u8 *payload;
 +};
 +
-+struct dw_mipi_dsi_host_ops {
-+	int (*attach)(void *priv_data,
++int mipi_dsi_create_packet(struct mipi_dsi_packet *packet,
++			   const struct mipi_dsi_msg *msg);
++
++/**
++ * struct mipi_dsi_host_ops - DSI bus operations
++ * @attach: attach DSI device to DSI host
++ * @detach: detach DSI device from DSI host
++ * @transfer: transmit a DSI packet
++ *
++ * DSI packets transmitted by .transfer() are passed in as mipi_dsi_msg
++ * structures. This structure contains information about the type of packet
++ * being transmitted as well as the transmit and receive buffers. When an
++ * error is encountered during transmission, this function will return a
++ * negative error code. On success it shall return the number of bytes
++ * transmitted for write packets or the number of bytes received for read
++ * packets.
++ *
++ * Note that typically DSI packet transmission is atomic, so the .transfer()
++ * function will seldomly return anything other than the number of bytes
++ * contained in the transmit buffer on success.
++ */
++struct mipi_dsi_host_ops {
++	int (*attach)(struct mipi_dsi_host *host,
 +		      struct mipi_dsi_device *dsi);
-+	int (*detach)(void *priv_data,
++	int (*detach)(struct mipi_dsi_host *host,
 +		      struct mipi_dsi_device *dsi);
++	ssize_t (*transfer)(struct mipi_dsi_host *host,
++			    const struct mipi_dsi_msg *msg);
 +};
 +
-+struct dw_mipi_dsi_plat_data {
-+	void __iomem *base;
-+	unsigned int max_data_lanes;
-+
-+	enum drm_mode_status (*mode_valid)(void *priv_data,
-+					   const struct drm_display_mode *mode,
-+					   unsigned long mode_flags,
-+					   u32 lanes, u32 format);
-+
-+	bool (*mode_fixup)(void *priv_data, const struct drm_display_mode *mode,
-+			   struct drm_display_mode *adjusted_mode);
-+
-+	const struct dw_mipi_dsi_phy_ops *phy_ops;
-+	const struct dw_mipi_dsi_host_ops *host_ops;
-+
-+	void *priv_data;
++/**
++ * struct mipi_dsi_host - DSI host device
++ * @dev: driver model device node for this DSI host
++ * @ops: DSI host operations
++ * @list: list management
++ */
++struct mipi_dsi_host {
++	struct device *dev;
++	const struct mipi_dsi_host_ops *ops;
++	struct list_head list;
 +};
 +
-+struct dw_mipi_dsi *
-+dw_mipi_dsi_bind(struct device *dev,
-+		 const struct dw_mipi_dsi_plat_data *plat_data);
-+static inline void dw_mipi_dsi_unbind(struct dw_mipi_dsi *dsi) { }
++int mipi_dsi_host_register(struct mipi_dsi_host *host);
++struct mipi_dsi_host *of_find_mipi_dsi_host_by_node(struct device_node *node);
 +
-+struct device_node *dw_mipi_dsi_crtc_node(struct dw_mipi_dsi *dsi);
++/* DSI mode flags */
 +
-+#endif /* __DW_MIPI_DSI__ */
++/* video mode */
++#define MIPI_DSI_MODE_VIDEO		BIT(0)
++/* video burst mode */
++#define MIPI_DSI_MODE_VIDEO_BURST	BIT(1)
++/* video pulse mode */
++#define MIPI_DSI_MODE_VIDEO_SYNC_PULSE	BIT(2)
++/* enable auto vertical count mode */
++#define MIPI_DSI_MODE_VIDEO_AUTO_VERT	BIT(3)
++/* enable hsync-end packets in vsync-pulse and v-porch area */
++#define MIPI_DSI_MODE_VIDEO_HSE		BIT(4)
++/* disable hfront-porch area */
++#define MIPI_DSI_MODE_VIDEO_HFP		BIT(5)
++/* disable hback-porch area */
++#define MIPI_DSI_MODE_VIDEO_HBP		BIT(6)
++/* disable hsync-active area */
++#define MIPI_DSI_MODE_VIDEO_HSA		BIT(7)
++/* flush display FIFO on vsync pulse */
++#define MIPI_DSI_MODE_VSYNC_FLUSH	BIT(8)
++/* disable EoT packets in HS mode */
++#define MIPI_DSI_MODE_NO_EOT_PACKET	BIT(9)
++/* device supports non-continuous clock behavior (DSI spec 5.6.1) */
++#define MIPI_DSI_CLOCK_NON_CONTINUOUS	BIT(10)
++/* transmit data in low power */
++#define MIPI_DSI_MODE_LPM		BIT(11)
++
++enum mipi_dsi_pixel_format {
++	MIPI_DSI_FMT_RGB888,
++	MIPI_DSI_FMT_RGB666,
++	MIPI_DSI_FMT_RGB666_PACKED,
++	MIPI_DSI_FMT_RGB565,
++};
++
++#define DSI_DEV_NAME_SIZE		20
++
++/**
++ * struct mipi_dsi_device_info - template for creating a mipi_dsi_device
++ * @type: DSI peripheral chip type
++ * @channel: DSI virtual channel assigned to peripheral
++ * @node: pointer to OF device node or NULL
++ *
++ * This is populated and passed to mipi_dsi_device_new to create a new
++ * DSI device
++ */
++struct mipi_dsi_device_info {
++	char type[DSI_DEV_NAME_SIZE];
++	u32 channel;
++	struct device_node *node;
++};
++
++/**
++ * struct mipi_dsi_device - DSI peripheral device
++ * @host: DSI host for this peripheral
++ * @dev: driver model device node for this peripheral
++ * @attached: the DSI device has been successfully attached
++ * @name: DSI peripheral chip type
++ * @channel: virtual channel assigned to the peripheral
++ * @format: pixel format for video mode
++ * @lanes: number of active data lanes
++ * @mode_flags: DSI operation mode related flags
++ */
++struct mipi_dsi_device {
++	struct mipi_dsi_host *host;
++	struct device dev;
++	bool attached;
++
++	char name[DSI_DEV_NAME_SIZE];
++	unsigned int channel;
++	unsigned int lanes;
++	enum mipi_dsi_pixel_format format;
++	unsigned long mode_flags;
++};
++
++/**
++ * struct mipi_dsi_multi_context - Context to call multiple MIPI DSI funcs in a row
++ */
++struct mipi_dsi_multi_context {
++	/**
++	 * @dsi: Pointer to the MIPI DSI device
++	 */
++	struct mipi_dsi_device *dsi;
++
++	/**
++	 * @accum_err: Storage for the accumulated error over the multiple calls
++	 *
++	 * Init to 0. If a function encounters an error then the error code
++	 * will be stored here. If you call a function and this points to a
++	 * non-zero value then the function will be a noop. This allows calling
++	 * a function many times in a row and just checking the error at the
++	 * end to see if any of them failed.
++	 */
++	int accum_err;
++};
++
++#define to_mipi_dsi_device(__dev)	container_of_const(__dev, struct mipi_dsi_device, dev)
++
++/**
++ * mipi_dsi_pixel_format_to_bpp - obtain the number of bits per pixel for any
++ *                                given pixel format defined by the MIPI DSI
++ *                                specification
++ * @fmt: MIPI DSI pixel format
++ *
++ * Returns: The number of bits per pixel of the given pixel format.
++ */
++static inline int mipi_dsi_pixel_format_to_bpp(enum mipi_dsi_pixel_format fmt)
++{
++	switch (fmt) {
++	case MIPI_DSI_FMT_RGB888:
++	case MIPI_DSI_FMT_RGB666:
++		return 24;
++
++	case MIPI_DSI_FMT_RGB666_PACKED:
++		return 18;
++
++	case MIPI_DSI_FMT_RGB565:
++		return 16;
++	}
++
++	return -EINVAL;
++}
++
++enum mipi_dsi_compression_algo {
++	MIPI_DSI_COMPRESSION_DSC = 0,
++	MIPI_DSI_COMPRESSION_VENDOR = 3,
++	/* other two values are reserved, DSI 1.3 */
++};
++
++struct mipi_dsi_device *
++mipi_dsi_device_register_full(struct mipi_dsi_host *host,
++			      const struct mipi_dsi_device_info *info);
++void mipi_dsi_device_unregister(struct mipi_dsi_device *dsi);
++struct mipi_dsi_device *of_find_mipi_dsi_device_by_node(struct device_node *np);
++
++/**
++ * mipi_dsi_attach - attach a DSI device to its DSI host
++ * @dsi: DSI peripheral
++ */
++int mipi_dsi_attach(struct mipi_dsi_device *dsi);
++
++/**
++ * mipi_dsi_detach - detach a DSI device from its DSI host
++ * @dsi: DSI peripheral
++ */
++int mipi_dsi_detach(struct mipi_dsi_device *dsi);
++int mipi_dsi_shutdown_peripheral(struct mipi_dsi_device *dsi);
++int mipi_dsi_turn_on_peripheral(struct mipi_dsi_device *dsi);
++int mipi_dsi_set_maximum_return_packet_size(struct mipi_dsi_device *dsi,
++					    u16 value);
++
++int mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable);
++int mipi_dsi_compression_mode_ext(struct mipi_dsi_device *dsi, bool enable,
++				  enum mipi_dsi_compression_algo algo,
++				  unsigned int pps_selector);
++
++void mipi_dsi_compression_mode_ext_multi(struct mipi_dsi_multi_context *ctx,
++					 bool enable,
++					 enum mipi_dsi_compression_algo algo,
++					 unsigned int pps_selector);
++void mipi_dsi_compression_mode_multi(struct mipi_dsi_multi_context *ctx,
++				     bool enable);
++
++ssize_t mipi_dsi_generic_write(struct mipi_dsi_device *dsi, const void *payload,
++			       size_t size);
++int mipi_dsi_generic_write_chatty(struct mipi_dsi_device *dsi,
++				  const void *payload, size_t size);
++void mipi_dsi_generic_write_multi(struct mipi_dsi_multi_context *ctx,
++				  const void *payload, size_t size);
++ssize_t mipi_dsi_generic_read(struct mipi_dsi_device *dsi, const void *params,
++			      size_t num_params, void *data, size_t size);
++#define mipi_dsi_mdelay(ctx, delay)	\
++	do {				\
++		if (!(ctx)->accum_err)	\
++			mdelay(delay);	\
++	} while (0)
++
++#define mipi_dsi_udelay_range(ctx, min, max)	\
++	do {					\
++		(void)(max);			\
++		if (!(ctx)->accum_err)		\
++			udelay(min);		\
++	} while (0)
++
++
++
++/**
++ * enum mipi_dsi_dcs_tear_mode - Tearing Effect Output Line mode
++ * @MIPI_DSI_DCS_TEAR_MODE_VBLANK: the TE output line consists of V-Blanking
++ *    information only
++ * @MIPI_DSI_DCS_TEAR_MODE_VHBLANK : the TE output line consists of both
++ *    V-Blanking and H-Blanking information
++ */
++enum mipi_dsi_dcs_tear_mode {
++	MIPI_DSI_DCS_TEAR_MODE_VBLANK,
++	MIPI_DSI_DCS_TEAR_MODE_VHBLANK,
++};
++
++#define MIPI_DSI_DCS_POWER_MODE_DISPLAY BIT(2)
++#define MIPI_DSI_DCS_POWER_MODE_NORMAL  BIT(3)
++#define MIPI_DSI_DCS_POWER_MODE_SLEEP   BIT(4)
++#define MIPI_DSI_DCS_POWER_MODE_PARTIAL BIT(5)
++#define MIPI_DSI_DCS_POWER_MODE_IDLE    BIT(6)
++
++/**
++ * mipi_dsi_dcs_write_buffer() - transmit a DCS command with payload
++ * @dsi: DSI peripheral device
++ * @data: buffer containing data to be transmitted
++ * @len: size of transmission buffer
++ *
++ * This function will automatically choose the right data type depending on
++ * the command payload length.
++ *
++ * Return: The number of bytes successfully transmitted or a negative error
++ * code on failure.
++ */
++ssize_t mipi_dsi_dcs_write_buffer(struct mipi_dsi_device *dsi,
++				  const void *data, size_t len);
++
++int mipi_dsi_dcs_write_buffer_chatty(struct mipi_dsi_device *dsi,
++				     const void *data, size_t len);
++void mipi_dsi_dcs_write_buffer_multi(struct mipi_dsi_multi_context *ctx,
++				     const void *data, size_t len);
++
++/**
++ * mipi_dsi_dcs_write() - send DCS write command
++ * @dsi: DSI peripheral device
++ * @cmd: DCS command
++ * @data: buffer containing the command payload
++ * @len: command payload length
++ *
++ * This function will automatically choose the right data type depending on
++ * the command payload length.
++
++ * code on failure.
++ */
++ssize_t mipi_dsi_dcs_write(struct mipi_dsi_device *dsi, u8 cmd,
++			   const void *data, size_t len);
++
++/**
++ * mipi_dsi_dcs_read() - send DCS read request command
++ * @dsi: DSI peripheral device
++ * @cmd: DCS command
++ * @data: buffer in which to receive data
++ * @len: size of receive buffer
++ *
++ * Return: The number of bytes read or a negative error code on failure.
++ */
++ssize_t mipi_dsi_dcs_read(struct mipi_dsi_device *dsi, u8 cmd, void *data,
++			  size_t len);
++
++/**
++ * mipi_dsi_dcs_nop() - send DCS nop packet
++ * @dsi: DSI peripheral device
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_nop(struct mipi_dsi_device *dsi);
++
++/**
++ * mipi_dsi_dcs_soft_reset() - perform a software reset of the display module
++ * @dsi: DSI peripheral device
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_soft_reset(struct mipi_dsi_device *dsi);
++
++/**
++ * mipi_dsi_dcs_get_power_mode() - query the display module's current power
++ *    mode
++ * @dsi: DSI peripheral device
++ * @mode: return location for the current power mode
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_get_power_mode(struct mipi_dsi_device *dsi, u8 *mode);
++
++/**
++ * mipi_dsi_dcs_get_pixel_format() - gets the pixel format for the RGB image
++ *    data used by the interface
++ * @dsi: DSI peripheral device
++ * @format: return location for the pixel format
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_get_pixel_format(struct mipi_dsi_device *dsi, u8 *format);
++
++/**
++ * mipi_dsi_dcs_enter_sleep_mode() - disable all unnecessary blocks inside the
++ *    display module except interface communication
++ * @dsi: DSI peripheral device
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_enter_sleep_mode(struct mipi_dsi_device *dsi);
++
++/**
++ * mipi_dsi_dcs_exit_sleep_mode() - enable all blocks inside the display
++ *    module
++ * @dsi: DSI peripheral device
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_exit_sleep_mode(struct mipi_dsi_device *dsi);
++
++/**
++ * mipi_dsi_dcs_set_display_off() - stop displaying the image data on the
++ *    display device
++ * @dsi: DSI peripheral device
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_display_off(struct mipi_dsi_device *dsi);
++
++/**
++ * mipi_dsi_dcs_set_display_on() - start displaying the image data on the
++ *    display device
++ * @dsi: DSI peripheral device
++ *
++ * Return: 0 on success or a negative error code on failure
++ */
++int mipi_dsi_dcs_set_display_on(struct mipi_dsi_device *dsi);
++
++/**
++ * mipi_dsi_dcs_set_column_address() - define the column extent of the frame
++ *    memory accessed by the host processor
++ * @dsi: DSI peripheral device
++ * @start: first column of frame memory
++ * @end: last column of frame memory
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_column_address(struct mipi_dsi_device *dsi, u16 start,
++				    u16 end);
++/**
++ * mipi_dsi_dcs_set_page_address() - define the page extent of the frame
++ *    memory accessed by the host processor
++ * @dsi: DSI peripheral device
++ * @start: first page of frame memory
++ * @end: last page of frame memory
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_page_address(struct mipi_dsi_device *dsi, u16 start,
++				  u16 end);
++
++/**
++ * mipi_dsi_dcs_set_tear_off() - turn off the display module's Tearing Effect
++ *    output signal on the TE signal line
++ * @dsi: DSI peripheral device
++ *
++ * Return: 0 on success or a negative error code on failure
++ */
++int mipi_dsi_dcs_set_tear_off(struct mipi_dsi_device *dsi);
++
++/**
++ * mipi_dsi_dcs_set_tear_on() - turn on the display module's Tearing Effect
++ *    output signal on the TE signal line.
++ * @dsi: DSI peripheral device
++ * @mode: the Tearing Effect Output Line mode
++ *
++ * Return: 0 on success or a negative error code on failure
++ */
++int mipi_dsi_dcs_set_tear_on(struct mipi_dsi_device *dsi,
++			     enum mipi_dsi_dcs_tear_mode mode);
++
++/**
++ * mipi_dsi_dcs_set_pixel_format() - sets the pixel format for the RGB image
++ *    data used by the interface
++ * @dsi: DSI peripheral device
++ * @format: pixel format
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_pixel_format(struct mipi_dsi_device *dsi, u8 format);
++
++/**
++ * mipi_dsi_dcs_set_tear_scanline() - set the scanline to use as trigger for
++ *    the Tearing Effect output signal of the display module
++ * @dsi: DSI peripheral device
++ * @scanline: scanline to use as trigger
++ *
++ * Return: 0 on success or a negative error code on failure
++ */
++int mipi_dsi_dcs_set_tear_scanline(struct mipi_dsi_device *dsi, u16 scanline);
++
++/**
++ * mipi_dsi_dcs_set_display_brightness() - sets the brightness value of the
++ *    display
++ * @dsi: DSI peripheral device
++ * @brightness: brightness value
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_set_display_brightness(struct mipi_dsi_device *dsi,
++					u16 brightness);
++
++/**
++ * mipi_dsi_dcs_get_display_brightness() - gets the current brightness value
++ *    of the display
++ * @dsi: DSI peripheral device
++ * @brightness: brightness value
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int mipi_dsi_dcs_get_display_brightness(struct mipi_dsi_device *dsi,
++					u16 *brightness);
++int mipi_dsi_dcs_set_display_brightness_large(struct mipi_dsi_device *dsi,
++					     u16 brightness);
++int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
++					     u16 *brightness);
++
++void mipi_dsi_dcs_nop_multi(struct mipi_dsi_multi_context *ctx);
++void mipi_dsi_dcs_enter_sleep_mode_multi(struct mipi_dsi_multi_context *ctx);
++void mipi_dsi_dcs_exit_sleep_mode_multi(struct mipi_dsi_multi_context *ctx);
++void mipi_dsi_dcs_set_display_off_multi(struct mipi_dsi_multi_context *ctx);
++void mipi_dsi_dcs_set_display_on_multi(struct mipi_dsi_multi_context *ctx);
++void mipi_dsi_dcs_set_tear_on_multi(struct mipi_dsi_multi_context *ctx,
++				    enum mipi_dsi_dcs_tear_mode mode);
++void mipi_dsi_turn_on_peripheral_multi(struct mipi_dsi_multi_context *ctx);
++void mipi_dsi_dcs_soft_reset_multi(struct mipi_dsi_multi_context *ctx);
++void mipi_dsi_dcs_set_display_brightness_multi(struct mipi_dsi_multi_context *ctx,
++					       u16 brightness);
++void mipi_dsi_dcs_set_pixel_format_multi(struct mipi_dsi_multi_context *ctx,
++					 u8 format);
++void mipi_dsi_dcs_set_column_address_multi(struct mipi_dsi_multi_context *ctx,
++					   u16 start, u16 end);
++void mipi_dsi_dcs_set_page_address_multi(struct mipi_dsi_multi_context *ctx,
++					 u16 start, u16 end);
++void mipi_dsi_dcs_set_tear_scanline_multi(struct mipi_dsi_multi_context *ctx,
++					  u16 scanline);
++void mipi_dsi_dcs_set_tear_off_multi(struct mipi_dsi_multi_context *ctx);
++
++/**
++ * mipi_dsi_generic_write_seq_multi - transmit data using a generic write packet
++ *
++ * This macro will print errors for you and error handling is optimized for
++ * callers that call this multiple times in a row.
++ *
++ * @ctx: Context for multiple DSI transactions
++ * @seq: buffer containing the payload
++ */
++#define mipi_dsi_generic_write_seq_multi(ctx, seq...)                \
++	do {                                                         \
++		static const u8 d[] = { seq };                       \
++		mipi_dsi_generic_write_multi(ctx, d, ARRAY_SIZE(d)); \
++	} while (0)
++
++/**
++ * mipi_dsi_dcs_write_seq_multi - transmit a DCS command with payload
++ *
++ * This macro will print errors for you and error handling is optimized for
++ * callers that call this multiple times in a row.
++ *
++ * @ctx: Context for multiple DSI transactions
++ * @cmd: Command
++ * @seq: buffer containing data to be transmitted
++ */
++#define mipi_dsi_dcs_write_seq_multi(ctx, cmd, seq...)                  \
++	do {                                                            \
++		static const u8 d[] = { cmd, seq };                     \
++		mipi_dsi_dcs_write_buffer_multi(ctx, d, ARRAY_SIZE(d)); \
++	} while (0)
++
++/**
++ * struct mipi_dsi_driver - DSI driver
++ * @driver: device driver model driver
++ * @probe: callback for device binding
++ * @remove: callback for device unbinding
++ */
++struct mipi_dsi_driver {
++	struct device_driver driver;
++	int(*probe)(struct mipi_dsi_device *dsi);
++	void (*remove)(struct mipi_dsi_device *dsi);
++};
++
++static inline struct mipi_dsi_driver *
++to_mipi_dsi_driver(struct device_driver *driver)
++{
++	return container_of(driver, struct mipi_dsi_driver, driver);
++}
++
++static inline void *mipi_dsi_get_drvdata(const struct mipi_dsi_device *dsi)
++{
++	return dev_get_drvdata(&dsi->dev);
++}
++
++static inline void mipi_dsi_set_drvdata(struct mipi_dsi_device *dsi, void *data)
++{
++	dev_set_drvdata(&dsi->dev, data);
++}
++
++int mipi_dsi_driver_register(struct mipi_dsi_driver *driver);
++void mipi_dsi_driver_unregister(struct mipi_dsi_driver *driver);
++
++#define module_mipi_dsi_driver(__mipi_dsi_driver) \
++	module_driver(__mipi_dsi_driver, mipi_dsi_driver_register, \
++			mipi_dsi_driver_unregister)
++
++extern struct bus_type mipi_dsi_bus_type;
++
++#endif /* MIPI_DSI_H */
 -- 
 2.39.5
 
