@@ -3,65 +3,63 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uF-003zhi-1B
+	id 1uN8uF-003zhj-1Q
 	for lore@lore.pengutronix.de;
 	Thu, 05 Jun 2025 13:37:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uB-0000TI-Lb
+	id 1uN8uB-0000TU-Lk
 	for lore@pengutronix.de; Thu, 05 Jun 2025 13:37:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kuj5GC0QMzDUP0qySVzOyMGVHfplcyLERtQdFAqhA3U=; b=Q3SaXxSNr2uqhcAHghPXeBgIcm
-	vOZIXQTu1RRM5q7bK1hII6YaouvNYjSRplcQMLdrAKEnqNHq8OyPN+pjVfPgXDLE2MbliF9mmFE5r
-	zkWsVEpS6pzQ5n2VXJP7xa6X/Xg9eQ5YjFLKTTFQoCUmMYB39QiaMI9v5B1bbNyRty+EJ0OpTJGcJ
-	12NXuUC/zRuvgs0EW+PB89VpgKEdIvE5X7frMN1p6dDpiA+GfpBwNDdTeERNgbEgrorMCMMPtCP7i
-	NVafXpthPIGKajzDY5UgB+VhuNM3dhx1K6dJDRmfAFuBW8p9yJ6/maIXiPt8+B8g7sSs4yMOhTRHN
-	T192lUKw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=u6zCWfYGixYMLHVGLyrHdf6v5EjVzGOx97cpsQXoUJw=; b=asURsDVm4T9ouReo3h2CDnyTGD
+	pmw+AbWe1rpqCWxhDaMVtHm/4E0c0PmzUKabp1Z6BJWgyWqGAnB845cV66MAJwYyCqJXylL68Nw5z
+	xS3bp6iLKEgDCdDnVr60++1LAj0y02CJmU+JC+DhNQOhnWDB8iU64qw4+DncWtE8WsBpHm8T5xDMb
+	Aw2lsbe1qUVSs4wyh7WeBQnRMZmqDxJLTqBrUCXocLc//lIk1jbplePj9GCbvbECOp2ArlwzqYzFc
+	/34aqcZIoYJuLMZBUF+SNHekO1qE0QWWmSPNPLbeRkEjo1vFbuVvX2OIr/X10lgIztIsU/KMpoCVI
+	EeFuFFmA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8tY-0000000FNIx-1zlK;
-	Thu, 05 Jun 2025 11:36:28 +0000
+	id 1uN8tX-0000000FNHa-0quS;
+	Thu, 05 Jun 2025 11:36:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8sg-0000000FN7w-0pLx
+	id 1uN8jl-0000000FMNv-0BZr
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 11:35:35 +0000
+	Thu, 05 Jun 2025 11:26:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8se-0007MR-WF; Thu, 05 Jun 2025 13:35:33 +0200
+	id 1uN8jj-0001hw-Qa; Thu, 05 Jun 2025 13:26:19 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8se-001wzP-2d;
-	Thu, 05 Jun 2025 13:35:32 +0200
+	id 1uN8jj-001wuG-22;
+	Thu, 05 Jun 2025 13:26:19 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8sf-008mT4-19;
-	Thu, 05 Jun 2025 13:35:32 +0200
+	id 1uN8jk-008H9N-0f;
+	Thu, 05 Jun 2025 13:26:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 Jun 2025 13:35:10 +0200
-Message-Id: <20250605113530.2076990-2-a.fatoum@pengutronix.de>
+Date: Thu,  5 Jun 2025 13:26:18 +0200
+Message-Id: <20250605112618.1972479-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
-References: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_043534_235158_4FE67BEB 
-X-CRM114-Status: GOOD (  10.43  )
+X-CRM114-CacheID: sfid-20250605_042621_108315_BEFE4C32 
+X-CRM114-Status: GOOD (  12.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,72 +81,58 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 01/21] pbl: add provision for architectures without piggy loader
+Subject: [PATCH] fs: ramfs: do not bother unmounting ramfs on shutdown
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In preparation for enabling PBL support on sandbox, allow sandbox to
-link directly PBL with barebox proper without requiring PBL to use mmap
-to change attributes.
+It's pointless to free memory when we are about to boot a kernel that
+will reclaim all memory anyway.
+
+As ramfs only consists of such memory buffers, let's just skip its
+freeing.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- images/Makefile | 11 +++++++----
- pbl/Kconfig     |  8 ++++++++
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ fs/fs.c    | 2 ++
+ fs/ramfs.c | 5 -----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/images/Makefile b/images/Makefile
-index 6daaee8b7c7e..91123ada4744 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -56,21 +56,24 @@ extra-y += $(pbl-lds)
- $(pbl-lds): $(obj)/../arch/$(SRCARCH)/lib/pbl.lds.S FORCE
- 	$(call if_changed_dep,cpp_lds_S)
+diff --git a/fs/fs.c b/fs/fs.c
+index 0f821451103f..4d478eaf1f72 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -835,6 +835,8 @@ static void fs_remove(struct device *dev)
+ 	int ret;
  
-+ifeq ($(CONFIG_PBL_IMAGE_NO_PIGGY),)
-+BAREBOX_PIGGY_OBJS = $(obj)/piggy.o $(obj)/sha_sum.o
-+endif
-+
- quiet_cmd_elf__ ?= LD      $@
-       cmd_elf__ ?= $(LD) $(LDFLAGS_$(patsubst .%,%,$(suffix $(@F)))) 	\
- 		-e $(2) -Map $@.map $(LDFLAGS_$(@F)) -o $@		\
- 		--gc-sections --defsym=__pbl_board_entry=$(2)  		\
- 		-T $(pbl-lds)						\
--		--whole-archive $(BAREBOX_PBL_OBJS) $(obj)/piggy.o	\
--		$(obj)/sha_sum.o
-+		--whole-archive $(BAREBOX_PBL_OBJS) $(BAREBOX_PIGGY_OBJS) \
+ 	if (fsdev->dev.driver) {
++		if (!dev->driver->remove)
++			return;
+ 		dev->driver->remove(dev);
+ 		list_del(&fsdev->list);
+ 	}
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index ab3c44270d43..e971f608545c 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -435,10 +435,6 @@ static int ramfs_probe(struct device *dev)
+ 	return 0;
+ }
  
- PBL_CPPFLAGS	+= -fdata-sections -ffunction-sections
- 
--$(obj)/%.pbl: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(obj)/piggy.o $(obj)/sha_sum.o FORCE
-+$(obj)/%.pbl: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(BAREBOX_PIGGY_OBJS) FORCE
- 	$(call if_changed,elf__,$(*F))
- 	$(call if_changed,prelink__)
- 
--$(obj)/%.elf: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(obj)/piggy.o $(obj)/sha_sum.o FORCE
-+$(obj)/%.elf: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(BAREBOX_PIGGY_OBJS) FORCE
- 	$(call if_changed,elf__,$(*F))
- 	$(call if_changed,prelink__)
- 
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index 6e3581829d58..e9fa35e29b19 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -13,6 +13,14 @@ config PBL_IMAGE
- 	bool "Pre-Bootloader image"
- 	depends on HAVE_PBL_IMAGE
- 
-+config PBL_IMAGE_NO_PIGGY
-+	bool
-+	depends on PBL_IMAGE
-+	help
-+	  This is a special case for architectures that don't
-+	  want to use the piggy mechanism to load barebox proper.
-+	  It's so far only intended for sandbox.
-+
- config PBL_MULTI_IMAGES
- 	bool
- 	select PBL_IMAGE
+-static void ramfs_remove(struct device *dev)
+-{
+-}
+-
+ static struct fs_driver ramfs_driver = {
+ 	.read      = ramfs_read,
+ 	.write     = ramfs_write,
+@@ -446,7 +442,6 @@ static struct fs_driver ramfs_driver = {
+ 	.truncate  = ramfs_truncate,
+ 	.drv = {
+ 		.probe  = ramfs_probe,
+-		.remove = ramfs_remove,
+ 		.name = "ramfs",
+ 	}
+ };
 -- 
 2.39.5
 
