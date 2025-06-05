@@ -1,71 +1,66 @@
-Delivery-date: Thu, 05 Jun 2025 09:17:21 +0200
+Delivery-date: Thu, 05 Jun 2025 09:49:40 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN4qn-003vjq-2t
+	id 1uN5M4-003w7T-2P
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 09:17:21 +0200
+	Thu, 05 Jun 2025 09:49:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN4qn-0007ji-C7
-	for lore@pengutronix.de; Thu, 05 Jun 2025 09:17:21 +0200
+	id 1uN5M3-0007l0-JS
+	for lore@pengutronix.de; Thu, 05 Jun 2025 09:49:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WcWFlorUoRuUE1VFR24vo+mjQRlukvz+j5lLTlvs2xc=; b=xGPxOQvPOpJmODBZVXN6AW8j6L
-	4ag5Pxxy24ZZjw2Y5s3P06eJrv+OGcNYE050CkHPo+kQAgHGHM6f/WlSJuXj9XJGm8hi3drXkFBg7
-	T5uM/FztdL2sPLSeyL/3mpVvbFUZGZfyA2z3/Zeb2E0WEpD6aJR94TobZSWHAHOXmyRFH7/MtfEBf
-	Fv0VPak8owR22mVLgJIF9bKUGgJI9aHhDh37qKsMqrgNraUYIuNSFdW96D6Wk3sQAcmkSGwzaGBcz
-	HV3UI3O1rowkCyuhcLscvgYBb2qGbPRSNJiGq2SgmBkdkzKNofD/jPevizRonFweNfBWk57o6BGQu
-	UOsqtp1Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=oW902xguPp0J/u1rSjXUhDLAho4WyDKqleUJoRCmi4M=; b=jwHU5VsT0F/tFNYBpWF3M/oCns
+	7pE63wUwS+RAfIWY/mbmMekYkRTDFH6jX1nT3ngL17LCExoOwTuRFHmvwesIjA6jqmCj77qf5HYIt
+	knq/3UkucAM9hbu+U0q5wVoaT59ChDdywnO96132vaA+yc2QfyV6ypTRarsiEDE3cEZhZrWZwFkP0
+	/stHUjoI32it16N0hG/ya9uwJg4vAlFCnXeOikWY7zXvXR6bckAYI702uTKwoqlEaGzM2xIm+Kgli
+	H0DbbVKkFrqFdNOJJL9t8aK0sjUDMkfjbXyY9MTNr9k4wCLXicIZbn6XfX8WcAmFoqjhlSy+K9pBz
+	TJ+rOuBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN4qI-0000000EvSZ-1cGH;
-	Thu, 05 Jun 2025 07:16:50 +0000
+	id 1uN5LW-0000000Ez4K-1KnA;
+	Thu, 05 Jun 2025 07:49:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN4kV-0000000Eucx-2NSp
+	id 1uN5Jk-0000000Eys3-1dcY
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 07:10:54 +0000
+	Thu, 05 Jun 2025 07:47:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uN4kS-0004Y5-P1; Thu, 05 Jun 2025 09:10:48 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <ore@pengutronix.de>)
+	id 1uN5Ji-00065Y-IF; Thu, 05 Jun 2025 09:47:14 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uN4kS-001unf-1u;
-	Thu, 05 Jun 2025 09:10:48 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uN4kS-00CXBP-1b;
-	Thu, 05 Jun 2025 09:10:48 +0200
-Date: Thu, 5 Jun 2025 09:10:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <aEFC-F_GDuaKQA4k@pengutronix.de>
-References: <20250526141914.185212-1-a.fatoum@barebox.org>
- <20250526141914.185212-6-a.fatoum@barebox.org>
+	(envelope-from <ore@pengutronix.de>)
+	id 1uN5Ji-001v86-0X;
+	Thu, 05 Jun 2025 09:47:14 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uN5Ji-00HUub-0A;
+	Thu, 05 Jun 2025 09:47:14 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu,  5 Jun 2025 09:47:12 +0200
+Message-Id: <20250605074713.4170334-9-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250605074713.4170334-1-o.rempel@pengutronix.de>
+References: <20250605074713.4170334-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526141914.185212-6-a.fatoum@barebox.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_001051_603751_3B4A6436 
-X-CRM114-Status: GOOD (  17.77  )
+X-CRM114-CacheID: sfid-20250605_004716_463800_B390C7B1 
+X-CRM114-Status: GOOD (  11.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,51 +78,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-1.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 5/6] resource: supply memory type/attrs on all SDRAM
- requests
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH v2 8/9] fs: Report errors for out-of-bounds protect operations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+The protect() function previously masked errors for out-of-bounds
+requests. It would either return success for offsets already beyond
+file/partition size or clamp the count for ranges extending beyond the
+boundary. This behavior was introduced by commit 6815e0d05480 ("fs:
+limit flash erase and protect to the partiton boundary") to address SPI
+flash wrap-around issues.
 
-On Mon, May 26, 2025 at 04:19:13PM +0200, Ahmad Fatoum wrote:
->   * Request a region from the registered sdram
->   */
->  struct resource *__request_sdram_region(const char *name, unsigned flags,
-> -					resource_size_t start, resource_size_t size)
-> +				      resource_size_t start, resource_size_t size,
-> +				      enum resource_memtype memtype, unsigned memattrs)
->  {
->  	struct memory_bank *bank;
+This masking prevented shell commands from reporting failures for
+invalid ranges, which could mislead users and scripts. For example,
+underlying driver errors like -EINVAL from NVMEM were not propagated.
 
-This changes the prototype in the definition...
+This patch modifies protect() to return appropriate error codes (-ENXIO
+or -EINVAL) for such out-of-bounds conditions, instead of silently
+succeeding or clamping.
 
-> diff --git a/include/memory.h b/include/memory.h
-> index 707c0f13130d..7c5b133b7693 100644
-> --- a/include/memory.h
-> +++ b/include/memory.h
-> @@ -33,14 +33,25 @@ int barebox_add_memory_bank(const char *name, resource_size_t start,
->  	if (((rsv)->flags & IORESOURCE_BUSY))
->  
->  struct resource *__request_sdram_region(const char *name, unsigned flags,
-> -					resource_size_t start, resource_size_t size);
-> +				      resource_size_t start, resource_size_t size);
+Fixes: 6815e0d05480 ("fs: limit flash erase and protect to the partiton boundary")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ fs/fs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-...but not in the declaration causing intermediate compile errors.
-
-Not sure what the correct fix is here. Could you fixup and send the
-last two patches of this series again?
-
-Sascha
-
+diff --git a/fs/fs.c b/fs/fs.c
+index 465fd617c2ba..6d60a1ae918b 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -652,9 +652,9 @@ int protect(int fd, size_t count, loff_t offset, int prot)
+ 	if (IS_ERR(f))
+ 		return -errno;
+ 	if (offset >= f->f_size)
+-		return 0;
+-	if (count > f->f_size - offset)
+-		count = f->f_size - offset;
++		return errno_set(-ENXIO);
++	if (!count  || count > f->f_size - offset)
++		return errno_set(-EINVAL);
+ 
+ 	fsdrv = f->fsdev->driver;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
