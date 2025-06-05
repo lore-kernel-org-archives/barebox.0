@@ -1,67 +1,67 @@
-Delivery-date: Thu, 05 Jun 2025 13:39:12 +0200
+Delivery-date: Thu, 05 Jun 2025 13:39:13 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8wC-003zqs-1L
+	id 1uN8wD-003zrO-1H
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 13:39:12 +0200
+	Thu, 05 Jun 2025 13:39:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8w9-0002c7-99
-	for lore@pengutronix.de; Thu, 05 Jun 2025 13:39:12 +0200
+	id 1uN8wB-0002eU-KC
+	for lore@pengutronix.de; Thu, 05 Jun 2025 13:39:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DNLrqsgy9N+ABCTcxAfr0lKYET5jKuvgxHWCU5wxOBs=; b=Wi7n9/Z9H0j1IZTEQk6T9tccU8
-	gZggfp0zuJn+5LGYFHwpbDolzYWw4nxybuZSkBFLZJGRg8PCOHoiUO0dcc1L3fx2GJf655zHgQ7fu
-	0mk4a2+v4hU5j69QA288feWAN7NG1bPfQRLR8spwwcvaZxQ1La7P4qGWRKvWz2qD9xPqSRxd6vvDW
-	VNrovta0sLZB1g+8SJckjgigQcGyUV+kWlm2JiSFtLXL2GpV1TOAizFPuxR8kR7ql2EOY4+zvV9AW
-	9yNVu0KLsKMwU1Gq5EReSXGiAOVmjANSkPn879cQ/+VH8xuO7+Qpn1pn4GyIAmc91ae0O7oV8t5XU
-	36pUljeA==;
+	bh=S9tE7Wi/Trx/hz+FETZ1xD2SkhzWf9exKyTnHiVpnwE=; b=reCNyxNxSA6IlhUHk2epzUi/QI
+	D3eQ9tsQvlhCG6a1YwmuCasFEABVj0huaYC8yvQmNgOEZ4HLOBkoAuHQi/QCs2WItgxl9N2b+zQSo
+	+Cmrsc9VuoHEn3CwDdscOgSmgq/JrgTm91HTaCuU1PubWn5l2aDLWCt4WGwl7nBjft2jbxuR4YsWX
+	fs+/xFWsHhv73IJTFAXHLv6qg6GD51sNSolDWv//QyZpdv4NDnsK/gzmwTNa3KOoSs+xrglhAKvU9
+	InvUXPtwMM5Y+zI1+URKrqrH84i81rapIKPa++7CkqszAljrRK2lY0mWc0oPaeEwXGx7LppoCrTFX
+	gp1jGR5w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8vd-0000000FOaj-0hAT;
-	Thu, 05 Jun 2025 11:38:37 +0000
+	id 1uN8ve-0000000FOcl-23mv;
+	Thu, 05 Jun 2025 11:38:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8vT-0000000FOOm-3oJ3
+	id 1uN8vU-0000000FOPK-0JHK
 	for barebox@lists.infradead.org;
 	Thu, 05 Jun 2025 11:38:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8vS-0001jW-MX; Thu, 05 Jun 2025 13:38:26 +0200
+	id 1uN8vS-0001k1-T1; Thu, 05 Jun 2025 13:38:26 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8vS-001x0v-1c;
+	id 1uN8vS-001x13-2F;
 	Thu, 05 Jun 2025 13:38:26 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8sg-008mT4-1P;
+	id 1uN8sg-008mT4-0B;
 	Thu, 05 Jun 2025 13:35:33 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 Jun 2025 13:35:30 +0200
-Message-Id: <20250605113530.2076990-22-a.fatoum@pengutronix.de>
+Date: Thu,  5 Jun 2025 13:35:23 +0200
+Message-Id: <20250605113530.2076990-15-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 References: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_043827_950507_BB37F74A 
-X-CRM114-Status: GOOD (  13.93  )
+X-CRM114-CacheID: sfid-20250605_043828_116310_4F489280 
+X-CRM114-Status: GOOD (  13.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,166 +83,103 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 21/21] sandbox: add support for coverage info generation
+Subject: [PATCH 14/21] block: mark underlying cdev with DEVFS_IS_BLOCK_DEV
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To be able to check how well along the fuzzer can descend into the
-parsers, add first coverage support and a target to generate HTML
-coverage information.
+When given a cdev, we detect whether it's a block device by testing that
+its ops are those of a block device.
+
+This has the downside that any block device must use the block caching layer.
+ramdisks don't benefit from the caching though, so let's add a new flag
+bit to mark block devices and use it in preparation for adding ramdisk
+support.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .gitignore                      |  6 ++++++
- Documentation/devel/fuzzing.rst | 30 ++++++++++++++++++++++++++++++
- Makefile                        | 23 ++++++++++++++++++++++-
- arch/sandbox/Kconfig.debug      |  7 +++++++
- arch/sandbox/Makefile           |  7 +++++++
- 5 files changed, 72 insertions(+), 1 deletion(-)
+ common/block.c   |  9 +--------
+ include/block.h  | 13 +++++++------
+ include/driver.h |  1 +
+ 3 files changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index 0bee67af4881..c37188a9f315 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -98,3 +98,9 @@ GTAGS
- /allrandom.config
- /allyes.config
- /compile_commands.json
-+
-+# coverage data
-+default.profdata
-+default.profraw
-+coverage.info
-+coverage_html/
-diff --git a/Documentation/devel/fuzzing.rst b/Documentation/devel/fuzzing.rst
-index 3151246aef1a..4b6d565a470a 100644
---- a/Documentation/devel/fuzzing.rst
-+++ b/Documentation/devel/fuzzing.rst
-@@ -62,6 +62,36 @@ We maintain a corpus for every fuzz test on
+diff --git a/common/block.c b/common/block.c
+index d401e979abff..ca2ed37dbd3e 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -447,14 +447,6 @@ static struct cdev_operations block_ops = {
+ 	.discard_range = block_op_discard_range,
+ };
  
- This helps bootstrap the fuzzer, so it can exercise new paths more quickly.
+-struct block_device *cdev_get_block_device(const struct cdev *cdev)
+-{
+-	if (!cdev || cdev->ops != &block_ops)
+-		return NULL;
+-
+-	return cdev->priv;
+-}
+-
+ int blockdevice_register(struct block_device *blk)
+ {
+ 	loff_t size = (loff_t)blk->num_blocks * BLOCKSIZE(blk);
+@@ -465,6 +457,7 @@ int blockdevice_register(struct block_device *blk)
+ 	blk->cdev.dev = blk->dev;
+ 	blk->cdev.ops = &block_ops;
+ 	blk->cdev.priv = blk;
++	blk->cdev.flags |= DEVFS_IS_BLOCK_DEV;
+ 	blk->rdbufsize = BUFSIZE >> blk->blockbits;
  
-+Determining Source Code Coverage
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+.. note::
-+	Coverage instrumentation is currently only supported with LLVM
-+        and sandbox.
-+
-+To collect coverage information, barebox must be built with ``CONFIG_GCOV=y``.
-+The linking process will take much longer than usual, but once done, running
-+barebox will produce coverage information.
-+
-+.. code-block:: bash
-+
-+	images/fuzz-filetype -max_total_time=60 -max_len=2048
-+
-+After the process exists regularly (i.e., not aborted with ctrl+C!),
-+it will produce a ``default.profraw`` file, which needs to be further
-+processed:
-+
-+.. code-block:: bash
-+
-+	make coverage-html
-+
-+This will produce a ``${KBUILD_OUTPUT}/coverage_html/`` directory, which can be
-+inspected by a web browser:
-+
-+.. code-block:: bash
-+
-+	firefox coverage_html/index.html
-+
- Adding a fuzzer
- ^^^^^^^^^^^^^^^
+ 	INIT_LIST_HEAD(&blk->buffered_blocks);
+diff --git a/include/block.h b/include/block.h
+index 5ce3eb7d7838..73b305cdb03f 100644
+--- a/include/block.h
++++ b/include/block.h
+@@ -82,14 +82,9 @@ static inline int block_flush(struct block_device *blk)
+ }
  
-diff --git a/Makefile b/Makefile
-index df0770e832e1..80a403f61dda 100644
---- a/Makefile
-+++ b/Makefile
-@@ -429,6 +429,8 @@ OBJCOPY		= $(LLVM_PREFIX)llvm-objcopy$(LLVM_SUFFIX)
- OBJDUMP		= $(LLVM_PREFIX)llvm-objdump$(LLVM_SUFFIX)
- READELF		= $(LLVM_PREFIX)llvm-readelf$(LLVM_SUFFIX)
- STRIP		= $(LLVM_PREFIX)llvm-strip$(LLVM_SUFFIX)
-+PROFDATA	= $(LLVM_PREFIX)llvm-profdata$(LLVM_SUFFIX)
-+COV		= $(LLVM_PREFIX)llvm-cov$(LLVM_SUFFIX)
- else
- CC		= $(CROSS_COMPILE)gcc
- CXX		= $(CROSS_COMPILE)g++
-@@ -450,6 +452,7 @@ PERL		= perl
- PYTHON3		= python3
- CHECK		= sparse
- MKIMAGE		= mkimage
-+GENHTML		= genhtml
- BASH		= bash
- KGZIP		= gzip
- KBZIP2		= bzip2
-@@ -518,7 +521,7 @@ LDFLAGS_elf += $(LDFLAGS_common) --nmagic -s
+ #ifdef CONFIG_BLOCK
+-struct block_device *cdev_get_block_device(const struct cdev *cdev);
+ unsigned file_list_add_blockdevs(struct file_list *files);
+ char *cdev_get_linux_rootarg(const struct cdev *partcdev);
+ #else
+-static inline struct block_device *cdev_get_block_device(const struct cdev *cdev)
+-{
+-	return NULL;
+-}
+ static inline unsigned file_list_add_blockdevs(struct file_list *files)
+ {
+ 	return 0;
+@@ -102,7 +97,8 @@ static inline char *cdev_get_linux_rootarg(const struct cdev *partcdev)
  
- export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC CXX
- export CPP AR NM STRIP OBJCOPY OBJDUMP MAKE AWK GENKSYMS PERL PYTHON3 UTS_MACHINE
--export LEX YACC
-+export LEX YACC PROFDATA COV GENHTML
- export HOSTCXX CHECK CHECKFLAGS MKIMAGE
- export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ
- export KBUILD_HOSTCXXFLAGS KBUILD_HOSTLDFLAGS KBUILD_HOSTLDLIBS LDFLAGS_MODULE
-@@ -1418,6 +1421,24 @@ endif
- 	@echo  'Execute "make" or "make all" to build all targets marked with [*] '
- 	@echo  'For further info see the documentation'
+ static inline bool cdev_is_block_device(const struct cdev *cdev)
+ {
+-	return cdev_get_block_device(cdev) != NULL;
++	return IS_ENABLED(CONFIG_BLOCK) && cdev &&
++		(cdev->flags & DEVFS_IS_BLOCK_DEV);
+ }
  
-+# Code Coverage
-+# ---------------------------------------------------------------------------
-+
-+barebox.coverage_html: barebox.coverage-info
-+	genhtml -o $@ $<
-+
-+barebox.coverage-info: default.profdata
-+	$(COV) export --format=lcov -instr-profile $< $(objtree)/barebox >$@
-+
-+default.profdata: $(srctree)/default.profraw
-+	$(PROFDATA) merge -sparse $< -o $@
-+
-+# We intentionally don't depend on barebox being built as that can take >10
-+# minutes when coverage is enabled
-+PHONY += coverage-html
-+coverage-html: barebox.coverage_html
-+	@echo "HTML coverage generated to $(objtree)/$<"
-+
- # Generate tags for editors
- # ---------------------------------------------------------------------------
- quiet_cmd_tags = GEN     $@
-diff --git a/arch/sandbox/Kconfig.debug b/arch/sandbox/Kconfig.debug
-index 4a754e389964..82ee355815c3 100644
---- a/arch/sandbox/Kconfig.debug
-+++ b/arch/sandbox/Kconfig.debug
-@@ -8,3 +8,10 @@ config ASAN
+ static inline bool cdev_is_block_partition(const struct cdev *cdev)
+@@ -116,4 +112,9 @@ static inline bool cdev_is_block_disk(const struct cdev *cdev)
+ 	return cdev_is_block_device(cdev) && !cdev_is_partition(cdev);
+ }
  
- 	  This is the hosted implementation for sandbox as opposed to
- 	  KASAN, which is the bare-metal implementation.
++static inline struct block_device *cdev_get_block_device(const struct cdev *cdev)
++{
++	return cdev_is_block_device(cdev) ? cdev->priv : NULL;
++}
 +
-+config GCOV
-+	bool "Enable gcov support"
-+	depends on CC_IS_CLANG
-+	help
-+	  This option allows developers to retrieve coverage data from a sandbox
-+	  session. Note that this will greatly increases link times.
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index f33d7fa961da..f9d79e9a7d15 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -79,6 +79,13 @@ SANDBOX_LIBS += -Wl,-Bstatic -L"$(CONFIG_CLANG_RUNTIME_DIR)" \
- 		-lclang_rt.fuzzer_no_main-$(LIBARCH-y) -Wl,-Bdynamic
- endif
- 
-+ifeq ($(CONFIG_GCOV),y)
-+GCOV_OPT-$(CONFIG_CC_IS_CLANG) = -fprofile-instr-generate -fcoverage-mapping
-+GCOV_OPT-$(CONFIG_CC_IS_GCC) = -fprofile-arcs -ftest-coverage
-+KBUILD_CFLAGS += $(GCOV_OPT-y)
-+BAREBOX_LDFLAGS += $(GCOV_OPT-y)
-+endif
-+
- ifeq ($(CONFIG_SANDBOX_LINUX_I386),y)
- KBUILD_CFLAGS += -m32
- KBUILD_LDFLAGS += -m elf_i386
+ #endif /* __BLOCK_H */
+diff --git a/include/driver.h b/include/driver.h
+index e9a919f9bbb5..41e5dad724c3 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -581,6 +581,7 @@ extern struct list_head cdev_list;
+ #define DEVFS_PARTITION_FIXED		(1U << 0)
+ #define DEVFS_PARTITION_READONLY	(1U << 1)
+ #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
++#define DEVFS_IS_BLOCK_DEV		(1U << 4)
+ #define DEVFS_PARTITION_FROM_OF		(1U << 5)
+ #define DEVFS_PARTITION_FROM_TABLE	(1U << 6)
+ #define DEVFS_IS_MBR_PARTITIONED	(1U << 7)
 -- 
 2.39.5
 
