@@ -3,63 +3,67 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uG-003ziu-16
+	id 1uN8uG-003zj8-1s
 	for lore@lore.pengutronix.de;
 	Thu, 05 Jun 2025 13:37:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uC-0000Ub-IK
+	id 1uN8uC-0000Ur-Op
 	for lore@pengutronix.de; Thu, 05 Jun 2025 13:37:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=O/G0Maia46t8IsLAMClPiUArPpJCebLw767qZE5OyAI=; b=oDLSXMl2Cq8n8tZjxvkmJZS+tU
-	SwxmQ2tJjdHkjf68Jb8x0IXX2hMRu1HmGzxsfWr2n+0q0ThI7UNwM0ieWfTTDXi5eXFTBaPZUmEJS
-	7P4sTQf/FDZKNBkF68XK7F0TFm0SyWbigDgU5gW4Ds+S5/x6VrZWfnmEMRyKjljNDiUhk1HYIhMlU
-	SdrFzf/3KG2B4udcrZ5meVt1KZqfhVkwfom8HmA9eMUf1jr79TwjHJX+Rip82HBHxrO3B3CIDGO58
-	1UFZvCSwwL6mW+j6VXKtljgM7whAp3DLQNyELbh5DQ5u7LBjOm5Ey2FGz9G5SrKVxIQBtWSbICwuI
-	WIYLIcvA==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=sxuk/O4+hnZTHXVpD3cEm1JHKUXH4lRYccgI+Gri8wo=; b=IVf3NiVogL3VlsMaFgZeLcpJLF
+	FqeFyd6x4930whnes63SsM+IcTDGdLIkk4uduSkjQSHCH36+DdW4sCE7FqY+eHwH9C/Zh44sMeB4X
+	py2HNaoAvwjKLg1t/mEBItTPHsW07TTyKe1uVo32XHYrrZG33OUGWnmZ9qKRwRqjeulgisIUl0aoc
+	pXLPBj8gfrgx1p1l4ypCJ03rTbPcNlrQGrviBo4aWyEiWMi/3itfXyjQmPcrReCAVW3b7pV+O1zSN
+	2lzPFe1y8jO2dn9UsWJBBwRSqRqkWweDBJUIdJQWyNr+xjlFeaFGuD1i3v/QUZWDg2Gka5J5aENJm
+	8qnd7R3g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8tU-0000000FNEz-1vIk;
-	Thu, 05 Jun 2025 11:36:24 +0000
+	id 1uN8tW-0000000FNGf-075M;
+	Thu, 05 Jun 2025 11:36:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8j2-0000000FMDl-0VvP
+	id 1uN8ja-0000000FMLp-0z9j
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 11:25:37 +0000
+	Thu, 05 Jun 2025 11:26:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8j0-0001FL-QA; Thu, 05 Jun 2025 13:25:34 +0200
+	id 1uN8jY-0001ae-VQ; Thu, 05 Jun 2025 13:26:08 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8j0-001wtu-1x;
-	Thu, 05 Jun 2025 13:25:34 +0200
+	id 1uN8jY-001wu9-2X;
+	Thu, 05 Jun 2025 13:26:08 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8j1-008F6s-0X;
-	Thu, 05 Jun 2025 13:25:34 +0200
+	id 1uN8jZ-008GwF-19;
+	Thu, 05 Jun 2025 13:26:08 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 Jun 2025 13:25:31 +0200
-Message-Id: <20250605112533.1960069-1-a.fatoum@pengutronix.de>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  5 Jun 2025 13:26:07 +0200
+Message-Id: <20250605112607.1970520-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250605112607.1970520-1-a.fatoum@pengutronix.de>
+References: <20250605112607.1970520-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_042536_260330_7F05B631 
-X-CRM114-Status: GOOD (  10.87  )
+X-CRM114-CacheID: sfid-20250605_042610_284598_B7862019 
+X-CRM114-Status: GOOD (  15.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,58 +85,155 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] common: tlv: clean up device name setting
+Subject: [PATCH 2/2] of: fdt: verify length within bounds before using it
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that dev_set_name has a __printf attribute, we get a warning that we
-are not using a string literal as format argument to it.
+We currently call dt_struct_advance() at the end of processing a tag
+to advance to the next tag with a check after the switch to verify that
+we are within bounds.
 
-Fix this and while at it avoid a superfluous memory allocation.
+This is error prone as it expects that code that comes before it also
+checks that len is not exceeded as dt_struct_advance would come too late
+to go anything about this.
 
+Avoid this by doing dt_struct_advance earlier in the switch cases and
+bailing out directly if sizes aren't sane.
+
+Reported-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/tlv/bus.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/of/fdt.c | 53 +++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 34 insertions(+), 19 deletions(-)
 
-diff --git a/common/tlv/bus.c b/common/tlv/bus.c
-index 336415483622..0f11f2a9442b 100644
---- a/common/tlv/bus.c
-+++ b/common/tlv/bus.c
-@@ -19,7 +19,6 @@ struct tlv_device *tlv_register_device(struct tlv_header *header,
- {
- 	struct tlv_device *tlvdev;
- 	const char *name = NULL;
--	char *buf = NULL;
- 	struct device *dev;
- 	static int id = 0;
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 5eead271edb7..9638b3d238be 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -227,6 +227,13 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 				goto err;
+ 			}
  
-@@ -34,17 +33,19 @@ struct tlv_device *tlv_register_device(struct tlv_header *header,
- 	dev->parent = parent ?: tlv_bus.dev;
- 	dev->id = DEVICE_ID_SINGLE;
- 
--	if (parent)
-+	if (parent) {
- 		name = of_alias_get(parent->device_node);
--	if (!name)
--		name = buf = basprintf("tlv%u", id++);
-+		if (name)
-+			dev_set_name(dev, "%s", name);
-+	}
- 
--	dev->device_node = of_new_node(of_new_node(NULL, NULL), name);
-+	if (!name)
-+		dev_set_name(dev, "tlv%u", id++);
++			dt_struct = dt_struct_advance(&f, dt_struct,
++					sizeof(struct fdt_node_header) + len + 1);
++			if (!dt_struct) {
++				ret = -ESPIPE;
++				goto err;
++			}
 +
-+	dev->device_node = of_new_node(of_new_node(NULL, NULL), dev_name(dev));
- 	dev->device_node->dev = dev;
--	dev_set_name(dev, name);
- 	register_device(dev);
+ 			if (!node) {
+ 				/* The root node must have an empty name */
+ 				if (*pathp) {
+@@ -243,9 +250,6 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 				node = of_new_node(node, pathp);
+ 			}
  
--	free(buf);
- 	return tlvdev;
- }
+-			dt_struct = dt_struct_advance(&f, dt_struct,
+-					sizeof(struct fdt_node_header) + len + 1);
+-
+ 			break;
  
+ 		case FDT_END_NODE:
+@@ -258,6 +262,10 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 			node = node->parent;
+ 
+ 			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
++			if (!dt_struct) {
++				ret = -ESPIPE;
++				goto err;
++			}
+ 
+ 			break;
+ 
+@@ -272,7 +280,14 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 			nodep = fdt_prop->data;
+ 
+ 			name = dt_string(&f, dt_strings, fdt32_to_cpu(fdt_prop->nameoff));
+-			if (!name || !node || is_reserved_name(name)) {
++			if (!name || !node ||  is_reserved_name(name)) {
++				ret = -ESPIPE;
++				goto err;
++			}
++
++			dt_struct = dt_struct_advance(&f, dt_struct,
++					sizeof(struct fdt_property) + len);
++			if (!dt_struct) {
+ 				ret = -ESPIPE;
+ 				goto err;
+ 			}
+@@ -285,13 +300,15 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 			if (!strcmp(name, "phandle") && len == 4)
+ 				node->phandle = be32_to_cpup(of_property_get_value(p));
+ 
+-			dt_struct = dt_struct_advance(&f, dt_struct,
+-					sizeof(struct fdt_property) + len);
+ 
+ 			break;
+ 
+ 		case FDT_NOP:
+ 			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
++			if (!dt_struct) {
++				ret = -ESPIPE;
++				goto err;
++			}
+ 
+ 			break;
+ 
+@@ -303,11 +320,6 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 			ret = -EINVAL;
+ 			goto err;
+ 		}
+-
+-		if (!dt_struct) {
+-			ret = -ESPIPE;
+-			goto err;
+-		}
+ 	}
+ err:
+ 	of_delete_node(root);
+@@ -752,6 +764,8 @@ int fdt_machine_is_compatible(const struct fdt_header *fdt, size_t fdt_size, con
+ 
+ 			dt_struct = dt_struct_advance(&f, dt_struct,
+ 					sizeof(struct fdt_node_header) + 1);
++			if (!dt_struct)
++				return 0;
+ 
+ 			/*
+ 			 * Quoting Device Tree Specification v0.4 §5.4.2:
+@@ -775,24 +789,25 @@ int fdt_machine_is_compatible(const struct fdt_header *fdt, size_t fdt_size, con
+ 			if (!name)
+ 				return 0;
+ 
+-			if (strcmp(name, "compatible")) {
+-				dt_struct = dt_struct_advance(&f, dt_struct,
+-							      sizeof(struct fdt_property) + len);
+-				break;
+-			}
++			dt_struct = dt_struct_advance(&f, dt_struct,
++						      sizeof(struct fdt_property) + len);
++			if (!dt_struct)
++				return 0;
++
++			if (strcmp(name, "compatible"))
++				continue;
+ 
+ 			return fdt_string_is_compatible(fdt_prop->data, len, compat, compat_len);
+ 
+ 		case FDT_NOP:
+ 			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
++			if (!dt_struct)
++				return 0;
+ 			break;
+ 
+ 		default:
+ 			return 0;
+ 		}
+-
+-		if (!dt_struct)
+-			return 0;
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
