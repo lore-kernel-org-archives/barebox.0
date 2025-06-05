@@ -1,75 +1,74 @@
-Delivery-date: Thu, 05 Jun 2025 14:45:41 +0200
+Delivery-date: Thu, 05 Jun 2025 14:45:43 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN9yX-0040wV-1k
+	id 1uN9yZ-0040wu-1z
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 14:45:41 +0200
+	Thu, 05 Jun 2025 14:45:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN9yW-0005nl-Q0
-	for lore@pengutronix.de; Thu, 05 Jun 2025 14:45:41 +0200
+	id 1uN9yY-0005oQ-6I
+	for lore@pengutronix.de; Thu, 05 Jun 2025 14:45:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SdDkDaswZla1uENgrqTvoUrVxKBc9tv00nvwZuWmBuM=; b=Qywq6RlwSWMmrgi3YUWibWh+oq
-	h7BUVNgUnUqQWNc4+broKHcka4cKCfnGcdHBdjWs7JjXvOnHduyEFc65IAfkeNbRmDtqK5sinhuAW
-	wTS9pXYGBrY2PdWCEmYGOH24dPLqacqg3Cm9pZ2H37b93vCEx69dberKdYnzMFE83oXef/zRjsN8L
-	YwLDo+BAfeFPRkCs+WgndPOxl/K4kOIct0IeFAluxrdU2D+xbOfmd1+iOlDNduyBAID1HW5ujxmhk
-	j2Yp0bhuE8eyv4DCrSAC6jCs9UWHP57KWvy14ROj6bGdiZ35p+MtIAylDR5p+Rv7oSh75MEbQrJfi
-	Mm4yd0sA==;
+	bh=sJtPWWAgdIEdqUQ6HT3gHuaImj3bnpzsHjR8LSNPuPE=; b=ZZiOBR2jchXkoJMzqKWR8Gp6+q
+	uHHVQCQttwBhoT+skyGjY2E7ubZoMNESGSsGmWhmVSfT14fP8XC7o6z0xr57yRl8+KKL7LuVmg1y8
+	Eui1MeZkY+E09flCFJlpF/O/CrlDZ+Ny5jbUuiVG3G7H/IZXcJg5cVwXmDgs5oDihOZtc7WH96rFw
+	yVYakmEFe3DZTmfvwxAK2r9m4t+mmtvxWNVfLtLhdIiC2/GxKSaOHCQU6HvCUbndMYsLpM+sFGN9Z
+	Y673w3GY9RItMzx/PhCrAVOkLwc7hkJAXv7r/g0kXhMAil6/+AQNYWGapFfZG+O9AOCQn0b5j72NK
+	WOIZ+HJg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN9xw-0000000FVK1-173i;
-	Thu, 05 Jun 2025 12:45:04 +0000
+	id 1uN9xy-0000000FVLK-2iZa;
+	Thu, 05 Jun 2025 12:45:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN9vU-0000000FV3O-0MjR
+	id 1uN9vU-0000000FV3R-0XYb
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 12:42:33 +0000
+	Thu, 05 Jun 2025 12:42:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uN9vS-0003Mt-RV; Thu, 05 Jun 2025 14:42:30 +0200
+	id 1uN9vS-0003N0-WD; Thu, 05 Jun 2025 14:42:31 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uN9vS-001xgO-1n;
+	id 1uN9vS-001xgV-1x;
 	Thu, 05 Jun 2025 14:42:30 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uN9vS-0024bQ-1R;
+	id 1uN9vS-0024bQ-1Y;
 	Thu, 05 Jun 2025 14:42:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 05 Jun 2025 14:42:27 +0200
+Date: Thu, 05 Jun 2025 14:42:34 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250605-arm-k3-am62l-v2-2-53257d4b2dd2@pengutronix.de>
+Message-Id: <20250605-arm-k3-am62l-v2-9-53257d4b2dd2@pengutronix.de>
 References: <20250605-arm-k3-am62l-v2-0-53257d4b2dd2@pengutronix.de>
 In-Reply-To: <20250605-arm-k3-am62l-v2-0-53257d4b2dd2@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749127350; l=3785;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749127350; l=3992;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=24yrVFtyN6rbFajwYCeZXwUJH5IRmrQApvuyZ6OuCz4=;
- b=l9UFKTdd0Hel75PC0Q84VD3jGI+IanmBXIh+W2Zcn/KMWaLvhV2ZKkoUw1I9nmVGL2D6nK7ek
- NA/fBxCOiS4AialDgPzaRH0U5t2yCvLs4pAP0G9YR7RRJvR/yY3f9cP
+ bh=eU6xDftIGYxEy9gcmUs9Kbw7/7qMxAHP5lBmsYDqnFM=;
+ b=KxkqX1pyfY4Qcd9MycG6iw0tTBdiwZ3kAvFvX9OWGINbyUdO6sDAX/XqxZ8N9k8c/wrxkjhMf
+ Lm9zyA/YaynAWNmv/4u3Jpe1tq4bmS5nCKDvKzbrEpCzr4deIWBC5g8
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_054232_144839_728C0C8B 
-X-CRM114-Status: UNSURE (   8.63  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250605_054232_223211_CD0540C6 
+X-CRM114-Status: GOOD (  17.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,91 +90,86 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 02/33] images: K3: rename %.k3img target to
- %.k3_am62x_img
+Subject: [PATCH v2 09/33] firmware: add ti-linux-firmware submodule
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For upcoming AM62L support we'll need AM62L specific image targets, so
-rename the current generic k3img target to a name including the SoC.
+For K3 SoCs we need several binaries from the ti-linux-firmware
+repository and currently we have to copy the needed files over from the
+repository to firmware/ in barebox. To simplify this expect the
+ti-linux-firmware repository to be checked out or linked at
+firmware/ti-linux-firmware. For further convenience create a git
+submodule for it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- images/Makefile.k3 | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ .gitmodules                    |  3 +++
+ Documentation/boards/ti-k3.rst | 10 +++++-----
+ firmware/ti-linux-firmware     |  1 +
+ images/Makefile.k3             |  6 +++---
+ 4 files changed, 12 insertions(+), 8 deletions(-)
 
+diff --git a/.gitmodules b/.gitmodules
+new file mode 100644
+index 0000000000000000000000000000000000000000..c58f53c29f302f7610c5776d13259a373c17520c
+--- /dev/null
++++ b/.gitmodules
+@@ -0,0 +1,3 @@
++[submodule "ti-linux-firmware"]
++	path = firmware/ti-linux-firmware
++	url = https://git.ti.com/git/processor-firmware/ti-linux-firmware.git
+diff --git a/Documentation/boards/ti-k3.rst b/Documentation/boards/ti-k3.rst
+index 3bb5103f32378d6fe7413b5f19ca29883444dc69..6cb9eb8edab93e6bf7a74bc24748f9ad11609b20 100644
+--- a/Documentation/boards/ti-k3.rst
++++ b/Documentation/boards/ti-k3.rst
+@@ -15,10 +15,11 @@ Prerequisites
+ 
+ There are several binary blobs required for building barebox for TI K3 SoCs. Find them
+ in git://git.ti.com/processor-firmware/ti-linux-firmware.git. The repository is assumed
+-to be checked out at ``$TI_LINUX_FIRMWARE``. The K3 SoCs boot from a FAT partition on
+-SD/eMMC cards. During the next steps the files are copied to ``$TI_BOOT``. This is assumed
+-to be an empty directory. After the build process copy its contents to a FAT filesystem
+-on an SD/eMMC card.
++to be checked out at ``firmware/ti-linux-firmware``. Alternatively the barebox repository
++has a ti-linux-firmware submodule which checks out at the correct place. The K3 SoCs boot
++from a FAT partition on SD/eMMC cards. During the next steps the files are copied to
++``$TI_BOOT``. This is assumed to be an empty directory. After the build process copy its
++contents to a FAT filesystem on an SD/eMMC card.
+ 
+ The Cortex-R5 is a 32-bit processors whereas the Cortex-A53 are 64-bit processors, so
+ both 32-bit and 64-bit toolchains are needed::
+@@ -35,7 +36,6 @@ need to be adjusted for other boards.
+ There's a single ``k3-r5_defconfig`` for all K3 boards. This builds the boot images
+ for the Cortex-R5 processors::
+ 
+-  cp $TI_LINUX_FIRMWARE/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62x-gp.bin firmware/
+   export ARCH=arm CROSS_COMPILE=$CROSS_COMPILE_32
+   make k3-r5_defconfig
+   make
+diff --git a/firmware/ti-linux-firmware b/firmware/ti-linux-firmware
+new file mode 160000
+index 0000000000000000000000000000000000000000..10257543a029cc608c9df1c36c83e36ac3dd5b46
+--- /dev/null
++++ b/firmware/ti-linux-firmware
+@@ -0,0 +1 @@
++Subproject commit 10257543a029cc608c9df1c36c83e36ac3dd5b46
 diff --git a/images/Makefile.k3 b/images/Makefile.k3
-index c03ce7acc3152bacfcd7c3c8bf953c2214aaa42a..b754202650f9c6178695c868af8bd2101012f203 100644
+index 3236a983d10a0df552392762200d8aa20fb2ea44..12db9c59a96eade62679987aedb9b5433cec3c2f 100644
 --- a/images/Makefile.k3
 +++ b/images/Makefile.k3
-@@ -28,40 +28,40 @@ KEY_custmpk=$(srctree)/arch/arm/mach-k3/custMpk.pem
+@@ -21,9 +21,9 @@ ifdef CONFIG_MACH_K3_CORTEX_R5
+ 
+ SYSFWDATA_am625=$(objtree)/arch/arm/mach-k3/combined-sysfw-cfg-am62x.k3cfg
+ DMDATA_am625=$(objtree)/arch/arm/mach-k3/combined-dm-cfg-am62x.k3cfg
+-SYSFW_am625_hs_fs=$(FIRMWARE_DIR)/ti-fs-firmware-am62x-hs-fs-enc.bin
+-SYSFW_am625_gp=$(FIRMWARE_DIR)/ti-fs-firmware-am62x-gp.bin
+-INNERDATA_am625=$(FIRMWARE_DIR)/ti-fs-firmware-am62x-hs-fs-cert.bin
++SYSFW_am625_hs_fs=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62x-hs-fs-enc.bin
++SYSFW_am625_gp=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62x-gp.bin
++INNERDATA_am625=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62x-hs-fs-cert.bin
+ KEY_custmpk=$(srctree)/arch/arm/mach-k3/custMpk.pem
  KEY_degenerate=$(srctree)/arch/arm/mach-k3/ti-degenerate-key.pem
  
- ## TI am625(sip)-SK ##
--SYSFW_start_am625_sk_r5.pblb.k3img=$(SYSFW_am625_hs_fs)
--SYSFWDATA_start_am625_sk_r5.pblb.k3img=$(SYSFWDATA_am625)
--DMDATA_start_am625_sk_r5.pblb.k3img=$(DMDATA_am625)
--INNERDATA_start_am625_sk_r5.pblb.k3img=$(INNERDATA_am625)
--KEY_start_am625_sk_r5.pblb.k3img=$(KEY_custmpk)
-+SYSFW_start_am625_sk_r5.pblb.k3_am62x_img=$(SYSFW_am625_hs_fs)
-+SYSFWDATA_start_am625_sk_r5.pblb.k3_am62x_img=$(SYSFWDATA_am625)
-+DMDATA_start_am625_sk_r5.pblb.k3_am62x_img=$(DMDATA_am625)
-+INNERDATA_start_am625_sk_r5.pblb.k3_am62x_img=$(INNERDATA_am625)
-+KEY_start_am625_sk_r5.pblb.k3_am62x_img=$(KEY_custmpk)
- 
- pblb-$(CONFIG_MACH_AM625_SK) += start_am625_sk_r5
--FILE_barebox-am625-sk-r5.img = start_am625_sk_r5.pblb.k3img
-+FILE_barebox-am625-sk-r5.img = start_am625_sk_r5.pblb.k3_am62x_img
- image-$(CONFIG_MACH_AM625_SK) += barebox-am625-sk-r5.img
- 
--SYSFW_start_am625sip_sk_r5.pblb.k3img=$(SYSFW_am625_hs_fs)
--SYSFWDATA_start_am625sip_sk_r5.pblb.k3img=$(SYSFWDATA_am625)
--DMDATA_start_am625sip_sk_r5.pblb.k3img=$(DMDATA_am625)
--INNERDATA_start_am625sip_sk_r5.pblb.k3img=$(INNERDATA_am625)
--KEY_start_am625sip_sk_r5.pblb.k3img=$(KEY_custmpk)
-+SYSFW_start_am625sip_sk_r5.pblb.k3_am62x_img=$(SYSFW_am625_hs_fs)
-+SYSFWDATA_start_am625sip_sk_r5.pblb.k3_am62x_img=$(SYSFWDATA_am625)
-+DMDATA_start_am625sip_sk_r5.pblb.k3_am62x_img=$(DMDATA_am625)
-+INNERDATA_start_am625sip_sk_r5.pblb.k3_am62x_img=$(INNERDATA_am625)
-+KEY_start_am625sip_sk_r5.pblb.k3_am62x_img=$(KEY_custmpk)
- 
- pblb-$(CONFIG_MACH_AM625_SK) += start_am625sip_sk_r5
--FILE_barebox-am625sip-sk-r5.img = start_am625sip_sk_r5.pblb.k3img
-+FILE_barebox-am625sip-sk-r5.img = start_am625sip_sk_r5.pblb.k3_am62x_img
- image-$(CONFIG_MACH_AM625_SK) += barebox-am625sip-sk-r5.img
- 
- ## BeaglePlay ##
--SYSFW_start_beagleplay_r5.pblb.k3img=$(SYSFW_am625_gp)
--SYSFWDATA_start_beagleplay_r5.pblb.k3img=$(SYSFWDATA_am625)
--DMDATA_start_beagleplay_r5.pblb.k3img=$(DMDATA_am625)
--KEY_start_beagleplay_r5.pblb.k3img=$(KEY_degenerate)
-+SYSFW_start_beagleplay_r5.pblb.k3_am62x_img=$(SYSFW_am625_gp)
-+SYSFWDATA_start_beagleplay_r5.pblb.k3_am62x_img=$(SYSFWDATA_am625)
-+DMDATA_start_beagleplay_r5.pblb.k3_am62x_img=$(DMDATA_am625)
-+KEY_start_beagleplay_r5.pblb.k3_am62x_img=$(KEY_degenerate)
- 
- pblb-$(CONFIG_MACH_BEAGLEPLAY) += start_beagleplay_r5
--FILE_barebox-beagleplay-r5.img = start_beagleplay_r5.pblb.k3img
-+FILE_barebox-beagleplay-r5.img = start_beagleplay_r5.pblb.k3_am62x_img
- image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay-r5.img
- 
- endif
- 
--quiet_cmd_k3_image = K3IMG   $@
--      cmd_k3_image = \
-+quiet_cmd_k3_am62x_image = K3_am62x_IMG   $@
-+      cmd_k3_am62x_image = \
- 		if [ -n "$(INNERDATA_$(@F))" ]; then				\
- 			inner="$(INNERDATA_$(@F)):3:0:0:00000000";		\
- 		fi;								\
-@@ -74,5 +74,5 @@ quiet_cmd_k3_image = K3IMG   $@
- 			$(DMDATA_$(@F)):17:16:0:43c3a800			\
- 			--key $(KEY_$(@F)) --out $@
- 
--$(obj)/%.k3img: $(obj)/% scripts/k3img FORCE
--	$(call if_changed,k3_image)
-+$(obj)/%.k3_am62x_img: $(obj)/% scripts/k3img FORCE
-+	$(call if_changed,k3_am62x_image)
 
 -- 
 2.39.5
