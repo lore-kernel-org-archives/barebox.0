@@ -1,65 +1,67 @@
-Delivery-date: Thu, 05 Jun 2025 13:37:07 +0200
+Delivery-date: Thu, 05 Jun 2025 13:37:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uB-003zg7-2L
+	id 1uN8uC-003zgS-0r
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 13:37:07 +0200
+	Thu, 05 Jun 2025 13:37:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8u9-0000Qx-IC
-	for lore@pengutronix.de; Thu, 05 Jun 2025 13:37:07 +0200
+	id 1uN8u9-0000Qu-N1
+	for lore@pengutronix.de; Thu, 05 Jun 2025 13:37:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=b6VDcBI4UgtjjHFguXGaSKe+99WJ6I6yGuDTsZ2xEv4=; b=zg7UyLLaqWtLvz/auNwhbwPPnc
-	AylytyMyXkpd/Y6otCCNxiVmTCoJkXkesA5k5X4aY/X9ypyE0bLHRyv7uIe9pkYe/0ytsnG650ByK
-	estSX4vQCqo7138P8C07AN2wzALY8r5OnnVXdBly7UYvM7l+xEqNKPdncwqNyVHwQhBFvHaVWrW/9
-	utxlqjm+MsUQwyUDAEcBu7CXMDYC/f1re7aFJF/ETgp8UxcRIDLWemXFGkLS5bH/Zq0o36CdH68Bg
-	vvJDWW6gFqSD0vDSNd820L6HGU7LMal99HdUzoaDzyHB1Zm3fJWhhIBgetACsqeyEmIZGp6prqERZ
-	h+vZ2cYw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=kvVxQ4zjY2Pe9Klwl9/BUqvXTY9KpRUUKknVmrfMCn0=; b=hOLrU0h86AmMaPG6m/rQ4aYqXM
+	z4IenhlBJ7t7NKVitCrp6adPWcgsUsYrWRwddmi2NQHgq8Wq5dv1XAnAKiUApg28PS5RmSDlzobNF
+	e11kzJtbk4qj70Ov7qCEYd9F3byNjbqPHIHlGG97HesSOc6sbHGUgQDmOoYJslIfKL6XGriKBdy9x
+	GyEcyRj9eIB3a/mqxykZbpf00Ps0IQC45ZW9+8vzvJkxOcooPgUy64kox1RaxHDM4j6UepQKtcb0O
+	hqxw/eJ9gEY8Su7oEE8/kCkQlPfFTb0iAH0wn/i/QeJB07R9VwOg2tuD/GPu5XH5LJ6ForU1VVYF0
+	AVyd5QEA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8tS-0000000FNDy-22wr;
-	Thu, 05 Jun 2025 11:36:22 +0000
+	id 1uN8tT-0000000FNEP-2lcZ;
+	Thu, 05 Jun 2025 11:36:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8iu-0000000FMAl-36jH
+	id 1uN8j2-0000000FMDk-0QV3
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 11:25:30 +0000
+	Thu, 05 Jun 2025 11:25:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8ir-000182-AY; Thu, 05 Jun 2025 13:25:25 +0200
+	id 1uN8j0-0001FN-TG; Thu, 05 Jun 2025 13:25:34 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8ir-001wtm-0R;
-	Thu, 05 Jun 2025 13:25:25 +0200
+	id 1uN8j0-001wty-2I;
+	Thu, 05 Jun 2025 13:25:34 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8ir-008DaT-2I;
-	Thu, 05 Jun 2025 13:25:25 +0200
+	id 1uN8j1-008F6s-0s;
+	Thu, 05 Jun 2025 13:25:34 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 Jun 2025 13:25:23 +0200
-Message-Id: <20250605112524.1958636-1-a.fatoum@pengutronix.de>
+Date: Thu,  5 Jun 2025 13:25:33 +0200
+Message-Id: <20250605112533.1960069-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250605112533.1960069-1-a.fatoum@pengutronix.de>
+References: <20250605112533.1960069-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_042528_781048_5A004E57 
-X-CRM114-Status: GOOD (  11.59  )
+X-CRM114-CacheID: sfid-20250605_042536_259934_400BA50B 
+X-CRM114-Status: GOOD (  10.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,72 +83,66 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] scripts: rockchip: rename SECTOR_SIZE/PAGE_SIZE
+Subject: [PATCH 3/3] fastboot: switch to using error format specifiers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-musl was found to define PAGE_SIZE on its own, which conflicts with the
-definition we use in the host tool. Add a RK_ prefix for the
-Rockchip-specific SECTOR_SIZE and PAGE_SIZE macros to avoid this.
+With the addition of the __printf attribute to fastboot_tx_print, we get
+a number of warnings telling us that we are passing not a string literal
+as format string, but the result of strerror.
+
+Silence the warning by using the error format specifiers instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/rk-usb-loader.c | 4 ++--
- scripts/rkimage.c       | 4 ++--
- scripts/rockchip.h      | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ common/fastboot.c                        | 6 +++---
+ drivers/usb/gadget/function/f_fastboot.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/rk-usb-loader.c b/scripts/rk-usb-loader.c
-index ad70cfe27147..2e0d5488deb9 100644
---- a/scripts/rk-usb-loader.c
-+++ b/scripts/rk-usb-loader.c
-@@ -266,8 +266,8 @@ static int upload_image(const char *filename)
+diff --git a/common/fastboot.c b/common/fastboot.c
+index 886f22f61128..2a5906c7e6a4 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -835,7 +835,7 @@ static void cb_erase(struct fastboot *fb, const char *cmd)
  
- 		log_info("Uploading %d/%d\n", i + 1, n_files);
+ 	fd = open(filename, O_RDWR);
+ 	if (fd < 0)
+-		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, strerror(-fd));
++		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, "%m");
  
--		foffset = (entry->sector & 0xffff) * SECTOR_SIZE;
--		fsize = (entry->sector >> 16) * SECTOR_SIZE;
-+		foffset = (entry->sector & 0xffff) * RK_SECTOR_SIZE;
-+		fsize = (entry->sector >> 16) * RK_SECTOR_SIZE;
+ 	ret = erase(fd, ERASE_SIZE_ALL, 0, ERASE_TO_CLEAR);
  
- 		log_debug("image starting at offset 0x%08x, size 0x%08x\n", foffset, fsize);
+@@ -920,7 +920,7 @@ static void cb_oem_setenv(struct fastboot *fb, const char *cmd)
+ 	free(var);
  
-diff --git a/scripts/rkimage.c b/scripts/rkimage.c
-index 551114ed8220..b31893fe8f45 100644
---- a/scripts/rkimage.c
-+++ b/scripts/rkimage.c
-@@ -82,7 +82,7 @@ static int create_newidb(struct newidb *idb)
- 		struct rkcode *c = &code[i];
- 		unsigned int image_sector;
+ 	if (ret)
+-		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, strerror(-ret));
++		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, "%pe", ERR_PTR(ret));
+ }
  
--		image_sector = c->size / SECTOR_SIZE;
-+		image_sector = c->size / RK_SECTOR_SIZE;
+ static void cb_oem_exec(struct fastboot *fb, const char *cmd)
+@@ -935,7 +935,7 @@ static void cb_oem_exec(struct fastboot *fb, const char *cmd)
  
- 		entry->sector  = (image_sector << 16) + image_offset;
- 		entry->unknown_ffffffff = 0xffffffff;
-@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
- 			exit(1);
+ 	ret = run_command(cmd);
+ 	if (ret < 0)
+-		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, strerror(-ret));
++		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, "%pe", ERR_PTR(ret));
+ 	else if (ret > 0)
+ 		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, "");
+ 	else
+diff --git a/drivers/usb/gadget/function/f_fastboot.c b/drivers/usb/gadget/function/f_fastboot.c
+index 20a5f076aa12..85732802ff80 100644
+--- a/drivers/usb/gadget/function/f_fastboot.c
++++ b/drivers/usb/gadget/function/f_fastboot.c
+@@ -471,7 +471,7 @@ static void rx_handler_dl_image(struct usb_ep *ep, struct usb_request *req)
+ 					    req->actual);
+ 	if (ret < 0) {
+ 		fastboot_tx_print(&f_fb->fastboot, FASTBOOT_MSG_FAIL,
+-				  strerror(-ret));
++				  "%pe", ERR_PTR(ret));
+ 		return;
+ 	}
  
- 		c->path = path;
--		c->size = ALIGN(s.st_size, PAGE_SIZE);
-+		c->size = ALIGN(s.st_size, RK_PAGE_SIZE);
- 		c->buf = calloc(c->size, 1);
- 		if (!c->buf)
- 			exit(1);
-diff --git a/scripts/rockchip.h b/scripts/rockchip.h
-index 8cc14f8f2fbd..2d060fdefe90 100644
---- a/scripts/rockchip.h
-+++ b/scripts/rockchip.h
-@@ -29,7 +29,7 @@ struct newidb {
- 	unsigned char hash[512];
- };
- 
--#define SECTOR_SIZE 512
--#define PAGE_SIZE 2048
-+#define RK_SECTOR_SIZE 512
-+#define RK_PAGE_SIZE 2048
- 
- #endif /* __ROCKCHIP_H */
 -- 
 2.39.5
 
