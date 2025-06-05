@@ -1,65 +1,68 @@
-Delivery-date: Thu, 05 Jun 2025 13:37:11 +0200
+Delivery-date: Thu, 05 Jun 2025 13:37:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uF-003zhj-1Q
+	id 1uN8uG-003ziR-0B
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 13:37:11 +0200
+	Thu, 05 Jun 2025 13:37:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uN8uB-0000TU-Lk
+	id 1uN8uC-0000U9-9S
 	for lore@pengutronix.de; Thu, 05 Jun 2025 13:37:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=u6zCWfYGixYMLHVGLyrHdf6v5EjVzGOx97cpsQXoUJw=; b=asURsDVm4T9ouReo3h2CDnyTGD
-	pmw+AbWe1rpqCWxhDaMVtHm/4E0c0PmzUKabp1Z6BJWgyWqGAnB845cV66MAJwYyCqJXylL68Nw5z
-	xS3bp6iLKEgDCdDnVr60++1LAj0y02CJmU+JC+DhNQOhnWDB8iU64qw4+DncWtE8WsBpHm8T5xDMb
-	Aw2lsbe1qUVSs4wyh7WeBQnRMZmqDxJLTqBrUCXocLc//lIk1jbplePj9GCbvbECOp2ArlwzqYzFc
-	/34aqcZIoYJuLMZBUF+SNHekO1qE0QWWmSPNPLbeRkEjo1vFbuVvX2OIr/X10lgIztIsU/KMpoCVI
-	EeFuFFmA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Z3guQ9C8LVnNpe2L9PjXJ3cjtet1+DgYkPACgG0et2k=; b=X6zSjEwSfbVOC8oHQWnPj0HEOq
+	1sEI2pqj0v9Dulim+IYeAP2rrlP0P0t0QQ8Ra3LlP2el9rqbwDvCz/9lEXk0uBw48qt1UiNB4hg4A
+	ujDGkisOI9HM0dfTAau1nh8pIIWDsCFZZ73/75RbpPNrdmS/5+qw3iOyuHwXwZUMPaxZjfolO4kHJ
+	oCP3OQUPmwe1Z2UxHcWyExHPJsq0qS+dhIARMZ/Ec/RZGRrRBvqrXwlFbA1SZv1vhgP9kjzkENb4q
+	8q44ZPbpZb1dPT4KLdt8/nYrbo21WAI31j6j1dkOsRiKzRNeMlbZMOiCRbHFY33cI/mAgi+MRXIEl
+	mKtMo0Kw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8tX-0000000FNHa-0quS;
-	Thu, 05 Jun 2025 11:36:27 +0000
+	id 1uN8ta-0000000FNLJ-2wiq;
+	Thu, 05 Jun 2025 11:36:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uN8jl-0000000FMNv-0BZr
+	id 1uN8sg-0000000FN7z-1qH8
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 11:26:22 +0000
+	Thu, 05 Jun 2025 11:35:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8jj-0001hw-Qa; Thu, 05 Jun 2025 13:26:19 +0200
+	id 1uN8sf-0007Mm-8D; Thu, 05 Jun 2025 13:35:33 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8jj-001wuG-22;
-	Thu, 05 Jun 2025 13:26:19 +0200
+	id 1uN8sf-001wzb-08;
+	Thu, 05 Jun 2025 13:35:33 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uN8jk-008H9N-0f;
-	Thu, 05 Jun 2025 13:26:19 +0200
+	id 1uN8sf-008mT4-1p;
+	Thu, 05 Jun 2025 13:35:32 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 Jun 2025 13:26:18 +0200
-Message-Id: <20250605112618.1972479-1-a.fatoum@pengutronix.de>
+Date: Thu,  5 Jun 2025 13:35:14 +0200
+Message-Id: <20250605113530.2076990-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
+References: <20250605113530.2076990-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_042621_108315_BEFE4C32 
-X-CRM114-Status: GOOD (  12.49  )
+X-CRM114-CacheID: sfid-20250605_043534_514021_160697BB 
+X-CRM114-Status: UNSURE (   9.31  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,58 +84,113 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fs: ramfs: do not bother unmounting ramfs on shutdown
+Subject: [PATCH 05/21] kbuild: collect compatibility symlink creation in symlink-y
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-It's pointless to free memory when we are about to boot a kernel that
-will reclaim all memory anyway.
-
-As ramfs only consists of such memory buffers, let's just skip its
-freeing.
+This allows for easier addition of symlinks, which is something we are
+going to do soon for the fuzzing support.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c    | 2 ++
- fs/ramfs.c | 5 -----
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ Makefile             | 21 ++++++++++++---------
+ images/Makefile      | 10 +++++++++-
+ scripts/Makefile.lib |  2 ++
+ 3 files changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 0f821451103f..4d478eaf1f72 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -835,6 +835,8 @@ static void fs_remove(struct device *dev)
- 	int ret;
+diff --git a/Makefile b/Makefile
+index 2abd03cb0a74..ecaf195b726d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -815,9 +815,6 @@ export KBUILD_BINARY ?= barebox.bin
+ # Also any assignments in arch/$(SRCARCH)/Makefile take precedence over
+ # the default value.
  
- 	if (fsdev->dev.driver) {
-+		if (!dev->driver->remove)
-+			return;
- 		dev->driver->remove(dev);
- 		list_del(&fsdev->list);
- 	}
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index ab3c44270d43..e971f608545c 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -435,10 +435,6 @@ static int ramfs_probe(struct device *dev)
- 	return 0;
- }
- 
--static void ramfs_remove(struct device *dev)
--{
--}
+-barebox-flash-image: $(KBUILD_IMAGE) FORCE
+-	$(call if_changed,symlink)
 -
- static struct fs_driver ramfs_driver = {
- 	.read      = ramfs_read,
- 	.write     = ramfs_write,
-@@ -446,7 +442,6 @@ static struct fs_driver ramfs_driver = {
- 	.truncate  = ramfs_truncate,
- 	.drv = {
- 		.probe  = ramfs_probe,
--		.remove = ramfs_remove,
- 		.name = "ramfs",
- 	}
- };
+ barebox-flash-images: $(KBUILD_IMAGE)
+ 	@echo $^ > $@
+ 
+@@ -826,16 +823,22 @@ images: barebox.bin FORCE
+ images/%: barebox.bin FORCE
+ 	$(Q)$(MAKE) $(build)=images $@
+ 
+-ifdef CONFIG_EFI_STUB
+-all: barebox.bin images barebox.efi
+-barebox.efi: FORCE
+-	$(Q)ln -fsn images/barebox-dt-2nd.img $@
+-else ifdef CONFIG_PBL_IMAGE
++ifdef CONFIG_PBL_IMAGE
++SYMLINK_TARGET_barebox.efi = images/barebox-dt-2nd.img
++symlink-$(CONFIG_EFI_STUB) += barebox.efi
+ all: barebox.bin images
+ else
+-all: barebox-flash-image barebox-flash-images
++SYMLINK_TARGET_barebox-flash-image = $(KBUILD_IMAGE)
++symlink-y += barebox-flash-image
++all: barebox-flash-images
+ endif
+ 
++all: $(symlink-y)
++
++.SECONDEXPANSION:
++$(symlink-y): $$(SYMLINK_TARGET_$$(@F)) FORCE
++	$(call if_changed,symlink_quiet)
++
+ common-$(CONFIG_PBL_IMAGE)	+= pbl/
+ common-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv/
+ 
+diff --git a/images/Makefile b/images/Makefile
+index c8ab8fc015ae..ca37c054ae9c 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -223,9 +223,12 @@ flash-list := $(obj)/../barebox-flash-images
+ # multiple images
+ flash-link := $(obj)/../barebox-flash-image
+ link-dest := $(if $(filter 1,$(words $(image-y))),$(image-y-path),multi-image-build)
++
++symlink-y-path := $(addprefix $(obj)/,$(symlink-y))
++
+ multi-image-build:
+ 
+-images: $(image-y-path) $(flash-link) $(flash-list) FORCE
++images: $(image-y-path) $(flash-link) $(flash-list) $(symlink-y-path) FORCE
+ 	@echo "images built:"
+ 	@for i in $(image-y); do \
+ 	  if [ -s $(obj)/$$i ]; then echo $$i; \
+@@ -233,6 +236,7 @@ images: $(image-y-path) $(flash-link) $(flash-list) FORCE
+ 	  $(if $(CONFIG_MISSING_FIRMWARE_ERROR), >&2 sed 's/^/\t/' <$(obj)/$${i}.missing-firmware; missing=1;) \
+ 	  fi; done; if [ -n "$$missing" ]; then \
+ 	    echo >&2 "Firmware missing in CONFIG_MISSING_FIRMWARE_ERROR=y build"; exit 1; fi
++	@for i in $(symlink-y); do echo $$i; done
+ 
+ __images_install: images
+ 	@for i in $(image-y-path); do if [ -s $$i ]; then install -t "$(INSTALL_PATH)" $$i; fi; done
+@@ -245,6 +249,10 @@ $(flash-link): $(link-dest) FORCE
+ $(flash-list): $(image-y-path)
+ 	@for i in $^; do if [ -s $$i ]; then echo $$i; fi; done > $@
+ 
++.SECONDEXPANSION:
++$(symlink-y-path): $(obj)/$$(SYMLINK_TARGET_$$(@F)) FORCE
++	$(call if_changed,symlink_quiet)
++
+ clean-files := *.pbl *.pblb *.elf *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+ 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
+ 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd *.rkimg \
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index e960d62ce59e..e6f0e254960a 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -532,6 +532,8 @@ cmd_disasm = $(OBJDUMP) -d $< > $@
+ quiet_cmd_symlink = LN      $@
+       cmd_symlink = mkdir -p $(dir $@) ; ln -fsn --relative $< $@
+ 
++cmd_symlink_quiet = mkdir -p $(dir $@) ; ln -fsn --relative $< $@
++
+ quiet_cmd_check_size = CHKSIZE $2
+       cmd_check_size = set -e;						\
+ 	size=`printf "%d" $2`;						\
 -- 
 2.39.5
 
