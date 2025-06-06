@@ -1,55 +1,55 @@
-Delivery-date: Fri, 06 Jun 2025 07:59:04 +0200
+Delivery-date: Fri, 06 Jun 2025 07:59:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNQ6Z-004HLe-31
+	id 1uNQ6d-004HM9-0y
 	for lore@lore.pengutronix.de;
-	Fri, 06 Jun 2025 07:59:03 +0200
+	Fri, 06 Jun 2025 07:59:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNQ6S-0004wg-BV
-	for lore@pengutronix.de; Fri, 06 Jun 2025 07:59:03 +0200
+	id 1uNQ6W-00051m-Da
+	for lore@pengutronix.de; Fri, 06 Jun 2025 07:59:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cHbiVTkP83KTCrjgN2FiJSVkfTcEjgVw2ZAaijYHAc8=; b=KZH75FMLBnROWIE/3sBP/k40jn
-	b06groSCEs+qella/RPER2bM0FshKPRzIF9MV54rtfm9f/8nyaMWrCbxIGghdzUsqV7OUk5txH2Vg
-	L76lrI21jpJpVhXnLCyYt6X5qp6URHnmU7cxsa5+64Epg6mshQUndnOz/TVrjwkFAdX2EycI4Tixp
-	S1UaQTNxgz9a3mzxaTCk4LAu91TUvPVz7hD6lKU/DoU9gPPXtHD4LyJR4hI6osTlbOdmnBkb44ZWd
-	gFmZa6VjeA0xa2GeM2lOcXrxwTehuHm49ngkZ/47mBVZYZuHyRS0VFGs+t+zcT9LeH3Oe3Uovub7o
-	SZDGMuCQ==;
+	bh=iRcSOv+HBaHy97F+2BJowedWIj8CJRiNA/3Xs4vVVCg=; b=C59/v7olXbTDNy4v11ir3Du7jo
+	uZcJh00DHMsWjig2V3gNKvGgxHOPXUdb9YpodH6F/8UNKYaxs7RjnTVw4WjcbrWGCFp/uB1S1YH09
+	zrkQgSY1vrczqu7lYJwNLwr88N0+hJ3UUJxc09SKu8ISbE81S8HPejxUhGyVESAZWMlVYYFj9+gNN
+	joZlEy8LGnGNBAveVd8jpFGCl/VFLHL4lpC5tl+6jDnI7aCTwBqMYICH5WephxVs1+nTgzLVy7Aks
+	MrLhMOSFNmMX4zeN6aknvyxlRwNKCWaaXJO+f6+0B92T2E3YSIU8jelMSGDOlrDcWPtoYL/V1uzPi
+	Vds510Nw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNQ5g-0000000H9U8-3N1o;
-	Fri, 06 Jun 2025 05:58:08 +0000
+	id 1uNQ5i-0000000H9Wj-0vfS;
+	Fri, 06 Jun 2025 05:58:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNQ5S-0000000H9GA-3cz9
+	id 1uNQ5T-0000000H9GL-0Sm7
 	for barebox@lists.infradead.org;
 	Fri, 06 Jun 2025 05:57:59 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNQ5R-0003r4-JD; Fri, 06 Jun 2025 07:57:53 +0200
+	id 1uNQ5R-0003r4-QG; Fri, 06 Jun 2025 07:57:53 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri,  6 Jun 2025 07:57:46 +0200
-Message-Id: <20250606055748.1990383-15-a.fatoum@barebox.org>
+Date: Fri,  6 Jun 2025 07:57:47 +0200
+Message-Id: <20250606055748.1990383-16-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250606055748.1990383-1-a.fatoum@barebox.org>
 References: <20250606055748.1990383-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_225755_215112_BD99F5A7 
-X-CRM114-Status: GOOD (  31.95  )
+X-CRM114-CacheID: sfid-20250605_225755_489099_559224A4 
+X-CRM114-Status: GOOD (  24.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,517 +71,626 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 14/16] video: add STM32 MIPI DSI video driver
+Subject: [PATCH v2 15/16] video: add support for Orise Technology otm8009a panel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now with the common Designware MIPI DSI support added, let's add STM32
-glue driver to make use of it.
+This is the panel used on the STM32MP157C-DK2. Unfortunately, I have not
+been successful in reading the panel ID via MIPI-DSI, but video mode
+works fine.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/video/Kconfig     |   9 +
- drivers/video/Makefile    |   1 +
- drivers/video/stm32_dsi.c | 458 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 468 insertions(+)
- create mode 100644 drivers/video/stm32_dsi.c
+ drivers/video/Kconfig                    |   9 +
+ drivers/video/Makefile                   |   1 +
+ drivers/video/panel-orisetech-otm8009a.c | 506 +++++++++++++++++++++++
+ include/linux/gpio/consumer.h            |   3 +
+ include/video/backlight.h                |  14 +
+ include/video/drm/drm_connector.h        |   2 +
+ 6 files changed, 535 insertions(+)
+ create mode 100644 drivers/video/panel-orisetech-otm8009a.c
 
 diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 818ff4a0f1c8..c4b244fa5a98 100644
+index c4b244fa5a98..2cf6bf6906d5 100644
 --- a/drivers/video/Kconfig
 +++ b/drivers/video/Kconfig
-@@ -68,6 +68,15 @@ config DRIVER_VIDEO_STM32_LTDC
- 	  Say 'Y' here to enable framebuffer and splash screen support for
- 	  STM32 and STM32MP1.
+@@ -203,6 +203,15 @@ config DRIVER_VIDEO_PANEL_SITRONIX_ST7789V
+ 	  Say Y here if you want to enable support for the Sitronix
+ 	  ST7789V controller for 240x320 LCD panels
  
-+config DRIVER_VIDEO_STM32_DSI
-+	bool "Enable STM32 DSI video support"
-+	select VIDEO_VPL
-+	select DRIVER_VIDEO_DW_MIPI_DSI
-+	depends on ARCH_STM32 || COMPILE_TEST
++config DRIVER_VIDEO_PANEL_ORISETECH_OTM8009A
++	tristate "Orise Technology otm8009a 480x800 dsi 2dl panel"
++	depends on OF
++	depends on DRIVER_VIDEO_MIPI_DSI
++	depends on DRIVER_VIDEO_BACKLIGHT
 +	help
-+	  This option enables support DSI internal bridge which can be used on
-+	  devices which have DSI devices connected.
++	  Say Y here if you want to enable support for Orise Technology
++	  otm8009a 480x800 dsi 2dl panel.
 +
- config DRIVER_VIDEO_SDL
- 	bool "SDL framebuffer driver"
- 	depends on HAVE_LIBSDL2
+ config DRIVER_VIDEO_PANEL_MIPI_DBI
+ 	tristate "MIPI DBI compatible panels"
+ 	depends on OFTREE && SPI
 diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 73d135776102..f6c309ead23b 100644
+index f6c309ead23b..470a5abaa450 100644
 --- a/drivers/video/Makefile
 +++ b/drivers/video/Makefile
-@@ -20,6 +20,7 @@ obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
+@@ -15,6 +15,7 @@ obj-$(CONFIG_DRIVER_VIDEO_MIPI_DSI) += mipi_dsi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
++obj-$(CONFIG_DRIVER_VIDEO_PANEL_ORISETECH_OTM8009A) += panel-orisetech-otm8009a.o
+ 
+ obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
  obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
- obj-$(CONFIG_DRIVER_VIDEO_STM) += stm.o
- obj-$(CONFIG_DRIVER_VIDEO_STM32_LTDC) += stm32_ltdc.o
-+obj-$(CONFIG_DRIVER_VIDEO_STM32_DSI) += stm32_dsi.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
- obj-$(CONFIG_DRIVER_VIDEO_PXA) += pxa.o
-diff --git a/drivers/video/stm32_dsi.c b/drivers/video/stm32_dsi.c
+diff --git a/drivers/video/panel-orisetech-otm8009a.c b/drivers/video/panel-orisetech-otm8009a.c
 new file mode 100644
-index 000000000000..588b41f1a9f7
+index 000000000000..3530547971d8
 --- /dev/null
-+++ b/drivers/video/stm32_dsi.c
-@@ -0,0 +1,458 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/drivers/video/panel-orisetech-otm8009a.c
+@@ -0,0 +1,506 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright (C) 2019 STMicroelectronics - All Rights Reserved
-+ * Author(s): Philippe Cornu <philippe.cornu@st.com> for STMicroelectronics.
-+ *	      Yannick Fertre <yannick.fertre@st.com> for STMicroelectronics.
++ * Copyright (C) STMicroelectronics SA 2017
 + *
-+ * This MIPI DSI controller driver is based on the Linux Kernel driver from
-+ * drivers/gpu/drm/stm/dw_mipi_dsi-stm.c.
++ * Authors: Philippe Cornu <philippe.cornu@st.com>
++ *          Yannick Fertre <yannick.fertre@st.com>
 + */
 +
-+#define pr_fmt(fmt) "stm32_dsi: " fmt
-+
-+#include <linux/clk.h>
-+#include <linux/reset.h>
-+#include <linux/math.h>
-+#include <of.h>
-+#include <of_graph.h>
-+#include <linux/bitops.h>
-+#include <linux/iopoll.h>
-+#include <linux/printk.h>
++#include <video/backlight.h>
++#include <video/vpl.h>
++#include <clock.h>
++#include <linux/kernel.h>
++#include <linux/gpio/consumer.h>
++#include <video/media-bus-format.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
 +#include <regulator.h>
 +
 +#include <video/mipi_display.h>
++
 +#include <video/mipi_dsi.h>
-+#include <video/dw_mipi_dsi.h>
++#include <video/mipi_display.h>
 +#include <video/drm/drm_modes.h>
++#include <video/videomode.h>
 +
-+#define HWVER_130			0x31333000	/* IP version 1.30 */
-+#define HWVER_131			0x31333100	/* IP version 1.31 */
++#define OTM8009A_BACKLIGHT_DEFAULT	240
++#define OTM8009A_BACKLIGHT_MAX		255
 +
-+/* DSI digital registers & bit definitions */
-+#define DSI_VERSION			0x00
-+#define VERSION				GENMASK(31, 8)
++/* Manufacturer Command Set */
++#define MCS_ADRSFT	0x0000	/* Address Shift Function */
++#define MCS_PANSET	0xB3A6	/* Panel Type Setting */
++#define MCS_SD_CTRL	0xC0A2	/* Source Driver Timing Setting */
++#define MCS_P_DRV_M	0xC0B4	/* Panel Driving Mode */
++#define MCS_OSC_ADJ	0xC181	/* Oscillator Adjustment for Idle/Normal mode */
++#define MCS_RGB_VID_SET	0xC1A1	/* RGB Video Mode Setting */
++#define MCS_SD_PCH_CTRL	0xC480	/* Source Driver Precharge Control */
++#define MCS_NO_DOC1	0xC48A	/* Command not documented */
++#define MCS_PWR_CTRL1	0xC580	/* Power Control Setting 1 */
++#define MCS_PWR_CTRL2	0xC590	/* Power Control Setting 2 for Normal Mode */
++#define MCS_PWR_CTRL4	0xC5B0	/* Power Control Setting 4 for DC Voltage */
++#define MCS_PANCTRLSET1	0xCB80	/* Panel Control Setting 1 */
++#define MCS_PANCTRLSET2	0xCB90	/* Panel Control Setting 2 */
++#define MCS_PANCTRLSET3	0xCBA0	/* Panel Control Setting 3 */
++#define MCS_PANCTRLSET4	0xCBB0	/* Panel Control Setting 4 */
++#define MCS_PANCTRLSET5	0xCBC0	/* Panel Control Setting 5 */
++#define MCS_PANCTRLSET6	0xCBD0	/* Panel Control Setting 6 */
++#define MCS_PANCTRLSET7	0xCBE0	/* Panel Control Setting 7 */
++#define MCS_PANCTRLSET8	0xCBF0	/* Panel Control Setting 8 */
++#define MCS_PANU2D1	0xCC80	/* Panel U2D Setting 1 */
++#define MCS_PANU2D2	0xCC90	/* Panel U2D Setting 2 */
++#define MCS_PANU2D3	0xCCA0	/* Panel U2D Setting 3 */
++#define MCS_PAND2U1	0xCCB0	/* Panel D2U Setting 1 */
++#define MCS_PAND2U2	0xCCC0	/* Panel D2U Setting 2 */
++#define MCS_PAND2U3	0xCCD0	/* Panel D2U Setting 3 */
++#define MCS_GOAVST	0xCE80	/* GOA VST Setting */
++#define MCS_GOACLKA1	0xCEA0	/* GOA CLKA1 Setting */
++#define MCS_GOACLKA3	0xCEB0	/* GOA CLKA3 Setting */
++#define MCS_GOAECLK	0xCFC0	/* GOA ECLK Setting */
++#define MCS_NO_DOC2	0xCFD0	/* Command not documented */
++#define MCS_GVDDSET	0xD800	/* GVDD/NGVDD */
++#define MCS_VCOMDC	0xD900	/* VCOM Voltage Setting */
++#define MCS_GMCT2_2P	0xE100	/* Gamma Correction 2.2+ Setting */
++#define MCS_GMCT2_2N	0xE200	/* Gamma Correction 2.2- Setting */
++#define MCS_NO_DOC3	0xF5B6	/* Command not documented */
++#define MCS_CMD2_ENA1	0xFF00	/* Enable Access Command2 "CMD2" */
++#define MCS_CMD2_ENA2	0xFF80	/* Enable Access Orise Command2 */
 +
-+/*
-+ * DSI wrapper registers & bit definitions
-+ * Note: registers are named as in the Reference Manual
-+ */
-+#define DSI_WCFGR	0x0400		/* Wrapper ConFiGuration Reg */
-+#define WCFGR_DSIM	BIT(0)		/* DSI Mode */
-+#define WCFGR_COLMUX	GENMASK(3, 1)	/* COLor MUltipleXing */
++#define OTM8009A_HDISPLAY	480
++#define OTM8009A_VDISPLAY	800
 +
-+#define DSI_WCR		0x0404		/* Wrapper Control Reg */
-+#define WCR_DSIEN	BIT(3)		/* DSI ENable */
-+
-+#define DSI_WISR	0x040C		/* Wrapper Interrupt and Status Reg */
-+#define WISR_PLLLS	BIT(8)		/* PLL Lock Status */
-+#define WISR_RRS	BIT(12)		/* Regulator Ready Status */
-+
-+#define DSI_WPCR0	0x0418		/* Wrapper Phy Conf Reg 0 */
-+#define WPCR0_UIX4	GENMASK(5, 0)	/* Unit Interval X 4 */
-+#define WPCR0_TDDL	BIT(16)		/* Turn Disable Data Lanes */
-+
-+#define DSI_WRPCR	0x0430		/* Wrapper Regulator & Pll Ctrl Reg */
-+#define WRPCR_PLLEN	BIT(0)		/* PLL ENable */
-+#define WRPCR_NDIV	GENMASK(8, 2)	/* pll loop DIVision Factor */
-+#define WRPCR_IDF	GENMASK(14, 11)	/* pll Input Division Factor */
-+#define WRPCR_ODF	GENMASK(17, 16)	/* pll Output Division Factor */
-+#define WRPCR_REGEN	BIT(24)		/* REGulator ENable */
-+#define WRPCR_BGREN	BIT(28)		/* BandGap Reference ENable */
-+#define IDF_MIN		1
-+#define IDF_MAX		7
-+#define NDIV_MIN	10
-+#define NDIV_MAX	125
-+#define ODF_MIN		1
-+#define ODF_MAX		8
-+
-+/* dsi color format coding according to the datasheet */
-+enum dsi_color {
-+	DSI_RGB565_CONF1,
-+	DSI_RGB565_CONF2,
-+	DSI_RGB565_CONF3,
-+	DSI_RGB666_CONF1,
-+	DSI_RGB666_CONF2,
-+	DSI_RGB888,
-+};
-+
-+#define LANE_MIN_KBPS	31250
-+#define LANE_MAX_KBPS	500000
-+
-+/* Timeout for regulator on/off, pll lock/unlock & fifo empty */
-+#define TIMEOUT_US	200000
-+
-+struct stm32_dsi_priv {
++struct otm8009a {
 +	struct device *dev;
-+	struct dw_mipi_dsi_plat_data pdata;
-+	u32 pllref_clk;
-+	u32 hw_version;
-+	int lane_min_kbps;
-+	int lane_max_kbps;
-+	struct regulator *vdd_reg;
++	struct vpl vpl;
++	struct backlight_device bl_dev;
++	struct gpio_desc *reset_gpio;
++	struct regulator *supply;
++	bool prepared;
 +};
 +
-+static inline void dsi_write(struct stm32_dsi_priv *dsi, u32 reg, u32 val)
-+{
-+	writel(val, dsi->pdata.base + reg);
-+}
-+
-+static inline u32 dsi_read(struct stm32_dsi_priv *dsi, u32 reg)
-+{
-+	return readl(dsi->pdata.base + reg);
-+}
-+
-+static inline void dsi_set(struct stm32_dsi_priv *dsi, u32 reg, u32 mask)
-+{
-+	dsi_write(dsi, reg, dsi_read(dsi, reg) | mask);
-+}
-+
-+static inline void dsi_clear(struct stm32_dsi_priv *dsi, u32 reg, u32 mask)
-+{
-+	dsi_write(dsi, reg, dsi_read(dsi, reg) & ~mask);
-+}
-+
-+static inline void dsi_update_bits(struct stm32_dsi_priv *dsi, u32 reg,
-+				   u32 mask, u32 val)
-+{
-+	dsi_write(dsi, reg, (dsi_read(dsi, reg) & ~mask) | val);
-+}
-+
-+static enum dsi_color dsi_color_from_mipi(u32 fmt)
-+{
-+	switch (fmt) {
-+	case MIPI_DSI_FMT_RGB888:
-+		return DSI_RGB888;
-+	case MIPI_DSI_FMT_RGB666:
-+		return DSI_RGB666_CONF2;
-+	case MIPI_DSI_FMT_RGB666_PACKED:
-+		return DSI_RGB666_CONF1;
-+	case MIPI_DSI_FMT_RGB565:
-+		return DSI_RGB565_CONF1;
-+	default:
-+		pr_err("MIPI color invalid, so we use rgb888\n");
-+	}
-+	return DSI_RGB888;
-+}
-+
-+static int dsi_pll_get_clkout_khz(int clkin_khz, int idf, int ndiv, int odf)
-+{
-+	int divisor = idf * odf;
-+
-+	/* prevent from division by 0 */
-+	if (!divisor)
-+		return 0;
-+
-+	return DIV_ROUND_CLOSEST(clkin_khz * ndiv, divisor);
-+}
-+
-+static int dsi_pll_get_params(struct stm32_dsi_priv *dsi,
-+			      int clkin_khz, int clkout_khz,
-+			      int *idf, int *ndiv, int *odf)
-+{
-+	int i, o, n, n_min, n_max;
-+	int fvco_min, fvco_max, delta, best_delta; /* all in khz */
-+
-+	/* Early checks preventing division by 0 & odd results */
-+	if (clkin_khz <= 0 || clkout_khz <= 0)
-+		return -EINVAL;
-+
-+	fvco_min = dsi->lane_min_kbps * 2 * ODF_MAX;
-+	fvco_max = dsi->lane_max_kbps * 2 * ODF_MIN;
-+
-+	best_delta = 1000000; /* big started value (1000000khz) */
-+
-+	for (i = IDF_MIN; i <= IDF_MAX; i++) {
-+		/* Compute ndiv range according to Fvco */
-+		n_min = ((fvco_min * i) / (2 * clkin_khz)) + 1;
-+		n_max = (fvco_max * i) / (2 * clkin_khz);
-+
-+		/* No need to continue idf loop if we reach ndiv max */
-+		if (n_min >= NDIV_MAX)
-+			break;
-+
-+		/* Clamp ndiv to valid values */
-+		if (n_min < NDIV_MIN)
-+			n_min = NDIV_MIN;
-+		if (n_max > NDIV_MAX)
-+			n_max = NDIV_MAX;
-+
-+		for (o = ODF_MIN; o <= ODF_MAX; o *= 2) {
-+			n = DIV_ROUND_CLOSEST(i * o * clkout_khz, clkin_khz);
-+			/* Check ndiv according to vco range */
-+			if (n < n_min || n > n_max)
-+				continue;
-+			/* Check if new delta is better & saves parameters */
-+			delta = dsi_pll_get_clkout_khz(clkin_khz, i, n, o) -
-+				clkout_khz;
-+			if (delta < 0)
-+				delta = -delta;
-+			if (delta < best_delta) {
-+				*idf = i;
-+				*ndiv = n;
-+				*odf = o;
-+				best_delta = delta;
-+			}
-+			/* fast return in case of "perfect result" */
-+			if (!delta)
-+				return 0;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int dsi_phy_init(void *priv_data)
-+{
-+	struct stm32_dsi_priv *dsi = priv_data;
-+	struct device *dev = dsi->dev;
-+	u32 val;
-+	int ret;
-+
-+	dev_dbg(dev, "Initialize DSI physical layer\n");
-+
-+	/* Enable the regulator */
-+	dsi_set(dsi, DSI_WRPCR, WRPCR_REGEN | WRPCR_BGREN);
-+	ret = readl_poll_timeout(dsi->pdata.base + DSI_WISR, val, val & WISR_RRS,
-+				 TIMEOUT_US);
-+	if (ret) {
-+		dev_dbg(dev, "!TIMEOUT! waiting REGU\n");
-+		return ret;
-+	}
-+
-+	/* Enable the DSI PLL & wait for its lock */
-+	dsi_set(dsi, DSI_WRPCR, WRPCR_PLLEN);
-+	ret = readl_poll_timeout(dsi->pdata.base + DSI_WISR, val, val & WISR_PLLLS,
-+				 TIMEOUT_US);
-+	if (ret) {
-+		dev_dbg(dev, "!TIMEOUT! waiting PLL\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void dsi_phy_post_set_mode(void *priv_data, unsigned long mode_flags)
-+{
-+	struct stm32_dsi_priv *dsi = priv_data;
-+	struct device *dev = dsi->dev;
-+
-+	dev_dbg(dev, "Set mode %p enable %ld\n", dsi,
-+		mode_flags & MIPI_DSI_MODE_VIDEO);
-+
-+	if (!dsi)
-+		return;
-+
-+	/*
-+	 * DSI wrapper must be enabled in video mode & disabled in command mode.
-+	 * If wrapper is enabled in command mode, the display controller
-+	 * register access will hang.
-+	 */
-+
-+	if (mode_flags & MIPI_DSI_MODE_VIDEO)
-+		dsi_set(dsi, DSI_WCR, WCR_DSIEN);
-+	else
-+		dsi_clear(dsi, DSI_WCR, WCR_DSIEN);
-+}
-+
-+static void dsi_phy_post_power_on(void *priv_data)
-+{
-+	dsi_phy_post_set_mode(priv_data, MIPI_DSI_MODE_VIDEO);
-+}
-+
-+static void dsi_phy_post_power_off(void *priv_data)
-+{
-+	dsi_phy_post_set_mode(priv_data, 0);
-+}
-+
-+static int dsi_get_lane_mbps(void *priv_data, const struct drm_display_mode *mode,
-+			     unsigned long mode_flags, u32 lanes, u32 format,
-+			     unsigned int *lane_mbps)
-+{
-+	struct stm32_dsi_priv *dsi = priv_data;
-+	struct device *dev = dsi->dev;
-+	int idf, ndiv, odf, pll_in_khz, pll_out_khz;
-+	int ret, bpp;
-+	u32 val;
-+
-+	/* Update lane capabilities according to hw version */
-+	dsi->lane_min_kbps = LANE_MIN_KBPS;
-+	dsi->lane_max_kbps = LANE_MAX_KBPS;
-+	if (dsi->hw_version == HWVER_131) {
-+		dsi->lane_min_kbps *= 2;
-+		dsi->lane_max_kbps *= 2;
-+	}
-+
-+	pll_in_khz = dsi->pllref_clk / 1000;
-+
-+	/* Compute requested pll out */
-+	bpp = mipi_dsi_pixel_format_to_bpp(format);
-+	pll_out_khz = mode->clock * bpp / lanes;
-+	/* Add 20% to pll out to be higher than pixel bw (burst mode only) */
-+	pll_out_khz = (pll_out_khz * 12) / 10;
-+	if (pll_out_khz > dsi->lane_max_kbps) {
-+		pll_out_khz = dsi->lane_max_kbps;
-+		dev_warn(dev, "Warning max phy mbps is used\n");
-+	}
-+	if (pll_out_khz < dsi->lane_min_kbps) {
-+		pll_out_khz = dsi->lane_min_kbps;
-+		dev_warn(dev, "Warning min phy mbps is used\n");
-+	}
-+
-+	/* Compute best pll parameters */
-+	idf = 0;
-+	ndiv = 0;
-+	odf = 0;
-+	ret = dsi_pll_get_params(dsi, pll_in_khz, pll_out_khz,
-+				 &idf, &ndiv, &odf);
-+	if (ret) {
-+		dev_err(dev, "Warning dsi_pll_get_params(): bad params\n");
-+		return ret;
-+	}
-+
-+	/* Get the adjusted pll out value */
-+	pll_out_khz = dsi_pll_get_clkout_khz(pll_in_khz, idf, ndiv, odf);
-+
-+	/* Set the PLL division factors */
-+	dsi_update_bits(dsi, DSI_WRPCR,	WRPCR_NDIV | WRPCR_IDF | WRPCR_ODF,
-+			(ndiv << 2) | (idf << 11) | ((ffs(odf) - 1) << 16));
-+
-+	/* Compute uix4 & set the bit period in high-speed mode */
-+	val = 4000000 / pll_out_khz;
-+	dsi_update_bits(dsi, DSI_WPCR0, WPCR0_UIX4, val);
-+
-+	/* Select video mode by resetting DSIM bit */
-+	dsi_clear(dsi, DSI_WCFGR, WCFGR_DSIM);
-+
-+	/* Select the color coding */
-+	dsi_update_bits(dsi, DSI_WCFGR, WCFGR_COLMUX,
-+			dsi_color_from_mipi(format) << 1);
-+
-+	*lane_mbps = pll_out_khz / 1000;
-+
-+	dev_dbg(dev, "pll_in %ukHz pll_out %ukHz lane_mbps %uMHz\n",
-+		pll_in_khz, pll_out_khz, *lane_mbps);
-+
-+	return 0;
-+}
-+
-+#define DSI_PHY_DELAY(fp, vp, mbps) DIV_ROUND_UP((fp) * (mbps) + 1000 * (vp), 8000)
-+
-+static int
-+dsi_phy_get_timing(void *priv_data, unsigned int lane_mbps,
-+		   struct dw_mipi_dsi_dphy_timing *timing)
-+{
-+	/*
-+	 * From STM32MP157 datasheet, valid for STM32F469, STM32F7x9, STM32H747
-+	 * phy_clkhs2lp_time = (272+136*UI)/(8*UI)
-+	 * phy_clklp2hs_time = (512+40*UI)/(8*UI)
-+	 * phy_hs2lp_time = (192+64*UI)/(8*UI)
-+	 * phy_lp2hs_time = (256+32*UI)/(8*UI)
-+	 */
-+	timing->clk_hs2lp = DSI_PHY_DELAY(272, 136, lane_mbps);
-+	timing->clk_lp2hs = DSI_PHY_DELAY(512, 40, lane_mbps);
-+	timing->data_hs2lp = DSI_PHY_DELAY(192, 64, lane_mbps);
-+	timing->data_lp2hs = DSI_PHY_DELAY(256, 32, lane_mbps);
-+
-+	return 0;
-+}
-+
-+static const struct dw_mipi_dsi_phy_ops dsi_stm_phy_ops = {
-+	.init = dsi_phy_init,
-+	.get_lane_mbps = dsi_get_lane_mbps,
-+	.power_on = dsi_phy_post_power_on,
-+	.power_off = dsi_phy_post_power_off,
-+	.get_timing = dsi_phy_get_timing,
++static const struct drm_display_mode modes[] = {
++	{ /* 50 Hz, preferred */
++		.clock = 29700,
++		.hdisplay = 480,
++		.hsync_start = 480 + 98,
++		.hsync_end = 480 + 98 + 32,
++		.htotal = 480 + 98 + 32 + 98,
++		.vdisplay = 800,
++		.vsync_start = 800 + 15,
++		.vsync_end = 800 + 15 + 10,
++		.vtotal = 800 + 15 + 10 + 14,
++		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++		.width_mm = 52,
++		.height_mm = 86,
++	},
++	{ /* 60 Hz */
++		.clock = 33000,
++		.hdisplay = 480,
++		.hsync_start = 480 + 70,
++		.hsync_end = 480 + 70 + 32,
++		.htotal = 480 + 70 + 32 + 72,
++		.vdisplay = 800,
++		.vsync_start = 800 + 15,
++		.vsync_end = 800 + 15 + 10,
++		.vtotal = 800 + 15 + 10 + 16,
++		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++		.width_mm = 52,
++		.height_mm = 86,
++	},
 +};
 +
-+static int stm32_dsi_probe(struct device *dev)
++static inline struct otm8009a *panel_to_otm8009a(struct vpl *vpl)
 +{
-+	struct stm32_dsi_priv *priv;
-+	struct dw_mipi_dsi *dmd;
-+	struct resource *res;
-+	struct reset_control *rst;
-+	struct clk *clk;
++	return container_of(vpl, struct otm8009a, vpl);
++}
++
++static void otm8009a_dcs_write_buf(struct otm8009a *ctx, const void *data,
++				   size_t len)
++{
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++
++	if (mipi_dsi_dcs_write_buffer(dsi, data, len) < 0)
++		dev_warn(ctx->dev, "mipi dsi dcs %swrite buffer [0x%02x..] failed\n",
++			 dsi->mode_flags & MIPI_DSI_MODE_LPM ? "" : "hs ",
++			 *(u8 *)data);
++}
++
++#define dcs_write_seq(ctx, seq...)			\
++({							\
++	static const u8 d[] = { seq };			\
++	otm8009a_dcs_write_buf(ctx, d, ARRAY_SIZE(d));	\
++})
++
++#define dcs_write_cmd_at(ctx, cmd, seq...)		\
++({							\
++	dcs_write_seq(ctx, MCS_ADRSFT, (cmd) & 0xFF);	\
++	dcs_write_seq(ctx, (cmd) >> 8, seq);		\
++})
++
++static int otm8009a_init_sequence(struct otm8009a *ctx)
++{
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
 +	int ret;
 +
-+	priv = xzalloc(sizeof(*priv));
++	/* Enter CMD2 */
++	dcs_write_cmd_at(ctx, MCS_CMD2_ENA1, 0x80, 0x09, 0x01);
 +
-+	res = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(res))
-+		return PTR_ERR(res);
++	/* Enter Orise Command2 */
++	dcs_write_cmd_at(ctx, MCS_CMD2_ENA2, 0x80, 0x09);
 +
-+	priv->vdd_reg = regulator_get(dev, "phy-dsi");
-+	if (IS_ERR(priv->vdd_reg))
-+		return dev_errp_probe(dev, priv->vdd_reg,
-+				      "getting phy dsi supply\n");
++	dcs_write_cmd_at(ctx, MCS_SD_PCH_CTRL, 0x30);
++	mdelay(10);
 +
-+	ret = regulator_enable(priv->vdd_reg);
++	dcs_write_cmd_at(ctx, MCS_NO_DOC1, 0x40);
++	mdelay(10);
++
++	dcs_write_cmd_at(ctx, MCS_PWR_CTRL4 + 1, 0xA9);
++	dcs_write_cmd_at(ctx, MCS_PWR_CTRL2 + 1, 0x34);
++	dcs_write_cmd_at(ctx, MCS_P_DRV_M, 0x50);
++	dcs_write_cmd_at(ctx, MCS_VCOMDC, 0x4E);
++	dcs_write_cmd_at(ctx, MCS_OSC_ADJ, 0x66); /* 65Hz */
++	dcs_write_cmd_at(ctx, MCS_PWR_CTRL2 + 2, 0x01);
++	dcs_write_cmd_at(ctx, MCS_PWR_CTRL2 + 5, 0x34);
++	dcs_write_cmd_at(ctx, MCS_PWR_CTRL2 + 4, 0x33);
++	dcs_write_cmd_at(ctx, MCS_GVDDSET, 0x79, 0x79);
++	dcs_write_cmd_at(ctx, MCS_SD_CTRL + 1, 0x1B);
++	dcs_write_cmd_at(ctx, MCS_PWR_CTRL1 + 2, 0x83);
++	dcs_write_cmd_at(ctx, MCS_SD_PCH_CTRL + 1, 0x83);
++	dcs_write_cmd_at(ctx, MCS_RGB_VID_SET, 0x0E);
++	dcs_write_cmd_at(ctx, MCS_PANSET, 0x00, 0x01);
++
++	dcs_write_cmd_at(ctx, MCS_GOAVST, 0x85, 0x01, 0x00, 0x84, 0x01, 0x00);
++	dcs_write_cmd_at(ctx, MCS_GOACLKA1, 0x18, 0x04, 0x03, 0x39, 0x00, 0x00,
++			 0x00, 0x18, 0x03, 0x03, 0x3A, 0x00, 0x00, 0x00);
++	dcs_write_cmd_at(ctx, MCS_GOACLKA3, 0x18, 0x02, 0x03, 0x3B, 0x00, 0x00,
++			 0x00, 0x18, 0x01, 0x03, 0x3C, 0x00, 0x00, 0x00);
++	dcs_write_cmd_at(ctx, MCS_GOAECLK, 0x01, 0x01, 0x20, 0x20, 0x00, 0x00,
++			 0x01, 0x02, 0x00, 0x00);
++
++	dcs_write_cmd_at(ctx, MCS_NO_DOC2, 0x00);
++
++	dcs_write_cmd_at(ctx, MCS_PANCTRLSET1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
++	dcs_write_cmd_at(ctx, MCS_PANCTRLSET2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++			 0, 0, 0, 0, 0);
++	dcs_write_cmd_at(ctx, MCS_PANCTRLSET3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++			 0, 0, 0, 0, 0);
++	dcs_write_cmd_at(ctx, MCS_PANCTRLSET4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
++	dcs_write_cmd_at(ctx, MCS_PANCTRLSET5, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0,
++			 0, 0, 0, 0, 0);
++	dcs_write_cmd_at(ctx, MCS_PANCTRLSET6, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4,
++			 4, 0, 0, 0, 0);
++	dcs_write_cmd_at(ctx, MCS_PANCTRLSET7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
++	dcs_write_cmd_at(ctx, MCS_PANCTRLSET8, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
++			 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
++
++	dcs_write_cmd_at(ctx, MCS_PANU2D1, 0x00, 0x26, 0x09, 0x0B, 0x01, 0x25,
++			 0x00, 0x00, 0x00, 0x00);
++	dcs_write_cmd_at(ctx, MCS_PANU2D2, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++			 0x00, 0x00, 0x00, 0x00, 0x00, 0x26, 0x0A, 0x0C, 0x02);
++	dcs_write_cmd_at(ctx, MCS_PANU2D3, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00,
++			 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
++	dcs_write_cmd_at(ctx, MCS_PAND2U1, 0x00, 0x25, 0x0C, 0x0A, 0x02, 0x26,
++			 0x00, 0x00, 0x00, 0x00);
++	dcs_write_cmd_at(ctx, MCS_PAND2U2, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++			 0x00, 0x00, 0x00, 0x00, 0x00, 0x25, 0x0B, 0x09, 0x01);
++	dcs_write_cmd_at(ctx, MCS_PAND2U3, 0x26, 0x00, 0x00, 0x00, 0x00, 0x00,
++			 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
++
++	dcs_write_cmd_at(ctx, MCS_PWR_CTRL1 + 1, 0x66);
++
++	dcs_write_cmd_at(ctx, MCS_NO_DOC3, 0x06);
++
++	dcs_write_cmd_at(ctx, MCS_GMCT2_2P, 0x00, 0x09, 0x0F, 0x0E, 0x07, 0x10,
++			 0x0B, 0x0A, 0x04, 0x07, 0x0B, 0x08, 0x0F, 0x10, 0x0A,
++			 0x01);
++	dcs_write_cmd_at(ctx, MCS_GMCT2_2N, 0x00, 0x09, 0x0F, 0x0E, 0x07, 0x10,
++			 0x0B, 0x0A, 0x04, 0x07, 0x0B, 0x08, 0x0F, 0x10, 0x0A,
++			 0x01);
++
++	/* Exit CMD2 */
++	dcs_write_cmd_at(ctx, MCS_CMD2_ENA1, 0xFF, 0xFF, 0xFF);
++
++	ret = mipi_dsi_dcs_nop(dsi);
 +	if (ret)
 +		return ret;
 +
-+	clk = clk_get_enabled(dev, "pclk");
-+	if (IS_ERR(clk)) {
-+		ret = dev_errp_probe(dev, clk,
-+				     "getting peripheral clock get\n");
-+		goto err_reg;
++	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
++	if (ret)
++		return ret;
++
++	/* Wait for sleep out exit */
++	mdelay(120);
++
++	/* Default portrait 480x800 rgb24 */
++	dcs_write_seq(ctx, MIPI_DCS_SET_ADDRESS_MODE, 0x00);
++
++	ret = mipi_dsi_dcs_set_column_address(dsi, 0, OTM8009A_HDISPLAY - 1);
++	if (ret)
++		return ret;
++
++	ret = mipi_dsi_dcs_set_page_address(dsi, 0, OTM8009A_VDISPLAY - 1);
++	if (ret)
++		return ret;
++
++	/* See otm8009a driver documentation for pixel format descriptions */
++	ret = mipi_dsi_dcs_set_pixel_format(dsi, MIPI_DCS_PIXEL_FMT_24BIT |
++					    MIPI_DCS_PIXEL_FMT_24BIT << 4);
++	if (ret)
++		return ret;
++
++	/* Disable CABC feature */
++	dcs_write_seq(ctx, MIPI_DCS_WRITE_POWER_SAVE, 0x00);
++
++	ret = mipi_dsi_dcs_set_display_on(dsi);
++	if (ret)
++		return ret;
++
++	ret = mipi_dsi_dcs_nop(dsi);
++	if (ret)
++		return ret;
++
++	/* Send Command GRAM memory write (no parameters) */
++	dcs_write_seq(ctx, MIPI_DCS_WRITE_MEMORY_START);
++
++	/* Wait a short while to let the panel be ready before the 1st frame */
++	mdelay(10);
++
++	return 0;
++}
++
++static int otm8009a_disable(struct otm8009a *ctx)
++{
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++	int ret;
++
++	backlight_disable(&ctx->bl_dev);
++
++	ret = mipi_dsi_dcs_set_display_off(dsi);
++	if (ret)
++		return ret;
++
++	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
++	if (ret)
++		return ret;
++
++	mdelay(120);
++
++	return 0;
++}
++
++static int otm8009a_unprepare(struct otm8009a *ctx)
++{
++	if (ctx->reset_gpio) {
++		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++		mdelay(20);
 +	}
 +
-+	clk = clk_get(dev, "ref");
-+	if (IS_ERR(clk)) {
-+		ret = dev_errp_probe(dev, clk,
-+				     "getting pll reference clock get\n");
-+		goto err_reg;
++	regulator_disable(ctx->supply);
++
++	ctx->prepared = false;
++
++	return 0;
++}
++
++static int otm8009a_prepare(struct otm8009a *ctx)
++{
++	int ret;
++
++	ret = regulator_enable(ctx->supply);
++	if (ret < 0) {
++		dev_err(ctx->dev, "failed to enable supply: %pe\n", ERR_PTR(ret));
++		return ret;
 +	}
 +
-+	priv->pllref_clk = clk_get_rate(clk);
-+
-+	rst = reset_control_get(dev, NULL);
-+	if (IS_ERR(rst)) {
-+		dev_err(dev, "missing dsi hardware reset\n");
-+		goto err_clk;
++	if (ctx->reset_gpio) {
++		gpiod_set_value_cansleep(ctx->reset_gpio, 0);
++		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++		mdelay(1); /* >50us */
++		gpiod_set_value_cansleep(ctx->reset_gpio, 0);
++		mdelay(10); /* >5ms */
 +	}
 +
-+	/* Reset */
-+	reset_control_deassert(rst);
++	ret = otm8009a_init_sequence(ctx);
++	if (ret)
++		return ret;
 +
-+	priv->dev = dev;
-+	priv->pdata.base = IOMEM(res->start);
-+	priv->pdata.max_data_lanes = 2;
-+	priv->pdata.phy_ops = &dsi_stm_phy_ops;
-+	priv->pdata.priv_data = priv;
-+	dev_set_drvdata(dev, priv);
++	ctx->prepared = true;
 +
-+	dmd = dw_mipi_dsi_bind(dev, &priv->pdata);
-+	if (IS_ERR(dmd)) {
-+		ret = dev_errp_probe(dev, dmd, "failed to bind\n");
-+		goto err_clk;
++	return 0;
++}
++
++static int otm8009a_enable(struct otm8009a *ctx)
++{
++	backlight_enable(&ctx->bl_dev);
++
++	return 0;
++}
++
++static int otm8009a_get_modes(struct otm8009a *ctx,
++			      struct display_timings *timings)
++{
++	struct fb_videomode *video_modes;
++	unsigned int num_modes = ARRAY_SIZE(modes);
++	unsigned int i;
++
++	video_modes = calloc(num_modes, sizeof(*video_modes));
++	if (!video_modes)
++		return -ENOMEM;
++
++	for (i = 0; i < num_modes; i++)
++		drm_display_mode_to_fb_videomode(&modes[i], &video_modes[i]);
++
++	timings->modes = video_modes;
++	timings->num_modes = num_modes;
++
++	return 0;
++}
++
++static int otm8009a_ioctl(struct vpl *vpl, unsigned int port,
++			  unsigned int cmd, void *ptr)
++{
++	struct otm8009a *ctx = panel_to_otm8009a(vpl);
++
++	switch (cmd) {
++	case VPL_PREPARE:
++		return otm8009a_prepare(ctx);
++	case VPL_ENABLE:
++		return otm8009a_enable(ctx);
++	case VPL_DISABLE:
++		return otm8009a_disable(ctx);
++	case VPL_UNPREPARE:
++		return otm8009a_unprepare(ctx);
++	case VPL_GET_VIDEOMODES:
++		return otm8009a_get_modes(ctx, ptr);
++	case VPL_GET_BUS_FORMAT:
++		*(u32 *)ptr = MEDIA_BUS_FMT_RGB888_1X24;
++		return 0;
++	default:
++		return 0;
++	}
++}
++
++/*
++ * DSI-BASED BACKLIGHT
++ */
++
++static int otm8009a_backlight_update_status(struct backlight_device *bd,
++					    int brightness)
++{
++	struct otm8009a *ctx = container_of(bd, struct otm8009a, bl_dev);
++	u8 data[2];
++
++	if (!ctx->prepared) {
++		dev_dbg(&bd->dev, "lcd not ready yet for setting its backlight!\n");
++		return -ENXIO;
 +	}
 +
-+	/* check hardware version */
-+	priv->hw_version = dsi_read(priv, DSI_VERSION) & VERSION;
-+	if (priv->hw_version != HWVER_130 &&
-+	    priv->hw_version != HWVER_131) {
-+		dev_err(dev, "DSI version 0x%x not supported\n", priv->hw_version);
-+		ret = -ENODEV;
-+		goto err_clk;
++	if (brightness > 0) {
++		/* Power on the backlight with the requested brightness
++		 * Note We can not use mipi_dsi_dcs_set_display_brightness()
++		 * as otm8009a driver support only 8-bit brightness (1 param).
++		 */
++		data[0] = MIPI_DCS_SET_DISPLAY_BRIGHTNESS;
++		data[1] = brightness;
++		otm8009a_dcs_write_buf(ctx, data, ARRAY_SIZE(data));
++
++		/* set Brightness Control & Backlight on */
++		data[1] = 0x24;
++
++	} else {
++		/* Power off the backlight: set Brightness Control & Bl off */
++		data[1] = 0;
++	}
++
++	/* Update Brightness Control & Backlight */
++	data[0] = MIPI_DCS_WRITE_CONTROL_DISPLAY;
++	otm8009a_dcs_write_buf(ctx, data, ARRAY_SIZE(data));
++
++	/* Need to wait a few time before sending the first image */
++	mdelay(10);
++
++	return 0;
++}
++
++static int otm8009a_probe(struct mipi_dsi_device *dsi)
++{
++	struct device *dev = &dsi->dev;
++	struct backlight_device *bl_dev;
++	struct otm8009a *ctx;
++	int ret;
++
++	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++
++	ctx->reset_gpio = gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(ctx->reset_gpio)) {
++		dev_err(dev, "cannot get reset-gpio\n");
++		return PTR_ERR(ctx->reset_gpio);
++	}
++
++	ctx->supply = regulator_get(dev, "power");
++	if (IS_ERR(ctx->supply)) {
++		ret = PTR_ERR(ctx->supply);
++		if (ret != -EPROBE_DEFER)
++			dev_err(dev, "failed to request regulator: %pe\n", ERR_PTR(ret));
++		return ret;
++	}
++
++	mipi_dsi_set_drvdata(dsi, ctx);
++
++	ctx->dev = dev;
++
++	dsi->lanes = 2;
++	dsi->format = MIPI_DSI_FMT_RGB888;
++	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
++			  MIPI_DSI_MODE_LPM | MIPI_DSI_CLOCK_NON_CONTINUOUS;
++
++	ctx->vpl.node = dev->of_node;
++	ctx->vpl.ioctl = otm8009a_ioctl;
++
++	ret = vpl_register(&ctx->vpl);
++	if (ret)
++		return ret;
++
++	ret = mipi_dsi_attach(dsi);
++	if (ret < 0) {
++		dev_err(dev, "mipi_dsi_attach failed. Is host ready?\n");
++		return ret;
++	}
++
++	bl_dev = &ctx->bl_dev;
++
++	bl_dev->brightness_max = OTM8009A_BACKLIGHT_MAX;
++	bl_dev->brightness_default = OTM8009A_BACKLIGHT_DEFAULT;
++	bl_dev->brightness_set = otm8009a_backlight_update_status;
++	bl_dev->dev.parent = dev;
++	bl_dev->node = dev->of_node;
++
++	ret = backlight_register(bl_dev);
++	if (ret) {
++		dev_err(dev, "failed to register backlight: %pe\n", ERR_PTR(ret));
++		return ret;
 +	}
 +
 +	return 0;
-+err_clk:
-+	clk_disable(clk);
-+err_reg:
-+	regulator_disable(priv->vdd_reg);
-+
-+	return ret;
 +}
 +
-+static const struct of_device_id stm32_dsi_dt_ids[] = {
-+	{ .compatible = "st,stm32-dsi" },
-+	{ /* sentinel */ }
++static const struct of_device_id orisetech_otm8009a_of_match[] = {
++	{ .compatible = "orisetech,otm8009a" },
++	{ }
 +};
-+MODULE_DEVICE_TABLE(of, stm32_dsi_dt_ids);
++MODULE_DEVICE_TABLE(of, orisetech_otm8009a_of_match);
 +
-+struct driver stm32_dsi_driver = {
-+	.name		= "stm32-display-dsi",
-+	.probe		= stm32_dsi_probe,
-+	.of_match_table = stm32_dsi_dt_ids,
++static struct mipi_dsi_driver orisetech_otm8009a_driver = {
++	.probe  = otm8009a_probe,
++	.driver = {
++		.name = "panel-orisetech-otm8009a",
++		.of_match_table = orisetech_otm8009a_of_match,
++	},
 +};
-+device_platform_driver(stm32_dsi_driver);
++module_mipi_dsi_driver(orisetech_otm8009a_driver);
++
++MODULE_AUTHOR("Philippe Cornu <philippe.cornu@st.com>");
++MODULE_AUTHOR("Yannick Fertre <yannick.fertre@st.com>");
++MODULE_DESCRIPTION("DRM driver for Orise Tech OTM8009A MIPI DSI panel");
++MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
+index 288fd7a030e9..c461f3f3108b 100644
+--- a/include/linux/gpio/consumer.h
++++ b/include/linux/gpio/consumer.h
+@@ -234,6 +234,9 @@ struct gpio_desc *gpiod_request_one(unsigned gpio,
+ 
+ #endif
+ 
++#define gpiod_get_value_cansleep	gpiod_get_value
++#define gpiod_set_value_cansleep	gpiod_set_value
++
+ static inline struct gpio_desc *dev_gpiod_get(struct device *dev,
+ 				struct device_node *np,
+ 				const char *con_id,
+diff --git a/include/video/backlight.h b/include/video/backlight.h
+index dcb8e8c5e10e..13e852152ea9 100644
+--- a/include/video/backlight.h
++++ b/include/video/backlight.h
+@@ -3,6 +3,8 @@
+ #ifndef __VIDEO_BACKLIGHT_H
+ #define __VIDEO_BACKLIGHT_H
+ 
++#include <device.h>
++
+ #ifdef CONFIG_DRIVER_VIDEO_BACKLIGHT
+ struct backlight_device {
+ 	int brightness;
+@@ -36,4 +38,16 @@ static inline struct backlight_device *
+ of_backlight_find(struct device_node *node) { return NULL; }
+ #endif
+ 
++static inline int
++backlight_enable(struct backlight_device *dev)
++{
++	return dev ? backlight_set_brightness_default(dev) : 0;
++}
++
++static inline int
++backlight_disable(struct backlight_device *dev)
++{
++	return dev ? backlight_set_brightness(dev, 0) : 0;
++}
++
+ #endif /* __VIDEO_BACKLIGHT_H */
+diff --git a/include/video/drm/drm_connector.h b/include/video/drm/drm_connector.h
+index 53ec7d3b79cb..40edc9e627a6 100644
+--- a/include/video/drm/drm_connector.h
++++ b/include/video/drm/drm_connector.h
+@@ -24,6 +24,8 @@
+ #define __DRM_CONNECTOR_H__
+ 
+ #include <uapi/drm/drm_mode.h>
++#include <linux/types.h>
++#include <linux/bitops.h>
+ 
+ enum drm_connector_force {
+ 	DRM_FORCE_UNSPECIFIED,
 -- 
 2.39.5
 
