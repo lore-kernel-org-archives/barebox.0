@@ -1,55 +1,55 @@
-Delivery-date: Fri, 06 Jun 2025 10:59:13 +0200
+Delivery-date: Fri, 06 Jun 2025 10:59:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNSuv-004K7h-17
+	id 1uNSuw-004K87-0X
 	for lore@lore.pengutronix.de;
-	Fri, 06 Jun 2025 10:59:13 +0200
+	Fri, 06 Jun 2025 10:59:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNSuq-0003h9-3c
-	for lore@pengutronix.de; Fri, 06 Jun 2025 10:59:13 +0200
+	id 1uNSuq-0003hK-FE
+	for lore@pengutronix.de; Fri, 06 Jun 2025 10:59:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+gZrqZEDnkD6335a3nD7t3/Osa9JiDyDah7NjFOBebM=; b=tJa4I1FLCS7wa/WKj831V4BLIr
-	umJCmKXTcxCj3BTV/tjnR1NglKrILkoCK+eycl+ePGkf7LnQKW/HUGrZBeJgLSukhVt/t28gnBGNW
-	BKgOOh746mlGLCQuJMOIKxK4GznPiQB4G4+eu9BGiJcyH3oUpojN6uxfEAwigWE3ZRyhLWxjK8xu4
-	cKnzdQxdL9uV/axsjOLAGk8gDBRy8JOpHL9qEOuzcyzz3vDiQnwfL9/kHZUy/S8UK8qbZIsr7QfTp
-	VxIAdFFPiALGlRTB7EpKWQDWiVyZKeB5nEH6tA+K0gCPYpxqvEn9VD4Vj11hPG7PDLSlEhDm2DKbs
-	ihFbUruw==;
+	bh=q8cOSBwUzUawfXXRp8vA/DnRlsEU2s4SKVS2j/mQmmY=; b=J7IRcpUCoj5gQ39NtI6yqsH1iA
+	t6OsQLSA1Wi3eRygEXiotmIMYcpBbDLAUU0pUMa+I2hwiqviw0pIeAryDZX6zibAg+DpfOWdxfOPf
+	1eiEcZsglvhV0nD7tub4vRtipN+iQRkJcoFJpvomZdQrKwQR25KXSnw8DN/pkQYn3sY7QOvFRLRZd
+	SFZK6xoMNtjZz80J5tqxdrRPeFZa+0SzvRbpnzqmGfUPgkvpbkDQS0ryDsS7ilTOQ6z9YS0VVDwF5
+	dtxBXz5pB6PO+UhFogB69DwYXMIpPbIUAf0m3kEy/jY5mZUi4IFdDR/xQ4QHHjHJ+GnyLhvSOtkdZ
+	UkFsA0Sw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNSu9-0000000HSQV-1KOh;
-	Fri, 06 Jun 2025 08:58:25 +0000
+	id 1uNSu8-0000000HSPI-01EF;
+	Fri, 06 Jun 2025 08:58:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNSu1-0000000HSKA-09Qd
+	id 1uNSu0-0000000HSK9-3KXj
 	for barebox@lists.infradead.org;
 	Fri, 06 Jun 2025 08:58:20 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNStz-0002si-NT; Fri, 06 Jun 2025 10:58:15 +0200
+	id 1uNStz-0002si-Fb; Fri, 06 Jun 2025 10:58:15 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri,  6 Jun 2025 10:58:08 +0200
-Message-Id: <20250606085813.2183260-6-a.fatoum@barebox.org>
+Date: Fri,  6 Jun 2025 10:58:07 +0200
+Message-Id: <20250606085813.2183260-5-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250606085813.2183260-1-a.fatoum@barebox.org>
 References: <20250606085813.2183260-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250606_015817_378022_43652D97 
-X-CRM114-Status: GOOD (  30.27  )
+X-CRM114-CacheID: sfid-20250606_015817_139622_2607EFCA 
+X-CRM114-Status: GOOD (  34.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,451 +71,628 @@ X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/10] lib: add parser code for mount options
+Subject: [PATCH 04/10] lib: add iov_iter I/O vector iterator support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is going to be used in the 9PFS code, but could be retrofitted to
-other file systems as well in future.
+I/O vector iterators are a frequent sight in Linux file system drivers
+and are also used in the incoming 9PFS support, so provide the
+definitions in barebox.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- include/linux/parser.h |  42 +++++
- lib/Makefile           |   1 +
- lib/parser.c           | 363 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 406 insertions(+)
- create mode 100644 include/linux/parser.h
- create mode 100644 lib/parser.c
+ include/linux/uio.h      | 305 +++++++++++++++++++++++++++++++++++++++
+ include/uapi/linux/uio.h |  23 +++
+ lib/Makefile             |   1 +
+ lib/iov_iter.c           | 245 +++++++++++++++++++++++++++++++
+ 4 files changed, 574 insertions(+)
+ create mode 100644 include/linux/uio.h
+ create mode 100644 include/uapi/linux/uio.h
+ create mode 100644 lib/iov_iter.c
 
-diff --git a/include/linux/parser.h b/include/linux/parser.h
+diff --git a/include/linux/uio.h b/include/linux/uio.h
 new file mode 100644
-index 000000000000..3c3185ddbad6
+index 000000000000..8724c04a4acb
 --- /dev/null
-+++ b/include/linux/parser.h
-@@ -0,0 +1,42 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/include/linux/uio.h
+@@ -0,0 +1,305 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/*
-+ * linux/include/linux/parser.h
-+ *
-+ * Header for lib/parser.c
-+ * Intended use of these functions is parsing filesystem argument lists,
-+ * but could potentially be used anywhere else that simple option=arg
-+ * parsing is required.
++ *	Berkeley style UIO structures	-	Alan Cox 1994.
 + */
-+#ifndef _LINUX_PARSER_H
-+#define _LINUX_PARSER_H
++#ifndef __LINUX_UIO_H
++#define __LINUX_UIO_H
 +
-+#include <linux/types.h>
++#include <linux/kernel.h>
++#include <uapi/linux/uio.h>
 +
-+/* associates an integer enumerator with a pattern string. */
-+struct match_token {
-+	int token;
-+	const char *pattern;
++struct page;
++
++typedef unsigned int __bitwise iov_iter_extraction_t;
++
++struct kvec {
++	void *iov_base; /* and that should *never* hold a userland pointer */
++	size_t iov_len;
 +};
 +
-+typedef struct match_token match_table_t[];
++enum iter_type {
++	/* iter types */
++	ITER_KVEC,
++};
 +
-+/* Maximum number of arguments that match_token will find in a pattern */
-+enum {MAX_OPT_ARGS = 3};
++#define ITER_SOURCE	1	// == WRITE
++#define ITER_DEST	0	// == READ
 +
-+/* Describe the location within a string of a substring */
-+typedef struct {
-+	char *from;
-+	char *to;
-+} substring_t;
++struct iov_iter_state {
++	size_t iov_offset;
++	size_t count;
++	unsigned long nr_segs;
++};
 +
-+int match_token(char *, const match_table_t table, substring_t args[]);
-+int match_int(substring_t *, int *result);
-+int match_uint(substring_t *s, unsigned int *result);
-+int match_u64(substring_t *, u64 *result);
-+int match_octal(substring_t *, int *result);
-+int match_hex(substring_t *, int *result);
-+bool match_wildcard(const char *pattern, const char *str);
-+size_t match_strlcpy(char *, const substring_t *, size_t);
-+char *match_strdup(const substring_t *);
++struct iov_iter {
++	u8 iter_type;
++	bool nofault;
++	bool data_source;
++	size_t iov_offset;
++	struct {
++		union {
++			/* use iter_iov() to get the current vec */
++			const struct iovec *__iov;
++			const struct kvec *kvec;
++		};
++		size_t count;
++	};
++	unsigned long nr_segs;
++};
 +
-+#endif /* _LINUX_PARSER_H */
++static inline const struct iovec *iter_iov(const struct iov_iter *iter)
++{
++	return iter->__iov;
++}
++
++static inline enum iter_type iov_iter_type(const struct iov_iter *i)
++{
++	return i->iter_type;
++}
++
++static inline void iov_iter_save_state(struct iov_iter *iter,
++				       struct iov_iter_state *state)
++{
++	state->iov_offset = iter->iov_offset;
++	state->count = iter->count;
++	state->nr_segs = iter->nr_segs;
++}
++
++static inline bool iter_is_iovec(const struct iov_iter *i)
++{
++	return false;
++}
++
++static inline bool iov_iter_is_kvec(const struct iov_iter *i)
++{
++	return iov_iter_type(i) == ITER_KVEC;
++}
++
++/*
++ * Total number of bytes covered by an iovec.
++ *
++ * NOTE that it is not safe to use this function until all the iovec's
++ * segment lengths have been validated.  Because the individual lengths can
++ * overflow a size_t when added together.
++ */
++static inline size_t iov_length(const struct iovec *iov, unsigned long nr_segs)
++{
++	unsigned long seg;
++	size_t ret = 0;
++
++	for (seg = 0; seg < nr_segs; seg++)
++		ret += iov[seg].iov_len;
++	return ret;
++}
++
++void iov_iter_advance(struct iov_iter *i, size_t bytes);
++void iov_iter_revert(struct iov_iter *i, size_t bytes);
++size_t fault_in_iov_iter_readable(const struct iov_iter *i, size_t bytes);
++size_t fault_in_iov_iter_writeable(const struct iov_iter *i, size_t bytes);
++size_t iov_iter_single_seg_count(const struct iov_iter *i);
++
++__must_check size_t copy_to_iter(const void *addr, size_t bytes, struct iov_iter *i);
++__must_check size_t copy_from_iter(void *addr, size_t bytes, struct iov_iter *i);
++__must_check size_t copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i);
++
++static __always_inline __must_check
++bool copy_to_iter_full(const void *addr, size_t bytes, struct iov_iter *i)
++{
++	size_t copied = copy_to_iter(addr, bytes, i);
++	if (likely(copied == bytes))
++		return true;
++	iov_iter_revert(i, copied);
++	return false;
++}
++
++static __always_inline __must_check
++bool copy_from_iter_full(void *addr, size_t bytes, struct iov_iter *i)
++{
++	size_t copied = copy_from_iter(addr, bytes, i);
++	if (likely(copied == bytes))
++		return true;
++	iov_iter_revert(i, copied);
++	return false;
++}
++
++static __always_inline __must_check
++bool copy_from_iter_full_nocache(void *addr, size_t bytes, struct iov_iter *i)
++{
++	size_t copied = copy_from_iter_nocache(addr, bytes, i);
++	if (likely(copied == bytes))
++		return true;
++	iov_iter_revert(i, copied);
++	return false;
++}
++
++size_t iov_iter_zero(size_t bytes, struct iov_iter *);
++bool iov_iter_is_aligned(const struct iov_iter *i, unsigned addr_mask,
++			unsigned len_mask);
++unsigned long iov_iter_alignment(const struct iov_iter *i);
++unsigned long iov_iter_gap_alignment(const struct iov_iter *i);
++void iov_iter_kvec(struct iov_iter *i, unsigned int direction, const struct kvec *kvec,
++			unsigned long nr_segs, size_t count);
++int iov_iter_npages(const struct iov_iter *i, int maxpages);
++
++const void *dup_iter(struct iov_iter *new, struct iov_iter *old, gfp_t flags);
++
++static inline size_t iov_iter_count(const struct iov_iter *i)
++{
++	return i->count;
++}
++
++/*
++ * Cap the iov_iter by given limit; note that the second argument is
++ * *not* the new size - it's upper limit for such.  Passing it a value
++ * greater than the amount of data in iov_iter is fine - it'll just do
++ * nothing in that case.
++ */
++static inline void iov_iter_truncate(struct iov_iter *i, u64 count)
++{
++	/*
++	 * count doesn't have to fit in size_t - comparison extends both
++	 * operands to u64 here and any value that would be truncated by
++	 * conversion in assignement is by definition greater than all
++	 * values of size_t, including old i->count.
++	 */
++	if (i->count > count)
++		i->count = count;
++}
++
++/*
++ * reexpand a previously truncated iterator; count must be no more than how much
++ * we had shrunk it.
++ */
++static inline void iov_iter_reexpand(struct iov_iter *i, size_t count)
++{
++	i->count = count;
++}
++
++static inline int
++iov_iter_npages_cap(struct iov_iter *i, int maxpages, size_t max_bytes)
++{
++	size_t shorted = 0;
++	int npages;
++
++	if (iov_iter_count(i) > max_bytes) {
++		shorted = iov_iter_count(i) - max_bytes;
++		iov_iter_truncate(i, max_bytes);
++	}
++	npages = iov_iter_npages(i, maxpages);
++	if (shorted)
++		iov_iter_reexpand(i, iov_iter_count(i) + shorted);
++
++	return npages;
++}
++
++struct iovec *iovec_from_user(const struct iovec __user *uvector,
++		unsigned long nr_segs, unsigned long fast_segs,
++		struct iovec *fast_iov, bool compat);
++ssize_t import_iovec(int type, const struct iovec __user *uvec,
++		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
++		 struct iov_iter *i);
++ssize_t __import_iovec(int type, const struct iovec __user *uvec,
++		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
++		 struct iov_iter *i, bool compat);
++
++struct sg_table;
++ssize_t extract_iter_to_sg(struct iov_iter *iter, size_t len,
++			   struct sg_table *sgtable, unsigned int sg_max,
++			   iov_iter_extraction_t extraction_flags);
++
++typedef size_t (*iov_step_f)(void *iter_base, size_t progress, size_t len,
++			     void *priv, void *priv2);
++typedef size_t (*iov_ustep_f)(void __user *iter_base, size_t progress, size_t len,
++			      void *priv, void *priv2);
++
++/*
++ * Handle ITER_KVEC.
++ */
++static __always_inline
++size_t iterate_kvec(struct iov_iter *iter, size_t len, void *priv, void *priv2,
++		    iov_step_f step)
++{
++	const struct kvec *p = iter->kvec;
++	size_t progress = 0, skip = iter->iov_offset;
++
++	do {
++		size_t remain, consumed;
++		size_t part = min(len, p->iov_len - skip);
++
++		if (likely(part)) {
++			remain = step(p->iov_base + skip, progress, part, priv, priv2);
++			consumed = part - remain;
++			progress += consumed;
++			skip += consumed;
++			len -= consumed;
++			if (skip < p->iov_len)
++				break;
++		}
++		p++;
++		skip = 0;
++	} while (len);
++
++	iter->nr_segs -= p - iter->kvec;
++	iter->kvec = p;
++	iter->iov_offset = skip;
++	iter->count -= progress;
++	return progress;
++}
++
++/**
++ * iterate_and_advance2 - Iterate over an iterator
++ * @iter: The iterator to iterate over.
++ * @len: The amount to iterate over.
++ * @priv: Data for the step functions.
++ * @priv2: More data for the step functions.
++ * @ustep: Function for UBUF/IOVEC iterators; given __user addresses.
++ * @step: Function for other iterators; given kernel addresses.
++ *
++ * Iterate over the next part of an iterator, up to the specified length.  The
++ * buffer is presented in segments, which for kernel iteration are broken up by
++ * physical pages and mapped, with the mapped address being presented.
++ *
++ * Two step functions, @step and @ustep, must be provided, one for handling
++ * mapped kernel addresses and the other is given user addresses which have the
++ * potential to fault since no pinning is performed.
++ *
++ * The step functions are passed the address and length of the segment, @priv,
++ * @priv2 and the amount of data so far iterated over (which can, for example,
++ * be added to @priv to point to the right part of a second buffer).  The step
++ * functions should return the amount of the segment they didn't process (ie. 0
++ * indicates complete processsing).
++ *
++ * This function returns the amount of data processed (ie. 0 means nothing was
++ * processed and the value of @len means processes to completion).
++ */
++static __always_inline
++size_t iterate_and_advance2(struct iov_iter *iter, size_t len, void *priv,
++			    void *priv2, iov_ustep_f ustep, iov_step_f step)
++{
++	if (unlikely(iter->count < len))
++		len = iter->count;
++	if (unlikely(!len))
++		return 0;
++
++	return iterate_kvec(iter, len, priv, priv2, step);
++}
++
++
++/**
++ * iterate_and_advance - Iterate over an iterator
++ * @iter: The iterator to iterate over.
++ * @len: The amount to iterate over.
++ * @priv: Data for the step functions.
++ * @ustep: Function for UBUF/IOVEC iterators; given __user addresses.
++ * @step: Function for other iterators; given kernel addresses.
++ *
++ * As iterate_and_advance2(), but priv2 is always NULL.
++ */
++static __always_inline
++size_t iterate_and_advance(struct iov_iter *iter, size_t len, void *priv,
++			   iov_ustep_f ustep, iov_step_f step)
++{
++	return iterate_and_advance2(iter, len, priv, NULL, ustep, step);
++}
++
++#endif
+diff --git a/include/uapi/linux/uio.h b/include/uapi/linux/uio.h
+new file mode 100644
+index 000000000000..1edb1422a786
+--- /dev/null
++++ b/include/uapi/linux/uio.h
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
++/*
++ *	Berkeley style UIO structures	-	Alan Cox 1994.
++ *
++ *		This program is free software; you can redistribute it and/or
++ *		modify it under the terms of the GNU General Public License
++ *		as published by the Free Software Foundation; either version
++ *		2 of the License, or (at your option) any later version.
++ */
++#ifndef _UAPI__LINUX_UIO_H
++#define _UAPI__LINUX_UIO_H
++
++#include <linux/compiler.h>
++#include <linux/types.h>
++
++
++struct iovec
++{
++	void __user *iov_base;	/* BSD uses caddr_t (1003.1g requires void *) */
++	__kernel_size_t iov_len; /* Must be size_t (1003.1g) */
++};
++
++#endif /* _UAPI__LINUX_UIO_H */
 diff --git a/lib/Makefile b/lib/Makefile
-index a1ca2803a095..468383508f17 100644
+index 0d1d22c0845b..a1ca2803a095 100644
 --- a/lib/Makefile
 +++ b/lib/Makefile
 @@ -32,6 +32,7 @@ obj-y			+= recursive_action.o
  obj-y			+= make_directory.o
  obj-y			+= arith.o
  obj-$(CONFIG_IDR)	+= idr.o
-+obj-y			+= parser.o
- obj-y			+= iov_iter.o
++obj-y			+= iov_iter.o
  obj-y			+= math/
  obj-y			+= uuid.o
-diff --git a/lib/parser.c b/lib/parser.c
+ obj-$(CONFIG_XXHASH)	+= xxhash.o
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
 new file mode 100644
-index 000000000000..83c49352667c
+index 000000000000..d8b6efb73920
 --- /dev/null
-+++ b/lib/parser.c
-@@ -0,0 +1,363 @@
++++ b/lib/iov_iter.c
+@@ -0,0 +1,245 @@
 +// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * lib/parser.c - simple parser for mount, etc. options.
-+ */
-+
-+#include <linux/ctype.h>
-+#include <linux/types.h>
 +#include <linux/export.h>
-+#include <linux/kstrtox.h>
-+#include <linux/parser.h>
++#include <linux/uio.h>
++#include <linux/pagemap.h>
 +#include <linux/slab.h>
-+#include <linux/string.h>
++#include <linux/scatterlist.h>
++#include <linux/uaccess.h>
++
++#define MAX_RW_COUNT (INT_MAX & PAGE_MASK)
++
++static __always_inline
++size_t copy_to_user_iter(void __user *iter_to, size_t progress,
++			 size_t len, void *from, void *priv2)
++{
++	if (access_ok(iter_to, len)) {
++		from += progress;
++		len = raw_copy_to_user(iter_to, from, len);
++	}
++	return len;
++}
++
++static __always_inline
++size_t copy_from_user_iter(void __user *iter_from, size_t progress,
++			   size_t len, void *to, void *priv2)
++{
++	size_t res = len;
++
++	if (access_ok(iter_from, len)) {
++		to += progress;
++		res = raw_copy_from_user(to, iter_from, len);
++	}
++	return res;
++}
++
++static __always_inline
++size_t memcpy_to_iter(void *iter_to, size_t progress,
++		      size_t len, void *from, void *priv2)
++{
++	memcpy(iter_to, from + progress, len);
++	return 0;
++}
++
++static __always_inline
++size_t memcpy_from_iter(void *iter_from, size_t progress,
++			size_t len, void *to, void *priv2)
++{
++	memcpy(to + progress, iter_from, len);
++	return 0;
++}
++
++static __always_inline
++size_t zero_to_user_iter(void __user *iter_to, size_t progress,
++			 size_t len, void *priv, void *priv2)
++{
++	return clear_user(iter_to, len);
++}
++
++static __always_inline
++size_t zero_to_iter(void *iter_to, size_t progress,
++		    size_t len, void *priv, void *priv2)
++{
++	memset(iter_to, 0, len);
++	return 0;
++}
++
++static void iov_iter_iovec_advance(struct iov_iter *i, size_t size)
++{
++	const struct iovec *iov, *end;
++
++	if (!i->count)
++		return;
++	i->count -= size;
++
++	size += i->iov_offset; // from beginning of current segment
++	for (iov = iter_iov(i), end = iov + i->nr_segs; iov < end; iov++) {
++		if (likely(size < iov->iov_len))
++			break;
++		size -= iov->iov_len;
++	}
++	i->iov_offset = size;
++	i->nr_segs -= iov - iter_iov(i);
++	i->__iov = iov;
++}
++
++void iov_iter_advance(struct iov_iter *i, size_t size)
++{
++	if (unlikely(i->count < size))
++		size = i->count;
++	if (likely(iter_is_iovec(i) || iov_iter_is_kvec(i))) {
++		/* iovec and kvec have identical layouts */
++		iov_iter_iovec_advance(i, size);
++	}
++}
++EXPORT_SYMBOL(iov_iter_advance);
++
++void iov_iter_revert(struct iov_iter *i, size_t unroll)
++{
++	if (!unroll)
++		return;
++	if (WARN_ON(unroll > MAX_RW_COUNT))
++		return;
++	i->count += unroll;
++	if (unroll <= i->iov_offset) {
++		i->iov_offset -= unroll;
++		return;
++	}
++	unroll -= i->iov_offset;
++	/* same logics for iovec and kvec */
++	const struct iovec *iov = iter_iov(i);
++	while (1) {
++		size_t n = (--iov)->iov_len;
++		i->nr_segs++;
++		if (unroll <= n) {
++			i->__iov = iov;
++			i->iov_offset = n - unroll;
++			return;
++		}
++		unroll -= n;
++	}
++}
++EXPORT_SYMBOL(iov_iter_revert);
 +
 +/*
-+ * max size needed by different bases to express U64
-+ * HEX: "0xFFFFFFFFFFFFFFFF" --> 18
-+ * DEC: "18446744073709551615" --> 20
-+ * OCT: "01777777777777777777777" --> 23
-+ * pick the max one to define NUMBER_BUF_LEN
++ * Return the count of just the current iov_iter segment.
 + */
-+#define NUMBER_BUF_LEN 24
-+
-+/**
-+ * match_one - Determines if a string matches a simple pattern
-+ * @s: the string to examine for presence of the pattern
-+ * @p: the string containing the pattern
-+ * @args: array of %MAX_OPT_ARGS &substring_t elements. Used to return match
-+ * locations.
-+ *
-+ * Description: Determines if the pattern @p is present in string @s. Can only
-+ * match extremely simple token=arg style patterns. If the pattern is found,
-+ * the location(s) of the arguments will be returned in the @args array.
-+ */
-+static int match_one(char *s, const char *p, substring_t args[])
++size_t iov_iter_single_seg_count(const struct iov_iter *i)
 +{
-+	const char *meta;
-+	int argc = 0;
-+
-+	if (!p)
-+		return 1;
-+
-+	while(1) {
-+		int len = -1;
-+		meta = strchr(p, '%');
-+		if (!meta)
-+			return strcmp(p, s) == 0;
-+
-+		if (strncmp(p, s, meta-p))
-+			return 0;
-+
-+		s += meta - p;
-+		p = meta + 1;
-+
-+		if (isdigit(*p))
-+			len = simple_strtoul(p, (char **) &p, 10);
-+		else if (*p == '%') {
-+			if (*s++ != '%')
-+				return 0;
-+			p++;
-+			continue;
-+		}
-+
-+		if (argc >= MAX_OPT_ARGS)
-+			return 0;
-+
-+		args[argc].from = s;
-+		switch (*p++) {
-+		case 's': {
-+			size_t str_len = strlen(s);
-+
-+			if (str_len == 0)
-+				return 0;
-+			if (len == -1 || len > str_len)
-+				len = str_len;
-+			args[argc].to = s + len;
-+			break;
-+		}
-+		case 'd':
-+			simple_strtol(s, &args[argc].to, 0);
-+			goto num;
-+		case 'u':
-+			simple_strtoul(s, &args[argc].to, 0);
-+			goto num;
-+		case 'o':
-+			simple_strtoul(s, &args[argc].to, 8);
-+			goto num;
-+		case 'x':
-+			simple_strtoul(s, &args[argc].to, 16);
-+		num:
-+			if (args[argc].to == args[argc].from)
-+				return 0;
-+			break;
-+		default:
-+			return 0;
-+		}
-+		s = args[argc].to;
-+		argc++;
++	if (i->nr_segs > 1) {
++		if (likely(iter_is_iovec(i) || iov_iter_is_kvec(i)))
++			return min(i->count, iter_iov(i)->iov_len - i->iov_offset);
 +	}
++	return i->count;
++}
++EXPORT_SYMBOL(iov_iter_single_seg_count);
++
++void iov_iter_kvec(struct iov_iter *i, unsigned int direction,
++			const struct kvec *kvec, unsigned long nr_segs,
++			size_t count)
++{
++	*i = (struct iov_iter){
++		.iter_type = ITER_KVEC,
++		.data_source = direction,
++		.kvec = kvec,
++		.nr_segs = nr_segs,
++		.iov_offset = 0,
++		.count = count
++	};
++}
++EXPORT_SYMBOL(iov_iter_kvec);
++
++static bool iov_iter_aligned_iovec(const struct iov_iter *i, unsigned addr_mask,
++				   unsigned len_mask)
++{
++	const struct iovec *iov = iter_iov(i);
++	size_t size = i->count;
++	size_t skip = i->iov_offset;
++
++	do {
++		size_t len = iov->iov_len - skip;
++
++		if (len > size)
++			len = size;
++		if (len & len_mask)
++			return false;
++		if ((unsigned long)(iov->iov_base + skip) & addr_mask)
++			return false;
++
++		iov++;
++		size -= len;
++		skip = 0;
++	} while (size);
++
++	return true;
 +}
 +
 +/**
-+ * match_token - Find a token (and optional args) in a string
-+ * @s: the string to examine for token/argument pairs
-+ * @table: match_table_t describing the set of allowed option tokens and the
-+ * arguments that may be associated with them. Must be terminated with a
-+ * &struct match_token whose pattern is set to the NULL pointer.
-+ * @args: array of %MAX_OPT_ARGS &substring_t elements. Used to return match
-+ * locations.
++ * iov_iter_is_aligned() - Check if the addresses and lengths of each segments
++ * 	are aligned to the parameters.
 + *
-+ * Description: Detects which if any of a set of token strings has been passed
-+ * to it. Tokens can include up to %MAX_OPT_ARGS instances of basic c-style
-+ * format identifiers which will be taken into account when matching the
-+ * tokens, and whose locations will be returned in the @args array.
++ * @i: &struct iov_iter to restore
++ * @addr_mask: bit mask to check against the iov element's addresses
++ * @len_mask: bit mask to check against the iov element's lengths
++ *
++ * Return: false if any addresses or lengths intersect with the provided masks
 + */
-+int match_token(char *s, const match_table_t table, substring_t args[])
++bool iov_iter_is_aligned(const struct iov_iter *i, unsigned addr_mask,
++			 unsigned len_mask)
 +{
-+	const struct match_token *p;
++	if (likely(iter_is_iovec(i) || iov_iter_is_kvec(i)))
++		return iov_iter_aligned_iovec(i, addr_mask, len_mask);
 +
-+	for (p = table; !match_one(s, p->pattern, args) ; p++)
-+		;
-+
-+	return p->token;
++	return true;
 +}
-+EXPORT_SYMBOL(match_token);
++EXPORT_SYMBOL_GPL(iov_iter_is_aligned);
 +
-+/**
-+ * match_number - scan a number in the given base from a substring_t
-+ * @s: substring to be scanned
-+ * @result: resulting integer on success
-+ * @base: base to use when converting string
-+ *
-+ * Description: Given a &substring_t and a base, attempts to parse the substring
-+ * as a number in that base.
-+ *
-+ * Return: On success, sets @result to the integer represented by the
-+ * string and returns 0. Returns -EINVAL or -ERANGE on failure.
-+ */
-+static int match_number(substring_t *s, int *result, int base)
++static unsigned long iov_iter_alignment_iovec(const struct iov_iter *i)
 +{
-+	char *endp;
-+	char buf[NUMBER_BUF_LEN];
-+	int ret;
-+	long val;
++	const struct iovec *iov = iter_iov(i);
++	unsigned long res = 0;
++	size_t size = i->count;
++	size_t skip = i->iov_offset;
 +
-+	if (match_strlcpy(buf, s, NUMBER_BUF_LEN) >= NUMBER_BUF_LEN)
-+		return -ERANGE;
-+	ret = 0;
-+	val = simple_strtol(buf, &endp, base);
-+	if (endp == buf)
-+		ret = -EINVAL;
-+	else if (val < (long)INT_MIN || val > (long)INT_MAX)
-+		ret = -ERANGE;
-+	else
-+		*result = (int) val;
-+	return ret;
-+}
-+
-+/**
-+ * match_u64int - scan a number in the given base from a substring_t
-+ * @s: substring to be scanned
-+ * @result: resulting u64 on success
-+ * @base: base to use when converting string
-+ *
-+ * Description: Given a &substring_t and a base, attempts to parse the substring
-+ * as a number in that base.
-+ *
-+ * Return: On success, sets @result to the integer represented by the
-+ * string and returns 0. Returns -EINVAL or -ERANGE on failure.
-+ */
-+static int match_u64int(substring_t *s, u64 *result, int base)
-+{
-+	char buf[NUMBER_BUF_LEN];
-+	int ret;
-+	u64 val;
-+
-+	if (match_strlcpy(buf, s, NUMBER_BUF_LEN) >= NUMBER_BUF_LEN)
-+		return -ERANGE;
-+	ret = kstrtoull(buf, base, &val);
-+	if (!ret)
-+		*result = val;
-+	return ret;
-+}
-+
-+/**
-+ * match_int - scan a decimal representation of an integer from a substring_t
-+ * @s: substring_t to be scanned
-+ * @result: resulting integer on success
-+ *
-+ * Description: Attempts to parse the &substring_t @s as a decimal integer.
-+ *
-+ * Return: On success, sets @result to the integer represented by the string
-+ * and returns 0. Returns -EINVAL or -ERANGE on failure.
-+ */
-+int match_int(substring_t *s, int *result)
-+{
-+	return match_number(s, result, 0);
-+}
-+EXPORT_SYMBOL(match_int);
-+
-+/**
-+ * match_uint - scan a decimal representation of an integer from a substring_t
-+ * @s: substring_t to be scanned
-+ * @result: resulting integer on success
-+ *
-+ * Description: Attempts to parse the &substring_t @s as a decimal integer.
-+ *
-+ * Return: On success, sets @result to the integer represented by the string
-+ * and returns 0. Returns -EINVAL or -ERANGE on failure.
-+ */
-+int match_uint(substring_t *s, unsigned int *result)
-+{
-+	char buf[NUMBER_BUF_LEN];
-+
-+	if (match_strlcpy(buf, s, NUMBER_BUF_LEN) >= NUMBER_BUF_LEN)
-+		return -ERANGE;
-+
-+	return kstrtouint(buf, 10, result);
-+}
-+EXPORT_SYMBOL(match_uint);
-+
-+/**
-+ * match_u64 - scan a decimal representation of a u64 from
-+ *                  a substring_t
-+ * @s: substring_t to be scanned
-+ * @result: resulting unsigned long long on success
-+ *
-+ * Description: Attempts to parse the &substring_t @s as a long decimal
-+ * integer.
-+ *
-+ * Return: On success, sets @result to the integer represented by the string
-+ * and returns 0. Returns -EINVAL or -ERANGE on failure.
-+ */
-+int match_u64(substring_t *s, u64 *result)
-+{
-+	return match_u64int(s, result, 0);
-+}
-+EXPORT_SYMBOL(match_u64);
-+
-+/**
-+ * match_octal - scan an octal representation of an integer from a substring_t
-+ * @s: substring_t to be scanned
-+ * @result: resulting integer on success
-+ *
-+ * Description: Attempts to parse the &substring_t @s as an octal integer.
-+ *
-+ * Return: On success, sets @result to the integer represented by the string
-+ * and returns 0. Returns -EINVAL or -ERANGE on failure.
-+ */
-+int match_octal(substring_t *s, int *result)
-+{
-+	return match_number(s, result, 8);
-+}
-+EXPORT_SYMBOL(match_octal);
-+
-+/**
-+ * match_hex - scan a hex representation of an integer from a substring_t
-+ * @s: substring_t to be scanned
-+ * @result: resulting integer on success
-+ *
-+ * Description: Attempts to parse the &substring_t @s as a hexadecimal integer.
-+ *
-+ * Return: On success, sets @result to the integer represented by the string
-+ * and returns 0. Returns -EINVAL or -ERANGE on failure.
-+ */
-+int match_hex(substring_t *s, int *result)
-+{
-+	return match_number(s, result, 16);
-+}
-+EXPORT_SYMBOL(match_hex);
-+
-+/**
-+ * match_wildcard - parse if a string matches given wildcard pattern
-+ * @pattern: wildcard pattern
-+ * @str: the string to be parsed
-+ *
-+ * Description: Parse the string @str to check if matches wildcard
-+ * pattern @pattern. The pattern may contain two types of wildcards:
-+ *   '*' - matches zero or more characters
-+ *   '?' - matches one character
-+ *
-+ * Return: If the @str matches the @pattern, return true, else return false.
-+ */
-+bool match_wildcard(const char *pattern, const char *str)
-+{
-+	const char *s = str;
-+	const char *p = pattern;
-+	bool star = false;
-+
-+	while (*s) {
-+		switch (*p) {
-+		case '?':
-+			s++;
-+			p++;
-+			break;
-+		case '*':
-+			star = true;
-+			str = s;
-+			if (!*++p)
-+				return true;
-+			pattern = p;
-+			break;
-+		default:
-+			if (*s == *p) {
-+				s++;
-+				p++;
-+			} else {
-+				if (!star)
-+					return false;
-+				str++;
-+				s = str;
-+				p = pattern;
-+			}
-+			break;
++	do {
++		size_t len = iov->iov_len - skip;
++		if (len) {
++			res |= (unsigned long)iov->iov_base + skip;
++			if (len > size)
++				len = size;
++			res |= len;
++			size -= len;
 +		}
-+	}
-+
-+	if (*p == '*')
-+		++p;
-+	return !*p;
++		iov++;
++		skip = 0;
++	} while (size);
++	return res;
 +}
-+EXPORT_SYMBOL(match_wildcard);
 +
-+/**
-+ * match_strlcpy - Copy the characters from a substring_t to a sized buffer
-+ * @dest: where to copy to
-+ * @src: &substring_t to copy
-+ * @size: size of destination buffer
-+ *
-+ * Description: Copy the characters in &substring_t @src to the
-+ * c-style string @dest.  Copy no more than @size - 1 characters, plus
-+ * the terminating NUL.
-+ *
-+ * Return: length of @src.
-+ */
-+size_t match_strlcpy(char *dest, const substring_t *src, size_t size)
++unsigned long iov_iter_alignment(const struct iov_iter *i)
 +{
-+	size_t ret = src->to - src->from;
++	/* iovec and kvec have identical layouts */
++	if (likely(iter_is_iovec(i) || iov_iter_is_kvec(i)))
++		return iov_iter_alignment_iovec(i);
 +
-+	if (size) {
-+		size_t len = ret >= size ? size - 1 : ret;
-+		memcpy(dest, src->from, len);
-+		dest[len] = '\0';
-+	}
-+	return ret;
++	return 0;
 +}
-+EXPORT_SYMBOL(match_strlcpy);
++EXPORT_SYMBOL(iov_iter_alignment);
 +
-+/**
-+ * match_strdup - allocate a new string with the contents of a substring_t
-+ * @s: &substring_t to copy
-+ *
-+ * Description: Allocates and returns a string filled with the contents of
-+ * the &substring_t @s. The caller is responsible for freeing the returned
-+ * string with kfree().
-+ *
-+ * Return: the address of the newly allocated NUL-terminated string or
-+ * %NULL on error.
-+ */
-+char *match_strdup(const substring_t *s)
++size_t copy_to_iter(const void *addr, size_t bytes, struct iov_iter *i)
 +{
-+	return memdup_nul(s->from, s->to - s->from);
++	if (WARN_ON_ONCE(i->data_source))
++		return 0;
++	return iterate_and_advance(i, bytes, (void *)addr,
++				   copy_to_user_iter, memcpy_to_iter);
 +}
-+EXPORT_SYMBOL(match_strdup);
++EXPORT_SYMBOL(copy_to_iter);
++
++size_t copy_from_iter(void *addr, size_t bytes, struct iov_iter *i)
++{
++	if (WARN_ON_ONCE(!i->data_source))
++		return 0;
++
++	return iterate_and_advance(i, bytes, addr,
++				   copy_from_user_iter, memcpy_from_iter);
++}
++EXPORT_SYMBOL(copy_from_iter);
 -- 
 2.39.5
 
