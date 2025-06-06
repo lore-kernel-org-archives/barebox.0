@@ -1,55 +1,55 @@
-Delivery-date: Thu, 05 Jun 2025 23:22:03 +0200
+Delivery-date: Fri, 06 Jun 2025 07:58:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNI2F-0049Zs-1W
+	id 1uNQ6P-004HGo-2J
 	for lore@lore.pengutronix.de;
-	Thu, 05 Jun 2025 23:22:03 +0200
+	Fri, 06 Jun 2025 07:58:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNI2E-00052A-RQ
-	for lore@pengutronix.de; Thu, 05 Jun 2025 23:22:03 +0200
+	id 1uNQ6M-0004pO-2o
+	for lore@pengutronix.de; Fri, 06 Jun 2025 07:58:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=eF33qVQOEFBTC0LGFXzstVNyjqwermacLofQAtm7BEw=; b=ktM6NX5f7m2c/xWo/3C3zj59KO
-	rXsAxYpZvSAWLbCQ8tHIFUgEH8no+vALs7AkT1+IBn8Dx5XFmYRaNfWioCppqZcqFy8rWWKXUqnIP
-	6uuPaLxw+l9Nowns6tsJA0QoUKX2nPwUy+3VpmSHqjEJ5xjB2HaLH5Q6q74JR9aL5UPkdz0/pnQic
-	SYs+Dn0dNanU39vPzoiYZTxsMlm5KckNI2YNeT4GnMTdtckSGjnwgd473Fj0qUhY2zffMrsJF4bRQ
-	M0YRt1kxEZpmi1IStOQN41HRnmKMmh+7vEngbia70ADhUKdny5PjVBp+ukBQaIk0o3kIXt6ibFapx
-	/NdMjE9g==;
+	bh=DuANhmjpUdtLzi6xFSOHInNkg/OVJL6Xu0kSzWtTRuM=; b=zdK1ffnk2g9ysAKrm0g9hWabtq
+	Z7ajlOKMQJe7x4+WEw3q+nKrV4eiuRcbT49RQCXS7ZxpzSUeuRIPZHI/F5mAlUgoAziTj88/CJDXM
+	cc/QbvDqRGtXQ4etT9lY3c272tBTnbj343eNdwvpG0oocG0EkvDX7rYHZdBVfJHhUcIayK/c6vuy2
+	PCbFFcFB07led26CxkTfFJYqUu5WKK5PfiJsHgudpXIuRnQ5UHkALIkXGo5LS3HHMzoylkaDCz8dr
+	zlu7A688VJe8QXHRNmxB6kV9EoDK5eD6is+3xBtBIo6SbkSMwFE4EjxuA5p2t05Yg9Z7XngZBAShV
+	/sklFFcw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNI1q-0000000GgUK-2YTI;
-	Thu, 05 Jun 2025 21:21:38 +0000
+	id 1uNQ5V-0000000H9IW-0jrN;
+	Fri, 06 Jun 2025 05:57:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNI1o-0000000GgTw-1Ue9
+	id 1uNQ5Q-0000000H9DQ-2n4h
 	for barebox@lists.infradead.org;
-	Thu, 05 Jun 2025 21:21:37 +0000
+	Fri, 06 Jun 2025 05:57:54 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNI1m-0004Yw-WE; Thu, 05 Jun 2025 23:21:35 +0200
+	id 1uNQ5P-0003r4-Bp; Fri, 06 Jun 2025 07:57:51 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu,  5 Jun 2025 23:21:34 +0200
-Message-Id: <20250605212134.1931135-1-a.fatoum@barebox.org>
+Date: Fri,  6 Jun 2025 07:57:37 +0200
+Message-Id: <20250606055748.1990383-6-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <https://lore.barebox.org/barebox/20250605210726.1916656-2-a.fatoum@barebox.org/T/#u>
-References: <https://lore.barebox.org/barebox/20250605210726.1916656-2-a.fatoum@barebox.org/T/#u>
+In-Reply-To: <20250606055748.1990383-1-a.fatoum@barebox.org>
+References: <20250606055748.1990383-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250605_142136_396919_79767E22 
-X-CRM114-Status: GOOD (  10.41  )
+X-CRM114-CacheID: sfid-20250605_225752_705011_C69D50C3 
+X-CRM114-Status: GOOD (  10.79  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,102 +71,69 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! driver: bus: embed bus driver node into bus
+Subject: [PATCH v2 05/16] drive: bus: make use of new bus_find_device helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With this, CI is happy on all tested targets.
+Instead of opencoding the iteration, let's make use of the new
+helpers to lookup devices on a given bus.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/bus/acpi.c       | 12 ++++++------
- drivers/efi/efi-device.c | 14 +++++++-------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/efi/efi-device.c | 17 ++++++++++-------
+ drivers/net/phy/phy.c    |  7 +++----
+ 2 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/bus/acpi.c b/drivers/bus/acpi.c
-index 92325c16e234..f586b605d0d4 100644
---- a/drivers/bus/acpi.c
-+++ b/drivers/bus/acpi.c
-@@ -138,7 +138,7 @@ static struct device *acpi_add_device(struct bus_type *bus,
- 	dev = xzalloc(sizeof(*dev));
- 
- 	dev->bus = bus;
--	dev->parent = bus->dev;
-+	dev->parent = &bus->dev;
- 	dev->id = DEVICE_ID_DYNAMIC;
- 	devinfo_add(dev, acpi_devinfo);
- 
-@@ -149,7 +149,7 @@ static struct device *acpi_add_device(struct bus_type *bus,
- 
- static int acpi_register_devices(struct bus_type *bus)
- {
--	struct efi_config_table *table = bus->dev->priv;
-+	struct efi_config_table *table = bus->dev.priv;
- 	struct acpi_rsdp *rsdp;
- 	struct acpi_rsdt *root;
- 	size_t entry_count;
-@@ -165,7 +165,7 @@ static int acpi_register_devices(struct bus_type *bus)
- 	 * 5.2.5.2 Finding the RSDP on UEFI Enabled Systems
- 	 */
- 	if (memcmp("RSD PTR ", rsdp->signature, sizeof(rsdp->signature))) {
--		dev_dbg(bus->dev, "unexpected signature at start of config table: '%.8s'\n",
-+		dev_dbg(&bus->dev, "unexpected signature at start of config table: '%.8s'\n",
- 			rsdp->signature);
- 		return -ENODEV;
- 	}
-@@ -183,12 +183,12 @@ static int acpi_register_devices(struct bus_type *bus)
- 	}
- 
- 	if (acpi_sigcmp(sig, root->sdt.signature)) {
--		dev_err(bus->dev, "Expected %s, but found '%.4s'.\n",
-+		dev_err(&bus->dev, "Expected %s, but found '%.4s'.\n",
- 			sig, root->sdt.signature);
- 		return -EIO;
- 	}
- 
--	dev_info(bus->dev, "Found %s (OEM: %.8s) with %zu entries\n",
-+	dev_info(&bus->dev, "Found %s (OEM: %.8s) with %zu entries\n",
- 		sig, root->sdt.oem_id, entry_count);
- 
- 	for (i = 0; i < entry_count; i++) {
-@@ -232,7 +232,7 @@ static int efi_acpi_probe(void)
- 	if (!table)
- 		return 0;
- 
--	acpi_bus.dev->priv = table;
-+	acpi_bus.dev.priv = table;
- 	return acpi_register_devices(&acpi_bus);
- }
- postcore_efi_initcall(efi_acpi_probe);
 diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index 23fcef7957fe..0e6f75659f62 100644
+index 46328d12bcdf..0e6f75659f62 100644
 --- a/drivers/efi/efi-device.c
 +++ b/drivers/efi/efi-device.c
-@@ -421,17 +421,17 @@ static int efi_init_devices(void)
+@@ -30,17 +30,20 @@ static int efi_locate_handle(enum efi_locate_search_type search_type,
+ 				   buffer);
+ }
  
- 	bus_register(&efi_bus);
++static int efi_device_match_handle(struct device *dev, const void *handle)
++{
++	struct efi_device *efidev = container_of(dev, struct efi_device, dev);
++	return efidev->handle == handle;
++}
++
+ static struct efi_device *efi_find_device(efi_handle_t handle)
+ {
+ 	struct device *dev;
+-	struct efi_device *efidev;
  
--	dev_add_param_fixed(efi_bus.dev, "fw_vendor", fw_vendor);
-+	dev_add_param_fixed(&efi_bus.dev, "fw_vendor", fw_vendor);
- 	free(fw_vendor);
+-	bus_for_each_device(&efi_bus, dev) {
+-		efidev = container_of(dev, struct efi_device, dev);
+-
+-		if (efidev->handle == handle)
+-			return efidev;
+-	}
++	dev = bus_find_device(&efi_bus, NULL, efi_device_match_handle,
++			      efi_device_match_handle);
++	if (dev)
++		return container_of(dev, struct efi_device, dev);
  
--	dev_add_param_uint32_fixed(efi_bus.dev, "major", sys_major, "%u");
--	dev_add_param_uint32_fixed(efi_bus.dev, "minor", sys_minor, "%u");
--	dev_add_param_uint32_fixed(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
--	dev_add_param_bool_fixed(efi_bus.dev, "secure_boot", secure_boot);
--	dev_add_param_bool_fixed(efi_bus.dev, "secure_mode",
-+	dev_add_param_uint32_fixed(&efi_bus.dev, "major", sys_major, "%u");
-+	dev_add_param_uint32_fixed(&efi_bus.dev, "minor", sys_minor, "%u");
-+	dev_add_param_uint32_fixed(&efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
-+	dev_add_param_bool_fixed(&efi_bus.dev, "secure_boot", secure_boot);
-+	dev_add_param_bool_fixed(&efi_bus.dev, "secure_mode",
- 				 secure_boot & setup_mode);
+ 	return NULL;
+ }
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index d9f50f45f441..9635c816c330 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -374,10 +374,9 @@ static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
+ 		}
+ 	}
  
--	devinfo_add(efi_bus.dev, efi_businfo);
-+	devinfo_add(&efi_bus.dev, efi_businfo);
+-	bus_for_each_device(&mdio_bus_type, dev) {
+-		if (dev->of_node == phy_node)
+-			return container_of(dev, struct phy_device, dev);
+-	}
++	dev = bus_find_device_by_of_node(&mdio_bus_type, phy_node);
++	if (dev)
++		return container_of(dev, struct phy_device, dev);
  
- 	efi_register_devices();
- 
+ 	return NULL;
+ }
 -- 
 2.39.5
 
