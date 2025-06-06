@@ -1,55 +1,55 @@
-Delivery-date: Fri, 06 Jun 2025 10:59:14 +0200
+Delivery-date: Fri, 06 Jun 2025 10:59:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNSuw-004K87-0X
+	id 1uNSuy-004K8p-2l
 	for lore@lore.pengutronix.de;
-	Fri, 06 Jun 2025 10:59:14 +0200
+	Fri, 06 Jun 2025 10:59:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNSuq-0003hK-FE
-	for lore@pengutronix.de; Fri, 06 Jun 2025 10:59:14 +0200
+	id 1uNSur-0003jl-TV
+	for lore@pengutronix.de; Fri, 06 Jun 2025 10:59:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=q8cOSBwUzUawfXXRp8vA/DnRlsEU2s4SKVS2j/mQmmY=; b=J7IRcpUCoj5gQ39NtI6yqsH1iA
-	t6OsQLSA1Wi3eRygEXiotmIMYcpBbDLAUU0pUMa+I2hwiqviw0pIeAryDZX6zibAg+DpfOWdxfOPf
-	1eiEcZsglvhV0nD7tub4vRtipN+iQRkJcoFJpvomZdQrKwQR25KXSnw8DN/pkQYn3sY7QOvFRLRZd
-	SFZK6xoMNtjZz80J5tqxdrRPeFZa+0SzvRbpnzqmGfUPgkvpbkDQS0ryDsS7ilTOQ6z9YS0VVDwF5
-	dtxBXz5pB6PO+UhFogB69DwYXMIpPbIUAf0m3kEy/jY5mZUi4IFdDR/xQ4QHHjHJ+GnyLhvSOtkdZ
-	UkFsA0Sw==;
+	bh=Q+0CkQbfhEBUqDJbkvi6dfqtlp3hPsUaVB3uRln8Bog=; b=npoiR4JMalAPf2fYpPa2cqMX0w
+	Wh7FdZlrJVuJzW0QynQMNBHo+ymlbbpkJUzwskl12JkNr57ichs2WCqFssojf2J4Vr+hwpsKsNLjL
+	pGzjsD/ORpGbMxorMjaKNSX81ZQq6dBEJ0R8GXFgk5BGyZW6lyOr0rP+tQ7vjM1dSFoHIIGHTrhg0
+	DqlsHbdnx7LiFfo6IZDOETQ81DdBcZty+slYdtnLBvhzDMh6dNAuiUAWsbeGigpx6J/5Pm+wU37L+
+	FGHrGgODdY+1+9nZtKmMruztNti2NmltOmHm2Bb9E1QHIi5RxzdJVDIdiLNU++yyXGJGXq/mVdEEm
+	s44Eq8gg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNSu8-0000000HSPI-01EF;
-	Fri, 06 Jun 2025 08:58:24 +0000
+	id 1uNSu6-0000000HSO5-3eD1;
+	Fri, 06 Jun 2025 08:58:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNSu0-0000000HSK9-3KXj
+	id 1uNSu0-0000000HSK7-3KSQ
 	for barebox@lists.infradead.org;
-	Fri, 06 Jun 2025 08:58:20 +0000
+	Fri, 06 Jun 2025 08:58:19 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uNStz-0002si-Fb; Fri, 06 Jun 2025 10:58:15 +0200
+	id 1uNStz-0002si-08; Fri, 06 Jun 2025 10:58:15 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri,  6 Jun 2025 10:58:07 +0200
-Message-Id: <20250606085813.2183260-5-a.fatoum@barebox.org>
+Date: Fri,  6 Jun 2025 10:58:05 +0200
+Message-Id: <20250606085813.2183260-3-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250606085813.2183260-1-a.fatoum@barebox.org>
 References: <20250606085813.2183260-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250606_015817_139622_2607EFCA 
-X-CRM114-Status: GOOD (  34.56  )
+X-CRM114-CacheID: sfid-20250606_015817_139930_2CAE9FAA 
+X-CRM114-Status: GOOD (  37.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,628 +71,548 @@ X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 04/10] lib: add iov_iter I/O vector iterator support
+Subject: [PATCH 02/10] Port Linux __cleanup() based guard infrastructure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-I/O vector iterators are a frequent sight in Linux file system drivers
-and are also used in the incoming 9PFS support, so provide the
-definitions in barebox.
+Kernel code is increasingly switching to make use of the new cleanup
+mechanism. This will also be useful for us in barebox to avoid leaks
+that are now biting us when fuzzing.
+
+As first step, let's import the infrastructure along with dummy guards
+for mutexes and spinlocks, which can be built upon in future.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- include/linux/uio.h      | 305 +++++++++++++++++++++++++++++++++++++++
- include/uapi/linux/uio.h |  23 +++
- lib/Makefile             |   1 +
- lib/iov_iter.c           | 245 +++++++++++++++++++++++++++++++
- 4 files changed, 574 insertions(+)
- create mode 100644 include/linux/uio.h
- create mode 100644 include/uapi/linux/uio.h
- create mode 100644 lib/iov_iter.c
+ Makefile                       |   3 -
+ include/linux/cleanup.h        | 401 +++++++++++++++++++++++++++++++++
+ include/linux/compiler-clang.h |  11 +
+ include/linux/compiler_types.h |   6 +
+ include/linux/mutex.h          |   8 +-
+ include/linux/spinlock.h       |  17 +-
+ 6 files changed, 439 insertions(+), 7 deletions(-)
+ create mode 100644 include/linux/cleanup.h
 
-diff --git a/include/linux/uio.h b/include/linux/uio.h
+diff --git a/Makefile b/Makefile
+index 031d5bdd3e20..8ab361ed63ed 100644
+--- a/Makefile
++++ b/Makefile
+@@ -783,9 +783,6 @@ KBUILD_USERLDFLAGS += $(filter -m32 -m64, $(KBUILD_CFLAGS))
+ NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
+ CHECKFLAGS     += $(NOSTDINC_FLAGS)
+ 
+-# warn about C99 declaration after statement
+-KBUILD_CFLAGS += $(call cc-option,-Wdeclaration-after-statement,)
+-
+ # warn about e.g. (unsigned)x < 0
+ KBUILD_CFLAGS += $(call cc-option,-Wtype-limits)
+ 
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
 new file mode 100644
-index 000000000000..8724c04a4acb
+index 000000000000..d796f1b1c8fc
 --- /dev/null
-+++ b/include/linux/uio.h
-@@ -0,0 +1,305 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ *	Berkeley style UIO structures	-	Alan Cox 1994.
-+ */
-+#ifndef __LINUX_UIO_H
-+#define __LINUX_UIO_H
-+
-+#include <linux/kernel.h>
-+#include <uapi/linux/uio.h>
-+
-+struct page;
-+
-+typedef unsigned int __bitwise iov_iter_extraction_t;
-+
-+struct kvec {
-+	void *iov_base; /* and that should *never* hold a userland pointer */
-+	size_t iov_len;
-+};
-+
-+enum iter_type {
-+	/* iter types */
-+	ITER_KVEC,
-+};
-+
-+#define ITER_SOURCE	1	// == WRITE
-+#define ITER_DEST	0	// == READ
-+
-+struct iov_iter_state {
-+	size_t iov_offset;
-+	size_t count;
-+	unsigned long nr_segs;
-+};
-+
-+struct iov_iter {
-+	u8 iter_type;
-+	bool nofault;
-+	bool data_source;
-+	size_t iov_offset;
-+	struct {
-+		union {
-+			/* use iter_iov() to get the current vec */
-+			const struct iovec *__iov;
-+			const struct kvec *kvec;
-+		};
-+		size_t count;
-+	};
-+	unsigned long nr_segs;
-+};
-+
-+static inline const struct iovec *iter_iov(const struct iov_iter *iter)
-+{
-+	return iter->__iov;
-+}
-+
-+static inline enum iter_type iov_iter_type(const struct iov_iter *i)
-+{
-+	return i->iter_type;
-+}
-+
-+static inline void iov_iter_save_state(struct iov_iter *iter,
-+				       struct iov_iter_state *state)
-+{
-+	state->iov_offset = iter->iov_offset;
-+	state->count = iter->count;
-+	state->nr_segs = iter->nr_segs;
-+}
-+
-+static inline bool iter_is_iovec(const struct iov_iter *i)
-+{
-+	return false;
-+}
-+
-+static inline bool iov_iter_is_kvec(const struct iov_iter *i)
-+{
-+	return iov_iter_type(i) == ITER_KVEC;
-+}
-+
-+/*
-+ * Total number of bytes covered by an iovec.
-+ *
-+ * NOTE that it is not safe to use this function until all the iovec's
-+ * segment lengths have been validated.  Because the individual lengths can
-+ * overflow a size_t when added together.
-+ */
-+static inline size_t iov_length(const struct iovec *iov, unsigned long nr_segs)
-+{
-+	unsigned long seg;
-+	size_t ret = 0;
-+
-+	for (seg = 0; seg < nr_segs; seg++)
-+		ret += iov[seg].iov_len;
-+	return ret;
-+}
-+
-+void iov_iter_advance(struct iov_iter *i, size_t bytes);
-+void iov_iter_revert(struct iov_iter *i, size_t bytes);
-+size_t fault_in_iov_iter_readable(const struct iov_iter *i, size_t bytes);
-+size_t fault_in_iov_iter_writeable(const struct iov_iter *i, size_t bytes);
-+size_t iov_iter_single_seg_count(const struct iov_iter *i);
-+
-+__must_check size_t copy_to_iter(const void *addr, size_t bytes, struct iov_iter *i);
-+__must_check size_t copy_from_iter(void *addr, size_t bytes, struct iov_iter *i);
-+__must_check size_t copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i);
-+
-+static __always_inline __must_check
-+bool copy_to_iter_full(const void *addr, size_t bytes, struct iov_iter *i)
-+{
-+	size_t copied = copy_to_iter(addr, bytes, i);
-+	if (likely(copied == bytes))
-+		return true;
-+	iov_iter_revert(i, copied);
-+	return false;
-+}
-+
-+static __always_inline __must_check
-+bool copy_from_iter_full(void *addr, size_t bytes, struct iov_iter *i)
-+{
-+	size_t copied = copy_from_iter(addr, bytes, i);
-+	if (likely(copied == bytes))
-+		return true;
-+	iov_iter_revert(i, copied);
-+	return false;
-+}
-+
-+static __always_inline __must_check
-+bool copy_from_iter_full_nocache(void *addr, size_t bytes, struct iov_iter *i)
-+{
-+	size_t copied = copy_from_iter_nocache(addr, bytes, i);
-+	if (likely(copied == bytes))
-+		return true;
-+	iov_iter_revert(i, copied);
-+	return false;
-+}
-+
-+size_t iov_iter_zero(size_t bytes, struct iov_iter *);
-+bool iov_iter_is_aligned(const struct iov_iter *i, unsigned addr_mask,
-+			unsigned len_mask);
-+unsigned long iov_iter_alignment(const struct iov_iter *i);
-+unsigned long iov_iter_gap_alignment(const struct iov_iter *i);
-+void iov_iter_kvec(struct iov_iter *i, unsigned int direction, const struct kvec *kvec,
-+			unsigned long nr_segs, size_t count);
-+int iov_iter_npages(const struct iov_iter *i, int maxpages);
-+
-+const void *dup_iter(struct iov_iter *new, struct iov_iter *old, gfp_t flags);
-+
-+static inline size_t iov_iter_count(const struct iov_iter *i)
-+{
-+	return i->count;
-+}
-+
-+/*
-+ * Cap the iov_iter by given limit; note that the second argument is
-+ * *not* the new size - it's upper limit for such.  Passing it a value
-+ * greater than the amount of data in iov_iter is fine - it'll just do
-+ * nothing in that case.
-+ */
-+static inline void iov_iter_truncate(struct iov_iter *i, u64 count)
-+{
-+	/*
-+	 * count doesn't have to fit in size_t - comparison extends both
-+	 * operands to u64 here and any value that would be truncated by
-+	 * conversion in assignement is by definition greater than all
-+	 * values of size_t, including old i->count.
-+	 */
-+	if (i->count > count)
-+		i->count = count;
-+}
-+
-+/*
-+ * reexpand a previously truncated iterator; count must be no more than how much
-+ * we had shrunk it.
-+ */
-+static inline void iov_iter_reexpand(struct iov_iter *i, size_t count)
-+{
-+	i->count = count;
-+}
-+
-+static inline int
-+iov_iter_npages_cap(struct iov_iter *i, int maxpages, size_t max_bytes)
-+{
-+	size_t shorted = 0;
-+	int npages;
-+
-+	if (iov_iter_count(i) > max_bytes) {
-+		shorted = iov_iter_count(i) - max_bytes;
-+		iov_iter_truncate(i, max_bytes);
-+	}
-+	npages = iov_iter_npages(i, maxpages);
-+	if (shorted)
-+		iov_iter_reexpand(i, iov_iter_count(i) + shorted);
-+
-+	return npages;
-+}
-+
-+struct iovec *iovec_from_user(const struct iovec __user *uvector,
-+		unsigned long nr_segs, unsigned long fast_segs,
-+		struct iovec *fast_iov, bool compat);
-+ssize_t import_iovec(int type, const struct iovec __user *uvec,
-+		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-+		 struct iov_iter *i);
-+ssize_t __import_iovec(int type, const struct iovec __user *uvec,
-+		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-+		 struct iov_iter *i, bool compat);
-+
-+struct sg_table;
-+ssize_t extract_iter_to_sg(struct iov_iter *iter, size_t len,
-+			   struct sg_table *sgtable, unsigned int sg_max,
-+			   iov_iter_extraction_t extraction_flags);
-+
-+typedef size_t (*iov_step_f)(void *iter_base, size_t progress, size_t len,
-+			     void *priv, void *priv2);
-+typedef size_t (*iov_ustep_f)(void __user *iter_base, size_t progress, size_t len,
-+			      void *priv, void *priv2);
-+
-+/*
-+ * Handle ITER_KVEC.
-+ */
-+static __always_inline
-+size_t iterate_kvec(struct iov_iter *iter, size_t len, void *priv, void *priv2,
-+		    iov_step_f step)
-+{
-+	const struct kvec *p = iter->kvec;
-+	size_t progress = 0, skip = iter->iov_offset;
-+
-+	do {
-+		size_t remain, consumed;
-+		size_t part = min(len, p->iov_len - skip);
-+
-+		if (likely(part)) {
-+			remain = step(p->iov_base + skip, progress, part, priv, priv2);
-+			consumed = part - remain;
-+			progress += consumed;
-+			skip += consumed;
-+			len -= consumed;
-+			if (skip < p->iov_len)
-+				break;
-+		}
-+		p++;
-+		skip = 0;
-+	} while (len);
-+
-+	iter->nr_segs -= p - iter->kvec;
-+	iter->kvec = p;
-+	iter->iov_offset = skip;
-+	iter->count -= progress;
-+	return progress;
-+}
-+
-+/**
-+ * iterate_and_advance2 - Iterate over an iterator
-+ * @iter: The iterator to iterate over.
-+ * @len: The amount to iterate over.
-+ * @priv: Data for the step functions.
-+ * @priv2: More data for the step functions.
-+ * @ustep: Function for UBUF/IOVEC iterators; given __user addresses.
-+ * @step: Function for other iterators; given kernel addresses.
-+ *
-+ * Iterate over the next part of an iterator, up to the specified length.  The
-+ * buffer is presented in segments, which for kernel iteration are broken up by
-+ * physical pages and mapped, with the mapped address being presented.
-+ *
-+ * Two step functions, @step and @ustep, must be provided, one for handling
-+ * mapped kernel addresses and the other is given user addresses which have the
-+ * potential to fault since no pinning is performed.
-+ *
-+ * The step functions are passed the address and length of the segment, @priv,
-+ * @priv2 and the amount of data so far iterated over (which can, for example,
-+ * be added to @priv to point to the right part of a second buffer).  The step
-+ * functions should return the amount of the segment they didn't process (ie. 0
-+ * indicates complete processsing).
-+ *
-+ * This function returns the amount of data processed (ie. 0 means nothing was
-+ * processed and the value of @len means processes to completion).
-+ */
-+static __always_inline
-+size_t iterate_and_advance2(struct iov_iter *iter, size_t len, void *priv,
-+			    void *priv2, iov_ustep_f ustep, iov_step_f step)
-+{
-+	if (unlikely(iter->count < len))
-+		len = iter->count;
-+	if (unlikely(!len))
-+		return 0;
-+
-+	return iterate_kvec(iter, len, priv, priv2, step);
-+}
-+
-+
-+/**
-+ * iterate_and_advance - Iterate over an iterator
-+ * @iter: The iterator to iterate over.
-+ * @len: The amount to iterate over.
-+ * @priv: Data for the step functions.
-+ * @ustep: Function for UBUF/IOVEC iterators; given __user addresses.
-+ * @step: Function for other iterators; given kernel addresses.
-+ *
-+ * As iterate_and_advance2(), but priv2 is always NULL.
-+ */
-+static __always_inline
-+size_t iterate_and_advance(struct iov_iter *iter, size_t len, void *priv,
-+			   iov_ustep_f ustep, iov_step_f step)
-+{
-+	return iterate_and_advance2(iter, len, priv, NULL, ustep, step);
-+}
-+
-+#endif
-diff --git a/include/uapi/linux/uio.h b/include/uapi/linux/uio.h
-new file mode 100644
-index 000000000000..1edb1422a786
---- /dev/null
-+++ b/include/uapi/linux/uio.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
-+/*
-+ *	Berkeley style UIO structures	-	Alan Cox 1994.
-+ *
-+ *		This program is free software; you can redistribute it and/or
-+ *		modify it under the terms of the GNU General Public License
-+ *		as published by the Free Software Foundation; either version
-+ *		2 of the License, or (at your option) any later version.
-+ */
-+#ifndef _UAPI__LINUX_UIO_H
-+#define _UAPI__LINUX_UIO_H
++++ b/include/linux/cleanup.h
+@@ -0,0 +1,401 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_CLEANUP_H
++#define _LINUX_CLEANUP_H
 +
 +#include <linux/compiler.h>
-+#include <linux/types.h>
-+
-+
-+struct iovec
-+{
-+	void __user *iov_base;	/* BSD uses caddr_t (1003.1g requires void *) */
-+	__kernel_size_t iov_len; /* Must be size_t (1003.1g) */
-+};
-+
-+#endif /* _UAPI__LINUX_UIO_H */
-diff --git a/lib/Makefile b/lib/Makefile
-index 0d1d22c0845b..a1ca2803a095 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -32,6 +32,7 @@ obj-y			+= recursive_action.o
- obj-y			+= make_directory.o
- obj-y			+= arith.o
- obj-$(CONFIG_IDR)	+= idr.o
-+obj-y			+= iov_iter.o
- obj-y			+= math/
- obj-y			+= uuid.o
- obj-$(CONFIG_XXHASH)	+= xxhash.o
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-new file mode 100644
-index 000000000000..d8b6efb73920
---- /dev/null
-+++ b/lib/iov_iter.c
-@@ -0,0 +1,245 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <linux/export.h>
-+#include <linux/uio.h>
-+#include <linux/pagemap.h>
-+#include <linux/slab.h>
-+#include <linux/scatterlist.h>
-+#include <linux/uaccess.h>
-+
-+#define MAX_RW_COUNT (INT_MAX & PAGE_MASK)
-+
-+static __always_inline
-+size_t copy_to_user_iter(void __user *iter_to, size_t progress,
-+			 size_t len, void *from, void *priv2)
-+{
-+	if (access_ok(iter_to, len)) {
-+		from += progress;
-+		len = raw_copy_to_user(iter_to, from, len);
-+	}
-+	return len;
-+}
-+
-+static __always_inline
-+size_t copy_from_user_iter(void __user *iter_from, size_t progress,
-+			   size_t len, void *to, void *priv2)
-+{
-+	size_t res = len;
-+
-+	if (access_ok(iter_from, len)) {
-+		to += progress;
-+		res = raw_copy_from_user(to, iter_from, len);
-+	}
-+	return res;
-+}
-+
-+static __always_inline
-+size_t memcpy_to_iter(void *iter_to, size_t progress,
-+		      size_t len, void *from, void *priv2)
-+{
-+	memcpy(iter_to, from + progress, len);
-+	return 0;
-+}
-+
-+static __always_inline
-+size_t memcpy_from_iter(void *iter_from, size_t progress,
-+			size_t len, void *to, void *priv2)
-+{
-+	memcpy(to + progress, iter_from, len);
-+	return 0;
-+}
-+
-+static __always_inline
-+size_t zero_to_user_iter(void __user *iter_to, size_t progress,
-+			 size_t len, void *priv, void *priv2)
-+{
-+	return clear_user(iter_to, len);
-+}
-+
-+static __always_inline
-+size_t zero_to_iter(void *iter_to, size_t progress,
-+		    size_t len, void *priv, void *priv2)
-+{
-+	memset(iter_to, 0, len);
-+	return 0;
-+}
-+
-+static void iov_iter_iovec_advance(struct iov_iter *i, size_t size)
-+{
-+	const struct iovec *iov, *end;
-+
-+	if (!i->count)
-+		return;
-+	i->count -= size;
-+
-+	size += i->iov_offset; // from beginning of current segment
-+	for (iov = iter_iov(i), end = iov + i->nr_segs; iov < end; iov++) {
-+		if (likely(size < iov->iov_len))
-+			break;
-+		size -= iov->iov_len;
-+	}
-+	i->iov_offset = size;
-+	i->nr_segs -= iov - iter_iov(i);
-+	i->__iov = iov;
-+}
-+
-+void iov_iter_advance(struct iov_iter *i, size_t size)
-+{
-+	if (unlikely(i->count < size))
-+		size = i->count;
-+	if (likely(iter_is_iovec(i) || iov_iter_is_kvec(i))) {
-+		/* iovec and kvec have identical layouts */
-+		iov_iter_iovec_advance(i, size);
-+	}
-+}
-+EXPORT_SYMBOL(iov_iter_advance);
-+
-+void iov_iter_revert(struct iov_iter *i, size_t unroll)
-+{
-+	if (!unroll)
-+		return;
-+	if (WARN_ON(unroll > MAX_RW_COUNT))
-+		return;
-+	i->count += unroll;
-+	if (unroll <= i->iov_offset) {
-+		i->iov_offset -= unroll;
-+		return;
-+	}
-+	unroll -= i->iov_offset;
-+	/* same logics for iovec and kvec */
-+	const struct iovec *iov = iter_iov(i);
-+	while (1) {
-+		size_t n = (--iov)->iov_len;
-+		i->nr_segs++;
-+		if (unroll <= n) {
-+			i->__iov = iov;
-+			i->iov_offset = n - unroll;
-+			return;
-+		}
-+		unroll -= n;
-+	}
-+}
-+EXPORT_SYMBOL(iov_iter_revert);
-+
-+/*
-+ * Return the count of just the current iov_iter segment.
-+ */
-+size_t iov_iter_single_seg_count(const struct iov_iter *i)
-+{
-+	if (i->nr_segs > 1) {
-+		if (likely(iter_is_iovec(i) || iov_iter_is_kvec(i)))
-+			return min(i->count, iter_iov(i)->iov_len - i->iov_offset);
-+	}
-+	return i->count;
-+}
-+EXPORT_SYMBOL(iov_iter_single_seg_count);
-+
-+void iov_iter_kvec(struct iov_iter *i, unsigned int direction,
-+			const struct kvec *kvec, unsigned long nr_segs,
-+			size_t count)
-+{
-+	*i = (struct iov_iter){
-+		.iter_type = ITER_KVEC,
-+		.data_source = direction,
-+		.kvec = kvec,
-+		.nr_segs = nr_segs,
-+		.iov_offset = 0,
-+		.count = count
-+	};
-+}
-+EXPORT_SYMBOL(iov_iter_kvec);
-+
-+static bool iov_iter_aligned_iovec(const struct iov_iter *i, unsigned addr_mask,
-+				   unsigned len_mask)
-+{
-+	const struct iovec *iov = iter_iov(i);
-+	size_t size = i->count;
-+	size_t skip = i->iov_offset;
-+
-+	do {
-+		size_t len = iov->iov_len - skip;
-+
-+		if (len > size)
-+			len = size;
-+		if (len & len_mask)
-+			return false;
-+		if ((unsigned long)(iov->iov_base + skip) & addr_mask)
-+			return false;
-+
-+		iov++;
-+		size -= len;
-+		skip = 0;
-+	} while (size);
-+
-+	return true;
-+}
 +
 +/**
-+ * iov_iter_is_aligned() - Check if the addresses and lengths of each segments
-+ * 	are aligned to the parameters.
++ * DOC: scope-based cleanup helpers
 + *
-+ * @i: &struct iov_iter to restore
-+ * @addr_mask: bit mask to check against the iov element's addresses
-+ * @len_mask: bit mask to check against the iov element's lengths
++ * The "goto error" pattern is notorious for introducing subtle resource
++ * leaks. It is tedious and error prone to add new resource acquisition
++ * constraints into code paths that already have several unwind
++ * conditions. The "cleanup" helpers enable the compiler to help with
++ * this tedium and can aid in maintaining LIFO (last in first out)
++ * unwind ordering to avoid unintentional leaks.
 + *
-+ * Return: false if any addresses or lengths intersect with the provided masks
++ * As drivers make up the majority of the kernel code base, here is an
++ * example of using these helpers to clean up PCI drivers. The target of
++ * the cleanups are occasions where a goto is used to unwind a device
++ * reference (pci_dev_put()), or unlock the device (pci_dev_unlock())
++ * before returning.
++ *
++ * The DEFINE_FREE() macro can arrange for PCI device references to be
++ * dropped when the associated variable goes out of scope::
++ *
++ *	DEFINE_FREE(pci_dev_put, struct pci_dev *, if (_T) pci_dev_put(_T))
++ *	...
++ *	struct pci_dev *dev __free(pci_dev_put) =
++ *		pci_get_slot(parent, PCI_DEVFN(0, 0));
++ *
++ * The above will automatically call pci_dev_put() if @dev is non-NULL
++ * when @dev goes out of scope (automatic variable scope). If a function
++ * wants to invoke pci_dev_put() on error, but return @dev (i.e. without
++ * freeing it) on success, it can do::
++ *
++ *	return no_free_ptr(dev);
++ *
++ * ...or::
++ *
++ *	return_ptr(dev);
++ *
++ * The DEFINE_GUARD() macro can arrange for the PCI device lock to be
++ * dropped when the scope where guard() is invoked ends::
++ *
++ *	DEFINE_GUARD(pci_dev, struct pci_dev *, pci_dev_lock(_T), pci_dev_unlock(_T))
++ *	...
++ *	guard(pci_dev)(dev);
++ *
++ * The lifetime of the lock obtained by the guard() helper follows the
++ * scope of automatic variable declaration. Take the following example::
++ *
++ *	func(...)
++ *	{
++ *		if (...) {
++ *			...
++ *			guard(pci_dev)(dev); // pci_dev_lock() invoked here
++ *			...
++ *		} // <- implied pci_dev_unlock() triggered here
++ *	}
++ *
++ * Observe the lock is held for the remainder of the "if ()" block not
++ * the remainder of "func()".
++ *
++ * Now, when a function uses both __free() and guard(), or multiple
++ * instances of __free(), the LIFO order of variable definition order
++ * matters. GCC documentation says:
++ *
++ * "When multiple variables in the same scope have cleanup attributes,
++ * at exit from the scope their associated cleanup functions are run in
++ * reverse order of definition (last defined, first cleanup)."
++ *
++ * When the unwind order matters it requires that variables be defined
++ * mid-function scope rather than at the top of the file.  Take the
++ * following example and notice the bug highlighted by "!!"::
++ *
++ *	LIST_HEAD(list);
++ *	DEFINE_MUTEX(lock);
++ *
++ *	struct object {
++ *	        struct list_head node;
++ *	};
++ *
++ *	static struct object *alloc_add(void)
++ *	{
++ *	        struct object *obj;
++ *
++ *	        lockdep_assert_held(&lock);
++ *	        obj = kzalloc(sizeof(*obj), GFP_KERNEL);
++ *	        if (obj) {
++ *	                LIST_HEAD_INIT(&obj->node);
++ *	                list_add(obj->node, &list):
++ *	        }
++ *	        return obj;
++ *	}
++ *
++ *	static void remove_free(struct object *obj)
++ *	{
++ *	        lockdep_assert_held(&lock);
++ *	        list_del(&obj->node);
++ *	        kfree(obj);
++ *	}
++ *
++ *	DEFINE_FREE(remove_free, struct object *, if (_T) remove_free(_T))
++ *	static int init(void)
++ *	{
++ *	        struct object *obj __free(remove_free) = NULL;
++ *	        int err;
++ *
++ *	        guard(mutex)(&lock);
++ *	        obj = alloc_add();
++ *
++ *	        if (!obj)
++ *	                return -ENOMEM;
++ *
++ *	        err = other_init(obj);
++ *	        if (err)
++ *	                return err; // remove_free() called without the lock!!
++ *
++ *	        no_free_ptr(obj);
++ *	        return 0;
++ *	}
++ *
++ * That bug is fixed by changing init() to call guard() and define +
++ * initialize @obj in this order::
++ *
++ *	guard(mutex)(&lock);
++ *	struct object *obj __free(remove_free) = alloc_add();
++ *
++ * Given that the "__free(...) = NULL" pattern for variables defined at
++ * the top of the function poses this potential interdependency problem
++ * the recommendation is to always define and assign variables in one
++ * statement and not group variable definitions at the top of the
++ * function when __free() is used.
++ *
++ * Lastly, given that the benefit of cleanup helpers is removal of
++ * "goto", and that the "goto" statement can jump between scopes, the
++ * expectation is that usage of "goto" and cleanup helpers is never
++ * mixed in the same function. I.e. for a given routine, convert all
++ * resources that need a "goto" cleanup to scope-based cleanup, or
++ * convert none of them.
 + */
-+bool iov_iter_is_aligned(const struct iov_iter *i, unsigned addr_mask,
-+			 unsigned len_mask)
-+{
-+	if (likely(iter_is_iovec(i) || iov_iter_is_kvec(i)))
-+		return iov_iter_aligned_iovec(i, addr_mask, len_mask);
 +
-+	return true;
++/*
++ * DEFINE_FREE(name, type, free):
++ *	simple helper macro that defines the required wrapper for a __free()
++ *	based cleanup function. @free is an expression using '_T' to access the
++ *	variable. @free should typically include a NULL test before calling a
++ *	function, see the example below.
++ *
++ * __free(name):
++ *	variable attribute to add a scoped based cleanup to the variable.
++ *
++ * no_free_ptr(var):
++ *	like a non-atomic xchg(var, NULL), such that the cleanup function will
++ *	be inhibited -- provided it sanely deals with a NULL value.
++ *
++ *	NOTE: this has __must_check semantics so that it is harder to accidentally
++ *	leak the resource.
++ *
++ * return_ptr(p):
++ *	returns p while inhibiting the __free().
++ *
++ * Ex.
++ *
++ * DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++ *
++ * void *alloc_obj(...)
++ * {
++ *	struct obj *p __free(kfree) = kmalloc(...);
++ *	if (!p)
++ *		return NULL;
++ *
++ *	if (!init_obj(p))
++ *		return NULL;
++ *
++ *	return_ptr(p);
++ * }
++ *
++ * NOTE: the DEFINE_FREE()'s @free expression includes a NULL test even though
++ * kfree() is fine to be called with a NULL value. This is on purpose. This way
++ * the compiler sees the end of our alloc_obj() function as:
++ *
++ *	tmp = p;
++ *	p = NULL;
++ *	if (p)
++ *		kfree(p);
++ *	return tmp;
++ *
++ * And through the magic of value-propagation and dead-code-elimination, it
++ * eliminates the actual cleanup call and compiles into:
++ *
++ *	return p;
++ *
++ * Without the NULL test it turns into a mess and the compiler can't help us.
++ */
++
++#define DEFINE_FREE(_name, _type, _free) \
++	static inline void __free_##_name(void *p) { _type _T = *(_type *)p; _free; }
++
++#define __free(_name)	__cleanup(__free_##_name)
++
++#define __get_and_null(p, nullvalue)   \
++	({                                  \
++		__auto_type __ptr = &(p);   \
++		__auto_type __val = *__ptr; \
++		*__ptr = nullvalue;         \
++		__val;                      \
++	})
++
++static inline __must_check
++const volatile void * __must_check_fn(const volatile void *val)
++{ return val; }
++
++#define no_free_ptr(p) \
++	((typeof(p)) __must_check_fn(__get_and_null(p, NULL)))
++
++#define return_ptr(p)	return no_free_ptr(p)
++
++
++/*
++ * DEFINE_CLASS(name, type, exit, init, init_args...):
++ *	helper to define the destructor and constructor for a type.
++ *	@exit is an expression using '_T' -- similar to FREE above.
++ *	@init is an expression in @init_args resulting in @type
++ *
++ * EXTEND_CLASS(name, ext, init, init_args...):
++ *	extends class @name to @name@ext with the new constructor
++ *
++ * CLASS(name, var)(args...):
++ *	declare the variable @var as an instance of the named class
++ *
++ * Ex.
++ *
++ * DEFINE_CLASS(fdget, struct fd, fdput(_T), fdget(fd), int fd)
++ *
++ *	CLASS(fdget, f)(fd);
++ *	if (!fd_file(f))
++ *		return -EBADF;
++ *
++ *	// use 'f' without concern
++ */
++
++#define DEFINE_CLASS(_name, _type, _exit, _init, _init_args...)		\
++typedef _type class_##_name##_t;					\
++static inline void class_##_name##_destructor(_type *p)			\
++{ _type _T = *p; _exit; }						\
++static inline _type class_##_name##_constructor(_init_args)		\
++{ _type t = _init; return t; }
++
++#define EXTEND_CLASS(_name, ext, _init, _init_args...)			\
++typedef class_##_name##_t class_##_name##ext##_t;			\
++static inline void class_##_name##ext##_destructor(class_##_name##_t *p)\
++{ class_##_name##_destructor(p); }					\
++static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
++{ class_##_name##_t t = _init; return t; }
++
++#define CLASS(_name, var)						\
++	class_##_name##_t var __cleanup(class_##_name##_destructor) =	\
++		class_##_name##_constructor
++
++
++/*
++ * DEFINE_GUARD(name, type, lock, unlock):
++ *	trivial wrapper around DEFINE_CLASS() above specifically
++ *	for locks.
++ *
++ * DEFINE_GUARD_COND(name, ext, condlock)
++ *	wrapper around EXTEND_CLASS above to add conditional lock
++ *	variants to a base class, eg. mutex_trylock() or
++ *	mutex_lock_interruptible().
++ *
++ * guard(name):
++ *	an anonymous instance of the (guard) class, not recommended for
++ *	conditional locks.
++ *
++ * scoped_guard (name, args...) { }:
++ *	similar to CLASS(name, scope)(args), except the variable (with the
++ *	explicit name 'scope') is declard in a for-loop such that its scope is
++ *	bound to the next (compound) statement.
++ *
++ *	for conditional locks the loop body is skipped when the lock is not
++ *	acquired.
++ *
++ * scoped_cond_guard (name, fail, args...) { }:
++ *      similar to scoped_guard(), except it does fail when the lock
++ *      acquire fails.
++ *
++ */
++
++#define DEFINE_GUARD(_name, _type, _lock, _unlock) \
++	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
++	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
++	{ return *_T; }
++
++#define DEFINE_GUARD_COND(_name, _ext, _condlock) \
++	EXTEND_CLASS(_name, _ext, \
++		     ({ void *_t = _T; if (_T && !(_condlock)) _t = NULL; _t; }), \
++		     class_##_name##_t _T) \
++	static inline void * class_##_name##_ext##_lock_ptr(class_##_name##_t *_T) \
++	{ return class_##_name##_lock_ptr(_T); }
++
++#define guard(_name) \
++	CLASS(_name, __UNIQUE_ID(guard))
++
++#define __guard_ptr(_name) class_##_name##_lock_ptr
++
++#define scoped_guard(_name, args...)					\
++	for (CLASS(_name, scope)(args),					\
++	     *done = NULL; __guard_ptr(_name)(&scope) && !done; done = (void *)1)
++
++#define scoped_cond_guard(_name, _fail, args...) \
++	for (CLASS(_name, scope)(args), \
++	     *done = NULL; !done; done = (void *)1) \
++		if (!__guard_ptr(_name)(&scope)) _fail; \
++		else
++
++/*
++ * Additional helper macros for generating lock guards with types, either for
++ * locks that don't have a native type (eg. RCU, preempt) or those that need a
++ * 'fat' pointer (eg. spin_lock_irqsave).
++ *
++ * DEFINE_LOCK_GUARD_0(name, lock, unlock, ...)
++ * DEFINE_LOCK_GUARD_1(name, type, lock, unlock, ...)
++ * DEFINE_LOCK_GUARD_1_COND(name, ext, condlock)
++ *
++ * will result in the following type:
++ *
++ *   typedef struct {
++ *	type *lock;		// 'type := void' for the _0 variant
++ *	__VA_ARGS__;
++ *   } class_##name##_t;
++ *
++ * As above, both _lock and _unlock are statements, except this time '_T' will
++ * be a pointer to the above struct.
++ */
++
++#define __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, ...)		\
++typedef struct {							\
++	_type *lock;							\
++	__VA_ARGS__;							\
++} class_##_name##_t;							\
++									\
++static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
++{									\
++	if (_T->lock) { _unlock; }					\
++}									\
++									\
++static inline void *class_##_name##_lock_ptr(class_##_name##_t *_T)	\
++{									\
++	return _T->lock;						\
 +}
-+EXPORT_SYMBOL_GPL(iov_iter_is_aligned);
 +
-+static unsigned long iov_iter_alignment_iovec(const struct iov_iter *i)
-+{
-+	const struct iovec *iov = iter_iov(i);
-+	unsigned long res = 0;
-+	size_t size = i->count;
-+	size_t skip = i->iov_offset;
 +
-+	do {
-+		size_t len = iov->iov_len - skip;
-+		if (len) {
-+			res |= (unsigned long)iov->iov_base + skip;
-+			if (len > size)
-+				len = size;
-+			res |= len;
-+			size -= len;
-+		}
-+		iov++;
-+		skip = 0;
-+	} while (size);
-+	return res;
++#define __DEFINE_LOCK_GUARD_1(_name, _type, _lock)			\
++static inline class_##_name##_t class_##_name##_constructor(_type *l)	\
++{									\
++	class_##_name##_t _t = { .lock = l }, *_T = &_t;		\
++	_lock;								\
++	return _t;							\
 +}
 +
-+unsigned long iov_iter_alignment(const struct iov_iter *i)
-+{
-+	/* iovec and kvec have identical layouts */
-+	if (likely(iter_is_iovec(i) || iov_iter_is_kvec(i)))
-+		return iov_iter_alignment_iovec(i);
-+
-+	return 0;
++#define __DEFINE_LOCK_GUARD_0(_name, _lock)				\
++static inline class_##_name##_t class_##_name##_constructor(void)	\
++{									\
++	class_##_name##_t _t = { .lock = (void*)1 },			\
++			 *_T __maybe_unused = &_t;			\
++	_lock;								\
++	return _t;							\
 +}
-+EXPORT_SYMBOL(iov_iter_alignment);
 +
-+size_t copy_to_iter(const void *addr, size_t bytes, struct iov_iter *i)
-+{
-+	if (WARN_ON_ONCE(i->data_source))
-+		return 0;
-+	return iterate_and_advance(i, bytes, (void *)addr,
-+				   copy_to_user_iter, memcpy_to_iter);
-+}
-+EXPORT_SYMBOL(copy_to_iter);
++#define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
++__DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
++__DEFINE_LOCK_GUARD_1(_name, _type, _lock)
 +
-+size_t copy_from_iter(void *addr, size_t bytes, struct iov_iter *i)
-+{
-+	if (WARN_ON_ONCE(!i->data_source))
-+		return 0;
++#define DEFINE_LOCK_GUARD_0(_name, _lock, _unlock, ...)			\
++__DEFINE_UNLOCK_GUARD(_name, void, _unlock, __VA_ARGS__)		\
++__DEFINE_LOCK_GUARD_0(_name, _lock)
 +
-+	return iterate_and_advance(i, bytes, addr,
-+				   copy_from_user_iter, memcpy_from_iter);
-+}
-+EXPORT_SYMBOL(copy_from_iter);
++#define DEFINE_LOCK_GUARD_1_COND(_name, _ext, _condlock)		\
++	EXTEND_CLASS(_name, _ext,					\
++		     ({ class_##_name##_t _t = { .lock = l }, *_T = &_t;\
++		        if (_T->lock && !(_condlock)) _T->lock = NULL;	\
++			_t; }),						\
++		     typeof_member(class_##_name##_t, lock) l)		\
++	static inline void * class_##_name##_ext##_lock_ptr(class_##_name##_t *_T) \
++	{ return class_##_name##_lock_ptr(_T); }
++
++
++#define dummy_do(arg, ...)	((void)arg)
++#define dummy_undo(arg, ...)	((void)arg)
++
++#define DEFINE_DUMMY_GUARD(_name, _type) \
++	DEFINE_GUARD(_name, _type, dummy_do(_T), dummy_undo(_T))
++
++#define DEFINE_DUMMY_GUARD_1(_name, _type, ...)		\
++	__DEFINE_UNLOCK_GUARD(_name, _type, dummy_undo(_T))		\
++	__DEFINE_LOCK_GUARD_1(_name, _type, dummy_do(_T))
++
++
++
++#endif /* _LINUX_CLEANUP_H */
+diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
+index b1ce500fe8b3..681e347283b2 100644
+--- a/include/linux/compiler-clang.h
++++ b/include/linux/compiler-clang.h
+@@ -3,6 +3,17 @@
+ #error "Please don't include <linux/compiler-clang.h> directly, include <linux/compiler.h> instead."
+ #endif
+ 
++/* Compiler specific definitions for Clang compiler */
++
++/*
++ * Clang prior to 17 is being silly and considers many __cleanup() variables
++ * as unused (because they are, their sole purpose is to go out of scope).
++ *
++ * https://github.com/llvm/llvm-project/commit/877210faa447f4cc7db87812f8ed80e398fedd61
++ */
++#undef __cleanup
++#define __cleanup(func) __maybe_unused __attribute__((__cleanup__(func)))
++
+ /* Some compiler specific definitions are overwritten here
+  * for Clang compiler
+  */
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index 87ab117aca13..9aac751af7ab 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -54,6 +54,12 @@ extern void __chk_io_ptr(const volatile void __iomem *);
+ #define ___PASTE(a,b) a##b
+ #define __PASTE(a,b) ___PASTE(a,b)
+ 
++/*
++ *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-cleanup-variable-attribute
++ * clang: https://clang.llvm.org/docs/AttributeReference.html#cleanup
++ */
++#define __cleanup(func)			__attribute__((__cleanup__(func)))
++
+ #ifdef __KERNEL__
+ 
+ /*
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index f511c45814e7..5b3ac89f9bab 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -12,9 +12,11 @@
+ #ifndef __LINUX_MUTEX_H
+ #define __LINUX_MUTEX_H
+ 
++#include <linux/cleanup.h>
++
+ #define mutex_init(...)
+-#define mutex_lock(...)
+-#define mutex_unlock(...)
++#define mutex_lock(lock) ((void)0)
++#define mutex_unlock(lock) ((void)0)
+ #define mutex_lock_nested(...)
+ #define mutex_unlock_nested(...)
+ #define mutex_is_locked(...)	0
+@@ -22,4 +24,6 @@ struct mutex { int i; };
+ 
+ #define DEFINE_MUTEX(obj) struct mutex  __always_unused obj
+ 
++DEFINE_DUMMY_GUARD(mutex, struct mutex *)
++
+ #endif /* __LINUX_MUTEX_H */
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index 6f90fb1cad43..c2d09eaf9064 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -3,15 +3,28 @@
+ #ifndef __LINUX_SPINLOCK_H
+ #define __LINUX_SPINLOCK_H
+ 
++#include <linux/cleanup.h>
++
+ typedef int   spinlock_t;
+ #define spin_lock_init(...)
+-#define spin_lock(...)
++#define spin_lock(lock)
+ #define spin_lock_bh spin_lock
+-#define spin_unlock(...)
++#define spin_lock_irq spin_lock
++#define spin_unlock(lock)
+ #define spin_unlock_bh spin_unlock
++#define spin_unlock_irq spin_unlock
+ #define spin_lock_irqsave(lock, flags) do { flags = 0; } while (0)
+ #define spin_unlock_irqrestore(lock, flags) do { flags = flags; } while (0)
+ 
+ #define DEFINE_SPINLOCK(lock) spinlock_t __always_unused lock
+ 
++DEFINE_DUMMY_GUARD_1(spinlock, spinlock_t,
++		     spin_lock(_T->lock),
++		     spin_unlock(_T->lock))
++
++DEFINE_DUMMY_GUARD_1(spinlock_irqsave, spinlock_t,
++		     spin_lock_irqsave(_T->lock, _T->flags),
++		     spin_unlock_irqrestore(_T->lock, _T->flags),
++		     unsigned long flags)
++
+ #endif /* __LINUX_SPINLOCK_H */
 -- 
 2.39.5
 
