@@ -1,56 +1,56 @@
-Delivery-date: Fri, 06 Jun 2025 13:13:49 +0200
+Delivery-date: Fri, 06 Jun 2025 16:45:02 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNV1B-004MMP-0Z
+	id 1uNYJa-004PmS-2K
 	for lore@lore.pengutronix.de;
-	Fri, 06 Jun 2025 13:13:49 +0200
+	Fri, 06 Jun 2025 16:45:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNV1A-0000I7-KX
-	for lore@pengutronix.de; Fri, 06 Jun 2025 13:13:49 +0200
+	id 1uNYJa-0006f4-5C
+	for lore@pengutronix.de; Fri, 06 Jun 2025 16:45:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=C/R8lhmBqSQ/lw5cqvACO5Ry36eS+sccyxWwObg3K/8=; b=zvC14YugN9cCpxaT8Sj7qnjDIz
-	p8Rq77MO3zafrn0mHnaRkj5TDKyK+CxB4WJCw7d74yD3tzO0M8iBy8k96C+7v5CrhkKZ0yJHmjoJM
-	DGsacw59yWpkcRHgU1BoDrX4a9he33d65PCUEw0r+GacNhF3zhxxtU3PEue2HkK17g4KA7LcpPntP
-	mbYJwuvPahIc9nXeBvCNnSKOH+j4jIeZBdyHKbxdp5D/rUp/6qVPBbUdJk6oTjzmyqgPln521w+e4
-	ww7siIi5XUdX5hKiEE+WoYHsAlYGtUuAyPyj6+SbpCrFInDyLnHNjiMcHA5GdJF1tOTary4JfwXSV
-	0hB6IB8Q==;
+	Content-Type:Subject:From:To:MIME-Version:Date:Message-ID:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=SqBnZYMHod4qwt463VnIdlkJ+2HGhclpEb1UNQAAJJg=; b=KOIgQEvh8WZ4JKIO+cuoQIOBdG
+	rnnTKzs9gnRUBpxq6WzZsIGb45EbWHTXXgpJoFD/vLYUMiXhRZy7XmOHH75QKRH+1aa1uYfI1gSHk
+	fnVOU2f8phZ8vfI2rhqRLLXNI42w9J293UxOfTyV1yaZpAeWmZjOggptTiUStdgEWrUukJjNYMAPL
+	YGAeb+g706qe2gtRf4zPbou6XBWEdgDFYmIx3tr1ly3H9a3JUDuRcbxyc7NpyOB8ygM3C9K/oSYqu
+	MNk5IVKvqFuVv+IQd82B4ktNugSr9uPqDudj3fL+aWTO76E0kwW5F/Vxm3eDG0bAplG+xtRPJd2YZ
+	8EwBAeGw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNV0f-000000007el-1dCy;
-	Fri, 06 Jun 2025 11:13:17 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uNYIh-00000000Rkl-2bCa;
+	Fri, 06 Jun 2025 14:44:07 +0000
+Received: from cczrelay02.in2p3.fr ([134.158.66.142])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNV0c-000000007eL-3HnH
+	id 1uNYId-00000000Rk2-1tVU
 	for barebox@lists.infradead.org;
-	Fri, 06 Jun 2025 11:13:16 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uNV0b-0008MG-EK; Fri, 06 Jun 2025 13:13:13 +0200
-Message-ID: <5a2cfb65-579a-4f18-b0cf-e0b226e94e64@pengutronix.de>
-Date: Fri, 6 Jun 2025 13:13:13 +0200
+	Fri, 06 Jun 2025 14:44:05 +0000
+Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
+	(authenticated bits=0)
+	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 556EhwEC012877
+	(version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NO)
+	for <barebox@lists.infradead.org>; Fri, 6 Jun 2025 16:43:59 +0200
+Message-ID: <f8c5021d-3dcb-47b5-8f27-09e33991d6ea@clermont.in2p3.fr>
+Date: Fri, 6 Jun 2025 16:43:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, barebox@lists.infradead.org
-References: <6e00946c-aeec-4f27-b4fc-a81920f79752@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <6e00946c-aeec-4f27-b4fc-a81920f79752@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Language: fr, en-US
+To: MList-Barebox <barebox@lists.infradead.org>
+From: David Picard <david.picard@clermont.in2p3.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250606_041314_827165_E87CABF7 
-X-CRM114-Status: GOOD (  13.42  )
+X-CRM114-CacheID: sfid-20250606_074403_762558_59901CAA 
+X-CRM114-Status: UNSURE (   8.18  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,59 +68,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: bbremote: Is it deprecated?
+Subject: moving to same chip, different board: no console output
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Jonas,
+Hello,
 
-On 6/6/25 12:44, Jonas Rebmann wrote:
-> Hi,
-> 
-> As bbremote seemed very well documented at
-> https://www.barebox.org/doc/latest/user/remote-control.html
-> today I wanted to try it but it seems incompatible with python 3.13.3:
+I am working on a project for which we selected an Intel/Altera Cyclone 
+5 SoC FPGA (an FPGA with an ARM core). As the project evolves, I have to 
+change boards and I am facing issues to boot: absolutely no output on 
+the serial console (USB virtual COM port), not even from Barebox.
 
-[snip]
+Previous working configuration:
+- SD card image produced by Buildroot with Barebox as the bootloader
+- Terasic ADC-SoC demo board, booting from the SD card.
+https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=1061&PartNo=1
 
-> $ scripts/bbremote --port /dev/ttyUSB0 --export '' ping
-> does "pong" but I'm giving up on trying to use or fix bbremote for now.
-> 
-> Is the perspective to deprecate bbremote (in favor of what?) or to port
-> it to current versions of python?
+Current non-working configuration:
+- Eclustra Mercury+ SA2 module, also with a Cyclone 5, plus SDRAM, RTC, 
+QSPI flash, etc. I think that the main difference between both Cyclone 5 
+chips is the size of the logic section is bigger on the module. The 
+module has more RAM.
+https://www.enclustra.com/en/products/system-on-chip-modules/mercury-sa2/
+- Enclustra ST1 demo baseboard. It has a JTAG port, should this 
+information be of interest.
+https://www.enclustra.com/en/products/base-boards/mercury-st1/
 
-Can't comment on that, RATP precedes my involvement.
+I the current configuration, I get no output on the serial console.
 
-> I would like to update either the script or the documentation.
+What I did:
+- I checked the hardware configuration (switches to select booting from 
+the SD card and USB config) with a bare-metal application provided by 
+Enclustra.
+- I used Enclutra's .dts and .dtsi files, which differ very slightly 
+from the Linux kernel tree files.
+- I checked how the SD card is connected: to the exact same pins in both 
+configurations.
+- I had a look at Barebox menuconfig, but nothing caught my eye.
 
-I thought it were already Python 3.0 compatible after the fixes in:
+So, now I'm stuck, and I'm looking for some guidance.
 
-https://lore.barebox.org/barebox/20220908093005.3035259-1-s.hauer@pengutronix.de/
-https://lore.barebox.org/barebox/20230207162055.10050-1-jmaselbas@kalray.eu/
-https://lore.barebox.org/barebox/20241212071928.2466094-2-a.fatoum@pengutronix.de/
-
-Any remaining incompatibilities are bugs IMO and need to be fixed, yes.
-
-Cheers,
-Ahmad
-
-
-> 
-> Regards,
-> Jonas
-> 
-> 
-> 
-
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+David
 
 
 
