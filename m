@@ -1,80 +1,53 @@
-Delivery-date: Sat, 07 Jun 2025 15:51:03 +0200
+Delivery-date: Mon, 09 Jun 2025 08:32:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNtwt-004lfA-07
+	id 1uOW3c-005LuY-2t
 	for lore@lore.pengutronix.de;
-	Sat, 07 Jun 2025 15:51:03 +0200
+	Mon, 09 Jun 2025 08:32:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uNtwq-0003gU-RP
-	for lore@pengutronix.de; Sat, 07 Jun 2025 15:51:02 +0200
+	id 1uOW3b-0005fr-Sm
+	for lore@pengutronix.de; Mon, 09 Jun 2025 08:32:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EdQV/mY7+1WYxy+2KfihXSEGgjbXsaEwbhMg/SmhIF8=; b=wQsCGR50zFurIsSH0KATg3fuHP
-	fVoTc6alH/9EwsD+UsCQdQ/P9zAct4CHgFpenRbbkV19KgMnh02PyS1S1j/oEYye6TBUZVSY6Uore
-	+DPAns8txaFnrTfdSjs+mMFpgAzN2wRJ8dT0pLNMOywmwmT62tnxaiVASZ92aUCz06zwEWHwB01fG
-	0wM+VozCsXAmE2LNcOAvQE07HqK0Fr3qYrzjEHCDZbUKnD1evk6Dqstyrj3uOOrDZ2lnwUQVdtmhF
-	7w4ESQFu+odgWprpQpOZuoLg1MqMnB7hGWhOreL5k73eZ5s11gFHqsikoYGfo6XqmTuZITJ53qVHU
-	61j9DuYA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=NUTlPEa301GbqD4aMvh+iJnaC25rjODctz77uyhPR6w=; b=fXEFK/cMAWxysmn8VdLYsjs1yc
+	Qf93jQJP1GMfLSbJerBjode+iqr8k3jO+fq/NIBdlulVhpF6UQXgnKSHmgoCjZi43dtlJyeGlJVz4
+	3izENaixNj5EYREgHxZqWv6hMThlB+GCe3oEbiA/TAkUMRpiDF1XNASMWMvhGuyXWlclRI3+ET+5D
+	ssmkNSrUNgIqWxzdmBwzdbw+NLx2SbuyOVTjfrh0EoqJ2DVFyQThX9cuRibQMecR/RSUn+CQv4LgE
+	2n7vgdbGrOxU5V9G6XclzsYaWiDK27E2z6mK7ra4eZM+sAxjaxUrakdFVhc5W6RMoBoARi7YlWenL
+	stqzEpWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNtwJ-00000001j0k-0ykJ;
-	Sat, 07 Jun 2025 13:50:27 +0000
-Received: from mout.kundenserver.de ([217.72.192.73])
+	id 1uOW2i-00000003Vir-1T1I;
+	Mon, 09 Jun 2025 06:31:36 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNtwF-00000001j0N-0doe
+	id 1uOW2f-00000003ViU-06H4
 	for barebox@lists.infradead.org;
-	Sat, 07 Jun 2025 13:50:25 +0000
-Received: from Precision-T3610 ([84.147.167.150]) by mrelayeu.kundenserver.de
- (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis) id
- 1MHWzP-1ubQSy0EKX-005j5g; Sat, 07 Jun 2025 15:50:13 +0200
-Date: Sat, 7 Jun 2025 15:50:07 +0200
-From: Johannes Roith <johannes@gnu-linux.rocks>
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org, michael.graichen@hotmail.com,
-	a.fatoum@barebox.org
-Message-ID: <aERDj6CjDeVesN9h@Precision-T3610>
-References: <20250607134711.48122-1-johannes@gnu-linux.rocks>
+	Mon, 09 Jun 2025 06:31:34 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1uOW2a-0005Ij-F7; Mon, 09 Jun 2025 08:31:28 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon,  9 Jun 2025 08:31:27 +0200
+Message-Id: <20250609063127.3165440-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250607134711.48122-1-johannes@gnu-linux.rocks>
-X-Provags-ID: V03:K1:LJtn8U4PpwYzTjOVtoJbcxKXoZvoCeh6gWeyhds/VBZ9ERvrKGd
- 087zJ0CJfDDnwp5cNFPFOngZkAKPiddlRjVwzFF5MDOKwbuTs7SzqwHEtLfDzauleqOcNDq
- Cyn6mvuwaSI5VU6HhQF5f1GyqWehmpuM6wQzBQqVVn6ROWxqTTznbYSeMYUfnl6qkH/R1jy
- 21owK6vU2Sw0YH0BZe7qA==
-UI-OutboundReport: notjunk:1;M01:P0:XKDMb+pZ6EM=;qJXMNDzAJ7Tpha7BL5qLhU7Ih9v
- JJG/lgNQvWtxeLC0HYJu/eSQXCWQDWEs11piHiUVi2OIQ0rgIp99z3bDBTC7XF8ToVB0qk9sB
- i7pd29gT33yHLALCKJ1mhxTCkdD6HFkFVKyBg3ty69nXmVyYdIZcRjISWdjjGSmP0+VHglJC9
- hfEud5TusoSoGN+DxO9rTQCiOU+wjUsmCs7X8DDmSqS1fMn4w1vPJJ9WOysq8IdB7RrbggH5W
- l7nfwCeEDOgMAW1DoEE3v/CCu66eganoNCO2Xz2IyHipn6HrPhKiJPjuaOCtIcnDRbPOo9TwG
- 6fqywPmhyJ5c+GgIFqpcZyEBO5/vufXCQO13ZWgOgUh5QxNBKofqiglwLM3Wcc0VqCgGFuO2F
- Igyv6xX1QEKUY6WTHzqp0VX2WjCsEVNJ+I1I3VuLMQlRxTHEcrspvSv115S5ltVCBarb9ZS9I
- yH3FYZp4pJUUzCQLBmYToSX5SRlWbw9sAC1J0wYzTLKjsai8LLSMPwo/QQvFUw+aD3HfbIJko
- wz/7LOlrcdTSy4et1ogvZKAYpD6O1AGfziNIZgNjBY8Iw4UfXgAcRpCS431WCQLvgjXIwZr/R
- jrUUecxh8QWiOBI4yK/65uSObyl+ucMJJRGqLBKxGH1YVe7IAeHSnP/LDFHq5cVoPeVTQEXbO
- 3DFL0uMlhuDoqrQPr00lBqfhda5FL4/Mgg0CeyVcaBSZKoOQ+eutnstmgWIS5GnOgnw1rY0l0
- jKYkoI3ZDRJOup1QunQNPCazdwKsNSuLljOQxp1Jwxpulx/MMcmrVVSAqSJenNFBVWQqTFtZT
- z2lYUwhkIxIeMTXPMVW9g1HGb0GU72ql4T1PmEEMX535XD8e62jbuG1D3ONqDqgp+DKT5ZIR5
- aqYrBsuxFcc1Jhh5LybFV/vxxmGMPQdWRnGjuKcvzgnD0G7ohWc1zKq+/s+wGox5tFvSOh3/c
- b8Detbfd/A/jKHXIBHvVfRxZnF3X7IrWwdj+L0BYkYHYlGj3V9gnQo34YQTMKbEjmvwchoXkm
- 6ZZsYa7K+ohpY5yqPRW/+I8B9acrdhxlU/7B5jM+wgccvHquHDU7Fuy6z0nmYvm7lyWs2np/J
- EY+BvD0LBlvLhp5XoOFVyRNtU8LBoZ1RIU5vbPGgtaRJMfYG9nFLqfdZVXgroZxDlztj20ddK
- GvIaOFSv7eTtE02F+rrb6+PCDIEqyVFyCODhveLD5Sv5RY56/v9+JuWh4wxrrmojWxk7gwX5E
- vIRpaDBhWQscleSGrk2WSqztyqAhHh+qUumqeeMDPhYjht9NKOl6ZGYFraHrQKFj6tD7g6A5u
- Vegq1RpsBE0lrj01P6KgyJxL0gCWuInkwHNrHiDeUwgwjnqOf6M27FAv/rUTP8x/lqxcZqSrk
- Y46paufvSrmiaxR4EdmtMQ2PiIPPauubmsi9wsuPWEcLn116+F93UCt6xH
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250607_065023_669320_7BA9F909 
-X-CRM114-Status: GOOD (  39.92  )
+X-CRM114-CacheID: sfid-20250608_233133_216196_05D906DF 
+X-CRM114-Status: GOOD (  18.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,1285 +65,267 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] Added support for Zynq 7000 FPGA firmware loading
+Subject: [PATCH] clk: make use of %pC format specifier for printing name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello,
+Linux has supported this format specifier for 10 years now.
+So let's add support for it in barebox proper as well.
 
-the patch compiles for the Zynq 7000 and the ZynqMP SoC, but as I only
-have a board with a Zynq 7000 chip available, I could only test the PL
-loading for this platform.
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ arch/arm/mach-at91/clock.c        |  2 +-
+ drivers/clk/clk-divider.c         |  4 ++--
+ drivers/clk/clk-stm32f4.c         |  2 +-
+ drivers/clk/clk.c                 | 14 +++++++-------
+ drivers/clk/imx/clk-pll14xx.c     |  4 ++--
+ drivers/clk/tegra/clk.c           | 12 ++++++------
+ drivers/firmware/arm_scmi/clock.c |  4 ++--
+ drivers/net/macb.c                |  2 +-
+ drivers/video/imx-ipu-v3/ipu-di.c |  4 ++--
+ lib/vsprintf.c                    | 16 +++++++++++++++-
+ 10 files changed, 39 insertions(+), 25 deletions(-)
 
-It would be good to test it also on the ZynqMP to be sure, I didn't
-break anything. 
+diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+index a3071189bb8f..6482aa93c0bf 100644
+--- a/arch/arm/mach-at91/clock.c
++++ b/arch/arm/mach-at91/clock.c
+@@ -858,7 +858,7 @@ static int at91_clock_reset(void)
+ 		if (clk->mode == pmc_sys_mode)
+ 			scdr |= clk->pmc_mask;
+ 
+-		pr_debug("Clocks: disable unused %s\n", clk->name);
++		pr_debug("Clocks: disable unused %pC\n", clk);
+ 	}
+ 
+ 	at91_pmc_write(AT91_PMC_PCDR, pcdr);
+diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
+index b0df34e85847..62d63ef39c7e 100644
+--- a/drivers/clk/clk-divider.c
++++ b/drivers/clk/clk-divider.c
+@@ -90,8 +90,8 @@ unsigned long divider_recalc_rate(struct clk *clk, unsigned long parent_rate,
+ 	div = _get_div(table, val, flags, width);
+ 	if (!div) {
+ 		WARN(!(flags & CLK_DIVIDER_ALLOW_ZERO),
+-			"%s: Zero divisor and CLK_DIVIDER_ALLOW_ZERO not set\n",
+-			clk->name);
++			"%pC: Zero divisor and CLK_DIVIDER_ALLOW_ZERO not set\n",
++			clk);
+ 		return parent_rate;
+ 	}
+ 
+diff --git a/drivers/clk/clk-stm32f4.c b/drivers/clk/clk-stm32f4.c
+index 22c47656c411..343ee0e6e9b5 100644
+--- a/drivers/clk/clk-stm32f4.c
++++ b/drivers/clk/clk-stm32f4.c
+@@ -1879,7 +1879,7 @@ static void __init stm32f4_rcc_init(struct device_node *np)
+ 				&stm32f4_clk_lock);
+ 
+ 		if (IS_ERR(hw)) {
+-			pr_warn("Unable to register %s clk\n", aux_clk->name);
++			pr_warn("Unable to register %pC clk\n", aux_clk);
+ 			continue;
+ 		}
+ 
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 9b21d0650b6c..ec8c06b61bfb 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -80,7 +80,7 @@ void clk_disable(struct clk *clk)
+ 		return;
+ 
+ 	if (clk->enable_count == 1 && clk->flags & CLK_IS_CRITICAL) {
+-		pr_warn("Disabling critical clock %s\n", clk->name);
++		pr_warn("Disabling critical clock %pC\n", clk);
+ 		return;
+ 	}
+ 
+@@ -446,8 +446,8 @@ static int __bclk_register(struct clk *clk)
+ 
+ 	list_for_each_entry(c, &clks, list) {
+ 		if (!strcmp(c->name, clk->name)) {
+-			pr_err("%s clk %s is already registered, skipping!\n",
+-				__func__, clk->name);
++			pr_err("%s clk %pC is already registered, skipping!\n",
++				__func__, clk);
+ 			return -EBUSY;
+ 		}
+ 	}
+@@ -1046,8 +1046,8 @@ static void dump_one_summary(struct clk *clk, int flags, int indent)
+ 	else
+ 		stat = "enabled";
+ 
+-	printf("%*s%s (rate %lu, enable_count: %d, %s)\n", indent * 4, "",
+-	       clk->name,
++	printf("%*s%pC (rate %lu, enable_count: %d, %s)\n", indent * 4, "",
++	       clk,
+ 	       clk_get_rate(clk),
+ 	       clk->enable_count,
+ 	       hwstat);
+@@ -1066,8 +1066,8 @@ static void dump_one_summary(struct clk *clk, int flags, int indent)
+ 
+ static void dump_one_json(struct clk *clk, int flags, int indent)
+ {
+-	printf("\"%s\": { \"rate\": %lu,\"enable_count\": %d",
+-	       clk->name,
++	printf("\"%pC\": { \"rate\": %lu,\"enable_count\": %d",
++	       clk,
+ 	       clk_get_rate(clk),
+ 	       clk->enable_count);
+ }
+diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
+index 86286448e9ef..6716a6f55560 100644
+--- a/drivers/clk/imx/clk-pll14xx.c
++++ b/drivers/clk/imx/clk-pll14xx.c
+@@ -261,8 +261,8 @@ static int clk_pll1443x_set_rate(struct clk_hw *hw, unsigned long drate,
+ 
+ 	rate = imx_get_pll_settings(pll, drate);
+ 	if (!rate) {
+-		pr_err("%s: Invalid rate : %lu for pll clk %s\n", __func__,
+-			drate, clk->name);
++		pr_err("%s: Invalid rate : %lu for pll clk %pC\n", __func__,
++			drate, clk);
+ 		return -EINVAL;
+ 	}
+ 
+diff --git a/drivers/clk/tegra/clk.c b/drivers/clk/tegra/clk.c
+index ad384d8d4d53..90f66f4daf87 100644
+--- a/drivers/clk/tegra/clk.c
++++ b/drivers/clk/tegra/clk.c
+@@ -117,23 +117,23 @@ void tegra_init_from_table(struct tegra_clk_init_table *tbl,
+ 		if (tbl->parent_id < clk_max) {
+ 			struct clk *parent = clks[tbl->parent_id];
+ 			if (clk_set_parent(clk, parent)) {
+-				pr_err("%s: Failed to set parent %s of %s\n",
+-				       __func__, parent->name, clk->name);
++				pr_err("%s: Failed to set parent %pC of %pC\n",
++				       __func__, parent, clk);
+ 				WARN_ON(1);
+ 			}
+ 		}
+ 
+ 		if (tbl->rate)
+ 			if (clk_set_rate(clk, tbl->rate)) {
+-				pr_err("%s: Failed to set rate %lu of %s\n",
+-				       __func__, tbl->rate, clk->name);
++				pr_err("%s: Failed to set rate %lu of %pC\n",
++				       __func__, tbl->rate, clk);
+ 				WARN_ON(1);
+ 			}
+ 
+ 		if (tbl->state)
+ 			if (clk_enable(clk)) {
+-				pr_err("%s: Failed to enable %s\n", __func__,
+-				       clk->name);
++				pr_err("%s: Failed to enable %pC\n", __func__,
++				       clk);
+ 				WARN_ON(1);
+ 			}
+ 	}
+diff --git a/drivers/firmware/arm_scmi/clock.c b/drivers/firmware/arm_scmi/clock.c
+index 2c902835a0ec..7e1e9f023496 100644
+--- a/drivers/firmware/arm_scmi/clock.c
++++ b/drivers/firmware/arm_scmi/clock.c
+@@ -197,8 +197,8 @@ iter_clk_describe_update_state(struct scmi_iterator_state *st,
+ 	if (!p->clk->rate_discrete &&
+ 	    (st->num_returned != 3 || st->num_remaining != 0)) {
+ 		dev_warn(p->dev,
+-			 "Out-of-spec CLOCK_DESCRIBE_RATES reply for %s - returned:%d remaining:%d rx_len:%zd\n",
+-			 p->clk->name, st->num_returned, st->num_remaining,
++			 "Out-of-spec CLOCK_DESCRIBE_RATES reply for %pC - returned:%d remaining:%d rx_len:%zd\n",
++			 p->clk, st->num_returned, st->num_remaining,
+ 			 st->rx_len);
+ 
+ 		/*
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 205e3169f17b..26bc3130bf59 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -772,7 +772,7 @@ static int fu540_c000_txclk_init(struct device *dev, struct clk **tx_clk)
+ 		return err;
+ 	}
+ 
+-	dev_info(dev, "Registered clk switch '%s'\n", clk->name);
++	dev_info(dev, "Registered clk switch '%pC'\n", clk);
+ 	return 0;
+ }
+ #else
+diff --git a/drivers/video/imx-ipu-v3/ipu-di.c b/drivers/video/imx-ipu-v3/ipu-di.c
+index 7653d512969f..80c0276ec96f 100644
+--- a/drivers/video/imx-ipu-v3/ipu-di.c
++++ b/drivers/video/imx-ipu-v3/ipu-di.c
+@@ -542,8 +542,8 @@ int ipu_di_init_sync_panel(struct ipu_di *di, struct ipu_di_signal_cfg *sig)
+ 	ret = clk_set_parent(&di->clk_di_pixel, parent);
+ 	if (ret) {
+ 		dev_err(di->ipu->dev,
+-			"setting pixel clock to parent %s failed with %d\n",
+-				parent->name, ret);
++			"setting pixel clock to parent %pC failed with %d\n",
++				parent, ret);
+ 		return ret;
+ 	}
+ 
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index ba87f6c210d2..b2eeb2702f3d 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -16,6 +16,7 @@
+ #include <linux/string.h>
+ #include <linux/ctype.h>
+ #include <linux/math64.h>
++#include <linux/clk.h>
+ #include <malloc.h>
+ #include <kallsyms.h>
+ #include <wchar.h>
+@@ -310,7 +311,7 @@ char *ip4_addr_string(char *buf, const char *end, const u8 *addr, int field_widt
+ }
+ 
+ static
+-char *error_string(char *buf, const char *end, const u8 *errptr, int field_width,
++char *error_string(char *buf, const char *end, const void *errptr, int field_width,
+ 		   int precision, int flags, const char *fmt)
+ {
+     if (!IS_ERR(errptr))
+@@ -477,6 +478,16 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
+ 		      precision, flags);
+ }
+ 
++static noinline_for_stack
++char *clock(char *buf, const char *end, const struct clk *clk,
++	    int field_width, int precision, int flags, const char *fmt)
++{
++	if (IS_ERR_OR_NULL(clk))
++		return error_string(buf, end, clk, field_width, precision, flags, fmt);
++
++	return string(buf, end, clk->name, field_width, precision, flags);
++}
++
+ /*
+  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+  * by an extra set of alphanumeric characters that are extended format
+@@ -515,6 +526,7 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
+  *              N no separator
+  * - 'M' For a 6-byte MAC address, it prints the address in the
+  *       usual colon-separated hex notation
++ * - 'C' For a clock, it prints the name in the Common Clock Framework
+  *
+  * Additionally, we support following barebox-specific format specifiers:
+  *
+@@ -575,6 +587,8 @@ static char *pointer(const char *fmt, char *buf, const char *end, const void *pt
+ 		if (IS_ENABLED(CONFIG_EFI_DEVICEPATH))
+ 			return device_path_string(buf, end, ptr, field_width, precision, flags);
+ 		break;
++	case 'C':
++		return clock(buf, end, ptr, field_width, precision, flags, fmt);
+ 	}
+ 
+ 	return raw_pointer(buf, end, ptr, field_width, precision, flags);
+-- 
+2.39.5
 
-Thanks,
-Johannes
-
-Am Sat, Jun 07, 2025 at 03:47:11PM +0200 schrieb Johannes Roith:
-> This patch adds support for loading the FPGA firmware to the PL of the
-> Zynq 7000 over barebox. It adds a new driver xilinx-fpga.c which uses
-> the code of the former zynqmp-firmware.c driver but supports loading the
-> PL on the Zynq 7000 and the ZynqMP SoC.
-> 
-> Signed-off-by: Johannes Roith <johannes@gnu-linux.rocks>
-> ---
->  arch/arm/configs/zynq_defconfig       |   1 +
->  drivers/firmware/Kconfig              |  16 ++
->  drivers/firmware/Makefile             |   2 +
->  drivers/firmware/xilinx-fpga.c        | 373 ++++++++++++++++++++++++
->  drivers/firmware/zynq-fpga.c          | 158 ++++++++++
->  drivers/firmware/zynqmp-fpga.c        | 400 ++------------------------
->  include/mach/zynq/firmware-zynq.h     |  68 +++++
->  include/mach/zynqmp/firmware-zynqmp.h |  39 +++
->  include/xilinx-firmware.h             |  54 ++++
->  9 files changed, 738 insertions(+), 373 deletions(-)
->  create mode 100644 drivers/firmware/xilinx-fpga.c
->  create mode 100644 drivers/firmware/zynq-fpga.c
->  create mode 100644 include/mach/zynq/firmware-zynq.h
->  create mode 100644 include/xilinx-firmware.h
-> 
-> diff --git a/arch/arm/configs/zynq_defconfig b/arch/arm/configs/zynq_defconfig
-> index 71bc5eaba7..8af0736562 100644
-> --- a/arch/arm/configs/zynq_defconfig
-> +++ b/arch/arm/configs/zynq_defconfig
-> @@ -1,5 +1,6 @@
->  CONFIG_ARCH_ZYNQ=y
->  CONFIG_MACH_ZEDBOARD=y
-> +CONFIG_FIRMWARE_ZYNQ7000_FPGA=y
->  CONFIG_AEABI=y
->  CONFIG_ARM_UNWIND=y
->  CONFIG_IMAGE_COMPRESSION_XZKERN=y
-> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-> index 264f7b2a5a..649b80ac28 100644
-> --- a/drivers/firmware/Kconfig
-> +++ b/drivers/firmware/Kconfig
-> @@ -20,13 +20,29 @@ config FIRMWARE_ALTERA_SOCFPGA
->  	depends on ARCH_SOCFPGA
->  	select FIRMWARE
->  
-> +config FIRMWARE_XILINX_FPGA
-> +	bool "Xilinx Zynq7000/ZynqMP FPGA loader"
-> +	depends on ARCH_ZYNQMP || ARCH_ZYNQ
-> +	select FIRMWARE
-> +	help
-> +	  Load a bitstream to the PL of Zynq 7000 or Zynq  Ultrascale+
-> +
->  config FIRMWARE_ZYNQMP_FPGA
->  	bool "Xilinx ZynqMP FPGA loader"
->  	depends on ARCH_ZYNQMP
->  	select FIRMWARE
-> +	select FIRMWARE_XILINX_FPGA
->  	help
->  	  Load a bitstream to the PL of Zynq Ultrascale+
->  
-> +config FIRMWARE_ZYNQ7000_FPGA
-> +	bool "Xilinx Zynq FPGA loader"
-> +	depends on ARCH_ZYNQ
-> +	select FIRMWARE
-> +	select FIRMWARE_XILINX_FPGA
-> +	help
-> +	  Load a bitstream to the PL of Zynq 7000
-> +
->  config QEMU_FW_CFG
->  	bool "QEMU FW CFG interface"
->  	help
-> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-> index d0ebe663ea..89856bd975 100644
-> --- a/drivers/firmware/Makefile
-> +++ b/drivers/firmware/Makefile
-> @@ -3,6 +3,8 @@ obj-$(CONFIG_SEMIHOSTING) += semihosting.o
->  obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) += altera_serial.o
->  obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o socfpga_sdr.o
->  obj-$(CONFIG_FIRMWARE_ZYNQMP_FPGA) += zynqmp-fpga.o
-> +obj-$(CONFIG_FIRMWARE_ZYNQ7000_FPGA) += zynq-fpga.o
-> +obj-$(CONFIG_FIRMWARE_XILINX_FPGA) += xilinx-fpga.o
->  obj-$(CONFIG_QEMU_FW_CFG) += qemu_fw_cfg.o
->  obj-$(CONFIG_TI_SCI_PROTOCOL) += ti_sci.o
->  obj-y += arm_scmi/
-> diff --git a/drivers/firmware/xilinx-fpga.c b/drivers/firmware/xilinx-fpga.c
-> new file mode 100644
-> index 0000000000..02f9e2abef
-> --- /dev/null
-> +++ b/drivers/firmware/xilinx-fpga.c
-> @@ -0,0 +1,373 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Xilinx Zynq MPSoC PL loading
-> + *
-> + * Copyright (c) 2018 Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-> + *
-> + * based on U-Boot zynqmppl code
-> + *
-> + * (C) Copyright 2015 - 2016, Xilinx, Inc,
-> + * Michal Simek <michal.simek@xilinx.com>
-> + * Siva Durga Prasad <siva.durga.paladugu@xilinx.com> *
-> + */
-> +
-> +#include <firmware.h>
-> +#include <xilinx-firmware.h>
-> +#include <common.h>
-> +#include <init.h>
-> +#include <dma.h>
-> +#include <mach/zynqmp/firmware-zynqmp.h>
-> +#include <mach/zynq/firmware-zynq.h>
-> +
-> +
-> +struct xilinx_fpga_devdata zynqmp_devdata = {
-> +	.bus_width_auto_detect1_offset = ZYNQMP_BUS_WIDTH_AUTO_DETECT1_OFFSET,
-> +	.bus_width_auto_detect2_offset = ZYNQMP_BUS_WIDTH_AUTO_DETECT2_OFFSET,
-> +	.sync_word_offset = ZYNQMP_SYNC_WORD_OFFSET,
-> +	.bin_header_length = ZYNQMP_BIN_HEADER_LENGTH,
-> +	.dev_init = zynqmp_init,
-> +	.dev_progammed_get = zynqmp_programmed_get,
-> +	.dev_fpga_load = zynqmp_fpga_load,
-> +};
-> +
-> +static struct xilinx_fpga_devdata zynq_devdata = {
-> +	.bus_width_auto_detect1_offset = ZYNQ_BUS_WIDTH_AUTO_DETECT1_OFFSET,
-> +	.bus_width_auto_detect2_offset = ZYNQ_BUS_WIDTH_AUTO_DETECT2_OFFSET,
-> +	.sync_word_offset = ZYNQ_SYNC_WORD_OFFSET,
-> +	.bin_header_length = ZYNQ_BIN_HEADER_LENGTH,
-> +	.dev_init = zynq_init,
-> +	.dev_progammed_get = zynq_programmed_get,
-> +	.dev_fpga_load = zynq_fpga_load,
-> +};
-> +
-> +static void copy_words_swapped(u32 *dst, const u32 *src, size_t size)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < size; i++)
-> +		dst[i] = __swab32(src[i]);
-> +}
-> +
-> +static int get_byte_order(const struct xilinx_fpga_devdata *devdata,
-> +			  const u32 *bin_header, size_t size,
-> +			  enum xilinx_byte_order *byte_order)
-> +{
-> +	if (size < devdata->bin_header_length * sizeof(*bin_header))
-> +		return -EINVAL;
-> +
-> +	if (bin_header[devdata->sync_word_offset] == SYNC_WORD) {
-> +		*byte_order = XILINX_BYTE_ORDER_BIT;
-> +		return 0;
-> +	}
-> +
-> +	if (bin_header[devdata->sync_word_offset] == __swab32(SYNC_WORD)) {
-> +		*byte_order = XILINX_BYTE_ORDER_BIN;
-> +		return 0;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static bool is_bin_header_valid(const struct xilinx_fpga_devdata *devdata,
-> +				const u32 *bin_header, size_t size,
-> +				enum xilinx_byte_order byte_order)
-> +{
-> +	size_t i;
-> +
-> +	if (size < devdata->bin_header_length * sizeof(*bin_header))
-> +		return false;
-> +
-> +	for (i = 0; i < devdata->bin_header_length; i++, bin_header++) {
-> +		u32 current;
-> +		u32 expected;
-> +
-> +		if (byte_order == XILINX_BYTE_ORDER_BIT)
-> +			current = *bin_header;
-> +		else
-> +			current = __swab32(*bin_header);
-> +
-> +		if (i == devdata->bus_width_auto_detect1_offset)
-> +			expected = BUS_WIDTH_AUTO_DETECT1;
-> +		else if (i == devdata->bus_width_auto_detect2_offset)
-> +			expected = BUS_WIDTH_AUTO_DETECT2;
-> +		else if (i == devdata->sync_word_offset)
-> +			expected = SYNC_WORD;
-> +		else
-> +			expected = DUMMY_WORD;
-> +
-> +		if (current != expected)
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +static int get_header_length(const char *header, size_t size)
-> +{
-> +	u32 *buf_u32;
-> +	int p;
-> +
-> +	for (p = 0; p < size; p++) {
-> +		buf_u32 = (u32 *)&header[p];
-> +		if (*buf_u32 == DUMMY_WORD)
-> +			return p;
-> +	}
-> +	return -EINVAL;
-> +}
-> +
-> +static void xilinx_fpga_show_header(const struct device *dev,
-> +				    struct bs_header *header, size_t size)
-> +{
-> +	struct bs_header_entry *entry;
-> +	unsigned int i;
-> +	unsigned int length;
-> +
-> +	for (i = 0; i < size - sizeof(*header); i += sizeof(*entry) + length) {
-> +		entry = (struct bs_header_entry *)&header->entries[i];
-> +		length = __be16_to_cpu(entry->length);
-> +
-> +		switch (entry->type) {
-> +		case 'a':
-> +			printf("Design: %s\n", entry->data);
-> +			break;
-> +		case 'b':
-> +			printf("Part number: %s\n", entry->data);
-> +			break;
-> +		case 'c':
-> +			printf("Date: %s\n", entry->data);
-> +			break;
-> +		case 'd':
-> +			printf("Time: %s\n", entry->data);
-> +			break;
-> +		case 'e':
-> +			/* Size entry does not have a length but is be32 int */
-> +			printf("Size: %d bytes\n",
-> +			      (length << 16) + (entry->data[0] << 8)
-> +			      + entry->data[1]);
-> +			return;
-> +		default:
-> +			dev_warn(dev, "Invalid header entry: %c", entry->type);
-> +			return;
-> +		}
-> +	}
-> +}
-> +
-> +static int fpgamgr_program_finish(struct firmware_handler *fh)
-> +{
-> +	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-> +	struct device *hw_dev = mgr->dev.parent;
-> +	u32 *buf_aligned;
-> +	u32 buf_size;
-> +	u32 *body;
-> +	size_t body_length;
-> +	int header_length = 0;
-> +	enum xilinx_byte_order byte_order;
-> +	dma_addr_t addr;
-> +	int status = 0;
-> +	u8 flags = 0;
-> +
-> +	if (!mgr->buf) {
-> +		status = -ENOBUFS;
-> +		dev_err(&mgr->dev, "buffer is NULL\n");
-> +		goto err_free;
-> +	}
-> +
-> +	header_length = get_header_length(mgr->buf, mgr->size);
-> +	if (header_length < 0) {
-> +		status = header_length;
-> +		goto err_free;
-> +	}
-> +	xilinx_fpga_show_header(&mgr->dev,
-> +			      (struct bs_header *)mgr->buf, header_length);
-> +
-> +	body = (u32 *)&mgr->buf[header_length];
-> +	body_length = mgr->size - header_length;
-> +
-> +	status = get_byte_order(mgr->devdata, body, body_length, &byte_order);
-> +	if (status < 0)
-> +		goto err_free;
-> +
-> +	if (!is_bin_header_valid(mgr->devdata, body, body_length, byte_order)) {
-> +		dev_err(&mgr->dev, "Invalid bitstream header\n");
-> +		status =  -EINVAL;
-> +		goto err_free;
-> +	}
-> +
-> +	/*
-> +	 * The PMU FW variants without the ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED
-> +	 * feature expect a pointer to the bitstream size, which is stored in
-> +	 * memory. Allocate extra space at the end of the buffer for the
-> +	 * bitstream size.
-> +	 */
-> +	buf_aligned = dma_alloc(body_length + sizeof(buf_size));
-> +	if (!buf_aligned) {
-> +		status = -ENOBUFS;
-> +		goto err_free;
-> +	}
-> +
-> +	if (!(mgr->features & ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL) &&
-> +	    byte_order == XILINX_BYTE_ORDER_BIN)
-> +		copy_words_swapped((u32 *)buf_aligned, body,
-> +				   body_length / sizeof(u32));
-> +	else
-> +		memcpy((u32 *)buf_aligned, body, body_length);
-> +	buf_aligned[body_length / sizeof(*buf_aligned)] = body_length;
-> +
-> +	addr = dma_map_single(hw_dev, buf_aligned,
-> +			      body_length + sizeof(buf_size), DMA_TO_DEVICE);
-> +	if (dma_mapping_error(hw_dev, addr)) {
-> +		status = -EFAULT;
-> +		goto err_free_dma;
-> +	}
-> +
-> +	if (mgr->features & ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED)
-> +		buf_size = body_length;
-> +	else
-> +		buf_size = addr + body_length;
-> +
-> +	status = mgr->devdata->dev_fpga_load(mgr, addr, buf_size, flags);
-> +	dma_unmap_single(hw_dev, addr, body_length + sizeof(buf_size),
-> +			 DMA_TO_DEVICE);
-> +	if (status < 0)
-> +		dev_err(&mgr->dev, "unable to load fpga\n");
-> +
-> +err_free_dma:
-> +	dma_free(buf_aligned);
-> +
-> + err_free:
-> +	free(mgr->buf);
-> +
-> +	return status;
-> +}
-> +
-> +static int fpgamgr_program_write_buf(struct firmware_handler *fh,
-> +		const void *buf, size_t size)
-> +{
-> +	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-> +
-> +	/* Since write() is called by copy_file, we only receive chuncks with
-> +	 * size RW_BUF_SIZE of the bitstream.
-> +	 * Buffer the chunks here and handle it in close()
-> +	 */
-> +
-> +	mgr->buf = realloc(mgr->buf, mgr->size + size);
-> +	if (!mgr->buf)
-> +		return -ENOBUFS;
-> +
-> +	memcpy(&(mgr->buf[mgr->size]), buf, size);
-> +	mgr->size += size;
-> +
-> +	return 0;
-> +}
-> +
-> +static int fpgamgr_program_start(struct firmware_handler *fh)
-> +{
-> +	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-> +
-> +	mgr->size = 0;
-> +	mgr->buf = NULL;
-> +
-> +	return 0;
-> +}
-> +
-> +static int programmed_get(struct param_d *p, void *priv)
-> +{
-> +	struct fpgamgr *mgr = priv;
-> +
-> +	return mgr->devdata->dev_progammed_get(mgr);
-> +}
-> +
-> +static int xilinx_fpga_probe(struct device *dev)
-> +{
-> +	struct fpgamgr *mgr;
-> +	struct firmware_handler *fh;
-> +	const char *alias = of_alias_get(dev->of_node);
-> +	const char *model = NULL;
-> +	struct param_d *p;
-> +	int ret;
-> +
-> +	mgr = xzalloc(sizeof(*mgr));
-> +
-> +	fh = &mgr->fh;
-> +
-> +	if (alias)
-> +		fh->id = xstrdup(alias);
-> +	else
-> +		fh->id = xstrdup("xilinx-fpga-manager");
-> +
-> +	fh->open = fpgamgr_program_start;
-> +	fh->write = fpgamgr_program_write_buf;
-> +	fh->close = fpgamgr_program_finish;
-> +	of_property_read_string(dev->of_node, "compatible", &model);
-> +	if (model)
-> +		fh->model = xstrdup(model);
-> +	fh->dev = dev;
-> +
-> +	mgr->devdata = device_get_match_data(dev);
-> +	if (!mgr->devdata) {
-> +		dev_err(dev, "could not get device data\n");
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	ret = mgr->devdata->dev_init(mgr, dev);
-> +	if (ret) {
-> +		dev_err(dev, "could not init device\n");
-> +		goto out;
-> +	}
-> +
-> +	dev_dbg(dev, "Registering Xilinx FPGA programmer\n");
-> +	mgr->dev.id = DEVICE_ID_SINGLE;
-> +	dev_set_name(&mgr->dev, "xilinx_fpga");
-> +	mgr->dev.parent = dev;
-> +	ret = register_device(&mgr->dev);
-> +	if (ret)
-> +		goto out;
-> +
-> +	p = dev_add_param_bool(&mgr->dev, "programmed", NULL, programmed_get,
-> +			&mgr->programmed, mgr);
-> +	if (IS_ERR(p)) {
-> +		ret = PTR_ERR(p);
-> +		goto out_unreg;
-> +	}
-> +
-> +	fh->dev = &mgr->dev;
-> +	fh->device_node = dev->of_node;
-> +
-> +	ret = firmwaremgr_register(fh);
-> +	if (ret != 0) {
-> +		free(mgr);
-> +		goto out_unreg;
-> +	}
-> +
-> +	return 0;
-> +out_unreg:
-> +	unregister_device(&mgr->dev);
-> +out:
-> +	free(fh->id);
-> +	if (mgr->private)
-> +		free(mgr->private);
-> +	free(mgr);
-> +
-> +	return ret;
-> +}
-> +
-> +static struct of_device_id xilinx_fpga_id_table[] = {
-> +	{
-> +		.compatible = "xlnx,zynqmp-pcap-fpga",
-> +		.data = &zynqmp_devdata,
-> +	},
-> +	{
-> +		.compatible = "xlnx,zynq-devcfg-1.0",
-> +		.data = &zynq_devdata,
-> +	},
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, xilinx_fpga_id_table);
-> +
-> +static struct driver xilinx_fpga_driver = {
-> +	.name = "xilinx_fpga_manager",
-> +	.of_compatible = DRV_OF_COMPAT(xilinx_fpga_id_table),
-> +	.probe = xilinx_fpga_probe,
-> +};
-> +device_platform_driver(xilinx_fpga_driver);
-> diff --git a/drivers/firmware/zynq-fpga.c b/drivers/firmware/zynq-fpga.c
-> new file mode 100644
-> index 0000000000..3dc04ea2b1
-> --- /dev/null
-> +++ b/drivers/firmware/zynq-fpga.c
-> @@ -0,0 +1,158 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <mach/zynq/firmware-zynq.h>
-> +#include <linux/iopoll.h>
-> +
-> +int zynq_init(struct fpgamgr *mgr, struct device *dev)
-> +{
-> +	struct resource *iores;
-> +	struct zynq_private *priv;
-> +
-> +	iores = dev_request_mem_resource(dev, 0);
-> +	if (IS_ERR(iores))
-> +		return PTR_ERR(iores);
-> +
-> +	priv = xzalloc(sizeof(struct zynq_private));
-> +
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	mgr->private = priv;
-> +	mgr->features = ZYNQ_PM_FEATURE_SIZE_NOT_NEEDED;
-> +
-> +	priv->base_addr = IOMEM(iores->start);
-> +
-> +	/* Unlock DevC in case BootROM did not do it */
-> +	writel(DEVC_UNLOCK_CODE, priv->base_addr + UNLOCK_OFFSET);
-> +
-> +	return 0;
-> +}
-> +
-> +int zynq_programmed_get(struct fpgamgr *mgr)
-> +{
-> +	struct zynq_private *priv = (struct zynq_private *) mgr->private;
-> +
-> +	mgr->programmed = (readl(priv->base_addr + INT_STS_OFFSET)
-> +				& INT_STS_DONE_INT_MASK) > 0;
-> +
-> +	return 0;
-> +}
-> +
-> +int zynq_fpga_load(struct fpgamgr *mgr, u64 addr, u32 buf_size, u8 flags)
-> +{
-> +	int ret;
-> +	unsigned long reg;
-> +	struct zynq_private *priv = (struct zynq_private *) mgr->private;
-> +
-> +	writel(0x0000DF0D, ZYNQ_SLCR_UNLOCK);
-> +	writel(0x0000000f, ZYNQ_SLCR_BASE + 0x240); // assert FPGA resets
-> +
-> +	writel(0x00000000, ZYNQ_SLCR_BASE + 0x900); // disable levelshifter
-> +	writel(0x0000000a, ZYNQ_SLCR_BASE + 0x900); // enable levelshifter PS-PL
-> +
-> +	/*
-> +	 * The Programming Seqenze, see ug585 (v.12.2) Juny 1, 2018 Chapter
-> +	 * 6.4.2 on page 211 Configure the PL via PCAP Bridge Example for
-> +	 * detailed information to this Sequenze
-> +	 */
-> +
-> +	/* Enable the PCAP bridge and select PCAP for reconfiguration */
-> +	reg = readl(priv->base_addr + CTRL_OFFSET);
-> +	reg |= (CTRL_PCAP_PR_MASK | CTRL_PCAP_MODE_MASK);
-> +	writel(reg, priv->base_addr + CTRL_OFFSET);
-> +
-> +	/* Clear the Interrupts */
-> +	writel(0xffffffff, priv->base_addr + INT_STS_OFFSET);
-> +
-> +	/* Initialize the PL */
-> +	reg = readl(priv->base_addr + CTRL_OFFSET);
-> +	reg |= CTRL_PCFG_PROG_B_MASK;
-> +	writel(reg, priv->base_addr + CTRL_OFFSET);
-> +
-> +	reg = readl(priv->base_addr + CTRL_OFFSET);
-> +	reg &= ~CTRL_PCFG_PROG_B_MASK;
-> +	writel(reg, priv->base_addr + CTRL_OFFSET);
-> +
-> +	ret = readl_poll_timeout(priv->base_addr + STATUS_OFFSET, reg,
-> +			!(reg & STATUS_PCFG_INIT_MASK), 100 * USEC_PER_MSEC);
-> +	if (ret < 0) {
-> +		dev_err(&mgr->dev, "Timeout 1");
-> +		return ret;
-> +	}
-> +
-> +	reg = readl(priv->base_addr + CTRL_OFFSET);
-> +	reg |= CTRL_PCFG_PROG_B_MASK;
-> +	writel(reg, priv->base_addr + CTRL_OFFSET);
-> +
-> +	/* Clear the Interrupts */
-> +	writel(0xffffffff, priv->base_addr + INT_STS_OFFSET);
-> +
-> +	/* Ensure that the PL is ready for programming */
-> +	ret = readl_poll_timeout(priv->base_addr + STATUS_OFFSET, reg,
-> +			(reg & STATUS_PCFG_INIT_MASK), 100 * USEC_PER_MSEC);
-> +	if (ret < 0) {
-> +		dev_err(&mgr->dev, "Timeout 2");
-> +		return ret;
-> +	}
-> +
-> +	/* Check that there is room in the Command Queue */
-> +	ret = readl_poll_timeout(priv->base_addr + STATUS_OFFSET, reg,
-> +			!(reg & STATUS_DMA_CMD_Q_F_MASK), 100 * USEC_PER_MSEC);
-> +	if (ret < 0) {
-> +		dev_err(&mgr->dev, "Timeout 3");
-> +		return ret;
-> +	}
-> +
-> +	/* Disable the PCAP loopback */
-> +	reg = readl(priv->base_addr + MCTRL_OFFSET);
-> +	reg &= ~MCTRL_INT_PCAP_LPBK_MASK;
-> +	writel(reg, priv->base_addr + MCTRL_OFFSET);
-> +
-> +	/* Program the PCAP_2x clock divider */
-> +	reg = readl(priv->base_addr + CTRL_OFFSET);
-> +	reg &= ~CTRL_PCAP_RATE_EN_MASK;
-> +	writel(reg, priv->base_addr + CTRL_OFFSET);
-> +
-> +	/* Source Address: Location of bitstream */
-> +	writel(addr, priv->base_addr + DMA_SRC_ADDR_OFFSET);
-> +
-> +	/* Destination Address: 0xFFFF_FFFF */
-> +	writel(0xffffffff, priv->base_addr + DMA_DST_ADDR_OFFSET);
-> +
-> +	/* Source Length: Total number of 32-bit words in the bitstream */
-> +	writel((buf_size >> 2), priv->base_addr + DMA_SRC_LEN_OFFSET);
-> +
-> +	/* Destination Length: Total number of 32-bit words in the bitstream */
-> +	writel((buf_size >> 2), priv->base_addr + DMA_DEST_LEN_OFFSET);
-> +
-> +	/* Wait for the DMA transfer to be done */
-> +	ret = readl_poll_timeout(priv->base_addr + INT_STS_OFFSET, reg,
-> +			(reg & INT_STS_D_P_DONE_MASK), 100 * USEC_PER_MSEC);
-> +	if (ret < 0) {
-> +		dev_err(&mgr->dev, "Timeout 4: reg: 0x%lx\n", reg);
-> +		return ret;
-> +	}
-> +
-> +	/* Check for errors */
-> +	if (reg & INT_STS_ERROR_FLAGS_MASK) {
-> +		dev_err(&mgr->dev, "interrupt status register (0x%04lx)\n",
-> +			reg);
-> +		return -EIO;
-> +	}
-> +
-> +	/* Wait for the DMA transfer to be done */
-> +	ret = readl_poll_timeout(priv->base_addr + INT_STS_OFFSET, reg,
-> +			(reg & INT_STS_DONE_INT_MASK), 100 * USEC_PER_MSEC);
-> +	if (ret < 0) {
-> +		dev_err(&mgr->dev, "Timeout 5");
-> +		return ret;
-> +	}
-> +
-> +	dev_info(&mgr->dev, "FPGA config done\n");
-> +
-> +	writel(0x0000000f, ZYNQ_SLCR_BASE + 0x900); // enable all levelshifter
-> +	writel(0x00000000, ZYNQ_SLCR_BASE + 0x240); // deassert FPGA resets
-> +
-> +	writel(0x0000767B, ZYNQ_SLCR_LOCK);
-> +
-> +	return 0;
-> +}
-> diff --git a/drivers/firmware/zynqmp-fpga.c b/drivers/firmware/zynqmp-fpga.c
-> index 1a9a5c1b2c..b4acad0541 100644
-> --- a/drivers/firmware/zynqmp-fpga.c
-> +++ b/drivers/firmware/zynqmp-fpga.c
-> @@ -11,314 +11,48 @@
->   * Siva Durga Prasad <siva.durga.paladugu@xilinx.com> *
->   */
->  
-> -#include <firmware.h>
-> -#include <common.h>
-> -#include <init.h>
-> -#include <dma.h>
->  #include <mach/zynqmp/firmware-zynqmp.h>
-> +#include <common.h>
->  
-> -#define ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL	BIT(0)
-> -#define ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED	BIT(1)
-> -
-> -#define ZYNQMP_PM_VERSION_1_0_FEATURES	0
-> -#define ZYNQMP_PM_VERSION_1_1_FEATURES	(ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL | \
-> -					 ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED)
-> -
-> -/*
-> - * Xilinx KU040 Bitstream Composition:
-> - *
-> - * Bitstream can be provided with an optinal header (`struct bs_header`).
-> - * The true bitstream starts with the binary-header composed of 21 words:
-> - *
-> - *  0: 0xFFFFFFFF (Dummy pad word)
-> - *     ...
-> - * 15: 0xFFFFFFFF (Dummy pad word)
-> - * 16: 0x000000BB (Bus width auto detect word 1)
-> - * 17: 0x11220044 (Bus width auto detect word 2)
-> - * 18: 0xFFFFFFFF (Dummy pad word)
-> - * 19: 0xFFFFFFFF (Dummy pad word)
-> - * 20: 0xAA995566 (Sync word)
-> - *
-> - * See Xilinx UG570 (v1.11) September 30 2019, Chapter 9 "Configuration
-> - * Details - Bitstream Composition" for further details.
-> - */
-> -#define DUMMY_WORD			0xFFFFFFFF
-> -#define BUS_WIDTH_AUTO_DETECT1_OFFSET	16
-> -#define BUS_WIDTH_AUTO_DETECT1		0x000000BB
-> -#define BUS_WIDTH_AUTO_DETECT2_OFFSET	17
-> -#define BUS_WIDTH_AUTO_DETECT2		0x11220044
-> -#define SYNC_WORD_OFFSET		20
-> -#define SYNC_WORD			0xAA995566
-> -#define BIN_HEADER_LENGTH		21
-> -
-> -enum xilinx_byte_order {
-> -	XILINX_BYTE_ORDER_BIT,
-> -	XILINX_BYTE_ORDER_BIN,
-> -};
-> -
-> -struct fpgamgr {
-> -	struct firmware_handler fh;
-> -	struct device dev;
-> -	const struct zynqmp_eemi_ops *eemi_ops;
-> -	int programmed;
-> -	char *buf;
-> -	size_t size;
-> -	u32 features;
-> -};
-> -
-> -struct bs_header {
-> -	__be16 length;
-> -	u8 padding[9];
-> -	__be16 size;
-> -	char entries[0];
-> -} __attribute__ ((packed));
-> -
-> -struct bs_header_entry {
-> -	char type;
-> -	__be16 length;
-> -	char data[0];
-> -} __attribute__ ((packed));
-> -
-> -static void copy_words_swapped(u32 *dst, const u32 *src, size_t size)
-> -{
-> -	int i;
-> -
-> -	for (i = 0; i < size; i++)
-> -		dst[i] = __swab32(src[i]);
-> -}
-> -
-> -static int get_byte_order(const u32 *bin_header, size_t size,
-> -			  enum xilinx_byte_order *byte_order)
-> -{
-> -	if (size < BIN_HEADER_LENGTH * sizeof(*bin_header))
-> -		return -EINVAL;
-> -
-> -	if (bin_header[SYNC_WORD_OFFSET] == SYNC_WORD) {
-> -		*byte_order = XILINX_BYTE_ORDER_BIT;
-> -		return 0;
-> -	}
-> -
-> -	if (bin_header[SYNC_WORD_OFFSET] == __swab32(SYNC_WORD)) {
-> -		*byte_order = XILINX_BYTE_ORDER_BIN;
-> -		return 0;
-> -	}
-> -
-> -	return -EINVAL;
-> -}
-> -
-> -static bool is_bin_header_valid(const u32 *bin_header, size_t size,
-> -				enum xilinx_byte_order byte_order)
-> -{
-> -	size_t i;
-> -
-> -	if (size < BIN_HEADER_LENGTH * sizeof(*bin_header))
-> -		return false;
-> -
-> -	for (i = 0; i < BIN_HEADER_LENGTH; i++, bin_header++) {
-> -		u32 current;
-> -		u32 expected;
-> -
-> -		if (byte_order == XILINX_BYTE_ORDER_BIT)
-> -			current = *bin_header;
-> -		else
-> -			current = __swab32(*bin_header);
-> -
-> -		switch (i) {
-> -		case BUS_WIDTH_AUTO_DETECT1_OFFSET:
-> -			expected = BUS_WIDTH_AUTO_DETECT1;
-> -			break;
-> -		case BUS_WIDTH_AUTO_DETECT2_OFFSET:
-> -			expected = BUS_WIDTH_AUTO_DETECT2;
-> -			break;
-> -		case SYNC_WORD_OFFSET:
-> -			expected = SYNC_WORD;
-> -			break;
-> -		default:
-> -			expected = DUMMY_WORD;
-> -			break;
-> -		}
-> -
-> -		if (current != expected)
-> -			return false;
-> -	}
-> -
-> -	return true;
-> -}
-> -
-> -static int get_header_length(const char *header, size_t size)
-> -{
-> -	u32 *buf_u32;
-> -	int p;
-> -
-> -	for (p = 0; p < size; p++) {
-> -		buf_u32 = (u32 *)&header[p];
-> -		if (*buf_u32 == DUMMY_WORD)
-> -			return p;
-> -	}
-> -	return -EINVAL;
-> -}
-> -
-> -static void zynqmp_fpga_show_header(const struct device *dev,
-> -				    struct bs_header *header, size_t size)
-> -{
-> -	struct bs_header_entry *entry;
-> -	unsigned int i;
-> -	unsigned int length;
-> -
-> -	for (i = 0; i < size - sizeof(*header); i += sizeof(*entry) + length) {
-> -		entry = (struct bs_header_entry *)&header->entries[i];
-> -		length = __be16_to_cpu(entry->length);
-> -
-> -		switch (entry->type) {
-> -		case 'a':
-> -			printf("Design: %s\n", entry->data);
-> -			break;
-> -		case 'b':
-> -			printf("Part number: %s\n", entry->data);
-> -			break;
-> -		case 'c':
-> -			printf("Date: %s\n", entry->data);
-> -			break;
-> -		case 'd':
-> -			printf("Time: %s\n", entry->data);
-> -			break;
-> -		case 'e':
-> -			/* Size entry does not have a length but is be32 int */
-> -			printf("Size: %d bytes\n",
-> -			       (length << 16) + (entry->data[0] << 8) + entry->data[1]);
-> -			return;
-> -		default:
-> -			dev_warn(dev, "Invalid header entry: %c", entry->type);
-> -			return;
-> -		}
-> -	}
-> -}
-> -
-> -static int fpgamgr_program_finish(struct firmware_handler *fh)
-> +int zynqmp_init(struct fpgamgr *mgr, struct device *dev)
->  {
-> -	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-> -	struct device *hw_dev = mgr->dev.parent;
-> -	u32 *buf_aligned;
-> -	u32 buf_size;
-> -	u32 *body;
-> -	size_t body_length;
-> -	int header_length = 0;
-> -	enum xilinx_byte_order byte_order;
-> -	dma_addr_t addr;
-> -	int status = 0;
-> -	u8 flags = 0;
-> -
-> -	if (!mgr->buf) {
-> -		status = -ENOBUFS;
-> -		dev_err(&mgr->dev, "buffer is NULL\n");
-> -		goto err_free;
-> -	}
-> -
-> -	header_length = get_header_length(mgr->buf, mgr->size);
-> -	if (header_length < 0) {
-> -		status = header_length;
-> -		goto err_free;
-> -	}
-> -	zynqmp_fpga_show_header(&mgr->dev,
-> -			      (struct bs_header *)mgr->buf, header_length);
-> +	struct zynqmp_private *priv;
-> +	u32 api_version;
-> +	int ret;
->  
-> -	body = (u32 *)&mgr->buf[header_length];
-> -	body_length = mgr->size - header_length;
-> +	priv = xzalloc(sizeof(struct zynqmp_private));
-> +	if (!priv)
-> +		return -ENOMEM;
->  
-> -	status = get_byte_order(body, body_length, &byte_order);
-> -	if (status < 0)
-> -		goto err_free;
-> +	mgr->private = priv;
->  
-> -	if (!is_bin_header_valid(body, body_length, byte_order)) {
-> -		dev_err(&mgr->dev, "Invalid bitstream header\n");
-> -		status =  -EINVAL;
-> -		goto err_free;
-> -	}
-> +	priv->eemi_ops = zynqmp_pm_get_eemi_ops();
->  
-> -	/*
-> -	 * The PMU FW variants without the ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED
-> -	 * feature expect a pointer to the bitstream size, which is stored in
-> -	 * memory. Allocate extra space at the end of the buffer for the
-> -	 * bitstream size.
-> -	 */
-> -	buf_aligned = dma_alloc(body_length + sizeof(buf_size));
-> -	if (!buf_aligned) {
-> -		status = -ENOBUFS;
-> -		goto err_free;
-> -	}
-> -
-> -	if (!(mgr->features & ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL) &&
-> -	    byte_order == XILINX_BYTE_ORDER_BIN)
-> -		copy_words_swapped((u32 *)buf_aligned, body,
-> -				   body_length / sizeof(u32));
-> -	else
-> -		memcpy((u32 *)buf_aligned, body, body_length);
-> -	buf_aligned[body_length / sizeof(*buf_aligned)] = body_length;
-> -
-> -	addr = dma_map_single(hw_dev, buf_aligned,
-> -			      body_length + sizeof(buf_size), DMA_TO_DEVICE);
-> -	if (dma_mapping_error(hw_dev, addr)) {
-> -		status = -EFAULT;
-> -		goto err_free_dma;
-> +	ret = priv->eemi_ops->get_api_version(&api_version);
-> +	if (ret) {
-> +		dev_err(&mgr->dev, "could not get API version\n");
-> +		goto out;
->  	}
->  
-> -	if (mgr->features & ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED)
-> -		buf_size = body_length;
-> -	else
-> -		buf_size = addr + body_length;
-> -
-> -	status = mgr->eemi_ops->fpga_load((u64)addr, buf_size, flags);
-> -	dma_unmap_single(hw_dev, addr, body_length + sizeof(buf_size),
-> -			 DMA_TO_DEVICE);
-> -	if (status < 0)
-> -		dev_err(&mgr->dev, "unable to load fpga\n");
-> -
-> -err_free_dma:
-> -	dma_free(buf_aligned);
-> -
-> - err_free:
-> -	free(mgr->buf);
-> -
-> -	return status;
-> -}
-> -
-> -static int fpgamgr_program_write_buf(struct firmware_handler *fh,
-> -		const void *buf, size_t size)
-> -{
-> -	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-> -
-> -	/* Since write() is called by copy_file, we only receive chuncks with
-> -	 * size RW_BUF_SIZE of the bitstream.
-> -	 * Buffer the chunks here and handle it in close()
-> -	 */
-> -
-> -	mgr->buf = realloc(mgr->buf, mgr->size + size);
-> -	if (!mgr->buf)
-> -		return -ENOBUFS;
-> -
-> -	memcpy(&(mgr->buf[mgr->size]), buf, size);
-> -	mgr->size += size;
-> -
-> -	return 0;
-> -}
-> -
-> -static int fpgamgr_program_start(struct firmware_handler *fh)
-> -{
-> -	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-> +	mgr->features = 0;
->  
-> -	mgr->size = 0;
-> -	mgr->buf = NULL;
-> +	if (api_version >= ZYNQMP_PM_VERSION(1, 1))
-> +		mgr->features |= ZYNQMP_PM_VERSION_1_1_FEATURES;
->  
->  	return 0;
-> +out:
-> +	free(priv);
-> +	mgr->private = NULL;
-> +	return ret;
->  }
->  
-> -static int programmed_get(struct param_d *p, void *priv)
-> +int zynqmp_programmed_get(struct fpgamgr *mgr)
->  {
-> -	struct fpgamgr *mgr = priv;
-> +	struct zynqmp_private *priv = (struct zynqmp_private *) mgr->private;
->  	u32 status = 0x00;
->  	int ret = 0;
->  
-> -	ret = mgr->eemi_ops->fpga_getstatus(&status);
-> +	ret = priv->eemi_ops->fpga_getstatus(&status);
->  	if (ret)
->  		return ret;
->  
-> @@ -327,90 +61,10 @@ static int programmed_get(struct param_d *p, void *priv)
->  	return 0;
->  }
->  
-> -static int zynqmp_fpga_probe(struct device *dev)
-> +int zynqmp_fpga_load(struct fpgamgr *mgr, u64 addr, u32 buf_size, u8 flags)
->  {
-> -	struct fpgamgr *mgr;
-> -	struct firmware_handler *fh;
-> -	const char *alias = of_alias_get(dev->of_node);
-> -	const char *model = NULL;
-> -	struct param_d *p;
-> -	u32 api_version;
-> -	int ret;
-> +	struct zynqmp_private *priv = (struct zynqmp_private *) mgr->private;
->  
-> -	mgr = xzalloc(sizeof(*mgr));
-> -	fh = &mgr->fh;
-> -
-> -	if (alias)
-> -		fh->id = xstrdup(alias);
-> -	else
-> -		fh->id = xstrdup("zynqmp-fpga-manager");
-> -
-> -	fh->open = fpgamgr_program_start;
-> -	fh->write = fpgamgr_program_write_buf;
-> -	fh->close = fpgamgr_program_finish;
-> -	of_property_read_string(dev->of_node, "compatible", &model);
-> -	if (model)
-> -		fh->model = xstrdup(model);
-> -	fh->dev = dev;
-> -
-> -	mgr->eemi_ops = zynqmp_pm_get_eemi_ops();
-> -
-> -	ret = mgr->eemi_ops->get_api_version(&api_version);
-> -	if (ret) {
-> -		dev_err(&mgr->dev, "could not get API version\n");
-> -		goto out;
-> -	}
-> -
-> -	mgr->features = 0;
-> -
-> -	if (api_version >= ZYNQMP_PM_VERSION(1, 1))
-> -		mgr->features |= ZYNQMP_PM_VERSION_1_1_FEATURES;
-> -
-> -	dev_dbg(dev, "Registering ZynqMP FPGA programmer\n");
-> -	mgr->dev.id = DEVICE_ID_SINGLE;
-> -	dev_set_name(&mgr->dev, "zynqmp_fpga");
-> -	mgr->dev.parent = dev;
-> -	ret = register_device(&mgr->dev);
-> -	if (ret)
-> -		goto out;
-> -
-> -	p = dev_add_param_bool(&mgr->dev, "programmed", NULL, programmed_get,
-> -			&mgr->programmed, mgr);
-> -	if (IS_ERR(p)) {
-> -		ret = PTR_ERR(p);
-> -		goto out_unreg;
-> -	}
-> -
-> -	fh->dev = &mgr->dev;
-> -	fh->device_node = dev->of_node;
-> -
-> -	ret = firmwaremgr_register(fh);
-> -	if (ret != 0) {
-> -		free(mgr);
-> -		goto out_unreg;
-> -	}
-> -
-> -	return 0;
-> -out_unreg:
-> -	unregister_device(&mgr->dev);
-> -out:
-> -	free(fh->id);
-> -	free(mgr);
-> -
-> -	return ret;
-> +	return priv->eemi_ops->fpga_load((u64)addr, buf_size, flags);
->  }
->  
-> -static struct of_device_id zynqmpp_fpga_id_table[] = {
-> -	{
-> -		.compatible = "xlnx,zynqmp-pcap-fpga",
-> -	},
-> -	{ /* sentinel */ }
-> -};
-> -MODULE_DEVICE_TABLE(of, zynqmpp_fpga_id_table);
-> -
-> -static struct driver zynqmp_fpga_driver = {
-> -	.name = "zynqmp_fpga_manager",
-> -	.of_compatible = DRV_OF_COMPAT(zynqmpp_fpga_id_table),
-> -	.probe = zynqmp_fpga_probe,
-> -};
-> -device_platform_driver(zynqmp_fpga_driver);
-> diff --git a/include/mach/zynq/firmware-zynq.h b/include/mach/zynq/firmware-zynq.h
-> new file mode 100644
-> index 0000000000..d443ed5aab
-> --- /dev/null
-> +++ b/include/mach/zynq/firmware-zynq.h
-> @@ -0,0 +1,68 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Xilinx Zynq Firmware layer
-> + */
-> +
-> +#ifndef FIRMWARE_ZYNQ_H_
-> +#define FIRMWARE_ZYNQ_H_
-> +
-> +#include <xilinx-firmware.h>
-> +
-> +#define ZYNQ_BUS_WIDTH_AUTO_DETECT1_OFFSET	8
-> +#define ZYNQ_BUS_WIDTH_AUTO_DETECT2_OFFSET	9
-> +#define ZYNQ_SYNC_WORD_OFFSET			12
-> +#define ZYNQ_BIN_HEADER_LENGTH			13
-> +
-> +#define ZYNQ_PM_FEATURE_SIZE_NOT_NEEDED		BIT(1)
-> +
-> +#define CTRL_OFFSET				0x00
-> +#define LOCK_OFFSET				0x04
-> +#define INT_STS_OFFSET				0x0c
-> +#define INT_MASK_OFFSET				0x10
-> +#define STATUS_OFFSET				0x14
-> +#define DMA_SRC_ADDR_OFFSET			0x18
-> +#define DMA_DST_ADDR_OFFSET			0x1c
-> +#define DMA_SRC_LEN_OFFSET			0x20
-> +#define DMA_DEST_LEN_OFFSET			0x24
-> +#define UNLOCK_OFFSET				0x34
-> +#define MCTRL_OFFSET				0x80
-> +
-> +#define CTRL_PCFG_PROG_B_MASK			BIT(30)
-> +#define CTRL_PCAP_PR_MASK			BIT(27)
-> +#define CTRL_PCAP_MODE_MASK			BIT(26)
-> +#define CTRL_PCAP_RATE_EN_MASK			BIT(25)
-> +
-> +#define STATUS_DMA_CMD_Q_F_MASK			BIT(31)
-> +#define STATUS_PCFG_INIT_MASK			BIT(4)
-> +
-> +#define INT_STS_D_P_DONE_MASK			BIT(12)
-> +#define INT_STS_DONE_INT_MASK			BIT(2)
-> +#define INT_STS_ERROR_FLAGS_MASK		0x00f4c860
-> +
-> +#define MCTRL_INT_PCAP_LPBK_MASK		BIT(4)
-> +#define DEVC_UNLOCK_CODE			0x757bdf0d
-> +
-> +struct zynq_private {
-> +	void __iomem *base_addr;
-> +};
-> +
-> +#if defined(CONFIG_FIRMWARE_ZYNQ7000_FPGA)
-> +int zynq_init(struct fpgamgr *mgr, struct device *dev);
-> +int zynq_programmed_get(struct fpgamgr *mgr);
-> +int zynq_fpga_load(struct fpgamgr *mgr, u64 addr, u32 buf_size, u8 flags);
-> +#else
-> +static inline int zynq_init(struct fpgamgr *mgr, struct device *dev)
-> +{
-> +	return -ENOSYS;
-> +}
-> +static inline int zynq_programmed_get(struct fpgamgr *mgr)
-> +{
-> +	return -ENOSYS;
-> +}
-> +static inline int zynq_fpga_load(struct fpgamgr *mgr, u64 addr, u32 buf_size, u8 flags)
-> +{
-> +	return -ENOSYS;
-> +}
-> +#endif
-> +
-> +#endif /* FIRMWARE_ZYNQ_H_ */
-> diff --git a/include/mach/zynqmp/firmware-zynqmp.h b/include/mach/zynqmp/firmware-zynqmp.h
-> index 9f833189d3..236bd94e86 100644
-> --- a/include/mach/zynqmp/firmware-zynqmp.h
-> +++ b/include/mach/zynqmp/firmware-zynqmp.h
-> @@ -15,6 +15,8 @@
->  #ifndef FIRMWARE_ZYNQMP_H_
->  #define FIRMWARE_ZYNQMP_H_
->  
-> +#include <xilinx-firmware.h>
-> +
->  #define PAYLOAD_ARG_CNT			4
->  
->  #define ZYNQMP_PM_VERSION(MAJOR, MINOR)	((MAJOR << 16) | MINOR)
-> @@ -27,6 +29,18 @@
->  
->  #define ZYNQMP_PCAP_STATUS_FPGA_DONE	BIT(3)
->  
-> +#define ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL	BIT(0)
-> +#define ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED	BIT(1)
-> +
-> +#define ZYNQMP_PM_VERSION_1_0_FEATURES	0
-> +#define ZYNQMP_PM_VERSION_1_1_FEATURES	(ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL | \
-> +					 ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED)
-> +
-> +#define ZYNQMP_BUS_WIDTH_AUTO_DETECT1_OFFSET	16
-> +#define ZYNQMP_BUS_WIDTH_AUTO_DETECT2_OFFSET	17
-> +#define ZYNQMP_SYNC_WORD_OFFSET			20
-> +#define ZYNQMP_BIN_HEADER_LENGTH		21
-> +
->  /* ZynqMP SD tap delay tuning */
->  #define SD_ITAPDLY	0xFF180314
->  #define SD_OTAPDLYSEL	0xFF180318
-> @@ -138,4 +152,29 @@ int zynqmp_pm_read_ggs(u32 index, u32 *value);
->  int zynqmp_pm_write_pggs(u32 index, u32 value);
->  int zynqmp_pm_read_pggs(u32 index, u32 *value);
->  
-> +
-> +struct zynqmp_private {
-> +	const struct zynqmp_eemi_ops *eemi_ops;
-> +};
-> +
-> +
-> +#if defined(CONFIG_FIRMWARE_ZYNQMP_FPGA)
-> +int zynqmp_init(struct fpgamgr *mgr, struct device *dev);
-> +int zynqmp_programmed_get(struct fpgamgr *mgr);
-> +int zynqmp_fpga_load(struct fpgamgr *mgr, u64 addr, u32 buf_size, u8 flags);
-> +#else
-> +static inline int zynqmp_init(struct fpgamgr *mgr, struct device *dev)
-> +{
-> +	return -ENOSYS;
-> +}
-> +static inline int zynqmp_programmed_get(struct fpgamgr *mgr)
-> +{
-> +	return -ENOSYS;
-> +}
-> +static inline int zynqmp_fpga_load(struct fpgamgr *mgr, u64 addr, u32 buf_size, u8 flags)
-> +{
-> +	return -ENOSYS;
-> +}
-> +#endif
-> +
->  #endif /* FIRMWARE_ZYNQMP_H_ */
-> diff --git a/include/xilinx-firmware.h b/include/xilinx-firmware.h
-> new file mode 100644
-> index 0000000000..4aacba622c
-> --- /dev/null
-> +++ b/include/xilinx-firmware.h
-> @@ -0,0 +1,54 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +#ifndef XILINX_FIRMWARE_H
-> +#define XILINX_FIRMWARE_H
-> +
-> +#include <firmware.h>
-> +
-> +#define DUMMY_WORD			0xFFFFFFFF
-> +#define BUS_WIDTH_AUTO_DETECT1		0x000000BB
-> +#define BUS_WIDTH_AUTO_DETECT2		0x11220044
-> +#define SYNC_WORD			0xAA995566
-> +
-> +enum xilinx_byte_order {
-> +	XILINX_BYTE_ORDER_BIT,
-> +	XILINX_BYTE_ORDER_BIN,
-> +};
-> +
-> +struct fpgamgr;
-> +
-> +struct xilinx_fpga_devdata {
-> +	u8 bus_width_auto_detect1_offset;
-> +	u8 bus_width_auto_detect2_offset;
-> +	u8 sync_word_offset;
-> +	u8 bin_header_length;
-> +	int (*dev_init)(struct fpgamgr *, struct device *);
-> +	int (*dev_progammed_get)(struct fpgamgr *);
-> +	int (*dev_fpga_load)(struct fpgamgr *mgr, u64 addr, u32 buf_size, u8 flags);
-> +};
-> +
-> +struct fpgamgr {
-> +	struct firmware_handler fh;
-> +	struct device dev;
-> +	void *private;
-> +	int programmed;
-> +	char *buf;
-> +	size_t size;
-> +	u32 features;
-> +	const struct xilinx_fpga_devdata *devdata;
-> +};
-> +
-> +struct bs_header {
-> +	__be16 length;
-> +	u8 padding[9];
-> +	__be16 size;
-> +	char entries[0];
-> +} __attribute__ ((packed));
-> +
-> +struct bs_header_entry {
-> +	char type;
-> +	__be16 length;
-> +	char data[0];
-> +} __attribute__ ((packed));
-> +
-> +#endif /* XILINX_FIRMWARE_H */
-> -- 
-> 2.34.1
-> 
 
 
