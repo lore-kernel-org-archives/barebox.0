@@ -1,53 +1,53 @@
-Delivery-date: Mon, 09 Jun 2025 08:32:32 +0200
+Delivery-date: Mon, 09 Jun 2025 08:35:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uOW3c-005LuY-2t
+	id 1uOW6X-005Lwt-1G
 	for lore@lore.pengutronix.de;
-	Mon, 09 Jun 2025 08:32:32 +0200
+	Mon, 09 Jun 2025 08:35:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uOW3b-0005fr-Sm
-	for lore@pengutronix.de; Mon, 09 Jun 2025 08:32:32 +0200
+	id 1uOW6W-0006lB-QS
+	for lore@pengutronix.de; Mon, 09 Jun 2025 08:35:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=NUTlPEa301GbqD4aMvh+iJnaC25rjODctz77uyhPR6w=; b=fXEFK/cMAWxysmn8VdLYsjs1yc
-	Qf93jQJP1GMfLSbJerBjode+iqr8k3jO+fq/NIBdlulVhpF6UQXgnKSHmgoCjZi43dtlJyeGlJVz4
-	3izENaixNj5EYREgHxZqWv6hMThlB+GCe3oEbiA/TAkUMRpiDF1XNASMWMvhGuyXWlclRI3+ET+5D
-	ssmkNSrUNgIqWxzdmBwzdbw+NLx2SbuyOVTjfrh0EoqJ2DVFyQThX9cuRibQMecR/RSUn+CQv4LgE
-	2n7vgdbGrOxU5V9G6XclzsYaWiDK27E2z6mK7ra4eZM+sAxjaxUrakdFVhc5W6RMoBoARi7YlWenL
-	stqzEpWw==;
+	bh=Ntswq27VCUXTneFR4xeMgi/OnwuAU69V/fZt0utVNEw=; b=hTxYQMHrHX5XJ8QNsUG800lkD6
+	iz/u47bQ8pqMXF7N+/jarZPwgb+f//hY5V3I3QkT8U35bvmyRXQrARCM0vWuR90QqN5iB7SDbZLZH
+	KkhJVBGpMk61LOrBh6Z8g478kHJWji9aIkmv5wv5TaQ/cTEA3LS3pNgKHXT3xm8+Crt2fpRTeAHmY
+	ex8rMVRL8Ip3fn2gUAJ0QlbgGfi4bBToiAd5eKsGNIHis4DjPczgjSjuFkCQTDf2Fk/R+sQGXuZNY
+	OA/0NYPdJmaaPRK7vGdgk6IBQduTxBtKlbBwhVJa1wuO8obMBO8qeoC6iMEHwjwc9kE24GCGY/bMm
+	6SvPMxag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uOW2i-00000003Vir-1T1I;
-	Mon, 09 Jun 2025 06:31:36 +0000
+	id 1uOW64-00000003W4W-3JRh;
+	Mon, 09 Jun 2025 06:35:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uOW2f-00000003ViU-06H4
+	id 1uOW61-00000003W3q-3GDA
 	for barebox@lists.infradead.org;
-	Mon, 09 Jun 2025 06:31:34 +0000
+	Mon, 09 Jun 2025 06:35:02 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uOW2a-0005Ij-F7; Mon, 09 Jun 2025 08:31:28 +0200
+	id 1uOW60-0006Xc-BL; Mon, 09 Jun 2025 08:35:00 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  9 Jun 2025 08:31:27 +0200
-Message-Id: <20250609063127.3165440-1-a.fatoum@barebox.org>
+Date: Mon,  9 Jun 2025 08:34:59 +0200
+Message-Id: <20250609063459.3167639-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250608_233133_216196_05D906DF 
-X-CRM114-Status: GOOD (  18.47  )
+X-CRM114-CacheID: sfid-20250608_233501_818443_8A5F30E9 
+X-CRM114-Status: GOOD (  10.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,261 +69,69 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] clk: make use of %pC format specifier for printing name
+Subject: [PATCH] commands: dmesg: add -p option for setting maximum log level
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Linux has supported this format specifier for 10 years now.
-So let's add support for it in barebox proper as well.
+The existing -l option requires the user to specify all log levels they
+are interested in, e.g. dmesg -l warn,err,crit,alert,emerg, which is
+cumbersome.
+
+Add a new -p option that automatically includes more severe log levels,
+so the above can be realized by just dmesg -p warn
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/mach-at91/clock.c        |  2 +-
- drivers/clk/clk-divider.c         |  4 ++--
- drivers/clk/clk-stm32f4.c         |  2 +-
- drivers/clk/clk.c                 | 14 +++++++-------
- drivers/clk/imx/clk-pll14xx.c     |  4 ++--
- drivers/clk/tegra/clk.c           | 12 ++++++------
- drivers/firmware/arm_scmi/clock.c |  4 ++--
- drivers/net/macb.c                |  2 +-
- drivers/video/imx-ipu-v3/ipu-di.c |  4 ++--
- lib/vsprintf.c                    | 16 +++++++++++++++-
- 10 files changed, 39 insertions(+), 25 deletions(-)
+ commands/dmesg.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
-index a3071189bb8f..6482aa93c0bf 100644
---- a/arch/arm/mach-at91/clock.c
-+++ b/arch/arm/mach-at91/clock.c
-@@ -858,7 +858,7 @@ static int at91_clock_reset(void)
- 		if (clk->mode == pmc_sys_mode)
- 			scdr |= clk->pmc_mask;
+diff --git a/commands/dmesg.c b/commands/dmesg.c
+index 8a60f075076e..a93ad5b359fb 100644
+--- a/commands/dmesg.c
++++ b/commands/dmesg.c
+@@ -81,7 +81,7 @@ static int do_dmesg(int argc, char *argv[])
+ 	unsigned flags = 0, levels = 0;
+ 	char *set = NULL;
  
--		pr_debug("Clocks: disable unused %s\n", clk->name);
-+		pr_debug("Clocks: disable unused %pC\n", clk);
- 	}
- 
- 	at91_pmc_write(AT91_PMC_PCDR, pcdr);
-diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
-index b0df34e85847..62d63ef39c7e 100644
---- a/drivers/clk/clk-divider.c
-+++ b/drivers/clk/clk-divider.c
-@@ -90,8 +90,8 @@ unsigned long divider_recalc_rate(struct clk *clk, unsigned long parent_rate,
- 	div = _get_div(table, val, flags, width);
- 	if (!div) {
- 		WARN(!(flags & CLK_DIVIDER_ALLOW_ZERO),
--			"%s: Zero divisor and CLK_DIVIDER_ALLOW_ZERO not set\n",
--			clk->name);
-+			"%pC: Zero divisor and CLK_DIVIDER_ALLOW_ZERO not set\n",
-+			clk);
- 		return parent_rate;
- 	}
- 
-diff --git a/drivers/clk/clk-stm32f4.c b/drivers/clk/clk-stm32f4.c
-index 22c47656c411..343ee0e6e9b5 100644
---- a/drivers/clk/clk-stm32f4.c
-+++ b/drivers/clk/clk-stm32f4.c
-@@ -1879,7 +1879,7 @@ static void __init stm32f4_rcc_init(struct device_node *np)
- 				&stm32f4_clk_lock);
- 
- 		if (IS_ERR(hw)) {
--			pr_warn("Unable to register %s clk\n", aux_clk->name);
-+			pr_warn("Unable to register %pC clk\n", aux_clk);
- 			continue;
- 		}
- 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 9b21d0650b6c..ec8c06b61bfb 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -80,7 +80,7 @@ void clk_disable(struct clk *clk)
- 		return;
- 
- 	if (clk->enable_count == 1 && clk->flags & CLK_IS_CRITICAL) {
--		pr_warn("Disabling critical clock %s\n", clk->name);
-+		pr_warn("Disabling critical clock %pC\n", clk);
- 		return;
- 	}
- 
-@@ -446,8 +446,8 @@ static int __bclk_register(struct clk *clk)
- 
- 	list_for_each_entry(c, &clks, list) {
- 		if (!strcmp(c->name, clk->name)) {
--			pr_err("%s clk %s is already registered, skipping!\n",
--				__func__, clk->name);
-+			pr_err("%s clk %pC is already registered, skipping!\n",
-+				__func__, clk);
- 			return -EBUSY;
- 		}
- 	}
-@@ -1046,8 +1046,8 @@ static void dump_one_summary(struct clk *clk, int flags, int indent)
- 	else
- 		stat = "enabled";
- 
--	printf("%*s%s (rate %lu, enable_count: %d, %s)\n", indent * 4, "",
--	       clk->name,
-+	printf("%*s%pC (rate %lu, enable_count: %d, %s)\n", indent * 4, "",
-+	       clk,
- 	       clk_get_rate(clk),
- 	       clk->enable_count,
- 	       hwstat);
-@@ -1066,8 +1066,8 @@ static void dump_one_summary(struct clk *clk, int flags, int indent)
- 
- static void dump_one_json(struct clk *clk, int flags, int indent)
- {
--	printf("\"%s\": { \"rate\": %lu,\"enable_count\": %d",
--	       clk->name,
-+	printf("\"%pC\": { \"rate\": %lu,\"enable_count\": %d",
-+	       clk,
- 	       clk_get_rate(clk),
- 	       clk->enable_count);
- }
-diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-index 86286448e9ef..6716a6f55560 100644
---- a/drivers/clk/imx/clk-pll14xx.c
-+++ b/drivers/clk/imx/clk-pll14xx.c
-@@ -261,8 +261,8 @@ static int clk_pll1443x_set_rate(struct clk_hw *hw, unsigned long drate,
- 
- 	rate = imx_get_pll_settings(pll, drate);
- 	if (!rate) {
--		pr_err("%s: Invalid rate : %lu for pll clk %s\n", __func__,
--			drate, clk->name);
-+		pr_err("%s: Invalid rate : %lu for pll clk %pC\n", __func__,
-+			drate, clk);
- 		return -EINVAL;
- 	}
- 
-diff --git a/drivers/clk/tegra/clk.c b/drivers/clk/tegra/clk.c
-index ad384d8d4d53..90f66f4daf87 100644
---- a/drivers/clk/tegra/clk.c
-+++ b/drivers/clk/tegra/clk.c
-@@ -117,23 +117,23 @@ void tegra_init_from_table(struct tegra_clk_init_table *tbl,
- 		if (tbl->parent_id < clk_max) {
- 			struct clk *parent = clks[tbl->parent_id];
- 			if (clk_set_parent(clk, parent)) {
--				pr_err("%s: Failed to set parent %s of %s\n",
--				       __func__, parent->name, clk->name);
-+				pr_err("%s: Failed to set parent %pC of %pC\n",
-+				       __func__, parent, clk);
- 				WARN_ON(1);
- 			}
- 		}
- 
- 		if (tbl->rate)
- 			if (clk_set_rate(clk, tbl->rate)) {
--				pr_err("%s: Failed to set rate %lu of %s\n",
--				       __func__, tbl->rate, clk->name);
-+				pr_err("%s: Failed to set rate %lu of %pC\n",
-+				       __func__, tbl->rate, clk);
- 				WARN_ON(1);
- 			}
- 
- 		if (tbl->state)
- 			if (clk_enable(clk)) {
--				pr_err("%s: Failed to enable %s\n", __func__,
--				       clk->name);
-+				pr_err("%s: Failed to enable %pC\n", __func__,
-+				       clk);
- 				WARN_ON(1);
- 			}
- 	}
-diff --git a/drivers/firmware/arm_scmi/clock.c b/drivers/firmware/arm_scmi/clock.c
-index 2c902835a0ec..7e1e9f023496 100644
---- a/drivers/firmware/arm_scmi/clock.c
-+++ b/drivers/firmware/arm_scmi/clock.c
-@@ -197,8 +197,8 @@ iter_clk_describe_update_state(struct scmi_iterator_state *st,
- 	if (!p->clk->rate_discrete &&
- 	    (st->num_returned != 3 || st->num_remaining != 0)) {
- 		dev_warn(p->dev,
--			 "Out-of-spec CLOCK_DESCRIBE_RATES reply for %s - returned:%d remaining:%d rx_len:%zd\n",
--			 p->clk->name, st->num_returned, st->num_remaining,
-+			 "Out-of-spec CLOCK_DESCRIBE_RATES reply for %pC - returned:%d remaining:%d rx_len:%zd\n",
-+			 p->clk, st->num_returned, st->num_remaining,
- 			 st->rx_len);
- 
- 		/*
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 205e3169f17b..26bc3130bf59 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -772,7 +772,7 @@ static int fu540_c000_txclk_init(struct device *dev, struct clk **tx_clk)
- 		return err;
- 	}
- 
--	dev_info(dev, "Registered clk switch '%s'\n", clk->name);
-+	dev_info(dev, "Registered clk switch '%pC'\n", clk);
- 	return 0;
- }
- #else
-diff --git a/drivers/video/imx-ipu-v3/ipu-di.c b/drivers/video/imx-ipu-v3/ipu-di.c
-index 7653d512969f..80c0276ec96f 100644
---- a/drivers/video/imx-ipu-v3/ipu-di.c
-+++ b/drivers/video/imx-ipu-v3/ipu-di.c
-@@ -542,8 +542,8 @@ int ipu_di_init_sync_panel(struct ipu_di *di, struct ipu_di_signal_cfg *sig)
- 	ret = clk_set_parent(&di->clk_di_pixel, parent);
- 	if (ret) {
- 		dev_err(di->ipu->dev,
--			"setting pixel clock to parent %s failed with %d\n",
--				parent->name, ret);
-+			"setting pixel clock to parent %pC failed with %d\n",
-+				parent, ret);
- 		return ret;
- 	}
- 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index ba87f6c210d2..b2eeb2702f3d 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -16,6 +16,7 @@
- #include <linux/string.h>
- #include <linux/ctype.h>
- #include <linux/math64.h>
-+#include <linux/clk.h>
- #include <malloc.h>
- #include <kallsyms.h>
- #include <wchar.h>
-@@ -310,7 +311,7 @@ char *ip4_addr_string(char *buf, const char *end, const u8 *addr, int field_widt
- }
- 
- static
--char *error_string(char *buf, const char *end, const u8 *errptr, int field_width,
-+char *error_string(char *buf, const char *end, const void *errptr, int field_width,
- 		   int precision, int flags, const char *fmt)
- {
-     if (!IS_ERR(errptr))
-@@ -477,6 +478,16 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
- 		      precision, flags);
- }
- 
-+static noinline_for_stack
-+char *clock(char *buf, const char *end, const struct clk *clk,
-+	    int field_width, int precision, int flags, const char *fmt)
-+{
-+	if (IS_ERR_OR_NULL(clk))
-+		return error_string(buf, end, clk, field_width, precision, flags, fmt);
-+
-+	return string(buf, end, clk->name, field_width, precision, flags);
-+}
-+
- /*
-  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
-  * by an extra set of alphanumeric characters that are extended format
-@@ -515,6 +526,7 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
-  *              N no separator
-  * - 'M' For a 6-byte MAC address, it prints the address in the
-  *       usual colon-separated hex notation
-+ * - 'C' For a clock, it prints the name in the Common Clock Framework
-  *
-  * Additionally, we support following barebox-specific format specifiers:
-  *
-@@ -575,6 +587,8 @@ static char *pointer(const char *fmt, char *buf, const char *end, const void *pt
- 		if (IS_ENABLED(CONFIG_EFI_DEVICEPATH))
- 			return device_path_string(buf, end, ptr, field_width, precision, flags);
- 		break;
-+	case 'C':
-+		return clock(buf, end, ptr, field_width, precision, flags, fmt);
- 	}
- 
- 	return raw_pointer(buf, end, ptr, field_width, precision, flags);
+-	while ((opt = getopt(argc, argv, "ctderl:n:")) > 0) {
++	while ((opt = getopt(argc, argv, "ctderl:p:n:")) > 0) {
+ 		switch (opt) {
+ 		case 'c':
+ 			delete_buf = 1;
+@@ -96,9 +96,16 @@ static int do_dmesg(int argc, char *argv[])
+ 			emit = 1;
+ 			break;
+ 		case 'l':
++		case 'p':
+ 			levels = dmesg_get_levels(optarg);
+ 			if (!levels)
+ 				return COMMAND_ERROR;
++			if (opt == 'p') {
++				unsigned maxbit = fls(levels) - 1;
++				if (levels & ~BIT(maxbit))
++					return COMMAND_ERROR_USAGE;
++				levels = GENMASK(maxbit, 0);
++			}
+ 			break;
+ 		case 'r':
+ 			flags |= BAREBOX_LOG_PRINT_RAW | BAREBOX_LOG_PRINT_TIME;
+@@ -170,6 +177,7 @@ BAREBOX_CMD_HELP_OPT ("-c",		"Delete messages after printing them")
+ BAREBOX_CMD_HELP_OPT ("-d",		"Show a time delta to the last message")
+ BAREBOX_CMD_HELP_OPT ("-e <msg>",	"Emit a log message")
+ BAREBOX_CMD_HELP_OPT ("-l <loglevel>", "Restrict output to the given (comma-separated) list of levels")
++BAREBOX_CMD_HELP_OPT ("-p <loglevel>", "Restrict output to specified log level at most")
+ BAREBOX_CMD_HELP_OPT ("-n <loglevel>", "Set level at which printing of messages is done to the console")
+ BAREBOX_CMD_HELP_OPT ("-r",		"Print timestamp and log-level prefixes.")
+ BAREBOX_CMD_HELP_OPT ("-t",		"Show timestamp informations")
+@@ -178,7 +186,7 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(dmesg)
+ 	.cmd	= do_dmesg,
+ 	BAREBOX_CMD_DESC("Print or control log messages")
+-	BAREBOX_CMD_OPTS("[-cdert]")
++	BAREBOX_CMD_OPTS("[-cdelprt]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+ 	BAREBOX_CMD_HELP(cmd_dmesg_help)
+ BAREBOX_CMD_END
 -- 
 2.39.5
 
