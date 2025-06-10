@@ -1,60 +1,80 @@
-Delivery-date: Tue, 10 Jun 2025 14:34:38 +0200
+Delivery-date: Tue, 10 Jun 2025 15:06:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uOyBa-005na2-2R
+	id 1uOyg5-005o9p-21
 	for lore@lore.pengutronix.de;
-	Tue, 10 Jun 2025 14:34:38 +0200
+	Tue, 10 Jun 2025 15:06:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uOyBa-00035r-6t
-	for lore@pengutronix.de; Tue, 10 Jun 2025 14:34:38 +0200
+	id 1uOyg4-0006lA-W7
+	for lore@pengutronix.de; Tue, 10 Jun 2025 15:06:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6M5PYmtH9b4z0oG1mpQstUBQCrXeYtiw2QFDsLYoVEg=; b=wbgqDFPgNsS0p3vQULwWsJvp9v
-	K1t9hk2XCM3QYExMd0yQuSBfGhjYDycSKO0GfEbTK7HGiIX+DwM9HqWDUi0zMhVvKvoCXUwsgcxTh
-	WT7p/yX31DFE0GrHCM5Ylt5NP4MfCunsxl2a4Kd1CmtsPtoKcOcRqPHK8JRw0tNd1NBVm3xE1fV16
-	jlXyh+0Sjyt0RUpVfJF1vGcl5iudXHFvZEQdom67LRKvtYyZnYS+l4wWJNDb4C6YZfaTTGphA2mJ1
-	7l/pwiFsvKolw5Vk05PXmF5MdkYgMJBjPrcSuWAE40ckJkvBBksvKnGgFPlQjsZncTfYh6Edo813a
-	O0HOwGog==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=acRJUVOvY+IZL2WOTdl6k+/xchFPg2hFozSfJNPiDuQ=; b=YDr+UIl5ejfvtt0z/LFTmMowSm
+	bsdz7EmwCnGLN3SiG1ZakzXGG2KR8i/Zm8AgCXMltyTPQxG1IClan0LLFhF7LcnSsrfhSqeX6kD2O
+	rWLM/nEZBKKinuPXHN0ewZE2D4iS6akT2mwIiM0TFKIbpOOkxIGwW53qRNEq6AiLYDYxK1qRa/sBw
+	47KpnNmjGkKHhnlyMiyL+QHUbO5kbzuss3fhuDYiN4mUx2ihoT8ecdl0jisGMVkexCC3vJMVdUBhB
+	fKZ2vx5OXg/eNF5IQ7k10Qx+XiVa69cOX2EPKIweTKX8MtYANEpnEphVFPRfnuuZhnLjkRwUDxcbM
+	pFBPTpNg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uOyB7-00000006mV6-3zkq;
-	Tue, 10 Jun 2025 12:34:09 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uOyfW-00000006tEw-3yKh;
+	Tue, 10 Jun 2025 13:05:34 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uOxb7-00000006hM4-1RlB
+	id 1uOxwj-00000006kcl-2QEE
+	for barebox@bombadil.infradead.org;
+	Tue, 10 Jun 2025 12:19:17 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=acRJUVOvY+IZL2WOTdl6k+/xchFPg2hFozSfJNPiDuQ=; b=ETXxLAE5FuEJ5aYRjF7ZC5pEAZ
+	4KNBaU/BoguhPmAX5fVhBugiKAar0Pca0DePPjNkbJfR9XIXiQtR1VUASwt2gBKR+Rnss1M2mAmzT
+	jujLnkgYaApt8k2YKZmIHXxdIEVF30q11UKIsobJFMGxxHk90sotv7sm7dDESYs+aKRfC/92QUNk4
+	zmBJ9/3qu9TxiyYrRMdsJg/XdIR7d82to2bUTB6L2Pk4547q8DuxLQ8/lLaah3PpAbxwykO2W4wZ7
+	Ue+pf/nSbCfzlRiLXy8SKOdg7qrnFBUPVZoDmzIjOgIlSRWuo0ZJl1WjSLyna2jzr59VQr7NhJD3h
+	LtiAloRw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uOxwh-00000001ny3-2bko
 	for barebox@lists.infradead.org;
-	Tue, 10 Jun 2025 11:56:58 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Tue, 10 Jun 2025 12:19:17 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uOxb5-0005wj-R8; Tue, 10 Jun 2025 13:56:55 +0200
-Message-ID: <a5da1e7a-aef3-4d1e-99bb-43ed617409a0@pengutronix.de>
-Date: Tue, 10 Jun 2025 13:56:53 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-References: <20250602-createnv-v1-0-c3239ff875d5@pengutronix.de>
- <20250602-createnv-v1-4-c3239ff875d5@pengutronix.de>
- <264954b4-d6d3-4ea1-a962-b2bc8a298bb9@pengutronix.de>
- <aD26LTpV_irbVcGw@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+	id 1uOxwd-0002Uz-Vt; Tue, 10 Jun 2025 14:19:12 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uOxwd-002lyX-2V;
+	Tue, 10 Jun 2025 14:19:11 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uOxwd-0081Fk-2C;
+	Tue, 10 Jun 2025 14:19:11 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <aD26LTpV_irbVcGw@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 10 Jun 2025 14:19:10 +0200
+Message-Id: <20250610121910.1911393-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250610_045657_388261_0CAB5620 
-X-CRM114-Status: GOOD (  21.95  )
+X-CRM114-CacheID: sfid-20250610_131915_717311_2226454E 
+X-CRM114-Status: GOOD (  14.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,63 +96,121 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/5] commands: create createnv command
+Subject: [PATCH] fixup! of: partition: do not try to translate offset as OF address
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+base: resource: fix build with OF support disabled
 
+With OF disabled, we end up with of_add_child_device defined twice.
+Move the definition into of/platform.c to fix this. This is the better
+place anyway, because it allocates a platform device.
 
-On 6/2/25 16:50, Sascha Hauer wrote:
-> On Mon, Jun 02, 2025 at 03:48:26PM +0200, Ahmad Fatoum wrote:
->> Hi,
->>
->> On 02.06.25 15:28, Sascha Hauer wrote:
->>> We want to move away from describing the barebox environment explicitly
->>> in the device tree and instead motivate usage of GPT partitions for the
->>> envrionment. This patch creates a createnv command to facilitate this.
->>> It creates an environment partition on the specified device and if
->>> necessary also a GPT partition table. In the simplest case a "createnv"
->>> without arguments will create a partition on the device barebox itself
->>> booted from. Both the device and the size of the partition can be
->>> specified on the command line.
->>>
->>> We can't create environment partitions on a device containing a MBR
->>> partition table, so a MBR partitioned device won't be touched.
->>>
->>> As an additional safety net the command will ask the user if altering
->>> the partition table is really desired. This behaviour can be overwritten
->>> by specifying -f on the command line.
->>
->> Could we have saveenv/loadenv nudge the user towards createnv if CMD_CREATENV
->> is enabled?
->>
->> Something along the lines of:
->>
->>   saveenv: no environment was registered
->>   saveenv: run createnv to create an ad-hoc environment
-> 
-> I was more thinking towards issuing a message like that during startup,
-> because by then we know already that we don't have an environment
-> partition. The corresponding patch is not yet ready though, so I sent
-> without it.
-> 
-> Do you see any advantages putting the message into the saveenv command?
+For some reason, we compile of/platform.c even for CONFIG_OFDEVICE disabled,
+but CONFIG_OFTREE enabled, so we need to tweak the #ifdef accordingly.
 
-Both sound good to me.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/base/resource.c | 25 -------------------------
+ drivers/of/platform.c   | 26 ++++++++++++++++++++++++++
+ include/driver.h        |  2 +-
+ 3 files changed, 27 insertions(+), 26 deletions(-)
 
-Thanks,
-Ahmad
-
-> 
-> Sascha
-> 
-> 
-
+diff --git a/drivers/base/resource.c b/drivers/base/resource.c
+index d214df0def4c..cf163844b86e 100644
+--- a/drivers/base/resource.c
++++ b/drivers/base/resource.c
+@@ -75,31 +75,6 @@ struct device *add_child_device(struct device *parent,
+ }
+ EXPORT_SYMBOL(add_child_device);
+ 
+-struct device *of_add_child_device(struct device *parent,
+-		const char* devname, int id, struct device_node *np)
+-{
+-	struct device *dev;
+-	int err;
+-
+-	if (!of_property_present(np, "compatible") || !of_device_is_available(np))
+-		return NULL;
+-
+-	dev = device_alloc(devname, id);
+-	dev->parent = parent;
+-	dev->of_node = np;
+-
+-	np->dev = dev;
+-	err = platform_device_register(dev);
+-	if (err) {
+-		np->dev = NULL;
+-		free_device(dev);
+-		return ERR_PTR(err);
+-	}
+-
+-	return dev;
+-}
+-EXPORT_SYMBOL(of_add_child_device);
+-
+ struct device *add_generic_device_res(const char* devname, int id,
+ 		struct resource *res, int nb, void *pdata)
+ {
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 7e086e9488e6..3600b5f9c10b 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -7,6 +7,7 @@
+  * based on Linux devicetree support
+  */
+ #include <common.h>
++#include <driver.h>
+ #include <deep-probe.h>
+ #include <malloc.h>
+ #include <of.h>
+@@ -314,6 +315,31 @@ struct device *of_device_enable_and_register_by_alias(const char *alias)
+ }
+ EXPORT_SYMBOL(of_device_enable_and_register_by_alias);
+ 
++struct device *of_add_child_device(struct device *parent,
++		const char* devname, int id, struct device_node *np)
++{
++	struct device *dev;
++	int err;
++
++	if (!of_property_present(np, "compatible") || !of_device_is_available(np))
++		return NULL;
++
++	dev = device_alloc(devname, id);
++	dev->parent = parent;
++	dev->of_node = np;
++
++	np->dev = dev;
++	err = platform_device_register(dev);
++	if (err) {
++		np->dev = NULL;
++		free_device(dev);
++		return ERR_PTR(err);
++	}
++
++	return dev;
++}
++EXPORT_SYMBOL(of_add_child_device);
++
+ #ifdef CONFIG_ARM_AMBA
+ static struct device *of_amba_device_create(struct device_node *np)
+ {
+diff --git a/include/driver.h b/include/driver.h
+index 31f63a0678d8..dd50a7aa3cce 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -227,7 +227,7 @@ struct device *add_child_device(struct device *parent,
+ 				resource_size_t start, resource_size_t size, unsigned int flags,
+ 				void *pdata);
+ 
+-#ifdef CONFIG_OFDEVICE
++#ifdef CONFIG_OFTREE
+ struct device *of_add_child_device(struct device *parent,
+ 		const char* devname, int id, struct device_node *np);
+ #else
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.39.5
 
 
 
