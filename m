@@ -1,70 +1,68 @@
-Delivery-date: Tue, 10 Jun 2025 08:31:46 +0200
+Delivery-date: Tue, 10 Jun 2025 08:41:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uOsWP-005hl6-37
+	id 1uOsg8-005hrk-2i
 	for lore@lore.pengutronix.de;
-	Tue, 10 Jun 2025 08:31:45 +0200
+	Tue, 10 Jun 2025 08:41:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uOsWP-0004ye-EI
-	for lore@pengutronix.de; Tue, 10 Jun 2025 08:31:45 +0200
+	id 1uOsg8-0000is-5g
+	for lore@pengutronix.de; Tue, 10 Jun 2025 08:41:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tDNHgHQ2bpUaErvyNW9gT6UWulC+vuFjdkYKuOkOYFo=; b=X/nt3ZceeZx94VacvmNp44AHJs
-	4w7zamf8pXIbK9m2WhHSJ1zLMUKxi065Bqx4QggbHSKs1ZwI7oXDeP0rfHtin7yq3JHCiyk/hhkal
-	wPmwugFpxb4OWAmeLG+NIyTM6vSrbeqj7NSNu/DuUJvc0Iwn68F1VSG9MZH5X2IjrYAg0rjd52kH5
-	23nCIPTd87KoT/FgBoLJPVFFX9tj44RW/RZpUh198nlFNAEmcsvvl/AItH+6QDcyLUGx/v4qCF8l2
-	zczj7B9SpOUOQAcFfgROc219Db4aPtfTYHAsCxAeeShfLuzHphdmq/YrKOgiwRvOq9s7Nw0FXHjgN
-	csUPCNwQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Y3khiYWueA5F4mnhi5HXi8noqhiEEfKq7ZhUTkI8B9w=; b=l5985tpgeoFkRaeAiRa98p/NpO
+	TDRGLRjP+1abfxTncTj3fUI9DXQi8BZX5ZMGqqeXVPTiiKwq1cqXHh1vTjs+V36tCVLWAlrgjt1dT
+	EULnUNgAQSSbx0hqLNaisi57kmNbsvB2cyvB8amxewtLBrMud7iSzaW4x9o8taLZ5170RzBxlX8wB
+	f9krXQnpEtj+hesRt5CsjIPd6Z5Yg1mMKuSf60gfQvOohxr2VyyHk3QpbagZS4riRcSn8C26qjw21
+	f8e2lPze71QoOH3kRCzws9dN9bShlVdpz+7oWMDd5BmpZiVE0MTV889/y1oDqYTq55yGJJ5VdnwAE
+	tbSsLM2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uOsVp-00000005w0C-31V7;
-	Tue, 10 Jun 2025 06:31:09 +0000
+	id 1uOsfe-00000005x2C-3WfV;
+	Tue, 10 Jun 2025 06:41:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uOsVn-00000005vzo-153u
+	id 1uOsbb-00000005wiw-3DkI
 	for barebox@lists.infradead.org;
-	Tue, 10 Jun 2025 06:31:08 +0000
+	Tue, 10 Jun 2025 06:37:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uOsVk-0004fX-Cv; Tue, 10 Jun 2025 08:31:04 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uOsbZ-00075V-Ro; Tue, 10 Jun 2025 08:37:05 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uOsVk-002j4y-0Z;
-	Tue, 10 Jun 2025 08:31:04 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uOsVk-004jFK-09;
-	Tue, 10 Jun 2025 08:31:04 +0200
-Date: Tue, 10 Jun 2025 08:31:04 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uOsbZ-002jAR-2B;
+	Tue, 10 Jun 2025 08:37:05 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uOsbZ-008WvE-1x;
+	Tue, 10 Jun 2025 08:37:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <aEfRKL3id-cjl_2m@pengutronix.de>
-References: <20250609063127.3165440-1-a.fatoum@barebox.org>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20250606083211.2172262-1-a.fatoum@barebox.org>
+References: <20250606083211.2172262-1-a.fatoum@barebox.org>
+Message-Id: <174953742560.2033131.13769942993592239140.b4-ty@pengutronix.de>
+Date: Tue, 10 Jun 2025 08:37:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250609063127.3165440-1-a.fatoum@barebox.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250609_233107_295615_2777FE12 
-X-CRM114-Status: GOOD (  16.89  )
+X-CRM114-CacheID: sfid-20250609_233707_811617_0D9800AD 
+X-CRM114-Status: UNSURE (   5.51  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,59 +80,29 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] clk: make use of %pC format specifier for printing name
+Subject: Re: [PATCH v2] ARM: multi_v8_defconfig: enable new boards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Jun 09, 2025 at 08:31:27AM +0200, Ahmad Fatoum wrote:
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index ba87f6c210d2..b2eeb2702f3d 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -16,6 +16,7 @@
->  #include <linux/string.h>
->  #include <linux/ctype.h>
->  #include <linux/math64.h>
-> +#include <linux/clk.h>
->  #include <malloc.h>
->  #include <kallsyms.h>
->  #include <wchar.h>
-> @@ -310,7 +311,7 @@ char *ip4_addr_string(char *buf, const char *end, const u8 *addr, int field_widt
->  }
->  
->  static
-> -char *error_string(char *buf, const char *end, const u8 *errptr, int field_width,
-> +char *error_string(char *buf, const char *end, const void *errptr, int field_width,
->  		   int precision, int flags, const char *fmt)
->  {
->      if (!IS_ERR(errptr))
-> @@ -477,6 +478,16 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
->  		      precision, flags);
->  }
->  
-> +static noinline_for_stack
-> +char *clock(char *buf, const char *end, const struct clk *clk,
-> +	    int field_width, int precision, int flags, const char *fmt)
-> +{
-> +	if (IS_ERR_OR_NULL(clk))
-> +		return error_string(buf, end, clk, field_width, precision, flags, fmt);
-> +
-> +	return string(buf, end, clk->name, field_width, precision, flags);
-> +}
 
-struct clk is declared inside #ifdef CONFIG_COMMON_CLK. Without some
-ifdef here you'll likely hit compile errors.
+On Fri, 06 Jun 2025 10:32:11 +0200, Ahmad Fatoum wrote:
+> The multi_v8_defconfig should enable all ARMv8 boards that are
+> multi-arch/platform capable.
+> 
+> 
 
-Sascha
+Applied, thanks!
 
+[1/1] ARM: multi_v8_defconfig: enable new boards
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d685b100aa1c (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
