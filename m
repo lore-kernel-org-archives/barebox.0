@@ -1,64 +1,68 @@
-Delivery-date: Tue, 10 Jun 2025 20:19:36 +0200
+Delivery-date: Tue, 10 Jun 2025 20:43:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uP3ZQ-005syN-1L
+	id 1uP3wM-005tHI-2Z
 	for lore@lore.pengutronix.de;
-	Tue, 10 Jun 2025 20:19:36 +0200
+	Tue, 10 Jun 2025 20:43:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uP3ZP-0008Ne-TR
-	for lore@pengutronix.de; Tue, 10 Jun 2025 20:19:36 +0200
+	id 1uP3wM-0006wt-9P
+	for lore@pengutronix.de; Tue, 10 Jun 2025 20:43:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=mL/SrcrpUcaFZeevnuKymueWWN4OGe0sp9OKF592e4w=; b=Z6wc8f/QjEFE8JvR9lESzLACeu
-	1tCp/CJ6giks3N6Z9X7kft4uX9bTY6XI8RjOR8YP6CDWGFMr14WKTlLQjDOfx1cCPtKVb+zP4/cfh
-	Kjph85khWxDzphFi8R0SjFZrKX4RDD0rdbgJju/kqAVon7vU3oT03pvIo9DUq+hMVbO62/8rAp1vQ
-	5jJKPC69LYvHg0tDGPn9vbmSmsfRd/ZkrO9nBhVFsOyQ93paq4pFiNabANm17mIgitrAREX+3W2VF
-	1rq+ZepJx1pCJ6GWc43SPToismve8PP3fQheui1uXlnCHR0x5jlJxyq68BiGEIvGXvT9yhVeBI1Yz
-	hUuQ06OQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=8ya+csSTLbnJNleP136lUW0cov913indb8yVr5rqtSI=; b=b4A0S5sILM/ZWY6fd2bx2CXuDf
+	uD2XeQrBcmlYGLodSRL5Yzw8V+A/8h26PXWPtg+OsnXOvdCKzI4/yrBiiUCq/gCaeWczYkCcET7CB
+	Chp+gujNJ/Eym7JtaQamcnNpuZtV4etZOdoWqtzQ53CQhwpOQBS+p+JgzU11rxiEqoTpDUmISX4vb
+	sFofX2Wm26smEJWPtysg7z6J/KR3XZdjAkGUShH2V+EIpiAtn69DReVWkrjzKQLuYnTS6MNmWNVXh
+	m2Gt710VZqu3KN+INwCkjm/ne22aBXQoIVynWXfvj3Rokfi2+Zh7UOJ211KIF4Ua/xrcKmzTVnpdE
+	Z6uaHeOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uP3Yy-00000007mQl-32yM;
-	Tue, 10 Jun 2025 18:19:08 +0000
+	id 1uP3vr-00000007pPa-0Wps;
+	Tue, 10 Jun 2025 18:42:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uP0fE-00000007FZI-1FBS
+	id 1uP0qy-00000007J9u-46Xv
 	for barebox@lists.infradead.org;
-	Tue, 10 Jun 2025 15:13:25 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uP0fD-0002LS-1J; Tue, 10 Jun 2025 17:13:23 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uP0fC-002nZd-2j;
-	Tue, 10 Jun 2025 17:13:22 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uP0fC-00CHqK-2J;
-	Tue, 10 Jun 2025 17:13:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 10 Jun 2025 17:13:21 +0200
-Message-Id: <20250610151321.2926513-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Tue, 10 Jun 2025 15:25:34 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1uP0qw-000204-Cv; Tue, 10 Jun 2025 17:25:30 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Tue, 10 Jun 2025 17:24:56 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250610-imx_spi_alias-v1-1-fc23f2f143ea@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAEdOSGgC/x3MQQqAMAwAwa+UnC2khQr6FZESNWpAqzQggvh3i
+ 8c57D6gnIUVWvNA5ktUjlTgKgPjSmlhK1MxePQBa4dW9jvqKZE2IbVI2BAHPw40Q2nOzLPc/6/
+ r3/cD3gIc8V8AAAA=
+X-Change-ID: 20250610-imx_spi_alias-0a09ae52cbaf
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1025; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=bvx5eQnmnEr2rEK3QD3148vkn+qlAPejAfWWKdzxIOI=;
+ b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYsjw8Eta8PSMp1zq47macoGe3Wt0+FsMdj/dtXzjwz+lk
+ 9KjowpCO0pZGMQ4GGTFFFli1eQUhIz9r5tV2sXCzGFlAhnCwMUpABPRamX4py6QlOZQUmjFdvbY
+ 613hGTcWiQbvCl71caHN2amzr666bcTIsG2VWrjOW7MAz+xf21LnFIrvEvq4puVEiOYnrp+fL7/
+ uZAYA
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250610_081324_332674_A53F021D 
-X-CRM114-Status: GOOD (  11.44  )
+X-CRM114-CacheID: sfid-20250610_082533_018872_09B41A00 
+X-CRM114-Status: UNSURE (   8.70  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,53 +80,48 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] sripts/k3img: determine size of files, not links
+Subject: [PATCH] spi: Probe spi devices without alias
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The input files to the k3img tool might be links, in that case we need
-the sizes of the actual files, not of the links pointing to them, so add
-the -L option to the stat command.
+Continue probing spi connected devices without an alias. Setting bus_num
+to -1 will assign numbers automatically.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- scripts/k3img | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/imx_spi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/k3img b/scripts/k3img
-index a514852fcd..32ceb15ee9 100755
---- a/scripts/k3img
-+++ b/scripts/k3img
-@@ -71,10 +71,10 @@ shasysfw=$(sha512sum $sysfw | sed 's/ .*//')
- shasysfwdata=$(sha512sum $sysfwdata | sed 's/ .*//')
- shadmdata=$(sha512sum $dmdata | sed 's/ .*//')
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index bfb4b413ebab0e62e92f61db52a866a1d55b9ae3..14c4baada8e03ce1b38031afc68de7b261d43e78 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -604,9 +604,10 @@ static int imx_spi_probe(struct device *dev)
+ 		imx->cs_array = pdata->chipselect;
+ 	} else if (IS_ENABLED(CONFIG_OFDEVICE)) {
+ 		ret = of_alias_get_id(dev->of_node, "spi");
+-		if (ret < 0)
+-			goto err_free;
+-		master->bus_num = ret;
++		if (ret >= 0)
++			master->bus_num = ret;
++		else
++			master->bus_num = -1;
+ 		imx_spi_dt_probe(imx);
+ 	}
  
--sblsize=$(stat -c%s $sbl)
--sysfwsize=$(stat -c%s $sysfw)
--sysfwdatasize=$(stat -c%s $sysfwdata)
--dmdatasize=$(stat -c%s $dmdata)
-+sblsize=$(stat -L -c%s $sbl)
-+sysfwsize=$(stat -L -c%s $sysfw)
-+sysfwdatasize=$(stat -L -c%s $sysfwdata)
-+dmdatasize=$(stat -L -c%s $dmdata)
- 
- total=$(($sblsize + $sysfwsize + $sysfwdatasize + $dmdatasize))
- 
-@@ -88,7 +88,7 @@ num_comp=4
- 
- if [ -n "${innerdata}" ]; then
- 	shainnerdata=$(sha512sum $innerdata | sed 's/ .*//')
--	innerdatasize=$(stat -c%s $innerdata)
-+	innerdatasize=$(stat -L -c%s $innerdata)
- 
- 	innercert=$(cat <<EOF
- [sysfw_inner_cert]
+
+---
+base-commit: 508059d413816818905f86c64145f6a7a1a1f998
+change-id: 20250610-imx_spi_alias-0a09ae52cbaf
+
+Best regards,
 -- 
-2.39.5
+Jonas Rebmann <jre@pengutronix.de>
 
 
 
