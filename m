@@ -1,71 +1,56 @@
-Delivery-date: Tue, 10 Jun 2025 14:09:13 +0200
+Delivery-date: Tue, 10 Jun 2025 14:34:36 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uOxmz-005n0m-29
+	id 1uOyBY-005nZc-0h
 	for lore@lore.pengutronix.de;
-	Tue, 10 Jun 2025 14:09:13 +0200
+	Tue, 10 Jun 2025 14:34:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uOxmz-0004tD-2F
-	for lore@pengutronix.de; Tue, 10 Jun 2025 14:09:13 +0200
+	id 1uOyBX-00034r-Kx
+	for lore@pengutronix.de; Tue, 10 Jun 2025 14:34:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vwfvxe0sK1SqWaM9rcghPXqpCB+crU18bwJaNVOdyNI=; b=PNlB8vTlTNQInKOpxJYuhwvzbf
-	v1pKmvLl1P5+9q/upWnHosiXsQeptowBfj/kvxEypbrhHd8wCASpcvAwAhvRmvKsWKXhwFPetGU4/
-	ruHtOO32hCxrrR/432BCRAMwsD7SE3fW5NodTwXhQ74x/Z6/VHQn0nfT+tzOBbxz73AFMVCoj6G/x
-	ofLcY2nbxCe6XXWXdRKkgmf/BPYmvwg2aatJ8ELBfVmER/9L3HA/13I5zVu8VAQMXsWgzpXWqYN/F
-	IzMZbbNODTTEa3pPfpa05msq55N1E+T8fq6gnOz1/Dtg1FCwHIHmRRFNYtvGNsCThzNBPyEt6eSc9
-	MccjDp1A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=6W5Oj79/u3jsZLV8JndeGSig6oEW6n45IPcmoUEptMQ=; b=AQxRdwVwOVvarVIR1nAMBLf9sr
+	z5NrW9f+RDQ1vXcLO5M23szxiqeFkan4vzRjQAKWbdN5ezbGP+wKoM2kOKNrNM543lGmFZqXxjEnv
+	scD8JTWtFSkvqRcX/u62QNm2ATdy3JujcToW5YP9BmOFGxVlbazpTOOdpUkoC2xV/WX72Q7YOZYgL
+	ZPx6s34jm3RIZQD6dbO2f8MtBYWnVPFCPTWYGU8XZ78iRD04icQP+e1jwXAXI8HVm0UMPvVTT5uzN
+	LAYMOCUHIkEsm72khjPTjDNZpZg+vAn3Sk82DEp0btLN58Zxk/3hGZ11ZjdyuODngugTQxdD27EEV
+	lVtIc9Sw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uOxmi-00000006iok-1jwC;
-	Tue, 10 Jun 2025 12:08:56 +0000
+	id 1uOyB7-00000006mUz-1xwR;
+	Tue, 10 Jun 2025 12:34:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uOw43-00000006Thq-0SuJ
+	id 1uOxZA-00000006hEy-2HlR
 	for barebox@lists.infradead.org;
-	Tue, 10 Jun 2025 10:18:44 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uOw41-0006UU-Kn; Tue, 10 Jun 2025 12:18:41 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uOw41-002kz7-1T;
-	Tue, 10 Jun 2025 12:18:41 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uOw41-004nNh-15;
-	Tue, 10 Jun 2025 12:18:41 +0200
-Date: Tue, 10 Jun 2025 12:18:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <aEgGgVGRrprdIWjz@pengutronix.de>
-References: <20250605194401.1841679-1-a.fatoum@barebox.org>
- <20250605194401.1841679-3-a.fatoum@barebox.org>
+	Tue, 10 Jun 2025 11:54:57 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uOxZ7-0004xn-Vg; Tue, 10 Jun 2025 13:54:54 +0200
+Message-ID: <08ead351-56f7-4b95-b982-4ddf8085839e@pengutronix.de>
+Date: Tue, 10 Jun 2025 13:54:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250605194401.1841679-3-a.fatoum@barebox.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Bastian Krause <bst@pengutronix.de>, barebox@lists.infradead.org
+References: <20250610092718.258050-1-bst@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20250610092718.258050-1-bst@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250610_031843_146633_1F5309F2 
-X-CRM114-Status: GOOD (  23.11  )
+X-CRM114-CacheID: sfid-20250610_045456_591706_5CAA90D6 
+X-CRM114-Status: GOOD (  16.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,85 +68,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 3/3] commands: iomem: add support for printing
- type/attributes
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] Documentation: user: use https instead of git protocol
+ for cloning
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Jun 05, 2025 at 09:44:01PM +0200, Ahmad Fatoum wrote:
-> To make it easier to verify attributes, let's teach iomem to print the
-> newly added information. This intentionally only operates on the
-> resources, the mmuinfo command is what should print information actually
-> in the page tables.
+Hello Bastian,
+
+On 6/10/25 11:27, Bastian Krause wrote:
+> The git server at git.pengutronix.de no longer supports the git
+> protocol, so switch to https.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+> Signed-off-by: Bastian Krause <bst@pengutronix.de>
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+Alternatively, we could also mention
+
+  ssh://public@git.pengutronix.de/barebox
+
+But I don't have a preference either way.
+
+Thanks,
+Ahmad
+
 > ---
-> v2 -> v3:
->   - new commit
-> ---
->  commands/iomemport.c   | 55 +++++++++++++++++++++++++++++++----
->  common/resource.c      | 66 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/ioport.h |  3 ++
->  3 files changed, 119 insertions(+), 5 deletions(-)
+>  Documentation/user/barebox.rst | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
 > 
-> diff --git a/commands/iomemport.c b/commands/iomemport.c
-> index bbe41f571b48..04d7b100a755 100644
-> --- a/commands/iomemport.c
-> +++ b/commands/iomemport.c
-> @@ -6,13 +6,23 @@
->  #include <asm/io.h>
->  #include <common.h>
->  #include <command.h>
-> +#include <getopt.h>
-> +#include <range.h>
+> diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
+> index 338c2f5d03c..8b3a29fc1c0 100644
+> --- a/Documentation/user/barebox.rst
+> +++ b/Documentation/user/barebox.rst
+> @@ -18,15 +18,15 @@ can be checked out as follows:
 >  
-> -static void __print_resources(struct resource *res, int indent)
-> +static void __print_resources(struct resource *res, int indent,
-> +			      ulong *addr, bool verbose)
->  {
-> +	char buf[64];
->  	struct resource *r;
->  	resource_size_t size = resource_size(res);
->  	int i;
+>  .. code-block:: sh
 >  
-> +	if (addr && !region_overlap_end(*addr, *addr, res->start, res->end))
-> +		return;
-> +
-> +	if (verbose)
-> +		printf("%-58s", resource_typeattr_format(buf, sizeof(buf), res) ?: "");
-> +
->  	for (i = 0; i < indent; i++)
->  		printf("  ");
+> -  $ git clone git://git.pengutronix.de/git/barebox.git
+> +  $ git clone https://git.pengutronix.de/git/barebox
+>    Cloning into 'barebox'...
+> -  remote: Counting objects: 113356, done.
+> -  remote: Compressing objects: 100% (25177/25177), done.
+> -  remote: Total 113356 (delta 87910), reused 111155 (delta 85935)
+> -  Receiving objects: 100% (113356/113356), 33.13 MiB | 183.00 KiB/s, done.
+> -  Resolving deltas: 100% (87910/87910), done.
+> -  Checking connectivity... done.
+> -  Checking out files: 100% (5651/5651), done.
+> +  remote: Enumerating objects: 330649, done.
+> +  remote: Counting objects: 100% (3932/3932), done.
+> +  remote: Compressing objects: 100% (2203/2203), done.
+> +  remote: Total 330649 (delta 2421), reused 2217 (delta 1706), pack-reused 326717
+> +  Receiving objects: 100% (330649/330649), 82.03 MiB | 14.88 MiB/s, done.
+> +  Resolving deltas: 100% (265076/265076), done.
+> +  Updating files: 100% (19054/19054), done.
 >  
-> @@ -22,26 +32,61 @@ static void __print_resources(struct resource *res, int indent)
->  			res->name);
->  
->  	list_for_each_entry(r, &res->children, sibling) {
-> -		__print_resources(r, indent + 1);
-> +		__print_resources(r, indent + 1, addr, verbose);
->  	}
-> +
->  }
->  
-> -static void print_resources(struct resource *res)
-> +static void print_resources(struct resource *res, ulong *addr, bool verbose)
->  {
-
-Dropped this patch:
-
-commands/iomemport.c: In function 'do_ioport':
-commands/iomemport.c:95:9: error: too few arguments to function 'print_resources'
-
-Sascha
+>  By default, the master branch is checked out. If you want to develop for
+>  barebox, this is the right branch to send patches against.
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
