@@ -1,56 +1,57 @@
-Delivery-date: Thu, 12 Jun 2025 00:24:23 +0200
+Delivery-date: Thu, 12 Jun 2025 00:24:24 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPTrr-006IqM-2v
+	id 1uPTrs-006IqX-0P
 	for lore@lore.pengutronix.de;
-	Thu, 12 Jun 2025 00:24:23 +0200
+	Thu, 12 Jun 2025 00:24:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPTrr-0004K2-BT
-	for lore@pengutronix.de; Thu, 12 Jun 2025 00:24:23 +0200
+	id 1uPTrr-0004KH-IR
+	for lore@pengutronix.de; Thu, 12 Jun 2025 00:24:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zpCFs9SDnTFPkZFElBXA9b+D0oEqkrvBeQeoy2jfSf4=; b=HUEJV5g/Cu5kKidZsQW+QHpuSn
-	eVo0GjH3leidr3bXu8Sn0oZc/hsTEKuMx5b34iW+DRnhs7Kab4VL/a5wRuiNkeAMoBr3Ynnxj2qPC
-	RTrWf7gUOVqOwQY1sN34mGUZ1eDBZZEq2zwXSlytLMupeYY/p81IOZqjFZ7mM/YzCM83FqfIV/xsS
-	iQzLTjx6OXD/kUm7MvZtvr3p6nBHLQinAwghMOJDhxBXDnVdZQSWtznOyKwftHFZDQRha5RHQKmPR
-	p3QRKRTh4cLH6/FKYGM6h+i1jHV6QKhVtHM8haf3XzR5gjF55yGHQnedxmR+8Tj/a/Edfg5LFaIq0
-	+KN0TQDw==;
+	bh=RfYvIxNb3Qzvg95qvutIDNY3mxgH5AV87YtpD4sAEj8=; b=CxttgwXA99NTk+Kdub8qRClwW5
+	Qub9N6mhBBMB41NiSnZysXhRSkkPBsV7iiCLwPryNOShdh7vXAY6cXVcocWyRuwnuLGO0tO9eL+lM
+	eTjgUxzN4kGy/0QFoqNSdGhpGcYECsvVVoB71FqXOI6YOlWYuZm7y2QVp5XYvH6Qwrh9AGqQjJpqG
+	F5CpSQ43PogUX6K83WPEcuveFz4KCLPgP9rVHEj/21Udybw12/cC7MZTQmEhry8iOihFMaA86Al8U
+	VbZXAC/NqiBG6qBDKu4DlfVaG/+Lo31HBz1uq6ab6pw2uolJyZ5drXjhUaXKrfsqsNqhqaHY/Tftp
+	T2mcMllA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPTri-0000000BT65-1lEl;
+	id 1uPTri-0000000BT6B-3mXK;
 	Wed, 11 Jun 2025 22:24:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPQ7b-0000000ArZE-3oVD
+	id 1uPQ85-0000000Ara9-3nFE
 	for barebox@lists.infradead.org;
-	Wed, 11 Jun 2025 18:24:25 +0000
+	Wed, 11 Jun 2025 18:24:55 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uPQ7a-0001sw-KM; Wed, 11 Jun 2025 20:24:22 +0200
-Message-ID: <13ed49a0-3e05-4fe7-9966-231229600f94@pengutronix.de>
-Date: Wed, 11 Jun 2025 20:24:22 +0200
+	id 1uPQ84-0002Cz-Mp; Wed, 11 Jun 2025 20:24:52 +0200
+Message-ID: <4f35c36d-2fb2-4c62-b34d-f3d63497837f@pengutronix.de>
+Date: Wed, 11 Jun 2025 20:24:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Lars Schmidt <l.schmidt@pengutronix.de>, barebox@lists.infradead.org
-References: <20250611093622.1309016-1-l.schmidt@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
+ <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <20250611090753.4164553-1-jre@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250611093622.1309016-1-l.schmidt@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20250611090753.4164553-1-jre@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250611_112423_951908_CE120FC5 
-X-CRM114-Status: GOOD (  19.42  )
+X-CRM114-CacheID: sfid-20250611_112453_946530_B3D2F962 
+X-CRM114-Status: GOOD (  12.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,71 +73,58 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: k3: beagleplay: Enable 32k crystal
+Subject: Re: [PATCH] fixup! ARM: i.MX8M: Add support for eCSPI boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Lars,
+Hi,
 
-On 6/11/25 11:36, Lars Schmidt wrote:
-> Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
+On 6/11/25 11:07, Jonas Rebmann wrote:
+> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 
-Would it make sense to describe the existence of the external 32K
-crystal in the DT, so we don't need to add code for every board?
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Thanks,
+Thank you,
 Ahmad
 
 > ---
->  arch/arm/boards/beagleplay/Makefile |  1 +
->  arch/arm/boards/beagleplay/board.c  | 30 +++++++++++++++++++++++++++++
->  2 files changed, 31 insertions(+)
->  create mode 100644 arch/arm/boards/beagleplay/board.c
+>  arch/arm/mach-imx/atf.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/arch/arm/boards/beagleplay/Makefile b/arch/arm/boards/beagleplay/Makefile
-> index a8c7320bdb..2d257fb4b2 100644
-> --- a/arch/arm/boards/beagleplay/Makefile
-> +++ b/arch/arm/boards/beagleplay/Makefile
-> @@ -1,2 +1,3 @@
->  pbl-y += lowlevel.o
-> +obj-y += board.o
->  pbl-$(CONFIG_MACH_K3_CORTEX_R5) += entry-r5.o ddr.o
-> diff --git a/arch/arm/boards/beagleplay/board.c b/arch/arm/boards/beagleplay/board.c
-> new file mode 100644
-> index 0000000000..dd42f0b7f0
-> --- /dev/null
-> +++ b/arch/arm/boards/beagleplay/board.c
-> @@ -0,0 +1,30 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#define pr_fmt(fmt) "beagleplay: " fmt
-> +
-> +#include <linux/kernel.h>
-> +#include <mach/k3/common.h>
-> +#include <driver.h>
-> +#include <bbu.h>
-> +
-> +static int beagleplay_probe(struct device *dev)
-> +{
-> +	am625_enable_32k_crystal();
-> +
-> +	return 0;
-> +}
-> +
-> +static __maybe_unused struct of_device_id beagleplay_ids[] = {
-> +	{
-> +		.compatible = "beagle,am625-beagleplay",
-> +	}, {
-> +		/* sentinel */
-> +	}
-> +};
-> +
-> +static struct driver beagleplay_driver = {
-> +	.name = "beagleplay",
-> +	.probe = beagleplay_probe,
-> +	.of_compatible = beagleplay_ids,
-> +};
-> +coredevice_platform_driver(beagleplay_driver);
+> diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
+> index 6993e33baa..e6c21107a5 100644
+> --- a/arch/arm/mach-imx/atf.c
+> +++ b/arch/arm/mach-imx/atf.c
+> @@ -104,6 +104,9 @@ void imx8mm_load_bl33(void *bl33)
+>  	case BOOTSOURCE_SPI:
+>  		imx8mm_qspi_load_image(instance, bl33);
+>  		break;
+> +	case BOOTSOURCE_SPI_NOR:
+> +		imx8m_ecspi_load_image(instance, bl33);
+> +		break;
+>  	default:
+>  		printf("Unsupported bootsource BOOTSOURCE_%d\n", src);
+>  		hang();
+> @@ -269,6 +272,9 @@ void imx8mn_load_bl33(void *bl33)
+>  	case BOOTSOURCE_SPI:
+>  		imx8mn_qspi_load_image(instance, bl33);
+>  		break;
+> +	case BOOTSOURCE_SPI_NOR:
+> +		imx8m_ecspi_load_image(instance, bl33);
+> +		break;
+>  	default:
+>  		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
+>  		hang();
+> @@ -334,6 +340,9 @@ void imx8mq_load_bl33(void *bl33)
+>  	case BOOTSOURCE_MMC:
+>  		imx8m_esdhc_load_image(instance, bl33);
+>  		break;
+> +	case BOOTSOURCE_SPI_NOR:
+> +		imx8m_ecspi_load_image(instance, bl33);
+> +		break;
+>  	default:
+>  		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
+>  		hang();
 
 -- 
 Pengutronix e.K.                  |                             |
