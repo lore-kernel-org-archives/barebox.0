@@ -1,61 +1,57 @@
-Delivery-date: Thu, 12 Jun 2025 00:19:39 +0200
+Delivery-date: Thu, 12 Jun 2025 00:24:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPTnH-006In2-2r
+	id 1uPTrr-006Iq2-1O
 	for lore@lore.pengutronix.de;
-	Thu, 12 Jun 2025 00:19:39 +0200
+	Thu, 12 Jun 2025 00:24:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPTnH-0003vi-8Q
-	for lore@pengutronix.de; Thu, 12 Jun 2025 00:19:39 +0200
+	id 1uPTrq-0004K1-TP
+	for lore@pengutronix.de; Thu, 12 Jun 2025 00:24:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-Type:Subject:Cc:To:From:MIME-Version:Date:Message-ID:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=u2E0NwNA58rLnzeklfULFzey/j0FHWJUwxySySZPnJs=; b=v9vCC+p7OQJ2jvwdibtK6Zs5X2
-	L14iNsy3iUvqny0rWb3dVjlIehM2oKQIupaAijB9DnUpIhOqTCUsgdoXXNlXeXy54oYsS/f3uX+HX
-	ukLB0leiOOLcTukHoFc4USMQAlRgNmNex98hN34xJDJd+qnNMLIIwfOfaweuWHk1CUwfxJ5LV3c+N
-	PPsJVk0/3PVBOapzJW66+qVxazHT7bN32dooRYSpROZkF4WlMdRWbjpSHovERvKm26nEJWsuAh3ru
-	dEWWtew3M9vmWLo4217+CAadCPWtEo96aCwMECKzw0hjgXFkQ7uImP4y4D4wO9YqyULhCYxyGcVQB
-	gQ2jQ20Q==;
+	bh=tHVWvq7CBG7b+tMhdCEldZUAVuAGhnVbaVfpV2IQllY=; b=qwwMP9KrKDYuOHtkUGAy3S+XKZ
+	D+HMaBgJOK+VVWXLf2iNp43s8eaKgEI3Naw/hKiY0X5bFFypjcYVyzkLPMNmK0rSv2L4lfF1NyxHJ
+	Jq7+htB9xyyDWg8fhbsckXxapqA29+eo+DJQVN0oVM2+i2Won1uvqxVmJgzffqZiFeTiyGlXAiV0w
+	9ISyMTUNe7ArHcDmMJgR36CvCNFGsRClf+p7EPTzjvpYSUOL/IdSIu+v17Doas0ui2KyFfmvnAJJa
+	jq9xcIknq+DGqn8fjzZBYtP9kLeWVuSsDnuS1IzraxjdlH4q4GXlhKhbGrJbLAxL7r1k2xKogXTj8
+	8kpFm8Dw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPTmc-0000000BS92-00eT;
-	Wed, 11 Jun 2025 22:18:58 +0000
+	id 1uPTrh-0000000BT5q-3udo;
+	Wed, 11 Jun 2025 22:24:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPRvE-0000000B9M3-2j3V
+	id 1uPPtR-0000000AqRb-472j
 	for barebox@lists.infradead.org;
-	Wed, 11 Jun 2025 20:19:45 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1uPRvB-0001zv-T5
-	for barebox@lists.infradead.org; Wed, 11 Jun 2025 22:19:41 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1uPRvB-0030Ut-2B
-	for barebox@lists.infradead.org;
-	Wed, 11 Jun 2025 22:19:41 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Wed, 11 Jun 2025 22:19:41 +0200
-Message-Id: <20250611201941.3615487-1-l.stach@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Wed, 11 Jun 2025 18:09:47 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uPPtN-00012L-8z; Wed, 11 Jun 2025 20:09:41 +0200
+Message-ID: <89ad64f2-fbda-48a3-9a27-5eaff5be9292@pengutronix.de>
+Date: Wed, 11 Jun 2025 20:09:40 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: manish.pandey2@arm.com
+Cc: op-tee@lists.trustedfirmware.org, BAREBOX <barebox@lists.infradead.org>,
+ rouven.czerwinski@linaro.org, Michael Tretter <m.tretter@pengutronix.de>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250611_131944_685075_EC00FFA6 
-X-CRM114-Status: UNSURE (   9.50  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250611_110946_022560_6AC34F45 
+X-CRM114-Status: GOOD (  11.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,89 +69,48 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: Cortex-A9: document core versions used in various SoCs
+Subject: Firmware Handoff for DT Overlay created by OP-TEE?
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The core revision is very helpful to know when checking if a specific
-erratum is present in the core. Looking this up in the various SoC
-specific documents is cumbersome, so leave a comment for the next time
-anyone has to do this.
+Hello Manish,
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
-Tegra seems to miss some workarounds, fixing this requires a bit more
-thought than I can spare right now.
----
- arch/arm/mach-imx/cpu_init.c                 | 2 ++
- arch/arm/mach-socfpga/cpu_init.c             | 2 ++
- arch/arm/mach-tegra/tegra_maincomplex_init.c | 2 ++
- arch/arm/mach-zynq/cpu_init.c                | 2 ++
- 4 files changed, 8 insertions(+)
+In your recent talk[1] at LinaroConnect about the Firmware Handoff
+specification, you were asking about what other use cases it could
+address for OP-TEE.
 
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index e9f42945528e..bd464e9f09e9 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -38,6 +38,8 @@ void imx6_cpu_lowlevel_init(void)
- 	arm_cpu_lowlevel_init();
- 
- 	arm_early_mmu_cache_invalidate();
-+
-+	/* apply necessary workarounds for Cortex A9 r2p10 */
- 	enable_arm_errata_742230_war();
- 	enable_arm_errata_743622_war();
- 	enable_arm_errata_751472_war();
-diff --git a/arch/arm/mach-socfpga/cpu_init.c b/arch/arm/mach-socfpga/cpu_init.c
-index f10cd468da96..bed0dabc38e4 100644
---- a/arch/arm/mach-socfpga/cpu_init.c
-+++ b/arch/arm/mach-socfpga/cpu_init.c
-@@ -9,6 +9,8 @@
- void arria10_cpu_lowlevel_init(void)
- {
- 	arm_early_mmu_cache_invalidate();
-+
-+	/* apply necessary workarounds for Cortex A9 r4p1 */
- 	enable_arm_errata_794072_war();
- 	enable_arm_errata_845369_war();
- }
-diff --git a/arch/arm/mach-tegra/tegra_maincomplex_init.c b/arch/arm/mach-tegra/tegra_maincomplex_init.c
-index e4cc3e780cbe..2ffffcdee3ff 100644
---- a/arch/arm/mach-tegra/tegra_maincomplex_init.c
-+++ b/arch/arm/mach-tegra/tegra_maincomplex_init.c
-@@ -38,11 +38,13 @@ void tegra_maincomplex_entry(char *fdt)
- 	/* enable ARM errata workarounds early */
- 	switch (chiptype) {
- 	case TEGRA20:
-+		/* Cortex A9 r1p1 */
- 		enable_arm_errata_716044_war();
- 		enable_arm_errata_742230_war();
- 		enable_arm_errata_751472_war();
- 		break;
- 	case TEGRA30:
-+		/* Cortex A9 r2p9 */
- 		enable_arm_errata_743622_war();
- 		enable_arm_errata_751472_war();
- 		break;
-diff --git a/arch/arm/mach-zynq/cpu_init.c b/arch/arm/mach-zynq/cpu_init.c
-index f26e2947fd6a..b5f620004611 100644
---- a/arch/arm/mach-zynq/cpu_init.c
-+++ b/arch/arm/mach-zynq/cpu_init.c
-@@ -11,6 +11,8 @@ void zynq_cpu_lowlevel_init(void)
- 	arm_cpu_lowlevel_init();
- 
- 	arm_early_mmu_cache_invalidate();
-+
-+	/* apply necessary workarounds for Cortex A9 r3p0 */
- 	enable_arm_errata_761320_war();
- 	enable_arm_errata_794072_war();
- 	enable_arm_errata_845369_war();
+We ran into a possible use case that we would like to share:
+
+BL2 can pass a DT to OP-TEE, which it would use to discover memory and
+to fix up with memory reservations covering the memory it carves out for
+itself.
+
+OP-TEE also supports passing along the reservations as a device tree
+overlay. AFAICS, there is no way currently to have both: A DT for OP-TEE
+to probe hardware from and a way to pass the normal world a device tree
+overlay in return.
+
+I think this could be neatly addressed with Firmware Handoff and would
+be a motivation for us to implement support in barebox BL2/BL33 to take
+advantage of this. The current way is suboptimal as we would prefer the
+DT passed to OP-TEE to be read-only. This avoids either having to copy
+it or to pad it sufficiently in anticipation of it growing with the
+addition of the new nodes.
+
+[1]: https://www.youtube.com/watch?v=RxU798h8aiE
+
+Cheers,
+Ahmad
+
 -- 
-2.49.0
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
