@@ -1,66 +1,65 @@
-Delivery-date: Thu, 12 Jun 2025 08:59:17 +0200
+Delivery-date: Thu, 12 Jun 2025 08:59:20 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPbu8-006QKd-30
+	id 1uPbuC-006QLA-0j
 	for lore@lore.pengutronix.de;
-	Thu, 12 Jun 2025 08:59:16 +0200
+	Thu, 12 Jun 2025 08:59:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPbu7-0007X0-66
-	for lore@pengutronix.de; Thu, 12 Jun 2025 08:59:16 +0200
+	id 1uPbuB-0007bA-H2
+	for lore@pengutronix.de; Thu, 12 Jun 2025 08:59:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=r9rIlbV+ZXhXMKjqVrYbb+5y0lEk8AHQw+xigudPjNc=; b=U4/RkWS6hsWr5+EgVYoTVgkeOW
-	XH9Qh2dN77LwZFJOw0lDULj/KEuPdbUg5Sh2vEtvhgJCkbhrikh/rBVXhGhTTTzJsrK5ntk9omoF+
-	KA7mbLqMebMLK2tTuFJW3ME9S04rIme8W/x0PHvnWakGV+/IIOr2BKaXC6lBWnlIizlb/euT7zUyX
-	8eu08BrSazfVegwXcUQF7uV1X8R8zjp+XQH7iNrTVYQUKsDJVT+oCcoMSKQdYn1l22dzOv/DhFgBq
-	P5X9I239OYqJwQ8ClSGzbBzFcxmlnbWnqPEX+p7zaLjx1qD3Kv9aEMpTkH+IBq32YE7SnsU22ed91
-	iNc4P+Xw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ESlnCina5MvQKOoJd2J7P6GIacoUesYCBRt7ywx9Aa8=; b=yvZ5WTKPX8Arxhu6tb34H9EEsc
+	Sydpk4UmZmrHtLySWew2fWpjoUGykx+/zyKQzoPPPyGbu6J+CFjSla/hu3kygW9Syb2h+MitWD4y6
+	1RWk2W8FjIphOJMW8IAb498AEtwBY/he5zZJoI22rzC2EDMgqJnEBD1qe07UKcEBn5NzyPNSjkPiy
+	Llvl4KIZ2rNpbJLdT2HYxJK0cm1Ob3HiuwGW71tNtMXmBviqA9ScxBuDBuXSY4lrIYALHUbFrfh2c
+	Kr5J5i0LEFhyDHgQgfEjav9/4c0mk0HPHTbfyeyrvqrPNe92EQf+mwIxJgxzTSSoAYAEPAWqz4dVP
+	Hl5DTVOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPbtF-0000000CNCO-2G3M;
-	Thu, 12 Jun 2025 06:58:21 +0000
+	id 1uPbtE-0000000CNBr-0G2w;
+	Thu, 12 Jun 2025 06:58:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPbtA-0000000CN8K-0Und
+	id 1uPbtA-0000000CN8L-0UhC
 	for barebox@lists.infradead.org;
-	Thu, 12 Jun 2025 06:58:18 +0000
+	Thu, 12 Jun 2025 06:58:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uPbt8-0006sq-82; Thu, 12 Jun 2025 08:58:14 +0200
+	id 1uPbt8-0006si-5e; Thu, 12 Jun 2025 08:58:14 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uPbt7-0034nX-32;
+	id 1uPbt7-0034nR-2h;
 	Thu, 12 Jun 2025 08:58:13 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uPbt7-008UzO-2i;
+	id 1uPbt7-008Uz1-2V;
 	Thu, 12 Jun 2025 08:58:13 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 12 Jun 2025 08:58:09 +0200
-Message-Id: <20250612065812.2025665-7-o.rempel@pengutronix.de>
+Date: Thu, 12 Jun 2025 08:58:03 +0200
+Message-Id: <20250612065812.2025665-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250612065812.2025665-1-o.rempel@pengutronix.de>
-References: <20250612065812.2025665-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250611_235816_211455_3F3647B3 
-X-CRM114-Status: GOOD (  18.33  )
+X-CRM114-CacheID: sfid-20250611_235816_198069_0D693BAE 
+X-CRM114-Status: UNSURE (   8.99  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,126 +81,44 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 6/9] nvmem: bsec: Implement NVMEM protect via regmap_seal for OTP locking
+Subject: [PATCH v3 0/9] NVMEM: Introduce write protection support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Enable the NVMEM 'protect' cdev operation for the STM32 BSEC driver.
-This allows One-Time Programmable (OTP) memory words managed by the
-BSEC driver to be permanently write-locked using the standard NVMEM
-protection mechanism.
+This series adds a generic protect op to NVMEM core, enabling
+standardized write protection. This makes NVMEM behave more like other
+flash interfaces (e.g., CFI block protection), which helps with common
+tooling.
 
-This change implements the recently added `regmap_bus->reg_seal`
-interface for the BSEC driver. A new function,
-`stm32_bsec_do_reg_seal_otp`, calls the `BSEC_SMC_WRLOCK_OTP` Secure
-Monitor Call to perform the hardware OTP word lock. This function is
-triggered when `regmap_seal` is called with the
-`REGMAP_SEAL_WRITE_PROTECT | REGMAP_SEAL_PERMANENT` flags, which the
-NVMEM-regmap bridge uses for `prot=1` (protect) requests. The
-`BSEC_SMC_WRLOCK_OTP` enum value is also added.
+Oleksij Rempel (9):
+  nvmem: Add 'protect' operation to core framework
+  nvmem: rmem: add write and protect support
+  commands: nvmem: Add support for creating dynamic rmem devices
+  regmap: Add reg_seal operation for hardware protection
+  nvmem: regmap: Implement protect operation using regmap_seal
+  nvmem: bsec: Implement NVMEM protect via regmap_seal for OTP locking
+  nvmem: rmem: ensure unique device name per instance
+  fs: Report errors for out-of-bounds protect operations
+  test: Add pytest suite for NVMEM framework
 
-This explicit sealing via `regmap_seal` is currently implemented for
-the SMC path.
+ commands/nvmem.c               |  121 +++-
+ drivers/base/regmap/internal.h |    2 +
+ drivers/base/regmap/regmap.c   |   30 +
+ drivers/nvmem/bsec.c           |   27 +
+ drivers/nvmem/core.c           |   32 +
+ drivers/nvmem/partition.c      |    7 +
+ drivers/nvmem/regmap.c         |   65 ++
+ drivers/nvmem/rmem.c           |   87 ++-
+ fs/fs.c                        |    6 +-
+ include/driver.h               |    3 +
+ include/linux/nvmem-provider.h |    2 +
+ include/linux/regmap.h         |   33 ++
+ include/mach/stm32mp/bsec.h    |    1 +
+ test/py/test_nvmem.py          | 1012 ++++++++++++++++++++++++++++++++
+ 14 files changed, 1418 insertions(+), 10 deletions(-)
+ create mode 100644 test/py/test_nvmem.py
 
-Testing from Barebox CLI:
-
-This functionality allows explicit locking of already programmed OTP
-words.  The following example demonstrates programming an OTP word,
-locking it, and then verifying the write protection.
-
-Assume the BSEC NVMEM device is `/dev/bsec0` and its parameters are
-accessed via `bsec0`.
-
-1. Enable permanent OTP writes:
-   bsec0.permanent_write_enable=1
-
-2. Program an OTP word (e.g., byte offset 0x170 with value 0x12345678):
-   mw -d /dev/bsec0 -l 0x170 0x12345678
-   md -s /dev/bsec0 -l 0x170+4  # Expected: Shows 0x12345678
-
-3. Lock this specific OTP word using the 'protect' command:
-   # Protects 4 bytes (one 32-bit word) starting at byte offset 0x170
-   protect /dev/bsec0 0x170+4
-   # Check dmesg for BSEC driver logs confirming the lock via SMC.
-
-4. Verify the write protection:
-   mw -d /dev/bsec0 -l 0x170 0xAABBCCDD
-   # This write should fail or have no effect on the hardware's fuses
-   # value. The mw command itself might not report an error for OTPs if
-   # the underlying hardware silently ignores writes to locked bits/words.
-
-   md -s /dev/bsec0 -l 0x170+4
-   # Expected: Should still show the original locked value (0x12345678),
-   # confirming the write attempt was blocked or ineffective.
-
-5. Verify unprotection is not possible:
-   unprotect /dev/bsec0 0x170 4
-   # This command should fail, returning an error (e.g., -EOPNOTSUPP or
-   # -EPERM) from the driver, as BSEC OTP locks are permanent.
-
-6. (Optional) Disable permanent OTP writes when done:
-   bsec0.permanent_write_enable=0
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/nvmem/bsec.c        | 27 +++++++++++++++++++++++++++
- include/mach/stm32mp/bsec.h |  1 +
- 2 files changed, 28 insertions(+)
-
-diff --git a/drivers/nvmem/bsec.c b/drivers/nvmem/bsec.c
-index 9ca98e6180f8..b67b55addfe0 100644
---- a/drivers/nvmem/bsec.c
-+++ b/drivers/nvmem/bsec.c
-@@ -74,9 +74,36 @@ static int stm32_bsec_reg_write(void *ctx, unsigned reg, unsigned val)
- 		return bsec_smc(BSEC_SMC_WRITE_SHADOW, reg, val, NULL);
- }
- 
-+static int stm32_bsec_do_reg_seal_otp(void *ctx, unsigned int reg,
-+				      unsigned int flags)
-+{
-+	struct bsec_priv *priv = ctx;
-+	struct device *dev = &priv->dev;
-+
-+	if (!priv->permanent_write_enable) {
-+		dev_warn(dev, "BSEC seal: permanent_write_enable is OFF.\n");
-+		return -EACCES;
-+	}
-+
-+	/* Only REGMAP_SEAL_WRITE_PROTECT and REGMAP_SEAL_PERMANENT
-+	 * flags are supported for BSEC OTP sealing.
-+	 */
-+	if ((flags & (REGMAP_SEAL_WRITE_PROTECT | REGMAP_SEAL_PERMANENT)) !=
-+	    (REGMAP_SEAL_WRITE_PROTECT | REGMAP_SEAL_PERMANENT)) {
-+		dev_warn(dev, "BSEC seal: unsupported flags 0x%x.\n", flags);
-+		return -EINVAL;
-+	}
-+
-+	dev_dbg(dev, "BSEC seal: Locking OTP word at byte offset 0x%x via SMC.\n",
-+		reg);
-+
-+	return bsec_smc(BSEC_SMC_WRLOCK_OTP, reg, 0, NULL);
-+}
-+
- static struct regmap_bus stm32_bsec_regmap_bus = {
- 	.reg_write = stm32_bsec_reg_write,
- 	.reg_read = stm32_bsec_read_shadow,
-+	.reg_seal = stm32_bsec_do_reg_seal_otp,
- };
- 
- static void stm32_bsec_set_unique_machine_id(struct regmap *map)
-diff --git a/include/mach/stm32mp/bsec.h b/include/mach/stm32mp/bsec.h
-index 45eb0a3f4523..be8cec536a40 100644
---- a/include/mach/stm32mp/bsec.h
-+++ b/include/mach/stm32mp/bsec.h
-@@ -26,6 +26,7 @@ enum bsec_op {
- 	BSEC_SMC_READ_OTP	= 4,
- 	BSEC_SMC_READ_ALL	= 5,
- 	BSEC_SMC_WRITE_ALL	= 6,
-+	BSEC_SMC_WRLOCK_OTP	= 7,
- };
- 
- static inline enum bsec_smc bsec_read_field(unsigned field, unsigned *val)
--- 
+--
 2.39.5
 
 
