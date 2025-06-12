@@ -1,67 +1,66 @@
-Delivery-date: Thu, 12 Jun 2025 08:59:21 +0200
+Delivery-date: Thu, 12 Jun 2025 08:59:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPbuD-006QLn-0w
+	id 1uPbuD-006QM4-2D
 	for lore@lore.pengutronix.de;
 	Thu, 12 Jun 2025 08:59:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPbuC-0007c8-G2
+	id 1uPbuC-0007dh-UX
 	for lore@pengutronix.de; Thu, 12 Jun 2025 08:59:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4k15DsvZl25zGfZzAraqwZOJLLTf8gB6iyE0DATfKKY=; b=FHQpRq2zdJqCS9cBqELygh9Dks
-	NGvlraiANJJ6VdgDsbckqdiNjexdqbx3/2ayAAI+bMlBgai0bZHqsUwY30+Rk/Cdzc7zHgF7DFygc
-	gYNwnbFXYRayUXnT68MJ8g/RnjcLbwN8kxacfJSiCcG4NEGP8OaJcCZ6rsBN+y7LDnhvo4QlLqrTv
-	Hhwmy/LUa93ajHZ9bxuEuqySGrLEh6G0brk2rYK+0ayUVLTfRMbXg58t3coPAciCnWU3wNAIuHhN7
-	N2t1f29qqv4pvLsljo+7zAtjGbo6u883Iy9sYJYM0qDfdaM/r2Y3Ly/DLecNLS7LLRq0SwgUrcG6g
-	y8envZ2A==;
+	bh=M6Org7onI1MR4iTGxrNoHZ6ZjzU8r3bCRM78FCbEFmY=; b=PGGGDGXXSJ3qph23J9KnQ/fLXa
+	Nc7ZR9JyPjxQssi0ubq/owc6GZ8fii/Cx10Z83ZUkORqNDn1zt+J//WzWmNmU0m9eMlpOWC4OmufL
+	bfqHS4aK50KuxMXTvra0TnXHhwHjXytP2DE6a0jNZDxw/n0O6qYVcyrXTpI7IPRh43DAr+sPsY7RU
+	BO+UhpE7YL6U2iPezQ1dQLX69pGfLv1UatxsAedyoeuDNAci1vq0HVWtrbff05GyZ3HmhDGZcUVUV
+	tVFPD7nqifJGYWwoecp431tokoeWmCGBISAe/hmOxuoOsK/mYKXFtLrw9TYY4Z3L/jYFZoCS4Xi1S
+	GwzMcAyw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPbtF-0000000CNCG-0DIh;
-	Thu, 12 Jun 2025 06:58:21 +0000
+	id 1uPbtG-0000000CNCX-090X;
+	Thu, 12 Jun 2025 06:58:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPbtA-0000000CN8J-0UVk
+	id 1uPbtA-0000000CN8O-0VMT
 	for barebox@lists.infradead.org;
 	Thu, 12 Jun 2025 06:58:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uPbt8-0006sm-5D; Thu, 12 Jun 2025 08:58:14 +0200
+	id 1uPbt8-0006sn-8j; Thu, 12 Jun 2025 08:58:14 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uPbt7-0034nU-2t;
+	id 1uPbt7-0034nS-2j;
 	Thu, 12 Jun 2025 08:58:13 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uPbt7-008UzC-2c;
+	id 1uPbt7-008Uz4-2Y;
 	Thu, 12 Jun 2025 08:58:13 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 12 Jun 2025 08:58:06 +0200
-Message-Id: <20250612065812.2025665-4-o.rempel@pengutronix.de>
+Date: Thu, 12 Jun 2025 08:58:04 +0200
+Message-Id: <20250612065812.2025665-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250612065812.2025665-1-o.rempel@pengutronix.de>
 References: <20250612065812.2025665-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250611_235816_183861_518D2539 
-X-CRM114-Status: GOOD (  21.61  )
+X-CRM114-CacheID: sfid-20250611_235816_206458_85E3BBD9 
+X-CRM114-Status: GOOD (  15.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,189 +78,133 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-0.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 3/9] commands: nvmem: Add support for creating dynamic rmem devices
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH v3 1/9] nvmem: Add 'protect' operation to core framework
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The 'nvmem' command is extended to allow the creation of dynamic
-RAM-backed NVMEM devices (rmem). This functionality is useful for
-testing NVMEM operations, for scripts that require temporary, writable
-NVMEM areas, or when a persistent NVMEM device is not available or
-necessary.
-
-This patch introduces the following new options to the 'nvmem' command:
-
--c : Creates a new rmem NVMEM device of the specified . The size can be
-given with common suffixes (e.g., K, M). The command enforces that the
-size is non-zero and does not exceed a defined maximum (NVMEM_MAX_SIZE,
-defaulting to 1MB). This option requires CONFIG_NVMEM_RMEM to be
-enabled.
-
--v : When used in conjunction with the -c option, this stores the name
-of the newly created rmem device (e.g., "rmem0") into the environment
-variable specified by . This allows subsequent commands or scripts to
-easily reference the dynamic NVMEM device.
-
-If invoked without any options, the 'nvmem' command retains its original
-behavior of listing all currently available NVMEM devices.
+Introduce a generic "protect" operation to the NVMEM framework.
+This allows NVMEM providers to expose hardware-specific protection or
+locking mechanisms through the character device interface. Existing
+read/write operations do not cover this type of state-altering
+protection.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
 changes v2:
-- do not check for error after xzalloc()
-- use 'if (ret)' after nvmem_parse_and_validate_create_size()
+- rebase against latest nvmem changes
+- use  (offset + count > nvmem->size) instead of (offset >= nvmem->size
+  || count > nvmem->size - offset)
+- remove NVMEM_PROTECT_ENABLE_WRITE and NVMEM_PROTECT_DISABLE_WRITE
+  they will be added later as non nvmem specific defines
 ---
- commands/nvmem.c | 121 ++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 115 insertions(+), 6 deletions(-)
+ drivers/nvmem/core.c           | 32 ++++++++++++++++++++++++++++++++
+ drivers/nvmem/partition.c      |  7 +++++++
+ include/linux/nvmem-provider.h |  2 ++
+ 3 files changed, 41 insertions(+)
 
-diff --git a/commands/nvmem.c b/commands/nvmem.c
-index a0e3d092e3cf..3bfa1ff19a19 100644
---- a/commands/nvmem.c
-+++ b/commands/nvmem.c
-@@ -1,24 +1,133 @@
- // SPDX-License-Identifier: GPL-2.0
- // SPDX-FileCopyrightText: © 2021 Ahmad Fatoum, Pengutronix
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 7acd26474b50..68cb27093227 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -30,6 +30,8 @@ struct nvmem_device {
+ 					     const void *val, size_t val_size);
+ 	int			(*reg_read)(void *ctx, unsigned int reg,
+ 					    void *val, size_t val_size);
++	int			(*reg_protect)(void *ctx, unsigned int reg,
++					       size_t bytes, int prot);
+ };
  
--#include <common.h>
- #include <command.h>
-+#include <common.h>
-+#include <environment.h>
-+#include <getopt.h>
- #include <linux/nvmem-consumer.h>
-+#include <linux/sizes.h>
+ struct nvmem_cell {
+@@ -87,9 +89,38 @@ static ssize_t nvmem_cdev_write(struct cdev *cdev, const void *buf, size_t count
+ 	return retlen;
+ }
  
--static int do_nvmem(int argc, char *argv[])
-+/* Maximum size for dynamically created NVMEM devices.
-+ * This is a reasonable limit for RAM-backed devices, but can be adjusted
-+ * based on system capabilities and requirements.
-+ */
-+#define NVMEM_MAX_SIZE		SZ_1M
-+
-+/* Static counter to ensure unique device IDs for dynamically created rmem
-+ * devices
-+ */
-+static int dynamic_rmem_idx;
-+
-+/**
-+ * nvmem_create_dynamic_rmem - Creates a dynamic RAM-backed NVMEM device.
-+ * @create_size: Size of the NVMEM device to create.
-+ * @var_name: Optional environment variable name to store the created device's
-+ *            name.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+static int nvmem_create_dynamic_rmem(unsigned long create_size,
-+				     const char *var_name)
++static int nvmem_cdev_protect(struct cdev *cdev, size_t count, loff_t offset,
++			      int prot)
 +{
-+	struct device *dev;
-+	void *buffer;
-+	int ret = 0;
++	struct nvmem_device *nvmem;
 +
-+	buffer = xzalloc(create_size);
-+	dev = add_generic_device("rmem", dynamic_rmem_idx, NULL,
-+				 (resource_size_t)(uintptr_t)buffer,
-+				 (resource_size_t)create_size,
-+				 IORESOURCE_MEM, NULL);
++	nvmem = container_of(cdev, struct nvmem_device, cdev);
 +
-+	if (var_name)
-+		ret = setenv(var_name, dev_name(dev));
++	dev_dbg(cdev->dev, "protect ofs: 0x%08llx count: 0x%08zx prot: %d\n",
++		offset, count, prot);
 +
-+	dynamic_rmem_idx++;
++	if (!nvmem->reg_protect) {
++		dev_warn(cdev->dev, "NVMEM device %s does not support protect operation\n",
++			 nvmem->name);
++		return -EOPNOTSUPP;
++	}
 +
-+	return ret;
-+}
++	if (!count)
++		return 0;
 +
-+static int nvmem_parse_and_validate_create_size(const char *size_arg,
-+						unsigned long *out_size)
- {
--	nvmem_devices_print();
-+
-+	if (!IS_ENABLED(CONFIG_NVMEM_RMEM)) {
-+		printf("Error: rmem NVMEM driver (CONFIG_NVMEM_RMEM) is not enabled in this build.\n");
++	if (offset + count > nvmem->size) {
++		dev_err(cdev->dev, "protect range out of bounds (ofs: 0x%08llx, count 0x%08zx, size 0x%08zx)\n",
++			offset, count, nvmem->size);
 +		return -EINVAL;
 +	}
 +
-+	*out_size = strtoul_suffix(optarg, NULL, 0);
-+	if (!*out_size) {
-+		printf("Error: Invalid size '%s' for -c option. Must be non-zero.\n",
-+		       optarg);
-+		return COMMAND_ERROR_USAGE;
-+	}
-+
-+	if (*out_size > NVMEM_MAX_SIZE) {
-+		printf("Error: Size '%lu' exceeds maximum allowed size of %d bytes.\n",
-+		       *out_size, NVMEM_MAX_SIZE);
-+		return COMMAND_ERROR_USAGE;
-+	}
- 
- 	return 0;
- }
- 
-+static int do_nvmem(int argc, char *argv[])
-+{
-+	unsigned long create_size = 0;
-+	char *optarg_v = NULL;
-+	int ret = 0;
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "c:v:h")) != -1) {
-+		switch (opt) {
-+		case 'c':
-+			ret = nvmem_parse_and_validate_create_size(optarg,
-+								&create_size);
-+			if (ret)
-+				return ret;
-+			break;
-+		case 'v':
-+			optarg_v = optarg;
-+			break;
-+		case 'h': /* fallthrough */
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (optarg_v && !create_size) {
-+		printf("Error: -v <VARNAME> option requires -c <SIZE> to create a device.\n");
-+		return COMMAND_ERROR_USAGE;
-+	}
-+
-+	if (create_size > 0)
-+		ret = nvmem_create_dynamic_rmem(create_size, optarg_v);
-+	else
-+		nvmem_devices_print();
-+
-+	return ret;
++	return nvmem->reg_protect(nvmem->priv, offset, count, prot);
 +}
 +
- BAREBOX_CMD_HELP_START(nvmem)
--BAREBOX_CMD_HELP_TEXT("Usage: nvmem")
--BAREBOX_CMD_HELP_END
-+BAREBOX_CMD_HELP_TEXT("List NVMEM devices or create dynamic RAM-backed NVMEM")
-+BAREBOX_CMD_HELP_TEXT("devices. If no arguments are provided, it lists all")
-+BAREBOX_CMD_HELP_TEXT("available NVMEM devices.")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-c <size>", "Create a new RAM-backed NVMEM device of")
-+BAREBOX_CMD_HELP_OPT("         ", "<size> bytes. (Requires CONFIG_NVMEM_RMEM")
-+BAREBOX_CMD_HELP_OPT("         ", "to be enabled). <size> must be a non-zero.")
-+BAREBOX_CMD_HELP_OPT("-v <variable>", "When using -c, set environment variable")
-+BAREBOX_CMD_HELP_OPT("             ", "<variable> to the name of the created")
-+BAREBOX_CMD_HELP_OPT("             ", "NVMEM device (e.g., rmem0).")
-+BAREBOX_CMD_HELP_END;
+ static struct cdev_operations nvmem_chrdev_ops = {
+ 	.read  = nvmem_cdev_read,
+ 	.write  = nvmem_cdev_write,
++	.protect = nvmem_cdev_protect,
+ };
  
- BAREBOX_CMD_START(nvmem)
- 	.cmd		= do_nvmem,
--	BAREBOX_CMD_DESC("list nvmem devices")
-+	BAREBOX_CMD_DESC("list or create NVMEM devices")
-+	BAREBOX_CMD_OPTS("[-c <size> [-v <varname>]]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
- 	BAREBOX_CMD_HELP(cmd_nvmem_help)
- BAREBOX_CMD_END
+ static int nvmem_register_cdev(struct nvmem_device *nvmem, const char *name)
+@@ -207,6 +238,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 	nvmem->dev.parent = config->dev;
+ 	nvmem->reg_read = config->reg_read;
+ 	nvmem->reg_write = config->reg_write;
++	nvmem->reg_protect = config->reg_protect;
+ 	np = config->cdev ? cdev_of_node(config->cdev) : config->dev->of_node;
+ 	nvmem->dev.of_node = np;
+ 	nvmem->priv = config->priv;
+diff --git a/drivers/nvmem/partition.c b/drivers/nvmem/partition.c
+index d1127c1401af..bb6dbad7b5f6 100644
+--- a/drivers/nvmem/partition.c
++++ b/drivers/nvmem/partition.c
+@@ -18,6 +18,12 @@ static int nvmem_cdev_read(void *ctx, unsigned offset, void *buf, size_t bytes)
+ 	return cdev_read(ctx, buf, bytes, offset, 0);
+ }
+ 
++static int nvmem_cdev_protect(void *ctx, unsigned int offset, size_t bytes,
++			      int prot)
++{
++	return cdev_protect(ctx, bytes, offset, prot);
++}
++
+ static int nvmem_cells_probe(struct device *dev)
+ {
+ 	struct nvmem_config config = {};
+@@ -37,6 +43,7 @@ static int nvmem_cells_probe(struct device *dev)
+ 	config.size = cdev->size;
+ 	config.reg_read = nvmem_cdev_read;
+ 	config.reg_write = nvmem_cdev_write;
++	config.reg_protect = nvmem_cdev_protect;
+ 
+ 	return PTR_ERR_OR_ZERO(nvmem_register(&config));
+ }
+diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
+index c1765673eb23..4d44468456f0 100644
+--- a/include/linux/nvmem-provider.h
++++ b/include/linux/nvmem-provider.h
+@@ -34,6 +34,8 @@ struct nvmem_config {
+ 					     const void *val, size_t val_size);
+ 	int			(*reg_read)(void *ctx, unsigned int reg,
+ 					    void *val, size_t val_size);
++	int			(*reg_protect)(void *ctx, unsigned int offset,
++					       size_t bytes, int prot);
+ 	void			*priv;
+ 	nvmem_cell_post_process_t cell_post_process;
+ };
 -- 
 2.39.5
 
