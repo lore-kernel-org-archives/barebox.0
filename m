@@ -1,55 +1,53 @@
-Delivery-date: Thu, 12 Jun 2025 12:08:09 +0200
+Delivery-date: Thu, 12 Jun 2025 12:29:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPeqv-006TZp-0z
+	id 1uPfBz-006Trr-1J
 	for lore@lore.pengutronix.de;
-	Thu, 12 Jun 2025 12:08:09 +0200
+	Thu, 12 Jun 2025 12:29:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPequ-0007Kd-Go
-	for lore@pengutronix.de; Thu, 12 Jun 2025 12:08:09 +0200
+	id 1uPfBy-0000Nc-SQ
+	for lore@pengutronix.de; Thu, 12 Jun 2025 12:29:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RdgUNL+8xz6J4HumaM5kOibz/NbeRvqbaVqcVtNrk8g=; b=CqS/aDkTHr5nCRGFpW94haYoB2
-	Z1TUSQu13fZpuqQFcgpzT4eK8vum/CyPB+u8KC50fYikGjlxYZWjn0PJM6bupkXihSOHa/JYud9Wm
-	+n/Cg07MxaQykHyQ3eYFuly2XsYlVDxMJhWwMMwZMKnQpcLBGIxrkWjf06TFOPrqGy0lxYHVuhn8Y
-	HoiN2thQY4LViqT7fF/TTjeH1oAx0dpdHcp7/cDpVx0q5d+VM4bcoc6FCrthgNsXeLy9dLJ+ZG9a6
-	DOYy4qS2xMjI1ONVD4sbB0vq/GBc2UkBXf43uZxV7e6Lios6LdIzP+Z2MHOA+WQlattPDdQvgZCXT
-	JqVwWqmA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=LB41mm/RI3Rl+FlypOqtkEQbRqi+gZcROAK7ojKEMuE=; b=reR8QMdWhOjxaeq4UbuJ+ruMsr
+	RFciSTIvAhSK7YiLtqLsJPQGMO5t05SwZntajt94krEUg2+gpyhh2merutfOrrh7e2djx3OtTYOCs
+	Khu2MxNAZsFvk9IOuJdk+GYtGc0EynSh0IN/iO+bYpHhQdBOdcLdBH91AWrppnDRov2Peo8y3St0x
+	SRD8MRmHqc0PZepDRBh2TaN6xGCUMMbkvZokC5bf43t5XEbNnFRLtD2vENA98/MgDDRwcorJ32CHX
+	9K6NX0qmj9pT2VRg3TFDX6yApTpNepap5coA5VuklXrgCw1OMl8r6CudptRaNwtfv7OCv+xeQic9J
+	7j9Etoiw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPeqP-0000000CvBQ-48lp;
-	Thu, 12 Jun 2025 10:07:38 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1uPfBa-0000000Cz2g-1fzt;
+	Thu, 12 Jun 2025 10:29:30 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPdt0-0000000ClUr-01y0
+	id 1uPe2f-0000000CnBD-2J7u
 	for barebox@lists.infradead.org;
-	Thu, 12 Jun 2025 09:06:15 +0000
+	Thu, 12 Jun 2025 09:16:14 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uPdsy-0005kn-LI; Thu, 12 Jun 2025 11:06:12 +0200
+	id 1uPe2e-0001kh-2c; Thu, 12 Jun 2025 11:16:12 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu, 12 Jun 2025 11:06:11 +0200
-Message-Id: <20250612090611.3682-2-a.fatoum@barebox.org>
+Date: Thu, 12 Jun 2025 11:16:11 +0200
+Message-Id: <20250612091611.11281-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250612090611.3682-1-a.fatoum@barebox.org>
-References: <20250612090611.3682-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250612_020614_048763_6D6DCEF9 
-X-CRM114-Status: UNSURE (   7.94  )
+X-CRM114-CacheID: sfid-20250612_021613_585912_E3AC75DF 
+X-CRM114-Status: UNSURE (   6.91  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -72,42 +70,39 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] ARM: multi_v7/8_defconfig: enable FIT image support
+Subject: [PATCH] Documentation: migration-2025.05.0: note compressed kernel regression
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We need this in CI tests, but it's a useful thing to enable anyhow.
+The breakage is annoying enough that it deserves being pointed out
+explicitly.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/configs/multi_v7_defconfig | 1 +
- arch/arm/configs/multi_v8_defconfig | 1 +
- 2 files changed, 2 insertions(+)
+There is nothing I want to add for migration2-2025.06.0.
+---
+ .../migration-guides/migration-2025.05.0.rst          | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
-index de2d41e633fa..4fb696a10626 100644
---- a/arch/arm/configs/multi_v7_defconfig
-+++ b/arch/arm/configs/multi_v7_defconfig
-@@ -107,6 +107,7 @@ CONFIG_BOOTM_INITRD=y
- CONFIG_BOOTM_OFTREE=y
- CONFIG_BOOTM_OFTREE_UIMAGE=y
- CONFIG_BOOTM_AIMAGE=y
-+CONFIG_BOOTM_FITIMAGE=y
- CONFIG_BLSPEC=y
- CONFIG_CONSOLE_ACTIVATE_NONE=y
- CONFIG_CONSOLE_ALLOW_COLOR=y
-diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-index ca3c891b4679..3d3f3254df20 100644
---- a/arch/arm/configs/multi_v8_defconfig
-+++ b/arch/arm/configs/multi_v8_defconfig
-@@ -60,6 +60,7 @@ CONFIG_BOOTM_VERBOSE=y
- CONFIG_BOOTM_INITRD=y
- CONFIG_BOOTM_OFTREE_UIMAGE=y
- CONFIG_BOOTM_AIMAGE=y
-+CONFIG_BOOTM_FITIMAGE=y
- CONFIG_BLSPEC=y
- CONFIG_CONSOLE_ACTIVATE_NONE=y
- CONFIG_CONSOLE_ALLOW_COLOR=y
+diff --git a/Documentation/migration-guides/migration-2025.05.0.rst b/Documentation/migration-guides/migration-2025.05.0.rst
+index 82b9fcb8e53f..f22c9f7c02c5 100644
+--- a/Documentation/migration-guides/migration-2025.05.0.rst
++++ b/Documentation/migration-guides/migration-2025.05.0.rst
+@@ -92,6 +92,11 @@ Build system
+ Bisectability
+ -------------
+ 
+-Many users of ``read*_poll_is_timeout`` are broken between
+-``554bbc479c09..dea0ad02bbd6``, which can falsify git bisect
+-results.
++Following regressions had a wider impact and could falsify
++falsify git bisect results:
++
++* Many users of ``read*_poll_is_timeout`` are broken between
++  ``554bbc479c09..dea0ad02bbd6``.
++
++* Handling of compressed kernel images on ARM64/RISC-V was broken between
++  ``a1248198fa3a..95aeb8d47d10``.
 -- 
 2.39.5
 
