@@ -1,57 +1,66 @@
-Delivery-date: Thu, 12 Jun 2025 00:24:24 +0200
+Delivery-date: Thu, 12 Jun 2025 08:59:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPTrs-006IqX-0P
+	id 1uPbu7-006QJg-1r
 	for lore@lore.pengutronix.de;
-	Thu, 12 Jun 2025 00:24:24 +0200
+	Thu, 12 Jun 2025 08:59:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPTrr-0004KH-IR
-	for lore@pengutronix.de; Thu, 12 Jun 2025 00:24:24 +0200
+	id 1uPbu6-0007Wb-8l
+	for lore@pengutronix.de; Thu, 12 Jun 2025 08:59:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RfYvIxNb3Qzvg95qvutIDNY3mxgH5AV87YtpD4sAEj8=; b=CxttgwXA99NTk+Kdub8qRClwW5
-	Qub9N6mhBBMB41NiSnZysXhRSkkPBsV7iiCLwPryNOShdh7vXAY6cXVcocWyRuwnuLGO0tO9eL+lM
-	eTjgUxzN4kGy/0QFoqNSdGhpGcYECsvVVoB71FqXOI6YOlWYuZm7y2QVp5XYvH6Qwrh9AGqQjJpqG
-	F5CpSQ43PogUX6K83WPEcuveFz4KCLPgP9rVHEj/21Udybw12/cC7MZTQmEhry8iOihFMaA86Al8U
-	VbZXAC/NqiBG6qBDKu4DlfVaG/+Lo31HBz1uq6ab6pw2uolJyZ5drXjhUaXKrfsqsNqhqaHY/Tftp
-	T2mcMllA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Dyw43lj/uJz7T84WGjl+UFg33D7XgM3N7eSlfmcf+x4=; b=oY8SrD6s66F2++lQsFRVgCYdi/
+	eoKIhYcDe3rQ2sab4EtcjCRfSRhF9b6EraNh2+EOzk+CrwLWvyYFl2vtPxN8iwOFqbBO9ioktdQyX
+	Wbp4Grt/CKuJwknCzfb3+ghZ8lbp2fpIR2ZepTuYVlFMzILUObFH+FB08oTgCKB1lpv61uUERIhPU
+	ff0oJi++YwIqOLq9G8K3Pan2SM9wyFIeSvJrXw38cxJf0H052MhgE5Bu+aRW2VlyML7EQWNW+tqkB
+	TO2MqBmRRJGpnC77BfVzzTamwJGJoqcZP7OdkzDa2c3CvRDvGq7wTsupBYc/73rLrJPY1dhusfWoD
+	6nd1NAgg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPTri-0000000BT6B-3mXK;
-	Wed, 11 Jun 2025 22:24:14 +0000
+	id 1uPbtI-0000000CNEV-0Vod;
+	Thu, 12 Jun 2025 06:58:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPQ85-0000000Ara9-3nFE
+	id 1uPbtA-0000000CN8I-0VWT
 	for barebox@lists.infradead.org;
-	Wed, 11 Jun 2025 18:24:55 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uPQ84-0002Cz-Mp; Wed, 11 Jun 2025 20:24:52 +0200
-Message-ID: <4f35c36d-2fb2-4c62-b34d-f3d63497837f@pengutronix.de>
-Date: Wed, 11 Jun 2025 20:24:52 +0200
+	Thu, 12 Jun 2025 06:58:19 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uPbt8-0006sl-5S; Thu, 12 Jun 2025 08:58:14 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uPbt7-0034nT-2l;
+	Thu, 12 Jun 2025 08:58:13 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uPbt7-008Uz8-2a;
+	Thu, 12 Jun 2025 08:58:13 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 12 Jun 2025 08:58:05 +0200
+Message-Id: <20250612065812.2025665-3-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250612065812.2025665-1-o.rempel@pengutronix.de>
+References: <20250612065812.2025665-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20250611090753.4164553-1-jre@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20250611090753.4164553-1-jre@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250611_112453_946530_B3D2F962 
-X-CRM114-Status: GOOD (  12.67  )
+X-CRM114-CacheID: sfid-20250611_235816_216306_0DF97E83 
+X-CRM114-Status: GOOD (  20.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,68 +78,179 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! ARM: i.MX8M: Add support for eCSPI boot
+Subject: [PATCH v3 2/9] nvmem: rmem: add write and protect support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Add reg_write and reg_protect operations to the rmem NVMEM driver.
+This makes rmem devices writable (they were previously read-only via the
+NVMEM interface due to lacking reg_write) and allows specific regions
+to be marked read-only.
 
-On 6/11/25 11:07, Jonas Rebmann wrote:
-> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+The primary motivation is to improve testing of NVMEM consumer code that
+handles write protection, by enabling rmem to emulate such hardware,
+particularly in sandbox environments.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Key changes:
 
-Thank you,
-Ahmad
+- reg_write implemented: Enables writes. Writes to protected regions
+  return -EROFS.
 
-> ---
->  arch/arm/mach-imx/atf.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-> index 6993e33baa..e6c21107a5 100644
-> --- a/arch/arm/mach-imx/atf.c
-> +++ b/arch/arm/mach-imx/atf.c
-> @@ -104,6 +104,9 @@ void imx8mm_load_bl33(void *bl33)
->  	case BOOTSOURCE_SPI:
->  		imx8mm_qspi_load_image(instance, bl33);
->  		break;
-> +	case BOOTSOURCE_SPI_NOR:
-> +		imx8m_ecspi_load_image(instance, bl33);
-> +		break;
->  	default:
->  		printf("Unsupported bootsource BOOTSOURCE_%d\n", src);
->  		hang();
-> @@ -269,6 +272,9 @@ void imx8mn_load_bl33(void *bl33)
->  	case BOOTSOURCE_SPI:
->  		imx8mn_qspi_load_image(instance, bl33);
->  		break;
-> +	case BOOTSOURCE_SPI_NOR:
-> +		imx8m_ecspi_load_image(instance, bl33);
-> +		break;
->  	default:
->  		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
->  		hang();
-> @@ -334,6 +340,9 @@ void imx8mq_load_bl33(void *bl33)
->  	case BOOTSOURCE_MMC:
->  		imx8m_esdhc_load_image(instance, bl33);
->  		break;
-> +	case BOOTSOURCE_SPI_NOR:
-> +		imx8m_ecspi_load_image(instance, bl33);
-> +		break;
->  	default:
->  		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
->  		hang();
+- reg_protect implemented:
+  - PROTECT_DISABLE_WRITE: Marks range read-only.
 
+  - PROTECT_ENABLE_WRITE: Makes range writable.
+
+  - Probe function updated for new ops and list initialization.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+changes v3:
+- use bitmap helpers
+changes v2:
+- use a bitmap instead of lists of ranges.
+---
+ drivers/nvmem/rmem.c | 85 ++++++++++++++++++++++++++++++++++++++++++++
+ include/driver.h     |  3 ++
+ 2 files changed, 88 insertions(+)
+
+diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
+index afa0dd78c8f4..fd742b69861b 100644
+--- a/drivers/nvmem/rmem.c
++++ b/drivers/nvmem/rmem.c
+@@ -5,12 +5,15 @@
+ 
+ #include <io.h>
+ #include <driver.h>
++#include <linux/bitmap.h>
+ #include <linux/nvmem-provider.h>
+ #include <init.h>
+ 
+ struct rmem {
+ 	struct device *dev;
+ 	const struct resource *mem;
++	unsigned long *protection_bitmap;
++	size_t size;
+ };
+ 
+ static int rmem_read(void *context, unsigned int offset,
+@@ -21,6 +24,82 @@ static int rmem_read(void *context, unsigned int offset,
+ 			bytes, offset, 0);
+ }
+ 
++/**
++ * rmem_write() - Write data to the NVMEM device.
++ * @context:	Pointer to the rmem private data (struct rmem).
++ * @offset:	Offset within the NVMEM device to write to.
++ * @val:	Buffer containing the data to write.
++ * @bytes:	Number of bytes to write.
++ *
++ * This function is called by the NVMEM core to write data to the
++ * reserved memory region. It first checks the protection bitmap to ensure
++ * the target range is not write-protected. If writable, it uses the
++ * custom 'mem_copy' function.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static int rmem_write(void *context, unsigned int offset, const void *val,
++		      size_t bytes)
++{
++	unsigned long protected_offset;
++	struct rmem *rmem = context;
++
++	protected_offset = find_next_bit(rmem->protection_bitmap,
++					 offset + bytes, offset);
++	if (protected_offset < offset + bytes)
++		return -EROFS;
++
++	/*
++	 * The last two arguments to mem_copy (0, 0) are specific to
++	 * the custom mem_copy implementation.
++	 */
++	return mem_copy(rmem->dev, (void *)rmem->mem->start + offset, val,
++			bytes, 0, 0);
++}
++
++/**
++ * rmem_protect() - NVMEM callback to change protection status of a range.
++ * @context:	Pointer to the rmem private data (struct rmem).
++ * @offset:	Starting offset of the range.
++ * @bytes:	Length of the range in bytes.
++ * @prot_mode:	Protection mode to apply (PROTECT_DISABLE_WRITE or
++ * PROTECT_ENABLE_WRITE).
++ *
++ * This function is called by the NVMEM core to enable or disable
++ * write protection for a specified memory range.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static int rmem_protect(void *context, unsigned int offset, size_t bytes,
++			int prot_mode)
++{
++	struct rmem *rmem = context;
++	int ret;
++
++	if (offset + bytes > rmem->size)
++		return -EINVAL;
++
++	switch (prot_mode) {
++	case PROTECT_DISABLE_WRITE: /* Make read-only */
++		bitmap_set(rmem->protection_bitmap, offset, bytes);
++		break;
++	case PROTECT_ENABLE_WRITE: /* Make writable */
++		bitmap_clear(rmem->protection_bitmap, offset, bytes);
++		break;
++	default:
++		dev_warn(rmem->dev, "%s: Invalid protection mode %d\n",
++			 __func__, prot_mode);
++		ret = -EINVAL;
++		break;
++	}
++
++	dev_dbg(rmem->dev,
++		"Protection op complete [0x%x, len %zu], mode %d\n", offset,
++		bytes, prot_mode);
++
++	return 0;
++}
++
+ static int rmem_probe(struct device *dev)
+ {
+ 	struct nvmem_config config = { };
+@@ -41,7 +120,13 @@ static int rmem_probe(struct device *dev)
+ 	config.priv = priv;
+ 	config.name = "rmem";
+ 	config.size = resource_size(mem);
++	priv->size = config.size;
++
++	priv->protection_bitmap = bitmap_xzalloc(priv->size);
++
+ 	config.reg_read = rmem_read;
++	config.reg_write = rmem_write;
++	config.reg_protect = rmem_protect;
+ 
+ 	return PTR_ERR_OR_ZERO(nvmem_register(&config));
+ }
+diff --git a/include/driver.h b/include/driver.h
+index dd50a7aa3cce..8b62087a0c42 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -442,6 +442,9 @@ int platform_driver_register(struct driver *drv);
+ 
+ int platform_device_register(struct device *new_device);
+ 
++#define PROTECT_ENABLE_WRITE		0
++#define PROTECT_DISABLE_WRITE		1
++
+ struct cdev_operations {
+ 	/*! Called in response of reading from this device. Required */
+ 	ssize_t (*read)(struct cdev*, void* buf, size_t count, loff_t offset, ulong flags);
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.39.5
 
 
 
