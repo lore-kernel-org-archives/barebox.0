@@ -1,65 +1,80 @@
-Delivery-date: Thu, 12 Jun 2025 15:19:54 +0200
+Delivery-date: Thu, 12 Jun 2025 15:21:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPhqU-006WNp-0I
+	id 1uPhru-006WPF-0O
 	for lore@lore.pengutronix.de;
-	Thu, 12 Jun 2025 15:19:54 +0200
+	Thu, 12 Jun 2025 15:21:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uPhqT-0004Xp-Cz
-	for lore@pengutronix.de; Thu, 12 Jun 2025 15:19:54 +0200
+	id 1uPhrt-0005aj-JM
+	for lore@pengutronix.de; Thu, 12 Jun 2025 15:21:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XcCVzzuI2NJHFPMuwDbR7BfErQFkM1DvhQOKJg/dOuM=; b=ruhKRJNFssQCWlRSDVXDjGh/q6
-	rCE8DM0cRTCOr3usKsX/MyP1j1A9dt9jyq2rD389uA2RjeG7Vqi8qXtG18eQHU8pKksO8A/LkdoOS
-	OEDqn8bxd9YpabTprGJjjpqAjMiC+1N53IM7BstptBnqZgXYMJqU+Us0dHLcQ6BFayAcfCeRyWFy9
-	bgRuQOQQRmLbH7cWTBHp/qbmGEidntsjrBn7cslHeeYYIHnzEXnhrc/UDsLOGUTIQUfxOz1skU5Pr
-	4y1DXFFhteRb2Jo2ky2zOPu/mF/tDe50xJ40rj/W/N/yVUKYVIJs+bBKH11JFEJjpEnkgYzOpdGeM
-	iOaIlxZg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To
+	:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=XarvPSx8D8RTt5FdPTTFDyBZsxVErA4HqAH36bu+154=; b=0wvOczGEl7hYfpGzpUo8hVApHk
+	PBlp+lPwAMTLd9Vdl5DYAcltmyi/mXQGm8w4+0M/QdqebZd93314nf3MS77TE1e+vdoOKv2GrrXD5
+	tp1pCbvs9QyvBzwnunSg72jIARYYMPsnhk42itnCJL1wSz62uX+roa52By8Mn+NHiVdbMKcpiZc29
+	JSh8pXFIk7qhWIs94iGiVIShK510PPmWRkb4uxP8C5L5MOBsWOyYI/8M3sr4e24QtWf7KULBhM/IU
+	ztpcFPVREoMeTYzMdwJRgj1o2hOD6Gh6oux2vfc51yMxF3OOuI75wOAr7Tf5QdpmUV1kIiCXB4zR6
+	T4caoIhw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPhpg-0000000DMf3-0nd2;
-	Thu, 12 Jun 2025 13:19:04 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uPhrM-0000000DPbx-0qqG;
+	Thu, 12 Jun 2025 13:20:48 +0000
+Received: from mout.kundenserver.de ([212.227.17.13])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPfPy-0000000D1uG-3Y18
+	id 1uPh5f-0000000DGMS-0aVp
 	for barebox@lists.infradead.org;
-	Thu, 12 Jun 2025 10:44:24 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uPfPx-0007O1-0q; Thu, 12 Jun 2025 12:44:21 +0200
-Message-ID: <88d6ff32-3303-4e66-b886-b2c459913648@pengutronix.de>
-Date: Thu, 12 Jun 2025 12:44:20 +0200
+	Thu, 12 Jun 2025 12:31:32 +0000
+Received: from fedora ([178.24.249.19]) by mrelayeu.kundenserver.de (mreue108
+ [213.165.67.113]) with ESMTPSA (Nemesis) id 1MF35K-1uaji92Wme-003MOL; Thu, 12
+ Jun 2025 14:31:25 +0200
+Date: Thu, 12 Jun 2025 14:31:14 +0200
+From: Johannes Roith <johannes@gnu-linux.rocks>
+To: Michael Tretter <m.tretter@pengutronix.de>
+Message-ID: <aErIkgAl4zIUNGjc@fedora>
+References: <20250607134711.48122-1-johannes@gnu-linux.rocks>
+ <aElxD6ELuh5xyAki@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Manish Pandey2 <Manish.Pandey2@arm.com>
-Cc: BAREBOX <barebox@lists.infradead.org>,
- Raymond Mao <raymond.mao@linaro.org>, Jose Marinho <Jose.Marinho@arm.com>,
- "rouven.czerwinski@linaro.org" <rouven.czerwinski@linaro.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Michael Tretter <m.tretter@pengutronix.de>, Dan Handley
- <Dan.Handley@arm.com>,
- "op-tee@lists.trustedfirmware.org" <op-tee@lists.trustedfirmware.org>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>
-References: <89ad64f2-fbda-48a3-9a27-5eaff5be9292@pengutronix.de>
- <VI1PR08MB1021788AAFA0E6A859BA3C18CC074A@VI1PR08MB10217.eurprd08.prod.outlook.com>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <VI1PR08MB1021788AAFA0E6A859BA3C18CC074A@VI1PR08MB10217.eurprd08.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aElxD6ELuh5xyAki@pengutronix.de>
+X-Provags-ID: V03:K1:CB68VpL5Zy0CQhyEkdivrVjrpIf4ffJ8e5G0GhySzaDccz8jjfL
+ +ZSuJLPMgAXUm14dHZVerrEm0cze6rbLaeFzJ6Gyc5MSCT2VkWigAcssOI+Zgp4zU6mDV9T
+ 37ViFfwBeVQlOgrU6geKZCdb79NSCVykJOIkrD77jfrkgVlhHtIfOzHr82ORDw2sspcIcvp
+ RBK18Ult+oe/JhpGE0Ypg==
+UI-OutboundReport: notjunk:1;M01:P0:WwJyrO51OYU=;vDMu1Vzv8X19J8bSSXYJx0+y5Gq
+ OxJgIFLNQ+Do6iysOkZa1kByaKtIoP6rsCYg/LEnFFGlo9Bj4mUlK1CF5kaJRbQWMm+fHGyQt
+ AyV10lN/3cmyxBWPzh+kQauzEx103eL/ftckuHqaxOpQ5uVhrkwPTAw0z7Bp9IGKyivEmNhzm
+ /XqH062ww4ZtzKzJ506u9IQtzBr84bPPpdlvQXC0pzKUsb6vhZDufvjOoFmG+8BI0ahMeAUB8
+ L5GO6ynrWVLGJ8wavNa1Vn8kzSQi5ieK8PFB2f14a2Btkox4RRT2V1YE2MdUbettslSjRiNmx
+ +i0ZgMkM2eOHjKsIultP5KqlT+MqE44qrxl+HYDnKxsgUFrksVNg55e4r8nVDsejE0qhJKnrY
+ 7g7qxNboo3H1JMkGN564OZ3TLBGvcHBTO04D5VbNFTf85UVNDYAZAkNUMHu3ds15KqPr9kOLt
+ yW6baO8lQrJN93eowvinczt/GznB/jF+P5H4PUeX3shlY91mHiSOZS0kJBBpXkgRJjocvvxkj
+ 3DBVzuONXxNfi2u0UbWQKyIK2O8wToLXr/XElClIqg9DuBd0ijotD7TaBOssEnjwJa5WPvF1b
+ o7ONB9bSu3CQzTMojODj6gBe3RegE3AJ6Mn6W3b+ku5vhovvS2qJ6IRKZrOnX9tPTBjmIy1cz
+ QZJXS6glxZEmA68EcakEtTC8K7ZoQ6C5V6qRPGkuKVV+FXTOUq1wz0FAonVckPuUzKP9EQ9/E
+ DjLCNjsiP0p5MWLI35MeDtVNz/51+gFSbCop3vi0NRqrVevdf+xcVizqPPZ4lYidviSEv+646
+ TzLuOKWZHT8AxEfqGhzHfKYXWkDW+gIkQ8y9F0EEzt+KZ7/wCSl9E7U4RGN+i1p1ArsA4FeWu
+ ItJXffSAnDbtWGv30WlYlXIuV+15qffLw+z6EbLfS4lbSsmbfA7eTm26PQ5ryQx46DIF9Ny/A
+ 89uggRQGSkF/Cig4nt7tyZSLnHGTDbS2DvM8zl8tMHaXi9jr4ZcAkPVaDlfbO7ay8t8lCUxS2
+ ExVtGRt4WJ41YgAtDpn2voAYtwW+TPLf0N77neDl5FjUcOlktARKPEsz4jQHzxGyqabAZ0b6i
+ +coXBDe0THIThVMRp1vAEOM/pK04sep4A0dnlTSLWVxOISGwO7suSuNem+ysm2gE5j+RzwxNq
+ goljXRrJGlS1oF++SAgxLVNBtJH/DqQR2dgaT9O9IfCCwhhpFeUG50xmErfqktkw/62Dezw7/
+ zKiWoJRBLOe1gMUITlf3RH38iRJL1RCp5feltK3laSFGmMgJ9BMDPnnu9LwnrtWFvuB7SqjVb
+ R598bIt/XgfKa/9Q96Z6RI7+rxdUXKcDt7xFdMxxi7tbHin/polGFh+ts0Bhx7shCaarMAJxX
+ qfRktNHjgsvA7chd6MtQfnPsdHZdpg9ilWeoA=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250612_034422_891676_5F829C34 
-X-CRM114-Status: GOOD (  30.64  )
+X-CRM114-CacheID: sfid-20250612_053131_474605_41650D0F 
+X-CRM114-Status: UNSURE (   5.46  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,126 +86,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org, michael.graichen@hotmail.com, a.fatoum@barebox.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Firmware Handoff for DT Overlay created by OP-TEE?
+Subject: Re: [PATCH] Added support for Zynq 7000 FPGA firmware loading
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Manish,
+Hi Michael,
 
-On 6/12/25 12:13, Manish Pandey2 wrote:
-> Thanks Ahmad for reaching out!
+thanks for testing and the feedback. I will add it in version 2.
 
-Thanks for the quick response.
-
-> There is a PR [1] on the Firmware Handoff specification that is still
-> under discussion. Could you take a look and see if it could accommodate
-> your use case?
-
-Cool, thanks for pointing it out. I will check it out in detail.
-
-> To confirm my understanding, would the desired flow be something like:
-> 
->  1.
->     *BL31 passes a read-only DT* to OP-TEE via the Transfer List (TL)
-
-DT comes from BL2 originally, but yes, BL31 passes it along.
-
->  2.
->     *OP-TEE consumes* the DT, adds memory reservations via a *DTO*, and
->     appends this DTO to the TL
-
-My original thought was that BL2 (via BL31) allocates some memory and
-passes it via transfer list for OP-TEE to fill out.
-
-This allows reclaiming the space used by the overlay, which would
-otherwise not be possible:
-
-  - If OP-TEE uses arbitrary memory, it may turn out to be used
-    otherwise
-
-  - If OP-TEE uses its own memory that it reserves, the space is
-    never reclaimed as it doesn't know when it's no longer needed
-
->  3.
->     *BL31 then forwards* the updated TL to BL33
-
-Right.
-
-> 
-> Does that match what you had in mind?
-
-Thanks,
-Ahmad
-
-> 
-> 
-> [1]: https://github.com/FirmwareHandoff/firmware_handoff/pull/74
-> <https://github.com/FirmwareHandoff/firmware_handoff/pull/74>
-> 
-> ------------------------------------------------------------------------
-> *From:* Ahmad Fatoum <a.fatoum@pengutronix.de>
-> *Sent:* 11 June 2025 19:09
-> *To:* Manish Pandey2 <Manish.Pandey2@arm.com>
-> *Cc:* op-tee@lists.trustedfirmware.org <op-
-> tee@lists.trustedfirmware.org>; BAREBOX <barebox@lists.infradead.org>;
-> rouven.czerwinski@linaro.org <rouven.czerwinski@linaro.org>; Michael
-> Tretter <m.tretter@pengutronix.de>; kernel@pengutronix.de
-> <kernel@pengutronix.de>
-> *Subject:* Firmware Handoff for DT Overlay created by OP-TEE?
->  
-> Hello Manish,
-> 
-> In your recent talk[1] at LinaroConnect about the Firmware Handoff
-> specification, you were asking about what other use cases it could
-> address for OP-TEE.
-> 
-> We ran into a possible use case that we would like to share:
-> 
-> BL2 can pass a DT to OP-TEE, which it would use to discover memory and
-> to fix up with memory reservations covering the memory it carves out for
-> itself.
-> 
-> OP-TEE also supports passing along the reservations as a device tree
-> overlay. AFAICS, there is no way currently to have both: A DT for OP-TEE
-> to probe hardware from and a way to pass the normal world a device tree
-> overlay in return.
-> 
-> I think this could be neatly addressed with Firmware Handoff and would
-> be a motivation for us to implement support in barebox BL2/BL33 to take
-> advantage of this. The current way is suboptimal as we would prefer the
-> DT passed to OP-TEE to be read-only. This avoids either having to copy
-> it or to pad it sufficiently in anticipation of it growing with the
-> addition of the new nodes.
-> 
-> [1]: https://www.youtube.com/watch?v=RxU798h8aiE <https://
-> www.youtube.com/watch?v=RxU798h8aiE>
-> 
-> Cheers,
-> Ahmad
-> 
-> --
-> Pengutronix e.K.                  |                             |
-> Steuerwalder Str. 21              | http://www.pengutronix.de/ <http://
-> www.pengutronix.de/>  |
-> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-> 
-
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Best regards,
+Johannes
 
 
 
