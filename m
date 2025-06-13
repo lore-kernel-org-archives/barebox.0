@@ -1,64 +1,66 @@
-Delivery-date: Fri, 13 Jun 2025 17:21:47 +0200
+Delivery-date: Fri, 13 Jun 2025 17:21:50 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uQ6Dz-006wD7-1R
+	id 1uQ6E2-006wDf-0O
 	for lore@lore.pengutronix.de;
-	Fri, 13 Jun 2025 17:21:47 +0200
+	Fri, 13 Jun 2025 17:21:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uQ6Dy-0007kG-U1
-	for lore@pengutronix.de; Fri, 13 Jun 2025 17:21:47 +0200
+	id 1uQ6E1-0007lN-Hy
+	for lore@pengutronix.de; Fri, 13 Jun 2025 17:21:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=2yzJuuci9g63G6eg12C462BrYymtOntV7AETZL8+52M=; b=47n5S8dJEKsZbKmAN4YPtslyc7
-	50aO7jc7Ve9yUii/OaBTuRn5uYcXQ6jYZ0tXXz5VuOAx+xx887CyDcuZfgg7lzzmK0PVB8NGccguz
-	/HMDWeFHSNGfvNkwfBHpGTNqHqN34V9Sei5tiE+yDgTof/6Kws981kulNR0nX6H1doBoJCn8TgtAd
-	HBPwXFKRkjikCXZGiaP+AVEjcIX70NmNrzW+z5qDP0kyzqKi5L13oETwmg5ZlTjhso2j/4TNFv+6s
-	ZNcdnOOKrxQ2aFy3GpCzq448jOh+uyHmLDY+qmReai5aNbSJuLEid8EuMMeCuQNVMJ4uPDUvwIux2
-	fdlQ1Uhw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=E4t5zzxyH22sXGGyAiV4nXHe9EH1Dhl9JpsWlNKlKS4=; b=kRJC6eNCRnKYiXeSEEXDLg2y2s
+	FJXJr+PqiAFWCbAxto6FZkx3azobL0t6OEv/sxU6JxiyHnukUM1xRqSOx+SbyjJEGfz9OyD/lOwF2
+	eeadL04xV5qnqYjKDJ0tumN3COoTSZAnbtbwip4g985ePuYX4fgdp2S6YFAAVxmgaR2XIXxG34Y16
+	2cuGM4nEQwHT7H93rCEAvNEozkkRE62X/COeNrrvk0NV7k23Q6dzFDy6rV3+7Z+KXQmBa/DeO1kf2
+	2moPIYSU+8irhNNaU4Qv2wosYe6xlsyGWW+OOvTFio3b3gsJPYU13gxgAyXlALNudRWr2BKyQkRKp
+	Z9SaNF+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uQ6DM-0000000Gqw4-0YFR;
-	Fri, 13 Jun 2025 15:21:08 +0000
+	id 1uQ6DO-0000000Gqxo-1KyO;
+	Fri, 13 Jun 2025 15:21:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uQ54m-0000000GcyL-3MDs
+	id 1uQ54r-0000000Gcza-3UcQ
 	for barebox@lists.infradead.org;
-	Fri, 13 Jun 2025 14:08:13 +0000
+	Fri, 13 Jun 2025 14:08:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <lsc@pengutronix.de>)
-	id 1uQ54k-00075g-6m; Fri, 13 Jun 2025 16:08:10 +0200
+	id 1uQ54q-00077c-Mj; Fri, 13 Jun 2025 16:08:16 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <lsc@pengutronix.de>)
-	id 1uQ54k-003IuS-05;
-	Fri, 13 Jun 2025 16:08:10 +0200
+	id 1uQ54q-003IuZ-1Z;
+	Fri, 13 Jun 2025 16:08:16 +0200
 Received: from lsc by dude06.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <lsc@pengutronix.de>)
-	id 1uQ54j-005AG9-36;
-	Fri, 13 Jun 2025 16:08:09 +0200
+	id 1uQ54q-005AGW-1N;
+	Fri, 13 Jun 2025 16:08:16 +0200
 From: Lars Schmidt <l.schmidt@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Lars Schmidt <l.schmidt@pengutronix.de>
-Date: Fri, 13 Jun 2025 16:08:01 +0200
-Message-Id: <20250613140805.1229525-1-l.schmidt@pengutronix.de>
+Date: Fri, 13 Jun 2025 16:08:05 +0200
+Message-Id: <20250613140805.1229525-5-l.schmidt@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250613140805.1229525-1-l.schmidt@pengutronix.de>
+References: <20250613140805.1229525-1-l.schmidt@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250613_070812_835800_C399EEFA 
-X-CRM114-Status: GOOD (  10.76  )
+X-CRM114-CacheID: sfid-20250613_070817_926647_90E5908D 
+X-CRM114-Status: GOOD (  13.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,31 +82,56 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/4] Add boot slot locking to bootchooser
+Subject: [PATCH 4/4] Documentation: migration-2025.07.0: add information about slots_locked
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This patch series adds an option to lock slots to bootchooser.
-When slots are locked, the remaining_attempts counter will not
-get counted down. It is optional, so when not set, it does not 
-have any effect on the counter. The choice of which slot to boot
-is also not affected.
-
-Lars Schmidt (4):
-  bootchooser: implement locking of boot slots
-  bootchooser: extend cmd tool by option to set slot locking
-  Documentation: bootchooser: add information about slots_locked
-  Documentation: migration-2025.07.0: add information about slots_locked
-
- Documentation/migration-guides/index.rst      |  1 +
- .../migration-guides/migration-2025.07.0.rst  |  8 +++
- Documentation/user/bootchooser.rst            | 26 +++++++++
- commands/bootchooser.c                        | 16 +++++-
- common/bootchooser.c                          | 55 +++++++++++++++++--
- include/bootchooser.h                         |  1 +
- 6 files changed, 101 insertions(+), 6 deletions(-)
+Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
+---
+ Documentation/migration-guides/index.rst               | 1 +
+ Documentation/migration-guides/migration-2025.07.0.rst | 8 ++++++++
+ Documentation/user/bootchooser.rst                     | 3 +++
+ 3 files changed, 12 insertions(+)
  create mode 100644 Documentation/migration-guides/migration-2025.07.0.rst
 
+diff --git a/Documentation/migration-guides/index.rst b/Documentation/migration-guides/index.rst
+index 182654847f..4bba061476 100644
+--- a/Documentation/migration-guides/index.rst
++++ b/Documentation/migration-guides/index.rst
+@@ -12,3 +12,4 @@ cause build errors are generally out-of-scope for these documents.
+ 
+    migration-2025.05.0
+    migration-2025.06.0
++   migration-2025.07.0
+\ No newline at end of file
+diff --git a/Documentation/migration-guides/migration-2025.07.0.rst b/Documentation/migration-guides/migration-2025.07.0.rst
+new file mode 100644
+index 0000000000..c18743a633
+--- /dev/null
++++ b/Documentation/migration-guides/migration-2025.07.0.rst
+@@ -0,0 +1,8 @@
++Release v2025.07.0
++==================
++
++Bootchooser
++-----------
++
++Bootchooser now interprets a top-level ``slots_locked`` variable.
++For more information, see :ref:`slot locking feature <bootchooser,slots_lock>`
+diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
+index 306443270a..f767dc77e8 100644
+--- a/Documentation/user/bootchooser.rst
++++ b/Documentation/user/bootchooser.rst
+@@ -77,6 +77,9 @@ no remaining attempts left.
+ To prevent ending up in an unbootable system after a number of failed boot
+ attempts, there is also a built-in mechanism to reset the counters to their defaults,
+ controlled by the ``global.bootchooser.reset_attempts`` variable.
++
++.. _bootchooser,slots_lock:
++
+ Alternatively, counting down the remaining attempts can be disabled by
+ locking the bootchooser slots.
+ This is done by defining a (32-bit) ``slots_locked`` variable in the
 -- 
 2.39.5
 
