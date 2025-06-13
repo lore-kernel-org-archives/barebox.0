@@ -1,58 +1,68 @@
-Delivery-date: Fri, 13 Jun 2025 13:32:04 +0200
+Delivery-date: Fri, 13 Jun 2025 13:32:30 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uQ2dg-006qgO-0d
+	id 1uQ2e6-006qh5-25
 	for lore@lore.pengutronix.de;
-	Fri, 13 Jun 2025 13:32:04 +0200
+	Fri, 13 Jun 2025 13:32:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uQ2df-0004Ys-Fm
-	for lore@pengutronix.de; Fri, 13 Jun 2025 13:32:04 +0200
+	id 1uQ2e5-0004vL-NA
+	for lore@pengutronix.de; Fri, 13 Jun 2025 13:32:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=17/Xj0KfpCZsCfP7IOS9rjfgO5rrSLDwo0boQ4RJPmc=; b=gknKgtfo6aRAqKbwzsnKocK1hO
-	rGfSr15NeLpLmL9kiH4iLsB6CO8AtgvCSMjXqIsIOu8OeksPOwg7pU6xYF6rIUh7pLpZhP8xtEChA
-	ph7gfjRHDaguZx1qs7ltYdH9fBCowCQgGQlXpnFVQGONpL9Bu3LazEraEklsGJt0I/U4mepaOyzeD
-	Fme29YV+iMTWjiUa5dCVsahzLac4nVHUoWmxub9q1sEYGni01zlNFJzIBKdj1Ye5PE9Iemdlq6arl
-	miiG+pqTV/26br7BIdnACKrDboPgIpKK7Wna68h37kxaqcztYU4c0xfudsChkiBqUXa1L+uvCGmVW
-	vY54WamQ==;
+	Content-Type:MIME-Version:Message-ID:Subject:To:From:Date:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=S/7/dgNDLNXtnm5XTyhUM7gACC5rmnWB58+C3BvYWmM=; b=PKmqn7XEhCQV0/35bSSbYgxF2x
+	qVOKXY2/vgDeWCz6s8iKyTwSiuZzd6ZoN6OF6r7q18iLopXsrw/y+2Suj+52yR5Ym0J7xrFCYAW/m
+	GY1mmM1k/SWetMcLAbLANoI6Sti+mHQ1vzC0EkcQczup6HT1O0B/JJJ+YRdVvPCHqBgs+WySwSWbo
+	I4mvfM0VN1pi8BFZUZaGXseu8YJqXwy7zGuBNN8/4C0Fv3wP5qGZa2G2DWAqGTMSn914PYGVhs4Hr
+	JVfV/j+diKikVJZyXh8BiBhtR3KXTBm26Ivb13n+1LZvSpRxt0pPUemuzncIQz2FrbTGwKwacJ3fM
+	JKv29I9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uQ2d3-0000000GBtH-3ru1;
-	Fri, 13 Jun 2025 11:31:29 +0000
+	id 1uQ2de-0000000GCyr-2vJl;
+	Fri, 13 Jun 2025 11:32:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uQ1ps-0000000G5bt-3hfx
+	id 1uQ2Uu-0000000GA2u-1dCn
 	for barebox@lists.infradead.org;
-	Fri, 13 Jun 2025 10:40:38 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uQ1pr-0006DC-J9; Fri, 13 Jun 2025 12:40:35 +0200
-Message-ID: <3e5e2e56-0d23-4fbc-a6a9-0ab471b85ae9@pengutronix.de>
-Date: Fri, 13 Jun 2025 12:40:35 +0200
+	Fri, 13 Jun 2025 11:23:02 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uQ2Us-0001Ok-7I; Fri, 13 Jun 2025 13:22:58 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uQ2Us-003HVc-09;
+	Fri, 13 Jun 2025 13:22:58 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uQ2Ur-00B9be-34;
+	Fri, 13 Jun 2025 13:22:57 +0200
+Date: Fri, 13 Jun 2025 13:22:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <aEwKEf9V0V9tbD5p@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-References: <20250613-arm-mmu-xn-ro-v1-0-60f05c6e7b4b@pengutronix.de>
- <20250613-arm-mmu-xn-ro-v1-7-60f05c6e7b4b@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250613-arm-mmu-xn-ro-v1-7-60f05c6e7b4b@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250613_034036_926161_8E2AD781 
-X-CRM114-Status: GOOD (  24.13  )
+X-CRM114-CacheID: sfid-20250613_042300_583367_7FCA277D 
+X-CRM114-Status: GOOD (  16.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,158 +84,164 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 7/7] ARM: MMU64: map text segment ro and data segments
- execute never
+Subject: v2025.06.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Hi All,
 
-On 6/13/25 09:58, Sascha Hauer wrote:
-> With this all segments in the DRAM except the text segment are mapped
-> execute-never so that only the barebox code can actually be executed.
-> Also map the readonly data segment readonly so that it can't be
-> modified.
-> 
-> The mapping is only implemented in barebox proper. The PBL still maps
-> the whole DRAM rwx.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/cpu/mmu_64.c            | 31 +++++++++++++++++++++++++++----
->  arch/arm/include/asm/pgtable64.h |  1 +
->  arch/arm/lib64/barebox.lds.S     |  5 +++--
->  3 files changed, 31 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-> index dc81c1da6add38b59b44a9a4e247ab51ebc2692e..7b021a3f2909f7a445d253579a16cc68f6cbd765 100644
-> --- a/arch/arm/cpu/mmu_64.c
-> +++ b/arch/arm/cpu/mmu_64.c
-> @@ -312,13 +312,19 @@ static unsigned long get_pte_attrs(unsigned flags)
->  {
->  	switch (flags) {
->  	case MAP_CACHED:
-> -		return CACHED_MEM;
-> +		return attrs_xn() | CACHED_MEM;
->  	case MAP_UNCACHED:
->  		return attrs_xn() | UNCACHED_MEM;
->  	case MAP_FAULT:
->  		return 0x0;
->  	case ARCH_MAP_WRITECOMBINE:
->  		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
-> +	case MAP_CODE:
-> +		return CACHED_MEM | PTE_BLOCK_RO;
-> +	case ARCH_MAP_CACHED_RO:
-> +		return attrs_xn() | CACHED_MEM | PTE_BLOCK_RO;
-> +	case ARCH_MAP_CACHED_RWX:
-> +		return CACHED_MEM;
->  	default:
->  		return ~0UL;
->  	}
-> @@ -376,6 +382,10 @@ void __mmu_init(bool mmu_on)
->  {
->  	uint64_t *ttb = get_ttb();
->  	struct memory_bank *bank;
-> +	unsigned long text_start = (unsigned long)&_stext;
-> +	unsigned long text_size = (unsigned long)&__start_rodata - (unsigned long)&_stext;
-> +	unsigned long rodata_start = (unsigned long)&__start_rodata;
-> +	unsigned long rodata_size = (unsigned long)&__end_rodata - rodata_start;
->  
->  	if (!request_barebox_region("ttb", (unsigned long)ttb,
->  				  ARM_EARLY_PAGETABLE_SIZE))
-> @@ -400,7 +410,20 @@ void __mmu_init(bool mmu_on)
->  			pos = rsv->end + 1;
->  		}
->  
-> -		remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
-> +		if (IS_ENABLED(CONFIG_ARM_MMU_PERMISSIONS)) {
-> +			if (region_overlap_size(pos, bank->start + bank->size - pos,
-> +			    text_start, text_size)) {
-> +				remap_range((void *)pos, text_start - pos, MAP_CACHED);
-> +				remap_range((void *)text_start, text_size, MAP_CODE);
-> +				remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
-> +				remap_range((void *)(rodata_start + rodata_size),
-> +					    bank->start + bank->size - (rodata_start + rodata_size), MAP_CACHED);
+barebox-2025.06.0 is just released.
 
-Same feedback as in mmu_32.c.
+This is a rather small release but is interesting due to some bug fixes.
 
-Looks good otherwise.
+First of all decompression of FIT images failed in v2025.05.0. This is now
+fixed with "fs: remove O_DIRECTORY flag from O_TMPFILE". FIT images with
+uncompressed contents were not affected by this bug.
 
-Thanks,
-Ahmad
+Another bug was in unmounting of filesystems. Filesystems could not be
+unmounted after they have been accessed due to wrong reference counting.
+Furthermore a filesystem could not be unmounted once a findmnt command
+was executed on the mountpoint. These are fixed in "fs: unreference path
+on file close" and "fs: unreference path in canonicalize_path()"
 
-> +			} else {
-> +				remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
-> +			}
-> +		} else {
-> +			remap_range((void *)pos, bank->start + bank->size - pos, ARCH_MAP_CACHED_RWX);
-> +		}
->  	}
->  
->  	/* Make zero page faulting to catch NULL pointer derefs */
-> @@ -482,7 +505,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
->  	 */
->  	init_range(2);
->  
-> -	early_remap_range(membase, memsize, MAP_CACHED);
-> +	early_remap_range(membase, memsize, ARCH_MAP_CACHED_RWX);
->  
->  	if (optee_get_membase(&optee_membase)) {
->                  optee_membase = membase + memsize - OPTEE_SIZE;
-> @@ -501,7 +524,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
->  	early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT);
->  
->  	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext),
-> -			  MAP_CACHED);
-> +			  ARCH_MAP_CACHED_RWX);
->  
->  	mmu_enable();
->  }
-> diff --git a/arch/arm/include/asm/pgtable64.h b/arch/arm/include/asm/pgtable64.h
-> index b88ffe6be5254e1b9d3968573d5e9b7a37828a55..6f6ef22717b76baaf7857b12d38c6074871ce143 100644
-> --- a/arch/arm/include/asm/pgtable64.h
-> +++ b/arch/arm/include/asm/pgtable64.h
-> @@ -59,6 +59,7 @@
->  #define PTE_BLOCK_NG            (1 << 11)
->  #define PTE_BLOCK_PXN           (UL(1) << 53)
->  #define PTE_BLOCK_UXN           (UL(1) << 54)
-> +#define PTE_BLOCK_RO            (UL(1) << 7)
->  
->  /*
->   * AttrIndx[2:0] encoding (mapping attributes defined in the MAIR* registers).
-> diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-> index 50e4b6f42cb8d4de92b7450e5b864b9056b61916..caddbedd610f68658b7ecf7616947ce02a84e5e8 100644
-> --- a/arch/arm/lib64/barebox.lds.S
-> +++ b/arch/arm/lib64/barebox.lds.S
-> @@ -28,18 +28,19 @@ SECTIONS
->  	}
->  	BAREBOX_BARE_INIT_SIZE
->  
-> -	. = ALIGN(4);
-> +	. = ALIGN(4096);
->  	__start_rodata = .;
->  	.rodata : {
->  		*(.rodata*)
->  		RO_DATA_SECTION
->  	}
->  
-> +	. = ALIGN(4096);
-> +
->  	__end_rodata = .;
->  	_etext = .;
->  	_sdata = .;
->  
-> -	. = ALIGN(4);
->  	.data : { *(.data*) }
->  
->  	.barebox_imd : { BAREBOX_IMD }
-> 
+There is a cool new feature as well: barebox now supports eMMC HS200
+mode which speeds up eMMCs quite nicely. For now this is only supported
+on i.MX but can be extended later.
+
+For a full list of patches that went into this release see below.
+
+Have fun!
+  Sascha
+
+----------------------------------------------------------------
+Ahmad Fatoum (68):
+      kbuild: treat char as always unsigned
+      ARM: v7r: fix TLSF memory pool mix-up
+      commands: devlookup: add support for cdev aliases
+      common: bootdef: output resolution at info log level
+      lib: random: make srand_xor a no-op in PBL
+      clocksource: timer-ti-dm: replace magic constant with descriptive macros
+      clocksource: timer-ti-dm: adapt omap_dmtimer_init parameter type to usage
+      fastboot: introduce fastboot_tx_print_var() helper
+      fastboot: don't populate partition variables unconditionally
+      fastboot: only populate variables explicitly asked for
+      fastboot: factor out fb_file_getsize
+      fastboot: check for file existence before flashing/erasing
+      fb: generate mode name if missing
+      include: linux/printk: import Linux dev_err_ptr/case_probe helpers
+      video: ipuv3: drop unused drm_ forward declarations
+      video: Rockchip: drop unused declarations
+      treewide: replace dev_get_drvdata with device_get_match_data
+      ARM: i.MX: esdctl: replace dev_get_drvdata with device_get_match_data
+      gpio: gpio-mxs: replace dev_get_drvdata with device_get_match_data
+      pinctrl: at91: replace dev_get_drvdata with device_get_match_data
+      driver: switch dev_get_drvdata to Linux semantics
+      mci: am654-sdhci: fix error code printed in error messages
+      drivers: maintain const when converting from struct driver
+      driver: base: invert driver match callback for Linux compatibility
+      mci: sdhci: fix SDHCI_TRNS_AUTO_CMD12 definition
+      mci: move most recent I/O settings into mci_host::ios
+      mci: use struct mci_host::ios inside mci_set_ios
+      mci: tuning: fix fallback to DDR52
+      mci: sdhci: unmap DMA buffers on timeout
+      mci: add MMC_CAP_UHS constants
+      mci: rename MMC_CAP_MMC_x_yV_DDR to MMC_CAP_x_yV_DDR as in Linux
+      mci: compare host and card caps for supported speeds
+      mci: print HS200 capabilities in devinfo
+      mci: respect no-1-8-v OF property
+      mci: sdhci: add support for struct mci_data::timeout_ns
+      mci: imx-esdhc: use unsigned types where appropriate
+      mci: imx-esdhc: implement esdhc_poll using sdhci_read32_poll_timeout
+      mci: imx-esdhc: drop one extra read of SDHCI_INT_STATUS
+      mci: sdhci: add cmd parameter to sdhci_transfer_*
+      mci: arasan: introduce mmc_op_tuning helper
+      mci: imx-esdhc: flesh out register description
+      mci: imx-esdhc: add support for delay/tuning properties in DT
+      mci: add mci_set_timing helper
+      mci: imx-esdhc: add support for setting drive strength
+      mci: sdhci: move SDHCI_MAKE_BLKSZ definition to header
+      mci: imx-esdhc: select different pinctrl state depending on frequency
+      mci: core: retry MMC_CMD_SET_BLOCKLEN up to 4 times
+      mci: imx-esdhc: don't reconfigure clock unless required
+      mci: sdhci: fix sdhci_transfer_data MMC_SEND_TUNING compatibility
+      mci: core: implement mmc_send_tuning
+      mci: imx-esdhc: set burst_length_enable
+      mci: imx-esdhc: fixup quirks in standard SDHCI registers
+      mci: sdhci: support Linux SDHCI_QUIRK2_BROKEN_HS200 flag
+      mci: imx-esdhc: implement HS200 support
+      usb: misc: rename USB onboard hub support to onboard device
+      ARM: at91: xload: make capacity an argument to at91_mci_bio_set_highcapacity
+      mci: atmel_mci: switch PBL implementation to common mci-pbl support
+      Documentation: devicetree: mention when symbols are required in base DT
+      Documentation: migration-2025.06.0: mention char becoming unsigned
+      fbconsole: reset cursor to origin when changing fonts
+      commands: bthread: fix format specifier for ulong
+      common: optee: improve documentation of options
+      scripts: rockchip: rename SECTOR_SIZE/PAGE_SIZE
+      ci: add new musl-tools Github CI workflow
+      hw_random: omap-rng: ignore clocks for OMAP3/4
+      ARM: configs: omap_defconfig: enable HW_RANDOM_OMAP
+      of: fdt: verify length within bounds before using it
+      of: fdt: fix overflowing in dt_struct_advance arguments
+
+Alexander Shiyan (3):
+      AT91: bootsource: Remove zero check of at91_bootsource
+      clk: Fix incorrect rate comparison in clk_set_rate()
+      at91: xload: Fix MCI instance selection for SAMA5D3
+
+Bastian Krause (1):
+      Documentation: user: use https instead of git protocol for cloning
+
+Enrico Jörns (6):
+      doc: user: barebox: improved and consistent markup for console examples
+      doc: user: devicetree: fix indentation and typo
+      doc: user: barebox: add markup for release scheme and update dates
+      doc: conf.py: update copyright from 2022 to 2025
+      doc: user: booting-linux: fix double code-block markup
+      docs: conf.py: tweak SearchEnglish to be hyphen- and dot-friendly
+
+Johannes Roith (1):
+      zedboard correct comments in lowlevel.c
+
+Lars Schmidt (1):
+      ARM: k3: beagleplay: Enable 32k crystal
+
+Roland Hieber (1):
+      Documentation: use https URLs for GitHub
+
+Sascha Hauer (21):
+      dts: update to v6.15-rc3
+      dts: update to v6.15-rc4
+      ti/k3-navss-ringacc: switch to Linux code base
+      firmware: ti_sci: pass struct to ti_sci_rm_ringacc_ops::config
+      firmware: ti_sci: handle Asel
+      dma: k3-udma: Handle Asel
+      dts: update to v6.15-rc5
+      Merge branch 'master' into for-next/misc
+      Merge branch 'for-next/arm'
+      Merge branch 'for-next/char-always-unsigned'
+      Merge branch 'for-next/dts'
+      Merge branch 'for-next/fastboot'
+      Merge branch 'for-next/k3'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/mmc'
+      Documentation: boards: k3: adjust to reality
+      Documentation: boards: k3: remove obsolete k3.rst
+      sripts/k3img: determine size of files, not links
+      fs: unreference path on file close
+      fs: unreference path in canonicalize_path()
+      Release v2025.06.0
+
+Stefan Kerkmann (1):
+      fs: remove O_DIRECTORY flag from O_TMPFILE
+
+Steffen Trumtrar (1):
+      of: fdt: fix length comparison
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
