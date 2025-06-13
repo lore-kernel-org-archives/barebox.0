@@ -1,70 +1,58 @@
-Delivery-date: Fri, 13 Jun 2025 13:32:00 +0200
+Delivery-date: Fri, 13 Jun 2025 13:32:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uQ2dc-006qfq-1d
+	id 1uQ2dg-006qgO-0d
 	for lore@lore.pengutronix.de;
-	Fri, 13 Jun 2025 13:32:00 +0200
+	Fri, 13 Jun 2025 13:32:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uQ2db-0004V3-OE
-	for lore@pengutronix.de; Fri, 13 Jun 2025 13:32:00 +0200
+	id 1uQ2df-0004Ys-Fm
+	for lore@pengutronix.de; Fri, 13 Jun 2025 13:32:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sS3gpgNTI5z55i/CSq5RyOpExiUTkfQhBfUu1bEjfyQ=; b=o9Xf5E2JFppsHfJ6MOTQnWBCyf
-	nqWmKJ1KPm/YNskEXxyI6sC0ujVfLdH7e/mXXn+zmvGPa4/c39EzTw8GNJaxak4BrxQHJ4u9A467P
-	YF9kqHsRU7BKXJtlaBcmqqsu2PBmyV0aNy3HCBq5zVG4PqbkPy1f6FjxSD6OhB65nRZadsNQRRDVF
-	5Gamh31i8MvrjHHHTWJ/prycUElFsZ8l2NXxtjrNUqgGzG3PCQUlUKcnwlN3IF3ZizcVZwWc+uDZi
-	zdc9Ar66pKDPrdGag9LKj6Jyp4Tdhu/+a7gh8KS8LBph1Zozzh5b/6CgFEhyt3FMfvs9pEMPcZ0hT
-	cJ4ruiPw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=17/Xj0KfpCZsCfP7IOS9rjfgO5rrSLDwo0boQ4RJPmc=; b=gknKgtfo6aRAqKbwzsnKocK1hO
+	rGfSr15NeLpLmL9kiH4iLsB6CO8AtgvCSMjXqIsIOu8OeksPOwg7pU6xYF6rIUh7pLpZhP8xtEChA
+	ph7gfjRHDaguZx1qs7ltYdH9fBCowCQgGQlXpnFVQGONpL9Bu3LazEraEklsGJt0I/U4mepaOyzeD
+	Fme29YV+iMTWjiUa5dCVsahzLac4nVHUoWmxub9q1sEYGni01zlNFJzIBKdj1Ye5PE9Iemdlq6arl
+	miiG+pqTV/26br7BIdnACKrDboPgIpKK7Wna68h37kxaqcztYU4c0xfudsChkiBqUXa1L+uvCGmVW
+	vY54WamQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uQ2d3-0000000GBnH-0Fq6;
-	Fri, 13 Jun 2025 11:31:25 +0000
+	id 1uQ2d3-0000000GBtH-3ru1;
+	Fri, 13 Jun 2025 11:31:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uQ1ng-0000000G5NS-0x2q
+	id 1uQ1ps-0000000G5bt-3hfx
 	for barebox@lists.infradead.org;
-	Fri, 13 Jun 2025 10:38:21 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uQ1nd-0005X3-Db; Fri, 13 Jun 2025 12:38:17 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uQ1nd-003HAI-0l;
-	Fri, 13 Jun 2025 12:38:17 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uQ1nd-00AtSr-0S;
-	Fri, 13 Jun 2025 12:38:17 +0200
-Date: Fri, 13 Jun 2025 12:38:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Michael Olbrich <m.olbrich@pengutronix.de>
-Message-ID: <aEv_mckl-RFUy5Um@pengutronix.de>
-References: <20250613103215.1500101-1-s.hauer@pengutronix.de>
+	Fri, 13 Jun 2025 10:40:38 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uQ1pr-0006DC-J9; Fri, 13 Jun 2025 12:40:35 +0200
+Message-ID: <3e5e2e56-0d23-4fbc-a6a9-0ab471b85ae9@pengutronix.de>
+Date: Fri, 13 Jun 2025 12:40:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250613103215.1500101-1-s.hauer@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+References: <20250613-arm-mmu-xn-ro-v1-0-60f05c6e7b4b@pengutronix.de>
+ <20250613-arm-mmu-xn-ro-v1-7-60f05c6e7b4b@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250613-arm-mmu-xn-ro-v1-7-60f05c6e7b4b@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250613_033820_263707_125BBBFD 
-X-CRM114-Status: GOOD (  20.99  )
+X-CRM114-CacheID: sfid-20250613_034036_926161_8E2AD781 
+X-CRM114-Status: GOOD (  24.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,76 +74,158 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] common: remove unused CONFIG_BOOTM_OFTREE
+Subject: Re: [PATCH 7/7] ARM: MMU64: map text segment ro and data segments
+ execute never
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Jun 13, 2025 at 12:32:15PM +0200, Sascha Hauer wrote:
-> CONFIG_BOOTM_OFTREE is entirely unused. Remove this Kconfig option.
+Hi,
+
+On 6/13/25 09:58, Sascha Hauer wrote:
+> With this all segments in the DRAM except the text segment are mapped
+> execute-never so that only the barebox code can actually be executed.
+> Also map the readonly data segment readonly so that it can't be
+> modified.
+> 
+> The mapping is only implemented in barebox proper. The PBL still maps
+> the whole DRAM rwx.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Please disregard. Just realized the purpose is to select OFTREE.
-
-Sascha
-
 > ---
->  arch/kvx/Kconfig |  1 -
->  common/Kconfig   | 13 +------------
->  2 files changed, 1 insertion(+), 13 deletions(-)
+>  arch/arm/cpu/mmu_64.c            | 31 +++++++++++++++++++++++++++----
+>  arch/arm/include/asm/pgtable64.h |  1 +
+>  arch/arm/lib64/barebox.lds.S     |  5 +++--
+>  3 files changed, 31 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/kvx/Kconfig b/arch/kvx/Kconfig
-> index bb662e4fd8..285f140f44 100644
-> --- a/arch/kvx/Kconfig
-> +++ b/arch/kvx/Kconfig
-> @@ -4,7 +4,6 @@ config KVX
->  	bool
->  	select 64BIT
->  	select BOOTM
-> -	select BOOTM_OFTREE
->  	select BOOTM_INITRD
->  	select COMMON_CLK
->  	select COMMON_CLK_OF_PROVIDER
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 987148847e..468a981f32 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -631,17 +631,6 @@ config BOOTM_INITRD
->  	  -r INITRD  specify an initrd image
->  	  -L ADDR    specify initrd load address
+> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+> index dc81c1da6add38b59b44a9a4e247ab51ebc2692e..7b021a3f2909f7a445d253579a16cc68f6cbd765 100644
+> --- a/arch/arm/cpu/mmu_64.c
+> +++ b/arch/arm/cpu/mmu_64.c
+> @@ -312,13 +312,19 @@ static unsigned long get_pte_attrs(unsigned flags)
+>  {
+>  	switch (flags) {
+>  	case MAP_CACHED:
+> -		return CACHED_MEM;
+> +		return attrs_xn() | CACHED_MEM;
+>  	case MAP_UNCACHED:
+>  		return attrs_xn() | UNCACHED_MEM;
+>  	case MAP_FAULT:
+>  		return 0x0;
+>  	case ARCH_MAP_WRITECOMBINE:
+>  		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
+> +	case MAP_CODE:
+> +		return CACHED_MEM | PTE_BLOCK_RO;
+> +	case ARCH_MAP_CACHED_RO:
+> +		return attrs_xn() | CACHED_MEM | PTE_BLOCK_RO;
+> +	case ARCH_MAP_CACHED_RWX:
+> +		return CACHED_MEM;
+>  	default:
+>  		return ~0UL;
+>  	}
+> @@ -376,6 +382,10 @@ void __mmu_init(bool mmu_on)
+>  {
+>  	uint64_t *ttb = get_ttb();
+>  	struct memory_bank *bank;
+> +	unsigned long text_start = (unsigned long)&_stext;
+> +	unsigned long text_size = (unsigned long)&__start_rodata - (unsigned long)&_stext;
+> +	unsigned long rodata_start = (unsigned long)&__start_rodata;
+> +	unsigned long rodata_size = (unsigned long)&__end_rodata - rodata_start;
 >  
-> -config BOOTM_OFTREE
-> -	bool
-> -	depends on BOOTM
-> -	select OFTREE
-> -	prompt "device tree (oftree) support"
-> -	help
-> -	  Add support to pass a device tree (a.k.a Open Firmware Tree, oftree). Adds
-> -	  this command line option:
-> -
-> -	  -o DTS  specify device tree
-> -
->  config BOOTM_UIMAGE
->  	def_bool y
->  	prompt "support the legacy uImage format"
-> @@ -654,7 +643,7 @@ config BOOTM_UIMAGE
->  config BOOTM_OFTREE_UIMAGE
->  	bool
->  	prompt "support passing device tree (oftree) uImages"
-> -	depends on BOOTM_OFTREE && BOOTM_UIMAGE
-> +	depends on BOOTM_UIMAGE
->  	help
->  	  Support using oftree uImages. Without this only raw oftree
->  	  blobs can be used.
-> -- 
-> 2.39.5
-> 
+>  	if (!request_barebox_region("ttb", (unsigned long)ttb,
+>  				  ARM_EARLY_PAGETABLE_SIZE))
+> @@ -400,7 +410,20 @@ void __mmu_init(bool mmu_on)
+>  			pos = rsv->end + 1;
+>  		}
+>  
+> -		remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
+> +		if (IS_ENABLED(CONFIG_ARM_MMU_PERMISSIONS)) {
+> +			if (region_overlap_size(pos, bank->start + bank->size - pos,
+> +			    text_start, text_size)) {
+> +				remap_range((void *)pos, text_start - pos, MAP_CACHED);
+> +				remap_range((void *)text_start, text_size, MAP_CODE);
+> +				remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
+> +				remap_range((void *)(rodata_start + rodata_size),
+> +					    bank->start + bank->size - (rodata_start + rodata_size), MAP_CACHED);
+
+Same feedback as in mmu_32.c.
+
+Looks good otherwise.
+
+Thanks,
+Ahmad
+
+> +			} else {
+> +				remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
+> +			}
+> +		} else {
+> +			remap_range((void *)pos, bank->start + bank->size - pos, ARCH_MAP_CACHED_RWX);
+> +		}
+>  	}
+>  
+>  	/* Make zero page faulting to catch NULL pointer derefs */
+> @@ -482,7 +505,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+>  	 */
+>  	init_range(2);
+>  
+> -	early_remap_range(membase, memsize, MAP_CACHED);
+> +	early_remap_range(membase, memsize, ARCH_MAP_CACHED_RWX);
+>  
+>  	if (optee_get_membase(&optee_membase)) {
+>                  optee_membase = membase + memsize - OPTEE_SIZE;
+> @@ -501,7 +524,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+>  	early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT);
+>  
+>  	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext),
+> -			  MAP_CACHED);
+> +			  ARCH_MAP_CACHED_RWX);
+>  
+>  	mmu_enable();
+>  }
+> diff --git a/arch/arm/include/asm/pgtable64.h b/arch/arm/include/asm/pgtable64.h
+> index b88ffe6be5254e1b9d3968573d5e9b7a37828a55..6f6ef22717b76baaf7857b12d38c6074871ce143 100644
+> --- a/arch/arm/include/asm/pgtable64.h
+> +++ b/arch/arm/include/asm/pgtable64.h
+> @@ -59,6 +59,7 @@
+>  #define PTE_BLOCK_NG            (1 << 11)
+>  #define PTE_BLOCK_PXN           (UL(1) << 53)
+>  #define PTE_BLOCK_UXN           (UL(1) << 54)
+> +#define PTE_BLOCK_RO            (UL(1) << 7)
+>  
+>  /*
+>   * AttrIndx[2:0] encoding (mapping attributes defined in the MAIR* registers).
+> diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+> index 50e4b6f42cb8d4de92b7450e5b864b9056b61916..caddbedd610f68658b7ecf7616947ce02a84e5e8 100644
+> --- a/arch/arm/lib64/barebox.lds.S
+> +++ b/arch/arm/lib64/barebox.lds.S
+> @@ -28,18 +28,19 @@ SECTIONS
+>  	}
+>  	BAREBOX_BARE_INIT_SIZE
+>  
+> -	. = ALIGN(4);
+> +	. = ALIGN(4096);
+>  	__start_rodata = .;
+>  	.rodata : {
+>  		*(.rodata*)
+>  		RO_DATA_SECTION
+>  	}
+>  
+> +	. = ALIGN(4096);
+> +
+>  	__end_rodata = .;
+>  	_etext = .;
+>  	_sdata = .;
+>  
+> -	. = ALIGN(4);
+>  	.data : { *(.data*) }
+>  
+>  	.barebox_imd : { BAREBOX_IMD }
 > 
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
