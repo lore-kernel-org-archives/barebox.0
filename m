@@ -1,58 +1,57 @@
-Delivery-date: Mon, 16 Jun 2025 13:49:56 +0200
+Delivery-date: Mon, 16 Jun 2025 13:58:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uR8Lc-007uPk-1O
+	id 1uR8UB-007uVW-0M
 	for lore@lore.pengutronix.de;
-	Mon, 16 Jun 2025 13:49:56 +0200
+	Mon, 16 Jun 2025 13:58:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uR8Lb-0001Ce-NG
-	for lore@pengutronix.de; Mon, 16 Jun 2025 13:49:56 +0200
+	id 1uR8UA-0007Xo-DX
+	for lore@pengutronix.de; Mon, 16 Jun 2025 13:58:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BNG7fZfqEQN9DI9/lC5et1Ta808fIVfIXHlnVL8fJPI=; b=KaMNi2MnFjPYZPuchEoAJ5pcvf
-	lQQygWykVLN7tDyGY45lRTXZzNmJkw5kxvuYgwlcMpBsbwFSrWv6ttWWdwRoEpCY85jcXuvpHBC+c
-	8/Ba+bhyMyY92nTIrQM4vSOdORV8Dtd8Xb9trheVrRuSS3oaTfI++tQOXSaNFMW60lYMMQCWnNTHy
-	7UvEEPaEOL9p8dQDaW+dn50s9EGIWXRHzlsVRbvmNF+t/bjXB2mJce9GC4OdRHh3ByzAdNC8pVbFt
-	/EDel7gz7kt1ynfN+EYtVtr5pUEGJs+i6vTXBRHgCr/1+iLPkoPfai523mQfbq/Yfp5AtdMdSaB4I
-	fIQiuneQ==;
+	bh=sTEkeNhKRuA2nDb7WxdtRrir6eIwwtCQ0c25OsJ7pNw=; b=cUVGuuOIDhf52DVnep9NxAb0VB
+	/we3j5ZA53/U7aYkp9Hys/Dlwsg936FCcJLOrW99ACz/ThvL6GceX6lNWyt7fJLmZ87ly8A6nWXcY
+	FwlW9mIHXEF7yRDTEH6EPjb1f+GW0zFzczOXdH9NExGXkMevqgMmkNNR3WdyGXPOfJa7D5b8RkEoi
+	5SlvEPhX4CHpFWTl56Hw6rjdWkhVeSwyOeaQv298KOngDzSmnzfFyIFPwnMjsFb1i3Zwd25kd0C7m
+	HfcF+gAoOrRnsriN+StmKSSYxolcD/JLbU133OL6BBPfPk6ASAIcH46yZAmubQEepF++oKXrS68re
+	MLtqrUlA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uR8Kv-00000004FcQ-0q9m;
-	Mon, 16 Jun 2025 11:49:13 +0000
+	id 1uR8Tj-00000004GjV-32Hg;
+	Mon, 16 Jun 2025 11:58:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uR7Fk-000000045re-0zge
+	id 1uR7KO-000000046cn-3wxk
 	for barebox@lists.infradead.org;
-	Mon, 16 Jun 2025 10:39:49 +0000
+	Mon, 16 Jun 2025 10:44:38 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uR7Fh-0007cw-6p; Mon, 16 Jun 2025 12:39:45 +0200
-Message-ID: <6ad40829-5819-4784-8123-0b6e24d4c525@pengutronix.de>
-Date: Mon, 16 Jun 2025 12:39:44 +0200
+	id 1uR7KN-0006l8-PL; Mon, 16 Jun 2025 12:44:35 +0200
+Message-ID: <02876a3b-c129-41d2-b0ff-f2d06025b595@pengutronix.de>
+Date: Mon, 16 Jun 2025 12:44:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: David Picard <david.picard@clermont.in2p3.fr>, barebox@lists.infradead.org
-References: <f8c5021d-3dcb-47b5-8f27-09e33991d6ea@clermont.in2p3.fr>
- <e867d36e-4632-46d5-934f-a4efb3a8db5f@pengutronix.de>
- <a9b43b82-c234-4542-981c-ad034ad65403@clermont.in2p3.fr>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Lars Schmidt <l.schmidt@pengutronix.de>, barebox@lists.infradead.org
+References: <20250613140805.1229525-1-l.schmidt@pengutronix.de>
+ <20250613140805.1229525-2-l.schmidt@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <a9b43b82-c234-4542-981c-ad034ad65403@clermont.in2p3.fr>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250613140805.1229525-2-l.schmidt@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250616_033948_273229_6D2A52DF 
-X-CRM114-Status: GOOD (  25.72  )
+X-CRM114-CacheID: sfid-20250616_034436_986943_8C48BFEE 
+X-CRM114-Status: GOOD (  27.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,97 +73,120 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: moving to same chip, different board: no console output
+Subject: Re: [PATCH 1/4] bootchooser: implement locking of boot slots
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi David,
+Hi,
 
-On 6/11/25 13:46, David Picard wrote:
-> Hello,
-> 
-> I took the same Buildroot configuration. I replaced the .dts* files with
-> the ones provided by the new board BSP. Actually, they differ quite a
-> lot from the Altera SoC FPGA .dts* files in the Linux tree. Then, I
-> compiled and flashed the SD card.
+FTR, this is meant to be exercised by RAUC with the PR being here:
+https://github.com/rauc/rauc/pull/1732
 
-The device trees don't have the whole story. There is Quartus-generated
-C board code that sets up the DRAM controller for example, so just
-replacing the device tree doesn't work so early.
+On 6/13/25 16:08, Lars Schmidt wrote:
+> This this new global slot lock inhibits the remaining attempts counter
+> from decreasing.
 
-> I enabled CONFIG_DEBUG_LL with no change. CONFIG_DEBUG_PBL doesn't exist
-> in my case. For some reason, the defconfig I built upon, uses Barebox
-> v2021.07.0, which is probably outdated...
+It turns out, the RAUC developers tell me, that slots is a RAUC concept
+and indeed there is no mention of slots anywhere in
+common/bootchooser.c. Bootchooser instead has targets.
 
-v2021.07.0 predated CONFIG_DEBUG_PBL, yes.
+> There are ways around this, but both come with a disadvantage:
+>   - If we mark the old slot as bad after a good update, we lose the
+>     distinction between old slots that are unbootable and ones that
+>     are bootable. Maintaining this distinction allows a health monitor
+>     to explicitly boot an old slot while preventing the bootloader
+>     from doing it automatically
+>   - If we set the maximum attempts to a very high number, we keep
+>     writing the storage every boot, even if we don't do
+> In both cases, by not decreasing and increasing the remaining attempts
+> counter constantly the number of write cycles is also lowered.
+> 
+> Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
+> ---
+>  common/bootchooser.c | 27 ++++++++++++++++++++++-----
+>  1 file changed, 22 insertions(+), 5 deletions(-)
+> 
+> diff --git a/common/bootchooser.c b/common/bootchooser.c
+> index 58032a2b57..a50f757791 100644
+> --- a/common/bootchooser.c
+> +++ b/common/bootchooser.c
+> @@ -49,6 +49,7 @@ struct bootchooser {
+>  	struct state *state;
+>  	char *state_prefix;
+>  	int refs;
+> +	bool slots_locked;
 
-Cheers,
-Ahmad
+rename to attempts_locked.
 
-> 
-> David
-> 
-> Le 06/06/2025 à 19:46, Ahmad Fatoum a écrit :
->> Hello David,
->>
->> On 06.06.25 16:43, David Picard wrote:
->>> Hello,
->>>
->>> I am working on a project for which we selected an Intel/Altera
->>> Cyclone 5 SoC FPGA (an FPGA with an ARM core). As the project
->>> evolves, I have to change boards and I am facing issues to boot:
->>> absolutely no output on the serial console (USB virtual COM port),
->>> not even from Barebox.
->>>
->>> Previous working configuration:
->>> - SD card image produced by Buildroot with Barebox as the bootloader
->>> - Terasic ADC-SoC demo board, booting from the SD card.
->>> https://www.terasic.com.tw/cgi-bin/page/archive.pl?
->>> Language=English&No=1061&PartNo=1
->>>
->>> Current non-working configuration:
->>> - Eclustra Mercury+ SA2 module, also with a Cyclone 5, plus SDRAM,
->>> RTC, QSPI flash, etc. I think that the main difference between both
->>> Cyclone 5 chips is the size of the logic section is bigger on the
->>> module. The module has more RAM.
->>> https://www.enclustra.com/en/products/system-on-chip-modules/mercury-
->>> sa2/
->>> - Enclustra ST1 demo baseboard. It has a JTAG port, should this
->>> information be of interest.
->>> https://www.enclustra.com/en/products/base-boards/mercury-st1/
->>>
->>> I the current configuration, I get no output on the serial console.
->> So you tried to use the exact same image on both boards or were
->> there changes?
->>
->>> What I did:
->>> - I checked the hardware configuration (switches to select booting
->>> from the SD card and USB config) with a bare-metal application
->>> provided by Enclustra.
->>> - I used Enclutra's .dts and .dtsi files, which differ very slightly
->>> from the Linux kernel tree files.
->>> - I checked how the SD card is connected: to the exact same pins in
->>> both configurations.
->>> - I had a look at Barebox menuconfig, but nothing caught my eye.
->>>
->>> So, now I'm stuck, and I'm looking for some guidance.
->> You can try enabling CONFIG_DEBUG_LL and CONFIG_DEBUG_PBL and see if you
->> get some debugging output maybe. You'll have to choose which UART to use.
->>
->> I think your new SoM may have different RAM and thus you can't use the
->> same image, but need one suitable to RAM integrated on your new board.
->>
->> Cheers,
->> Ahmad
->>
->>> David
->>>
->>>
->>>
->>
-> 
-> 
-> 
+>  
+>  	int verbose;
+>  	int dryrun;
+> @@ -353,6 +354,7 @@ struct bootchooser *bootchooser_get(void)
+>  	int ret = -EINVAL, id = 1;
+>  	uint32_t last_chosen;
+>  	static int attempts_resetted;
+> +	uint32_t locked;
+>  
+>  	if (bootchooser) {
+>  		bootchooser->refs++;
+> @@ -397,6 +399,18 @@ struct bootchooser *bootchooser_get(void)
+>  		pr_warn("using non-redundant NV instead of barebox-state\n");
+>  	}
+>  
+> +	ret = getenv_u32(bc->state_prefix, "slots_locked", &locked);
+
+attempts_locked.
+
+> +	if (!ret) {
+> +		bc->slots_locked = locked ? true : false;
+
+Needlessly verbose. Just initialize attempts_locked to false and then here:
+
+if (!ret && locked) {
+	bc->attempts_locked = true;
+        pr_debug(...);
+}
+> +		if (bc->slots_locked)
+> +			pr_debug("Global slots locking is enabled\n");
+
+"boot attempt counting is locked\n" ?
+
+> +	} else {
+> +		/* this is an optional value, so if it doesn't exist,
+> +		 * we assume it's not locked
+> +		 */
+> +		bc->slots_locked = false;
+> +	}
+
+Can be dropped with above suggested change.
+
+> +
+>  	INIT_LIST_HEAD(&bc->targets);
+>  
+>  	freep = targets = xstrdup(available_targets);
+> @@ -650,11 +664,14 @@ static struct bootchooser_target *bootchooser_get_target(struct bootchooser *bc)
+>  	return ERR_PTR(-ENOENT);
+>  
+>  found:
+> -	target->remaining_attempts--;
+> -
+> -	if (bc->verbose)
+> -		pr_info("name=%s decrementing remaining_attempts to %d\n",
+> -			target->name, target->remaining_attempts);
+> +	if (!bc->slots_locked) {
+
+attempts_locked
+
+> +		target->remaining_attempts--;
+> +		if (bc->verbose)
+> +			pr_info("name=%s remaining_attempts %d\n", target->name,
+> +				target->remaining_attempts);
+> +	} else {
+> +		pr_info("Slots locking is enabled, not decreasing remaining_attempts\n");
+> +	}
+>  
+>  	if (bc->verbose)
+>  		pr_info("selected target '%s', boot '%s'\n", target->name, target->boot);
 
 -- 
 Pengutronix e.K.                  |                             |
