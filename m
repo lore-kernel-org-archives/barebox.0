@@ -3,52 +3,53 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uR4Cj-007qaI-2m
+	id 1uR4Cj-007qaP-35
 	for lore@lore.pengutronix.de;
 	Mon, 16 Jun 2025 09:24:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uR4Cj-0004wb-5T
+	id 1uR4Cj-0004wP-2f
 	for lore@pengutronix.de; Mon, 16 Jun 2025 09:24:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=0HhbfDRDIR8g13IJx8Oj+lRMHDbwUhgRATmb+rsjuZE=; b=eBW3aCGYDcalFtlfws+guiqIl1
-	KP6W4IhSAVoKth+vHc2ja/AV19tAYUu3u4othVL5d1V1aeYDKkhKqIZyYlkG+eUtl4fZOPj9tYRcf
-	MJflsLl32Zjy9+gEGykcLhg1z7/5XDSAQrzobyeQ4eaqrbXk0uESoW7HnT6FslkwFX6udYKOe65j/
-	BDKQ3IJSdjjqxZyyf87fp6UIDHM6gobsF099kKrhn/bOEcpTHo5ehX2ANfh0v7xNArMt7Wf7jqpBn
-	Cizf9rMbZ+ILQSIyo54KPydS7RRbvPPbe5N6bVx7m7frX0pdszVSZ9grw0A6gVhvOWkN0189BtLCI
-	zCGwnMdA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=qeRRyZ1ZvFEyzahO7YMbGYQk321zZup2UccyMDB+ucU=; b=HWJAqKf1huWAR+PflYnfS8SvZB
+	OMPZx9dNclyTlziT3sd64C+MSc2owDTBcYYY1lw+5V40Ii2UPLM+YGngiZrQi1yXHy7egB/ijzkeB
+	flI8EGSNUQv5Cbb+UzDR3rPMEGH1sHFfdTmy4bIybqMqiWf4jnuJhB9YmYpeNOe5oT76ay5EkKIB/
+	OOB7vctDZnBDfoO2SWIbNO5nLsD6tI1R+c8CBrcdDsdJbzaxSdEr+bU6GbJQyK2vVE00CRf/XhTSv
+	eVelAZ40w4xYuzHeK+wjqdq04QwKSu9fkOTOUjZgm9UFdiMe49MvQezJgR/XIOtLQNbmjuxpsgflb
+	qmUwveLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uR4C7-00000003cwN-04vJ;
-	Mon, 16 Jun 2025 07:23:51 +0000
+	id 1uR4C8-00000003cx6-2zT9;
+	Mon, 16 Jun 2025 07:23:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uR474-00000003c83-28wm
+	id 1uR474-00000003c85-28n9
 	for barebox@lists.infradead.org;
 	Mon, 16 Jun 2025 07:18:41 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uR470-0006Gi-Bv; Mon, 16 Jun 2025 09:18:34 +0200
+	id 1uR470-0006Gi-Qh; Mon, 16 Jun 2025 09:18:34 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 16 Jun 2025 09:16:29 +0200
-Message-Id: <20250616071634.811000-1-a.fatoum@barebox.org>
+Date: Mon, 16 Jun 2025 09:16:31 +0200
+Message-Id: <20250616071634.811000-3-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250616071634.811000-1-a.fatoum@barebox.org>
+References: <20250616071634.811000-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250616_001838_569143_67B8F8B0 
-X-CRM114-Status: UNSURE (   9.33  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250616_001838_564025_04125C31 
+X-CRM114-Status: GOOD (  14.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,41 +71,119 @@ X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/6] resource: mark normal memory as supporting being uncacheable
+Subject: [PATCH 3/6] commands: iomem: print human readable sizes by default
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The attributes report what the underlying memory is capable of,
-so if we can configure it as WT/WC/WB, it's likely we can configure it
-as uncached as well. This doesn't hold true for all architectures, but
-it does for ARM, so add it to the MEMATTRS_NORMAL bitfield for now.
+We already print start and end in hexadecimal, so print a size of e.g.,
+905.6 KiB doesn't lose any information when copy-pasting, but makes it
+easier for quick sanity checks.
+
+The newly introduced -v flag can be used to restore the old behavior.
+For I/O ports, printing a size in bytes doesn't make sense, so we
+exclude it via the FLAG_IOPORT flag.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- include/linux/ioport.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ commands/iomemport.c | 51 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 43 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 425928df3bfe..ceff1bb7e5ac 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -133,11 +133,11 @@ enum resource_memtype {
- #define MEMATTR_RO	0x00020000	/* read-only */
- #define MEMATTR_SP	0x00040000	/* specific-purpose */
+diff --git a/commands/iomemport.c b/commands/iomemport.c
+index bbe41f571b48..2246868c2818 100644
+--- a/commands/iomemport.c
++++ b/commands/iomemport.c
+@@ -6,9 +6,17 @@
+ #include <asm/io.h>
+ #include <common.h>
+ #include <command.h>
++#include <getopt.h>
++#include <range.h>
  
--#define MEMATTRS_CACHEABLE	(MEMATTR_WT | MEMATTR_WC | MEMATTR_WB)
--#define MEMATTRS_RW		(MEMATTRS_CACHEABLE | MEMATTR_XP)
--#define MEMATTRS_RO		(MEMATTRS_CACHEABLE | MEMATTR_XP | MEMATTR_RO)
--#define MEMATTRS_RX		(MEMATTRS_CACHEABLE | MEMATTR_RO)
--#define MEMATTRS_RWX		(MEMATTRS_CACHEABLE)	/* TODO: remove all */
-+#define MEMATTRS_NORMAL		(MEMATTR_UC | MEMATTR_WT | MEMATTR_WC | MEMATTR_WB)
-+#define MEMATTRS_RW		(MEMATTRS_NORMAL | MEMATTR_XP)
-+#define MEMATTRS_RO		(MEMATTRS_NORMAL | MEMATTR_XP | MEMATTR_RO)
-+#define MEMATTRS_RX		(MEMATTRS_NORMAL | MEMATTR_RO)
-+#define MEMATTRS_RWX		(MEMATTRS_NORMAL)	/* TODO: remove all */
- #define MEMATTRS_RW_DEVICE	(MEMATTR_UC | MEMATTR_XP)
- #define MEMATTRS_FAULT		(MEMATTR_UC | MEMATTR_XP | MEMATTR_RP | MEMATTR_RO)
+-static void __print_resources(struct resource *res, int indent)
++#define	FLAG_VERBOSE		BIT(0)
++#define	FLAG_IOPORT		BIT(1)
++
++static void __print_resources(struct resource *res, int indent,
++			      unsigned flags)
+ {
++	const char *size_str;
++	char buf[64];
+ 	struct resource *r;
+ 	resource_size_t size = resource_size(res);
+ 	int i;
+@@ -16,24 +24,50 @@ static void __print_resources(struct resource *res, int indent)
+ 	for (i = 0; i < indent; i++)
+ 		printf("  ");
  
+-	printf("%pa - %pa (size %pa) %s%s\n",
+-			&res->start, &res->end, &size,
++	if (flags & (FLAG_VERBOSE | FLAG_IOPORT)) {
++		snprintf(buf, sizeof(buf), "%pa", &size);
++		size_str = buf;
++	} else {
++		size_str = size_human_readable(size);
++	}
++
++	printf("%pa - %pa (size %9s) %s%s\n",
++			&res->start, &res->end, size_str,
+ 			is_reserved_resource(res) ? "[R] " : "",
+ 			res->name);
+ 
+ 	list_for_each_entry(r, &res->children, sibling) {
+-		__print_resources(r, indent + 1);
++		__print_resources(r, indent + 1, flags);
+ 	}
+ }
+ 
+-static void print_resources(struct resource *res)
++static void print_resources(struct resource *res, unsigned flags)
+ {
+-	__print_resources(res, 0);
++	__print_resources(res, 0, flags);
+ }
+ 
+ static int do_iomem(int argc, char *argv[])
+ {
+-	print_resources(&iomem_resource);
++	unsigned flags = 0;
++	int opt;
++
++	while((opt = getopt(argc, argv, "v")) > 0) {
++		switch(opt) {
++		case 'v':
++			flags |= FLAG_VERBOSE;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	argv += optind;
++	argc -= optind;
++
++	if (argc > 0)
++		return COMMAND_ERROR_USAGE;
++
++	print_resources(&iomem_resource, flags);
+ 
+ 	return 0;
+ }
+@@ -41,13 +75,14 @@ static int do_iomem(int argc, char *argv[])
+ BAREBOX_CMD_START(iomem)
+ 	.cmd		= do_iomem,
+ 	BAREBOX_CMD_DESC("show IO memory usage")
++	BAREBOX_CMD_OPTS("[-v]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+ BAREBOX_CMD_END
+ 
+ #if IO_SPACE_LIMIT > 0
+ static int do_ioport(int argc, char *argv[])
+ {
+-	print_resources(&ioport_resource);
++	print_resources(&ioport_resource, FLAG_IOPORT);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
