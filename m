@@ -3,58 +3,58 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRBlG-007xmS-06
+	id 1uRBlG-007xmV-0H
 	for lore@lore.pengutronix.de;
 	Mon, 16 Jun 2025 17:28:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRBlF-0001zP-Fh
-	for lore@pengutronix.de; Mon, 16 Jun 2025 17:28:37 +0200
+	id 1uRBlF-0001zO-Fi
+	for lore@pengutronix.de; Mon, 16 Jun 2025 17:28:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3qDGQL+hkJ3j2OJS6OY7c4pn1iP5uxxRNabr+Xp9A4w=; b=KrwLNmC43Wz6isbJ//Mhrb3oWH
-	CSA6JrycLFjQCkBK8n3e1TCaxgu6joqHehgH8xN8AMf9T7OanmTEpsmf/aIpU4D/Hk9zft/kpwZ0P
-	dvR1bZkkilx6xgEMOskfEneRzJixqBV/h2xKThhiSTRojJInr2czS/9Ol2h+uW4Lrd0J9E846mper
-	bl1gIoS1VX2lt9VAiR8MbvvK1SYLU2o1VRK5TTFFUScZhgsOEqRcxw4I8pa9pC3Op5HUT48vhBNtP
-	f6I4yjQK8IhZiZUkGR0JbYQYaYzAV2duRVfRSgAJNpPH+W+mD+8XE8tBV65N/JOPJnNdklVoI9MUC
-	pSBlCz2Q==;
+	bh=fV2XgrfVW7/MoocppFbyHI1Xka7VQzMTrXPAxnLpd8s=; b=Q9Z2v8R2bnYNK5+WtLPaI9jYXL
+	xhETcxT4U5rIGwHIVs7L6PwG3bOvZwxRSeG6MkfQMp6fj+1+jLEsh+VeBc2zUbhIjajeLeDc0a++A
+	57kpBWpsflosRYgzz0+2MDKQ5g0Dr5QO7iZXx2RXG8r2pu/OEdB4DWiFPw0WOwVKF9McVZVnT8Tg2
+	8BBb2bd1DPtjl9eRlqHNn9AxDdBF6FROtyNS+74vQxQz+2DMl1oZzkcp9XLtl1dE1l/EOhjQDrCjY
+	wPgFURGOHQ9oSnefGr/Lttd3NiOgvrE3Z0lfeaJzXLl3mVIscRJkEwActEtqH6C8wqUVfusqRWNDL
+	6nUpAPqw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRBkm-00000004s1O-42Mj;
-	Mon, 16 Jun 2025 15:28:08 +0000
+	id 1uRBko-00000004s2p-0Dlc;
+	Mon, 16 Jun 2025 15:28:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRBQS-00000004nWU-3rqB
+	id 1uRBQS-00000004nWV-3sBq
 	for barebox@lists.infradead.org;
 	Mon, 16 Jun 2025 15:07:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <l.schmidt@pengutronix.de>)
-	id 1uRBQP-0007fL-HK; Mon, 16 Jun 2025 17:07:05 +0200
+	id 1uRBQP-0007fM-HQ; Mon, 16 Jun 2025 17:07:05 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <l.schmidt@pengutronix.de>)
-	id 1uRBQP-003pFX-10;
+	id 1uRBQP-003pFU-12;
 	Mon, 16 Jun 2025 17:07:05 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <l.schmidt@pengutronix.de>)
-	id 1uRBQP-00Gw36-30;
+	id 1uRBQP-00Gw36-2x;
 	Mon, 16 Jun 2025 17:07:05 +0200
 From: Lars Schmidt <l.schmidt@pengutronix.de>
-Date: Mon, 16 Jun 2025 17:06:57 +0200
+Date: Mon, 16 Jun 2025 17:06:54 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250616-bootchooser-lock-v2-4-df1f0d118635@pengutronix.de>
+Message-Id: <20250616-bootchooser-lock-v2-1-df1f0d118635@pengutronix.de>
 References: <20250616-bootchooser-lock-v2-0-df1f0d118635@pengutronix.de>
 In-Reply-To: <20250616-bootchooser-lock-v2-0-df1f0d118635@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -62,9 +62,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Lars Schmidt <l.schmidt@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250616_080708_977386_39A43A4E 
-X-CRM114-Status: UNSURE (   9.71  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250616_080708_980146_B7B77A2F 
+X-CRM114-Status: GOOD (  14.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,46 +85,83 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/4] Documentation: migration-2025.08.0: add information
- about attempts_locked
+Subject: [PATCH v2 1/4] bootchooser: implement locking of attempts counter
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Document the newly added feature.
+This this new global slot lock inhibits the remaining attempts counter
+from decreasing.
+There are ways around this, but both come with a disadvantage:
+  - If we mark the old slot as bad after a good update, we lose the
+    distinction between old slots that are unbootable and ones that
+    are bootable. Maintaining this distinction allows a health monitor
+    to explicitly boot an old slot while preventing the bootloader
+    from doing it automatically
+  - If we set the maximum attempts to a very high number, we keep
+    writing the storage every boot, even if we don't do
+In both cases, by not decreasing and increasing the remaining attempts
+counter constantly the number of write cycles is also lowered.
 
 Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
 ---
- Documentation/migration-guides/migration-2025.08.0.rst | 5 +++++
- Documentation/user/bootchooser.rst                     | 3 +++
- 2 files changed, 8 insertions(+)
+ common/bootchooser.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/migration-guides/migration-2025.08.0.rst b/Documentation/migration-guides/migration-2025.08.0.rst
-index d13d5c770d5e7688e0299184b0b8b938db160fca..da60132e7d8c784b08a43c8032ee7e4dc7cb7991 100644
---- a/Documentation/migration-guides/migration-2025.08.0.rst
-+++ b/Documentation/migration-guides/migration-2025.08.0.rst
-@@ -1,3 +1,8 @@
- Release v2025.08.0
- ==================
+diff --git a/common/bootchooser.c b/common/bootchooser.c
+index 58032a2b576284fe65ee53ee0e49aea68e09697a..50ce73682fb6bac8e4319119169dfb8334eb8762 100644
+--- a/common/bootchooser.c
++++ b/common/bootchooser.c
+@@ -49,6 +49,7 @@ struct bootchooser {
+ 	struct state *state;
+ 	char *state_prefix;
+ 	int refs;
++	bool attempts_locked;
  
-+Bootchooser
-+-----------
+ 	int verbose;
+ 	int dryrun;
+@@ -353,6 +354,7 @@ struct bootchooser *bootchooser_get(void)
+ 	int ret = -EINVAL, id = 1;
+ 	uint32_t last_chosen;
+ 	static int attempts_resetted;
++	uint32_t locked;
+ 
+ 	if (bootchooser) {
+ 		bootchooser->refs++;
+@@ -397,6 +399,14 @@ struct bootchooser *bootchooser_get(void)
+ 		pr_warn("using non-redundant NV instead of barebox-state\n");
+ 	}
+ 
++	/* this is an optional value */
++	bc->attempts_locked = false;
++	ret = getenv_u32(bc->state_prefix, "attempts_locked", &locked);
++	if (!ret && locked) {
++		bc->attempts_locked = true;
++		pr_debug("remaining attempt counter is locked\n");
++	}
 +
-+Bootchooser now interprets a top-level ``attempts_locked`` variable.
-+For more information, see :ref:`attempts lock feature <bootchooser,attempts_lock>`
-diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
-index ab0b6c3fc895226f5aa4590944a2cd675a56d985..d123e8d34e63fcfb6a725cbe1aeca40a7dbbeb87 100644
---- a/Documentation/user/bootchooser.rst
-+++ b/Documentation/user/bootchooser.rst
-@@ -77,6 +77,9 @@ no remaining attempts left.
- To prevent ending up in an unbootable system after a number of failed boot
- attempts, there is also a built-in mechanism to reset the counters to their defaults,
- controlled by the ``global.bootchooser.reset_attempts`` variable.
-+
-+.. _bootchooser,attempts_lock:
-+
- Alternatively, counting down the remaining attempts can be disabled by
- locking bootchooser boot attempts.
- This is done by defining a (32-bit) ``attempts_locked`` variable in the
+ 	INIT_LIST_HEAD(&bc->targets);
+ 
+ 	freep = targets = xstrdup(available_targets);
+@@ -650,11 +660,14 @@ static struct bootchooser_target *bootchooser_get_target(struct bootchooser *bc)
+ 	return ERR_PTR(-ENOENT);
+ 
+ found:
+-	target->remaining_attempts--;
+-
+-	if (bc->verbose)
+-		pr_info("name=%s decrementing remaining_attempts to %d\n",
+-			target->name, target->remaining_attempts);
++	if (!bc->attempts_locked) {
++		target->remaining_attempts--;
++		if (bc->verbose)
++			pr_info("name=%s remaining_attempts %d\n", target->name,
++				target->remaining_attempts);
++	} else {
++		pr_info("Attempts are locked, not decreasing remaining_attempts\n");
++	}
+ 
+ 	if (bc->verbose)
+ 		pr_info("selected target '%s', boot '%s'\n", target->name, target->boot);
 
 -- 
 2.39.5
