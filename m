@@ -1,73 +1,73 @@
-Delivery-date: Mon, 16 Jun 2025 20:29:53 +0200
+Delivery-date: Mon, 16 Jun 2025 20:29:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uREaf-0080jc-25
+	id 1uREah-0080jz-0i
 	for lore@lore.pengutronix.de;
-	Mon, 16 Jun 2025 20:29:53 +0200
+	Mon, 16 Jun 2025 20:29:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uREae-0002qa-T9
-	for lore@pengutronix.de; Mon, 16 Jun 2025 20:29:53 +0200
+	id 1uREag-0002x1-FL
+	for lore@pengutronix.de; Mon, 16 Jun 2025 20:29:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fOGoceQc+CZHerLc5xZRNE7va8UBuKt/LO1YUYSgNPs=; b=x/FMwq7rgy4Q0bDmBlzUyuWO8r
-	TMOLAm1eCibBXra49QoM/eTK2T/UcDpjVjKmeObeCkGy5x7QQUwMdhSrvcfqEWBlY9ihmddSx5Zp4
-	yToiKnpChQs36Eg4ULTNb6oUjRbjiVMmMMsRCW9b1MJ3uWSoGaIqhUbn31IYDWmplOMEoKuT+UIwJ
-	nqylbofuoBr+DDdTX3/malVl3yJ7SqcFuCkFaizHXqeQBSvQeDqvgnK2vKWG7qovc+jloXmEf+1N+
-	ZN7G9L7r/+AJ9Vw1WkerjQmhh1Tm1Mr3rDKPINvoSMMnxW6HMfV/v08qv/VQw08R5+xQQ6pJsUeI4
-	jPrCVNWg==;
+	bh=YOAf4O+ddsJopCEG6E8vWW4y+Df61FEdepPk/dSPqRA=; b=LF9F+bURTXwWAwVqxOtPGz2CRu
+	jRuh2U+w7D/pIiCTsnmNDePLYeOSZNwJHAp3QwiD5Ov+vB3iVd/SWEx5m0FEqfqJDzeSSJwiz3iYY
+	ZJHymfu/b1oeTkti6GesiL+5AfPdK5lNf2+fIY9sMfwTlfz4nuUZ1XSGUm340Haw/sygelrcU1vEz
+	UTYTHpuOKTosD5kKcDmRMkTBzjzFJD7uLt8TMqXV0byXY/HCxdmE9XbtUwQ7zNUgusrYRPBVGdQk9
+	uLoKx9cj7ZvTbu1/HrnqWWZ3Kq7V2avu4sYHXVOzA/EYalK/By4xo7JTP8jpqABvnnJ9/BWIWqLzo
+	J9gPW2dA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uREZv-00000005DaI-0ro9;
+	id 1uREZv-00000005Dat-3Hc0;
 	Mon, 16 Jun 2025 18:29:07 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRBpn-00000004tjQ-46DN
+	id 1uRBrM-00000004tsL-0fVs
 	for barebox@bombadil.infradead.org;
-	Mon, 16 Jun 2025 15:33:20 +0000
+	Mon, 16 Jun 2025 15:34:56 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
 	:In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
 	Reply-To:Cc:Content-ID:Content-Description;
-	bh=fOGoceQc+CZHerLc5xZRNE7va8UBuKt/LO1YUYSgNPs=; b=G0Wx+eAW2qr1xD/3bpxKbIV/Q0
-	hMqNgrw6qxpW/+thgYJl4QKqrrQur4yGU+66OauIMRj6zEeSVI1Ulgn3bQ9zjx/ILuUVY06Rp02xh
-	PRMdSW+PA9j1JpgqnhsJN1V4zdSa8BnHH6X8H3mhVhfZFGwqgAhlYAvEWQChly5h6ty3wM2h4Dith
-	rjVYhnc1A2OrpF+uYgfSxFRDAuIJ6qMooq65ExDvgvS5IIwT9gCTYhDCla1VbaLlH4PVJS1qfZNdf
-	8ZvWWn5+oe5Q5K8HhLEaxIrCF+b0Zr8KX4GjLXNo1h0hR0c5np/BIh+WWTMFInhvkhIMvfbkQHXpa
-	Q22oQcvg==;
+	bh=YOAf4O+ddsJopCEG6E8vWW4y+Df61FEdepPk/dSPqRA=; b=BmrRJaQtxlVqfEQu69vg/w79E1
+	otPFqkeyft3ru4OzqC6LUC/zPTS9GMe5/SHgGldUQ9MaOAP9+duFFKnhFPFXbPJJwqB7lCuUYLH8R
+	XPXIFRC1FRfTIAhO2rTjaB9r2+d0ru4p1AUjnEuo8W/JmOr8aSatY+co3giwA0v9pGwKQSj0xBwH7
+	oOWSQtZLC0w8Cp6AMXXoUxgS1vt431S/LUkyvahlyhw59JtN/xWBIPKrtyJXR8pJBKAvbKBrVqeoX
+	c5cwh0QGoaKnrJ4+nebJFfl+kWcJlF6tqCElbfGTMVcj+PySchDrCkFU8E73FpXwN3rr5ulmLslgM
+	OgaRLp8g==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRBpl-00000003cfL-2tCM
+	id 1uRBrJ-00000003cg6-2MUv
 	for barebox@lists.infradead.org;
-	Mon, 16 Jun 2025 15:33:19 +0000
+	Mon, 16 Jun 2025 15:34:55 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uRBpk-0003fF-Dq; Mon, 16 Jun 2025 17:33:16 +0200
-Message-ID: <7209b49f-df3a-4e08-9c57-d21a498ae7d1@pengutronix.de>
-Date: Mon, 16 Jun 2025 17:33:16 +0200
+	id 1uRBrI-00073y-9v; Mon, 16 Jun 2025 17:34:52 +0200
+Message-ID: <6470c77d-deb7-454b-88b8-39775ba8e423@pengutronix.de>
+Date: Mon, 16 Jun 2025 17:34:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Lars Schmidt <l.schmidt@pengutronix.de>,
  Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
 References: <20250616-bootchooser-lock-v2-0-df1f0d118635@pengutronix.de>
- <20250616-bootchooser-lock-v2-2-df1f0d118635@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ <20250616-bootchooser-lock-v2-3-df1f0d118635@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20250616-bootchooser-lock-v2-2-df1f0d118635@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250616-bootchooser-lock-v2-3-df1f0d118635@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250616_163317_881187_9192FD42 
-X-CRM114-Status: GOOD (  27.05  )
+X-CRM114-CacheID: sfid-20250616_163453_870177_7F808C3C 
+X-CRM114-Status: GOOD (  23.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,142 +89,88 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/4] bootchooser: extend cmd tool by option to set
+Subject: Re: [PATCH v2 3/4] Documentation: bootchooser: add information about
  attempts_locked
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+
+
 On 6/16/25 17:06, Lars Schmidt wrote:
-> This flag is normally set in userspace. But having
-> the option of setting it in bootloader gives more debugging
-> options.
+> The new attempts_locked variable does have influence on
+> remaining_attempts counter.
+
+This commit message feels incomplete.
+
+> 
+> While at it, also make mention in the bootstate.dtsi.
 > 
 > Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
 
+The diff looks fine though:
+
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-There's a boot test pending review[1]. I intend to submit a test
-exercising this feature and using the bootchooser -l/-L command later.
-
-[1]:
-https://lore.barebox.org/barebox/20250612085603.4190573-1-a.fatoum@barebox.org/T/#t
-
-Cheers,
-Ahmad
-
 > ---
->  commands/bootchooser.c | 16 +++++++++++++++-
->  common/bootchooser.c   | 28 ++++++++++++++++++++++++++++
->  include/bootchooser.h  |  1 +
->  3 files changed, 44 insertions(+), 1 deletion(-)
+>  Documentation/user/bootchooser.rst | 23 +++++++++++++++++++++++
+>  arch/arm/dts/bootstate.dtsi        |  5 +++++
+>  2 files changed, 28 insertions(+)
 > 
-> diff --git a/commands/bootchooser.c b/commands/bootchooser.c
-> index 46b063e027db30073ada28487bc0434026cc081a..4199085f352b289e069f22870c0239aede38df61 100644
-> --- a/commands/bootchooser.c
-> +++ b/commands/bootchooser.c
-> @@ -48,8 +48,9 @@ static int do_bootchooser(int argc, char *argv[])
->  	int info = 0;
->  	bool done_something = false;
->  	bool last_boot_successful = false;
-> +	int lock_state = -1;
->  
-> -	while ((opt = getopt(argc, argv, "a:p:is")) > 0) {
-> +	while ((opt = getopt(argc, argv, "a:p:islL")) > 0) {
->  		switch (opt) {
->  		case 'a':
->  			if (!strcmp(optarg, "default"))
-> @@ -69,6 +70,12 @@ static int do_bootchooser(int argc, char *argv[])
->  		case 's':
->  			last_boot_successful = true;
->  			break;
-> +		case 'l':
-> +			lock_state = true;
-> +			break;
-> +		case 'L':
-> +			lock_state = false;
-> +			break;
->  		default:
->  			return COMMAND_ERROR_USAGE;
->  		}
-> @@ -109,6 +116,11 @@ static int do_bootchooser(int argc, char *argv[])
->  		done_something = true;
->  	}
->  
-> +	if (lock_state >= 0) {
-> +		ret = bootchooser_lock_attempts(bootchooser, lock_state);
-> +		done_something = true;
-> +	}
+> diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
+> index 351e1d14e1ead6ba8d329c03c0bc7ed28b523df0..ab0b6c3fc895226f5aa4590944a2cd675a56d985 100644
+> --- a/Documentation/user/bootchooser.rst
+> +++ b/Documentation/user/bootchooser.rst
+> @@ -77,6 +77,16 @@ no remaining attempts left.
+>  To prevent ending up in an unbootable system after a number of failed boot
+>  attempts, there is also a built-in mechanism to reset the counters to their defaults,
+>  controlled by the ``global.bootchooser.reset_attempts`` variable.
+> +Alternatively, counting down the remaining attempts can be disabled by
+> +locking bootchooser boot attempts.
+> +This is done by defining a (32-bit) ``attempts_locked`` variable in the
+> +bootstate and setting its value to ``1`` (usually from userspace).
 > +
->  	if (!done_something) {
->  		printf("Nothing to do\n");
->  		ret = COMMAND_ERROR_USAGE;
-> @@ -126,6 +138,8 @@ BAREBOX_CMD_HELP_TEXT("Options:")
->  BAREBOX_CMD_HELP_OPT ("-a <n|default> [TARGETS]",  "set remaining attempts of given targets to 'n' or the default attempts")
->  BAREBOX_CMD_HELP_OPT ("-p <n|default> [TARGETS]",  "set priority of given targets to 'n' or the default priority")
->  BAREBOX_CMD_HELP_OPT ("-i",  "Show information about the bootchooser")
-> +BAREBOX_CMD_HELP_OPT ("-l",  "Enable locking of remaining attempts")
-> +BAREBOX_CMD_HELP_OPT ("-L",  "Disable locking of remaining attempts")
->  BAREBOX_CMD_HELP_OPT ("-s",  "Mark the last boot successful")
->  BAREBOX_CMD_HELP_END
->  
-> diff --git a/common/bootchooser.c b/common/bootchooser.c
-> index 50ce73682fb6bac8e4319119169dfb8334eb8762..7e4622aad5dfe02d8e798a249c46cd1c048dc3c9 100644
-> --- a/common/bootchooser.c
-> +++ b/common/bootchooser.c
-> @@ -631,6 +631,9 @@ void bootchooser_info(struct bootchooser *bc)
->  
->  	printf("\nlast booted target: %s\n", bc->last_chosen ?
->  	       bc->last_chosen->name : "unknown");
+> +The variable affects all targets, is optional and its absence is
+> +interpreted as ``0``, meaning that attempts are decremented normally.
 > +
-> +	printf("Locking of boot attempt counter: %s",
-> +	       bc->attempts_locked ? "enabled" : "disabled");
->  }
+> +The ``attempts_locked`` value does not influence the decision on which target
+> +to boot if any, only whether to decrement the attempts when booting.
 >  
->  /**
-> @@ -817,6 +820,31 @@ struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bc)
->  	return bc->last_chosen;
->  }
+>  If ``global.bootchooser.retry`` is enabled (set to ``1``), the bootchooser
+>  algorithm will iterate through all valid boot targets (and decrease their
+> @@ -107,6 +117,19 @@ on the :ref:`reset reason <reset_reason>` (i.e. != WDG) using the
+>  This will reset the ``remaining_attempts`` counter of the *last chosen* slot to
+>  its default value (``reset_attempts``).
 >  
-> +/**
-> + * bootchooser_lock_attempts - lock the bootchooser attempt counter
-> + * @bc:		The bootchooser
-> + * @locked:     Whether the attempt counter is locked or not.
-> + *
-> + * Instruct bootchooser to lock the boot attempts counter.
-> + * This means remaining_attempts will not be counted down.
-> + *
-> + * Return: 0 for success, negative error code otherwise
-> + */
-> +int bootchooser_lock_attempts(struct bootchooser *bc, bool locked)
-> +{
-> +	uint32_t not_needed;
-> +	/* We just need to check here, if the value exists in the device tree
-> +	 * So if it doesn't exist, we can inform user about it for easier debugging
-> +	 */
-> +	if (getenv_u32(bc->state_prefix, "attempts_locked", &not_needed)) {
-> +		pr_warn("Missing attempts_locked property in state DT node\n");
-> +		return -ENOENT;
-> +	}
+> +Another option is to use ``attempts_locked``. Normally this should be controlled from
+> +Linux userspace using the *barebox-state* tool, i.e.::
 > +
-> +	bc->attempts_locked = locked;
-> +	return 0;
-> +}
+> +  barebox-state -s  bootstate.attempts_locked=1
 > +
->  static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
->  {
->  	char *system;
-> diff --git a/include/bootchooser.h b/include/bootchooser.h
-> index 31989163b236196d6355acb9e7d30a18b784baa2..69783b0b7494ac303a17a466d599559513fb6d17 100644
-> --- a/include/bootchooser.h
-> +++ b/include/bootchooser.h
-> @@ -17,6 +17,7 @@ void bootchooser_info(struct bootchooser *bootchooser);
->  int bootchooser_boot(struct bootchooser *bc);
+> +It can also be locked via the :ref:`bootchooser command <command_bootchooser>`::
+> +
+> +  bootchooser -l
+> +
+> +or unlocked::
+> +
+> +  bootchooser -L
+> +
 >  
->  struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bootchooser);
-> +int bootchooser_lock_attempts(struct bootchooser *bc, bool locked);
->  const char *bootchooser_target_name(struct bootchooser_target *target);
->  struct bootchooser_target *bootchooser_target_by_name(struct bootchooser *bootchooser,
->  						      const char *name);
+>  .. _dt-utils: https://git.pengutronix.de/cgit/tools/dt-utils
+>  
+> diff --git a/arch/arm/dts/bootstate.dtsi b/arch/arm/dts/bootstate.dtsi
+> index aa767d4e3b966244b01702bbc2bdcd5c95ef7009..733441fb2697b283dc784b00b012e11ad671bb15 100644
+> --- a/arch/arm/dts/bootstate.dtsi
+> +++ b/arch/arm/dts/bootstate.dtsi
+> @@ -42,4 +42,9 @@ last_chosen@10 {
+>  		reg = <0x10 0x4>;
+>  		type = "uint32";
+>  	};
+> +
+> +	attempts_locked@14 {
+> +		reg = <0x14 0x4>;
+> +		type = "uint32";
+> +	};
+>  };
 > 
 
 -- 
