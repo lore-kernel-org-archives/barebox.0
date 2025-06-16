@@ -1,66 +1,54 @@
-Delivery-date: Fri, 13 Jun 2025 17:21:50 +0200
+Delivery-date: Mon, 16 Jun 2025 09:24:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uQ6E2-006wDf-0O
+	id 1uR4Cj-007qaI-2m
 	for lore@lore.pengutronix.de;
-	Fri, 13 Jun 2025 17:21:50 +0200
+	Mon, 16 Jun 2025 09:24:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uQ6E1-0007lN-Hy
-	for lore@pengutronix.de; Fri, 13 Jun 2025 17:21:50 +0200
+	id 1uR4Cj-0004wb-5T
+	for lore@pengutronix.de; Mon, 16 Jun 2025 09:24:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=E4t5zzxyH22sXGGyAiV4nXHe9EH1Dhl9JpsWlNKlKS4=; b=kRJC6eNCRnKYiXeSEEXDLg2y2s
-	FJXJr+PqiAFWCbAxto6FZkx3azobL0t6OEv/sxU6JxiyHnukUM1xRqSOx+SbyjJEGfz9OyD/lOwF2
-	eeadL04xV5qnqYjKDJ0tumN3COoTSZAnbtbwip4g985ePuYX4fgdp2S6YFAAVxmgaR2XIXxG34Y16
-	2cuGM4nEQwHT7H93rCEAvNEozkkRE62X/COeNrrvk0NV7k23Q6dzFDy6rV3+7Z+KXQmBa/DeO1kf2
-	2moPIYSU+8irhNNaU4Qv2wosYe6xlsyGWW+OOvTFio3b3gsJPYU13gxgAyXlALNudRWr2BKyQkRKp
-	Z9SaNF+g==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=0HhbfDRDIR8g13IJx8Oj+lRMHDbwUhgRATmb+rsjuZE=; b=eBW3aCGYDcalFtlfws+guiqIl1
+	KP6W4IhSAVoKth+vHc2ja/AV19tAYUu3u4othVL5d1V1aeYDKkhKqIZyYlkG+eUtl4fZOPj9tYRcf
+	MJflsLl32Zjy9+gEGykcLhg1z7/5XDSAQrzobyeQ4eaqrbXk0uESoW7HnT6FslkwFX6udYKOe65j/
+	BDKQ3IJSdjjqxZyyf87fp6UIDHM6gobsF099kKrhn/bOEcpTHo5ehX2ANfh0v7xNArMt7Wf7jqpBn
+	Cizf9rMbZ+ILQSIyo54KPydS7RRbvPPbe5N6bVx7m7frX0pdszVSZ9grw0A6gVhvOWkN0189BtLCI
+	zCGwnMdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uQ6DO-0000000Gqxo-1KyO;
-	Fri, 13 Jun 2025 15:21:10 +0000
+	id 1uR4C7-00000003cwN-04vJ;
+	Mon, 16 Jun 2025 07:23:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uQ54r-0000000Gcza-3UcQ
+	id 1uR474-00000003c83-28wm
 	for barebox@lists.infradead.org;
-	Fri, 13 Jun 2025 14:08:19 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <lsc@pengutronix.de>)
-	id 1uQ54q-00077c-Mj; Fri, 13 Jun 2025 16:08:16 +0200
-Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <lsc@pengutronix.de>)
-	id 1uQ54q-003IuZ-1Z;
-	Fri, 13 Jun 2025 16:08:16 +0200
-Received: from lsc by dude06.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <lsc@pengutronix.de>)
-	id 1uQ54q-005AGW-1N;
-	Fri, 13 Jun 2025 16:08:16 +0200
-From: Lars Schmidt <l.schmidt@pengutronix.de>
+	Mon, 16 Jun 2025 07:18:41 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1uR470-0006Gi-Bv; Mon, 16 Jun 2025 09:18:34 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Lars Schmidt <l.schmidt@pengutronix.de>
-Date: Fri, 13 Jun 2025 16:08:05 +0200
-Message-Id: <20250613140805.1229525-5-l.schmidt@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon, 16 Jun 2025 09:16:29 +0200
+Message-Id: <20250616071634.811000-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250613140805.1229525-1-l.schmidt@pengutronix.de>
-References: <20250613140805.1229525-1-l.schmidt@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250613_070817_926647_90E5908D 
-X-CRM114-Status: GOOD (  13.06  )
+X-CRM114-CacheID: sfid-20250616_001838_569143_67B8F8B0 
+X-CRM114-Status: UNSURE (   9.33  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,60 +66,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/4] Documentation: migration-2025.07.0: add information about slots_locked
+Subject: [PATCH 1/6] resource: mark normal memory as supporting being uncacheable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
----
- Documentation/migration-guides/index.rst               | 1 +
- Documentation/migration-guides/migration-2025.07.0.rst | 8 ++++++++
- Documentation/user/bootchooser.rst                     | 3 +++
- 3 files changed, 12 insertions(+)
- create mode 100644 Documentation/migration-guides/migration-2025.07.0.rst
+The attributes report what the underlying memory is capable of,
+so if we can configure it as WT/WC/WB, it's likely we can configure it
+as uncached as well. This doesn't hold true for all architectures, but
+it does for ARM, so add it to the MEMATTRS_NORMAL bitfield for now.
 
-diff --git a/Documentation/migration-guides/index.rst b/Documentation/migration-guides/index.rst
-index 182654847f..4bba061476 100644
---- a/Documentation/migration-guides/index.rst
-+++ b/Documentation/migration-guides/index.rst
-@@ -12,3 +12,4 @@ cause build errors are generally out-of-scope for these documents.
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ include/linux/ioport.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+index 425928df3bfe..ceff1bb7e5ac 100644
+--- a/include/linux/ioport.h
++++ b/include/linux/ioport.h
+@@ -133,11 +133,11 @@ enum resource_memtype {
+ #define MEMATTR_RO	0x00020000	/* read-only */
+ #define MEMATTR_SP	0x00040000	/* specific-purpose */
  
-    migration-2025.05.0
-    migration-2025.06.0
-+   migration-2025.07.0
-\ No newline at end of file
-diff --git a/Documentation/migration-guides/migration-2025.07.0.rst b/Documentation/migration-guides/migration-2025.07.0.rst
-new file mode 100644
-index 0000000000..c18743a633
---- /dev/null
-+++ b/Documentation/migration-guides/migration-2025.07.0.rst
-@@ -0,0 +1,8 @@
-+Release v2025.07.0
-+==================
-+
-+Bootchooser
-+-----------
-+
-+Bootchooser now interprets a top-level ``slots_locked`` variable.
-+For more information, see :ref:`slot locking feature <bootchooser,slots_lock>`
-diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
-index 306443270a..f767dc77e8 100644
---- a/Documentation/user/bootchooser.rst
-+++ b/Documentation/user/bootchooser.rst
-@@ -77,6 +77,9 @@ no remaining attempts left.
- To prevent ending up in an unbootable system after a number of failed boot
- attempts, there is also a built-in mechanism to reset the counters to their defaults,
- controlled by the ``global.bootchooser.reset_attempts`` variable.
-+
-+.. _bootchooser,slots_lock:
-+
- Alternatively, counting down the remaining attempts can be disabled by
- locking the bootchooser slots.
- This is done by defining a (32-bit) ``slots_locked`` variable in the
+-#define MEMATTRS_CACHEABLE	(MEMATTR_WT | MEMATTR_WC | MEMATTR_WB)
+-#define MEMATTRS_RW		(MEMATTRS_CACHEABLE | MEMATTR_XP)
+-#define MEMATTRS_RO		(MEMATTRS_CACHEABLE | MEMATTR_XP | MEMATTR_RO)
+-#define MEMATTRS_RX		(MEMATTRS_CACHEABLE | MEMATTR_RO)
+-#define MEMATTRS_RWX		(MEMATTRS_CACHEABLE)	/* TODO: remove all */
++#define MEMATTRS_NORMAL		(MEMATTR_UC | MEMATTR_WT | MEMATTR_WC | MEMATTR_WB)
++#define MEMATTRS_RW		(MEMATTRS_NORMAL | MEMATTR_XP)
++#define MEMATTRS_RO		(MEMATTRS_NORMAL | MEMATTR_XP | MEMATTR_RO)
++#define MEMATTRS_RX		(MEMATTRS_NORMAL | MEMATTR_RO)
++#define MEMATTRS_RWX		(MEMATTRS_NORMAL)	/* TODO: remove all */
+ #define MEMATTRS_RW_DEVICE	(MEMATTR_UC | MEMATTR_XP)
+ #define MEMATTRS_FAULT		(MEMATTR_UC | MEMATTR_XP | MEMATTR_RP | MEMATTR_RO)
+ 
 -- 
 2.39.5
 
