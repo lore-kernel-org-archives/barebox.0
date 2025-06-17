@@ -1,55 +1,72 @@
-Delivery-date: Tue, 17 Jun 2025 15:20:30 +0200
+Delivery-date: Tue, 17 Jun 2025 15:25:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRWEo-008Haf-2u
+	id 1uRWJH-008Hdr-1y
 	for lore@lore.pengutronix.de;
-	Tue, 17 Jun 2025 15:20:30 +0200
+	Tue, 17 Jun 2025 15:25:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRWEo-0001E9-Cv
-	for lore@pengutronix.de; Tue, 17 Jun 2025 15:20:30 +0200
+	id 1uRWJF-0001V0-RF
+	for lore@pengutronix.de; Tue, 17 Jun 2025 15:25:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=/NMAjqxE2IK/3fZhyQ8THxlC0woOWuNcBhBQJgYWXXE=; b=KN2CTCT8liq0c1xqyu1wK8gV8m
-	T2FA+CdNvTCn3lJJp2NQ+LTqXChvB7leCONXwdUmTXemm2SdpE+i55G2EESL/vt0DG+HN1r2t+aU0
-	+yUbqqKmmnmPBSx6m0HHN4+R6HsBX6pxhuLw645ST3/qFsqyarCOjJ9suFLN2B1YNmHc2TiDX5bqU
-	Xoyw8kguA8fi44R9aW0XllB54QVBlv3ZvGDcGRrZYlfpW4bfCIadNwfiiDNE7bNhJYe4+KGWd45zX
-	QSTuuwOvQxPKzDybtfbVj9wDd/NfOW+82CCZslsvXFAZc2nJimhhWmuPE2PPBLH76GRA6B7+VtMHa
-	PE/SlSgg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=p0PbH7ldhbAXFfsrz7+mugNHXng/eyVPYIjLcl7xTa8=; b=Y+ZYYGDNSOxlTMZeD2YQQFxdU5
+	LbF1h2hg1QYN0ER3JGTgCx92zDzM7ftV0bIeVyUoATP6Hr6PYiFdpKSv5bO6GsKCBBLbUPiV53DDl
+	/iHbSDIy0/bnoyaGBn3IH+8GSSf7P3eKek2ZRzPbI6AjSYPqdmD3yFDihL5OYWQnvA53Nfqa4JB54
+	DLvwvueTn+HgdlQWoDOfk+sawubYP5wrfU/e4gtng3mpmDC2jDrbeaIIHbZETXow3QS3cmYJlYN99
+	66d5vfqDP3a9uWYiPwskQcvPAJt8uG6ZZSWpJGyIE8OOEH+RfTK95C2kUXSQ170qQHojYkUXRo6VI
+	F8C7P0+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRWE5-00000007K8e-05js;
-	Tue, 17 Jun 2025 13:19:45 +0000
+	id 1uRWIp-00000007LB7-1jMN;
+	Tue, 17 Jun 2025 13:24:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRVeF-00000007DW8-2TFI
+	id 1uRW16-00000007Hha-1h6r
 	for barebox@lists.infradead.org;
-	Tue, 17 Jun 2025 12:42:45 +0000
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <bst@pengutronix.de>)
-	id 1uRVeC-0006W5-C6; Tue, 17 Jun 2025 14:42:40 +0200
-From: Bastian Krause <bst@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Bastian Krause <bst@pengutronix.de>
-Date: Tue, 17 Jun 2025 14:42:38 +0200
-Message-Id: <20250617124238.2024714-1-bst@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Tue, 17 Jun 2025 13:06:21 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uRW15-0008BN-08; Tue, 17 Jun 2025 15:06:19 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uRW14-003ybs-2b;
+	Tue, 17 Jun 2025 15:06:18 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uRW14-001SJL-2F;
+	Tue, 17 Jun 2025 15:06:18 +0200
+Date: Tue, 17 Jun 2025 15:06:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aFFoSvuMhKpYjpgS@pengutronix.de>
+References: <20250613-arm-mmu-xn-ro-v1-0-60f05c6e7b4b@pengutronix.de>
+ <20250613-arm-mmu-xn-ro-v1-5-60f05c6e7b4b@pengutronix.de>
+ <8fe1fedf-f6e3-4c11-9154-3a355488a352@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8fe1fedf-f6e3-4c11-9154-3a355488a352@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250617_054243_634536_46BB0CBE 
-X-CRM114-Status: UNSURE (   9.61  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250617_060620_443505_7ACEFC39 
+X-CRM114-Status: GOOD (  29.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,41 +84,124 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] console: handle input consoles in of_console_by_stdout_path() gracefully
+Subject: Re: [PATCH 5/7] ARM: MMU: map text segment ro and data segments
+ execute never
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With CONFIG_INPUT=y, inputs are registered as consoles without setting
-the dev member. This leads to a NULL pointer dereference when passed to
-dev_of_node().
+On Fri, Jun 13, 2025 at 12:12:01PM +0200, Ahmad Fatoum wrote:
+> Hi,
+> 
+> On 6/13/25 09:58, Sascha Hauer wrote:
+> > +	pr_debug("%s: 0x%08x 0x%08x type %d\n", __func__, virt_addr, size, map_type);
+> 
+> I can add a follow up patch turning type into a string.
+> 
+> > +	unsigned long text_start = (unsigned long)&_stext;
+> > +	unsigned long text_size = (unsigned long)&__start_rodata - (unsigned long)&_stext;
+> 
+> text_size is an unfortunate name as text_start + text_size != _etext -
+> 1, which is surprising.
+> 
+> I would prefer:
+> 
+> text_start = code_start = &_stext;
+> text_size = &_etext - text_start;
+> code_size = &__start_ro_data - code_start;
 
-So add a check prior to calling dev_of_node() with a NULL pointer to
-prevent this.
+Ok.
 
-Signed-off-by: Bastian Krause <bst@pengutronix.de>
----
- common/console.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> > +	unsigned long rodata_start = (unsigned long)&__start_rodata;
+> > +	unsigned long rodata_size = (unsigned long)&__end_rodata - rodata_start;
+> >  
+> >  	if (!request_barebox_region("ttb", (unsigned long)ttb,
+> >  				    ARM_EARLY_PAGETABLE_SIZE))
+> > @@ -550,6 +574,8 @@ void __mmu_init(bool mmu_on)
+> >  
+> >  	pr_debug("ttb: 0x%p\n", ttb);
+> >  
+> > +	vectors_init();
+> 
+> Any particular reason to move this around?
 
-diff --git a/common/console.c b/common/console.c
-index f94dbe3243c..424290b6cd1 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -264,7 +264,7 @@ struct console_device *of_console_by_stdout_path(void)
- 		return NULL;
- 
- 	for_each_console(console) {
--		if (dev_of_node(console->dev) == stdout_np)
-+		if (console->dev && dev_of_node(console->dev) == stdout_np)
- 			return console;
- 	}
- 
+Yes. vectors_init() modifies the exception table which on ARMv7 happens
+to live in the text segment which is readonly after the loop.
+
+First I thought this is a hack and the exception vectors should be moved
+out of the text segment, but maybe it's not a hack. In the end this way
+the exception vectors are protected against modification.
+
+> 
+> > +
+> >  	/*
+> >  	 * Early mmu init will have mapped everything but the initial memory area
+> >  	 * (excluding final OPTEE_SIZE bytes) uncached. We have now discovered
+> > @@ -568,10 +594,22 @@ void __mmu_init(bool mmu_on)
+> >  			pos = rsv->end + 1;
+> >  		}
+> >  
+> > -		remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
+> > +		if (IS_ENABLED(CONFIG_ARM_MMU_PERMISSIONS)) {
+> > +			if (region_overlap_size(pos, bank->start + bank->size - pos,
+> > +			    text_start, text_size)) {
+> 
+> Wouldn't matter, but we should check overlap against the full range we
+> are going to remap specially. With my suggested text_size/code_size
+> changes above that would be correct(er).
+
+Yes, fixed that.
+
+> 
+> > +				remap_range((void *)pos, text_start - pos, MAP_CACHED);
+> 
+> This is ok.
+> 
+> > +				remap_range((void *)text_start, text_size, MAP_CODE);
+> > +				remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
+> 
+> These I would move out of the loop after the iteration.
+> 
+> > +				remap_range((void *)(rodata_start + rodata_size),
+> > +					    bank->start + bank->size - (rodata_start + rodata_size),
+> > +					    MAP_CACHED);
+> > +			} else {
+> > +				remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
+> > +			}
+> > +		} else {
+> > +			remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
+> > +		}
+> 
+> If we combine the two if conditional into a single &&ed one, we can
+> replace the three remap_range calls by a single one:
+> 
+> 		pos = text_start + text_end;
+> 		if (pos >= bank->start + bank->size)
+> 			continue;
+> 		/* We carved out a gap for the barebox parts, so fall
+>                  * through to remapping the rest
+>                  */
+> 	}
+> 
+> 	remap_range((void *)pos, bank->start + bank->size - pos,
+> 		    MAP_CACHED);
+> }
+> 
+> Then we can do the remapping of the sections here. I think that would
+> aid readability.
+
+Ok, will rearrange.
+
+Sascha
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
