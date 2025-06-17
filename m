@@ -3,64 +3,57 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRSDC-008DQb-0B
+	id 1uRSDC-008DQw-1a
 	for lore@lore.pengutronix.de;
 	Tue, 17 Jun 2025 11:02:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRSDB-0001RZ-Ak
-	for lore@pengutronix.de; Tue, 17 Jun 2025 11:02:33 +0200
+	id 1uRSDB-0001TX-TP
+	for lore@pengutronix.de; Tue, 17 Jun 2025 11:02:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=033teF35leCnElgHUameStBuGZmf99BADLYhgWpwA4I=; b=xfoD427XFA8vJjgC6WJTw1FRoT
-	cXprvdCInvbS2QWCUNsv69zlVEkpKqJRpeLPBRvMjobI/Fys8WEUvk0wypcLi6fe0tgkLV8hV8qKH
-	+f7cnQq17RaO1uW3eKhbzpgLMmK7RR6ql0ojXPKKYyJpETuvnuBtb6dF8Zj5eObBtylAWZc/yF41g
-	+P5HQ4Jo1L6AFqnvS29O/fBW0cKnBxU6t1ZwHmM6Ln9j9x44AoIpHwDp0+JY7aYZvs0WYT2uEvSft
-	vAeu4BB/15rZb0LdKqFjHYcMfXKG0WHDrxD1MbuDE6NS9Z/aF7f1+qG5ALH9BKhpoEvj3CLslp/r1
-	KFZMqF2w==;
+	bh=55wgcsln9iGkGKTjkUTFPzo4AZt7MjkE4dSNDOLmk1M=; b=pwY1sHck5rvX5Zmfr8teaqnJTX
+	XgQIGTp4JzMBfCVcIKw6RN0XsO5BjAU/6ZS2xzm9vvrvbZ7+hFyeEW6ArZmTYLr9C3dzv2cqhfHCn
+	K0gaZ726jLByvl/hARA4Bbb96CQ8cFZhZQqJejSt+2/tBzXjXRLqRAHh0x5u3A/fX9N8zqcoJ/7gi
+	vBskBvX0XRuoN9di4BZ0FAJDyehBTP0ediwTTl+CN0VrRM3KdPVkpjY6YQj0CLStn5I2WXT20A6Bd
+	XrA0xyEWvJgf0JzGvWMon/dkn0eNmw/YQxS9GfYV7Nw7uiFZLObLhbqFUrskK4miZVhJSgZbjk+eT
+	YkfVGz8Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRSCR-00000006g93-423t;
-	Tue, 17 Jun 2025 09:01:47 +0000
+	id 1uRSCF-00000006g3R-1iG9;
+	Tue, 17 Jun 2025 09:01:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRSCP-00000006g79-2E0Z
+	id 1uRSAt-00000006frC-2nnd
 	for barebox@lists.infradead.org;
-	Tue, 17 Jun 2025 09:01:46 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uRSCO-0008Tm-DN; Tue, 17 Jun 2025 11:01:44 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uRSCO-003wfP-0f;
-	Tue, 17 Jun 2025 11:01:44 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uRSCO-00Cb9A-0J;
-	Tue, 17 Jun 2025 11:01:44 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 17 Jun 2025 11:01:40 +0200
-Message-Id: <20250617090142.3000882-2-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250617090142.3000882-1-s.hauer@pengutronix.de>
-References: <20250617090142.3000882-1-s.hauer@pengutronix.de>
+	Tue, 17 Jun 2025 09:00:12 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <l.schmidt@pengutronix.de>)
+	id 1uRSAs-0006B5-De; Tue, 17 Jun 2025 11:00:10 +0200
+Message-ID: <23ad7e64-e59c-48f1-9dfe-56f9b3f72faa@pengutronix.de>
+Date: Tue, 17 Jun 2025 11:00:10 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+References: <20250616-bootchooser-lock-v2-0-df1f0d118635@pengutronix.de>
+ <20250616-bootchooser-lock-v2-3-df1f0d118635@pengutronix.de>
+ <aFEqWBIvAqatnZKx@pengutronix.de>
+Content-Language: en-US, de-DE
+From: Lars Schmidt <l.schmidt@pengutronix.de>
+In-Reply-To: <aFEqWBIvAqatnZKx@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250617_020145_573954_E35235ED 
-X-CRM114-Status: GOOD (  13.90  )
+X-CRM114-CacheID: sfid-20250617_020011_719126_F8AAEE3F 
+X-CRM114-Status: GOOD (  16.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,64 +71,59 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] plat: ti: k3: fix SCMI parent clock ids
+Subject: Re: [PATCH v2 3/4] Documentation: bootchooser: add information about
+ attempts_locked
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On AM62lx not the full clock tree is exposed to the normal world.
-Instead only some muxes are exposed which do not have any connection
-between them. When a mux has a clock_id of 'n' its possible inputs have
-the clock_ids 'n+1', 'n+2',... Now the mux inputs are not exposed as
-'n+x', but instead only as 'x', so when the normal world wants to select
-the first mux input then it has to pass 0 as input, not n+0. This
-confuses the Linux and barebox SCMI clock drivers which hang all muxes
-to the first n clock_ids instead of their real parents.
 
-Fix this by adding the scmi clock_id to the possible parents.
+On 17.06.25 10:42, Sascha Hauer wrote:
+> On Mon, Jun 16, 2025 at 05:06:56PM +0200, Lars Schmidt wrote:
+>> The new attempts_locked variable does have influence on
+>> remaining_attempts counter.
+>>
+>> While at it, also make mention in the bootstate.dtsi.
+>>
+>> Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
+>> ---
+>>  Documentation/user/bootchooser.rst | 23 +++++++++++++++++++++++
+>>  arch/arm/dts/bootstate.dtsi        |  5 +++++
+>>  2 files changed, 28 insertions(+)
+>>
+>> diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
+>> index 351e1d14e1ead6ba8d329c03c0bc7ed28b523df0..ab0b6c3fc895226f5aa4590944a2cd675a56d985 100644
+>> --- a/Documentation/user/bootchooser.rst
+>> +++ b/Documentation/user/bootchooser.rst
+>> @@ -77,6 +77,16 @@ no remaining attempts left.
+>>  To prevent ending up in an unbootable system after a number of failed boot
+>>  attempts, there is also a built-in mechanism to reset the counters to their defaults,
+>>  controlled by the ``global.bootchooser.reset_attempts`` variable.
+>> +Alternatively, counting down the remaining attempts can be disabled by
+>> +locking bootchooser boot attempts.
+>> +This is done by defining a (32-bit) ``attempts_locked`` variable in the
+>> +bootstate and setting its value to ``1`` (usually from userspace).
+>> +
+>> +The variable affects all targets, is optional and its absence is
+>> +interpreted as ``0``, meaning that attempts are decremented normally.
+>> +
+>> +The ``attempts_locked`` value does not influence the decision on which target
+>> +to boot if any, only whether to decrement the attempts when booting.
+> This describes what it does, but not what it's good for. Could you add a
+> few sentences about it?
 
-Change-Id: I5857e67b040e0060b1d2fe57937b5b44ccc3441e
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- plat/ti/k3/common/drivers/scmi/scmi_clock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+I was hoping this is understandable if you read in the context of the already
+existing paragraph right before that: "To prevent ending up in an unbootable system....."
+As it is meant to be an alternative to global.bootchooser.reset_attempts
 
-diff --git a/plat/ti/k3/common/drivers/scmi/scmi_clock.c b/plat/ti/k3/common/drivers/scmi/scmi_clock.c
-index 48a362ed5..afda3f05b 100644
---- a/plat/ti/k3/common/drivers/scmi/scmi_clock.c
-+++ b/plat/ti/k3/common/drivers/scmi/scmi_clock.c
-@@ -162,7 +162,7 @@ int32_t plat_scmi_clock_get_possible_parents(unsigned int agent_id,
- 									clock->clock_id);
- 	if (plat_possible_parents) {
- 		for (uint32_t i = 0; i < (uint32_t)*nb_elts ; i++) {
--			plat_possible_parents[i] = i;
-+			plat_possible_parents[i] = i + scmi_id + 1;
- 		}
- 	}
- 	VERBOSE("num_parents %d\n", (uint32_t)*nb_elts);
-@@ -185,7 +185,7 @@ int32_t plat_scmi_clock_get_parent(unsigned int agent_id,
- 	if (status)
- 		return SCMI_GENERIC_ERROR;
- 
--	parent_id = parent_id - clock->clock_id - 1;
-+	parent_id = parent_id - clock->clock_id + scmi_id;
- 
- 	VERBOSE("scmi_clock_get_parent parent_id = %d\n", parent_id);
- 	return parent_id;
-@@ -204,7 +204,7 @@ int32_t plat_scmi_clock_set_parent(unsigned int agent_id,
- 	if (clock == 0)
- 		return SCMI_NOT_FOUND;
- 
--	parent_id = parent_id + clock->clock_id + 1;
-+	parent_id = parent_id + clock->clock_id - scmi_id;
- 	status = scmi_handler_clock_set_clock_parent(clock->dev_id, clock->clock_id, parent_id);
- 	if (status)
- 		return SCMI_GENERIC_ERROR;
--- 
-2.39.5
+I didn't want to get too repetitive, but if you want, I can try to rephrase it.
 
+>
+> Sascha
+>
+Lars
 
 
