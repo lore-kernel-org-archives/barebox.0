@@ -1,75 +1,92 @@
-Delivery-date: Tue, 17 Jun 2025 19:11:03 +0200
+Delivery-date: Wed, 18 Jun 2025 08:38:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRZpv-008LCv-2h
+	id 1uRmRI-008WfT-0h
 	for lore@lore.pengutronix.de;
-	Tue, 17 Jun 2025 19:11:03 +0200
+	Wed, 18 Jun 2025 08:38:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRZpv-00020R-35
-	for lore@pengutronix.de; Tue, 17 Jun 2025 19:11:03 +0200
+	id 1uRmRH-00038J-GC
+	for lore@pengutronix.de; Wed, 18 Jun 2025 08:38:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1/zk2FlT4HrYWhwF4JADYX6iEuvjR77CvL+KzJ9yuFA=; b=xCFiTMw0bRCnW+FdyhQCXuvtOu
-	0pfUCaqv3FeuQjCOtxQdJ/Q5qddd0Y99DGj1eWCDZo3PmIXVkhMuOE621FSEYuw8dAHOvks1alpVf
-	fGC2hiHW/dt3TIUCmrPifDkajz/oiN2hwcY2eJ0TyIO0018z99CHw/A4/FhC+FGrSRrpJ3DlJbEY5
-	aQD0put4mdIm4ZxR6U6+3zopRPnMWKJVqWfuly1zvHgDkz0C/U7tkz0SosZdraI2HxSsmtjTDlxNh
-	RzCDTA7BHGlgJ5+xoE/YTE2zHn0iLgV1NaLZIr4h2J1UfFRpizPxZ16jP60bs/88V2SFGRCgwSLsV
-	1n9W4VFA==;
+	bh=+Cb6XYH15z3AloGyfeWb12Viv/io7mTMvLoDRE/J59s=; b=MxVqhuJMdHCx4RiThSOZ1f8emM
+	MdC2ohSGFOLQJQcSmHQFhr6WC0cMIRaizu1ADXb7DMa+dXzpqLrnuNRjLAv+1Fd/4SwjqcHEXrwwv
+	raYE3tVJpp9U/Pw6YqWOGfrn6GctDkjfvHOJNVvfxEztd6uH6RcheC2HeU6+qx4hFfMFbLjN/E/64
+	9ZgxN0CVFzgC+GgtSAobARC2/HBx6u9xra+RchvWrdovwRCKL6iYgzl1ZJP1X5tMOEXwVy1a5v+rg
+	lG/f09IZbGlsEQn5f76TmIgiV7n5k7KgYBsItWUp3dqIYrNCWva1cMTFhF1OLHDEeSj51aELphZ/e
+	a2hYKnEA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRZpc-00000007xiT-13MI;
-	Tue, 17 Jun 2025 17:10:44 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uRmQl-00000009Bvr-0rAm;
+	Wed, 18 Jun 2025 06:37:55 +0000
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRXIc-00000007YY7-1ocA
+	id 1uRmPG-00000009Bk9-2BmZ
 	for barebox@lists.infradead.org;
-	Tue, 17 Jun 2025 14:28:31 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uRXIL-0007nb-5s; Tue, 17 Jun 2025 16:28:13 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uRXIK-003zFh-2r;
-	Tue, 17 Jun 2025 16:28:12 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uRXIK-00Gvg5-2R;
-	Tue, 17 Jun 2025 16:28:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 17 Jun 2025 16:28:10 +0200
+	Wed, 18 Jun 2025 06:36:23 +0000
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-32b3b250621so51456701fa.2
+        for <barebox@lists.infradead.org>; Tue, 17 Jun 2025 23:36:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750228580; x=1750833380; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+Cb6XYH15z3AloGyfeWb12Viv/io7mTMvLoDRE/J59s=;
+        b=ZMHKTBsXbm3zbrO1EW8TMuYvoPtTkqCk6V8lxUXFCf3rR7fucGo8gZBiZNY/UEcSgY
+         d0ujqVr2FtvJu2O5BXcF9jTokU9ty+apL8HTZ1/DH3vzPPsAe4kpU2mHbd7+ARItwwRI
+         cFMgJQZth7W252m+eDfY+ENLDxTfPFg7NI1QlGxruVHg7TbLpy44YJBBihd0iGybMg/w
+         x8p2XLzhjbzNC/CyRlqj0Zds2enBlzKo1CilpTG0noKwf7U/MiMR0YEO0SpLw5IY2HEG
+         vpuzR+7PuSRpuDwFh4SNhjTxqyHN784rxhcD97OSeLI1xq7IVOyFEUsGVpuatZxc7W+9
+         VNKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750228580; x=1750833380;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+Cb6XYH15z3AloGyfeWb12Viv/io7mTMvLoDRE/J59s=;
+        b=ZXqEAhNzyKDtWENSScKYD34PnSYLYkPL+ara7R9ynf2SOgPdbphHXJDO2sJdK3UeHS
+         JSs8n8XIidy+5EKhXfxpR+Qjnh8GTjB35L7Z8JtyOnqXKornanc/XbddivlLB7P3f/O9
+         JWUK7n3N88Cv/C+6cXsN1B6YUZme4pwc5dsUWqMhLw4/ITKugMHUWRkXlPsNT7nHUoLp
+         hC182SZuwjkLZPL86sQNQb0hLPz+XH30y3Ps8HE+h4mNfN8yO7N89M9393R8nnAoI2Mv
+         103TV28qiqwI1XkuSNX1VuipYiltEgVOiNPpOmGQInlV2lHRxAcbySFtGAgo2CfUTqNg
+         w/BA==
+X-Gm-Message-State: AOJu0Yys9rfrS3+ZlbY/oZZkdNB5wjr2qbmppAsVQ8xeYMrFSJvyZG0H
+	Tdpsi5CaswgQUQcRbD8AUDHWEAXqfUq8ZYMQwhFWoXlKxeL+KWo0JAeiG8Sw0A==
+X-Gm-Gg: ASbGncsHCfChQLdjGrjml3R4UZzO9U4bs7BulGDNnaF0IGQDlCxCTmodgnX5l+cjVH6
+	1WwuJEuULe377gLlS/R5EisVg144A+Gm2/Vqs7rM7lsMtvufwgEtqzqMIwAjGP2u7UH5pehc6w1
+	8DXFwAF87WdbKkNioRMf2xy7i7+QoGYpGL8tpijKHh8wsvpWk2LBYZhRvoMzDD5BLMtogWjD73G
+	eRDNLiSJ3m8W80QMShICbG9eyHfmtaG4SlLwTDbUxGmbD053jAUuPGVGpgPxQlqYy0Ay0zR5H6X
+	0qyOz7t2zJkULXv5EIp4J2HOVgbJI8IXkq7N8iaMFapQbeyQdvAQgzE0Bf0DZU/YBxiccl/w7Ma
+	oyoH12yHD0w==
+X-Google-Smtp-Source: AGHT+IEG3Q3vjqUL5rtucrjEKxu0yq9Ykzv7Xql2ypvaiAMMf3srMGHb+00kw8+NXbWlvRHxnn6wWA==
+X-Received: by 2002:a05:651c:4ca:b0:32b:533a:f4d6 with SMTP id 38308e7fff4ca-32b533af852mr46722111fa.34.1750228580198;
+        Tue, 17 Jun 2025 23:36:20 -0700 (PDT)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b3c7decb8sm19038121fa.49.2025.06.17.23.36.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 23:36:19 -0700 (PDT)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Wed, 18 Jun 2025 09:35:52 +0300
+Message-Id: <20250618063552.23777-5-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20250618063552.23777-1-eagle.alexander923@gmail.com>
+References: <20250618063552.23777-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250617-mmu-xn-ro-v2-3-3c7aa9046b67@pengutronix.de>
-References: <20250617-mmu-xn-ro-v2-0-3c7aa9046b67@pengutronix.de>
-In-Reply-To: <20250617-mmu-xn-ro-v2-0-3c7aa9046b67@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1750170492; l=4429;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=X/zxjN2p8zbR0l1IZRslyw3N8DnU+TnZEZ1bEZDV4jQ=;
- b=yfN2o971sn+VTMWMO7OKUGZOZNZHEYtgtyB9etNb/S7wt7/aRuge0GP/xvbPnMHwYYVAAFsVj
- iNEj7UlUbmhCgYxhdhwd4WyL5aTwBFfro6rHee+H6D+0nPgr15M4iMW
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250617_072830_476493_A86A5931 
-X-CRM114-Status: GOOD (  15.86  )
+X-CRM114-CacheID: sfid-20250617_233622_597346_FEDA9DE8 
+X-CRM114-Status: GOOD (  11.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,112 +104,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/6] ARM: MMU: map memory for barebox proper pagewise
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] ARM: at91: xload: use pin_to_mask for peripheral pin configuration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Map the remainder of the memory explicitly with two level page tables. This is
-the place where barebox proper ends at. In barebox proper we'll remap the code
-segments readonly/executable and the ro segments readonly/execute never. For this
-we need the memory being mapped pagewise. We can't do the split up from section
-wise mapping to pagewise mapping later because that would require us to do
-a break-before-make sequence which we can't do when barebox proper is running
-at the location being remapped.
+The patch replaces the use of BIT(*pin) with pin_to_mask(*pin) when
+configuring peripheral pins for both SDHCI and QSPI boot modes.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- arch/arm/cpu/mmu_32.c | 37 +++++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
+ arch/arm/mach-at91/xload.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index 104780ff6b9827982e16c1e2b8ac8aae6e4b5c6a..b21fc75f0ceb0c50f5190662a6cd674b1bd38ced 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -247,7 +247,8 @@ static uint32_t get_pmd_flags(int map_type)
- 	return pte_flags_to_pmd(get_pte_flags(map_type));
- }
+diff --git a/arch/arm/mach-at91/xload.c b/arch/arm/mach-at91/xload.c
+index fd3878269e..0f7d9738e1 100644
+--- a/arch/arm/mach-at91/xload.c
++++ b/arch/arm/mach-at91/xload.c
+@@ -79,7 +79,7 @@ static void __noreturn sama5d2_sdhci_start_image(u32 r4)
+ 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOA);
+ 	for (pin = instance->pins; *pin >= 0; pin++) {
+ 		at91_mux_pio4_set_periph(SAMA5D2_BASE_PIOA,
+-					 BIT(*pin), instance->periph);
++					 pin_to_mask(*pin), instance->periph);
+ 	}
  
--static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t size, unsigned map_type)
-+static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t size,
-+			       unsigned map_type, bool force_pages)
- {
- 	u32 virt_addr = (u32)_virt_addr;
- 	u32 pte_flags, pmd_flags;
-@@ -268,7 +269,7 @@ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t s
+ 	sama5d2_pmc_enable_periph_clock(instance->id);
+@@ -143,7 +143,7 @@ static void __noreturn sama5d2_qspi_start_image(u32 r4)
+ 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOA);
+ 	for (pin = instance->pins; *pin >= 0; pin++)
+ 		at91_mux_pio4_set_periph(SAMA5D2_BASE_PIOA,
+-					 BIT(*pin), instance->periph);
++					 pin_to_mask(*pin), instance->periph);
  
- 		if (size >= PGDIR_SIZE && pgdir_size_aligned &&
- 		    IS_ALIGNED(phys_addr, PGDIR_SIZE) &&
--		    !pgd_type_table(*pgd)) {
-+		    !pgd_type_table(*pgd) && !force_pages) {
- 			u32 val;
- 			/*
- 			 * TODO: Add code to discard a page table and
-@@ -339,14 +340,15 @@ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t s
+ 	sama5d2_pmc_enable_periph_clock(instance->id);
  
- 	tlb_invalidate();
- }
--static void early_remap_range(u32 addr, size_t size, unsigned map_type)
-+
-+static void early_remap_range(u32 addr, size_t size, unsigned map_type, bool force_pages)
- {
--	__arch_remap_range((void *)addr, addr, size, map_type);
-+	__arch_remap_range((void *)addr, addr, size, map_type, force_pages);
- }
- 
- int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, unsigned map_type)
- {
--	__arch_remap_range(virt_addr, phys_addr, size, map_type);
-+	__arch_remap_range(virt_addr, phys_addr, size, map_type, false);
- 
- 	if (map_type == MAP_UNCACHED)
- 		dma_inv_range(virt_addr, size);
-@@ -616,6 +618,7 @@ void *dma_alloc_writecombine(struct device *dev, size_t size, dma_addr_t *dma_ha
- void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned long barebox_start)
- {
- 	uint32_t *ttb = (uint32_t *)arm_mem_ttb(membase + memsize);
-+	unsigned long barebox_size, optee_start;
- 
- 	pr_debug("enabling MMU, ttb @ 0x%p\n", ttb);
- 
-@@ -637,9 +640,27 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
- 	create_flat_mapping();
- 
- 	/* maps main memory as cachable */
--	early_remap_range(membase, memsize - OPTEE_SIZE, MAP_CACHED);
--	early_remap_range(membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_UNCACHED);
--	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext), MAP_CACHED);
-+	optee_start = membase + memsize - OPTEE_SIZE;
-+	barebox_size = optee_start - barebox_start;
-+
-+	/*
-+	 * map the bulk of the memory as sections to avoid allocating too many page tables
-+	 * at this early stage
-+	 */
-+	early_remap_range(membase, barebox_start - membase, MAP_CACHED, false);
-+	/*
-+	 * Map the remainder of the memory explicitly with two level page tables. This is
-+	 * the place where barebox proper ends at. In barebox proper we'll remap the code
-+	 * segments readonly/executable and the ro segments readonly/execute never. For this
-+	 * we need the memory being mapped pagewise. We can't do the split up from section
-+	 * wise mapping to pagewise mapping later because that would require us to do
-+	 * a break-before-make sequence which we can't do when barebox proper is running
-+	 * at the location being remapped.
-+	 */
-+	early_remap_range(barebox_start, barebox_size, MAP_CACHED, true);
-+	early_remap_range(optee_start, OPTEE_SIZE, MAP_UNCACHED, false);
-+	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext),
-+			  MAP_CACHED, false);
- 
- 	__mmu_cache_on();
- }
-
 -- 
-2.39.5
+2.39.1
 
 
 
