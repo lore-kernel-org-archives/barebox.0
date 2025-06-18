@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRmRI-008WfT-0h
+	id 1uRmRI-008WfX-0q
 	for lore@lore.pengutronix.de;
 	Wed, 18 Jun 2025 08:38:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRmRH-00038J-GC
+	id 1uRmRH-00038L-Iy
 	for lore@pengutronix.de; Wed, 18 Jun 2025 08:38:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,75 +18,75 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+Cb6XYH15z3AloGyfeWb12Viv/io7mTMvLoDRE/J59s=; b=MxVqhuJMdHCx4RiThSOZ1f8emM
-	MdC2ohSGFOLQJQcSmHQFhr6WC0cMIRaizu1ADXb7DMa+dXzpqLrnuNRjLAv+1Fd/4SwjqcHEXrwwv
-	raYE3tVJpp9U/Pw6YqWOGfrn6GctDkjfvHOJNVvfxEztd6uH6RcheC2HeU6+qx4hFfMFbLjN/E/64
-	9ZgxN0CVFzgC+GgtSAobARC2/HBx6u9xra+RchvWrdovwRCKL6iYgzl1ZJP1X5tMOEXwVy1a5v+rg
-	lG/f09IZbGlsEQn5f76TmIgiV7n5k7KgYBsItWUp3dqIYrNCWva1cMTFhF1OLHDEeSj51aELphZ/e
-	a2hYKnEA==;
+	bh=lcH3FSTokhzW/wBJ//DYBhH7GVkJknUqaHZNcDUBXx8=; b=USlQIcvoNGVPNxGMzHdMT1SoI2
+	V4vKkOYL98FtB6OZBzAsf8pvniCg5owfuL41vVE/8rdrHUsoEiDmNeKycB/oYzhWXD5ANjNDeLxEi
+	jQrCTs94X4qinq1AjFHjpMKnQv7Dsn6o8NeszVnSctC1fSeR6apiubKs+fe85OYQs4UFa2VvhRQZp
+	6C7E7sklRsVbkZFm87ogqSZlENYoY/bUNzzVilogy2Xbp4OX9c4ioxmxTEcSwtbvjTg0iQRA+4qFp
+	rVUJOoFXAhYHN+AL+YvskK5wn9ojW58kV5K6k+x8Plb6uiPPT+S5vnyJ9pvkuvupHynQqllmCV4bA
+	gWwAPJug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRmQl-00000009Bvr-0rAm;
-	Wed, 18 Jun 2025 06:37:55 +0000
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+	id 1uRmQj-00000009Buh-27Zc;
+	Wed, 18 Jun 2025 06:37:53 +0000
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRmPG-00000009Bk9-2BmZ
+	id 1uRmP7-00000009Bim-3dlM
 	for barebox@lists.infradead.org;
-	Wed, 18 Jun 2025 06:36:23 +0000
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-32b3b250621so51456701fa.2
-        for <barebox@lists.infradead.org>; Tue, 17 Jun 2025 23:36:22 -0700 (PDT)
+	Wed, 18 Jun 2025 06:36:14 +0000
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-32b8134ef6aso654721fa.0
+        for <barebox@lists.infradead.org>; Tue, 17 Jun 2025 23:36:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750228580; x=1750833380; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1750228572; x=1750833372; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+Cb6XYH15z3AloGyfeWb12Viv/io7mTMvLoDRE/J59s=;
-        b=ZMHKTBsXbm3zbrO1EW8TMuYvoPtTkqCk6V8lxUXFCf3rR7fucGo8gZBiZNY/UEcSgY
-         d0ujqVr2FtvJu2O5BXcF9jTokU9ty+apL8HTZ1/DH3vzPPsAe4kpU2mHbd7+ARItwwRI
-         cFMgJQZth7W252m+eDfY+ENLDxTfPFg7NI1QlGxruVHg7TbLpy44YJBBihd0iGybMg/w
-         x8p2XLzhjbzNC/CyRlqj0Zds2enBlzKo1CilpTG0noKwf7U/MiMR0YEO0SpLw5IY2HEG
-         vpuzR+7PuSRpuDwFh4SNhjTxqyHN784rxhcD97OSeLI1xq7IVOyFEUsGVpuatZxc7W+9
-         VNKA==
+        bh=lcH3FSTokhzW/wBJ//DYBhH7GVkJknUqaHZNcDUBXx8=;
+        b=MQnYSFzlTJnqOvsRMzlhWW0TVb0ioFBzknbwMlXJGjdk/34FzCa5aN5rrMwL1q7joY
+         A2kKce3vPBEvSbzyFkiirAUnnX9g/cl+48bn7kSiwN/hXP1Q99rF8m+imyB59ptTrSuv
+         +Iss9aYciXxuWiRuWKI2I6C7x3KtwqgPAmrd3IxoqtZ3rRNq/FO3YFX5GR1x2OFarlZg
+         wSUGCQZt2/HVWQ/K17ws5/JA15b/0GKeeAi3RIbqviMpRUwFfPK0pEh6PKsJdWa6aXLY
+         7QPF9L7uZSItd9+JUVwJshE3QtWfJr2DK2M1dSmfuVYXMODwLbJz22fNZTUL5UmlJK8B
+         bPxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750228580; x=1750833380;
+        d=1e100.net; s=20230601; t=1750228572; x=1750833372;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+Cb6XYH15z3AloGyfeWb12Viv/io7mTMvLoDRE/J59s=;
-        b=ZXqEAhNzyKDtWENSScKYD34PnSYLYkPL+ara7R9ynf2SOgPdbphHXJDO2sJdK3UeHS
-         JSs8n8XIidy+5EKhXfxpR+Qjnh8GTjB35L7Z8JtyOnqXKornanc/XbddivlLB7P3f/O9
-         JWUK7n3N88Cv/C+6cXsN1B6YUZme4pwc5dsUWqMhLw4/ITKugMHUWRkXlPsNT7nHUoLp
-         hC182SZuwjkLZPL86sQNQb0hLPz+XH30y3Ps8HE+h4mNfN8yO7N89M9393R8nnAoI2Mv
-         103TV28qiqwI1XkuSNX1VuipYiltEgVOiNPpOmGQInlV2lHRxAcbySFtGAgo2CfUTqNg
-         w/BA==
-X-Gm-Message-State: AOJu0Yys9rfrS3+ZlbY/oZZkdNB5wjr2qbmppAsVQ8xeYMrFSJvyZG0H
-	Tdpsi5CaswgQUQcRbD8AUDHWEAXqfUq8ZYMQwhFWoXlKxeL+KWo0JAeiG8Sw0A==
-X-Gm-Gg: ASbGncsHCfChQLdjGrjml3R4UZzO9U4bs7BulGDNnaF0IGQDlCxCTmodgnX5l+cjVH6
-	1WwuJEuULe377gLlS/R5EisVg144A+Gm2/Vqs7rM7lsMtvufwgEtqzqMIwAjGP2u7UH5pehc6w1
-	8DXFwAF87WdbKkNioRMf2xy7i7+QoGYpGL8tpijKHh8wsvpWk2LBYZhRvoMzDD5BLMtogWjD73G
-	eRDNLiSJ3m8W80QMShICbG9eyHfmtaG4SlLwTDbUxGmbD053jAUuPGVGpgPxQlqYy0Ay0zR5H6X
-	0qyOz7t2zJkULXv5EIp4J2HOVgbJI8IXkq7N8iaMFapQbeyQdvAQgzE0Bf0DZU/YBxiccl/w7Ma
-	oyoH12yHD0w==
-X-Google-Smtp-Source: AGHT+IEG3Q3vjqUL5rtucrjEKxu0yq9Ykzv7Xql2ypvaiAMMf3srMGHb+00kw8+NXbWlvRHxnn6wWA==
-X-Received: by 2002:a05:651c:4ca:b0:32b:533a:f4d6 with SMTP id 38308e7fff4ca-32b533af852mr46722111fa.34.1750228580198;
-        Tue, 17 Jun 2025 23:36:20 -0700 (PDT)
+        bh=lcH3FSTokhzW/wBJ//DYBhH7GVkJknUqaHZNcDUBXx8=;
+        b=ODi0KTIOl0WmThquZAZQeov6pJqsqo2zaXmeDQ1QXoHInyiGntphLTlTahwYHDRC5T
+         bEAuak/VJK9iKNksASqiK41qfg3ThCJt8fKJMcu6qHjorZzEZU7l0ftbMleboS3EYKnk
+         vtmlW+PUkELfzbwRDiajOUclUpkPzTQaqCeTllwbMW02bRORY+Mq1oS4koHnQlzXFeav
+         UwefPdeYCtc7FSV1+gGT1xYllTAa2j/QTp9qQ7f7cyFCW/ffTq9svUzUrHxFxjBv24v0
+         p0+gfp0txtyukwQnnFwM1SR6yEK4fgxKdk+Xv8zrOlfMVtOmSPTlWa9zp0zZmIjm/t5U
+         hPiA==
+X-Gm-Message-State: AOJu0YzFvT2SDyJ4vwIHyubTMJmB72XsKoQnSPg5AXo8WHFz4R0MpuCq
+	VHHielRTI53rGxAJANwrVayW4vK5YqHz7CbN3gCl6RB64J8CV3JEunlnHp3K1A==
+X-Gm-Gg: ASbGncuSIa/bA4UYDS7DUiL4HExFwzO3LFe1OK6oQy4dYVUPyFCkTiXRu5tjO7aslPO
+	Zf//kpKQlIX7Nx9J27fX2fL6IZwhOzoI2xSqXe+iVcqrmIUA6zrdSUnAk0T4LgFAliiOSUxZunx
+	bHuFqT8I22TujTmq4iR38OuQsq+L9qGgvPyljJ4U2GKlUg1szEF9zfQ83SW56tdvr/vFAxyPYl8
+	TsYK9avEGc//pyrGbdLJx68uQLUyKjNxXYwMHmSz5qroye7/6rBpfmBe17TEFQ33rl/cl0e5yGP
+	/lZ+2hURy0cxjhL4yMFlV6DrPTut2fVCd9v+7vI0LcXa65KxzCg9X27GpEZVMIzWPhxZkSPUTZX
+	MzCcDL0un/g==
+X-Google-Smtp-Source: AGHT+IHHxSj9MaCangHk7Sm0J9kcDC+FMh2mfvl89GkurW9d/Ol5+RgRwYIusH03lqhYaIwA2dcAQg==
+X-Received: by 2002:a05:651c:1505:b0:32b:4fd4:f1b5 with SMTP id 38308e7fff4ca-32b4fd4f515mr37591371fa.27.1750228571350;
+        Tue, 17 Jun 2025 23:36:11 -0700 (PDT)
 Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b3c7decb8sm19038121fa.49.2025.06.17.23.36.19
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b3c7decb8sm19038121fa.49.2025.06.17.23.36.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 23:36:19 -0700 (PDT)
+        Tue, 17 Jun 2025 23:36:10 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 18 Jun 2025 09:35:52 +0300
-Message-Id: <20250618063552.23777-5-eagle.alexander923@gmail.com>
+Date: Wed, 18 Jun 2025 09:35:49 +0300
+Message-Id: <20250618063552.23777-2-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250618063552.23777-1-eagle.alexander923@gmail.com>
 References: <20250618063552.23777-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250617_233622_597346_FEDA9DE8 
-X-CRM114-Status: GOOD (  11.26  )
+X-CRM114-CacheID: sfid-20250617_233613_903464_0D582150 
+X-CRM114-Status: GOOD (  10.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -109,40 +109,32 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] ARM: at91: xload: use pin_to_mask for peripheral pin configuration
+Subject: [PATCH] ARM: at91: sam9x5ek: enable missing DT and clock options for devicetree boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The patch replaces the use of BIT(*pin) with pin_to_mask(*pin) when
-configuring peripheral pins for both SDHCI and QSPI boot modes.
+The AT91SAM9X5EK board uses devicetree but was missing critical Kconfig
+options required for proper DT-based operation. This patch adds OFDEVICE
+and COMMON_CLK_OF_PROVIDER Kconfig options for this board.
 
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- arch/arm/mach-at91/xload.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-at91/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-at91/xload.c b/arch/arm/mach-at91/xload.c
-index fd3878269e..0f7d9738e1 100644
---- a/arch/arm/mach-at91/xload.c
-+++ b/arch/arm/mach-at91/xload.c
-@@ -79,7 +79,7 @@ static void __noreturn sama5d2_sdhci_start_image(u32 r4)
- 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOA);
- 	for (pin = instance->pins; *pin >= 0; pin++) {
- 		at91_mux_pio4_set_periph(SAMA5D2_BASE_PIOA,
--					 BIT(*pin), instance->periph);
-+					 pin_to_mask(*pin), instance->periph);
- 	}
- 
- 	sama5d2_pmc_enable_periph_clock(instance->id);
-@@ -143,7 +143,7 @@ static void __noreturn sama5d2_qspi_start_image(u32 r4)
- 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOA);
- 	for (pin = instance->pins; *pin >= 0; pin++)
- 		at91_mux_pio4_set_periph(SAMA5D2_BASE_PIOA,
--					 BIT(*pin), instance->periph);
-+					 pin_to_mask(*pin), instance->periph);
- 
- 	sama5d2_pmc_enable_periph_clock(instance->id);
- 
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index bb04c1267e..db79ad2d26 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -581,6 +581,8 @@ config MACH_AT91SAM9263EK
+ config MACH_AT91SAM9X5EK
+ 	bool "Atmel AT91SAM9x5 Series Evaluation Kit"
+ 	select SOC_AT91SAM9X5
++	select OFDEVICE
++	select COMMON_CLK_OF_PROVIDER
+ 	help
+ 	  Select this if you re using Atmel's AT91SAM9x5-EK Evaluation Kit.
+ 	  Supported chips are sam9g15, sam9g25, sam9x25, sam9g35 and sam9x35.
 -- 
 2.39.1
 
