@@ -1,55 +1,54 @@
-Delivery-date: Thu, 19 Jun 2025 19:12:04 +0200
+Delivery-date: Thu, 19 Jun 2025 20:36:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSIo0-0090dM-2i
+	id 1uSK7k-0091l9-2I
 	for lore@lore.pengutronix.de;
-	Thu, 19 Jun 2025 19:12:04 +0200
+	Thu, 19 Jun 2025 20:36:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSIo0-0000j6-8g
-	for lore@pengutronix.de; Thu, 19 Jun 2025 19:12:04 +0200
+	id 1uSK7k-00049K-6S
+	for lore@pengutronix.de; Thu, 19 Jun 2025 20:36:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qOLcGCnzrwDR+dgMiqM+13Yp0WiNVMeT2KkCOTqDq08=; b=0SDpVOeQ7VYq8VPmUaW9bQPSmn
-	wEyHqKAH8bKleUGggglZLhoZklbg2ZEATIpX9uKEZV2XM8VCqsLocBzVfPAWmxJqbuTBDieplqL5A
-	/VsHwThc2aMKqvdxi5P/o+pJ+gxKmKw1ruexz4Mj1dchGAk1I6jCMAJWWNUdt1W+FtQcOdPBMM0Bj
-	Hhh586bxnOUoiT2djqJhL7R6E+F0HrHNt0TucdIaE3TwdVzdEat5rW4+VyFjGlrnMg3JHk5mN8jss
-	gGIbuZC8FRlfVFKh6vzy8OJHJDsJNosWWmieGmGkAyX00TM8dMgCAKmGngZllOV6fKe4c/Inj7TJf
-	n+TVKEPw==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=YtdfDNeRNN/g7iVCYvOHt0p/9RX8lZLj/4wiu5GxZm0=; b=NbpMfDJYObu9yWiuKsD/JLj4eC
+	UzfIcSOEWzAcamZx0dCAJOaaEmdJobuqmAyXE/APBFdiMhlGRFAvKfnAKdAF/RVujVOWGeedCC8oP
+	kWFD32ITbmpXc6o5x3x/Wia2Z6RHrQ0Yjzm1bnTaIkbC5rf5UruAH+ZFr10xheCuQBNWh0I8U+5yA
+	MLRM1YyE9cJaNKElCOU9Dl1SyLwDtp9XvXNhDhMbFU/o4XppdlPI5MK4wG9JVlXNANoVWnzTCWkdS
+	qJdcgpwIWz8ELhCl4YygDm5e23G7dIDxcrFukw59EPMXhdKzdHU7pW/mNzkPc6Qf5BZcKDFm7/rkB
+	rC0hH9ww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSInV-0000000DiWs-1eoG;
-	Thu, 19 Jun 2025 17:11:33 +0000
+	id 1uSK7T-0000000DtSl-3XfN;
+	Thu, 19 Jun 2025 18:36:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSH9M-0000000DPJW-3FV8
+	id 1uSGxy-0000000DNct-2uhX
 	for barebox@lists.infradead.org;
-	Thu, 19 Jun 2025 15:26:02 +0000
+	Thu, 19 Jun 2025 15:14:16 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1uSH9L-0006U8-Lx
-	for barebox@lists.infradead.org; Thu, 19 Jun 2025 17:25:59 +0200
+	id 1uSGxt-0000LO-Qe
+	for barebox@lists.infradead.org; Thu, 19 Jun 2025 17:14:09 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 19 Jun 2025 17:25:56 +0200
-Message-Id: <20250619152556.3749995-5-m.felsch@pengutronix.de>
+Date: Thu, 19 Jun 2025 17:14:06 +0200
+Message-Id: <20250619151406.3746678-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250619152556.3749995-1-m.felsch@pengutronix.de>
-References: <20250619152556.3749995-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250619_082600_818930_45E55FAE 
-X-CRM114-Status: GOOD (  10.38  )
+X-CRM114-CacheID: sfid-20250619_081414_727952_CC4D439A 
+X-CRM114-Status: UNSURE (   8.03  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,66 +69,31 @@ X-Spam-Level:
 X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/5] ARM: mach-imx: tzasc: add imx6q_tzc380_is_enabled
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH] crypto: caam - adapt pr_fmt to make it more clear
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In preparation of adding an i.MX6QD optee-early helper add a helper to
-check if the early code e.g. PBL/BootROM enabled the TZC380 controllers
-on the i.MX6QDL.
+Add a "caam" prefix to make it more clear.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/tzasc.c | 15 +++++++++++++++
- include/mach/imx/tzasc.h  |  1 +
- 2 files changed, 16 insertions(+)
+ drivers/crypto/caam/rng_self_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
-index aad6ece64f18..14b72386ad53 100644
---- a/arch/arm/mach-imx/tzasc.c
-+++ b/arch/arm/mach-imx/tzasc.c
-@@ -76,6 +76,9 @@
- #define MX6_TZASC1_BASE			0x21d0000
- #define MX6_TZASC2_BASE			0x21d4000
+diff --git a/drivers/crypto/caam/rng_self_test.c b/drivers/crypto/caam/rng_self_test.c
+index b6fcc3bc0947..84dd24d58f4c 100644
+--- a/drivers/crypto/caam/rng_self_test.c
++++ b/drivers/crypto/caam/rng_self_test.c
+@@ -42,7 +42,7 @@
+  * - i.MX67SD silicon revision 1.3
+  */
  
-+#define MX6_GPR_TZASC1_EN		BIT(0)
-+#define MX6_GPR_TZASC2_EN		BIT(1)
-+
- #define GPR_TZASC_EN					BIT(0)
- #define GPR_TZASC_ID_SWAP_BYPASS		BIT(1)
- #define GPR_TZASC_EN_LOCK				BIT(16)
-@@ -293,6 +296,18 @@ void imx6q_tzc380_early_ns_region1(void)
- 				  TZC380_REGION_SP_NS_RW);
- }
+-#define pr_fmt(fmt) "rng_self_test: " fmt
++#define pr_fmt(fmt) "caam-rng-self-test: " fmt
  
-+bool imx6q_tzc380_is_enabled(void)
-+{
-+	u32 __iomem *gpr = IOMEM(MX6_IOMUXC_BASE_ADDR);
-+
-+	/*
-+	 * MX6_GPR_TZASC1_EN and MX6_GPR_TZASC2_EN are sticky bits which
-+	 * preserve their values once set until the next power-up cycle.
-+	 */
-+	return (readl(&gpr[9]) & (MX6_GPR_TZASC1_EN | MX6_GPR_TZASC2_EN)) ==
-+	       (MX6_GPR_TZASC1_EN | MX6_GPR_TZASC2_EN);
-+}
-+
- void imx8m_tzc380_init(void)
- {
- 	u32 __iomem *gpr = IOMEM(MX8M_IOMUXC_GPR_BASE_ADDR);
-diff --git a/include/mach/imx/tzasc.h b/include/mach/imx/tzasc.h
-index 4d3f26fc82f1..59ec56a5ec60 100644
---- a/include/mach/imx/tzasc.h
-+++ b/include/mach/imx/tzasc.h
-@@ -7,6 +7,7 @@
- #include <asm/system.h>
- 
- void imx6q_tzc380_early_ns_region1(void);
-+bool imx6q_tzc380_is_enabled(void);
- void imx8m_tzc380_init(void);
- bool imx8m_tzc380_is_enabled(void);
- 
+ #include <dma.h>
+ #include <common.h>
 -- 
 2.39.5
 
