@@ -1,89 +1,89 @@
-Delivery-date: Thu, 19 Jun 2025 13:33:54 +0200
+Delivery-date: Thu, 19 Jun 2025 17:50:34 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSDWk-008vZg-1v
+	id 1uSHX8-008zFO-0X
 	for lore@lore.pengutronix.de;
-	Thu, 19 Jun 2025 13:33:54 +0200
+	Thu, 19 Jun 2025 17:50:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSDWk-0008DM-0B
-	for lore@pengutronix.de; Thu, 19 Jun 2025 13:33:54 +0200
+	id 1uSHX7-0004f3-Kf
+	for lore@pengutronix.de; Thu, 19 Jun 2025 17:50:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ZmIqUlxGDbEVCoQWYNffkdtKBeS0vMjBdmVLFwc8cHE=; b=YrMkUA7C312yxbjsuELimbl8RQ
-	uMPFX7d/zGj3sKl8/jjbWwfroorVoQfEaNxqliOWGws4jgles0ELRV860502dQyPvSFxUktwD9BpP
-	Xyg3CKHLUDq1hm5tO7oQ2PC4W2yrmwbOs0LU6npeTGtbT797vTj6rVtxjPVi8/fV2ChJ67K41brqS
-	MaZK7bQXHoJp3KhdxSwXSI7TMLfnAK03L0llUkbPV9HQzg+NPCBdcE/Wu4XEyvOsLrweGU/AtC4YS
-	mYFSqv9woXitFsqi6AO7xV7lyQFsBEMp3tZS2RoFGHz+CZkBgfOP1rCP7nqV2feruu9JqwfrlyCwk
-	THAxGBPg==;
+	bh=bKVnMdXakW0Aba16OsSf2jQAFG3fjEXcwleSyANP50w=; b=aGoKnh9eC7B5zNvNyeILnH+0FE
+	hZkSK1urE9PT/iWvtorZ6iZH/gsjxcjZysO0B8c4QH2FLd0uart3pT7pgn8bKPqzn/ZFYsBRwOlzp
+	Rg+34lv3brJ38iU2E3FNpSraxAO0WWgQLcdkuPRVdDVkkaD3C0dwsOfWkrBM4RByciB3xEu/RObVr
+	ghsgpLBFNlFBcYH5mYcBwBwz5cT1w9nTSDAXJ2oqUp0g/SxwZn135carn1ljxFHM1IjxYg7jaFCoV
+	/kn9phwRh5+XeEzl3HGCE/YZKv0Hhq72a80X5OBFlyLHXJzwQTMo636pfMir/aVczriKzNctvlG8y
+	lt11qyGQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSDW8-0000000CtVA-2WrN;
-	Thu, 19 Jun 2025 11:33:16 +0000
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+	id 1uSHWT-0000000DZL2-0aYN;
+	Thu, 19 Jun 2025 15:49:53 +0000
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSCbg-0000000ClKp-0RDW
+	id 1uSFSZ-0000000DCUH-3vWc
 	for barebox@lists.infradead.org;
-	Thu, 19 Jun 2025 10:34:57 +0000
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-32b7113ed6bso5944721fa.1
-        for <barebox@lists.infradead.org>; Thu, 19 Jun 2025 03:34:55 -0700 (PDT)
+	Thu, 19 Jun 2025 13:37:45 +0000
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-553cf020383so839274e87.2
+        for <barebox@lists.infradead.org>; Thu, 19 Jun 2025 06:37:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750329294; x=1750934094; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1750340262; x=1750945062; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZmIqUlxGDbEVCoQWYNffkdtKBeS0vMjBdmVLFwc8cHE=;
-        b=JN6zztC9PtEPEUoj/Addspb52EqkDu2pjYmhKV93oU+q+jXbcFQHPngZ2ZeNHEnYbp
-         fztzliG+e33gnV/Xg7EvcinWK3tQLl4FJga6sGzD4syv4rg86agNV4NeMOW57Tb1+5u7
-         bFVv4KtQeV+Oy/eBaCit8cMCj+TDUqH9LiVEGmavz3TIq1axdaX//cZTfdIIzwqxO/1q
-         fYJVuUFfgfTxx1805vZsgf7XJ0kxY5wMUcujhI1uSSW/W6vL1gyhipYahQVMMPTTl3Lj
-         bb5akyBcmy7XSxMlbQvmRn0HR6Ruj1n5eTAv1LqB+ttywIKzRX2D04l9D5EOfH+dwdMT
-         FG+g==
+        bh=bKVnMdXakW0Aba16OsSf2jQAFG3fjEXcwleSyANP50w=;
+        b=HpG5B2gldD7y1+htymZKKt0z4Fu+pmK4Y0PnN3w/Gf/PtkSQTpxa4uFl6ldKhULaJY
+         J93O4gR87Qfmhc3nDGPDJqC2Vyy7RgsHsa+dsBsJugDwng/dEYM2gDZvc1TPVhJstYLF
+         bHZ8VxkodbCO2hUWjA22f+F+VJ0lS9vq5eG0eVZ5e29zTomcrxL6/BSfDTjV/XWFFvQ1
+         g9PkmiVD86d0p7yKpNLU9sKbzLO9KUN9FunL43G5FB/ykZAJ1s6W9v2slzqrfx6jsx34
+         2peDKXh6+uG3+BshlSvsj4nLKbVBdBCQwjXMwrJyPGf7Q6qWfnjSRpCgMX9/hY7fts6g
+         LiSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750329294; x=1750934094;
+        d=1e100.net; s=20230601; t=1750340262; x=1750945062;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZmIqUlxGDbEVCoQWYNffkdtKBeS0vMjBdmVLFwc8cHE=;
-        b=fTw46jVDy2DUIhz+/Rfo6DGGcPZS69fIMvp8g7gq3hZMSURu+jLzUnWWDoUIp1h+fj
-         /r0QF7jPHvIDxWcRt6c3xYuDETGHUIYSAXGCUV0moDxjacPyP+X/fvlTFxffRJfVbgWW
-         nbyeWaSz5G0qBDiWlZaZVaJP+RHgM5H3weeyd4/UBJoGyr/tWXccDIorv+SyTVOhrUQT
-         gs8yK4qGgJ5dF4uDe19yhxQjJWIYDx5aQralAObJT98/QY3sser5k7qsTqO4y4RSIMWC
-         htBd/CGw0aqJum7IW0EDNVdqEFh3yUsDVHGUGz8JdY3F0IGigS5B6BAvMA3IJgByY1Ia
-         z1WA==
-X-Gm-Message-State: AOJu0YxyH8aZzDDG42Qgm4L77HMV2+iM9LPnfuCsZLiKk/bvgBDlF/Gm
-	2XoR4sn8aCMa7B1Ff+B5KyTaCC8tPTDKOr0dkaywMEbSJPthiNHBCoC4B0wx0A==
-X-Gm-Gg: ASbGncuv+aTwx7yGQbPHrZUdjqhi6FJRe6uN5sPv9CpcNBTbhDVqyCPO+oxvxq/sozJ
-	ivvKYO0mo62mBIY5+fK36LaLvRVgyr8nZpWXD95AhmJKn1pL/obC+A2NZSk9bKWs8iSvlodZbNl
-	buOrZ4aOZKcyBjcfQAee7odGSE7XAC7SHP5Q6sduF6fyH1JgKocmifMUHmAkSGosfSV79yillVK
-	4hqBaA0hQpG6x+nni6VlYQz1uj2Yokdd7506szGY9+9pk8MkuJsPfcC7JTM3Dd0HsXifhXmZpcN
-	fkhyp77HexWVwH9abpRVe7ALakd2lN+aRwbXX1+46rRTYtfZlJsixICHW+FOinxDQ4FIdprH+5a
-	OySg94fPA
-X-Google-Smtp-Source: AGHT+IGhPeQ9uJTSwZTItZ2KGw1u/7FeTsl9IeE57+Ids/oHrsiSxP7E4GLFggRSOZHj0ncbRUnB1Q==
-X-Received: by 2002:a05:651c:4ca:b0:32b:50d8:f122 with SMTP id 38308e7fff4ca-32b50d8f261mr58041631fa.40.1750329293333;
-        Thu, 19 Jun 2025 03:34:53 -0700 (PDT)
-Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b8b231538sm1730281fa.41.2025.06.19.03.34.52
+        bh=bKVnMdXakW0Aba16OsSf2jQAFG3fjEXcwleSyANP50w=;
+        b=reKEVmKR/TJtB6n4pm+OBFy5f548PiQ/h7adlftCF7my/oHl0uiOkPmCaVChWKF8hv
+         hlCZyygo95dDZkhI+YTw4qjG/+k6O+QswXMHZWVuVBTc+lrT9Vn4LMLzY/p5HRTrDUck
+         ML7cRx+Y8WsrkcuiAHN4fdkWMgasMlvyjUOIugL/s8ejDNIAK38nOpKGmChTzdZJ9WP8
+         nv1ola2T85sJxAdpkUfKYv9Vtt/lpkbPLiBEqhK4MivRzMaiU0CMLDcNkzbMipS7GoYl
+         moKT+XbdHuMPFdNb9eRTJIyuul9XO1bVhptTLVLNkMMCsqUv1MxhTSfgTVRimgv4wbLh
+         VM1g==
+X-Gm-Message-State: AOJu0YxqgIYuODlyv9zxzRsmlitwt8HDneof956PPk0NTThDHjHVw8Es
+	pmH9sInrnr/DLjR+YpWuOdiTxkD3gA7sGVh06pSZkOBCJPkft6eGi9QkfylLvQ==
+X-Gm-Gg: ASbGnctQy0b3mzptGWQVlapPqXGWiV19u+XLbzvTQP/gvl/6a2S7zSJhIyeCN0t68jk
+	OiMEZDSAXUDVVj2o4Cr52bnU027lmWQ0tjxMZnJZ1cLw5m4lXallkhpM0Tx9uo7jFnvVulUPnNZ
+	03BJcCC0oy6J3KUaB/Oe1Jb0mfUxcr01fY08U53ebgHhOyMicrcsktE4LdOmm0FjnzwUQXQC2FA
+	YWMJTQx2CvyHQIPtTdwqmuDH+GI916zwTYnK2U6i5zS7p8ZQ/XKBUsiRoU2MUaNlXwXLZuju6Zr
+	Baarvfax9VFK+drTmCNiMUq+qLaLfUwYM+i22G0Pd0R3Ap3UO84CmGcJLrequh7X+kPnEf0SliB
+	DB3njOyqgbys=
+X-Google-Smtp-Source: AGHT+IGEAkFAL6H/J+UIekip2l2lPC1HNB3UsT8shV3DqJDEDPmon/Gd1+iIZkkhRn7RgIOi9ToVRw==
+X-Received: by 2002:a05:6512:39cc:b0:553:2868:6357 with SMTP id 2adb3069b0e04-553b6f4307emr6272138e87.50.1750340261314;
+        Thu, 19 Jun 2025 06:37:41 -0700 (PDT)
+Received: from localhost.localdomain ([95.161.223.108])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ac116509sm2591277e87.4.2025.06.19.06.37.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 03:34:52 -0700 (PDT)
+        Thu, 19 Jun 2025 06:37:40 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Thu, 19 Jun 2025 13:34:40 +0300
-Message-Id: <20250619103440.76796-1-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.39.1
+Date: Thu, 19 Jun 2025 16:37:30 +0300
+Message-Id: <20250619133730.2980527-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.38.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250619_033456_141842_7777A5D6 
-X-CRM114-Status: GOOD (  12.31  )
+X-CRM114-CacheID: sfid-20250619_063743_974547_93D181F6 
+X-CRM114-Status: GOOD (  11.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,97 +101,56 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] ARM: at91: remove unused soc type/subtype getter functions
+Subject: [PATCH] ARM: at91: remove AT32AP7000 (AVR32) remnants
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The functions at91_get_soc_type() and at91_get_soc_subtype() were
-used only within the setup.c file. They provided simple access to
-string arrays but added an unnecessary layer of abstraction.
-Since they are not used elsewhere, we can safely remove them and
-access the string arrays directly.
+barebox does not support the AVR32-based AT32AP7000 platform,
+so lets delete unused cpu_is_at32ap7000() macro and its comment.
 
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- arch/arm/mach-at91/setup.c | 22 ++++++----------------
- include/mach/at91/cpu.h    |  2 --
- 2 files changed, 6 insertions(+), 18 deletions(-)
+ drivers/video/atmel_lcdfb_core.c | 3 +--
+ include/mach/at91/cpu.h          | 5 -----
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
-index e726495726..5969c32e54 100644
---- a/arch/arm/mach-at91/setup.c
-+++ b/arch/arm/mach-at91/setup.c
-@@ -281,12 +281,6 @@ static const char *soc_name[] = {
- 	[AT91_SOC_NONE]		= "Unknown"
- };
+diff --git a/drivers/video/atmel_lcdfb_core.c b/drivers/video/atmel_lcdfb_core.c
+index 002ddb8d16..d7f33bdb4f 100644
+--- a/drivers/video/atmel_lcdfb_core.c
++++ b/drivers/video/atmel_lcdfb_core.c
+@@ -409,8 +409,7 @@ static int lcdfb_pdata_init(struct device *dev,
+ 				   !cpu_is_at91sam9g45es();
+ 	sinfo->have_intensity_bit = pdata->have_intensity_bit;
+ 	sinfo->have_hozval = cpu_is_at91sam9261() ||
+-			     cpu_is_at91sam9g10() ||
+-			     cpu_is_at32ap7000();
++			     cpu_is_at91sam9g10();
  
--const char *at91_get_soc_type(struct at91_socinfo *c)
--{
--	return soc_name[c->type];
--}
--EXPORT_SYMBOL(at91_get_soc_type);
--
- static const char *soc_subtype_name[] = {
- 	[AT91_SOC_RM9200_BGA]	= "at91rm9200 BGA",
- 	[AT91_SOC_RM9200_PQFP]	= "at91rm9200 PQFP",
-@@ -330,12 +324,6 @@ static const char *soc_subtype_name[] = {
- 	[AT91_SOC_SUBTYPE_NONE]	= "Unknown"
- };
- 
--const char *at91_get_soc_subtype(struct at91_socinfo *c)
--{
--	return soc_subtype_name[c->subtype];
--}
--EXPORT_SYMBOL(at91_get_soc_subtype);
--
- static int at91_detect(void)
- {
- 	at91_soc_initdata.type = AT91_SOC_NONE;
-@@ -353,9 +341,9 @@ static int at91_detect(void)
- 		panic("AT91: Impossible to detect the SOC type");
- 
- 	pr_info("AT91: Detected soc type: %s\n",
--		at91_get_soc_type(&at91_soc_initdata));
-+		soc_name[at91_soc_initdata.type]);
- 	pr_info("AT91: Detected soc subtype: %s\n",
--		at91_get_soc_subtype(&at91_soc_initdata));
-+		soc_subtype_name[at91_soc_initdata.subtype]);
- 
- 	/* Init clock subsystem */
- 	at91_clock_init();
-@@ -372,8 +360,10 @@ static int at91_soc_device(void)
- 	struct device *dev;
- 
- 	dev = add_generic_device_res("soc", DEVICE_ID_SINGLE, NULL, 0, NULL);
--	dev_add_param_fixed(dev, "name", (char*)at91_get_soc_type(&at91_soc_initdata));
--	dev_add_param_fixed(dev, "subname", (char*)at91_get_soc_subtype(&at91_soc_initdata));
-+	dev_add_param_fixed(dev, "name",
-+			    (char*)soc_name[at91_soc_initdata.type]);
-+	dev_add_param_fixed(dev, "subname",
-+			    (char*)soc_subtype_name[at91_soc_initdata.subtype]);
- 
- 	return 0;
- }
+ 	info = &sinfo->info;
+ 	info->modes.modes = pdata->mode_list;
 diff --git a/include/mach/at91/cpu.h b/include/mach/at91/cpu.h
-index ca85e8be6e..7114b5d63f 100644
+index ca85e8be6e..cd72e187d5 100644
 --- a/include/mach/at91/cpu.h
 +++ b/include/mach/at91/cpu.h
-@@ -158,8 +158,6 @@ struct at91_socinfo {
- };
+@@ -301,11 +301,6 @@ static inline int at91_soc_is_detected(void)
+ #define cpu_is_sama5d44()	(0)
+ #endif
  
- extern struct at91_socinfo at91_soc_initdata;
--const char *at91_get_soc_type(struct at91_socinfo *c);
--const char *at91_get_soc_subtype(struct at91_socinfo *c);
+-/*
+- * Since this is ARM, we will never run on any AVR32 CPU. But these
+- * definitions may reduce clutter in common drivers.
+- */
+-#define cpu_is_at32ap7000()	(0)
+ #endif /* __ASSEMBLY__ */
  
- static inline int at91_soc_is_detected(void)
- {
+ #endif /* __MACH_CPU_H__ */
 -- 
-2.39.1
+2.38.2
 
 
 
