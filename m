@@ -1,53 +1,70 @@
-Delivery-date: Wed, 18 Jun 2025 18:02:20 +0200
+Delivery-date: Thu, 19 Jun 2025 10:46:56 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRvEy-008egG-0r
+	id 1uSAvA-008tA7-18
 	for lore@lore.pengutronix.de;
-	Wed, 18 Jun 2025 18:02:20 +0200
+	Thu, 19 Jun 2025 10:46:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uRvEx-0006C3-08
-	for lore@pengutronix.de; Wed, 18 Jun 2025 18:02:20 +0200
+	id 1uSAv9-0004h0-Oo
+	for lore@pengutronix.de; Thu, 19 Jun 2025 10:46:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=kdOYGsGZP+uRx/B3dzBHyq8MXvP4aRDHt8y9h8xvi2I=; b=qY52JIevNDI2xq/CBrXu5UhMh8
-	vYFud5ZToQ3w0LtMmAg9KlXfBCrk2kxtoBElNemGY06y+Zap0cOo3jY5TiSMeKe0TXnPXTIaP3IL0
-	jHfH5WJ/7rysc3UKEx9HAwAjiKEFQyj1Imm+EVoe9hcp5pkaAPSRjgv0qxRaA0H2RvFmch/FP/Y5w
-	sEKLKOJhs6TO9FIAFOD1JDBcs1sU7VLm14D08lrm3RQaQiiWqnIT6wT8V5Hnm/Baoi2DB1ks/gdHN
-	ESk9I1d/tV7ESGoqZKNdTYTFhzuQXLEJVbnOoda4gTnw1SpYuzVshA8QxhT2ZL1LQ7koluD1olotZ
-	+6Gm+Giw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GBkMxOe5odJCOTloUEiDGDct4d1zthtDpX7QLcrIrN4=; b=dW7Q3ekpFFkeGx23hWtirCz/PO
+	am60jnlRANQqK73l2Y0couBUiERZxLDCOBE0+DPrjl8AMqFoAS1lcnEGYz4zW7vHe0Pihn9o42U2h
+	L73gKk6o3ydQXgEPEpnKen6JnuOp47y0LnCaku+l7CL7DsKfYR1rZPv3mcuuviSJf6o+zQHAhXBsr
+	8DkCHBv2rVSyEpMmqWHZS5rgmKLZX7cj1dCtv8uW8kfW79OOIU5pk4cd5eFOWOBQ3xFfgO/wFKfde
+	3Vspr9k8Liz3/0w/LQRmt78ITWthghXJEivtmB0WsTcG/Z44o5/GsPEn1Ito1eUYd4Ls91Adi9C0C
+	AnlZnAMw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRvEV-0000000AfcY-3l5e;
-	Wed, 18 Jun 2025 16:01:51 +0000
+	id 1uSAuZ-0000000CU1u-12nd;
+	Thu, 19 Jun 2025 08:46:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRs23-0000000A9VE-0tSp
+	id 1uSAap-0000000CQdL-43b8
 	for barebox@lists.infradead.org;
-	Wed, 18 Jun 2025 12:36:48 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1uRs1z-0008Id-Ix; Wed, 18 Jun 2025 14:36:43 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Wed, 18 Jun 2025 14:36:42 +0200
-Message-Id: <20250618123642.1432610-1-a.fatoum@barebox.org>
-X-Mailer: git-send-email 2.39.5
+	Thu, 19 Jun 2025 08:25:57 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.schmidt@pengutronix.de>)
+	id 1uSAag-0001x0-Ql; Thu, 19 Jun 2025 10:25:46 +0200
+Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <l.schmidt@pengutronix.de>)
+	id 1uSAag-004Gty-1w;
+	Thu, 19 Jun 2025 10:25:46 +0200
+Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
+	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <l.schmidt@pengutronix.de>)
+	id 1uSAah-003bEH-0d;
+	Thu, 19 Jun 2025 10:25:46 +0200
+From: Lars Schmidt <l.schmidt@pengutronix.de>
+Date: Thu, 19 Jun 2025 10:25:39 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250619-bootchooser-lock-v3-4-fc4ad92c3866@pengutronix.de>
+References: <20250619-bootchooser-lock-v3-0-fc4ad92c3866@pengutronix.de>
+In-Reply-To: <20250619-bootchooser-lock-v3-0-fc4ad92c3866@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Lars Schmidt <l.schmidt@pengutronix.de>
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250618_053647_252148_798CAC7B 
-X-CRM114-Status: GOOD (  13.48  )
+X-CRM114-CacheID: sfid-20250619_012556_017415_384515FE 
+X-CRM114-Status: UNSURE (   9.84  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,89 +82,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mmu: explicitly map executable non-SDRAM regions with MAP_CODE
+Subject: [PATCH v3 4/4] Documentation: migration-2025.08.0: add information
+ about attempts_locked
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-So far we have been setting eXecute Never on MAP_UNCACHED regions and
-left it out for the default MAP_CACHED region.
+Document the newly added feature.
 
-We have at least three places, which depend on this to remap non-SDRAM
-regions executable, so ROM code or newly uploaded code can be run.
-
-Switch them over to use a new MAP_CODE mapping type. For now, this is
-equivalent to MAP_CACHED, but with the addition of W^X support in
-barebox, this will be required to avoid a prefetch abort when MMU
-attributes are used.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
 ---
-Sascha, I think this should be ordered before your MMU patches to avoid
-the known regressions. Let's see what else there is. :)
----
- arch/arm/mach-imx/romapi.c | 3 ++-
- drivers/firmware/socfpga.c | 3 ++-
- drivers/hab/habv4.c        | 2 +-
- include/mmu.h              | 1 +
- 4 files changed, 6 insertions(+), 3 deletions(-)
+ Documentation/migration-guides/migration-2025.08.0.rst | 5 +++++
+ Documentation/user/bootchooser.rst                     | 3 +++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
-index 10af42f28a76..a4143d372ae8 100644
---- a/arch/arm/mach-imx/romapi.c
-+++ b/arch/arm/mach-imx/romapi.c
-@@ -299,7 +299,8 @@ void imx93_bootsource(void)
- 		goto out;
- 	}
+diff --git a/Documentation/migration-guides/migration-2025.08.0.rst b/Documentation/migration-guides/migration-2025.08.0.rst
+index d13d5c770d5e7688e0299184b0b8b938db160fca..da60132e7d8c784b08a43c8032ee7e4dc7cb7991 100644
+--- a/Documentation/migration-guides/migration-2025.08.0.rst
++++ b/Documentation/migration-guides/migration-2025.08.0.rst
+@@ -1,3 +1,8 @@
+ Release v2025.08.0
+ ==================
  
--	arch_remap_range((void *)rom.start, rom.start, resource_size(&rom), MAP_CACHED);
-+	/* TODO: restore uncached mapping once we no longer need this? */
-+	arch_remap_range((void *)rom.start, rom.start, resource_size(&rom), MAP_CODE);
- 
- 	OPTIMIZER_HIDE_VAR(rom_api);
- 
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-index 0f7d11abb588..4b10ca009798 100644
---- a/drivers/firmware/socfpga.c
-+++ b/drivers/firmware/socfpga.c
-@@ -353,7 +353,8 @@ static int socfpga_fpgamgr_program_finish(struct firmware_handler *fh)
- 		return status;
- 	}
- 
--	remap_range((void *)CYCLONE5_OCRAM_ADDRESS, PAGE_SIZE, MAP_CACHED);
-+	/* TODO: restore uncached mapping once we no longer need this? */
-+	remap_range((void *)CYCLONE5_OCRAM_ADDRESS, PAGE_SIZE, MAP_CODE);
- 
- 	dev_dbg(&mgr->dev, "Setting APPLYCFG bit...\n");
- 
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index 4945e8930acb..83ee06a6aa46 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -689,7 +689,7 @@ int imx8m_hab_print_status(void)
- 
- int imx6_hab_print_status(void)
- {
--	remap_range(0x0, SZ_1M, MAP_CACHED);
-+	remap_range(0x0, SZ_1M, MAP_CODE);
- 
- 	imx6_hab_get_status();
- 
-diff --git a/include/mmu.h b/include/mmu.h
-index 84ec6c5efb3e..669959050194 100644
---- a/include/mmu.h
-+++ b/include/mmu.h
-@@ -8,6 +8,7 @@
- #define MAP_UNCACHED	0
- #define MAP_CACHED	1
- #define MAP_FAULT	2
-+#define MAP_CODE	MAP_CACHED	/* until support added */
- 
- /*
-  * Depending on the architecture the default mapping can be
++Bootchooser
++-----------
++
++Bootchooser now interprets a top-level ``attempts_locked`` variable.
++For more information, see :ref:`attempts lock feature <bootchooser,attempts_lock>`
+diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
+index 1d7ece6c4b1255b41d359d3303daaf78bacfa17a..c094dca15a0e415d9076bf210ffdbece05ade62e 100644
+--- a/Documentation/user/bootchooser.rst
++++ b/Documentation/user/bootchooser.rst
+@@ -77,6 +77,9 @@ no remaining attempts left.
+ To prevent ending up in an unbootable system after a number of failed boot
+ attempts, there is also a built-in mechanism to reset the counters to their defaults,
+ controlled by the ``global.bootchooser.reset_attempts`` variable.
++
++.. _bootchooser,attempts_lock:
++
+ Alternatively, counting down the remaining attempts can be disabled by
+ locking bootchooser boot attempts.
+ This is done by defining a (32-bit) ``attempts_locked`` variable in the
+
 -- 
 2.39.5
 
