@@ -3,51 +3,53 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSIo0-0090cr-0k
+	id 1uSIo0-0090ct-13
 	for lore@lore.pengutronix.de;
 	Thu, 19 Jun 2025 19:12:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSIny-0000iF-W4
+	id 1uSInz-0000iM-7P
 	for lore@pengutronix.de; Thu, 19 Jun 2025 19:12:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=nl6M/cxIZQbW8sZQTnZQCEMcz8BOmJKzVLJFOCeS31A=; b=B+UzMnio2qgEo/a7av76TrR1KW
-	+u3mpsWqhTstIVP+95ogefWR8R6gOr0gne1RSmsliSAbf21MG45JaRo7VGh6KGn8NOLAwmdAflGUd
-	7RruNftLgOX0SH5UVnkoWg5CBLIsKZCiaJlUHJ+UMohBcU8f8uz1ciKw/DdWADzGiQ+a6LorAhBkA
-	P5RjLu83UbVh2RH/3wUy8dICNabTskIpOXPGBUkWWkcgRDXg5kZZsy2OrYoWSVfcsWdmIGR8xOI+o
-	CWvgvRlmIWitHCCuznuropAnDZs8eGjvV7vunExaBI0e1OhOt55FjTfSUrHzM43hauM44JPeq0jml
-	mYCjrc4A==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=HaxyHH55JjfJMs2zpYEi8sOOUD8ZGKLRSU+bd+z3438=; b=Eod54KXSDVesfZzcI6O7vjxLRX
+	7IrSN9niuFgTr3VY1Cp3IvAfuKY9EzXrVMxAYL0tpo4erpdKRIMmxSsZK8/0IZ7sepr2Pkml4oQOS
+	w+k2DGySZiPMKgh7rtgF8XRaF83NIngB45KjfpvjJtvHfVuOVoX1GkOa8E+xu4oMj4FU92EHI3GDK
+	Nsgk+ZNtQ49y+8Mh/Pkn52iFBn4grtptvOI4FfR4fCMzx1YXKpxSTKjesdiAxb6vj4Di0JXFRVW0v
+	mqTQBEa2lhTpQMyMVKKpPQseqEZIgotoN3dBrUVsiEIwSM2IAzcxmwu3XRSHdIivNF/hkw1sQeci0
+	kiNZDvOg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSInX-0000000DiYB-0YOG;
-	Thu, 19 Jun 2025 17:11:35 +0000
+	id 1uSInV-0000000DiXF-40gn;
+	Thu, 19 Jun 2025 17:11:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSHCF-0000000DPYd-4BPF
+	id 1uSH9M-0000000DPJU-3G0X
 	for barebox@lists.infradead.org;
-	Thu, 19 Jun 2025 15:29:01 +0000
+	Thu, 19 Jun 2025 15:26:02 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1uSHCE-0003qT-Rl
-	for barebox@lists.infradead.org; Thu, 19 Jun 2025 17:28:58 +0200
+	id 1uSH9L-0006U8-Jp
+	for barebox@lists.infradead.org; Thu, 19 Jun 2025 17:25:59 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 19 Jun 2025 17:28:57 +0200
-Message-Id: <20250619152857.3750132-1-m.felsch@pengutronix.de>
+Date: Thu, 19 Jun 2025 17:25:54 +0200
+Message-Id: <20250619152556.3749995-3-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250619152556.3749995-1-m.felsch@pengutronix.de>
+References: <20250619152556.3749995-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250619_082900_034312_AE22D2C0 
-X-CRM114-Status: GOOD (  16.33  )
+X-CRM114-CacheID: sfid-20250619_082600_966588_97F8C8EC 
+X-CRM114-Status: GOOD (  21.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,111 +71,283 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: optee-early: add mx6_start_optee_early helper
+Subject: [PATCH 3/5] ARM: mach-imx: tzasc: add region configure helpers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add a i.MX6 specific helper function which covers most of the steps
-usually done within the board lowlevel code. All new i.MX6 boards are
-encouraged to use this helper to load OP-TEE since the helper validates
-that the TZC380 is enabled and setup the TZC380 region properly.
+At the moment the TZC380 driver is very limited and focused on minimal
+platform setup unlike the TZC400 driver.
+
+This commit adds helper functions to setup any number of TZASC regions
+of any size which is required by later commits to setup an early
+non-secure TZASC region1.
+
+The code is based on the TZC400 barebox driver and the TZC380 OP-TEE
+driver.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- Documentation/user/optee.rst | 19 ++++++++++++-------
- arch/arm/lib32/optee-early.c | 30 ++++++++++++++++++++++++++++++
- include/tee/optee.h          |  2 ++
- 3 files changed, 44 insertions(+), 7 deletions(-)
+ arch/arm/mach-imx/tzasc.c | 235 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 235 insertions(+)
 
-diff --git a/Documentation/user/optee.rst b/Documentation/user/optee.rst
-index 2729d21d2e44..451f9ad264bb 100644
---- a/Documentation/user/optee.rst
-+++ b/Documentation/user/optee.rst
-@@ -19,14 +19,19 @@ During the PBL
- ^^^^^^^^^^^^^^
+diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
+index 4cb4d7c5cffc..4f6da6016601 100644
+--- a/arch/arm/mach-imx/tzasc.c
++++ b/arch/arm/mach-imx/tzasc.c
+@@ -1,11 +1,76 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
- To start OP-TEE during the lowlevel initialization of your board in the ``PBL``,
--enable the ``CONFIG_PBL_OPTEE`` configuration variable. your board should then
-+enable the ``CONFIG_PBL_OPTEE`` configuration variable. Your board should then
- call the function ``start_optee_early(void* tee, void* fdt)`` with a valid tee
--and FDT. Ensure that your OP-TEE is compiled with ``CFG_NS_ENTRY_ADDR`` unset,
--otherwise OP-TEE will not correctly return to barebox after startup.
--Since OP-TEE in the default configuration also modifies the device tree, don't
--pass the barebox internal device tree, instead copy it into a different memory
--location and pass it to OP-TEE afterwards.
--The modified device tree can then be passed to the main barebox start function.
-+and FDT. If you're running on an i.MX6 platform your board code should call
-+``int mx6_start_optee_early(void *fdt, void *tee, void *data_location, unsigned
-+int data_location_size)`` instead since it validates that the TZASC is running
-+and configured as expected by OP-TEE.
++#define pr_fmt(fmt) "tzc380: " fmt
 +
-+Ensure that your OP-TEE is compiled with ``CFG_NS_ENTRY_ADDR`` unset, otherwise
-+OP-TEE will not correctly return to barebox after startup. Since OP-TEE in the
-+default configuration also modifies the device tree, don't pass the barebox
-+internal device tree, instead copy it into a different memory location and pass
-+it to OP-TEE afterwards. The modified device tree can then be passed to the
-+main barebox start function.
++#include <common.h>
+ #include <mach/imx/generic.h>
+ #include <mach/imx/tzasc.h>
++#include <linux/bitfield.h>
+ #include <linux/bitops.h>
++#include <linux/log2.h>
++#include <linux/sizes.h>
+ #include <mach/imx/imx8m-regs.h>
+ #include <io.h>
  
- Before Linux start
- ^^^^^^^^^^^^^^^^^^
-diff --git a/arch/arm/lib32/optee-early.c b/arch/arm/lib32/optee-early.c
-index 735d829c99fb..a3e2892a3291 100644
---- a/arch/arm/lib32/optee-early.c
-+++ b/arch/arm/lib32/optee-early.c
-@@ -10,6 +10,8 @@
- #include <tee/optee.h>
- #include <debug_ll.h>
- #include <string.h>
-+#include <mach/imx/imx6.h>
-+#include <mach/imx/tzasc.h>
- 
- static jmp_buf tee_buf;
- 
-@@ -37,3 +39,31 @@ int start_optee_early(void *fdt, void *tee)
- 
- 	return 0;
- }
++/*******************************************************************************
++ *                         TZC380 defines
++ ******************************************************************************/
 +
-+int mx6_start_optee_early(void *fdt, void *tee, void *data_location,
-+			  unsigned int data_location_size)
++#define TZC380_BUILD_CONFIG		0x000
++#define   TZC380_BUILD_CONFIG_AW	GENMASK(13, 8)
++#define   TZC380_BUILD_CONFIG_NR	GENMASK(4, 0)
++
++/*
++ * All TZC region configuration registers are placed one after another. It
++ * depicts size of block of registers for programming each region.
++ */
++#define TZC380_REGION_REG_SIZE		0x10
++
++#define TZC380_REGION_SETUP_LOW_0	0x100
++#define TZC380_REGION_SETUP_HIGH_0	0x104
++#define TZC380_REGION_ATTR_0		0x108
++#define   TZC380_REGION_SP		GENMASK(31, 28)
++#define   TZC380_SUBREGION_DIS_MASK	GENMASK(15, 8)
++#define   TZC380_REGION_SIZE		GENMASK(6, 1)
++#define   TZC380_REGION_EN		BIT(0)
++
++/* ID Registers */
++#define TZC380_PID0_OFF			0xfe0
++#define TZC380_PID1_OFF			0xfe4
++#define   TZC380_PERIPHERAL_ID		0x380
++#define TZC380_PID2_OFF			0xfe8
++#define TZC380_PID3_OFF			0xfec
++#define TZC380_PID4_OFF			0xfd0
++#define TZC380_CID0_OFF			0xff0
++#define TZC380_CID1_OFF			0xff4
++#define TZC380_CID2_OFF			0xff8
++
++#define TZC380_REGION_OFFSET(region_no)		\
++		(TZC380_REGION_REG_SIZE * (region_no))
++#define TZC380_REGION_SETUP_LOW(region_no)	\
++		(TZC380_REGION_OFFSET(region_no) + TZC380_REGION_SETUP_LOW_0)
++#define TZC380_REGION_SETUP_HIGH(region_no)	\
++		(TZC380_REGION_OFFSET(region_no) + TZC380_REGION_SETUP_HIGH_0)
++#define TZC380_REGION_ATTR(region_no)		\
++		(TZC380_REGION_OFFSET(region_no) + TZC380_REGION_ATTR_0)
++
++#define TZC380_REGION_SP_NS_W		FIELD_PREP(TZC380_REGION_SP, BIT(0))
++#define TZC380_REGION_SP_NS_R		FIELD_PREP(TZC380_REGION_SP, BIT(1))
++#define TZC380_REGION_SP_S_W		FIELD_PREP(TZC380_REGION_SP, BIT(2))
++#define TZC380_REGION_SP_S_R		FIELD_PREP(TZC380_REGION_SP, BIT(3))
++
++#define TZC380_REGION_SP_ALL		\
++		(TZC380_REGION_SP_NS_W | TZC380_REGION_SP_NS_R | \
++		 TZC380_REGION_SP_S_W | TZC380_REGION_SP_S_R)
++#define TZC380_REGION_SP_S_RW		\
++		(TZC380_REGION_SP_S_W | TZC380_REGION_SP_S_R)
++#define TZC380_REGION_SP_NS_RW		\
++		(TZC380_REGION_SP_NS_W | TZC380_REGION_SP_NS_R)
++
++/*******************************************************************************
++ *                         SoC specific defines
++ ******************************************************************************/
++
+ #define GPR_TZASC_EN					BIT(0)
+ #define GPR_TZASC_ID_SWAP_BYPASS		BIT(1)
+ #define GPR_TZASC_EN_LOCK				BIT(16)
+@@ -14,6 +79,176 @@
+ #define MX8M_TZASC_REGION_ATTRIBUTES_0		(MX8M_TZASC_BASE_ADDR + 0x108)
+ #define MX8M_TZASC_REGION_ATTRIBUTES_0_SP	GENMASK(31, 28)
+ 
++/*
++ * Implementation defined values used to validate inputs later.
++ * Filters : max of 4 ; 0 to 3
++ * Regions : max of 9 ; 0 to 8
++ * Address width : Values between 32 to 64
++ */
++struct tzc380_instance {
++	void __iomem *base;
++	uint8_t addr_width;
++	uint8_t num_regions;
++};
++/* Some platforms like i.MX6 does have two tzc380 controllers */
++static struct tzc380_instance tzc380_inst[2];
++
++static inline unsigned int tzc_read_peripheral_id(void __iomem *base)
 +{
-+	switch (__imx6_cpu_type()) {
-+	case IMX6_CPUTYPE_IMX6D:
-+	case IMX6_CPUTYPE_IMX6Q:
-+		if (!imx6q_tzc380_is_enabled())
-+			panic("TZC380 is not enabled, abort OP-TEE loading\n");
++	unsigned int id;
 +
-+		/* Add early non-secure TZASC region1 to pass DTO */
-+		imx6q_tzc380_early_ns_region1();
++	id = in_le32(base + TZC380_PID0_OFF);
++	/* Masks DESC part in PID1 */
++	id |= ((in_le32(base + TZC380_PID1_OFF) & 0xFU) << 8U);
 +
-+		/*
-+		 * Set the OP-TEE <-> barebox exchange data location to zero.
-+		 * This is optional since recent OP-TEE versions perform the
-+		 * memset too.
-+		 */
-+		if (data_location)
-+			memset(data_location, 0, data_location_size);
-+
-+		break;
-+	default:
-+		panic("Unknown CPU type\n");
-+	}
-+
-+	return start_optee_early(fdt, tee);
++	return id;
 +}
-diff --git a/include/tee/optee.h b/include/tee/optee.h
-index f52775dab5b4..19d9a20c7cdc 100644
---- a/include/tee/optee.h
-+++ b/include/tee/optee.h
-@@ -54,6 +54,8 @@ static inline int optee_get_membase(u64 *membase)
- #ifdef __PBL__
- 
- int start_optee_early(void* fdt, void* tee);
-+int mx6_start_optee_early(void *fdt, void *tee, void *data_location,
-+			  unsigned int data_location_size);
- 
- #endif /* __PBL__ */
- 
++
++static struct tzc380_instance *tzc380_init(void __iomem *base)
++{
++	struct tzc380_instance *tzc380 = &tzc380_inst[0];
++	unsigned int tzc380_id;
++	unsigned int tzc380_build;
++
++	if (tzc380->base)
++		tzc380 = &tzc380_inst[1];
++
++	if (tzc380->base)
++		panic("TZC-380: No free memory\n");
++
++	tzc380->base = base;
++
++	tzc380_id = tzc_read_peripheral_id(base);
++	if (tzc380_id != TZC380_PERIPHERAL_ID)
++		panic("TZC-380 : Wrong device ID (0x%x).\n", tzc380_id);
++
++	/* Save values we will use later. */
++	tzc380_build = in_le32(base + TZC380_BUILD_CONFIG);
++	tzc380->addr_width  = FIELD_GET(TZC380_BUILD_CONFIG_AW, tzc380_build) + 1;
++	tzc380->num_regions = FIELD_GET(TZC380_BUILD_CONFIG_NR, tzc380_build) + 1;
++
++	return tzc380;
++}
++
++static void
++tzc380_configure_region(struct tzc380_instance *tzc380, unsigned int region,
++			uint64_t region_base, unsigned int region_attr)
++{
++	void __iomem *base = tzc380->base;
++
++	/* Do range checks on regions */
++	ASSERT((region < tzc380->num_regions));
++
++	pr_debug("TrustZone : Configuring region %u\n", region);
++	pr_debug("TrustZone : ... base = %#llx\n", region_base);
++	pr_debug("TrustZone : ... sp = %#x\n",
++		 (unsigned int)FIELD_GET(TZC380_REGION_SP, region_attr));
++	pr_debug("TrustZone : ... subregion dis-mask = %#x\n",
++		 (unsigned int)FIELD_GET(TZC380_SUBREGION_DIS_MASK, region_attr));
++	pr_debug("TrustZone : ... size = %#x\n",
++		 (unsigned int)FIELD_GET(TZC380_REGION_SIZE, region_attr));
++	pr_debug("TrustZone : ... enable = %#x\n",
++		 (unsigned int)FIELD_GET(TZC380_REGION_EN, region_attr));
++
++	/***************************************************/
++	/* Inputs look ok, start programming registers.    */
++	/* The address registers are 32 bits wide and      */
++	/* have a LOW and HIGH				   */
++	/* component used to construct an address up to a  */
++	/* 64bit.					   */
++	/***************************************************/
++	out_le32(base + TZC380_REGION_SETUP_LOW(region), (uint32_t)region_base);
++	out_le32(base + TZC380_REGION_SETUP_HIGH(region), (uint32_t)(region_base >> 32));
++
++	/* Set region attributes */
++	out_le32(base + TZC380_REGION_ATTR(region), region_attr);
++}
++
++static int
++tzc380_auto_configure(struct tzc380_instance *tzc380, unsigned int region,
++		      uint64_t base, uint64_t size,
++		      unsigned int attr)
++{
++	uint64_t sub_region_size = 0;
++	uint64_t area = 0;
++	uint8_t lregion = region;
++	uint64_t region_size = 0;
++	uint64_t sub_address = 0;
++	uint64_t address = base;
++	uint64_t lsize = size;
++	unsigned int lattr;
++	uint32_t mask = 0;
++	uint64_t reminder;
++	int i = 0;
++	uint8_t pow = 0;
++
++	ASSERT(tzc380->base);
++
++	/*
++	 * TZC380 RM
++	 * For region_attributes_<n> registers, region_size:
++	 * Note: The AXI address width, that is AXI_ADDRESS_MSB+1, controls the
++	 * upper limit value of the field.
++	 */
++	pow = tzc380->addr_width;
++
++	while (lsize != 0 && pow >= 15) {
++		region_size = 1ULL << pow;
++
++		/* Case region fits alignment and covers requested area */
++		if ((address % region_size == 0) &&
++		    ((address + lsize) % region_size == 0)) {
++			lattr = attr;
++			lattr |= FIELD_PREP(TZC380_REGION_SIZE, (pow - 1));
++			lattr |= TZC380_REGION_EN;
++
++			tzc380_configure_region(tzc380, lregion, address, lattr);
++
++			lregion++;
++			address += region_size;
++			lsize -= region_size;
++			pow = tzc380->addr_width;
++			continue;
++		}
++
++		/* Cover area using several subregions */
++		sub_region_size = div_u64(region_size, 8);
++		div64_u64_rem(address, sub_region_size, &reminder);
++		if (reminder == 0 && lsize > 2 * sub_region_size) {
++			sub_address = div64_u64(address, region_size) * region_size;
++			mask = 0;
++			for (i = 0; i < 8; i++) {
++				area = (i + 1) * sub_region_size;
++				if (sub_address + area <= address ||
++				    sub_address + area > address + lsize) {
++					mask |= FIELD_PREP(TZC380_SUBREGION_DIS_MASK, BIT(i));
++				} else {
++					address += sub_region_size;
++					lsize -= sub_region_size;
++				}
++			}
++
++			lattr = mask | attr;
++			lattr |= FIELD_PREP(TZC380_REGION_SIZE, (pow - 1));
++			lattr |= TZC380_REGION_EN;
++
++			tzc380_configure_region(tzc380, lregion, sub_address, lattr);
++
++			lregion++;
++			pow = tzc380->addr_width;
++			continue;
++		}
++		pow--;
++	}
++	ASSERT(lsize == 0);
++	ASSERT(address == base + size);
++	return lregion;
++}
++
++/******************************************************************************
++ *                          SoC specific helpers
++ ******************************************************************************/
++
+ void imx8m_tzc380_init(void)
+ {
+ 	u32 __iomem *gpr = IOMEM(MX8M_IOMUXC_GPR_BASE_ADDR);
 -- 
 2.39.5
 
