@@ -3,68 +3,70 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSAvA-008tA7-18
+	id 1uSAvA-008tA6-18
 	for lore@lore.pengutronix.de;
 	Thu, 19 Jun 2025 10:46:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSAv9-0004h0-Oo
+	id 1uSAv9-0004gz-O8
 	for lore@pengutronix.de; Thu, 19 Jun 2025 10:46:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GBkMxOe5odJCOTloUEiDGDct4d1zthtDpX7QLcrIrN4=; b=dW7Q3ekpFFkeGx23hWtirCz/PO
-	am60jnlRANQqK73l2Y0couBUiERZxLDCOBE0+DPrjl8AMqFoAS1lcnEGYz4zW7vHe0Pihn9o42U2h
-	L73gKk6o3ydQXgEPEpnKen6JnuOp47y0LnCaku+l7CL7DsKfYR1rZPv3mcuuviSJf6o+zQHAhXBsr
-	8DkCHBv2rVSyEpMmqWHZS5rgmKLZX7cj1dCtv8uW8kfW79OOIU5pk4cd5eFOWOBQ3xFfgO/wFKfde
-	3Vspr9k8Liz3/0w/LQRmt78ITWthghXJEivtmB0WsTcG/Z44o5/GsPEn1Ito1eUYd4Ls91Adi9C0C
-	AnlZnAMw==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=gFjvt6Q1VDlP1fJBnMqSmU3Kl3vEEK3jbSypEOAF9u4=; b=Kf1GR+OB9pGh92
+	neCUSIGPTdy102LGnICmuU5BzOC1zGRYcJLaOpvh6AFgs23M/L2y6OI+SEO+t3mttifCE26O2gvQy
+	vKPucIpXVoWLiwjUGilRiFSGSyld+o5LvN99hG0PcmWxpzqZ6NJlNCJQvJX9ef+o4ebJ5YV2hQMkk
+	ngQJPbrYz2hxxjnnMRowBE6ozwoFYbcPyovA5crieP1WovUjTb2hfQYIQiJSXujfcDtesEGC/u2Mp
+	Exp8zWBoDldID+6JQBPpMK7VXow44QEdqzjBBfevyc4KH/hb8zZmoPiTFhG7qcIXI2vFBO1aFxWdt
+	A7usetgk3Vz7UpEuJP6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSAuZ-0000000CU1u-12nd;
+	id 1uSAuZ-0000000CU2A-3I62;
 	Thu, 19 Jun 2025 08:46:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSAap-0000000CQdL-43b8
+	id 1uSAap-0000000CQdK-41FR
 	for barebox@lists.infradead.org;
 	Thu, 19 Jun 2025 08:25:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <l.schmidt@pengutronix.de>)
-	id 1uSAag-0001x0-Ql; Thu, 19 Jun 2025 10:25:46 +0200
+	id 1uSAag-0001wY-Pt; Thu, 19 Jun 2025 10:25:46 +0200
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <l.schmidt@pengutronix.de>)
-	id 1uSAag-004Gty-1w;
+	id 1uSAag-004Gtu-1o;
 	Thu, 19 Jun 2025 10:25:46 +0200
 Received: from localhost ([::1] helo=dude06.red.stw.pengutronix.de)
 	by dude06.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <l.schmidt@pengutronix.de>)
-	id 1uSAah-003bEH-0d;
+	id 1uSAah-003bEH-0Z;
 	Thu, 19 Jun 2025 10:25:46 +0200
 From: Lars Schmidt <l.schmidt@pengutronix.de>
-Date: Thu, 19 Jun 2025 10:25:39 +0200
+Date: Thu, 19 Jun 2025 10:25:35 +0200
+Message-Id: <20250619-bootchooser-lock-v3-0-fc4ad92c3866@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250619-bootchooser-lock-v3-4-fc4ad92c3866@pengutronix.de>
-References: <20250619-bootchooser-lock-v3-0-fc4ad92c3866@pengutronix.de>
-In-Reply-To: <20250619-bootchooser-lock-v3-0-fc4ad92c3866@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAH/JU2gC/52PQQ6CMBBFr2K6dkhnoIiuvIdxgW2hjcqYthKN4
+ e4WVyS6cvkW7+X/l4g2eBvFbvUSwY4+eh4ylOuV0K4degveZBYkSckaazgxJ+2YswcX1mfQTdW
+ SUvWmQhJZuwXb+ccneThm7gJfIblg22WoxEo2UhVItFWkAOFSRO2u3qT9zQ79PQUe/KMwdm46H
+ xOH52fliHP5j848ZqSl/OPNSCDBdNhJg9jUpfqqTNP0Bi2ngaM2AQAA
+X-Change-ID: 20250616-bootchooser-lock-c84a25567412
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Lars Schmidt <l.schmidt@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250619_012556_017415_384515FE 
-X-CRM114-Status: UNSURE (   9.84  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250619_012556_015121_32F75781 
+X-CRM114-Status: GOOD (  12.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,49 +88,52 @@ X-Spam-Status: No, score=-6.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 4/4] Documentation: migration-2025.08.0: add information
- about attempts_locked
+Subject: [PATCH v3 0/4] Add boot slot locking to bootchooser
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Document the newly added feature.
+This patch series adds an option to lock attempts to bootchooser.
+When slots are locked, the remaining_attempts counter will not
+get counted down. It is optional, so when not set, it does not
+have any effect on the counter. The choice of which slot to boot
+is also not affected.
 
-Signed-off-by: Lars Schmidt <l.schmidt@pengutronix.de>
 ---
- Documentation/migration-guides/migration-2025.08.0.rst | 5 +++++
- Documentation/user/bootchooser.rst                     | 3 +++
- 2 files changed, 8 insertions(+)
+Changes in v3:
+- documentation: improve documentation to better describe the use case
+- reword commit message for documentation
+- change comment in common/bootchooser.c to fit into 80 chars
+- Link to v2: https://lore.kernel.org/r/20250616-bootchooser-lock-v2-0-df1f0d118635@pengutronix.de
 
-diff --git a/Documentation/migration-guides/migration-2025.08.0.rst b/Documentation/migration-guides/migration-2025.08.0.rst
-index d13d5c770d5e7688e0299184b0b8b938db160fca..da60132e7d8c784b08a43c8032ee7e4dc7cb7991 100644
---- a/Documentation/migration-guides/migration-2025.08.0.rst
-+++ b/Documentation/migration-guides/migration-2025.08.0.rst
-@@ -1,3 +1,8 @@
- Release v2025.08.0
- ==================
- 
-+Bootchooser
-+-----------
-+
-+Bootchooser now interprets a top-level ``attempts_locked`` variable.
-+For more information, see :ref:`attempts lock feature <bootchooser,attempts_lock>`
-diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
-index 1d7ece6c4b1255b41d359d3303daaf78bacfa17a..c094dca15a0e415d9076bf210ffdbece05ade62e 100644
---- a/Documentation/user/bootchooser.rst
-+++ b/Documentation/user/bootchooser.rst
-@@ -77,6 +77,9 @@ no remaining attempts left.
- To prevent ending up in an unbootable system after a number of failed boot
- attempts, there is also a built-in mechanism to reset the counters to their defaults,
- controlled by the ``global.bootchooser.reset_attempts`` variable.
-+
-+.. _bootchooser,attempts_lock:
-+
- Alternatively, counting down the remaining attempts can be disabled by
- locking bootchooser boot attempts.
- This is done by defining a (32-bit) ``attempts_locked`` variable in the
+Changes in v2:
+- rename slot locking to attempt locking (Ahmad)
+- drop else clauses when not needed (Ahmad)
+- write commit message bodies
+- change migration notes to 2025.08.0
+- add attempts_locked to bootstate.dtsi
+- Link to v2: https://lore.kernel.org/barebox/20250613140805.1229525-1-l.schmidt@pengutronix.de
 
+---
+Lars Schmidt (4):
+      bootchooser: implement locking of attempts counter
+      bootchooser: extend cmd tool by option to set attempts_locked
+      Documentation: bootchooser: add information about attempts_locked
+      Documentation: migration-2025.08.0: add information about attempts_locked
+
+ .../migration-guides/migration-2025.08.0.rst       |  5 +++
+ Documentation/user/bootchooser.rst                 | 33 ++++++++++++++
+ arch/arm/dts/bootstate.dtsi                        |  5 +++
+ commands/bootchooser.c                             | 16 ++++++-
+ common/bootchooser.c                               | 51 +++++++++++++++++++---
+ include/bootchooser.h                              |  1 +
+ 6 files changed, 105 insertions(+), 6 deletions(-)
+---
+base-commit: f2dc1e3b183ce2bcc05a6ab91801d7ce186d432c
+change-id: 20250616-bootchooser-lock-c84a25567412
+
+Best regards,
 -- 
-2.39.5
+Lars Schmidt <l.schmidt@pengutronix.de>
 
 
 
