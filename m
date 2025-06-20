@@ -1,88 +1,90 @@
-Delivery-date: Fri, 20 Jun 2025 07:49:11 +0200
+Delivery-date: Fri, 20 Jun 2025 09:43:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSUch-009BVE-2L
+	id 1uSWP0-009DAZ-0o
 	for lore@lore.pengutronix.de;
-	Fri, 20 Jun 2025 07:49:11 +0200
+	Fri, 20 Jun 2025 09:43:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSUch-0002d1-2q
-	for lore@pengutronix.de; Fri, 20 Jun 2025 07:49:11 +0200
+	id 1uSWOz-0002di-NW
+	for lore@pengutronix.de; Fri, 20 Jun 2025 09:43:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wiqRLO7bd4zGRK7W8BEmJ9WplrFr991gJdvHG8V/Uig=; b=ko4dPcPm5tMvBLc+/eLDfwWKlD
-	YXqU8m+XXWBqp7WOOyNWSAvFGik5Y/F4DFLpc4jp6Z1nB6Z1InkqS5zof8xeHFFstH0nDTfadU8zo
-	yRya8ZOWf1q3Ex3i/leVvU+fx23nzWD4CY2Azf8+4FMHNaqrcgpZnh6xx7QqkexnQJk4ppuldfvDE
-	C98h3MfmSWYXSDGk7dNw7EvDQ9PHf3yv7StNHuR80fdRSax12F6mpbJ5PuUtZC0E/fZ/fK6n+aXca
-	3pMNNoDGv560tRiQJ2s8/6B2swbTowMPUiipxqyqpTVR7SwL6/ynRGjUcRn17hqylv/d/wfOxSmBr
-	IOCcHTXg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Qkm4MUPYtNagP4VCZuvOU+kNcLYK1X/FqwBIVVY2sx4=; b=Sjrqv/26Ki7JodVySRv6cwsfQy
+	K7NZhilVvaA7P9VYZUKBaWFQBQmrTZ+gCRRRE1nUwj5dn90dmdSd2OywTK//hEyDkOx0bRbTJmCV2
+	FYAvzuxMeY/xRAi6oAxVC5YPXKU9z/4Y7mzg23l5YfQ2mrH+5iQbDjkynp1Ujwt50O/dbDmMgZq8G
+	W3+yk/ahZxtRoWJ273dwj9PKKvOv5lGFNsop6kQXC5fuXQ/enhFbPbQOkSrkvAr8EvTzdSo0vJsQJ
+	X5lb7T18CIuKJLbKPSsBYlYJir7GNtDkzxiB7f0UW/jBOlRNu4fbKjjtkfXbMJ9A23yUss+u/Xkfx
+	m5WPok/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSUc0-0000000Eo56-0Rts;
-	Fri, 20 Jun 2025 05:48:28 +0000
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+	id 1uSWOR-0000000ExrJ-3iLo;
+	Fri, 20 Jun 2025 07:42:35 +0000
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSUbx-0000000Eo47-2Jnc
+	id 1uSWO2-0000000Expt-2Vgl
 	for barebox@lists.infradead.org;
-	Fri, 20 Jun 2025 05:48:26 +0000
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-b31f22d706aso261908a12.0
-        for <barebox@lists.infradead.org>; Thu, 19 Jun 2025 22:48:25 -0700 (PDT)
+	Fri, 20 Jun 2025 07:42:11 +0000
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-32ac52f78c1so14330841fa.3
+        for <barebox@lists.infradead.org>; Fri, 20 Jun 2025 00:42:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750398505; x=1751003305; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wiqRLO7bd4zGRK7W8BEmJ9WplrFr991gJdvHG8V/Uig=;
-        b=k+k5WsjHT3IhZCyq6W2eUnYeeyg0/m8cvT4GntAKSn3htu20IvXU5dnvFgdujqNJbD
-         VVnVCTAfJKRVNTfFOAtiI/8+F3e5T9fn2bdfGW0Z2FXTbgdWZUIBOkldcXjIvtFk2fEt
-         EAwDX20tEj0WUiPp1GO/Z+Ll2E42geS+iH66pz6qk58FOrzUU3sgBSe8+du1B2EvotDh
-         muKJGY07/i1UofwNlMdpaJN3HnpJMxaO6dmpmAp2601mFerDmLAUb1WF7yCpXhFbvxQ+
-         TiJfRnPxoiPenrYhfNoPpM6TR/8lVoEyyHarI8UGi/Ckq5RtjQcjXlgzQezNmimnaOzC
-         NeSg==
+        d=gmail.com; s=20230601; t=1750405328; x=1751010128; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qkm4MUPYtNagP4VCZuvOU+kNcLYK1X/FqwBIVVY2sx4=;
+        b=la/yzsOHMgNA7/K6oInROShzxZfN8M53sw2lBRaGiEyxdhuJH7Pnkl9cpNZiqe66EZ
+         LFXTB7t6qGk6KIIO16QncwaRw/fn1+rwrioYAYSruSrqAe6n9zxrn//FlJ8L+LFjzb7X
+         hMFATv+QQ8JtULK8YWSDXmbrJsz3eCj1FZ6WZdtSEJ6a9DcaO4LSiOtretn7L8HcnEzS
+         RFnqtBOzFmqK7rgsBQceNFiAN/jBMyT0sffowTJINbFdcIhhTYjmWVM91nlt7kJ23Q36
+         R5uO8y90muvQqrZ6vi31G4j4pWBGA9SF8/e6b5r9g3ECObBwyfmHXdY+Z74wNNK+1PdE
+         gSiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750398505; x=1751003305;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wiqRLO7bd4zGRK7W8BEmJ9WplrFr991gJdvHG8V/Uig=;
-        b=L6gXFDwgADTvcp5XMAzSRMwcFrEx7olVC5N658TOVQ4mDBWWTrDCBYX3m4hrGyoCHs
-         FhB9cbgVkeMVChIRrW6roT2tKxjC98s35EH1b17bPfMnaMG99eyo5ejXXldY37rcwMdw
-         xqCy3BZrX/MQ+gDJKI2Pns6m3ylIRZoC401FgTCS4RkHadD94cA35YJywJdusHispAPH
-         zlz8F/+4fT+h/88MW5Kyuoi4Myv4HdAqTz84SnvVhHvfJ0nMWuTjJps6QgLimdHnVpdJ
-         DaH0y9KhSgo4ZJy3CWbscdzb1nOzelYzy29D28QHkGX0ywpr8EojCO2nuq8c5MAaziAt
-         uGAA==
-X-Gm-Message-State: AOJu0Yy9fYd23KK0zoPwdPW7iCbsM+6F7VmZ+UclwF1TvAJo2lwTFaET
-	lgcwu9YEkLnk7WOUttCvtu7SrT1yegJiouvapT2zvRs7YazCBSOf78XgQzU++POsSyEmMQlfyRK
-	rUEsNnBpyTR4dLPVx1aFbw7+DE4hAemwJpbrX
-X-Gm-Gg: ASbGncveMKvd2CexLCApJu9K8xYom33QdtWRtv0o1KpxGPgC9bvLEA4qL+ho1qDYBFV
-	9dzMlYw45w+g/oqArBFt2EmAR/hhCU0slHibhbASmTnZjsabwTuZVX/r8dRM9hdqnJ+GeFiS8In
-	Pt5Dzhm1CFMVJf7EwZoDYZZJFU/mSFnpIkeZ3bbs97ysA=
-X-Google-Smtp-Source: AGHT+IFhTNa3YgRzmtcPpS7Z0e3VchJRbIeKiXNN0E0mjgQy7hMWQkO9DNLToworqXamcH+ts6Y2iTksgT2FfQz9jNg=
-X-Received: by 2002:a17:90b:5143:b0:311:fde5:c4c2 with SMTP id
- 98e67ed59e1d1-3159d6361damr2787992a91.1.1750398504594; Thu, 19 Jun 2025
- 22:48:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250619103440.76796-1-eagle.alexander923@gmail.com> <20250619171358.GA1859740@ravnborg.org>
-In-Reply-To: <20250619171358.GA1859740@ravnborg.org>
+        d=1e100.net; s=20230601; t=1750405328; x=1751010128;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qkm4MUPYtNagP4VCZuvOU+kNcLYK1X/FqwBIVVY2sx4=;
+        b=C06HAlllRCH2Eyjsem7HR86gG4DEiz69o5/cYsfm8ayKtmtak4z9o8wqmRBr3GXijd
+         ub3RBlmo4cUpdRbFV+9uneaaFpPfi2qGzr+/eIiNEW517+rvOahaxH1hOknaRaFBDdfs
+         Y7FGxWre/2ezNxr+lVNqOEYX1YrC4mKZwdSwGpcFM68jny7yya3mpAMuWuUPSv+cE+Eb
+         JQbzAbF0fgrkOLKmKvT6BOmt8wKeFh0ed31X3aRdnNFDLP5jCVJ4o56dM+kMcTJaM4tS
+         h95V83zbCB/fBDae1jbkoNAQAza8yvzYSrGYXTpRlVAmEzt/40AcM7SzX37vqQYsoMrz
+         LnHQ==
+X-Gm-Message-State: AOJu0YzUqy82PcBzWjPhYE8AyIWy/oKkSE/hL6Xg70H0D5VnsLORXoIf
+	jtJrhlDfTyVXDlGXDtW76+F4rCeK5rCBdfXNiY2D2QErdTcf8rTanp4qag4oMQ==
+X-Gm-Gg: ASbGncu0sOcRhpVkk7ZtKvFE9g36tNhdX0+fb7GYVrBovWQaInl3eVpup+ujvuu/s8L
+	5yTOAvGeRv/ls1Levd07YTysLyEzhDHXmzdxfw+mdtqmZvqAMprA7sgr0sXGkXxISoS4lSBCSai
+	xRytRANcFJrFjtBpsWn1BSmAsGMF7uiGzCCAY2MEnqBuhb+sm2CTvIRgd8ff43ikZd6Ti2B0Thp
+	6jojQWgoCjeYh4XtHsFE8tkV3+ldGiOrHIwpRf692Rh3nYyNIGmYEef+D1piBF67pQWpcnm94Y/
+	PlQbVeaCWyf3FhhwIvABdsT2PW9O19vmMLX27ExmcWl1RU/zxowks+UDoZHQKVLtkasyugNSOwQ
+	KFlTP5nNV
+X-Google-Smtp-Source: AGHT+IHsdie0iKl1YYll+0+SYsstIdT+A8/06WtsbzW0TBXt56fp0bDaJHmPe6tGWe/zET1e30pVzQ==
+X-Received: by 2002:a05:651c:4201:b0:32a:826a:c9d9 with SMTP id 38308e7fff4ca-32b9918e7d6mr3393561fa.5.1750405328175;
+        Fri, 20 Jun 2025 00:42:08 -0700 (PDT)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b97fa69c4sm1955391fa.41.2025.06.20.00.42.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 00:42:07 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 20 Jun 2025 08:48:12 +0300
-X-Gm-Features: AX0GCFv6d5eufliipnrQobZHmlGS2jdCGwZdTW6V5yeJrJrYyvemE-Q2utRjgJ4
-Message-ID: <CAP1tNvQ=7zHyN39vRj=so0=AXLTWG-EQQjJEwyu6Uvr4qmu5yw@mail.gmail.com>
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Fri, 20 Jun 2025 10:41:57 +0300
+Message-Id: <20250620074157.19047-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250619_224825_606993_2A49E610 
-X-CRM114-Status: GOOD (  20.23  )
+X-CRM114-CacheID: sfid-20250620_004210_638137_883F89EA 
+X-CRM114-Status: UNSURE (   8.65  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,99 +102,57 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ARM: at91: remove unused soc type/subtype getter functions
+Subject: [PATCH] ARM: boards: sama5d4 xplained: Use proper header for image start
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello.
+Switch to using the SAMA5D4-specific entry function and barebox header
+instead of the generic ARM entry points. This aligns the board with
+standard AT91 bootstrap practices.
+The board is already marked BROKEN, so this refactoring won't cause
+regressions but improves code consistency with other AT91 boards.
 
-Indeed, I hope Sas=D1=81ha can fix this in the commit.
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ arch/arm/boards/sama5d4_xplained/lowlevel.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-Thanks!
+diff --git a/arch/arm/boards/sama5d4_xplained/lowlevel.c b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+index 183bd9c5a9..38dc07a973 100644
+--- a/arch/arm/boards/sama5d4_xplained/lowlevel.c
++++ b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+@@ -4,20 +4,12 @@
+  * Under GPLv2
+  */
+ 
+-#include <common.h>
+-#include <init.h>
++#include <mach/at91/barebox-arm.h>
++#include <mach/at91/ddramc.h>
+ 
+-#include <asm/barebox-arm-head.h>
+-#include <asm/barebox-arm.h>
+-
+-#include <mach/at91/at91_ddrsdrc.h>
+-#include <mach/at91/hardware.h>
+-
+-void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
++SAMA5D4_ENTRY_FUNCTION(start_sama5d4_xplained, r4)
+ {
+ 	arm_cpu_lowlevel_init();
+ 
+-	arm_setup_stack(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE);
+-
+-	barebox_arm_entry(SAMA5_DDRCS, at91sama5d4_get_ddram_size(), NULL);
++	sama5d4_barebox_entry(r4, NULL);
+ }
+-- 
+2.39.1
 
-=D1=87=D1=82, 19 =D0=B8=D1=8E=D0=BD. 2025=E2=80=AF=D0=B3. =D0=B2 20:14, Sam=
- Ravnborg <sam@ravnborg.org>:
->
-> Hi Alexander.
->
-> On Thu, Jun 19, 2025 at 01:34:40PM +0300, Alexander Shiyan wrote:
-> > The functions at91_get_soc_type() and at91_get_soc_subtype() were
-> > used only within the setup.c file. They provided simple access to
-> > string arrays but added an unnecessary layer of abstraction.
-> > Since they are not used elsewhere, we can safely remove them and
-> > access the string arrays directly.
-> >
-> > Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-> > ---
-> >  arch/arm/mach-at91/setup.c | 22 ++++++----------------
-> >  include/mach/at91/cpu.h    |  2 --
-> >  2 files changed, 6 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
-> > index e726495726..5969c32e54 100644
-> > --- a/arch/arm/mach-at91/setup.c
-> > +++ b/arch/arm/mach-at91/setup.c
-> > @@ -281,12 +281,6 @@ static const char *soc_name[] =3D {
-> >       [AT91_SOC_NONE]         =3D "Unknown"
-> >  };
-> >
-> > -const char *at91_get_soc_type(struct at91_socinfo *c)
-> > -{
-> > -     return soc_name[c->type];
-> > -}
-> > -EXPORT_SYMBOL(at91_get_soc_type);
-> > -
-> >  static const char *soc_subtype_name[] =3D {
-> >       [AT91_SOC_RM9200_BGA]   =3D "at91rm9200 BGA",
-> >       [AT91_SOC_RM9200_PQFP]  =3D "at91rm9200 PQFP",
-> > @@ -330,12 +324,6 @@ static const char *soc_subtype_name[] =3D {
-> >       [AT91_SOC_SUBTYPE_NONE] =3D "Unknown"
-> >  };
-> >
-> > -const char *at91_get_soc_subtype(struct at91_socinfo *c)
-> > -{
-> > -     return soc_subtype_name[c->subtype];
-> > -}
-> > -EXPORT_SYMBOL(at91_get_soc_subtype);
-> > -
-> >  static int at91_detect(void)
-> >  {
-> >       at91_soc_initdata.type =3D AT91_SOC_NONE;
-> > @@ -353,9 +341,9 @@ static int at91_detect(void)
-> >               panic("AT91: Impossible to detect the SOC type");
-> >
-> >       pr_info("AT91: Detected soc type: %s\n",
-> > -             at91_get_soc_type(&at91_soc_initdata));
-> > +             soc_name[at91_soc_initdata.type]);
-> >       pr_info("AT91: Detected soc subtype: %s\n",
-> > -             at91_get_soc_subtype(&at91_soc_initdata));
-> > +             soc_subtype_name[at91_soc_initdata.subtype]);
-> >
-> >       /* Init clock subsystem */
-> >       at91_clock_init();
-> > @@ -372,8 +360,10 @@ static int at91_soc_device(void)
-> >       struct device *dev;
-> >
-> >       dev =3D add_generic_device_res("soc", DEVICE_ID_SINGLE, NULL, 0, =
-NULL);
-> > -     dev_add_param_fixed(dev, "name", (char*)at91_get_soc_type(&at91_s=
-oc_initdata));
-> > -     dev_add_param_fixed(dev, "subname", (char*)at91_get_soc_subtype(&=
-at91_soc_initdata));
-> > +     dev_add_param_fixed(dev, "name",
-> > +                         (char*)soc_name[at91_soc_initdata.type]);
-> > +     dev_add_param_fixed(dev, "subname",
-> > +                         (char*)soc_subtype_name[at91_soc_initdata.sub=
-type]);
-> The cast can go, as dev_add_param_fixed() take a const already.
-> Otherwise looks good.
-> It is good to see at91 gets some attention, despite the age.
->
->         Sam
 
 
