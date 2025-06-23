@@ -1,71 +1,71 @@
-Delivery-date: Mon, 23 Jun 2025 19:06:40 +0200
+Delivery-date: Mon, 23 Jun 2025 19:06:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTkcy-00AKfQ-0e
+	id 1uTkd7-00AKg4-1d
 	for lore@lore.pengutronix.de;
-	Mon, 23 Jun 2025 19:06:40 +0200
+	Mon, 23 Jun 2025 19:06:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTkcu-0004As-7I
-	for lore@pengutronix.de; Mon, 23 Jun 2025 19:06:40 +0200
+	id 1uTkd1-0004Gf-8d
+	for lore@pengutronix.de; Mon, 23 Jun 2025 19:06:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mMlDc18+IXZw+nZKRHM89oH1jnSTp9HnVIvP0JHn/hM=; b=kb/elp7FbtCf6jh5iwy16aGDPT
-	x0ac5WmdKExanQ/PPgmU9M3YLw+DeUIO5pw+r4k+KYDy9RiNMKEmScAWULktEZvu4Vfsr7Ci1CnJi
-	y/xPKzQNL3Xnn9gYePSoPff52ckCkFxsgGhwS+JCP0txujiHkY++7wuMHc9yPVmhSh6oDR38JDbbA
-	xMIaL+GO23Uqmuml1vMRcyDFCLj9Thzgr/rYwe3vm5zR5TraSQ2L3MXGlYvD2D7nOce9JrGph9ufi
-	0ENgUWX8IaWSDZX9Ff591s0tpXmDflRf7C7xVNz6hODve6ezM9D3B85bseLvSs7huvBKbe04FmJPg
-	QoXSXQDg==;
+	bh=xU/kS98K+Z3vPwAx+4CH42Opw6SV/qo8bHTknCPAbVI=; b=IfzLdHNDJXgQ6OZ/PQQZJ05JMS
+	EJTGcE06mHb/HqLNGH8vuwYH2ISNE4bLDvy9FRuT/bVt4VmUvbH3k1RNJwgUMk9ZTfMOESF5vtm1C
+	rnzvIirujoNXQ7qkvX36Xjr91Y/JnjR1FwNMmxBGWNnh7SkE44WsgWBTz/IIo/oSUt7oMe2ZUOvB5
+	8rqf0fLSApjgENFYJstx6Cyttrb2K/vRucWjXA9fQRmmXT+F7spW1Bke7nXN/1PahLS85GJIkONdW
+	ao+fv1BpktGV1YmCah0jGYHvhOo/F1cNH3mCSkcJLIOQlitdILnA/4chNNNftZ6JCIWFERWqshOH/
+	3ehGb0pQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTkcA-00000003Vl5-3ZLh;
-	Mon, 23 Jun 2025 17:05:50 +0000
+	id 1uTkc9-00000003Vj6-08Ho;
+	Mon, 23 Jun 2025 17:05:49 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uThgT-00000002xNM-2gMo
+	id 1uThgS-00000002xMm-1yWB
 	for barebox@bombadil.infradead.org;
-	Mon, 23 Jun 2025 13:58:05 +0000
+	Mon, 23 Jun 2025 13:58:04 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=mMlDc18+IXZw+nZKRHM89oH1jnSTp9HnVIvP0JHn/hM=; b=SfseVqrjsiobwg5xmuikfEeAU7
-	ZmqbDDIl6Q0T72jfhoResvTAlgvgYxhfiSOiEigjf1c8Uhqar+FL25331wyZGJqE8bcwo+pCE29c0
-	RFQadxuWqd+FT9h+aqJ91N4bpPMHyKQ4E9ppkJYDsNAawFzSd3Ou3ekQa42eOaouCTLo09FwM3+IU
-	uVFKb1lxvkpirVFFkeYYObHBRtCLdR0mYzMBPDTBTlx1D752lZlle8VQPzerVGUbDZtyaw+7ZqHUA
-	44NM/ZShYuItlofSki8m6blW6Y0YsOfWMxA4N2K4NRv6HiLtl6ZJ8orG3yPzu4XL1qSH2h1FIsu+8
-	A2DK6OwA==;
+	bh=xU/kS98K+Z3vPwAx+4CH42Opw6SV/qo8bHTknCPAbVI=; b=QfrVkoJ/v9TIfunluDetWg0N+H
+	ABq4KIy9Zt2wp2oqRfAekmmXO/bOHCu34Sa5/2JuADsaWQt6IZEiMdYY8MGhsrPE4vPqgsHIbWnVP
+	Oq+4Hg5cKxhH2R4WAhFJmtnXksDeZNGExgCMXRIOhupEEdxauzzO6uiGR8WDzsaz7GYGkog6ufPjF
+	QNDUl9gVVeI9227r38SJXf3PmYFtJOePSBVGf2ULP3MOi8hfFsKuKUsLsXgusQYbclth9XZ252cMn
+	jZ3qz9DNoJlw6ErK/HX6bR/omcn3VxeUp7NTpxn735SRx9jYdaDarz4n7xOwmjbWzbokzAKXLRrkv
+	XtODImtQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uThgO-00000005EPK-1iOa
+	id 1uThgO-00000005EPG-0mq1
 	for barebox@lists.infradead.org;
-	Mon, 23 Jun 2025 13:58:04 +0000
+	Mon, 23 Jun 2025 13:58:03 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1uThgM-0000r6-WE; Mon, 23 Jun 2025 15:57:59 +0200
+	id 1uThgM-0000r6-Ml; Mon, 23 Jun 2025 15:57:58 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 23 Jun 2025 15:57:53 +0200
+Date: Mon, 23 Jun 2025 15:57:52 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250623-v2024-10-0-topic-socfpga-agilex5-v3-8-e9de9e31b2c1@pengutronix.de>
+Message-Id: <20250623-v2024-10-0-topic-socfpga-agilex5-v3-7-e9de9e31b2c1@pengutronix.de>
 References: <20250623-v2024-10-0-topic-socfpga-agilex5-v3-0-e9de9e31b2c1@pengutronix.de>
 In-Reply-To: <20250623-v2024-10-0-topic-socfpga-agilex5-v3-0-e9de9e31b2c1@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250623_145800_935883_8E0FCA43 
-X-CRM114-Status: GOOD (  19.11  )
+X-CRM114-CacheID: sfid-20250623_145800_809932_2841C055 
+X-CRM114-Status: GOOD (  14.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,420 +87,1498 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 08/10] net: phy: add Analog Devices ADIN1300
+Subject: [PATCH v3 07/10] clk: socfpga: add agilex5 clock support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Analog Devices ADIN1300 is a low power 10Mbps,100Mbps, and 1Gbps
-ethernet phy.
-(https://www.analog.com/media/en/technical-documentation/data-sheets/adin1300.pdf)
+Add support for the Stratix10 and Agilex5 pll,gate and periph clocks.
 
-Driver ported from u-boot v2024.07 drivers/net/phy/adin.c
+Only tested on Agilex5.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/net/phy/Kconfig  |   7 +
- drivers/net/phy/Makefile |   1 +
- drivers/net/phy/adin.c   | 362 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 370 insertions(+)
+ drivers/clk/socfpga/Makefile         |   4 +-
+ drivers/clk/socfpga/clk-agilex5.c    | 833 +++++++++++++++++++++++++++++++++++
+ drivers/clk/socfpga/clk-gate-s10.c   | 181 ++++++++
+ drivers/clk/socfpga/clk-periph-s10.c | 163 +++++++
+ drivers/clk/socfpga/clk-pll-s10.c    | 140 ++++++
+ drivers/clk/socfpga/clk.h            |   9 +
+ drivers/clk/socfpga/stratix10-clk.h  |  73 +++
+ 7 files changed, 1402 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 8e12671801f39a4507937e16d2382e60c258990e..ac6fcf79027aa587b658d5f43cfbf7bb4f86f1f3 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -9,6 +9,13 @@ if PHYLIB
- 
- comment "MII PHY device drivers"
- 
-+config ADIN_PHY
-+	bool "Driver for Analog Devices Industrial Ethernet PHYs"
-+	help
-+	  Currently supports the:  
-+	  - ADIN1300
-+	  Ethernet PHY
-+
- config AR8327N_PHY
- 	bool "Driver for QCA AR8327N PHYs"
- 	help
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index ce15e1bab79fb227f48dca5e9cdba2d0f7e92f7b..862a7e9ba1d19a12b272431c88d452e1434e757a 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -1,5 +1,6 @@
+diff --git a/drivers/clk/socfpga/Makefile b/drivers/clk/socfpga/Makefile
+index 0a195cbf3f8efe2828cc2eade549d550001f0ca1..bd6f2266fc6847d3201d3fcb536e8061816ac8e3 100644
+--- a/drivers/clk/socfpga/Makefile
++++ b/drivers/clk/socfpga/Makefile
+@@ -1,4 +1,6 @@
  # SPDX-License-Identifier: GPL-2.0-only
- obj-y += phy.o mdio_bus.o phy-core.o
-+obj-$(CONFIG_ADIN_PHY)		+= adin.o
- obj-$(CONFIG_AR8327N_PHY)	+= ar8327.o
- obj-$(CONFIG_AT803X_PHY)	+= at803x.o
- obj-$(CONFIG_DAVICOM_PHY)	+= davicom.o
-diff --git a/drivers/net/phy/adin.c b/drivers/net/phy/adin.c
+-obj-y	+= clk.o
++obj-$(CONFIG_ARCH_SOCFPGA_CYCLONE5)	+= clk.o
++obj-$(CONFIG_ARCH_SOCFPGA_ARRIA10)	+= clk.o
+ 
+ obj-$(CONFIG_ARCH_SOCFPGA_ARRIA10) += clk-gate-a10.o clk-periph-a10.o clk-pll-a10.o
++obj-$(CONFIG_ARCH_SOCFPGA_AGILEX5) += clk-agilex5.o clk-pll-s10.o clk-periph-s10.o clk-gate-s10.o
+diff --git a/drivers/clk/socfpga/clk-agilex5.c b/drivers/clk/socfpga/clk-agilex5.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..15c5550e9440001e7c2f9bb0e7042375ec533646
+index 0000000000000000000000000000000000000000..1b6dc5abde931e192b917b3584513406075c06e8
 --- /dev/null
-+++ b/drivers/net/phy/adin.c
-@@ -0,0 +1,362 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/drivers/clk/socfpga/clk-agilex5.c
+@@ -0,0 +1,833 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ *  Driver for Analog Devices Industrial Ethernet PHYs
-+ *
-+ * Copyright 2019 Analog Devices Inc.
++ * Copyright (C) 2022, Intel Corporation
 + */
 +#include <common.h>
 +#include <init.h>
-+#include <linux/bitfield.h>
-+#include <linux/mdio.h>
-+#include <linux/phy.h>
-+#include <linux/string.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/clkdev.h>
++#include <linux/clk-provider.h>
++#include <dt-bindings/clock/intel,agilex5-clkmgr.h>
 +
-+#define PHY_ID_ADIN1200				0x0283bc20
-+#define PHY_ID_ADIN1300				0x0283bc30
++#include "stratix10-clk.h"
 +
-+#define ADIN1300_MII_EXT_REG_PTR		0x0010
-+#define ADIN1300_MII_EXT_REG_DATA		0x0011
++static const struct clk_parent_data pll_mux[] = {
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
 +
-+#define ADIN1300_PHY_CTRL1			0x0012
-+#define   ADIN1300_AUTO_MDI_EN			BIT(10)
-+#define   ADIN1300_MAN_MDIX_EN			BIT(9)
-+#define   ADIN1300_DIAG_CLK_EN			BIT(2)
++static const struct clk_parent_data boot_mux[] = {
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++};
 +
-+#define ADIN1300_RX_ERR_CNT			0x0014
++static const struct clk_parent_data core0_free_mux[] = {
++	{
++		.fw_name = "main_pll_c1",
++		.name = "main_pll_c1",
++	},
++	{
++		.fw_name = "peri_pll_c0",
++		.name = "peri_pll_c0",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
 +
-+#define ADIN1300_PHY_CTRL_STATUS2		0x0015
-+#define   ADIN1300_NRG_PD_EN			BIT(3)
-+#define   ADIN1300_NRG_PD_TX_EN			BIT(2)
-+#define   ADIN1300_NRG_PD_STATUS		BIT(1)
++static const struct clk_parent_data core1_free_mux[] = {
++	{
++		.fw_name = "main_pll_c1",
++		.name = "main_pll_c1",
++	},
++	{
++		.fw_name = "peri_pll_c0",
++		.name = "peri_pll_c0",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
 +
-+#define ADIN1300_PHY_CTRL2			0x0016
-+#define   ADIN1300_DOWNSPEED_AN_100_EN		BIT(11)
-+#define   ADIN1300_DOWNSPEED_AN_10_EN		BIT(10)
-+#define   ADIN1300_GROUP_MDIO_EN		BIT(6)
-+#define   ADIN1300_DOWNSPEEDS_EN	\
-+	(ADIN1300_DOWNSPEED_AN_100_EN | ADIN1300_DOWNSPEED_AN_10_EN)
++static const struct clk_parent_data core2_free_mux[] = {
++	{
++		.fw_name = "main_pll_c0",
++		.name = "main_pll_c0",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
 +
-+#define ADIN1300_PHY_CTRL3			0x0017
-+#define   ADIN1300_LINKING_EN			BIT(13)
-+#define   ADIN1300_DOWNSPEED_RETRIES_MSK	GENMASK(12, 10)
++static const struct clk_parent_data core3_free_mux[] = {
++	{
++		.fw_name = "main_pll_c0",
++		.name = "main_pll_c0",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
 +
-+#define ADIN1300_INT_MASK_REG			0x0018
-+#define   ADIN1300_INT_MDIO_SYNC_EN		BIT(9)
-+#define   ADIN1300_INT_ANEG_STAT_CHNG_EN	BIT(8)
-+#define   ADIN1300_INT_ANEG_PAGE_RX_EN		BIT(6)
-+#define   ADIN1300_INT_IDLE_ERR_CNT_EN		BIT(5)
-+#define   ADIN1300_INT_MAC_FIFO_OU_EN		BIT(4)
-+#define   ADIN1300_INT_RX_STAT_CHNG_EN		BIT(3)
-+#define   ADIN1300_INT_LINK_STAT_CHNG_EN	BIT(2)
-+#define   ADIN1300_INT_SPEED_CHNG_EN		BIT(1)
-+#define   ADIN1300_INT_HW_IRQ_EN		BIT(0)
-+#define ADIN1300_INT_MASK_EN	\
-+	(ADIN1300_INT_LINK_STAT_CHNG_EN | ADIN1300_INT_HW_IRQ_EN)
-+#define ADIN1300_INT_STATUS_REG			0x0019
++static const struct clk_parent_data dsu_free_mux[] = {
++	{
++		.fw_name = "main_pll_c2",
++		.name = "main_pll_c2",
++	},
++	{
++		.fw_name = "peri_pll_c0",
++		.name = "peri_pll_c0",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
 +
-+#define ADIN1300_PHY_STATUS1			0x001a
-+#define   ADIN1300_PAIR_01_SWAP			BIT(11)
++static const struct clk_parent_data noc_free_mux[] = {
++	{
++		.fw_name = "main_pll_c3",
++		.name = "main_pll_c3",
++	},
++	{
++		.fw_name = "peri_pll_c1",
++		.name = "peri_pll_c1",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
 +
-+/* EEE register addresses, accessible via Clause 22 access using
-+ * ADIN1300_MII_EXT_REG_PTR & ADIN1300_MII_EXT_REG_DATA.
-+ * The bit-fields are the same as specified by IEEE for EEE.
-+ */
-+#define ADIN1300_EEE_CAP_REG			0x8000
-+#define ADIN1300_EEE_ADV_REG			0x8001
-+#define ADIN1300_EEE_LPABLE_REG			0x8002
-+#define ADIN1300_CLOCK_STOP_REG			0x9400
-+#define ADIN1300_LPI_WAKE_ERR_CNT_REG		0xa000
++static const struct clk_parent_data emaca_free_mux[] = {
++	{
++		.fw_name = "main_pll_c1",
++		.name = "main_pll_c1",
++	},
++	{
++		.fw_name = "peri_pll_c3",
++		.name = "peri_pll_c3",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
 +
-+#define ADIN1300_CDIAG_RUN			0xba1b
-+#define   ADIN1300_CDIAG_RUN_EN			BIT(0)
++static const struct clk_parent_data emacb_free_mux[] = {
++	{
++		.fw_name = "main_pll_c1",
++		.name = "main_pll_c1",
++	},
++	{
++		.fw_name = "peri_pll_c3",
++		.name = "peri_pll_c3",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
++
++static const struct clk_parent_data emac_ptp_free_mux[] = {
++	{
++		.fw_name = "main_pll_c3",
++		.name = "main_pll_c3",
++	},
++	{
++		.fw_name = "peri_pll_c3",
++		.name = "peri_pll_c3",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
++
++static const struct clk_parent_data gpio_db_free_mux[] = {
++	{
++		.fw_name = "main_pll_c3",
++		.name = "main_pll_c3",
++	},
++	{
++		.fw_name = "peri_pll_c1",
++		.name = "peri_pll_c1",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
++
++static const struct clk_parent_data psi_ref_free_mux[] = {
++	{
++		.fw_name = "main_pll_c1",
++		.name = "main_pll_c1",
++	},
++	{
++		.fw_name = "peri_pll_c3",
++		.name = "peri_pll_c3",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
++
++static const struct clk_parent_data usb31_free_mux[] = {
++	{
++		.fw_name = "main_pll_c3",
++		.name = "main_pll_c3",
++	},
++	{
++		.fw_name = "peri_pll_c2",
++		.name = "peri_pll_c2",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
++
++static const struct clk_parent_data s2f_usr0_free_mux[] = {
++	{
++		.fw_name = "main_pll_c1",
++		.name = "main_pll_c1",
++	},
++	{
++		.fw_name = "peri_pll_c3",
++		.name = "peri_pll_c3",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
++
++static const struct clk_parent_data s2f_usr1_free_mux[] = {
++	{
++		.fw_name = "main_pll_c1",
++		.name = "main_pll_c1",
++	},
++	{
++		.fw_name = "peri_pll_c3",
++		.name = "peri_pll_c3",
++	},
++	{
++		.fw_name = "osc1",
++		.name = "osc1",
++	},
++	{
++		.fw_name = "cb-intosc-hs-div2-clk",
++		.name = "cb-intosc-hs-div2-clk",
++	},
++	{
++		.fw_name = "f2s-free-clk",
++		.name = "f2s-free-clk",
++	},
++};
++
++static const struct clk_parent_data core0_mux[] = {
++	{
++		.fw_name = "core0_free_clk",
++		.name = "core0_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data core1_mux[] = {
++	{
++		.fw_name = "core1_free_clk",
++		.name = "core1_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data core2_mux[] = {
++	{
++		.fw_name = "core2_free_clk",
++		.name = "core2_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data core3_mux[] = {
++	{
++		.fw_name = "core3_free_clk",
++		.name = "core3_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data dsu_mux[] = {
++	{
++		.fw_name = "dsu_free_clk",
++		.name = "dsu_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data emac_mux[] = {
++	{
++		.fw_name = "emaca_free_clk",
++		.name = "emaca_free_clk",
++	},
++	{
++		.fw_name = "emacb_free_clk",
++		.name = "emacb_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data noc_mux[] = {
++	{
++		.fw_name = "noc_free_clk",
++		.name = "noc_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data s2f_user0_mux[] = {
++	{
++		.fw_name = "s2f_user0_free_clk",
++		.name = "s2f_user0_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data s2f_user1_mux[] = {
++	{
++		.fw_name = "s2f_user1_free_clk",
++		.name = "s2f_user1_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data psi_mux[] = {
++	{
++		.fw_name = "psi_ref_free_clk",
++		.name = "psi_ref_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data gpio_db_mux[] = {
++	{
++		.fw_name = "gpio_db_free_clk",
++		.name = "gpio_db_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data emac_ptp_mux[] = {
++	{
++		.fw_name = "emac_ptp_free_clk",
++		.name = "emac_ptp_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
++
++static const struct clk_parent_data usb31_mux[] = {
++	{
++		.fw_name = "usb31_free_clk",
++		.name = "usb31_free_clk",
++	},
++	{
++		.fw_name = "boot_clk",
++		.name = "boot_clk",
++	},
++};
 +
 +/*
-+ * The XSIM3/2/1 and XSHRT3/2/1 are actually relative.
-+ * For CDIAG_DTLD_RSLTS(0) it's ADIN1300_CDIAG_RSLT_XSIM3/2/1
-+ * For CDIAG_DTLD_RSLTS(1) it's ADIN1300_CDIAG_RSLT_XSIM3/2/0
-+ * For CDIAG_DTLD_RSLTS(2) it's ADIN1300_CDIAG_RSLT_XSIM3/1/0
-+ * For CDIAG_DTLD_RSLTS(3) it's ADIN1300_CDIAG_RSLT_XSIM2/1/0
++ * TODO - Clocks in AO (always on) controller
++ * 2 main PLLs only
 + */
-+#define ADIN1300_CDIAG_DTLD_RSLTS(x)		(0xba1d + (x))
-+#define   ADIN1300_CDIAG_RSLT_BUSY		BIT(10)
-+#define   ADIN1300_CDIAG_RSLT_XSIM3		BIT(9)
-+#define   ADIN1300_CDIAG_RSLT_XSIM2		BIT(8)
-+#define   ADIN1300_CDIAG_RSLT_XSIM1		BIT(7)
-+#define   ADIN1300_CDIAG_RSLT_SIM		BIT(6)
-+#define   ADIN1300_CDIAG_RSLT_XSHRT3		BIT(5)
-+#define   ADIN1300_CDIAG_RSLT_XSHRT2		BIT(4)
-+#define   ADIN1300_CDIAG_RSLT_XSHRT1		BIT(3)
-+#define   ADIN1300_CDIAG_RSLT_SHRT		BIT(2)
-+#define   ADIN1300_CDIAG_RSLT_OPEN		BIT(1)
-+#define   ADIN1300_CDIAG_RSLT_GOOD		BIT(0)
-+
-+#define ADIN1300_CDIAG_FLT_DIST(x)		(0xba21 + (x))
-+
-+#define ADIN1300_GE_SOFT_RESET_REG		0xff0c
-+#define   ADIN1300_GE_SOFT_RESET		BIT(0)
-+
-+#define ADIN1300_GE_CLK_CFG_REG			0xff1f
-+#define   ADIN1300_GE_CLK_CFG_MASK		GENMASK(5, 0)
-+#define   ADIN1300_GE_CLK_CFG_RCVR_125		BIT(5)
-+#define   ADIN1300_GE_CLK_CFG_FREE_125		BIT(4)
-+#define   ADIN1300_GE_CLK_CFG_REF_EN		BIT(3)
-+#define   ADIN1300_GE_CLK_CFG_HRT_RCVR		BIT(2)
-+#define   ADIN1300_GE_CLK_CFG_HRT_FREE		BIT(1)
-+#define   ADIN1300_GE_CLK_CFG_25		BIT(0)
-+
-+#define ADIN1300_GE_RGMII_CFG_REG		0xff23
-+#define   ADIN1300_GE_RGMII_RX_MSK		GENMASK(8, 6)
-+#define   ADIN1300_GE_RGMII_RX_SEL(x)		\
-+		FIELD_PREP(ADIN1300_GE_RGMII_RX_MSK, x)
-+#define   ADIN1300_GE_RGMII_GTX_MSK		GENMASK(5, 3)
-+#define   ADIN1300_GE_RGMII_GTX_SEL(x)		\
-+		FIELD_PREP(ADIN1300_GE_RGMII_GTX_MSK, x)
-+#define   ADIN1300_GE_RGMII_RXID_EN		BIT(2)
-+#define   ADIN1300_GE_RGMII_TXID_EN		BIT(1)
-+#define   ADIN1300_GE_RGMII_EN			BIT(0)
-+
-+/* RGMII internal delay settings for rx and tx for ADIN1300 */
-+#define ADIN1300_RGMII_1_60_NS			0x0001
-+#define ADIN1300_RGMII_1_80_NS			0x0002
-+#define	ADIN1300_RGMII_2_00_NS			0x0000
-+#define	ADIN1300_RGMII_2_20_NS			0x0006
-+#define	ADIN1300_RGMII_2_40_NS			0x0007
-+
-+#define ADIN1300_GE_RMII_CFG_REG		0xff24
-+#define   ADIN1300_GE_RMII_FIFO_DEPTH_MSK	GENMASK(6, 4)
-+#define   ADIN1300_GE_RMII_FIFO_DEPTH_SEL(x)	\
-+		FIELD_PREP(ADIN1300_GE_RMII_FIFO_DEPTH_MSK, x)
-+#define   ADIN1300_GE_RMII_EN			BIT(0)
-+
-+/* RMII fifo depth values */
-+#define ADIN1300_RMII_4_BITS			0x0000
-+#define ADIN1300_RMII_8_BITS			0x0001
-+#define ADIN1300_RMII_12_BITS			0x0002
-+#define ADIN1300_RMII_16_BITS			0x0003
-+#define ADIN1300_RMII_20_BITS			0x0004
-+#define ADIN1300_RMII_24_BITS			0x0005
-+
-+/**
-+ * struct adin_cfg_reg_map - map a config value to aregister value
-+ * @cfg:	value in device configuration
-+ * @reg:	value in the register
-+ */
-+struct adin_cfg_reg_map {
-+	int cfg;
-+	int reg;
++static const struct stratix10_pll_clock agilex5_pll_clks[] = {
++	{ AGILEX5_BOOT_CLK, "boot_clk", boot_mux, ARRAY_SIZE(boot_mux), 0,
++	  0x0 },
++	{ AGILEX5_MAIN_PLL_CLK, "main_pll", pll_mux, ARRAY_SIZE(pll_mux), 0,
++	  0x48 },
++	{ AGILEX5_PERIPH_PLL_CLK, "periph_pll", pll_mux, ARRAY_SIZE(pll_mux), 0,
++	  0x9C },
 +};
 +
-+static const struct adin_cfg_reg_map adin_rgmii_delays[] = {
-+	{ 1600, ADIN1300_RGMII_1_60_NS },
-+	{ 1800, ADIN1300_RGMII_1_80_NS },
-+	{ 2000, ADIN1300_RGMII_2_00_NS },
-+	{ 2200, ADIN1300_RGMII_2_20_NS },
-+	{ 2400, ADIN1300_RGMII_2_40_NS },
-+	{ },
++static const struct stratix10_perip_c_clock agilex5_main_perip_c_clks[] = {
++	{ AGILEX5_MAIN_PLL_C0_CLK, "main_pll_c0", "main_pll", NULL, 1, 0,
++	  0x5C },
++	{ AGILEX5_MAIN_PLL_C1_CLK, "main_pll_c1", "main_pll", NULL, 1, 0,
++	  0x60 },
++	{ AGILEX5_MAIN_PLL_C2_CLK, "main_pll_c2", "main_pll", NULL, 1, 0,
++	  0x64 },
++	{ AGILEX5_MAIN_PLL_C3_CLK, "main_pll_c3", "main_pll", NULL, 1, 0,
++	  0x68 },
++	{ AGILEX5_PERIPH_PLL_C0_CLK, "peri_pll_c0", "periph_pll", NULL, 1, 0,
++	  0xB0 },
++	{ AGILEX5_PERIPH_PLL_C1_CLK, "peri_pll_c1", "periph_pll", NULL, 1, 0,
++	  0xB4 },
++	{ AGILEX5_PERIPH_PLL_C2_CLK, "peri_pll_c2", "periph_pll", NULL, 1, 0,
++	  0xB8 },
++	{ AGILEX5_PERIPH_PLL_C3_CLK, "peri_pll_c3", "periph_pll", NULL, 1, 0,
++	  0xBC },
 +};
 +
-+static const struct adin_cfg_reg_map adin_rmii_fifo_depths[] = {
-+	{ 4,  ADIN1300_RMII_4_BITS },
-+	{ 8,  ADIN1300_RMII_8_BITS },
-+	{ 12, ADIN1300_RMII_12_BITS },
-+	{ 16, ADIN1300_RMII_16_BITS },
-+	{ 20, ADIN1300_RMII_20_BITS },
-+	{ 24, ADIN1300_RMII_24_BITS },
-+	{ },
++/* Non-SW clock-gated enabled clocks */
++static const struct stratix10_perip_cnt_clock agilex5_main_perip_cnt_clks[] = {
++	{ AGILEX5_CORE0_FREE_CLK, "core0_free_clk", NULL, core0_free_mux,
++	ARRAY_SIZE(core0_free_mux), 0, 0x0104, 0, 0, 0},
++	{ AGILEX5_CORE1_FREE_CLK, "core1_free_clk", NULL, core1_free_mux,
++	ARRAY_SIZE(core1_free_mux), 0, 0x0104, 0, 0, 0},
++	{ AGILEX5_CORE2_FREE_CLK, "core2_free_clk", NULL, core2_free_mux,
++	ARRAY_SIZE(core2_free_mux), 0, 0x010C, 0, 0, 0},
++	{ AGILEX5_CORE3_FREE_CLK, "core3_free_clk", NULL, core3_free_mux,
++	ARRAY_SIZE(core3_free_mux), 0, 0x0110, 0, 0, 0},
++	{ AGILEX5_DSU_FREE_CLK, "dsu_free_clk", NULL, dsu_free_mux,
++	ARRAY_SIZE(dsu_free_mux), 0, 0x0100, 0, 0, 0},
++	{ AGILEX5_NOC_FREE_CLK, "noc_free_clk", NULL, noc_free_mux,
++	  ARRAY_SIZE(noc_free_mux), 0, 0x40, 0, 0, 0 },
++	{ AGILEX5_EMAC_A_FREE_CLK, "emaca_free_clk", NULL, emaca_free_mux,
++	  ARRAY_SIZE(emaca_free_mux), 0, 0xD4, 0, 0x88, 0 },
++	{ AGILEX5_EMAC_B_FREE_CLK, "emacb_free_clk", NULL, emacb_free_mux,
++	  ARRAY_SIZE(emacb_free_mux), 0, 0xD8, 0, 0x88, 1 },
++	{ AGILEX5_EMAC_PTP_FREE_CLK, "emac_ptp_free_clk", NULL,
++	  emac_ptp_free_mux, ARRAY_SIZE(emac_ptp_free_mux), 0, 0xDC, 0, 0x88,
++	  2 },
++	{ AGILEX5_GPIO_DB_FREE_CLK, "gpio_db_free_clk", NULL, gpio_db_free_mux,
++	  ARRAY_SIZE(gpio_db_free_mux), 0, 0xE0, 0, 0x88, 3 },
++	{ AGILEX5_S2F_USER0_FREE_CLK, "s2f_user0_free_clk", NULL,
++	  s2f_usr0_free_mux, ARRAY_SIZE(s2f_usr0_free_mux), 0, 0xE8, 0, 0x30,
++	  2 },
++	{ AGILEX5_S2F_USER1_FREE_CLK, "s2f_user1_free_clk", NULL,
++	  s2f_usr1_free_mux, ARRAY_SIZE(s2f_usr1_free_mux), 0, 0xEC, 0, 0x88,
++	  5 },
++	{ AGILEX5_PSI_REF_FREE_CLK, "psi_ref_free_clk", NULL, psi_ref_free_mux,
++	  ARRAY_SIZE(psi_ref_free_mux), 0, 0xF0, 0, 0x88, 6 },
++	{ AGILEX5_USB31_FREE_CLK, "usb31_free_clk", NULL, usb31_free_mux,
++	  ARRAY_SIZE(usb31_free_mux), 0, 0xF8, 0, 0x88, 7},
 +};
 +
-+static int adin_lookup_reg_value(const struct adin_cfg_reg_map *tbl, int cfg)
-+{
-+	size_t i;
++/* SW Clock gate enabled clocks */
++static const struct stratix10_gate_clock agilex5_gate_clks[] = {
 +
-+	for (i = 0; tbl[i].cfg; i++) {
-+		if (tbl[i].cfg == cfg)
-+			return tbl[i].reg;
++	/* TODO HW Managed Clocks list */
++
++	/* TODO SW Managed Clocks list */
++
++	/* Main PLL0 Begin */
++	/* MPU clocks */
++	{ AGILEX5_CORE0_CLK, "core0_clk", NULL, core0_mux,
++	  ARRAY_SIZE(core0_mux), 0, 0x24, 8, 0, 0, 0, 0x30, 5, 0 },
++	{ AGILEX5_CORE1_CLK, "core1_clk", NULL, core1_mux,
++	  ARRAY_SIZE(core1_mux), 0, 0x24, 9, 0, 0, 0, 0x30, 5, 0 },
++	{ AGILEX5_CORE2_CLK, "core2_clk", NULL, core2_mux,
++	  ARRAY_SIZE(core2_mux), 0, 0x24, 10, 0, 0, 0, 0x30, 6, 0 },
++	{ AGILEX5_CORE3_CLK, "core3_clk", NULL, core3_mux,
++	  ARRAY_SIZE(core3_mux), 0, 0x24, 11, 0, 0, 0, 0x30, 7, 0 },
++	{ AGILEX5_MPU_CLK, "dsu_clk", NULL, dsu_mux, ARRAY_SIZE(dsu_mux), 0, 0,
++	  0, 0, 0, 0, 0x34, 4, 0 },
++	{ AGILEX5_MPU_PERIPH_CLK, "mpu_periph_clk", NULL, dsu_mux,
++	  ARRAY_SIZE(dsu_mux), 0, 0, 0, 0x44, 20, 2, 0x34, 4, 0 },
++	{ AGILEX5_MPU_CCU_CLK, "mpu_ccu_clk", NULL, dsu_mux,
++	  ARRAY_SIZE(dsu_mux), 0, 0, 0, 0x44, 18, 2, 0x34, 4, 0 },
++
++	/* ANGTS TODO l4 main clk has no divider now. To check. */
++	{ AGILEX5_L4_MAIN_CLK, "l4_main_clk", NULL, noc_mux,
++	  ARRAY_SIZE(noc_mux), 0, 0x24, 1, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_L4_MP_CLK, "l4_mp_clk", NULL, noc_mux, ARRAY_SIZE(noc_mux), 0,
++	  0x24, 2, 0x44, 4, 2, 0x30, 1, 0 },
++	{ AGILEX5_L4_SYS_FREE_CLK, "l4_sys_free_clk", NULL, noc_mux,
++	  ARRAY_SIZE(noc_mux), 0, 0, 0, 0x44, 2, 2, 0x30, 1, 0 },
++	{ AGILEX5_L4_SP_CLK, "l4_sp_clk", NULL, noc_mux, ARRAY_SIZE(noc_mux),
++	  CLK_IS_CRITICAL, 0x24, 3, 0x44, 6, 2, 0x30, 1, 0 },
++
++	/* Core sight clocks*/
++	{ AGILEX5_CS_AT_CLK, "cs_at_clk", NULL, noc_mux, ARRAY_SIZE(noc_mux), 0,
++	  0x24, 4, 0x44, 24, 2, 0x30, 1, 0 },
++	{ AGILEX5_CS_TRACE_CLK, "cs_trace_clk", NULL, noc_mux,
++	  ARRAY_SIZE(noc_mux), 0, 0x24, 4, 0x44, 26, 2, 0x30, 1, 0 },
++	{ AGILEX5_CS_PDBG_CLK, "cs_pdbg_clk", "cs_at_clk", NULL, 1, 0, 0x24, 4,
++	  0x44, 28, 1, 0, 0, 0 },
++	/* Main PLL0 End */
++
++	/* Main Peripheral PLL1 Begin */
++	{ AGILEX5_EMAC0_CLK, "emac0_clk", NULL, emac_mux, ARRAY_SIZE(emac_mux),
++	  0, 0x7C, 0, 0, 0, 0, 0x94, 26, 0 },
++	{ AGILEX5_EMAC1_CLK, "emac1_clk", NULL, emac_mux, ARRAY_SIZE(emac_mux),
++	  0, 0x7C, 1, 0, 0, 0, 0x94, 27, 0 },
++	{ AGILEX5_EMAC2_CLK, "emac2_clk", NULL, emac_mux, ARRAY_SIZE(emac_mux),
++	  0, 0x7C, 2, 0, 0, 0, 0x94, 28, 0 },
++	{ AGILEX5_EMAC_PTP_CLK, "emac_ptp_clk", NULL, emac_ptp_mux,
++	  ARRAY_SIZE(emac_ptp_mux), 0, 0x7C, 3, 0, 0, 0, 0x88, 2, 0 },
++	{ AGILEX5_GPIO_DB_CLK, "gpio_db_clk", NULL, gpio_db_mux,
++	  ARRAY_SIZE(gpio_db_mux), 0, 0x7C, 4, 0x98, 0, 16, 0x88, 3, 1 },
++	  /* Main Peripheral PLL1 End */
++
++	  /* Peripheral clocks  */
++	{ AGILEX5_S2F_USER0_CLK, "s2f_user0_clk", NULL, s2f_user0_mux,
++	  ARRAY_SIZE(s2f_user0_mux), 0, 0x24, 6, 0, 0, 0, 0x30, 2, 0 },
++	{ AGILEX5_S2F_USER1_CLK, "s2f_user1_clk", NULL, s2f_user1_mux,
++	  ARRAY_SIZE(s2f_user1_mux), 0, 0x7C, 6, 0, 0, 0, 0x88, 5, 0 },
++	{ AGILEX5_PSI_REF_CLK, "psi_ref_clk", NULL, psi_mux,
++	  ARRAY_SIZE(psi_mux), 0, 0x7C, 7, 0, 0, 0, 0x88, 6, 0 },
++	{ AGILEX5_USB31_SUSPEND_CLK, "usb31_suspend_clk", NULL, usb31_mux,
++	  ARRAY_SIZE(usb31_mux), 0, 0x7C, 25, 0, 0, 0, 0x88, 7, 0 },
++	{ AGILEX5_USB31_BUS_CLK_EARLY, "usb31_bus_clk_early", "l4_main_clk",
++	  NULL, 1, 0, 0x7C, 25, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_USB2OTG_HCLK, "usb2otg_hclk", "l4_mp_clk", NULL, 1, 0, 0x7C,
++	  8, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SPIM_0_CLK, "spim_0_clk", "l4_mp_clk", NULL, 1, 0, 0x7C, 9,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SPIM_1_CLK, "spim_1_clk", "l4_mp_clk", NULL, 1, 0, 0x7C, 11,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SPIS_0_CLK, "spis_0_clk", "l4_sp_clk", NULL, 1, 0, 0x7C, 12,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SPIS_1_CLK, "spis_1_clk", "l4_sp_clk", NULL, 1, 0, 0x7C, 13,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_DMA_CORE_CLK, "dma_core_clk", "l4_mp_clk", NULL, 1, 0, 0x7C,
++	  14, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_DMA_HS_CLK, "dma_hs_clk", "l4_mp_clk", NULL, 1, 0, 0x7C, 14,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_I3C_0_CORE_CLK, "i3c_0_core_clk", "l4_mp_clk", NULL, 1, 0,
++	  0x7C, 18, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_I3C_1_CORE_CLK, "i3c_1_core_clk", "l4_mp_clk", NULL, 1, 0,
++	  0x7C, 19, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_I2C_0_PCLK, "i2c_0_pclk", "l4_sp_clk", NULL, 1, 0, 0x7C, 15,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_I2C_1_PCLK, "i2c_1_pclk", "l4_sp_clk", NULL, 1, 0, 0x7C, 16,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_I2C_EMAC0_PCLK, "i2c_emac0_pclk", "l4_sp_clk", NULL, 1, 0,
++	  0x7C, 17, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_I2C_EMAC1_PCLK, "i2c_emac1_pclk", "l4_sp_clk", NULL, 1, 0,
++	  0x7C, 22, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_I2C_EMAC2_PCLK, "i2c_emac2_pclk", "l4_sp_clk", NULL, 1, 0,
++	  0x7C, 27, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_UART_0_PCLK, "uart_0_pclk", "l4_sp_clk", NULL, 1, 0, 0x7C, 20,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_UART_1_PCLK, "uart_1_pclk", "l4_sp_clk", NULL, 1, 0, 0x7C, 21,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SPTIMER_0_PCLK, "sptimer_0_pclk", "l4_sp_clk", NULL, 1, 0,
++	  0x7C, 23, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SPTIMER_1_PCLK, "sptimer_1_pclk", "l4_sp_clk", NULL, 1, 0,
++	  0x7C, 24, 0, 0, 0, 0, 0, 0 },
++
++	/*NAND, SD/MMC and SoftPHY overall clocking*/
++	{ AGILEX5_DFI_CLK, "dfi_clk", "l4_mp_clk", NULL, 1, 0, 0, 0, 0x44, 16,
++	  2, 0, 0, 0 },
++	{ AGILEX5_NAND_NF_CLK, "nand_nf_clk", "dfi_clk", NULL, 1, 0, 0x7C, 10,
++	  0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_NAND_BCH_CLK, "nand_bch_clk", "l4_mp_clk", NULL, 1, 0, 0x7C,
++	  10, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SDMMC_SDPHY_REG_CLK, "sdmmc_sdphy_reg_clk", "l4_mp_clk", NULL,
++	  1, 0, 0x7C, 5, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SDMCLK, "sdmclk", "dfi_clk", NULL, 1, 0, 0x7C, 5, 0, 0, 0, 0,
++	  0, 0 },
++	{ AGILEX5_SOFTPHY_REG_PCLK, "softphy_reg_pclk", "l4_mp_clk", NULL, 1, 0,
++	  0x7C, 26, 0, 0, 0, 0, 0, 0 },
++	{ AGILEX5_SOFTPHY_PHY_CLK, "softphy_phy_clk", "l4_mp_clk", NULL, 1, 0,
++	  0x7C, 26, 0x44, 16, 2, 0, 0, 0 },
++	{ AGILEX5_SOFTPHY_CTRL_CLK, "softphy_ctrl_clk", "dfi_clk", NULL, 1, 0,
++	  0x7C, 26, 0, 0, 0, 0, 0, 0 },
++};
++
++static int
++agilex5_clk_register_c_perip(const struct stratix10_perip_c_clock *clks,
++			     int nums, struct stratix10_clock_data *data)
++{
++	struct clk_hw *hw_clk;
++	void __iomem *base = data->base;
++	int i;
++
++	for (i = 0; i < nums; i++) {
++		hw_clk = s10_register_periph(&clks[i], base);
++		if (IS_ERR(hw_clk)) {
++			pr_err("%s: failed to register clock %s\n", __func__,
++			       clks[i].name);
++			continue;
++		}
++		data->clk_data.hws[clks[i].id] = hw_clk;
 +	}
-+
-+	return -EINVAL;
++	return 0;
 +}
 +
-+static u32 adin_get_reg_value(struct phy_device *phydev,
-+			      const char *prop_name,
-+			      const struct adin_cfg_reg_map *tbl,
-+			      u32 dflt)
++static int
++agilex5_clk_register_cnt_perip(const struct stratix10_perip_cnt_clock *clks,
++			       int nums, struct stratix10_clock_data *data)
 +{
-+	struct device *dev = &phydev->bus->dev;
-+	u32 val;
-+	int rc;
++	struct clk_hw *hw_clk;
++	void __iomem *base = data->base;
++	int i;
 +
-+	if (of_property_read_u32(dev->of_node, prop_name, &val))
-+		return dflt;
-+
-+	rc = adin_lookup_reg_value(tbl, val);
-+	if (rc < 0) {
-+		phydev_warn(phydev,
-+			    "Unsupported value %u for %s using default (%u)\n",
-+			    val, prop_name, dflt);
-+		return dflt;
++	for (i = 0; i < nums; i++) {
++		hw_clk = s10_register_cnt_periph(&clks[i], base);
++		if (IS_ERR(hw_clk)) {
++			pr_err("%s: failed to register clock %s\n", __func__,
++			       clks[i].name);
++			continue;
++		}
++		data->clk_data.hws[clks[i].id] = hw_clk;
 +	}
-+
-+	return rc;
-+}
-+
-+static u16 adin_ext_read(struct phy_device *phydev, const u32 regnum)
-+{
-+	u16 val;
-+
-+	phy_write(phydev, ADIN1300_MII_EXT_REG_PTR, regnum);
-+	val = phy_read(phydev, ADIN1300_MII_EXT_REG_DATA);
-+
-+	phydev_dbg(phydev, "%s: adin@0x%x 0x%x=0x%x\n", __func__, phydev->addr,
-+		   regnum, val);
-+
-+	return val;
-+}
-+
-+static int adin_ext_write(struct phy_device *phydev, const u32 regnum, const u16 val)
-+{
-+	phydev_dbg(phydev, "%s: adin@0x%x 0x%x=0x%x\n", __func__, phydev->addr,
-+		   regnum, val);
-+
-+	phy_write(phydev, ADIN1300_MII_EXT_REG_PTR, regnum);
-+
-+	return phy_write(phydev, ADIN1300_MII_EXT_REG_DATA, val);
-+}
-+
-+static int adin_config_rgmii_mode(struct phy_device *phydev)
-+{
-+	u32 val;
-+	int reg;
-+
-+	if (!phy_interface_is_rgmii(phydev))
-+		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1,
-+					  ADIN1300_GE_RGMII_CFG_REG,
-+					  ADIN1300_GE_RGMII_EN);
-+
-+	reg = adin_ext_read(phydev, ADIN1300_GE_RGMII_CFG_REG);
-+	if (reg < 0)
-+		return reg;
-+
-+	reg |= ADIN1300_GE_RGMII_EN;
-+
-+	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+	    phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
-+		reg |= ADIN1300_GE_RGMII_RXID_EN;
-+
-+		val = adin_get_reg_value(phydev, "adi,rx-internal-delay-ps",
-+					 adin_rgmii_delays,
-+					 ADIN1300_RGMII_2_00_NS);
-+		reg &= ~ADIN1300_GE_RGMII_RX_MSK;
-+		reg |= ADIN1300_GE_RGMII_RX_SEL(val);
-+	} else {
-+		reg &= ~ADIN1300_GE_RGMII_RXID_EN;
-+	}
-+
-+	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+	    phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
-+		reg |= ADIN1300_GE_RGMII_TXID_EN;
-+
-+		val = adin_get_reg_value(phydev, "adi,tx-internal-delay-ps",
-+					 adin_rgmii_delays,
-+					 ADIN1300_RGMII_2_00_NS);
-+		reg &= ~ADIN1300_GE_RGMII_GTX_MSK;
-+		reg |= ADIN1300_GE_RGMII_GTX_SEL(val);
-+	} else {
-+		reg &= ~ADIN1300_GE_RGMII_TXID_EN;
-+	}
-+
-+	return adin_ext_write(phydev, ADIN1300_GE_RGMII_CFG_REG, reg);
-+}
-+
-+static int adin_config_rmii_mode(struct phy_device *phydev)
-+{
-+	u32 val;
-+	int reg;
-+
-+	if (phydev->interface != PHY_INTERFACE_MODE_RMII)
-+		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1,
-+					  ADIN1300_GE_RMII_CFG_REG,
-+					  ADIN1300_GE_RMII_EN);
-+
-+	reg = phy_read_mmd(phydev, MDIO_MMD_VEND1, ADIN1300_GE_RMII_CFG_REG);
-+	if (reg < 0)
-+		return reg;
-+
-+	reg |= ADIN1300_GE_RMII_EN;
-+
-+	val = adin_get_reg_value(phydev, "adi,fifo-depth-bits",
-+				 adin_rmii_fifo_depths,
-+				 ADIN1300_RMII_8_BITS);
-+
-+	reg &= ~ADIN1300_GE_RMII_FIFO_DEPTH_MSK;
-+	reg |= ADIN1300_GE_RMII_FIFO_DEPTH_SEL(val);
-+
-+	return phy_write_mmd(phydev, MDIO_MMD_VEND1,
-+			     ADIN1300_GE_RMII_CFG_REG, reg);
-+}
-+
-+static int adin_config_init(struct phy_device *phydev)
-+{
-+	int rc;
-+
-+	rc = adin_config_rgmii_mode(phydev);
-+	if (rc < 0)
-+		return rc;
-+
-+	rc = adin_config_rmii_mode(phydev);
-+	if (rc < 0)
-+		return rc;
-+
-+	return genphy_config_init(phydev);
-+}
-+
-+static int adin_soft_reset(struct phy_device *phydev)
-+{
-+	int rc;
-+
-+	/* Read link and autonegotiation status */
-+	/* The reset bit is self-clearing, set it and wait */
-+	rc = phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
-+			      ADIN1300_GE_SOFT_RESET_REG,
-+			      ADIN1300_GE_SOFT_RESET);
-+	if (rc < 0)
-+		return rc;
-+
-+	mdelay(20);
-+
-+	/* If we get a read error something may be wrong */
-+	rc = phy_read_mmd(phydev, MDIO_MMD_VEND1,
-+			  ADIN1300_GE_SOFT_RESET_REG);
-+
-+	return rc < 0 ? rc : 0;
-+}
-+
-+static int adin_config_aneg(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = genphy_config_aneg(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Enable Autonegotiation */
-+	phy_write(phydev, MII_BMCR, BMCR_ANENABLE);
-+	phydev->autoneg = AUTONEG_ENABLE;
 +
 +	return 0;
 +}
 +
-+static struct phy_driver adin_driver[] = {
++static int agilex5_clk_register_gate(const struct stratix10_gate_clock *clks,
++				     int nums,
++				     struct stratix10_clock_data *data)
++{
++	struct clk_hw *hw_clk;
++	void __iomem *base = data->base;
++	int i;
++
++	for (i = 0; i < nums; i++) {
++		hw_clk = agilex_register_gate(&clks[i], base);
++		if (IS_ERR(hw_clk)) {
++			pr_err("%s: failed to register clock %s\n", __func__,
++			       clks[i].name);
++			continue;
++		}
++		data->clk_data.hws[clks[i].id] = hw_clk;
++	}
++
++	return 0;
++}
++
++static int agilex5_clk_register_pll(const struct stratix10_pll_clock *clks,
++				    int nums, struct stratix10_clock_data *data)
++{
++	struct clk_hw *hw_clk;
++	void __iomem *base = data->base;
++	int i;
++
++	for (i = 0; i < nums; i++) {
++		hw_clk = agilex5_register_pll(&clks[i], base);
++		if (IS_ERR(hw_clk)) {
++			pr_err("%s: failed to register clock %s\n", __func__,
++			       clks[i].name);
++			continue;
++		}
++		data->clk_data.hws[clks[i].id] = hw_clk;
++	}
++
++	return 0;
++}
++
++static int agilex5_clkmgr_probe(struct device *dev)
++{
++	struct device_node *np = dev->of_node;
++	struct stratix10_clock_data *clk_data;
++	struct resource *res;
++	int i, num_clks;
++
++	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
++	if (IS_ERR(res))
++		return PTR_ERR(res);
++
++	num_clks = AGILEX5_NUM_CLKS;
++
++	clk_data = xzalloc(struct_size(clk_data, clk_data.hws, num_clks));
++	if (!clk_data)
++		return -ENOMEM;
++
++	for (i = 0; i < num_clks; i++)
++		clk_data->clk_data.hws[i] = ERR_PTR(-ENOENT);
++
++	clk_data->base = IOMEM(res->start);
++	clk_data->clk_data.num = num_clks;
++
++	agilex5_clk_register_pll(agilex5_pll_clks, ARRAY_SIZE(agilex5_pll_clks),
++				 clk_data);
++
++	agilex5_clk_register_c_perip(agilex5_main_perip_c_clks,
++				     ARRAY_SIZE(agilex5_main_perip_c_clks),
++				     clk_data);
++
++	agilex5_clk_register_cnt_perip(agilex5_main_perip_cnt_clks,
++				       ARRAY_SIZE(agilex5_main_perip_cnt_clks),
++				       clk_data);
++
++	agilex5_clk_register_gate(agilex5_gate_clks,
++				  ARRAY_SIZE(agilex5_gate_clks), clk_data);
++
++	of_clk_add_hw_provider(np, of_clk_hw_onecell_get, &clk_data->clk_data);
++	return 0;
++}
++
++static const struct of_device_id agilex5_clkmgr_match_table[] = {
 +	{
-+		.phy_id		= 0x0283bc30,
-+		.phy_id_mask	= 0xffffffff,
-+		.drv.name	= "ADIN1300",
-+		.features	= PHY_GBIT_FEATURES,
-+		.config_init	= adin_config_init,
-+		.soft_reset	= adin_soft_reset,
-+		.config_aneg	= adin_config_aneg,
-+		.read_status	= genphy_read_status,
-+	},
++		.compatible = "intel,agilex5-clkmgr",
++	} , {
++		/* sentinel */
++	}
 +};
 +
-+device_phy_drivers(adin_driver);
++static struct driver agilex5_clkmgr_driver = {
++	.name	= "agilex5-clkmgr",
++	.of_match_table = agilex5_clkmgr_match_table,
++	.probe	= agilex5_clkmgr_probe,
++};
++
++static int __init agilex5_clk_init(void)
++{
++	return platform_driver_register(&agilex5_clkmgr_driver);
++}
++core_initcall(agilex5_clk_init);
+diff --git a/drivers/clk/socfpga/clk-gate-s10.c b/drivers/clk/socfpga/clk-gate-s10.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..5656c8ba97ff6ca7578b27be5882c0f0681b0212
+--- /dev/null
++++ b/drivers/clk/socfpga/clk-gate-s10.c
+@@ -0,0 +1,181 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2017, Intel Corporation
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/clk-provider.h>
++
++#include "stratix10-clk.h"
++#include "clk.h"
++
++#define SOCFPGA_CS_PDBG_CLK	"cs_pdbg_clk"
++#define to_socfpga_gate_clk(p) container_of(p, struct socfpga_gate_clk, hw)
++
++#define SOCFPGA_EMAC0_CLK		"emac0_clk"
++#define SOCFPGA_EMAC1_CLK		"emac1_clk"
++#define SOCFPGA_EMAC2_CLK		"emac2_clk"
++#define AGILEX_BYPASS_OFFSET		0xC
++#define STRATIX10_BYPASS_OFFSET		0x2C
++#define BOOTCLK_BYPASS			2
++
++static unsigned long socfpga_gate_clk_recalc_rate(struct clk_hw *hwclk,
++						  unsigned long parent_rate)
++{
++	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hwclk);
++	u32 div = 1, val;
++
++	if (socfpgaclk->fixed_div) {
++		div = socfpgaclk->fixed_div;
++	} else if (socfpgaclk->div_reg) {
++		val = readl(socfpgaclk->div_reg) >> socfpgaclk->shift;
++		val &= GENMASK(socfpgaclk->width - 1, 0);
++		div = (1 << val);
++	}
++	return parent_rate / div;
++}
++
++static unsigned long socfpga_dbg_clk_recalc_rate(struct clk_hw *hwclk,
++						  unsigned long parent_rate)
++{
++	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hwclk);
++	u32 div, val;
++
++	val = readl(socfpgaclk->div_reg) >> socfpgaclk->shift;
++	val &= GENMASK(socfpgaclk->width - 1, 0);
++	div = (1 << val);
++	div = div ? 4 : 1;
++
++	return parent_rate / div;
++}
++
++static int socfpga_gate_get_parent(struct clk_hw *hwclk)
++{
++	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hwclk);
++	u32 mask, second_bypass;
++	u8 parent = 0;
++	const char *name = clk_hw_get_name(hwclk);
++
++	if (socfpgaclk->bypass_reg) {
++		mask = (0x1 << socfpgaclk->bypass_shift);
++		parent = ((readl(socfpgaclk->bypass_reg) & mask) >>
++			  socfpgaclk->bypass_shift);
++	}
++
++	if (streq(name, SOCFPGA_EMAC0_CLK) ||
++	    streq(name, SOCFPGA_EMAC1_CLK) ||
++	    streq(name, SOCFPGA_EMAC2_CLK)) {
++		second_bypass = readl(socfpgaclk->bypass_reg -
++				      STRATIX10_BYPASS_OFFSET);
++		/* EMACA bypass to bootclk @0xB0 offset */
++		if (second_bypass & 0x1)
++			if (parent == 0) /* only applicable if parent is maca */
++				parent = BOOTCLK_BYPASS;
++
++		if (second_bypass & 0x2)
++			if (parent == 1) /* only applicable if parent is macb */
++				parent = BOOTCLK_BYPASS;
++	}
++	return parent;
++}
++
++static int socfpga_agilex_gate_get_parent(struct clk_hw *hwclk)
++{
++	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hwclk);
++	u32 mask, second_bypass;
++	u8 parent = 0;
++	const char *name = clk_hw_get_name(hwclk);
++
++	if (socfpgaclk->bypass_reg) {
++		mask = (0x1 << socfpgaclk->bypass_shift);
++		parent = ((readl(socfpgaclk->bypass_reg) & mask) >>
++			  socfpgaclk->bypass_shift);
++	}
++
++	if (streq(name, SOCFPGA_EMAC0_CLK) ||
++	    streq(name, SOCFPGA_EMAC1_CLK) ||
++	    streq(name, SOCFPGA_EMAC2_CLK)) {
++		second_bypass = readl(socfpgaclk->bypass_reg -
++				      AGILEX_BYPASS_OFFSET);
++		/* EMACA bypass to bootclk @0x88 offset */
++		if (second_bypass & 0x1)
++			if (parent == 0) /* only applicable if parent is maca */
++				parent = BOOTCLK_BYPASS;
++
++		if (second_bypass & 0x2)
++			if (parent == 1) /* only applicable if parent is macb */
++				parent = BOOTCLK_BYPASS;
++	}
++
++	return parent;
++}
++
++static struct clk_ops agilex_gateclk_ops = {
++	.recalc_rate = socfpga_gate_clk_recalc_rate,
++	.get_parent = socfpga_agilex_gate_get_parent,
++};
++
++static const struct clk_ops dbgclk_ops = {
++	.recalc_rate = socfpga_dbg_clk_recalc_rate,
++	.get_parent = socfpga_gate_get_parent,
++};
++
++struct clk_hw *agilex_register_gate(const struct stratix10_gate_clock *clks, void __iomem *regbase)
++{
++	struct clk_hw *hw_clk;
++	struct socfpga_gate_clk *socfpga_clk;
++	struct clk_init_data init;
++	const char *parent_name = clks->parent_name;
++	int ret;
++
++	socfpga_clk = kzalloc(sizeof(*socfpga_clk), GFP_KERNEL);
++	if (!socfpga_clk)
++		return NULL;
++
++	socfpga_clk->reg = regbase + clks->gate_reg;
++	socfpga_clk->bit_idx = clks->gate_idx;
++
++	agilex_gateclk_ops.enable = clk_gate_ops.enable;
++	agilex_gateclk_ops.disable = clk_gate_ops.disable;
++
++	socfpga_clk->fixed_div = clks->fixed_div;
++
++	if (clks->div_reg)
++		socfpga_clk->div_reg = regbase + clks->div_reg;
++	else
++		socfpga_clk->div_reg = NULL;
++
++	socfpga_clk->width = clks->div_width;
++	socfpga_clk->shift = clks->div_offset;
++
++	if (clks->bypass_reg)
++		socfpga_clk->bypass_reg = regbase + clks->bypass_reg;
++	else
++		socfpga_clk->bypass_reg = NULL;
++	socfpga_clk->bypass_shift = clks->bypass_shift;
++
++	if (streq(clks->name, "cs_pdbg_clk"))
++		init.ops = &dbgclk_ops;
++	else
++		init.ops = &agilex_gateclk_ops;
++	init.name = clks->name;
++	init.flags = clks->flags;
++
++	init.num_parents = clks->num_parents;
++	init.parent_names = parent_name ? &parent_name : NULL;
++	if (init.parent_names == NULL)
++		init.parent_data = clks->parent_data;
++	socfpga_clk->hw.init = &init;
++
++	hw_clk = &socfpga_clk->hw;
++
++	ret = clk_hw_register(NULL, &socfpga_clk->hw);
++	if (ret) {
++		kfree(socfpga_clk);
++		return ERR_PTR(ret);
++	}
++	return hw_clk;
++}
+diff --git a/drivers/clk/socfpga/clk-periph-s10.c b/drivers/clk/socfpga/clk-periph-s10.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..68f9d4bc80af5587666e1a4900362eba290ef4f4
+--- /dev/null
++++ b/drivers/clk/socfpga/clk-periph-s10.c
+@@ -0,0 +1,163 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2017, Intel Corporation
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <linux/clk-provider.h>
++
++#include "stratix10-clk.h"
++#include "clk.h"
++
++#define CLK_MGR_FREE_SHIFT		16
++#define CLK_MGR_FREE_MASK		0x7
++#define SWCTRLBTCLKSEN_SHIFT		8
++
++#define to_periph_clk(p) container_of(p, struct socfpga_periph_clk, hw)
++
++static unsigned long clk_peri_c_clk_recalc_rate(struct clk_hw *hwclk,
++					     unsigned long parent_rate)
++{
++	struct socfpga_periph_clk *socfpgaclk = to_periph_clk(hwclk);
++	unsigned long div = 1;
++	u32 val;
++
++	val = readl(socfpgaclk->reg);
++	val &= GENMASK(SWCTRLBTCLKSEN_SHIFT - 1, 0);
++	parent_rate /= val;
++
++	return parent_rate / div;
++}
++
++static unsigned long clk_peri_cnt_clk_recalc_rate(struct clk_hw *hwclk,
++					     unsigned long parent_rate)
++{
++	struct socfpga_periph_clk *socfpgaclk = to_periph_clk(hwclk);
++	unsigned long div = 1;
++
++	if (socfpgaclk->fixed_div) {
++		div = socfpgaclk->fixed_div;
++	} else {
++		if (socfpgaclk->reg)
++			div = ((readl(socfpgaclk->reg) & 0x7ff) + 1);
++	}
++
++	return parent_rate / div;
++}
++
++static int clk_periclk_get_parent(struct clk_hw *hwclk)
++{
++	struct socfpga_periph_clk *socfpgaclk = to_periph_clk(hwclk);
++	u32 clk_src, mask;
++	u8 parent = 0;
++
++	/* handle the bypass first */
++	if (socfpgaclk->bypass_reg) {
++		mask = (0x1 << socfpgaclk->bypass_shift);
++		parent = ((readl(socfpgaclk->bypass_reg) & mask) >>
++			   socfpgaclk->bypass_shift);
++		if (parent)
++			return parent;
++	}
++
++	if (socfpgaclk->reg) {
++		clk_src = readl(socfpgaclk->reg);
++		parent = (clk_src >> CLK_MGR_FREE_SHIFT) &
++			  CLK_MGR_FREE_MASK;
++	}
++	return parent;
++}
++
++static const struct clk_ops peri_c_clk_ops = {
++	.recalc_rate = clk_peri_c_clk_recalc_rate,
++	.get_parent = clk_periclk_get_parent,
++};
++
++static const struct clk_ops peri_cnt_clk_ops = {
++	.recalc_rate = clk_peri_cnt_clk_recalc_rate,
++	.get_parent = clk_periclk_get_parent,
++};
++
++struct clk_hw *s10_register_periph(const struct stratix10_perip_c_clock *clks,
++				void __iomem *reg)
++{
++	struct clk_hw *hw_clk;
++	struct socfpga_periph_clk *periph_clk;
++	struct clk_init_data init;
++	const char *name = clks->name;
++	const char *parent_name = clks->parent_name;
++	int ret;
++
++	periph_clk = kzalloc(sizeof(*periph_clk), GFP_KERNEL);
++	if (WARN_ON(!periph_clk))
++		return NULL;
++
++	periph_clk->reg = reg + clks->offset;
++
++	init.name = name;
++	init.ops = &peri_c_clk_ops;
++	init.flags = clks->flags;
++
++	init.num_parents = clks->num_parents;
++	init.parent_names = parent_name ? &parent_name : NULL;
++	if (init.parent_names == NULL)
++		init.parent_data = clks->parent_data;
++
++	periph_clk->hw.init = &init;
++	hw_clk = &periph_clk->hw;
++
++	ret = clk_hw_register(NULL, hw_clk);
++	if (ret) {
++		kfree(periph_clk);
++		return ERR_PTR(ret);
++	}
++	return hw_clk;
++}
++
++struct clk_hw *s10_register_cnt_periph(const struct stratix10_perip_cnt_clock *clks,
++				    void __iomem *regbase)
++{
++	struct clk_hw *hw_clk;
++	struct socfpga_periph_clk *periph_clk;
++	struct clk_init_data init;
++	const char *name = clks->name;
++	const char *parent_name = clks->parent_name;
++	int ret;
++
++	periph_clk = kzalloc(sizeof(*periph_clk), GFP_KERNEL);
++	if (WARN_ON(!periph_clk))
++		return NULL;
++
++	if (clks->offset)
++		periph_clk->reg = regbase + clks->offset;
++	else
++		periph_clk->reg = NULL;
++
++	if (clks->bypass_reg)
++		periph_clk->bypass_reg = regbase + clks->bypass_reg;
++	else
++		periph_clk->bypass_reg = NULL;
++	periph_clk->bypass_shift = clks->bypass_shift;
++	periph_clk->fixed_div = clks->fixed_divider;
++
++	init.name = name;
++	init.ops = &peri_cnt_clk_ops;
++	init.flags = clks->flags;
++
++	init.num_parents = clks->num_parents;
++	init.parent_names = parent_name ? &parent_name : NULL;
++	if (init.parent_names == NULL)
++		init.parent_data = clks->parent_data;
++
++	periph_clk->hw.init = &init;
++	hw_clk = &periph_clk->hw;
++
++	ret = clk_hw_register(NULL, hw_clk);
++	if (ret) {
++		kfree(periph_clk);
++		return ERR_PTR(ret);
++	}
++	return hw_clk;
++}
+diff --git a/drivers/clk/socfpga/clk-pll-s10.c b/drivers/clk/socfpga/clk-pll-s10.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..59e5ec33b06b6cf634b353bf6d6fe4d345171550
+--- /dev/null
++++ b/drivers/clk/socfpga/clk-pll-s10.c
+@@ -0,0 +1,140 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2017, Intel Corporation
++ */
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/clk-provider.h>
++
++#include "stratix10-clk.h"
++#include "clk.h"
++
++/* Clock Manager offsets */
++#define CLK_MGR_PLL_CLK_SRC_SHIFT	16
++#define CLK_MGR_PLL_CLK_SRC_MASK	0x3
++
++/* PLL Clock enable bits */
++#define SOCFPGA_PLL_POWER		0
++#define SOCFPGA_PLL_RESET_MASK		0x2
++#define SOCFPGA_PLL_REFDIV_MASK		0x00003F00
++#define SOCFPGA_PLL_REFDIV_SHIFT	8
++#define SOCFPGA_PLL_AREFDIV_MASK	0x00000F00
++#define SOCFPGA_PLL_DREFDIV_MASK	0x00003000
++#define SOCFPGA_PLL_DREFDIV_SHIFT	12
++#define SOCFPGA_PLL_MDIV_MASK		0xFF000000
++#define SOCFPGA_PLL_MDIV_SHIFT		24
++#define SOCFPGA_AGILEX_PLL_MDIV_MASK	0x000003FF
++#define SWCTRLBTCLKSEL_MASK		0x200
++#define SWCTRLBTCLKSEL_SHIFT		9
++
++#define SOCFPGA_BOOT_CLK		"boot_clk"
++
++#define to_socfpga_clk(p) container_of(p, struct socfpga_pll, hw)
++
++static unsigned long agilex_clk_pll_recalc_rate(struct clk_hw *hwclk,
++						unsigned long parent_rate)
++{
++	struct socfpga_pll *socfpgaclk = to_socfpga_clk(hwclk);
++	unsigned long arefdiv, reg, mdiv;
++	unsigned long long vco_freq;
++
++	/* read VCO1 reg for numerator and denominator */
++	reg = readl(socfpgaclk->reg);
++	arefdiv = (reg & SOCFPGA_PLL_AREFDIV_MASK) >> SOCFPGA_PLL_REFDIV_SHIFT;
++
++	vco_freq = (unsigned long long)parent_rate / arefdiv;
++
++	/* Read mdiv and fdiv from the fdbck register */
++	reg = readl(socfpgaclk->reg + 0x24);
++	mdiv = reg & SOCFPGA_AGILEX_PLL_MDIV_MASK;
++
++	vco_freq = (unsigned long long)vco_freq * mdiv;
++	return (unsigned long)vco_freq;
++}
++
++static unsigned long clk_boot_clk_recalc_rate(struct clk_hw *hwclk,
++					 unsigned long parent_rate)
++{
++	struct socfpga_pll *socfpgaclk = to_socfpga_clk(hwclk);
++	u32 div;
++
++	div = ((readl(socfpgaclk->reg) &
++		SWCTRLBTCLKSEL_MASK) >>
++		SWCTRLBTCLKSEL_SHIFT);
++	div += 1;
++	return parent_rate / div;
++}
++
++static int clk_pll_get_parent(struct clk_hw *hwclk)
++{
++	struct socfpga_pll *socfpgaclk = to_socfpga_clk(hwclk);
++	u32 pll_src;
++
++	pll_src = readl(socfpgaclk->reg);
++	return (pll_src >> CLK_MGR_PLL_CLK_SRC_SHIFT) &
++		CLK_MGR_PLL_CLK_SRC_MASK;
++}
++
++static int clk_boot_get_parent(struct clk_hw *hwclk)
++{
++	struct socfpga_pll *socfpgaclk = to_socfpga_clk(hwclk);
++	u32 pll_src;
++
++	pll_src = readl(socfpgaclk->reg);
++	return (pll_src >> SWCTRLBTCLKSEL_SHIFT) &
++		SWCTRLBTCLKSEL_MASK;
++}
++
++/* TODO need to fix, Agilex5 SM requires change */
++static const struct clk_ops agilex5_clk_pll_ops = {
++	/* TODO This may require a custom Agilex5 implementation */
++	.recalc_rate = agilex_clk_pll_recalc_rate,
++	.get_parent = clk_pll_get_parent,
++};
++
++static const struct clk_ops clk_boot_ops = {
++	.recalc_rate = clk_boot_clk_recalc_rate,
++	.get_parent = clk_boot_get_parent,
++};
++
++struct clk_hw *agilex5_register_pll(const struct stratix10_pll_clock *clks,
++				void __iomem *reg)
++{
++	struct clk_hw *hw_clk;
++	struct socfpga_pll *pll_clk;
++	struct clk_init_data init;
++	const char *name = clks->name;
++	int ret;
++
++	pll_clk = xzalloc(sizeof(*pll_clk));
++	if (!pll_clk)
++		return ERR_PTR(-ENOMEM);
++
++	pll_clk->reg = reg + clks->offset;
++
++	if (streq(name, SOCFPGA_BOOT_CLK))
++		init.ops = &clk_boot_ops;
++	else
++		init.ops = &agilex5_clk_pll_ops;
++
++	init.name = name;
++	init.flags = clks->flags;
++
++	init.num_parents = clks->num_parents;
++	init.parent_names = NULL;
++	init.parent_data = clks->parent_data;
++	pll_clk->hw.init = &init;
++
++	pll_clk->bit_idx = SOCFPGA_PLL_POWER;
++	hw_clk = &pll_clk->hw;
++
++	ret = clk_hw_register(NULL, hw_clk);
++	if (ret) {
++		kfree(pll_clk);
++		return ERR_PTR(ret);
++	}
++	return hw_clk;
++}
++
+diff --git a/drivers/clk/socfpga/clk.h b/drivers/clk/socfpga/clk.h
+index 402f714436ab2f94dc5ecbad244915f0fa1c6194..19fc45e7f639583342b37422f30762d673421760 100644
+--- a/drivers/clk/socfpga/clk.h
++++ b/drivers/clk/socfpga/clk.h
+@@ -20,6 +20,11 @@
+ #define SOCFPGA_MAX_PARENTS		5
+ 
+ #define streq(a, b) (strcmp((a), (b)) == 0)
++#define SYSMGR_SDMMC_CTRL_SET(smplsel, drvsel) \
++	((((smplsel) & 0x7) << 3) | (((drvsel) & 0x7) << 0))
++
++#define SYSMGR_SDMMC_CTRL_SET_AS10(smplsel, drvsel) \
++	((((smplsel) & 0x7) << 4) | (((drvsel) & 0x7) << 0))
+ 
+ extern void __iomem *clk_mgr_base_addr;
+ 
+@@ -58,11 +63,13 @@ struct socfpga_gate_clk {
+ 	char *parent_name;
+ 	u32 fixed_div;
+ 	void __iomem *div_reg;
++	void __iomem *bypass_reg;
+ 	struct regmap *sys_mgr_base_addr;
+ 	u32 width;	/* only valid if div_reg != 0 */
+ 	u32 shift;	/* only valid if div_reg != 0 */
+ 	u32 bit_idx;
+ 	void __iomem *reg;
++	u32 bypass_shift;      /* only valid if bypass_reg != 0 */
+ 	u32 clk_phase[2];
+ 	const char *parent_names[SOCFPGA_MAX_PARENTS];
+ };
+@@ -73,8 +80,10 @@ struct socfpga_periph_clk {
+ 	char *parent_name;
+ 	u32 fixed_div;
+ 	void __iomem *div_reg;
++	void __iomem *bypass_reg;
+ 	u32 width;      /* only valid if div_reg != 0 */
+ 	u32 shift;      /* only valid if div_reg != 0 */
++	u32 bypass_shift;      /* only valid if bypass_reg != 0 */
+ 	const char *parent_names[SOCFPGA_MAX_PARENTS];
+ };
+ 
+diff --git a/drivers/clk/socfpga/stratix10-clk.h b/drivers/clk/socfpga/stratix10-clk.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..1fe025f65f7a05faf00efc3991d2afc9c564d5ca
+--- /dev/null
++++ b/drivers/clk/socfpga/stratix10-clk.h
+@@ -0,0 +1,73 @@
++/* SPDX-License-Identifier:    GPL-2.0 */
++/*
++ * Copyright (C) 2017, Intel Corporation
++ */
++
++#ifndef	__STRATIX10_CLK_H
++#define	__STRATIX10_CLK_H
++
++struct stratix10_clock_data {
++	void __iomem		*base;
++
++	/* Must be last */
++	struct clk_hw_onecell_data	clk_data;
++};
++
++struct stratix10_pll_clock {
++	unsigned int		id;
++	const char		*name;
++	const struct clk_parent_data	*parent_data;
++	u8			num_parents;
++	unsigned long		flags;
++	unsigned long		offset;
++};
++
++struct stratix10_perip_c_clock {
++	unsigned int		id;
++	const char		*name;
++	const char		*parent_name;
++	const struct clk_parent_data	*parent_data;
++	u8			num_parents;
++	unsigned long		flags;
++	unsigned long		offset;
++};
++
++struct stratix10_perip_cnt_clock {
++	unsigned int		id;
++	const char		*name;
++	const char		*parent_name;
++	const struct clk_parent_data	*parent_data;
++	u8			num_parents;
++	unsigned long		flags;
++	unsigned long		offset;
++	u8			fixed_divider;
++	unsigned long		bypass_reg;
++	unsigned long		bypass_shift;
++};
++
++struct stratix10_gate_clock {
++	unsigned int		id;
++	const char		*name;
++	const char		*parent_name;
++	const struct clk_parent_data	*parent_data;
++	u8			num_parents;
++	unsigned long		flags;
++	unsigned long		gate_reg;
++	u8			gate_idx;
++	unsigned long		div_reg;
++	u8			div_offset;
++	u8			div_width;
++	unsigned long		bypass_reg;
++	u8			bypass_shift;
++	u8			fixed_div;
++};
++
++struct clk_hw *agilex5_register_pll(const struct stratix10_pll_clock *clks,
++				void __iomem *reg);
++struct clk_hw *s10_register_periph(const struct stratix10_perip_c_clock *clks,
++				void __iomem *reg);
++struct clk_hw *s10_register_cnt_periph(const struct stratix10_perip_cnt_clock *clks,
++				    void __iomem *reg);
++struct clk_hw *agilex_register_gate(const struct stratix10_gate_clock *clks,
++			      void __iomem *reg);
++#endif	/* __STRATIX10_CLK_H */
 
 -- 
 2.46.0
