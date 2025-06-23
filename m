@@ -1,58 +1,56 @@
-Delivery-date: Fri, 20 Jun 2025 18:15:27 +0200
+Delivery-date: Mon, 23 Jun 2025 08:40:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSeOl-009Kd8-29
+	id 1uTaqn-00AB0u-0o
 	for lore@lore.pengutronix.de;
-	Fri, 20 Jun 2025 18:15:27 +0200
+	Mon, 23 Jun 2025 08:40:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uSeOl-0004Wq-2D
-	for lore@pengutronix.de; Fri, 20 Jun 2025 18:15:27 +0200
+	id 1uTaqm-0001Nr-11
+	for lore@pengutronix.de; Mon, 23 Jun 2025 08:40:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YxdJYXJ3XhAxzuvofFUEHWVFvPyzPmQZvqaPsjzCnAg=; b=Rc9ZLSq5qed8x5m/DqB63Z/1xs
-	CjIEzo5vwPHp8GlzxXZpAw9VwHP+9m0tB2R6MNqm+m+Kq4KIHwjtKMsH9C59mxrvyAJYT41PQmHDn
-	1tsFe1+VvwKbHSST1PWUYszNMWlTB/EabRfE5NCLuQ+6HeCwcAanm07YAUFXT0YpRsMm/dtZwEWTF
-	Nn+Xo/zNgM6/YGfc1mI8SqfaZp4BMcjcwp16aWbAu/e8JBeMz1M1NVolw5EjxXtAJwVT5qeT57upU
-	o5LcO+neUVEQzrYArHNR5FGE7kHh1k48Gapb/FgUDgxsLXZ/kHSCD+8cTeolIHHQi5VpfNcBUcoQd
-	6wduV8gg==;
+	bh=jfB33979Lv81s1XgZxygT5p0/FQr0zBXP/vWR7h2tc0=; b=B4dOljJU1/03mDI2ET+Sr/uxGW
+	x64nznar5d97U+xFnSZ2bJYYsicA5ng2Uh2waz2Ue24dKOTEmt+yMkg9Q7aXucmaqtN2ZQxMJeWo0
+	9VYBOpUMiMGCgtubbIZ0QuTQjaXgCZ6IMi6fezK+CVPP09NFMTF7dLX0tVPsBoySDUnp/IndDZ80Y
+	g13NDGWduFmTZjTknb6K6suxJ1hLtCAa2mhWxc6ITQsZNXOLZVp3faqDSNIiu0+sr9EJaO6LG2jQ6
+	Ayw/m/c1MH1Zg+8nebVOKzsC4pQXvOfMv8Qy9IOaPVBk8ySu1DN8yT7YGwT+6zkz0F8bUPIoSHMka
+	+rPsKxJA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSeO1-0000000G6rM-17ex;
-	Fri, 20 Jun 2025 16:14:41 +0000
+	id 1uTaq9-00000001kWg-24sI;
+	Mon, 23 Jun 2025 06:39:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSdw5-0000000G226-0VUn
+	id 1uTaXl-00000001iLk-3di2
 	for barebox@lists.infradead.org;
-	Fri, 20 Jun 2025 15:45:51 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Mon, 23 Jun 2025 06:20:39 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uSdw2-0000pf-0b; Fri, 20 Jun 2025 17:45:46 +0200
-Message-ID: <0c5b58a4-bc8a-4775-a265-f1bb2b46eea0@pengutronix.de>
-Date: Fri, 20 Jun 2025 17:45:45 +0200
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1uTaXi-0001b6-Eg; Mon, 23 Jun 2025 08:20:34 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon, 23 Jun 2025 08:20:31 +0200
+Message-Id: <20250623062032.3527006-3-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250623062032.3527006-1-a.fatoum@barebox.org>
+References: <20250623062032.3527006-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-References: <20250618123642.1432610-1-a.fatoum@barebox.org>
- <aFVYBJikCmjGpupI@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <aFVYBJikCmjGpupI@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250620_084549_178574_8FBD7392 
-X-CRM114-Status: GOOD (  24.75  )
+X-CRM114-CacheID: sfid-20250622_232037_928628_00BA42EC 
+X-CRM114-Status: UNSURE (   8.15  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,88 +68,81 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mmu: explicitly map executable non-SDRAM regions with
- MAP_CODE
+Subject: [PATCH master 3/4] startup: track system state with regards to initcall/exitcalls
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 20.06.25 14:45, Sascha Hauer wrote:
-> On Wed, Jun 18, 2025 at 02:36:42PM +0200, Ahmad Fatoum wrote:
->> So far we have been setting eXecute Never on MAP_UNCACHED regions and
->> left it out for the default MAP_CACHED region.
->>
->> We have at least three places, which depend on this to remap non-SDRAM
->> regions executable, so ROM code or newly uploaded code can be run.
->>
->> Switch them over to use a new MAP_CODE mapping type. For now, this is
->> equivalent to MAP_CACHED, but with the addition of W^X support in
->> barebox, this will be required to avoid a prefetch abort when MMU
->> attributes are used.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
->> ---
->> Sascha, I think this should be ordered before your MMU patches to avoid
->> the known regressions. Let's see what else there is. :)
->> ---
->>  arch/arm/mach-imx/romapi.c | 3 ++-
->>  drivers/firmware/socfpga.c | 3 ++-
->>  drivers/hab/habv4.c        | 2 +-
->>  include/mmu.h              | 1 +
->>  4 files changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
->> index 10af42f28a76..a4143d372ae8 100644
->> --- a/arch/arm/mach-imx/romapi.c
->> +++ b/arch/arm/mach-imx/romapi.c
->> @@ -299,7 +299,8 @@ void imx93_bootsource(void)
->>  		goto out;
->>  	}
->>  
->> -	arch_remap_range((void *)rom.start, rom.start, resource_size(&rom), MAP_CACHED);
->> +	/* TODO: restore uncached mapping once we no longer need this? */
->> +	arch_remap_range((void *)rom.start, rom.start, resource_size(&rom), MAP_CODE);
->>  
->>  	OPTIMIZER_HIDE_VAR(rom_api);
->>  
->> diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
->> index 0f7d11abb588..4b10ca009798 100644
->> --- a/drivers/firmware/socfpga.c
->> +++ b/drivers/firmware/socfpga.c
->> @@ -353,7 +353,8 @@ static int socfpga_fpgamgr_program_finish(struct firmware_handler *fh)
->>  		return status;
->>  	}
->>  
->> -	remap_range((void *)CYCLONE5_OCRAM_ADDRESS, PAGE_SIZE, MAP_CACHED);
->> +	/* TODO: restore uncached mapping once we no longer need this? */
->> +	remap_range((void *)CYCLONE5_OCRAM_ADDRESS, PAGE_SIZE, MAP_CODE);
-> 
-> This is done before the code is copied to this page. I moved it after
-> the fncpy call to avoid writing to readonly memory.
+The operating system reclaims the barebox malloc area fully after it's
+booted, so there is no point freeing memory while executing exitcalls.
 
-fncpy calls memcpy internally though, so we should either leave the MAP_CACHED
-as is and add a further MAP_CODE after the fncpy or introduce a fncpy_toio
-that calls memcpy_toio internally.
+To allow skipping memory freeing in that situation, maintain this
+information in a new barebox_system_state variable.
 
-What do you think?
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ common/startup.c  |  5 +++++
+ include/barebox.h | 12 ++++++++++++
+ 2 files changed, 17 insertions(+)
 
-> While at it I also added the remapping to MAP_UNCACHED.
-
-Thanks,
-Ahmad
-
-> 
-> Sascha
-> 
-
-
+diff --git a/common/startup.c b/common/startup.c
+index 560a00c5699b..8d36ffceb47e 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -51,6 +51,7 @@ extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
+ 
+ extern exitcall_t __barebox_exitcalls_start[], __barebox_exitcalls_end[];
+ 
++enum system_states barebox_system_state;
+ 
+ #if defined CONFIG_FS_RAMFS && defined CONFIG_FS_DEVFS
+ static int mount_root(void)
+@@ -404,8 +405,10 @@ void __noreturn start_barebox(void)
+ 					ERR_PTR(result));
+ 	}
+ 
++	barebox_system_state = BAREBOX_RUNNING;
+ 	pr_debug("initcalls done\n");
+ 
++
+ 	if (IS_ENABLED(CONFIG_SELFTEST_AUTORUN))
+ 		selftests_run();
+ 
+@@ -435,6 +438,8 @@ void shutdown_barebox(void)
+ {
+ 	exitcall_t *exitcall;
+ 
++	barebox_system_state = BAREBOX_EXITING;
++
+ 	for (exitcall = __barebox_exitcalls_start;
+ 			exitcall < __barebox_exitcalls_end; exitcall++) {
+ 		pr_debug("exitcall-> %pS\n", *exitcall);
+diff --git a/include/barebox.h b/include/barebox.h
+index 02228451c26e..1b291129e982 100644
+--- a/include/barebox.h
++++ b/include/barebox.h
+@@ -48,4 +48,16 @@ void shutdown_barebox(void);
+ 
+ long get_ram_size(volatile long *base, long size);
+ 
++enum system_states {
++	BAREBOX_STARTING,
++	BAREBOX_RUNNING,
++	BAREBOX_EXITING,
++};
++
++#if IN_PROPER
++extern enum system_states barebox_system_state;
++#else
++#define barebox_system_state	BAREBOX_STARTING
++#endif
++
+ #endif
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
