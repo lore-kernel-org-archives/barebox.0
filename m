@@ -1,56 +1,54 @@
-Delivery-date: Mon, 23 Jun 2025 08:40:18 +0200
+Delivery-date: Mon, 23 Jun 2025 08:40:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTaqo-00AB1s-07
+	id 1uTaqo-00AB2G-2z
 	for lore@lore.pengutronix.de;
-	Mon, 23 Jun 2025 08:40:18 +0200
+	Mon, 23 Jun 2025 08:40:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTaqm-0001Pz-PY
-	for lore@pengutronix.de; Mon, 23 Jun 2025 08:40:17 +0200
+	id 1uTaqo-0001R4-32
+	for lore@pengutronix.de; Mon, 23 Jun 2025 08:40:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iv32UHEtTP3qh2rDf+heSZ/fIAfCHodneM8x2esVOow=; b=fA5BGIsd5OA0GPKGw/E6vq6+l0
-	iOSvYufC81Amw6ntDGMKi5P02f8CRQCX4kqh9HMXK4qvvvDCHzCz6/PyFAAYqPFUbXnv6Fl+bfQGQ
-	WY8pB93RlDn5qU2y+8m+Z0YXpb7rKPkU2Z6yZv7aMI7hbiej0oDuhuBUSM4usaO0MwgnjIxF0ne8M
-	CkP8R3xYZVj7fRhUozS0lrrXgluOfWFhzqnYzGi/2aeC35otL5ZKe9FfVW9JHiqEzrezhv7Jr7S7W
-	GGsu9tpI+kfToHrAkujXEdbFybfHJgvCH+LFOFPYryC9oVRftySxVt/USutnpBXQ2kxOu6zdhqOch
-	Z+w6e1xg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=jvTWfvq+G1j1eAMmF2DZkyR1JHR1uSQaSgiqJPpZwOY=; b=L6KU1QQWK+rmb2KQaYq3vSeKIS
+	uokYVEYjVaBcUFKKfept6YCEhyFvCsA4eY5cZjtBx5V/o0+GlGDqcNXzdWPS8rNv3rvGUKXCEoD9G
+	cCVKZ3UNr3PyMk6KlNwpgxinfznonGAQ0IaazWdUh3+c2GKS13Ityvqei6VTCGOmH2cvG1BFrsaTn
+	3SKVqo4PFiPW8rG1MMP1Pq+mKxtWSRnxLbR+tO2nhURR7nuePuykTR2ssGDudxCA7taksNp8u2y4n
+	Bdf1/f5DREndQ0GVgQKLYM1TpmgyaUprJc8oqULSWZw8dO+y9DfH/F3EK5B6V8Z0bSOf2SlV0ZnvZ
+	N3pXo1aA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTaqA-00000001kXM-08QD;
-	Mon, 23 Jun 2025 06:39:38 +0000
+	id 1uTaqD-00000001kZG-3qhk;
+	Mon, 23 Jun 2025 06:39:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTaXl-00000001iLm-3cs6
+	id 1uTaa1-00000001j2W-3ZJ4
 	for barebox@lists.infradead.org;
-	Mon, 23 Jun 2025 06:20:39 +0000
+	Mon, 23 Jun 2025 06:22:58 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uTaXi-0001b6-Kq; Mon, 23 Jun 2025 08:20:34 +0200
+	id 1uTaZz-0003by-T0; Mon, 23 Jun 2025 08:22:55 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 23 Jun 2025 08:20:32 +0200
-Message-Id: <20250623062032.3527006-4-a.fatoum@barebox.org>
+Cc: Lars Schmidt <l.schmidt@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon, 23 Jun 2025 08:22:53 +0200
+Message-Id: <20250623062253.3528292-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250623062032.3527006-1-a.fatoum@barebox.org>
-References: <20250623062032.3527006-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250622_232037_929611_7E1AE5A3 
-X-CRM114-Status: UNSURE (   9.82  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250622_232257_888308_71E5D583 
+X-CRM114-Status: GOOD (  17.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,44 +70,126 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 4/4] fs: do not skip fs_remove when calling umount ramfs
+Subject: [PATCH] fixup! bootchooser: extend cmd tool by option to set attempts_locked
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-There's usually only a single ramfs mounted at / and given that the OS
-will reclaim the memory anyway, we skip removal of ramfs.
+commands: bootchooser: fix new locking/unlocking options
 
-Should further ramfs be mounted though, e.g. by tests, we run into a
-use after free: fs_remove is skipped, but the unmount deallocates
-the fs_device.
+The bootchooser instance is reference counted and the command releases
+it again when it's done. Setting the struct bootchooser::lock_attempts
+member in the command is thus without effect if the reference count
+drops to zero when the command terminates.
 
-Fix this by only skipping removal for mounted file systems without a
-remove callback when barebox_shutdown has been called.
+Fix the issue by setting a global bootchooser instance independent flag
+that forces locking until disabled. This is also the way that
+bootchooser_last_boot_successful() is implemented.
 
-Fixes: cf7b19df6541 ("fs: ramfs: do not bother unmounting ramfs on shutdown")
+This also drops the check for existence of the attempts_locked variable
+in the boot state as the command doesn't interact with the state anyway.
+
+Cc: Lars Schmidt <l.schmidt@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- fs/fs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ commands/bootchooser.c |  2 +-
+ common/bootchooser.c   | 25 ++++++++-----------------
+ include/bootchooser.h  |  2 +-
+ 3 files changed, 10 insertions(+), 19 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 763f1b617460..3580bff6f5a6 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -835,9 +835,11 @@ static void fs_remove(struct device *dev)
- 	int ret;
- 
- 	if (fsdev->dev.driver) {
--		if (!dev->driver->remove)
-+		if (barebox_system_state == BAREBOX_EXITING
-+		    && !dev->driver->remove)
- 			return;
--		dev->driver->remove(dev);
-+		if (dev->driver->remove)
-+			dev->driver->remove(dev);
- 		list_del(&fsdev->list);
+diff --git a/commands/bootchooser.c b/commands/bootchooser.c
+index 4199085f352b..a59b5ebf7cce 100644
+--- a/commands/bootchooser.c
++++ b/commands/bootchooser.c
+@@ -117,7 +117,7 @@ static int do_bootchooser(int argc, char *argv[])
  	}
  
+ 	if (lock_state >= 0) {
+-		ret = bootchooser_lock_attempts(bootchooser, lock_state);
++		bootchooser_lock_attempts(lock_state);
+ 		done_something = true;
+ 	}
+ 
+diff --git a/common/bootchooser.c b/common/bootchooser.c
+index f2beed543db0..623cb8ce7714 100644
+--- a/common/bootchooser.c
++++ b/common/bootchooser.c
+@@ -41,6 +41,7 @@ static int global_default_priority = 1;
+ static int disable_on_zero_attempts;
+ static int retry;
+ static int last_boot_successful;
++static bool attempts_locked;
+ 
+ struct bootchooser {
+ 	struct list_head targets;
+@@ -400,12 +401,13 @@ struct bootchooser *bootchooser_get(void)
+ 	}
+ 
+ 	/* this is an optional value */
+-	bc->attempts_locked = false;
++	bc->attempts_locked = attempts_locked;
+ 	ret = getenv_u32(bc->state_prefix, "attempts_locked", &locked);
+-	if (!ret && locked) {
++	if (!ret && locked)
+ 		bc->attempts_locked = true;
++
++	if (bc->attempts_locked)
+ 		pr_debug("remaining attempt counter is locked\n");
+-	}
+ 
+ 	INIT_LIST_HEAD(&bc->targets);
+ 
+@@ -632,7 +634,7 @@ void bootchooser_info(struct bootchooser *bc)
+ 	printf("\nlast booted target: %s\n", bc->last_chosen ?
+ 	       bc->last_chosen->name : "unknown");
+ 
+-	printf("Locking of boot attempt counter: %s",
++	printf("Locking of boot attempt counter: %s\n",
+ 	       bc->attempts_locked ? "enabled" : "disabled");
+ }
+ 
+@@ -822,7 +824,6 @@ struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bc)
+ 
+ /**
+  * bootchooser_lock_attempts - lock the bootchooser attempt counter
+- * @bc:		The bootchooser
+  * @locked:     Whether the attempt counter is locked or not.
+  *
+  * Instruct bootchooser to lock the boot attempts counter.
+@@ -830,19 +831,9 @@ struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bc)
+  *
+  * Return: 0 for success, negative error code otherwise
+  */
+-int bootchooser_lock_attempts(struct bootchooser *bc, bool locked)
++void bootchooser_lock_attempts(bool locked)
+ {
+-	uint32_t not_needed;
+-	/* We just need to check here, if the value exists in the device tree
+-	 * So if it doesn't exist, inform user about it for easier debugging
+-	 */
+-	if (getenv_u32(bc->state_prefix, "attempts_locked", &not_needed)) {
+-		pr_warn("Missing attempts_locked property in state DT node\n");
+-		return -ENOENT;
+-	}
+-
+-	bc->attempts_locked = locked;
+-	return 0;
++	attempts_locked = locked;
+ }
+ 
+ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
+diff --git a/include/bootchooser.h b/include/bootchooser.h
+index 69783b0b7494..36cbd0dd0a01 100644
+--- a/include/bootchooser.h
++++ b/include/bootchooser.h
+@@ -17,7 +17,7 @@ void bootchooser_info(struct bootchooser *bootchooser);
+ int bootchooser_boot(struct bootchooser *bc);
+ 
+ struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bootchooser);
+-int bootchooser_lock_attempts(struct bootchooser *bc, bool locked);
++void bootchooser_lock_attempts(bool locked);
+ const char *bootchooser_target_name(struct bootchooser_target *target);
+ struct bootchooser_target *bootchooser_target_by_name(struct bootchooser *bootchooser,
+ 						      const char *name);
 -- 
 2.39.5
 
