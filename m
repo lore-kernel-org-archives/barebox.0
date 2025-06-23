@@ -1,54 +1,55 @@
-Delivery-date: Mon, 23 Jun 2025 08:40:19 +0200
+Delivery-date: Mon, 23 Jun 2025 08:40:20 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTaqo-00AB2G-2z
+	id 1uTaqq-00AB2v-1d
 	for lore@lore.pengutronix.de;
-	Mon, 23 Jun 2025 08:40:19 +0200
+	Mon, 23 Jun 2025 08:40:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTaqo-0001R4-32
-	for lore@pengutronix.de; Mon, 23 Jun 2025 08:40:18 +0200
+	id 1uTaqp-0001Rm-9z
+	for lore@pengutronix.de; Mon, 23 Jun 2025 08:40:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=jvTWfvq+G1j1eAMmF2DZkyR1JHR1uSQaSgiqJPpZwOY=; b=L6KU1QQWK+rmb2KQaYq3vSeKIS
-	uokYVEYjVaBcUFKKfept6YCEhyFvCsA4eY5cZjtBx5V/o0+GlGDqcNXzdWPS8rNv3rvGUKXCEoD9G
-	cCVKZ3UNr3PyMk6KlNwpgxinfznonGAQ0IaazWdUh3+c2GKS13Ityvqei6VTCGOmH2cvG1BFrsaTn
-	3SKVqo4PFiPW8rG1MMP1Pq+mKxtWSRnxLbR+tO2nhURR7nuePuykTR2ssGDudxCA7taksNp8u2y4n
-	Bdf1/f5DREndQ0GVgQKLYM1TpmgyaUprJc8oqULSWZw8dO+y9DfH/F3EK5B6V8Z0bSOf2SlV0ZnvZ
-	N3pXo1aA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mPr/IUFHvjdlO+kJMOEamyITdsHWWJV+n/mt+/rJpJg=; b=igoU5iga22i2tymCnxG9JaH0/i
+	ZpwlzM2053QwtvqYsq1mlGzSFsCZNaCz8pNou7WiUbqbqibXZb6o6yX+b1Kg406yVpr3NKBI9af9m
+	hCr4h2OdMxCyHl5E3TZaTwWYszHG3yoPGJRHh0c04kCMiXtok0/k9nNDnIXUqC/YL50nHJvT5aV2b
+	JvzPKObKSHot34pApEk1MvWBYL3CdJ1QiyS2FG3uo9CYtNFaEQPmhhF/Pv6uawSSQRFMWYpiybI2L
+	7SxgZzNA6yRQbW4PUeTk4QC6GkgoNeBAEQj3ZTqQy5ZDX1qnshNv1f2mzyRcYGfCjfw889dz9XaCn
+	/kgTwfHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTaqD-00000001kZG-3qhk;
-	Mon, 23 Jun 2025 06:39:41 +0000
+	id 1uTaqG-00000001kb3-047j;
+	Mon, 23 Jun 2025 06:39:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTaa1-00000001j2W-3ZJ4
+	id 1uTadg-00000001jLH-2vlK
 	for barebox@lists.infradead.org;
-	Mon, 23 Jun 2025 06:22:58 +0000
+	Mon, 23 Jun 2025 06:26:45 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uTaZz-0003by-T0; Mon, 23 Jun 2025 08:22:55 +0200
+	id 1uTadf-0006dU-Db; Mon, 23 Jun 2025 08:26:43 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Lars Schmidt <l.schmidt@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 23 Jun 2025 08:22:53 +0200
-Message-Id: <20250623062253.3528292-1-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon, 23 Jun 2025 08:26:40 +0200
+Message-Id: <20250623062641.3529615-3-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250623062641.3529615-1-a.fatoum@barebox.org>
+References: <20250623062641.3529615-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250622_232257_888308_71E5D583 
-X-CRM114-Status: GOOD (  17.56  )
+X-CRM114-CacheID: sfid-20250622_232644_733784_461F4433 
+X-CRM114-Status: GOOD (  11.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,126 +71,92 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! bootchooser: extend cmd tool by option to set attempts_locked
+Subject: [PATCH 2/3] test: py: test mount/unmount of pstore file system
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-commands: bootchooser: fix new locking/unlocking options
+The file system internals were recently touched to enable easier porting
+of the 9P file system. This led to regressions[1][2] that broke
+unmounting a volumes.
 
-The bootchooser instance is reference counted and the command releases
-it again when it's done. Setting the struct bootchooser::lock_attempts
-member in the command is thus without effect if the reference count
-drops to zero when the command terminates.
+Add a simple regression test that would have caught the two described
+issues.
 
-Fix the issue by setting a global bootchooser instance independent flag
-that forces locking until disabled. This is also the way that
-bootchooser_last_boot_successful() is implemented.
+[1]: a3ef153fdf26 ("fs: unreference path on file close")
+[2]: aef3b0134519 ("fs: unreference path in canonicalize_path()")
 
-This also drops the check for existence of the attempts_locked variable
-in the boot state as the command doesn't interact with the state anyway.
-
-Cc: Lars Schmidt <l.schmidt@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- commands/bootchooser.c |  2 +-
- common/bootchooser.c   | 25 ++++++++-----------------
- include/bootchooser.h  |  2 +-
- 3 files changed, 10 insertions(+), 19 deletions(-)
+ arch/arm/configs/multi_v5_v6_defconfig |  1 +
+ arch/arm/configs/multi_v7_defconfig    |  1 +
+ arch/arm/configs/multi_v8_defconfig    |  1 +
+ test/py/test_mount.py                  | 21 +++++++++++++++++++++
+ 4 files changed, 24 insertions(+)
+ create mode 100644 test/py/test_mount.py
 
-diff --git a/commands/bootchooser.c b/commands/bootchooser.c
-index 4199085f352b..a59b5ebf7cce 100644
---- a/commands/bootchooser.c
-+++ b/commands/bootchooser.c
-@@ -117,7 +117,7 @@ static int do_bootchooser(int argc, char *argv[])
- 	}
- 
- 	if (lock_state >= 0) {
--		ret = bootchooser_lock_attempts(bootchooser, lock_state);
-+		bootchooser_lock_attempts(lock_state);
- 		done_something = true;
- 	}
- 
-diff --git a/common/bootchooser.c b/common/bootchooser.c
-index f2beed543db0..623cb8ce7714 100644
---- a/common/bootchooser.c
-+++ b/common/bootchooser.c
-@@ -41,6 +41,7 @@ static int global_default_priority = 1;
- static int disable_on_zero_attempts;
- static int retry;
- static int last_boot_successful;
-+static bool attempts_locked;
- 
- struct bootchooser {
- 	struct list_head targets;
-@@ -400,12 +401,13 @@ struct bootchooser *bootchooser_get(void)
- 	}
- 
- 	/* this is an optional value */
--	bc->attempts_locked = false;
-+	bc->attempts_locked = attempts_locked;
- 	ret = getenv_u32(bc->state_prefix, "attempts_locked", &locked);
--	if (!ret && locked) {
-+	if (!ret && locked)
- 		bc->attempts_locked = true;
+diff --git a/arch/arm/configs/multi_v5_v6_defconfig b/arch/arm/configs/multi_v5_v6_defconfig
+index 2afc072e129c..91d3a63e85ab 100644
+--- a/arch/arm/configs/multi_v5_v6_defconfig
++++ b/arch/arm/configs/multi_v5_v6_defconfig
+@@ -38,6 +38,7 @@ CONFIG_CMD_GO=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_FINDMNT=y
+ CONFIG_CMD_UBIFORMAT=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_LOADENV=y
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index 4fb696a10626..726afe8ce6c5 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -143,6 +143,7 @@ CONFIG_CMD_RESET=y
+ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_BOOTCHOOSER=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_FINDMNT=y
+ CONFIG_CMD_UBIFORMAT=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_DEFAULTENV=y
+diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
+index 3d3f3254df20..a487d331d04e 100644
+--- a/arch/arm/configs/multi_v8_defconfig
++++ b/arch/arm/configs/multi_v8_defconfig
+@@ -89,6 +89,7 @@ CONFIG_CMD_RESET=y
+ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_BOOTCHOOSER=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_FINDMNT=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_DEFAULTENV=y
+ CONFIG_CMD_LOADENV=y
+diff --git a/test/py/test_mount.py b/test/py/test_mount.py
+new file mode 100644
+index 000000000000..33608a3b6ddb
+--- /dev/null
++++ b/test/py/test_mount.py
+@@ -0,0 +1,21 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+	if (bc->attempts_locked)
- 		pr_debug("remaining attempt counter is locked\n");
--	}
- 
- 	INIT_LIST_HEAD(&bc->targets);
- 
-@@ -632,7 +634,7 @@ void bootchooser_info(struct bootchooser *bc)
- 	printf("\nlast booted target: %s\n", bc->last_chosen ?
- 	       bc->last_chosen->name : "unknown");
- 
--	printf("Locking of boot attempt counter: %s",
-+	printf("Locking of boot attempt counter: %s\n",
- 	       bc->attempts_locked ? "enabled" : "disabled");
- }
- 
-@@ -822,7 +824,6 @@ struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bc)
- 
- /**
-  * bootchooser_lock_attempts - lock the bootchooser attempt counter
-- * @bc:		The bootchooser
-  * @locked:     Whether the attempt counter is locked or not.
-  *
-  * Instruct bootchooser to lock the boot attempts counter.
-@@ -830,19 +831,9 @@ struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bc)
-  *
-  * Return: 0 for success, negative error code otherwise
-  */
--int bootchooser_lock_attempts(struct bootchooser *bc, bool locked)
-+void bootchooser_lock_attempts(bool locked)
- {
--	uint32_t not_needed;
--	/* We just need to check here, if the value exists in the device tree
--	 * So if it doesn't exist, inform user about it for easier debugging
--	 */
--	if (getenv_u32(bc->state_prefix, "attempts_locked", &not_needed)) {
--		pr_warn("Missing attempts_locked property in state DT node\n");
--		return -ENOENT;
--	}
--
--	bc->attempts_locked = locked;
--	return 0;
-+	attempts_locked = locked;
- }
- 
- static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
-diff --git a/include/bootchooser.h b/include/bootchooser.h
-index 69783b0b7494..36cbd0dd0a01 100644
---- a/include/bootchooser.h
-+++ b/include/bootchooser.h
-@@ -17,7 +17,7 @@ void bootchooser_info(struct bootchooser *bootchooser);
- int bootchooser_boot(struct bootchooser *bc);
- 
- struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bootchooser);
--int bootchooser_lock_attempts(struct bootchooser *bc, bool locked);
-+void bootchooser_lock_attempts(bool locked);
- const char *bootchooser_target_name(struct bootchooser_target *target);
- struct bootchooser_target *bootchooser_target_by_name(struct bootchooser *bootchooser,
- 						      const char *name);
++from .helper import skip_disabled
++
++
++def test_findmnt_umount(barebox, barebox_config):
++    skip_disabled(barebox_config, "CONFIG_CMD_FINDMNT")
++
++    barebox.run_check("mount -t ramfs none /tmp")
++    findmnt_out1 = barebox.run_check("findmnt /tmp")
++    barebox.run_check("umount /tmp")
++
++    assert len(findmnt_out1) == 2
++
++
++def test_echo_umount(barebox):
++    barebox.run_check("mount -t ramfs none /tmp")
++    barebox.run_check("echo -o /tmp/file test")
++    barebox.run_check("umount /tmp")
++
++    # Nothing to assert, we are happy if this is reached without exception
 -- 
 2.39.5
 
