@@ -1,60 +1,66 @@
-Delivery-date: Tue, 24 Jun 2025 21:55:20 +0200
+Delivery-date: Tue, 24 Jun 2025 21:55:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uU9jk-00AhP6-0h
+	id 1uU9jl-00AhPR-1j
 	for lore@lore.pengutronix.de;
-	Tue, 24 Jun 2025 21:55:20 +0200
+	Tue, 24 Jun 2025 21:55:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uU9jj-0005xC-Ek
-	for lore@pengutronix.de; Tue, 24 Jun 2025 21:55:20 +0200
+	id 1uU9jk-0005y3-Ho
+	for lore@pengutronix.de; Tue, 24 Jun 2025 21:55:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Z6YN/hX0q/Cakw95Xfodunpo5q5E3YtT47bpNYhVomY=; b=cANnf/c1YFCl/FLW/g+dZzrwDH
-	rKWswyasRoRM+W4HcxQFpnQ7HaDfOjn7T5zC0t4gok6a4cmyutgrOo1BLAttOaAfCz2h8glJHWW1U
-	QGvhnwCDkBYURlQLvqjsyyC6EYp1onQ6FQTErn/FllFXiMALGUvovimPmYl7MAPP1dIAiswWKN+OI
-	DB3A9oZKACXQSON0E6XWeb89dmvNshbhjpbvO/lP3nzVO3xE5OSNYLoyII7GIB0o8mP8bMaUg4GJv
-	0oKll/l0oLgmYTb748XLGUmeSmyZjMhsFtGWUUHKnQBnn9tbGRi5OGKdTn5eQf2RrLml9QzQI6Pao
-	QPfXC+Rw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Sw6WYEBqK3UgAt5RJ213a01M2Z0RWa6LPCNiiHI5dkg=; b=pFTHt8Se6QcYvzLI12/irNoreo
+	vZin6dKq72fAB1JJDocxsDKvl8FCDPNW7VgsNFbrHlVMNa0L+EixrXGF9g8tCpEP4pjaReLsym2VF
+	76ovNMl990+0wq/x1dS+w0Y7E828a0Mri36I8oHsrxyVLyQ3Rw7vOidHN4B7KI+i7Y+ClRT/WZcks
+	fUO3KSz7MPI6myvZBlveafgzrYZwC4ezgyHLVV4BxJ5VygnGAD+ixNsGMfSIMM9qbYcsI4dKWc66Q
+	smYa3lNoTkRxLSlFV9RoivHcnJ4YSTdSD2Rg6DRoXh7KbazYW3k7fIVKWeKpuszi4NAzECpmSrPJt
+	IbvI8nXQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uU9j0-00000006fBz-3NYh;
-	Tue, 24 Jun 2025 19:54:34 +0000
+	id 1uU9ix-00000006f9j-1UmM;
+	Tue, 24 Jun 2025 19:54:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uU5ow-00000006ANa-29rw
+	id 1uU5T5-000000065W5-1E9C
 	for barebox@lists.infradead.org;
-	Tue, 24 Jun 2025 15:44:27 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Tue, 24 Jun 2025 15:21:52 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uU5ov-0000ym-7g; Tue, 24 Jun 2025 17:44:25 +0200
-Message-ID: <b3933e45-6ab6-4437-86a1-af1ace18cd2b@pengutronix.de>
-Date: Tue, 24 Jun 2025 17:44:25 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20250619152556.3749995-1-m.felsch@pengutronix.de>
- <20250619152556.3749995-4-m.felsch@pengutronix.de>
- <7987c09e-d236-455e-b17d-efaa5e1ea791@pengutronix.de>
- <20250624105534.kmewkn5etl2rhh5a@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+	id 1uU5T3-00080U-9I; Tue, 24 Jun 2025 17:21:49 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uU5T3-0058Q1-0K;
+	Tue, 24 Jun 2025 17:21:49 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uU5T3-009MDM-00;
+	Tue, 24 Jun 2025 17:21:49 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250624105534.kmewkn5etl2rhh5a@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: sha@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 24 Jun 2025 17:21:48 +0200
+Message-Id: <20250624152148.2230298-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250624_084426_555169_9A4D48E7 
-X-CRM114-Status: GOOD (  19.10  )
+X-CRM114-CacheID: sfid-20250624_082151_332480_26557C95 
+X-CRM114-Status: GOOD (  11.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,85 +82,60 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/5] ARM: mach-imx: tzasc: add
- imx6q_tzc380_early_ns_region1()
+Subject: [PATCH master] fs: fix file creation by not pointing file dentry at parent dir
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+A last-minute regression fix to allow unmounting file systems in some
+situations unfortunately introduced a regression of its own:
+Creating new files with O_CREAT associated a file descriptor's struct
+file with the dentry of the parent directory instead of the dentry
+of the newly created file.
 
-On 6/24/25 12:55, Marco Felsch wrote:
-> Hi Ahmad,
-> 
-> On 25-06-24, Ahmad Fatoum wrote:
->> Hello Marco,
->>
->> On 6/19/25 17:25, Marco Felsch wrote:
->>> +void imx6q_tzc380_early_ns_region1(void)
->>> +{
->>> +	resource_size_t ram_sz = imx6_get_mmdc_sdram_size();
->>> +
->>> +	imx_tzc380_init_and_setup(IOMEM(MX6_TZASC1_BASE), 1,
->>> +				  MX6_MMDC_PORT01_BASE_ADDR, ram_sz,
->>> +				  TZC380_REGION_SP_NS_RW);
->>> +	imx_tzc380_init_and_setup(IOMEM(MX6_TZASC2_BASE), 1,
->>> +				  MX6_MMDC_PORT01_BASE_ADDR, ram_sz,
->>> +				  TZC380_REGION_SP_NS_RW);
->>
->> What's the point of having two TZASC's if you configure them the exact
->> same way..?
-> 
-> The i.MX6QDL do have two MMDCs. Depending on the system/board-design the
-> controllers support interleaved access. I'm not that deep into that
-> topic but I think this was mostly used by LPDDR2 setups. For DDR3 setups
-> only one MMDC can be used.
+Opening already existing files worked fine though, leading to e.g.
+problems when saving a fresh environment to a directory:
 
-Mhm, it still looks strange to configure the same into both instead of
-the actual physical address space mappings they have, but given that the
-physical address is used to route the transfer in the first place, I
-guess it doesn't matter and the way it's written now is simpler.
+  barebox@TI AM335x BeagleBone black:/ rm /mnt/mmc0.0/barebox.env
+  barebox@TI AM335x BeagleBone black:/ saveenv
+  saving environment to /mnt/mmc0.0/barebox.env
+  could not open /mnt/mmc0.0/barebox.env: Invalid argument
+  saveenv: Invalid argument
+  barebox@TI AM335x BeagleBone black:/ saveenv
+  saving environment to /mnt/mmc0.0/barebox.env
 
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Opening existing files did not regress, because filename_lookup stores
+the dentry of the actual file, unlike filename_create, which stores the
+dentry of the parent directory.
 
-Cheers,
-Ahmad
+Fixes: a3ef153fdf26 ("fs: unreference path on file close")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+I noticed this with saveenv to FAT, because FAT doesn't like opening /,
+but I could imagine other subtle errors creeping up elsewhere.
+I think a v2025.06.1 may be in order..
+---
+ fs/fs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> 
-> Regards,
->   Marco
-> 
->>> +}
->>> +
->>>  void imx8m_tzc380_init(void)
->>>  {
->>>  	u32 __iomem *gpr = IOMEM(MX8M_IOMUXC_GPR_BASE_ADDR);
->>> diff --git a/include/mach/imx/tzasc.h b/include/mach/imx/tzasc.h
->>> index 51c86f168ee4..4d3f26fc82f1 100644
->>> --- a/include/mach/imx/tzasc.h
->>> +++ b/include/mach/imx/tzasc.h
->>> @@ -6,6 +6,7 @@
->>>  #include <linux/types.h>
->>>  #include <asm/system.h>
->>>  
->>> +void imx6q_tzc380_early_ns_region1(void);
->>>  void imx8m_tzc380_init(void);
->>>  bool imx8m_tzc380_is_enabled(void);
->>>  
->>
->> -- 
->> Pengutronix e.K.                  |                             |
->> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
->>
->>
-> 
-
+diff --git a/fs/fs.c b/fs/fs.c
+index 8689e14e68ef..4a500bbdd9da 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -2604,6 +2604,12 @@ int openat(int dirfd, const char *pathname, int flags)
+ 			error = create(path.dentry, dentry);
+ 			if (error)
+ 				goto out1;
++			/* repoint path.dentry from parent to newly created entry.
++			 * path.mnt already points at the correct vfsmount, even
++			 * for a dirfd of the root directory, so that's fine.
++			 */
++			dput(path.dentry);
++			path.dentry = dentry;
+ 		} else {
+ 			dput(dentry);
+ 			error = -ENOENT;
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.39.5
 
 
 
