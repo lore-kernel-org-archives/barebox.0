@@ -1,71 +1,58 @@
-Delivery-date: Tue, 24 Jun 2025 11:00:24 +0200
+Delivery-date: Tue, 24 Jun 2025 11:05:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTzVw-00AY7f-1a
+	id 1uTzaq-00AYMp-0P
 	for lore@lore.pengutronix.de;
-	Tue, 24 Jun 2025 11:00:24 +0200
+	Tue, 24 Jun 2025 11:05:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTzVv-0002UV-Tt
-	for lore@pengutronix.de; Tue, 24 Jun 2025 11:00:24 +0200
+	id 1uTzap-0007q5-JT
+	for lore@pengutronix.de; Tue, 24 Jun 2025 11:05:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Z0HAfoY96PSX5Mh6N6SlpsFLkBHQ+RFTMDGmKjuYII4=; b=TLjg3Zrwr/68DbOzyj9XzAhuHn
-	HYHcJMBChCBQ2uzlDdOqPQxLyvJw5+sd7s8DO0UpTwNdRmA5EiVONmCPeSjb81IT9/SGu1ZrHYx1w
-	EtUziYdwlDWz7bCIBPKie7lwHSR9jfBGFk4qSZ+n4071LWNUZxq6H3FPlNDcg5+4GZUt++6oWVTyn
-	XuU/WXjHDHVWDjYQMJRkFV1d8usS+tl3NA9aut986fGQrVh8sfjxg/YWW2ryayWvk7lS3d4A7/7VP
-	XqzNBVfM3M94H08xeL9UCCmpvENk63yX+KtZkoM14lSD/aC42h+3b6YV854TgEaBrYLcmlkrHi0PX
-	VhkBceEw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=7l1gIfoPxvXfnD4UXQ+gPoyBJ2t+n7+CEWhAbTFuzrA=; b=IXJRwkBC6o/QIN7G0RjFegwmSV
+	l7muhGHPfzHiPgfwBcpWMdPYto34aEyFSrhtn5mJn6vIRT1uoi9KroU/FEsvFDLH49RIPFFl+VPRN
+	5PzZIlytUE8NqNJ+7WFkn9S+GQhJCYv5oa7pN1E1wQ8/iF+rilv15ZbBrCPB1InXxlqJh+st3ciTq
+	Eo7Em2EtG8RG9Q/dG2KUROr/t4Ofw+ottPc9fccEiBn8ZmeiiorFFT7nkzzLp0PKVobRNXaS4w5dJ
+	yUUzCjEXW1Y/IyOfWV4au27d9CFySo7sAZe5TKeQsQX4/DtJhPnnwSAYyuMYGFJ9a+c8A1fVGKgiM
+	pQSv9WiQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTzVQ-000000056am-3zjf;
-	Tue, 24 Jun 2025 08:59:52 +0000
+	id 1uTzaM-000000057RL-0xF4;
+	Tue, 24 Jun 2025 09:04:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTzI0-000000054cO-0auA
+	id 1uTzUz-000000056Y6-2MfW
 	for barebox@lists.infradead.org;
-	Tue, 24 Jun 2025 08:46:01 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uTzHy-0004CV-Sp; Tue, 24 Jun 2025 10:45:58 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uTzHy-0055Fp-2G;
-	Tue, 24 Jun 2025 10:45:58 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uTzHy-00F75A-1j;
-	Tue, 24 Jun 2025 10:45:58 +0200
-Date: Tue, 24 Jun 2025 10:45:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <aFplxg4CG5vvpxu3@pengutronix.de>
-References: <20250623-v2024-10-0-topic-socfpga-agilex5-v3-0-e9de9e31b2c1@pengutronix.de>
- <20250623-v2024-10-0-topic-socfpga-agilex5-v3-7-e9de9e31b2c1@pengutronix.de>
+	Tue, 24 Jun 2025 08:59:30 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uTzUy-0001NW-Aj; Tue, 24 Jun 2025 10:59:24 +0200
+Message-ID: <3f0dfef5-b380-4bdc-9cd7-86ddd7cbf83a@pengutronix.de>
+Date: Tue, 24 Jun 2025 10:59:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250623-v2024-10-0-topic-socfpga-agilex5-v3-7-e9de9e31b2c1@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20250624081712.4054548-1-a.fatoum@pengutronix.de>
+ <aFpiFmyiNN6IL5UI@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <aFpiFmyiNN6IL5UI@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250624_014600_182793_7728F812 
-X-CRM114-Status: GOOD (  18.05  )
+X-CRM114-CacheID: sfid-20250624_015925_613032_AEE03D23 
+X-CRM114-Status: GOOD (  14.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,78 +74,52 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 07/10] clk: socfpga: add agilex5 clock support
+Subject: Re: [PATCH] fixup! test: Add pytest suite for NVMEM framework
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Jun 23, 2025 at 03:57:52PM +0200, Steffen Trumtrar wrote:
-> +
-> +static int agilex5_clkmgr_probe(struct device *dev)
-> +{
-> +	struct device_node *np = dev->of_node;
-> +	struct stratix10_clock_data *clk_data;
-> +	struct resource *res;
-> +	int i, num_clks;
-> +
-> +	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
-> +	if (IS_ERR(res))
-> +		return PTR_ERR(res);
+Hi,
 
-dev_get_resource() should only be used when you know it is used
-somewhere else as well. Otherwise please use dev_request_mem_resource().
-That way you will recognize conflicts and as an additional bonus the
-resource will show up in iomem ooutput.
+On 6/24/25 10:30, Oleksij Rempel wrote:
+> On Tue, Jun 24, 2025 at 10:17:12AM +0200, Ahmad Fatoum wrote:
+>> If CONFIG_DEBUG_PROBES is enabled, barebox will print an info log
+>> whenever a device is probed. This breaks one test case in the newly
+>> introduced nvmem tests, because running the nvmem command results in two
+>> lines instead of one:
+>>
+>>       probe-> rmem1
+>>   rmem1
+>>
+>> A better solution might be disabling stderr, but for now, let's just
+>> have the test check all lines that appeared after running the command.
+>>
+>> This fixes CI breakage in next.
+>>
+>> Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> 
+> LGTM
+> 
+> May be better to keep it as separate patch, not as fixup? Since It provides
+> important information.
 
-> +static int __init agilex5_clk_init(void)
-> +{
-> +	return platform_driver_register(&agilex5_clkmgr_driver);
-> +}
-> +core_initcall(agilex5_clk_init);
+Fine with me either way. If Sascha prefers a separate patch I would
+suggest as commit message title:
 
-You could use core_platform_driver here.
+  test: nvmem: fix test failure with CONFIG_DEBUG_PROBES
 
+Cheers,
+Ahmad
 
-> +static unsigned long clk_peri_c_clk_recalc_rate(struct clk_hw *hwclk,
-> +					     unsigned long parent_rate)
-> +{
-> +	struct socfpga_periph_clk *socfpgaclk = to_periph_clk(hwclk);
-> +	unsigned long div = 1;
-> +	u32 val;
-> +
-> +	val = readl(socfpgaclk->reg);
-> +	val &= GENMASK(SWCTRLBTCLKSEN_SHIFT - 1, 0);
-> +	parent_rate /= val;
-> +
-> +	return parent_rate / div;
-
-div is always 1.
-
-> +}
-> +
-> +struct clk_hw *agilex5_register_pll(const struct stratix10_pll_clock *clks,
-> +				void __iomem *reg)
-> +{
-> +	struct clk_hw *hw_clk;
-> +	struct socfpga_pll *pll_clk;
-> +	struct clk_init_data init;
-> +	const char *name = clks->name;
-> +	int ret;
-> +
-> +	pll_clk = xzalloc(sizeof(*pll_clk));
-> +	if (!pll_clk)
-> +		return ERR_PTR(-ENOMEM);
-
-xzalloc never fails.
-
-You kept the original kzalloc in some places and replaced with xzalloc
-elsewhere. Could you use xzalloc consistently?
-
-Sascha
+> 
+> Best Regards,
+> Oleksij
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
