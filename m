@@ -1,89 +1,71 @@
-Delivery-date: Tue, 24 Jun 2025 11:20:53 +0200
+Delivery-date: Tue, 24 Jun 2025 11:58:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTzpl-00AYZR-0F
+	id 1uU0Pk-00AYx6-1Q
 	for lore@lore.pengutronix.de;
-	Tue, 24 Jun 2025 11:20:53 +0200
+	Tue, 24 Jun 2025 11:58:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uTzpk-00080F-Ey
-	for lore@pengutronix.de; Tue, 24 Jun 2025 11:20:53 +0200
+	id 1uU0Pj-0006eX-HW
+	for lore@pengutronix.de; Tue, 24 Jun 2025 11:58:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:Content-Type:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=aTNyoHR8DoV3C8aJ4Dk0zN0BuIdO8XVrwuu9ofSY2YE=; b=vS44trhY0z50UQ
-	nTC+C++2G6AWFGDlZgybkZ8yDzStBO5ntsSG5NOganKpD6LNNCy1e9/KROiQDNv0uyqsG7bk457Zj
-	5usgxsK6D92gPrNZcHOt2mmt9jW1xoK/KKmLmo6tjxSQaHmjAGTNhrXYan+VpWV/+nkTUfUnQzLoj
-	RkeAbtpokxa/IaJpi/PJuNR43D6vYSinK+ETqyYUp/bE4H2X1UBVnZFLAFByS0Z6ulu+F1kBQ2SKX
-	b/2fsQzT7uY5iJ29Q3ab+3UNfgAHgRYCuUdRnHJxUYy9V1S7ueKfR1ouYhcPZ6VyPs0/gqhXt/oaX
-	+oteICdx/kTRMaulahug==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=y0nIDcdroIsLyOWy3GY40skXGOdUOnOxzlKR1Mhvrks=; b=N8kgMWq88+P6UlH6C1L4EC75iv
+	MVlAREeAI2cekBFS6FXaRlni5ZKQa+ysCDikFj/215RRknIu2pbQ5+9qu7j8u25uWQVdgSyfpbS8r
+	TqzqTxR6GIFN/kzzZ/U7qV0nGJtf9xu/5FH2iU2vNEvowSB0ZgAWmq7e1AJSVs2KuASWcE+ZxGyb6
+	SxThMBkILH5AAM2MKEK5qLy7D2wwOhhYfGKEDd86DYyE2MpmYb/dDKgcbpQsYPfd//mJf/d/3ZsLC
+	T8D9b/SiDqacWTXTpH/+zkYnbaw9e3Q17Api20Wi9Jce8EuNTaMCkKCv1dCf78KifacjY4fWPaorA
+	Nne2xQ5A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTzpF-00000005A74-2ddO;
-	Tue, 24 Jun 2025 09:20:21 +0000
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+	id 1uU0P5-00000005EyY-1bAX;
+	Tue, 24 Jun 2025 09:57:23 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uTzjc-0000000592g-13dL
+	id 1uU0P2-00000005ExX-0bI9
 	for barebox@lists.infradead.org;
-	Tue, 24 Jun 2025 09:14:33 +0000
-Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-b3182c6d03bso250163a12.0
-        for <barebox@lists.infradead.org>; Tue, 24 Jun 2025 02:14:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750756471; x=1751361271; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aTNyoHR8DoV3C8aJ4Dk0zN0BuIdO8XVrwuu9ofSY2YE=;
-        b=ZpLNj27QKJhr3MHfoS0vFJZY182Z9txqRDW7QOWkyWV/NBKkEINQhd1fe66DAzXY6Q
-         Sk5KuyXfkV2kfeRuDb6L9dP7FUvlmpm/D1sJnDPbPuE0eRB9R3S58xJxl9+4CNe0WK07
-         mb0eUF4/8gunI+8BGomA905kW9I3/dGUJw9vtp1jn3QO/DcfnwuzcqS1LwJ+UGqyFcHs
-         UxDfBxZC2+aCZ9lwUVWhRGbchANVhvmvR3FNiZ+eXuwM1CTZZHHSgWomsT3bpLuYq8ES
-         p5Qjl+/4EA6IYIuKHkmu2fgOhT+N1GasLYwaRPrgPLjsA5j2eap9ZaJs8/vC65JgF0OF
-         PgzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750756471; x=1751361271;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aTNyoHR8DoV3C8aJ4Dk0zN0BuIdO8XVrwuu9ofSY2YE=;
-        b=tsrhvrCGwE0EiS+TswVLnQTNE154V0OpK1TjnRlfoU4eW9EzB12vFWjHvVSIaQvjsq
-         aDUA8WNZOWBn0qGMUHyigRpZUTm1xvCTgLSGE9E934FuaDP7kD+f4UOAkcIa3I+Rj/8v
-         zASYXgpIDDJhmsInIsDF9kF2xG69WDwaZpbVmr8Hl8JQnBDXG8gMLsa5PsMSrZlWgWNF
-         cepzjCFdcRZl1lUoNOlht9v7vsKZs/Lal16SicthAKZbNr2N7iaf0dGfv3X9hoamtpCo
-         hkzH9yNgIhEKcynBYV5tu+N40TycU27gBsWLYaqEyx+H56SPg/7c6PuOeLKhWCuJYfpe
-         x5/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVas5LYZ/VO6AEk88YxWHe4tREGFA9rB+PTciS4C4uPC9faGrjDLSutGEH9751VplOQJYnMxBgV@lists.infradead.org
-X-Gm-Message-State: AOJu0YyBfQM6jBl4dWLlSoxUBnt7D6Z+9re6m7ZoEWOQNUsVSwnlUAE5
-	W1gbz5la1kHaNUVLDClmRsgJVo4TT4pxlPH0nUMOu7CAe+F+aMaEXaQRtoTMOVnRigy6O75Fy5j
-	NjKqAEl+hf9EJZVWZTkeb74O7I8Cv0dgOWacs
-X-Gm-Gg: ASbGncuk61hNuaXM95zHwdsoJkDhQeL1bg81s8PHxRNa5JwrsdMTNUgDTnQF9qoMUAM
-	75Q6MawuWi8u4C8GpROzvVIzxDuc8K9J5huuCRSog2Oa9scDBV5JGaA5wXo2cK9JiZ4iJ9bArK0
-	hOMpGW3PpuLYfD5enepo6utc1zZEElFrEuPP6s/w08L7g=
-X-Google-Smtp-Source: AGHT+IFwuR8qEDJ6RFIVQU766g0BErP3uyTyvQ9HoexvwNio/RekE3KJnOGENx79tPQhD73t9GtmIHIzBmrbfI574j4=
-X-Received: by 2002:a17:90b:3e81:b0:313:1ea2:a577 with SMTP id
- 98e67ed59e1d1-3159d8d16c2mr21595824a91.29.1750756471059; Tue, 24 Jun 2025
- 02:14:31 -0700 (PDT)
+	Tue, 24 Jun 2025 09:57:21 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uU0P0-0005lB-RG; Tue, 24 Jun 2025 11:57:18 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uU0P0-0055jT-27;
+	Tue, 24 Jun 2025 11:57:18 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uU0P0-00F8Kl-1i;
+	Tue, 24 Jun 2025 11:57:18 +0200
+Date: Tue, 24 Jun 2025 11:57:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <aFp2fkj9sBURaH3M@pengutronix.de>
+References: <20250623-v2024-10-0-topic-socfpga-agilex5-v3-0-e9de9e31b2c1@pengutronix.de>
+ <20250623-v2024-10-0-topic-socfpga-agilex5-v3-9-e9de9e31b2c1@pengutronix.de>
 MIME-Version: 1.0
-References: <CAP1tNvRTbyB7NXoaLOid9-7jH5Jxfa5MB6LGVfyZYwc7y+Sq_w@mail.gmail.com>
- <aFke1jEhe1ICGEmG@pengutronix.de> <d1c20ac9-1d97-46c0-851a-2a15fb2b79ce@pengutronix.de>
-In-Reply-To: <d1c20ac9-1d97-46c0-851a-2a15fb2b79ce@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 24 Jun 2025 12:14:18 +0300
-X-Gm-Features: AX0GCFvwzMYVsYfIXJ8lCDCKuaQZrLx7eGd5TlTXnUjovZk8jgMJURMTkPZZ22Q
-Message-ID: <CAP1tNvS1hTatpg71qTb-0x-N0cH3fdpdN1DAn8cmy+8L9UBVCA@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250623-v2024-10-0-topic-socfpga-agilex5-v3-9-e9de9e31b2c1@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250624_021432_291279_AD85AD85 
-X-CRM114-Status: GOOD (  24.79  )
+X-CRM114-CacheID: sfid-20250624_025720_338167_59880D70 
+X-CRM114-Status: GOOD (  28.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,74 +77,236 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Barebox List <barebox@lists.infradead.org>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: SAMA5D3-xplained board cleanup question
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v3 09/10] net: add support for Designware XGMAC (10gb)
+ ethernet
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello.
+On Mon, Jun 23, 2025 at 03:57:54PM +0200, Steffen Trumtrar wrote:
+>  
+> +config DRIVER_NET_DESIGNWARE_XGMAC
+> +	bool "Designware XGMAC Ethernet driver support" if COMPILE_TEST
 
-I'll do it now. Thanks!
+Does it make sense to make this option visible?
 
-=D0=BF=D0=BD, 23 =D0=B8=D1=8E=D0=BD. 2025=E2=80=AF=D0=B3. =D0=B2 13:16, Ahm=
-ad Fatoum <a.fatoum@pengutronix.de>:
->
-> Hi,
->
-> On 6/23/25 11:31, Sascha Hauer wrote:
-> > Hi Alexander,
-> >
-> > On Fri, Jun 20, 2025 at 03:21:56PM +0300, Alexander Shiyan wrote:
-> >> Hello All!
-> >>
-> >>  I would like to propose a cleanup for the SAMA5D3-xplained board supp=
-ort.
-> >> The board currently has code in board.c that configures the
-> >> at91sam9-smc (Static Memory Controller).
-> >> However, since the board uses devicetree, this configuration should be
-> >> handled by the MFD driver
-> >> that is responsible for the SMC and is devicetree-based.
-> >>
-> >> Therefore, I think we can remove the SMC configuration from the board =
-file.
-> >> But I don't have a SAMA5D3-xplained board to test this change.
-> >>
-> >> Could someone who has access to this board please test the removal of
-> >> the SMC configuration?
-> >
-> > It's rather unlikely that someone gives a positive answer here.
-> > I'd say just send the patch and add a note that it's untested.
-> >
-> > That said, we @Pengutronix should have such a board, at least I can fin=
-d
-> > it in our inventory list. Not sure if I can motivate someone to connect
-> > it for me.
->
-> I have one at home. If you send a patch, I can give it a test.
->
-> Cheers,
-> Ahmad
->
-> >
-> > Sascha
-> >
->
-> --
-> Pengutronix e.K.                  |                             |
-> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
->
+> +	depends on HAS_DMA && OFTREE
+> +	select PHYLIB
+> +	select MFD_SYSCON
+> +	help
+> +	  This option enables support for the Synopsys Designware Ethernet XGMAC (10G Ethernet MAC).
+> +
+> +config DRIVER_NET_DESIGNWARE_XGMAC_SOCFPGA
+> +	bool "Designware XGMAC Ethernet driver support for SOCFPGA"
+> +	select DRIVER_NET_DESIGNWARE_XGMAC
+> +	depends on (ARCH_SOCFPGA_AGILEX5 || COMPILE_TEST)
+> +	select RESET_CONTROLLER if ARCH_SOCFPGA
+> +	select RESET_SIMPLE if ARCH_SOCFPGA_AGILEX5
+> +	help
+> +	  This option enables support for the Synopsys Designware Ethernet XGMAC with specific configuration
+> +	  for the Intel SoC FPGA chip.
+> +
+>  config DRIVER_NET_DM9K
+>  	bool "Davicom dm9k[E|A|B] ethernet driver"
+>  	depends on HAS_DM9000 || COMPILE_TEST
+> +}
+> +
+> +static int xgmac_read_rom_hwaddr(struct eth_device *edev, unsigned char *mac)
+> +{
+> +	struct xgmac_priv *xgmac = to_xgmac(edev);
+> +	int ret;
+> +
+> +	ret = xgmac->config->ops->xgmac_get_enetaddr(edev->parent);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return !is_valid_ether_addr(xgmac->macaddr);
+
+Please return a proper error code here.
+
+> +static int xgmac_send(struct eth_device *edev, void *packet, int length)
+> +{
+> +	struct xgmac_priv *xgmac = to_xgmac(edev);
+> +	struct xgmac_desc *tx_desc;
+> +	dma_addr_t dma;
+> +	u32 des3_prev, des3;
+> +	int ret;
+> +
+> +	tx_desc = &xgmac->tx_descs[xgmac->tx_desc_idx];
+> +	xgmac->tx_desc_idx++;
+> +	xgmac->tx_desc_idx %= XGMAC_DESCRIPTORS_NUM;
+> +
+> +	dma = dma_map_single(edev->parent, packet, length, DMA_TO_DEVICE);
+> +	if (dma_mapping_error(edev->parent, dma))
+> +		return -EFAULT;
+> +
+> +	tx_desc->des0 = lower_32_bits(dma);
+> +	tx_desc->des1 = upper_32_bits(dma);
+> +	tx_desc->des2 = length;
+> +	/*
+> +	 * Make sure that if HW sees the _OWN write below, it will see all the
+> +	 * writes to the rest of the descriptor too.
+> +	 */
+> +	barrier();
+> +
+> +	des3_prev = XGMAC_DESC3_OWN | XGMAC_DESC3_FD | XGMAC_DESC3_LD | length;
+> +	writel(des3_prev, &tx_desc->des3);
+> +	writel((ulong)(tx_desc + 1), &xgmac->dma_regs->ch0_txdesc_tail_pointer); // <-- TODO
+
+	if (upper_32_bits((ulong)(tx_desc)))
+		dev_err(dev, "meeeeh\n");
+
+To make clear what the TODO is about.
+
+> +
+> +	ret = readl_poll_timeout(&tx_desc->des3, des3,
+> +				 !(des3 & XGMAC_DESC3_OWN),
+> +				 100 * USEC_PER_MSEC);
+> +
+> +	dma_unmap_single(edev->parent, dma, length, DMA_TO_DEVICE);
+> +
+> +	if (ret == -ETIMEDOUT)
+> +		dev_dbg(xgmac->dev, "%s: TX timeout 0x%08x\n", __func__, des3);
+> +
+> +	return ret;
+> +}
+> +
+> +static void xgmac_recv(struct eth_device *edev)
+> +{
+> +	struct xgmac_priv *xgmac = to_xgmac(edev);
+> +	struct xgmac_desc *rx_desc;
+> +	dma_addr_t dma;
+> +	void *pkt;
+> +	int length;
+> +
+> +	rx_desc = &xgmac->rx_descs[xgmac->rx_desc_idx];
+> +
+> +	if (rx_desc->des3 & XGMAC_DESC3_OWN)
+> +		return;
+> +
+> +	dma = xgmac->dma_rx_buf_phys[xgmac->rx_desc_idx];
+> +	pkt = xgmac->dma_rx_buf_virt[xgmac->rx_desc_idx];
+> +	length = rx_desc->des3 & XGMAC_RDES3_PKT_LENGTH_MASK;
+> +
+> +	dma_sync_single_for_cpu(edev->parent, dma, length, DMA_FROM_DEVICE);
+> +	net_receive(edev, pkt, length);
+> +	dma_sync_single_for_device(edev->parent, dma, length, DMA_FROM_DEVICE);
+> +
+> +	/* Read Format RX descriptor */
+> +	rx_desc = &xgmac->rx_descs[xgmac->rx_desc_idx];
+> +	rx_desc->des0 = lower_32_bits(dma);
+> +	rx_desc->des1 = upper_32_bits(dma);
+
+Is this necessary? I would expect the same address is still in the
+descriptor ring.
+
+> +	rx_desc->des2 = 0;
+> +	/*
+> +	 * Make sure that if HW sees the _OWN write below, it will see all the
+> +	 * writes to the rest of the descriptor too.
+> +	 */
+> +	rx_desc->des3 = XGMAC_DESC3_OWN;
+> +	barrier();
+> +
+> +	writel(xgmac->rx_descs_phys + (xgmac->rx_desc_idx * XGMAC_DESCRIPTOR_SIZE),
+> +	       &xgmac->dma_regs->ch0_rxdesc_tail_pointer);
+> +
+> +	xgmac->rx_desc_idx++;
+> +	xgmac->rx_desc_idx %= XGMAC_DESCRIPTORS_NUM;
+> +}
+> +
+> +static int xgmac_probe_resources_core(struct xgmac_priv *xgmac)
+> +{
+> +	unsigned int desc_step;
+> +	int ret = 0;
+> +	void *p;
+> +	int i;
+> +
+> +	/* Maximum distance between neighboring descriptors, in Bytes. */
+> +	desc_step = sizeof(struct xgmac_desc);
+> +
+> +	xgmac->tx_descs = dma_alloc_coherent(DMA_DEVICE_BROKEN,
+> +					     XGMAC_DESCRIPTORS_SIZE,
+> +					     &xgmac->tx_descs_phys);
+
+No need to pass DMA_DEVICE_BROKEN. You should have a device available
+here.
+
+> +	if (!xgmac->tx_descs) {
+> +		ret = -ENOMEM;
+> +		goto err;
+> +	}
+> +
+> +	xgmac->rx_descs = dma_alloc_coherent(DMA_DEVICE_BROKEN,
+> +					     XGMAC_DESCRIPTORS_SIZE,
+> +					     &xgmac->rx_descs_phys);
+> +	if (!xgmac->rx_descs) {
+> +		ret = -ENOMEM;
+> +		goto err_free_tx_descs;
+> +	}
+> +
+> +	p = dma_alloc(XGMAC_RX_BUFFER_SIZE);
+> +	if (!p)
+> +		goto err_free_descs;
+> +
+> +	for (i = 0; i < XGMAC_DESCRIPTORS_NUM; i++) {
+> +		struct xgmac_desc *rx_desc = &xgmac->rx_descs[i];
+> +		dma_addr_t dma;
+> +
+> +		dma = dma_map_single(xgmac->dev, p, XGMAC_MAX_PACKET_SIZE, DMA_FROM_DEVICE);
+> +		if (dma_mapping_error(xgmac->dev, dma)) {
+> +			ret = -EFAULT;
+> +			goto err_free_dma_bufs;
+> +		}
+> +
+> +		rx_desc->des0 = lower_32_bits(dma);
+> +		rx_desc->des1 = upper_32_bits(dma);
+> +		xgmac->dma_rx_buf_phys[i] = dma;
+> +		xgmac->dma_rx_buf_virt[i] = p;
+> +
+> +		p += XGMAC_MAX_PACKET_SIZE;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_free_dma_bufs:
+> +	dma_free(phys_to_virt(xgmac->rx_descs[0].des0));
+
+You should unmap before freeing this. Also you have the virtual pointer
+available, please use this instead of phys_to_virt().
+
+> +err_free_descs:
+> +	dma_free_coherent(DMA_DEVICE_BROKEN, xgmac->rx_descs, xgmac->rx_descs_phys,
+> +			  XGMAC_DESCRIPTORS_SIZE);
+> +err_free_tx_descs:
+> +	dma_free_coherent(DMA_DEVICE_BROKEN, xgmac->tx_descs, xgmac->tx_descs_phys,
+> +			  XGMAC_DESCRIPTORS_SIZE);
+> +err:
+> +
+> +	return ret;
+> +}
+> +
+> +static int xgmac_remove_resources_core(struct xgmac_priv *xgmac)
+> +{
+> +	dma_free(xgmac->rx_dma_buf);
+
+Please unmap before freeing.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
