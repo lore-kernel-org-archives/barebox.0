@@ -1,64 +1,82 @@
-Delivery-date: Wed, 25 Jun 2025 11:18:00 +0200
+Delivery-date: Wed, 25 Jun 2025 11:51:00 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUMGW-00Asxj-1R
+	id 1uUMmS-00AtKV-03
 	for lore@lore.pengutronix.de;
-	Wed, 25 Jun 2025 11:18:00 +0200
+	Wed, 25 Jun 2025 11:51:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUMGV-0000eO-RR
-	for lore@pengutronix.de; Wed, 25 Jun 2025 11:18:00 +0200
+	id 1uUMmR-0000yH-GO
+	for lore@pengutronix.de; Wed, 25 Jun 2025 11:50:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=NObxM2y9kKa+1Kvy+vwnzdKfSEWvBr6i14r+d/b7Sw4=; b=xscQWdz2VSFIk8Tn0DKK5ByROb
-	7JZ+CWQQ0fjtxcQ40cNK9S2uuAt5peXxPXdKrdUEBVfi0BILaocWyTjxFmkiYD08Sf1G66+JX9nz7
-	0L7+0ns+Wqf7/DtXWyHQ6mu5hT9XYLlatz9JGvXr8UDW2qRpesX79ULlusq9iAV2p4NbraIzGs5x0
-	e9PoIkV34iUB5hv4RPd8upz1VQlvp7y5AayeVhiIK7MQfl2GvRvZUZyWrq+MTPhwchp6YEbtce3/i
-	CgcmKzaPxxKuDrT9ptYzgLHmDHgE1KNA26yWxcy5GP1qI5DjveeFCc5CIY9AZ9C5dPSThjxjKSQrn
-	HKu4rzbg==;
+	bh=FPFdN3KYNMRb4r3u7JtjgZWU6kOzmv6n2aLtcP9ty5E=; b=zIvDiaW3LIuI8lbmY40RAmWo1a
+	omoC8hFiHjgiYLiQDKNr6isDJ6mfk/RTO5hKD3Cov1dbeGFF+lAZs8fBZgS1DjLh1H4/Z/i8c/xQL
+	5gcaKo1pHPUpbMZjy8BGm57wSALaj5DoRVFSu6IoGkXxxHKjebQt7WLv0p2HcKugknMlR9pKaRXj/
+	6N8IRI1YjgyYpq7uo3giNe7vqx/Ctk9aT2uwYWaJW6OFRpf9GWOnyHwVpMxHeGGl7ltZIkOvqTto/
+	5BjhiW9d6+d0YWcEe9zXq2zI0cn3OfKmWBUeczVgdQg4/Nxz3cpXPzFRmsFR+daZ6Y2jlwYE2aPN1
+	a4yXWHxA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUMFq-000000086DP-14MD;
-	Wed, 25 Jun 2025 09:17:18 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uUMlr-00000008BkM-3OTb;
+	Wed, 25 Jun 2025 09:50:23 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uULbf-00000007yWE-0b0r
+	id 1uULuP-000000082VM-0S8R
+	for barebox@bombadil.infradead.org;
+	Wed, 25 Jun 2025 08:55:09 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:Message-ID:
+	Subject:To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=FPFdN3KYNMRb4r3u7JtjgZWU6kOzmv6n2aLtcP9ty5E=; b=WCJv0yUy1xYM0pWK5V/EKBe+qM
+	EFkihcYDLaD0i2XCVvv9o0fy7ep7wrIkLjfbmCxg+5DAo+6tQNCGqNQ7OUIZE6x3XpVyDMwCyYT22
+	BbGGjiUow5rVaAkz2uQ4RT+4Ykuk7wvs1Sm1mG/FUvJ58zz2R+JebuFIzXRh6xFXOVyzOQ3rIRjbf
+	Ul5+9giwi5InjTKWSCI5LgFE7MLNyL7Pc+NJH4Pto6K80kuRoWdQ9JVgzul19eTSTFPotwO9X62zO
+	sQYxKEefyHvXUvaCeMLhnU2qYYQpJUhEbzU+f/p8wdyxVy8Mxd1Gg8SMnfzwusdnrlyc2pQU/18SN
+	On7ujZkg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uULuK-00000005hvH-42ek
 	for barebox@lists.infradead.org;
-	Wed, 25 Jun 2025 08:35:48 +0000
+	Wed, 25 Jun 2025 08:55:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uULbd-0003Vx-BO; Wed, 25 Jun 2025 10:35:45 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1uULuI-00047A-1J; Wed, 25 Jun 2025 10:55:02 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uULbd-005FdQ-0X;
-	Wed, 25 Jun 2025 10:35:45 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uULbd-00BAEh-0A;
-	Wed, 25 Jun 2025 10:35:45 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1uULuG-005Ffg-0Q;
+	Wed, 25 Jun 2025 10:55:00 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uULuG-00H60v-04;
+	Wed, 25 Jun 2025 10:55:00 +0200
+Date: Wed, 25 Jun 2025 10:54:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 25 Jun 2025 10:35:44 +0200
-Message-Id: <20250625083544.2660810-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+Message-ID: <aFu5Y1-1w7z4AbA7@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250625_013547_177752_6191A169 
-X-CRM114-Status: GOOD (  14.74  )
+X-CRM114-CacheID: sfid-20250625_095505_108709_1376BB97 
+X-CRM114-Status: GOOD (  12.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,115 +98,34 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fs: drop f_dentry
+Subject: v2025.06.1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Defining f_dentry f_path.dentry is confusing as it suggests that a
-struct member f_dentry is modified that doesn't exist and furthermore
-it suggests that the f_path member is not modified. Drop the define
-and replace its usage with f_path.dentry directly. While at it remove
-the unused define f_vfsmnt.
+Hi All,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/9p/vfs_file.c       | 2 +-
- fs/9p/vfs_inode_dotl.c | 2 +-
- fs/fs.c                | 4 ++--
- fs/legacy.c            | 2 +-
- fs/tftp.c              | 2 +-
- include/linux/fs.h     | 2 --
- 6 files changed, 6 insertions(+), 8 deletions(-)
+I just released v2025.06.1.
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 2a44a77326..f99f7f294b 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -44,7 +44,7 @@ int v9fs_file_open(struct inode *inode, struct file *file)
- 	fid = file->private_data;
- 
- 	if (!fid) {
--		fid = v9fs_fid_clone(file->f_dentry);
-+		fid = v9fs_fid_clone(file->f_path.dentry);
- 		if (IS_ERR(fid))
- 			return PTR_ERR(fid);
- 
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 2eb3cc9274..46fc858eae 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -319,7 +319,7 @@ v9fs_truncate(struct device *dev, struct file *f, loff_t size)
- 		.ia_file = f,
- 	};
- 
--	return v9fs_vfs_setattr_dotl(f->f_dentry, &iattr);
-+	return v9fs_vfs_setattr_dotl(f->f_path.dentry, &iattr);
- }
- 
- /**
-diff --git a/fs/fs.c b/fs/fs.c
-index 3580bff6f5..3d7bea3a63 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -2243,7 +2243,7 @@ static const char *path_init(int dirfd, struct nameidata *nd, unsigned flags)
- 			return ERR_CAST(f);
- 
- 		nd->path.mnt = &f->fsdev->vfsmount;
--		nd->path.dentry = f->f_dentry;
-+		nd->path.dentry = f->f_path.dentry;
- 		follow_mount(&nd->path);
- 
- 		if (*s == '/')
-@@ -2590,7 +2590,7 @@ int openat(int dirfd, const char *pathname, int flags)
- 		}
- 
- 		f->path = NULL;
--		f->f_dentry = NULL;
-+		f->f_path.dentry = NULL;
- 		f->f_inode = new_inode(&fsdev->sb);
- 		f->f_inode->i_mode = S_IFREG;
- 		f->f_flags = flags;
-diff --git a/fs/legacy.c b/fs/legacy.c
-index f0901ce0d4..5cb4ec22fe 100644
---- a/fs/legacy.c
-+++ b/fs/legacy.c
-@@ -89,7 +89,7 @@ static int legacy_open(struct inode *inode, struct file *file)
- 	if (!legacy_ops->open)
- 		return 0;
- 
--	pathname = dpath(file->f_dentry, fsdev->vfsmount.mnt_root);
-+	pathname = dpath(file->f_path.dentry, fsdev->vfsmount.mnt_root);
- 	error = legacy_ops->open(&file->fsdev->dev, file, pathname);
- 	free(pathname);
- 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 5cb71431eb..01ebcbfc7a 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -769,7 +769,7 @@ static int tftp_open(struct inode *inode, struct file *file)
- {
- 	struct file_priv *priv;
- 
--	priv = tftp_do_open(&file->fsdev->dev, file->f_flags, file->f_dentry, false);
-+	priv = tftp_do_open(&file->fsdev->dev, file->f_flags, file->f_path.dentry, false);
- 	if (IS_ERR(priv))
- 		return PTR_ERR(priv);
- 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 7ae52d476d..55e01d386d 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -228,8 +228,6 @@ struct file {
- #define FILE_SIZE_STREAM	((loff_t) -1)
- #define f_size f_inode->i_size
- 	struct inode		*f_inode;	/* cached value */
--#define f_dentry	f_path.dentry
--#define f_vfsmnt	f_path.mnt
- 	const struct file_operations	*f_op;
- 	unsigned int 		f_flags;
- 	loff_t			f_pos;
+v2025.06.0 contains an annoying bug which requires a stable update.
+
+v2025.06.0 won't let you create a file in filesystems supported by the
+legacy FS layer, most prominently used by the FAT filesystem. This is
+easy to reproduce by issuing a "echo -o /vfat/foo bar" when /vfat is
+contains a mounted FAT. This also breaks saving the environment on
+systems which store the environment on FAT partitions like the TI
+Omap/AMxxx and Raspberry Pi platforms.
+
+If you are affected by this bug please update to v2025.06.1.
+
+See https://lore.kernel.org/barebox/20250624152148.2230298-1-a.fatoum@pengutronix.de/T/#u
+for the patch and background of the issue.
+
+Sascha
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
