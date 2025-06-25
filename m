@@ -1,76 +1,66 @@
-Delivery-date: Wed, 25 Jun 2025 13:23:05 +0200
+Delivery-date: Wed, 25 Jun 2025 14:32:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUODZ-00AulZ-0L
+	id 1uUPIU-00AvhE-0m
 	for lore@lore.pengutronix.de;
-	Wed, 25 Jun 2025 13:23:05 +0200
+	Wed, 25 Jun 2025 14:32:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUODY-000393-CY
-	for lore@pengutronix.de; Wed, 25 Jun 2025 13:23:05 +0200
+	id 1uUPIT-00015A-LB
+	for lore@pengutronix.de; Wed, 25 Jun 2025 14:32:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oUeWJpnlWcawoLPitU8hP4HcB0Rr46OBxZ/cPhGtlLA=; b=KiXRdJcMkLs8fQlfZ8rdwCAN63
-	DtRvIXM7HfXJ3yeRnHibGEADHiVy4sp8tEQvAA4gL63JXmxnmC9b07r/qpLsez6N4iaKzx/uZWrTa
-	P46+RPpNzom9ygP+MXarstMuAEghpHBAQfUjOXv0yHQeUgjF+di38og4LC69BGF9W6L0ReMwaldHq
-	QGX2xj7jzehoT6fprS/XxmA83uqafkG5Bods/uIh12XT5rNOxw4G30CoxvsdyGiR0K9XcdI6hWBUc
-	ounZqzmpbLJazi91JscLqf+az2M6IcZCWrviPM/8uIuSnGgkgSwJN7UDNGuSUPBAMxVlC1WZxJbvb
-	pdY/ZEDA==;
+	bh=wDkaPHgzpkKZDuDel4aD3pnrC2oKt9UDBcbNYdJ3rj4=; b=tNsViTHPuNXGm2jOk2kftXFDyE
+	cTMirr5j2YHNrm9Hs0o8RhH83uheGIqC36/sFqEj+4lC2eNf80In44v6IWbjG9IMeI/jmTOOINXf6
+	hT905pqbwzRu0aZ2LZ9GRTnX+pZwmq689rJ3lrDvE/E61vuhvMoqZcRNRVRfezqtHZkYiphR38sYO
+	Fak6g7whQg2PUlFgCD3WzCgmJ2mjs6vSXJb5PYTCEf+8B4MoiAE5yumSoabG1LeVF0hne4CpcGNOq
+	S/UVwnG2waYdpAK8vaPF0mQmua2UB4Pkpv/OxxfYqNCdCdhhkN813sSMai6lmOi8BIcxp2WpdIMwt
+	vZqWggmg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUOCs-00000008SFo-1VCJ;
-	Wed, 25 Jun 2025 11:22:22 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUNQO-00000008JqB-447Y
-	for barebox@bombadil.infradead.org;
-	Wed, 25 Jun 2025 10:32:16 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:Message-ID:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=oUeWJpnlWcawoLPitU8hP4HcB0Rr46OBxZ/cPhGtlLA=; b=o3+75LRbCxQA6qfN5uIkSlvjxJ
-	bP+VvWr8FB6WNDnzmdWdYUTa742l7+dwW2U/WBpUJiOjAMjQUGMozlccg6LigLiQKnWEs0QvuTFj2
-	MxFl8fRK7gO+ZaliHvnrxgjfqliWZUc2BQ/zsR/IyiqBaTYzxuHdenvh1Z3aPKltPZo4c7mtKTeMX
-	7JTSILsZlTrtfjxogKPZ/amptNu4TDCONtvlG1Q7RIpejrVzqyT0Gi1WpTMM0y7xh7OgKA8OLdjla
-	uRIVKBAjJ45VxlkVqoD+rKyaLJPkumKjokUEsyUp2eYoZ2AeXsYH1IGn4pOyjBbUao1IFYll3p5y/
-	u+f7abzQ==;
+	id 1uUPHx-00000008dGr-1Sf4;
+	Wed, 25 Jun 2025 12:31:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUNQM-00000005mlg-1C1j
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uUNjJ-00000008N6w-3ZPT
 	for barebox@lists.infradead.org;
-	Wed, 25 Jun 2025 10:32:16 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uUNQK-0004Wz-FI; Wed, 25 Jun 2025 12:32:12 +0200
-Message-ID: <3cdc65d6-b06c-4d86-9df3-84f060a5539d@pengutronix.de>
-Date: Wed, 25 Jun 2025 12:32:12 +0200
+	Wed, 25 Jun 2025 10:51:52 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1uUNjG-0001ZM-OA; Wed, 25 Jun 2025 12:51:46 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1uUNjG-005GZL-1m;
+	Wed, 25 Jun 2025 12:51:46 +0200
+Received: from rhi by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1uUNjG-00FDVr-1V;
+	Wed, 25 Jun 2025 12:51:46 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <rhi@pengutronix.de>
+Date: Wed, 25 Jun 2025 12:51:45 +0200
+Message-Id: <20250625105145.3626715-3-rhi@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250625105145.3626715-1-rhi@pengutronix.de>
+References: <20250625105145.3626715-1-rhi@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: David Picard <david.picard@clermont.in2p3.fr>, str@pengutronix.de
-References: <f8c5021d-3dcb-47b5-8f27-09e33991d6ea@clermont.in2p3.fr>
- <e867d36e-4632-46d5-934f-a4efb3a8db5f@pengutronix.de>
- <a9b43b82-c234-4542-981c-ad034ad65403@clermont.in2p3.fr>
- <6ad40829-5819-4784-8123-0b6e24d4c525@pengutronix.de>
- <a547bc92-6d37-4db7-9eab-3576009c12ec@clermont.in2p3.fr>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-In-Reply-To: <a547bc92-6d37-4db7-9eab-3576009c12ec@clermont.in2p3.fr>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250625_113214_388186_B646DB37 
-X-CRM114-Status: GOOD (  26.68  )
+X-CRM114-CacheID: sfid-20250625_035149_932856_4737ACC3 
+X-CRM114-Status: GOOD (  12.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,134 +78,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: moving to same chip, different board: no console output
+Subject: [PATCH 3/3] doc: user: net: document Fastboot over UDP usage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello David,
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+---
+ Documentation/user/networking.rst | 16 ++++++++++++++++
+ Documentation/user/usb.rst        |  4 ++++
+ 2 files changed, 20 insertions(+)
 
-Adding mailing list to CC.
-
-On 6/25/25 11:54, David Picard wrote:
-> Hello,
-> 
-> I am trying to create a new board for the Enclustra Mercury+ SA2 module
-> (Intel/Altera Cyclone 5 SoC FPGA).
-> 
-> I'd like to run the scripts/socfpga_import_preloader script, but I can't
-> figure out what the so-called Altera Embedded SDK is. I found:
-> - Altera SoC Embedded Development Suite (EDS), https://www.intel.com/
-> content/www/us/en/docs/programmable/683227/current/installing-the-
-> altera-soc-embedded-development.html
-> - Arm DS Development Studio for Altera SoC FPGA, https://
-> developer.arm.com/splash-screen/altera-welcome-screen
-
-I haven't done so myself either. Adding Steffen to Cc, who added much of
-the SoCFPGA support.
-
-Cheers,
-Ahmad
-
-> 
-> David
-> 
-> Le 16/06/2025 à 12:39, Ahmad Fatoum a écrit :
->> Hi David,
->>
->> On 6/11/25 13:46, David Picard wrote:
->>> Hello,
->>>
->>> I took the same Buildroot configuration. I replaced the .dts* files with
->>> the ones provided by the new board BSP. Actually, they differ quite a
->>> lot from the Altera SoC FPGA .dts* files in the Linux tree. Then, I
->>> compiled and flashed the SD card.
->> The device trees don't have the whole story. There is Quartus-generated
->> C board code that sets up the DRAM controller for example, so just
->> replacing the device tree doesn't work so early.
->>
->>> I enabled CONFIG_DEBUG_LL with no change. CONFIG_DEBUG_PBL doesn't exist
->>> in my case. For some reason, the defconfig I built upon, uses Barebox
->>> v2021.07.0, which is probably outdated...
->> v2021.07.0 predated CONFIG_DEBUG_PBL, yes.
->>
->> Cheers,
->> Ahmad
->>
->>> David
->>>
->>> Le 06/06/2025 à 19:46, Ahmad Fatoum a écrit :
->>>> Hello David,
->>>>
->>>> On 06.06.25 16:43, David Picard wrote:
->>>>> Hello,
->>>>>
->>>>> I am working on a project for which we selected an Intel/Altera
->>>>> Cyclone 5 SoC FPGA (an FPGA with an ARM core). As the project
->>>>> evolves, I have to change boards and I am facing issues to boot:
->>>>> absolutely no output on the serial console (USB virtual COM port),
->>>>> not even from Barebox.
->>>>>
->>>>> Previous working configuration:
->>>>> - SD card image produced by Buildroot with Barebox as the bootloader
->>>>> - Terasic ADC-SoC demo board, booting from the SD card.
->>>>> https://www.terasic.com.tw/cgi-bin/page/archive.pl?
->>>>> Language=English&No=1061&PartNo=1
->>>>>
->>>>> Current non-working configuration:
->>>>> - Eclustra Mercury+ SA2 module, also with a Cyclone 5, plus SDRAM,
->>>>> RTC, QSPI flash, etc. I think that the main difference between both
->>>>> Cyclone 5 chips is the size of the logic section is bigger on the
->>>>> module. The module has more RAM.
->>>>> https://www.enclustra.com/en/products/system-on-chip-modules/mercury-
->>>>> sa2/
->>>>> - Enclustra ST1 demo baseboard. It has a JTAG port, should this
->>>>> information be of interest.
->>>>> https://www.enclustra.com/en/products/base-boards/mercury-st1/
->>>>>
->>>>> I the current configuration, I get no output on the serial console.
->>>> So you tried to use the exact same image on both boards or were
->>>> there changes?
->>>>
->>>>> What I did:
->>>>> - I checked the hardware configuration (switches to select booting
->>>>> from the SD card and USB config) with a bare-metal application
->>>>> provided by Enclustra.
->>>>> - I used Enclutra's .dts and .dtsi files, which differ very slightly
->>>>> from the Linux kernel tree files.
->>>>> - I checked how the SD card is connected: to the exact same pins in
->>>>> both configurations.
->>>>> - I had a look at Barebox menuconfig, but nothing caught my eye.
->>>>>
->>>>> So, now I'm stuck, and I'm looking for some guidance.
->>>> You can try enabling CONFIG_DEBUG_LL and CONFIG_DEBUG_PBL and see if
->>>> you
->>>> get some debugging output maybe. You'll have to choose which UART to
->>>> use.
->>>>
->>>> I think your new SoM may have different RAM and thus you can't use the
->>>> same image, but need one suitable to RAM integrated on your new board.
->>>>
->>>> Cheers,
->>>> Ahmad
->>>>
->>>>> David
->>>>>
->>>>>
->>>>>
->>>
->>>
-> 
-> 
-
+diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
+index 6997da10dbea..605936c6a895 100644
+--- a/Documentation/user/networking.rst
++++ b/Documentation/user/networking.rst
+@@ -203,6 +203,22 @@ The netconsole can be used just like any other console. Note, however, that the
+ simple console protocol is UDP based, so there is no guarantee about packet
+ loss.
+ 
++Fastboot over UDP
++-----------------
++
++When built with ``CONFIG_NET_FASTBOOT=y`` and the environment variable
++``fastboot.net.autostart`` is set to any non-empty value, barebox will
++listen for fastboot commands on UDP port 5554.
++You might need to configure a IP address first in order to use fastboot (e.g.
++via DHCP or statically; see above).
++
++Additionally, you have to configure at least the ``fastboot.partitions``
++variable, see :ref:`usbgadget_variables`.
++
++On your development host, use fastboot with the ``-s udp:<IP-address>``
++parameter, specifying the IP address of your board.
++See :ref:`fastboot` for more information about Fastboot usage.
++
+ DSA (Distributed Switch Architecture) Support in Barebox
+ --------------------------------------------------------
+ 
+diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+index 43072be53db7..f233927656bc 100644
+--- a/Documentation/user/usb.rst
++++ b/Documentation/user/usb.rst
+@@ -153,6 +153,8 @@ barebox can provide a serial console over USB. This can be initialized with the
+ :ref:`command_usbserial` command. Once the host is plugged in it should show a
+ new serial device, on Linux for example ``/dev/ttyACM0``.
+ 
++.. _fastboot:
++
+ Android Fastboot support
+ ^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+@@ -307,6 +309,8 @@ chosen at boot time from other driver or script.
+ To get usbgadget autostart support barebox has to be compiled with
+ CONFIG_USB_GADGET_AUTOSTART enabled.
+ 
++.. _usbgadget_variables:
++
+ USB Gadget autostart Options
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.39.5
 
 
 
