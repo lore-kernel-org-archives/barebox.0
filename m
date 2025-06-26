@@ -1,64 +1,66 @@
-Delivery-date: Thu, 26 Jun 2025 16:04:23 +0200
+Delivery-date: Thu, 26 Jun 2025 16:04:24 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUnDD-00BIEy-12
+	id 1uUnDE-00BIFJ-16
 	for lore@lore.pengutronix.de;
-	Thu, 26 Jun 2025 16:04:23 +0200
+	Thu, 26 Jun 2025 16:04:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUnDC-0001dR-OF
-	for lore@pengutronix.de; Thu, 26 Jun 2025 16:04:23 +0200
+	id 1uUnDC-0001dP-7t
+	for lore@pengutronix.de; Thu, 26 Jun 2025 16:04:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=LZvaM2k/LxIu666SDVerljY1hyJiwZ1VTiCwpaift7E=; b=vSELWKitvp2bq/nPi9lcMQk3h2
-	Zw0gvlpctBeEntHhO+949oUzfQpDst3T5t02OL7cIfP20LwujpEjVuchoxjeguqWPy1ojgHOzlD1i
-	QYsPdcsJNB996AG/HhVZgZPxptIXwWZ/SKnUCJs8PRQZOTbkYd72UFSKPzA3jX8L0+3d6uCy+3xCX
-	LikzPhKHGAW+yk/1UzlJl5PNBmHYPGqYXUZ7cHnYa0UdrxC6NJct3KkPSI4JWPIcXF+LYN4zZ9WsQ
-	CH2/JVqy6WvAEUWhE77ugXzMcaVwiWzMIQYc8nbuhNUy/nORWPbd0z7X5n+/woEX7w+L6iEQ01tw7
-	tojixaOQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Fq9N+1B38Zd24E9ZzaH/0wsA0IVuG7UbYAy+QcHQ2ME=; b=q1qqMq0m+8YeKMY3zsilcVyBee
+	Bjm4TqOOf8YaLKZGWquZ2OAy7WrnXFzPBCULRam6FZTp2ouDc4RU8wC9n6V2P0M4dYHZNydJB5fvv
+	v6Ph1a0DGRNz6EjRy00EjB/rrIREqpf2+vEPzaUyIkCVyMgRzFIlAWaIwz8iU2ljabn05bbA7W/hF
+	HBUR0+ibidxCApU4kTNW84Aks1M+TP0ewS2nbW9Mmq8P3Tq53fx20ep3hWC4Jm2VDINVvC90vJ1AK
+	C2o/TwcM28rs8z00AX9nFJehBErjCn+jwG4s8nyn4kHZPScxeWprQaA4NW5qojnobFwV4K+PwoxXm
+	7USqwP/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUnCS-0000000BqmC-3OGX;
+	id 1uUnCS-0000000Bqm5-1Quf;
 	Thu, 26 Jun 2025 14:03:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUnCP-0000000Bqk6-064U
+	id 1uUnCP-0000000Bqk7-02p9
 	for barebox@lists.infradead.org;
 	Thu, 26 Jun 2025 14:03:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uUnCM-0000Fr-Dn; Thu, 26 Jun 2025 16:03:30 +0200
+	id 1uUnCM-0000Fs-Fb; Thu, 26 Jun 2025 16:03:30 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uUnCM-005SPa-0m;
+	id 1uUnCM-005SPb-0u;
 	Thu, 26 Jun 2025 16:03:30 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uUnCM-001kkf-0N;
+	id 1uUnCM-001kkf-0X;
 	Thu, 26 Jun 2025 16:03:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 26 Jun 2025 16:03:28 +0200
-Message-Id: <20250626140329.418033-1-s.hauer@pengutronix.de>
+Date: Thu, 26 Jun 2025 16:03:29 +0200
+Message-Id: <20250626140329.418033-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250626140329.418033-1-s.hauer@pengutronix.de>
+References: <20250626140329.418033-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250626_070333_059125_3FAEA2C0 
-X-CRM114-Status: GOOD (  16.10  )
+X-CRM114-CacheID: sfid-20250626_070333_047099_D78B17B6 
+X-CRM114-Status: GOOD (  17.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,7 +82,7 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] ARM: i.MX: tqma6ulx: fix barebox chainloading with OP-TEE enabled
+Subject: [PATCH 2/2] ARM: i.MX: Webasto ccbv2: fix barebox chainloading with OP-TEE enabled
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -102,49 +104,66 @@ EL1, so move the manipulation to the code which is only executed in EL2.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/tqma6ulx/lowlevel.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/arm/boards/webasto-ccbv2/lowlevel.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boards/tqma6ulx/lowlevel.c b/arch/arm/boards/tqma6ulx/lowlevel.c
-index 5fd997d2ec..ce330c37af 100644
---- a/arch/arm/boards/tqma6ulx/lowlevel.c
-+++ b/arch/arm/boards/tqma6ulx/lowlevel.c
-@@ -66,7 +66,7 @@ static void *read_eeprom(void)
- 	return fdt;
+diff --git a/arch/arm/boards/webasto-ccbv2/lowlevel.c b/arch/arm/boards/webasto-ccbv2/lowlevel.c
+index 7a198bd801..17264479c2 100644
+--- a/arch/arm/boards/webasto-ccbv2/lowlevel.c
++++ b/arch/arm/boards/webasto-ccbv2/lowlevel.c
+@@ -31,23 +31,21 @@ static void configure_uart(void)
+ 
  }
  
--static void noinline start_mba6ulx(u32 r0)
-+static void noinline start_mba6ulx(u32 r2)
+-static void noinline start_ccbv2(u32 r0, unsigned long mem_size, char *fdt)
++static void noinline start_ccbv2(u32 r2, unsigned long mem_size, char *fdt)
  {
- 	void *fdt;
  	int tee_size;
-@@ -76,16 +76,15 @@ static void noinline start_mba6ulx(u32 r0)
- 
- 	fdt = read_eeprom();
+ 	void *tee;
  
 -	/* Enable normal/secure r/w for TZC380 region0 */
 -	writel(0xf0000000, 0x021D0108);
 -
+ 	configure_uart();
+ 
  	/*
  	 * Chainloading barebox will pass a device tree within the RAM in r0,
  	 * skip OP-TEE early loading in this case
  	 */
- 	if (IS_ENABLED(CONFIG_FIRMWARE_TQMA6UL_OPTEE) &&
--	    !(r0 > MX6_MMDC_P0_BASE_ADDR &&
--	      r0 < MX6_MMDC_P0_BASE_ADDR + SZ_256M)) {
-+	    !(r2 > MX6_MMDC_PORT0_BASE_ADDR && r2 < MX6_MMDC_PORT0_BASE_ADDR + SZ_256M)) {
+-	if(IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE)
+-	   && !(r0 > MX6_MMDC_P0_BASE_ADDR
+-	        &&  r0 < MX6_MMDC_P0_BASE_ADDR + mem_size)) {
++	if(IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE) &&
++	   !(r2 > MX6_MMDC_PORT0_BASE_ADDR && r2 < MX6_MMDC_PORT0_BASE_ADDR + mem_size)) {
 +		/* Enable normal/secure r/w for TZC380 region0 */
 +		writel(0xf0000000, 0x021D0108);
-+
- 		get_builtin_firmware(mba6ul_optee_bin, &tee, &tee_size);
+ 		get_builtin_firmware(ccbv2_optee_bin, &tee, &tee_size);
  
  		memset((void *)OPTEE_OVERLAY_LOCATION, 0, 0x1000);
-@@ -112,5 +111,5 @@ ENTRY_FUNCTION(start_imx6ul_mba6ulx, r0, r1, r2)
+@@ -70,7 +68,7 @@ ENTRY_FUNCTION(start_imx6ul_ccbv2_256m, r0, r1, r2)
  	setup_c();
  	barrier();
  
--	start_mba6ulx(r0);
-+	start_mba6ulx(r2);
+-	start_ccbv2(r0, SZ_256M, __dtb_z_imx6ul_webasto_ccbv2_start);
++	start_ccbv2(r2, SZ_256M, __dtb_z_imx6ul_webasto_ccbv2_start);
+ }
+ 
+ ENTRY_FUNCTION(start_imx6ul_ccbv2_512m, r0, r1, r2)
+@@ -83,7 +81,7 @@ ENTRY_FUNCTION(start_imx6ul_ccbv2_512m, r0, r1, r2)
+ 	setup_c();
+ 	barrier();
+ 
+-	start_ccbv2(r0, SZ_512M, __dtb_z_imx6ul_webasto_ccbv2_start);
++	start_ccbv2(r2, SZ_512M, __dtb_z_imx6ul_webasto_ccbv2_start);
+ }
+ 
+ extern char __dtb_z_imx6ul_webasto_marvel_start[];
+@@ -97,5 +95,5 @@ ENTRY_FUNCTION(start_imx6ul_marvel, r0, r1, r2)
+ 	setup_c();
+ 	barrier();
+ 
+-	start_ccbv2(r0, SZ_512M, __dtb_z_imx6ul_webasto_marvel_start);
++	start_ccbv2(r2, SZ_512M, __dtb_z_imx6ul_webasto_marvel_start);
  }
 -- 
 2.39.5
