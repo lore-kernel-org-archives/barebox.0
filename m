@@ -1,66 +1,55 @@
-Delivery-date: Thu, 26 Jun 2025 16:04:24 +0200
+Delivery-date: Thu, 26 Jun 2025 16:46:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUnDE-00BIFJ-16
+	id 1uUnre-00BIkd-2L
 	for lore@lore.pengutronix.de;
-	Thu, 26 Jun 2025 16:04:24 +0200
+	Thu, 26 Jun 2025 16:46:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUnDC-0001dP-7t
-	for lore@pengutronix.de; Thu, 26 Jun 2025 16:04:24 +0200
+	id 1uUnre-0007tk-3E
+	for lore@pengutronix.de; Thu, 26 Jun 2025 16:46:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Fq9N+1B38Zd24E9ZzaH/0wsA0IVuG7UbYAy+QcHQ2ME=; b=q1qqMq0m+8YeKMY3zsilcVyBee
-	Bjm4TqOOf8YaLKZGWquZ2OAy7WrnXFzPBCULRam6FZTp2ouDc4RU8wC9n6V2P0M4dYHZNydJB5fvv
-	v6Ph1a0DGRNz6EjRy00EjB/rrIREqpf2+vEPzaUyIkCVyMgRzFIlAWaIwz8iU2ljabn05bbA7W/hF
-	HBUR0+ibidxCApU4kTNW84Aks1M+TP0ewS2nbW9Mmq8P3Tq53fx20ep3hWC4Jm2VDINVvC90vJ1AK
-	C2o/TwcM28rs8z00AX9nFJehBErjCn+jwG4s8nyn4kHZPScxeWprQaA4NW5qojnobFwV4K+PwoxXm
-	7USqwP/A==;
+	bh=8u2QXrTAGRNq71ISDBTIb8KKgw/QtWjvkPeVzRquShg=; b=Hw4gvWwN+35KOLXw3ZxkDL6JSR
+	PXLBJ9z4GhUd6CjBJzF5YDIFKNoHp9agEln8ONy6PI5ZE7dFERL6rLng4epnvYYCArJamgj2Rkten
+	XOvM6fDanaboeY2WqH54cfHKR82JT841Uxek/XcR9ijZIqhjMUHhPFAw5q2gK3gqJnDnUOtOLqMkd
+	OGaBgBWBRF8S/AbmOITeNacrD1S9m6iX6QJe1m2eWbC4Sjfvd1cDacF3F0FYVRZ45tp79NmqhZ9ss
+	pXgnEdspQqnM6ILUJ3QpdHZCGe09To+FZfT5UBqyvkNxU2znWdM14+8dTfBzonDFb+mtQrTu8bOOF
+	JrsKVgNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUnCS-0000000Bqm5-1Quf;
-	Thu, 26 Jun 2025 14:03:36 +0000
+	id 1uUnrB-0000000BySa-18g5;
+	Thu, 26 Jun 2025 14:45:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUnCP-0000000Bqk7-02p9
+	id 1uUnr8-0000000ByPx-00PX
 	for barebox@lists.infradead.org;
-	Thu, 26 Jun 2025 14:03:34 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uUnCM-0000Fs-Fb; Thu, 26 Jun 2025 16:03:30 +0200
+	Thu, 26 Jun 2025 14:45:39 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uUnCM-005SPb-0u;
-	Thu, 26 Jun 2025 16:03:30 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uUnCM-001kkf-0X;
-	Thu, 26 Jun 2025 16:03:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 26 Jun 2025 16:03:29 +0200
-Message-Id: <20250626140329.418033-2-s.hauer@pengutronix.de>
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1uUnr5-0006pw-0j; Thu, 26 Jun 2025 16:45:35 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 26 Jun 2025 16:45:26 +0200
+Message-Id: <20250626144527.416697-6-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250626140329.418033-1-s.hauer@pengutronix.de>
-References: <20250626140329.418033-1-s.hauer@pengutronix.de>
+In-Reply-To: <20250626144527.416697-1-m.felsch@pengutronix.de>
+References: <20250626144527.416697-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250626_070333_047099_D78B17B6 
-X-CRM114-Status: GOOD (  17.08  )
+X-CRM114-CacheID: sfid-20250626_074538_035541_2D752ABA 
+X-CRM114-Status: GOOD (  10.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,93 +67,74 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] ARM: i.MX: Webasto ccbv2: fix barebox chainloading with OP-TEE enabled
+Subject: [PATCH v2 5/6] ARM: mach-imx: tzasc: add imx6q_tzc380_is_enabled
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Chainloading barebox when OP-TEE is enabled has multiple bugs, fix them.
+In preparation of adding an i.MX6QD optee-early helper add a helper to
+check if the early code e.g. PBL/BootROM enabled the TZC380 controllers
+on the i.MX6QDL.
 
-When barebox starts we have to guess if we have to start OP-TEE or not.
-As we can't detect the exception level on ARMv7 we do this by checking
-if a first stage loader has passed us a device tree.
-
-First of all the device tree is passed in r2, not in r0, so fix the
-register we use.
-
-Then we have to check if r2 is within the SDRAM. We check against
-MX6_MMDC_P0_BASE_ADDR which is the base of the SDRAM controller. Use the
-base address of the SDRAM instead.
-
-Finally we manipulate the TZASC which we are obviously not allowed in
-EL1, so move the manipulation to the code which is only executed in EL2.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/boards/webasto-ccbv2/lowlevel.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+Changelog:
+v2:
+- Add Ahmad r-b
 
-diff --git a/arch/arm/boards/webasto-ccbv2/lowlevel.c b/arch/arm/boards/webasto-ccbv2/lowlevel.c
-index 7a198bd801..17264479c2 100644
---- a/arch/arm/boards/webasto-ccbv2/lowlevel.c
-+++ b/arch/arm/boards/webasto-ccbv2/lowlevel.c
-@@ -31,23 +31,21 @@ static void configure_uart(void)
+ arch/arm/mach-imx/tzasc.c | 15 +++++++++++++++
+ include/mach/imx/tzasc.h  |  1 +
+ 2 files changed, 16 insertions(+)
+
+diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
+index 54f7d1d49715..b8270a4afdc8 100644
+--- a/arch/arm/mach-imx/tzasc.c
++++ b/arch/arm/mach-imx/tzasc.c
+@@ -76,6 +76,9 @@
+ #define MX6_TZASC1_BASE			0x21d0000
+ #define MX6_TZASC2_BASE			0x21d4000
  
++#define MX6_GPR_TZASC1_EN		BIT(0)
++#define MX6_GPR_TZASC2_EN		BIT(1)
++
+ #define GPR_TZASC_EN					BIT(0)
+ #define GPR_TZASC_ID_SWAP_BYPASS		BIT(1)
+ #define GPR_TZASC_EN_LOCK				BIT(16)
+@@ -294,6 +297,18 @@ void imx6q_tzc380_early_ns_region1(void)
+ 				  TZC380_REGION_SP_NS_RW);
  }
  
--static void noinline start_ccbv2(u32 r0, unsigned long mem_size, char *fdt)
-+static void noinline start_ccbv2(u32 r2, unsigned long mem_size, char *fdt)
++bool imx6q_tzc380_is_enabled(void)
++{
++	u32 __iomem *gpr = IOMEM(MX6_IOMUXC_BASE_ADDR);
++
++	/*
++	 * MX6_GPR_TZASC1_EN and MX6_GPR_TZASC2_EN are sticky bits which
++	 * preserve their values once set until the next power-up cycle.
++	 */
++	return (readl(&gpr[9]) & (MX6_GPR_TZASC1_EN | MX6_GPR_TZASC2_EN)) ==
++	       (MX6_GPR_TZASC1_EN | MX6_GPR_TZASC2_EN);
++}
++
+ void imx8m_tzc380_init(void)
  {
- 	int tee_size;
- 	void *tee;
+ 	u32 __iomem *gpr = IOMEM(MX8M_IOMUXC_GPR_BASE_ADDR);
+diff --git a/include/mach/imx/tzasc.h b/include/mach/imx/tzasc.h
+index 4d3f26fc82f1..59ec56a5ec60 100644
+--- a/include/mach/imx/tzasc.h
++++ b/include/mach/imx/tzasc.h
+@@ -7,6 +7,7 @@
+ #include <asm/system.h>
  
--	/* Enable normal/secure r/w for TZC380 region0 */
--	writel(0xf0000000, 0x021D0108);
--
- 	configure_uart();
+ void imx6q_tzc380_early_ns_region1(void);
++bool imx6q_tzc380_is_enabled(void);
+ void imx8m_tzc380_init(void);
+ bool imx8m_tzc380_is_enabled(void);
  
- 	/*
- 	 * Chainloading barebox will pass a device tree within the RAM in r0,
- 	 * skip OP-TEE early loading in this case
- 	 */
--	if(IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE)
--	   && !(r0 > MX6_MMDC_P0_BASE_ADDR
--	        &&  r0 < MX6_MMDC_P0_BASE_ADDR + mem_size)) {
-+	if(IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE) &&
-+	   !(r2 > MX6_MMDC_PORT0_BASE_ADDR && r2 < MX6_MMDC_PORT0_BASE_ADDR + mem_size)) {
-+		/* Enable normal/secure r/w for TZC380 region0 */
-+		writel(0xf0000000, 0x021D0108);
- 		get_builtin_firmware(ccbv2_optee_bin, &tee, &tee_size);
- 
- 		memset((void *)OPTEE_OVERLAY_LOCATION, 0, 0x1000);
-@@ -70,7 +68,7 @@ ENTRY_FUNCTION(start_imx6ul_ccbv2_256m, r0, r1, r2)
- 	setup_c();
- 	barrier();
- 
--	start_ccbv2(r0, SZ_256M, __dtb_z_imx6ul_webasto_ccbv2_start);
-+	start_ccbv2(r2, SZ_256M, __dtb_z_imx6ul_webasto_ccbv2_start);
- }
- 
- ENTRY_FUNCTION(start_imx6ul_ccbv2_512m, r0, r1, r2)
-@@ -83,7 +81,7 @@ ENTRY_FUNCTION(start_imx6ul_ccbv2_512m, r0, r1, r2)
- 	setup_c();
- 	barrier();
- 
--	start_ccbv2(r0, SZ_512M, __dtb_z_imx6ul_webasto_ccbv2_start);
-+	start_ccbv2(r2, SZ_512M, __dtb_z_imx6ul_webasto_ccbv2_start);
- }
- 
- extern char __dtb_z_imx6ul_webasto_marvel_start[];
-@@ -97,5 +95,5 @@ ENTRY_FUNCTION(start_imx6ul_marvel, r0, r1, r2)
- 	setup_c();
- 	barrier();
- 
--	start_ccbv2(r0, SZ_512M, __dtb_z_imx6ul_webasto_marvel_start);
-+	start_ccbv2(r2, SZ_512M, __dtb_z_imx6ul_webasto_marvel_start);
- }
 -- 
 2.39.5
 
