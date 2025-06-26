@@ -1,82 +1,54 @@
-Delivery-date: Thu, 26 Jun 2025 11:48:32 +0200
+Delivery-date: Thu, 26 Jun 2025 14:13:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUjDc-00BETS-1m
+	id 1uUlTq-00BGgK-0C
 	for lore@lore.pengutronix.de;
-	Thu, 26 Jun 2025 11:48:32 +0200
+	Thu, 26 Jun 2025 14:13:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUjDc-0007x9-1h
-	for lore@pengutronix.de; Thu, 26 Jun 2025 11:48:32 +0200
+	id 1uUlTp-0006If-G9
+	for lore@pengutronix.de; Thu, 26 Jun 2025 14:13:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=H/OVjDwukuMqEUjwXvyjZNpROQYCvCCk2niUeTBCbRk=; b=i+n0DY/vrbDe0wp20jV9/CRm9D
-	970wg2eWBfmcAM0sof9kQXIlSQkrUh/724ajtq4lNE37U24/itbu/+lYaBdGqQsIXdjBjt3/7MQ2F
-	CX3kjSBw0adEsUCIr41MHrocxIvk5+kzTLO72YjkwBLO2qJp0ur3N7bPLKNM+P4zzUav9UrmAu6aQ
-	VZdntyr1ZPYCAdjQD9MW0NfSxh9+LP74+OCZVc102mPpMUg7irPX2p7BkP4PSNkQboJu1d0aeTON/
-	5O1F20yxEgSNo26gJYvukePmQGrbTlq0M7eWkMX3S8lxTkRyBs8/SyZ81frJM+g6DE0G+AjPEhdWQ
-	4FfWtOLw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=IIuyc5t1yW/toFrIzqfdd7mm6m53t4nwTMTq/AaV63E=; b=WNiY9KzHvlMwU2WrsSHsnsKE7b
+	/J89o+fCKhsjTSQdip+8IGutozQb/8umwdijmqKMkXKEUrzYQUIfegb775WMaVaY4Ap0MpyxFisSj
+	KSWryLNH9xIlCQIXOfCNqV/+gs1i+VgrDkFo+IeD1hnwSe78hFtUcw0e6DSGJ7zcx7AqTqXuHt8su
+	tvC41mdp/cphAz67VFWoC57rxRgv0F8dReY5O2v00p2s2Ow8fzdAxpUGUMyYPX+SopuEDtuKlVmc1
+	dKQlhF/r/MdDCVznCIwqnXc0/BH7879WCS2BhHZZnRTrKuwqWradyzAR7WWMdedlbq4od1+jVCzpy
+	bKlkSmaQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUjCs-0000000BBT5-3zCS;
-	Thu, 26 Jun 2025 09:47:46 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUiTs-0000000B4kG-3BqP
-	for barebox@bombadil.infradead.org;
-	Thu, 26 Jun 2025 09:01:16 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=H/OVjDwukuMqEUjwXvyjZNpROQYCvCCk2niUeTBCbRk=; b=OHNZH+Er99e2u0XhDHPx9KCivH
-	sUut3fqJleckGbLOLJGg8+wEGpL/BvCWfVv3cffL/eowWJVZr751WFmhNYxrZgGhBWDv6FPLEU5XP
-	zPUUdHKOXeJ3wti0+1tnIO/J1MZHJU1OxhlpgDNw0TYY5iGfzG2ereK3R9RisVD5edywZs5Q5sgPi
-	6OocMsbRYKqGgy30ObF8XbZg7EgRdAInajHkOal2OoX6TfaihFyuw2vZ5/SMf0KIceJPzpNfe/U/i
-	3yvdYUGJHboGFhTsla/d2+hoKztcSggXn0Z4NPB8ZftDsPutkCGKdUHIpYf4Wmf5vw/AUO2/xpIvr
-	eCDR3ghw==;
+	id 1uUlTB-0000000BWAe-1hsE;
+	Thu, 26 Jun 2025 12:12:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUiTo-0000000648z-1Obe
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uUkh7-0000000BO4D-3wtf
 	for barebox@lists.infradead.org;
-	Thu, 26 Jun 2025 09:01:15 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uUiTl-0001Ei-Gw; Thu, 26 Jun 2025 11:01:09 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uUiTl-005Q5l-15;
-	Thu, 26 Jun 2025 11:01:09 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uUiTl-001WjR-0m;
-	Thu, 26 Jun 2025 11:01:09 +0200
-Date: Thu, 26 Jun 2025 11:01:09 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20250626090109.cf6oatzpdu5x76wl@pengutronix.de>
-References: <20250619152556.3749995-1-m.felsch@pengutronix.de>
- <aFzqETAvVIcvVT6U@pengutronix.de>
+	Thu, 26 Jun 2025 11:23:07 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1uUkh4-0003Wf-8o; Thu, 26 Jun 2025 13:23:02 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Thu, 26 Jun 2025 13:23:01 +0200
+Message-Id: <20250626112301.363955-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFzqETAvVIcvVT6U@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250626_100112_634131_134C8B98 
-X-CRM114-Status: GOOD (  11.67  )
+X-CRM114-CacheID: sfid-20250626_042306_003076_FCCA32B0 
+X-CRM114-Status: UNSURE (   8.71  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,29 +66,110 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/5] ARM: i.MX6QDL: add TZASC1/2 defines
+Subject: [PATCH] commands: add dedicated security menu
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-06-26, Sascha Hauer wrote:
-> The subject doesn't match this patch. It doesn't add any defines.
-> 
-> On Thu, Jun 19, 2025 at 05:25:52PM +0200, Marco Felsch wrote:
-> > On i.MX6 platforms we need to set the bypass mode within the DCD unlike
-> > the i.MX8M platforms which uses the PBL lowlevel code
-> > (imx8m_tzc380_init()).
-> > 
-> > Add an imxcfg helper to configure the TZASC1/2 to simplify the integration.
-> 
-> This sentence would make for a better subject.
+Instead of lumping commands like keystore and blobgen with misc
+utilities like 2048, add a dedicated security menu for them.
 
-It's a bit long but sure. Shall I send a v2?
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ commands/Kconfig | 54 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 28 insertions(+), 26 deletions(-)
 
-Regards,
-  Marco
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 23cb6d6b7832..6c61bff1cd12 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2323,15 +2323,7 @@ config CMD_HAB
+ # end Hardware manipulation commands
+ endmenu
+ 
+-
+-
+-menu "Miscellaneous"
+-
+-config CMD_2048
+-	tristate
+-	prompt "2048"
+-	help
+-	  Console version of the game "2048" for GNU/Linux
++menu "Security"
+ 
+ config CMD_AVB_PVALUE
+ 	depends on OPTEE_AVB_PERSISTENT_VALUES
+@@ -2345,6 +2337,33 @@ config CMD_AVB_PVALUE
+ 	  that must be tamper evident and allows AVB to store arbitrary key-value
+ 	  pairs.
+ 
++config CMD_BLOBGEN
++	bool
++	select BLOBGEN
++	prompt "blobgen"
++	help
++	  Provides the "blobgen" command. This command encrypts and decrypts
++	  plaintext to/from blobs. This is done with hardware crypto engines,
++	  so this command is only useful when you also enable a blobgen capable
++	  driver.
++
++config CMD_KEYSTORE
++	depends on CRYPTO_KEYSTORE
++	bool
++	prompt "keystore"
++	help
++	  keystore provides access to the barebox keystore.
++
++# end Security commands
++endmenu
++
++menu "Miscellaneous"
++
++config CMD_2048
++	tristate
++	prompt "2048"
++	help
++	  Console version of the game "2048" for GNU/Linux
+ 
+ config CMD_BAREBOX_UPDATE
+ 	tristate
+@@ -2362,16 +2381,6 @@ config CMD_BAREBOX_UPDATE
+ 		  -y		autom. use 'yes' when asking confirmations
+ 		  -f LEVEL	set force level
+ 
+-config CMD_BLOBGEN
+-	bool
+-	select BLOBGEN
+-	prompt "blobgen"
+-	help
+-	  Provides the "blobgen" command. This command encrypts and decrypts
+-	  plaintext to/from blobs. This is done with hardware crypto engines,
+-	  so this command is only useful when you also enable a blobgen capable
+-	  driver.
+-
+ config CMD_FIRMWARELOAD
+ 	bool
+ 	select FIRMWARE
+@@ -2389,13 +2398,6 @@ config CMD_KALLSYMS
+ 
+ 	  Usage: kallsyns [SYMBOL | ADDRESS]
+ 
+-config CMD_KEYSTORE
+-	depends on CRYPTO_KEYSTORE
+-	bool
+-	prompt "keystore"
+-	help
+-	  keystore provides access to the barebox keystore.
+-
+ config CMD_LINUX_EXEC
+ 	bool "linux exec"
+ 	depends on SANDBOX
+-- 
+2.39.5
+
 
 
