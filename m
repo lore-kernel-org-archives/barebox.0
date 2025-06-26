@@ -1,57 +1,64 @@
-Delivery-date: Thu, 26 Jun 2025 19:24:25 +0200
+Delivery-date: Thu, 26 Jun 2025 20:24:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUqKn-00BLG9-1Z
+	id 1uUrGt-00BM7F-2i
 	for lore@lore.pengutronix.de;
-	Thu, 26 Jun 2025 19:24:25 +0200
+	Thu, 26 Jun 2025 20:24:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUqKm-0000KH-Ny
-	for lore@pengutronix.de; Thu, 26 Jun 2025 19:24:25 +0200
+	id 1uUrGt-0005KD-7O
+	for lore@pengutronix.de; Thu, 26 Jun 2025 20:24:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2Ljj0LsYRTHo3tlzWNbJU4oMA8rPnKRNQclLLQONo7s=; b=ki9iCfrBJ1pSzHryp1Yg3v4wPV
-	8Q9eqQk+MqrufHuGd2dYqyhQJWbX+jPrUMs9oWMv57yZXwjn/gabxfeBtgK7S1CfQ4ijb3G8fP4Ps
-	4yCzMVzqrCE58Dmuq1BoTk+GYYfmiE+G6s5zRJnnRiFMceCOfk1FxAkcuoax/Yz9ZWnxsp9VxHru/
-	Ro//tYB13lI8zwAwdBsYck9LvyaUKHjbNJQWBhmeYofbdobKv9N9D1RPi8tCo4/r5cab8N+fENCNi
-	LIB/FDfkl7qrBq9tj20IKNRJPqccn0hkl8511g1bv/KHsqxevGiOffNTG0CPMgRR2zGidxWKH1MtW
-	/1K+yqAQ==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=2l5wjObHl2sufs8xqQ8bNtKJUSVxUtT5rXGDLRhRGqM=; b=RAimCHQf6LAPeV2/yEPwltx/Z2
+	XlcWq54fMAR0lU16sfPEXaoTIadFg3XWNKeYJHjc3hY60eIy+NuN7Mq5Lxf7EwM9waxMwLV8WL5+N
+	sc9HBERhntuhcc77I+RY5EW5C23b4Zitfdf9e2Q2jxntpFhsCmhqMhW05gxNY9Ou0G9MmHdk+VYzp
+	qyQ4wuiEozu1vUgPTwY/66U8cY2iwc+o5URooFhAayUgY2xf03mPELoj/UjwVA7xsmc1gPxdpbf7X
+	0mowU7tITsX2CVo00rM8y8NkGRGQDAqlQa/XNTlf6im04LZBXLLrqs+2wwbaoHTkhYeM/+z5of32x
+	1RHmeimQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUqKT-0000000CMgh-1TpB;
-	Thu, 26 Jun 2025 17:24:05 +0000
+	id 1uUrGU-0000000CS6Y-2IHu;
+	Thu, 26 Jun 2025 18:24:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUofS-0000000C9Ru-2YKv
+	id 1uUo6P-0000000C2Lz-2lCY
 	for barebox@lists.infradead.org;
-	Thu, 26 Jun 2025 15:37:40 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uUofP-0007vg-WB; Thu, 26 Jun 2025 17:37:36 +0200
-Message-ID: <70b41f3b-4329-48f7-827f-1924e002ab04@pengutronix.de>
-Date: Thu, 26 Jun 2025 17:37:35 +0200
+	Thu, 26 Jun 2025 15:01:26 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uUo6O-0007nU-Cc; Thu, 26 Jun 2025 17:01:24 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uUo6O-005Spk-0f;
+	Thu, 26 Jun 2025 17:01:24 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uUo6O-001rub-0J;
+	Thu, 26 Jun 2025 17:01:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 26 Jun 2025 17:01:22 +0200
+Message-Id: <20250626150122.445558-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20250626140329.418033-1-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20250626140329.418033-1-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250626_083738_652158_B0C3C5ED 
-X-CRM114-Status: GOOD (  30.25  )
+X-CRM114-CacheID: sfid-20250626_080125_693892_B03691C8 
+X-CRM114-Status: GOOD (  13.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,106 +80,107 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] ARM: i.MX: tqma6ulx: fix barebox chainloading with
- OP-TEE enabled
+Subject: [PATCH] ARM: i.MX: tzasc: configure region 1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
+Configuring TZASC region0 for non secure access has the effect that the
+OP-TEE memory can be accessed via aliases in the SDRAM memory space,
+see https://lore.kernel.org/20250626144527.416697-1-m.felsch@pengutronix.de.
+This patch fixes the issue for i.MX6ul boards.
 
-On 6/26/25 16:03, Sascha Hauer wrote:
-> Chainloading barebox when OP-TEE is enabled has multiple bugs, fix them.
-> 
-> When barebox starts we have to guess if we have to start OP-TEE or not.
-> As we can't detect the exception level on ARMv7 we do this by checking
-> if a first stage loader has passed us a device tree.
-> 
-> First of all the device tree is passed in r2, not in r0, so fix the
-> register we use.
-> 
-> Then we have to check if r2 is within the SDRAM. We check against
-> MX6_MMDC_P0_BASE_ADDR which is the base of the SDRAM controller. Use the
-> base address of the SDRAM instead.
-> 
-> Finally we manipulate the TZASC which we are obviously not allowed in
-> EL1, so move the manipulation to the code which is only executed in EL2.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/tqma6ulx/lowlevel.c      |  5 +++--
+ arch/arm/boards/webasto-ccbv2/lowlevel.c |  5 +++--
+ arch/arm/mach-imx/tzasc.c                | 12 ++++++++++++
+ include/mach/imx/tzasc.h                 |  2 ++
+ 4 files changed, 20 insertions(+), 4 deletions(-)
 
-EL1/EL2 are ARMv8-specific.
-
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/boards/tqma6ulx/lowlevel.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm/boards/tqma6ulx/lowlevel.c b/arch/arm/boards/tqma6ulx/lowlevel.c
-> index 5fd997d2ec..ce330c37af 100644
-> --- a/arch/arm/boards/tqma6ulx/lowlevel.c
-> +++ b/arch/arm/boards/tqma6ulx/lowlevel.c
-> @@ -66,7 +66,7 @@ static void *read_eeprom(void)
->  	return fdt;
->  }
->  
-> -static void noinline start_mba6ulx(u32 r0)
-> +static void noinline start_mba6ulx(u32 r2)
->  {
->  	void *fdt;
->  	int tee_size;
-> @@ -76,16 +76,15 @@ static void noinline start_mba6ulx(u32 r0)
->  
->  	fdt = read_eeprom();
->  
-> -	/* Enable normal/secure r/w for TZC380 region0 */
-> -	writel(0xf0000000, 0x021D0108);
-> -
->  	/*
->  	 * Chainloading barebox will pass a device tree within the RAM in r0,
->  	 * skip OP-TEE early loading in this case
->  	 */
->  	if (IS_ENABLED(CONFIG_FIRMWARE_TQMA6UL_OPTEE) &&
-> -	    !(r0 > MX6_MMDC_P0_BASE_ADDR &&
-> -	      r0 < MX6_MMDC_P0_BASE_ADDR + SZ_256M)) {
-> +	    !(r2 > MX6_MMDC_PORT0_BASE_ADDR && r2 < MX6_MMDC_PORT0_BASE_ADDR + SZ_256M)) {
-> +		/* Enable normal/secure r/w for TZC380 region0 */
-> +		writel(0xf0000000, 0x021D0108);
-
-I think this is problematic:
-
-  - robustness-wise: We have no guarantee that there isn't some lesser
-    used BootROM code path that happens to leave a suitable DRAM
-    look-alike address that would trick us here.
-
-  - security wise, even if we check for FDT header if r2 points into
-    DRAM, a compromised OS could spray RAM with FDT magic,
-    trigger a warm reset that has the BootROM produce a DRAM lookalike
-    pointer in r2 and then OP-TEE loading is skipped and the kernel
-    starts in the highest privilege level.
-
-To address this, we need some way to set a sticky bit that's cleared
-only on reset. One way, would be to set up an IVT and try to access the
-L2 cache controller while data_abort_mask() is active, like
-imx6_cannot_write_l2x0 is doing.
-
-Cheers,
-Ahmad
-
-> +
->  		get_builtin_firmware(mba6ul_optee_bin, &tee, &tee_size);
->  
->  		memset((void *)OPTEE_OVERLAY_LOCATION, 0, 0x1000);
-> @@ -112,5 +111,5 @@ ENTRY_FUNCTION(start_imx6ul_mba6ulx, r0, r1, r2)
->  	setup_c();
->  	barrier();
->  
-> -	start_mba6ulx(r0);
-> +	start_mba6ulx(r2);
->  }
-
+diff --git a/arch/arm/boards/tqma6ulx/lowlevel.c b/arch/arm/boards/tqma6ulx/lowlevel.c
+index ce330c37af..14553fa1aa 100644
+--- a/arch/arm/boards/tqma6ulx/lowlevel.c
++++ b/arch/arm/boards/tqma6ulx/lowlevel.c
+@@ -16,6 +16,7 @@
+ #include <pbl/i2c.h>
+ #include <boards/tq/tq_eeprom.h>
+ #include <tee/optee.h>
++#include <mach/imx/tzasc.h>
+ 
+ #include "tqma6ulx.h"
+ 
+@@ -82,8 +83,8 @@ static void noinline start_mba6ulx(u32 r2)
+ 	 */
+ 	if (IS_ENABLED(CONFIG_FIRMWARE_TQMA6UL_OPTEE) &&
+ 	    !(r2 > MX6_MMDC_PORT0_BASE_ADDR && r2 < MX6_MMDC_PORT0_BASE_ADDR + SZ_256M)) {
+-		/* Enable normal/secure r/w for TZC380 region0 */
+-		writel(0xf0000000, 0x021D0108);
++
++		imx6ul_tzc380_early_ns_region1();
+ 
+ 		get_builtin_firmware(mba6ul_optee_bin, &tee, &tee_size);
+ 
+diff --git a/arch/arm/boards/webasto-ccbv2/lowlevel.c b/arch/arm/boards/webasto-ccbv2/lowlevel.c
+index 17264479c2..23d053863a 100644
+--- a/arch/arm/boards/webasto-ccbv2/lowlevel.c
++++ b/arch/arm/boards/webasto-ccbv2/lowlevel.c
+@@ -13,6 +13,7 @@
+ #include <mach/imx/iomux-mx6ul.h>
+ #include <asm/cache.h>
+ #include <tee/optee.h>
++#include <mach/imx/tzasc.h>
+ 
+ #include "ccbv2.h"
+ 
+@@ -44,8 +45,8 @@ static void noinline start_ccbv2(u32 r2, unsigned long mem_size, char *fdt)
+ 	 */
+ 	if(IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE) &&
+ 	   !(r2 > MX6_MMDC_PORT0_BASE_ADDR && r2 < MX6_MMDC_PORT0_BASE_ADDR + mem_size)) {
+-		/* Enable normal/secure r/w for TZC380 region0 */
+-		writel(0xf0000000, 0x021D0108);
++		imx6ul_tzc380_early_ns_region1();
++
+ 		get_builtin_firmware(ccbv2_optee_bin, &tee, &tee_size);
+ 
+ 		memset((void *)OPTEE_OVERLAY_LOCATION, 0, 0x1000);
+diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
+index c2603c2b43..77601d8d14 100644
+--- a/arch/arm/mach-imx/tzasc.c
++++ b/arch/arm/mach-imx/tzasc.c
+@@ -296,6 +296,18 @@ void imx6q_tzc380_early_ns_region1(void)
+ 				  TZC380_REGION_SP_NS_RW);
+ }
+ 
++void imx6ul_tzc380_early_ns_region1(void)
++{
++	resource_size_t ram_sz = imx6_get_mmdc_sdram_size();
++
++	imx_tzc380_init_and_setup(IOMEM(MX6_TZASC1_BASE), 1,
++				  MX6_MMDC_PORT0_BASE_ADDR, ram_sz,
++				  TZC380_REGION_SP_NS_RW);
++}
++
++void imx6sx_tzc380_early_ns_region1(void)
++        __alias(imx6ul_tzc380_early_ns_region1);
++
+ bool imx6q_tzc380_is_enabled(void)
+ {
+ 	u32 __iomem *gpr = IOMEM(MX6_IOMUXC_BASE_ADDR);
+diff --git a/include/mach/imx/tzasc.h b/include/mach/imx/tzasc.h
+index 59ec56a5ec..75bb7b1393 100644
+--- a/include/mach/imx/tzasc.h
++++ b/include/mach/imx/tzasc.h
+@@ -7,6 +7,8 @@
+ #include <asm/system.h>
+ 
+ void imx6q_tzc380_early_ns_region1(void);
++void imx6ul_tzc380_early_ns_region1(void);
++void imx6sx_tzc380_early_ns_region1(void);
+ bool imx6q_tzc380_is_enabled(void);
+ void imx8m_tzc380_init(void);
+ bool imx8m_tzc380_is_enabled(void);
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.39.5
 
 
 
