@@ -1,57 +1,70 @@
-Delivery-date: Wed, 25 Jun 2025 19:37:25 +0200
+Delivery-date: Thu, 26 Jun 2025 08:37:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUU3p-00B08L-26
+	id 1uUgEb-00BBeI-2F
 	for lore@lore.pengutronix.de;
-	Wed, 25 Jun 2025 19:37:25 +0200
+	Thu, 26 Jun 2025 08:37:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUU3p-0003Lz-1q
-	for lore@pengutronix.de; Wed, 25 Jun 2025 19:37:25 +0200
+	id 1uUgEb-0006Og-2y
+	for lore@pengutronix.de; Thu, 26 Jun 2025 08:37:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9y0VXpvkke7a5k2Ewifv1qbfdzIsExlsDDxflOdNNas=; b=JRPzIwGS8qvXUB/ONAfYDoc7pp
-	m/A5QkHajR5io52KHe3F3g/AHLv3IJmH40Z1diqmZt/xFH1x8mX0lONM+TUa5lXmBhw8SLBBUmIYi
-	ON6CAHLUOOHmMYK2pmds0qFq9amlkXtVeKM8UN7Kbqo0eypVau7eYK0u6W3YHd4BYVM8mSjsJHvcK
-	LQZKEtEertsLUQus3bnOcLrsobPG+ITnbRT3CJj8DjMf9+KqhL2WqC2VYDU8qup62jM7T3crvlVKM
-	bJaHuDdYghEtVb5IvqDBYR9qdc5SEjPL0mQy3JMsxcSXmDLOvQ2STI1+8OHroSt3W/jbZ4n41dI+b
-	TpHnnc2g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=dWsbm/Q9c9N1sKjBoPC6L6fPr+7C3VsctN7zdW985Y8=; b=RAp84aSfLATDZn5xgKL7sT4s3E
+	Glj0cWXEVAgJq+YS8fC2ly95InaLXWY9USRSid/t/oKSyom7oRvxxmyl1kuvyf5tPrgCN49mJNCDh
+	GuAjn5hF/3eqyKeQN88gPOiF9d5UeVe23cdMC5lQw2nlSE0kVpvOtRTXqxXX93SG4JT46w/ADRJ+y
+	X5kyZ9wIazKv76UYoyN+qivVgoveuOvkbZD8pX97Q6ACGjj3UriCAmwFIuccIzzkrnfnvBXksurSf
+	mmdvW2Lo6l1PqVtILiwk/y7HTdZQflFln8rSV3DttIi8SDC/5xWReoQzDrWHFv3uOAYBXDKciKjnO
+	+NjzbTkQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUU37-00000009T7d-3a34;
-	Wed, 25 Jun 2025 17:36:41 +0000
+	id 1uUgDw-0000000AkmX-2Xeb;
+	Thu, 26 Jun 2025 06:36:40 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUPY0-00000008foh-1McY
+	id 1uUgCJ-0000000AkSm-3l0a
 	for barebox@lists.infradead.org;
-	Wed, 25 Jun 2025 12:48:17 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uUPXx-0003lh-LE; Wed, 25 Jun 2025 14:48:13 +0200
-Message-ID: <860c29af-b414-4141-bef4-69f1a961369a@pengutronix.de>
-Date: Wed, 25 Jun 2025 14:48:13 +0200
+	Thu, 26 Jun 2025 06:35:01 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uUgCI-00046X-63; Thu, 26 Jun 2025 08:34:58 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uUgCI-005PBU-00;
+	Thu, 26 Jun 2025 08:34:58 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uUgCH-001TiZ-2u;
+	Thu, 26 Jun 2025 08:34:57 +0200
+Date: Thu, 26 Jun 2025 08:34:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <aFzqETAvVIcvVT6U@pengutronix.de>
+References: <20250619152556.3749995-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Roland Hieber <rhi@pengutronix.de>, barebox@lists.infradead.org
-References: <20250625105145.3626715-1-rhi@pengutronix.de>
- <20250625105145.3626715-3-rhi@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20250625105145.3626715-3-rhi@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250619152556.3749995-1-m.felsch@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250625_054816_377220_9CDA35FA 
-X-CRM114-Status: GOOD (  22.72  )
+X-CRM114-CacheID: sfid-20250625_233459_932867_D89F7C13 
+X-CRM114-Status: GOOD (  22.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,80 +86,54 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] doc: user: net: document Fastboot over UDP usage
+Subject: Re: [PATCH 1/5] ARM: i.MX6QDL: add TZASC1/2 defines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Roland,
+The subject doesn't match this patch. It doesn't add any defines.
 
-On 6/25/25 12:51, Roland Hieber wrote:
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Thanks a lot for the documentation,
-Ahmad
-
-> ---
->  Documentation/user/networking.rst | 16 ++++++++++++++++
->  Documentation/user/usb.rst        |  4 ++++
->  2 files changed, 20 insertions(+)
+On Thu, Jun 19, 2025 at 05:25:52PM +0200, Marco Felsch wrote:
+> On i.MX6 platforms we need to set the bypass mode within the DCD unlike
+> the i.MX8M platforms which uses the PBL lowlevel code
+> (imx8m_tzc380_init()).
 > 
-> diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
-> index 6997da10dbea..605936c6a895 100644
-> --- a/Documentation/user/networking.rst
-> +++ b/Documentation/user/networking.rst
-> @@ -203,6 +203,22 @@ The netconsole can be used just like any other console. Note, however, that the
->  simple console protocol is UDP based, so there is no guarantee about packet
->  loss.
->  
-> +Fastboot over UDP
-> +-----------------
-> +
-> +When built with ``CONFIG_NET_FASTBOOT=y`` and the environment variable
-> +``fastboot.net.autostart`` is set to any non-empty value, barebox will
-> +listen for fastboot commands on UDP port 5554.
-> +You might need to configure a IP address first in order to use fastboot (e.g.
-> +via DHCP or statically; see above).
-> +
-> +Additionally, you have to configure at least the ``fastboot.partitions``
-> +variable, see :ref:`usbgadget_variables`.
-> +
-> +On your development host, use fastboot with the ``-s udp:<IP-address>``
-> +parameter, specifying the IP address of your board.
-> +See :ref:`fastboot` for more information about Fastboot usage.
-> +
->  DSA (Distributed Switch Architecture) Support in Barebox
->  --------------------------------------------------------
->  
-> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-> index 43072be53db7..f233927656bc 100644
-> --- a/Documentation/user/usb.rst
-> +++ b/Documentation/user/usb.rst
-> @@ -153,6 +153,8 @@ barebox can provide a serial console over USB. This can be initialized with the
->  :ref:`command_usbserial` command. Once the host is plugged in it should show a
->  new serial device, on Linux for example ``/dev/ttyACM0``.
->  
-> +.. _fastboot:
-> +
->  Android Fastboot support
->  ^^^^^^^^^^^^^^^^^^^^^^^^
->  
-> @@ -307,6 +309,8 @@ chosen at boot time from other driver or script.
->  To get usbgadget autostart support barebox has to be compiled with
->  CONFIG_USB_GADGET_AUTOSTART enabled.
->  
-> +.. _usbgadget_variables:
-> +
->  USB Gadget autostart Options
->  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->  
+> Add an imxcfg helper to configure the TZASC1/2 to simplify the integration.
+
+This sentence would make for a better subject.
+
+Sascha
+
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  include/mach/imx/imx6q-tzasc.h | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>  create mode 100644 include/mach/imx/imx6q-tzasc.h
+> 
+> diff --git a/include/mach/imx/imx6q-tzasc.h b/include/mach/imx/imx6q-tzasc.h
+> new file mode 100644
+> index 000000000000..968b17d5ec3f
+> --- /dev/null
+> +++ b/include/mach/imx/imx6q-tzasc.h
+> @@ -0,0 +1,8 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Per default all clocks are on, except for TZASC1/2 CG11/2, so enable them
+> + * before activate the modules (disable the bypass mode).
+> + */
+> +wm 32 0x020c4070 0xffffffff
+> +/* Disable TZASC1/2 bypass */
+> +wm 32 0x020E0024 0x00000003
+> -- 
+> 2.39.5
+> 
+> 
+> 
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
