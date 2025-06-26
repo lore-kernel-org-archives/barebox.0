@@ -1,70 +1,82 @@
-Delivery-date: Thu, 26 Jun 2025 08:37:21 +0200
+Delivery-date: Thu, 26 Jun 2025 11:48:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUgEb-00BBeI-2F
+	id 1uUjDc-00BETS-1m
 	for lore@lore.pengutronix.de;
-	Thu, 26 Jun 2025 08:37:21 +0200
+	Thu, 26 Jun 2025 11:48:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uUgEb-0006Og-2y
-	for lore@pengutronix.de; Thu, 26 Jun 2025 08:37:21 +0200
+	id 1uUjDc-0007x9-1h
+	for lore@pengutronix.de; Thu, 26 Jun 2025 11:48:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dWsbm/Q9c9N1sKjBoPC6L6fPr+7C3VsctN7zdW985Y8=; b=RAp84aSfLATDZn5xgKL7sT4s3E
-	Glj0cWXEVAgJq+YS8fC2ly95InaLXWY9USRSid/t/oKSyom7oRvxxmyl1kuvyf5tPrgCN49mJNCDh
-	GuAjn5hF/3eqyKeQN88gPOiF9d5UeVe23cdMC5lQw2nlSE0kVpvOtRTXqxXX93SG4JT46w/ADRJ+y
-	X5kyZ9wIazKv76UYoyN+qivVgoveuOvkbZD8pX97Q6ACGjj3UriCAmwFIuccIzzkrnfnvBXksurSf
-	mmdvW2Lo6l1PqVtILiwk/y7HTdZQflFln8rSV3DttIi8SDC/5xWReoQzDrWHFv3uOAYBXDKciKjnO
-	+NjzbTkQ==;
+	bh=H/OVjDwukuMqEUjwXvyjZNpROQYCvCCk2niUeTBCbRk=; b=i+n0DY/vrbDe0wp20jV9/CRm9D
+	970wg2eWBfmcAM0sof9kQXIlSQkrUh/724ajtq4lNE37U24/itbu/+lYaBdGqQsIXdjBjt3/7MQ2F
+	CX3kjSBw0adEsUCIr41MHrocxIvk5+kzTLO72YjkwBLO2qJp0ur3N7bPLKNM+P4zzUav9UrmAu6aQ
+	VZdntyr1ZPYCAdjQD9MW0NfSxh9+LP74+OCZVc102mPpMUg7irPX2p7BkP4PSNkQboJu1d0aeTON/
+	5O1F20yxEgSNo26gJYvukePmQGrbTlq0M7eWkMX3S8lxTkRyBs8/SyZ81frJM+g6DE0G+AjPEhdWQ
+	4FfWtOLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUgDw-0000000AkmX-2Xeb;
-	Thu, 26 Jun 2025 06:36:40 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uUjCs-0000000BBT5-3zCS;
+	Thu, 26 Jun 2025 09:47:46 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUgCJ-0000000AkSm-3l0a
+	id 1uUiTs-0000000B4kG-3BqP
+	for barebox@bombadil.infradead.org;
+	Thu, 26 Jun 2025 09:01:16 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=H/OVjDwukuMqEUjwXvyjZNpROQYCvCCk2niUeTBCbRk=; b=OHNZH+Er99e2u0XhDHPx9KCivH
+	sUut3fqJleckGbLOLJGg8+wEGpL/BvCWfVv3cffL/eowWJVZr751WFmhNYxrZgGhBWDv6FPLEU5XP
+	zPUUdHKOXeJ3wti0+1tnIO/J1MZHJU1OxhlpgDNw0TYY5iGfzG2ereK3R9RisVD5edywZs5Q5sgPi
+	6OocMsbRYKqGgy30ObF8XbZg7EgRdAInajHkOal2OoX6TfaihFyuw2vZ5/SMf0KIceJPzpNfe/U/i
+	3yvdYUGJHboGFhTsla/d2+hoKztcSggXn0Z4NPB8ZftDsPutkCGKdUHIpYf4Wmf5vw/AUO2/xpIvr
+	eCDR3ghw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uUiTo-0000000648z-1Obe
 	for barebox@lists.infradead.org;
-	Thu, 26 Jun 2025 06:35:01 +0000
+	Thu, 26 Jun 2025 09:01:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uUgCI-00046X-63; Thu, 26 Jun 2025 08:34:58 +0200
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uUiTl-0001Ei-Gw; Thu, 26 Jun 2025 11:01:09 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uUgCI-005PBU-00;
-	Thu, 26 Jun 2025 08:34:58 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uUgCH-001TiZ-2u;
-	Thu, 26 Jun 2025 08:34:57 +0200
-Date: Thu, 26 Jun 2025 08:34:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uUiTl-005Q5l-15;
+	Thu, 26 Jun 2025 11:01:09 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uUiTl-001WjR-0m;
+	Thu, 26 Jun 2025 11:01:09 +0200
+Date: Thu, 26 Jun 2025 11:01:09 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <aFzqETAvVIcvVT6U@pengutronix.de>
+Message-ID: <20250626090109.cf6oatzpdu5x76wl@pengutronix.de>
 References: <20250619152556.3749995-1-m.felsch@pengutronix.de>
+ <aFzqETAvVIcvVT6U@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250619152556.3749995-1-m.felsch@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+In-Reply-To: <aFzqETAvVIcvVT6U@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250625_233459_932867_D89F7C13 
-X-CRM114-Status: GOOD (  22.08  )
+X-CRM114-CacheID: sfid-20250626_100112_634131_134C8B98 
+X-CRM114-Status: GOOD (  11.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,50 +102,21 @@ Subject: Re: [PATCH 1/5] ARM: i.MX6QDL: add TZASC1/2 defines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The subject doesn't match this patch. It doesn't add any defines.
+On 25-06-26, Sascha Hauer wrote:
+> The subject doesn't match this patch. It doesn't add any defines.
+> 
+> On Thu, Jun 19, 2025 at 05:25:52PM +0200, Marco Felsch wrote:
+> > On i.MX6 platforms we need to set the bypass mode within the DCD unlike
+> > the i.MX8M platforms which uses the PBL lowlevel code
+> > (imx8m_tzc380_init()).
+> > 
+> > Add an imxcfg helper to configure the TZASC1/2 to simplify the integration.
+> 
+> This sentence would make for a better subject.
 
-On Thu, Jun 19, 2025 at 05:25:52PM +0200, Marco Felsch wrote:
-> On i.MX6 platforms we need to set the bypass mode within the DCD unlike
-> the i.MX8M platforms which uses the PBL lowlevel code
-> (imx8m_tzc380_init()).
-> 
-> Add an imxcfg helper to configure the TZASC1/2 to simplify the integration.
+It's a bit long but sure. Shall I send a v2?
 
-This sentence would make for a better subject.
-
-Sascha
-
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  include/mach/imx/imx6q-tzasc.h | 8 ++++++++
->  1 file changed, 8 insertions(+)
->  create mode 100644 include/mach/imx/imx6q-tzasc.h
-> 
-> diff --git a/include/mach/imx/imx6q-tzasc.h b/include/mach/imx/imx6q-tzasc.h
-> new file mode 100644
-> index 000000000000..968b17d5ec3f
-> --- /dev/null
-> +++ b/include/mach/imx/imx6q-tzasc.h
-> @@ -0,0 +1,8 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * Per default all clocks are on, except for TZASC1/2 CG11/2, so enable them
-> + * before activate the modules (disable the bypass mode).
-> + */
-> +wm 32 0x020c4070 0xffffffff
-> +/* Disable TZASC1/2 bypass */
-> +wm 32 0x020E0024 0x00000003
-> -- 
-> 2.39.5
-> 
-> 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+  Marco
 
 
