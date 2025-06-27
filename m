@@ -1,58 +1,58 @@
-Delivery-date: Fri, 27 Jun 2025 19:21:59 +0200
+Delivery-date: Fri, 27 Jun 2025 19:22:00 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVClz-00BhD5-2f
+	id 1uVCm0-00BhDP-1h
 	for lore@lore.pengutronix.de;
-	Fri, 27 Jun 2025 19:21:59 +0200
+	Fri, 27 Jun 2025 19:22:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVClz-0004VJ-6c
-	for lore@pengutronix.de; Fri, 27 Jun 2025 19:21:59 +0200
+	id 1uVClz-0004VV-R6
+	for lore@pengutronix.de; Fri, 27 Jun 2025 19:22:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1GayeLa+WCQzUQO5cVPL9FvBbObHoSelmbbA2du9Jlw=; b=kCO2rXaqALt5SBpMmEftHWPCFQ
-	HBiSWhH7Dm0QRLSl5Kv+9C9Oef+KJvyTYxteYBIh0xbYaMu2U0zc+HHnK0GpfBB9LAJhjpnUWu03y
-	ZfCJPn3qi12j02aodhTte7InZEcRhXtjVECDj9EimcUYAySqp1FjPnmw2b68GUDF0jzu/d7xR8Kt1
-	10w7exD27Nb4TqC0Hs+V/AH7+UAhVOsMZRBbxDO4VKosPxzm8rLiF2mE3lI+svCe8d857eWeYVcVe
-	PsoLVuI0CbcFKLh+KzCp69MVsGlDcEHh/iUEl2kkBtbdX8gBa2p2W1bKq51ajWOE1hMjSo6jDLzhG
-	YbMlur2Q==;
+	bh=5TNGigNI5Zu6qiyUGfxAKAxH3V5pWn6o5piU+b+tgTU=; b=RDVY7Yh7yYxsH+UudRvtmYF5LT
+	o95GEGnS9ckvOk3OQnUzNafFK/0pzg+4q4CB6nB8TL8hvTDHDkM+tAo+AixDIgrulQOQalF3gC/uj
+	lMZWvRrlRf/F9m07YE1gvUps4BuugxN8QrQQW85OCu6KDGVTjC/Oba8dWhl1mH2oKY2/3YXOtvzUd
+	9ZykgkNb091PtXU/1SIQrJeBzdr79M+ARrnP3zvFwT10sQjlByWwHGJxpyiizI6XUi7zMD03evYS5
+	BwVt4oZpg2HrFBdcqSITl4kzzHEh7TkePvx9pD5HVs3KmgI83U+1ggQvEOWZ5/VXrJKmrDRtHKKin
+	mdrN4W7A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVClZ-0000000FOeC-2gei;
-	Fri, 27 Jun 2025 17:21:33 +0000
+	id 1uVClX-0000000FOd6-0qaz;
+	Fri, 27 Jun 2025 17:21:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVBeo-0000000FDgn-2Umo
+	id 1uVBdN-0000000FDTQ-04FQ
 	for barebox@lists.infradead.org;
-	Fri, 27 Jun 2025 16:10:31 +0000
+	Fri, 27 Jun 2025 16:09:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uVBen-0007g8-DK; Fri, 27 Jun 2025 18:10:29 +0200
+	id 1uVBdL-0005SS-TG; Fri, 27 Jun 2025 18:08:59 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uVBen-005e3q-0j;
-	Fri, 27 Jun 2025 18:10:29 +0200
+	id 1uVBdL-005e3k-2L;
+	Fri, 27 Jun 2025 18:08:59 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uVBen-003dXo-0P;
-	Fri, 27 Jun 2025 18:10:29 +0200
-Date: Fri, 27 Jun 2025 18:10:29 +0200
+	id 1uVBdL-003dX9-22;
+	Fri, 27 Jun 2025 18:08:59 +0200
+Date: Fri, 27 Jun 2025 18:08:59 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20250627161029.s472ws6pw7i6lgff@pengutronix.de>
+Message-ID: <20250627160859.5w5xdd3wl7almykt@pengutronix.de>
 References: <20250627-arm-optee-early-helper-v1-0-4b098e8ac7cd@pengutronix.de>
  <20250627-arm-optee-early-helper-v1-11-4b098e8ac7cd@pengutronix.de>
 MIME-Version: 1.0
@@ -60,8 +60,8 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250627-arm-optee-early-helper-v1-11-4b098e8ac7cd@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250627_091030_633757_527BBA9A 
-X-CRM114-Status: GOOD (  22.92  )
+X-CRM114-CacheID: sfid-20250627_090901_057339_8E03E162 
+X-CRM114-Status: GOOD (  22.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,6 +103,9 @@ On 25-06-27, Sascha Hauer wrote:
 > [1] https://lore.kernel.org/70b41f3b-4329-48f7-827f-1924e002ab04@pengutronix.de
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+
 > ---
 >  arch/arm/boards/tqma6ulx/lowlevel.c | 22 +++++++++-------------
 >  arch/arm/mach-imx/Kconfig           |  1 +
@@ -173,9 +176,6 @@ On 25-06-27, Sascha Hauer wrote:
 >  config MACH_TQMA6UL
 >  	bool "TQ tqma6ul on mba6ulx"
 > +	select CONFIG_ARM_EXCEPTIONS_PBL if FIRMWARE_TQMA6UL_OPTEE
-		^
-Please drop the CONFIG_ as Ahmad already mentioned this for patch12.
-
 >  	select ARCH_IMX6UL
 >  	select BOARD_TQ
 >  	select I2C_IMX_EARLY
