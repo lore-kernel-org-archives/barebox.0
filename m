@@ -1,72 +1,72 @@
-Delivery-date: Fri, 27 Jun 2025 21:05:29 +0200
+Delivery-date: Fri, 27 Jun 2025 21:05:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVEO9-00BiVN-2E
+	id 1uVEOD-00BiVi-2i
 	for lore@lore.pengutronix.de;
-	Fri, 27 Jun 2025 21:05:29 +0200
+	Fri, 27 Jun 2025 21:05:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVEO8-0006gy-ON
-	for lore@pengutronix.de; Fri, 27 Jun 2025 21:05:29 +0200
+	id 1uVEOC-0006iV-Rv
+	for lore@pengutronix.de; Fri, 27 Jun 2025 21:05:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rp3ZxnrE9v+4KsjIg5pCzQFMN/5MrxGP0WUtxC/M0H8=; b=0BUzYA3lHbfBqePEezwvVuIqB6
-	wROkrRMz7cUQROTuLqIVe9aJF/2Kgm3z0OQcKjZRQ342sOea1SRqUaZ/Ef/akKvV3buwFfYk+ZeD/
-	PGIRL1WJ8okIktQThTVtDZqJWGLz2oH0iCKgrbzze616KOqBSTc+6R0U0X04tgteoJNApoSf0yX+/
-	j6daYerGJa8SVQC9zDsBzILfyAY2giz5v4/MF4NBbTr5hd3sstISSYg+HuISkrG1UlqbMHF1E5K8F
-	x28TOzJPvDzEUfFFrUXtw9OsElUiksH6MSqWj5wTZ24TGRKYHWMXEprmMY+vDHpO8hrmVZM12Gtac
-	FTtnzIlA==;
+	bh=SYBQ/l5ZQD1Aig5l48DXVyLId4Jt9vdnaNVnww9empQ=; b=dfB5xpeS0UP2v/SwQ9jX00ght1
+	uWRbVxCjMs6iX4GLrEB6rSXPBCoCE1jVzMNmcdG5o6ulbwXBB8b6xnMrI0Qoqp3W0FL+QDMf0zoaR
+	bnn0TQjPsQw3laq5XsSsvIDFYChq6Q6BwW31vJMrVHYSJ+1vfH24pX1RnCGZKcYzuAtrkKam6i1ZP
+	0gYxmyKGsR6p4LS8l2txk5bsb2dVGNRNXf6JP0HFEEyXCxHDV30cXMlMbXn+pTWnL84ZTHBZmhyK5
+	/eqkU6urFi4gPQEg8z9vjcvNngFNCYKM3W1qct2RD+ggpGz3zsIPlFMJf3F3USlNt6dDdKIVGVUxq
+	34n4uTzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVENN-0000000FYa7-3hOM;
-	Fri, 27 Jun 2025 19:04:41 +0000
+	id 1uVENl-0000000FZJa-3eES;
+	Fri, 27 Jun 2025 19:05:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVCmB-0000000FOmV-151q
+	id 1uVDBC-0000000FRYC-33hK
 	for barebox@lists.infradead.org;
-	Fri, 27 Jun 2025 17:22:12 +0000
+	Fri, 27 Jun 2025 17:48:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uVCmA-0004p1-0C; Fri, 27 Jun 2025 19:22:10 +0200
+	id 1uVDBB-0001vY-Ir; Fri, 27 Jun 2025 19:48:01 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uVCm9-005eVL-2d;
-	Fri, 27 Jun 2025 19:22:09 +0200
+	id 1uVDBB-005ecb-1H;
+	Fri, 27 Jun 2025 19:48:01 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uVCm9-003eRh-2I;
-	Fri, 27 Jun 2025 19:22:09 +0200
-Date: Fri, 27 Jun 2025 19:22:09 +0200
+	id 1uVDBB-003f0q-0z;
+	Fri, 27 Jun 2025 19:48:01 +0200
+Date: Fri, 27 Jun 2025 19:48:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <aF7TQVeI_xd08Y3w@pengutronix.de>
+Message-ID: <aF7ZUU5UcO2kms34@pengutronix.de>
 References: <20250627-arm-optee-early-helper-v1-0-4b098e8ac7cd@pengutronix.de>
- <20250627-arm-optee-early-helper-v1-3-4b098e8ac7cd@pengutronix.de>
- <20250627154509.m2ovsgqdnpoc3auh@pengutronix.de>
+ <20250627-arm-optee-early-helper-v1-9-4b098e8ac7cd@pengutronix.de>
+ <20250627160404.gs7txsvrba4dezds@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250627154509.m2ovsgqdnpoc3auh@pengutronix.de>
+In-Reply-To: <20250627160404.gs7txsvrba4dezds@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250627_102211_459899_9E9EA349 
-X-CRM114-Status: GOOD (  42.76  )
+X-CRM114-CacheID: sfid-20250627_104802_770335_B785F346 
+X-CRM114-Status: GOOD (  19.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,195 +88,44 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 03/14] ARM: add exception handling support for PBL
+Subject: Re: [PATCH 09/14] ARM: i.MX: add imx6_can_access_tzasc()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Jun 27, 2025 at 05:45:09PM +0200, Marco Felsch wrote:
-> Hi Sascha,
-> 
+On Fri, Jun 27, 2025 at 06:04:04PM +0200, Marco Felsch wrote:
 > On 25-06-27, Sascha Hauer wrote:
-> > Exception handling in PBL can be very useful for debugging PBL code.
-> > This patch adds support for it.
-> > 
-> > This is currently only implemented for ARMv7 and ARMv8. Only on these
-> > architectures we can tell the CPU where the exception table is. On ARMv6
-> > and older we would have to copy the exception table either to 0x0 or
-> > 0xffff0000. Not all SoCs have writable memory at these locations, so we
-> > would have to utilize the MMU to map writable memory there. We are not
-> > there yet, so for now skip exception handling support on these older
-> > architectures.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/Kconfig                   | 10 ++++++++++
-> >  arch/arm/cpu/Makefile              |  1 +
-> >  arch/arm/cpu/interrupts_32.c       | 14 +++++++++++++-
-> >  arch/arm/cpu/interrupts_64.c       | 10 +++++++++-
-> >  arch/arm/cpu/uncompress.c          |  2 ++
-> >  arch/arm/include/asm/barebox-arm.h |  8 ++++++++
-> >  arch/arm/lib/pbl.lds.S             |  4 ++++
-> >  7 files changed, 47 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> > index 0800b15d784ca0ab975cf7ceb2f7b47ed10643b1..eaccee9f2f7a128a820e1c55fba816ec5ac4c02d 100644
-> > --- a/arch/arm/Kconfig
-> > +++ b/arch/arm/Kconfig
-> > @@ -378,6 +378,16 @@ config ARM_EXCEPTIONS
-> >  	bool "enable arm exception handling support"
-> >  	default y
-> >  
-> > +config ARM_EXCEPTIONS_PBL
-> > +	select ARCH_HAS_DATA_ABORT_MASK_PBL
-> > +	depends on CPU_V7 || CPU_V8
-> > +	bool "enable arm exception handling support in PBL"
-> > +	help
-> > +	  Say yes here to enable exception handling in PBL. Note that the exception
-> > +	  table has to be initialized by calling arm_pbl_init_exceptions(). This is
-> > +	  done in barebox_pbl_start(). If you need exception handling earlier then
-> > +	  you have to call arm_pbl_init_exceptions() earlier from your board code.
-> > +
-> >  config ARM_UNWIND
-> >  	bool "enable stack unwinding support"
-> >  	depends on AEABI
-> > diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> > index 39e59c2a2f733d668d57a2f28bdd99f69a016229..9550592796702759f950a3bc4de385100ef2b2e8 100644
-> > --- a/arch/arm/cpu/Makefile
-> > +++ b/arch/arm/cpu/Makefile
-> > @@ -3,6 +3,7 @@
-> >  obj-pbl-y += cpu.o
-> >  
-> >  obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_$(S64_32).o interrupts_$(S64_32).o
-> > +pbl-$(CONFIG_ARM_EXCEPTIONS_PBL) += exceptions_$(S64_32).o interrupts_$(S64_32).o
-> >  obj-$(CONFIG_MMU) += mmu-common.o
-> >  obj-pbl-$(CONFIG_MMU) += mmu_$(S64_32).o
-> >  obj-$(CONFIG_MMU) += dma_$(S64_32).o
-> > diff --git a/arch/arm/cpu/interrupts_32.c b/arch/arm/cpu/interrupts_32.c
-> > index 623efb3966f0c34632e678d9e1edf2b6affcb4c5..cd503b38eeea551f27bbab0663bbfabdda7ffeea 100644
-> > --- a/arch/arm/cpu/interrupts_32.c
-> > +++ b/arch/arm/cpu/interrupts_32.c
-> > @@ -12,6 +12,7 @@
-> >  #include <asm/ptrace.h>
-> >  #include <asm/barebox-arm.h>
-> >  #include <asm/unwind.h>
-> > +#include <asm/system_info.h>
-> >  #include <init.h>
-> >  
-> >  /* Avoid missing prototype warning, called from assembly */
-> > @@ -61,7 +62,7 @@ void show_regs (struct pt_regs *regs)
-> >  		fast_interrupts_enabled (regs) ? "on" : "off",
-> >  		processor_modes[processor_mode (regs)],
-> >  		thumb_mode (regs) ? " (T)" : "");
-> > -#ifdef CONFIG_ARM_UNWIND
-> > +#if defined CONFIG_ARM_UNWIND && IN_PROPER
-> >  	unwind_backtrace(regs);
-> >  #endif
-> >  }
-> > @@ -181,3 +182,14 @@ int data_abort_unmask(void)
-> >  
-> >  	return arm_data_abort_occurred != 0;
-> >  }
-> > +
-> > +#if IS_ENABLED(CONFIG_ARM_EXCEPTIONS_PBL)
-> > +void arm_pbl_init_exceptions(void)
-> > +{
-> > +	if (cpu_architecture() < CPU_ARCH_ARMv7)
-> > +		return;
-> > +
-> > +	set_vbar((unsigned long)__exceptions_start);
-> > +	arm_fixup_vectors();
-> > +}
-> > +#endif
-> > diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
-> > index 4d4ef2bab88ef46a7be1cd4add8f3e51423a283b..574ab6a7ec220d2239b6e27c05426e2d4c67d426 100644
-> > --- a/arch/arm/cpu/interrupts_64.c
-> > +++ b/arch/arm/cpu/interrupts_64.c
-> > @@ -88,7 +88,8 @@ static void __noreturn do_exception(struct pt_regs *pt_regs)
-> >  {
-> >  	show_regs(pt_regs);
-> >  
-> > -	unwind_backtrace(pt_regs);
-> > +	if (IN_PROPER)
-> > +		unwind_backtrace(pt_regs);
-> >  
-> >  	panic_no_stacktrace("panic: unhandled exception");
-> >  }
-> > @@ -226,3 +227,10 @@ static int aarch64_init_vectors(void)
-> >  	return 0;
-> >  }
-> >  core_initcall(aarch64_init_vectors);
-> > +
-> > +#if IS_ENABLED(CONFIG_ARM_EXCEPTIONS_PBL)
-> > +void arm_pbl_init_exceptions(void)
-> > +{
-> > +	aarch64_init_vectors();
-> > +}
-> > +#endif
-> > diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-> > index 4657a4828e67e1b0acfa9dec3aef33bc4c525468..4529ef5e3821e5b31a3673de6285d2f37e0ecba2 100644
-> > --- a/arch/arm/cpu/uncompress.c
-> > +++ b/arch/arm/cpu/uncompress.c
-> > @@ -63,6 +63,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
-> >  
-> >  	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
-> >  
-> > +	arm_pbl_init_exceptions();
-> > +
-> >  	if (IS_ENABLED(CONFIG_MMU))
-> >  		mmu_early_enable(membase, memsize);
-> >  	else if (IS_ENABLED(CONFIG_ARMV7R_MPU))
-> > diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-> > index 7d35e88c812393d45e331f238baecfa91cbbe299..3ab442bd373e50a84b26145395e42879fc96757f 100644
-> > --- a/arch/arm/include/asm/barebox-arm.h
-> > +++ b/arch/arm/include/asm/barebox-arm.h
-> > @@ -52,6 +52,14 @@ static inline void arm_fixup_vectors(void)
-> >  }
-> >  #endif
-> >  
-> > +#if IS_ENABLED(CONFIG_ARM_EXCEPTIONS_PBL)
-> > +void arm_pbl_init_exceptions(void);
-> > +#else
-> > +static inline void arm_pbl_init_exceptions(void)
-> > +{
-> > +}
-> > +#endif
-> > +
-> >  void *barebox_arm_boot_dtb(void);
-> >  
-> >  /*
-> > diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
-> > index dad37c9e9bca98beb4f34360fa53a0421662f03c..9c51f5eb3a3d8256752a78e03fed851c84d92edb 100644
-> > --- a/arch/arm/lib/pbl.lds.S
-> > +++ b/arch/arm/lib/pbl.lds.S
-> > @@ -52,6 +52,10 @@ SECTIONS
-> >  		__bare_init_start = .;
-> >  		*(.text_bare_init*)
-> >  		__bare_init_end = .;
-> > +		. = ALIGN(0x20);
-> > +		__exceptions_start = .;
-> > +		KEEP(*(.text_exceptions*))
-> > +		__exceptions_stop = .;
+> > On ARMv7 there is no direct way to detect if we are in the secure or non
+> > secure world. Add a imx6_can_access_tzasc() for this purpose. When
+> > accessing the TZASC triggers a data abort then we are in the non secure
+> > world. This function can be used later to detect if we have to load
+>        ^
+> because OP-TEE configures the TZASC access policy to secure-world R/W. ?
+
+Will add.
+
 > 
-> Nit: We only need this in case of CONFIG_CPU_64, right?
+> Keep in mind that this test will fail if a downstream/buggy OP-TEE
+> doesn't configure the CSU correctly. Fingers crossed that this never
+> will never happen.
 
-s/CONFIG_CPU_64/CONFIG_CPU_32/
+When you are using this buggy OP-TEE for security relevant stuff you're
+screwed anyway.
 
-Yes, right.
+When in this case barebox tries to start OP-TEE again and your board
+crashes because of this then you are lucky as this could give you a hint
+that there's really something wrong.
 
-> Maybe I
-> overlooked it but the only user of this section is
-> arch/arm/cpu/exceptions_32.S. Not sure why arch/arm/lib64/barebox.lds.S
-> has this section too.
+> > +bool imx6_can_access_tzasc(void)
+> > +{
+> > +	if (!IS_ENABLED(CONFIG_ARM_EXCEPTIONS_PBL))
+> > +		panic("%s only works with CONFIG_ARM_EXCEPTIONS_PBL\n", __func__);
+> > +
+> > +	arm_pbl_init_exceptions();
+> 
+> Can't we do that within the imx*_cpu_lowlevel_init?
 
-Likely because the initial arm64 linker script started as a copy from
-the arm32 linker script.
-
-I'll prepare a patch to remove the section from arch/arm/lib64/barebox.lds.S
-because it's indeed unused.
-
-In arch/arm/lib/pbl.lds.S we could add an #ifdef CONFIG_CPU_64 around the
-section, but it doesn't make a difference, the section will be empty
-anyway.
+No, we need a proper C environment for this which is not guaranteed in
+these functions.
 
 Sascha
 
