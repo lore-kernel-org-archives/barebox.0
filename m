@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVEOD-00BiVi-2i
+	id 1uVEOD-00BiVs-2y
 	for lore@lore.pengutronix.de;
 	Fri, 27 Jun 2025 21:05:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVEOC-0006iV-Rv
+	id 1uVEOD-0006iW-0K
 	for lore@pengutronix.de; Fri, 27 Jun 2025 21:05:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,55 +18,55 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SYBQ/l5ZQD1Aig5l48DXVyLId4Jt9vdnaNVnww9empQ=; b=dfB5xpeS0UP2v/SwQ9jX00ght1
-	uWRbVxCjMs6iX4GLrEB6rSXPBCoCE1jVzMNmcdG5o6ulbwXBB8b6xnMrI0Qoqp3W0FL+QDMf0zoaR
-	bnn0TQjPsQw3laq5XsSsvIDFYChq6Q6BwW31vJMrVHYSJ+1vfH24pX1RnCGZKcYzuAtrkKam6i1ZP
-	0gYxmyKGsR6p4LS8l2txk5bsb2dVGNRNXf6JP0HFEEyXCxHDV30cXMlMbXn+pTWnL84ZTHBZmhyK5
-	/eqkU6urFi4gPQEg8z9vjcvNngFNCYKM3W1qct2RD+ggpGz3zsIPlFMJf3F3USlNt6dDdKIVGVUxq
-	34n4uTzw==;
+	bh=lPVP7xMQrUPEmfZuDs7bMY54FryGtCsqiNbLsWlWLCA=; b=zValciqzrJ7ehkWfcfQZ+Josjk
+	qSQrcAPn8uVwfbNTTNpN0pZuocdT3QGIn7rHR5xPhmqZpuOJUZ2501wk1YLIwbwmpJLiLcveO/t7g
+	9S0h47hlQ0AqAI4UarfPkmiXhCOl7nW9Ob8f0vVs3b5JKeyCNvAL6/2BXus4b+T9IjWLaQPuLPsW8
+	q+AGYxFKsn9HIqG2+0RFbH+ZlmJ4KfMOqSK1izPHLyQxPT3+KddhW2pHDrSbnzTBTt7zo+JW1xg9U
+	fFkzTbAy7CHtPD62V23zx97QqlOLXLE9/u80n+vnNVHIFgIpLLHckrX8hBKYrKjayUs29QH7OSNkj
+	DE8gbkiA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVENl-0000000FZJa-3eES;
-	Fri, 27 Jun 2025 19:05:05 +0000
+	id 1uVENe-0000000FZ5q-0R8H;
+	Fri, 27 Jun 2025 19:05:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVDBC-0000000FRYC-33hK
+	id 1uVD2h-0000000FQU0-2u28
 	for barebox@lists.infradead.org;
-	Fri, 27 Jun 2025 17:48:03 +0000
+	Fri, 27 Jun 2025 17:39:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uVDBB-0001vY-Ir; Fri, 27 Jun 2025 19:48:01 +0200
+	id 1uVD2g-0005Mq-A4; Fri, 27 Jun 2025 19:39:14 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uVDBB-005ecb-1H;
-	Fri, 27 Jun 2025 19:48:01 +0200
+	id 1uVD2g-005ebZ-0O;
+	Fri, 27 Jun 2025 19:39:14 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1uVDBB-003f0q-0z;
-	Fri, 27 Jun 2025 19:48:01 +0200
-Date: Fri, 27 Jun 2025 19:48:01 +0200
+	id 1uVD2g-003erX-03;
+	Fri, 27 Jun 2025 19:39:14 +0200
+Date: Fri, 27 Jun 2025 19:39:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <aF7ZUU5UcO2kms34@pengutronix.de>
+Message-ID: <aF7XQWe6JZkCObTq@pengutronix.de>
 References: <20250627-arm-optee-early-helper-v1-0-4b098e8ac7cd@pengutronix.de>
  <20250627-arm-optee-early-helper-v1-9-4b098e8ac7cd@pengutronix.de>
- <20250627160404.gs7txsvrba4dezds@pengutronix.de>
+ <70a40a96-4468-4869-8ef6-f3ad4b27c36f@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250627160404.gs7txsvrba4dezds@pengutronix.de>
+In-Reply-To: <70a40a96-4468-4869-8ef6-f3ad4b27c36f@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250627_104802_770335_B785F346 
-X-CRM114-Status: GOOD (  19.78  )
+X-CRM114-CacheID: sfid-20250627_103915_732374_8354F0F3 
+X-CRM114-Status: GOOD (  25.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,40 +92,68 @@ Subject: Re: [PATCH 09/14] ARM: i.MX: add imx6_can_access_tzasc()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Jun 27, 2025 at 06:04:04PM +0200, Marco Felsch wrote:
-> On 25-06-27, Sascha Hauer wrote:
+On Fri, Jun 27, 2025 at 05:33:19PM +0200, Ahmad Fatoum wrote:
+> On 6/27/25 16:07, Sascha Hauer wrote:
 > > On ARMv7 there is no direct way to detect if we are in the secure or non
 > > secure world. Add a imx6_can_access_tzasc() for this purpose. When
 > > accessing the TZASC triggers a data abort then we are in the non secure
 > > world. This function can be used later to detect if we have to load
->        ^
-> because OP-TEE configures the TZASC access policy to secure-world R/W. ?
-
-Will add.
-
+> > OP-TEE or not.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/mach-imx/tzasc.c | 16 ++++++++++++++++
+> >  include/mach/imx/tzasc.h  |  1 +
+> >  2 files changed, 17 insertions(+)
+> > 
+> > diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
+> > index ed20ad8803a2e91b67b5d8c3ab1a4265c4228ec7..63f01cbaa6d4a8fbf47b9683ca840ee64f908cfc 100644
+> > --- a/arch/arm/mach-imx/tzasc.c
+> > +++ b/arch/arm/mach-imx/tzasc.c
+> > @@ -13,6 +13,8 @@
+> >  #include <linux/sizes.h>
+> >  #include <mach/imx/imx8m-regs.h>
+> >  #include <io.h>
+> > +#include <abort.h>
+> > +#include <asm/barebox-arm.h>
+> >  
+> >  /*******************************************************************************
+> >   *                         TZC380 defines
+> > @@ -329,6 +331,20 @@ bool imx6ul_tzc380_is_bypassed(void)
+> >  	return !(readl(&gpr[9]) & MX6_GPR_TZASC1_EN);
+> >  }
+> >  
 > 
-> Keep in mind that this test will fail if a downstream/buggy OP-TEE
-> doesn't configure the CSU correctly. Fingers crossed that this never
-> will never happen.
-
-When you are using this buggy OP-TEE for security relevant stuff you're
-screwed anyway.
-
-When in this case barebox tries to start OP-TEE again and your board
-crashes because of this then you are lucky as this could give you a hint
-that there's really something wrong.
-
+> How about dropping the panic and just failing the build:
+> 
+> #ifdef CONFIG_ARM_EXCEPTIONS_PBL
+> 
 > > +bool imx6_can_access_tzasc(void)
 > > +{
 > > +	if (!IS_ENABLED(CONFIG_ARM_EXCEPTIONS_PBL))
 > > +		panic("%s only works with CONFIG_ARM_EXCEPTIONS_PBL\n", __func__);
 > > +
 > > +	arm_pbl_init_exceptions();
+> > +
+> > +	data_abort_mask();
+> > +
+> > +	readl(IOMEM(MX6_TZASC1_BASE));
+> > +
+> > +	return !data_abort_unmask();
+> > +}
 > 
-> Can't we do that within the imx*_cpu_lowlevel_init?
+> #else
+> 
+> bool imx6_can_access_tzasc(void)
+> 	__compiletime_error("function called without CONFIG_ARM_EXCEPTIONS_PBL ");
+> 
+> #endif
 
-No, we need a proper C environment for this which is not guaranteed in
-these functions.
+At the moment tzasc.c is obj-y, so failing the build would make
+CONFIG_ARM_EXCEPTIONS_PBL mandatory for i.MX.
+
+We could introduce a config symbol for the TZASC code and select
+CONFIG_ARM_EXCEPTIONS_PBL from there.
 
 Sascha
 
