@@ -3,72 +3,72 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVAiE-00Bepi-38
+	id 1uVAiF-00Beq4-0r
 	for lore@lore.pengutronix.de;
 	Fri, 27 Jun 2025 17:09:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVAiD-0004j7-EE
-	for lore@pengutronix.de; Fri, 27 Jun 2025 17:09:58 +0200
+	id 1uVAiE-0004o0-5w
+	for lore@pengutronix.de; Fri, 27 Jun 2025 17:09:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dH3p7xbfGrYDlFeEDpAWK9uIbzNycYtdO/I2zO/vkng=; b=gA4vNWh8q0Za3mw5AS958gyKOt
-	AeqjPvYjznrzJ1WJsGjHQCSvUb3W9XnTiSKL0DzTs9AqAMnwd57Mbn6Lful1EjULyTfUxlziK0qNx
-	xfoVQQFuE+k4J94/uuGsZ8BCNmskVIFXaFEBLh3pdOxFPDe8K5tW0b4iOJZO0GzxNXUXIMOAVl0yz
-	TNmQVLMDIpwRU/SGkxWpZFCD1XVAuBsyH3f/GEzNLNt56ycOP9B5CXUtrUpLxkuugjWJ+TeOb1BEC
-	cA1EF7pIm0wlOBOyS66Zj4x3kLLihc1r+zvCD1GN8z53do7c8QUga7OgZh61X1l6DU6g07ufRmT7D
-	1eZENkEw==;
+	bh=Y0K0i4aTsrZmq6e+QO14aJe2UHbEmISYd0ZL25AvHMY=; b=BB25RiDMJhEi0UoH71qheNIFlX
+	XPMTkn+GAR/bJCK3FFf3JBnIkr7bZjCvDpWZeasqU0cMz7zw/WN4h0/B45wpNcGMMEPWuAhBux+Nd
+	SzFC12zkKn5wJ6jSXMynUNWqOKL5ox+bFC8aXkXHdOWCr0NNIPwzuyDOGODtw0cQJBeJfRrbwMsK+
+	MarUrqaG4wp7j1yQdLfO4V9YOuVwaHKw1GHomugDhCN1U8WLEQyZNMX3DHcWxhpUl2bzj6svmscWg
+	gOJ7Ue+3miUKlb2+4YMnnPjP8eWM3X3cjeB55eAJzjlECDtD+DTXMvacY89J4DJHfWb5QO8wiff8t
+	dLKtM2Wg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVAhi-0000000F0xt-0PGD;
-	Fri, 27 Jun 2025 15:09:26 +0000
+	id 1uVAhj-0000000F0zA-2cgk;
+	Fri, 27 Jun 2025 15:09:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVAAu-0000000Evk4-0f9J
+	id 1uVAAt-0000000Evk1-3uXQ
 	for barebox@lists.infradead.org;
-	Fri, 27 Jun 2025 14:35:34 +0000
+	Fri, 27 Jun 2025 14:35:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uVAAt-0008Nq-20; Fri, 27 Jun 2025 16:35:31 +0200
+	id 1uVAAs-0008ND-OD; Fri, 27 Jun 2025 16:35:30 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uVAAs-005dIs-2l;
+	id 1uVAAs-005dIh-1p;
 	Fri, 27 Jun 2025 16:35:30 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uV9kG-004uPv-2U;
+	id 1uV9kG-004uPv-2W;
 	Fri, 27 Jun 2025 16:08:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Jun 2025 16:07:57 +0200
+Date: Fri, 27 Jun 2025 16:07:59 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250627-arm-optee-early-helper-v1-11-4b098e8ac7cd@pengutronix.de>
+Message-Id: <20250627-arm-optee-early-helper-v1-13-4b098e8ac7cd@pengutronix.de>
 References: <20250627-arm-optee-early-helper-v1-0-4b098e8ac7cd@pengutronix.de>
 In-Reply-To: <20250627-arm-optee-early-helper-v1-0-4b098e8ac7cd@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751033280; l=3147;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751033280; l=3129;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=9fMb1fK1w04dZ+t6eMbt8USKyX/iKVY7imTfxfPySTI=;
- b=XdOka6RWWhmYSZD6J4prtHS67sBl3dDNzpC6uSv3qsd6zKO07jnnKaq034J2SZQ0tqek9fyVk
- 7A+tM4Fg9jDDgZVccgG/qcVvCyIDMA8IR6J5Sh8Rr1sV66Rh+CN7lfc
+ bh=0yjUKFn65lt5BHiVpbRgJHDkj3yNd01P5mpmNbANYG8=;
+ b=SmJEOnALfVrRz7rsdJf6rgpjnsueNVG25xV70ijiU9vFxDLC7bq37zRlXSzNTIwzz3sPrWUeZ
+ 6/8Yfw2DRJYAz0GWjTXG1XXnZbnQIwysTVZov3sYF6xQW1FqrzWnuzi
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250627_073533_146265_1F95595D 
-X-CRM114-Status: GOOD (  15.59  )
+X-CRM114-CacheID: sfid-20250627_073533_168666_A48690B7 
+X-CRM114-Status: GOOD (  12.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,98 +90,95 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 11/14] ARM: i.MX: tqma6ulx: fix barebox chainloading with
- OP-TEE enabled
+Subject: [PATCH 13/14] ARM: optee-early: drop start_optee_early()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When barebox starts we have to guess if we have to start OP-TEE or not.
-The current detection works by checking if the first stage passed us a
-device tree pointer. This is not robust and might have security issues
-[1], so replace that with the check with imx6_can_access_tzasc(). If we
-can access the TZASC then we are the first stage and configure it and
-start OP-TEE, otherwise assume that we are chainloaded and continue
-without starting OP-TEE.
-
-Chainloading barebox with OP-TEE enabled contained several bugs, so it
-never actually worked. This patch fixes them.
-
-[1] https://lore.kernel.org/70b41f3b-4329-48f7-827f-1924e002ab04@pengutronix.de
+Now that all users of start_optee_early() use the SoC variants
+make start_optee_early() a static function. While at it move the zeroing
+of the data_location which was duplicated in the SoC specific functions
+to start_optee_early().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/tqma6ulx/lowlevel.c | 22 +++++++++-------------
- arch/arm/mach-imx/Kconfig           |  1 +
- 2 files changed, 10 insertions(+), 13 deletions(-)
+ arch/arm/lib32/optee-early.c | 34 +++++++++++++++-------------------
+ include/tee/optee.h          |  1 -
+ 2 files changed, 15 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/boards/tqma6ulx/lowlevel.c b/arch/arm/boards/tqma6ulx/lowlevel.c
-index 5fd997d2ec7e79c7319237a4ae52216e584ba5cd..da67e67537167096477de2b905ee5c42c653c3af 100644
---- a/arch/arm/boards/tqma6ulx/lowlevel.c
-+++ b/arch/arm/boards/tqma6ulx/lowlevel.c
-@@ -16,6 +16,8 @@
- #include <pbl/i2c.h>
- #include <boards/tq/tq_eeprom.h>
- #include <tee/optee.h>
-+#include <mach/imx/tzasc.h>
-+#include <tee/optee.h>
+diff --git a/arch/arm/lib32/optee-early.c b/arch/arm/lib32/optee-early.c
+index 6f842bdd2010582c61a8e88c9f644e6ae93bcbf4..7ef3f3e9c6f3b934aba9d4d3db2df3fd7a0aa642 100644
+--- a/arch/arm/lib32/optee-early.c
++++ b/arch/arm/lib32/optee-early.c
+@@ -15,12 +15,24 @@
  
- #include "tqma6ulx.h"
+ static jmp_buf tee_buf;
  
-@@ -66,7 +68,7 @@ static void *read_eeprom(void)
- 	return fdt;
- }
- 
--static void noinline start_mba6ulx(u32 r0)
-+static void noinline start_mba6ulx(void)
+-int start_optee_early(void *fdt, void *tee)
++static int start_optee_early(void *fdt, void *tee, void *data_location,
++			     unsigned int data_location_size)
  {
- 	void *fdt;
- 	int tee_size;
-@@ -76,21 +78,15 @@ static void noinline start_mba6ulx(u32 r0)
+ 	void (*tee_start)(void *r0, void *r1, void *r2);
+ 	struct optee_header *hdr;
+ 	int ret;
  
- 	fdt = read_eeprom();
++	/* We expect this function to be called with data caches disabled */
++	BUG_ON(get_cr() & CR_C);
++
++	/*
++	 * Set the OP-TEE <-> barebox exchange data location to zero.
++	 * This is optional since recent OP-TEE versions perform the
++	 * memset too.
++	 */
++	if (data_location)
++		memset(data_location, 0, data_location_size);
++
+ 	hdr = tee;
+ 	ret = optee_verify_header(hdr);
+ 	if (ret < 0)
+@@ -49,15 +61,7 @@ int imx6q_start_optee_early(void *fdt, void *tee, void *data_location,
+ 	/* Add early non-secure TZASC region1 to pass DTO */
+ 	imx6q_tzc380_early_ns_region1();
  
--	/* Enable normal/secure r/w for TZC380 region0 */
--	writel(0xf0000000, 0x021D0108);
+-	/*
+-	 * Set the OP-TEE <-> barebox exchange data location to zero.
+-	 * This is optional since recent OP-TEE versions perform the
+-	 * memset too.
+-	 */
+-	if (data_location)
+-		memset(data_location, 0, data_location_size);
 -
- 	/*
--	 * Chainloading barebox will pass a device tree within the RAM in r0,
--	 * skip OP-TEE early loading in this case
-+	 * Skip loading barebox when we are chainloaded. We can detect that by detecting
-+	 * if we can access the TZASC.
- 	 */
--	if (IS_ENABLED(CONFIG_FIRMWARE_TQMA6UL_OPTEE) &&
--	    !(r0 > MX6_MMDC_P0_BASE_ADDR &&
--	      r0 < MX6_MMDC_P0_BASE_ADDR + SZ_256M)) {
--		get_builtin_firmware(mba6ul_optee_bin, &tee, &tee_size);
-+	if (IS_ENABLED(CONFIG_FIRMWARE_TQMA6UL_OPTEE) && imx6_can_access_tzasc()) {
- 
--		memset((void *)OPTEE_OVERLAY_LOCATION, 0, 0x1000);
-+		get_builtin_firmware(mba6ul_optee_bin, &tee, &tee_size);
- 
--		start_optee_early(NULL, tee);
-+		imx6ul_start_optee_early(NULL, tee, (void *)OPTEE_OVERLAY_LOCATION, 0x1000);
- 	}
- 
- 	imx6ul_barebox_entry(fdt);
-@@ -112,5 +108,5 @@ ENTRY_FUNCTION(start_imx6ul_mba6ulx, r0, r1, r2)
- 	setup_c();
- 	barrier();
- 
--	start_mba6ulx(r0);
-+	start_mba6ulx();
+-	return start_optee_early(fdt, tee);
++	return start_optee_early(fdt, tee, data_location, data_location_size);
  }
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 552e7227a0221fee8232dfba5dcdd60de923ff0c..1bf28b473af2b517a784c11d33f745ad74750583 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -490,6 +490,7 @@ config MACH_TQMA6X
  
- config MACH_TQMA6UL
- 	bool "TQ tqma6ul on mba6ulx"
-+	select CONFIG_ARM_EXCEPTIONS_PBL if FIRMWARE_TQMA6UL_OPTEE
- 	select ARCH_IMX6UL
- 	select BOARD_TQ
- 	select I2C_IMX_EARLY
+ int imx6ul_start_optee_early(void *fdt, void *tee, void *data_location,
+@@ -69,13 +73,5 @@ int imx6ul_start_optee_early(void *fdt, void *tee, void *data_location,
+ 	/* Add early non-secure TZASC region1 to pass DTO */
+ 	imx6ul_tzc380_early_ns_region1();
+ 
+-	/*
+-	 * Set the OP-TEE <-> barebox exchange data location to zero.
+-	 * This is optional since recent OP-TEE versions perform the
+-	 * memset too.
+-	 */
+-	if (data_location)
+-		memset(data_location, 0, data_location_size);
+-
+-	return start_optee_early(fdt, tee);
++	return start_optee_early(fdt, tee, data_location, data_location_size);
+ }
+diff --git a/include/tee/optee.h b/include/tee/optee.h
+index 943dbb8fdab6a11e25fb27e3487fe6fdec59a182..77f7924aa4793c001aa6fb15440729e6c77bd483 100644
+--- a/include/tee/optee.h
++++ b/include/tee/optee.h
+@@ -53,7 +53,6 @@ static inline int optee_get_membase(u64 *membase)
+ 
+ #ifdef __PBL__
+ 
+-int start_optee_early(void* fdt, void* tee);
+ int imx6q_start_optee_early(void *fdt, void *tee, void *data_location,
+ 			    unsigned int data_location_size);
+ int imx6ul_start_optee_early(void *fdt, void *tee, void *data_location,
 
 -- 
 2.39.5
