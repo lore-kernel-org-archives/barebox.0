@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uV9vu-00BeEK-29
+	id 1uV9vu-00BeEU-2U
 	for lore@lore.pengutronix.de;
 	Fri, 27 Jun 2025 16:20:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uV9vt-0004EO-FT
+	id 1uV9vt-0004EN-Hf
 	for lore@pengutronix.de; Fri, 27 Jun 2025 16:20:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,57 +18,58 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5yA9BY8PrwZR3Rcq9/N3rpep/bQXWWpIukdBnWe01Pc=; b=CR/bjxceAJyKN+ycplwn8isVWh
-	EDWUOpHZcssdGTju4B1dznlDZgcr2Wjor0TyFA7xLM/2GBsHT4HborxFv3BZ0gBbRjRw+nghpyUvQ
-	yDAzhu8Xi3um6bq1Kf6Mp0bcdZAsJFLigXCZ8Tbq5E5S5VwM96xHPlmBBXSS+ft7OVDgroODeYYK3
-	j+Mnl68yn/QeJQhZM6qVVdSzKPOawaD5VDHJxyCTd7+PKdy6HYubuUxG5W4vvACi3S3NFs8LjbDjr
-	GDSlRX9iNmnTdMO9uH0l8iwdX+L79gmu9Yy6sYQa6M1Y+AadAOFlLvClnSmAWGz43i0yMqrgiUvGg
-	CqY5VwYg==;
+	bh=NrvZarJNysw3LgdrdmdqQFUkXTxYj4q1cVTAOcnnCtI=; b=RfSwiNFaGDsZWNF5ln/xW/bhvA
+	wscBDMJ7Ys6qaWTT2hs7XUapLmhP7RtqmpihwnMgAsm2KFAvdrEsPTAZ41ZZmN2vKVf6EqxLzhQVO
+	J0YEa1pUmcI5VYOlI0HLBLkMarsabgJQef0hIIwMX8hW/Or0LyRmFjAhRiwc7NfcrLJPtNova7fv2
+	EiJFn8o3IgkNJ6baTRq6itAACRqJI5Argz6s7PkCBvXqil4eYSO58eA7g5isgjciApz1z0YHjYim2
+	TS/kauU/yIwHQIhDJPWbMJPP7waUHwd2Dk/rgrkZQJFDeYLoh7Aq+Kn0v9QT8XMChtip1AFBUQpII
+	DHlupycw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uV9vR-0000000Et0r-0XRb;
-	Fri, 27 Jun 2025 14:19:33 +0000
+	id 1uV9vQ-0000000Et0X-2dzP;
+	Fri, 27 Jun 2025 14:19:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uV9kJ-0000000ErWW-3IuD
+	id 1uV9kJ-0000000ErWT-3Mc1
 	for barebox@lists.infradead.org;
 	Fri, 27 Jun 2025 14:08:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uV9kH-0004vO-8k; Fri, 27 Jun 2025 16:08:01 +0200
+	id 1uV9kH-0004vI-3F; Fri, 27 Jun 2025 16:08:01 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uV9kG-005dAc-2s;
+	id 1uV9kG-005dAT-2Y;
 	Fri, 27 Jun 2025 16:08:00 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uV9kG-004uPv-2S;
+	id 1uV9kG-004uPv-2J;
 	Fri, 27 Jun 2025 16:08:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Jun 2025 16:07:55 +0200
+Date: Fri, 27 Jun 2025 16:07:47 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250627-arm-optee-early-helper-v1-9-4b098e8ac7cd@pengutronix.de>
+Message-Id: <20250627-arm-optee-early-helper-v1-1-4b098e8ac7cd@pengutronix.de>
 References: <20250627-arm-optee-early-helper-v1-0-4b098e8ac7cd@pengutronix.de>
 In-Reply-To: <20250627-arm-optee-early-helper-v1-0-4b098e8ac7cd@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751033280; l=2032;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751033280; l=670;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=WsikfYU90sP5bUmzF7zks7IhSH7bvMBnNOUOJJeY0QQ=;
- b=EnymppJOP4k92ZrcQGtNhRlWtfItthjLcQtJFOVbbu4DEQMgxfkNsc4r8vqXwZYby0/fgzU4m
- tcIbWxYAMWHCwfm/4tZE08lJcSnMxUhDATW3s9qPXpISVLAuh7cbO/2
+ bh=K2aC3iMfTbm1ZSqL34/UiiRGQ7F/Us6kdlKmfnLq4OQ=;
+ b=NXdJP/q5SEGck5X2BNHw12MK4bXA07eNU8jUHGOUMIMBM5CtjATQVm/JpFjCRue9Cytt178qR
+ b3BM7yEw0dHAB/9EkZkNR8L0+Uv/Ifp+wueT3jP2Ji86iDXLPKsMWoj
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250627_070803_853638_CC999C0F 
-X-CRM114-Status: GOOD (  10.30  )
+X-CRM114-CacheID: sfid-20250627_070803_889540_C57C1C8B 
+X-CRM114-Status: UNSURE (   8.24  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,68 +91,30 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/14] ARM: i.MX: add imx6_can_access_tzasc()
+Subject: [PATCH 01/14] pbl: add panic_no_stacktrace()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On ARMv7 there is no direct way to detect if we are in the secure or non
-secure world. Add a imx6_can_access_tzasc() for this purpose. When
-accessing the TZASC triggers a data abort then we are in the non secure
-world. This function can be used later to detect if we have to load
-OP-TEE or not.
+ARM code calls panic_no_stacktrace() when exceptions are enabled.
+In order to to add exception handling support for PBL introduce
+panic_no_stacktrace() for PBL as an alias to panic().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/tzasc.c | 16 ++++++++++++++++
- include/mach/imx/tzasc.h  |  1 +
- 2 files changed, 17 insertions(+)
+ pbl/misc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
-index ed20ad8803a2e91b67b5d8c3ab1a4265c4228ec7..63f01cbaa6d4a8fbf47b9683ca840ee64f908cfc 100644
---- a/arch/arm/mach-imx/tzasc.c
-+++ b/arch/arm/mach-imx/tzasc.c
-@@ -13,6 +13,8 @@
- #include <linux/sizes.h>
- #include <mach/imx/imx8m-regs.h>
- #include <io.h>
-+#include <abort.h>
-+#include <asm/barebox-arm.h>
- 
- /*******************************************************************************
-  *                         TZC380 defines
-@@ -329,6 +331,20 @@ bool imx6ul_tzc380_is_bypassed(void)
- 	return !(readl(&gpr[9]) & MX6_GPR_TZASC1_EN);
+diff --git a/pbl/misc.c b/pbl/misc.c
+index 1f0d992ce08b5c45e8416885de7395f065ab7666..075c6a854bc8c0e01000087bd2a957a7abe92d0d 100644
+--- a/pbl/misc.c
++++ b/pbl/misc.c
+@@ -20,3 +20,6 @@ void __noreturn panic(const char *fmt, ...)
+ 	va_end(args);
+ 	while(1);
  }
- 
-+bool imx6_can_access_tzasc(void)
-+{
-+	if (!IS_ENABLED(CONFIG_ARM_EXCEPTIONS_PBL))
-+		panic("%s only works with CONFIG_ARM_EXCEPTIONS_PBL\n", __func__);
 +
-+	arm_pbl_init_exceptions();
-+
-+	data_abort_mask();
-+
-+	readl(IOMEM(MX6_TZASC1_BASE));
-+
-+	return !data_abort_unmask();
-+}
-+
- void imx8m_tzc380_init(void)
- {
- 	u32 __iomem *gpr = IOMEM(MX8M_IOMUXC_GPR_BASE_ADDR);
-diff --git a/include/mach/imx/tzasc.h b/include/mach/imx/tzasc.h
-index 0fbcdc2150e63864366a8dddeed2d1b97685903d..ca85704a8f459ab6e0cdc975940d855929f3d6f7 100644
---- a/include/mach/imx/tzasc.h
-+++ b/include/mach/imx/tzasc.h
-@@ -10,6 +10,7 @@ void imx6q_tzc380_early_ns_region1(void);
- void imx6ul_tzc380_early_ns_region1(void);
- bool imx6q_tzc380_is_bypassed(void);
- bool imx6ul_tzc380_is_bypassed(void);
-+bool imx6_can_access_tzasc(void);
- void imx8m_tzc380_init(void);
- bool imx8m_tzc380_is_enabled(void);
- 
++void __noreturn panic_no_stacktrace(const char *fmt, ...)
++	__alias(panic);
 
 -- 
 2.39.5
