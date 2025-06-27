@@ -1,70 +1,71 @@
-Delivery-date: Fri, 27 Jun 2025 15:02:44 +0200
+Delivery-date: Fri, 27 Jun 2025 15:23:43 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uV8j6-00Bcbb-12
+	id 1uV93P-00Bd3u-0Q
 	for lore@lore.pengutronix.de;
-	Fri, 27 Jun 2025 15:02:44 +0200
+	Fri, 27 Jun 2025 15:23:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uV8j5-0004Ac-L2
-	for lore@pengutronix.de; Fri, 27 Jun 2025 15:02:44 +0200
+	id 1uV93O-0005Gc-Ho
+	for lore@pengutronix.de; Fri, 27 Jun 2025 15:23:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JuX87wDZ8OVY0xjwN5j/bvGdXvOdTfETXoK5Tidr0Ew=; b=NJjGRBCWRsbC/1KqmHRQjUcpWJ
-	NvLKoIYTIwk0DOdlBtPmtjLCqO8aMRIydQvdnECMXsyWKRO1XhLUOXix7cWCjnn7GWoB8ueeiU9DJ
-	rxrriSsa+g8snE1PyPRSJh+t0GpY7vWUY1mw3h/O+rM9eX3C3QBR9ABGqS8XouqtwHo4fQw34JYXM
-	vVkk4Cj9/HyUPQIPq8Qlhu5jPxF/TK9NPtsoOr5M1PiQ34yKGz0lbmZjYI5Uq8SFuC/CM3G6eOefK
-	XiXZWsuHoQBEaKazF1IUiuku3Q1QGRMDgI+5PcE0tB+5i4VRdx5mEPDMpJRDxw4UPJ+kNrjBsmEI1
-	b+J7y3yw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=lnWLnIvZFTTL8JBBbH4tdMq0PVMbhB8/jPm8A+HKZZM=; b=Zz57cZCespfG00KuPVeJOOhtVG
+	lPhQ1je3xozOgaWzoUkEMzrqPpo5QjM9yMx5AvU2Z4QCisd4cGQhcxO7YgERDONx2yCjsSdl+EWSJ
+	zVTJUmGaLWUzkTjqB1Zc3f5yGvDKo2CmH1YL408lk1Fe2VkJbk2ypbN/ozocFtn6QlbNfUADpp/Hn
+	PXv8sypFYgdqizEb9k5SFipGDqr5FF4q8BfpA8EH68t5Jlm8Wjczh9jyPg0dou2adaZ2vM52vieD8
+	BxDN77Y39N8O9X1ZxMMUcx8JbsMv92RLDI7HcSj2mc7HhCXsEMivi6/pj2H08Pd5JU2x00vRAg7rI
+	s6lPqpYg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uV8iM-0000000EiPx-1ONN;
-	Fri, 27 Jun 2025 13:01:58 +0000
-Received: from mail-108-mta64.mxroute.com ([136.175.108.64])
+	id 1uV92v-0000000ElKb-3MiI;
+	Fri, 27 Jun 2025 13:23:13 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uV8Bs-0000000EdrB-2729
+	id 1uV8OV-0000000EfTC-41Vm
 	for barebox@lists.infradead.org;
-	Fri, 27 Jun 2025 12:28:25 +0000
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta64.mxroute.com (ZoneMTA) with ESMTPSA id 197b15c31260008631.001
- for <barebox@lists.infradead.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Fri, 27 Jun 2025 12:28:18 +0000
-X-Zone-Loop: a652fe8b22267c8d4cb5a5afc9464688a9a3d8c2bf31
-X-Originating-IP: [136.175.111.3]
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
-	; s=x; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Date:
-	Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=JuX87wDZ8OVY0xjwN5j/bvGdXvOdTfETXoK5Tidr0Ew=; b=MU+/xo/I9AGzfTbpX9Uakbmh/C
-	spkfgkHktm2iqXj0iakZyq/zrIYKVsPFQdIio65xjVo5pAccGYXTcOSSyyHSyqua66/P9Lcvhwij2
-	emoiiUKR2ImkYOTu+QKbxHR9Ndao94HVJhbG87dheIuNvszcL8N1AZUdSFhA2qKoRYOjQXpUZW4be
-	eh3gr3tpVsSZ07Zt+DUs79ivfVTz5wPyiPd0apCzyjhAzv/3J9k0tpbjKhYQPidqdNGUsvkJ8GL7m
-	8VTWz9e6MBxHDBjpdyh4gUtGfKyWnTgUxr1U93W5nW9jX/hN+4sUE9l1z3sKqjKRx5H2JJ+i/CWGW
-	9UFqmwMg==;
-From: Bo Sun <bo@mboxify.com>
-To: barebox@lists.infradead.org
-Date: Fri, 27 Jun 2025 20:28:11 +0800
-Message-Id: <20250627122811.1051283-2-bo@mboxify.com>
-In-Reply-To: <20250627122811.1051283-1-bo@mboxify.com>
-References: <20250627122811.1051283-1-bo@mboxify.com>
+	Fri, 27 Jun 2025 12:41:29 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uV8OS-0003VJ-Bl; Fri, 27 Jun 2025 14:41:24 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uV8OS-005cFI-0Z;
+	Fri, 27 Jun 2025 14:41:24 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uV8OS-003Ztd-0G;
+	Fri, 27 Jun 2025 14:41:24 +0200
+Date: Fri, 27 Jun 2025 14:41:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <aF6RdKeYUeCS7mW-@pengutronix.de>
+References: <20250626144527.416697-1-m.felsch@pengutronix.de>
+ <20250626144527.416697-6-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: bo@mboxify.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250626144527.416697-6-m.felsch@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250627_052824_632226_3F4E35DC 
-X-CRM114-Status: GOOD (  13.36  )
+X-CRM114-CacheID: sfid-20250627_054127_994330_9B902EAF 
+X-CRM114-Status: GOOD (  22.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,81 +83,69 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/1] spi: convert transfer delay to new spi_delay struct
+Subject: Re: [PATCH v2 5/6] ARM: mach-imx: tzasc: add imx6q_tzc380_is_enabled
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Replace the deprecated delay_usecs field with the new spi_delay struct
-in spi_transfer structure. Update spi_transfer_one_message to use
-spi_delay_exec and the mc13xxx driver to use the new structure.
+On Thu, Jun 26, 2025 at 04:45:26PM +0200, Marco Felsch wrote:
+> In preparation of adding an i.MX6QD optee-early helper add a helper to
+> check if the early code e.g. PBL/BootROM enabled the TZC380 controllers
+> on the i.MX6QDL.
+> 
+> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+> Changelog:
+> v2:
+> - Add Ahmad r-b
+> 
+>  arch/arm/mach-imx/tzasc.c | 15 +++++++++++++++
+>  include/mach/imx/tzasc.h  |  1 +
+>  2 files changed, 16 insertions(+)
+> 
+> diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
+> index 54f7d1d49715..b8270a4afdc8 100644
+> --- a/arch/arm/mach-imx/tzasc.c
+> +++ b/arch/arm/mach-imx/tzasc.c
+> @@ -76,6 +76,9 @@
+>  #define MX6_TZASC1_BASE			0x21d0000
+>  #define MX6_TZASC2_BASE			0x21d4000
+>  
+> +#define MX6_GPR_TZASC1_EN		BIT(0)
+> +#define MX6_GPR_TZASC2_EN		BIT(1)
+> +
+>  #define GPR_TZASC_EN					BIT(0)
+>  #define GPR_TZASC_ID_SWAP_BYPASS		BIT(1)
+>  #define GPR_TZASC_EN_LOCK				BIT(16)
+> @@ -294,6 +297,18 @@ void imx6q_tzc380_early_ns_region1(void)
+>  				  TZC380_REGION_SP_NS_RW);
+>  }
+>  
+> +bool imx6q_tzc380_is_enabled(void)
 
-Signed-off-by: Bo Sun <bo@mboxify.com>
----
- drivers/mfd/mc13xxx.c | 5 ++++-
- drivers/spi/spi.c     | 4 +---
- include/spi/spi.h     | 8 ++++----
- 3 files changed, 9 insertions(+), 8 deletions(-)
+I think the function name is misleading. The function does not return
+the tzc380 enabled status, but whether SDRAM accesses are checked or
+bypassed.
 
-diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-index 288bd407ff..393f163671 100644
---- a/drivers/mfd/mc13xxx.c
-+++ b/drivers/mfd/mc13xxx.c
-@@ -84,7 +84,10 @@ static int spi_rw(struct spi_device *spi, void * buf, size_t len)
- 		.rx_buf = buf,
- 		.len = len,
- 		.cs_change = 0,
--		.delay_usecs = 0,
-+		.delay = {
-+			.value = 0,
-+			.unit = SPI_DELAY_UNIT_USECS,
-+		},
- 	};
- 	struct spi_message m;
- 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f8a01dd083..b64e206649 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -463,9 +463,7 @@ static int spi_transfer_one_message(struct spi_device *spi, struct spi_message *
- 		if (msg->status != -EINPROGRESS)
- 			goto out;
- 
--		/* TODO: Convert to new spi_delay API */
--		if (xfer->delay_usecs)
--			udelay(xfer->delay_usecs);
-+		spi_delay_exec(&xfer->delay, NULL);
- 
- 		if (xfer->cs_change) {
- 			if (list_is_last(&xfer->transfer_list,
-diff --git a/include/spi/spi.h b/include/spi/spi.h
-index 5b2d345705..00337446e6 100644
---- a/include/spi/spi.h
-+++ b/include/spi/spi.h
-@@ -413,9 +413,9 @@ static inline size_t spi_max_transfer_size(struct spi_device *spi)
-  * @bits_per_word: select a bits_per_word other then the device default
-  *      for this transfer. If 0 the default (from @spi_device) is used.
-  * @cs_change: affects chipselect after this transfer completes
-- * @delay_usecs: microseconds to delay after this transfer before
-- *	(optionally) changing the chipselect status, then starting
-- *	the next transfer or completing this @spi_message.
-+ * @delay: delay to be introduced after this transfer before
-+ *  (optionally) changing the chipselect status, then starting
-+ *  the next transfer or completing this @spi_message.
-  * @transfer_list: transfers are sequenced through @spi_message.transfers
-  *
-  * SPI transfers always write the same number of bytes as they read.
-@@ -476,7 +476,7 @@ struct spi_transfer {
- 
- 	unsigned	cs_change:1;
- 	u8		bits_per_word;
--	u16		delay_usecs;
-+	struct spi_delay    delay;
- 	u32		speed_hz;
- 
- 	u32		effective_speed_hz;
+When bypassed you can still enable the tzc380, but SDRAM accesses are
+not checked anymore.
+
+imx6q_tzc380_is_bypassed() would be a better name.
+
+I am currently working on a unified series which includes this series
+with i.MX6UL support added and my fix-chainload series, so no need to
+resend now.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
