@@ -1,69 +1,65 @@
-Delivery-date: Fri, 27 Jun 2025 21:05:42 +0200
+Delivery-date: Mon, 30 Jun 2025 08:43:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVEOM-00BiXU-30
+	id 1uW8Er-00CXKe-0S
 	for lore@lore.pengutronix.de;
-	Fri, 27 Jun 2025 21:05:42 +0200
+	Mon, 30 Jun 2025 08:43:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uVEOM-00075E-CO
-	for lore@pengutronix.de; Fri, 27 Jun 2025 21:05:42 +0200
+	id 1uW8Eq-0007B2-KM
+	for lore@pengutronix.de; Mon, 30 Jun 2025 08:43:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X0+gU0SgokeOqZAQFlw7ylaP0jBlpIF8d3r1TA2IuiA=; b=E7XUUIBrL10FJTTFnNNkxNwWJv
-	7v3FHqvOMsgcTMzx9bewwbSCdqmNmsAtat2XKxHeJlMV+JavEbJawbsZT5JEmroE46PAIUxSuxdoT
-	d4kkQmeztLALATJpQSG0l31HTAAqLywnlxV0ZrABI1MwiSu6y+T9HQ5nk2ViEok9bMXQ4oywDtDvg
-	t/KX4K37n35OoOczI2ZmdPTt7Bg0B9/UdovcATHfeBImc3/FwRVjUr7BfDFrg+6U8xsVPwTxGHAfI
-	rzGPVuCB+AWSGhxNINFUPbdwxRKO0aDaEzB460U4bFPVIkEPqH7O9GRaTFHIMQL8xRaZSDEFlg0WZ
-	d4mYf4Ig==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=d48r0TLOmLLscgr1izjzJZ2dIdYZi2K/nPsC3frXwJI=; b=OHA5sddGut1BRobbxrTf0hFs6K
+	Og3YZmFvkmoNzR/vyH2JoLv6vpsSbxyR7ArS1bC+dRPdh8hkuPDhdky+zletNfksPVpOW9Co7+Wqm
+	OA0gdrMKNtU3OU6cXVykbvFE7y76kpJ0dHyPgJWNc7e0svigSOpJ+sSmBTT/KKYhyaaDx7/JKPMh9
+	r6ANwBn33OVsfubkKgiNcuVWHq4+xg40fa4ATwA8xU4qbtREuQkStwrK/izNd+/bzKbGS4gowYsSd
+	SlrM4u+lZ1Hh/3+cWBk8L+O2AgK8ak78gotOBBC2vHSCmP51LK7+I94TOlRYodhCk78+qp+WQy7+w
+	QnSiKelg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVENr-0000000FZUw-2WGZ;
-	Fri, 27 Jun 2025 19:05:11 +0000
+	id 1uW8E2-00000001MVl-1Dau;
+	Mon, 30 Jun 2025 06:42:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVDHc-0000000FSD1-2I6s
+	id 1uW8Dx-00000001MV9-0We3
 	for barebox@lists.infradead.org;
-	Fri, 27 Jun 2025 17:54:41 +0000
+	Mon, 30 Jun 2025 06:42:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uVDHb-0003bG-8h; Fri, 27 Jun 2025 19:54:39 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uW8Dt-0006SY-7c; Mon, 30 Jun 2025 08:42:37 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uVDHb-005ed4-0H;
-	Fri, 27 Jun 2025 19:54:39 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uVDHa-003f2I-3A;
-	Fri, 27 Jun 2025 19:54:38 +0200
-Date: Fri, 27 Jun 2025 19:54:38 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20250627175438.o6tx3nz4r3ek3jx4@pengutronix.de>
-References: <20250627-arm-optee-early-helper-v1-0-4b098e8ac7cd@pengutronix.de>
- <20250627-arm-optee-early-helper-v1-9-4b098e8ac7cd@pengutronix.de>
- <20250627160404.gs7txsvrba4dezds@pengutronix.de>
- <aF7ZUU5UcO2kms34@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uW8Dt-0063i8-0A;
+	Mon, 30 Jun 2025 08:42:37 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uW8Ds-00B2Os-32;
+	Mon, 30 Jun 2025 08:42:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 30 Jun 2025 08:42:35 +0200
+Message-Id: <20250630064235.2625712-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aF7ZUU5UcO2kms34@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250627_105440_587696_F203847F 
-X-CRM114-Status: GOOD (  22.24  )
+X-CRM114-CacheID: sfid-20250629_234241_160627_70352FE9 
+X-CRM114-Status: UNSURE (   8.49  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,62 +81,34 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 09/14] ARM: i.MX: add imx6_can_access_tzasc()
+Subject: [PATCH] ARM: lib64: remove unused section
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-06-27, Sascha Hauer wrote:
-> On Fri, Jun 27, 2025 at 06:04:04PM +0200, Marco Felsch wrote:
-> > On 25-06-27, Sascha Hauer wrote:
-> > > On ARMv7 there is no direct way to detect if we are in the secure or non
-> > > secure world. Add a imx6_can_access_tzasc() for this purpose. When
-> > > accessing the TZASC triggers a data abort then we are in the non secure
-> > > world. This function can be used later to detect if we have to load
-> >        ^
-> > because OP-TEE configures the TZASC access policy to secure-world R/W. ?
-> 
-> Will add.
-> 
-> > 
-> > Keep in mind that this test will fail if a downstream/buggy OP-TEE
-> > doesn't configure the CSU correctly. Fingers crossed that this never
-> > will never happen.
-> 
-> When you are using this buggy OP-TEE for security relevant stuff you're
-> screwed anyway.
-> 
-> When in this case barebox tries to start OP-TEE again and your board
-> crashes because of this then you are lucky as this could give you a hint
-> that there's really something wrong.
+The ARM64 linker script has a section for the exceptions. This is unused
+and can be removed.
 
-Yes, you're right.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/lib64/barebox.lds.S | 3 ---
+ 1 file changed, 3 deletions(-)
 
-> > > +bool imx6_can_access_tzasc(void)
-> > > +{
-> > > +	if (!IS_ENABLED(CONFIG_ARM_EXCEPTIONS_PBL))
-> > > +		panic("%s only works with CONFIG_ARM_EXCEPTIONS_PBL\n", __func__);
-> > > +
-> > > +	arm_pbl_init_exceptions();
-> > 
-> > Can't we do that within the imx*_cpu_lowlevel_init?
-> 
-> No, we need a proper C environment for this which is not guaranteed in
-> these functions.
+diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+index 50e4b6f42c..454ae3a95d 100644
+--- a/arch/arm/lib64/barebox.lds.S
++++ b/arch/arm/lib64/barebox.lds.S
+@@ -21,9 +21,6 @@ SECTIONS
+ 		__bare_init_start = .;
+ 		*(.text_bare_init*)
+ 		__bare_init_end = .;
+-		__exceptions_start = .;
+-		KEEP(*(.text_exceptions*))
+-		__exceptions_stop = .;
+ 		*(.text*)
+ 	}
+ 	BAREBOX_BARE_INIT_SIZE
+-- 
+2.39.5
 
-Ah, right.
-
-Regards,
-  Marco
-
-
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
 
 
