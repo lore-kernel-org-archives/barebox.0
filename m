@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uW9EC-00CYCO-22
+	id 1uW9EC-00CYCY-2O
 	for lore@lore.pengutronix.de;
 	Mon, 30 Jun 2025 09:47:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uW9EB-0005i9-HM
+	id 1uW9EB-0005iB-KT
 	for lore@pengutronix.de; Mon, 30 Jun 2025 09:47:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,57 +18,58 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XP692H5lgjlDj4VpMVffgbwKhB0s97s5Mj1KG+s2QDA=; b=cW8PW6adEftUMaeFrCcmoPV3pw
-	SNX0xxOGdvir2qn4eb9nsJyz9iEmgmwVuTY7pOZfwpmZAVCLvYdr+0MJh4G+PUIAF64q3V+MklEUJ
-	B5BoCGdX/7dawqHa6whlT2TUubj9mkDeHCGpon1fuQy4h9gTIq/cO0cRvl4GOs/KLxrxWAlmUi63p
-	k6IbznxlqPI9DOVGVMv7PNMKK8iMa99lwpNyN4wzdc2UuWBDknNqjhtWZo+mUtUKU6ePP4wJ77loT
-	oUpBg5ceDoUmkYoZrDJuRIV6mhx2vqJUHYllvo57nQgoBM8y7yMTDvR9sTA3X30Wel0tRkBWSQv7R
-	oVxGnPng==;
+	bh=bkLFSWEvobtSQQUCrv8SGT78klolPcoroYTyy2k7qro=; b=WF1i5hKDnfX6UVPjFTicrvSz7s
+	Ou5heEMz27e6F096o5yo1npK/aItcCcAqWzqHT7TvDcFohLtkt/iCM0it6F3PKTvWtgVxHaxkxYl2
+	xMZjHLaODXYv3IVbmsdrENu4DJzebYMCa6aDiWrWSH0BShrCZ87pe8qt/fn1cFIZgNqs9jivbddZW
+	jAhTbVnnpHC/hUGA9uMnDbaVmLIqgrQSe+4xrHmcd2R9EF7RduBHUxzTngJDlxpclIVqa5ozxW60w
+	I+iKgfpM95t0qcQopOs8NNwYQ5aO97ZBxpzcn01gUFqO1yxjoRBTc6KqN/69Jd6Ah4Myk0WTncwN/
+	GTIfHYdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uW9Dj-00000001Ugx-1hA6;
-	Mon, 30 Jun 2025 07:46:31 +0000
+	id 1uW9Dg-00000001UeI-3FVE;
+	Mon, 30 Jun 2025 07:46:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uW9DB-00000001UUl-3xwE
+	id 1uW9D3-00000001UQv-3pbX
 	for barebox@lists.infradead.org;
-	Mon, 30 Jun 2025 07:46:00 +0000
+	Mon, 30 Jun 2025 07:45:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uW9D2-0004OF-LB; Mon, 30 Jun 2025 09:45:48 +0200
+	id 1uW9D2-0004O9-Lh; Mon, 30 Jun 2025 09:45:48 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uW9D2-00648N-12;
+	id 1uW9D2-00648L-0u;
 	Mon, 30 Jun 2025 09:45:48 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uW9D2-004Sjo-0X;
+	id 1uW9D2-004Sjo-0R;
 	Mon, 30 Jun 2025 09:45:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 30 Jun 2025 09:45:51 +0200
+Date: Mon, 30 Jun 2025 09:45:47 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250630-arm-optee-early-helper-v2-9-c8cce3ae42b0@pengutronix.de>
+Message-Id: <20250630-arm-optee-early-helper-v2-5-c8cce3ae42b0@pengutronix.de>
 References: <20250630-arm-optee-early-helper-v2-0-c8cce3ae42b0@pengutronix.de>
 In-Reply-To: <20250630-arm-optee-early-helper-v2-0-c8cce3ae42b0@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751269547; l=2774;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751269547; l=1604;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=nDrl2y8LI18a4E4me1Qw/YAO9G75YsY9l+Gl+Bj0d8g=;
- b=iQSWQLBeayDiFlWXxRyEYN1Loiz76ZO1TzpY/DWLli0+sLsvgPT5MQ4KNMxx8DAGOxmPQJtQI
- EYImlT9DIeBBZMUqGcDrG1ugY9evuNnoy4Yujz2vgJ3Z0Lbdo1a8wsU
+ bh=Wmu2IrPWZKJGxFFKg8rcbFj9iuF6aH665sJZLulbTLs=;
+ b=JRc/HcyV5Ky5Je73U1WcBY9+idcxryi2RlT1nSGQ0XioTW8l+PfXQvNvU7YkLXG0GN3paqYku
+ smokj41Eqv0CEKqaQJskGZwhGTCgctD1D3oySc/g0ZXC+YghCaDgJZm
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250630_004558_041444_28DCD302 
-X-CRM114-Status: GOOD (  15.42  )
+X-CRM114-CacheID: sfid-20250630_004549_994797_0F20AB72 
+X-CRM114-Status: UNSURE (   9.95  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,88 +92,50 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 09/14] ARM: mach-imx: tzasc: add
- imx6[q|ul]_tzc380_is_bypassed()
+Subject: [PATCH v2 05/14] ARM: i.MX6Q: add imx6_get_mmdc_sdram_size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Marco Felsch <m.felsch@pengutronix.de>
 
-The TZASC_BYP bits default to not bypass DDR transactions from the
-TZASC. These bits must be set while the DDR controller is inactive, so
-when the DDR controller is initialized in the DCD table and barebox is
-directly loaded and startes in DDR we must set the bits in the DCD.
-As this is board specific it's easy to forget this setting and the whole
-DDR is accessible by the normal world regardless of the TZASC
-configuration. This patch adds a check if the bits have been set
-correctly so that we can warn the user if necessary.
+Add a helper to query the MMDC configured SDRAM size.
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/tzasc.c | 26 ++++++++++++++++++++++++++
- include/mach/imx/tzasc.h  |  2 ++
- 2 files changed, 28 insertions(+)
+ arch/arm/mach-imx/esdctl.c | 5 +++++
+ include/mach/imx/esdctl.h  | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
-index 169c4b9801e5fdd01edd3c5661418a945cf21c55..ed20ad8803a2e91b67b5d8c3ab1a4265c4228ec7 100644
---- a/arch/arm/mach-imx/tzasc.c
-+++ b/arch/arm/mach-imx/tzasc.c
-@@ -76,6 +76,9 @@
- #define MX6_TZASC1_BASE			0x21d0000
- #define MX6_TZASC2_BASE			0x21d4000
- 
-+#define MX6_GPR_TZASC1_EN		BIT(0)
-+#define MX6_GPR_TZASC2_EN		BIT(1)
-+
- #define GPR_TZASC_EN					BIT(0)
- #define GPR_TZASC_ID_SWAP_BYPASS		BIT(1)
- #define GPR_TZASC_EN_LOCK				BIT(16)
-@@ -303,6 +306,29 @@ void imx6ul_tzc380_early_ns_region1(void)
- 				  TZC380_REGION_SP_NS_RW);
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 4b67b52ca45eea178889dfc5554a8a9a8ddf51b7..4c4c3528e1a6e68c508edc48ad38c9e2e6324c1c 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -286,6 +286,11 @@ static inline resource_size_t imx6_mmdc_sdram_size(void __iomem *mmdcbase)
+ 	return size;
  }
  
-+bool imx6q_tzc380_is_bypassed(void)
++resource_size_t imx6_get_mmdc_sdram_size(void)
 +{
-+	u32 __iomem *gpr = IOMEM(MX6_IOMUXC_BASE_ADDR);
-+
-+	/*
-+	 * MX6_GPR_TZASC1_EN and MX6_GPR_TZASC2_EN are sticky bits which
-+	 * preserve their values once set until the next power-up cycle.
-+	 */
-+	return (readl(&gpr[9]) & (MX6_GPR_TZASC1_EN | MX6_GPR_TZASC2_EN)) !=
-+	       (MX6_GPR_TZASC1_EN | MX6_GPR_TZASC2_EN);
++	return imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR));
 +}
 +
-+bool imx6ul_tzc380_is_bypassed(void)
-+{
-+	u32 __iomem *gpr = IOMEM(MX6_IOMUXC_BASE_ADDR + 0x4000);
-+
-+	/*
-+	 * MX6_GPR_TZASC1_EN is a sticky bit which preserves its value
-+	 * once set until the next power-up cycle.
-+	 */
-+	return !(readl(&gpr[9]) & MX6_GPR_TZASC1_EN);
-+}
-+
- void imx8m_tzc380_init(void)
+ static int imx6_mmdc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
  {
- 	u32 __iomem *gpr = IOMEM(MX8M_IOMUXC_GPR_BASE_ADDR);
-diff --git a/include/mach/imx/tzasc.h b/include/mach/imx/tzasc.h
-index eb479ad55c9c101a5fb47fc4a7178b3669b9e44f..0fbcdc2150e63864366a8dddeed2d1b97685903d 100644
---- a/include/mach/imx/tzasc.h
-+++ b/include/mach/imx/tzasc.h
-@@ -8,6 +8,8 @@
- 
- void imx6q_tzc380_early_ns_region1(void);
- void imx6ul_tzc380_early_ns_region1(void);
-+bool imx6q_tzc380_is_bypassed(void);
-+bool imx6ul_tzc380_is_bypassed(void);
- void imx8m_tzc380_init(void);
- bool imx8m_tzc380_is_enabled(void);
- 
+ 	return arm_add_mem_device("ram0", data->base0,
+diff --git a/include/mach/imx/esdctl.h b/include/mach/imx/esdctl.h
+index d79bf17959e6d46d19af35be8c10003007d21223..97bd444b1a4ca2defdeb9f82180c0366296a32a0 100644
+--- a/include/mach/imx/esdctl.h
++++ b/include/mach/imx/esdctl.h
+@@ -151,6 +151,7 @@ void __noreturn imx7d_barebox_entry(void *boarddata);
+ void __noreturn imx93_barebox_entry(void *boarddata);
+ #define imx6sx_barebox_entry(boarddata) imx6ul_barebox_entry(boarddata)
+ void imx_esdctl_disable(void);
++resource_size_t imx6_get_mmdc_sdram_size(void);
+ resource_size_t imx8m_barebox_earlymem_size(unsigned buswidth);
+ resource_size_t imx9_ddrc_sdram_size(void);
+ #endif
 
 -- 
 2.39.5
