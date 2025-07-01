@@ -1,60 +1,65 @@
-Delivery-date: Mon, 30 Jun 2025 15:29:36 +0200
+Delivery-date: Tue, 01 Jul 2025 09:48:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWEZk-00Cd9C-2K
+	id 1uWVje-00CtSG-0G
 	for lore@lore.pengutronix.de;
-	Mon, 30 Jun 2025 15:29:36 +0200
+	Tue, 01 Jul 2025 09:48:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWEZk-0006WC-18
-	for lore@pengutronix.de; Mon, 30 Jun 2025 15:29:36 +0200
+	id 1uWVjd-00053O-IP
+	for lore@pengutronix.de; Tue, 01 Jul 2025 09:48:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8P0g+0dW4SY6U46FqBF2kzWwhu4rTFj1xy/EWJEv1Rw=; b=b1xoiDiEEOQTxZldfkN51zEQwg
-	20JRpJZAurziBOPZO4e822OLl/cAR5QfgV1jYG4uUT6YZvgBGiAOiC48ZrDLEjqPJQ1tA2ZQ14y1m
-	13D5s44qIbvlOIAZ+QnHwikZqkKfPKWboO0Zqe4MVKT0vAiUXQOMZps91v7DH6W7ExjEWvTLR3Qjq
-	KdhkEUgPlUoDaUgIb4waFpbH3+NFv+WkJZt13ZibIWj/Z9YGD8r/2a75Yc49xSBPXdSwDy+kCgXkQ
-	QBYpiEjzN9NzQ8WULJNeR45euVh7qPuYuZS7e9LxAW+QuXkgYLQn/CAiiXITUBoXCCSivPZm5Zmch
-	OSe1ZlEg==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=PW7FwukzvVk8BvMfWcSREAMxxv4gSWEJTMdBFSnEiXQ=; b=hDtLGSdZU9r0zcWBdxIzEBWg1u
+	uT7rYn/EDxoAmMveTuDMGKrY6sss1Aa6PQLhz10wZlz9rkO6U/vQHa88nwhkKSf0WpLonZEmaBMS2
+	KQ/FgYfij+2K/RwpYVpUhIS2rr7GdX0ivpjWNMPVcKQE3eszZVfwJ6bGd0UIEeimCTF8UCmvtS9zD
+	IBzCWKlHH2iTDL3DJBUhx9iOksMaryj2gM1EMxO4yA+OLQ4i6zpu1zgTFdnhe9+DdoW9D4crS85oV
+	DVq8zvG0/4m+5oweAdh0OA+SSAoDrKuyCgRJmfZHmfutbQKcKZESP25n6/4ZE7RsAsTvMZE6lMUl5
+	2TPabcbg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWEZ8-00000002NOW-09w1;
-	Mon, 30 Jun 2025 13:28:58 +0000
-Received: from cczrelay02.in2p3.fr ([134.158.66.142])
+	id 1uWVio-00000004JRx-0b8c;
+	Tue, 01 Jul 2025 07:48:06 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWETW-00000002MUs-1WiU
+	id 1uWVEQ-00000004FRh-0YsP
 	for barebox@lists.infradead.org;
-	Mon, 30 Jun 2025 13:23:12 +0000
-Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
-	(authenticated bits=0)
-	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 55UDN6S2002344
-	(version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NO)
-	for <barebox@lists.infradead.org>; Mon, 30 Jun 2025 15:23:06 +0200
-Message-ID: <fd64d9fb-1b5e-4f99-a36a-e7d6fd59a13f@clermont.in2p3.fr>
-Date: Mon, 30 Jun 2025 15:23:06 +0200
+	Tue, 01 Jul 2025 07:16:43 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uWVEM-0006Cc-C3; Tue, 01 Jul 2025 09:16:38 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uWVEM-006ETP-0b;
+	Tue, 01 Jul 2025 09:16:38 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uWVEM-001dg8-0F;
+	Tue, 01 Jul 2025 09:16:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue,  1 Jul 2025 09:16:37 +0200
+Message-Id: <20250701071637.390845-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: barebox@lists.infradead.org
-References: <f8c5021d-3dcb-47b5-8f27-09e33991d6ea@clermont.in2p3.fr>
- <e867d36e-4632-46d5-934f-a4efb3a8db5f@pengutronix.de>
- <a9b43b82-c234-4542-981c-ad034ad65403@clermont.in2p3.fr>
- <6ad40829-5819-4784-8123-0b6e24d4c525@pengutronix.de>
-Content-Language: en-US
-From: David Picard <david.picard@clermont.in2p3.fr>
-In-Reply-To: <6ad40829-5819-4784-8123-0b6e24d4c525@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250630_062310_538276_D9E5B30A 
-X-CRM114-Status: GOOD (  21.37  )
+X-CRM114-CacheID: sfid-20250701_001642_204992_089D78EF 
+X-CRM114-Status: UNSURE (   8.43  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,135 +77,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: moving to same chip, different board: no console output
+Subject: [PATCH] common: drop duplicate inclusion of common/boards/Kconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello,
+Commit b3d50a2b40 ("common: factor out debugging options into separate
+files") accidently added a second inclusion of common/boards/Kconfig.
+Drop the duplicate.
 
-I can get an output on the console! I switched to v2025.06.1 and enabled 
-CONFIG_DEBUG_LL, CONFIG_PBL_CONSOLE and CONFIG_DEBUG_PBL.
+Fixes: b3d50a2b40 ("common: factor out debugging options into separate files")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-Could you help me to interpret this ?
-
--------------------------
-
-barebox 2025.06.1 #2 Mon Jun 30 15:01:21 CEST 2025
-
-
-Board: SoCFPGA
-No consoles were activated. Activating all consoles as fallback!
-dw_mmc dw_mmc0: registered as mci0
-mci0: detected SD card version 2.0
-mci0: registered disk0
-starting bootloader...
-uncompress.c: memory at 0x00000000, size 0x40000000
-mmu: enabling MMU, ttb @ 0x3ffe0000
-endmem                = 0x40000000
-arm_mem_scratch       = 0x3fff8000+0x00008000
-arm_mem_stack         = 0x3fff0000+0x00008000
-arm_mem_ttb           = 0x3ffe0000+0x00010000
-arm_mem_barebox_image = 0x3fe00000+0x00200000
-arm_mem_early_malloc  = 0x3fde0000+0x00020000
-membase               = 0x00000000+0x40000000
-uncompress.c: uncompressing barebox binary at 0x1ff8c5e0 (size 
-0x00056c32) to 0x3fe00000 (uncompressed size: 0x000)
-uncompress.c: jumping to uncompressed image at 0x3fe00001
-
------------
-
-End of log, no prompt.
-
-David
-
-
-Le 16/06/2025 à 12:39, Ahmad Fatoum a écrit :
-> Hi David,
->
-> On 6/11/25 13:46, David Picard wrote:
->> Hello,
->>
->> I took the same Buildroot configuration. I replaced the .dts* files with
->> the ones provided by the new board BSP. Actually, they differ quite a
->> lot from the Altera SoC FPGA .dts* files in the Linux tree. Then, I
->> compiled and flashed the SD card.
-> The device trees don't have the whole story. There is Quartus-generated
-> C board code that sets up the DRAM controller for example, so just
-> replacing the device tree doesn't work so early.
->
->> I enabled CONFIG_DEBUG_LL with no change. CONFIG_DEBUG_PBL doesn't exist
->> in my case. For some reason, the defconfig I built upon, uses Barebox
->> v2021.07.0, which is probably outdated...
-> v2021.07.0 predated CONFIG_DEBUG_PBL, yes.
->
-> Cheers,
-> Ahmad
->
->> David
->>
->> Le 06/06/2025 à 19:46, Ahmad Fatoum a écrit :
->>> Hello David,
->>>
->>> On 06.06.25 16:43, David Picard wrote:
->>>> Hello,
->>>>
->>>> I am working on a project for which we selected an Intel/Altera
->>>> Cyclone 5 SoC FPGA (an FPGA with an ARM core). As the project
->>>> evolves, I have to change boards and I am facing issues to boot:
->>>> absolutely no output on the serial console (USB virtual COM port),
->>>> not even from Barebox.
->>>>
->>>> Previous working configuration:
->>>> - SD card image produced by Buildroot with Barebox as the bootloader
->>>> - Terasic ADC-SoC demo board, booting from the SD card.
->>>> https://www.terasic.com.tw/cgi-bin/page/archive.pl?
->>>> Language=English&No=1061&PartNo=1
->>>>
->>>> Current non-working configuration:
->>>> - Eclustra Mercury+ SA2 module, also with a Cyclone 5, plus SDRAM,
->>>> RTC, QSPI flash, etc. I think that the main difference between both
->>>> Cyclone 5 chips is the size of the logic section is bigger on the
->>>> module. The module has more RAM.
->>>> https://www.enclustra.com/en/products/system-on-chip-modules/mercury-
->>>> sa2/
->>>> - Enclustra ST1 demo baseboard. It has a JTAG port, should this
->>>> information be of interest.
->>>> https://www.enclustra.com/en/products/base-boards/mercury-st1/
->>>>
->>>> I the current configuration, I get no output on the serial console.
->>> So you tried to use the exact same image on both boards or were
->>> there changes?
->>>
->>>> What I did:
->>>> - I checked the hardware configuration (switches to select booting
->>>> from the SD card and USB config) with a bare-metal application
->>>> provided by Enclustra.
->>>> - I used Enclutra's .dts and .dtsi files, which differ very slightly
->>>> from the Linux kernel tree files.
->>>> - I checked how the SD card is connected: to the exact same pins in
->>>> both configurations.
->>>> - I had a look at Barebox menuconfig, but nothing caught my eye.
->>>>
->>>> So, now I'm stuck, and I'm looking for some guidance.
->>> You can try enabling CONFIG_DEBUG_LL and CONFIG_DEBUG_PBL and see if you
->>> get some debugging output maybe. You'll have to choose which UART to use.
->>>
->>> I think your new SoM may have different RAM and thus you can't use the
->>> same image, but need one suitable to RAM integrated on your new board.
->>>
->>> Cheers,
->>> Ahmad
->>>
->>>> David
->>>>
->>>>
->>>>
->>
->>
+diff --git a/common/Kconfig b/common/Kconfig
+index 0651f955dc..df5709faf9 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1457,7 +1457,6 @@ endif
+ endmenu
+ 
+ source "common/Kconfig.debug"
+-source "common/boards/Kconfig"
+ 
+ config DDR_SPD
+ 	bool
+-- 
+2.39.5
 
 
 
