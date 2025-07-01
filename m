@@ -1,68 +1,66 @@
-Delivery-date: Tue, 01 Jul 2025 12:06:07 +0200
+Delivery-date: Tue, 01 Jul 2025 12:06:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWXsN-00CvKp-0F
+	id 1uWXsO-00CvLO-14
 	for lore@lore.pengutronix.de;
-	Tue, 01 Jul 2025 12:06:07 +0200
+	Tue, 01 Jul 2025 12:06:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWXsM-0007ch-GB
-	for lore@pengutronix.de; Tue, 01 Jul 2025 12:06:07 +0200
+	id 1uWXsN-0007fL-N7
+	for lore@pengutronix.de; Tue, 01 Jul 2025 12:06:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HNwQtqUPWdUvBHDdhYZVJQ6Q0y3LBaXGq7u9QYLBjIg=; b=RwWRlDrqqJmpa0u9dm94dKlchm
-	uifcWyNpbSaXHP5Mcs2Y4MRFw14naRuKDhD70nCXf384NbLD/HRUX7CIpWcOFysMZaGlVkHiQZDfD
-	2Rnjz8MGf56riuBbE+Mh+JJkRCmPXnjcqWTSk4LrAzfViIPkN1IvFsag0tBEBrUQyB5EbdQzXf24d
-	SZBjoULWJ8W46cbVCMadnzN28Tocu3o5WT4Bh4V3SEM9UFToUe7EHjcP2STy1xWOkxO8TtDKbwQw5
-	i9tesIeQf2KwaNGI3u8fs6bHYA0t6ByC0B0IhaCWifihKlOpEpiNGExI2Z6lGI+NG+U95PTYSv1FV
-	18hE97BA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=kmKDO6WRs181Bk/gWZW0vzqZn56a3c9kL06G27cEbSU=; b=ra+SsZ55rgKA0bC2QlLBDOBiPV
+	sWxY/gCCpMAgHuPVGhZDJ0q1JuVFfFi0ftHec4ygBPHCFkoa/w3DJIW8yTv5qUTpEFJfHeTHqQMEm
+	6cqNjWwOoxK1S8wD5ksVmWmHcGe5PjacsFUNS6LsIwJn14OyE7BiIiTt7WbbB7tjqVzHUuQM6aKVl
+	KqOYpA4FcE/LdhjPf5JrGWBuLQuvtd9pjFAa8NISZU7YQ6nTJYhtcXzN2qhYxpgV0b4qrrEh0wjo4
+	g6Fc7NHH4EPlawiF1l2AdCaQnfBePRBXR/dmbaYwSklSNUWpk4dIcPV+8KWH8EZTPPTMKWunBPhcD
+	KeLxI0jQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWXsB-00000004gif-2M6T;
-	Tue, 01 Jul 2025 10:05:55 +0000
+	id 1uWXsA-00000004ghk-3AAU;
+	Tue, 01 Jul 2025 10:05:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWWjW-00000004UIB-1K7f
+	id 1uWWjW-00000004UI8-1Lj0
 	for barebox@lists.infradead.org;
-	Tue, 01 Jul 2025 08:52:56 +0000
+	Tue, 01 Jul 2025 08:52:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uWWjU-0007yz-Rb; Tue, 01 Jul 2025 10:52:52 +0200
+	id 1uWWjU-0007yy-QK; Tue, 01 Jul 2025 10:52:52 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uWWjU-006F2l-26;
+	id 1uWWjU-006F2k-1y;
 	Tue, 01 Jul 2025 10:52:52 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uWWjU-000cXB-0A;
+	id 1uWWjU-000cXB-00;
 	Tue, 01 Jul 2025 10:52:52 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: bst@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  1 Jul 2025 10:52:50 +0200
-Message-Id: <20250701085251.148111-2-a.fatoum@pengutronix.de>
+Date: Tue,  1 Jul 2025 10:52:49 +0200
+Message-Id: <20250701085251.148111-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250701085251.148111-1-a.fatoum@pengutronix.de>
-References: <20250701085251.148111-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250701_015254_492957_0C6F8837 
-X-CRM114-Status: GOOD (  15.21  )
+X-CRM114-CacheID: sfid-20250701_015254_501745_4D8DFF98 
+X-CRM114-Status: GOOD (  14.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,89 +82,155 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] poller: add option to detect delayed poller activation
+Subject: [PATCH 1/3] commands: sleep: add support for running without pollers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We already have checks that see if pollers run too long, but none to see
-if poller run too late, because scheduling was disabled for a too long
-period of time. Add an option that does this to aid with debugging.
+This is useful to test how different parts of barebox behave when
+pollers are delayed too much.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/poller.c | 33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ commands/sleep.c | 42 +++++++++++++++++++++++++++++++++++-------
+ common/console.c | 13 +++++++++----
+ include/stdio.h  |  6 ++++++
+ 3 files changed, 50 insertions(+), 11 deletions(-)
 
-diff --git a/common/poller.c b/common/poller.c
-index 83f7205e5d57..18bd9c80f4b3 100644
---- a/common/poller.c
-+++ b/common/poller.c
-@@ -10,6 +10,7 @@
- #include <malloc.h>
- #include <module.h>
- #include <param.h>
-+#include <linux/ktime.h>
- #include <poller.h>
+diff --git a/commands/sleep.c b/commands/sleep.c
+index 641dbb230ad5..bb9baf079404 100644
+--- a/commands/sleep.c
++++ b/commands/sleep.c
+@@ -7,15 +7,28 @@
+ #include <command.h>
+ #include <complete.h>
  #include <clock.h>
- #include <linux/ktime.h>
-@@ -188,19 +189,46 @@ static void poller_info(void)
- 	}
- }
++#include <getopt.h>
  
-+static struct poller_async blocking_poller;
-+
-+static void blocking_poller_cb(void *priv)
-+{
-+	ktime_t diff = ktime_get() - blocking_poller.end;
-+
-+	if (diff < 0) {
-+		pr_err("Poller watchdog activated %lluns too early!\n", diff);
-+	} else if (diff > SECOND) {
-+		pr_warn("Poller watchdog activated %llums too late!\n",
-+			ktime_to_ms(diff));
+ static int do_sleep(int argc, char *argv[])
+ {
+ 	uint64_t start, delay;
++	bool blocking = false;
++	int opt;
+ 
+-	if (argc != 2)
++	while((opt = getopt(argc, argv, "b")) > 0) {
++		switch(opt) {
++		case 'b':
++			blocking = true;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
 +	}
 +
-+	poller_call_async(&blocking_poller, SECOND, blocking_poller_cb, NULL);
-+}
-+
-+static void poller_blocking_time(void)
-+{
-+	if (blocking_poller.active)
-+		return;
-+
-+	poller_async_register(&blocking_poller, "poller-monitor");
-+	printf("Poller registered to monitor blocking time\n");
-+	poller_call_async(&blocking_poller, SECOND, blocking_poller_cb, NULL);
-+}
-+
- BAREBOX_CMD_HELP_START(poller)
- BAREBOX_CMD_HELP_TEXT("print info about registered pollers")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-i", "Print information about registered pollers")
- BAREBOX_CMD_HELP_OPT ("-t", "measure how many pollers we run in 1s")
-+BAREBOX_CMD_HELP_OPT ("-b", "warn if poller was blocked from running for more than 1 second")
- BAREBOX_CMD_HELP_END
++	if (argc - optind != 1)
+ 		return COMMAND_ERROR_USAGE;
  
- static int do_poller(int argc, char *argv[])
- {
- 	int opt;
+-	delay = simple_strtoul(argv[1], NULL, 10);
++	delay = simple_strtoul(argv[optind], NULL, 10);
  
--	while ((opt = getopt(argc, argv, "it")) > 0) {
-+	while ((opt = getopt(argc, argv, "itb")) > 0) {
- 		switch (opt) {
- 		case 'i':
- 			poller_info();
-@@ -208,6 +236,9 @@ static int do_poller(int argc, char *argv[])
- 		case 't':
- 			poller_time();
- 			return 0;
-+		case 'b':
-+			poller_blocking_time();
-+			return 0;
- 		}
+ 	if (!strcmp(argv[0], "msleep"))
+ 		delay *= MSECOND;
+@@ -23,9 +36,17 @@ static int do_sleep(int argc, char *argv[])
+ 		delay *= SECOND;
+ 
+ 	start = get_time_ns();
+-	while (!is_timeout(start, delay)) {
+-		if (ctrlc())
+-			return 1;
++
++	if (blocking) {
++		while (!is_timeout_non_interruptible(start, delay)) {
++			if (ctrlc_non_interruptible())
++				return 1;
++		}
++	} else {
++		while (!is_timeout(start, delay)) {
++			if (ctrlc())
++				return 1;
++		}
  	}
  
+ 	return 0;
+@@ -33,11 +54,18 @@ static int do_sleep(int argc, char *argv[])
+ 
+ static const char * const sleep_aliases[] = { "msleep", NULL};
+ 
++BAREBOX_CMD_HELP_START(sleep)
++BAREBOX_CMD_HELP_TEXT("delay execution for n seconds or n mseconds if invoked as msleep")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-b",  "For development: busy loop while inhibiting pollers from running")
++BAREBOX_CMD_HELP_END
++
+ BAREBOX_CMD_START(sleep)
+ 	.cmd		= do_sleep,
+ 	.aliases	= sleep_aliases,
+-	BAREBOX_CMD_DESC("delay execution for n seconds or n mseconds if invoked as msleep")
+-	BAREBOX_CMD_OPTS("SECONDS")
++	BAREBOX_CMD_DESC("delay execution for specified time")
++	BAREBOX_CMD_OPTS("[-b] SECONDS")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_SCRIPT)
+ 	BAREBOX_CMD_COMPLETE(command_var_complete)
+ BAREBOX_CMD_END
+diff --git a/common/console.c b/common/console.c
+index 424290b6cd10..24f1500a6558 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -648,13 +648,10 @@ void ctrlc_handled(void)
+ 	ctrlc_abort = 0;
+ }
+ 
+-/* test if ctrl-c was pressed */
+-int ctrlc(void)
++int ctrlc_non_interruptible(void)
+ {
+ 	int ret = 0;
+ 
+-	resched();
+-
+ 	if (!ctrlc_allowed)
+ 		return 0;
+ 
+@@ -673,6 +670,14 @@ int ctrlc(void)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL(ctrlc_non_interruptible);
++
++/* test if ctrl-c was pressed */
++int ctrlc(void)
++{
++	resched();
++	return ctrlc_non_interruptible();
++}
+ EXPORT_SYMBOL(ctrlc);
+ 
+ static int console_ctrlc_init(void)
+diff --git a/include/stdio.h b/include/stdio.h
+index dcaed71dae05..cec303461ba3 100644
+--- a/include/stdio.h
++++ b/include/stdio.h
+@@ -59,6 +59,7 @@ void console_flush(void);
+ int vprintf(const char *fmt, va_list args);
+ 
+ int ctrlc(void);
++int ctrlc_non_interruptible(void);
+ void ctrlc_handled(void);
+ #else
+ static inline int tstc(void)
+@@ -91,6 +92,11 @@ static inline int ctrlc (void)
+ 	return 0;
+ }
+ 
++int ctrlc_non_interruptible(void)
++{
++	return 0;
++}
++
+ static inline void ctrlc_handled(void)
+ {
+ }
 -- 
 2.39.5
 
