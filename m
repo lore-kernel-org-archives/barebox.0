@@ -1,67 +1,65 @@
-Delivery-date: Tue, 01 Jul 2025 15:55:00 +0200
+Delivery-date: Tue, 01 Jul 2025 16:54:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWbRs-00CycR-1H
+	id 1uWcNO-00CzUc-0X
 	for lore@lore.pengutronix.de;
-	Tue, 01 Jul 2025 15:55:00 +0200
+	Tue, 01 Jul 2025 16:54:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWbRr-00070K-SH
-	for lore@pengutronix.de; Tue, 01 Jul 2025 15:55:00 +0200
+	id 1uWcNN-0008Q9-LI
+	for lore@pengutronix.de; Tue, 01 Jul 2025 16:54:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=yK6rE0rm6jFUujslkWhR/vfe7V8C+eBOtJlKbDn5q+M=; b=EbllKb59TL9XpzyqcROR+kJ0wH
-	3NMV804c9byQ4RNhFMe2iq0LO3cT1raLOUTSPmIvVkddot/IiuOrquFFKSrW1C9swJkGmBBkYau9/
-	nnNNTsgJIbJEIxY5gmUoRBS3p+vVFIV0eUOY9+rgohuu1wq1Fo76btwXNXYrH9NqtPY1aRLzYOB6J
-	TlOCWP3vRVW7w6UHjj5WurzQcZ5pkamo8tKkL6lMzVOb1PkwnNS9v1lAK8DKLkNbtRrRtAoBOaHus
-	TaYzJDuy03AIgEm0Oi0T48LlaaMizISk9h9I6mE3DwGMxk8kT4eKXkphghHb8rLfa7iKk8XUV4nVi
-	WfLzQAaA==;
+	bh=WtLTEBJ9Qza+SiOb+CLL+kABajjzttSm/tIv8SyfLXc=; b=fdlG9LasPm40R8LlbK69F34Vg1
+	LVJHMMxMWF2r+VUZxfQCfj5rjIFf8Rcd2iOCjUkfeMtMIeTxl+cbD6rLU6/0mRnYNU3YSMknne2sf
+	eHzPpB8wRdT1ulnVOg06/hWARu9VwErLF7Uog1bi7oP0/yb1BiYZSz4DrjB5j3SoaTP1NJ/15OPCC
+	L510P5VXHs1oEp0XEOTrMOvbMNuJOcOXZ5sJS+T24zGUszsi4yvUHyLwjZy9Tj27WTEw0TwvRqt1o
+	31+ZLvQ2CSAf7PKftGk0HFXYhXBBUcbdvu0IUzf0IfFpdwHsqvFh6UlL0WIPIJpowXotcz9/fxlOX
+	4wzswQJA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWbRC-00000005b4n-1A8H;
-	Tue, 01 Jul 2025 13:54:18 +0000
-Received: from mail-108-mta46.mxroute.com ([136.175.108.46])
+	id 1uWcMs-00000005mbY-2U1a;
+	Tue, 01 Jul 2025 14:53:54 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWaC0-00000005L1v-0LaY
+	id 1uWas9-00000005ThT-265R
 	for barebox@lists.infradead.org;
-	Tue, 01 Jul 2025 12:34:33 +0000
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta46.mxroute.com (ZoneMTA) with ESMTPSA id 197c5fb27fd0008631.001
- for <barebox@lists.infradead.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Tue, 01 Jul 2025 12:34:20 +0000
-X-Zone-Loop: 813712654264a8decc76661184b2f0e8d913e5a82fc8
-X-Originating-IP: [136.175.111.3]
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
-	; s=x; h=Content-Transfer-Encoding:MIME-Version:Date:Subject:To:From:Sender:
-	Reply-To:Cc:Content-Type:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive; bh=yK6rE0rm6jFUujslkWhR/vfe7V8C+eBOtJlKbDn5q+M=; b=Z
-	iMbQAcfoYXMIWpfE6N5BwKISfxO7mNfPFdlXo8HsReGNnKw8imCpTv6qn5efa+WroSDHeRIdcN2Lm
-	Ma2LDex5dfM/4YGa6tAkeQfhABD1bfmsgRfsoaYoUoQsxoDxmj/54q6ft4qffu9KK6iqxrvo/tiRu
-	5NPzJaBRE8s73sAmlpv9soM85Biqbe2bdZTDsASWz3FCRgZyUrgnk4+5/HPXqFwWSuAJQTWnjStun
-	daMaHnPrwzjUihNpk3UaQf6xTnrMuLdVw2rf/IqoW/m8SBguThjYJAokOi1juwdMlBvi4tQWYIxS2
-	JhrmhODEGf6r2XRrf5ME9VQ7MCaTfte2w==;
-From: Bo Sun <bo@mboxify.com>
+	Tue, 01 Jul 2025 13:18:11 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uWas7-00088N-EY; Tue, 01 Jul 2025 15:18:03 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uWas7-006HBt-0p;
+	Tue, 01 Jul 2025 15:18:03 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uWas6-001x2u-26;
+	Tue, 01 Jul 2025 15:18:03 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue,  1 Jul 2025 20:34:13 +0800
-Message-Id: <20250701123413.1755385-1-bo@mboxify.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  1 Jul 2025 15:18:01 +0200
+Message-Id: <20250701131802.465283-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: bo@mboxify.com
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250701_053432_215255_19D98D00 
-X-CRM114-Status: UNSURE (   8.56  )
+X-CRM114-CacheID: sfid-20250701_061805_577569_8538138C 
+X-CRM114-Status: UNSURE (   9.88  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,36 +78,56 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] barebox.h: correct barebox_main default comment
+Subject: [PATCH 1/2] clock: make SECOND/MSECOND/USECOND constants a constant expression
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The comment incorrectly states that barebox_main defaults to
-run_shell() when a shell is enabled. In fact, it defaults to
-run_init() when both shell and command support are enabled.
-Update the comment to match the actual logic.
+This makes the constants potentially usable in more places than before.
 
-Signed-off-by: Bo Sun <bo@mboxify.com>
+While at it, move the definitions to the start of the header to make them
+usable within.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/barebox.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/clock.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/barebox.h b/include/barebox.h
-index 1b291129e9..6f3179d4bd 100644
---- a/include/barebox.h
-+++ b/include/barebox.h
-@@ -14,7 +14,7 @@ void __noreturn hang (void);
+diff --git a/include/clock.h b/include/clock.h
+index e28870b1e84b..db20877571a4 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -6,6 +6,12 @@
+ #include <linux/time.h>
+ #include <linux/bitops.h>
+ 
++#define SECOND (1000ULL * 1000 * 1000)
++#define MSECOND (1000ULL * 1000)
++#define USECOND (1000ULL)
++
++#define HZ	SECOND
++
+ #define CLOCKSOURCE_MASK(bits) GENMASK_ULL((bits) - 1, 0)
+ 
+ struct clocksource {
+@@ -51,12 +57,6 @@ static inline void clocksource_srand(void)
+ }
+ #endif
+ 
+-#define SECOND ((uint64_t)(1000 * 1000 * 1000))
+-#define MSECOND ((uint64_t)(1000 * 1000))
+-#define USECOND ((uint64_t)(1000))
+-
+-#define HZ	SECOND
+-
+ extern uint64_t time_beginning;
  
  /*
-  * Function pointer to the main barebox function. Defaults
-- * to run_shell() when a shell is enabled.
-+ * to run_init() when shell and command support are enabled.
-  */
- extern int (*barebox_main)(void);
- 
+-- 
+2.39.5
+
 
 
