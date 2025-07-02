@@ -1,61 +1,70 @@
-Delivery-date: Tue, 01 Jul 2025 18:06:04 +0200
+Delivery-date: Wed, 02 Jul 2025 08:14:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWdUi-00D0Uq-0w
+	id 1uWqjL-00DD59-0M
 	for lore@lore.pengutronix.de;
-	Tue, 01 Jul 2025 18:06:04 +0200
+	Wed, 02 Jul 2025 08:14:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWdUh-000364-HR
-	for lore@pengutronix.de; Tue, 01 Jul 2025 18:06:04 +0200
+	id 1uWqjK-0004za-G6
+	for lore@pengutronix.de; Wed, 02 Jul 2025 08:14:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:Subject:From:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=eREgbubaQlCx6sivLNTgFaeaW7Qdrh230SiXEDXFbNw=; b=uAOlvxol6/UhpAdvDz6KuJGiWR
-	ikVax7K1HyPN/MNg8MG7A7F4WdhOrhk5omrE9pL11Rl+tnKecrAlYkBWscjyrs0L6ZjNtWW5a/1py
-	88RoadDXVNjaVg63VoGrROV4w4AGGlBh+VdFjRDWrBP8XhTFUiuJQ2TkvT8aXWOgDU2n7yd4EtwVc
-	uylpik2Cr0a9qRtZp8UorUPjr62HuPj2v98nTX/H767Jh0jgDotXoNzlu4VaEhjzreWiQLqZ/IgwJ
-	CGlpU39457dLg12amC3ggqMfMa+19FGaEPhB4lwbNeet/Rz9zChRqEqLh/33Y8L7fuLd+cI43ca78
-	Gue7kHbw==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=P9AjNWpiWDnB7RKQua9ArSrA7m/HY4S8Uz8wUgkfVv4=; b=QL1J/va/i1y29Df7hwbGcTTmb2
+	ErM3kB1QXNqH7Iu816f208NnEkCXACoM0pd9FsQs7OYgTnrrrVz7xmehgw0WoDF2Lsc+fSC/awpR/
+	8ALDnh6ppM6AWKhBgFQwtU4Lr2hDreUvPKK6VTBpivrPe7hb6WpS8bC5rqpBl9i4X+PlmOJpSmrWl
+	CKRk8UUVI5FEQey6Qs+bqG4dTaLiMMxQeslU+wL1X6icufmqF+7EBxZeOb3jtpT3Qxb77Q5XUuOUO
+	Ye0dpdV6gbglbTw9pyV1bwIsqH7pknJTy5tnRnb+7J7cPOpYjFD/hrhfaR6KZFNy+kapTfKtTn5x/
+	Ip2r8E9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWdU3-00000005yQo-2t4X;
-	Tue, 01 Jul 2025 16:05:23 +0000
-Received: from cczrelay02.in2p3.fr ([134.158.66.142])
+	id 1uWqif-00000007NO9-2gye;
+	Wed, 02 Jul 2025 06:13:21 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWbuF-00000005h1p-2vbA
+	id 1uWqib-00000007NMg-3kYb
 	for barebox@lists.infradead.org;
-	Tue, 01 Jul 2025 14:24:21 +0000
-Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
-	(authenticated bits=0)
-	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 561EO5fO012378
-	(version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NO)
-	for <barebox@lists.infradead.org>; Tue, 1 Jul 2025 16:24:16 +0200
-Message-ID: <59977218-0639-40da-9999-515f3973dbea@clermont.in2p3.fr>
-Date: Tue, 1 Jul 2025 16:24:16 +0200
+	Wed, 02 Jul 2025 06:13:20 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uWqia-0004MD-4p; Wed, 02 Jul 2025 08:13:16 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uWqiZ-006OJM-36;
+	Wed, 02 Jul 2025 08:13:15 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uWqiZ-00Fzch-2u;
+	Wed, 02 Jul 2025 08:13:15 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ Marco Felsch <m.felsch@pengutronix.de>
+In-Reply-To: <20250630-arm-optee-early-helper-v2-0-c8cce3ae42b0@pengutronix.de>
+References: <20250630-arm-optee-early-helper-v2-0-c8cce3ae42b0@pengutronix.de>
+Message-Id: <175143679589.3811754.18100215175629866625.b4-ty@pengutronix.de>
+Date: Wed, 02 Jul 2025 08:13:15 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Picard <david.picard@clermont.in2p3.fr>
-To: barebox@lists.infradead.org
-References: <f8c5021d-3dcb-47b5-8f27-09e33991d6ea@clermont.in2p3.fr>
- <e867d36e-4632-46d5-934f-a4efb3a8db5f@pengutronix.de>
- <a9b43b82-c234-4542-981c-ad034ad65403@clermont.in2p3.fr>
- <6ad40829-5819-4784-8123-0b6e24d4c525@pengutronix.de>
- <fd64d9fb-1b5e-4f99-a36a-e7d6fd59a13f@clermont.in2p3.fr>
-Content-Language: fr, en-US
-In-Reply-To: <fd64d9fb-1b5e-4f99-a36a-e7d6fd59a13f@clermont.in2p3.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250701_072420_011344_33FEDF38 
-X-CRM114-Status: GOOD (  24.92  )
+X-CRM114-CacheID: sfid-20250701_231317_936056_53133D03 
+X-CRM114-Status: GOOD (  13.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,167 +82,67 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: moving to same chip, different board: no console output
+Subject: Re: [PATCH v2 00/14] i.MX6 TZASC and OP-TEE early helpers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-I copied the handoff files from a Quartus sample project released by the 
-manufacturer, Enclustra.
 
-Any hint about the debug output below is welcome.
+On Mon, 30 Jun 2025 09:45:42 +0200, Sascha Hauer wrote:
+> This series combines Marcos "i.MX6Q TZASC and OP-TEE early helpers" [1]
+> and my series fixing chainloading barebox on OP-TEE enabled i.MX6ul
+> platforms [2] into one.
+> 
+> Changes to Marcos series are:
+> 
+> - rename imx6q_tzc380_is_enabled() to imx6q_tzc380_is_bypassed() as the
+>   function really only detects if the bypass bits are set correctly and
+>   not if the tzc380 is enabled.
+> - Add i.MX6UL variants of the functions Marco created for i.MX6DQ
+> - Marco created a mx6_start_optee_early() function that has a
+>   switch/case for the actual SoC type. I have split that into SoC
+>   specific functions so that we don't have to carry the binary weight
+>   when only one specific SoC is needed
+> 
+> [...]
 
-I put some pr_debug() in arch/arm/cpu/uncompress.c, and it seems to 
-execute until the last line: barebox(membase, memsize, handoff_data);
-https://github.com/barebox/barebox/blob/796506e790596a0b59c186651cf98112eafe01c5/arch/arm/cpu/uncompress.c#L106
+Applied, thanks!
 
-I'm trying to boot from the SD card. I copied and adapted Buildroot 
-genimage.cfg from the Terasic DE0 board.
-Device             Boot Start    End Sectors  Size Id Type
-images/sdcard.img1          1   2048    2048    1M a2 unknown
-images/sdcard.img2 *     2049  18432   16384    8M  c W95 FAT32 (LBA)
-images/sdcard.img3      18433 264192  245760  120M 83 Linux
+[01/14] pbl: add panic_no_stacktrace()
+        https://git.pengutronix.de/cgit/barebox/commit/?id=f5fd3cdae3db (link may not be stable)
+[02/14] arch: Allow data_abort_mask() in PBL
+        https://git.pengutronix.de/cgit/barebox/commit/?id=556b99617e63 (link may not be stable)
+[03/14] ARM: add exception handling support for PBL
+        https://git.pengutronix.de/cgit/barebox/commit/?id=f33372b459da (link may not be stable)
+[04/14] ARM: i.MX6QDL: add imxcfg helper to configure the TZASC1/2
+        https://git.pengutronix.de/cgit/barebox/commit/?id=91676c7f402b (link may not be stable)
+[05/14] ARM: i.MX6Q: add imx6_get_mmdc_sdram_size
+        https://git.pengutronix.de/cgit/barebox/commit/?id=b026f6e83284 (link may not be stable)
+[06/14] ARM: i.MX: add config symbol for TZASC
+        https://git.pengutronix.de/cgit/barebox/commit/?id=836d9a5660a6 (link may not be stable)
+[07/14] ARM: mach-imx: tzasc: add region configure helpers
+        https://git.pengutronix.de/cgit/barebox/commit/?id=c1c7be3b9abc (link may not be stable)
+[08/14] ARM: mach-imx: tzasc: add imx6[q|ul]_tzc380_early_ns_region1()
+        https://git.pengutronix.de/cgit/barebox/commit/?id=fe96d6d530c5 (link may not be stable)
+[09/14] ARM: mach-imx: tzasc: add imx6[q|ul]_tzc380_is_bypassed()
+        https://git.pengutronix.de/cgit/barebox/commit/?id=e841bfdaaa61 (link may not be stable)
+[10/14] ARM: i.MX: add imx6_can_access_tzasc()
+        https://git.pengutronix.de/cgit/barebox/commit/?id=0ae719a914f3 (link may not be stable)
+[11/14] ARM: optee-early: add mx6_start_optee_early helper
+        https://git.pengutronix.de/cgit/barebox/commit/?id=5f233de5e090 (link may not be stable)
+[12/14] ARM: i.MX: tqma6ulx: fix barebox chainloading with OP-TEE enabled
+        https://git.pengutronix.de/cgit/barebox/commit/?id=1dcba06ff316 (link may not be stable)
+[13/14] ARM: i.MX: Webasto ccbv2: fix barebox chainloading with OP-TEE enabled
+        https://git.pengutronix.de/cgit/barebox/commit/?id=710fcf4bbdd5 (link may not be stable)
+[14/14] ARM: i.MX: tqma6ulx: use ENTRY_FUNCTION_WITHSTACK
+        https://git.pengutronix.de/cgit/barebox/commit/?id=0935e23f8e10 (link may not be stable)
 
-The FAT32 partition contains:
--rwxr-xr-x 1 root root 375K juil.  1  2025 barebox.bin
--rwxr-xr-x 1 root root  600 juil.  1  2025 barebox.env
--rwxr-xr-x 1 root root  26K juil.  1  2025 socfpga_cyclone5_mercury_sa2.dtb
--rwxr-xr-x 1 root root 5,9M juil.  1  2025 zImage
-
-
-David
-
-Le 30/06/2025 à 15:23, David Picard a écrit :
-> Hello,
->
-> I can get an output on the console! I switched to v2025.06.1 and 
-> enabled CONFIG_DEBUG_LL, CONFIG_PBL_CONSOLE and CONFIG_DEBUG_PBL.
->
-> Could you help me to interpret this ?
->
-> -------------------------
->
-> barebox 2025.06.1 #2 Mon Jun 30 15:01:21 CEST 2025
->
->
-> Board: SoCFPGA
-> No consoles were activated. Activating all consoles as fallback!
-> dw_mmc dw_mmc0: registered as mci0
-> mci0: detected SD card version 2.0
-> mci0: registered disk0
-> starting bootloader...
-> uncompress.c: memory at 0x00000000, size 0x40000000
-> mmu: enabling MMU, ttb @ 0x3ffe0000
-> endmem                = 0x40000000
-> arm_mem_scratch       = 0x3fff8000+0x00008000
-> arm_mem_stack         = 0x3fff0000+0x00008000
-> arm_mem_ttb           = 0x3ffe0000+0x00010000
-> arm_mem_barebox_image = 0x3fe00000+0x00200000
-> arm_mem_early_malloc  = 0x3fde0000+0x00020000
-> membase               = 0x00000000+0x40000000
-> uncompress.c: uncompressing barebox binary at 0x1ff8c5e0 (size 
-> 0x00056c32) to 0x3fe00000 (uncompressed size: 0x000778b0)
-> uncompress.c: jumping to uncompressed image at 0x3fe00001
->
-> -----------
->
-> End of log, no prompt.
->
-> David
->
->
-> Le 16/06/2025 à 12:39, Ahmad Fatoum a écrit :
->> Hi David,
->>
->> On 6/11/25 13:46, David Picard wrote:
->>> Hello,
->>>
->>> I took the same Buildroot configuration. I replaced the .dts* files 
->>> with
->>> the ones provided by the new board BSP. Actually, they differ quite a
->>> lot from the Altera SoC FPGA .dts* files in the Linux tree. Then, I
->>> compiled and flashed the SD card.
->> The device trees don't have the whole story. There is Quartus-generated
->> C board code that sets up the DRAM controller for example, so just
->> replacing the device tree doesn't work so early.
->>
->>> I enabled CONFIG_DEBUG_LL with no change. CONFIG_DEBUG_PBL doesn't 
->>> exist
->>> in my case. For some reason, the defconfig I built upon, uses Barebox
->>> v2021.07.0, which is probably outdated...
->> v2021.07.0 predated CONFIG_DEBUG_PBL, yes.
->>
->> Cheers,
->> Ahmad
->>
->>> David
->>>
->>> Le 06/06/2025 à 19:46, Ahmad Fatoum a écrit :
->>>> Hello David,
->>>>
->>>> On 06.06.25 16:43, David Picard wrote:
->>>>> Hello,
->>>>>
->>>>> I am working on a project for which we selected an Intel/Altera
->>>>> Cyclone 5 SoC FPGA (an FPGA with an ARM core). As the project
->>>>> evolves, I have to change boards and I am facing issues to boot:
->>>>> absolutely no output on the serial console (USB virtual COM port),
->>>>> not even from Barebox.
->>>>>
->>>>> Previous working configuration:
->>>>> - SD card image produced by Buildroot with Barebox as the bootloader
->>>>> - Terasic ADC-SoC demo board, booting from the SD card.
->>>>> https://www.terasic.com.tw/cgi-bin/page/archive.pl?
->>>>> Language=English&No=1061&PartNo=1
->>>>>
->>>>> Current non-working configuration:
->>>>> - Eclustra Mercury+ SA2 module, also with a Cyclone 5, plus SDRAM,
->>>>> RTC, QSPI flash, etc. I think that the main difference between both
->>>>> Cyclone 5 chips is the size of the logic section is bigger on the
->>>>> module. The module has more RAM.
->>>>> https://www.enclustra.com/en/products/system-on-chip-modules/mercury-
->>>>> sa2/
->>>>> - Enclustra ST1 demo baseboard. It has a JTAG port, should this
->>>>> information be of interest.
->>>>> https://www.enclustra.com/en/products/base-boards/mercury-st1/
->>>>>
->>>>> I the current configuration, I get no output on the serial console.
->>>> So you tried to use the exact same image on both boards or were
->>>> there changes?
->>>>
->>>>> What I did:
->>>>> - I checked the hardware configuration (switches to select booting
->>>>> from the SD card and USB config) with a bare-metal application
->>>>> provided by Enclustra.
->>>>> - I used Enclutra's .dts and .dtsi files, which differ very slightly
->>>>> from the Linux kernel tree files.
->>>>> - I checked how the SD card is connected: to the exact same pins in
->>>>> both configurations.
->>>>> - I had a look at Barebox menuconfig, but nothing caught my eye.
->>>>>
->>>>> So, now I'm stuck, and I'm looking for some guidance.
->>>> You can try enabling CONFIG_DEBUG_LL and CONFIG_DEBUG_PBL and see 
->>>> if you
->>>> get some debugging output maybe. You'll have to choose which UART 
->>>> to use.
->>>>
->>>> I think your new SoM may have different RAM and thus you can't use the
->>>> same image, but need one suitable to RAM integrated on your new board.
->>>>
->>>> Cheers,
->>>> Ahmad
->>>>
->>>>> David
->>>>>
->>>>>
->>>>>
->>>
->>>
->
->
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
