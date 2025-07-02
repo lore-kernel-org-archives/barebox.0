@@ -1,67 +1,68 @@
-Delivery-date: Wed, 02 Jul 2025 08:14:03 +0200
+Delivery-date: Wed, 02 Jul 2025 08:14:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWqjL-00DD5S-1z
+	id 1uWqja-00DD6A-1f
 	for lore@lore.pengutronix.de;
-	Wed, 02 Jul 2025 08:14:03 +0200
+	Wed, 02 Jul 2025 08:14:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uWqjL-0004zm-2m
-	for lore@pengutronix.de; Wed, 02 Jul 2025 08:14:03 +0200
+	id 1uWqja-0005Dn-1X
+	for lore@pengutronix.de; Wed, 02 Jul 2025 08:14:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MZ/fO2x5ND6MxR2C56USHvz6MqO6acLZs+SbpkvKfYM=; b=a0jaqWvLAHgdN+d61rcR9d9+2K
-	3ADF+JYEJyxpFlkIxgYBjZBcHkjBoQ3aaSVoiMPQ7NgpPdt18lqXZTWcasQUk+R3WZMqSipSW005z
-	THIeR6ocOVWko7pGOJ0yWdCe1wtQcTL+IrybLiHA/1gB5hb2UZ5Qtqp5TA0ItJ9A/8rTPU0JnT0b+
-	asgoXMOEtWhosmlm0RRETfBXgxCN7yj8vz9Gr+MzPxZMVgi8ZpfnNSdQYV4t46lzAtidHiQU9UTwL
-	GyGIi22YFLgiXphQ3XPTmIspnyYAVmeMECROGgMN8nF3EXHyLDpkVxwsCzPStlJVjAkSlOwtQ2k5T
-	VqbJLHPA==;
+	bh=dAouCt3X+DqHDLD/cME3ZaJBnMKat88r+7aYJ3mBFho=; b=i8/bErB6clsm1hv1Vcm/LESMKF
+	4dYsadGEUASvhfLuS++QdWhHR+aS0oJiN4mD+uZTJwerCGjpl+D/hE2EOhjVlwR3PeYManxMycHNa
+	2jtiaiO+RSY8aC6frAYslE+5GlvqNAb8gLytJezQ6N7EKWW+cuad6anBh5FmEpnpRvVUnS3znjuYu
+	2odYesWSIdtc7CDX7ILLlV5e6OWgpNKOX/dDhtItlDW9FtEibOBwPsRoIsN/wEGavXy7n7dIpJ3dy
+	8OJ7DkOUiCeQNFOQH8HVqmRlJhUoglWQVeBHqsZGD3GFnj/TR4aquTKaPlzrPxKEOHY1MvEDGKO/y
+	03ke9M+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWqif-00000007NO1-0gMA;
-	Wed, 02 Jul 2025 06:13:21 +0000
+	id 1uWqjC-00000007NUc-0eUX;
+	Wed, 02 Jul 2025 06:13:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uWqib-00000007NMb-3kTQ
+	id 1uWqj9-00000007NTn-1NI8
 	for barebox@lists.infradead.org;
-	Wed, 02 Jul 2025 06:13:19 +0000
+	Wed, 02 Jul 2025 06:13:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uWqia-0004MC-4k; Wed, 02 Jul 2025 08:13:16 +0200
+	id 1uWqj8-0004qn-6G; Wed, 02 Jul 2025 08:13:50 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uWqiZ-006OJL-34;
-	Wed, 02 Jul 2025 08:13:15 +0200
+	id 1uWqj8-006OJV-00;
+	Wed, 02 Jul 2025 08:13:50 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uWqiZ-00Fzch-2q;
-	Wed, 02 Jul 2025 08:13:15 +0200
+	id 1uWqj7-00Fzgd-32;
+	Wed, 02 Jul 2025 08:13:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>
-In-Reply-To: <20250626144527.416697-1-m.felsch@pengutronix.de>
-References: <20250626144527.416697-1-m.felsch@pengutronix.de>
-Message-Id: <175143679587.3811754.17434853053729142530.b4-ty@pengutronix.de>
-Date: Wed, 02 Jul 2025 08:13:15 +0200
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20250630064235.2625712-1-s.hauer@pengutronix.de>
+References: <20250630064235.2625712-1-s.hauer@pengutronix.de>
+Message-Id: <175143682993.3812036.17347175303898246776.b4-ty@pengutronix.de>
+Date: Wed, 02 Jul 2025 08:13:49 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250701_231317_936144_7F15EA07 
-X-CRM114-Status: UNSURE (   7.95  )
+X-CRM114-CacheID: sfid-20250701_231351_373514_D0F86E2C 
+X-CRM114-Status: UNSURE (   7.19  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,40 +85,21 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 0/6] i.MX6Q TZASC and OP-TEE early helpers
+Subject: Re: [PATCH] ARM: lib64: remove unused section
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 26 Jun 2025 16:45:21 +0200, Marco Felsch wrote:
-> the series combines the previous separate send patches [1] and [2].
+On Mon, 30 Jun 2025 08:42:35 +0200, Sascha Hauer wrote:
+> The ARM64 linker script has a section for the exceptions. This is unused
+> and can be removed.
 > 
-> The problem
-> -----------
 > 
-> Currently all upstream boards which do have OP-TEE support:
->  - TQMA6ULX [3],
->  - Webasto CCBV2 [4],
->  - i.MX8M* based boards [5],
-> configure the TZASC (TZC-380) [6] region0 to secure+non-secure R/W
-> access.
-> 
-> [...]
 
 Applied, thanks!
 
-[1/6] ARM: i.MX6QDL: add imxcfg helper to configure the TZASC1/2
-      https://git.pengutronix.de/cgit/barebox/commit/?id=91676c7f402b (link may not be stable)
-[2/6] ARM: i.MX6Q: add imx6_get_mmdc_sdram_size
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b026f6e83284 (link may not be stable)
-[3/6] ARM: mach-imx: tzasc: add region configure helpers
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c1c7be3b9abc (link may not be stable)
-[4/6] ARM: mach-imx: tzasc: add imx6q_tzc380_early_ns_region1()
-      (no commit info)
-[5/6] ARM: mach-imx: tzasc: add imx6q_tzc380_is_enabled
-      (no commit info)
-[6/6] ARM: optee-early: add mx6_start_optee_early helper
-      https://git.pengutronix.de/cgit/barebox/commit/?id=5f233de5e090 (link may not be stable)
+[1/1] ARM: lib64: remove unused section
+      https://git.pengutronix.de/cgit/barebox/commit/?id=46f528b9cf6b (link may not be stable)
 
 Best regards,
 -- 
