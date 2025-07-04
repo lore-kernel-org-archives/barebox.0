@@ -1,57 +1,82 @@
-Delivery-date: Fri, 04 Jul 2025 17:17:41 +0200
+Delivery-date: Fri, 04 Jul 2025 19:40:11 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uXiAX-00E1vC-0W
+	id 1uXkOR-00E40p-1K
 	for lore@lore.pengutronix.de;
-	Fri, 04 Jul 2025 17:17:41 +0200
+	Fri, 04 Jul 2025 19:40:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uXiAW-0007XM-GJ
-	for lore@pengutronix.de; Fri, 04 Jul 2025 17:17:41 +0200
+	id 1uXkOQ-0004mk-Qn
+	for lore@pengutronix.de; Fri, 04 Jul 2025 19:40:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OwrQJVqdETAW+HSg3WOqHDUps6HKHKP2VkKdraUx7oQ=; b=1Gqj/aQjw9cRGeED64YLLU3jSq
-	KZDqPzGQHb1loM0JVoSKqYs7r4hhe/Mm8udzjrj2kG09BU1fKgsAopGSEpUfUsnQaixmkc1xLSdYs
-	XbQR1GBxEsuJneqUdF8nld2n5QEuMdtZVuP6W1g/zqzS6WOlNF6jTksOHKVmRNi19Z3P6HMBDuqF9
-	Qj9VLEQNn9dVfWeKKZTrHpBlbQJBlWdnjx8P6WSOE/b1IANxwcGi3dzh8j1lt0cNGuxRSmNZny7bE
-	vSrB/aU+7AZzXoo3geG/sdzBc7nh5ZP6B4ewmycwpNH/vMkUy8ec3vYOW6ltn9BIBuRTv+lLEF5cw
-	rM9R5IgA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To
+	:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mPM+FTeHdcvrl8grRieLBbQCl+zN2vmo+skFZGEKlYs=; b=pEut1K5pSst+rJaSeVtDBX+MJr
+	IWMOIDjQFaj/YjrlOxjP/LkrYwyWpGzdI3ITD9ofRK2QHQgUf6uIMKeCnkS0wASM0/cKt39g19Zj1
+	6nPErqpgmg2bv+BOoRhpwSRh/q1vl+/GkaaKviLzmOzSUtsHgd5zREDZ7Difnm/36ei74EySuObls
+	9SsOuhFijx89w7cRIduGlOJIcYvJ/zwVH465gSvqYt8lKjioF4QDULalw4WaJvNo+L3RqgBXjMeqd
+	Xg9tyZTJQPqD6+Ua5p7v0+MJu9LZEq3+JoxHrpgZDqyRyrWl6+rXh3+rREMu+MhPmcBSPrX36nEuD
+	G39vj4BQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uXiA7-0000000Enas-1km3;
-	Fri, 04 Jul 2025 15:17:15 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uXkNn-0000000F7FW-2aS1;
+	Fri, 04 Jul 2025 17:39:31 +0000
+Received: from mout.kundenserver.de ([212.227.126.135])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uXi2G-0000000Elsu-28pu
+	id 1uXkMu-0000000F72X-44k7
 	for barebox@lists.infradead.org;
-	Fri, 04 Jul 2025 15:09:09 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uXi2F-0005Wo-9U; Fri, 04 Jul 2025 17:09:07 +0200
-Message-ID: <c775017a-aa6c-46b2-8bd8-457474f34325@pengutronix.de>
-Date: Fri, 4 Jul 2025 17:09:07 +0200
+	Fri, 04 Jul 2025 17:38:38 +0000
+Received: from Precision-T3610 ([84.147.167.150]) by mrelayeu.kundenserver.de
+ (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MPGBR-1uJmoX41hF-00Ho9E; Fri, 04 Jul 2025 19:38:33 +0200
+Date: Fri, 4 Jul 2025 19:38:26 +0200
+From: Johannes Roith <johannes@gnu-linux.rocks>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <aGgRkmkiFhNGq+Qg@Precision-T3610>
+References: <db21b526-ba6f-4714-8dca-3ed57d7bf028@trabucayre.com>
+ <c4307832-408c-4508-aa7a-46a448dbfe5b@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: David Picard <david.picard@clermont.in2p3.fr>,
- MList-Barebox <barebox@lists.infradead.org>
-References: <9026c709-5e5f-4545-94ca-ea78ea431082@clermont.in2p3.fr>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <9026c709-5e5f-4545-94ca-ea78ea431082@clermont.in2p3.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4307832-408c-4508-aa7a-46a448dbfe5b@pengutronix.de>
+X-Provags-ID: V03:K1:q2pZvvstK91/8gcPGEKassIvkKcTNzy5FDVSXuwwfTZzfnNSTvU
+ FD2rSbTh+RChCM1ciLmczE0POUJgMPqCaaTVWHSSVTtA6kfpIq6poi8JkwhCoMODSMcR9kN
+ 6XM3/5DRaMuRvYH3ExZlbXRWMX5FOE1yU5824xdRSCNVQcfbj22pcqfO4tc3Lz7tY09Zqn9
+ IlxwjfXBpTPeB8qvg4rMg==
+UI-OutboundReport: notjunk:1;M01:P0:aquXIQ92Rp4=;hBYloP9su2TT/i5jr2Gn7DSHrUv
+ PuoNm/bhwZfmfG7nBaT1ndl/Jd+H2v+tH4Ep6X4YAv4d/X3wKSaLMatw1Lj9r7BmMRAxKvOEB
+ 0cUW6XSSAjWGD5JohoLIZ+Wfo1S/1ushVwYBTHOjuTg8WnGbRauixThOSN0G5UQL5hXcL1frh
+ ClW37wxL6qxrDbKHNttktKpn03btO88ptN7GcZSgSCXhYblo/qTxCGEYmI5S4B6wNtnDrZRgp
+ tC0mZsctQs1worInL3BIszF93dDiDwPVMLiIoGFVqZciejBg3l6LPF8sLNbxGXsinwitSPFOk
+ 7GYq86V3Deq491jOAuJTRxNrAocnQdkbvBPizyux0YRiG7DfogYc6HgfthtYyyBIu8yaS0oYK
+ UH3Ha71hA4Qsp4iyDkPGwX0dp9s/0QG3k6mIHEVfmczdd1JFm+XpPs70mknIRGmccn3v+LNAf
+ SINxPUW8qfm1pZcfmxTj3PFrYCuhCo+sFha913/MjJuWkpQDCnwoR0exPBmYjznXmudCmDTM7
+ XK46wiDVDamiIALBiRE8nTJQwR7TVyumF56LI+P5EI6/YpXjFEyf5DwLHHtfvuGIuokZWa+5S
+ DMkuLT0Bz93SCOciLdoUG+WEUkUqpBjBHirudOT0LZDXFyWfgm+MM8d7+pektsBk+SRc7Fqoo
+ qxIR6QAyFI+vutc5PA3NwerHoA6MaPcBlc9Uiyo5ekzrYAPpTqlFErGjkwCG3/Qaqk2RBTbef
+ OdAIswljuRDdinPF19t9bbEyzL384sUX2rmbvZKqxXUSRtUrMPHNe3jeb5R4j+4BZK3N86G28
+ UIPJgFY1p+uxYM4tzRvyfZNLA7Vh3Gyto0lPhuQ2hoMkkgKfXlPlFFogbEl+tqog1G3hq43Mz
+ AU6tfKrqO5PFx2bZ/VKtyVZnbVFRteGrAaDhBar0MRAvfBffUpPthwgTQoZHWHx317Tv6eTv/
+ VyR9o2C6rndigj8myV3G0Iw5Y/h3fCA0UTe2CZdDysT1jf9tbv08/Z+NF6eP26SFOX7OlmseM
+ psm5foJ4cNMA3acDGEW8A6zivY8TG+veoFX3B5v4J++c176Hkwq+fS/bi/fY9aeXE5wFd6JX0
+ sntx6p1zsTVTybwWbAxHfInkgTBLqjdtZP3FjGM9uX8e3Remf1GDAdCTBb8+B3Atu1U5N8C4a
+ PrpskiFYrcKVEeb42zYU8/2aeOB3yzFxQlfKP5nw/Qn2wb6CnkjNuz2eW3XMPYlq9+o6vlG9V
+ 3il+UFxXqzr8uj2790VhFn1+ZjBfhTvWZCYzniFu4csS2pZtIVQT+eSIngL4FA8gNQK5acy+M
+ ueEthXX6k0wrIs4FtNmpUX1EcWpPtW4K/ejtDKqdfAeudYUMhS+UjGtkrrT5ePQSmr0238hr2
+ 3DC4nCmgW447CQl5Qd8dqh59QggIhL4UdVEHMPF/4SQP/SucvLNDb/irt65rBH/VjdkW66RZ2
+ 8yGie04a/suFF0Pny4FVpmbXUPWs7T+QBIx7dxKm02fFq52acZ8frPqJwOMAG9w6Qd4znVU2I
+ Mq02AS+yg+gVcUKaXOSSMxaSqvvsEXlPQZFofAFU8+qYxrvVFCAJ1FlhCNRkGA1KUhgWOwGer
+ QKZyEo6t4E=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250704_080908_551434_E874D6E6 
-X-CRM114-Status: GOOD (  23.79  )
+X-CRM114-CacheID: sfid-20250704_103837_299638_8708C865 
+X-CRM114-Status: GOOD (  25.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -63,119 +88,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: boards/enclustra-sa2: add new board (HELP NEEDED)
+Subject: Re: MMC prepare for zynq
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello David,
+Hi Gwenhael, hi Ahmad
 
-On 7/3/25 16:21, David Picard wrote:
-> Hello,
+Am Fri, Jul 04, 2025 at 04:56:01PM +0200 schrieb Ahmad Fatoum:
+> Hi Gwenhael,
 > 
-> I'm trying to port the Enclustra SA2 module. I started off the Terasic
-> DE0 nano Soc board, that I could run with success previously. They both
-> have a Cyclone V SoC FPGA. I added some pr_debug().
+> On 7/3/25 09:18, Gwenhael Goavec-Merou wrote:
+> > Dear all,
+> > 
+> > I'm trying to uses my zedboard with barebox but can't be able to boot this.
+> > 
+> > According to mails found in this mailing list I have done this sequence:
+> > 
+> > export ARCH=arm
+> > export CROSS_COMPILE=$SOMEWHERE/arm-buildroot-linux-gnueabihf-
+> > 
+> > make zynq_defconfig
+> > make -j$(nproc)
 > 
-> My code is here, in the board-enclustra-sa2 branch:
-> https://github.com/dpproto/barebox
+> That looks correct IMO.
 > 
-> It hangs when the execution jumps to the uncompressed Barebox image, and
-> I'm really stuck.
-
-It's very interesting to know that this is actually the second
-decompression. The first stage (barebox-socfpga-sa2-xload.img) succeeded
-up to 'starting bootloader...' and then the output you have after that
-is the prebootloader of the second stage (barebox-socfpga-sa2.img).
-
-The decompressed barebox proper of the first stage already ran from
-within SDRAM, so your SDRAM setup might not be to blame.
-
-For a more complete picture, could you enable CONFIG_DEBUG_PBL and
-CONFIG_DEBUG_LL also for the first stage and include them in your next mail?
-
-> Enclustra provides a U-Boot configuration, with handoff files. I tried
-> to compare them with those I copied from a sample Quartus project they
-> provide too. I couldn't notice striking differences, although it's not
-> easy to compare because they used an older version of Quartus.
+> > And copied in the first SDCard FAT partition:
+> > - images/barebox-avnet-zedboard.img as BOOT.bin
+> > - barebox.bin
 > 
-> - The addresses and sizes in the log output below don't seem to exceed
-> SDRAM boundaries, do they?
-> - Any hint on anything to check?
+> Which binary is barebox.bin?
 
-I expanded a bit on Sascha's suggestions in the troubleshooting guide
-I just sent out. I hope this will be helpful to you in pinpointing your
-issue. Looking at the branch you pushed to your repository, I notice
-the following in no particular order:
+The first one is the correct one. Just copy the images/barebox-avnet-zedboard.img
+with the name BOOT.bin to an SD-Card whose first partition is FAT32.
+> 
+> > But I have nothing displayed through serial port.
+> 
+> Two things come to mind:
+> 
+> - The Image is 184K. Does the Zynq enforce a maximum limit on the BOOT.BIN?
 
-  -  you are missing a /chosen/stdout-path. You probably want to set it
-     to silence the 'No consoles were activated' warning and get
-     early output, even without CONFIG_DEBUG_LL
+Yes, there is a limitation for the size of the First Stage Bootloader
+(FSBL) as Xilinx calls it, which is the available SRAM size in the ZYNQ
+7000 (192 kBytes). Currently Barebox PBL and Barebox Proper are combined
+to one image (images/barebox-avnet-zedboard.img) but you will get an
+error in the build process, if your image exceeds this size.
+> 
+> - Does DEBUG_LL produce any output? For details on how to configure
+> DEBUG_LL, see the troubleshooting guide I just Cc'd you on.
+> 
+> > Are there somewhere details on how to prepare SD Card for a zynq board?
+> 
+> I haven't done work with the Zynq 7000 so far, but Lucas and Johannes
+> did. I Cc'd them as they may be able to give some tips for troubleshooting.
 
-  - As Sascha mentioned, calling pr_debug before relocation can
-    introduce bugs of its own, so stick to putc_ll('@') if unsure
+I would also take a look at this message on the mailing list:
 
-  - It would be interesting to see if CONFIG_PBL_VERIFY_PIGGY succeeds
-    and if an early putc_ll() in start.c as suggested by Sascha
-    would give any output.
+https://lore.barebox.org/barebox/DB7PR02MB43323CD77E0507E560475BCAABF00@DB7PR02MB4332.eurprd02.prod.outlook.com/
 
-Cheers,
-Ahmad
+Here, the content of the file
+arch/arm/boards/avnet-zedboard/zedboard.zynqcfg caused a boot error for
+barebox. With my Digilent Cora Z7 board, I also had to modify the file
+by deleting everything but the last line, to get barebox booting. Have
+you already tried this?
 
 > 
-> David
+> Cheers,
+> Ahmad
 > 
-> =============================
-> barebox 2025.06.1 #1 Thu Jul 3 10:53:43 CEST 2025
+> > 
+> > Thanks
+> > 
+> > Gwenhael
+> > 
+> > 
 > 
-> 
-> Board: SoCFPGA
-> No consoles were activated. Activating all consoles as fallback!
-> dw_mmc dw_mmc0: registered as mci0
-> mci0: detected SD card version 2.0
-> mci0: registered disk0
-> starting bootloader...
-> arch/arm/boards/enclustra-sa2/lowlevel.c: __start_socfpga_sa2() >>> start
-> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>> start
-> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>>
-> arm_cpu_lowlevel_init() OK
-> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>>
-> fdt_blob=0x00002320 fdt=0x1ff87ae8 size=0x40000000
-> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>> calling
-> barebox_arm_entry()...
-> uncompress.c: memory at 0x00000000, size 0x40000000
-> mmu: enabling MMU, ttb @ 0x3ffe0000
-> endmem                = 0x40000000
-> arm_mem_scratch       = 0x3fff8000+0x00008000
-> arm_mem_stack         = 0x3fff0000+0x00008000
-> arm_mem_ttb           = 0x3ffe0000+0x00010000
-> arm_mem_barebox_image = 0x3fe00000+0x00200000
-> arm_mem_early_malloc  = 0x3fde0000+0x00020000
-> membase               = 0x00000000+0x40000000
-> uncompress.c: uncompressing barebox binary at 0x1ff8c800 (size
-> 0x00056b67) to 0x3fe00000 (uncompressed size: 0x000778b0)
-> uncompress.c: jumping to uncompressed image at 0x3fe00001
-> uncompress.c: calling armv7_switch_to_hyp()...
-> uncompress.c: armv7_switch_to_hyp() OK. Now jumping...
-> =============================
-> 
-> 
+> -- 
+> Pengutronix e.K.                  |                             |
+> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 > 
 
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Best regards,
+Johannes
 
 
