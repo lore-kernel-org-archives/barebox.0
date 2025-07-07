@@ -1,56 +1,71 @@
-Delivery-date: Mon, 07 Jul 2025 13:55:36 +0200
+Delivery-date: Mon, 07 Jul 2025 13:55:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uYkRc-00F0z7-1G
+	id 1uYkRd-00F0zS-1w
 	for lore@lore.pengutronix.de;
-	Mon, 07 Jul 2025 13:55:36 +0200
+	Mon, 07 Jul 2025 13:55:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uYkRa-0002kq-Ii
-	for lore@pengutronix.de; Mon, 07 Jul 2025 13:55:36 +0200
+	id 1uYkRc-0002lB-GZ
+	for lore@pengutronix.de; Mon, 07 Jul 2025 13:55:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5O47ZukxusMS+ayMQ4F0JUMi6aYErIotMwMza6BzsVg=; b=uRaqLcNR06gK551hm2bUYOyxIR
-	gB31l4HGFI8aw/l5K5XvD8evvN8/ARNp2bKrBYBLJX3Mm3TE5ILjZoX0mGQ/X9Ok2QVw/CdsDulhz
-	nWEjkdC4KmR8wsu2DlSGQ68TGhxLC9QMTzBNZwBBY1CfiUugo7bV1PSpuR3EhLxIMtsARGa1XE4bP
-	Rn57jm/IGy5QQDdQCk1ZLwTpsxfHhNDUlCusFt7uoPqY6phg4P7mHNrNNQfd1cRwDZP4m7Ni0nMhM
-	kAYT9IxE9AdIcKmVpKV+gQdjIcJIs/VvcFDIXVRVpHW+WjEaHRXPI2m4x0lOT9v4muYeS0klxFYd0
-	W6LPQKWA==;
+	bh=+zGazEoIKK/+Yu9sQXAPkXgJDrB9KljZP8k3cLpcBMg=; b=yLmepXJ9RosOrcAdkyTowfxa4M
+	xb1gC1JUzgVKxwjrNpuphi+u3iHSnN9JATsqXFPDkZd2zSOZsW+9RAJ7us5SHg8vu9iO94yk6qii5
+	lJxitu4yKdXx681DZuGd2k/o617qYq/OiqGr8lz1YFm21O9bWVMklnqiERlsL6Ol2WpNmNPtAhIOL
+	lEHTktox8Dwyv+DenB8XA/uBVUqlAzocGwfT0RjWD+IMa4Q+nUfsMYGRgvFDmqh+FCoo2LDYON5mN
+	MzU6weRKg6PgQhIkZ/U5SElzZe7iPlJ9JyteKuK3vrSJUwto/V73Qoe75F/Iz971ykaULZbE4L23O
+	wshO2FdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uYkQq-00000002LSJ-2Ev5;
-	Mon, 07 Jul 2025 11:54:48 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uYkQt-00000002LUB-0hxT;
+	Mon, 07 Jul 2025 11:54:51 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uYjvx-00000002GeF-2jRJ
+	id 1uYjwC-00000002GjI-1NeI
+	for barebox@bombadil.infradead.org;
+	Mon, 07 Jul 2025 11:23:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=+zGazEoIKK/+Yu9sQXAPkXgJDrB9KljZP8k3cLpcBMg=; b=Fo162rMk0xS8aVMWjQmd0M5125
+	kJQJ6PryZgSd5lQWmxrUYqwZJQ6cBCVJFtg23JACKohSjTXWlLV0GQprd3GvtxEKeoHBhXdfDjB3H
+	mQoeLM6tT18p3zqKPpAqLfskCypxmHfZfhEtVl34OfQ9NID80Hr+O+6v8GtOUBHe+nCNaTSa4CBk3
+	WDCtopSyMxxfbA4byM6xz1uvAwkk7BroXZsGzLA9vCSwiiX56YJS6+ipI/IkVSn/n0LEIYYcI5WhO
+	TxzoTn0h/6ao1B5Lcf69yTD2Sfuup9bcfRd3flyXL9W1ZCMxpaAhl7SPNETi8oq5hGj6/OkTNdKDV
+	AW34KrCg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uYjw8-00000008TaA-39LK
 	for barebox@lists.infradead.org;
-	Mon, 07 Jul 2025 11:22:55 +0000
+	Mon, 07 Jul 2025 11:23:06 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1uYjvv-0001uY-6G; Mon, 07 Jul 2025 13:22:51 +0200
+	id 1uYjvv-0001uY-Sy; Mon, 07 Jul 2025 13:22:51 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 07 Jul 2025 13:22:45 +0200
+Date: Mon, 07 Jul 2025 13:22:48 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250707-v2024-10-0-topic-socfpga-agilex5-v4-3-af7ee9182480@pengutronix.de>
+Message-Id: <20250707-v2024-10-0-topic-socfpga-agilex5-v4-6-af7ee9182480@pengutronix.de>
 References: <20250707-v2024-10-0-topic-socfpga-agilex5-v4-0-af7ee9182480@pengutronix.de>
 In-Reply-To: <20250707-v2024-10-0-topic-socfpga-agilex5-v4-0-af7ee9182480@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250707_042253_690182_7C810C48 
-X-CRM114-Status: UNSURE (   9.28  )
+X-CRM114-CacheID: sfid-20250707_122305_071208_AFAFE904 
+X-CRM114-Status: UNSURE (   8.44  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -73,47 +88,36 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 03/10] reset: reset-socfpga: build only for 32-bit
- socfpga
+Subject: [PATCH v4 06/10] linux: clk: add fw_name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The 64-bit SoCFPGA platforms will use reset-simple.
+Allow setting a local parent name for the provider that is registering
+the clk. This is done in Linux, too.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/reset/Kconfig  | 6 ++++++
- drivers/reset/Makefile | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ include/linux/clk.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 16c05d50f0e30cb93609c6fbaa4287975894509a..c3779f087490f57deeabf2178723983a87d0446c 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -57,4 +57,10 @@ config RESET_SCMI
- 	  This driver uses SCMI Message Protocol to interact with the
- 	  firmware controlling all the reset signals.
- 
-+config RESET_SOCFPGA32
-+	bool "SoCFPGA 32-bit Reset Driver"
-+	default ARCH_SOCFPGA && 32BIT
-+	help
-+	  This enables the reset controller driver for 32-bit SoCFPGA platforms.
-+
- endif
-diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-index b1668433d76af89a49ef577ad9d0cdc4af48de8d..a446cb20d0b7ddb6404fdf385498bdf6a076e34e 100644
---- a/drivers/reset/Makefile
-+++ b/drivers/reset/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_RESET_CONTROLLER) += core.o
- obj-$(CONFIG_RESET_SIMPLE) += reset-simple.o
--obj-$(CONFIG_ARCH_SOCFPGA) += reset-socfpga.o
-+obj-$(CONFIG_RESET_SOCFPGA32) += reset-socfpga.o
- obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
- obj-$(CONFIG_RESET_STARFIVE) += reset-starfive-vic.o
- obj-$(CONFIG_RESET_SCMI) += reset-scmi.o
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index f2c02c9eec8fca9702176d0265eecc3620e74fdb..f893d9071371340366b118b506e597195d3f1d58 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -352,11 +352,13 @@ struct clk_ops {
+ /**
+  * struct clk_parent_data - clk parent information
+  * @hw: parent clk_hw pointer (used for clk providers with internal clks)
++ * @fw_name: parent name local to provider registering clk
+  * @name: globally unique parent name (used as a fallback)
+  * @index: parent index local to provider registering clk (if @fw_name absent)
+  */
+ struct clk_parent_data {
+ 	const struct clk_hw	*hw;
++	const char		*fw_name;
+ 	const char		*name;
+ 	int			index;
+ };
 
 -- 
 2.46.0
