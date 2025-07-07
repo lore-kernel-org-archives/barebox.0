@@ -1,56 +1,71 @@
-Delivery-date: Mon, 07 Jul 2025 13:55:49 +0200
+Delivery-date: Mon, 07 Jul 2025 13:55:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uYkRp-00F12G-2N
+	id 1uYkRs-00F12c-2J
 	for lore@lore.pengutronix.de;
-	Mon, 07 Jul 2025 13:55:49 +0200
+	Mon, 07 Jul 2025 13:55:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uYkRl-0002sg-5k
-	for lore@pengutronix.de; Mon, 07 Jul 2025 13:55:49 +0200
+	id 1uYkRn-0002uV-Ip
+	for lore@pengutronix.de; Mon, 07 Jul 2025 13:55:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Lilp5CQ6WrSSVIZZcXcSupewNbjosE1e6MCgdXk1CnY=; b=td/CIdcDtAzHcQ8HoBSDBbsc0n
-	0R+OixHsejkbXJxWMm7UJPH5eLlOz5hxbxPRtG0uisb8PMlHOtKPh94VEI7RAkT6CaenZk6vzKxyl
-	r6m4NSsmB6VWnuZVpioBQsM3jfzaZlTVrnXcCq6eu0iZZjZ+ziF7wbzlQUEXaOrWYI4C9l/L1L+U5
-	qz2TonI2KK/bmxS0bvB/FZ2vggCmzZUbd2F+wKIy0gUzXqBNmrReX6ioP/KZwE3rRj34kkgOEMdty
-	PCAEKl1XH2Ai0Q2/V6b/we4dKqPDAAjKM7eFgECREqx/wmAboKOzBk3E8Y7jrEstJj8dHGpSt514u
-	d1TBMEuA==;
+	bh=RsehMcfl5W9GKZykM0R2Tx7cc6lJigyfEgL3fYVP37I=; b=4z24WMly5bHylzZtScuJZfcgz5
+	xdpBdCa6sqsyJ5Wt61vnkKAGOC8vnlw5NRZP0K65VioU9sq9ZefYAedE30SWsEcmaKNaR1DTCUQVM
+	zuqZHJbTtHVC1RZX7DN8QHYE7vQrRQYm1rggrCMaNNIMbio/lUeHx6ExXE7/76jTLo+ENLIiqN64x
+	qS5dCo+J8ukZnupGKC97TfXBN7EnLGCpY0x+k18O0+W5BvYPn7XrGWJ5TL5og95lBhLToEYZgHl6B
+	ZZFkZlMs/9/YDTrPKoWwpz0br0QBZxYvLGRZZWOypHGOxarvnm0z605cDETEH8OgSOXaamxIl25oI
+	MRCFFSgQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uYkQs-00000002LTm-2Htl;
-	Mon, 07 Jul 2025 11:54:50 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1uYkQt-00000002LUl-3FsI;
+	Mon, 07 Jul 2025 11:54:51 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uYjvx-00000002GeX-2qxI
+	id 1uYjwC-00000002GjG-0KYr
+	for barebox@bombadil.infradead.org;
+	Mon, 07 Jul 2025 11:23:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=RsehMcfl5W9GKZykM0R2Tx7cc6lJigyfEgL3fYVP37I=; b=Ebz13Hj798NH+Z57Bpfa3GuJLE
+	Qdp7x3PrYs5IB3n7KZZrpwDYSIeSruwbQfqmwCRYWYUfiQvJZztM/DVH2H1lLLV2rPST/ELYaQd/J
+	xTL+63jvLP8y++9/pvcMU6oNWeoTtzo7N6OQTHALhYZshXB4rX669+M5nVaOtDwAmB6OasM+h8Fel
+	qBoWffbp5QmFvxAto5QUuaZ8wkULIOE04L4Ig5FXR369X5gepG20QWAJqON1CsnSSgyRf/LBu5dW0
+	vlej9Xr744ni2JsdrdOg2ECxb2Xl7R+mFKI37yT1s1Fh8/oESTCq1OQ79kSyT2SRK6mdYb/oZu50g
+	wKtScXcw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uYjw8-00000008TaB-2txh
 	for barebox@lists.infradead.org;
-	Mon, 07 Jul 2025 11:22:56 +0000
+	Mon, 07 Jul 2025 11:23:06 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1uYjvw-0001uY-3I; Mon, 07 Jul 2025 13:22:52 +0200
+	id 1uYjvw-0001uY-IZ; Mon, 07 Jul 2025 13:22:52 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 07 Jul 2025 13:22:49 +0200
+Date: Mon, 07 Jul 2025 13:22:51 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250707-v2024-10-0-topic-socfpga-agilex5-v4-7-af7ee9182480@pengutronix.de>
+Message-Id: <20250707-v2024-10-0-topic-socfpga-agilex5-v4-9-af7ee9182480@pengutronix.de>
 References: <20250707-v2024-10-0-topic-socfpga-agilex5-v4-0-af7ee9182480@pengutronix.de>
 In-Reply-To: <20250707-v2024-10-0-topic-socfpga-agilex5-v4-0-af7ee9182480@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250707_042254_047332_8C8D3851 
-X-CRM114-Status: GOOD (  14.88  )
+X-CRM114-CacheID: sfid-20250707_122305_312136_6EB7E528 
+X-CRM114-Status: GOOD (  28.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,1482 +87,1373 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 07/10] clk: socfpga: add agilex5 clock support
+Subject: [PATCH v4 09/10] net: add support for Designware XGMAC (10gb)
+ ethernet
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add support for the Stratix10 and Agilex5 pll,gate and periph clocks.
-
-Only tested on Agilex5.
+The Designware XGMAC is designed for 1/2.5/5/10G ethernet applications.
+It is mostly identical to the eqos driver but has a different register
+layout.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/clk/socfpga/Makefile         |   4 +-
- drivers/clk/socfpga/clk-agilex5.c    | 829 +++++++++++++++++++++++++++++++++++
- drivers/clk/socfpga/clk-gate-s10.c   | 178 ++++++++
- drivers/clk/socfpga/clk-periph-s10.c | 157 +++++++
- drivers/clk/socfpga/clk-pll-s10.c    | 137 ++++++
- drivers/clk/socfpga/clk.h            |   9 +
- drivers/clk/socfpga/stratix10-clk.h  |  73 +++
- 7 files changed, 1386 insertions(+), 1 deletion(-)
+ drivers/net/Kconfig                    |  18 +
+ drivers/net/Makefile                   |   2 +
+ drivers/net/designware_xgmac.c         | 837 +++++++++++++++++++++++++++++++++
+ drivers/net/designware_xgmac.h         | 296 ++++++++++++
+ drivers/net/designware_xgmac_socfpga.c | 156 ++++++
+ 5 files changed, 1309 insertions(+)
 
-diff --git a/drivers/clk/socfpga/Makefile b/drivers/clk/socfpga/Makefile
-index 0a195cbf3f8efe2828cc2eade549d550001f0ca1..bd6f2266fc6847d3201d3fcb536e8061816ac8e3 100644
---- a/drivers/clk/socfpga/Makefile
-+++ b/drivers/clk/socfpga/Makefile
-@@ -1,4 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
--obj-y	+= clk.o
-+obj-$(CONFIG_ARCH_SOCFPGA_CYCLONE5)	+= clk.o
-+obj-$(CONFIG_ARCH_SOCFPGA_ARRIA10)	+= clk.o
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index e1439d9caf0b144d89fac7fb65e737cf6eea289f..068906078c047cb337bdace5726744b144f73711 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -158,6 +158,24 @@ config DRIVER_NET_DESIGNWARE_ROCKCHIP
+ 	help
+ 	  This option enables support for the Ethernet MAC on different Rockchip SoCs
  
- obj-$(CONFIG_ARCH_SOCFPGA_ARRIA10) += clk-gate-a10.o clk-periph-a10.o clk-pll-a10.o
-+obj-$(CONFIG_ARCH_SOCFPGA_AGILEX5) += clk-agilex5.o clk-pll-s10.o clk-periph-s10.o clk-gate-s10.o
-diff --git a/drivers/clk/socfpga/clk-agilex5.c b/drivers/clk/socfpga/clk-agilex5.c
++config DRIVER_NET_DESIGNWARE_XGMAC
++	bool "Designware XGMAC Ethernet driver support" if COMPILE_TEST
++	depends on HAS_DMA && OFTREE
++	select PHYLIB
++	select MFD_SYSCON
++	help
++	  This option enables support for the Synopsys Designware Ethernet XGMAC (10G Ethernet MAC).
++
++config DRIVER_NET_DESIGNWARE_XGMAC_SOCFPGA
++	bool "Designware XGMAC Ethernet driver support for SOCFPGA"
++	select DRIVER_NET_DESIGNWARE_XGMAC
++	depends on (ARCH_SOCFPGA_AGILEX5 || COMPILE_TEST)
++	select RESET_CONTROLLER if ARCH_SOCFPGA
++	select RESET_SIMPLE if ARCH_SOCFPGA_AGILEX5
++	help
++	  This option enables support for the Synopsys Designware Ethernet XGMAC with specific configuration
++	  for the Intel SoC FPGA chip.
++
+ config DRIVER_NET_DM9K
+ 	bool "Davicom dm9k[E|A|B] ethernet driver"
+ 	depends on HAS_DM9000 || COMPILE_TEST
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 59d78bce3fc7d51ef6b3fa65a1c6f402254589f3..e45ce7cb6a6c6fab721aaaba09bac75ac99d6663 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -21,6 +21,8 @@ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_IMX8) += designware_imx.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_STM32) += designware_stm32.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_TEGRA186) += designware_tegra186.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP) += designware_rockchip.o
++obj-$(CONFIG_DRIVER_NET_DESIGNWARE_XGMAC) += designware_xgmac.o
++obj-$(CONFIG_DRIVER_NET_DESIGNWARE_XGMAC_SOCFPGA) += designware_xgmac_socfpga.o
+ obj-$(CONFIG_DRIVER_NET_DM9K)		+= dm9k.o
+ obj-$(CONFIG_DRIVER_NET_E1000)		+= e1000/
+ obj-$(CONFIG_DRIVER_NET_ENC28J60)	+= enc28j60.o
+diff --git a/drivers/net/designware_xgmac.c b/drivers/net/designware_xgmac.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..f61b346ba4db97d2c1e7783c03b25ff861499bbd
+index 0000000000000000000000000000000000000000..f1de4f8923fb7de43673505bdf0846e99b209064
 --- /dev/null
-+++ b/drivers/clk/socfpga/clk-agilex5.c
-@@ -0,0 +1,829 @@
++++ b/drivers/net/designware_xgmac.c
+@@ -0,0 +1,837 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright (C) 2022, Intel Corporation
++ * Copyright (c) 2023, Intel Corporation.
++ *
++ * Portions based on U-Boot's dwc_eth_qos.c.
 + */
++
++/*
++ * This driver supports the Synopsys Designware Ethernet XGMAC (10G Ethernet
++ * MAC) IP block. The IP supports multiple options for bus type, clocking/
++ * reset structure, and feature list.
++ *
++ * The driver is written such that generic core logic is kept separate from
++ * configuration-specific logic. Code that interacts with configuration-
++ * specific resources is split out into separate functions to avoid polluting
++ * common code. If/when this driver is enhanced to support multiple
++ * configurations, the core code should be adapted to call all configuration-
++ * specific functions through function pointers, with the definition of those
++ * function pointers being supplied by struct udevice_id xgmac_ids[]'s .data
++ * field.
++ *
++ * This configuration uses an AXI master/DMA bus, an AHB slave/register bus,
++ * contains the DMA, MTL, and MAC sub-blocks, and supports a single RGMII PHY.
++ * This configuration also has SW control over all clock and reset signals to
++ * the HW block.
++ */
++
 +#include <common.h>
 +#include <init.h>
 +#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <linux/clk-provider.h>
-+#include <dt-bindings/clock/intel,agilex5-clkmgr.h>
++#include <dma.h>
++#include <errno.h>
++#include <gpio.h>
++#include <linux/gpio/consumer.h>
++#include <malloc.h>
++#include <net.h>
++#include <of_gpio.h>
++#include <of_net.h>
++#include <linux/iopoll.h>
++#include <linux/phy.h>
++#include <asm/cache.h>
++#include "designware_xgmac.h"
 +
-+#include "stratix10-clk.h"
++static inline struct xgmac_priv *to_xgmac(struct eth_device *edev)
++{
++	return container_of(edev, struct xgmac_priv, netdev);
++}
 +
-+static const struct clk_parent_data pll_mux[] = {
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++static int xgmac_mdio_wait_idle(struct xgmac_priv *xgmac)
++{
++	u32 idle;
 +
-+static const struct clk_parent_data boot_mux[] = {
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+};
++	return readl_poll_timeout(&xgmac->mac_regs->mdio_data, idle,
++				  !(idle & XGMAC_MAC_MDIO_ADDRESS_SBUSY),
++				  XGMAC_TIMEOUT_100MS);
++}
 +
-+static const struct clk_parent_data core0_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c1",
-+		.name = "main_pll_c1",
-+	},
-+	{
-+		.fw_name = "peri_pll_c0",
-+		.name = "peri_pll_c0",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++static int xgmac_mdio_read(struct mii_bus *bus, int mdio_addr, int mdio_reg)
++{
++	struct xgmac_priv *xgmac = bus->priv;
++	u32 val;
++	u32 hw_addr;
++	u32 idle;
++	int ret;
 +
-+static const struct clk_parent_data core1_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c1",
-+		.name = "main_pll_c1",
-+	},
-+	{
-+		.fw_name = "peri_pll_c0",
-+		.name = "peri_pll_c0",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	ret = readl_poll_timeout(&xgmac->mac_regs->mdio_data, idle,
++				 !(idle & XGMAC_MAC_MDIO_ADDRESS_SBUSY),
++				 XGMAC_TIMEOUT_100MS);
++	if (ret) {
++		dev_err(xgmac->dev, "MDIO not idle at entry: %d\n", ret);
++		return ret;
++	}
 +
-+static const struct clk_parent_data core2_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c0",
-+		.name = "main_pll_c0",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	/* Set clause 22 format */
++	val = BIT(mdio_addr);
++	writel(val, &xgmac->mac_regs->mdio_clause_22_port);
 +
-+static const struct clk_parent_data core3_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c0",
-+		.name = "main_pll_c0",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	hw_addr = (mdio_addr << XGMAC_MAC_MDIO_ADDRESS_PA_SHIFT) |
++		   (mdio_reg & XGMAC_MAC_MDIO_REG_ADDR_C22P_MASK);
 +
-+static const struct clk_parent_data dsu_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c2",
-+		.name = "main_pll_c2",
-+	},
-+	{
-+		.fw_name = "peri_pll_c0",
-+		.name = "peri_pll_c0",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	val = xgmac->config->config_mac_mdio <<
++	      XGMAC_MAC_MDIO_ADDRESS_CR_SHIFT;
 +
-+static const struct clk_parent_data noc_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c3",
-+		.name = "main_pll_c3",
-+	},
-+	{
-+		.fw_name = "peri_pll_c1",
-+		.name = "peri_pll_c1",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	val |= XGMAC_MAC_MDIO_ADDRESS_SADDR |
++	       XGMAC_MDIO_SINGLE_CMD_ADDR_CMD_READ |
++	       XGMAC_MAC_MDIO_ADDRESS_SBUSY;
 +
-+static const struct clk_parent_data emaca_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c1",
-+		.name = "main_pll_c1",
-+	},
-+	{
-+		.fw_name = "peri_pll_c3",
-+		.name = "peri_pll_c3",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	ret = readl_poll_timeout(&xgmac->mac_regs->mdio_data, idle,
++				 !(idle & XGMAC_MAC_MDIO_ADDRESS_SBUSY),
++				 XGMAC_TIMEOUT_100MS);
++	if (ret) {
++		dev_err(xgmac->dev, "MDIO not idle at entry: %d\n", ret);
++		return ret;
++	}
 +
-+static const struct clk_parent_data emacb_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c1",
-+		.name = "main_pll_c1",
-+	},
-+	{
-+		.fw_name = "peri_pll_c3",
-+		.name = "peri_pll_c3",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	writel(hw_addr, &xgmac->mac_regs->mdio_address);
++	writel(val, &xgmac->mac_regs->mdio_data);
 +
-+static const struct clk_parent_data emac_ptp_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c3",
-+		.name = "main_pll_c3",
-+	},
-+	{
-+		.fw_name = "peri_pll_c3",
-+		.name = "peri_pll_c3",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	ret = readl_poll_timeout(&xgmac->mac_regs->mdio_data, idle,
++				 !(idle & XGMAC_MAC_MDIO_ADDRESS_SBUSY),
++				 XGMAC_TIMEOUT_100MS);
++	if (ret) {
++		dev_err(xgmac->dev, "MDIO read didn't complete: %d\n", ret);
++		return ret;
++	}
 +
-+static const struct clk_parent_data gpio_db_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c3",
-+		.name = "main_pll_c3",
-+	},
-+	{
-+		.fw_name = "peri_pll_c1",
-+		.name = "peri_pll_c1",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	val = readl(&xgmac->mac_regs->mdio_data);
++	val &= XGMAC_MAC_MDIO_DATA_GD_MASK;
 +
-+static const struct clk_parent_data psi_ref_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c1",
-+		.name = "main_pll_c1",
-+	},
-+	{
-+		.fw_name = "peri_pll_c3",
-+		.name = "peri_pll_c3",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	return val;
++}
 +
-+static const struct clk_parent_data usb31_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c3",
-+		.name = "main_pll_c3",
-+	},
-+	{
-+		.fw_name = "peri_pll_c2",
-+		.name = "peri_pll_c2",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++static int xgmac_mdio_write(struct mii_bus *bus, int mdio_addr, int mdio_reg,
++			    u16 mdio_val)
++{
++	struct xgmac_priv *xgmac = bus->priv;
++	u32 val;
++	u32 hw_addr;
++	int ret;
 +
-+static const struct clk_parent_data s2f_usr0_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c1",
-+		.name = "main_pll_c1",
-+	},
-+	{
-+		.fw_name = "peri_pll_c3",
-+		.name = "peri_pll_c3",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	ret = xgmac_mdio_wait_idle(xgmac);
++	if (ret) {
++		dev_err(xgmac->dev, "MDIO not idle at entry: %d\n", ret);
++		return ret;
++	}
 +
-+static const struct clk_parent_data s2f_usr1_free_mux[] = {
-+	{
-+		.fw_name = "main_pll_c1",
-+		.name = "main_pll_c1",
-+	},
-+	{
-+		.fw_name = "peri_pll_c3",
-+		.name = "peri_pll_c3",
-+	},
-+	{
-+		.fw_name = "osc1",
-+		.name = "osc1",
-+	},
-+	{
-+		.fw_name = "cb-intosc-hs-div2-clk",
-+		.name = "cb-intosc-hs-div2-clk",
-+	},
-+	{
-+		.fw_name = "f2s-free-clk",
-+		.name = "f2s-free-clk",
-+	},
-+};
++	/* Set clause 22 format */
++	val = BIT(mdio_addr);
++	writel(val, &xgmac->mac_regs->mdio_clause_22_port);
 +
-+static const struct clk_parent_data core0_mux[] = {
-+	{
-+		.fw_name = "core0_free_clk",
-+		.name = "core0_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	hw_addr = (mdio_addr << XGMAC_MAC_MDIO_ADDRESS_PA_SHIFT) |
++		   (mdio_reg & XGMAC_MAC_MDIO_REG_ADDR_C22P_MASK);
 +
-+static const struct clk_parent_data core1_mux[] = {
-+	{
-+		.fw_name = "core1_free_clk",
-+		.name = "core1_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	hw_addr |= (mdio_reg >> XGMAC_MAC_MDIO_ADDRESS_PA_SHIFT) <<
++		    XGMAC_MAC_MDIO_ADDRESS_DA_SHIFT;
 +
-+static const struct clk_parent_data core2_mux[] = {
-+	{
-+		.fw_name = "core2_free_clk",
-+		.name = "core2_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	val = (xgmac->config->config_mac_mdio <<
++	       XGMAC_MAC_MDIO_ADDRESS_CR_SHIFT);
 +
-+static const struct clk_parent_data core3_mux[] = {
-+	{
-+		.fw_name = "core3_free_clk",
-+		.name = "core3_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	val |= XGMAC_MAC_MDIO_ADDRESS_SADDR |
++		mdio_val | XGMAC_MDIO_SINGLE_CMD_ADDR_CMD_WRITE |
++		XGMAC_MAC_MDIO_ADDRESS_SBUSY;
 +
-+static const struct clk_parent_data dsu_mux[] = {
-+	{
-+		.fw_name = "dsu_free_clk",
-+		.name = "dsu_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	ret = xgmac_mdio_wait_idle(xgmac);
++	if (ret) {
++		dev_err(xgmac->dev, "MDIO not idle at entry: %d\n", ret);
++		return ret;
++	}
 +
-+static const struct clk_parent_data emac_mux[] = {
-+	{
-+		.fw_name = "emaca_free_clk",
-+		.name = "emaca_free_clk",
-+	},
-+	{
-+		.fw_name = "emacb_free_clk",
-+		.name = "emacb_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	writel(hw_addr, &xgmac->mac_regs->mdio_address);
++	writel(val, &xgmac->mac_regs->mdio_data);
 +
-+static const struct clk_parent_data noc_mux[] = {
-+	{
-+		.fw_name = "noc_free_clk",
-+		.name = "noc_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	ret = xgmac_mdio_wait_idle(xgmac);
++	if (ret) {
++		dev_err(xgmac->dev, "MDIO write didn't complete: %d\n", ret);
++		return ret;
++	}
 +
-+static const struct clk_parent_data s2f_user0_mux[] = {
-+	{
-+		.fw_name = "s2f_user0_free_clk",
-+		.name = "s2f_user0_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	return 0;
++}
 +
-+static const struct clk_parent_data s2f_user1_mux[] = {
-+	{
-+		.fw_name = "s2f_user1_free_clk",
-+		.name = "s2f_user1_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++static void xgmac_set_full_duplex(struct xgmac_priv *xgmac)
++{
++	clrbits_le32(&xgmac->mac_regs->mac_extended_conf, XGMAC_MAC_EXT_CONF_HD);
++}
 +
-+static const struct clk_parent_data psi_mux[] = {
-+	{
-+		.fw_name = "psi_ref_free_clk",
-+		.name = "psi_ref_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++static void xgmac_set_half_duplex(struct xgmac_priv *xgmac)
++{
++	setbits_le32(&xgmac->mac_regs->mac_extended_conf, XGMAC_MAC_EXT_CONF_HD);
 +
-+static const struct clk_parent_data gpio_db_mux[] = {
-+	{
-+		.fw_name = "gpio_db_free_clk",
-+		.name = "gpio_db_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++	/* WAR: Flush TX queue when switching to half-duplex */
++	setbits_le32(&xgmac->mtl_regs->txq0_operation_mode,
++		     XGMAC_MTL_TXQ0_OPERATION_MODE_FTQ);
++}
 +
-+static const struct clk_parent_data emac_ptp_mux[] = {
-+	{
-+		.fw_name = "emac_ptp_free_clk",
-+		.name = "emac_ptp_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++static void xgmac_set_gmii_speed(struct xgmac_priv *xgmac)
++{
++	clrsetbits_le32(&xgmac->mac_regs->tx_configuration,
++			XGMAC_MAC_CONF_SS_SHIFT_MASK,
++			XGMAC_MAC_CONF_SS_1G_GMII << XGMAC_MAC_CONF_SS_SHIFT);
++}
 +
-+static const struct clk_parent_data usb31_mux[] = {
-+	{
-+		.fw_name = "usb31_free_clk",
-+		.name = "usb31_free_clk",
-+	},
-+	{
-+		.fw_name = "boot_clk",
-+		.name = "boot_clk",
-+	},
-+};
++static void xgmac_set_mii_speed_100(struct xgmac_priv *xgmac)
++{
++	clrsetbits_le32(&xgmac->mac_regs->tx_configuration,
++			XGMAC_MAC_CONF_SS_SHIFT_MASK,
++			XGMAC_MAC_CONF_SS_100M_MII << XGMAC_MAC_CONF_SS_SHIFT);
++}
 +
++static void xgmac_set_mii_speed_10(struct xgmac_priv *xgmac)
++{
++	clrsetbits_le32(&xgmac->mac_regs->tx_configuration,
++			XGMAC_MAC_CONF_SS_SHIFT_MASK,
++			XGMAC_MAC_CONF_SS_2_10M_MII << XGMAC_MAC_CONF_SS_SHIFT);
++}
++
++static void xgmac_adjust_link(struct eth_device *edev)
++{
++	struct xgmac_priv *xgmac = to_xgmac(edev);
++	struct device *dev = edev->parent;
++
++	if (edev->phydev->duplex)
++		xgmac_set_full_duplex(xgmac);
++	else
++		xgmac_set_half_duplex(xgmac);
++
++	switch (edev->phydev->speed) {
++	case SPEED_1000:
++		xgmac_set_gmii_speed(xgmac);
++		break;
++	case SPEED_100:
++		xgmac_set_mii_speed_100(xgmac);
++		break;
++	case SPEED_10:
++		xgmac_set_mii_speed_10(xgmac);
++		break;
++	default:
++		dev_err(dev, "invalid speed %d\n", edev->phydev->speed);
++	}
++}
++
++static int xgmac_write_hwaddr(struct eth_device *edev, const unsigned char *mac)
++{
++	struct xgmac_priv *xgmac = to_xgmac(edev);
++	u32 val;
++
++	memcpy(xgmac->macaddr, mac, ETH_ALEN);
++
++	/*
++	 * This function may be called before start() or after stop(). At that
++	 * time, on at least some configurations of the XGMAC HW, all clocks to
++	 * the XGMAC HW block will be stopped, and a reset signal applied. If
++	 * any register access is attempted in this state, bus timeouts or CPU
++	 * hangs may occur. This check prevents that.
++	 *
++	 * A simple solution to this problem would be to not implement
++	 * write_hwaddr(), since start() always writes the MAC address into HW
++	 * anyway. However, it is desirable to implement write_hwaddr() to
++	 * support the case of SW that runs subsequent to U-Boot which expects
++	 * the MAC address to already be programmed into the XGMAC registers,
++	 * which must happen irrespective of whether the U-Boot user (or
++	 * scripts) actually made use of the XGMAC device, and hence
++	 * irrespective of whether start() was ever called.
++	 *
++	 */
++	if (!xgmac->config->reg_access_always_ok && !xgmac->reg_access_ok)
++		return 0;
++
++	/* Update the MAC address */
++	val = (xgmac->macaddr[5] << 8) |
++		(xgmac->macaddr[4]);
++	writel(val, &xgmac->mac_regs->address0_high);
++	val = (xgmac->macaddr[3] << 24) |
++		(xgmac->macaddr[2] << 16) |
++		(xgmac->macaddr[1] << 8) |
++		(xgmac->macaddr[0]);
++	writel(val, &xgmac->mac_regs->address0_low);
++	return 0;
++}
++
++static int xgmac_read_rom_hwaddr(struct eth_device *edev, unsigned char *mac)
++{
++	struct xgmac_priv *xgmac = to_xgmac(edev);
++	int ret;
++
++	ret = xgmac->config->ops->xgmac_get_enetaddr(edev->parent);
++	if (ret < 0)
++		return ret;
++
++	if (is_valid_ether_addr(xgmac->macaddr))
++		return 0;
++
++	return -EINVAL;
++}
++
++static int xgmac_start(struct eth_device *edev)
++{
++	struct xgmac_priv *xgmac = to_xgmac(edev);
++	int ret, i;
++	u32 val, tx_fifo_sz, rx_fifo_sz, tqs, rqs, pbl;
++	ulong last_rx_desc;
++	ulong desc_pad;
++	u32 idle;
++
++	ret = phy_device_connect(edev, &xgmac->miibus, xgmac->phy_addr,
++				 xgmac_adjust_link, 0, xgmac->interface);
++	if (ret)
++		return ret;
++
++	ret = xgmac->config->ops->xgmac_start_resets(edev->parent);
++	if (ret < 0) {
++		dev_err(&edev->dev, "xgmac_start_resets() failed: %d\n", ret);
++		goto err;
++	}
++
++	xgmac->reg_access_ok = true;
++
++	setbits_le32(&xgmac->dma_regs->mode, XGMAC_DMA_MODE_SWR);
++
++	ret = readl_poll_timeout(&xgmac->dma_regs->mode, idle,
++				  !(idle & XGMAC_DMA_MODE_SWR),
++				  XGMAC_TIMEOUT_100MS);
++	if (ret) {
++		dev_err(&edev->dev, "XGMAC_DMA_MODE_SWR stuck: %d\n", ret);
++		goto err;
++	}
++
++	/* Configure MTL */
++
++	/* Enable Store and Forward mode for TX */
++	/* Program Tx operating mode */
++	setbits_le32(&xgmac->mtl_regs->txq0_operation_mode,
++		     XGMAC_MTL_TXQ0_OPERATION_MODE_TSF |
++		     (XGMAC_MTL_TXQ0_OPERATION_MODE_TXQEN_ENABLED <<
++		      XGMAC_MTL_TXQ0_OPERATION_MODE_TXQEN_SHIFT));
++
++	/* Transmit Queue weight */
++	writel(0x10, &xgmac->mtl_regs->txq0_quantum_weight);
++
++	/* Enable Store and Forward mode for RX, since no jumbo frame */
++	setbits_le32(&xgmac->mtl_regs->rxq0_operation_mode,
++		     XGMAC_MTL_RXQ0_OPERATION_MODE_RSF);
++
++	/* Transmit/Receive queue fifo size; use all RAM for 1 queue */
++	val = readl(&xgmac->mac_regs->hw_feature1);
++	tx_fifo_sz = (val >> XGMAC_MAC_HW_FEATURE1_TXFIFOSIZE_SHIFT) &
++		XGMAC_MAC_HW_FEATURE1_TXFIFOSIZE_MASK;
++	rx_fifo_sz = (val >> XGMAC_MAC_HW_FEATURE1_RXFIFOSIZE_SHIFT) &
++		XGMAC_MAC_HW_FEATURE1_RXFIFOSIZE_MASK;
++
++	/*
++	 * r/tx_fifo_sz is encoded as log2(n / 128). Undo that by shifting.
++	 * r/tqs is encoded as (n / 256) - 1.
++	 */
++	tqs = (128 << tx_fifo_sz) / 256 - 1;
++	rqs = (128 << rx_fifo_sz) / 256 - 1;
++
++	clrsetbits_le32(&xgmac->mtl_regs->txq0_operation_mode,
++			XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_MASK <<
++			XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_SHIFT,
++			tqs << XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_SHIFT);
++	clrsetbits_le32(&xgmac->mtl_regs->rxq0_operation_mode,
++			XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_MASK <<
++			XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_SHIFT,
++			rqs << XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_SHIFT);
++
++	setbits_le32(&xgmac->mtl_regs->rxq0_operation_mode,
++		     XGMAC_MTL_RXQ0_OPERATION_MODE_EHFC);
++
++	/* Configure MAC */
++	clrsetbits_le32(&xgmac->mac_regs->rxq_ctrl0,
++			XGMAC_MAC_RXQ_CTRL0_RXQ0EN_MASK <<
++			XGMAC_MAC_RXQ_CTRL0_RXQ0EN_SHIFT,
++			xgmac->config->config_mac <<
++			XGMAC_MAC_RXQ_CTRL0_RXQ0EN_SHIFT);
++
++	/* Multicast and Broadcast Queue Enable */
++	setbits_le32(&xgmac->mac_regs->rxq_ctrl1,
++		     XGMAC_MAC_RXQ_CTRL1_MCBCQEN);
++
++	/* enable promisc mode and receive all mode */
++	setbits_le32(&xgmac->mac_regs->mac_packet_filter,
++		     XGMAC_MAC_PACKET_FILTER_RA |
++			 XGMAC_MAC_PACKET_FILTER_PR);
++
++	/* Set TX flow control parameters */
++	/* Set Pause Time */
++	setbits_le32(&xgmac->mac_regs->q0_tx_flow_ctrl,
++		     XGMAC_MAC_Q0_TX_FLOW_CTRL_PT_MASK <<
++		     XGMAC_MAC_Q0_TX_FLOW_CTRL_PT_SHIFT);
++
++	/* Assign priority for RX flow control */
++	clrbits_le32(&xgmac->mac_regs->rxq_ctrl2,
++		     XGMAC_MAC_RXQ_CTRL2_PSRQ0_MASK <<
++		     XGMAC_MAC_RXQ_CTRL2_PSRQ0_SHIFT);
++
++	/* Enable flow control */
++	setbits_le32(&xgmac->mac_regs->q0_tx_flow_ctrl,
++		     XGMAC_MAC_Q0_TX_FLOW_CTRL_TFE);
++	setbits_le32(&xgmac->mac_regs->rx_flow_ctrl,
++		     XGMAC_MAC_RX_FLOW_CTRL_RFE);
++
++	clrbits_le32(&xgmac->mac_regs->tx_configuration,
++		     XGMAC_MAC_CONF_JD);
++
++	clrbits_le32(&xgmac->mac_regs->rx_configuration,
++		     XGMAC_MAC_CONF_JE |
++		     XGMAC_MAC_CONF_GPSLCE |
++		     XGMAC_MAC_CONF_WD);
++
++	setbits_le32(&xgmac->mac_regs->rx_configuration,
++		     XGMAC_MAC_CONF_ACS |
++		     XGMAC_MAC_CONF_CST);
++
++	/* Configure DMA */
++	clrsetbits_le32(&xgmac->dma_regs->sysbus_mode,
++			XGMAC_DMA_SYSBUS_MODE_AAL,
++			XGMAC_DMA_SYSBUS_MODE_EAME |
++			XGMAC_DMA_SYSBUS_MODE_UNDEF);
++
++	/* Enable OSP mode */
++	setbits_le32(&xgmac->dma_regs->ch0_tx_control,
++		     XGMAC_DMA_CH0_TX_CONTROL_OSP);
++
++	/* RX buffer size. Must be a multiple of bus width */
++	clrsetbits_le32(&xgmac->dma_regs->ch0_rx_control,
++			XGMAC_DMA_CH0_RX_CONTROL_RBSZ_MASK <<
++			XGMAC_DMA_CH0_RX_CONTROL_RBSZ_SHIFT,
++			XGMAC_MAX_PACKET_SIZE <<
++			XGMAC_DMA_CH0_RX_CONTROL_RBSZ_SHIFT);
++
++	desc_pad = 0;
++
++	setbits_le32(&xgmac->dma_regs->ch0_control,
++		     XGMAC_DMA_CH0_CONTROL_PBLX8 |
++		     (desc_pad << XGMAC_DMA_CH0_CONTROL_DSL_SHIFT));
++
++	/*
++	 * Burst length must be < 1/2 FIFO size.
++	 * FIFO size in tqs is encoded as (n / 256) - 1.
++	 * Each burst is n * 8 (PBLX8) * 16 (AXI width) == 128 bytes.
++	 * Half of n * 256 is n * 128, so pbl == tqs, modulo the -1.
++	 */
++	pbl = tqs + 1;
++	if (pbl > 32)
++		pbl = 32;
++
++	clrsetbits_le32(&xgmac->dma_regs->ch0_tx_control,
++			XGMAC_DMA_CH0_TX_CONTROL_TXPBL_MASK <<
++			XGMAC_DMA_CH0_TX_CONTROL_TXPBL_SHIFT,
++			pbl << XGMAC_DMA_CH0_TX_CONTROL_TXPBL_SHIFT);
++
++	clrsetbits_le32(&xgmac->dma_regs->ch0_rx_control,
++			XGMAC_DMA_CH0_RX_CONTROL_RXPBL_MASK <<
++			XGMAC_DMA_CH0_RX_CONTROL_RXPBL_SHIFT,
++			8 << XGMAC_DMA_CH0_RX_CONTROL_RXPBL_SHIFT);
++
++	/* DMA performance configuration */
++	val = (XGMAC_DMA_SYSBUS_MODE_RD_OSR_LMT_MASK <<
++	       XGMAC_DMA_SYSBUS_MODE_RD_OSR_LMT_SHIFT) |
++	       (XGMAC_DMA_SYSBUS_MODE_WR_OSR_LMT_MASK <<
++	       XGMAC_DMA_SYSBUS_MODE_WR_OSR_LMT_SHIFT) |
++	       XGMAC_DMA_SYSBUS_MODE_EAME |
++	       XGMAC_DMA_SYSBUS_MODE_BLEN16 |
++	       XGMAC_DMA_SYSBUS_MODE_BLEN8 |
++	       XGMAC_DMA_SYSBUS_MODE_BLEN4 |
++	       XGMAC_DMA_SYSBUS_MODE_BLEN32;
++
++	writel(val, &xgmac->dma_regs->sysbus_mode);
++
++	/* Set up descriptors */
++
++	xgmac->tx_desc_idx = 0;
++	xgmac->rx_desc_idx = 0;
++
++	for (i = 0; i < XGMAC_DESCRIPTORS_NUM; i++) {
++		struct xgmac_desc *rx_desc = &xgmac->rx_descs[i];
++
++		writel(XGMAC_DESC3_OWN, &rx_desc->des3);
++	}
++
++	writel(0, &xgmac->dma_regs->ch0_txdesc_list_haddress);
++	writel(xgmac->tx_descs_phys, &xgmac->dma_regs->ch0_txdesc_list_address);
++	writel(XGMAC_DESCRIPTORS_NUM - 1,
++	       &xgmac->dma_regs->ch0_txdesc_ring_length);
++
++	writel(0, &xgmac->dma_regs->ch0_rxdesc_list_haddress);
++	writel(xgmac->rx_descs_phys, &xgmac->dma_regs->ch0_rxdesc_list_address);
++	writel(XGMAC_DESCRIPTORS_NUM - 1,
++	       &xgmac->dma_regs->ch0_rxdesc_ring_length);
++
++	/* Enable everything */
++	setbits_le32(&xgmac->dma_regs->ch0_tx_control,
++		     XGMAC_DMA_CH0_TX_CONTROL_ST);
++	setbits_le32(&xgmac->dma_regs->ch0_rx_control,
++		     XGMAC_DMA_CH0_RX_CONTROL_SR);
++	setbits_le32(&xgmac->mac_regs->tx_configuration,
++		     XGMAC_MAC_CONF_TE);
++	setbits_le32(&xgmac->mac_regs->rx_configuration,
++		     XGMAC_MAC_CONF_RE);
++
++	/* TX tail pointer not written until we need to TX a packet */
++	/*
++	 * Point RX tail pointer at last descriptor. Ideally, we'd point at the
++	 * first descriptor, implying all descriptors were available. However,
++	 * that's not distinguishable from none of the descriptors being
++	 * available.
++	 */
++	last_rx_desc = (ulong)&xgmac->rx_descs[(XGMAC_DESCRIPTORS_NUM - 1)];
++	writel(last_rx_desc, &xgmac->dma_regs->ch0_rxdesc_tail_pointer);
++
++	xgmac->started = true;
++
++	return 0;
++
++err:
++	return ret;
++}
++
++static void xgmac_stop(struct eth_device *edev)
++{
++	struct xgmac_priv *xgmac = to_xgmac(edev);
++	u64 start_time;
++	u32 val;
++	u32 trcsts;
++	u32 txqsts;
++	u32 prxq;
++	u32 rxqsts;
++
++	if (!xgmac->started)
++		return;
++
++	xgmac->started = false;
++	xgmac->reg_access_ok = false;
++
++	/* Disable TX DMA */
++	clrbits_le32(&xgmac->dma_regs->ch0_tx_control,
++		     XGMAC_DMA_CH0_TX_CONTROL_ST);
++
++	/* Wait for TX all packets to drain out of MTL */
++	start_time = get_time_ns();
++
++	while (!is_timeout(start_time, XGMAC_TIMEOUT_100MS)) {
++		val = readl(&xgmac->mtl_regs->txq0_debug);
++
++		trcsts = (val >> XGMAC_MTL_TXQ0_DEBUG_TRCSTS_SHIFT) &
++			  XGMAC_MTL_TXQ0_DEBUG_TRCSTS_MASK;
++
++		txqsts = val & XGMAC_MTL_TXQ0_DEBUG_TXQSTS;
++
++		if (trcsts != XGMAC_MTL_TXQ0_DEBUG_TRCSTS_READ_STATE && !txqsts)
++			break;
++	}
++
++	/* Turn off MAC TX and RX */
++	clrbits_le32(&xgmac->mac_regs->tx_configuration,
++		     XGMAC_MAC_CONF_RE);
++	clrbits_le32(&xgmac->mac_regs->rx_configuration,
++		     XGMAC_MAC_CONF_RE);
++
++	/* Wait for all RX packets to drain out of MTL */
++	start_time = get_time_ns();
++
++	while (!is_timeout(start_time, XGMAC_TIMEOUT_100MS)) {
++		val = readl(&xgmac->mtl_regs->rxq0_debug);
++
++		prxq = (val >> XGMAC_MTL_RXQ0_DEBUG_PRXQ_SHIFT) &
++			XGMAC_MTL_RXQ0_DEBUG_PRXQ_MASK;
++
++		rxqsts = (val >> XGMAC_MTL_RXQ0_DEBUG_RXQSTS_SHIFT) &
++			  XGMAC_MTL_RXQ0_DEBUG_RXQSTS_MASK;
++
++		if (!prxq && !rxqsts)
++			break;
++	}
++
++	/* Turn off RX DMA */
++	clrbits_le32(&xgmac->dma_regs->ch0_rx_control,
++		     XGMAC_DMA_CH0_RX_CONTROL_SR);
++}
++
++static int xgmac_send(struct eth_device *edev, void *packet, int length)
++{
++	struct xgmac_priv *xgmac = to_xgmac(edev);
++	struct xgmac_desc *tx_desc;
++	dma_addr_t dma;
++	u32 des3_prev, des3;
++	int ret;
++
++	tx_desc = &xgmac->tx_descs[xgmac->tx_desc_idx];
++	xgmac->tx_desc_idx++;
++	xgmac->tx_desc_idx %= XGMAC_DESCRIPTORS_NUM;
++
++	dma = dma_map_single(edev->parent, packet, length, DMA_TO_DEVICE);
++	if (dma_mapping_error(edev->parent, dma))
++		return -EFAULT;
++
++	tx_desc->des0 = lower_32_bits(dma);
++	tx_desc->des1 = upper_32_bits(dma);
++	tx_desc->des2 = length;
++	/*
++	 * Make sure that if HW sees the _OWN write below, it will see all the
++	 * writes to the rest of the descriptor too.
++	 */
++	barrier();
++
++	des3_prev = XGMAC_DESC3_OWN | XGMAC_DESC3_FD | XGMAC_DESC3_LD | length;
++	writel(des3_prev, &tx_desc->des3);
++	writel((ulong)(tx_desc + 1), &xgmac->dma_regs->ch0_txdesc_tail_pointer);
++
++	ret = readl_poll_timeout(&tx_desc->des3, des3,
++				 !(des3 & XGMAC_DESC3_OWN),
++				 100 * USEC_PER_MSEC);
++
++	dma_unmap_single(edev->parent, dma, length, DMA_TO_DEVICE);
++
++	if (ret == -ETIMEDOUT)
++		dev_dbg(xgmac->dev, "%s: TX timeout 0x%08x\n", __func__, des3);
++
++	return ret;
++}
++
++static void xgmac_recv(struct eth_device *edev)
++{
++	struct xgmac_priv *xgmac = to_xgmac(edev);
++	struct xgmac_desc *rx_desc;
++	dma_addr_t dma;
++	void *pkt;
++	int length;
++
++	rx_desc = &xgmac->rx_descs[xgmac->rx_desc_idx];
++
++	if (rx_desc->des3 & XGMAC_DESC3_OWN)
++		return;
++
++	dma = xgmac->dma_rx_buf_phys[xgmac->rx_desc_idx];
++	pkt = xgmac->dma_rx_buf_virt[xgmac->rx_desc_idx];
++	length = rx_desc->des3 & XGMAC_RDES3_PKT_LENGTH_MASK;
++
++	dma_sync_single_for_cpu(edev->parent, dma, length, DMA_FROM_DEVICE);
++	net_receive(edev, pkt, length);
++	dma_sync_single_for_device(edev->parent, dma, length, DMA_FROM_DEVICE);
++
++	/* Read Format RX descriptor */
++	rx_desc = &xgmac->rx_descs[xgmac->rx_desc_idx];
++	rx_desc->des0 = lower_32_bits(dma);
++	rx_desc->des1 = upper_32_bits(dma);
++	rx_desc->des2 = 0;
++	/*
++	 * Make sure that if HW sees the _OWN write below, it will see all the
++	 * writes to the rest of the descriptor too.
++	 */
++	rx_desc->des3 = XGMAC_DESC3_OWN;
++	barrier();
++
++	writel(xgmac->rx_descs_phys + (xgmac->rx_desc_idx * XGMAC_DESCRIPTOR_SIZE),
++	       &xgmac->dma_regs->ch0_rxdesc_tail_pointer);
++
++	xgmac->rx_desc_idx++;
++	xgmac->rx_desc_idx %= XGMAC_DESCRIPTORS_NUM;
++}
++
++static int xgmac_probe_resources_core(struct xgmac_priv *xgmac)
++{
++	unsigned int desc_step;
++	dma_addr_t dma;
++	int ret = 0;
++	void *p;
++	int i;
++
++	/* Maximum distance between neighboring descriptors, in Bytes. */
++	desc_step = sizeof(struct xgmac_desc);
++
++	xgmac->tx_descs = dma_alloc_coherent(xgmac->dev,
++					     XGMAC_DESCRIPTORS_SIZE,
++					     &xgmac->tx_descs_phys);
++	if (!xgmac->tx_descs) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	xgmac->rx_descs = dma_alloc_coherent(xgmac->dev,
++					     XGMAC_DESCRIPTORS_SIZE,
++					     &xgmac->rx_descs_phys);
++	if (!xgmac->rx_descs) {
++		ret = -ENOMEM;
++		goto err_free_tx_descs;
++	}
++
++	p = dma_alloc(XGMAC_RX_BUFFER_SIZE);
++	if (!p)
++		goto err_free_descs;
++
++	for (i = 0; i < XGMAC_DESCRIPTORS_NUM; i++) {
++		struct xgmac_desc *rx_desc = &xgmac->rx_descs[i];
++
++		dma = dma_map_single(xgmac->dev, p, XGMAC_MAX_PACKET_SIZE, DMA_FROM_DEVICE);
++		if (dma_mapping_error(xgmac->dev, dma)) {
++			ret = -EFAULT;
++			goto err_free_dma_bufs;
++		}
++
++		rx_desc->des0 = lower_32_bits(dma);
++		rx_desc->des1 = upper_32_bits(dma);
++		xgmac->dma_rx_buf_phys[i] = dma;
++		xgmac->dma_rx_buf_virt[i] = p;
++
++		p += XGMAC_MAX_PACKET_SIZE;
++	}
++
++	return 0;
++
++err_free_dma_bufs:
++	dma_unmap_single(xgmac->dev, dma, XGMAC_MAX_PACKET_SIZE, DMA_FROM_DEVICE);
++	dma_free(&dma);
++err_free_descs:
++	dma_free_coherent(xgmac->dev, xgmac->rx_descs, xgmac->rx_descs_phys,
++			  XGMAC_DESCRIPTORS_SIZE);
++err_free_tx_descs:
++	dma_free_coherent(xgmac->dev, xgmac->tx_descs, xgmac->tx_descs_phys,
++			  XGMAC_DESCRIPTORS_SIZE);
++err:
++
++	return ret;
++}
++
++static int xgmac_remove_resources_core(struct xgmac_priv *xgmac)
++{
++	dma_free_coherent(xgmac->dev, xgmac->rx_descs, xgmac->rx_descs_phys,
++			  XGMAC_DESCRIPTORS_SIZE);
++	dma_free_coherent(xgmac->dev, xgmac->tx_descs, xgmac->tx_descs_phys,
++			  XGMAC_DESCRIPTORS_SIZE);
++
++	return 0;
++}
++
++static void xgmac_probe_dt(struct device *dev, struct xgmac_priv *xgmac)
++{
++	struct device_node *child;
++
++	xgmac->interface = of_get_phy_mode(dev->of_node);
++	xgmac->phy_addr = -1;
++
++	/* Set MDIO bus device node, if present. */
++	for_each_child_of_node(dev->of_node, child) {
++		if (of_device_is_compatible(child, "snps,dwmac-mdio") ||
++		    (child->name && !of_node_cmp(child->name, "mdio"))) {
++			xgmac->miibus.dev.of_node = child;
++			break;
++		}
++	}
++}
++
++static int xgmac_phy_reset(struct device *dev)
++{
++	struct gpio_desc *phy_reset;
++	u32 delays[3] = {0, 0, 0};
++
++	phy_reset = gpiod_get_optional(dev, "snps,reset",
++				       GPIOF_OUT_INIT_ACTIVE);
++	if (IS_ERR(phy_reset)) {
++		dev_warn(dev, "Failed to get 'snps,reset' GPIO (ignored)\n");
++	} else if (phy_reset) {
++		of_property_read_u32_array(dev->of_node,
++					   "snps,reset-delays-us",
++					   delays, ARRAY_SIZE(delays));
++		udelay(delays[1]);
++		gpiod_set_value(phy_reset, false);
++		udelay(delays[2]);
++	}
++
++	return 0;
++}
++
++int xgmac_probe(struct device *dev)
++{
++	struct mii_bus *miibus;
++	struct xgmac_priv *xgmac;
++	struct resource *iores;
++	struct eth_device *edev;
++	int ret = 0;
++
++	xgmac = xzalloc(sizeof(*xgmac));
++
++	xgmac->dev = dev;
++	xgmac->config = device_get_match_data(dev);
++	if (!xgmac->config) {
++		dev_err(dev, "failed to get driver data: %d\n", ret);
++		return ret;
++	}
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++	xgmac->regs = IOMEM(iores->start);
++
++	xgmac->mac_regs = xgmac->regs + XGMAC_MAC_REGS_BASE;
++	xgmac->mtl_regs = xgmac->regs + XGMAC_MTL_REGS_BASE;
++	xgmac->dma_regs = xgmac->regs + XGMAC_DMA_REGS_BASE;
++
++	xgmac_probe_dt(dev, xgmac);
++
++	edev = &xgmac->netdev;
++	dev->priv = xgmac;
++	edev->priv = xgmac;
++
++	edev->parent = dev;
++	edev->open = xgmac_start;
++	edev->send = xgmac_send;
++	edev->halt = xgmac_stop;
++	edev->recv = xgmac_recv;
++	edev->get_ethaddr = xgmac_read_rom_hwaddr;
++	edev->set_ethaddr = xgmac_write_hwaddr;
++
++	miibus = &xgmac->miibus;
++	miibus->parent = edev->parent;
++	miibus->read = xgmac_mdio_read;
++	miibus->write = xgmac_mdio_write;
++	miibus->priv = xgmac;
++
++	ret = xgmac_phy_reset(dev);
++	if (ret)
++		return ret;
++
++	ret = xgmac_probe_resources_core(xgmac);
++	if (ret < 0) {
++		dev_err(dev, "xgmac_probe_resources_core() failed: %d\n", ret);
++		return ret;
++	}
++
++	ret = xgmac->config->ops->xgmac_probe_resources(dev);
++	if (ret < 0) {
++		dev_err(dev, "xgmac_probe_resources() failed: %d\n", ret);
++		goto err_remove_resources_core;
++	}
++
++	ret = mdiobus_register(miibus);
++	if (ret)
++		return ret;
++
++	return eth_register(edev);
++
++err_remove_resources_core:
++	xgmac_remove_resources_core(xgmac);
++
++	return ret;
++}
++
++void xgmac_remove(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev->priv;
++
++	eth_unregister(&xgmac->netdev);
++	mdiobus_unregister(&xgmac->miibus);
++
++	xgmac_remove_resources_core(xgmac);
++}
+diff --git a/drivers/net/designware_xgmac.h b/drivers/net/designware_xgmac.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..9f9048427d3bcde01d619575448145ad5243f1dc
+--- /dev/null
++++ b/drivers/net/designware_xgmac.h
+@@ -0,0 +1,296 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
-+ * TODO - Clocks in AO (always on) controller
-+ * 2 main PLLs only
++ * Copyright 2023 Intel Coporation.
 + */
-+static const struct stratix10_pll_clock agilex5_pll_clks[] = {
-+	{ AGILEX5_BOOT_CLK, "boot_clk", boot_mux, ARRAY_SIZE(boot_mux), 0,
-+	  0x0 },
-+	{ AGILEX5_MAIN_PLL_CLK, "main_pll", pll_mux, ARRAY_SIZE(pll_mux), 0,
-+	  0x48 },
-+	{ AGILEX5_PERIPH_PLL_CLK, "periph_pll", pll_mux, ARRAY_SIZE(pll_mux), 0,
-+	  0x9C },
++
++#include <net.h>
++#include <linux/bitops.h>
++#include <linux/phy.h>
++
++/* Core registers */
++
++#define XGMAC_MAC_REGS_BASE 0x000
++
++struct xgmac_mac_regs {
++	u32 tx_configuration;			/* 0x000 */
++	u32 rx_configuration;			/* 0x004 */
++	u32 mac_packet_filter;			/* 0x008 */
++	u32 unused_00c[(0x070 - 0x00c) / 4];	/* 0x00c */
++	u32 q0_tx_flow_ctrl;			/* 0x070 */
++	u32 unused_070[(0x090 - 0x074) / 4];	/* 0x074 */
++	u32 rx_flow_ctrl;			/* 0x090 */
++	u32 unused_094[(0x0a0 - 0x094) / 4];	/* 0x094 */
++	u32 rxq_ctrl0;				/* 0x0a0 */
++	u32 rxq_ctrl1;				/* 0x0a4 */
++	u32 rxq_ctrl2;				/* 0x0a8 */
++	u32 unused_0ac[(0x0dc - 0x0ac) / 4];	/* 0x0ac */
++	u32 us_tic_counter;			/* 0x0dc */
++	u32 unused_0e0[(0x11c - 0x0e0) / 4];	/* 0x0e0 */
++	u32 hw_feature0;			/* 0x11c */
++	u32 hw_feature1;			/* 0x120 */
++	u32 hw_feature2;			/* 0x124 */
++	u32 hw_feature3;			/* 0x128 */
++	u32 hw_feature4;			/* 0x12c */
++	u32 unused_130[(0x140 - 0x130) / 4];	/* 0x130 */
++	u32 mac_extended_conf;			/* 0x140 */
++	u32 unused_144[(0x200 - 0x144) / 4];	/* 0x144 */
++	u32 mdio_address;			/* 0x200 */
++	u32 mdio_data;				/* 0x204 */
++	u32 mdio_cont_write_addr;		/* 0x208 */
++	u32 mdio_cont_write_data;		/* 0x20c */
++	u32 mdio_cont_scan_port_enable;		/* 0x210 */
++	u32 mdio_intr_status;			/* 0x214 */
++	u32 mdio_intr_enable;			/* 0x218 */
++	u32 mdio_port_cnct_dsnct_status;	/* 0x21c */
++	u32 mdio_clause_22_port;		/* 0x220 */
++	u32 unused_224[(0x300 - 0x224)	/ 4];	/* 0x224 */
++	u32 address0_high;			/* 0x300 */
++	u32 address0_low;			/* 0x304 */
 +};
 +
-+static const struct stratix10_perip_c_clock agilex5_main_perip_c_clks[] = {
-+	{ AGILEX5_MAIN_PLL_C0_CLK, "main_pll_c0", "main_pll", NULL, 1, 0,
-+	  0x5C },
-+	{ AGILEX5_MAIN_PLL_C1_CLK, "main_pll_c1", "main_pll", NULL, 1, 0,
-+	  0x60 },
-+	{ AGILEX5_MAIN_PLL_C2_CLK, "main_pll_c2", "main_pll", NULL, 1, 0,
-+	  0x64 },
-+	{ AGILEX5_MAIN_PLL_C3_CLK, "main_pll_c3", "main_pll", NULL, 1, 0,
-+	  0x68 },
-+	{ AGILEX5_PERIPH_PLL_C0_CLK, "peri_pll_c0", "periph_pll", NULL, 1, 0,
-+	  0xB0 },
-+	{ AGILEX5_PERIPH_PLL_C1_CLK, "peri_pll_c1", "periph_pll", NULL, 1, 0,
-+	  0xB4 },
-+	{ AGILEX5_PERIPH_PLL_C2_CLK, "peri_pll_c2", "periph_pll", NULL, 1, 0,
-+	  0xB8 },
-+	{ AGILEX5_PERIPH_PLL_C3_CLK, "peri_pll_c3", "periph_pll", NULL, 1, 0,
-+	  0xBC },
++#define XGMAC_TIMEOUT_100MS			100000
++#define XGMAC_MAC_CONF_SS_SHIFT			29
++#define XGMAC_MAC_CONF_SS_SHIFT_MASK		GENMASK(31, 29)
++#define XGMAC_MAC_CONF_SS_10G_XGMII		0
++#define XGMAC_MAC_CONF_SS_2_5G_GMII		2
++#define XGMAC_MAC_CONF_SS_1G_GMII		3
++#define XGMAC_MAC_CONF_SS_100M_MII		4
++#define XGMAC_MAC_CONF_SS_5G_XGMII		5
++#define XGMAC_MAC_CONF_SS_2_5G_XGMII		6
++#define XGMAC_MAC_CONF_SS_2_10M_MII		7
++
++#define XGMAC_MAC_CONF_JD			BIT(16)
++#define XGMAC_MAC_CONF_JE			BIT(8)
++#define XGMAC_MAC_CONF_WD			BIT(7)
++#define XGMAC_MAC_CONF_GPSLCE			BIT(6)
++#define XGMAC_MAC_CONF_CST			BIT(2)
++#define XGMAC_MAC_CONF_ACS			BIT(1)
++#define XGMAC_MAC_CONF_TE			BIT(0)
++#define XGMAC_MAC_CONF_RE			BIT(0)
++
++#define XGMAC_MAC_EXT_CONF_HD			BIT(24)
++
++#define XGMAC_MAC_PACKET_FILTER_RA		BIT(31)
++#define XGMAC_MAC_PACKET_FILTER_PR		BIT(0)
++
++#define XGMAC_MAC_Q0_TX_FLOW_CTRL_PT_SHIFT	16
++#define XGMAC_MAC_Q0_TX_FLOW_CTRL_PT_MASK	GENMASK(15, 0)
++#define XGMAC_MAC_Q0_TX_FLOW_CTRL_TFE		BIT(1)
++
++#define XGMAC_MAC_RX_FLOW_CTRL_RFE		BIT(0)
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_SHIFT	0
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_MASK		GENMASK(1, 0)
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_NOT_ENABLED	0
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB	2
++#define XGMAC_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_AV	1
++
++#define XGMAC_MAC_RXQ_CTRL1_MCBCQEN		BIT(15)
++
++#define XGMAC_MAC_RXQ_CTRL2_PSRQ0_SHIFT		0
++#define XGMAC_MAC_RXQ_CTRL2_PSRQ0_MASK		GENMASK(7, 0)
++
++#define XGMAC_MAC_HW_FEATURE1_TXFIFOSIZE_SHIFT	6
++#define XGMAC_MAC_HW_FEATURE1_TXFIFOSIZE_MASK	GENMASK(4, 0)
++#define XGMAC_MAC_HW_FEATURE1_RXFIFOSIZE_SHIFT	0
++#define XGMAC_MAC_HW_FEATURE1_RXFIFOSIZE_MASK	GENMASK(4, 0)
++
++#define XGMAC_MDIO_SINGLE_CMD_SHIFT		16
++#define XGMAC_MDIO_SINGLE_CMD_ADDR_CMD_READ	3 << XGMAC_MDIO_SINGLE_CMD_SHIFT
++#define XGMAC_MDIO_SINGLE_CMD_ADDR_CMD_WRITE	BIT(16)
++#define XGMAC_MAC_MDIO_ADDRESS_PA_SHIFT		16
++#define XGMAC_MAC_MDIO_ADDRESS_PA_MASK		GENMASK(15, 0)
++#define XGMAC_MAC_MDIO_ADDRESS_DA_SHIFT		21
++#define XGMAC_MAC_MDIO_ADDRESS_CR_SHIFT		19
++#define XGMAC_MAC_MDIO_ADDRESS_CR_100_150	0
++#define XGMAC_MAC_MDIO_ADDRESS_CR_150_250	1
++#define XGMAC_MAC_MDIO_ADDRESS_CR_250_300	2
++#define XGMAC_MAC_MDIO_ADDRESS_CR_300_350	3
++#define XGMAC_MAC_MDIO_ADDRESS_CR_350_400	4
++#define XGMAC_MAC_MDIO_ADDRESS_CR_400_500	5
++#define XGMAC_MAC_MDIO_ADDRESS_SADDR		BIT(18)
++#define XGMAC_MAC_MDIO_ADDRESS_SBUSY		BIT(22)
++#define XGMAC_MAC_MDIO_REG_ADDR_C22P_MASK	GENMASK(4, 0)
++#define XGMAC_MAC_MDIO_DATA_GD_MASK		GENMASK(15, 0)
++
++/* MTL Registers */
++
++#define XGMAC_MTL_REGS_BASE 0x1000
++
++struct xgmac_mtl_regs {
++	u32 mtl_operation_mode;			/* 0x1000 */
++	u32 unused_1004[(0x1030 - 0x1004) / 4];	/* 0x1004 */
++	u32 mtl_rxq_dma_map0;			/* 0x1030 */
++	u32 mtl_rxq_dma_map1;			/* 0x1034 */
++	u32 mtl_rxq_dma_map2;			/* 0x1038 */
++	u32 mtl_rxq_dma_map3;			/* 0x103c */
++	u32 mtl_tc_prty_map0;			/* 0x1040 */
++	u32 mtl_tc_prty_map1;			/* 0x1044 */
++	u32 unused_1048[(0x1100 - 0x1048) / 4]; /* 0x1048 */
++	u32 txq0_operation_mode;		/* 0x1100 */
++	u32 unused_1104;			/* 0x1104 */
++	u32 txq0_debug;				/* 0x1108 */
++	u32 unused_100c[(0x1118 - 0x110c) / 4];	/* 0x110c */
++	u32 txq0_quantum_weight;		/* 0x1118 */
++	u32 unused_111c[(0x1140 - 0x111c) / 4];	/* 0x111c */
++	u32 rxq0_operation_mode;		/* 0x1140 */
++	u32 unused_1144;			/* 0x1144 */
++	u32 rxq0_debug;				/* 0x1148 */
 +};
 +
-+/* Non-SW clock-gated enabled clocks */
-+static const struct stratix10_perip_cnt_clock agilex5_main_perip_cnt_clks[] = {
-+	{ AGILEX5_CORE0_FREE_CLK, "core0_free_clk", NULL, core0_free_mux,
-+	ARRAY_SIZE(core0_free_mux), 0, 0x0104, 0, 0, 0},
-+	{ AGILEX5_CORE1_FREE_CLK, "core1_free_clk", NULL, core1_free_mux,
-+	ARRAY_SIZE(core1_free_mux), 0, 0x0104, 0, 0, 0},
-+	{ AGILEX5_CORE2_FREE_CLK, "core2_free_clk", NULL, core2_free_mux,
-+	ARRAY_SIZE(core2_free_mux), 0, 0x010C, 0, 0, 0},
-+	{ AGILEX5_CORE3_FREE_CLK, "core3_free_clk", NULL, core3_free_mux,
-+	ARRAY_SIZE(core3_free_mux), 0, 0x0110, 0, 0, 0},
-+	{ AGILEX5_DSU_FREE_CLK, "dsu_free_clk", NULL, dsu_free_mux,
-+	ARRAY_SIZE(dsu_free_mux), 0, 0x0100, 0, 0, 0},
-+	{ AGILEX5_NOC_FREE_CLK, "noc_free_clk", NULL, noc_free_mux,
-+	  ARRAY_SIZE(noc_free_mux), 0, 0x40, 0, 0, 0 },
-+	{ AGILEX5_EMAC_A_FREE_CLK, "emaca_free_clk", NULL, emaca_free_mux,
-+	  ARRAY_SIZE(emaca_free_mux), 0, 0xD4, 0, 0x88, 0 },
-+	{ AGILEX5_EMAC_B_FREE_CLK, "emacb_free_clk", NULL, emacb_free_mux,
-+	  ARRAY_SIZE(emacb_free_mux), 0, 0xD8, 0, 0x88, 1 },
-+	{ AGILEX5_EMAC_PTP_FREE_CLK, "emac_ptp_free_clk", NULL,
-+	  emac_ptp_free_mux, ARRAY_SIZE(emac_ptp_free_mux), 0, 0xDC, 0, 0x88,
-+	  2 },
-+	{ AGILEX5_GPIO_DB_FREE_CLK, "gpio_db_free_clk", NULL, gpio_db_free_mux,
-+	  ARRAY_SIZE(gpio_db_free_mux), 0, 0xE0, 0, 0x88, 3 },
-+	{ AGILEX5_S2F_USER0_FREE_CLK, "s2f_user0_free_clk", NULL,
-+	  s2f_usr0_free_mux, ARRAY_SIZE(s2f_usr0_free_mux), 0, 0xE8, 0, 0x30,
-+	  2 },
-+	{ AGILEX5_S2F_USER1_FREE_CLK, "s2f_user1_free_clk", NULL,
-+	  s2f_usr1_free_mux, ARRAY_SIZE(s2f_usr1_free_mux), 0, 0xEC, 0, 0x88,
-+	  5 },
-+	{ AGILEX5_PSI_REF_FREE_CLK, "psi_ref_free_clk", NULL, psi_ref_free_mux,
-+	  ARRAY_SIZE(psi_ref_free_mux), 0, 0xF0, 0, 0x88, 6 },
-+	{ AGILEX5_USB31_FREE_CLK, "usb31_free_clk", NULL, usb31_free_mux,
-+	  ARRAY_SIZE(usb31_free_mux), 0, 0xF8, 0, 0x88, 7},
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_SHIFT		16
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TQS_MASK		GENMASK(8, 0)
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TXQEN_SHIFT	2
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TXQEN_ENABLED	2
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_TSF		BIT(1)
++#define XGMAC_MTL_TXQ0_OPERATION_MODE_FTQ		BIT(0)
++
++#define XGMAC_MTL_TXQ0_DEBUG_TXQSTS			BIT(4)
++#define XGMAC_MTL_TXQ0_DEBUG_TRCSTS_SHIFT		1
++#define XGMAC_MTL_TXQ0_DEBUG_TRCSTS_MASK		GENMASK(2, 0)
++#define XGMAC_MTL_TXQ0_DEBUG_TRCSTS_READ_STATE		0x1
++
++#define XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_SHIFT		16
++#define XGMAC_MTL_RXQ0_OPERATION_MODE_RQS_MASK		GENMASK(9, 0)
++#define XGMAC_MTL_RXQ0_OPERATION_MODE_EHFC		BIT(7)
++#define XGMAC_MTL_RXQ0_OPERATION_MODE_RSF		BIT(5)
++
++#define XGMAC_MTL_RXQ0_DEBUG_PRXQ_SHIFT			16
++#define XGMAC_MTL_RXQ0_DEBUG_PRXQ_MASK			GENMASK(14, 0)
++#define XGMAC_MTL_RXQ0_DEBUG_RXQSTS_SHIFT		4
++#define XGMAC_MTL_RXQ0_DEBUG_RXQSTS_MASK		GENMASK(1, 0)
++
++/* DMA Registers */
++
++#define XGMAC_DMA_REGS_BASE 0x3000
++
++struct xgmac_dma_regs {
++	u32 mode;					/* 0x3000 */
++	u32 sysbus_mode;				/* 0x3004 */
++	u32 unused_3008[(0x3100 - 0x3008) / 4];		/* 0x3008 */
++	u32 ch0_control;				/* 0x3100 */
++	u32 ch0_tx_control;				/* 0x3104 */
++	u32 ch0_rx_control;				/* 0x3108 */
++	u32 slot_func_control_status;			/* 0x310c */
++	u32 ch0_txdesc_list_haddress;			/* 0x3110 */
++	u32 ch0_txdesc_list_address;			/* 0x3114 */
++	u32 ch0_rxdesc_list_haddress;			/* 0x3118 */
++	u32 ch0_rxdesc_list_address;			/* 0x311c */
++	/* 0x3120: register undocumented; maybe high address of ch0_txdesc_tail_pointer? */
++	u32 unused_3120;
++	u32 ch0_txdesc_tail_pointer;			/* 0x3124 */
++	/* 0x3128: register undocumented; maybe high address of ch0_rxdesc_tail_pointer? */
++	u32 unused_3128;
++	u32 ch0_rxdesc_tail_pointer;			/* 0x312c */
++	u32 ch0_txdesc_ring_length;			/* 0x3130 */
++	u32 ch0_rxdesc_ring_length;			/* 0x3134 */
++	u32 unused_3138[(0x3160 - 0x3138) / 4];		/* 0x3138 */
++	u32 ch0_status;					/* 0x3160 */
 +};
 +
-+/* SW Clock gate enabled clocks */
-+static const struct stratix10_gate_clock agilex5_gate_clks[] = {
++#define XGMAC_DMA_MODE_SWR				BIT(0)
++#define XGMAC_DMA_SYSBUS_MODE_WR_OSR_LMT_SHIFT		24
++#define XGMAC_DMA_SYSBUS_MODE_WR_OSR_LMT_MASK		GENMASK(4, 0)
++#define XGMAC_DMA_SYSBUS_MODE_RD_OSR_LMT_SHIFT		16
++#define XGMAC_DMA_SYSBUS_MODE_RD_OSR_LMT_MASK		GENMASK(4, 0)
++#define XGMAC_DMA_SYSBUS_MODE_AAL			BIT(12)
++#define XGMAC_DMA_SYSBUS_MODE_EAME			BIT(11)
++#define XGMAC_DMA_SYSBUS_MODE_BLEN32			BIT(4)
++#define XGMAC_DMA_SYSBUS_MODE_BLEN16			BIT(3)
++#define XGMAC_DMA_SYSBUS_MODE_BLEN8			BIT(2)
++#define XGMAC_DMA_SYSBUS_MODE_BLEN4			BIT(1)
++#define XGMAC_DMA_SYSBUS_MODE_UNDEF			BIT(0)
 +
-+	/* TODO HW Managed Clocks list */
++#define XGMAC_DMA_CH0_CONTROL_DSL_SHIFT			18
++#define XGMAC_DMA_CH0_CONTROL_PBLX8			BIT(16)
 +
-+	/* TODO SW Managed Clocks list */
++#define XGMAC_DMA_CH0_TX_CONTROL_TXPBL_SHIFT		16
++#define XGMAC_DMA_CH0_TX_CONTROL_TXPBL_MASK		GENMASK(5, 0)
++#define XGMAC_DMA_CH0_TX_CONTROL_OSP			BIT(4)
++#define XGMAC_DMA_CH0_TX_CONTROL_ST			BIT(0)
 +
-+	/* Main PLL0 Begin */
-+	/* MPU clocks */
-+	{ AGILEX5_CORE0_CLK, "core0_clk", NULL, core0_mux,
-+	  ARRAY_SIZE(core0_mux), 0, 0x24, 8, 0, 0, 0, 0x30, 5, 0 },
-+	{ AGILEX5_CORE1_CLK, "core1_clk", NULL, core1_mux,
-+	  ARRAY_SIZE(core1_mux), 0, 0x24, 9, 0, 0, 0, 0x30, 5, 0 },
-+	{ AGILEX5_CORE2_CLK, "core2_clk", NULL, core2_mux,
-+	  ARRAY_SIZE(core2_mux), 0, 0x24, 10, 0, 0, 0, 0x30, 6, 0 },
-+	{ AGILEX5_CORE3_CLK, "core3_clk", NULL, core3_mux,
-+	  ARRAY_SIZE(core3_mux), 0, 0x24, 11, 0, 0, 0, 0x30, 7, 0 },
-+	{ AGILEX5_MPU_CLK, "dsu_clk", NULL, dsu_mux, ARRAY_SIZE(dsu_mux), 0, 0,
-+	  0, 0, 0, 0, 0x34, 4, 0 },
-+	{ AGILEX5_MPU_PERIPH_CLK, "mpu_periph_clk", NULL, dsu_mux,
-+	  ARRAY_SIZE(dsu_mux), 0, 0, 0, 0x44, 20, 2, 0x34, 4, 0 },
-+	{ AGILEX5_MPU_CCU_CLK, "mpu_ccu_clk", NULL, dsu_mux,
-+	  ARRAY_SIZE(dsu_mux), 0, 0, 0, 0x44, 18, 2, 0x34, 4, 0 },
++#define XGMAC_DMA_CH0_RX_CONTROL_RXPBL_SHIFT		16
++#define XGMAC_DMA_CH0_RX_CONTROL_RXPBL_MASK		GENMASK(5, 0)
++#define XGMAC_DMA_CH0_RX_CONTROL_RBSZ_SHIFT		4
++#define XGMAC_DMA_CH0_RX_CONTROL_RBSZ_MASK		GENMASK(10, 0)
++#define XGMAC_DMA_CH0_RX_CONTROL_SR			BIT(0)
 +
-+	/* ANGTS TODO l4 main clk has no divider now. To check. */
-+	{ AGILEX5_L4_MAIN_CLK, "l4_main_clk", NULL, noc_mux,
-+	  ARRAY_SIZE(noc_mux), 0, 0x24, 1, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_L4_MP_CLK, "l4_mp_clk", NULL, noc_mux, ARRAY_SIZE(noc_mux), 0,
-+	  0x24, 2, 0x44, 4, 2, 0x30, 1, 0 },
-+	{ AGILEX5_L4_SYS_FREE_CLK, "l4_sys_free_clk", NULL, noc_mux,
-+	  ARRAY_SIZE(noc_mux), 0, 0, 0, 0x44, 2, 2, 0x30, 1, 0 },
-+	{ AGILEX5_L4_SP_CLK, "l4_sp_clk", NULL, noc_mux, ARRAY_SIZE(noc_mux),
-+	  CLK_IS_CRITICAL, 0x24, 3, 0x44, 6, 2, 0x30, 1, 0 },
++/* Descriptors */
++#define XGMAC_DESCRIPTOR_WORDS		4
++#define XGMAC_DESCRIPTOR_SIZE		(XGMAC_DESCRIPTOR_WORDS * 4)
++#define XGMAC_DESCRIPTORS_NUM		8
++#define XGMAC_DESCRIPTOR_ALIGN		64
++#define XGMAC_DESCRIPTORS_SIZE		ALIGN(XGMAC_DESCRIPTORS_NUM * \
++					      XGMAC_DESCRIPTOR_SIZE, XGMAC_DESCRIPTOR_ALIGN)
++#define XGMAC_BUFFER_ALIGN		XGMAC_DESCRIPTOR_ALIGN
++#define XGMAC_MAX_PACKET_SIZE		ALIGN(1568, XGMAC_DESCRIPTOR_ALIGN)
++#define XGMAC_RX_BUFFER_SIZE		(XGMAC_DESCRIPTORS_NUM * XGMAC_MAX_PACKET_SIZE)
 +
-+	/* Core sight clocks*/
-+	{ AGILEX5_CS_AT_CLK, "cs_at_clk", NULL, noc_mux, ARRAY_SIZE(noc_mux), 0,
-+	  0x24, 4, 0x44, 24, 2, 0x30, 1, 0 },
-+	{ AGILEX5_CS_TRACE_CLK, "cs_trace_clk", NULL, noc_mux,
-+	  ARRAY_SIZE(noc_mux), 0, 0x24, 4, 0x44, 26, 2, 0x30, 1, 0 },
-+	{ AGILEX5_CS_PDBG_CLK, "cs_pdbg_clk", "cs_at_clk", NULL, 1, 0, 0x24, 4,
-+	  0x44, 28, 1, 0, 0, 0 },
-+	/* Main PLL0 End */
++#define XGMAC_RDES3_PKT_LENGTH_MASK	GENMASK(13, 0)
 +
-+	/* Main Peripheral PLL1 Begin */
-+	{ AGILEX5_EMAC0_CLK, "emac0_clk", NULL, emac_mux, ARRAY_SIZE(emac_mux),
-+	  0, 0x7C, 0, 0, 0, 0, 0x94, 26, 0 },
-+	{ AGILEX5_EMAC1_CLK, "emac1_clk", NULL, emac_mux, ARRAY_SIZE(emac_mux),
-+	  0, 0x7C, 1, 0, 0, 0, 0x94, 27, 0 },
-+	{ AGILEX5_EMAC2_CLK, "emac2_clk", NULL, emac_mux, ARRAY_SIZE(emac_mux),
-+	  0, 0x7C, 2, 0, 0, 0, 0x94, 28, 0 },
-+	{ AGILEX5_EMAC_PTP_CLK, "emac_ptp_clk", NULL, emac_ptp_mux,
-+	  ARRAY_SIZE(emac_ptp_mux), 0, 0x7C, 3, 0, 0, 0, 0x88, 2, 0 },
-+	{ AGILEX5_GPIO_DB_CLK, "gpio_db_clk", NULL, gpio_db_mux,
-+	  ARRAY_SIZE(gpio_db_mux), 0, 0x7C, 4, 0x98, 0, 16, 0x88, 3, 1 },
-+	  /* Main Peripheral PLL1 End */
-+
-+	  /* Peripheral clocks  */
-+	{ AGILEX5_S2F_USER0_CLK, "s2f_user0_clk", NULL, s2f_user0_mux,
-+	  ARRAY_SIZE(s2f_user0_mux), 0, 0x24, 6, 0, 0, 0, 0x30, 2, 0 },
-+	{ AGILEX5_S2F_USER1_CLK, "s2f_user1_clk", NULL, s2f_user1_mux,
-+	  ARRAY_SIZE(s2f_user1_mux), 0, 0x7C, 6, 0, 0, 0, 0x88, 5, 0 },
-+	{ AGILEX5_PSI_REF_CLK, "psi_ref_clk", NULL, psi_mux,
-+	  ARRAY_SIZE(psi_mux), 0, 0x7C, 7, 0, 0, 0, 0x88, 6, 0 },
-+	{ AGILEX5_USB31_SUSPEND_CLK, "usb31_suspend_clk", NULL, usb31_mux,
-+	  ARRAY_SIZE(usb31_mux), 0, 0x7C, 25, 0, 0, 0, 0x88, 7, 0 },
-+	{ AGILEX5_USB31_BUS_CLK_EARLY, "usb31_bus_clk_early", "l4_main_clk",
-+	  NULL, 1, 0, 0x7C, 25, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_USB2OTG_HCLK, "usb2otg_hclk", "l4_mp_clk", NULL, 1, 0, 0x7C,
-+	  8, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SPIM_0_CLK, "spim_0_clk", "l4_mp_clk", NULL, 1, 0, 0x7C, 9,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SPIM_1_CLK, "spim_1_clk", "l4_mp_clk", NULL, 1, 0, 0x7C, 11,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SPIS_0_CLK, "spis_0_clk", "l4_sp_clk", NULL, 1, 0, 0x7C, 12,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SPIS_1_CLK, "spis_1_clk", "l4_sp_clk", NULL, 1, 0, 0x7C, 13,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_DMA_CORE_CLK, "dma_core_clk", "l4_mp_clk", NULL, 1, 0, 0x7C,
-+	  14, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_DMA_HS_CLK, "dma_hs_clk", "l4_mp_clk", NULL, 1, 0, 0x7C, 14,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_I3C_0_CORE_CLK, "i3c_0_core_clk", "l4_mp_clk", NULL, 1, 0,
-+	  0x7C, 18, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_I3C_1_CORE_CLK, "i3c_1_core_clk", "l4_mp_clk", NULL, 1, 0,
-+	  0x7C, 19, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_I2C_0_PCLK, "i2c_0_pclk", "l4_sp_clk", NULL, 1, 0, 0x7C, 15,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_I2C_1_PCLK, "i2c_1_pclk", "l4_sp_clk", NULL, 1, 0, 0x7C, 16,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_I2C_EMAC0_PCLK, "i2c_emac0_pclk", "l4_sp_clk", NULL, 1, 0,
-+	  0x7C, 17, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_I2C_EMAC1_PCLK, "i2c_emac1_pclk", "l4_sp_clk", NULL, 1, 0,
-+	  0x7C, 22, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_I2C_EMAC2_PCLK, "i2c_emac2_pclk", "l4_sp_clk", NULL, 1, 0,
-+	  0x7C, 27, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_UART_0_PCLK, "uart_0_pclk", "l4_sp_clk", NULL, 1, 0, 0x7C, 20,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_UART_1_PCLK, "uart_1_pclk", "l4_sp_clk", NULL, 1, 0, 0x7C, 21,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SPTIMER_0_PCLK, "sptimer_0_pclk", "l4_sp_clk", NULL, 1, 0,
-+	  0x7C, 23, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SPTIMER_1_PCLK, "sptimer_1_pclk", "l4_sp_clk", NULL, 1, 0,
-+	  0x7C, 24, 0, 0, 0, 0, 0, 0 },
-+
-+	/*NAND, SD/MMC and SoftPHY overall clocking*/
-+	{ AGILEX5_DFI_CLK, "dfi_clk", "l4_mp_clk", NULL, 1, 0, 0, 0, 0x44, 16,
-+	  2, 0, 0, 0 },
-+	{ AGILEX5_NAND_NF_CLK, "nand_nf_clk", "dfi_clk", NULL, 1, 0, 0x7C, 10,
-+	  0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_NAND_BCH_CLK, "nand_bch_clk", "l4_mp_clk", NULL, 1, 0, 0x7C,
-+	  10, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SDMMC_SDPHY_REG_CLK, "sdmmc_sdphy_reg_clk", "l4_mp_clk", NULL,
-+	  1, 0, 0x7C, 5, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SDMCLK, "sdmclk", "dfi_clk", NULL, 1, 0, 0x7C, 5, 0, 0, 0, 0,
-+	  0, 0 },
-+	{ AGILEX5_SOFTPHY_REG_PCLK, "softphy_reg_pclk", "l4_mp_clk", NULL, 1, 0,
-+	  0x7C, 26, 0, 0, 0, 0, 0, 0 },
-+	{ AGILEX5_SOFTPHY_PHY_CLK, "softphy_phy_clk", "l4_mp_clk", NULL, 1, 0,
-+	  0x7C, 26, 0x44, 16, 2, 0, 0, 0 },
-+	{ AGILEX5_SOFTPHY_CTRL_CLK, "softphy_ctrl_clk", "dfi_clk", NULL, 1, 0,
-+	  0x7C, 26, 0, 0, 0, 0, 0, 0 },
++struct xgmac_desc {
++	u32 des0;
++	u32 des1;
++	u32 des2;
++	u32 des3;
 +};
 +
-+static int
-+agilex5_clk_register_c_perip(const struct stratix10_perip_c_clock *clks,
-+			     int nums, struct stratix10_clock_data *data)
-+{
-+	struct clk_hw *hw_clk;
-+	void __iomem *base = data->base;
-+	int i;
++#define XGMAC_DESC3_OWN		BIT(31)
++#define XGMAC_DESC3_FD		BIT(29)
++#define XGMAC_DESC3_LD		BIT(28)
 +
-+	for (i = 0; i < nums; i++) {
-+		hw_clk = s10_register_periph(&clks[i], base);
-+		if (IS_ERR(hw_clk)) {
-+			pr_err("%s: failed to register clock %s\n", __func__,
-+			       clks[i].name);
-+			continue;
-+		}
-+		data->clk_data.hws[clks[i].id] = hw_clk;
++#define XGMAC_AXI_WIDTH_32	4
++#define XGMAC_AXI_WIDTH_64	8
++#define XGMAC_AXI_WIDTH_128	16
++
++struct xgmac_config {
++	bool reg_access_always_ok;
++	int swr_wait;
++	int config_mac;
++	int config_mac_mdio;
++	unsigned int axi_bus_width;
++	phy_interface_t interface;
++	struct xgmac_ops *ops;
++};
++
++struct xgmac_ops {
++	int (*xgmac_probe_resources)(struct device *dev);
++	int (*xgmac_start_resets)(struct device *dev);
++	int (*xgmac_get_enetaddr)(struct device *dev);
++};
++
++struct xgmac_priv {
++	struct eth_device netdev;
++	struct device *dev;
++	const struct xgmac_config *config;
++	void __iomem *regs;
++	struct xgmac_mac_regs *mac_regs;
++	struct xgmac_mtl_regs *mtl_regs;
++	struct xgmac_dma_regs *dma_regs;
++	struct reset_control *rst;
++	struct reset_control *rst_ocp;
++	struct mii_bus miibus;
++	int phy_addr;
++	phy_interface_t interface;
++
++	u8 macaddr[6];
++
++	u32 reg_offset, reg_shift;
++	struct xgmac_desc *tx_descs, *rx_descs;
++	dma_addr_t tx_descs_phys, rx_descs_phys;
++	dma_addr_t dma_rx_buf_phys[XGMAC_DESCRIPTORS_NUM];
++	void *dma_rx_buf_virt[XGMAC_DESCRIPTORS_NUM];
++	int tx_desc_idx, rx_desc_idx;
++	unsigned int desc_size;
++	unsigned int desc_per_cacheline;
++	bool started;
++	bool reg_access_ok;
++	bool clk_ck_enabled;
++};
++
++int xgmac_probe(struct device *dev);
++void xgmac_remove(struct device *dev);
++void xgmac_flush_desc_generic(void *desc);
++void xgmac_flush_buffer_generic(void *buf, size_t size);
++int xgmac_null_ops(struct device *dev);
++
++extern struct xgmac_config xgmac_socfpga_config;
+diff --git a/drivers/net/designware_xgmac_socfpga.c b/drivers/net/designware_xgmac_socfpga.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..21373c50d9628ab36df65f301fa92f9f1a7cd103
+--- /dev/null
++++ b/drivers/net/designware_xgmac_socfpga.c
+@@ -0,0 +1,156 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ *
++ * Copyright (c) 2023, Intel Corporation
++ */
++#include <common.h>
++#include <init.h>
++#include <errno.h>
++#include <malloc.h>
++#include <net.h>
++#include <linux/reset.h>
++#include <linux/phy.h>
++#include <mfd/syscon.h>
++#include <linux/clk.h>
++#include <mach/socfpga/soc64-system-manager.h>
++#include <mach/socfpga/secure_reg_helper.h>
++
++#include "designware_xgmac.h"
++
++#define SOCFPGA_XGMAC_SYSCON_ARG_COUNT 2
++
++static int dwxgmac_socfpga_do_setphy(struct device *dev, u32 modereg)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++	u32 modemask = SYSMGR_EMACGRP_CTRL_PHYSEL_MASK;
++	u32 index = (xgmac->reg_offset - SYSMGR_SOC64_EMAC0) >> 2;
++	u32 id = SOCFPGA_SECURE_REG_SYSMGR_SOC64_EMAC0 + index;
++	int ret;
++
++	ret = socfpga_secure_reg_update32(id, modemask, modereg);
++	if (ret) {
++		dev_err(dev, "Failed to set PHY register via SMC call\n");
++		return ret;
 +	}
++
 +	return 0;
 +}
 +
-+static int
-+agilex5_clk_register_cnt_perip(const struct stratix10_perip_cnt_clock *clks,
-+			       int nums, struct stratix10_clock_data *data)
++static int xgmac_probe_resources_socfpga(struct device *dev)
 +{
-+	struct clk_hw *hw_clk;
-+	void __iomem *base = data->base;
-+	int i;
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
++	phy_interface_t interface;
++	int ret;
++	u32 modereg;
 +
-+	for (i = 0; i < nums; i++) {
-+		hw_clk = s10_register_cnt_periph(&clks[i], base);
-+		if (IS_ERR(hw_clk)) {
-+			pr_err("%s: failed to register clock %s\n", __func__,
-+			       clks[i].name);
-+			continue;
-+		}
-+		data->clk_data.hws[clks[i].id] = hw_clk;
++	interface = xgmac->interface;
++
++	switch (interface) {
++	case PHY_INTERFACE_MODE_MII:
++	case PHY_INTERFACE_MODE_GMII:
++		modereg = SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_GMII_MII;
++		break;
++	case PHY_INTERFACE_MODE_RMII:
++		modereg = SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RMII;
++		break;
++	case PHY_INTERFACE_MODE_RGMII:
++	case PHY_INTERFACE_MODE_RGMII_ID:
++		modereg = SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII;
++		break;
++	default:
++		dev_err(dev, "Unsupported PHY mode\n");
++		return -EINVAL;
 +	}
 +
-+	return 0;
-+}
++	/* Get PHY syscon */
++	ret = of_property_read_u32_index(dev->of_node, "altr,sysmgr-syscon",
++					 1, &xgmac->reg_offset);
++	if (ret) {
++		dev_err(dev, "Could not read reg_offset from sysmgr-syscon! Please update the devicetree.\n");
 +
-+static int agilex5_clk_register_gate(const struct stratix10_gate_clock *clks,
-+				     int nums,
-+				     struct stratix10_clock_data *data)
-+{
-+	struct clk_hw *hw_clk;
-+	void __iomem *base = data->base;
-+	int i;
-+
-+	for (i = 0; i < nums; i++) {
-+		hw_clk = agilex_register_gate(&clks[i], base);
-+		if (IS_ERR(hw_clk)) {
-+			pr_err("%s: failed to register clock %s\n", __func__,
-+			       clks[i].name);
-+			continue;
-+		}
-+		data->clk_data.hws[clks[i].id] = hw_clk;
++		return -EINVAL;
 +	}
 +
-+	return 0;
-+}
-+
-+static int agilex5_clk_register_pll(const struct stratix10_pll_clock *clks,
-+				    int nums, struct stratix10_clock_data *data)
-+{
-+	struct clk_hw *hw_clk;
-+	void __iomem *base = data->base;
-+	int i;
-+
-+	for (i = 0; i < nums; i++) {
-+		hw_clk = agilex5_register_pll(&clks[i], base);
-+		if (IS_ERR(hw_clk)) {
-+			pr_err("%s: failed to register clock %s\n", __func__,
-+			       clks[i].name);
-+			continue;
-+		}
-+		data->clk_data.hws[clks[i].id] = hw_clk;
++	ret = of_property_read_u32_index(dev->of_node, "altr,sysmgr-syscon",
++					 2, &xgmac->reg_shift);
++	if (ret) {
++		dev_err(dev, "Could not read reg_shift from sysmgr-syscon! Please update the devicetree.\n");
++		return -EINVAL;
 +	}
 +
++	xgmac->rst = reset_control_get(dev, "stmmaceth");
++	if (IS_ERR(xgmac->rst)) {
++		dev_err(dev, "Invalid reset line 'stmmaceth'.\n");
++		return PTR_ERR(xgmac->rst);
++	}
++	xgmac->rst_ocp = reset_control_get(dev, "stmmaceth-ocp");
++	if (IS_ERR(xgmac->rst_ocp)) {
++		dev_err(dev, "Invalid reset line 'stmmaceth-ocp'.\n");
++		return PTR_ERR(xgmac->rst_ocp);
++	}
++
++	reset_control_assert(xgmac->rst_ocp);
++	reset_control_assert(xgmac->rst);
++
++	ret = dwxgmac_socfpga_do_setphy(dev, modereg);
++	if (ret)
++		return ret;
++
++	reset_control_deassert(xgmac->rst_ocp);
++	reset_control_deassert(xgmac->rst);
++
 +	return 0;
 +}
 +
-+static int agilex5_clkmgr_probe(struct device *dev)
++static int xgmac_get_enetaddr_socfpga(struct device *dev)
 +{
-+	struct device_node *np = dev->of_node;
-+	struct stratix10_clock_data *clk_data;
-+	struct resource *res;
-+	int i, num_clks;
++	return -ENOTSUPP;
++}
 +
-+	res = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(res))
-+		return PTR_ERR(res);
++static int xgmac_start_resets_socfpga(struct device *dev)
++{
++	struct xgmac_priv *xgmac = dev_get_priv(dev);
 +
-+	num_clks = AGILEX5_NUM_CLKS;
++	reset_control_assert(xgmac->rst);
++	reset_control_assert(xgmac->rst_ocp);
 +
-+	clk_data = xzalloc(struct_size(clk_data, clk_data.hws, num_clks));
-+	if (!clk_data)
-+		return -ENOMEM;
++	udelay(2);
 +
-+	for (i = 0; i < num_clks; i++)
-+		clk_data->clk_data.hws[i] = ERR_PTR(-ENOENT);
++	reset_control_deassert(xgmac->rst);
++	reset_control_deassert(xgmac->rst_ocp);
 +
-+	clk_data->base = IOMEM(res->start);
-+	clk_data->clk_data.num = num_clks;
-+
-+	agilex5_clk_register_pll(agilex5_pll_clks, ARRAY_SIZE(agilex5_pll_clks),
-+				 clk_data);
-+
-+	agilex5_clk_register_c_perip(agilex5_main_perip_c_clks,
-+				     ARRAY_SIZE(agilex5_main_perip_c_clks),
-+				     clk_data);
-+
-+	agilex5_clk_register_cnt_perip(agilex5_main_perip_cnt_clks,
-+				       ARRAY_SIZE(agilex5_main_perip_cnt_clks),
-+				       clk_data);
-+
-+	agilex5_clk_register_gate(agilex5_gate_clks,
-+				  ARRAY_SIZE(agilex5_gate_clks), clk_data);
-+
-+	of_clk_add_hw_provider(np, of_clk_hw_onecell_get, &clk_data->clk_data);
 +	return 0;
 +}
 +
-+static const struct of_device_id agilex5_clkmgr_match_table[] = {
++static struct xgmac_ops xgmac_socfpga_ops = {
++	.xgmac_probe_resources = xgmac_probe_resources_socfpga,
++	.xgmac_start_resets = xgmac_start_resets_socfpga,
++	.xgmac_get_enetaddr = xgmac_get_enetaddr_socfpga,
++};
++
++struct xgmac_config __maybe_unused xgmac_socfpga_config = {
++	.reg_access_always_ok = false,
++	.swr_wait = 50,
++	.config_mac = XGMAC_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB,
++	.config_mac_mdio = XGMAC_MAC_MDIO_ADDRESS_CR_350_400,
++	.axi_bus_width = XGMAC_AXI_WIDTH_64,
++	.ops = &xgmac_socfpga_ops
++};
++
++static __maybe_unused struct of_device_id xgmac_socfpga_compatible[] = {
 +	{
-+		.compatible = "intel,agilex5-clkmgr",
++		.compatible = "intel,socfpga-dwxgmac",
++		.data = &xgmac_socfpga_config
 +	}, {
 +		/* sentinel */
 +	}
 +};
++MODULE_DEVICE_TABLE(of, xgmac_socfpga_compatible);
 +
-+static struct driver agilex5_clkmgr_driver = {
-+	.name	= "agilex5-clkmgr",
-+	.of_match_table = agilex5_clkmgr_match_table,
-+	.probe	= agilex5_clkmgr_probe,
++static struct driver xgmac_socfpga_driver = {
++	.name = "designware-xgmac-socfpga",
++	.probe = xgmac_probe,
++	.remove = xgmac_remove,
++	.of_compatible = DRV_OF_COMPAT(xgmac_socfpga_compatible),
 +};
-+
-+core_platform_driver(agilex5_clkmgr_driver);
-diff --git a/drivers/clk/socfpga/clk-gate-s10.c b/drivers/clk/socfpga/clk-gate-s10.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..c4f51b86740a259363af2061c85e17fe395d4ce1
---- /dev/null
-+++ b/drivers/clk/socfpga/clk-gate-s10.c
-@@ -0,0 +1,178 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2017, Intel Corporation
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/clk-provider.h>
-+
-+#include "stratix10-clk.h"
-+#include "clk.h"
-+
-+#define SOCFPGA_CS_PDBG_CLK	"cs_pdbg_clk"
-+#define to_socfpga_gate_clk(p) container_of(p, struct socfpga_gate_clk, hw)
-+
-+#define SOCFPGA_EMAC0_CLK		"emac0_clk"
-+#define SOCFPGA_EMAC1_CLK		"emac1_clk"
-+#define SOCFPGA_EMAC2_CLK		"emac2_clk"
-+#define AGILEX_BYPASS_OFFSET		0xC
-+#define STRATIX10_BYPASS_OFFSET		0x2C
-+#define BOOTCLK_BYPASS			2
-+
-+static unsigned long socfpga_gate_clk_recalc_rate(struct clk_hw *hwclk,
-+						  unsigned long parent_rate)
-+{
-+	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hwclk);
-+	u32 div = 1, val;
-+
-+	if (socfpgaclk->fixed_div) {
-+		div = socfpgaclk->fixed_div;
-+	} else if (socfpgaclk->div_reg) {
-+		val = readl(socfpgaclk->div_reg) >> socfpgaclk->shift;
-+		val &= GENMASK(socfpgaclk->width - 1, 0);
-+		div = (1 << val);
-+	}
-+	return parent_rate / div;
-+}
-+
-+static unsigned long socfpga_dbg_clk_recalc_rate(struct clk_hw *hwclk,
-+						  unsigned long parent_rate)
-+{
-+	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hwclk);
-+	u32 div, val;
-+
-+	val = readl(socfpgaclk->div_reg) >> socfpgaclk->shift;
-+	val &= GENMASK(socfpgaclk->width - 1, 0);
-+	div = (1 << val);
-+	div = div ? 4 : 1;
-+
-+	return parent_rate / div;
-+}
-+
-+static int socfpga_gate_get_parent(struct clk_hw *hwclk)
-+{
-+	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hwclk);
-+	u32 mask, second_bypass;
-+	u8 parent = 0;
-+	const char *name = clk_hw_get_name(hwclk);
-+
-+	if (socfpgaclk->bypass_reg) {
-+		mask = (0x1 << socfpgaclk->bypass_shift);
-+		parent = ((readl(socfpgaclk->bypass_reg) & mask) >>
-+			  socfpgaclk->bypass_shift);
-+	}
-+
-+	if (streq(name, SOCFPGA_EMAC0_CLK) ||
-+	    streq(name, SOCFPGA_EMAC1_CLK) ||
-+	    streq(name, SOCFPGA_EMAC2_CLK)) {
-+		second_bypass = readl(socfpgaclk->bypass_reg -
-+				      STRATIX10_BYPASS_OFFSET);
-+		/* EMACA bypass to bootclk @0xB0 offset */
-+		if (second_bypass & 0x1)
-+			if (parent == 0) /* only applicable if parent is maca */
-+				parent = BOOTCLK_BYPASS;
-+
-+		if (second_bypass & 0x2)
-+			if (parent == 1) /* only applicable if parent is macb */
-+				parent = BOOTCLK_BYPASS;
-+	}
-+	return parent;
-+}
-+
-+static int socfpga_agilex_gate_get_parent(struct clk_hw *hwclk)
-+{
-+	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hwclk);
-+	u32 mask, second_bypass;
-+	u8 parent = 0;
-+	const char *name = clk_hw_get_name(hwclk);
-+
-+	if (socfpgaclk->bypass_reg) {
-+		mask = (0x1 << socfpgaclk->bypass_shift);
-+		parent = ((readl(socfpgaclk->bypass_reg) & mask) >>
-+			  socfpgaclk->bypass_shift);
-+	}
-+
-+	if (streq(name, SOCFPGA_EMAC0_CLK) ||
-+	    streq(name, SOCFPGA_EMAC1_CLK) ||
-+	    streq(name, SOCFPGA_EMAC2_CLK)) {
-+		second_bypass = readl(socfpgaclk->bypass_reg -
-+				      AGILEX_BYPASS_OFFSET);
-+		/* EMACA bypass to bootclk @0x88 offset */
-+		if (second_bypass & 0x1)
-+			if (parent == 0) /* only applicable if parent is maca */
-+				parent = BOOTCLK_BYPASS;
-+
-+		if (second_bypass & 0x2)
-+			if (parent == 1) /* only applicable if parent is macb */
-+				parent = BOOTCLK_BYPASS;
-+	}
-+
-+	return parent;
-+}
-+
-+static struct clk_ops agilex_gateclk_ops = {
-+	.recalc_rate = socfpga_gate_clk_recalc_rate,
-+	.get_parent = socfpga_agilex_gate_get_parent,
-+};
-+
-+static const struct clk_ops dbgclk_ops = {
-+	.recalc_rate = socfpga_dbg_clk_recalc_rate,
-+	.get_parent = socfpga_gate_get_parent,
-+};
-+
-+struct clk_hw *agilex_register_gate(const struct stratix10_gate_clock *clks, void __iomem *regbase)
-+{
-+	struct clk_hw *hw_clk;
-+	struct socfpga_gate_clk *socfpga_clk;
-+	struct clk_init_data init;
-+	const char *parent_name = clks->parent_name;
-+	int ret;
-+
-+	socfpga_clk = xzalloc(sizeof(*socfpga_clk));
-+	socfpga_clk->reg = regbase + clks->gate_reg;
-+	socfpga_clk->bit_idx = clks->gate_idx;
-+
-+	agilex_gateclk_ops.enable = clk_gate_ops.enable;
-+	agilex_gateclk_ops.disable = clk_gate_ops.disable;
-+
-+	socfpga_clk->fixed_div = clks->fixed_div;
-+
-+	if (clks->div_reg)
-+		socfpga_clk->div_reg = regbase + clks->div_reg;
-+	else
-+		socfpga_clk->div_reg = NULL;
-+
-+	socfpga_clk->width = clks->div_width;
-+	socfpga_clk->shift = clks->div_offset;
-+
-+	if (clks->bypass_reg)
-+		socfpga_clk->bypass_reg = regbase + clks->bypass_reg;
-+	else
-+		socfpga_clk->bypass_reg = NULL;
-+	socfpga_clk->bypass_shift = clks->bypass_shift;
-+
-+	if (streq(clks->name, "cs_pdbg_clk"))
-+		init.ops = &dbgclk_ops;
-+	else
-+		init.ops = &agilex_gateclk_ops;
-+	init.name = clks->name;
-+	init.flags = clks->flags;
-+
-+	init.num_parents = clks->num_parents;
-+	init.parent_names = parent_name ? &parent_name : NULL;
-+	if (init.parent_names == NULL)
-+		init.parent_data = clks->parent_data;
-+	socfpga_clk->hw.init = &init;
-+
-+	hw_clk = &socfpga_clk->hw;
-+
-+	ret = clk_hw_register(NULL, &socfpga_clk->hw);
-+	if (ret) {
-+		kfree(socfpga_clk);
-+		return ERR_PTR(ret);
-+	}
-+	return hw_clk;
-+}
-diff --git a/drivers/clk/socfpga/clk-periph-s10.c b/drivers/clk/socfpga/clk-periph-s10.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..3689b08f7d78a28f3226e90925e5ace819ad55b6
---- /dev/null
-+++ b/drivers/clk/socfpga/clk-periph-s10.c
-@@ -0,0 +1,157 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2017, Intel Corporation
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk-provider.h>
-+
-+#include "stratix10-clk.h"
-+#include "clk.h"
-+
-+#define CLK_MGR_FREE_SHIFT		16
-+#define CLK_MGR_FREE_MASK		0x7
-+#define SWCTRLBTCLKSEN_SHIFT		8
-+
-+#define to_periph_clk(p) container_of(p, struct socfpga_periph_clk, hw)
-+
-+static unsigned long clk_peri_c_clk_recalc_rate(struct clk_hw *hwclk,
-+					     unsigned long parent_rate)
-+{
-+	struct socfpga_periph_clk *socfpgaclk = to_periph_clk(hwclk);
-+	u32 val;
-+
-+	val = readl(socfpgaclk->reg);
-+	val &= GENMASK(SWCTRLBTCLKSEN_SHIFT - 1, 0);
-+	parent_rate /= val;
-+
-+	return parent_rate;
-+}
-+
-+static unsigned long clk_peri_cnt_clk_recalc_rate(struct clk_hw *hwclk,
-+					     unsigned long parent_rate)
-+{
-+	struct socfpga_periph_clk *socfpgaclk = to_periph_clk(hwclk);
-+	unsigned long div = 1;
-+
-+	if (socfpgaclk->fixed_div) {
-+		div = socfpgaclk->fixed_div;
-+	} else {
-+		if (socfpgaclk->reg)
-+			div = ((readl(socfpgaclk->reg) & 0x7ff) + 1);
-+	}
-+
-+	return parent_rate / div;
-+}
-+
-+static int clk_periclk_get_parent(struct clk_hw *hwclk)
-+{
-+	struct socfpga_periph_clk *socfpgaclk = to_periph_clk(hwclk);
-+	u32 clk_src, mask;
-+	u8 parent = 0;
-+
-+	/* handle the bypass first */
-+	if (socfpgaclk->bypass_reg) {
-+		mask = (0x1 << socfpgaclk->bypass_shift);
-+		parent = ((readl(socfpgaclk->bypass_reg) & mask) >>
-+			   socfpgaclk->bypass_shift);
-+		if (parent)
-+			return parent;
-+	}
-+
-+	if (socfpgaclk->reg) {
-+		clk_src = readl(socfpgaclk->reg);
-+		parent = (clk_src >> CLK_MGR_FREE_SHIFT) &
-+			  CLK_MGR_FREE_MASK;
-+	}
-+	return parent;
-+}
-+
-+static const struct clk_ops peri_c_clk_ops = {
-+	.recalc_rate = clk_peri_c_clk_recalc_rate,
-+	.get_parent = clk_periclk_get_parent,
-+};
-+
-+static const struct clk_ops peri_cnt_clk_ops = {
-+	.recalc_rate = clk_peri_cnt_clk_recalc_rate,
-+	.get_parent = clk_periclk_get_parent,
-+};
-+
-+struct clk_hw *s10_register_periph(const struct stratix10_perip_c_clock *clks,
-+				void __iomem *reg)
-+{
-+	struct clk_hw *hw_clk;
-+	struct socfpga_periph_clk *periph_clk;
-+	struct clk_init_data init;
-+	const char *name = clks->name;
-+	const char *parent_name = clks->parent_name;
-+	int ret;
-+
-+	periph_clk = xzalloc(sizeof(*periph_clk));
-+	periph_clk->reg = reg + clks->offset;
-+
-+	init.name = name;
-+	init.ops = &peri_c_clk_ops;
-+	init.flags = clks->flags;
-+
-+	init.num_parents = clks->num_parents;
-+	init.parent_names = parent_name ? &parent_name : NULL;
-+	if (init.parent_names == NULL)
-+		init.parent_data = clks->parent_data;
-+
-+	periph_clk->hw.init = &init;
-+	hw_clk = &periph_clk->hw;
-+
-+	ret = clk_hw_register(NULL, hw_clk);
-+	if (ret) {
-+		kfree(periph_clk);
-+		return ERR_PTR(ret);
-+	}
-+	return hw_clk;
-+}
-+
-+struct clk_hw *s10_register_cnt_periph(const struct stratix10_perip_cnt_clock *clks,
-+				    void __iomem *regbase)
-+{
-+	struct clk_hw *hw_clk;
-+	struct socfpga_periph_clk *periph_clk;
-+	struct clk_init_data init;
-+	const char *name = clks->name;
-+	const char *parent_name = clks->parent_name;
-+	int ret;
-+
-+	periph_clk = xzalloc(sizeof(*periph_clk));
-+
-+	if (clks->offset)
-+		periph_clk->reg = regbase + clks->offset;
-+	else
-+		periph_clk->reg = NULL;
-+
-+	if (clks->bypass_reg)
-+		periph_clk->bypass_reg = regbase + clks->bypass_reg;
-+	else
-+		periph_clk->bypass_reg = NULL;
-+	periph_clk->bypass_shift = clks->bypass_shift;
-+	periph_clk->fixed_div = clks->fixed_divider;
-+
-+	init.name = name;
-+	init.ops = &peri_cnt_clk_ops;
-+	init.flags = clks->flags;
-+
-+	init.num_parents = clks->num_parents;
-+	init.parent_names = parent_name ? &parent_name : NULL;
-+	if (init.parent_names == NULL)
-+		init.parent_data = clks->parent_data;
-+
-+	periph_clk->hw.init = &init;
-+	hw_clk = &periph_clk->hw;
-+
-+	ret = clk_hw_register(NULL, hw_clk);
-+	if (ret) {
-+		kfree(periph_clk);
-+		return ERR_PTR(ret);
-+	}
-+	return hw_clk;
-+}
-diff --git a/drivers/clk/socfpga/clk-pll-s10.c b/drivers/clk/socfpga/clk-pll-s10.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..2b1e8f60c3786f9c95d4f8746d196bc244719b0d
---- /dev/null
-+++ b/drivers/clk/socfpga/clk-pll-s10.c
-@@ -0,0 +1,137 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2017, Intel Corporation
-+ */
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/clk-provider.h>
-+
-+#include "stratix10-clk.h"
-+#include "clk.h"
-+
-+/* Clock Manager offsets */
-+#define CLK_MGR_PLL_CLK_SRC_SHIFT	16
-+#define CLK_MGR_PLL_CLK_SRC_MASK	0x3
-+
-+/* PLL Clock enable bits */
-+#define SOCFPGA_PLL_POWER		0
-+#define SOCFPGA_PLL_RESET_MASK		0x2
-+#define SOCFPGA_PLL_REFDIV_MASK		0x00003F00
-+#define SOCFPGA_PLL_REFDIV_SHIFT	8
-+#define SOCFPGA_PLL_AREFDIV_MASK	0x00000F00
-+#define SOCFPGA_PLL_DREFDIV_MASK	0x00003000
-+#define SOCFPGA_PLL_DREFDIV_SHIFT	12
-+#define SOCFPGA_PLL_MDIV_MASK		0xFF000000
-+#define SOCFPGA_PLL_MDIV_SHIFT		24
-+#define SOCFPGA_AGILEX_PLL_MDIV_MASK	0x000003FF
-+#define SWCTRLBTCLKSEL_MASK		0x200
-+#define SWCTRLBTCLKSEL_SHIFT		9
-+
-+#define SOCFPGA_BOOT_CLK		"boot_clk"
-+
-+#define to_socfpga_clk(p) container_of(p, struct socfpga_pll, hw)
-+
-+static unsigned long agilex_clk_pll_recalc_rate(struct clk_hw *hwclk,
-+						unsigned long parent_rate)
-+{
-+	struct socfpga_pll *socfpgaclk = to_socfpga_clk(hwclk);
-+	unsigned long arefdiv, reg, mdiv;
-+	unsigned long long vco_freq;
-+
-+	/* read VCO1 reg for numerator and denominator */
-+	reg = readl(socfpgaclk->reg);
-+	arefdiv = (reg & SOCFPGA_PLL_AREFDIV_MASK) >> SOCFPGA_PLL_REFDIV_SHIFT;
-+
-+	vco_freq = (unsigned long long)parent_rate / arefdiv;
-+
-+	/* Read mdiv and fdiv from the fdbck register */
-+	reg = readl(socfpgaclk->reg + 0x24);
-+	mdiv = reg & SOCFPGA_AGILEX_PLL_MDIV_MASK;
-+
-+	vco_freq = (unsigned long long)vco_freq * mdiv;
-+	return (unsigned long)vco_freq;
-+}
-+
-+static unsigned long clk_boot_clk_recalc_rate(struct clk_hw *hwclk,
-+					 unsigned long parent_rate)
-+{
-+	struct socfpga_pll *socfpgaclk = to_socfpga_clk(hwclk);
-+	u32 div;
-+
-+	div = ((readl(socfpgaclk->reg) &
-+		SWCTRLBTCLKSEL_MASK) >>
-+		SWCTRLBTCLKSEL_SHIFT);
-+	div += 1;
-+	return parent_rate / div;
-+}
-+
-+static int clk_pll_get_parent(struct clk_hw *hwclk)
-+{
-+	struct socfpga_pll *socfpgaclk = to_socfpga_clk(hwclk);
-+	u32 pll_src;
-+
-+	pll_src = readl(socfpgaclk->reg);
-+	return (pll_src >> CLK_MGR_PLL_CLK_SRC_SHIFT) &
-+		CLK_MGR_PLL_CLK_SRC_MASK;
-+}
-+
-+static int clk_boot_get_parent(struct clk_hw *hwclk)
-+{
-+	struct socfpga_pll *socfpgaclk = to_socfpga_clk(hwclk);
-+	u32 pll_src;
-+
-+	pll_src = readl(socfpgaclk->reg);
-+	return (pll_src >> SWCTRLBTCLKSEL_SHIFT) &
-+		SWCTRLBTCLKSEL_MASK;
-+}
-+
-+/* TODO need to fix, Agilex5 SM requires change */
-+static const struct clk_ops agilex5_clk_pll_ops = {
-+	/* TODO This may require a custom Agilex5 implementation */
-+	.recalc_rate = agilex_clk_pll_recalc_rate,
-+	.get_parent = clk_pll_get_parent,
-+};
-+
-+static const struct clk_ops clk_boot_ops = {
-+	.recalc_rate = clk_boot_clk_recalc_rate,
-+	.get_parent = clk_boot_get_parent,
-+};
-+
-+struct clk_hw *agilex5_register_pll(const struct stratix10_pll_clock *clks,
-+				void __iomem *reg)
-+{
-+	struct clk_hw *hw_clk;
-+	struct socfpga_pll *pll_clk;
-+	struct clk_init_data init;
-+	const char *name = clks->name;
-+	int ret;
-+
-+	pll_clk = xzalloc(sizeof(*pll_clk));
-+	pll_clk->reg = reg + clks->offset;
-+
-+	if (streq(name, SOCFPGA_BOOT_CLK))
-+		init.ops = &clk_boot_ops;
-+	else
-+		init.ops = &agilex5_clk_pll_ops;
-+
-+	init.name = name;
-+	init.flags = clks->flags;
-+
-+	init.num_parents = clks->num_parents;
-+	init.parent_names = NULL;
-+	init.parent_data = clks->parent_data;
-+	pll_clk->hw.init = &init;
-+
-+	pll_clk->bit_idx = SOCFPGA_PLL_POWER;
-+	hw_clk = &pll_clk->hw;
-+
-+	ret = clk_hw_register(NULL, hw_clk);
-+	if (ret) {
-+		kfree(pll_clk);
-+		return ERR_PTR(ret);
-+	}
-+	return hw_clk;
-+}
-+
-diff --git a/drivers/clk/socfpga/clk.h b/drivers/clk/socfpga/clk.h
-index 402f714436ab2f94dc5ecbad244915f0fa1c6194..19fc45e7f639583342b37422f30762d673421760 100644
---- a/drivers/clk/socfpga/clk.h
-+++ b/drivers/clk/socfpga/clk.h
-@@ -20,6 +20,11 @@
- #define SOCFPGA_MAX_PARENTS		5
- 
- #define streq(a, b) (strcmp((a), (b)) == 0)
-+#define SYSMGR_SDMMC_CTRL_SET(smplsel, drvsel) \
-+	((((smplsel) & 0x7) << 3) | (((drvsel) & 0x7) << 0))
-+
-+#define SYSMGR_SDMMC_CTRL_SET_AS10(smplsel, drvsel) \
-+	((((smplsel) & 0x7) << 4) | (((drvsel) & 0x7) << 0))
- 
- extern void __iomem *clk_mgr_base_addr;
- 
-@@ -58,11 +63,13 @@ struct socfpga_gate_clk {
- 	char *parent_name;
- 	u32 fixed_div;
- 	void __iomem *div_reg;
-+	void __iomem *bypass_reg;
- 	struct regmap *sys_mgr_base_addr;
- 	u32 width;	/* only valid if div_reg != 0 */
- 	u32 shift;	/* only valid if div_reg != 0 */
- 	u32 bit_idx;
- 	void __iomem *reg;
-+	u32 bypass_shift;      /* only valid if bypass_reg != 0 */
- 	u32 clk_phase[2];
- 	const char *parent_names[SOCFPGA_MAX_PARENTS];
- };
-@@ -73,8 +80,10 @@ struct socfpga_periph_clk {
- 	char *parent_name;
- 	u32 fixed_div;
- 	void __iomem *div_reg;
-+	void __iomem *bypass_reg;
- 	u32 width;      /* only valid if div_reg != 0 */
- 	u32 shift;      /* only valid if div_reg != 0 */
-+	u32 bypass_shift;      /* only valid if bypass_reg != 0 */
- 	const char *parent_names[SOCFPGA_MAX_PARENTS];
- };
- 
-diff --git a/drivers/clk/socfpga/stratix10-clk.h b/drivers/clk/socfpga/stratix10-clk.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..1fe025f65f7a05faf00efc3991d2afc9c564d5ca
---- /dev/null
-+++ b/drivers/clk/socfpga/stratix10-clk.h
-@@ -0,0 +1,73 @@
-+/* SPDX-License-Identifier:    GPL-2.0 */
-+/*
-+ * Copyright (C) 2017, Intel Corporation
-+ */
-+
-+#ifndef	__STRATIX10_CLK_H
-+#define	__STRATIX10_CLK_H
-+
-+struct stratix10_clock_data {
-+	void __iomem		*base;
-+
-+	/* Must be last */
-+	struct clk_hw_onecell_data	clk_data;
-+};
-+
-+struct stratix10_pll_clock {
-+	unsigned int		id;
-+	const char		*name;
-+	const struct clk_parent_data	*parent_data;
-+	u8			num_parents;
-+	unsigned long		flags;
-+	unsigned long		offset;
-+};
-+
-+struct stratix10_perip_c_clock {
-+	unsigned int		id;
-+	const char		*name;
-+	const char		*parent_name;
-+	const struct clk_parent_data	*parent_data;
-+	u8			num_parents;
-+	unsigned long		flags;
-+	unsigned long		offset;
-+};
-+
-+struct stratix10_perip_cnt_clock {
-+	unsigned int		id;
-+	const char		*name;
-+	const char		*parent_name;
-+	const struct clk_parent_data	*parent_data;
-+	u8			num_parents;
-+	unsigned long		flags;
-+	unsigned long		offset;
-+	u8			fixed_divider;
-+	unsigned long		bypass_reg;
-+	unsigned long		bypass_shift;
-+};
-+
-+struct stratix10_gate_clock {
-+	unsigned int		id;
-+	const char		*name;
-+	const char		*parent_name;
-+	const struct clk_parent_data	*parent_data;
-+	u8			num_parents;
-+	unsigned long		flags;
-+	unsigned long		gate_reg;
-+	u8			gate_idx;
-+	unsigned long		div_reg;
-+	u8			div_offset;
-+	u8			div_width;
-+	unsigned long		bypass_reg;
-+	u8			bypass_shift;
-+	u8			fixed_div;
-+};
-+
-+struct clk_hw *agilex5_register_pll(const struct stratix10_pll_clock *clks,
-+				void __iomem *reg);
-+struct clk_hw *s10_register_periph(const struct stratix10_perip_c_clock *clks,
-+				void __iomem *reg);
-+struct clk_hw *s10_register_cnt_periph(const struct stratix10_perip_cnt_clock *clks,
-+				    void __iomem *reg);
-+struct clk_hw *agilex_register_gate(const struct stratix10_gate_clock *clks,
-+			      void __iomem *reg);
-+#endif	/* __STRATIX10_CLK_H */
++device_platform_driver(xgmac_socfpga_driver);
 
 -- 
 2.46.0
