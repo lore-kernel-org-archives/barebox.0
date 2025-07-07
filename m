@@ -1,54 +1,61 @@
-Delivery-date: Mon, 07 Jul 2025 07:56:04 +0200
+Delivery-date: Mon, 07 Jul 2025 07:58:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uYepg-00Evdy-1H
+	id 1uYesA-00Evfx-1R
 	for lore@lore.pengutronix.de;
-	Mon, 07 Jul 2025 07:56:04 +0200
+	Mon, 07 Jul 2025 07:58:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uYepf-00070N-S9
-	for lore@pengutronix.de; Mon, 07 Jul 2025 07:56:04 +0200
+	id 1uYes9-0007vG-OM
+	for lore@pengutronix.de; Mon, 07 Jul 2025 07:58:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=iBU9Zx6UfDu/CexYoJGQIqvSM78vdaiWHMleZkNjwLA=; b=rdkdNCpsWzEhuH
-	fTIhOzvN+nbBX88WrR6wEt+h8FJ59JqL/kVs4pDCnS9AGYZXER1eUVTFXXgZNPNkzEU34D7xHqrf/
-	OUOECWI1P5ry2z+6cUVOruzoiUeS+JjL6MXbtsuBGrmNSveF0xZ30JrSXgK89kJFvfq9+/uts4P4x
-	YVqFZxJw+QZxkbi4s7r1y9g2MIL01hi3jtTzCqr+7ayjwDWMhjRpv8NwLjU3EIabDqAiDhnD+kv/q
-	seo2NFhvj876+3RYuBMCPBeWuGzmvkBkULY/0an2VENXKPlhHdnx+OHKe2UURuJGRV2OubF1JyB5u
-	FW6pAnf73w2Zy38KLPTA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=g2YR9B7KaUmnyyr95eiQ7cd6R846ZJ/UGnf5NvJK8As=; b=Jqp/kfhDqr7po1Rz8/n1QawG86
+	b+mnMpwZuz0Fmss8Vm765A/IT0PrAOpgjkIUPzC6elDc5GwdkSyw/M6DXzDRtf7bfBWp5NEpeMobi
+	zzw6EZoA+37qT032KZDcnfF8ZgNYOHennXYVMX4pzF7uePgNag1yHYSC8tX478I2V/Y88aSbJsA+x
+	rec3QDXygpwMn8dI+gUvATp3QEeA6DG0VPg84bmQrgt26rrzAwT/Id+z+F4JUM7X0/UojtFN/ImjX
+	uKOZc53JN/2TeEwDXz2gslttT/PzHfhFd1p3SwfNgBxdvB3awMug79kMUtDDpNULZD8vRLicRStqC
+	7NvTaQUA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uYeox-00000001UDW-1akC;
-	Mon, 07 Jul 2025 05:55:19 +0000
-Received: from ns3108948.ip-54-37-254.eu ([54.37.254.54] helo=kmf2.trabucayre.com)
-	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uYenK-00000001U7R-3j4N
+	id 1uYerd-00000001UpX-2KGW;
+	Mon, 07 Jul 2025 05:58:05 +0000
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uYepQ-00000001UNe-1eQl
 	for barebox@lists.infradead.org;
-	Mon, 07 Jul 2025 05:53:40 +0000
-Received: from kmf3.. (localhost [IPv6:::1])
-	by kmf2.trabucayre.com (Postfix) with ESMTP id 8BA1D160538;
-	Mon,  7 Jul 2025 05:53:33 +0000 (UTC)
-From: Gwenhael Goavec-Merou <gwenj@trabucayre.com>
-To: barebox@lists.infradead.org
-Date: Mon,  7 Jul 2025 05:53:31 +0000
-Message-Id: <20250707055331.2355809-3-gwenj@trabucayre.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250707055331.2355809-1-gwenj@trabucayre.com>
-References: <20250707055331.2355809-1-gwenj@trabucayre.com>
+	Mon, 07 Jul 2025 05:55:50 +0000
+Received: from [IPV6:2a01:e0a:efa:53b0:468a:5bff:fe9a:3c4d] (unknown [IPv6:2a01:e0a:efa:53b0:468a:5bff:fe9a:3c4d])
+	by smtp1-g21.free.fr (Postfix) with ESMTP id 0DFD3B00563;
+	Mon,  7 Jul 2025 07:55:39 +0200 (CEST)
+Message-ID: <92aa3504-2c94-49e0-9270-2e430ed89933@trabucayre.com>
+Date: Mon, 7 Jul 2025 07:55:39 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Michael Graichen <michael.graichen@hotmail.com>,
+ barebox@lists.infradead.org, Johannes Roith <johannes@gnu-linux.rocks>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+References: <db21b526-ba6f-4714-8dca-3ed57d7bf028@trabucayre.com>
+ <c4307832-408c-4508-aa7a-46a448dbfe5b@pengutronix.de>
+ <aGgRkmkiFhNGq+Qg@Precision-T3610>
+ <1dd8b780-1150-421a-932c-081aa31ae775@trabucayre.com>
+ <VI1PR02MB4429606E3B06D0F53D2B4175AB4DA@VI1PR02MB4429.eurprd02.prod.outlook.com>
+Content-Language: en-US
+From: Gwenhael Goavec-Merou <gwenj@trabucayre.com>
+In-Reply-To: <VI1PR02MB4429606E3B06D0F53D2B4175AB4DA@VI1PR02MB4429.eurprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250706_225339_061955_70A75648 
-X-CRM114-Status: UNSURE (   9.64  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250706_225548_575214_B0E7DA0F 
+X-CRM114-Status: GOOD (  26.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,43 +67,143 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Johannes Roith <johannes@gnu-linux.rocks>, Sascha Hauer <sha@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3]  arch/arm/boards/avnet-zedboard/env/nv/linux.bootargs.console: fixed console name
+Subject: Re: MMC prepare for zynq
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+Hi,
+After some tweaks:
+- barebox is able to display prompt
+- MMC is correctly configured
+- Linux is correctly configured/enables to boot with console feedback.
 
-When trying to boot Linux no output from Linux is printed in the
-console. Linux devicetree only enables one UART (connected to USB<->UART
-interface) and has specified in Linux devicetree this one is called
-ttyPS0 instead of ttyPS1.
-This patch changes console name.
+I have sent a patch serie to fix these issues.
 
-Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
----
- arch/arm/boards/avnet-zedboard/env/nv/linux.bootargs.console | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks to all
 
-diff --git a/arch/arm/boards/avnet-zedboard/env/nv/linux.bootargs.console b/arch/arm/boards/avnet-zedboard/env/nv/linux.bootargs.console
-index 6c9f9dabcf..ebb44efc48 100644
---- a/arch/arm/boards/avnet-zedboard/env/nv/linux.bootargs.console
-+++ b/arch/arm/boards/avnet-zedboard/env/nv/linux.bootargs.console
-@@ -1 +1 @@
--console=ttyPS1,115200
-+console=ttyPS0,115200
--- 
-2.47.2
+Gwenhael
+
+Le 05/07/2025 à 5:21 PM, Michael Graichen a écrit :
+> Am 5. Juli 2025 09:01:38 MESZ schrieb Gwenhael Goavec-Merou <gwenj@trabucayre.com>:
+>> Hi,
+>> Thanks for informations: after deleting everything but the last two lines, barebox starts has expected.
+>> Now I have and error with SDCard but maybe related to lines removes or something similar.
+>>
+> 
+> Hey,
+> 
+> please show me the error messages once you put #define DEBUG at the top of mci-core.c
+> 
+> I'm also using a patches Version of drivers/mci/mci-core.c
+> 
+> First thing is that the amplitude of SD-Cards clock signal decreases with higher speed on Zynq-7000. I had to reduce SD-Cards speed to 25MHz within lowlevel.c. Next thing is mci-core.c does some speed and line testing that then causes error messages for my eMMC on the other line. So I skip this tests.
+> 
+> Since the board i'm working on doesn't change anymore, that's fine to me. But probably will not be good for other boards using mci-core.c
+> 
+> A feature to define fixed line nummers and speed mode from devicetree would be nice here?!
+> 
+> Have and nice weekend,
+> Michael
+> 
+> 
+> 
+>> Thanks!
+>>
+>> Gwenhael
+>>
+>> Le 04/07/2025 à 7:38 PM, Johannes Roith a écrit :
+>>> Hi Gwenhael, hi Ahmad
+>>>
+>>> Am Fri, Jul 04, 2025 at 04:56:01PM +0200 schrieb Ahmad Fatoum:
+>>>> Hi Gwenhael,
+>>>>
+>>>> On 7/3/25 09:18, Gwenhael Goavec-Merou wrote:
+>>>>> Dear all,
+>>>>>
+>>>>> I'm trying to uses my zedboard with barebox but can't be able to boot this.
+>>>>>
+>>>>> According to mails found in this mailing list I have done this sequence:
+>>>>>
+>>>>> export ARCH=arm
+>>>>> export CROSS_COMPILE=$SOMEWHERE/arm-buildroot-linux-gnueabihf-
+>>>>>
+>>>>> make zynq_defconfig
+>>>>> make -j$(nproc)
+>>>>
+>>>> That looks correct IMO.
+>>>>
+>>>>> And copied in the first SDCard FAT partition:
+>>>>> - images/barebox-avnet-zedboard.img as BOOT.bin
+>>>>> - barebox.bin
+>>>>
+>>>> Which binary is barebox.bin?
+>>>
+>>> The first one is the correct one. Just copy the images/barebox-avnet-zedboard.img
+>>> with the name BOOT.bin to an SD-Card whose first partition is FAT32.
+>>>>
+>>>>> But I have nothing displayed through serial port.
+>>>>
+>>>> Two things come to mind:
+>>>>
+>>>> - The Image is 184K. Does the Zynq enforce a maximum limit on the BOOT.BIN?
+>>>
+>>> Yes, there is a limitation for the size of the First Stage Bootloader
+>>> (FSBL) as Xilinx calls it, which is the available SRAM size in the ZYNQ
+>>> 7000 (192 kBytes). Currently Barebox PBL and Barebox Proper are combined
+>>> to one image (images/barebox-avnet-zedboard.img) but you will get an
+>>> error in the build process, if your image exceeds this size.
+>>>>
+>>>> - Does DEBUG_LL produce any output? For details on how to configure
+>>>> DEBUG_LL, see the troubleshooting guide I just Cc'd you on.
+>>>>
+>>>>> Are there somewhere details on how to prepare SD Card for a zynq board?
+>>>>
+>>>> I haven't done work with the Zynq 7000 so far, but Lucas and Johannes
+>>>> did. I Cc'd them as they may be able to give some tips for troubleshooting.
+>>>
+>>> I would also take a look at this message on the mailing list:
+>>>
+>>> https://lore.barebox.org/barebox/DB7PR02MB43323CD77E0507E560475BCAABF00@DB7PR02MB4332.eurprd02.prod.outlook.com/
+>>>
+>>> Here, the content of the file
+>>> arch/arm/boards/avnet-zedboard/zedboard.zynqcfg caused a boot error for
+>>> barebox. With my Digilent Cora Z7 board, I also had to modify the file
+>>> by deleting everything but the last line, to get barebox booting. Have
+>>> you already tried this?
+>>>
+>>>>
+>>>> Cheers,
+>>>> Ahmad
+>>>>
+>>>>>
+>>>>> Thanks
+>>>>>
+>>>>> Gwenhael
+>>>>>
+>>>>>
+>>>>
+>>>> -- 
+>>>> Pengutronix e.K.                  |                             |
+>>>> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+>>>> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+>>>> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+>>>>
+>>>
+>>> Best regards,
+>>> Johannes
+>>
+>>
+> 
 
 
 
