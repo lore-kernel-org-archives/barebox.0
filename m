@@ -1,58 +1,57 @@
-Delivery-date: Tue, 08 Jul 2025 17:05:12 +0200
+Delivery-date: Tue, 08 Jul 2025 22:09:01 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uZ9se-00FOYc-0Q
+	id 1uZEcf-00FTIv-0l
 	for lore@lore.pengutronix.de;
-	Tue, 08 Jul 2025 17:05:12 +0200
+	Tue, 08 Jul 2025 22:09:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uZ9sd-00056P-EJ
-	for lore@pengutronix.de; Tue, 08 Jul 2025 17:05:12 +0200
+	id 1uZEce-0002F6-9E
+	for lore@pengutronix.de; Tue, 08 Jul 2025 22:09:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3X5m2McOzEk2qVMrnJmf67FbED6igMRV9A1Nbdg9piw=; b=sT092a78x+jF0kVNghxpRJG0Or
-	eBLqYsazNFQe5bSxePN7s4EIWq4VQo+udkW1K2jfevLcdigS7IzoGwO8msnImr4bPWVU8Tmqnrljd
-	lxDrdyT7UVpT1nxghmE1zBkeFy4WlNyes9sV/uyZIxXmA/FczbymQD2Kxpq2YVVp9waBB1qR+bdLK
-	V7fcB+eo0GgLFkAwTfTqQ0MR3M4kvqmG0YNGuQ/BrIqF0LpBjX04umZO62ic4TxFC80iUylzWrFif
-	bwZYzQH2P3UiMxxJzWYsQQwOf/atED2TaWMvhbsW4RBPObYbMyzN/9GK5CabvxpG2j6wI/g4OZKbS
-	L0ZFSctA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=pF0LGiUDbGRxveLJ2vtSWcm/b7lCSlCVV2XDEFboH5U=; b=dqukRGNlT+/iN8iPLyDklLsMJw
+	LwZsxpT8P1Z7ApLx6eNQxCbaXW3YjQC9zGM66/l+ftUOlTfm1pz00AisJImbvO/GJpVvO7T3IwUJg
+	2pV6wc9qb/dAVF2fgV/IPjAUhOQ3r/gWJ9D/BuKM6M7g69q/FTbPkJ8/ayVmN9IKA4pKh0ChmGCVt
+	Imkm3lFhQ5Kvf/KWfwW7OfiXSjCeJqd6KpUyw36iCVU3jWUINcUDjDmg5Mimn/kz8wDw2eCBVePDc
+	GBdKPG8wSceHHjdFDDJF2z5TzGX+hnsd79BJwRTH0Mfj9cCRmrRgwNiV+jQy3YtpBLIsOUSJmM4z2
+	Lxta9qMA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uZ9rs-00000005hnD-3XiM;
-	Tue, 08 Jul 2025 15:04:24 +0000
-Received: from cczrelay02.in2p3.fr ([134.158.66.142])
+	id 1uZEc6-00000006SmL-0Fcc;
+	Tue, 08 Jul 2025 20:08:26 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uZ9l4-00000005gXo-2quh
+	id 1uZE6o-00000006M32-2rLw
 	for barebox@lists.infradead.org;
-	Tue, 08 Jul 2025 14:57:26 +0000
-Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
-	(authenticated bits=0)
-	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 568Ev8fc012117
-	(version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NO)
-	for <barebox@lists.infradead.org>; Tue, 8 Jul 2025 16:57:17 +0200
-Message-ID: <f267df0d-6a2a-4a19-8763-998e05110406@clermont.in2p3.fr>
-Date: Tue, 8 Jul 2025 16:57:08 +0200
+	Tue, 08 Jul 2025 19:36:09 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1uZE6l-0008Qx-4Z; Tue, 08 Jul 2025 21:36:03 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Dang Huynh <danct12@riseup.net>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Tue,  8 Jul 2025 21:35:58 +0200
+Message-Id: <20250708193600.758772-3-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250708193600.758772-1-a.fatoum@barebox.org>
+References: <20250708193600.758772-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: MList-Barebox <barebox@lists.infradead.org>
-References: <9026c709-5e5f-4545-94ca-ea78ea431082@clermont.in2p3.fr>
- <c775017a-aa6c-46b2-8bd8-457474f34325@pengutronix.de>
-Content-Language: en-US
-From: David Picard <david.picard@clermont.in2p3.fr>
-In-Reply-To: <c775017a-aa6c-46b2-8bd8-457474f34325@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250708_075722_992101_4BCF9CD9 
-X-CRM114-Status: GOOD (  26.87  )
+X-CRM114-CacheID: sfid-20250708_123606_877994_9963207F 
+X-CRM114-Status: UNSURE (   6.80  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,133 +69,204 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: boards/enclustra-sa2: add new board (HELP NEEDED)
+Subject: [PATCH 2/4] test: drop now superfluous extra_args
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello,
+Labgrid v25.0 allows this to be empty, so let's drop it where unneeded.
 
-I could enable CONFIG_DEBUG_LL in the 1st stage, but not 
-CONFIG_DEBUG_PBL because I got an error:
-"input image too big. Maximum is 61436 bytes, got xxxxx bytes" where 
-xxxxx > 61436. The on-chip RAM is 64KB.
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ test/arm/a15@multi_v7_defconfig.yaml              | 1 -
+ test/arm/a9@multi_v7_defconfig.yaml               | 1 -
+ test/arm/qemu-raspi0@multi_v5_v6_defconfig.yaml   | 1 -
+ test/arm/qemu-raspi1ap@multi_v5_v6_defconfig.yaml | 1 -
+ test/arm/qemu-raspi2b@multi_v7_defconfig.yaml     | 1 -
+ test/arm/virt@multi_v7_defconfig.yaml             | 1 -
+ test/arm/virt@multi_v8_defconfig.yaml             | 1 -
+ test/mips/be@qemu-malta_defconfig.yaml            | 1 -
+ test/mips/qemu-malta64el_defconfig.yaml           | 1 -
+ test/mips/qemu-maltael_defconfig.yaml             | 1 -
+ test/openrisc/generic_defconfig.yaml              | 1 -
+ test/riscv/qemu-virt64@rv64i_defconfig.yaml       | 1 -
+ test/riscv/qemu@virt32_defconfig.yaml             | 1 -
+ test/riscv/sifive@rv64i_defconfig.yaml            | 1 -
+ 14 files changed, 14 deletions(-)
 
-When I enable CONFIG_DEBUG_LL in the 1st stage, I get the following 
-output, which is much shorter:
-
-=============================
-lowlevel init done
-SDRAM setup...
-SDRAM calibration...
-done
-Error: offset create reference outside destination buffer <<< MY DEBUG 
-MESSAGE
-ERROR: Decoding failed
-HANG
-=============================
-
-So, there is an error in lib/lz4/lz4_decompress.c on this test:
-https://github.com/barebox/barebox/blob/7e5ea8eb09a1ca3b13e89586411f5a60ae8fd5b3/lib/lz4/lz4_decompress.c#L104
-
-I added chosen/stdout-path in the devicetree.
-
-David
-
-Le 04/07/2025 à 17:09, Ahmad Fatoum a écrit :
-> Hello David,
->
-> On 7/3/25 16:21, David Picard wrote:
->> Hello,
->>
->> I'm trying to port the Enclustra SA2 module. I started off the Terasic
->> DE0 nano Soc board, that I could run with success previously. They both
->> have a Cyclone V SoC FPGA. I added some pr_debug().
->>
->> My code is here, in the board-enclustra-sa2 branch:
->> https://github.com/dpproto/barebox
->>
->> It hangs when the execution jumps to the uncompressed Barebox image, and
->> I'm really stuck.
-> It's very interesting to know that this is actually the second
-> decompression. The first stage (barebox-socfpga-sa2-xload.img) succeeded
-> up to 'starting bootloader...' and then the output you have after that
-> is the prebootloader of the second stage (barebox-socfpga-sa2.img).
->
-> The decompressed barebox proper of the first stage already ran from
-> within SDRAM, so your SDRAM setup might not be to blame.
->
-> For a more complete picture, could you enable CONFIG_DEBUG_PBL and
-> CONFIG_DEBUG_LL also for the first stage and include them in your next mail?
->
->> Enclustra provides a U-Boot configuration, with handoff files. I tried
->> to compare them with those I copied from a sample Quartus project they
->> provide too. I couldn't notice striking differences, although it's not
->> easy to compare because they used an older version of Quartus.
->>
->> - The addresses and sizes in the log output below don't seem to exceed
->> SDRAM boundaries, do they?
->> - Any hint on anything to check?
-> I expanded a bit on Sascha's suggestions in the troubleshooting guide
-> I just sent out. I hope this will be helpful to you in pinpointing your
-> issue. Looking at the branch you pushed to your repository, I notice
-> the following in no particular order:
->
->    -  you are missing a /chosen/stdout-path. You probably want to set it
->       to silence the 'No consoles were activated' warning and get
->       early output, even without CONFIG_DEBUG_LL
->
->    - As Sascha mentioned, calling pr_debug before relocation can
->      introduce bugs of its own, so stick to putc_ll('@') if unsure
->
->    - It would be interesting to see if CONFIG_PBL_VERIFY_PIGGY succeeds
->      and if an early putc_ll() in start.c as suggested by Sascha
->      would give any output.
->
-> Cheers,
-> Ahmad
->
->> David
->>
->> =============================
->> barebox 2025.06.1 #1 Thu Jul 3 10:53:43 CEST 2025
->>
->>
->> Board: SoCFPGA
->> No consoles were activated. Activating all consoles as fallback!
->> dw_mmc dw_mmc0: registered as mci0
->> mci0: detected SD card version 2.0
->> mci0: registered disk0
->> starting bootloader...
->> arch/arm/boards/enclustra-sa2/lowlevel.c: __start_socfpga_sa2() >>> start
->> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>> start
->> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>>
->> arm_cpu_lowlevel_init() OK
->> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>>
->> fdt_blob=0x00002320 fdt=0x1ff87ae8 size=0x40000000
->> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>> calling
->> barebox_arm_entry()...
->> uncompress.c: memory at 0x00000000, size 0x40000000
->> mmu: enabling MMU, ttb @ 0x3ffe0000
->> endmem                = 0x40000000
->> arm_mem_scratch       = 0x3fff8000+0x00008000
->> arm_mem_stack         = 0x3fff0000+0x00008000
->> arm_mem_ttb           = 0x3ffe0000+0x00010000
->> arm_mem_barebox_image = 0x3fe00000+0x00200000
->> arm_mem_early_malloc  = 0x3fde0000+0x00020000
->> membase               = 0x00000000+0x40000000
->> uncompress.c: uncompressing barebox binary at 0x1ff8c800 (size
->> 0x00056b67) to 0x3fe00000 (uncompressed size: 0x000778b0)
->> uncompress.c: jumping to uncompressed image at 0x3fe00001
->> uncompress.c: calling armv7_switch_to_hyp()...
->> uncompress.c: armv7_switch_to_hyp() OK. Now jumping...
->> =============================
->>
->>
->>
+diff --git a/test/arm/a15@multi_v7_defconfig.yaml b/test/arm/a15@multi_v7_defconfig.yaml
+index dfa73fb3f5fd..c7c3e3b0af49 100644
+--- a/test/arm/a15@multi_v7_defconfig.yaml
++++ b/test/arm/a15@multi_v7_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: cortex-a15
+         memory: 1024M
+         bios: barebox-vexpress-ca15.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/arm/a9@multi_v7_defconfig.yaml b/test/arm/a9@multi_v7_defconfig.yaml
+index 8e8220102c90..21ce4202cf90 100644
+--- a/test/arm/a9@multi_v7_defconfig.yaml
++++ b/test/arm/a9@multi_v7_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: cortex-a9
+         memory: 1024M
+         bios: barebox-vexpress-ca9.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/arm/qemu-raspi0@multi_v5_v6_defconfig.yaml b/test/arm/qemu-raspi0@multi_v5_v6_defconfig.yaml
+index 0a9a727c641f..9cad68225e1e 100644
+--- a/test/arm/qemu-raspi0@multi_v5_v6_defconfig.yaml
++++ b/test/arm/qemu-raspi0@multi_v5_v6_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: arm1176
+         memory: 512M
+         kernel: barebox-raspberry-pi.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/arm/qemu-raspi1ap@multi_v5_v6_defconfig.yaml b/test/arm/qemu-raspi1ap@multi_v5_v6_defconfig.yaml
+index 0950481a63ea..cbd0686ebd71 100644
+--- a/test/arm/qemu-raspi1ap@multi_v5_v6_defconfig.yaml
++++ b/test/arm/qemu-raspi1ap@multi_v5_v6_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: arm1176
+         memory: 512M
+         kernel: barebox-raspberry-pi.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/arm/qemu-raspi2b@multi_v7_defconfig.yaml b/test/arm/qemu-raspi2b@multi_v7_defconfig.yaml
+index 72471c0a7f30..6dc91984ecca 100644
+--- a/test/arm/qemu-raspi2b@multi_v7_defconfig.yaml
++++ b/test/arm/qemu-raspi2b@multi_v7_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: cortex-a7
+         memory: 1G
+         kernel: barebox-raspberry-pi.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/arm/virt@multi_v7_defconfig.yaml b/test/arm/virt@multi_v7_defconfig.yaml
+index d8cd6c853bb9..d22b67cb31a8 100644
+--- a/test/arm/virt@multi_v7_defconfig.yaml
++++ b/test/arm/virt@multi_v7_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: cortex-a7
+         memory: 1024M
+         kernel: barebox-dt-2nd.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/arm/virt@multi_v8_defconfig.yaml b/test/arm/virt@multi_v8_defconfig.yaml
+index 8d1de41f8572..0c73591e4513 100644
+--- a/test/arm/virt@multi_v8_defconfig.yaml
++++ b/test/arm/virt@multi_v8_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: cortex-a57
+         memory: 1024M
+         kernel: barebox-dt-2nd.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/mips/be@qemu-malta_defconfig.yaml b/test/mips/be@qemu-malta_defconfig.yaml
+index 5f438e4b900a..2f6de8a43a8f 100644
+--- a/test/mips/be@qemu-malta_defconfig.yaml
++++ b/test/mips/be@qemu-malta_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: M14Kc
+         memory: 256M
+         bios: barebox-qemu-malta.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/mips/qemu-malta64el_defconfig.yaml b/test/mips/qemu-malta64el_defconfig.yaml
+index bf8563e6623b..61318f491aa8 100644
+--- a/test/mips/qemu-malta64el_defconfig.yaml
++++ b/test/mips/qemu-malta64el_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: 5KEf
+         memory: 256M
+         bios: barebox-qemu-malta.img.swapped
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/mips/qemu-maltael_defconfig.yaml b/test/mips/qemu-maltael_defconfig.yaml
+index 1b3f15fec5e9..0571d1b4d495 100644
+--- a/test/mips/qemu-maltael_defconfig.yaml
++++ b/test/mips/qemu-maltael_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: M14Kc
+         memory: 256M
+         bios: barebox-qemu-malta.img.swapped
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/openrisc/generic_defconfig.yaml b/test/openrisc/generic_defconfig.yaml
+index 56b70b8242f0..3d2cd5f9550f 100644
+--- a/test/openrisc/generic_defconfig.yaml
++++ b/test/openrisc/generic_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: or1200
+         memory: 256M
+         kernel: barebox
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/riscv/qemu-virt64@rv64i_defconfig.yaml b/test/riscv/qemu-virt64@rv64i_defconfig.yaml
+index 83cdac6c8b9d..f6497de85e54 100644
+--- a/test/riscv/qemu-virt64@rv64i_defconfig.yaml
++++ b/test/riscv/qemu-virt64@rv64i_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: rv64
+         memory: 256M
+         kernel: barebox-dt-2nd.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/riscv/qemu@virt32_defconfig.yaml b/test/riscv/qemu@virt32_defconfig.yaml
+index 03d5ef281592..58a4f918958b 100644
+--- a/test/riscv/qemu@virt32_defconfig.yaml
++++ b/test/riscv/qemu@virt32_defconfig.yaml
+@@ -8,7 +8,6 @@ targets:
+         memory: 256M
+         kernel: barebox-dt-2nd.img
+         bios: opensbi-riscv32-generic-fw_dynamic.bin
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+diff --git a/test/riscv/sifive@rv64i_defconfig.yaml b/test/riscv/sifive@rv64i_defconfig.yaml
+index ce4ea0e1e27e..a35229bddb34 100644
+--- a/test/riscv/sifive@rv64i_defconfig.yaml
++++ b/test/riscv/sifive@rv64i_defconfig.yaml
+@@ -7,7 +7,6 @@ targets:
+         cpu: sifive-u54
+         memory: 256M
+         kernel: barebox-hifive-unleashed.img
+-        extra_args: ''
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+-- 
+2.39.5
 
 
 
