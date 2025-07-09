@@ -1,65 +1,67 @@
-Delivery-date: Wed, 09 Jul 2025 14:03:48 +0200
+Delivery-date: Wed, 09 Jul 2025 14:08:20 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uZTWe-00Fh5z-0U
+	id 1uZTb2-00Fh96-1n
 	for lore@lore.pengutronix.de;
-	Wed, 09 Jul 2025 14:03:48 +0200
+	Wed, 09 Jul 2025 14:08:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uZTWd-0005g1-Ic
-	for lore@pengutronix.de; Wed, 09 Jul 2025 14:03:48 +0200
+	id 1uZTb1-0001IN-EH
+	for lore@pengutronix.de; Wed, 09 Jul 2025 14:08:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=cf6s6/H0kIe9/WSSjna/oIgicDheuy4tVxsiLGl+vJw=; b=Y4wwTaPlDNz2V0KWrJAjXKQjKH
-	ZUjTec4e/G6hAhRLcekA4zgt4/asEh0EJP0zViKlmh4i7ajOn0Mm8I/e2qiqQ7K1J/Yq6H5GDrskf
-	UoCjQMt+HRLNdkCToFDd42Ulzv7LL/TP2ZaRyAKU8OWz6l3w5G9HNe70jMAgmtmnDILxBPNYohO1L
-	KO7BTJoIsMWAdV+ZicaOMmxHzaz9G9wrr8lOQQABvNJzikHWlDcCXgJ3+M8Xgf8YKGDPQ3zTkAzOg
-	/H8VzsKxRQvPG0a6eecnnw2XAAyOc0S78+GoFdiQyqmmJ7dGwejmgGdC4H3FZHDiiof1olDdRyk6M
-	4vw5B4Qw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=sVp9OoPdVwLHCr8nO1XPo1LanYeceIk16PodoH3RIhc=; b=hba0IO5KjUmCJBX2TaMhksNDj1
+	MkKB90HRB3+Mk1yfNc11jk+hO3QyDOJva7qFsB125sssOAGpgGmZltnr+Ans2kblLzeuN0xlIftQs
+	uWMxjxFrmzYYAYraRwyghIut+uY7X5MVot2b+fWjoENSvhuZUsvCVhO05wK9/m+JpWXyi5HL1sBPd
+	DavL6NFRcxq2/WMOU3jN3fw0IQCEERySwtLJeKTilM7RspHErRpU84b1SR/f/JDqMWipcmdRT2K02
+	KDeiD+s8fmbV7j5GRzPswqmgwFhwkiyAJrIGXpfmgx14TqiiL4EZAvz/PfYQOMxWtcKMm3BmJ3LHB
+	sWEzwUXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uZTW2-00000008Zlu-2jO1;
-	Wed, 09 Jul 2025 12:03:10 +0000
+	id 1uZTac-00000008aOD-3wOS;
+	Wed, 09 Jul 2025 12:07:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uZRnM-00000008GqK-3c88
+	id 1uZRt5-00000008HmK-1af8
 	for barebox@lists.infradead.org;
-	Wed, 09 Jul 2025 10:12:58 +0000
+	Wed, 09 Jul 2025 10:18:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uZRnG-0007Yg-5n; Wed, 09 Jul 2025 12:12:50 +0200
+	id 1uZRt4-00044u-2b; Wed, 09 Jul 2025 12:18:50 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uZRnF-007Yyf-3D;
-	Wed, 09 Jul 2025 12:12:50 +0200
+	id 1uZRt3-007ZCM-2t;
+	Wed, 09 Jul 2025 12:18:49 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uZRnF-00GtEd-1F;
-	Wed, 09 Jul 2025 12:12:49 +0200
+	id 1uZRt3-00Gx1j-0w;
+	Wed, 09 Jul 2025 12:18:49 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  9 Jul 2025 12:12:49 +0200
-Message-Id: <20250709101249.4025552-1-a.fatoum@pengutronix.de>
+Date: Wed,  9 Jul 2025 12:18:48 +0200
+Message-Id: <20250709101848.4039929-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250709101848.4039929-1-a.fatoum@pengutronix.de>
+References: <20250709101848.4039929-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250709_031256_895952_B352210B 
-X-CRM114-Status: GOOD (  12.64  )
+X-CRM114-CacheID: sfid-20250709_031851_414002_D5A67E50 
+X-CRM114-Status: GOOD (  10.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,96 +83,34 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! ARM: add exception handling support for PBL
+Subject: [PATCH 2/2] hardening: update text after addition of CONFIG_ARM_MMU_PERMISSIONS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-ARM: interrupts: fix guard page linker error in PBL
-
-We set up the stack guard page only in barebox proper. Attempting to
-compile in support in barebox PBL leads to a compile error, because
-arm_mem_guard_page_get() references arm_mem_endmem_get(), which is not
-available.
-
-Fix this by defining and using a new helper that always returns skips
-referencing arm_mem_endmem_get when not IN_PROPER.
+Until we have wired CONFIG_MEMORY_ATTRIBUTES with CONFIG_ARM_MMU_PERMISSIONS,
+add a notice to the help text about it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/interrupts_32.c       | 10 ++--------
- arch/arm/cpu/interrupts_64.c       | 10 ++--------
- arch/arm/include/asm/barebox-arm.h | 12 ++++++++++++
- 3 files changed, 16 insertions(+), 16 deletions(-)
+ lib/Kconfig.hardening | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/interrupts_32.c b/arch/arm/cpu/interrupts_32.c
-index cd503b38eeea..b8b9210197ea 100644
---- a/arch/arm/cpu/interrupts_32.c
-+++ b/arch/arm/cpu/interrupts_32.c
-@@ -111,16 +111,10 @@ void do_prefetch_abort (struct pt_regs *pt_regs)
+diff --git a/lib/Kconfig.hardening b/lib/Kconfig.hardening
+index 53bf4d5bb956..d9f6909eca51 100644
+--- a/lib/Kconfig.hardening
++++ b/lib/Kconfig.hardening
+@@ -261,8 +261,9 @@ config MEMORY_ATTRIBUTES
+ 	bool "record memory attributes" if EXPERIMENTAL
+ 	help
+ 	  Tag all SDRAM memory region requests with type and attributes.
+-	  This is currently not acted upon, but protections (e.g. read-only)
+-	  will in future be enforced by the MMU.
++	  This is currently independent from ARM_MMU_PERMISSIONS, but protections
++	  (e.g. read-only) may in future be enforced by the MMU in addition
++	  to the protections already in-place.
  
- static const char *data_abort_reason(ulong far)
- {
--	ulong guard_page;
--
- 	if (far < PAGE_SIZE)
- 		return "NULL pointer dereference";
--
--	if (IS_ENABLED(CONFIG_STACK_GUARD_PAGE)) {
--		guard_page = arm_mem_guard_page_get();
--		if (guard_page <= far && far < guard_page + PAGE_SIZE)
--			return "stack overflow";
--	}
-+	if (inside_stack_guard_page(far))
-+		return "stack overflow";
+ endmenu
  
- 	return "paging request";
- }
-diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
-index 574ab6a7ec22..b4787783978e 100644
---- a/arch/arm/cpu/interrupts_64.c
-+++ b/arch/arm/cpu/interrupts_64.c
-@@ -147,16 +147,10 @@ extern volatile int arm_data_abort_occurred;
- 
- static const char *data_abort_reason(ulong far)
- {
--	ulong guard_page;
--
- 	if (far < PAGE_SIZE)
- 		return "NULL pointer dereference: ";
--
--	if (IS_ENABLED(CONFIG_STACK_GUARD_PAGE)) {
--		guard_page = arm_mem_guard_page_get();
--		if (guard_page <= far && far < guard_page + PAGE_SIZE)
--			return "Stack overflow: ";
--	}
-+	if (inside_stack_guard_page(far))
-+		return "Stack overflow: ";
- 
- 	return NULL;
- }
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index 0abdd297a2ce..da6f5d528338 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -167,6 +167,18 @@ static inline unsigned long arm_mem_guard_page_get(void)
- 	return arm_mem_guard_page(arm_mem_endmem_get());
- }
- 
-+static inline bool inside_stack_guard_page(ulong addr)
-+{
-+	if (IS_ENABLED(CONFIG_STACK_GUARD_PAGE) && IN_PROPER) {
-+		ulong guard_page = arm_mem_guard_page_get();
-+
-+		if (guard_page <= addr && addr < guard_page + PAGE_SIZE)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * When using compressed images in conjunction with relocatable images
-  * the PBL code must pick a suitable place where to uncompress the barebox
 -- 
 2.39.5
 
