@@ -1,68 +1,67 @@
-Delivery-date: Fri, 11 Jul 2025 09:53:37 +0200
+Delivery-date: Fri, 11 Jul 2025 09:53:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ua8Zd-00GKCk-0f
+	id 1ua8Ze-00GKCw-1w
 	for lore@lore.pengutronix.de;
-	Fri, 11 Jul 2025 09:53:37 +0200
+	Fri, 11 Jul 2025 09:53:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ua8Zb-0002zX-Q0
-	for lore@pengutronix.de; Fri, 11 Jul 2025 09:53:37 +0200
+	id 1ua8Zd-000309-HS
+	for lore@pengutronix.de; Fri, 11 Jul 2025 09:53:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ro+GkPdu5zxRY64eUnHwCW2v/TGk1u9MlMTvn+YyYrM=; b=nVy1R4CFYtPXNiJ34mJzzQvEjW
-	cfPf9WC2t7CUajIIRafdu5n8kPG+a9TDN+dnt8WDchmMLJJjigDJI2GOGDTCqGXV/UZv4OEmN5oEC
-	3yZ85ZhGPl5xoBjsR+22Z/esqDQAVt+2lIKflamZ7QPm9JdbCckLUxSlQxypNhnj9OOFoFg69bNg9
-	DFF593tSE417HfJyD5R1T0/lMuOGkV8TcmW0N9BJGXpnJ+t1ASfKggu2oP9DeJDXfsLLpKokHJAxt
-	QzbyORLLuf+5KcP9WR+BdBT2ZX8xEjoHXQFiXculDFgX1/gTunFX59wxPqS8VuMIYRCkDvGotB/eW
-	7sCYaZHQ==;
+	bh=rTndI6DJcRrWKbSxTvDp1HpiwZNXJtTWOhkuo1ADCP4=; b=plm5qcPdQKvakwBYUCc4puLaGu
+	98aCZ3fVahXYvmsc4bZQJIlibZObHCV9FpvQRo/Ub5RSkwVavW6D6IOdLt3sQSqy0tTu3tYiS0/QP
+	JllOLM028hpdkL5z6pDcfFFz8qOQMRBimn8o+LxLZ/dVZ1/h6T2DmBa/3wi23CGFrJazz/rK3YGCj
+	S7Lbqel0oYpOs9f9eMX0xq2RRGTbJcy6HUfHhAiJmE9LK4WygEvcZEqygIwuGgdCDni/u9P3CqNLz
+	e6w4Qq76Mlo1hiO57/KQ4XOK6u0+ybIycLUF1xmlWUqNJUgwaXuwvq9PzcOBV1HlRFrQWk5/Rkru2
+	uUUQGjmA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ua8Z4-0000000E2SE-1WHR;
-	Fri, 11 Jul 2025 07:53:02 +0000
+	id 1ua8Z2-0000000E2RP-3Gb1;
+	Fri, 11 Jul 2025 07:53:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ua8Et-0000000DzDx-2gdx
+	id 1ua8Et-0000000DzDw-2gB1
 	for barebox@lists.infradead.org;
-	Fri, 11 Jul 2025 07:32:14 +0000
+	Fri, 11 Jul 2025 07:32:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ua8Es-0006Am-Ej; Fri, 11 Jul 2025 09:32:10 +0200
+	id 1ua8Es-0006Al-DA; Fri, 11 Jul 2025 09:32:10 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ua8Es-007skn-0r;
+	id 1ua8Es-007skk-0i;
 	Fri, 11 Jul 2025 09:32:10 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ua8Er-00GXtT-26;
+	id 1ua8Er-00GXtT-1w;
 	Fri, 11 Jul 2025 09:32:10 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 11 Jul 2025 09:32:06 +0200
-Message-Id: <20250711073208.3926688-3-a.fatoum@pengutronix.de>
+Date: Fri, 11 Jul 2025 09:32:05 +0200
+Message-Id: <20250711073208.3926688-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250711073208.3926688-1-a.fatoum@pengutronix.de>
 References: <20250711073208.3926688-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250711_003211_863296_FA6642FA 
-X-CRM114-Status: GOOD (  29.39  )
+X-CRM114-CacheID: sfid-20250711_003211_864692_BA95C923 
+X-CRM114-Status: GOOD (  24.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,178 +83,203 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/4] Documentation: devel: architecture: detail first/second stage handling
+Subject: [PATCH v2 1/4] Documentation: devel: porting: split out architecture intro
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-barebox is at mercy of the BootROM in relation to how its first/second
-stages need to be structured. In the optimal case, the user need not
-about it, but when issues arises, it becomes very important to know
-_where_ the issue occurs.
-
-Let's add some general background information about that.
+In preparation for adding a debugging chapter, move the parts in the
+porting guide that are equally applicable to debugging to its separate
+file, so they can be referenced easily.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
   - no change
 ---
- Documentation/devel/architecture.rst | 136 +++++++++++++++++++++++++--
- 1 file changed, 129 insertions(+), 7 deletions(-)
+ Documentation/devel/architecture.rst | 78 ++++++++++++++++++++++++++
+ Documentation/devel/porting.rst      | 83 +++-------------------------
+ 2 files changed, 85 insertions(+), 76 deletions(-)
+ create mode 100644 Documentation/devel/architecture.rst
 
 diff --git a/Documentation/devel/architecture.rst b/Documentation/devel/architecture.rst
-index 83556095098a..b557ec830dc7 100644
---- a/Documentation/devel/architecture.rst
+new file mode 100644
+index 000000000000..83556095098a
+--- /dev/null
 +++ b/Documentation/devel/architecture.rst
-@@ -60,19 +60,141 @@ addressed, it will unpack barebox proper there and call it with the
- necessary arguments: an initial memory region and the FDT.
+@@ -0,0 +1,78 @@
++.. _architecture:
++
++####################
++barebox architecture
++####################
++
++The usual barebox binary consists of two parts. A prebootloader doing
++the bare minimum initialization and then the proper barebox binary.
++
++barebox proper
++==============
++
++This is the main part of barebox and, like a multi-platform Linux kernel,
++is platform-agnostic: The program starts, registers its drivers and tries
++to match the drivers with the devices it discovers at runtime.
++It initializes file systems and common management facilities and finally
++starts an init process. barebox knows no privilege separation and the
++init process is built into barebox.
++The default init is the :ref:`Hush`, but can be overridden if required.
++
++For such a platform-agnostic program to work, it must receive external
++input about what kind of devices are available: For example, is there a
++timer? At what address and how often does it tick? For most barebox
++architectures this hardware description is provided in the form
++of a flattened device tree (FDT). As part of barebox' initialization
++procedure, it unflattens (parses) the device tree and starts probing
++(matching) the devices described within with the drivers that are being
++registered.
++
++The device tree can also describe the RAM available in the system. As
++walking the device tree itself consumes RAM, barebox proper needs to
++be passed information about an initial memory region for use as stack
++and for dynamic allocations. When barebox has probed the memory banks,
++the whole memory will become available.
++
++As result of this design, the same barebox proper binary can be reused for
++many different boards. Unlike Linux, which can expect a bootloader to pass
++it the device tree, barebox *is* the bootloader. For this reason, barebox
++proper is prefixed with what is called a prebootloader (PBL). The PBL
++handles the low-level details that need to happen before invoking barebox
++proper.
++
++Prebootloader (PBL)
++===================
++
++The :ref:`prebootloader <pbl>` is a small chunk of code whose objective is
++to prepare the environment for barebox proper to execute. This means:
++
++ - Setting up a stack
++ - Determining a memory region for initial allocations
++ - Provide the device tree
++ - Jump to barebox proper
++
++The prebootloader often runs from a constrained medium like a small
++(tens of KiB) on-chip SRAM or sometimes even directly from flash.
++
++If the size constraints allow, the PBL will contain the barebox proper
++binary in compressed form. After ensuring any external DRAM can be
++addressed, it will unpack barebox proper there and call it with the
++necessary arguments: an initial memory region and the FDT.
++
++If this is not feasible, the PBL will contain drivers to chain load
++barebox proper from the storage medium. As this is usually the same
++storage medium the PBL itself was loaded from, shortcuts can often
++be taken: e.g. a SD-Card could already be in the correct mode, so the
++PBL driver can just read the blocks without having to reinitialize
++the SD-card.
++
++barebox images
++==============
++
++In a typical build, the barebox build process generates multiple images
++(:ref:`multi_image`).  All enabled PBLs are each linked with the same
++barebox proper binary and then the resulting images are processed to be
++in the format expected by the loader.
++
++The loader is often a BootROM, but maybe another first stage bootloader
++or a hardware debugger.
+diff --git a/Documentation/devel/porting.rst b/Documentation/devel/porting.rst
+index 9dab2a301f2a..88847f42a8f7 100644
+--- a/Documentation/devel/porting.rst
++++ b/Documentation/devel/porting.rst
+@@ -15,83 +15,14 @@ about porting barebox to new hardware.
+ Introduction
+ ************
  
- If this is not feasible, the PBL will contain drivers to chain load
+-Your usual barebox binary consists of two parts. A prebootloader doing
+-the bare minimum initialization and then the proper barebox binary.
++Before starting your barebox port, you'll want to familiarize yourself with
++key concepts of the :ref:`barebox architecture <architecture>`  namely the
++prebootloader, barebox proper and the multi-image support.
+ 
+-barebox proper
+-==============
+-
+-This is the main part of barebox and, like a multi-platform Linux kernel,
+-is platform-agnostic: The program starts, registers its drivers and tries
+-to match the drivers with the devices it discovers at runtime.
+-It initializes file systems and common management facilities and finally
+-starts an init process. barebox knows no privilege separation and the
+-init process is built into barebox.
+-The default init is the :ref:`Hush`, but can be overridden if required.
+-
+-For such a platform-agnostic program to work, it must receive external
+-input about what kind of devices are available: For example, is there a
+-timer? At what address and how often does it tick? For most barebox
+-architectures this hardware description is provided in the form
+-of a flattened device tree (FDT). As part of barebox' initialization
+-procedure, it unflattens (parses) the device tree and starts probing
+-(matching) the devices described within with the drivers that are being
+-registered.
+-
+-The device tree can also describe the RAM available in the system. As
+-walking the device tree itself consumes RAM, barebox proper needs to
+-be passed information about an initial memory region for use as stack
+-and for dynamic allocations. When barebox has probed the memory banks,
+-the whole memory will become available.
+-
+-As result of this design, the same barebox proper binary can be reused for
+-many different boards. Unlike Linux, which can expect a bootloader to pass
+-it the device tree, barebox *is* the bootloader. For this reason, barebox
+-proper is prefixed with what is called a prebootloader (PBL). The PBL
+-handles the low-level details that need to happen before invoking barebox
+-proper.
+-
+-Prebootloader (PBL)
+-===================
+-
+-The :ref:`prebootloader <pbl>` is a small chunk of code whose objective is
+-to prepare the environment for barebox proper to execute. This means:
+-
+- - Setting up a stack
+- - Determining a memory region for initial allocations
+- - Provide the device tree
+- - Jump to barebox proper
+-
+-The prebootloader often runs from a constrained medium like a small
+-(tens of KiB) on-chip SRAM or sometimes even directly from flash.
+-
+-If the size constraints allow, the PBL will contain the barebox proper
+-binary in compressed form. After ensuring any external DRAM can be
+-addressed, it will unpack barebox proper there and call it with the
+-necessary arguments: an initial memory region and the FDT.
+-
+-If this is not feasible, the PBL will contain drivers to chain load
 -barebox proper from the storage medium. As this is usually the same
 -storage medium the PBL itself was loaded from, shortcuts can often
 -be taken: e.g. a SD-Card could already be in the correct mode, so the
 -PBL driver can just read the blocks without having to reinitialize
 -the SD-card.
-+barebox proper from the storage medium, usually the same
-+storage medium the PBL itself was loaded from.
- 
- barebox images
- ==============
- 
- In a typical build, the barebox build process generates multiple images
+-
+-barebox images
+-==============
+-
+-In a typical build, the barebox build process generates multiple images
 -(:ref:`multi_image`).  All enabled PBLs are each linked with the same
 -barebox proper binary and then the resulting images are processed to be
-+(:ref:`multi_image`).  Normally, all enabled PBLs are each linked with the
-+same barebox proper binary and then the resulting images are processed to be
- in the format expected by the loader.
+-in the format expected by the loader.
+-
+-The loader is often a BootROM, but maybe another first stage bootloader
+-or a hardware debugger.
+-
+-Let us now put these new concepts into practice. We will start by adding
+-a new board for a platform, for which similar boards already exist.
+-Then we'll look at adding a new SoC, then a new SoC family and finally
+-a new architecture.
++Once you've read through, let us now put these new concepts into practice.
++We will start by adding a new board for a platform, for which similar boards
++already exist.  Then we'll look at adding a new SoC, then a new SoC family
++and finally a new architecture.
  
- The loader is often a BootROM, but maybe another first stage bootloader
- or a hardware debugger.
-+
-+Ideally, a single image is all that's needed to boot into barebox.
-+Depending on BootROM, this may not be possible, because the BootROM hardcodes
-+assumptions about the image that it loads. This is often the case with
-+BootROMs that boot from a file system (often FAT): They expect a ``BOOT.BIN``
-+file, ``MLO`` or similarly named file that does not exceed a fixed file size,
-+because that file needs to be loaded into the small on-chip SRAM available on
-+the SoC. In such cases, most barebox functionality will be located in a separate
-+image, e.g. ``barebox.bin``, which is loaded by ``BOOT.BIN``, once DRAM has
-+been successfully set up.
-+
-+There are two ways we generate such small first stage bootloaders in barebox:
-+
-+Old way: ≥ 2 configs
-+---------------------
-+
-+The old way is to have a dedicated barebox first stage config that builds a
-+very small non-interactive barebox for use as first stage.
-+Due to size constraints, the first stage config is usually board-specific, while
-+the second-stage config can target multiple boards at once.
-+
-+In this setup, each of the first and second stage each consist of their own
-+prebootloader and barebox proper.
-+
-+* first stage prebootloader: Does DRAM setup and extracts first stage
-+  barebox proper into DRAM.
-+
-+* first stage barebox proper: runs in DRAM and chainloads the second stage binary.
-+
-+* first stage prebootloader: is already running in DRAM, so it doesn't need to do
-+  any hardware setup and instead directly extract second stage barebox proper
-+
-+* second stage barebox proper: your usual barebox experience, which can have an
-+  interactive shell and boot an operating system
-+
-+An Example for this is ``am335x_mlo_defconfig``.
-+
-+New way: single config
-+----------------------
-+
-+The new way avoids having a dedicated barebox first stage config by doing both
-+the low level first stage setup and the chainloading from the same barebox
-+prebootloader. Despite the prebootloader lacking nearly all driver frameworks found
-+in barebox proper this is often made possible by reusing the hardware set up
-+by the BootROM:
-+
-+BootROMs usually don't deinitialize hardware before jumping to the first stage
-+bootloader. That means that the barebox prebootloader could just keep reusing
-+the pre-configured SD-Card and host controller for example and issue read block
-+commands right away without having to reinitialize the SD-card.
-+
-+In this setup, only one prebootloader binary will be built. Depending on
-+the bootflow defined by the BootROM, it may be executed more than once however:
-+
-+BootROM loads directly into DRAM
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Some BootROMs have built-in support for executing multiple programs and
-+loading them to different locations. In that case, a full second stage
-+barebox binary can be loaded as second stage with the first stage RAM
-+setup handled outside barebox.
-+
-+An example for Mask ROM loading one image into SRAM and another afterwards
-+into DRAM are the boards in ``rockchip_v8_defconfig``: A DRAM setup blob
-+is loaded as first stage followed by barebox directly into DRAM as second
-+stage.
-+
-+A slightly different example are what most boards in ``imx_v7_defconfig``
-+are doing: The i.MX bootrom can execute the bytecode located in the DCD
-+(Device Configuration Data) table that's part of the bootloader header.
-+This byte code has simple memory read/write and control flow primitives
-+that are sufficient to setup a DDR2/DDR3 DRAM, so that barebox can be
-+loaded into it right away.
-+
-+The option of being loaded into SRAM first and chainloading from there
-+is also available, but not used frequently for the 32-bit i.MX platforms.
-+For the 64-bit platforms with (LP)DDR4, the RAM controller setup is
-+too complex to express with DCD opcodes, leading to the approach described
-+below.
-+
-+BootROM loads into SRAM from offset
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+For BootROMs, where the first stage bootloader is loaded from a raw offset
-+on the boot medium, the barebox image is usually a single binary, which
-+is processed as follows:
-+
-+* The BootROM reads the first X bytes containing the prebootloader (and
-+  some truncated barebox proper content) into the on-chip SRAM and executes
-+  it.
-+
-+* The prebootloader will set up DRAM and then chainload the whole of barebox
-+  proper into it. The offset and size of barebox proper are compiled into
-+  the PBL, so it knows where to look.
-+
-+* The prebootloader will then invoke itself again, but this time while running
-+  from DRAM. The re-executed prebootloader detects that it's running in DRAM
-+  or at a lower exception level and will then proceed to extract barebox
-+  proper to the end of the initial memory region and execute it.
-+
-+And example for this is the ``imx_v8_defconfig``.
-+
-+.. note:: Some SoCs like the i.MX8M Nano and Plus provide a boot API in ROM
-+  that can be used by the prebootloader to effortlessly chainload the second stage
-+  cutting down complexity in the prebootloader greatly. Thanks BootROM authors!
-+
-+BootROM loads into SRAM from file
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+When the BootROM expects a file, it most often does a size check,
-+necessitating a second binary for the whole of barebox proper.
-+
-+The boot flow then looks as follows:
-+
-+* The BootROM reads the first binary, which includes only the prebootloader
-+  from the file system into on-chip SRAM and executes it
-+
-+* The prebootloader will set up DRAM and then load the second binary
-+  into it. It has no knowledge of its offsets and sizes, but gets that
-+  information out of the FAT filesystem.
-+
-+* The second stage binary contains both its own prebootloader and a barebox
-+  binary. The second stage prebootloader does not need to do any special
-+  hardware setup, so it will proceed to extract barebox proper to the end of
-+  the initial memory region and execute it.
+ **********************
+ Porting to a new board
 -- 
 2.39.5
 
