@@ -1,54 +1,61 @@
-Delivery-date: Wed, 16 Jul 2025 08:48:30 +0200
+Delivery-date: Wed, 16 Jul 2025 10:58:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ubvwM-000PE3-0C
+	id 1ubxyZ-000R8b-2L
 	for lore@lore.pengutronix.de;
-	Wed, 16 Jul 2025 08:48:30 +0200
+	Wed, 16 Jul 2025 10:58:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ubvwL-0001vh-Ax
-	for lore@pengutronix.de; Wed, 16 Jul 2025 08:48:29 +0200
+	id 1ubxyZ-0007LW-64
+	for lore@pengutronix.de; Wed, 16 Jul 2025 10:58:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=11Xbk5PUx+g1xyF5S4wBSLj1Pochmoe7Ypym++IW9S0=; b=eP4kZLswxiR84+fUxPdf8y0ZjE
-	/2UoTgtMdynBaUiFVxDwIZ8z0u4plod2PnvQz/hJcO9WwmOnKlAV9y1qV8LX04CaM3HqknGxklv4J
-	qXPbiKJKARI4cbHYACp/JJOJiJ7fhA2nAuWCURTmOz8To2XB68wRT7P2Wg4fXLJPcQzxPGp5ULwJ2
-	hD87O1sKJW8kqlMITE1Pr0g9CxgG8n1GhkTxYMtA3IuSGYCTI8uherRzpJujpj/A/YSzHEpA/k/RM
-	Wn4Qe1SW3TIb2XckVomGT8eNJ52VRVzCvBACgq6VtcKT2ruyx1w40OhHF1W0C94LS8TZY4ZVRnnkN
-	WBrgqQbw==;
+	Content-Type:In-Reply-To:References:To:Subject:From:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Az7XeVBI+DRw0g59LC9AsM8jnTegvA2q0ncHxSArpH0=; b=LgjOmpxlIWnZVYhJVCwFZDimQd
+	WvLvNJRUjIffO3AtIba0gikkrmd7RKiXYheens8K+1zdFRheIrr2oK25tQNPVEqbpoggHSCP93C6/
+	WP+6JuVtekTu2/mnOFADXDPdo7PdHxWMbz6k1w8uW8Brl65x7I1rJ/l/OuRtk1PDRGGTWDCFXnVX7
+	dJnV67ZoGHwvZx3u/BiSQVKEGiqa7RN1UBu4/mW1/kFroFkJsoU9dbT3DJYvmjZTDjok0zGqiBfMo
+	LHbQbgdKlNaZr9/rfQCEbYg6HZQkWPxFN4aKMWczRvLbMY/zrWPPeiYTbwTcOOSNhxk6H+AYlBwoG
+	Pdyfnn5A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ubvvZ-00000006v8h-1S5D;
-	Wed, 16 Jul 2025 06:47:41 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1ubxxw-00000007Dtw-28ew;
+	Wed, 16 Jul 2025 08:58:16 +0000
+Received: from cczrelay02.in2p3.fr ([134.158.66.142])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ubvcE-00000006t9t-1U6g
+	id 1ubxxu-00000007Dt0-08bu
 	for barebox@lists.infradead.org;
-	Wed, 16 Jul 2025 06:27:43 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1ubvcC-0003Ht-7P; Wed, 16 Jul 2025 08:27:40 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Wed, 16 Jul 2025 08:27:38 +0200
-Message-Id: <20250716062738.2534887-1-a.fatoum@barebox.org>
-X-Mailer: git-send-email 2.39.5
+	Wed, 16 Jul 2025 08:58:15 +0000
+Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
+	(authenticated bits=0)
+	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 56G8wCER002282
+	(version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NO)
+	for <barebox@lists.infradead.org>; Wed, 16 Jul 2025 10:58:12 +0200
+Message-ID: <9ba2fd9c-4181-40ac-bce5-31e1aebe4611@clermont.in2p3.fr>
+Date: Wed, 16 Jul 2025 10:58:12 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: David Picard <david.picard@clermont.in2p3.fr>
+To: barebox@lists.infradead.org
+References: <9026c709-5e5f-4545-94ca-ea78ea431082@clermont.in2p3.fr>
+ <aGbpedWAZoPS054m@pengutronix.de>
+ <3c3f1ff0-c43e-448e-9706-72bf160a6ab4@clermont.in2p3.fr>
+ <0f14a473-e238-4e7f-9c4b-5b59c4f6bc0e@pengutronix.de>
+ <e9281091-84f3-4572-befa-e14cf713be74@clermont.in2p3.fr>
+Content-Language: fr
+In-Reply-To: <e9281091-84f3-4572-befa-e14cf713be74@clermont.in2p3.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250715_232742_392415_B48CC59C 
-X-CRM114-Status: UNSURE (   7.26  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250716_015814_335362_5D3F100F 
+X-CRM114-Status: GOOD (  10.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,50 +73,61 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] kbuild: drop ineffectual variable assignments in Makefile.dtbs
+Subject: Re: boards/enclustra-sa2: add new board (HELP NEEDED)
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We don't define, multi-search or real-search, so variables using them
-are always empty. So drop them to avoid confusion.
-We can bring them back and fix them, when we start applying overlays
-at build time.
+Hi,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- scripts/Makefile.dtbs | 10 ----------
- 1 file changed, 10 deletions(-)
+After disabling the Arria 10, I can boot Linux:
+- CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1
+- CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES
+- CONFIG_ARCH_SOCFPGA_ARRIA10
 
-diff --git a/scripts/Makefile.dtbs b/scripts/Makefile.dtbs
-index 046361c20a6a..7b5b9e1d16ee 100644
---- a/scripts/Makefile.dtbs
-+++ b/scripts/Makefile.dtbs
-@@ -3,19 +3,9 @@
- # If CONFIG_OF_ALL_DTBS is enabled, all DT blobs are built
- dtb-$(CONFIG_OF_ALL_DTBS) += $(dtb-)
- 
--# Composite DTB (i.e. DTB constructed by overlay)
--multi-dtb-y := $(call multi-search, $(dtb-y), .dtb, -dtbs)
--# Primitive DTB compiled from *.dts
--real-dtb-y := $(call real-search, $(dtb-y), .dtb, -dtbs)
--# Base DTB that overlay is applied onto
--base-dtb-y := $(filter %.dtb, $(call real-search, $(multi-dtb-y), .dtb, -dtbs))
--
- dtb-y           := $(addprefix $(obj)/, $(dtb-y))
--multi-dtb-y     := $(addprefix $(obj)/, $(multi-dtb-y))
--real-dtb-y      := $(addprefix $(obj)/, $(real-dtb-y))
- 
- always-y        += $(dtb-y)
--targets         += $(real-dtb-y)
- 
- # dtbs-list
- # ---------------------------------------------------------------------------
--- 
-2.39.5
+I used Enclustra's devicetree, from their BSP. The last Barebox boot log 
+(https://paste.debian.net/1386131/) shows an issue with:
+- the Ethernet PHY
+- the QSPI flash
+- the MMC
+
+I pushed my code to 
+https://github.com/dpproto/barebox/tree/board-enclustra-sa2 
+<https://github.com/dpproto/barebox/tree/board-enclustra-sa2>.
+
+David
+
+Le 11/07/2025 à 10:04, David Picard a écrit :
+> Hi,
+>
+> CONFIG_ARCH_SOCFPGA_ARRIA10 was enabled, indeed. I disabled a bunch of 
+> boards.
+>
+> # CONFIG_MACH_SOCFPGA_ALTERA_SOCDK is not set
+> # CONFIG_MACH_SOCFPGA_EBV_SOCRATES is not set
+> # CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1 is not set
+> # CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES is not set
+> # CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC is not set
+> # CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO is not set
+> # CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT is not set
+> # CONFIG_ARCH_SOCFPGA_ARRIA10 is not set
+>
+> However, I won't be able to test until Tuesday morning. I'll report then.
+>
+> David
+>
+>
+> Le 10/07/2025 à 20:30, Ahmad Fatoum a écrit :
+>> As for why it hangs, I suspect you have CONFIG_ARCH_SOCFPGA_ARRIA10
+>> enabled, despite that SA2 using a Cyclone V.
+>>
+>> Can you check if CONFIG_ARCH_SOCFPGA_ARRIA10 is enabled and try again
+>> after disabling it if it is?
+>
+>
 
 
 
