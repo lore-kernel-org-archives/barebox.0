@@ -1,57 +1,54 @@
-Delivery-date: Tue, 15 Jul 2025 22:20:45 +0200
+Delivery-date: Wed, 16 Jul 2025 08:48:30 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ubm8r-000Fa6-1m
+	id 1ubvwM-000PE3-0C
 	for lore@lore.pengutronix.de;
-	Tue, 15 Jul 2025 22:20:45 +0200
+	Wed, 16 Jul 2025 08:48:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ubm8q-0002Gu-VX
-	for lore@pengutronix.de; Tue, 15 Jul 2025 22:20:45 +0200
+	id 1ubvwL-0001vh-Ax
+	for lore@pengutronix.de; Wed, 16 Jul 2025 08:48:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=M0KRxtMfskgJSJVYeANRpO3UF4MCbELb6vBhOs0zM54=; b=bh5Ng+ZDHc9Ajp/csgfiJ4a7Ti
-	8bC0bjQQbout/rxjDnLKLwUdqblCTaBH+6ErWW823+qVezMPOYiIhC+IR8iUJlOXgpm2PPyLNlnOf
-	WEccZAKlrqWbJqYEhWdtLH41euzcl7pRegSBsk788mI622Hl4OYjihTm9IBtmdJSSUEDO7nctjDEW
-	5BrCLNsKVCOjel1VUBUgvwWh79G6Bb83295D+mdJ0n021BWQ8YoDkgG08evwaaJ0zI0lH5xFu0sbt
-	IAsG/rl7gryw/CIEf0/ALCjIIMGdVVchJORGsrNg7EK7BMWLvMp2U6Yy6udfzi71FnbfbBimg7Rtz
-	kka/wPuA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=11Xbk5PUx+g1xyF5S4wBSLj1Pochmoe7Ypym++IW9S0=; b=eP4kZLswxiR84+fUxPdf8y0ZjE
+	/2UoTgtMdynBaUiFVxDwIZ8z0u4plod2PnvQz/hJcO9WwmOnKlAV9y1qV8LX04CaM3HqknGxklv4J
+	qXPbiKJKARI4cbHYACp/JJOJiJ7fhA2nAuWCURTmOz8To2XB68wRT7P2Wg4fXLJPcQzxPGp5ULwJ2
+	hD87O1sKJW8kqlMITE1Pr0g9CxgG8n1GhkTxYMtA3IuSGYCTI8uherRzpJujpj/A/YSzHEpA/k/RM
+	Wn4Qe1SW3TIb2XckVomGT8eNJ52VRVzCvBACgq6VtcKT2ruyx1w40OhHF1W0C94LS8TZY4ZVRnnkN
+	WBrgqQbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ubm8Q-00000006ARi-2fGZ;
-	Tue, 15 Jul 2025 20:20:18 +0000
+	id 1ubvvZ-00000006v8h-1S5D;
+	Wed, 16 Jul 2025 06:47:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ubm8O-00000006AR0-08hE
+	id 1ubvcE-00000006t9t-1U6g
 	for barebox@lists.infradead.org;
-	Tue, 15 Jul 2025 20:20:17 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Wed, 16 Jul 2025 06:27:43 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ubm8L-0001m5-Hs; Tue, 15 Jul 2025 22:20:13 +0200
-Message-ID: <9183ce45-f0c5-432f-b424-5dad3f5b03b5@pengutronix.de>
-Date: Tue, 15 Jul 2025 22:20:12 +0200
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1ubvcC-0003Ht-7P; Wed, 16 Jul 2025 08:27:40 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Wed, 16 Jul 2025 08:27:38 +0200
+Message-Id: <20250716062738.2534887-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Renaud Barbier <Renaud.Barbier@ametek.com>,
- Barebox List <barebox@lists.infradead.org>
-References: <DM5PR07MB3532E2B48E52ED710507A7B6EC57A@DM5PR07MB3532.namprd07.prod.outlook.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <DM5PR07MB3532E2B48E52ED710507A7B6EC57A@DM5PR07MB3532.namprd07.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250715_132016_074583_C523F209 
-X-CRM114-Status: GOOD (  18.28  )
+X-CRM114-CacheID: sfid-20250715_232742_392415_B48CC59C 
+X-CRM114-Status: UNSURE (   7.26  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,83 +66,50 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: ls1046a: fsl-fman failure
+Subject: [PATCH] kbuild: drop ineffectual variable assignments in Makefile.dtbs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Renaud,
+We don't define, multi-search or real-search, so variables using them
+are always empty. So drop them to avoid confusion.
+We can bring them back and fix them, when we start applying overlays
+at build time.
 
-Thanks for the report and your investigation and sorry for the breakage.
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ scripts/Makefile.dtbs | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-I just Cc'd you on a suggested fix.
-
-Cheers,
-Ahmad
-
-On 15.07.25 17:04, Renaud Barbier wrote:
-> I have recently moved to barebox v2025.06 and the ethernet driver is failing probing.
-> In the COMMIT below, dev_get_drvdata is replaced by the following function device_get_match_data:
-> 
-> const void *device_get_match_data(struct device *dev)
->   {
-> ~         if (dev->of_id_entry) {
-> +                pr_err("%s A0 return 0x%p\n", __func__, dev->of_id_entry->data);
->                   return dev->of_id_entry->data;
-> +         }
-> 
-> ~         if (dev->id_entry) {
-> +                pr_err("%s A1 return 0x%p\n", __func__, dev->of_id_entry->data);
->                   return (void *)dev->id_entry->driver_data;
-> +         }
-> 
-> +        pr_err("%s return 0x%p\n", __func__, NULL);
->           return NULL;
->   }
-> 
-> For my specific device, I get the following debug message:
-> ERROR: fsl-fman-port 1a8b000.port@8b000.of: probe
-> ERROR: device_get_match_data A0 return 0x0000000000000000 (here dev->of_id_entry is not NULL  and dev->of_id_entry->data is returned)
-> 
-> and from fsl_fman_port_probe:
-> ERROR: fsl-fman-port 1a8b000.port@8b000.of: type = 0. This is a valid type: FMAN_PORT_TYPE_RX = 0
-> ERROR: fsl-fman-port 1a8b000.port@8b000.of:  out 
-> 
-> COMMIT:
-> index f205de1929..84e7f20330 100644
-> --- a/drivers/net/fsl-fman.c
-> +++ b/drivers/net/fsl-fman.c
-> @@ -1085,15 +1085,14 @@ static int fsl_fman_mdio_probe(struct device *dev)
->  static int fsl_fman_port_probe(struct device *dev)
->  {
->         struct resource *iores;
-> -       int ret;
->         struct fsl_fman_port *port;
->         unsigned long type;
-> 
->         dev_dbg(dev, "probe\n");
-> 
-> -       ret = dev_get_drvdata(dev, (const void **)&type);
->          dev_err(dev, "type = %d\n", type); <==== type is 0 or 1 (FMAN_PORT_TYPE_RX  or FMAN_PORT_TYPE_TX )
-> -       if (ret)
-> -               return ret;
-> +       type = (uintptr_t)device_get_match_data(dev);
-> +       if (!type)  <==== HERE it bails out because type == 0
->                  dev_err(dev, "out\n"); **
-> +               return -ENODEV;
-> 
->  
->  
-> 
-
-
+diff --git a/scripts/Makefile.dtbs b/scripts/Makefile.dtbs
+index 046361c20a6a..7b5b9e1d16ee 100644
+--- a/scripts/Makefile.dtbs
++++ b/scripts/Makefile.dtbs
+@@ -3,19 +3,9 @@
+ # If CONFIG_OF_ALL_DTBS is enabled, all DT blobs are built
+ dtb-$(CONFIG_OF_ALL_DTBS) += $(dtb-)
+ 
+-# Composite DTB (i.e. DTB constructed by overlay)
+-multi-dtb-y := $(call multi-search, $(dtb-y), .dtb, -dtbs)
+-# Primitive DTB compiled from *.dts
+-real-dtb-y := $(call real-search, $(dtb-y), .dtb, -dtbs)
+-# Base DTB that overlay is applied onto
+-base-dtb-y := $(filter %.dtb, $(call real-search, $(multi-dtb-y), .dtb, -dtbs))
+-
+ dtb-y           := $(addprefix $(obj)/, $(dtb-y))
+-multi-dtb-y     := $(addprefix $(obj)/, $(multi-dtb-y))
+-real-dtb-y      := $(addprefix $(obj)/, $(real-dtb-y))
+ 
+ always-y        += $(dtb-y)
+-targets         += $(real-dtb-y)
+ 
+ # dtbs-list
+ # ---------------------------------------------------------------------------
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
