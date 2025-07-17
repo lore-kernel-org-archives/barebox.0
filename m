@@ -1,61 +1,68 @@
-Delivery-date: Wed, 16 Jul 2025 10:58:55 +0200
+Delivery-date: Thu, 17 Jul 2025 16:17:50 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ubxyZ-000R8b-2L
+	id 1ucPQk-000sT5-15
 	for lore@lore.pengutronix.de;
-	Wed, 16 Jul 2025 10:58:55 +0200
+	Thu, 17 Jul 2025 16:17:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ubxyZ-0007LW-64
-	for lore@pengutronix.de; Wed, 16 Jul 2025 10:58:55 +0200
+	id 1ucPQj-0008AO-FE
+	for lore@pengutronix.de; Thu, 17 Jul 2025 16:17:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:Subject:From:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Az7XeVBI+DRw0g59LC9AsM8jnTegvA2q0ncHxSArpH0=; b=LgjOmpxlIWnZVYhJVCwFZDimQd
-	WvLvNJRUjIffO3AtIba0gikkrmd7RKiXYheens8K+1zdFRheIrr2oK25tQNPVEqbpoggHSCP93C6/
-	WP+6JuVtekTu2/mnOFADXDPdo7PdHxWMbz6k1w8uW8Brl65x7I1rJ/l/OuRtk1PDRGGTWDCFXnVX7
-	dJnV67ZoGHwvZx3u/BiSQVKEGiqa7RN1UBu4/mW1/kFroFkJsoU9dbT3DJYvmjZTDjok0zGqiBfMo
-	LHbQbgdKlNaZr9/rfQCEbYg6HZQkWPxFN4aKMWczRvLbMY/zrWPPeiYTbwTcOOSNhxk6H+AYlBwoG
-	Pdyfnn5A==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=RTlHDLTi010RaEEQ6qpZrAWBBumV0alZh7mjChWTouE=; b=ncaUMHiIQk/YNOZUvyDjt9uRGR
+	OhasIU5+HVJdicErZWA6HIPLrk9ZA5XwAaZcYXZCNGHgjwQuhVxIzw3qNaX19CDwFk0i0k6WAy45q
+	h7vgPmOvaR8VAIKHzYydc5oW0dBVA77fHJ8H5gAE5/raYYf2biFnuTnk4uo29jJj15RT/3JT8EdZv
+	v7fDjCrpZ8WAfV0PRSSUL+78Id5OF17jdBnwbiEcXL16cUgIkCcl7trY1m3e4T+m9dLEADbS9P6Wt
+	nMIB/KEc7KGhr4F4k8zoI5jvx9Z4YnvgK+3ajySk8gxJnuSl5sHWrrXPrVw/zM4EJImegB3dKHHoa
+	+fQtmp/w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ubxxw-00000007Dtw-28ew;
-	Wed, 16 Jul 2025 08:58:16 +0000
-Received: from cczrelay02.in2p3.fr ([134.158.66.142])
+	id 1ucPQ2-0000000ALPL-2GhQ;
+	Thu, 17 Jul 2025 14:17:06 +0000
+Received: from mail-108-mta203.mxroute.com ([136.175.108.203])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ubxxu-00000007Dt0-08bu
+	id 1ucOQp-0000000ADxf-3qnU
 	for barebox@lists.infradead.org;
-	Wed, 16 Jul 2025 08:58:15 +0000
-Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
-	(authenticated bits=0)
-	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 56G8wCER002282
-	(version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NO)
-	for <barebox@lists.infradead.org>; Wed, 16 Jul 2025 10:58:12 +0200
-Message-ID: <9ba2fd9c-4181-40ac-bce5-31e1aebe4611@clermont.in2p3.fr>
-Date: Wed, 16 Jul 2025 10:58:12 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Picard <david.picard@clermont.in2p3.fr>
+	Thu, 17 Jul 2025 13:13:53 +0000
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta203.mxroute.com (ZoneMTA) with ESMTPSA id 19818850b890008631.001
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Thu, 17 Jul 2025 13:13:49 +0000
+X-Zone-Loop: 4fe59c1e1997e93686f8d83809975762930b9d1596df
+X-Originating-IP: [136.175.111.3]
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
+	; s=x; h=Content-Transfer-Encoding:MIME-Version:Date:Subject:Cc:To:From:
+	Sender:Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+	List-Owner:List-Archive; bh=RTlHDLTi010RaEEQ6qpZrAWBBumV0alZh7mjChWTouE=; b=M
+	JYSIjxhng/WYwzOBV7aeJp8JMOfLY9SOPm6Od+KiVhohxm4auullroHLrsZ+/WHhktXc3cHEyilVA
+	U99JHP6mGlgjK4a8Wz2ZbbC7li6drlP3lCw186046U224jHSkfxyMcH2pJ1GBQTJZ3oi1ES6WZDqR
+	5fiaC3Bgn5wG2eyz+l7C0Ng834liZnLZgfp0/umZ7C3jB4JV/xRjFAq4ukzZ+yMD9J9j0Q5FK23yr
+	Apcowich1hHE+aQLjTz8pXoetuHqW4zYdgAC+kbWeAcyyFnzD1Wd8gYYv3neifb2k7LBLaMv1TU3C
+	cJLEp7pF+zmZbWIACoYfbNHCJgaxU9Csg==;
+From: Bo Sun <bo@mboxify.com>
 To: barebox@lists.infradead.org
-References: <9026c709-5e5f-4545-94ca-ea78ea431082@clermont.in2p3.fr>
- <aGbpedWAZoPS054m@pengutronix.de>
- <3c3f1ff0-c43e-448e-9706-72bf160a6ab4@clermont.in2p3.fr>
- <0f14a473-e238-4e7f-9c4b-5b59c4f6bc0e@pengutronix.de>
- <e9281091-84f3-4572-befa-e14cf713be74@clermont.in2p3.fr>
-Content-Language: fr
-In-Reply-To: <e9281091-84f3-4572-befa-e14cf713be74@clermont.in2p3.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: a.fatoum@pengutronix.de
+Date: Thu, 17 Jul 2025 21:13:39 +0800
+Message-Id: <20250717131339.1127485-1-bo@mboxify.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: bo@mboxify.com
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250716_015814_335362_5D3F100F 
-X-CRM114-Status: GOOD (  10.84  )
+X-CRM114-CacheID: sfid-20250717_061352_044627_E5B52A60 
+X-CRM114-Status: GOOD (  26.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,61 +80,165 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: boards/enclustra-sa2: add new board (HELP NEEDED)
+Subject: [PATCH] driver: convert struct device comments to kernel-doc style
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Convert the comments of struct device from the old style to standard
+kernel-doc style.
 
-After disabling the Arria 10, I can boot Linux:
-- CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1
-- CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES
-- CONFIG_ARCH_SOCFPGA_ARRIA10
+No functional changes.
 
-I used Enclustra's devicetree, from their BSP. The last Barebox boot log 
-(https://paste.debian.net/1386131/) shows an issue with:
-- the Ethernet PHY
-- the QSPI flash
-- the MMC
+Signed-off-by: Bo Sun <bo@mboxify.com>
+---
+As suggested, I took the opportunity to switch struct device comments
+to kernel-doc style.
 
-I pushed my code to 
-https://github.com/dpproto/barebox/tree/board-enclustra-sa2 
-<https://github.com/dpproto/barebox/tree/board-enclustra-sa2>.
+ include/device.h | 86 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 48 insertions(+), 38 deletions(-)
 
-David
-
-Le 11/07/2025 à 10:04, David Picard a écrit :
-> Hi,
->
-> CONFIG_ARCH_SOCFPGA_ARRIA10 was enabled, indeed. I disabled a bunch of 
-> boards.
->
-> # CONFIG_MACH_SOCFPGA_ALTERA_SOCDK is not set
-> # CONFIG_MACH_SOCFPGA_EBV_SOCRATES is not set
-> # CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1 is not set
-> # CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES is not set
-> # CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC is not set
-> # CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO is not set
-> # CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT is not set
-> # CONFIG_ARCH_SOCFPGA_ARRIA10 is not set
->
-> However, I won't be able to test until Tuesday morning. I'll report then.
->
-> David
->
->
-> Le 10/07/2025 à 20:30, Ahmad Fatoum a écrit :
->> As for why it hangs, I suspect you have CONFIG_ARCH_SOCFPGA_ARRIA10
->> enabled, despite that SA2 using a Cyclone V.
->>
->> Can you check if CONFIG_ARCH_SOCFPGA_ARRIA10 is enabled and try again
->> after disabling it if it is?
->
->
-
+diff --git a/include/device.h b/include/device.h
+index 97fa040365..965251e552 100644
+--- a/include/device.h
++++ b/include/device.h
+@@ -24,24 +24,48 @@ struct generic_pm_domain;
+ struct platform_device_id;
+ struct of_device_id;
+ 
+-/** @brief Describes a particular device present in the system */
++/**
++ * struct device - The basic device structure
++ * @name: This member is used to match with a driver. This is a
++ *        descriptive name and could be MPC5XXX_ether or imx_serial.
++ *        Unless absolutely necessary, should not be modified
++ *        directly and dev_set_name() should be used instead.
++ * @unique_name: Device's unique name as obtained by calling dev_id().
++ *               Internal field, do not access it directly.
++ * @id: Used to uniquely identify a device in the system. The id
++ *      will show up under /dev/ as the device's name. Usually this
++ *      is something like eth0 or nor0.
++ * @dma_coherent: DMA coherence setting for this device.
++ * @resource: Array of resources for this device.
++ * @num_resources: Number of resources in the resource array.
++ * @platform_data: Board specific information about this device.
++ * @priv: Device class specific data storage.
++ * @driver_data: Alternative name for @priv
++ * @type_data: In case this device is a specific device, this pointer
++ *             points to the type specific device, i.e. eth_device
++ * @driver: The driver for this device.
++ * @list: The list of all devices.
++ * @bus_list: Our bus.
++ * @children: Our children.
++ * @sibling: Our siblings.
++ * @active: The list of all devices which have a driver
++ * @parent: The device's "parent" device, the device to which it is attached.
++ *          If parent is NULL, the device is a top-level device.
++ * @pm_domain: Attached power domain.
++ * @bus: Type of bus device is on.
++ * @parameters: The parameters for this device. This is used to carry information
++ *              of board specific data from the board code to the device driver
++ * @dma_mask: DMA mask.
++ * @dma_offset: DMA offset.
++ * @detect: For devices which take longer to probe, this is called when the driver
++ *          should actually detect client devices.
++ * @rescan: Callback to rescan the device.
++ * @deferred_probe_reason: If a driver probe is deferred, this stores the last error.
++ */
+ struct device {
+-	/*! This member (and 'type' described below) is used to match
+-	 * with a driver. This is a descriptive name and could be
+-	 * MPC5XXX_ether or imx_serial. Unless absolutely necessary,
+-	 * should not be modified directly and dev_set_name() should
+-	 * be used instead.
+-	 */
+ 	char *name;
+ 
+-	/*! This member is used to store device's unique name as
+-	 *  obtained by calling dev_id(). Internal field, do not
+-	 *  access it directly.
+-	 */
+ 	char *unique_name;
+-	/*! The id is used to uniquely identify a device in the system. The id
+-	 * will show up under /dev/ as the device's name. Usually this is
+-	 * something like eth0 or nor0. */
+ 	int id;
+ 
+ 	enum dev_dma_coherence dma_coherent;
+@@ -49,36 +73,29 @@ struct device {
+ 	struct resource *resource;
+ 	int num_resources;
+ 
+-	void *platform_data; /*! board specific information about this device */
++	void *platform_data;
+ 
+-	/*! Devices of a particular class normaly need to store more
+-	 * information than struct device holds.
+-	 */
+ 	union {
+ 		void *priv;
+ 		void *driver_data;
+ 	};
+-	/*! In case this device is a specific device, this pointer
+-	 * points to the type specific device, i.e. eth_device
+-	 */
++
+ 	void *type_data;
+ 
+-	struct driver *driver; /*! The driver for this device */
++	struct driver *driver;
+ 
+-	struct list_head list;     /* The list of all devices */
+-	struct list_head bus_list; /* our bus */
+-	struct list_head children; /* our children */
++	struct list_head list;
++	struct list_head bus_list;
++	struct list_head children;
+ 	struct list_head sibling;
+-	struct list_head active;   /* The list of all devices which have a driver */
++	struct list_head active;
+ 
+-	struct device *parent;   /* our parent, NULL if not present */
++	struct device *parent;
+ 
+-	struct generic_pm_domain *pm_domain;	/* attached power domain */
++	struct generic_pm_domain *pm_domain;
+ 
+ 	struct bus_type *bus;
+ 
+-	/*! The parameters for this device. This is used to carry information
+-	 * of board specific data from the board code to the device driver. */
+ 	struct list_head parameters;
+ 
+ 	struct list_head cdevs;
+@@ -90,7 +107,6 @@ struct device {
+ 		struct device_node *device_node;
+ 		struct device_node *of_node;
+ 	};
+-
+ 	const struct of_device_id *of_id_entry;
+ 
+ 	u64 dma_mask;
+@@ -100,16 +116,10 @@ struct device {
+ #ifdef CONFIG_CMD_DEVINFO
+ 	struct list_head info_list;
+ #endif
+-	/*
+-	 * For devices which take longer to probe this is called
+-	 * when the driver should actually detect client devices
+-	 */
++
+ 	int (*detect)(struct device *);
+ 	void (*rescan)(struct device *);
+ 
+-	/*
+-	 * if a driver probe is deferred, this stores the last error
+-	 */
+ 	char *deferred_probe_reason;
+ };
+ 
 
 
