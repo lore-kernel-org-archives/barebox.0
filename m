@@ -1,67 +1,69 @@
-Delivery-date: Thu, 17 Jul 2025 16:17:52 +0200
+Delivery-date: Fri, 18 Jul 2025 15:45:40 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ucPQm-000sTQ-0g
+	id 1uclPA-001Dpg-2C
 	for lore@lore.pengutronix.de;
-	Thu, 17 Jul 2025 16:17:52 +0200
+	Fri, 18 Jul 2025 15:45:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ucPQl-0008Fj-Kl
-	for lore@pengutronix.de; Thu, 17 Jul 2025 16:17:52 +0200
+	id 1uclPA-0003QR-5R
+	for lore@pengutronix.de; Fri, 18 Jul 2025 15:45:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=maKz+Ud2r6nn+qcRTsoh1TIoc4hGdaFWV2G6Hjcp8Ng=; b=j097WwnWlEGMbgLFdnf4tZt80Q
-	N0jxFF+6DQKLf4H5oTm6MAwK8/kN4MPoBR01QmJ1gV3jFHedFSqCnVPnwGHfYIG9K7pjgwVlWA6Ml
-	HpWe6Sgn2H4MUr+BmGqQS8J2j0VY/48LlR9gDKUKJR0LLDCscd1vUBz4TOGp7MogXvfst9Dd0HEF2
-	K41LuuS5xpHvT7LBuI7wzk10i1Q7yKsfvVqXFQuEYq/qj0IFZvXl1YZ/uopSsZv7oMWAWRUWW8ZeI
-	kgE+6Y2jR2myIhjjBjJcWEHkRUBz2Je6Hft8nvO8udh0suFVyxwpkJr6NpnDf5C59bUnyk0iA8WoG
-	8xlAsfwg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=zDXk4bZqNPrd3PcdWkMwLPGj6YE9PtkGMb7Q1X1PKwM=; b=Wo5PqBID4rVQAfwZVImV65p/if
+	mooibj7ZwsgEeZlwYaZ6bSA9fi5iPwfdAeg8LA75LWiyyXhit6nnIYcIY+VexVcyGKv5H8BN+bWeR
+	MjkP9sAa8idUj0FVy2IDiQuWVM3xkEzV0UIXoizi8PHpw8sqYbcEhl04iHga9ayd5f41noN8onkG5
+	sYA+GouX4iSICxSHkdSQFpJUQNNQPVDkbNvBcj1huw2rX750Z7JeClpVhufXvh86b2E1q0pqjfTG+
+	5C7Xf3XMhEO3umRm9r5baJFHGD2IpU0dnMpS5tFuoPwR/IsJ6e8JGamz22v/+BTPgrMCYSUlCcDcJ
+	UMzJT5sQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ucPQ3-0000000ALPU-08XO;
-	Thu, 17 Jul 2025 14:17:07 +0000
-Received: from mail-108-mta159.mxroute.com ([136.175.108.159])
+	id 1uclOT-0000000Ciu9-20SX;
+	Fri, 18 Jul 2025 13:44:57 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ucORc-0000000AE3A-33Ox
+	id 1uclH9-0000000Chx0-0MIK
 	for barebox@lists.infradead.org;
-	Thu, 17 Jul 2025 13:14:41 +0000
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta159.mxroute.com (ZoneMTA) with ESMTPSA id 1981885c8ef0008631.001
- for <barebox@lists.infradead.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Thu, 17 Jul 2025 13:14:37 +0000
-X-Zone-Loop: 32ebf13be02c10fcbe2455b75aadfcc203474524426d
-X-Originating-IP: [136.175.111.3]
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
-	; s=x; h=Content-Transfer-Encoding:MIME-Version:Date:Subject:To:From:Sender:
-	Reply-To:Cc:Content-Type:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive; bh=maKz+Ud2r6nn+qcRTsoh1TIoc4hGdaFWV2G6Hjcp8Ng=; b=g
-	b/+z66oL9KvTbo+pMTVednTjXVJA6QGbYGkjU5G1nky8qqZhMptMPOMIiiVa8jF+qIWvsIUh8QKaV
-	0GyAdabNjGyC+eDb7hI78/jdebJT8mxy1ENnbs4UsE7VXGIWy2KusIEDuuVNDpDdMR8vFMCKM6j7n
-	X61lFiEFofO7Fg8jz8186i/kKhLvpvVEIwxI3eg4cgiTBihxD7V19jtUdh/uWZWw3DVt1R9xc5bOj
-	LKFeMY+1Y4G9vw0YppGmaxsBBhe8xt8t2+ahoVy6fWgwrHYBCA4sAsgM7A+Ndj64ioDDYgUzJB6eW
-	BmRyYglD2X/4krJz44SDt9N58SvMdgRQQ==;
-From: Bo Sun <bo@mboxify.com>
-To: barebox@lists.infradead.org
-Date: Thu, 17 Jul 2025 21:14:31 +0800
-Message-Id: <20250717131431.1127636-1-bo@mboxify.com>
+	Fri, 18 Jul 2025 13:37:24 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1uclH5-0005zt-Gj; Fri, 18 Jul 2025 15:37:19 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Fri, 18 Jul 2025 15:37:18 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: bo@mboxify.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250718-clk_register-v1-1-009e23a7da84@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAA1OemgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDc0Nz3eSc7Pii1PTM4pLUIl3jtDRLizRzYxNTw1QloJaCotS0zAqwcdG
+ xtbUAqQtX/V4AAAA=
+X-Change-ID: 20250717-clk_register-3ff98f73451e
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>, 
+ Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.15-dev-19c33
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1238; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=nMX7giP/lLh1lMZb4PD4cVjaElH72VpMCbo9euNGWfQ=;
+ b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYsio8uPTuXPEtMRmyu8d04yCNNLXdD78eLFhTspi8bLNx
+ 2QM/z5W6ihlYRDjYJAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAExEYhojw07F2/Vftli9njz/
+ RsISg+n7lopp1xWfD/fo9t/cNMPqw0mGfyZX/s2tZ3mW9yZ5usOM4/acr27r901l2qHcn2/16Yf
+ YZm4A
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250717_061440_852565_17F8D0EC 
-X-CRM114-Status: GOOD (  10.12  )
+X-CRM114-CacheID: sfid-20250718_063723_137140_DA964E42 
+X-CRM114-Status: UNSURE (   7.97  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,72 +81,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] of: platform: rename parameter 'bus' to 'node' in of_platform_bus_create()
+Subject: [PATCH] clk: clk-gpio: Use clk_register instead of bclk_register
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The parameter represents a device tree node, not specifically a bus.
-Use more accurate naming following device tree conventions.
+GPIO-gated clocks wrongfully used barebox clock interface which leads to
+bugs due to clk not being initialized from init->ops.
 
-Signed-off-by: Bo Sun <bo@mboxify.com>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- drivers/of/platform.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/clk/clk-gpio.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 3600b5f9c1..092ec39b05 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -399,14 +399,14 @@ static inline struct device *of_amba_device_create(struct device_node *np)
+diff --git a/drivers/clk/clk-gpio.c b/drivers/clk/clk-gpio.c
+index dc61c88b9f..3f9760c921 100644
+--- a/drivers/clk/clk-gpio.c
++++ b/drivers/clk/clk-gpio.c
+@@ -96,7 +96,6 @@ static struct clk_hw *clk_register_gpio(struct device *dev, u8 num_parents,
+ 	struct clk_hw *hw;
+ 	struct clk_init_data init = {};
+ 	const char *parent_names[2];
+-	int err;
  
- /**
-  * of_platform_bus_create() - Create a device for a node and its children.
-- * @bus: device node of the bus to instantiate
-+ * @node: device node of the bus to instantiate
-  * @matches: match table for bus nodes
-  * @parent: parent for new device, or NULL for top level.
-  *
-  * Creates a platform_device for the provided device_node, and optionally
-  * recursively create devices for all the child nodes.
-  */
--static int of_platform_bus_create(struct device_node *bus,
-+static int of_platform_bus_create(struct device_node *node,
- 				const struct of_device_id *matches,
- 				struct device *parent)
- {
-@@ -415,22 +415,22 @@ static int of_platform_bus_create(struct device_node *bus,
- 	int rc = 0;
+ 	clk_gpio = xzalloc(sizeof(*clk_gpio));
+ 	if (!clk_gpio)
+@@ -116,11 +115,7 @@ static struct clk_hw *clk_register_gpio(struct device *dev, u8 num_parents,
+ 	clk_gpio->hw.init = &init;
  
- 	/* Make sure it has a compatible property */
--	if (!of_get_property(bus, "compatible", NULL)) {
-+	if (!of_get_property(node, "compatible", NULL)) {
- 		pr_debug("%s() - skipping %pOF, no compatible prop\n",
--			__func__, bus);
-+			__func__, node);
- 		return 0;
- 	}
+ 	hw = &clk_gpio->hw;
+-	err =  bclk_register(&clk_gpio->hw.clk);
+-	if (err)
+-		return ERR_PTR(err);
+-
+-	return hw;
++	return clk_to_clk_hw(clk_register(dev, hw));
+ }
  
--	if (of_device_is_compatible(bus, "arm,primecell")) {
--		if (of_amba_device_create(bus))
-+	if (of_device_is_compatible(node, "arm,primecell")) {
-+		if (of_amba_device_create(node))
- 			return 0;
- 	}
- 
--	dev = of_platform_device_create(bus, parent);
--	if (!dev || !of_match_node(matches, bus))
-+	dev = of_platform_device_create(node, parent);
-+	if (!dev || !of_match_node(matches, node))
- 		return 0;
- 
--	for_each_child_of_node(bus, child) {
-+	for_each_child_of_node(node, child) {
- 		pr_debug("   create child: %pOF\n", child);
- 		rc = of_platform_bus_create(child, matches, dev);
- 		if (rc)
+ static struct clk_hw *clk_hw_register_gpio_gate(struct device *dev,
+
+---
+base-commit: 89bf1fcc998fc5fea0ce613d9930dd9ee39c0fb2
+change-id: 20250717-clk_register-3ff98f73451e
+
+Best regards,
+--  
+Jonas Rebmann <jre@pengutronix.de>
+
 
 
