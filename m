@@ -1,58 +1,58 @@
-Delivery-date: Fri, 18 Jul 2025 19:13:52 +0200
+Delivery-date: Fri, 18 Jul 2025 19:13:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ucoee-001HCr-1p
+	id 1ucoeh-001HDE-16
 	for lore@lore.pengutronix.de;
-	Fri, 18 Jul 2025 19:13:52 +0200
+	Fri, 18 Jul 2025 19:13:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ucoed-0007Bj-Tj
-	for lore@pengutronix.de; Fri, 18 Jul 2025 19:13:52 +0200
+	id 1ucoeg-0007GV-Q7
+	for lore@pengutronix.de; Fri, 18 Jul 2025 19:13:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+jfld4p3u6eAAH5Qw9L4ZNxa7/3TbK+cNhyqyclvCvg=; b=aBpw8SodHgXpXUIlYDWqyYBtQM
-	hdLiKLfKE2ZVl1iSXkcRmoJEYV9eDz0r/YBDMyrFTf/tEcM44Ag5uc7B1LvpGwFJ3PoiPe4+hAjIE
-	QDZ6zcKmtTn7ZSUsGXyKpFCotL8Zn2GdoFEMa2CnM5t+okTYb8KdEMGFe8S6w2jvKUjhpqMosbg4s
-	KiEEzjcygbzJwVASt9PGcsIZeLFSfb1pFr43M0GhmACdLJEZy7jeuAyylPie8S0MW+oyqe7ad22LP
-	W+Ei4Qt0zUr8fHPjAHMap0EkjU1LZ3UHfGfnL9OMZiCehh62vmk7J/DMBLbKscM1Bn9y3BhPbVP2F
-	vXwpgrqA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=W6JiI2CT4Ol7dXEX5T10CkKJBUbPijhDFccIbekudGc=; b=K6a+2kAWCT+k8d2Lz7V7xGODY0
+	w4KZrggEGMWMoM88jjWvaHM85Aze+0FbO3jo7zxfp3/95DLf+vomDq9R09Sao5rMhfgxv9kYqMuIu
+	B384UBUlieYRkgcLdTu9UC19wtKoWtMN7xTxzn5CjdSUl3yFrQkpXnIMRL5cZNeokeoy+rVb4WViF
+	EGA5jAT7Vg/ahM/fnY4DsKgvAJ1fvLy2PMOQegfouEtTQfUipndKWiCM1RURnfs0c3Ct9m4ldbGAR
+	ky+eBVCYBrZoS4d4EVsY6l3EMNafEfsJThhCm1QbnValU5ZAPowQJP/mzrz/HWZCh4v1jveVLXn8i
+	UJONMeSA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ucoe4-0000000DBsO-2OTP;
-	Fri, 18 Jul 2025 17:13:16 +0000
+	id 1ucodz-0000000DBqp-3cs5;
+	Fri, 18 Jul 2025 17:13:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ucoYk-0000000DBFC-1IWG
+	id 1ucoYO-0000000DBE9-0B7h
 	for barebox@lists.infradead.org;
-	Fri, 18 Jul 2025 17:07:47 +0000
+	Fri, 18 Jul 2025 17:07:25 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ucoYj-0002On-4Q; Fri, 18 Jul 2025 19:07:45 +0200
-Message-ID: <51239d12-ce56-48c9-89e9-0ee3edaf3ffd@pengutronix.de>
-Date: Fri, 18 Jul 2025 19:07:44 +0200
+	id 1ucoYK-00027r-Dg; Fri, 18 Jul 2025 19:07:20 +0200
+Message-ID: <a629c053-7446-405a-946c-d02174e12925@pengutronix.de>
+Date: Fri, 18 Jul 2025 19:07:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Alexander Shiyan <eagle.alexander923@gmail.com>,
- barebox@lists.infradead.org
-References: <20250624091510.28947-1-eagle.alexander923@gmail.com>
- <CAP1tNvTuhdM4Yn206NrWyG+nOJaP0d4PDLfNn=FRs7dW424C+A@mail.gmail.com>
+To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
+ <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+References: <20250718-clk_register-v1-1-009e23a7da84@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <CAP1tNvTuhdM4Yn206NrWyG+nOJaP0d4PDLfNn=FRs7dW424C+A@mail.gmail.com>
+In-Reply-To: <20250718-clk_register-v1-1-009e23a7da84@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250718_100746_347840_EF5695F0 
-X-CRM114-Status: GOOD (  16.15  )
+X-CRM114-CacheID: sfid-20250718_100724_086821_63A975F9 
+X-CRM114-Status: GOOD (  17.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,138 +74,60 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [RFC] ARM: at91: sama5d3: Migrate to MFD-based SMC driver
+Subject: Re: [PATCH] clk: clk-gpio: Use clk_register instead of bclk_register
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 14.07.25 22:00, Alexander Shiyan wrote:
-> Hi Ahmad, any news on this?
-
-Sorry, haven't come around to yet, but will try to soon.
-
+On 18.07.25 15:37, Jonas Rebmann wrote:
+> GPIO-gated clocks wrongfully used barebox clock interface which leads to
+> bugs due to clk not being initialized from init->ops.
 > 
-> вт, 24 июн. 2025 г. в 12:15, Alexander Shiyan <eagle.alexander923@gmail.com>:
->>
->> This replaces the low-level SMC driver implementation with the
->> MFD-based driver for SAMA5D3 platforms.
->>
->> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
->> ---
->>  arch/arm/boards/sama5d3_xplained/board.c | 46 ------------------------
->>  arch/arm/mach-at91/Kconfig               |  1 -
->>  arch/arm/mach-at91/sam9_smc.c            |  5 +--
->>  3 files changed, 1 insertion(+), 51 deletions(-)
->>
->> diff --git a/arch/arm/boards/sama5d3_xplained/board.c b/arch/arm/boards/sama5d3_xplained/board.c
->> index 4d908e6b9f..3ee3f2166e 100644
->> --- a/arch/arm/boards/sama5d3_xplained/board.c
->> +++ b/arch/arm/boards/sama5d3_xplained/board.c
->> @@ -3,60 +3,14 @@
->>  #include <common.h>
->>  #include <init.h>
->>  #include <envfs.h>
->> -#include <mach/at91/at91sam9_smc.h>
->> -#include <mach/at91/hardware.h>
->> -#include <linux/clk.h>
->> -
->> -static struct sam9_smc_config sama5d3_xplained_nand_smc_config = {
->> -       .ncs_read_setup         = 1,
->> -       .nrd_setup              = 2,
->> -       .ncs_write_setup        = 1,
->> -       .nwe_setup              = 2,
->> -
->> -       .ncs_read_pulse         = 5,
->> -       .nrd_pulse              = 3,
->> -       .ncs_write_pulse        = 5,
->> -       .nwe_pulse              = 3,
->> -
->> -       .read_cycle             = 8,
->> -       .write_cycle            = 8,
->> -
->> -       .mode                   = AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
->> -                                 AT91_SMC_EXNWMODE_DISABLE | AT91_SMC_DBW_8,
->> -       .tdf_cycles             = 3,
->> -
->> -       .tclr                   = 3,
->> -       .tadl                   = 10,
->> -       .tar                    = 3,
->> -       .ocms                   = 0,
->> -       .trr                    = 4,
->> -       .twb                    = 5,
->> -       .rbnsel                 = 3,
->> -       .nfsel                  = 1
->> -};
->>
->>  static int sama5d3_xplained_probe(struct device *dev)
->>  {
->> -       struct clk *clk;
->> -
->>         barebox_set_hostname("sama5d3_xplained");
->>
->>         if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
->>                 defaultenv_append_directory(defaultenv_sama5d3_xplained);
->>
->> -       add_generic_device("at91sam9-smc", DEVICE_ID_SINGLE, NULL,
->> -                          SAMA5D3_BASE_HSMC + 0x600, 0xa0,
->> -                          IORESOURCE_MEM, NULL);
->> -
->> -       clk = clk_lookup("hsmc_clk");
->> -       if (IS_ERR(clk))
->> -               dev_warn(dev, "couldn't get hsmc_clk: %pe\n", clk);
->> -
->> -       clk_enable(clk);
->> -
->> -       /* configure chip-select 3 (NAND) */
->> -       sama5_smc_configure(0, 3, &sama5d3_xplained_nand_smc_config);
->> -
->>         return 0;
->>  }
->>
->> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
->> index db79ad2d26..22ab99d9c8 100644
->> --- a/arch/arm/mach-at91/Kconfig
->> +++ b/arch/arm/mach-at91/Kconfig
->> @@ -107,7 +107,6 @@ config SOC_SAMA5D2
->>  config SOC_SAMA5D3
->>         bool
->>         select SOC_SAMA5
->> -       select AT91SAM9_SMC
->>         select CLOCKSOURCE_ATMEL_PIT
->>         select HAVE_AT91_SMD
->>         select HAVE_AT91_USB_CLK
->> diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
->> index 6c9e169a8e..66b30694ce 100644
->> --- a/arch/arm/mach-at91/sam9_smc.c
->> +++ b/arch/arm/mach-at91/sam9_smc.c
->> @@ -14,8 +14,7 @@
->>
->>  #define AT91_SAM9_SMC_CS_STRIDE                0x10
->>  #define AT91_SAMA5_SMC_CS_STRIDE       0x14
->> -#define AT91_SMC_CS_STRIDE     ((at91_soc_initdata.type == AT91_SOC_SAMA5D3 \
->> -                                || at91_soc_initdata.type == AT91_SOC_SAMA5D4) \
->> +#define AT91_SMC_CS_STRIDE     ((at91_soc_initdata.type == AT91_SOC_SAMA5D4) \
->>                                  ? AT91_SAMA5_SMC_CS_STRIDE : AT91_SAM9_SMC_CS_STRIDE)
->>  #define AT91_SMC_CS(id, n)     (smc_base_addr[id] + ((n) * AT91_SMC_CS_STRIDE))
->>
->> @@ -27,7 +26,6 @@ static void sam9_smc_cs_write_mode(void __iomem *base,
->>         void __iomem *mode_reg;
->>
->>         switch (at91_soc_initdata.type) {
->> -       case AT91_SOC_SAMA5D3:
->>         case AT91_SOC_SAMA5D4:
->>                 mode_reg = base + AT91_SAMA5_SMC_MODE;
->>                 break;
->> @@ -101,7 +99,6 @@ static void sam9_smc_cs_read_mode(void __iomem *base,
->>         void __iomem *mode_reg;
->>
->>         switch (at91_soc_initdata.type) {
->> -       case AT91_SOC_SAMA5D3:
->>         case AT91_SOC_SAMA5D4:
->>                 mode_reg = base + AT91_SAMA5_SMC_MODE;
->>                 break;
->> --
->> 2.39.1
->>
+
+Fixes: b1fb0aac1ed5 ("gpio: clk-gpio: Updating the driver from the kernel repository")
+
+> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> ---
+>  drivers/clk/clk-gpio.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+> 
+> diff --git a/drivers/clk/clk-gpio.c b/drivers/clk/clk-gpio.c
+> index dc61c88b9f..3f9760c921 100644
+> --- a/drivers/clk/clk-gpio.c
+> +++ b/drivers/clk/clk-gpio.c
+> @@ -96,7 +96,6 @@ static struct clk_hw *clk_register_gpio(struct device *dev, u8 num_parents,
+>  	struct clk_hw *hw;
+>  	struct clk_init_data init = {};
+>  	const char *parent_names[2];
+> -	int err;
+>  
+>  	clk_gpio = xzalloc(sizeof(*clk_gpio));
+>  	if (!clk_gpio)
+> @@ -116,11 +115,7 @@ static struct clk_hw *clk_register_gpio(struct device *dev, u8 num_parents,
+>  	clk_gpio->hw.init = &init;
+>  
+>  	hw = &clk_gpio->hw;
+> -	err =  bclk_register(&clk_gpio->hw.clk);
+> -	if (err)
+> -		return ERR_PTR(err);
+> -
+> -	return hw;
+> +	return clk_to_clk_hw(clk_register(dev, hw));
+>  }
+>  
+>  static struct clk_hw *clk_hw_register_gpio_gate(struct device *dev,
+> 
+> ---
+> base-commit: 89bf1fcc998fc5fea0ce613d9930dd9ee39c0fb2
+> change-id: 20250717-clk_register-3ff98f73451e
+> 
+> Best regards,
+> --  
+> Jonas Rebmann <jre@pengutronix.de>
+> 
+> 
 > 
 
 
