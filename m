@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1udikj-0027aP-1Z
+	id 1udikj-0027aZ-26
 	for lore@lore.pengutronix.de;
 	Mon, 21 Jul 2025 07:07:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1udiki-0007N7-NY
+	id 1udiki-0007N6-PO
 	for lore@pengutronix.de; Mon, 21 Jul 2025 07:07:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,74 +18,74 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=iEVyURQjbbE+He4uVD3t8nzffpfITCYb4keXqjZB+cU=; b=zyUI1MK6Y2FPMJ
-	/cWV+Qq6Fh2+tWtqYTt3iRVettUbxk7zZ29fudisBkjMccqtScUQhE55nHbCkwPIy4VdwVgzSsyiu
-	osbEgJo7JxzrB3x8kxOiwxz3s+y2GLT8ypyswpw6bW8S0/brK7O2dW4rLh0rtCU0IYWtZgKi6MjLI
-	10yNBToREOa2ztdac2SstPg2hIkKyMvXAgvSjqywvHFDH2KvMM+T4t1lZ8ayEY+7vNkEEH0a9yOeS
-	c0eSWdUPRKgH2fU2FI6SZbbix/6DYlJgXrBm1nNK0S0n1A3qolonHIGGMg4AIS63eaNPg08nY5fFH
-	oHac06ff5C7qbIhTiwag==;
+	List-Owner; bh=KgzzvqGgmDVIZ4G5oa7DywkAPm4uOGW6/6WOcqHspB4=; b=bYk1uhlqcjsTke
+	0SYaxgAlECUVRpIyQjdNtAPh6m187DCBY5eHWJ+bZE4o4RZRqtx56Xl06rdz15pJVOTxFnmfQqjeR
+	Xa+LNCFk6AGidiPmFGrjICvb2a/MZeGiVaujbFhyA/hDc6ikN9kd6BH4uVcxby3IXNVqqaqJl8uNu
+	iDyGs3KgasMB5L55huquASopWfpzsuP5AqVYno8wOKBq7pZl4QbUhhqpRdvVc4R2EQOYUW2fSyQl5
+	7HCiH8xyE4cQMLhdHTHGxiHyUWgYOzaeVF2kJWHy7wCjhiV8Tzy0TUccN3omYYfZB6RG8dbJjnekM
+	uh9hiZN3A84GcVsnVWGg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1udik1-0000000GEEL-3yvA;
-	Mon, 21 Jul 2025 05:07:09 +0000
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+	id 1udik6-0000000GEFu-1mjN;
+	Mon, 21 Jul 2025 05:07:14 +0000
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1udijy-0000000GED0-3tAI
+	id 1udik3-0000000GEEn-2XPy
 	for barebox@lists.infradead.org;
-	Mon, 21 Jul 2025 05:07:08 +0000
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-ae3a604b43bso655701766b.0
-        for <barebox@lists.infradead.org>; Sun, 20 Jul 2025 22:07:06 -0700 (PDT)
+	Mon, 21 Jul 2025 05:07:12 +0000
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-60c01b983b6so8139422a12.0
+        for <barebox@lists.infradead.org>; Sun, 20 Jul 2025 22:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753074425; x=1753679225; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1753074430; x=1753679230; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iEVyURQjbbE+He4uVD3t8nzffpfITCYb4keXqjZB+cU=;
-        b=lGWatnckp6lXXEu+edpnbD0U2yX4ufyqX1IPZ7N5LjGHjfB5E1eLzzbrbJsdrcpKxS
-         X0qIeby8ZmiKUQR1BIQWzvaqxudNSlL51rMkKeyRxKHX7P8WLXM8LY/RL/Vuc82pebsV
-         eT6d2LtdFvpXeMgmfTTrgO5E9c8xJmx2e3j3veQAAXu+wf5ssYFC97f04j+Fm5LImoje
-         EVnx7hyRdtsVytR+s/8oNPLftA1iZL0UhQQ8YI+uIU8ie0AbgIWiVBRLfxtLUumS8hso
-         aa1onEp3IgJd6I1b83GigGWHzsnMEmnTDw6RwfUkVGdMiw0av44eLVifHPul3xTHlnpj
-         apDw==
+        bh=KgzzvqGgmDVIZ4G5oa7DywkAPm4uOGW6/6WOcqHspB4=;
+        b=EM+1+aagotiY6lkqWnd/wgGBycrDxyUKKzUv2AWk63e7TnTQ2UP49EjkAg9NwpL+Nw
+         Tc6RNbO64t2e7eyLqATGXQo3iMit57cssnRl5dnUvaAboLiIko6lfoez/CbcXSa+aJNq
+         Mfe6nGv+GX7lwweZUIe6mBQSd8CWeIHLaHQBWdupTmG/VDM4FCkhxKJnmb30qoeq9t/G
+         DXOVY7I0M1H2cO61UrtLcsf9u3wQVMOJ14ISLDrDIHlm4qqH40WYV6M/9wsNRCXhXrcm
+         AMnbWlDs5nlr1bWBy+CgNtaKRXT9yANbWzIuFK/jRhglsqxKoNRNhQ7DCLhflkx5Zqjl
+         hCJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753074425; x=1753679225;
+        d=1e100.net; s=20230601; t=1753074430; x=1753679230;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iEVyURQjbbE+He4uVD3t8nzffpfITCYb4keXqjZB+cU=;
-        b=OTFdep7LqibuEbr2XAodCFXZyzXNP8TrkO9UnYhURGZ6ykTvnEI5VMwSVE1nu0v2Io
-         TpyOy8C5H1bQiuAQQ8/jzSpAqU80lZd6Ml2CnR0MZFweiZ/ACSRFH58JSo8twv9Hvr/3
-         kMwrPe390XLhGFQHIWPFgBaH6CDtuvmNWwAvE2J9P7HM9LpOE+kLHPInEp7/ysig9Ifs
-         kigUZlDwSPw4aVmEQ3SVnz9XZtCqM+0tP0oamNf6ivbfFvMTUs0PI+PiTc4aqpeZtBzB
-         56/lccazgd+yARNQ2gmnOnWDb9bKRErubL3VfKoDSD4KYvViYzR7lDRtMoTCbKQ2ScRP
-         xFsw==
-X-Gm-Message-State: AOJu0YyI4jiMQCozxzCW06M9LXBkAPRo0C3dej63DvbsrW//CiXVFFcb
-	WZRsNDexaRDgzUjfMoH+5N+bBH9EBiwDWrwvXIB6cz8D3kVc/sGPfkq1iSc6hw==
-X-Gm-Gg: ASbGnctUp0+9Bbbbi5qQGNzsGmEjxGQZf3IUHbmH5/fd0VLmdfzTkWvHKpqEkSPrAJu
-	2N8q6n3g9TjAO7YW9mFEqHGBa+7iIyX5ju5cMByTrjRtWAvNxf3hN9JSd0I+mE5R+qdJKriQoJ4
-	N9FDE6hHAknQABrf9DN0/vE/y8L4J9ahVZs0rcZXZvRnhXKRN8MMI79DgmFiorBL7iL/YUx78Vs
-	Nb4Rohtxblzd6kjINgyiBt2tbC0Vhrml0b5tPMgigs9xfbuWFncbAd3AMZunuSMj+c0+OeITa09
-	kFxXFxr4SWtrTEEnrDp+aFPBdT+2DOjrEr5rDRD6Md+DibHX04+nVkTZDT4mS1K7mOSP97rxNlg
-	+oc7lNjyWR8YEnj/bHHJLwoPXgf1oR8/id5BAY8t17oXFWxwIwch0Bw==
-X-Google-Smtp-Source: AGHT+IFjatvRhsSwvqEpYhAj3paYVUordyYwpg+nhtb+AWEuSzhw6nZeGpjU1Pq7w32C6fJpbg1ncA==
-X-Received: by 2002:a17:906:255b:b0:ad5:27f5:7183 with SMTP id a640c23a62f3a-ae9ce0c5bc3mr1370883866b.39.1753074424752;
-        Sun, 20 Jul 2025 22:07:04 -0700 (PDT)
+        bh=KgzzvqGgmDVIZ4G5oa7DywkAPm4uOGW6/6WOcqHspB4=;
+        b=tLh86gMpM3OpSDCMXzWBV64QicFRywYcYyPTLAO08oBd4dJ3zf7Zu8QKtSZcoka+Sl
+         YejFB7A1V7ibSQfbcqDjJHa2vmnHH/AUBi3zDfsFuU6fD+0xGjUuuzZ0xPlE59j7X5iN
+         F8/bpGPUE5l/vTBIBSn4BXATIR/ABQf6FVhbc0q3+WGamTe8t+WMBbT4227ACt7/P4GG
+         MV5oKMFYyobl6R6bFejTb6f+Dy9zqayuFmqOsWflrfLD5TqSnSGq9RQSEGGEPPwCJjZa
+         DXCuwzq40CKgsp+dMLFoYUUYD72QUnMXoZ+g60JXb9RoB/4DcAi/j7gEOo5DTcQw9eVr
+         c+9w==
+X-Gm-Message-State: AOJu0YyMjpDTdfltf2XALcC9TAQFb+l8DcYSgDCbAUljOt1U0DGvCIRB
+	tHHPN1rBkeBA+UxbLgo4un7xa+fBu0PfNYWsQEmHmx9uQXTQXYwmLDK8S7k6tQ==
+X-Gm-Gg: ASbGncvwXF8COUKK1pynJrZ8CJiTMA8XtKF/6mbRrf7gAJ3T6pmC/9Hsu1vNnNiKdZb
+	pDKAJAEigwGeZuDO0OjQZ7tYob55Pon3H4BoVoFQ2v1Up4USkB/JkOPIo/4Bxhm0EzfZ37m1PXd
+	lHGAVy9BH0PHa6Lmo8wyXK0vjd8QM4RK9OBUlp2kFBcwK3cqgstH/IKMyXc7ahrJWLX5qSm6uvh
+	v1rYA5v9tC5qD9JbQIQK7AWkEyLthHLhOsahB9zu7su1FZ/vILYbNck+HngvsAPFPP++7RwCLQ4
+	JUGfMdDOyzB0jk6QfOftHKofpWt+ARSe0QWdBA6avxdo3TVwifIJFQ03wxLHnYITUYoIO3rVISo
+	/3u8Fg8JHWkrish+tVm2FJX3UTuifug0yXPWv5aOQwsNg23TomGJZlg==
+X-Google-Smtp-Source: AGHT+IEKl1LGu9+nFvJW4hrwfk4lBtolT1Em6kJ7T0HXDaW4jRqefMd/bTs3ZxHI1XDF92bIeBqOTA==
+X-Received: by 2002:a05:6402:913:b0:60c:6b2a:d170 with SMTP id 4fb4d7f45d1cf-612c0efa713mr11136859a12.13.1753074429788;
+        Sun, 20 Jul 2025 22:07:09 -0700 (PDT)
 Received: from cinco.. (109-252-15-179.nat.spd-mgts.ru. [109.252.15.179])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8f5cf4esm4742135a12.32.2025.07.20.22.07.03
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8f5cf4esm4742135a12.32.2025.07.20.22.07.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jul 2025 22:07:03 -0700 (PDT)
+        Sun, 20 Jul 2025 22:07:08 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Mon, 21 Jul 2025 08:00:42 +0300
-Message-ID: <20250721050045.17310-2-antonynpavlov@gmail.com>
+Date: Mon, 21 Jul 2025 08:00:45 +0300
+Message-ID: <20250721050045.17310-5-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250721050045.17310-1-antonynpavlov@gmail.com>
 References: <20250721050045.17310-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250720_220706_964971_4D71F8BF 
-X-CRM114-Status: UNSURE (   8.37  )
+X-CRM114-CacheID: sfid-20250720_220711_647066_B279FB65 
+X-CRM114-Status: UNSURE (   8.96  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -110,33 +110,42 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/4] include/stdio.h: drop serial_printf() declaration
+Subject: [PATCH 4/4] include/driver.h: drop unused declarations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The serial_printf() function was removed
-in the commit af347d05abb8b69f ("svn_rev_380").
-
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/stdio.h | 4 ----
- 1 file changed, 4 deletions(-)
+ include/driver.h | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/include/stdio.h b/include/stdio.h
-index 50688feff4e..b4acc01bc39 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -10,10 +10,6 @@
- /*
-  * STDIO based functions (can always be used)
+diff --git a/include/driver.h b/include/driver.h
+index dd50a7aa3cc..5169b959f92 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -117,13 +117,6 @@ static inline void device_rescan(struct device *dev)
+ #define device_for_each_child_safe(dev, tmpdev, child) \
+ 	list_for_each_entry_safe(child, tmpdev, &(dev)->children, sibling)
+ 
+-/* Iterate through the devices of a given type. if last is NULL, the
+- * first device of this type is returned. Put this pointer in as
+- * 'last' to get the next device. This functions returns NULL if no
+- * more devices are found.
+- */
+-struct device *get_device_by_type(ulong type, struct device *last);
+-struct device *get_device_by_id(const char *id);
+ struct device *get_device_by_name(const char *name);
+ 
+ /* Find a device by name and if not found look up by device tree path
+@@ -137,8 +130,6 @@ struct device *find_device(const char *str);
   */
+ int get_free_deviceid(const char *name_template);
+ 
+-char *deviceid_from_spec_str(const char *str, char **endp);
 -
--/* serial stuff */
--void serial_printf(const char *fmt, ...) __printf(1, 2);
--
- int sprintf(char *buf, const char *fmt, ...) __printf(2, 3);
- int snprintf(char *buf, size_t size, const char *fmt, ...) __printf(3, 4);
- int scnprintf(char *buf, size_t size, const char *fmt, ...) __printf(3, 4);
+ static inline const char *dev_id(const struct device *dev)
+ {
+ 	if (!dev)
 -- 
 2.45.2
 
