@@ -1,89 +1,57 @@
-Delivery-date: Mon, 21 Jul 2025 07:07:54 +0200
+Delivery-date: Mon, 21 Jul 2025 10:44:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1udikk-0027bB-1q
+	id 1udm88-002AYw-0O
 	for lore@lore.pengutronix.de;
-	Mon, 21 Jul 2025 07:07:54 +0200
+	Mon, 21 Jul 2025 10:44:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1udikk-0007O0-1R
-	for lore@pengutronix.de; Mon, 21 Jul 2025 07:07:54 +0200
+	id 1udm87-0003rP-Gf
+	for lore@pengutronix.de; Mon, 21 Jul 2025 10:44:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=i2Z/DPztEZO/9hxQJWtsAXrzCrVjr+zU3OQyigoCJIo=; b=BooKcj5nKV8eKc
-	Pvd/kRI8EWbq3tcWiztdk/kA6JowLAGCBPA3uPh4WuHmUMOr/Vl6mNXYqLidhcv7FM6YNLO00gsoc
-	cM6TpmZ4W7RlGkhGJgIJHBbkpSPzPblfGiCf5VzgUeqX8EZ6jvevHg1s//eNKmx1/0Zd9rejVmqpZ
-	SioPBvZK6yGe9rwNlxQOJOyO4g86nHthlN8/8p7V+7r9QwcC6DJ5QKB8XvijF651KPRm9PyL9lh5q
-	Gb8cJHTPcMqPVjVHIP/HMtunzUcmt7j0q52lHagxVm6dIb64nDVBEwa9qodxNOY4btGg8PHVVR76M
-	lTPsTlxqmWDiwgQSUkZQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=gGDparLYZlrAQcCM28+3KwOZV/uxZlJQDFhGQRoRL2I=; b=gQBCQN74U/aVjOhs6IBk1MgQrH
+	5ARicvFUmGVwl8ZFmD4+7vzGfdNoVsPe39wESY5TF5GPorzhb6iWvEhq9ZitLYbB0KBESOYbiD3xd
+	7cDS53YP+7BQh2zQu+M8gzdNOVJNaLHFUZrmimWkDv1LyxevMnPO8ZjUSsrIzcP2pgAUwU39nHrzr
+	ML2mbwtwrZ/e20KuN9c1HLgaMQnuPqsORGJLSUnkrUf2+tZyekVUoSMMsTE2TyRHi7oidzLBA7GvD
+	8z+Q6yi8hO4MiE3Ih08NbvxDexErd91fQYeO3wZNJMwOHKyBlADHdt9Lmf0Zqiyt5TnnQvvATnUia
+	0SOv6Ztg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1udik1-0000000GEE8-1sPI;
-	Mon, 21 Jul 2025 05:07:09 +0000
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+	id 1udm7O-0000000GhAj-0Nht;
+	Mon, 21 Jul 2025 08:43:30 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1udijy-0000000GECr-07q8
+	id 1udlkK-0000000GcoS-33Zf
 	for barebox@lists.infradead.org;
-	Mon, 21 Jul 2025 05:07:07 +0000
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-60707b740a6so5600123a12.0
-        for <barebox@lists.infradead.org>; Sun, 20 Jul 2025 22:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753074423; x=1753679223; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=i2Z/DPztEZO/9hxQJWtsAXrzCrVjr+zU3OQyigoCJIo=;
-        b=CsiEb+o5rMWElQCNnNI+GEN77adrNJRRZvPACcyVZBSkizcVQzLhnKP1at2/oWFxzv
-         zC6NUOBWqLJOrXRLo+mzKSaaJlqAcWVud6r1Qxkl3cVL9Q0E0vXD4Z5w5iHXQwdukjoM
-         Ie1nRkl4tP5JcwHUTSdQYn0iWwAD3wiisnt8QA39p9ijK94tI5xXnJLH7nlRtJD6L3TN
-         z474k9gkAe1pElhnb5jn95lrvHK+SVzoFIRLapwlP74siQc+Ar7MwyjHMqvlpybuY426
-         EQsN93qKbsQFMtCQ/36Gfq/UpCA94roarXG9gGmNngxVS6I70ACA90hcFiJAJQI5hwQ2
-         WNGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753074423; x=1753679223;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i2Z/DPztEZO/9hxQJWtsAXrzCrVjr+zU3OQyigoCJIo=;
-        b=kQxYmAJD/C0X7sTT7l+JW8J0xniofs2FlSeaBZJeg3G/sk37rDbpGxDZ2M/NT7o2HK
-         +cKlAVJGqGV7ykLpNqA/x5P9MR4Xuu3llS6EbzBf14kQIOfxgc8NzSsd4bnaVqy+Whot
-         wqp6d+KVKZRk39K7AnOY4Vu7uFl9VkD/nQ2IHbinVW0p6cnJbG3Y8KHaj6RziUng8iIt
-         kS4DfRjBHEpwI8YyBMi0MsM4RYt1dtOt6Hlu9o16PUE8BWvJ1hg1KRjTvr4Bd4hY3sI9
-         96thXuhtDy4LfBC82WAx3XlEkfYMKmnCtI7VBZZYFmyXHIqn8W2p1ICM2nNPptodpyt4
-         ufEg==
-X-Gm-Message-State: AOJu0Yyy436kb1Ijqz2pQrsa3sjJ8MwohGGz3bb9Rlf0olbDXGUaQZP0
-	imq2nR6jJjRFOZwq0g/qTgPmroGfaDEqpYaj4fpT1rcEMu+7tVrgcYEx/apVUw==
-X-Gm-Gg: ASbGncthsEuvRvdYsI0er7b9uoQQoYFasR2U7CaJsWNMGIVgyVERnNWi8M3zIIEwBGl
-	BJPNKYhRG9M8MLd94M30nksjkDYrj4/WY+K1990ww6KVsKykCgSMXLfGXSM7Mszi4nw8xG/pVS1
-	IJGkAxWglO20ygNkJM9Q9KcOKFd/aGPnzwcP8b/dMyCeY0uvn13D8DcOxgCAyx5xD2t4kX8GZma
-	HlS8chIvnggkTy+ihh3PZ5KCF4CniO74uTmfQ3hz7XEPRW+tWYDJwq8wKCDoDN560X0QNpxDl3u
-	S1Y4AGL12E+MvhmGSMuRyPeI3Odl8MS3R1CrWvCC7ke1P/DgD1O1riCvPuPuh89U/euce85ZG99
-	hneqhYRtMN9IjmZ3zik+vYJQu0BtaALT2vmaNTFljvRI3PLmggHkiqTXDIsk0Z4vn
-X-Google-Smtp-Source: AGHT+IHLRiuBQ6U+F6xWUH+gnUXoeUY0mWJ14EcFvWlDamqKJGsDr3tHk6dXxrCgKAHQ1uzhk5gGag==
-X-Received: by 2002:a05:6402:5c9:b0:602:e46:638 with SMTP id 4fb4d7f45d1cf-61285bfad49mr16828392a12.26.1753074423189;
-        Sun, 20 Jul 2025 22:07:03 -0700 (PDT)
-Received: from cinco.. (109-252-15-179.nat.spd-mgts.ru. [109.252.15.179])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8f5cf4esm4742135a12.32.2025.07.20.22.07.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jul 2025 22:07:02 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: barebox@lists.infradead.org
-Date: Mon, 21 Jul 2025 08:00:41 +0300
-Message-ID: <20250721050045.17310-1-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	Mon, 21 Jul 2025 08:19:42 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1udlkH-0004lV-6y; Mon, 21 Jul 2025 10:19:37 +0200
+Message-ID: <a71446fa-b6e9-46e2-b5ee-b8e9121fab98@pengutronix.de>
+Date: Mon, 21 Jul 2025 10:19:37 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+References: <20250618-mmu-xn-ro-v3-0-2a9825725934@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250618-mmu-xn-ro-v3-0-2a9825725934@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250720_220706_071297_A05726A1 
-X-CRM114-Status: UNSURE (   5.62  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250721_011940_771868_EC0CA4EB 
+X-CRM114-Status: GOOD (  21.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,36 +63,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 0/4] drop unused declarations
+X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v3 0/6] ARM: Map sections RO/XN
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Antony Pavlov (4):
-  include/stdio.h: drop serial_printf() declaration
-  include/scsi.h: drop unused declarations
-  include/of.h: drop of_parse_dtb() declaration
-  include/driver.h: drop unused declarations
+Hi,
 
- include/driver.h |  9 ---------
- include/of.h     |  1 -
- include/scsi.h   | 14 --------------
- include/stdio.h  |  4 ----
- 4 files changed, 28 deletions(-)
+On 6/18/25 11:34, Sascha Hauer wrote:
+> So far we mapped all RAM as read write with execute permission. This
+> series series hardens this a bit. The barebox text segment will be
+> mapped readonly with execute permission, the RO data section as readonly
+> without execute permission and the remaining RAM will lose its execute
+> permission.
+> 
+> I tested this series on ARMv5, ARMv7 and ARMv8. I am not confident
+> though that there are no regressions, so this new behaviour is behind a
+> Kconfig option. It is default-y, but can be disabled for debugging
+> purposses.  Once this series has proven stable it can be removed.
+
+Reservations aren't handled correctly and thus if there is e.g. an
+OP-TEE memory region after the barebox code region, the system hangs.
+
+I prepared patches and will send them out soon. Just wanted to give a
+heads up, so next isn't merged into master before that.
+
+Cheers,
+Ahmad
+
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+> Changes in v3:
+> - rework create_sections() for Ahmads comments
+> - mention CR_S bit and DOMAIN_CLIENT in commit message
+> - Link to v2: https://lore.barebox.org/20250617-mmu-xn-ro-v2-0-3c7aa9046b67@pengutronix.de
+> 
+> Changes in v2:
+> - Tested and fixed for ARMv5
+> - merge create_pages() and create_sections() into one functions (ahmad)
+> - introduce function to create mapping flags based on CONFIG_ARM_MMU_PERMISSIONS
+> - Link to v1: https://lore.barebox.org/20250606-mmu-xn-ro-v1-0-7ee6ddd134d4@pengutronix.de
+> 
+> ---
+> Sascha Hauer (6):
+>       ARM: pass barebox base to mmu_early_enable()
+>       ARM: mmu: move ARCH_MAP_WRITECOMBINE to header
+>       ARM: MMU: map memory for barebox proper pagewise
+>       ARM: MMU: map text segment ro and data segments execute never
+>       ARM: MMU64: map memory for barebox proper pagewise
+>       ARM: MMU64: map text segment ro and data segments execute never
+> 
+>  arch/arm/Kconfig                 | 12 ++++++
+>  arch/arm/cpu/lowlevel_32.S       |  1 +
+>  arch/arm/cpu/mmu-common.h        | 20 +++++++++
+>  arch/arm/cpu/mmu_32.c            | 89 ++++++++++++++++++++++++++++++++--------
+>  arch/arm/cpu/mmu_64.c            | 74 +++++++++++++++++++++++++--------
+>  arch/arm/cpu/uncompress.c        |  9 ++--
+>  arch/arm/include/asm/mmu.h       |  2 +-
+>  arch/arm/include/asm/pgtable64.h |  1 +
+>  arch/arm/lib32/barebox.lds.S     |  3 +-
+>  arch/arm/lib64/barebox.lds.S     |  5 ++-
+>  common/memory.c                  |  7 +++-
+>  include/mmu.h                    |  1 +
+>  12 files changed, 181 insertions(+), 43 deletions(-)
+> ---
+> base-commit: fa92c730b34d7ea90309ca10b399ab1a22dc761a
+> change-id: 20250606-mmu-xn-ro-e2a4c4b080a4
+> 
+> Best regards,
 
 -- 
-2.45.2
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
