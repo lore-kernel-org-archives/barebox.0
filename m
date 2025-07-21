@@ -1,90 +1,90 @@
-Delivery-date: Mon, 21 Jul 2025 07:07:52 +0200
+Delivery-date: Mon, 21 Jul 2025 07:07:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1udiki-0027a4-28
+	id 1udikj-0027aP-1Z
 	for lore@lore.pengutronix.de;
-	Mon, 21 Jul 2025 07:07:52 +0200
+	Mon, 21 Jul 2025 07:07:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1udikh-0007Mp-VI
-	for lore@pengutronix.de; Mon, 21 Jul 2025 07:07:52 +0200
+	id 1udiki-0007N7-NY
+	for lore@pengutronix.de; Mon, 21 Jul 2025 07:07:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=+09zvi3I+djnR+YfwnWdAxdNqqOlEiRZsovb6U/IJgQ=; b=WRaja+6y4t+Ynm
-	3J5/6h6SauNcPcxzEvzFgGYvZhMecJbAuV4R8tI3YNRSRk+8VYlwHiIdJmSZQJiprEtnhB7xDDuxp
-	SvgGd+YMUUwjNqF+JQZBIR85tubSQ3VczVftQTw9YdzYj04ZQEgm3Jr6cfIFyYzdvz0ze2KfZHdOI
-	b2vmxLJD+QoAfG09wneePozxkhTm5nhCtNRmCKMFAp88yxV4Ocw6KrN87kg2eLV/3r2e/9bvtljkf
-	IiwEZvDTxDE/qO0pi6I8F0VuBoUMB1XBjPi71iRERXwBpLOhMqH8UXzvX76HNn+S1IEwSz/0WUomt
-	FNiMkQQ62B9YwAmfJ8gA==;
+	List-Owner; bh=iEVyURQjbbE+He4uVD3t8nzffpfITCYb4keXqjZB+cU=; b=zyUI1MK6Y2FPMJ
+	/cWV+Qq6Fh2+tWtqYTt3iRVettUbxk7zZ29fudisBkjMccqtScUQhE55nHbCkwPIy4VdwVgzSsyiu
+	osbEgJo7JxzrB3x8kxOiwxz3s+y2GLT8ypyswpw6bW8S0/brK7O2dW4rLh0rtCU0IYWtZgKi6MjLI
+	10yNBToREOa2ztdac2SstPg2hIkKyMvXAgvSjqywvHFDH2KvMM+T4t1lZ8ayEY+7vNkEEH0a9yOeS
+	c0eSWdUPRKgH2fU2FI6SZbbix/6DYlJgXrBm1nNK0S0n1A3qolonHIGGMg4AIS63eaNPg08nY5fFH
+	oHac06ff5C7qbIhTiwag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1udik2-0000000GEEY-1kXC;
-	Mon, 21 Jul 2025 05:07:10 +0000
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+	id 1udik1-0000000GEEL-3yvA;
+	Mon, 21 Jul 2025 05:07:09 +0000
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1udijz-0000000GEDI-31aU
+	id 1udijy-0000000GED0-3tAI
 	for barebox@lists.infradead.org;
 	Mon, 21 Jul 2025 05:07:08 +0000
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-6077dea37easo6119972a12.3
-        for <barebox@lists.infradead.org>; Sun, 20 Jul 2025 22:07:07 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-ae3a604b43bso655701766b.0
+        for <barebox@lists.infradead.org>; Sun, 20 Jul 2025 22:07:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753074426; x=1753679226; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1753074425; x=1753679225; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+09zvi3I+djnR+YfwnWdAxdNqqOlEiRZsovb6U/IJgQ=;
-        b=btXjvC1hlclwLqydroO9Qy/WEpJnpCFJ7NmxPpABMJ0DOTNQWVblZ5SvBM/oNxCW6F
-         DT6/SSowy6hncHUHL78SdVhL3I1qDqIlBXMqCMtjsWsc6IVbhLD4vvAcl8eb+3oqc+4j
-         mVpAeRFGCXQgDIhMfM095dfXg3R0Cab2n9HWhHmfpvgOqOReB2FsyaXqwhyXqFcNYKcq
-         iAxIUD0CUbdoFSx24PhPYcIJk4pbEppiRPoaPoMHhw/xkhC2YybDwJeB/RPPs6KkQoqw
-         QPXGHSFphNencfhq/4y8s2QeCZIG4vkhMgY6tuhwdp7f1OsPBQF5XMbW7qD4hQ5TjCP/
-         5twg==
+        bh=iEVyURQjbbE+He4uVD3t8nzffpfITCYb4keXqjZB+cU=;
+        b=lGWatnckp6lXXEu+edpnbD0U2yX4ufyqX1IPZ7N5LjGHjfB5E1eLzzbrbJsdrcpKxS
+         X0qIeby8ZmiKUQR1BIQWzvaqxudNSlL51rMkKeyRxKHX7P8WLXM8LY/RL/Vuc82pebsV
+         eT6d2LtdFvpXeMgmfTTrgO5E9c8xJmx2e3j3veQAAXu+wf5ssYFC97f04j+Fm5LImoje
+         EVnx7hyRdtsVytR+s/8oNPLftA1iZL0UhQQ8YI+uIU8ie0AbgIWiVBRLfxtLUumS8hso
+         aa1onEp3IgJd6I1b83GigGWHzsnMEmnTDw6RwfUkVGdMiw0av44eLVifHPul3xTHlnpj
+         apDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753074426; x=1753679226;
+        d=1e100.net; s=20230601; t=1753074425; x=1753679225;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+09zvi3I+djnR+YfwnWdAxdNqqOlEiRZsovb6U/IJgQ=;
-        b=qPceC2OcIOwTyUyR8JjI7RT3lOzX0SmCmT3IURUZBn3SlBFLorp/f7968oE0FwP0J/
-         6GeurXewtlaVMZtYZoPuz3UR/Bk79/P9X+1OB6rXbwzajRQet/e+/QHK4PAIB1aPoS4H
-         6uY9isS3Pceprdj6xTpuFCqwmJRaDnG/Z1qd4vRImXlD7LSsqLPIIknjIWms0QWKINDP
-         z6od+lJuHGZbF7TVasroQVkhFuJl80TJnAedZauczoKEsxqOkLgxuX1kKYmNy1voW4Ym
-         MeWGki7ZimlI/rgqAeqMWgwZggR3/jdQ78BEitg30/BAvcn4z/7rt9VX3ayUiK2IKtgA
-         lUrQ==
-X-Gm-Message-State: AOJu0YxtcAPAEHGaShwCei52KdHNe5M7LKS9DGfgGEYTuYx3DR0DVv1i
-	G8JYgAX3n0hojmaQobk2qID1YGsdfQ/QfEE4jBorK7p3iHLTIy+K/qMNu9Wsug==
-X-Gm-Gg: ASbGncvkk5eNeWDe5xRNxlVNXPjC7NBH8W6I40dagCtHoAyK75n71rbze2kcRnWMclK
-	VL1+zoW6WFktVSt7Ja9hTc+qBPp3ASD/qlOZNY2dv0cYG7RXacB639+Oh/VMNHqk2dwU2zALTwa
-	knxmf+euSipQ7Wc8GowSYNtzOYNLH+fxB4NPnJkr0FAs8UMuQbP16cvBcF7322tH/qh7IJcYf4X
-	muobouhwx7GEJZhFZCwls6Q+0mKD4ZzuhpBI0xcriB4jFc/92RBS3hpcpZNOG+F9Iy4qHTPLsO4
-	ekvr7SiLpzwS9VOTZ4JLjI4HEPLiK4Kh09FMOfYQXC1xvDbIZtJps7V3zyUvr0wlrbhwrVc/o4B
-	WE70l5B1I+szvngBZCC00OmI8IZNL+f//p4vT7QJYSatcjwckeOQdtW/UyrWnb8bn
-X-Google-Smtp-Source: AGHT+IHdkXtKlUNoRD/fukTl9Z1diDwzu9pELATgkg5empmmlD6V8LSmq+J/k9xyJUzKt0aCCiv7sA==
-X-Received: by 2002:a05:6402:5202:b0:601:fcc7:4520 with SMTP id 4fb4d7f45d1cf-612859190cdmr16938223a12.4.1753074425645;
-        Sun, 20 Jul 2025 22:07:05 -0700 (PDT)
+        bh=iEVyURQjbbE+He4uVD3t8nzffpfITCYb4keXqjZB+cU=;
+        b=OTFdep7LqibuEbr2XAodCFXZyzXNP8TrkO9UnYhURGZ6ykTvnEI5VMwSVE1nu0v2Io
+         TpyOy8C5H1bQiuAQQ8/jzSpAqU80lZd6Ml2CnR0MZFweiZ/ACSRFH58JSo8twv9Hvr/3
+         kMwrPe390XLhGFQHIWPFgBaH6CDtuvmNWwAvE2J9P7HM9LpOE+kLHPInEp7/ysig9Ifs
+         kigUZlDwSPw4aVmEQ3SVnz9XZtCqM+0tP0oamNf6ivbfFvMTUs0PI+PiTc4aqpeZtBzB
+         56/lccazgd+yARNQ2gmnOnWDb9bKRErubL3VfKoDSD4KYvViYzR7lDRtMoTCbKQ2ScRP
+         xFsw==
+X-Gm-Message-State: AOJu0YyI4jiMQCozxzCW06M9LXBkAPRo0C3dej63DvbsrW//CiXVFFcb
+	WZRsNDexaRDgzUjfMoH+5N+bBH9EBiwDWrwvXIB6cz8D3kVc/sGPfkq1iSc6hw==
+X-Gm-Gg: ASbGnctUp0+9Bbbbi5qQGNzsGmEjxGQZf3IUHbmH5/fd0VLmdfzTkWvHKpqEkSPrAJu
+	2N8q6n3g9TjAO7YW9mFEqHGBa+7iIyX5ju5cMByTrjRtWAvNxf3hN9JSd0I+mE5R+qdJKriQoJ4
+	N9FDE6hHAknQABrf9DN0/vE/y8L4J9ahVZs0rcZXZvRnhXKRN8MMI79DgmFiorBL7iL/YUx78Vs
+	Nb4Rohtxblzd6kjINgyiBt2tbC0Vhrml0b5tPMgigs9xfbuWFncbAd3AMZunuSMj+c0+OeITa09
+	kFxXFxr4SWtrTEEnrDp+aFPBdT+2DOjrEr5rDRD6Md+DibHX04+nVkTZDT4mS1K7mOSP97rxNlg
+	+oc7lNjyWR8YEnj/bHHJLwoPXgf1oR8/id5BAY8t17oXFWxwIwch0Bw==
+X-Google-Smtp-Source: AGHT+IFjatvRhsSwvqEpYhAj3paYVUordyYwpg+nhtb+AWEuSzhw6nZeGpjU1Pq7w32C6fJpbg1ncA==
+X-Received: by 2002:a17:906:255b:b0:ad5:27f5:7183 with SMTP id a640c23a62f3a-ae9ce0c5bc3mr1370883866b.39.1753074424752;
+        Sun, 20 Jul 2025 22:07:04 -0700 (PDT)
 Received: from cinco.. (109-252-15-179.nat.spd-mgts.ru. [109.252.15.179])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8f5cf4esm4742135a12.32.2025.07.20.22.07.04
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8f5cf4esm4742135a12.32.2025.07.20.22.07.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jul 2025 22:07:05 -0700 (PDT)
+        Sun, 20 Jul 2025 22:07:03 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Mon, 21 Jul 2025 08:00:43 +0300
-Message-ID: <20250721050045.17310-3-antonynpavlov@gmail.com>
+Date: Mon, 21 Jul 2025 08:00:42 +0300
+Message-ID: <20250721050045.17310-2-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250721050045.17310-1-antonynpavlov@gmail.com>
 References: <20250721050045.17310-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250720_220707_757002_C0DEBF32 
+X-CRM114-CacheID: sfid-20250720_220706_964971_4D71F8BF 
 X-CRM114-Status: UNSURE (   8.37  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
@@ -110,45 +110,33 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] include/scsi.h: drop unused declarations
+Subject: [PATCH 1/4] include/stdio.h: drop serial_printf() declaration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Several U-Boot function declarations were introduced
-in the commit 637b3aa727b5b4710b753563ccc3ee8128d0a71b
-("USB mass storage device driver initial implementation").
-At the moment these declarations are unused, so drop them.
+The serial_printf() function was removed
+in the commit af347d05abb8b69f ("svn_rev_380").
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/scsi.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ include/stdio.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/scsi.h b/include/scsi.h
-index 23fc7abbaf4..cb8c95dc5ba 100644
---- a/include/scsi.h
-+++ b/include/scsi.h
-@@ -144,20 +144,6 @@
- /* values for service action in */
- #define	SAI_READ_CAPACITY_16	0x10
- 
--/****************************************************************************
-- * decleration of functions which have to reside in the LowLevel Part Driver
-- */
+diff --git a/include/stdio.h b/include/stdio.h
+index 50688feff4e..b4acc01bc39 100644
+--- a/include/stdio.h
++++ b/include/stdio.h
+@@ -10,10 +10,6 @@
+ /*
+  * STDIO based functions (can always be used)
+  */
 -
--void scsi_bus_reset(void);
--void scsi_low_level_init(int busdevfunc);
+-/* serial stuff */
+-void serial_printf(const char *fmt, ...) __printf(1, 2);
 -
--
--/***************************************************************************
-- * functions residing inside cmd_scsi.c
-- */
--void scsi_init(void);
--
--
- #define SCSI_IDENTIFY				0xC0  /* not used */
- 
- /* Hardware errors  */
+ int sprintf(char *buf, const char *fmt, ...) __printf(2, 3);
+ int snprintf(char *buf, size_t size, const char *fmt, ...) __printf(3, 4);
+ int scnprintf(char *buf, size_t size, const char *fmt, ...) __printf(3, 4);
 -- 
 2.45.2
 
