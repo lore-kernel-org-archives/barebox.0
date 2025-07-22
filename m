@@ -1,57 +1,97 @@
-Delivery-date: Tue, 22 Jul 2025 19:00:49 +0200
+Delivery-date: Tue, 22 Jul 2025 19:34:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ueGMD-002cnE-08
+	id 1ueGst-002dM0-0b
 	for lore@lore.pengutronix.de;
-	Tue, 22 Jul 2025 19:00:49 +0200
+	Tue, 22 Jul 2025 19:34:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ueGMC-0005oy-Aw
-	for lore@pengutronix.de; Tue, 22 Jul 2025 19:00:48 +0200
+	id 1ueGss-0007ge-LL
+	for lore@pengutronix.de; Tue, 22 Jul 2025 19:34:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mnlZfELeQyxkt/fu1GBsPJMLHFbBtbolWHMdikp3zmo=; b=Uy6H6hD1zo6OhiBIoE1cIv8G9K
-	ZdrzxQZGsHATdxqpOgXubv8rj7lsIXJxcC2pa+f7WUzs4glYBXWQtuPwAI64daKXrPG38CZC5uEtm
-	oBc4X0BGCcw/ihJOwoWXtEjfmrnsrcLh6vrehtwqN2t2GwELedSkyi8RCHbYXeK2phR8v7D2eu6FD
-	a5cOQQHXCCj//bpIugU5hfJbrBWy7LBIH4YFeHoAaf+Ssp2B7Nf/gOwuH+Sjf79fEs5Jlys3GMN0s
-	XPSPJDNPLmEmoNdGm9cTOBnPmC63YLDXXD0uJI6ULRHxC9ZSYIXU0OEKjY+ZqcJtIhxGc6HV+19Wr
-	6ZU9ZKSA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=qahjEEZgCxsBayB2sJYSJVrFn0zvwwcXuHEpY6IByak=; b=oHEsrI3oSUg/A96jDH2z51qjBW
+	A4MfUMPmZtoF6j5IHCI+OUDlCF42FkJ+mog89r31ErISllESmaNW8IZ9AUwFSLdVKYjf9D2XxB9xE
+	Z+9O/Caq6WTLNJgCVESiS23hqDCCEFpfnjhVgDDwhitow2zDfC8K8enkaXBLGp1PJkzrD/z9+RZmC
+	Zr8ojvKwl+cPWuIqv6Fy7NBUZxJLLiux88mGxy1oVnjd4B3xQkQuVUcpEVXm6j09DuHkX6qzSXwAI
+	paSlw5O2i/n3//4E47bf06ErZ04UMQvwIQ4w99e0VE1NQGdUhDyDTJ2romcHAFcsveZieJftQGjwm
+	SkxjxGuA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ueGLe-000000034wW-30Tr;
-	Tue, 22 Jul 2025 17:00:14 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1ueGsf-000000038pl-2dAa;
+	Tue, 22 Jul 2025 17:34:21 +0000
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ueG4f-000000033Mh-1Ukp
+	id 1ueFIr-00000002vUG-2yR9
 	for barebox@lists.infradead.org;
-	Tue, 22 Jul 2025 16:42:42 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ueG4e-0008W8-3v; Tue, 22 Jul 2025 18:42:40 +0200
-Message-ID: <b4b3f20f-2fd2-4653-8f1a-dd303e7c5b8e@pengutronix.de>
-Date: Tue, 22 Jul 2025 18:42:39 +0200
+	Tue, 22 Jul 2025 15:53:19 +0000
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4550709f2c1so43525115e9.3
+        for <barebox@lists.infradead.org>; Tue, 22 Jul 2025 08:53:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753199596; x=1753804396; darn=lists.infradead.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qahjEEZgCxsBayB2sJYSJVrFn0zvwwcXuHEpY6IByak=;
+        b=GLjoMiv7OpPumv265G4nM3IX3plu0XONUoL3sZfWJGPrC9k5/r/0yxjAy45a68aYZH
+         YIQ2cC5a0IpqIx764bXJoX+OxMpEfFXUX56D2Qk1i8D+A+RLzPs7AYbge4GMhjrhdHBc
+         sahJO2jY/r3VE0uuirbfmMNwO6cZ+YRNSHMioYMpA4HGP7KIr9wtMrZA2NFdh6tbtRpo
+         QvTxX5dCorwDMRgWbVeykYUe1Eci+5+63wfgJy3i5Ugz3jz5ijvUeINO6z45wn1HwJeq
+         YpN1wL3P9hLf7nyPHz/riC/UtA63rZc65/Uw+mDA2/v7zOX+7BoRBMFJ3kfLPz6LiZ+g
+         dzIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753199596; x=1753804396;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qahjEEZgCxsBayB2sJYSJVrFn0zvwwcXuHEpY6IByak=;
+        b=NjlMVUqsc3N6CzVrvP1t4nopoh6egBDU9wlCMnY/DkA+zAzORXwtDvwR1CPAkAekvo
+         L4VpirQ5fVSgIY7W+m5KdvkHUTzYLtm2D3BXKzwWsglBUtlAgHvFdT7wpA3om34o+dAz
+         tdeNhoiq0IlmLVKhLVSzZkscIvwKC7kJKziKn3NVyW6n7zaL52YaHOWZcszoIv5UogOh
+         dqXvtUmIT1EwLtduiz/xferqMr2ujg6u9InLkoIcHEZ6khzg+Z7Ec8q+LYR2CaaReXUr
+         y3ER1DjX8pRE2V1hcVuGVEh/GmV3rskvwVsel6pBSD0UAszYPsNDnJj6VUcRdmf1ujlt
+         iLXQ==
+X-Gm-Message-State: AOJu0YwDdoGaWxPM5ahzJw30X8+aRY/bBaTcxdLQPJjAZmlTQp8Zg16R
+	zc6mvDCE6LxbUdEQx2Zi9xdavzdCun/hlYcRzgI2kq37Ma0klo6I8PUl
+X-Gm-Gg: ASbGncvxjODP/OFBQYKHu7/EleNXGKnCvvcOqfApYhJunzhIkfuR6TdDWk7P3Gj5tDk
+	6BbccqQKGtbPKS5eEia39xmZaQQFipIaI4WphiJV/Nk8lRL2rZI/rT5axUAL4fvxnBTMxrO6rzj
+	aGYQUsrITSERAEMAukcHdiP4tq4mLvAvTx7rEVpYjDcL6oPYhCxKg3bkqZQUFHe9Bf2GafF85Gq
+	vWD1VtCFhXBapyN7nqnL76xhDMpZCLE9TmU0Dis+Ai5E5hnsE0vCYcZIWfAPcohYGYNvT6rJH/t
+	i7YU065+QexyD1hzxe6vxhCpFrHBdlRKStXmvvs3rr1SLcAVP7GtWJEUdxiAHlpkBHluk2krEwk
+	WEsK86NLqGO/tNpMe4G+lJPe5d4ot8lfd28rsbSEyrYNa4LgIk7mgRels8WjTuvj+amf5jDHDf4
+	As9LQUZzLTj3CSn6Wr1Zyt5uCVngul1t0aVAjaITZcDF/t4C1eNMLSLAq3p0AVLCfWO8fewYRVL
+	MKTl83RHuNVSfnUYgxGrfEMTp0=
+X-Google-Smtp-Source: AGHT+IHQPIZ09QWPz2nB1+2j8cNk9tAy0KelkFZ7BDC3Q7a1Cf3JN6Wwn7wM9qVxcqAwwKEtF6T2SQ==
+X-Received: by 2002:a05:600c:468a:b0:453:c39:d0a7 with SMTP id 5b1f17b1804b1-4563b89f82bmr155829735e9.5.1753199595153;
+        Tue, 22 Jul 2025 08:53:15 -0700 (PDT)
+Received: from ?IPV6:2a02:8388:e103:2700:94ed:9045:ed9c:402c? (2a02-8388-e103-2700-94ed-9045-ed9c-402c.cable.dynamic.v6.surfer.at. [2a02:8388:e103:2700:94ed:9045:ed9c:402c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4563b5b8941sm135227615e9.11.2025.07.22.08.53.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jul 2025 08:53:14 -0700 (PDT)
+Message-ID: <8258cc5e-4223-4777-9c45-3feb6acba793@gmail.com>
+Date: Tue, 22 Jul 2025 17:53:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
- barebox@lists.infradead.org
-References: <20250719174737.2035188-2-uwe@kleine-koenig.org>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20250719174737.2035188-2-uwe@kleine-koenig.org>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
+References: <20250611175645.144025-1-andrey.lalaev@gmail.com>
+ <44e20622-1c1f-4087-8b34-01cf378d3004@pengutronix.de>
+Content-Language: en-GB
+From: Andrei Lalaev <andrey.lalaev@gmail.com>
+In-Reply-To: <44e20622-1c1f-4087-8b34-01cf378d3004@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250722_094241_398497_464985DC 
-X-CRM114-Status: GOOD (  31.87  )
+X-CRM114-CacheID: sfid-20250722_085317_745894_0CEF74DB 
+X-CRM114-Status: GOOD (  11.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,202 +109,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] arm64: rockchip: Add support for QNAP's ts-433 4bay
- NAS
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] common: fastboot: send FAIL if variable does not exist
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Uwe,
+On 22.07.2025 16:07, Ahmad Fatoum wrote:
+> Hello Andrei,
+> 
+> On 6/11/25 19:56, Andrei Lalaev wrote:
+>> According to doc [1], new implementations should send FAIL if the
+>> variable specified in the getvar command does not exist.
+>>
+>> [1]: https://android.googlesource.com/platform/system/core/+show/refs/heads/main/fastboot/README.md#121
+>>
+>> Signed-off-by: Andrei Lalaev <andrey.lalaev@gmail.com>
+> 
+> Did you run into any particular issues that motivated your change?
 
-On 7/19/25 19:47, Uwe Kleine-König wrote:
-> The resulting image boots to a prompt using usb booting or when booting
-> from eMMC. Networking and USB are working.
+Hi Ahmad,
 
-Cool stuff!
+Sorry, I should have written a more descriptive commit message
+or at least mentioned the root cause in the footer.
 
-My comments below.
+I was using uuu v1.5.201 with barebox 2025.01 (or 2025.02) to flash
+a raw image to eMMC using the raw2flash flag. Unfortunately,
+due to a bug in uuu, it ended up flashing garbage :/
+I’ve fixed the issue in uuu [1], but during the investigation
+I found out that newer implementation of Fastboot should send FAIL
+if variable is missing, so I also decided to send a patch to barebox.
 
-> Thanks to the fine rk3568 base support this was an easy journey to
-> create a powerful bootloader for my NAS. Thanks!
+1 - https://github.com/nxp-imx/mfgtools/commit/f7351c1cf626764d902576362421f33b79b3a9e9
 
-Glad to hear. :)
-
-> diff --git a/arch/arm/boards/qnap-tsx33/board.c b/arch/arm/boards/qnap-tsx33/board.c
-> new file mode 100644
-> index 000000000000..2611f7a6a9bf
-> --- /dev/null
-> +++ b/arch/arm/boards/qnap-tsx33/board.c
-> @@ -0,0 +1,73 @@
-> +#include <common.h>
-> +#include <gpio.h>
-> +#include <init.h>
-> +#include <mach/rockchip/bbu.h>
-> +#include <bootsource.h>
-> +#include <environment.h>
-> +#include <globalvar.h>
-> +#include <magicvar.h>
-> +#include <deep-probe.h>
-> +
-> +static int ts433_usb_device_mode(void)
-> +{
-> +	struct device_node *node;
-> +
-> +	/* &usb_host0_xhci */
-> +	node = of_find_node_by_path("/usb@fcc00000");
-> +	if (!node)
-> +		return -ENODEV;
-> +
-> +	return of_property_write_string(node, "dr_mode", "peripheral");
-> +}
-> +
-> +static int ts433_probe(struct device *dev)
-> +{
-> +	enum bootsource bootsource = bootsource_get();
-> +	int copy_button_pressed = !gpio_get_value(14);
-
-You need to ensure the GPIO controller is probed before you try to get
-the GPIO, e.g. by calling
-
-  of_devices_ensure_probed_by_property("gpio-controller");
-
-first.
-
-My preference would be using the input API for this though.
-
-Define a gpio-keys node in the DT, wire the GPIO and then call:
-
-  of_devices_ensure_probed_by_compatible("gpio-keys");
-  input_key_get_status(keys, KEY_COPY);
-
-For an example, see commit e44d472d128d ("ARM: boards: protonic-imx6:
-prtvt7: Use the input system for key detection").
-
-
-> +	barebox_set_model("QNAP TS-433");
-> +	barebox_set_hostname("ts433");
-> +
-> +	if (bootsource == BOOTSOURCE_USB || copy_button_pressed) {
-> +		/*
-> +		 * Configure the front USB socket to USB device (i.e. like the
-> +		 * ROM when booting from USB. Add gadget support equivalent to
-> +		 * usbgadget -b -A "kernel(kernel)c,initramfs(initramfs)c,dtb(dtb)" -a
-> +		 */
-> +		ts433_usb_device_mode();
-
-If you set dr_mode = "otg" in the device tree, you can just do
-otg.mode=peripheral/host in barebox without having to mess with DT directly.
-
-> +		globalvar_add_simple("usbgadget.autostart", "1");
-
-Conceptually, this should be at the end, because it activate the
-feature. It doesn't matter here though, I think, because it's only
-evaluated later on.
-
-> +		globalvar_add_simple("fastboot.bbu", "1");
-> +		globalvar_add_simple("fastboot.partitions", "kernel(kernel)c,initramfs(initramfs)c,dtb(dtb)c");
-> +		globalvar_add_simple("usbgadget.acm", "1");
-
-These could have been a built-in init script, but both are fine I guess.
-
-> +		/*
-> +		 * exit to a shell, also to give the user the chance to open the
-> +		 * console on USB.
-> +		 */
-> +		globalvar_add_simple("autoboot", "abort");
-
-You could instead set a higher count down time, so a mistaken press
-during startup will eventually boot still. For actual flashing use,
-first fastboot command or console input will abort the countdown anyway.
-
-> +
-> +		/*
-> +		 * Don't use emmc to result in a working state even with a
-> +		 * borked environment.
-> +		 */
-> +		of_device_disable_path("/chosen/environment-emmc");
-
-You will want to call globalvar_set("env.autoprobe", "0") as well, so
-environment isn't autoprobed by Type UUID.
-
-Cheers,
-Ahmad
-
-> +	}
-> +
-> +	rockchip_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/mmc0");
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id ts433_of_match[] = {
-> +        { .compatible = "qnap,ts433" },
-> +        { /* Sentinel */},
-> +};
-> +
-> +static struct driver ts433_board_driver = {
-> +        .name = "board-ts433",
-> +        .probe = ts433_probe,
-> +        .of_compatible = ts433_of_match,
-> +};
-> +coredevice_platform_driver(ts433_board_driver);
-> +
-> +BAREBOX_DEEP_PROBE_ENABLE(ts433_of_match);
-> diff --git a/arch/arm/boards/qnap-tsx33/lowlevel.c b/arch/arm/boards/qnap-tsx33/lowlevel.c
-> new file mode 100644
-> index 000000000000..f852e8d00a2b
-
-
-> --- /dev/null
-> +++ b/arch/arm/dts/rk3568-qnap-ts433.dts
-> @@ -0,0 +1,26 @@
-> +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-> +
-> +/dts-v1/;
-> +#include <arm64/rockchip/rk3568-qnap-ts433.dts>
-> +#include "rk356x.dtsi"
-> +
-> +/ {
-> +	chosen: chosen {
-> +		environment-emmc {
-> +			compatible = "barebox,environment";
-> +			device-path = &sdhci, "partname:barebox-environment";
-> +		};
-> +	};
-
-If you choose 6C3737F2-07F8-45D1-AD45-15D260AAB24D as GPT partition type
-UUID, barebox should automatically choose it as environment partition.
-
-This would allow you to drop this node completely.
-
-> +};
-> +
-> +&gmac0 {
-> +	/*
-> +	 * The Linux device tree uses rgmii-id and that also works iff the
-> +	 * matching phy driver (motorcomm) is available. The barebox motorcomm
-> +	 * driver however doesn't support the used phy (Motorcomm YT8521) yet
-> +	 * and so we have to stick to rgmii and explicit delays for now.
-> +	 */
-
-Fair enough.
-
-> +	phy-mode = "rgmii";
-> +	tx_delay = <0x3c>;
-> +	rx_delay = <0x2f>;
-> +};
-
-Cheers,
-Ahmad
+> 
+> Thanks,
+> Ahmad
+> 
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Best regards,
+Andrei Lalaev
 
 
