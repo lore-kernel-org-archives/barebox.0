@@ -1,97 +1,57 @@
-Delivery-date: Tue, 22 Jul 2025 19:34:35 +0200
+Delivery-date: Wed, 23 Jul 2025 11:35:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ueGst-002dM0-0b
+	id 1ueVsk-002rM9-2p
 	for lore@lore.pengutronix.de;
-	Tue, 22 Jul 2025 19:34:35 +0200
+	Wed, 23 Jul 2025 11:35:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ueGss-0007ge-LL
-	for lore@pengutronix.de; Tue, 22 Jul 2025 19:34:35 +0200
+	id 1ueVsk-0000gD-7B
+	for lore@pengutronix.de; Wed, 23 Jul 2025 11:35:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qahjEEZgCxsBayB2sJYSJVrFn0zvwwcXuHEpY6IByak=; b=oHEsrI3oSUg/A96jDH2z51qjBW
-	A4MfUMPmZtoF6j5IHCI+OUDlCF42FkJ+mog89r31ErISllESmaNW8IZ9AUwFSLdVKYjf9D2XxB9xE
-	Z+9O/Caq6WTLNJgCVESiS23hqDCCEFpfnjhVgDDwhitow2zDfC8K8enkaXBLGp1PJkzrD/z9+RZmC
-	Zr8ojvKwl+cPWuIqv6Fy7NBUZxJLLiux88mGxy1oVnjd4B3xQkQuVUcpEVXm6j09DuHkX6qzSXwAI
-	paSlw5O2i/n3//4E47bf06ErZ04UMQvwIQ4w99e0VE1NQGdUhDyDTJ2romcHAFcsveZieJftQGjwm
-	SkxjxGuA==;
+	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=pQbCdpLB7wkKb01vC8EOzocAGlDVAQp7uBPlHyKfLeo=; b=krXBPN3Np/20ftbLp0KKnckGfS
+	EepD8EWiyciA98pskyrAgtm4TvFwma2ZwAjcaAlGpYtYU0kbh5UezwqGfrBWDiA+OE7gNAszlT6gt
+	wq2uCdV+JH7+W3fGMeuGcmAyGsLNDq9AfneoW2rstJ9Wd2iZuJAIG/4G9+YRSPILU5wRyu09nTBpt
+	5tkiDmYrB3eodmhoHlq5hjfjChWanIkCp48KNBIV5PBz45/6B9ccr0T3Unyx9rBw7LGv2AmZEL4Lx
+	1t3LUyhXZvqBeRj535q/4S6fzzKmXNEZQYnYBP8HNNUmABPAkbWYtI6n0VgLMhHKI6JXzE/8DEEpX
+	2ju43JEw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ueGsf-000000038pl-2dAa;
-	Tue, 22 Jul 2025 17:34:21 +0000
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+	id 1ueVs2-00000004WUY-0lyE;
+	Wed, 23 Jul 2025 09:34:42 +0000
+Received: from cczrelay02.in2p3.fr ([134.158.66.142])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ueFIr-00000002vUG-2yR9
+	id 1ueVL9-00000004Ror-2kB1
 	for barebox@lists.infradead.org;
-	Tue, 22 Jul 2025 15:53:19 +0000
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4550709f2c1so43525115e9.3
-        for <barebox@lists.infradead.org>; Tue, 22 Jul 2025 08:53:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753199596; x=1753804396; darn=lists.infradead.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qahjEEZgCxsBayB2sJYSJVrFn0zvwwcXuHEpY6IByak=;
-        b=GLjoMiv7OpPumv265G4nM3IX3plu0XONUoL3sZfWJGPrC9k5/r/0yxjAy45a68aYZH
-         YIQ2cC5a0IpqIx764bXJoX+OxMpEfFXUX56D2Qk1i8D+A+RLzPs7AYbge4GMhjrhdHBc
-         sahJO2jY/r3VE0uuirbfmMNwO6cZ+YRNSHMioYMpA4HGP7KIr9wtMrZA2NFdh6tbtRpo
-         QvTxX5dCorwDMRgWbVeykYUe1Eci+5+63wfgJy3i5Ugz3jz5ijvUeINO6z45wn1HwJeq
-         YpN1wL3P9hLf7nyPHz/riC/UtA63rZc65/Uw+mDA2/v7zOX+7BoRBMFJ3kfLPz6LiZ+g
-         dzIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753199596; x=1753804396;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qahjEEZgCxsBayB2sJYSJVrFn0zvwwcXuHEpY6IByak=;
-        b=NjlMVUqsc3N6CzVrvP1t4nopoh6egBDU9wlCMnY/DkA+zAzORXwtDvwR1CPAkAekvo
-         L4VpirQ5fVSgIY7W+m5KdvkHUTzYLtm2D3BXKzwWsglBUtlAgHvFdT7wpA3om34o+dAz
-         tdeNhoiq0IlmLVKhLVSzZkscIvwKC7kJKziKn3NVyW6n7zaL52YaHOWZcszoIv5UogOh
-         dqXvtUmIT1EwLtduiz/xferqMr2ujg6u9InLkoIcHEZ6khzg+Z7Ec8q+LYR2CaaReXUr
-         y3ER1DjX8pRE2V1hcVuGVEh/GmV3rskvwVsel6pBSD0UAszYPsNDnJj6VUcRdmf1ujlt
-         iLXQ==
-X-Gm-Message-State: AOJu0YwDdoGaWxPM5ahzJw30X8+aRY/bBaTcxdLQPJjAZmlTQp8Zg16R
-	zc6mvDCE6LxbUdEQx2Zi9xdavzdCun/hlYcRzgI2kq37Ma0klo6I8PUl
-X-Gm-Gg: ASbGncvxjODP/OFBQYKHu7/EleNXGKnCvvcOqfApYhJunzhIkfuR6TdDWk7P3Gj5tDk
-	6BbccqQKGtbPKS5eEia39xmZaQQFipIaI4WphiJV/Nk8lRL2rZI/rT5axUAL4fvxnBTMxrO6rzj
-	aGYQUsrITSERAEMAukcHdiP4tq4mLvAvTx7rEVpYjDcL6oPYhCxKg3bkqZQUFHe9Bf2GafF85Gq
-	vWD1VtCFhXBapyN7nqnL76xhDMpZCLE9TmU0Dis+Ai5E5hnsE0vCYcZIWfAPcohYGYNvT6rJH/t
-	i7YU065+QexyD1hzxe6vxhCpFrHBdlRKStXmvvs3rr1SLcAVP7GtWJEUdxiAHlpkBHluk2krEwk
-	WEsK86NLqGO/tNpMe4G+lJPe5d4ot8lfd28rsbSEyrYNa4LgIk7mgRels8WjTuvj+amf5jDHDf4
-	As9LQUZzLTj3CSn6Wr1Zyt5uCVngul1t0aVAjaITZcDF/t4C1eNMLSLAq3p0AVLCfWO8fewYRVL
-	MKTl83RHuNVSfnUYgxGrfEMTp0=
-X-Google-Smtp-Source: AGHT+IHQPIZ09QWPz2nB1+2j8cNk9tAy0KelkFZ7BDC3Q7a1Cf3JN6Wwn7wM9qVxcqAwwKEtF6T2SQ==
-X-Received: by 2002:a05:600c:468a:b0:453:c39:d0a7 with SMTP id 5b1f17b1804b1-4563b89f82bmr155829735e9.5.1753199595153;
-        Tue, 22 Jul 2025 08:53:15 -0700 (PDT)
-Received: from ?IPV6:2a02:8388:e103:2700:94ed:9045:ed9c:402c? (2a02-8388-e103-2700-94ed-9045-ed9c-402c.cable.dynamic.v6.surfer.at. [2a02:8388:e103:2700:94ed:9045:ed9c:402c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4563b5b8941sm135227615e9.11.2025.07.22.08.53.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jul 2025 08:53:14 -0700 (PDT)
-Message-ID: <8258cc5e-4223-4777-9c45-3feb6acba793@gmail.com>
-Date: Tue, 22 Jul 2025 17:53:13 +0200
+	Wed, 23 Jul 2025 09:00:46 +0000
+Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
+	(authenticated bits=0)
+	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 56N90T8W029817
+	(version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NO)
+	for <barebox@lists.infradead.org>; Wed, 23 Jul 2025 11:00:38 +0200
+Message-ID: <3ef00ba8-98b2-476b-96ed-5bc2d0164de8@clermont.in2p3.fr>
+Date: Wed, 23 Jul 2025 11:00:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
-References: <20250611175645.144025-1-andrey.lalaev@gmail.com>
- <44e20622-1c1f-4087-8b34-01cf378d3004@pengutronix.de>
-Content-Language: en-GB
-From: Andrei Lalaev <andrey.lalaev@gmail.com>
-In-Reply-To: <44e20622-1c1f-4087-8b34-01cf378d3004@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+From: David Picard <david.picard@clermont.in2p3.fr>
+To: MList-Barebox <barebox@lists.infradead.org>
+References: <9026c709-5e5f-4545-94ca-ea78ea431082@clermont.in2p3.fr>
+Content-Language: fr, en-US
+In-Reply-To: <9026c709-5e5f-4545-94ca-ea78ea431082@clermont.in2p3.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250722_085317_745894_0CEF74DB 
-X-CRM114-Status: GOOD (  11.90  )
+X-CRM114-CacheID: sfid-20250723_020043_967930_36AFA569 
+X-CRM114-Status: GOOD (  19.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -109,49 +69,103 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] common: fastboot: send FAIL if variable does not exist
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: boards/enclustra-sa2: add new board (HELP NEEDED)
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 22.07.2025 16:07, Ahmad Fatoum wrote:
-> Hello Andrei,
-> 
-> On 6/11/25 19:56, Andrei Lalaev wrote:
->> According to doc [1], new implementations should send FAIL if the
->> variable specified in the getvar command does not exist.
->>
->> [1]: https://android.googlesource.com/platform/system/core/+show/refs/heads/main/fastboot/README.md#121
->>
->> Signed-off-by: Andrei Lalaev <andrey.lalaev@gmail.com>
-> 
-> Did you run into any particular issues that motivated your change?
+Hello,
 
-Hi Ahmad,
+I am now able to boot Linux, after I changed the devicetree files. Now, 
+neither Barebox nor Linux can detect the Ethernet PHY.
 
-Sorry, I should have written a more descriptive commit message
-or at least mentioned the root cause in the footer.
+I copied the devicetree files from Enclustra's BSP because e.g. they 
+include skew parameters for the Ethernet PHY, that, if I understood 
+well, depend on board routing.
 
-I was using uuu v1.5.201 with barebox 2025.01 (or 2025.02) to flash
-a raw image to eMMC using the raw2flash flag. Unfortunately,
-due to a bug in uuu, it ended up flashing garbage :/
-I’ve fixed the issue in uuu [1], but during the investigation
-I found out that newer implementation of Fastboot should send FAIL
-if variable is missing, so I also decided to send a patch to barebox.
+To port the board to Barebox, I took the Terasic DE0, which has the same 
+SoC FPGA and the same Ethernet PHY, the Microchip KSZ9031RNX. The MDIO 
+bus address on the DE0 is 1, and 3 on the SA2.
 
-1 - https://github.com/nxp-imx/mfgtools/commit/f7351c1cf626764d902576362421f33b79b3a9e9
+@dok had me type some commands in the Barebox prompt such as devinfo, 
+miitool, but it didn't solve the issue.
 
-> 
-> Thanks,
-> Ahmad
-> 
+I notices differences in the devicetree files of the DE0 and the SA2. I 
+tried to group them; see the links below.
 
--- 
-Best regards,
-Andrei Lalaev
+Links:
+- the boot log: https://paste.debian.net/1387433/
+- Ethernet-related DT of Terasic DE0: https://paste.debian.net/1387428/
+- Ethernet-related DT of Enclustra SA2: https://paste.debian.net/1387430/
+- arch/arm/boards/enclustra-sa2/board.c (seems to tweak MDIO timing ?): 
+https://paste.debian.net/1387437/
+- the KSZ9031RNX PHY datasheet: 
+https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDocuments/DataSheets/KSZ9031RNX-Data-Sheet-DS00002117.pdf
+
+David
+
+Le 03/07/2025 à 16:21, David Picard a écrit :
+> Hello,
+>
+> I'm trying to port the Enclustra SA2 module. I started off the Terasic 
+> DE0 nano Soc board, that I could run with success previously. They 
+> both have a Cyclone V SoC FPGA. I added some pr_debug().
+>
+> My code is here, in the board-enclustra-sa2 branch:
+> https://github.com/dpproto/barebox
+>
+> It hangs when the execution jumps to the uncompressed Barebox image, 
+> and I'm really stuck.
+>
+> Enclustra provides a U-Boot configuration, with handoff files. I tried 
+> to compare them with those I copied from a sample Quartus project they 
+> provide too. I couldn't notice striking differences, although it's not 
+> easy to compare because they used an older version of Quartus.
+>
+> - The addresses and sizes in the log output below don't seem to exceed 
+> SDRAM boundaries, do they?
+> - Any hint on anything to check?
+>
+> David
+>
+> =============================
+> barebox 2025.06.1 #1 Thu Jul 3 10:53:43 CEST 2025
+>
+>
+> Board: SoCFPGA
+> No consoles were activated. Activating all consoles as fallback!
+> dw_mmc dw_mmc0: registered as mci0
+> mci0: detected SD card version 2.0
+> mci0: registered disk0
+> starting bootloader...
+> arch/arm/boards/enclustra-sa2/lowlevel.c: __start_socfpga_sa2() >>> start
+> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>> start
+> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>> 
+> arm_cpu_lowlevel_init() OK
+> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>> 
+> fdt_blob=0x00002320 fdt=0x1ff87ae8 size=0x40000000
+> include/mach/socfpga/lowlevel.h: start_socfpga_c5_common() >>> calling 
+> barebox_arm_entry()...
+> uncompress.c: memory at 0x00000000, size 0x40000000
+> mmu: enabling MMU, ttb @ 0x3ffe0000
+> endmem                = 0x40000000
+> arm_mem_scratch       = 0x3fff8000+0x00008000
+> arm_mem_stack         = 0x3fff0000+0x00008000
+> arm_mem_ttb           = 0x3ffe0000+0x00010000
+> arm_mem_barebox_image = 0x3fe00000+0x00200000
+> arm_mem_early_malloc  = 0x3fde0000+0x00020000
+> membase               = 0x00000000+0x40000000
+> uncompress.c: uncompressing barebox binary at 0x1ff8c800 (size 
+> 0x00056b67) to 0x3fe00000 (uncompressed size: 0x000778b0)
+> uncompress.c: jumping to uncompressed image at 0x3fe00001
+> uncompress.c: calling armv7_switch_to_hyp()...
+> uncompress.c: armv7_switch_to_hyp() OK. Now jumping...
+> =============================
+>
+>
+
 
 
