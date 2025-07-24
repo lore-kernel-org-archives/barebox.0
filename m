@@ -1,56 +1,56 @@
-Delivery-date: Thu, 24 Jul 2025 15:54:19 +0200
+Delivery-date: Thu, 24 Jul 2025 15:54:20 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uewOp-003GNq-0I
+	id 1uewOq-003GOC-0X
 	for lore@lore.pengutronix.de;
-	Thu, 24 Jul 2025 15:54:19 +0200
+	Thu, 24 Jul 2025 15:54:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uewOn-0001wt-Uo
-	for lore@pengutronix.de; Thu, 24 Jul 2025 15:54:19 +0200
+	id 1uewOn-0001wF-2K
+	for lore@pengutronix.de; Thu, 24 Jul 2025 15:54:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TyMX61R2qo8JrJWYITLbN+PMevHc6eX4cuKDFecqUyY=; b=vpJC1P91wMU2MQ82v1ItiVtCGl
-	mq20YKgSdieDeD1+vNQzqZVNjp4KQtMQiCG3SartnpjT0EhoQ18Xpvo2UxmGIjOAD8w0eQO5H/9NG
-	7IimKiCaoaBYoDo+Yti92niH46BtR7spMpJ+NTaH4dsjI5FEvrJvL0+gOhjm5LJ4lCvDqKd5EQ1KZ
-	e+/sZWhmXmg8bbQSb7547vWkuCAOy8KjbHuG/p3gLt9XhA32vIDymPCHbx5CDwh2orGsOBFDA90Nt
-	9aHNg8ADd9PWLSXVIRykoeC9GHGQGuJpNhpk89kCj16DMBV58xG2YgT598i/uvIjVVo+cmacU/FXu
-	V7pS5YPg==;
+	bh=YaGnNCrIdsMGTowQCCJbzs6OhXSnJsGtKOATvXB62Y0=; b=4MXCNDA/QLpfsJpXD1H7MmAH/D
+	qeIC4prKfvYUt6HndGSDKPpCXBQUFIRfPyNa/EpyYnMmih9SD8jldpQyUljJ+26fCJg/COOeTYQR0
+	msotTrn+XStYjbHUVMiPHBEwfBD5ZiGfXp2hG4PoJ7io3t/zmtx7gUUP4R04THxCWzBmeQsBDe7Bu
+	eH/B6O+9zaeTVLjRvmqZR2O300YpTrVV9WV6iq+gmGa946zOboWG2Zwjg/VfjokzYFOi/mTc1xfHX
+	a9tZChcpzz2bLecUakfhLkWbNx7XIZ4fS/qb6gIGZpavwOvyh6JddoEIXOu+u9l32apV3S6voF4no
+	VXcd+e4g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uewOM-00000007bVt-2app;
-	Thu, 24 Jul 2025 13:53:50 +0000
+	id 1uewON-00000007bXa-3U98;
+	Thu, 24 Jul 2025 13:53:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ueu5y-00000007KsH-2yi5
+	id 1ueu7R-00000007L0V-40Yo
 	for barebox@lists.infradead.org;
-	Thu, 24 Jul 2025 11:26:44 +0000
+	Thu, 24 Jul 2025 11:28:15 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ueu5v-0002I8-Jq; Thu, 24 Jul 2025 13:26:39 +0200
-Message-ID: <4dc6dcc4-da54-4fde-88f8-ce2c62203407@pengutronix.de>
-Date: Thu, 24 Jul 2025 13:26:39 +0200
+	id 1ueu7Q-0002P5-P1; Thu, 24 Jul 2025 13:28:12 +0200
+Message-ID: <7b363e3a-978e-4632-9c46-604960e875a3@pengutronix.de>
+Date: Thu, 24 Jul 2025 13:28:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
-References: <20250724091339.1091147-1-m.felsch@pengutronix.de>
+References: <20250723155545.682170-1-m.felsch@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20250724091339.1091147-1-m.felsch@pengutronix.de>
+In-Reply-To: <20250723155545.682170-1-m.felsch@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250724_042642_755792_CF443CF7 
-X-CRM114-Status: GOOD (  23.55  )
+X-CRM114-CacheID: sfid-20250724_042813_997727_DF6A3242 
+X-CRM114-Status: GOOD (  15.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,76 +72,38 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] block: fix block device detection
+Subject: Re: [PATCH] block: follow links before check if
+ cdev_is_block_partition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 7/24/25 11:13, Marco Felsch wrote:
-> Before commit a6410cfa9aff ("block: mark underlying cdev with
-> DEVFS_IS_BLOCK_DEV") the block device decision was made based on the
-> block_ops. Since each parition-cdev inherits the parent (master)
-> cdev-ops the parition-cdevs were detected as block device.
+On 7/23/25 17:55, Marco Felsch wrote:
+> cdev_is_block_partition() fails if a cdev is passed which is a
+> parition-link. Most of our barebox code is link-aware by resolving the
+> links first.
 > 
-> Commit a6410cfa9aff the detection mechanism to be based on cdev flag but
-> commit a6410cfa9aff forgot to pass the flag to the partition (child)
-> cdev.
+> Make it more user-friendly and resolve the possible cdev parttion link
+> first before performing the actual check.
 > 
-> Fix this by passing the DEVFS_IS_BLOCK_DEV to the partition (child) cdev
-> as well. Add a small helper function to query the inheritable devfs
-> flags instead of open coding it within __devfs_add_partition().
-> 
-> Fixes: a6410cfa9aff ("block: mark underlying cdev with DEVFS_IS_BLOCK_DEV")
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
 > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+
+Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
 > ---
->  fs/devfs-core.c  |  4 ++--
->  include/driver.h | 10 ++++++++++
->  2 files changed, 12 insertions(+), 2 deletions(-)
+>  include/block.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-> index 73a13be7336d..f80281aaf91c 100644
-> --- a/fs/devfs-core.c
-> +++ b/fs/devfs-core.c
-> @@ -584,7 +584,7 @@ static struct cdev *__devfs_add_partition(struct cdev *cdev,
->  	loff_t _end = end ? *end : 0;
->  	static struct cdev *new;
->  	struct cdev *overlap;
-> -	unsigned inherited_flags = 0;
-> +	unsigned inherited_flags;
+> diff --git a/include/block.h b/include/block.h
+> index 5ce3eb7d7838..a5a2dcf58995 100644
+> --- a/include/block.h
+> +++ b/include/block.h
+> @@ -107,6 +107,7 @@ static inline bool cdev_is_block_device(const struct cdev *cdev)
 >  
->  	if (cdev_by_name(partinfo->name))
->  		return ERR_PTR(-EEXIST);
-> @@ -628,7 +628,7 @@ static struct cdev *__devfs_add_partition(struct cdev *cdev,
->  	}
->  
->  	/* Filter flags that we want to pass along to children */
-> -	inherited_flags |= cdev->flags & DEVFS_WRITE_AUTOERASE;
-> +	inherited_flags = get_inheritable_devfs_flags(cdev);
->  
->  	if (IS_ENABLED(CONFIG_MTD) && cdev->mtd) {
->  		struct mtd_info *mtd;
-> diff --git a/include/driver.h b/include/driver.h
-> index dd50a7aa3cce..01e04578540b 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -627,6 +627,16 @@ static inline bool cdev_is_gpt_partitioned(const struct cdev *master)
->  	return master && (master->flags & DEVFS_IS_GPT_PARTITIONED);
+>  static inline bool cdev_is_block_partition(const struct cdev *cdev)
+>  {
+> +	cdev = cdev_readlink(cdev);
+>  	return cdev_is_block_device(cdev) && cdev_is_partition(cdev);
 >  }
->  
-> +#define DEVFS_INHERITABLE_FLAGS (DEVFS_WRITE_AUTOERASE | DEVFS_IS_BLOCK_DEV)
-> +
-> +static inline unsigned int
-> +get_inheritable_devfs_flags(const struct cdev *parent_cdev)
-> +{
-> +	if (!parent_cdev)
-> +		return 0;
-> +	return parent_cdev->flags & DEVFS_INHERITABLE_FLAGS;
-> +}
-> +
->  struct cdev *
->  cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, const guid_t *typeuuid);
 >  
 
 -- 
