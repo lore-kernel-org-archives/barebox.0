@@ -1,68 +1,56 @@
-Delivery-date: Thu, 24 Jul 2025 15:53:12 +0200
+Delivery-date: Thu, 24 Jul 2025 15:54:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uewNk-003GMj-2U
+	id 1uewOp-003GNq-0I
 	for lore@lore.pengutronix.de;
-	Thu, 24 Jul 2025 15:53:12 +0200
+	Thu, 24 Jul 2025 15:54:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uewNk-0001Oj-6x
-	for lore@pengutronix.de; Thu, 24 Jul 2025 15:53:12 +0200
+	id 1uewOn-0001wt-Uo
+	for lore@pengutronix.de; Thu, 24 Jul 2025 15:54:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PDdET6wo76sjLhXml1KQ1GMSLRZ4eVM8leyKq50nUy0=; b=EUyDRE4NADGIAUmJXTY9650g3t
-	jdnoV+UpxNWfHHxwUdETCFYTm5id0kwAC0cZYJE1UxlRgoKiDbUpNMz+9bVv8lZR6SbK2kuKzRpFr
-	iiJlNzzXkzuOodmLnoU+uOxgP0FVdnB2H2hxXCIdOll876jhzgBDuiP5WfMH1IPALbbSM56ryjecM
-	29XdYLJRjFakFUWVEpjukeY1Xo7ISoTVLnBup2EETxUiDY1KUlumeBcBZQZCZiahKAeDRofBB14hv
-	Yg2+Ry0cTQqiSrOij0Sl4NjvDTwY7ql1nHxMiYnOy4tUCBXrOBYO3e+k06C+vTUF6ADsKdp1n3inH
-	a+jBT+CQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=TyMX61R2qo8JrJWYITLbN+PMevHc6eX4cuKDFecqUyY=; b=vpJC1P91wMU2MQ82v1ItiVtCGl
+	mq20YKgSdieDeD1+vNQzqZVNjp4KQtMQiCG3SartnpjT0EhoQ18Xpvo2UxmGIjOAD8w0eQO5H/9NG
+	7IimKiCaoaBYoDo+Yti92niH46BtR7spMpJ+NTaH4dsjI5FEvrJvL0+gOhjm5LJ4lCvDqKd5EQ1KZ
+	e+/sZWhmXmg8bbQSb7547vWkuCAOy8KjbHuG/p3gLt9XhA32vIDymPCHbx5CDwh2orGsOBFDA90Nt
+	9aHNg8ADd9PWLSXVIRykoeC9GHGQGuJpNhpk89kCj16DMBV58xG2YgT598i/uvIjVVo+cmacU/FXu
+	V7pS5YPg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uewMy-00000007YvW-1kyV;
-	Thu, 24 Jul 2025 13:52:24 +0000
+	id 1uewOM-00000007bVt-2app;
+	Thu, 24 Jul 2025 13:53:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uesus-00000007AoP-0itu
+	id 1ueu5y-00000007KsH-2yi5
 	for barebox@lists.infradead.org;
-	Thu, 24 Jul 2025 10:11:13 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uesup-0002iN-Kh
-	for barebox@lists.infradead.org; Thu, 24 Jul 2025 12:11:07 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uesup-00A2PG-1T
-	for barebox@lists.infradead.org;
-	Thu, 24 Jul 2025 12:11:07 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uesup-0036Kh-18
-	for barebox@lists.infradead.org;
-	Thu, 24 Jul 2025 12:11:07 +0200
-Date: Thu, 24 Jul 2025 12:11:07 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: barebox@lists.infradead.org
-Message-ID: <20250724101107.odutzn53sxydsmew@pengutronix.de>
-References: <20250723132831.519984-1-m.felsch@pengutronix.de>
+	Thu, 24 Jul 2025 11:26:44 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1ueu5v-0002I8-Jq; Thu, 24 Jul 2025 13:26:39 +0200
+Message-ID: <4dc6dcc4-da54-4fde-88f8-ce2c62203407@pengutronix.de>
+Date: Thu, 24 Jul 2025 13:26:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250723132831.519984-1-m.felsch@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
+References: <20250724091339.1091147-1-m.felsch@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20250724091339.1091147-1-m.felsch@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250724_031110_209859_8604A1CF 
-X-CRM114-Status: GOOD (  17.77  )
+X-CRM114-CacheID: sfid-20250724_042642_755792_CF443CF7 
+X-CRM114-Status: GOOD (  23.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,72 +72,83 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] keytoc: fix env provided keyspec handling
+Subject: Re: [PATCH] block: fix block device detection
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-07-23, Marco Felsch wrote:
-> Currently the env provided keyspec is resolved during the gen_key() step
-> by making use of the try_resolve_env(). This is wrong because it will
-> set the complete <hint>:<key> string for the 'keyname' and 'path'.
+On 7/24/25 11:13, Marco Felsch wrote:
+> Before commit a6410cfa9aff ("block: mark underlying cdev with
+> DEVFS_IS_BLOCK_DEV") the block device decision was made based on the
+> block_ops. Since each parition-cdev inherits the parent (master)
+> cdev-ops the parition-cdevs were detected as block device.
 > 
-> To fix this the resolve step must happen during the main-loop as first step
-> because the main-loop is doing the 'keyname' and 'path' split already.
+> Commit a6410cfa9aff the detection mechanism to be based on cdev flag but
+> commit a6410cfa9aff forgot to pass the flag to the partition (child)
+> cdev.
 > 
+> Fix this by passing the DEVFS_IS_BLOCK_DEV to the partition (child) cdev
+> as well. Add a small helper function to query the inheritable devfs
+> flags instead of open coding it within __devfs_add_partition().
+> 
+> Fixes: a6410cfa9aff ("block: mark underlying cdev with DEVFS_IS_BLOCK_DEV")
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
 > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
->  scripts/keytoc.c | 13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
+>  fs/devfs-core.c  |  4 ++--
+>  include/driver.h | 10 ++++++++++
+>  2 files changed, 12 insertions(+), 2 deletions(-)
 > 
-> diff --git a/scripts/keytoc.c b/scripts/keytoc.c
-> index c92465707f65..c1e8c51d7a7e 100644
-> --- a/scripts/keytoc.c
-> +++ b/scripts/keytoc.c
-> @@ -615,10 +615,6 @@ static int gen_key(const char *keyname, const char *path)
->  	char *tmp, *key_name_c;
+> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+> index 73a13be7336d..f80281aaf91c 100644
+> --- a/fs/devfs-core.c
+> +++ b/fs/devfs-core.c
+> @@ -584,7 +584,7 @@ static struct cdev *__devfs_add_partition(struct cdev *cdev,
+>  	loff_t _end = end ? *end : 0;
+>  	static struct cdev *new;
+>  	struct cdev *overlap;
+> -	unsigned inherited_flags = 0;
+> +	unsigned inherited_flags;
 >  
->  	/* key name handling */
-> -	keyname = try_resolve_env(keyname);
-> -	if (!keyname)
-> -		exit(1);
-> -
->  	tmp = key_name_c = strdup(keyname);
->  
->  	while (*tmp) {
-> @@ -628,10 +624,6 @@ static int gen_key(const char *keyname, const char *path)
+>  	if (cdev_by_name(partinfo->name))
+>  		return ERR_PTR(-EEXIST);
+> @@ -628,7 +628,7 @@ static struct cdev *__devfs_add_partition(struct cdev *cdev,
 >  	}
 >  
->  	/* path/URI handling */
-> -	path = try_resolve_env(path);
-> -	if (!path)
-> -		exit(1);
-> -
->  	if (!strncmp(path, "pkcs11:", 7)) {
->  		ret = engine_get_pub_key(path, &key);
->  		if (ret)
-> @@ -709,6 +701,11 @@ int main(int argc, char *argv[])
->  		char *keyname = NULL;
->  		char *path, *freep = NULL;
+>  	/* Filter flags that we want to pass along to children */
+> -	inherited_flags |= cdev->flags & DEVFS_WRITE_AUTOERASE;
+> +	inherited_flags = get_inheritable_devfs_flags(cdev);
 >  
-> +		/* Check if the keyspec is provided by the ENV first */
-> +		keyspec = try_resolve_env(keyspec);
-
-This throws a warning which I didn't noticed.. I will send a v2.
-
-Regards,
-  Marco
-
-
-> +		if (!keyspec)
-> +			exit(1);
+>  	if (IS_ENABLED(CONFIG_MTD) && cdev->mtd) {
+>  		struct mtd_info *mtd;
+> diff --git a/include/driver.h b/include/driver.h
+> index dd50a7aa3cce..01e04578540b 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -627,6 +627,16 @@ static inline bool cdev_is_gpt_partitioned(const struct cdev *master)
+>  	return master && (master->flags & DEVFS_IS_GPT_PARTITIONED);
+>  }
+>  
+> +#define DEVFS_INHERITABLE_FLAGS (DEVFS_WRITE_AUTOERASE | DEVFS_IS_BLOCK_DEV)
 > +
->  		if (!strncmp(keyspec, "pkcs11:", 7)) {
->  			path = keyspec;
->  		} else {
-> -- 
-> 2.39.5
-> 
-> 
-> 
+> +static inline unsigned int
+> +get_inheritable_devfs_flags(const struct cdev *parent_cdev)
+> +{
+> +	if (!parent_cdev)
+> +		return 0;
+> +	return parent_cdev->flags & DEVFS_INHERITABLE_FLAGS;
+> +}
+> +
+>  struct cdev *
+>  cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, const guid_t *typeuuid);
+>  
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
