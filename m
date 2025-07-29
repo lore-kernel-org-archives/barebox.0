@@ -1,57 +1,93 @@
-Delivery-date: Tue, 29 Jul 2025 17:35:15 +0200
+Delivery-date: Tue, 29 Jul 2025 22:37:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ugmMF-004y5M-0Y
+	id 1ugr4z-0052Ql-28
 	for lore@lore.pengutronix.de;
-	Tue, 29 Jul 2025 17:35:15 +0200
+	Tue, 29 Jul 2025 22:37:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ugmMC-0008V5-Ok
-	for lore@pengutronix.de; Tue, 29 Jul 2025 17:35:15 +0200
+	id 1ugr4y-0007hF-Rl
+	for lore@pengutronix.de; Tue, 29 Jul 2025 22:37:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CR/qUEYkk1ANwAUqXlWpMhF7vW7xhIeuCE1gcOLWjrw=; b=MQDoWaaZpwfYheYsE2NjeCw1qU
-	X6AXj8nWvzAh3iNp6UOcIkE0RbQTxd8roEjbVcs+bLjivHdg3DZTW39K+Ryu7+9wX9vsHcH8cVMJK
-	CsmJqtsZkBFQVQQycx7YGR1qkVIWQju4yyZRmVet00xb9GVHw+9aY2ux8X7NpfG9ns4TUoNACn8y4
-	NVS2M1zZY+oIghE5AFar3/dM0lcD9h9iI6XylYbljSd7iBuryiAziBWXbyZMJSuF/0Zb1kdoaSwhZ
-	3vusYNdpXo3CJGd0YMOqv+EMc1BJyLzu2OyWaaZqLWit/seOGE1Fl/nLedYWizq1Zqw/K1ovepY9P
-	ktvmZ1kA==;
+	bh=0lYCBCZn9gpoY7s0jaBxeExo7TuznEQNVGGtgA+Pl44=; b=KA+cstq5PpZYQjeEN0nNSlRzAb
+	MHHekxgbPSIlDQdQQQGJZu7xFUnBOGKxVaFW59RaOciGF1NZZENp4E+enO4bNhKiIQpfNCEc+RZVh
+	VtSZHWwwokD9uakk8esKiVPtER33Ta9DwEV4KdgsJ//dEvgH4NILD6pIRRouDT3IbztIWmj6RXbS0
+	Y83KIZ9rEahbH3bejkUbcJKaO4RYdy3gYjYdA+8/lS+tWGK8Lng6pEcBRpW5v/CTiuBLviFt9Vl7u
+	Ux71PlSQLejSNZZQU11haJGbfEZIr4Hhp0u35gsOACFIP8wa842qoSKnRRwzfUiR3eYwrbeit6zbz
+	QgwWSmug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ugmLf-0000000H95G-1VwQ;
-	Tue, 29 Jul 2025 15:34:39 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1ugr4O-000000003ya-2kY2;
+	Tue, 29 Jul 2025 20:37:08 +0000
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ugmLW-0000000H8vt-1DQN
+	id 1ugr4L-000000003xE-1V5G
 	for barebox@lists.infradead.org;
-	Tue, 29 Jul 2025 15:34:34 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1ugmLT-0007q6-OO; Tue, 29 Jul 2025 17:34:27 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Tue, 29 Jul 2025 17:34:32 +0200
+	Tue, 29 Jul 2025 20:37:06 +0000
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-455fdfb5d04so32529795e9.2
+        for <barebox@lists.infradead.org>; Tue, 29 Jul 2025 13:37:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753821424; x=1754426224; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0lYCBCZn9gpoY7s0jaBxeExo7TuznEQNVGGtgA+Pl44=;
+        b=b+0CcuVeftnwwGkUAn/qgYY5SD6AXFZHuU7Rubs5yIw0v/eLM0wOEINtlpRR1xxspg
+         QFZLmHK0G8qBuOOZnrNE2Ywz5YHi/7XS+NM4138IB9vXI+l64beaw/3QkIPXPBRaBKxX
+         c3Md7/vgra9BFgH88vQdxru3xA5eB+om2PBsJbpRXAngGK35ZfUdrej4McrpItLyXt9C
+         h8rjTNewZ7CDgfceGo8vW4Cc5GdlDtJA/nfTQ+vT3SZETQquQICrsSVR+oCcSg/mDykU
+         yLkNV0fZf6qTm+tZJZ/knAzAjjmyEDBQ0/PE3D2/rr0WIkVN7SRhL3/AawxnYMXU8WY+
+         hsWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753821424; x=1754426224;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0lYCBCZn9gpoY7s0jaBxeExo7TuznEQNVGGtgA+Pl44=;
+        b=QL/dC3NAwxK1g5Xz1l6aNNa5pwHEtFBhy93YHJYoEQOT/mEmIEWadZ9ui8b6Xpy3nL
+         xhmZdwMzILZko1lf/LNB3fXh/OuHhK5nkCJOI81CYkRD7fhlaa6NAO8r942Blf2oxzR5
+         FEz9KLIEoWnEsz22guYOWGy4Fdp21kAgbYzH2+xDyW5NfhMqyMfJhAnffq2J4YegXsVI
+         uyb4oc4yYjosZqfHAb6Y3/G9f23O+F0u7rstkAGixs+eoFmxv3ddDYmPTH6WrZ3j+7T1
+         FQIcKCgNivznXKW8LTyXREGTMs2tGSAOwkVqmuq6hHTsg2NiLfu/jDUl8gLORCzHwp/d
+         3kQg==
+X-Gm-Message-State: AOJu0YxfkV9AqrbUApMnAFj7jSdxkIw3++WPtRVcNAihkjZFTl6guJ25
+	b9muISSXR1kIklxC2OQK2Hm3vj9KhAidf4+Et50XTllw6+ogsZc6benWyCEisQ==
+X-Gm-Gg: ASbGncvkL9e5dJZfX5gqCC1FUGo6K2Bzk7C1ldY+fTuIwa7KOoGQwBqUTcih8ShScGf
+	+Wqi+qpyw6X9HuO9LMkPJxKQwLiB/Y5R79xg6/ayEhxOqDYovXzH/l8r6ggBMbxzhreJXUpEYx8
+	nIlNvUKEy41iOyB8v5hfgXKySOLf9iAORlTShJlC4fSPqEbomtvDyMkCcvzB9EsbrBXbQ/8G9f2
+	YMUpCScaUlnPsnRx2JS8d+7Tj2BUgnlvsj94esShxfjBPEawIwmxmHfUKXURKz5hXq/Vs0AxXjj
+	iy88t1S0PXyl5IGbBL9ALJ4lCE9kVT164E0kW+hTv09uCjv0Sn5fFKllYEqp26hiU+BvIxMwLDs
+	W6T8ih5cd7dnvj0qDtXkAbtP+UUvVOIW3JmVNHknoYuWpUMINTpHcndz8SLy8x1hlCovHEd3fQw
+	==
+X-Google-Smtp-Source: AGHT+IG65M9AmPlC05ihg4SmR9gYwNXKNdBg31xKAAYLNg/TErMyhwWJFOvxLA2wVHllTUAsiwxeiA==
+X-Received: by 2002:a05:600c:810c:b0:456:2020:166a with SMTP id 5b1f17b1804b1-45892bc6d0emr9225955e9.20.1753821423503;
+        Tue, 29 Jul 2025 13:37:03 -0700 (PDT)
+Received: from ivaylo-T580.. (91-139-201-119.stz.ddns.bulsat.com. [91.139.201.119])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45895386627sm481325e9.19.2025.07.29.13.37.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 13:37:03 -0700 (PDT)
+From: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Date: Tue, 29 Jul 2025 23:36:56 +0300
+Message-ID: <20250729203659.1858575-2-ivo.ivanov.ivanov1@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250729203659.1858575-1-ivo.ivanov.ivanov1@gmail.com>
+References: <20250729203659.1858575-1-ivo.ivanov.ivanov1@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250729-v2024-05-0-topic-fit-overlay-v4-7-af3ad99acde2@pengutronix.de>
-References: <20250729-v2024-05-0-topic-fit-overlay-v4-0-af3ad99acde2@pengutronix.de>
-In-Reply-To: <20250729-v2024-05-0-topic-fit-overlay-v4-0-af3ad99acde2@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250729_083430_495736_FEEA5C5B 
-X-CRM114-Status: GOOD (  25.00  )
+X-CRM114-CacheID: sfid-20250729_133705_394180_223D4F2A 
+X-CRM114-Status: GOOD (  11.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,252 +105,53 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 07/11] of: overlay: add FIT image overlay support
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH v1 1/4] video: simplefb-client: switch to dev_get_resource
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds the support to load devicetree overlays from a FIT image.
-There are a few options to handle FIT overlays since the FIT overlay
-spec is not very strict.
+Since the framebuffer memory resource resides in ram, it has already
+been requested and mapped, so only get the resource to avoid
+requesting a busy resource. This is also the approach for linux.
 
-This implements the most configurable case where each overlay does have
-its own config node (including the optional signature).
+While at it, use IOMEM for mem->start and drop an unnecessary newline.
 
-- The "pattern" filter matches the config-node names (the node names
-  below the configurations node), not the overlay image names (the node
-  names below the images node).
-
-- The "compatible" filter check doesn't differ from the file based overlay
-  handling.
-
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
 ---
- Documentation/user/devicetree.rst |  19 +++---
- drivers/of/overlay.c              | 132 +++++++++++++++++++++++++++++++++++---
- 2 files changed, 134 insertions(+), 17 deletions(-)
+ drivers/video/simplefb-client.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
-index 30a15a8865c154f8afe23d641da10d0afa84423b..4431ae26bd0f13f3b703881ccb1ed134c844cbf6 100644
---- a/Documentation/user/devicetree.rst
-+++ b/Documentation/user/devicetree.rst
-@@ -109,20 +109,23 @@ Overlays can be applied to the kernel device tree before it is handed over to
- the kernel. The behaviour is controlled by different variables:
+diff --git a/drivers/video/simplefb-client.c b/drivers/video/simplefb-client.c
+index dafec617..41ad8ffa 100644
+--- a/drivers/video/simplefb-client.c
++++ b/drivers/video/simplefb-client.c
+@@ -96,7 +96,7 @@ static int simplefb_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
- ``global.of.overlay.path``
--  Overlays are read from this directory. barebox will try to apply all overlays
--  found here if not limited by one of the other variables below. When the path
--  given here is an absolute path it is used as is. A relative path is relative
--  to ``/`` or relative to the rootfs when using bootloader spec.
-+  Overlays are read from this path. The path can either be a directory which
-+  contains the overlays or an absolute path to a FIT-image. barebox will try to
-+  apply all found overlays found if not limited by one of the other variables
-+  below. When the path given here is an absolute path it is used as is. A
-+  relative path is relative to ``/`` or relative to the rootfs when using
-+  bootloader spec.
- ``global.of.overlay.compatible``
-   This is a space separated list of compatibles. Only overlays matching one of
-   these compatibles will be applied. When this list is empty then all overlays
-   will be applied. Overlays that don't have a compatible are considered being
-   always compatible.
- ``global.of.overlay.pattern``
--  This is a space separated list of file patterns. An overlay is only applied
--  when its filename matches one of the patterns. The patterns can contain
--  ``*`` and ``?`` as wildcards. The default is ``*`` which means all files are
--  applied.
-+  This is a space separated list of file patterns or FIT-image config-node name
-+  patterns. An overlay is only applied when its filename or FIT-image
-+  config-node name matches one of the patterns. The patterns can contain ``*``
-+  and ``?`` as wildcards. The default is ``*`` which means all files or FIT-Image
-+  config-nodes are applied.
- ``global.of.overlay.filter``
-   This is a space separated list of filters to apply. There are two generic filters:
-   ``pattern`` matches ``global.of.overlay.pattern`` above, ``compatible`` matches
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index f02a12d44f0d53db3fb7bb065461c0ef193d0ab3..604ce0998cd8044cca59c40e65f4e9b95bec6112 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -8,10 +8,13 @@
-  */
- #define pr_fmt(fmt) "of_overlay: " fmt
+-	mem = dev_request_mem_resource(dev, 0);
++	mem = dev_get_resource(dev, IORESOURCE_MEM, 0);
+ 	if (IS_ERR(mem)) {
+ 		dev_err(dev, "No memory resource\n");
+ 		return PTR_ERR(mem);
+@@ -116,10 +116,9 @@ static int simplefb_probe(struct device *dev)
+ 	info->blue = params.format->blue;
+ 	info->transp = params.format->transp;
  
-+#include <bootm.h>
- #include <common.h>
- #include <of.h>
- #include <errno.h>
-+#include <filetype.h>
- #include <globalvar.h>
-+#include <image-fit.h>
- #include <magicvar.h>
- #include <string.h>
- #include <libfile.h>
-@@ -463,8 +466,99 @@ static int of_overlay_apply_dir(struct device_node *root, const char *dirname,
- 	return ret;
- }
+-	info->screen_base = (void *)mem->start;
++	info->screen_base = IOMEM(mem->start);
+ 	info->screen_size = resource_size(mem);
  
-+static int of_overlay_apply_fit(struct device_node *root, struct fit_handle *fit,
-+				struct device_node *config)
-+{
-+	const char *name = config->name;
-+	struct device_node *overlay;
-+	unsigned long ovl_sz;
-+	const void *ovl;
-+	int ret;
-+
-+	if (!of_overlay_matches_filter(name, NULL))
-+		return 0;
-+
-+	ret = fit_open_image(fit, config, "fdt", &ovl, &ovl_sz);
-+	if (ret)
-+		return ret;
-+
-+	overlay = of_unflatten_dtb(ovl, ovl_sz);
-+
-+	if (!of_overlay_matches_filter(NULL, overlay)) {
-+		ret = 0;
-+		goto out;
-+	}
-+
-+	ret = of_overlay_apply_tree(root, overlay);
-+	if (ret == -ENODEV)
-+		pr_debug("Not applied %s (not compatible)\n", name);
-+	else if (ret)
-+		pr_err("Cannot apply %s: %s\n", name, strerror(-ret));
-+	else
-+		pr_info("Applied %s\n", name);
-+
-+out:
-+	of_delete_node(overlay);
-+
-+	return ret;
-+}
-+
-+static bool of_overlay_valid_config(struct fit_handle *fit,
-+				    struct device_node *config)
-+{
-+	/*
-+	 * Either kernel or firmware is marked as mandatory by U-Boot
-+	 * (doc/usage/fit/source_file_format.rst) except for overlays
-+	 * (doc/usage/fit/overlay-fdt-boot.rst). Therefore we need to ensure
-+	 * that only "fdt" config nodes are recognized as overlay config node.
-+	 */
-+	if (!fit_has_image(fit, config, "fdt") ||
-+	    fit_has_image(fit, config, "kernel") ||
-+	    fit_has_image(fit, config, "firmware"))
-+		return false;
-+
-+	return true;
-+}
-+
-+static int of_overlay_global_fixup_fit(struct device_node *root,
-+				       const char *fit_path, loff_t fit_size)
-+{
-+	enum bootm_verify verify = bootm_get_verify_mode();
-+	struct device_node *conf_node;
-+	struct fit_handle *fit;
-+	int ret;
-+
-+	if (!IS_ENABLED(CONFIG_FITIMAGE))
-+		return 0;
-+
-+	fit = fit_open(fit_path, 0, verify, fit_size);
-+	if (IS_ERR(fit)) {
-+		pr_err("Loading FIT image %s failed with: %pe\n", fit_path, fit);
-+		return PTR_ERR(fit);
-+	}
-+
-+	for_each_child_of_node(fit->configurations, conf_node) {
-+		if (!of_overlay_valid_config(fit, conf_node))
-+			continue;
-+
-+		ret = fit_config_verify_signature(fit, conf_node);
-+		if (ret)
-+			goto out;
-+
-+		ret = of_overlay_apply_fit(root, fit, conf_node);
-+		if (ret)
-+			goto out;
-+	}
-+
-+out:
-+	fit_close(fit);
-+	return ret;
-+}
-+
- static int of_overlay_global_fixup(struct device_node *root, void *data)
- {
-+	enum filetype type;
-+	struct stat s;
- 	char *dir;
- 	int ret;
+-
+ 	info->fbops = &simplefb_ops;
  
-@@ -476,10 +570,30 @@ static int of_overlay_global_fixup(struct device_node *root, void *data)
- 	else
- 		dir = concat_path_file(of_overlay_basedir, of_overlay_path);
- 
--	ret = of_overlay_apply_dir(root, dir, true);
-+	if (stat(dir, &s)) {
-+		pr_err("Failed to detect file status\n");
-+		ret = -errno;
-+		goto out;
-+	}
- 
--	free(dir);
-+	if (S_ISDIR(s.st_mode)) {
-+		ret = of_overlay_apply_dir(root, dir, true);
-+		goto out;
-+	}
- 
-+	ret = file_name_detect_type(dir, &type);
-+	if (ret)
-+		goto out;
-+
-+	if (type == filetype_oftree) {
-+		ret = of_overlay_global_fixup_fit(root, dir, s.st_size);
-+		goto out;
-+	}
-+
-+	pr_err("No suitable overlay provider found!\n");
-+	ret = -EINVAL;
-+out:
-+	free(dir);
- 	return ret;
- }
- 
-@@ -505,13 +619,13 @@ int of_overlay_register_filter(struct of_overlay_filter *filter)
- 
- /**
-  * of_overlay_filter_pattern - A filter that matches on the filename or
-- *                                an overlay
-+ *			       FIT config-node name of an overlay
-  * @f: The filter
-- * @pattern: The filename of the overlay
-+ * @pattern: The filename or FIT config-node name of the overlay
-  *
-- * This filter matches when the filename matches one of the patterns given
-- * in global.of.overlay.filepattern. global.of.overlay.filepattern shall
-- * contain a space separated list of wildcard patterns.
-+ * This filter matches when the filename or FIT config-node name matches one of
-+ * the patterns given in global.of.overlay.pattern. global.of.overlay.pattern
-+ * shall contain a space separated list of wildcard patterns.
-  *
-  * @return: True when the overlay shall be applied, false otherwise.
-  */
-@@ -632,6 +746,6 @@ static int of_overlay_init(void)
- device_initcall(of_overlay_init);
- 
- BAREBOX_MAGICVAR(global.of.overlay.compatible, "space separated list of compatibles an overlay must match");
--BAREBOX_MAGICVAR(global.of.overlay.pattern, "space separated list of filepatterns an overlay must match");
--BAREBOX_MAGICVAR(global.of.overlay.path, "Path to look for dt overlays");
-+BAREBOX_MAGICVAR(global.of.overlay.pattern, "space separated list of filename or fit config-node name patterns an overlay must match");
-+BAREBOX_MAGICVAR(global.of.overlay.path, "Path to look for dt overlays or a path to a FIT image");
- BAREBOX_MAGICVAR(global.of.overlay.filter, "space separated list of filters");
-
+ 	info->dev.parent = dev;
 -- 
-2.39.5
+2.43.0
 
 
 
