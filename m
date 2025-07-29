@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ugr4z-0052Ql-28
+	id 1ugr4z-0052Qv-2m
 	for lore@lore.pengutronix.de;
 	Tue, 29 Jul 2025 22:37:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ugr4y-0007hF-Rl
+	id 1ugr4y-0007hE-Ra
 	for lore@pengutronix.de; Tue, 29 Jul 2025 22:37:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,76 +18,76 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0lYCBCZn9gpoY7s0jaBxeExo7TuznEQNVGGtgA+Pl44=; b=KA+cstq5PpZYQjeEN0nNSlRzAb
-	MHHekxgbPSIlDQdQQQGJZu7xFUnBOGKxVaFW59RaOciGF1NZZENp4E+enO4bNhKiIQpfNCEc+RZVh
-	VtSZHWwwokD9uakk8esKiVPtER33Ta9DwEV4KdgsJ//dEvgH4NILD6pIRRouDT3IbztIWmj6RXbS0
-	Y83KIZ9rEahbH3bejkUbcJKaO4RYdy3gYjYdA+8/lS+tWGK8Lng6pEcBRpW5v/CTiuBLviFt9Vl7u
-	Ux71PlSQLejSNZZQU11haJGbfEZIr4Hhp0u35gsOACFIP8wa842qoSKnRRwzfUiR3eYwrbeit6zbz
-	QgwWSmug==;
+	bh=qx/1oTWM3SfOgSRGJxZ0aQlJKR18RE3Pn5feG9LXGoo=; b=k2ZyVd9mM//kwbLnmRuuBwGQsd
+	ELhEqS5utl4AilETZZjVOlSJBhCDozcoH8SnDKyjIfK2lbQDJeFDYwOVXzW8J5DelVUUcP448KIb1
+	3voSEWcAv89MOZYU6i/i5dgtxlyk0BbzLQfBkC7+ZOjuTcjCzdzR4XQHKf+yqv6c14g1EVSPvOxZE
+	cRN6PWK/RulUJf+s8RGnXgMdAXiEdVVHrmixWSTu/twry7iHLok6i/QbEbsFdZrzS+Clt8JBTaQD8
+	80+z80eUrtDQo5KQlJXMA6Rk3pE9b3GNUxN+nIre4BCrUuSqhywXevilSWZXf9rarHjAPm2ZrDGpC
+	rAjzGcAw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ugr4O-000000003ya-2kY2;
-	Tue, 29 Jul 2025 20:37:08 +0000
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+	id 1ugr4P-000000003yi-0ZyB;
+	Tue, 29 Jul 2025 20:37:09 +0000
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ugr4L-000000003xE-1V5G
+	id 1ugr4M-000000003xj-3L6A
 	for barebox@lists.infradead.org;
-	Tue, 29 Jul 2025 20:37:06 +0000
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-455fdfb5d04so32529795e9.2
-        for <barebox@lists.infradead.org>; Tue, 29 Jul 2025 13:37:05 -0700 (PDT)
+	Tue, 29 Jul 2025 20:37:07 +0000
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-455b00283a5so35068475e9.0
+        for <barebox@lists.infradead.org>; Tue, 29 Jul 2025 13:37:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753821424; x=1754426224; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1753821425; x=1754426225; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0lYCBCZn9gpoY7s0jaBxeExo7TuznEQNVGGtgA+Pl44=;
-        b=b+0CcuVeftnwwGkUAn/qgYY5SD6AXFZHuU7Rubs5yIw0v/eLM0wOEINtlpRR1xxspg
-         QFZLmHK0G8qBuOOZnrNE2Ywz5YHi/7XS+NM4138IB9vXI+l64beaw/3QkIPXPBRaBKxX
-         c3Md7/vgra9BFgH88vQdxru3xA5eB+om2PBsJbpRXAngGK35ZfUdrej4McrpItLyXt9C
-         h8rjTNewZ7CDgfceGo8vW4Cc5GdlDtJA/nfTQ+vT3SZETQquQICrsSVR+oCcSg/mDykU
-         yLkNV0fZf6qTm+tZJZ/knAzAjjmyEDBQ0/PE3D2/rr0WIkVN7SRhL3/AawxnYMXU8WY+
-         hsWg==
+        bh=qx/1oTWM3SfOgSRGJxZ0aQlJKR18RE3Pn5feG9LXGoo=;
+        b=g7Msapv5V2SQSmRvEWbRe0lTeG/8+UFosPaXR5Cuq6cBDQYxoIEXu784egOWEN/S3n
+         ZvkqvYqgQuqskmF4/mhEWbECu+o1IZuH+50qmhq/tnweN+TF0XvdzI0ThTXkFdc7kRZA
+         KMoCs2knQ5pd50S8/oesh2v+sf7c0UT/xz/415hEGbM8sC5J8MUeoTSHxs7SvhSn+2sD
+         t86lJNTAFNQhHDCYGsttlXnI/60pxHbU0B1+tYw/ygmxtehrNduE9Ebfdy07cN/ee4cJ
+         bCOc+TzHro73G5BlPydbgX+xBpzYmkoeHb4kNQlU5IquZGu4k8MfvIoqFT5BIF6y1i2U
+         0suA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753821424; x=1754426224;
+        d=1e100.net; s=20230601; t=1753821425; x=1754426225;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0lYCBCZn9gpoY7s0jaBxeExo7TuznEQNVGGtgA+Pl44=;
-        b=QL/dC3NAwxK1g5Xz1l6aNNa5pwHEtFBhy93YHJYoEQOT/mEmIEWadZ9ui8b6Xpy3nL
-         xhmZdwMzILZko1lf/LNB3fXh/OuHhK5nkCJOI81CYkRD7fhlaa6NAO8r942Blf2oxzR5
-         FEz9KLIEoWnEsz22guYOWGy4Fdp21kAgbYzH2+xDyW5NfhMqyMfJhAnffq2J4YegXsVI
-         uyb4oc4yYjosZqfHAb6Y3/G9f23O+F0u7rstkAGixs+eoFmxv3ddDYmPTH6WrZ3j+7T1
-         FQIcKCgNivznXKW8LTyXREGTMs2tGSAOwkVqmuq6hHTsg2NiLfu/jDUl8gLORCzHwp/d
-         3kQg==
-X-Gm-Message-State: AOJu0YxfkV9AqrbUApMnAFj7jSdxkIw3++WPtRVcNAihkjZFTl6guJ25
-	b9muISSXR1kIklxC2OQK2Hm3vj9KhAidf4+Et50XTllw6+ogsZc6benWyCEisQ==
-X-Gm-Gg: ASbGncvkL9e5dJZfX5gqCC1FUGo6K2Bzk7C1ldY+fTuIwa7KOoGQwBqUTcih8ShScGf
-	+Wqi+qpyw6X9HuO9LMkPJxKQwLiB/Y5R79xg6/ayEhxOqDYovXzH/l8r6ggBMbxzhreJXUpEYx8
-	nIlNvUKEy41iOyB8v5hfgXKySOLf9iAORlTShJlC4fSPqEbomtvDyMkCcvzB9EsbrBXbQ/8G9f2
-	YMUpCScaUlnPsnRx2JS8d+7Tj2BUgnlvsj94esShxfjBPEawIwmxmHfUKXURKz5hXq/Vs0AxXjj
-	iy88t1S0PXyl5IGbBL9ALJ4lCE9kVT164E0kW+hTv09uCjv0Sn5fFKllYEqp26hiU+BvIxMwLDs
-	W6T8ih5cd7dnvj0qDtXkAbtP+UUvVOIW3JmVNHknoYuWpUMINTpHcndz8SLy8x1hlCovHEd3fQw
+        bh=qx/1oTWM3SfOgSRGJxZ0aQlJKR18RE3Pn5feG9LXGoo=;
+        b=C1KaY7atIeNt66o8PgLEz+EaVq+Wkc67/3Qdl5q5Wo2X8ARMY+Kc0ebohRU6f1XBFp
+         76lXEcFxVkZwJxL3g/3inIpsuFwI18E+FHQalvx2Fbn2tZxfVCCDxp+P2JTCMwx7parp
+         +KxWRbAgVfqZHSdFY1AepGWQ+Jw07OjDT5V5En2yDvXMGUClYjukft7C51t3E0gk17fU
+         IHT2Smu3wSur3SBOkAzUDIxz1CyoB/qBi72QDo5DJOjK7TOIsUJCej1LCODcjd7vN8Ti
+         r0meD9pIU6wvwFFXAfHhsZ/DZfBHLvRoaxweln033t1hL4EcvRKXx+slH/cfWaJpZlEV
+         ggmg==
+X-Gm-Message-State: AOJu0YytXkqRsCKRxEOCH7hacmW+td/N6r2xr9y1zdQw3DvO4/a59j5n
+	SpjylHLxncgYYnV0fpWEK5KePYNvO+unh2xCMxmXzbxkXCtYnJi5Do6R
+X-Gm-Gg: ASbGncthgjVxEpfZ7YDkl7Jrhich7Sq27ZZfYDX0JuKHO1M3WEn4WKmpEGxVvvm59Sq
+	AAbw2Xt3bmqv2WczCSX9Xq48HpFGV5i0r98Cfms8kFMg/4d6Xg6yL3pPtxZJTEmauv+7mRnKq9O
+	bl4Q7KDVhWv9HMm+NmvBI+uwBaEkbIkr7PrTCgo3fXfqmDNNH47BXIyLKCFkjQ19wU+xs9KUTzs
+	Gs9R/j3GwznCkIRL8ly7cugjHSa6UiEgw94trAJfHrkNxSHIY8asrD27vxdaMi+xJiouFKaCZzD
+	VlkdTmAbfDCldIHu2i1Adx9cHYB9Fk0HkvwcWVBKihjuke1Rfd5hfnu31yaJbjD85v4KJ+Oje60
+	TJXilPCs32pAp7yeNLVY/2unzpXIUVldY2wiBpO3npt2p90nVrko65wK3+cooQAsl+asVxiWgTQ
 	==
-X-Google-Smtp-Source: AGHT+IG65M9AmPlC05ihg4SmR9gYwNXKNdBg31xKAAYLNg/TErMyhwWJFOvxLA2wVHllTUAsiwxeiA==
-X-Received: by 2002:a05:600c:810c:b0:456:2020:166a with SMTP id 5b1f17b1804b1-45892bc6d0emr9225955e9.20.1753821423503;
-        Tue, 29 Jul 2025 13:37:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH2a7aSbwvxB0MqyzC7IR8fIbWO2CyuOxwzcmU+kcUbE/MrKcnRTHUuDzj+IGtZnGslivNOrQ==
+X-Received: by 2002:a05:600c:138e:b0:456:237b:5e4e with SMTP id 5b1f17b1804b1-45892bdf4abmr7789885e9.32.1753821424934;
+        Tue, 29 Jul 2025 13:37:04 -0700 (PDT)
 Received: from ivaylo-T580.. (91-139-201-119.stz.ddns.bulsat.com. [91.139.201.119])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45895386627sm481325e9.19.2025.07.29.13.37.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45895386627sm481325e9.19.2025.07.29.13.37.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 13:37:03 -0700 (PDT)
+        Tue, 29 Jul 2025 13:37:04 -0700 (PDT)
 From: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Date: Tue, 29 Jul 2025 23:36:56 +0300
-Message-ID: <20250729203659.1858575-2-ivo.ivanov.ivanov1@gmail.com>
+Date: Tue, 29 Jul 2025 23:36:57 +0300
+Message-ID: <20250729203659.1858575-3-ivo.ivanov.ivanov1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250729203659.1858575-1-ivo.ivanov.ivanov1@gmail.com>
 References: <20250729203659.1858575-1-ivo.ivanov.ivanov1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250729_133705_394180_223D4F2A 
-X-CRM114-Status: GOOD (  11.60  )
+X-CRM114-CacheID: sfid-20250729_133706_832054_88C65756 
+X-CRM114-Status: GOOD (  13.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -110,46 +110,45 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v1 1/4] video: simplefb-client: switch to dev_get_resource
+Subject: [PATCH v1 2/4] clocksource: arm_architected_timer: support clock-frequency
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Since the framebuffer memory resource resides in ram, it has already
-been requested and mapped, so only get the resource to avoid
-requesting a busy resource. This is also the approach for linux.
+Some platforms, like the Samsung Galaxy S8, leave CNTFRQ_EL0 unset in
+the previous stage bootloader. Therefore reading it causes a hang and
+the boot proccess is halted.
 
-While at it, use IOMEM for mem->start and drop an unnecessary newline.
+Since on such retail devices there is no way to set it without replacing
+the entire boot chain, allow setting a value from clock-frequency
+whenever it's passed.
 
 Signed-off-by: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
 ---
- drivers/video/simplefb-client.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/clocksource/arm_architected_timer.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/simplefb-client.c b/drivers/video/simplefb-client.c
-index dafec617..41ad8ffa 100644
---- a/drivers/video/simplefb-client.c
-+++ b/drivers/video/simplefb-client.c
-@@ -96,7 +96,7 @@ static int simplefb_probe(struct device *dev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/clocksource/arm_architected_timer.c b/drivers/clocksource/arm_architected_timer.c
+index 9a1f2d2b..daced94c 100644
+--- a/drivers/clocksource/arm_architected_timer.c
++++ b/drivers/clocksource/arm_architected_timer.c
+@@ -24,7 +24,16 @@ static struct clocksource cs = {
  
--	mem = dev_request_mem_resource(dev, 0);
-+	mem = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (IS_ERR(mem)) {
- 		dev_err(dev, "No memory resource\n");
- 		return PTR_ERR(mem);
-@@ -116,10 +116,9 @@ static int simplefb_probe(struct device *dev)
- 	info->blue = params.format->blue;
- 	info->transp = params.format->transp;
+ static int arm_arch_timer_probe(struct device *dev)
+ {
+-	cs.mult = clocksource_hz2mult(get_cntfrq(), cs.shift);
++	u32 cntfrq;
++	int ret;
++
++	/* Some platforms don't set CNTFRQ_EL0 before barebox */
++	ret = of_property_read_u32(dev->of_node, "clock-frequency", &cntfrq);
++
++	if (ret)
++		cntfrq = get_cntfrq();
++
++	cs.mult = clocksource_hz2mult(cntfrq, cs.shift);
  
--	info->screen_base = (void *)mem->start;
-+	info->screen_base = IOMEM(mem->start);
- 	info->screen_size = resource_size(mem);
- 
--
- 	info->fbops = &simplefb_ops;
- 
- 	info->dev.parent = dev;
+ 	return init_clock(&cs);
+ }
 -- 
 2.43.0
 
