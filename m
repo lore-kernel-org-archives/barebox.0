@@ -1,57 +1,66 @@
-Delivery-date: Wed, 30 Jul 2025 14:42:35 +0200
+Delivery-date: Wed, 30 Jul 2025 14:42:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uh68h-005GLO-0r
+	id 1uh68k-005GOa-2f
 	for lore@lore.pengutronix.de;
-	Wed, 30 Jul 2025 14:42:35 +0200
+	Wed, 30 Jul 2025 14:42:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uh68g-0006A4-Jz
-	for lore@pengutronix.de; Wed, 30 Jul 2025 14:42:35 +0200
+	id 1uh68k-0006CX-63
+	for lore@pengutronix.de; Wed, 30 Jul 2025 14:42:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=T6Ohma9Itq4fCik/jPyxrxDkO9YytKbEgbD6kd0U7eQ=; b=a94Nm7k96zfBhMNrGm+se+PyCh
-	szNGHEYXlGDDUlP0ppC2A3+b8ffxDTEQ+2IDO4UrXtgZkZzhIzsunsGjAfaBGt9b60Wpk9Gay7nya
-	rFHG39Nq2NWsyMvDg3a5ON4NOLh2cIi2DwJ/Evp2LV6GM8rqW59sO+tY6Xgid2OeWCS5in88h9XBe
-	Pued6AFwjXniWRJ0AjtMhqZLAFbyU3qOVFvD3ASNWDdyQZgDqoSN5WdPoNLuKtAhqo4N/iO68FdEU
-	slvqIc0zGGyXmVInhbkftVaeF8k80s2UOXAfsyEMOLHCr50vdk/kwUzU68GLayQvtv3g+mcq7+J8Z
-	6HowBYCA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=/h+SSZzBaEt40ZZUK60wIjph0Ld4VxF4dnliKaILtQo=; b=Cb9g4ECWYEeHRkDN77hyvNsDW0
+	FJReXKIqVtVhUKuvYiSYLFFfkwtPZH3FW3euwjOKrHumeeaBa94sC7s53pFyqME6Thf5QvX3oqGQh
+	hFdfZW6l5ISXOf0R5W/4LFZcIrYVUSqa4g56mBtH5LKZC5/7Bt3s6X4sOmxLPSoTaIyZmsc/yOPCq
+	n8ZpDi4KhpX1hB/C5ybaWukZ6tC2yvJUVtgvtcyBYSva8n93BV0duvengCMTOc4XiBooi6SEumRie
+	PSEbFykKROnTGu5GH9A3Lluaixo8018EPuljTFwTq6rSducniVcllPwGlml3AGrl0zMLnSdARXnuY
+	HQj00FWA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uh68G-00000001UZp-0YI8;
-	Wed, 30 Jul 2025 12:42:08 +0000
+	id 1uh68F-00000001UZT-2ENB;
+	Wed, 30 Jul 2025 12:42:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uh66Y-00000001UPl-2kO7
+	id 1uh5y4-00000001TKi-3c8e
 	for barebox@lists.infradead.org;
-	Wed, 30 Jul 2025 12:40:24 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Wed, 30 Jul 2025 12:31:37 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uh66W-0005ms-UP; Wed, 30 Jul 2025 14:40:20 +0200
-Message-ID: <bbc6d12d-4c8a-463a-ae7e-8b2f36afebb9@pengutronix.de>
-Date: Wed, 30 Jul 2025 14:40:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Stefano Manni <stefano.manni@gmail.com>,
- barebox <barebox@lists.infradead.org>
-References: <8JK70T.9NOP3AIQTVWR@gmail.com>
+	id 1uh5xv-0004gR-HK; Wed, 30 Jul 2025 14:31:27 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uh5xv-00B2fD-0e;
+	Wed, 30 Jul 2025 14:31:27 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uh5xv-004SW5-0I;
+	Wed, 30 Jul 2025 14:31:27 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <8JK70T.9NOP3AIQTVWR@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: barebox@lists.infradead.org
+Cc: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 30 Jul 2025 14:31:25 +0200
+Message-Id: <20250730123126.1062875-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250730_054022_691902_494D334D 
-X-CRM114-Status: GOOD (  21.44  )
+X-CRM114-CacheID: sfid-20250730_053136_899409_440FAD54 
+X-CRM114-Status: GOOD (  13.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,101 +82,146 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: fixed partitions issue
+Subject: [PATCH 1/2] mmu: define MAP_WRITECOMBINE for all architectures
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Stefano,
+Write Combine (WC) memory is an optimization over uncached memory,
+especially suitable for framebuffers. We allocate WC memory using
+dma_alloc_writecombine(), but it can be useful to remap existing memory
+not allocated within barebox as WC.
 
-On 7/30/25 12:45, Stefano Manni wrote:
-> Dear all,
-> 
-> I'm encountering an issue with fixed-partitions on spinor with
-> v2025.07.0 that
-> was not there in v2025.01.0.
-> 
-> The partitions are configured as follows:
-> 
-> partitions {
->     compatible = "fixed-partitions";
->     #size-cells = <1>;
->     #address-cells = <1>;
-> 
->     barebox: partition@0 {
->         label = "barebox";
->         reg = <0x0 0x0100000>;
->     };
-> 
->     barebox_env: partition@100000 {
->         label = "barebox-env";
->         reg = <0x0100000 0x100000>;
->     };
-> 
->     barebox_state: partition@200000 {
->         label = "barebox-state";
->         reg = <0x0100000 0x100000>;
+To allow this, let's define MAP_WRITECOMBINE globally with a fallback to
+MAP_UNCACHED if not available.
 
-The first cell is the start address, so this should be 0x200000, not
-0x0100000.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/Kconfig              |  3 +++
+ arch/arm/Kconfig          |  1 +
+ arch/arm/cpu/mmu-common.h |  1 -
+ arch/arm/cpu/mmu_32.c     |  6 +++---
+ arch/arm/cpu/mmu_64.c     |  4 ++--
+ include/mmu.h             | 14 ++++++++++----
+ 6 files changed, 19 insertions(+), 10 deletions(-)
 
->     };
-> };
-> 
-> It seems to me the partition offsets (0, 0x100000, 0x200000) are not
-> taken into account
-
-The unit address in the node name is never parsed as address, neither in
-barebox or in Linux. What's in reg is what matters.
-
-> so the results is that all the partitions point to the same piece of
-> memory. That's how I tested it:
-
-The devinfo command without arguments will show you the start/end
-address of all partitions.
-
-> Do you have any hint? After the changes on drivers/of/partition.c
-> between v2025.01.0 and v2025.07.0
-
-I don't know how it worked before, but that DT description is buggy.
-What changed is that barebox doesn't refuse identical partitions, it
-just makes the dupes a link to the first registered.
-
-Do you maybe have board code that calls devfs_add_partition()?
-
-The output of devinfo in both versions would be useful as well to
-understand this.
-
-> shall I need to change something in my dts?
-
-It should work after fixing the reg properties. There has been changes
-around the partition handling stuff, but they affected only fixed
-partitions in eMMC/EEPROM. The MTD binding is an upstream binding and no
-intentional changes happened here.
-
-Cheers,
-Ahmad
-
-> 
-> Best,
-> Stefano
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 919c8cfebab5..55618bf896c2 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -59,6 +59,9 @@ config ARCH_HAS_CTRLC
+ config ARCH_DMA_DEFAULT_COHERENT
+ 	bool
+ 
++config ARCH_HAS_DMA_WRITE_COMBINE
++	bool
++
+ config ARCH_HAS_ASAN_FIBER_API
+ 	bool
+ 
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 7a3952700aa8..9694cb5b7463 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -16,6 +16,7 @@ config ARM
+ 	select HAVE_ARCH_BOARD_GENERIC_DT if OFDEVICE
+ 	select HAVE_ARCH_BOOTM_OFTREE
+ 	select HW_HAS_PCI
++	select ARCH_HAS_DMA_WRITE_COMBINE
+ 	default y
+ 
+ config ARCH_LINUX_NAME
+diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
+index ac11a87be416..3bca5cc3b821 100644
+--- a/arch/arm/cpu/mmu-common.h
++++ b/arch/arm/cpu/mmu-common.h
+@@ -10,7 +10,6 @@
+ #include <linux/kernel.h>
+ #include <linux/sizes.h>
+ 
+-#define ARCH_MAP_WRITECOMBINE	((unsigned)-1)
+ #define ARCH_MAP_CACHED_RWX	((unsigned)-2)
+ #define ARCH_MAP_CACHED_RO	((unsigned)-3)
+ 
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index 67f1fe59886a..89a18d342b80 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -238,7 +238,7 @@ static uint32_t get_pte_flags(int map_type)
+ 			return PTE_FLAGS_UNCACHED_V7;
+ 		case MAP_CODE:
+ 			return PTE_FLAGS_CODE_V7;
+-		case ARCH_MAP_WRITECOMBINE:
++		case MAP_WRITECOMBINE:
+ 			return PTE_FLAGS_WC_V7;
+ 		case MAP_FAULT:
+ 		default:
+@@ -253,7 +253,7 @@ static uint32_t get_pte_flags(int map_type)
+ 		case MAP_CACHED:
+ 			return PTE_FLAGS_CACHED_V4;
+ 		case MAP_UNCACHED:
+-		case ARCH_MAP_WRITECOMBINE:
++		case MAP_WRITECOMBINE:
+ 			return PTE_FLAGS_UNCACHED_V4;
+ 		case MAP_FAULT:
+ 		default:
+@@ -651,7 +651,7 @@ void mmu_disable(void)
+ 
+ void *dma_alloc_writecombine(struct device *dev, size_t size, dma_addr_t *dma_handle)
+ {
+-	return dma_alloc_map(dev, size, dma_handle, ARCH_MAP_WRITECOMBINE);
++	return dma_alloc_map(dev, size, dma_handle, MAP_WRITECOMBINE);
+ }
+ 
+ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned long barebox_start)
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index abcc970f4bff..a229e4cb5526 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -295,7 +295,7 @@ static unsigned long get_pte_attrs(unsigned flags)
+ 		return attrs_xn() | UNCACHED_MEM;
+ 	case MAP_FAULT:
+ 		return 0x0;
+-	case ARCH_MAP_WRITECOMBINE:
++	case MAP_WRITECOMBINE:
+ 		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
+ 	case MAP_CODE:
+ 		return CACHED_MEM | PTE_BLOCK_RO;
+@@ -448,7 +448,7 @@ void dma_flush_range(void *ptr, size_t size)
+ 
+ void *dma_alloc_writecombine(struct device *dev, size_t size, dma_addr_t *dma_handle)
+ {
+-	return dma_alloc_map(dev, size, dma_handle, ARCH_MAP_WRITECOMBINE);
++	return dma_alloc_map(dev, size, dma_handle, MAP_WRITECOMBINE);
+ }
+ 
+ static void init_range(size_t total_level0_tables)
+diff --git a/include/mmu.h b/include/mmu.h
+index 20855e89eda3..17c04d2fa05f 100644
+--- a/include/mmu.h
++++ b/include/mmu.h
+@@ -5,10 +5,16 @@
+ #include <linux/types.h>
+ #include <errno.h>
+ 
+-#define MAP_UNCACHED	0
+-#define MAP_CACHED	1
+-#define MAP_FAULT	2
+-#define MAP_CODE	3
++#define MAP_UNCACHED		0
++#define MAP_CACHED		1
++#define MAP_FAULT		2
++#define MAP_CODE		3
++
++#ifdef CONFIG_ARCH_HAS_DMA_WRITE_COMBINE
++#define MAP_WRITECOMBINE	4
++#else
++#define MAP_WRITECOMBINE	MAP_UNCACHED
++#endif
+ 
+ /*
+  * Depending on the architecture the default mapping can be
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.39.5
 
 
 
