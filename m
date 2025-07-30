@@ -1,66 +1,63 @@
-Delivery-date: Wed, 30 Jul 2025 14:42:38 +0200
+Delivery-date: Wed, 30 Jul 2025 14:53:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uh68k-005GOa-2f
+	id 1uh6JN-005GV7-12
 	for lore@lore.pengutronix.de;
-	Wed, 30 Jul 2025 14:42:38 +0200
+	Wed, 30 Jul 2025 14:53:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uh68k-0006CX-63
-	for lore@pengutronix.de; Wed, 30 Jul 2025 14:42:38 +0200
+	id 1uh6JM-0007jK-Lf
+	for lore@pengutronix.de; Wed, 30 Jul 2025 14:53:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=/h+SSZzBaEt40ZZUK60wIjph0Ld4VxF4dnliKaILtQo=; b=Cb9g4ECWYEeHRkDN77hyvNsDW0
-	FJReXKIqVtVhUKuvYiSYLFFfkwtPZH3FW3euwjOKrHumeeaBa94sC7s53pFyqME6Thf5QvX3oqGQh
-	hFdfZW6l5ISXOf0R5W/4LFZcIrYVUSqa4g56mBtH5LKZC5/7Bt3s6X4sOmxLPSoTaIyZmsc/yOPCq
-	n8ZpDi4KhpX1hB/C5ybaWukZ6tC2yvJUVtgvtcyBYSva8n93BV0duvengCMTOc4XiBooi6SEumRie
-	PSEbFykKROnTGu5GH9A3Lluaixo8018EPuljTFwTq6rSducniVcllPwGlml3AGrl0zMLnSdARXnuY
-	HQj00FWA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mQfOXRMHFZPBKwoHNVC2Hnf31NUmGlOjDrnOHZud3AQ=; b=xM1uLaG4ElQ+45dV109v8ARyzT
+	q+88kvAWJBLUaXV40lTOzxnIhgp2J6YSar48cJKGa1fLIK0FPstHYzTzAKnUwfN29QmWzNx8VsE3D
+	DTRjWSsEwnUt5/MNBcJJ86ojsQO0OE4s/m0L0TrsEkEvaI1EnHZtVyR2ZevEjlKdm4Jmno6YMA4dc
+	tpCSi1Rpm8J8fWU/YEwKR9/D0DGKwPCO9fXYGp07tVb+acg8NNh2QzfD4S0n7WL9jHf2KewWNEma0
+	wilJQ4zsF0LYPmFfmS2XmRwzNbMsjWPPorRRuJFUmUjobeCKruGnn8nOBAla8dHagjaSZ8LHB+C0/
+	djH+kPNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uh68F-00000001UZT-2ENB;
-	Wed, 30 Jul 2025 12:42:07 +0000
+	id 1uh6Ir-00000001WaK-3zSN;
+	Wed, 30 Jul 2025 12:53:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uh5y4-00000001TKi-3c8e
+	id 1uh6Gi-00000001WSl-0RW0
 	for barebox@lists.infradead.org;
-	Wed, 30 Jul 2025 12:31:37 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Wed, 30 Jul 2025 12:50:53 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uh5xv-0004gR-HK; Wed, 30 Jul 2025 14:31:27 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uh5xv-00B2fD-0e;
-	Wed, 30 Jul 2025 14:31:27 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uh5xv-004SW5-0I;
-	Wed, 30 Jul 2025 14:31:27 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 30 Jul 2025 14:31:25 +0200
-Message-Id: <20250730123126.1062875-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	id 1uh6Gg-0007KN-Q3; Wed, 30 Jul 2025 14:50:50 +0200
+Message-ID: <9fb60284-c587-4581-8aad-c4c65d50a18d@pengutronix.de>
+Date: Wed, 30 Jul 2025 14:50:50 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20250729203659.1858575-1-ivo.ivanov.ivanov1@gmail.com>
+ <20250729203659.1858575-5-ivo.ivanov.ivanov1@gmail.com>
+ <d343c6c7-ef7c-498b-8059-a08b8f166dec@pengutronix.de>
+ <17756254-8151-4c61-95be-2878bc736622@gmail.com>
+ <1a0e5c13-14b5-4021-9baf-c2e701478c80@pengutronix.de>
+ <b6c276e2-5217-4260-b8bb-3026d2b44a28@gmail.com>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <b6c276e2-5217-4260-b8bb-3026d2b44a28@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250730_053136_899409_440FAD54 
-X-CRM114-Status: GOOD (  13.48  )
+X-CRM114-CacheID: sfid-20250730_055052_147931_C6FDB408 
+X-CRM114-Status: GOOD (  25.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,146 +79,118 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] mmu: define MAP_WRITECOMBINE for all architectures
+Subject: Re: [PATCH v1 4/4] ARM: boards: add support for Samsung Galaxy S20 5G
+ (x1s)
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Write Combine (WC) memory is an optimization over uncached memory,
-especially suitable for framebuffers. We allocate WC memory using
-dma_alloc_writecombine(), but it can be useful to remap existing memory
-not allocated within barebox as WC.
+Hi,
 
-To allow this, let's define MAP_WRITECOMBINE globally with a fallback to
-MAP_UNCACHED if not available.
+On 7/30/25 13:18, Ivaylo Ivanov wrote:
+> On 7/30/25 12:44, Ahmad Fatoum wrote:
+>> Hi,
+>>
+>> On 7/30/25 11:16, Ivaylo Ivanov wrote:
+>>> On 7/30/25 11:48, Ahmad Fatoum wrote:
+>>>> Hi Ivaylo,
+>>>>
+>>>> On 7/29/25 22:36, Ivaylo Ivanov wrote:
+>>>>> Add support for Samsung Galaxy S20 5G, based on exynos990, to the
+>>>>> current samsung board support. This platform, just like exynos8895,
+>>>>> needs a bit to be set in order to allow the framebuffer to refresh.
+>>>>>
+>>>> Oh, a shame that I sold the old S20 FE I had. :/
+>>>> I still have a rooted S10e though. I should give this a try when I have
+>>>> time.
+>>> Heh, I was thinking about getting an s10e to bring up mainline linux on it,
+>>> but I do have quite a lot of devices to work on right now. At the very least,
+>>> I expect to throw in support for 7580 and 8890 in the future for both
+>>> mainline linux and barebox. The plan ideally will be to bring up support for
+>>> exynos7580 in barebox to a decent state, with mmc and usb working at least.
+>>> S20 series are decently supported, but nothing exciting yet.
+>> Cool stuff. Looking forward to it. :-)
+>>
+>>> Another qustion: are there any plans to support booting fit images from an
+>>> address in ram instead of a file? I suspect porting over all the ufs stuff from
+>>> linux will be a hassle
+>> It's something we will want sooner or later, but yes, it will likely be
+>> involved.
+>>
+>>> , so for S20 (which does not have an sd card slot, only ufs)
+>>> booting a fit image that s-boot has loaded into ram for us might be neat.
+>>> As far as I've seen, only "go" can do that, but not "bootm".
+>> $ addpart /dev/ram0 0x1000@0x1000(fit)
+>> $ bootm /dev/ram0.fit
+>>
+>> would've been the workaround so far.
+> 
+> Oh, nice. I'll give it a shot and if it works, I'll include it
+> in a config in the board dir as default boot behavior
+> (we really cannot interact with the console yet anyways).
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/Kconfig              |  3 +++
- arch/arm/Kconfig          |  1 +
- arch/arm/cpu/mmu-common.h |  1 -
- arch/arm/cpu/mmu_32.c     |  6 +++---
- arch/arm/cpu/mmu_64.c     |  4 ++--
- include/mmu.h             | 14 ++++++++++----
- 6 files changed, 19 insertions(+), 10 deletions(-)
+I think a convenient behavior, at least during development is to set
+autoboot=menu and set a menu timeout. Then add a config option that
+remaps volume up/down to up/down and some button as return and you
+should at least be able to navigate the menu.
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 919c8cfebab5..55618bf896c2 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -59,6 +59,9 @@ config ARCH_HAS_CTRLC
- config ARCH_DMA_DEFAULT_COHERENT
- 	bool
- 
-+config ARCH_HAS_DMA_WRITE_COMBINE
-+	bool
-+
- config ARCH_HAS_ASAN_FIBER_API
- 	bool
- 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 7a3952700aa8..9694cb5b7463 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -16,6 +16,7 @@ config ARM
- 	select HAVE_ARCH_BOARD_GENERIC_DT if OFDEVICE
- 	select HAVE_ARCH_BOOTM_OFTREE
- 	select HW_HAS_PCI
-+	select ARCH_HAS_DMA_WRITE_COMBINE
- 	default y
- 
- config ARCH_LINUX_NAME
-diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
-index ac11a87be416..3bca5cc3b821 100644
---- a/arch/arm/cpu/mmu-common.h
-+++ b/arch/arm/cpu/mmu-common.h
-@@ -10,7 +10,6 @@
- #include <linux/kernel.h>
- #include <linux/sizes.h>
- 
--#define ARCH_MAP_WRITECOMBINE	((unsigned)-1)
- #define ARCH_MAP_CACHED_RWX	((unsigned)-2)
- #define ARCH_MAP_CACHED_RO	((unsigned)-3)
- 
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index 67f1fe59886a..89a18d342b80 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -238,7 +238,7 @@ static uint32_t get_pte_flags(int map_type)
- 			return PTE_FLAGS_UNCACHED_V7;
- 		case MAP_CODE:
- 			return PTE_FLAGS_CODE_V7;
--		case ARCH_MAP_WRITECOMBINE:
-+		case MAP_WRITECOMBINE:
- 			return PTE_FLAGS_WC_V7;
- 		case MAP_FAULT:
- 		default:
-@@ -253,7 +253,7 @@ static uint32_t get_pte_flags(int map_type)
- 		case MAP_CACHED:
- 			return PTE_FLAGS_CACHED_V4;
- 		case MAP_UNCACHED:
--		case ARCH_MAP_WRITECOMBINE:
-+		case MAP_WRITECOMBINE:
- 			return PTE_FLAGS_UNCACHED_V4;
- 		case MAP_FAULT:
- 		default:
-@@ -651,7 +651,7 @@ void mmu_disable(void)
- 
- void *dma_alloc_writecombine(struct device *dev, size_t size, dma_addr_t *dma_handle)
- {
--	return dma_alloc_map(dev, size, dma_handle, ARCH_MAP_WRITECOMBINE);
-+	return dma_alloc_map(dev, size, dma_handle, MAP_WRITECOMBINE);
- }
- 
- void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned long barebox_start)
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index abcc970f4bff..a229e4cb5526 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -295,7 +295,7 @@ static unsigned long get_pte_attrs(unsigned flags)
- 		return attrs_xn() | UNCACHED_MEM;
- 	case MAP_FAULT:
- 		return 0x0;
--	case ARCH_MAP_WRITECOMBINE:
-+	case MAP_WRITECOMBINE:
- 		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
- 	case MAP_CODE:
- 		return CACHED_MEM | PTE_BLOCK_RO;
-@@ -448,7 +448,7 @@ void dma_flush_range(void *ptr, size_t size)
- 
- void *dma_alloc_writecombine(struct device *dev, size_t size, dma_addr_t *dma_handle)
- {
--	return dma_alloc_map(dev, size, dma_handle, ARCH_MAP_WRITECOMBINE);
-+	return dma_alloc_map(dev, size, dma_handle, MAP_WRITECOMBINE);
- }
- 
- static void init_range(size_t total_level0_tables)
-diff --git a/include/mmu.h b/include/mmu.h
-index 20855e89eda3..17c04d2fa05f 100644
---- a/include/mmu.h
-+++ b/include/mmu.h
-@@ -5,10 +5,16 @@
- #include <linux/types.h>
- #include <errno.h>
- 
--#define MAP_UNCACHED	0
--#define MAP_CACHED	1
--#define MAP_FAULT	2
--#define MAP_CODE	3
-+#define MAP_UNCACHED		0
-+#define MAP_CACHED		1
-+#define MAP_FAULT		2
-+#define MAP_CODE		3
-+
-+#ifdef CONFIG_ARCH_HAS_DMA_WRITE_COMBINE
-+#define MAP_WRITECOMBINE	4
-+#else
-+#define MAP_WRITECOMBINE	MAP_UNCACHED
-+#endif
- 
- /*
-  * Depending on the architecture the default mapping can be
+After timeout expires, system would boot normally.
+
+> 
+>>
+>> Since the fuzzing infrastructure has been merged, we also have
+>> ramdisk_init, which sets up a block device on top of a memory buffer
+>> without block layer caching. I think that's sufficient to implement
+>> losetup(8), which would go beyond addpart and even allow mounting file
+>> systems from the loop device.
+> 
+> I see. Looking forward to that.
+> 
+> Best regards,
+> Ivaylo.
+> 
+>>
+>> Cheers,
+>> Ahmad
+>>
+>>
+>>
+>>> Best regards,
+>>> Ivaylo
+>>>
+>>>>> diff --git a/arch/arm/dts/exynos990-x1s.dts b/arch/arm/dts/exynos990-x1s.dts
+>>>>> new file mode 100644
+>>>>> index 00000000..19d59eaa
+>>>>> --- /dev/null
+>>>>> +++ b/arch/arm/dts/exynos990-x1s.dts
+>>>>> @@ -0,0 +1,13 @@
+>>>>> +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+>>>>> +/*
+>>>>> + * Samsung Galaxy S20 5G (x1s/SM-G981B) barebox device tree source
+>>>>> + *
+>>>>> + * Copyright (c) 2025, Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
+>>>>> + */
+>>>>> +
+>>>>> +/dts-v1/;
+>>>>> +#include <arm64/exynos/exynos990-x1s.dts>
+>>>>> +
+>>>>> +/ {
+>>>>> +	barebox,disable-deep-probe;
+>>>> Same comment: we want deep probe as default eventually. Did you run into
+>>>> problems without this?
+>>>>
+>>>> Cheers,
+>>>> Ahmad
+>>>>
+>>>>> +};
+>>>
+> 
+> 
+
 -- 
-2.39.5
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
