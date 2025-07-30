@@ -1,57 +1,58 @@
-Delivery-date: Wed, 30 Jul 2025 07:59:31 +0200
+Delivery-date: Wed, 30 Jul 2025 08:12:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ugzqd-005AVC-2e
+	id 1uh03K-005AhE-2J
 	for lore@lore.pengutronix.de;
-	Wed, 30 Jul 2025 07:59:31 +0200
+	Wed, 30 Jul 2025 08:12:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ugzqd-0003HC-3G
-	for lore@pengutronix.de; Wed, 30 Jul 2025 07:59:31 +0200
+	id 1uh03K-00053l-1q
+	for lore@pengutronix.de; Wed, 30 Jul 2025 08:12:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5T7Ecgek1RwDODjnGThZa9dcSFCK+Y+/V4Q7pfrjGKA=; b=pmvfqhWA2FgSZtR/OsI15PkayB
-	i90u9vtUVvqbVLtHTWwv5oH2ykTcoa6vqEayIMJC78gY/lsXFlhry1M3li61NjKiB74d5/sCy2/12
-	H5aAMxNKS9k1hR1IwzkbmLKXR3/AeumZc7EeoKiZaCV0h9cK5LqYmIMzg9F/YmZgxTTKc51qLpOL4
-	mTskOsrd6UrpOOHaWq6+v01fTtFrfH6+mnvbFcH7x7kVgP+REsaRmHH7zjFQODOF89h6fPwXIrJvT
-	/S8PdPFo3/CnpNGIXla41SWzXGSX/SD9J51SQLX4qaiq12ZORSuJ+jpo8p6YtnfNMzqjBUPb5qvt/
-	SiW4t9xQ==;
+	bh=p4N8LJDmL79PGoYwdIRmq62bYf/YrmB+8PelBuIJh/0=; b=bqVNUGdbbQOhXd34ZlFp8XIms1
+	pscaKkO2+4TG0uQ5zkVlSQ9cw+KOeWko6YUhgFzucgJPyTxOy69y/8IvuDOcilfxECquDLyCfjHXE
+	tEccTZCexmJY38mlCB4yZLOcSxxyXFNhcpRSyEtpx1/UCn7nEv1d03nk1KEhkUuHPdfStKbejg/tz
+	t1S6P+d83fboLZFXpyJ7K4zv83EruAn30J7u/ojNzAkV2sgpNUX4Aj6eMcUZWL5uOZEHwCIambYUh
+	Ek6RYvC/2WhFy1Uhr1JDF+vm7S4x6PraBAUb3ZOlQ2C6jxT1rbKA0TbE8zqDVF39zhp9tGfahloom
+	/njW0NtA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ugzq1-00000000kw1-0MBZ;
-	Wed, 30 Jul 2025 05:58:53 +0000
+	id 1uh02q-00000000mGD-44Aq;
+	Wed, 30 Jul 2025 06:12:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ugzoy-00000000kgq-2YKE
+	id 1uh02n-00000000mEb-3TD1
 	for barebox@lists.infradead.org;
-	Wed, 30 Jul 2025 05:57:50 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
+	Wed, 30 Jul 2025 06:12:07 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1ugzov-0002zI-02; Wed, 30 Jul 2025 07:57:45 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: chalianis1@gmail.com,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Wed, 30 Jul 2025 07:57:41 +0200
-Message-Id: <20250730055743.922932-2-a.fatoum@barebox.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250730055743.922932-1-a.fatoum@barebox.org>
-References: <20250730055743.922932-1-a.fatoum@barebox.org>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uh02l-0004zo-8G; Wed, 30 Jul 2025 08:12:03 +0200
+Message-ID: <0271f274-7d1d-4d93-8e89-30881ffca47c@pengutronix.de>
+Date: Wed, 30 Jul 2025 08:12:02 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: chalianis1@gmail.com, s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
+References: <20250730035010.3318600-1-chalianis1@gmail.com>
+ <20250730035010.3318600-2-chalianis1@gmail.com>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250730035010.3318600-2-chalianis1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250729_225748_657020_CCB88F5F 
-X-CRM114-Status: UNSURE (   6.97  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250729_231205_868674_08C10084 
+X-CRM114-Status: GOOD (  23.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,57 +70,117 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] ARM64: configs: multi_v8: disable layerscape temporarily
+Subject: Re: [PATCH] arm: efi: add a dummy efi arch on ARM64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With multi_v8, we build everything in a single build and that makes the
-layerscape PBLs exceed their hard limit of 64K failing the build.
+Hi,
 
-Until resolved, let's disable it from the defconfig. Users can still use
-the dedicated layerscape defconfigs.
+On 30.07.25 05:50, chalianis1@gmail.com wrote:
+> From: Chali Anis <chalianis1@gmail.com>
+> 
+> this arch will forces a generic arm 64 cpu, which will
+> produce an efi payload on ARM 64, this works with a virtual
+> machine using qemu-system-aarch64, need further work to support
+> real hardware.
+> Submit the patch in case someone is interrested in working
+> to have a full support for efi payload on real hardware.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- arch/arm/configs/multi_v8_defconfig | 5 -----
- 1 file changed, 5 deletions(-)
+Thanks for your patch.
 
-diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-index a487d331d04e..5c295cd58269 100644
---- a/arch/arm/configs/multi_v8_defconfig
-+++ b/arch/arm/configs/multi_v8_defconfig
-@@ -3,7 +3,6 @@ CONFIG_ARCH_BCM283X=y
- CONFIG_ARCH_IMX=y
- CONFIG_ARCH_K3=y
- CONFIG_ARCH_SUNXI=y
--CONFIG_ARCH_LAYERSCAPE=y
- CONFIG_ARCH_ROCKCHIP=y
- CONFIG_ARCH_ZYNQMP=y
- CONFIG_MACH_RPI3=y
-@@ -28,9 +27,6 @@ CONFIG_MACH_ZII_IMX8MQ_DEV=y
- CONFIG_MACH_PHYTEC_PHYCORE_IMX93=y
- CONFIG_MACH_TQMA93XX=y
- CONFIG_IMX_IIM=y
--CONFIG_MACH_LS1028ARDB=y
--CONFIG_MACH_LS1046ARDB=y
--CONFIG_MACH_TQMLS1046A=y
- CONFIG_MACH_BEAGLEPLAY=y
- CONFIG_MACH_RK3568_EVB=y
- CONFIG_MACH_RK3568_BPI_R2PRO=y
-@@ -258,7 +254,6 @@ CONFIG_REGULATOR_FIXED=y
- CONFIG_REGULATOR_ARM_SCMI=y
- CONFIG_REGULATOR_RK808=y
- CONFIG_RESET_IMX7=y
--CONFIG_PCI_LAYERSCAPE=y
- CONFIG_PCI_ECAM_GENERIC=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_DS1307=y
+For the Virt platforms we decided to use the multi defconfigs to cut down
+on the number of configs. I think efi_defconfig is useful to have, because
+it shares little with other existing configs, but it might confuse users
+to provide it before it is a viable target, i.e. can actually boot a kernel
+via EFI...
+
+I just submitted an alternative patch for multi_v8_efi_defconfig, which could
+be used as stepping stone for further work.
+
+What do you think?
+
+> -Use the following to build barebox for EFI:
+> +Use the following to build barebox for EFI for x86:
+>  
+>  .. code-block:: sh
+>  
+> @@ -31,6 +31,15 @@ Use the following to build barebox for EFI:
+>    make efi_defconfig
+>    make
+>  
+> +for EFI on arm 64 use:
+> +
+> +.. code-block:: sh
+> +
+> +  export ARCH=arm
+> +  export CROSS_COMPILE=aarch64-linux-gnu-
+> +  make efi_defconfig
+> +  make
+> +
+>  The resulting EFI image is ``barebox.efi`` (or the barebox-flash-image link).
+>  
+>  Running barebox on EFI systems
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index d283ef7793a1..d5dd6abc416f 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -276,6 +276,7 @@ source "arch/arm/mach-vexpress/Kconfig"
+>  source "arch/arm/mach-tegra/Kconfig"
+>  source "arch/arm/mach-zynq/Kconfig"
+>  source "arch/arm/mach-zynqmp/Kconfig"
+> +source "arch/arm/mach-efi/Kconfig"
+>  
+>  config BOARD_ARM_VIRT
+>  	bool
+> diff --git a/arch/arm/configs/efi_defconfig b/arch/arm/configs/efi_defconfig
+> new file mode 100644
+> index 000000000000..5fe998ed4d4d
+
+> +CONFIG_VIDEO=y
+> +CONFIG_FRAMEBUFFER_CONSOLE=y
+> +CONFIG_DRIVER_VIDEO_EFI_GOP=y
+
+This doesn't work correctly on ARM yet
+
+> +CONFIG_FINTEK_SUPERIO=y
+> +CONFIG_SMSC_SUPERIO=y
+
+These are likely not used with ARM systems
+
+> +CONFIG_STATE_DRV=y
+> +CONFIG_WATCHDOG=y
+> +CONFIG_WATCHDOG_EFI=y
+> +CONFIG_F71808E_WDT=y
+> +CONFIG_ITCO_WDT=y
+
+Not relevant to ARM systems.
+
+> +++ b/arch/arm/mach-efi/Kconfig
+> @@ -0,0 +1,10 @@
+> +config EFI_ARM64
+> +	bool "EFI on ARM64"
+> +	select CPU_V8
+> +	select CPU_SUPPORTS_64BIT_KERNEL
+> +	select HAVE_EFI_PAYLOAD
+> +	select EFI_PAYLOAD
+
+EFI_PAYLOAD is still gated behind COMPILE_TEST, so I think this should result in
+a warning.
+
+> +    select CLOCKSOURCE_EFI
+
+Wrong indentation.
+
+Cheers,
+Ahmad
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
