@@ -1,82 +1,82 @@
-Delivery-date: Wed, 30 Jul 2025 14:19:46 +0200
+Delivery-date: Wed, 30 Jul 2025 14:19:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uh5mc-005G5N-2M
+	id 1uh5mf-005G5i-1R
 	for lore@lore.pengutronix.de;
-	Wed, 30 Jul 2025 14:19:46 +0200
+	Wed, 30 Jul 2025 14:19:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uh5mc-0003LQ-3W
-	for lore@pengutronix.de; Wed, 30 Jul 2025 14:19:46 +0200
+	id 1uh5me-0003M9-EO
+	for lore@pengutronix.de; Wed, 30 Jul 2025 14:19:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2yWivX+duPe1aydw83IIMY2oJz+dDOsloqyx/gM8Gh8=; b=R3IfgLRMQbEpvr/DUEtuGEPdEb
-	ZA0QqcIizVfE+xHPeu3BRaKE0E3JWsfrFZZjeZ+KoghtjdDxj/65DfUkI0h+wGfx8kmJxOkyN5UA2
-	dGcSoF4l50EZiPTqfbyGN0qMp/ELFBzYsOqBToYHThTrUzpyop92UVI0v2Xn4HeCSIT++R6yCZN9T
-	6lJoVkFvFvw7IlohoV7mxuCHeXZmUJzCuoDCKl2A8o11HtPaGP48K3ClvB7oPlcuVxYnsCwKZg8Cf
-	N5TxtMOQT1sQW6/oSLeSr8v5DQ50zmo1ftfesxJOhlpPjzB2h8SRZAapz2PbUgVzCiUCFLykvgs8a
-	CT23AoKA==;
+	bh=gJnHFZbIgWecnbyhLK8CIo9/Lmn7XnL8utAOOXQsrH4=; b=PrprEgi64WudKw4rP9rWpJ6+95
+	YE1NLAY6H63gw8IRK2dk4V39hnVCrW+wk0a4MtpxryT11TOGKdlf/XwI7r4LwLB8Qtgx3oOAmXzk8
+	4iuyav4yR+45ijs/RbX1fmgNY5qex0LLRipFx/r1eUFJ/CgdTy7xB0MDNttkMaWgqWZfyb0LzeByF
+	a3Z0BOUEi6Meo5fC+Je2Gu691eM/uY4+QOUpcT7ACErmXP9q6h/EDIIIQ3mtSHrx0dZ5twJ//TRNC
+	nOVu7fU6MlqSURmvq2IcRTGjcuzoZtIDADS8qIqdGvP0NY6tnOaWDdZR4QACDJIoxcz1VVIwTWLUw
+	6G0wI3jg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uh5m2-00000001RE7-3hT0;
+	id 1uh5m2-00000001RDz-1eni;
 	Wed, 30 Jul 2025 12:19:10 +0000
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uh4ow-00000001KVA-2Xjq
+	id 1uh4jL-00000001K2p-3ZOl
 	for barebox@lists.infradead.org;
-	Wed, 30 Jul 2025 11:18:07 +0000
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-4561514c7f0so62534375e9.0
-        for <barebox@lists.infradead.org>; Wed, 30 Jul 2025 04:18:06 -0700 (PDT)
+	Wed, 30 Jul 2025 11:12:21 +0000
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-4589b3e3820so3205145e9.3
+        for <barebox@lists.infradead.org>; Wed, 30 Jul 2025 04:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753874285; x=1754479085; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1753873938; x=1754478738; darn=lists.infradead.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=2yWivX+duPe1aydw83IIMY2oJz+dDOsloqyx/gM8Gh8=;
-        b=L5ugEB96e4l+tMHvJBbLUzWXlRRDt2yIymiS38s1GGqWjqJpuYw1DeMrdIqVs7cH0z
-         fNVLtd9WyiDjN2JP4KKajl1LsIIB+0kOLy6QqbH3SBP4i7DCXUqTfMH75bOfTbsf307H
-         XQ1RCx2v9magqskwbjeQutzx7MpJayiMEt9NEA2ZNXwfbaZg2/RIQp9R7Uc4FnzgXG/y
-         2K4KliRsnUYsoAKUnYD5QqOt5/0pNIFLhg82CrZinVT+SAW8kn/xyDjS/ytIQySsKh0Q
-         IOniSFfTjP6jJDftmgegHE6qcmmKEjQ4RvriqE1aQNch/gssyUCdtvT3KF96iVp7dgo4
-         j7dA==
+        bh=gJnHFZbIgWecnbyhLK8CIo9/Lmn7XnL8utAOOXQsrH4=;
+        b=HRo2nTPwRDDLUPjYBwP+a8FuzrEH6kHPNdnIN4SWf3PLMEfduIs8tcZNHD56VRIjii
+         QaHNE0rDzUvdWQ0DaygSmBqWoBxygVxRzaL3aS+X9Mh5sut7OgnhQrnxM0sKFb21NkO7
+         Ji3nQtCZzD3JCPqL+YnOGe62WEAKv4kDlaZPtjtCRVfVcK1KhB4xiGM5bE5Luy1w24x+
+         lXwS8zExfS4HmZgq5jLnzn1BPT0AsM41CWeHc7XfdiTEhdPJcntmNVkt1xkjr/YEWEQ5
+         xPFK7AzL1x8xdi1fa0XcvH6+j7kB7R6HhzCvuRXebWVKFTqyxPb8tuUiRnXjvbpMXKiV
+         OoVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753874285; x=1754479085;
+        d=1e100.net; s=20230601; t=1753873938; x=1754478738;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2yWivX+duPe1aydw83IIMY2oJz+dDOsloqyx/gM8Gh8=;
-        b=xBIdpRlD6HU+0GQvts5m7tAS7eBnaB/S1/BjkavtYheY1TqCmEvE3mwwt8ANu/GfOd
-         hZEqi9xmHm6/yZdFS0BTKY0hhFHJ6CC312SAYaI2yNHio8yah/DSUQB3d6tWae8NWEe6
-         7BCYVzyPSZMUpitV3MxCDQKw7eq6WapbUgFzSckpCTGL0DZj1+LvQvm6NxhZNIaUAlT7
-         5O/MpoMsRN5xtjqpRMMIsfJ8YJ1Y56VNJoKC+cQWNwoKtEoHZ3IIFEeAsfWLvYRSqCW8
-         9PCSViFsyA8ZhtLYEIxdhvOx7/cPASRkCNZ2KAiGhbOmPh+nDW1h4qWgUgnRDllr2LR1
-         7cQw==
-X-Gm-Message-State: AOJu0YxOqJ1YrjdznE5sOjo7Ucu/dEtgya0NmbCmER3yO3w8adi86l8d
-	g+gQT0dWWppNCiEAGC9NhMWiTme98ZPpm02WtukqFDJOrkn1rlYC5249RPhp0A==
-X-Gm-Gg: ASbGncsl2RJHO+e2HkawgJg9js+wHcagoMJp2lmU8eFmL12P6hJiL4IVKbNsKPkujim
-	xolhie+CaGrEMuGyYadriuTZg/fR7cpeABMS4+Bdf4hu55Y2ezmzSMkYpHp1f83jqqKq0V3c75l
-	MNZ2drk/UxCBIqny350wfeM9Pqha3g9XwjKJFWSOssxvmCtt8Je9K5EhrXtCu/F5YMEoOEAhqG2
-	OueKLychq1WaloPPW2ben2jzZE6E8qfW81ig8vgdSGIeN9BTf4udb/Ws3jmyYb6oIj3aVMS+rQR
-	j15BktFGL7dEG3o3VRfuajNB/wXuuSgZJqUee6LWOdbgCsKgzl7TF+mRkqpCR/KPujVWEHL7H3j
-	Fq5WUREiGqPGOiDbSqzcuw0fSXrbXXfa4GnQ2LPIJDgC8itHFTdEgYRVvHOcNdSkY8QjTVTrMsB
-	Uq
-X-Google-Smtp-Source: AGHT+IGVYi2eYeuUpY5n8IVLsLlbd7RSgTgs+6DtX9fhBZoISAMeXugqf22RgRxWvl/3H1mHWBFBTA==
-X-Received: by 2002:a05:600c:35d4:b0:453:8bc7:5e53 with SMTP id 5b1f17b1804b1-45892a34a35mr31184125e9.0.1753874284821;
-        Wed, 30 Jul 2025 04:18:04 -0700 (PDT)
+        bh=gJnHFZbIgWecnbyhLK8CIo9/Lmn7XnL8utAOOXQsrH4=;
+        b=jnr4Wtej8E+scizGMeXVfgWrXK8rJFEo9qU3Xq4CkZQ0eupNTNmTlK19g4Fl0Md4yI
+         CTJ1vMvXLDeq44pUO1cgPi6rHCShMSID3Bb9B9cbPUXKFwLzQBUS1CYuwMskc/N3pFRB
+         nyDqBb1hSH20FliZOxdSKQQHB/3A6zOe18nx+v1c+yRA4dyYkwz6xDPsBFLgWUQRSGhe
+         r39KRYn0mkDYAccY9ahtXNJbOhePS9HS1vCqskev92cK3m+EloyJj+UMmnY4yI4MNCwG
+         K6H1jrXiA2bR6Ck51qPSguvc2ThRIQXTfXe6TFBZ9Zxy5RUymibXbdHef4dF8VaasJG+
+         BKGQ==
+X-Gm-Message-State: AOJu0YwvowYJZmlOGqek3gqCKru+DOk86qxPqHIOvrUVyKaRBTvZltLI
+	I/zIB9ZEQ2/2CzuwGujDkszHueSq8h0oSrDHsu0eHJnELNNIJH2YTXRTClshVQ==
+X-Gm-Gg: ASbGncuwcgouVOlczBVP3yGGRapSS8fPFhJ847xQYHN9YHQAjyvzMQiFKkRx/3aNOLa
+	M5CvzWkW7jY/QelvX+APcqCXM9VGHUgUfd8Pot0kuY02ntTn9PnM2gF5XC4DmyeMlU0ACvXhfxg
+	DGPaPkkk7nTlez5TdKA52i4CoU4JgjFG42ES+Mq7nwoJFKvy3VMOLuOF2ca7x6RvFp9zZXJ6tZM
+	298mCppPoAF+P8DVf+aT07B6RIWO8vq3xSnTv7xfNwBBZPR5Jl0ebEQBEyA8AGg8vYJeYDsPJeR
+	bA0uZG1rY4tNkZZkR98iS+37sr7ke1MVEaegln4cYNypIPLl5lby4F3eldbDezWUEliMMuwUPpx
+	+m2pSZ5B+orP1+G9sRU46hZQsm88FN9wof8jCp8ImaOfhM+EnJd7QIWmvigU7KBwjVZ9+P6ys7C
+	u/BdHeyIrVZc8=
+X-Google-Smtp-Source: AGHT+IGlEvv/+CC0gZXln2Vp1NFDam/OzPWvGBP6c1X1kk7aUmcoF6KsNlpygxdrlaoRmsYJ84x6TQ==
+X-Received: by 2002:a05:600c:1da2:b0:456:1ac8:cace with SMTP id 5b1f17b1804b1-45892b9e27emr33171755e9.12.1753873937958;
+        Wed, 30 Jul 2025 04:12:17 -0700 (PDT)
 Received: from [192.168.1.104] (91-139-201-119.stz.ddns.bulsat.com. [91.139.201.119])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589538030csm22596285e9.16.2025.07.30.04.18.04
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589536abb1sm24142165e9.4.2025.07.30.04.12.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Jul 2025 04:18:04 -0700 (PDT)
-Message-ID: <b6c276e2-5217-4260-b8bb-3026d2b44a28@gmail.com>
-Date: Wed, 30 Jul 2025 14:18:03 +0300
+        Wed, 30 Jul 2025 04:12:17 -0700 (PDT)
+Message-ID: <b9277209-8c77-4679-b40e-208de13e1ab4@gmail.com>
+Date: Wed, 30 Jul 2025 14:12:16 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
@@ -84,17 +84,17 @@ To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
  Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 References: <20250729203659.1858575-1-ivo.ivanov.ivanov1@gmail.com>
- <20250729203659.1858575-5-ivo.ivanov.ivanov1@gmail.com>
- <d343c6c7-ef7c-498b-8059-a08b8f166dec@pengutronix.de>
- <17756254-8151-4c61-95be-2878bc736622@gmail.com>
- <1a0e5c13-14b5-4021-9baf-c2e701478c80@pengutronix.de>
+ <20250729203659.1858575-4-ivo.ivanov.ivanov1@gmail.com>
+ <b5566962-ad86-4fdc-9a4f-f81cbe88c4a4@pengutronix.de>
+ <b5d8f40a-cfd7-436b-844c-f6b1f436fad2@gmail.com>
+ <92fc40e6-de2c-48d0-8e9a-1b18b87b05f5@pengutronix.de>
 From: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
-In-Reply-To: <1a0e5c13-14b5-4021-9baf-c2e701478c80@pengutronix.de>
+In-Reply-To: <92fc40e6-de2c-48d0-8e9a-1b18b87b05f5@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250730_041806_652060_3F0D15A3 
-X-CRM114-Status: GOOD (  23.10  )
+X-CRM114-CacheID: sfid-20250730_041219_900484_CC1AEF3B 
+X-CRM114-Status: GOOD (  56.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -117,99 +117,194 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v1 4/4] ARM: boards: add support for Samsung Galaxy S20 5G
- (x1s)
+Subject: Re: [PATCH v1 3/4] ARM: boards: add support for Samsung Galaxy S8
+ (dreamlte)
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 7/30/25 12:44, Ahmad Fatoum wrote:
-> Hi,
+On 7/30/25 12:33, Ahmad Fatoum wrote:
+> Hi Ivaylo,
 >
-> On 7/30/25 11:16, Ivaylo Ivanov wrote:
->> On 7/30/25 11:48, Ahmad Fatoum wrote:
->>> Hi Ivaylo,
+> On 7/30/25 11:09, Ivaylo Ivanov wrote:
+>> On 7/30/25 11:31, Ahmad Fatoum wrote:
+>>> Hello Ivaylo,
+>>>
+>>> Thanks for your patch.
 >>>
 >>> On 7/29/25 22:36, Ivaylo Ivanov wrote:
->>>> Add support for Samsung Galaxy S20 5G, based on exynos990, to the
->>>> current samsung board support. This platform, just like exynos8895,
->>>> needs a bit to be set in order to allow the framebuffer to refresh.
+>>>> Phones utilizing an exynos SoC boot android with samsung's proprietary
+>>>> bootloader, called s-boot (s-lk on newer devices). However, not only is
+>>>> it closed source, it also enforces some limitations that prevent us from
+>>>> booting mainline linux cleanly on them, such as an applied overlay device
+>>>> tree, disabled framebuffer refreshing, misaligned kernel image at boot.
+>>> misaligned kernel image might be a bit problematic for barebox too, but
+>>> we can fix it for PBL if needed.
+>>>
+>>> What misalignment are we speaking of?
+>> On exynos 8890 up to exynos990, the bootloader takes a random number via
+>> hwrng in a specific range after 80000000. If I recall correctly, when I was booting
+>> mainline linux without any shim on my galaxy S8 (it was 5 years ago), the kernel
+>> was complaining about misaligment, but I'd need to recreate that to be able
+>> to provide logs. Anyways, I've tested barebox on 4 exynos devices and so far
+>> there haven't been any inconsistencies at boot.
+> While barebox is relocatable, we link it as if it would be running from
+> address 0. This has the side effect that adrp instructions are emitted
+> that assume implicitly that barebox starts at a 4K-aligned address,
+> because well, 0, is 4K-aligned.
+>
+> If this proves problematic, we can try to eliminate the generation of
+> adrp instruction. Did you experience kernel/bootloader being loaded to
+> an address that's not 4K-aligned?
+
+Nope, I think it's always 4k-aligned at least. We've been booting mainline linux
+using our own bootloader shim implementation (github.com/ivoszbg/uniLoader),
+and this hasn't been an issue.
+
+>
+>>>> Therefore, having another stage bootloader, loaded as a linux kernel
+>>>> image by s-boot, is best.
 >>>>
->>> Oh, a shame that I sold the old S20 FE I had. :/
->>> I still have a rooted S10e though. I should give this a try when I have
->>> time.
->> Heh, I was thinking about getting an s10e to bring up mainline linux on it,
->> but I do have quite a lot of devices to work on right now. At the very least,
->> I expect to throw in support for 7580 and 8890 in the future for both
->> mainline linux and barebox. The plan ideally will be to bring up support for
->> exynos7580 in barebox to a decent state, with mmc and usb working at least.
->> S20 series are decently supported, but nothing exciting yet.
-> Cool stuff. Looking forward to it. :-)
+>>>> Add support for Samsung Galaxy S8, utilizing the exynos 8895 SoC. Support
+>>>> is modelled to be as reusable on other devices as possible, requiring
+>>>> only a minimal set of changes to boot - a barebox device tree, which in
+>>>> this case is basically imported torvalds tree for dreamlte, that is then
+>>>> matched from the downstream device tree, provided by s-boot at x0.
+>>>>
+>>>> For some reason, on certain devices the stack set up by the previous
+>>>> bootloader is not enough. Since the idea of this board support is to be
+>>>> as generic as possible, setting a fixed stack top via
+>>>> ENTRY_FUNCTION_WITHSTACK does not make sense, due to different exynos
+>>>> devices having different memory layouts - exynos8895's dram starts at
+>>>> 0x80000000, whereas exynos7870's starts at 0x40000000. Instead, set the
+>>>> SP as early as possible in the entry C function by taking the memory base
+>>>> from the downstream fdt + (SZ_8M - SZ_64K).
+>>> naked functions are not support on ARM64, so setting a stack pointer in
+>>> C code is always an unsafe operation that could mess up codegen.
+>>>
+>>> If you need to do this dynamically, this needs to be done in assembly.
+>> hm, so I could just have a C entry that messes with fdt, and then jump to
+>> the assembly function for SP relocation, after which we go back to C?
+> Yes. See __barebox_arm_entry, which does this generically for all boards.
 >
->> Another qustion: are there any plans to support booting fit images from an
->> address in ram instead of a file? I suspect porting over all the ufs stuff from
->> linux will be a hassle
-> It's something we will want sooner or later, but yes, it will likely be
-> involved.
+>>>> Currently, only a minimal set of features work. An image can be booted by
+>>>> barebox by configuring barebox to jump to the address where ramdisk gets
+>>>> loaded by s-boot, and packaging that payload as a ramdisk with mkbootimg.
+>>> Nice. Would be good to have this info in Documentation/
+>> I was gonna do that in a separate patch after the patchset gets merged.
+> Great.
 >
->> , so for S20 (which does not have an sd card slot, only ufs)
->> booting a fit image that s-boot has loaded into ram for us might be neat.
->> As far as I've seen, only "go" can do that, but not "bootm".
-> $ addpart /dev/ram0 0x1000@0x1000(fit)
-> $ bootm /dev/ram0.fit
->
-> would've been the workaround so far.
+>>>> +	compat = fdt_getprop(fdt, node, "model", &len);
+>>>> +	if (!compat)
+>>>> +		return false;
+>>> Why compare the model and not the compatible as the compat variable name
+>>> would suggest?
+>> Because Samsung are more consistent at coming up with model name
+>> props than compatibles. For example:
+>>
+>> compatible = "samsung,X1S EUR OPEN 05\0samsung,EXYNOS990";
+>> compatible = "samsung, DREAMLTE KOR rev01", "samsung,EXYNOS8895";
+>> compatible = "samsung, J7VE LTE LTN OPEN 00", "samsung,exynos7870";
+>>
+>> there are inconsistencies in spacing, capitalizing etc etc. But yeah, I will
+>> change the variable name to is_model.
+> Sounds good. Can you add a comment that compatibles are inconsistent?
+> maybe with an example.
 
-Oh, nice. I'll give it a shot and if it works, I'll include it
-in a config in the board dir as default boot behavior
-(we really cannot interact with the console yet anyways).
+Okay.
 
 >
-> Since the fuzzing infrastructure has been merged, we also have
-> ramdisk_init, which sets up a block device on top of a memory buffer
-> without block layer caching. I think that's sufficient to implement
-> losetup(8), which would go beyond addpart and even allow mounting file
-> systems from the loop device.
+>>>> +static noinline void exynos_continue(void *downstream_fdt)
+>>>> +{
+>>>> +	void *fdt;
+>>>> +	unsigned long membase, memsize;
+>>>> +	char *__dtb_start;
+>>>> +
+>>>> +	/* select device tree dynamically */
+>>>> +	if (is_compat(downstream_fdt, "Samsung DREAMLTE")) {
+>>>> +		__dtb_start = __dtb_exynos8895_dreamlte_start;
+>>>> +	} else {
+>>>> +		/* we didn't match any device */
+>>>> +		return;
+>>>> +	}
+>>>> +	fdt = __dtb_start + get_runtime_offset();
+>>>> +	fdt_find_mem(fdt, &membase, &memsize);
+>>> Ah, so you do need the FDT in uncompressed form..
+>> Mhm. I tried taking mem from downstream DT, but it's so broken it
+>> doesn't work.
+> That's a shame.
+>
+>>>> +	/*
+>>>> +	 * The previous bootloader has a stack set up, but it seems to not be
+>>>> +	 * enough as we can't get past the relocation on some devices. Set up
+>>>> +	 * a stack determined by the memory node from the downstream fdt.
+>>>> +	 */
+>>>> +	fdt_find_mem(downstream_fdt, &mem_base, &mem_size);
+>>> It's not a good idea to call this here before having set up the C
+>>> environment. This makes regressions after compile updates much more
+>>> likely. Can't we instead grow down from the start of the barebox binary?
+>>>
+>>> That's what start_dt_2nd in board-dt-2nd-aarch64.S is doing.
+>> iirc this is not my first attempt at barebox, I had some work a few months ago,
+>> and the board-dt-2nd wasn't booting. I suppose it's the SP stuff that was borked.
+>> I will test it again though and report back.
+> Thanks. Two things come to mind that might be worth exploring:
+>
+> - increment the stack pointer: We are not going to return from the
+> barebox entry point, so we do not care if we overwrite old stack frames.
+> Just aligning the stack to the next 4K for example might already be
+> enough that you could call relocate_to_current_adr(); setup_c(); right
+> away without first parsing the device tree
+>
+> - enable CONFIG_PBL_FULLY_PIC: This is still a bit experimental, but it
+> eliminates a lot of relocation entries that are avoidable. It should be
+> the default eventually. If aligning the stack is no option and you need
+> to parse the DT before calling relocate_to_current_adr(), PBL_FULLY_PIC
+> should help with reducing the chance of problems...
 
-I see. Looking forward to that.
+I tested the board-dt-2nd-aarch64.S logic and it works. I'll add an
+entry.S with it for v2, but stripped out of the efi header stuff.
+
+>
+>>>> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+>>>> index 6612a514..a53834f7 100644
+>>>> --- a/arch/arm/dts/Makefile
+>>>> +++ b/arch/arm/dts/Makefile
+>>>> @@ -13,6 +13,7 @@ lwl-$(CONFIG_MACH_BEAGLEPLAY) += k3-am625-beagleplay.dtb.o k3-am625-r5-beaglepla
+>>>>  lwl-$(CONFIG_MACH_CLEP7212) += ep7212-clep7212.dtb.o
+>>>>  lwl-$(CONFIG_MACH_CM_FX6) += imx6dl-cm-fx6.dtb.o imx6q-cm-fx6.dtb.o imx6q-utilite.dtb.o
+>>>>  lwl-$(CONFIG_MACH_DFI_FS700_M60) += imx6q-dfi-fs700-m60-6q.dtb.o imx6dl-dfi-fs700-m60-6s.dtb.o
+>>>> +lwl-$(CONFIG_MACH_EXYNOS) += exynos8895-dreamlte.dtb.o
+>>> It's on my todo list to add a way to specify device trees externally to
+>>> make. Still need to figure out how it will look like though.
+>> Yeah, I was thinking that it'd be nice to just compile it directly from
+>> dts/src/.
+> Ye, we'll have to think about how the X DTs that are built this way and
+> bundled into barebox will be selected. The easy way would be just
+> including them all into the existing barebox-2nd.fit and have the
+> previous stage bootloader select the correct one, but in your case we
+> would need custom logic somehow.
+>
+>>>> +/ {
+>>>> +	barebox,disable-deep-probe;
+>>> Why not enable it?
+>> Honestly, I other devices doing that and didn't dig too deep into what
+>> it's meant for. Will test.
+> Deep probe means that barebox will recursively probe resources as needed
+> instead of returning -EPROBE_DEFER. This can break old board code or
+> buggy drivers, so it's disabled for a number of boards in-tree.
+>
+> I don't assume you'll run into issues with your new subarch here, so you
+> can just enable it unconditionally.
+
+I see. Thanks!
 
 Best regards,
-Ivaylo.
+Ivaylo
 
 >
 > Cheers,
 > Ahmad
 >
->
->
->> Best regards,
->> Ivaylo
->>
->>>> diff --git a/arch/arm/dts/exynos990-x1s.dts b/arch/arm/dts/exynos990-x1s.dts
->>>> new file mode 100644
->>>> index 00000000..19d59eaa
->>>> --- /dev/null
->>>> +++ b/arch/arm/dts/exynos990-x1s.dts
->>>> @@ -0,0 +1,13 @@
->>>> +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
->>>> +/*
->>>> + * Samsung Galaxy S20 5G (x1s/SM-G981B) barebox device tree source
->>>> + *
->>>> + * Copyright (c) 2025, Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
->>>> + */
->>>> +
->>>> +/dts-v1/;
->>>> +#include <arm64/exynos/exynos990-x1s.dts>
->>>> +
->>>> +/ {
->>>> +	barebox,disable-deep-probe;
->>> Same comment: we want deep probe as default eventually. Did you run into
->>> problems without this?
->>>
->>> Cheers,
->>> Ahmad
->>>
->>>> +};
->>
 
 
 
