@@ -1,16 +1,16 @@
-Delivery-date: Mon, 04 Aug 2025 19:23:23 +0200
+Delivery-date: Mon, 04 Aug 2025 19:23:24 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uiyuB-007102-0v
+	id 1uiyuC-00710V-0P
 	for lore@lore.pengutronix.de;
-	Mon, 04 Aug 2025 19:23:23 +0200
+	Mon, 04 Aug 2025 19:23:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uiyu9-0001Ky-Sa
+	id 1uiyuB-0001LZ-3v
 	for lore@pengutronix.de; Mon, 04 Aug 2025 19:23:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,53 +18,53 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Wlr2Cry2UK/FOQwkju69tklGwIUQSUtv61bHrwmSzRk=; b=kVl8IzuLpNLi3dF3i+eWC1Prp6
-	0+QN4XyY/wArfsECuCrJvzTB9l+HP1i33FxXOJdiN2sXLyrn/EOaXFKfKnevVNisUQiXLxk2/dr31
-	UwuGQR9WEHyw4uPFoIAuWWxyQI0FCGm5404Q+jM0spSvjWX7dhQ8gZJdvJ3WbIXmXmPRIHFqxBDvu
-	QI+8mAF0nWa/QfjezR6Skjc1uQ0On966GIsBwP1ROqeE4wP7viZhNKhNUXjaH+CFKmvZIk314IG2m
-	tnSEkT4u1oRpixwPNjT1P7nI32CP+y4FdUnux77J+Xszn476wZno4qiuGD+YrhRChQW4jTos6aDEI
-	VyvT3LOQ==;
+	bh=OjT+gGTW3asBSnlfG7vRuLu82VzhYcJ9uDPSO1Jpyfw=; b=1k7qPooskAaRuPAY2TyKgmOdkp
+	LYOkJAjG/t2GeoNYa3SbjCXJFA3uGURuw7T+VwKo6m7nIqugWabyZ6L0iADYIeBxA9sCgh53Xommt
+	LChL5C19ypqavh7EauEGzZ7rXfUeTcYbQKa0KL2Ln5EWqLCg+LBX90oucf6qnychP8Mb/4Why+jQF
+	09N75ZF9Vl728DS0BCX0JdRYbvsZuGSJHV7QbaCnpsshRl1Eibi035nd2tR+z0rXnm05DdFxWrfnj
+	tGmRhxUP7Qe65Z19pjQRolhqjoKwRiviyhOQReVJfsH/AKtkzpPlZzqlN0OsUs2ydv7DM5X1x7p5u
+	VAbSgRuw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiytZ-0000000B5O3-00CF;
-	Mon, 04 Aug 2025 17:22:45 +0000
+	id 1uiytY-0000000B5NT-239a;
+	Mon, 04 Aug 2025 17:22:44 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiytX-0000000B5Lw-2GEu
+	id 1uiytX-0000000B5Lp-1YPE
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Aug 2025 17:22:43 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=Wlr2Cry2UK/FOQwkju69tklGwIUQSUtv61bHrwmSzRk=; b=EX7VnmoBM0alh1U60uOMsD96V/
-	Zwnk/DqjHg2T3p2xZtyFGyfIP0571oXoNhDZxqUrDtx6f/uqwsQ4nmPFNv0yper/53g6pq0Znx/gk
-	fyrNf1W1NKxyM1TrkWXxQYpp7mW4KOHoap4cdaD50TA9e/fQ9RUcPHiBjAE7OOlEa+1nXMYUGs1O+
-	+AzSXipfSs7vQVYMTqBYU2eLrN0bKyUxBhnhSKEsrezK+KxwVqfXNF7qg5VcpvzYTc3YIODi3b7m9
-	hBNsy6qiU6krWf0UVu7Kgl5ob6MEj3v6KmglmxT67Sl5qsMUIiKVSRQZw0l32I/UQYgMRoEc07I7c
-	xd38XqdQ==;
+	bh=OjT+gGTW3asBSnlfG7vRuLu82VzhYcJ9uDPSO1Jpyfw=; b=lhzR7Pk+I3q6l+ngKWGyZ0a6L7
+	BOlZh34fVTqpkPF0iN2HL12HJFtwz7UDjQ8sFDlAmZ62AnbX/P8V6kMajp/tFcV2B66jzrVBoh9FU
+	XyuuqY2TrDlH1vfaSdZ2cRYd4nkbOt6Ja+RFx8LVNRGMc/gReAO+vR6CVg25V/ZQ/G8fBxM2t4sP1
+	x2P6rF5RsqlAboDl3e2IQDlAQSPDs6sMXW1gETH90muj9USt7fIW14U0ATAN6W6aFswXllNTE5Qr0
+	fd43a6f8F30r00TCejNsbzjK2aBgM5WUSmnH/uV+xwlE1g87wMScDiTv+IBYsYWP9GJXuot54smGm
+	RAUFZTmg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiytT-0000000DteN-1qa2
+	id 1uiytS-0000000Dtda-41GL
 	for barebox@lists.infradead.org;
 	Mon, 04 Aug 2025 17:22:42 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uiytS-0000su-BL; Mon, 04 Aug 2025 19:22:38 +0200
+	id 1uiytR-0000su-Lt; Mon, 04 Aug 2025 19:22:37 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  4 Aug 2025 19:22:29 +0200
-Message-Id: <20250804172233.2158462-10-a.fatoum@barebox.org>
+Date: Mon,  4 Aug 2025 19:22:26 +0200
+Message-Id: <20250804172233.2158462-7-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250804172233.2158462-1-a.fatoum@barebox.org>
 References: <20250804172233.2158462-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250804_182239_645049_83941EA5 
-X-CRM114-Status: GOOD (  12.52  )
+X-CRM114-CacheID: sfid-20250804_182239_172209_A4265276 
+X-CRM114-Status: GOOD (  13.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,88 +86,105 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 09/13] partition: rename region_overlap_end to region_overlap_end_inclusive
+Subject: [PATCH v4 06/13] ARM: mmu: provide setup_trap_pages for both 32- and 64-bit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-While quite verbose, off-by-one are very annoying, so it makes sense to
-be very explicit about the expected input. Rename the function in
-preparation for adding region_overlap_end_exclusive.
+In preparation for moving the remapping of memory banks into the common
+code, rename vectors_init to setup_trap_pages and export it for both
+32-bit and 64-bit ARM, so it can be called from the common code as well.
+
+This needs to happen after the remapping, because otherwise the trap
+pages would be switched cached by the SDRAM remapping loop.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- commands/iomemport.c |  2 +-
- common/partitions.c  |  6 +++---
- include/range.h      | 10 +++++-----
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ arch/arm/cpu/mmu-common.c |  2 ++
+ arch/arm/cpu/mmu-common.h |  1 +
+ arch/arm/cpu/mmu_32.c     |  4 +---
+ arch/arm/cpu/mmu_64.c     | 12 ++++++++----
+ 4 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/commands/iomemport.c b/commands/iomemport.c
-index bb546e4a3ad9..d7c960d15b41 100644
---- a/commands/iomemport.c
-+++ b/commands/iomemport.c
-@@ -21,7 +21,7 @@ static void __print_resources(struct resource *res, int indent,
- 	resource_size_t size = resource_size(res);
- 	int i;
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+index f3416ae7f7ca..a55dce72a22d 100644
+--- a/arch/arm/cpu/mmu-common.c
++++ b/arch/arm/cpu/mmu-common.c
+@@ -95,6 +95,8 @@ static int mmu_init(void)
  
--	if (addr && !region_overlap_end(*addr, *addr, res->start, res->end))
-+	if (addr && !region_overlap_end_inclusive(*addr, *addr, res->start, res->end))
- 		return;
+ 	__mmu_init(get_cr() & CR_M);
  
- 	if ((flags & FLAG_VERBOSE) && !(flags & FLAG_IOPORT))
-diff --git a/common/partitions.c b/common/partitions.c
-index fdead333a40a..7563cb0e6767 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -251,9 +251,9 @@ int partition_create(struct partition_desc *pdesc, const char *name,
- 	}
++	setup_trap_pages();
++
+ 	return 0;
+ }
+ mmu_initcall(mmu_init);
+diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
+index 0f11a4b73d11..8d90da8c86fe 100644
+--- a/arch/arm/cpu/mmu-common.h
++++ b/arch/arm/cpu/mmu-common.h
+@@ -16,6 +16,7 @@ struct device;
+ void dma_inv_range(void *ptr, size_t size);
+ void dma_flush_range(void *ptr, size_t size);
+ void *dma_alloc_map(struct device *dev, size_t size, dma_addr_t *dma_handle, unsigned flags);
++void setup_trap_pages(void);
+ void __mmu_init(bool mmu_on);
  
- 	list_for_each_entry(part, &pdesc->partitions, list) {
--		if (region_overlap_end(part->first_sec,
--				       part->first_sec + part->size - 1,
--				       lba_start, lba_end)) {
-+		if (region_overlap_end_inclusive(part->first_sec,
-+						 part->first_sec + part->size - 1,
-+						 lba_start, lba_end)) {
- 			pr_err("new partition %llu-%llu overlaps with partition %s (%llu-%llu)\n",
- 			       lba_start, lba_end, part->name, part->first_sec,
- 				part->first_sec + part->size - 1);
-diff --git a/include/range.h b/include/range.h
-index f72849044d0b..f1b75f5fafd8 100644
---- a/include/range.h
-+++ b/include/range.h
-@@ -5,15 +5,15 @@
- #include <linux/types.h>
- 
- /**
-- * region_overlap_end - check whether a pair of [start, end] ranges overlap
-+ * region_overlap_end_inclusive - check whether a pair of [start, end] ranges overlap
-  *
-  * @starta: start of the first range
-  * @enda:   end of the first range (inclusive)
-  * @startb: start of the second range
-  * @endb:   end of the second range (inclusive)
+ static inline void arm_mmu_not_initialized_error(void)
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index 80e302596890..3572fa70d13a 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -518,7 +518,7 @@ static void create_guard_page(void)
+ /*
+  * Map vectors and zero page
   */
--static inline bool region_overlap_end(u64 starta, u64 enda,
--				      u64 startb, u64 endb)
-+static inline bool region_overlap_end_inclusive(u64 starta, u64 enda,
-+						u64 startb, u64 endb)
+-static void vectors_init(void)
++void setup_trap_pages(void)
  {
- 	if (enda < startb)
- 		return false;
-@@ -36,8 +36,8 @@ static inline bool region_overlap_size(u64 starta, u64 lena,
- 	if (!lena || !lenb)
- 		return false;
+ 	create_guard_page();
  
--	return region_overlap_end(starta, starta + lena - 1,
--				  startb, startb + lenb - 1);
-+	return region_overlap_end_inclusive(starta, starta + lena - 1,
-+					    startb, startb + lenb - 1);
+@@ -595,8 +595,6 @@ void __mmu_init(bool mmu_on)
+ 
+ 		remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
+ 	}
+-
+-	vectors_init();
  }
  
- /**
+ /*
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index db312daafdd2..ba82528990fe 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -345,6 +345,14 @@ static void create_guard_page(void)
+ 	pr_debug("Created guard page\n");
+ }
+ 
++void setup_trap_pages(void)
++{
++	/* Vectors are already registered by aarch64_init_vectors */
++	/* Make zero page faulting to catch NULL pointer derefs */
++	zero_page_faulting();
++	create_guard_page();
++}
++
+ /*
+  * Prepare MMU for usage enable it.
+  */
+@@ -380,10 +388,6 @@ void __mmu_init(bool mmu_on)
+ 
+ 		remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
+ 	}
+-
+-	/* Make zero page faulting to catch NULL pointer derefs */
+-	zero_page_faulting();
+-	create_guard_page();
+ }
+ 
+ void mmu_disable(void)
 -- 
 2.39.5
 
