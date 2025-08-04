@@ -1,53 +1,71 @@
-Delivery-date: Mon, 04 Aug 2025 19:23:20 +0200
+Delivery-date: Mon, 04 Aug 2025 19:23:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uiyu8-0070zC-26
+	id 1uiyuB-0070za-0E
 	for lore@lore.pengutronix.de;
-	Mon, 04 Aug 2025 19:23:20 +0200
+	Mon, 04 Aug 2025 19:23:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uiyu7-0001K1-Ur
-	for lore@pengutronix.de; Mon, 04 Aug 2025 19:23:20 +0200
+	id 1uiyu9-0001KQ-8I
+	for lore@pengutronix.de; Mon, 04 Aug 2025 19:23:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dJecLEw8VRsyztDLskJYspYGRLF5SFaFL3l4GpOuyxE=; b=F/6blOH9s8l94NgFv9tte5FsZl
-	tJFvcyX/cQulqDk7gxZb7HvPl8d7VAkNCxjFWftWcgc2OobZtbUeyXKwbswgTlSnzHwFavcqIaNms
-	XhFXDBt4gS7Z4tJ+4VLAMDBvahZj0t1nbgBVxlCjUSvvckjJk07lOOBLKh8zpZyT6Sf6lfMmW03Sm
-	BFqGtNdoy/VZM1aziVtGxj12+SwwuC2H2T5PZs4lTogltc8SPVMnSx2lBpV2CUX76gJy2t6k+0sx3
-	uzPvMAKLwjoe/Cr0Bkey04U4EG7f+NR+2cgYL5Cz9lSpY2XBGilF5gafbPveT+6gzOkgu/rqj248a
-	gzyRaD4Q==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=n/1D68LiXIT7j593PRUxV6CCUaBvb8aE+5aTz+fbVZs=; b=UZuEdsZYUpp3PFNIdvRL3YY76X
+	I8aAd9BJWE0cBqA09sMtGzNwVZpkqIkOOW2Uk25tbArqFGD2c2a2UdH1rU+S9wmSv4ur3TQYtD/Bi
+	k/5OyKbGON+2OFQzL0N97HxBLoTNi2WuMRR+hGr6ncIm4O1PxJHjHrvutavrsxsYpBKZk6DKE57se
+	3CHDGYh9bxdeNmcmp5ffGvxBB/1q+LKSyh3qS5B7vY1B2CYsXIP+4Xg/A0FpMTIXd2pqr2A600t6/
+	zRdWx2Kb8o7dyEVvOIxk1sB2U6Pez1byRd24QbXMc1fs9mMVpMs01omUUdm1K/UWQS9GTPSfrcfYx
+	wASzE7yA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiytW-0000000B5Lj-2wqi;
-	Mon, 04 Aug 2025 17:22:42 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uiytZ-0000000B5OP-2UGY;
+	Mon, 04 Aug 2025 17:22:45 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiytT-0000000B5JH-1azs
+	id 1uiytX-0000000B5Lu-2E0n
+	for barebox@bombadil.infradead.org;
+	Mon, 04 Aug 2025 17:22:43 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=n/1D68LiXIT7j593PRUxV6CCUaBvb8aE+5aTz+fbVZs=; b=A6ZmdLF8lTBIg/tCAM7CNftQLb
+	QX8xv4wIE6r8PPyWLjUB4GRgzXLSKSgAKKPPHtcGNpXSWy1xNv9ni/c9FVjAu7p8wIF2ps5k2svuC
+	Anno236Q5qWC8QvwaRyaTbN8Uqz6SHiSGczN/VKQNAUX906SYUelzvCv5ZIF/h7f8hIcDlkH8wkrO
+	lnLedr1WgAMW2xCAg+ZLTE0d0uvy7gFRtR81Rh/CzSBEAaGyNkG6V7FHdWsvBL8LO+vRavs6UtCWQ
+	NXm8BT08Hh50S082LvYo9AggNxji4gmm/FyB69t7k2YkSigGKwOlQxKc7y5bXijgA0toQCnmwsNjV
+	svxUB1jg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uiytS-0000000DtdX-418j
 	for barebox@lists.infradead.org;
-	Mon, 04 Aug 2025 17:22:40 +0000
+	Mon, 04 Aug 2025 17:22:42 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uiytQ-0000su-9i
-	for barebox@lists.infradead.org; Mon, 04 Aug 2025 19:22:36 +0200
+	id 1uiytR-0000su-8D; Mon, 04 Aug 2025 19:22:37 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Date: Mon,  4 Aug 2025 19:22:20 +0200
-Message-Id: <20250804172233.2158462-1-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon,  4 Aug 2025 19:22:24 +0200
+Message-Id: <20250804172233.2158462-5-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250804172233.2158462-1-a.fatoum@barebox.org>
+References: <20250804172233.2158462-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250804_102239_416096_1EABEE7C 
-X-CRM114-Status: GOOD (  11.28  )
+X-CRM114-CacheID: sfid-20250804_182239_263708_3DC458CA 
+X-CRM114-Status: GOOD (  15.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,74 +87,108 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 00/13] ARM: Map sections RO/XN
+Subject: [PATCH v4 04/13] ARM: mmu: map memory for barebox proper pagewise
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series replaces 7 patches that are in next to fix a barebox hang
-when used together with OP-TEE.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Root cause is that we need to consider both reserved memory entries
-and the text area at once, otherwise mapping non-reserved regions
-cached would map the text area eXecute never
+Map the remainder of the memory explicitly with two level page tables. This is
+the place where barebox proper ends at. In barebox proper we'll remap the code
+segments readonly/executable and the ro segments readonly/execute never. For this
+we need the memory being mapped pagewise. We can't do the split up from section
+wise mapping to pagewise mapping later because that would require us to do
+a break-before-make sequence which we can't do when barebox proper is running
+at the location being remapped.
 
-Changes in v4:
-- skip TLB invalidation if remapping zero bytes
-- share common memory bank remapping code
-- fix reserved memory at end of RAM mapping barebox text
-  eXecute Never
-- add range helpers to make especially v4 code clearer
-- pass map type not pte flags to early_remap_range
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ arch/arm/cpu/mmu_32.c | 37 +++++++++++++++++++++++++++++--------
+ 1 file changed, 29 insertions(+), 8 deletions(-)
 
-Changes in v3:
-- rework create_sections() for Ahmads comments
-- mention CR_S bit and DOMAIN_CLIENT in commit message
-- Link to v2: https://lore.barebox.org/20250617-mmu-xn-ro-v2-0-3c7aa9046b67@pengutronix.de
-
-Changes in v2:
-- Tested and fixed for ARMv5
-- merge create_pages() and create_sections() into one functions (ahmad)
-- introduce function to create mapping flags based on CONFIG_ARM_MMU_PERMISSIONS
-- Link to v1: https://lore.barebox.org/20250606-mmu-xn-ro-v1-0-7ee6ddd134d4@pengutronix.de
-
-Ahmad Fatoum (8):
-  mmu: explicitly map executable non-SDRAM regions with MAP_CODE
-  ARM: mmu: skip TLB invalidation if remapping zero bytes
-  ARM: mmu: provide setup_trap_pages for both 32- and 64-bit
-  ARM: mmu: share common memory bank remapping code
-  ARM: mmu: make mmu_remap_memory_banks clearer with helper
-  partition: rename region_overlap_end to region_overlap_end_inclusive
-  partition: define new region_overlap_end_exclusive helper
-  ARM: mmu64: map text segment ro and data segments execute never
-
-Sascha Hauer (5):
-  ARM: pass barebox base to mmu_early_enable()
-  ARM: mmu: move ARCH_MAP_WRITECOMBINE to header
-  ARM: mmu: map memory for barebox proper pagewise
-  ARM: mmu: map text segment ro and data segments execute never
-  ARM: mmu64: map memory for barebox proper pagewise
-
- arch/arm/Kconfig                 |  12 ++++
- arch/arm/cpu/lowlevel_32.S       |   1 +
- arch/arm/cpu/mmu-common.c        |  69 +++++++++++++++++++++
- arch/arm/cpu/mmu-common.h        |  21 +++++++
- arch/arm/cpu/mmu_32.c            | 101 ++++++++++++++++++-------------
- arch/arm/cpu/mmu_64.c            |  88 ++++++++++++++++-----------
- arch/arm/cpu/uncompress.c        |   9 ++-
- arch/arm/include/asm/mmu.h       |   2 +-
- arch/arm/include/asm/pgtable64.h |   1 +
- arch/arm/lib32/barebox.lds.S     |   3 +-
- arch/arm/lib64/barebox.lds.S     |   5 +-
- arch/arm/mach-imx/romapi.c       |   3 +-
- commands/iomemport.c             |   2 +-
- common/memory.c                  |   7 ++-
- common/partitions.c              |   6 +-
- drivers/firmware/socfpga.c       |   4 ++
- drivers/hab/habv4.c              |   2 +-
- include/mmu.h                    |   1 +
- include/range.h                  |  30 +++++++--
- 19 files changed, 268 insertions(+), 99 deletions(-)
-
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index 104780ff6b98..b21fc75f0ceb 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -247,7 +247,8 @@ static uint32_t get_pmd_flags(int map_type)
+ 	return pte_flags_to_pmd(get_pte_flags(map_type));
+ }
+ 
+-static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t size, unsigned map_type)
++static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t size,
++			       unsigned map_type, bool force_pages)
+ {
+ 	u32 virt_addr = (u32)_virt_addr;
+ 	u32 pte_flags, pmd_flags;
+@@ -268,7 +269,7 @@ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t s
+ 
+ 		if (size >= PGDIR_SIZE && pgdir_size_aligned &&
+ 		    IS_ALIGNED(phys_addr, PGDIR_SIZE) &&
+-		    !pgd_type_table(*pgd)) {
++		    !pgd_type_table(*pgd) && !force_pages) {
+ 			u32 val;
+ 			/*
+ 			 * TODO: Add code to discard a page table and
+@@ -339,14 +340,15 @@ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t s
+ 
+ 	tlb_invalidate();
+ }
+-static void early_remap_range(u32 addr, size_t size, unsigned map_type)
++
++static void early_remap_range(u32 addr, size_t size, unsigned map_type, bool force_pages)
+ {
+-	__arch_remap_range((void *)addr, addr, size, map_type);
++	__arch_remap_range((void *)addr, addr, size, map_type, force_pages);
+ }
+ 
+ int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, unsigned map_type)
+ {
+-	__arch_remap_range(virt_addr, phys_addr, size, map_type);
++	__arch_remap_range(virt_addr, phys_addr, size, map_type, false);
+ 
+ 	if (map_type == MAP_UNCACHED)
+ 		dma_inv_range(virt_addr, size);
+@@ -616,6 +618,7 @@ void *dma_alloc_writecombine(struct device *dev, size_t size, dma_addr_t *dma_ha
+ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned long barebox_start)
+ {
+ 	uint32_t *ttb = (uint32_t *)arm_mem_ttb(membase + memsize);
++	unsigned long barebox_size, optee_start;
+ 
+ 	pr_debug("enabling MMU, ttb @ 0x%p\n", ttb);
+ 
+@@ -637,9 +640,27 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+ 	create_flat_mapping();
+ 
+ 	/* maps main memory as cachable */
+-	early_remap_range(membase, memsize - OPTEE_SIZE, MAP_CACHED);
+-	early_remap_range(membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_UNCACHED);
+-	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext), MAP_CACHED);
++	optee_start = membase + memsize - OPTEE_SIZE;
++	barebox_size = optee_start - barebox_start;
++
++	/*
++	 * map the bulk of the memory as sections to avoid allocating too many page tables
++	 * at this early stage
++	 */
++	early_remap_range(membase, barebox_start - membase, MAP_CACHED, false);
++	/*
++	 * Map the remainder of the memory explicitly with two level page tables. This is
++	 * the place where barebox proper ends at. In barebox proper we'll remap the code
++	 * segments readonly/executable and the ro segments readonly/execute never. For this
++	 * we need the memory being mapped pagewise. We can't do the split up from section
++	 * wise mapping to pagewise mapping later because that would require us to do
++	 * a break-before-make sequence which we can't do when barebox proper is running
++	 * at the location being remapped.
++	 */
++	early_remap_range(barebox_start, barebox_size, MAP_CACHED, true);
++	early_remap_range(optee_start, OPTEE_SIZE, MAP_UNCACHED, false);
++	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext),
++			  MAP_CACHED, false);
+ 
+ 	__mmu_cache_on();
+ }
 -- 
 2.39.5
 
