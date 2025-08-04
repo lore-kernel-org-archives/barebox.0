@@ -3,69 +3,68 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uiyuB-0070zj-0S
+	id 1uiyuB-007102-0v
 	for lore@lore.pengutronix.de;
 	Mon, 04 Aug 2025 19:23:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uiyu9-0001KP-7B
-	for lore@pengutronix.de; Mon, 04 Aug 2025 19:23:22 +0200
+	id 1uiyu9-0001Ky-Sa
+	for lore@pengutronix.de; Mon, 04 Aug 2025 19:23:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IvJkaN94MEZ2noODSSLzbN/Q+xaL0ZDZx/Pb0zHmRb4=; b=hVLdEhl+bHjCYloVnFkCMeBLQw
-	wP6b9XpZROEXzgLd3QKEFgW81f6Xufg5p6/FvYK3RprGErQNIr0mrIfVGTuI5rvXwiO7NxZITFpwc
-	uF/+luXtWmEbfoXAPen4nco3SaifLE1F7PXp+2+Mv8V7HlffAj9yusCnBywc92hj0KOxiYW8S+d30
-	4LinwAzieW+jHmXYqhdL1j9oRGYhJuzJ/QdxhuEdHi1Qz+e2v7f33/XlLlcoxaARLeRgkoEmr+Msp
-	N4Sp6dsuiNd6aL7ZdcIcxlCtFwYX+UAE2zMTsHc4U62+I9B4od9b5KGNFf/vdkN3Pjv0HeA/+UjED
-	OQS5eing==;
+	bh=Wlr2Cry2UK/FOQwkju69tklGwIUQSUtv61bHrwmSzRk=; b=kVl8IzuLpNLi3dF3i+eWC1Prp6
+	0+QN4XyY/wArfsECuCrJvzTB9l+HP1i33FxXOJdiN2sXLyrn/EOaXFKfKnevVNisUQiXLxk2/dr31
+	UwuGQR9WEHyw4uPFoIAuWWxyQI0FCGm5404Q+jM0spSvjWX7dhQ8gZJdvJ3WbIXmXmPRIHFqxBDvu
+	QI+8mAF0nWa/QfjezR6Skjc1uQ0On966GIsBwP1ROqeE4wP7viZhNKhNUXjaH+CFKmvZIk314IG2m
+	tnSEkT4u1oRpixwPNjT1P7nI32CP+y4FdUnux77J+Xszn476wZno4qiuGD+YrhRChQW4jTos6aDEI
+	VyvT3LOQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiytc-0000000B5Rl-42At;
-	Mon, 04 Aug 2025 17:22:48 +0000
+	id 1uiytZ-0000000B5O3-00CF;
+	Mon, 04 Aug 2025 17:22:45 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiytZ-0000000B5OG-3mYU
+	id 1uiytX-0000000B5Lw-2GEu
 	for barebox@bombadil.infradead.org;
-	Mon, 04 Aug 2025 17:22:45 +0000
+	Mon, 04 Aug 2025 17:22:43 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=IvJkaN94MEZ2noODSSLzbN/Q+xaL0ZDZx/Pb0zHmRb4=; b=OnTKVmEg+Y4ZMENWnPZi/Z6efE
-	8afnchJRf1R2CSzpaiGMyK+HTSHhPBv8SNGsP78apZD65Ip8AAiU93m9+oQXQWB256oOC/ZMQaXvy
-	gwzfP2kFa5BpNGUTviInk83D2ijCZsXbjCoWKYfbkJqn02OsjuA6ZiMUpuvOBctcy72ssQqAjnXFH
-	YR83cKrkMcgYfQF/dQlVDGEgrHTqsGTequg/Be/AGo8lNf160xg//QqE3nxhATQpH2eo1iqz+tKbI
-	Lgad8ikvKOfp98l+w83bAL9S0Clzl0j0PEkX26PryUBH86DQSE7U3QVTe+tVbmUAv2gNCTH94+kb3
-	zhQDmN5A==;
+	bh=Wlr2Cry2UK/FOQwkju69tklGwIUQSUtv61bHrwmSzRk=; b=EX7VnmoBM0alh1U60uOMsD96V/
+	Zwnk/DqjHg2T3p2xZtyFGyfIP0571oXoNhDZxqUrDtx6f/uqwsQ4nmPFNv0yper/53g6pq0Znx/gk
+	fyrNf1W1NKxyM1TrkWXxQYpp7mW4KOHoap4cdaD50TA9e/fQ9RUcPHiBjAE7OOlEa+1nXMYUGs1O+
+	+AzSXipfSs7vQVYMTqBYU2eLrN0bKyUxBhnhSKEsrezK+KxwVqfXNF7qg5VcpvzYTc3YIODi3b7m9
+	hBNsy6qiU6krWf0UVu7Kgl5ob6MEj3v6KmglmxT67Sl5qsMUIiKVSRQZw0l32I/UQYgMRoEc07I7c
+	xd38XqdQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiytU-0000000Dtfg-26NQ
+	id 1uiytT-0000000DteN-1qa2
 	for barebox@lists.infradead.org;
-	Mon, 04 Aug 2025 17:22:43 +0000
+	Mon, 04 Aug 2025 17:22:42 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1uiytT-0000su-Ap; Mon, 04 Aug 2025 19:22:39 +0200
+	id 1uiytS-0000su-BL; Mon, 04 Aug 2025 19:22:38 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  4 Aug 2025 19:22:33 +0200
-Message-Id: <20250804172233.2158462-14-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon,  4 Aug 2025 19:22:29 +0200
+Message-Id: <20250804172233.2158462-10-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250804172233.2158462-1-a.fatoum@barebox.org>
 References: <20250804172233.2158462-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250804_182240_742949_3AF417E6 
-X-CRM114-Status: GOOD (  14.82  )
+X-CRM114-CacheID: sfid-20250804_182239_645049_83941EA5 
+X-CRM114-Status: GOOD (  12.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,151 +86,88 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 13/13] ARM: mmu64: map text segment ro and data segments execute never
+Subject: [PATCH v4 09/13] partition: rename region_overlap_end to region_overlap_end_inclusive
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-With this all segments in the DRAM except the text segment are mapped
-execute-never so that only the barebox code can actually be executed.
-Also map the readonly data segment readonly so that it can't be
-modified.
+While quite verbose, off-by-one are very annoying, so it makes sense to
+be very explicit about the expected input. Rename the function in
+preparation for adding region_overlap_end_exclusive.
 
-The mapping is only implemented in barebox proper. The PBL still maps
-the whole DRAM rwx.
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/Kconfig                 |  1 -
- arch/arm/cpu/mmu-common.c        |  3 ---
- arch/arm/cpu/mmu_64.c            | 18 ++++++++++++++----
- arch/arm/include/asm/pgtable64.h |  1 +
- arch/arm/lib64/barebox.lds.S     |  5 +++--
- 5 files changed, 18 insertions(+), 10 deletions(-)
+ commands/iomemport.c |  2 +-
+ common/partitions.c  |  6 +++---
+ include/range.h      | 10 +++++-----
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 18bd0ffa5bf4..7a3952700aa8 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -399,7 +399,6 @@ config ARM_UNWIND
+diff --git a/commands/iomemport.c b/commands/iomemport.c
+index bb546e4a3ad9..d7c960d15b41 100644
+--- a/commands/iomemport.c
++++ b/commands/iomemport.c
+@@ -21,7 +21,7 @@ static void __print_resources(struct resource *res, int indent,
+ 	resource_size_t size = resource_size(res);
+ 	int i;
  
- config ARM_MMU_PERMISSIONS
- 	bool "Map with extended RO/X permissions"
--	depends on ARM32
- 	default y
- 	help
- 	  Enable this option to map readonly sections as readonly, executable
-diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index a8673d027d17..365d9c89ba7c 100644
---- a/arch/arm/cpu/mmu-common.c
-+++ b/arch/arm/cpu/mmu-common.c
-@@ -133,9 +133,6 @@ static void mmu_remap_memory_banks(void)
- 	/* Do this while interrupt vectors are still writable */
- 	setup_trap_pages();
+-	if (addr && !region_overlap_end(*addr, *addr, res->start, res->end))
++	if (addr && !region_overlap_end_inclusive(*addr, *addr, res->start, res->end))
+ 		return;
  
--	if (!IS_ENABLED(CONFIG_ARM_MMU_PERMISSIONS))
--		return;
--
- 	remap_range((void *)code_start, code_size, MAP_CODE);
- 	remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
- }
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 6fd767d983b7..8621bcd26cf4 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -292,13 +292,19 @@ static unsigned long get_pte_attrs(unsigned flags)
+ 	if ((flags & FLAG_VERBOSE) && !(flags & FLAG_IOPORT))
+diff --git a/common/partitions.c b/common/partitions.c
+index fdead333a40a..7563cb0e6767 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -251,9 +251,9 @@ int partition_create(struct partition_desc *pdesc, const char *name,
+ 	}
+ 
+ 	list_for_each_entry(part, &pdesc->partitions, list) {
+-		if (region_overlap_end(part->first_sec,
+-				       part->first_sec + part->size - 1,
+-				       lba_start, lba_end)) {
++		if (region_overlap_end_inclusive(part->first_sec,
++						 part->first_sec + part->size - 1,
++						 lba_start, lba_end)) {
+ 			pr_err("new partition %llu-%llu overlaps with partition %s (%llu-%llu)\n",
+ 			       lba_start, lba_end, part->name, part->first_sec,
+ 				part->first_sec + part->size - 1);
+diff --git a/include/range.h b/include/range.h
+index f72849044d0b..f1b75f5fafd8 100644
+--- a/include/range.h
++++ b/include/range.h
+@@ -5,15 +5,15 @@
+ #include <linux/types.h>
+ 
+ /**
+- * region_overlap_end - check whether a pair of [start, end] ranges overlap
++ * region_overlap_end_inclusive - check whether a pair of [start, end] ranges overlap
+  *
+  * @starta: start of the first range
+  * @enda:   end of the first range (inclusive)
+  * @startb: start of the second range
+  * @endb:   end of the second range (inclusive)
+  */
+-static inline bool region_overlap_end(u64 starta, u64 enda,
+-				      u64 startb, u64 endb)
++static inline bool region_overlap_end_inclusive(u64 starta, u64 enda,
++						u64 startb, u64 endb)
  {
- 	switch (flags) {
- 	case MAP_CACHED:
--		return CACHED_MEM;
-+		return attrs_xn() | CACHED_MEM;
- 	case MAP_UNCACHED:
- 		return attrs_xn() | UNCACHED_MEM;
- 	case MAP_FAULT:
- 		return 0x0;
- 	case ARCH_MAP_WRITECOMBINE:
- 		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
-+	case MAP_CODE:
-+		return CACHED_MEM | PTE_BLOCK_RO;
-+	case ARCH_MAP_CACHED_RO:
-+		return attrs_xn() | CACHED_MEM | PTE_BLOCK_RO;
-+	case ARCH_MAP_CACHED_RWX:
-+		return CACHED_MEM;
- 	default:
- 		return ~0UL;
- 	}
-@@ -316,7 +322,11 @@ static void early_remap_range(uint64_t addr, size_t size, unsigned flags, bool f
+ 	if (enda < startb)
+ 		return false;
+@@ -36,8 +36,8 @@ static inline bool region_overlap_size(u64 starta, u64 lena,
+ 	if (!lena || !lenb)
+ 		return false;
  
- int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, unsigned flags)
- {
--	unsigned long attrs = get_pte_attrs(flags);
-+	unsigned long attrs;
-+
-+	flags = arm_mmu_maybe_skip_permissions(flags);
-+
-+	attrs = get_pte_attrs(flags);
- 
- 	if (attrs == ~0UL)
- 		return -EINVAL;
-@@ -453,7 +463,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
- 	 */
- 	init_range(2);
- 
--	early_remap_range(membase, memsize, MAP_CACHED, false);
-+	early_remap_range(membase, memsize, ARCH_MAP_CACHED_RWX, false);
- 
- 	if (optee_get_membase(&optee_membase)) {
-                 optee_membase = membase + memsize - OPTEE_SIZE;
-@@ -472,7 +482,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
- 	early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT, false);
- 
- 	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext),
--			  MAP_CACHED, false);
-+			  ARCH_MAP_CACHED_RWX, false);
- 
- 	mmu_enable();
+-	return region_overlap_end(starta, starta + lena - 1,
+-				  startb, startb + lenb - 1);
++	return region_overlap_end_inclusive(starta, starta + lena - 1,
++					    startb, startb + lenb - 1);
  }
-diff --git a/arch/arm/include/asm/pgtable64.h b/arch/arm/include/asm/pgtable64.h
-index b88ffe6be525..6f6ef22717b7 100644
---- a/arch/arm/include/asm/pgtable64.h
-+++ b/arch/arm/include/asm/pgtable64.h
-@@ -59,6 +59,7 @@
- #define PTE_BLOCK_NG            (1 << 11)
- #define PTE_BLOCK_PXN           (UL(1) << 53)
- #define PTE_BLOCK_UXN           (UL(1) << 54)
-+#define PTE_BLOCK_RO            (UL(1) << 7)
  
- /*
-  * AttrIndx[2:0] encoding (mapping attributes defined in the MAIR* registers).
-diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-index 454ae3a95d8d..68cff9dacdeb 100644
---- a/arch/arm/lib64/barebox.lds.S
-+++ b/arch/arm/lib64/barebox.lds.S
-@@ -25,18 +25,19 @@ SECTIONS
- 	}
- 	BAREBOX_BARE_INIT_SIZE
- 
--	. = ALIGN(4);
-+	. = ALIGN(4096);
- 	__start_rodata = .;
- 	.rodata : {
- 		*(.rodata*)
- 		RO_DATA_SECTION
- 	}
- 
-+	. = ALIGN(4096);
-+
- 	__end_rodata = .;
- 	_etext = .;
- 	_sdata = .;
- 
--	. = ALIGN(4);
- 	.data : { *(.data*) }
- 
- 	.barebox_imd : { BAREBOX_IMD }
+ /**
 -- 
 2.39.5
 
