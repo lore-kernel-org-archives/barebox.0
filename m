@@ -3,46 +3,61 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uixAd-006z8x-0R
+	id 1uixAd-006z9G-0m
 	for lore@lore.pengutronix.de;
 	Mon, 04 Aug 2025 17:32:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uixAa-0006K0-Fn
-	for lore@pengutronix.de; Mon, 04 Aug 2025 17:32:14 +0200
+	id 1uixAZ-0006JX-Tk
+	for lore@pengutronix.de; Mon, 04 Aug 2025 17:32:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kvvGyNAyrYGlwe4fzPOfCpROqDMck7qz/0TpJGoikcI=; b=L5YwyQUQhNP6Y2lIlUGTd2cIIz
-	RE0/ayXm5rPLQ1M8lKKiSBbv8DxiduiBTTCSk2atYFAg5EodbadNx1bJ2sIFT2bl5dkoiMrQhunIL
-	2sHIyf3Aclwhm+qOVKkS27LO0pq3zF7+2TB3bxDpg6Ox58mCyhM11BdQxIhRSJzaBOX2N26TU/lfu
-	TnsKi1Zjcfu/1PpbxI/26eoEvzBVvJEErtvbbsVKt9eZQIIHtsAX6i1KxHNiY4Dmoo9bsN/7eiGwY
-	Br7juS/Cm+coY/2WGEgT/0GamQRNtPjAO806pr9eobMaPnl6/Vqmue/6zLUeXS+3GYphXNzMYao+L
-	Z1BD8Grg==;
+	bh=yomN/HjLdf2xMqlQNKyStWUt6v3ou0ot+6DyZNZzYxc=; b=H2nvtpAQTtrmafGVq+BWfcIWgK
+	0wK0611kDhP+Yoz00qjEQ89x7hojBRsCv37u7t6p2aPE0pTtkumUde6CUuVIYO8ye3lBsTsdBbXVx
+	HMjZQiWDL/WGkrREKM5cmejhnKyEcx61Y/viqQISRM/JoETxBB0obonrSqcEegYOIrLp23uwtUv5P
+	NtjKattNLb0FNix2r6QjbkfqAsujuhFMZxJtg5YqqkI+lWX3krnMbulEXpQSo6hVarM2yftVEDYqo
+	GTwKIuNK+GImN8xgvVqs1AARaMp2eIOzpHv6QsQ/gtZrxGo79qH3gvGOXXDPpwj9k6m6lB0LKxVA7
+	i+jQD+/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uix9q-0000000Anyg-3acH;
-	Mon, 04 Aug 2025 15:31:26 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uix9u-0000000Ao4T-0nmI;
+	Mon, 04 Aug 2025 15:31:30 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiwJ5-0000000AgmM-30Lw
+	id 1uiwJ8-0000000Ags2-1sTe
+	for barebox@bombadil.infradead.org;
+	Mon, 04 Aug 2025 14:36:58 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=yomN/HjLdf2xMqlQNKyStWUt6v3ou0ot+6DyZNZzYxc=; b=OknQNIiDEYToOwPurTXyGpbCRZ
+	JwyzE5JlkG6tHfIzEZkRdVWXgdYWAUZgLsCB/B18hdfndjAAYOAH04dK93SR+3eRXebWMufg7fIUw
+	OZDhIcp1MQ1gXAtxdfCtNb4xnO01b3IzTCL3uKkAoeUh0uMcV0l4l0YN+zdWgQcf9CwCs8eA4j2eC
+	C5D+aiof15GUoNlL9+ICZWwozTAkGQWjmEngqXCF7tGnsFgXMTi8oQgvGJC1zxXEhPmiOSB1P4Kkd
+	9TNQsMIqLT17X1sopGvtZ+QrLRZcUYfBRQUE1F74pGUYoqslpAZIuv9UwK4BMS2UBF8rtcMSYQZeX
+	+vgRUosw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uiwJ4-0000000DrsO-31Pe
 	for barebox@lists.infradead.org;
 	Mon, 04 Aug 2025 14:36:57 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1uiwIz-0000aW-In; Mon, 04 Aug 2025 16:36:49 +0200
+	id 1uiwIz-0000aW-MN; Mon, 04 Aug 2025 16:36:49 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 04 Aug 2025 16:36:58 +0200
+Date: Mon, 04 Aug 2025 16:37:01 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250804-v2025-06-0-topic-nvmem-v1-12-7603eaa4d2b0@pengutronix.de>
+Message-Id: <20250804-v2025-06-0-topic-nvmem-v1-15-7603eaa4d2b0@pengutronix.de>
 References: <20250804-v2025-06-0-topic-nvmem-v1-0-7603eaa4d2b0@pengutronix.de>
 In-Reply-To: <20250804-v2025-06-0-topic-nvmem-v1-0-7603eaa4d2b0@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +65,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250804_073655_793398_5C7B2E81 
-X-CRM114-Status: GOOD (  14.80  )
+X-CRM114-CacheID: sfid-20250804_153655_220243_05460EA7 
+X-CRM114-Status: GOOD (  16.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,105 +88,183 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 12/15] nvmem: core: add per-cell post processing
+Subject: [PATCH 15/15] nvmem: core: drop global cell_post_process
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To further sync the nvmem code base port Linux commit:
-
-| commit 345ec382cd4b736c36e01f155d08c913b225b736
-| Author: Michael Walle <michael@walle.cc>
-| Date:   Tue Apr 4 18:21:24 2023 +0100
-|
-|     nvmem: core: add per-cell post processing
-|
-|     Instead of relying on the name the consumer is using for the cell, like
-|     it is done for the nvmem .cell_post_process configuration parameter,
-|     provide a per-cell post processing hook. This can then be populated by
-|     the NVMEM provider (or the NVMEM layout) when adding the cell.
-|
-|     Signed-off-by: Michael Walle <michael@walle.cc>
-|     Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-|     Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-|     Link: https://lore.kernel.org/r/20230404172148.82422-17-srinivas.kandagatla@linaro.org
-|     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Switch to the cell local read_post_process() hook and drop the global
+nvmem cell_post_process() hook to align our code base with Linux, to
+make it easier to port nvmem(-layout) drivers.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/nvmem/core.c           | 17 +++++++++++++++++
- include/linux/nvmem-provider.h |  3 +++
- 2 files changed, 20 insertions(+)
+ drivers/nvmem/core.c           | 10 +---------
+ drivers/nvmem/imx-ocotp-ele.c  |  8 +++++++-
+ drivers/nvmem/internals.h      |  1 -
+ drivers/nvmem/ocotp.c          |  8 +++++++-
+ drivers/nvmem/regmap.c         |  5 +++--
+ include/linux/nvmem-provider.h | 12 ++++++------
+ 6 files changed, 24 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index abb576af01ae0f8fc2d1e2f30ec9d0d22cd2a4fa..0c78d61e3c58fbe019a1def08d06e2ecf561a9b1 100644
+index 7f4fd329c196efa3baac2c97016d6651d4c140a3..fb5860bf03956170cb1d32ca21c36568387f1cf9 100644
 --- a/drivers/nvmem/core.c
 +++ b/drivers/nvmem/core.c
-@@ -22,6 +22,7 @@ struct nvmem_cell_entry {
- 	int			bytes;
- 	int			bit_offset;
- 	int			nbits;
-+	nvmem_cell_post_process_t read_post_process;
- 	struct device_node	*np;
- 	struct nvmem_device	*nvmem;
- 	struct list_head	node;
-@@ -242,6 +243,7 @@ static int nvmem_cell_info_to_nvmem_cell_entry_nodup(struct nvmem_device *nvmem,
- 	cell->raw_len = info->raw_len ?: info->bytes;
- 	cell->bytes = info->bytes;
- 	cell->name = info->name;
-+	cell->read_post_process = info->read_post_process;
+@@ -444,7 +444,6 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 	nvmem->priv = config->priv;
+ 	INIT_LIST_HEAD(&nvmem->cells);
+ 	nvmem->fixup_dt_cell_info = config->fixup_dt_cell_info;
+-	nvmem->cell_post_process = config->cell_post_process;
  
- 	cell->bit_offset = info->bit_offset;
- 	cell->nbits = info->nbits;
-@@ -829,6 +831,13 @@ static int __nvmem_cell_read(struct nvmem_device *nvmem,
- 	if (cell->bit_offset || cell->nbits)
- 		nvmem_shift_read_buffer_in_place(cell, buf);
+ 	rval = nvmem_add_cells_from_legacy_of(nvmem);
+ 	if (rval)
+@@ -844,13 +843,6 @@ static int __nvmem_cell_read(struct nvmem_device *nvmem,
+ 			return rc;
+ 	}
  
-+	if (cell->read_post_process) {
-+		rc = cell->read_post_process(nvmem->priv, id, index,
-+				cell->offset, buf, cell->bytes);
-+		if (rc)
-+			return rc;
-+	}
-+
- 	if (nvmem->cell_post_process) {
- 		rc = nvmem->cell_post_process(nvmem->priv, id, index,
- 					      cell->offset, buf, cell->bytes);
-@@ -937,6 +946,14 @@ static int __nvmem_cell_entry_write(struct nvmem_cell_entry *cell, const void *b
- 	    (cell->bit_offset == 0 && len != cell->bytes))
+-	if (nvmem->cell_post_process) {
+-		rc = nvmem->cell_post_process(nvmem->priv, id, index,
+-					      cell->offset, buf, cell->bytes);
+-		if (rc)
+-			return rc;
+-	}
+-
+ 	if (len)
+ 		*len = cell->bytes;
+ 
+@@ -953,7 +945,7 @@ static int __nvmem_cell_entry_write(struct nvmem_cell_entry *cell, const void *b
  		return -EINVAL;
  
-+	/*
-+	 * Any cells which have a cell_post_process hook are read-only because
-+	 * we cannot reverse the operation and it might affect other cells,
-+	 * too.
-+	 */
-+	if (cell->read_post_process)
-+		return -EINVAL;
+ 	/*
+-	 * Any cells which have a cell_post_process hook are read-only because
++	 * Any cells which have a read_post_process hook are read-only because
+ 	 * we cannot reverse the operation and it might affect other cells,
+ 	 * too.
+ 	 */
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index 8ac4e2a9a6c87f128ff9aaf16d1238ef129d91ca..797c6f8d7a2a069fbf342c517031eb5dc3f09d7a 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -128,6 +128,12 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
+ 	return 0;
+ }
+ 
++static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
++					 struct nvmem_cell_info *cell)
++{
++	cell->read_post_process = imx_ocotp_cell_pp;
++}
 +
- 	if (cell->bit_offset || cell->nbits) {
- 		buf = nvmem_cell_prepare_write_buffer(cell, buf, len);
- 		if (IS_ERR(buf))
+ static struct regmap_bus imx_ocotp_regmap_bus = {
+ 	.reg_write = imx_ocotp_reg_write,
+ 	.reg_read = imx_ocotp_reg_read,
+@@ -192,7 +198,7 @@ static int imx_ele_ocotp_probe(struct device *dev)
+ 		imx_ocotp_set_unique_machine_id(priv);
+ 
+ 	nvmem = nvmem_regmap_register_with_pp(priv->map, "imx_ocotp",
+-					      imx_ocotp_cell_pp);
++					      imx_ocotp_fixup_dt_cell_info);
+ 	if (IS_ERR(nvmem))
+ 		return PTR_ERR(nvmem);
+ 
+diff --git a/drivers/nvmem/internals.h b/drivers/nvmem/internals.h
+index 10e11ad79bc32364d542c5320e70fb0377e83478..1e050df78621f8cce751577365107bfa16766374 100644
+--- a/drivers/nvmem/internals.h
++++ b/drivers/nvmem/internals.h
+@@ -21,7 +21,6 @@ struct nvmem_device {
+ 	void			*priv;
+ 	struct nvmem_layout	*layout;
+ 	struct list_head	cells;
+-	nvmem_cell_post_process_t cell_post_process;
+ 	void (*fixup_dt_cell_info)(struct nvmem_device *nvmem,
+ 				   struct nvmem_cell_info *cell);
+ 	int			(*reg_write)(void *ctx, unsigned int reg,
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index d4510d4b89ba404c0b0537afc01075cac501042c..7bca27540417ad9ba0ce5c5f8ec43ad1c63638b9 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -803,6 +803,12 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
+ 	return 0;
+ }
+ 
++static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
++					 struct nvmem_cell_info *cell)
++{
++	cell->read_post_process = imx_ocotp_cell_pp;
++}
++
+ static int imx_ocotp_init_dt(struct ocotp_priv *priv)
+ {
+ 	char mac[MAC_BYTES];
+@@ -898,7 +904,7 @@ static int imx_ocotp_probe(struct device *dev)
+ 		return PTR_ERR(priv->map);
+ 
+ 	nvmem = nvmem_regmap_register_with_pp(priv->map, "imx-ocotp",
+-					      imx_ocotp_cell_pp);
++					      imx_ocotp_fixup_dt_cell_info);
+ 	if (IS_ERR(nvmem))
+ 		return PTR_ERR(nvmem);
+ 
+diff --git a/drivers/nvmem/regmap.c b/drivers/nvmem/regmap.c
+index 24712fbb0f332e98474955aa433c0a5e02502054..d35814c9a2a955926781768fb3e1126b6f041c26 100644
+--- a/drivers/nvmem/regmap.c
++++ b/drivers/nvmem/regmap.c
+@@ -65,7 +65,8 @@ static int nvmem_regmap_read(void *ctx, unsigned offset, void *buf, size_t bytes
+ 
+ struct nvmem_device *
+ nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
+-			      nvmem_cell_post_process_t cell_post_process)
++			      void (*fixup_dt_cell_info)(struct nvmem_device *nvmem,
++							 struct nvmem_cell_info *cell))
+ {
+ 	struct nvmem_config config = {};
+ 
+@@ -79,7 +80,7 @@ nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
+ 	config.stride = 1;
+ 	config.word_size = 1;
+ 	config.size = regmap_size_bytes(map);
+-	config.cell_post_process = cell_post_process;
++	config.fixup_dt_cell_info = fixup_dt_cell_info;
+ 	config.reg_write = nvmem_regmap_write;
+ 	config.reg_read = nvmem_regmap_read;
+ 
 diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
-index 44c6b76ccc5212a72bffe694308321ce1b27e470..892e3604ef83ef8b616041f5d4dbfdcae1136fc9 100644
+index e1e7d8871d67465157191e7e6a46b400a285e834..2ea2a20d9efbcd704c347da9d0bd77bfaf14be61 100644
 --- a/include/linux/nvmem-provider.h
 +++ b/include/linux/nvmem-provider.h
-@@ -38,6 +38,8 @@ typedef int (*nvmem_cell_post_process_t)(void *priv, const char *id, int index,
-  * @bit_offset:	Bit offset if cell is smaller than a byte.
-  * @nbits:	Number of bits.
-  * @np:		Optional device_node pointer.
-+ * @read_post_process:	Callback for optional post processing of cell data
-+ *			on reads.
-  */
- struct nvmem_cell_info {
- 	const char		*name;
-@@ -47,6 +49,7 @@ struct nvmem_cell_info {
- 	unsigned int		bit_offset;
- 	unsigned int		nbits;
- 	struct device_node	*np;
-+	nvmem_cell_post_process_t read_post_process;
+@@ -84,7 +84,6 @@ struct nvmem_config {
+ 	int			word_size;
+ 	int			stride;
+ 	void			*priv;
+-	nvmem_cell_post_process_t cell_post_process;
  };
  
  /**
+@@ -120,8 +119,9 @@ struct cdev;
+ 
+ struct nvmem_device *nvmem_register(const struct nvmem_config *cfg);
+ struct nvmem_device *nvmem_regmap_register(struct regmap *regmap, const char *name);
+-struct nvmem_device *nvmem_regmap_register_with_pp(struct regmap *regmap,
+-		const char *name, nvmem_cell_post_process_t cell_post_process);
++struct nvmem_device *nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
++			      void (*fixup_dt_cell_info)(struct nvmem_device *nvmem,
++							 struct nvmem_cell_info *cell));
+ struct device *nvmem_device_get_device(struct nvmem_device *nvmem);
+ int nvmem_add_one_cell(struct nvmem_device *nvmem,
+ 		       const struct nvmem_cell_info *info);
+@@ -145,9 +145,9 @@ static inline struct nvmem_device *nvmem_regmap_register(struct regmap *regmap,
+ 	return ERR_PTR(-ENOSYS);
+ }
+ 
+-static inline struct nvmem_device *
+-nvmem_regmap_register_with_pp(struct regmap *regmap, const char *name,
+-			      nvmem_cell_post_process_t cell_post_process)
++struct nvmem_device *nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
++			      void (*fixup_dt_cell_info)(struct nvmem_device *nvmem,
++							 struct nvmem_cell_info *cell))
+ {
+ 	return ERR_PTR(-ENOSYS);
+ }
 
 -- 
 2.39.5
