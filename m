@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uixAf-006zAH-23
+	id 1uixAf-006zAV-35
 	for lore@lore.pengutronix.de;
 	Mon, 04 Aug 2025 17:32:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uixAc-0006Ll-Ik
+	id 1uixAb-0006L6-Mq
 	for lore@pengutronix.de; Mon, 04 Aug 2025 17:32:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=13qtKx3lzzlC2KYlUqyxpxPnDsqiFPuRfRqiOhsJ338=; b=FucdKQLY89924SnX9pY1OGBxPg
-	hsB2hY6Jjamk4kPeZ9RqvszRhZH20/Szt4mQZ4Lga8TMxB595wa6p+Up5kTCnw3RzFuzMdOQ03vUE
-	KknXrrTzj2n5UyWXpACopw556jUMDDQqEuUF1KFUWYzl5Ubpus0tQigs04VkFnm+AOBR+T5Imn8na
-	IUGs0qzX+hxMKDH76S1M1Hy58y5/G24EwVncdiyz7Ui3+ku2VoAkzUZF1XCFAknZqWTRzH3CXmGa3
-	HxY7f8hgLR6eJiEpbRnTzLj1u/5+KhXaO2JoyJ4mYGetMrRtlCwek8WGTyrdaFeziCk1koC54+QEK
-	g+v6D70Q==;
+	bh=u/BmqHgy6f3O72p+N8cgfIORU6Y4vYUzbn+OophXzGY=; b=S2GtdWCP3G01osxt5IC8I4mCOl
+	NQ+iPgMnvZ2nvw5d9rcmOPQERSaCZnNvDlSO0MFIkM+YT15Tp00eJTNQHTWSiIoNNonl2h3bHNUes
+	rSbjvxwTweLDK/ezJWe+RXTu3Bpe/g9a9Sp1vSVCt0SKf63PsPp0oh8ZRFaWaiLHXfCZ6bHQ8nrVp
+	/cTWpEec0BcNoaU0a6fDM33gqymMY/sELO0DVY4t6s3OFMEmn5CvCDO9kgrMT1zGdleeSaRuN6Mgq
+	8MfmKZ8MiLgADozUQbmaaHvrb1PQw5/ly/Rt51D7ML0xnYM59EqQqVaTjrcV81TP9z0DlaO0Fqcoz
+	mtNpCPjg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uix9o-0000000Anvg-27oR;
-	Mon, 04 Aug 2025 15:31:24 +0000
+	id 1uix9t-0000000Ao37-1HWC;
+	Mon, 04 Aug 2025 15:31:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uiwJ2-0000000AgmA-1ley
+	id 1uiwJ5-0000000AgmK-2knW
 	for barebox@lists.infradead.org;
-	Mon, 04 Aug 2025 14:36:56 +0000
+	Mon, 04 Aug 2025 14:36:57 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1uiwIz-0000aW-6X; Mon, 04 Aug 2025 16:36:49 +0200
+	id 1uiwIz-0000aW-GX; Mon, 04 Aug 2025 16:36:49 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 04 Aug 2025 16:36:47 +0200
+Date: Mon, 04 Aug 2025 16:36:56 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250804-v2025-06-0-topic-nvmem-v1-1-7603eaa4d2b0@pengutronix.de>
+Message-Id: <20250804-v2025-06-0-topic-nvmem-v1-10-7603eaa4d2b0@pengutronix.de>
 References: <20250804-v2025-06-0-topic-nvmem-v1-0-7603eaa4d2b0@pengutronix.de>
 In-Reply-To: <20250804-v2025-06-0-topic-nvmem-v1-0-7603eaa4d2b0@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +50,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250804_073652_797289_D8D60D5F 
-X-CRM114-Status: GOOD (  36.57  )
+X-CRM114-CacheID: sfid-20250804_073656_086058_CA442604 
+X-CRM114-Status: GOOD (  30.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,559 +73,596 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 01/15] of: sync of_*_phandle_with_args with Linux
+Subject: [PATCH 10/15] nvmem: core: add nvmem-layout support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The current of_parse_phandle_with_args() logic was ported from Linux a
-long time ago by commits:
- - 58f3457f4f03 ("of: add devicetree probing support") and
- - 511ba46157d8 ("OF: base: import parse phandle functions from Linux OF
-   API")
+This ports the Linux nvmem-layout core infrastructure required for the
+actual nvmem-layout drivers. This commit doesn't add any specific
+nvmem-layout driver.
 
-Commit f114b0479a22 ("of: base: don't try to read cells_name property if
-no cells_name set") adapted the logic to make it compatible with current
-mainline device-trees.
-
-This commits syncs the complete of_*_phandle_with_args() family with the
-current Linux implementation instead of doing further adaptions to the
-old Linux based logic. This ensures that the of_*_phandle_with_args()
-family is compatible with the mainline provided device-trees.
-
-Furthermore it prepares the code base to add new of_parse_phandle_* from
-Linux more easily.
-
-The main changes are:
- - __of_parse_phandle_with_args() was made public and the accessors like
-   of_parse_phandle_with_args() are now static inline functions.
- - The open coded parsing logic was replaced by an iterator based logic
-   (struct of_phandle_iterator and its accessors).
- - Some bugfixes
+A nvmem-layout is the new way to describe the nvmem storage format. The
+nvmem-layout driver parses the nvmem sotrage format and provides the
+information via nvmem-cells.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/of/base.c | 280 +++++++++++++++++++++++++++++++++++-------------------
- include/of.h      | 121 ++++++++++++++++++++++-
- 2 files changed, 300 insertions(+), 101 deletions(-)
+ drivers/nvmem/Kconfig          |   7 ++
+ drivers/nvmem/Makefile         |   3 +
+ drivers/nvmem/core.c           | 100 +++++++++++++++++++++++-
+ drivers/nvmem/internals.h      |  22 ++++++
+ drivers/nvmem/layouts.c        | 173 +++++++++++++++++++++++++++++++++++++++++
+ drivers/nvmem/layouts/Kconfig  |  13 ++++
+ drivers/nvmem/layouts/Makefile |   7 ++
+ include/linux/nvmem-provider.h |  63 +++++++++++++++
+ 8 files changed, 385 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 1439e55a0aac0f19aab822901a5331e11ea10d48..808533d5da4e94449b5eb48bfb33a540e504157e 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1678,117 +1678,182 @@ struct device_node *of_parse_phandle(const struct device_node *np,
- }
- EXPORT_SYMBOL(of_parse_phandle);
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index 349471ce393275298acbe684328f731260a5f2ba..41a3bf26dda04155e7457a5bd9473ff4be646574 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ menuconfig NVMEM
+ 	bool "NVMEM Support"
++	imply NVMEM_LAYOUTS
+ 	help
+ 	  Support for NVMEM(Non Volatile Memory) devices like EEPROM, EFUSES...
  
--/**
-- * of_parse_phandle_with_args() - Find a node pointed by phandle in a list
-- * @np:		pointer to a device tree node containing a list
-- * @list_name:	property name that contains a list
-- * @cells_name:	property name that specifies phandles' arguments count
-- * @index:	index of a phandle to parse out
-- * @out_args:	optional pointer to output arguments structure (will be filled)
-- *
-- * This function is useful to parse lists of phandles and their arguments.
-- * Returns 0 on success and fills out_args, on error returns appropriate
-- * errno value.
-- *
-- * Example:
-- *
-- * phandle1: node1 {
-- * 	#list-cells = <2>;
-- * }
-- *
-- * phandle2: node2 {
-- * 	#list-cells = <1>;
-- * }
-- *
-- * node3 {
-- * 	list = <&phandle1 1 2 &phandle2 3>;
-- * }
-- *
-- * To get a device_node of the `node2' node you may call this:
-- * of_parse_phandle_with_args(node3, "list", "#list-cells", 1, &args);
-- */
--static int __of_parse_phandle_with_args(const struct device_node *np,
--					const char *list_name,
--					const char *cells_name, int index,
--					struct of_phandle_args *out_args)
-+int of_phandle_iterator_init(struct of_phandle_iterator *it,
-+		const struct device_node *np,
-+		const char *list_name,
-+		const char *cells_name,
-+		int cell_count)
+@@ -10,6 +11,12 @@ menuconfig NVMEM
+ 
+ if NVMEM
+ 
++# Layouts
++
++source "drivers/nvmem/layouts/Kconfig"
++
++# Devices
++
+ config NVMEM_RMEM
+ 	bool "Reserved Memory Based Driver Support"
+ 	help
+diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
+index 31db05e5a71c4fd398f84e08bf45da1e6ba23312..fdd5c63e321db009f5eaa282e0b37fe0c8f28572 100644
+--- a/drivers/nvmem/Makefile
++++ b/drivers/nvmem/Makefile
+@@ -5,6 +5,9 @@
+ 
+ obj-$(CONFIG_NVMEM)		+= nvmem_core.o
+ nvmem_core-y			:= core.o regmap.o partition.o
++obj-$(CONFIG_NVMEM_LAYOUTS)	+= nvmem_layouts.o
++nvmem_layouts-y			:= layouts.o
++obj-y				+= layouts/
+ 
+ obj-$(CONFIG_NVMEM_RMEM)	+= rmem.o
+ 
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 86f4f43a3084bf0c0e71b9af002334975c5e5e0e..bd80283f2be061c55c286006f6f318eccb10897e 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -35,6 +35,7 @@ struct nvmem_cell {
+ };
+ 
+ static LIST_HEAD(nvmem_devs);
++static LIST_HEAD(nvmem_layouts);
+ 
+ void nvmem_devices_print(void)
  {
--	const __be32 *list, *list_end;
--	int rc = 0, size, cur_index = 0;
--	uint32_t count = 0;
--	struct device_node *node = NULL;
--	phandle phandle;
-+	const __be32 *list;
-+	int size;
+@@ -162,6 +163,9 @@ static int nvmem_populate_sysfs_cells(struct nvmem_device *nvmem)
+ 	struct device *dev = &nvmem->dev;
+ 	struct nvmem_cell_entry *entry;
+ 
++	if (list_empty(&nvmem->cells) || nvmem->sysfs_cells_populated)
++		return 0;
 +
-+	memset(it, 0, sizeof(*it));
+ 	list_for_each_entry(entry, &nvmem->cells, node) {
+ 		struct cdev *cdev;
+ 		int ret;
+@@ -182,6 +186,8 @@ static int nvmem_populate_sysfs_cells(struct nvmem_device *nvmem)
+ 		}
+ 	}
+ 
++	nvmem->sysfs_cells_populated = true;
 +
-+	/*
-+	 * one of cell_count or cells_name must be provided to determine the
-+	 * argument length.
-+	 */
-+	if (cell_count < 0 && !cells_name)
+ 	return 0;
+ }
+ 
+@@ -351,6 +357,52 @@ static int nvmem_add_cells_from_legacy_of(struct nvmem_device *nvmem)
+ 	return nvmem_add_cells_from_dt(nvmem, nvmem->dev.of_node);
+ }
+ 
++static int nvmem_add_cells_from_fixed_layout(struct nvmem_device *nvmem)
++{
++	struct device_node *layout_np;
++	int err = 0;
++
++	layout_np = of_nvmem_layout_get_container(nvmem);
++	if (!layout_np)
++		return 0;
++
++	if (of_device_is_compatible(layout_np, "fixed-layout"))
++		err = nvmem_add_cells_from_dt(nvmem, layout_np);
++
++	of_node_put(layout_np);
++
++	return err;
++}
++
++int nvmem_layout_register(struct nvmem_layout *layout)
++{
++	int ret;
++
++	if (!layout->add_cells)
 +		return -EINVAL;
- 
--	/* Retrieve the phandle list property */
- 	list = of_get_property(np, list_name, &size);
- 	if (!list)
- 		return -ENOENT;
--	list_end = list + size / sizeof(*list);
- 
--	/* Loop over the phandles until all the requested entry is found */
--	while (list < list_end) {
--		rc = -EINVAL;
--		count = 0;
-+	it->cells_name = cells_name;
-+	it->cell_count = cell_count;
-+	it->parent = np;
-+	it->list_end = list + size / sizeof(*list);
-+	it->phandle_end = list;
-+	it->cur = list;
++
++	/* Populate the cells */
++	ret = layout->add_cells(layout);
++	if (ret)
++		return ret;
++
++	ret = nvmem_populate_sysfs_cells(layout->nvmem);
++	if (ret) {
++		nvmem_device_remove_all_cdevs(layout->nvmem);
++		nvmem_device_remove_all_cells(layout->nvmem);
++		return ret;
++	}
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(of_phandle_iterator_init);
++EXPORT_SYMBOL_GPL(nvmem_layout_register);
 +
-+int of_phandle_iterator_next(struct of_phandle_iterator *it)
++void nvmem_layout_unregister(struct nvmem_layout *layout)
 +{
-+	uint32_t count = 0;
++	/* Keep the API even with an empty stub in case we need it later */
++}
++EXPORT_SYMBOL_GPL(nvmem_layout_unregister);
 +
-+	if (it->node) {
-+		of_node_put(it->node);
-+		it->node = NULL;
-+	}
-+
-+	if (!it->cur || it->phandle_end >= it->list_end)
-+		return -ENOENT;
-+
-+	it->cur = it->phandle_end;
-+
-+	/* If phandle is 0, then it is an empty entry with no arguments. */
-+	it->phandle = be32_to_cpup(it->cur++);
-+
-+	if (it->phandle) {
+ /**
+  * nvmem_register() - Register a nvmem device for given nvmem_config.
+  *
+@@ -389,6 +441,10 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 	if (rval)
+ 		goto err_remove_cells;
  
- 		/*
--		 * If phandle is 0, then it is an empty entry with no
--		 * arguments.  Skip forward to the next entry.
-+		 * Find the provider node and parse the #*-cells property to
-+		 * determine the argument length.
- 		 */
--		phandle = be32_to_cpup(list++);
--		if (phandle) {
--			/*
--			 * Find the provider node and parse the #*-cells
--			 * property to determine the argument length
--			 */
--			node = of_find_node_by_phandle(phandle);
--			if (!node) {
--				pr_err("%pOF: could not find phandle\n", np);
--				goto err;
--			}
--			if (cells_name &&
--			    of_property_read_u32(node, cells_name, &count)) {
--				pr_err("%pOF: could not get %s for %pOF\n",
--					 np, cells_name, node);
-+		it->node = of_find_node_by_phandle(it->phandle);
++	rval = nvmem_add_cells_from_fixed_layout(nvmem);
++	if (rval)
++		goto err_remove_cells;
 +
-+		if (it->cells_name) {
-+			if (!it->node) {
-+				pr_err("%pOF: could not find phandle %d\n",
-+				       it->parent, it->phandle);
- 				goto err;
- 			}
+ 	if (config->read_only || !config->reg_write || of_property_read_bool(np, "read-only"))
+ 		nvmem->read_only = true;
  
--			/*
--			 * Make sure that the arguments actually fit in the
--			 * remaining property data length
--			 */
--			if (list + count > list_end) {
--				pr_err("%pOF: arguments longer than property\n", np);
--				goto err;
-+			if (of_property_read_u32(it->node, it->cells_name,
-+						 &count)) {
-+				/*
-+				 * If both cell_count and cells_name is given,
-+				 * fall back to cell_count in absence
-+				 * of the cells_name property
-+				 */
-+				if (it->cell_count >= 0) {
-+					count = it->cell_count;
-+				} else {
-+					pr_err("%pOF: could not get %s for %pOF\n",
-+					       it->parent,
-+					       it->cells_name,
-+					       it->node);
-+					goto err;
-+				}
- 			}
-+		} else {
-+			count = it->cell_count;
- 		}
+@@ -413,14 +469,20 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 			goto err_unregister;
+ 	}
  
- 		/*
--		 * All of the error cases above bail out of the loop, so at
-+		 * Make sure that the arguments actually fit in the remaining
-+		 * property data length
-+		 */
-+		if (it->cur + count > it->list_end) {
-+			if (it->cells_name)
-+				pr_err("%pOF: %s = %d found %td\n",
-+					it->parent, it->cells_name,
-+					count, it->list_end - it->cur);
-+			else
-+				pr_err("%pOF: phandle %s needs %d, found %td\n",
-+					it->parent, of_node_full_name(it->node),
-+					count, it->list_end - it->cur);
-+			goto err;
+-	rval = nvmem_populate_sysfs_cells(nvmem);
++	rval = nvmem_populate_layout(nvmem);
+ 	if (rval)
+ 		goto err_remove_cdevs;
+ 
++	rval = nvmem_populate_sysfs_cells(nvmem);
++	if (rval)
++		goto err_destroy_layout;
++
+ 	list_add_tail(&nvmem->node, &nvmem_devs);
+ 
+ 	return nvmem;
+ 
++err_destroy_layout:
++	nvmem_destroy_layout(nvmem);
+ err_remove_cdevs:
+ 	nvmem_device_remove_all_cdevs(nvmem);
+ err_unregister:
+@@ -579,6 +641,17 @@ nvmem_find_cell_entry_by_node(struct nvmem_device *nvmem, struct device_node *np
+ 	return cell;
+ }
+ 
++static int nvmem_layout_module_get_optional(struct nvmem_device *nvmem)
++{
++	if (!nvmem->layout)
++		return 0;
++
++	if (!nvmem->layout->dev.driver)
++		return -EPROBE_DEFER;
++
++	return 0;
++}
++
+ /**
+  * of_nvmem_cell_get() - Get a nvmem cell from given device node and cell id
+  *
+@@ -608,13 +681,20 @@ struct nvmem_cell *of_nvmem_cell_get(struct device_node *np, const char *id)
+ 		return ERR_PTR(-ENOENT);
+ 
+ 	nvmem_np = of_get_parent(cell_np);
+-	if (nvmem_np && of_device_is_compatible(nvmem_np, "fixed-layout"))
+-		nvmem_np = of_get_parent(nvmem_np);
+ 	if (!nvmem_np) {
+ 		of_node_put(cell_np);
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
++	/* nvmem layouts produce cells within the nvmem-layout container */
++	if (of_node_name_eq(nvmem_np, "nvmem-layout")) {
++		nvmem_np = of_get_parent(nvmem_np);
++		if (!nvmem_np) {
++			of_node_put(cell_np);
++			return ERR_PTR(-EINVAL);
 +		}
 +	}
 +
-+	it->phandle_end = it->cur + count;
-+	it->cur_count = count;
-+
-+	return 0;
-+
-+err:
-+	if (it->node) {
-+		of_node_put(it->node);
-+		it->node = NULL;
-+	}
-+
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL_GPL(of_phandle_iterator_next);
-+
-+int of_phandle_iterator_args(struct of_phandle_iterator *it,
-+			     uint32_t *args,
-+			     int size)
-+{
-+	int i, count;
-+
-+	count = it->cur_count;
-+
-+	if (WARN_ON(size < count))
-+		count = size;
-+
-+	for (i = 0; i < count; i++)
-+		args[i] = be32_to_cpup(it->cur++);
-+
-+	return count;
-+}
-+
-+int __of_parse_phandle_with_args(const struct device_node *np,
-+				 const char *list_name,
-+				 const char *cells_name,
-+				 int cell_count, int index,
-+				 struct of_phandle_args *out_args)
-+{
-+	struct of_phandle_iterator it;
-+	int rc, cur_index = 0;
-+
-+	if (index < 0)
-+		return -EINVAL;
-+
-+	/* Loop over the phandles until all the requested entry is found */
-+	of_for_each_phandle(&it, rc, np, list_name, cells_name, cell_count) {
-+		/*
-+		 * All of the error cases bail out of the loop, so at
- 		 * this point, the parsing is successful. If the requested
- 		 * index matches, then fill the out_args structure and return,
- 		 * or return -ENOENT for an empty entry.
- 		 */
- 		rc = -ENOENT;
- 		if (cur_index == index) {
--			if (!phandle)
-+			if (!it.phandle)
- 				goto err;
- 
- 			if (out_args) {
--				int i;
--				if (WARN_ON(count > MAX_PHANDLE_ARGS))
--					count = MAX_PHANDLE_ARGS;
--				out_args->np = node;
--				out_args->args_count = count;
--				for (i = 0; i < count; i++)
--					out_args->args[i] =
--						be32_to_cpup(list++);
-+				int c;
-+
-+				c = of_phandle_iterator_args(&it,
-+							     out_args->args,
-+							     MAX_PHANDLE_ARGS);
-+				out_args->np = it.node;
-+				out_args->args_count = c;
-+			} else {
-+				of_node_put(it.node);
- 			}
- 
- 			/* Found it! return success */
- 			return 0;
- 		}
- 
--		node = NULL;
--		list += count;
- 		cur_index++;
+ 	nvmem = __nvmem_device_get(nvmem_np);
+ 	of_node_put(nvmem_np);
+ 	if (IS_ERR(nvmem)) {
+@@ -622,6 +702,13 @@ struct nvmem_cell *of_nvmem_cell_get(struct device_node *np, const char *id)
+ 		return ERR_CAST(nvmem);
  	}
  
-@@ -1796,23 +1861,13 @@ static int __of_parse_phandle_with_args(const struct device_node *np,
- 	 * Unlock node before returning result; will be one of:
- 	 * -ENOENT : index is for empty phandle
- 	 * -EINVAL : parsing error on data
--	 * [1..n]  : Number of phandle (count mode; when index = -1)
- 	 */
--	rc = index < 0 ? cur_index : -ENOENT;
-+
-  err:
-+	of_node_put(it.node);
- 	return rc;
- }
--
--int of_parse_phandle_with_args(const struct device_node *np,
--		const char *list_name, const char *cells_name, int index,
--		struct of_phandle_args *out_args)
--{
--	if (index < 0)
--		return -EINVAL;
--	return __of_parse_phandle_with_args(np, list_name, cells_name,
--					index, out_args);
--}
--EXPORT_SYMBOL(of_parse_phandle_with_args);
-+EXPORT_SYMBOL(__of_parse_phandle_with_args);
- 
- /**
-  * of_count_phandle_with_args() - Find the number of phandles references in a property
-@@ -1820,7 +1875,7 @@ EXPORT_SYMBOL(of_parse_phandle_with_args);
-  * @list_name:	property name that contains a list
-  * @cells_name:	property name that specifies phandles' arguments count
-  *
-- * Returns the number of phandle + argument tuples within a property. It
-+ * Return: The number of phandle + argument tuples within a property. It
-  * is a typical pattern to encode a list of phandle and variable
-  * arguments into a single property. The number of arguments is encoded
-  * by a property in the phandle-target node. For example, a gpios
-@@ -1829,11 +1884,40 @@ EXPORT_SYMBOL(of_parse_phandle_with_args);
-  * determined by the #gpio-cells property in the node pointed to by the
-  * phandle.
-  */
--int of_count_phandle_with_args(const struct device_node *np,
--			const char *list_name, const char *cells_name)
-+int of_count_phandle_with_args(const struct device_node *np, const char *list_name,
-+				const char *cells_name)
- {
--	return __of_parse_phandle_with_args(np, list_name, cells_name,
--					-1, NULL);
-+	struct of_phandle_iterator it;
-+	int rc, cur_index = 0;
-+
-+	/*
-+	 * If cells_name is NULL we assume a cell count of 0. This makes
-+	 * counting the phandles trivial as each 32bit word in the list is a
-+	 * phandle and no arguments are to consider. So we don't iterate through
-+	 * the list but just use the length to determine the phandle count.
-+	 */
-+	if (!cells_name) {
-+		const __be32 *list;
-+		int size;
-+
-+		list = of_get_property(np, list_name, &size);
-+		if (!list)
-+			return -ENOENT;
-+
-+		return size / sizeof(*list);
++	ret = nvmem_layout_module_get_optional(nvmem);
++	if (ret) {
++		of_node_put(cell_np);
++		__nvmem_device_put(nvmem);
++		return ERR_PTR(ret);
 +	}
 +
-+	rc = of_phandle_iterator_init(&it, np, list_name, cells_name, -1);
-+	if (rc)
-+		return rc;
-+
-+	while ((rc = of_phandle_iterator_next(&it)) == 0)
-+		cur_index += 1;
-+
-+	if (rc != -ENOENT)
-+		return rc;
-+
-+	return cur_index;
+ 	cell_entry = nvmem_find_cell_entry_by_node(nvmem, cell_np);
+ 	of_node_put(cell_np);
+ 	if (!cell_entry) {
+@@ -1057,3 +1144,10 @@ struct device *nvmem_device_get_device(struct nvmem_device *nvmem)
+ 	return &nvmem->dev;
  }
- EXPORT_SYMBOL(of_count_phandle_with_args);
- 
-diff --git a/include/of.h b/include/of.h
-index 2258cd501b727797ac00fc4cce1a6fdcfc529d44..841ab0408b19f6341e67685891bc4da4e82771c8 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -52,6 +52,23 @@ struct of_phandle_args {
- 	uint32_t args[MAX_PHANDLE_ARGS];
+ EXPORT_SYMBOL_GPL(nvmem_device_get_device);
++
++static int __init nvmem_init(void)
++{
++	/* TODO: add support for the NVMEM bus too */
++	return nvmem_layout_bus_register();
++}
++pure_initcall(nvmem_init);
+diff --git a/drivers/nvmem/internals.h b/drivers/nvmem/internals.h
+index 4faa9a7f9e76e93cb67192ab11475f466df31473..97ffdfe79dfe6c5459d1bba5ba717c861678e9a2 100644
+--- a/drivers/nvmem/internals.h
++++ b/drivers/nvmem/internals.h
+@@ -19,12 +19,34 @@ struct nvmem_device {
+ 	bool			read_only;
+ 	struct cdev		cdev;
+ 	void			*priv;
++	struct nvmem_layout	*layout;
+ 	struct list_head	cells;
+ 	nvmem_cell_post_process_t cell_post_process;
+ 	int			(*reg_write)(void *ctx, unsigned int reg,
+ 					     const void *val, size_t val_size);
+ 	int			(*reg_read)(void *ctx, unsigned int reg,
+ 					    void *val, size_t val_size);
++	bool			sysfs_cells_populated;
  };
  
-+struct of_phandle_iterator {
-+	/* Common iterator information */
-+	const char *cells_name;
-+	int cell_count;
-+	const struct device_node *parent;
-+
-+	/* List size information */
-+	const __be32 *list_end;
-+	const __be32 *phandle_end;
-+
-+	/* Current position state */
-+	const __be32 *cur;
-+	uint32_t cur_count;
-+	phandle phandle;
-+	struct device_node *node;
-+};
-+
- #define OF_MAX_RESERVE_MAP	16
- struct of_reserve_map {
- 	uint64_t start[OF_MAX_RESERVE_MAP];
-@@ -134,6 +151,9 @@ extern int of_bus_n_addr_cells(struct device_node *np);
- extern int of_n_addr_cells(struct device_node *np);
- extern int of_bus_n_size_cells(struct device_node *np);
- extern int of_n_size_cells(struct device_node *np);
-+extern int __of_parse_phandle_with_args(const struct device_node *np,
-+	const char *list_name, const char *cells_name, int cell_count,
-+	int index, struct of_phandle_args *out_args);
- extern bool of_node_name_eq(const struct device_node *np, const char *name);
- extern size_t of_node_has_prefix(const struct device_node *np, const char *prefix);
- 
-@@ -298,12 +318,69 @@ extern struct device_node *of_parse_phandle_from(const struct device_node *np,
- 					    struct device_node *root,
- 					    const char *phandle_name,
- 					    int index);
--extern int of_parse_phandle_with_args(const struct device_node *np,
--	const char *list_name, const char *cells_name, int index,
--	struct of_phandle_args *out_args);
-+/**
-+ * of_parse_phandle_with_args() - Find a node pointed by phandle in a list
-+ * @np:		pointer to a device tree node containing a list
-+ * @list_name:	property name that contains a list
-+ * @cells_name:	property name that specifies phandles' arguments count
-+ * @index:	index of a phandle to parse out
-+ * @out_args:	optional pointer to output arguments structure (will be filled)
-+ *
-+ * This function is useful to parse lists of phandles and their arguments.
-+ * Returns 0 on success and fills out_args, on error returns appropriate
-+ * errno value.
-+ *
-+ * Caller is responsible to call of_node_put() on the returned out_args->np
-+ * pointer.
-+ *
-+ * Example::
-+ *
-+ *  phandle1: node1 {
-+ *	#list-cells = <2>;
-+ *  };
-+ *
-+ *  phandle2: node2 {
-+ *	#list-cells = <1>;
-+ *  };
-+ *
-+ *  node3 {
-+ *	list = <&phandle1 1 2 &phandle2 3>;
-+ *  };
-+ *
-+ * To get a device_node of the ``node2`` node you may call this:
-+ * of_parse_phandle_with_args(node3, "list", "#list-cells", 1, &args);
-+ */
-+static inline int of_parse_phandle_with_args(const struct device_node *np,
-+					     const char *list_name,
-+					     const char *cells_name,
-+					     int index,
-+					     struct of_phandle_args *out_args)
-+{
-+	int cell_count = -1;
-+
-+	/* If cells_name is NULL we assume a cell count of 0 */
-+	if (!cells_name)
-+		cell_count = 0;
-+
-+	return __of_parse_phandle_with_args(np, list_name, cells_name,
-+					    cell_count, index, out_args);
-+}
-+
- extern int of_count_phandle_with_args(const struct device_node *np,
- 	const char *list_name, const char *cells_name);
- 
-+/* phandle iterator functions */
-+extern int of_phandle_iterator_init(struct of_phandle_iterator *it,
-+				    const struct device_node *np,
-+				    const char *list_name,
-+				    const char *cells_name,
-+				    int cell_count);
-+
-+extern int of_phandle_iterator_next(struct of_phandle_iterator *it);
-+extern int of_phandle_iterator_args(struct of_phandle_iterator *it,
-+				    uint32_t *args,
-+				    int size);
-+
- extern void of_alias_scan(void);
- extern int of_alias_get_id(struct device_node *np, const char *stem);
- extern int of_alias_get_id_from(struct device_node *root, struct device_node *np,
-@@ -751,6 +828,16 @@ static inline int of_property_read_string_helper(const struct device_node *np,
- 	return -ENOSYS;
- }
- 
-+static inline int __of_parse_phandle_with_args(const struct device_node *np,
-+					       const char *list_name,
-+					       const char *cells_name,
-+					       int cell_count,
-+					       int index,
-+					       struct of_phandle_args *out_args)
-+{
-+	return -ENOSYS;
-+}
-+
- static inline const __be32 *of_prop_next_u32(const struct property *prop,
- 					const __be32 *cur, u32 *pu)
- {
-@@ -825,6 +912,27 @@ static inline int of_count_phandle_with_args(const struct device_node *np,
- 	return -ENOSYS;
- }
- 
-+static inline int of_phandle_iterator_init(struct of_phandle_iterator *it,
-+					   const struct device_node *np,
-+					   const char *list_name,
-+					   const char *cells_name,
-+					   int cell_count)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_phandle_iterator_next(struct of_phandle_iterator *it)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_phandle_iterator_args(struct of_phandle_iterator *it,
-+					   uint32_t *args,
-+					   int size)
++#if IS_ENABLED(CONFIG_OF)
++int nvmem_layout_bus_register(void);
++int nvmem_populate_layout(struct nvmem_device *nvmem);
++void nvmem_destroy_layout(struct nvmem_device *nvmem);
++#else /* CONFIG_OF */
++static inline int nvmem_layout_bus_register(void)
 +{
 +	return 0;
 +}
 +
- static inline struct device_node *of_find_node_by_path_from(
- 	struct device_node *from, const char *path)
- {
-@@ -1229,6 +1337,13 @@ static inline int of_property_read_s32(const struct device_node *np,
- 	return of_property_read_u32(np, propname, (u32*) out_value);
++static inline void nvmem_layout_bus_unregister(void) {}
++
++static inline int nvmem_populate_layout(struct nvmem_device *nvmem)
++{
++	return 0;
++}
++
++static inline void nvmem_destroy_layout(struct nvmem_device *nvmem) { }
++#endif /* CONFIG_OF */
++
+ #endif  /* ifndef _LINUX_NVMEM_INTERNALS_H */
+diff --git a/drivers/nvmem/layouts.c b/drivers/nvmem/layouts.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..dfb7dc35895ad249585224ae69a39069ea852a1b
+--- /dev/null
++++ b/drivers/nvmem/layouts.c
+@@ -0,0 +1,173 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * NVMEM layout bus handling
++ *
++ * Copyright (C) 2023 Bootlin
++ * Author: Miquel Raynal <miquel.raynal@bootlin.com
++ */
++
++#include <device.h>
++#include <of_device.h>
++#include <module.h>
++#include <linux/nvmem-consumer.h>
++#include <linux/nvmem-provider.h>
++
++#include "internals.h"
++
++#define to_nvmem_layout_driver(drv) \
++	(container_of_const((drv), struct nvmem_layout_driver, driver))
++#define to_nvmem_layout_device(_dev) \
++	container_of((_dev), struct nvmem_layout, dev)
++
++static int nvmem_layout_bus_match(struct device *dev, const struct device_driver *drv)
++{
++	return of_driver_match_device(dev, drv);
++}
++
++static int nvmem_layout_bus_probe(struct device *dev)
++{
++	struct nvmem_layout_driver *drv = to_nvmem_layout_driver(dev->driver);
++	struct nvmem_layout *layout = to_nvmem_layout_device(dev);
++
++	if (!drv->probe || !drv->remove)
++		return -EINVAL;
++
++	return drv->probe(layout);
++}
++
++static void nvmem_layout_bus_remove(struct device *dev)
++{
++	struct nvmem_layout_driver *drv = to_nvmem_layout_driver(dev->driver);
++	struct nvmem_layout *layout = to_nvmem_layout_device(dev);
++
++	return drv->remove(layout);
++}
++
++static struct bus_type nvmem_layout_bus_type = {
++	.name		= "nvmem-layout",
++	.match		= nvmem_layout_bus_match,
++	.probe		= nvmem_layout_bus_probe,
++	.remove		= nvmem_layout_bus_remove,
++};
++
++int nvmem_layout_driver_register(struct nvmem_layout_driver *drv)
++{
++	drv->driver.bus = &nvmem_layout_bus_type;
++
++	return register_driver(&drv->driver);
++}
++EXPORT_SYMBOL_GPL(nvmem_layout_driver_register);
++
++static int nvmem_layout_create_device(struct nvmem_device *nvmem,
++				      struct device_node *np)
++{
++	struct nvmem_layout *layout;
++	struct device *dev;
++	int ret;
++
++	layout = kzalloc(sizeof(*layout), GFP_KERNEL);
++	if (!layout)
++		return -ENOMEM;
++
++	/* Create a bidirectional link */
++	layout->nvmem = nvmem;
++	nvmem->layout = layout;
++
++	/* Device model registration */
++	dev = &layout->dev;
++	dev->parent = &nvmem->dev;
++	dev->bus = &nvmem_layout_bus_type;
++	dev->dma_mask = DMA_BIT_MASK(32);
++	dev->of_node = of_node_get(np);
++	of_device_make_bus_id(dev);
++
++	ret = register_device(dev);
++	if (ret) {
++		put_device(dev);
++		return ret;
++	}
++
++	np->dev = dev;
++
++	return 0;
++}
++
++static const struct of_device_id of_nvmem_layout_skip_table[] = {
++	{ .compatible = "fixed-layout", },
++	{}
++};
++
++static int nvmem_layout_bus_populate(struct nvmem_device *nvmem,
++				     struct device_node *layout_dn)
++{
++	int ret;
++
++	/* Make sure it has a compatible property */
++	if (!of_property_present(layout_dn, "compatible")) {
++		pr_debug("%s() - skipping %pOF, no compatible prop\n",
++			 __func__, layout_dn);
++		return 0;
++	}
++
++	/* Fixed layouts are parsed manually somewhere else for now */
++	if (of_match_node(of_nvmem_layout_skip_table, layout_dn)) {
++		pr_debug("%s() - skipping %pOF node\n", __func__, layout_dn);
++		return 0;
++	}
++
++	if (layout_dn->dev) {
++		pr_debug("%s() - skipping %pOF, already populated\n",
++			 __func__, layout_dn);
++
++		return 0;
++	}
++
++	/* NVMEM layout buses expect only a single device representing the layout */
++	ret = nvmem_layout_create_device(nvmem, layout_dn);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++struct device_node *of_nvmem_layout_get_container(struct nvmem_device *nvmem)
++{
++	return of_get_child_by_name(nvmem->dev.of_node, "nvmem-layout");
++}
++EXPORT_SYMBOL_GPL(of_nvmem_layout_get_container);
++
++/*
++ * Returns the number of devices populated, 0 if the operation was not relevant
++ * for this nvmem device, an error code otherwise.
++ */
++int nvmem_populate_layout(struct nvmem_device *nvmem)
++{
++	struct device_node *layout_dn;
++	int ret;
++
++	layout_dn = of_nvmem_layout_get_container(nvmem);
++	if (!layout_dn)
++		return 0;
++
++	/* Populate the layout device */
++	ret = nvmem_layout_bus_populate(nvmem, layout_dn);
++
++	of_node_put(layout_dn);
++	return ret;
++}
++
++void nvmem_destroy_layout(struct nvmem_device *nvmem)
++{
++	struct device *dev;
++
++	if (!nvmem->layout)
++		return;
++
++	dev = &nvmem->layout->dev;
++	unregister_device(dev);
++}
++
++int nvmem_layout_bus_register(void)
++{
++	return bus_register(&nvmem_layout_bus_type);
++}
+diff --git a/drivers/nvmem/layouts/Kconfig b/drivers/nvmem/layouts/Kconfig
+new file mode 100644
+index 0000000000000000000000000000000000000000..5b2848b23825d70ecd1026819e51d2612681e3f9
+--- /dev/null
++++ b/drivers/nvmem/layouts/Kconfig
+@@ -0,0 +1,13 @@
++# SPDX-License-Identifier: GPL-2.0
++
++config NVMEM_LAYOUTS
++	bool
++	depends on OF
++
++if NVMEM_LAYOUTS
++
++menu "Layout Types"
++
++endmenu
++
++endif
+diff --git a/drivers/nvmem/layouts/Makefile b/drivers/nvmem/layouts/Makefile
+new file mode 100644
+index 0000000000000000000000000000000000000000..2202410b966b96a4cd0b992d04d62b7bc8e70d84
+--- /dev/null
++++ b/drivers/nvmem/layouts/Makefile
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Makefile for nvmem layouts.
++#
++
++# Dummy, can be delete once we do have a driver
++obj- := __dummy__.o
+diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
+index 08e16d49497a9e71f55e3827a0b28c6c6f9e24ae..eca8cd0400a2d20a9c62ec59d6031e8508025a81 100644
+--- a/include/linux/nvmem-provider.h
++++ b/include/linux/nvmem-provider.h
+@@ -14,6 +14,7 @@
+ 
+ #include <common.h>
+ #include <linux/types.h>
++#include <linux/device.h>
+ 
+ struct nvmem_device;
+ typedef int (*nvmem_reg_read_t)(void *priv, unsigned int offset,
+@@ -77,6 +78,32 @@ struct nvmem_config {
+ 	nvmem_cell_post_process_t cell_post_process;
+ };
+ 
++/**
++ * struct nvmem_layout - NVMEM layout definitions
++ *
++ * @dev:		Device-model layout device.
++ * @nvmem:		The underlying NVMEM device
++ * @add_cells:		Will be called if a nvmem device is found which
++ *			has this layout. The function will add layout
++ *			specific cells with nvmem_add_one_cell().
++ *
++ * A nvmem device can hold a well defined structure which can just be
++ * evaluated during runtime. For example a TLV list, or a list of "name=val"
++ * pairs. A nvmem layout can parse the nvmem device and add appropriate
++ * cells.
++ */
++struct nvmem_layout {
++	struct device dev;
++	struct nvmem_device *nvmem;
++	int (*add_cells)(struct nvmem_layout *layout);
++};
++
++struct nvmem_layout_driver {
++	struct device_driver driver;
++	int (*probe)(struct nvmem_layout *layout);
++	void (*remove)(struct nvmem_layout *layout);
++};
++
+ struct regmap;
+ struct cdev;
+ 
+@@ -90,6 +117,13 @@ struct device *nvmem_device_get_device(struct nvmem_device *nvmem);
+ int nvmem_add_one_cell(struct nvmem_device *nvmem,
+ 		       const struct nvmem_cell_info *info);
+ 
++int nvmem_layout_register(struct nvmem_layout *layout);
++void nvmem_layout_unregister(struct nvmem_layout *layout);
++
++int nvmem_layout_driver_register(struct nvmem_layout_driver *drv);
++#define module_nvmem_layout_driver(drv)		\
++	register_driver_macro(device, nvmem_layout, drv)
++
+ #else
+ 
+ static inline struct nvmem_device *nvmem_register(const struct nvmem_config *c)
+@@ -120,5 +154,34 @@ static inline int nvmem_add_one_cell(struct nvmem_device *nvmem,
+ 	return -EOPNOTSUPP;
  }
  
-+#define of_for_each_phandle(it, err, np, ln, cn, cc)			\
-+	for (of_phandle_iterator_init((it), (np), (ln), (cn), (cc)),	\
-+	     err = of_phandle_iterator_next(it);			\
-+	     err == 0;							\
-+	     err = of_phandle_iterator_next(it))
++static inline int nvmem_layout_register(struct nvmem_layout *layout)
++{
++	return -EOPNOTSUPP;
++}
 +
++static inline void nvmem_layout_unregister(struct nvmem_layout *layout) {}
 +
- /**
-  * of_property_read_u64_array - Find and read an array of 64 bit integers
-  * from a property.
+ #endif /* CONFIG_NVMEM */
++
++#if IS_ENABLED(CONFIG_NVMEM) && IS_ENABLED(CONFIG_OF)
++
++/**
++ * of_nvmem_layout_get_container() - Get OF node of layout container
++ *
++ * @nvmem: nvmem device
++ *
++ * Return: a node pointer with refcount incremented or NULL if no
++ * container exists. Use of_node_put() on it when done.
++ */
++struct device_node *of_nvmem_layout_get_container(struct nvmem_device *nvmem);
++
++#else  /* CONFIG_NVMEM && CONFIG_OF */
++
++static inline struct device_node *of_nvmem_layout_get_container(struct nvmem_device *nvmem)
++{
++	return NULL;
++}
++
++#endif /* CONFIG_NVMEM && CONFIG_OF */
++
+ #endif  /* ifndef _LINUX_NVMEM_PROVIDER_H */
 
 -- 
 2.39.5
