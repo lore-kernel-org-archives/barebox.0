@@ -1,68 +1,68 @@
-Delivery-date: Tue, 05 Aug 2025 22:08:39 +0200
+Delivery-date: Tue, 05 Aug 2025 22:15:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujNxf-007P9z-1U
+	id 1ujO4P-007PIX-0I
 	for lore@lore.pengutronix.de;
-	Tue, 05 Aug 2025 22:08:39 +0200
+	Tue, 05 Aug 2025 22:15:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujNxe-0002Vz-Rm
-	for lore@pengutronix.de; Tue, 05 Aug 2025 22:08:39 +0200
+	id 1ujO4O-00038i-Dr
+	for lore@pengutronix.de; Tue, 05 Aug 2025 22:15:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Q9BxqoBQBwDzICUb8hnQt1n0PKQ9yd81j9K+yB0quck=; b=0WysAJsxxYdFouNXSZOJ2yVDD4
-	EDbxnqfpp1phqOHzM3apwcM99UsLG0MX/j5QAC0ba+2wfbDbGM1pKV6pDYFuHV5ztAYS2HnysbEda
-	AyCvzsjfIsqJxywiVVH7tKNMOE6gRb2edMaxSsXmST/3lRfUNGgYJ4myE7TS5XhqHJiGNnA/WD7gM
-	JVLUGmU3dJLqQRBdm9VeJ1KGz/S+QCIK4NCOz1Y5VKXUwC1LcejqPhWIN4zJKHGWK005ipbflCS0S
-	Btv6xy2m4UwHjHJFeoaqPkR0qAbxXmZNlS8PecGrqnZVcNb72osJgOaB23NEJKcUWS/jFrcHwWOxk
-	WwndYppA==;
+	bh=YuecBw/BD7XskqyoahsO6PQ5r6vsowGnw1ZEE3ZDTas=; b=AJ4KnR3IXB7iRuag0O1F9YWlHF
+	WcYzFixgeEwZfxZD0shzmf+Bu70tTtWt9rkx7t8vQxiSD18prH+k3H1FyHb2bPQMz8WTrB2r7j2Iz
+	FiHbdQIqz30uUMISNjT6tsuhiKRmH0fDYRiXscSzOMBk/EJc62SBsD93jjRs/ZXPzWkc1OvwyGIdl
+	vwZDmzKfIKJblB7X6WSuz4gV3f6axkqnTaRLtpWsPIi8QwleZjtF70XOWtl5bqpvQFvsvhpDoDIG3
+	LPW4jHtx13V+AVNF7QD1gmFQoGVMttUME0lUYqoUefZrxb9sTt9eR6tomtK0cPeW/l6mcwlaU8/Wb
+	shGPXyIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujNx2-0000000DjWZ-0XJM;
-	Tue, 05 Aug 2025 20:08:00 +0000
+	id 1ujO3r-0000000Dk0f-2Mc7;
+	Tue, 05 Aug 2025 20:15:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujNwz-0000000DjVW-1cs7
+	id 1ujO3p-0000000Djzz-1Wuf
 	for barebox@lists.infradead.org;
-	Tue, 05 Aug 2025 20:07:58 +0000
+	Tue, 05 Aug 2025 20:15:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1ujNww-0002Pp-Mo; Tue, 05 Aug 2025 22:07:54 +0200
+	id 1ujO3o-00032M-0v; Tue, 05 Aug 2025 22:15:00 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1ujNww-00C5u6-1g;
-	Tue, 05 Aug 2025 22:07:54 +0200
+	id 1ujO3n-00C66P-2j;
+	Tue, 05 Aug 2025 22:14:59 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1ujNww-00AIcr-1I;
-	Tue, 05 Aug 2025 22:07:54 +0200
-Date: Tue, 5 Aug 2025 22:07:54 +0200
+	id 1ujO3n-00AIr3-2N;
+	Tue, 05 Aug 2025 22:14:59 +0200
+Date: Tue, 5 Aug 2025 22:14:59 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
-Message-ID: <20250805200754.tpbu2pypgaz6gk2g@pengutronix.de>
-References: <20250724135056.1252995-1-m.felsch@pengutronix.de>
- <20250724135056.1252995-2-m.felsch@pengutronix.de>
- <aJG88XTuJpuYX12B@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <20250805201459.knlzkgmcyucmqpzg@pengutronix.de>
+References: <20250729-v2024-05-0-topic-fit-overlay-v4-0-af3ad99acde2@pengutronix.de>
+ <20250729-v2024-05-0-topic-fit-overlay-v4-7-af3ad99acde2@pengutronix.de>
+ <aJHjgp5uJI47PXK6@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aJG88XTuJpuYX12B@pengutronix.de>
+In-Reply-To: <aJHjgp5uJI47PXK6@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250805_130757_427923_1120EBA3 
-X-CRM114-Status: GOOD (  27.10  )
+X-CRM114-CacheID: sfid-20250805_131501_416949_0F38CE5A 
+X-CRM114-Status: GOOD (  30.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,99 +84,130 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/2] keytoc: fix env provided keyspec handling
+Subject: Re: [PATCH v4 07/11] of: overlay: add FIT image overlay support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 25-08-05, Sascha Hauer wrote:
-> +Cc Basti
-> 
-> On Thu, Jul 24, 2025 at 03:50:56PM +0200, Marco Felsch wrote:
-> > Currently the env provided keyspec is resolved during the gen_key() step
-> > by making use of the try_resolve_env(). This is wrong because it will
-> > set the complete <hint>:<key> keyspec string for the 'keyname' and 'path'.
+> On Tue, Jul 29, 2025 at 05:34:32PM +0200, Marco Felsch wrote:
+> > This adds the support to load devicetree overlays from a FIT image.
+> > There are a few options to handle FIT overlays since the FIT overlay
+> > spec is not very strict.
 > > 
-> > To fix this the resolve step must happen during the main-loop as first step
-> > because the main-loop is doing the 'keyname' and 'path' split already.
+> > This implements the most configurable case where each overlay does have
+> > its own config node (including the optional signature).
+> > 
+> > - The "pattern" filter matches the config-node names (the node names
+> >   below the configurations node), not the overlay image names (the node
+> >   names below the images node).
+> > 
+> > - The "compatible" filter check doesn't differ from the file based overlay
+> >   handling.
 > > 
 > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > ---
-> >  scripts/keytoc.c | 13 +++++--------
-> >  1 file changed, 5 insertions(+), 8 deletions(-)
+> >  Documentation/user/devicetree.rst |  19 +++---
+> >  drivers/of/overlay.c              | 132 +++++++++++++++++++++++++++++++++++---
+> >  2 files changed, 134 insertions(+), 17 deletions(-)
 > > 
-> > diff --git a/scripts/keytoc.c b/scripts/keytoc.c
-> > index 617317d6607e..105fa4b5413d 100644
-> > --- a/scripts/keytoc.c
-> > +++ b/scripts/keytoc.c
-> > @@ -615,10 +615,6 @@ static int gen_key(const char *keyname, const char *path)
-> >  	char *tmp, *key_name_c;
+> > diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+> > index f02a12d44f0d53db3fb7bb065461c0ef193d0ab3..604ce0998cd8044cca59c40e65f4e9b95bec6112 100644
+> > --- a/drivers/of/overlay.c
+> > +++ b/drivers/of/overlay.c
+> > @@ -8,10 +8,13 @@
+> >   */
+> >  #define pr_fmt(fmt) "of_overlay: " fmt
 > >  
-> >  	/* key name handling */
-> > -	keyname = try_resolve_env(keyname);
-> > -	if (!keyname)
-> > -		exit(1);
-> > -
-> >  	tmp = key_name_c = strdup(keyname);
+> > +#include <bootm.h>
+> >  #include <common.h>
+> >  #include <of.h>
+> >  #include <errno.h>
+> > +#include <filetype.h>
+> >  #include <globalvar.h>
+> > +#include <image-fit.h>
+> >  #include <magicvar.h>
+> >  #include <string.h>
+> >  #include <libfile.h>
+> > @@ -463,8 +466,99 @@ static int of_overlay_apply_dir(struct device_node *root, const char *dirname,
+> >  	return ret;
+> >  }
 > >  
-> >  	while (*tmp) {
-> > @@ -628,10 +624,6 @@ static int gen_key(const char *keyname, const char *path)
-> >  	}
-> >  
-> >  	/* path/URI handling */
-> > -	path = try_resolve_env(path);
-> > -	if (!path)
-> > -		exit(1);
-> > -
+> > +static int of_overlay_apply_fit(struct device_node *root, struct fit_handle *fit,
+> > +				struct device_node *config)
+> > +{
+> > +	const char *name = config->name;
+> > +	struct device_node *overlay;
+> > +	unsigned long ovl_sz;
+> > +	const void *ovl;
+> > +	int ret;
+> > +
+> > +	if (!of_overlay_matches_filter(name, NULL))
+> > +		return 0;
+> > +
+> > +	ret = fit_open_image(fit, config, "fdt", &ovl, &ovl_sz);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	overlay = of_unflatten_dtb(ovl, ovl_sz);
+> > +
+> > +	if (!of_overlay_matches_filter(NULL, overlay)) {
+> > +		ret = 0;
+> > +		goto out;
+> > +	}
+> > +
+> > +	ret = of_overlay_apply_tree(root, overlay);
+> > +	if (ret == -ENODEV)
+> > +		pr_debug("Not applied %s (not compatible)\n", name);
+> > +	else if (ret)
+> > +		pr_err("Cannot apply %s: %s\n", name, strerror(-ret));
+> > +	else
+> > +		pr_info("Applied %s\n", name);
+> > +
+> > +out:
+> > +	of_delete_node(overlay);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static bool of_overlay_valid_config(struct fit_handle *fit,
+> > +				    struct device_node *config)
+> > +{
+> > +	/*
+> > +	 * Either kernel or firmware is marked as mandatory by U-Boot
+> > +	 * (doc/usage/fit/source_file_format.rst) except for overlays
+> > +	 * (doc/usage/fit/overlay-fdt-boot.rst). Therefore we need to ensure
+> > +	 * that only "fdt" config nodes are recognized as overlay config node.
+> > +	 */
+> > +	if (!fit_has_image(fit, config, "fdt") ||
+> > +	    fit_has_image(fit, config, "kernel") ||
+> > +	    fit_has_image(fit, config, "firmware"))
+> > +		return false;
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +static int of_overlay_global_fixup_fit(struct device_node *root,
+> > +				       const char *fit_path, loff_t fit_size)
+> > +{
+> > +	enum bootm_verify verify = bootm_get_verify_mode();
+> > +	struct device_node *conf_node;
+> > +	struct fit_handle *fit;
+> > +	int ret;
+> > +
+> > +	if (!IS_ENABLED(CONFIG_FITIMAGE))
+> > +		return 0;
 > 
-> This was introduced by Basti in 685cc602e0ad ("keytoc: allow __ENV__
-> lookup for keyname hint") to support:
-> 
-> CONFIG_CRYPTO_PUBLIC_KEYS="__ENV__FIT_KEY_NAME_HINT:__ENV__FIT_KEY"
+> The comments in https://lore.barebox.org/barebox/ZpT3h0o089tae2WS@pengutronix.de/
+> do not seem to be addressed here.
 
-Right, albeit I don't see why there should be two separate environment
-variables for specifying one keyspec entry.
+Sorry, I missed your comments. I will answer them first on the old
+Mail-Thread and send a new version afterwards.
 
-> I believe this patch breaks this usecase.
-
-Of course :-/ but at the moment the simple use-case:
-
-__ENV__FITKEY -> FITKEY="hint:<key>"
-
-is broken. IMHO having two separate ENV variables is rather counter
-intuitive. I also found myself in the following situation:
-
-__ENV__FITKEYS -> FITKEYS="hint:<key> hint-2:<key-2> <key-3>"
-
-This is not supported as well. So we should really define and document
-the ENV behavior.
-
-Regards,
+Thanks,
   Marco
-
 
 > 
 > Sascha
-> 
-> >  	if (!strncmp(path, "pkcs11:", 7)) {
-> >  		ret = engine_get_pub_key(path, &key);
-> >  		if (ret)
-> > @@ -737,6 +729,11 @@ int main(int argc, char *argv[])
-> >  		char *keyname = NULL;
-> >  		char *path = NULL;
-> >  
-> > +		/* Check if the keyspec is provided by the ENV first */
-> > +		keyspec = try_resolve_env(keyspec);
-> > +		if (!keyspec)
-> > +			exit(1);
-> > +
-> >  		if (!strncmp(keyspec, "pkcs11:", 7))
-> >  			path = strdup(keyspec);
-> >  		else
-> > -- 
-> > 2.39.5
-> > 
-> > 
-> > 
 > 
 > -- 
 > Pengutronix e.K.                           |                             |
