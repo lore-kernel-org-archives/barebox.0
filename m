@@ -1,67 +1,72 @@
-Delivery-date: Tue, 05 Aug 2025 11:36:52 +0200
+Delivery-date: Tue, 05 Aug 2025 12:01:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujE6G-007FYl-1A
+	id 1ujETv-007G3M-1D
 	for lore@lore.pengutronix.de;
-	Tue, 05 Aug 2025 11:36:52 +0200
+	Tue, 05 Aug 2025 12:01:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujE6F-0004Ax-K5
-	for lore@pengutronix.de; Tue, 05 Aug 2025 11:36:52 +0200
+	id 1ujETu-0006ZV-PM
+	for lore@pengutronix.de; Tue, 05 Aug 2025 12:01:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=auoB/ofAFibm2xyGh7Ftro6Cwr3xEPjZjkMgi8pnA0A=; b=wVKgeUwXL/8nVl8apOtz0AiFx6
-	x8PO49av65Utbpj2MRUkvN/ukNXlHNQTdZE7QgW4uZ30uPogFI/tatMqqK1qeikgjkiws1iVppjj9
-	b1HLUa+ex+DN77M1Dp3+KZUHgeWOSk37ZIUm9KbyI9yMtsV4Nfw/k82gBR70VnoqfMUCsqtISmos8
-	3+Z+uOuilGJPpDq48SATUYhyUDrmjgAnb0kafTi1wSvI8ehzitqbULLBKtavs7iwuEZzLbEm+V13A
-	D0enp4pSCXp3/3+PhXavhnxRRc+2fVrvsu6ih1egUxKk/jDoJjbQ/smfzzSkaUDViKmbELtbD9NPK
-	GESUJTHA==;
+	bh=AY3t2uGXXm9u/uLpu2LEVHfOyUJJx5d/8BLU/kO7ij8=; b=dnans3edGjLx0+moD7ICm27pP2
+	CNF4+l+XhNzgDFL0etfZGBMAqbj+QARR/3Usmf90QwKyT9hBPWjrtCJSbSpSDPx9dobdBpViU+S0k
+	WhcuoNSgz+z4A8tYJuDYNGaEFh+KgDB9ioFFqxC56VAjO06aFClj87Ae+6bfvZF3Qpah8uou6aUi1
+	V/viur5UkAs06ODv008CpsXmja1sNagIL7SfmIWO2DRivmi1CZk/b73ALrF6A3EcDbQqLlFc2U3Yr
+	vm0xquaLMSwQToYlawzntBdUYDr4VJ5aNldCvSRAgQrWh3li4DA7dnMOfRDR0JdMmbSzTIc7gciBv
+	Oh0js+0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujE5n-0000000CO44-3lFc;
-	Tue, 05 Aug 2025 09:36:23 +0000
+	id 1ujETL-0000000CRCs-0JDU;
+	Tue, 05 Aug 2025 10:00:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujDzK-0000000CM5q-3NOM
+	id 1ujE3Y-0000000CN1Y-23Rz
 	for barebox@lists.infradead.org;
-	Tue, 05 Aug 2025 09:29:44 +0000
+	Tue, 05 Aug 2025 09:34:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujDzJ-000269-D1; Tue, 05 Aug 2025 11:29:41 +0200
+	id 1ujE3W-0002m5-Hz; Tue, 05 Aug 2025 11:34:02 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujDzJ-00C1Bv-0h;
-	Tue, 05 Aug 2025 11:29:41 +0200
+	id 1ujE3V-00C1CN-3C;
+	Tue, 05 Aug 2025 11:34:02 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujDzJ-00EjFB-0V;
-	Tue, 05 Aug 2025 11:29:41 +0200
+	id 1ujE3V-00EjUP-30;
+	Tue, 05 Aug 2025 11:34:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250702110139.2235318-1-a.fatoum@pengutronix.de>
-References: <20250702110139.2235318-1-a.fatoum@pengutronix.de>
-Message-Id: <175438618115.3510454.7550480690935997570.b4-ty@pengutronix.de>
-Date: Tue, 05 Aug 2025 11:29:41 +0200
+To: barebox@lists.infradead.org, 
+ Gwenhael Goavec-Merou <gwenj@trabucayre.com>
+Cc: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>, 
+ Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ Johannes Roith <johannes@gnu-linux.rocks>, 
+ Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20250707055331.2355809-1-gwenj@trabucayre.com>
+References: <20250707055331.2355809-1-gwenj@trabucayre.com>
+Message-Id: <175438644192.3511396.4404667642500132320.b4-ty@pengutronix.de>
+Date: Tue, 05 Aug 2025 11:34:01 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250805_022942_847154_D0992C0C 
-X-CRM114-Status: UNSURE (   8.16  )
+X-CRM114-CacheID: sfid-20250805_023404_694398_5FF62609 
+X-CRM114-Status: UNSURE (   7.91  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,35 +89,28 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/4] mci: clean up MCI idle delay handling a bit
+Subject: Re: (subset) [PATCH 1/3]
+ arch/arm/boards/avnet-zedboard/zedboard.zynqcfg: removed everything but
+ stop instruction to fix barebox boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 02 Jul 2025 13:01:35 +0200, Ahmad Fatoum wrote:
-> Stuff I noticed while looking into actual issues that have been
-> submitted separately as fixes for master.
+On Mon, 07 Jul 2025 05:53:29 +0000, Gwenhael Goavec-Merou wrote:
+> From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 > 
-> Nothing critical in this series, so can go into next.
+> As mentionned in [1,2] sequence present in arch/arm/boards/avnet-zedboard/zedboard.zynqcfg
+> causes boot failure without any messages.
 > 
-> Ahmad Fatoum (4):
->   include: linux/iopoll.h: evaluate timeout_us argument only once
->   mci: bcm2835: allow core to request timeouts longer than 100ms
->   mci: sdhci: use sdhci_compute_timeout in sdhci_wait_idle[_data]
->   mci: sdhci: reduce duplication in sdhci_wait_idle[_data]
+> This patch removes all instructions but the last one allowing to have
+> access to the barebox prompt
 > 
 > [...]
 
 Applied, thanks!
 
-[1/4] include: linux/iopoll.h: evaluate timeout_us argument only once
-      https://git.pengutronix.de/cgit/barebox/commit/?id=828aa7a3c609 (link may not be stable)
-[2/4] mci: bcm2835: allow core to request timeouts longer than 100ms
-      https://git.pengutronix.de/cgit/barebox/commit/?id=962179a82898 (link may not be stable)
-[3/4] mci: sdhci: use sdhci_compute_timeout in sdhci_wait_idle[_data]
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3054debb58a7 (link may not be stable)
-[4/4] mci: sdhci: reduce duplication in sdhci_wait_idle[_data]
-      https://git.pengutronix.de/cgit/barebox/commit/?id=fb25385dc3b8 (link may not be stable)
+[2/3] arch/arm/boards/avnet-zedboard/lowlevel.c: added SDIO clk frequency configuration
+      https://git.pengutronix.de/cgit/barebox/commit/?id=74d4f36f9d9a (link may not be stable)
 
 Best regards,
 -- 
