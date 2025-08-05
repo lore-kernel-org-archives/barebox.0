@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujMXc-007NiR-0x
+	id 1ujMXc-007Nic-1l
 	for lore@lore.pengutronix.de;
 	Tue, 05 Aug 2025 20:37:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujMXb-0001Cq-3K
+	id 1ujMXb-0001D8-Ku
 	for lore@pengutronix.de; Tue, 05 Aug 2025 20:37:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,39 +18,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Yv9IuyIdR17S5p1eeQwEdubwW0/9/zYhr8JcTiIXdOw=; b=RikopkpvosRhHGEmvHLtdR5H6L
-	IHBZsfpO0f3oLUT8DRUTq271fPgU/7EqbIh0jvt9YZWguiQRlpOss1MMvfNzYAekGJps20o43AFX1
-	QU5AcpmnfsZGQabX5d4VvTmlAEBg7T2zuQ1/3xukpVgxM1B/EoY/PtfmIswCuRdy7BWyvYK00Ejzr
-	eqB3rV7JgsN1K3GqisKH/f8pLvTdZ90Q+YogToECA1Agsj0iFHvAenF+vmZA9LCpKb1s+nBztjagR
-	bIwtElakiyS9b99jxo+uhnfyr+f1/C+4HfDfahs2OyJK7ksPJYA0Sdb7DiBlxiZaoOlGgmAKOlzlZ
-	KkLJkcyQ==;
+	bh=phhzdzjMTXQPmBJE8mk+vB18X/iDL60c4oGTZJTSxsw=; b=yYcwBEZ+isQcG1YcnRHEChpHG/
+	cn5GJT8l7CeOIuSBdzLl974KZejsYR6TiejmuCoNnpqUTAN6Mz1mm0NEk+IPYxpAepgFgQpz0aX27
+	O0cpK/S45haGyIgD1H67JviDYFEQDliD2zxgOrPFsZT2ABiGGzxVNHZ3Y0lONZ5558dk/wfrVEXVj
+	dW7tOYNwuIMMHCi+XSxSSDprJtfNGehTzyGZCJlkhBhFmmsyn4jbwL0/cBVwca80yZGU8QukaVNAX
+	oDd+OD/xtZQeor4CFoiqO+tvCzi5iMNHOUTU7bN9E34VR1VcmRNftl1PrgMbUGddYP2C0KqAULdKF
+	hee9n+mA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujMWy-0000000DYSB-1f59;
-	Tue, 05 Aug 2025 18:37:00 +0000
+	id 1ujMX1-0000000DYVL-32OB;
+	Tue, 05 Aug 2025 18:37:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujLjQ-0000000DSgV-3JSa
+	id 1ujLjR-0000000DSgc-0gV3
 	for barebox@lists.infradead.org;
-	Tue, 05 Aug 2025 17:45:50 +0000
+	Tue, 05 Aug 2025 17:45:51 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1ujLjO-0003rm-3k; Tue, 05 Aug 2025 19:45:46 +0200
+	id 1ujLjO-0003rm-HW; Tue, 05 Aug 2025 19:45:46 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Tue,  5 Aug 2025 19:45:37 +0200
-Message-Id: <20250805174541.2606267-5-a.fatoum@barebox.org>
+Date: Tue,  5 Aug 2025 19:45:39 +0200
+Message-Id: <20250805174541.2606267-7-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250805174541.2606267-1-a.fatoum@barebox.org>
 References: <20250805174541.2606267-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250805_104548_832638_A741C44C 
-X-CRM114-Status: UNSURE (   9.44  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250805_104549_197357_4546F011 
+X-CRM114-Status: GOOD (  10.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,38 +71,39 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 4/8] ARM64: mmu: pass map type not PTE flags to early_remap_range
+Subject: [PATCH master 6/8] ARM: mmu: setup trap pages before remapping R/O
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-early_remap_range() is calling get_pre_attrs() internally already on the
-flags argument, so passing PTE flags here is incorrect.
+The order matters on ARM32, because arm_fixup_vectors() actually rewrite
+the vector table, which is in the text area.
 
-Fixes: 59c1288698b4 ("ARM: MMU64: map memory for barebox proper pagewise")
+On ARM64, the order doesn't matter. As we are going to make the memory
+bank remapping code common between both ARM32 and ARM64, move
+setup_trap_pages, so the code between ARM32 and ARM64 becomes identical.
+
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
  arch/arm/cpu/mmu_64.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 91b3cd76c24f..0db95bceba1b 100644
+index 7e6e89cb98c2..a770be7ed611 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -499,12 +499,12 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
- 		barebox_size = optee_membase - barebox_start;
- 
- 		early_remap_range(optee_membase - barebox_size, barebox_size,
--			     get_pte_attrs(ARCH_MAP_CACHED_RWX), true);
-+			     ARCH_MAP_CACHED_RWX, true);
- 	} else {
- 		barebox_size = membase + memsize - barebox_start;
- 
- 		early_remap_range(membase + memsize - barebox_size, barebox_size,
--			     get_pte_attrs(ARCH_MAP_CACHED_RWX), true);
-+			     ARCH_MAP_CACHED_RWX, true);
+@@ -417,10 +417,10 @@ void __mmu_init(bool mmu_on)
+ 		remap_range((void *)pos, bank->start + bank->size - pos, MAP_CACHED);
  	}
  
- 	early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT, false);
++	setup_trap_pages();
++
+ 	remap_range((void *)code_start, code_size, MAP_CODE);
+ 	remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
+-
+-	setup_trap_pages();
+ }
+ 
+ void mmu_disable(void)
 -- 
 2.39.5
 
