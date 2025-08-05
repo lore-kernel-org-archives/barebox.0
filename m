@@ -1,68 +1,68 @@
-Delivery-date: Tue, 05 Aug 2025 11:34:25 +0200
+Delivery-date: Tue, 05 Aug 2025 11:34:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujE3t-007FRu-36
+	id 1ujE3u-007FS5-0W
 	for lore@lore.pengutronix.de;
-	Tue, 05 Aug 2025 11:34:25 +0200
+	Tue, 05 Aug 2025 11:34:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujE3q-0003Fg-Mo
-	for lore@pengutronix.de; Tue, 05 Aug 2025 11:34:25 +0200
+	id 1ujE3r-0003GU-7h
+	for lore@pengutronix.de; Tue, 05 Aug 2025 11:34:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oZM/r5ZhDpBhqKLxK9x6z8ohYiCF4taoZ3+y+ZRKv7o=; b=5Eikq1B52HfvXkj7VQHh4iz6I1
-	l5r9YBHwgsocm6W9yrndNqIGuY4/fu+jHeADVuCZtyTTMbmIg2lSfWgJezU9lK0opCXPk8USjQRch
-	8s66gXbbtf+5lZIlNipJ8hFvtdnrzwl582k9z8wEJrRgf9MTtXLn8diFqrqqFENi1KdympwpR7I/N
-	PRY+HyJvmVJSDyR/J5JOY54W7QgI4HrR3I3CzyZeSg2qeGh8lgB4Pis5PCMmIJgn0BbXlexcx6ZB0
-	CqtCatwZ34N+yN/4iGhhjqGbJDkSKK3N8Gg0168ejU3abduCcF6CBw8SUanWh4CrXtGoDtyXgbjFP
-	1MRZNulQ==;
+	bh=TDSRFeaSmAGRAU3EKHJRlYi+KAUm0LStvr3cTgtk0OI=; b=Npl3bJbASn6ZP3n4LUfqnHSy1m
+	jmEO8hHF6Zpd5PXOhldwwcugUZmQsU/8ok6Yy81uQcnDmwfwxpQZY4NTw9JsIiI7l50kNmJyL7f3d
+	AhsWiKcHJjnbjGAalNeAW/i+0iiQC0wmF9R/Cg4gcGOUENHPIYuCEXQykrHrWs/Bz+eTrqucmWopG
+	i1VqkYotlbLglerRCrLUPr/mHYmhM459woEP+7Yp8qxScUXnkDFyAUCeEkUVwKda1n/FTJhBj5kLw
+	Oo0Whk4np9FRdFwzURmC2MiuxIs+d7HRSuIrM55SeM2FKSprSGELvXp4ciR2MEoQ8SNIezMOQUY+X
+	TmmSaT9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujE3B-0000000CMe9-1sP0;
-	Tue, 05 Aug 2025 09:33:41 +0000
+	id 1ujE38-0000000CMbU-3Ddx;
+	Tue, 05 Aug 2025 09:33:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujDgh-0000000CJlD-0oCc
+	id 1ujDdI-0000000CJ2m-2oLu
 	for barebox@lists.infradead.org;
-	Tue, 05 Aug 2025 09:10:28 +0000
+	Tue, 05 Aug 2025 09:06:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujDgg-0000Gt-2k; Tue, 05 Aug 2025 11:10:26 +0200
+	id 1ujDdH-0007z5-9X; Tue, 05 Aug 2025 11:06:55 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujDgf-00C17J-2u;
-	Tue, 05 Aug 2025 11:10:25 +0200
+	id 1ujDdG-00C16p-2n;
+	Tue, 05 Aug 2025 11:06:54 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujDgf-00EiAY-2i;
-	Tue, 05 Aug 2025 11:10:25 +0200
+	id 1ujDdG-00EhhW-2c;
+	Tue, 05 Aug 2025 11:06:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- =?utf-8?q?Ulrich_=C3=96lmann?= <u.oelmann@pengutronix.de>
-In-Reply-To: <20250711064232.403961-1-u.oelmann@pengutronix.de>
-References: <20250711064232.403961-1-u.oelmann@pengutronix.de>
-Message-Id: <175438502584.3506339.18149337735674878045.b4-ty@pengutronix.de>
-Date: Tue, 05 Aug 2025 11:10:25 +0200
+To: barebox@lists.infradead.org, Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250721050045.17310-1-antonynpavlov@gmail.com>
+References: <20250721050045.17310-1-antonynpavlov@gmail.com>
+Message-Id: <175438481480.3504547.5196387311071104038.b4-ty@pengutronix.de>
+Date: Tue, 05 Aug 2025 11:06:54 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250805_021027_235735_F0AE7DAA 
-X-CRM114-Status: UNSURE (   4.98  )
+X-CRM114-CacheID: sfid-20250805_020656_748169_9D1CDA06 
+X-CRM114-Status: UNSURE (   6.66  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,19 +85,36 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX: Kconfig: fix typos
+Subject: Re: [PATCH 0/4] drop unused declarations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 11 Jul 2025 08:42:32 +0200, Ulrich Ölmann wrote:
+On Mon, 21 Jul 2025 08:00:41 +0300, Antony Pavlov wrote:
+> Antony Pavlov (4):
+>   include/stdio.h: drop serial_printf() declaration
+>   include/scsi.h: drop unused declarations
+>   include/of.h: drop of_parse_dtb() declaration
+>   include/driver.h: drop unused declarations
 > 
-
+> include/driver.h |  9 ---------
+>  include/of.h     |  1 -
+>  include/scsi.h   | 14 --------------
+>  include/stdio.h  |  4 ----
+>  4 files changed, 28 deletions(-)
+> 
+> [...]
 
 Applied, thanks!
 
-[1/1] ARM: i.MX: Kconfig: fix typos
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0cc4e584f082 (link may not be stable)
+[1/4] include/stdio.h: drop serial_printf() declaration
+      https://git.pengutronix.de/cgit/barebox/commit/?id=be8c8f03aa49 (link may not be stable)
+[2/4] include/scsi.h: drop unused declarations
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7f58b924f64b (link may not be stable)
+[3/4] include/of.h: drop of_parse_dtb() declaration
+      https://git.pengutronix.de/cgit/barebox/commit/?id=03e3d2b050e4 (link may not be stable)
+[4/4] include/driver.h: drop unused declarations
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d4d15c91e32e (link may not be stable)
 
 Best regards,
 -- 
