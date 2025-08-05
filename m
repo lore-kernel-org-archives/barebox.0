@@ -1,69 +1,67 @@
-Delivery-date: Tue, 05 Aug 2025 09:45:57 +0200
+Delivery-date: Tue, 05 Aug 2025 10:26:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujCMv-007Dl2-0f
+	id 1ujD0Z-007EPl-0l
 	for lore@lore.pengutronix.de;
-	Tue, 05 Aug 2025 09:45:57 +0200
+	Tue, 05 Aug 2025 10:26:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujCMu-00073d-Mz
-	for lore@pengutronix.de; Tue, 05 Aug 2025 09:45:57 +0200
+	id 1ujD0Y-0003ry-Hc
+	for lore@pengutronix.de; Tue, 05 Aug 2025 10:26:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Xc0+/m6k7htShKHdrTJJ54kt461B2ChesOkU2FQCr0o=; b=X7oB4bNVFDy41Mdde+l9FAHF9r
-	BiCEOvtmtmsc6ujTiYcxAHfP/Dg90aW/SMsHSDZtEtgKniOomarjwVPJsgDCDYurGiDsb0EVDqibN
-	wfUy5Urd0fx0PeedN0+10ccPA/C+TX25eujAB59Dq/VeUTwBrfGVtIuxy0igJvcz54fsmoJbqcDoW
-	UYGKjBT2QWzVgBD2ecFED8P4Sg+qgrtHQkfjdllelIfQC6+TpORwL+BCWoMQxF6xP+oO5UhDgsxN1
-	+XlEbRjflcTDCM3IDczPwp1ul2007uewJ1khW486JpNbIMJI5VP9YWBu8OzzhBzRqQzsdb9nxz++o
-	IDlyWDKQ==;
+	bh=9PlhkZMt1EbfZX+p2FshiMXTwbSIRpyEYX4jY/GZSAA=; b=grXjwvjR/n9qWE64DH2Ys/NWhA
+	+KGU1D70K3s9r+YiBVtbM2yuL8bnHQURL43ViS5aF+ME4oIPZs05Cpp+tkLjCky4EcJT7SXKEQ/Jw
+	Yvint4ridSG/A5K21o5Sc6CxWiS9QUwpAKypcnxnrfKaKhq/w3keUM4/v7CVXzgOkyHTclM36gGMf
+	dl+QWeGJEyPQXl6d75b7q9IfxjhShNuegQlvte0NFyuKTwE347943RDhVRH/vvvfMeRMEfSe4HR/Z
+	OyVmCvGckezc38kzME1NQd+EfLTh5KXXrwLBPpbAjjQBuScb9bTA7UzHGpHCIexJWfKtesghnYIoF
+	ZOONCLYA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujCMW-0000000C3bB-47jX;
-	Tue, 05 Aug 2025 07:45:33 +0000
+	id 1ujCzx-0000000C9um-3OiX;
+	Tue, 05 Aug 2025 08:26:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujCMU-0000000C3a9-09tK
+	id 1ujCQx-0000000C4Zr-43ws
 	for barebox@lists.infradead.org;
-	Tue, 05 Aug 2025 07:45:31 +0000
+	Tue, 05 Aug 2025 07:50:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujCMS-0006yJ-Ng; Tue, 05 Aug 2025 09:45:28 +0200
+	id 1ujCQw-0007fx-Os; Tue, 05 Aug 2025 09:50:06 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujCMS-00C0Lg-1S;
-	Tue, 05 Aug 2025 09:45:28 +0200
+	id 1ujCQw-00C0M9-1t;
+	Tue, 05 Aug 2025 09:50:06 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujCMS-00EdDg-1G;
-	Tue, 05 Aug 2025 09:45:28 +0200
+	id 1ujCQw-00Edis-1i;
+	Tue, 05 Aug 2025 09:50:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>, 
- Andrei Lalaev <andrey.lalaev@gmail.com>
-In-Reply-To: <20250722140534.3349443-1-a.fatoum@pengutronix.de>
-References: <20250722140534.3349443-1-a.fatoum@pengutronix.de>
-Message-Id: <175437992838.3487339.6501651936142178260.b4-ty@pengutronix.de>
-Date: Tue, 05 Aug 2025 09:45:28 +0200
+To: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>
+In-Reply-To: <20250723155545.682170-1-m.felsch@pengutronix.de>
+References: <20250723155545.682170-1-m.felsch@pengutronix.de>
+Message-Id: <175438020652.3489265.12576782998669389252.b4-ty@pengutronix.de>
+Date: Tue, 05 Aug 2025 09:50:06 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250805_004530_081843_5C9C96F6 
-X-CRM114-Status: UNSURE (   5.74  )
+X-CRM114-CacheID: sfid-20250805_005008_048978_4B60EC34 
+X-CRM114-Status: UNSURE (   7.32  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,30 +80,30 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] fastboot: populate is-logical:$partition
- variable
+Subject: Re: [PATCH] block: follow links before check if
+ cdev_is_block_partition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 22 Jul 2025 16:05:34 +0200, Ahmad Fatoum wrote:
-> Uwe reports on IRC that fastboot tries to read some default variables
-> that barebox doesn't define, which triggers host-side error output:
+On Wed, 23 Jul 2025 17:55:45 +0200, Marco Felsch wrote:
+> cdev_is_block_partition() fails if a cdev is passed which is a
+> parition-link. Most of our barebox code is link-aware by resolving the
+> links first.
 > 
->   ERROR: fastboot: no such variable: is-logical:kernel
-> 
-> Flashing didn't seem impacted though.
+> Make it more user-friendly and resolve the possible cdev parttion link
+> first before performing the actual check.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] fastboot: populate is-logical:$partition variable
-      https://git.pengutronix.de/cgit/barebox/commit/?id=9df63cbfdeec (link may not be stable)
+[1/1] block: follow links before check if cdev_is_block_partition
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9322c61055f8 (link may not be stable)
 
 Best regards,
 -- 
