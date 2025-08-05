@@ -1,70 +1,68 @@
-Delivery-date: Tue, 05 Aug 2025 12:06:29 +0200
+Delivery-date: Tue, 05 Aug 2025 12:25:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujEYv-007G6h-27
+	id 1ujErM-007GLr-38
 	for lore@lore.pengutronix.de;
-	Tue, 05 Aug 2025 12:06:29 +0200
+	Tue, 05 Aug 2025 12:25:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujEYv-0007Zg-3X
-	for lore@pengutronix.de; Tue, 05 Aug 2025 12:06:29 +0200
+	id 1ujErM-0001Co-Bz
+	for lore@pengutronix.de; Tue, 05 Aug 2025 12:25:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To
-	:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=us6fnADGxUFNXd81TQgNaGyhfVg1CUDYAaIIu5r84uw=; b=fAygpxxyBDEMYXVcFfzMnDnr1d
-	+hVfLZeCajiUvT6GidTcBgrkDF2Ul3Om+D01mvvj7KN1mdh/2oVSe4KlRFwaIBYGdvu4tbDT92YFK
-	FwVa6Isa0H0dBfErCrX2IKmp2CUYwreyn16LBz/1X4TNGK1TMy1uANV+KzTwuanngvT9n3ReIz9hf
-	VDU7R3QnL/FqyrCLIcWr0QDdfCXn2ZI/q+ijWlnUSw87q1wV178TV8/8dS5rRCun3g/CMRuLViX3c
-	aRWCteOIa0TCnvO2/q5Lv0b0SP+rhWCbntJZ8zPQBJoGzcW0N4yeIts+Rhgoyq26czVUvgyFT3b50
-	tW34GmWQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=dzWm4MHCTN+5Emyyk8sKfCcHqf81Tl535HWXd9pWfgs=; b=qAT4MnlEMzVCZtdFuKkAzJueT1
+	6ImukvvxLrHx4t/OZHrqCHzCMjyox3t/xUGnzo4XTTZrNJFBE+daTg7MfcZlSsg1qFIzPvf0QB7Wy
+	LuzhkCqxhQcD4Ia9Eevkk/kYS6gxNpvZmDHsh5+sqTwASPa6sMWZ/z+ktJD0eP+CVuf2FbPKsTCNZ
+	RWRBTS+iaHDlG6wUhhCAxo9OWJ2tgv2qJs0a3rPEwpq3CO6Z0ifBI/hFYy6+QF1abdxKBZDpxwXme
+	aIsfjUadp4gosc7RUW6bOTDjwcaCKfFcx3QwOscZIkcmpxkrmt7JEe/3T/j3fCtQ7uurCsCbwgYWy
+	BLAUrt0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujEYV-0000000CRpz-33k0;
-	Tue, 05 Aug 2025 10:06:03 +0000
+	id 1ujEqt-0000000CTqx-1FT4;
+	Tue, 05 Aug 2025 10:25:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujE4X-0000000CNlV-21zg
+	id 1ujEdz-0000000CSTt-1B3S
 	for barebox@lists.infradead.org;
-	Tue, 05 Aug 2025 09:35:06 +0000
+	Tue, 05 Aug 2025 10:11:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ujE4W-0003sL-33; Tue, 05 Aug 2025 11:35:04 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1ujEdx-00082B-IA; Tue, 05 Aug 2025 12:11:41 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ujE4V-00C1Gt-2m;
-	Tue, 05 Aug 2025 11:35:03 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ujE4V-00AACE-2P;
-	Tue, 05 Aug 2025 11:35:03 +0200
-Date: Tue, 5 Aug 2025 11:35:03 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Gwenhael Goavec-Merou <gwenj@trabucayre.com>
-Message-ID: <aJHQRz3NOMISohsV@pengutronix.de>
-References: <20250707055331.2355809-1-gwenj@trabucayre.com>
- <20250707055331.2355809-2-gwenj@trabucayre.com>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1ujEdx-00C1Nx-0z;
+	Tue, 05 Aug 2025 12:11:41 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1ujEdx-00EspN-0m;
+	Tue, 05 Aug 2025 12:11:41 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, 
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>
+In-Reply-To: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-0-96df2d7dadf4@pengutronix.de>
+References: <20241029-v2024-10-0-topic-socfpga-agilex5-v1-0-96df2d7dadf4@pengutronix.de>
+Message-Id: <175438870123.3547280.6878728654983311792.b4-ty@pengutronix.de>
+Date: Tue, 05 Aug 2025 12:11:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250707055331.2355809-2-gwenj@trabucayre.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250805_023505_523495_5C25020C 
-X-CRM114-Status: GOOD (  18.26  )
+X-CRM114-CacheID: sfid-20250805_031143_370206_B8E02631 
+X-CRM114-Status: GOOD (  11.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,7 +74,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org, Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Johannes Roith <johannes@gnu-linux.rocks>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -87,45 +84,48 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] arch/arm/boards/avnet-zedboard/lowlevel.c: added
- SDIO clk frequency configuration
+Subject: Re: [PATCH 00/10] ARM: SoCFPGA: Add initial support for Agilex5
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Jul 07, 2025 at 05:53:30AM +0000, Gwenhael Goavec-Merou wrote:
-> From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
-> 
-> As mentionned in [1] MMC sometime fails to be initialized/ is not
-> working with this type of error:
-> 
-> arasan-sdhci e0100000.mmc@e0100000.of: registered as mmc0
-> malloc space: 0x17e00000 -> 0x1fdfffff (size 128 MiB)
-> arasan-sdhci e0100000.mmc@e0100000.of: error while transferring data for command 6
-> arasan-sdhci e0100000.mmc@e0100000.of: state = 0x01ff0202 , interrupt = 0x00208000
-> mmc0: Card's startup fails with -74
-> barebox-environment chosen:environment-sd.of: probe failed: No such file or directory
-> environment load /dev/env0: No such file or directory
-> 
-> This patch adds SDIO clck configuration allowing to have a valid MMC
-> clock frequency.
-> 
-> [1] https://lore.barebox.org/barebox/VI1PR02MB4429606E3B06D0F53D2B4175AB4DA@VI1PR02MB4429.eurprd02.prod.outlook.com/T/#m1cb8598da4741c0b7a41944e1aecef373dd74319
-> 
-> Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
-> ---
->  arch/arm/boards/avnet-zedboard/lowlevel.c | 1 +
->  1 file changed, 1 insertion(+)
 
-Applied with Ahmads suggestion for the subject.
+On Tue, 29 Oct 2024 09:42:30 +0100, Steffen Trumtrar wrote:
+> This series adds basic support for the Altera Agilex5 SoCFPGA series.
+> Currently only booting from QSPI is supported. Flashing the image to the
+> QSPI has to be done with quartus_pgm, therefore there are still some
+> essential things left to have proper support for this platform.
+> 
+> Nevertheless it boots from QSPI and starts linux on the included
+> Arrow AXE5 board.
+> 
+> [...]
 
-Thanks,
- Sascha
+Applied, thanks!
 
+[01/10] ARM: socfpga: kconfig: sort entries
+        https://git.pengutronix.de/cgit/barebox/commit/?id=7e5e8068c261 (link may not be stable)
+[02/10] mach: socfpga: debug_ll: rework putc_ll
+        https://git.pengutronix.de/cgit/barebox/commit/?id=3f7b0e870250 (link may not be stable)
+[03/10] reset: reset-socfpga: build only for 32-bit socfpga
+        https://git.pengutronix.de/cgit/barebox/commit/?id=fdcfda4944f5 (link may not be stable)
+[04/10] arm: socfgpa: add support for SoCFPGA Agilex5
+        https://git.pengutronix.de/cgit/barebox/commit/?id=bd8541b60e2e (link may not be stable)
+[05/10] ARM: socfpga: add Arrow AXE5 Agilex5 board
+        https://git.pengutronix.de/cgit/barebox/commit/?id=a824f41c6a2c (link may not be stable)
+[06/10] net: add support for Designware XGMAC (10gb) ethernet
+        https://git.pengutronix.de/cgit/barebox/commit/?id=631eecb0b3a7 (link may not be stable)
+[07/10] net: phy: add Analog Devices ADIN1300
+        https://git.pengutronix.de/cgit/barebox/commit/?id=b644c62c6254 (link may not be stable)
+[08/10] linux: clk: add clk_parent_data
+        (no commit info)
+[09/10] clk: support init->parent_data
+        https://git.pengutronix.de/cgit/barebox/commit/?id=19fdf932cc2c (link may not be stable)
+[10/10] clk: socfpga: add agilex5 clock support
+        https://git.pengutronix.de/cgit/barebox/commit/?id=19f83d5b59f4 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
