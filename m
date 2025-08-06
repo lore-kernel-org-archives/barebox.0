@@ -1,67 +1,54 @@
-Delivery-date: Wed, 06 Aug 2025 14:39:34 +0200
+Delivery-date: Wed, 06 Aug 2025 14:47:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujdQc-007dc8-0O
+	id 1ujdYQ-007dlx-2T
 	for lore@lore.pengutronix.de;
-	Wed, 06 Aug 2025 14:39:34 +0200
+	Wed, 06 Aug 2025 14:47:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujdQa-00011p-OZ
-	for lore@pengutronix.de; Wed, 06 Aug 2025 14:39:34 +0200
+	id 1ujdYQ-0002NR-79
+	for lore@pengutronix.de; Wed, 06 Aug 2025 14:47:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6OyPYYaodOn8KXrPQ4AH28zYlxKzDvt63mPXTk5lbFw=; b=Smycm53SBs7/HXcLjGQc3vV76d
-	i5GLnhiLJ8DQwNXnZK1NIFE656gKd5tfSrCB73a4NrQmtAbTA1vMPI+YMQaj6zf4/sWqUa+lRzLcH
-	o6J/4DqXiprWoPs0yfJAUcV4/TWMNKdG+/PvT5Zs2eSTGousjRc2mWMj9VAQzm9g6k3Qzx0ZTM5BO
-	+dOCbJQZhi+jy3SIS/9wXXVdr2vzK4YYV7B0Dc25jguFtMTxnU3CzUMTwtzgPOPsG5lKn8UikzzIH
-	Ih7UL9V0xxAIUqLaojNp6b84vSPlsOJv5ORSWH2GU5GKO8VD1NTiAtNxPUs28yN5p7gQpO4Wovw6G
-	hhM0KojA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=iDUvrBS5G5beZkt4bA+vC1MPY78HzrUDr92pNQpIH1I=; b=Cc/6PWGETgeEZopICN8ixwTiiO
+	4NKZXU1dUIecXIZAe9fKElXw5/Ale5YHNIIt3WG0YX622JLWVcBk+pRDjUwSTDfUcfIhqn9+G0V1n
+	eCoER1boz9QI2itohA4YAHHX4fQoCQzChKIX8s/1ykS9Nv/TK4CWYi55a/pvFt5dXcWrD5bVuryah
+	RSCjJM9MlciKgyvh19LAAKnOG1HRaLM88nxbJ2+1f1QeOeI0OcemZCC9sOUykOzQ8xpxlD1JWYtZo
+	DJz5RfLvZc0mRw8Hy97LGC0Rspykahr5BRcPUAXe32UOC8Z1FB7YhObBb+235TZOceQjxmGm6D7Dh
+	xXS5ePdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujdQ5-0000000FALr-2gNC;
-	Wed, 06 Aug 2025 12:39:01 +0000
+	id 1ujdXz-0000000FCVw-1lzM;
+	Wed, 06 Aug 2025 12:47:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujdOO-0000000FA5Q-44GO
+	id 1ujdXC-0000000FCNa-3K00
 	for barebox@lists.infradead.org;
-	Wed, 06 Aug 2025 12:37:19 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujdON-0000Mt-OA; Wed, 06 Aug 2025 14:37:15 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujdON-00CD97-1d;
-	Wed, 06 Aug 2025 14:37:15 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujdON-009YOP-1I;
-	Wed, 06 Aug 2025 14:37:15 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Wed, 06 Aug 2025 12:46:24 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1ujdXB-00029F-6A; Wed, 06 Aug 2025 14:46:21 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  6 Aug 2025 14:36:59 +0200
-Message-Id: <20250806123714.2092620-8-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Wed,  6 Aug 2025 14:46:20 +0200
+Message-Id: <20250806124620.2800123-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250806123714.2092620-1-a.fatoum@pengutronix.de>
-References: <20250806123714.2092620-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250806_053717_015481_3D4AAC0E 
-X-CRM114-Status: GOOD (  12.44  )
+X-CRM114-CacheID: sfid-20250806_054622_826575_A4543AF4 
+X-CRM114-Status: UNSURE (   8.20  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,87 +66,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/22] ARM: mmu: print map type as string
+Subject: [PATCH] ci: pytest: print labgrid console output inline
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To make early debugging of the MMU easier, let's add support for
-printing the MMU mapping type as a string.
+Makes it easier to debug issues instead of having to download the
+console_main files:
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+- Print the console_main files inline on error
+- Collect all console_main files at the end
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/cpu/mmu-common.c | 14 ++++++++++++++
- arch/arm/cpu/mmu-common.h | 16 ++++++++++++++++
- arch/arm/cpu/mmu_32.c     |  2 +-
- 3 files changed, 31 insertions(+), 1 deletion(-)
+ .github/workflows/test-labgrid-pytest.yml | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index 2e61dc36b7cc..1770c56b6eea 100644
---- a/arch/arm/cpu/mmu-common.c
-+++ b/arch/arm/cpu/mmu-common.c
-@@ -16,6 +16,20 @@
- #include "mmu-common.h"
- #include <efi/efi-mode.h>
+diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
+index 38bd7126bd86..adec3defc1d7 100644
+--- a/.github/workflows/test-labgrid-pytest.yml
++++ b/.github/workflows/test-labgrid-pytest.yml
+@@ -96,6 +96,7 @@ jobs:
+         done
  
-+const char *map_type_tostr(maptype_t map_type)
-+{
-+	switch (map_type) {
-+	case ARCH_MAP_CACHED_RWX:	return "RWX";
-+	case ARCH_MAP_CACHED_RO:	return "RO";
-+	case MAP_CACHED:		return "CACHED";
-+	case MAP_UNCACHED:		return "UNCACHED";
-+	case MAP_CODE:			return "CODE";
-+	case MAP_WRITECOMBINE:		return "WRITECOMBINE";
-+	case MAP_FAULT:			return "FAULT";
-+	default:			return "<unknown>";
-+	}
-+}
-+
- void arch_sync_dma_for_cpu(void *vaddr, size_t size,
- 			   enum dma_data_direction dir)
- {
-diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
-index e9005dfae766..01d081db426e 100644
---- a/arch/arm/cpu/mmu-common.h
-+++ b/arch/arm/cpu/mmu-common.h
-@@ -57,4 +57,20 @@ static inline size_t resource_count_pages(const struct resource *res)
- 	return ALIGN(resource_size(res), SZ_4K);
- }
+     - name: labgrid-pytest
++      if: steps.build.outcome == 'success'
+       run: |
+         export KBUILD_OUTPUT=build-${{matrix.arch}}-${{matrix.defconfig}}
  
-+const char *map_type_tostr(maptype_t map_type);
-+
-+static inline void __pr_debug_remap(const char *func, ulong virt_addr, ulong phys_addr,
-+				  size_t size, maptype_t map_type)
-+{
-+	if (phys_addr == virt_addr)
-+		pr_debug("%s: 0x%08lx+0x%zx type %s\n",	func,
-+			 virt_addr, size, map_type_tostr(map_type));
-+	else
-+		pr_debug("%s: 0x%08lx+0x%zx -> 0x%08lx type %s\n", func,
-+			 virt_addr, size, phys_addr, map_type_tostr(map_type));
-+}
-+
-+#define pr_debug_remap(virt_addr, phys_addr, size, map_type)	\
-+	__pr_debug_remap(__func__, virt_addr, phys_addr, size, map_type)
-+
- #endif
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index e631b741f107..4b7f370edaea 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -278,7 +278,7 @@ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t s
- 	pte_flags = get_pte_flags(map_type);
- 	pmd_flags = pte_flags_to_pmd(pte_flags);
+@@ -113,17 +114,19 @@ jobs:
+           --junitxml=$cfg.tests.xml --lg-log=log/$cfg $extraargs
+         done
  
--	pr_debug("%s: 0x%08x 0x%08x type %d\n", __func__, virt_addr, size, map_type);
-+	pr_debug_remap(virt_addr, phys_addr, size, map_type);
- 
- 	size = PAGE_ALIGN(size);
- 	if (!size)
++    - name: Print Labgrid Console Output
++      if: always()
++      run: |
++        for i in ${{matrix.lgenv}}; do
++          grep -wq '\(QEMUDriver\|ExternalConsoleDriver\):' "$i" || continue
++
++          cfg=$(basename $i .yaml)
++          cat log/$cfg/* || true
++        done
++
+     - name: Publish Test Results
+       uses: EnricoMi/publish-unit-test-result-action@v2
+       if: steps.build.outcome == 'success'
+       with:
+         check_name: "Test Results (${{matrix.defconfig}})"
+         files: ./*.tests.xml
+-
+-    - name: Publish Labgrid Log Results
+-      uses: actions/upload-artifact@v4
+-      if: steps.build.outcome == 'success'
+-      with:
+-        name: console-log-${{matrix.defconfig}}
+-        path: log/
+-        if-no-files-found: error
 -- 
 2.39.5
 
