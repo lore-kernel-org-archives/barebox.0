@@ -1,66 +1,68 @@
-Delivery-date: Wed, 06 Aug 2025 12:17:30 +0200
+Delivery-date: Wed, 06 Aug 2025 12:17:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujbD5-007bdt-12
+	id 1ujbDA-007bed-0Y
 	for lore@lore.pengutronix.de;
-	Wed, 06 Aug 2025 12:17:30 +0200
+	Wed, 06 Aug 2025 12:17:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujbD4-00030x-ME
-	for lore@pengutronix.de; Wed, 06 Aug 2025 12:17:27 +0200
+	id 1ujbD9-00032S-Gu
+	for lore@pengutronix.de; Wed, 06 Aug 2025 12:17:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Po4BoQL6LDZsHsJF4jMsoGmbQK077aH4bYlIrmEnxAA=; b=zl2klYBBWKQORjkNK/5Zx+yimj
-	Csq/zZps45z7ISMJuwbN/URT75sj+tEsr0n//QV8cF7Edz6feqC+Ei7RCtR5cKN2lp3ksGA3XLWiI
-	reYPGLpiI3DK+w7NjBflOxuoaeXe7QpNDNAJaLcS0LjjLxK1V/hkQAGDeYow05joa6S+8/dtu8vvw
-	+PfmzrFHgoBLNgHhufm4+C/5zWEZJEoa9/tSWolgIckAFcVdscvBZ1QKoTqnkV+raIJZEry7/JS2H
-	aVxhehjeOBB89PfRMYrB2AMGzsRVV/dD19AZ74zTjvDX5e3z7gWVoqcAQoLZxfpVWwLHwE8/RJhVk
-	3MqUoa/g==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GdBQp71uwY1dKOhCQfO1FTF5UtaRkmBRP/cXQJSPKDY=; b=M0YveERLpeWzSxSWhoeP6R3pL8
+	5dXri1cZirhuT49fDfPgwtxHa1Q7KRJ22aTfW2VPLZcNRAdzMc6r4N+mVgT0sWWVVAoVHvzFjI7qz
+	ryLTaozryYZHWUHp3usG5vbeGdrtkcQxE7A8xJ5kqoFnsjbq4bY1Aj3PlDmFU4+in0ATYZJO1BbGF
+	TcjpYWXDzm+rLODmr/VodR4Rg38OjgnP6oS+B3gVpOEKuVLDDHEhTM1SRzW5c2jkNCm9XVjLMeCaY
+	bdQ3daYp/IC0veAnG7QCrxCL+hRrKmkYlkmluwaBKqaP2AvhlLMMvDEppQWRsw39p3bkjeBQ1UGc0
+	FqnFaTWQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujbCT-0000000Es2U-3Nzs;
-	Wed, 06 Aug 2025 10:16:49 +0000
+	id 1ujbCU-0000000Es2a-1RNg;
+	Wed, 06 Aug 2025 10:16:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujbAn-0000000Erth-2ziS
+	id 1ujbBi-0000000ErzW-25NR
 	for barebox@lists.infradead.org;
-	Wed, 06 Aug 2025 10:15:06 +0000
+	Wed, 06 Aug 2025 10:16:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujbAl-0002jl-M5; Wed, 06 Aug 2025 12:15:03 +0200
+	id 1ujbBh-0002oH-7C; Wed, 06 Aug 2025 12:16:01 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujbAl-00CBzT-17;
-	Wed, 06 Aug 2025 12:15:03 +0200
+	id 1ujbBh-00CBzc-04;
+	Wed, 06 Aug 2025 12:16:01 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujbAl-00GDmi-0n;
-	Wed, 06 Aug 2025 12:15:03 +0200
+	id 1ujbBg-00GEkW-2z;
+	Wed, 06 Aug 2025 12:16:00 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: David Picard <david.picard@clermont.in2p3.fr>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  6 Aug 2025 12:15:02 +0200
-Message-Id: <20250806101502.3865381-1-a.fatoum@pengutronix.de>
+Date: Wed,  6 Aug 2025 12:15:59 +0200
+Message-Id: <20250806101559.3869005-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250806101559.3869005-1-a.fatoum@pengutronix.de>
+References: <20250806101559.3869005-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250806_031505_758022_1D4C6C0C 
-X-CRM114-Status: GOOD (  15.71  )
+X-CRM114-CacheID: sfid-20250806_031602_535955_4CD68612 
+X-CRM114-Status: GOOD (  16.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,7 +84,7 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RFT] gpio: dw: make deep probe compatible
+Subject: [PATCH RFT v2 2/2] gpio: dw: make deep probe compatible
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -98,7 +100,8 @@ proper drivers.
 Reported-by: David Picard <david.picard@clermont.in2p3.fr>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-@David, can you test?
+v1 -> v2:
+  - unchanged
 ---
  drivers/gpio/gpio-dw.c | 44 ++++++++++++++++++++++++------------------
  1 file changed, 25 insertions(+), 19 deletions(-)
