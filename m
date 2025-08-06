@@ -1,67 +1,67 @@
-Delivery-date: Wed, 06 Aug 2025 15:06:15 +0200
+Delivery-date: Wed, 06 Aug 2025 15:06:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujdqR-007e36-0j
+	id 1ujdqV-007e3h-0h
 	for lore@lore.pengutronix.de;
-	Wed, 06 Aug 2025 15:06:15 +0200
+	Wed, 06 Aug 2025 15:06:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujdqQ-0005Xd-07
-	for lore@pengutronix.de; Wed, 06 Aug 2025 15:06:15 +0200
+	id 1ujdqT-0005bM-B8
+	for lore@pengutronix.de; Wed, 06 Aug 2025 15:06:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qmayjoPvU7DgiKpjtL47XTjkbIQIloQyXPZ6mesETs0=; b=3iwZ3VFxtO5eqNpj1Pkv7z5b7b
-	AQmpbeJwnu3uaY/yayoLXREzcgkhaDxLRBdqWVqOY9K25nTHtWyAOp2R1sQNHtZptpAXA018fcYxu
-	gAEh7F3fVeLosNbatCLyj/hvxHi6d57vVfjlis+zy+Ln/zHuXOqtl3K3e4SMuzXqtJEqMcF2uuAq4
-	X0NXS+Ef9qu+XL6ERngMfY7NwlrXuNXo2rTR+wO0A6D51FiJb7l4y5UdF6Amb48gRa03ns+DpsgN2
-	Q9GxMmBJrulYsJ5DPGb8NXCPSXsZF7QYbPjzVW2h7zwO8gTplopSbqcJqB+/IMR5Dk8JrDf75EXlw
-	gpYvZcug==;
+	bh=Tr538F7r3hyYPJoENKqdLGDqRgVLVs6QOK+bYyjY8PM=; b=BrOcUGs+9CafuC6MipJEa0bIeA
+	dw8OtL3Hd/N3wn/lk05skLgWvDyov34TUcaL8jX/rlFf8H5bMvbXLAHFd6x73QCosNuyWiuKtMOS2
+	UbQpriUEb8U4sIK7wY6PBwAeMW7/1DXSZiYRde9+YMz+qxSJeUr/3TMU7BtggSydW1imQhMhzj0Jj
+	G6BGDvsWqDxMkS0RVao+aKIyASxF7LidtdPeYeJWvPnZoVEBUL/DRjTj2xOYCcuN2rDlM2098aLYB
+	3zRLfjoTXWNzJwipdeU7d4308iXIaLkuFxNvJiVXLp7YJqh7U9lgONIEkSH+/NzQecJkezflLBuY/
+	bs+uCP8w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujdps-0000000FG0t-36HO;
-	Wed, 06 Aug 2025 13:05:40 +0000
+	id 1ujdpt-0000000FG1w-2LyB;
+	Wed, 06 Aug 2025 13:05:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujdpq-0000000FFyS-2e1d
+	id 1ujdpq-0000000FFyV-2kTT
 	for barebox@lists.infradead.org;
 	Wed, 06 Aug 2025 13:05:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujdpZ-0004kw-3k; Wed, 06 Aug 2025 15:05:21 +0200
+	id 1ujdpZ-0004ku-2v; Wed, 06 Aug 2025 15:05:21 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujdpY-00CDTc-2z;
+	id 1ujdpY-00CDTW-2Q;
 	Wed, 06 Aug 2025 15:05:20 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ujdON-009YOP-34;
+	id 1ujdON-009YOP-1u;
 	Wed, 06 Aug 2025 14:37:15 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  6 Aug 2025 14:37:11 +0200
-Message-Id: <20250806123714.2092620-20-a.fatoum@pengutronix.de>
+Date: Wed,  6 Aug 2025 14:37:03 +0200
+Message-Id: <20250806123714.2092620-12-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250806123714.2092620-1-a.fatoum@pengutronix.de>
 References: <20250806123714.2092620-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250806_060538_670771_E727C04B 
-X-CRM114-Status: GOOD (  16.98  )
+X-CRM114-CacheID: sfid-20250806_060538_862966_057A34DE 
+X-CRM114-Status: GOOD (  15.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,144 +79,179 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 19/22] ARM: mmu32: flush only cacheable pages on remap
+Subject: [PATCH 11/22] ARM: mmu: make force_pages a maptype_t flag
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For the same reasons described in b8454cae3b1e ("ARM64: mmu: flush
-cacheable regions prior to remapping"), we want to cease doing cache
-maintenance operation on MMIO regions and only flush regions that were
-actually cacheable before.
-
-We already do that for ARM64 and the code has been prepared for reuse by
-the move into a dedicated header, so let's define the functions it
-expects and put it to use.
+The case with force_page == false is the default and having to write an
+extra parameter everywhere is needless visual clutter. Especially if we
+are going to add new parameters or OR further flags, it's more readable
+to use a single parameter for the flags instead of multiple.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/flush_cacheable_pages.h |  2 +-
- arch/arm/cpu/mmu_32.c                | 58 ++++++++++++++++++++++++++--
- arch/arm/cpu/mmu_64.c                |  2 +-
- 3 files changed, 57 insertions(+), 5 deletions(-)
+ arch/arm/cpu/mmu-common.h |  3 +++
+ arch/arm/cpu/mmu_32.c     | 18 ++++++++++--------
+ arch/arm/cpu/mmu_64.c     | 21 +++++++++++----------
+ 3 files changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm/cpu/flush_cacheable_pages.h b/arch/arm/cpu/flush_cacheable_pages.h
-index 85fde0122802..a03e10810dc7 100644
---- a/arch/arm/cpu/flush_cacheable_pages.h
-+++ b/arch/arm/cpu/flush_cacheable_pages.h
-@@ -47,7 +47,7 @@ static void flush_cacheable_pages(void *start, size_t size)
+diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
+index 01d081db426e..a111e15a21b4 100644
+--- a/arch/arm/cpu/mmu-common.h
++++ b/arch/arm/cpu/mmu-common.h
+@@ -9,10 +9,13 @@
+ #include <linux/ioport.h>
+ #include <linux/kernel.h>
+ #include <linux/sizes.h>
++#include <linux/bits.h>
  
- 		block_size = granule_size(level);
+ #define ARCH_MAP_CACHED_RWX	MAP_ARCH(2)
+ #define ARCH_MAP_CACHED_RO	MAP_ARCH(3)
  
--		if (!pte || !pte_is_cacheable(*pte))
-+		if (!pte || !pte_is_cacheable(*pte, level))
- 			continue;
++#define ARCH_MAP_FLAG_PAGEWISE	BIT(31)
++
+ struct device;
  
- 		if (flush_end == addr) {
+ void dma_inv_range(void *ptr, size_t size);
 diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index 521e5f3a5769..a76d403e3477 100644
+index 4b7f370edaea..e43d9d0d4606 100644
 --- a/arch/arm/cpu/mmu_32.c
 +++ b/arch/arm/cpu/mmu_32.c
-@@ -24,6 +24,36 @@
- 
- #define PTRS_PER_PTE		(PGDIR_SIZE / PAGE_SIZE)
- 
-+static size_t granule_size(int level)
-+{
-+	/*
-+	 *  With 4k page granule, a virtual address is split into 2 lookup parts.
-+	 *  We don't do LPAE or large (64K) pages for ARM32.
-+	 *
-+	 *    _______________________
-+	 *   |       |       |       |
-+	 *   |  Lv1  |  Lv2  |  off  |
-+	 *   |_______|_______|_______|
-+	 *     31-21   20-12   11-00
-+	 *
-+	 *             mask        page size   term
-+	 *
-+	 *    Lv0:     E0000000       --
-+	 *    Lv1:     1FE00000       1M      PGD/PMD
-+	 *    Lv2:       1FF000       4K      PTE
-+	 *    off:          FFF
-+	 */
-+
-+	switch (level) {
-+	case 1:
-+		return PGDIR_SIZE;
-+	case 2:
-+		return PAGE_SIZE;
-+	}
-+
-+	return 0;
-+}
-+
- static inline uint32_t *get_ttb(void)
- {
- 	/* Clear unpredictable bits [13:0] */
-@@ -142,6 +172,20 @@ void dma_flush_range(void *ptr, size_t size)
- 		outer_cache.flush_range(start, end);
+@@ -266,8 +266,9 @@ static uint32_t get_pmd_flags(maptype_t map_type)
  }
  
-+/**
-+ * dma_flush_range_end - Flush caches for address range
-+ * @start: Starting virtual address of the range.
-+ * @end:   Last virtual address in range (inclusive)
-+ *
-+ * This function cleans and invalidates all cache lines in the specified
-+ * range. Note that end is inclusive, meaning that it's the last address
-+ * that is flushed (assuming both start and total size are cache line aligned).
-+ */
-+static void dma_flush_range_end(unsigned long start, unsigned long end)
-+{
-+	dma_flush_range((void *)start, end - start + 1);
-+}
-+
- void dma_inv_range(void *ptr, size_t size)
+ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t size,
+-			       maptype_t map_type, bool force_pages)
++			       maptype_t map_type)
  {
- 	unsigned long start = (unsigned long)ptr;
-@@ -389,15 +433,23 @@ static void early_remap_range(u32 addr, size_t size, maptype_t map_type)
- 	__arch_remap_range((void *)addr, addr, size, map_type);
++	bool force_pages = map_type & ARCH_MAP_FLAG_PAGEWISE;
+ 	u32 virt_addr = (u32)_virt_addr;
+ 	u32 pte_flags, pmd_flags;
+ 	uint32_t *ttb = get_ttb();
+@@ -363,16 +364,16 @@ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t s
+ 	tlb_invalidate();
  }
  
-+static bool pte_is_cacheable(uint32_t pte, int level)
-+{
-+	return	(level == 2 && (pte & PTE_CACHEABLE)) ||
-+		(level == 1 && (pte & PMD_SECT_CACHEABLE));
-+}
-+
-+#include "flush_cacheable_pages.h"
-+
+-static void early_remap_range(u32 addr, size_t size, maptype_t map_type, bool force_pages)
++static void early_remap_range(u32 addr, size_t size, maptype_t map_type)
+ {
+-	__arch_remap_range((void *)addr, addr, size, map_type, force_pages);
++	__arch_remap_range((void *)addr, addr, size, map_type);
+ }
+ 
  int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, maptype_t map_type)
  {
-+	if (!maptype_is_compatible(map_type, MAP_CACHED))
-+		flush_cacheable_pages(virt_addr, size);
-+
  	map_type = arm_mmu_maybe_skip_permissions(map_type);
  
- 	__arch_remap_range(virt_addr, phys_addr, size, map_type);
+-	__arch_remap_range(virt_addr, phys_addr, size, map_type, false);
++	__arch_remap_range(virt_addr, phys_addr, size, map_type);
  
--	if (maptype_is_compatible(map_type, MAP_UNCACHED))
--		dma_inv_range(virt_addr, size);
--
- 	return 0;
+ 	if (maptype_is_compatible(map_type, MAP_UNCACHED))
+ 		dma_inv_range(virt_addr, size);
+@@ -643,7 +644,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+ 	 * map the bulk of the memory as sections to avoid allocating too many page tables
+ 	 * at this early stage
+ 	 */
+-	early_remap_range(membase, barebox_start - membase, ARCH_MAP_CACHED_RWX, false);
++	early_remap_range(membase, barebox_start - membase, ARCH_MAP_CACHED_RWX);
+ 	/*
+ 	 * Map the remainder of the memory explicitly with two level page tables. This is
+ 	 * the place where barebox proper ends at. In barebox proper we'll remap the code
+@@ -653,10 +654,11 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+ 	 * a break-before-make sequence which we can't do when barebox proper is running
+ 	 * at the location being remapped.
+ 	 */
+-	early_remap_range(barebox_start, barebox_size, ARCH_MAP_CACHED_RWX, true);
+-	early_remap_range(optee_start, OPTEE_SIZE, MAP_UNCACHED, false);
++	early_remap_range(barebox_start, barebox_size,
++			  ARCH_MAP_CACHED_RWX | ARCH_MAP_FLAG_PAGEWISE);
++	early_remap_range(optee_start, OPTEE_SIZE, MAP_UNCACHED);
+ 	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext),
+-			  ARCH_MAP_CACHED_RWX, false);
++			  ARCH_MAP_CACHED_RWX);
+ 
+ 	__mmu_cache_on();
  }
- 
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 50bb25b5373a..d8ba7a171c2d 100644
+index 0bd5e4dc98c4..6e617a15a6d7 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -254,7 +254,7 @@ static int __arch_remap_range(uint64_t virt, uint64_t phys, uint64_t size,
- 	return 0;
+@@ -146,8 +146,9 @@ static void split_block(uint64_t *pte, int level)
  }
  
--static bool pte_is_cacheable(uint64_t pte)
-+static bool pte_is_cacheable(uint64_t pte, int level)
+ static int __arch_remap_range(uint64_t virt, uint64_t phys, uint64_t size,
+-			      maptype_t map_type, bool force_pages)
++			      maptype_t map_type)
  {
- 	return (pte & PTE_ATTRINDX_MASK) == PTE_ATTRINDX(MT_NORMAL);
++	bool force_pages = map_type & ARCH_MAP_FLAG_PAGEWISE;
+ 	unsigned long attr = get_pte_attrs(map_type);
+ 	uint64_t *ttb = get_ttb();
+ 	uint64_t block_size;
+@@ -312,9 +313,9 @@ static void flush_cacheable_pages(void *start, size_t size)
+ 		v8_flush_dcache_range(flush_start, flush_end);
+ }
+ 
+-static void early_remap_range(uint64_t addr, size_t size, maptype_t map_type, bool force_pages)
++static void early_remap_range(uint64_t addr, size_t size, maptype_t map_type)
+ {
+-	__arch_remap_range(addr, addr, size, map_type, force_pages);
++	__arch_remap_range(addr, addr, size, map_type);
+ }
+ 
+ int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, maptype_t map_type)
+@@ -324,7 +325,7 @@ int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, maptyp
+ 	if (!maptype_is_compatible(map_type, MAP_CACHED))
+ 		flush_cacheable_pages(virt_addr, size);
+ 
+-	return __arch_remap_range((uint64_t)virt_addr, phys_addr, (uint64_t)size, map_type, false);
++	return __arch_remap_range((uint64_t)virt_addr, phys_addr, (uint64_t)size, map_type);
+ }
+ 
+ static void mmu_enable(void)
+@@ -419,7 +420,7 @@ static void early_init_range(size_t total_level0_tables)
+ 	uint64_t addr = 0;
+ 
+ 	while (total_level0_tables--) {
+-		early_remap_range(addr, L0_XLAT_SIZE, MAP_UNCACHED, false);
++		early_remap_range(addr, L0_XLAT_SIZE, MAP_UNCACHED);
+ 		split_block(ttb, 0);
+ 		addr += L0_XLAT_SIZE;
+ 		ttb++;
+@@ -451,7 +452,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+ 	 */
+ 	early_init_range(2);
+ 
+-	early_remap_range(membase, memsize, ARCH_MAP_CACHED_RWX, false);
++	early_remap_range(membase, memsize, ARCH_MAP_CACHED_RWX);
+ 
+ 	if (optee_get_membase(&optee_membase)) {
+                 optee_membase = membase + memsize - OPTEE_SIZE;
+@@ -459,18 +460,18 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+ 		barebox_size = optee_membase - barebox_start;
+ 
+ 		early_remap_range(optee_membase - barebox_size, barebox_size,
+-			     ARCH_MAP_CACHED_RWX, true);
++			     ARCH_MAP_CACHED_RWX | ARCH_MAP_FLAG_PAGEWISE);
+ 	} else {
+ 		barebox_size = membase + memsize - barebox_start;
+ 
+ 		early_remap_range(membase + memsize - barebox_size, barebox_size,
+-			     ARCH_MAP_CACHED_RWX, true);
++			     ARCH_MAP_CACHED_RWX | ARCH_MAP_FLAG_PAGEWISE);
+ 	}
+ 
+-	early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT, false);
++	early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT);
+ 
+ 	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext),
+-			  ARCH_MAP_CACHED_RWX, false);
++			  ARCH_MAP_CACHED_RWX);
+ 
+ 	mmu_enable();
  }
 -- 
 2.39.5
