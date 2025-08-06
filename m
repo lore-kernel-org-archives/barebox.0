@@ -1,71 +1,75 @@
-Delivery-date: Wed, 06 Aug 2025 06:56:30 +0200
+Delivery-date: Wed, 06 Aug 2025 07:12:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujWCU-007WqM-0e
+	id 1ujWSQ-007XFN-23
 	for lore@lore.pengutronix.de;
-	Wed, 06 Aug 2025 06:56:30 +0200
+	Wed, 06 Aug 2025 07:12:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujWCT-0005FP-N1
-	for lore@pengutronix.de; Wed, 06 Aug 2025 06:56:30 +0200
+	id 1ujWSP-0006Gt-Jg
+	for lore@pengutronix.de; Wed, 06 Aug 2025 07:12:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1GVai2p483hAQwXilWbss3Rx5Kn/mGYsl8vn68eugYA=; b=pUxAS50BDMpjron6m4P4uLGG42
-	0j4iFQeH0R0vfo+Wq9i7/Ty8TM0zJCBFV9xr+32zjOjqQ8Bk5XHoB1m2gbC3di498ym0QNctslq5U
-	d9M3KrWGCPJGcbCQPHonxYzfFMgo4v6libbFaF98ODw6cnJD2poW7BNFVG3JDUgYjugqbL7sHV8cB
-	7qFndU2YlUlOAKYCDHsAlAQPEd61ZboMOki95U17DDQcKnVUp4WmhgOYqZUH2Yu5NZLVcxRPmp9X/
-	j0hQrjH+43sKtB6ZHSqxD5MY/MJWZuaIw2h2P1co6BCJb4NLiMcOOzw1NxdGCD4atd6gsUDa8DZX8
-	cs6WLLJQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=zKAyR5fT2d8VtdH+BCvQ45tenIyDwrFpyQGJ6acJ8fM=; b=atDXs60oAo4I60wrycjKFSPSYZ
+	hAtCWP0jaEoiLaFy6JSbhzcbIxhbryMpWq2cbVXOom8JF5prPvmvAfZUtEY0hkupQHAQYwVOUmKDb
+	3KpiLjk5G8gOOqpxKUb/75GKfFqu8BzLBjaObdyJtj7dGDQjL5kh/xdJwJgnDps2frhrgENIkWUcB
+	VivGvkOQIg4icuyGH1FRLSM/sg3amEDrWYZ0rJj0h7shiGiyISpJBYaGQZOVKlMqc642hE1cfB+jz
+	9z/IODHx/AWyMtMZdylgP8pUzaIGS4IrOFnyku+L1189FNDgINGP0qR5OT27pjyu4NxyWm5TERSfy
+	ci22fm9A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujWC7-0000000EIYn-02Ca;
-	Wed, 06 Aug 2025 04:56:07 +0000
+	id 1ujWRq-0000000EK4m-2k9v;
+	Wed, 06 Aug 2025 05:12:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujWC4-0000000EIYD-039X
+	id 1ujWRm-0000000EK4P-3fiz
 	for barebox@lists.infradead.org;
-	Wed, 06 Aug 2025 04:56:05 +0000
+	Wed, 06 Aug 2025 05:12:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujWC2-00059s-Qy; Wed, 06 Aug 2025 06:56:02 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1ujWRj-0006Bh-WB; Wed, 06 Aug 2025 07:12:16 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujWC2-00C9Wr-1e;
-	Wed, 06 Aug 2025 06:56:02 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujWC2-000lV1-1R;
-	Wed, 06 Aug 2025 06:56:02 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1ujWRj-00C9oN-2c;
+	Wed, 06 Aug 2025 07:12:15 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ujWRj-00C9Ju-2J;
+	Wed, 06 Aug 2025 07:12:15 +0200
+Date: Wed, 6 Aug 2025 07:12:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- Stefano Manni <stefano.manni@gmail.com>
-In-Reply-To: <20250805072537.3484221-1-s.hauer@pengutronix.de>
-References: <20250805072537.3484221-1-s.hauer@pengutronix.de>
-Message-Id: <175445616244.181986.16429687902953801596.b4-ty@pengutronix.de>
-Date: Wed, 06 Aug 2025 06:56:02 +0200
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aJLkLxBkqeK7Vx5y@pengutronix.de>
+References: <20240703-v2024-05-0-topic-fit-overlay-v3-0-c1fd766fd31d@pengutronix.de>
+ <20240703-v2024-05-0-topic-fit-overlay-v3-6-c1fd766fd31d@pengutronix.de>
+ <ZpT3h0o089tae2WS@pengutronix.de>
+ <20240715113000.6ymgummxyf5amtuu@pengutronix.de>
+ <ZpUOdtLMmozPPOrP@pengutronix.de>
+ <20250805203435.k3s24chls6566dty@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250805203435.k3s24chls6566dty@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250805_215604_058699_AEED6450 
-X-CRM114-Status: UNSURE (   7.78  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250805_221219_071221_9B9E20E9 
+X-CRM114-Status: GOOD (  58.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,29 +91,241 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] cdev: fix mtd partition handling
+Subject: Re: [PATCH v3 06/10] of: overlay: add FIT overlay support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Tue, 05 Aug 2025 09:25:37 +0200, Sascha Hauer wrote:
-> devfs-core.c implements the partition handling only for devices that are
-> not MTD devices. MTD devices have their own partition handling in
-> drivers/mtd/partition.c, see the special case in __devfs_add_partition()
-> for MTD devices. This means for MTD devices we have to pass the original
-> cdev to the ops, not the master cdev.
+On Tue, Aug 05, 2025 at 10:34:35PM +0200, Marco Felsch wrote:
+> On 24-07-15, Sascha Hauer wrote:
+> > On Mon, Jul 15, 2024 at 01:30:00PM +0200, Marco Felsch wrote:
+> > > Hi Sascha,
+> > > 
+> > > On 24-07-15, Sascha Hauer wrote:
+> > > > On Wed, Jul 03, 2024 at 06:58:34PM +0200, Marco Felsch wrote:
+> > > > > This adds the support to load devicetree overlays from an FIT image.
+> > > > > There are quite a few options to handle FIT overlays since the FIT
+> > > > > overlay spec is not very strict.
+> > > > > 
+> > > > > This patch implement the most configurable case where each overlay does
+> > > > > have it's own config node (including the optional signature).
+> > > > > 
+> > > > > - The "name" filter check is performed on the config-node name (the node
+> > > > >   under the configurations) and not the FIT overlay image name (the node
+> > > > >   name under the images node).
+> > > > > - The "content" filter check does not differ from the file based overlay
+> > > > >   handling.
+> > > > > 
+> > > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > > > ---
+> > > > >  drivers/of/overlay.c | 131 ++++++++++++++++++++++++++++++++++++++++++++++++---
+> > > > >  1 file changed, 124 insertions(+), 7 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+> > > > > index 5617f322ddca..a980e7aa5e02 100644
+> > > > > --- a/drivers/of/overlay.c
+> > > > > +++ b/drivers/of/overlay.c
+> > > > > @@ -8,10 +8,13 @@
+> > > > >   */
+> > > > >  #define pr_fmt(fmt) "of_overlay: " fmt
+> > > > >  
+> > > > > +#include <bootm.h>
+> > > > >  #include <common.h>
+> > > > >  #include <of.h>
+> > > > >  #include <errno.h>
+> > > > > +#include <filetype.h>
+> > > > >  #include <globalvar.h>
+> > > > > +#include <image-fit.h>
+> > > > >  #include <magicvar.h>
+> > > > >  #include <string.h>
+> > > > >  #include <libfile.h>
+> > > > > @@ -470,9 +473,123 @@ static int of_overlay_global_fixup_dir(struct device_node *root, const char *ovl
+> > > > >  	return ret;
+> > > > >  }
+> > > > >  
+> > > > > +static int of_overlay_apply_fit(struct device_node *root, struct fit_handle *fit,
+> > > > > +				struct device_node *config)
+> > > > > +{
+> > > > > +	const char *name = config->name;
+> > > > > +	struct device_node *overlay;
+> > > > > +	unsigned long ovl_sz;
+> > > > > +	const void *ovl;
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	if (!of_overlay_matches_filter(name, NULL))
+> > > > > +		return 0;
+> > > > > +
+> > > > > +	ret = fit_open_image(fit, config, "fdt", &ovl, &ovl_sz);
+> > > > > +	if (ret)
+> > > > > +		return ret;
+> > > > > +
+> > > > > +	overlay = of_unflatten_dtb(ovl, ovl_sz);
+> > > > > +
+> > > > > +	if (!of_overlay_matches_filter(NULL, overlay)) {
+> > > > > +		ret = 0;
+> > > > > +		goto out;
+> > > > > +	}
+> > > > > +
+> > > > > +	ret = of_overlay_apply_tree(root, overlay);
+> > > > > +	if (ret == -ENODEV)
+> > > > > +		pr_debug("Not applied %s (not compatible)\n", name);
+> > > > > +	else if (ret)
+> > > > > +		pr_err("Cannot apply %s: %s\n", name, strerror(-ret));
+> > > > > +	else
+> > > > > +		pr_info("Applied %s\n", name);
+> > > > > +
+> > > > > +out:
+> > > > > +	of_delete_node(overlay);
+> > > > > +
+> > > > > +	return ret;
+> > > > > +}
+> > > > > +
+> > > > > +static bool of_overlay_valid_config(struct fit_handle *fit,
+> > > > > +				    struct device_node *config)
+> > > > > +{
+> > > > > +	/*
+> > > > > +	 * Either kernel or firmware is marked as mandatory by U-Boot
+> > > > > +	 * (doc/usage/fit/source_file_format.rst) except for overlays
+> > > > > +	 * (doc/usage/fit/overlay-fdt-boot.rst). Therefore we need to ensure
+> > > > > +	 * that only "fdt" config nodes are recognized as overlay config node.
+> > > > > +	 */
+> > > > > +	if (!fit_has_image(fit, config, "fdt") ||
+> > > > > +	    fit_has_image(fit, config, "kernel") ||
+> > > > > +	    fit_has_image(fit, config, "firmware"))
+> > > > > +		return false;
+> > > > > +
+> > > > > +	return true;
+> > > > > +}
+> > > > > +
+> > > > > +static int of_overlay_global_fixup_fit(struct device_node *root,
+> > > > > +				       const char *fit_path, loff_t fit_size)
+> > > > > +{
+> > > > > +	enum bootm_verify verify = bootm_get_verify_mode();
+> > > > > +	struct device_node *conf_node;
+> > > > > +	struct fit_handle *fit;
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	if (!IS_ENABLED(CONFIG_FITIMAGE))
+> > > > > +		return 0;
+> > > > 
+> > > > The user has explicitly passed a FIT image, but we don't have FIT
+> > > > support compiled in. Shouldn't this be an error?
+> > > 
+> > > Yes you're right. I will return the error and an error-message.
+> > > 
+> > > > > +	fit = fit_open(fit_path, 0, verify, fit_size);
+> > > > > +	if (IS_ERR(fit)) {
+> > > > > +		pr_err("Loading FIT image %s failed with: %pe\n", fit_path, fit);
+> > > > > +		return PTR_ERR(fit);
+> > > > > +	}
+> > > > > +
+> > > > > +	for_each_child_of_node(fit->configurations, conf_node) {
+> > > > > +		if (!of_overlay_valid_config(fit, conf_node))
+> > > > > +			continue;
+> > > > > +
+> > > > > +		ret = fit_config_verify_signature(fit, conf_node);
+> > > > > +		if (ret)
+> > > > > +			goto out;
+> > > > > +
+> > > > > +		ret = of_overlay_apply_fit(root, fit, conf_node);
+> > > > > +		if (ret)
+> > > > > +			goto out;
+> > > > > +	}
+> > > > > +
+> > > > > +out:
+> > > > > +	fit_close(fit);
+> > > > > +	return ret;
+> > > > > +}
+> > > > > +
+> > > > >  static int of_overlay_global_fixup(struct device_node *root, void *data)
+> > > > >  {
+> > > > > -	return of_overlay_global_fixup_dir(root, of_overlay_path);
+> > > > > +	enum filetype type;
+> > > > > +	struct stat s;
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	if (isempty(of_overlay_path))
+> > > > > +		return 0;
+> > > > > +
+> > > > > +	if (stat(of_overlay_path, &s)) {
+> > > > > +		pr_err("Failed to detect file status\n");
+> > > > 
+> > > > Maybe something like:
+> > > > 
+> > > > 	pr_err("Cannot stat global.of.overlay.path (%s): %pe\n", of_overlay_path, ERR_PTR(ret));
+> > > > 
+> > > > To give the user a better clue what to do about this error?
+> > > 
+> > > ACK
+> > > 
+> > > > > +		return -errno;
+> > > > > +	}
+> > > > > +
+> > > > > +	if (S_ISDIR(s.st_mode))
+> > > > > +		return of_overlay_global_fixup_dir(root, of_overlay_path);
+> > > > > +
+> > > > > +	ret = file_name_detect_type(of_overlay_path, &type);
+> > > > > +	if (ret)
+> > > > > +		return ret;
+> > > > > +
+> > > > > +	if (type == filetype_oftree)
+> > > > > +		return of_overlay_global_fixup_fit(root, of_overlay_path,
+> > > > > +						   s.st_size);
+> > > > > +
+> > > > > +	pr_err("No suitable overlay provider found!\n");
+> > > > 
+> > > > What other file types are you anticipating here? I would rather assume a
+> > > > "... is not a FIT image" message to give the user a clue what is
+> > > > expected here.
+> > > 
+> > > E.g. overlays supplied via an unified kernel image (UKI) which of course
+> > > is not supported by barebox yet. Also if we reach this error it means
+> > > that the of_overlay_path was neither a DIR nor a FIT therefore I went
+> > > the generic way.
+> > > 
+> > > > I think you could also just drop the filetype detection here and just
+> > > > call of_overlay_global_fixup_fit() unconditionally. The resulting
+> > > > "Loading FIT image %s failed with: %pe\n" message when a non FIT image
+> > > > is to be opened should be enough information for the user.
+> > > 
+> > > You're right. I took an very defensive approach. We can extend this
+> > > later as well if we're going to support UKIs in the future.
+> > > 
+> > > > Note that it's a bit unfortunate that both a FIT image and a dtbo file
+> > > > are detected as device tree files. With the prvious naming
+> > > > "global.of.overlay.dir" it was clear that a directory was expected here.
+> > > > The "global.of.overlay.path" naming might confuse the user into thinking
+> > > > that a path to a dtbo file could be passed here which would then be
+> > > > opened as a FIT image. Would be nice to give a meaningful error message
+> > > > when a user falls into this trap.
+> > > 
+> > > Sorry I don't get this. With "global.of.overlay.path" there are now two
+> > > possibilities:
+> > >  1) It's a directory: in that case the already existing
+> > >     of_overlay_global_fixup_dir() is triggered.
+> > >  2) It's a file: in that case we try to apply the new fit-overlay
+> > >     handling.
+> > 
+> > In the end global.of.overlay.path specifies where to find device tree
+> > overlay files, usually dtbos. If that variable specifies a directory
+> > then in this directory indeed dtbos are expected. If the variable
+> > specifies a file, then a FIT image is expected and a dtbo doesn't work.
+> > This is inconsistent and it might be worth having a message printed
+> > when global.of.overlay.path points to a dtbo.
 > 
+> Sorry, I should have read your comment more carefully, I got it now. Yes
+> this is a bit unfortunate. What about:
 > 
-> [...]
+> BAREBOX_MAGICVAR(global.of.overlay.provider, "Select one overlay provider: directory (default), fit");
 
-Applied, thanks!
+How about just accepting either a FIT image or a dtbo if
+global.of.overlay.path refers to a file?
 
-[1/1] cdev: fix mtd partition handling
-      https://git.pengutronix.de/cgit/barebox/commit/?id=52aa463c0662 (link may not be stable)
+Sascha
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
