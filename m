@@ -1,67 +1,67 @@
-Delivery-date: Thu, 07 Aug 2025 07:13:09 +0200
+Delivery-date: Thu, 07 Aug 2025 07:13:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujsw9-007smC-2q
+	id 1ujswj-007smz-2n
 	for lore@lore.pengutronix.de;
-	Thu, 07 Aug 2025 07:13:09 +0200
+	Thu, 07 Aug 2025 07:13:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ujsw9-0004XT-AV
-	for lore@pengutronix.de; Thu, 07 Aug 2025 07:13:09 +0200
+	id 1ujswj-0004dd-CQ
+	for lore@pengutronix.de; Thu, 07 Aug 2025 07:13:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=crc7A55cCKZuTNJXLT5XPigp3jVOFSntz+FIIyVV744=; b=zEVyeirM/xjAEY++4V9CPjs2dl
-	YeaBWDCHhBY8RvpKeXQE2iXfOSy4dQpRXwNOxnwK4jO1SKX/Hy/eWzkLCup1cpQc1yIxOmhFHyrcP
-	x/j7juVOxZyYtXH5GCY0sPmGJpjO6O2F1IcGCedGAln5TJO/24ExQ2FZJO0zQNcgdXwHOWRw2Eov1
-	fwXA5o6dBqMu0xg9zUAla45OUn/lHtOXJHVRNLiknomOrjYWZXpicPMGTw64usYRjMlzsBhh2wENV
-	nG6P4I7CTzJBMX0YqOoXskV5h1gnpRAAqKrWxzgUXgD7+kdivAvF7J+Y+R4dPjXNFCM2E2UoOJw7S
-	qZZ00/ag==;
+	bh=n8O4cGcvTuYh6H2QpN1CvzLUPoP8cORBNVCN/2CpWes=; b=VxQhK/VNN5Eb3Bv+hq/y6kKGEe
+	wKN/uLJUBb07t9eoFUCCdj+FJXRmmyifweEEAroj5NpI3KUYdjGgEJSJ05cMXB4Z9WX8PObK6RZcc
+	xrzkaJlHaor+bx+BbF8E9FYH/sg3EzV7+GmNJsepXnOEnM+sqRYmaxOyN6HkXg0+rLMh724eEH0RP
+	P5Z+S0Xx0v/i7ruZoHhdTCagUSi6244Ug/Ul7d/yAQ1rnH5ijAt2m3wUg9LVQ8NB5TQ2LYGJqRqW4
+	+bkGaA/hEe6Q82JswV/4GDl7yx3EqV9BpAOPX2bdxlnU4fzhhd2QXJY0N9uF3JItQ6Km1rPvOfVB5
+	FEY+aAaA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujsvQ-0000000HHyA-07ew;
-	Thu, 07 Aug 2025 05:12:24 +0000
+	id 1ujswJ-0000000HI2D-2fLQ;
+	Thu, 07 Aug 2025 05:13:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujsvN-0000000HHxT-0iX2
+	id 1ujswH-0000000HI1q-13pw
 	for barebox@lists.infradead.org;
-	Thu, 07 Aug 2025 05:12:22 +0000
+	Thu, 07 Aug 2025 05:13:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujsvL-0004S0-79; Thu, 07 Aug 2025 07:12:19 +0200
+	id 1ujswG-0004YP-1P; Thu, 07 Aug 2025 07:13:16 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujsvL-00CK6X-07;
-	Thu, 07 Aug 2025 07:12:19 +0200
+	id 1ujswF-00CK6i-2l;
+	Thu, 07 Aug 2025 07:13:15 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ujsvK-006XXA-37;
-	Thu, 07 Aug 2025 07:12:18 +0200
+	id 1ujswF-006Xan-2a;
+	Thu, 07 Aug 2025 07:13:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250806163214.3233080-1-a.fatoum@pengutronix.de>
-References: <20250806163214.3233080-1-a.fatoum@pengutronix.de>
-Message-Id: <175454353895.1558809.13846636793562061186.b4-ty@pengutronix.de>
-Date: Thu, 07 Aug 2025 07:12:18 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20250806135751.2865266-1-a.fatoum@barebox.org>
+References: <20250806135751.2865266-1-a.fatoum@barebox.org>
+Message-Id: <175454359579.1559038.7612958624593763045.b4-ty@pengutronix.de>
+Date: Thu, 07 Aug 2025 07:13:15 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250806_221221_210538_D89CA3F2 
-X-CRM114-Status: UNSURE (   7.58  )
+X-CRM114-CacheID: sfid-20250806_221317_297501_64BAE161 
+X-CRM114-Status: UNSURE (   7.62  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,23 +84,23 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! test: add support for pytest --graphic
+Subject: Re: [PATCH] test: add --bootarg option when running under QEMU
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 06 Aug 2025 18:32:14 +0200, Ahmad Fatoum wrote:
-> test: qemu: pass -nographic in the default case.
+On Wed, 06 Aug 2025 15:57:51 +0200, Ahmad Fatoum wrote:
+> On platforms, where the device tree is passed by QEMU, /chosen/bootargs
+> is an easy way to pass early settings to barebox.
 > 
-> Otherwise, we end up with an error message if the default is to use a
-> graphic backend.
+> Expose this over a new --bootarg parameter.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] fixup! test: add support for pytest --graphic
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3c5498cf9255 (link may not be stable)
+[1/1] test: add --bootarg option when running under QEMU
+      https://git.pengutronix.de/cgit/barebox/commit/?id=aa4cd27f719d (link may not be stable)
 
 Best regards,
 -- 
