@@ -1,55 +1,55 @@
-Delivery-date: Mon, 11 Aug 2025 14:29:47 +0200
+Delivery-date: Mon, 11 Aug 2025 14:29:50 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulRet-009Kdt-2s
+	id 1ulRew-009KeI-1m
 	for lore@lore.pengutronix.de;
-	Mon, 11 Aug 2025 14:29:47 +0200
+	Mon, 11 Aug 2025 14:29:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulRed-0005aj-2t
-	for lore@pengutronix.de; Mon, 11 Aug 2025 14:29:47 +0200
+	id 1ulReg-0005fO-Cx
+	for lore@pengutronix.de; Mon, 11 Aug 2025 14:29:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=v0fSlKY4vy78roI/rRL8o6yt6mefA6SOzCbRaFhiecY=; b=vpUsPTSHgCmVtb2rCemfIDk/vV
-	MffBbIfg5baxaEhhEOsvFgMgLNMp1mBOPU6pfY0/eKC74G6vX6PfiDZEmxN1uNUo9KQ/HAyroom7B
-	CkTHO+4pi50u9SsAFihsIE7d4zZf6Yuen9+2xADtCYrYDsG++rsvFtmljj5lLEeaStWO20hgQWYjT
-	znlYNv7ByMKy/RhLPNFaLHj5utKzDrfDg42uZ7yAb1RR82rx9TfS34In2GejFmGl730UvFkDMP0IR
-	/94IzroATCzPo7tWqmHcf3OuRHOi8gRVxNUcx0evc4yxxrgEX98yl5oK3JJcgyRFHW7/XIyWq8pMP
-	7LvDkHoA==;
+	bh=cIC0wxf7Bv1fvimBJxQHnNwBLbcJKc4bM1o9eg1r3Eo=; b=KWuHAik8qE3HIWRyKARD5oRjPK
+	p8IUXN+iK+slUXlLItS9zRRTm18p/X7Zm3kZLAfwEr3sxEeSmgR4DjDKTP220azA8XdzcVm1rOiZy
+	JD6jy8OrNM1QlRwfO4jEq7BatqjMNGsW7W0M2aRE8NkXXktRLG22osqNpUFM8UByNXvLX/Pux4FrU
+	FAAgbuNgEUE0lq02pdS5ON5rE9RSb/oh10UEPHqyRyi0PjlTEi38/sHoY7L+BA+mb1djiRq4PRn9F
+	ej4L8guaywr7B3U4AI77SahEiDzPUIKOdIetMEXcnd9su2uM8fpmzX/rr5tuZ3qO+1Mt9axJ0zb1c
+	4xvDJOzQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRds-00000007dlT-19Rx;
-	Mon, 11 Aug 2025 12:28:44 +0000
+	id 1ulRdl-00000007df2-1XkG;
+	Mon, 11 Aug 2025 12:28:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRdf-00000007dVy-0hf5
+	id 1ulRde-00000007dVq-2U52
 	for barebox@lists.infradead.org;
-	Mon, 11 Aug 2025 12:28:34 +0000
+	Mon, 11 Aug 2025 12:28:33 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1ulRdc-0004WP-Is; Mon, 11 Aug 2025 14:28:28 +0200
+	id 1ulRdb-0004WP-0H; Mon, 11 Aug 2025 14:28:27 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 11 Aug 2025 14:27:48 +0200
-Message-Id: <20250811122824.1667791-9-a.fatoum@barebox.org>
+Date: Mon, 11 Aug 2025 14:27:41 +0200
+Message-Id: <20250811122824.1667791-2-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250811122824.1667791-1-a.fatoum@barebox.org>
 References: <20250811122824.1667791-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250811_052831_203729_79568635 
-X-CRM114-Status: GOOD (  11.60  )
+X-CRM114-CacheID: sfid-20250811_052830_650126_792B7B37 
+X-CRM114-Status: GOOD (  10.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,57 +71,89 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 08/44] commands: version: print value of CONFIG_NAME
+Subject: [PATCH 01/44] driver: move device name definition into device.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A project may contain multiple barebox configurations, e.g. for first
-stage and second stage or for development and release.
-
-Make it possible to encode that information directly into the config via
-a name CONFIG_NAME option.
+These definitions are not tied to the driver support, so move them into
+the better matching device.h header.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- commands/version.c | 5 ++++-
- common/Kconfig     | 8 ++++++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ include/device.h | 21 +++++++++++++++++++++
+ include/driver.h | 20 --------------------
+ 2 files changed, 21 insertions(+), 20 deletions(-)
 
-diff --git a/commands/version.c b/commands/version.c
-index 0ad8e587de87..d6da1bba6e31 100644
---- a/commands/version.c
-+++ b/commands/version.c
-@@ -7,7 +7,10 @@
- 
- static int do_version(int argc, char *argv[])
- {
--	printf ("\n%s\n\n", version_string);
-+	printf ("\n%s", version_string);
-+	if (*CONFIG_NAME)
-+		printf (" (%s)", CONFIG_NAME);
-+	printf ("\n\n");
- 	return 0;
+diff --git a/include/device.h b/include/device.h
+index 965251e55240..7ef807f7d6b1 100644
+--- a/include/device.h
++++ b/include/device.h
+@@ -168,6 +168,27 @@ static inline struct device_node *dev_of_node(struct device *dev)
+ 	return IS_ENABLED(CONFIG_OFDEVICE) ? dev->of_node : NULL;
  }
  
-diff --git a/common/Kconfig b/common/Kconfig
-index a8e62600c4ee..159cd271d748 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -112,6 +112,14 @@ config FASTBOOT_BASE
- 
- menu "General Settings"
- 
-+config NAME
-+	string "Informational config name to include in binary"
-+	help
-+	  Unless left empty, this compiles into barebox an informational
-+	  string describing the config used. This is reproduced by the
-+	  version command, but does not influence any runtime or
-+	  compile-time behavior.
++/* dynamically assign the next free id */
++#define DEVICE_ID_DYNAMIC	-2
++/* do not use an id (only one device available) */
++#define DEVICE_ID_SINGLE	-1
 +
- config LOCALVERSION
- 	string "Local version - append to the version string"
- 	help
++static inline const char *dev_id(const struct device *dev)
++{
++	if (!dev)
++		return NULL;
++	return (dev->id != DEVICE_ID_SINGLE) ? dev->unique_name : dev->name;
++}
++
++static inline const char *dev_name(const struct device *dev)
++{
++	if (!dev)
++		return NULL;
++	return dev_id(dev) ?: dev->name;
++}
++
++int dev_set_name(struct device *dev, const char *fmt, ...) __printf(2, 3);
++
+ static inline bool dev_is_dma_coherent(struct device *dev)
+ {
+ 	if (dev) {
+diff --git a/include/driver.h b/include/driver.h
+index e1493177e435..c130a3cd63fd 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -60,11 +60,6 @@ struct driver {
+ #define device_d device
+ #define driver_d driver
+ 
+-/* dynamically assign the next free id */
+-#define DEVICE_ID_DYNAMIC	-2
+-/* do not use an id (only one device available) */
+-#define DEVICE_ID_SINGLE	-1
+-
+ /* Register devices and drivers.
+  */
+ int register_driver(struct driver *);
+@@ -131,21 +126,6 @@ struct device *find_device(const char *str);
+  */
+ int get_free_deviceid(const char *name_template);
+ 
+-static inline const char *dev_id(const struct device *dev)
+-{
+-	if (!dev)
+-		return NULL;
+-	return (dev->id != DEVICE_ID_SINGLE) ? dev->unique_name : dev->name;
+-}
+-
+-static inline const char *dev_name(const struct device *dev)
+-{
+-	if (!dev)
+-		return NULL;
+-	return dev_id(dev) ?: dev->name;
+-}
+-
+-int dev_set_name(struct device *dev, const char *fmt, ...) __printf(2, 3);
+ int dev_add_alias(struct device *dev, const char *fmt, ...) __printf(2, 3);
+ 
+ /*
 -- 
 2.39.5
 
