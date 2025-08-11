@@ -1,55 +1,55 @@
-Delivery-date: Mon, 11 Aug 2025 14:29:53 +0200
+Delivery-date: Mon, 11 Aug 2025 14:29:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulRez-009Keg-1L
+	id 1ulRf1-009KfD-13
 	for lore@lore.pengutronix.de;
-	Mon, 11 Aug 2025 14:29:53 +0200
+	Mon, 11 Aug 2025 14:29:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulReh-0005gl-VH
-	for lore@pengutronix.de; Mon, 11 Aug 2025 14:29:53 +0200
+	id 1ulRej-0005ib-L4
+	for lore@pengutronix.de; Mon, 11 Aug 2025 14:29:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ppUrFOZ3VDCgO9f3N8RPiv98GVvFlmDK7xKGY/mXunk=; b=4PKrjbfiZL+aNiidSvrxX9iHTr
-	eUm6WX/g4L23kXhP3XzV4FrdN6KmrVoz24EJ+WA1b8xZXxRjncEAdJqUg9/e5SdfPBkkDzjSdWTg4
-	2yWaTAgGzxfdn8un0ygHi8td1ALu2YobWhWpzaK3McVd/D7DOxpsdb4OO6TP08gmuvH7V5ZtIBf+w
-	TscaskrvThlUkrt5dEUohhsYzR8Wlpag2XOGKMrBVZ0NZxUy7+4iHOHf/9VX7KSUPBCnZgz+HtOtR
-	2K20uEuFzOCwSA1UC0jYNJuI+YWOuj7ZgfJVwnv6lU/l2J+EklQnFipCAUuEk/+aTnIg1ZR6sar4/
-	n5tKIbtg==;
+	bh=i7y/ZXh6/xlD5O78XA93ZY2Bc5JYB/WvNp9C7bZDy3w=; b=LUaUMPF2jDx9bZ5c+d/BD7iBcx
+	OH54JGLDKEovVYLRiabmKyroUIJ+k8GWwEr6scmF7Fku8S54agPpemO3nWqRDFEOIcszZ2CEjNip8
+	jfkdmyakLaM7ljZXOjwImDbcypDdo8ShduZPfq5v4it1Y1ps/BWgz8p+T7RAQx31ZOrHmrCF/sb5E
+	9QPaEGhUO7i+miLu2xTM5S3SnMs6AjVk91p+5AwVzEIrYVTfF6/SOPkABQ23EgURkHDyA1GEJC4Ym
+	k4RNG4PGKV5bdfO8ZXj7cyqG5raDGGl9/0/jQwuOtzImdOwo3XZ3iQCP0Da9GAz2hUAi+B30cjh7L
+	WK7xOp7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRdk-00000007ddf-0hqE;
-	Mon, 11 Aug 2025 12:28:36 +0000
+	id 1ulRdu-00000007dsG-0uOX;
+	Mon, 11 Aug 2025 12:28:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRde-00000007dW1-2W6W
+	id 1ulRdf-00000007dW3-0En7
 	for barebox@lists.infradead.org;
-	Mon, 11 Aug 2025 12:28:33 +0000
+	Mon, 11 Aug 2025 12:28:35 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1ulRdd-0004WP-CF; Mon, 11 Aug 2025 14:28:29 +0200
+	id 1ulRdd-0004WP-PU; Mon, 11 Aug 2025 14:28:29 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 11 Aug 2025 14:27:51 +0200
-Message-Id: <20250811122824.1667791-12-a.fatoum@barebox.org>
+Date: Mon, 11 Aug 2025 14:27:53 +0200
+Message-Id: <20250811122824.1667791-14-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250811122824.1667791-1-a.fatoum@barebox.org>
 References: <20250811122824.1667791-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250811_052830_665907_2202EBB4 
-X-CRM114-Status: GOOD (  12.76  )
+X-CRM114-CacheID: sfid-20250811_052831_090386_5F16C635 
+X-CRM114-Status: GOOD (  10.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,103 +71,108 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 11/44] test: add heuristic for guessing labgrid environment YAML
+Subject: [PATCH 13/44] drivers: use dev_add_param_uint32_fixed for IDs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that each defconfig in barebox has its name carried into the build
-.config, we can teach pytest to query that and find out what labgrid
-environment YAML to use if none was specified by the user.
-
-That means when building e.g., multi_v8_defconfig, it's enough to just
-run pytest without arguments.
+Cut down on the use of temporary buffers for formatting integers in
+fixed parameters by using the dev_add_param_uint32_fixed that's
+especially meant for this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- common/Kconfig |  4 ++++
- conftest.py    | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
+ drivers/mfd/superio.c |  7 ++-----
+ drivers/pci/bus.c     | 16 +++++-----------
+ drivers/w1/w1.c       | 10 +++-------
+ 3 files changed, 10 insertions(+), 23 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 159cd271d748..21ce2ef97f2c 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -120,6 +120,10 @@ config NAME
- 	  version command, but does not influence any runtime or
- 	  compile-time behavior.
+diff --git a/drivers/mfd/superio.c b/drivers/mfd/superio.c
+index 891c8ace52e2..9917c0ff9a59 100644
+--- a/drivers/mfd/superio.c
++++ b/drivers/mfd/superio.c
+@@ -68,7 +68,6 @@ void superio_chip_add(struct superio_chip *siochip)
+ {
+ 	struct regmap *regmap;
+ 	char *chipname;
+-	char str[5];
+ 	int ret;
  
-+	  For testing, pytest will use this option to determine, which
-+	  Labgrid environment YAML to use if none was specified by the
-+	  user.
-+
- config LOCALVERSION
- 	string "Local version - append to the version string"
- 	help
-diff --git a/conftest.py b/conftest.py
-index e8de5952efb4..06321c938dba 100644
---- a/conftest.py
-+++ b/conftest.py
-@@ -26,6 +26,45 @@ def barebox_config(request, strategy, target):
-     command = target.get_driver("BareboxDriver")
-     return helper.get_config(command)
+ 	chipname = xasprintf("superio-%04x:%04x@%02x",
+@@ -79,10 +78,8 @@ void superio_chip_add(struct superio_chip *siochip)
  
-+
-+def get_enabled_arch(config):
-+    # Get the absolute path to the directory containing this script
-+    base_dir = os.path.dirname(os.path.abspath(__file__))
-+
-+    # Path to the 'arch' directory relative to this script
-+    arch_dir = os.path.join(base_dir, "arch")
-+
-+    if not os.path.isdir(arch_dir):
-+        return None
-+
-+    # Optional mapping from directory names to config key suffixes
-+    arch_map = {"powerpc": "ppc"}
-+
-+    for entry in os.listdir(arch_dir):
-+        path = os.path.join(arch_dir, entry)
-+        if os.path.isdir(path):
-+            key_suffix = arch_map.get(entry, entry).upper()
-+            config_key = f"CONFIG_{key_suffix}"
-+            if config.get(config_key):
-+                return entry
-+
-+    return None
-+
-+
-+def guess_lg_env():
-+    config_file = helper.open_config_file(os.environ['LG_BUILDDIR'] + "/.config")
-+    config = helper.parse_config(config_file)
-+    if not config or not config.get('CONFIG_NAME'):
-+        return None
-+    arch = get_enabled_arch(config)
-+    if not arch:
-+        return None
-+    filename = os.path.join("test", arch, f"{config['CONFIG_NAME']}.yaml")
-+    if os.path.exists(filename):
-+        return filename
-+    return None
-+
-+
- def pytest_configure(config):
-     if 'LG_BUILDDIR' not in os.environ:
-         if 'KBUILD_OUTPUT' in os.environ:
-@@ -38,6 +77,14 @@ def pytest_configure(config):
-     if os.environ['LG_BUILDDIR'] is not None:
-         os.environ['LG_BUILDDIR'] = os.path.realpath(os.environ['LG_BUILDDIR'])
+ 	siochip->dev->priv = siochip;
  
-+    lg_env = config.option.lg_env
-+    if lg_env is None:
-+        lg_env = os.environ.get('LG_ENV')
-+    if lg_env is None:
-+        if lg_env := guess_lg_env():
-+            os.environ['LG_ENV'] = lg_env
-+
-+
- def pytest_addoption(parser):
-     def assignment(arg):
-             return arg.split('=', 1)
+-	sprintf(str, "%04x", siochip->vid);
+-	dev_add_param_fixed(siochip->dev, "vendor", str);
+-	sprintf(str, "%04x", siochip->devid);
+-	dev_add_param_fixed(siochip->dev, "device", str);
++	dev_add_param_uint32_fixed(siochip->dev, "vendor", siochip->vid, "%04x");
++	dev_add_param_uint32_fixed(siochip->dev, "device", siochip->devid, "%04x");
+ 
+ 	regmap = regmap_init(siochip->dev, &superio_regmap_bus, siochip,
+ 			     &superio_regmap_config);
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+index c8f5b592428d..a5da84d282b4 100644
+--- a/drivers/pci/bus.c
++++ b/drivers/pci/bus.c
+@@ -133,7 +133,6 @@ int pci_register_driver(struct pci_driver *pdrv)
+ 
+ int pci_register_device(struct pci_dev *pdev)
+ {
+-	char str[6];
+ 	struct device *dev = &pdev->dev;
+ 	int ret;
+ 
+@@ -149,16 +148,11 @@ int pci_register_device(struct pci_dev *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	sprintf(str, "%02x", pdev->devfn);
+-	dev_add_param_fixed(dev, "devfn", str);
+-	sprintf(str, "%04x", (pdev->class >> 8) & 0xffff);
+-	dev_add_param_fixed(dev, "class", str);
+-	sprintf(str, "%04x", pdev->vendor);
+-	dev_add_param_fixed(dev, "vendor", str);
+-	sprintf(str, "%04x", pdev->device);
+-	dev_add_param_fixed(dev, "device", str);
+-	sprintf(str, "%04x", pdev->revision);
+-	dev_add_param_fixed(dev, "revision", str);
++	dev_add_param_uint32_fixed(dev, "devfn", pdev->devfn, "%02x");
++	dev_add_param_uint32_fixed(dev, "class", (pdev->class >> 8) & 0xffff, "%04x");
++	dev_add_param_uint32_fixed(dev, "vendor", pdev->vendor, "%04x");
++	dev_add_param_uint32_fixed(dev, "device", pdev->device, "%04x");
++	dev_add_param_uint32_fixed(dev, "revision", pdev->revision, "%04x");
+ 
+ 	return 0;
+ }
+diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
+index 61f21ff446b8..3944c4676ee8 100644
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -411,7 +411,6 @@ static bool w1_is_registered(struct w1_bus *bus, u64 rn)
+ 
+ static int w1_device_register(struct w1_bus *bus, struct w1_device *dev)
+ {
+-	char str[18];
+ 	int ret;
+ 
+ 	dev_set_name(&dev->dev, "w1-%x-", dev->fid);
+@@ -425,12 +424,9 @@ static int w1_device_register(struct w1_bus *bus, struct w1_device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	sprintf(str, "0x%x", dev->fid);
+-	dev_add_param_fixed(&dev->dev, "fid", str);
+-	sprintf(str, "0x%llx", dev->id);
+-	dev_add_param_fixed(&dev->dev, "id", str);
+-	sprintf(str, "0x%llx", dev->reg_num);
+-	dev_add_param_fixed(&dev->dev, "reg_num", str);
++	dev_add_param_uint32_fixed(&dev->dev, "fid", dev->fid, "0x%x");
++	dev_add_param_uint64_fixed(&dev->dev, "id", dev->id, "0x%llx");
++	dev_add_param_uint64_fixed(&dev->dev, "reg_num", dev->reg_num, "0x%llx");
+ 
+ 	return ret;
+ }
 -- 
 2.39.5
 
