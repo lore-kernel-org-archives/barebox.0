@@ -1,61 +1,61 @@
-Delivery-date: Mon, 11 Aug 2025 08:44:30 +0200
+Delivery-date: Mon, 11 Aug 2025 08:44:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulMGk-009Fgf-21
+	id 1ulMGl-009Fh0-0F
 	for lore@lore.pengutronix.de;
-	Mon, 11 Aug 2025 08:44:30 +0200
+	Mon, 11 Aug 2025 08:44:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulMGj-0002Wb-RU
-	for lore@pengutronix.de; Mon, 11 Aug 2025 08:44:30 +0200
+	id 1ulMGk-0002XH-HG
+	for lore@pengutronix.de; Mon, 11 Aug 2025 08:44:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=5zwhJUJc1RLo62AwsrKgYbBuC+TmNAG09g2KumcsGpQ=; b=36hchR8oWn9kqD
-	d+4xv1uUZhC9u9yeTAShY03PaO0ESy1WTMlpAvUCntdeOZywsTp7BzjrxiOGfPAxQqXz+NxuOdZLL
-	dDq4wOPCNkc7W9Df7BOd/Z3Vmo/rrKw8GTrL8Gi0jXOOXm0/OLdS4UenF220zKiEJZ6TdpurtBiiH
-	L8z6wMJVdk/OS1Kd/OMXzApXG/AxhMe4G+6LyqybYGntg/0uUJBiIDYYTp2qCbG2vDOr528npymVb
-	PQskXhYw+TbhWIwVh4hsqIRx3GuGszXtVLVG0cfje2ytqvZaKXbgKiab70jPesN1+U/IpyWhQ87Ej
-	cxP3fil3W6QK29vM59hQ==;
+	List-Owner; bh=OL5xCdiItSsDRWcsW+H8n5KL2bdtlMTQwHA71yGaVas=; b=wFIBMkjnDALqTZ
+	XxpJudqv6Clxa5yPWhh2YdQMBm1VDzZPewy2ZYxxXGgK5rNJglH2TiYewcep2ZyD63FwK9kzycBHZ
+	kIabKqtlZQlKdw2bpNjQ6koSqTL3CQZW9CW80YSA0IgbhdLCckAXwGZuTxoXruX18sjHEKm/4QlM0
+	Q/oO7bm5R3LM/IwlyEQtdO+NHPUIp0dIax9AG9lcCCiRC45j5f9DZBcD+48KXdGAx650+FCcv8ZTn
+	M8kxq7/B6+YNFMULCkzcLc0iR7t8XDaYkonXwtKke+nTuz6T1x9TbPn/A9YwVwWtuf9T6YVkcXC1V
+	546vvAEl/Px95GtBI9Xg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulMFz-00000006ci6-2VgN;
-	Mon, 11 Aug 2025 06:43:43 +0000
+	id 1ulMG0-00000006cit-3CDn;
+	Mon, 11 Aug 2025 06:43:44 +0000
 Received: from smtp15.bhosted.nl ([2a02:9e0:8000::26])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulMD8-00000006cTL-0SS3
+	id 1ulMD9-00000006cTH-3788
 	for barebox@lists.infradead.org;
-	Mon, 11 Aug 2025 06:40:48 +0000
+	Mon, 11 Aug 2025 06:40:49 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=protonic.nl; s=202111;
 	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
 	 subject:cc:to:from:from;
-	bh=5zwhJUJc1RLo62AwsrKgYbBuC+TmNAG09g2KumcsGpQ=;
-	b=sHBXsoSHMgp96mdgJ2jsl/7DrOLzd4dU9fq+kJh3VSHBb4OQqA361OCE7f42OP8Z3ZXnyPpdUgGUU
-	 EflMwq3OKNMnbOszeR5KG+DaLscxETPK+SZV8wPOMYaW5grVCfZ5+9Uq9HJsEzj/80xbaRlyw3pAJP
-	 vapUOppE9z7tKKtnHEo4o4tznXsDVOGVLrEO8a+BPpEZWYD7knog4JdkWindEhsqFTlRKMh0uTaarj
-	 HwwiNfpDmXYM3eNjEEm3qldji0KwMT+zUMUI4Apv058cQzfFRHhMRZbTkLSZ1SxOur0TqUu36V2r8H
-	 e6+ehQP3KdYpkqpoR9o9HwCR/QgRQzQ==
-X-MSG-ID: 1928f8a0-767e-11f0-9d4b-00505681446f
+	bh=OL5xCdiItSsDRWcsW+H8n5KL2bdtlMTQwHA71yGaVas=;
+	b=cY9Mrtjazdk3IJPhcPhCzSCrzpcA1kUfzX910pCDNs1ruZ7cotIrvicn8BX9lPYDK+b4B33NcOGmv
+	 avPvXoiK704I5bd8tPfTqrU9EXNxov6syZFDPV0FlBgasdlW8lshG+E0F35vuuRZcksKvz5b7U1NrX
+	 +63cbkjAvk5WznL6ZoUp82NpguvzSHekXrbtIWrFjHPE8BhHLWkw258j3SjzXlp4QOLAVIRI2aPIOc
+	 W+6kJAVw//WEIaLPeuGXAIhwV0ZUON3Z3ZuA0lb5vDDhZCYRLJDRE+/CQxFOzwQPvTcEZiovDB55AI
+	 FT2z5fIP1gY15VWko/Gbqo929O2CAAQ==
+X-MSG-ID: 19c1511d-767e-11f0-9d4b-00505681446f
 From: David Jander <david@protonic.nl>
 To: barebox@lists.infradead.org
-Date: Mon, 11 Aug 2025 08:40:19 +0200
-Message-ID: <20250811064026.753776-2-david@protonic.nl>
+Date: Mon, 11 Aug 2025 08:40:25 +0200
+Message-ID: <20250811064026.753776-8-david@protonic.nl>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250811064026.753776-1-david@protonic.nl>
 References: <20250811064026.753776-1-david@protonic.nl>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250810_234046_492634_26ADEDC6 
-X-CRM114-Status: UNSURE (   8.75  )
+X-CRM114-CacheID: sfid-20250810_234047_919131_3B208829 
+X-CRM114-Status: UNSURE (   8.20  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -79,31 +79,36 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/8] clk: rockchip: clk-pll.c: Fix macro name confusion
+Subject: [PATCH 7/8] arm: dts: rk3576.dtsi: Add gpio aliases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-RK3399_PLLCON() and RK3588_PLLCON() are identical, but using the RK3399
-name in an RK3588 function seems confusing.
+These are needed for the GPIO driver to probe.
 
 Signed-off-by: David Jander <david@protonic.nl>
 ---
- drivers/clk/rockchip/clk-pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/dts/rk3576.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/clk/rockchip/clk-pll.c b/drivers/clk/rockchip/clk-pll.c
-index 64f9e0dc5e..548cbe391a 100644
---- a/drivers/clk/rockchip/clk-pll.c
-+++ b/drivers/clk/rockchip/clk-pll.c
-@@ -943,7 +943,7 @@ static int rockchip_rk3588_pll_set_params(struct rockchip_clk_pll *pll,
- 	/* set pll power down */
- 	writel(HIWORD_UPDATE(RK3588_PLLCON1_PWRDOWN,
- 			     RK3588_PLLCON1_PWRDOWN, 0),
--	       pll->reg_base + RK3399_PLLCON(1));
-+	       pll->reg_base + RK3588_PLLCON(1));
+diff --git a/arch/arm/dts/rk3576.dtsi b/arch/arm/dts/rk3576.dtsi
+index cf7c69b3b5..e4b63784d9 100644
+--- a/arch/arm/dts/rk3576.dtsi
++++ b/arch/arm/dts/rk3576.dtsi
+@@ -1,6 +1,14 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
  
- 	/* update pll values */
- 	writel_relaxed(HIWORD_UPDATE(rate->m, RK3588_PLLCON0_M_MASK, RK3588_PLLCON0_M_SHIFT),
+ / {
++	aliases {
++		gpio0 = &gpio0;
++		gpio1 = &gpio1;
++		gpio2 = &gpio2;
++		gpio3 = &gpio3;
++		gpio4 = &gpio4;
++	};
++
+ 	dmc: memory-controller {
+ 		compatible = "rockchip,rk3576-dmc";
+ 		rockchip,pmu = <&pmu1_grf>;
 -- 
 2.47.2
 
