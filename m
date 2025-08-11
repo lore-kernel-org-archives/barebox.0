@@ -1,55 +1,55 @@
-Delivery-date: Mon, 11 Aug 2025 14:30:01 +0200
+Delivery-date: Mon, 11 Aug 2025 14:30:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulRf7-009Kgd-0V
+	id 1ulRf9-009Kgz-02
 	for lore@lore.pengutronix.de;
-	Mon, 11 Aug 2025 14:30:01 +0200
+	Mon, 11 Aug 2025 14:30:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulReo-0005on-OG
-	for lore@pengutronix.de; Mon, 11 Aug 2025 14:30:00 +0200
+	id 1ulReq-0005rf-Rv
+	for lore@pengutronix.de; Mon, 11 Aug 2025 14:30:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MOcewNwkz0kBXpBTP8LOmx2uOfLHGCZZIotF0asNxrA=; b=Jv+kAue2elrMIcZSkms19PxIpn
-	/DFXx7at/HW7kcrh89xlng2ChFyl2+1T4vV/uj4IDSZxN9JC7dqawGHFjiGPjgyg15y8//sQ78jSz
-	7rbg7psdAdhpgTqRWO34LL/HSY4ZOzDffoUL9N2I0fI6HASIhkb01SnTGSsO/JlpWyVyNNsO6CtuU
-	/n0wHCdqLbtFNFe1Mw4JVu1hBPdUvRp44Q/uDvyx4IMxTlg7owSSnSrJRWRknPt/yGrWjuGR9x1J7
-	HTnPMwHdaTWGo0zMg6DDc3+x9HOo0prlKS8gzCAZUGyeZDn5oUNL3bUSKGVUmCY62bMLoa6C/pe/i
-	GEeq8Lig==;
+	bh=KNASNjPjseDpTfJ2NVW5Uk0xHsgGKBggcUyTat05+dk=; b=UfCUcpYd3I7ZVpRfXX+vJ6MJsr
+	2Qy0Sir/4H7hj9DSgDhlJxIko2BvhrP+ssehqJRY8YJbNO8VjxiQ2LLvt10sM+2op6xAIsOFBdazY
+	r7gRan5yfo9ai2g4M+i7R4S1+EodMsJBUqrPMhexSY2Bif3wp0FGR7sXg2bapO0It3S08sXDQfo7v
+	7FXPUlT+p7UdjnnjuwQ/m4rgGgjv13uYN7nuIeGDU3VrY5dFTNRo3qzgMpYjIO8fNjVBWx+FtpMPU
+	+O/HrCXBa/3+Jlx6uYYhiEQPmX+3GrVE9oqDzoZ/s13rt8r3DLna/4CUA51o1A77MlsKvUh68Tk5Z
+	iIK3zY6w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRdv-00000007duj-448f;
-	Mon, 11 Aug 2025 12:28:47 +0000
+	id 1ulRdx-00000007dxC-1n48;
+	Mon, 11 Aug 2025 12:28:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRdf-00000007dW0-3Atw
+	id 1ulRdf-00000007dYB-3nFk
 	for barebox@lists.infradead.org;
 	Mon, 11 Aug 2025 12:28:36 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1ulRdd-0004WP-4e; Mon, 11 Aug 2025 14:28:29 +0200
+	id 1ulRde-0004WP-DE; Mon, 11 Aug 2025 14:28:30 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 11 Aug 2025 14:27:50 +0200
-Message-Id: <20250811122824.1667791-11-a.fatoum@barebox.org>
+Date: Mon, 11 Aug 2025 14:27:56 +0200
+Message-Id: <20250811122824.1667791-17-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250811122824.1667791-1-a.fatoum@barebox.org>
 References: <20250811122824.1667791-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250811_052831_794310_CAAF2AB0 
-X-CRM114-Status: GOOD (  10.62  )
+X-CRM114-CacheID: sfid-20250811_052831_941288_15834FB5 
+X-CRM114-Status: GOOD (  15.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,91 +71,166 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 10/44] test: py: change barebox_config from set to dict
+Subject: [PATCH 16/44] common: introduce structured I/O
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The use of a set to collect enabled config options means that we can't
-make use of options of non-boolean type. Switch over to a dict to
-support arbitrary types.
+Structured I/O is an alternative method for shell commands input and
+output. Instead of consuming and producing lines of unstructured
+strings, commands receive objects with dedicated attributes.
+
+In the future, once enough commands support this, we could make it
+available in the shell as the pipe operator.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- test/py/helper.py | 46 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ common/Kconfig     |  4 ++++
+ common/Makefile    |  1 +
+ common/structio.c  | 56 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/structio.h | 44 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 105 insertions(+)
+ create mode 100644 common/structio.c
+ create mode 100644 include/structio.h
 
-diff --git a/test/py/helper.py b/test/py/helper.py
-index 191af47a7f14..d4949acb63a0 100644
---- a/test/py/helper.py
-+++ b/test/py/helper.py
-@@ -3,7 +3,36 @@ import pytest
- import os
- import re
- import shlex
--from itertools import filterfalse
-+
-+
-+def parse_config(lines):
-+    options = {}
-+    for line in lines:
-+        if line and line.startswith("CONFIG_"):
-+            key, val = line.split("=", 1)
-+            key = key.strip()
-+            val = val.strip()
-+
-+            if val == "y":
-+                options[key] = True
-+            elif val == "m":
-+                options[key] = False
-+            elif val == "n":
-+                options[key] = None
-+            elif val.startswith('"') and val.endswith('"'):
-+                options[key] = val[1:-1]
-+            else:
-+                options[key] = int(val, base=0)
-+
-+    return options
-+
-+
-+def open_config_file(path):
-+    try:
-+        with open(path) as f:
-+            return f.read().splitlines()
-+    except OSError:
-+        return []
+diff --git a/common/Kconfig b/common/Kconfig
+index 21ce2ef97f2c..b4de85f356c9 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -55,6 +55,10 @@ config BLOCK_STATS
+ config FILETYPE
+ 	bool
  
- 
- def get_config(command):
-@@ -19,17 +48,10 @@ def get_config(command):
- 
-     out, err, returncode = command.run("cat /env/data/config")
-     if returncode != 0:
--        try:
--            with open(os.environ['LG_BUILDDIR'] + "/.config") as f:
--                out = f.read().splitlines()
--        except OSError:
--            return set()
-+        out = open_config_file(os.environ['LG_BUILDDIR'] + "/.config")
++config STRUCTIO
++	bool
++	select PARAM
 +
-+    return parse_config(out)
+ config BINFMT
+ 	bool
+ 	select FILETYPE
+diff --git a/common/Makefile b/common/Makefile
+index b50b92122293..7a91ef21f79b 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -2,6 +2,7 @@
  
--    options = set()
--    for line in out:
--        if line and line.startswith("CONFIG_"):
--            options.add(line.split('=')[0])
--    return options
- 
- def devinfo(barebox, device):
-     info = {}
-@@ -107,7 +129,7 @@ def of_get_property(barebox, path):
- 
- def skip_disabled(config, *options):
-     if bool(config):
--        undefined = list(filterfalse(config.__contains__, options))
-+        undefined = [opt for opt in options if opt not in config]
- 
-         if bool(undefined):
-             pytest.skip("skipping test due to disabled " + (",".join(undefined)) + " dependency")
+ obj-y				+= boards/
+ obj-y				+= memory.o
++obj-$(CONFIG_STRUCTIO)		+= structio.o
+ obj-y				+= memory_display.o
+ pbl-$(CONFIG_PBL_CONSOLE)	+= memory_display.o
+ obj-y				+= clock.o
+diff --git a/common/structio.c b/common/structio.c
+new file mode 100644
+index 000000000000..935c4628dd77
+--- /dev/null
++++ b/common/structio.c
+@@ -0,0 +1,56 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <structio.h>
++#include <command.h>
++#include <device.h>
++
++static struct bobject *active_capture;
++
++struct bobject *structio_active(void)
++{
++	return active_capture;
++}
++
++int structio_run_command(struct bobject **bret, const char *cmd)
++{
++	struct bobject *bobj;
++	int ret;
++
++	if (!bret)
++		return run_command(cmd);
++
++	active_capture = bobj = bobject_alloc("capture");
++	bobj->local = true;
++
++	ret = run_command(cmd);
++
++	active_capture = NULL;
++
++	if (ret) {
++		bobject_free(bobj);
++		return ret;
++	}
++
++	*bret = bobj;
++	return 0;
++}
++
++int structio_devinfo(struct bobject **bret, struct device *dev)
++{
++	struct bobject *bobj;
++
++	if (!bret) {
++		devinfo(dev);
++		return 0;
++	}
++
++	active_capture = bobj = bobject_alloc("devinfo");
++	bobj->local = true;
++
++	devinfo(dev);
++
++	active_capture = NULL;
++
++	*bret = bobj;
++	return 0;
++}
+diff --git a/include/structio.h b/include/structio.h
+new file mode 100644
+index 000000000000..1c97b4c29b79
+--- /dev/null
++++ b/include/structio.h
+@@ -0,0 +1,44 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __STRUCTIO_H_
++#define __STRUCTIO_H_
++
++#include <bobject.h>
++
++#ifdef CONFIG_STRUCTIO
++struct bobject *structio_active(void);
++int structio_run_command(struct bobject **, const char *cmd);
++int structio_devinfo(struct bobject **, struct device *dev);
++#else
++#define structio_active() NULL
++static inline int structio_run_command(struct bobject **bobj, const char *cmd)
++{
++	return -ENOSYS;
++}
++
++static inline int structio_devinfo(struct bobject **bobj, struct device *dev)
++{
++	return -ENOSYS;
++}
++#endif
++
++#define stprintf(name, fmt, ...) do { \
++	struct bobject *__bobj = structio_active(); \
++	if (__bobj) \
++		bobject_add_param_fixed(__bobj, name, fmt, ##__VA_ARGS__); \
++	else \
++		printf(name ": " fmt "\n", ##__VA_ARGS__); \
++} while (0)
++
++#define stprintf_prefix(name, prefix, fmt, ...) do { \
++	struct bobject *__bobj = structio_active(); \
++	if (__bobj) \
++		bobject_add_param_fixed(__bobj, name, fmt, ##__VA_ARGS__); \
++	else \
++		printf(prefix fmt "\n", ##__VA_ARGS__); \
++} while (0)
++
++#define stprintf_single(name, fmt...) stprintf_prefix(name, "", fmt)
++
++#define stnoprintf(args...) ({ structio_active() ? 0 : (printf(args), 1); })
++
++#endif
 -- 
 2.39.5
 
