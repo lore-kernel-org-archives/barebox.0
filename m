@@ -1,55 +1,55 @@
-Delivery-date: Mon, 11 Aug 2025 14:29:50 +0200
+Delivery-date: Mon, 11 Aug 2025 14:29:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulRew-009KeI-1m
+	id 1ulRez-009Keg-1L
 	for lore@lore.pengutronix.de;
-	Mon, 11 Aug 2025 14:29:50 +0200
+	Mon, 11 Aug 2025 14:29:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulReg-0005fO-Cx
-	for lore@pengutronix.de; Mon, 11 Aug 2025 14:29:50 +0200
+	id 1ulReh-0005gl-VH
+	for lore@pengutronix.de; Mon, 11 Aug 2025 14:29:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cIC0wxf7Bv1fvimBJxQHnNwBLbcJKc4bM1o9eg1r3Eo=; b=KWuHAik8qE3HIWRyKARD5oRjPK
-	p8IUXN+iK+slUXlLItS9zRRTm18p/X7Zm3kZLAfwEr3sxEeSmgR4DjDKTP220azA8XdzcVm1rOiZy
-	JD6jy8OrNM1QlRwfO4jEq7BatqjMNGsW7W0M2aRE8NkXXktRLG22osqNpUFM8UByNXvLX/Pux4FrU
-	FAAgbuNgEUE0lq02pdS5ON5rE9RSb/oh10UEPHqyRyi0PjlTEi38/sHoY7L+BA+mb1djiRq4PRn9F
-	ej4L8guaywr7B3U4AI77SahEiDzPUIKOdIetMEXcnd9su2uM8fpmzX/rr5tuZ3qO+1Mt9axJ0zb1c
-	4xvDJOzQ==;
+	bh=ppUrFOZ3VDCgO9f3N8RPiv98GVvFlmDK7xKGY/mXunk=; b=4PKrjbfiZL+aNiidSvrxX9iHTr
+	eUm6WX/g4L23kXhP3XzV4FrdN6KmrVoz24EJ+WA1b8xZXxRjncEAdJqUg9/e5SdfPBkkDzjSdWTg4
+	2yWaTAgGzxfdn8un0ygHi8td1ALu2YobWhWpzaK3McVd/D7DOxpsdb4OO6TP08gmuvH7V5ZtIBf+w
+	TscaskrvThlUkrt5dEUohhsYzR8Wlpag2XOGKMrBVZ0NZxUy7+4iHOHf/9VX7KSUPBCnZgz+HtOtR
+	2K20uEuFzOCwSA1UC0jYNJuI+YWOuj7ZgfJVwnv6lU/l2J+EklQnFipCAUuEk/+aTnIg1ZR6sar4/
+	n5tKIbtg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRdl-00000007df2-1XkG;
-	Mon, 11 Aug 2025 12:28:37 +0000
+	id 1ulRdk-00000007ddf-0hqE;
+	Mon, 11 Aug 2025 12:28:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRde-00000007dVq-2U52
+	id 1ulRde-00000007dW1-2W6W
 	for barebox@lists.infradead.org;
 	Mon, 11 Aug 2025 12:28:33 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1ulRdb-0004WP-0H; Mon, 11 Aug 2025 14:28:27 +0200
+	id 1ulRdd-0004WP-CF; Mon, 11 Aug 2025 14:28:29 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 11 Aug 2025 14:27:41 +0200
-Message-Id: <20250811122824.1667791-2-a.fatoum@barebox.org>
+Date: Mon, 11 Aug 2025 14:27:51 +0200
+Message-Id: <20250811122824.1667791-12-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250811122824.1667791-1-a.fatoum@barebox.org>
 References: <20250811122824.1667791-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250811_052830_650126_792B7B37 
-X-CRM114-Status: GOOD (  10.83  )
+X-CRM114-CacheID: sfid-20250811_052830_665907_2202EBB4 
+X-CRM114-Status: GOOD (  12.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,89 +71,103 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 01/44] driver: move device name definition into device.h
+Subject: [PATCH 11/44] test: add heuristic for guessing labgrid environment YAML
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-These definitions are not tied to the driver support, so move them into
-the better matching device.h header.
+Now that each defconfig in barebox has its name carried into the build
+.config, we can teach pytest to query that and find out what labgrid
+environment YAML to use if none was specified by the user.
+
+That means when building e.g., multi_v8_defconfig, it's enough to just
+run pytest without arguments.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- include/device.h | 21 +++++++++++++++++++++
- include/driver.h | 20 --------------------
- 2 files changed, 21 insertions(+), 20 deletions(-)
+ common/Kconfig |  4 ++++
+ conftest.py    | 47 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
-diff --git a/include/device.h b/include/device.h
-index 965251e55240..7ef807f7d6b1 100644
---- a/include/device.h
-+++ b/include/device.h
-@@ -168,6 +168,27 @@ static inline struct device_node *dev_of_node(struct device *dev)
- 	return IS_ENABLED(CONFIG_OFDEVICE) ? dev->of_node : NULL;
- }
+diff --git a/common/Kconfig b/common/Kconfig
+index 159cd271d748..21ce2ef97f2c 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -120,6 +120,10 @@ config NAME
+ 	  version command, but does not influence any runtime or
+ 	  compile-time behavior.
  
-+/* dynamically assign the next free id */
-+#define DEVICE_ID_DYNAMIC	-2
-+/* do not use an id (only one device available) */
-+#define DEVICE_ID_SINGLE	-1
++	  For testing, pytest will use this option to determine, which
++	  Labgrid environment YAML to use if none was specified by the
++	  user.
 +
-+static inline const char *dev_id(const struct device *dev)
-+{
-+	if (!dev)
-+		return NULL;
-+	return (dev->id != DEVICE_ID_SINGLE) ? dev->unique_name : dev->name;
-+}
-+
-+static inline const char *dev_name(const struct device *dev)
-+{
-+	if (!dev)
-+		return NULL;
-+	return dev_id(dev) ?: dev->name;
-+}
-+
-+int dev_set_name(struct device *dev, const char *fmt, ...) __printf(2, 3);
-+
- static inline bool dev_is_dma_coherent(struct device *dev)
- {
- 	if (dev) {
-diff --git a/include/driver.h b/include/driver.h
-index e1493177e435..c130a3cd63fd 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -60,11 +60,6 @@ struct driver {
- #define device_d device
- #define driver_d driver
+ config LOCALVERSION
+ 	string "Local version - append to the version string"
+ 	help
+diff --git a/conftest.py b/conftest.py
+index e8de5952efb4..06321c938dba 100644
+--- a/conftest.py
++++ b/conftest.py
+@@ -26,6 +26,45 @@ def barebox_config(request, strategy, target):
+     command = target.get_driver("BareboxDriver")
+     return helper.get_config(command)
  
--/* dynamically assign the next free id */
--#define DEVICE_ID_DYNAMIC	-2
--/* do not use an id (only one device available) */
--#define DEVICE_ID_SINGLE	-1
--
- /* Register devices and drivers.
-  */
- int register_driver(struct driver *);
-@@ -131,21 +126,6 @@ struct device *find_device(const char *str);
-  */
- int get_free_deviceid(const char *name_template);
++
++def get_enabled_arch(config):
++    # Get the absolute path to the directory containing this script
++    base_dir = os.path.dirname(os.path.abspath(__file__))
++
++    # Path to the 'arch' directory relative to this script
++    arch_dir = os.path.join(base_dir, "arch")
++
++    if not os.path.isdir(arch_dir):
++        return None
++
++    # Optional mapping from directory names to config key suffixes
++    arch_map = {"powerpc": "ppc"}
++
++    for entry in os.listdir(arch_dir):
++        path = os.path.join(arch_dir, entry)
++        if os.path.isdir(path):
++            key_suffix = arch_map.get(entry, entry).upper()
++            config_key = f"CONFIG_{key_suffix}"
++            if config.get(config_key):
++                return entry
++
++    return None
++
++
++def guess_lg_env():
++    config_file = helper.open_config_file(os.environ['LG_BUILDDIR'] + "/.config")
++    config = helper.parse_config(config_file)
++    if not config or not config.get('CONFIG_NAME'):
++        return None
++    arch = get_enabled_arch(config)
++    if not arch:
++        return None
++    filename = os.path.join("test", arch, f"{config['CONFIG_NAME']}.yaml")
++    if os.path.exists(filename):
++        return filename
++    return None
++
++
+ def pytest_configure(config):
+     if 'LG_BUILDDIR' not in os.environ:
+         if 'KBUILD_OUTPUT' in os.environ:
+@@ -38,6 +77,14 @@ def pytest_configure(config):
+     if os.environ['LG_BUILDDIR'] is not None:
+         os.environ['LG_BUILDDIR'] = os.path.realpath(os.environ['LG_BUILDDIR'])
  
--static inline const char *dev_id(const struct device *dev)
--{
--	if (!dev)
--		return NULL;
--	return (dev->id != DEVICE_ID_SINGLE) ? dev->unique_name : dev->name;
--}
--
--static inline const char *dev_name(const struct device *dev)
--{
--	if (!dev)
--		return NULL;
--	return dev_id(dev) ?: dev->name;
--}
--
--int dev_set_name(struct device *dev, const char *fmt, ...) __printf(2, 3);
- int dev_add_alias(struct device *dev, const char *fmt, ...) __printf(2, 3);
- 
- /*
++    lg_env = config.option.lg_env
++    if lg_env is None:
++        lg_env = os.environ.get('LG_ENV')
++    if lg_env is None:
++        if lg_env := guess_lg_env():
++            os.environ['LG_ENV'] = lg_env
++
++
+ def pytest_addoption(parser):
+     def assignment(arg):
+             return arg.split('=', 1)
 -- 
 2.39.5
 
