@@ -1,55 +1,55 @@
-Delivery-date: Mon, 11 Aug 2025 14:30:17 +0200
+Delivery-date: Mon, 11 Aug 2025 14:30:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulRfN-009Kjn-1l
+	id 1ulRfT-009KkG-1E
 	for lore@lore.pengutronix.de;
-	Mon, 11 Aug 2025 14:30:17 +0200
+	Mon, 11 Aug 2025 14:30:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulRf3-00066k-VA
-	for lore@pengutronix.de; Mon, 11 Aug 2025 14:30:17 +0200
+	id 1ulRf9-0006DI-8P
+	for lore@pengutronix.de; Mon, 11 Aug 2025 14:30:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+N3siqonQ7vnMpnhzwkT8BpcQmAMhPTuDiuoF5TdENE=; b=FwnlQhdZEnxCQeFk58+GaVYlc4
-	YbfQcbqd2VoSIBKRBanDte3zjgTR5cV7JjGREn+3j9K6PK7fjj93NyMwRrMHYPyDWJYD1esVvpuIJ
-	lU0eVA1KvrUMbS+8jvhgwQHX+wdFurzYLz9QvdbtiXaX3vFkU/Zs+ytVCFxA6+t+Lch7qUZGIG/9Q
-	KFPvbWl7x5QLxJYmakFHx9+QKPQmFSAEMeRWbXzknd47Nq27S6eTx9nSJmTkvpBjQACX80pY2vCIu
-	2TXCnMaIV96DV0jOtMcoXQSD8lilstSoTYqnyGSjcOY+/es5TKRFe6JPgSfhqOuRIvAoB2VO+SUAo
-	bee8IxbA==;
+	bh=0MABBOCSVYU75Vc0sxslaVnS8o9GEchotBWZ2WaucZ8=; b=PAgffttujlHWllfxmD+OyHL1aA
+	WPaZIuK0cuBHo236idxGCaD6PgZQPKTJQmV7fMPM3cAR55vG2JaDZS3hWCuzVxQOEHams5eFwHo2z
+	X6E8MYuKJ8M9TcdhqvGiopCxZ0U9sXKQiABo/3Cx9sDNpsg/Yj7ZkfNipBETEfT7VqsfW17hXQm47
+	cWgtPydEDEL7ki3S3bGeDE77qsQJofJULOvT76VrUdIt66BWJhFiPfOgD+Z/DhCn9TNWwh/HOO3eH
+	emOjN+Pr9zVD/esEmQdbMGiRlJorR3dgqpSNIlnhvvRC1eC9EOiIwnn9th9r3pJkeVRYl0du7aWmV
+	2+VdjMMA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRdy-00000007dyG-1bPY;
-	Mon, 11 Aug 2025 12:28:50 +0000
+	id 1ulRe2-00000007e4u-1Mtx;
+	Mon, 11 Aug 2025 12:28:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulRdg-00000007dYS-0QCL
+	id 1ulRdh-00000007daX-19Cu
 	for barebox@lists.infradead.org;
-	Mon, 11 Aug 2025 12:28:37 +0000
+	Mon, 11 Aug 2025 12:28:38 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1ulRde-0004WP-Ro; Mon, 11 Aug 2025 14:28:30 +0200
+	id 1ulRdg-0004WP-0m; Mon, 11 Aug 2025 14:28:32 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 11 Aug 2025 14:27:58 +0200
-Message-Id: <20250811122824.1667791-19-a.fatoum@barebox.org>
+Date: Mon, 11 Aug 2025 14:28:03 +0200
+Message-Id: <20250811122824.1667791-24-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250811122824.1667791-1-a.fatoum@barebox.org>
 References: <20250811122824.1667791-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250811_052832_135407_6C35A847 
-X-CRM114-Status: GOOD (  10.61  )
+X-CRM114-CacheID: sfid-20250811_052833_349504_F40CBA82 
+X-CRM114-Status: GOOD (  11.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,106 +71,96 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 18/44] commands: uptime: enable structured I/O
+Subject: [PATCH 23/44] optee: add revision info to tee devinfo output
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The uptime command can format the uptime into a human readable time
-string. We have no API to capture this output, so let's add one by using
-structured I/O.
+We currently only report an implementation ID when doing devinfo on the
+tee device. Improve upon that by translating the ID to a string and
+printing the OP-TEE revision if possible.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- commands/uptime.c | 34 ++++++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+ drivers/tee/optee/smc_abi.c | 16 +++++++++++-----
+ drivers/tee/tee_core.c      | 20 +++++++++++++++++++-
+ 2 files changed, 30 insertions(+), 6 deletions(-)
 
-diff --git a/commands/uptime.c b/commands/uptime.c
-index d67538631c8f..7d7d8fa9be70 100644
---- a/commands/uptime.c
-+++ b/commands/uptime.c
-@@ -4,26 +4,31 @@
- #include <command.h>
- #include <clock.h>
- #include <getopt.h>
-+#include <structio.h>
- #include <linux/math64.h>
- 
-+#define BUFSIZE		128
-+
- #define NSEC_PER_MINUTE	(NSEC_PER_SEC * 60LL)
- #define NSEC_PER_HOUR	(NSEC_PER_MINUTE * 60LL)
- #define NSEC_PER_DAY	(NSEC_PER_HOUR * 24LL)
- #define NSEC_PER_WEEK	(NSEC_PER_DAY * 7LL)
- 
--static bool print_with_unit(u64 val, const char *unit, bool comma)
-+static bool print_with_unit(char *buf, u64 val, const char *unit, bool comma)
- {
- 	if (!val)
- 		return comma;
- 
--	printf("%s%llu %s%s", comma ? ", " : "", val, unit, val > 1 ? "s" : "");
-+	snprintf(buf, BUFSIZE,
-+		 "%s%llu %s%s", comma ? ", " : "", val, unit, val > 1 ? "s" : "");
- 	return true;
+diff --git a/drivers/tee/optee/smc_abi.c b/drivers/tee/optee/smc_abi.c
+index aab8ebb186ed..0b8d581cf19b 100644
+--- a/drivers/tee/optee/smc_abi.c
++++ b/drivers/tee/optee/smc_abi.c
+@@ -549,8 +549,10 @@ static bool optee_msg_api_uid_is_optee_api(optee_invoke_fn *invoke_fn)
+ 	return false;
  }
  
- static int do_uptime(int argc, char *argv[])
+-static void optee_msg_get_os_revision(optee_invoke_fn *invoke_fn)
++static void optee_msg_get_os_revision(struct device *dev,
++				      optee_invoke_fn *invoke_fn)
  {
-+	char buf[BUFSIZE];
- 	u64 timestamp, weeks, days, hours, minutes;
--	bool comma = false;
-+	bool nanoseconds = false, comma = false;
- 	int opt;
++	struct param_d *param;
+ 	union {
+ 		struct arm_smccc_res smccc;
+ 		struct optee_smc_call_get_os_revision_result result;
+@@ -564,10 +566,14 @@ static void optee_msg_get_os_revision(optee_invoke_fn *invoke_fn)
+ 		  &res.smccc);
  
- 	timestamp = get_time_ns();
-@@ -31,8 +36,8 @@ static int do_uptime(int argc, char *argv[])
- 	while((opt = getopt(argc, argv, "n")) > 0) {
- 		switch(opt) {
- 		case 'n':
--			printf("up %lluns\n", timestamp);
--			return 0;
-+			nanoseconds = true;
-+			break;
- 		default:
- 			return COMMAND_ERROR_USAGE;
- 		}
-@@ -41,24 +46,29 @@ static int do_uptime(int argc, char *argv[])
- 	if (optind != argc)
- 		return COMMAND_ERROR_USAGE;
- 
--	printf("up ");
-+	stnoprintf("up ");
+ 	if (res.result.build_id)
+-		pr_info("revision %lu.%lu (%08lx)\n", res.result.major,
+-			res.result.minor, res.result.build_id);
++		param = dev_add_param_fixed(dev, "revision", "%lu.%lu (%08lx)",
++					    res.result.major, res.result.minor,
++					    res.result.build_id);
+ 	else
+-		pr_info("revision %lu.%lu\n", res.result.major, res.result.minor);
++		param = dev_add_param_fixed(dev, "revision", "%lu.%lu",
++				    res.result.major, res.result.minor);
 +
-+	if (nanoseconds) {
-+		stprintf_single("uptime", "%lluns", timestamp);
-+		return 0;
-+	}
++	pr_info("revision %s\n", param->get(dev, param));
+ }
  
- 	weeks = div64_u64_rem(timestamp, NSEC_PER_WEEK, &timestamp);
- 	days = div64_u64_rem(timestamp, NSEC_PER_DAY, &timestamp);
- 	hours = div64_u64_rem(timestamp, NSEC_PER_HOUR, &timestamp);
- 	minutes = div64_u64_rem(timestamp, NSEC_PER_MINUTE, &timestamp);
- 
--	comma = print_with_unit(weeks, "week", false);
--	comma = print_with_unit(days, "day", comma);
--	comma = print_with_unit(hours, "hour", comma);
--	comma = print_with_unit(minutes, "minute", comma);
-+	comma = print_with_unit(buf, weeks, "week", false);
-+	comma = print_with_unit(buf, days, "day", comma);
-+	comma = print_with_unit(buf, hours, "hour", comma);
-+	comma = print_with_unit(buf, minutes, "minute", comma);
- 
- 	if (!comma) {
- 		u64 seconds = div64_u64_rem(timestamp, NSEC_PER_SEC, &timestamp);
--		print_with_unit(seconds, "second", false);
-+		print_with_unit(buf, seconds, "second", false);
+ static bool optee_msg_api_revision_is_compatible(optee_invoke_fn *invoke_fn)
+@@ -662,7 +668,7 @@ static int optee_probe(struct device *dev)
+ 		return -EINVAL;
  	}
  
--	printf("\n");
-+	stprintf_single("uptime", "%s", buf);
+-	optee_msg_get_os_revision(invoke_fn);
++	optee_msg_get_os_revision(dev, invoke_fn);
  
- 	return 0;
+ 	if (!optee_msg_api_revision_is_compatible(invoke_fn)) {
+ 		pr_warn("api revision mismatch\n");
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index 653b04ff06af..a4bb9af46933 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -487,9 +487,27 @@ static void tee_devinfo(struct device *dev)
+ {
+ 	struct tee_device *teedev = dev->priv;
+ 	struct tee_ioctl_version_data vers;
++	const char *impl = NULL, *rev;
+ 
+ 	teedev->desc->ops->get_version(teedev, &vers);
+-	printf("Implementation ID: %d\n", vers.impl_id);
++
++	switch (vers.impl_id) {
++	case TEE_IMPL_ID_OPTEE:
++		impl = "optee";
++		break;
++	case TEE_IMPL_ID_AMDTEE:
++		impl = "amdtee";
++		break;
++	}
++
++	printf("Implementation ID: %d%s%s%s\n", vers.impl_id,
++	       impl ? " ( " : "", impl, impl ? ")" : "");
++	if (!dev->parent)
++		return;
++
++	rev = dev_get_param(dev->parent, "revision");
++	if (rev)
++		printf("Revision: %s\n", rev);
  }
+ 
+ /**
 -- 
 2.39.5
 
