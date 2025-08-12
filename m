@@ -1,59 +1,70 @@
-Delivery-date: Tue, 12 Aug 2025 18:18:42 +0200
+Delivery-date: Tue, 12 Aug 2025 18:19:43 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulrhy-009ivs-0V
+	id 1ulrix-009ixC-1f
 	for lore@lore.pengutronix.de;
-	Tue, 12 Aug 2025 18:18:42 +0200
+	Tue, 12 Aug 2025 18:19:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ulrhx-0005OV-Io
-	for lore@pengutronix.de; Tue, 12 Aug 2025 18:18:42 +0200
+	id 1ulriw-0005oA-R1
+	for lore@pengutronix.de; Tue, 12 Aug 2025 18:19:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GvHaE8fHuYKJTzovdq1wdM6e98ldgDfu00qYCxvAcG8=; b=a1BkTSLAdoW1CjDd9IVjJLrIej
-	9JS1tCKnu4XBYNBCj/6iYTqT7f2P6lZ7AOQUXGtjik0QQsHYA2MbWPlBDUr2H1CoBhjkaCrQP+0c1
-	m8DE2u2twfhkf/I7nRO1momfJUavq5Wmq+EkfFIvbCaYuuNggvlJCitZ/VCL20Cpb+mlskOELZxEX
-	GY4hoP5dHX4JJ0Sj5pdfhL1cGXqnXYLTIy5fuHbPH3U1LhrLrCMAKKrT7PinJgJoJ8+l6N1QLI0dx
-	ZJaEjWKsx+iJt3Tl5dyl+hccZ0cDYhhuPUYb8OlSHj0gXuhmmUeFKf82ecI1N+vQs/MmyuR+eufKK
-	SEmIsIFw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=gXhHnj8teUj6lrsdjRzOWycjyn9KIohu4miyWHIaNBg=; b=kHHGTaEk1MyNLNyGPYwqPA6Ngd
+	tFCFiIK8CRqidoVEFHHmAMMq/5On5XxAqBv4JgIZ5CXfwlUGvDmZdSjllgX5vO2aNAh9DchqL9kSm
+	A3+PxPTlF7pfhE0iVBUzLB94ioArndvffU2d1siofxYhtX2iEbftkwgCoibiuCdSt09huC99YIr5N
+	XE5wRUoPOzE1q8MkZ/z8g4152cj/4asQm7m8YvY6LA2e8uCQs0Wex8ibjGtLG6ViuUUquXqXGasS9
+	R4AsZeKJGU2OPWhj3d3sRItlpcvlK7cI1ZOrxDN2udnRaRW5RNw6kgMy6Ydye7f/w+rjETUjPlE25
+	IV6JlCag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulrhh-0000000BHGb-0KUT;
-	Tue, 12 Aug 2025 16:18:25 +0000
+	id 1ulriM-0000000BI9w-3iRQ;
+	Tue, 12 Aug 2025 16:19:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ullYm-0000000AQYa-1HeB
+	id 1ulmFy-0000000AVlP-09VD
 	for barebox@lists.infradead.org;
-	Tue, 12 Aug 2025 09:44:49 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ullYk-0000ue-Ef; Tue, 12 Aug 2025 11:44:46 +0200
-Message-ID: <ffd2461f-b3eb-4866-9157-04f284c5c3e8@pengutronix.de>
-Date: Tue, 12 Aug 2025 11:44:47 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <a.fatoum@barebox.org>
+	Tue, 12 Aug 2025 10:29:27 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ulmFw-00085X-H3; Tue, 12 Aug 2025 12:29:24 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ulmFw-00DBL0-16;
+	Tue, 12 Aug 2025 12:29:24 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ulmFw-006uzY-0o;
+	Tue, 12 Aug 2025 12:29:24 +0200
+Date: Tue, 12 Aug 2025 12:29:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@barebox.org>
 Cc: barebox@lists.infradead.org
+Message-ID: <aJsXhGDeqQptV4Rh@pengutronix.de>
 References: <20250811122824.1667791-1-a.fatoum@barebox.org>
- <20250811122824.1667791-24-a.fatoum@barebox.org>
- <aJsK9lRVzTzBt7Fu@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <aJsK9lRVzTzBt7Fu@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250811122824.1667791-1-a.fatoum@barebox.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250812_024448_349179_95DEC2DE 
-X-CRM114-Status: GOOD (  17.50  )
+X-CRM114-CacheID: sfid-20250812_032926_084689_2EFFAC60 
+X-CRM114-Status: GOOD (  35.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,78 +82,109 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 23/44] optee: add revision info to tee devinfo output
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 00/44] commands: add bfetch/buds of command redirection
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Sascha,
-
-On 8/12/25 11:35, Sascha Hauer wrote:
-> On Mon, Aug 11, 2025 at 02:28:03PM +0200, Ahmad Fatoum wrote:
->> We currently only report an implementation ID when doing devinfo on the
->> tee device. Improve upon that by translating the ID to a string and
->> printing the OP-TEE revision if possible.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
->> ---
->>  drivers/tee/optee/smc_abi.c | 16 +++++++++++-----
->>  drivers/tee/tee_core.c      | 20 +++++++++++++++++++-
->>  2 files changed, 30 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/tee/optee/smc_abi.c b/drivers/tee/optee/smc_abi.c
->> index aab8ebb186ed..0b8d581cf19b 100644
->> --- a/drivers/tee/optee/smc_abi.c
->> +++ b/drivers/tee/optee/smc_abi.c
->> @@ -549,8 +549,10 @@ static bool optee_msg_api_uid_is_optee_api(optee_invoke_fn *invoke_fn)
->>  	return false;
->>  }
->>  
->> -static void optee_msg_get_os_revision(optee_invoke_fn *invoke_fn)
->> +static void optee_msg_get_os_revision(struct device *dev,
->> +				      optee_invoke_fn *invoke_fn)
->>  {
->> +	struct param_d *param;
->>  	union {
->>  		struct arm_smccc_res smccc;
->>  		struct optee_smc_call_get_os_revision_result result;
->> @@ -564,10 +566,14 @@ static void optee_msg_get_os_revision(optee_invoke_fn *invoke_fn)
->>  		  &res.smccc);
->>  
->>  	if (res.result.build_id)
->> -		pr_info("revision %lu.%lu (%08lx)\n", res.result.major,
->> -			res.result.minor, res.result.build_id);
->> +		param = dev_add_param_fixed(dev, "revision", "%lu.%lu (%08lx)",
->> +					    res.result.major, res.result.minor,
->> +					    res.result.build_id);
->>  	else
->> -		pr_info("revision %lu.%lu\n", res.result.major, res.result.minor);
->> +		param = dev_add_param_fixed(dev, "revision", "%lu.%lu",
->> +				    res.result.major, res.result.minor);
->> +
->> +	pr_info("revision %s\n", param->get(dev, param));
+On Mon, Aug 11, 2025 at 02:27:40PM +0200, Ahmad Fatoum wrote:
+> Inspired by U-Boot's addition of the ufetch command and the neofetch
+> utility for Linux, add a similar command to barebox.
 > 
-> In 20/44 you protected this with a if (!IS_ERR(param)). Don't we need this
-> here as well?
-
-Yes, good point. I will add a helper that does this check and use if for
-v2 (which will hopefully be much shorter, because the rest is applied? ;-)
-
-Cheers,
-Ahmad
-
+> The command is meant to fancily show off a barebox port with some
+> colored ASCII art. The usual alternative is a screenshot of a barebox
+> boot up and prompt, which doesn't look fancy, because a first port nearly
+> always contains some warning/error messages (e.g. because there is no
+> bootsource available and net boot is unconfigured). Example:
 > 
-> Sascha
+> https://raw.githubusercontent.com/a3f/a3f.github.io/refs/heads/master/img/bfetch.png
 > 
+> This series also includes an abnormal amount of Yakshaving.
+> 
+> Understandably, we need to export a lot of helpers and lists for bfetch
+> to be able to enumerate what features are available at runtime.
+> 
+> For some things like what CPU we are running on, what uptime we have or
+> what's the TEE's implementation ID, we readily have code that prints
+> to stdout, but it is not reusable because we do not buffer console
+> output streams and thus no command output capture or piping support.
+> 
+> But even if we had piping, we would need to manipulate strings to split
+> lines into key/value pairs.
+> 
+> Instead, let's rethink the problem: We have commands like cpuinfo, which
+> format a table with key/value pairs and print it to out. Then the UNIX
+> way would be to use awk/grep/sed/perl or whatever to separate them out
+> again.
+> 
+> Why not skip that and have commands directly return an object
+> with key/value pairs (attributes) or more complex data structures
+> like PowerShell is able to do?
+> 
+> This series does exactly that. Device parameters are now associated
+> with a struct bobject and that bobject can be returned and consumed
+> by commands without requiring association with a device.
+> 
+> This mechanism should be able to bring support for the pipe operator
+> to barebox' shell once the critical commands are adapted to use it and
+> there exists a way for commands to report whether they support
+> structured I/O or not. As I am still figuring out how to do that,
+> I did not include a command that captures structured output to
+> a variable, but that would follow in future.
+
+Very nice!
+
+How about something along the lines:
+
+struct device structio_device = {
+	.name = "structio",
+	.id = DEVICE_ID_SINGLE,
+};
+
+static int do_structio(int argc, char *argv[])
+{
+	int ret;
+
+	active_capture = &structio_device.bobject;
+
+	bobject_del(active_capture);
+
+	/* TODO: merge argv[1-x] to a single string */
+	ret = run_command(argv[1]);
+
+	active_capture = NULL;
+
+	return ret;
+}
+
+static int structio_init(void)
+{
+	return register_device(&structio_device);
+}
+late_initcall(structio_init);
+
+BAREBOX_CMD_START(structio)
+	.cmd		= do_structio,
+	BAREBOX_CMD_DESC("run with structio")
+	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+BAREBOX_CMD_END
+
+With this you could do a
+
+structio cpuinfo; echo $structio.core
+
+We would have to replace characters like whitespaces and hyphens in the
+variablenames though.
+
+Sascha
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
