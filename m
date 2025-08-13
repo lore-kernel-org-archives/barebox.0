@@ -1,54 +1,70 @@
-Delivery-date: Wed, 13 Aug 2025 16:51:10 +0200
+Delivery-date: Wed, 13 Aug 2025 16:51:11 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umCoo-000Chy-2R
+	id 1umCoq-000CiU-0s
 	for lore@lore.pengutronix.de;
-	Wed, 13 Aug 2025 16:51:10 +0200
+	Wed, 13 Aug 2025 16:51:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umCom-0006uP-Bs
-	for lore@pengutronix.de; Wed, 13 Aug 2025 16:51:09 +0200
+	id 1umCoo-0006wd-EX
+	for lore@pengutronix.de; Wed, 13 Aug 2025 16:51:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=SwXjzcwaZMKrWt/0zllwqJAt147AATrahSqZMKuy1Bo=; b=ksE5j9v9u44zHEAYuydeqhTLwq
-	SQMksK8eiDhdRr67GyxeF/rrRkHWW6dF6iFESE+FnK3PLC3ZbRU7d19XWBtY6ccaeZ1r/gbbWkaKr
-	mPhbPhX7bj9Q/Wlm9jk3ZsLvlXbdMC4zi8sY8JYOvQWTWkhjAQ25P2+gofWgWIfpM/YeB7rrNGjvE
-	EoQaD/Zcwe8o6cqUeL+PTsSwKkD7sWFh+dbx8yjOHP+da8zsRh1nXvRha/+t014W9Q+IFBwEv5lum
-	qS/f7LU1w7ciAojzhADQCQ1+SYEj8g6lnSCj8SYryj8yeF5iRD71d+Ua8WI5a9gG+hLnxP+hyQH9A
-	bTfQ7E2Q==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=vEt3BYDuOLZd6SDUfOsXKiL7Mti+JjVibCTpqZvOiCY=; b=T3ISOYoToiWsp0P5TV5qeGtQCo
+	rcAcFrLOPQ7xSiJ99e36IK0uaJ56ihodhjvNyLMGBTBI71m0MJ7Da3Ff+tpR7RMeNhSkepZSSqZns
+	1bq8BtOBGDwV5aJ0skhtVvPJiYQh+yMBZB/TkGxHHB7AdxPvWfOs7kwngzvciUx0hPnLMO5c+5kQY
+	ouhHX/HZpkXsDGfl1bjrsF/rgH5+xGhqakpH1VyXzww1jRd/sKReVS8nVNyx7oprmpZY3apRlHqFC
+	amnl3H8ARGN3Ijl7yuzCxFgStkwEzGvNdew9pJjlN84cQ47sLSFS2GN/8tupxxdZ4l0+oKABVnq2U
+	Ick9PMrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umCnw-0000000DxrU-42K1;
-	Wed, 13 Aug 2025 14:50:16 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1umCo6-0000000Dy1Y-0JHt;
+	Wed, 13 Aug 2025 14:50:26 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umCYE-0000000DvJl-0Qvz
+	id 1umCYL-0000000DvO2-3krb
+	for barebox@bombadil.infradead.org;
+	Wed, 13 Aug 2025 14:34:09 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=vEt3BYDuOLZd6SDUfOsXKiL7Mti+JjVibCTpqZvOiCY=; b=AXt8XQ5KRl02z1oqnrn7Xrl/cO
+	/PgP6UIRgEzOYFmI++JXd8O3QE2WcjZ2gfN4xF2QoVPIowANmgpGtYBODHPQri4+X5DWxqRCLPk4h
+	+CRuxOE+7dVPV+JvgOne27Ps7ngRKXyobFq639Y0RT+0vo/1J9FuSs6a2I7INAdxYRbL0M3fQaJ0w
+	XLtb4dLK9s+nATFDxl5nmAo4GZ5plbV88ympUtmBOoSE2COYKkJ8mai3IenunhFCVDQNldOyOfx6s
+	9XdWKjl59pbEafeoPbggky5Xjw/hTIB7h4wjWoZ5dTYX+sq0olv/PFRnh96vgThYElnBhGg7Vb0Hw
+	AgmCwgBg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1umCYH-0000000G6hp-2y7E
 	for barebox@lists.infradead.org;
-	Wed, 13 Aug 2025 14:34:05 +0000
+	Wed, 13 Aug 2025 14:34:08 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1umCYA-0003xl-RK
-	for barebox@lists.infradead.org; Wed, 13 Aug 2025 16:33:58 +0200
+	id 1umCYE-0003xl-8U; Wed, 13 Aug 2025 16:34:02 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Date: Wed, 13 Aug 2025 16:33:32 +0200
-Message-Id: <20250813143345.3758653-1-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Wed, 13 Aug 2025 16:33:41 +0200
+Message-Id: <20250813143345.3758653-10-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250813143345.3758653-1-a.fatoum@barebox.org>
+References: <20250813143345.3758653-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250813_073402_150960_F98CAB91 
-X-CRM114-Status: UNSURE (   8.30  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250813_153405_977418_0E40025D 
+X-CRM114-Status: GOOD (  13.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,65 +86,83 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 00/13] commands: add bfetch/buds of command redirection
+Subject: [PATCH v2 09/13] security: blobgen: add easy way to check for existent providers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-See patches for individual changelog.
+blobgen_get() expects the user to name the blobgen instance to be used.
+For general informational purposes, it would be nice to just check if
+any provider is registered at all, so make that possible by accepting a
+NULL filter argument.
 
-Ahmad Fatoum (13):
-  common: introduce structured I/O
-  ARM: cpuinfo: support structio output
-  commands: uptime: enable structured I/O
-  string: implement strv_length helper
-  ARM: psci: client: add PSCI version/method parameters
-  net: move netmask_to_prefix into header
-  optee: add revision info to tee devinfo output
-  tee: enable structured I/O in devinfo handler
-  security: blobgen: add easy way to check for existent providers
-  clk: implement clk_have_nonfixed_providers
-  commands: introduce bfetch command
-  configs: enable bfetch in some popular defconfigs
-  hush: structio: silence missing command error message
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+v1 -> v2:
+  - no change
+---
+ include/blobgen.h  |  7 +++++++
+ security/blobgen.c | 18 +++++++++++-------
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
- arch/arm/configs/multi_v7_defconfig    |   1 +
- arch/arm/configs/multi_v8_defconfig    |   1 +
- arch/arm/cpu/cpuinfo.c                 |  47 +-
- arch/arm/cpu/psci-client.c             |  17 +-
- arch/riscv/configs/rv64i_defconfig     |   1 +
- arch/riscv/configs/virt32_defconfig    |   1 +
- arch/sandbox/configs/sandbox_defconfig |   1 +
- commands/Kconfig                       |  11 +
- commands/Makefile                      |   1 +
- commands/bfetch.c                      | 752 +++++++++++++++++++++++++
- commands/ip.c                          |  13 -
- commands/uptime.c                      |  34 +-
- common/Kconfig                         |   4 +
- common/Makefile                        |   1 +
- common/hush.c                          |   3 +-
- common/structio.c                      |  56 ++
- drivers/clk/clk-fixed.c                |   7 +
- drivers/clk/clk-fixed.h                |  11 +
- drivers/clk/clk.c                      |  14 +
- drivers/tee/optee/smc_abi.c            |  17 +-
- drivers/tee/tee_core.c                 |  25 +-
- include/blobgen.h                      |   7 +
- include/linux/clk.h                    |   9 +
- include/linux/string_choices.h         |  18 +
- include/net.h                          |  13 +
- include/param.h                        |  10 +
- include/string.h                       |   7 +
- include/stringlist.h                   |   6 +
- include/structio.h                     |  44 ++
- lib/string.c                           |  17 +
- security/blobgen.c                     |  18 +-
- 31 files changed, 1102 insertions(+), 65 deletions(-)
- create mode 100644 commands/bfetch.c
- create mode 100644 common/structio.c
- create mode 100644 drivers/clk/clk-fixed.h
- create mode 100644 include/linux/string_choices.h
- create mode 100644 include/structio.h
-
+diff --git a/include/blobgen.h b/include/blobgen.h
+index 9f8876cee045..00674ef40f73 100644
+--- a/include/blobgen.h
++++ b/include/blobgen.h
+@@ -44,7 +44,14 @@ struct blobgen {
+ 
+ int blob_gen_register(struct device *dev, struct blobgen *bg);
+ 
++#ifdef CONFIG_BLOBGEN
+ struct blobgen *blobgen_get(const char *name);
++#else
++static inline struct blobgen *blobgen_get(const char *name)
++{
++	return NULL;
++}
++#endif
+ 
+ int blob_encrypt(struct blobgen *blg, const char *modifier, const void *plain,
+ 		 int plainsize, void **blob, int *blobsize);
+diff --git a/security/blobgen.c b/security/blobgen.c
+index 0a4e192a271f..df42c8f6f1bc 100644
+--- a/security/blobgen.c
++++ b/security/blobgen.c
+@@ -50,24 +50,28 @@ int blob_gen_register(struct device *dev, struct blobgen *bg)
+ 
+ /**
+  * blobgen_get - get a blob generator of given name
+- * @name: The name of the blob generator to look for
++ * @name: The name of the blob generator to look for or NULL
+  *
+- * Finds a blob generator by name and returns it. Returns NULL if none is found.
++ * Finds a blob generator by name and returns it.
++ * If name is NULL, returns the first blob generator encountered.
++ * Returns NULL if none is found.
+  */
+ struct blobgen *blobgen_get(const char *name)
+ {
+-	struct device *dev;
++	struct device *dev = NULL;
+ 	struct blobgen *bg;
+ 
+ 	if (!name)
+ 		return bg_default;
+ 
+-	dev = get_device_by_name(name);
+-	if (!dev)
+-		return NULL;
++	if (name) {
++		dev = get_device_by_name(name);
++		if (!dev)
++			return NULL;
++	}
+ 
+ 	list_for_each_entry(bg, &blobs, list) {
+-		if (dev == &bg->dev)
++		if (!dev || dev == &bg->dev)
+ 			return bg;
+ 	}
+ 
 -- 
 2.39.5
 
