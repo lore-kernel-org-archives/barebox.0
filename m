@@ -1,70 +1,55 @@
-Delivery-date: Wed, 13 Aug 2025 16:51:11 +0200
+Delivery-date: Wed, 13 Aug 2025 16:51:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umCoq-000CiU-0s
+	id 1umCor-000Cip-03
 	for lore@lore.pengutronix.de;
-	Wed, 13 Aug 2025 16:51:11 +0200
+	Wed, 13 Aug 2025 16:51:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umCoo-0006wd-EX
-	for lore@pengutronix.de; Wed, 13 Aug 2025 16:51:11 +0200
+	id 1umCoo-0006wH-QV
+	for lore@pengutronix.de; Wed, 13 Aug 2025 16:51:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vEt3BYDuOLZd6SDUfOsXKiL7Mti+JjVibCTpqZvOiCY=; b=T3ISOYoToiWsp0P5TV5qeGtQCo
-	rcAcFrLOPQ7xSiJ99e36IK0uaJ56ihodhjvNyLMGBTBI71m0MJ7Da3Ff+tpR7RMeNhSkepZSSqZns
-	1bq8BtOBGDwV5aJ0skhtVvPJiYQh+yMBZB/TkGxHHB7AdxPvWfOs7kwngzvciUx0hPnLMO5c+5kQY
-	ouhHX/HZpkXsDGfl1bjrsF/rgH5+xGhqakpH1VyXzww1jRd/sKReVS8nVNyx7oprmpZY3apRlHqFC
-	amnl3H8ARGN3Ijl7yuzCxFgStkwEzGvNdew9pJjlN84cQ47sLSFS2GN/8tupxxdZ4l0+oKABVnq2U
-	Ick9PMrg==;
+	bh=azxQJrlWruF95K4NNStcNcyNcwVU6WaGLMOXiit+Fck=; b=fx2AKe0Cue/XiOctZCr4hlcz2v
+	kKVvjcj3pOkTdLp7ltEPeXpXe7UvOBl6nCV9Y+m4YpMWnj1JjvPOm5EG82wzZ/kDpG+QprG57KvIr
+	rqF+gyjYn6zt+dGGReNC2CNALJgcsYIO4twm8dj1s1itzy7WC5K3CHfuggctiwz4SZz4qjHIWSD/y
+	U8C7zsaMN8nGPfs21Yg4awwfPAMsbp3x0Hk1f5GQP48p2Q85cbFHp06CLZtP83a0Hrxl1cATFMBCP
+	PxZ0tTNDAwQviPsW/cHhOX6XGT1OjU4Y973q5HXXFreVo0tBUltnlT9eZX+ag992JYK8HBgzS0PI4
+	gUj5jgFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umCo6-0000000Dy1Y-0JHt;
-	Wed, 13 Aug 2025 14:50:26 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umCYL-0000000DvO2-3krb
-	for barebox@bombadil.infradead.org;
-	Wed, 13 Aug 2025 14:34:09 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=vEt3BYDuOLZd6SDUfOsXKiL7Mti+JjVibCTpqZvOiCY=; b=AXt8XQ5KRl02z1oqnrn7Xrl/cO
-	/PgP6UIRgEzOYFmI++JXd8O3QE2WcjZ2gfN4xF2QoVPIowANmgpGtYBODHPQri4+X5DWxqRCLPk4h
-	+CRuxOE+7dVPV+JvgOne27Ps7ngRKXyobFq639Y0RT+0vo/1J9FuSs6a2I7INAdxYRbL0M3fQaJ0w
-	XLtb4dLK9s+nATFDxl5nmAo4GZ5plbV88ympUtmBOoSE2COYKkJ8mai3IenunhFCVDQNldOyOfx6s
-	9XdWKjl59pbEafeoPbggky5Xjw/hTIB7h4wjWoZ5dTYX+sq0olv/PFRnh96vgThYElnBhGg7Vb0Hw
-	AgmCwgBg==;
+	id 1umCo0-0000000Dxuu-2iWo;
+	Wed, 13 Aug 2025 14:50:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umCYH-0000000G6hp-2y7E
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1umCYE-0000000DvK0-1NH3
 	for barebox@lists.infradead.org;
-	Wed, 13 Aug 2025 14:34:08 +0000
+	Wed, 13 Aug 2025 14:34:06 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1umCYE-0003xl-8U; Wed, 13 Aug 2025 16:34:02 +0200
+	id 1umCYB-0003xl-MJ; Wed, 13 Aug 2025 16:33:59 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Wed, 13 Aug 2025 16:33:41 +0200
-Message-Id: <20250813143345.3758653-10-a.fatoum@barebox.org>
+Date: Wed, 13 Aug 2025 16:33:35 +0200
+Message-Id: <20250813143345.3758653-4-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250813143345.3758653-1-a.fatoum@barebox.org>
 References: <20250813143345.3758653-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250813_153405_977418_0E40025D 
-X-CRM114-Status: GOOD (  13.38  )
+X-CRM114-CacheID: sfid-20250813_073402_363801_223C202D 
+X-CRM114-Status: GOOD (  11.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,83 +71,109 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 09/13] security: blobgen: add easy way to check for existent providers
+Subject: [PATCH v2 03/13] commands: uptime: enable structured I/O
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-blobgen_get() expects the user to name the blobgen instance to be used.
-For general informational purposes, it would be nice to just check if
-any provider is registered at all, so make that possible by accepting a
-NULL filter argument.
+The uptime command can format the uptime into a human readable time
+string. We have no API to capture this output, so let's add one by using
+structured I/O.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
 v1 -> v2:
   - no change
 ---
- include/blobgen.h  |  7 +++++++
- security/blobgen.c | 18 +++++++++++-------
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ commands/uptime.c | 34 ++++++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/include/blobgen.h b/include/blobgen.h
-index 9f8876cee045..00674ef40f73 100644
---- a/include/blobgen.h
-+++ b/include/blobgen.h
-@@ -44,7 +44,14 @@ struct blobgen {
+diff --git a/commands/uptime.c b/commands/uptime.c
+index d67538631c8f..7d7d8fa9be70 100644
+--- a/commands/uptime.c
++++ b/commands/uptime.c
+@@ -4,26 +4,31 @@
+ #include <command.h>
+ #include <clock.h>
+ #include <getopt.h>
++#include <structio.h>
+ #include <linux/math64.h>
  
- int blob_gen_register(struct device *dev, struct blobgen *bg);
++#define BUFSIZE		128
++
+ #define NSEC_PER_MINUTE	(NSEC_PER_SEC * 60LL)
+ #define NSEC_PER_HOUR	(NSEC_PER_MINUTE * 60LL)
+ #define NSEC_PER_DAY	(NSEC_PER_HOUR * 24LL)
+ #define NSEC_PER_WEEK	(NSEC_PER_DAY * 7LL)
  
-+#ifdef CONFIG_BLOBGEN
- struct blobgen *blobgen_get(const char *name);
-+#else
-+static inline struct blobgen *blobgen_get(const char *name)
-+{
-+	return NULL;
-+}
-+#endif
- 
- int blob_encrypt(struct blobgen *blg, const char *modifier, const void *plain,
- 		 int plainsize, void **blob, int *blobsize);
-diff --git a/security/blobgen.c b/security/blobgen.c
-index 0a4e192a271f..df42c8f6f1bc 100644
---- a/security/blobgen.c
-+++ b/security/blobgen.c
-@@ -50,24 +50,28 @@ int blob_gen_register(struct device *dev, struct blobgen *bg)
- 
- /**
-  * blobgen_get - get a blob generator of given name
-- * @name: The name of the blob generator to look for
-+ * @name: The name of the blob generator to look for or NULL
-  *
-- * Finds a blob generator by name and returns it. Returns NULL if none is found.
-+ * Finds a blob generator by name and returns it.
-+ * If name is NULL, returns the first blob generator encountered.
-+ * Returns NULL if none is found.
-  */
- struct blobgen *blobgen_get(const char *name)
+-static bool print_with_unit(u64 val, const char *unit, bool comma)
++static bool print_with_unit(char *buf, u64 val, const char *unit, bool comma)
  {
--	struct device *dev;
-+	struct device *dev = NULL;
- 	struct blobgen *bg;
+ 	if (!val)
+ 		return comma;
  
- 	if (!name)
- 		return bg_default;
+-	printf("%s%llu %s%s", comma ? ", " : "", val, unit, val > 1 ? "s" : "");
++	snprintf(buf, BUFSIZE,
++		 "%s%llu %s%s", comma ? ", " : "", val, unit, val > 1 ? "s" : "");
+ 	return true;
+ }
  
--	dev = get_device_by_name(name);
--	if (!dev)
--		return NULL;
-+	if (name) {
-+		dev = get_device_by_name(name);
-+		if (!dev)
-+			return NULL;
+ static int do_uptime(int argc, char *argv[])
+ {
++	char buf[BUFSIZE];
+ 	u64 timestamp, weeks, days, hours, minutes;
+-	bool comma = false;
++	bool nanoseconds = false, comma = false;
+ 	int opt;
+ 
+ 	timestamp = get_time_ns();
+@@ -31,8 +36,8 @@ static int do_uptime(int argc, char *argv[])
+ 	while((opt = getopt(argc, argv, "n")) > 0) {
+ 		switch(opt) {
+ 		case 'n':
+-			printf("up %lluns\n", timestamp);
+-			return 0;
++			nanoseconds = true;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -41,24 +46,29 @@ static int do_uptime(int argc, char *argv[])
+ 	if (optind != argc)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	printf("up ");
++	stnoprintf("up ");
++
++	if (nanoseconds) {
++		stprintf_single("uptime", "%lluns", timestamp);
++		return 0;
 +	}
  
- 	list_for_each_entry(bg, &blobs, list) {
--		if (dev == &bg->dev)
-+		if (!dev || dev == &bg->dev)
- 			return bg;
+ 	weeks = div64_u64_rem(timestamp, NSEC_PER_WEEK, &timestamp);
+ 	days = div64_u64_rem(timestamp, NSEC_PER_DAY, &timestamp);
+ 	hours = div64_u64_rem(timestamp, NSEC_PER_HOUR, &timestamp);
+ 	minutes = div64_u64_rem(timestamp, NSEC_PER_MINUTE, &timestamp);
+ 
+-	comma = print_with_unit(weeks, "week", false);
+-	comma = print_with_unit(days, "day", comma);
+-	comma = print_with_unit(hours, "hour", comma);
+-	comma = print_with_unit(minutes, "minute", comma);
++	comma = print_with_unit(buf, weeks, "week", false);
++	comma = print_with_unit(buf, days, "day", comma);
++	comma = print_with_unit(buf, hours, "hour", comma);
++	comma = print_with_unit(buf, minutes, "minute", comma);
+ 
+ 	if (!comma) {
+ 		u64 seconds = div64_u64_rem(timestamp, NSEC_PER_SEC, &timestamp);
+-		print_with_unit(seconds, "second", false);
++		print_with_unit(buf, seconds, "second", false);
  	}
  
+-	printf("\n");
++	stprintf_single("uptime", "%s", buf);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
