@@ -1,74 +1,74 @@
-Delivery-date: Thu, 14 Aug 2025 15:16:13 +0200
+Delivery-date: Thu, 14 Aug 2025 15:16:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umXoU-000WDd-1e
+	id 1umXoZ-000WE4-2D
 	for lore@lore.pengutronix.de;
-	Thu, 14 Aug 2025 15:16:13 +0200
+	Thu, 14 Aug 2025 15:16:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umXoT-00081N-Bi
-	for lore@pengutronix.de; Thu, 14 Aug 2025 15:16:13 +0200
+	id 1umXoY-00083e-H4
+	for lore@pengutronix.de; Thu, 14 Aug 2025 15:16:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=agpDSQAMYKGzxNO8uTVD5zCNSTlCkc7pntEo3TdWO00=; b=YiSbtxW03KlJeoxTfp16r6DPsD
-	kFbUbwzEslYTyiX1vGgOlj5dxiqQFR+rcPVeONfsH74OpGnGtayJlg0YDXvmxQcgc8YE8f090zdgD
-	2DDQnlsa9qccG4oo0KWWwgsjZ7MZOGDBwVmKW8gknNHTbVIxI64VR3STzj1eysIt4AaU5TfHnsnbM
-	NeW1TmTLd3cNIWLaUSBRvGIMyOBmOr3jHPD8MUK/RVzsO3NeB5QZqVZgTplmHDjJs1dNlXQ99M9XS
-	gkJYcD8votWv20dm1wQw5ctS2cjzkZYZAb4rSqGHNcsVmj1eZNuZHp53FGHvIG+L8PCUHq6efnSfm
-	ne1AFtPg==;
+	bh=j1/JdZ6mXCoLdYnmN/URT9Sefhlc2xFY+20dP9dM+N0=; b=D5FPGnhuIabDaQflh3sQDM/cqK
+	uhZ9VHtspuceYgERYRW3ejdTkl6W6Zi3UcNtZtYocd1b/rvv+fRT3oNO1Ty6spgKz2WAfvXZE9/0n
+	fnvoPgRYKKqi9RSdQCFpvSM5UmA1Bv4oIjuZkMyJCXd97zAvzlOqKIkyk/P0XmqIEIwRgxvvlSCS7
+	1DLb5nKYQ889hrLUomUL8R2aEwG/LqGrPqy+QlXeFh4nt5GmOAI+GmUdb7EDVeh2A7J6eiQYd0l+c
+	rcNf/xkXYEdAN4PIeHRfTLkWfZA+NisF9fYcQDcsbBsBC6WDAOdO+14yBfrkrjy84FzhA8A6bpaCx
+	Sc2WWL/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umXny-0000000GzFi-44r8;
-	Thu, 14 Aug 2025 13:15:42 +0000
+	id 1umXo1-0000000GzJR-1Cmr;
+	Thu, 14 Aug 2025 13:15:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umVU4-0000000Ge15-33UT
+	id 1umVUC-0000000Ge5B-3CUp
 	for barebox@lists.infradead.org;
-	Thu, 14 Aug 2025 10:47:02 +0000
+	Thu, 14 Aug 2025 10:47:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1umVTv-0000NX-JJ; Thu, 14 Aug 2025 12:46:51 +0200
+	id 1umVTv-0000NY-Jp; Thu, 14 Aug 2025 12:46:51 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1umVTv-000Eww-16;
+	id 1umVTv-000Ewy-18;
 	Thu, 14 Aug 2025 12:46:51 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1umVTv-004nMh-0t;
+	id 1umVTv-004nMh-0v;
 	Thu, 14 Aug 2025 12:46:51 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 Aug 2025 12:46:52 +0200
+Date: Thu, 14 Aug 2025 12:46:54 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250814-k3-am62l-updates-v1-4-9934277d8757@pengutronix.de>
+Message-Id: <20250814-k3-am62l-updates-v1-6-9934277d8757@pengutronix.de>
 References: <20250814-k3-am62l-updates-v1-0-9934277d8757@pengutronix.de>
 In-Reply-To: <20250814-k3-am62l-updates-v1-0-9934277d8757@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755168411; l=853;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755168411; l=1705;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=2Z4WnU0OmcG/rjj975KB+xKMroBLp/NArz1WQWI1WoI=;
- b=w7+LCvfqyxejtei5Q9e+qLR8HuVHEbAcfYkIolCIcnH7gpC3JC9sY9Tn4KqDZ/l5tZ9ANPiGs
- vBKER1cRpOjAaDffqmUi3H+/C4CPOE4O1+Cr3M9IBsPcfYuEvxo1/fu
+ bh=0Orl05dlyxHNHzNKUc+qZ/ouHsxGCyvXuThbWwNEnG0=;
+ b=gTpDI2Qv+mTWkgDa5TTM2INNUyQRCYPE+elPBtCYomMQurPG2vJlLZylBGXloAVzxCWj386Wo
+ KGDqXYi//HkBe1UayNoZUWOmfQpHmd94YhEwW1O+qdlMiRe+PS8roWk
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250814_034700_772917_21F5CE29 
-X-CRM114-Status: UNSURE (   9.02  )
+X-CRM114-CacheID: sfid-20250814_034708_805671_023F4906 
+X-CRM114-Status: UNSURE (   9.98  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -91,34 +91,45 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/6] k3img: handle PKCS#11 uris
+Subject: [PATCH 6/6] ARM: k3: use newer ti-linux-firmware
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In case the keys passed to k3img are PKCS#11 uris we have to set the
-keyform/engine options for openssl.
+In ti-linux-firmware 11.00.14 ti-fs-firmware-am62lx-hs-fs-enc.bin is
+renamed to ti-fs-firmware-am62lx-hs-enc.bin and
+ti-fs-firmware-am62lx-hs-fs-cert.bin is renamed to
+ti-fs-firmware-am62lx-hs-cert.bin.
+
+Switch to the newer firmware and update the submodule accordingly.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/k3img | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ firmware/ti-linux-firmware | 2 +-
+ images/Makefile.k3         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/k3img b/scripts/k3img
-index 4242c505d07513d915797a9b68faae9310506a0c..bd86a437898de7c3980b61bceffbd973d6b9f3d8 100755
---- a/scripts/k3img
-+++ b/scripts/k3img
-@@ -143,6 +143,10 @@ EndOfHereDocument
+diff --git a/firmware/ti-linux-firmware b/firmware/ti-linux-firmware
+index 10257543a029cc608c9df1c36c83e36ac3dd5b46..f59a711599249ecac75fea38b7a15ef9137d650d 160000
+--- a/firmware/ti-linux-firmware
++++ b/firmware/ti-linux-firmware
+@@ -1 +1 @@
+-Subproject commit 10257543a029cc608c9df1c36c83e36ac3dd5b46
++Subproject commit f59a711599249ecac75fea38b7a15ef9137d650d
+diff --git a/images/Makefile.k3 b/images/Makefile.k3
+index 05b645f6d48b0594eec2af1208825c1d551a1dff..1a8bfe641a8efc7d4a4a89bb8cd9f6ee3b13adb1 100644
+--- a/images/Makefile.k3
++++ b/images/Makefile.k3
+@@ -66,8 +66,8 @@ image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay-r5.img
+ endif
  
- cat $ext_boot_info $components >> $certcfg
+ SYSFWDATA_am62lx=$(objtree)/arch/arm/mach-k3/combined-sysfw-cfg-am62l.k3cfg
+-SYSFW_am62lx_hs_fs=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62lx-hs-fs-enc.bin
+-INNERDATA_am62lx=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62lx-hs-fs-cert.bin
++SYSFW_am62lx_hs_fs=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62lx-hs-enc.bin
++INNERDATA_am62lx=$(FIRMWARE_DIR)/ti-linux-firmware/ti-sysfw/ti-fs-firmware-am62lx-hs-cert.bin
  
--openssl req -new -x509 -key $key -nodes -outform DER -out $cert -config $certcfg -sha512
-+case $key in pkcs11:*)
-+	PKCS11OPTS="-engine pkcs11 -keyform engine"
-+esac
-+
-+openssl req ${PKCS11OPTS} -new -x509 -key "${key}" -nodes -outform DER -out "${cert}" -config "${certcfg}" -sha512
- 
- cat $cert $data > $out
+ ## TI am62lx-EVM ##
+ SYSFW_start_am62lx_evm.pblb.k3_am62lx_img=$(SYSFW_am62lx_hs_fs)
 
 -- 
 2.39.5
