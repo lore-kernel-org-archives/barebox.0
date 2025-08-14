@@ -3,65 +3,66 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umYPX-000Wgy-2b
+	id 1umYPY-000WhJ-1D
 	for lore@lore.pengutronix.de;
 	Thu, 14 Aug 2025 15:54:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umYPW-0005qg-G9
+	id 1umYPW-0005qC-3s
 	for lore@pengutronix.de; Thu, 14 Aug 2025 15:54:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nryGjC+6EsbyqD1bqtNvpVMdWMNjMNlWgNDrBzWYnEY=; b=xib1mx6o/5cc7SkKQMCw6dGYln
-	8hIjRmqut31TT4LN1CtYnp4f8fGWAOjEE9xWQ7Lg6DeSjlyeWaPwotsYDj0S3Z95Z6qU4x1KAc1jB
-	5EhdDIs6nBwejFbX9K0NdQCF+LsO87z7aHohajEPzqJTmZJ44BcOI/dm+I5fKDOYw/YAZfkLCuK+F
-	ZDuppfWQgY4KmA/qWrWw0nk15EuEbcsBiGDZmwCoTalT7UuS0UujlbfOMunVH46FHiRc6hhQ9K97e
-	4b0icVZfYwXCSiNLXuYfPvFr6CdVNt7SiZL6Dsx2t0qI05etCxrpVmUgB/0r4CeGZ3/78xjnQoLyY
-	3JpfUzzA==;
+	bh=kttH63x13DuoP6KVkEAbzXMarTkzTzJTlyuSJKv22xQ=; b=UWbO/tV7WVsHbV4iFlvSIwMk9w
+	kXKLtJGuEpq5Zm1rkTE1p5bbgqUSx3w+gPNFXmf4ZOZA9fTFn5r97VX8O1PK82ibflqRwzDPBUi1N
+	SVN90eFD6LYS7aTMzGEGQZc43rjDgWUhHOEMfj2jitQdrGDjVxkj+uONldQnGafcvmfT5LQCRWeLJ
+	4uawpd0zxzxkyUCbYitVSeNQIBLJojE/xZNVVQ5TczqUiqVUMiFBXUd5P0WOWyj28x7seMEPKrafH
+	10q5ZlNvb4jYReE3r1aBr0ZR2XVODdW2lCY0lUg00iJf9lpQu3eZPgLGymY56KWZmpvgUhy90+HD1
+	y8HiLUoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umYP5-0000000H7YU-3aZe;
-	Thu, 14 Aug 2025 13:54:03 +0000
+	id 1umYP6-0000000H7Yu-1lRK;
+	Thu, 14 Aug 2025 13:54:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umXfu-0000000GvWT-1NMJ
+	id 1umXg2-0000000GvYF-1Gn1
 	for barebox@lists.infradead.org;
-	Thu, 14 Aug 2025 13:07:23 +0000
+	Thu, 14 Aug 2025 13:07:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umXfd-0006HL-21; Thu, 14 Aug 2025 15:07:05 +0200
+	id 1umXfd-0006HO-22; Thu, 14 Aug 2025 15:07:05 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umXfb-000GGz-1E;
+	id 1umXfb-000GH8-1g;
 	Thu, 14 Aug 2025 15:07:03 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umXfb-00Gwpv-0v;
+	id 1umXfb-00Gwpv-1N;
 	Thu, 14 Aug 2025 15:07:03 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 14 Aug 2025 15:06:51 +0200
-Message-Id: <20250814130702.4039241-7-a.fatoum@pengutronix.de>
+Date: Thu, 14 Aug 2025 15:06:54 +0200
+Message-Id: <20250814130702.4039241-10-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
 References: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250814_060722_370055_26D39A1A 
-X-CRM114-Status: GOOD (  15.67  )
+X-CRM114-CacheID: sfid-20250814_060730_497298_954F5478 
+X-CRM114-Status: GOOD (  22.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,130 +84,260 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RFC 06/17] defaultenv: update PS1 according to security policy
+Subject: [PATCH RFC 09/17] docs: security-policies: add documentation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-This nifty optional feature makes it easy to see what security policy
-is currently active.
+Let's add some first documentation for the newly added security policy
+support.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/user/defaultenv-2.rst           |  2 ++
- common/Kconfig                                |  5 +++++
- defaultenv/Makefile                           |  1 +
- .../bin/ps1-policy                            | 20 +++++++++++++++++++
- .../init/ps1-policy                           |  1 +
- .../init/source-colors                        |  1 +
- defaultenv/defaultenv.c                       |  2 ++
- 7 files changed, 32 insertions(+)
- create mode 100755 defaultenv/defaultenv-2-security-policy/bin/ps1-policy
- create mode 100644 defaultenv/defaultenv-2-security-policy/init/ps1-policy
- create mode 100644 defaultenv/defaultenv-2-security-policy/init/source-colors
+ Documentation/devel/devel.rst             |   1 +
+ Documentation/devel/security-policies.rst |  89 +++++++++++++++++
+ Documentation/user/security-policies.rst  | 110 ++++++++++++++++++++++
+ Documentation/user/user-manual.rst        |   1 +
+ 4 files changed, 201 insertions(+)
+ create mode 100644 Documentation/devel/security-policies.rst
+ create mode 100644 Documentation/user/security-policies.rst
 
-diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
-index a01a70fa9310..3715fd770d9d 100644
---- a/Documentation/user/defaultenv-2.rst
-+++ b/Documentation/user/defaultenv-2.rst
-@@ -23,6 +23,7 @@ The default environment is composed from different directories during compilatio
-   defaultenv/defaultenv-2-dfu                  -> overlay for DFU
-   defaultenv/defaultenv-2-reboot-mode          -> overlay for reboot modes
-   defaultenv/defaultenv-2-menu                 -> overlay for menus
-+  defaultenv/defaultenv-2-security-policy       -> overlay for security policy
-   arch/$ARCH/boards/<board>/defaultenv-<board> -> board specific overlay
-   $(CONFIG_DEFAULT_ENVIRONMENT_PATH)           -> config specific overlay
+diff --git a/Documentation/devel/devel.rst b/Documentation/devel/devel.rst
+index b90805263bbd..84074d142e03 100644
+--- a/Documentation/devel/devel.rst
++++ b/Documentation/devel/devel.rst
+@@ -13,6 +13,7 @@ Contents:
+    troubleshooting
+    filesystems
+    background-execution
++   security-policies
+    project-ideas
+    fuzzing
  
-@@ -43,6 +44,7 @@ and their respective included directories in ``defaultenv/Makefile``:
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE) += defaultenv-2-reboot-mode
-+  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY) += defaultenv-2-security-policy
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
- 
- /env/bin/init
-diff --git a/common/Kconfig b/common/Kconfig
-index 67aff85efc9b..0c7e5a10c38e 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1087,6 +1087,11 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE
- 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
- 	depends on REBOOT_MODE
- 
-+config DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY
-+	bool "Update PS1 according to active security policy"
-+	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
-+	depends on SECURITY_POLICY
-+
- config DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG
- 	bool "Ship .config as /env/data/config"
- 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
-diff --git a/defaultenv/Makefile b/defaultenv/Makefile
-index 1eaca9f41087..ab88ed739305 100644
---- a/defaultenv/Makefile
-+++ b/defaultenv/Makefile
-@@ -4,6 +4,7 @@ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE) += defaultenv-2-reboot-mode
-+bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY) += defaultenv-2-security-policy
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
- obj-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv.o
- extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX) barebox_zero_env
-diff --git a/defaultenv/defaultenv-2-security-policy/bin/ps1-policy b/defaultenv/defaultenv-2-security-policy/bin/ps1-policy
-new file mode 100755
-index 000000000000..af121bbbaeed
---- /dev/null
-+++ b/defaultenv/defaultenv-2-security-policy/bin/ps1-policy
-@@ -0,0 +1,20 @@
-+if [ -n "$security.policy" ]; then
-+	if [ "$security.policy" = "devel" ]; then
-+		PS1_policy_color="$YELLOW"
-+	elif [ "$security.policy" = "factory" ]; then
-+		PS1_policy_color="$PINK"
-+	elif [ "$security.policy" = "lockdown" ]; then
-+		PS1_policy_color="$RED;"
-+	elif [ "$security.policy" = "tamper" ]; then
-+		PS1_policy_color="$RED_INV";
-+	elif [ "$security.policy" = "return" ]; then
-+		PS1_policy_color="$PINK_INV";
-+	elif [[ "$security.policy" = "debug*" ]]; then
-+		PS1_policy_color="$CYAN";
-+        else
-+                PS1_policy_color="$NC"
-+	fi
-+
-+	. /env/init/ps1
-+	export PS1="(${PS1_policy_color}${security.policy}${NC}) $PS1"
-+fi
-diff --git a/defaultenv/defaultenv-2-security-policy/init/ps1-policy b/defaultenv/defaultenv-2-security-policy/init/ps1-policy
+diff --git a/Documentation/devel/security-policies.rst b/Documentation/devel/security-policies.rst
 new file mode 100644
-index 000000000000..a76cd7fd1728
+index 000000000000..af2faa7352fe
 --- /dev/null
-+++ b/defaultenv/defaultenv-2-security-policy/init/ps1-policy
-@@ -0,0 +1 @@
-+PROMPT_COMMAND=". /env/bin/ps1-policy"
-diff --git a/defaultenv/defaultenv-2-security-policy/init/source-colors b/defaultenv/defaultenv-2-security-policy/init/source-colors
++++ b/Documentation/devel/security-policies.rst
+@@ -0,0 +1,89 @@
++.. _develop_security-policies:
++
++Security Policies (Developer Manual)
++====================================
++
++Overview
++--------
++
++This document describes how to define new SConfig symbols and integrate them
++into Barebox security policies. SConfig uses the same backend as Kconfig, and
++its configuration files live alongside Kconfig files (e.g. ``common/Sconfig``).
++
++Key principles:
++
++- Except for the name, symbols are always ``bool``.
++- Policies are board-specific and described in ``.sconfig`` files at build-time.
++- Every policy is complete and no implicit defaults are applied by mere building
++- Policy ``.sconfig`` files are post-processed into ``.sconfig.c`` files and
++  then compiled and linked into the final barebox binary.
++
++Creating New Symbols
++--------------------
++
++1. **Add a new symbol** to the appropriate ``Sconfig`` file, such as ``common/Sconfig``:
++
++   .. code-block:: kconfig
++
++      config ENV_HANDLING
++          bool "Allow persisting and loading the environment from storage"
++          depends on $(kconfig-enabled ENV_HANDLING)
++
++2. **Reference it in code** using:
++
++   .. code-block:: c
++
++      #include <security/config.h>
++
++      if (!IS_ALLOWS(SCONFIG_ENV_HANDLING))
++          return -EPERM;
++
++3. **Update policies**:
++
++   Every existing ``.sconfig`` policy must define a value for the new symbol
++   as there are no implicit defaults to ensure every policy explicitly encodes
++   all options in accordance with its security requirements.
++
++   Example in ``lockdown.sconfig``:
++
++   .. code-block:: none
++
++      SCONFIG_ENV_HANDLING=n
++
++   And in ``devel.sconfig``:
++
++   .. code-block:: none
++
++      SCONFIG_ENV_HANDLING=y
++
++Linking Policy Files
++--------------------
++
++Policies must be added to the build using ``policy-y`` in the board’s
++Makefile:
++
++.. code-block:: make
++
++   policy-y += lockdown.sconfig
++
++Tips for Symbol Design
++----------------------
++
++- Avoid naming symbols after board names. Favor functionality.
++- Prefer giving Sconfig symbols the same name as Kconfig symbols, when they
++  address the same goal, but at runtime instead of build-time.
++- When possible, reuse logic in core code by wrapping around
++  ``IS_ALLOWED()`` checks.
++
++Validation & Maintenance
++------------------------
++
++Always run ``make security_olddconfig`` for the security policy reference
++configuration ``virt32_policy_defconfig``::
++
++  export ARCH=arm
++  export CROSS_COMPILE=...
++  make virt32_policy_defconfig
++  make security_olddefconfig
++
++CI also checks this configuration and verifies that it's up-to-date.
+diff --git a/Documentation/user/security-policies.rst b/Documentation/user/security-policies.rst
 new file mode 100644
-index 000000000000..3df8e02b0ebc
+index 000000000000..b1002285b414
 --- /dev/null
-+++ b/defaultenv/defaultenv-2-security-policy/init/source-colors
-@@ -0,0 +1 @@
-+. /env/data/ansi-colors
-diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
-index 2567653751cb..d6cca466a683 100644
---- a/defaultenv/defaultenv.c
-+++ b/defaultenv/defaultenv.c
-@@ -49,6 +49,8 @@ static void defaultenv_add_base(void)
- 		defaultenv_append_directory(defaultenv_2_dfu);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE))
- 		defaultenv_append_directory(defaultenv_2_reboot_mode);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY))
-+		defaultenv_append_directory(defaultenv_2_security_policy);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG))
- 		defaultenv_append_directory(defaultenv_2_ikconfig);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
++++ b/Documentation/user/security-policies.rst
+@@ -0,0 +1,110 @@
++.. _use_security-policies:
++
++Security Policies (User Manual)
++===============================
++
++Overview
++--------
++
++Barebox supports structured security configuration through **security policies**,
++a runtime configuration mechanism that allows switching between multiple
++predefined security policies (e.g. ``lockdown``, ``devel``),
++depending on operational requirements.
++
++This replaces ad-hoc board code with a clean, reproducible, and
++auditable configuration-based model.
++
++Concepts
++--------
++
++- **SConfig**: A configuration system using the same backend as
++  Kconfig, designed for **runtime security policies**.
++- **Policies**: Named configurations like ``lockdown.sconfig``,
++  ``open.sconfig`` specific to each board.
++
++Usage
++-----
++
++1. **Configure a policy** using menuconfig (or another frontend):
++
++   .. code-block:: shell
++
++      make KPOLICY=arch/arm/boards/myboard/lockdown.sconfig security_oldconfig
++      make sercurity_menuconfig # Iterates over all policies
++
++2. **Configuration files** (e.g. ``lockdown.sconfig``) are in Kconfig
++   format with ``SCONFIG_``-prefixed entries.
++
++3. **Build integration**:
++
++   The sconfig files for the board are placed into the ``security/``
++   directory in the source tree and their file names (without slashes)
++   are added to ``CONFIG_SECURITY_POLICY_PATH``.
++
++   Alternatively, policies can also be be referenced in a board's
++   Makefile::
++
++   .. code-block:: make
++
++      lwl-y       += lowlevel.o
++      obj-y       += board.o
++      policy-y    += myboard-lockdown.sconfig myboard-devel.sconfig
++
++   This latter method can be useful when building multiple boards in
++   the same build, but with different security policies.
++
++4. **Registration**:
++
++   Policies added with ``CONFIG_SECURITY_POLICY_PATH`` are automatically
++   registered for all enabled boards.
++
++   Policies added with policy-y need to be explicitly added by symbol
++   to the set of registered policies in board code:
++
++   .. code-block:: c
++
++     #include <security/policy.h>
++
++     security_policy_add(myboard_lockdown)
++     security_policy_add(myboard_devel)
++
++5. **Runtime selection**:
++
++   In board code, switch to a policy by name:
++
++   .. code-block:: c
++
++     #include <security/policy.h>
++
++     sconfig_set_policy("lockdown");
++
++Differences from Kconfig
++------------------------
++
+++-------------------------+------------------------------+-----------------------------+
++| Feature                 | Kconfig                      | SConfig                     |
+++=========================+==============================+=============================+
++| Purpose                 | Build-time configuration     | Runtime security policy     |
+++-------------------------+------------------------------+-----------------------------+
++| File name               | .config                      | ${policy}.sconfig           |
+++-------------------------+------------------------------+-----------------------------+
++| policies per build      | One                          | Multiple                    |
+++-------------------------+------------------------------+-----------------------------+
++| Symbol types            | bool, int, string, ... etc.  | bool only                   |
+++-------------------------+------------------------------+-----------------------------+
++| Symbol dependencies     | Kconfig symbols              | Both Kconfig and Sconfig    |
++|                         |                              | symbols                     |
+++-------------------------+------------------------------+-----------------------------+
++
++Best Practices
++--------------
++
++- Maintain all ``.sconfig`` files under version control,
++  either as part of the barebox patch stack or in your BSP
++
++- Document reasoning when changing every single security option
++  (even when doing ``security_olddefconfig``).
++
++- Avoid logic duplication in board code — rely on SConfig conditionals.
++
++- Name policies meaningfully: e.g. ``lockdown``, ``tamper``, ``return``.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index ce0792000a3c..cb01721863dd 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -29,6 +29,7 @@ Contents:
+    bootchooser
+    remote-control
+    security
++   security-policies
+    reset-reason
+    system-reset
+    state
 -- 
 2.39.5
 
