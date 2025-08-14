@@ -3,80 +3,80 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umZhI-000Y2w-1o
+	id 1umZhI-000Y3H-2k
 	for lore@lore.pengutronix.de;
-	Thu, 14 Aug 2025 17:16:55 +0200
+	Thu, 14 Aug 2025 17:16:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umZhH-0001J2-AH
-	for lore@pengutronix.de; Thu, 14 Aug 2025 17:16:55 +0200
+	id 1umZhH-0001J3-Ld
+	for lore@pengutronix.de; Thu, 14 Aug 2025 17:16:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gjUHneAFpdra/yFKpbJA3nx3PO9Mg/1GwHN4gBGVuhs=; b=upbWoAsQ04XLNi4KYkj2Pik+N/
-	Pz+ggQRDZD7KxVsoOxaugrkLWXV03vDlBdAnJKuN5bzRwO8i5mx+sbZ8HRkOvRL7AROvRC/rpKTKQ
-	beETzumxL6eCfVbPuNryA2V1Bg3Diz6+4A/oSv2a57PToKqJSDkvqT+JnCg1MPuiBHDwy+UUY+AY3
-	ej/krrGMW+Ahr6RdbT9t3qC7e4MBL6mnXVf+QyVG3mdNMeAws6r34Myq4C3Me+U6pifBMP98YVo1l
-	Qh08uQnZfuj+vdMjND8RS/ubWL44YIykiPry8YG2JTlO8Bgk5EKwRtKy+Mx+CzzETzKFlDlP5JoYt
-	s+fOvAeg==;
+	bh=H66MokWjVMCPMCIeSrYAlWlitdHk7KPmUSjBx39SMDg=; b=FhsdM/uDm8MgVe3LH3q2iYuA/v
+	l5gwpYNs2TjWll22HjlNrAvyBV4nKwjsI6pLCByvFj9XhwuKXp22XD12mpPRpsCLffMkp9p6iuMc2
+	bUJek02ajQXmUfH7qtY1Ltcg5+t6B0u+QoUyh7dONl89kyklh7MlZgSOZMkeZpN5mf4wgpXrpySzd
+	XvsUkG6Obe2W2j1m1FMTok1eQbNNi/tbGYiEdc5ubBL3ug/InDNCRsd7HMJ4K5JJ90/RW8jY1+vAP
+	to7L6meu1th4uUXuLkvtWgPOkQkcYMf7r/XjOk2nbzdWgwOnInUVPq4jPgjO7eswee8MbYtXL08B7
+	9/lGu9hw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umZh6-0000000HOk8-0jen;
-	Thu, 14 Aug 2025 15:16:44 +0000
+	id 1umZh5-0000000HOjB-2Pp5;
+	Thu, 14 Aug 2025 15:16:43 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umY7r-0000000H4Ph-2wPT
+	id 1umY7r-0000000H4Pi-2vt5
 	for barebox@bombadil.infradead.org;
 	Thu, 14 Aug 2025 13:36:15 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=gjUHneAFpdra/yFKpbJA3nx3PO9Mg/1GwHN4gBGVuhs=; b=IJq9HbOyjNNxWAM7GZvf+Vk1+K
-	GHjEbt0joHbb+JgTMspBTjTyEAu+JGCHIoXfazSZ9wFUXzctg2lQAtn8vHZQWHS7ZVB5sTHFtqm+i
-	ZUiZF85bBnBN5+qwr5T6320Zdk6w5gF2li/zD/hJnO6nWbkilHJj5W1qOeBUMJ5RfofanoLdLUh0T
-	wvDML0jgd/90YcBZpa9KrNOy52Cd+4K0kdDMbhPZfOXPHcG/h5gvKsUU6s243/V/BBplcPZYdZ/Yt
-	str0VMfhfzVNgKG8PQ90aaTrAMDFZ0cOpLf93A1Dw8b/WfShrBd1YAnUnI2HaYE3ypuDCVWvst9Yb
-	Fxh1teCA==;
+	bh=H66MokWjVMCPMCIeSrYAlWlitdHk7KPmUSjBx39SMDg=; b=dwBOna2a5i/jIaqI8DC4lhwu4G
+	c2H2JPE3YUQtXiNbQJdnXznW24LYo5b4/l2rpky8nFBZ7mge5wGkAVtCUGJQNKhOERbkUkxmDb0nK
+	d+zkHO4+rpMnJVokW1gS0nqEhEWpKAB56H4sZbr14T3UbMPE3mzchRi6e6S3rIZs+Hy2REW0UosV5
+	9Rwyh57CzDlZFXkkGkYTGucwyh1Pbp5GteJNgpFVgJp8wflp4crhOlfTO7yY0guhPFaSYThEqTHzU
+	/HhiFqEP43bFBVXaMlKMKjBfq491YNWH1Ktm6Gr4wwCJ6oQvrwdW+T7o5iRFw81nSUU6n7VcilWNm
+	auOyib4g==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umY7m-0000000GPTm-0g2x
+	id 1umY7m-0000000GPTo-0Ssi
 	for barebox@lists.infradead.org;
 	Thu, 14 Aug 2025 13:36:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umY7j-0002ip-OH; Thu, 14 Aug 2025 15:36:07 +0200
+	id 1umY7j-0002j2-W4; Thu, 14 Aug 2025 15:36:08 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umY7j-000GO3-1o;
+	id 1umY7j-000GOC-2b;
 	Thu, 14 Aug 2025 15:36:07 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umXfb-00Gwpv-2X;
+	id 1umXfb-00Gwpv-1o;
 	Thu, 14 Aug 2025 15:07:03 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 14 Aug 2025 15:07:02 +0200
-Message-Id: <20250814130702.4039241-18-a.fatoum@pengutronix.de>
+Date: Thu, 14 Aug 2025 15:06:57 +0200
+Message-Id: <20250814130702.4039241-13-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
 References: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250814_143610_312087_06735F1E 
-X-CRM114-Status: GOOD (  12.22  )
+X-CRM114-CacheID: sfid-20250814_143610_202793_D255CC29 
+X-CRM114-Status: GOOD (  12.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,87 +98,82 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RFC 17/17] test: py: add basic security policy test
+Subject: [PATCH RFC 12/17] bootm: support calling bootm_optional_signed_images at any time
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This simple test checks that the security policies were added and that a
-number of options that we expect to be there indeed change as expected.
+bootm_init is a late initcall and thus the code has the implicit
+assumption that bootm_force_signed_images is called after it runs.
+
+Rework the code to allow calling the function at any time.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/arm/virt32_secure_defconfig.yaml |  1 +
- test/py/test_policies.py              | 49 +++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
- create mode 100644 test/py/test_policies.py
+ common/bootm.c | 32 +++++++++++++++++++++++---------
+ 1 file changed, 23 insertions(+), 9 deletions(-)
 
-diff --git a/test/arm/virt32_secure_defconfig.yaml b/test/arm/virt32_secure_defconfig.yaml
-index a1537c634811..3a26e09ef683 100644
---- a/test/arm/virt32_secure_defconfig.yaml
-+++ b/test/arm/virt32_secure_defconfig.yaml
-@@ -15,6 +15,7 @@ targets:
-       BareboxTestStrategy: {}
-     features:
-       - virtio-mmio
-+      - policies
- images:
-   barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
- imports:
-diff --git a/test/py/test_policies.py b/test/py/test_policies.py
-new file mode 100644
-index 000000000000..28ab16d2cf68
---- /dev/null
-+++ b/test/py/test_policies.py
-@@ -0,0 +1,49 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/common/bootm.c b/common/bootm.c
+index 3a2eb262b26a..5c129cd4b579 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -116,19 +116,34 @@ static const char * const bootm_verify_names[] = {
+ 
+ static bool force_signed_images = IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES);
+ 
+-void bootm_force_signed_images(void)
++static void bootm_optional_signed_images(void)
++{
++	/* This function should not be exported */
++	BUG_ON(force_signed_images);
 +
-+import pytest
++	globalvar_remove("bootm.verify");
++	/* recreate bootm.verify with a single enumeration as option */
++	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
++				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
 +
++	bootm_verify_mode = BOOTM_VERIFY_AVAILABLE;
++}
 +
-+def test_security_policies(barebox, env):
-+    if 'policies' not in env.get_target_features():
-+        pytest.skip('policies feature flag missing')
++static void bootm_require_signed_images(void)
+ {
+ 	static unsigned int verify_mode = 0;
+ 
+-	if (force_signed_images)
+-		return;
+-
+ 	/* recreate bootm.verify with a single enumeration as option */
+ 	globalvar_remove("bootm.verify");
+ 	globalvar_add_simple_enum("bootm.verify", &verify_mode,
+ 				  &bootm_verify_names[BOOTM_VERIFY_SIGNATURE], 1);
+ 
+ 	bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
++}
 +
-+    assert 'Active Policy: devel' in barebox.run_check('sconfig')
-+
-+    assert set(barebox.run_check('sconfig -l')) == \
-+           set(['devel', 'factory', 'lockdown', 'tamper'])
-+
-+    assert barebox.run_check('varinfo global.bootm.verify') == \
-+        ['bootm.verify: available (type: enum) '
-+         '(values: "none", "hash", "signature", "available")']
-+
-+    barebox.run_check('sconfig -s factory')
-+    assert 'Active Policy: factory' in barebox.run_check('sconfig')
-+
-+    stdout = barebox.run_check('sconfig -v -s devel')
-+    assert set(['+SCONFIG_BOOT_UNSIGNED_IMAGES',
-+                '+SCONFIG_CMD_GO']) <= set(stdout)
-+    assert 'Active Policy: devel' in barebox.run_check('sconfig')
-+
-+    stdout, _, rc = barebox.run('go')
-+    assert 'go - start application at address or file' in stdout
-+    assert 'go: Operation not permitted' not in stdout
-+    assert rc == 1
-+
-+    stdout = barebox.run_check('sconfig -v -s tamper')
-+    assert set(['-SCONFIG_SECURITY_POLICY_SELECT',
-+                '-SCONFIG_BOOT_UNSIGNED_IMAGES',
-+                '-SCONFIG_RATP',
-+                '-SCONFIG_CMD_GO']) <= set(stdout)
-+    assert 'Active Policy: tamper' in barebox.run_check('sconfig')
-+
-+    _, _, rc = barebox.run('sconfig -s devel')
-+    assert rc != 0
-+    assert 'Active Policy: tamper' in barebox.run_check('sconfig')
-+
-+    stdout, _, rc = barebox.run('go')
-+    assert 'go - start application at address or file' not in stdout
-+    assert 'go: Operation not permitted' in stdout
-+    assert rc == 127
-+
-+    assert barebox.run_check('varinfo global.bootm.verify') == \
-+        ['bootm.verify: signature (type: enum)']
++void bootm_force_signed_images(void)
++{
++	bootm_require_signed_images();
+ 	force_signed_images = true;
+ }
+ 
+@@ -1075,14 +1090,13 @@ static int bootm_init(void)
+ 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
+ 	}
+ 
+-	if (bootm_signed_images_are_forced())
+-		bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
+-
+ 	globalvar_add_simple_bool("bootm.dryrun", &bootm_dryrun);
+ 	globalvar_add_simple_int("bootm.verbose", &bootm_verbosity, "%u");
+ 
+-	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
+-				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
++	if (bootm_signed_images_are_forced())
++		bootm_require_signed_images();
++	else
++		bootm_optional_signed_images();
+ 
+ 	if (IS_ENABLED(CONFIG_ROOTWAIT_BOOTARG))
+ 		globalvar_add_simple_int("linux.rootwait",
 -- 
 2.39.5
 
