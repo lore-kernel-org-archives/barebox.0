@@ -1,67 +1,67 @@
-Delivery-date: Thu, 14 Aug 2025 15:51:56 +0200
+Delivery-date: Thu, 14 Aug 2025 15:51:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umYN3-000Wcu-1f
+	id 1umYN3-000WdB-2s
 	for lore@lore.pengutronix.de;
-	Thu, 14 Aug 2025 15:51:56 +0200
+	Thu, 14 Aug 2025 15:51:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umYN1-0005Bs-SO
-	for lore@pengutronix.de; Thu, 14 Aug 2025 15:51:56 +0200
+	id 1umYN2-0005CA-3i
+	for lore@pengutronix.de; Thu, 14 Aug 2025 15:51:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Mmg7DQ1m8f1P0ay4URgi59ka180hK3IEacRkNRwV+WU=; b=31jpmU5nI/5M1ojuxvAEvdHGfB
-	SoMdq7Lm3heE5IZkLpQD60LjDBMLUkQ0OLR0PReY+P833mg/RBZwmERVOa4g3YKs5FfSwglIg0TXt
-	O8zVRQUZWle+O4uir1f/tylXGLelxIF35VKotxvOKgkHS8c+Jxu4XIe1J0z1qVotxujG+3C5ph44N
-	baB0xXnNHRao2oyFXo5BD/yqiFLSFtFN5psjKaMq2qgXGfqNHArzNHQ4r2zKgXoE4/QWAtxgHvUZR
-	h08QUV2Pdy3fRUbVBWsicZyAe5ynaUEz7nG9CcD/qZaYNzEZZh4fnm8YP+45f0XL6whvxBzV4fA4o
-	S0m/IkIA==;
+	bh=EeqTV/Kw5ubSOnBEo90QlYzoSvK0BdF8QNrlg0sM8kw=; b=D2TYrNDyThwkpaNCSxxo8aVj5m
+	VRBZ8P7hirkz6F9K/4z4lTSm4VxX31vlY2fif0/4iTQ47GS/n9uQqLRFfTXa3drwFt2KHi2COMShE
+	g4WfytlxqqC+oBqhrGYqrGr6wjaYI9eGSU8+zMkxq6EkQiLtzciaT9WnKs/GK8WENMPHgM24njTCB
+	CUDDWNqGBKFinWgSJnv0WfUGD7TTDPs6w0FsCVOqHFJtzQlQMq3xg03eUhsB5K3Pr4bWAgQp9kcJK
+	SLE0MLffBUppn0lErtwZrBXN83zt66HPaLacF8YN9Mbq7Tv/1Ao3GPj7Fe4k1kD9ly2VSXnedKFxo
+	hCGNH+RQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umYMZ-0000000H6k8-3qMg;
-	Thu, 14 Aug 2025 13:51:27 +0000
+	id 1umYMW-0000000H6hv-47yF;
+	Thu, 14 Aug 2025 13:51:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umXfm-0000000GvU9-19UY
+	id 1umXfe-0000000GvRo-2Wxk
 	for barebox@lists.infradead.org;
-	Thu, 14 Aug 2025 13:07:15 +0000
+	Thu, 14 Aug 2025 13:07:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umXfd-0006HK-23; Thu, 14 Aug 2025 15:07:05 +0200
+	id 1umXfd-0006HM-22; Thu, 14 Aug 2025 15:07:05 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umXfb-000GGw-14;
+	id 1umXfb-000GH2-1N;
 	Thu, 14 Aug 2025 15:07:03 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umXfb-00Gwpv-0l;
+	id 1umXfb-00Gwpv-14;
 	Thu, 14 Aug 2025 15:07:03 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 14 Aug 2025 15:06:50 +0200
-Message-Id: <20250814130702.4039241-6-a.fatoum@pengutronix.de>
+Date: Thu, 14 Aug 2025 15:06:52 +0200
+Message-Id: <20250814130702.4039241-8-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
 References: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250814_060714_313426_F8D1D606 
-X-CRM114-Status: GOOD (  14.45  )
+X-CRM114-CacheID: sfid-20250814_060706_645482_3A363AB3 
+X-CRM114-Status: GOOD (  13.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,72 +83,126 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RFC 05/17] kbuild: allow security config use without source tree modification
+Subject: [PATCH RFC 07/17] security: policy: support externally provided configs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A key aspect of security policies is the enforcement of a policy to be
-complete with no implicit defaults. To make this easier to use, the
-security_*config targets directly manipulate the specified KPOLICY or
-all known policies if none were specified.
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-This is at odds with build systems that assume an immutable source tree
-and prefer that changes to files within purview of the build system are
-only done explicitly by the user. For that purpose, add an optional
-KPOLICY_TMPUPDATE, which works as follows:
+The enforcement of security policies to be up-to-date and removal of
+implicit syncing nudges users into checking in the actual security
+policy into version control. To allow the policies to live outside the
+barebox tree, introduce CONFIG_SECURITY_POLICY_PATH that takes a
+space-separated list of configs.
 
-  - When set, only the tmp file in the build tree is updated, but not the
-    original
-  - The tmp file is always what's used in the build
-  - Once unset, the tmp file will always be overwritten by the original
-    on next build
+For now, the option is very strict: All files referenced must be placed
+into security/ in the barebox source directory. Different build rules
+sharing the same source directory can install their configs with
+different names and customize via CONFIG_SECURITY_POLICY_PATH which options
+to include.
+
+sconfigpost also supports iterating over directories, but this feature
+is left out for now, as it needs more extensive testing to verify that
+targets are rebuilt as often as needed and not more.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Makefile                | 4 +++-
- scripts/Makefile.policy | 4 ++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ security/Kconfig.policy | 15 +++++++++++++++
+ security/Makefile       | 36 ++++++++++++++++++++++++++++++++++++
+ security/policy.c       |  3 +++
+ 3 files changed, 54 insertions(+)
 
-diff --git a/Makefile b/Makefile
-index a2e5697b09fe..6027b5c37c82 100644
---- a/Makefile
-+++ b/Makefile
-@@ -100,7 +100,7 @@ ifeq ($(silence),s)
- quiet=silent_
- endif
+diff --git a/security/Kconfig.policy b/security/Kconfig.policy
+index 6c5cb5687c17..36875ea198d1 100644
+--- a/security/Kconfig.policy
++++ b/security/Kconfig.policy
+@@ -80,6 +80,21 @@ config SECURITY_POLICY_DEFAULT_PANIC
  
--export quiet Q KBUILD_VERBOSE
-+export quiet Q KBUILD_VERBOSE KPOLICY_TMPUPDATE
+ endchoice
  
- # Kbuild will save output files in the current working directory.
- # This does not need to match to the root of the kernel source tree.
-@@ -1213,8 +1213,10 @@ security_checkconfigs: collect-policies $(KPOLICY.tmp) FORCE
- security_%config: collect-policies $(KPOLICY.tmp) FORCE
- 	+$(Q)$(foreach p, $(KPOLICY), $(call loop_cmd,sconfig, \
- 		$(@:security_%=%),$p.tmp))
-+ifeq ($(KPOLICY_TMPUPDATE),)
- 	+$(Q)$(foreach p, $(KPOLICY), \
- 		cp 2>/dev/null $p.tmp $(call resolve-srctree,$p) || true;)
++config SECURITY_POLICY_PATH
++	string
++	depends on SECURITY_POLICY
++	prompt "Paths to additional security policies"
++	help
++	  Space separated list of security policies that should be
++	  compiled into barebox and registered. This option currently
++	  requires security policies to have the .sconfig extension
++	  and be located in the barebox source tree's security/
++	  directory.
++	  If left empty, only security policies explicitly provided
++	  and registered by board code will be available.
++
++	  Absolute paths are disallowed.
++
+ config SECURITY_POLICY_NAMES
+ 	bool
+ 
+diff --git a/security/Makefile b/security/Makefile
+index 16b328266a1b..c7896ed74fb3 100644
+--- a/security/Makefile
++++ b/security/Makefile
+@@ -8,6 +8,9 @@ obj-pbl-$(CONFIG_HAVE_OPTEE)	+= optee.o
+ obj-$(CONFIG_BLOBGEN)		+= blobgen.o
+ obj-$(CONFIG_PASSWORD)		+= password.o
+ 
++# Default password handling
++# ---------------------------------------------------------------------------
++#
+ ifdef CONFIG_PASSWORD
+ 
+ ifeq ($(CONFIG_PASSWORD_DEFAULT),"")
+@@ -29,3 +32,36 @@ include/generated/passwd.h: FORCE
+ 
+ $(obj)/password.o: include/generated/passwd.h
+ endif # CONFIG_PASSWORD
++
++# External security policy handling
++# ---------------------------------------------------------------------------
++
++external-policy := $(foreach p, \
++	$(call remove_quotes,$(CONFIG_SECURITY_POLICY_PATH)), $p)
++
++external-policy-tmp := $(addsuffix .tmp,$(external-policy))
++real-external-policy-tmp := $(addprefix $(obj)/,$(external-policy-tmp))
++
++ifneq ($(external-policy),)
++obj-y	+= default.sconfig.o
++extra-y	+= default.sconfig.c
++always-y += policy-list
++$(foreach p, $(external-policy), \
++	$(if $(findstring /,$p),$(error \
++	CONFIG_SECURITY_POLICY_PATH contains path separators.\
++	$(newline)"$p" must be a file name relative to security/)))
++$(foreach p, $(external-policy), \
++	$(if $(wildcard $(srctree)/$(src)/$p),,$(error \
++	CONFIG_SECURITY_POLICY_PATH contains non-existent files.\
++	$(newline)"$p" does not exit in $$(srctree)/security)))
 +endif
++
++$(obj)/policy-list: $(addprefix $(src)/,$(external-policy)) FORCE
++	$(call if_changed,gen_order_src)
++
++targets += $(external-policy-tmp)
++
++$(obj)/default.sconfig.c: $(real-external-policy-tmp) FORCE
++	+$(Q)$(foreach p, $(real-external-policy-tmp), \
++		$(call noop_cmd,security_checkconfig,$p) ;)
++	$(call if_changed_dep,sconfigpost_c,$(real-external-policy-tmp))
+diff --git a/security/policy.c b/security/policy.c
+index 10d6148866ab..774e64968cba 100644
+--- a/security/policy.c
++++ b/security/policy.c
+@@ -238,6 +238,9 @@ static int security_init(void)
+ 	dev_add_param_string(&security_device, "policy", param_set_readonly,
+ 			     security_policy_get_name, &policy_name, NULL);
  
- quiet_cmd_sconfigpost = SCONFPP $@
-       cmd_sconfigpost = $(SCONFIGPOST) $2 -D $(depfile) -o $@ $<
-diff --git a/scripts/Makefile.policy b/scripts/Makefile.policy
-index 4c71774bbbc9..7629afc43226 100644
---- a/scripts/Makefile.policy
-+++ b/scripts/Makefile.policy
-@@ -23,7 +23,11 @@ endif
- # ---------------------------------------------------------------------------
- 
- $(obj)/%.sconfig.tmp: $(src)/%.sconfig FORCE
-+ifeq ($(KPOLICY_TMPUPDATE),)
- 	$(call filechk,cat)
-+else
-+	$(call if_changed,shipped)
-+endif
- 
- quiet_cmd_sconfigpost_c = SCONFPP $@
-       cmd_sconfigpost_c = $(SCONFIGPOST) -o $@ -D$(depfile) $(2)
++	if (*CONFIG_SECURITY_POLICY_PATH)
++		security_policy_add(default);
++
+ 	return 0;
+ }
+ pure_initcall(security_init);
 -- 
 2.39.5
 
