@@ -1,82 +1,77 @@
-Delivery-date: Thu, 14 Aug 2025 17:16:56 +0200
+Delivery-date: Thu, 14 Aug 2025 17:37:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umZhJ-000Y3g-1O
+	id 1uma0l-000YFq-2o
 	for lore@lore.pengutronix.de;
-	Thu, 14 Aug 2025 17:16:56 +0200
+	Thu, 14 Aug 2025 17:37:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umZhI-0001J4-7H
-	for lore@pengutronix.de; Thu, 14 Aug 2025 17:16:56 +0200
+	id 1uma0k-00043o-OS
+	for lore@pengutronix.de; Thu, 14 Aug 2025 17:37:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NwfAx0s90CPHPSHgb0qsz6X9Q9uc123XjDCND6zruSw=; b=U4nMSIxGswemKck61XH43qW5pE
-	pvMyoQrIXgy8BZoIfodfMqtSLSUEp9oefjSo9autyrkcu3UeylIrMDmr//KemzJ2NrxKmzDcaLrrk
-	PBWCa38r61ZDuPm2YiUVOkMSTmLblFoHdILzPV7oh7k62MSz4n32sIlv7U5NAPGF3DsPqxE1sSdMq
-	AVCHDLF0lBW04N9P/D18til7621UPD+AoDPBmU0okE/9zEdIa2oCHcPkDlEQ37nho6p4rv+7WrRys
-	UE7ubPo+v8WHeHBjAZLyFHHFP6LD+RPM6mMh+VysS7XOPufIoGUJez8jxEUlyU453rK0HrjhbpYEz
-	UKWhoH1w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=fHVoW0q1oPAEoNvEJgwan5aEiOieSb+o4BcIbXsL/+I=; b=k6YwQ2ATukj2D/QOCA6plO3Sw9
+	cKdyPXc74avi5BYmeqprvCbBtlH4t0zXwzghCyaK8lcvsqRTSjogWOjg/zSugSTkpfr+OokJpJloj
+	UJWsAFKRbESq8UR7n6N8V8tL3aA+TPBzrFIZQe8DK4I17YCgMBQhNH5RIVmt1A93SUbYQ9nHLgKRP
+	l13tQfVvTV8bSSOYMDQiesk7rLAO/qTujKjecKhkxim6BG5F0KerRZMmIl0n9Miztd0ogmLssvj7m
+	txKTlnQVDlwehYYL4nkfxzy5Bf+auJX+8ennYmE25wutlXwtiX2tgfORulnIF6HK1teIWX5UDWHkA
+	gvej4Mxw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umZh4-0000000HOih-3gfD;
-	Thu, 14 Aug 2025 15:16:42 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umY7p-0000000H4PM-3c77
-	for barebox@bombadil.infradead.org;
-	Thu, 14 Aug 2025 13:36:13 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=NwfAx0s90CPHPSHgb0qsz6X9Q9uc123XjDCND6zruSw=; b=q0v3zCrN21I6nl3JRI4Y5reGSv
-	FNaz646JUuYkLpV769E5kgvVLzQas4YFJvPSXLbssPXn3VBROvhfYfVuS0lGV4X9n1R2ziDX2vsZ8
-	qVzW/skRt48oyeH8TTqhHFzAAl9WhaXPXLQOCmtwuNQDW5v8jMP7l66zM/+Ses3oqGtE6HWFk1K9L
-	d3cyzvbZPlgp6mqpuqvKJmqkasJMVMYHiaNDhSzcL2B8TBAhdE89uxND5pi0QW1sBvZHWLez2usZv
-	S4if7DFu0m5oHf81x8PlLMc1EIh4x+KjgCJZf4YPpYfFghPqGMpvSPi+jFOu02HIPHUOHG+0PT4to
-	MV92lYvQ==;
+	id 1uma0M-0000000HSl7-30ow;
+	Thu, 14 Aug 2025 15:36:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umY7m-0000000GPTp-0CcE
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1umVTw-0000000Gdwi-3Pyh
 	for barebox@lists.infradead.org;
-	Thu, 14 Aug 2025 13:36:12 +0000
+	Thu, 14 Aug 2025 10:46:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umY7k-0002jD-2I; Thu, 14 Aug 2025 15:36:08 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1umVTv-0000NW-JH; Thu, 14 Aug 2025 12:46:51 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umY7j-000GOG-2r;
-	Thu, 14 Aug 2025 15:36:07 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1umXfb-00Gwpv-1X;
-	Thu, 14 Aug 2025 15:07:03 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 14 Aug 2025 15:06:55 +0200
-Message-Id: <20250814130702.4039241-11-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
-References: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1umVTv-000Ews-12;
+	Thu, 14 Aug 2025 12:46:51 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1umVTv-004nMh-0p;
+	Thu, 14 Aug 2025 12:46:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 14 Aug 2025 12:46:48 +0200
+Message-Id: <20250814-k3-am62l-updates-v1-0-9934277d8757@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJi+nWgC/x3MywqAIBBA0V+JWTegZs9fiRaSUw090Yog/Pek5
+ Vnc+4Inx+ShSV5wdLPnfYuQaQL9ZLaRkG00KKFyUUmNc4ZmLdSC12HNSR5zW0qjS021EBCzw9H
+ Az79suxA+K0LrOGIAAAA=
+X-Change-ID: 20250814-k3-am62l-updates-5d71a474e900
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755168411; l=1091;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=dR/Y3ULj/8mK5DGIsmpABYElcSaM90SJuxumVwBLZTY=;
+ b=za0gPF2RJHUNKoVEqvOY0JeE0JXQJ7oAeUNMzJ1C0/mbB2vjf/SG62Q6HkGuxiVY/r1Ec0uvY
+ rWdoOIPhwv3Cg7jdyec1Fj+gFWC2WkNd3VynkW088or2ogY/8jegP1T
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250814_143610_191529_2DF2B2C9 
-X-CRM114-Status: GOOD (  13.78  )
+X-CRM114-CacheID: sfid-20250814_034652_886258_864E0392 
+X-CRM114-Status: UNSURE (   7.09  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,73 +93,39 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RFC 10/17] commands: go: add security config option
+Subject: [PATCH 0/6] ARM: k3: updates
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The go command doesn't do any signature verification and allows
-executing arbitrary code. Add a security option, so a policy can disable
-this command at runtime.
+This contains assorted patches for the K3 architecture.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Sconfig          |  1 +
- commands/Sconfig | 12 ++++++++++++
- commands/go.c    |  4 ++++
- 3 files changed, 17 insertions(+)
- create mode 100644 commands/Sconfig
+Sascha Hauer (6):
+      ARM: k3: AM62l3-EVM: add usb0
+      ARM: k3: quote PEM files
+      ARM: k3: allow to pass custom signing keys
+      k3img: handle PKCS#11 uris
+      ARM: K3: Update yaml files for AM62L
+      ARM: k3: use newer ti-linux-firmware
 
-diff --git a/Sconfig b/Sconfig
-index ee6ddf53bccb..93f5760ad96f 100644
---- a/Sconfig
-+++ b/Sconfig
-@@ -5,3 +5,4 @@ mainmenu "Barebox/$(ARCH) Security Configuration"
- source "scripts/Sconfig.include"
- 
- source "security/Sconfig"
-+source "commands/Sconfig"
-diff --git a/commands/Sconfig b/commands/Sconfig
-new file mode 100644
-index 000000000000..7e6d937e162c
---- /dev/null
-+++ b/commands/Sconfig
-@@ -0,0 +1,12 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+menu "Command Policy"
-+
-+config CMD_GO
-+	bool "Allow go command"
-+	depends on $(kconfig-enabled,CMD_GO)
-+	help
-+	  The go command jumps to an arbitrary address after shutting
-+          down barebox and does not do any signature verification.
-+
-+endmenu
-diff --git a/commands/go.c b/commands/go.c
-index 3449a2181ad0..640911d90db2 100644
---- a/commands/go.c
-+++ b/commands/go.c
-@@ -11,6 +11,7 @@
- #include <getopt.h>
- #include <linux/ctype.h>
- #include <errno.h>
-+#include <security/config.h>
- 
- #define INT_ARGS_MAX	4
- 
-@@ -24,6 +25,9 @@ static int do_go(int argc, char *argv[])
- 	ulong	arg[INT_ARGS_MAX] = {};
- 	bool	pass_argv = true;
- 
-+	if (!IS_ALLOWED(SCONFIG_CMD_GO))
-+		return -EPERM;
-+
- 	while ((opt = getopt(argc, argv, "+si")) > 0) {
- 		switch (opt) {
- 		case 's':
+ arch/arm/dts/k3-am62l3-evm.dts        |  47 ++++
+ arch/arm/mach-k3/Kconfig              |  22 ++
+ arch/arm/mach-k3/Makefile             |   2 +-
+ arch/arm/mach-k3/board-cfg-am62l.yaml |  32 +++
+ arch/arm/mach-k3/schema-am62l.yaml    | 427 ++++++++++++++++++++++++++++++++++
+ arch/arm/mach-k3/sec-cfg-am62l.yaml   | 131 +++++------
+ firmware/ti-linux-firmware            |   2 +-
+ images/Makefile.k3                    |  14 +-
+ scripts/k3img                         |   6 +-
+ 9 files changed, 610 insertions(+), 73 deletions(-)
+---
+base-commit: a353f75968e07fcdf43c862e4e00856629c67c32
+change-id: 20250814-k3-am62l-updates-5d71a474e900
+
+Best regards,
 -- 
-2.39.5
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
