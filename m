@@ -3,70 +3,58 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo4dP-001ySJ-1r
+	id 1uo4dQ-001ySe-0L
 	for lore@lore.pengutronix.de;
-	Mon, 18 Aug 2025 20:31:06 +0200
+	Mon, 18 Aug 2025 20:31:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo4dL-0003ra-HX
-	for lore@pengutronix.de; Mon, 18 Aug 2025 20:31:06 +0200
+	id 1uo4dM-0003s8-5M
+	for lore@pengutronix.de; Mon, 18 Aug 2025 20:31:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BAp4sAuabadwDSn0qAQb8vBm+akvNi6FOKHzj6i+c+0=; b=f9D1FfQOt/0fqIlpVIgiGSmyZW
-	hhhbw6ioFotnm6UtvGnIHjoeu3Ee0oM/bNvLOwDgEXiz19iTPP5KZTXR2OcYn4ZBpwY3eRFvgKzvC
-	j8WLi18Nx1CkC7uX19rb/jcx8hizFJAz05HixmS1w2vMx7y4LIfjgaJX9DP74f45knPKv2oVCU9eM
-	J6dmlxg6MQPz0olXUu1wpBjK1AISSKBHLVTuypp3qvJyKz9a+aB5g2/3GX4OCVMpM0YfbDplYx+8c
-	R4tYnRffoV0MVOlZNcJu/TOPmB4vsvH3EB4MHVy4z0nHZw3br+R/8Ar+liZh2Y8Oc2nVWE+P5hVVf
-	GVYbWxpQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=QNKtorESciZWtkZz/uUSQR+mree7Ep+uFE1nrcQLDHc=; b=gmNfOVkF6fw680
+	ij9dEHlC6ByBHJc2501DGFUWRTzCYNfRqlrP1KWJJE1Yw8FIVQOd3OSHxZFiP3f1DcO+dN4rS9UOb
+	30L8KzIdbDZhmkhYLaoKky6M9PLfzklQNKeFt4xOUU/B3T4ZSHWYpWeJScZr6we08lA9aT9IaAdvS
+	pACHANvrNxPRMPrEhWqaVjZzyX6P+4wrJ8orIVW2Pv0JVYC9Z8XDVDU1W+7i6aNrSlaIIEhgpqLHG
+	EGszp2dDdUdafYUEQK46mUjYwn5kdNUU9xOv/XZBxmuaE/K265mFhknEAo5QqZSD9qSsXYYLZhgm0
+	dXTZuLrSvyIu860iiAnA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo4cm-00000008LNI-1N8M;
-	Mon, 18 Aug 2025 18:30:28 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo3uX-00000008F5Q-1rRp
-	for barebox@bombadil.infradead.org;
-	Mon, 18 Aug 2025 17:44:45 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=BAp4sAuabadwDSn0qAQb8vBm+akvNi6FOKHzj6i+c+0=; b=pTQCLMNJbbF+DPdN7rixOavXeR
-	QpGzv0wAfel27CRZqOlxja5PegQvtNZ5XwtTLudnWmiF7Zo7rYq6iR6Nf2YjgoOB86HPu6bSj3Uqn
-	UPRINFuCeXoxKWpqwFOOe/i4ed93+VdHb6H4T3IHslU7sf5xZHppC6LI4x0nGqmZmDjGyYrO1jvpV
-	b4iWLmTffwRf2dBaglJNq7mZP3GQmBNvaNFnhz/Vnww0wp6lV6jIyAJ2W4AabmqD1FLYlHLrac1KJ
-	jR+6h8IvVttRuT/pY97cbogyyksyS2/TUKZXNPQuSK3dAkhAKkgZ/KKAHESspk3TwQ8IcgD3PZd+v
-	F9KTGZYA==;
+	id 1uo4cj-00000008LJz-02sq;
+	Mon, 18 Aug 2025 18:30:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo3uT-0000000HStC-18AN
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uo3uR-00000008F34-3rbf
 	for barebox@lists.infradead.org;
-	Mon, 18 Aug 2025 17:44:44 +0000
+	Mon, 18 Aug 2025 17:44:41 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1uo3uQ-0003aK-RG; Mon, 18 Aug 2025 19:44:38 +0200
+	id 1uo3uQ-0003aK-Iw; Mon, 18 Aug 2025 19:44:38 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 18 Aug 2025 19:44:42 +0200
+Date: Mon, 18 Aug 2025 19:44:34 +0200
+Message-Id: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250818-v2025-06-0-topic-nvmem-v2-8-b6d677f6c519@pengutronix.de>
-References: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
-In-Reply-To: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAIJmo2gC/3WNzQ7CIBCEX6Xh7JoFEYwn38P00J+13UOhASQ1T
+ d9dWs/e5ptkvllFpMAUxb1aRaDMkb0roE6V6MbGDQTcFxYK1RUtSsh7AjSAkPzMHbg80QSd1bY
+ 1WqIhJcp4DvTi5RA/68Ijx+TD5/jJcm9/yhvqf8osS2ENXqhpdK9afMzkhncK3vFy7knU27Z9A
+ WM2Fc7BAAAA
+X-Change-ID: 20250701-v2025-06-0-topic-nvmem-c747b64106e2
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250818_184441_547348_8A3FCD99 
-X-CRM114-Status: GOOD (  13.88  )
+X-CRM114-CacheID: sfid-20250818_104439_966512_BFFDA849 
+X-CRM114-Status: GOOD (  12.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,81 +76,85 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 08/15] eeprom: at24: fix device name handling
+Subject: [PATCH v2 00/15] NVMEM: Add support for layout drivers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The nvmem_core already handles the ids/numbering, there is no need for
-the driver to do it too. Furthermore it's wrong because the final device
-would be: eeprom00 instead of eeprom0.
+Hi,
 
-While on it fix the alias name handlng too since the device is never
-named as described by the alias, but 'alias<ID>'. Since the
-nvmem_core supports NVMEM_DEVID_{NONE,AUTO}, pass this information to
-the core so the name would be: 'alias'.
+with this patchset the barebox nvmem-core is prepared for the Linux
+nvmem-layout drivers. Layout drivers are used to describe the NVMEM
+storage format. The patchset also adds the support to read nvmem-cells
+via the devfs. This makes it possible to read the cells from the board
+code or shell without the need of referencing the cells within the DT.
 
-Also while on it, make devname a 'const char *' pointer since the name is
-allocated later on by the dev_set_name() during the nvmem_register()
-call.
+A long with the alignment and feature work I fixed a few issues like:
+honor the DT alias for a nvmem provider correctly.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+For the new features to work correctly the NVMEM core had to be partly
+(re-)synced with the one from Linux. This involved porting different DT
+helpers.
+
+Unfortunately this patchset doesn't add a NVMEM layout driver therefore
+a __dummy__.o is added within the Makefile.
+
+I decided to start from a fresh v1 because of the rework I've done. But
+for reference, the previous patchset can be found here:
+
+ - https://lore.kernel.org/barebox/20240613131531.364894-1-m.felsch@pengutronix.de/
+
+Regards,
+  Marco
+
 ---
- drivers/eeprom/at24.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+Changes in v2:
+- Link to v1: https://lore.barebox.org/20250804-v2025-06-0-topic-nvmem-v1-0-7603eaa4d2b0@pengutronix.de
+- rebased ontop of current master to resolve merge conflict
 
-diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-index ffd3376a156694a53c49ddd4f9a6669cccfac215..667d111b349d6941c757da3c6eb46ad7f2bb422e 100644
---- a/drivers/eeprom/at24.c
-+++ b/drivers/eeprom/at24.c
-@@ -371,7 +371,7 @@ static int at24_probe(struct device *dev)
- 	struct at24_data *at24;
- 	int err;
- 	unsigned i, num_addresses;
--	char *devname;
-+	const char *devname;
- 	const char *alias;
- 
- 	if (dev->platform_data) {
-@@ -423,16 +423,10 @@ static int at24_probe(struct device *dev)
- 	at24->num_addresses = num_addresses;
- 
- 	alias = of_alias_get(dev->of_node);
--	if (alias) {
--		devname = xstrdup(alias);
--	} else {
--		err = cdev_find_free_index("eeprom");
--		if (err < 0) {
--			dev_err(&client->dev, "no index found to name device\n");
--			goto err_device_name;
--		}
--		devname = xasprintf("eeprom%d", err);
--	}
-+	if (alias)
-+		devname = alias;
-+	else
-+		devname = "eeprom";
- 
- 	writable = !(chip.flags & AT24_FLAG_READONLY);
- 
-@@ -487,6 +481,7 @@ static int at24_probe(struct device *dev)
- 	at24->nvmem_config.stride = 1;
- 	at24->nvmem_config.word_size = 1;
- 	at24->nvmem_config.size = chip.byte_len;
-+	at24->nvmem_config.id = alias ? NVMEM_DEVID_NONE : NVMEM_DEVID_AUTO;
- 
- 	at24->nvmem = nvmem_register(&at24->nvmem_config);
- 	err = PTR_ERR_OR_ZERO(at24->nvmem);
-@@ -503,7 +498,6 @@ static int at24_probe(struct device *dev)
- 	if (gpio_is_valid(at24->wp_gpio))
- 		gpio_free(at24->wp_gpio);
- 	kfree(at24->writebuf);
--err_device_name:
- 	kfree(at24);
- err_out:
- 	dev_dbg(&client->dev, "probe error %d\n", err);
+---
+Marco Felsch (15):
+      of: sync of_*_phandle_with_args with Linux
+      of: base: add of_parse_phandle_with_optional_args()
+      of: device: Export of_device_make_bus_id()
+      nvmem: core: fix nvmem_register error path
+      nvmem: core: sync with Linux
+      nvmem: core: expose nvmem cells as cdev
+      nvmem: core: allow single and dynamic device ids
+      eeprom: at24: fix device name handling
+      nvmem: core: create a header for internal sharing
+      nvmem: core: add nvmem-layout support
+      nvmem: core: add an index parameter to the cell
+      nvmem: core: add per-cell post processing
+      nvmem: core: add cell based fixup logic
+      nvmem: core: provide own priv pointer in post process callback
+      nvmem: core: drop global cell_post_process
 
+ drivers/eeprom/at24.c          |  18 +-
+ drivers/nvmem/Kconfig          |   7 +
+ drivers/nvmem/Makefile         |   3 +
+ drivers/nvmem/core.c           | 691 ++++++++++++++++++++++++++++++-----------
+ drivers/nvmem/imx-ocotp-ele.c  |  12 +-
+ drivers/nvmem/internals.h      |  55 ++++
+ drivers/nvmem/layouts.c        | 173 +++++++++++
+ drivers/nvmem/layouts/Kconfig  |  13 +
+ drivers/nvmem/layouts/Makefile |   7 +
+ drivers/nvmem/ocotp.c          |  12 +-
+ drivers/nvmem/regmap.c         |   5 +-
+ drivers/of/base.c              | 280 +++++++++++------
+ drivers/of/device.c            |  37 +++
+ drivers/of/platform.c          |  36 +--
+ include/linux/nvmem-consumer.h |  17 +-
+ include/linux/nvmem-provider.h | 148 ++++++++-
+ include/of.h                   | 146 ++++++++-
+ include/of_device.h            |   3 +
+ 18 files changed, 1295 insertions(+), 368 deletions(-)
+---
+base-commit: 6e3b27f11772b42da310050d459fd104748867bc
+change-id: 20250701-v2025-06-0-topic-nvmem-c747b64106e2
+
+Best regards,
 -- 
-2.39.5
+Marco Felsch <m.felsch@pengutronix.de>
 
 
 
