@@ -1,56 +1,79 @@
-Delivery-date: Thu, 14 Aug 2025 22:28:44 +0200
+Delivery-date: Mon, 18 Aug 2025 15:38:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umeZ3-000chm-1B
+	id 1uo04a-001tol-2k
 	for lore@lore.pengutronix.de;
-	Thu, 14 Aug 2025 22:28:44 +0200
+	Mon, 18 Aug 2025 15:38:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1umeZ1-0001bx-PQ
-	for lore@pengutronix.de; Thu, 14 Aug 2025 22:28:44 +0200
+	id 1uo04Z-0001gy-In
+	for lore@pengutronix.de; Mon, 18 Aug 2025 15:38:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ej/RrBwxI3bNBKy9mDM5BWRsUb/HYLotRComwYW4E7Q=; b=ehWFM8nW8K9OKRu6My0/Ry634S
-	4rWTR6nt+BscycJI40UPjHh6vJ1SsAQHdnOA0lUVnJmgg2REx0UZsmXkMsJSI1N7E7/hRqLyw34zO
-	qGcqc3jf8arZP67f4MtiAQgE3xuai7CLVnkM9jdPYBYM97tnOr8odZS5nKcxk6Or7z04bCzr6kof1
-	isi1IfS/48X++XI+BUGD2Jk3JpNr/2oNRxoyrjnUPRz1m6Iselx4jQ5l/Yf6HPaYvFTAWuIg4Xx24
-	4HSedV9+gQCwnyfaqOiVl9Jmm2hqJl2YA9gM7hfB+A3yndQz5K1MwLjRBdPA95znALe4ihRy/KsLY
-	5I8Z7VKg==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Tj+QQvnvzd6d1lIghE4/2PIf0IgEfh5Hdq8ODbJnTas=; b=PnKgdywkbwnCk8LDYAStjzdHst
+	Fmm/AsksZNXhV4efTHMz5f8tsqnF5X27VL5OeCUZRvp4gSxJTy7WWyW86jYM5p3sM2VUb/KjVOyu6
+	9VbTd2SpcenSWCa0DaxC9jCWIOn6LPupw2J2Kfx6j6cMyMabd99ORXm2Q0SqRwRY4xsB6JyZveyg2
+	n7cUMdc5rYkwAzMKGKCiX/OOU1zpl5vqRy2gJST+/MPHxFNpZlv1JsIcf7UABlf13Mr9bqAUAM9gU
+	pAXslXQdMz605tYGMqLFd4LR0TavUexSPzUtEnBcdbfG8AVruFGYuKGI/mPJRQmYaZC8zC+V2KzdX
+	3h94FClA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umeYY-00000000VDf-2e4O;
-	Thu, 14 Aug 2025 20:28:14 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uo03Y-00000007UYI-2eZM;
+	Mon, 18 Aug 2025 13:37:48 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1umeYS-00000000V7y-2aJn
+	id 1unvOb-00000006xQy-3wFc
+	for barebox@bombadil.infradead.org;
+	Mon, 18 Aug 2025 08:39:13 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=Tj+QQvnvzd6d1lIghE4/2PIf0IgEfh5Hdq8ODbJnTas=; b=Y4YO028HyUrSr3mBKVpkPtsr+/
+	B+Sejerfy1hdLMLWLrK8Nqma+fQ1sHnagDCsQbuM6HoV/hYv1/u/d8KqIy+cdn3wK3c+GpXh0yJha
+	J6Ns8dV0GskwsEgUf+mKNV8YrkTYDRxhWrFoja8EKwqnJ0WaZ/eR1WoTn5rpGxLf6duVbXK4I3UHa
+	U1kwj2AbKId6ZeRVdEjJdStCfx2Gp+16e9gFeIgPEmuT1bkF4vM2IbxnkZz6b8VYmokssRgGYKnQQ
+	UyL68GRbhc7jikPzRwKi5yM897Hh+m34k3Uu0y4C8J1/OjapliOXsLcIecCMRzU752geNG3ZNgM+k
+	qvWWrV5A==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1unvOY-0000000HKaJ-3wk4
 	for barebox@lists.infradead.org;
-	Thu, 14 Aug 2025 20:28:10 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1umeYR-00019L-B6; Thu, 14 Aug 2025 22:28:07 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu, 14 Aug 2025 22:28:03 +0200
-Message-Id: <20250814202805.354827-6-a.fatoum@barebox.org>
+	Mon, 18 Aug 2025 08:39:12 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1unvOV-0008QJ-U2; Mon, 18 Aug 2025 10:39:07 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1unvOV-000s8K-2P;
+	Mon, 18 Aug 2025 10:39:07 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1unvOV-006Sb7-21;
+	Mon, 18 Aug 2025 10:39:07 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 18 Aug 2025 10:39:02 +0200
+Message-Id: <20250818083902.1536392-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250814202805.354827-1-a.fatoum@barebox.org>
-References: <20250814202805.354827-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250814_132808_802682_86E70B1E 
-X-CRM114-Status: UNSURE (   6.83  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250818_093911_093067_8BAA4F6E 
+X-CRM114-Status: GOOD (  10.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,384 +91,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	UPPERCASE_75_100 autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 6/8] RISC-V: riscvemu: update configs for web demo
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH master] partition: Fix wrong check
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For showing off barebox functionality, enable a number of extra options,
-most of them added after the last time these configs were updated.
+In region_overlap_end_exclusive() we pass startb - 1 as endb argument to
+region_overlap_end_inclusive() which is obviously wrong. Fix this.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Fixes: 768fdb36f3 partition: define new region_overlap_end_exclusive helper
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/riscv/configs/rv64i_defconfig  | 72 ++++++++++++++++-------------
- arch/riscv/configs/virt32_defconfig | 37 ++++++++++++---
- 2 files changed, 72 insertions(+), 37 deletions(-)
+ include/range.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/configs/rv64i_defconfig b/arch/riscv/configs/rv64i_defconfig
-index 12ced940c5c4..f08c60766a77 100644
---- a/arch/riscv/configs/rv64i_defconfig
-+++ b/arch/riscv/configs/rv64i_defconfig
-@@ -1,20 +1,18 @@
- CONFIG_ARCH_RV64I=y
--CONFIG_SOC_ALLWINNER_SUN20I=y
--CONFIG_SOC_SIFIVE=y
--CONFIG_SOC_STARFIVE=y
- CONFIG_SOC_VIRT=y
--CONFIG_BOARD_ALLWINNER_D1=y
-+CONFIG_SOC_SIFIVE=y
-+CONFIG_BOARD_HIFIVE=y
-+CONFIG_SOC_STARFIVE=y
- CONFIG_BOARD_BEAGLEV=y
- CONFIG_BOARD_BEAGLEV_BETA=y
--CONFIG_BOARD_HIFIVE=y
--CONFIG_BOARD_GENERIC_DT=y
-+CONFIG_SOC_ALLWINNER_SUN20I=y
- CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_RISCV_UNWIND=y
-+CONFIG_NAME="rv64i_defconfig"
- CONFIG_STACK_SIZE=0x20000
- CONFIG_MALLOC_SIZE=0x0
--CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_RELOCATABLE=y
--CONFIG_NAME="rv64i_defconfig"
- CONFIG_PANIC_HANG=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
-@@ -22,31 +20,44 @@ CONFIG_AUTO_COMPLETE=y
- CONFIG_MENU=y
- CONFIG_BOOTM_VERBOSE=y
- CONFIG_BOOTM_INITRD=y
--CONFIG_SYSTEM_PARTITIONS=y
- CONFIG_BLSPEC=y
-+CONFIG_SYSTEM_PARTITIONS=y
- CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_CONSOLE_ALLOW_COLOR=y
- CONFIG_PBL_CONSOLE=y
- CONFIG_PARTITION_DISK_EFI=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG=y
-+# CONFIG_BTHREAD is not set
- CONFIG_STATE=y
- CONFIG_STATE_CRYPTO=y
- CONFIG_BOOTCHOOSER=y
- CONFIG_RESET_SOURCE=y
- CONFIG_MACHINE_ID=y
-+CONFIG_CMD_TUTORIAL=y
-+CONFIG_CMD_CLASS=y
-+CONFIG_CMD_DEVLOOKUP=y
-+CONFIG_CMD_DEVUNBIND=y
- CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
- CONFIG_CMD_IMD=y
- CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_BLKSTATS=y
-+CONFIG_CMD_NVMEM=y
- CONFIG_CMD_BFETCH=y
-+CONFIG_CMD_MMC=y
-+CONFIG_CMD_MMC_EXTCSD=y
- CONFIG_CMD_POLLER=y
- CONFIG_CMD_SLICE=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_LOADY=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_BOOTCHOOSER=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_FINDMNT=y
-+CONFIG_CMD_PARTED=y
-+CONFIG_CMD_CREATENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_MAGICVAR=y
-@@ -59,21 +70,31 @@ CONFIG_CMD_MD5SUM=y
- CONFIG_CMD_SHA1SUM=y
- CONFIG_CMD_SHA256SUM=y
- CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
- CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_DHCP=y
- CONFIG_CMD_MIITOOL=y
- CONFIG_CMD_PING=y
-+CONFIG_CMD_IP=y
-+CONFIG_CMD_ETHLOG=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_EDIT=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_MENUTREE=y
- CONFIG_CMD_SPLASH=y
- CONFIG_CMD_FBTEST=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MEMTESTER=y
- CONFIG_CMD_MM=y
- CONFIG_CMD_CLK=y
- CONFIG_CMD_DETECT=y
-+CONFIG_CMD_TRUNCATE=y
-+CONFIG_CMD_SYNC=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_I2C=y
-@@ -82,6 +103,8 @@ CONFIG_CMD_SPI=y
- CONFIG_CMD_WD=y
- CONFIG_CMD_2048=y
- CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_KALLSYMS=y
-+CONFIG_CMD_OF_COMPATIBLE=y
- CONFIG_CMD_OF_DIFF=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_OF_PROPERTY=y
-@@ -90,25 +113,21 @@ CONFIG_CMD_OF_FIXUP_STATUS=y
- CONFIG_CMD_OF_OVERLAY=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
--CONFIG_CMD_STATE=y
-+CONFIG_CMD_WATCH=y
- CONFIG_CMD_DHRYSTONE=y
-+CONFIG_CMD_SEED=y
- CONFIG_NET=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_FASTBOOT=y
- CONFIG_NET_9P=y
--CONFIG_NET_9P_VIRTIO=y
- CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_OF_BAREBOX_ENV_IN_FS=y
- CONFIG_DRIVER_SERIAL_NS16550=y
--CONFIG_VIRTIO_CONSOLE=y
- CONFIG_SERIAL_SIFIVE=y
--CONFIG_DRIVER_NET_MACB=y
--CONFIG_DRIVER_NET_DESIGNWARE=y
- CONFIG_DRIVER_NET_DESIGNWARE_GENERIC=y
- CONFIG_DRIVER_NET_DESIGNWARE_STARFIVE=y
--CONFIG_DRIVER_NET_VIRTIO=y
-+CONFIG_DRIVER_NET_MACB=y
- CONFIG_MICREL_PHY=y
--CONFIG_SPI_MEM=y
- CONFIG_DRIVER_SPI_GPIO=y
- CONFIG_SPI_SIFIVE=y
- CONFIG_I2C=y
-@@ -121,36 +140,30 @@ CONFIG_MTD_M25P80=y
- CONFIG_MTD_MTDRAM=y
- CONFIG_DRIVER_CFI=y
- CONFIG_DRIVER_CFI_BANK_WIDTH_8=y
--CONFIG_DISK=y
--CONFIG_DISK_WRITE=y
--CONFIG_VIRTIO_BLK=y
- CONFIG_VIDEO=y
- CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_DRIVER_VIDEO_BOCHS_PCI=y
- CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT=y
-+# CONFIG_SOUND is not set
- CONFIG_MCI=y
--CONFIG_MCI_SPI=y
- CONFIG_MCI_DW=y
-+CONFIG_MCI_SPI=y
- CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
--CONFIG_STATE_DRV=y
--CONFIG_EEPROM_AT24=y
--CONFIG_VIRTIO_INPUT=y
- CONFIG_SRAM=y
- CONFIG_STARFIVE_PWRSEQ=y
- CONFIG_LED=y
- CONFIG_LED_GPIO=y
- CONFIG_LED_GPIO_OF=y
- CONFIG_LED_TRIGGERS=y
-+CONFIG_EEPROM_AT24=y
- CONFIG_WATCHDOG=y
- CONFIG_STARFIVE_WDT=y
- CONFIG_HWRNG=y
--CONFIG_HW_RANDOM_VIRTIO=y
--CONFIG_GPIO_SIFIVE=y
- CONFIG_HW_RANDOM_STARFIVE=y
- CONFIG_GPIO_GENERIC_PLATFORM=y
-+CONFIG_GPIO_SIFIVE=y
- CONFIG_GPIO_STARFIVE=y
- CONFIG_PINCTRL_SINGLE=y
--CONFIG_NVMEM=y
- CONFIG_NVMEM_RMEM=y
- CONFIG_STARFIVE_OTP=y
- CONFIG_PCI_ECAM_GENERIC=y
-@@ -159,10 +172,9 @@ CONFIG_SYSCON_REBOOT_MODE=y
- CONFIG_NVMEM_REBOOT_MODE=y
- CONFIG_POWER_RESET_SYSCON=y
- CONFIG_POWER_RESET_SYSCON_POWEROFF=y
--CONFIG_POWER_RESET_HTIF_POWEROFF=y
- CONFIG_POWER_RESET_GPIO=y
- CONFIG_POWER_RESET_GPIO_RESTART=y
--CONFIG_VIRTIO_MMIO=y
-+CONFIG_POWER_RESET_HTIF_POWEROFF=y
- # CONFIG_VIRTIO_MENU is not set
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
-@@ -171,18 +183,16 @@ CONFIG_9P_FS=y
- CONFIG_9P_FS_WRITE=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
- CONFIG_FS_UIMAGEFS=y
- CONFIG_FS_PSTORE=y
- CONFIG_FS_SQUASHFS=y
-+CONFIG_DIGEST_CRC32_GENERIC=y
- CONFIG_ZLIB=y
- CONFIG_BZLIB=y
--CONFIG_LZ4_DECOMPRESS=y
- CONFIG_ZSTD_DECOMPRESS=y
- CONFIG_XZ_DECOMPRESS=y
- CONFIG_BASE64=y
- CONFIG_LZO_DECOMPRESS=y
--CONFIG_DIGEST_CRC32_GENERIC=y
- CONFIG_IMD_TARGET=y
- CONFIG_BAREBOXENV_TARGET=y
- CONFIG_BAREBOXCRC32_TARGET=y
-diff --git a/arch/riscv/configs/virt32_defconfig b/arch/riscv/configs/virt32_defconfig
-index ac2eb1c94305..982704df6837 100644
---- a/arch/riscv/configs/virt32_defconfig
-+++ b/arch/riscv/configs/virt32_defconfig
-@@ -1,12 +1,12 @@
- CONFIG_SOC_VIRT=y
- CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_RISCV_UNWIND=y
-+CONFIG_NAME="virt32_defconfig"
- CONFIG_STACK_SIZE=0x20000
- CONFIG_MALLOC_SIZE=0x0
--CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_RELOCATABLE=y
- CONFIG_PANIC_HANG=y
--CONFIG_NAME="virt32_defconfig"
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
-@@ -20,16 +20,24 @@ CONFIG_PBL_CONSOLE=y
- CONFIG_PARTITION_DISK_EFI=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG=y
-+# CONFIG_BTHREAD is not set
- CONFIG_STATE=y
- CONFIG_STATE_CRYPTO=y
- CONFIG_BOOTCHOOSER=y
- CONFIG_RESET_SOURCE=y
- CONFIG_MACHINE_ID=y
-+CONFIG_CMD_TUTORIAL=y
-+CONFIG_CMD_CLASS=y
-+CONFIG_CMD_DEVLOOKUP=y
-+CONFIG_CMD_DEVUNBIND=y
- CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
- CONFIG_CMD_IMD=y
- CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_BLKSTATS=y
-+CONFIG_CMD_NVMEM=y
-+CONFIG_CMD_VARINFO=y
- CONFIG_CMD_BFETCH=y
- CONFIG_CMD_POLLER=y
- CONFIG_CMD_SLICE=y
-@@ -37,6 +45,9 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_LOADY=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_BOOTCHOOSER=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_FINDMNT=y
-+CONFIG_CMD_PARTED=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_MAGICVAR=y
-@@ -45,23 +56,34 @@ CONFIG_CMD_SAVEENV=y
- CONFIG_CMD_CMP=y
- CONFIG_CMD_FILETYPE=y
- CONFIG_CMD_LN=y
-+CONFIG_CMD_STAT=y
- CONFIG_CMD_MD5SUM=y
- CONFIG_CMD_SHA1SUM=y
- CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_LET=y
- CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_DHCP=y
- CONFIG_CMD_PING=y
-+CONFIG_CMD_IP=y
-+CONFIG_CMD_ETHLOG=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_EDIT=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_MENUTREE=y
- CONFIG_CMD_SPLASH=y
- CONFIG_CMD_FBTEST=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MEMTESTER=y
- CONFIG_CMD_MM=y
- CONFIG_CMD_CLK=y
- CONFIG_CMD_DETECT=y
-+CONFIG_CMD_TRUNCATE=y
-+CONFIG_CMD_SYNC=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_I2C=y
-@@ -69,16 +91,20 @@ CONFIG_CMD_POWEROFF=y
- CONFIG_CMD_SPI=y
- CONFIG_CMD_2048=y
- CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_KALLSYMS=y
-+CONFIG_CMD_OF_COMPATIBLE=y
- CONFIG_CMD_OF_DIFF=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OF_FIXUP=y
- CONFIG_CMD_OF_FIXUP_STATUS=y
- CONFIG_CMD_OF_OVERLAY=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
--CONFIG_CMD_STATE=y
-+CONFIG_CMD_WATCH=y
- CONFIG_CMD_DHRYSTONE=y
-+CONFIG_CMD_SEED=y
- CONFIG_NET=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_FASTBOOT=y
-@@ -106,8 +132,8 @@ CONFIG_VIDEO=y
- CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_DRIVER_VIDEO_BOCHS_PCI=y
- CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT=y
-+# CONFIG_SOUND is not set
- CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
--CONFIG_STATE_DRV=y
- CONFIG_EEPROM_AT24=y
- CONFIG_VIRTIO_INPUT=y
- CONFIG_HWRNG=y
-@@ -128,10 +154,10 @@ CONFIG_9P_FS=y
- CONFIG_9P_FS_WRITE=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
- CONFIG_FS_UIMAGEFS=y
- CONFIG_FS_PSTORE=y
- CONFIG_FS_SQUASHFS=y
-+CONFIG_DIGEST_CRC32_GENERIC=y
- CONFIG_ZLIB=y
- CONFIG_BZLIB=y
- CONFIG_LZ4_DECOMPRESS=y
-@@ -139,7 +165,6 @@ CONFIG_ZSTD_DECOMPRESS=y
- CONFIG_XZ_DECOMPRESS=y
- CONFIG_BASE64=y
- CONFIG_LZO_DECOMPRESS=y
--CONFIG_DIGEST_CRC32_GENERIC=y
- CONFIG_IMD_TARGET=y
- CONFIG_BAREBOXENV_TARGET=y
- CONFIG_BAREBOXCRC32_TARGET=y
+diff --git a/include/range.h b/include/range.h
+index e7819017e4..bb41dc78ac 100644
+--- a/include/range.h
++++ b/include/range.h
+@@ -38,7 +38,7 @@ static inline bool region_overlap_end_exclusive(u64 starta, u64 enda,
+ 		return false;
+ 
+ 	return region_overlap_end_inclusive(starta, enda - 1,
+-					    startb, startb - 1);
++					    startb, endb - 1);
+ }
+ 
+ 
 -- 
 2.39.5
 
