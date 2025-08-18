@@ -1,60 +1,72 @@
-Delivery-date: Mon, 18 Aug 2025 20:31:07 +0200
+Delivery-date: Mon, 18 Aug 2025 20:31:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo4dQ-001ySe-0L
+	id 1uo4dS-001yT0-11
 	for lore@lore.pengutronix.de;
-	Mon, 18 Aug 2025 20:31:07 +0200
+	Mon, 18 Aug 2025 20:31:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo4dM-0003s8-5M
-	for lore@pengutronix.de; Mon, 18 Aug 2025 20:31:07 +0200
+	id 1uo4dO-0003uL-8Z
+	for lore@pengutronix.de; Mon, 18 Aug 2025 20:31:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=QNKtorESciZWtkZz/uUSQR+mree7Ep+uFE1nrcQLDHc=; b=gmNfOVkF6fw680
-	ij9dEHlC6ByBHJc2501DGFUWRTzCYNfRqlrP1KWJJE1Yw8FIVQOd3OSHxZFiP3f1DcO+dN4rS9UOb
-	30L8KzIdbDZhmkhYLaoKky6M9PLfzklQNKeFt4xOUU/B3T4ZSHWYpWeJScZr6we08lA9aT9IaAdvS
-	pACHANvrNxPRMPrEhWqaVjZzyX6P+4wrJ8orIVW2Pv0JVYC9Z8XDVDU1W+7i6aNrSlaIIEhgpqLHG
-	EGszp2dDdUdafYUEQK46mUjYwn5kdNUU9xOv/XZBxmuaE/K265mFhknEAo5QqZSD9qSsXYYLZhgm0
-	dXTZuLrSvyIu860iiAnA==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=hS56RFFdJKH7f1vJA+G3WqpCNo9LKdFqrJXWEGV2rfk=; b=T2StbbP0Q9zeMqXD8+S5wQ5YLb
+	sCauTMyfVZDLrq1N1XQF91pURGsVimcwpNYLN+rDYzJPQkwQ9rKliAekB1xHs2AZb93q+/SgvXDvJ
+	IwWeYBrSAcJ4WJnyrNAwuYHSNnqM4kiy0R9UE9WWpOcwEOJsz3ePwdA61AXQl1rFIwDdHuQtQXlc1
+	WR6iqQ75f3xr35L4kMUoQrhVgXFMnQA9+witqzSqKnrDZ1XzAUmz1NooDN3DZQAn9awZEI7zi3XwL
+	GH1OeDIGwlqGJXedqfjAsPn4ncpI2z75XU4qmzdHZ3R/BbWd2PpbtB+XgddB7SKXse4ucaxXd1mE6
+	ziHyDRyQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo4cj-00000008LJz-02sq;
-	Mon, 18 Aug 2025 18:30:25 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1uo4cn-00000008LO6-0FoE;
+	Mon, 18 Aug 2025 18:30:29 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo3uR-00000008F34-3rbf
+	id 1uo3uX-00000008F5R-21Aj
+	for barebox@bombadil.infradead.org;
+	Mon, 18 Aug 2025 17:44:45 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=hS56RFFdJKH7f1vJA+G3WqpCNo9LKdFqrJXWEGV2rfk=; b=BacjZc7eOCwTV8+8/h7k/imfuI
+	3+xcngqUZo/WucvyutHx7oaNhrvqXp+eDzN31JNqz1Ox0QWXmxhwf4Xk53D0f69oJ9+uJ7XYDSNZQ
+	MuPvWgTm+lo2JoLmp9X16XLvgwssN/gi+K8P9lGpOMTYatj7unOPmDl9gu488+UfVh0Gm+4GqjMzf
+	4P/4wGwS67YJb6EVoaZWkCVQ9zh5U8yYjoaLwk6+Hg5WzQ4MyHdN1rdJCf9ebgrIyeu1scHpGgadK
+	sPlocyQS70QER2IOKl5j0qO2lL+Y62M9dqJk2qbw07BtRWUMG3wSHsjb46O0W/RXIedsBXTpvi5b6
+	4vGG7AAw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uo3uS-0000000HStD-3scE
 	for barebox@lists.infradead.org;
-	Mon, 18 Aug 2025 17:44:41 +0000
+	Mon, 18 Aug 2025 17:44:44 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1uo3uQ-0003aK-Iw; Mon, 18 Aug 2025 19:44:38 +0200
+	id 1uo3uQ-0003aK-SI; Mon, 18 Aug 2025 19:44:38 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 18 Aug 2025 19:44:34 +0200
-Message-Id: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
+Date: Mon, 18 Aug 2025 19:44:43 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIJmo2gC/3WNzQ7CIBCEX6Xh7JoFEYwn38P00J+13UOhASQ1T
- d9dWs/e5ptkvllFpMAUxb1aRaDMkb0roE6V6MbGDQTcFxYK1RUtSsh7AjSAkPzMHbg80QSd1bY
- 1WqIhJcp4DvTi5RA/68Ijx+TD5/jJcm9/yhvqf8osS2ENXqhpdK9afMzkhncK3vFy7knU27Z9A
- WM2Fc7BAAAA
-X-Change-ID: 20250701-v2025-06-0-topic-nvmem-c747b64106e2
+Message-Id: <20250818-v2025-06-0-topic-nvmem-v2-9-b6d677f6c519@pengutronix.de>
+References: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
+In-Reply-To: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250818_104439_966512_BFFDA849 
-X-CRM114-Status: GOOD (  12.61  )
+X-CRM114-CacheID: sfid-20250818_184441_217144_E0B84B39 
+X-CRM114-Status: GOOD (  13.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,85 +88,110 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 00/15] NVMEM: Add support for layout drivers
+Subject: [PATCH v2 09/15] nvmem: core: create a header for internal sharing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Port Linux commit:
 
-with this patchset the barebox nvmem-core is prepared for the Linux
-nvmem-layout drivers. Layout drivers are used to describe the NVMEM
-storage format. The patchset also adds the support to read nvmem-cells
-via the devfs. This makes it possible to read the cells from the board
-code or shell without the need of referencing the cells within the DT.
+| commit ec9c08a1cb8dc5e8e003f95f5f62de41dde235bb
+| Author: Miquel Raynal <miquel.raynal@bootlin.com>
+| Date:   Fri Dec 15 11:15:29 2023 +0000
+|
+|     nvmem: Create a header for internal sharing
+|
+|     Before adding all the NVMEM layout bus infrastructure to the core, let's
+|     move the main nvmem_device structure in an internal header, only
+|     available to the core. This way all the additional code can be added in
+|     a dedicated file in order to keep the current core file tidy.
+|
+|     Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+|     Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+|     Link: https://lore.kernel.org/r/20231215111536.316972-4-srinivas.kandagatla@linaro.org
+|     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-A long with the alignment and feature work I fixed a few issues like:
-honor the DT alias for a nvmem provider correctly.
+which is required for the upcoming nvmem-layout support.
 
-For the new features to work correctly the NVMEM core had to be partly
-(re-)synced with the one from Linux. This involved porting different DT
-helpers.
-
-Unfortunately this patchset doesn't add a NVMEM layout driver therefore
-a __dummy__.o is added within the Makefile.
-
-I decided to start from a fresh v1 because of the rework I've done. But
-for reference, the previous patchset can be found here:
-
- - https://lore.kernel.org/barebox/20240613131531.364894-1-m.felsch@pengutronix.de/
-
-Regards,
-  Marco
-
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-Changes in v2:
-- Link to v1: https://lore.barebox.org/20250804-v2025-06-0-topic-nvmem-v1-0-7603eaa4d2b0@pengutronix.de
-- rebased ontop of current master to resolve merge conflict
+ drivers/nvmem/core.c      | 22 +---------------------
+ drivers/nvmem/internals.h | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 21 deletions(-)
 
----
-Marco Felsch (15):
-      of: sync of_*_phandle_with_args with Linux
-      of: base: add of_parse_phandle_with_optional_args()
-      of: device: Export of_device_make_bus_id()
-      nvmem: core: fix nvmem_register error path
-      nvmem: core: sync with Linux
-      nvmem: core: expose nvmem cells as cdev
-      nvmem: core: allow single and dynamic device ids
-      eeprom: at24: fix device name handling
-      nvmem: core: create a header for internal sharing
-      nvmem: core: add nvmem-layout support
-      nvmem: core: add an index parameter to the cell
-      nvmem: core: add per-cell post processing
-      nvmem: core: add cell based fixup logic
-      nvmem: core: provide own priv pointer in post process callback
-      nvmem: core: drop global cell_post_process
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 7e1dcceb00b924548b4582504b8ccaa4f29c4bdc..7d026330105b629e68353ae5cdbbf966284da7ea 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -13,27 +13,7 @@
+ #include <linux/nvmem-consumer.h>
+ #include <linux/nvmem-provider.h>
+ 
+-struct nvmem_device {
+-	const char		*name;
+-	struct device		dev;
+-	struct list_head	node;
+-	int			stride;
+-	int			word_size;
+-	int			ncells;
+-	int			users;
+-	size_t			size;
+-	bool			read_only;
+-	struct cdev		cdev;
+-	void			*priv;
+-	struct list_head	cells;
+-	nvmem_cell_post_process_t cell_post_process;
+-	int			(*reg_write)(void *ctx, unsigned int reg,
+-					     const void *val, size_t val_size);
+-	int			(*reg_read)(void *ctx, unsigned int reg,
+-					    void *val, size_t val_size);
+-	int			(*reg_protect)(void *ctx, unsigned int reg,
+-					       size_t bytes, int prot);
+-};
++#include "internals.h"
+ 
+ struct nvmem_cell_entry {
+ 	const char		*name;
+diff --git a/drivers/nvmem/internals.h b/drivers/nvmem/internals.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..c58a51bf72ab45ac7d941877021af4409fee9cf8
+--- /dev/null
++++ b/drivers/nvmem/internals.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef _LINUX_NVMEM_INTERNALS_H
++#define _LINUX_NVMEM_INTERNALS_H
++
++#include <device.h>
++#include <linux/nvmem-consumer.h>
++#include <linux/nvmem-provider.h>
++
++struct nvmem_device {
++	const char		*name;
++	struct device		dev;
++	struct list_head	node;
++	int			stride;
++	int			word_size;
++	int			ncells;
++	int			users;
++	size_t			size;
++	bool			read_only;
++	struct cdev		cdev;
++	void			*priv;
++	struct list_head	cells;
++	nvmem_cell_post_process_t cell_post_process;
++	int			(*reg_write)(void *ctx, unsigned int reg,
++					     const void *val, size_t val_size);
++	int			(*reg_read)(void *ctx, unsigned int reg,
++					    void *val, size_t val_size);
++	int			(*reg_protect)(void *ctx, unsigned int reg,
++					       size_t bytes, int prot);
++};
++
++#endif  /* ifndef _LINUX_NVMEM_INTERNALS_H */
 
- drivers/eeprom/at24.c          |  18 +-
- drivers/nvmem/Kconfig          |   7 +
- drivers/nvmem/Makefile         |   3 +
- drivers/nvmem/core.c           | 691 ++++++++++++++++++++++++++++++-----------
- drivers/nvmem/imx-ocotp-ele.c  |  12 +-
- drivers/nvmem/internals.h      |  55 ++++
- drivers/nvmem/layouts.c        | 173 +++++++++++
- drivers/nvmem/layouts/Kconfig  |  13 +
- drivers/nvmem/layouts/Makefile |   7 +
- drivers/nvmem/ocotp.c          |  12 +-
- drivers/nvmem/regmap.c         |   5 +-
- drivers/of/base.c              | 280 +++++++++++------
- drivers/of/device.c            |  37 +++
- drivers/of/platform.c          |  36 +--
- include/linux/nvmem-consumer.h |  17 +-
- include/linux/nvmem-provider.h | 148 ++++++++-
- include/of.h                   | 146 ++++++++-
- include/of_device.h            |   3 +
- 18 files changed, 1295 insertions(+), 368 deletions(-)
----
-base-commit: 6e3b27f11772b42da310050d459fd104748867bc
-change-id: 20250701-v2025-06-0-topic-nvmem-c747b64106e2
-
-Best regards,
 -- 
-Marco Felsch <m.felsch@pengutronix.de>
+2.39.5
 
 
 
