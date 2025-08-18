@@ -3,46 +3,46 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo4Q0-001yEv-1o
+	id 1uo4Q1-001yFH-0F
 	for lore@lore.pengutronix.de;
-	Mon, 18 Aug 2025 20:17:15 +0200
+	Mon, 18 Aug 2025 20:17:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo4Py-0000j7-HA
-	for lore@pengutronix.de; Mon, 18 Aug 2025 20:17:15 +0200
+	id 1uo4Pz-0000jQ-48
+	for lore@pengutronix.de; Mon, 18 Aug 2025 20:17:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sL5y5YS+dBihPe0PFmpZo6Babkt4gNSosBBZo32BYZQ=; b=11CKuzmF85gHy3ySONyiXopKSM
-	Yzm1gEm4YOL0EHjE2rIS5pcTdht/cX/0N2q701/wgSxOovT/zdejeJRcIPOyQjP6wftOaGjK1nu8H
-	GlpPZprifL8b0aw5PWnvJOILJiFajOaOxwDSFeraBAYRwtHxjN0v+XlWRHX83DqnJSaz4OdGdL2ue
-	p9UHi8cj4M3o5XRUq3SEWksrnu9MKp7hg1Gezli6Xf/sgIfuB69J+5qix4qAC7tzEqGushGkqASTE
-	vcPF7ifwKMUkxcgUCG9KGO1nb0VcZKCnBmW924RzkjJ18E61ZJg57aN2LvoVtdeRcB+eHPMh4KuXT
-	KeCyM5uw==;
+	bh=4YWII6RWpxvmiHxaZwrEo/hbUgtV3E9+33XB1Jx2JNE=; b=wBCcHQQHk6PnMt5nUTAvgxtNol
+	TVf2a8aPnB+hdUulkFiOBGtFtY66d4r8HxDhzgVDmojhaTenol+EwxFCibnBDxFBdxFC5Oh6dRDGn
+	Bst+l1ha49FAIo/902Rvg0KrsSSpaS+hDYC+dSEKsh2HBuGgiwHsXAv4HBHw9aFbyuFNHP/BBlXF8
+	7yP2PvO4Hk88H/D7CYbAq5l9tfPGKu08QfJe1yEY5A8mz3SvVZ56lrsPeeuiB2x9+iZLrfWE6nMjQ
+	0KzAMSSDlfy7oj1EqexZNEx8Sa5G0d/ix2IoVUra+fDqLM4FswMdRkKqQD4GcYuJn/hG5KC684Xgr
+	i2hxhNeg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo4PY-00000008Iln-1PlJ;
-	Mon, 18 Aug 2025 18:16:48 +0000
+	id 1uo4PV-00000008Ijq-1u1w;
+	Mon, 18 Aug 2025 18:16:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo3cZ-000000087uI-36Nx
+	id 1uo3cZ-000000087uB-2ikX
 	for barebox@lists.infradead.org;
-	Mon, 18 Aug 2025 17:26:15 +0000
+	Mon, 18 Aug 2025 17:26:13 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1uo3cY-0008EV-Iz; Mon, 18 Aug 2025 19:26:10 +0200
+	id 1uo3cY-0008EV-BP; Mon, 18 Aug 2025 19:26:10 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 18 Aug 2025 19:26:19 +0200
+Date: Mon, 18 Aug 2025 19:26:12 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250818-v2024-05-0-topic-fit-overlay-v5-11-b92e466a1d32@pengutronix.de>
+Message-Id: <20250818-v2024-05-0-topic-fit-overlay-v5-4-b92e466a1d32@pengutronix.de>
 References: <20250818-v2024-05-0-topic-fit-overlay-v5-0-b92e466a1d32@pengutronix.de>
 In-Reply-To: <20250818-v2024-05-0-topic-fit-overlay-v5-0-b92e466a1d32@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +50,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250818_102611_917360_733A8A97 
-X-CRM114-Status: GOOD (  13.29  )
+X-CRM114-CacheID: sfid-20250818_102611_828323_7561BB2E 
+X-CRM114-Status: GOOD (  11.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,130 +73,86 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v5 11/11] FIT: add support to cache opened fit images
+Subject: [PATCH v5 04/11] of: overlay: make search dir more generic
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Cache the FIT image fit_open() calls to avoid loading the same FIT image
-twice. This is very useful if the same FIT image is used to provide the
-base devicetree, kernel and initrd as well as devicetree overlays.
+Rename global.of.overlay.dir to global.of.overlay.path to prepare the
+codebase to handle FIT image overlays as well because *.path doesn't
+imply that it have to be a directory.
+
+Keep the backward compatibility by providing the of.overlay.dir variable
+but mark it as deprecated.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- common/image-fit.c  | 32 ++++++++++++++++++++++++++++++++
- include/image-fit.h |  4 ++++
- 2 files changed, 36 insertions(+)
+ Documentation/user/devicetree.rst |  2 +-
+ drivers/of/overlay.c              | 15 ++++++++-------
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/common/image-fit.c b/common/image-fit.c
-index e4b0a8bd5d1a7283239556dd4532eccd5333e90a..23fcbfee3a5ab6c9deec67b4297da986521c114a 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -16,6 +16,7 @@
- #include <fs.h>
- #include <malloc.h>
- #include <linux/ctype.h>
-+#include <linux/refcount.h>
- #include <asm/byteorder.h>
- #include <errno.h>
- #include <linux/err.h>
-@@ -33,6 +34,8 @@
- #define CHECK_LEVEL_SIG 2
- #define CHECK_LEVEL_MAX 3
+diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
+index ef04e14f7c0dde579493425073f1ee01395f0d8c..30a15a8865c154f8afe23d641da10d0afa84423b 100644
+--- a/Documentation/user/devicetree.rst
++++ b/Documentation/user/devicetree.rst
+@@ -108,7 +108,7 @@ Device tree overlays on the kernel device tree
+ Overlays can be applied to the kernel device tree before it is handed over to
+ the kernel. The behaviour is controlled by different variables:
  
-+static LIST_HEAD(open_fits);
-+
- static uint32_t dt_struct_advance(struct fdt_header *f, uint32_t dt, int size)
- {
- 	dt += size;
-@@ -902,6 +905,18 @@ void *fit_open_configuration(struct fit_handle *handle, const char *name,
- 	return conf_node;
+-``global.of.overlay.dir``
++``global.of.overlay.path``
+   Overlays are read from this directory. barebox will try to apply all overlays
+   found here if not limited by one of the other variables below. When the path
+   given here is an absolute path it is used as is. A relative path is relative
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+index a63cca1b47e74615d4453a27a55fb15d1f706fae..bc3fdff0cd277b3460981769c2b220adfced6e80 100644
+--- a/drivers/of/overlay.c
++++ b/drivers/of/overlay.c
+@@ -408,7 +408,7 @@ int of_register_overlay(struct device_node *overlay)
  }
  
-+static struct fit_handle *fit_get_handle(const char *filename)
-+{
-+	struct fit_handle *handle;
-+
-+	list_for_each_entry(handle, &open_fits, entry) {
-+		if (!strcmp(filename, handle->filename))
-+			return handle;
-+	}
-+
-+	return NULL;
-+}
-+
- static int fit_do_open(struct fit_handle *handle)
- {
- 	const char *desc = "(no description)";
-@@ -951,6 +966,8 @@ struct fit_handle *fit_open_buf(const void *buf, size_t size, bool verbose,
- 	handle->size = size;
- 	handle->verify = verify;
+ static char *of_overlay_pattern;
+-static char *of_overlay_dir;
++static char *of_overlay_path;
+ static char *of_overlay_basedir;
  
-+	refcount_set(&handle->users, 1);
-+
- 	ret = fit_do_open(handle);
- 	if (ret) {
- 		fit_close(handle);
-@@ -991,6 +1008,12 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
- 		return ERR_PTR(-errno);
- 	}
+ /**
+@@ -468,13 +468,13 @@ static int of_overlay_global_fixup(struct device_node *root, void *data)
+ 	char *dir;
+ 	int ret;
  
-+	handle = fit_get_handle(filename);
-+	if (handle) {
-+		refcount_inc(&handle->users);
-+		return handle;
-+	}
-+
- 	handle = xzalloc(sizeof(struct fit_handle));
+-	if (*of_overlay_dir == '/')
+-		return of_overlay_apply_dir(root, of_overlay_dir, true);
++	if (*of_overlay_path == '/')
++		return of_overlay_apply_dir(root, of_overlay_path, true);
  
- 	handle->verbose = verbose;
-@@ -1008,6 +1031,9 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
- 	handle->fit = handle->fit_alloc;
- 	handle->filename = filename;
+-	if (*of_overlay_dir == '\0')
++	if (*of_overlay_path == '\0')
+ 		return 0;
  
-+	refcount_set(&handle->users, 1);
-+	list_add(&handle->entry, &open_fits);
-+
- 	ret = fit_do_open(handle);
- 	if (ret) {
- 		fit_close(handle);
-@@ -1019,9 +1045,15 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
+-	dir = concat_path_file(of_overlay_basedir, of_overlay_dir);
++	dir = concat_path_file(of_overlay_basedir, of_overlay_path);
  
- static void __fit_close(struct fit_handle *handle)
- {
-+	if (!refcount_dec_and_test(&handle->users))
-+		return;
-+
- 	if (handle->root)
- 		of_delete_node(handle->root);
+ 	ret = of_overlay_apply_dir(root, dir, true);
  
-+	if (handle->filename)
-+		list_del(&handle->entry);
-+
- 	free(handle->filename);
- 	free(handle->fit_alloc);
- }
-diff --git a/include/image-fit.h b/include/image-fit.h
-index 68f70f4365cb7a650596263086f7de2209d5957e..f9791ff251c554eda56bf3af98c8abceb056a176 100644
---- a/include/image-fit.h
-+++ b/include/image-fit.h
-@@ -7,6 +7,7 @@
- #define __IMAGE_FIT_H__
+@@ -616,9 +616,10 @@ static int of_overlay_init(void)
+ 	globalvar_add_simple_string("of.overlay.compatible", &of_overlay_compatible);
+ 	globalvar_add_simple_string("of.overlay.pattern", &of_overlay_pattern);
+ 	globalvar_add_simple_string("of.overlay.filter", &of_overlay_filter);
+-	globalvar_add_simple_string("of.overlay.dir", &of_overlay_dir);
++	globalvar_add_simple_string("of.overlay.path", &of_overlay_path);
  
- #include <linux/types.h>
-+#include <linux/refcount.h>
- #include <bootm.h>
+ 	globalvar_alias_deprecated("of.overlay.filepattern", "of.overlay.pattern");
++	globalvar_alias_deprecated("of.overlay.dir", "of.overlay.path");
  
- struct fit_handle {
-@@ -15,6 +16,9 @@ struct fit_handle {
- 	size_t size;
- 	char *filename;
+ 	of_overlay_register_filter(&of_overlay_pattern_filter);
+ 	of_overlay_register_filter(&of_overlay_filepattern_filter);
+@@ -632,5 +633,5 @@ device_initcall(of_overlay_init);
  
-+	struct list_head entry;
-+	refcount_t users;
-+
- 	bool verbose;
- 	enum bootm_verify verify;
- 
+ BAREBOX_MAGICVAR(global.of.overlay.compatible, "space separated list of compatibles an overlay must match");
+ BAREBOX_MAGICVAR(global.of.overlay.pattern, "space separated list of filepatterns an overlay must match");
+-BAREBOX_MAGICVAR(global.of.overlay.dir, "Directory to look for dt overlays");
++BAREBOX_MAGICVAR(global.of.overlay.path, "Path to look for dt overlays");
+ BAREBOX_MAGICVAR(global.of.overlay.filter, "space separated list of filters");
 
 -- 
 2.39.5
