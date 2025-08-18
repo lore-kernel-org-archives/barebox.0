@@ -1,81 +1,74 @@
-Delivery-date: Mon, 18 Aug 2025 19:31:14 +0200
+Delivery-date: Mon, 18 Aug 2025 19:31:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo3hS-001xQg-2a
+	id 1uo3hU-001xR6-0n
 	for lore@lore.pengutronix.de;
-	Mon, 18 Aug 2025 19:31:14 +0200
+	Mon, 18 Aug 2025 19:31:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo3hR-0000fb-Jj
-	for lore@pengutronix.de; Mon, 18 Aug 2025 19:31:14 +0200
+	id 1uo3hT-0000fv-35
+	for lore@pengutronix.de; Mon, 18 Aug 2025 19:31:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pUD5fT/HZ47cdIuHgP3+XbzigebhzJewBydagTX29ak=; b=Kcqg+2AQzRJKX9l0gfrlr1sxSM
-	k9fZ4yHKs29u5gxVBRabhb1ySeFHzYhvs+CFPFjMOdP5D6BDiLjDdtg9Xf3o9AikjjGX9fHrXG2k6
-	m7I52JmLAGu2IOm5IMIBlH6M/JKQVfCC3a/zF9qY3SkYpUaJeJ+lO8myx3cGXhdHTWOR20SzExNH4
-	9524DXUjPqQ1h2U2/dJkJMC0By7ueyQ1V/mOtIDVbjI3La94DmdmgFZIeAyExCHvhFq1B5WGUF23h
-	VjPqzeyy5+EW+hLQgiqlcAhM3Jp5Z/QJS+6ZWB/iXqQKTWtUCzfgiJnt5JsoOGX+l3qqJEyeGtx8C
-	F57CRuYQ==;
+	bh=PfSnB9aBOcxvVNDN9xAW27oVFC7B0ttWM4hDgAYn+qE=; b=yQ56miwzejn4uDh0ypV4N0osMP
+	Mt9aJijSoOgNGZQK+8o5n0OgZQonneyRxzx8RNfGjFkKMYJ0+k3u0x3nJs1o0j3dW3hroDW0Yzr06
+	Lp5zRJdDnO7SW/kRdpplEuHhr9Qr3SsRNyhGpenCEQxSbyjrmpN3lrWjq58xM+2PxltzzGZEes5Cr
+	odh9jDphuxaF8wvK36C1B0XkCl19nLu7h/RoYokix/dYwNlaoXX4PBPGu2lyjVEKtKnhwiCijhwzx
+	HI4VaUm/coPMXn12ZCoOWG5GmvwDoPZsA7MNtbRYpIEjCLOlNW2qIAbGGkI4zs5c/BITIXLS2Mb4n
+	ORk722EA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo3h8-000000088Tk-22kW;
-	Mon, 18 Aug 2025 17:30:54 +0000
+	id 1uo3h9-000000088US-3BRY;
+	Mon, 18 Aug 2025 17:30:55 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo0NS-00000007gCn-40fI
+	id 1uo0X9-00000007hHR-2DAZ
 	for barebox@bombadil.infradead.org;
-	Mon, 18 Aug 2025 13:58:22 +0000
+	Mon, 18 Aug 2025 14:08:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=pUD5fT/HZ47cdIuHgP3+XbzigebhzJewBydagTX29ak=; b=SanuuqGEOX48LntjrNZOrrZWKY
-	V/6XMvKBcQ7iMvBvi3pi5AXMSg2DnDyCNHbH4c+HEsNtVV5Z8byJCcwrKKHRtYaaeeQIbkvcHWc6k
-	j8PjJSDtctGnl3g915Z2jNM7ZG5kF5+cwMdlw/ur1R0/8gFboEuDstqjHSEcmVVA1/kzu7+ww3RLN
-	f+yG3bSMhH+JlLVjzF34xoG+LY9Us3T1unOdSO+e+Z+cUYFcoVQ3+cF6x1jlvBfoHGUZWNDHNqTYn
-	xFjmJdOReV70oXPg+pOZqaI4CcYH/lW/z1bbRyCAGjmj0XW0G8qqNXAoWcAVF3ZhazqLQyUeVUkTt
-	e45OgKNQ==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=PfSnB9aBOcxvVNDN9xAW27oVFC7B0ttWM4hDgAYn+qE=; b=APjAz2yOZU8X05hPHzbeqVId84
+	Zc9Wj5laj0mK96jw1WRMyAdBU0P+ucLsiKcjLmKQsAMaWrDAy1L2IVG6pdPsMAGY2VGPnMNu6vzbe
+	B6A2TKSx2hplSIMycdFFe14fieUrn5Y5+2wgW34xS2PJplpb5wwGZv3TBicGoWeD/Pd6AtH/zCNLv
+	kJcHruvCaMztkE8p9dr3KcXTV0FnX8p+Lo4QyCOKxXKiYyJd55030pL8cnuh4l23aCV/3K3PMiFG7
+	ZI5FhgOWqg5/CaoR9IJMtb9xMag7BLJZu8wa1X2WnsiUQZ5+SBB7CRyFHFFbracuMgnZR7t+/2f1a
+	08zvJCLg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo0NQ-0000000HON1-0AIa
+	id 1uo0X6-0000000HOtJ-1l2B
 	for barebox@lists.infradead.org;
-	Mon, 18 Aug 2025 13:58:21 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uo0NO-0005ak-IP; Mon, 18 Aug 2025 15:58:18 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uo0NO-000ufD-1D;
-	Mon, 18 Aug 2025 15:58:18 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uo0NO-008Oh3-0t;
-	Mon, 18 Aug 2025 15:58:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 18 Aug 2025 15:58:17 +0200
-Message-Id: <20250818135817.2001506-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250814130702.4039241-10-a.fatoum@pengutronix.de>
-References: <20250814130702.4039241-10-a.fatoum@pengutronix.de>
+	Mon, 18 Aug 2025 14:08:22 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uo0X5-0007sB-Dl; Mon, 18 Aug 2025 16:08:19 +0200
+Message-ID: <cd0df5cd-36e2-445c-bf80-445dd4884833@pengutronix.de>
+Date: Mon, 18 Aug 2025 16:08:19 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
+ <20250814130702.4039241-5-a.fatoum@pengutronix.de>
+ <aKMqjrAy6kJLoJof@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <aKMqjrAy6kJLoJof@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250818_145820_182494_51A02A80 
-X-CRM114-Status: GOOD (  10.30  )
+X-CRM114-CacheID: sfid-20250818_150820_602744_79FDEB7F 
+X-CRM114-Status: GOOD (  15.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,52 +90,52 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! docs: security-policies: add documentation
+Subject: Re: [PATCH RFC 04/17] Add security policy support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
----
- Documentation/devel/security-policies.rst | 2 +-
- Documentation/user/security-policies.rst  | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devel/security-policies.rst b/Documentation/devel/security-policies.rst
-index af2faa7352..cff4f5d606 100644
---- a/Documentation/devel/security-policies.rst
-+++ b/Documentation/devel/security-policies.rst
-@@ -35,7 +35,7 @@ Creating New Symbols
- 
-       #include <security/config.h>
- 
--      if (!IS_ALLOWS(SCONFIG_ENV_HANDLING))
-+      if (!IS_ALLOWED(SCONFIG_ENV_HANDLING))
-           return -EPERM;
- 
- 3. **Update policies**:
-diff --git a/Documentation/user/security-policies.rst b/Documentation/user/security-policies.rst
-index b1002285b4..3ad3d8ccb9 100644
---- a/Documentation/user/security-policies.rst
-+++ b/Documentation/user/security-policies.rst
-@@ -30,7 +30,7 @@ Usage
-    .. code-block:: shell
- 
-       make KPOLICY=arch/arm/boards/myboard/lockdown.sconfig security_oldconfig
--      make sercurity_menuconfig # Iterates over all policies
-+      make security_menuconfig # Iterates over all policies
- 
- 2. **Configuration files** (e.g. ``lockdown.sconfig``) are in Kconfig
-    format with ``SCONFIG_``-prefixed entries.
-@@ -76,7 +76,7 @@ Usage
- 
-      #include <security/policy.h>
- 
--     sconfig_set_policy("lockdown");
-+     security_policy_select("lockdown");
- 
- Differences from Kconfig
- ------------------------
+
+On 8/18/25 15:28, Sascha Hauer wrote:
+> On Thu, Aug 14, 2025 at 03:06:49PM +0200, Ahmad Fatoum wrote:
+>> +if SECURITY_POLICY
+>> +
+>> +config SECURITY_POLICY_INIT
+>> +	string
+>> +	prompt "Initial security policy"
+>> +	help
+>> +	  The policy named here will be automatically selected the first
+>> +	  time a security policy is to be consulted.
+>> +	  It's recommended to use a restrictive policy here and remove
+>> +	  the restrictions if needed instead of the other way round.
+>> +
+>> +choice
+>> +	prompt "Initial Security Policy"
+>> +	default SECURITY_POLICY_DEFAULT_PERMISSIVE
+> 
+> This ends up showing:
+> 
+> 	(lockdown) Initial security policy
+> 	Initial Security Policy (Panic)
+> 
+> How about "Missing security policy behaviour" instead for the choice
+> description?
+
+Yes, will adapt for v2.
+
+Thanks,
+Ahmad
+
+> 
+> Sascha
+> 
+> 
+
 -- 
-2.39.5
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
