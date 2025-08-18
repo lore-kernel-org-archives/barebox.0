@@ -1,79 +1,58 @@
-Delivery-date: Mon, 18 Aug 2025 15:38:52 +0200
+Delivery-date: Mon, 18 Aug 2025 15:43:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo04a-001tol-2k
+	id 1uo09Q-001twY-2M
 	for lore@lore.pengutronix.de;
-	Mon, 18 Aug 2025 15:38:52 +0200
+	Mon, 18 Aug 2025 15:43:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uo04Z-0001gy-In
-	for lore@pengutronix.de; Mon, 18 Aug 2025 15:38:52 +0200
+	id 1uo09P-0003Jp-J2
+	for lore@pengutronix.de; Mon, 18 Aug 2025 15:43:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Tj+QQvnvzd6d1lIghE4/2PIf0IgEfh5Hdq8ODbJnTas=; b=PnKgdywkbwnCk8LDYAStjzdHst
-	Fmm/AsksZNXhV4efTHMz5f8tsqnF5X27VL5OeCUZRvp4gSxJTy7WWyW86jYM5p3sM2VUb/KjVOyu6
-	9VbTd2SpcenSWCa0DaxC9jCWIOn6LPupw2J2Kfx6j6cMyMabd99ORXm2Q0SqRwRY4xsB6JyZveyg2
-	n7cUMdc5rYkwAzMKGKCiX/OOU1zpl5vqRy2gJST+/MPHxFNpZlv1JsIcf7UABlf13Mr9bqAUAM9gU
-	pAXslXQdMz605tYGMqLFd4LR0TavUexSPzUtEnBcdbfG8AVruFGYuKGI/mPJRQmYaZC8zC+V2KzdX
-	3h94FClA==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=xlPGmR/iyps0k49FDRtATYkuN0hEtCc7LoRA86aTE9A=; b=Rz6BfRJx7O7VKn7jE2UVPYdYR+
+	wy71ZqJOhJiFAem2tGNmtC0F/qnYPWsVUV3zwO+qJo4hfvVlHZZQ1ghVym8byoHMWTBbSQZI3M35c
+	sPZijIMasqei1s/2ngCjl6hMx20vEEcIpLIKn+j5ohys02nFLkdiX0v2Z4xBcln41Trq5Xpwk5QlD
+	YoJ9jeIHUUPe4L9Xq42rbSbeE/D0Q3l3jViDJXjSIySq9BtK24rkY9dGLFFC+HcGSXnuC0tXq2bQ0
+	+A/PRFIsbimEIvJEWDWOeXy9txqjJenukZTwcvv4h0LJCx6SVgugqi/wR8Ie3g4i98ja/96HEik+I
+	1mrypKbQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo03Y-00000007UYI-2eZM;
-	Mon, 18 Aug 2025 13:37:48 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1unvOb-00000006xQy-3wFc
-	for barebox@bombadil.infradead.org;
-	Mon, 18 Aug 2025 08:39:13 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=Tj+QQvnvzd6d1lIghE4/2PIf0IgEfh5Hdq8ODbJnTas=; b=Y4YO028HyUrSr3mBKVpkPtsr+/
-	B+Sejerfy1hdLMLWLrK8Nqma+fQ1sHnagDCsQbuM6HoV/hYv1/u/d8KqIy+cdn3wK3c+GpXh0yJha
-	J6Ns8dV0GskwsEgUf+mKNV8YrkTYDRxhWrFoja8EKwqnJ0WaZ/eR1WoTn5rpGxLf6duVbXK4I3UHa
-	U1kwj2AbKId6ZeRVdEjJdStCfx2Gp+16e9gFeIgPEmuT1bkF4vM2IbxnkZz6b8VYmokssRgGYKnQQ
-	UyL68GRbhc7jikPzRwKi5yM897Hh+m34k3Uu0y4C8J1/OjapliOXsLcIecCMRzU752geNG3ZNgM+k
-	qvWWrV5A==;
+	id 1uo08v-00000007dVw-40IS;
+	Mon, 18 Aug 2025 13:43:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1unvOY-0000000HKaJ-3wk4
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1unz8h-00000007LrX-0kVR
 	for barebox@lists.infradead.org;
-	Mon, 18 Aug 2025 08:39:12 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1unvOV-0008QJ-U2; Mon, 18 Aug 2025 10:39:07 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1unvOV-000s8K-2P;
-	Mon, 18 Aug 2025 10:39:07 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1unvOV-006Sb7-21;
-	Mon, 18 Aug 2025 10:39:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 18 Aug 2025 10:39:02 +0200
-Message-Id: <20250818083902.1536392-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Mon, 18 Aug 2025 12:39:04 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1unz8d-0000Uw-P5
+	for barebox@lists.infradead.org; Mon, 18 Aug 2025 14:38:59 +0200
+Message-ID: <6398f293-ec46-446f-b686-03156e4788e4@pengutronix.de>
+Date: Mon, 18 Aug 2025 14:38:59 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: BAREBOX <barebox@lists.infradead.org>
+References: <20250814130702.4039241-1-a.fatoum@pengutronix.de>
+ <20250814130702.4039241-8-a.fatoum@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20250814130702.4039241-8-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250818_093911_093067_8BAA4F6E 
-X-CRM114-Status: GOOD (  10.19  )
+X-CRM114-CacheID: sfid-20250818_053903_219562_23FCBC3B 
+X-CRM114-Status: GOOD (  11.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,34 +74,32 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] partition: Fix wrong check
+Subject: Re: [PATCH RFC 07/17] security: policy: support externally provided
+ configs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In region_overlap_end_exclusive() we pass startb - 1 as endb argument to
-region_overlap_end_inclusive() which is obviously wrong. Fix this.
+On 8/14/25 15:06, Ahmad Fatoum wrote:
+> From: Ahmad Fatoum <a.fatoum@barebox.org>
+> +	help
+> +	  Space separated list of security policies that should be
+> +	  compiled into barebox and registered. This option currently
+> +	  requires security policies to have the .sconfig extension
+> +	  and be located in the barebox source tree's security/
+> +	  directory.
+> +	  If left empty, only security policies explicitly provided
+> +	  and registered by board code will be available.
 
-Fixes: 768fdb36f3 partition: define new region_overlap_end_exclusive helper
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/range.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+With an eye towards removing this limitation in future, once the build
+system is adapted, I would change this in v2 to require a security/
+prefix in front of the configs now. Then at some point in the future, we
+could allow arbitrary paths without changing semantics for existing users.
 
-diff --git a/include/range.h b/include/range.h
-index e7819017e4..bb41dc78ac 100644
---- a/include/range.h
-+++ b/include/range.h
-@@ -38,7 +38,7 @@ static inline bool region_overlap_end_exclusive(u64 starta, u64 enda,
- 		return false;
- 
- 	return region_overlap_end_inclusive(starta, enda - 1,
--					    startb, startb - 1);
-+					    startb, endb - 1);
- }
- 
- 
 -- 
-2.39.5
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
