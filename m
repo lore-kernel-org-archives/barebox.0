@@ -1,68 +1,68 @@
-Delivery-date: Tue, 19 Aug 2025 09:47:31 +0200
+Delivery-date: Tue, 19 Aug 2025 09:47:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uoH48-002AMN-1c
+	id 1uoH49-002AMh-0K
 	for lore@lore.pengutronix.de;
-	Tue, 19 Aug 2025 09:47:31 +0200
+	Tue, 19 Aug 2025 09:47:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uoH47-00012q-9S
-	for lore@pengutronix.de; Tue, 19 Aug 2025 09:47:31 +0200
+	id 1uoH47-00012t-Sn
+	for lore@pengutronix.de; Tue, 19 Aug 2025 09:47:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pY5t9X/8REXuROd3x2GIW245d9RgQE/lhE+0BeTe38Q=; b=1mSgasq1Yo6+koaeNdJJf1NE9f
-	TjioX1fvlUpSpUMBx37NXtZvX3er2P9XbwTCoqofzidFhpjouE2bgc05f40tNhKw68vIuwnDZRE+l
-	bcY/M42AVLiSlYyUMxhCKR5DPj8HsH2HRJms5Q24qha73hP2rfIm07x2HCaU+G8mp1UHyKq7X/s2D
-	qrv1LqH3lnUpZ18G+ox7x24ocAtKQimRjm2RX3qp5K2Tov//g8wkug0p9nSahch20CnLLarryvAml
-	rhOUL+Z0ox+YACbQIplgoJLRif28e16p87/lZo1iwLG2gbaQxW7E5rkmbgvWiEeXD3ik1eAFcB4EA
-	mnRIHgHA==;
+	bh=DnyJdtG6I5R2snVpt1IeZIQGGwlbmxzRro1yGBhoKJw=; b=PQcDcqBm4bn44zIsAAjE7XIhst
+	lHdDPuwgypHBHcJV8QWaMDtXd7X738UCJsEYrm5OMdl9I0MCymoB63q+gYCUX6AfHrrhJgM2LVoWr
+	UYnnSfzs+gVSk89xBjq0n84oA7WaaHkX5T1OSPrTmg4guKiN5n4oW1deZ4ltbbvdMKTvqQQeHatTP
+	dFCyzC+5T7V/4N1mGcnzbGPfRM0qxltqlrm5X1eAnLzbUgxsll0wHkuDIxROhtkE1uS0bMGbKm6oq
+	1JFRxQ69wY8lcOGwl2xPemsM3onjbcdV5fqBfY2lAoXyAPyvFWlsTj67rHJjZSZ2+fW1rcEPzVBLN
+	gw9Oc5Eg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uoH3f-00000009iSB-25t7;
-	Tue, 19 Aug 2025 07:47:03 +0000
+	id 1uoH3e-00000009iS1-3t9W;
+	Tue, 19 Aug 2025 07:47:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uoGgp-00000009f9K-2bzR
+	id 1uoGgh-00000009f6Q-3C7i
 	for barebox@lists.infradead.org;
-	Tue, 19 Aug 2025 07:23:28 +0000
+	Tue, 19 Aug 2025 07:23:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoGgg-0006a4-GS; Tue, 19 Aug 2025 09:23:18 +0200
+	id 1uoGgg-0006a3-GS; Tue, 19 Aug 2025 09:23:18 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoGgg-00122e-0z;
+	id 1uoGgg-00122d-0x;
 	Tue, 19 Aug 2025 09:23:18 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoGgg-00D66z-0n;
+	id 1uoGgg-00D66z-0l;
 	Tue, 19 Aug 2025 09:23:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
  Marco Felsch <m.felsch@pengutronix.de>
-In-Reply-To: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
-References: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
-Message-Id: <175558819824.3121704.4400851516091113450.b4-ty@pengutronix.de>
+In-Reply-To: <20250804-v2025-06-0-topic-nvmem-v1-0-7603eaa4d2b0@pengutronix.de>
+References: <20250804-v2025-06-0-topic-nvmem-v1-0-7603eaa4d2b0@pengutronix.de>
+Message-Id: <175558819823.3121704.9953125372934781250.b4-ty@pengutronix.de>
 Date: Tue, 19 Aug 2025 09:23:18 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250819_002327_690191_C8DBF014 
-X-CRM114-Status: GOOD (  10.73  )
+X-CRM114-CacheID: sfid-20250819_002319_842938_A2F51CAE 
+X-CRM114-Status: GOOD (  10.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,12 +84,12 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 00/15] NVMEM: Add support for layout drivers
+Subject: Re: [PATCH 00/15] NVMEM: Add support for layout drivers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 18 Aug 2025 19:44:34 +0200, Marco Felsch wrote:
+On Mon, 04 Aug 2025 16:36:46 +0200, Marco Felsch wrote:
 > with this patchset the barebox nvmem-core is prepared for the Linux
 > nvmem-layout drivers. Layout drivers are used to describe the NVMEM
 > storage format. The patchset also adds the support to read nvmem-cells
