@@ -3,63 +3,55 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uohmT-002cCq-05
+	id 1uohmT-002cCs-0F
 	for lore@lore.pengutronix.de;
 	Wed, 20 Aug 2025 14:19:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uohmR-0007q7-U1
+	id 1uohmR-0007q8-VM
 	for lore@pengutronix.de; Wed, 20 Aug 2025 14:19:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=PPaPQ+8fy63SeODG2fy6OKVm3ZGCLIcbqUUvYZTEwSU=; b=1h6CAiHq04F5u6xlpy3RxU/jEj
-	UlFh0LUlukOYVYx3DMGZIIJK3MfUHxxXigg4pYOQDcbleRj2Sjx2K1wrPR1R2YQWAsCNgm6jMK5UF
-	71FXlsm1a/u4Mk13AeOLZkTocqz3BwcS2OZKQsSxx2hrtbt4COiOE+x7BP2323RJwWMji2pTn60OF
-	6Pg5luFzZNJ5FM3Vf9YE0bIxjCh04df6uXuXsn7AvioGHmapbknGBLCUFDUFjN7KPQM9eR1/RI1or
-	sSr0klTM3tfCOXrQJ6yvkYgxacEM6dnxFScOrpmjqBHHHk+s62GWZhg+keLihUxGxkE9P1MvP0LNH
-	33IlYuQg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=X3CSTA5DHsLG4UeAYHTJpweJCl6+yFSqJ85gjQQyv2Y=; b=d9MrcQtV/cEyaPsp7TUVd1rRQC
+	9CekpqDR24EASNgwwj3lwUTnSfkkA9KRqXVTDQZRv+Txo4m7zMtWuo71mrUeCtNIKtqVxsrtXNV8y
+	o9RZhHRU7mPwIv+l8S+zJjj4FDTQoACaZ/cZQ+MhD+hj37ITk1LK8cVxYtC1KjFyAY+vcxSIedZb2
+	v9uQp+IyX9LrMKj+MQUPsYGzSgvBsj8f1/+3leyJhYZQ8PshO3EkdwQA3jlsrlWq++jo3m3R3q8k+
+	GuzVnkVWJDp2W5JcXYla23zkFDXjdRyOMNwOvmvSTwm5vPImLuzFbBAXx69cMM6FckEo+gfT9uc+D
+	tg1XalHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uohmF-0000000DXAw-1fhF;
-	Wed, 20 Aug 2025 12:18:51 +0000
+	id 1uohmH-0000000DXCG-2pMT;
+	Wed, 20 Aug 2025 12:18:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uofsP-0000000D6us-3zHP
+	id 1uofsQ-0000000D6uz-1IJi
 	for barebox@lists.infradead.org;
-	Wed, 20 Aug 2025 10:17:06 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uofsN-0005Ac-8l; Wed, 20 Aug 2025 12:17:03 +0200
+	Wed, 20 Aug 2025 10:17:08 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uofsN-001EEV-0G;
-	Wed, 20 Aug 2025 12:17:03 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uofsM-008AHx-3B;
-	Wed, 20 Aug 2025 12:17:03 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 20 Aug 2025 12:17:02 +0200
-Message-Id: <20250820101702.1946026-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1uofsN-0005Ap-Rh; Wed, 20 Aug 2025 12:17:03 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Wed, 20 Aug 2025 12:17:00 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250820-rkimage-signed-v1-4-0ad3d1d1c952@pengutronix.de>
+References: <20250820-rkimage-signed-v1-0-0ad3d1d1c952@pengutronix.de>
+In-Reply-To: <20250820-rkimage-signed-v1-0-0ad3d1d1c952@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Michael Tretter <m.tretter@pengutronix.de>
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250820_031705_983900_550F38F8 
-X-CRM114-Status: UNSURE (   8.29  )
+X-CRM114-CacheID: sfid-20250820_031706_351744_993C1F04 
+X-CRM114-Status: UNSURE (   9.59  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -78,40 +70,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] fastboot: implement dummy has-slot:partition variables
+Subject: [PATCH 4/4] ARM: rockchip: bootm: accept signed images
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that we enforce variables to be available, flashing can result in
-following error message:
+Add an image handler for signed Rockchip images.
 
-  ERROR: fastboot: no such variable: has-slot:rootfs-eMMC
+Signed image can be handled like unsigned images. Eventually barebox may
+perform additional checks on the signed image, e.g. that the image is
+actually signed and the signature is valid. For now, simply accept and
+boot signed images.
 
-Report the default no value to suppress this.
-
-Fixes: dd377c937f8b ("common: fastboot: send FAIL if variable does not exist")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- common/fastboot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-rockchip/bootm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/common/fastboot.c b/common/fastboot.c
-index 603391de7739..e5c79c22376c 100644
---- a/common/fastboot.c
-+++ b/common/fastboot.c
-@@ -180,6 +180,8 @@ static int fastboot_add_partition_variables(struct fastboot *fb, struct list_hea
- 	fb_setvar(var, "%s", type);
- 	var = fb_addvar(fb, list, "is-logical:%s", fentry->name);
- 	fb_setvar(var, "%s", "no");
-+	var = fb_addvar(fb, list, "has-slot:%s", fentry->name);
-+	fb_setvar(var, "%s", "no");
+diff --git a/arch/arm/mach-rockchip/bootm.c b/arch/arm/mach-rockchip/bootm.c
+index 097b0af7d8ba29a37e50dcb0f7d823c0456d1020..ff3d9a2db3a0462365f3ccd4e09f178b74903244 100644
+--- a/arch/arm/mach-rockchip/bootm.c
++++ b/arch/arm/mach-rockchip/bootm.c
+@@ -113,12 +113,19 @@ static struct image_handler image_handler_rkns_barebox_image = {
+ 	.filetype = filetype_rockchip_rkns_image,
+ };
  
- 	return ret;
++static struct image_handler image_handler_rkss_barebox_image = {
++	.name = "Rockchip RKSS barebox image",
++	.bootm = do_bootm_rkns_barebox_image,
++	.filetype = filetype_rockchip_rkss_image,
++};
++
+ static int rockchip_register_barebox_image_handler(void)
+ {
+ 	if (rockchip_soc() < 0)
+ 		return 0;
+ 
+ 	register_image_handler(&image_handler_rkns_barebox_image);
++	register_image_handler(&image_handler_rkss_barebox_image);
+ 
+ 	return 0;
  }
+
 -- 
 2.39.5
 
