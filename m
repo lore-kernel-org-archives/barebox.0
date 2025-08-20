@@ -1,71 +1,66 @@
-Delivery-date: Wed, 20 Aug 2025 14:01:52 +0200
+Delivery-date: Wed, 20 Aug 2025 14:19:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uohVo-002blp-39
+	id 1uohmT-002cCq-05
 	for lore@lore.pengutronix.de;
-	Wed, 20 Aug 2025 14:01:52 +0200
+	Wed, 20 Aug 2025 14:19:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uohVn-0004wk-S4
-	for lore@pengutronix.de; Wed, 20 Aug 2025 14:01:52 +0200
+	id 1uohmR-0007q7-U1
+	for lore@pengutronix.de; Wed, 20 Aug 2025 14:19:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bG30Y5c+oB86s4PVSc7dwe562DvTiV3+x/2LTtbDj64=; b=reS/OQgriyAiaw+LwTRgKPKcAN
-	jtokP3XvY3fw4XaL18BYeG7rxOpfcc3hKHEzMGF4gyKTK2gMd45OE9DFEIHqlvyD9TYPUpHBkh3Yz
-	vF5aL8p5GBvv3Tds1xAnK44hxxMXuwfrFh+AvGAst67dmXHaBvMc5bAulyEU8GTQXItarO9q/IVok
-	GJ/dcgmZXCwjSwJ3XDvA8e7kiuM/F5usDsMRtT1V6NC26nevD7TtYsCe7mDnVXlIGo15flQiYln4V
-	KbubAyWN/1Kt7U8dYftM7ORnUOntNFXrqlSZ5OV6Mw571xs2hn7LNYsa1VcLEALo3Q+YPcg7v9BY3
-	tcJ7VchA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=PPaPQ+8fy63SeODG2fy6OKVm3ZGCLIcbqUUvYZTEwSU=; b=1h6CAiHq04F5u6xlpy3RxU/jEj
+	UlFh0LUlukOYVYx3DMGZIIJK3MfUHxxXigg4pYOQDcbleRj2Sjx2K1wrPR1R2YQWAsCNgm6jMK5UF
+	71FXlsm1a/u4Mk13AeOLZkTocqz3BwcS2OZKQsSxx2hrtbt4COiOE+x7BP2323RJwWMji2pTn60OF
+	6Pg5luFzZNJ5FM3Vf9YE0bIxjCh04df6uXuXsn7AvioGHmapbknGBLCUFDUFjN7KPQM9eR1/RI1or
+	sSr0klTM3tfCOXrQJ6yvkYgxacEM6dnxFScOrpmjqBHHHk+s62GWZhg+keLihUxGxkE9P1MvP0LNH
+	33IlYuQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uohVM-0000000DVG1-16Pq;
-	Wed, 20 Aug 2025 12:01:24 +0000
+	id 1uohmF-0000000DXAw-1fhF;
+	Wed, 20 Aug 2025 12:18:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uohUl-0000000DUym-2RNc
+	id 1uofsP-0000000D6us-3zHP
 	for barebox@lists.infradead.org;
-	Wed, 20 Aug 2025 12:00:48 +0000
+	Wed, 20 Aug 2025 10:17:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uohUk-0004HM-9e; Wed, 20 Aug 2025 14:00:46 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uofsN-0005Ac-8l; Wed, 20 Aug 2025 12:17:03 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uohUk-001Eua-0M;
-	Wed, 20 Aug 2025 14:00:46 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uohUk-005w9j-03;
-	Wed, 20 Aug 2025 14:00:46 +0200
-Date: Wed, 20 Aug 2025 14:00:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <aKW47XXQkFVgTesC@pengutronix.de>
-References: <20250820-v2024-05-0-topic-fit-overlay-v6-0-9d1b3bab2ee2@pengutronix.de>
- <20250820-v2024-05-0-topic-fit-overlay-v6-12-9d1b3bab2ee2@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uofsN-001EEV-0G;
+	Wed, 20 Aug 2025 12:17:03 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uofsM-008AHx-3B;
+	Wed, 20 Aug 2025 12:17:03 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 20 Aug 2025 12:17:02 +0200
+Message-Id: <20250820101702.1946026-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250820-v2024-05-0-topic-fit-overlay-v6-12-9d1b3bab2ee2@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250820_050047_677262_9A33C153 
-X-CRM114-Status: GOOD (  15.91  )
+X-CRM114-CacheID: sfid-20250820_031705_983900_550F38F8 
+X-CRM114-Status: UNSURE (   8.29  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,29 +82,38 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v6 12/12] FIT: add support to cache opened fit images
+Subject: [PATCH master] fastboot: implement dummy has-slot:partition variables
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Aug 20, 2025 at 11:48:44AM +0200, Marco Felsch wrote:
-> Cache the FIT image fit_open() calls to avoid loading the same FIT image
-> twice. This is very useful if the same FIT image is used to provide the
-> base devicetree, kernel and initrd as well as devicetree overlays.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  common/image-fit.c  | 32 ++++++++++++++++++++++++++++++++
->  include/image-fit.h |  4 ++++
->  2 files changed, 36 insertions(+)
+Now that we enforce variables to be available, flashing can result in
+following error message:
 
-I merged the last three patches into one while applying.
+  ERROR: fastboot: no such variable: has-slot:rootfs-eMMC
 
-Sascha
+Report the default no value to suppress this.
 
+Fixes: dd377c937f8b ("common: fastboot: send FAIL if variable does not exist")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/fastboot.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/common/fastboot.c b/common/fastboot.c
+index 603391de7739..e5c79c22376c 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -180,6 +180,8 @@ static int fastboot_add_partition_variables(struct fastboot *fb, struct list_hea
+ 	fb_setvar(var, "%s", type);
+ 	var = fb_addvar(fb, list, "is-logical:%s", fentry->name);
+ 	fb_setvar(var, "%s", "no");
++	var = fb_addvar(fb, list, "has-slot:%s", fentry->name);
++	fb_setvar(var, "%s", "no");
+ 
+ 	return ret;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
