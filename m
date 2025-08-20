@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uojRh-002dfb-0k
+	id 1uojRh-002dfX-0a
 	for lore@lore.pengutronix.de;
 	Wed, 20 Aug 2025 16:05:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uojRf-00016J-JJ
+	id 1uojRf-00016t-U2
 	for lore@pengutronix.de; Wed, 20 Aug 2025 16:05:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,57 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UB9fFLv5beFTLH6EOrooSiQxmo9Yg7e7zawVAHdqkqE=; b=uvxDdsWv5S1mAOO3kNIKAPupGE
-	uZIEdz3oe6e99qQQ+XYqLYxhy3ZmavGWx6DyvE1TTThAcwzE+z438dpT1ivaR1OR7SJ8/no0ZelOf
-	hgZx0k/9UoquGi18sN/oXOm5o7Yh+33RO9BKLq1ea/grdjasTqv5xD6oRa7lVsP6MKEEf3QnSYgSx
-	iIoT4z9F5euhdzmmn0liOLJsk1yGD1sv7XyIjrvLxO9HIt4pC4NNRtxpJ0eX7Bnho9o8cWPcdtpto
-	X6RP5Y9H/7zVlHFQbzy5DJrkU/h+J4duoWDmK7VnWV2Gf0OPvpL19N+JWXZ88HuhEgci+0o6IMsl4
-	j8PQHuyA==;
+	bh=xzc3WuafyllnDYFsszmotdxh3hbmi0XdIJqb4v6MBx4=; b=HRwvLxrrqLmp3OiUOg29Q77/33
+	zlpJs48sSXqHfWpj9iFdkg9Fd5qwqo3OBlZlMpzFBnXbbibsVRLzCTcdhvbY3QR/wM1FFGeKa8U07
+	+QbSgb8f4Zz9ILopLWWfKqEMDLiHfmdMk8dhVRCTBtQgL1SiKk5S77Oucs8/Tj5FdIO6YW1BctuXB
+	+nMqO/sdiV7g2e32eHdz1GTaowHrRK/byN3GKFt6B7qw7cJ1p3X8X/nKC38coafGXFGlWDI0YmNes
+	/Iu01oZw/DGuE/NtGLgC4fj/V2am4wdO0dTr2grCCIslHf7OIkjUWynGNlmqgT/lJ5KnsO9c/7kHL
+	cSWtmHDA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uojR4-0000000Dvtk-3AQv;
-	Wed, 20 Aug 2025 14:05:06 +0000
+	id 1uojR3-0000000DvtQ-38EO;
+	Wed, 20 Aug 2025 14:05:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uoihM-0000000DjqP-1UPu
+	id 1uoihM-0000000DjqM-1UKR
 	for barebox@lists.infradead.org;
-	Wed, 20 Aug 2025 13:17:54 +0000
+	Wed, 20 Aug 2025 13:17:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoihL-0000fx-0X; Wed, 20 Aug 2025 15:17:51 +0200
+	id 1uoihK-0000fs-TN; Wed, 20 Aug 2025 15:17:50 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoihK-001Fp6-1s;
+	id 1uoihK-001Fp8-1r;
 	Wed, 20 Aug 2025 15:17:50 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoihK-004jSI-1Q;
+	id 1uoihK-004jSI-1U;
 	Wed, 20 Aug 2025 15:17:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 20 Aug 2025 15:17:46 +0200
+Date: Wed, 20 Aug 2025 15:17:49 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250820-security-policies-v1-2-76fde70fdbd8@pengutronix.de>
+Message-Id: <20250820-security-policies-v1-5-76fde70fdbd8@pengutronix.de>
 References: <20250820-security-policies-v1-0-76fde70fdbd8@pengutronix.de>
 In-Reply-To: <20250820-security-policies-v1-0-76fde70fdbd8@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755695870; l=7088;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755695870; l=2472;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=FYT1cloI6Ptn/wMqANQ6oem3leF9bVBYRZwoU8YgZ6g=;
- b=7c/INPAoxECJzVEPyXhpFoYnWkk3/SBbeOdWnv+dxvBIQywxaYWo/w/sXCbWM1g4DQCsXZpVs
- 3o2YLzC8IAkDlsF6p7GfBbDB4jHE10vDzZ0SkwvyrI8Pm2GXyK4XGVn
+ bh=ZbRzzX9ksgBIxWZFUrOSFYLPOYnHCzNIsfQOSEzggi4=;
+ b=T2Cefseeo9uK36nvcuC0SKCFxtx47BceyZpCnZDiUkweYWPAVGlzmS8XnyTYWFYzFQvcJWMM1
+ VjukRb1aMfoCiacfLxsGxkzTvh6CT9PibSxm/FuMHzFChQim6IFtImK
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250820_061752_555311_1F099993 
-X-CRM114-Status: GOOD (  21.93  )
+X-CRM114-CacheID: sfid-20250820_061752_402309_3E61490C 
+X-CRM114-Status: GOOD (  15.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,215 +91,75 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 02/24] scripts: include scripts/include for all host tools
+Subject: [PATCH 05/24] kbuild: allow security config use without source
+ tree modification
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We already have one implementation of list.h, so we do not need to
-replicate it of Kconfig specially. Make use of scripts/include for all
-host tools to align us with what Linux is doing.
+A key aspect of security policies is the enforcement of a policy to be
+complete with no implicit defaults. To make this easier to use, the
+security_*config targets directly manipulate the specified KPOLICY or
+all known policies if none were specified.
+
+This is at odds with build systems that assume an immutable source tree
+and prefer that changes to files within purview of the build system are
+only done explicitly by the user. For that purpose, add an optional
+KPOLICY_TMPUPDATE, which works as follows:
+
+  - When set, only the tmp file in the build tree is updated, but not the
+    original
+  - The tmp file is always what's used in the build
+  - Once unset, the tmp file will always be overwritten by the original
+    on next build
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Makefile               |   6 ++-
- scripts/Makefile       |   1 -
- scripts/basic/Makefile |   2 -
- scripts/include/list.h |   7 +++
- scripts/kconfig/list.h | 132 -------------------------------------------------
- 5 files changed, 11 insertions(+), 137 deletions(-)
+ Makefile                | 4 +++-
+ scripts/Makefile.policy | 4 ++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 836176d541c3e806726e25cad6e195a0911d8e6f..209999618e8830e9495e3ff2297b50408ad625ae 100644
+index a2e5697b09fe219739bf2c4de45db8d54e09fc32..6027b5c37c82a99d1e9518edb790e9934378afab 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -410,8 +410,10 @@ KBUILD_USERHOSTCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
- KBUILD_USERCFLAGS  := $(KBUILD_USERHOSTCFLAGS) $(USERCFLAGS)
- KBUILD_USERLDFLAGS := $(USERLDFLAGS)
+@@ -100,7 +100,7 @@ ifeq ($(silence),s)
+ quiet=silent_
+ endif
  
--KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
--KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
-+KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) \
-+		       $(HOSTCFLAGS) -I $(srctree)/scripts/include
-+KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS) \
-+		       -I $(srctree)/scripts/include
- KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
- KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
+-export quiet Q KBUILD_VERBOSE
++export quiet Q KBUILD_VERBOSE KPOLICY_TMPUPDATE
  
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 85e0815445537fee8593515f6b892ed761154ed2..7d6bc5a8ab9798dfaf6583d5d09ae63aa98f43ac 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -29,7 +29,6 @@ hostprogs-always-$(CONFIG_RISCV)			+= prelink-riscv
- hostprogs-always-$(CONFIG_RK_IMAGE)			+= rkimage
- HOSTCFLAGS_rkimage.o = `$(PKG_CONFIG) --cflags openssl`
- HOSTLDLIBS_rkimage = `$(PKG_CONFIG) --libs openssl`
--KBUILD_HOSTCFLAGS += -I$(srctree)/scripts/include/
- HOSTCFLAGS_mxsimage.o = `$(PKG_CONFIG) --cflags openssl`
- HOSTLDLIBS_mxsimage  = `$(PKG_CONFIG) --libs openssl`
- HOSTCFLAGS_omap3-usb-loader.o = `$(PKG_CONFIG) --cflags libusb-1.0`
-diff --git a/scripts/basic/Makefile b/scripts/basic/Makefile
-index e48754e29924117ec6b2f159cfdf8e76ef77fa29..eeb6a38c5551516bc3b1539e5f236ff952fea394 100644
---- a/scripts/basic/Makefile
-+++ b/scripts/basic/Makefile
-@@ -3,5 +3,3 @@
- # fixdep: used to generate dependency information during build process
+ # Kbuild will save output files in the current working directory.
+ # This does not need to match to the root of the kernel source tree.
+@@ -1213,8 +1213,10 @@ security_checkconfigs: collect-policies $(KPOLICY.tmp) FORCE
+ security_%config: collect-policies $(KPOLICY.tmp) FORCE
+ 	+$(Q)$(foreach p, $(KPOLICY), $(call loop_cmd,sconfig, \
+ 		$(@:security_%=%),$p.tmp))
++ifeq ($(KPOLICY_TMPUPDATE),)
+ 	+$(Q)$(foreach p, $(KPOLICY), \
+ 		cp 2>/dev/null $p.tmp $(call resolve-srctree,$p) || true;)
++endif
  
- hostprogs-always-y	+= fixdep
--
--KBUILD_HOSTCFLAGS += -I$(srctree)/scripts/include/
-diff --git a/scripts/include/list.h b/scripts/include/list.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..ced30b635f95c7bbf2e123ddeb1a093099ce9650
---- /dev/null
-+++ b/scripts/include/list.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef LIST_H
-+#define LIST_H
-+
-+#include "linux/list.h"
-+
-+#endif
-diff --git a/scripts/kconfig/list.h b/scripts/kconfig/list.h
-deleted file mode 100644
-index 45cb237ab7ef7a9f17779647220da6a30afd06fc..0000000000000000000000000000000000000000
---- a/scripts/kconfig/list.h
-+++ /dev/null
-@@ -1,132 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef LIST_H
--#define LIST_H
--
--/*
-- * Copied from include/linux/...
-- */
--
--#undef offsetof
--#define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
--
--/**
-- * container_of - cast a member of a structure out to the containing structure
-- * @ptr:        the pointer to the member.
-- * @type:       the type of the container struct this is embedded in.
-- * @member:     the name of the member within the struct.
-- *
-- */
--#define container_of(ptr, type, member) ({                      \
--	const typeof( ((type *)0)->member ) *__mptr = (ptr);    \
--	(type *)( (char *)__mptr - offsetof(type,member) );})
--
--
--struct list_head {
--	struct list_head *next, *prev;
--};
--
--
--#define LIST_HEAD_INIT(name) { &(name), &(name) }
--
--#define LIST_HEAD(name) \
--	struct list_head name = LIST_HEAD_INIT(name)
--
--/**
-- * list_entry - get the struct for this entry
-- * @ptr:	the &struct list_head pointer.
-- * @type:	the type of the struct this is embedded in.
-- * @member:	the name of the list_head within the struct.
-- */
--#define list_entry(ptr, type, member) \
--	container_of(ptr, type, member)
--
--/**
-- * list_for_each_entry	-	iterate over list of given type
-- * @pos:	the type * to use as a loop cursor.
-- * @head:	the head for your list.
-- * @member:	the name of the list_head within the struct.
-- */
--#define list_for_each_entry(pos, head, member)				\
--	for (pos = list_entry((head)->next, typeof(*pos), member);	\
--	     &pos->member != (head); 	\
--	     pos = list_entry(pos->member.next, typeof(*pos), member))
--
--/**
-- * list_for_each_entry_safe - iterate over list of given type safe against removal of list entry
-- * @pos:	the type * to use as a loop cursor.
-- * @n:		another type * to use as temporary storage
-- * @head:	the head for your list.
-- * @member:	the name of the list_head within the struct.
-- */
--#define list_for_each_entry_safe(pos, n, head, member)			\
--	for (pos = list_entry((head)->next, typeof(*pos), member),	\
--		n = list_entry(pos->member.next, typeof(*pos), member);	\
--	     &pos->member != (head);					\
--	     pos = n, n = list_entry(n->member.next, typeof(*n), member))
--
--/**
-- * list_empty - tests whether a list is empty
-- * @head: the list to test.
-- */
--static inline int list_empty(const struct list_head *head)
--{
--	return head->next == head;
--}
--
--/*
-- * Insert a new entry between two known consecutive entries.
-- *
-- * This is only for internal list manipulation where we know
-- * the prev/next entries already!
-- */
--static inline void __list_add(struct list_head *_new,
--			      struct list_head *prev,
--			      struct list_head *next)
--{
--	next->prev = _new;
--	_new->next = next;
--	_new->prev = prev;
--	prev->next = _new;
--}
--
--/**
-- * list_add_tail - add a new entry
-- * @new: new entry to be added
-- * @head: list head to add it before
-- *
-- * Insert a new entry before the specified head.
-- * This is useful for implementing queues.
-- */
--static inline void list_add_tail(struct list_head *_new, struct list_head *head)
--{
--	__list_add(_new, head->prev, head);
--}
--
--/*
-- * Delete a list entry by making the prev/next entries
-- * point to each other.
-- *
-- * This is only for internal list manipulation where we know
-- * the prev/next entries already!
-- */
--static inline void __list_del(struct list_head *prev, struct list_head *next)
--{
--	next->prev = prev;
--	prev->next = next;
--}
--
--#define LIST_POISON1  ((void *) 0x00100100)
--#define LIST_POISON2  ((void *) 0x00200200)
--/**
-- * list_del - deletes entry from list.
-- * @entry: the element to delete from the list.
-- * Note: list_empty() on entry does not return true after this, the entry is
-- * in an undefined state.
-- */
--static inline void list_del(struct list_head *entry)
--{
--	__list_del(entry->prev, entry->next);
--	entry->next = (struct list_head*)LIST_POISON1;
--	entry->prev = (struct list_head*)LIST_POISON2;
--}
--#endif
+ quiet_cmd_sconfigpost = SCONFPP $@
+       cmd_sconfigpost = $(SCONFIGPOST) $2 -D $(depfile) -o $@ $<
+diff --git a/scripts/Makefile.policy b/scripts/Makefile.policy
+index 4c71774bbbc98f9de9cf5463e5ef431de60be6ac..7629afc432269e70d5fa7403fef3bad28f00135a 100644
+--- a/scripts/Makefile.policy
++++ b/scripts/Makefile.policy
+@@ -23,7 +23,11 @@ endif
+ # ---------------------------------------------------------------------------
+ 
+ $(obj)/%.sconfig.tmp: $(src)/%.sconfig FORCE
++ifeq ($(KPOLICY_TMPUPDATE),)
+ 	$(call filechk,cat)
++else
++	$(call if_changed,shipped)
++endif
+ 
+ quiet_cmd_sconfigpost_c = SCONFPP $@
+       cmd_sconfigpost_c = $(SCONFIGPOST) -o $@ -D$(depfile) $(2)
 
 -- 
 2.39.5
