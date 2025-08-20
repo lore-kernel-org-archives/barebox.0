@@ -1,74 +1,74 @@
-Delivery-date: Wed, 20 Aug 2025 16:05:43 +0200
+Delivery-date: Wed, 20 Aug 2025 16:05:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uojRg-002dey-0k
+	id 1uojRh-002dfQ-0L
 	for lore@lore.pengutronix.de;
-	Wed, 20 Aug 2025 16:05:43 +0200
+	Wed, 20 Aug 2025 16:05:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uojRe-00015u-LC
-	for lore@pengutronix.de; Wed, 20 Aug 2025 16:05:43 +0200
+	id 1uojRf-00016U-Md
+	for lore@pengutronix.de; Wed, 20 Aug 2025 16:05:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ANBSzrkuEHgp9ArSzQxtniX7uJlBReC9rWJj2c5E8VU=; b=Ua0RUBl73HVWaxx7RD3tIC3zqb
-	8dBhZZE5JKnQDqjCXZf/UJr0xwDTNysrXyLqwLBB//GjGHEErvqUO/6wfvHHgl2dxLda3+pNfK1I3
-	/HrTkbj5Y8f2i+J2zG9ST5MIhyRRymPfd7V7+kPw9G8yxIrS3XQTFXv+TU9Nlaqct6tSAE7DR1w5O
-	4rrACAcCsc1I/jgjx/S4TwzCDMo35CRXjVWGyX4tTRX+EgEVN268kNbT6pSn+RtjBxUtxRDqnsh5S
-	/7PtDOVErcib1v/HBWGGyHMxxFFJoX225m9mIMg5NfkwBrI1Dzwa9EZgBf3QFAmncOkLbxjOFH7Dr
-	Of3W9plg==;
+	bh=1luSGBwU7Fub4vW5GH2Ww1Dru1mjPDYc/arl0PymY80=; b=ljWy3FSzFew88n1+R988USzFXS
+	4TjDYaIrEspM2fKDyNSy5B7xaWWQsNOBwpwvXSIutFiOGi4iHL255Gf4N+4g6uMAcaoxj8s6/5Mdc
+	ZcwE0rLsuRmtr2NHGvA7WnP33D67VRUjCp1aiZ16DYHwwDMmkH3RgXDJ3kefAlCmHtt/CMCsKGeJP
+	gYhbF6+rJv4z4JFpx4qQjFBbqqJZIFu8FwgJ2YLvm9bJd36Q/U+fjRkV204X6wEcmiE5p6UzcQpER
+	6dpt4IFa9NEkJy2uA3sF641OECTvo/CNsLsEIm4WDrsw+Wt8PORsJ8HglRX12wcMn5VS+f0yRpHNI
+	ubrOK50g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uojR4-0000000DvtY-12cm;
-	Wed, 20 Aug 2025 14:05:06 +0000
+	id 1uojR5-0000000Dvtv-1Mzo;
+	Wed, 20 Aug 2025 14:05:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uoihM-0000000DjqO-1Uah
+	id 1uoihM-0000000DjqN-1UpX
 	for barebox@lists.infradead.org;
-	Wed, 20 Aug 2025 13:17:53 +0000
+	Wed, 20 Aug 2025 13:17:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoihL-0000fw-0B; Wed, 20 Aug 2025 15:17:51 +0200
+	id 1uoihK-0000fy-Vx; Wed, 20 Aug 2025 15:17:51 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoihK-001FpB-1y;
+	id 1uoihK-001FpA-1y;
 	Wed, 20 Aug 2025 15:17:50 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uoihK-004jSI-1Z;
+	id 1uoihK-004jSI-1W;
 	Wed, 20 Aug 2025 15:17:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 20 Aug 2025 15:17:51 +0200
+Date: Wed, 20 Aug 2025 15:17:50 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250820-security-policies-v1-7-76fde70fdbd8@pengutronix.de>
+Message-Id: <20250820-security-policies-v1-6-76fde70fdbd8@pengutronix.de>
 References: <20250820-security-policies-v1-0-76fde70fdbd8@pengutronix.de>
 In-Reply-To: <20250820-security-policies-v1-0-76fde70fdbd8@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755695870; l=4445;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755695870; l=6062;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Vn/Ycoi3htUMZbThBg5XgLI+RJhj1+pCLSI4z4kjGSA=;
- b=lFGL3MTiWfgzbiX5qwi9blYmCf/kAEnIEYUbYKRZ7/zxaUKmRk1VGiQAbiw7Uf0vbggrB7NJE
- ObFRpd9HC4zA2YYzPHv1xOXjayzluagmQnPwMV6gwDjEFEh9a3JaygT
+ bh=gWDBIMG66kaR14fwtJY5fUWyA4GC6ZzY8KmqRsJmEGg=;
+ b=Sti7dIIHVYhIUK4Ky1SFmD3Heytu6aDXNWwhSq2bCsR4ThNBsd43I2+r6bu9OwKDl00ZnTiPR
+ aCEIfRriWk9B6OKOYLXJreOl9bJinji0+KLvbtucT7G3RxlB0mqLGGr
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250820_061752_403536_46756EA2 
-X-CRM114-Status: GOOD (  14.09  )
+X-CRM114-CacheID: sfid-20250820_061752_561926_97CB81EE 
+X-CRM114-Status: GOOD (  14.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,128 +91,127 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/24] security: policy: support externally provided
- configs
+Subject: [PATCH 06/24] defaultenv: update PS1 according to security policy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-The enforcement of security policies to be up-to-date and removal of
-implicit syncing nudges users into checking in the actual security
-policy into version control. To allow the policies to live outside the
-barebox tree, introduce CONFIG_SECURITY_POLICY_PATH that takes a
-space-separated list of configs.
-
-For now, the option is very strict: All files referenced must be placed
-into security/ in the barebox source directory. Different build rules
-sharing the same source directory can install their configs with
-different names and customize via CONFIG_SECURITY_POLICY_PATH which options
-to include.
-
-sconfigpost also supports iterating over directories, but this feature
-is left out for now, as it needs more extensive testing to verify that
-targets are rebuilt as often as needed and not more.
+This nifty optional feature makes it easy to see what security policy
+is currently active.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- security/Kconfig.policy | 15 +++++++++++++++
- security/Makefile       | 37 +++++++++++++++++++++++++++++++++++++
- security/policy.c       |  3 +++
- 3 files changed, 55 insertions(+)
+ Documentation/user/defaultenv-2.rst                  |  2 ++
+ common/Kconfig                                       |  5 +++++
+ defaultenv/Makefile                                  |  1 +
+ .../defaultenv-2-security-policy/bin/ps1-policy      | 20 ++++++++++++++++++++
+ .../defaultenv-2-security-policy/init/ps1-policy     |  1 +
+ .../defaultenv-2-security-policy/init/source-colors  |  1 +
+ defaultenv/defaultenv.c                              |  2 ++
+ 7 files changed, 32 insertions(+)
 
-diff --git a/security/Kconfig.policy b/security/Kconfig.policy
-index 6c5cb5687c17c5a66f8757191c00d1c3d75a9312..bf938a9f3dd87fc21009f0260f3cf8be7937bd36 100644
---- a/security/Kconfig.policy
-+++ b/security/Kconfig.policy
-@@ -80,6 +80,21 @@ config SECURITY_POLICY_DEFAULT_PANIC
+diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
+index a01a70fa9310be88c8666c40bcc3def33c48ac21..3715fd770d9d89d52172bcc1e7564d871977aa30 100644
+--- a/Documentation/user/defaultenv-2.rst
++++ b/Documentation/user/defaultenv-2.rst
+@@ -23,6 +23,7 @@ The default environment is composed from different directories during compilatio
+   defaultenv/defaultenv-2-dfu                  -> overlay for DFU
+   defaultenv/defaultenv-2-reboot-mode          -> overlay for reboot modes
+   defaultenv/defaultenv-2-menu                 -> overlay for menus
++  defaultenv/defaultenv-2-security-policy       -> overlay for security policy
+   arch/$ARCH/boards/<board>/defaultenv-<board> -> board specific overlay
+   $(CONFIG_DEFAULT_ENVIRONMENT_PATH)           -> config specific overlay
  
- endchoice
+@@ -43,6 +44,7 @@ and their respective included directories in ``defaultenv/Makefile``:
+   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
+   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
+   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE) += defaultenv-2-reboot-mode
++  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY) += defaultenv-2-security-policy
+   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
  
-+config SECURITY_POLICY_PATH
-+	string
+ /env/bin/init
+diff --git a/common/Kconfig b/common/Kconfig
+index ad211d1fa519547f128e982423071328235b8ea8..290aab447b6243e48bf51068d5295b08d9299db8 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1091,6 +1091,11 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE
+ 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
+ 	depends on REBOOT_MODE
+ 
++config DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY
++	bool "Update PS1 according to active security policy"
++	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
 +	depends on SECURITY_POLICY
-+	prompt "Paths to additional security policies"
-+	help
-+	  Space separated list of security policies that should be
-+	  compiled into barebox and registered. This option currently
-+	  requires each security policy to match security/*.sconfig, i.e.
-+	  be directly located in the security/ directory of the source
-+	  source tree and have the .sconfig extension.
-+	  If left empty, only security policies explicitly provided
-+	  and registered by board code will be available.
 +
-+	  Absolute paths are disallowed.
+ config DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG
+ 	bool "Ship .config as /env/data/config"
+ 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
+diff --git a/defaultenv/Makefile b/defaultenv/Makefile
+index 1eaca9f41087fdb893575db1ab2bf1f267185435..ab88ed739305d4157d6ec124b5330f002c577340 100644
+--- a/defaultenv/Makefile
++++ b/defaultenv/Makefile
+@@ -4,6 +4,7 @@ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE) += defaultenv-2-reboot-mode
++bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY) += defaultenv-2-security-policy
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
+ obj-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv.o
+ extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX) barebox_zero_env
+diff --git a/defaultenv/defaultenv-2-security-policy/bin/ps1-policy b/defaultenv/defaultenv-2-security-policy/bin/ps1-policy
+new file mode 100755
+index 0000000000000000000000000000000000000000..af121bbbaeedfbf6ade22431d3b7bf1de862701f
+--- /dev/null
++++ b/defaultenv/defaultenv-2-security-policy/bin/ps1-policy
+@@ -0,0 +1,20 @@
++if [ -n "$security.policy" ]; then
++	if [ "$security.policy" = "devel" ]; then
++		PS1_policy_color="$YELLOW"
++	elif [ "$security.policy" = "factory" ]; then
++		PS1_policy_color="$PINK"
++	elif [ "$security.policy" = "lockdown" ]; then
++		PS1_policy_color="$RED;"
++	elif [ "$security.policy" = "tamper" ]; then
++		PS1_policy_color="$RED_INV";
++	elif [ "$security.policy" = "return" ]; then
++		PS1_policy_color="$PINK_INV";
++	elif [[ "$security.policy" = "debug*" ]]; then
++		PS1_policy_color="$CYAN";
++        else
++                PS1_policy_color="$NC"
++	fi
 +
- config SECURITY_POLICY_NAMES
- 	bool
- 
-diff --git a/security/Makefile b/security/Makefile
-index 16b328266a1b35861ee263e8026fc8ebd704aedb..3e92fb776fb2aed36cb79ee267b02c7c279eabce 100644
---- a/security/Makefile
-+++ b/security/Makefile
-@@ -8,6 +8,9 @@ obj-pbl-$(CONFIG_HAVE_OPTEE)	+= optee.o
- obj-$(CONFIG_BLOBGEN)		+= blobgen.o
- obj-$(CONFIG_PASSWORD)		+= password.o
- 
-+# Default password handling
-+# ---------------------------------------------------------------------------
-+#
- ifdef CONFIG_PASSWORD
- 
- ifeq ($(CONFIG_PASSWORD_DEFAULT),"")
-@@ -29,3 +32,37 @@ include/generated/passwd.h: FORCE
- 
- $(obj)/password.o: include/generated/passwd.h
- endif # CONFIG_PASSWORD
-+
-+# External security policy handling
-+# ---------------------------------------------------------------------------
-+
-+external-policy := $(foreach p, \
-+	$(call remove_quotes,$(CONFIG_SECURITY_POLICY_PATH)), \
-+		$(p:security/%=%))
-+
-+external-policy-tmp := $(addsuffix .tmp,$(external-policy))
-+real-external-policy-tmp := $(addprefix $(obj)/,$(external-policy-tmp))
-+
-+ifneq ($(external-policy),)
-+obj-y	+= default.sconfig.o
-+extra-y	+= default.sconfig.c
-+always-y += policy-list
-+$(foreach p, $(external-policy), \
-+	$(if $(findstring /,$p),$(error \
-+	CONFIG_SECURITY_POLICY_PATH contains path separators.\
-+	$(newline)"$p" must start with security/)))
-+$(foreach p, $(external-policy), \
-+	$(if $(wildcard $(srctree)/$(src)/$p),,$(error \
-+	CONFIG_SECURITY_POLICY_PATH contains non-existent files.\
-+	$(newline)"$p" does not exit in $$(srctree)/security)))
-+endif
-+
-+$(obj)/policy-list: $(addprefix $(src)/,$(external-policy)) FORCE
-+	$(call if_changed,gen_order_src)
-+
-+targets += $(external-policy-tmp)
-+
-+$(obj)/default.sconfig.c: $(real-external-policy-tmp) FORCE
-+	+$(Q)$(foreach p, $(real-external-policy-tmp), \
-+		$(call noop_cmd,security_checkconfig,$p) ;)
-+	$(call if_changed_dep,sconfigpost_c,$(real-external-policy-tmp))
-diff --git a/security/policy.c b/security/policy.c
-index 10d6148866ab2eba6cc8ff0d78e99025d83ed3e8..774e64968cbab2d5e63155caacebf0a2d31627da 100644
---- a/security/policy.c
-+++ b/security/policy.c
-@@ -238,6 +238,9 @@ static int security_init(void)
- 	dev_add_param_string(&security_device, "policy", param_set_readonly,
- 			     security_policy_get_name, &policy_name, NULL);
- 
-+	if (*CONFIG_SECURITY_POLICY_PATH)
-+		security_policy_add(default);
-+
- 	return 0;
- }
- pure_initcall(security_init);
++	. /env/init/ps1
++	export PS1="(${PS1_policy_color}${security.policy}${NC}) $PS1"
++fi
+diff --git a/defaultenv/defaultenv-2-security-policy/init/ps1-policy b/defaultenv/defaultenv-2-security-policy/init/ps1-policy
+new file mode 100644
+index 0000000000000000000000000000000000000000..a76cd7fd17288da03ca7515f1422f9c596e90dcb
+--- /dev/null
++++ b/defaultenv/defaultenv-2-security-policy/init/ps1-policy
+@@ -0,0 +1 @@
++PROMPT_COMMAND=". /env/bin/ps1-policy"
+diff --git a/defaultenv/defaultenv-2-security-policy/init/source-colors b/defaultenv/defaultenv-2-security-policy/init/source-colors
+new file mode 100644
+index 0000000000000000000000000000000000000000..3df8e02b0ebca4d0de41bf1a3ca3908650719dd1
+--- /dev/null
++++ b/defaultenv/defaultenv-2-security-policy/init/source-colors
+@@ -0,0 +1 @@
++. /env/data/ansi-colors
+diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
+index 2567653751cb36b3bb6b1a577360738bc3e0a30a..d6cca466a6835da0896823b1f8858d702a10770e 100644
+--- a/defaultenv/defaultenv.c
++++ b/defaultenv/defaultenv.c
+@@ -49,6 +49,8 @@ static void defaultenv_add_base(void)
+ 		defaultenv_append_directory(defaultenv_2_dfu);
+ 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE))
+ 		defaultenv_append_directory(defaultenv_2_reboot_mode);
++	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY))
++		defaultenv_append_directory(defaultenv_2_security_policy);
+ 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG))
+ 		defaultenv_append_directory(defaultenv_2_ikconfig);
+ 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
 
 -- 
 2.39.5
