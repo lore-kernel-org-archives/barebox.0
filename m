@@ -1,68 +1,68 @@
-Delivery-date: Wed, 20 Aug 2025 13:04:12 +0200
+Delivery-date: Wed, 20 Aug 2025 13:04:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uogc1-002arZ-1T
+	id 1uogc2-002aru-23
 	for lore@lore.pengutronix.de;
-	Wed, 20 Aug 2025 13:04:12 +0200
+	Wed, 20 Aug 2025 13:04:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uogc0-0003ki-6C
-	for lore@pengutronix.de; Wed, 20 Aug 2025 13:04:12 +0200
+	id 1uogc1-0003kk-CR
+	for lore@pengutronix.de; Wed, 20 Aug 2025 13:04:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KgTnvdxusReNUGX+erRmjQfkdrLwncN59GbG787Vqck=; b=omPWwtrj24qfONgdl+PDA8eRmf
-	yTiyh3HsaqqL7Or4OyVqWlOH3O161v7hkGDSV/HI6ztgRO3ey5SjHBarD1TZxYl5y2VSz0XQqAmsw
-	lFWW8qKBJosnq4JzI6NLKxRDayekcC+R4oHyh70YBpseFW7VlcjHzdYmT9A8h7ILBWCGF+LHu3uQm
-	OnA+VxHEvSt2TK135sN6AOMam0vGyjGDnSAmzUbSCemIcNSK+8rLX7aEAO+siJ5NR2za5+R9tzQz6
-	PD73vHYVNS/NsaSGNja0udkBMztTIVoMni+5kSJh0piWNHsBuGkrjvBULpocDBZHnrHuAiIJT2bpD
-	u0bYjQgA==;
+	bh=S3a9Z8CNnJ3YyL0SlzhaOTbXf5UiQEkw42yFuQTW92I=; b=sR3VKAbGTMa1eHnTjyACyV1XmW
+	kCCPbTqo0dSsU0AwcfR3mqWNrZJMA+6ZJtYEVeZ3Pu8bhaOChl+mER6TOfoNlpQ6ZpdbSBOQY9PQc
+	iDnPWwF/bfc4F13CvO3Y4rqtrCvf8NnUWKNRoKXwgw/LV1zzbYRSkWUOvF04Zvss+u9y16Zks02X0
+	d52zkBk6zVfQ9GdSxtMJCM3nff82r5Om4CQCGu+s6hVWJpJN0Lfwi7QSS6rjglVpY3vNsbsCbzUL9
+	kVF8KNQnvy4daVD5eVfROcGOtkjfa2cArRiYCzv0wQiifRe5uJgsUfmP0iVpwBQf7vz3JYCVAxZuy
+	yjZP0OkQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uogbp-0000000DHU4-2J9K;
-	Wed, 20 Aug 2025 11:04:01 +0000
+	id 1uogbr-0000000DHWZ-0dmU;
+	Wed, 20 Aug 2025 11:04:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uoeob-0000000Cqpm-41XT
+	id 1uoeqm-0000000CrWu-3BgN
 	for barebox@lists.infradead.org;
-	Wed, 20 Aug 2025 09:09:07 +0000
+	Wed, 20 Aug 2025 09:11:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uoeoa-0001fT-8B; Wed, 20 Aug 2025 11:09:04 +0200
+	id 1uoeql-00027F-KP; Wed, 20 Aug 2025 11:11:19 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uoeoa-001Dmt-0D;
-	Wed, 20 Aug 2025 11:09:04 +0200
+	id 1uoeql-001Dn6-1Q;
+	Wed, 20 Aug 2025 11:11:19 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uoeoZ-005sW0-3A;
-	Wed, 20 Aug 2025 11:09:03 +0200
-Date: Wed, 20 Aug 2025 11:09:03 +0200
+	id 1uoeql-005sX6-1A;
+	Wed, 20 Aug 2025 11:11:19 +0200
+Date: Wed, 20 Aug 2025 11:11:19 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20250820090903.a4svfbrphnhh452r@pengutronix.de>
+Message-ID: <20250820091119.sihdo4bemqsc67wc@pengutronix.de>
 References: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
- <20250818-v2025-06-0-topic-nvmem-v2-5-b6d677f6c519@pengutronix.de>
- <aKV5-BopekRX26BL@pengutronix.de>
+ <20250818-v2025-06-0-topic-nvmem-v2-10-b6d677f6c519@pengutronix.de>
+ <aKV8IWPfWNYEst-Z@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aKV5-BopekRX26BL@pengutronix.de>
+In-Reply-To: <aKV8IWPfWNYEst-Z@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250820_020906_000122_7392E5A2 
-X-CRM114-Status: GOOD (  23.07  )
+X-CRM114-CacheID: sfid-20250820_021120_802154_54CA9C2D 
+X-CRM114-Status: GOOD (  19.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,65 +84,55 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 05/15] nvmem: core: sync with Linux
+Subject: Re: [PATCH v2 10/15] nvmem: core: add nvmem-layout support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 25-08-20, Sascha Hauer wrote:
-> On Mon, Aug 18, 2025 at 07:44:39PM +0200, Marco Felsch wrote:
-> > Partly (re-)sync the nvmem core with Linux. The main changes are:
-> >   - The nvmem_cell struct was split into nvmem_cell and nvmem_cell_entry
-> >   - The cells are now parsed and registered during nvmem_register(), no
-> >     longer during of_nvmem_cell_get()
-> >   - The registered cells are now tracked per nvmem device, no longer in
-> >     a global nvmem_cells list
+> On Mon, Aug 18, 2025 at 07:44:44PM +0200, Marco Felsch wrote:
+> > This ports the Linux nvmem-layout core infrastructure required for the
+> > actual nvmem-layout drivers. This commit doesn't add any specific
+> > nvmem-layout driver.
 > > 
-> > The sync is in preparation of adding nvmem-layout driver support and
-> > features like accessing nvmem-cells via cdevs.
+> > A nvmem-layout is the new way to describe the nvmem storage format. The
+> > nvmem-layout driver parses the nvmem sotrage format and provides the
+> > information via nvmem-cells.
 > > 
 > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > ---
-> >  drivers/nvmem/core.c           | 428 ++++++++++++++++++++++++++---------------
-> >  include/linux/nvmem-consumer.h |  17 +-
-> >  include/linux/nvmem-provider.h |  58 +++++-
-> >  3 files changed, 326 insertions(+), 177 deletions(-)
+> >  drivers/nvmem/Kconfig          |   7 ++
+> >  drivers/nvmem/Makefile         |   3 +
+> >  drivers/nvmem/core.c           | 100 +++++++++++++++++++++++-
+> >  drivers/nvmem/internals.h      |  22 ++++++
+> >  drivers/nvmem/layouts.c        | 173 +++++++++++++++++++++++++++++++++++++++++
+> >  drivers/nvmem/layouts/Kconfig  |  13 ++++
+> >  drivers/nvmem/layouts/Makefile |   7 ++
+> >  include/linux/nvmem-provider.h |  63 +++++++++++++++
+> >  8 files changed, 385 insertions(+), 3 deletions(-)
 > > 
-> > diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-> > +static int nvmem_add_cells_from_dt(struct nvmem_device *nvmem, struct device_node *np)
+> > diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+> > +struct device_node *of_nvmem_layout_get_container(struct nvmem_device *nvmem)
 > > +{
-> > +	struct device *dev = &nvmem->dev;
-> > +	struct device_node *child;
-> > +	const __be32 *addr;
-> > +	int len, ret;
-> > +
-> > +	if (!IS_ENABLED(CONFIG_OFTREE))
-> > +		return 0;
-> > +
+> > +	return of_get_child_by_name(nvmem->dev.of_node, "nvmem-layout");
 > 
-> This needs an additional check:
+> This also needs an additional
 > 
-> 	if (!np)
-> 		return 0;
+> 	if (!nvmem->dev.of_node)
+> 		return NULL;
 > 
-> > +	for_each_child_of_node(np, child) {
+> check. This also goes down to of_get_child_by_name doing a
+> for_each_child_of_node() which is defines as:
 > 
-> Linux gracefully handles NULL in for_each_child_of_node() whereas
-> barebox crashes here.
+> #define for_each_child_of_node(parent, child) \
+> 	list_for_each_entry(child, &parent->children, parent_list)
+> 
+> list_for_each_entry() does not work with NULL pointers. We might want to
+> change this for Linux compatibility.
 
-Damn, thanks for spotting this.
+Thanks for testing and spotting this. I ran tests but of course all my
+nvmem devices had an of_node :(
 
 Regards,
   Marco
-
-
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
 
 
