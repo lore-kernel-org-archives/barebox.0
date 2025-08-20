@@ -1,68 +1,68 @@
-Delivery-date: Wed, 20 Aug 2025 13:04:11 +0200
+Delivery-date: Wed, 20 Aug 2025 13:04:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uogc0-002arE-1e
+	id 1uogc1-002arZ-1T
 	for lore@lore.pengutronix.de;
-	Wed, 20 Aug 2025 13:04:11 +0200
+	Wed, 20 Aug 2025 13:04:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uogbz-0003kg-7x
-	for lore@pengutronix.de; Wed, 20 Aug 2025 13:04:11 +0200
+	id 1uogc0-0003ki-6C
+	for lore@pengutronix.de; Wed, 20 Aug 2025 13:04:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NlFNZAYoSLL4rA0I5pqlB0KlLO7hRjPsqrXXfy1puJk=; b=aacUISG8bKCN2wiy5fhonHu78S
-	jaoX0m28wUruLmSqoxTyxjaUG0aqnk+jL4UCzcSIiVTlFfgtzzG6zxUFGi/CI7QuNF6zJ3q2GiHsJ
-	a0Of8h9ZGzevMLum65nI1vAiD5chd2g14yWsbRdVRobKOKnmGm28IHJd37xtZ0RfFA40oXFieAM4J
-	rK73dTpXHhvfjZGXfurmryypCxzohYZSRwDRE+dSxoW3wSf1BJikUurYZodzY6Icvx+4k4OOmO0A+
-	5mEB6NakDmp7CyjbV7Q+SvuMn2XkVELvS0WMqn6KODqfUi37qA8zCwbEd1B2ZskMrjcWdDciYQnw7
-	TpdRPMyA==;
+	bh=KgTnvdxusReNUGX+erRmjQfkdrLwncN59GbG787Vqck=; b=omPWwtrj24qfONgdl+PDA8eRmf
+	yTiyh3HsaqqL7Or4OyVqWlOH3O161v7hkGDSV/HI6ztgRO3ey5SjHBarD1TZxYl5y2VSz0XQqAmsw
+	lFWW8qKBJosnq4JzI6NLKxRDayekcC+R4oHyh70YBpseFW7VlcjHzdYmT9A8h7ILBWCGF+LHu3uQm
+	OnA+VxHEvSt2TK135sN6AOMam0vGyjGDnSAmzUbSCemIcNSK+8rLX7aEAO+siJ5NR2za5+R9tzQz6
+	PD73vHYVNS/NsaSGNja0udkBMztTIVoMni+5kSJh0piWNHsBuGkrjvBULpocDBZHnrHuAiIJT2bpD
+	u0bYjQgA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uogbq-0000000DHVG-1Nql;
-	Wed, 20 Aug 2025 11:04:02 +0000
+	id 1uogbp-0000000DHU4-2J9K;
+	Wed, 20 Aug 2025 11:04:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uoepD-0000000CqxU-1os0
+	id 1uoeob-0000000Cqpm-41XT
 	for barebox@lists.infradead.org;
-	Wed, 20 Aug 2025 09:09:44 +0000
+	Wed, 20 Aug 2025 09:09:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uoepC-0001nU-8d; Wed, 20 Aug 2025 11:09:42 +0200
+	id 1uoeoa-0001fT-8B; Wed, 20 Aug 2025 11:09:04 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uoepC-001Dmz-0F;
-	Wed, 20 Aug 2025 11:09:42 +0200
+	id 1uoeoa-001Dmt-0D;
+	Wed, 20 Aug 2025 11:09:04 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uoepB-005sWI-3C;
-	Wed, 20 Aug 2025 11:09:41 +0200
-Date: Wed, 20 Aug 2025 11:09:41 +0200
+	id 1uoeoZ-005sW0-3A;
+	Wed, 20 Aug 2025 11:09:03 +0200
+Date: Wed, 20 Aug 2025 11:09:03 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20250820090941.mb7mozcbt5gjry5d@pengutronix.de>
+Message-ID: <20250820090903.a4svfbrphnhh452r@pengutronix.de>
 References: <20250818-v2025-06-0-topic-nvmem-v2-0-b6d677f6c519@pengutronix.de>
- <20250818-v2025-06-0-topic-nvmem-v2-6-b6d677f6c519@pengutronix.de>
- <aKV6XQDJIzUcZNAR@pengutronix.de>
+ <20250818-v2025-06-0-topic-nvmem-v2-5-b6d677f6c519@pengutronix.de>
+ <aKV5-BopekRX26BL@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aKV6XQDJIzUcZNAR@pengutronix.de>
+In-Reply-To: <aKV5-BopekRX26BL@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250820_020943_471948_3161B561 
-X-CRM114-Status: GOOD (  25.37  )
+X-CRM114-CacheID: sfid-20250820_020906_000122_7392E5A2 
+X-CRM114-Status: GOOD (  23.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,61 +84,56 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 06/15] nvmem: core: expose nvmem cells as cdev
+Subject: Re: [PATCH v2 05/15] nvmem: core: sync with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 25-08-20, Sascha Hauer wrote:
-> On Mon, Aug 18, 2025 at 07:44:40PM +0200, Marco Felsch wrote:
-> > Linux has added the support to expose nvmem-cells via the sysfs by
-> > commit 0331c611949f ("nvmem: core: Expose cells through sysfs"). This
-> > commit adds an equivalent mechanism by exposing the nvmem-cells via
-> > cdevs. The name scheme is: <nvmem-dev-name>.<cell-name>.
+> On Mon, Aug 18, 2025 at 07:44:39PM +0200, Marco Felsch wrote:
+> > Partly (re-)sync the nvmem core with Linux. The main changes are:
+> >   - The nvmem_cell struct was split into nvmem_cell and nvmem_cell_entry
+> >   - The cells are now parsed and registered during nvmem_register(), no
+> >     longer during of_nvmem_cell_get()
+> >   - The registered cells are now tracked per nvmem device, no longer in
+> >     a global nvmem_cells list
 > > 
-> > With this in place it is possible for board code and/or shell to query
-> > the nvmem-cell values without specifying the consumer API within DT. At
-> > the moment the access is RO like Linux does since write support requires
-> > more corner case handling.
-> > 
-> > The naming scheme for nvmem_populate_sysfs_cells() was kept to reduce the
-> > Linux diff.
+> > The sync is in preparation of adding nvmem-layout driver support and
+> > features like accessing nvmem-cells via cdevs.
 > > 
 > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > ---
-> >  drivers/nvmem/core.c | 93 ++++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 93 insertions(+)
+> >  drivers/nvmem/core.c           | 428 ++++++++++++++++++++++++++---------------
+> >  include/linux/nvmem-consumer.h |  17 +-
+> >  include/linux/nvmem-provider.h |  58 +++++-
+> >  3 files changed, 326 insertions(+), 177 deletions(-)
 > > 
 > > diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-> > index c252f17ef0b24e8199e199db086aeec8d09fdf94..4dbeb1e116ae398f1f2748238d97468c1096262a 100644
-> > --- a/drivers/nvmem/core.c
-> > +++ b/drivers/nvmem/core.c
-> > @@ -45,6 +45,8 @@ struct nvmem_cell_entry {
-> >  	struct device_node	*np;
-> >  	struct nvmem_device	*nvmem;
-> >  	struct list_head	node;
+> > +static int nvmem_add_cells_from_dt(struct nvmem_device *nvmem, struct device_node *np)
+> > +{
+> > +	struct device *dev = &nvmem->dev;
+> > +	struct device_node *child;
+> > +	const __be32 *addr;
+> > +	int len, ret;
 > > +
-> > +	struct cdev		cdev;
-> >  };
-> >  
-> >  struct nvmem_cell {
-> > @@ -167,6 +169,71 @@ static struct nvmem_device *of_nvmem_find(struct device_node *nvmem_np)
-> >  	return NULL;
-> >  }
-> >  
-> > +static struct nvmem_cell *nvmem_create_cell(struct nvmem_cell_entry *entry,
-> > +					    const char *id, int index);
+> > +	if (!IS_ENABLED(CONFIG_OFTREE))
+> > +		return 0;
+> > +
 > 
-> This causes intermediate breakage. The prototype at this point is still:
+> This needs an additional check:
 > 
-> static struct nvmem_cell *nvmem_create_cell(struct nvmem_cell_entry *entry,
-> 					    const char *id);
+> 	if (!np)
+> 		return 0;
 > 
-> The index parameter is only added later in this series.
+> > +	for_each_child_of_node(np, child) {
+> 
+> Linux gracefully handles NULL in for_each_child_of_node() whereas
+> barebox crashes here.
 
-Argh.. I didn't noticed this sorry.
+Damn, thanks for spotting this.
 
 Regards,
   Marco
+
 
 > 
 > Sascha
