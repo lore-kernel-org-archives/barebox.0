@@ -1,69 +1,59 @@
-Delivery-date: Thu, 21 Aug 2025 03:08:02 +0200
+Delivery-date: Thu, 21 Aug 2025 09:18:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uotmd-002num-1J
+	id 1uozYn-002tN3-1J
 	for lore@lore.pengutronix.de;
-	Thu, 21 Aug 2025 03:08:02 +0200
+	Thu, 21 Aug 2025 09:18:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uotmc-0000VN-2S
-	for lore@pengutronix.de; Thu, 21 Aug 2025 03:08:02 +0200
+	id 1uozYm-0002rO-1z
+	for lore@pengutronix.de; Thu, 21 Aug 2025 09:18:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OrQp8tcd1Fm2kQgzA02ESd8wfto0E5wZS8bMVAitroQ=; b=ewgCH5XfYQT4BadlkZGn64zMlK
-	9njKLw2R4L8KwQY3JhlyeGmsBeXRGyArn4T6HlfAbQeJdAjs3zTGrPqTUuHMeTGMEce6bE+wMZYZX
-	x6ebU5cs/EhoZvmI1s7Jq5I7GDx5hkG/bdHuTY9po+/uz7JsxdnPUqI3bjIogTPPkZ1aOAS1r5vAJ
-	s27uswZ8wrwkoQNwg1PIDzG/SVcWGhT9I+8Zz3+5CzrMJCSXrHNmyqu4d/l/qWQ8VjcuIAOWGKthz
-	38z/ESbssJTJpNMbpbl0LtlypmpFJaHKlxKqPvqdc7zZKvByoJ3fnMSFkSyYXuYwShr8jECco8T+T
-	B7OcH6yg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2mSlS1EuBpR/2pPj4sZecIZROBAmRQZsiA3RoJy6RsM=; b=tXJ+0rKNcNNVNV5/kU0MCoDD0z
+	HRKi1cBvyKfzcLmvMN1Ls38J13Rp//Bq60MTtc8flWCe3qDdoP54vYJBiQINlW1RgU/lZFN7tL+Oe
+	0Yn46eK+aYxXs5RDl0nKh/4P3I0/dEUZjJGzFsrYzcy1xOTyd20RGma3UkVLQbQ6HD0ZFLsEzNV36
+	aE3XtHSIRRJCR7lh+bMK0/lXz1UtY9HLfiP88D2IMpKxfhrC3kzzHf4Qg59MtkWfOLVyWDku3s7KL
+	5W82qg0lgdaGshv4d7LMhxpB1ThPgtuYRmPfn79hWVC+Ty+i9RFsozUg4WqIAc9fNg0QAl3JRdeA3
+	aeKYaq3Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uotm1-0000000FNiu-1jBs;
-	Thu, 21 Aug 2025 01:07:25 +0000
+	id 1uozY7-0000000G4kl-35aZ;
+	Thu, 21 Aug 2025 07:17:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uopd5-0000000Er6p-0fiX
+	id 1uozEW-0000000G1Ut-1bBz
 	for barebox@lists.infradead.org;
-	Wed, 20 Aug 2025 20:41:56 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uopd2-0002Ns-ND; Wed, 20 Aug 2025 22:41:52 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uopd2-001IrB-1h;
-	Wed, 20 Aug 2025 22:41:52 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uopd2-00638l-1H;
-	Wed, 20 Aug 2025 22:41:52 +0200
-Date: Wed, 20 Aug 2025 22:41:52 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20250820204152.fpc7vlyt2lqc3qfn@pengutronix.de>
-References: <20250820-v2024-05-0-topic-fit-overlay-v6-0-9d1b3bab2ee2@pengutronix.de>
- <20250820-v2024-05-0-topic-fit-overlay-v6-12-9d1b3bab2ee2@pengutronix.de>
- <007c5c91-6a6c-4877-8aae-df381aa48677@pengutronix.de>
- <20250820145106.ngoy6zfwuq4hwyie@pengutronix.de>
+	Thu, 21 Aug 2025 06:57:13 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uozET-0000Vm-Ta; Thu, 21 Aug 2025 08:57:09 +0200
+Message-ID: <227a5210-f01f-48ce-9908-50ebc01931a8@pengutronix.de>
+Date: Thu, 21 Aug 2025 08:57:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250820145106.ngoy6zfwuq4hwyie@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+References: <20250820-security-policies-v1-0-76fde70fdbd8@pengutronix.de>
+ <20250820-security-policies-v1-15-76fde70fdbd8@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250820-security-policies-v1-15-76fde70fdbd8@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250820_134155_203820_CA1F0605 
-X-CRM114-Status: GOOD (  28.52  )
+X-CRM114-CacheID: sfid-20250820_235712_428105_BAD8DE87 
+X-CRM114-Status: GOOD (  20.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,182 +71,218 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v6 12/12] FIT: add support to cache opened fit images
+Subject: Re: [PATCH 15/24] boards: qemu-virt: add security policies
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-08-20, Marco Felsch wrote:
-> Hi,
+Hi,
+
+On 8/20/25 15:17, Sascha Hauer wrote:
+> From: Ahmad Fatoum <a.fatoum@barebox.org>
 > 
-> On 25-08-20, Ahmad Fatoum wrote:
-> > Hi,
-> > 
-> > On 8/20/25 11:48, Marco Felsch wrote:
-> > > Cache the FIT image fit_open() calls to avoid loading the same FIT image
-> > > twice. This is very useful if the same FIT image is used to provide the
-> > > base devicetree, kernel and initrd as well as devicetree overlays.
-> > 
-> > Just curious, how much time does this save?
-> 
-> This depends on the amount of overlays you're going to check/apply. But
-> in my use-case it reduced the time from ~1sec to 200ms for ~10 overlays
-> which are stored together with the boot image e.g. kernel, base-dt,
-> initrd.
+> To make it easier to experiment with security policies, add four example
+> configurations, two via the build system and two "externally".
 
-Sorry I remembered incorrectly. In the end it does not depend on the
-overlays but on the FIT which supplies the overlays and the boot-image.
+The configs need a make security_olddefconfig due to the addition of the
+new symbols in later commits.
 
-IIRC, we reduced the FIT load time from 1sec to 200ms because the same
-FIT is used for the overlays and the boot-image, so we only need to
-fit_open() the image once.
-
-Before the caching we had to open it twice:
- - 1nd time for the bootm bootm-image handling,
- - 2st time for the overlay handling.
-
-Regards,
-  Marco
-
+Cheers,
+Ahmad
 
 > 
-> Regards,
->   Marco
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/configs/virt32_secure_defconfig           |  1 +
+>  common/boards/qemu-virt/Makefile                   |  3 +++
+>  common/boards/qemu-virt/board.c                    |  8 ++++++++
+>  common/boards/qemu-virt/qemu-virt-factory.sconfig  | 24 ++++++++++++++++++++++
+>  common/boards/qemu-virt/qemu-virt-lockdown.sconfig | 24 ++++++++++++++++++++++
+>  security/qemu-virt-devel.sconfig                   | 24 ++++++++++++++++++++++
+>  security/qemu-virt-tamper.sconfig                  | 24 ++++++++++++++++++++++
+>  7 files changed, 108 insertions(+)
 > 
-> > 
-> > Cheers,
-> > Ahmad
-> > 
-> > > 
-> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > ---
-> > >  common/image-fit.c  | 32 ++++++++++++++++++++++++++++++++
-> > >  include/image-fit.h |  4 ++++
-> > >  2 files changed, 36 insertions(+)
-> > > 
-> > > diff --git a/common/image-fit.c b/common/image-fit.c
-> > > index c9d08d25f723665e5203d8e8372255a39bf739de..2cde844e46a61f412a46c2c7bb79d833153e5344 100644
-> > > --- a/common/image-fit.c
-> > > +++ b/common/image-fit.c
-> > > @@ -16,6 +16,7 @@
-> > >  #include <fs.h>
-> > >  #include <malloc.h>
-> > >  #include <linux/ctype.h>
-> > > +#include <linux/refcount.h>
-> > >  #include <asm/byteorder.h>
-> > >  #include <errno.h>
-> > >  #include <linux/err.h>
-> > > @@ -33,6 +34,8 @@
-> > >  #define CHECK_LEVEL_SIG 2
-> > >  #define CHECK_LEVEL_MAX 3
-> > >  
-> > > +static LIST_HEAD(open_fits);
-> > > +
-> > >  static uint32_t dt_struct_advance(struct fdt_header *f, uint32_t dt, int size)
-> > >  {
-> > >  	dt += size;
-> > > @@ -902,6 +905,18 @@ void *fit_open_configuration(struct fit_handle *handle, const char *name,
-> > >  	return conf_node;
-> > >  }
-> > >  
-> > > +static struct fit_handle *fit_get_handle(const char *filename)
-> > > +{
-> > > +	struct fit_handle *handle;
-> > > +
-> > > +	list_for_each_entry(handle, &open_fits, entry) {
-> > > +		if (!strcmp(filename, handle->filename))
-> > > +			return handle;
-> > > +	}
-> > > +
-> > > +	return NULL;
-> > > +}
-> > > +
-> > >  static int fit_do_open(struct fit_handle *handle)
-> > >  {
-> > >  	const char *desc = "(no description)";
-> > > @@ -951,6 +966,8 @@ struct fit_handle *fit_open_buf(const void *buf, size_t size, bool verbose,
-> > >  	handle->size = size;
-> > >  	handle->verify = verify;
-> > >  
-> > > +	refcount_set(&handle->users, 1);
-> > > +
-> > >  	ret = fit_do_open(handle);
-> > >  	if (ret) {
-> > >  		fit_close(handle);
-> > > @@ -985,6 +1002,12 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
-> > >  		return ERR_PTR(-errno);
-> > >  	}
-> > >  
-> > > +	handle = fit_get_handle(filename);
-> > > +	if (handle) {
-> > > +		refcount_inc(&handle->users);
-> > > +		return handle;
-> > > +	}
-> > > +
-> > >  	handle = xzalloc(sizeof(struct fit_handle));
-> > >  
-> > >  	handle->verbose = verbose;
-> > > @@ -1002,6 +1025,9 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
-> > >  	handle->fit = handle->fit_alloc;
-> > >  	handle->filename = filename;
-> > >  
-> > > +	refcount_set(&handle->users, 1);
-> > > +	list_add(&handle->entry, &open_fits);
-> > > +
-> > >  	ret = fit_do_open(handle);
-> > >  	if (ret) {
-> > >  		fit_close(handle);
-> > > @@ -1013,9 +1039,15 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
-> > >  
-> > >  static void __fit_close(struct fit_handle *handle)
-> > >  {
-> > > +	if (!refcount_dec_and_test(&handle->users))
-> > > +		return;
-> > > +
-> > >  	if (handle->root)
-> > >  		of_delete_node(handle->root);
-> > >  
-> > > +	if (handle->filename)
-> > > +		list_del(&handle->entry);
-> > > +
-> > >  	free(handle->filename);
-> > >  	free(handle->fit_alloc);
-> > >  }
-> > > diff --git a/include/image-fit.h b/include/image-fit.h
-> > > index 68f70f4365cb7a650596263086f7de2209d5957e..f9791ff251c554eda56bf3af98c8abceb056a176 100644
-> > > --- a/include/image-fit.h
-> > > +++ b/include/image-fit.h
-> > > @@ -7,6 +7,7 @@
-> > >  #define __IMAGE_FIT_H__
-> > >  
-> > >  #include <linux/types.h>
-> > > +#include <linux/refcount.h>
-> > >  #include <bootm.h>
-> > >  
-> > >  struct fit_handle {
-> > > @@ -15,6 +16,9 @@ struct fit_handle {
-> > >  	size_t size;
-> > >  	char *filename;
-> > >  
-> > > +	struct list_head entry;
-> > > +	refcount_t users;
-> > > +
-> > >  	bool verbose;
-> > >  	enum bootm_verify verify;
-> > >  
-> > > 
-> > 
-> > -- 
-> > Pengutronix e.K.                  |                             |
-> > Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-> > 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> > Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-> > 
-> > 
+> diff --git a/arch/arm/configs/virt32_secure_defconfig b/arch/arm/configs/virt32_secure_defconfig
+> index 34cc49405495b33b4f78e078dfbcd951c433fcd8..09c98e5e4dc88aa22b3aa10db38efd7b7cac2310 100644
+> --- a/arch/arm/configs/virt32_secure_defconfig
+> +++ b/arch/arm/configs/virt32_secure_defconfig
+> @@ -292,6 +292,7 @@ CONFIG_FS_UBOOTVARFS=y
+>  CONFIG_SECURITY_POLICY=y
+>  CONFIG_SECURITY_POLICY_INIT="lockdown"
+>  CONFIG_SECURITY_POLICY_DEFAULT_PANIC=y
+> +CONFIG_SECURITY_POLICY_PATH="security/qemu-virt-devel.sconfig security/qemu-virt-tamper.sconfig"
+>  CONFIG_BUG_ON_DATA_CORRUPTION=y
+>  CONFIG_DIGEST_SHA1_ARM=y
+>  CONFIG_DIGEST_SHA256_ARM=y
+> diff --git a/common/boards/qemu-virt/Makefile b/common/boards/qemu-virt/Makefile
+> index 30bf4f1955ee9d306b46523863e247e4cf94ab75..2caa6a20c522ac68fd629f38e51fdf1423db4b09 100644
+> --- a/common/boards/qemu-virt/Makefile
+> +++ b/common/boards/qemu-virt/Makefile
+> @@ -9,5 +9,8 @@ ifeq ($(CONFIG_ARM),y)
+>  DTC_CPP_FLAGS_qemu-virt-flash.dtbo := -DCONFIG_ARM
+>  endif
+>  
+> +policy-y += qemu-virt-factory.sconfig
+> +policy-y += qemu-virt-lockdown.sconfig
+> +
+>  clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+>  clean-files += *.dtbo *.dtbo.S .*.dtso
+> diff --git a/common/boards/qemu-virt/board.c b/common/boards/qemu-virt/board.c
+> index 9882b0c31a3cf9a97ef0e963653c85a3ead961bb..6f88f24b0690c2562b3b3718a56c9f5c46a4455a 100644
+> --- a/common/boards/qemu-virt/board.c
+> +++ b/common/boards/qemu-virt/board.c
+> @@ -7,6 +7,7 @@
+>  #include <init.h>
+>  #include <of.h>
+>  #include <deep-probe.h>
+> +#include <security/policy.h>
+>  #include "qemu-virt-flash.h"
+>  
+>  #ifdef CONFIG_64BIT
+> @@ -83,6 +84,13 @@ static int virt_board_driver_init(void)
+>  
+>  	/* of_probe() will happen later at of_populate_initcall */
+>  
+> +	security_policy_add(qemu_virt_factory);
+> +	security_policy_add(qemu_virt_lockdown);
+> +	/*
+> +	 * qemu_virt_devel & qemu_virt_tamper intentionally not added here,
+> +	 * so the test suite can exercise CONFIG_SECURITY_POLICY_PATH.
+> +	 */
+> +
+>  	return 0;
+>  }
+>  postcore_initcall(virt_board_driver_init);
+> diff --git a/common/boards/qemu-virt/qemu-virt-factory.sconfig b/common/boards/qemu-virt/qemu-virt-factory.sconfig
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..b19d02b37f7c308e8e93da17349981301902d851
+> --- /dev/null
+> +++ b/common/boards/qemu-virt/qemu-virt-factory.sconfig
+> @@ -0,0 +1,24 @@
+> +#
+> +# Automatically generated file; DO NOT EDIT.
+> +# Barebox/arm Security Configuration
+> +#
+> +SCONFIG_POLICY_NAME="factory"
+> +SCONFIG_SECURITY_POLICY_SELECT=y
+> +
+> +#
+> +# General Settings
+> +#
+> +SCONFIG_RATP=y
+> +# end of General Settings
+> +
+> +#
+> +# Boot Policy
+> +#
+> +# SCONFIG_BOOT_UNSIGNED_IMAGES is not set
+> +# end of Boot Policy
+> +
+> +#
+> +# Command Policy
+> +#
+> +# SCONFIG_CMD_GO is not set
+> +# end of Command Policy
+> diff --git a/common/boards/qemu-virt/qemu-virt-lockdown.sconfig b/common/boards/qemu-virt/qemu-virt-lockdown.sconfig
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..e11e5e069c61f6b968716b75a836bfda2676057e
+> --- /dev/null
+> +++ b/common/boards/qemu-virt/qemu-virt-lockdown.sconfig
+> @@ -0,0 +1,24 @@
+> +#
+> +# Automatically generated file; DO NOT EDIT.
+> +# Barebox/arm Security Configuration
+> +#
+> +SCONFIG_POLICY_NAME="lockdown"
+> +SCONFIG_SECURITY_POLICY_SELECT=y
+> +
+> +#
+> +# General Settings
+> +#
+> +# SCONFIG_RATP is not set
+> +# end of General Settings
+> +
+> +#
+> +# Boot Policy
+> +#
+> +# SCONFIG_BOOT_UNSIGNED_IMAGES is not set
+> +# end of Boot Policy
+> +
+> +#
+> +# Command Policy
+> +#
+> +# SCONFIG_CMD_GO is not set
+> +# end of Command Policy
+> diff --git a/security/qemu-virt-devel.sconfig b/security/qemu-virt-devel.sconfig
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..4513917a95cca07d415fcc856589dca92a289707
+> --- /dev/null
+> +++ b/security/qemu-virt-devel.sconfig
+> @@ -0,0 +1,24 @@
+> +#
+> +# Automatically generated file; DO NOT EDIT.
+> +# Barebox/arm Security Configuration
+> +#
+> +SCONFIG_POLICY_NAME="devel"
+> +SCONFIG_SECURITY_POLICY_SELECT=y
+> +
+> +#
+> +# General Settings
+> +#
+> +SCONFIG_RATP=y
+> +# end of General Settings
+> +
+> +#
+> +# Boot Policy
+> +#
+> +SCONFIG_BOOT_UNSIGNED_IMAGES=y
+> +# end of Boot Policy
+> +
+> +#
+> +# Command Policy
+> +#
+> +SCONFIG_CMD_GO=y
+> +# end of Command Policy
+> diff --git a/security/qemu-virt-tamper.sconfig b/security/qemu-virt-tamper.sconfig
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..f2453a9936c19fe8a31879d1ee48cd0ce6655d5e
+> --- /dev/null
+> +++ b/security/qemu-virt-tamper.sconfig
+> @@ -0,0 +1,24 @@
+> +#
+> +# Automatically generated file; DO NOT EDIT.
+> +# Barebox/arm Security Configuration
+> +#
+> +SCONFIG_POLICY_NAME="tamper"
+> +# SCONFIG_SECURITY_POLICY_SELECT is not set
+> +
+> +#
+> +# General Settings
+> +#
+> +# SCONFIG_RATP is not set
+> +# end of General Settings
+> +
+> +#
+> +# Boot Policy
+> +#
+> +# SCONFIG_BOOT_UNSIGNED_IMAGES is not set
+> +# end of Boot Policy
+> +
+> +#
+> +# Command Policy
+> +#
+> +# SCONFIG_CMD_GO is not set
+> +# end of Command Policy
 > 
-> 
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
