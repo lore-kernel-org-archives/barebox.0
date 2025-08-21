@@ -1,74 +1,74 @@
-Delivery-date: Thu, 21 Aug 2025 19:52:57 +0200
+Delivery-date: Thu, 21 Aug 2025 19:52:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1up9T8-0032dc-04
+	id 1up9T8-0032dy-2A
 	for lore@lore.pengutronix.de;
-	Thu, 21 Aug 2025 19:52:57 +0200
+	Thu, 21 Aug 2025 19:52:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1up9T6-0005vg-K4
-	for lore@pengutronix.de; Thu, 21 Aug 2025 19:52:57 +0200
+	id 1up9T7-0005wE-3Z
+	for lore@pengutronix.de; Thu, 21 Aug 2025 19:52:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mR0Bm7zoJrg4JOd5zTa3JVEcMKMysA0wJgQkAKKqxfI=; b=lxe0uLgkVUknRe/N3VRAp/Pvwn
-	CVmtFzBsut3D+1UUMK/Eth+i9uhL3Ru0rWrdt5CXD6IqbZBvPpnbRoGJ/bDhRswz5iRsjwR/cmln3
-	3z2c2yGENkfdMWdb10rZOZ2o6jyD2NpOUaXkXmmihnQXFFzLi4mKCbVTXvmP3VSudUuvYMHhrFyym
-	OFI67zo69PTZmo3yerUGpjPAfk2K16WKDKFutFiXLzzreCZQvQkiIQUwcdnnJRfRVHyiEN0K6zTg/
-	zzltEK+gAnn64K+H2LGmeaeR4NApBZ7uB/AisbDJV6thiYO4V3E2cWNlblA92aFpcIYm+lCcUZnif
-	7z67mULw==;
+	bh=gAK5WvFrQS5suFKUGFOeeLDJBCO86+CylY08V/bDFII=; b=1SaPAP+1H0wqJ6Az3TtKRAzGE+
+	eTtrT6fEuPMdHB+n7Q0dG82tsVI7XZ5d4IGgXOHFT1eeUcRAUhUkHRnY48zBYP55ut5EI/hgm2ILJ
+	HQOWIsFWmZGEwVnJ677lbfGOdGubt+UmL6Df2gYZRmOKih2dfZ+YOcx0gBtKNCF6YCxNX1TYqKd/X
+	Psyo4LkNYpbYeTyMgnmpoULSsNJccjWBbStSh2WxYFku+ZhJc87llpQlv9KZufmX2Gg74Wxf7ITzr
+	wRSvVlU6+F9XFjWMaVBMKWwnfmZWnP4ZXhjyMxgDaS9gqxF3NK907Vbd4eidK8UIT8Dnxv4TI1wMv
+	7/hwj9yg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1up9SQ-000000006sw-20OY;
-	Thu, 21 Aug 2025 17:52:14 +0000
+	id 1up9ST-000000006vN-12SF;
+	Thu, 21 Aug 2025 17:52:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1up5Ba-0000000H1aH-3Mde
+	id 1up5Bg-0000000H1ct-2lmN
 	for barebox@lists.infradead.org;
-	Thu, 21 Aug 2025 13:18:37 +0000
+	Thu, 21 Aug 2025 13:18:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1up5BX-0008Vg-IY; Thu, 21 Aug 2025 15:18:31 +0200
+	id 1up5BX-0008Vd-Gu; Thu, 21 Aug 2025 15:18:31 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1up5BX-001Q3K-0y;
+	id 1up5BX-001Q3H-0t;
 	Thu, 21 Aug 2025 15:18:31 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1up5BX-00HHYe-0g;
+	id 1up5BX-00HHYe-0c;
 	Thu, 21 Aug 2025 15:18:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 21 Aug 2025 15:18:29 +0200
+Date: Thu, 21 Aug 2025 15:18:25 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250821-keynames-v1-6-8144af76d0ab@pengutronix.de>
+Message-Id: <20250821-keynames-v1-2-8144af76d0ab@pengutronix.de>
 References: <20250821-keynames-v1-0-8144af76d0ab@pengutronix.de>
 In-Reply-To: <20250821-keynames-v1-0-8144af76d0ab@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755782311; l=3440;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755782311; l=6430;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=8v4goGUa9Awy8wUFk5Z0A5ge3WGOPSJz0qwpH913CRY=;
- b=u3ROzhJG7HL4Q10/y8vXhU8b6Gq02gl4JM02rjOsrSVCMTxvjTy75ha5gU9ic5vNsLh+gUo35
- 5dSAirsH0cvAmP4aXruN1/v9Y2MOTy+LO1wYJB2bfaACvacuKyfnQv4
+ bh=y8IoMqhNSamFaBnZjRaZ8fo1oF6zYFLwzwwQwihiSXw=;
+ b=CVX+tQ1Kk1kn9r9k3h8qBNqys1Y8pB2lAZz9Zzc1Z3nEUmYTVWBkUIuxJCJcVh8l+01/LBvlb
+ 5yadHb6g0F5Do7X3mfyJ0L8vGCn/4Euc9zy0KVQxWmT4rGSta5QCIB3
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250821_061834_859119_98F00805 
-X-CRM114-Status: GOOD (  15.48  )
+X-CRM114-CacheID: sfid-20250821_061840_857237_EC000D41 
+X-CRM114-Status: GOOD (  15.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,114 +90,142 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 6/6] fit: improve diagnostics
+Subject: [PATCH 2/6] crypto: Allow to include development keys in build
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-FIT image output can become very verbose when a FIT image with multiple
-device tree overlays is used. This hides several messages from normal
-output and only prints them in verbose mode, (i.e. called via bootm -v)
+Pengutronix has published well known RSA and ECDSA keys for development
+purposes. This adds the public keys to the tree and adds
+CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS. By enabling this option these
+keys will be built into the barebox binary to allow for easy signing
+tests.
 
-Also from the output we could not see if all available keys fail to
-verify the image or if no key is available at all. This patch improves
-this by printing it clearly that no keys are available.
+As these keys obviously should not show up in a production build this
+option selects HAS_INSECURE_DEFAULTS.
+
+The private keys for the well known development keys can be found at
+[1].
+
+[1] https://git.pengutronix.de/cgit/ptx-code-signing-dev/
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/image-fit.c   | 23 +++++++++++++++++------
- crypto/public-keys.c |  4 +++-
- 2 files changed, 20 insertions(+), 7 deletions(-)
+ Documentation/user/security.rst  |  5 +++++
+ crypto/Kconfig                   |  4 ++++
+ crypto/Makefile                  |  9 +++++++++
+ crypto/fit-4096-development.crt  | 33 +++++++++++++++++++++++++++++++++
+ crypto/fit-ecdsa-development.crt | 13 +++++++++++++
+ 5 files changed, 64 insertions(+)
 
-diff --git a/common/image-fit.c b/common/image-fit.c
-index 1fe5aaf9bb186ae2407818b7824deea3f182e3e0..46e687bf91412f6957a8ba61c4b81648a8346b1d 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -258,6 +258,7 @@ static struct digest *fit_alloc_digest(struct device_node *sig_node,
- static int fit_check_signature(struct fit_handle *handle, struct device_node *sig_node,
- 			       enum hash_algo algo, void *hash)
- {
-+	const char *fail_reason = "no built-in keys";
- 	const struct public_key *key;
- 	const char *key_name = NULL;
- 	int sig_len;
-@@ -275,26 +276,34 @@ static int fit_check_signature(struct fit_handle *handle, struct device_node *si
- 		key = public_key_get(key_name);
- 		if (key) {
- 			ret = public_key_verify(key, sig_value, sig_len, hash, algo);
-+			if (handle->verbose)
-+				pr_info("Key %*phN (%s) -> signature %s\n", key->hashlen,
-+					key->hash, key_name, ret ? "BAD" : "OK");
- 			if (!ret)
- 				goto ok;
- 		}
- 	}
+diff --git a/Documentation/user/security.rst b/Documentation/user/security.rst
+index cc15c8b512b277dc4480b67d5e378958ac916a1a..357ea86a1d9abcc49b0d01ad24981e90d1e3fc45 100644
+--- a/Documentation/user/security.rst
++++ b/Documentation/user/security.rst
+@@ -81,6 +81,11 @@ be allowed to boot any images that have not been signed by the correct key.
+ This can be enforced by setting ``CONFIG_BOOTM_FORCE_SIGNED_IMAGES=y``
+ and disabling any ways that could use used to override this.
  
- 	for_each_public_key(key) {
-+		fail_reason = "verification failed";
++For development convenience ``CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS`` keys
++can be used to compile in well known development keys into the barebox binary.
++The private keys for these keys can be found
++`[here] <https://git.pengutronix.de/cgit/ptx-code-signing-dev>`__
 +
- 		if (key_name && !strcmp(key->key_name_hint, key_name))
- 			continue;
+ Disabling the shell
+ ^^^^^^^^^^^^^^^^^^^
  
- 		ret = public_key_verify(key, sig_value, sig_len, hash, algo);
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index 4f9cc3e6a560b653225efd70246ad1d79a451f78..f1f9b9bb80cfc88836c6b6b384bd8b089108b412 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -145,6 +145,10 @@ config CRYPTO_PUBLIC_KEYS
+ 	  corresponding value in the environment variable VAR_NAME for both
+ 	  public key paths/URIs as well as key name hints.
+ 
++config CRYPTO_BUILTIN_DEVELOPMENT_KEYS
++	select HAS_INSECURE_DEFAULTS
++	bool "Include development keys in build"
 +
-+		if (handle->verbose)
-+			pr_info("Key %*phN -> signature %s\n", key->hashlen, key->hash,
-+				ret ? "BAD" : "OK");
+ config CRYPTO_KEYSTORE
+ 	bool "Keystore"
+ 	help
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 7148aecb4a8e2275a62b25c834b1743c156a7f91..481bbec81bb2da3fbaea20c6e4eb32d6c79be4b0 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -33,6 +33,15 @@ $(obj)/public-keys.o: $(obj)/public-keys.h
+ CONFIG_CRYPTO_PUBLIC_KEYS := $(shell echo $(CONFIG_CRYPTO_PUBLIC_KEYS))
+ CONFIG_CRYPTO_PUBLIC_KEYS := $(foreach d,$(CONFIG_CRYPTO_PUBLIC_KEYS),"$(d)")
+ 
++ifdef CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS
++ifdef CONFIG_CRYPTO_RSA
++CONFIG_CRYPTO_PUBLIC_KEYS += rsa-devel:$(srctree)/crypto/fit-4096-development.crt
++endif
++ifdef CONFIG_CRYPTO_ECDSA
++CONFIG_CRYPTO_PUBLIC_KEYS += ecdsa-devel:$(srctree)/crypto/fit-ecdsa-development.crt
++endif
++endif
 +
- 		if (!ret)
- 			goto ok;
- 	}
+ filechk_public_keys_dummy = echo
  
--	pr_err("image signature BAD\n");
-+	pr_err("image signature BAD: %s\n", fail_reason);
- 
- 	return -EBADMSG;
- ok:
--	pr_info("image signature OK\n");
--
- 	return 0;
- }
- 
-@@ -417,10 +426,11 @@ static int fit_verify_hash(struct fit_handle *handle, struct device_node *image,
- 	digest_update(d, data, data_len);
- 
- 	if (digest_verify(d, value_read)) {
--		pr_info("%pOF: hash BAD\n", hash);
-+		pr_err("%pOF: hash BAD\n", hash);
- 		ret =  -EBADMSG;
- 	} else {
--		pr_info("%pOF: hash OK\n", hash);
-+		if (handle->verbose)
-+			pr_info("%pOF: hash OK\n", hash);
- 		ret = 0;
- 	}
- 
-@@ -663,7 +673,8 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
- 		return ret;
- 
- 	of_property_read_string(image, "description", &desc);
--	pr_info("image '%s': '%s'\n", unit, desc);
-+	if (handle->verbose)
-+		pr_info("image '%s': '%s'\n", unit, desc);
- 
- 	of_property_read_string(image, "type", &type);
- 	if (!type) {
-diff --git a/crypto/public-keys.c b/crypto/public-keys.c
-index 3b691ffd6aa536084aefca90933b4bb74b724423..05ea6e76d212e9a37a6691647ce9e6350141c18d 100644
---- a/crypto/public-keys.c
-+++ b/crypto/public-keys.c
-@@ -96,8 +96,10 @@ static int init_public_keys(void)
- 	for (iter = __public_keys_start; iter != __public_keys_end; iter++) {
- 		struct public_key *key = public_key_dup(iter);
- 
--		if (!key)
-+		if (!key) {
-+			pr_warn("error while adding key\n");
- 			continue;
-+		}
- 
- 		public_key_add(key);
- 	}
+ $(obj)/public-keys.h: FORCE
+diff --git a/crypto/fit-4096-development.crt b/crypto/fit-4096-development.crt
+new file mode 100644
+index 0000000000000000000000000000000000000000..dffba216b9c671899bb7c12fb1560e2431b9aa6e
+--- /dev/null
++++ b/crypto/fit-4096-development.crt
+@@ -0,0 +1,33 @@
++-----BEGIN CERTIFICATE-----
++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
++Yu8PytQLFKL1pZU=
++-----END CERTIFICATE-----
+diff --git a/crypto/fit-ecdsa-development.crt b/crypto/fit-ecdsa-development.crt
+new file mode 100644
+index 0000000000000000000000000000000000000000..490d48b93a094ca5ed6fe507193a19eeb35683ae
+--- /dev/null
++++ b/crypto/fit-ecdsa-development.crt
+@@ -0,0 +1,13 @@
++-----BEGIN CERTIFICATE-----
++MIIB+jCCAaCgAwIBAgIUPWGk8K75jmaLrLI7VkbZQwbJuU4wCgYIKoZIzj0EAwIw
++XTEUMBIGA1UECgwLUGVuZ3V0cm9uaXgxIDAeBgNVBAMMF0RldmVsb3BtZW50IHNp
++Z25pbmcga2V5MSMwIQYJKoZIhvcNAQkBFhRkZWJ1Z0BwZW5ndXRyb25peC5kZTAg
++Fw0yNDA3MjYwOTM5NTZaGA8yMTI0MDcwMjA5Mzk1NlowXTEUMBIGA1UECgwLUGVu
++Z3V0cm9uaXgxIDAeBgNVBAMMF0RldmVsb3BtZW50IHNpZ25pbmcga2V5MSMwIQYJ
++KoZIhvcNAQkBFhRkZWJ1Z0BwZW5ndXRyb25peC5kZTBZMBMGByqGSM49AgEGCCqG
++SM49AwEHA0IABKMAmtjmHz3Rka9SaUmDjTgNzdo8CYxmz23xurgcyoNVajjpNGv1
++XwXxG0Hr+l/ehwnes77wtrYwYLyAlvFAdE2jPDA6MAwGA1UdEwEB/wQCMAAwCwYD
++VR0PBAQDAgeAMB0GA1UdDgQWBBQ5gyCsUddXXclJHHRUH+w2+R0N2jAKBggqhkjO
++PQQDAgNIADBFAiAfMkyM1n7JYCYqvYq4YdbWD8q2kZvVYhRK7gKIRZNUjAIhAKng
++1plXACT2UcKDQV9+o3qbve9LDV3aASRmZz47DX+0
++-----END CERTIFICATE-----
 
 -- 
 2.39.5
