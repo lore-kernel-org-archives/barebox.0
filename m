@@ -1,74 +1,74 @@
-Delivery-date: Thu, 21 Aug 2025 19:52:55 +0200
+Delivery-date: Thu, 21 Aug 2025 19:52:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1up9T6-0032ct-1d
+	id 1up9T8-0032dc-04
 	for lore@lore.pengutronix.de;
-	Thu, 21 Aug 2025 19:52:55 +0200
+	Thu, 21 Aug 2025 19:52:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1up9T4-0005u6-Rj
-	for lore@pengutronix.de; Thu, 21 Aug 2025 19:52:55 +0200
+	id 1up9T6-0005vg-K4
+	for lore@pengutronix.de; Thu, 21 Aug 2025 19:52:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=43Ke28a0X68Xk4G8LFpiCu96MrCtDGIFI2gbF9bJMhQ=; b=uW0jpIL1EbME7Y8YfHfK73NpLZ
-	KKEb/Ai57BBm0ZvEE+ugekF7k2ESTaAZmOMh4kXYcTxXpXmeJIDA1lyJXQ7XFYh+qbWBJXt7lxvJK
-	IUe8h9PFnTTUsf3MnHvJ9ZFyg2s/soQ5in1k4pHwfKybOIZfBBxFI9nhDHo9yKtRDeaQjgQWYXigw
-	+JV8n5w8So9KuBKo4zfBS+e24NLBAMlqm+H5JVJxMSQwKsZ8++84nWo5sPZClrHjC/IvemOQAqFWj
-	GYcMuYOFQJqZA4lQIa/P/TgtbettbNijKOGGWRJt6oz3kgnQw394paFOpzcyYJ9pveV7xPcSGvmXW
-	9DnaGMFQ==;
+	bh=mR0Bm7zoJrg4JOd5zTa3JVEcMKMysA0wJgQkAKKqxfI=; b=lxe0uLgkVUknRe/N3VRAp/Pvwn
+	CVmtFzBsut3D+1UUMK/Eth+i9uhL3Ru0rWrdt5CXD6IqbZBvPpnbRoGJ/bDhRswz5iRsjwR/cmln3
+	3z2c2yGENkfdMWdb10rZOZ2o6jyD2NpOUaXkXmmihnQXFFzLi4mKCbVTXvmP3VSudUuvYMHhrFyym
+	OFI67zo69PTZmo3yerUGpjPAfk2K16WKDKFutFiXLzzreCZQvQkiIQUwcdnnJRfRVHyiEN0K6zTg/
+	zzltEK+gAnn64K+H2LGmeaeR4NApBZ7uB/AisbDJV6thiYO4V3E2cWNlblA92aFpcIYm+lCcUZnif
+	7z67mULw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1up9SR-000000006tU-1r0O;
-	Thu, 21 Aug 2025 17:52:15 +0000
+	id 1up9SQ-000000006sw-20OY;
+	Thu, 21 Aug 2025 17:52:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1up5Ba-0000000H1aF-3Hjb
+	id 1up5Ba-0000000H1aH-3Mde
 	for barebox@lists.infradead.org;
 	Thu, 21 Aug 2025 13:18:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1up5BX-0008Ve-H2; Thu, 21 Aug 2025 15:18:31 +0200
+	id 1up5BX-0008Vg-IY; Thu, 21 Aug 2025 15:18:31 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1up5BX-001Q3L-0w;
+	id 1up5BX-001Q3K-0y;
 	Thu, 21 Aug 2025 15:18:31 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1up5BX-00HHYe-0e;
+	id 1up5BX-00HHYe-0g;
 	Thu, 21 Aug 2025 15:18:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 21 Aug 2025 15:18:27 +0200
+Date: Thu, 21 Aug 2025 15:18:29 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250821-keynames-v1-4-8144af76d0ab@pengutronix.de>
+Message-Id: <20250821-keynames-v1-6-8144af76d0ab@pengutronix.de>
 References: <20250821-keynames-v1-0-8144af76d0ab@pengutronix.de>
 In-Reply-To: <20250821-keynames-v1-0-8144af76d0ab@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755782311; l=2808;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755782311; l=3440;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=onRC8R6Yjz6rZfqG0wNNcKKsutqgNLkTlDfWycXEmnk=;
- b=5/mSnZnNJvTOs9FgQWSZl8NKje9MlewCH9tckJXl7swq2DchFLYrhrWcdvXmBm9aySgUKp05r
- /ep/7sEqy0nBHSwUCdZYribJafKkxFz0IxGe5QDF7dq37CK1PmBOinz
+ bh=8v4goGUa9Awy8wUFk5Z0A5ge3WGOPSJz0qwpH913CRY=;
+ b=u3ROzhJG7HL4Q10/y8vXhU8b6Gq02gl4JM02rjOsrSVCMTxvjTy75ha5gU9ic5vNsLh+gUo35
+ 5dSAirsH0cvAmP4aXruN1/v9Y2MOTy+LO1wYJB2bfaACvacuKyfnQv4
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250821_061834_850143_C43AD0AF 
-X-CRM114-Status: GOOD (  13.94  )
+X-CRM114-CacheID: sfid-20250821_061834_859119_98F00805 
+X-CRM114-Status: GOOD (  15.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,93 +90,114 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/6] commands: add keys command
+Subject: [PATCH 6/6] fit: improve diagnostics
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Currently there is no way to show the keys built into the barebox
-binary. The new keys command does exactly that. For each key it will
-show the key name hint if exists and a sha256 hash over the public key.
+FIT image output can become very verbose when a FIT image with multiple
+device tree overlays is used. This hides several messages from normal
+output and only prints them in verbose mode, (i.e. called via bootm -v)
 
-The sha256 hash can be retrieved from the certificates or public key PEM
-files with openssl commands:
-
-openssl x509 -in crypto/fit-ecdsa-development.crt -pubkey -noout | openssl ec -pubin -inform PEM -outform DER | openssl dgst -sha256
-cat ~/git/ptx-code-signing-dev/fit/fit-ecdsa-development.public-key | openssl ec -pubin -inform PEM -outform DER | openssl dgst -sha256
+Also from the output we could not see if all available keys fail to
+verify the image or if no key is available at all. This patch improves
+this by printing it clearly that no keys are available.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  |  7 +++++++
- commands/Makefile |  1 +
- commands/keys.c   | 30 ++++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+)
+ common/image-fit.c   | 23 +++++++++++++++++------
+ crypto/public-keys.c |  4 +++-
+ 2 files changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 6c61bff1cd1220107f658a89bfade4cef7b5af23..34235865bdf5035f581ea82f4a4f9c174a80adce 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2354,6 +2354,13 @@ config CMD_KEYSTORE
- 	help
- 	  keystore provides access to the barebox keystore.
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 1fe5aaf9bb186ae2407818b7824deea3f182e3e0..46e687bf91412f6957a8ba61c4b81648a8346b1d 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -258,6 +258,7 @@ static struct digest *fit_alloc_digest(struct device_node *sig_node,
+ static int fit_check_signature(struct fit_handle *handle, struct device_node *sig_node,
+ 			       enum hash_algo algo, void *hash)
+ {
++	const char *fail_reason = "no built-in keys";
+ 	const struct public_key *key;
+ 	const char *key_name = NULL;
+ 	int sig_len;
+@@ -275,26 +276,34 @@ static int fit_check_signature(struct fit_handle *handle, struct device_node *si
+ 		key = public_key_get(key_name);
+ 		if (key) {
+ 			ret = public_key_verify(key, sig_value, sig_len, hash, algo);
++			if (handle->verbose)
++				pr_info("Key %*phN (%s) -> signature %s\n", key->hashlen,
++					key->hash, key_name, ret ? "BAD" : "OK");
+ 			if (!ret)
+ 				goto ok;
+ 		}
+ 	}
  
-+config CMD_KEYS
-+	depends on CRYPTO_BUILTIN_KEYS
-+	bool
-+	prompt "keys"
-+	help
-+	  The keys command provides information about builtin public keys
+ 	for_each_public_key(key) {
++		fail_reason = "verification failed";
 +
- # end Security commands
- endmenu
+ 		if (key_name && !strcmp(key->key_name_hint, key_name))
+ 			continue;
  
-diff --git a/commands/Makefile b/commands/Makefile
-index 9247287ed53aa3bf06692744bf409e80bc832e7a..3222a02aac85ee7996ea7b52dd58dcb36bb71926 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -116,6 +116,7 @@ obj-$(CONFIG_CMD_LN)		+= ln.o
- obj-$(CONFIG_CMD_CLK)		+= clk.o
- obj-$(CONFIG_CMD_KALLSYMS)	+= kallsyms.o
- obj-$(CONFIG_CMD_KEYSTORE)	+= keystore.o
-+obj-$(CONFIG_CMD_KEYS)		+= keys.o
- obj-$(CONFIG_CMD_TFTP)		+= tftp.o
- obj-$(CONFIG_CMD_FILETYPE)	+= filetype.o
- obj-$(CONFIG_CMD_BAREBOX_UPDATE)+= barebox-update.o
-diff --git a/commands/keys.c b/commands/keys.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..2d85e8124ff57ecc8ef7364f083b3439e3b958e4
---- /dev/null
-+++ b/commands/keys.c
-@@ -0,0 +1,30 @@
-+#include <command.h>
-+#include <stdio.h>
-+#include <crypto/public_key.h>
+ 		ret = public_key_verify(key, sig_value, sig_len, hash, algo);
 +
-+static int do_keys(int argc, char *argv[])
-+{
-+	const struct public_key *key;
++		if (handle->verbose)
++			pr_info("Key %*phN -> signature %s\n", key->hashlen, key->hash,
++				ret ? "BAD" : "OK");
 +
-+	for_each_public_key(key) {
-+		printf("KEY: %*phN", key->hashlen, key->hash);
-+
-+		if (key->key_name_hint)
-+			printf(" (%s)\n", key->key_name_hint);
-+		else
-+			printf("\n");
-+	}
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(keys)
-+BAREBOX_CMD_HELP_TEXT("Print informations about public keys")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(keys)
-+        .cmd            = do_keys,
-+        BAREBOX_CMD_DESC("Print informations about public keys")
-+        BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
-+        BAREBOX_CMD_HELP(cmd_keys_help)
-+BAREBOX_CMD_END
+ 		if (!ret)
+ 			goto ok;
+ 	}
+ 
+-	pr_err("image signature BAD\n");
++	pr_err("image signature BAD: %s\n", fail_reason);
+ 
+ 	return -EBADMSG;
+ ok:
+-	pr_info("image signature OK\n");
+-
+ 	return 0;
+ }
+ 
+@@ -417,10 +426,11 @@ static int fit_verify_hash(struct fit_handle *handle, struct device_node *image,
+ 	digest_update(d, data, data_len);
+ 
+ 	if (digest_verify(d, value_read)) {
+-		pr_info("%pOF: hash BAD\n", hash);
++		pr_err("%pOF: hash BAD\n", hash);
+ 		ret =  -EBADMSG;
+ 	} else {
+-		pr_info("%pOF: hash OK\n", hash);
++		if (handle->verbose)
++			pr_info("%pOF: hash OK\n", hash);
+ 		ret = 0;
+ 	}
+ 
+@@ -663,7 +673,8 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		return ret;
+ 
+ 	of_property_read_string(image, "description", &desc);
+-	pr_info("image '%s': '%s'\n", unit, desc);
++	if (handle->verbose)
++		pr_info("image '%s': '%s'\n", unit, desc);
+ 
+ 	of_property_read_string(image, "type", &type);
+ 	if (!type) {
+diff --git a/crypto/public-keys.c b/crypto/public-keys.c
+index 3b691ffd6aa536084aefca90933b4bb74b724423..05ea6e76d212e9a37a6691647ce9e6350141c18d 100644
+--- a/crypto/public-keys.c
++++ b/crypto/public-keys.c
+@@ -96,8 +96,10 @@ static int init_public_keys(void)
+ 	for (iter = __public_keys_start; iter != __public_keys_end; iter++) {
+ 		struct public_key *key = public_key_dup(iter);
+ 
+-		if (!key)
++		if (!key) {
++			pr_warn("error while adding key\n");
+ 			continue;
++		}
+ 
+ 		public_key_add(key);
+ 	}
 
 -- 
 2.39.5
