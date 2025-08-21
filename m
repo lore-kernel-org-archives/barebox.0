@@ -1,66 +1,65 @@
-Delivery-date: Fri, 22 Aug 2025 04:25:20 +0200
+Delivery-date: Fri, 22 Aug 2025 05:19:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1upHSz-003AYr-0Y
+	id 1upIJM-003BO0-0V
 	for lore@lore.pengutronix.de;
-	Fri, 22 Aug 2025 04:25:20 +0200
+	Fri, 22 Aug 2025 05:19:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1upHSy-0001Um-0z
-	for lore@pengutronix.de; Fri, 22 Aug 2025 04:25:20 +0200
+	id 1upIJK-00054e-VS
+	for lore@pengutronix.de; Fri, 22 Aug 2025 05:19:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=bM4dRkvjtf+/yrWqcQkg/9MVm3dUkUhKBllXVRJS7C0=; b=hJo5oLL1b8cBXjDGJA504cNi8j
-	AfR9L9Am7j+Fz8CBrY4yO4jSQAzdc9LSASjnoAIqEmda9MpwjouNuO8yANmAAQ7Rygq3TIGsaHBzW
-	dTxcQl/X2mCzKMiwOzpoxfHzKeF6HbQQyNtdM7RZeqxoalA+st8lVcNO+JIK/qjb09IaYd+JIt03w
-	VFMB1oPOJ+OHEX7QA5343r9/OATojQjyhd9Qk3u9keI1WVbtprKIKcdp5P4JJg/ueXlmSbaX4aVgX
-	B3Vk45RaMuPtV5+OpLVBrbyoUrPYP7etbXP/yqE0/mCz+84BWw1kP+bINaRUaUALbgAVNrQt+y2x1
-	bSB/FYqQ==;
+	bh=DloRAng9lHPgqr88hSuXAxtbP4JgGxYfsWcOI6wQe7k=; b=p8Q2uWUhIb7hoshA5RmX2H7Pvg
+	F64hQ+YnQ4jSfHyvGxxl6sfvv/51B6If/zJTn9Vc/fQC7Ydp34K7RgGWqKJ9fleuSjikEgAWcc8Ku
+	B2AJTU3smi1/SwlXw/Pa6naIfdnVArdjiK2jerkPBTTsyZz7SNK97lmRRrWBMAzDFOHdi8aa/bzOe
+	JtSLKwhjwyy/MmWSt/5xl350HiA3nl4EFzqReP8yMbhijo+yICmDfdby+bGjmcqTqDfNUk4fWgcwN
+	QxaGMz//rxftH2lRGKMH4VwjlKVTS8P3e7BSjWqCnAlkHq7tj0HgOSWWvbJrSZPM2qxqQpcGMyclv
+	QVqhMNZw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1upHSX-00000001GwH-3Chc;
-	Fri, 22 Aug 2025 02:24:53 +0000
+	id 1upIJ5-00000001Mi3-1E74;
+	Fri, 22 Aug 2025 03:19:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1upCNu-00000000b83-0fpY
+	id 1upCBa-00000000XLU-0DUz
 	for barebox@lists.infradead.org;
-	Thu, 21 Aug 2025 20:59:47 +0000
+	Thu, 21 Aug 2025 20:47:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1upCNs-0000b7-QF; Thu, 21 Aug 2025 22:59:44 +0200
+	id 1upCBY-00074r-4U; Thu, 21 Aug 2025 22:47:00 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1upCNr-001T4v-2X;
-	Thu, 21 Aug 2025 22:59:43 +0200
+	id 1upCBX-001T3t-34;
+	Thu, 21 Aug 2025 22:46:59 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1upCNr-0061Uc-2F;
-	Thu, 21 Aug 2025 22:59:43 +0200
+	id 1upCBX-005z7T-2m;
+	Thu, 21 Aug 2025 22:46:59 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 21 Aug 2025 22:59:40 +0200
-Message-Id: <20250821205942.1435683-1-a.fatoum@pengutronix.de>
+Date: Thu, 21 Aug 2025 22:46:57 +0200
+Message-Id: <20250821204658.1426566-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250821_135946_197540_E9B590DD 
-X-CRM114-Status: UNSURE (   9.81  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250821_134702_093797_2ACB19F2 
+X-CRM114-Status: GOOD (  11.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,55 +80,75 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] fuzz: add test harness for fuzzing nul-terminated strings
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH v2 1/2] state: do not panic on flipped bits in on-disk sizes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Many APIs expect NUL terminated strings, for example the JSON Web Token
-decoding functions.
+We allocate some buffers with a size that's ultimately dictated by
+on-disk metadata. This metadata can be incorrect and state is supposed
+to handle that by storing the data redundantly in three buckets.
 
-Add a helper to make it easy to fuzz such functions. As we are
-allocating anew anyway, we pass along the buffer mutably as well as the
-original size, so the harness is useful for a wider range of API.
+Due to the use of x-family functions, we triggered a panic though, which
+made an unfortunate bitflip an irrecoverable error.
+
+Fix this by switching the allocations in question to non-panicking ones
+and propagating the error. This issue has been detected by libfuzzer.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/fuzz.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+v1 -> v2:
+  - also check for zero byte allocations
+---
+ common/state/backend_bucket_circular.c | 10 ++++++----
+ common/state/backend_bucket_direct.c   |  6 +++---
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/include/fuzz.h b/include/fuzz.h
-index bd95ae6203b0..caebc284d5db 100644
---- a/include/fuzz.h
-+++ b/include/fuzz.h
-@@ -9,6 +9,8 @@
+diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+index 6b5873aa9af1..9fe38bc9c508 100644
+--- a/common/state/backend_bucket_circular.c
++++ b/common/state/backend_bucket_circular.c
+@@ -265,9 +265,9 @@ static int state_backend_bucket_circular_read(struct state_backend_storage_bucke
+ 		offset = circ->write_area - read_len;
+ 	}
  
- #include <linux/types.h>
- #include <linux/compiler_types.h>
-+#include <linux/bug.h>
-+#include <linux/string.h>
- #include <ramdisk.h>
+-	buf = xmalloc(read_len);
+-	if (!buf)
+-		return -ENOMEM;
++	buf = malloc(read_len);
++	if (ZERO_OR_NULL_PTR(buf))
++		return buf ? -EINVAL : -ENOMEM;
  
- /**
-@@ -65,6 +67,18 @@ extern const struct fuzz_test __barebox_fuzz_tests_end;
- 	}							\
- 	fuzz_test(_name, _func##_ramdisk)
+ 	dev_dbg(circ->dev, "Read state from PEB %u global offset %lld length %zd\n",
+ 		circ->eraseblock, (long long) offset, read_len);
+@@ -311,7 +311,9 @@ static int state_backend_bucket_circular_write(struct state_backend_storage_buck
+ 	 * We need zero initialization so that our data comparisons don't show
+ 	 * random changes
+ 	 */
+-	write_buf = xzalloc(written_length);
++	write_buf = calloc(1, written_length);
++	if (ZERO_OR_NULL_PTR(write_buf))
++		return write_buf ? -EINVAL : -ENOMEM;
  
-+#define fuzz_test_str(_name, _func)				\
-+	static int _func##_str(const u8 *_data, size_t size)	\
-+	{							\
-+		int ret;					\
-+		char *data = memdup_nul(_data, size);		\
-+		BUG_ON(!data);					\
-+		ret = _func(data, size);			\
-+		free(data);					\
-+		return ret;					\
-+	}							\
-+	fuzz_test(_name, _func##_str)
-+
- static inline int fuzz_test_once(const struct fuzz_test *test, const u8 *data, size_t len)
- {
- 	return test->func(data, len);
+ 	memcpy(write_buf, buf, len);
+ 	meta = (struct state_backend_storage_bucket_circular_meta *)
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 03c752d6fe41..2ee0c7184193 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -92,9 +92,9 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 
+ 	}
+ 
+-	buf = xmalloc(read_len);
+-	if (!buf)
+-		return -ENOMEM;
++	buf = malloc(read_len);
++	if (ZERO_OR_NULL_PTR(buf))
++		return buf ? -EINVAL : -ENOMEM;
+ 
+ 	dev_dbg(direct->dev, "Read state from %lld length %d\n", (long long) direct->offset,
+ 		header_len + read_len);
 -- 
 2.39.5
 
