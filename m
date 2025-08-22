@@ -1,66 +1,55 @@
-Delivery-date: Sat, 23 Aug 2025 08:30:00 +0200
+Delivery-date: Sat, 23 Aug 2025 08:31:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uphlI-003aCh-1z
+	id 1uphmv-003aED-2s
 	for lore@lore.pengutronix.de;
-	Sat, 23 Aug 2025 08:30:00 +0200
+	Sat, 23 Aug 2025 08:31:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uphlH-0004PL-FE
-	for lore@pengutronix.de; Sat, 23 Aug 2025 08:29:59 +0200
+	id 1uphmu-0004tz-Lq
+	for lore@pengutronix.de; Sat, 23 Aug 2025 08:31:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=I7xLBky46OmBZRpyDMUT6UjB6fYsfq5ZBnWI29I4tA8=; b=Xmf1M5HubwnLcPCA9x30Cbh9Gn
-	aagGMz2LDBpbXQ3BwNnfvVJA+KnCt3fNgNHY7JFoNlLml/efLgGle9zYJ17JaWtuMVY9OreLfX3Lb
-	e6Y+C92ezAd7ebvPdraPegTtX66fVyHM4MTLtSIGa1l/iTmUb8dRYoYyN91wzRdni+YpmU5k3NO8m
-	2JWmHWVvK3lTGYPvkhyckGe+t3AA6oESN+o8gfIs5u7GtWVzvQn7/FZP4wu0zxXYaezjb1D/BpvWo
-	E7KeEHmcRVjjSkqmK7NUBq3fcWDro+pse8G/Ub4nCmriztVRwnBmIbCjfQZbiU6R/Fg702neqWHAa
-	4K3C2n+w==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=uBaFIAgh7PCAEWc5I7isJIgXA+wPfzpvXbxKl17rarQ=; b=LcNmA0ogl/s7STeQk2qBNBDuZ5
+	ntmQ47feJbceQEK8mJGnt6RfuRxU2kOmF0oiMK6m1f3AShX7irL3bjdm7APF/UbqWre/7XljCaDzf
+	Ux85JwDvhyloDi1AQtgAylEJ1V7QSZNcRiMFT5c1Uyr5wWsozL/E35CeNNIgRj9bl4O/w0cLVf2W+
+	cL9qPm/AxbLXz0a7LBwE8/pq0RPWCEq7thJ+E5uBzZStc6W9g+HExtHeZZmaJTAJxP2yuqxoSWF1T
+	6N1LzOxfijUSjlRqk/ngxHPFK1na2XW7pl9Vvs6KXksHDhJx9E43zK7kAmYAKCeqtxQjxyV3BdjTC
+	3woWaXLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uphkS-00000003wsP-4508;
-	Sat, 23 Aug 2025 06:29:08 +0000
+	id 1uphmN-00000003zqY-4AAl;
+	Sat, 23 Aug 2025 06:31:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1upQt9-00000002UA9-2kYP
+	id 1upSKS-00000002hn7-3uA9
 	for barebox@lists.infradead.org;
-	Fri, 22 Aug 2025 12:29:00 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1upQt8-0001N9-Cn; Fri, 22 Aug 2025 14:28:58 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1upQt8-001Ziw-0h;
-	Fri, 22 Aug 2025 14:28:58 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1upQt8-00000002nrc-0TVq;
-	Fri, 22 Aug 2025 14:28:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 22 Aug 2025 14:28:57 +0200
-Message-ID: <20250822122857.668323-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250820-security-policies-v1-4-76fde70fdbd8@pengutronix.de>
-References: <20250820-security-policies-v1-4-76fde70fdbd8@pengutronix.de>
+	Fri, 22 Aug 2025 14:01:18 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.fritz.box)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1upSKP-0004T9-Kq; Fri, 22 Aug 2025 16:01:13 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: mfe@pengutronix.de,
+	sha@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Fri, 22 Aug 2025 16:01:11 +0200
+Message-Id: <20250822140111.811702-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250822_052859_690594_4DD3F54C 
-X-CRM114-Status: GOOD (  11.27  )
+X-CRM114-CacheID: sfid-20250822_070116_964479_36FB3823 
+X-CRM114-Status: GOOD (  10.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,38 +67,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! Add security policy support
+Subject: [PATCH master] ARM: mmu: increase early page table size to 256K for now
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With $(ARCH) in Sconfig we can not share Sconfig files between
-different architectures as the build system would detect them as
-outdated when the architecture is changed. Let's just drop $(ARCH) as
-it's not really important in this context anyway.
+With recent changes for W^X, the size of our early page tables have grown
+in some cases, so they no longer fit into the 64K we reserve for them.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+This has been observed in at least two ARM64 platforms:
+
+  - i.MX8M with OP-TEE at start of RAM (on master)
+  - Raspberry Pi Zero 2 without OP-TEE (on next)
+
+It's very likely we are overly wasteful of space, but until that's fixed
+properly, increase the size reserved for our early page tables.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- Sconfig | 2 +-
+ arch/arm/include/asm/barebox-arm.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Sconfig b/Sconfig
-index 183a6687f0..cdb2ceccb1 100644
---- a/Sconfig
-+++ b/Sconfig
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index da6f5d528338..11be8b85837e 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -26,7 +26,7 @@
+ #include <linux/stringify.h>
+ #include <pbl/handoff-data.h>
  
--mainmenu "Barebox/$(ARCH) Security Configuration"
-+mainmenu "Barebox Security Configuration"
+-#define ARM_EARLY_PAGETABLE_SIZE	SZ_64K
++#define ARM_EARLY_PAGETABLE_SIZE	SZ_256K
  
- source "scripts/Sconfig.include"
- 
+ #define handoff_add_arm_machine(machine)				\
+ 	do {								\
 -- 
-2.47.2
+2.39.5
 
 
 
