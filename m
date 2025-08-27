@@ -1,70 +1,69 @@
-Delivery-date: Wed, 27 Aug 2025 13:57:54 +0200
+Delivery-date: Wed, 27 Aug 2025 17:49:46 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1urEmp-0054XB-1V
+	id 1urIPC-005876-39
 	for lore@lore.pengutronix.de;
-	Wed, 27 Aug 2025 13:57:54 +0200
+	Wed, 27 Aug 2025 17:49:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1urEmo-0001LY-9H
-	for lore@pengutronix.de; Wed, 27 Aug 2025 13:57:54 +0200
+	id 1urIPB-0002lh-R1
+	for lore@pengutronix.de; Wed, 27 Aug 2025 17:49:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=L/fRCS6sAXGej0+STFR4TtdAnN5zyJkm0zAJizxq1sk=; b=SwcQ1ZT2HYBrpLoLxWMtFyoHVL
-	wr7HTWQLWRQ49gj8NpMjXGsC38YFtahAGhDo7xOpWXuAnmTpc3gadDoLi9NyyieDZBW9WTYlX36py
-	ZUYvHPg1QbcHlWlk0KJBrrI3nxr+pDMG9g+dIek91zykwpQXrg8uyYbXbgcinErfp/QvODG8A9MZS
-	Ol4VdyxIpMtVSsgJfCG9tDSXjdDD85VTHZ20nFDOEWmUMAWFVE9oVbW2gFsSQcKiKE8s/Ep+3UdyK
-	9fSeY4XOb3if3TFGOx25AOiJd85gmzq96Zu76fy9yF6a+zGEhGiSj7kKMIdXbbH+5G1pGj430H1Ge
-	2RpFEa+g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=sOHQOJdPaGJPMp5YxOh1kRg31UXVW+P4mZ0T019u2ck=; b=iJTCjf7U7QqrVKoil6b8JGcBRW
+	ot8f0SEDTSoUaID26gNKXO28AgFWiu7Wh7u8VwE69HVweCAx5v+DUjONAyjMYw3wGF2QnfVKRXzqt
+	P9utiWBJ3rgpZfdwFz8GQFr2EW+CW5pEy/cgx5JOq+bwjK0Tnrh1TUBz2jQRPV2PyIAm3pt7GRYaT
+	to1RnI3yiyH9iVLbLC5wcaiRhKUrbVVjX/YMvW/n3IMYdGCpq6hjo5NRn2ciSm33a14JUaGl9WsZ5
+	+rA5QTeKllszek6bV+K9lVfO/aIsY0EmEp2/fMwnmU1DMfy55kxZXX/eN6BjXjm0RsdCkk5UmaJP+
+	zjdzGrRw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1urEmH-0000000FM2g-02SL;
-	Wed, 27 Aug 2025 11:57:21 +0000
+	id 1urIOR-0000000Fxze-2bhm;
+	Wed, 27 Aug 2025 15:48:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1urDyO-0000000F9es-2VvI
+	id 1urEEM-0000000FFL5-0Fp9
 	for barebox@lists.infradead.org;
-	Wed, 27 Aug 2025 11:05:50 +0000
+	Wed, 27 Aug 2025 11:22:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1urDyM-0000jN-Dz; Wed, 27 Aug 2025 13:05:46 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1urEEK-00065V-Kd; Wed, 27 Aug 2025 13:22:16 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1urDyL-002NsM-3D;
-	Wed, 27 Aug 2025 13:05:46 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1urDyL-002pxo-2p;
-	Wed, 27 Aug 2025 13:05:45 +0200
-Date: Wed, 27 Aug 2025 13:05:45 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1urEEK-002Nu4-1R;
+	Wed, 27 Aug 2025 13:22:16 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1urEEK-0000000HauH-1S3G;
+	Wed, 27 Aug 2025 13:22:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: chalianis1@gmail.com
 Cc: barebox@lists.infradead.org
-Message-ID: <aK7mic8MBXuUVJXc@pengutronix.de>
-References: <20250826061108.3372599-1-chalianis1@gmail.com>
+In-Reply-To: <20250822053717.1050752-1-chalianis1@gmail.com>
+References: <20250822053717.1050752-1-chalianis1@gmail.com>
+Message-Id: <175629373633.4193323.9744071043903087913.b4-ty@pengutronix.de>
+Date: Wed, 27 Aug 2025 13:22:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250826061108.3372599-1-chalianis1@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250827_040548_637155_2688C45B 
-X-CRM114-Status: GOOD (  27.56  )
+X-CRM114-CacheID: sfid-20250827_042218_106169_6D777396 
+X-CRM114-Status: UNSURE (   6.85  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,76 +85,33 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] common: bootm: only use initrd override if non-empty
+Subject: Re: [PATCH] efi: payload: early-mem: add memory type on early mem
+ allocation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
 
-I have some trouble understanding this patch.
-
-On Tue, Aug 26, 2025 at 02:11:08AM -0400, chalianis1@gmail.com wrote:
-> From: Chali Anis <chalianis1@gmail.com>
+On Fri, 22 Aug 2025 01:37:17 -0400, chalianis1@gmail.com wrote:
+> Add the ability to specify the memory type which mendatory for the
+> recent efi versions that have MMU, this will fix a permission fault
+> on second level when trying to relocate the barebox or even execting
+> the memory code. see the snapshot error log below.
 > 
-> OSTree integration in Yocto generates an empty initramfs
-> file and references it in the boot configuration (under
-> /boot/loader/ostree-1.conf) to suppress init= kernel arguments.
-> This caused Barebox to always prefer the override, even when
-> the initramfs was empty, preventing booting of FIT images
-> that already contain an embedded initramfs.
-
-So you have one initrd specified in /boot/loader/ostree-1.conf and
-another one in your FIT image, right?
-
-By default and without this patch I would assume the initrd from the FIT
-image takes precedence, right?
-
+>  SP 0x000000007C6CFF80  ELR 0x000000006C6EA4FC  SPSR 0x60000205  FPSR 0x00000000
+>  ESR 0x8600000E          FAR 0x000000006C6EA4FC
+>  ESR : EC 0x21  IL 0x1  ISS 0x0000000E
+>  Instruction abort: Permission fault, second level
 > 
-> Signed-off-by: Chali Anis <chalianis1@gmail.com>
-> ---
->  common/bootm.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 3a2eb262b26a..f31ef546d92c 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -279,14 +279,18 @@ static int bootm_open_initrd_uimage(struct image_data *data)
->  const struct resource *
->  bootm_load_initrd(struct image_data *data, unsigned long load_address)
->  {
-> +	struct stat st;
->  	enum filetype type;
->  	int ret;
->  
->  	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
->  		return NULL;
->  
-> -	if (bootm_get_override(&data->initrd_file, bootm_overrides.initrd_file))
-> -		goto initrd_file;
-> +	if (bootm_get_override(&data->initrd_file,
-> +			       bootm_overrides.initrd_file)) {
+> [...]
 
-This path is only taken when bootm_overrides.initrd_file is non empty,
-so it seems you are booting with boot -o bootm.initrd=/some/initrd
+Applied, thanks!
 
-Without this patch you would then end up using /some/initrd as initrd
+[1/1] efi: payload: early-mem: add memory type on early mem allocation
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7497c86c5032 (link may not be stable)
 
-> +		if (!stat(data->initrd_file, &st) && st.st_size > 0)
-> +			goto initrd_file;
-
-Now with this patch you use /some/initrd only when it exists and is non
-empty. Otherwise you would end up using the initrd from the FIT image,
-the same initrd which would be used if you had not set -o bootm.initrd=/some/initrd.
-
-I think I am misunderstanding something.
-
-Sascha
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
