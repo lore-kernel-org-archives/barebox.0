@@ -1,91 +1,92 @@
-Delivery-date: Wed, 27 Aug 2025 19:55:20 +0200
+Delivery-date: Thu, 28 Aug 2025 06:15:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1urKMi-005A6i-32
+	id 1urU2n-005JvE-1j
 	for lore@lore.pengutronix.de;
-	Wed, 27 Aug 2025 19:55:20 +0200
+	Thu, 28 Aug 2025 06:15:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1urKMh-0004Zn-Mn
-	for lore@pengutronix.de; Wed, 27 Aug 2025 19:55:20 +0200
+	id 1urU2m-0004K8-CT
+	for lore@pengutronix.de; Thu, 28 Aug 2025 06:15:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=PLKTBBXvtLD3XhAdL/7Dkxap9QQtfCyXROUIcYTdJwA=; b=KsLfKIaNOw57dasOoyGgdSmWqP
-	2ru8TBVabuwEZ3yfNnUIVfB6YO3TsjDpbBK2duYNeQ0ppZEYRQyPuiLiDnitAnPkX4BNN5YrgBz88
-	Hs3+6+ty2lgKEKX1NPt+I9EQbsLOqL7xZs6pZzyo3a18DO+EcSNYHFgTc8LUAChRXETSrCLxx1h6I
-	2nwSn0ctr8w2gESjvfE9ooSuttvGdEwj8SP4ljyQoVwn1zNctp3TrSjn8qUCGP6gqJhTqlxs0EhKc
-	fEg7BVhmgP9P1PwnRYYmIGfdHOIEoBb87+KY+xYdagLbgEKI0/Vk7ZmNYRGk5WA3LqY4P6TWPP2Sn
-	RzmilAaA==;
+	bh=EkZsReoNp0lBUBlZhpnSLpLoMlGRdV347UoBxeZghyg=; b=UZj1cc/hOGue5aV43CJvBTiY7L
+	w+NhXKmogzZFvZGzCystil1obnr9ZH/TG8xeK3Q3hjo8Jm9f56XWjKXgUr+AYgB6gapCuXJNHCoQR
+	f2NWfjTCFurCDHouJTK97B3oKrQjoJpxu20fFDjzbg+xG2fE8DxVhy5UyUU+01KgzCE5wfrDhu0Tu
+	2NHZsYDAPOqH8ko2DnQ6WpJAr9li3sE9zxZWwLLsT9SCbsrEme/6lGjhWtkVKHrBLOOQnKwj/aU3b
+	i6i6SgMkIptfrZi7MXlWNc1Ni57UWs0Jzqt52Wjuw/CE3Pq3xQgvcuIKCrXVpCDjImJicBmQPYflH
+	bkXP+weg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1urKM8-0000000GNMT-3WgU;
-	Wed, 27 Aug 2025 17:54:44 +0000
-Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
+	id 1urU1q-00000000DVx-2uf0;
+	Thu, 28 Aug 2025 04:14:26 +0000
+Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1urISY-0000000G2w7-182N
+	id 1urU1o-00000000DVS-0K9C
 	for barebox@lists.infradead.org;
-	Wed, 27 Aug 2025 15:53:35 +0000
-Received: by mail-qv1-xf34.google.com with SMTP id 6a1803df08f44-70ddbb81734so627026d6.3
-        for <barebox@lists.infradead.org>; Wed, 27 Aug 2025 08:53:13 -0700 (PDT)
+	Thu, 28 Aug 2025 04:14:25 +0000
+Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-4b109c4af9eso4391991cf.3
+        for <barebox@lists.infradead.org>; Wed, 27 Aug 2025 21:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756309992; x=1756914792; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1756354463; x=1756959263; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PLKTBBXvtLD3XhAdL/7Dkxap9QQtfCyXROUIcYTdJwA=;
-        b=lSuclK9aGvmzKMju7tVGW2IXN/W30Ysy/8FjsETG1F9Of9pkTsec+EWec7+guzquA8
-         C6soBKB8HSAtY3YdOP/u1zG67bTTK7JU/pzOGVPa9/jqZNjZym8NT0JnQzmH9f9oIN4Q
-         hI7NWwULSLJtGb3yXrrgOv3wndu8KWXDrA9042GPrP69pHWLvUGEcv72XdhTUCrz2h54
-         nR3pGdTISqBacqyJv7L3sCAkpgumRbc8KR0CJ8/2UOZSjNRuRcAxbEQALiCHPEK+jakQ
-         JhYc07Evx7fWRUH28Ev9/Us0IZlJuic2ycmOmU4mxvap1mGCk/PQx9QX0UKrmbgCOC9R
-         j08Q==
+        bh=EkZsReoNp0lBUBlZhpnSLpLoMlGRdV347UoBxeZghyg=;
+        b=VoorwL2K9FtkWJOWT2LolpvAqjAMZi1egJNLcIBzRA2o6tfCw64LyHR3toXlEuzCKL
+         3KC1rVDecG+xlTFX3Y21nouoBeX2ANrEpOGHV3GOlFkxzIpe2MMlPfvhCRs145eJNWMg
+         eAVCDhBTGCoa0VzZ+gJpMPBgqu0572hbLVtHL4JHV4xUMUZ549vHaiBTtIyBD3mlI8dX
+         iB0cJOTR3JA5mje8cFTuNj4UsKAepR0nnFDHFEBC3DmF9B+yiM/6mnuu+9p+2hwWOGqi
+         p3YNE0KivXfjSw0R00SEZw7+U+gSRuk4oEQYpFIuLG1bDie+/t1ooi8Kd3bWopxjLvmh
+         MAMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756309992; x=1756914792;
+        d=1e100.net; s=20230601; t=1756354463; x=1756959263;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PLKTBBXvtLD3XhAdL/7Dkxap9QQtfCyXROUIcYTdJwA=;
-        b=jMaNuy6iQAf7IYyMV9qSpVeCVQ23KPOTE25Sup8SThiU7siIBfSGjrpG273NoMZKLx
-         z80U+KSZ1EY+SUTumJxK/XAheo5GPO1HjXYMipP3ycgEzM2pnbwqyGubw15S/82g47yg
-         w54jM7zRdN7XrvCRpIALqJZjDaxmo+BSKe9MYav6nS1uNahkVxHUQix17TSO/shIUUAY
-         DEWyTUHSITAKvNZrRywSymsiiOI0UxQe2jeUhbJpkybtyWDcxGPQcw/9fex/bWBcgTRa
-         C95xQh4dGcC4lo+3AqqWaEB0vpuT4N19uWQ4iw1Ul1sSKCjX/Zn40rEpopSPqJbL0E9W
-         5Kfg==
-X-Gm-Message-State: AOJu0YwVFNPzvsjUI6kyWB3LtGlPQyBuETLHUm0Fvib13eTHrVfVWidZ
-	S9ti9z1l9/IocLQek0UUltYIiiaFILMJvexhkdjSlSbQJ/MaTKtlAKgo
-X-Gm-Gg: ASbGncuaNEYVukL/twMl+H4SHIDnbL0YKts1vFxk5DvmjGkK68pX/5udkswR8QJwBa4
-	4BjtU4cc+qtJZEhETo9okPSCQp71jqWK4LrqIXgCJXK8t2Zn2qBabs8wFjwKbSUZJBscT1JnORI
-	heZ0CPOGcHxUK08TFp/wqVemeibHq2RRFn10vRi06ImGFE1ZdkpNhnIt/M+8MpZl0pnmMQJlZo4
-	mZaEnpxxHeZnae0hpVQaVY8Jr9nkL/dVzJSgdphvPaNE3/hkuTITNzzNqp4s5mIZME765W6obzO
-	HHsxEIb9QTlfuxYiEMedcdw3F3quY0eRJzl8PyZBFxLIZTM3JGUFOGxeeD3S++LApkFDbrN1a8X
-	ptfi5wMymAnEFA7BmfDhPEozFPpO9iHEBWJMiD99PilXH6/n6G1PD1ircDr1EBUwgze87wxjELV
-	Zwr87FIwOGH/bmRomBAyORGyRiZQ==
-X-Google-Smtp-Source: AGHT+IGbXRYeS2NZS7rH/ZXYAqqroIqZAkzCGcSq/rgzaM7scoC/jUx5YY1vzBjSe/kpckEfwTUsRg==
-X-Received: by 2002:a05:6214:cc7:b0:70d:aa1f:9e29 with SMTP id 6a1803df08f44-70daa1f9e65mr176395326d6.1.1756309991828;
-        Wed, 27 Aug 2025 08:53:11 -0700 (PDT)
-Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:50dc:5c11:c7c9:56a3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70da714ac64sm86302666d6.4.2025.08.27.08.53.10
+        bh=EkZsReoNp0lBUBlZhpnSLpLoMlGRdV347UoBxeZghyg=;
+        b=UNkPAzz90WSuQNLcwRlishSERKccjOkMl7Jod8zGyMAfw2yOtFkstjQJY47ghJF1a6
+         N8HU4prk3V1WIrhTs4DA6M/abMHbuKCp+i0/PvNbaeyG1tyRXvbAwVzw2R+8va05P7+P
+         gWRkam3HE6JpBLuvr3U5J5e0CpPHs4oBc7lD1RLLOp6oCtV7GAe0Yp1HB/jHDC39fApe
+         y1zYGtJKABJEapjN+SIgaL9UkqNgs3fVsNHQt21yPP0vZ0P0z8234ninvMy2uoUGonHo
+         k/fnKwgQjkMg8M7UVaQupx3HJEkCPq4HN85JhbDoV4YQCeE7gviTWJs3BE/5aidUzDeR
+         u6jg==
+X-Gm-Message-State: AOJu0YxzrjXoDXZP2NW8htP8iC9ac3cbMXSOitv6xTdm0DxgBRDCf8On
+	cBRCFoBuaEnXDqXoxkfj/tzBnsQKsscD7DB9mh4uwFzi20AAjdY69igAmXScKg==
+X-Gm-Gg: ASbGncti6d48tjsaVJT2eQ7xf0tJmv9SMKiQqUt0PUglUeBYU3EiOz+chGABwR+y/Pg
+	0pdibFtb2nK8LGZCYceEZhOSkW3BthcxkLeL6RD2fPw+C/aYsKt75GUCy0zARbv6fLRE3ut9S58
+	BrvpsABGnOxn4Wej86VtSeyqHqLXAiIn7g9+NY5bPzqQoAFnFSk5FLmYxppc8oMaggnN72z429b
+	jBgHtx9KGBtpWJy4MUf1ARIGHgrkl8q3WTCtOqQb9S0Ad6ZHMWYylefJu/O7BUp7RfC9bxf349V
+	t2SQ62R2e+b0XkC7MZkYDl+wGKeHk1zKfL6lS6TX4sDZNlfsOPvXjpbkCEjkZuwpvkqAG/nvNdR
+	wKm1mvAMuTvIAnGDiv+nqI3onivoj5MoSKKB3RchQZxNUO5/2XFlfrT5ZyaqR3yIXFBSLWaoR75
+	MIP3cBjq8/n3M3vWaK6tQGh1CB
+X-Google-Smtp-Source: AGHT+IEOzV/CDmf7KJjV1NLG7k/eKUQLfiEbFGodzS+zwkpba2UgaoJ6QIxxB1mw0ATY6Be5B3nWFg==
+X-Received: by 2002:a05:622a:116:b0:4b2:9e22:6588 with SMTP id d75a77b69052e-4b2aab206a8mr277986351cf.39.1756354462860;
+        Wed, 27 Aug 2025 21:14:22 -0700 (PDT)
+Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:e02a:fb82:e2b3:28c])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2da606336sm61547291cf.49.2025.08.27.21.14.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 08:53:11 -0700 (PDT)
+        Wed, 27 Aug 2025 21:14:22 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org,
 	Chali Anis <chalianis1@gmail.com>
-Date: Wed, 27 Aug 2025 11:53:07 -0400
-Message-Id: <20250827155307.764061-1-chalianis1@gmail.com>
+Date: Thu, 28 Aug 2025 00:14:19 -0400
+Message-Id: <20250828041419.1874774-1-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250827_085314_444035_7CF0C278 
-X-CRM114-Status: GOOD (  12.94  )
+X-CRM114-CacheID: sfid-20250827_211424_119427_5654CD21 
+X-CRM114-Status: UNSURE (   9.37  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -108,99 +109,36 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] arm: crypto: add a check for crypto extensions support.
+Subject: [PATCH] drivers: video: efi-gop: fix null reference pointer on priv->fb.mode=NULL.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Chali Anis <chalianis1@gmail.com>
 
-In some configuration the CPU may raise an exception bacause of an
-unknown instruction if it does not support Crypto Extensions for
-example in some BCM281X (RPi3B in my case) when running barebox
-as an EFI Payload, where the EFI stops with a synchronous execption
-See bellow:
-Synchronous Exception at 0x0000000037BFF548
-SP 0x0000000037F798C0 ELR 0x0000000037BFF548
-SPSR 0x20000209 FPSR 0x00000000
-ESR 0x02000000 FAR 0x14F64325185430BF
-ESR : EC 0x00 IL 0x1 ISS 0x00000000
+fix a null reference pointer on mode variable, that was never initialized,
+the mode will be set by the framebuffer subsyetem after initialisation so
+it's not necessary to change the resolution here.
+
+Fixes: 6518b21c6c66 ("video: add EFI Graphics Output Protocol support")
 
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- arch/arm/crypto/sha1-ce-glue.c | 7 +++++++
- arch/arm/crypto/sha2-ce-glue.c | 9 +++++++--
- arch/arm/include/asm/sysreg.h  | 6 ++++++
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ drivers/video/efi_gop.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/crypto/sha1-ce-glue.c b/arch/arm/crypto/sha1-ce-glue.c
-index 5b49237573fa..fea15f295a00 100644
---- a/arch/arm/crypto/sha1-ce-glue.c
-+++ b/arch/arm/crypto/sha1-ce-glue.c
-@@ -14,6 +14,7 @@
- #include <linux/linkage.h>
- #include <asm/byteorder.h>
- #include <asm/neon.h>
-+#include <asm/sysreg.h>
+diff --git a/drivers/video/efi_gop.c b/drivers/video/efi_gop.c
+index f4f58d9271f5..cef8a6816cac 100644
+--- a/drivers/video/efi_gop.c
++++ b/drivers/video/efi_gop.c
+@@ -169,8 +169,6 @@ static int efi_gop_query(struct efi_gop_priv *priv)
  
- MODULE_DESCRIPTION("SHA1 secure hash using ARMv8 Crypto Extensions");
- MODULE_AUTHOR("Ard Biesheuvel <ard.biesheuvel@linaro.org>");
-@@ -88,6 +89,12 @@ static struct digest_algo m = {
+ 	priv->fb.screen_base = mode->frame_buffer_base;
+ 	priv->mode = mode->mode;
+-	priv->fb.xres = priv->fb.mode->xres;
+-	priv->fb.yres = priv->fb.mode->yres;
  
- static int sha1_ce_mod_init(void)
- {
-+	uint64_t isar0;
-+
-+	isar0 = read_sysreg(ID_AA64ISAR0_EL1);
-+	if (!(isar0 & ID_AA64ISAR0_EL1_SHA1_MASK))
-+		return -EOPNOTSUPP;
-+
- 	return digest_algo_register(&m);
+ 	return 0;
  }
- coredevice_initcall(sha1_ce_mod_init);
-diff --git a/arch/arm/crypto/sha2-ce-glue.c b/arch/arm/crypto/sha2-ce-glue.c
-index 88cbc7993dac..8479b3c60cb3 100644
---- a/arch/arm/crypto/sha2-ce-glue.c
-+++ b/arch/arm/crypto/sha2-ce-glue.c
-@@ -14,8 +14,7 @@
- #include <linux/linkage.h>
- #include <asm/byteorder.h>
- #include <asm/neon.h>
--
--#include <asm/neon.h>
-+#include <asm/sysreg.h>
- 
- MODULE_DESCRIPTION("SHA-224/SHA-256 secure hash using ARMv8 Crypto Extensions");
- MODULE_AUTHOR("Ard Biesheuvel <ard.biesheuvel@linaro.org>");
-@@ -116,6 +115,12 @@ static struct digest_algo sha256 = {
- 
- static int sha256_ce_digest_register(void)
- {
-+	uint64_t isar0;
-+
-+	isar0 = read_sysreg(ID_AA64ISAR0_EL1);
-+	if (!(isar0 & ID_AA64ISAR0_EL1_SHA2_MASK))
-+		return -EOPNOTSUPP;
-+
- 	return digest_algo_register(&sha256);
- }
- coredevice_initcall(sha256_ce_digest_register);
-diff --git a/arch/arm/include/asm/sysreg.h b/arch/arm/include/asm/sysreg.h
-index 7d567e08d8b7..6f47016e54e8 100644
---- a/arch/arm/include/asm/sysreg.h
-+++ b/arch/arm/include/asm/sysreg.h
-@@ -12,6 +12,12 @@
- #include <asm/system.h>
- #include <linux/stringify.h>
- 
-+/*
-+ *	ARM64 registers
-+ */
-+#define ID_AA64ISAR0_EL1_SHA1_MASK      0xF00UL
-+#define ID_AA64ISAR0_EL1_SHA2_MASK      0xF000UL
-+
- /*
-  * Unlike read_cpuid, calls to read_sysreg are never expected to be
-  * optimized away or replaced with synthetic values.
 -- 
 2.34.1
 
