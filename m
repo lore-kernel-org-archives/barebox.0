@@ -1,55 +1,91 @@
-Delivery-date: Sun, 31 Aug 2025 08:41:30 +0200
+Delivery-date: Sun, 31 Aug 2025 09:49:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1usbkp-006SdZ-1H
+	id 1uscob-006ThO-10
 	for lore@lore.pengutronix.de;
-	Sun, 31 Aug 2025 08:41:30 +0200
+	Sun, 31 Aug 2025 09:49:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1usbkn-0004fO-Qo
-	for lore@pengutronix.de; Sun, 31 Aug 2025 08:41:30 +0200
+	id 1uscoZ-0006Fv-R4
+	for lore@pengutronix.de; Sun, 31 Aug 2025 09:49:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=4LbnlF1DeVDyxjiVNBp4uh2cvpn3t6IJ+M/t/M37E/k=; b=SDiArnk3sjKyC8IzPxRLG6pZ46
-	a7r9Z+rrckEaPfB7CSxjzZA5CzZGTbBSCqFfqr0qRefZZovuNr8nTLwQT0Fn7KcTnIgcy1RY2PrEx
-	VGYI3XSac1RXQZ39TtRsBDYxhNsfCCgOzrFrdwzHFzhu1BkN3rx9VX1WEybV6d3h2yruSDfwzZYTQ
-	SmC5zgsY4IETlhFnb9hP9Zt69WrubXfI3Vtywt9FoZUC/6pbh24kdl0QzTgEBGIZ7zLHYmf2vOPCI
-	ZiHus2Nac9mDcp3pkAGMB/B8GDYIuh/leaQM7/HLZv5fbnT78R9uF17rXgkR2aFUDxdVJqcn3+WOM
-	RfbI0XWg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:Date:References:In-Reply-To:Subject:Cc:To:From:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=WH5sId2UeKsHlyV0STA/+Vb87hc/0X9OV8qVTB0OiuY=; b=1EBeINhO3+HRHDH1VyeXAwa2EM
+	TrERlvnANGmdhj8C98vV9UUAVt0kC4539c7YbKWL0LKAsC3R110Sna/pl2Xh7iV+Kuk5NV50zpJXX
+	9Jb5KNXEVifn8H6xYf8SCTKy0HndPgIjLorH3VWteRIvIDgRqNGU9yK3tTU4sTlaqSyGihwvcDsbK
+	p4ZUeo2UhbOuSnvA1WJ3wDAH7bMebK6/867kq3dVVHxgdDcwpMkKd+GOhdmoxaamFCumj9WBT58UJ
+	RXJAzYp1tC8RF1bviC/74S2P0qHMOQu/Jn4JsuSMxL6CCwe67oKacja1IleNklTf8ebcC259pkuKG
+	RW0JqbEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1usbjz-00000009pKS-2cy2;
-	Sun, 31 Aug 2025 06:40:39 +0000
-Received: from vs10.datenmanufaktur-hosting.net ([213.160.73.65] helo=vs81.iboxed.net)
+	id 1uscnn-00000009stU-38ZD;
+	Sun, 31 Aug 2025 07:48:39 +0000
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1usbjw-00000009pJo-2Am5
+	id 1uscnl-00000009st3-0wqA
 	for barebox@lists.infradead.org;
-	Sun, 31 Aug 2025 06:40:37 +0000
-Received: from blala.de (localhost [127.0.0.1])
-	by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id 57V6jrMl030655;
-	Sun, 31 Aug 2025 06:45:53 GMT
-Received: (from akurz@localhost)
-	by blala.de (8.15.2/8.15.2/Submit) id 57V6jrNN030654;
-	Sun, 31 Aug 2025 06:45:53 GMT
-From: Alexander Kurz <akurz@blala.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
-Date: Sun, 31 Aug 2025 06:45:51 +0000
-Message-Id: <20250831064551.30611-1-akurz@blala.de>
-X-Mailer: git-send-email 2.20.1
+	Sun, 31 Aug 2025 07:48:38 +0000
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-336cee72f40so6986441fa.2
+        for <barebox@lists.infradead.org>; Sun, 31 Aug 2025 00:48:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1756626515; x=1757231315; darn=lists.infradead.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WH5sId2UeKsHlyV0STA/+Vb87hc/0X9OV8qVTB0OiuY=;
+        b=J7I/eulxRDa4CE2FHNpYsvgFUgjS+T5DvzMjim2/UrQgK9ktY1NYcodJ4As5HWXZmY
+         2vRYXIZT9qw/44dEjE+Xffen+kTuzK4xNbtKyBKQytpMUs52JZJXmhuMaIuVqahao/yp
+         q+JXTx+JmxzfF57d98WX5rvXXYn0EDDoIdGtuz7lZXTeIVaYjQXqtBlWsZkt1LTixF0k
+         TMlXYCZkYx45ApyB7sia569oDNgvZhCohcZHxfJhRwzwdPe+7GKsIAIeUapISCngQi8t
+         Wy3u00VmtTODkzBXjfCQ6yAHTNlNKZGkBcZfuhXQzlBDWCKD8ifyKEouNCVcK0JwsNUf
+         J2Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756626515; x=1757231315;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WH5sId2UeKsHlyV0STA/+Vb87hc/0X9OV8qVTB0OiuY=;
+        b=oDISlG3qJ+LdnMEQ7KdUVMhE2RHRSgZJ6FajAy7p/FC0ICjRwHyDANOfeDHWksm9Al
+         3MvCHjRDxvJgiTqm6AzJQRqypSf7Xg6StahxprQHT1eWcrt364QqSw4CELeMyJocOjkX
+         Ebi0LO8IxEuRsFyqhhLm7bSkLaQEtoVUuSrKJoAU1dgZbeeLl5HXeyQRGATXDfYlgfOH
+         sTHywqk58h5hCfHtGb95SYYU8EZg5cqysxSOyRP1v1CddijYaMG369lrb/tut0FtuWQP
+         GkcLfOPCgDAppJWNIFMurhdgS7nolrjzLOzINrHIKzMLfwHn1vRtm8ZqVDV8ETVWtjeW
+         lPVw==
+X-Gm-Message-State: AOJu0YwrfhGxpGQ0NI4KaaGbb2a2UYPN8GiJEnIB3bT2lG2K5JfZOaVi
+	QMpS80a9rIJZj8Z73ChpD9kzEvyE2LrU/kJ3Hz++ICnxkYI+Lw0vvjmVzhLnnmpYCrPZgYyyyB0
+	t/462
+X-Gm-Gg: ASbGncu6wseUVK3oo38bDpSI8BRFReItTMgAsKOpoNwkICN5/rlifeOqLGtSqenO7Ig
+	GLBMwc7PUiO2UQvdciZOZUFUjpG2Yo0kJJ/WOkfkYg9veY7y0nMZz4GE6DaWEGQojcTAVn66NHG
+	rlsSACQk8CLY4qd9z4XbNGAJd7B4njUELyKNEuHGxgmmDeCidaPUYVtoEuwr8OiLjB4xTUPtmsn
+	Gm0E0otjF5WZIU4Ut4pvfCCs0fo4ME/YnpBG1R+nSqboKs7czUT0EKFssLxTAGvKUZVTgVRAd92
+	708rQ0QkVG6AJyg1R+2fsRX2wdTeCmEPhvm3ubUiEPl/WAs1DrcFi8xFX673ebD5o4U5C2ufln6
+	rtbJny0+8GGPSQr9JHF9TB77Nxx1jddChxqzStoRmtbIzOdxHIRBlrz3e/il/Zz6qxg==
+X-Google-Smtp-Source: AGHT+IEHkVJ4+ZamOXA/kMUJLB60qCQi7ejcsClOBAgfzaDUzHwa9OJYCKVfmP7yS75zxpf47MD2Dg==
+X-Received: by 2002:a05:651c:1119:b0:336:bb9c:d392 with SMTP id 38308e7fff4ca-336ca90366fmr7436421fa.9.1756626514436;
+        Sun, 31 Aug 2025 00:48:34 -0700 (PDT)
+Received: from wkz-x13 (h-176-10-159-15.NA.cust.bahnhof.se. [176.10.159.15])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-336d0e3f3absm7352841fa.37.2025.08.31.00.48.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Aug 2025 00:48:33 -0700 (PDT)
+From: Tobias Waldekranz <tobias@waldekranz.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+In-Reply-To: <aLFk86Wk1uSR0JQl@pengutronix.de>
+References: <20250828150637.2222474-1-tobias@waldekranz.com>
+ <aLFk86Wk1uSR0JQl@pengutronix.de>
+Date: Sun, 31 Aug 2025 09:48:32 +0200
+Message-ID: <87h5xo3p9r.fsf@waldekranz.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250830_234036_843052_86FF7A5D 
-X-CRM114-Status: GOOD (  16.56  )
+X-CRM114-CacheID: sfid-20250831_004837_505033_F2251C38 
+X-CRM114-Status: GOOD (  36.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,237 +103,128 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: boards: kindle mx50: extend vendor ATAGs
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 0/5] dm: Initial work on a device mapper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Board and device specific details are passed to the factory-shipped
-kernel as ATAG, e.g. board type and device serial number.
-Extend the list of vendor specific ATAGs with wifi and bootmode
-parameters to improve compatibility with the factory shipped
-installation, e.g. to get the wifi MAC address correctly set.
+On fre, aug 29, 2025 at 10:29, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Tobias,
+>
+> On Thu, Aug 28, 2025 at 05:05:25PM +0200, Tobias Waldekranz wrote:
+>> Start work on adding a device mapper that is compatible with the
+>> corresponding subsystem in Linux.
+>> 
+>> This is the foundation of several higher level abstractions, for
+>> example:
+>> 
+>> - LVM: Linux Volume manager. Dynamically allocates logical volumes
+>>   from one or more storage devices, manages RAID arrays, etc.
+>> 
+>> - LUKS: Linux Unified Key Setup. Transparent disk
+>>   encryption/decryption.
+>> 
+>> - dm-verity: Transparent integrity checking of block devices.
+>
+> That's great stuff. We are also interested especially in dm-verity as
+> that would allow us to get rid of separate partitions for the Kernel
+> image and maybe even the FIT image format we currently use whenever we
+> need signed Kernel images.
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- arch/arm/boards/kindle-mx50/board.c | 155 +++++++++++++++++++---------
- 1 file changed, 109 insertions(+), 46 deletions(-)
+We are sort of in the same boat. We wrap our rootfs in an FIT header,
+just because that is the only format U-Boot knows how to verify. After
+verification, we strip off the header, mount it, and then sysboot from
+it, with the kernel and DTBs in /boot on the squash.
 
-diff --git a/arch/arm/boards/kindle-mx50/board.c b/arch/arm/boards/kindle-mx50/board.c
-index a5c81ac8e7..81fda48248 100644
---- a/arch/arm/boards/kindle-mx50/board.c
-+++ b/arch/arm/boards/kindle-mx50/board.c
-@@ -21,87 +21,150 @@
- #include <mach/imx/imx5.h>
- #include <mach/imx/revision.h>
- 
--/* 16 byte id for serial number */
-+/* 16 byte id for the device serial number */
- #define ATAG_SERIAL16   0x5441000a
- /* 16 byte id for a board revision */
- #define ATAG_REVISION16 0x5441000b
-+/* mac address / secret */
-+#define ATAG_MACADDR    0x5441000d
-+/* 2x 16 byte /proc/bootmode */
-+#define ATAG_BOOTMODE   0x5441000f
- 
--struct char16_tag {
-+struct tag_char16 {
- 	char data[16];
- };
- 
-+struct tag_macaddr {
-+	char address[12];
-+	char secret[20];
-+};
-+
-+struct tag_bootmode {
-+	char boot[16];
-+	char post[16];
-+};
-+
- static struct tag *setup_16char_tag(struct tag *params, uint32_t tag,
- 				    const char *value)
- {
--	struct char16_tag *target;
--	target = ((void *) params) + sizeof(struct tag_header);
-+	struct tag_char16 *target;
-+
-+	target = (void *)params + sizeof(struct tag_header);
-+	params->hdr.tag = tag;
-+	params->hdr.size = tag_size(tag_char16);
-+	memset(target->data, 0, sizeof(target->data));
-+	/* don't care for missing null terminators */
-+	strncpy(target->data, value, sizeof(target->data));
-+	return tag_next(params);
-+}
-+
-+static struct tag *setup_macaddr_tag(struct tag *params, uint32_t tag,
-+				    const char *addr, const char *secret)
-+{
-+	struct tag_macaddr *target;
-+
-+	target = (void *)params + sizeof(struct tag_header);
-+	params->hdr.tag = tag;
-+	params->hdr.size = tag_size(tag_macaddr);
-+	memset(target->address, 0, sizeof(target->address));
-+	memset(target->secret, 0, sizeof(target->secret));
-+	strncpy(target->address, addr, sizeof(target->address));
-+	strncpy(target->secret, secret, sizeof(target->secret));
-+	return tag_next(params);
-+}
-+
-+static struct tag *setup_bootmode_tag(struct tag *params, uint32_t tag,
-+				    const char *bootmode, const char *postmode)
-+{
-+	struct tag_bootmode *target;
-+
-+	target = (void *) params + sizeof(struct tag_header);
- 	params->hdr.tag = tag;
--	params->hdr.size = tag_size(char16_tag);
--	memcpy(target->data, value, sizeof target->data);
-+	params->hdr.size = tag_size(tag_macaddr);
-+	memset(target->boot, 0, sizeof(target->boot));
-+	memset(target->post, 0, sizeof(target->post));
-+	strncpy(target->boot, bootmode, sizeof(target->boot));
-+	strncpy(target->post, postmode, sizeof(target->post));
- 	return tag_next(params);
- }
- 
--static const char *get_env_16char_tag(const char *tag)
-+static const char *get_env_char_tag(const char *tag, const char *defaultval)
- {
--	static const char *default16 = "0000000000000000";
- 	const char *value;
- 	value = getenv(tag);
- 	if (!value) {
--		pr_err("env var %s not found, using default\n", tag);
--		return default16;
-+		printf("env var %s not found, using default\n", tag);
-+		return defaultval;
- 	}
--	if (strlen(value) != 16) {
--		pr_err("env var %s: expecting 16 characters, using default\n",
--			tag);
--		return default16;
--	}
--	pr_info("%s: %s\n", tag, value);
- 	return value;
- }
- 
- BAREBOX_MAGICVAR(global.board.serial16,
--	"Pass the kindle Serial as vendor-specific ATAG to linux");
-+	"The device serial in ATAG_SERIAL16, visible in /proc/cpuinfo");
- BAREBOX_MAGICVAR(global.board.revision16,
--	"Pass the kindle BoardId as vendor-specific ATAG to linux");
-+	"The boardid in ATAG_REVISION16 to fill /proc/boardid");
-+BAREBOX_MAGICVAR(global.board.mac,
-+	"The wifi MAC in ATAG_MACADDR visible as /proc/mac_addr");
-+BAREBOX_MAGICVAR(global.board.sec,
-+	"The sec code in ATAG_MACADDR visible as /proc/mac_sec");
-+BAREBOX_MAGICVAR(global.board.bootmode,
-+	"The bootmode in ATAG_BOOTMODE to fill /proc/bootmode");
-+BAREBOX_MAGICVAR(global.board.postmode,
-+	"The postmode in ATAG_BOOTMODE to fill /proc/postmode");
-+
-+static struct envdata {
-+	size_t offset;
-+	size_t size;
-+	const char *env_name;
-+	char *data;
-+} kindle_mx50_boardinfo[] = {
-+	{ 0x0,  16, "board.serial16" },
-+	{ 0x60, 16, "board.revision16" },
-+	{ 0x30, 16, "board.mac" },
-+	{ 0x40, 20, "board.sec" },
-+	{ 0x1000, 16, "board.bootmode" },
-+	{ 0x1010, 16, "board.postmode" },
-+};
- 
--/* The Kindle Kernel expects two custom ATAGs, ATAG_REVISION16 describing
-- * the board and ATAG_SERIAL16 to identify the individual device.
-- */
-+/* The original kernel expects multiple custom ATAGs. */
- static struct tag *kindle_mx50_append_atags(struct tag *params)
- {
- 	params = setup_16char_tag(params, ATAG_SERIAL16,
--				get_env_16char_tag("global.board.serial16"));
-+			get_env_char_tag("global.board.serial16",
-+				"0000000000000000"));
- 	params = setup_16char_tag(params, ATAG_REVISION16,
--				get_env_16char_tag("global.board.revision16"));
-+			get_env_char_tag("global.board.revision16",
-+				"0000000000000000"));
-+	params = setup_macaddr_tag(params, ATAG_MACADDR,
-+			get_env_char_tag("global.board.mac",
-+				"000000000000"),
-+			get_env_char_tag("global.board.sec",
-+				"00000000000000000000"));
-+	params = setup_bootmode_tag(params, ATAG_BOOTMODE,
-+			get_env_char_tag("global.board.bootmode", ""),
-+			get_env_char_tag("global.board.postmode", ""));
- 	return params;
- }
- 
--static char *serial16;
--static char *revision16;
--static char *mac;
--
--static void kindle_rev_init(void)
-+static void kindle_rev_init(const char *part, struct envdata *env, size_t num)
- {
--	int ret;
- 	void *buf;
--	const char userdata[] = "/dev/mmc2.boot0.userdata";
--	ret = read_file_2(userdata, NULL, &buf, 128);
-+
-+	int ret = read_file_2(part, NULL, &buf, 0x1060);
- 	if (ret && ret != -EFBIG) {
--		pr_err("Could not read board info from %s\n", userdata);
-+		pr_err("Could not read board info from %s\n", part);
- 		return;
- 	}
--
--	serial16 = xzalloc(17);
--	revision16 = xzalloc(17);
--	mac = xzalloc(17);
--
--	memcpy(serial16, buf, 16);
--	memcpy(revision16, buf + 96, 16);
--	memcpy(mac, buf + 48, 16);
--
--	globalvar_add_simple_string("board.serial16", &serial16);
--	globalvar_add_simple_string("board.revision16", &revision16);
--	globalvar_add_simple_string("board.mac", &mac);
-+	for (int i = 0; i < num; i++) {
-+		size_t offset = env[i].offset;
-+		size_t size = env[i].size;
-+		const char *name = env[i].env_name;
-+
-+		env[i].data = xzalloc(size + 1);
-+		env[i].data[size] = 0;
-+		memcpy(env[i].data, buf + offset, size);
-+		globalvar_add_simple_string(name, &env[i].data);
-+	}
- 
- 	free(buf);
- }
-@@ -121,8 +184,8 @@ static int kindle_mx50_late_init(void)
- 	armlinux_set_revision(0x50000 | imx_silicon_revision());
- 	/* Compatibility ATAGs for original kernel */
- 	armlinux_set_atag_appender(kindle_mx50_append_atags);
--
--	kindle_rev_init();
-+	kindle_rev_init("/dev/mmc2.boot0.userdata", kindle_mx50_boardinfo,
-+		ARRAY_SIZE(kindle_mx50_boardinfo));
- 
- 	return 0;
- }
--- 
-2.39.5
+Just shipping the fs with verity data (+ possibly FEC, in the future)
+and a signature would be _so_ much nicer.
 
+>> 
+>> This is part of an exploratory project for investigating how we could
+>> boot Infix[1] in a more platform-independent way. I.e., my intention
+>> is to eventually add support for some of the features mentioned above,
+>> assuming we don't hit any major road blocks. The rest of this letter
+>> just gives context for how we got here and where we would like to take
+>> Barebox. If that is not interesting, feel free to stop reading here :)
+>> 
+>> Our idea is to relegate U-Boot to serve only as a UEFI firmware on the
+>> platforms where we can't escape it, and then do most of our boot logic
+>> in Barebox instead. Primarily we want to do this for two reasons:
+>> 
+>> 1. Being able to ship barebox as an EFI app means we can use the same
+>>    boot logic on x86 machines as we to on everything else.
+>> 
+>> 2. Barebox is a much higher quality code base to work in than
+>>    U-Boot. I'm sorry, but it just is.
+>> 
+>> Barebox would thus take the place occupied by systemd-boot in many
+>> distro setups. So why not go with systemd-boot?
+>> 
+>> 1. Infix does not run systemd as PID 1, so reusing their bootloader is
+>>    awkward.
+>> 
+>> 2. Infix ships as a single immutable filesystem image, including
+>>    kernel, DTBs, etc. So we want to extract these files from the
+>>    filesystem before booting the kernel. This is not supported by
+>>    systemd-boot, AFAIK - all boot files must live on the ESP.
+>> 
+>> 3. We would like to manage our devices' non-volatile storage with LVM,
+>>    and not be bound to a fixed partition table. This will give us more
+>>    flexibility in growing our image, efficiently having images of
+>>    varying sizes installed, etc.
+>> 
+>> Therefore, our plan is (roughly):
+>> 
+>> 1. Add dm-verity support
+>> 2. Add dm-verity root-hash-signature verification support
+>> 
+>> With that, we can securely extract kernel+DTB from our filesystem
+>> without having to sign them individually.
+>
+> Ok, it seems we have the same goals ;)
+
+Very glad to hear it! :)
+
+>> 
+>> 3. Add basic LVM support, no RAID or anything, just basic (linear)
+>>    logical volumes.
+>> 
+>> This will allow us to install multiple versions of Infix on individual
+>> logical volumes, which Barebox can then find and boot from.
+>> 
+>> 4. Add high-level helpers for working with DPS disks and DDI images.
+>> 
+>> I really like the Linux Userspace API Group's thinking around
+>> Discoverable Partitions Specification (DPS) and Discoverable Disk
+>> Images (DDI). I think it would be great if Barebox had knowledge about
+>> these patterns, and could automatically set up the dm-verity
+>> configuration for a partition when available, for example.
+>
+> I haven't looked into this yet, but it sounds good. It's a good thing
+> when barebox can just do the right thing without much configuration.
+>
+>> 
+>> My hope is that this plan sparks some ideas and reflections. If so, I
+>> would love to hear them. If not, sorry for the wall of text :)
+>
+> Well I am very open for adding DM and dm-verity support to barebox. We
+> would likely have done it anyway at some point, but that could have
+> taken some time.
+
+Cool! I did a toy implementation in Python yesterday, just to convince
+myself I understood how it works, and it was actually very straight
+forward. So if this series is eventually merged, I hope to follow up
+with an implementation of dm-verity pretty quickly.
+
+> Sascha
+>
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
