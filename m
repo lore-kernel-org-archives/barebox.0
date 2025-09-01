@@ -1,53 +1,58 @@
-Delivery-date: Mon, 01 Sep 2025 14:31:54 +0200
+Delivery-date: Mon, 01 Sep 2025 14:40:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ut3hS-006uJL-25
+	id 1ut3ph-006uPF-2H
 	for lore@lore.pengutronix.de;
-	Mon, 01 Sep 2025 14:31:54 +0200
+	Mon, 01 Sep 2025 14:40:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ut3hR-0007yn-Bx
-	for lore@pengutronix.de; Mon, 01 Sep 2025 14:31:53 +0200
+	id 1ut3pg-00037J-FV
+	for lore@pengutronix.de; Mon, 01 Sep 2025 14:40:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=DL3m6falxHEqAa7AyC0rPM53K1EsH+rCAwLvUq8xbGg=; b=stn+D/VQXssZmF0X4EZyIx9Arg
-	rtx3GWZ7HGTd+sZNnQHMcGDQDKS1lIoH39Kpa24Gs5X0cb/xxiUaEZOm2IRiB2Ozl8UG5OMcIp9rH
-	WDvpv//7mFA2fC/PamoMSiJwLeHWIIkIQbQPLRx9QqmXPVDVZXu7MZ5b8MbFsxOncSLwOauhPEbJE
-	u/XblwGDqH+LzM24MEs+hIIrpe86hJYeVVAgyXz9jRatgXQ4Cf1gQIC9qUaA17L85kIOFYyzwgBio
-	iHF2KyQNgSHFby6RR5tiJsIgkO78UCgk8B9jd6SghDVKUgD+E9rf1gwZ8O59OJkWRxtQvo/2luAQ/
-	zEWn94QA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mrlJJ75pSnHBNwLBmUROErOFfwQREio2mflplw9tziM=; b=aI/UwI3FqZT5yp7zg6KY1eiDnr
+	Zubgobk7CGPD03Dr9AxUhjgQHntR9VzGPYQh9z7zDViS17eb+wVcAPbK/uxs4NWt4wJR+FZs6HMQ7
+	27on7XSayiFUp1LKIWZvuQJBPpCe0DzoX+N1FHKjS7ixrSjM5gHsZXV4SH9IDMkv/o5b1fyX8Tt5O
+	VfCytdAsM0X6km9WIGsF5vC6shSvlo8O/dF9Td0wBSRdzjladrbTaw+FIP4nQdLl9RVigJcTVzZ1z
+	BuCcORn03m+mU7QWdkxYP0sI2W3K5T2ipww5+cjnGFu/6CmGnbatHFaMpkRq5g51J+tH2REgPMLW2
+	yV76DbUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ut3gu-0000000CUsK-1fxE;
-	Mon, 01 Sep 2025 12:31:20 +0000
+	id 1ut3pF-0000000CYPb-23lp;
+	Mon, 01 Sep 2025 12:39:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ut1oC-0000000Bufk-3dYY
+	id 1ut1wW-0000000Bvtt-1FZd
 	for barebox@lists.infradead.org;
-	Mon, 01 Sep 2025 10:30:46 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	Mon, 01 Sep 2025 10:39:21 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1ut1oA-0003vz-7e; Mon, 01 Sep 2025 12:30:42 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: s.hauer@pengutronix.de,
-	barebox@lists.infradead.org
-Date: Mon,  1 Sep 2025 12:29:37 +0200
-Message-ID: <20250901103039.914774-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1ut1wR-0007Rh-Nv; Mon, 01 Sep 2025 12:39:15 +0200
+Message-ID: <fa6f678f-7e79-401c-b857-43d34885ef6e@pengutronix.de>
+Date: Mon, 1 Sep 2025 12:39:15 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+Cc: Ahmad Fatoum <afa@pengutronix.de>
+References: <20250828093135.1959085-1-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20250828093135.1959085-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250901_033044_980350_30EC2536 
-X-CRM114-Status: GOOD (  11.11  )
+X-CRM114-CacheID: sfid-20250901_033920_340720_6D397C4C 
+X-CRM114-Status: GOOD (  24.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,81 +70,101 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: mach-imx: tzasc: keep default region 0 secure settings for i.MX8M
+Subject: Re: [PATCH] Kbuild: do not build dtbs concurrently
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The TZC-380 region 0 is the TZC default (fallback) region. This region
-is used if access to a certain DRAM address was done which isn't
-configured by any other region (see [1] for more information). Region 0
-covers the complete AXI space from 0x0 to AXI-bus width. The access is
-secure-only after reset.
+On 8/28/25 11:31 AM, Sascha Hauer wrote:
+> commit 3c862a83f019 ("kbuild: restrict dtbs target to enabled DTs by
+> default") added the dtbs target as a dependency to the images target.
+> In the dtbs target we call into Kbuild for building the device trees.
+> The device trees are also built as part of the regular build in
+> parallel, so we end up running Kbuild for the same directory twice.
+> 
+> This sometimes results in failed builds with messages like this one
+> (done with make V=2):
+> 
+>   AS [P]  arch/arm/dts/bcm2711-rpi-400.dtb.pbl.o - due to target missing
+>   AS [P]  arch/arm/dts/bcm2711-rpi-400.dtb.pbl.o - due to target missing
+> fixdep: error opening file: arch/arm/dts/.bcm2711-rpi-400.dtb.pbl.o.d: No such file or directory
+> 
+> Fix this by removing the dtbs target from the images dependencies. We
+> then would no longer build the dtbs-list, so build that unconditionally
+> once we descend into a directory containing device trees. The dtbs-list
+> is built with always-y which should make sure it is ready once we need
+> it in imagages/
+> 
+> Fixes: 3c862a83f019 ("kbuild: restrict dtbs target to enabled DTs by default")
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-The TZC-380 is not memory alias aware (see [1] for more information) and
-due to the DDR controller, the i.MX8M allows memory alias access.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Configuring region 0 as secure + non-secure RW access opens the
-potential security risk of allowing access to secure only memory e.g.
-TEE memory area if the TEE didn't configure all memory aliases for its
-memory. Because in such case region 0 could be used as fallback if an
-attackers access the TEE memory via memory aliases.
+> ---
+>  Makefile               | 7 +------
+>  scripts/Makefile.build | 2 +-
+>  scripts/Makefile.dtbs  | 2 --
+>  3 files changed, 2 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index b9c252476f..7620c47cf4 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1187,15 +1187,10 @@ ifneq ($(dtstree),)
+>  
+>  PHONY += dtbs dtbs_prepare
+>  dtbs: dtbs_prepare
+> -	$(Q)$(MAKE) $(build)=$(dtstree) need-dtbslist=1
+> +	$(Q)$(MAKE) $(build)=$(dtstree)
+>  
+>  dtbs_prepare: include/config/kernel.release scripts_dtc
+>  
+> -ifdef CONFIG_OFDEVICE
+> -images: dtbs
+> -images/%: dtbs
+> -endif
+> -
+>  endif
+>  
+>  PHONY += scripts_dtc
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 591da3d750..fed8c247f9 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -56,7 +56,7 @@ ifneq ($(userprogs),)
+>  include scripts/Makefile.userprogs
+>  endif
+>  
+> -ifneq ($(need-dtbslist)$(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
+> +ifneq ($(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
+>  include $(srctree)/scripts/Makefile.dtbs
+>  endif
+>  
+> diff --git a/scripts/Makefile.dtbs b/scripts/Makefile.dtbs
+> index 7b5b9e1d16..25ed08e8ee 100644
+> --- a/scripts/Makefile.dtbs
+> +++ b/scripts/Makefile.dtbs
+> @@ -10,11 +10,9 @@ always-y        += $(dtb-y)
+>  # dtbs-list
+>  # ---------------------------------------------------------------------------
+>  
+> -ifdef need-dtbslist
+>  subdir-dtbslist := $(addsuffix /dtbs-list, $(subdir-ym))
+>  dtb-y           += $(subdir-dtbslist)
+>  always-y        += $(obj)/dtbs-list
+> -endif
+>  
+>  $(subdir-dtbslist): $(obj)/%/dtbs-list: $(obj)/% ;
+>  
 
-Don't reconfigure TZC-380 default region 0 to allow secure and
-non-secure access and instead setup an early non-secure region 1 which
-covers the complete ram <= 4G size to fix this.
-
-[1] https://developer.arm.com/documentation/ddi0431/c
-
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- arch/arm/mach-imx/tzasc.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
-index 0fe7f6eb7f4a..31664bbf2b39 100644
---- a/arch/arm/mach-imx/tzasc.c
-+++ b/arch/arm/mach-imx/tzasc.c
-@@ -345,6 +345,7 @@ bool imx6_can_access_tzasc(void)
- void imx8m_tzc380_init(void)
- {
- 	u32 __iomem *gpr = IOMEM(MX8M_IOMUXC_GPR_BASE_ADDR);
-+	resource_size_t ram_sz;
- 
- 	/* Enable TZASC and lock setting */
- 	setbits_le32(&gpr[10], GPR_TZASC_EN);
-@@ -364,13 +365,21 @@ void imx8m_tzc380_init(void)
- 	if (cpu_is_mx8mn() || cpu_is_mx8mp())
- 		setbits_le32(&gpr[10], GPR_TZASC_ID_SWAP_BYPASS_LOCK);
- 
-+	/* All i.MX8M do have a 32-bit bus width except for the i.MX8M Nano */
-+	ram_sz = imx8m_barebox_earlymem_size(32);
-+	if (cpu_is_mx8mn())
-+		ram_sz = imx8m_barebox_earlymem_size(16);
-+
- 	/*
--	 * set Region 0 attribute to allow secure and non-secure
--	 * read/write permission. Found some masters like usb dwc3
--	 * controllers can't work with secure memory.
-+	 * Setup Region 1 to cover complete earlymem size, to  allow non-secure
-+	 * read/write permission. Found some masters like usb dwc3 controllers
-+	 * can't work with secure memory.
-+	 *
-+	 * According to upstream OP-TEE and TF-A the TZC-380 reagion base
-+	 * address starts at 0x0 and not at MX8M_DDR_CSD1_BASE_ADDR.
- 	 */
--	writel(MX8M_TZASC_REGION_ATTRIBUTES_0_SP,
--		   MX8M_TZASC_REGION_ATTRIBUTES_0);
-+	imx_tzc380_init_and_setup(IOMEM(MX8M_TZASC_BASE_ADDR), 1,
-+				  0, ram_sz, TZC380_REGION_SP_NS_RW);
- }
- 
- bool imx8m_tzc380_is_enabled(void)
 -- 
-2.47.2
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
