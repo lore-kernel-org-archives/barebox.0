@@ -1,95 +1,90 @@
-Delivery-date: Tue, 02 Sep 2025 21:10:17 +0200
+Delivery-date: Tue, 02 Sep 2025 21:12:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1utWOX-007NXU-37
+	id 1utWQi-007NZr-0s
 	for lore@lore.pengutronix.de;
-	Tue, 02 Sep 2025 21:10:17 +0200
+	Tue, 02 Sep 2025 21:12:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1utWOW-0005wH-7b
-	for lore@pengutronix.de; Tue, 02 Sep 2025 21:10:17 +0200
+	id 1utWQh-0006ew-1l
+	for lore@pengutronix.de; Tue, 02 Sep 2025 21:12:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
-	Message-ID:Date:References:In-Reply-To:Subject:Cc:To:From:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wGl6lQbCnQrKXHqDboB03M5cgBayk4scAAXh2hbcKz0=; b=m7gtdmqFqmJtdBO23Ba1YI3OEM
-	LYJE0MTEt05LEk1QmvaQuXP0qcxv3ilmj8v5H0GVmi0ghcLOef55S5NL+EU+YSSvv0ehYAfXCHks/
-	7MSGrs88ykrHbzPqUxJ73npt00U+yQEPuBJ5WvDnT/I8yI2XjIq34gsRKqZv6B3+U7p/8IjCw2SAL
-	+5rnrBahTR/kKFP5wwnpCOsbMMDkUS6/PMOa6GanE4DtXUp5ROeJkHKbATAMhRjO1GZwa2U1QGtXW
-	zJeZRp0BK3PBl/GzoYoYHbk0s+D+yG628Uo8tvIwwsSR3dd+0ozFsv3b/RdUbmtRr/oM5V7wvYuht
-	GJCbth5Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=HCZnuqz8O1d/+zxhHfN3ZpYlNMFlZz4iZu9/QR5XRqg=; b=QorW2A9m3CpJHjbTu4hXPfA2J4
+	s4HjP7VouYEmXfkn5aiPON2hFF29os+/x9E8fe/nOeUguNSgr13WaEFFWbj91b8jwkYoUNDkBzNpe
+	hud19o5jSYkQDypbS40uT25mduvB/P65VeHU/4x0O1GfUGIiWFvyOGQLUzSCiZHa2QIoba/wTylRN
+	xeLp2p1QltYJQIaBGVfE7uib5rWww++zHH2tmipMafmHgk61beeFawUbAKVJbBTdG0jrz/WCYHxZy
+	VRl+n+4ixyKqPveM5IFCazf+iWhuGKLTRqyxerMjW8156WQONsIkNln9EZ0nyp82UyrGF6G+H49bA
+	GK3R94pA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utWNb-00000001Z7e-0CGp;
-	Tue, 02 Sep 2025 19:09:19 +0000
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+	id 1utWQD-00000001czS-1z9P;
+	Tue, 02 Sep 2025 19:12:01 +0000
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utQdT-0000000HUQn-0yOl
+	id 1utRYY-00000000DcL-22gQ
 	for barebox@lists.infradead.org;
-	Tue, 02 Sep 2025 13:01:20 +0000
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-55f646b1db8so5070201e87.0
-        for <barebox@lists.infradead.org>; Tue, 02 Sep 2025 06:01:18 -0700 (PDT)
+	Tue, 02 Sep 2025 14:00:19 +0000
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-afede1b3d05so901930266b.2
+        for <barebox@lists.infradead.org>; Tue, 02 Sep 2025 07:00:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1756818077; x=1757422877; darn=lists.infradead.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wGl6lQbCnQrKXHqDboB03M5cgBayk4scAAXh2hbcKz0=;
-        b=v45n/A7pwttTtDA5vD8cvyCN725Bar8uN0g+uyGr7bE1JQpdLAGeAv39RZjEh/9nZN
-         coJWSCrEORI80p6pIDO7XsOSmrjjaHsXn5fTVJUF1WBVSHD/umKmOjuxdYd2eKFtyyTW
-         7S2gNO1VU8nkPMctW+NnFGfu7PMkuRyP/5UFruLiQnWBVwJG2J00IRtx4XWkhUNH/6Hr
-         dg5OjBfkwvnNOymrU7xc8GMtzgnIIqqXt7pifQk1F+SuuTtZtfqSfCr8gYfHjjmH3Wtu
-         sOoo+m0+DBGGZsge62CufjIuoSM89NEz9Ka/3Cz4uxDvaiwgDXoWa9d+DT+VT78BPzTF
-         Za5g==
+        d=gmail.com; s=20230601; t=1756821616; x=1757426416; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HCZnuqz8O1d/+zxhHfN3ZpYlNMFlZz4iZu9/QR5XRqg=;
+        b=YPwIUKkhSDvotnpqVWoV0posa8a/Aciu/1hNj/OqlX7h75RMhqjcmlYbF4zpyeqcWh
+         u6PK4LWFBYYzfbqFHG2+/yEOZ0FCVNxc4r8YDH0JqusmQCHrwQ/Lk+dphZ+V0bntSq0R
+         iXl1+aeUfeXmAilcIlJR7Gu7o66+emIkNicEBylhbL9QxAhGv1uBcAtC4SuiCtae+ZER
+         rlNqmAV3pvn+A4tPhBOraDcqCHhzVS9TYINxgJ2fmx0zmIntKaYIDMuVMLFyi7ZtigPU
+         5O5NnnsafMn8i/k7L2tfHh7/Vl6RfEBuHY7tFMn8Yo7Lo1F6FhHKxsPij2Mk67e39zDj
+         6btw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756818077; x=1757422877;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wGl6lQbCnQrKXHqDboB03M5cgBayk4scAAXh2hbcKz0=;
-        b=gO6/vs/mFjJbtYYetSTFga9Y9SfhPF8AflEwAM0/op7tOw/k0RKRdpE/WnKBeEcSVs
-         gx/xi/jFsNzSr/wQs+UdRekxAV/vQtpTDyXFTZ2ViVGxudD/ypHmrJHNfo9x/SSGtoe3
-         TLyjE052QbOvl1jPCY97VZTx17RX9iPj4gsGwl+c9J+i3iise64K4paTc6GcISba/kDD
-         M1nDmTRTnFIWOPPQ3REeo38+pdi+5Ot7yAerl1yqjNemN0K5R8pVNwFkSLFIxTH4gKoX
-         0pJ5YH6Q/WJPInCQQVTJrNM7mkOpQQcsAsJvdJ6zzAkwVD5BsawiJLe4f+e+CsSG/9au
-         l3XA==
-X-Forwarded-Encrypted: i=1; AJvYcCUAMvxRydC/gBmjQL6psBx2+lAtyXsbxORJkfMLXHxFqq7P2fxAGNrcRIG55/dngapQQFgJ0WEr@lists.infradead.org
-X-Gm-Message-State: AOJu0YxKx4878MvO8+dmVYCZIp3hzRHCqVVeDCTBxxKYbd2sL+Tgem0n
-	s2RnPAqEynvu5KkmqmieXktvC2CkB77XkYdpqT73+6BtQQhwSZi8qqG5/8264TsqiqU=
-X-Gm-Gg: ASbGncsbBJ+RkiNVkHzMUx5S3x33CsvsUq2oMRo1EpPus2bzSGa0LlUTXUDwyJkh8ZR
-	qXRXIVuOvM0kQdpRpTWWwee1lEfJSniwEv6reITxAUJv3mP1nKh0MIQzgl/ceqdT47CrGwX67Rr
-	FM9ySaTm0Y9wrDn/65vfH8CfUX8QwbS5qMUTWjDbt6hFXKKTp0nIFfdUZ7OcQUj6JLSmJv/7rAx
-	u+ueOc3zYY2RK6c9hlU8KpXhK2mAT15dXCz/lf3O+fiB0YjgxR+UkITyEAAx8cyGERflkPNRUaF
-	Vo8vBIIbmK0rAmlpG54pVs4gYDxALnL5AY2eBn5/9bNlQ4Qhzifp/Ygc5qgi1mukK/traqGVdMc
-	OI50E3ho+8sd3ES3TFkPXVzR6dNr/w9e57rEnlRvwZFCbbykzwMrU
-X-Google-Smtp-Source: AGHT+IE90PyiBEoE6Adude5dEoff0OKVeGA52oX5Zhfh+0FJmzWJceHcsIAeyAw8hOUD7Cw+Sjd3yA==
-X-Received: by 2002:a05:6512:3f28:b0:55b:9283:b590 with SMTP id 2adb3069b0e04-55f70983a86mr3516403e87.50.1756818077160;
-        Tue, 02 Sep 2025 06:01:17 -0700 (PDT)
-Received: from wkz-x13 (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-560826d1279sm697431e87.25.2025.09.02.06.01.16
+        d=1e100.net; s=20230601; t=1756821616; x=1757426416;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HCZnuqz8O1d/+zxhHfN3ZpYlNMFlZz4iZu9/QR5XRqg=;
+        b=X4+JVPsU59Rq48bKg51n5kZE0rxAbYm/XkO00fCzqF/Q8vvtFrEVRuBT9q9SgvkQUM
+         37wGsXkQZtqvYTdxXTpkRRIC1v1nd1QhN2Fe4qQCsM3Kx79/eJ+xn6T4qfnyLokH4v6i
+         aTUhMvMLUMN7BKOQ+NsmUFAK7hRZd/gZifLwVwGwfPdT5sQXRPH1YIcYxubXyOE0xClG
+         oeh980vZe0eWrf8FX3rEAcbMSCgZKdmTSnLEHO5G3t5GUvLDogBTRu56uDrWK5fI3bSs
+         mHFDAadHfFGqpx1QPG3zuLdJ9VDSDcB64UBHVDuekR7xMTns+sEjOz0h8/YmIzuLbDY1
+         hp2g==
+X-Gm-Message-State: AOJu0YzUpXjc+3u0sl4/ODDKlDmXVambCUu8I+8B8Y/ShlXGNTwsfcdc
+	06IG7KCn32suMK7KntaMZYNhYTPjr+0dUBzL6OU3PVLWWiVTU1owk/70+hIi/Q==
+X-Gm-Gg: ASbGncuRw0Bo+1n8p3/GZ03KXH+eLDN2NjDodSLg6XKwRPbfi/rvyY6pxpHkWcbAjxX
+	qimbes3iLHmbc1gaGYfff+SoIKSczG6InMQcqBRt9cDsmJQEIg/NGNpX+BADd/V08GttTRFutPN
+	2e4rTPC4nfqETTpkI+aHUq57XoKk9GatgklWVNiXoWI/qqUJC3+E8foetlv1fywgCr5QmWZh8Qj
+	fse8Hp9/vKqZOb36TsgPAeximlQ4uyXg1stT7odg48wHOowPTKUgykP3rcRVnMJp3yRozpRgMq8
+	xvVAYPzHLMw7KH9qSFiF9O2k6lC89Ri8ARlgQ+GQHWNA3wZIdw2ilwcMPA+Ohk+bJ9YP1ECzcbn
+	ueLDKT6co3mr9uxNuJxDcZVoIEzWeZ3p2
+X-Google-Smtp-Source: AGHT+IFvA8uCEpPkGkueSujGKpvgMWjTuh8ykQrdpaBmGCnH9QYpHsKwgwhbk0q+cKAMAUagFK4blQ==
+X-Received: by 2002:a17:907:3e08:b0:afe:a4a7:df95 with SMTP id a640c23a62f3a-b01d8a26e5amr1118769866b.3.1756821616043;
+        Tue, 02 Sep 2025 07:00:16 -0700 (PDT)
+Received: from ivaylo-T580.. ([37.63.16.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aff08b86833sm1034411366b.48.2025.09.02.07.00.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 06:01:16 -0700 (PDT)
-From: Tobias Waldekranz <tobias@waldekranz.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Cc: Michael Olbrich <mol@pengutronix.de>, Richard Weinberger
- <richard@nod.at>, Marco Felsch <m.felsch@pengutronix.de>, anis chali
- <chalianis1@gmail.com>
-In-Reply-To: <24ac7ede-0f36-4283-b654-9cccdfa97a37@pengutronix.de>
-References: <20250828150637.2222474-1-tobias@waldekranz.com>
- <07a7e6e0-f0dd-4969-888a-b616fe337158@pengutronix.de>
- <87frd83p9h.fsf@waldekranz.com>
- <24ac7ede-0f36-4283-b654-9cccdfa97a37@pengutronix.de>
-Date: Tue, 02 Sep 2025 15:01:15 +0200
-Message-ID: <878qix3t5w.fsf@waldekranz.com>
+        Tue, 02 Sep 2025 07:00:15 -0700 (PDT)
+From: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Date: Tue,  2 Sep 2025 17:00:03 +0300
+Message-ID: <20250902140006.1410408-1-ivo.ivanov.ivanov1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250902_060119_275017_BE084266 
-X-CRM114-Status: GOOD (  55.66  )
+X-CRM114-CacheID: sfid-20250902_070018_532162_6801A3C6 
+X-CRM114-Status: GOOD (  17.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -107,223 +102,78 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/5] dm: Initial work on a device mapper
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH v2 0/3] ARM: boards: add support for Samsung Galaxy S8 and S20 5G
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On tis, sep 02, 2025 at 11:03, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> On 8/31/25 9:48 AM, Tobias Waldekranz wrote:
->> On fre, aug 29, 2025 at 13:24, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>> On 28.08.25 17:05, Tobias Waldekranz wrote:
->>> Fortunately, Anis (Cc'd) is right now working on exactly the use case
->>> of filling out the missing pieces for using barebox as EFI payload on ARM and has
->>> already submitted patches bringing this closer to completion.
->> 
->> Thanks for the background. Yeah, once I figured out I needed
->> CONFIG_COMPILE_TEST to build for aarch64 I got the sense that there was
->> still work to be done there :) That's alright though, I'm skating to
->> where the puck will be.
->
-> Great. I think it shapes up quite nicely right now.
->
->>> Sidenote: Something that been irking me for ages is the over-reliance
->>> on FAT in systemd-boot. Could the FAT on a file system level break
->>> by inopportune power cuts? We go to great lengths with barebox-state
->>> and redundant buckets on raw partitions to avoid this and it leaves
->>> me asking: Was I wrong to mistrust FAT or is a sudden power cut during
->>> file system write operations not as much a concern for their users?
->> 
->> This has been bothering me too, and AFAIK the UEFI spec does not
->> describe any way of defining a redundant ESP either?
->
-> Not really, but depending on the tools you use, there are workarounds:
->
-> - barebox skips partitions with the DPS_TYPE_FLAG_NO_AUTO flag.
-> Currently only for blspec, but in future also when searching for ESP
->
-> - RAUC supports a "boot-gpt-switch"[1] that "[changes] the GPT to switch
-> the first GPT partition entry between the first and second halves of a
-> region configured for that purpose"
->
-> [1]:
-> https://rauc.readthedocs.io/en/latest/advanced.html#update-bootloader-partition-in-gpt
+Hey folks,
 
-Neat! We use RAUC in Infix, so I will definitely look into that.
+This patchset focuses on adding support for S8 and S20. It's designed to
+allow adding support for new exynos devices easy, with the primary
+differentiating factor being the device tree. Currently, the same built
+barebox-exynos.img can be booted on both S20 and S8 without any changes
+in the code, as it can dynamically recognize what device it's booting on
+based on the tree provided at x0 from the previous bootloader (s-boot).
 
->>> I hope someone (maybe me instead of talking) should do fault injection
->>> in QEMU or using kernel APIs and see how broken it can get.
->> 
->> That would be great. Doing it at the VM layer seems very hard, at least
->> if you want something deterministic. In the kernel though, it should be
->> easier to know when a filesystem is in an inconsistent state, and inject
->> the errors at that point.
->
-> Ack.
->
->>> they also support XBOOTLDR partitions? At least in barebox, you should
->>> be able to just assign the rootfs partition of the Infix OS the XBOOTLDR
->>> partition Type UUID to have barebox automatically look for the bootloader
->>> spec entries there.
->> 
->> They do support that, yes. However, but that would mean that we could
->> not use the DPS/DDI partition types that would allow for discovery of
->> verity data/signature etc.
->
-> I haven't read the spec in full, but after a discussion with Jan (Cc'd),
-> we had an unanswered question about the root verity partition:
->
-> "Contains dm-verity integrity hash data for the matching root partition.
-> If this feature is used the partition UUID of the root partition should
-> be the first 128 bits of the root hash of the dm-verity hash data, and
-> the partition UUID of this dm-verity partition should be the final 128
-> bits of it, so that the root partition and its Verity partition can be
-> discovered easily, simply by specifying the root hash."
->
-> Now a UUID is only 128 bits and the partition UUID is supposed to be
-> unique, so splitting a 256 bit hash over two partitions UUIDs means that
-> in an A/B setup, we can end up with duplicate partition UUIDs if the
-> same update bundle is installed twice.
->
->   - A and B root partition are identical
->   - A and B verity super block are identical
->
-> When updating this may prove to be problematic: The system will start up
-> normally (partitions are identical), but when flashing the update, how
-> would the updater easily find out which is the inactive partition that
-> it should write to..?
+On these devices, barebox will be used as a shim after the stock bootloader
+(s-boot), replacing the linux kernel image in the boot.img.
 
-That was a question I had as well. My conclusion, given how they think
-about blspec entries only existing on ESP/XBOOTLDR with split
-rootfs/kernel etc., is that they are not designing for the kinds of
-systems that you and I typically target.
+Please read the patch commit messages, I've tried to describe everything
+well enough. Thanks!
 
->> This is my plan forward as well. We're using the syslinux-flavor of the
->> same idea at the moment. I like barebox's relaxation of the standard to
->> allow for locating boot entries outside of ESP/XBOOTLDR, without which
->> we would be back at the split-rootfs-and-kernel problem. Have you
->> thought about making this case to the UAPI group to amend the spec?
->
-> I tried to get linux-appendroot upstreamed as first step, but haven't
-> been too successful so far:
-> https://github.com/uapi-group/specifications/pull/136
+Best regards,
+Ivaylo
 
-Oh wow, the x86 is strong in this one.
+Changes in V2:
+- drop the applied patch
+- s/Since/If in 1/3
+- add r-b tag on 1/3 from Ahmad
+- add a simple defaultenv that autoboots a fit image from memory
+- change is_compat to is_model
+- rework the entry to deal with SP in assembly and jump us to C
+- set up properly before touching fdts
+- beautify postcore a bit
+- enable deep probe on both platforms in DT
 
-Unfortunately I think this is in line with my hunch about the gamut of
-systems on their radar not including our domain (embedded+immutable).
+Ivaylo Ivanov (3):
+  video: simplefb-client: switch to dev_get_resource
+  ARM: boards: add support for Samsung Galaxy S8 (dreamlte)
+  ARM: boards: add support for Samsung Galaxy S20 5G (x1s)
 
->> Yeah I noticed that, _very_ useful. For Infix, if we end up going with
->> LVM, I suspect we won't be able to send all of that info along with the
->> commandline, and will end up needing to figure that out (again) in an
->> initramfs - but for most cases I think it would work really well!
->
-> Ah, didn't think of LVM. If mix-and-match is no problem for you, then
-> doing it in the initramfs is a workable solution of course.
+ arch/arm/Kconfig                              |  5 ++
+ arch/arm/boards/Makefile                      |  1 +
+ arch/arm/boards/samsung-exynos/Makefile       |  5 ++
+ arch/arm/boards/samsung-exynos/board.c        | 69 +++++++++++++++
+ .../defaultenv-exynos/boot/ramfit             | 16 ++++
+ .../defaultenv-exynos/init/bootsource         |  3 +
+ arch/arm/boards/samsung-exynos/entry.S        | 31 +++++++
+ arch/arm/boards/samsung-exynos/lowlevel.c     | 83 +++++++++++++++++++
+ arch/arm/dts/Makefile                         |  2 +
+ arch/arm/dts/exynos8895-dreamlte.dts          | 13 +++
+ arch/arm/dts/exynos990-x1s.dts                | 13 +++
+ arch/arm/mach-samsung/Kconfig                 | 13 +++
+ drivers/video/simplefb-client.c               |  5 +-
+ images/Makefile                               |  1 +
+ images/Makefile.exynos                        |  8 ++
+ 15 files changed, 265 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boards/samsung-exynos/Makefile
+ create mode 100644 arch/arm/boards/samsung-exynos/board.c
+ create mode 100644 arch/arm/boards/samsung-exynos/defaultenv-exynos/boot/ramfit
+ create mode 100644 arch/arm/boards/samsung-exynos/defaultenv-exynos/init/bootsource
+ create mode 100644 arch/arm/boards/samsung-exynos/entry.S
+ create mode 100644 arch/arm/boards/samsung-exynos/lowlevel.c
+ create mode 100644 arch/arm/dts/exynos8895-dreamlte.dts
+ create mode 100644 arch/arm/dts/exynos990-x1s.dts
+ create mode 100644 arch/arm/mach-samsung/Kconfig
+ create mode 100644 images/Makefile.exynos
 
-I definitely want to avoid mix-and-matching between kernel and
-rootfs. My idea was that barebox could still pass the partition UUID and
-the root hash to the kernel, then the (very small) initramfs would just:
+-- 
+2.43.0
 
-1. Run some LVM probing to find and setup the volume with that UUID
-2. Run verity setup on the it with the (already signature-checked) root
-   hash
-3. pivot_root
-
-Maybe this is more trouble than its worth, still not sure.
-
-I just seems strange to me that this is fairly common on setups with raw
-flash (via UBI volumes), but for some reason it is never used (at least
-to my knowledge) on systems with managed flash.
-
->>> Generally speaking, whether DDI or veritysetup, if there exists a scheme
->>> to put a signed hash somewhere discoverable and it's adopted by some
->>> widely used tool, barebox should not unnecessarily reinvent the wheel.
->> 
->> Exactly. From what I understand, systemd already supports automatically
->> sourcing the signature from a partition with the ID specified in DPS. So
->> I don't see them switching from that to something else (Poettering
->> himself seems quite involved with all UAPI specs).
->
-> Ack.
->
->>> Thanks for taking the time and the good timing. I was meaning to use
->>> the time writing this mails to cut down on some of the slides[3] for a second
->>> talk at the Linux Security Summit today, but now they are getting more.
->>> At least the talk is right before a break :)
->> 
->> Thanks for the shout-out! :)
->
-> You had me dig out WordArt just for this special announcement ;)
-
-I k-n-o-w - instantly felt the urge to put on my old roller blades and
-blast some eurodisco on my Walkman!
-
-> Cheers,
-> Ahmad
->
->> 
->>> [1]: https://osseu2025.sched.com/event/25VqL
->>> [2]: https://osseu2025.sched.com/event/25VwO
->>> [3]: https://lsseu2025.sched.com/event/25GEc
->>>
->>> Cheers,
->>> Ahmad
->>>
->>>
->>>>
->>>>
->>>> [1]: https://github.com/kernelkit/infix/
->>>>
->>>> Tobias Waldekranz (5):
->>>>   string: add strtok/strtokv
->>>>   dm: Add initial device mapper infrastructure
->>>>   dm: linear: Add linear target
->>>>   test: self: dm: Add test of linear target
->>>>   commands: dmsetup: Basic command set for dm device management
->>>>
->>>>  commands/Kconfig             |  14 ++
->>>>  commands/Makefile            |   1 +
->>>>  commands/dmsetup.c           | 145 +++++++++++++
->>>>  drivers/block/Kconfig        |   2 +
->>>>  drivers/block/Makefile       |   1 +
->>>>  drivers/block/dm/Kconfig     |  14 ++
->>>>  drivers/block/dm/Makefile    |   3 +
->>>>  drivers/block/dm/dm-core.c   | 393 +++++++++++++++++++++++++++++++++++
->>>>  drivers/block/dm/dm-linear.c | 123 +++++++++++
->>>>  drivers/block/dm/dm-target.h |  39 ++++
->>>>  include/dm.h                 |  16 ++
->>>>  include/string.h             |   2 +
->>>>  lib/string.c                 |  66 ++++++
->>>>  test/self/Kconfig            |   7 +
->>>>  test/self/Makefile           |   1 +
->>>>  test/self/dm.c               | 159 ++++++++++++++
->>>>  16 files changed, 986 insertions(+)
->>>>  create mode 100644 commands/dmsetup.c
->>>>  create mode 100644 drivers/block/dm/Kconfig
->>>>  create mode 100644 drivers/block/dm/Makefile
->>>>  create mode 100644 drivers/block/dm/dm-core.c
->>>>  create mode 100644 drivers/block/dm/dm-linear.c
->>>>  create mode 100644 drivers/block/dm/dm-target.h
->>>>  create mode 100644 include/dm.h
->>>>  create mode 100644 test/self/dm.c
->>>>
->>>
->>>
->>> -- 
->>> Pengutronix e.K.                           |                             |
->>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->> 
->
-> -- 
-> Pengutronix e.K.                  |                             |
-> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
