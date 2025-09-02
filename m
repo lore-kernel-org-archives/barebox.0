@@ -1,150 +1,95 @@
-Delivery-date: Tue, 02 Sep 2025 21:10:10 +0200
+Delivery-date: Tue, 02 Sep 2025 21:10:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1utWOQ-007NX6-1w
+	id 1utWOX-007NXU-37
 	for lore@lore.pengutronix.de;
-	Tue, 02 Sep 2025 21:10:10 +0200
+	Tue, 02 Sep 2025 21:10:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1utWOP-0005tc-AX
-	for lore@pengutronix.de; Tue, 02 Sep 2025 21:10:09 +0200
+	id 1utWOW-0005wH-7b
+	for lore@pengutronix.de; Tue, 02 Sep 2025 21:10:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Message-ID:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=sfL0jCxngpAeBHH/OnzsGdBCX9zMqHd64E1w41p9EOw=; b=imPonMNqzw4swA1oAaG95JgPwS
-	WhOTgWW+YnrI4EJzVUEgvTjnY68X94lA0MJM6uilo2PxltnvwnaRwzd1ei2Js9IhGTPnyP9V83Vc9
-	xxLECEvS80lXRY1UVvesHzq/6IeIQo33hi5Pc7LLZ5sAZhWBz9/mBFXrByddGdwtK7J8jqo3Lsqm8
-	/E7fTc0BwIkzshX0g2ucuafuZMKV/pFLU1A2U9UPKoO3hY56ZusJrx8S1EbdDRkOvb6sDKgiJtC1r
-	SS+nM1teGiIm8fsR0SpLZEvPcZnrq1tgZ+ZNAdGr1A6wBAtI9l4dHp26genoooYYWSKLU8cfYPqug
-	k6MVzNzw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:Date:References:In-Reply-To:Subject:Cc:To:From:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=wGl6lQbCnQrKXHqDboB03M5cgBayk4scAAXh2hbcKz0=; b=m7gtdmqFqmJtdBO23Ba1YI3OEM
+	LYJE0MTEt05LEk1QmvaQuXP0qcxv3ilmj8v5H0GVmi0ghcLOef55S5NL+EU+YSSvv0ehYAfXCHks/
+	7MSGrs88ykrHbzPqUxJ73npt00U+yQEPuBJ5WvDnT/I8yI2XjIq34gsRKqZv6B3+U7p/8IjCw2SAL
+	+5rnrBahTR/kKFP5wwnpCOsbMMDkUS6/PMOa6GanE4DtXUp5ROeJkHKbATAMhRjO1GZwa2U1QGtXW
+	zJeZRp0BK3PBl/GzoYoYHbk0s+D+yG628Uo8tvIwwsSR3dd+0ozFsv3b/RdUbmtRr/oM5V7wvYuht
+	GJCbth5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utWNd-00000001ZAI-1Unm;
-	Tue, 02 Sep 2025 19:09:21 +0000
-Received: from mail-germanynorthazlp170100001.outbound.protection.outlook.com ([2a01:111:f403:c20b::1] helo=BEUP281CU002.outbound.protection.outlook.com)
+	id 1utWNb-00000001Z7e-0CGp;
+	Tue, 02 Sep 2025 19:09:19 +0000
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utQfQ-0000000HV6T-1CS4
+	id 1utQdT-0000000HUQn-0yOl
 	for barebox@lists.infradead.org;
-	Tue, 02 Sep 2025 13:03:21 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x3cE+LbpTJ5OnxvMSGQ0JAQ+fZYLnUllBybaAwjT9lzDu0NJryG0iJ9V8Wjfq4AJ+lhms0JqFYUddgMzVwkJaz767oIdaoE5cZ/nkZfP/ScN4Hx0d+JbT117xUiqip53zaGcUCmufKirFl3V8ozZwPndgj5lK8iZq8wg9XlMHS10/lCcG6y9uHARAoVKtfzcbpQ+8tKOaItlSo3CT6smN+JXQduJHQhhwyk3Frb4FXiWSxNFX5XDzSFG52Ts6lnwlDD3Gppr1AoYaTEbPiOcfNTVRTrPpXpLYZThCXtJSoZXWv56BI2exZwS4cOAvOP82h3Su0EBPezHpJgMnJLmpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sfL0jCxngpAeBHH/OnzsGdBCX9zMqHd64E1w41p9EOw=;
- b=aeo8V9lUHGspshS9ccbjEQ29xw0jpH/mT8dkkXOIurji9aVqYWMRAHUsNSwx7DOmP6zZggZ5lK7PA/fIAYvWAzfgRHAGHCayFxTlXQuuq/xoCIVWTvlapl3TvSWwlneoAEHfnCLAx7Us/Xpk69gBnte6zVFZNv/fHDD1dBeOZZ98rVO17pJYhpAITuS5YpaCnbo1fPNDBwxdD8OIollp7SbYaVEN6iQ8+0uWSrK6DupKxUnJd2VR+P36eMvbpDHFN/MCuWhD3saIKjTikf5m5TaZO1H468kx6xiJfD4jdU3vxjUXAbn678zfDI+XH5ZrwmIPN4ekZSpvKQu3n73Tgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=eckelmann.de; dmarc=pass action=none header.from=eckelmann.de;
- dkim=pass header.d=eckelmann.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eckelmann.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sfL0jCxngpAeBHH/OnzsGdBCX9zMqHd64E1w41p9EOw=;
- b=ocYziJj+EKZ5V8u1296tHbrHUWZvBDmOi1F99ZCTg5kpeQhpYkJq7fCXK81fzznwGBhnWfiXoW9o5ygwP4AkK5tLAm9/Q70AxaLeQcO705uPbOyO/6b0zsagX5whcQlhAu9DOf8Iu1Cl6P45jNpUNbmDfzibVD2thSy/UeuELrE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=eckelmann.de;
-Received: from FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:da::13)
- by FR1PPFAE7C0AA8F.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d18::f85) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.24; Tue, 2 Sep
- 2025 13:03:12 +0000
-Received: from FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM
- ([fe80::3927:fe99:bb4:1aa7]) by FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM
- ([fe80::3927:fe99:bb4:1aa7%3]) with mapi id 15.20.9073.026; Tue, 2 Sep 2025
- 13:03:12 +0000
-From: Thorsten Scherer <t.scherer@eckelmann.de>
-To: barebox@lists.infradead.org
-Cc: Thorsten Scherer <t.scherer@eckelmann.de>
-Date: Tue,  2 Sep 2025 15:03:02 +0200
-Message-ID: <20250902130302.142251-1-t.scherer@eckelmann.de>
-X-Mailer: git-send-email 2.50.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AS4PR09CA0030.eurprd09.prod.outlook.com
- (2603:10a6:20b:5d4::20) To FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:da::13)
+	Tue, 02 Sep 2025 13:01:20 +0000
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-55f646b1db8so5070201e87.0
+        for <barebox@lists.infradead.org>; Tue, 02 Sep 2025 06:01:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1756818077; x=1757422877; darn=lists.infradead.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wGl6lQbCnQrKXHqDboB03M5cgBayk4scAAXh2hbcKz0=;
+        b=v45n/A7pwttTtDA5vD8cvyCN725Bar8uN0g+uyGr7bE1JQpdLAGeAv39RZjEh/9nZN
+         coJWSCrEORI80p6pIDO7XsOSmrjjaHsXn5fTVJUF1WBVSHD/umKmOjuxdYd2eKFtyyTW
+         7S2gNO1VU8nkPMctW+NnFGfu7PMkuRyP/5UFruLiQnWBVwJG2J00IRtx4XWkhUNH/6Hr
+         dg5OjBfkwvnNOymrU7xc8GMtzgnIIqqXt7pifQk1F+SuuTtZtfqSfCr8gYfHjjmH3Wtu
+         sOoo+m0+DBGGZsge62CufjIuoSM89NEz9Ka/3Cz4uxDvaiwgDXoWa9d+DT+VT78BPzTF
+         Za5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756818077; x=1757422877;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wGl6lQbCnQrKXHqDboB03M5cgBayk4scAAXh2hbcKz0=;
+        b=gO6/vs/mFjJbtYYetSTFga9Y9SfhPF8AflEwAM0/op7tOw/k0RKRdpE/WnKBeEcSVs
+         gx/xi/jFsNzSr/wQs+UdRekxAV/vQtpTDyXFTZ2ViVGxudD/ypHmrJHNfo9x/SSGtoe3
+         TLyjE052QbOvl1jPCY97VZTx17RX9iPj4gsGwl+c9J+i3iise64K4paTc6GcISba/kDD
+         M1nDmTRTnFIWOPPQ3REeo38+pdi+5Ot7yAerl1yqjNemN0K5R8pVNwFkSLFIxTH4gKoX
+         0pJ5YH6Q/WJPInCQQVTJrNM7mkOpQQcsAsJvdJ6zzAkwVD5BsawiJLe4f+e+CsSG/9au
+         l3XA==
+X-Forwarded-Encrypted: i=1; AJvYcCUAMvxRydC/gBmjQL6psBx2+lAtyXsbxORJkfMLXHxFqq7P2fxAGNrcRIG55/dngapQQFgJ0WEr@lists.infradead.org
+X-Gm-Message-State: AOJu0YxKx4878MvO8+dmVYCZIp3hzRHCqVVeDCTBxxKYbd2sL+Tgem0n
+	s2RnPAqEynvu5KkmqmieXktvC2CkB77XkYdpqT73+6BtQQhwSZi8qqG5/8264TsqiqU=
+X-Gm-Gg: ASbGncsbBJ+RkiNVkHzMUx5S3x33CsvsUq2oMRo1EpPus2bzSGa0LlUTXUDwyJkh8ZR
+	qXRXIVuOvM0kQdpRpTWWwee1lEfJSniwEv6reITxAUJv3mP1nKh0MIQzgl/ceqdT47CrGwX67Rr
+	FM9ySaTm0Y9wrDn/65vfH8CfUX8QwbS5qMUTWjDbt6hFXKKTp0nIFfdUZ7OcQUj6JLSmJv/7rAx
+	u+ueOc3zYY2RK6c9hlU8KpXhK2mAT15dXCz/lf3O+fiB0YjgxR+UkITyEAAx8cyGERflkPNRUaF
+	Vo8vBIIbmK0rAmlpG54pVs4gYDxALnL5AY2eBn5/9bNlQ4Qhzifp/Ygc5qgi1mukK/traqGVdMc
+	OI50E3ho+8sd3ES3TFkPXVzR6dNr/w9e57rEnlRvwZFCbbykzwMrU
+X-Google-Smtp-Source: AGHT+IE90PyiBEoE6Adude5dEoff0OKVeGA52oX5Zhfh+0FJmzWJceHcsIAeyAw8hOUD7Cw+Sjd3yA==
+X-Received: by 2002:a05:6512:3f28:b0:55b:9283:b590 with SMTP id 2adb3069b0e04-55f70983a86mr3516403e87.50.1756818077160;
+        Tue, 02 Sep 2025 06:01:17 -0700 (PDT)
+Received: from wkz-x13 (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-560826d1279sm697431e87.25.2025.09.02.06.01.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 06:01:16 -0700 (PDT)
+From: Tobias Waldekranz <tobias@waldekranz.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Cc: Michael Olbrich <mol@pengutronix.de>, Richard Weinberger
+ <richard@nod.at>, Marco Felsch <m.felsch@pengutronix.de>, anis chali
+ <chalianis1@gmail.com>
+In-Reply-To: <24ac7ede-0f36-4283-b654-9cccdfa97a37@pengutronix.de>
+References: <20250828150637.2222474-1-tobias@waldekranz.com>
+ <07a7e6e0-f0dd-4969-888a-b616fe337158@pengutronix.de>
+ <87frd83p9h.fsf@waldekranz.com>
+ <24ac7ede-0f36-4283-b654-9cccdfa97a37@pengutronix.de>
+Date: Tue, 02 Sep 2025 15:01:15 +0200
+Message-ID: <878qix3t5w.fsf@waldekranz.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: FR4P281MB3510:EE_|FR1PPFAE7C0AA8F:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73682df8-72c5-4888-a521-08ddea21124d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?orOkdEGwbk1p+PueESH29BcwPH4fWhChMgVt4TFu14NyjOuQZn/J8Vy+4v9z?=
- =?us-ascii?Q?OGD0P/DAPS2NXMtSfG3KB+oQ3egnVMR2GLximqBxIcLOFcJWAAkym4KT9FuR?=
- =?us-ascii?Q?ENvwc8aGq3wcMkCsJAz+e1pI7YXfZlHBiomMAYeE6aaRx0dX+ynJ7r0RjAOy?=
- =?us-ascii?Q?xkri2hHxX6KUlN6HTrBDcCI10ByJ1RPwvPUqFP+hdQufTGtZU4TTIhg2+vHV?=
- =?us-ascii?Q?oWZfiWHnki5EiwvMaWyI9yXimqpgU2PlFaX1hi98xYNqeQuXswiugccxfwmP?=
- =?us-ascii?Q?kRNxxQXcG6+L32HxrxAz2lA2CKLMacMelTdDBNhP/xDjpWTznTIoOeDcJpL9?=
- =?us-ascii?Q?AIx8XWzPZF+StZABns0EkW1YPCvll31JzMq/VSyyMEM9yvasUMxhKTsiAhg0?=
- =?us-ascii?Q?eaVrTV7wjd4PdnOiRDmKMHGNwpqMWGKeBc3XBO9iIpkfeqpiOtwpW8d2bFyD?=
- =?us-ascii?Q?S34JorCxzn0dsSXWn1R10vsAdYReqtDQmzk1iDHXws5HEUXfB4uVhGjYHN5T?=
- =?us-ascii?Q?aXmvSXHUpyGx/S8RnWeQrC1Zj1g5PCyleCCIUm9SEThxtt0huz85H+u4K+Wo?=
- =?us-ascii?Q?1uAUtQgzt1zTm3d1s5ENMyFUPUYQ0ygpeDC/dRbWRc/fe2H8jEbV3NGfH73x?=
- =?us-ascii?Q?QAFsgsIQFBhfZJSogNHXLUCoBaQS1yoCrNn/uQvxCqwR6qCPQVsMvbdMtqo2?=
- =?us-ascii?Q?BNyiLenrKi2pS8VnV5lAzIyCGIzPr7+S/lnxMfmyWno1E2ttfTotxpKaNDko?=
- =?us-ascii?Q?FtDgSTJgdnv/eoYLVKE/aMpj3ND3fnNjaJMyos96ja2UB/bLKgGBShl9DaUu?=
- =?us-ascii?Q?38g2qcqWZILkgfvOm/6nV52DhKqOiO/Rwes4DHYTZ0htuf67UKeVeSIAOSDy?=
- =?us-ascii?Q?fBm290G8QEureB7yOQ/JIN3T4fREciFGwx/CpilHCIgwk4NLakV4LTrgYrBQ?=
- =?us-ascii?Q?WQAB8ddt1H/BxrlKeznI4gHl4YQpTuQIp12xyC/402D8BwjtRAYwt091xE60?=
- =?us-ascii?Q?Tp5EtkyUFFPPvdPtOOyM+kvM+l83t3lB9ViGuIsYy/O26N8O7KBmU5BU0UoX?=
- =?us-ascii?Q?hg11S0Tfw27cqhDkTJANRUZyIST5L/s3zYpS75Zf07HTtms2XQSNITIFNAxK?=
- =?us-ascii?Q?B+kkcdyqYeu+P9qt8IFGPlftRaL1C6VjQxRvvZEYfYMPL1p5iESSw/0HlyA8?=
- =?us-ascii?Q?USq+ISxUfmBt4/x/fhb0WahpfD3g0qAGQH4i3wUacw7/IDPNXNRLEfcIn5yn?=
- =?us-ascii?Q?DR5BRP3t1Wr9LzzNOhVVaKu9uv8grSEkaM0PB6znS/mHgBPUvPKwmDccUMFN?=
- =?us-ascii?Q?LO9gaeWP07EljbIDMJ3BL7waGTaw39ViNfMTYj9rOwEeX1wupYDM13/mJ5Lp?=
- =?us-ascii?Q?+/JARVF1McumP8/eaN3ijeabeYwMvcLklxkOd+2ceCF8a2gwMUt/aRRjDN1U?=
- =?us-ascii?Q?OyN+VHCusK4=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3C04Ud7zY1FGSKDn7f7dxeu3gal4bJKjE3AFCb8I1evWCZu/nQeX74OWT49T?=
- =?us-ascii?Q?WdrS+JJZclPUHLzSEq2wCeV2qweYs9deb9rQQAGm+BvdS2J/FfFh8Rp8nEkz?=
- =?us-ascii?Q?WV7Ot9XrBSMMqhnc+Z3gewDjtiCK1QeBYYI/Dx3GvmEcPTSFF8HCT6l5qY29?=
- =?us-ascii?Q?vEoAR2W42SKcgS1mAHW8SJTVGIX3HwFg+tE0U/3cHswRhgX8JVJauErPsZnn?=
- =?us-ascii?Q?3xl7TbVsjef21SbhQSfW7sI8q/RWggIAQvn46iIfTsEONCbjoIkfeoSwh+nj?=
- =?us-ascii?Q?os0Xal4sYSS128U+/qrhGZwmom+iQRI9fQz4VbMjAuLlZ5JtpDrRR8etwCDG?=
- =?us-ascii?Q?Ht7wM9k1zSXou73TpGE7Vor98ZZ7wVBHxkK0JwWlL7zejqak4tCfpKKhOsAs?=
- =?us-ascii?Q?7GDrSXn3OY6U6XsDEh9razOCHTnWbwRJA2gj3ajtvmIn5mQHizYs7mgJNMSL?=
- =?us-ascii?Q?wCSgIUGKTKYyX94UBt5B+q/OI3Nv7rK0PG1Kh7g/ex1zkwHyH2c1RiyWFW69?=
- =?us-ascii?Q?2NtfMN2zfFAaOn1pJzmxXwXyQ0wvjhuFxxXY6Cf/QaOOIcUNgjA3blxdOx57?=
- =?us-ascii?Q?mM5gi6IjLoBz69s6+CdLykhvElGHEifhjsDfUNXyfAXnrx0s+8g8hmE68k/O?=
- =?us-ascii?Q?Jt4pJDBqCeCtYdtpkjzBm70uge26LVCyZjG+GoSiSfKNhb2F1Gv2Z6+tN2ij?=
- =?us-ascii?Q?CP8/AnFSTxXe4HfrgldS0Cdg8/CXwU2jcq4hSKX3n/QjtBoq6HcKdzMTYE/Z?=
- =?us-ascii?Q?23IsGY2mVBwiu5kkUjixYr/Ldx6SKv9P4lcJ4N0gSr1nxV7Dd/66xY0icGgl?=
- =?us-ascii?Q?hFVhWNlNwrB5Y312i6vETTIq1FHFhcAAzPdP3blOu7dge4HLMdYPnjpGXUVT?=
- =?us-ascii?Q?lgWpPvhRp+qVSLu98CaFmxQ3e9TFCqobD/ATAB5VMUtTsKEe00wAJ1yMvBG0?=
- =?us-ascii?Q?TSUsqw+uH6A5WfTs3hpmK1RsTdzqraehYnYJST+EPUkN1+cU0HpIf9lnWVP0?=
- =?us-ascii?Q?6CpkXyRtUxSuB8A+10deXMNQy9JH8OgfBZ5sJ1bKmI7gON6rrOTaTW2gKCkq?=
- =?us-ascii?Q?ZGrkjNz7jZS8EqXh9JKRVAEIVyKVlfe//vpiUiHEUOBbr+gQmALj7jccMyEW?=
- =?us-ascii?Q?ikPTyUa5GAsZuzC8BrvVJvHCNch1BpHFTbC9Nbb9Gznu/gI+81CNLsyK3eFx?=
- =?us-ascii?Q?lESnIvKq3Fo4aQDfKsYHsLS/cajbGOGEn9IFib7A3OSOYjEiIw+CQJHOPmsv?=
- =?us-ascii?Q?v0O91cyWRvAlgoMV71R9NqlqlLRUvrBv1230e5y4tV4OjIsZIpq4ejtqrzSV?=
- =?us-ascii?Q?I73AQRkuUFEh6JU886oXxtCrU280PmUhMauixK0yHtS1z4K4kL1zB31xZ8o6?=
- =?us-ascii?Q?RtgN2F5V6hLDHGHSPXqdhB2Y9CAkXVrdlnEBJdZgq1Jfevv/abcKpsP0paJb?=
- =?us-ascii?Q?IKenh82ON4k03M2G4oKbvkuLjjG31f39PWj7UMv8UEccsVzSd0IAXZ5nx+x2?=
- =?us-ascii?Q?cefngBL82f2EMlUDBKUcVOJ27tmGO8cpqiqf2swa900s+M9XPFMTAjnCCp0B?=
- =?us-ascii?Q?L1E8OxZbZgEEfoRIBGfAqr4lWzK3KGHNNQlrLIsZ?=
-X-OriginatorOrg: eckelmann.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73682df8-72c5-4888-a521-08ddea21124d
-X-MS-Exchange-CrossTenant-AuthSource: FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 13:03:12.1077
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 62e24f58-823c-4d73-8ff2-db0a5f20156c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dw9Xe6PE10dNN9hD5ARYDNza2il8e1uPz9XBMRC6B45hLbGejg3EnAOae52lNUHOC9MsTCv7xCF/11ZKNvhLPA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR1PPFAE7C0AA8F
+Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250902_060320_341909_3D971DE2 
-X-CRM114-Status: GOOD (  10.02  )
+X-CRM114-CacheID: sfid-20250902_060119_275017_BE084266 
+X-CRM114-Status: GOOD (  55.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -162,41 +107,223 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] doc/barebox-tlv: Fix typo in path
+Subject: Re: [PATCH 0/5] dm: Initial work on a device mapper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Fixes: 5a7fc3321407 ("doc: Add User-Documentation for Barebox TLV")
-Signed-off-by: Thorsten Scherer <t.scherer@eckelmann.de>
----
- Documentation/user/barebox-tlv.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On tis, sep 02, 2025 at 11:03, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> On 8/31/25 9:48 AM, Tobias Waldekranz wrote:
+>> On fre, aug 29, 2025 at 13:24, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>>> On 28.08.25 17:05, Tobias Waldekranz wrote:
+>>> Fortunately, Anis (Cc'd) is right now working on exactly the use case
+>>> of filling out the missing pieces for using barebox as EFI payload on ARM and has
+>>> already submitted patches bringing this closer to completion.
+>> 
+>> Thanks for the background. Yeah, once I figured out I needed
+>> CONFIG_COMPILE_TEST to build for aarch64 I got the sense that there was
+>> still work to be done there :) That's alright though, I'm skating to
+>> where the puck will be.
+>
+> Great. I think it shapes up quite nicely right now.
+>
+>>> Sidenote: Something that been irking me for ages is the over-reliance
+>>> on FAT in systemd-boot. Could the FAT on a file system level break
+>>> by inopportune power cuts? We go to great lengths with barebox-state
+>>> and redundant buckets on raw partitions to avoid this and it leaves
+>>> me asking: Was I wrong to mistrust FAT or is a sudden power cut during
+>>> file system write operations not as much a concern for their users?
+>> 
+>> This has been bothering me too, and AFAIK the UEFI spec does not
+>> describe any way of defining a redundant ESP either?
+>
+> Not really, but depending on the tools you use, there are workarounds:
+>
+> - barebox skips partitions with the DPS_TYPE_FLAG_NO_AUTO flag.
+> Currently only for blspec, but in future also when searching for ESP
+>
+> - RAUC supports a "boot-gpt-switch"[1] that "[changes] the GPT to switch
+> the first GPT partition entry between the first and second halves of a
+> region configured for that purpose"
+>
+> [1]:
+> https://rauc.readthedocs.io/en/latest/advanced.html#update-bootloader-partition-in-gpt
 
-diff --git a/Documentation/user/barebox-tlv.rst b/Documentation/user/barebox-tlv.rst
-index 3db13ec88b22..4e83cdf47fc7 100644
---- a/Documentation/user/barebox-tlv.rst
-+++ b/Documentation/user/barebox-tlv.rst
-@@ -75,11 +75,11 @@ TLV Binary Generation
- To generate a TLV binary the schema for the specific TLV must be defined.
- Schemas are yaml-files that represent what the actual parser in barebox expects.
- 
--An example schema can be found in ``srcipts/bareboxtlv-generator/schema-example.yaml``.
-+An example schema can be found in ``scripts/bareboxtlv-generator/schema-example.yaml``.
- This schema defines some well-known tags and two board-specific tags.
- 
- Afterwards another yaml-file with the data for the TLV binary is needed.
--An example can be found in ``srcipts/bareboxtlv-generator/data-example.yaml``.
-+An example can be found in ``scripts/bareboxtlv-generator/data-example.yaml``.
- 
- With these information in place a TLV binary can be created:
- 
--- 
-2.50.1
+Neat! We use RAUC in Infix, so I will definitely look into that.
 
+>>> I hope someone (maybe me instead of talking) should do fault injection
+>>> in QEMU or using kernel APIs and see how broken it can get.
+>> 
+>> That would be great. Doing it at the VM layer seems very hard, at least
+>> if you want something deterministic. In the kernel though, it should be
+>> easier to know when a filesystem is in an inconsistent state, and inject
+>> the errors at that point.
+>
+> Ack.
+>
+>>> they also support XBOOTLDR partitions? At least in barebox, you should
+>>> be able to just assign the rootfs partition of the Infix OS the XBOOTLDR
+>>> partition Type UUID to have barebox automatically look for the bootloader
+>>> spec entries there.
+>> 
+>> They do support that, yes. However, but that would mean that we could
+>> not use the DPS/DDI partition types that would allow for discovery of
+>> verity data/signature etc.
+>
+> I haven't read the spec in full, but after a discussion with Jan (Cc'd),
+> we had an unanswered question about the root verity partition:
+>
+> "Contains dm-verity integrity hash data for the matching root partition.
+> If this feature is used the partition UUID of the root partition should
+> be the first 128 bits of the root hash of the dm-verity hash data, and
+> the partition UUID of this dm-verity partition should be the final 128
+> bits of it, so that the root partition and its Verity partition can be
+> discovered easily, simply by specifying the root hash."
+>
+> Now a UUID is only 128 bits and the partition UUID is supposed to be
+> unique, so splitting a 256 bit hash over two partitions UUIDs means that
+> in an A/B setup, we can end up with duplicate partition UUIDs if the
+> same update bundle is installed twice.
+>
+>   - A and B root partition are identical
+>   - A and B verity super block are identical
+>
+> When updating this may prove to be problematic: The system will start up
+> normally (partitions are identical), but when flashing the update, how
+> would the updater easily find out which is the inactive partition that
+> it should write to..?
+
+That was a question I had as well. My conclusion, given how they think
+about blspec entries only existing on ESP/XBOOTLDR with split
+rootfs/kernel etc., is that they are not designing for the kinds of
+systems that you and I typically target.
+
+>> This is my plan forward as well. We're using the syslinux-flavor of the
+>> same idea at the moment. I like barebox's relaxation of the standard to
+>> allow for locating boot entries outside of ESP/XBOOTLDR, without which
+>> we would be back at the split-rootfs-and-kernel problem. Have you
+>> thought about making this case to the UAPI group to amend the spec?
+>
+> I tried to get linux-appendroot upstreamed as first step, but haven't
+> been too successful so far:
+> https://github.com/uapi-group/specifications/pull/136
+
+Oh wow, the x86 is strong in this one.
+
+Unfortunately I think this is in line with my hunch about the gamut of
+systems on their radar not including our domain (embedded+immutable).
+
+>> Yeah I noticed that, _very_ useful. For Infix, if we end up going with
+>> LVM, I suspect we won't be able to send all of that info along with the
+>> commandline, and will end up needing to figure that out (again) in an
+>> initramfs - but for most cases I think it would work really well!
+>
+> Ah, didn't think of LVM. If mix-and-match is no problem for you, then
+> doing it in the initramfs is a workable solution of course.
+
+I definitely want to avoid mix-and-matching between kernel and
+rootfs. My idea was that barebox could still pass the partition UUID and
+the root hash to the kernel, then the (very small) initramfs would just:
+
+1. Run some LVM probing to find and setup the volume with that UUID
+2. Run verity setup on the it with the (already signature-checked) root
+   hash
+3. pivot_root
+
+Maybe this is more trouble than its worth, still not sure.
+
+I just seems strange to me that this is fairly common on setups with raw
+flash (via UBI volumes), but for some reason it is never used (at least
+to my knowledge) on systems with managed flash.
+
+>>> Generally speaking, whether DDI or veritysetup, if there exists a scheme
+>>> to put a signed hash somewhere discoverable and it's adopted by some
+>>> widely used tool, barebox should not unnecessarily reinvent the wheel.
+>> 
+>> Exactly. From what I understand, systemd already supports automatically
+>> sourcing the signature from a partition with the ID specified in DPS. So
+>> I don't see them switching from that to something else (Poettering
+>> himself seems quite involved with all UAPI specs).
+>
+> Ack.
+>
+>>> Thanks for taking the time and the good timing. I was meaning to use
+>>> the time writing this mails to cut down on some of the slides[3] for a second
+>>> talk at the Linux Security Summit today, but now they are getting more.
+>>> At least the talk is right before a break :)
+>> 
+>> Thanks for the shout-out! :)
+>
+> You had me dig out WordArt just for this special announcement ;)
+
+I k-n-o-w - instantly felt the urge to put on my old roller blades and
+blast some eurodisco on my Walkman!
+
+> Cheers,
+> Ahmad
+>
+>> 
+>>> [1]: https://osseu2025.sched.com/event/25VqL
+>>> [2]: https://osseu2025.sched.com/event/25VwO
+>>> [3]: https://lsseu2025.sched.com/event/25GEc
+>>>
+>>> Cheers,
+>>> Ahmad
+>>>
+>>>
+>>>>
+>>>>
+>>>> [1]: https://github.com/kernelkit/infix/
+>>>>
+>>>> Tobias Waldekranz (5):
+>>>>   string: add strtok/strtokv
+>>>>   dm: Add initial device mapper infrastructure
+>>>>   dm: linear: Add linear target
+>>>>   test: self: dm: Add test of linear target
+>>>>   commands: dmsetup: Basic command set for dm device management
+>>>>
+>>>>  commands/Kconfig             |  14 ++
+>>>>  commands/Makefile            |   1 +
+>>>>  commands/dmsetup.c           | 145 +++++++++++++
+>>>>  drivers/block/Kconfig        |   2 +
+>>>>  drivers/block/Makefile       |   1 +
+>>>>  drivers/block/dm/Kconfig     |  14 ++
+>>>>  drivers/block/dm/Makefile    |   3 +
+>>>>  drivers/block/dm/dm-core.c   | 393 +++++++++++++++++++++++++++++++++++
+>>>>  drivers/block/dm/dm-linear.c | 123 +++++++++++
+>>>>  drivers/block/dm/dm-target.h |  39 ++++
+>>>>  include/dm.h                 |  16 ++
+>>>>  include/string.h             |   2 +
+>>>>  lib/string.c                 |  66 ++++++
+>>>>  test/self/Kconfig            |   7 +
+>>>>  test/self/Makefile           |   1 +
+>>>>  test/self/dm.c               | 159 ++++++++++++++
+>>>>  16 files changed, 986 insertions(+)
+>>>>  create mode 100644 commands/dmsetup.c
+>>>>  create mode 100644 drivers/block/dm/Kconfig
+>>>>  create mode 100644 drivers/block/dm/Makefile
+>>>>  create mode 100644 drivers/block/dm/dm-core.c
+>>>>  create mode 100644 drivers/block/dm/dm-linear.c
+>>>>  create mode 100644 drivers/block/dm/dm-target.h
+>>>>  create mode 100644 include/dm.h
+>>>>  create mode 100644 test/self/dm.c
+>>>>
+>>>
+>>>
+>>> -- 
+>>> Pengutronix e.K.                           |                             |
+>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>> 
+>
+> -- 
+> Pengutronix e.K.                  |                             |
+> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
