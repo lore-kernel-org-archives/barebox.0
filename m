@@ -1,64 +1,67 @@
-Delivery-date: Wed, 03 Sep 2025 08:14:50 +0200
+Delivery-date: Wed, 03 Sep 2025 08:14:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1utglf-007XyU-0w
+	id 1utglg-007Xyp-0G
 	for lore@lore.pengutronix.de;
-	Wed, 03 Sep 2025 08:14:50 +0200
+	Wed, 03 Sep 2025 08:14:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1utgle-0006Ga-4U
-	for lore@pengutronix.de; Wed, 03 Sep 2025 08:14:50 +0200
+	id 1utgle-0006Gk-VW
+	for lore@pengutronix.de; Wed, 03 Sep 2025 08:14:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=vlBsPJoH5lRZYeGlea4VEsG7G/zS2NXhfbtsCyZbqh4=; b=K3e3p3FeJyGQtyn1nAed4RzNqZ
-	bfV903zuS3GHasF8wIOny47gGPo3LK9/QsVm+NRrc1rRuR4uVwasfOHAxl12hNz3xBIr/zRTRWtY3
-	yYf2Fy8xMxyNbpG+o7ybWMaknE6pW9WsarqjgOydfjmBbh0wYqeUPZMA5JVVmKuvkMjs7s9hPJAwy
-	+ym/ck+pns5aqWTmaMj3CepbCgPLcCCkM+tMIm0syeY2iGxsOZ9uuQhN+joGtkOzNtaE6nqA0F/TJ
-	peaQAPhrwYucXqIBRoU2ScPyJEk/NWzKy/bf4GLvLXcSJg4yF8B/LQOr/KrDezWlaJEM78+Bebm6Q
-	z7jsQc5g==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=oXjacXEaV2QHZk+FAxnUdl/J5nTyCKerOSOSrOAPo9w=; b=ssAri6/1gwh8DqtpeA7miEPnr0
+	VQvlLXDKFms6j5CXk/d6hk+7lQYEp9bS/zltmR4yOMSFYKsyr2+g3I9VGA2Kgac7RNlm/l5WAsGvv
+	sjxr1PWrpt+5atWx4yK1m5wuyBuhJM0oSl84s9sCwHeIVhNuYugMRC7hYBiJBRO4zdtTmo+kp59Mi
+	GY3XqdXtLXfw7pFs0ImQG6huck5CzDwjZWCN4Qmyid4JZooqZYGx+CTnZ1G1bN7R5bBge88Jnd6kZ
+	GeGxzgTu8Hi3mkfBgSzFRKRiq5eOinDXID1ToiCIUdWn4ANhtNIou04OxvHF6fc7vEWInHlYuz2aM
+	Hh/ykJmw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utgl4-00000004WCX-1WKg;
+	id 1utgl4-00000004WCw-3Yhf;
 	Wed, 03 Sep 2025 06:14:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utgjQ-00000004VXh-1Vfm
+	id 1utgjf-00000004VdX-04jB
 	for barebox@lists.infradead.org;
-	Wed, 03 Sep 2025 06:12:33 +0000
+	Wed, 03 Sep 2025 06:12:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1utgjN-0005q8-AS; Wed, 03 Sep 2025 08:12:29 +0200
+	id 1utgjd-0005ss-Or; Wed, 03 Sep 2025 08:12:45 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1utgjN-003Vwm-0R;
-	Wed, 03 Sep 2025 08:12:29 +0200
+	id 1utgjd-003Vx6-1s;
+	Wed, 03 Sep 2025 08:12:45 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1utgjN-00000009kLY-085s;
-	Wed, 03 Sep 2025 08:12:29 +0200
+	id 1utgjd-00000009kQY-2Bni;
+	Wed, 03 Sep 2025 08:12:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed,  3 Sep 2025 08:12:27 +0200
-Message-ID: <20250903061227.2323100-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250901152940.2472959-1-a.fatoum@pengutronix.de>
+References: <20250901152940.2472959-1-a.fatoum@pengutronix.de>
+Message-Id: <175687996551.2323368.7741118843918004423.b4-ty@pengutronix.de>
+Date: Wed, 03 Sep 2025 08:12:45 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250902_231232_431518_B01361A3 
-X-CRM114-Status: UNSURE (   8.85  )
+X-CRM114-CacheID: sfid-20250902_231247_061479_9CA22619 
+X-CRM114-Status: UNSURE (   7.46  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -81,49 +84,30 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: rk3576-prtpuk: remove unused vp0_out_dsi1 node
+Subject: Re: [PATCH master] param: don't use bobject_t in function pointer
+ signatures
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-compiliing rk3576-prtpuk-linux.dts generates a warning:
 
-arch/arm/dts/rk3576-prtpuk-linux.dts:448.28-451.4: Warning (graph_endpoint): /soc/vop@27d00000/ports/port@0/endpoint@10: graph node unit address error, expected "a"
+On Mon, 01 Sep 2025 17:29:36 +0200, Ahmad Fatoum wrote:
+> UndefinedBehaviorSanitizier for clang-21 complains about calling
+> functions through function pointers with bobject_t in their signatures
+> when the original arguments use struct device * or struct bobject *.
+> 
+> Let's migrate all function pointers to use struct bobject * instead to
+> fix this.
+> 
+> [...]
 
-The node is unused currently in its incomplete state, so just remove it.
-While at it remove commented out pwm nodes.
+Applied, thanks!
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/dts/rk3576-prtpuk-linux.dts | 17 -----------------
- 1 file changed, 17 deletions(-)
+[1/1] param: don't use bobject_t in function pointer signatures
+      https://git.pengutronix.de/cgit/barebox/commit/?id=fc5d59977d54 (link may not be stable)
 
-diff --git a/arch/arm/dts/rk3576-prtpuk-linux.dts b/arch/arm/dts/rk3576-prtpuk-linux.dts
-index 2085adbaa8..d3b7d07718 100644
---- a/arch/arm/dts/rk3576-prtpuk-linux.dts
-+++ b/arch/arm/dts/rk3576-prtpuk-linux.dts
-@@ -443,20 +443,3 @@ &vop {
- &vop_mmu {
- 	status = "okay";
- };
--
--&vp0 {
--	vp0_out_dsi1: endpoint@ROCKCHIP_VOP2_EP_DP0 {
--		reg = <ROCKCHIP_VOP2_EP_DP0>;
--		/* remote-endpoint = <...>; ?? */
--	};
--};
--
--/*
--&pwm1 {
--	status = "okay";
--};
--
--&pwm2 {
--	status = "okay";
--};
--*/
+Best regards,
 -- 
-2.47.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
