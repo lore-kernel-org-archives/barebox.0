@@ -1,75 +1,71 @@
-Delivery-date: Wed, 03 Sep 2025 09:06:31 +0200
+Delivery-date: Wed, 03 Sep 2025 09:12:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uthZf-007Ytf-2u
+	id 1uthfM-007Yxa-0F
 	for lore@lore.pengutronix.de;
-	Wed, 03 Sep 2025 09:06:31 +0200
+	Wed, 03 Sep 2025 09:12:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uthZe-0007iP-Iw
-	for lore@pengutronix.de; Wed, 03 Sep 2025 09:06:31 +0200
+	id 1uthfK-0000Tu-Ib
+	for lore@pengutronix.de; Wed, 03 Sep 2025 09:12:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
-	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=K5dqJMmjTPfmOF+diQKscihWLtGWthX+XQLPJcWtkTw=; b=hcqkVSk0V15J/6jKQTgNCC7++5
-	18Kf4rEGHVCbSb8DTRj7qe/6SvlyERkosuesuQDPFPn8YqIqTcK2/NvTcRMKrYvp6qSdXbTFzpdUK
-	hG6aXUX0Ksts3a1osAKDpFlrj2mo4mRY3L6f1sOt5Fbn5kq89puKQVLQvMWaIFEXzt9JSOT4w7lQ1
-	lG9cFYvm/fdxuDJm32dhLQNX3ynmGQgNTlY2j/pOUu/ImLyD5w1JJzNiM/mk47uy93xkdiH2DA8Al
-	Kf1xk9MZB/DDwXD87iTwjQaxItdUwxDvOL4YPURPc7zZZT4UMC1Hunn0/+dcVwmr0oL19hsX1/KI7
-	J18Z27WA==;
+	bh=g/klXb16+uRCEYb8Hc41pCzK9n++jZ8F6LeXLKeftpk=; b=pCCqqGm87LjlCkoszxPBWrDW/l
+	f4Y5JdjNWdrXLHLeCpuPiUF0cNVLpPZIo2V+f9y/wTSwHHAGZqrDVypj4nYxaEy4y9VIdIYdn+qXX
+	bpN/5EdBFRa9betkzNeW2DLFufypKVfODMxUY9uIBsdCdCeZ2W8dyCEfhR09zgR4YsT8d7Q2QkPbp
+	/YxTgeWmgdd1KD5lqIy/vSPOOKYjkD1bmWkXD1S29IE8hHqXqTlJMVBSxpF8ajJLjUwDXlXGE0UTR
+	ysocTabbUBEPPIlpFHZyZLGuBEYwJxBgpe3TWa+KoUJK6XFXE/w+YHuKL5TB9H0VK590BjRcAiSfx
+	tMGVMrpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uthZ9-00000004ume-3XVy;
-	Wed, 03 Sep 2025 07:05:59 +0000
+	id 1uthep-00000004xN4-1AaP;
+	Wed, 03 Sep 2025 07:11:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uthZ6-00000004uld-38vW
+	id 1uthe6-00000004wxI-3Bvy
 	for barebox@lists.infradead.org;
-	Wed, 03 Sep 2025 07:05:57 +0000
+	Wed, 03 Sep 2025 07:11:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <jlu@pengutronix.de>)
-	id 1uthZ5-0007bX-7l; Wed, 03 Sep 2025 09:05:55 +0200
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
+	(envelope-from <sha@pengutronix.de>)
+	id 1uthe3-0000Ca-V5; Wed, 03 Sep 2025 09:11:03 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <jlu@pengutronix.de>)
-	id 1uthZ4-003WBp-2w;
-	Wed, 03 Sep 2025 09:05:54 +0200
-Received: from localhost ([127.0.0.1] helo=[IPv6:::1])
-	by ptz.office.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <jlu@pengutronix.de>)
-	id 1uthZ4-009vPh-2L;
-	Wed, 03 Sep 2025 09:05:54 +0200
-Message-ID: <7756967c23e6a1c332f039007676940b195cf645.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-To: Tobias Waldekranz <tobias@waldekranz.com>, Ahmad Fatoum
-	 <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Cc: Michael Olbrich <mol@pengutronix.de>, Richard Weinberger
- <richard@nod.at>,  Marco Felsch <m.felsch@pengutronix.de>, anis chali
- <chalianis1@gmail.com>
-Date: Wed, 03 Sep 2025 09:05:54 +0200
-In-Reply-To: <878qix3t5w.fsf@waldekranz.com>
-References: <20250828150637.2222474-1-tobias@waldekranz.com>
-	 <07a7e6e0-f0dd-4969-888a-b616fe337158@pengutronix.de>
-	 <87frd83p9h.fsf@waldekranz.com>
-	 <24ac7ede-0f36-4283-b654-9cccdfa97a37@pengutronix.de>
-	 <878qix3t5w.fsf@waldekranz.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	(envelope-from <sha@pengutronix.de>)
+	id 1uthe3-003WPA-21;
+	Wed, 03 Sep 2025 09:11:03 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uthe3-00HVsf-1j;
+	Wed, 03 Sep 2025 09:11:03 +0200
+Date: Wed, 3 Sep 2025 09:11:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: chalianis1@gmail.com
+Cc: a.fatoum@pengutronix.de, barebox@lists.infradead.org
+Message-ID: <aLfqB0Ma_UTaGKpG@pengutronix.de>
+References: <20250831035542.1623695-1-chalianis1@gmail.com>
+ <20250831035542.1623695-6-chalianis1@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250831035542.1623695-6-chalianis1@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250903_000556_789905_36673D22 
-X-CRM114-Status: GOOD (  52.74  )
+X-CRM114-CacheID: sfid-20250903_001106_955160_9034715B 
+X-CRM114-Status: GOOD (  26.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,136 +83,261 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/5] dm: Initial work on a device mapper
+Subject: Re: [PATCH 6/7] efi: payload: add support for efi stub boot and fit
+ image.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, 2025-09-02 at 15:01 +0200, Tobias Waldekranz wrote:
-> > > > I hope someone (maybe me instead of talking) should do fault inject=
-ion
-> > > > in QEMU or using kernel APIs and see how broken it can get.
-> > >=20
-> > > That would be great. Doing it at the VM layer seems very hard, at lea=
-st
-> > > if you want something deterministic. In the kernel though, it should =
-be
-> > > easier to know when a filesystem is in an inconsistent state, and inj=
-ect
-> > > the errors at that point.
-> >=20
-> > Ack.
-> >=20
-> > > > they also support XBOOTLDR partitions? At least in barebox, you sho=
-uld
-> > > > be able to just assign the rootfs partition of the Infix OS the XBO=
-OTLDR
-> > > > partition Type UUID to have barebox automatically look for the
-> > > > bootloader
-> > > > spec entries there.
-> > >=20
-> > > They do support that, yes. However, but that would mean that we could
-> > > not use the DPS/DDI partition types that would allow for discovery of
-> > > verity data/signature etc.
-> >=20
-> > I haven't read the spec in full, but after a discussion with Jan (Cc'd)=
-,
-> > we had an unanswered question about the root verity partition:
-> >=20
-> > "Contains dm-verity integrity hash data for the matching root partition=
-.
-> > If this feature is used the partition UUID of the root partition should
-> > be the first 128 bits of the root hash of the dm-verity hash data, and
-> > the partition UUID of this dm-verity partition should be the final 128
-> > bits of it, so that the root partition and its Verity partition can be
-> > discovered easily, simply by specifying the root hash."
-> >=20
-> > Now a UUID is only 128 bits and the partition UUID is supposed to be
-> > unique, so splitting a 256 bit hash over two partitions UUIDs means tha=
-t
-> > in an A/B setup, we can end up with duplicate partition UUIDs if the
-> > same update bundle is installed twice.
-> >=20
-> > =C2=A0=C2=A0 - A and B root partition are identical
-> > =C2=A0=C2=A0 - A and B verity super block are identical
-> >=20
-> > When updating this may prove to be problematic: The system will start u=
-p
-> > normally (partitions are identical), but when flashing the update, how
-> > would the updater easily find out which is the inactive partition that
-> > it should write to..?
->=20
-> That was a question I had as well. My conclusion, given how they think
-> about blspec entries only existing on ESP/XBOOTLDR with split
-> rootfs/kernel etc., is that they are not designing for the kinds of
-> systems that you and I typically target.
->=20
-> > > This is my plan forward as well. We're using the syslinux-flavor of t=
-he
-> > > same idea at the moment. I like barebox's relaxation of the standard =
-to
-> > > allow for locating boot entries outside of ESP/XBOOTLDR, without whic=
-h
-> > > we would be back at the split-rootfs-and-kernel problem. Have you
-> > > thought about making this case to the UAPI group to amend the spec?
-> >=20
-> > I tried to get linux-appendroot upstreamed as first step, but haven't
-> > been too successful so far:
-> > https://github.com/uapi-group/specifications/pull/136
->=20
-> Oh wow, the x86 is strong in this one.
->=20
-> Unfortunately I think this is in line with my hunch about the gamut of
-> systems on their radar not including our domain (embedded+immutable).
+Hi,
 
-Image-based/immutable systems are very much in their focus:
-https://uapi-group.org/docs/
+Some things worth fixing below.
 
-There is a strong preference for UEFI, though, as they see it as the only v=
-iable
-path to a standardized interface between bootloader and kernel.
 
-That create some tension in areas where some parts of their specs are also =
-very
-useful for vertically integrated systems like the ones we build (and with o=
-ften
-don't use UEFI).
+On Sat, Aug 30, 2025 at 11:55:41PM -0400, chalianis1@gmail.com wrote:
+> +static int efi_load_file_image(const char *file,
+> +			       struct efi_loaded_image **loaded_image,
+> +			       efi_handle_t *h)
+>  {
+> +	efi_physical_addr_t mem;
+>  	void *exe;
+> +	char *buf;
+>  	size_t size;
+>  	efi_handle_t handle;
+>  	efi_status_t efiret = EFI_SUCCESS;
+>  
+> -	exe = efi_read_file(file, &size);
+> -	if (!exe)
+> -		return -errno;
+> +	buf = read_file(file, &size);
+> +	if (!buf)
+> +		return -ENOMEM;
 
-> > > Yeah I noticed that, _very_ useful. For Infix, if we end up going wit=
-h
-> > > LVM, I suspect we won't be able to send all of that info along with t=
-he
-> > > commandline, and will end up needing to figure that out (again) in an
-> > > initramfs - but for most cases I think it would work really well!
-> >=20
-> > Ah, didn't think of LVM. If mix-and-match is no problem for you, then
-> > doing it in the initramfs is a workable solution of course.
->
-> I definitely want to avoid mix-and-matching between kernel and
-> rootfs. My idea was that barebox could still pass the partition UUID and
-> the root hash to the kernel, then the (very small) initramfs would just:
->=20
-> 1. Run some LVM probing to find and setup the volume with that UUID
-> 2. Run verity setup on the it with the (already signature-checked) root
-> =C2=A0=C2=A0 hash
-> 3. pivot_root
->=20
-> Maybe this is more trouble than its worth, still not sure.
->
-> I just seems strange to me that this is fairly common on setups with raw
-> flash (via UBI volumes), but for some reason it is never used (at least
-> to my knowledge) on systems with managed flash.
+buf is never freed, neither in the error nor in the success path.
 
-With A/B partitions I find it simpler and less error prone to avoid scannin=
-g and
-just pass the fixed device names already known to the bootloader.
+>  
+> -	efiret = BS->load_image(false, efi_parent_image, efi_device_path, exe, size,
+> -			&handle);
+> +	exe = efi_allocate_pages(&mem, size, EFI_ALLOCATE_ANY_PAGES,
+> +				 EFI_LOADER_CODE);
+> +	if (!exe) {
+> +		pr_err("Failed to allocate pages for image\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	memcpy(exe, buf, size);
+> +
+> +	efiret = BS->load_image(false, efi_parent_image, efi_device_path, exe,
+> +				size, &handle);
+>  	if (EFI_ERROR(efiret)) {
+>  		pr_err("failed to LoadImage: %s\n", efi_strerror(efiret));
+>  		goto out;
+>  	};
+>  
+>  	efiret = BS->open_protocol(handle, &efi_loaded_image_protocol_guid,
+> -			(void **)loaded_image,
+> -			efi_parent_image, NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
+> +				   (void **)loaded_image, efi_parent_image,
+> +				   NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
+>  	if (EFI_ERROR(efiret)) {
+>  		pr_err("failed to OpenProtocol: %s\n", efi_strerror(efiret));
+>  		BS->unload_image(handle);
+> @@ -151,8 +163,10 @@ static int efi_load_image(const char *file, struct efi_loaded_image **loaded_ima
+>  	}
+>  
+>  	*h = handle;
+> +
+> +	return 0;
+>  out:
+> -	efi_free_file(exe, size);
+> +	efi_free_pages(exe, size);
+>  	return -efi_errno(efiret);
+>  }
+>  
+> @@ -171,20 +185,16 @@ static bool is_linux_image(enum filetype filetype, const void *base)
+>  	return false;
+>  }
+>  
+> +static bool ramdisk_is_fit(struct image_data *data)
+> +{
+> +	struct stat st;
+> +
+> +	if (bootm_signed_images_are_forced())
+> +		return true;
+> +
+> +	if (data->initrd_file) {
+> +		if (!stat(data->initrd_file, &st) && st.st_size > 0)
+> +			return false;
+> +	}
+> +
+> +	return data->os_fit ? (bool)fit_has_image(data->os_fit,
+> +			data->fit_config, "ramdisk") : false;
+> +}
+> +
+> +static bool fdt_is_fit(struct image_data *data)
+> +{
+> +	struct stat st;
+> +
+> +	if (bootm_signed_images_are_forced())
+> +		return true;
+> +
+> +	if (data->oftree_file) {
+> +		if (!stat(data->initrd_file, &st) && st.st_size > 0)
+> +			return false;
+> +	}
+> +
+> +	return data->os_fit ? (bool)fit_has_image(data->os_fit,
+> +			data->fit_config, "fdt") : false;
 
-Jan
+fit_has_image() can return an error code. Casting this to bool will
+result in 'true' which is not what you want here.
 
---=20
+> +}
+> +
+> +static int efi_load_os(struct efi_image_data *e)
+> +{
+> +	efi_status_t efiret = EFI_SUCCESS;
+> +	efi_physical_addr_t mem;
+> +	size_t image_size = 0;
+> +	void *image = NULL;
+> +	void *vmem = NULL;
+> +	int ret = 0;
+> +
+> +	if (e->data->os_fit) {
+> +		image = (void *)e->data->fit_kernel;
+> +		image_size = e->data->fit_kernel_size;
+> +	} else if (e->data->os_file)
+> +		return efi_load_file_image(e->data->os_file,
+> +				&e->loaded_image, &e->handle);
+
+If neither of the above is true you continue with image = NULL and
+image_size = 0. I think you need a else return -ESOMETHING here.
+
+> +
+> +	vmem = efi_allocate_pages(&mem, image_size, EFI_ALLOCATE_ANY_PAGES,
+> +				 EFI_LOADER_CODE);
+> +	if (!vmem) {
+> +		pr_err("Failed to allocate pages for image\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	memcpy(vmem, image, image_size);
+> +
+> +	efiret = BS->load_image(false, efi_parent_image, efi_device_path, image,
+> +				image_size, &e->handle);
+> +	if (EFI_ERROR(efiret)) {
+> +		ret = -efi_errno(efiret);
+> +		pr_err("failed to LoadImage: %s\n", efi_strerror(efiret));
+> +		goto out_mem;
+> +	};
+> +
+> +	efiret = BS->open_protocol(e->handle, &efi_loaded_image_protocol_guid,
+> +				   (void **)&e->loaded_image, efi_parent_image,
+> +				   NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
+> +	if (EFI_ERROR(efiret)) {
+> +		ret = -efi_errno(efiret);
+> +		pr_err("failed to OpenProtocol: %s\n", efi_strerror(efiret));
+> +		goto out_unload;
+> +	}
+> +
+> +	e->image_res.base = mem;
+> +	e->image_res.size = image_size;
+> +
+> +	return 0;
+> +
+> +out_mem:
+> +	efi_free_pages(vmem, image_size);
+> +out_unload:
+> +	BS->unload_image(e->handle);
+> +	return ret;
+> +}
+> +
+> +static int efi_load_fdt(struct efi_image_data *e)
+> +{
+> +	efi_status_t efiret = EFI_SUCCESS;
+> +	efi_physical_addr_t mem;
+> +	void *vmem, *tmp = NULL;
+> +	const void *of_tree;
+> +	unsigned long of_size;
+> +	bool from_fit;
+> +	int ret;
+> +
+> +	if (IS_ENABLED(CONFIG_EFI_FDT_FORCE))
+> +		return 0;
+> +
+> +	from_fit = fdt_is_fit(e->data);
+> +	if (from_fit) {
+> +		ret = fit_open_image(e->data->os_fit, e->data->fit_config,
+> +				     "fdt", &of_tree, &of_size);
+> +		if (ret) {
+> +			pr_err("Cannot open FDT image in FIT image: %pe\n",
+> +			       ERR_PTR(ret));
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	if (!from_fit) {
+
+else instead?
+
+> +		if (!e->data->oftree_file)
+> +			return 0;
+> +
+> +		pr_info("Loading devicetree from '%s'\n", e->data->oftree_file);
+> +		tmp = read_file(e->data->oftree_file, &of_size);
+> +		if (!tmp || of_size <= 0) {
+> +			pr_err("Failed to read initrd from file: %s\n",
+> +				e->data->initrd_file);
+> +			return -EINVAL;
+> +		}
+> +		of_tree = tmp;
+> +	}
+> +
+> +	vmem = efi_allocate_pages(&mem, of_size + CONFIG_FDT_PADDING,
+> +				 EFI_ALLOCATE_ANY_PAGES,
+> +				 EFI_ACPI_RECLAIM_MEMORY);
+
+Can you replace CONFIG_FDT_PADDING with a #define in this file? The
+Kconfig option you introduced becomes visible for every user, but it
+only has a meaning in special cases. I think on EFI machines we are not
+scarce on memory, so you could allocate a much higher amount of memory,
+say 128KiB to reduce the need to make this configurable.
+
+> +	if (!vmem) {
+> +		pr_err("Failed to allocate pages for FDT\n");
+> +		goto free_file;
+> +		return -ENOMEM;
+
+This return is never reached. Also add ret = -ENOMEM before the goto.
+
+> +	}
+> +
+> +	memcpy(vmem, of_tree, of_size);
+> +
+> +	efiret = BS->install_configuration_table(&efi_fdt_guid,
+> +			(void *)mem);
+> +	if (EFI_ERROR(efiret)) {
+> +		pr_err("Failed to install FDT %s/n", efi_strerror(efiret));
+> +		ret = -efi_errno(efiret);
+> +		goto free_mem;
+> +	}
+> +
+> +	e->oftree_res.base = mem;
+> +	e->oftree_res.size = of_size + CONFIG_FDT_PADDING;
+> +
+> +	if (!from_fit && tmp)
+> +		free(tmp);
+
+No need to check, free() handles NULL pointers fine.
+
+Some of the comments apply to efi_load_ramdisk() as well.
+
+Sascha
+
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
