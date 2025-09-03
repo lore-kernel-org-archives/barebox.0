@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1utt1C-007l6l-1h
+	id 1utt1C-007l6k-1Y
 	for lore@lore.pengutronix.de;
 	Wed, 03 Sep 2025 21:19:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1utt1B-0006vr-Cs
+	id 1utt1B-0006vg-9U
 	for lore@pengutronix.de; Wed, 03 Sep 2025 21:19:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Reply-To:List-Subscribe:
@@ -18,67 +18,62 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=J024FS8i2Tw/rCnhm6bjY7t3F3+3eFdcz5STMhJTg3Q=; b=giQ/xtZOzlIBidyuIR7Ovi9w1a
-	SFhoYhMPn6g2t0aaRflzpo2YXZHJP1aa3QD/MD1uODcwWKaXLXHSDtBtuAoGfa7quuCqIyQd+sycb
-	bbDELzr+5KT6JhOYGx1rRbbXoIZIu9Ln1Op1lXeb1kJpaiEASaea++Vrb/cAFTRypS8l5fD8bxDdl
-	s6rKiI0QuQwb8m4gMNSRjs/uYRC8OEEvKUPqmQP7l6yBhxExlAmd5WICooUWDtFDqBROaCITUNKd1
-	gRD1au4oaER1UWuza7BJ3ol5FVZUJCP213Lg3h7lfX+bMVdJPuvuhRVAnFdXfLfV+SNfJwaT1RJKo
-	BkW+Ct7g==;
+	bh=3T0G9HTISz5c66LMe5LzOioYkQ8ZThSxw442izbJNwo=; b=Z+AtZXbctK2/6bcwYau0tFijQt
+	nWOfUFG23UJXPs+kw+RuDsBf4ny42ainR6K1oaW2dCzUR9KF8v11XtfduO5HpJQw4L9yULsmC0ZiB
+	bN/qgQDqU8M4S3zWnEO4EE6ghac0445I6ByjJIEkIisnu+QmvaQPR99DBsgycSbrKaMu+2gHve4xn
+	YH9PYcPzJTH3CtZY9F9bz6gXztwv8H0Ph//0/eCO/xvnUNsTXeanzjfibY9M930KDa6v31TZVx3kb
+	+yacOZpmxUjp42OSBEVn0wIcmdO4aY1UqBsOiFMFkaswzeaGbSN2NLf2Sa7IDsirLNoUlzncUXQhM
+	h22Bj29Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utt0Q-00000007QvE-1O8F;
-	Wed, 03 Sep 2025 19:18:54 +0000
-Received: from sea.source.kernel.org ([172.234.252.31])
+	id 1utt0S-00000007Qw5-3KfD;
+	Wed, 03 Sep 2025 19:18:56 +0000
+Received: from tor.source.kernel.org ([172.105.4.254])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utoWC-00000006jxY-24JN
+	id 1utokX-00000006kyp-3dvy
 	for barebox@lists.infradead.org;
-	Wed, 03 Sep 2025 14:31:25 +0000
+	Wed, 03 Sep 2025 14:46:15 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 371A343DAC;
-	Wed,  3 Sep 2025 14:31:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 16908C4CEF4;
-	Wed,  3 Sep 2025 14:31:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4650A60237;
+	Wed,  3 Sep 2025 14:46:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F1C69C4CEE7;
+	Wed,  3 Sep 2025 14:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756909884;
-	bh=7nQM8Y6giHxrowtl1Fq2xtRuf303tQ7l/XPNGurWAkY=;
+	s=k20201202; t=1756910773;
+	bh=GsqUfTYeY4JYqKyl75zf/xfMUqKBghaNm7slLJyxRY0=;
 	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=gSNsUCeRP8R2PdBrpJzS3qCvOA2o+H/ScOjdCTUix5oRd5NMmrlON+dNe+DG/pOly
-	 uMzKCmWySeGIjGWAygz4gIzthi6uFZ58yzXvP7RNRNEG+mkzwryppcPgcK7XDRhA59
-	 rZwJRjl0TX0xcZVWtaqsT5JbZFYTGIe5diH+0NVf2HPogeN/n06tVB3bAb06BvvOG4
-	 CJNge5ojJPt+pF8PNyo/zBNoCFJzT3sjD7DZlmlCME7xanCx3SizC3lau8VsN+eAp5
-	 OlZpNAgpuxy5cy8Cvxj7ZnnND0rmHan4ETDyAcGj/jmtV7WfYq0qb5dUxnJLLZzvx+
-	 01e9glTuSz5wA==
+	b=Wrg0wEJs8lRAxrxyY1kGS5OKpWanvMieLP6AFDWl8+Fkhnu2EoEpe3H9FL91ZMBPE
+	 fGQnXNwIWLEWNkZ3tAcqOcMEL4YDLD23gclsdjE589xubNvJmpXch+kgMFY1iyT5uQ
+	 DmUDjwZp/sKDDKG5qVaGfQffqFF67i1NmtHzh7FSxmiATvWOIl7xZaIJ9I/T50SXeL
+	 5iSfr+G76OB1b3ez2theN8dl6OhZJtHxo5RbUSjf4WsdIF8T4i/OUDDlx0BS3d3Upq
+	 rJv4h3llv2LjF2yZCvpREKXX9pf89EVrIIWxFIvJnT0apAa8EefAAZzT1i7Dw/D08J
+	 EVJSwdxqsMvTA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09836CA1011;
-	Wed,  3 Sep 2025 14:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC75CCA1009;
+	Wed,  3 Sep 2025 14:46:12 +0000 (UTC)
 From: =?utf-8?q?Christian_Thie=C3=9Fen_via_B4_Relay?= <devnull+christian.thiessen.airbus.com@kernel.org>
-Date: Wed, 03 Sep 2025 16:31:21 +0200
+Date: Wed, 03 Sep 2025 16:46:05 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250903-mtd-erase-enosys-v2-1-7b7f28302f25@airbus.com>
-X-B4-Tracking: v=1; b=H4sIADhRuGgC/2WNQQ6CMBBFr0Jm7Zi2ggVX3sOwKGWUWUBNB4mE9
- O5WElcu30v++xsIRSaBS7FBpIWFw5TBHArwg5sehNxnBqNMpRplcJx7pOiEkKYgq6Dpa0Vl563
- 1NeTZM9Kd33vy1mYeWOYQ1/1h0V/7i53+Y4tGjc3ZuqbS1viSro5j95KjDyO0KaUPjitzG7EAA
- AA=
-X-Change-ID: 20250902-mtd-erase-enosys-2d80e4bc77c8
+Message-Id: <20250903-fec_imx-fix-enodev-v1-1-0dd4c42fc293@airbus.com>
+X-B4-Tracking: v=1; b=H4sIAKxUuGgC/x2MWwqAIBAArxL73cL2wuoqESG21n6koSBCdPekz
+ 2GYeSByEI4wVw8EThLFuwJNXYE5tTsYZS8MLbUDTdShZbPJldFKRnZ+54RW6YlGRUNvRijhHbj
+ Yf7qs7/sBgeaILWQAAAA=
+X-Change-ID: 20250903-fec_imx-fix-enodev-f7a9087054c8
 To: BAREBOX <barebox@lists.infradead.org>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- =?utf-8?q?Christian_Thie=C3=9Fen?= <christian.thiessen@airbus.com>
+Cc: =?utf-8?q?Christian_Thie=C3=9Fen?= <christian.thiessen@airbus.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756909883; l=1789;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756910772; l=4139;
  i=christian.thiessen@airbus.com; s=20250902; h=from:subject:message-id;
- bh=emJT9PXfX11+EmeT0CfeZS06OR+auBfkOIiI8W3unJc=;
- b=I4F1s14f5xx2CiThPY90cnC4PurebN3mVrIYCZVDBNZfScKVjgo+hfhRKqEHxLKD8MhktAXKu
- Q/RgUrXg3LSDEqIqKgKlvWNvELSjeJ7j76PqvCcf6mNePg0z+YUUAPR
+ bh=XFKPIv88ugljtV+KWINy7eR1OlNtbCCJvHz4x+4ROys=;
+ b=MpGSpANLnaOThfS4wPW7Nq+bqT3AlRPMkuA/QPKx7jEvCPDxk7S8IqiQhpb2879YA730rmDcH
+ RujByihngNfAE638uYtv+f5ZD/o8aEc+EY76NB6o2W93t5QG10C6l39
 X-Developer-Key: i=christian.thiessen@airbus.com; a=ed25519;
  pk=NCvzeydU+5OZKp2shtC3Zp/OS1LfbLmhNZNws46FeWk=
 X-Endpoint-Received: by B4 Relay for christian.thiessen@airbus.com/20250902
  with auth_id=508
 X-Original-From: =?utf-8?q?Christian_Thie=C3=9Fen?= <christian.thiessen@airbus.com>
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250903_073124_572955_09815139 
-X-CRM114-Status: GOOD (  12.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,59 +92,138 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.4 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-105.3 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2] mtd: Make mtd_erase fail gracefully if CONFIG_MTD_WRITE
- is off
+Subject: [PATCH] fec_imx: Fix ENODEV in fec_probe on i.MX27
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Christian Thießen <christian.thiessen@airbus.com>
 
-When CONFIG_MTD_WRITE is unset, the mtd->_erase member of partition
-devices does not get initialized, so it remains NULL.
-However when running ubiattach on an UBI partition, mtd_erase() still
-gets called, tries to call mtd->_erase and crashes. Make it fail
-gracefully by returning ENOSYS ("Function not implemented") instead.
+The fec_imx driver stores an enum fec_type value in the match data
+pointer. When retrieving this value in fec_probe(), it handles
+FEC_TYPE_IMX27 (which is 0) like an error result from
+device_get_match_data and returns -ENODEV.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To be able to differentiate NULL from errors, introduce a new function
+device_get_match_data_default which returns its defaultval argument
+instead of NULL in case of errors.
+Add an FEC_TYPE_COUNT value to the fec_type enum.
+In fec_probe, pass FEC_TYPE_COUNT as defaultval and return -ENODEV for
+all type values greater or equal to that.
+
+Fixes: 20d87123a6 ("treewide: replace dev_get_drvdata with        device_get_match_data")
 Signed-off-by: Christian Thießen <christian.thiessen@airbus.com>
 ---
-As discussed in https://github.com/barebox/barebox/issues/39 this patch
-enables ubiattach-ing a NAND partition even if CONFIG_MTD_WRITE is
-turned off, by making mtd_erase fail gracefully.
----
-Hi,
-thank you for the warm welcome and the constructive feedback!
-Changes in v2: Addressed review comments.
-- Changed from ifdef to IS_ENABLED
-- Moved the sign-off tag to the commit message (why does b4 add it to
-  the cover letter?)
-- Link to v1: https://lore.kernel.org/r/20250903-mtd-erase-enosys-v1-1-967a95172c4e@airbus.com
----
- drivers/mtd/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+Hi again,
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 6162ec450fc1c3a0fa6339042c4d627e0f9567d0..bb579a8f5249981ec1623060ddb1b7056a06c1a0 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -436,6 +436,8 @@ int mtd_erase(struct mtd_info *mtd, struct erase_info *instr)
+this patch addresses the issue discussed in
+https://github.com/barebox/barebox/issues/40 ("fec_imx (and possibly
+others): Probe fails with ENODEV").
+
+Cheers,
+Christian
+---
+ drivers/base/driver.c | 13 +++++++++++++
+ drivers/net/fec_imx.c | 12 +++++-------
+ drivers/net/fec_imx.h |  1 +
+ include/driver.h      | 10 ++++++++++
+ 4 files changed, 29 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 61118385f1df0f8d36208d236be66b077fa5e54d..614c3c26b04c6f252e3970e014a43bae6a1d9c2b 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -690,6 +690,19 @@ const void *device_get_match_data(struct device *dev)
+ }
+ EXPORT_SYMBOL(device_get_match_data);
+ 
++const void *device_get_match_data_default(struct device *dev,
++					  const void *defaultval)
++{
++	if (dev->of_id_entry)
++		return dev->of_id_entry->data;
++
++	if (dev->id_entry)
++		return (const void *)dev->id_entry->driver_data;
++
++	return defaultval;
++}
++EXPORT_SYMBOL(device_get_match_data_default);
++
+ static void device_set_deferred_probe_reason(struct device *dev,
+ 					     const struct va_format *vaf)
  {
- 	if (instr->addr >= mtd->size || instr->len > mtd->size - instr->addr)
- 		return -EINVAL;
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOSYS;
- 	if (!(mtd->flags & MTD_WRITEABLE))
- 		return -EROFS;
- 	instr->fail_addr = MTD_FAIL_ADDR_UNKNOWN;
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 8474e6d5be9c6225af5708d21b0249b2618d36f6..fac190e6ea51950ed6085264e12617969847acbf 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -763,20 +763,18 @@ static int fec_probe(struct device *dev)
+ 	struct fec_priv *fec;
+ 	void *base;
+ 	int ret;
+-	enum fec_type type;
+-	void const *type_v;
++	uintptr_t type_v;
+ 	int phy_reset;
+ 	u32 msec = 1, phy_post_delay = 0;
+ 	u32 reg;
+ 
+-	type_v = device_get_match_data(dev);
+-	if (!type_v)
++	type_v = (uintptr_t)device_get_match_data_default(dev,
++		(const void *)FEC_TYPE_COUNT);
++	if (type_v >= FEC_TYPE_COUNT)
+ 		return -ENODEV;
+ 
+-	type = (uintptr_t)(type_v);
+-
+ 	fec = xzalloc(sizeof(*fec));
+-	fec->type = type;
++	fec->type = type_v;
+ 	fec->dev = dev;
+ 	edev = &fec->edev;
+ 	dev->priv = fec;
+diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
+index 1aaff87fddfb44cf558436ab4a846757c6cd51aa..9549dab0f8e88288bd9fe3a02ff8bd5573147842 100644
+--- a/drivers/net/fec_imx.h
++++ b/drivers/net/fec_imx.h
+@@ -117,6 +117,7 @@ enum fec_type {
+ 	FEC_TYPE_IMX27,
+ 	FEC_TYPE_IMX28,
+ 	FEC_TYPE_IMX6,
++	FEC_TYPE_COUNT,
+ };
+ 
+ enum fec_clock {
+diff --git a/include/driver.h b/include/driver.h
+index c130a3cd63fd5e6dc365a33c765a22dc4e2ca90a..223799294fc0e32ceb13fc5bda2e3b8a78d71647 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -650,6 +650,16 @@ int cdevfs_del_partition(struct cdev *cdev);
+  */
+ const void *device_get_match_data(struct device *dev);
+ 
++/**
++ * device_get_match_data_default - get driver match data associated with device
++ * @dev: device instance
++ * @defaultval: Value to return if no match data is associated with dev
++ *
++ * Returns match data on success and defaultval otherwise
++ */
++const void *device_get_match_data_default(struct device *dev,
++					  const void *defaultval);
++
+ int device_match_of_modalias(struct device *dev, const struct driver *drv);
+ 
+ struct device *device_find_child(struct device *parent, void *data,
 
 ---
-base-commit: b5561f3bdd4845b478e5b35aab04f1d8e71ea93b
-change-id: 20250902-mtd-erase-enosys-2d80e4bc77c8
+base-commit: 7689314d0a78605e7d4a0c3ce4953d9d768aa343
+change-id: 20250903-fec_imx-fix-enodev-f7a9087054c8
 
 Best regards,
 -- 
