@@ -3,78 +3,67 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uu5lu-007yeR-03
+	id 1uu5lu-007yeb-0L
 	for lore@lore.pengutronix.de;
 	Thu, 04 Sep 2025 10:56:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uu5ls-00041D-MK
+	id 1uu5ls-00041F-UC
 	for lore@pengutronix.de; Thu, 04 Sep 2025 10:56:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=0tzDTM9MctE2GuzKfSMZI35xqHWLeyiUxW/0JLWcCZU=; b=vJeli7gBHA6JZXWMFSXxzIwQJL
-	Fkhs9p/tyVxdxfvk8KjyGKWImqliLVUyYupeCmBvCyQb046dBogO9gB0THUyvwumZu3/ncauIivYp
-	CkY6XGuVGwqfsU8v1LciDOadr/iuiPyumP8q6+nr3ivvdRl22N7h4QY8Jx7ok79aotTyqywgPlkQg
-	RskRF0Zp06p3r6+60ZxIH9X4oYgcQMS3kYirveZLn4j/q//kyS8kHloa2rLPFlne1Lppstk4n6j7i
-	Oj3C7H3y3dQF9UoNpD5nZI/6ro1Do+OWvDKylNEfDgSD6DJOIMz33RMuIRqT9r1Rv2BtG0+sq2eO8
-	kD/H/f3w==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=9/gQo+DegqHoatKElo0QpRDR3AbXsvMcbM8XNoWjZx8=; b=1oqScUeu6yXTtTX/XWYC44snH+
+	b2MJFS+RvzctmGhmj8+05VbBgucoAWPsFMAyzKUg7sRkIx6BG6bp/hCefUcAHQvkL/u5HTJ6zQvPG
+	sj+2fQ4Va18SNl0L0WL7yktn2NRUO11r1bbOS19UUxMBxbLFgndPQ/VFHUloizseV142NJvu3LgSb
+	AlIexKlKz7sIgeKwcqJvbSBq293rZ/qFJEo+/kz414YEjjmhPYk4cxvyXVNxn+Sn1tuhlkqPL6eMt
+	76mRyoLAx9zL0LWgq2gnIx2xGUzZjraSe4Sbaq4Bya16JjaBYNtHlKop0x/e15pjxwYrKVVRQYGaU
+	6ktgs4BA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uu5lT-0000000ANsL-2PbG;
-	Thu, 04 Sep 2025 08:56:19 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uu58x-0000000A9sE-2xrd
-	for barebox@bombadil.infradead.org;
-	Thu, 04 Sep 2025 08:16:31 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=0tzDTM9MctE2GuzKfSMZI35xqHWLeyiUxW/0JLWcCZU=; b=D1RD5CcjBIlBLAUL7AgdrWm9SL
-	CE7h0ETmt7s9bEHtXfNbXJDPGc8XXhclGr9+R0+ARXz4wL8m7pulGAS3nOqhzaCGmoXK+Sxx3HwUE
-	DmjbehPjFk53TeiNab1Zkt1/XYaZclnUq9yZuxMluw7UlMw8YP3tiWRs20wue+rtkle0MuiL5+NgL
-	zo6wAvS270HD03WAe8wMWvhc9zDFjoB7cY58NQDQtc8AcDlQWPxrxy9C2CzLbh7b3stivGQa3mRyP
-	XphkrCOGTX3SrqCvYcnN2jHWRPGp4nyk28yEZP9F0j7pRnaPHjsu63PF9TtcWFj8dx2dMen3wfTPY
-	WQ2hcbtA==;
+	id 1uu5lR-0000000ANqU-30Kq;
+	Thu, 04 Sep 2025 08:56:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uu58u-00000004JGB-0oiH
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uu53d-0000000A6wm-2Nsr
 	for barebox@lists.infradead.org;
-	Thu, 04 Sep 2025 08:16:29 +0000
+	Thu, 04 Sep 2025 08:11:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uu58t-0000II-L3; Thu, 04 Sep 2025 10:16:27 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uu53c-0007M4-DT; Thu, 04 Sep 2025 10:11:00 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uu58t-003hEY-1V;
-	Thu, 04 Sep 2025 10:16:27 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uu58t-00000000OFC-1aBr;
-	Thu, 04 Sep 2025 10:16:27 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  4 Sep 2025 10:16:26 +0200
-Message-ID: <20250904081626.93182-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uu53c-003hDw-0j;
+	Thu, 04 Sep 2025 10:11:00 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uu53c-0000000DHCT-0hgj;
+	Thu, 04 Sep 2025 10:11:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: anis chali <chalianis1@gmail.com>
+In-Reply-To: <20250904055336.3136705-1-s.hauer@pengutronix.de>
+References: <20250904055336.3136705-1-s.hauer@pengutronix.de>
+Message-Id: <175697346016.3164312.17077249245446502614.b4-ty@pengutronix.de>
+Date: Thu, 04 Sep 2025 10:11:00 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250904_091628_387888_8334790D 
-X-CRM114-Status: UNSURE (   8.37  )
+X-CRM114-CacheID: sfid-20250904_011101_609908_E0CF55D5 
+X-CRM114-Status: UNSURE (   7.53  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -97,47 +86,27 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: cpu: allow selecting CPU_V7/CPU_V8 directly
+Subject: Re: [PATCH] FIT: let fit_has_image() return bool
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently lack a way to build a barebox EFI payload on ARM without
-enabling some other subarchitecture. As CONFIG_EFI_PAYLOAD has a global
-effect and adds EFI stubs to all enabled board, an EFI subarchitecture
-doesn't fit into our current model.
 
-Instead, let's make it possible to enable either CONFIG_CPU_V8 or
-CONFIG_CPU_V7 directly.
+On Thu, 04 Sep 2025 07:53:36 +0200, Sascha Hauer wrote:
+> The return value of fit_has_image() is treated as bool by most callers.
+> It could return an error code though which by the callers would be
+> evaluated to true. Change the return type to bool and return false
+> instead of an error code to meet the callers expectations.
+> 
+> 
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/cpu/Kconfig | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Applied, thanks!
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index e61bcadc8c35..fe0d1e470578 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -79,12 +79,15 @@ config CPU_V6
- 
- # ARMv7
- config CPU_V7
--	bool
-+	bool "Generic ARMv7 support"
-+	depends on 32BIT
- 	select CPU_32v7
- 
- # ARMv8
- config CPU_V8
--	bool
-+	bool "Generic ARMv8 support"
-+	default y
-+	depends on 64BIT
- 	select CPU_64v8
- 	select ARM_EXCEPTIONS
- 	select GENERIC_FIND_NEXT_BIT
+[1/1] FIT: let fit_has_image() return bool
+      https://git.pengutronix.de/cgit/barebox/commit/?id=403d8a3b6acf (link may not be stable)
+
+Best regards,
 -- 
-2.47.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
