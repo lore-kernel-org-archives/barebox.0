@@ -1,76 +1,54 @@
-Delivery-date: Thu, 04 Sep 2025 08:51:35 +0200
+Delivery-date: Thu, 04 Sep 2025 08:51:36 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uu3om-007wL2-07
+	id 1uu3on-007wLN-1P
 	for lore@lore.pengutronix.de;
-	Thu, 04 Sep 2025 08:51:35 +0200
+	Thu, 04 Sep 2025 08:51:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uu3ok-0003q3-Sh
-	for lore@pengutronix.de; Thu, 04 Sep 2025 08:51:35 +0200
+	id 1uu3om-0003qa-As
+	for lore@pengutronix.de; Thu, 04 Sep 2025 08:51:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=t7E24wsHcey8nIzkInTl3xI17yHQBeCWSBF9DxAT4C0=; b=37gwSMfgdOH6/la8ECbkUN5mah
-	WW7Tk2UBNBE7V/gga3yyg3IUEE1a6RfPQ/9KrXwUn6OIs5ulXIOrJh7KTWNpvxFuINqst0zYijap3
-	BYL4++l8BT4ypL0YtdIVvi2+lSnYwrupelb4WudKMmVH9/ke9FkpW0e7d6/xqGCPtQ1P6jfL9IPMG
-	h6vkJGQ9MdKmC7Z6h5IsuBEbmRa7xtbE7Wti/RM8edn5KkA6A6a6Dv7X8wOPGfbTGPaGJcTN4JtAb
-	kNphmKzq2y6P6qFUTXnSaOSNtx4Zp9VHSJYyZ+tHC3NYP8u0xqE4KhACYuv8OCKcg9FhMMyXAZzRp
-	vfmSfrFw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=9/QDcU0Gdw/00xko+fHMUvejsvRswnp+Ad74Rshp+1k=; b=PAqq/k/Ju1NIX63Y6rtpEJiS/L
+	gYCQ1cwLCzDwxSE66rPzLan6e30SzijbTxvTv2BTxEKym6jZcfxUFY0+VhTBLq37PyJ5PVeAmSl8u
+	F9t2BZ0upvBAVnT1UC3eifcQjvAUzw8PAFp3cE0PbL6G/m8v81pwAb0oaIcTBeyUOrNrKLRCKjk9h
+	hkW8ieVXks30/PANXbGb9tr1mlND76KmJrtkRAdAza/kvne22ARJ6sKNn4dApgeDyPNXGWqvt9QFn
+	g5V+0JnypZIjT2A9TK7XPldk+pdM3BnOtLqXMj7cdMq93s1oEXMW+4bMBkbaaWHIMbHPBlFlQwykk
+	293y3qBg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uu3oK-00000009eO0-0LTF;
+	id 1uu3oK-00000009eOG-2cFs;
 	Thu, 04 Sep 2025 06:51:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uu3lj-00000009dnS-1mit
+	id 1uu3mo-00000009e5z-23a1
 	for barebox@lists.infradead.org;
-	Thu, 04 Sep 2025 06:48:29 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uu3li-00037B-23; Thu, 04 Sep 2025 08:48:26 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uu3lh-003gVG-2p;
-	Thu, 04 Sep 2025 08:48:25 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uu3lh-0023oy-2S;
-	Thu, 04 Sep 2025 08:48:25 +0200
-Date: Thu, 4 Sep 2025 08:48:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: anis chali <chalianis1@gmail.com>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <aLk2OXrt357LdhkT@pengutronix.de>
-References: <20250831035542.1623695-1-chalianis1@gmail.com>
- <20250831035542.1623695-6-chalianis1@gmail.com>
- <aLfqB0Ma_UTaGKpG@pengutronix.de>
- <CAL+1fyD6Jevxx_wP00caRoXe0yRmM6uScJN8W3fkRVNVfLRj1Q@mail.gmail.com>
- <aLksEfZ3-YiEL-xN@pengutronix.de>
- <CAL+1fyA5FtjLfRDbF-dpxr=T6kL=hrF8pr6wJk5aR1X=5CEFUg@mail.gmail.com>
+	Thu, 04 Sep 2025 06:49:35 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1uu3ml-0003JU-CB; Thu, 04 Sep 2025 08:49:31 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Thu,  4 Sep 2025 08:49:30 +0200
+Message-Id: <20250904064930.2867799-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL+1fyA5FtjLfRDbF-dpxr=T6kL=hrF8pr6wJk5aR1X=5CEFUg@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250903_234827_460925_388BA357 
-X-CRM114-Status: GOOD (  26.59  )
+X-CRM114-CacheID: sfid-20250903_234934_529020_90736291 
+X-CRM114-Status: UNSURE (   8.22  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,50 +66,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 6/7] efi: payload: add support for efi stub boot and fit
- image.
+Subject: [PATCH] test: arm: multi_v7_defconfig.yaml: make virt@ the default
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Sep 04, 2025 at 02:20:59AM -0400, anis chali wrote:
->    Hi Sascha,
->    > Please keep the list on Cc. Other people might be interested as well and
->    > might have some opinion in the discussions taking place.
->    Sorry for that of course.
->    > I just looked around how fit_has_image() is used. The return value is
->    > treated as bool by all callers, so I think it's better to just return
->    > bool from the function. I just sent a patch for it...
->    ack
->    > Sorry, I don't understand the question.
->    I was asking, would 128KB be always enough to cover any hardware, should
->    we go for 512KB instead?
+The vexpress-a9 board is less functional in barebox than the virt board,
+e.g., only the latter has a restart handler registered.
 
-When I understand correctly the 128KiB would only be the additional
-memory for later additions to the device tree, right?
+Switch over the default, so a simple pytest uses the virt labgrid
+environment instead by default.
 
-I think for that 128KiB should be quite much already.
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ test/arm/multi_v7_defconfig.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->    For now I submitted with 128KB.
->    > No. I don't do EFI very much and I currently don't have a setup for
->    > testing this. Ahmad is more experienced with EFI than me.
->    Ok, I can maybe share my scripts, they are not clean at all with many
->    repos.  if I have time
->    I will do some clean up and share them (there scripts to generate
->    fitImage, linux, dts, optee, TF-A, UKI, edk2, custom qemu ...).
->    Thanks.
-
-Great, looking forward to it.
-
-Sascha
-
+diff --git a/test/arm/multi_v7_defconfig.yaml b/test/arm/multi_v7_defconfig.yaml
+index ac18c8272c45..4be28baf564c 120000
+--- a/test/arm/multi_v7_defconfig.yaml
++++ b/test/arm/multi_v7_defconfig.yaml
+@@ -1 +1 @@
+-a9@multi_v7_defconfig.yaml
+\ No newline at end of file
++virt@multi_v7_defconfig.yaml
+\ No newline at end of file
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
 
