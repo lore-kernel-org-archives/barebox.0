@@ -1,54 +1,63 @@
-Delivery-date: Thu, 04 Sep 2025 08:51:36 +0200
+Delivery-date: Thu, 04 Sep 2025 08:56:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uu3on-007wLN-1P
+	id 1uu3tR-007wPj-2U
 	for lore@lore.pengutronix.de;
-	Thu, 04 Sep 2025 08:51:36 +0200
+	Thu, 04 Sep 2025 08:56:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uu3om-0003qa-As
-	for lore@pengutronix.de; Thu, 04 Sep 2025 08:51:36 +0200
+	id 1uu3tQ-0004vp-LH
+	for lore@pengutronix.de; Thu, 04 Sep 2025 08:56:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=9/QDcU0Gdw/00xko+fHMUvejsvRswnp+Ad74Rshp+1k=; b=PAqq/k/Ju1NIX63Y6rtpEJiS/L
-	gYCQ1cwLCzDwxSE66rPzLan6e30SzijbTxvTv2BTxEKym6jZcfxUFY0+VhTBLq37PyJ5PVeAmSl8u
-	F9t2BZ0upvBAVnT1UC3eifcQjvAUzw8PAFp3cE0PbL6G/m8v81pwAb0oaIcTBeyUOrNrKLRCKjk9h
-	hkW8ieVXks30/PANXbGb9tr1mlND76KmJrtkRAdAza/kvne22ARJ6sKNn4dApgeDyPNXGWqvt9QFn
-	g5V+0JnypZIjT2A9TK7XPldk+pdM3BnOtLqXMj7cdMq93s1oEXMW+4bMBkbaaWHIMbHPBlFlQwykk
-	293y3qBg==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=BE+Yx5ccPfiiDv+NN6WvSQhfA976QK1BcuBceCflJMI=; b=npalp3FbViQQsafWHqnTK5nHdo
+	4NeW5PVyQNF39Z6mwuLwvmAXpaG7w3vMIMGxKLQhEB/ZjuJ1OkCtuhXW0QQ17iF798/2U3nPqtN0j
+	qPkAqeqWTWxhYN1IonG0CEpzWLlmMqYjFmUAkCx7PNEbCy+99qaSqm2k0k8Ry/+WsWfCX8AjhVucb
+	SrVZEkeAxMGKeX6ZQ7zbY233UWbug4m8JWPukfbdKn412IrboEy8pqdOpmybLFSSMTBtnIUII02wX
+	LyeClFfrTk9TwwLmbEhjhRgxRnH3/ySOJ54Pr2ueVHM6V3lxX6+onUG1UobNruxF2CtU91X+BTPCa
+	pswJo8vw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uu3oK-00000009eOG-2cFs;
-	Thu, 04 Sep 2025 06:51:08 +0000
+	id 1uu3sz-00000009g6d-2Jno;
+	Thu, 04 Sep 2025 06:55:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uu3mo-00000009e5z-23a1
+	id 1uu3sw-00000009g5T-2JUP
 	for barebox@lists.infradead.org;
-	Thu, 04 Sep 2025 06:49:35 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
+	Thu, 04 Sep 2025 06:55:55 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1uu3ml-0003JU-CB; Thu, 04 Sep 2025 08:49:31 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu,  4 Sep 2025 08:49:30 +0200
-Message-Id: <20250904064930.2867799-1-a.fatoum@barebox.org>
-X-Mailer: git-send-email 2.39.5
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uu3sv-0004mw-9e; Thu, 04 Sep 2025 08:55:53 +0200
+Message-ID: <170fca94-fe84-42aa-b760-6745c86c94c9@pengutronix.de>
+Date: Thu, 4 Sep 2025 08:55:52 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>, anis chali <chalianis1@gmail.com>
+Cc: barebox@lists.infradead.org
+References: <20250831035542.1623695-1-chalianis1@gmail.com>
+ <20250831035542.1623695-6-chalianis1@gmail.com>
+ <aLfqB0Ma_UTaGKpG@pengutronix.de>
+ <CAL+1fyD6Jevxx_wP00caRoXe0yRmM6uScJN8W3fkRVNVfLRj1Q@mail.gmail.com>
+ <aLksEfZ3-YiEL-xN@pengutronix.de>
+ <CAL+1fyA5FtjLfRDbF-dpxr=T6kL=hrF8pr6wJk5aR1X=5CEFUg@mail.gmail.com>
+ <aLk2OXrt357LdhkT@pengutronix.de>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <aLk2OXrt357LdhkT@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250903_234934_529020_90736291 
-X-CRM114-Status: UNSURE (   8.22  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250903_235554_585733_B0121953 
+X-CRM114-Status: GOOD (  14.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,36 +75,48 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] test: arm: multi_v7_defconfig.yaml: make virt@ the default
+Subject: Re: [PATCH 6/7] efi: payload: add support for efi stub boot and fit
+ image.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The vexpress-a9 board is less functional in barebox than the virt board,
-e.g., only the latter has a restart handler registered.
+Hi,
 
-Switch over the default, so a simple pytest uses the virt labgrid
-environment instead by default.
+On 04.09.25 08:48, Sascha Hauer wrote:
+> On Thu, Sep 04, 2025 at 02:20:59AM -0400, anis chali wrote:
+>>    For now I submitted with 128KB.
+>>    > No. I don't do EFI very much and I currently don't have a setup for
+>>    > testing this. Ahmad is more experienced with EFI than me.
+>>    Ok, I can maybe share my scripts, they are not clean at all with many
+>>    repos.  if I have time
+>>    I will do some clean up and share them (there scripts to generate
+>>    fitImage, linux, dts, optee, TF-A, UKI, edk2, custom qemu ...).
+>>    Thanks.
+> 
+> Great, looking forward to it.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- test/arm/multi_v7_defconfig.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That would be very useful. I already started setting up a Yocto BSP, which
+generates some of this components (OP-TEE, TF-A and kernel for 32-bit ARM
+so far) for eventual use by CI and development.
 
-diff --git a/test/arm/multi_v7_defconfig.yaml b/test/arm/multi_v7_defconfig.yaml
-index ac18c8272c45..4be28baf564c 120000
---- a/test/arm/multi_v7_defconfig.yaml
-+++ b/test/arm/multi_v7_defconfig.yaml
-@@ -1 +1 @@
--a9@multi_v7_defconfig.yaml
-\ No newline at end of file
-+virt@multi_v7_defconfig.yaml
-\ No newline at end of file
+Your scripts would help in fleshing it out.
+
+Cheers,
+Ahmad
+
+> 
+> Sascha
+> 
+
+
 -- 
-2.39.5
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
