@@ -3,93 +3,90 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uvYnk-000bdJ-0H
+	id 1uvYnk-000bdW-1W
 	for lore@lore.pengutronix.de;
 	Mon, 08 Sep 2025 12:08:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uvYnj-0006VB-60
+	id 1uvYnj-0006VR-Ed
 	for lore@pengutronix.de; Mon, 08 Sep 2025 12:08:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:References:In-Reply-To:Subject:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=eq3Pji7Hye62yd/xiiF0m7/LDrf0E1tNFcsBGfMWEdM=; b=g8XZG5EfFf9bvjP+jOzPsrPymX
-	y1CZAcKR2Yhj8c8oo10q+H9d7xe2eus5Eb9eNJDGWBoGKcNrLm4z61Uhyw6pJUsEAr1Fw3EtRbeH1
-	PfBOpjvw7cPpIN4AyaYGkhYPfikV4dZFSDSmfgMWkzE3+gKbE5tmG+ZjDlBidosZjI05xMtCRFNEO
-	E09b1Wtll5VgW/CSWqB7ou4vLEWwdaB6w2QbJBTPW5KNTNb4g+10sXT1rdd2oS6pXWqfyxMGKhujg
-	fFN1fXb2HZuLmmqXi7VcfEcwN5Wm5B8koc2uB9nZQ9ZBvyr/6+G4MvKCq98dYhO55rIgRRWevkJ6M
-	ExIj7BCQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:Date:References:In-Reply-To:Subject:To:From:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=KwiXq0WsuceexoLDYpmIpLScCsEnlmL671yEsC8T7GI=; b=ypUvDq1p3LcgNtEa1S3f/96aKl
+	KAAPrYbcNr2VuYvn2XoCPdt279ZlsPzuumQjQx7LwaWNhbH4xcb7kWwAzvCywL5sEsAJzJ9GKYHDi
+	o7eRQQkSqR3St5AnE6HSW8ClkhzSE3XVORDtDbJZpVhypdVw0Z1+OpPNNozNotCWIqd4GY864u+s4
+	UFxWHhllBC2vXaCcl/o5auYFmjcauVajLBCaoyTvssa9PB0ABFo7/x+2Vy9tux+iyS8Ix6p9xzMb3
+	B3INSCq/9sRxnMwHfhb672dhgftpQhHzDknqWOkyqFThsjj/trLyZXTaAwZFpF+Ipz1V1zdxpB8xe
+	yQvY+bNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uvYnF-0000000GGhg-3gIH;
+	id 1uvYnF-0000000GGhF-15ew;
 	Mon, 08 Sep 2025 10:08:13 +0000
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uvYA5-0000000G1Zy-1aAN
+	id 1uvYA0-0000000G1YT-07gu
 	for barebox@lists.infradead.org;
-	Mon, 08 Sep 2025 09:27:47 +0000
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-b04679375f6so726282166b.2
-        for <barebox@lists.infradead.org>; Mon, 08 Sep 2025 02:27:45 -0700 (PDT)
+	Mon, 08 Sep 2025 09:27:41 +0000
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-6263d0e4b94so3160515a12.3
+        for <barebox@lists.infradead.org>; Mon, 08 Sep 2025 02:27:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1757323664; x=1757928464; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eq3Pji7Hye62yd/xiiF0m7/LDrf0E1tNFcsBGfMWEdM=;
-        b=isPYllOgh2uq1/jwi5xhjg/aslHXFCy9yIO6FeYQVNT+yFF8HFsHrEsVJqz0Aq0536
-         XuTnYprVzXPWWximhyzT6eIKOkpqs/kLUCzqY+bNFGCBBOpiXqiKxs4G89Tp2nop74zo
-         bb3F76yvg5jvST3YXjWM0Y+aRM/Ym9xvED04DmcjgB0aGw69yF2OidHVTb/2xtn5rfFJ
-         YNUOfXWHoNLoqgUt3d8Dw996Ey88ZRIdAyTN9GG53V+83A2cMPxbMXNAXCK/mUOxh0I+
-         yuB3I8El/PFAwjZMEissBu00fLGnEE8d8+JZ6ODsUWYm61mYKzd5MIxzkz6qeoSDIPXw
-         vWYg==
+        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1757323658; x=1757928458; darn=lists.infradead.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:to:from
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KwiXq0WsuceexoLDYpmIpLScCsEnlmL671yEsC8T7GI=;
+        b=NU8/BktnpLduldouBaUHbGcD0btXzBGWbTcxTyTe0AOBnJ/R2NXfvW2otELL72BNmg
+         MRetBwj6twIHmC/Gry6ffvploFB1HLHuKK+TmUXpI/QWfVUNjUpBI/p7NSlgjsCdv1JX
+         XAnwk4AHxbEyPIpQJM9sdXCcsfgYCZHPxVAvDiAM6tdb/SD2Jw7LBG2ygoEdMztvtOw/
+         2txOIaOpyTq2PTOWWy5d9oap3yMUWOK4rzWiQLWMXPmlX4Pp9LriVQzVgsTEb9JoknDK
+         ukrSVL2V4OcXXvxrs/X9cwD9EgOLOgrgdmkB3VWhlOoPRjgBzLG1LLwdPknklaakZ85y
+         8d0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757323664; x=1757928464;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:to:from:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eq3Pji7Hye62yd/xiiF0m7/LDrf0E1tNFcsBGfMWEdM=;
-        b=vt6sOOnXnBgz75XRdMlKobRU4coeoWdK7oGDqY8ayT4XnR6A/osa67aV3Gc82148TH
-         LnKxUzv70+mjleCpCgGSxw1NY+j/0IhdXkDiVifUAD53Ww6qM8v2Xi97e9HN7InkcQSz
-         Nv/xwPVfoPfDj8Si3GwCl1IZz75CXxci363S+fpsaEtO8dFgoYqRLvdJ5LE/a+6gr4sL
-         2vNBZRATT1/avlMCWb3AbeqW6X0CfRw8PkzNmaSYEhFjS4ErVGphBqq0CJDZKZIjI1/H
-         UGau+GeA25+Zxh/YT1w6gfL8pQRhpf8rT5qscOy8yx2QZ01N3+Q8elW6ZmOUpZvQlBBP
-         kxsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQhRods1kCdtTcBIbl8R//etQZgdu1V/xlR00Fh1zGe0qKtLiQboKGkpUd3qIdF39ITTnJz/Ma@lists.infradead.org
-X-Gm-Message-State: AOJu0YxIC+6cMINTK939oTQT3TkMbvVVxCxJA1X8g4FbUhBFnp8T1vsK
-	7zMchoxknglsASPjuz4WVelO+p67wWuhsfMrtuNm1PiS7SyNXpv+uIjf2GVt2MzBzB/AnoZvXwR
-	d6Jnv
-X-Gm-Gg: ASbGncu84XIPC1mUuTxVYnhRk04ZXGQDY6DIFqsqKxwat7nu6YchHRCht3tQwomnr1H
-	KtPBBQLSYvYie2DYH0l5njtD/b6EXzt7GRFkUdM9bSYA3NgGdglwPp/kXdKHhNjF01NCgXPR+a8
-	olIT7htyiYpKsu9/dsxIEmbkLAMO5AKL/rBCZywjcbs1Cxr9Lr6GUac4ja1cKd4TJpxvdJfbJAR
-	R0mmRK3smk2N8iq4dS9U76AZ2tvxORL4lGXzwy9+GYIHzla/k0hBgYVv5qxZVwpOewKhu9KmYNW
-	R1uPpVkbtIE6FzMpLXjDnMhKT7kDQ8zRATy+bKCHeIVJmyQHyrM79iVV/2djuW+YivWcB+BHMpl
-	g8wsBwRuc4lTGIkBukKYx2/BUnQhfTpZTa6aZH9sOkgWPxqyIeOgPQAo8Hp+BX9I=
-X-Google-Smtp-Source: AGHT+IE3BgPDwy5k1M3dCsVU9APuBGaQeF321eAtE6Lmc0WUsnteNnYA+GPVHLj9ymPj5Q2FgTi06Q==
-X-Received: by 2002:a17:907:6d05:b0:b04:9ad9:5b29 with SMTP id a640c23a62f3a-b04b16ca72emr716200866b.54.1757323663595;
-        Mon, 08 Sep 2025 02:27:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757323658; x=1757928458;
+        h=mime-version:message-id:date:references:in-reply-to:subject:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KwiXq0WsuceexoLDYpmIpLScCsEnlmL671yEsC8T7GI=;
+        b=Pd7eJXv+X0d4Tl86tehHPE+2JlQOSWp0cHtQJUgF/Gw9+fATw2T8Q8AsYJTYlKC5o4
+         7nAduRExrmxPPrzkyeArmnghl3qa87J0QwQDFOhk8hD9ftB3byfjHYJhWwH4ZNtn53vN
+         X8wVYJIFYPWnb6t9v//Sw1oXn2Yq33tvuLOvErOOrLaqyPfgT/vt7ldwpwCsOJ3j6ZDE
+         Dup3beQ0PoJl2anTz7127d80NaOqRAYQXlOWVWEmqnz8TYKHAACmG2C4870edFDjOsV0
+         1n8DrRyDWX2HP/LVat+h4ouO+HLJXeHlXicuELNgG17dvl1IsAGFT+2sozW0I/lzWNpZ
+         CjfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNaqUy1luPyFz4uZyqWkEnFfXVGpTApo+SwtqC0nwn0GfBvF32KwqeQpv4xnwgej63oOYatlSC@lists.infradead.org
+X-Gm-Message-State: AOJu0Yx3f0jRmccD2gOWcxZgKf0Dz/9HvYGU3MkaYKss25gvvH51ogTY
+	gD1JDhzDQ/C7qOciih37UU/Ol3/QqcA0XXHJK+WQhwkKmwmtdldgHXeKbv9hgXLqtCDNKNrhQs2
+	dydNZ
+X-Gm-Gg: ASbGncuXtKrl/JspdDMNBadK7T6eVz4Wh6e2Wp2+2kAL3PyYL+uYjZbBPI1oPUBoK1Z
+	oOcJU08rEEEyH2JTsUJBaOtY9NFrjOt4P6gJlgjxZAsK675b04SFP9OEzbnMY6dKje7nmK4PAtD
+	I2TDZAiZrYMUvaMp67HjgDJ7We9Edu2zPlwwwGIgUgncx6S5QGX9AmBrbohiP6LDiQ0N/T39g8G
+	qD2PvwU2uI3TnTjex1GLxRE4pNyI+PyZTfK64jXdZs+tPilNQbUto7Lt6wz++SdwmwYcLO8truF
+	nuW4X5eZZZBUDZ/JUgrXlpCoA/iO0Zm+zhKRCxVT1VUXTIfbO2P1gX/tuESJtiNAsI8g/rCVT9Z
+	rIPlk/XMpEQuQKvxg5/t/9vj1hJ9aazY9UFTDt6Cnz4Kmuv2NGvE9
+X-Google-Smtp-Source: AGHT+IHPLsasBKin0XADV2jXXw4I2nMfvQMoGdS6RKQZ3MVVOWDDGntyQsNO5wIp++wsGX6YcL/Lpg==
+X-Received: by 2002:a05:6402:40ca:b0:627:f13f:5e85 with SMTP id 4fb4d7f45d1cf-627f13f6a80mr3582859a12.29.1757323658101;
+        Mon, 08 Sep 2025 02:27:38 -0700 (PDT)
 Received: from wkz-x13 (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b041565ca98sm2082119066b.86.2025.09.08.02.27.43
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6286246f887sm1992369a12.25.2025.09.08.02.27.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 02:27:43 -0700 (PDT)
+        Mon, 08 Sep 2025 02:27:37 -0700 (PDT)
 From: Tobias Waldekranz <tobias@waldekranz.com>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-In-Reply-To: <366fb2bd-74b1-438e-9de4-ad7dac512ccf@pengutronix.de>
+In-Reply-To: <33d27821-8395-4e66-b1fc-4fe57c72042b@pengutronix.de>
 References: <20250828150637.2222474-1-tobias@waldekranz.com>
- <20250828150637.2222474-6-tobias@waldekranz.com>
- <366fb2bd-74b1-438e-9de4-ad7dac512ccf@pengutronix.de>
-Date: Mon, 08 Sep 2025 11:27:42 +0200
-Message-ID: <87ikht2t0x.fsf@waldekranz.com>
+ <20250828150637.2222474-5-tobias@waldekranz.com>
+ <33d27821-8395-4e66-b1fc-4fe57c72042b@pengutronix.de>
+Date: Mon, 08 Sep 2025 11:27:37 +0200
+Message-ID: <87jz292t12.fsf@waldekranz.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250908_022746_233070_D9F659B3 
-X-CRM114-Status: GOOD (  22.26  )
+X-CRM114-CacheID: sfid-20250908_022740_075406_8AA9F4BA 
+X-CRM114-Status: GOOD (  26.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -111,170 +108,234 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 5/5] commands: dmsetup: Basic command set for dm device
- management
+Subject: Re: [PATCH 4/5] test: self: dm: Add test of linear target
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On fre, sep 05, 2025 at 18:54, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+On fre, sep 05, 2025 at 18:50, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 > On 8/28/25 5:05 PM, Tobias Waldekranz wrote:
->> Modeled on dmsetup(8) from LVM2.
->>=20
->> This lets the user create/remove arbitrary dm devices using the same
->> table file format used in Linux, and dump information about currently
->> configured devices.
->>=20
+>> Verify that the 'linear' target works as expected.
+>> 
+>> Do this by (1) creating a dm device with a couple of linear mappings
+>> to two underlying ramdisks, and then (2) verify that data is returned
+>> in the expected order when reading it through the dm device.
+>
+> Thanks for writing a test! :)
+>
 >> Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
 >> ---
->>  commands/Kconfig   |  14 +++++
->>  commands/Makefile  |   1 +
->>  commands/dmsetup.c | 145 +++++++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 160 insertions(+)
->>  create mode 100644 commands/dmsetup.c
->>=20
->> diff --git a/commands/Kconfig b/commands/Kconfig
->> index 1626912c30..219f626c3e 100644
->> --- a/commands/Kconfig
->> +++ b/commands/Kconfig
->> @@ -732,6 +732,20 @@ config CMD_PARTED
->>  	         unit <unit>     change display/input units
->>  	         refresh         refresh a partition table
->>=20=20
->> +config CMD_DMSETUP
->> +	tristate
+>>  test/self/Kconfig  |   7 ++
+>>  test/self/Makefile |   1 +
+>>  test/self/dm.c     | 159 +++++++++++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 167 insertions(+)
+>
+> Please add to common/boards/configs/enable_self_test.config, so CI also
+> tests this.
+
+Ah right, tests are more useful if you execute them :)
+
+I have told SELFTEST_ENABLE_ALL to select SELFTEST_DM and all checks
+pass (https://github.com/wkz/barebox/actions/runs/17545487677), but I'm
+not exactly sure which job is running the selftests, and how I can see
+whether the dm tests are included.
+
+>>  create mode 100644 test/self/dm.c
+>> 
+>> diff --git a/test/self/Kconfig b/test/self/Kconfig
+>> index 4c43dfe394..a6dfd5f9ae 100644
+>> --- a/test/self/Kconfig
+>> +++ b/test/self/Kconfig
+>> @@ -125,4 +125,11 @@ config SELFTEST_TLV
+>>  	select BASE64
+>>  	select BOARD_LXA
+>>  
+>> +config SELFTEST_DM
+>> +	bool "Device mapper selftest"
 >> +	depends on DM_BLK
->> +	prompt "dmsetup"
+>> +	select RAMDISK_BLK
 >> +	help
->> +	  dmsetup - low level interface to the device mapper
+>> +	  Tests the available device mapper targets
 >> +
->> +	  Compose virtual block devices from a table of mappings from
->> +	  logical block addresses to various data sources, such as
->> +	  linear ranges from other existing devices.
->> +
->> +	  commands:
->> +	        create <name> <table-file>
->> +
->>  config CMD_UBI
->>  	tristate
->>  	default y if MTD_UBI
->> diff --git a/commands/Makefile b/commands/Makefile
->> index d9403b18d5..6b010fe30c 100644
->> --- a/commands/Makefile
->> +++ b/commands/Makefile
->> @@ -166,4 +166,5 @@ obj-$(CONFIG_CMD_STACKSMASH)	+=3D stacksmash.o
->>  obj-$(CONFIG_CMD_PARTED)	+=3D parted.o
->>  obj-$(CONFIG_CMD_EFI_HANDLE_DUMP)	+=3D efi_handle_dump.o
->>  obj-$(CONFIG_CMD_HOST)		+=3D host.o
->> +obj-$(CONFIG_CMD_DMSETUP)	+=3D dmsetup.o
->>  UBSAN_SANITIZE_ubsan.o :=3D y
->> diff --git a/commands/dmsetup.c b/commands/dmsetup.c
+>>  endif
+>> diff --git a/test/self/Makefile b/test/self/Makefile
+>> index 9aa8aab78b..3d74bf9e98 100644
+>> --- a/test/self/Makefile
+>> +++ b/test/self/Makefile
+>> @@ -20,6 +20,7 @@ obj-$(CONFIG_SELFTEST_REGULATOR) += regulator.o test_regulator.dtbo.o
+>>  obj-$(CONFIG_SELFTEST_TEST_COMMAND) += test_command.o
+>>  obj-$(CONFIG_SELFTEST_IDR) += idr.o
+>>  obj-$(CONFIG_SELFTEST_TLV) += tlv.o tlv.dtb.o
+>> +obj-$(CONFIG_SELFTEST_DM) += dm.o
+>>  
+>>  ifdef REGENERATE_KEYTOC
+>>  
+>> diff --git a/test/self/dm.c b/test/self/dm.c
 >> new file mode 100644
->> index 0000000000..722aa6cbf0
+>> index 0000000000..e2add03a48
 >> --- /dev/null
->> +++ b/commands/dmsetup.c
->> @@ -0,0 +1,145 @@
+>> +++ b/test/self/dm.c
+>> @@ -0,0 +1,159 @@
 >> +// SPDX-License-Identifier: GPL-2.0-only
->> +// SPDX-FileCopyrightText: =C2=A9 2025 Tobias Waldekranz <tobias@waldek=
-ranz.com>, Wires
 >> +
->> +#include <command.h>
+>> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>> +
 >> +#include <common.h>
->> +#include <dm.h>
+>> +#include <fcntl.h>
+>> +#include <fs.h>
+>> +#include <disks.h>
+>> +#include <dirent.h>
 >> +#include <libfile.h>
+>> +#include <sys/stat.h>
+>> +#include <unistd.h>
+>> +#include <bselftest.h>
+>> +#include <linux/sizes.h>
+>> +#include <ramdisk.h>
+>> +#include <dm.h>
+>> +#include <driver.h>
+>> +#include <block.h>
 >> +
->> +static struct dm_device *dmsetup_find(const char *name)
+>> +BSELFTEST_GLOBALS();
+>> +
+>> +struct rdctx {
+>> +	char mem[16][SECTOR_SIZE];
+>> +	struct ramdisk *rd;
+>> +	const char *name;
+>> +};
+>> +
+>> +static struct rdctx rdctx[2];
+>> +
+>> +static int rd_create(void)
 >> +{
+>> +	struct block_device *blk;
+>> +	struct rdctx *ctx;
+>> +	char base;
+>> +	int i, s;
+>> +
+>> +
+>> +	for (i = 0, ctx = rdctx; i < 2; i++, ctx++) {
+>> +		/* In case tests are run multiple times */
+>> +		memset(ctx->mem, '\0', sizeof(ctx->mem));
+>> +
+>> +		/* Add an identifying mark ('a'-'p' and 'A'-'P') at
+>> +		 * the start and end of every sector in both disks, so
+>> +		 * that we have something to compare against when we
+>> +		 * read them back through the DM device.
+>> +		 */
+>> +		base = i ? 'A' : 'a';
+>> +		for (s = 0; s < 16; s++) {
+>> +			ctx->mem[s][0] = base + s;
+>> +			ctx->mem[s][SECTOR_SIZE - 1] = base + s;
+>> +		}
+>> +
+>> +		ctx->rd = ramdisk_init(SECTOR_SIZE);
+>> +		if (!ctx->rd) {
+>> +			failed_tests++;
+>> +			pr_err("Could not create ramdisk\n");
+>> +			return 1;
+>> +		}
+>> +
+>> +		ramdisk_setup_rw(ctx->rd, ctx->mem, sizeof(ctx->mem));
+>> +		blk = ramdisk_get_block_device(ctx->rd);
+>> +		ctx->name = cdev_name(&blk->cdev);
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void rd_destroy(void)
+>> +{
+>> +	ramdisk_free(rdctx[0].rd);
+>> +	ramdisk_free(rdctx[1].rd);
+>> +}
+>> +
+>> +static void verify_read(const char *pattern, const char *buf)
+>> +{
+>> +	off_t first, last;
+>> +	int s, len;
+>> +
+>> +	for (s = 0, len = strlen(pattern); s < len; s++) {
+>> +		first = s << SECTOR_SHIFT;
+>> +		last = first + SECTOR_SIZE - 1;
+>> +
+>> +		if (buf[first] != pattern[s]) {
+>> +			failed_tests++;
+>> +			pr_err("Expected '%c' at beginning of sector %d, read '%c'\n",
+>> +			       pattern[s], s, buf[first]);
+>> +			return;
+>> +		}
+>> +
+>> +		if (buf[last] != pattern[s]) {
+>> +			failed_tests++;
+>> +			pr_err("Expected '%c' at end of sector %d, read '%c'\n",
+>> +			       pattern[s], s, buf[last]);
+>> +			return;
+>> +		}
+>> +	}
+>> +}
+>> +
+>> +static void test_dm_linear(void)
+>> +{
+>> +	static const char pattern[] = "DEFaghijklmnopNOP";
+>> +	const size_t dmsize = (sizeof(pattern) - 1) * SECTOR_SIZE;
 >> +	struct dm_device *dm;
+>> +	struct cdev *cdev;
+>> +	char *buf, *table;
 >> +
->> +	dm =3D dm_find_by_name(name);
->> +	if (IS_ERR_OR_NULL(dm)) {
->> +		pr_err("Found no device named \"%s\"\n", name);
->
-> pr_/dev_ is logged, so will also be shared with Linux if pstore/ramoops
-> is enabled. For commands, just use printf.
-
-Wow, nice! I will have to look into this more.
-
->> +		return NULL;
+>> +	total_tests++;
+>> +
+>> +	if (!IS_ENABLED(CONFIG_DM_BLK_LINEAR)) {
+>> +		pr_info("skipping dm-linear test: disabled in config\n");
+>> +		skipped_tests++;
+>> +		return;
 >> +	}
 >> +
->> +	return dm;
->> +}
->
->> +	dm =3D dm_create(argv[0], table);
+>> +	if (rd_create())
+>> +		return;
+>> +
+>> +	table = xasprintf(" 0  3 linear /dev/%s  3\n" /* "DEF" */
+>> +			  " 3  1 linear /dev/%s  0\n" /* "a"   */
+>> +			  " 4 10 linear /dev/%s  6\n" /* "ghijklmnop" */
+>> +			  "14  3 linear /dev/%s 13\n" /* "NOP" */,
+>> +			  rdctx[1].name,
+>> +			  rdctx[0].name,
+>> +			  rdctx[0].name,
+>> +			  rdctx[1].name);
+>> +
+>> +	dm = dm_create("dmtest", table);
 >> +	free(table);
+>> +
 >> +	if (IS_ERR_OR_NULL(dm)) {
->> +		pr_err("Failed to create %s: %s\n",
->> +		       argv[0], strerror(-PTR_ERR(dm)));
->
-> %pe and pass dm directly.
->
->> +		return COMMAND_ERROR;
+>> +		failed_tests++;
+>> +		pr_err("Could not create dm device\n");
+>> +		goto out_destroy;
 >> +	}
 >> +
->> +	pr_info("Created %s\n", argv[0]);
->> +	return COMMAND_SUCCESS;
+>> +	cdev = cdev_by_name("dmtest");
+>> +	if (!cdev) {
+>> +		failed_tests++;
+>> +		pr_err("Could not find dm device\n");
+>> +		goto out_destroy;
+>> +	}
+>> +
+>> +	buf = xmalloc(dmsize);
+>> +
+>> +	if (cdev_read(cdev, buf, dmsize, 0, 0) < dmsize) {
+>> +		failed_tests++;
+>> +		pr_err("Could not read dm device\n");
+>> +		goto out_free_buf;
+>> +	}
+>> +
+>> +	verify_read(pattern, buf);
+>> +
+>> +out_free_buf:
+>> +	free(buf);
+>> +out_destroy:
+>> +	dm_destroy(dm);
+>> +	rd_destroy();
 >> +}
->> +
->> +static int do_dmsetup(int argc, char *argv[])
->> +{
->> +	const char *cmd;
->> +
->> +	if (argc < 2)
->> +		return COMMAND_ERROR_USAGE;
->> +
->> +	cmd =3D argv[1];
->> +	argc -=3D 2;
->> +	argv +=3D 2;
->> +
->> +	if (!strcmp(cmd, "create"))
->> +		return dmsetup_create(argc, argv);
->> +	else if (!strcmp(cmd, "info"))
->> +		return dmsetup_info(argc, argv);
->> +	else if (!strcmp(cmd, "remove"))
->> +		return dmsetup_remove(argc, argv);
->> +
->> +	printf("Unknown command: %s\n", cmd);
->> +	return -EINVAL;
->> +}
->> +
->> +BAREBOX_CMD_HELP_START(dmsetup)
->> +BAREBOX_CMD_HELP_TEXT("dmsetup - low level interface to the device mapp=
-er")
->> +BAREBOX_CMD_HELP_TEXT("")
->> +BAREBOX_CMD_HELP_TEXT("Compose virtual block devices from a table of ma=
-ppings from")
->> +BAREBOX_CMD_HELP_TEXT("logical block addresses to various data sources,=
- such as")
->> +BAREBOX_CMD_HELP_TEXT("linear ranges from other existing devices.")
->> +BAREBOX_CMD_HELP_TEXT("")
->> +BAREBOX_CMD_HELP_TEXT("commands:")
->> +BAREBOX_CMD_HELP_OPT("create <name> <table-file>", "Create new device")
->> +BAREBOX_CMD_HELP_OPT("info [<name>]", "Show device information")
->> +BAREBOX_CMD_HELP_OPT("remove <name>", "Remove device")
->> +BAREBOX_CMD_HELP_END
+>> +bselftest(core, test_dm_linear);
 >
-> Nice. FYI, if selftest is too cumbersome once you start adding more
-> targets, you can also add tests that exercise commands via pytest. See
-> test/py/.
-
-Right, yes I will read up on this in the future.
-
-Thanks for reviewing!
-
-> Cheers,
-> Ahmad
->
->> +
->> +BAREBOX_CMD_START(dmsetup)
->> +	.cmd =3D do_dmsetup,
->> +	BAREBOX_CMD_DESC("low level interface to the device mapper")
->> +	BAREBOX_CMD_OPTS("<command> [args...]")
->> +	BAREBOX_CMD_GROUP(CMD_GRP_PART)
->> +	BAREBOX_CMD_HELP(cmd_dmsetup_help)
->> +BAREBOX_CMD_END
->
-> --=20
+> -- 
 > Pengutronix e.K.                  |                             |
 > Steuerwalder Str. 21              | http://www.pengutronix.de/  |
 > 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
