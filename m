@@ -1,64 +1,72 @@
-Delivery-date: Tue, 09 Sep 2025 12:20:45 +0200
+Delivery-date: Tue, 09 Sep 2025 14:04:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uvvSv-00125k-0A
+	id 1uvx5G-0013de-33
 	for lore@lore.pengutronix.de;
-	Tue, 09 Sep 2025 12:20:45 +0200
+	Tue, 09 Sep 2025 14:04:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uvvSu-0004fJ-DB
-	for lore@pengutronix.de; Tue, 09 Sep 2025 12:20:44 +0200
+	id 1uvx5G-0007jH-4q
+	for lore@pengutronix.de; Tue, 09 Sep 2025 14:04:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zvFoeivDwDGD9cbEc7PEBBGPpWXSrT5vKHJBFVKMu1o=; b=PmIZH8vrewrCTt8/k74IovxAOA
-	QVWj3prP5dqAbh98Tc+RWbEKk0PZl16BT2cuZudOpJ2k2Ij0Y+g8kfRajxF9LQFO+j8sQeDiMoWng
-	6toZL7J32uLYMMcgCFAqh1P4odfanwsaCszqjneiF5ed5XcPcWBQ/y54c3nv8/EOtsEVOgee66QeG
-	LxIu1y5H3pMZzA7S3+kNP50N+o4QUS4TJhIXLdOi8R8RQODI7QqXv9doedNcP2VA0B2lAhTS/zeW+
-	y59c1INxrBGS4OoUDD+WQQ5Op8DDsgIJIPQ0oPH0kMz8ab5EULg442ChS2OznO4TcayI40FFGr6KR
-	1FHBdFTw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=d85ToTqE7hXme/IhXyxdgPPMuIEzRrf3zyj/wp/yyhk=; b=ieDBtEOb6HZFWSetRGzIsEl07u
+	xnFOOtcw3xSoMEqYQGlFfOlXRfOHirpis9oR28BgM3eTRPPJwYd3+Gaz8EH5uhnFv8R7ub22i7AXO
+	gCHtFc2uscPopY4qujAmypuxR00OGP8l3HD30guRvJ5q8okXHPRFUuM8OXHMa/DPsy+fqaXvu/1rp
+	nYv0BlUc+2WwFXENjPSwIV+Yz4rGepyWYA+84Q/kR0/cexggNvwu7ZgbZZ4aEj1GY2R1mJa49n0nU
+	i6Ow9kPrMXwBHFXrTnkoLCuh9Lf4wVWLbWdaoSaMaba4s0VQpI8AG7dRz6vB2hqx+FyUNvBZd9/Ru
+	yyhhwJXw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uvvSE-00000006LAD-3Tk1;
-	Tue, 09 Sep 2025 10:20:02 +0000
+	id 1uvx4X-00000006wLy-26cx;
+	Tue, 09 Sep 2025 12:03:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uvuCP-00000005kij-3fFo
+	id 1uvukA-000000060ea-2kAn
 	for barebox@lists.infradead.org;
-	Tue, 09 Sep 2025 08:59:39 +0000
+	Tue, 09 Sep 2025 09:34:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uvuCM-0004rt-MB; Tue, 09 Sep 2025 10:59:34 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1uvuk8-0003Cz-2Z; Tue, 09 Sep 2025 11:34:28 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uvuCM-000OKv-1c;
-	Tue, 09 Sep 2025 10:59:34 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uvuCM-00000003swG-1dhd;
-	Tue, 09 Sep 2025 10:59:34 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1uvuk7-000OjC-2T;
+	Tue, 09 Sep 2025 11:34:27 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uvuk7-00E0TP-29;
+	Tue, 09 Sep 2025 11:34:27 +0200
+Date: Tue, 9 Sep 2025 11:34:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  9 Sep 2025 10:59:33 +0200
-Message-ID: <20250909085933.926161-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+To: Christian =?iso-8859-15?Q?Thie=DFen?= via B4 Relay <devnull+christian.thiessen.airbus.com@kernel.org>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Christian =?iso-8859-15?Q?Thie=DFen?= <christian.thiessen@airbus.com>
+Message-ID: <aL_0o86zNN1vRH4f@pengutronix.de>
+References: <20250903-fec_imx-fix-enodev-v1-1-0dd4c42fc293@airbus.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250903-fec_imx-fix-enodev-v1-1-0dd4c42fc293@airbus.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250909_015937_976175_A4B63881 
-X-CRM114-Status: GOOD (  13.72  )
+X-CRM114-CacheID: sfid-20250909_023430_751863_D87E59FE 
+X-CRM114-Status: GOOD (  35.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,127 +88,180 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] treewide: drop useless casting to void * in of_device_id
+Subject: Re: [PATCH] fec_imx: Fix ENODEV in fec_probe on i.MX27
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-struct of_device_id::data already is a const void *, so drop explicit
-casting to void * when initialized with something that already is a
-pointer.
+Hi Christian,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/hw_random/rockchip-rng.c   |  6 +++---
- drivers/pinctrl/pinctrl-rockchip.c |  2 +-
- drivers/spi/dspi_spi.c             |  2 +-
- drivers/spi/spi-nxp-fspi.c         | 10 +++++-----
- drivers/video/ssd1307fb.c          |  8 ++++----
- 5 files changed, 14 insertions(+), 14 deletions(-)
+On Wed, Sep 03, 2025 at 04:46:05PM +0200, Christian Thieﬂen via B4 Relay wrote:
+> From: Christian Thieﬂen <christian.thiessen@airbus.com>
+> 
+> The fec_imx driver stores an enum fec_type value in the match data
+> pointer. When retrieving this value in fec_probe(), it handles
+> FEC_TYPE_IMX27 (which is 0) like an error result from
+> device_get_match_data and returns -ENODEV.
+> 
+> To be able to differentiate NULL from errors, introduce a new function
+> device_get_match_data_default which returns its defaultval argument
+> instead of NULL in case of errors.
+> Add an FEC_TYPE_COUNT value to the fec_type enum.
+> In fec_probe, pass FEC_TYPE_COUNT as defaultval and return -ENODEV for
+> all type values greater or equal to that.
+> 
+> Fixes: 20d87123a6 ("treewide: replace dev_get_drvdata with        device_get_match_data")
+> Signed-off-by: Christian Thieﬂen <christian.thiessen@airbus.com>
+> ---
+> Hi again,
+> 
+> this patch addresses the issue discussed in
+> https://github.com/barebox/barebox/issues/40 ("fec_imx (and possibly
+> others): Probe fails with ENODEV").
+> 
+> Cheers,
+> Christian
+> ---
+>  drivers/base/driver.c | 13 +++++++++++++
+>  drivers/net/fec_imx.c | 12 +++++-------
+>  drivers/net/fec_imx.h |  1 +
+>  include/driver.h      | 10 ++++++++++
+>  4 files changed, 29 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> index 61118385f1df0f8d36208d236be66b077fa5e54d..614c3c26b04c6f252e3970e014a43bae6a1d9c2b 100644
+> --- a/drivers/base/driver.c
+> +++ b/drivers/base/driver.c
+> @@ -690,6 +690,19 @@ const void *device_get_match_data(struct device *dev)
+>  }
+>  EXPORT_SYMBOL(device_get_match_data);
+>  
+> +const void *device_get_match_data_default(struct device *dev,
+> +					  const void *defaultval)
+> +{
+> +	if (dev->of_id_entry)
+> +		return dev->of_id_entry->data;
+> +
+> +	if (dev->id_entry)
+> +		return (const void *)dev->id_entry->driver_data;
+> +
+> +	return defaultval;
+> +}
+> +EXPORT_SYMBOL(device_get_match_data_default);
 
-diff --git a/drivers/hw_random/rockchip-rng.c b/drivers/hw_random/rockchip-rng.c
-index 62a21db0e2..8856a3883e 100644
---- a/drivers/hw_random/rockchip-rng.c
-+++ b/drivers/hw_random/rockchip-rng.c
-@@ -187,15 +187,15 @@ static const struct rk_rng_soc_data rk_rng_v2_soc_data = {
- static const struct of_device_id rk_rng_dt_match[] = {
- 	{
- 		.compatible = "rockchip,rk3399-crypto",
--		.data = (void *)&rk_rng_rk3399_soc_data,
-+		.data = &rk_rng_rk3399_soc_data,
- 	},
- 	{
- 		.compatible = "rockchip,cryptov1-rng",
--		.data = (void *)&rk_rng_v1_soc_data,
-+		.data = &rk_rng_v1_soc_data,
- 	},
- 	{
- 		.compatible = "rockchip,rk3568-rng",
--		.data = (void *)&rk_rng_v2_soc_data,
-+		.data = &rk_rng_v2_soc_data,
- 	},
- 	{ },
- };
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 9c11104513..58e9153bd6 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -3236,7 +3236,7 @@ static const struct of_device_id rockchip_pinctrl_dt_match[] = {
- #endif
- #ifdef CONFIG_ARCH_RK3128
- 	{ .compatible = "rockchip,rk3128-pinctrl",
--		.data = (void *)&rk3128_pin_ctrl },
-+		.data = &rk3128_pin_ctrl },
- #endif
- #ifdef CONFIG_ARCH_RK3188
- 	{ .compatible = "rockchip,rk3188-pinctrl",
-diff --git a/drivers/spi/dspi_spi.c b/drivers/spi/dspi_spi.c
-index 75addfd12c..356259a814 100644
---- a/drivers/spi/dspi_spi.c
-+++ b/drivers/spi/dspi_spi.c
-@@ -397,7 +397,7 @@ static const struct fsl_dspi_devtype_data vf610_data = {
- };
- 
- static const struct of_device_id dspi_dt_ids[] = {
--	{ .compatible = "fsl,vf610-dspi", .data = (void *)&vf610_data, },
-+	{ .compatible = "fsl,vf610-dspi", .data = &vf610_data, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, dspi_dt_ids);
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 6f91e75d5e..4937932a36 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1039,11 +1039,11 @@ static int nxp_fspi_probe(struct device *dev)
- }
- 
- static const struct of_device_id nxp_fspi_dt_ids[] = {
--	{ .compatible = "nxp,imx8mm-fspi", .data = (void *)&imx8mm_data, },
--	{ .compatible = "nxp,imx8mn-fspi", .data = (void *)&imx8mm_data, },
--	{ .compatible = "nxp,imx8mp-fspi", .data = (void *)&imx8mm_data, },
--	{ .compatible = "nxp,imx8qxp-fspi", .data = (void *)&imx8qxp_data, },
--	{ .compatible = "nxp,imx8dxl-fspi", .data = (void *)&imx8dxl_data, },
-+	{ .compatible = "nxp,imx8mm-fspi", .data = &imx8mm_data, },
-+	{ .compatible = "nxp,imx8mn-fspi", .data = &imx8mm_data, },
-+	{ .compatible = "nxp,imx8mp-fspi", .data = &imx8mm_data, },
-+	{ .compatible = "nxp,imx8qxp-fspi", .data = &imx8qxp_data, },
-+	{ .compatible = "nxp,imx8dxl-fspi", .data = &imx8dxl_data, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, nxp_fspi_dt_ids);
-diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
-index 5880f2b4a5..abb8031636 100644
---- a/drivers/video/ssd1307fb.c
-+++ b/drivers/video/ssd1307fb.c
-@@ -404,11 +404,11 @@ static struct ssd1307fb_deviceinfo ssd1307fb_ssd1309_deviceinfo = {
- static const struct of_device_id ssd1307fb_of_match[] = {
- 	{
- 		.compatible = "solomon,ssd1305fb-i2c",
--		.data = (void *)&ssd1307fb_ssd1305_deviceinfo,
-+		.data = &ssd1307fb_ssd1305_deviceinfo,
- 	},
- 	{
- 		.compatible = "solomon,ssd1306fb-i2c",
--		.data = (void *)&ssd1307fb_ssd1306_deviceinfo,
-+		.data = &ssd1307fb_ssd1306_deviceinfo,
- 	},
- 	{
- 		/*
-@@ -416,11 +416,11 @@ static const struct of_device_id ssd1307fb_of_match[] = {
- 		 * documented as device tree binding.
- 		 */
- 		.compatible = "solomon,ssd1306",
--		.data = (void *)&ssd1307fb_ssd1306_deviceinfo,
-+		.data = &ssd1307fb_ssd1306_deviceinfo,
- 	},
- 	{
- 		.compatible = "solomon,ssd1309fb-i2c",
--		.data = (void *)&ssd1307fb_ssd1309_deviceinfo,
-+		.data = &ssd1307fb_ssd1309_deviceinfo,
- 	},
- 	{},
- };
+This more goes to Ahmad, because he suggested this solution:
+
+I don't like this very much. With this solution the driver writer must
+still know that he has to call device_get_match_data_default() instead
+of plain device_get_match_data().
+
+In other words, the driver writer must be aware of this problem, so he
+could equally well avoid 0 as valid value and declare
+
+enum fec_type {
+	FEC_TYPE_IMX27 = 1,
+	...
+};
+
+in this case. I have looked up all cases that pass an integer into data
+in the tree and these are not many, we could change them easily.
+
+Another possibility would be to return an error pointer instead of NULL
+from device_get_match_data(), but that would require some refactoring
+throughout the tree.
+
+Unless Ahmad objects I would prefer converting the in tree users not to
+use zero.
+
+Ahmad is on holiday this week, so it'll likely take some time, but
+anyway, we'll solve this issue before the next release.
+
+Sascha
+
+
+> +
+>  static void device_set_deferred_probe_reason(struct device *dev,
+>  					     const struct va_format *vaf)
+>  {
+> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+> index 8474e6d5be9c6225af5708d21b0249b2618d36f6..fac190e6ea51950ed6085264e12617969847acbf 100644
+> --- a/drivers/net/fec_imx.c
+> +++ b/drivers/net/fec_imx.c
+> @@ -763,20 +763,18 @@ static int fec_probe(struct device *dev)
+>  	struct fec_priv *fec;
+>  	void *base;
+>  	int ret;
+> -	enum fec_type type;
+> -	void const *type_v;
+> +	uintptr_t type_v;
+>  	int phy_reset;
+>  	u32 msec = 1, phy_post_delay = 0;
+>  	u32 reg;
+>  
+> -	type_v = device_get_match_data(dev);
+> -	if (!type_v)
+> +	type_v = (uintptr_t)device_get_match_data_default(dev,
+> +		(const void *)FEC_TYPE_COUNT);
+> +	if (type_v >= FEC_TYPE_COUNT)
+>  		return -ENODEV;
+>  
+> -	type = (uintptr_t)(type_v);
+> -
+>  	fec = xzalloc(sizeof(*fec));
+> -	fec->type = type;
+> +	fec->type = type_v;
+>  	fec->dev = dev;
+>  	edev = &fec->edev;
+>  	dev->priv = fec;
+> diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
+> index 1aaff87fddfb44cf558436ab4a846757c6cd51aa..9549dab0f8e88288bd9fe3a02ff8bd5573147842 100644
+> --- a/drivers/net/fec_imx.h
+> +++ b/drivers/net/fec_imx.h
+> @@ -117,6 +117,7 @@ enum fec_type {
+>  	FEC_TYPE_IMX27,
+>  	FEC_TYPE_IMX28,
+>  	FEC_TYPE_IMX6,
+> +	FEC_TYPE_COUNT,
+>  };
+>  
+>  enum fec_clock {
+> diff --git a/include/driver.h b/include/driver.h
+> index c130a3cd63fd5e6dc365a33c765a22dc4e2ca90a..223799294fc0e32ceb13fc5bda2e3b8a78d71647 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -650,6 +650,16 @@ int cdevfs_del_partition(struct cdev *cdev);
+>   */
+>  const void *device_get_match_data(struct device *dev);
+>  
+> +/**
+> + * device_get_match_data_default - get driver match data associated with device
+> + * @dev: device instance
+> + * @defaultval: Value to return if no match data is associated with dev
+> + *
+> + * Returns match data on success and defaultval otherwise
+> + */
+> +const void *device_get_match_data_default(struct device *dev,
+> +					  const void *defaultval);
+> +
+>  int device_match_of_modalias(struct device *dev, const struct driver *drv);
+>  
+>  struct device *device_find_child(struct device *parent, void *data,
+> 
+> ---
+> base-commit: 7689314d0a78605e7d4a0c3ce4953d9d768aa343
+> change-id: 20250903-fec_imx-fix-enodev-f7a9087054c8
+> 
+> Best regards,
+> -- 
+> Christian Thieﬂen <christian.thiessen@airbus.com>
+> 
+> 
+> 
+> 
+
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
