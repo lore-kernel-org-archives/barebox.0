@@ -1,69 +1,59 @@
-Delivery-date: Tue, 09 Sep 2025 18:42:46 +0200
+Delivery-date: Wed, 10 Sep 2025 07:43:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uw1Qc-0018cT-2b
+	id 1uwDcB-001LyD-38
 	for lore@lore.pengutronix.de;
-	Tue, 09 Sep 2025 18:42:46 +0200
+	Wed, 10 Sep 2025 07:43:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uw1Qc-0007eQ-6v
-	for lore@pengutronix.de; Tue, 09 Sep 2025 18:42:46 +0200
+	id 1uwDcB-00086j-Cr
+	for lore@pengutronix.de; Wed, 10 Sep 2025 07:43:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=t41zBZCnbvPLh4fQaR6664i5lXxZtSfPaO5VM19mMqw=; b=HiM9b6AO+Do9LhikDCuuH13O4W
-	zC6j3YKa8gbT+ytRCKtPhipYUz+FfKMsRjjOc9+l0UL7JiI7envuXzJA5kio9JnlTiq08QAU+J8Ks
-	39XnL3wISfK4BuxaDdy6xxLNeUDDMalkdYpUvVYco6eXByV+HPEEue8XSrntoxpH8iKTlKMzG/VC6
-	cdIViJQCoqZ94SAboWIJxOJGppodIEOOdbMS9I9IACTiNA5wq6OlZhdE3KUjrheWzldo4gROAevWy
-	osdnOHA+s3v5UtHY6BH/1gSJ91aYTnBdRXiXmKNyg8HtigIUYI55Z9TD2QvXSssFxhAl+sCNwfu8+
-	hFTb5Tlg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=mRIdbPBsT7J2HHOlEB9LvrYdbIqATsdymVOd1cBAhhs=; b=oW7cdmd3yxe5hApT2Ue+RPVSv/
+	9czIffh+mGCBez+6lfMCcpbm8lqIJ7YwsWEML5B7xXbm1bSZWjyvlJJZi08iFqKj2GZlmR2FNm2tc
+	RSwxbeR4e5UO+VVrl3WyWrkkK6UVfspzunm48i0XfVy6g3CCOpscHBBwkov/RjGFcmnH8bWQiuWb/
+	1O2Fbuk0PvZ9qZb/djgmijWYzuQk7Y+qzHQcAxbQd3Qe9I87QMSQXsAMjEk8F4V7yL4Uur/HaEBvh
+	U0BE+45QZTP9x9hEjfNwLVm5AMvjYjxefMfYSUoUYlEdbEnaSYrajAFQTNK92VdeAeyDuZK+Al0XY
+	Ibk8dlig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uw1Q7-00000008aeU-3JUH;
-	Tue, 09 Sep 2025 16:42:15 +0000
+	id 1uwDbQ-0000000CDFj-0gpi;
+	Wed, 10 Sep 2025 05:42:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uvusL-000000064kD-1l7O
+	id 1uwDbO-0000000CDF2-022Q
 	for barebox@lists.infradead.org;
-	Tue, 09 Sep 2025 09:42:58 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uvusK-0004w5-5s; Tue, 09 Sep 2025 11:42:56 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uvusJ-000OkS-3C;
-	Tue, 09 Sep 2025 11:42:56 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uvusJ-00000004138-3uZk;
-	Tue, 09 Sep 2025 11:42:55 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
-Cc: barebox@lists.infradead.org
-In-Reply-To: <20250902140006.1410408-1-ivo.ivanov.ivanov1@gmail.com>
-References: <20250902140006.1410408-1-ivo.ivanov.ivanov1@gmail.com>
-Message-Id: <175741097592.957082.7216128013557525967.b4-ty@pengutronix.de>
-Date: Tue, 09 Sep 2025 11:42:55 +0200
+	Wed, 10 Sep 2025 05:42:43 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1uwDbK-0007xg-Lv; Wed, 10 Sep 2025 07:42:38 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Wed, 10 Sep 2025 07:42:25 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250910-v2025-08-0-topic-mvebu-spi-v1-1-c3e57dbb7503@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAMAPwWgC/x3MQQ5AMBBA0avIrE0ybSLKVcSidDALNC2NRNxd2
+ f23+TdEDsIR2uKGwEmi7FuGKgsYF7vNjOKyQZOuqFGE6Sskg4TH7mXENfFwYvSCtVW6JleRsgb
+ ywAee5PrnXf88L4ZbrBpsAAAA
+X-Change-ID: 20250910-v2025-08-0-topic-mvebu-spi-7a1270d501a8
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250909_024257_464525_A1CA2C1D 
-X-CRM114-Status: GOOD (  11.52  )
+X-CRM114-CacheID: sfid-20250909_224242_057558_412504B0 
+X-CRM114-Status: UNSURE (   9.75  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,40 +71,58 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 0/3] ARM: boards: add support for Samsung Galaxy S8
- and S20 5G
+Subject: [PATCH] spi: mvebu: move timekeeping out of hot path
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+The wait_on_timeout uses get_time_ns for timekeeping. It seems that this
+considerably decreases transfer speeds, because the wait_on_timeout loop
+gets throttled by the timekeeping.
+Moving the timekeeping after the hot path results in ~3x transfer speed.
+Keep the wait_on_timeout after the hot path to be sure, that the code
+nevertheless waits long enough once.
 
-On Tue, 02 Sep 2025 17:00:03 +0300, Ivaylo Ivanov wrote:
-> Hey folks,
-> 
-> This patchset focuses on adding support for S8 and S20. It's designed to
-> allow adding support for new exynos devices easy, with the primary
-> differentiating factor being the device tree. Currently, the same built
-> barebox-exynos.img can be booted on both S20 and S8 without any changes
-> in the code, as it can dynamically recognize what device it's booting on
-> based on the tree provided at x0 from the previous bootloader (s-boot).
-> 
-> [...]
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ drivers/spi/mvebu_spi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Applied, thanks!
+diff --git a/drivers/spi/mvebu_spi.c b/drivers/spi/mvebu_spi.c
+index e220d1f9eeafedd9b2073638ee4fb94e29ff292a..554b73a0936aa0c5fee766714ed8510ba64808ae 100644
+--- a/drivers/spi/mvebu_spi.c
++++ b/drivers/spi/mvebu_spi.c
+@@ -238,11 +238,15 @@ static int mvebu_spi_setup(struct spi_device *spi)
+ 
+ static inline int mvebu_spi_wait_for_read_ready(struct mvebu_spi *p)
+ {
+-	int ret;
++	int timeout = 10000;
+ 
+-	ret = wait_on_timeout(100 * USECOND,
+-			      readl(p->base + SPI_IF_CTRL) & IF_READ_READY);
+-	return ret;
++	while (!(readl(p->base + SPI_IF_CTRL) & IF_READ_READY) && timeout--)
++		;
++	if (timeout)
++		return 0;
++
++	return wait_on_timeout(100 * USECOND,
++				readl(p->base + SPI_IF_CTRL) & IF_READ_READY);
+ }
+ 
+ static int mvebu_spi_do_transfer(struct spi_device *spi,
 
-[1/3] video: simplefb-client: switch to dev_get_resource
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c31d855177ff (link may not be stable)
-[2/3] ARM: boards: add support for Samsung Galaxy S8 (dreamlte)
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b88ced1955e6 (link may not be stable)
-[3/3] ARM: boards: add support for Samsung Galaxy S20 5G (x1s)
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4d8a5d41cbed (link may not be stable)
+---
+base-commit: 4d59215c346398971f1b09824aed6505b771df99
+change-id: 20250910-v2025-08-0-topic-mvebu-spi-7a1270d501a8
 
 Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 
 
