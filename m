@@ -1,64 +1,55 @@
-Delivery-date: Wed, 10 Sep 2025 14:00:55 +0200
+Delivery-date: Fri, 12 Sep 2025 08:51:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uwJVP-001SGp-1Q
+	id 1uwxdX-0028kC-21
 	for lore@lore.pengutronix.de;
-	Wed, 10 Sep 2025 14:00:55 +0200
+	Fri, 12 Sep 2025 08:51:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uwJVO-0006ga-U3
-	for lore@pengutronix.de; Wed, 10 Sep 2025 14:00:55 +0200
+	id 1uwxdX-0006z7-1A
+	for lore@pengutronix.de; Fri, 12 Sep 2025 08:51:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=+h27wUEScN5M7rrxvqiyka+VDkDc27f8gOhnYbdZY+I=; b=4gTRQLqFiCnZEma3GG5h5yhQ8N
-	nLrdABl/LRGStVsheNIJn+MTDt3rt+SyzWSvnTjLJj50F29iW64NIJLvTzx1OPSgiao6bbk1hxtrO
-	XlBjaa6oJAA58nPhJMdAYjXIz9Xc72HdCZaasQV7PaUp+dykPvvgPOnMmKhT5nDbbjMtiojxz57iw
-	kL1xBOtPD1wvQac9l2vrSWsxLijop02Pkj5UuWtLHfG2Sa6j3JfZ2xgAtsnFjrgrxKJlXko5CDLc9
-	lG4ZrDIbtGK7hWBMk5Nm+H0yaAV16GwaEdM1a4ZxIx6n38UNhgopI8+QdAVCAHh/ZEp+QeKAxaX9I
-	zMrJcc1w==;
+	bh=c1WIljuneBOHv24OKLilKSqCz2j8M1IU4N6ohEZ/Cb4=; b=pHt9CFffhUED503b94blrDmW/W
+	8FhJJMPxyHAqHxs/3P4S66SriYKXuOah1/zu/rmtGW0mN8Kdkt5m6UtnlyIhYmp1oVgMOFwFN7CuF
+	eJkQ4D8Uu3gxozoKGsry1BBGqTDuERB82FnhGhbGMdWS7e3oAVF2tx3bEjMJU2jtYX/Em9IZUauI0
+	nQ0FVmLUoWpH6qo6w1jAry+hUq75WOsMh7Wrl3g5OzWElvcHN+igEHkSofqoVLSeW5ocXlhiC6OGK
+	fVrofuQvLkOSGp7747xN8V692gZP9BfGGd4tK4scsnXigjtGzrs/0HGUbklTE/wZ5h523tjnGCH2Z
+	Vx50dOuA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwJUe-0000000DySS-1Lcv;
-	Wed, 10 Sep 2025 12:00:08 +0000
+	id 1uwxcq-00000007UUr-3Gwh;
+	Fri, 12 Sep 2025 06:51:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwJUb-0000000DyQe-2Wl6
+	id 1uwxcn-00000007USo-2cPu
 	for barebox@lists.infradead.org;
-	Wed, 10 Sep 2025 12:00:06 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uwJUY-0006Nk-D6; Wed, 10 Sep 2025 14:00:02 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uwJUV-000aGy-2E;
-	Wed, 10 Sep 2025 13:59:59 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uwJUV-0000000DPAr-2JtZ;
-	Wed, 10 Sep 2025 13:59:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 10 Sep 2025 13:59:56 +0200
-Message-ID: <20250910115956.3195025-1-s.hauer@pengutronix.de>
+	Fri, 12 Sep 2025 06:51:15 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1uwxcj-0006s9-T5; Fri, 12 Sep 2025 08:51:09 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Chali Anis <chalianis1@gmail.com>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Fri, 12 Sep 2025 08:51:04 +0200
+Message-ID: <20250912065105.2443411-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250910_050005_646351_EC617441 
-X-CRM114-Status: GOOD (  10.63  )
+X-CRM114-CacheID: sfid-20250911_235113_661181_C149769D 
+X-CRM114-Status: UNSURE (   8.37  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,39 +67,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: k3: am625: fix syscon-reboot-mode
+Subject: [PATCH] ARM64: setupc: drop erroneous cache flush of virt addr 0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On AM625 the DEVSTAT register for specifying the reboot mode is at
-0x43000030, not at 0x43010030.
+From: Chali Anis <chalianis1@gmail.com>
 
-Fixes: 45647c1c85 ("ARM: k3: add syscon-reboot-mode")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+relocate_to_adr copies around executable code and thus needs to
+ensure coherence between I$ and D$. When the function was first added,
+it didn't maintain cache correctly, because while it did call
+arm_early_mmu_cache_flush(), back then that function did not invalidate
+I$ after the D$ clean.
+
+This likely went unnoticed, because a comment in relocate_to_adr
+suggested that ic ivau is invalidating the I$, but in reality that
+instruction did an unconditional invalidation of the single
+cache line corresponding to virtual address 0 if it exists.
+
+Back in 2019, sync_caches_for_execution() was introduced, which
+correctly invalidates I$ after D$ cleaning, but the invalidation of
+address 0 still remained.
+
+On a 64-bit Tegra SoC with barebox running as EFI payload, it was
+observed that this instruction was triggering a translation fault[1] at
+address 0. The reason behind that is not completely understood, but it's
+fixed by removing these two lines that are erroneous anyway, so let's do
+that.
+
+[1]: https://esr.arm64.dev/#0x96000147
+
+Fixes: 868df08038a9 ("ARM: aarch64: Add relocation support")
+Signed-off-by: Chali Anis <chalianis1@gmail.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/dts/k3-am625.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/cpu/setupc_64.S | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm/dts/k3-am625.dtsi b/arch/arm/dts/k3-am625.dtsi
-index 2aa77ab2d5..a67b9f5d9a 100644
---- a/arch/arm/dts/k3-am625.dtsi
-+++ b/arch/arm/dts/k3-am625.dtsi
-@@ -10,9 +10,9 @@ chosen {
- };
+diff --git a/arch/arm/cpu/setupc_64.S b/arch/arm/cpu/setupc_64.S
+index 2138c2a600fa..fd95187a0422 100644
+--- a/arch/arm/cpu/setupc_64.S
++++ b/arch/arm/cpu/setupc_64.S
+@@ -63,9 +63,6 @@ ENTRY(relocate_to_adr)
  
- &wkup_conf {
--	reboot-mode-syscon@10030 {
-+	reboot-mode-syscon@30 {
- 		compatible = "syscon", "simple-mfd";
--		reg = <0x10030 0x4>;
-+		reg = <0x30 0x4>;
+ 	bl	sync_caches_for_execution
  
- 		reboot_mode: reboot-mode {
- 			compatible = "syscon-reboot-mode";
+-	mov	x0,#0
+-	ic	ivau, x0	/* flush icache */
+-
+ 	adr_l	x0, 1f
+ 	sub	x0, x0, x20
+ 	add	x0, x0, x21
 -- 
 2.47.3
 
