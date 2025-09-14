@@ -1,91 +1,91 @@
-Delivery-date: Sun, 14 Sep 2025 21:26:26 +0200
+Delivery-date: Sun, 14 Sep 2025 21:33:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uxsMj-0033wp-3C
+	id 1uxsTY-00341I-1c
 	for lore@lore.pengutronix.de;
-	Sun, 14 Sep 2025 21:26:26 +0200
+	Sun, 14 Sep 2025 21:33:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uxsMj-0001qn-Dx
-	for lore@pengutronix.de; Sun, 14 Sep 2025 21:26:25 +0200
+	id 1uxsTX-0002S1-Lj
+	for lore@pengutronix.de; Sun, 14 Sep 2025 21:33:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=JuC5a+n9nlcp+i/aAGhLZpkWHJexsc0NYZlMJvcg42Y=; b=hoK+0d2WiCmLzJliBQ8RxNGoGU
-	OWuwSeOePIy4QLsGBVZm3TrtPjL8AD5JWOY0aoRaG/aW8+upP1nZitrcNylBrDbtmdpJr0RP22HF3
-	sWmBveIUStQhYqgD8Lrbo7MrHZCxyERFkM6QCdk5+aMptnQ2SPXFpOXKHJtuFcQfkl6ugb2kX3f/N
-	9sL3BCtLw+mgYHPX7yeT5cHfL1WjtzAyWN147WyEZ+qIxQ2qyfArbzx8/I02//UbFO+a0W7ANRIZq
-	ghX0yDfrwGul6tP/O5shEt/95JM73CH+t3XbPxtDIgTAmBC8nSdVr04OSWZrxakMr1DEmsjKvgyv7
-	qKGnS4gw==;
+	bh=KQHNDzcKKfIJ2ZPZ/ubvSTl+W94jdlKyzczL/Xy1JVk=; b=WPLTmUGzytdBckGr/ba29b15YD
+	wAmCHNlnZersNwwVgjlkX0p5kwpNdATWVfv46p0zfWB573R+kr9VcbDCK7NO8fyuCpZI2EfLi9iqi
+	0RIC/ZKihGPWj2RVvCdujLhTL97vcvkytkSnotp4/EAermmIndDwPIqBhKapM+jgHLYKeWhWrfPY/
+	7HYgZKANQLGlh20vvPOjzln2SDwUM8aeFZ/zD7C5JMf2JGSJRjdm2jWlUQI7t6zbjiIXaYXxndpsP
+	AIMEPwaZi9GL/+kth8oi0X1wRs9eY1MsjN04n1zn99p8LCtnjBA1me9ES7EQMXryfOYJYWeFReAv9
+	53OdXoxw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uxsLy-000000022N5-0UUV;
-	Sun, 14 Sep 2025 19:25:38 +0000
-Received: from mail-qv1-xf2f.google.com ([2607:f8b0:4864:20::f2f])
+	id 1uxsT3-000000023El-0Jzn;
+	Sun, 14 Sep 2025 19:32:57 +0000
+Received: from mail-qv1-xf29.google.com ([2607:f8b0:4864:20::f29])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uxsLw-000000022MQ-0BkF
+	id 1uxsT0-000000023Dp-27bU
 	for barebox@lists.infradead.org;
-	Sun, 14 Sep 2025 19:25:37 +0000
-Received: by mail-qv1-xf2f.google.com with SMTP id 6a1803df08f44-777fb17fdf0so9199466d6.0
-        for <barebox@lists.infradead.org>; Sun, 14 Sep 2025 12:25:35 -0700 (PDT)
+	Sun, 14 Sep 2025 19:32:55 +0000
+Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-782ba4488b8so3053436d6.3
+        for <barebox@lists.infradead.org>; Sun, 14 Sep 2025 12:32:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757877934; x=1758482734; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1757878373; x=1758483173; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JuC5a+n9nlcp+i/aAGhLZpkWHJexsc0NYZlMJvcg42Y=;
-        b=H4XvhbOY+/Bfj98hICtNoqRLQBSLV8869rD4eZJANuAmFeszVkNF5qq/ubyeCLK3JQ
-         FDoR8aFd56BWhvGHeBf2+oeSTkLpHim5L/ZQV83UWcaZttq44b1M5RAtUMLZ4HtHhimc
-         kPCi/2E8xMEFTw/ZmHgOqN8vKKY4ju1Cpj270eBD02G5HbvGcBE/ELMhWABviaMb+YUV
-         0z1CkoK0YIJsR+p+LFU+QqFlnUF+T6k6yIDnoQl0Nsra8O4yiMcGl03MXVBaTAlkmLM8
-         Q3jQiK2BKr2rQOAgVXDHSkK45Sq/mUBH147seLSX5BNZ7lLUzfXG6Yf7ocaBk+gym++2
-         id7Q==
+        bh=KQHNDzcKKfIJ2ZPZ/ubvSTl+W94jdlKyzczL/Xy1JVk=;
+        b=jRJyPR0gOOyK/aHrl16STFGIV007V3WNNNWu87w7NawRz1CplEwZFGMMF413WaNNuz
+         XCnpyi/YrRwTIUJkY3TLi2d7ygarFoDs2Rp77e2vPObmK7qTYsx9RWw4jXggnvPSvHXS
+         Trm5hDSyzviGkqgvtklRX/RFQS9lfS6aj/l/kN8nAz6DVUfSNEY86gNo5TYg9QE+VFa9
+         LaEwK+rNDHhwi/i9L8mmjFPeQ+5tnB5ne8nBqTZBTVngpMcxiBhtPMpbCB9Gna/P/PEa
+         cjCaHw7oRcsjeIJ5/ZUAThy3utdCw8r+0OYSer/uq217xkxfJ2FUdR/PSFU5uhSMWR35
+         45eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757877934; x=1758482734;
+        d=1e100.net; s=20230601; t=1757878373; x=1758483173;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JuC5a+n9nlcp+i/aAGhLZpkWHJexsc0NYZlMJvcg42Y=;
-        b=J3mNcDIdnAMo5tMChJ4VtCAPeNcCh/cDNq/NTvXwHGXLnLS4HrXdU2G2ZTu3PLldyI
-         sx1h5hWPmPwjpGc0Pg3QbymUuKXHe7PhpqDnG/w03NUA03WuuE0pJsY4YQR1TXQYole4
-         FrFtt5NCewHgHgSvgmIJdjoI/Rb2Y1SIP3Kt+3c2UZQriqgar/IirV97AWe0sEDTJd16
-         HfhQtAostq77O0T4s5LTLATlY81aPR/5b56Xd3DpmOJZv46q7MK/wN5+m2tjYl1uXYaC
-         0UUJKM2Xd22oeJ65ldd0ttDQSd9jh+O9M61k9SeaEutZHcY9TH1SU12uAyJMmUqQZBqh
-         gpig==
-X-Gm-Message-State: AOJu0YyPiXK/cfaYvnOhnDYRL+Hx7suS1C2G5NzFmqcQfn7miW+qQiMe
-	FEhjDUkxT5tFmbwVpf9i5d1vrH2qRSGhr19LNB5EKPsZKKfAyiJbv3IO
-X-Gm-Gg: ASbGncv8heVYkwkjER1MLANTuCZXx4aw3RDcxqOEqw2sIJunknFF+5p/JSrO0fYP6ig
-	wRE2+uqkSSEV4XiIcp7UKmeIxijaZ41Canpft1GopgoUfc+roT76AaBKkOoFT+KD3nvVAyVW/hF
-	wfGIhCufi/PW7caUiz1nUeNOL2BaFmXqC7/h18ttPu8E2QtkVem+5/PzH48kS/YdUgbt1EGY78g
-	m2PDB2Mbg4Tv2N89Kb2uALY0iumdy/shUDGCeB7zqN2I5Jo4ONKfN6uGl18nDRa6tdvDysgYidH
-	Nixvn8qV5Dy2/iJ/sFFR+zVFnsaauyQA8VhJsn6PWx0S3sr8pepTgOxrtqv0kpy7pEljhEJoBE2
-	2RM0nQ/Uq0qr/ZN0Sf1OeL1HYwve8/pwutn5u9BSnenpxILf/oGYW1YIG696Bh+Gl8Gs0xGnFBS
-	KgpEtQ1HRT7OdIKWa2R8aaJPZl8dl18fDCxH8H
-X-Google-Smtp-Source: AGHT+IGPYJO+3wGq7W/91GTpmWuHdKuKLB5hhINS7HXYuEXG63yQWKdxdfHkTPOB4/z/Oneg8f759A==
-X-Received: by 2002:a05:6214:76e:b0:783:aeed:f597 with SMTP id 6a1803df08f44-783aeedf81emr8376456d6.56.1757877934550;
-        Sun, 14 Sep 2025 12:25:34 -0700 (PDT)
+        bh=KQHNDzcKKfIJ2ZPZ/ubvSTl+W94jdlKyzczL/Xy1JVk=;
+        b=nfnRfye7Q5LSf0OoswKTdONCzWTat8B1Y5BfCpBMjFunNvp5dB5Q+3Qa9iolQuj8Xd
+         37w9fbqovXb0EFGPHKl68G7fMIUqnpFijQlqyrI5RYqWe0i88FQSYrdwY+UszYztwulA
+         Vajr4CEyqV0ma/sG3anWV4AMpDLn+aKSC0izH+gABWwUw4e3V1axLHuIA5c3MXW//IRD
+         Gstosevy0i/QlqOJh63VM/htDAccHc1ZZslxTmy4tgvAt+3+mjJDwML8Qa4ZZr5bt+9L
+         k/VL1QC2a6dNrR3hdLeD7s+s1jW9D9nKY1E+OoO87fDhVTiJ+P909/ZDf83dqTaLLAwY
+         P0sw==
+X-Gm-Message-State: AOJu0YzVYPkCFB9e6W+9UkHKt3SOSaCZn8vvTMFMYWJHpkyUQPeHxvD6
+	px+bXxSX5jUnkNSrdyihm/CSCKLGhF7FZWQ8yV9I072NQJBmGOdZuXFm
+X-Gm-Gg: ASbGncuocbqF3oV/wR6Nle85zxuP77M22TLRzm0cwYSzQvsalwfHrGMaubF8TNRgti5
+	bS1ts1m+4J3xw57NUxjpYg+MVxrTd+94HZWRHS/npSyY/MLPXhcJDkuLodDZuNkdK2WBQ1LwZAQ
+	BaYy3SH8pcyLu+AUGWQkapnIY0y6Ie0yq+t5YF59lYAy3TlmiTUkuAJ5gV7oTO21zZ1wHDy98Pk
+	jfnroLXYiBikRYhT9kmpZ1wCpO6R0konzmxPdMZ7ImeIR//LkfvOHTsoWwZhmT+lTHUQcpDHDlK
+	CZVo5/Kzgy23Eb+n06aNwIrcWU4YYAJtQm8xRl41YLQlYeCytEMqpQPwcKakAR1vUc7mNUjoOZx
+	WsXpRWIewXyOph6WC6R0IozTWEEdW5rIhN6dVEPT6FAZN130ldgpLo9/UIKMfhbW3s6HBAgPKQT
+	M5wKI/x5XDtKiZs/4WGTNwXPHhaw==
+X-Google-Smtp-Source: AGHT+IGRpmMoYKfPMuwMTQQn3wsfwP6z+U/DejuaShbYQYYURVDsDUZESAqy5GW9quLXZeKlOPQbxw==
+X-Received: by 2002:a05:6214:f67:b0:70b:af39:8596 with SMTP id 6a1803df08f44-767bd944886mr137978966d6.28.1757878373341;
+        Sun, 14 Sep 2025 12:32:53 -0700 (PDT)
 Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:88f2:c609:e1c6:6429])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7858cb5ac70sm472436d6.20.2025.09.14.12.25.33
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-763c03a9da5sm62936626d6.60.2025.09.14.12.32.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Sep 2025 12:25:34 -0700 (PDT)
+        Sun, 14 Sep 2025 12:32:52 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org,
 	Chali Anis <chalianis1@gmail.com>
-Date: Sun, 14 Sep 2025 15:25:31 -0400
-Message-Id: <20250914192531.14494-1-chalianis1@gmail.com>
+Date: Sun, 14 Sep 2025 15:32:49 -0400
+Message-Id: <20250914193249.23414-1-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250914_122536_092460_225C5DBD 
-X-CRM114-Status: GOOD (  10.10  )
+X-CRM114-CacheID: sfid-20250914_123254_561888_28093136 
+X-CRM114-Status: GOOD (  14.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -108,35 +108,158 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] efi: payload: entry-single: memory need to be alloccated as data.
+Subject: [PATCH] drivers: dma: refactor: rename dma_ops to dma_device_ops.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Chali Anis <chalianis1@gmail.com>
 
-The entry single is used in x86, this memory allocation need to be set to
-data since it is used to initialise the malloc memory. set all this region
-to loader code could represent a security issue since we autorise memory
-execution.
+This patch is an esthetic cleanup, rename the dma_ops to dma_device_ops
+to be sure that the struct in drivers/dma is different from one used in
+arch/riscv/cpu. I accidentally faced the issue telling that the struct is
+defined in the two places but it is not supposed to happen since the
+the driver is never selected from riscv.
 
-Fixes: 7497c86c5032 ("efi: payload: early-mem: add memory type on early mem allocation")
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- efi/payload/entry-single.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/dma-devices.c      | 18 +++++++++---------
+ drivers/dma/ti/k3-udma-am62l.c |  2 +-
+ drivers/dma/ti/k3-udma.c       |  2 +-
+ include/dma-devices.h          |  4 ++--
+ 4 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/efi/payload/entry-single.c b/efi/payload/entry-single.c
-index b7171bb24bfa..8600bd845c49 100644
---- a/efi/payload/entry-single.c
-+++ b/efi/payload/entry-single.c
-@@ -37,7 +37,7 @@ void efi_main(efi_handle_t image, struct efi_system_table *sys_table)
- 		BS->handle_protocol(efi_loaded_image->device_handle,
- 				&efi_device_path_protocol_guid, (void **)&efi_device_path);
+diff --git a/drivers/dma/dma-devices.c b/drivers/dma/dma-devices.c
+index a8b8086d5f86..43e585175a94 100644
+--- a/drivers/dma/dma-devices.c
++++ b/drivers/dma/dma-devices.c
+@@ -35,7 +35,7 @@ static int dma_of_xlate_default(struct dma *dma,
  
--	mem = efi_earlymem_alloc(sys_table, &memsize, EFI_LOADER_CODE);
-+	mem = efi_earlymem_alloc(sys_table, &memsize, EFI_LOADER_DATA);
+ static int dma_request(struct device *dev, struct dma *dma)
+ {
+-	const struct dma_ops *ops = dma->dmad->ops;
++	const struct dma_device_ops *ops = dma->dmad->ops;
  
- 	mem_malloc_init(mem, mem + memsize - 1);
+ 	dev_dbg(dma->dev, "%s(dev=%p, dma=%p)\n", __func__, dev, dma);
+ 
+@@ -61,7 +61,7 @@ struct dma *dma_get_by_index(struct device *dev, int index)
+ {
+ 	int ret;
+ 	struct of_phandle_args args;
+-	const struct dma_ops *ops;
++	const struct dma_device_ops *ops;
+ 	struct dma *dma;
+ 	struct dma_device *dmad;
+ 
+@@ -120,7 +120,7 @@ struct dma *dma_get_by_name(struct device *dev, const char *name)
+ 
+ int dma_release(struct dma *dma)
+ {
+-	const struct dma_ops *ops = dma->dmad->ops;
++	const struct dma_device_ops *ops = dma->dmad->ops;
+ 
+ 	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
+ 
+@@ -132,7 +132,7 @@ int dma_release(struct dma *dma)
+ 
+ int dma_enable(struct dma *dma)
+ {
+-	const struct dma_ops *ops = dma->dmad->ops;
++	const struct dma_device_ops *ops = dma->dmad->ops;
+ 
+ 	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
+ 
+@@ -144,7 +144,7 @@ int dma_enable(struct dma *dma)
+ 
+ int dma_disable(struct dma *dma)
+ {
+-	const struct dma_ops *ops = dma->dmad->ops;
++	const struct dma_device_ops *ops = dma->dmad->ops;
+ 
+ 	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
+ 
+@@ -156,7 +156,7 @@ int dma_disable(struct dma *dma)
+ 
+ int dma_prepare_rcv_buf(struct dma *dma, dma_addr_t dst, size_t size)
+ {
+-	const struct dma_ops *ops = dma->dmad->ops;
++	const struct dma_device_ops *ops = dma->dmad->ops;
+ 
+ 	dev_vdbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
+ 
+@@ -168,7 +168,7 @@ int dma_prepare_rcv_buf(struct dma *dma, dma_addr_t dst, size_t size)
+ 
+ int dma_receive(struct dma *dma, dma_addr_t *dst, void *metadata)
+ {
+-	const struct dma_ops *ops = dma->dmad->ops;
++	const struct dma_device_ops *ops = dma->dmad->ops;
+ 
+ 	dev_vdbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
+ 
+@@ -180,7 +180,7 @@ int dma_receive(struct dma *dma, dma_addr_t *dst, void *metadata)
+ 
+ int dma_send(struct dma *dma, dma_addr_t src, size_t len, void *metadata)
+ {
+-	const struct dma_ops *ops = dma->dmad->ops;
++	const struct dma_device_ops *ops = dma->dmad->ops;
+ 
+ 	dev_vdbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
+ 
+@@ -192,7 +192,7 @@ int dma_send(struct dma *dma, dma_addr_t src, size_t len, void *metadata)
+ 
+ int dma_get_cfg(struct dma *dma, u32 cfg_id, void **cfg_data)
+ {
+-	const struct dma_ops *ops = dma->dmad->ops;
++	const struct dma_device_ops *ops = dma->dmad->ops;
+ 
+ 	dev_dbg(dma->dev, "%s(dma=%p)\n", __func__, dma);
+ 
+diff --git a/drivers/dma/ti/k3-udma-am62l.c b/drivers/dma/ti/k3-udma-am62l.c
+index cd4a4cdf032f..ba54ba53e6d4 100644
+--- a/drivers/dma/ti/k3-udma-am62l.c
++++ b/drivers/dma/ti/k3-udma-am62l.c
+@@ -408,7 +408,7 @@ static int am62l_udma_rfree(struct dma *dma)
+ 	return 0;
+ }
+ 
+-static const struct dma_ops am62l_udma_ops = {
++static const struct dma_device_ops am62l_udma_ops = {
+ 	.transfer	= udma_transfer,
+ 	.of_xlate	= udma_of_xlate,
+ 	.request	= am62l_udma_request,
+diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+index fb0fe62c53a9..1f0594749549 100644
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -1190,7 +1190,7 @@ static int udma_rfree(struct dma *dma)
+ 	return 0;
+ }
+ 
+-static const struct dma_ops udma_ops = {
++static const struct dma_device_ops udma_ops = {
+ 	.transfer	= udma_transfer,
+ 	.of_xlate	= udma_of_xlate,
+ 	.request	= udma_request,
+diff --git a/include/dma-devices.h b/include/dma-devices.h
+index bbb25770f86b..bb081311dd72 100644
+--- a/include/dma-devices.h
++++ b/include/dma-devices.h
+@@ -40,7 +40,7 @@ struct of_phandle_args;
+  * The uclass interface is implemented by all DMA devices which use
+  * driver model.
+  */
+-struct dma_ops {
++struct dma_device_ops {
+ 	/**
+ 	 * of_xlate - Translate a client's device-tree (OF) DMA specifier.
+ 	 *
+@@ -155,7 +155,7 @@ struct dma_ops {
+ 
+ struct dma_device {
+ 	struct device *dev;
+-	const struct dma_ops *ops;
++	const struct dma_device_ops *ops;
+ 	struct list_head list;
+ };
  
 -- 
 2.34.1
