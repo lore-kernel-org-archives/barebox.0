@@ -1,92 +1,57 @@
-Delivery-date: Sun, 14 Sep 2025 21:41:04 +0200
+Delivery-date: Mon, 15 Sep 2025 10:40:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uxsau-00346f-2U
+	id 1uy4lK-003G2x-1r
 	for lore@lore.pengutronix.de;
-	Sun, 14 Sep 2025 21:41:04 +0200
+	Mon, 15 Sep 2025 10:40:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uxsau-0003N6-8y
-	for lore@pengutronix.de; Sun, 14 Sep 2025 21:41:04 +0200
+	id 1uy4lK-0002Du-1O
+	for lore@pengutronix.de; Mon, 15 Sep 2025 10:40:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=klKdthcV+JeULNRf/iRnZyynavosLYUiArYDdBrALxs=; b=SH0v7q5vEqlMdiwmyUwCsQd6oW
-	p06PqNEPk3SGcQZ6r+6OBalGduss4TQetr5ebirdGtSrAiKqnE+Pe4cxjvb4jFqRAQjm7B2ISf+eX
-	l9rEz3Ufk/wLCLRLYuFggnLNC2t+st1mDieHO25Wt080xuQdl5Qh/AQmxiKbDqKScEeBp9OyofwzA
-	woW+VMopnIvWUKt3+8qoO6KE8uT5jmgD8yO6+QUdrFqJR+KcIvIwlck4v20aoN9/eFmFcOqFgQhkt
-	vEFzragYL3ExXkWUNSHUqXMysqI4VkkznVegW4uZAuqCMGH1or9F3gdcD4pevjcFEy584ZhP1vHmM
-	MZl/niMg==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=99SrpjzD7CUft3hpgHmYFOEffviupdzsyBn546kwWgw=; b=kBE4Or/F4dwummUinJWQOzQtlm
+	m0VtWJVBEzuB1M7u76N5bpsA5yk75E2wj6gYROeYTEAt+bh8gDOSlceZ1s82/uO/6PEasmwbL7gzO
+	804xTkshcs8VE9kQNvpumUGRS5RvOEuStTfoJo7YaNE5TFOGTFJnoEYaPq7X6bc1I1rO+AzWHmvC3
+	tBX8lD/xwjQe26g98SheRu9bq3pAxaBsIfH62ADMLW/X5DINuGWhYIadgHXMeDo0MRZg4Y213bQh3
+	lx9MoMcAZ2bhlLlgG5ofUfeZjNDE5BfVyzIikkEZhXgzS1Ob0WZ/VPP2N6IG/oQFchDONMq88VvV9
+	gkVp6vbQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uxsaR-000000025If-3Odc;
-	Sun, 14 Sep 2025 19:40:35 +0000
-Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+	id 1uy4kg-00000003Fnw-1rUF;
+	Mon, 15 Sep 2025 08:39:58 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uxsaP-000000025I9-0ORO
+	id 1uy4kd-00000003FmX-3MDk
 	for barebox@lists.infradead.org;
-	Sun, 14 Sep 2025 19:40:34 +0000
-Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-4b5ed9d7e20so40020781cf.0
-        for <barebox@lists.infradead.org>; Sun, 14 Sep 2025 12:40:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757878832; x=1758483632; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=klKdthcV+JeULNRf/iRnZyynavosLYUiArYDdBrALxs=;
-        b=jj18hsXuAANvvXDyT156QwX8H4Vmv7Y2+v3CW8Ws1ou/7jKwsu6DZC83KmcaiyQ2Ug
-         E5NHBmtw1xLHea//xHUr1xw06hr03n6L2+wP3NYDbBCmn3cavmbhZEMuuKO1xz1MzCEj
-         1jD3PsS4GNMKEVhloG95AwxhnZfAt8JnUMmStATAMSVqutVKn42eqjA+ImR+/kI5c7dX
-         2JdWdrT9Go/EKf9D35JdUN5iHtjBn3vtHAKQ9vMtSbCx3cYBkCvUZgiqAG79HnLAA5Ae
-         E72Z3NQExchnYwMW9zSj2QHbsg3O34Oq2625sq+xmzKgKisgqXfu0hnuABNukySM7X4H
-         NXIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757878832; x=1758483632;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=klKdthcV+JeULNRf/iRnZyynavosLYUiArYDdBrALxs=;
-        b=u5rbUxJ2w7Hr+PgNuhtI4K8Np7vhtMAQL7JnWPVH/qpk8EFZK1dP1kl0gHZezfuJrO
-         slcNtOcdc43f2kQJ3vMmXS5Z77nBGnJ+8DIOg3tjdmlGQfdrMJBBF0RhY6HUTJ0W6Yt9
-         td6iwSNSWXvR2Ek5AzO/8P+wYncqn1cor/SiGYss/D0ZaFM+SGUebE7ze3si0LRIsy6I
-         1SoYmXFvQVt5V25VtL8eSH8g9TZqHpBAGNYX/9yckzTmvRBDQElo8svjfGsOUJ3jNCSB
-         IrXPqleg7PbPJ+hX7DoYycHHS3+qsDSDe5ybzpu6Bit0Xp7VWcHV+kR2WLH/k8LcPR43
-         7Lsg==
-X-Gm-Message-State: AOJu0YxMKzJAVhqi9VSdbqWZ4ngxKX32qH3EJZB6iqlUE/2+CyuN7kTn
-	uBaLSUsQy1oaJt318mLwyGjqsVLbrbWMbUpe69FX2UEbOPdIsV1c9ayq
-X-Gm-Gg: ASbGnctdYlEnHQ2sfnVrLf9ARFtcicCz/ts/iNWKcNOjPRjDRlLHglR4tkIHz7C0o6f
-	kjtFcOEMycM8wGqAy/aGYhgivV99SmLVZi7wx7/ogUllBg64X+sL9xb/IFNEAC9cEMjUpUxwC3u
-	KamW0w5mX974sI71bzSZzcYlxN2Gi41kCM1xMIrzDB47q9rwt7ypDVQiuYeogSBrmBr2zXZrHcp
-	BPe5GUM0zasaUWDfWygOreHBPr3XpZjriYGVKzU06A1ebFfDEZJzzPwQfXpuxORxI5EC8xxLuSO
-	78cMmnu9OidlXv3mPXuqu8fNtDelHCZV2duiZ07AO5Kz4Phb2Y0zBIYR+x8fpX2rzj3fErkhgLA
-	uLj/o49a7t5R4q3nEbj1/AwWVzHgm7/f53iZfq7++BAEpCfcKoUVPBJ5Oq5edcrFElb76jb72/M
-	4aRhx7a0e7hN0BiEWiKWHPUJgmV7I8QOn4LYli0sdHt+OsCDc=
-X-Google-Smtp-Source: AGHT+IHT3C7O91kQHIDyuI2i2WzykOwQKc7oL6SLYhSG0EWmQM8KAJlLv3UUtcLd58XC5IyJHUBglQ==
-X-Received: by 2002:a05:622a:5a0c:b0:4b6:144:faf3 with SMTP id d75a77b69052e-4b77cff4747mr134024351cf.30.1757878831589;
-        Sun, 14 Sep 2025 12:40:31 -0700 (PDT)
-Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:88f2:c609:e1c6:6429])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b639dc8d9bsm56409981cf.38.2025.09.14.12.40.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Sep 2025 12:40:30 -0700 (PDT)
-From: chalianis1@gmail.com
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org,
-	Chali Anis <chalianis1@gmail.com>
-Date: Sun, 14 Sep 2025 15:40:27 -0400
-Message-Id: <20250914194027.32261-1-chalianis1@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Mon, 15 Sep 2025 08:39:57 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uy4kZ-00027D-Pw; Mon, 15 Sep 2025 10:39:51 +0200
+Message-ID: <77b5ac7d-278a-4759-bebd-234a0db6de4c@pengutronix.de>
+Date: Mon, 15 Sep 2025 10:39:50 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: chalianis1@gmail.com, s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
+References: <20250914192531.14494-1-chalianis1@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20250914192531.14494-1-chalianis1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250914_124033_135998_7E4BD2B3 
-X-CRM114-Status: UNSURE (   8.60  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250915_013955_843010_003FC83C 
+X-CRM114-Status: GOOD (  17.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -104,41 +69,56 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] arch: x86: efi_defconfig: remove framebuffer console to fix duplicate screen.
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] efi: payload: entry-single: memory need to be alloccated
+ as data.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Chali Anis <chalianis1@gmail.com>
+Hi,
 
-remove the framebuffer console and let develpers select it when needed, this
-fixes the problem that consist of having the screen splited to top and bottom
-displaying the output twice, and considerably speedup the efi payload on x86.
+On 9/14/25 9:25 PM, chalianis1@gmail.com wrote:
+> From: Chali Anis <chalianis1@gmail.com>
+> 
+> The entry single is used in x86, this memory allocation need to be set to
+> data since it is used to initialise the malloc memory. set all this region
+> to loader code could represent a security issue since we autorise memory
+> execution.
+> 
+> Fixes: 7497c86c5032 ("efi: payload: early-mem: add memory type on early mem allocation")
+> Signed-off-by: Chali Anis <chalianis1@gmail.com>
 
-Fixes: 67498b411276 ("x86: configs: efi: enable some more useful options")
-Signed-off-by: Chali Anis <chalianis1@gmail.com>
----
- arch/x86/configs/efi_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defconfig
-index 1dd823af40ea..9844a70d2628 100644
---- a/arch/x86/configs/efi_defconfig
-+++ b/arch/x86/configs/efi_defconfig
-@@ -78,7 +78,6 @@ CONFIG_DRIVER_NET_EFI_SNP=y
- CONFIG_DISK=y
- CONFIG_DISK_WRITE=y
- CONFIG_VIDEO=y
--CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_DRIVER_VIDEO_EFI_GOP=y
- CONFIG_FINTEK_SUPERIO=y
- CONFIG_SMSC_SUPERIO=y
+Thanks,
+Ahmad
+
+> ---
+>  efi/payload/entry-single.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/efi/payload/entry-single.c b/efi/payload/entry-single.c
+> index b7171bb24bfa..8600bd845c49 100644
+> --- a/efi/payload/entry-single.c
+> +++ b/efi/payload/entry-single.c
+> @@ -37,7 +37,7 @@ void efi_main(efi_handle_t image, struct efi_system_table *sys_table)
+>  		BS->handle_protocol(efi_loaded_image->device_handle,
+>  				&efi_device_path_protocol_guid, (void **)&efi_device_path);
+>  
+> -	mem = efi_earlymem_alloc(sys_table, &memsize, EFI_LOADER_CODE);
+> +	mem = efi_earlymem_alloc(sys_table, &memsize, EFI_LOADER_DATA);
+>  
+>  	mem_malloc_init(mem, mem + memsize - 1);
+>  
+
 -- 
-2.34.1
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
