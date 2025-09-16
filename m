@@ -1,95 +1,95 @@
-Delivery-date: Tue, 16 Sep 2025 02:17:43 +0200
+Delivery-date: Tue, 16 Sep 2025 02:17:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyJOA-003V28-3A
+	id 1uyJOC-003V2q-2M
 	for lore@lore.pengutronix.de;
-	Tue, 16 Sep 2025 02:17:42 +0200
+	Tue, 16 Sep 2025 02:17:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyJO9-00017e-KW
-	for lore@pengutronix.de; Tue, 16 Sep 2025 02:17:42 +0200
+	id 1uyJOB-00018v-7D
+	for lore@pengutronix.de; Tue, 16 Sep 2025 02:17:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kfn+C3yppJ/kzQ0GyuFuaMKcVnZlst8Hh5fL/H3BNzw=; b=lmEp6SNcYV1zuBf8/X6775T8yX
-	+hq0ZEv7cimG00CcJ/7vDazEPJJfxqiSN+WvlM8sMWZKcvGZGbpk/3P5DwKqkmbOTW7qUjLqoM5OW
-	C8GDksezbe1G4KtAFMc2PVjxpkvqRDQqya7QUEVJEFr+DzfET5WILb+GwEfQ7pW7kfGL8vMaSz2Ir
-	l7YI7WW3NiA97PI447j6wSuf6VVRyP2a8io1afbcYjiBrMqhmEjiHupQz3TGrX2/tofungZYDxLiE
-	V96wltu3kJES6zvD2GbMvoXZpxrfbRS2x62XdcUwKQCGQMXYncnwpUTFGSUJKcSsB6mYA1B5Rrluy
-	+Wp7I4hw==;
+	bh=VVbgBhfz26bmFcP1BdeIchvRcwIBb5ASBESfKsJZi2Y=; b=dPls5gmWINBFqDMDaCurRgVLaa
+	Pk6Nr0GyPncsAIZERkJ4C0zT1Tl7XQb3NhXjEEZdVJoE0ShI2H7M8sZhvQyeKTKaC/ODXW1CStq3v
+	ThHQZOlrni4mjJ+ljtZW3pVikCPpWPTEt6r6qe2dxM//Ou6zMyVtZzCowBQo20VvMFhwoi5q/1MlV
+	IW1PBdqafHOH0k1qsAJUKVbefWlG8sOuhyG2RLFa4/T6VWrhz3DG/ljHIspr+vT5P4J6iLBD7sp6S
+	/g4x9ntg80ovH2/6wuaQFZmDgfqSeTDkuNvNC80V+EXwRv/H7BeZFsEtE5kEvjyIojuOJp9z15U3Q
+	7zYGpj5g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyJNV-00000005ySb-3pQM;
-	Tue, 16 Sep 2025 00:17:01 +0000
-Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+	id 1uyJNU-00000005yRS-0St8;
+	Tue, 16 Sep 2025 00:17:00 +0000
+Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyJNS-00000005yQo-2phd
+	id 1uyJNR-00000005yQI-0maH
 	for barebox@lists.infradead.org;
-	Tue, 16 Sep 2025 00:16:59 +0000
-Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-4b7a8ceace8so13643831cf.3
-        for <barebox@lists.infradead.org>; Mon, 15 Sep 2025 17:16:58 -0700 (PDT)
+	Tue, 16 Sep 2025 00:16:58 +0000
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-4b7a434b2d0so11952601cf.0
+        for <barebox@lists.infradead.org>; Mon, 15 Sep 2025 17:16:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757981817; x=1758586617; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1757981816; x=1758586616; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kfn+C3yppJ/kzQ0GyuFuaMKcVnZlst8Hh5fL/H3BNzw=;
-        b=h+U3J9PQYHAHPZW63xTNhgCgjG7rtcmpaOB6caXMwF4ehvoeFzaqaW9rQaX94x5NlX
-         82SZPra3HLzAQZXDD+NSuZYtoCFBlmon6xuNUK6Fesw6UGGWCPO50jhKI6SE7hAv9QQC
-         Qdz2yO2FMw2ZUAvCY44pW0FaeUjvZq9MZGBIh70N/QZsua58MqfaTasZEhWHcKIiNv6M
-         FpvfkhmywJhBrSk00aPTDI19JrZJU4QckK7dZ+xY+e9xpbXnF+fmrZ0Mvhq0s9SbIOcG
-         pz07L4lV/wvAU+q9mPwEnsflBgGjh/TaVw6s6YskY+DECy9Am3MAMtSB5+ApihOAvZT5
-         eCow==
+        bh=VVbgBhfz26bmFcP1BdeIchvRcwIBb5ASBESfKsJZi2Y=;
+        b=lrxs/rIQcceUcx/2y3H6NJzBQvWkoTUKslzKjYproE7CahkjT5tU+k3FGu19uei7JQ
+         +oBrG91UmfJ+4Hi7edDWrxYiQRQp+8pW5dlnWWyg0x7JNM4vUDoj+jCqzYJDaOeiioc/
+         QU4Y5adTEYwUb04dpqgTESBsM5+Z6XmJ+I+4JfS0pN2BGXi8I6rkdHhS/VxeXkNqEUao
+         r9Pf7J+3KOl4jx4T2nLVWAPZ2XW9Plczam37o3gvq83zRooMJPFrb9swnB39ffCpTusE
+         DPut8NyiPdqB0VgL/8gglieAxAHasEAjD18qmuCL11o1j1B8BVzkS/uw8UH/KZLCsd/a
+         Z+HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757981817; x=1758586617;
+        d=1e100.net; s=20230601; t=1757981816; x=1758586616;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kfn+C3yppJ/kzQ0GyuFuaMKcVnZlst8Hh5fL/H3BNzw=;
-        b=T952DJ92os6/7Akcw38QxPxRn0T3z8ZEXvrH9IFRVgFxIJ5/S6iUMhDsbf+Mj5ui8A
-         6hj/wXZYyTJZw2u3k5GncDhF7orHIhmMi56fTp9AQAsT5rP8XYiyEZESWTgAYlaaODJ4
-         ZiiTENe8KhtmBAEQY8K1GIrCSmh+BFJ/2R7TbAePBwU0/wp+RhfsiDu8ZdsctPDoIKKu
-         yGk4/sDyg8ufAVUYDZUGu9iSXCd8lh+vgNPWxrwBDBu8zdCVRTXhZ0b2NptRVL6oAZcd
-         FH+SL6/HOX4EGR1odGJ/fpKqBwgW1WukayTqFPRUlhypDgi4v9dEN459wSSD4z6kXF9M
-         Mklw==
-X-Gm-Message-State: AOJu0YwkkFtStoLygL8VUuh9HCwBfofl+hymO5WcLSka7GUChz/J8GGZ
-	/98v2hvu78aK5lkIvSuzpYaCquhGsXi3XdVsTe1zKTpXHp/RtVQWfSeLSAqDEyiXNN8dpQ==
-X-Gm-Gg: ASbGncu7d/31jqerttvs+y7JaFKtBMBqhFhJ/fyqQGOMe7grabxXNp+1RSPyhFeiRrb
-	+uBLsF1JYgYj3qGlbOz/c0pW1XeqMfQfCNS/gOkZYuaeK/6a0BQOtoBUIFpx3LA9+NpnjLe+C5+
-	b+yCvtNp3W9qIGbjthr+8pV2Q1gZqMNGqb5RfXhlz5it/6wPSMokdkbBOYzoprqPYIq+QfD8e9C
-	bZl0I03pNgYZEdNsePrXzIU4zY5/W+ZV4pf9Ckr6AXbBXhSdItV9GTDqAKC95uKVHZ1gHiGvJ0e
-	S6t9mCLCl0lw/qeuTenexYp0clzHA4fxU42hOay7qs+WH5rBSX3UpCbCi9ohu0N7Uv+WDnyxsY5
-	1Cr2iujItT8txT3jET50otldhykftdvlRfMw8PE2gHAk2NiCObsDB9XkYuvI0jX4swYbh2qryYL
-	GLEHQAW5xdBDQ+5bcCtpz6mMFe1ivlF+tgMOQbBoA+4chW7cs=
-X-Google-Smtp-Source: AGHT+IGWzbV0wCxUI1FHQi3O1Lo1voSaT2X1NE9OijwiXNuNeGKhbAf5JnwFMtIG7nCpA28M8sCt+Q==
-X-Received: by 2002:a05:622a:192a:b0:4b4:9489:8c9a with SMTP id d75a77b69052e-4b77d14e6a9mr162569271cf.61.1757981817384;
-        Mon, 15 Sep 2025 17:16:57 -0700 (PDT)
+        bh=VVbgBhfz26bmFcP1BdeIchvRcwIBb5ASBESfKsJZi2Y=;
+        b=cT2R+BEiNWIilcpWZu7xRFB80orcO6U4p5mc5tXLoZTaUrDPbIgnikH7R5+kVRQlM7
+         ausqoMyZZzGSLc+lI7OTUFv1mUVcV8IvvhugpkKERA9REq1dPb1KX6QVKs6t6hKVRn/+
+         7YKVgqZAo5jRi/46nob6vGChj8/QKaG4C2xT7WAlCki3d0Ef5CAjsTP4phC672IiphKN
+         fIHvdmkEl3kgdvQAwSbtNA8NCgLXjV/qfbnaFcDHTlf32djoGzh9G4EyYICr4PdnafG6
+         fWmhrwfOs4L8o43ukTZvCGaKHF4ghUopNpoKS0CLq8rwjAsqqwhY1McKZwoXRQA9RcHk
+         yyow==
+X-Gm-Message-State: AOJu0Yzp2fP5wQWAa57c+QM4+7hVmjFsXsUk9uU8PFRLUOgjMXPMxZ47
+	s4RNUEQTe3YA9rGu2pxgrRaj07LEfPOSFbQ+243N0bowHR5lZivgw/hH
+X-Gm-Gg: ASbGncuQykrD2VgukFXTD5Dq+qPbZV5K0WX+B9I11Ihukis+h2837jKzLV0XKiXKxsf
+	cbdVyJtfW4RNnbcvzK1DX1ZCuLO8RI/aqAkvZVWcfITWbafOI/JhOmPK7FZGiOZwWkLGuVOQoKb
+	52CAWYmsT4olNLeAupoGDc/fHMccyyvPNk8mKmLHI9cNSCY9jqG1VVuqdaUiTL2oet0WRfL7QpD
+	u7yNCBz9w4uE4HTmn2FFCoNRH1XGRE2dGTZoaRZCbxFgFnxnr+yR795b7I9/Cmi9YEq/zrTPUMY
+	228HW7Cr4lVYovrsl8DhwxM87QNkEOf7ZFqjfkNzZTeXigHqK6G1Y+GoRHKJ2uIOcq9DcAq9eTL
+	+OLG/jXOkT5Ygfq0YBtRRc2Bjd0cZCJi3UDab0yf6z4vzWI7N6qtlS0DmJlu04l9oijT9/U2BsB
+	45kNwdUrl6RE/m0Gz72fJzyLrJBv/OYmDIuQ7X
+X-Google-Smtp-Source: AGHT+IGo5kaGS3bsmfx6SFDxOqAhmX3YS4eZhwNcmuOkH5/i4UnKxLUeZ7GfI0Wq4MoaLtbANnKNCw==
+X-Received: by 2002:a05:622a:2512:b0:4b2:fdb3:75bb with SMTP id d75a77b69052e-4b77cfbaa95mr209864161cf.27.1757981815886;
+        Mon, 15 Sep 2025 17:16:55 -0700 (PDT)
 Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:db10:d083:890b:6e1f])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b639cb4212sm73732431cf.19.2025.09.15.17.16.56
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b639cb4212sm73732431cf.19.2025.09.15.17.16.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 17:16:56 -0700 (PDT)
+        Mon, 15 Sep 2025 17:16:55 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de,
 	a.fatoum@barebox.org
 Cc: barebox@lists.infradead.org,
 	Chali Anis <chalianis1@gmail.com>
-Date: Mon, 15 Sep 2025 20:16:45 -0400
-Message-Id: <20250916001649.591989-3-chalianis1@gmail.com>
+Date: Mon, 15 Sep 2025 20:16:44 -0400
+Message-Id: <20250916001649.591989-2-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916001649.591989-1-chalianis1@gmail.com>
 References: <20250916001649.591989-1-chalianis1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250915_171658_788879_05FB139B 
-X-CRM114-Status: GOOD (  29.21  )
+X-CRM114-CacheID: sfid-20250915_171657_310870_9974D4E1 
+X-CRM114-Status: GOOD (  26.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -112,99 +112,75 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/7] efi: payload: add support for efi stub boot
+Subject: [PATCH 2/7] efi: payload: split image handling from legacy handover boot support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-This patch has more stock, between implementing EFI STUB boot, refactor to
-reuse the code and finaly support the fit image format.
-This code is tested on many qemu EFI compilations comming from ovmf ubuntu
-package, tianocore efi for qemu, local edk2 build, and also tested on RPi3b
-64 bit EFI from tianocore and a local build of edk2, more mchines will be
-tested soon. the test was for a full boot chain on RPi3b booting a fit image
-containing a kernel, an fdt, and a ramdisk with ostree initrd to mount an
-ostree root filesystem. for contribution in short term,
-1. it would be nice to test with more hardware,
-2. linux global checkup of efivars, efi capsule update, efi runtime services
-3. The state.dtb to support barebox state to manage multiple system boot
-   and a recovery.
-   the case would be sys1 = new ostree commit, sys2 = old commit (rollback)
-   and a recovery boot system on readonly disk.
-4. secure boot, PoC to check if there is a way to load TF-A from EFI
-and then load the efi payload from it and launch optee??
-
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- efi/Kconfig          |  17 ++
- efi/payload/Kconfig  |   5 +-
- efi/payload/Makefile |   1 +
- efi/payload/bootm.c  | 508 +++++++++++++++++++++++++++++++++++++++++++
- lib/Kconfig          |   4 +
- 5 files changed, 534 insertions(+), 1 deletion(-)
- create mode 100644 efi/payload/bootm.c
+ efi/Kconfig                |   4 +
+ efi/payload/Kconfig        |   4 +
+ efi/payload/Makefile       |   2 +
+ efi/payload/handover.c     | 195 +++++++++++++++++++++++++++++++
+ efi/payload/image.c        | 228 ++-----------------------------------
+ efi/payload/image.h        |  14 +++
+ efi/payload/setup_header.h |  63 ++++++++++
+ 7 files changed, 291 insertions(+), 219 deletions(-)
+ create mode 100644 efi/payload/Kconfig
+ create mode 100644 efi/payload/handover.c
+ create mode 100644 efi/payload/image.h
+ create mode 100644 efi/payload/setup_header.h
 
 diff --git a/efi/Kconfig b/efi/Kconfig
-index 91dca949b5a3..5f4c6713d539 100644
+index 84f670fd23d3..91dca949b5a3 100644
 --- a/efi/Kconfig
 +++ b/efi/Kconfig
-@@ -54,4 +54,21 @@ config EFI_PAYLOAD_DEFAULT_PATH
+@@ -18,6 +18,10 @@ config EFI_PAYLOAD
+ 	select PARTITION_DISK
+ 	select HW_HAS_PCI
  
- endif
++if EFI_PAYLOAD
++source "efi/payload/Kconfig"
++endif
++
+ config EFI
+ 	bool
  
-+config EFI_FDT_FORCE
-+	bool "Force EFI provided FDT"
-+	default n
-+	help
-+	  with this options we keep the fdt passed by EFI in the
-+	  system configuration table, EFI has to suppot FDT otherwise
-+	  an empty fdt will be generated when linux boots by efi.
-+
-+config EFI_INITRD_INSTALL
-+	bool "Install the initramfs by barebox"
-+	default n
-+	help
-+	  with this option barebox will install the initrd to the
-+	  system configuration table, same as what kernel do after
-+	  calling read file2 boot services, in this case the initrd
-+	  will be read directly by the kernel as an initramfs.
-+
- endmenu
 diff --git a/efi/payload/Kconfig b/efi/payload/Kconfig
-index 310f79c3d89f..8f76b00744e7 100644
---- a/efi/payload/Kconfig
+new file mode 100644
+index 000000000000..310f79c3d89f
+--- /dev/null
 +++ b/efi/payload/Kconfig
-@@ -1,4 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
- config EFI_HANDOVER_PROTOCOL
--	def_bool y
-+	def_bool X86
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+config EFI_PAYLOAD_BOOTM
-+	def_bool !EFI_HANDOVER_PROTOCOL
++config EFI_HANDOVER_PROTOCOL
++	def_bool y
 diff --git a/efi/payload/Makefile b/efi/payload/Makefile
-index d8b577bf3e23..083728c53cb4 100644
+index a4a0332a8288..d8b577bf3e23 100644
 --- a/efi/payload/Makefile
 +++ b/efi/payload/Makefile
-@@ -3,6 +3,7 @@
+@@ -2,6 +2,8 @@
+ 
  obj-y += init.o
  obj-y += image.o
- obj-$(CONFIG_EFI_HANDOVER_PROTOCOL) += handover.o
-+obj-$(CONFIG_EFI_PAYLOAD_BOOTM) += bootm.o
- obj-y += efi-initrd.o
++obj-$(CONFIG_EFI_HANDOVER_PROTOCOL) += handover.o
++obj-y += efi-initrd.o
  obj-$(CONFIG_OFTREE) += fdt.o
  bbenv-y += env-efi
-diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
+ obj-$(CONFIG_CMD_IOMEM) += iomem.o
+diff --git a/efi/payload/handover.c b/efi/payload/handover.c
 new file mode 100644
-index 000000000000..6d6ecbf2e49a
+index 000000000000..7419d86cc997
 --- /dev/null
-+++ b/efi/payload/bootm.c
-@@ -0,0 +1,508 @@
++++ b/efi/payload/handover.c
+@@ -0,0 +1,195 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * image.c - barebox EFI payload support
++ * handover.c - legacy x86 EFI handover protocol
 + *
 + * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
 + */
@@ -235,112 +211,24 @@ index 000000000000..6d6ecbf2e49a
 +#include "image.h"
 +#include "setup_header.h"
 +
-+struct efi_mem_resource {
-+	efi_physical_addr_t base;
-+	size_t size;
-+} __attribute__ ((packed));
-+
-+struct efi_image_data {
-+	struct image_data *data;
-+
++static int efi_do_execute_image(enum filetype filetype, const char *file)
++{
 +	efi_handle_t handle;
 +	struct efi_loaded_image *loaded_image;
-+
-+	struct efi_mem_resource image_res;
-+	struct efi_mem_resource oftree_res;
-+	struct efi_mem_resource *initrd_res;
-+};
-+
-+
-+static void *efi_allocate_pages(efi_physical_addr_t *mem,
-+				size_t size,
-+				enum efi_allocate_type allocate_type,
-+				enum efi_memory_type mem_type)
-+{
-+	efi_status_t efiret;
-+
-+	efiret = BS->allocate_pages(allocate_type, mem_type,
-+				    DIV_ROUND_UP(size, EFI_PAGE_SIZE), mem);
-+	if (EFI_ERROR(efiret)) {
-+		errno = efi_errno(efiret);
-+		return NULL;
-+	}
-+
-+	return efi_phys_to_virt(*mem);
-+}
-+
-+static void efi_free_pages(void *_mem, size_t size)
-+{
-+	efi_physical_addr_t mem = efi_virt_to_phys(_mem);
-+
-+	if (mem_malloc_start() <= mem && mem < mem_malloc_end())
-+		free(_mem);
-+	else
-+		BS->free_pages(mem, DIV_ROUND_UP(size, EFI_PAGE_SIZE));
-+}
-+
-+static int efi_load_file_image(const char *file,
-+			       struct efi_loaded_image **loaded_image,
-+			       efi_handle_t *h)
-+{
-+	efi_physical_addr_t mem;
-+	void *exe;
-+	char *buf;
-+	size_t size;
-+	efi_handle_t handle;
-+	efi_status_t efiret = EFI_SUCCESS;
 +	int ret;
 +
-+	buf = read_file(file, &size);
-+	if (!buf)
-+		return -ENOMEM;
++	ret = efi_load_image(file, &loaded_image, &handle);
++	if (ret)
++		return ret;
 +
-+	exe = efi_allocate_pages(&mem, size, EFI_ALLOCATE_ANY_PAGES,
-+				 EFI_LOADER_CODE);
-+	if (!exe) {
-+		pr_err("Failed to allocate pages for image\n");
-+		ret = -ENOMEM;
-+		goto free_buf;
-+	}
-+
-+	memcpy(exe, buf, size);
-+
-+	efiret = BS->load_image(false, efi_parent_image, efi_device_path, exe,
-+				size, &handle);
-+	if (EFI_ERROR(efiret)) {
-+		ret = -efi_errno(efiret);
-+		pr_err("failed to LoadImage: %s\n", efi_strerror(efiret));
-+		goto free_mem;
-+	}
-+
-+	efiret = BS->open_protocol(handle, &efi_loaded_image_protocol_guid,
-+				   (void **)loaded_image, efi_parent_image,
-+				   NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
-+	if (EFI_ERROR(efiret)) {
-+		ret = -efi_errno(efiret);
-+		pr_err("failed to OpenProtocol: %s\n", efi_strerror(efiret));
-+		BS->unload_image(handle);
-+		goto free_mem;
-+	}
-+
-+	*h = handle;
-+	free(buf);
-+
-+	return 0;
-+
-+free_mem:
-+	efi_free_pages(exe, size);
-+free_buf:
-+	free(buf);
-+
-+	return ret;
++	return efi_execute_image(handle, loaded_image, filetype);
 +}
 +
 +typedef void(*handover_fn)(void *image, struct efi_system_table *table,
-+		struct x86_setup_header *header);
++			   struct x86_setup_header *header);
 +
 +static inline void linux_efi_handover(efi_handle_t handle,
-+		struct x86_setup_header *header)
++				      struct x86_setup_header *header)
 +{
 +	handover_fn handover;
 +	uintptr_t addr;
@@ -364,14 +252,13 @@ index 000000000000..6d6ecbf2e49a
 +	struct efi_loaded_image *loaded_image;
 +	struct x86_setup_header *image_header, *boot_header;
 +
-+	ret = efi_load_file_image(data->os_file, &loaded_image, &handle);
++	ret = efi_load_image(data->os_file, &loaded_image, &handle);
 +	if (ret)
 +		return ret;
 +
 +	image_header = (struct x86_setup_header *)loaded_image->image_base;
 +
-+	if (image_header->boot_flag != 0xAA55 ||
-+	    image_header->header != 0x53726448 ||
++	if (!is_x86_setup_header(image_header) ||
 +	    image_header->version < 0x20b ||
 +	    !image_header->relocatable_kernel) {
 +		pr_err("Not a valid kernel image!\n");
@@ -431,237 +318,15 @@ index 000000000000..6d6ecbf2e49a
 +	return 0;
 +}
 +
-+static int efi_load_os(struct efi_image_data *e)
-+{
-+	return efi_load_file_image(e->data->os_file,
-+		&e->loaded_image, &e->handle);
-+}
-+
-+static void efi_unload_os(struct efi_image_data *e)
-+{
-+	BS->close_protocol(e->handle, &efi_loaded_image_protocol_guid,
-+				 efi_parent_image, NULL);
-+
-+	BS->unload_image(e->handle);
-+	efi_free_pages(efi_phys_to_virt(e->image_res.base),
-+				 e->image_res.size);
-+}
-+
-+static int efi_load_ramdisk(struct efi_image_data *e)
-+{
-+	void *vmem, *tmp = NULL;
-+	efi_physical_addr_t mem;
-+	efi_status_t efiret = EFI_SUCCESS;
-+	const void *initrd;
-+	unsigned long initrd_size;
-+	int ret;
-+
-+	if (!e->data->initrd_file)
-+		return 0;
-+
-+	pr_info("Loading ramdisk from '%s'\n", e->data->initrd_file);
-+	tmp = read_file(e->data->initrd_file, &initrd_size);
-+	if (!tmp || initrd_size <= 0) {
-+		pr_err("Failed to read initrd from file: %s\n",
-+			e->data->initrd_file);
-+		return -EINVAL;
-+	}
-+	initrd = tmp;
-+
-+	efiret = BS->allocate_pool(EFI_LOADER_DATA,
-+			sizeof(struct efi_mem_resource),
-+			(void **)&e->initrd_res);
-+	if (EFI_ERROR(efiret) || !e->initrd_res) {
-+		ret = -efi_errno(efiret);
-+		pr_err("Failed to allocate initrd %s/n", efi_strerror(efiret));
-+		goto free_mem;
-+	}
-+
-+	vmem = efi_allocate_pages(&mem, initrd_size,
-+				 EFI_ALLOCATE_MAX_ADDRESS, EFI_LOADER_DATA);
-+	if (!vmem) {
-+		pr_err("Failed to allocate pages for initrd data\n");
-+		ret = -ENOMEM;
-+		goto free_pool;
-+	}
-+
-+	memcpy(vmem, (void *)initrd, initrd_size);
-+	e->initrd_res->base = (uint64_t)mem;
-+	e->initrd_res->size = (uint64_t)initrd_size;
-+
-+	if (IS_ENABLED(CONFIG_EFI_INITRD_INSTALL)) {
-+		efiret = BS->install_configuration_table(
-+			&efi_linux_initrd_media_guid,
-+			(void *)e->initrd_res);
-+		if (EFI_ERROR(efiret)) {
-+			ret = -efi_errno(efiret);
-+			pr_err("Failed to install INITRD %s/n",
-+					efi_strerror(efiret));
-+			goto free_pages;
-+		}
-+	} else {
-+		ret = efi_initrd_register(vmem, initrd_size);
-+		if (ret) {
-+			pr_err("Failed to register INITRD %s/n",
-+				strerror(efiret));
-+			goto free_pages;
-+		}
-+	}
-+
-+	free(tmp);
-+
-+	return 0;
-+
-+free_pages:
-+	efi_free_pages(vmem, initrd_size);
-+free_pool:
-+	BS->free_pool(e->initrd_res);
-+free_mem:
-+	free(tmp);
-+
-+	return ret;
-+}
-+
-+static void efi_unload_ramdisk(struct efi_image_data *e)
-+{
-+
-+	if (IS_ENABLED(CONFIG_EFI_INITRD_INSTALL))
-+		BS->install_configuration_table(
-+			&efi_linux_initrd_media_guid, NULL);
-+	else
-+		efi_initrd_unregister();
-+
-+	efi_free_pages(efi_phys_to_virt(e->initrd_res->base),
-+				 e->initrd_res->size);
-+
-+	BS->free_pool(e->initrd_res);
-+	e->initrd_res = NULL;
-+}
-+
-+static int efi_load_fdt(struct efi_image_data *e)
-+{
-+	efi_status_t efiret = EFI_SUCCESS;
-+	efi_physical_addr_t mem;
-+	void *vmem, *tmp = NULL;
-+	const void *of_tree;
-+	unsigned long of_size;
-+	int ret;
-+
-+	if (IS_ENABLED(CONFIG_EFI_FDT_FORCE))
-+		return 0;
-+
-+	if (!e->data->oftree_file)
-+		return 0;
-+
-+	pr_info("Loading devicetree from '%s'\n", e->data->oftree_file);
-+	tmp = read_file(e->data->oftree_file, &of_size);
-+	if (!tmp || of_size <= 0) {
-+		pr_err("Failed to read initrd from file: %s\n",
-+			e->data->initrd_file);
-+		return -EINVAL;
-+	}
-+	of_tree = tmp;
-+
-+	vmem = efi_allocate_pages(&mem, SZ_128K,
-+				 EFI_ALLOCATE_ANY_PAGES,
-+				 EFI_ACPI_RECLAIM_MEMORY);
-+	if (!vmem) {
-+		pr_err("Failed to allocate pages for FDT\n");
-+		ret = -ENOMEM;
-+		goto free_file;
-+	}
-+
-+	memcpy(vmem, of_tree, of_size);
-+
-+	efiret = BS->install_configuration_table(&efi_fdt_guid,
-+			(void *)mem);
-+	if (EFI_ERROR(efiret)) {
-+		pr_err("Failed to install FDT %s/n", efi_strerror(efiret));
-+		ret = -efi_errno(efiret);
-+		goto free_mem;
-+	}
-+
-+	e->oftree_res.base = mem;
-+	e->oftree_res.size = SZ_128K;
-+
-+	free(tmp);
-+
-+	return 0;
-+
-+free_mem:
-+	efi_free_pages(vmem, SZ_128K);
-+free_file:
-+	free(tmp);
-+
-+	return ret;
-+}
-+
-+static void efi_unload_fdt(struct efi_image_data *e)
-+{
-+	BS->install_configuration_table(&efi_fdt_guid, NULL);
-+
-+	efi_free_pages(efi_phys_to_virt(e->oftree_res.base),
-+				 e->oftree_res.size);
-+}
-+
-+static int do_bootm_efi_stub(struct image_data *data)
-+{
-+	struct efi_image_data e = { .data = data };
-+	enum filetype type;
-+	int ret = 0;
-+
-+	ret = efi_load_os(&e);
-+	if (ret)
-+		return ret;
-+
-+	ret = efi_load_fdt(&e);
-+	if (ret)
-+		goto unload_os;
-+
-+	ret = efi_load_ramdisk(&e);
-+	if (ret)
-+		goto unload_oftree;
-+
-+	type = file_detect_type(e.loaded_image->image_base, PAGE_SIZE);
-+	ret = efi_execute_image(e.handle, e.loaded_image, type);
-+	if (ret)
-+		goto unload_ramdisk;
-+
-+	return 0;
-+
-+unload_ramdisk:
-+	if (e.initrd_res)
-+		efi_unload_ramdisk(&e);
-+unload_oftree:
-+	efi_unload_fdt(&e);
-+unload_os:
-+	efi_unload_os(&e);
-+	return ret;
-+}
-+
 +static struct image_handler efi_handle_tr = {
 +	.name = "EFI Application",
 +	.bootm = do_bootm_efi,
 +	.filetype = filetype_exe,
 +};
 +
-+static struct image_handler efi_arm64_handle_tr = {
-+	.name = "EFI ARM64 Linux kernel",
-+	.bootm = do_bootm_efi_stub,
-+	.filetype = filetype_arm64_efi_linux_image,
-+};
-+
 +static int efi_execute(struct binfmt_hook *b, char *file, int argc, char **argv)
 +{
-+	int ret;
-+	efi_handle_t handle;
-+	struct efi_loaded_image *loaded_image;
-+
-+	ret = efi_load_file_image(file, &loaded_image, &handle);
-+	if (ret)
-+		return ret;
-+
-+	return efi_execute_image(handle, loaded_image, b->type);
++	return efi_do_execute_image(b->type, file);
 +}
 +
 +static struct binfmt_hook binfmt_efi_hook = {
@@ -702,29 +367,383 @@ index 000000000000..6d6ecbf2e49a
 +	if (IS_ENABLED(CONFIG_X86))
 +		register_image_handler(&non_efi_handle_linux_x86);
 +
-+	if (IS_ENABLED(CONFIG_ARM64)) {
-+		register_image_handler(&efi_arm64_handle_tr);
++	if (IS_ENABLED(CONFIG_ARM64))
 +		binfmt_register(&binfmt_arm64_efi_hook);
-+	}
 +
 +	return 0;
 +}
 +late_efi_initcall(efi_register_image_handler);
-diff --git a/lib/Kconfig b/lib/Kconfig
-index d07e2f3b6959..89e95d202c2c 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -121,6 +121,10 @@ config FSL_QE_FIRMWARE
- 	select CRC32
- 	bool
+diff --git a/efi/payload/image.c b/efi/payload/image.c
+index 33c5e18dac27..5b0a0ac199c0 100644
+--- a/efi/payload/image.c
++++ b/efi/payload/image.c
+@@ -8,10 +8,7 @@
+ #include <clock.h>
+ #include <common.h>
+ #include <linux/sizes.h>
+-#include <linux/ktime.h>
+ #include <memory.h>
+-#include <command.h>
+-#include <magicvar.h>
+ #include <init.h>
+ #include <driver.h>
+ #include <io.h>
+@@ -19,63 +16,15 @@
+ #include <malloc.h>
+ #include <string.h>
+ #include <linux/err.h>
+-#include <boot.h>
+-#include <bootm.h>
++#include <bootargs.h>
+ #include <fs.h>
+ #include <libfile.h>
+-#include <binfmt.h>
+ #include <wchar.h>
+ #include <efi/efi-payload.h>
+ #include <efi/efi-device.h>
  
-+config FDT_PADDING
-+	int "FDT padding size for fixups"
-+	default 4096
+-struct linux_kernel_header {
+-	/* first sector of the image */
+-	uint8_t code1[0x0020];
+-	uint16_t cl_magic;		/**< Magic number 0xA33F */
+-	uint16_t cl_offset;		/**< The offset of command line */
+-	uint8_t code2[0x01F1 - 0x0020 - 2 - 2];
+-	uint8_t setup_sects;		/**< The size of the setup in sectors */
+-	uint16_t root_flags;		/**< If the root is mounted readonly */
+-	uint16_t syssize;		/**< obsolete */
+-	uint16_t swap_dev;		/**< obsolete */
+-	uint16_t ram_size;		/**< obsolete */
+-	uint16_t vid_mode;		/**< Video mode control */
+-	uint16_t root_dev;		/**< Default root device number */
+-	uint16_t boot_flag;		/**< 0xAA55 magic number */
+-
+-	/* second sector of the image */
+-	uint16_t jump;			/**< Jump instruction (this is code!) */
+-	uint32_t header;		/**< Magic signature "HdrS" */
+-	uint16_t version;		/**< Boot protocol version supported */
+-	uint32_t realmode_swtch;	/**< Boot loader hook */
+-	uint16_t start_sys;		/**< The load-low segment (obsolete) */
+-	uint16_t kernel_version;	/**< Points to kernel version string */
+-	uint8_t type_of_loader;		/**< Boot loader identifier */
+-	uint8_t loadflags;		/**< Boot protocol option flags */
+-	uint16_t setup_move_size;	/**< Move to high memory size */
+-	uint32_t code32_start;		/**< Boot loader hook */
+-	uint32_t ramdisk_image;		/**< initrd load address */
+-	uint32_t ramdisk_size;		/**< initrd size */
+-	uint32_t bootsect_kludge;	/**< obsolete */
+-	uint16_t heap_end_ptr;		/**< Free memory after setup end */
+-	uint8_t ext_loader_ver;		/**< boot loader's extension of the version number */
+-	uint8_t ext_loader_type;	/**< boot loader's extension of its type */
+-	uint32_t cmd_line_ptr;		/**< Points to the kernel command line */
+-	uint32_t initrd_addr_max;	/**< Highest address for initrd */
+-	uint32_t kernel_alignment;	/**< Alignment unit required by the kernel */
+-	uint8_t relocatable_kernel;	/** */
+-	uint8_t min_alignment;		/** */
+-	uint16_t xloadflags;		/** */
+-	uint32_t cmdline_size;		/** */
+-	uint32_t hardware_subarch;	/** */
+-	uint64_t hardware_subarch_data;	/** */
+-	uint32_t payload_offset;	/** */
+-	uint32_t payload_length;	/** */
+-	uint64_t setup_data;		/** */
+-	uint64_t pref_address;		/** */
+-	uint32_t init_size;		/** */
+-	uint32_t handover_offset;	/** */
+-} __attribute__ ((packed));
++#include "image.h"
++#include "setup_header.h"
+ 
+ static void *efi_read_file(const char *file, size_t *size)
+ {
+@@ -122,8 +71,8 @@ static void efi_free_file(void *_mem, size_t size)
+ 		BS->free_pages(mem, DIV_ROUND_UP(size, EFI_PAGE_SIZE));
+ }
+ 
+-static int efi_load_image(const char *file, struct efi_loaded_image **loaded_image,
+-		efi_handle_t *h)
++int efi_load_image(const char *file, struct efi_loaded_image **loaded_image,
++		   efi_handle_t *h)
+ {
+ 	void *exe;
+ 	size_t size;
+@@ -158,10 +107,7 @@ static int efi_load_image(const char *file, struct efi_loaded_image **loaded_ima
+ 
+ static bool is_linux_image(enum filetype filetype, const void *base)
+ {
+-	const struct linux_kernel_header *hdr = base;
+-
+-	if (IS_ENABLED(CONFIG_X86) &&
+-	    hdr->boot_flag == 0xAA55 && hdr->header == 0x53726448)
++	if (IS_ENABLED(CONFIG_X86) && is_x86_setup_header(base))
+ 		return true;
+ 
+ 	if (IS_ENABLED(CONFIG_ARM64) &&
+@@ -171,18 +117,13 @@ static bool is_linux_image(enum filetype filetype, const void *base)
+ 	return false;
+ }
+ 
+-static int efi_execute_image(enum filetype filetype, const char *file)
++int efi_execute_image(efi_handle_t handle,
++		      struct efi_loaded_image *loaded_image,
++		      enum filetype filetype)
+ {
+-	efi_handle_t handle;
+-	struct efi_loaded_image *loaded_image;
+ 	efi_status_t efiret;
+ 	const char *options;
+ 	bool is_driver;
+-	int ret;
+-
+-	ret = efi_load_image(file, &loaded_image, &handle);
+-	if (ret)
+-		return ret;
+ 
+ 	is_driver = (loaded_image->image_code_type == EFI_BOOT_SERVICES_CODE) ||
+ 		(loaded_image->image_code_type == EFI_RUNTIME_SERVICES_CODE);
+@@ -215,154 +156,3 @@ static int efi_execute_image(enum filetype filetype, const char *file)
+ 
+ 	return -efi_errno(efiret);
+ }
+-
+-typedef void(*handover_fn)(void *image, struct efi_system_table *table,
+-		struct linux_kernel_header *header);
+-
+-static inline void linux_efi_handover(efi_handle_t handle,
+-		struct linux_kernel_header *header)
+-{
+-	handover_fn handover;
+-	uintptr_t addr;
+-
+-	addr = header->code32_start + header->handover_offset;
+-	if (IS_ENABLED(CONFIG_X86_64))
+-		addr += 512;
+-
+-	handover = efi_phys_to_virt(addr);
+-	handover(handle, efi_sys_table, header);
+-}
+-
+-static int do_bootm_efi(struct image_data *data)
+-{
+-	void *tmp;
+-	void *initrd = NULL;
+-	size_t size;
+-	efi_handle_t handle;
+-	int ret;
+-	const char *options;
+-	struct efi_loaded_image *loaded_image;
+-	struct linux_kernel_header *image_header, *boot_header;
+-
+-	ret = efi_load_image(data->os_file, &loaded_image, &handle);
+-	if (ret)
+-		return ret;
+-
+-	image_header = (struct linux_kernel_header *)loaded_image->image_base;
+-
+-	if (image_header->boot_flag != 0xAA55 ||
+-	    image_header->header != 0x53726448 ||
+-	    image_header->version < 0x20b ||
+-	    !image_header->relocatable_kernel) {
+-		pr_err("Not a valid kernel image!\n");
+-		BS->unload_image(handle);
+-		return -EINVAL;
+-	}
+-
+-	boot_header = xmalloc(0x4000);
+-	memset(boot_header, 0, 0x4000);
+-	memcpy(boot_header, image_header, sizeof(*image_header));
+-
+-	/* Refer to Linux kernel commit a27e292b8a54
+-	 * ("Documentation/x86/boot: Reserve type_of_loader=13 for barebox")
+-	 */
+-	boot_header->type_of_loader = 0x13;
+-
+-	if (data->initrd_file) {
+-		tmp = read_file(data->initrd_file, &size);
+-		initrd = xmemalign(PAGE_SIZE, PAGE_ALIGN(size));
+-		memcpy(initrd, tmp, size);
+-		memset(initrd + size, 0, PAGE_ALIGN(size) - size);
+-		free(tmp);
+-		boot_header->ramdisk_image = efi_virt_to_phys(initrd);
+-		boot_header->ramdisk_size = PAGE_ALIGN(size);
+-	}
+-
+-	options = linux_bootargs_get();
+-	if (options) {
+-		boot_header->cmd_line_ptr = efi_virt_to_phys(options);
+-		boot_header->cmdline_size = strlen(options);
+-	}
+-
+-	boot_header->code32_start = efi_virt_to_phys(loaded_image->image_base +
+-			(image_header->setup_sects+1) * 512);
+-
+-	if (bootm_verbose(data)) {
+-		printf("\nStarting kernel at 0x%p", loaded_image->image_base);
+-		if (data->initrd_file)
+-			printf(", initrd at 0x%08x",
+-			       boot_header->ramdisk_image);
+-		printf("...\n");
+-	}
+-
+-	if (data->dryrun) {
+-		BS->unload_image(handle);
+-		free(boot_header);
+-		free(initrd);
+-		return 0;
+-	}
+-
+-	efi_set_variable_usec("LoaderTimeExecUSec", &efi_systemd_vendor_guid,
+-			      ktime_to_us(ktime_get()));
+-
+-	shutdown_barebox();
+-	linux_efi_handover(handle, boot_header);
+-
+-	return 0;
+-}
+-
+-static struct image_handler efi_handle_tr = {
+-	.name = "EFI Application",
+-	.bootm = do_bootm_efi,
+-	.filetype = filetype_exe,
+-};
+-
+-static int efi_execute(struct binfmt_hook *b, char *file, int argc, char **argv)
+-{
+-	return efi_execute_image(b->type, file);
+-}
+-
+-static struct binfmt_hook binfmt_efi_hook = {
+-	.type = filetype_exe,
+-	.hook = efi_execute,
+-};
+-
+-static int do_bootm_mbr(struct image_data *data)
+-{
+-	/* On x86, Linux kernel images have a MBR magic at the end of
+-	 * the first 512 byte sector and a PE magic if they're EFI-stubbed.
+-	 * The PE magic has precedence over the MBR, so if we arrive in
+-	 * this boot handler, the kernel has no EFI stub.
+-	 *
+-	 * Print a descriptive error message instead of "no image handler
+-	 * found for image type MBR sector".
+-	 */
+-	pr_err("Can't boot MBR sector: Is CONFIG_EFI_STUB disabled in your Linux kernel config?\n");
+-	return -ENOSYS;
+-}
+-
+-static struct image_handler non_efi_handle_linux_x86 = {
+-	.name = "non-EFI x86 Linux Image",
+-	.bootm = do_bootm_mbr,
+-	.filetype = filetype_mbr,
+-};
+-
+-static struct binfmt_hook binfmt_arm64_efi_hook = {
+-	.type = filetype_arm64_efi_linux_image,
+-	.hook = efi_execute,
+-};
+-
+-static int efi_register_image_handler(void)
+-{
+-	register_image_handler(&efi_handle_tr);
+-	binfmt_register(&binfmt_efi_hook);
+-
+-	if (IS_ENABLED(CONFIG_X86))
+-		register_image_handler(&non_efi_handle_linux_x86);
+-
+-	if (IS_ENABLED(CONFIG_ARM64))
+-		binfmt_register(&binfmt_arm64_efi_hook);
+-
+-	return 0;
+-}
+-late_efi_initcall(efi_register_image_handler);
+diff --git a/efi/payload/image.h b/efi/payload/image.h
+new file mode 100644
+index 000000000000..673b21db839a
+--- /dev/null
++++ b/efi/payload/image.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __EFI_PAYLOAD_IMAGE_H__
++#define __EFI_PAYLOAD_IMAGE_H__
 +
- config LIBFDT
- 	bool
- 
++#include <efi/types.h>
++
++int efi_load_image(const char *file, struct efi_loaded_image **loaded_image,
++		   efi_handle_t *h);
++
++int efi_execute_image(efi_handle_t handle,
++		      struct efi_loaded_image *loaded_image,
++		      enum filetype filetype);
++
++#endif
+diff --git a/efi/payload/setup_header.h b/efi/payload/setup_header.h
+new file mode 100644
+index 000000000000..4f094b844415
+--- /dev/null
++++ b/efi/payload/setup_header.h
+@@ -0,0 +1,63 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __EFI_PAYLOAD_SETUP_HEADER_H__
++#define __EFI_PAYLOAD_SETUP_HEADER_H__
++
++#include <linux/types.h>
++
++struct x86_setup_header {
++	/* first sector of the image */
++	uint8_t code1[0x0020];
++	uint16_t cl_magic;		/**< Magic number 0xA33F */
++	uint16_t cl_offset;		/**< The offset of command line */
++	uint8_t code2[0x01F1 - 0x0020 - 2 - 2];
++	uint8_t setup_sects;		/**< The size of the setup in sectors */
++	uint16_t root_flags;		/**< If the root is mounted readonly */
++	uint16_t syssize;		/**< obsolete */
++	uint16_t swap_dev;		/**< obsolete */
++	uint16_t ram_size;		/**< obsolete */
++	uint16_t vid_mode;		/**< Video mode control */
++	uint16_t root_dev;		/**< Default root device number */
++	uint16_t boot_flag;		/**< 0xAA55 magic number */
++
++	/* second sector of the image */
++	uint16_t jump;			/**< Jump instruction (this is code!) */
++	uint32_t header;		/**< Magic signature "HdrS" */
++	uint16_t version;		/**< Boot protocol version supported */
++	uint32_t realmode_swtch;	/**< Boot loader hook */
++	uint16_t start_sys;		/**< The load-low segment (obsolete) */
++	uint16_t kernel_version;	/**< Points to kernel version string */
++	uint8_t type_of_loader;		/**< Boot loader identifier */
++	uint8_t loadflags;		/**< Boot protocol option flags */
++	uint16_t setup_move_size;	/**< Move to high memory size */
++	uint32_t code32_start;		/**< Boot loader hook */
++	uint32_t ramdisk_image;		/**< initrd load address */
++	uint32_t ramdisk_size;		/**< initrd size */
++	uint32_t bootsect_kludge;	/**< obsolete */
++	uint16_t heap_end_ptr;		/**< Free memory after setup end */
++	uint8_t ext_loader_ver;		/**< boot loader's extension of the version number */
++	uint8_t ext_loader_type;	/**< boot loader's extension of its type */
++	uint32_t cmd_line_ptr;		/**< Points to the kernel command line */
++	uint32_t initrd_addr_max;	/**< Highest address for initrd */
++	uint32_t kernel_alignment;	/**< Alignment unit required by the kernel */
++	uint8_t relocatable_kernel;	/** */
++	uint8_t min_alignment;		/** */
++	uint16_t xloadflags;		/** */
++	uint32_t cmdline_size;		/** */
++	uint32_t hardware_subarch;	/** */
++	uint64_t hardware_subarch_data;	/** */
++	uint32_t payload_offset;	/** */
++	uint32_t payload_length;	/** */
++	uint64_t setup_data;		/** */
++	uint64_t pref_address;		/** */
++	uint32_t init_size;		/** */
++	uint32_t handover_offset;	/** */
++} __attribute__ ((packed));
++
++static inline bool is_x86_setup_header(const void *base)
++{
++	const struct x86_setup_header *hdr = base;
++
++	return hdr->boot_flag == 0xAA55 && hdr->header == 0x53726448;
++}
++
++#endif
 -- 
 2.34.1
 
