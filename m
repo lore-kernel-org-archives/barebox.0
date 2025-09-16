@@ -1,57 +1,69 @@
-Delivery-date: Tue, 16 Sep 2025 07:32:42 +0200
+Delivery-date: Tue, 16 Sep 2025 08:29:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyOJ0-003ZzH-2w
+	id 1uyPBm-003asf-2X
 	for lore@lore.pengutronix.de;
-	Tue, 16 Sep 2025 07:32:42 +0200
+	Tue, 16 Sep 2025 08:29:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyOJ0-0007YX-BL
-	for lore@pengutronix.de; Tue, 16 Sep 2025 07:32:42 +0200
+	id 1uyPBm-0003so-60
+	for lore@pengutronix.de; Tue, 16 Sep 2025 08:29:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wp/a8Go7U7p30YRh4wMFf9cTJ590QoI4x5jeHQ3O4Jw=; b=t7p2GgosI3+IOfGWQ/eL5IQgDO
-	JnaVLM8Imbo52JAhNzkR79dP8x6G1lzOFaLov7arI/C2ca9Q+xdCqUXejS6yox8myXhHPrWL7YjBK
-	hpTfjhOOyusLEnBdGkSUdAfyT/r4E/bIdHKevODh26s3bo+9tJs8go80rtx9VtddFwIKDJ3uqx5PJ
-	e0Oi2vNugH/zK6TNbcid8ShgfQ2nY7iRlU9KJgHoCkg9SwvfRWsKWQz7CRuAdHj0JlOCbWTcSyznv
-	cweA8/7GEnxThNSA3cb53BTU1IE0MREH+9x50K784UaRGlmftoi3WizdOk0L38OeWm2W+eC0CHK0n
-	BWeuat9A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=34X74jrisEKXVvPKkEQ8qiNh9mcItcfCrrV7MoOSUTo=; b=G7zomcnAZQtO96z8TD9svf3FSB
+	gkfWsfuM6WmUheE6aBQDD0jmFBbGkgAQpQFvaR9roVNv11EvJDVrs6HFmfJt+ozMqkgGIvbN172A4
+	df3BBefKPevy0jktK9/VHqyStJHbJTm9I7ymqOIX5/sPAkWWbkcqHHcgSKi9LMy6cmj9SaqPkNEtN
+	Ynzs1ywpxEX+EHPROXkfpbqVWQ9C7nb7Tpe6I+6/l6UZuTtae3Z+JdqzNQtNLBBojmFvRWn7RumiI
+	NM55kCvzsHZmx2pSAL3fokizUyix3ZRoUT+Nho5HuWsAlAovMHq+WLdPUTx2MRuhrEXl7HFXb1gFB
+	89Bg5dfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyOIW-00000006p5Y-2YtI;
-	Tue, 16 Sep 2025 05:32:12 +0000
+	id 1uyPB9-00000006usN-2Yiw;
+	Tue, 16 Sep 2025 06:28:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyOIT-00000006p53-1kXn
+	id 1uyPB6-00000006urY-1FAz
 	for barebox@lists.infradead.org;
-	Tue, 16 Sep 2025 05:32:10 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uyOIR-0007QI-6f; Tue, 16 Sep 2025 07:32:07 +0200
-Message-ID: <fef65104-2910-419f-aae7-bc41c08d4950@pengutronix.de>
-Date: Tue, 16 Sep 2025 07:32:06 +0200
+	Tue, 16 Sep 2025 06:28:37 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uyPB3-0003lM-DH; Tue, 16 Sep 2025 08:28:33 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uyPB3-001Xig-0j;
+	Tue, 16 Sep 2025 08:28:33 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1uyPB3-00BT0v-0Q;
+	Tue, 16 Sep 2025 08:28:33 +0200
+Date: Tue, 16 Sep 2025 08:28:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <aMkDkV7PauVJ5CQ7@pengutronix.de>
+References: <20250915144119.1828166-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: chalianis1@gmail.com, s.hauer@pengutronix.de, a.fatoum@barebox.org
-Cc: barebox@lists.infradead.org
-References: <20250916045500.907542-1-chalianis1@gmail.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250916045500.907542-1-chalianis1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250915144119.1828166-1-s.hauer@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250915_223209_464884_319958EE 
-X-CRM114-Status: GOOD (  19.42  )
+X-CRM114-CacheID: sfid-20250915_232836_390243_0CEC79F3 
+X-CRM114-Status: GOOD (  20.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,71 +81,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v4 01/12] ARM: cpu: allow selecting CPU_V7/CPU_V8 directly
+Subject: Re: [PATCH] usb: dwc3: remove non existent Kconfig option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
-
-On 16.09.25 06:54, chalianis1@gmail.com wrote:
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Mon, Sep 15, 2025 at 04:41:19PM +0200, Sascha Hauer wrote:
+> CONFIG_USB_ROLE_SWITCH does not exist in barebox. Remove the test for
+> this option.
 > 
-> We currently lack a way to build a barebox EFI payload on ARM without
-> enabling some other subarchitecture. As CONFIG_EFI_PAYLOAD has a global
-> effect and adds EFI stubs to all enabled board, an EFI subarchitecture
-> doesn't fit into our current model.
-> 
-> Instead, let's make it possible to enable either CONFIG_CPU_V8 or
-> CONFIG_CPU_V7 directly.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Link: https://lore.barebox.org/20250904081626.93182-1-a.fatoum@pengutronix.de
+> Fixes: 5d01c33175 ("usb: dwc3: sync with Linux-6.3-rc2")
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Chali Anis <chalianis1@gmail.com>
-
-This patch is already upstream, so no need to resend. You can rebase the series
-on next and it should be dropped automatically.
-
-Also, did you intend to send this series 4 times? Unlike e.g. Github, sending
-a series multiple times, results in separate mail threads and doesn't update
-the original.
-
-I will ignore the older series and review this one as it's the most recent.
-
-Cheers,
-Ahmad
-
 > ---
->  arch/arm/cpu/Kconfig | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-> index e61bcadc8c35..fe0d1e470578 100644
-> --- a/arch/arm/cpu/Kconfig
-> +++ b/arch/arm/cpu/Kconfig
-> @@ -79,12 +79,15 @@ config CPU_V6
->  
->  # ARMv7
->  config CPU_V7
-> -	bool
-> +	bool "Generic ARMv7 support"
-> +	depends on 32BIT
->  	select CPU_32v7
->  
->  # ARMv8
->  config CPU_V8
-> -	bool
-> +	bool "Generic ARMv8 support"
-> +	default y
-> +	depends on 64BIT
->  	select CPU_64v8
->  	select ARM_EXCEPTIONS
->  	select GENERIC_FIND_NEXT_BIT
+>  drivers/usb/dwc3/core.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
+Stefan already fixed that. Dropped.
+
+Sascha
+
+> 
+> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+> index dfc9c85ad8..985213deb4 100644
+> --- a/drivers/usb/dwc3/core.c
+> +++ b/drivers/usb/dwc3/core.c
+> @@ -70,8 +70,7 @@ static int dwc3_get_dr_mode(struct dwc3 *dwc)
+>  		 * specified or set to OTG, then set the mode to peripheral.
+>  		 */
+>  		if (mode == USB_DR_MODE_OTG && !dwc->edev &&
+> -		    (!IS_ENABLED(CONFIG_USB_ROLE_SWITCH) ||
+> -		     !of_property_read_bool(dwc->dev->of_node, "usb-role-switch")) &&
+> +		    (!of_property_read_bool(dwc->dev->of_node, "usb-role-switch")) &&
+>  		    !DWC3_VER_IS_PRIOR(DWC3, 330A))
+>  			mode = USB_DR_MODE_PERIPHERAL;
+>  	}
+> -- 
+> 2.47.3
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
