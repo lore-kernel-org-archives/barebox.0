@@ -1,64 +1,61 @@
-Delivery-date: Tue, 16 Sep 2025 11:33:13 +0200
+Delivery-date: Tue, 16 Sep 2025 11:33:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyS3l-003dvF-2e
+	id 1uyS3o-003dvb-12
 	for lore@lore.pengutronix.de;
-	Tue, 16 Sep 2025 11:33:13 +0200
+	Tue, 16 Sep 2025 11:33:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyS3l-00055c-6l
-	for lore@pengutronix.de; Tue, 16 Sep 2025 11:33:13 +0200
+	id 1uyS3n-00055n-Hb
+	for lore@pengutronix.de; Tue, 16 Sep 2025 11:33:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Brs2ZGF5tRDJaqZso2t/QwQdu3SWnL7rVut0QK3Z5Ws=; b=ytNMyxX3iM+1g4bqYQHXzrB/26
-	IXaBswxw5Hvcm+nrvmRsFwOgy8HflNqr+enZ/MKw0xmgW1R/DEqHPzwdX4SeJgtD70+dhOO0SJjSx
-	zbE2gh0ymoFengeRDFNwPGap8dPLecL79m2lkSNjhkv5hHJbDqpdC2tS4jWkbLtTE8HyEVK4GlVk1
-	o9m0cvw4qRWLY6LfWb57Sjv4cNkojHPyviyGFg569wkjhdgSUmt8TeJ2K2ahO2lcIhGMpaat+2T72
-	YRWPZe1utrEJysG8GQkjT5fjVAON/5PJSuCgjvJDEtXDJaGDSS9iDLbkRE7n67gWXfZVcj7dT3MGf
-	iIznoOnQ==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=x3Vl921E1MbjTJIXP+lV/qkT0++aT9vo2ltbw3i9Auc=; b=O6VUhrAL7SMBdDvWTOXoNsEiu2
+	MzFHu1oLxWm/TRffsrGdsP1Ndc2kkRCmm2cv88hw/Jt0qdDe3Egg8vdOaG3Vwk75po95Ya0W7msyN
+	mvBpDWqQ7/FuksDOkJlkoJDUroP1eua2o1G6mUnTjbbdLOBsPGv1smBhkadEMNNrtZ//6NIpW0zyj
+	4rA/0flzjjn0L3LSp13ZXe8kKk3LLr5LlTifhdADuYvPHe48MKs8O6N42M/+9dS7m5+S2NSVFXFrN
+	FDJJZPp7lElTCXirj4RXblyGvpj7BQvXaj8XKn9MGL0CsE2ADAAPAL9EzqigOzo0mKmoMiDrgWSX8
+	WkJnJ5CA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyS3H-00000007ODP-3AYE;
-	Tue, 16 Sep 2025 09:32:43 +0000
+	id 1uyS3J-00000007ODe-0Ca3;
+	Tue, 16 Sep 2025 09:32:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyS3F-00000007OCg-1Z3v
+	id 1uyS3G-00000007OCj-20sj
 	for barebox@lists.infradead.org;
-	Tue, 16 Sep 2025 09:32:42 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uyS3C-0004yK-Fu; Tue, 16 Sep 2025 11:32:38 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uyS3C-001Z8a-0x;
-	Tue, 16 Sep 2025 11:32:38 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uyS3C-00000002zKc-0n5L;
-	Tue, 16 Sep 2025 11:32:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 16 Sep 2025 11:32:37 +0200
-Message-ID: <20250916093237.712407-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Tue, 16 Sep 2025 09:32:43 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uyS3D-0004yk-NG; Tue, 16 Sep 2025 11:32:39 +0200
+Message-ID: <a0f39695-1318-4359-84b1-8f8a0260a2b2@pengutronix.de>
+Date: Tue, 16 Sep 2025 11:32:38 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ =?UTF-8?Q?Christian_Thie=C3=9Fen_via_B4_Relay?=
+ <devnull+christian.thiessen.airbus.com@kernel.org>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+ =?UTF-8?Q?Christian_Thie=C3=9Fen?= <christian.thiessen@airbus.com>
+References: <20250903-fec_imx-fix-enodev-v1-1-0dd4c42fc293@airbus.com>
+ <aL_0o86zNN1vRH4f@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <aL_0o86zNN1vRH4f@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250916_023241_412651_89E0966C 
-X-CRM114-Status: GOOD (  16.04  )
+X-CRM114-CacheID: sfid-20250916_023242_521370_55022DF2 
+X-CRM114-Status: GOOD (  37.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,114 +77,204 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] drivers: treewide: Do not use NULL as driver_data
+Subject: Re: [PATCH] fec_imx: Fix ENODEV in fec_probe on i.MX27
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Several drivers in the tree use an enum for the chip type casted to int
-as driver_data. This comes with the problem that device_get_match_data()
-returns NULL for these devices and a potential error check bails out
-then.
+Hi,
 
-This patch changes the enums used by the drivers to start from 1 instead
-of 0 so that the return value of device_get_match_data() can safely
-checked for being NULL.
+On 9/9/25 11:34 AM, Sascha Hauer wrote:
+> On Wed, Sep 03, 2025 at 04:46:05PM +0200, Christian Thießen via B4 Relay wrote:
+>> From: Christian Thießen <christian.thiessen@airbus.com>
+>>
+>> The fec_imx driver stores an enum fec_type value in the match data
+>> pointer. When retrieving this value in fec_probe(), it handles
+>> FEC_TYPE_IMX27 (which is 0) like an error result from
+>> device_get_match_data and returns -ENODEV.
+>>
+>> To be able to differentiate NULL from errors, introduce a new function
+>> device_get_match_data_default which returns its defaultval argument
+>> instead of NULL in case of errors.
+>> Add an FEC_TYPE_COUNT value to the fec_type enum.
+>> In fec_probe, pass FEC_TYPE_COUNT as defaultval and return -ENODEV for
+>> all type values greater or equal to that.
+>>
+>> Fixes: 20d87123a6 ("treewide: replace dev_get_drvdata with        device_get_match_data")
+>> Signed-off-by: Christian Thießen <christian.thiessen@airbus.com>
+>> ---
+>> Hi again,
+>>
+>> this patch addresses the issue discussed in
+>> https://github.com/barebox/barebox/issues/40 ("fec_imx (and possibly
+>> others): Probe fails with ENODEV").
+>>
+>> Cheers,
+>> Christian
+>> ---
+>>  drivers/base/driver.c | 13 +++++++++++++
+>>  drivers/net/fec_imx.c | 12 +++++-------
+>>  drivers/net/fec_imx.h |  1 +
+>>  include/driver.h      | 10 ++++++++++
+>>  4 files changed, 29 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+>> index 61118385f1df0f8d36208d236be66b077fa5e54d..614c3c26b04c6f252e3970e014a43bae6a1d9c2b 100644
+>> --- a/drivers/base/driver.c
+>> +++ b/drivers/base/driver.c
+>> @@ -690,6 +690,19 @@ const void *device_get_match_data(struct device *dev)
+>>  }
+>>  EXPORT_SYMBOL(device_get_match_data);
+>>  
+>> +const void *device_get_match_data_default(struct device *dev,
+>> +					  const void *defaultval)
+>> +{
+>> +	if (dev->of_id_entry)
+>> +		return dev->of_id_entry->data;
+>> +
+>> +	if (dev->id_entry)
+>> +		return (const void *)dev->id_entry->driver_data;
+>> +
+>> +	return defaultval;
+>> +}
+>> +EXPORT_SYMBOL(device_get_match_data_default);
+> 
+> This more goes to Ahmad, because he suggested this solution:
+> 
+> I don't like this very much. With this solution the driver writer must
+> still know that he has to call device_get_match_data_default() instead
+> of plain device_get_match_data().
 
-Most drivers do not check the return value anyway, but fec_imx.c does
-which causes the driver to no longer work on i.MX27. This issue is fixed
-here.
+For drivers that are already written, it's easier to designate an error
+code that shouldn't happen than shift around all existing values and
+hope you don't miss anything.
 
-Fixes: Fixes: 20d87123a6 ("treewide: replace dev_get_drvdata with device_get_match_data")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/nand/raw/nand_mxs.c | 2 +-
- drivers/net/fec_imx.h           | 2 +-
- drivers/net/fsl-fman.c          | 2 +-
- drivers/regulator/fan53555.c    | 2 +-
- include/linux/mfd/axp20x.h      | 2 +-
- include/mfd/bd71837.h           | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+> In other words, the driver writer must be aware of this problem, so he
+> could equally well avoid 0 as valid value and declare
+> 
+> enum fec_type {
+> 	FEC_TYPE_IMX27 = 1,
+> 	...
+> };
 
-diff --git a/drivers/mtd/nand/raw/nand_mxs.c b/drivers/mtd/nand/raw/nand_mxs.c
-index 02f8546b87..4293f4e0e0 100644
---- a/drivers/mtd/nand/raw/nand_mxs.c
-+++ b/drivers/mtd/nand/raw/nand_mxs.c
-@@ -38,7 +38,7 @@
- #include "internals.h"
- 
- enum gpmi_type {
--	GPMI_MXS,
-+	GPMI_MXS = 1,
- 	GPMI_IMX6,
- };
- 
-diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
-index 1aaff87fdd..33b8db2745 100644
---- a/drivers/net/fec_imx.h
-+++ b/drivers/net/fec_imx.h
-@@ -114,7 +114,7 @@ struct buffer_descriptor {
- };
- 
- enum fec_type {
--	FEC_TYPE_IMX27,
-+	FEC_TYPE_IMX27 = 1,
- 	FEC_TYPE_IMX28,
- 	FEC_TYPE_IMX6,
- };
-diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
-index bde054d751..ac716c7468 100644
---- a/drivers/net/fsl-fman.c
-+++ b/drivers/net/fsl-fman.c
-@@ -123,7 +123,7 @@ struct fsl_fman_mdio {
- };
- 
- enum fman_port_type {
--	FMAN_PORT_TYPE_RX = 0,	/* RX Port */
-+	FMAN_PORT_TYPE_RX = 1,	/* RX Port */
- 	FMAN_PORT_TYPE_TX,	/* TX Port */
- };
- 
-diff --git a/drivers/regulator/fan53555.c b/drivers/regulator/fan53555.c
-index 2dcc6f5394..7477543915 100644
---- a/drivers/regulator/fan53555.c
-+++ b/drivers/regulator/fan53555.c
-@@ -44,7 +44,7 @@ enum {
- };
- 
- enum fan53555_vendor {
--	FAN53526_VENDOR_FAIRCHILD = 0,
-+	FAN53526_VENDOR_FAIRCHILD = 1,
- 	FAN53555_VENDOR_FAIRCHILD,
- 	FAN53555_VENDOR_ROCKCHIP,	/* RK8600, RK8601 */
- 	RK8602_VENDOR_ROCKCHIP,		/* RK8602, RK8603 */
-diff --git a/include/linux/mfd/axp20x.h b/include/linux/mfd/axp20x.h
-index 93d303c459..0ba4568faf 100644
---- a/include/linux/mfd/axp20x.h
-+++ b/include/linux/mfd/axp20x.h
-@@ -11,7 +11,7 @@
- #include <poweroff.h>
- 
- enum axp20x_variants {
--	AXP152_ID = 0,
-+	AXP152_ID = 1,
- 	AXP202_ID,
- 	AXP209_ID,
- 	AXP221_ID,
-diff --git a/include/mfd/bd71837.h b/include/mfd/bd71837.h
-index 4e285a647a..ab4cc57c88 100644
---- a/include/mfd/bd71837.h
-+++ b/include/mfd/bd71837.h
-@@ -7,7 +7,7 @@
- #define BD718XX_REGULATOR_DRIVER "bd718x7_regulator"
- 
- enum {
--	ROHM_CHIP_TYPE_BD71837 = 0,
-+	ROHM_CHIP_TYPE_BD71837 = 1,
- 	ROHM_CHIP_TYPE_BD71847,
- 	ROHM_CHIP_TYPE_BD70528,
- 	ROHM_CHIP_TYPE_AMOUNT
+Linux already has device_get_match_data() with the same semantics we
+have in barebox now, so if we will not run into additional issues when
+code is ported from Linux.
+
+> in this case. I have looked up all cases that pass an integer into data
+> in the tree and these are not many, we could change them easily.
+> 
+> Another possibility would be to return an error pointer instead of NULL
+> from device_get_match_data(), but that would require some refactoring
+> throughout the tree.
+
+That would change the semantics of the function different to what's done
+in Linux and we don't want that.
+
+> Unless Ahmad objects I would prefer converting the in tree users not to
+> use zero.
+
+I still think the approach here is easier to reason about for converting
+drivers, but if you have invested the time to shift around enumerations
+in all the drivers, we can go with that too.
+
+> Ahmad is on holiday this week, so it'll likely take some time, but
+> anyway, we'll solve this issue before the next release.
+
+Yes, priority is getting this fixed in the next release.
+
+Thanks,
+Ahmad
+
+> 
+> Sascha
+> 
+> 
+>> +
+>>  static void device_set_deferred_probe_reason(struct device *dev,
+>>  					     const struct va_format *vaf)
+>>  {
+>> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+>> index 8474e6d5be9c6225af5708d21b0249b2618d36f6..fac190e6ea51950ed6085264e12617969847acbf 100644
+>> --- a/drivers/net/fec_imx.c
+>> +++ b/drivers/net/fec_imx.c
+>> @@ -763,20 +763,18 @@ static int fec_probe(struct device *dev)
+>>  	struct fec_priv *fec;
+>>  	void *base;
+>>  	int ret;
+>> -	enum fec_type type;
+>> -	void const *type_v;
+>> +	uintptr_t type_v;
+>>  	int phy_reset;
+>>  	u32 msec = 1, phy_post_delay = 0;
+>>  	u32 reg;
+>>  
+>> -	type_v = device_get_match_data(dev);
+>> -	if (!type_v)
+>> +	type_v = (uintptr_t)device_get_match_data_default(dev,
+>> +		(const void *)FEC_TYPE_COUNT);
+>> +	if (type_v >= FEC_TYPE_COUNT)
+>>  		return -ENODEV;
+>>  
+>> -	type = (uintptr_t)(type_v);
+>> -
+>>  	fec = xzalloc(sizeof(*fec));
+>> -	fec->type = type;
+>> +	fec->type = type_v;
+>>  	fec->dev = dev;
+>>  	edev = &fec->edev;
+>>  	dev->priv = fec;
+>> diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
+>> index 1aaff87fddfb44cf558436ab4a846757c6cd51aa..9549dab0f8e88288bd9fe3a02ff8bd5573147842 100644
+>> --- a/drivers/net/fec_imx.h
+>> +++ b/drivers/net/fec_imx.h
+>> @@ -117,6 +117,7 @@ enum fec_type {
+>>  	FEC_TYPE_IMX27,
+>>  	FEC_TYPE_IMX28,
+>>  	FEC_TYPE_IMX6,
+>> +	FEC_TYPE_COUNT,
+>>  };
+>>  
+>>  enum fec_clock {
+>> diff --git a/include/driver.h b/include/driver.h
+>> index c130a3cd63fd5e6dc365a33c765a22dc4e2ca90a..223799294fc0e32ceb13fc5bda2e3b8a78d71647 100644
+>> --- a/include/driver.h
+>> +++ b/include/driver.h
+>> @@ -650,6 +650,16 @@ int cdevfs_del_partition(struct cdev *cdev);
+>>   */
+>>  const void *device_get_match_data(struct device *dev);
+>>  
+>> +/**
+>> + * device_get_match_data_default - get driver match data associated with device
+>> + * @dev: device instance
+>> + * @defaultval: Value to return if no match data is associated with dev
+>> + *
+>> + * Returns match data on success and defaultval otherwise
+>> + */
+>> +const void *device_get_match_data_default(struct device *dev,
+>> +					  const void *defaultval);
+>> +
+>>  int device_match_of_modalias(struct device *dev, const struct driver *drv);
+>>  
+>>  struct device *device_find_child(struct device *parent, void *data,
+>>
+>> ---
+>> base-commit: 7689314d0a78605e7d4a0c3ce4953d9d768aa343
+>> change-id: 20250903-fec_imx-fix-enodev-f7a9087054c8
+>>
+>> Best regards,
+>> -- 
+>> Christian Thießen <christian.thiessen@airbus.com>
+>>
+>>
+>>
+>>
+> 
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
