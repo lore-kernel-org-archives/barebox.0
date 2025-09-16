@@ -1,60 +1,59 @@
-Delivery-date: Tue, 16 Sep 2025 09:59:32 +0200
+Delivery-date: Tue, 16 Sep 2025 10:02:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyQb6-003cCs-2E
+	id 1uyQe0-003cF6-22
 	for lore@lore.pengutronix.de;
-	Tue, 16 Sep 2025 09:59:32 +0200
+	Tue, 16 Sep 2025 10:02:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyQb5-0002Ly-U8
-	for lore@pengutronix.de; Tue, 16 Sep 2025 09:59:32 +0200
+	id 1uyQdz-0003K9-WD
+	for lore@pengutronix.de; Tue, 16 Sep 2025 10:02:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=aTnt8BEWbWr5AX+Pp3uI/kdZxDLxXoy8nja0UAbXH/Y=; b=Cv+qUXlkDhsY7cHJ666NqeDNAm
-	P5dNDPoPlrmIPIj84NmrISRWyLJXI5arnC3uaFOkT1e2f6PFXzNcxsDg1zBOUAp6R4y9PIXkEsbHR
-	9xsMCId6Wqxm2Y3fIZuCHDSU+hV2+EY1b6LFYIZsn4+211/22jAMG2/CkhJFQq/xnKBAGHKt6qb09
-	D7StN0eBRmZef3Od9foydwjfJD0s6otVM4Pp0LlevjMMujl6TYgwUmwCXvpSpv/UxQbp/a4dltnwW
-	zOMFyy1Cu3EC+wdRwqqIXoaq6qm+GTccm6+8j+tdAqQGbALab/9tji5wLHm+qs/rQQBE5LTsUN6AN
-	3odUgiLQ==;
+	bh=DWEP9dJbfWs/qUTOVm0CbgCpsC/1BSEKUl2SAZAWdU8=; b=zQFBu+UHXolEECU4mUm1vAkdgb
+	3LcHY/pafs1HTTjBzlS6bdgjmYJ7o3RI7bOQze4aUALRa1zJnHh93lYwsPSEXUaw4ZoufymLTpRd3
+	LV5YbJewtqMX5Pb3qIku5KC/IDq8jvj3N373eGlKKMVurvgsQ0vpOhE7uAO3oYaN11QkqpuxA8bW5
+	XIJE9N+Tyho4q1rg3mECpr+UkjABje/NygFf5lia5OdtdMElYMELFRWGv/lKI8cWYlC2KFUT5zq0Y
+	kQGiaBg/u11f2HdKIhFEtyPYvhgzP04+yscTUXBj18NArZkTB80QjL+oX9W3iSyU14MPOcmyp/iKD
+	ncLxM/+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyQaZ-000000076Ej-0B3h;
-	Tue, 16 Sep 2025 07:58:59 +0000
+	id 1uyQdb-000000076tu-2NeJ;
+	Tue, 16 Sep 2025 08:02:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyQaW-000000076Db-3Cxp
+	id 1uyQdY-000000076t2-2iJe
 	for barebox@lists.infradead.org;
-	Tue, 16 Sep 2025 07:58:58 +0000
+	Tue, 16 Sep 2025 08:02:05 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1uyQaT-0002F2-OT; Tue, 16 Sep 2025 09:58:53 +0200
+	id 1uyQdX-000385-6p; Tue, 16 Sep 2025 10:02:03 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Tue, 16 Sep 2025 09:58:47 +0200
+Date: Tue, 16 Sep 2025 10:02:02 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250916-rk3588-rock5t-v1-1-95ac38397a16@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIALYYyWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDS0Mz3aJsY1MLC92i/ORs0xLd5FTLNLOUJKNUU4tEJaCegqLUtMwKsHn
- RsbW1ANqB68dfAAAA
-X-Change-ID: 20250916-rk3588-rock5t-ce9f6db2e58a
+Message-Id: <20250916-rockchip-cleanup-iram-v1-1-e6797d08f8dc@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAHkZyWgC/x3MQQqEMAxA0atI1hPQFoXOVcRFiFHDzNSSMiJI7
+ 25x+Rb/X5DFVDK8mwtMDs26x4ru1QBvFFdBnavBta5vQzeg7fzhTRPyVyj+E6rRD8nPJM57Lxy
+ gtslk0fP5jlMpNyImg8hnAAAA
+X-Change-ID: 20250916-rockchip-cleanup-iram-a3dae2333ec9
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
- Lucas Sinn <lucas.sinn@wolfvision.net>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250916_005856_848515_F67E7486 
-X-CRM114-Status: GOOD (  16.86  )
+X-CRM114-CacheID: sfid-20250916_010204_827057_F630993D 
+X-CRM114-Status: GOOD (  13.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,197 +75,95 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: rockchip: add support for Radxa ROCK 5T
+Subject: [PATCH] ARM: rockchip: cleanup iram handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Lucas Sinn <lucas.sinn@wolfvision.net>
+struct rockchip_scratch_space has grown and gained additional fields.
+While the scratch space for the iram is still at the start of the
+rockchip_scratch_space, it is actually just one field in the scratch
+space.
 
-Add basic support for the Radxa ROCK 5T.
+Explicitly store the iram to the iram field, and copy only the size of
+the iram field instead of the entire scratch space.
 
-Signed-off-by: Lucas Sinn <lucas.sinn@wolfvision.net>
+Explicitly pass the iram field when the iram should be parsed.
+
+Rename the field from irom to iram.
+
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/boards/radxa-rock5/board.c    |  9 ++++
- arch/arm/boards/radxa-rock5/lowlevel.c | 15 +++++++
- arch/arm/dts/Makefile                  |  4 +-
- arch/arm/dts/rk3588-rock-5t.dts        | 81 ++++++++++++++++++++++++++++++++++
- images/Makefile.rockchip               |  1 +
- 5 files changed, 109 insertions(+), 1 deletion(-)
+ arch/arm/mach-rockchip/rk3568.c | 2 +-
+ arch/arm/mach-rockchip/rk3576.c | 2 +-
+ arch/arm/mach-rockchip/rk3588.c | 2 +-
+ include/mach/rockchip/bootrom.h | 4 ++--
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boards/radxa-rock5/board.c b/arch/arm/boards/radxa-rock5/board.c
-index eab0c010400036f281beaa1c199cec8b8b841de2..4dfa7d500bed2ffdf8d487be606ce5b965783a6d 100644
---- a/arch/arm/boards/radxa-rock5/board.c
-+++ b/arch/arm/boards/radxa-rock5/board.c
-@@ -34,11 +34,20 @@ static const struct rock5_model rock5b = {
- 	.shortname = "rock5b",
- };
+diff --git a/arch/arm/mach-rockchip/rk3568.c b/arch/arm/mach-rockchip/rk3568.c
+index 75b0824479fb8f774b0d41137b25ddf90ea9a3df..5019ea03366b658b5d3f07d845ac2bb901af0ac7 100644
+--- a/arch/arm/mach-rockchip/rk3568.c
++++ b/arch/arm/mach-rockchip/rk3568.c
+@@ -142,7 +142,7 @@ void rk3568_lowlevel_init(void)
  
-+static const struct rock5_model rock5t = {
-+	.name = "Radxa ROCK5 Model T",
-+	.shortname = "rock5t",
-+};
-+
- static const struct of_device_id rock5_of_match[] = {
- 	{
- 		.compatible = "radxa,rock-5b",
- 		.data = &rock5b,
- 	},
-+	{
-+		.compatible = "radxa,rock-5t",
-+		.data = &rock5t,
-+	},
- 	{ /* sentinel */ },
- };
- 
-diff --git a/arch/arm/boards/radxa-rock5/lowlevel.c b/arch/arm/boards/radxa-rock5/lowlevel.c
-index 6f0ac732cc4573b6677a8001c71e89d7dce6270c..373cc1ba4e0bce84e70fff97581c95d4936d34af 100644
---- a/arch/arm/boards/radxa-rock5/lowlevel.c
-+++ b/arch/arm/boards/radxa-rock5/lowlevel.c
-@@ -9,6 +9,7 @@
- #include <mach/rockchip/rockchip.h>
- 
- extern char __dtb_rk3588_rock_5b_start[];
-+extern char __dtb_rk3588_rock_5t_start[];
- 
- ENTRY_FUNCTION(start_rock5b, r0, r1, r2)
+ int rk3568_init(void)
  {
-@@ -23,3 +24,17 @@ ENTRY_FUNCTION(start_rock5b, r0, r1, r2)
+-	rockchip_parse_bootrom_iram(rockchip_scratch_space());
++	rockchip_parse_bootrom_iram(rockchip_scratch_space()->iram);
  
- 	rk3588_barebox_entry(__dtb_rk3588_rock_5b_start);
+ 	return 0;
  }
-+
-+ENTRY_FUNCTION(start_rock5t, r0, r1, r2)
-+{
-+	putc_ll('>');
-+
-+	if (current_el() == 3)
-+		relocate_to_adr_full(RK3588_BAREBOX_LOAD_ADDRESS);
-+	else
-+		relocate_to_current_adr();
-+
-+	setup_c();
-+
-+	rk3588_barebox_entry(__dtb_rk3588_rock_5t_start);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 021573a266ca30d46ce0a2dc9083a61461949540..c26b6d9e66c5281d9955e33cdb223b7c9c0c453d 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -125,7 +125,9 @@ lwl-$(CONFIG_MACH_PROTONIC_STM32MP13) += \
- 	stm32mp133c-prihmb.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK3) += rk3568-rock-3a.dtb.o
--lwl-$(CONFIG_MACH_RADXA_ROCK5) += rk3588-rock-5b.dtb.o
-+lwl-$(CONFIG_MACH_RADXA_ROCK5) += \
-+	rk3588-rock-5b.dtb.o \
-+	rk3588-rock-5t.dtb.o
- lwl-$(CONFIG_MACH_RADXA_CM3) += rk3566-cm3-io.dtb.o
- lwl-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
- lwl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
-diff --git a/arch/arm/dts/rk3588-rock-5t.dts b/arch/arm/dts/rk3588-rock-5t.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..35bdeb949d01391a26c9c88d637c09ec2e8f2a4d
---- /dev/null
-+++ b/arch/arm/dts/rk3588-rock-5t.dts
-@@ -0,0 +1,81 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+
-+/dts-v1/;
-+
-+#include <arm64/rockchip/rk3588-rock-5t.dts>
-+#include "rk3588.dtsi"
-+#include <dt-bindings/pinctrl/rockchip.h>
-+#include <dt-bindings/gpio/gpio.h>
-+
-+/ {
-+	barebox,deep-probe;
-+
-+	aliases {
-+		mmc0 = &sdhci;
-+		mmc1 = &sdmmc;
-+	};
-+
-+	chosen: chosen {
-+		environment-emmc {
-+			compatible = "barebox,environment";
-+			device-path = &environment_emmc;
-+			status = "disabled";
-+		};
-+
-+		environment-sd {
-+			compatible = "barebox,environment";
-+			device-path = &environment_sd;
-+			status = "disabled";
-+		};
-+	};
-+};
-+
-+&sdhci {
-+	partitions {
-+		compatible = "barebox,fixed-partitions";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		environment_emmc: partition@408000 {
-+			label = "barebox-environment";
-+			reg = <0x0 0x408000 0x0 0x8000>;
-+		};
-+	};
-+};
-+
-+&sdmmc {
-+	partitions {
-+		compatible = "barebox,fixed-partitions";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		environment_sd: partition@408000 {
-+			label = "barebox-environment";
-+			reg = <0x0 0x408000 0x0 0x8000>;
-+		};
-+	};
-+};
-+
-+&pcie3x4 {
-+	/* Does not work in barebox (missing phy driver) */
-+	status = "disabled";
-+};
-+
-+&pcie30phy {
-+	status = "disabled";
-+};
-+
-+&pcie2x1l0 {
-+	/* Does not work in barebox */
-+	status = "disabled";
-+};
-+
-+&usb_host0_ehci {
-+	/* Does not work in barebox (missing phy driver) */
-+	status = "disabled";
-+};
-+
-+&usb_host1_ehci {
-+	/* Does not work in barebox (missing phy driver) */
-+	status = "disabled";
-+};
-diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
-index 72a224959d4b08e7661dd05524bf49f9698ccf25..da24cb15b186380d03ea3bd3a9b07bfff8abb837 100644
---- a/images/Makefile.rockchip
-+++ b/images/Makefile.rockchip
-@@ -46,6 +46,7 @@ $(call build_rockchip_image, CONFIG_MACH_PROTONIC_MECSBC, start_mecsbc, protonic
- $(call build_rockchip_image, CONFIG_MACH_PROTONIC_PRTPUK, start_prtpuk, protonic-prtpuk/sdram-init.bin, prtpuk)
- $(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK3, start_rock3a, radxa-rock3/sdram-init.bin, rock3a)
- $(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK5, start_rock5b, radxa-rock5/sdram-init.bin, rock5b)
-+$(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK5, start_rock5t, radxa-rock5/sdram-init.bin, rock5t)
- $(call build_rockchip_image, CONFIG_MACH_RADXA_CM3, start_radxa_cm3_io, radxa-cm3/sdram-init.bin, radxa-cm3-io)
- $(call build_rockchip_image, CONFIG_MACH_WOLFVISION_PF5, start_rk3568_wolfvision_pf5, wolfvision-pf5/sdram-init.bin, rk3568-wolfvision-pf5)
- $(call build_rockchip_image, CONFIG_MACH_XUNLONG_ORANGEPI_5_PLUS, start_orangepi_5_plus, xunlong-orangepi-5-plus/sdram-init.bin, orangepi_5_plus)
+diff --git a/arch/arm/mach-rockchip/rk3576.c b/arch/arm/mach-rockchip/rk3576.c
+index 320d0ec9a536aaa88b44f6e022d6ee990da4209b..28655a25269e466048addf5544d722945c942af2 100644
+--- a/arch/arm/mach-rockchip/rk3576.c
++++ b/arch/arm/mach-rockchip/rk3576.c
+@@ -14,7 +14,7 @@ void rk3576_lowlevel_init(void)
+ 
+ int rk3576_init(void)
+ {
+-	rockchip_parse_bootrom_iram(rockchip_scratch_space());
++	rockchip_parse_bootrom_iram(rockchip_scratch_space()->iram);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-rockchip/rk3588.c b/arch/arm/mach-rockchip/rk3588.c
+index 25f14812967f85b27c2a58564d904b33208f87c7..e0841154ed9ff1e37a1ac65c129d282d8e371ef6 100644
+--- a/arch/arm/mach-rockchip/rk3588.c
++++ b/arch/arm/mach-rockchip/rk3588.c
+@@ -14,7 +14,7 @@ void rk3588_lowlevel_init(void)
+ 
+ int rk3588_init(void)
+ {
+-	rockchip_parse_bootrom_iram(rockchip_scratch_space());
++	rockchip_parse_bootrom_iram(rockchip_scratch_space()->iram);
+ 
+ 	return 0;
+ }
+diff --git a/include/mach/rockchip/bootrom.h b/include/mach/rockchip/bootrom.h
+index 586008a78505943c968301a9ce90ed5e4aa9b18b..fc63e793783bc7706235fb01abdb6acd64c3afa6 100644
+--- a/include/mach/rockchip/bootrom.h
++++ b/include/mach/rockchip/bootrom.h
+@@ -11,7 +11,7 @@
+ #include <pbl.h>
+ 
+ struct rockchip_scratch_space {
+-	u32 irom[16];
++	u32 iram[16];
+ 	struct optee_header optee_hdr;
+ 	/* FDT needs an 8 byte alignment */
+ 	u8 fdt[CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE] __aligned(8);
+@@ -23,7 +23,7 @@ extern struct rockchip_scratch_space *rk_scratch;
+ static inline void rockchip_store_bootrom_iram(const void *iram)
+ {
+ 	if (rk_scratch)
+-		memcpy(rk_scratch, iram, sizeof(struct rockchip_scratch_space));
++		memcpy(rk_scratch->iram, iram, sizeof(rk_scratch->iram));
+ }
+ 
+ static inline const struct rockchip_scratch_space *rockchip_scratch_space(void)
 
 ---
 base-commit: f3be3a8e9ae884bdfb116238e9049b1eb2759810
-change-id: 20250916-rk3588-rock5t-ce9f6db2e58a
+change-id: 20250916-rockchip-cleanup-iram-a3dae2333ec9
 
 Best regards,
 -- 
