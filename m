@@ -1,95 +1,94 @@
-Delivery-date: Tue, 16 Sep 2025 02:17:41 +0200
+Delivery-date: Tue, 16 Sep 2025 02:17:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyJO9-003V1a-25
+	id 1uyJOA-003V1m-0M
 	for lore@lore.pengutronix.de;
-	Tue, 16 Sep 2025 02:17:41 +0200
+	Tue, 16 Sep 2025 02:17:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyJO8-00017D-Ha
-	for lore@pengutronix.de; Tue, 16 Sep 2025 02:17:41 +0200
+	id 1uyJO9-00017b-C1
+	for lore@pengutronix.de; Tue, 16 Sep 2025 02:17:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GiDFQtpbElp+Wl6KEsZdZObJNYnQXvAtA5+3YTgncTo=; b=DrjdAo2smypqreJ0hUj/OWRqbQ
-	HXpnTPZpJI9kLLjKnw/gTIkg5mDAQymwLaePFic3wuv0snEuKs70esBnB1836rDJ2pB+dEpSYHAcM
-	RlfhQQN0EmngsC0Tadw4tUvvIRsziXNLPVqoBOci8cegkXZQBPcpfijKtMC6r5dhEfjRmCZUtPvE7
-	YcNaCRq10X7XCehj3e6gs3iZ5LNZOiv0DG5EpO72Lx1wEbp9yO1ubelExNiRR75AgG5F8cszw6r6i
-	D0lRDIbQH+SmzaEtXy4theRl8Cm9L3AbgHL1f9ox8C8f5a3I0JVk2K1ZuRZjiAFLCfgaPz3BGXQf3
-	coSZIfaQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=hiGpOwuJ1owhSHf82WdYAJtsixw8nr2GwZ4mn2LD7dk=; b=ZmvDfPHcac0pM8rf4ovhOqCCDF
+	Tif5aLAefYu+vGQPDifAgmihsT2IWZoFxSnXRnLcnDyhtLPphCXc9/8dhgLy/qyDyf0MeX1urgsRs
+	jfCX6mZDOEk992D8opNEDkHRHvLzi+ILG+7UO0P38VsSRozagAAOGtVDxPY41b0jKhlfPmcVRetZk
+	Ezb25AODHZBwbvp8qgv+Qc0cm+d8RgvcS26Nf1Hskf+cMPHmS/TwrHOw32NP4Ub682uTt2q/ZX1Mh
+	E4/dy2Z8FqsATnHhuYAsRncrxh4iuoEpUKn6Io+LyEkGTMn9tOS8lftJyYVv6iy6D4blLYWyY9n3H
+	FjdTjBmg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyJNa-00000005yWU-2qjp;
-	Tue, 16 Sep 2025 00:17:06 +0000
-Received: from mail-qk1-x735.google.com ([2607:f8b0:4864:20::735])
+	id 1uyJNR-00000005yQd-3MKu;
+	Tue, 16 Sep 2025 00:16:57 +0000
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyJNX-00000005yTx-3uO6
+	id 1uyJNP-00000005yQ4-1xoD
 	for barebox@lists.infradead.org;
-	Tue, 16 Sep 2025 00:17:05 +0000
-Received: by mail-qk1-x735.google.com with SMTP id af79cd13be357-8112c7d196eso515051785a.3
-        for <barebox@lists.infradead.org>; Mon, 15 Sep 2025 17:17:03 -0700 (PDT)
+	Tue, 16 Sep 2025 00:16:56 +0000
+Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-4b5e88d9994so47173241cf.1
+        for <barebox@lists.infradead.org>; Mon, 15 Sep 2025 17:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757981823; x=1758586623; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GiDFQtpbElp+Wl6KEsZdZObJNYnQXvAtA5+3YTgncTo=;
-        b=dHie3MQG4zrFbkgoE01E+Sw2mTkJWpj8hge1g5cxd/mP8f+jBCPzGvTJUL2xIvNCYG
-         GjM66aHwKIwCDZgaQtDdMiU2w5csZdWdpZTsg+6RV6n3cFjEtkAyPb1XcjSv1lG2+AAx
-         l9XeQ8HJ84zTCiHdbLKXz6tnNuyKXMDGL45neQJ1W7z8Ftfl19YCzReSWkRDTVOwIs8D
-         9+4sGl7hVbkvJIsy5vUgHhiQARN3sNNm1x7aLVCKLHG2kl0ZZYDTUdLJwjScyzYppf3O
-         r69d9C/qGzYCtz3bo+gVLe9FbuBmc/jmhhUCHcpPJGM9OppvOIY2TTMO/gRA6AWY5UcY
-         Yp1g==
+        d=gmail.com; s=20230601; t=1757981814; x=1758586614; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hiGpOwuJ1owhSHf82WdYAJtsixw8nr2GwZ4mn2LD7dk=;
+        b=PEFy975A9Wg6YHUAsVrMZjGTwWCfNwM6uRXzg4FEMxs+DpvwER3dOhBoi7wA9LHQdx
+         BqEYFc75g8fxkfwFTVANBfDULqiNmYq/6Pe0CXECWAAxKs/JKEqo4s1xrvAD+huZx3jn
+         LAkrWp9qJDfR2nmbcCBqov+KaRKg1lCfWRxyxba7w683wkENvsvYS2PembBhNNExLFFU
+         MlBI3HOC3vecpGZ4rl8dFBUqvgdlSPTr+cyCxEewdNDl94gvxo0cZVJvXUIeLNf3wZoC
+         IojvXjC5tMzLJGowsop+JvvxAliIv9LQHaL3K3rJKt3ZEo7wNQ51YZyP//pHqe5Lyg7k
+         JjQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757981823; x=1758586623;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GiDFQtpbElp+Wl6KEsZdZObJNYnQXvAtA5+3YTgncTo=;
-        b=EOz5bdsQaOcNblf3q9BDaLdvEuirdEX2JPwFC/MvkFankoueBfcrZQvA81a4dbkxSo
-         6m/MvRWjC2DFH7/yZNsBARKYp1uEru33QgcEHVBor+ItpSlTjs/C/liS75JXCI7OghBi
-         izkZ88aT6H/EQbvGFWLVM0Et1901e7r3vHm+BKRhp8RAXgQX7yZbKILodF0S5eR4cMtA
-         Wbhsmpqo2hqQRFP25H5Jp3Alz86Oy66IYfCl6B6Rgxa58xCgcLQMwmUz/rhJopxAO+c9
-         BHNz/8xS8l1TXsTfsMF9OoT2OzM571uEDyp0CZV0GGAsmyLt6YRE/cod9kixGcF4cNFV
-         zh0g==
-X-Gm-Message-State: AOJu0YwOHXnIhN2OqRIRm1Vj5l5E2vRE9/Zm4AtewCcAptjA6bYsgjdH
-	Tf9Va2iHoaNCaWCMR5nJNImiI0IxYhgP775gwPYjj0OaQbpNoFvbRtFI
-X-Gm-Gg: ASbGncsUqPVa5UyYK5mYVUJR7Wce617oJPOk+IRGWtmN0qd/sv1h3y+tKCtAxkp/EzH
-	FI3dkkIQDM3sWjZR7u60xgyLASWvsOMWReZS2YVEB7+woaPB4uMjir5jUV7IDrTsXAGJ9gVI3vI
-	aRMsY48/nNrVyzksoW9cj6ANmUulD327O9nk9WbRBkPPrxhdtGjRItdRGiY+hZ9YMxU/ndnjG0C
-	CUNqexaKMt8gRiQl0JWL0tOCE/PIXvX222BVVnHGdbbvxQZxUGVxf8zwc9m+11Go9wjXkq8O9uf
-	SEl2zgVsvlV7JHr68/cq0x0LBCBrIS+i5MtSHJiqrAh88DEz7V9amo3ZDWXxo6jERpAyuKLI6YL
-	wF3+MedfUzLIcwv2uNnQpPHx21aUxd5m4NYIn6L7CPSJXJJd7QDnE7kpsPH+cPX0mjbGStBH3AX
-	VSScykFzBqsZ0XFQ/4YYcxpOsArw==
-X-Google-Smtp-Source: AGHT+IHXWgFbIR7EJRy1Ge3jP1qHH08O9sqZVbRQdLESZPfRrp+pE24X5imCSZE/NLDP2tjxPG1UoA==
-X-Received: by 2002:a05:620a:a1ce:b0:813:31ad:bf34 with SMTP id af79cd13be357-82400944aecmr1420399285a.51.1757981822730;
-        Mon, 15 Sep 2025 17:17:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757981814; x=1758586614;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hiGpOwuJ1owhSHf82WdYAJtsixw8nr2GwZ4mn2LD7dk=;
+        b=fg2HWzyXC0SRniti3uLcvvg/1Msw5BPqRHx0e3GfMtjzmZ6NzpJxLcf18+fXM301Ov
+         78Dch3Ud22Y1PVLwekOCen8pbT+2o/ePT+40NTixyfMURf04LXzDxbWv2kVOK+Dm3kCi
+         Po14OPp4K+5rQ77f/hL7rrNdg2sHBNuCAROquw5pLo1QgQFqCHJ1DlLQYAb+sUtCJeSy
+         2kkypIoqQ+e5dTfWgOPwqSTozsYkzUkWym2xRaiXrWsLclJso7K6dX7F/XywZklECTJO
+         aXYgGDh8bCvcBGxtVI11P1W/v3rx/r21erDF4kaxQNPKLGGHDQ/PKNRa0rrNJhRQT7t4
+         lbqw==
+X-Gm-Message-State: AOJu0Yz8rSG8fSPMSrSf4UhzZjS6aVmuwFgaF0ranMgROuba9gfPL8vi
+	q+gYxaeZGvzKnMOomKDzgDzsGsc8oDG295igpOrrcgbGwwLUViyuKLYq
+X-Gm-Gg: ASbGncu1Bsd4gIUjzu5ut+f+zNctMFy7RkQltaf1oauED4at8r742KV2vCIos+ke764
+	1/TvpNUXDE4HXIMwIaKlymWgXTJyvkcngcPGG/CAIKiXnEeZf3ft86D6NzmcFhqZSM/EaB/8Rd4
+	QE8DLk794gqoh8GYkdZUXh2Nndx2YyzDwX+QUWfYtGWhcBCa9qqTB7JJX8Ad5s1akKDywGa/bpR
+	ExXr1vFYdOY3zA2dVM//7NmHeZMbP4XdrHOMUxxmdokPKI1v5jj9Vegd9psjRA2yG3Pxl84wI45
+	flO1IuqGwmfItjxhb61iIDDk8NmkXN6M8Z1mUfXrPYWy/Tv4R/BEL6vlN16BtUCR0CzTtx9NPrS
+	PP2yIJO+g8sDvEPctqREAHdD5SrpTmiL0wyH78r5oHK2vWr8wxwTdi8UA4U+TFftsO+3Udbh7Sz
+	JKfcMaUBHBuGYoittz5KGJPgSv0w==
+X-Google-Smtp-Source: AGHT+IHtJlbWDbys/H5RiONh/Ij3LsmTaEcLsmmGFrBEvKJJJW03iVHPB2h1bmAy4XqBVjzWMmAXCw==
+X-Received: by 2002:a05:622a:56:b0:4b7:a885:9659 with SMTP id d75a77b69052e-4b7a8859f30mr56660761cf.41.1757981813830;
+        Mon, 15 Sep 2025 17:16:53 -0700 (PDT)
 Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:db10:d083:890b:6e1f])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b639cb4212sm73732431cf.19.2025.09.15.17.17.01
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b639cb4212sm73732431cf.19.2025.09.15.17.16.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 17:17:02 -0700 (PDT)
+        Mon, 15 Sep 2025 17:16:53 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de,
 	a.fatoum@barebox.org
 Cc: barebox@lists.infradead.org,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	Chali Anis <chalianis1@gmail.com>
-Date: Mon, 15 Sep 2025 20:16:49 -0400
-Message-Id: <20250916001649.591989-7-chalianis1@gmail.com>
+Date: Mon, 15 Sep 2025 20:16:43 -0400
+Message-Id: <20250916001649.591989-1-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250916001649.591989-1-chalianis1@gmail.com>
-References: <20250916001649.591989-1-chalianis1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250915_171703_999977_9F877FBE 
-X-CRM114-Status: GOOD (  18.95  )
+X-CRM114-CacheID: sfid-20250915_171655_515732_ECB0E068 
+X-CRM114-Status: UNSURE (   8.99  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -112,212 +111,50 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 7/7] efi: payload: initrd: implement efi initrd media protocol.
+Subject: [PATCH 1/7] ARM: cpu: allow selecting CPU_V7/CPU_V8 directly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Chali Anis <chalianis1@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Add the ability to install an initrd media protocol from an initrd file
-or a fitImage, support both the initrd media protocol or installing the
-initramfs directly to efi like what linux do.
+We currently lack a way to build a barebox EFI payload on ARM without
+enabling some other subarchitecture. As CONFIG_EFI_PAYLOAD has a global
+effect and adds EFI stubs to all enabled board, an EFI subarchitecture
+doesn't fit into our current model.
 
+Instead, let's make it possible to enable either CONFIG_CPU_V8 or
+CONFIG_CPU_V7 directly.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20250904081626.93182-1-a.fatoum@pengutronix.de
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- efi/guid.c                |   7 +++
- efi/payload/efi-initrd.c  | 123 ++++++++++++++++++++++++++++++++++++++
- include/efi.h             |   4 ++
- include/efi/efi-payload.h |   3 +
- 4 files changed, 137 insertions(+)
- create mode 100644 efi/payload/efi-initrd.c
+ arch/arm/cpu/Kconfig | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/efi/guid.c b/efi/guid.c
-index ef230a2b2403..7b572acb768b 100644
---- a/efi/guid.c
-+++ b/efi/guid.c
-@@ -44,6 +44,7 @@ const efi_guid_t efi_load_file_protocol_guid = EFI_LOAD_FILE_PROTOCOL_GUID;
- const efi_guid_t efi_load_file2_protocol_guid = EFI_LOAD_FILE2_PROTOCOL_GUID;
- const efi_guid_t efi_device_path_utilities_protocol_guid =
- 	EFI_DEVICE_PATH_UTILITIES_PROTOCOL_GUID;
-+const efi_guid_t efi_linux_initrd_media_guid = EFI_LINUX_INITRD_MEDIA_GUID;
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index e61bcadc8c35..fe0d1e470578 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -79,12 +79,15 @@ config CPU_V6
  
- #define EFI_GUID_STRING(guid, short, long) do {	\
- 	if (!efi_guidcmp(guid, *g))		\
-@@ -128,5 +129,11 @@ const char *efi_guid_string(efi_guid_t *g)
- 	EFI_GUID_STRING(EFI_ISCSIDXE_INF_GUID, "IScsiDxe.inf", "EFI IScsiDxe.inf File GUID");
- 	EFI_GUID_STRING(EFI_VLANCONFIGDXE_INF_GUID, "VlanConfigDxe.inf", "EFI VlanConfigDxe.inf File GUID");
+ # ARMv7
+ config CPU_V7
+-	bool
++	bool "Generic ARMv7 support"
++	depends on 32BIT
+ 	select CPU_32v7
  
-+	/* FDT */
-+	EFI_GUID_STRING(EFI_DEVICE_TREE_GUID, "DeviceTree", "EFI Device Tree GUID");
-+
-+	/* Ramdisk */
-+	EFI_GUID_STRING(EFI_LINUX_INITRD_MEDIA_GUID, "Initrd Media", "EFI Linux Initrd Media GUID");
-+
- 	return "unknown";
- }
-diff --git a/efi/payload/efi-initrd.c b/efi/payload/efi-initrd.c
-new file mode 100644
-index 000000000000..633fbc29c137
---- /dev/null
-+++ b/efi/payload/efi-initrd.c
-@@ -0,0 +1,123 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * efi-initrd.c - barebox EFI payload support
-+ *
-+ * Copyright (c) 2025 Anis Chali <chalianis1@gmail.com>
-+ */
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <linux/hw_random.h>
-+#include <efi.h>
-+#include <efi/efi-device.h>
-+#include <efi/device-path.h>
-+#include <efi/efi-payload.h>
-+
-+static efi_status_t EFIAPI efi_initrd_load_file2(
-+	struct efi_load_file_protocol *this, struct efi_device_path *file_path,
-+	bool boot_policy, unsigned long *buffer_size, void *buffer);
-+
-+static const struct {
-+	struct efi_device_path_vendor vendor;
-+	struct efi_device_path end;
-+} __packed initrd_dev_path = { { {
-+					 DEVICE_PATH_TYPE_MEDIA_DEVICE,
-+					 DEVICE_PATH_SUB_TYPE_VENDOR_PATH,
-+					 sizeof(initrd_dev_path.vendor),
-+				 },
-+				 EFI_LINUX_INITRD_MEDIA_GUID },
-+			       { DEVICE_PATH_TYPE_END, DEVICE_PATH_SUB_TYPE_END,
-+				 DEVICE_PATH_END_LENGTH } };
-+
-+static struct efi_device_path_memory *initrd_dev;
-+static efi_handle_t lf2_handle;
-+static struct efi_load_file_protocol efi_lf2_p = {
-+	.load_file = efi_initrd_load_file2
-+};
-+
-+static efi_status_t EFIAPI efi_initrd_load_file2(
-+	struct efi_load_file_protocol *this, struct efi_device_path *file_path,
-+	bool boot_policy, unsigned long *buffer_size, void *buffer)
-+{
-+	size_t initrd_size;
-+
-+	if (!this || this != &efi_lf2_p || !buffer_size)
-+		return EFI_INVALID_PARAMETER;
-+
-+	if (file_path->type != initrd_dev_path.end.type ||
-+	    file_path->sub_type != initrd_dev_path.end.sub_type)
-+		return EFI_INVALID_PARAMETER;
-+
-+	if (boot_policy)
-+		return EFI_UNSUPPORTED;
-+
-+	initrd_size = initrd_dev->ending_address - initrd_dev->starting_address;
-+	if (!buffer || *buffer_size < initrd_size) {
-+		*buffer_size = initrd_size;
-+		return EFI_BUFFER_TOO_SMALL;
-+	}
-+
-+	else {
-+		memcpy(buffer, (void *)(uintptr_t)initrd_dev->starting_address,
-+		       initrd_size);
-+		*buffer_size = initrd_size;
-+	}
-+
-+	return EFI_SUCCESS;
-+}
-+
-+int efi_initrd_register(void *initrd, size_t initrd_sz)
-+{
-+	efi_physical_addr_t mem;
-+	efi_status_t efiret;
-+	size_t sz;
-+	int ret;
-+
-+	sz = sizeof(struct efi_device_path_memory) +
-+	     sizeof(struct efi_device_path);
-+	efiret = BS->allocate_pool(EFI_BOOT_SERVICES_DATA, sz, (void **)&mem);
-+	if (EFI_ERROR(efiret)) {
-+		pr_err("Failed to allocate memory for INITRD %s\n",
-+		       efi_strerror(efiret));
-+		ret = -efi_errno(efiret);
-+		return ret;
-+	}
-+
-+	initrd_dev = efi_phys_to_virt(mem);
-+	initrd_dev->header.type = DEVICE_PATH_TYPE_HARDWARE_DEVICE;
-+	initrd_dev->header.sub_type = DEVICE_PATH_SUB_TYPE_MEMORY;
-+	initrd_dev->header.length = sizeof(struct efi_device_path_memory);
-+	initrd_dev->memory_type = EFI_LOADER_DATA;
-+	initrd_dev->starting_address = efi_virt_to_phys(initrd);
-+	initrd_dev->ending_address = efi_virt_to_phys(initrd) + initrd_sz;
-+
-+	memcpy(&initrd_dev[1], &initrd_dev_path.end, DEVICE_PATH_END_LENGTH);
-+
-+	efiret = BS->install_multiple_protocol_interfaces(
-+		&lf2_handle, &efi_load_file2_protocol_guid, &efi_lf2_p,
-+		&efi_device_path_protocol_guid, &initrd_dev_path, NULL);
-+	if (EFI_ERROR(efiret)) {
-+		pr_err("Failed to install protocols for INITRD %s\n",
-+		       efi_strerror(efiret));
-+		ret = -efi_errno(efiret);
-+		goto out;
-+	}
-+
-+	return 0;
-+out:
-+	BS->free_pool(efi_phys_to_virt(mem));
-+	return ret;
-+}
-+
-+void efi_initrd_unregister(void)
-+{
-+	if (!initrd_dev)
-+		return;
-+
-+	BS->uninstall_multiple_protocol_interfaces(
-+		lf2_handle, &efi_device_path_protocol_guid, &initrd_dev_path,
-+		&efi_load_file2_protocol_guid, &efi_lf2_p, NULL);
-+
-+	BS->free_pool(initrd_dev);
-+	initrd_dev = NULL;
-+}
-diff --git a/include/efi.h b/include/efi.h
-index 40b69fdb0188..bd339ea097c3 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -558,6 +558,9 @@ extern struct efi_runtime_services *RT;
- #define EFI_DRIVER_BINDING_PROTOCOL_GUID \
-     EFI_GUID(0x18a031ab, 0xb443, 0x4d1a, 0xa5, 0xc0, 0x0c, 0x09, 0x26, 0x1e, 0x9f, 0x71)
- 
-+#define EFI_LINUX_INITRD_MEDIA_GUID \
-+	EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
-+
- struct efi_driver_binding_protocol {
- 	efi_status_t (EFIAPI * supported)(
- 			struct efi_driver_binding_protocol *this,
-@@ -603,6 +606,7 @@ extern const efi_guid_t efi_guid_event_group_reset_system;
- extern const efi_guid_t efi_load_file_protocol_guid;
- extern const efi_guid_t efi_load_file2_protocol_guid;
- extern const efi_guid_t efi_device_path_utilities_protocol_guid;
-+extern const efi_guid_t efi_linux_initrd_media_guid;
- 
- struct efi_config_table {
- 	efi_guid_t guid;
-diff --git a/include/efi/efi-payload.h b/include/efi/efi-payload.h
-index fe45864dd8a7..d8e66a187a87 100644
---- a/include/efi/efi-payload.h
-+++ b/include/efi/efi-payload.h
-@@ -34,4 +34,7 @@ int efi_set_variable_usec(char *name, efi_guid_t *vendor, uint64_t usec);
- void *efi_earlymem_alloc(const struct efi_system_table *sys_table,
- 			 size_t *memsize, enum efi_memory_type mem_type);
- 
-+int efi_initrd_register(void *initrd, size_t initrd_size);
-+void efi_initrd_unregister(void);
-+
- #endif
+ # ARMv8
+ config CPU_V8
+-	bool
++	bool "Generic ARMv8 support"
++	default y
++	depends on 64BIT
+ 	select CPU_64v8
+ 	select ARM_EXCEPTIONS
+ 	select GENERIC_FIND_NEXT_BIT
 -- 
 2.34.1
 
