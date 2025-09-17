@@ -1,65 +1,65 @@
-Delivery-date: Wed, 17 Sep 2025 17:52:05 +0200
+Delivery-date: Wed, 17 Sep 2025 17:52:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyuRx-0047rw-00
+	id 1uyuS8-0047sc-0F
 	for lore@lore.pengutronix.de;
-	Wed, 17 Sep 2025 17:52:05 +0200
+	Wed, 17 Sep 2025 17:52:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyuRs-00013D-VY
-	for lore@pengutronix.de; Wed, 17 Sep 2025 17:52:04 +0200
+	id 1uyuS5-0001By-7F
+	for lore@pengutronix.de; Wed, 17 Sep 2025 17:52:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7xe93lTseQIbiJUxPW0vLwRiJgM3Wgu8+80y/v9BOuI=; b=h9ICHTl8ICo68NKJ5mPLDUACyp
-	oqOSUo0gMcL+V0C2vxwQODkEmRmNxuI/QXi51tGDNSCP8vuXVdP/YDGIT9oEUviCtrMyhtiTDpMNw
-	Vu93X0F5TOJdTRJXkC9OPLGDbrrBn680iY6H/pBrMHwxGDkRVfMAdznPjZ54gXWtsLKlC4dZiFvjW
-	sn7u+hHiFmeLdsYbIrqIPmjof4yKHhkun+LgK/rhJUomtIxAkLo3zxatNNu0ss/eVwZrkZmFwNfGm
-	Agf8cVa46xbpY105FUZI0laPZryh/I1LKYOusF6TQcC9pO5drdigK1MgHy2pc2jfz9RAUdvMChNfz
-	0tcGK7sg==;
+	bh=OdNRcLXmfnC723qCNWg0eG07siWCDSHW2ksB8KyKC2c=; b=iMZgg2Wcsl0dSECvdwdM94Y+4x
+	CpZBIATYxaC2u5iIsqBCuzIwU4WtNVng2h871plbpBpV9pnkS3HQ9q0SLQmpZnHSleFkx0YGfMpSy
+	e0mXMDqVihQn2DKT13lzr8/VICvBwC2w6yZM7g6ki16E9aIf07t5pOH1kw0fX1t/fTlkyyO2fLaag
+	OLmA1SqJi2QF46bY9cnc3rKEzIkWf9fo9+qkORmRmDxRhrwZkr+y8wfyXh0hZYqBK8zVp5H7DBi2s
+	mpl9EY4pi/xvl780EM+R67r6k4dwmh19vc/+APLwFqTkZUbK3TJ3LeJeOYkpwoTg9XFOgqRLv25Bu
+	R8c0UU4w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyuRH-0000000CtSx-1Jez;
-	Wed, 17 Sep 2025 15:51:23 +0000
+	id 1uyuRR-0000000Ctik-11Pt;
+	Wed, 17 Sep 2025 15:51:33 +0000
 Received: from cczrelay01.in2p3.fr ([134.158.66.141])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyuRD-0000000CtAB-2mn3
+	id 1uyuRN-0000000CtAB-0GkR
 	for barebox@lists.infradead.org;
-	Wed, 17 Sep 2025 15:51:21 +0000
+	Wed, 17 Sep 2025 15:51:32 +0000
 Received: from [127.0.1.1] (clrelecpo09w.in2p3.fr [134.158.124.135])
 	(authenticated bits=0)
-	by cczrelay01.in2p3.fr (8.14.4/8.14.4) with ESMTP id 58HFNoC8032210
+	by cczrelay01.in2p3.fr (8.14.4/8.14.4) with ESMTP id 58HFNoC9032210
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
 	Wed, 17 Sep 2025 17:24:02 +0200
 From: David Picard <david.picard@clermont.in2p3.fr>
-Date: Wed, 17 Sep 2025 17:22:06 +0200
+Date: Wed, 17 Sep 2025 17:22:07 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-boards-enclustra-sa2-add-support-v1-3-2de8f69107a1@clermont.in2p3.fr>
+Message-Id: <20250917-boards-enclustra-sa2-add-support-v1-4-2de8f69107a1@clermont.in2p3.fr>
 References: <20250917-boards-enclustra-sa2-add-support-v1-0-2de8f69107a1@clermont.in2p3.fr>
 In-Reply-To: <20250917-boards-enclustra-sa2-add-support-v1-0-2de8f69107a1@clermont.in2p3.fr>
 To: Sascha Hauer <s.hauer@pengutronix.de>,
         BAREBOX <barebox@lists.infradead.org>
-Cc: David Picard <david.picard@clermont.in2p3.fr>
+Cc: David Picard <david.picard@clermont.in2p3.fr>, Ahmad Fatoum <ahmad@a3f.at>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758122641; l=31615;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758122641; l=36904;
  i=david.picard@clermont.in2p3.fr; s=20250917; h=from:subject:message-id;
- bh=Wpp90UdSV/CpGWAq9APJlfB9ADZrcqJqy/DARgBzj0Y=;
- b=CNfU+mvBUxCJUUDyHgEcwPQLXRzP0Cak2UnRkVEdCU/sOrC0Z0F+kFawzNorDgkB2Mv9EjJfO
- w+wCJvOxmSRBEK4peULJ/xQoXiKP09n9y5xqSYDgw+Y6oSSxcKcIWPl
+ bh=KxZNx6IOZyTlQTE9pSLKVZaqxcqMAvl80gsA+9V4Xlo=;
+ b=73KanU2pEKrjUgh7oWs++NzgucXJDhQr7BLN9QcdWDuiENGnDg8dYgWduhU7KOiRHjvBJgarI
+ Rb4B+sHpyHqDua+EVk15TOWusWLvv6x3BJLpnwglmn0mzI/WX991Qje
 X-Developer-Key: i=david.picard@clermont.in2p3.fr; a=ed25519;
  pk=Ew2hyxWdBXm7qaK2tHrk3KcOlOjoh3+irqJPSHtq/PU=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250917_085120_000235_1484607E 
-X-CRM114-Status: GOOD (  15.96  )
+X-CRM114-CacheID: sfid-20250917_085129_450977_A7664213 
+X-CRM114-Status: GOOD (  23.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,1229 +77,1428 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/11] Add Enclustra devicetree files
+Subject: [PATCH 04/11] ARM: dts: socfpga: use upstream SA2 device tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Copied from Enclustra's BSP
+From: Ahmad Fatoum <ahmad@a3f.at>
 
-Signed-off-by: David Picard <david.picard@clermont.in2p3.fr>
+The device trees from the Enclustra BSP are outdated and not compatible
+with what barebox expects. Drop them and use the upstream SoC device
+tree imported from Linux instead. For the board itself, we import the
+device tree in the most recent posting[1] to the kernel mailing lists.
+
+[1]: https://lore.kernel.org/all/20241116131025.114542-1-l.rubusch@gmail.com/
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- dts/src/arm/intel/socfpga/skeleton.dtsi            |  13 +
- .../intel/socfpga/socfpga_cyclone5_enclustra.dtsi  |  69 ++
- .../intel/socfpga/socfpga_cyclone5_mercury_sa2.dts | 128 +++
- dts/src/arm/intel/socfpga/socfpga_enclustra.dtsi   | 971 +++++++++++++++++++++
- 4 files changed, 1181 insertions(+)
+ arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts      |  18 +-
+ arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi     | 150 ++++
+ dts/src/arm/intel/socfpga/skeleton.dtsi            |  13 -
+ .../intel/socfpga/socfpga_cyclone5_enclustra.dtsi  |  69 --
+ .../intel/socfpga/socfpga_cyclone5_mercury_sa2.dts | 128 ---
+ dts/src/arm/intel/socfpga/socfpga_enclustra.dtsi   | 971 ---------------------
+ 6 files changed, 152 insertions(+), 1197 deletions(-)
 
-diff --git a/dts/src/arm/intel/socfpga/skeleton.dtsi b/dts/src/arm/intel/socfpga/skeleton.dtsi
+diff --git a/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts b/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts
+index 9e2f2c1af19e68c0c662f62bc154856f75df2510..2e69f33b030a144d08d55eacb01fd69b009f38e8 100644
+--- a/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts
++++ b/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts
+@@ -1,27 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+ /*
+  *  Copyright (C) 2025 David Picard <david.picard@clermont.in2p3.fr>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+-#include <arm/intel/socfpga/socfpga_cyclone5_mercury_sa2.dts>
++#include "socfpga_cyclone5_mercury_sa2.dtsi"
+ #include "socfpga.dtsi"
+ 
+ / {
+ 	chosen {
+-		stdout-path = &uart0;
+-
+ 		environment {
+ 			compatible = "barebox,environment";
+ 			device-path = &mmc, "partname:1";
+diff --git a/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi b/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi
 new file mode 100644
-index 0000000000000000000000000000000000000000..b41d241de2cde0ccf022134519e9f9d3ae4261a4
+index 0000000000000000000000000000000000000000..73bd75fcf224fbf31fce27dda6566d4bfe37d624
 --- /dev/null
-+++ b/dts/src/arm/intel/socfpga/skeleton.dtsi
-@@ -0,0 +1,13 @@
++++ b/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi
+@@ -0,0 +1,150 @@
++// SPDX-License-Identifier: GPL-2.0+ OR MIT
 +/*
-+ * Skeleton device tree; the bare minimum needed to boot; just include and
-+ * add a compatible value.  The bootloader will typically populate the memory
-+ * node.
++ * Copyright (C) 2024 Enclustra GmbH - https://www.enclustra.com
++ *
++ * TODO: This whole file should be dropped, once the patches[1] are upstream
++ * and synced into barebox dts/src/arm.
++ * [1]: https://lore.kernel.org/all/20241116131025.114542-1-l.rubusch@gmail.com/
 + */
 +
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	chosen { };
-+	aliases { };
-+	memory { device_type = "memory"; reg = <0 0>; };
-+};
-diff --git a/dts/src/arm/intel/socfpga/socfpga_cyclone5_enclustra.dtsi b/dts/src/arm/intel/socfpga/socfpga_cyclone5_enclustra.dtsi
-new file mode 100644
-index 0000000000000000000000000000000000000000..9ea1b76f1d55b28fd162231144bcb537a111c53f
---- /dev/null
-+++ b/dts/src/arm/intel/socfpga/socfpga_cyclone5_enclustra.dtsi
-@@ -0,0 +1,69 @@
-+/*
-+ *  Copyright (C) 2012 Altera Corporation <www.altera.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+/dts-v1/;
-+/* First 4KB has trampoline code for secondary cores. */
-+/memreserve/ 0x00000000 0x0001000;
-+#include "socfpga_enclustra.dtsi"
++#include <arm/intel/socfpga/socfpga_cyclone5.dtsi>
 +
 +/ {
-+	soc {
-+		clkmgr@ffd04000 {
-+			clocks {
-+				osc1 {
-+					clock-frequency = <50000000>;
-+				};
-+			};
-+		};
-+
-+		mmc0: dwmmc0@ff704000 {
-+			num-slots = <1>;
-+			broken-cd;
-+			bus-width = <4>;
-+			cap-mmc-highspeed;
-+			cap-sd-highspeed;
-+		};
-+
-+		ethernet@ff702000 {
-+			phy-mode = "rgmii";
-+			phy-addr = <0xffffffff>; /* probe for phy addr */
-+			status = "okay";
-+		};
-+
-+		sysmgr@ffd08000 {
-+			cpu1-start-addr = <0xffd080c4>;
-+		};
-+	};
-+};
-+
-+&watchdog0 {
-+	status = "okay";
-+};
-+
-+&i2c0 {
-+    /* Both RTCs disabled by default, choose one */
-+    pcf85063: pcf85063@51 {
-+        status = "disabled";
-+        compatible = "nxp,pcf85063";
-+        reg = <0x51>;
-+    };
-+    isl12022: isl12022@68 {
-+        status = "disabled";
-+        compatible = "isil,isl12022";
-+        reg = <0x6f>;
-+    };
-+};
-diff --git a/dts/src/arm/intel/socfpga/socfpga_cyclone5_mercury_sa2.dts b/dts/src/arm/intel/socfpga/socfpga_cyclone5_mercury_sa2.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..cc55bf8f575433046915d3f33aaf789861d13b1a
---- /dev/null
-+++ b/dts/src/arm/intel/socfpga/socfpga_cyclone5_mercury_sa2.dts
-@@ -0,0 +1,128 @@
-+/*
-+ *  Copyright (C) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "socfpga_cyclone5_enclustra.dtsi"
-+
-+/ {
-+	model = "Enclustra Mercury SA2 SOM";
++	model = "Enclustra Mercury+ SA2";
 +	compatible = "altr,socfpga-cyclone5", "altr,socfpga";
 +
 +	chosen {
-+		bootargs = "console=ttyS0,115200";
++		stdout-path = "serial0:115200n8";
++	};
++
++	aliases {
++		ethernet0 = &gmac1;
++	};
++
++	/* Adjusted the i2c labels to use generic base-board dtsi files for
++	 * Enclustra Arria10 and Cyclone5 SoMs.
++	 *
++	 * The set of i2c0 and i2c1 labels defined in socfpga_cyclone5.dtsi and in
++	 * socfpga_arria10.dtsi do not allow for using the same base-board .dtsi
++	 * fragments. Thus define generic labels here to match the correct i2c
++	 * bus in a generic base-board .dtsi file.
++	 */
++	soc {
++		i2c_encl: i2c@ffc04000 {
++		};
++		i2c_encl_fpga: i2c@ffc05000 {
++		};
 +	};
 +
 +	memory {
 +		name = "memory";
 +		device_type = "memory";
-+		reg = <0x0 0x40000000>; /* 1GB */
-+	};
-+
-+	aliases {
-+		/* this allow the ethaddr uboot environmnet variable contents
-+		 * to be added to the gmac1 device tree blob.
-+		 */
-+		ethernet0 = &gmac1;
-+	};
-+
-+	regulator_3_3v: vcc3p3-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VCC3P3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
++		reg = <0x0 0x80000000>; /* 2GB */
 +	};
 +};
 +
-+&gmac1 {
++&osc1 {
++	clock-frequency = <50000000>;
++};
++
++&i2c_encl {
++	i2c-sda-hold-time-ns = <300>;
++	clock-frequency = <100000>;
 +	status = "okay";
-+	phy-mode = "rgmii";
 +
-+	rxd0-skew-ps = <0>;
-+	rxd1-skew-ps = <0>;
-+	rxd2-skew-ps = <0>;
-+	rxd3-skew-ps = <0>;
-+	txen-skew-ps = <0>;
-+	txc-skew-ps = <2600>;
-+	rxdv-skew-ps = <0>;
-+	rxc-skew-ps = <2000>;
-+
-+	phy-handle = <&phy3>;
-+
-+	mdio0 {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		compatible = "snps,dwmac-mdio";
-+		phy3: ethernet-phy@3 {
-+			reg = <3>;
-+		};
++	isl12020: rtc@6f {
++		compatible = "isil,isl12022";
++		reg = <0x6f>;
 +	};
++
++	atsha204a: crypto@64 {
++		compatible = "atmel,atsha204a";
++		reg = <0x64>;
++	};
++};
++
++&i2c_encl_fpga {
++	i2c-sda-hold-time-ns = <300>;
++	status = "disabled";
++};
++
++&uart0 {
++	clock-frequency = <100000000>;
 +};
 +
 +&mmc0 {
-+	vmmc-supply = <&regulator_3_3v>;
-+	vqmmc-supply = <&regulator_3_3v>;
-+};
-+
-+&usb1 {
 +	status = "okay";
 +};
 +
 +&qspi {
 +	status = "okay";
 +
-+	flash0: n25q00@0 {
++	flash0: flash@0 {
++		u-boot,dm-pre-reloc;
 +		#address-cells = <1>;
 +		#size-cells = <1>;
-+		compatible = "n25q00";
++		compatible = "spansion,s25fl512s", "jedec,spi-nor";
 +		reg = <0>;
-+		spi-max-frequency = <100000000>;
-+		cdns,page-size = <256>;
-+		cdns,block-size = <16>;
-+		m25p,fast-read;
++
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
++		spi-max-frequency = <10000000>;
++
 +		cdns,read-delay = <4>;
 +		cdns,tshsl-ns = <50>;
 +		cdns,tsd2d-ns = <50>;
 +		cdns,tchsh-ns = <4>;
 +		cdns,tslch-ns = <4>;
 +
-+		part0: partition@0 {
-+			label = "Flash 0 Raw Data";
-+			reg = < 0x00000000 0x01000000 >;
-+		};
-+
-+		part1: partition@800000 {
-+			label = "Flash 1 jffs2 Filesystem";
-+			reg = < 0x01000000 0x03000000 >;
++		partition@raw {
++			label = "Flash Raw";
++			reg = <0x0 0x4000000>;
 +		};
 +	};
 +};
 +
-+&i2c0 {
++&gpio0 {
 +	status = "okay";
 +};
 +
-+&isl12022 {
++&gpio1 {
 +	status = "okay";
 +};
 +
-+&spi0 {
++&gmac1 {
 +	status = "okay";
-+	spidev@0 {
-+		compatible = "spidev";
-+		reg = <0>;
-+		spi-max-frequency = <1000000>;
-+	};
-+};
-diff --git a/dts/src/arm/intel/socfpga/socfpga_enclustra.dtsi b/dts/src/arm/intel/socfpga/socfpga_enclustra.dtsi
-new file mode 100644
-index 0000000000000000000000000000000000000000..a5ccc1933a7ed851effc4844a2e22f55d58c6905
---- /dev/null
-+++ b/dts/src/arm/intel/socfpga/socfpga_enclustra.dtsi
-@@ -0,0 +1,971 @@
-+/*
-+ *  Copyright (C) 2012 Altera <www.altera.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
++	/delete-property/ mac-address;
++	phy-mode = "rgmii";
++	phy-handle = <&phy3>;
 +
-+#include "skeleton.dtsi"
-+#include <dt-bindings/reset/altr,rst-mgr.h>
-+
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	aliases {
-+		ethernet0 = &gmac0;
-+		ethernet1 = &gmac1;
-+		serial0 = &uart0;
-+		serial1 = &uart1;
-+		timer0 = &timer0;
-+		timer1 = &timer1;
-+		timer2 = &timer2;
-+		timer3 = &timer3;
-+	};
-+
-+	cpus {
++	mdio0 {
 +		#address-cells = <1>;
 +		#size-cells = <0>;
-+		enable-method = "altr,socfpga-smp";
-+
-+		cpu@0 {
-+			compatible = "arm,cortex-a9";
-+			device_type = "cpu";
-+			reg = <0>;
-+			next-level-cache = <&L2>;
-+		};
-+		cpu@1 {
-+			compatible = "arm,cortex-a9";
-+			device_type = "cpu";
-+			reg = <1>;
-+			next-level-cache = <&L2>;
-+		};
-+	};
-+
-+	intc: intc@fffed000 {
-+		compatible = "arm,cortex-a9-gic";
-+		#interrupt-cells = <3>;
-+		interrupt-controller;
-+		reg = <0xfffed000 0x1000>,
-+		      <0xfffec100 0x100>;
-+	};
-+
-+	soc {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "simple-bus";
-+		device_type = "soc";
-+		interrupt-parent = <&intc>;
-+		ranges;
-+
-+		amba {
-+			compatible = "arm,amba-bus";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges;
-+
-+			pdma: pdma@ffe01000 {
-+				compatible = "arm,pl330", "arm,primecell";
-+				reg = <0xffe01000 0x1000>;
-+				interrupts = <0 104 4>,
-+					     <0 105 4>,
-+					     <0 106 4>,
-+					     <0 107 4>,
-+					     <0 108 4>,
-+					     <0 109 4>,
-+					     <0 110 4>,
-+					     <0 111 4>;
-+				#dma-cells = <1>;
-+				#dma-channels = <8>;
-+				#dma-requests = <32>;
-+				clocks = <&l4_main_clk>;
-+				clock-names = "apb_pclk";
-+			};
-+		};
-+
-+		can0: can@ffc00000 {
-+			compatible = "bosch,d_can";
-+			reg = <0xffc00000 0x1000>;
-+			interrupts = <0 131 4>, <0 132 4>, <0 133 4>, <0 134 4>;
-+			clocks = <&can0_clk>;
-+			status = "disabled";
-+		};
-+
-+		can1: can@ffc01000 {
-+			compatible = "bosch,d_can";
-+			reg = <0xffc01000 0x1000>;
-+			interrupts = <0 135 4>, <0 136 4>, <0 137 4>, <0 138 4>;
-+			clocks = <&can1_clk>;
-+			status = "disabled";
-+		};
-+
-+		clkmgr@ffd04000 {
-+				compatible = "altr,clk-mgr";
-+				reg = <0xffd04000 0x1000>;
-+
-+				clocks {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					osc1: osc1 {
-+						#clock-cells = <0>;
-+						compatible = "fixed-clock";
-+					};
-+
-+					osc2: osc2 {
-+						#clock-cells = <0>;
-+						compatible = "fixed-clock";
-+					};
-+
-+					f2s_periph_ref_clk: f2s_periph_ref_clk {
-+						#clock-cells = <0>;
-+						compatible = "fixed-clock";
-+					};
-+
-+					f2s_sdram_ref_clk: f2s_sdram_ref_clk {
-+						#clock-cells = <0>;
-+						compatible = "fixed-clock";
-+					};
-+
-+					main_pll: main_pll {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-pll-clock";
-+						clocks = <&osc1>;
-+						reg = <0x40>;
-+
-+						mpuclk: mpuclk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&main_pll>;
-+							div-reg = <0xe0 0 9>;
-+							reg = <0x48>;
-+						};
-+
-+						mainclk: mainclk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&main_pll>;
-+							div-reg = <0xe4 0 9>;
-+							reg = <0x4C>;
-+						};
-+
-+						dbg_base_clk: dbg_base_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&main_pll>, <&osc1>;
-+							div-reg = <0xe8 0 9>;
-+							reg = <0x50>;
-+						};
-+
-+						main_qspi_clk: main_qspi_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&main_pll>;
-+							reg = <0x54>;
-+						};
-+
-+						main_nand_sdmmc_clk: main_nand_sdmmc_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&main_pll>;
-+							reg = <0x58>;
-+						};
-+
-+						cfg_h2f_usr0_clk: cfg_h2f_usr0_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&main_pll>;
-+							reg = <0x5C>;
-+						};
-+					};
-+
-+					periph_pll: periph_pll {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-pll-clock";
-+						clocks = <&osc1>, <&osc2>, <&f2s_periph_ref_clk>;
-+						reg = <0x80>;
-+
-+						emac0_clk: emac0_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&periph_pll>;
-+							reg = <0x88>;
-+						};
-+
-+						emac1_clk: emac1_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&periph_pll>;
-+							reg = <0x8C>;
-+						};
-+
-+						per_qspi_clk: per_qsi_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&periph_pll>;
-+							reg = <0x90>;
-+						};
-+
-+						per_nand_mmc_clk: per_nand_mmc_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&periph_pll>;
-+							reg = <0x94>;
-+						};
-+
-+						per_base_clk: per_base_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&periph_pll>;
-+							reg = <0x98>;
-+						};
-+
-+						h2f_usr1_clk: h2f_usr1_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&periph_pll>;
-+							reg = <0x9C>;
-+						};
-+					};
-+
-+					sdram_pll: sdram_pll {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-pll-clock";
-+						clocks = <&osc1>, <&osc2>, <&f2s_sdram_ref_clk>;
-+						reg = <0xC0>;
-+
-+						ddr_dqs_clk: ddr_dqs_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&sdram_pll>;
-+							reg = <0xC8>;
-+						};
-+
-+						ddr_2x_dqs_clk: ddr_2x_dqs_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&sdram_pll>;
-+							reg = <0xCC>;
-+						};
-+
-+						ddr_dq_clk: ddr_dq_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&sdram_pll>;
-+							reg = <0xD0>;
-+						};
-+
-+						h2f_usr2_clk: h2f_usr2_clk {
-+							#clock-cells = <0>;
-+							compatible = "altr,socfpga-perip-clk";
-+							clocks = <&sdram_pll>;
-+							reg = <0xD4>;
-+						};
-+					};
-+
-+					mpu_periph_clk: mpu_periph_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-perip-clk";
-+						clocks = <&mpuclk>;
-+						fixed-divider = <4>;
-+					};
-+
-+					mpu_l2_ram_clk: mpu_l2_ram_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-perip-clk";
-+						clocks = <&mpuclk>;
-+						fixed-divider = <2>;
-+					};
-+
-+					l4_main_clk: l4_main_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&mainclk>;
-+						clk-gate = <0x60 0>;
-+					};
-+
-+					l3_main_clk: l3_main_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-perip-clk";
-+						clocks = <&mainclk>;
-+						fixed-divider = <1>;
-+					};
-+
-+					l3_mp_clk: l3_mp_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&mainclk>;
-+						div-reg = <0x64 0 2>;
-+						clk-gate = <0x60 1>;
-+					};
-+
-+					l3_sp_clk: l3_sp_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&l3_mp_clk>;
-+						div-reg = <0x64 2 2>;
-+					};
-+
-+					l4_mp_clk: l4_mp_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&mainclk>, <&per_base_clk>;
-+						div-reg = <0x64 4 3>;
-+						clk-gate = <0x60 2>;
-+					};
-+
-+					l4_sp_clk: l4_sp_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&mainclk>, <&per_base_clk>;
-+						div-reg = <0x64 7 3>;
-+						clk-gate = <0x60 3>;
-+					};
-+
-+					dbg_at_clk: dbg_at_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&dbg_base_clk>;
-+						div-reg = <0x68 0 2>;
-+						clk-gate = <0x60 4>;
-+					};
-+
-+					dbg_clk: dbg_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&dbg_at_clk>;
-+						div-reg = <0x68 2 2>;
-+						clk-gate = <0x60 5>;
-+					};
-+
-+					dbg_trace_clk: dbg_trace_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&dbg_base_clk>;
-+						div-reg = <0x6C 0 3>;
-+						clk-gate = <0x60 6>;
-+					};
-+
-+					dbg_timer_clk: dbg_timer_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&dbg_base_clk>;
-+						clk-gate = <0x60 7>;
-+					};
-+
-+					cfg_clk: cfg_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&cfg_h2f_usr0_clk>;
-+						clk-gate = <0x60 8>;
-+					};
-+
-+					h2f_user0_clk: h2f_user0_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&cfg_h2f_usr0_clk>;
-+						clk-gate = <0x60 9>;
-+					};
-+
-+					emac_0_clk: emac_0_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&emac0_clk>;
-+						clk-gate = <0xa0 0>;
-+					};
-+
-+					emac_1_clk: emac_1_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&emac1_clk>;
-+						clk-gate = <0xa0 1>;
-+					};
-+
-+					usb_mp_clk: usb_mp_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&per_base_clk>;
-+						clk-gate = <0xa0 2>;
-+						div-reg = <0xa4 0 3>;
-+					};
-+
-+					spi_m_clk: spi_m_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&per_base_clk>;
-+						clk-gate = <0xa0 3>;
-+						div-reg = <0xa4 3 3>;
-+					};
-+
-+					can0_clk: can0_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&per_base_clk>;
-+						clk-gate = <0xa0 4>;
-+						div-reg = <0xa4 6 3>;
-+					};
-+
-+					can1_clk: can1_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&per_base_clk>;
-+						clk-gate = <0xa0 5>;
-+						div-reg = <0xa4 9 3>;
-+					};
-+
-+					gpio_db_clk: gpio_db_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&per_base_clk>;
-+						clk-gate = <0xa0 6>;
-+						div-reg = <0xa8 0 24>;
-+					};
-+
-+					h2f_user1_clk: h2f_user1_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&h2f_usr1_clk>;
-+						clk-gate = <0xa0 7>;
-+					};
-+
-+					sdmmc_clk: sdmmc_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&f2s_periph_ref_clk>, <&main_nand_sdmmc_clk>, <&per_nand_mmc_clk>;
-+						clk-gate = <0xa0 8>;
-+						clk-phase = <0 135>;
-+					};
-+
-+					sdmmc_clk_divided: sdmmc_clk_divided {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&sdmmc_clk>;
-+						clk-gate = <0xa0 8>;
-+						fixed-divider = <4>;
-+					};
-+
-+					nand_x_clk: nand_x_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&f2s_periph_ref_clk>, <&main_nand_sdmmc_clk>, <&per_nand_mmc_clk>;
-+						clk-gate = <0xa0 9>;
-+					};
-+
-+					nand_clk: nand_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&f2s_periph_ref_clk>, <&main_nand_sdmmc_clk>, <&per_nand_mmc_clk>;
-+						clk-gate = <0xa0 10>;
-+						fixed-divider = <4>;
-+					};
-+
-+					qspi_clk: qspi_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&f2s_periph_ref_clk>, <&main_qspi_clk>, <&per_qspi_clk>;
-+						clk-gate = <0xa0 11>;
-+						fixed-divider = <2>;
-+					};
-+
-+					ddr_dqs_clk_gate: ddr_dqs_clk_gate {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&ddr_dqs_clk>;
-+						clk-gate = <0xd8 0>;
-+					};
-+
-+					ddr_2x_dqs_clk_gate: ddr_2x_dqs_clk_gate {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&ddr_2x_dqs_clk>;
-+						clk-gate = <0xd8 1>;
-+					};
-+
-+					ddr_dq_clk_gate: ddr_dq_clk_gate {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&ddr_dq_clk>;
-+						clk-gate = <0xd8 2>;
-+					};
-+
-+					h2f_user2_clk: h2f_user2_clk {
-+						#clock-cells = <0>;
-+						compatible = "altr,socfpga-gate-clk";
-+						clocks = <&h2f_usr2_clk>;
-+						clk-gate = <0xd8 3>;
-+					};
-+
-+				};
-+		};
-+
-+		gmac0: ethernet@ff700000 {
-+			compatible = "altr,socfpga-stmmac", "snps,dwmac-3.70a", "snps,dwmac";
-+			altr,sysmgr-syscon = <&sysmgr 0x60 0>;
-+			reg = <0xff700000 0x2000>;
-+			interrupts = <0 115 4>;
-+			interrupt-names = "macirq";
-+			mac-address = [00 00 00 00 00 00];/* Filled in by U-Boot */
-+			clocks = <&emac0_clk>;
-+			clock-names = "stmmaceth";
-+			resets = <&rst EMAC0_RESET>;
-+			reset-names = "stmmaceth";
-+			snps,multicast-filter-bins = <256>;
-+			snps,perfect-filter-entries = <128>;
-+			tx-fifo-depth = <4096>;
-+			rx-fifo-depth = <4096>;
-+			status = "disabled";
-+		};
-+
-+		gmac1: ethernet@ff702000 {
-+			compatible = "altr,socfpga-stmmac", "snps,dwmac-3.70a", "snps,dwmac";
-+			altr,sysmgr-syscon = <&sysmgr 0x60 2>;
-+			reg = <0xff702000 0x2000>;
-+			interrupts = <0 120 4>;
-+			interrupt-names = "macirq";
-+			mac-address = [00 00 00 00 00 00];/* Filled in by U-Boot */
-+			clocks = <&emac1_clk>;
-+			clock-names = "stmmaceth";
-+			resets = <&rst EMAC1_RESET>;
-+			reset-names = "stmmaceth";
-+			snps,multicast-filter-bins = <256>;
-+			snps,perfect-filter-entries = <128>;
-+			tx-fifo-depth = <4096>;
-+			rx-fifo-depth = <4096>;
-+			status = "disabled";
-+		};
-+
-+		hps_0_fpgamgr: fpgamgr@0xff706000 {
-+			compatible = "altr,fpga-mgr-1.0", "altr,fpga-mgr";
-+			transport = "mmio";
-+			reg = <0xFF706000 0x1000
-+			0xFFB90000 0x1000>;
-+			interrupts = <0 175 4>;
-+		};
-+
-+		hps_fpgabridge0: fpgabridge@0 {
-+			compatible = "altr,socfpga-hps2fpga-bridge";
-+			label = "hps2fpga";
-+			resets = <&rst HPS2FPGA_RESET>;
-+			reset-names = "hps2fpga";
-+			clocks = <&l4_main_clk>;
-+		};
-+
-+		hps_fpgabridge1: fpgabridge@1 {
-+			compatible = "altr,socfpga-lwhps2fpga-bridge";
-+			label = "lwhps2fpga";
-+			resets = <&rst LWHPS2FPGA_RESET>;
-+			reset-names = "lwhps2fpga";
-+			clocks = <&l4_main_clk>;
-+		};
-+
-+		hps_fpgabridge2: fpgabridge@2 {
-+			compatible = "altr,socfpga-fpga2hps-bridge";
-+			label = "fpga2hps";
-+			resets = <&rst FPGA2HPS_RESET>;
-+			reset-names = "fpga2hps";
-+			clocks = <&l4_main_clk>;
-+		};
-+
-+		i2c0: i2c@ffc04000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "snps,designware-i2c";
-+			reg = <0xffc04000 0x1000>;
-+			clocks = <&l4_sp_clk>;
-+			interrupts = <0 158 0x4>;
-+			status = "disabled";
-+		};
-+
-+		i2c1: i2c@ffc05000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "snps,designware-i2c";
-+			reg = <0xffc05000 0x1000>;
-+			clocks = <&l4_sp_clk>;
-+			interrupts = <0 159 0x4>;
-+			status = "disabled";
-+		};
-+
-+		i2c2: i2c@ffc06000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "snps,designware-i2c";
-+			reg = <0xffc06000 0x1000>;
-+			clocks = <&l4_sp_clk>;
-+			interrupts = <0 160 0x4>;
-+			status = "disabled";
-+		};
-+
-+		i2c3: i2c@ffc07000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "snps,designware-i2c";
-+			reg = <0xffc07000 0x1000>;
-+			clocks = <&l4_sp_clk>;
-+			interrupts = <0 161 0x4>;
-+			status = "disabled";
-+		};
-+
-+		gpio0: gpio@ff708000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "snps,dw-apb-gpio";
-+			reg = <0xff708000 0x1000>;
-+			clocks = <&l4_mp_clk>;
-+			status = "disabled";
-+
-+			porta: gpio-controller@0 {
-+				compatible = "snps,dw-apb-gpio-port";
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				snps,nr-gpios = <29>;
-+				reg = <0>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+				interrupts = <0 164 4>;
-+			};
-+		};
-+
-+		gpio1: gpio@ff709000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "snps,dw-apb-gpio";
-+			reg = <0xff709000 0x1000>;
-+			clocks = <&l4_mp_clk>;
-+			status = "disabled";
-+
-+			portb: gpio-controller@0 {
-+				compatible = "snps,dw-apb-gpio-port";
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				snps,nr-gpios = <29>;
-+				reg = <0>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+				interrupts = <0 165 4>;
-+			};
-+		};
-+
-+		gpio2: gpio@ff70a000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "snps,dw-apb-gpio";
-+			reg = <0xff70a000 0x1000>;
-+			clocks = <&l4_mp_clk>;
-+			status = "disabled";
-+
-+			portc: gpio-controller@0 {
-+				compatible = "snps,dw-apb-gpio-port";
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				snps,nr-gpios = <27>;
-+				reg = <0>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+				interrupts = <0 166 4>;
-+			};
-+		};
-+
-+		sdr: sdr@ffc25000 {
-+			compatible = "syscon";
-+			reg = <0xffc25000 0x1000>;
-+		};
-+
-+		sdramedac {
-+			compatible = "altr,sdram-edac";
-+			altr,sdr-syscon = <&sdr>;
-+			interrupts = <0 39 4>;
-+		};
-+
-+		L2: l2-cache@fffef000 {
-+			compatible = "arm,pl310-cache", "syscon";
-+			reg = <0xfffef000 0x1000>;
-+			interrupts = <0 38 0x04>;
-+			cache-unified;
-+			cache-level = <2>;
-+			arm,tag-latency = <1 1 1>;
-+			arm,data-latency = <2 1 1>;
-+			prefetch-data = <1>;
-+			prefetch-instr = <1>;
-+		};
-+
-+		mmc: dwmmc0@ff704000 {
-+			compatible = "altr,socfpga-dw-mshc";
-+			reg = <0xff704000 0x1000>;
-+			interrupts = <0 139 4>;
-+			fifo-depth = <0x400>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			clocks = <&l4_mp_clk>, <&sdmmc_clk_divided>;
-+			clock-names = "biu", "ciu";
-+		};
-+
-+		nand: nand@ff900000 {
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			compatible = "denali,denali-nand-dt";
-+			reg = <0xff900000 0x100000>, <0xffb80000 0x10000>;
-+			reg-names = "nand_data", "denali_reg";
-+			interrupts = <0 144 4>;
-+			dma-mask = <0xffffffff>;
-+			clocks = <&nand_clk>;
-+			have-hw-ecc-fixup;
-+			status = "disabled";
-+
-+			partition@nand-boot {
-+				/* 8MB for raw data. */
-+				label = "NAND Flash Boot Area 8MB";
-+				reg = <0x0 0x800000>;
-+			};
-+			partition@nand-rootfs {
-+				/* 128MB jffs2 root filesystem. */
-+				label = "NAND Flash jffs2 Root Filesystem 128MB";
-+				reg = <0x800000 0x8000000>;
-+			};
-+			partition@nand-128 {
-+				label = "NAND Flash 128 MB";
-+				reg = <0x8800000 0x8000000>;
-+			};
-+			partition@nand-64 {
-+				label = "NAND Flash 64 MB";
-+				reg = <0x10800000 0x4000000>;
-+			};
-+			partition@nand-32 {
-+				label = "NAND Flash 32 MB";
-+				reg = <0x14800000 0x2000000>;
-+			};
-+			partition@nand-16 {
-+				label = "NAND Flash 16 MB";
-+				reg = <0x16800000 0x1000000>;
-+			};
-+		};
-+
-+		ocram: sram@ffff0000 {
-+			compatible = "mmio-sram";
-+			reg = <0xffff0000 0x10000>;
-+		};
-+
-+		pmu {
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			compatible = "arm,cortex-a9-pmu";
-+			interrupts = <0 176 4>, <0 177 4>;
-+			ranges;
-+
-+			cti0: cti0@ff118000 {
-+				compatible = "arm,coresight-cti";
-+				reg = <0xff118000 0x100>;
-+			};
-+
-+			cti1: cti1@ff119000 {
-+				compatible = "arm,coresight-cti";
-+				reg = <0xff119000 0x100>;
-+			};
-+		};
-+
-+		sdrctl@0xffc25000 {
-+			compatible = "altr,sdr-ctl", "syscon";
-+			reg = <0xffc25000 0x1000>;
-+		};
-+
-+		l2edac@xffd08140 {
-+			compatible = "altr,l2-edac";
-+			reg = <0xffd08140 0x4>;
-+			interrupts = <0 36 1>, <0 37 1>;
-+                };
-+
-+		ocramedac@ffd08144 {
-+			compatible = "altr,ocram-edac";
-+			reg = <0xffd08144 0x4>;
-+			iram = <&ocram>;
-+			interrupts = <0 178 1>, <0 179 1>;
-+		};
-+
-+		l3regs@0xff800000 {
-+			compatible = "altr,l3regs", "syscon";
-+			reg = <0xff800000 0x1000>;
-+		};
-+
-+		qspi: spi@ff705000 {
-+			compatible = "cdns,qspi-nor";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0xff705000 0x1000>,
-+				<0xffa00000 0x1000>;
-+			interrupts = <0 151 4>;
-+			clocks = <&qspi_clk>;
-+			is-decoded-cs = <1>;
-+			fifo-depth = <128>;
-+			status = "disabled";
-+			m25p,fast-read;
-+		};
-+
-+		spi0: spi@fff00000 {
-+			compatible = "snps,dw-apb-ssi";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0xfff00000 0x1000>;
-+			interrupts = <0 154 4>;
-+			num-cs = <4>;
-+			tx-dma-channel = <&pdma 16>;
-+			rx-dma-channel = <&pdma 17>;
-+			clocks = <&per_base_clk>;
-+			status = "disabled";
-+		};
-+
-+		scu: snoop-control-unit@fffec000 {
-+			compatible = "arm,cortex-a9-scu";
-+			reg = <0xfffec000 0x100>;
-+		};
-+
-+		spi1: spi@fff01000 {
-+			compatible = "snps,dw-apb-ssi";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0xfff01000 0x1000>;
-+			interrupts = <0 155 4>;
-+			num-cs = <4>;
-+			tx-dma-channel = <&pdma 20>;
-+			rx-dma-channel = <&pdma 21>;
-+			clocks = <&per_base_clk>;
-+			status = "disabled";
-+		};
-+
-+		/* Local timer */
-+		timer@fffec600 {
-+			compatible = "arm,cortex-a9-twd-timer";
-+			reg = <0xfffec600 0x100>;
-+			interrupts = <1 13 0xf04>;
-+			clocks = <&mpu_periph_clk>;
-+		};
-+
-+		timer0: timer0@ffc08000 {
-+			compatible = "snps,dw-apb-timer";
-+			interrupts = <0 167 4>;
-+			reg = <0xffc08000 0x1000>;
-+			clocks = <&l4_sp_clk>;
-+			clock-names = "timer";
-+		};
-+
-+		timer1: timer1@ffc09000 {
-+			compatible = "snps,dw-apb-timer";
-+			interrupts = <0 168 4>;
-+			reg = <0xffc09000 0x1000>;
-+			clocks = <&l4_sp_clk>;
-+			clock-names = "timer";
-+		};
-+
-+		timer2: timer2@ffd00000 {
-+			compatible = "snps,dw-apb-timer";
-+			interrupts = <0 169 4>;
-+			reg = <0xffd00000 0x1000>;
-+			clocks = <&osc1>;
-+			clock-names = "timer";
-+		};
-+
-+		timer3: timer3@ffd01000 {
-+			compatible = "snps,dw-apb-timer";
-+			interrupts = <0 170 4>;
-+			reg = <0xffd01000 0x1000>;
-+			clocks = <&osc1>;
-+			clock-names = "timer";
-+		};
-+
-+		uart0: serial0@ffc02000 {
-+			compatible = "snps,dw-apb-uart";
-+			reg = <0xffc02000 0x1000>;
-+			interrupts = <0 162 4>;
-+			reg-shift = <2>;
-+			reg-io-width = <4>;
-+			/*clocks = <&l4_sp_clk>;*/
-+			clock-frequency = <100000000>;
-+			dmas = <&pdma 28>,
-+			       <&pdma 29>;
-+			dma-names = "tx", "rx";
-+		};
-+
-+		uart1: serial1@ffc03000 {
-+			compatible = "snps,dw-apb-uart";
-+			reg = <0xffc03000 0x1000>;
-+			interrupts = <0 163 4>;
-+			reg-shift = <2>;
-+			reg-io-width = <4>;
-+			clocks = <&l4_sp_clk>;
-+			dmas = <&pdma 30>,
-+			       <&pdma 31>;
-+			dma-names = "tx", "rx";
-+		};
-+
-+		rst: rstmgr@ffd05000 {
-+			#reset-cells = <1>;
-+			compatible = "altr,rst-mgr";
-+			reg = <0xffd05000 0x1000>;
-+			altr,modrst-offset = <0x10>;
-+		};
-+
-+		usbphy0: usbphy@0 {
-+			#phy-cells = <0>;
-+			compatible = "usb-nop-xceiv";
-+			status = "okay";
-+		};
-+
-+		usb0: usb@ffb00000 {
-+			compatible = "snps,dwc2";
-+			reg = <0xffb00000 0xffff>;
-+			interrupts = <0 125 4>;
-+			clocks = <&usb_mp_clk>;
-+			clock-names = "otg";
-+			phys = <&usbphy0>;
-+			phy-names = "usb2-phy";
-+			status = "disabled";
-+		};
-+
-+		usb1: usb@ffb40000 {
-+			compatible = "snps,dwc2";
-+			reg = <0xffb40000 0xffff>;
-+			interrupts = <0 128 4>;
-+			clocks = <&usb_mp_clk>;
-+			clock-names = "otg";
-+			phys = <&usbphy0>;
-+			phy-names = "usb2-phy";
-+			status = "disabled";
-+		};
-+
-+		watchdog0: watchdog@ffd02000 {
-+			compatible = "snps,dw-wdt";
-+			reg = <0xffd02000 0x1000>;
-+			interrupts = <0 171 4>;
-+			clocks = <&osc1>;
-+			status = "disabled";
-+		};
-+
-+		watchdog1: watchdog@ffd03000 {
-+			compatible = "snps,dw-wdt";
-+			reg = <0xffd03000 0x1000>;
-+			interrupts = <0 172 4>;
-+			clocks = <&osc1>;
-+			status = "disabled";
-+		};
-+
-+		sysmgr: sysmgr@ffd08000 {
-+			compatible = "altr,sys-mgr", "syscon";
-+			reg = <0xffd08000 0x4000>;
++		compatible = "snps,dwmac-mdio";
++
++		phy3: ethernet-phy@3 {
++			reg = <3>;
++
++			/* Add 2ns RX clock delay (1.2ns + 0.78ns)*/
++			rxc-skew-ps = <1680>;
++			rxd0-skew-ps = <420>;
++			rxd1-skew-ps = <420>;
++			rxd2-skew-ps = <420>;
++			rxd3-skew-ps = <420>;
++			rxdv-skew-ps = <420>;
++
++			/* Add 1.38ns TX clock delay (0.96ns + 0.42ns)*/
++			txc-skew-ps = <1860>;
++			txd0-skew-ps = <0>;
++			txd1-skew-ps = <0>;
++			txd2-skew-ps = <0>;
++			txd3-skew-ps = <0>;
++			txen-skew-ps = <0>;
 +		};
 +	};
 +};
++
++&usb1 {
++	status = "okay";
++	dr_mode = "host";
++};
+diff --git a/dts/src/arm/intel/socfpga/skeleton.dtsi b/dts/src/arm/intel/socfpga/skeleton.dtsi
+deleted file mode 100644
+index b41d241de2cde0ccf022134519e9f9d3ae4261a4..0000000000000000000000000000000000000000
+--- a/dts/src/arm/intel/socfpga/skeleton.dtsi
++++ /dev/null
+@@ -1,13 +0,0 @@
+-/*
+- * Skeleton device tree; the bare minimum needed to boot; just include and
+- * add a compatible value.  The bootloader will typically populate the memory
+- * node.
+- */
+-
+-/ {
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	chosen { };
+-	aliases { };
+-	memory { device_type = "memory"; reg = <0 0>; };
+-};
+diff --git a/dts/src/arm/intel/socfpga/socfpga_cyclone5_enclustra.dtsi b/dts/src/arm/intel/socfpga/socfpga_cyclone5_enclustra.dtsi
+deleted file mode 100644
+index 9ea1b76f1d55b28fd162231144bcb537a111c53f..0000000000000000000000000000000000000000
+--- a/dts/src/arm/intel/socfpga/socfpga_cyclone5_enclustra.dtsi
++++ /dev/null
+@@ -1,69 +0,0 @@
+-/*
+- *  Copyright (C) 2012 Altera Corporation <www.altera.com>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- */
+-
+-/dts-v1/;
+-/* First 4KB has trampoline code for secondary cores. */
+-/memreserve/ 0x00000000 0x0001000;
+-#include "socfpga_enclustra.dtsi"
+-
+-/ {
+-	soc {
+-		clkmgr@ffd04000 {
+-			clocks {
+-				osc1 {
+-					clock-frequency = <50000000>;
+-				};
+-			};
+-		};
+-
+-		mmc0: dwmmc0@ff704000 {
+-			num-slots = <1>;
+-			broken-cd;
+-			bus-width = <4>;
+-			cap-mmc-highspeed;
+-			cap-sd-highspeed;
+-		};
+-
+-		ethernet@ff702000 {
+-			phy-mode = "rgmii";
+-			phy-addr = <0xffffffff>; /* probe for phy addr */
+-			status = "okay";
+-		};
+-
+-		sysmgr@ffd08000 {
+-			cpu1-start-addr = <0xffd080c4>;
+-		};
+-	};
+-};
+-
+-&watchdog0 {
+-	status = "okay";
+-};
+-
+-&i2c0 {
+-    /* Both RTCs disabled by default, choose one */
+-    pcf85063: pcf85063@51 {
+-        status = "disabled";
+-        compatible = "nxp,pcf85063";
+-        reg = <0x51>;
+-    };
+-    isl12022: isl12022@68 {
+-        status = "disabled";
+-        compatible = "isil,isl12022";
+-        reg = <0x6f>;
+-    };
+-};
+diff --git a/dts/src/arm/intel/socfpga/socfpga_cyclone5_mercury_sa2.dts b/dts/src/arm/intel/socfpga/socfpga_cyclone5_mercury_sa2.dts
+deleted file mode 100644
+index cc55bf8f575433046915d3f33aaf789861d13b1a..0000000000000000000000000000000000000000
+--- a/dts/src/arm/intel/socfpga/socfpga_cyclone5_mercury_sa2.dts
++++ /dev/null
+@@ -1,128 +0,0 @@
+-/*
+- *  Copyright (C) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- */
+-
+-#include "socfpga_cyclone5_enclustra.dtsi"
+-
+-/ {
+-	model = "Enclustra Mercury SA2 SOM";
+-	compatible = "altr,socfpga-cyclone5", "altr,socfpga";
+-
+-	chosen {
+-		bootargs = "console=ttyS0,115200";
+-	};
+-
+-	memory {
+-		name = "memory";
+-		device_type = "memory";
+-		reg = <0x0 0x40000000>; /* 1GB */
+-	};
+-
+-	aliases {
+-		/* this allow the ethaddr uboot environmnet variable contents
+-		 * to be added to the gmac1 device tree blob.
+-		 */
+-		ethernet0 = &gmac1;
+-	};
+-
+-	regulator_3_3v: vcc3p3-regulator {
+-		compatible = "regulator-fixed";
+-		regulator-name = "VCC3P3";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-	};
+-};
+-
+-&gmac1 {
+-	status = "okay";
+-	phy-mode = "rgmii";
+-
+-	rxd0-skew-ps = <0>;
+-	rxd1-skew-ps = <0>;
+-	rxd2-skew-ps = <0>;
+-	rxd3-skew-ps = <0>;
+-	txen-skew-ps = <0>;
+-	txc-skew-ps = <2600>;
+-	rxdv-skew-ps = <0>;
+-	rxc-skew-ps = <2000>;
+-
+-	phy-handle = <&phy3>;
+-
+-	mdio0 {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		compatible = "snps,dwmac-mdio";
+-		phy3: ethernet-phy@3 {
+-			reg = <3>;
+-		};
+-	};
+-};
+-
+-&mmc0 {
+-	vmmc-supply = <&regulator_3_3v>;
+-	vqmmc-supply = <&regulator_3_3v>;
+-};
+-
+-&usb1 {
+-	status = "okay";
+-};
+-
+-&qspi {
+-	status = "okay";
+-
+-	flash0: n25q00@0 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "n25q00";
+-		reg = <0>;
+-		spi-max-frequency = <100000000>;
+-		cdns,page-size = <256>;
+-		cdns,block-size = <16>;
+-		m25p,fast-read;
+-		cdns,read-delay = <4>;
+-		cdns,tshsl-ns = <50>;
+-		cdns,tsd2d-ns = <50>;
+-		cdns,tchsh-ns = <4>;
+-		cdns,tslch-ns = <4>;
+-
+-		part0: partition@0 {
+-			label = "Flash 0 Raw Data";
+-			reg = < 0x00000000 0x01000000 >;
+-		};
+-
+-		part1: partition@800000 {
+-			label = "Flash 1 jffs2 Filesystem";
+-			reg = < 0x01000000 0x03000000 >;
+-		};
+-	};
+-};
+-
+-&i2c0 {
+-	status = "okay";
+-};
+-
+-&isl12022 {
+-	status = "okay";
+-};
+-
+-&spi0 {
+-	status = "okay";
+-	spidev@0 {
+-		compatible = "spidev";
+-		reg = <0>;
+-		spi-max-frequency = <1000000>;
+-	};
+-};
+diff --git a/dts/src/arm/intel/socfpga/socfpga_enclustra.dtsi b/dts/src/arm/intel/socfpga/socfpga_enclustra.dtsi
+deleted file mode 100644
+index a5ccc1933a7ed851effc4844a2e22f55d58c6905..0000000000000000000000000000000000000000
+--- a/dts/src/arm/intel/socfpga/socfpga_enclustra.dtsi
++++ /dev/null
+@@ -1,971 +0,0 @@
+-/*
+- *  Copyright (C) 2012 Altera <www.altera.com>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- */
+-
+-#include "skeleton.dtsi"
+-#include <dt-bindings/reset/altr,rst-mgr.h>
+-
+-/ {
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-
+-	aliases {
+-		ethernet0 = &gmac0;
+-		ethernet1 = &gmac1;
+-		serial0 = &uart0;
+-		serial1 = &uart1;
+-		timer0 = &timer0;
+-		timer1 = &timer1;
+-		timer2 = &timer2;
+-		timer3 = &timer3;
+-	};
+-
+-	cpus {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		enable-method = "altr,socfpga-smp";
+-
+-		cpu@0 {
+-			compatible = "arm,cortex-a9";
+-			device_type = "cpu";
+-			reg = <0>;
+-			next-level-cache = <&L2>;
+-		};
+-		cpu@1 {
+-			compatible = "arm,cortex-a9";
+-			device_type = "cpu";
+-			reg = <1>;
+-			next-level-cache = <&L2>;
+-		};
+-	};
+-
+-	intc: intc@fffed000 {
+-		compatible = "arm,cortex-a9-gic";
+-		#interrupt-cells = <3>;
+-		interrupt-controller;
+-		reg = <0xfffed000 0x1000>,
+-		      <0xfffec100 0x100>;
+-	};
+-
+-	soc {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "simple-bus";
+-		device_type = "soc";
+-		interrupt-parent = <&intc>;
+-		ranges;
+-
+-		amba {
+-			compatible = "arm,amba-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			ranges;
+-
+-			pdma: pdma@ffe01000 {
+-				compatible = "arm,pl330", "arm,primecell";
+-				reg = <0xffe01000 0x1000>;
+-				interrupts = <0 104 4>,
+-					     <0 105 4>,
+-					     <0 106 4>,
+-					     <0 107 4>,
+-					     <0 108 4>,
+-					     <0 109 4>,
+-					     <0 110 4>,
+-					     <0 111 4>;
+-				#dma-cells = <1>;
+-				#dma-channels = <8>;
+-				#dma-requests = <32>;
+-				clocks = <&l4_main_clk>;
+-				clock-names = "apb_pclk";
+-			};
+-		};
+-
+-		can0: can@ffc00000 {
+-			compatible = "bosch,d_can";
+-			reg = <0xffc00000 0x1000>;
+-			interrupts = <0 131 4>, <0 132 4>, <0 133 4>, <0 134 4>;
+-			clocks = <&can0_clk>;
+-			status = "disabled";
+-		};
+-
+-		can1: can@ffc01000 {
+-			compatible = "bosch,d_can";
+-			reg = <0xffc01000 0x1000>;
+-			interrupts = <0 135 4>, <0 136 4>, <0 137 4>, <0 138 4>;
+-			clocks = <&can1_clk>;
+-			status = "disabled";
+-		};
+-
+-		clkmgr@ffd04000 {
+-				compatible = "altr,clk-mgr";
+-				reg = <0xffd04000 0x1000>;
+-
+-				clocks {
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					osc1: osc1 {
+-						#clock-cells = <0>;
+-						compatible = "fixed-clock";
+-					};
+-
+-					osc2: osc2 {
+-						#clock-cells = <0>;
+-						compatible = "fixed-clock";
+-					};
+-
+-					f2s_periph_ref_clk: f2s_periph_ref_clk {
+-						#clock-cells = <0>;
+-						compatible = "fixed-clock";
+-					};
+-
+-					f2s_sdram_ref_clk: f2s_sdram_ref_clk {
+-						#clock-cells = <0>;
+-						compatible = "fixed-clock";
+-					};
+-
+-					main_pll: main_pll {
+-						#address-cells = <1>;
+-						#size-cells = <0>;
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-pll-clock";
+-						clocks = <&osc1>;
+-						reg = <0x40>;
+-
+-						mpuclk: mpuclk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&main_pll>;
+-							div-reg = <0xe0 0 9>;
+-							reg = <0x48>;
+-						};
+-
+-						mainclk: mainclk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&main_pll>;
+-							div-reg = <0xe4 0 9>;
+-							reg = <0x4C>;
+-						};
+-
+-						dbg_base_clk: dbg_base_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&main_pll>, <&osc1>;
+-							div-reg = <0xe8 0 9>;
+-							reg = <0x50>;
+-						};
+-
+-						main_qspi_clk: main_qspi_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&main_pll>;
+-							reg = <0x54>;
+-						};
+-
+-						main_nand_sdmmc_clk: main_nand_sdmmc_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&main_pll>;
+-							reg = <0x58>;
+-						};
+-
+-						cfg_h2f_usr0_clk: cfg_h2f_usr0_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&main_pll>;
+-							reg = <0x5C>;
+-						};
+-					};
+-
+-					periph_pll: periph_pll {
+-						#address-cells = <1>;
+-						#size-cells = <0>;
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-pll-clock";
+-						clocks = <&osc1>, <&osc2>, <&f2s_periph_ref_clk>;
+-						reg = <0x80>;
+-
+-						emac0_clk: emac0_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&periph_pll>;
+-							reg = <0x88>;
+-						};
+-
+-						emac1_clk: emac1_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&periph_pll>;
+-							reg = <0x8C>;
+-						};
+-
+-						per_qspi_clk: per_qsi_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&periph_pll>;
+-							reg = <0x90>;
+-						};
+-
+-						per_nand_mmc_clk: per_nand_mmc_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&periph_pll>;
+-							reg = <0x94>;
+-						};
+-
+-						per_base_clk: per_base_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&periph_pll>;
+-							reg = <0x98>;
+-						};
+-
+-						h2f_usr1_clk: h2f_usr1_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&periph_pll>;
+-							reg = <0x9C>;
+-						};
+-					};
+-
+-					sdram_pll: sdram_pll {
+-						#address-cells = <1>;
+-						#size-cells = <0>;
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-pll-clock";
+-						clocks = <&osc1>, <&osc2>, <&f2s_sdram_ref_clk>;
+-						reg = <0xC0>;
+-
+-						ddr_dqs_clk: ddr_dqs_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&sdram_pll>;
+-							reg = <0xC8>;
+-						};
+-
+-						ddr_2x_dqs_clk: ddr_2x_dqs_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&sdram_pll>;
+-							reg = <0xCC>;
+-						};
+-
+-						ddr_dq_clk: ddr_dq_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&sdram_pll>;
+-							reg = <0xD0>;
+-						};
+-
+-						h2f_usr2_clk: h2f_usr2_clk {
+-							#clock-cells = <0>;
+-							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&sdram_pll>;
+-							reg = <0xD4>;
+-						};
+-					};
+-
+-					mpu_periph_clk: mpu_periph_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-perip-clk";
+-						clocks = <&mpuclk>;
+-						fixed-divider = <4>;
+-					};
+-
+-					mpu_l2_ram_clk: mpu_l2_ram_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-perip-clk";
+-						clocks = <&mpuclk>;
+-						fixed-divider = <2>;
+-					};
+-
+-					l4_main_clk: l4_main_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&mainclk>;
+-						clk-gate = <0x60 0>;
+-					};
+-
+-					l3_main_clk: l3_main_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-perip-clk";
+-						clocks = <&mainclk>;
+-						fixed-divider = <1>;
+-					};
+-
+-					l3_mp_clk: l3_mp_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&mainclk>;
+-						div-reg = <0x64 0 2>;
+-						clk-gate = <0x60 1>;
+-					};
+-
+-					l3_sp_clk: l3_sp_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&l3_mp_clk>;
+-						div-reg = <0x64 2 2>;
+-					};
+-
+-					l4_mp_clk: l4_mp_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&mainclk>, <&per_base_clk>;
+-						div-reg = <0x64 4 3>;
+-						clk-gate = <0x60 2>;
+-					};
+-
+-					l4_sp_clk: l4_sp_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&mainclk>, <&per_base_clk>;
+-						div-reg = <0x64 7 3>;
+-						clk-gate = <0x60 3>;
+-					};
+-
+-					dbg_at_clk: dbg_at_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&dbg_base_clk>;
+-						div-reg = <0x68 0 2>;
+-						clk-gate = <0x60 4>;
+-					};
+-
+-					dbg_clk: dbg_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&dbg_at_clk>;
+-						div-reg = <0x68 2 2>;
+-						clk-gate = <0x60 5>;
+-					};
+-
+-					dbg_trace_clk: dbg_trace_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&dbg_base_clk>;
+-						div-reg = <0x6C 0 3>;
+-						clk-gate = <0x60 6>;
+-					};
+-
+-					dbg_timer_clk: dbg_timer_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&dbg_base_clk>;
+-						clk-gate = <0x60 7>;
+-					};
+-
+-					cfg_clk: cfg_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&cfg_h2f_usr0_clk>;
+-						clk-gate = <0x60 8>;
+-					};
+-
+-					h2f_user0_clk: h2f_user0_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&cfg_h2f_usr0_clk>;
+-						clk-gate = <0x60 9>;
+-					};
+-
+-					emac_0_clk: emac_0_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&emac0_clk>;
+-						clk-gate = <0xa0 0>;
+-					};
+-
+-					emac_1_clk: emac_1_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&emac1_clk>;
+-						clk-gate = <0xa0 1>;
+-					};
+-
+-					usb_mp_clk: usb_mp_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&per_base_clk>;
+-						clk-gate = <0xa0 2>;
+-						div-reg = <0xa4 0 3>;
+-					};
+-
+-					spi_m_clk: spi_m_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&per_base_clk>;
+-						clk-gate = <0xa0 3>;
+-						div-reg = <0xa4 3 3>;
+-					};
+-
+-					can0_clk: can0_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&per_base_clk>;
+-						clk-gate = <0xa0 4>;
+-						div-reg = <0xa4 6 3>;
+-					};
+-
+-					can1_clk: can1_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&per_base_clk>;
+-						clk-gate = <0xa0 5>;
+-						div-reg = <0xa4 9 3>;
+-					};
+-
+-					gpio_db_clk: gpio_db_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&per_base_clk>;
+-						clk-gate = <0xa0 6>;
+-						div-reg = <0xa8 0 24>;
+-					};
+-
+-					h2f_user1_clk: h2f_user1_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&h2f_usr1_clk>;
+-						clk-gate = <0xa0 7>;
+-					};
+-
+-					sdmmc_clk: sdmmc_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&f2s_periph_ref_clk>, <&main_nand_sdmmc_clk>, <&per_nand_mmc_clk>;
+-						clk-gate = <0xa0 8>;
+-						clk-phase = <0 135>;
+-					};
+-
+-					sdmmc_clk_divided: sdmmc_clk_divided {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&sdmmc_clk>;
+-						clk-gate = <0xa0 8>;
+-						fixed-divider = <4>;
+-					};
+-
+-					nand_x_clk: nand_x_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&f2s_periph_ref_clk>, <&main_nand_sdmmc_clk>, <&per_nand_mmc_clk>;
+-						clk-gate = <0xa0 9>;
+-					};
+-
+-					nand_clk: nand_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&f2s_periph_ref_clk>, <&main_nand_sdmmc_clk>, <&per_nand_mmc_clk>;
+-						clk-gate = <0xa0 10>;
+-						fixed-divider = <4>;
+-					};
+-
+-					qspi_clk: qspi_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&f2s_periph_ref_clk>, <&main_qspi_clk>, <&per_qspi_clk>;
+-						clk-gate = <0xa0 11>;
+-						fixed-divider = <2>;
+-					};
+-
+-					ddr_dqs_clk_gate: ddr_dqs_clk_gate {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&ddr_dqs_clk>;
+-						clk-gate = <0xd8 0>;
+-					};
+-
+-					ddr_2x_dqs_clk_gate: ddr_2x_dqs_clk_gate {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&ddr_2x_dqs_clk>;
+-						clk-gate = <0xd8 1>;
+-					};
+-
+-					ddr_dq_clk_gate: ddr_dq_clk_gate {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&ddr_dq_clk>;
+-						clk-gate = <0xd8 2>;
+-					};
+-
+-					h2f_user2_clk: h2f_user2_clk {
+-						#clock-cells = <0>;
+-						compatible = "altr,socfpga-gate-clk";
+-						clocks = <&h2f_usr2_clk>;
+-						clk-gate = <0xd8 3>;
+-					};
+-
+-				};
+-		};
+-
+-		gmac0: ethernet@ff700000 {
+-			compatible = "altr,socfpga-stmmac", "snps,dwmac-3.70a", "snps,dwmac";
+-			altr,sysmgr-syscon = <&sysmgr 0x60 0>;
+-			reg = <0xff700000 0x2000>;
+-			interrupts = <0 115 4>;
+-			interrupt-names = "macirq";
+-			mac-address = [00 00 00 00 00 00];/* Filled in by U-Boot */
+-			clocks = <&emac0_clk>;
+-			clock-names = "stmmaceth";
+-			resets = <&rst EMAC0_RESET>;
+-			reset-names = "stmmaceth";
+-			snps,multicast-filter-bins = <256>;
+-			snps,perfect-filter-entries = <128>;
+-			tx-fifo-depth = <4096>;
+-			rx-fifo-depth = <4096>;
+-			status = "disabled";
+-		};
+-
+-		gmac1: ethernet@ff702000 {
+-			compatible = "altr,socfpga-stmmac", "snps,dwmac-3.70a", "snps,dwmac";
+-			altr,sysmgr-syscon = <&sysmgr 0x60 2>;
+-			reg = <0xff702000 0x2000>;
+-			interrupts = <0 120 4>;
+-			interrupt-names = "macirq";
+-			mac-address = [00 00 00 00 00 00];/* Filled in by U-Boot */
+-			clocks = <&emac1_clk>;
+-			clock-names = "stmmaceth";
+-			resets = <&rst EMAC1_RESET>;
+-			reset-names = "stmmaceth";
+-			snps,multicast-filter-bins = <256>;
+-			snps,perfect-filter-entries = <128>;
+-			tx-fifo-depth = <4096>;
+-			rx-fifo-depth = <4096>;
+-			status = "disabled";
+-		};
+-
+-		hps_0_fpgamgr: fpgamgr@0xff706000 {
+-			compatible = "altr,fpga-mgr-1.0", "altr,fpga-mgr";
+-			transport = "mmio";
+-			reg = <0xFF706000 0x1000
+-			0xFFB90000 0x1000>;
+-			interrupts = <0 175 4>;
+-		};
+-
+-		hps_fpgabridge0: fpgabridge@0 {
+-			compatible = "altr,socfpga-hps2fpga-bridge";
+-			label = "hps2fpga";
+-			resets = <&rst HPS2FPGA_RESET>;
+-			reset-names = "hps2fpga";
+-			clocks = <&l4_main_clk>;
+-		};
+-
+-		hps_fpgabridge1: fpgabridge@1 {
+-			compatible = "altr,socfpga-lwhps2fpga-bridge";
+-			label = "lwhps2fpga";
+-			resets = <&rst LWHPS2FPGA_RESET>;
+-			reset-names = "lwhps2fpga";
+-			clocks = <&l4_main_clk>;
+-		};
+-
+-		hps_fpgabridge2: fpgabridge@2 {
+-			compatible = "altr,socfpga-fpga2hps-bridge";
+-			label = "fpga2hps";
+-			resets = <&rst FPGA2HPS_RESET>;
+-			reset-names = "fpga2hps";
+-			clocks = <&l4_main_clk>;
+-		};
+-
+-		i2c0: i2c@ffc04000 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "snps,designware-i2c";
+-			reg = <0xffc04000 0x1000>;
+-			clocks = <&l4_sp_clk>;
+-			interrupts = <0 158 0x4>;
+-			status = "disabled";
+-		};
+-
+-		i2c1: i2c@ffc05000 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "snps,designware-i2c";
+-			reg = <0xffc05000 0x1000>;
+-			clocks = <&l4_sp_clk>;
+-			interrupts = <0 159 0x4>;
+-			status = "disabled";
+-		};
+-
+-		i2c2: i2c@ffc06000 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "snps,designware-i2c";
+-			reg = <0xffc06000 0x1000>;
+-			clocks = <&l4_sp_clk>;
+-			interrupts = <0 160 0x4>;
+-			status = "disabled";
+-		};
+-
+-		i2c3: i2c@ffc07000 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "snps,designware-i2c";
+-			reg = <0xffc07000 0x1000>;
+-			clocks = <&l4_sp_clk>;
+-			interrupts = <0 161 0x4>;
+-			status = "disabled";
+-		};
+-
+-		gpio0: gpio@ff708000 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "snps,dw-apb-gpio";
+-			reg = <0xff708000 0x1000>;
+-			clocks = <&l4_mp_clk>;
+-			status = "disabled";
+-
+-			porta: gpio-controller@0 {
+-				compatible = "snps,dw-apb-gpio-port";
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				snps,nr-gpios = <29>;
+-				reg = <0>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-				interrupts = <0 164 4>;
+-			};
+-		};
+-
+-		gpio1: gpio@ff709000 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "snps,dw-apb-gpio";
+-			reg = <0xff709000 0x1000>;
+-			clocks = <&l4_mp_clk>;
+-			status = "disabled";
+-
+-			portb: gpio-controller@0 {
+-				compatible = "snps,dw-apb-gpio-port";
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				snps,nr-gpios = <29>;
+-				reg = <0>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-				interrupts = <0 165 4>;
+-			};
+-		};
+-
+-		gpio2: gpio@ff70a000 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "snps,dw-apb-gpio";
+-			reg = <0xff70a000 0x1000>;
+-			clocks = <&l4_mp_clk>;
+-			status = "disabled";
+-
+-			portc: gpio-controller@0 {
+-				compatible = "snps,dw-apb-gpio-port";
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				snps,nr-gpios = <27>;
+-				reg = <0>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-				interrupts = <0 166 4>;
+-			};
+-		};
+-
+-		sdr: sdr@ffc25000 {
+-			compatible = "syscon";
+-			reg = <0xffc25000 0x1000>;
+-		};
+-
+-		sdramedac {
+-			compatible = "altr,sdram-edac";
+-			altr,sdr-syscon = <&sdr>;
+-			interrupts = <0 39 4>;
+-		};
+-
+-		L2: l2-cache@fffef000 {
+-			compatible = "arm,pl310-cache", "syscon";
+-			reg = <0xfffef000 0x1000>;
+-			interrupts = <0 38 0x04>;
+-			cache-unified;
+-			cache-level = <2>;
+-			arm,tag-latency = <1 1 1>;
+-			arm,data-latency = <2 1 1>;
+-			prefetch-data = <1>;
+-			prefetch-instr = <1>;
+-		};
+-
+-		mmc: dwmmc0@ff704000 {
+-			compatible = "altr,socfpga-dw-mshc";
+-			reg = <0xff704000 0x1000>;
+-			interrupts = <0 139 4>;
+-			fifo-depth = <0x400>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			clocks = <&l4_mp_clk>, <&sdmmc_clk_divided>;
+-			clock-names = "biu", "ciu";
+-		};
+-
+-		nand: nand@ff900000 {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			compatible = "denali,denali-nand-dt";
+-			reg = <0xff900000 0x100000>, <0xffb80000 0x10000>;
+-			reg-names = "nand_data", "denali_reg";
+-			interrupts = <0 144 4>;
+-			dma-mask = <0xffffffff>;
+-			clocks = <&nand_clk>;
+-			have-hw-ecc-fixup;
+-			status = "disabled";
+-
+-			partition@nand-boot {
+-				/* 8MB for raw data. */
+-				label = "NAND Flash Boot Area 8MB";
+-				reg = <0x0 0x800000>;
+-			};
+-			partition@nand-rootfs {
+-				/* 128MB jffs2 root filesystem. */
+-				label = "NAND Flash jffs2 Root Filesystem 128MB";
+-				reg = <0x800000 0x8000000>;
+-			};
+-			partition@nand-128 {
+-				label = "NAND Flash 128 MB";
+-				reg = <0x8800000 0x8000000>;
+-			};
+-			partition@nand-64 {
+-				label = "NAND Flash 64 MB";
+-				reg = <0x10800000 0x4000000>;
+-			};
+-			partition@nand-32 {
+-				label = "NAND Flash 32 MB";
+-				reg = <0x14800000 0x2000000>;
+-			};
+-			partition@nand-16 {
+-				label = "NAND Flash 16 MB";
+-				reg = <0x16800000 0x1000000>;
+-			};
+-		};
+-
+-		ocram: sram@ffff0000 {
+-			compatible = "mmio-sram";
+-			reg = <0xffff0000 0x10000>;
+-		};
+-
+-		pmu {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			compatible = "arm,cortex-a9-pmu";
+-			interrupts = <0 176 4>, <0 177 4>;
+-			ranges;
+-
+-			cti0: cti0@ff118000 {
+-				compatible = "arm,coresight-cti";
+-				reg = <0xff118000 0x100>;
+-			};
+-
+-			cti1: cti1@ff119000 {
+-				compatible = "arm,coresight-cti";
+-				reg = <0xff119000 0x100>;
+-			};
+-		};
+-
+-		sdrctl@0xffc25000 {
+-			compatible = "altr,sdr-ctl", "syscon";
+-			reg = <0xffc25000 0x1000>;
+-		};
+-
+-		l2edac@xffd08140 {
+-			compatible = "altr,l2-edac";
+-			reg = <0xffd08140 0x4>;
+-			interrupts = <0 36 1>, <0 37 1>;
+-                };
+-
+-		ocramedac@ffd08144 {
+-			compatible = "altr,ocram-edac";
+-			reg = <0xffd08144 0x4>;
+-			iram = <&ocram>;
+-			interrupts = <0 178 1>, <0 179 1>;
+-		};
+-
+-		l3regs@0xff800000 {
+-			compatible = "altr,l3regs", "syscon";
+-			reg = <0xff800000 0x1000>;
+-		};
+-
+-		qspi: spi@ff705000 {
+-			compatible = "cdns,qspi-nor";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			reg = <0xff705000 0x1000>,
+-				<0xffa00000 0x1000>;
+-			interrupts = <0 151 4>;
+-			clocks = <&qspi_clk>;
+-			is-decoded-cs = <1>;
+-			fifo-depth = <128>;
+-			status = "disabled";
+-			m25p,fast-read;
+-		};
+-
+-		spi0: spi@fff00000 {
+-			compatible = "snps,dw-apb-ssi";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			reg = <0xfff00000 0x1000>;
+-			interrupts = <0 154 4>;
+-			num-cs = <4>;
+-			tx-dma-channel = <&pdma 16>;
+-			rx-dma-channel = <&pdma 17>;
+-			clocks = <&per_base_clk>;
+-			status = "disabled";
+-		};
+-
+-		scu: snoop-control-unit@fffec000 {
+-			compatible = "arm,cortex-a9-scu";
+-			reg = <0xfffec000 0x100>;
+-		};
+-
+-		spi1: spi@fff01000 {
+-			compatible = "snps,dw-apb-ssi";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			reg = <0xfff01000 0x1000>;
+-			interrupts = <0 155 4>;
+-			num-cs = <4>;
+-			tx-dma-channel = <&pdma 20>;
+-			rx-dma-channel = <&pdma 21>;
+-			clocks = <&per_base_clk>;
+-			status = "disabled";
+-		};
+-
+-		/* Local timer */
+-		timer@fffec600 {
+-			compatible = "arm,cortex-a9-twd-timer";
+-			reg = <0xfffec600 0x100>;
+-			interrupts = <1 13 0xf04>;
+-			clocks = <&mpu_periph_clk>;
+-		};
+-
+-		timer0: timer0@ffc08000 {
+-			compatible = "snps,dw-apb-timer";
+-			interrupts = <0 167 4>;
+-			reg = <0xffc08000 0x1000>;
+-			clocks = <&l4_sp_clk>;
+-			clock-names = "timer";
+-		};
+-
+-		timer1: timer1@ffc09000 {
+-			compatible = "snps,dw-apb-timer";
+-			interrupts = <0 168 4>;
+-			reg = <0xffc09000 0x1000>;
+-			clocks = <&l4_sp_clk>;
+-			clock-names = "timer";
+-		};
+-
+-		timer2: timer2@ffd00000 {
+-			compatible = "snps,dw-apb-timer";
+-			interrupts = <0 169 4>;
+-			reg = <0xffd00000 0x1000>;
+-			clocks = <&osc1>;
+-			clock-names = "timer";
+-		};
+-
+-		timer3: timer3@ffd01000 {
+-			compatible = "snps,dw-apb-timer";
+-			interrupts = <0 170 4>;
+-			reg = <0xffd01000 0x1000>;
+-			clocks = <&osc1>;
+-			clock-names = "timer";
+-		};
+-
+-		uart0: serial0@ffc02000 {
+-			compatible = "snps,dw-apb-uart";
+-			reg = <0xffc02000 0x1000>;
+-			interrupts = <0 162 4>;
+-			reg-shift = <2>;
+-			reg-io-width = <4>;
+-			/*clocks = <&l4_sp_clk>;*/
+-			clock-frequency = <100000000>;
+-			dmas = <&pdma 28>,
+-			       <&pdma 29>;
+-			dma-names = "tx", "rx";
+-		};
+-
+-		uart1: serial1@ffc03000 {
+-			compatible = "snps,dw-apb-uart";
+-			reg = <0xffc03000 0x1000>;
+-			interrupts = <0 163 4>;
+-			reg-shift = <2>;
+-			reg-io-width = <4>;
+-			clocks = <&l4_sp_clk>;
+-			dmas = <&pdma 30>,
+-			       <&pdma 31>;
+-			dma-names = "tx", "rx";
+-		};
+-
+-		rst: rstmgr@ffd05000 {
+-			#reset-cells = <1>;
+-			compatible = "altr,rst-mgr";
+-			reg = <0xffd05000 0x1000>;
+-			altr,modrst-offset = <0x10>;
+-		};
+-
+-		usbphy0: usbphy@0 {
+-			#phy-cells = <0>;
+-			compatible = "usb-nop-xceiv";
+-			status = "okay";
+-		};
+-
+-		usb0: usb@ffb00000 {
+-			compatible = "snps,dwc2";
+-			reg = <0xffb00000 0xffff>;
+-			interrupts = <0 125 4>;
+-			clocks = <&usb_mp_clk>;
+-			clock-names = "otg";
+-			phys = <&usbphy0>;
+-			phy-names = "usb2-phy";
+-			status = "disabled";
+-		};
+-
+-		usb1: usb@ffb40000 {
+-			compatible = "snps,dwc2";
+-			reg = <0xffb40000 0xffff>;
+-			interrupts = <0 128 4>;
+-			clocks = <&usb_mp_clk>;
+-			clock-names = "otg";
+-			phys = <&usbphy0>;
+-			phy-names = "usb2-phy";
+-			status = "disabled";
+-		};
+-
+-		watchdog0: watchdog@ffd02000 {
+-			compatible = "snps,dw-wdt";
+-			reg = <0xffd02000 0x1000>;
+-			interrupts = <0 171 4>;
+-			clocks = <&osc1>;
+-			status = "disabled";
+-		};
+-
+-		watchdog1: watchdog@ffd03000 {
+-			compatible = "snps,dw-wdt";
+-			reg = <0xffd03000 0x1000>;
+-			interrupts = <0 172 4>;
+-			clocks = <&osc1>;
+-			status = "disabled";
+-		};
+-
+-		sysmgr: sysmgr@ffd08000 {
+-			compatible = "altr,sys-mgr", "syscon";
+-			reg = <0xffd08000 0x4000>;
+-		};
+-	};
+-};
 
 -- 
 2.43.0
