@@ -1,84 +1,57 @@
-Delivery-date: Wed, 17 Sep 2025 12:07:19 +0200
+Delivery-date: Wed, 17 Sep 2025 12:22:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyp4J-00423D-2L
+	id 1uypJ4-0042UE-3B
 	for lore@lore.pengutronix.de;
-	Wed, 17 Sep 2025 12:07:19 +0200
+	Wed, 17 Sep 2025 12:22:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyp4J-0005w2-5V
-	for lore@pengutronix.de; Wed, 17 Sep 2025 12:07:19 +0200
+	id 1uypJ4-00085z-Ac
+	for lore@pengutronix.de; Wed, 17 Sep 2025 12:22:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vtjcpXrCzkwdwEZ/zaW9UU4y7gfhSn4RxYoBY8y1+cM=; b=y/mVhvOUGUGdIuLnqPjj2d+Mp5
-	gEsHVjQ3okq5tusSzQ2AigEQFmeAfA2R7jxEf8TUsp77w6CbCTaSQMregGPMUN3gAJkhf2wzH2qjd
-	p2kV8isi1eC5W/72XY0uA6ZtANfJd3pCwVxphlT+LVzEeRO4bfBDTWH+96LT85CB3UP/aZNMid3wg
-	qouKwlejqej+uHchfrrJTzI+jPD9e8m2kgMqY6iqnqLBti5OE5Jjiy4iR857RTDlMBzyzlQM8/BZF
-	XlWvF1N2codEvuAE9yt0dOJbJSJh5UW44kX9/BvxNUcjPRiPbtTt3IR3p8XUphb4aup9L0vLqxJOE
-	NnpjmABg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=LyMSuzQryhM2kjVC3FyzpFU8HicokJCCM6snk0sRgqM=; b=Fm189/UUeC9tPRJ7VhyFS/DTEv
+	pr4vhP/d365X4nKvwpcPKk67Au9rJVWaEyYhpGXn3C72nZWisBToLxkuQ96jQmqiKMNJ//L60oEC5
+	l4xyMGtB7qbc6zvq9b5NTrt+zuYQF/H67B29HChjaCr+nPIgvsLQ4pfcXXRLD34SQsqMubqHPwC/m
+	DGxCVjCm7Bgt3XTVWTaMfHn6YvogALhoE1dMLsC+KDxXs5FaxMGtefrVXl4LAdCwmaCXdMJolvMh5
+	DRR3yRrHF6Ns3aHU3yZnSaneX1esqD7NOUK45GLRgwxC8JNmkCF7X7Q1llrwYG1defFefzbf0+1KL
+	Q5A+fxjg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyp3c-0000000Au7I-0ODe;
-	Wed, 17 Sep 2025 10:06:36 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyp3Z-0000000Au73-3QsM
-	for barebox@bombadil.infradead.org;
-	Wed, 17 Sep 2025 10:06:35 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=vtjcpXrCzkwdwEZ/zaW9UU4y7gfhSn4RxYoBY8y1+cM=; b=Q+TvxRenkmFfj4O/qOP8CcMKKX
-	nrJcgCod70fERDPuMbnvuYndcMndfBTyBbWjUB1qGJN285Y3YqRnmBPy4VAe8n5+ZETqIoI42z/WN
-	7UOxtx5Al+aIE/m6OvtDvP6tkT7h/tTGXlhfnWkkf0ghYcY3WLmb7uk7t6UEYR9LL7CuboBk8R/8Y
-	gZp8fPPivH4Rtbsw8d8zaJxhE75J5teMosyfMuwHF/BhpoXBe/3ErTlJJgmwy1W2fQLkN1LOi3b4s
-	7wUPfUVJSqZcI46Jl/po1jra4fXaP0ST9EBKBvoxV9Xbl68atR08i51FAsQCquwTP6TOrujGHxAP2
-	w3WWmoKA==;
+	id 1uypIZ-0000000Ay2J-2tg9;
+	Wed, 17 Sep 2025 10:22:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyp3W-00000007Mqc-1PWe
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uypIW-0000000Ay1F-3BgA
 	for barebox@lists.infradead.org;
-	Wed, 17 Sep 2025 10:06:32 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uyp3T-0005nO-JZ; Wed, 17 Sep 2025 12:06:27 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uyp3T-001k4S-1L;
-	Wed, 17 Sep 2025 12:06:27 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uyp3T-00DfRl-0p;
-	Wed, 17 Sep 2025 12:06:27 +0200
-Date: Wed, 17 Sep 2025 12:06:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <aMqIIz1zelD0wVGK@pengutronix.de>
-References: <20250917095834.2727068-1-s.hauer@pengutronix.de>
+	Wed, 17 Sep 2025 10:22:02 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uypIT-0007uH-Rd; Wed, 17 Sep 2025 12:21:57 +0200
+Message-ID: <70e5f030-a3c5-4fa8-af71-99084828d56e@pengutronix.de>
+Date: Wed, 17 Sep 2025 12:21:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20250917095834.2727068-1-s.hauer@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 In-Reply-To: <20250917095834.2727068-1-s.hauer@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250917_110630_607226_728D93B6 
-X-CRM114-Status: GOOD (  21.13  )
+X-CRM114-CacheID: sfid-20250917_032200_829958_CC911A49 
+X-CRM114-Status: GOOD (  23.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -104,17 +77,23 @@ Subject: Re: [PATCH] firmware: handle firmware files being links correctly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Sep 17, 2025 at 11:58:34AM +0200, Sascha Hauer wrote:
+On 9/17/25 11:58 AM, Sascha Hauer wrote:
 > Sometimes firmware files can be links. When rebuilding barebox correctly
 > rebuilds the firmware when file the link points to is updated, but the
 > firmware is not rebuilt when the link itself is changed to link to
 > another file.
-> 
+
+This is surprising. I though GNU make looks at the mtime of the destination.
+
 > Fix this by including the sha256sum directly in the generated assembly
 > file by using .byte rather than generating a file containing the
 > binary sha256sum and include that using .incbin. This way the generated
 > assembly file for sure changes when the firmware file changes and it's
 > rebuilt when necessary (and not when it's not).
+
+The if_changed in just one of the $(if branches looks a bit strange, so
+it's good to drop it IMO..
+
 > 
 > Reproducer:
 > 
@@ -130,19 +109,81 @@ On Wed, Sep 17, 2025 at 11:58:34AM +0200, Sascha Hauer wrote:
 > 
 > ln -sf bar firmware/imx8mm-bl31.bin
 > make
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-I ran into this several times now when I tested different TF-A versions.
-I linked the bl31 directly into the trusted-firmware build tree and
-at some point I wanted to test a known good bl31 binary and changed the
-link to that file. The result can be confusing and time consuming, so
-after this happened once again it was time to fix this.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Sascha
+But see suggestion below.
+
+> ---
+>  firmware/Makefile | 16 +++++-----------
+>  1 file changed, 5 insertions(+), 11 deletions(-)
+> 
+> diff --git a/firmware/Makefile b/firmware/Makefile
+> index 0c9da2996f..df9f277475 100644
+> --- a/firmware/Makefile
+> +++ b/firmware/Makefile
+> @@ -57,6 +57,8 @@ FWSTR     = $(subst /,_,$(subst .,_,$(subst -,_,$(FWNAME))))
+>  FWNAME_EXISTS = $(if $(wildcard $(FIRMWARE_DIR)/$(FWNAME)),1,0)
+>  
+>  filechk_fwbin = { \
+> +	SHA=$$(sha256sum $(FIRMWARE_DIR)/$(FWNAME) | sed 's/ .*$$//;s/../0x&, /g;s/, $$//') ;\
+> +	\
+>  	echo "/* Generated by $(src)/Makefile */"		;\
+>  	echo "\#include <asm-generic/pointer.h>"		;\
+>  	echo ".section .note.GNU-stack,\"\",%progbits"		;\
+> @@ -80,7 +82,7 @@ filechk_fwbin = { \
+>  	echo "    .p2align ASM_LGPTR"				;\
+>  	echo ".global _fw_$(FWSTR)_sha_start"			;\
+>  	echo "_fw_$(FWSTR)_sha_start:"				;\
+> -	echo "    .incbin \"$(fwobjdir)/$(FWNAME).sha.bin\""	;\
+> +	echo "    .byte $${SHA}"				;\
+>  	echo ".global _fw_$(FWSTR)_sha_end"			;\
+
+How about we add here an
+
+.if _fw_$(FWSTR)_sha_start - _fw_$(FWSTR)_sha_end
+	.err
+	.warnig "sha256sum empty"
+.endif
+
+As .byte doesn't require an argument, this would ensure breakage to be
+noticed at compile time.
+
+Cheers,
+Ahmad
+
+>  }
+> @@ -89,20 +91,12 @@ filechk_fwbin_ext = { \
+>  	$(filechk_fwbin)					;\
+>  }
+>  
+> -$(obj)/%.gen.S: $(obj)/%.sha.bin FORCE
+> +$(obj)/%.gen.S: FORCE
+>  	$(call filechk,fwbin,.rodata.$(FWSTR),)
+>  
+> -$(obj)/%.extgen.S: $(obj)/%.sha.bin FORCE
+> +$(obj)/%.extgen.S: FORCE
+>  	$(call filechk,fwbin_ext,.pblext.$(FWSTR),a)
+>  
+> -$(obj)/%.sha.bin: $(obj)/%.sum FORCE
+> -	$(call if_changed,sha256bin)
+> -
+> -$(obj)/%.sum: FORCE
+> -	$(if $(wildcard $(FIRMWARE_DIR)/$*), $(call if_changed,sha256sum,$(FIRMWARE_DIR)/$*), @touch $@)
+> -
+> -clean-files += *.sha.bin *.sum
+> -
+>  # This dependency is used if missing firmware should fail the build immediately
+>  fwdep-required-y = $(FIRMWARE_DIR)/%
+>  # This dependency expands to nothing if the file doesn't exist. This allows
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
