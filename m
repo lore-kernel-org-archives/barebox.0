@@ -1,89 +1,74 @@
-Delivery-date: Wed, 17 Sep 2025 16:19:09 +0200
+Delivery-date: Wed, 17 Sep 2025 16:19:11 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyt01-0046Qo-2M
+	id 1uyt03-0046RA-07
 	for lore@lore.pengutronix.de;
-	Wed, 17 Sep 2025 16:19:09 +0200
+	Wed, 17 Sep 2025 16:19:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uyt00-0003oa-E0
-	for lore@pengutronix.de; Wed, 17 Sep 2025 16:19:09 +0200
+	id 1uyt00-0003ox-Ke
+	for lore@pengutronix.de; Wed, 17 Sep 2025 16:19:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IhLb3JWdacoj7s+3FSL3lH/VMlCaLaCY2sSYsUO/ZuI=; b=EI4oYcQUz6brepTZhwOLha8hyz
-	oTH54eDFcS653eMga44vt00Xbc6upeOM0e5Q/gpECtttM096ciHj0Sn5+qIjj+crnows58mM4t73E
-	UqjCYtbGMp7iZAt36TnxytSoD47Ege3ptmaBYk+CNyjT9oqIqVxUCq7s/iwO++7CB4BeSAqL2zIX9
-	VZkEqpe++t0Q2+4N3S0sxSKOtr0KWr7Xc1liBoKxYj5fmy+DDQyCrb/GL/MqhyDUFngc4z1DYaf5V
-	hlCX3xwHXw/sCH1uldT0GTYWpPmrtUKzU5z8lNbc7ufC6eu4P0zxMQqPLlNRJrvuYTP7y3/mjJXbs
-	ixUUgfJA==;
+	bh=wEzqYFGNXgR96zwAplhultkSaFZ8BRixPli7f/vhJh4=; b=Ang134SG3eWKjReRyjZFER4Y42
+	9ylLJVyTCn0T4serGPa5RhA+r9HPHm8XI3m1MEb/9Mp5wP7CE9ttUKsmT3xwXo64jd8llBsbtc5nD
+	LLIK0A9yt3ZKLHjNTLKtVu70WK2RCwm/wi6LVqf4we49YPTwKEDLsC2QEXEL0vY7Zq/W9Jr0ERwi0
+	l46febxcZONJEEAe/dXfZaCfGai4Pm2rILhJMpT2qC95u43505Gr2GbfG7ZrZlCbitM+eHjYvQRFu
+	RSdkJi3vpIdQITL99KSK8hKKvv0bbI6hrS+xtcnHNbD9BFDh/ZEd67aSzgi/fGOaImS5Yixcl/zCE
+	r1rofIlA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyszS-0000000C8SD-21sI;
-	Wed, 17 Sep 2025 14:18:34 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyszL-0000000C8DG-3apk
-	for barebox@bombadil.infradead.org;
-	Wed, 17 Sep 2025 14:18:27 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=IhLb3JWdacoj7s+3FSL3lH/VMlCaLaCY2sSYsUO/ZuI=; b=qG9nodl5hYFILPzidMOzXp+ky3
-	4nBlUgrR7IorI7JMMFjysIK4Zzo3LP8gJ42kmWUCexZbRmJ11dIi7ODDpXY2HBNdnNlAgj6DZdr/6
-	xvwmBAG5KjtpbYl3QfDq/OZJTX85s3tNlgv05wHhv2dmYhrjtK5Wp5DNp+R+flXJRXrGZKDRtoxI+
-	uuRomva4f0PVQeZGEQT9g/7dIZhOktAMhoCoeGJBDlyKFN1nFJdP73i2psY82tbLmLewVudzghy7i
-	9v7s2qCAb5f34lme3BX0LyHWi9rntCVlvmunVT8Z5NnG8OCgfD3ip8D1npc9g+ViBYvxVN029fiNo
-	GsJ1k3pQ==;
+	id 1uyszQ-0000000C8MZ-05Ql;
+	Wed, 17 Sep 2025 14:18:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyszI-00000007PGG-2DLd
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uyszH-0000000C87e-1yEj
 	for barebox@lists.infradead.org;
-	Wed, 17 Sep 2025 14:18:26 +0000
+	Wed, 17 Sep 2025 14:18:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uyszG-00033w-Di; Wed, 17 Sep 2025 16:18:22 +0200
+	id 1uyszF-00032U-VR; Wed, 17 Sep 2025 16:18:21 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uyszG-001mH7-0h;
-	Wed, 17 Sep 2025 16:18:22 +0200
+	id 1uyszF-001mGn-2V;
+	Wed, 17 Sep 2025 16:18:21 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uysbA-0000000CZtI-32u8;
+	id 1uysbA-0000000CZtI-34US;
 	Wed, 17 Sep 2025 15:53:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Sep 2025 15:53:32 +0200
+Date: Wed, 17 Sep 2025 15:53:35 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-security-policies-v2-12-f30769a3ff51@pengutronix.de>
+Message-Id: <20250917-security-policies-v2-15-f30769a3ff51@pengutronix.de>
 References: <20250917-security-policies-v2-0-f30769a3ff51@pengutronix.de>
 In-Reply-To: <20250917-security-policies-v2-0-f30769a3ff51@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758117208; l=2473;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758117208; l=6533;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=M5SfEGasgybobtLTYhoS5qCmOybYmn5h6q6MICXZ1k0=;
- b=rLhPEYJnKtkzJg1lGsJxgPhP+GtEheAyE1e4N8KXF+NwVWjD2mf3pn8d3/tbm2Nsl16TMbpu9
- LhSwv4G1E8lDh3KdExN7DyZTks2qdYi5K4ya7l6wF0TqOeoZYUzkwnA
+ bh=ZEx/lE5hCnaViOKoUukBb47Ro+oB7KRv/AIaesyBT/E=;
+ b=NnoyxAmMyNiOR6ducbRuOpIr4LxVEpWc4KooEmUVQwwTcorG2zjbQTahD5KnQwGm7mn6eEIAP
+ /cjSmxeiLWqApOLF2zrHI5W9R2a27hC8ZbhCNgU2HcA2ZfWJJrYSWN1
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250917_151824_706257_7CC46D0E 
-X-CRM114-Status: GOOD (  13.69  )
+X-CRM114-CacheID: sfid-20250917_071823_670791_0AB78162 
+X-CRM114-Status: GOOD (  15.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,7 +80,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Ahmad Fatoum <a.fatoum@barebox.org>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -106,85 +91,243 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 12/24] bootm: support calling
- bootm_optional_signed_images at any time
+Subject: [PATCH v2 15/24] boards: qemu-virt: add security policies
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-bootm_init is a late initcall and thus the code has the implicit
-assumption that bootm_force_signed_images is called after it runs.
-
-Rework the code to allow calling the function at any time.
+To make it easier to experiment with security policies, add four example
+configurations, two via the build system and two "externally".
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootm.c | 32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ arch/arm/configs/virt32_secure_defconfig           |  1 +
+ common/boards/qemu-virt/Makefile                   |  3 ++
+ common/boards/qemu-virt/board.c                    |  8 +++++
+ common/boards/qemu-virt/qemu-virt-factory.sconfig  | 36 ++++++++++++++++++++++
+ common/boards/qemu-virt/qemu-virt-lockdown.sconfig | 35 +++++++++++++++++++++
+ security/qemu-virt-devel.sconfig                   | 36 ++++++++++++++++++++++
+ security/qemu-virt-tamper.sconfig                  | 35 +++++++++++++++++++++
+ 7 files changed, 154 insertions(+)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 15b18c12faa1856e08e30f59a5c2151558f20ec3..755c9358ce3a17c8ce37a9db13cf18d0aea1b5e7 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -116,12 +116,22 @@ static const char * const bootm_verify_names[] = {
+diff --git a/arch/arm/configs/virt32_secure_defconfig b/arch/arm/configs/virt32_secure_defconfig
+index 34cc49405495b33b4f78e078dfbcd951c433fcd8..09c98e5e4dc88aa22b3aa10db38efd7b7cac2310 100644
+--- a/arch/arm/configs/virt32_secure_defconfig
++++ b/arch/arm/configs/virt32_secure_defconfig
+@@ -292,6 +292,7 @@ CONFIG_FS_UBOOTVARFS=y
+ CONFIG_SECURITY_POLICY=y
+ CONFIG_SECURITY_POLICY_INIT="lockdown"
+ CONFIG_SECURITY_POLICY_DEFAULT_PANIC=y
++CONFIG_SECURITY_POLICY_PATH="security/qemu-virt-devel.sconfig security/qemu-virt-tamper.sconfig"
+ CONFIG_BUG_ON_DATA_CORRUPTION=y
+ CONFIG_DIGEST_SHA1_ARM=y
+ CONFIG_DIGEST_SHA256_ARM=y
+diff --git a/common/boards/qemu-virt/Makefile b/common/boards/qemu-virt/Makefile
+index 30bf4f1955ee9d306b46523863e247e4cf94ab75..2caa6a20c522ac68fd629f38e51fdf1423db4b09 100644
+--- a/common/boards/qemu-virt/Makefile
++++ b/common/boards/qemu-virt/Makefile
+@@ -9,5 +9,8 @@ ifeq ($(CONFIG_ARM),y)
+ DTC_CPP_FLAGS_qemu-virt-flash.dtbo := -DCONFIG_ARM
+ endif
  
- static bool force_signed_images = IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES);
- 
--void bootm_force_signed_images(void)
-+static void bootm_optional_signed_images(void)
- {
--	static unsigned int verify_mode = 0;
-+	/* This function should not be exported */
-+	BUG_ON(force_signed_images);
- 
--	if (force_signed_images)
--		return;
-+	globalvar_remove("bootm.verify");
-+	/* recreate bootm.verify with a single enumeration as option */
-+	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
-+				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
++policy-y += qemu-virt-factory.sconfig
++policy-y += qemu-virt-lockdown.sconfig
 +
-+	bootm_verify_mode = BOOTM_VERIFY_AVAILABLE;
-+}
-+
-+static void bootm_require_signed_images(void)
-+{
-+	static unsigned int verify_mode = 0;
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+ clean-files += *.dtbo *.dtbo.S .*.dtso
+diff --git a/common/boards/qemu-virt/board.c b/common/boards/qemu-virt/board.c
+index 9882b0c31a3cf9a97ef0e963653c85a3ead961bb..6f88f24b0690c2562b3b3718a56c9f5c46a4455a 100644
+--- a/common/boards/qemu-virt/board.c
++++ b/common/boards/qemu-virt/board.c
+@@ -7,6 +7,7 @@
+ #include <init.h>
+ #include <of.h>
+ #include <deep-probe.h>
++#include <security/policy.h>
+ #include "qemu-virt-flash.h"
  
- 	/* recreate bootm.verify with a single enumeration as option */
- 	globalvar_remove("bootm.verify");
-@@ -129,6 +139,11 @@ void bootm_force_signed_images(void)
- 				  &bootm_verify_names[BOOTM_VERIFY_SIGNATURE], 1);
+ #ifdef CONFIG_64BIT
+@@ -83,6 +84,13 @@ static int virt_board_driver_init(void)
  
- 	bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
-+}
+ 	/* of_probe() will happen later at of_populate_initcall */
+ 
++	security_policy_add(qemu_virt_factory);
++	security_policy_add(qemu_virt_lockdown);
++	/*
++	 * qemu_virt_devel & qemu_virt_tamper intentionally not added here,
++	 * so the test suite can exercise CONFIG_SECURITY_POLICY_PATH.
++	 */
 +
-+void bootm_force_signed_images(void)
-+{
-+	bootm_require_signed_images();
- 	force_signed_images = true;
+ 	return 0;
  }
- 
-@@ -1086,14 +1101,13 @@ static int bootm_init(void)
- 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
- 	}
- 
--	if (bootm_signed_images_are_forced())
--		bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
--
- 	globalvar_add_simple_bool("bootm.dryrun", &bootm_dryrun);
- 	globalvar_add_simple_int("bootm.verbose", &bootm_verbosity, "%u");
- 
--	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
--				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
-+	if (bootm_signed_images_are_forced())
-+		bootm_require_signed_images();
-+	else
-+		bootm_optional_signed_images();
- 
- 	if (IS_ENABLED(CONFIG_ROOTWAIT_BOOTARG))
- 		globalvar_add_simple_int("linux.rootwait",
+ postcore_initcall(virt_board_driver_init);
+diff --git a/common/boards/qemu-virt/qemu-virt-factory.sconfig b/common/boards/qemu-virt/qemu-virt-factory.sconfig
+new file mode 100644
+index 0000000000000000000000000000000000000000..7fb35e9b722d1694ed089f209c9d1af5892557ca
+--- /dev/null
++++ b/common/boards/qemu-virt/qemu-virt-factory.sconfig
+@@ -0,0 +1,36 @@
++#
++# Automatically generated file; DO NOT EDIT.
++# Barebox Security Configuration
++#
++SCONFIG_POLICY_NAME="factory"
++
++#
++# General Settings
++#
++SCONFIG_CONSOLE_INPUT=y
++SCONFIG_SHELL=y
++SCONFIG_SHELL_INTERACTIVE=y
++SCONFIG_ENVIRONMENT_LOAD=y
++SCONFIG_RATP=y
++# SCONFIG_FASTBOOT_CMD_OEM is not set
++# end of General Settings
++
++#
++# Boot Policy
++#
++# SCONFIG_BOOT_UNSIGNED_IMAGES is not set
++# end of Boot Policy
++
++#
++# USB Gadget Policy
++#
++SCONFIG_USB_GADGET=y
++# end of USB Gadget Policy
++
++#
++# Command Policy
++#
++# SCONFIG_CMD_GO is not set
++# end of Command Policy
++
++SCONFIG_FS_EXTERNAL=y
+diff --git a/common/boards/qemu-virt/qemu-virt-lockdown.sconfig b/common/boards/qemu-virt/qemu-virt-lockdown.sconfig
+new file mode 100644
+index 0000000000000000000000000000000000000000..04763d2233b41dc53e187641c45c48c9c1115a7d
+--- /dev/null
++++ b/common/boards/qemu-virt/qemu-virt-lockdown.sconfig
+@@ -0,0 +1,35 @@
++#
++# Automatically generated file; DO NOT EDIT.
++# Barebox Security Configuration
++#
++SCONFIG_POLICY_NAME="lockdown"
++
++#
++# General Settings
++#
++# SCONFIG_CONSOLE_INPUT is not set
++SCONFIG_SHELL=y
++# SCONFIG_ENVIRONMENT_LOAD is not set
++# SCONFIG_RATP is not set
++# SCONFIG_FASTBOOT_CMD_OEM is not set
++# end of General Settings
++
++#
++# Boot Policy
++#
++# SCONFIG_BOOT_UNSIGNED_IMAGES is not set
++# end of Boot Policy
++
++#
++# USB Gadget Policy
++#
++# SCONFIG_USB_GADGET is not set
++# end of USB Gadget Policy
++
++#
++# Command Policy
++#
++# SCONFIG_CMD_GO is not set
++# end of Command Policy
++
++# SCONFIG_FS_EXTERNAL is not set
+diff --git a/security/qemu-virt-devel.sconfig b/security/qemu-virt-devel.sconfig
+new file mode 100644
+index 0000000000000000000000000000000000000000..423374dfbdef5a22f40d30872f6eeb05590e9f3f
+--- /dev/null
++++ b/security/qemu-virt-devel.sconfig
+@@ -0,0 +1,36 @@
++#
++# Automatically generated file; DO NOT EDIT.
++# Barebox Security Configuration
++#
++SCONFIG_POLICY_NAME="devel"
++
++#
++# General Settings
++#
++SCONFIG_CONSOLE_INPUT=y
++SCONFIG_SHELL=y
++SCONFIG_SHELL_INTERACTIVE=y
++SCONFIG_ENVIRONMENT_LOAD=y
++SCONFIG_RATP=y
++SCONFIG_FASTBOOT_CMD_OEM=y
++# end of General Settings
++
++#
++# Boot Policy
++#
++SCONFIG_BOOT_UNSIGNED_IMAGES=y
++# end of Boot Policy
++
++#
++# USB Gadget Policy
++#
++SCONFIG_USB_GADGET=y
++# end of USB Gadget Policy
++
++#
++# Command Policy
++#
++SCONFIG_CMD_GO=y
++# end of Command Policy
++
++SCONFIG_FS_EXTERNAL=y
+diff --git a/security/qemu-virt-tamper.sconfig b/security/qemu-virt-tamper.sconfig
+new file mode 100644
+index 0000000000000000000000000000000000000000..10058c5b61010e64356df62269260c7a5bb33120
+--- /dev/null
++++ b/security/qemu-virt-tamper.sconfig
+@@ -0,0 +1,35 @@
++#
++# Automatically generated file; DO NOT EDIT.
++# Barebox Security Configuration
++#
++SCONFIG_POLICY_NAME="tamper"
++
++#
++# General Settings
++#
++# SCONFIG_CONSOLE_INPUT is not set
++# SCONFIG_SHELL is not set
++# SCONFIG_ENVIRONMENT_LOAD is not set
++# SCONFIG_RATP is not set
++# SCONFIG_FASTBOOT_CMD_OEM is not set
++# end of General Settings
++
++#
++# Boot Policy
++#
++# SCONFIG_BOOT_UNSIGNED_IMAGES is not set
++# end of Boot Policy
++
++#
++# USB Gadget Policy
++#
++# SCONFIG_USB_GADGET is not set
++# end of USB Gadget Policy
++
++#
++# Command Policy
++#
++# SCONFIG_CMD_GO is not set
++# end of Command Policy
++
++# SCONFIG_FS_EXTERNAL is not set
 
 -- 
 2.47.3
