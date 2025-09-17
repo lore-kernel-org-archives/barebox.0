@@ -1,74 +1,74 @@
-Delivery-date: Wed, 17 Sep 2025 15:54:13 +0200
+Delivery-date: Wed, 17 Sep 2025 15:54:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uysbt-0045mZ-1J
+	id 1uysbx-0045mx-0J
 	for lore@lore.pengutronix.de;
-	Wed, 17 Sep 2025 15:54:13 +0200
+	Wed, 17 Sep 2025 15:54:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uysbs-0006eq-D5
-	for lore@pengutronix.de; Wed, 17 Sep 2025 15:54:13 +0200
+	id 1uysbv-0006hp-CW
+	for lore@pengutronix.de; Wed, 17 Sep 2025 15:54:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4Xj0sVvbFEdF9l8G0Y8iJmyJjzlJr0XUV/bdbk48NsQ=; b=HhRA7ClE+Oft5pdOmYKcTFVtqT
-	kNVBQwDNItVtSdeIf42UX+WbZqN/2DAd3hcuHd9tcL1jJLZvdtYl+JQRMgh03xd8wBvjDQO6vWNUL
-	Ql8a2xTzMWmsoiMvRNpHd0NO/1zYvy0F+EWZ3l+480cbqNn3LLICjhWcH0YWZJHeS9pUV5LBXzws4
-	9dM+FvFbSjaqySAJhyejP7vq/pvqs/BGuB84A7jMDSimYpi3QWBncxav7sP24+In4XZMeYTpjrvjC
-	vW9oAro+zlfCyRkN8knN3pMWD9W9j95JlZk9j7BHxfLygc7xWvlwR5OGd2zwkPLWX91ZvYhkIu9hd
-	MrKuB4fw==;
+	bh=TUGHSrBdYSse1aqVEAglCCoU083KLB9zLeSXQ+30vVU=; b=eq6pWq2SJU2Xyma0wU3rhID5Le
+	YoL+DiVfMmG2VoTomZoUDroriueUo3raseMiTn629CAi/QiYQ7NiaUYEp4WpzUhiEvnmG5YvfDY1i
+	pCNqYhbFE+y2xDePrJZQL/ZqToeJ0iSW4WA0c5a1q+WSJzJuF/gb+w2JXsHsM0K2uIKaXIkeiInGg
+	zP8EMxQ6wGuz8LLZfe8mUb3bfPhnBRWY4IOWokDvTihi20Is0P+BeWlsigq4C7xawxxV8J4AkL1wY
+	WGl48z3CYfyo4QKV/CrmxB2O2CpHtnfCkKry590iVJz3tXL37UPwut8Zp0vBZpOPYWc4nCLp883mj
+	AFh8IHIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uysbP-0000000Bssd-3F3M;
-	Wed, 17 Sep 2025 13:53:43 +0000
+	id 1uysbQ-0000000BstB-0IMH;
+	Wed, 17 Sep 2025 13:53:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uysbK-0000000Bslc-3xay
+	id 1uysbK-0000000BslY-3pGB
 	for barebox@lists.infradead.org;
-	Wed, 17 Sep 2025 13:53:40 +0000
+	Wed, 17 Sep 2025 13:53:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uysbB-0006AZ-B8; Wed, 17 Sep 2025 15:53:29 +0200
+	id 1uysbB-0006Ad-Bx; Wed, 17 Sep 2025 15:53:29 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uysbA-001luR-2i;
+	id 1uysbA-001luT-2j;
 	Wed, 17 Sep 2025 15:53:28 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uysbA-0000000CZtI-2waA;
+	id 1uysbA-0000000CZtI-2zjq;
 	Wed, 17 Sep 2025 15:53:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Sep 2025 15:53:26 +0200
+Date: Wed, 17 Sep 2025 15:53:28 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-security-policies-v2-6-f30769a3ff51@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250917-security-policies-v2-8-f30769a3ff51@pengutronix.de>
 References: <20250917-security-policies-v2-0-f30769a3ff51@pengutronix.de>
 In-Reply-To: <20250917-security-policies-v2-0-f30769a3ff51@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758117208; l=6058;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758117208; l=8491;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=rlbGpBSBycZNGMv/iZjMeio63bpD43a7T0HQ6UhmIUE=;
- b=J5M8YgiqTTHqQ6Lk5WuPsGUyvMaX2spoWdNMv33Qn0vJC9olnFFuWv2IJxbXdpdIbjiofhJWk
- KRT8pppwSbiBFMbSGvV4tAeZJGcqKgBLQld8amQOWdVyXauxDCLC8NX
+ bh=c9XlT7NDDZI7Ycs5bl50rsOgGFUYqgiqzqr4b25rufE=;
+ b=yayYTUBUMqVW2+uEK3D+xcydyux9CiNIYnmQOPRySGSXTpoE3N+T3Dnz3WQ79NjMRaBvIkbhD
+ zRDLyFBpNf9CTNpY0PclsjBjHy+kB0TKqmznPUp81S3k7wmHenTzKWS
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250917_065339_165635_0A305F66 
-X-CRM114-Status: GOOD (  14.80  )
+X-CRM114-CacheID: sfid-20250917_065339_113025_AAB334F9 
+X-CRM114-Status: GOOD (  21.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,7 +80,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Ahmad Fatoum <a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -91,128 +91,318 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 06/24] defaultenv: update PS1 according to security
- policy
+Subject: [PATCH v2 08/24] commands: implement sconfig command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+The sconfig command provides a convenient interface to test the new
+security policy support. It allows inspecting available policies
+and optionally switching between them and enabling/disabling them
+piecewise for interactive testing of code that is gated behind these
+security options.
 
-This nifty optional feature makes it easy to see what security policy
-is currently active.
-
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de
+Co-developed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/user/defaultenv-2.rst                  |  2 ++
- common/Kconfig                                       |  5 +++++
- defaultenv/Makefile                                  |  1 +
- .../defaultenv-2-security-policy/bin/ps1-policy      | 20 ++++++++++++++++++++
- .../defaultenv-2-security-policy/init/ps1-policy     |  1 +
- .../defaultenv-2-security-policy/init/source-colors  |  1 +
- defaultenv/defaultenv.c                              |  2 ++
- 7 files changed, 32 insertions(+)
+ commands/Kconfig          |  23 +++++
+ commands/Makefile         |   1 +
+ commands/sconfig.c        | 227 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/security/policy.h |   4 +
+ 4 files changed, 255 insertions(+)
 
-diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
-index a01a70fa9310be88c8666c40bcc3def33c48ac21..3715fd770d9d89d52172bcc1e7564d871977aa30 100644
---- a/Documentation/user/defaultenv-2.rst
-+++ b/Documentation/user/defaultenv-2.rst
-@@ -23,6 +23,7 @@ The default environment is composed from different directories during compilatio
-   defaultenv/defaultenv-2-dfu                  -> overlay for DFU
-   defaultenv/defaultenv-2-reboot-mode          -> overlay for reboot modes
-   defaultenv/defaultenv-2-menu                 -> overlay for menus
-+  defaultenv/defaultenv-2-security-policy       -> overlay for security policy
-   arch/$ARCH/boards/<board>/defaultenv-<board> -> board specific overlay
-   $(CONFIG_DEFAULT_ENVIRONMENT_PATH)           -> config specific overlay
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 1626912c30bd688d8a900738b40acf6def70d9df..d28f8a6c75054d9b231b88d6be15d90092b8cbd2 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2288,6 +2288,29 @@ endmenu
  
-@@ -43,6 +44,7 @@ and their respective included directories in ``defaultenv/Makefile``:
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE) += defaultenv-2-reboot-mode
-+  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY) += defaultenv-2-security-policy
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
+ menu "Security"
  
- /env/bin/init
-diff --git a/common/Kconfig b/common/Kconfig
-index eb2fb1da1e0919b6e7d5e868c48ad2e195cd8aa8..d923d4c4b6283878e487232a5b43487e3f2d9a4a 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1068,6 +1068,11 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE
- 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
- 	depends on REBOOT_MODE
- 
-+config DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY
-+	bool "Update PS1 according to active security policy"
-+	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
++config CMD_SCONFIG
 +	depends on SECURITY_POLICY
++	select SECURITY_POLICY_NAMES
++	default y
++	bool "sconfig"
++	help
++	  Interact with security policies. By default, this only
++	  allows read-access and not selection of new policies
 +
- config DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG
- 	bool "Ship .config as /env/data/config"
- 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
-diff --git a/defaultenv/Makefile b/defaultenv/Makefile
-index 1eaca9f41087fdb893575db1ab2bf1f267185435..ab88ed739305d4157d6ec124b5330f002c577340 100644
---- a/defaultenv/Makefile
-+++ b/defaultenv/Makefile
-@@ -4,6 +4,7 @@ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE) += defaultenv-2-reboot-mode
-+bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY) += defaultenv-2-security-policy
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
- obj-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv.o
- extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX) barebox_zero_env
-diff --git a/defaultenv/defaultenv-2-security-policy/bin/ps1-policy b/defaultenv/defaultenv-2-security-policy/bin/ps1-policy
-new file mode 100755
-index 0000000000000000000000000000000000000000..5c8b26415d77062495471aa89f7e1b403165d9cf
---- /dev/null
-+++ b/defaultenv/defaultenv-2-security-policy/bin/ps1-policy
-@@ -0,0 +1,20 @@
-+if [ -n "$security.policy" ]; then
-+	if [ "$security.policy" = "devel" ]; then
-+		PS1_policy_color="$YELLOW"
-+	elif [ "$security.policy" = "factory" ]; then
-+		PS1_policy_color="$PINK"
-+	elif [ "$security.policy" = "lockdown" ]; then
-+		PS1_policy_color="$RED"
-+	elif [ "$security.policy" = "tamper" ]; then
-+		PS1_policy_color="$RED_INV"
-+	elif [ "$security.policy" = "return" ]; then
-+		PS1_policy_color="$PINK_INV"
-+	elif [[ "$security.policy" = "debug*" ]]; then
-+		PS1_policy_color="$CYAN"
-+        else
-+                PS1_policy_color="$NC"
-+	fi
++config CMD_SCONFIG_MODIFY
++	depends on CMD_SCONFIG
++	select HAS_INSECURE_DEFAULTS
++	bool "support policy modification"
++	help
++	  Say y here if you are developing and want to extend the sconfig
++	  command to support selecting a different active policy and
++	  modifying it.
 +
-+	. /env/init/ps1
-+	export PS1="(${PS1_policy_color}${security.policy}${NC}) $PS1"
-+fi
-diff --git a/defaultenv/defaultenv-2-security-policy/init/ps1-policy b/defaultenv/defaultenv-2-security-policy/init/ps1-policy
++	  This is an very priviliged operation and the recommendation is
++	  to hardcode policy transitions in board code and not from scripts.
++
++	  Say n here if unsure.
++
+ config CMD_AVB_PVALUE
+ 	depends on OPTEE_AVB_PERSISTENT_VALUES
+ 	tristate
+diff --git a/commands/Makefile b/commands/Makefile
+index d9403b18d582f0fac042cef57c88aa4a49f6c8a3..c1f1162c2fdd15b455a7b2f8a47cc187c17510d6 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -166,4 +166,5 @@ obj-$(CONFIG_CMD_STACKSMASH)	+= stacksmash.o
+ obj-$(CONFIG_CMD_PARTED)	+= parted.o
+ obj-$(CONFIG_CMD_EFI_HANDLE_DUMP)	+= efi_handle_dump.o
+ obj-$(CONFIG_CMD_HOST)		+= host.o
++obj-$(CONFIG_CMD_SCONFIG)	+= sconfig.o
+ UBSAN_SANITIZE_ubsan.o := y
+diff --git a/commands/sconfig.c b/commands/sconfig.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..a76cd7fd17288da03ca7515f1422f9c596e90dcb
+index 0000000000000000000000000000000000000000..02c3a6b1ed9b75f9e27b096dd5bf27c94b7f7f05
 --- /dev/null
-+++ b/defaultenv/defaultenv-2-security-policy/init/ps1-policy
-@@ -0,0 +1 @@
-+PROMPT_COMMAND=". /env/bin/ps1-policy"
-diff --git a/defaultenv/defaultenv-2-security-policy/init/source-colors b/defaultenv/defaultenv-2-security-policy/init/source-colors
-new file mode 100644
-index 0000000000000000000000000000000000000000..3df8e02b0ebca4d0de41bf1a3ca3908650719dd1
---- /dev/null
-+++ b/defaultenv/defaultenv-2-security-policy/init/source-colors
-@@ -0,0 +1 @@
-+. /env/data/ansi-colors
-diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
-index 2567653751cb36b3bb6b1a577360738bc3e0a30a..d6cca466a6835da0896823b1f8858d702a10770e 100644
---- a/defaultenv/defaultenv.c
-+++ b/defaultenv/defaultenv.c
-@@ -49,6 +49,8 @@ static void defaultenv_add_base(void)
- 		defaultenv_append_directory(defaultenv_2_dfu);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE))
- 		defaultenv_append_directory(defaultenv_2_reboot_mode);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY))
-+		defaultenv_append_directory(defaultenv_2_security_policy);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG))
- 		defaultenv_append_directory(defaultenv_2_ikconfig);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
++++ b/commands/sconfig.c
+@@ -0,0 +1,227 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <linux/kernel.h>
++#include <command.h>
++#include <environment.h>
++#include <getopt.h>
++#include <globalvar.h>
++#include <linux/ctype.h>
++#include <stdio.h>
++
++#include <security/policy.h>
++#include <security/config.h>
++
++#define RED	"\e[1;31m"
++#define GREEN	"\e[1;32m"
++#define YELLOW	"\e[1;33m"
++#define PINK	"\e[1;35m"
++#define CYAN	"\e[1;36m"
++#define NC	"\e[0m"
++
++static struct security_policy *last_override;
++static int debug_iteration;
++static struct notifier_block sconfig_notifier;
++
++static const char *red, *green, *nc;
++
++static void sconfig_print(const struct security_policy *policy)
++{
++	for (int i = 0; i < SCONFIG_NUM; i++) {
++		bool allow = is_allowed(policy, i);
++
++		printf("[%s%s%s] %s\n", allow ? green : red,
++		       allow ? "✓" : "✗", nc, sconfig_names[i]);
++	}
++}
++
++static int sconfig_command_notify(struct notifier_block *nb,
++				  unsigned long opt, void *unused)
++{
++	bool allow = is_allowed(NULL, opt);
++
++	printf("%s%s%s%s\n", allow ? green : red, allow ? "+" : "-", nc,
++	       sconfig_names[opt]);
++
++	return 0;
++}
++
++static int do_sconfig_flags(int argc, char *argv[])
++{
++	const struct security_policy *policy;
++	const char *set = NULL;
++	int ret = 0, opt;
++
++	while ((opt = getopt(argc, argv, "li:vs:")) > 0) {
++		switch (opt) {
++		case 'l':
++			security_policy_list();
++			break;
++		case 'i':
++			policy = security_policy_get(optarg);
++			if (!policy) {
++				ret = -ENOENT;
++				goto out;
++			}
++
++			sconfig_print(policy);
++			break;
++		case 'v':
++			if (!IS_ENABLED(CONFIG_CMD_SCONFIG_MODIFY))
++				return COMMAND_ERROR_USAGE;
++			sconfig_register_handler(&sconfig_notifier,
++						 sconfig_command_notify);
++			break;
++		case 's':
++			if (!IS_ENABLED(CONFIG_CMD_SCONFIG_MODIFY))
++				return COMMAND_ERROR_USAGE;
++			set = optarg;
++			break;
++		default:
++			ret = COMMAND_ERROR_USAGE;
++			goto out;
++		}
++	}
++
++	if (argc != optind) {
++		ret = COMMAND_ERROR_USAGE;
++		goto out;
++	}
++
++	if (set) {
++		policy = security_policy_get(set);
++		if (!policy) {
++			printf("Policy '%s' not found\n", set);
++			ret = -ENOENT;
++			goto out;
++		}
++
++		ret = security_policy_activate(policy);
++	}
++out:
++	if (sconfig_notifier.notifier_call) {
++		sconfig_unregister_handler(&sconfig_notifier);
++		sconfig_notifier.notifier_call = NULL;
++	}
++
++	return ret;
++}
++
++static struct security_policy *alloc_policy(void)
++{
++	struct security_policy *override;
++
++	override = xmalloc(sizeof(*override));
++
++	if (active_policy)
++		memcpy(override->policy, active_policy->policy,
++		       sizeof(override->policy));
++	else
++		memset(override->policy, 0x1, sizeof(override->policy));
++
++	override->name = xasprintf("debug%u", debug_iteration++);
++	override->chained = false;
++
++	return override;
++}
++
++static void free_policy(struct security_policy *policy)
++{
++	security_policy_unregister_one(policy);
++	free(policy);
++}
++
++static int do_sconfig(int argc, char *argv[])
++{
++	struct security_policy *override;
++	bool allow_color;
++	int i, ret;
++
++	allow_color = !streq_ptr(globalvar_get("allow_color"), "0");
++	if (allow_color) {
++		red = RED;
++		green = GREEN;
++		nc = NC;
++	} else {
++		red = green = nc = "";
++	}
++
++	if (argc == 1) {
++		if (active_policy)
++			printf("Active Policy: %s\n\n", active_policy->name);
++		else
++			printf("No Policy is Active\n\n");
++
++		sconfig_print(NULL);
++		return 0;
++	}
++
++	for (i = 1; i < argc; i++) {
++		if ((*argv[i] != '-' && *argv[i] != '+' ) ||
++		    !strstarts(argv[i] + 1, "SCONFIG_"))
++			return do_sconfig_flags(argc, argv);;
++	}
++
++	if (!IS_ENABLED(CONFIG_CMD_SCONFIG_MODIFY)) {
++		printf("Runtime security policy modification disallowed\n");
++		return COMMAND_ERROR_USAGE;
++	}
++
++	override = alloc_policy();
++
++	for (i = 1; i < argc; i++) {
++		char ch_action = *argv[i];
++		enum security_config_option sopt;
++
++		ret = sconfig_lookup(argv[i] + 1);
++		if (ret < 0) {
++			printf("No such option: %s\n", argv[i] + 1);
++			return ret;
++		}
++
++		sopt = ret;
++
++		switch (ch_action) {
++		case '+':
++			override->policy[sopt] = true;
++			break;
++		case '-':
++			override->policy[sopt] = false;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	__security_policy_register(override);
++
++	ret = security_policy_activate(override);
++	if (ret) {
++		free_policy(override);
++		return ret;
++	}
++
++	free_policy(last_override);
++	last_override = override;
++
++	return 0;
++}
++
++BAREBOX_CMD_HELP_START(sconfig)
++BAREBOX_CMD_HELP_TEXT("Interact with security policies")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-l",  "list registered security policies")
++BAREBOX_CMD_HELP_OPT ("-i POLICY",  "show security options of specified POLICY")
++#ifdef CONFIG_CMD_SCONFIG_MODIFY
++BAREBOX_CMD_HELP_OPT ("-v",  "verbose output: report options as they are modified")
++BAREBOX_CMD_HELP_OPT ("-s POLICY",  "select specified POLICY")
++#endif
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(sconfig)
++        .cmd            = do_sconfig,
++        BAREBOX_CMD_DESC("interact with security policies")
++        BAREBOX_CMD_OPTS("[-vlsi] [<+->SCONFIG_*]...")
++        BAREBOX_CMD_GROUP(CMD_GRP_SECURITY)
++        BAREBOX_CMD_HELP(cmd_sconfig_help)
++BAREBOX_CMD_END
+diff --git a/include/security/policy.h b/include/security/policy.h
+index 6f270793bc80b03966c1b47fe9c44c9bfb9263a5..c41220ef3b96fb78862ae28340e41221f3c97781 100644
+--- a/include/security/policy.h
++++ b/include/security/policy.h
+@@ -42,6 +42,10 @@ static inline int __security_policy_register(const struct security_policy policy
+ }
+ #endif
+ 
++#ifdef CONFIG_CMD_SCONFIG
++void security_policy_unregister_one(const struct security_policy *policy);
++#endif
++
+ #define security_policy_add(name) ({				\
+ 	extern const struct security_policy __policy_##name[];	\
+ 	__security_policy_register(__policy_##name);		\
 
 -- 
 2.47.3
