@@ -1,68 +1,67 @@
-Delivery-date: Thu, 18 Sep 2025 16:25:38 +0200
+Delivery-date: Thu, 18 Sep 2025 17:04:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uzFZq-004V6e-2m
+	id 1uzGBL-004Vag-03
 	for lore@lore.pengutronix.de;
-	Thu, 18 Sep 2025 16:25:38 +0200
+	Thu, 18 Sep 2025 17:04:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uzFZq-0001Mq-BZ
-	for lore@pengutronix.de; Thu, 18 Sep 2025 16:25:38 +0200
+	id 1uzGBK-0008AC-FZ
+	for lore@pengutronix.de; Thu, 18 Sep 2025 17:04:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vYv3eNNXycJ1B1ff7J7atx4yXngD41O89M4ZgVSmqSM=; b=xcxErXiPw/bYaQW+nPKRXpvov6
-	tmTOSWYTE+xggo4StdO/cIvdk1wCYgue7zHNVmgkcoqgVuZPox6tNOJnQDfDCq9iJPLEqkaR7Batq
-	O9PHOi3rQKRhLloFpUrmvY/mKs9l+5uedbtSDtwi0wDgrxX+oPLJ9NKLHHKsWOo0AQh9zMd7W8kut
-	XaBhLmL3Zvf/z3RqrG6XA6QA6W1fa8qsNb0iY8nIvsqQ6tFquFNz0a1mCV9fUiUHE9cu4LF2Pa073
-	LErYejJRX3Vv8VN6DFr6LjebBCn5mxnvJiYOBkkUKpJkRkgKD0vpXFvv4Y849mc0wT1bmCImKNmXV
-	ipebPLww==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=XIWOsW46mKVZu8yJ9UvX7PkrDa7AFGuRJbpItl0+ijI=; b=eRYK896p4UBwiw
+	PGfj6ndYjKgbuEMsP5oUsXlestM33O8HYKd+uwR2A8x7WXLN08yU60NwWVubJrR02XLQOt96h9qcN
+	zAUH+K5hH1JGAvFeU0p11Dj2zplM7v0VPWQzBnEQGbVtdvvoDhM8e0mjCco/PkOUdOIswuATD1ndJ
+	R9/TTO1LhSlMDiJ+Qgf39UPEhpfoEec4CfoNbPGA1WMbhxI3QjDGygJIUYpVuCp8mHeqImmnTOR/0
+	1ImkdiFXkeKyhuegBt62iyKPr1Fht/SrIhr5lFpUTJLYm2hf1wFt5ytu+mm/dzcXTSrMzxoHm93Tn
+	m3oA9ktmIqs+WnGmlGTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uzFZO-000000008Lm-3LO3;
-	Thu, 18 Sep 2025 14:25:10 +0000
+	id 1uzGAp-00000000G8A-0ovH;
+	Thu, 18 Sep 2025 15:03:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uzFZM-000000008KT-3TZw
+	id 1uzGAm-00000000G71-4Ap6
 	for barebox@lists.infradead.org;
-	Thu, 18 Sep 2025 14:25:10 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uzFZL-0001FW-BR; Thu, 18 Sep 2025 16:25:07 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uzFZL-001xEm-0X;
-	Thu, 18 Sep 2025 16:25:07 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1uzFZL-0000000EPW2-0SOf;
-	Thu, 18 Sep 2025 16:25:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20250917140659.3001588-1-s.hauer@pengutronix.de>
-References: <20250917140659.3001588-1-s.hauer@pengutronix.de>
-Message-Id: <175820550710.3434657.16620671217639651768.b4-ty@pengutronix.de>
-Date: Thu, 18 Sep 2025 16:25:07 +0200
+	Thu, 18 Sep 2025 15:03:50 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1uzGAl-0007vx-FL; Thu, 18 Sep 2025 17:03:47 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Thu, 18 Sep 2025 17:03:33 +0200
+Message-Id: <20250918-prt8ml-v1-0-3fd826e0807d@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+X-B4-Tracking: v=1; b=H4sIAEUfzGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDS0ML3YKiEovcHF1zi5QkS4PkZItkMxMloOKCotS0zAqwQdGxtbUAcOx
+ 1vlgAAAA=
+X-Change-ID: 20250918-prt8ml-78db90cc8c64
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <jre@pengutronix.de>, David Jander <david@protonic.nl>
+X-Mailer: b4 0.15-dev-7abec
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1244; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=hJ3XNB7ai+Ht5T/CXADrzh4z6i0YoAHjE9to84XYAsY=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsg4Ix80VXVWm/KTY9IHD1/tquCQmfL9L4dnyye79gCGp
+ qvX4oy9OkpZGMS4GGTFFFli1eQUhIz9r5tV2sXCzGFlAhnCwMUpABM5yMrIsPVs72uJ1gVrt0Rp
+ v7BvuJt6dm7f4mCmxio/jjl6+gv0HzP8lYmLb/hcdP+356SEVIWZD6PeuMcdavhz7+vbOZd/6WR
+ E8gIA
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250918_072508_870261_604C8A4E 
-X-CRM114-Status: UNSURE (   7.09  )
+X-CRM114-CacheID: sfid-20250918_080349_036463_7802D143 
+X-CRM114-Status: UNSURE (   7.58  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -81,30 +80,42 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: fec_imx: Fix probe failure on i.MX27
+Subject: [PATCH 0/2] Extend protonic prt8m to support prt8ml
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Update prt8m to use deep probe and add support for the prt8ml using the
+mainlining candidate devicetree from
+https://lore.kernel.org/lkml/20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de/T
 
-On Wed, 17 Sep 2025 16:06:59 +0200, Sascha Hauer wrote:
-> FEC_TYPE_IMX27 is 0 which meands device_get_match_data() returns NULL
-> and the driver bails out on the error check of this function. Start
-> counting the enum at one to pass the error check also on i.MX27.
-> 
-> 
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+---
+Jonas Rebmann (2):
+      ARM: i.MX8M: protonic-imx8m: enable deep probe
+      ARM: boards: Add support for PRT8ML
 
-Applied, thanks!
-
-[1/1] net: fec_imx: Fix probe failure on i.MX27
-      https://git.pengutronix.de/cgit/barebox/commit/?id=d37cbb49ccfa (link may not be stable)
+ arch/arm/boards/protonic-imx8m/Makefile            |    2 +-
+ arch/arm/boards/protonic-imx8m/board.c             |   28 +-
+ .../protonic-imx8m/flash-header-prt8ml.imxcfg      |    5 +
+ arch/arm/boards/protonic-imx8m/lowlevel-prt8ml.c   |  100 ++
+ .../boards/protonic-imx8m/lpddr4-timing-prt8ml.c   | 1121 ++++++++++++++++++++
+ arch/arm/dts/Makefile                              |    4 +-
+ arch/arm/dts/imx8mp-prt8ml.dts                     |   48 +
+ arch/arm/dts/imx8mp-prt8ml.dtsi                    |  500 +++++++++
+ arch/arm/mach-imx/Kconfig                          |    4 +-
+ images/Makefile.imx                                |    2 +
+ 10 files changed, 1799 insertions(+), 15 deletions(-)
+---
+base-commit: f3be3a8e9ae884bdfb116238e9049b1eb2759810
+change-id: 20250918-prt8ml-78db90cc8c64
 
 Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+--  
+Jonas Rebmann <jre@pengutronix.de>
 
 
 
