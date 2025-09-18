@@ -3,84 +3,84 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uz9L2-004Nz9-0L
+	id 1uz9L2-004NzS-2I
 	for lore@lore.pengutronix.de;
 	Thu, 18 Sep 2025 09:45:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uz9L0-0001nD-8Z
-	for lore@pengutronix.de; Thu, 18 Sep 2025 09:45:55 +0200
+	id 1uz9L1-0001nq-20
+	for lore@pengutronix.de; Thu, 18 Sep 2025 09:45:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=p34f+oyH+IgjOQk0Bro/yx6zceS55ck0LoN9ca2Amc8=; b=U3xTSyka2qcBzbV5bdi/qxWWkU
-	XRqMcnw3Q47RRLh+C88MSW1mWFsZVLBVcHNqzuXrW2S2Ju3SGwZ1UMkw6QpjX5mvyFLoU3D8EFCTH
-	d+9CIjjRiviMtGZnHlhkXYZ7xMT+B9MXMGRKi81R3vtzsyVLtlOLSUfoowMHkvJNfVEw4wt5R0Vwe
-	8/xJbBeP4J6Afo2PJzgSJcFaZQp7SWrYgQwUqzsxsrr+6Q2VYT+mGgmgGAAIXr8QWvHPSuH+gIT00
-	ooTiNLBuqr5zakLm/Jalzv9fmbu9wPNMmuXiake9fmC71hKUgDBxX2wJ+ecXVm9Ohnlnlh+s589vo
-	b3Qg4Seg==;
+	bh=xxschE5JL/vQ1V/SgbnD+PZq5QCTueDLUXrxTA4sAtA=; b=ab9r8cbKKe+20gZaC/Zqfbrk9D
+	AGHGYI2fQ03CMXwsnIDJaWAH6/uH5HmRtLQq9iCmfDvblvch5Nty2ymE5KMJd1YV0j0z9qh5nvnjW
+	a0BN1047z7ZcfPQeoGRhb1fEIJYsWCkhduMU/YnXQnHg26aI9oAcnudZgMVgyOKU2of4qi/SNdL1j
+	c6ogHOw85mV8YCpIC912hWl23zJr/mDmzaVTrOge1okvJM2SK2TeFc6lkkh63PIBjF6ziXYONDH2O
+	e2t9wVG2PHczCj8Luh3hPHzj6JGQmOGfXI5ljn8YVaEvodCL+IPbERMXdVqQI0W8NaGkId+y1bQnB
+	e4yuAOug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uz9KM-0000000GaOY-10pP;
-	Thu, 18 Sep 2025 07:45:14 +0000
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+	id 1uz9KQ-0000000GaSw-2wkC;
+	Thu, 18 Sep 2025 07:45:18 +0000
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uz9KI-0000000GaLK-2yrP
+	id 1uz9KL-0000000GaN3-33pQ
 	for barebox@lists.infradead.org;
-	Thu, 18 Sep 2025 07:45:12 +0000
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-b04ba3de760so81081366b.0
-        for <barebox@lists.infradead.org>; Thu, 18 Sep 2025 00:45:10 -0700 (PDT)
+	Thu, 18 Sep 2025 07:45:15 +0000
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-b0e7bc49263so105593066b.1
+        for <barebox@lists.infradead.org>; Thu, 18 Sep 2025 00:45:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1758181509; x=1758786309; darn=lists.infradead.org;
+        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1758181512; x=1758786312; darn=lists.infradead.org;
         h=content-transfer-encoding:organization:mime-version:references
          :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p34f+oyH+IgjOQk0Bro/yx6zceS55ck0LoN9ca2Amc8=;
-        b=zYNpKWqq1xglHZrJjtIONVPcy47c27uqNE+JtNABStYxVTuhiBw3+4SZ6thXDdcThv
-         bsItOSKE1aqDfBBHHNiXf2VKYequWSiXfAOlkcIF2hQpz9SSXMSzyil2W2WXTj9zbZYN
-         hqYZ8EW6ELtyfMubEFsCIbAU2hENSt2E3BONZPPETUYBE+dsKCC+izXcwj4z/qg/JJzU
-         11Fs0PAZaBDzoqTDOTGUUubm1TskKFJUmP7FN9Iv7OJ/X3TWhP8MxVezD6uz9W1Iyxtc
-         HFsN3NN2XGqUtUGaqCQbOlnVq2pfL3fiA5BgwwgZN2rHKk3wmdt4ipzMukgVWScyrZvT
-         kDSw==
+        bh=xxschE5JL/vQ1V/SgbnD+PZq5QCTueDLUXrxTA4sAtA=;
+        b=wi7TMfjgd1dWYkzH8kWD8ZotKk/HC5uze3PnMNKX6lJYwiycWp1gtjIzldt3gjEhFU
+         Gam4d5gF1sAyS+SPeR3dXtrmv5ZwFxYQF0dcwfspMEpRWkWJ7cqKSD4xO191JGepOiJ0
+         Vs4lj0haqtKCBvI3hvAfZIA9iCmomI0QQXew2F3OjUtjE57jO0Q2FH2r2fCJWQpxe3mG
+         q9jFy09Nu0xD2tdgi4IpuyAWIPcXdq9pkB7dPJrGZ81Q22Bzzk/BNMy9VX+2iuRLHSu/
+         nJPb7eOwdmof9a64GX/maeAcloe3dZcpC2fT8IjgQPb6gIJiijuGbUbYVOnMIy+oadlO
+         yOHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758181509; x=1758786309;
+        d=1e100.net; s=20230601; t=1758181512; x=1758786312;
         h=content-transfer-encoding:organization:mime-version:references
          :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=p34f+oyH+IgjOQk0Bro/yx6zceS55ck0LoN9ca2Amc8=;
-        b=bgjtnWDAVQaNvoNVReQLg8UC0rbb1w0mgcLY508oCeFCcXhaUQsKbvIhIxSwzVWY5o
-         oGDmF7YKf4tKxCKteVmY4v1BSv+be00N2FZmh1ANblbZLjzOuviSz9b1fNNvLCSNBJ9x
-         H/Kp8deT9hBA9v3Pmx5KScCRu+Eg9nPouU1xEjI6cs2S6Q7/M1fflzuTcHRh8ubW139h
-         FUE7o02QNiza5WCJPq6AHmxI6KlSRdyRwjiiOcwrmI8UZ/ckqT7NbfAZ19H/BKPz3V3j
-         gpp77kvKHurMJwDh9GT8ZtS2AEoU2hSPdZ8xcYmiX86uk1ZIHr+FaC/cwt8HgGUJ4gMm
-         ymuQ==
-X-Gm-Message-State: AOJu0YyUFtiJ1BNkj6Z7nBOXSDmq7Q1TKs7s+ZGwUk60cYZDDhM8dNmz
-	w6o3ajrnY170Vn9N00YttemX2zqrcb1k38EbFreMks08OCMgdHp8gcgFObAQ37hOY2PDj74FlNQ
-	+bVcc
-X-Gm-Gg: ASbGncu/BusGIwH/xH6V66AFSAAJ7qBPaBf6NqAsZ3CXo64D/jSDPjWDVK5G988dhGH
-	6f6Uxmgdo7fMF5l68e7qPRw78YGQkZWkf8HtvZpL84d/adM7ECcSWW9D9MhVu2jzKZ8s1OllcM8
-	V6MDMNpPo+dEvR3qUCcQnO8MvdUViKUmp5cwSciy56NVrwU+YPv1j2PKsw6fBjPTrqp3TRk0e9q
-	SxGRZc/SzPed6kf9e3VeoWwZfzc0Ewn288uDP8ZbHn5b6aUJ2zHjVW90NFGKJxW+jQoSIqnStFa
-	V7ZKEbfvQt+MZnLfcwVO4sDpcrBw/41Jyk5YRwSaIl5adBGnTTPbs4pmSgNeqwJbIBHHGR+urzU
-	QPdfeRYoh+AI/Dx446nlmteB3A/OOrJ/+ISyHzdrdK9Ewt39rRRSst0uYhGFUfG9slt4VZapGgt
-	T5NqPMRjOe
-X-Google-Smtp-Source: AGHT+IFXG72bnsQ6eE/86OwuGGpGNpebbU5ssQNMcEIMZHL+NtbnYEbxS3wgGsX1XL3WPo9KwVPC6g==
-X-Received: by 2002:a17:907:d89:b0:afe:8037:bc7d with SMTP id a640c23a62f3a-b1bb0a58dafmr551130966b.2.1758181508502;
-        Thu, 18 Sep 2025 00:45:08 -0700 (PDT)
+        bh=xxschE5JL/vQ1V/SgbnD+PZq5QCTueDLUXrxTA4sAtA=;
+        b=EDiJv4eyP114btXOVfm9Vy6L9N9P4yiXKpKn6rdb2KGYlwMIsGH4ZagD+MKLkSGmvg
+         rt20jCIRzOHJoq7Z1dUi2xPBKNrzZDGHtJD/4MZHdkCKf1tXtBz1l+tqA94TSlzYGv6M
+         HoaVuLZyNACUnxusVpiIdVg9czjurm73YbFm8G3BI9vGwZuWmG54lr1j7Ey9mlsCiBbC
+         dS0WIX8STv3I3wJMs7RUnZG0IucBHDzTxUSg1yrUWSgByKZlgiDgTuOjN2495VarJ5XL
+         dDFRuDQdy6I/SFPx7/WFUHim7KOs0LixI1TVqF7aadVRY/KcnjwzOqmAgt370h2liMoC
+         hlpQ==
+X-Gm-Message-State: AOJu0YwhgGyYebpElCIx7jQY3a9q0QlhGvUc5yno+Sc3udbgu2wA/Sct
+	LzxKkV6/qE5t0w/REOFaNK5wvpUSgGyK7NW67QVQQMrGsKcS/Rrbc6db0PxRyyS91CyRwe96k00
+	SM57g
+X-Gm-Gg: ASbGncv7NE/vt+4lMKOTf+0+Fx5fsYVdS7+Hg/59nAAMA+GQwZI+fdIuxKnRflxPneM
+	/R+3pSh6FSeQwR7EcENdyECr1APdhxFtkeW0xqmhO63uSEMx3SCuD/wRI6ThMIUCsm+VKhdo9lE
+	SbYCSm1sOcJMUTTWg2EeN2Dy9qSyVqz39p+yFMaQXE38AcdLqQmLgtZMrslDA+aFPJPFl4CX1OF
+	5dnAgVWFaUSFP4B6W3EfZs5pVANpUh1sYf1KMnokOIVMLwsuLiKdpmgrVnd/m1+pADrL8YqV/Te
+	XmmFEEcwkRwAluUWMMAzJKt6KLNwaVURwcVMHMzGhwBA1JQJEKIaSb6WN6tfIsZdkcT7ThZE2pY
+	rN9mETY/AhFiOeUfRvSwwbTGkT/Z3yhcIm6x0jEXq0F6o2dYuZNtlmRkTKQAfzjhu1gjNujzsNA
+	brZOBbEk2k
+X-Google-Smtp-Source: AGHT+IF08VrQyPW9AsetY5n8M98O/k9vIhyZ0stbpIbpIH577WGd05n5mXKkSSsFzrUse9oChEzK3Q==
+X-Received: by 2002:a17:906:7954:b0:afd:d94b:830d with SMTP id a640c23a62f3a-b1bc320c8b3mr492522866b.62.1758181511601;
+        Thu, 18 Sep 2025 00:45:11 -0700 (PDT)
 Received: from wkz-x13.addiva.ad (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fcfe888bcsm140703166b.71.2025.09.18.00.45.08
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fcfe888bcsm140703166b.71.2025.09.18.00.45.11
         for <barebox@lists.infradead.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 00:45:08 -0700 (PDT)
+        Thu, 18 Sep 2025 00:45:11 -0700 (PDT)
 From: Tobias Waldekranz <tobias@waldekranz.com>
 To: barebox@lists.infradead.org
-Date: Thu, 18 Sep 2025 09:43:11 +0200
-Message-ID: <20250918074455.891780-2-tobias@waldekranz.com>
+Date: Thu, 18 Sep 2025 09:43:16 +0200
+Message-ID: <20250918074455.891780-7-tobias@waldekranz.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250918074455.891780-1-tobias@waldekranz.com>
 References: <20250918074455.891780-1-tobias@waldekranz.com>
@@ -88,8 +88,8 @@ MIME-Version: 1.0
 Organization: Wires
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250918_004511_013644_51C523B0 
-X-CRM114-Status: GOOD (  15.78  )
+X-CRM114-CacheID: sfid-20250918_004513_837181_3BBB92AA 
+X-CRM114-Status: GOOD (  12.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -111,193 +111,96 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 01/11] dm: Add helper to manage a lower device
+Subject: [PATCH 06/11] ci: pytest: Open up testfs to more consumers than the FIT test
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With the upcoming support for dm-verity, some patterns started to emerge
-about commonalities between target types when it comes to dealing with
-lower devices:
+With upcoming dm-verity tests, we want to store more test artifacts
+than the FIT image in the testfs.
 
-- Transparently creating/removing loop devices when a regular file is
-  passed in place of a device special
-- Validation of offsets and sizes
-- Reading in chunks of block sizes (possibly different from 512B)
-
-Therefore, add a generic way of dealing with this that all targets can
-hook into.
+Since the dm tests might run on systems for which no ITS is available
+to build an FIT from, make FIT generation conditional on the ITS being
+available. This allows us to enable the testfs feature on all matrix
+cells that support 9p over virtio.
 
 Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
 ---
- drivers/block/dm/dm-core.c   | 118 +++++++++++++++++++++++++++++++++++
- drivers/block/dm/dm-target.h |  20 ++++++
- 2 files changed, 138 insertions(+)
+ scripts/generate_testfs.sh                  | 20 ++++++++++++--------
+ test/py/test_fit.py                         |  4 +++-
+ test/riscv/qemu-virt64@rv64i_defconfig.yaml |  1 +
+ test/riscv/qemu@virt32_defconfig.yaml       |  1 +
+ 4 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/block/dm/dm-core.c b/drivers/block/dm/dm-core.c
-index 953673073b..1bc3446cb0 100644
---- a/drivers/block/dm/dm-core.c
-+++ b/drivers/block/dm/dm-core.c
-@@ -7,11 +7,129 @@
- #include <stdio.h>
- #include <string.h>
- #include <xfuncs.h>
-+#include <unistd.h>
+diff --git a/scripts/generate_testfs.sh b/scripts/generate_testfs.sh
+index c5d24f7e1a..3c200bd401 100755
+--- a/scripts/generate_testfs.sh
++++ b/scripts/generate_testfs.sh
+@@ -13,14 +13,18 @@ fi
+ rm -rf "${KBUILD_OUTPUT}/testfs/"
+ mkdir -p ${KBUILD_OUTPUT}/testfs
  
- #include <linux/kstrtox.h>
-+#include <linux/stat.h>
- 
- #include "dm-target.h"
- 
-+int dm_cdev_read(struct dm_cdev *dmcdev, void *buf, sector_t block,
-+		 blkcnt_t num_blocks)
+-cat ${KBUILD_OUTPUT}/images/barebox-dt-2nd.img | \
+-  ${KGZIP} -n -f -9 >${KBUILD_OUTPUT}/barebox-dt-2nd.img.gz
++generate_fit()
 +{
-+	ssize_t n;
-+
-+	n = cdev_read(dmcdev->cdev, buf, num_blocks << dmcdev->blk.bits,
-+		      (dmcdev->blk.start + block) << dmcdev->blk.bits, 0);
-+	if (n < 0)
-+		return n;
-+
-+	if (n < (num_blocks << dmcdev->blk.bits))
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+int dm_cdev_write(struct dm_cdev *dmcdev, const void *buf, sector_t block,
-+		  blkcnt_t num_blocks)
-+{
-+	ssize_t n;
-+
-+	n = cdev_write(dmcdev->cdev, buf, num_blocks << dmcdev->blk.bits,
-+		       (dmcdev->blk.start + block) << dmcdev->blk.bits, 0);
-+	if (n < 0)
-+		return n;
-+
-+	if (n < (num_blocks << dmcdev->blk.bits))
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+int dm_cdev_open(struct dm_cdev *dmcdev, const char *path, ulong flags,
-+		 sector_t start, blkcnt_t num_blocks, size_t blocksize, char **errmsg)
-+{
-+	struct stat st;
-+	int err;
-+
-+	memset(dmcdev, 0, sizeof(*dmcdev));
-+
-+	err = stat(path, &st);
-+	if (err) {
-+		*errmsg = xasprintf("Cannot determine type: %m");
-+		return err;
-+	}
-+
-+	switch (st.st_mode & S_IFMT) {
-+	case S_IFREG:
-+		dmcdev->cdev = cdev_create_loop(path, flags, 0);
-+		if (!dmcdev->cdev) {
-+			*errmsg = xstrdup("Cannot create loop device");
-+			return -ENODEV;
-+		}
-+		dmcdev->loop = true;
-+		break;
-+	case S_IFBLK:
-+	case S_IFCHR:
-+		dmcdev->cdev = cdev_open_by_path_name(path, flags);
-+		if (!dmcdev->cdev) {
-+			*errmsg = xstrdup("Cannot open device");
-+			return -ENODEV;
-+		}
-+
-+		dmcdev->cdev = cdev_readlink(dmcdev->cdev);
-+		break;
-+	default:
-+		*errmsg = xstrdup("Only regular files and device specials are supported");
-+		return -EINVAL;
-+	}
-+
-+	if (blocksize == 0 || (blocksize & (blocksize - 1))) {
-+		*errmsg = xasprintf("Invalid block size: %zu is not a power of 2",
-+				    blocksize);
-+		goto err;
-+	}
-+
-+	dmcdev->blk.bits = ffs(blocksize) - 1;
-+	if (dmcdev->blk.bits < SECTOR_SHIFT) {
-+		*errmsg = xasprintf("Invalid block size: %zu, must be at least %u",
-+				    blocksize, SECTOR_SIZE);
-+		goto err;
-+	}
-+
-+	dmcdev->blk.mask = (1 << (dmcdev->blk.bits - SECTOR_SHIFT)) - 1;
-+
-+	if (((start + num_blocks) << dmcdev->blk.bits) > dmcdev->cdev->size) {
-+		*errmsg = xstrdup("# of blocks is larger than device");
-+		err = -E2BIG;
-+		goto err;
-+	}
-+
-+	dmcdev->blk.start = start;
-+	dmcdev->blk.num = num_blocks;
-+	return 0;
-+err:
-+	if (dmcdev->cdev) {
-+		if (dmcdev->loop)
-+			cdev_remove_loop(dmcdev->cdev);
-+		else
-+			cdev_close(dmcdev->cdev);
-+
-+		memset(dmcdev, 0, sizeof(*dmcdev));
-+	}
-+	return err;
-+}
-+
-+void dm_cdev_close(struct dm_cdev *dmcdev)
-+{
-+	if (dmcdev->loop)
-+		cdev_remove_loop(dmcdev->cdev);
-+	else
-+		cdev_close(dmcdev->cdev);
-+
-+	memset(dmcdev, 0, sizeof(*dmcdev));
-+}
-+
- static LIST_HEAD(dm_target_ops_list);
++    cat ${KBUILD_OUTPUT}/images/barebox-dt-2nd.img | \
++	${KGZIP} -n -f -9 >${KBUILD_OUTPUT}/barebox-dt-2nd.img.gz
  
- static struct dm_target_ops *dm_target_ops_find(const char *name)
-diff --git a/drivers/block/dm/dm-target.h b/drivers/block/dm/dm-target.h
-index 506e808b79..bd25208889 100644
---- a/drivers/block/dm/dm-target.h
-+++ b/drivers/block/dm/dm-target.h
-@@ -4,6 +4,26 @@
- #ifndef __DM_TARGET_H
- #define __DM_TARGET_H
+-cp .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ${KBUILD_OUTPUT}/
++    cp .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ${KBUILD_OUTPUT}/
  
-+struct dm_cdev {
-+	struct cdev *cdev;
-+	bool loop;
-+
-+	struct {
-+		sector_t start;
-+		blkcnt_t num;
-+		u32 mask;
-+		u8 bits;
-+	} blk;
-+};
-+
-+int dm_cdev_read(struct dm_cdev *dmc, void *buf, sector_t block,
-+		 blkcnt_t num_blocks);
-+int dm_cdev_write(struct dm_cdev *dmc, const void *buf, sector_t block,
-+		  blkcnt_t num_blocks);
-+int dm_cdev_open(struct dm_cdev *dmcdev, const char *path, ulong flags,
-+		 sector_t start, blkcnt_t num_blocks, size_t blocksize, char **errmsg);
-+void dm_cdev_close(struct dm_cdev *dmcdev);
-+
- struct dm_device;
- struct dm_target_ops;
+-find COPYING LICENSES/ | cpio -o -H newc | ${KGZIP} \
+-  > ${KBUILD_OUTPUT}/ramdisk.cpio.gz
++    find COPYING LICENSES/ | cpio -o -H newc | ${KGZIP} \
++						   > ${KBUILD_OUTPUT}/ramdisk.cpio.gz
  
+-${MKIMAGE} -G $PWD/test/self/development_rsa2048.pem -r \
+-      -f ${KBUILD_OUTPUT}/${KBUILD_DEFCONFIG}-gzipped.its \
+-	 ${KBUILD_OUTPUT}/testfs/barebox-gzipped.fit
++    ${MKIMAGE} -G $PWD/test/self/development_rsa2048.pem -r \
++	       -f ${KBUILD_OUTPUT}/${KBUILD_DEFCONFIG}-gzipped.its \
++	       ${KBUILD_OUTPUT}/testfs/barebox-gzipped.fit
++}
++[ -f .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ] && generate_fit
+diff --git a/test/py/test_fit.py b/test/py/test_fit.py
+index c53a1ece14..1a23a53a32 100644
+--- a/test/py/test_fit.py
++++ b/test/py/test_fit.py
+@@ -23,7 +23,9 @@ def test_fit(barebox, env, target, barebox_config):
+     if returncode != 0:
+         pytest.xfail("skipping test due to missing --fs testfs=")
+ 
+-    barebox.run_check(f"ls {fit_name('gzipped')}")
++    _, _, returncode = barebox.run(f"ls {fit_name('gzipped')}")
++    if returncode != 0:
++        pytest.xfail("skipping test due to missing FIT image")
+ 
+     # Sanity check, this is only fixed up on first boot
+     assert of_get_property(barebox, "/chosen/barebox-version") is False
+diff --git a/test/riscv/qemu-virt64@rv64i_defconfig.yaml b/test/riscv/qemu-virt64@rv64i_defconfig.yaml
+index 7f86d9ac7d..5f1310617a 100644
+--- a/test/riscv/qemu-virt64@rv64i_defconfig.yaml
++++ b/test/riscv/qemu-virt64@rv64i_defconfig.yaml
+@@ -15,6 +15,7 @@ targets:
+     features:
+       - virtio-mmio
+       - barebox-state
++      - testfs
+ images:
+   barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
+ imports:
+diff --git a/test/riscv/qemu@virt32_defconfig.yaml b/test/riscv/qemu@virt32_defconfig.yaml
+index 7860e97c52..d0b640aa18 100644
+--- a/test/riscv/qemu@virt32_defconfig.yaml
++++ b/test/riscv/qemu@virt32_defconfig.yaml
+@@ -16,6 +16,7 @@ targets:
+     features:
+       - virtio-mmio
+       - barebox-state
++      - testfs
+     runner:
+       download:
+         opensbi-riscv32-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin?raw=true
 -- 
 2.43.0
 
