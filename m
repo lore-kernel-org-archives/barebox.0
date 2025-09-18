@@ -1,73 +1,68 @@
-Delivery-date: Thu, 18 Sep 2025 16:12:47 +0200
+Delivery-date: Thu, 18 Sep 2025 16:20:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uzFNP-004UtN-1C
+	id 1uzFUx-004Uz0-2Y
 	for lore@lore.pengutronix.de;
-	Thu, 18 Sep 2025 16:12:47 +0200
+	Thu, 18 Sep 2025 16:20:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uzFNO-000773-RX
-	for lore@pengutronix.de; Thu, 18 Sep 2025 16:12:47 +0200
+	id 1uzFUx-0008Tx-92
+	for lore@pengutronix.de; Thu, 18 Sep 2025 16:20:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=K39B/jdWwaSWhAlHXE1BACweGykCa+3yQ+oy09wi0q8=; b=hOlxBjPPnQe9mm6rL6+xiMqiWA
-	4tdEzRo4Ju9pjJLXicMYKCUng5JKWD/UDDTIgF4eIl1fuIae0g6I5lyp4YC5L2q7uyE4hKxzzHqxM
-	PjuyktwOtQWudjIiRcM7r+LNy1q6D6ct612wZLJdVBi1sjHBempSxwz/gKxHZxBtTzJWwYe4rKAae
-	Ly0S1adRe42+4+UDtWERvqzNNi3PYcm557xIcz2nz35P4ovZc7OOgY7ZFNCNW1MIvIFul+Nbpm4U/
-	WEhzhbwxPns4TvNsMwtzVCNDQBb/qkIokiE7k4lLtVjaCcZ7msod+cO4MPLDUcWDULlTjh22w5pHv
-	2GDyXt0A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=vDwCcXw1NkZ1rhhGAV6yUDFVkKxYSec3VxxUOAvqHHY=; b=ion9M7MDTrLA3jUYHscyKLWAzV
+	JCS2xMS7g5kNhZYpMWbPxhg95KgIuI0Rplc10O2V5T/uzYPo3xrvyXqOILKY/qqfle+mjYIEHj7QW
+	JzHvNhUeUafjGTRpvt7Vocfy4ArGB8naZvmB2m3frTbSqQH9kaU4ARNMy+7GeCxwI+Xe3G3E7imHk
+	sOECsG6nAK4TuevPmZsapIMIxlUuVP8mNtdz4sVgW4i5dqdqfYKPfclJFOpwvB2xSnc4Zl3aSshv1
+	E00aoTnwaB6xglMLoDtl6bcgU+GQ3pGDJ/C7j4Q5hMRPJmivfmpJ+LTGv2JAIVqkibdk0gejogyPu
+	//ItY+Ag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uzFMy-000000004V2-0Z2M;
-	Thu, 18 Sep 2025 14:12:20 +0000
+	id 1uzFUX-000000006a3-2sFl;
+	Thu, 18 Sep 2025 14:20:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uzFMu-000000004TS-3akC
+	id 1uzFUV-000000006XP-1Tjr
 	for barebox@lists.infradead.org;
-	Thu, 18 Sep 2025 14:12:18 +0000
+	Thu, 18 Sep 2025 14:20:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uzFMt-00071q-CZ; Thu, 18 Sep 2025 16:12:15 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uzFUS-0008Lh-8g; Thu, 18 Sep 2025 16:20:04 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uzFMt-001xCa-0e;
-	Thu, 18 Sep 2025 16:12:15 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1uzFMt-00Fsl9-0L;
-	Thu, 18 Sep 2025 16:12:15 +0200
-Date: Thu, 18 Sep 2025 16:12:15 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uzFUS-001xDe-0H;
+	Thu, 18 Sep 2025 16:20:04 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1uzFUS-0000000EPES-033N;
+	Thu, 18 Sep 2025 16:20:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: David Picard <david.picard@clermont.in2p3.fr>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <aMwTP4-1s7pB1gsd@pengutronix.de>
-References: <20250917-boards-enclustra-sa2-add-support-v1-0-2de8f69107a1@clermont.in2p3.fr>
- <20250917-boards-enclustra-sa2-add-support-v1-6-2de8f69107a1@clermont.in2p3.fr>
- <aMukQcvHZOMExEzw@pengutronix.de>
- <00327370-bbd5-4e70-863a-c7cb5a801bf4@clermont.in2p3.fr>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Michael Tretter <m.tretter@pengutronix.de>
+In-Reply-To: <20250916-rock5-bbu-default-target-v1-1-aba344fa5c50@pengutronix.de>
+References: <20250916-rock5-bbu-default-target-v1-1-aba344fa5c50@pengutronix.de>
+Message-Id: <175820520400.3433565.4649117137447102040.b4-ty@pengutronix.de>
+Date: Thu, 18 Sep 2025 16:20:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <00327370-bbd5-4e70-863a-c7cb5a801bf4@clermont.in2p3.fr>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250918_071216_891905_A629561F 
-X-CRM114-Status: GOOD (  13.29  )
+X-CRM114-CacheID: sfid-20250918_072007_421002_FC866885 
+X-CRM114-Status: GOOD (  10.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,28 +80,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 06/11] boards: enclustra-sa2: read MAC address from EEPROM
+Subject: Re: [PATCH] ARM: rockchip: select bbu default target using
+ bootsource
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Sep 18, 2025 at 04:01:54PM +0200, David Picard wrote:
-> Well, I'm not sure. The Linux driver only supports random number generation.
-> https://elixir.bootlin.com/linux/v6.16.7/source/drivers/crypto/Kconfig#L487
 
-Look at the driver itself. The OTP area is registered as a sysfs entry
-there, see otp_show() and atmel_sha204a_otp_read(). It seems the Kconfig
-entry wasn't updated when adding OTP support.
+On Tue, 16 Sep 2025 10:04:18 +0200, Michael Tretter wrote:
+> The ROCK 5 boards may be booted from SD card and eMMC. The BootROM
+> prefers the eMMC unless disabled explicitly.
+> 
+> As a user, I'd expect barebox_update to update the SD card if I booted a
+> board from SD card.
+> 
+> Use the bootsource to set the default target for the bbu default
+> handler. If booted from SD card, by default update barebox on the SD
+> card.
+> 
+> [...]
 
-Sascha
+Applied, thanks!
 
+[1/1] ARM: rockchip: select bbu default target using bootsource
+      https://git.pengutronix.de/cgit/barebox/commit/?id=86be3af602ba (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
