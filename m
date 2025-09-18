@@ -1,86 +1,86 @@
-Delivery-date: Thu, 18 Sep 2025 09:45:51 +0200
+Delivery-date: Thu, 18 Sep 2025 09:45:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uz9Kx-004Nx1-0v
+	id 1uz9Kz-004NxN-1d
 	for lore@lore.pengutronix.de;
-	Thu, 18 Sep 2025 09:45:51 +0200
+	Thu, 18 Sep 2025 09:45:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uz9Kw-0001kc-DD
-	for lore@pengutronix.de; Thu, 18 Sep 2025 09:45:51 +0200
+	id 1uz9Ky-0001lo-Al
+	for lore@pengutronix.de; Thu, 18 Sep 2025 09:45:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Mp1CY0dEflEn7oUu6wdvhtq7jAIJ4eq6zzL3GNGcUJQ=; b=x39uuktHqRmzcWPGJ6I8m9KQc5
-	YDDzhQBNcgsjJVJ4F3hiSGZNgiKGTWg8yYxs5xE7Xy0kpNNtQqBIQO/UdPbMR7ebnGbmT7P+KhiQy
-	kYgBO11/ghPkC4TYJ0Z6sDuKJRbk6a24KHPTm4VBppyWAtaRRcWjwWzUjgmBXH4Wk/VExue/8P01R
-	U9lwsr+pxSqqg4EQuLIYRpicFNqspHdtaJFyTTO7UCsANK7bjuTPsm4jltK2+O4F+jhbw1GgI+jBn
-	aW18WcVWpKSDnr2zq3z3StfYadYUZvi4PO+JZS0U3axJkEWvcNwbizkVcXJ9bsajymap7Q3lq0c7g
-	vMoEREcw==;
+	bh=C3kFGWP2AhphqiJN+XydK0yKUi7dVy+GuMaAeVTIpnU=; b=1+0d/HK6wr6neCU6W9W9PMt75B
+	OAx6JjzhXY2WWX5uhCpOysUzJh3FNxVHp1l/HJamf1gywl91PnJ0kzDjNbK+kFzLFjSV6XArRf5g1
+	5vhd/zG5FcMBgPTOwSn/PDnO90CDmUcz5tTSoDvN5swQw+Ds6VufVRoDWPtJ1VejyCvUJnCT2MJ/F
+	gjxnhlydMZfpSMiEkv9T6+vmZUktlFhWT9N10dx7j3FFW14VXCeTrhAdPvDyWg6fqFp8Axc3E4B2w
+	eUh9/y6wjO9WaalDUgP382SvW7Tc2dHf8D0bl0qb8upHqAUR6ejYUokk36tJ0FIh8Xjj6d1TptUrb
+	KTJC2wig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uz9KP-0000000GaQu-0Q7X;
-	Thu, 18 Sep 2025 07:45:17 +0000
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+	id 1uz9KT-0000000GaWI-0A2L;
+	Thu, 18 Sep 2025 07:45:21 +0000
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uz9KJ-0000000GaLX-1ZuR
+	id 1uz9KN-0000000GaOg-2Ir7
 	for barebox@lists.infradead.org;
-	Thu, 18 Sep 2025 07:45:13 +0000
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-b0411b83aafso98506466b.1
-        for <barebox@lists.infradead.org>; Thu, 18 Sep 2025 00:45:10 -0700 (PDT)
+	Thu, 18 Sep 2025 07:45:17 +0000
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-b079c13240eso108785766b.1
+        for <barebox@lists.infradead.org>; Thu, 18 Sep 2025 00:45:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1758181509; x=1758786309; darn=lists.infradead.org;
+        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1758181513; x=1758786313; darn=lists.infradead.org;
         h=content-transfer-encoding:organization:mime-version:references
          :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Mp1CY0dEflEn7oUu6wdvhtq7jAIJ4eq6zzL3GNGcUJQ=;
-        b=isK/fa1qND+qyUnV3M4iqTc3JU7BHX5Sdd6b7uOqhJ0wOpogAHV8wnettX/MYn10GN
-         dpDJ9kNbQNAqXaOyG9YjC1vKM9HkP1b/Z8IC/LAjL7JT9bUa9EUUB55zPYJijKGsHlZf
-         7+T8CFFsmodMWV23fdgcO7bFpcw0lXGjBUPLM1kZobvaS+E1fQQpmVNwzYbtSBBZFyZP
-         Gs0lg2wsh+NmC85zBYK2ZzRP3Cb+8MZZBRWL4CPYOqU1z8yXKt6gxes5P7Qe3TZuIfrR
-         hY8W3m0MsktlC1AldcNFig+BiiaCOm3pNapneNwwO6we1L0aGYvWAnYVAjJfD9Uy27hJ
-         Ettw==
+        bh=C3kFGWP2AhphqiJN+XydK0yKUi7dVy+GuMaAeVTIpnU=;
+        b=luvwDWJxpZ8MD4GuQfpR4RM7N/WFd+keuvFa1/qYBC6RWpFoNjMyixv+Zc1Z/RsWG2
+         JNdpfSnMZDB4JWTE5hwDjOWc8uJpEvtrtGpYFQo/iIRwe7hoPadu2+NLQh/aegBRdxzO
+         dVNpNLhsbNSD9bfzMIo71m76Yi/ZDBntvS6WTJzybHyt/VNpIkiOHMyNQl+koa9FQQxf
+         yZxHz5M0Ectc0F5O1ylDhUBhBpz+hJFSZmKa/crBG+p1D7YYlMcX7TDhzTn1cuN/wP5g
+         UIEBEoKZLR7MIt25Q1FPF+4XgBnepvDlVtmWN/R4gHk1Ytqh+x4CBY/22k82rtDXhUFV
+         UoXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758181509; x=1758786309;
+        d=1e100.net; s=20230601; t=1758181513; x=1758786313;
         h=content-transfer-encoding:organization:mime-version:references
          :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Mp1CY0dEflEn7oUu6wdvhtq7jAIJ4eq6zzL3GNGcUJQ=;
-        b=I/7BmEWYc1c+3JBruohGB0t82THbNYtaQ0lMeBnd4N9It+gACNURTpbD3DHJmixUP4
-         TvHM3kb53MtvdyfqKZLsm2gchgBDSzMmxj9kH4YQnXCzWguvc0YhWKFNFZbubTl0jJoR
-         X2uS8n2XZgMZMe3pMSsXpFcLOC81Aw8INko5PXsctmb/T6WiJTlFcmjfW28iu+LgAEcH
-         UCS0nXaix5Im9UEjyOboiDl1A15U8Zt8xYRKnP2WX2AN6W7YBTI16RIAafMDSe4YPM12
-         WrfbIUYrUk74NruSZXumql058n4RZwUacIpLE0lb/4WaWiuwdVFH34HaSnrAmE1gh0Pd
-         9G3g==
-X-Gm-Message-State: AOJu0YzTa2l/lnbiELAVqXInKKc+jM9FfPvq6O5vH1l5bQ3fJTbXtQfW
-	he6xF+Jt12lpSi/7noPkfaNroGUHoqDVDTKb+Uow6Xn5dv2b24bkQgxLnc1Z6WJNCpTXxD4LsU3
-	bKIYD
-X-Gm-Gg: ASbGncshgsZ4UJ9ZQVdms154GYdI9/Aaif3jPi8InW3AIHMWxR3uKeVF1uaR7HaVWGt
-	pJsVB0Ladv3E6WZLQckiq06Q0i6+GhvRIALQAxIxz6Lp1Lc3IkHALu2v7fE2RW3pwIuRkhqkSuB
-	kzgpOVpx1jB9rhtZwG9wCElk1E6qZjWg2bqwXu1zg0MsV8eGCYVclu+20Lvd+wSgYR/oqwu90So
-	UcnF+zvP0BLW1QkOBQZjuytYa7ZVDnpalTlPVhHJXkbNHPS9OdGV6FD4QU4vjTYE7Yf+W921Dow
-	eX5w1oPiswkHgUyZAEoSl7Z4SQCLlMM/cWBrzJId3GA9vya/hL4O0Upmj0iFSWKvlRT914opVfF
-	sMTqDqWZfnyL34/b/1pktO5SwRgsZB0hHxo81Mqu6EwYIu7Tmb/D+O9XnthTHJqpFRxDlsa2aRl
-	Fo3k7LliMnSVdIzrsCjSg=
-X-Google-Smtp-Source: AGHT+IEyqwsAVAhjWcx2NU4SIB37mxkvfIadroLqs8TjM11X2EASWxsTN+3SiXMw7q+DDw2pQFYD6A==
-X-Received: by 2002:a17:906:d555:b0:afe:ef8a:ac69 with SMTP id a640c23a62f3a-b1bb7d419ddmr563403666b.43.1758181509026;
-        Thu, 18 Sep 2025 00:45:09 -0700 (PDT)
+        bh=C3kFGWP2AhphqiJN+XydK0yKUi7dVy+GuMaAeVTIpnU=;
+        b=XflWi5NFbUEmf8zeJkkakLnftNXFUGzeWsyYzVr9PHWfwL/wlrZlpT7H7UB9ex5Stj
+         PqIZA4ENuWl0ta7eW0oU9NYpbqA9+ChlrO7itule2c1p3GnqClkdUUOz9I3Nk/EXNuRr
+         wE6Umi8mCvG7QU32f1AsQu2XzP3EtgAfIYHQq8pryWoGpr7sqXlB7MTK5/W8FLKc3RS+
+         oWxfJXR24NIq8SbIakcQ16oWocNhUjWx8wrTVb3QkMcAu0lM4rnty1EUKLtyybZs4hQB
+         LME6QivF8jEbQynhZUHGosaQI3bKsZNg4xbdIcSV8x+Ps1I7a1IotG78Fsp8pRQtYbOj
+         1arQ==
+X-Gm-Message-State: AOJu0YzB42hlI9wBVgSTOQ/l6QYMNHEqXNBeW+xPDuWdzBgsy4EaYOSB
+	o1Too7xycqzXUzIJvTHfPHqJE3Xk6xQYo0tEqlSwVaY4SbU+sQVipEsAAWHOEAlJCM+AkjEtijV
+	cqrOT
+X-Gm-Gg: ASbGncuem2OUtMb1/gQtyddYklbFY1I19QO3wRnVCxTjRfOrEj6I2X7Z2n6bYRTc/ut
+	2xrWKi2oCiqmw68FNILei1mMmYKrzhimLtKVr0dB1xu2HITrcYoYdnvhlDP/TLv0zJCIWKG4e2V
+	hu7aQqSrf4sVVcdYdCKCnRTVgCDqPcyMq+a3rhN6jCJ6xOx4/uNFaFzTTLlLOU2Sp1WiZEbfbAy
+	YW7S+e8+5w/s3Ga7DdyGoCBxHyoCUxfgKIijS1OhwpTVS9XQUlYT2b/xHiiafDbMPUj0q+G39Px
+	RORCaJ5nNCNk0sio4SUs5EWWMRBVpyHXMb5qu8hRVto7dmXrMVFUpW/qiYonU8OiuRGi4dyl2Ok
+	Rs3yTbJJZYfCBqcnisGdawPe8Ju4JlHJCDvbUTx9GYM/Mfo9mcf7M6hDKZUVjSsYuZBxR2IAhQp
+	mfmA6u8eec
+X-Google-Smtp-Source: AGHT+IF89I/ey8FqIHGrzphiu4DDFvHFipQ4omGWbBQxsXjMsltmus3XMUYp1Edh/8XlYQZDNuhQRQ==
+X-Received: by 2002:a17:906:7314:b0:b09:2331:f139 with SMTP id a640c23a62f3a-b1bb0c442e2mr491457266b.14.1758181513447;
+        Thu, 18 Sep 2025 00:45:13 -0700 (PDT)
 Received: from wkz-x13.addiva.ad (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fcfe888bcsm140703166b.71.2025.09.18.00.45.08
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fcfe888bcsm140703166b.71.2025.09.18.00.45.13
         for <barebox@lists.infradead.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 00:45:08 -0700 (PDT)
+        Thu, 18 Sep 2025 00:45:13 -0700 (PDT)
 From: Tobias Waldekranz <tobias@waldekranz.com>
 To: barebox@lists.infradead.org
-Date: Thu, 18 Sep 2025 09:43:12 +0200
-Message-ID: <20250918074455.891780-3-tobias@waldekranz.com>
+Date: Thu, 18 Sep 2025 09:43:19 +0200
+Message-ID: <20250918074455.891780-10-tobias@waldekranz.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250918074455.891780-1-tobias@waldekranz.com>
 References: <20250918074455.891780-1-tobias@waldekranz.com>
@@ -88,8 +88,8 @@ MIME-Version: 1.0
 Organization: Wires
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250918_004511_433706_AFF1FDA1 
-X-CRM114-Status: GOOD (  14.57  )
+X-CRM114-CacheID: sfid-20250918_004515_611327_DCB4B444 
+X-CRM114-Status: GOOD (  15.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -111,142 +111,70 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 02/11] dm: linear: Refactor to make use of the generalized cdev management
+Subject: [PATCH 09/11] test: pytest: add basic dm-verity test
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Rely on the dm_cdev operations to do most of the heavy lifting of
-managing the lower device. In addition this also adds support for
-creating a linear target from a regular file (via a loop device).
+>From a consistent dm-verity device (good):
+
+- Ensure that we can read from the underlying filesystem.
+
+>From a dm-verity device where the data device does not match the hash
+tree (bad):
+
+- Ensure that unmodified parts are readable
+- Ensure that reading from a modified block results in an I/O error
 
 Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
 ---
- drivers/block/dm/dm-linear.c | 64 +++++++++++-------------------------
- 1 file changed, 19 insertions(+), 45 deletions(-)
+ test/py/test_dm.py | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 test/py/test_dm.py
 
-diff --git a/drivers/block/dm/dm-linear.c b/drivers/block/dm/dm-linear.c
-index 797d761f63..38e340af3a 100644
---- a/drivers/block/dm/dm-linear.c
-+++ b/drivers/block/dm/dm-linear.c
-@@ -11,45 +11,30 @@
- #include "dm-target.h"
- 
- struct dm_linear {
--	struct cdev *cdev;
--	loff_t offset;
-+	struct dm_cdev dmcdev;
- };
- 
- static int dm_linear_read(struct dm_target *ti, void *buf,
- 			  sector_t block, blkcnt_t num_blocks)
- {
- 	struct dm_linear *l = ti->private;
--	ssize_t ret;
--
--	block <<= SECTOR_SHIFT;
--	num_blocks <<= SECTOR_SHIFT;
- 
--	ret = cdev_read(l->cdev, buf, num_blocks, l->offset + block, 0);
--	if (ret < num_blocks)
--		return (ret < 0) ? ret : -EIO;
--
--	return 0;
-+	return dm_cdev_read(&l->dmcdev, buf, block, num_blocks);
- }
- 
- static int dm_linear_write(struct dm_target *ti, const void *buf,
- 			   sector_t block, blkcnt_t num_blocks)
- {
- 	struct dm_linear *l = ti->private;
--	ssize_t ret;
- 
--	block <<= SECTOR_SHIFT;
--	num_blocks <<= SECTOR_SHIFT;
--
--	ret = cdev_write(l->cdev, buf, num_blocks, l->offset + block, 0);
--	if (ret < num_blocks)
--		return (ret < 0) ? ret : -EIO;
--
--	return 0;
-+	return dm_cdev_write(&l->dmcdev, buf, block, num_blocks);
- }
- 
- static int dm_linear_create(struct dm_target *ti, unsigned int argc, char **argv)
- {
--	struct dm_linear *l;
-+	struct dm_linear *l = NULL;
-+	loff_t offset;
-+	char *errmsg;
- 	int err;
- 
- 	if (argc != 2) {
-@@ -62,37 +47,26 @@ static int dm_linear_create(struct dm_target *ti, unsigned int argc, char **argv
- 	l = xzalloc(sizeof(*l));
- 	ti->private = l;
- 
--	if (kstrtoull(argv[1], 0, &l->offset)) {
-+	if (kstrtoull(argv[1], 0, &offset)) {
- 		dm_target_err(ti, "Invalid offset: \"%s\"\n", argv[1]);
- 		err = -EINVAL;
--		goto err_free;
--	}
--	l->offset <<= SECTOR_SHIFT;
--
--	l->cdev = cdev_open_by_path_name(argv[0], O_RDWR);
--	if (!l->cdev) {
--		dm_target_err(ti, "Cannot open device %s: %m\n", argv[0]);
--		err = -ENODEV;
--		goto err_free;
-+		goto err;
- 	}
- 
--	l->cdev = cdev_readlink(l->cdev);
--
--	if ((ti->size << SECTOR_SHIFT) > (l->cdev->size - l->offset)) {
--		dm_target_err(ti, "%s is too small to map %llu blocks at %llu, %llu available\n",
--			      argv[0], ti->size, l->offset >> SECTOR_SHIFT,
--			      (l->cdev->size - l->offset) >> SECTOR_SHIFT);
--		err = -ENOSPC;
--		goto err_close;
-+	err = dm_cdev_open(&l->dmcdev, argv[0], O_RDWR, offset,
-+			   ti->size, SECTOR_SIZE, &errmsg);
-+	if (err) {
-+		dm_target_err(ti, "Cannot open device %s: %s\n", argv[0], errmsg);
-+		free(errmsg);
-+		goto err;
- 	}
- 
- 	return 0;
- 
--err_close:
--	cdev_close(l->cdev);
--err_free:
--	free(l);
- err:
-+	if (l)
-+		free(l);
+diff --git a/test/py/test_dm.py b/test/py/test_dm.py
+new file mode 100644
+index 0000000000..a9debd85b5
+--- /dev/null
++++ b/test/py/test_dm.py
+@@ -0,0 +1,38 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
- 	return err;
- }
- 
-@@ -100,7 +74,7 @@ static int dm_linear_destroy(struct dm_target *ti)
- {
- 	struct dm_linear *l = ti->private;
- 
--	cdev_close(l->cdev);
-+	dm_cdev_close(&l->dmcdev);
- 	free(l);
- 	return 0;
- }
-@@ -110,7 +84,7 @@ static char *dm_linear_asprint(struct dm_target *ti)
- 	struct dm_linear *l = ti->private;
- 
- 	return xasprintf("dev:%s offset:%llu",
--			 cdev_name(l->cdev), l->offset >> SECTOR_SHIFT);
-+			 cdev_name(l->dmcdev.cdev), l->dmcdev.blk.start);
- }
- 
- static struct dm_target_ops dm_linear_ops = {
++import re
++import pytest
++from .helper import of_get_property
++
++
++
++def test_dm_verity(barebox):
++    _, _, returncode = barebox.run("ls /mnt/9p/testfs")
++    if returncode != 0:
++        pytest.xfail("skipping test due to missing --fs testfs=")
++
++    barebox.run_check("cd /mnt/9p/testfs")
++
++    # Since commands run in a subshell, export the root hash in a
++    # global, so that we can access it from subsequent commands
++    barebox.run_check("readf good.hash roothash && global roothash=$roothash")
++
++    barebox.run_check("veritysetup open good.fat good good.verity $global.roothash")
++    barebox.run_check("veritysetup open bad.fat  bad  good.verity $global.roothash")
++
++    barebox.run_check("md5sum /mnt/good/latin /mnt/good/english")
++
++    # 'latin' has not been modified, so it should read fine even from
++    # 'bad'
++    barebox.run_check("md5sum /mnt/bad/latin")
++
++    # 'english' however, does not match the data in the hash tree and
++    # MUST thus fail
++    _, _, returncode = barebox.run("md5sum /mnt/bad/english")
++    assert returncode != 0, "'english' should not be readable from 'bad'"
++
++    barebox.run_check("umount /dev/good")
++    barebox.run_check("veritysetup close good")
++
++    barebox.run_check("umount /dev/bad")
++    barebox.run_check("veritysetup close bad")
 -- 
 2.43.0
 
