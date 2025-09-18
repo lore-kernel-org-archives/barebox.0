@@ -3,93 +3,94 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uz9L1-004Nyd-1o
+	id 1uz9L1-004Nyc-1n
 	for lore@lore.pengutronix.de;
 	Thu, 18 Sep 2025 09:45:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uz9L0-0001n3-21
+	id 1uz9Kz-0001mX-AM
 	for lore@pengutronix.de; Thu, 18 Sep 2025 09:45:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fWTn4W2lnH2jbunddK1s0j/UX31sqzmgsoA0s93IU10=; b=O4yNSdISWJfrJLOpKJpLuC3Khf
-	01uj/Pk1UbBzKZj+E45xN4PCfN6f6gEAqUVMaoQrTKODVFfBa77Q3kYuPvXhiOKOwfhmlwK9Fnehp
-	Bp/W13yZprneXFLIU+ySau9HmwbRf+GSzftXolYLfxylin5bfcgKLL1ctqgmD7qLrs6l2yDBroPko
-	ikg8rJQViajbfu7XDdILy/nd7Cb2bw5NrjNBny9er51Pr2rlcgfuZN7F3RNouU7Yg5AE6KJ9MEZml
-	e9WDqOnRYEdHl3Ycowb/9E8jyZQwuX4bND9aIgMEmJIDYNwaxarVN/JqM/uddjiQ2Gp90P5x61gxL
-	046HHzgA==;
+	bh=ADAwQlYA1HICmeQZSK35I5Wnd5qkwJd+GdpwsybIf1Y=; b=qmtr6cMC9wM0WDB9BN5JfmMItF
+	Q+EhCazDEuUF1NjBdVjGwvJ5VPPAtmcP0bYfMjBjG53FTVxSxoMl5fG7RXtNlpurCPkox7t6T6oux
+	yakaqWDub4xecww+rcJDK2EmiEonkvzF9uxXQI8jNQ5u3TAM8+UCOruU/RT3KV0asuegwfGB/m6qX
+	N+SSNDWxzm1T+mXyOOHBeuDAv0WECzhb7JMZsaqyppNnW5mXMV3LrrkkMHYAWUTnEaGPScrSqyvOR
+	6MyIpomOo5UgBWG9v7TPYV/v0vjtDV8zfHvCJDHv0EOAZ2b+FbVP5+weufHbfh7A2xw8KPykbKSwZ
+	76xS1tpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uz9KR-0000000GaTi-1Mcz;
-	Thu, 18 Sep 2025 07:45:19 +0000
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+	id 1uz9KQ-0000000GaSU-1Ltx;
+	Thu, 18 Sep 2025 07:45:18 +0000
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uz9KM-0000000GaO6-3c3H
+	id 1uz9KL-0000000GaMd-0y1T
 	for barebox@lists.infradead.org;
-	Thu, 18 Sep 2025 07:45:16 +0000
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-b04ba3de760so81090866b.0
-        for <barebox@lists.infradead.org>; Thu, 18 Sep 2025 00:45:14 -0700 (PDT)
+	Thu, 18 Sep 2025 07:45:14 +0000
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-b04b55d5a2cso108507366b.2
+        for <barebox@lists.infradead.org>; Thu, 18 Sep 2025 00:45:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1758181513; x=1758786313; darn=lists.infradead.org;
+        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1758181511; x=1758786311; darn=lists.infradead.org;
         h=content-transfer-encoding:organization:mime-version:references
          :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fWTn4W2lnH2jbunddK1s0j/UX31sqzmgsoA0s93IU10=;
-        b=wEwCmuu3UnouI07/6j4Hr21zCEqJC6SQxvOGjGEEmL3v6V1H8qKPsO9QPwII1gDmlI
-         bOyPwdgncGyAhzBqKegRKVMF60nNkb5lTL53RfhWWBN/shTDl4vMs+KJhv3bOeySKlnG
-         OwPQ+mm6ygcxsfFBpNiVG9tRaLWiWsH9yQnIipm2JKrkM0vwCtu1N38OHj5adELSm2cv
-         2Ilt1brNvIZMKlfQBwQnUScxmMg3sTuXXQ11Yj6Qc/BbbtZU1IwQnAAqDowX8ubQ9jyo
-         sVvM+sctXa3pVruyesaSAilTNjTkM5RHEMF+pdulrjBCaZb8XhODI6QzNx8WT9nyN1lV
-         iJ4g==
+        bh=ADAwQlYA1HICmeQZSK35I5Wnd5qkwJd+GdpwsybIf1Y=;
+        b=AfQs87jRROMylYcNC8SBhW2ZytaDQbVLlIovFUVD/MOWbQD9ky9C7dklxY0L0N+GhR
+         Mq9IHQcuoajCHv8qrhgheUmgoXUzRuo2mzug42iE2YCgKt0L3Mh+FYKfhOaMej0oi0KA
+         ahXqFTpGT/SkkAtKBfyi7gLayTGUo1+we0FP6apCtUzsfXi9IfGTASyYs2F+nHS2FcLM
+         T80ryFJTZK7jIUFGPZe78k8RVluSgy/hRxIkZI6eAEXH53U22NareavPD34LFkvuIfsH
+         StXFdWsoEmzC73EwxLF4fv+qm4fUuzqD0+7nfobcwtd2fAXUx6Wi0LE1zZVRQnJJckq1
+         QNNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758181513; x=1758786313;
+        d=1e100.net; s=20230601; t=1758181511; x=1758786311;
         h=content-transfer-encoding:organization:mime-version:references
          :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fWTn4W2lnH2jbunddK1s0j/UX31sqzmgsoA0s93IU10=;
-        b=I46GGkOIjz8ngj0gNq6h8il7R9UWqj5HW0rX6jOdGyrH+ZLkG9GGEB3s6viZDD9E9o
-         F5E4ckEVz/FFwzSBqHMyXV3+PQ+fPa6EIsVMXuUaxZ6hmjV6ll8uP8ZsUmGu+XyEzn+4
-         88NqRc9bbQxEkJo/SZfAUBo3Nqlj4q+Vqs93rj4JBbOWE3WqsHJyXUTHXc5Tvav0RJ2e
-         DZd959grZ5H9i0CxvoZ+7qIkaAvDGP1Vmvc6TEF0eBkU7zLNJ7wtbvMns/0+W7Z9p+eG
-         sTBlE3iQd1b3SQMs/usTugY4ufQsacXpDZCIHmZlHHoBC+Y6YLByTnp9gl1X+A3am8WE
-         z9ow==
-X-Gm-Message-State: AOJu0YzarI4ow93OlCn5Ib9df1V7kgC/oXqM7yy/2wKzIzSEHk99I6gt
-	yZCtLCQRvTLRMvkZr2tIS2A1s8/Zwp0XeYbF3D+UjgcapXwcFWhgWGzbfKBppsjMBWF8yEi1D3Q
-	IScN3
-X-Gm-Gg: ASbGncsa43G1h9xMGXCBXvoiY87Fxio+C0+6KYDthNuOeHRBNzJZYh9Frsq6+QeL1Pr
-	tfDTZ6fh1pqaeiBebmIC7kLNzt13BEoFB9A6iBXuv1WZnwfR8KtUjqPwoy6kUgmVGzMuRkBzpCL
-	Jcs41Nhzv6sv1vXPof2s8NjIjR5M2vYlpLNoe+nCHP9EcgFy0OLlKoZ16NFjdOXpHINymmThc4F
-	MpNJyhXbHe290eBSJ+JyVE2fGYHIBCi4pctBZ96mrejidUb30+dto1YC3srDRPTgmCQjVn1bLrC
-	D5PCg6q+75fNu6J7ktH57fZGTG5kFeCb1Pq6IrTDwoqq4CTouwNM1rYw13WzP3Hu7lIqPYsqQrw
-	BRsFfgCf/sM8r6oQ+yyelLmWaw42l2St8Fce3sH43wbzXNOe+eZPLK7AQ6HVqIhRh9WuICLiaG5
-	oL3RV+GNOv
-X-Google-Smtp-Source: AGHT+IG2Q8eTteah7dbyS6vhD9cvpKRLKLbaBDYvJG2a4J1rYDO/hPEeIsVe6LYHtAu0rh6hTLO1GQ==
-X-Received: by 2002:a17:907:bb49:b0:b04:8c45:4bdb with SMTP id a640c23a62f3a-b1bb7d41a03mr502473566b.34.1758181512926;
-        Thu, 18 Sep 2025 00:45:12 -0700 (PDT)
+        bh=ADAwQlYA1HICmeQZSK35I5Wnd5qkwJd+GdpwsybIf1Y=;
+        b=UKCdV8/2jsKSzV4BYH0yKkBdXNdG5wSVoxjXeLdKsQhP5mZ0E2TNTZoAfdg+kJ/hu2
+         YVWx9wNT9ERb95nRNTFpLY9egiLeawKUTMXwUuhlHfF4LDG0zEG8gZs+pXp2PD7130SF
+         +6we8rAB+XwWS5Ac8eaHEuAmF1KrXY8QFy4ieWBMgsVAIkAw2ROUVv15mVZJktv1YcUZ
+         j0GZualwMiCDGHr8s8tD2a/evWLSOBLwVBQOVeGKZCeEbu3EpBepFU7hi6WAaPWYgwU/
+         kL8l+7buF5p2RlkjUsmRaxXfdGmHtCi+DI3GvyiObWjKYKottGenvPKaanGf+hocu5iM
+         N8wg==
+X-Gm-Message-State: AOJu0Yx3IehsExvfW29GDm0igrFEMXLDdbf1CkRV9Zea9XnpkGu0SSwS
+	PiyRK5tDy+Stzxug/7s+STk8ZgOeNARNFhGgmIhQPBTa8In8dTyKWvAL1yQYc8rB4FICJ7yuz6H
+	GXN2b
+X-Gm-Gg: ASbGncvvCnZEY+sCUgPoOqjF9T3F3W2bT1mL+HlL1F71vAYp85VG5EJfdP8MdubqKmL
+	6HG2JLHg+amxuWvwxpOnBXHbNAi1DAzIqx2wU6uktW61GxmJO+PdbpwVoeijz/W8AUrHJ05K73c
+	MINquJmwYVVa0ygTIEGWhKxUsQxFEXb0x+dIJVyAuhyTL4k2QHwz0ZelmErPaOvAOi0Wk2zj7hP
+	5XPIelFUf8aSxWmSxXwLGkPCDNbbZrhDjpLy0Alqm615h6qmUlKtZxTLitnvwpoqyOkb91UzXPf
+	lnlyzU4PMlSPATbsP9h5JW2+LwbdDPjky84/DuqU4JktR/wNkEXjJTfaRVhgCWkktoO55IskRnZ
+	sWld97bDWF35SJDaA1sLy/M48tIeI1d5Wc/cWUUHrfiXJd0m46vs5Tf0jVTrv+OhsGW0iqdw04Z
+	5TrlIG/7mT
+X-Google-Smtp-Source: AGHT+IG1i0D4DCZyQ2bwaVI1IQKrjqm7Jpaq04MgKcryWbiYv+ZV2XUQxEEIrf9A0LECKoTMrn64xQ==
+X-Received: by 2002:a17:907:b5a3:b0:b1e:29b8:ff2f with SMTP id a640c23a62f3a-b1e29c8817emr326777566b.12.1758181510832;
+        Thu, 18 Sep 2025 00:45:10 -0700 (PDT)
 Received: from wkz-x13.addiva.ad (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fcfe888bcsm140703166b.71.2025.09.18.00.45.12
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fcfe888bcsm140703166b.71.2025.09.18.00.45.10
         for <barebox@lists.infradead.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 00:45:12 -0700 (PDT)
+        Thu, 18 Sep 2025 00:45:10 -0700 (PDT)
 From: Tobias Waldekranz <tobias@waldekranz.com>
 To: barebox@lists.infradead.org
-Date: Thu, 18 Sep 2025 09:43:18 +0200
-Message-ID: <20250918074455.891780-9-tobias@waldekranz.com>
+Date: Thu, 18 Sep 2025 09:43:15 +0200
+Message-ID: <20250918074455.891780-6-tobias@waldekranz.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250918074455.891780-1-tobias@waldekranz.com>
 References: <20250918074455.891780-1-tobias@waldekranz.com>
 MIME-Version: 1.0
 Organization: Wires
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250918_004514_917617_311DD49D 
-X-CRM114-Status: GOOD (  10.53  )
+X-CRM114-CacheID: sfid-20250918_004513_304977_955E561C 
+X-CRM114-Status: GOOD (  15.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -111,71 +112,181 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 08/11] ci: pytest: Generate test data for dm-verity
+Subject: [PATCH 05/11] commands: veritysetup: Create dm-verity devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Create a small FAT fs with a couple of files, and the corresponding
-hash tree. Then create a modified copy that we can use to make sure
-that errors are detected.
+For hash devices that contain a superblock, parse it and setup a
+dm-verity device based on that information.
 
 Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
 ---
- scripts/generate_testfs.sh | 44 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ commands/Kconfig       |  10 ++++
+ commands/Makefile      |   1 +
+ commands/veritysetup.c | 123 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 134 insertions(+)
+ create mode 100644 commands/veritysetup.c
 
-diff --git a/scripts/generate_testfs.sh b/scripts/generate_testfs.sh
-index 3c200bd401..1c358ff846 100755
---- a/scripts/generate_testfs.sh
-+++ b/scripts/generate_testfs.sh
-@@ -28,3 +28,47 @@ generate_fit()
- 	       ${KBUILD_OUTPUT}/testfs/barebox-gzipped.fit
- }
- [ -f .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ] && generate_fit
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 219f626c3e..1924016756 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -789,6 +789,16 @@ config CMD_UMOUNT
+ 
+ 	  Unmount a filesystem mounted on a specific MOINTPOINT
+ 
++config CMD_VERITYSETUP
++	tristate
++	depends on DM_BLK_VERITY
++	prompt "veritysetup"
++	help
++	  veritysetup - manage dm-verity volumes
 +
-+alias pad128k="dd if=/dev/zero bs=128k count=1 status=none"
++	  commands:
++	        open <data-dev> <name> <hash-dev> <root-hash>
 +
-+generate_dm_verity()
+ # end Partition commands
+ endmenu
+ 
+diff --git a/commands/Makefile b/commands/Makefile
+index 6b010fe30c..62dd8284cd 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -167,4 +167,5 @@ obj-$(CONFIG_CMD_PARTED)	+= parted.o
+ obj-$(CONFIG_CMD_EFI_HANDLE_DUMP)	+= efi_handle_dump.o
+ obj-$(CONFIG_CMD_HOST)		+= host.o
+ obj-$(CONFIG_CMD_DMSETUP)	+= dmsetup.o
++obj-$(CONFIG_CMD_VERITYSETUP)	+= veritysetup.o
+ UBSAN_SANITIZE_ubsan.o := y
+diff --git a/commands/veritysetup.c b/commands/veritysetup.c
+new file mode 100644
+index 0000000000..99f27278f8
+--- /dev/null
++++ b/commands/veritysetup.c
+@@ -0,0 +1,123 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: © 2025 Tobias Waldekranz <tobias@waldekranz.com>, Wires
++
++#include <command.h>
++#include <device-mapper.h>
++#include <libfile.h>
++#include <stdio.h>
++
++static int veritysetup_dump(int argc, char *argv[])
 +{
-+    work=$(mktemp -d)
-+    cd ${work}
++	char *config;
 +
-+    # Create two dummy files; use lots of padding to make sure that
-+    # when we alter the contents of 'english' in root-bad, 'latin' is
-+    # still be readable, as their contents wont (a) share the same
-+    # hash block and (b) the block cache layer won't accedentally read
-+    # the invalid block.
++	if (argc != 1)
++		return COMMAND_ERROR_USAGE;
 +
-+    pad128k  >latin
-+    echo -n "veritas vos liberabit" >>latin
-+    pad128k >>latin
++	config = dm_verity_config_from_sb("<data-dev>", argv[0], "<root-hash>");
++	if (IS_ERR(config)) {
++		printf("Invalid or missing superblock: %pe\n", config);
++		return COMMAND_ERROR;
++	}
 +
-+    pad128k  >english
-+    echo -n "truth will set you free" >>english
-+    pad128k >>english
-+
-+    truncate -s 1M good.fat
-+    mkfs.vfat good.fat
-+    mcopy -i good.fat latin english ::
-+
-+    veritysetup format \
-+		--root-hash-file=good.hash \
-+		good.fat good.verity
-+
-+    sed 's/truth will set you free/LIAR LIAR PANTS ON FIRE/' \
-+	<good.fat >bad.fat
-+
-+    cd -
-+    cp \
-+	${work}/good.fat \
-+	${work}/good.verity \
-+	${work}/good.hash \
-+	${work}/bad.fat \
-+	${KBUILD_OUTPUT}/testfs
-+
-+    rm -rf ${work}
++	puts(config);
++	free(config);
++	return COMMAND_SUCCESS;
 +}
-+generate_dm_verity
++
++static struct dm_device *veritysetup_find(const char *name)
++{
++	struct dm_device *dm;
++
++	dm = dm_find_by_name(name);
++	if (IS_ERR_OR_NULL(dm)) {
++		printf("Found no device named \"%s\"\n", name);
++		return NULL;
++	}
++
++	return dm;
++}
++
++static int veritysetup_close(int argc, char *argv[])
++{
++	struct dm_device *dm;
++
++	if (argc != 1)
++		return COMMAND_ERROR_USAGE;
++
++	dm = veritysetup_find(argv[0]);
++	if (!dm)
++		return COMMAND_ERROR;
++
++	dm_destroy(dm);
++
++	printf("Removed %s\n", argv[0]);
++	return COMMAND_SUCCESS;
++}
++
++static int veritysetup_open(int argc, char *argv[])
++{
++	struct dm_device *dm;
++	char *config;
++
++	if (argc != 4)
++		return COMMAND_ERROR_USAGE;
++
++	config = dm_verity_config_from_sb(argv[0], argv[2], argv[3]);
++	if (IS_ERR(config)) {
++		printf("Invalid or missing superblock: %pe\n", config);
++		return COMMAND_ERROR;
++	}
++
++	dm = dm_create(argv[1], config);
++	free(config);
++	if (IS_ERR_OR_NULL(dm)) {
++		printf("Failed to create %s: %pe\n", argv[1], dm);
++		return COMMAND_ERROR;
++	}
++
++	printf("Created %s\n", argv[1]);
++	return COMMAND_SUCCESS;
++}
++
++static int do_veritysetup(int argc, char *argv[])
++{
++	const char *cmd;
++
++	if (argc < 2)
++		return COMMAND_ERROR_USAGE;
++
++	cmd = argv[1];
++	argc -= 2;
++	argv += 2;
++
++	if (!strcmp(cmd, "open"))
++		return veritysetup_open(argc, argv);
++	else if (!strcmp(cmd, "close"))
++		return veritysetup_close(argc, argv);
++	else if (!strcmp(cmd, "dump"))
++		return veritysetup_dump(argc, argv);
++
++	printf("Unknown command: %s\n", cmd);
++	return -EINVAL;
++}
++
++BAREBOX_CMD_HELP_START(veritysetup)
++BAREBOX_CMD_HELP_TEXT("veritysetup - manage dm-verity volumes")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Layers a transparent integrity layer on top of an existing")
++BAREBOX_CMD_HELP_TEXT("device, backed by a Merkle tree whose root hash must be")
++BAREBOX_CMD_HELP_TEXT("verified by an externally provided signature")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("commands:")
++BAREBOX_CMD_HELP_OPT("open <data-dev> <name> <hash-dev> <root-hash>", "Create new device")
++BAREBOX_CMD_HELP_OPT("close <name>", "Remove device")
++BAREBOX_CMD_HELP_OPT("dump <hash-dev>", "Dump superblock information")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(veritysetup)
++	.cmd = do_veritysetup,
++	BAREBOX_CMD_DESC("manage dm-verity volumes")
++	BAREBOX_CMD_OPTS("<command> [args...]")
++	BAREBOX_CMD_GROUP(CMD_GRP_PART)
++	BAREBOX_CMD_HELP(cmd_veritysetup_help)
++BAREBOX_CMD_END
 -- 
 2.43.0
 
