@@ -1,99 +1,96 @@
-Delivery-date: Sat, 20 Sep 2025 05:04:21 +0200
+Delivery-date: Sat, 20 Sep 2025 05:04:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uzntd-0054ww-2j
+	id 1uznte-0054xN-1h
 	for lore@lore.pengutronix.de;
-	Sat, 20 Sep 2025 05:04:21 +0200
+	Sat, 20 Sep 2025 05:04:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uznta-00050l-7H
-	for lore@pengutronix.de; Sat, 20 Sep 2025 05:04:21 +0200
+	id 1uznta-00050x-9r
+	for lore@pengutronix.de; Sat, 20 Sep 2025 05:04:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=FjXDHH9+9IICthkfiXNIjhBViCUJDk2KItY+WsZZtfY=; b=pnycA8Fm+qeem3
-	uT2QwbZY1rG1/Ui6KaytQhemi4jkK7onFayo0iOGncvlPlkzI3oQJ9XFVhEZIzD4x7v67yWfK/42T
-	krs6j6UMJ700TU9DBHmomMji/qvG0bB0wf0gM07BeCKoOScW82Y3P5tNxip7f9VqzDqBT3G+KED4M
-	c2BawCGwVbcHKKwJ64SFoscinPaiKKqRKLrwbwuSqa/IXfSwa6HQpGQzK9J4CpSRICX7P2Xru3iKi
-	XdpUbfucghN7iPZ5jLGtRBQS2GEtS5BMWI9JlBrNANrvrYEkc/QAmlZoIHpc/x0eyF+SPN6R7Go1K
-	xZwXhu4I5WOFCpZgJXUw==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3NydSgVuGXlWB4EgRvo+3b7yIpS20SMjWEnI9yIwqEI=; b=Vqxa9erzv1cR0ZWFCKi0SwdR/0
+	F70dN4DT/JvZEj0E3JsfDhPtucN8gLjDO2MAiNgXn20ApnY74vJwHw+I7zrk45/hdIpvryR+LbMcW
+	Hqonp6kboQbGova08PPTL7q4ifnsbKbohQ1X1zHrRbX7eFN9q7wSXilZGsYYQ7uYZXR7G9Dzq5yaI
+	7S4rxO9mfmzwZ3yNTDTQqqY32HxEb/x7izDl9a66VCv0eYjDprQm1IvsTEmfhOcWtz1Wb8pOIRWN2
+	BNsIj9btwk0KTHK4Mz4SzAyBbw9z67wyhZlL3mPdz6dUeUGnbHMnI3ZCxebTnfJxdMvuZT1O4YJ4x
+	OPY9KZxQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uznsl-00000004bhe-1clV;
-	Sat, 20 Sep 2025 03:03:27 +0000
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+	id 1uznss-00000004bkv-3ylX;
+	Sat, 20 Sep 2025 03:03:34 +0000
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uznsj-00000004bhC-0k1Q
+	id 1uznsq-00000004bjB-3Mv9
 	for barebox@lists.infradead.org;
-	Sat, 20 Sep 2025 03:03:26 +0000
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-46b303f7469so316575e9.1
-        for <barebox@lists.infradead.org>; Fri, 19 Sep 2025 20:03:24 -0700 (PDT)
+	Sat, 20 Sep 2025 03:03:33 +0000
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-3ee15b5435bso1208834f8f.0
+        for <barebox@lists.infradead.org>; Fri, 19 Sep 2025 20:03:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758337403; x=1758942203; darn=lists.infradead.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FjXDHH9+9IICthkfiXNIjhBViCUJDk2KItY+WsZZtfY=;
-        b=mXSacetI36Vanza6Nd7iOJG+n97JaoeTolBmggMKUQ55f0CAHKWqYsAPmoR9ZT/Kn0
-         OkNPVCqzh9BVtw/ASbtPKrLnK/eBnI4TnNVSiqXTFLD56OaHpCHjWUrG9WR+IlpEBzvk
-         ecLuH32GODV2d4tLWEYN2z7ryIjU5/T50rIIb2Pf9pyYZdpnxIeCPpluvHIMFxkikiCQ
-         ig+vnSIHTUysLACY49uB/0E4xd0hSdP0B5B/ZYe8UugeHRQATtHLz8LXIrGIWP48TieS
-         fPfwCLV2druewDQ/Sh7r+3PtTjPYsodVGU5LomiSRcdb9lkhPaokreOnkfglLNGqS+u1
-         ANZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758337403; x=1758942203;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1758337411; x=1758942211; darn=lists.infradead.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FjXDHH9+9IICthkfiXNIjhBViCUJDk2KItY+WsZZtfY=;
-        b=PujJXD61q4IH8Cz4imozjZF1DuwhjETEzNwHsmOuw3rbvQa+AUJgcjOkeJjkeOEYFc
-         iYXJQN5CJcDzqlkzLLn/5W9OYy/31Xv7WDXa0tkRw87K1EI4moMNbZMp0SevS/GI/Vfo
-         3y/dOuAVEeXwxQ70DjjSKSpfWF8ziqUHdgivg/bqnyrOtOSsSDqnvRn68jNMIjH6jLHQ
-         91evKqYfVoXKky0QZcWC9/DNR7Lx/uoxu8GdgJWGsQe1WKwyBIlwxO2M2L+mapZaPCix
-         B+YCL5hJJyR6eLtArZUAFQTffVRdgjPZwGnZI8pOVKprbepCFG7r1GT2Uzq/4luiI2Uq
-         uaag==
-X-Forwarded-Encrypted: i=1; AJvYcCVwqCKCnl7qF+TvqulpAm5KPHyxH1SqtokBAmfH369EBeStJru4iEfhuzOvQw2jGMhdyzoux7cd@lists.infradead.org
-X-Gm-Message-State: AOJu0YyaUC77e7s9BGuioq+Z7yL+iwnJ1FrO2PL9NGNKHeG7oTiJEr2b
-	hJAbjhSx9QmntCTLlaC18ivKV37aUVDzsl6NmgVPEXJ/4mL3MIJ9LbGj
-X-Gm-Gg: ASbGncsQbxDs/hJGabZNuZ9qtf9A9aE6Vvhda7LdFYKkdFfay4J5PdmaOT28BxChDe4
-	7PuGFvyHtBpBxkmwHVib/5j4IDfvu36dD4wBzWemT0cnsshigOx8O4PL2pXLPEpFSNGo2wQNAwX
-	Rki8jdZNWpFpQoUip0iqZYG6gFXcstIgtwQSjwJf5TzOV8P/5oZhIM2qJLi8iXlYfAIo1rmqSLe
-	69QBn9mEGpRmzTdZMYiGaAzP8v8S8nRVrLTXYHgDFsbZwhr5yXkTp3uqRGPkx6Mle8w2JALLmNp
-	Rf7CXzzYh8yE4ecZ+jA7VzJb2SXDVUhALOyOJORb6/JSYAYO2Xex2BkSVpHW3qnwBtO6vFIKTru
-	HaNWA6PfIk/UcNiRus1NIRZCpqKFiR7AGwf9RDPWCWwzKeXFziMW8mHOlsRXfZXpIcCReXue9hG
-	4xfW1Sy7Ry
-X-Google-Smtp-Source: AGHT+IGOprCbwRPuiQNS3Msw1a9jwFCPAtE38W8jscKPBtgR9OAOpuiYIJpYzcy01YAtP6lDJenAOA==
-X-Received: by 2002:a05:600c:5490:b0:46a:6e5f:203e with SMTP id 5b1f17b1804b1-46a6e5f22a4mr16677295e9.23.1758337402906;
-        Fri, 19 Sep 2025 20:03:22 -0700 (PDT)
+        bh=3NydSgVuGXlWB4EgRvo+3b7yIpS20SMjWEnI9yIwqEI=;
+        b=DJ7hNXpDknOtwalob8nYnpSvxobrUgapPFK/xp1+Ei7N3wPT9c2CRP5GYmrhSt/Jkq
+         tGJNXB2ScT9fjzpbGtO0pYMO36PJiJzl75pdfAYxQgdPvQHIwQXIFgkYN/zszP7DQ2os
+         uvIir7qq1lAXavBq9XYHvhlzw2sPpMt9iLR382pFvpW9O/4PDEqNDbhLo84AZDlZo55d
+         qJ0XTePbsjy6u5K0i/9L8I3scFwIWaVLUFJYcPBrBTT6SV8pDDVCv9+7IVzH9aWaH3/k
+         ApNf6C8pzjcqNr3nHR86AktSlKNTSqTSm7o2AI2AD2ibBX4TTimTcS9U8JLOnRwPAA8g
+         uI9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758337411; x=1758942211;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3NydSgVuGXlWB4EgRvo+3b7yIpS20SMjWEnI9yIwqEI=;
+        b=ITobIwMYjcfyGOm3mMmVfv+gjBZ8NFqz/A2Yh2+eVvjLdg0hi3rqn1SNo0wm5O4HhJ
+         Lk51puG4LZNL0AS/tbkzCNc4IrU3O8q1jZx5IQPd1NaYRL/ZYh9bd0QiPxynXoKqewQi
+         l/6yLiDZ4jplef3jTNLWz8FzDuKWjQrWGCcpn5ehy0Ks7KT7W6JQQzOqOo0i/zlydIw/
+         WhBf181w+PhJ8vMLZ/m18tEJKKZIRRG2tn4hDZWR/x3kCycO3morAMVXLFvhB9Et2FH4
+         Ovp/yNm6bBDwk9vSRP5g5v+W+SIF8wlJKNI+DhMro+2d44b3tMTgM8CrE24kxTU3feBB
+         njyA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgWhSe5zimiR10PkFSF/dWf5kxQocCdrrEwLuCL019NiwCExSHa5qYrbzw19CKTVdRta1UTkZn@lists.infradead.org
+X-Gm-Message-State: AOJu0Ywmm0/4FPbnyHAWB0PaRI0++rvdr3/WU+JP5eMxZkClCzL4h7Gc
+	ruzv4uypSrXqEGKY1KY/LTNvpSxUGSvpxIZp55WoUaYiecYot3kKTFRy8wqXX2ks
+X-Gm-Gg: ASbGnctPapNFMWjpJYinWpfHYK+QeMwDgiPiYhrabZv6cgpRMNUJZYVlVsLyjdlpcD9
+	QLXu5fBXKQl7Z6h/Ig8gnumhjV11lq/KBeipcChvBqVpvlIYhTbg9RFv2MGL/J7bZZxb6eIiztu
+	/JwolXQ6WYeY1VZfaYQeXAnv2oT6sB/N/L3rgQkxpqh1tp+00IF1q4D6H0NWzZdXADotNHjcvrU
+	0RkMzYZ8Ra2GsGhBVKLTN9t+XzxefHAI8XkyR3oOJNV7RkkMrC1IcKi5AWVYW5H6EDJnsEy5Dci
+	PxvPyNezpWqx5elGiIJcWl9utCSSj0dKnZ0Eo94TJTeY1hGYUoam1HJg0Kjcg+MUpBx9yDvcTGk
+	0hFPtosYPgPdngHk1R7yEmHNwsY88shZTB2fTC6DfMZ0RPGNcxtUX1LuOpYC7pDu93OQwPWKHiv
+	Dtn5iuJ1KF
+X-Google-Smtp-Source: AGHT+IFoFyXCqqMtvE5qpSaIw5/4oVXpckRLQ+jclr6zD1GjFilN0lefVUrl50INMnHUpHcnWJpQpw==
+X-Received: by 2002:a05:6000:2084:b0:3ee:1294:4783 with SMTP id ffacd0b85a97d-3ee84bf16e1mr3560664f8f.32.1758337410832;
+        Fri, 19 Sep 2025 20:03:30 -0700 (PDT)
 Received: from [127.0.1.1] ([143.244.56.164])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f64ad359sm128118415e9.22.2025.09.19.20.03.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f64ad359sm128118415e9.22.2025.09.19.20.03.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 20:03:22 -0700 (PDT)
+        Fri, 19 Sep 2025 20:03:30 -0700 (PDT)
 From: chalianis1@gmail.com
-Date: Fri, 19 Sep 2025 23:03:09 -0400
-Message-Id: <20250919-efi-loader-v1-0-dd8cdafb9067@gmail.com>
+Date: Fri, 19 Sep 2025 23:03:12 -0400
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAG0ZzmgC/x2MQQqAIBAAvyJ7bkHFDvaV6CDtWguhoRCB+Pek4
- zDMNKhchCssqkHhR6rkNMBMCvYzpINRaDBYbWftjUeOglcOxAV3itG5QJachhHcZcj3n61b7x+
- HlzbnXAAAAA==
-X-Change-ID: 20250919-efi-loader-cdff44ad2d40
+Message-Id: <20250919-efi-loader-v1-3-dd8cdafb9067@gmail.com>
+References: <20250919-efi-loader-v1-0-dd8cdafb9067@gmail.com>
+In-Reply-To: <20250919-efi-loader-v1-0-dd8cdafb9067@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
-Cc: Chali Anis <chalianis1@gmail.com>, Ahmad Fatoum <a.fatoum@barebox.org>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Chali Anis <chalianis1@gmail.com>, Ahmad Fatoum <a.fatoum@barebox.org>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250919_200325_244562_A54BEB61 
-X-CRM114-Status: UNSURE (   8.00  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250919_200332_895779_56AFC80D 
+X-CRM114-Status: GOOD (  19.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -116,65 +113,221 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 00/15] Implement efi loader to run barebox as efi payload
- app and then load efi stubed application/kernels.
+Subject: [PATCH 03/15] efi: payload: add support for fit image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+
+This patch has more stock, between implementing EFI STUB boot, refactor to
+reuse the code and finaly support the fit image format.
+This code is tested on many qemu EFI compilations comming from ovmf ubuntu
+package, tianocore efi for qemu, local edk2 build, and also tested on RPi3b
+64 bit EFI from tianocore and a local build of edk2, more mchines will be
+tested soon. the test was for a full boot chain on RPi3b booting a fit image
+containing a kernel, an fdt, and a ramdisk with ostree initrd to mount an
+ostree root filesystem. for contribution in short term,
+1. it would be nice to test with more hardware,
+2. linux global checkup of efivars, efi capsule update, efi runtime services
+3. The state.dtb to support barebox state to manage multiple system boot
+   and a recovery.
+   the case would be sys1 = new ostree commit, sys2 = old commit (rollback)
+   and a recovery boot system on readonly disk.
+4. secure boot, PoC to check if there is a way to load TF-A from EFI
+and then load the efi payload from it and launch optee??
+
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
-Ahmad Fatoum (5):
-      efi: payload: split image handling from legacy handover boot support
-      efi: payload: add support for efi stub boot
-      efi: payload: add support for fit image
-      efi: payload: make selectable without COMPILE_TEST
-      ARM: cpu: allow selecting CPU_V7/CPU_V8 directly
+ efi/payload/bootm.c | 148 ++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 126 insertions(+), 22 deletions(-)
 
-Chali Anis (10):
-      arm: efi: add a generic defconfig for v8 efi payload,
-      efi: payload: initrd: implement efi initrd media protocol.
-      common: filetype: add x86 linux filetype.
-      efi: payload: early-mem: helps to correctly boot x86 linux.
-      efi: payload: bootm: add x86 efi stub boot support.
-      efi: payload: x86: enable the possibility to efi stub bootm for x86.
-      malloc: tlsf: efi: add a fallback for allocate more memory when we are in efi.
-      configs: efi: arm64: x86: enable the use of efi malloc fallback.
-      efi: payload: earlymem: allocate only the barebox needs in term of memory.
-      efi: payload: bootm: remove redundant reallocations in image loader
+diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
+index 6d6ecbf2e49ab7a47cfb9843418abf306b5c51db..ce225ab949c92cb0c52c1334c2395e30b309b781 100644
+--- a/efi/payload/bootm.c
++++ b/efi/payload/bootm.c
+@@ -25,6 +25,7 @@
+ #include <libfile.h>
+ #include <binfmt.h>
+ #include <wchar.h>
++#include <image-fit.h>
+ #include <efi/efi-payload.h>
+ #include <efi/efi-device.h>
+ 
+@@ -227,10 +228,93 @@ static int do_bootm_efi(struct image_data *data)
+ 	return 0;
+ }
+ 
++static bool ramdisk_is_fit(struct image_data *data)
++{
++	struct stat st;
++
++	if (bootm_signed_images_are_forced())
++		return true;
++
++	if (data->initrd_file) {
++		if (!stat(data->initrd_file, &st) && st.st_size > 0)
++			return false;
++	}
++
++	return data->os_fit ? fit_has_image(data->os_fit,
++			data->fit_config, "ramdisk") > 0 : false;
++}
++
++static bool fdt_is_fit(struct image_data *data)
++{
++	struct stat st;
++
++	if (bootm_signed_images_are_forced())
++		return true;
++
++	if (data->oftree_file) {
++		if (!stat(data->oftree_file, &st) && st.st_size > 0)
++			return false;
++	}
++
++	return data->os_fit ? fit_has_image(data->os_fit,
++			data->fit_config, "fdt") > 0 : false;
++}
++
+ static int efi_load_os(struct efi_image_data *e)
+ {
+-	return efi_load_file_image(e->data->os_file,
+-		&e->loaded_image, &e->handle);
++	efi_status_t efiret = EFI_SUCCESS;
++	efi_physical_addr_t mem;
++	size_t image_size = 0;
++	void *image = NULL;
++	void *vmem = NULL;
++	int ret = 0;
++
++	if (!e->data->os_fit)
++		return efi_load_file_image(e->data->os_file,
++			&e->loaded_image, &e->handle);
++
++	image = (void *)e->data->fit_kernel;
++	image_size = e->data->fit_kernel_size;
++
++	if (image_size <= 0 || !image)
++		return -EINVAL;
++
++	vmem = efi_allocate_pages(&mem, image_size, EFI_ALLOCATE_ANY_PAGES,
++				 EFI_LOADER_CODE);
++	if (!vmem) {
++		pr_err("Failed to allocate pages for image\n");
++		return -ENOMEM;
++	}
++
++	memcpy(vmem, image, image_size);
++
++	efiret = BS->load_image(false, efi_parent_image, efi_device_path, image,
++				image_size, &e->handle);
++	if (EFI_ERROR(efiret)) {
++		ret = -efi_errno(efiret);
++		pr_err("failed to LoadImage: %s\n", efi_strerror(efiret));
++		goto out_mem;
++	};
++
++	efiret = BS->open_protocol(e->handle, &efi_loaded_image_protocol_guid,
++				   (void **)&e->loaded_image, efi_parent_image,
++				   NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
++	if (EFI_ERROR(efiret)) {
++		ret = -efi_errno(efiret);
++		pr_err("failed to OpenProtocol: %s\n", efi_strerror(efiret));
++		goto out_unload;
++	}
++
++	e->image_res.base = mem;
++	e->image_res.size = image_size;
++
++	return 0;
++
++out_mem:
++	efi_free_pages(vmem, image_size);
++out_unload:
++	BS->unload_image(e->handle);
++	return ret;
+ }
+ 
+ static void efi_unload_os(struct efi_image_data *e)
+@@ -252,17 +336,27 @@ static int efi_load_ramdisk(struct efi_image_data *e)
+ 	unsigned long initrd_size;
+ 	int ret;
+ 
+-	if (!e->data->initrd_file)
+-		return 0;
+-
+-	pr_info("Loading ramdisk from '%s'\n", e->data->initrd_file);
+-	tmp = read_file(e->data->initrd_file, &initrd_size);
+-	if (!tmp || initrd_size <= 0) {
+-		pr_err("Failed to read initrd from file: %s\n",
+-			e->data->initrd_file);
+-		return -EINVAL;
++	if (ramdisk_is_fit(e->data)) {
++		ret = fit_open_image(e->data->os_fit, e->data->fit_config,
++				     "ramdisk", &initrd, &initrd_size);
++		if (ret) {
++			pr_err("Cannot open ramdisk image in FIT image: %pe\n",
++			       ERR_PTR(ret));
++			return ret;
++		}
++	} else {
++		if (!e->data->initrd_file)
++			return 0;
++
++		pr_info("Loading ramdisk from '%s'\n", e->data->initrd_file);
++		tmp = read_file(e->data->initrd_file, &initrd_size);
++		if (!tmp || initrd_size <= 0) {
++			pr_err("Failed to read initrd from file: %s\n",
++				e->data->initrd_file);
++			return -EINVAL;
++		}
++		initrd = tmp;
+ 	}
+-	initrd = tmp;
+ 
+ 	efiret = BS->allocate_pool(EFI_LOADER_DATA,
+ 			sizeof(struct efi_mem_resource),
+@@ -346,17 +440,27 @@ static int efi_load_fdt(struct efi_image_data *e)
+ 	if (IS_ENABLED(CONFIG_EFI_FDT_FORCE))
+ 		return 0;
+ 
+-	if (!e->data->oftree_file)
+-		return 0;
+-
+-	pr_info("Loading devicetree from '%s'\n", e->data->oftree_file);
+-	tmp = read_file(e->data->oftree_file, &of_size);
+-	if (!tmp || of_size <= 0) {
+-		pr_err("Failed to read initrd from file: %s\n",
+-			e->data->initrd_file);
+-		return -EINVAL;
++	if (fdt_is_fit(e->data)) {
++		ret = fit_open_image(e->data->os_fit, e->data->fit_config,
++				     "fdt", &of_tree, &of_size);
++		if (ret) {
++			pr_err("Cannot open FDT image in FIT image: %pe\n",
++			       ERR_PTR(ret));
++			return ret;
++		}
++	} else {
++		if (!e->data->oftree_file)
++			return 0;
++
++		pr_info("Loading devicetree from '%s'\n", e->data->oftree_file);
++		tmp = read_file(e->data->oftree_file, &of_size);
++		if (!tmp || of_size <= 0) {
++			pr_err("Failed to read initrd from file: %s\n",
++				e->data->initrd_file);
++			return -EINVAL;
++		}
++		of_tree = tmp;
+ 	}
+-	of_tree = tmp;
+ 
+ 	vmem = efi_allocate_pages(&mem, SZ_128K,
+ 				 EFI_ALLOCATE_ANY_PAGES,
 
- arch/arm/configs/efi_v8_defconfig | 267 +++++++++++++++++++++
- arch/arm/cpu/Kconfig              |   7 +-
- arch/x86/configs/efi_defconfig    |   1 +
- common/Kconfig                    |   9 +
- common/Makefile                   |   1 +
- common/efi_malloc.c               |  80 +++++++
- common/filetype.c                 |   4 +
- common/tlsf_malloc.c              |  22 +-
- efi/Kconfig                       |  23 +-
- efi/guid.c                        |   7 +
- efi/payload/Kconfig               |  11 +
- efi/payload/Makefile              |   3 +
- efi/payload/bootm.c               | 477 ++++++++++++++++++++++++++++++++++++++
- efi/payload/early-mem.c           |  19 +-
- efi/payload/efi-initrd.c          | 123 ++++++++++
- efi/payload/entry-multi.c         |   5 +-
- efi/payload/entry-single.c        |   5 +-
- efi/payload/handover.c            | 195 ++++++++++++++++
- efi/payload/image.c               | 228 +-----------------
- efi/payload/image.h               |  14 ++
- efi/payload/setup_header.h        |  63 +++++
- include/efi.h                     |   4 +
- include/efi/efi-payload.h         |   5 +-
- include/filetype.h                |   6 +
- include/malloc.h                  |  19 ++
- 25 files changed, 1352 insertions(+), 246 deletions(-)
----
-base-commit: 3366e9e04a284b7fed71c4b8729fe331b6547d6b
-change-id: 20250919-efi-loader-cdff44ad2d40
-
-Best regards,
 -- 
-Chali Anis <chalianis1@gmail.com>
+2.34.1
 
 
 
