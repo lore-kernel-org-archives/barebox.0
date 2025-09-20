@@ -3,85 +3,85 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uzntg-0054yS-34
+	id 1uznth-0054yo-1m
 	for lore@lore.pengutronix.de;
-	Sat, 20 Sep 2025 05:04:24 +0200
+	Sat, 20 Sep 2025 05:04:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1uznte-00055H-Mm
-	for lore@pengutronix.de; Sat, 20 Sep 2025 05:04:24 +0200
+	id 1uzntf-000562-6U
+	for lore@pengutronix.de; Sat, 20 Sep 2025 05:04:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=B3ZqcHqtsHoB7+LO92S3T9nLpiV3pMNfvq2JgEqyQLA=; b=Ql2D1Mz9yLO/XLnp9Cd8f1m4op
-	+EiPRSeMiyTgNqKe847aVddsu+yx0rXNJZFvgexsFddMmhUtQ6KBr4a5WrBjJeOzoj8+pFr3f5SGv
-	QoDZiJn5DWJSTrYy2kmjmIc+HqsCLVumQKN2MBlNGLOfa6UnTnYHTwPvsucRS6BGM9ztP+7w+5K0u
-	hBYTJY+bPr/gJG6YQ4kiPPYyRrWhLel/WqbF7lCQpudWZhG7FiGMhF7VDC9HlcQdbqER72bTtmW0w
-	YASwpxsoxkj6MiQX9e4yZzMkL4wF2nvIoLSZKBKHJs+931LqRoa0zrxP/4u1Scn9v2Jrm1lq7a+ri
-	WfbWIu9A==;
+	bh=xV6Hgr4ZctsNeYE+f+yliexCvm8pvNkCH5gNWeDUWwY=; b=NzUFqVwRtjQla+6alc3H6LVYr/
+	RVMj/UD0zTfCdu7kzpR3imMd6/CGTM3WKcytKBf3/ESzdhagN0AbV4xl0uNETQcAb51mxv16J8JPI
+	noSHnVZF8pk+OjHMkoH9Gvx4FNXUSTR3JLwZujFiY6WeAbypioGop20l0v4fdfx8vsXwQKSY7BnlX
+	Aq2rX/RiznyGyUfs3+vmICxPYVn877Nsy2tiWwmWFFqigr0ZV/MVtK5kssQEkwqqR16D1EXDdTVyP
+	/a/fwhCV9aJ3bhEl1nMPrJU569y4JinyAKxgA1+j4ECET5Ojjf5YFmOo0qqi0sFTMWYPP8+BOObgK
+	k83FOIMA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uznt4-00000004buy-3f04;
-	Sat, 20 Sep 2025 03:03:46 +0000
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+	id 1uznt6-00000004bwX-0wle;
+	Sat, 20 Sep 2025 03:03:48 +0000
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uznt0-00000004bqN-0p62
+	id 1uznt3-00000004bsN-17zp
 	for barebox@lists.infradead.org;
-	Sat, 20 Sep 2025 03:03:43 +0000
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-45e03730f83so11935225e9.0
-        for <barebox@lists.infradead.org>; Fri, 19 Sep 2025 20:03:41 -0700 (PDT)
+	Sat, 20 Sep 2025 03:03:46 +0000
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-45f2313dd86so23794695e9.2
+        for <barebox@lists.infradead.org>; Fri, 19 Sep 2025 20:03:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758337420; x=1758942220; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1758337423; x=1758942223; darn=lists.infradead.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=B3ZqcHqtsHoB7+LO92S3T9nLpiV3pMNfvq2JgEqyQLA=;
-        b=UuiS8uO0Q9YGbniuBSBtOU97FVRWanoJAMMfOw1Q9VHQWSEku172UUdzqWDwgfVlsO
-         U6Ad4m/k4TEMx5y3pXl8hYYqSwyONuw7bnvz901YG5on3fd/5YMMgf6zhuOnVDVZZEoo
-         TEAVnQNWeCvO/mWdUBAT5yCQNNd662P3t47svzBLn8Ml/F0+rEew4T+4FbJ4MDvpBaTy
-         aHL4pzYNv38QTTF0kMd/4GhvaEZThgsX8J6pkiuyldJv9nd+PlcPlUWQuhtWidUAglh2
-         Q/YrLzvcOtCBV0/4QSIduksHhaLUnw4GcMyQqpODRhApj9PogQ+Ty+XHMVEWjE9fCUlN
-         MwNw==
+        bh=xV6Hgr4ZctsNeYE+f+yliexCvm8pvNkCH5gNWeDUWwY=;
+        b=S0R/vPvx5PhSg6lEYqMvm0q3WzmJbTMqY6UjJlrsKsi0ygVfyAh0ehAPFtLf3gP7Xm
+         NkIlf2R1Af3zHhdz2ET7yQrtP/C6GnucxtLij5oXvhclfm50u6sLc4wDEIDoj71Q6M+4
+         qOK+9UnuOwst7KYBVz7z4xUfXT8BJ9JBfl0p/J+gI/ccwN2RApcqnQ1ljEBXFnd8SOqo
+         hd5ewQ8YEs5e1rajl7A+GYInGl5yWw9y4241BcX/+W7tBNAxJIAOZZwTCjwDptgaaNtw
+         2zod25ZrlNMJSHw1ZUZIh85HKZo5Jirc2jrqJOOwdARalpe3Pk9QeqDC9RY6DnQvpTTI
+         lerQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758337420; x=1758942220;
+        d=1e100.net; s=20230601; t=1758337423; x=1758942223;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B3ZqcHqtsHoB7+LO92S3T9nLpiV3pMNfvq2JgEqyQLA=;
-        b=WC6p4gCc+bOuQvddooH8JafDVe48G6A4qcHz4e1IqSgJ4K9sN7TA2S7CcnnGp8fCWB
-         YdMF/A3DZcUQeAPavmVGUlacL/qot4Ns7rfFNABaF8wMBT3uWbv+EqfXviZfZGpUBwUd
-         8kXzOtDSCCoX4mT3nnq0rTgbhMxOBfbs5+5LuHEu4irQtaBhAhnt3O43r7dTGtPHKXbc
-         KHh+7yvZIFawgXcnAPooUW50tEoi+PwTmFNjNtPkWJJWf+F5ufiqgqbMjKYn+msqNW85
-         k8s6QaoBGHUvNStLv7oEd2BpMEhNbyau29CdPRo97GCGqWxfeyXa1KL0+qWyoau5NuYD
-         6UBw==
-X-Forwarded-Encrypted: i=1; AJvYcCWITRJ57ynVyp9GStJPrL6oa5y/CiHU7JRMxCxO4xw5dNmywcCA9WzqMzoRIEfQg5V4g9bJuMYl@lists.infradead.org
-X-Gm-Message-State: AOJu0YwZD677hsbJMEvGYSZY1BBSdxB4OoxLd45zoMQJ2/O0l71wxg1f
-	1np2Cg3vNtQQjwcCkwpKEFP6V+jbuDYO+k2SVoNwZ63tkRihnpC6Szyh/P077VdP
-X-Gm-Gg: ASbGncvKHR8M5YYwP++J5AWQCUPZ3pTgPREf1JnkVw/fiGhPcS/BMLeK1n7XGX5b9Uw
-	H69fNIKnno7pHtki3tUuwSCzvv/MopmVaDRTPJtpAjo6NXl25vOufavcX5O7wx3Xez5O4h6lu2t
-	+PXEzEpAzjgpQO+i+VEVX7tpSD1t/mJuvgy9DtqYjy9aohhw2ibT1wcoJJRXZ5b3yCLGEN2DQd2
-	IybDsZFzwjvJq+CDufhXjCpWDAG41rix/xiFT37JV9e51to20/1MG3OGkoJJZmwdZPyVkIxvwuc
-	gVWkLUwpVGes5Dh2GktcbmqjixN2QsSvGbHwwQsEf+ynTwZxbwi5QzlCKZnn7OamrnLRZd4ftlT
-	5pUGKlBCf1IbQnbP4nAP6M4TA/C2zz7YeO6tR8/JGBISlw7kFpuRvNirLdo9QRQ9DThMPIgmLAf
-	GzwHRD7/iA
-X-Google-Smtp-Source: AGHT+IE43zuPp5P0ttfgTmgIPZBM2owKCs6nvUauM+eGz8yNRcoV1YJCjxQyqE/mt3IF41i1XfOFWA==
-X-Received: by 2002:a05:600c:4711:b0:45d:d718:3b9e with SMTP id 5b1f17b1804b1-467ec742d07mr52425315e9.10.1758337420247;
-        Fri, 19 Sep 2025 20:03:40 -0700 (PDT)
+        bh=xV6Hgr4ZctsNeYE+f+yliexCvm8pvNkCH5gNWeDUWwY=;
+        b=ARZVfg+eMJvBB0V9yUeAS3ESwlOMGr1fLI7LXi5o6nGom5IkILbscy2v04VMy19siO
+         c+yv9jxBkImMA67ZmNWoBk5kf/xhs0qtEA4EPhRV78873OH0ENM05yj2RPkpPzCkgk/3
+         WdTKAfoxnDAusP4/+3DRlN430kPWqFh5Ix9q0ire0G86Ioc4BK5jDn4p+0th3Hgs1RR4
+         fEqABP4Vii3Mhd2Si7H/ud9hyg7TbFHhs4ZNPUEiCxEdVu8weLtQd3s9fXPh1ABO0w5B
+         tW++SEM0mSY57ITwuCcMZmzpPOAkdQIv7AERbWWhcNHg7c7irY3kDGWtAnILheOMHD7D
+         uW3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUl20XDm8SqWUn1C4IEGSgWKgW0x8UtRJMSPBqicadUyIkuFK0DVsCK5LHtjr0HilU4c8b/bB42@lists.infradead.org
+X-Gm-Message-State: AOJu0Ywz6/aNUCzyHf3R6DRVwKNFAqH0betX9ZibUkCX1LojwSROJKoq
+	SyGuwVBOUJ6IoxiJn6raSEyBWPoJg4WC/vdQQAXt0UqY1n4KCPkjIWCwds8zvMvi
+X-Gm-Gg: ASbGnctpVq2XT30Bfu/dm39GoCykH0YktqDaPvecjY0G2XJgp0bQLh2FuKNZTkMqSGx
+	6z/lXxfHPkRsJRawfSctscJ+qcT4CXDKUQ+AsNJRezIclLwdtBkFB2xSfy3Rnt8Ex3zrDuNdbo3
+	g/KvSZj+plOHawXQBkhjNPm7bOWrfGR3kxlZ59HQvMEO9FotFhh0VAqIM5t7h/glnWAEhC0xyAg
+	Ra8ka4ZyZLzTPe9aDX91EtjwWZCRnrGyVGdbt7DQnsLtg+e5Kat0dzvEwGq2pAtQYDZBmS0+rOV
+	Ud//zJ1OF9kbLEvy+/UWQTMGcRNgh2NR80YwdgdlPlukglz+abiVgJws3xQvcW2PKCrFTVkkjSC
+	rGsU5ak7H207TZw0lCccl2kILoTLK9LGy02/HRWpPCrAm3PuQQH0wV3Gj6Rw6/UuFwIPw5jMkCc
+	c15Met6cApLJg+c0oZAzY=
+X-Google-Smtp-Source: AGHT+IH/SU0rnMgEkdNyTvfAFKdPFCpklsF5vun5L5gnltRYu/3XYx+Hkn7ajGtJ2gKx8yZsymHNUg==
+X-Received: by 2002:a05:600c:a41:b0:45b:72a9:28ba with SMTP id 5b1f17b1804b1-467eaa86e35mr49243005e9.28.1758337423376;
+        Fri, 19 Sep 2025 20:03:43 -0700 (PDT)
 Received: from [127.0.1.1] ([143.244.56.164])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f64ad359sm128118415e9.22.2025.09.19.20.03.38
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f64ad359sm128118415e9.22.2025.09.19.20.03.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 20:03:39 -0700 (PDT)
+        Fri, 19 Sep 2025 20:03:42 -0700 (PDT)
 From: Chali Anis <chalianis1@gmail.com>
-Date: Fri, 19 Sep 2025 23:03:17 -0400
+Date: Fri, 19 Sep 2025 23:03:19 -0400
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250919-efi-loader-v1-8-dd8cdafb9067@gmail.com>
+Message-Id: <20250919-efi-loader-v1-10-dd8cdafb9067@gmail.com>
 References: <20250919-efi-loader-v1-0-dd8cdafb9067@gmail.com>
 In-Reply-To: <20250919-efi-loader-v1-0-dd8cdafb9067@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -89,8 +89,9 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Chali Anis <chalianis1@gmail.com>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250919_200342_254393_E2881F71 
-X-CRM114-Status: GOOD (  12.26  )
+X-CRM114-CacheID: sfid-20250919_200345_400062_994AB818 
+X-CRM114-Status: UNSURE (   8.55  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -113,54 +114,35 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 08/15] efi: payload: early-mem: helps to correctly boot x86
- linux.
+Subject: [PATCH 10/15] efi: payload: x86: enable the possibility to efi
+ stub bootm for x86.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-remove the allocate EFI_ALLOCATE_MAX_ADDRESSES and use a different
-memsize for x86 since the initrd could be bigger that those used in
-arm. it might be refactored in the future with a more generic allocation
-strategy (i.e barebox malloc memory vs an allocator for the boot loader data)
-something like sdram_request_region or just allocate small memory for the
-barebox allocator and implement a way to allocate memory for kernel/initrd
-directly from efi.
+this permits to select one of efi stub bootm or efi handover protocol
+tested on dell latitude and qemu.
 
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- efi/payload/early-mem.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ efi/payload/Kconfig | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/efi/payload/early-mem.c b/efi/payload/early-mem.c
-index 0f79a8c306942f21169a947cb957e0318a54294e..150a2a595afcdb69026f98c53f9a3bf3425da999 100644
---- a/efi/payload/early-mem.c
-+++ b/efi/payload/early-mem.c
-@@ -9,18 +9,17 @@ void *efi_earlymem_alloc(const struct efi_system_table *sys_table,
- 			 size_t *memsize, enum efi_memory_type mem_type)
- {
- 	struct efi_boot_services *bs = sys_table->boottime;
--	enum efi_allocate_type alloc_type = EFI_ALLOCATE_ANY_PAGES;
- 	efi_physical_addr_t mem;
- 	efi_status_t efiret;
-+	size_t m_sz;
+diff --git a/efi/payload/Kconfig b/efi/payload/Kconfig
+index 8f76b00744e7453ddde4ac19c1ce9a4db377e0b2..47238208c527e8a6ab0e7f18a86dfb9a8ab79716 100644
+--- a/efi/payload/Kconfig
++++ b/efi/payload/Kconfig
+@@ -1,7 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0-only
  
--	if (IS_ENABLED(CONFIG_X86)) {
--		/* Try to stay clear of memory mapped devices */
--		alloc_type = EFI_ALLOCATE_MAX_ADDRESS;
--		mem = SZ_1G - 1;
--	}
-+	if (IS_ENABLED(CONFIG_X86))
-+		m_sz = SZ_512M;
-+	else
-+		m_sz = SZ_256M;
+ config EFI_HANDOVER_PROTOCOL
++	bool "EFI Handover protocol"
+ 	def_bool X86
  
--	for (*memsize = SZ_256M; *memsize >= SZ_8M; *memsize /= 2) {
--		efiret  = bs->allocate_pages(alloc_type, mem_type,
-+	for (*memsize = m_sz; *memsize >= SZ_8M; *memsize /= 2) {
-+		efiret  = bs->allocate_pages(EFI_ALLOCATE_ANY_PAGES, mem_type,
- 					     *memsize / EFI_PAGE_SIZE, &mem);
- 		if (!EFI_ERROR(efiret) || efiret != EFI_OUT_OF_RESOURCES)
- 			break;
+ config EFI_PAYLOAD_BOOTM
+-	def_bool !EFI_HANDOVER_PROTOCOL
++	bool "EFI bootm protocol"
++	depends on !EFI_HANDOVER_PROTOCOL
++	select BOOTM_FITIMAGE
 
 -- 
 2.34.1
