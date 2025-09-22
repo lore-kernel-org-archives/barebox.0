@@ -1,59 +1,58 @@
-Delivery-date: Mon, 22 Sep 2025 18:15:14 +0200
+Delivery-date: Mon, 22 Sep 2025 18:16:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v0jC6-0060uD-0L
+	id 1v0jDn-0060vm-0T
 	for lore@lore.pengutronix.de;
-	Mon, 22 Sep 2025 18:15:14 +0200
+	Mon, 22 Sep 2025 18:16:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v0jC5-00018T-CI
-	for lore@pengutronix.de; Mon, 22 Sep 2025 18:15:14 +0200
+	id 1v0jDm-0001Tm-I7
+	for lore@pengutronix.de; Mon, 22 Sep 2025 18:16:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/KD6SbS+dBYNB6rLd0e0wBSyFrxKkFuREe+ye8eZNUU=; b=MnOmNB2bAYGjGmcCnqthA9Mg/0
-	Hjwd3hFbW2eSWjX1l6E/y2zNib8/4wT8/6YM3oM5Nh0NVtgH/w43q+OL41S4+5dRpVI54Wz1pb/VW
-	OlA1KGrsANVJ338pKL6vpFO9JCO1lkJjR8n9HinOdmcI4AsarPig7h3KtLTZoIc+wO7qbv3O/glG3
-	EqV+i/yhUD/xnSIH4gt+EBPGMJxjD48Lsb+prPcORaia0tBQUxoYbfeDDwVqaghIYHgu58JUFvdWS
-	ZwaHML8UZUeeSujpzAg/80YTcmur62rNh4rafPNDlhyZ3G4wfpAxcbfD1KuRWOAfJ4DB8ZoGOdm9c
-	wMD26W/A==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=H/3y4Q8EczSDBP557NCafwEmxRD2tcjPQttpNqK3SRY=; b=XWMmnsh83iutJno7tIGFPv5/7+
+	aY4RHacvVLGSWvLchtKY4MSi8ck7LosJoTOkKeO0i4oEyV3/B5lE1/WrbeYQLMMcOHM6B/zX4OUIT
+	vBcC10gMlEO2k4iWPvpzGMNc8CdIUac1899HBFVk2q9WLg535ZJDcytj97LDJOn6EAQP4Tu+6RV4a
+	bSFLCtLd2HmDhDvQas0rMwzgoDAouJ9X9Z0vvM7wttcjKl69VoLd0LP2XeI7QtvC1G3y2zCeO6J0f
+	yjIarpvBspyho5BVLPHbOXAGtxG843tYM6AcpPSIODSSI/Pjxyasdew1wvaM8NOML7ZrGdDFVcOLN
+	TvF2VB9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v0jBa-0000000Ax0L-1r6b;
-	Mon, 22 Sep 2025 16:14:42 +0000
+	id 1v0jDS-0000000AxQ1-1Uqs;
+	Mon, 22 Sep 2025 16:16:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v0jBX-0000000Awz4-2Fc5
+	id 1v0jDP-0000000AxOe-2amt
 	for barebox@lists.infradead.org;
-	Mon, 22 Sep 2025 16:14:41 +0000
+	Mon, 22 Sep 2025 16:16:36 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v0jBU-0000zO-Vi; Mon, 22 Sep 2025 18:14:37 +0200
-Message-ID: <3d2f3b6b-ff92-4244-bbb4-15657337f72d@pengutronix.de>
-Date: Mon, 22 Sep 2025 18:14:36 +0200
+	id 1v0jDO-0001MG-6Z; Mon, 22 Sep 2025 18:16:34 +0200
+Message-ID: <fbdf26d4-458b-49f3-8a00-f68840e4c934@pengutronix.de>
+Date: Mon, 22 Sep 2025 18:16:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
 References: <20250917-security-policies-v2-0-f30769a3ff51@pengutronix.de>
- <20250917-security-policies-v2-4-f30769a3ff51@pengutronix.de>
+ <20250917-security-policies-v2-23-f30769a3ff51@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250917-security-policies-v2-4-f30769a3ff51@pengutronix.de>
+In-Reply-To: <20250917-security-policies-v2-23-f30769a3ff51@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250922_091439_586520_A4CD8C86 
-X-CRM114-Status: GOOD (  22.78  )
+X-CRM114-CacheID: sfid-20250922_091635_665448_5659EAD0 
+X-CRM114-Status: GOOD (  21.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,222 +74,75 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 04/24] Add security policy support
+Subject: Re: [PATCH v2 23/24] security: add filesystem security policies
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 17.09.25 15:53, Sascha Hauer wrote:
-> +bool is_allowed(const struct security_policy *policy, unsigned option)
-> +{
-> +	policy = policy ?: active_policy;
-> +
-> +	if (WARN(option > SCONFIG_NUM))
-> +		return false;
-> +
-> +	if (!policy && *CONFIG_SECURITY_POLICY_INIT) {
-> +		security_policy_select(CONFIG_SECURITY_POLICY_INIT);
-> +		policy = active_policy;
-> +	}
-> +
-> +	if (policy) {
-> +		bool allow = __is_allowed(policy, option);
-> +
-> +		policy_debug(policy, option, "%s for %pS\n",
-> +			 allow ? "allowed" : "denied", (void *)_RET_IP_);
-> +
-> +		return allow;
-> +	}
-> +
-> +	if (IS_ENABLED(CONFIG_SECURITY_POLICY_DEFAULT_PERMISSIVE))
-> +		pr_warn_once("option %s checked before security policy was set!\n",
-> +			     sconfig_name(option));
-> +	else
-> +		return false;
-
-Not having a security policy selected outside of permissive mode is a bug, so
-I don't think silent forbidding is a good idea.
-
-At the very least, we should print the warning outside permissive mode as well,
-if only to tell people if they select the policy too late in their board code.
-
-What's wrong with a panic though?
-
-> +
-> +	return true;
-> +}
-> +
-> +int security_policy_activate(const struct security_policy *policy)
-> +{
-> +	const struct security_policy *old_policy = active_policy;
-> +
-> +	if (policy == old_policy)
-> +		return 0;
-> +
-> +	active_policy = policy;
-> +
-> +	for (int i = 0; i < SCONFIG_NUM; i++) {
-> +		if (__is_allowed(policy, i) == __is_allowed(old_policy, i))
-> +			continue;
-> +
-> +		notifier_call_chain(&sconfig_notifier_list, i, NULL);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +const struct security_policy *security_policy_get(const char *name)
-> +{
-> +	const struct policy_list_entry *entry;
-> +
-> +	list_for_each_entry(entry, &policy_list, list) {
-> +		if (!strcmp(name, entry->policy->name))
-> +			return entry->policy;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +int security_policy_select(const char *name)
-> +{
-> +	const struct security_policy *policy;
-> +
-> +	policy = security_policy_get(name);
-> +	if (!policy) {
-> +		policy_err("Policy '%s' not found!\n", name);
-> +		return -ENOENT;
-> +	}
-> +
-> +	return security_policy_activate(policy);
-> +}
-> +
-> +int __security_policy_register(const struct security_policy policy[])
-> +{
-> +	int ret = 0;
-> +
-> +	do {
-> +		struct policy_list_entry *entry;
-> +
-> +		if (security_policy_get(policy->name)) {
-> +			policy_err("policy '%s' already registered\n", policy->name);
-> +			ret = -EBUSY;
-> +			continue;
-> +		}
-> +
-> +		entry = xzalloc(sizeof(*entry));
-> +		entry->policy = policy;
-> +		list_add_tail(&entry->list, &policy_list);
-> +	} while ((policy++)->chained);
-> +
-> +	return ret;
-> +}
-> +
-> +#ifdef CONFIG_CMD_SCONFIG
-> +void security_policy_unregister_one(const struct security_policy *policy)
-> +{
-> +	struct policy_list_entry *entry;
-> +
-> +	if (!policy)
-> +		return;
-> +
-> +	list_for_each_entry(entry, &policy_list, list) {
-> +		if (entry->policy == policy) {
-> +			list_del(&entry->list);
-> +			return;
-> +		}
-> +	}
-> +}
-> +#endif
-> +
-> +void security_policy_list(void)
-> +{
-> +	const struct policy_list_entry *entry;
-> +
-> +	list_for_each_entry(entry, &policy_list, list) {
-> +		printf("%s\n", entry->policy->name);
-> +	}
-> +}
-> +
-> +static int sconfig_handler_filtered(struct notifier_block *nb,
-> +				    unsigned long opt, void *data)
-> +{
-> +	struct sconfig_notifier_block *snb
-> +		= container_of(nb, struct sconfig_notifier_block, nb);
-> +	bool allow;
-> +
-> +	if (snb->opt != opt)
-> +		return NOTIFY_DONE;
-> +
-> +	allow = is_allowed(NULL, opt);
-> +
-> +	policy_debug(active_policy, opt, "calling %pS to %s\n",
-> +		     snb->cb_filtered, allow ? "allow" : "deny");
-> +
-> +	snb->cb_filtered(snb, opt, is_allowed(NULL, opt));
-> +	return NOTIFY_OK;
-> +}
-> +
-> +int __sconfig_register_handler_filtered(struct sconfig_notifier_block *snb,
-> +					sconfig_notifier_callback_t cb,
-> +					enum security_config_option opt)
-> +{
-> +	snb->cb_filtered = cb;
-> +	snb->opt = opt;
-> +	return sconfig_register_handler(&snb->nb, sconfig_handler_filtered);
-> +}
-> +
-> +struct device security_device = {
-> +	.name = "security",
-> +	.id = DEVICE_ID_SINGLE,
-> +};
-> +
-> +static char *policy_name = "";
-> +
-> +static int security_policy_get_name(struct param_d *param, void *priv)
-> +{
-> +	if (!active_policy) {
-> +		policy_name = "";
-> +		return 0;
-> +	}
-> +
-> +	free_const(policy_name);
-> +	policy_name = strdup(active_policy->name);
-> +	return 0;
-> +}
-> +
-> +static int security_init(void)
-> +{
-> +	register_device(&security_device);
-> +
-> +	dev_add_param_string(&security_device, "policy", param_set_readonly,
-> +			     security_policy_get_name, &policy_name, NULL);
-> +
-> +	return 0;
-> +}
-> +pure_initcall(security_init);
-> diff --git a/security/sconfig_names.c b/security/sconfig_names.c
+> We don't have any trusted filesystems in barebox and a manipulated
+> filesystem could trick barebox into crashing or loading untrusted data,
+> so add a security policy for the barebox filesystems.
+> 
+> With SCONFIG_FS_EXTERNAL set barebox will allow mounting all filesystems
+> whereas with this option disabled only ramfs can be mounted. ramfs is
+> special: It is basically essential for barebox and also has no untrusted
+> data input.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  Sconfig    | 1 +
+>  fs/Sconfig | 5 +++++
+>  fs/fs.c    | 4 ++++
+>  3 files changed, 10 insertions(+)
+> 
+> diff --git a/Sconfig b/Sconfig
+> index 7d7657e79061f4bf200519cf1fab8810b544f97e..cdb2ceccb1b46b038c0d4fa8dbd203737031dec5 100644
+> --- a/Sconfig
+> +++ b/Sconfig
+> @@ -8,3 +8,4 @@ source "security/Sconfig"
+>  source "common/Sconfig"
+>  source "drivers/usb/gadget/Sconfig"
+>  source "commands/Sconfig"
+> +source "fs/Sconfig"
+> diff --git a/fs/Sconfig b/fs/Sconfig
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..c830c4eb389202403e049db6a71b70f0f18b76f5
+> index 0000000000000000000000000000000000000000..cdb58230f0e79addf8c0f719844af400e0d19939
 > --- /dev/null
-> +++ b/security/sconfig_names.c
-> @@ -0,0 +1,18 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
+> +++ b/fs/Sconfig
+> @@ -0,0 +1,5 @@
 > +
+> +config FS_EXTERNAL
+> +	bool "Allow mounting external file systems"
+> +	help
+> +	  Say y to permit mounting file systems beyond devfs and ramfs.
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 54bd35786857ab0e588277870fd1630d9292e116..5dcdf223756f470f94da15947e3f4e30bc27c1bd 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -35,6 +35,7 @@
+>  #include <libfile.h>
+>  #include <parseopt.h>
+>  #include <linux/namei.h>
 > +#include <security/config.h>
-> +#include <string.h>
-> +#include <errno.h>
-> +#include <linux/kernel.h>
+>  
+>  char *mkmodestr(unsigned long mode, char *str)
+>  {
+> @@ -774,6 +775,9 @@ static int fs_probe(struct device *dev)
+>  	struct fs_driver *fsdrv = container_of(drv, struct fs_driver, drv);
+>  	int ret;
+>  
+> +	if (!IS_ALLOWED(SCONFIG_FS_EXTERNAL) && strcmp(fsdrv->drv.name, "ramfs"))
+> +		return -EPERM;
+
+devfs is listed in the Kconfig help text, but missing here.
+
+Cheers,
+Ahmad
+
 > +
-> +#include <generated/sconfig_names.h>
-> +
-> +int sconfig_lookup(const char *name)
-> +{
-> +	for (int i = 0; i < ARRAY_SIZE(sconfig_names); i++) {
-> +		if (!strcmp(name, sconfig_names[i]))
-> +			return i;
-> +	}
-> +
-> +	return -ENOENT;
-> +}
+>  	ret = dev->driver->probe(dev);
+>  	if (ret)
+>  		return ret;
 > 
 
 
