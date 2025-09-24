@@ -1,69 +1,89 @@
-Delivery-date: Wed, 24 Sep 2025 07:52:28 +0200
+Delivery-date: Wed, 24 Sep 2025 08:09:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1IQW-000SYA-19
+	id 1v1IhH-000SvV-2S
 	for lore@lore.pengutronix.de;
-	Wed, 24 Sep 2025 07:52:28 +0200
+	Wed, 24 Sep 2025 08:09:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1IQV-00020t-Qu
-	for lore@pengutronix.de; Wed, 24 Sep 2025 07:52:28 +0200
+	id 1v1IhH-00049Z-8M
+	for lore@pengutronix.de; Wed, 24 Sep 2025 08:09:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ajOrg+87iG0kzJ/ZjN1zsqbNiKeRWWIwP/Lm6249ebY=; b=YMPGqGu8z+9diY8MGbJ0LztCID
-	eRHrPipYBfc1Xs3daVJwkJWbuWMpypM4G77diHYyi5DtSq3gz8Gnm0OTeZOF0pOaT+GpHPIPd3X/Y
-	imGrujnwTqPJis5or44oZ2t+qnML1FGgFa7NB/x36Hv0zCklGNRXhpUzTnJSetTsUBERhPcw9W8cz
-	EDZWktawggY7n4+leBhKHbXINOs3DmZBXb0x8hGblmoEcCutRO3JWVDBnQWFCVyYy267Q55Upbnyh
-	ArBvNJ/ZeZ7zvlIGdBEMfuulAQ/D5VvMtukjPVNL1vgTltLs6vfs33H31uNuc8EGvTFl6XxnbSUQH
-	GgSgZvIA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=pI9mv9brr6ePqvvEE/r7b458xM6g9rvNdVFIADSTwcM=; b=vbLJgkO+FJbFlMhpQxFqLOeVsL
+	eTbQT64Eu6HA4veSdHfS6K0Awzjpscv4HfV3a/Rc01aMR/mKOKdIaiAPsWAE132Tg9ygkANAkvTwO
+	RaFbD5aljrq5ZRW/3rWIHLT4ueQNXDuYf7nkXqQK2xj+nT0+VxAmc8R8wQg8xryvBKJxIkFEJ8O8N
+	QdSFoVBtfuiBbT3GnLSiLduEWG8DDLv0kfIG1RcbOzrew0kse4akXkOc3HaQ51aB5SkESB69HsFln
+	ilMKXAIoXysRNM186G30K4F2FdM3ostSemMs7mYnRgqxjBBU6RLGJvwvVPR6xqwXOFamtvXe5wsG+
+	nk635BTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1IPm-0000000Fb9g-1scQ;
-	Wed, 24 Sep 2025 05:51:42 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1v1Igs-0000000Fd77-2Vmb;
+	Wed, 24 Sep 2025 06:09:22 +0000
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1IPi-0000000Fb8g-2THE
+	id 1v1Igp-0000000Fd6f-2td1
 	for barebox@lists.infradead.org;
-	Wed, 24 Sep 2025 05:51:40 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v1IPg-0001ud-FQ; Wed, 24 Sep 2025 07:51:36 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v1IPg-000CgJ-0i;
-	Wed, 24 Sep 2025 07:51:36 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v1IPg-00000005r4K-0hO0;
-	Wed, 24 Sep 2025 07:51:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20250922131253.2728716-1-s.hauer@pengutronix.de>
-References: <20250922131253.2728716-1-s.hauer@pengutronix.de>
-Message-Id: <175869309615.1395504.11500971207152941276.b4-ty@pengutronix.de>
-Date: Wed, 24 Sep 2025 07:51:36 +0200
+	Wed, 24 Sep 2025 06:09:20 +0000
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-57ea78e0618so2903985e87.0
+        for <barebox@lists.infradead.org>; Tue, 23 Sep 2025 23:09:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758694157; x=1759298957; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pI9mv9brr6ePqvvEE/r7b458xM6g9rvNdVFIADSTwcM=;
+        b=DCTPw9PRCUedRrdv9JDhGfQg435s4SS9Pt6Xy7TGCmLTR3LAjYltNFvSbuUCEoEsSF
+         jRy6rf4IHlKbItnQ8BvsYaQu12r0ZStXVweP5JPGkmbBPJhOJyIVcqEuGb9hA9swQliI
+         noHigYnJBxLp6DqPS4WWZmVtJUBLqIa4OfEmOXaIF0zyIOLpust5RCnvCoE/p70G4o6A
+         LGSz/yhe/JhBmu/eV5TVWtAew1dZVYxQZXCvkVw3//34HqC/w89huG0sx3fp5VBAIPRj
+         AVqt7uuuGzs+ShlauYrDRLsqyygCiymYvLTHztejNB24WPbLjhuCqwb5K7Js1qmEG2z5
+         +eyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758694157; x=1759298957;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pI9mv9brr6ePqvvEE/r7b458xM6g9rvNdVFIADSTwcM=;
+        b=Fyw1RDO2k8BXuSr0NFGMlxx8RlnP/O8f1ZTT5TGujDBSKwMyqbMpWraw4PGaJ0ObYM
+         fUfJ4OGgsqZ3HqLVxR9qG2aAGRYRNNwHpe5T+2/9lRzCscKKdu/C2JCsnxjk8mv7lM58
+         NvbQynx4lJE/7xIqU8x14OiSAJVVeNj3Te9RoO1HF8RIUMIhVmNA7HaeV+chKYXVua+8
+         OFPJPToWZii/CAD9+HOwMLDI4FqR0N9KIBQ11YvoyIucClzj5raaKTTiI8W3gDBrG9QW
+         29CqfL17e34V5J+LEDDSRHm6Ntv5m3K1W1+Dtd5RyoGNxWtdzEYTeL0ORihu2h5/T1iD
+         HI1Q==
+X-Gm-Message-State: AOJu0YxQyc1/Ope/jQgEUqyJ190MKF+VLxbvhNXyBfRo+FrAve9/H6/Q
+	gJV2Jb4jB5lEzJtDT1SbGJKYV2B0jYomiDwUuE46j9G21K1l1dDrBLIaQdWu3A==
+X-Gm-Gg: ASbGnct73LCsL0Rqh+cRks8cLZes1WK31a5G/kS+r3Lu9etHr0DbBtYwbO0i1fg4rWv
+	wjbVP35emM/zvEE+6wO9wbu7hniDu7MFJdaf52DtNQbapVCBk1m8btJI0/pzlyvU9lLDW9H9TZx
+	4svP1s6eq3MtY7IGylM70MOApXseiLGeYuZvQ2LU6dOBNOYUEKAVwQwdT+XCEtld0wDp20xcydx
+	kVNk5S8bZt/DxIbxhiBCVeVdXRn248A2eLh8eTB1rqpiLmwOBS4VSRFbW7+bbYGTQlUi/0D4+6p
+	dMIh84m4qnbNvdcoXrHHHesicWzrnVaVBOmxvPtLEWz2tTHOkEJGyvl5kuffjVDedfjgrBEVcX/
+	6OmADcXtf+CbdN2sTHAlVXV0P9niGOH0PeJUR7y2l+CEZ
+X-Google-Smtp-Source: AGHT+IGehBrbOAtbe2wC4EL58JCw0lV6mM4kriY5rJ8M5Zjoq2Hk5PlRo9/yph+i3/EvAK81T10+Cw==
+X-Received: by 2002:a05:6512:616:10b0:57a:de0d:d9ce with SMTP id 2adb3069b0e04-58072efee43mr1438601e87.44.1758694156463;
+        Tue, 23 Sep 2025 23:09:16 -0700 (PDT)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-578a5f44b29sm4760825e87.24.2025.09.23.23.09.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 23:09:15 -0700 (PDT)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Wed, 24 Sep 2025 09:09:06 +0300
+Message-Id: <20250924060906.6791-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250923_225138_632014_6526CEC4 
-X-CRM114-Status: UNSURE (   6.14  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250923_230919_737321_3E333E66 
+X-CRM114-Status: GOOD (  10.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,30 +101,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] lib: add crc16 support
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] clk: rockchip: rk3588: Add PLL rate for 1500 MHz
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+At least one RK3588 clock (CPLL) uses 1.5 GHz, so let's add
+that frequency to the PLL table.
+This change is taken from the mainline Linux kernel.
 
-On Mon, 22 Sep 2025 15:12:52 +0200, Sascha Hauer wrote:
-> This adds crc16 support taken straight out of Linux-6.16
-> 
-> 
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ drivers/clk/rockchip/clk-rk3588.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Applied, thanks!
-
-[1/2] lib: add crc16 support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=83865ed69b4d (link may not be stable)
-[2/2] nvmem: add support for Atmel sha204(a)
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0837819622a2 (link may not be stable)
-
-Best regards,
+diff --git a/drivers/clk/rockchip/clk-rk3588.c b/drivers/clk/rockchip/clk-rk3588.c
+index f6d16ed0cf..5aecfb3b1b 100644
+--- a/drivers/clk/rockchip/clk-rk3588.c
++++ b/drivers/clk/rockchip/clk-rk3588.c
+@@ -88,6 +88,7 @@ static struct rockchip_pll_rate_table rk3588_pll_rates[] = {
+ 	RK3588_PLL_RATE(1560000000, 2, 260, 1, 0),
+ 	RK3588_PLL_RATE(1536000000, 2, 256, 1, 0),
+ 	RK3588_PLL_RATE(1512000000, 2, 252, 1, 0),
++	RK3588_PLL_RATE(1500000000, 2, 250, 1, 0),
+ 	RK3588_PLL_RATE(1488000000, 2, 248, 1, 0),
+ 	RK3588_PLL_RATE(1464000000, 2, 244, 1, 0),
+ 	RK3588_PLL_RATE(1440000000, 2, 240, 1, 0),
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.1
 
 
 
