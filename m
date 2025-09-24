@@ -1,67 +1,69 @@
-Delivery-date: Tue, 23 Sep 2025 17:32:09 +0200
+Delivery-date: Wed, 24 Sep 2025 07:52:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v14zx-000EnB-0C
+	id 1v1IQW-000SYA-19
 	for lore@lore.pengutronix.de;
-	Tue, 23 Sep 2025 17:32:09 +0200
+	Wed, 24 Sep 2025 07:52:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v14zw-0001DR-Gq
-	for lore@pengutronix.de; Tue, 23 Sep 2025 17:32:08 +0200
+	id 1v1IQV-00020t-Qu
+	for lore@pengutronix.de; Wed, 24 Sep 2025 07:52:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gsuOPVBuSMi/axZ5LmrXMVIWUEgiSZlI083S30FfCCo=; b=zrQxMIHnC/q+IEfTzY5A0dnJN0
-	L1xYY5IxFjCpFA4yIc27nGTGxGUEQqP+QnThpfDmfB2pqtXW7h+w2czjpXjetpI22jsSrs7sV65EQ
-	gn6f0zjt0xf8PNrG1xobIe74SXyKTTgDmtWKqe08GnwFL1f5ImDaf2dlAusc8PMsSM8syZHTUwwkI
-	Sv4OQmBN8BDUMxdSlHHTxkXhwDPiUUXD4BNffs2yTfCsBQNbvh1vDSmibwoTmbGrk7kMydOsfngci
-	WjEQmRUk+48IL0oSxbu7KGKqbbU+jppsdbkXVWhbHxEU0ScBTXlzMaznAces3x1pO+b/euKOv1pl9
-	scRO/Qtw==;
+	bh=ajOrg+87iG0kzJ/ZjN1zsqbNiKeRWWIwP/Lm6249ebY=; b=YMPGqGu8z+9diY8MGbJ0LztCID
+	eRHrPipYBfc1Xs3daVJwkJWbuWMpypM4G77diHYyi5DtSq3gz8Gnm0OTeZOF0pOaT+GpHPIPd3X/Y
+	imGrujnwTqPJis5or44oZ2t+qnML1FGgFa7NB/x36Hv0zCklGNRXhpUzTnJSetTsUBERhPcw9W8cz
+	EDZWktawggY7n4+leBhKHbXINOs3DmZBXb0x8hGblmoEcCutRO3JWVDBnQWFCVyYy267Q55Upbnyh
+	ArBvNJ/ZeZ7zvlIGdBEMfuulAQ/D5VvMtukjPVNL1vgTltLs6vfs33H31uNuc8EGvTFl6XxnbSUQH
+	GgSgZvIA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v14zJ-0000000E40g-2r3r;
-	Tue, 23 Sep 2025 15:31:29 +0000
-Received: from cczrelay01.in2p3.fr ([134.158.66.141])
+	id 1v1IPm-0000000Fb9g-1scQ;
+	Wed, 24 Sep 2025 05:51:42 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v14zG-0000000E3xu-1LYa
+	id 1v1IPi-0000000Fb8g-2THE
 	for barebox@lists.infradead.org;
-	Tue, 23 Sep 2025 15:31:28 +0000
-Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
-	(authenticated bits=0)
-	by cczrelay01.in2p3.fr (8.14.4/8.14.4) with ESMTP id 58NFVMRM030283
-	(version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NO);
-	Tue, 23 Sep 2025 17:31:22 +0200
-Message-ID: <0afb7e25-5660-45d0-bfc5-90ce2582e6c4@clermont.in2p3.fr>
-Date: Tue, 23 Sep 2025 17:31:22 +0200
+	Wed, 24 Sep 2025 05:51:40 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v1IPg-0001ud-FQ; Wed, 24 Sep 2025 07:51:36 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v1IPg-000CgJ-0i;
+	Wed, 24 Sep 2025 07:51:36 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v1IPg-00000005r4K-0hO0;
+	Wed, 24 Sep 2025 07:51:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20250922131253.2728716-1-s.hauer@pengutronix.de>
+References: <20250922131253.2728716-1-s.hauer@pengutronix.de>
+Message-Id: <175869309615.1395504.11500971207152941276.b4-ty@pengutronix.de>
+Date: Wed, 24 Sep 2025 07:51:36 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Picard <david.picard@clermont.in2p3.fr>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-References: <20250917-boards-enclustra-sa2-add-support-v1-0-2de8f69107a1@clermont.in2p3.fr>
- <20250917-boards-enclustra-sa2-add-support-v1-6-2de8f69107a1@clermont.in2p3.fr>
- <aMukQcvHZOMExEzw@pengutronix.de>
- <00327370-bbd5-4e70-863a-c7cb5a801bf4@clermont.in2p3.fr>
- <aMwTP4-1s7pB1gsd@pengutronix.de>
- <96208dcc-fbd7-478c-b8dc-cad04e04b169@clermont.in2p3.fr>
- <aNFL-L4yQGPBU_IM@pengutronix.de>
- <e1c99c7a-2f02-4638-b491-2929c84c9291@clermont.in2p3.fr>
- <aNJq8zmFkM9KXJw1@pengutronix.de>
- <6099cd02-f779-4cbd-af0c-daab487bb8ef@clermont.in2p3.fr>
-Content-Language: en-US
-In-Reply-To: <6099cd02-f779-4cbd-af0c-daab487bb8ef@clermont.in2p3.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250923_083126_630550_8E223C59 
-X-CRM114-Status: GOOD (  10.96  )
+X-CRM114-CacheID: sfid-20250923_225138_632014_6526CEC4 
+X-CRM114-Status: UNSURE (   6.14  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,49 +81,30 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 06/11] boards: enclustra-sa2: read MAC address from EEPROM
+Subject: Re: [PATCH 1/2] lib: add crc16 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-I figured it out! I tweaked the DT a little bit, and I get this:
 
-barebox@Enclustra Mercury+ SA2:/ md -b -s /dev/atsha204a00.mac@10
-00000000: 20 b0 f7 0a 6c 08                                   ...l.
+On Mon, 22 Sep 2025 15:12:52 +0200, Sascha Hauer wrote:
+> This adds crc16 support taken straight out of Linux-6.16
+> 
+> 
 
-Same as what I used to get:
-eth0: got preset MAC address: 20:b0:f7:0a:6c:08
+Applied, thanks!
 
-David
+[1/2] lib: add crc16 support
+      https://git.pengutronix.de/cgit/barebox/commit/?id=83865ed69b4d (link may not be stable)
+[2/2] nvmem: add support for Atmel sha204(a)
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0837819622a2 (link may not be stable)
 
-Le 23/09/2025 à 13:50, David Picard a écrit :
-> It works! https://paste.debian.net/1397791/
->
-> However, I don't see how I can use the driver to read the MAC address. 
-> Could you give me some hints?
->
-> David
->
-> Le 23/09/2025 à 11:40, Sascha Hauer a écrit :
->> On Tue, Sep 23, 2025 at 11:07:39AM +0200, David Picard wrote:
->>> Hi,
->>>
->>> The driver crashes and causes immediate reset.
->>>
->>> I could track it as far as this line:
->>> https://git.pengutronix.de/cgit/barebox/tree/drivers/nvmem/core.c#n473
->>>
->>> Boot log and some more details: https://paste.debian.net/1397772/
->> Seems *i2c_priv is not zeroed. Could you replace the devm_kmalloc() in
->> atmel_i2c_probe() with devm_kzalloc()?
->>
->> Sascha
->>
->
->
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
