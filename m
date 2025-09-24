@@ -1,92 +1,89 @@
-Delivery-date: Wed, 24 Sep 2025 15:06:00 +0200
+Delivery-date: Wed, 24 Sep 2025 17:03:46 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1PC4-000ZTA-2a
+	id 1v1R22-000bOT-2Q
 	for lore@lore.pengutronix.de;
-	Wed, 24 Sep 2025 15:06:00 +0200
+	Wed, 24 Sep 2025 17:03:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1PC3-0007Df-VO
-	for lore@pengutronix.de; Wed, 24 Sep 2025 15:06:00 +0200
+	id 1v1R22-0006WQ-6K
+	for lore@pengutronix.de; Wed, 24 Sep 2025 17:03:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YlpJOdNyHvV2I8xVBrzdgpMa6isUlE/1v/d573cm8fE=; b=CzU2cH3C7c9iUORH2gmjGU+La+
-	l1An6Sf/NF2/XkKj3VF7lfa7/c7T+CYxmRXWl56McC16Yp1C5vtEedfqMJDcipELgjlYyJ6t6wIsQ
-	RDGP8zMqljv9Y1zfmZOJ/BNy4xvLcTg0OUhmNdUgA11LqOHMPEdaZpnjeORABX78Sk9Rx/a57vsTb
-	UJ4PnIaTpRlqnTnCinV6XlmfaBIaxu0oUHVgRtfQetzZFDcReaBd0K1OeTQyUBpn/aQopCr9+88aR
-	SrQoC9VyjxCd++JGaAjyguKyVfcNAIP51qJA2ADvCP1aettKTd/MSHTzfEuF7/qZhizt1w5aIw31e
-	sPLCNveQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=v20t+9GkFLMJqMRmFiznb6Nzl0PUAj5j4hRwVhC+WWU=; b=FNqnS4DfMqrCh1RnDbUbd2ESRt
+	UCBaZ9jOddeu3L20OhdZP59dBWvyOn+Du75RIubLml0NZDkkbsa6vOqsJ2Qk130paxX9ifg7Lybkb
+	Fopm5E7FtHZMunaE3NI9dXG5mkDWh4HlD3QriLzXJBRdtW/H97ViE9woLoe9Cg6lY9auf3RkpjUYn
+	zFtOzgcw8u6M9RiZRntMN9LZgj9y57BpAOnUIO7/Ip0/yQBqwGxk0d60V0OPeigBdngKuBXzpo9dz
+	oF+MHOqaBHpxYlYrIGBdF24YTusRixMZu1JJjyvvN6uN5y3iPCz0a+ipzoi4AHzUlx9L2PLOaaKOq
+	R2ONOB1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1PBM-000000003el-3KTo;
-	Wed, 24 Sep 2025 13:05:16 +0000
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+	id 1v1R1L-000000011Qt-47ra;
+	Wed, 24 Sep 2025 15:03:03 +0000
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1PBL-000000003dv-0jGl
+	id 1v1R1I-000000011Nm-3DGw
 	for barebox@lists.infradead.org;
-	Wed, 24 Sep 2025 13:05:16 +0000
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-273a0aeed57so11499195ad.1
-        for <barebox@lists.infradead.org>; Wed, 24 Sep 2025 06:05:14 -0700 (PDT)
+	Wed, 24 Sep 2025 15:03:02 +0000
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-3652d7800a8so43715411fa.0
+        for <barebox@lists.infradead.org>; Wed, 24 Sep 2025 08:03:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758719114; x=1759323914; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YlpJOdNyHvV2I8xVBrzdgpMa6isUlE/1v/d573cm8fE=;
-        b=Jfad4qXYQUyTGjjGpGf1MXou8PLgqmCTd7CiQCPcCPmfrpXf+qThRaS0y5EgQd8R7b
-         gtfd9bTgXP8gKvdsG/DXsPM56VhTMK2w/UlO6m38SJffo9Pbbq8MC6ihQkmeRvXaPZN0
-         rIrfZPFIPZMRtLoZIFARyZfDn/gXRa4GSmRuGec2nxZzQ480c74Is1xSSXRqhDSe9nha
-         g3v/Yh5LKgGfzvV37MMgI5NU56TxJb1u//I0mtV+NlOCv68p4cVhwbanN1zSjomDb5aF
-         XsS/w3gw/UF54GpVJGXoKo3QBnS/qFVtQddbEV12zdqAsGuPn+U0SMU+2eTK6yEUL+2n
-         wjwQ==
+        d=gmail.com; s=20230601; t=1758726178; x=1759330978; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=v20t+9GkFLMJqMRmFiznb6Nzl0PUAj5j4hRwVhC+WWU=;
+        b=awg2KDuaQzcirMbmIJOY3IcBErRLC0YLsQfXlbE/yOTI+291KA4P0A/iOqYNLwo/fu
+         /yGTlLQLJMOPpXN4dE95luDa4m6fDReLLdQopcR4hyFOtgr/5wbFuNoX/UUGZTIHI3+F
+         JhsWXJ5d1nikdSqAXmM+qqy7qD0BDmXcdJ1jEp0AgPi2fNXmPKiG0RCD29hsyI7z5K2h
+         0zOqobaiRyWR3uZH6TumWQl/sKAR8rWCd5odpUIfi1yNvrWLfyK9LnBsHCnOKYiajJFl
+         cpHUir4Dkrc7UUEDpo67SyAXT2GwmRYIxlepeD8TJPKJA2WSNTSPpZlG/MD8eYZnTpeH
+         eCVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758719114; x=1759323914;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YlpJOdNyHvV2I8xVBrzdgpMa6isUlE/1v/d573cm8fE=;
-        b=N7JODgg5pM3gIFcUfUz7BWvEf0rORuZC36b8YPk8nsbox4sq8/Bd6qzm6kAZGsrTRz
-         5jguX89bZZ3mb5OsaB8E4bXdthU9p73l3aoOX1z5mdm/AWMBRy0v3OVQKPyphrr/soIZ
-         c4gq+Eviios8UDy6du8HZ+N2APjoGGq9Lkbsj0d6AE+NxQg5uKbQ9GUxhuR5pWwO2XnX
-         kZ7EkpcY67Cke2cNtTOlI9YPL3+fF19J96jW9dYTf04ObfZ6clPjTr+Gw4H5LBXVhSAj
-         GLAlA+Ch6Qd29RSlIU1K2nq7xoEyJ/3E22ng8mCRkvS8I431z7dK/X/+gXKL0fcyLmMD
-         Mvgg==
-X-Gm-Message-State: AOJu0YysH42jZ/+4+FReoZJ2kr9jwUQ+DOsf+45UZ9OwSjRuT5KGBi2X
-	0igIxQmkQsFgwHJr83b4I8Gw041qRUVpDTKg21nphWS/3+ejN7mjehAImENyo0ZKIcBUaXNBjec
-	ZIg3ytwWnG9YLeYLE7B6gSkU5ss4TB2MxZxep
-X-Gm-Gg: ASbGncvkPya7q8fSO6eLgTyFsie0QF3fBOwYMu2rSM/xEdRMEJYa0Pu1dEZWOAuXiAp
-	FiJboahLWMA/GXSzWCq/SdWtLrABh/KmQv5b6uzXsH0M9sbl+rJlDH7qVMTVvQkk32hJNovLJ9I
-	nHY+noymRYdESr9d+UaAkHpb9cD6CkN9HTmscOzpEytwo68VUssa+tQZGusb+Co06ThQy6zS3vt
-	d66wJA1
-X-Google-Smtp-Source: AGHT+IFGkvlVuhx3NxAH6dxQ+XiCNG0cDkAK7XuYhtCMTkjRFMgg11UlfWKJg7PO4FO3N1Zcwk3mMIlSU4M6K8HLgro=
-X-Received: by 2002:a17:903:1a4c:b0:267:fa8d:29a6 with SMTP id
- d9443c01a7336-27ec126acc0mr26305965ad.25.1758719113944; Wed, 24 Sep 2025
- 06:05:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAP1tNvQLfni2s37JYe-hDBxQfWLc2TNhrypH+-bicWXmW9o6Og@mail.gmail.com>
- <Z-6TBYRYiazahICg@pengutronix.de> <CAP1tNvR6mxe8gMSb05U20GdGqaO4N9zq-7so74+fm0DJ0iopVA@mail.gmail.com>
- <Z-6WbLbIkVS_wvLj@pengutronix.de> <CAP1tNvTfCC=f+naoA5MJXnwr8EGxL2wEsMpOVbKWGBjb=CGztg@mail.gmail.com>
- <Z--KaWCsJbI7hyxw@pengutronix.de> <CAP1tNvSL6vMx=ePmwHx-=yJGtWi2PdAfpa34PEZFPCgNrP1nhQ@mail.gmail.com>
-In-Reply-To: <CAP1tNvSL6vMx=ePmwHx-=yJGtWi2PdAfpa34PEZFPCgNrP1nhQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1758726178; x=1759330978;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v20t+9GkFLMJqMRmFiznb6Nzl0PUAj5j4hRwVhC+WWU=;
+        b=MqSYhpvfcaz+DynrEmUZq5Ki5DRZ8xqH9nfosG0/K/POuiPFMK+qvYuR0lIx77q9kT
+         Da1Wq28v66d2y4TeAIXU3q2TD1Ajz4AaPSMaOiWyhAODY5a9RiLkHKdW2Os4eICmUikS
+         1ahM0Y3KGvavSjlARkEUJJjO+gb6ZeiRchFOEBJqT6jl1j3h3oUbnFCZveWPi80/q+GR
+         WBFOxftnMGdQxHdkCPAsATkqKU+ZIafr2Am3zrB2N6tWUMGJ/p9iyVKudiICXeQGizTP
+         Qa9vTYyc5FrHmPeyCndFZ5NB0n+FGkzlJcrv2uV82aFLSacLswhXTvKbfFnzYeF00W5V
+         nK0Q==
+X-Gm-Message-State: AOJu0YyQ+YMuSrYjqBxTzWAS/zKKMLRKkjL9NinVLQfIDpHtT08TK62C
+	/Xn3rjzZAYN8b7zZIfamBse/c24UtrhTsTfX4n3fHynl2Z/TmKny3yVNFuli7w==
+X-Gm-Gg: ASbGncvv7a343Q2M9MR0ZCTJDwbW63PZcbsSF3DN8Mu9h50haeNXLgzqssWTkUp0n6A
+	jn0Vt678dsy1u+7eIB1Kctu9Ozl+hB5R1skV+RZ9HHAxsxD1YWf5MZoGSe+iopifjDDo8zbDMKV
+	sovNjunuEw9QLHJFMz5noKKtg1/NzH1ivNmSQ6KZaP+1EmFzJpFcvtGIj7yd5dxEp1erZ8iVOBB
+	CeyDQAOQE5wWoq6AI8bTEfvGWge6QydmW2f029xWqcZfWO4ljpxbc+RebOG+Zq+aI2gbsc3Ojr8
+	E61Glzn0h9Gi6p8TLXu9fuXQgTRgtFCcAst+KtxJ0J23YdILMLAJGnHtCU2//71IIzgscLda2hl
+	9xu5re3/Cx+7wad0EADWnbLTm1BOhJZqcCpfSAdrpwZCzzGmgCPzd15qOAw==
+X-Google-Smtp-Source: AGHT+IHQUZyWlHzb8iOG40aHlOKOhLsC9Zw0UitsEC4Jg3U8R6uXKhco8nH3Ke21PxPazR/l/J1iWQ==
+X-Received: by 2002:a2e:be1c:0:b0:336:9c43:3362 with SMTP id 38308e7fff4ca-36d14ad9cf4mr20922621fa.4.1758726177668;
+        Wed, 24 Sep 2025 08:02:57 -0700 (PDT)
+Received: from localhost.localdomain ([95.161.221.172])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-361a28b6c1esm45668561fa.26.2025.09.24.08.02.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 08:02:56 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 24 Sep 2025 16:05:02 +0300
-X-Gm-Features: AS18NWAeBx09aHUZFG5Xi5XeNqu0iwZjlLQO6eiKsU5T5ZmUX9dGLCx1bdeHdI0
-Message-ID: <CAP1tNvRcKkBfqP_mTQf2KOzqPU=RnzjEZkfQ2kgS9MpQ9Vo6Fw@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Wed, 24 Sep 2025 18:02:46 +0300
+Message-Id: <20250924150246.381179-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.38.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250924_060515_224298_44420218 
-X-CRM114-Status: GOOD (  27.99  )
+X-CRM114-CacheID: sfid-20250924_080300_812553_FCF8F7D2 
+X-CRM114-Status: GOOD (  11.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -104,140 +101,57 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: RK3588 CPLL question
+Subject: [PATCH] clk: rockchip: Drop empty init callback for rk3588 PLL type
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello All.
+Unlike PLLs in previous geneation of SoCs, PLLs in RK3588 type don't
+require any platform-specific initialization. Drop callback
+rockchip_rk3588_pll_init() that does nothing in fact to clean the
+driver up.
+This change is taken from the mainline Linux kernel.
 
-There's still no successful result with properly configuring the CPLL
-for the RK3588.
-Without it, kernel startup becomes pointless, as important frequencies
-for network
-interfaces, and likely some others, remain half the speed required for
-system operation.
-The CPLL in U-Boot is programmed for a frequency of 1500 MHz, and it
-works there,
-but in barebox these actions do not bring success.
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ drivers/clk/rockchip/clk-pll.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-CRU_CPLL_CON1 Address: Operational Base + offset (0x01A4)
-CRU_CPLL_CON6 Address: Operational Base + offset (0x01B8)
-CRU_MODE_CON00 Address: Operational Base + offset (0x0280)
+diff --git a/drivers/clk/rockchip/clk-pll.c b/drivers/clk/rockchip/clk-pll.c
+index 64f9e0dc5e..904d70d5d4 100644
+--- a/drivers/clk/rockchip/clk-pll.c
++++ b/drivers/clk/rockchip/clk-pll.c
+@@ -1021,16 +1021,6 @@ static int rockchip_rk3588_pll_is_enabled(struct clk_hw *hw)
+ 	return !(pllcon & RK3588_PLLCON1_PWRDOWN);
+ }
+ 
+-static int rockchip_rk3588_pll_init(struct clk_hw *hw)
+-{
+-	struct rockchip_clk_pll *pll = to_rockchip_clk_pll(hw);
+-
+-	if (!(pll->flags & ROCKCHIP_PLL_SYNC_RATE))
+-		return 0;
+-
+-	return 0;
+-}
+-
+ static const struct clk_ops rockchip_rk3588_pll_clk_norate_ops = {
+ 	.recalc_rate = rockchip_rk3588_pll_recalc_rate,
+ 	.enable = rockchip_rk3588_pll_enable,
+@@ -1045,7 +1035,6 @@ static const struct clk_ops rockchip_rk3588_pll_clk_ops = {
+ 	.enable = rockchip_rk3588_pll_enable,
+ 	.disable = rockchip_rk3588_pll_disable,
+ 	.is_enabled = rockchip_rk3588_pll_is_enabled,
+-	.init = rockchip_rk3588_pll_init,
+ };
+ 
+ /*
+-- 
+2.38.2
 
-md -l 0xfd7c0280+1
-fd7c0280: 00000545
-
-md -l 0xfd7c01a0+28
-fd7c01a0: 0000007d 00000081 00000000 00000000
-fd7c01b0: 00000000 00000000 00009c00
-
-clk_set_parent cpll xin24m
-md -l 0xfd7c0280+1
-fd7c0280: 00000445
-
-md -l 0xfd7c01a0+28
-fd7c01a0: 0000007d 00002081 00000000 00000000
-fd7c01b0: 00000000 00000000 00004000
-
-mw -l 0xfd7c01a4 0x20000000
-<Freeze here>
-
-So the error occurs when the CPLL is turned on. Line:
-writel(HIWORD_UPDATE(0, RK3588_PLLCON1_PWRDOWN, 0), pll->reg_base +
-RK3588_PLLCON(1));
-
-I don't know what else to try...
-Has anyone had any successful experience running a barebox for RK3588
-with working network interfaces?
-
-Thanks!
-
-=D0=BF=D0=BD, 7 =D0=B0=D0=BF=D1=80. 2025=E2=80=AF=D0=B3. =D0=B2 15:31, Alex=
-ander Shiyan <eagle.alexander923@gmail.com>:
-
->
-> Hello.
->
-> Unfortunately, there is still a stupor in this issue
-> Any PLL can be configured normally, except CPLL.
-> Changing CPLL freezes the system. I tried to use some tricks from
-> U-boot, but to no avail...
->
-> barebox@Diasom DS-RK3588-BTB-EVB:/ clk_set_parent cpll xin24m
-> barebox@Diasom DS-RK3588-BTB-EVB:/ clk_set_rate pll_cpll 816000000
-> rockchip_rk3588_pll_set_rate: changing pll_cpll to 816000000 with a
-> parent rate of 24000000
-> rockchip_rk3588_pll_set_params: rate settings for 816000000 p: 2, m:
-> 272, s: 2, k: 0
-> <freeze here>
->
-> =D0=BF=D1=82, 4 =D0=B0=D0=BF=D1=80. 2025=E2=80=AF=D0=B3. =D0=B2 10:29, Sa=
-scha Hauer <s.hauer@pengutronix.de>:
-> >
-> > On Thu, Apr 03, 2025 at 05:20:33PM +0300, Alexander Shiyan wrote:
-> > > I found this hack:
-> > > https://github.com/u-boot/u-boot/blob/master/drivers/clk/rockchip/clk=
-_rk3588.c#L1933
-> >
-> > Let's do the same then.
-> >
-> > It would be nicer to have the CPLL setting in the assigned-clock-rates
-> > property. That should be done in the upstream dtsi though, overwriting
-> > the assigned-clock-rates in the barebox dtsi would mean we would have t=
-o
-> > copy the many existing settings and hope they don't change upstream.
-> >
-> > Sascha
-> >
-> > >
-> > > =D1=87=D1=82, 3 =D0=B0=D0=BF=D1=80. 2025=E2=80=AF=D0=B3. =D0=B2 17:08=
-, Sascha Hauer <s.hauer@pengutronix.de>:
-> > > >
-> > > > On Thu, Apr 03, 2025 at 05:01:05PM +0300, Alexander Shiyan wrote:
-> > > > > Thanks Sascha!
-> > > > >
-> > > > > So something is wrong here.
-> > > > > At least the GMAC0/1 interfaces end up with the wrong frequency.
-> > > > > I have another image with u-boot and Rockchip kernel where CPLL
-> > > > > is 1.5GHz and network is ok.
-> > > >
-> > > > The only place where the PLL rates are configured in barebox is via
-> > > > assigned-clock-rates in the clock controller node. PLL_CPLL doesn't=
- show
-> > > > up there, so I would assume it is just left to the default whatever=
- that
-> > > > is.
-> > > >
-> > > > You could chainload barebox from U-Boot and see what the CPLL rate =
-is
-> > > > then.
-> > > >
-> > > > Sascha
-> > > >
-> > > > --
-> > > > Pengutronix e.K.                           |                       =
-      |
-> > > > Steuerwalder Str. 21                       | http://www.pengutronix=
-.de/  |
-> > > > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917=
--0    |
-> > > > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917=
--5555 |
-> > >
-> >
-> > --
-> > Pengutronix e.K.                           |                           =
-  |
-> > Steuerwalder Str. 21                       | http://www.pengutronix.de/=
-  |
-> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0  =
-  |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-555=
-5 |
 
 
