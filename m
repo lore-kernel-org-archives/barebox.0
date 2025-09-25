@@ -1,65 +1,65 @@
-Delivery-date: Thu, 25 Sep 2025 14:00:26 +0200
+Delivery-date: Thu, 25 Sep 2025 14:00:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1keA-000vuz-2F
+	id 1v1keC-000vvg-3B
 	for lore@lore.pengutronix.de;
-	Thu, 25 Sep 2025 14:00:26 +0200
+	Thu, 25 Sep 2025 14:00:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1ke7-0005HM-D1
-	for lore@pengutronix.de; Thu, 25 Sep 2025 14:00:26 +0200
+	id 1v1ke8-0005Iy-TS
+	for lore@pengutronix.de; Thu, 25 Sep 2025 14:00:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rvAtyJ/FhWXlgAcTyeCc4ZzEKYS7on5iIxa+UHjXpM8=; b=Ekgym4qS8krdjtmB9Oy8ZAHFio
-	25a1xzq20t4qhhwcT6wMkyawmcLZeFMLXzdHww1VVuddVMIvTzyI1kBRLaOYhx1ptOJYxLaZEYlkG
-	J1LMVSrwIBr7TQvrw1fkkJwkuPnsvH7ZIhdvT1e4ZN010/L4u3P+RupLmDlpWCcWoqMN0f3Uvu+9M
-	hBm3LLsapUAD4frxl+FHaDUf1MxBpCRQjCm/W/Bn7G79wMRQf/LFCSGCc4Od0EYmM5mQiuJVXccbj
-	eWIbhxoz0Y73fURA6PGzTMQkrIRKr5SttpRYbiEfajHz3PhVLcVQW3HdurEg8zkdXiO+vnrpCgWiU
-	B4xjmEIw==;
+	bh=sRKexSNql3jasvnSFeAZXjc8tSUwsyjL1mO4iN7ODIQ=; b=BiQXLdwL5L42ONkYcgakZUxDJ9
+	k7SvgyAShnxV62YIxJFDXKhclnwFtV5KE91Pei3OovTyj9I7+1R1njtF8BVxckeaHct4odXIfnjqK
+	826taTk21eA7Dn0Kriz40GUW9Jo/v4bkgZxPqz6iyDBc3Vk85hgYuYFTqVwlwR4Rv9TyPRciFMY0y
+	CdPBn8J0TUX2r4/PNGTg57Fw/njcniDWD1KYND1+XOPIl5zUsyfCM1L68mk5/dswPLGiPP1mZI9Sd
+	AlKCQD67jrGltDeerMf4kP4awZwpXpxCZQ4JR5PKJvgWEEUfOZg7kGOZ2hK5hj/UWag78si2wUk0p
+	rQpg70dw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1kdO-00000008k2g-2yFK;
-	Thu, 25 Sep 2025 11:59:38 +0000
+	id 1v1kdM-00000008jzk-1eSO;
+	Thu, 25 Sep 2025 11:59:36 +0000
 Received: from cczrelay02.in2p3.fr ([134.158.66.142])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1kdG-00000008jqb-1H6c
+	id 1v1kdG-00000008jqa-1Gkb
 	for barebox@lists.infradead.org;
-	Thu, 25 Sep 2025 11:59:35 +0000
+	Thu, 25 Sep 2025 11:59:34 +0000
 Received: from [127.0.1.1] (clrelecpo09w.in2p3.fr [134.158.124.135])
 	(authenticated bits=0)
-	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 58PBxEkv016594
+	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 58PBxEl0016594
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
 	Thu, 25 Sep 2025 13:59:25 +0200
 From: David Picard <david.picard@clermont.in2p3.fr>
-Date: Thu, 25 Sep 2025 13:59:13 +0200
+Date: Thu, 25 Sep 2025 13:59:16 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250925-boards-enclustra-sa2-add-support-v2-6-6820ad6c6256@clermont.in2p3.fr>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250925-boards-enclustra-sa2-add-support-v2-9-6820ad6c6256@clermont.in2p3.fr>
 References: <20250925-boards-enclustra-sa2-add-support-v2-0-6820ad6c6256@clermont.in2p3.fr>
 In-Reply-To: <20250925-boards-enclustra-sa2-add-support-v2-0-6820ad6c6256@clermont.in2p3.fr>
 To: Sascha Hauer <s.hauer@pengutronix.de>,
         BAREBOX <barebox@lists.infradead.org>
 Cc: David Picard <david.picard@clermont.in2p3.fr>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758801565; l=21282;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758801565; l=20670;
  i=david.picard@clermont.in2p3.fr; s=20250917; h=from:subject:message-id;
- bh=YyMoGqxESsDTyWZAoxd8x0bxBq7NV1wa81RgjJ+dD5s=;
- b=2LBvuTBjfujefK+iPoe0itTKiQJPtm6LYyUnj/LRru7exhVDQO1OuTJLY4HH8TjUMoJuF7MtR
- vGJYhyf8hX8B1Kxh4mU7hZgltrgzoj3M0bgzkDn5knymd6uoys1lA/5
+ bh=xR/K5vEekR28RH24mx4aFUJ5FHWnK3zf9IVxMsEPmiE=;
+ b=4ihVVPx/zfkZ6/NMZHlVEGCgJhBBms3+X3G5T3VBClH51Id7cScqwSzPY0TL9nWu8unDL3Hfg
+ O09fwcPfHL9DTf0uxLdT1P17oucP3KVk30KBzEBNixLSxGOkm4/amAP
 X-Developer-Key: i=david.picard@clermont.in2p3.fr; a=ed25519;
  pk=Ew2hyxWdBXm7qaK2tHrk3KcOlOjoh3+irqJPSHtq/PU=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250925_045930_763991_CD557E62 
-X-CRM114-Status: GOOD (  20.82  )
+X-CRM114-CacheID: sfid-20250925_045930_773576_946836F4 
+X-CRM114-Status: GOOD (  36.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,802 +81,679 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 06/10] boards: enclustra-sa2: configure SI5338
+Subject: [PATCH v2 09/10] nvmem: add support for Atmel sha204(a)
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Configure the SI5338 clock generator on the ST1 baseboard.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: David Picard <david.picard@clermont.in2p3.fr>
+This adds support for the Atmel SHA204(a) which is a SHA accelerator
+with hwrng and OTP support. This only adds the OTP functionality, hence
+the driver resides in drivers/nvmem for now. The code is based on the
+corresponding Linux driver.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 ---
 v1 -> v2:
-  - replace custom functions to read and write a byte to a
-    I2C register with regmap functions.
-  - replace custom functions to update bits in a
-    I2C register with regmap functions.
+  - replace devm_kmalloc() with devm_kzalloc() in atmel_i2c_probe().
 ---
 ---
- arch/arm/boards/enclustra-sa2/Makefile             |   2 +-
- .../boards/enclustra-sa2/Si5338-RevB-Registers.h   | 433 +++++++++++++++++++++
- arch/arm/boards/enclustra-sa2/board.c              |   6 +
- arch/arm/boards/enclustra-sa2/si5338_config.c      | 252 ++++++++++++
- arch/arm/boards/enclustra-sa2/si5338_config.h      |  22 ++
- arch/arm/mach-socfpga/Kconfig                      |   4 +
- 6 files changed, 718 insertions(+), 1 deletion(-)
+ drivers/nvmem/Kconfig         |  15 +++
+ drivers/nvmem/Makefile        |   2 +
+ drivers/nvmem/atmel-i2c.c     | 302 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/nvmem/atmel-i2c.h     | 180 +++++++++++++++++++++++++
+ drivers/nvmem/atmel-sha204a.c | 114 ++++++++++++++++
+ 5 files changed, 613 insertions(+)
 
-diff --git a/arch/arm/boards/enclustra-sa2/Makefile b/arch/arm/boards/enclustra-sa2/Makefile
-index 8c927fe291a6b3eb20a32a2db96c73f231ab4697..2185c84fc482776681a5f2fc3cad7434f0160561 100644
---- a/arch/arm/boards/enclustra-sa2/Makefile
-+++ b/arch/arm/boards/enclustra-sa2/Makefile
-@@ -1,2 +1,2 @@
--obj-y += lowlevel.o board.o
-+obj-y += lowlevel.o board.o si5338_config.o
- pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/enclustra-sa2/Si5338-RevB-Registers.h b/arch/arm/boards/enclustra-sa2/Si5338-RevB-Registers.h
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index 41a3bf26dda04155e7457a5bd9473ff4be646574..7428512e28babc35fb3ca3b144a6b8a762ea584e 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -121,4 +121,19 @@ config STARFIVE_OTP
+ 	  This adds support for the StarFive OTP controller. Only reading
+ 	  is currently supported.
+ 
++config NVMEM_ATMEL_SHA204A
++	bool "Support for Microchip / Atmel SHA accelerator OTP support"
++	depends on I2C
++	select CRC16
++	select BITREV
++	select NVMEM_ATMEL_I2C
++	help
++	  Microchip / Atmel SHA accelerator and RNG.
++	  Select this if you want to use the Microchip / Atmel SHA204A
++	  chip. This driver currently only supports reading the OTP memory
++
++config NVMEM_ATMEL_I2C
++	bool
++	select BITREVERSE
++
+ endif
+diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
+index fdd5c63e321db009f5eaa282e0b37fe0c8f28572..9cdc669a966958551e708bc4ef21ff353f0cfe83 100644
+--- a/drivers/nvmem/Makefile
++++ b/drivers/nvmem/Makefile
+@@ -34,3 +34,5 @@ nvmem-kvx-otp-nv-y		:= kvx-otp-nv.o
+ obj-$(CONFIG_NVMEM_ROCKCHIP_OTP)+= rockchip-otp.o
+ obj-$(CONFIG_STARFIVE_OTP)	+= starfive-otp.o
+ obj-$(CONFIG_IMX_OCOTP_ELE)	+= imx-ocotp-ele.o
++obj-$(CONFIG_NVMEM_ATMEL_I2C)	+= atmel-i2c.o
++obj-$(CONFIG_NVMEM_ATMEL_SHA204A) += atmel-sha204a.o
+diff --git a/drivers/nvmem/atmel-i2c.c b/drivers/nvmem/atmel-i2c.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..ea9093e8601835e01391b4b19aa98787c4861b41
+index 0000000000000000000000000000000000000000..19ab5f89240be31a02ecb3af83f2dcb26cb75bae
 --- /dev/null
-+++ b/arch/arm/boards/enclustra-sa2/Si5338-RevB-Registers.h
-@@ -0,0 +1,433 @@
-+//Register map for use with AN428 (JumpStart)
-+//http://www.skyworksinc.com/timing
-+//#BEGIN_HEADER
-+//Date = Friday, June 09, 2023 5:03 PM
-+//File version = 3
-+//Software Name = ClockBuilder Pro
-+//Software version = 4.9.0.0
-+//Software date = 4 24, 2023
-+//Chip = Si533x
-+//Part Number = Si533x
-+//#END_HEADER
-+//Input Frequency (MHz) = 24.000000000
-+//Input Type = CMOS_SSTL_HSTL
-+//P1 = 1
-+//Input Mux = RefClk
-+//FDBK Input Frequency (MHz) = 24.000000000
-+//FDBK Input Type = OFF
-+//P2 = 1
-+//FDBK Mux = NoClk
-+//PFD Input Frequency (MHz) = 24.000000000
-+//VCO Frequency (GHz) = 2.500000
-+//N = 104  1/6  (104.1667)
-+//Internal feedback enabled
-+//Output Clock 0
-+// Output Frequency (MHz) = 125.000000000
-+// Mux Selection = IDn
-+// MultiSynth = 20  (20.0000)
-+// R = 1
-+//Output Clock 1
-+// Output is off
-+//Output Clock 2
-+// Output is off
-+//Output Clock 3
-+// Output Frequency (MHz) = 100.000000000
-+// Mux Selection = IDn
-+// MultiSynth = 25  (25.0000)
-+// R = 1
-+//Driver 0
-+// Enabled
-+// Powered on
-+// Output voltage = 3.30
-+// Output type = 3.3V LVDS
-+// Output state when disabled = Tristate
-+//Driver 1
-+// Disabled
-+// Powered off
-+// Output voltage = 3.30
-+// Output type = 3.3V LVDS
-+// Output state when disabled = StopLow
-+//Driver 2
-+// Disabled
-+// Powered off
-+// Output voltage = 3.30
-+// Output type = 3.3V LVDS
-+// Output state when disabled = StopLow
-+//Driver 3
-+// Enabled
-+// Powered on
-+// Output voltage = 3.30
-+// Output type = 3.3V CMOS on A
-+// Output state when disabled = Tristate
-+//Clock 0 phase inc/dec step size (ns) = 0.000
-+//Clock 1 phase inc/dec step size (ns) = 0.000
-+//Clock 2 phase inc/dec step size (ns) = 0.000
-+//Clock 3 phase inc/dec step size (ns) = 0.000
-+//Phase increment and decrement pin control is off
-+//Frequency increment and decrement pin control is off
-+//Frequency increment and decrement is disabled
-+//Initial phase offset 0 (ns) = 0.000
-+//Initial phase offset 1 (ns) = 0.000
-+//Initial phase offset 2 (ns) = 0.000
-+//Initial phase offset 3 (ns) = 0.000
-+//SSC is disabled
++++ b/drivers/nvmem/atmel-i2c.c
+@@ -0,0 +1,302 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Microchip / Atmel ECC (I2C) driver.
++ *
++ * Copyright (c) 2017, Microchip Technology Inc.
++ * Author: Tudor Ambarus
++ */
 +
-+#define NUM_REGS_MAX 350
-+
-+typedef struct Reg_Data {
-+	unsigned char Reg_Addr;
-+	unsigned char Reg_Val;
-+	unsigned char Reg_Mask;
-+} Reg_Data;
-+
-+Reg_Data const Reg_Store[NUM_REGS_MAX] = {
-+	{  0, 0x00, 0x00 },
-+	{  1, 0x00, 0x00 },
-+	{  2, 0x00, 0x00 },
-+	{  3, 0x00, 0x00 },
-+	{  4, 0x00, 0x00 },
-+	{  5, 0x00, 0x00 },
-+	{  6, 0x08, 0x1D },
-+	{  7, 0x00, 0x00 },
-+	{  8, 0x70, 0x00 },
-+	{  9, 0x0F, 0x00 },
-+	{ 10, 0x00, 0x00 },
-+	{ 11, 0x00, 0x00 },
-+	{ 12, 0x00, 0x00 },
-+	{ 13, 0x00, 0x00 },
-+	{ 14, 0x00, 0x00 },
-+	{ 15, 0x00, 0x00 },
-+	{ 16, 0x00, 0x00 },
-+	{ 17, 0x00, 0x00 },
-+	{ 18, 0x00, 0x00 },
-+	{ 19, 0x00, 0x00 },
-+	{ 20, 0x00, 0x00 },
-+	{ 21, 0x00, 0x00 },
-+	{ 22, 0x00, 0x00 },
-+	{ 23, 0x00, 0x00 },
-+	{ 24, 0x00, 0x00 },
-+	{ 25, 0x00, 0x00 },
-+	{ 26, 0x00, 0x00 },
-+	{ 27, 0x70, 0x80 },
-+	{ 28, 0x0B, 0xFF },
-+	{ 29, 0x08, 0xFF },
-+	{ 30, 0xB0, 0xFF },
-+	{ 31, 0xC0, 0xFF },
-+	{ 32, 0xE3, 0xFF },
-+	{ 33, 0xE3, 0xFF },
-+	{ 34, 0xC0, 0xFF },
-+	{ 35, 0x00, 0xFF },
-+	{ 36, 0x06, 0x1F },
-+	{ 37, 0x00, 0x1F },
-+	{ 38, 0x00, 0x1F },
-+	{ 39, 0x01, 0x1F },
-+	{ 40, 0x63, 0xFF },
-+	{ 41, 0x0C, 0x7F },
-+	{ 42, 0x37, 0x3F },
-+	{ 43, 0x00, 0x00 },
-+	{ 44, 0x00, 0x00 },
-+	{ 45, 0x00, 0xFF },
-+	{ 46, 0x00, 0xFF },
-+	{ 47, 0x14, 0x3F },
-+	{ 48, 0x3C, 0xFF },
-+	{ 49, 0x00, 0xFF },
-+	{ 50, 0xC4, 0xFF },
-+	{ 51, 0x07, 0xFF },
-+	{ 52, 0x10, 0xFF },
-+	{ 53, 0x00, 0xFF },
-+	{ 54, 0x08, 0xFF },
-+	{ 55, 0x00, 0xFF },
-+	{ 56, 0x00, 0xFF },
-+	{ 57, 0x00, 0xFF },
-+	{ 58, 0x00, 0xFF },
-+	{ 59, 0x01, 0xFF },
-+	{ 60, 0x00, 0xFF },
-+	{ 61, 0x00, 0xFF },
-+	{ 62, 0x00, 0x3F },
-+	{ 63, 0x10, 0xFF },
-+	{ 64, 0x00, 0xFF },
-+	{ 65, 0x00, 0xFF },
-+	{ 66, 0x00, 0xFF },
-+	{ 67, 0x00, 0xFF },
-+	{ 68, 0x00, 0xFF },
-+	{ 69, 0x00, 0xFF },
-+	{ 70, 0x00, 0xFF },
-+	{ 71, 0x00, 0xFF },
-+	{ 72, 0x00, 0xFF },
-+	{ 73, 0x00, 0x3F },
-+	{ 74, 0x10, 0xFF },
-+	{ 75, 0x00, 0xFF },
-+	{ 76, 0x00, 0xFF },
-+	{ 77, 0x00, 0xFF },
-+	{ 78, 0x00, 0xFF },
-+	{ 79, 0x00, 0xFF },
-+	{ 80, 0x00, 0xFF },
-+	{ 81, 0x00, 0xFF },
-+	{ 82, 0x00, 0xFF },
-+	{ 83, 0x00, 0xFF },
-+	{ 84, 0x00, 0x3F },
-+	{ 85, 0x10, 0xFF },
-+	{ 86, 0x80, 0xFF },
-+	{ 87, 0x0A, 0xFF },
-+	{ 88, 0x00, 0xFF },
-+	{ 89, 0x00, 0xFF },
-+	{ 90, 0x00, 0xFF },
-+	{ 91, 0x00, 0xFF },
-+	{ 92, 0x01, 0xFF },
-+	{ 93, 0x00, 0xFF },
-+	{ 94, 0x00, 0xFF },
-+	{ 95, 0x00, 0x3F },
-+	{ 96, 0x10, 0x00 },
-+	{ 97, 0x15, 0xFF },
-+	{ 98, 0x32, 0xFF },
-+	{ 99, 0x08, 0xFF },
-+	{ 100, 0x00, 0xFF },
-+	{ 101, 0x00, 0xFF },
-+	{ 102, 0x00, 0xFF },
-+	{ 103, 0x06, 0xFF },
-+	{ 104, 0x00, 0xFF },
-+	{ 105, 0x00, 0xFF },
-+	{ 106, 0x80, 0xBF },
-+	{ 107, 0x00, 0xFF },
-+	{ 108, 0x00, 0xFF },
-+	{ 109, 0x00, 0xFF },
-+	{ 110, 0x00, 0xFF },
-+	{ 111, 0x00, 0xFF },
-+	{ 112, 0x00, 0xFF },
-+	{ 113, 0x00, 0xFF },
-+	{ 114, 0x40, 0xFF },
-+	{ 115, 0x00, 0xFF },
-+	{ 116, 0x80, 0xFF },
-+	{ 117, 0x00, 0xFF },
-+	{ 118, 0x40, 0xFF },
-+	{ 119, 0x00, 0xFF },
-+	{ 120, 0x00, 0xFF },
-+	{ 121, 0x00, 0xFF },
-+	{ 122, 0x00, 0xFF },
-+	{ 123, 0x00, 0xFF },
-+	{ 124, 0x00, 0xFF },
-+	{ 125, 0x00, 0xFF },
-+	{ 126, 0x00, 0xFF },
-+	{ 127, 0x00, 0xFF },
-+	{ 128, 0x00, 0xFF },
-+	{ 129, 0x00, 0x0F },
-+	{ 130, 0x00, 0x0F },
-+	{ 131, 0x00, 0xFF },
-+	{ 132, 0x00, 0xFF },
-+	{ 133, 0x00, 0xFF },
-+	{ 134, 0x00, 0xFF },
-+	{ 135, 0x00, 0xFF },
-+	{ 136, 0x00, 0xFF },
-+	{ 137, 0x00, 0xFF },
-+	{ 138, 0x00, 0xFF },
-+	{ 139, 0x00, 0xFF },
-+	{ 140, 0x00, 0xFF },
-+	{ 141, 0x00, 0xFF },
-+	{ 142, 0x00, 0xFF },
-+	{ 143, 0x00, 0xFF },
-+	{ 144, 0x00, 0xFF },
-+	{ 145, 0x00, 0x00 },
-+	{ 146, 0xFF, 0x00 },
-+	{ 147, 0x00, 0x00 },
-+	{ 148, 0x00, 0x00 },
-+	{ 149, 0x00, 0x00 },
-+	{ 150, 0x00, 0x00 },
-+	{ 151, 0x00, 0x00 },
-+	{ 152, 0x00, 0xFF },
-+	{ 153, 0x00, 0xFF },
-+	{ 154, 0x00, 0xFF },
-+	{ 155, 0x00, 0xFF },
-+	{ 156, 0x00, 0xFF },
-+	{ 157, 0x00, 0xFF },
-+	{ 158, 0x00, 0x0F },
-+	{ 159, 0x00, 0x0F },
-+	{ 160, 0x00, 0xFF },
-+	{ 161, 0x00, 0xFF },
-+	{ 162, 0x00, 0xFF },
-+	{ 163, 0x00, 0xFF },
-+	{ 164, 0x00, 0xFF },
-+	{ 165, 0x00, 0xFF },
-+	{ 166, 0x00, 0xFF },
-+	{ 167, 0x00, 0xFF },
-+	{ 168, 0x00, 0xFF },
-+	{ 169, 0x00, 0xFF },
-+	{ 170, 0x00, 0xFF },
-+	{ 171, 0x00, 0xFF },
-+	{ 172, 0x00, 0xFF },
-+	{ 173, 0x00, 0xFF },
-+	{ 174, 0x00, 0xFF },
-+	{ 175, 0x00, 0xFF },
-+	{ 176, 0x00, 0xFF },
-+	{ 177, 0x00, 0xFF },
-+	{ 178, 0x00, 0xFF },
-+	{ 179, 0x00, 0xFF },
-+	{ 180, 0x00, 0xFF },
-+	{ 181, 0x00, 0x0F },
-+	{ 182, 0x00, 0xFF },
-+	{ 183, 0x00, 0xFF },
-+	{ 184, 0x00, 0xFF },
-+	{ 185, 0x00, 0xFF },
-+	{ 186, 0x00, 0xFF },
-+	{ 187, 0x00, 0xFF },
-+	{ 188, 0x00, 0xFF },
-+	{ 189, 0x00, 0xFF },
-+	{ 190, 0x00, 0xFF },
-+	{ 191, 0x00, 0xFF },
-+	{ 192, 0x00, 0xFF },
-+	{ 193, 0x00, 0xFF },
-+	{ 194, 0x00, 0xFF },
-+	{ 195, 0x00, 0xFF },
-+	{ 196, 0x00, 0xFF },
-+	{ 197, 0x00, 0xFF },
-+	{ 198, 0x00, 0xFF },
-+	{ 199, 0x00, 0xFF },
-+	{ 200, 0x00, 0xFF },
-+	{ 201, 0x00, 0xFF },
-+	{ 202, 0x00, 0xFF },
-+	{ 203, 0x00, 0x0F },
-+	{ 204, 0x00, 0xFF },
-+	{ 205, 0x00, 0xFF },
-+	{ 206, 0x00, 0xFF },
-+	{ 207, 0x00, 0xFF },
-+	{ 208, 0x00, 0xFF },
-+	{ 209, 0x00, 0xFF },
-+	{ 210, 0x00, 0xFF },
-+	{ 211, 0x00, 0xFF },
-+	{ 212, 0x00, 0xFF },
-+	{ 213, 0x00, 0xFF },
-+	{ 214, 0x00, 0xFF },
-+	{ 215, 0x00, 0xFF },
-+	{ 216, 0x00, 0xFF },
-+	{ 217, 0x00, 0xFF },
-+	{ 218, 0x00, 0x00 },
-+	{ 219, 0x00, 0x00 },
-+	{ 220, 0x00, 0x00 },
-+	{ 221, 0x0D, 0x00 },
-+	{ 222, 0x00, 0x00 },
-+	{ 223, 0x00, 0x00 },
-+	{ 224, 0xF4, 0x00 },
-+	{ 225, 0xF0, 0x00 },
-+	{ 226, 0x00, 0x00 },
-+	{ 227, 0x00, 0x00 },
-+	{ 228, 0x00, 0x00 },
-+	{ 229, 0x00, 0x00 },
-+	{ 231, 0x00, 0x00 },
-+	{ 232, 0x00, 0x00 },
-+	{ 233, 0x00, 0x00 },
-+	{ 234, 0x00, 0x00 },
-+	{ 235, 0x00, 0x00 },
-+	{ 236, 0x00, 0x00 },
-+	{ 237, 0x00, 0x00 },
-+	{ 238, 0x14, 0x00 },
-+	{ 239, 0x00, 0x00 },
-+	{ 240, 0x00, 0x00 },
-+	{ 242, 0x02, 0x02 },
-+	{ 243, 0xF0, 0x00 },
-+	{ 244, 0x00, 0x00 },
-+	{ 245, 0x00, 0x00 },
-+	{ 247, 0x00, 0x00 },
-+	{ 248, 0x00, 0x00 },
-+	{ 249, 0xA8, 0x00 },
-+	{ 250, 0x00, 0x00 },
-+	{ 251, 0x84, 0x00 },
-+	{ 252, 0x00, 0x00 },
-+	{ 253, 0x00, 0x00 },
-+	{ 254, 0x00, 0x00 },
-+	{ 255, 1, 0xFF }, // set page bit to 1
-+	{  0, 0x00, 0x00 },
-+	{  1, 0x00, 0x00 },
-+	{  2, 0x00, 0x00 },
-+	{  3, 0x00, 0x00 },
-+	{  4, 0x00, 0x00 },
-+	{  5, 0x00, 0x00 },
-+	{  6, 0x00, 0x00 },
-+	{  7, 0x00, 0x00 },
-+	{  8, 0x00, 0x00 },
-+	{  9, 0x00, 0x00 },
-+	{ 10, 0x00, 0x00 },
-+	{ 11, 0x00, 0x00 },
-+	{ 12, 0x00, 0x00 },
-+	{ 13, 0x00, 0x00 },
-+	{ 14, 0x00, 0x00 },
-+	{ 15, 0x00, 0x00 },
-+	{ 16, 0x00, 0x00 },
-+	{ 17, 0x01, 0x00 },
-+	{ 18, 0x00, 0x00 },
-+	{ 19, 0x00, 0x00 },
-+	{ 20, 0x90, 0x00 },
-+	{ 21, 0x31, 0x00 },
-+	{ 22, 0x00, 0x00 },
-+	{ 23, 0x00, 0x00 },
-+	{ 24, 0x01, 0x00 },
-+	{ 25, 0x00, 0x00 },
-+	{ 26, 0x00, 0x00 },
-+	{ 27, 0x00, 0x00 },
-+	{ 28, 0x00, 0x00 },
-+	{ 29, 0x00, 0x00 },
-+	{ 30, 0x00, 0x00 },
-+	{ 31, 0x00, 0xFF },
-+	{ 32, 0x00, 0xFF },
-+	{ 33, 0x01, 0xFF },
-+	{ 34, 0x00, 0xFF },
-+	{ 35, 0x00, 0xFF },
-+	{ 36, 0x90, 0xFF },
-+	{ 37, 0x31, 0xFF },
-+	{ 38, 0x00, 0xFF },
-+	{ 39, 0x00, 0xFF },
-+	{ 40, 0x01, 0xFF },
-+	{ 41, 0x00, 0xFF },
-+	{ 42, 0x00, 0xFF },
-+	{ 43, 0x00, 0x0F },
-+	{ 44, 0x00, 0x00 },
-+	{ 45, 0x00, 0x00 },
-+	{ 46, 0x00, 0x00 },
-+	{ 47, 0x00, 0xFF },
-+	{ 48, 0x00, 0xFF },
-+	{ 49, 0x01, 0xFF },
-+	{ 50, 0x00, 0xFF },
-+	{ 51, 0x00, 0xFF },
-+	{ 52, 0x90, 0xFF },
-+	{ 53, 0x31, 0xFF },
-+	{ 54, 0x00, 0xFF },
-+	{ 55, 0x00, 0xFF },
-+	{ 56, 0x01, 0xFF },
-+	{ 57, 0x00, 0xFF },
-+	{ 58, 0x00, 0xFF },
-+	{ 59, 0x00, 0x0F },
-+	{ 60, 0x00, 0x00 },
-+	{ 61, 0x00, 0x00 },
-+	{ 62, 0x00, 0x00 },
-+	{ 63, 0x00, 0xFF },
-+	{ 64, 0x00, 0xFF },
-+	{ 65, 0x01, 0xFF },
-+	{ 66, 0x00, 0xFF },
-+	{ 67, 0x00, 0xFF },
-+	{ 68, 0x90, 0xFF },
-+	{ 69, 0x31, 0xFF },
-+	{ 70, 0x00, 0xFF },
-+	{ 71, 0x00, 0xFF },
-+	{ 72, 0x01, 0xFF },
-+	{ 73, 0x00, 0xFF },
-+	{ 74, 0x00, 0xFF },
-+	{ 75, 0x00, 0x0F },
-+	{ 76, 0x00, 0x00 },
-+	{ 77, 0x00, 0x00 },
-+	{ 78, 0x00, 0x00 },
-+	{ 79, 0x00, 0xFF },
-+	{ 80, 0x00, 0xFF },
-+	{ 81, 0x00, 0xFF },
-+	{ 82, 0x00, 0xFF },
-+	{ 83, 0x00, 0xFF },
-+	{ 84, 0x90, 0xFF },
-+	{ 85, 0x31, 0xFF },
-+	{ 86, 0x00, 0xFF },
-+	{ 87, 0x00, 0xFF },
-+	{ 88, 0x01, 0xFF },
-+	{ 89, 0x00, 0xFF },
-+	{ 90, 0x00, 0xFF },
-+	{ 91, 0x00, 0x0F },
-+	{ 92, 0x00, 0x00 },
-+	{ 93, 0x00, 0x00 },
-+	{ 94, 0x00, 0x00 },
-+	{ 255, 0, 0xFF } }; // set page bit to 0
-+//End of file
-diff --git a/arch/arm/boards/enclustra-sa2/board.c b/arch/arm/boards/enclustra-sa2/board.c
-index 4c2b44252d84c78ed8de5754051d0bf194ce8d02..d2e539cbf9460adddc158885473f4ef0004dc284 100644
---- a/arch/arm/boards/enclustra-sa2/board.c
-+++ b/arch/arm/boards/enclustra-sa2/board.c
-@@ -14,6 +14,7 @@
- #include <mach/socfpga/cyclone5-regs.h>
- #include <net.h>
- #include <linux/nvmem-consumer.h>
-+#include "si5338_config.h"
- 
- /** Enclustra's MAC address vendor prefix is 20:B0:F7 */
- #define ENCLUSTRA_PREFIX            (0x20b0f7)
-@@ -99,6 +100,11 @@ static int socfpga_init(void)
- 
- 	set_mac_addr();
- 
-+#ifdef CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2_SI5338
-+	/* configure clock generator on the Enclustra ST1 baseboard: */
-+	si5338_init();
-+#endif
-+
- 	return 0;
- }
- late_initcall(socfpga_init);
-diff --git a/arch/arm/boards/enclustra-sa2/si5338_config.c b/arch/arm/boards/enclustra-sa2/si5338_config.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..deb8a460be3dc8712add893710825e6b0746181a
---- /dev/null
-+++ b/arch/arm/boards/enclustra-sa2/si5338_config.c
-@@ -0,0 +1,252 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
++#include <linux/bitrev.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/errno.h>
 +#include <i2c/i2c.h>
-+#include <clock.h>
-+#include <linux/kernel.h>              /* ARRAY_SIZE */
-+#include <linux/regmap.h>
-+#include "si5338_config.h"
-+#include "Si5338-RevB-Registers.h"
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include "atmel-i2c.h"
 +
-+struct si5338 {
-+	struct device *dev;
-+	struct regmap *map;
-+	struct i2c_client *client;
-+	int revision;
-+	int type;
-+} si_dev = { NULL, NULL, NULL, 0, 0 };
-+
-+
++static const struct {
++	u8 value;
++	const char *error_text;
++} error_list[] = {
++	{ 0x01, "CheckMac or Verify miscompare" },
++	{ 0x03, "Parse Error" },
++	{ 0x05, "ECC Fault" },
++	{ 0x0F, "Execution Error" },
++	{ 0xEE, "Watchdog about to expire" },
++	{ 0xFF, "CRC or other communication error" },
++};
++u16 crc16(u16 crc, const u8 *buffer, size_t len);
 +/**
-+ * @brief Get the device from the devicetree
-+ * @return A pointer to the device if found, or \t NULL otherwise.
-+ */
-+static struct device *get_dev(void)
-+{
-+	struct device *dev;
-+	struct i2c_client *client;
-+
-+	dev = get_device_by_name("si53380");
-+	if (dev == NULL) {
-+		printf("%s() >> ERROR: can't find device SI5338\n", __func__);
-+		return NULL;
-+	}
-+	client = to_i2c_client(dev);
-+	debug("%s() >> SI5338 found at I2C address 0x%02x\n", __func__,
-+		  client->addr);
-+
-+	return dev;
-+}
-+
-+/**
-+ * @brief Write a single byte to a register in the SI5338
-+ * @param[in] ctx A pointer to a struct si5338.
-+ * @param[in] reg The register address.
-+ * @param[in] val The byte to be written to the register.
-+ * @return 0 on success, a negative value from `asm-generic/errno.h` on error.
-+ */
-+static int regmap_reg_write(void *ctx, unsigned int reg, unsigned int val)
-+{
-+	int ret;
-+	struct si5338 *si = ctx;
-+	u8 buf[] = { val };			/* register value */
-+
-+	ret = i2c_write_reg(si->client, reg, buf, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+
-+/**
-+ * @brief Read a single byte from a register in the SI5338
-+ * @param[in] ctx A pointer to a struct si5338.
-+ * @param[in] reg The register address.
-+ * @param[out] val The byte to be written to the register.
-+ * @return 0 on success, a negative value from `asm-generic/errno.h` on error.
-+ */
-+static int regmap_reg_read(void *ctx, unsigned int reg, unsigned int *val)
-+{
-+	struct si5338 *si = ctx;
-+	u8 buf[1];
-+	int ret;
-+
-+	ret = i2c_read_reg(si->client, reg, buf, 1);
-+	*val = buf[0];
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+
-+/**
-+ * @brief Validate input clock status
-+ * @param[in] dev The I²C device.
++ * atmel_i2c_checksum() - Generate 16-bit CRC as required by ATMEL ECC.
++ * CRC16 verification of the count, opcode, param1, param2 and data bytes.
++ * The checksum is saved in little-endian format in the least significant
++ * two bytes of the command. CRC polynomial is 0x8005 and the initial register
++ * value should be zero.
 + *
-+ * Loop until the \c LOS_CLKIN bit is clear.
-+ *
-+ * @return 0 on success, a negative value from `asm-generic/errno.h` on error.
++ * @cmd : structure used for communicating with the device.
 + */
-+static int check_input_clock(struct device *dev)
++static void atmel_i2c_checksum(struct atmel_i2c_cmd *cmd)
 +{
-+	// validate input clock status
-+	int ret;
-+	unsigned int val;
++	u8 *data = &cmd->count;
++	size_t len = cmd->count - CRC_SIZE;
++	__le16 *__crc16 = (__le16 *)(data + len);
 +
-+	do {
-+		ret = regmap_reg_read(&si_dev, 218, &val);
-+		if (ret) {
-+			printf("%s() >> ERROR: SI5338 read failed addr: 218\n", __func__);
-+			return ret;
-+		}
-+	} while (val & 0x04);
-+
-+	return 0;
++	*__crc16 = cpu_to_le16(bitrev16(crc16(0, data, len)));
 +}
 +
-+/**
-+ * @brief Check output PLL status
-+ * @param[in] dev The I²C device.
-+ *
-+ * Loop until the \c PLL_LOL, \c LOS_CLKIN and \c SYS_CAL bits are clear.
-+ *
-+ * @return 0 on success, a negative value from `asm-generic/errno.h` on error
-+ * (-EIO if too many trials).
-+ */
-+static int check_pll(struct device *dev)
++void atmel_i2c_init_read_config_cmd(struct atmel_i2c_cmd *cmd)
 +{
-+	int ret;
-+	int try = 0;
-+	unsigned int val;
-+
-+	do {
-+		ret = regmap_reg_read(&si_dev, 218, &val);
-+		if (ret < 0)
-+			return ret;
-+		mdelay(100);
-+		try++;
-+		if (try > 10) {
-+			printf("%s() >> ERROR: SI5338 PLL is not locking\n", __func__);
-+			return -EIO;
-+		}
-+	} while (val & 0x15);
-+
-+	return 0;
-+}
-+
-+int si5338_init(void)
-+{
-+	unsigned int val;
-+	struct device *dev;
-+	int ret;
-+	struct regmap_config rgmp_cfg = {
-+		.reg_bits = 8,          /* register addresses are coded on 8 bits */
-+		.reg_stride = 1,        /* register addresses increment by 1 */
-+		.pad_bits = 0,
-+		.val_bits = 8,
-+		.max_register = 0xff,   /* maximum register address */
-+		.reg_format_endian = REGMAP_ENDIAN_DEFAULT,
-+		.val_format_endian = REGMAP_ENDIAN_DEFAULT,
-+		.read_flag_mask = 0,
-+		.write_flag_mask = 0,
-+	};
-+	struct regmap_bus rgmp_i2c_bus = {
-+		.reg_write = regmap_reg_write,
-+		.reg_read = regmap_reg_read,
-+	};
-+
-+	si_dev.dev = get_dev();
-+	if (si_dev.dev == NULL)
-+		return -ENODEV;
-+	si_dev.client = to_i2c_client(si_dev.dev);
-+	si_dev.map = regmap_init(si_dev.dev, &rgmp_i2c_bus,
-+							 &si_dev, &rgmp_cfg);
-+
-+	dev = get_dev();
-+	if (dev == NULL)
-+		return -ENODEV;
-+
-+	/* Set PAGE_SEL bit to 0. If bit is 1, registers with address
-+	 * greater than 255 can be addressed.
++	cmd->word_addr = COMMAND;
++	cmd->opcode = OPCODE_READ;
++	/*
++	 * Read the word from Configuration zone that contains the lock bytes
++	 * (UserExtra, Selector, LockValue, LockConfig).
 +	 */
-+	if (regmap_reg_write(&si_dev, 255, 0x00))
-+		return -1;
++	cmd->param1 = CONFIGURATION_ZONE;
++	cmd->param2 = cpu_to_le16(DEVICE_LOCK_ADDR);
++	cmd->count = READ_COUNT;
 +
-+	// disable outputs
-+	if (regmap_update_bits(si_dev.map, 230, 0x10, 0x10))
-+		return -1;
++	atmel_i2c_checksum(cmd);
 +
-+	// pause lol
-+	if (regmap_update_bits(si_dev.map, 241, 0x80, 0x80))
-+		return -1;
++	cmd->msecs = MAX_EXEC_TIME_READ;
++	cmd->rxsize = READ_RSP_SIZE;
++}
++EXPORT_SYMBOL(atmel_i2c_init_read_config_cmd);
 +
-+	// write new configuration
-+	for (int i = 0; i < NUM_REGS_MAX; i++)
-+		if (regmap_update_bits(si_dev.map, Reg_Store[i].Reg_Addr,
-+							   Reg_Store[i].Reg_Mask, Reg_Store[i].Reg_Val))
-+			return -1;
++int atmel_i2c_init_read_otp_cmd(struct atmel_i2c_cmd *cmd, u16 addr)
++{
++	if (addr > OTP_ZONE_SIZE)
++		return -EINVAL;
 +
-+	ret = check_input_clock(dev);
-+	if (ret)
-+		return ret;
++	cmd->word_addr = COMMAND;
++	cmd->opcode = OPCODE_READ;
++	/*
++	 * Read the word from OTP zone that may contain e.g. serial
++	 * numbers or similar if persistently pre-initialized and locked
++	 */
++	cmd->param1 = OTP_ZONE;
++	cmd->param2 = cpu_to_le16(addr);
++	cmd->count = READ_COUNT;
 +
-+	// configure PLL for locking
-+	ret = regmap_update_bits(si_dev.map, 49, 0x80, 0x00);
-+	if (ret)
-+		return ret;
++	atmel_i2c_checksum(cmd);
 +
-+	// initiate locking of PLL
-+	ret = regmap_reg_write(&si_dev, 246, 0x02);
-+	if (ret)
-+		return ret;
-+
-+	// wait 25ms (100ms to be on the safe side)
-+	mdelay(100);
-+
-+	// restart lol
-+	ret = regmap_update_bits(si_dev.map, 241, 0xff, 0x65);
-+	if (ret)
-+		return ret;
-+
-+	ret = check_pll(dev);
-+	if (ret)
-+		return ret;
-+
-+	// copy fcal values to active registers: FCAL[17:16]
-+	ret = regmap_reg_read(&si_dev, 237, &val);
-+	if (ret)
-+		return ret;
-+	ret = regmap_update_bits(si_dev.map, 47, 0x03, val);
-+	if (ret)
-+		return ret;
-+
-+	// copy fcal values to active registers: FCAL[15:8]
-+	ret = regmap_reg_read(&si_dev, 236, &val);
-+	if (ret)
-+		return ret;
-+	ret = regmap_reg_write(&si_dev, 46, val);
-+	if (ret)
-+		return ret;
-+
-+	// copy fcal values to active registers: FCAL[7:0]
-+	ret = regmap_reg_read(&si_dev, 235, &val);
-+	if (ret)
-+		return ret;
-+	ret = regmap_reg_write(&si_dev, 45, val);
-+	if (ret)
-+		return ret;
-+
-+	// Must write 000101b to these bits if the device is not factory programmed
-+	ret = regmap_update_bits(si_dev.map, 47, 0xFC, 0x14);
-+	if (ret)
-+		return ret;
-+
-+	// set PLL to use FCAL values
-+	ret = regmap_update_bits(si_dev.map, 49, 0x80, 0x80);
-+	if (ret)
-+		return ret;
-+
-+	// enable outputs
-+	ret = regmap_reg_write(&si_dev, 230, 0x00);
-+	if (ret)
-+		return ret;
-+
-+	printf("SI5338 init successful\n");
++	cmd->msecs = MAX_EXEC_TIME_READ;
++	cmd->rxsize = READ_RSP_SIZE;
 +
 +	return 0;
 +}
-diff --git a/arch/arm/boards/enclustra-sa2/si5338_config.h b/arch/arm/boards/enclustra-sa2/si5338_config.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..69eb81e57e55db4fecc5ba7307ec05cd2bcc772d
---- /dev/null
-+++ b/arch/arm/boards/enclustra-sa2/si5338_config.h
-@@ -0,0 +1,22 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++EXPORT_SYMBOL(atmel_i2c_init_read_otp_cmd);
 +
 +/*
-+ * Initialize the Si5338 clock generator.
-+ *
-+ * Datasheet: https://www.skyworksinc.com/en/application-pages/-/media/SkyWorks/SL/documents/public/data-sheets/Si5338.pdf
-+ * Reference manual: https://www.skyworksinc.com/-/media/Skyworks/SL/documents/public/reference-manuals/Si5338-RM.pdf
++ * After wake and after execution of a command, there will be error, status, or
++ * result bytes in the device's output register that can be retrieved by the
++ * system. When the length of that group is four bytes, the codes returned are
++ * detailed in error_list.
 + */
++static int atmel_i2c_status(struct device *dev, u8 *status)
++{
++	size_t err_list_len = ARRAY_SIZE(error_list);
++	int i;
++	u8 err_id = status[1];
 +
-+#pragma once
++	if (*status != STATUS_SIZE)
++		return 0;
++
++	if (err_id == STATUS_WAKE_SUCCESSFUL || err_id == STATUS_NOERR)
++		return 0;
++
++	for (i = 0; i < err_list_len; i++)
++		if (error_list[i].value == err_id)
++			break;
++
++	/* if err_id is not in the error_list then ignore it */
++	if (i != err_list_len) {
++		dev_err(dev, "%02x: %s:\n", err_id, error_list[i].error_text);
++		return err_id;
++	}
++
++	return 0;
++}
 +
 +/**
-+ * @brief Initialize the SI5338
++ * i2c_transfer_buffer_flags - issue a single I2C message transferring data
++ *                             to/from a buffer
++ * @client: Handle to slave device
++ * @buf: Where the data is stored
++ * @count: How many bytes to transfer, must be less than 64k since msg.len is u16
++ * @flags: The flags to be used for the message, e.g. I2C_M_RD for reads
 + *
-+ * Get the I²C address from the devicetree and write the registers of the
-+ * SI5338 after the configuration in \c Si5338-RevB-Registers.h, generated
-+ * by [ClockBuilder Pro](https://www.skyworksinc.com/Application-Pages/Clockbuilder-Pro-Software).
++ * Returns negative errno, or else the number of bytes transferred.
++ */
++static int i2c_transfer_buffer_flags(const struct i2c_client *client, char *buf,
++			      int count, u16 flags)
++{
++	int ret;
++	struct i2c_msg msg = {
++		.addr = client->addr,
++		.flags = flags,
++		.len = count,
++		.buf = buf,
++	};
++
++	ret = i2c_transfer(client->adapter, &msg, 1);
++
++	/*
++	 * If everything went ok (i.e. 1 msg transferred), return #bytes
++	 * transferred, else error code.
++	 */
++	return (ret == 1) ? count : ret;
++}
++
++static int atmel_i2c_wakeup(struct i2c_client *client)
++{
++	struct atmel_i2c_client_priv *i2c_priv = i2c_get_clientdata(client);
++	u8 status[STATUS_RSP_SIZE];
++	int ret;
++
++	/*
++	 * The device ignores any levels or transitions on the SCL pin when the
++	 * device is idle, asleep or during waking up. Don't check for error
++	 * when waking up the device.
++	 */
++	i2c_transfer_buffer_flags(client, i2c_priv->wake_token,
++				i2c_priv->wake_token_sz, I2C_M_IGNORE_NAK);
++
++	/*
++	 * Wait to wake the device. Typical execution times for ecdh and genkey
++	 * are around tens of milliseconds. Delta is chosen to 50 microseconds.
++	 */
++	udelay(TWHI_MIN);
++
++	ret = i2c_master_recv(client, status, STATUS_SIZE);
++	if (ret < 0)
++		return ret;
++
++	return atmel_i2c_status(&client->dev, status);
++}
++
++static int atmel_i2c_sleep(struct i2c_client *client)
++{
++	u8 sleep = SLEEP_TOKEN;
++
++	return i2c_master_send(client, &sleep, 1);
++}
++
++/*
++ * atmel_i2c_send_receive() - send a command to the device and receive its
++ *                            response.
++ * @client: i2c client device
++ * @cmd   : structure used to communicate with the device
 + *
-+ * @return 0 on success, a negative value from `asm-generic/errno.h` on error.
++ * After the device receives a Wake token, a watchdog counter starts within the
++ * device. After the watchdog timer expires, the device enters sleep mode
++ * regardless of whether some I/O transmission or command execution is in
++ * progress. If a command is attempted when insufficient time remains prior to
++ * watchdog timer execution, the device will return the watchdog timeout error
++ * code without attempting to execute the command. There is no way to reset the
++ * counter other than to put the device into sleep or idle mode and then
++ * wake it up again.
++ */
++int atmel_i2c_send_receive(struct i2c_client *client, struct atmel_i2c_cmd *cmd)
++{
++	int ret;
++
++	ret = atmel_i2c_wakeup(client);
++	if (ret)
++		goto err;
++
++	/* send the command */
++	ret = i2c_master_send(client, (u8 *)cmd, cmd->count + WORD_ADDR_SIZE);
++	if (ret < 0)
++		goto err;
++
++	/* delay the appropriate amount of time for command to execute */
++	mdelay(cmd->msecs);
++
++	/* receive the response */
++	ret = i2c_master_recv(client, cmd->data, cmd->rxsize);
++	if (ret < 0)
++		goto err;
++
++	/* put the device into low-power mode */
++	ret = atmel_i2c_sleep(client);
++	if (ret < 0)
++		goto err;
++
++	return atmel_i2c_status(&client->dev, cmd->data);
++err:
++	return ret;
++}
++EXPORT_SYMBOL(atmel_i2c_send_receive);
++
++static inline size_t atmel_i2c_wake_token_sz(u32 bus_clk_rate)
++{
++	u32 no_of_bits = DIV_ROUND_UP(TWLO_USEC * bus_clk_rate, USEC_PER_SEC);
++
++	/* return the size of the wake_token in bytes */
++	return DIV_ROUND_UP(no_of_bits, 8);
++}
++
++static int device_sanity_check(struct i2c_client *client)
++{
++	struct atmel_i2c_cmd *cmd;
++	int ret;
++
++	cmd = kmalloc(sizeof(*cmd), GFP_KERNEL);
++	if (!cmd)
++		return -ENOMEM;
++
++	atmel_i2c_init_read_config_cmd(cmd);
++
++	ret = atmel_i2c_send_receive(client, cmd);
++	if (ret)
++		goto free_cmd;
++
++	/*
++	 * It is vital that the Configuration, Data and OTP zones be locked
++	 * prior to release into the field of the system containing the device.
++	 * Failure to lock these zones may permit modification of any secret
++	 * keys and may lead to other security problems.
++	 */
++	if (cmd->data[LOCK_CONFIG_IDX] || cmd->data[LOCK_VALUE_IDX]) {
++		dev_err(&client->dev, "Configuration or Data and OTP zones are unlocked!\n");
++		ret = -ENOTSUPP;
++	}
++
++	/* fall through */
++free_cmd:
++	kfree(cmd);
++	return ret;
++}
++
++int atmel_i2c_probe(struct i2c_client *client)
++{
++	struct atmel_i2c_client_priv *i2c_priv;
++	struct device *dev = &client->dev;
++	int bus_clk_rate = 1000000; /* maximum */
++
++	i2c_priv = devm_kzalloc(dev, sizeof(*i2c_priv), GFP_KERNEL);
++	if (!i2c_priv)
++		return -ENOMEM;
++
++	i2c_priv->client = client;
++
++	/*
++	 * WAKE_TOKEN_MAX_SIZE was calculated for the maximum bus_clk_rate -
++	 * 1MHz. The previous bus_clk_rate check ensures us that wake_token_sz
++	 * will always be smaller than or equal to WAKE_TOKEN_MAX_SIZE.
++	 */
++	i2c_priv->wake_token_sz = atmel_i2c_wake_token_sz(bus_clk_rate);
++
++	memset(i2c_priv->wake_token, 0, sizeof(i2c_priv->wake_token));
++
++	i2c_set_clientdata(client, i2c_priv);
++
++	return device_sanity_check(client);
++}
++EXPORT_SYMBOL(atmel_i2c_probe);
++
++MODULE_AUTHOR("Tudor Ambarus");
++MODULE_DESCRIPTION("Microchip / Atmel ECC (I2C) driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/drivers/nvmem/atmel-i2c.h b/drivers/nvmem/atmel-i2c.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..5e8b2b12951d988dd8b8e37751dd82c9f41d9411
+--- /dev/null
++++ b/drivers/nvmem/atmel-i2c.h
+@@ -0,0 +1,180 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2017, Microchip Technology Inc.
++ * Author: Tudor Ambarus
 + */
 +
-+int si5338_init(void);
-diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
-index 61935c260c8f06acec119377af7d46411e3e2744..7b05646eac0b39a119cf1bcc61b06ebc631feb28 100644
---- a/arch/arm/mach-socfpga/Kconfig
-+++ b/arch/arm/mach-socfpga/Kconfig
-@@ -42,6 +42,10 @@ config MACH_SOCFPGA_ENCLUSTRA_SA2
- 	select ARCH_SOCFPGA_CYCLONE5
- 	bool "Enclustra SA2"
- 
-+config MACH_SOCFPGA_ENCLUSTRA_SA2_SI5338
-+	depends on MACH_SOCFPGA_ENCLUSTRA_SA2
-+	bool "Configure the SI5338 clock generator on ST1 baseboard"
++#ifndef __ATMEL_I2C_H__
++#define __ATMEL_I2C_H__
 +
- config MACH_SOCFPGA_TERASIC_DE0_NANO_SOC
- 	select ARCH_SOCFPGA_CYCLONE5
- 	bool "Terasic DE0-NANO-SoC aka Atlas"
++#include <linux/types.h>
++#include <linux/nvmem-provider.h>
++
++#define ATMEL_ECC_PRIORITY		300
++
++#define COMMAND				0x03 /* packet function */
++#define SLEEP_TOKEN			0x01
++#define WAKE_TOKEN_MAX_SIZE		8
++
++/* Definitions of Data and Command sizes */
++#define WORD_ADDR_SIZE			1
++#define COUNT_SIZE			1
++#define CRC_SIZE			2
++#define CMD_OVERHEAD_SIZE		(COUNT_SIZE + CRC_SIZE)
++
++/* size in bytes of the n prime */
++#define ATMEL_ECC_NIST_P256_N_SIZE	32
++#define ATMEL_ECC_PUBKEY_SIZE		(2 * ATMEL_ECC_NIST_P256_N_SIZE)
++
++#define STATUS_RSP_SIZE			4
++#define ECDH_RSP_SIZE			(32 + CMD_OVERHEAD_SIZE)
++#define GENKEY_RSP_SIZE			(ATMEL_ECC_PUBKEY_SIZE + \
++					 CMD_OVERHEAD_SIZE)
++#define READ_RSP_SIZE			(4 + CMD_OVERHEAD_SIZE)
++#define RANDOM_RSP_SIZE			(32 + CMD_OVERHEAD_SIZE)
++#define MAX_RSP_SIZE			GENKEY_RSP_SIZE
++
++/**
++ * atmel_i2c_cmd - structure used for communicating with the device.
++ * @word_addr: indicates the function of the packet sent to the device. This
++ *             byte should have a value of COMMAND for normal operation.
++ * @count    : number of bytes to be transferred to (or from) the device.
++ * @opcode   : the command code.
++ * @param1   : the first parameter; always present.
++ * @param2   : the second parameter; always present.
++ * @data     : optional remaining input data. Includes a 2-byte CRC.
++ * @rxsize   : size of the data received from i2c client.
++ * @msecs    : command execution time in milliseconds
++ */
++struct atmel_i2c_cmd {
++	u8 word_addr;
++	u8 count;
++	u8 opcode;
++	u8 param1;
++	__le16 param2;
++	u8 data[MAX_RSP_SIZE];
++	u8 msecs;
++	u16 rxsize;
++} __packed;
++
++/* Status/Error codes */
++#define STATUS_SIZE			0x04
++#define STATUS_NOERR			0x00
++#define STATUS_WAKE_SUCCESSFUL		0x11
++
++/* Definitions for eeprom organization */
++#define CONFIGURATION_ZONE		0
++#define OTP_ZONE			1
++
++/* Definitions for eeprom zone sizes */
++#define OTP_ZONE_SIZE			64
++
++/* Definitions for Indexes common to all commands */
++#define RSP_DATA_IDX			1 /* buffer index of data in response */
++#define DATA_SLOT_2			2 /* used for ECDH private key */
++
++/* Definitions for the device lock state */
++#define DEVICE_LOCK_ADDR		0x15
++#define LOCK_VALUE_IDX			(RSP_DATA_IDX + 2)
++#define LOCK_CONFIG_IDX			(RSP_DATA_IDX + 3)
++
++/*
++ * Wake High delay to data communication (microseconds). SDA should be stable
++ * high for this entire duration.
++ */
++#define TWHI_MIN			1500
++#define TWHI_MAX			1550
++
++/* Wake Low duration */
++#define TWLO_USEC			60
++
++/* Command execution time (milliseconds) */
++#define MAX_EXEC_TIME_ECDH		58
++#define MAX_EXEC_TIME_GENKEY		115
++#define MAX_EXEC_TIME_READ		1
++#define MAX_EXEC_TIME_RANDOM		50
++
++/* Command opcode */
++#define OPCODE_ECDH			0x43
++#define OPCODE_GENKEY			0x40
++#define OPCODE_READ			0x02
++#define OPCODE_RANDOM			0x1b
++
++/* Definitions for the READ Command */
++#define READ_COUNT			7
++
++/* Definitions for the RANDOM Command */
++#define RANDOM_COUNT			7
++
++/* Definitions for the GenKey Command */
++#define GENKEY_COUNT			7
++#define GENKEY_MODE_PRIVATE		0x04
++
++/* Definitions for the ECDH Command */
++#define ECDH_COUNT			71
++#define ECDH_PREFIX_MODE		0x00
++
++/**
++ * atmel_i2c_client_priv - i2c_client private data
++ * @client              : pointer to i2c client device
++ * @i2c_client_list_node: part of i2c_client_list
++ * @lock                : lock for sending i2c commands
++ * @wake_token          : wake token array of zeros
++ * @wake_token_sz       : size in bytes of the wake_token
++ * @tfm_count           : number of active crypto transformations on i2c client
++ * @hwrng               : hold the hardware generated rng
++ *
++ * Reads and writes from/to the i2c client are sequential. The first byte
++ * transmitted to the device is treated as the byte size. Any attempt to send
++ * more than this number of bytes will cause the device to not ACK those bytes.
++ * After the host writes a single command byte to the input buffer, reads are
++ * prohibited until after the device completes command execution. Use a mutex
++ * when sending i2c commands.
++ */
++struct atmel_i2c_client_priv {
++	struct i2c_client *client;
++	u8 wake_token[WAKE_TOKEN_MAX_SIZE];
++	size_t wake_token_sz;
++	struct nvmem_config nvmem_config;
++	struct nvmem_device *nvmem;
++	void *data;
++};
++
++/**
++ * atmel_i2c_work_data - data structure representing the work
++ * @ctx : transformation context.
++ * @cbk : pointer to a callback function to be invoked upon completion of this
++ *        request. This has the form:
++ *        callback(struct atmel_i2c_work_data *work_data, void *areq, u8 status)
++ *        where:
++ *        @work_data: data structure representing the work
++ *        @areq     : optional pointer to an argument passed with the original
++ *                    request.
++ *        @status   : status returned from the i2c client device or i2c error.
++ * @areq: optional pointer to a user argument for use at callback time.
++ * @work: describes the task to be executed.
++ * @cmd : structure used for communicating with the device.
++ */
++struct atmel_i2c_work_data {
++	void *ctx;
++	struct i2c_client *client;
++	void (*cbk)(struct atmel_i2c_work_data *work_data, void *areq,
++		    int status);
++	void *areq;
++	struct atmel_i2c_cmd cmd;
++};
++
++int atmel_i2c_probe(struct i2c_client *client);
++
++void atmel_i2c_enqueue(struct atmel_i2c_work_data *work_data,
++		       void (*cbk)(struct atmel_i2c_work_data *work_data,
++				   void *areq, int status),
++		       void *areq);
++void atmel_i2c_flush_queue(void);
++
++int atmel_i2c_send_receive(struct i2c_client *client, struct atmel_i2c_cmd *cmd);
++
++void atmel_i2c_init_read_config_cmd(struct atmel_i2c_cmd *cmd);
++int atmel_i2c_init_read_otp_cmd(struct atmel_i2c_cmd *cmd, u16 addr);
++
++#endif /* __ATMEL_I2C_H__ */
+diff --git a/drivers/nvmem/atmel-sha204a.c b/drivers/nvmem/atmel-sha204a.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..3bf077c057286ae2f659a76ebb0c02c62f647535
+--- /dev/null
++++ b/drivers/nvmem/atmel-sha204a.c
+@@ -0,0 +1,114 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Microchip / Atmel SHA204A (I2C) driver.
++ *
++ * Copyright (c) 2019 Linaro, Ltd. <ard.biesheuvel@linaro.org>
++ */
++
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/errno.h>
++#include <i2c/i2c.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++
++#include "atmel-i2c.h"
++
++static int atmel_sha204a_otp_read_full(struct atmel_i2c_client_priv *i2c_priv, void *buf)
++{
++	u16 addr;
++	struct atmel_i2c_cmd cmd;
++	struct i2c_client *client = i2c_priv->client;
++	int ret;
++
++	for (addr = 0; addr < OTP_ZONE_SIZE / 4; addr++) {
++		ret = atmel_i2c_init_read_otp_cmd(&cmd, addr);
++		if (ret) {
++			dev_err(&client->dev, "failed, invalid otp address %04X\n",
++				addr);
++			return ret;
++		}
++
++		ret = atmel_i2c_send_receive(client, &cmd);
++
++		if (cmd.data[0] == 0xff) {
++			dev_err(&client->dev, "failed, device not ready\n");
++			return -EINVAL;
++		}
++
++		memcpy(buf, cmd.data + 1, 4);
++		buf += 4;
++	}
++
++	return 0;
++}
++
++static int atmel_sha204a_otp_read(void *ctx, unsigned off, void *val, size_t count)
++{
++	struct atmel_i2c_client_priv *i2c_priv = ctx;
++	int ret;
++
++	if (!i2c_priv->data) {
++		i2c_priv->data = xzalloc(OTP_ZONE_SIZE);
++		ret = atmel_sha204a_otp_read_full(i2c_priv, i2c_priv->data);
++		if (ret) {
++			free(i2c_priv->data);
++			i2c_priv->data = NULL;
++			return ret;
++		}
++	}
++
++	memcpy(val, i2c_priv->data + off, count);
++
++	return 0;
++}
++
++static int atmel_sha204a_probe(struct device *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	struct atmel_i2c_client_priv *i2c_priv;
++	int ret;
++
++	ret = atmel_i2c_probe(client);
++	if (ret)
++		return ret;
++
++	i2c_priv = i2c_get_clientdata(client);
++
++	i2c_priv->nvmem_config.name = dev_name(&client->dev);
++	i2c_priv->nvmem_config.dev = &client->dev;
++	i2c_priv->nvmem_config.priv = i2c_priv;
++	i2c_priv->nvmem_config.read_only = true;
++	i2c_priv->nvmem_config.reg_read = atmel_sha204a_otp_read;
++
++	i2c_priv->nvmem_config.stride = 4;
++	i2c_priv->nvmem_config.word_size = 1;
++	i2c_priv->nvmem_config.size = OTP_ZONE_SIZE;
++
++	i2c_priv->nvmem = nvmem_register(&i2c_priv->nvmem_config);
++	if (IS_ERR(i2c_priv->nvmem)) {
++		ret = PTR_ERR(i2c_priv->nvmem);
++		goto fail;
++	}
++
++fail:
++	return ret;
++}
++
++static const struct of_device_id atmel_sha204a_dt_ids[] __maybe_unused = {
++	{ .compatible = "atmel,atsha204", },
++	{ .compatible = "atmel,atsha204a", },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, atmel_sha204a_dt_ids);
++
++static struct driver sha204a_driver = {
++	.name  = "atmel-sha204a",
++	.probe = atmel_sha204a_probe,
++	.of_compatible = DRV_OF_COMPAT(atmel_sha204a_dt_ids),
++};
++device_i2c_driver(sha204a_driver);
++
++MODULE_AUTHOR("Ard Biesheuvel <ard.biesheuvel@linaro.org>");
++MODULE_DESCRIPTION("Microchip / Atmel SHA204A (I2C) driver");
++MODULE_LICENSE("GPL v2");
 
 -- 
 2.43.0
