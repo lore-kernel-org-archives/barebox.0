@@ -1,65 +1,65 @@
-Delivery-date: Thu, 25 Sep 2025 14:00:21 +0200
+Delivery-date: Thu, 25 Sep 2025 14:00:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1ke5-000vsX-2F
+	id 1v1ke6-000vsi-0r
 	for lore@lore.pengutronix.de;
-	Thu, 25 Sep 2025 14:00:21 +0200
+	Thu, 25 Sep 2025 14:00:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1ke3-0005EH-3J
-	for lore@pengutronix.de; Thu, 25 Sep 2025 14:00:21 +0200
+	id 1v1ke3-0005Eb-IQ
+	for lore@pengutronix.de; Thu, 25 Sep 2025 14:00:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cXnx7IbP/BsnQLXQa06Rt9SK3k/2vFKPQaPb6hMbrrM=; b=xW7kW7uowl/yORKfTjmMYFBsAs
-	ONqg2kkh5N1BE7hqZ8qIJYDVOQ2VC4PWnaMktyaKoozbJYV5q3Ydh1F11kx6sXDhMZS3sqHhgdPza
-	KgKYBijsWakX5OoI1uT6dKTDyND0k/zXCaCgfiKqhSuLCuHMXkFfAWG42VRPDhir7583EG3C4oEPF
-	P9BaPV3NsvZU0uZJdJ9MA/N5NynJhzWuQmDCUfJ3WElaKhW3b1nQa72d//wFsM+ssY/XOwjaJpRVk
-	COLOI6Pvoip56MUzKEGk0QSr/Ky7JqaOok1nNEmoRNcXLvdjlNWIvwW0mq42u74SnHkTVyOpf40GE
-	Y6Dd5F3w==;
+	bh=jI4YQkoub0i+ORwTGsa0jcs2C0dEAE+4DMHxkoznQu0=; b=1EGBQvBMugYlN8zoETv1KMseSa
+	gmxxbIAAiBEAAjxL+Q69oJo9GU8LOILll+wOruB+WNQ1upVD9hiOGOMb9Af87AHrFvjbHAE2jcfj2
+	ez62EOdOcQOSPAYEz8dmwjhWzUVp5aPxXfHJlzeu93V5brWNCfzCYQyfVQTh9kZdBih2NOPFeMb7Z
+	9VQA4O8DxTHlMTCl2DamTRaJG9uUAF7N+phIa38/5wRoE1gzTnTUI9fH/kpfAXH1LKKprN5PplQgf
+	KQdumdK+483DiENhTU7q1IM7uzS44sisAioWhxT3OEElgZjIhX/g1Uqm7LilX0z3NeqYRnq7lRqLb
+	h0fuRRxg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1kdO-00000008k2A-1dJ0;
-	Thu, 25 Sep 2025 11:59:38 +0000
+	id 1v1kdM-00000008jzH-0JxB;
+	Thu, 25 Sep 2025 11:59:36 +0000
 Received: from cczrelay02.in2p3.fr ([134.158.66.142])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1kdH-00000008jqd-00cO
+	id 1v1kdG-00000008jqf-1H0H
 	for barebox@lists.infradead.org;
-	Thu, 25 Sep 2025 11:59:35 +0000
+	Thu, 25 Sep 2025 11:59:34 +0000
 Received: from [127.0.1.1] (clrelecpo09w.in2p3.fr [134.158.124.135])
 	(authenticated bits=0)
-	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 58PBxEkx016594
+	by cczrelay02.in2p3.fr (8.14.4/8.14.4) with ESMTP id 58PBxEkr016594
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
 	Thu, 25 Sep 2025 13:59:25 +0200
 From: David Picard <david.picard@clermont.in2p3.fr>
-Date: Thu, 25 Sep 2025 13:59:15 +0200
+Date: Thu, 25 Sep 2025 13:59:09 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250925-boards-enclustra-sa2-add-support-v2-8-6820ad6c6256@clermont.in2p3.fr>
+Message-Id: <20250925-boards-enclustra-sa2-add-support-v2-2-6820ad6c6256@clermont.in2p3.fr>
 References: <20250925-boards-enclustra-sa2-add-support-v2-0-6820ad6c6256@clermont.in2p3.fr>
 In-Reply-To: <20250925-boards-enclustra-sa2-add-support-v2-0-6820ad6c6256@clermont.in2p3.fr>
 To: Sascha Hauer <s.hauer@pengutronix.de>,
         BAREBOX <barebox@lists.infradead.org>
 Cc: David Picard <david.picard@clermont.in2p3.fr>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758801565; l=5111;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758801565; l=8958;
  i=david.picard@clermont.in2p3.fr; s=20250917; h=from:subject:message-id;
- bh=794bCC9JR6DY/LVkFSSq9Af7SXS9JhqSrxBV0gJoqds=;
- b=sgbK0kKls6vcyOuJOQsAdIqNIQl3MtQvLEhXojBNIVH5HFFarO0/+jahQhrt+xoiC7GSAJ82a
- 62SIxUi4SpHCNfdwC3DSTPJIGhd/0L2ceNC6+QdK0VyRajaBS7yO85s
+ bh=GlaJrASjolC19WZxGpe3t3XCDWIHUeYzVwvFYAuqsMk=;
+ b=SRMcdUsyR36u90ad3odTlGseroYA3zA/84IJmOezd+OaewYnLj2rfWcTcewgW7C0L/RH1XoOu
+ A9YK8QHJRtpAowk5Ke3tpx3UtfE7OevemwPJ1ghdHQtt/Frp0/NFHIt
 X-Developer-Key: i=david.picard@clermont.in2p3.fr; a=ed25519;
  pk=Ew2hyxWdBXm7qaK2tHrk3KcOlOjoh3+irqJPSHtq/PU=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250925_045931_320822_865246FC 
-X-CRM114-Status: GOOD (  12.99  )
+X-CRM114-CacheID: sfid-20250925_045930_635564_ED908899 
+X-CRM114-Status: GOOD (  17.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,150 +81,217 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 08/10] lib: add crc16 support
+Subject: [PATCH v2 02/10] Add Enclustra Mercury+ SA2 module
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Implement the files necessary to support the Enclustra Mercury+ SA2
+module (SoM).
 
-This adds crc16 support taken straight out of Linux-6.16
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: David Picard <david.picard@clermont.in2p3.fr>
 ---
- include/linux/crc16.h | 21 ++++++++++++++++
- lib/Kconfig           |  3 +++
- lib/Makefile          |  1 +
- lib/crc16.c           | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 94 insertions(+)
+ arch/arm/boards/Makefile                      |  1 +
+ arch/arm/boards/enclustra-sa2/Makefile        |  2 ++
+ arch/arm/boards/enclustra-sa2/board.c         | 34 +++++++++++++++++++++++++++
+ arch/arm/boards/enclustra-sa2/lowlevel.c      | 15 ++++++++++++
+ arch/arm/configs/socfpga-xload_defconfig      |  1 +
+ arch/arm/configs/socfpga_defconfig            |  3 +--
+ arch/arm/dts/Makefile                         |  1 +
+ arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts | 31 ++++++++++++++++++++++++
+ arch/arm/mach-socfpga/Kconfig                 |  4 ++++
+ images/Makefile.socfpga                       |  8 +++++++
+ 10 files changed, 98 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/crc16.h b/include/linux/crc16.h
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index c851e1546bd6e0840a4361a53f60852df07c0a95..61cc7b056607e7e87b277e37c4bc3376ad252593 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -120,6 +120,7 @@ obj-$(CONFIG_MACH_SOCFPGA_ALTERA_SOCDK)		+= altera-socdk/
+ obj-$(CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE)	+= arrow-axe5-eagle/
+ obj-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES)		+= ebv-socrates/
+ obj-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1)	+= enclustra-aa1/
++obj-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2)	+= enclustra-sa2/
+ obj-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES)	+= reflex-achilles/
+ obj-$(CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC)	+= terasic-de0-nano-soc/
+ obj-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO)	+= terasic-de10-nano/
+diff --git a/arch/arm/boards/enclustra-sa2/Makefile b/arch/arm/boards/enclustra-sa2/Makefile
 new file mode 100644
-index 0000000000000000000000000000000000000000..2b53d62d81f0d5db9b98dd29bf2625bb34e2bb4e
+index 0000000000000000000000000000000000000000..8c927fe291a6b3eb20a32a2db96c73f231ab4697
 --- /dev/null
-+++ b/include/linux/crc16.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ *	crc16.h - CRC-16 routine
-+ *
-+ * Implements the standard CRC-16:
-+ *   Width 16
-+ *   Poly  0x8005 (x^16 + x^15 + x^2 + 1)
-+ *   Init  0
-+ *
-+ * Copyright (c) 2005 Ben Gardner <bgardner@wabtec.com>
-+ */
-+
-+#ifndef __CRC16_H
-+#define __CRC16_H
-+
-+#include <linux/types.h>
-+
-+u16 crc16(u16 crc, const u8 *buffer, size_t len);
-+
-+#endif /* __CRC16_H */
-+
-diff --git a/lib/Kconfig b/lib/Kconfig
-index d07e2f3b695916df56775bc8c1a98bad8bd52b52..c83589e2d9e442caa2351bfb400d197296819c16 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -162,6 +162,9 @@ config CRC8
- 	  when they need to do cyclic redundancy check according CRC8
- 	  algorithm. Module will be called crc8.
- 
-+config CRC16
-+	bool "CRC16 function"
-+
- source "lib/gui/Kconfig"
- 
- source "lib/fonts/Kconfig"
-diff --git a/lib/Makefile b/lib/Makefile
-index 13f1de1420083df3e8c846b503968f58474e36f0..e9f152b21dad3f521cb9dbbf88d6012fdee19c3c 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -85,6 +85,7 @@ obj-y			+= parseopt.o
- obj-y			+= clz_ctz.o
- obj-$(CONFIG_CRC_CCITT) += crc-ccitt.o
- obj-$(CONFIG_CRC8)	+= crc8.o
-+obj-$(CONFIG_CRC16)	+= crc16.o
- obj-$(CONFIG_NLS)	+= nls_base.o
- obj-$(CONFIG_FSL_QE_FIRMWARE) += fsl-qe-firmware.o
- obj-$(CONFIG_UBSAN_STANDALONE)	+= ubsan.o
-diff --git a/lib/crc16.c b/lib/crc16.c
++++ b/arch/arm/boards/enclustra-sa2/Makefile
+@@ -0,0 +1,2 @@
++obj-y += lowlevel.o board.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/enclustra-sa2/board.c b/arch/arm/boards/enclustra-sa2/board.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..8d0354ba6b7a6a02367cf42e7bec30d64ce57e0b
+index 0000000000000000000000000000000000000000..d3117e9a1058738ea541f45b28c6a95184331554
 --- /dev/null
-+++ b/lib/crc16.c
-@@ -0,0 +1,69 @@
++++ b/arch/arm/boards/enclustra-sa2/board.c
+@@ -0,0 +1,34 @@
 +// SPDX-License-Identifier: GPL-2.0-only
++
++#include <common.h>
++#include <types.h>
++#include <driver.h>
++#include <init.h>
++#include <asm/armlinux.h>
++#include <linux/mdio.h>
++#include <linux/micrel_phy.h>
++#include <linux/phy.h>
++#include <linux/sizes.h>
++#include <fcntl.h>
++#include <fs.h>
++#include <mach/socfpga/cyclone5-regs.h>
++
 +/*
-+ *      crc16.c
++ * Ethernet PHY: Microchip/Micrel KSZ9031RNX
 + */
-+
-+#include <linux/types.h>
-+#include <linux/module.h>
-+#include <linux/crc16.h>
-+
-+/** CRC table for the CRC-16. The poly is 0x8005 (x^16 + x^15 + x^2 + 1) */
-+static u16 const crc16_table[256] = {
-+	0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
-+	0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
-+	0xCC01, 0x0CC0, 0x0D80, 0xCD41, 0x0F00, 0xCFC1, 0xCE81, 0x0E40,
-+	0x0A00, 0xCAC1, 0xCB81, 0x0B40, 0xC901, 0x09C0, 0x0880, 0xC841,
-+	0xD801, 0x18C0, 0x1980, 0xD941, 0x1B00, 0xDBC1, 0xDA81, 0x1A40,
-+	0x1E00, 0xDEC1, 0xDF81, 0x1F40, 0xDD01, 0x1DC0, 0x1C80, 0xDC41,
-+	0x1400, 0xD4C1, 0xD581, 0x1540, 0xD701, 0x17C0, 0x1680, 0xD641,
-+	0xD201, 0x12C0, 0x1380, 0xD341, 0x1100, 0xD1C1, 0xD081, 0x1040,
-+	0xF001, 0x30C0, 0x3180, 0xF141, 0x3300, 0xF3C1, 0xF281, 0x3240,
-+	0x3600, 0xF6C1, 0xF781, 0x3740, 0xF501, 0x35C0, 0x3480, 0xF441,
-+	0x3C00, 0xFCC1, 0xFD81, 0x3D40, 0xFF01, 0x3FC0, 0x3E80, 0xFE41,
-+	0xFA01, 0x3AC0, 0x3B80, 0xFB41, 0x3900, 0xF9C1, 0xF881, 0x3840,
-+	0x2800, 0xE8C1, 0xE981, 0x2940, 0xEB01, 0x2BC0, 0x2A80, 0xEA41,
-+	0xEE01, 0x2EC0, 0x2F80, 0xEF41, 0x2D00, 0xEDC1, 0xEC81, 0x2C40,
-+	0xE401, 0x24C0, 0x2580, 0xE541, 0x2700, 0xE7C1, 0xE681, 0x2640,
-+	0x2200, 0xE2C1, 0xE381, 0x2340, 0xE101, 0x21C0, 0x2080, 0xE041,
-+	0xA001, 0x60C0, 0x6180, 0xA141, 0x6300, 0xA3C1, 0xA281, 0x6240,
-+	0x6600, 0xA6C1, 0xA781, 0x6740, 0xA501, 0x65C0, 0x6480, 0xA441,
-+	0x6C00, 0xACC1, 0xAD81, 0x6D40, 0xAF01, 0x6FC0, 0x6E80, 0xAE41,
-+	0xAA01, 0x6AC0, 0x6B80, 0xAB41, 0x6900, 0xA9C1, 0xA881, 0x6840,
-+	0x7800, 0xB8C1, 0xB981, 0x7940, 0xBB01, 0x7BC0, 0x7A80, 0xBA41,
-+	0xBE01, 0x7EC0, 0x7F80, 0xBF41, 0x7D00, 0xBDC1, 0xBC81, 0x7C40,
-+	0xB401, 0x74C0, 0x7580, 0xB541, 0x7700, 0xB7C1, 0xB681, 0x7640,
-+	0x7200, 0xB2C1, 0xB381, 0x7340, 0xB101, 0x71C0, 0x7080, 0xB041,
-+	0x5000, 0x90C1, 0x9181, 0x5140, 0x9301, 0x53C0, 0x5280, 0x9241,
-+	0x9601, 0x56C0, 0x5780, 0x9741, 0x5500, 0x95C1, 0x9481, 0x5440,
-+	0x9C01, 0x5CC0, 0x5D80, 0x9D41, 0x5F00, 0x9FC1, 0x9E81, 0x5E40,
-+	0x5A00, 0x9AC1, 0x9B81, 0x5B40, 0x9901, 0x59C0, 0x5880, 0x9841,
-+	0x8801, 0x48C0, 0x4980, 0x8941, 0x4B00, 0x8BC1, 0x8A81, 0x4A40,
-+	0x4E00, 0x8EC1, 0x8F81, 0x4F40, 0x8D01, 0x4DC0, 0x4C80, 0x8C41,
-+	0x4400, 0x84C1, 0x8581, 0x4540, 0x8701, 0x47C0, 0x4680, 0x8641,
-+	0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040
-+};
-+
-+static inline u16 crc16_byte(u16 crc, const u8 data)
++static int phy_fixup(struct phy_device *dev)
 +{
-+	return (crc >> 8) ^ crc16_table[(crc ^ data) & 0xff];
++	return 0;
 +}
 +
-+/**
-+ * crc16 - compute the CRC-16 for the data buffer
-+ * @crc:	previous CRC value
-+ * @buffer:	data pointer
-+ * @len:	number of bytes in the buffer
++static int socfpga_init(void)
++{
++	if (!of_machine_is_compatible("enclustra,mercury-sa2"))
++		return 0;
++
++	if (IS_ENABLED(CONFIG_PHYLIB))
++		phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK, phy_fixup);
++
++	return 0;
++}
++console_initcall(socfpga_init);
+diff --git a/arch/arm/boards/enclustra-sa2/lowlevel.c b/arch/arm/boards/enclustra-sa2/lowlevel.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..08744756949f96c041e255963362f04c4d3d186a
+--- /dev/null
++++ b/arch/arm/boards/enclustra-sa2/lowlevel.c
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include "sdram_config.h"
++#include "pinmux_config.c"
++#include "pll_config.h"
++#include "sequencer_defines.h"
++#include "sequencer_auto.h"
++#include "sequencer_auto_inst_init.c"
++#include "sequencer_auto_ac_init.c"
++#include "iocsr_config_cyclone5.c"
++
++#include <mach/socfpga/lowlevel.h>
++
++SOCFPGA_C5_ENTRY(start_socfpga_sa2, socfpga_cyclone5_mercury_sa2, SZ_1G);
++SOCFPGA_C5_XLOAD_ENTRY(start_socfpga_sa2_xload, SZ_1G);
+diff --git a/arch/arm/configs/socfpga-xload_defconfig b/arch/arm/configs/socfpga-xload_defconfig
+index 892f1d24cb268387668ed064db48c674dbbf4ef8..00841b8530ded7f09a16c6c3b957ecd902211ec2 100644
+--- a/arch/arm/configs/socfpga-xload_defconfig
++++ b/arch/arm/configs/socfpga-xload_defconfig
+@@ -2,6 +2,7 @@ CONFIG_ARCH_SOCFPGA=y
+ CONFIG_ARCH_SOCFPGA_XLOAD=y
+ CONFIG_MACH_SOCFPGA_ALTERA_SOCDK=y
+ CONFIG_MACH_SOCFPGA_EBV_SOCRATES=y
++CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2=y
+ CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC=y
+ CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO=y
+ CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT=y
+diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
+index a24934cd8bda229fea6a41d94d5c049bff585699..e9b93bc19775667d70ce02a01ab4dcae26053b86 100644
+--- a/arch/arm/configs/socfpga_defconfig
++++ b/arch/arm/configs/socfpga_defconfig
+@@ -1,8 +1,7 @@
+ CONFIG_ARCH_SOCFPGA=y
+ CONFIG_MACH_SOCFPGA_ALTERA_SOCDK=y
+ CONFIG_MACH_SOCFPGA_EBV_SOCRATES=y
+-CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1=y
+-CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES=y
++CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2=y
+ CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC=y
+ CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO=y
+ CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 021573a266ca30d46ce0a2dc9083a61461949540..5d04636cd3946084d66596a90c276b119f9dcb2c 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -142,6 +142,7 @@ lwl-$(CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB) += imx6sx-sdb.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_ALTERA_SOCDK) += socfpga_cyclone5_socdk.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1) += socfpga_arria10_mercury_aa1.dtb.o
++lwl-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2) += socfpga_cyclone5_mercury_sa2.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES) += socfpga_arria10_achilles.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC) += socfpga_cyclone5_de0_nano_soc.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO) += socfpga_cyclone5_de10_nano.dtb.o
+diff --git a/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts b/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e2f2c1af19e68c0c662f62bc154856f75df2510
+--- /dev/null
++++ b/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dts
+@@ -0,0 +1,31 @@
++/*
++ *  Copyright (C) 2025 David Picard <david.picard@clermont.in2p3.fr>
 + *
-+ * Returns the updated CRC value.
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
-+u16 crc16(u16 crc, u8 const *buffer, size_t len)
-+{
-+	while (len--)
-+		crc = crc16_byte(crc, *buffer++);
-+	return crc;
-+}
-+EXPORT_SYMBOL(crc16);
 +
-+MODULE_DESCRIPTION("CRC16 calculations");
-+MODULE_LICENSE("GPL");
++#include <arm/intel/socfpga/socfpga_cyclone5_mercury_sa2.dts>
++#include "socfpga.dtsi"
 +
++/ {
++	chosen {
++		stdout-path = &uart0;
++
++		environment {
++			compatible = "barebox,environment";
++			device-path = &mmc, "partname:1";
++			file-path = "barebox.env";
++		};
++	};
++};
+diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
+index f0dce3bad0429d38840975a2f3c3640731e7a605..61935c260c8f06acec119377af7d46411e3e2744 100644
+--- a/arch/arm/mach-socfpga/Kconfig
++++ b/arch/arm/mach-socfpga/Kconfig
+@@ -38,6 +38,10 @@ config MACH_SOCFPGA_EBV_SOCRATES
+ 	select ARCH_SOCFPGA_CYCLONE5
+ 	bool "EBV Socrates"
+ 
++config MACH_SOCFPGA_ENCLUSTRA_SA2
++	select ARCH_SOCFPGA_CYCLONE5
++	bool "Enclustra SA2"
++
+ config MACH_SOCFPGA_TERASIC_DE0_NANO_SOC
+ 	select ARCH_SOCFPGA_CYCLONE5
+ 	bool "Terasic DE0-NANO-SoC aka Atlas"
+diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
+index db1a47b6a1ad7f6a7d08036bdeed6a50b707ac47..ec1bce5079c9e1b334f6ae8225f9d91282615b6d 100644
+--- a/images/Makefile.socfpga
++++ b/images/Makefile.socfpga
+@@ -59,6 +59,14 @@ pblb-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1) += start_socfpga_aa1_bringup
+ FILE_barebox-socfpga-aa1-bringup.img = start_socfpga_aa1_bringup.pblb
+ socfpga-barebox-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1) += barebox-socfpga-aa1-bringup.img
+ 
++pblb-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2) += start_socfpga_sa2_xload
++FILE_barebox-socfpga-sa2-xload.img = start_socfpga_sa2_xload.pblb.socfpgaimg
++socfpga-xload-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2) += barebox-socfpga-sa2-xload.img
++
++pblb-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2) += start_socfpga_sa2
++FILE_barebox-socfpga-sa2.img = start_socfpga_sa2.pblb
++socfpga-barebox-$(CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2) += barebox-socfpga-sa2.img
++
+ pblb-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES) += start_socfpga_achilles_xload
+ FILE_barebox-socfpga-achilles-xload.img = start_socfpga_achilles_xload.pblb.socfpgaimg
+ socfpga-barebox-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES) += barebox-socfpga-achilles-xload.img
 
 -- 
 2.43.0
