@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v25Tp-001IJI-1s
+	id 1v25Tp-001IJS-2B
 	for lore@lore.pengutronix.de;
 	Fri, 26 Sep 2025 12:15:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v25To-0004pC-Tx
+	id 1v25Tm-0004nD-MU
 	for lore@pengutronix.de; Fri, 26 Sep 2025 12:15:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,48 +18,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=O1YHu4fJWbzUuJ8RHNiIUcy31RUQmWCSW1qtk4OLWaM=; b=ELlneGG0YzOVvX/SW/xxOFR6lX
-	agpoqd4XBGpVc2eD3cEamqY2KhS415eDqQ0k740byQbE6d15XIMS5K/aiUbFQmjLqRlnVGPdPKMjZ
-	k4rH40Ms+1QncVORPkqNelsCNVDDp7kBX78jGbOJDxk0dkpdm/9Odf21bD1LW7WiR41eqwHtg3XOC
-	zx0EcMBBo8eNjhoUqdyBO9XYFtDzYVF2nHUnlvTVWw+rMXN8hmGzuUzN/AGeXWS+9A7hUkcJ/xNMj
-	yh1qZMD//ot54eq0CVOUBxIwyqVO/7dMjWIjq6Bdw+gH1qwZmOrGNafCbxCXEl3Tkh5SAFNyJzJpA
-	FNhW360g==;
+	bh=XAa0TwDootebBSjSqsU0py2tYev1vQoVieegTIaW2QU=; b=xZ8FPLhQTZKOeo/iPs8Kgzb0df
+	c16t5k9w7IbirpPuQb6u6mPVliq4fQUPr/Ag/6EJ9v5OjSzpbrnCWVkPC5+QHgaeIGaOqUKuYstkN
+	aBri2wrF8baNpChF16OKlVc4S473vk+OLyu5UvKSX8C8vSzJPHcSSHcAiHrRUt2GFcwE9ko4cDIWS
+	sLd8MBQ6oBsYNl+wWrbBvJuVLMUGpB+ua3qgVxVd0xPnIpefDV5lC4gz3HeASLcZEhit9+1aNoYvn
+	yTxxqXh6BJ+K6VVq9hvTfJbbH8P3Lj9NbayoDHMNkF5n1en0kpwZ0XdcjRPY7H8f+t+zMbyZvbVji
+	tVxW9Uzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v25TG-00000000Id2-0Wmt;
-	Fri, 26 Sep 2025 10:14:34 +0000
+	id 1v25TE-00000000IbD-11ej;
+	Fri, 26 Sep 2025 10:14:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v25TB-00000000IWm-1XdG
+	id 1v25TB-00000000IWq-1QjY
 	for barebox@lists.infradead.org;
-	Fri, 26 Sep 2025 10:14:31 +0000
+	Fri, 26 Sep 2025 10:14:30 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1v25T8-0004Ji-Dz; Fri, 26 Sep 2025 12:14:26 +0200
+	id 1v25T8-0004Ji-Ig; Fri, 26 Sep 2025 12:14:26 +0200
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Fri, 26 Sep 2025 12:14:04 +0200
+Date: Fri, 26 Sep 2025 12:14:08 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250926-tlv-integration-v1-3-45dc68b9b602@pengutronix.de>
+Message-Id: <20250926-tlv-integration-v1-7-45dc68b9b602@pengutronix.de>
 References: <20250926-tlv-integration-v1-0-45dc68b9b602@pengutronix.de>
 In-Reply-To: <20250926-tlv-integration-v1-0-45dc68b9b602@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3949; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=sj9GfvOKH/CfqsinF0GiqZ3O+iMYjK8JSzcPl6CH47Q=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsi4ll4XPmGzbMiswNUq1sYLnly645azN+uRz+2bN08Xp
- GxpOL3fqKOUhUGMi0FWTJElVk1OQcjY/7pZpV0szBxWJpAhDFycAjCR6YwM/1MuCcfed7b1uq+4
- Yy17ya9jfcd88jQXiD7Uzkj9WreT/xojw8lQo6CqqRZC6yaFdrZacqhWsT/asoyZe86tpbcn9Zj
- rsAEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4043; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=P+IuEVp2hPDlMjdFh7IuDAZJZ2NJYR+35cXg7GMxex0=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsi4lt6oXXXJccvBTcYVcm/uHvrmedJtTo6mazwPz63Hh
+ 9eFzA5c3FHKwiDGxSArpsgSqyanIGTsf92s0i4WZg4rE8gQBi5OAZhI/05Ghrsxz3pPRBiczzAs
+ XL0nzejQlVX8VeLP9BgEGjt7X8dcKGdkmBPuEOJyJ3g62+/36z0eN/3j+SZotGIxy5sk0fofX88
+ eYAcA
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250926_031429_461844_4E81FD39 
-X-CRM114-Status: GOOD (  10.26  )
+X-CRM114-CacheID: sfid-20250926_031429_389456_343E6AED 
+X-CRM114-Status: GOOD (  11.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,141 +81,110 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/7] test: move dm-verity testdata generation to fixture
+Subject: [PATCH 7/7] test: py: add TLV integration tests
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Simplify barebox integration test setup by moving logic away from
-scripts/ and .github/.
+With TLV signature coming up, we want to test all things TLV more
+thoroughly, including "roundtrip" integration tests that include the
+bareboxtlv-generator python-script and the tlv barebox-command.
 
-Instead of generating testdata in separate scripts, they should be
-implemented as testfs fixtures which are automatically ran as part of
-the test suite.
-
-Includes error handling and cleanup.
+ - Encode the example TLV data
+ - Add a "corrupted" variant of that tlv binary with a bit error
+ - Test decoding those binaries using bareboxtlv-generator
+ - Test decoding those binaries using the tlv-command
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- scripts/generate_testfs.sh | 44 ---------------------------------------
- test/py/test_dm.py         | 51 ++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 49 insertions(+), 46 deletions(-)
+ test/py/test_tlv.py | 80 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
-diff --git a/scripts/generate_testfs.sh b/scripts/generate_testfs.sh
-index 1c358ff846..3c200bd401 100755
---- a/scripts/generate_testfs.sh
-+++ b/scripts/generate_testfs.sh
-@@ -28,47 +28,3 @@ generate_fit()
- 	       ${KBUILD_OUTPUT}/testfs/barebox-gzipped.fit
- }
- [ -f .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ] && generate_fit
--
--alias pad128k="dd if=/dev/zero bs=128k count=1 status=none"
--
--generate_dm_verity()
--{
--    work=$(mktemp -d)
--    cd ${work}
--
--    # Create two dummy files; use lots of padding to make sure that
--    # when we alter the contents of 'english' in root-bad, 'latin' is
--    # still be readable, as their contents wont (a) share the same
--    # hash block and (b) the block cache layer won't accedentally read
--    # the invalid block.
--
--    pad128k  >latin
--    echo -n "veritas vos liberabit" >>latin
--    pad128k >>latin
--
--    pad128k  >english
--    echo -n "truth will set you free" >>english
--    pad128k >>english
--
--    truncate -s 1M good.fat
--    mkfs.vfat good.fat
--    mcopy -i good.fat latin english ::
--
--    veritysetup format \
--		--root-hash-file=good.hash \
--		good.fat good.verity
--
--    sed 's/truth will set you free/LIAR LIAR PANTS ON FIRE/' \
--	<good.fat >bad.fat
--
--    cd -
--    cp \
--	${work}/good.fat \
--	${work}/good.verity \
--	${work}/good.hash \
--	${work}/bad.fat \
--	${KBUILD_OUTPUT}/testfs
--
--    rm -rf ${work}
--}
--generate_dm_verity
-diff --git a/test/py/test_dm.py b/test/py/test_dm.py
-index 8bdacf7b4e..837881f4af 100644
---- a/test/py/test_dm.py
-+++ b/test/py/test_dm.py
-@@ -4,10 +4,57 @@ import re
- import pytest
- from .helper import of_get_property
- 
-+import os, subprocess, shutil
- 
-+def pad128k(f):
-+    f.write(b"\0" * 128 * 1024)
- 
--def test_dm_verity(barebox, testfs):
--    barebox.run_check("cd /mnt/9p/testfs")
+diff --git a/test/py/test_tlv.py b/test/py/test_tlv.py
+new file mode 100644
+index 0000000000..3e8faafd25
+--- /dev/null
++++ b/test/py/test_tlv.py
+@@ -0,0 +1,80 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++import os
++import re
++import subprocess
++from pathlib import Path
++from crcmod.predefined import mkPredefinedCrcFun
++
++_crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
++
++import pytest
++
++
++class _TLV_Testdata:
++    def generator(self, args, check=True):
++        cmd = [os.sys.executable, str(self.generator_py)] + args
++        res = subprocess.run(cmd, text=True)
++        if check and res.returncode != 0:
++            raise RuntimeError(f"generator failed ({res.returncode}): {res.stdout}\n{res.stderr}")
++        return res
++
++    def __init__(self, testfs):
++        self.dir = Path(testfs)
++        self.scripts_dir = Path("scripts/bareboxtlv-generator")
++        self.data = self.scripts_dir / "data-example.yaml"
++        self.schema = self.scripts_dir / "schema-example.yaml"
++        self.generator_py = self.scripts_dir / "bareboxtlv-generator.py"
++        self.unsigned_bin = self.dir / 'unsigned.tlv'
++        self.corrupted_bin = self.dir / 'unsigned_corrupted.tlv'
++
 +@pytest.fixture(scope="module")
-+def dm_testdata(testfs):
-+    path = os.path.join(testfs, "dm")
-+    os.makedirs(path, exist_ok=True)
-+    cwd = os.getcwd()
-+    os.chdir(path)
++def tlv_testdata(testfs):
++    t = _TLV_Testdata(testfs)
++    t.generator(["--input-data", str(t.data), str(t.schema), str(t.unsigned_bin)])
++    assert t.unsigned_bin.exists(), "unsigned TLV not created"
 +
-+    with open("latin", "wb") as f:
-+        pad128k(f)
-+        f.write(b"veritas vos liberabit")
-+        pad128k(f)
++    with open(t.unsigned_bin, 'r+b') as f:
++        data = bytearray(f.read())
++    data[0x20] ^= 1
++    with open(t.corrupted_bin, "wb") as f:
++        f.write(data)
 +
-+    with open("english", "wb") as f:
-+        pad128k(f)
-+        f.write(b"truth will set you free")
-+        pad128k(f)
++    return t
 +
-+    try:
-+        subprocess.run(["truncate", "-s", "1M", "good.fat"], check=True)
-+        subprocess.run(["mkfs.vfat", "good.fat"], check=True)
-+        subprocess.run(["mcopy", "-i", "good.fat", "latin", "english", "::"], check=True)
-+
-+        subprocess.run([
-+            "veritysetup", "format",
-+            "--root-hash-file=good.hash",
-+            "good.fat", "good.verity"
-+        ], check=True)
-+    except FileNotFoundError as e:
-+        pytest.skip(f"Skip dm tests due to missing dependency: {e}")
-+
-+    with open("good.fat", "rb") as f: data = f.read()
-+    with open("bad.fat", "wb") as f:
-+        f.write(data.replace(
-+            b"truth will set you free",
-+            b"LIAR LIAR PANTS ON FIRE"
-+        ))
-+
-+    os.chdir(cwd)
-+
-+    yield path
-+
-+    shutil.rmtree(path)
++def test_tlv_generator(tlv_testdata):
++    t = tlv_testdata
++    out_yaml = t.dir / 'out.yaml'
 +
 +
-+def test_dm_verity(barebox, dm_testdata):
-+    barebox.run_check("cd /mnt/9p/testfs/dm")
- 
-     # Since commands run in a subshell, export the root hash in a
-     # global, so that we can access it from subsequent commands
++    good = t.generator(["--output-data", str(out_yaml), str(t.schema), str(t.unsigned_bin)], check=False)
++    assert good.returncode == 0, f"valid unsigned TLV failed to decode: {good.stderr}\n{good.stdout}"
++
++    bad = t.generator(["--output-data", str(t.dir / 'bad.yaml'), str(t.schema), str(t.corrupted_bin)], check=False)
++    assert bad.returncode != 0, "unsigned TLV with invalid CRC unexpectedly decoded successfully"
++
++def test_tlv_command(barebox, tlv_testdata):
++    t = tlv_testdata
++    _, _, rc = barebox.run("ls /mnt/9p/testfs")
++    if rc != 0:
++        pytest.xfail("skipping test due to missing --fs testfs=")
++
++    with open(t.data, 'r', encoding='utf-8') as f:
++        yaml_lines = [l.strip() for l in f if l.strip() and not l.strip().startswith('#')]
++
++    stdout = barebox.run_check(f"tlv /mnt/9p/testfs/{t.unsigned_bin.name}")
++    tlv_lines = stdout[1:-1]
++
++    assert len(yaml_lines) == len(tlv_lines), \
++        f"YAML and TLV output line count mismatch for {t.unsigned_bin.name}"
++
++    for yline, tline in zip(yaml_lines, tlv_lines):
++        ykey, yval = [x.strip() for x in yline.split(':', 1)]
++        m = re.match(r'^\s*([^=]+) = "(.*)";$', tline)
++        assert m, f"malformed tlv line: {tline}"
++        tkey, tval = m.group(1), m.group(2)
++        m = re.match(r'^([^:]+):\s*(?:"([^"]*)"\s*|(.*))$', yline)
++        assert m, f"malformed yaml line: {yline}"
++        ykey, yval = m.group(1), m.group(2) or m.group(3)
++        assert ykey == tkey, f"key mismatch: {ykey} != {tkey}"
++        assert str(yval) == str(tval), f"value mismatch for {ykey}: {yval} != {tval}"
 
 -- 
 2.51.0.297.gca2559c1d6
