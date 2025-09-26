@@ -1,65 +1,65 @@
-Delivery-date: Thu, 25 Sep 2025 16:33:56 +0200
+Delivery-date: Fri, 26 Sep 2025 10:15:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1n2i-000yR9-1o
+	id 1v23bk-001GBt-1J
 	for lore@lore.pengutronix.de;
-	Thu, 25 Sep 2025 16:33:56 +0200
+	Fri, 26 Sep 2025 10:15:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v1n2h-0005ra-Bg
-	for lore@pengutronix.de; Thu, 25 Sep 2025 16:33:56 +0200
+	id 1v23bi-0002oK-Vi
+	for lore@pengutronix.de; Fri, 26 Sep 2025 10:15:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Lr8VvivlEgA6AJeH1SEcWdcfwbszTPbuQmF7sozK5qY=; b=BB5BYkZgVrPFjJnOkC02KuK9Aw
-	3FQclEJdEz72kC+9jL/Sud3cpAPiednhw4F+2Pv9pa73TDTAi5zFf3rW4VWTnTB5OZ6mcof7XHYke
-	Ovl8H72GT3KMXNXjM5YLccZB1TpGJSI8h3BLQcNAk27IBMhuRpJ9NzAt3auyGoAn+vlc5KYMHRh/l
-	H386qOP5iL0zvcUOt83hiYRJEGYbkZUaZLnH+uyjoupaUo4afrjkrIRyl1KpVoWkptEJPGj+D9gU6
-	ep17xgPqH9X3P2PRuL1WSpHIQAe8xGNa0VDFDf61/diRfLIirS+fz8icgEwfnrWuNtWDw8lCo4lTv
-	tYK/jPPA==;
+	bh=8MBhxJhZ+QRVRxg7GK9Ic++4ZsDq1Uwh91RtSnb1WZw=; b=BCqdF5rWDlgyUX4c69PSAN8js7
+	kyf/FwVCbn5gmMd39TNfIpYOL0IuCznyaE1nuOpk5KjjLthNssNQsLC91oVlG60Wa/5KmMkA/vUIB
+	RsXdBGxD7rb3oZyXzOt5Jqgg8ZuDt/yPmU/k3nb3pvUvQlorg0XZtxA4aEgTEb5yVoioR7VrL8Kuj
+	HIcElx8nCf59orU/XKq2+PFDSuo5jgWTev/ZbSw8pQoED0vkJSoe8Ki5U+lCvM8wFohvK5PTXcsdH
+	tKUBfBa/pOfRRELIC/6l8II0Q1dR2oHSqUyTeQu96emH3Q+n5DEuxPee963qvMpKtRPNhFC96a1JA
+	IEBQNhIw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1n21-0000000A6Np-3rqU;
-	Thu, 25 Sep 2025 14:33:13 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1v23as-0000000H4Tz-1Ll2;
+	Fri, 26 Sep 2025 08:14:18 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v1n1y-0000000A6Jq-1vej
+	id 1v23ao-0000000H4Qc-1S0f
 	for barebox@lists.infradead.org;
-	Thu, 25 Sep 2025 14:33:12 +0000
+	Fri, 26 Sep 2025 08:14:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v1n1w-0005eQ-3y; Thu, 25 Sep 2025 16:33:08 +0200
+	id 1v23ak-0002e6-EY; Fri, 26 Sep 2025 10:14:10 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v1n1v-000R31-2y;
-	Thu, 25 Sep 2025 16:33:07 +0200
+	id 1v23ah-000Ym8-2J;
+	Fri, 26 Sep 2025 10:14:07 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v1n1v-0000000FXYK-3Tyu;
-	Thu, 25 Sep 2025 16:33:07 +0200
+	id 1v23ah-00000002XFS-2bVU;
+	Fri, 26 Sep 2025 10:14:07 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 25 Sep 2025 16:33:01 +0200
-Message-ID: <20250925143307.3703710-1-a.fatoum@pengutronix.de>
+Date: Fri, 26 Sep 2025 10:13:43 +0200
+Message-ID: <20250926081405.603700-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250925_073310_791652_5BCAA873 
-X-CRM114-Status: GOOD (  16.82  )
+X-CRM114-CacheID: sfid-20250926_011414_691125_F3A19B11 
+X-CRM114-Status: GOOD (  15.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,7 +81,7 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] test: emulate.pl: remove in favor of pytest
+Subject: [PATCH v2] test: emulate.pl: remove in favor of pytest
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -91,10 +91,31 @@ MAKEALL. It's thus time to remove it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/emulate.pl | 532 ------------------------------------------------
- 1 file changed, 532 deletions(-)
+v1 -> v2:
+  - remove now unused runner tuxmake_arch as well
+---
+ test/arm/virt@multi_v8_defconfig.yaml |   2 -
+ test/emulate.pl                       | 532 --------------------------
+ test/sandbox/sandbox_defconfig.yaml   |   2 -
+ test/x86/pc@efi_defconfig.yaml        |   1 -
+ test/x86/q35@efi_defconfig.yaml       |   1 -
+ test/x86/virtio@efi_defconfig.yaml    |   1 -
+ 6 files changed, 539 deletions(-)
  delete mode 100755 test/emulate.pl
 
+diff --git a/test/arm/virt@multi_v8_defconfig.yaml b/test/arm/virt@multi_v8_defconfig.yaml
+index 46caf8820f00..8aa514fb4179 100644
+--- a/test/arm/virt@multi_v8_defconfig.yaml
++++ b/test/arm/virt@multi_v8_defconfig.yaml
+@@ -17,8 +17,6 @@ targets:
+       - network
+       - barebox-state
+       - testfs
+-    runner:
+-      tuxmake_arch: arm64
+ images:
+   barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
+ imports:
 diff --git a/test/emulate.pl b/test/emulate.pl
 deleted file mode 100755
 index df21d5c727bf..000000000000
@@ -633,6 +654,54 @@ index df21d5c727bf..000000000000
 -=back
 -
 -=cut
+diff --git a/test/sandbox/sandbox_defconfig.yaml b/test/sandbox/sandbox_defconfig.yaml
+index eb9ab7f17a55..689e8d2ba89d 100644
+--- a/test/sandbox/sandbox_defconfig.yaml
++++ b/test/sandbox/sandbox_defconfig.yaml
+@@ -9,7 +9,5 @@ targets:
+       BareboxDriver:
+         prompt: "barebox@[^:]+:[^ ]+ "
+       BareboxTestStrategy: {}
+-    runner:
+-      tuxmake_arch: um
+ imports:
+   -  ../strategy.py
+diff --git a/test/x86/pc@efi_defconfig.yaml b/test/x86/pc@efi_defconfig.yaml
+index 29e9fa3595b0..2c077d55098f 100644
+--- a/test/x86/pc@efi_defconfig.yaml
++++ b/test/x86/pc@efi_defconfig.yaml
+@@ -24,7 +24,6 @@ targets:
+       efifs0: 'Driver: efifs'
+       acpi-APIC0: 'Signature: APIC (Multiple APIC Description Table)'
+     runner:
+-      tuxmake_arch: x86_64
+       kconfig_add:
+         - CONFIG_DRIVER_SERIAL_NS16550=y
+         - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+diff --git a/test/x86/q35@efi_defconfig.yaml b/test/x86/q35@efi_defconfig.yaml
+index be56a36151c6..0e79ed186d15 100644
+--- a/test/x86/q35@efi_defconfig.yaml
++++ b/test/x86/q35@efi_defconfig.yaml
+@@ -16,7 +16,6 @@ targets:
+     features:
+       - pci
+     runner:
+-      tuxmake_arch: x86_64
+       kconfig_add:
+         - CONFIG_DRIVER_SERIAL_NS16550=y
+         - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+diff --git a/test/x86/virtio@efi_defconfig.yaml b/test/x86/virtio@efi_defconfig.yaml
+index 0f6b8d2b17de..15f45b013bab 100644
+--- a/test/x86/virtio@efi_defconfig.yaml
++++ b/test/x86/virtio@efi_defconfig.yaml
+@@ -16,7 +16,6 @@ targets:
+     features:
+       - virtio-pci
+     runner:
+-      tuxmake_arch: x86_64
+       kconfig_add:
+         - common/boards/configs/virtio-pci.config
+         - CONFIG_DRIVER_SERIAL_NS16550=y
 -- 
 2.47.3
 
