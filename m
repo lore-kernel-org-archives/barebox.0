@@ -1,65 +1,65 @@
-Delivery-date: Fri, 26 Sep 2025 11:11:02 +0200
+Delivery-date: Fri, 26 Sep 2025 12:15:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v24Tl-001H3N-3A
+	id 1v25Tn-001IHc-1F
 	for lore@lore.pengutronix.de;
-	Fri, 26 Sep 2025 11:11:01 +0200
+	Fri, 26 Sep 2025 12:15:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v24Tl-0002nN-0c
-	for lore@pengutronix.de; Fri, 26 Sep 2025 11:11:01 +0200
+	id 1v25Tm-0004mv-6j
+	for lore@pengutronix.de; Fri, 26 Sep 2025 12:15:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=pTcy/iIUy0IRNY2EcUbNR7BCAeZjrrZKBnrhFbeyvPM=; b=2NyWsJ2F8znfzw/A73EQs9dn6O
-	Lo8ArDXEa6g1wT69+M30e0uSIqTW0DTNqtMT+TvvRmUm3maBOVAiGbRlv2i+saOYW54gkCZ1LJzNI
-	dZV8i1Zmfmta9nB1eP9g97ARDElAIulCUDUpqFFIq/Hk3UslRe/Cl8pVnLi+sj8AkY4RgFAQOTabC
-	SLAawarrnFbqbXsDXcadHlk2zVJZTAch3M1HGfIDO3XL5RGqSpvjRowCJ++YNaaDtAdgweMf1ZLCJ
-	0elFHrYSCd8uhaEOZ+ozVIptdYPVvOMK46vkVdYIDCin0EqXEvWqxn05fwajqhl0+LvV4tQQC5NeU
-	8yQ0aVhA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=d27L2CQtBGASRk0RYVVLzCQPq4BBZ4Ggc7evsqrIjhs=; b=e1Vo5XmeIfJoysG5MQNd2Bh/Xn
+	kmaALxI4iw/kUqzVxXY4FXB4ifpNz1ucaAts0ByZl0UVlq9VXD0Uav/tju6rfZTs9waX7ebuTm5DW
+	4UZ9dITpO1sgayTRLl9L2mfT20Sk7B6PCws+h8JsEClYlHzzutEjXdLgEzfdtsUzKuJlOtjB0Ujy2
+	R5C/dau2E5mdgImJ5WZgoP4OIKH3XnzI4FI4xC40+eg331hES8EFSm8QwY6t+ryRLTEfQH7o9fq9s
+	IE6qK1GA+ctseyX59igi2TWg/XlKL5NLjQKFtdVRDsWwwwW2s3UvAtEearaIP+a4yd32ZkEvZybIR
+	I0rsgZpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v24TJ-0000000HRWw-2eQf;
-	Fri, 26 Sep 2025 09:10:33 +0000
+	id 1v25TG-00000000Idb-3Ncd;
+	Fri, 26 Sep 2025 10:14:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v24TG-0000000HRUI-2Qem
+	id 1v25TB-00000000IWo-1ZZ2
 	for barebox@lists.infradead.org;
-	Fri, 26 Sep 2025 09:10:31 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v24TE-0002eA-T3; Fri, 26 Sep 2025 11:10:28 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v24TE-000ZFI-2I;
-	Fri, 26 Sep 2025 11:10:28 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v24TE-00000004IdF-2aIq;
-	Fri, 26 Sep 2025 11:10:28 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 26 Sep 2025 11:10:03 +0200
-Message-ID: <20250926091027.1024322-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Fri, 26 Sep 2025 10:14:32 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1v25T8-0004Ji-GT; Fri, 26 Sep 2025 12:14:26 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Fri, 26 Sep 2025 12:14:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250926-tlv-integration-v1-5-45dc68b9b602@pengutronix.de>
+References: <20250926-tlv-integration-v1-0-45dc68b9b602@pengutronix.de>
+In-Reply-To: <20250926-tlv-integration-v1-0-45dc68b9b602@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.15-dev-7abec
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1005; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=iFeo3AtjuwFu9w/cIpOk18QbDXu8BwuBHPlD+w9G2y4=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsi4lt7AlPAxdt4c92mPWWVFg7I6tzi6556VeHXAp8g5J
+ /DcU97bHaUsDGJcDLJiiiyxanIKQsb+180q7WJh5rAygQxh4OIUgInoizIynC7cJPE+RGjZlAn7
+ /2tPeM6c/yAiKzFm5sL9V7OeWWzbHcPIcHt57MtX2SFrq++kXSxenMN7Pi/9gegs9mddJS/mGTj
+ rcQMA
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250926_021030_765986_69B2750B 
-X-CRM114-Status: GOOD (  11.44  )
+X-CRM114-CacheID: sfid-20250926_031429_474611_F04C9394 
+X-CRM114-Status: GOOD (  10.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,184 +77,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/2] common: misc: reduce duplication in strerror
+Subject: [PATCH 5/7] commands: tlv: clarify error opening tlv
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We duplicate the fallback behavior and use an unnecessary intermediate
-str variable, when we could return directly.
+Returning PTR_ERR(tlvdev) instead of printing an error message leads to
+the same output when CONFIG_CMD_TLV and when the specified path could
+not be read:
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - new patch (missing prerequisite)
----
- common/misc.c | 139 ++++++++++++++++++++++++--------------------------
- 1 file changed, 66 insertions(+), 73 deletions(-)
+  tlv: No such file or directory
 
-diff --git a/common/misc.c b/common/misc.c
-index 67f88af1a3df..2ee6fdd7d612 100644
---- a/common/misc.c
-+++ b/common/misc.c
-@@ -26,86 +26,79 @@ const char *strerror(int errnum)
- {
- 	static char errno_string[sizeof("error -2147483648")];
+In the latter case, print an explanatory message instead.
+
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+---
+ commands/tlv.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/commands/tlv.c b/commands/tlv.c
+index 53fbc2a291..6118a2947f 100644
+--- a/commands/tlv.c
++++ b/commands/tlv.c
+@@ -28,9 +28,11 @@ static int do_tlv(int argc, char *argv[])
+ 	if (!filename)
+ 		return COMMAND_ERROR_USAGE;
  
--#ifdef CONFIG_ERRNO_MESSAGES
--	char *str;
- 	switch(errnum) {
--	case	0		: str = "No error"; break;
--	case	EPERM		: str = "Operation not permitted"; break;
--	case	ENOENT		: str = "No such file or directory"; break;
--	case	EIO		: str = "I/O error"; break;
--	case	ENXIO		: str = "No such device or address"; break;
--	case	E2BIG		: str = "Arg list too long"; break;
--	case	ENOEXEC		: str = "Exec format error"; break;
--	case	EBADF		: str = "Bad file number"; break;
--	case	ENOMEM		: str = "Out of memory"; break;
--	case	EACCES		: str = "Permission denied"; break;
--	case	EFAULT		: str = "Bad address"; break;
--	case	EBUSY		: str = "Device or resource busy"; break;
--	case	EEXIST		: str = "File exists"; break;
--	case	ENODEV		: str = "No such device"; break;
--	case	ENOTDIR		: str = "Not a directory"; break;
--	case	EISDIR		: str = "Is a directory"; break;
--	case	EINVAL		: str = "Invalid argument"; break;
--	case	ENOSPC		: str = "No space left on device"; break;
--	case	ESPIPE		: str = "Illegal seek"; break;
--	case	EROFS		: str = "Read-only file system"; break;
--	case	ENAMETOOLONG	: str = "File name too long"; break;
--	case	ENOSYS		: str = "Function not implemented"; break;
--	case	ENOTEMPTY	: str = "Directory not empty"; break;
--	case	EHOSTUNREACH	: str = "No route to host"; break;
--	case	EINTR		: str = "Interrupted system call"; break;
--	case	ENETUNREACH	: str = "Network is unreachable"; break;
--	case	ENETDOWN	: str = "Network is down"; break;
--	case	ETIMEDOUT	: str = "Connection timed out"; break;
--	case	EPROBE_DEFER	: str = "Requested probe deferral"; break;
--	case	ELOOP		: str = "Too many symbolic links encountered"; break;
--	case	ENODATA		: str = "No data available"; break;
--	case	EOPNOTSUPP	: str = "Operation not supported"; break;
-+#ifdef CONFIG_ERRNO_MESSAGES
-+	case	0		: return "No error";
-+	case	EPERM		: return "Operation not permitted";
-+	case	ENOENT		: return "No such file or directory";
-+	case	EIO		: return "I/O error";
-+	case	ENXIO		: return "No such device or address";
-+	case	E2BIG		: return "Arg list too long";
-+	case	ENOEXEC		: return "Exec format error";
-+	case	EBADF		: return "Bad file number";
-+	case	ENOMEM		: return "Out of memory";
-+	case	EACCES		: return "Permission denied";
-+	case	EFAULT		: return "Bad address";
-+	case	EBUSY		: return "Device or resource busy";
-+	case	EEXIST		: return "File exists";
-+	case	ENODEV		: return "No such device";
-+	case	ENOTDIR		: return "Not a directory";
-+	case	EISDIR		: return "Is a directory";
-+	case	EINVAL		: return "Invalid argument";
-+	case	ENOSPC		: return "No space left on device";
-+	case	ESPIPE		: return "Illegal seek";
-+	case	EROFS		: return "Read-only file system";
-+	case	ENAMETOOLONG	: return "File name too long";
-+	case	ENOSYS		: return "Function not implemented";
-+	case	ENOTEMPTY	: return "Directory not empty";
-+	case	EHOSTUNREACH	: return "No route to host";
-+	case	EINTR		: return "Interrupted system call";
-+	case	ENETUNREACH	: return "Network is unreachable";
-+	case	ENETDOWN	: return "Network is down";
-+	case	ETIMEDOUT	: return "Connection timed out";
-+	case	EPROBE_DEFER	: return "Requested probe deferral";
-+	case	ELOOP		: return "Too many symbolic links encountered";
-+	case	ENODATA		: return "No data available";
-+	case	EOPNOTSUPP	: return "Operation not supported";
- #if 0 /* These are probably not needed */
--	case	ENOTBLK		: str = "Block device required"; break;
--	case	EFBIG		: str = "File too large"; break;
--	case	EBADSLT		: str = "Invalid slot"; break;
--	case	ETIME		: str = "Timer expired"; break;
--	case	ENONET		: str = "Machine is not on the network"; break;
--	case	EADV		: str = "Advertise error"; break;
--	case	ECOMM		: str = "Communication error on send"; break;
--	case	EPROTO		: str = "Protocol error"; break;
--	case	EBADMSG		: str = "Not a data message"; break;
--	case	EOVERFLOW	: str = "Value too large for defined data type"; break;
--	case	EBADFD		: str = "File descriptor in bad state"; break;
--	case	EREMCHG		: str = "Remote address changed"; break;
--	case	EMSGSIZE	: str = "Message too long"; break;
--	case	EPROTOTYPE	: str = "Protocol wrong type for socket"; break;
--	case	ENOPROTOOPT	: str = "Protocol not available"; break;
--	case	EPROTONOSUPPORT	: str = "Protocol not supported"; break;
--	case	ESOCKTNOSUPPORT	: str = "Socket type not supported"; break;
--	case	EPFNOSUPPORT	: str = "Protocol family not supported"; break;
--	case	EAFNOSUPPORT	: str = "Address family not supported by protocol"; break;
--	case	EADDRINUSE	: str = "Address already in use"; break;
--	case	EADDRNOTAVAIL	: str = "Cannot assign requested address"; break;
--	case	ENETRESET	: str = "Network dropped connection because of reset"; break;
--	case	ECONNABORTED	: str = "Software caused connection abort"; break;
--	case	ECONNRESET	: str = "Connection reset by peer"; break;
--	case	ENOBUFS		: str = "No buffer space available"; break;
--	case	ECONNREFUSED	: str = "Connection refused"; break;
--	case	EHOSTDOWN	: str = "Host is down"; break;
--	case	EALREADY	: str = "Operation already in progress"; break;
--	case	EINPROGRESS	: str = "Operation now in progress"; break;
--	case	ESTALE		: str = "Stale NFS file handle"; break;
--	case	EISNAM		: str = "Is a named type file"; break;
--	case	EREMOTEIO	: str = "Remote I/O error"; break;
-+	case	ENOTBLK		: return "Block device required";
-+	case	EFBIG		: return "File too large";
-+	case	EBADSLT		: return "Invalid slot";
-+	case	ETIME		: return "Timer expired";
-+	case	ENONET		: return "Machine is not on the network";
-+	case	EADV		: return "Advertise error";
-+	case	ECOMM		: return "Communication error on send";
-+	case	EPROTO		: return "Protocol error";
-+	case	EBADMSG		: return "Not a data message";
-+	case	EOVERFLOW	: return "Value too large for defined data type";
-+	case	EBADFD		: return "File descriptor in bad state";
-+	case	EREMCHG		: return "Remote address changed";
-+	case	EMSGSIZE	: return "Message too long";
-+	case	EPROTOTYPE	: return "Protocol wrong type for socket";
-+	case	ENOPROTOOPT	: return "Protocol not available";
-+	case	EPROTONOSUPPORT	: return "Protocol not supported";
-+	case	ESOCKTNOSUPPORT	: return "Socket type not supported";
-+	case	EPFNOSUPPORT	: return "Protocol family not supported";
-+	case	EAFNOSUPPORT	: return "Address family not supported by protocol";
-+	case	EADDRINUSE	: return "Address already in use";
-+	case	EADDRNOTAVAIL	: return "Cannot assign requested address";
-+	case	ENETRESET	: return "Network dropped connection because of reset";
-+	case	ECONNABORTED	: return "Software caused connection abort";
-+	case	ECONNRESET	: return "Connection reset by peer";
-+	case	ENOBUFS		: return "No buffer space available";
-+	case	ECONNREFUSED	: return "Connection refused";
-+	case	EHOSTDOWN	: return "Host is down";
-+	case	EALREADY	: return "Operation already in progress";
-+	case	EINPROGRESS	: return "Operation now in progress";
-+	case	ESTALE		: return "Stale NFS file handle";
-+	case	EISNAM		: return "Is a named type file";
-+	case	EREMOTEIO	: return "Remote I/O error";
-+#endif
- #endif
- 	default:
- 		sprintf(errno_string, "error %d", errnum);
- 		return errno_string;
- 	};
--
--        return str;
--#else
--	sprintf(errno_string, "error %d", errnum);
--
--	return errno_string;
--#endif
- }
- EXPORT_SYMBOL(strerror);
+-	tlvdev = tlv_register_device_by_path(argv[optind], NULL);
+-	if (IS_ERR(tlvdev))
+-		return PTR_ERR(tlvdev);
++	tlvdev = tlv_register_device_by_path(filename, NULL);
++	if (IS_ERR(tlvdev)) {
++		printf("Could not open \"%s\": %m\n", filename);
++		return COMMAND_ERROR;
++	}
  
+ 	if (fixup)
+ 		return tlv_of_register_fixup(tlvdev);
+
 -- 
-2.47.3
+2.51.0.297.gca2559c1d6
 
 
 
