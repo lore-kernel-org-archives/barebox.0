@@ -1,66 +1,68 @@
-Delivery-date: Fri, 26 Sep 2025 11:01:47 +0200
+Delivery-date: Fri, 26 Sep 2025 11:10:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v24Kp-001Gkw-2V
+	id 1v24Th-001H2v-1H
 	for lore@lore.pengutronix.de;
-	Fri, 26 Sep 2025 11:01:47 +0200
+	Fri, 26 Sep 2025 11:10:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v24Kp-0001CV-7P
-	for lore@pengutronix.de; Fri, 26 Sep 2025 11:01:47 +0200
+	id 1v24Tg-0002mf-ST
+	for lore@pengutronix.de; Fri, 26 Sep 2025 11:10:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=d+tEZj1aXnJSIX2VFvg1p3RaZMJigzlggMBrKAwFuk4=; b=5ALSuSJZzGSPJTLDQBEhLK1rh2
-	kjPKpTLWcuuQwbtO6Rc/8YZETc4YTeMrk5TC6L8F3HkDHA6czXETe9Bp/j1qfvpqmEcpkgbGSSpYg
-	O8vrq+ntmRE5c6OOuJonRMGOzOV45DdOb2jmFMFvQtUQdPzYaRvGTRfGpQFIDPbwhyGBzysCpt16b
-	HrxSmN8xxLweCyOMR9Jmn0Iu9Ehid82feNqRPNJHC9B67FOj/IVNA8sL5BqocEcCexuea6Ji/hRWK
-	A5pkbP0uxOEu44lQhNJ0G5rrexmSr9f2WRwmHqh8yvQsjhPyZr/QVhpbtoaG1ouo2G6VC8bDXLJQc
-	XqIUa8Gw==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=1Xd82wpJO3aaRSwbLMrCK3ZRgKxlYNqlIvQLj5CmDfo=; b=K/R4j+My2u4f/nrqfdeLiB+iJo
+	a9SxO8sfkhlEM9XIrAUm64u7yOu0GDdC/TnmyRxOSYlihxRgCp/a8XREtSZ+Z6WuJh/Ex2ZSgPxHk
+	vaHFc5BdcT8tyXe0ScUG4S04ptTF4BNqXpBM74bpkBi4xYpJ9BSLGUG0QzBLQGpBWb5E2irCbnpkI
+	AI3aZaofEfC/CF5zudGwj3Wf1wxxDT/MZz1RYGtfucJs0EyO4rWqJZi6ouR91VxenWUJtPBGCZd/s
+	p0l0DT1VcT3Z5DAbnc8IoxYkR5VMihUNwjqdsl5UClVRxhMTllrm4mPpFQArjLWa7/FIOIEhl0E5x
+	PFWgUdhg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v24KH-0000000HN6A-13ps;
-	Fri, 26 Sep 2025 09:01:13 +0000
+	id 1v24TJ-0000000HRWY-0vWf;
+	Fri, 26 Sep 2025 09:10:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v24KB-0000000HN1F-30mq
+	id 1v24TG-0000000HRUD-2QdI
 	for barebox@lists.infradead.org;
-	Fri, 26 Sep 2025 09:01:12 +0000
+	Fri, 26 Sep 2025 09:10:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v24K9-0000zD-TL; Fri, 26 Sep 2025 11:01:05 +0200
+	id 1v24TE-0002eB-Uo; Fri, 26 Sep 2025 11:10:28 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v24K9-000Z8k-2K;
-	Fri, 26 Sep 2025 11:01:05 +0200
+	id 1v24TE-000ZFJ-2T;
+	Fri, 26 Sep 2025 11:10:28 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v24K9-00000003qPT-2ale;
-	Fri, 26 Sep 2025 11:01:05 +0200
+	id 1v24TE-00000004IdF-2m9U;
+	Fri, 26 Sep 2025 11:10:28 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Jonas Rebmann <jre@pengutronix.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 26 Sep 2025 11:01:00 +0200
-Message-ID: <20250926090102.915685-1-a.fatoum@pengutronix.de>
+Date: Fri, 26 Sep 2025 11:10:04 +0200
+Message-ID: <20250926091027.1024322-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250926091027.1024322-1-a.fatoum@pengutronix.de>
+References: <20250926091027.1024322-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250926_020107_756795_BF9D1EE9 
-X-CRM114-Status: GOOD (  11.37  )
+X-CRM114-CacheID: sfid-20250926_021030_619769_2EB8D546 
+X-CRM114-Status: GOOD (  12.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,7 +84,7 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] common: binfmt: replace generic ENOENT message with "Command not found"
+Subject: [PATCH v2 2/2] common: binfmt: replace generic ENOENT message with "Command not found"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -98,6 +100,9 @@ Let's differentiate between these two situations, so the former becomes:
 
 Reported-by: Jonas Rebmann <jre@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - no change
 ---
  common/binfmt.c | 4 ++--
  common/misc.c   | 1 +
