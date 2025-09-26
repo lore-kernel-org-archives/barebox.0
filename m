@@ -1,68 +1,67 @@
-Delivery-date: Fri, 26 Sep 2025 13:32:46 +0200
+Delivery-date: Fri, 26 Sep 2025 13:33:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v26gw-001JSk-27
+	id 1v26hZ-001JTn-1B
 	for lore@lore.pengutronix.de;
-	Fri, 26 Sep 2025 13:32:46 +0200
+	Fri, 26 Sep 2025 13:33:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v26gw-00080I-5D
-	for lore@pengutronix.de; Fri, 26 Sep 2025 13:32:46 +0200
+	id 1v26hY-00089S-Qf
+	for lore@pengutronix.de; Fri, 26 Sep 2025 13:33:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pJp6Eqks86B1Mf8O9nnVnjNJRXuhKNsqc2Lhrh+c6HI=; b=TMGkUvCQ9869Dflsl/zN2NV5gY
-	t045x2nJLvyMsRS8+SfwjTFFeT2KE11wu7mQeUU9bbxDZmYYuTqHlufg+48epV655QSlY8wdUAh76
-	AlQEJ5BduckMTthCtsUYI3e5V1HxJlAJB88FcYV0Rr3ud4dwMp9OPSxmTRdMzKrD/yvljQMrvWl6M
-	leiSFtDbaTkbmjvTmFMCcLdFkaUwkWS6fE7HL8n7VbOQlxGp3MHYWEKQdWzgd3s0m3nEy8g9cksks
-	465yKBYNQR0W63jhN1lGextJVhA03WeVJ+uaQNUwUKvnRjEHHsJ/FoxcsP7Nm8iHO6ErBlf078EEj
-	C3MTyMMQ==;
+	bh=QGblAxdmPao8M8+ddu9sv1FJVFnQMahazIjW9kvl+64=; b=pnVQsVzqLn46hiRFq+18tQZA8Q
+	TlVvg8bTp/D9DVjkbqZqYEOKAVcBU1/8itWdGfQwOyT3TpjW3jYDWRUB6kKxDBjOcWvkyKwL9yEax
+	Pw6H7nZHTOzryDf+TPX4X5+VWa1rr35NMWDHk1PKdxrjZljwG5Fz9qJrTkXI5FQEXFN6Pw+0mTxxd
+	y9TzJlfhhKmM7V/oz8sXdOsPnKKYYwWnGEwYmSOxVifNbFYxq70xnX3TnTtFGwYoKyIMWw7wAPKD4
+	Zxc4daGe3BTUgbkjG8J40zPAB9yc1ffQFzBDkyD0SqL2WSGUwm3upRncddv6LOM9zaPmybVbwrQJi
+	MDrLM1AQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v26gU-00000000oKz-1MPz;
-	Fri, 26 Sep 2025 11:32:18 +0000
+	id 1v26h9-00000000olg-2k5v;
+	Fri, 26 Sep 2025 11:32:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v26gR-00000000oIG-3Gz0
+	id 1v26h6-00000000ojT-2Sk4
 	for barebox@lists.infradead.org;
-	Fri, 26 Sep 2025 11:32:17 +0000
+	Fri, 26 Sep 2025 11:32:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v26gP-0007s3-1r; Fri, 26 Sep 2025 13:32:13 +0200
+	id 1v26h4-00082b-U5; Fri, 26 Sep 2025 13:32:54 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v26gO-000a9G-2o;
-	Fri, 26 Sep 2025 13:32:12 +0200
+	id 1v26h4-000a9N-2P;
+	Fri, 26 Sep 2025 13:32:54 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v26gO-0000000D0GK-3Nyi;
-	Fri, 26 Sep 2025 13:32:12 +0200
+	id 1v26h4-0000000D0JO-2rnC;
+	Fri, 26 Sep 2025 13:32:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- Alexander Shiyan <eagle.alexander923@gmail.com>
-In-Reply-To: <20250924060906.6791-1-eagle.alexander923@gmail.com>
-References: <20250924060906.6791-1-eagle.alexander923@gmail.com>
-Message-Id: <175888633280.3099265.6955804497034457084.b4-ty@pengutronix.de>
-Date: Fri, 26 Sep 2025 13:32:12 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250925143307.3703710-1-a.fatoum@pengutronix.de>
+References: <20250925143307.3703710-1-a.fatoum@pengutronix.de>
+Message-Id: <175888637468.3099447.3566664740570890994.b4-ty@pengutronix.de>
+Date: Fri, 26 Sep 2025 13:32:54 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250926_043215_825014_63B8C868 
-X-CRM114-Status: UNSURE (   6.99  )
+X-CRM114-CacheID: sfid-20250926_043256_629937_B9197010 
+X-CRM114-Status: UNSURE (   6.25  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,22 +84,22 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] clk: rockchip: rk3588: Add PLL rate for 1500 MHz
+Subject: Re: [PATCH] test: emulate.pl: remove in favor of pytest
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 24 Sep 2025 09:09:06 +0300, Alexander Shiyan wrote:
-> At least one RK3588 clock (CPLL) uses 1.5 GHz, so let's add
-> that frequency to the PLL table.
-> This change is taken from the mainline Linux kernel.
+On Thu, 25 Sep 2025 16:33:01 +0200, Ahmad Fatoum wrote:
+> emulate.pl is no longer documented and all its functionality has been
+> replaced by either pytest conftest.py, changes in Labgrid itself or
+> MAKEALL. It's thus time to remove it.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] clk: rockchip: rk3588: Add PLL rate for 1500 MHz
-      https://git.pengutronix.de/cgit/barebox/commit/?id=dc780c20b067 (link may not be stable)
+[1/1] test: emulate.pl: remove in favor of pytest
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ac3ea9520c4e (link may not be stable)
 
 Best regards,
 -- 
