@@ -1,60 +1,91 @@
-Delivery-date: Fri, 26 Sep 2025 16:26:27 +0200
+Delivery-date: Sat, 27 Sep 2025 18:34:00 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v29P1-001MYS-1N
+	id 1v2Xs0-001lPB-24
 	for lore@lore.pengutronix.de;
-	Fri, 26 Sep 2025 16:26:27 +0200
+	Sat, 27 Sep 2025 18:34:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v29P0-00039g-JC
-	for lore@pengutronix.de; Fri, 26 Sep 2025 16:26:27 +0200
+	id 1v2Xs0-0000qk-2v
+	for lore@pengutronix.de; Sat, 27 Sep 2025 18:34:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wKrpXQDzjI4lC//f/0OTzBziu2hdX3FXhSdbaPdrFYo=; b=VQv7j9+bO0wHBhHeOmR5bLIPfT
-	C9tXk0N/kGTOKTNQ6AMiUPhOUXmaoq9oPxH+7jGowlmR5IWPQkoolUcJA+k6gPf+SzkCeP12a4D7J
-	rR0KJ+bMrDMnEu116Jl5ezV/ndRW1wphkZwPLsaUMpHYZByz+DpU6hwNBChPGy1ecw++JxWGm2l+X
-	Yz/dgRD2BlE2eCgfJlPxOFETtL2i8VI6DB3W2XJHFi2PNctJ0G7rNKn7WvchKmCqw0gDDDRCpiTjE
-	WO0ALpJzgNLEdVV70BalcuIFXkHZAl04/Rera952iu9ILgEWEEW/ldU+KJ8FQScz0jSFamT4ptPRp
-	MsDmqNuw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Sjd6xZ6gYdkSWdiEdLwgGY1pLmttp3YPBC/OVVTlWMU=; b=4SQAKXFzXbgsuOdNTQI9MMqJe0
+	qaVCvLXGK8MmyoD/lhAVi8VuvSbqOvYl7eEOnNXKeFt2W+1wDFYGYgViJ8Qy/snu6u9Ich7fd8WGZ
+	YgIfpe5sBaiD4dAZRNplpbPJNZk2K01/AFvSoQ74GBY0IhJ5suI7g3hxdMOKQP9VqS9Gxnp1/5GxQ
+	k/TC+8rg88u1Jqf/DrlST5BTdlPo9EuUOENcX6k3kwbAfjrIe0DKLw1ek/pL8/DrTk7Vg6fRIR+FL
+	46BpUaJS/n/mgvqedSvUhkPa54FYTPy5S5U9M0GdvWkRCd2tQJ396EMOvcvTeULMl1w/HnXfoSmKS
+	U6CGrWjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v29OW-00000001yNh-3iee;
-	Fri, 26 Sep 2025 14:25:56 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1v2XrB-0000000B0yj-0pC0;
+	Sat, 27 Sep 2025 16:33:09 +0000
+Received: from mail-qk1-x72e.google.com ([2607:f8b0:4864:20::72e])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v29OU-00000001yM8-3SZC
+	id 1v2Xr8-0000000B0wd-1ES8
 	for barebox@lists.infradead.org;
-	Fri, 26 Sep 2025 14:25:56 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1v29OS-0002zu-FJ; Fri, 26 Sep 2025 16:25:52 +0200
-Message-ID: <bd290731-fc60-4ec0-b091-cef811d4e057@pengutronix.de>
-Date: Fri, 26 Sep 2025 16:25:49 +0200
+	Sat, 27 Sep 2025 16:33:07 +0000
+Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-85d02580a07so188719985a.0
+        for <barebox@lists.infradead.org>; Sat, 27 Sep 2025 09:33:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758990785; x=1759595585; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sjd6xZ6gYdkSWdiEdLwgGY1pLmttp3YPBC/OVVTlWMU=;
+        b=CbmyZPFOjM3jmkl0h2ngIuxT6+ZxqYXwlKcrwUwwFvrkPt8XJhzxsB9x41GwACqsY2
+         xVP7WUTuo599sKWTAfVkUxy5arZfoLcJSnTs8a2dUpLZ9xYWL7/G5FqvPzmJ8LhIEYzP
+         GYADcGES54/OICQT48ogUUYUpjqlYbpWC9TaWAfueqFaLZABMBNASXp95zM4ie6G+Po/
+         pivNDjNWyJxoFW/0MA7NJDPUYjTdAgD6dJL0+FE7XlQyap/wCVogjRjyACQ8ho6QtR/G
+         eg+yvu7TSAAen2rtQyHR5gfBXT2Fp22/+EjU4oXqloW0rX9oh6oYbgkb01ktDzp2z9sS
+         Pcmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758990785; x=1759595585;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Sjd6xZ6gYdkSWdiEdLwgGY1pLmttp3YPBC/OVVTlWMU=;
+        b=ZbHnuOdEwcVDqWiGaomeLbQZlukP5oHqnwRd2eLi811hDkR+DxAeUY0zHkTdlXKN+T
+         uLSnEOtr14fvU4p7aHVzddjVsRyjlzTkFNW2YMzOv/9Ec+9/6QTJxxgoEu1hhtfQVja7
+         HAzv4trLqb3D7apBDIrmSaRSB1soDlLCHKb5mJoyvl6POZe6EyeWSeY9WId3K5ZPgRn+
+         AULiEG+h8Nx8Xvm806hqfxSby7xXYZRaNJtkZ/QgqaX2jKHhqW2atwoIPPjBGFtubf0d
+         7byGTR0rrsG+m+eFWlH/n8s2vqZtIKjtX0Ao4+NodqXaMoD4nOTI1TXYkHgUbtzESPsc
+         G+eA==
+X-Gm-Message-State: AOJu0Yx3k3ogSgqYdh+RhM6XKp3RRHwEKrB+Euas1/T8VSA9iYqZw65C
+	Qn+KqY7wBQaRL0nybxVDz91w13RcUchPei4D7Bktga6bpreFu78sacB2UgRV62zZvyA=
+X-Gm-Gg: ASbGncthWuig+iBVHGp4ZakSEAziPTCCsRrN+Hkufqp5Jqu0mAHEZ0OJZHtmxGMR3IO
+	Z3xJ97n6PF9j55HULfV7Bp0O6P3X9hFABuqDSsyV9nhDp5b14rlNYCiAE7bNrefCCQV0vR44q5f
+	nYBW34XGhSgCJWqjFrk6vhpkC87wKPuS9l/XQj8rjvG5M4Wf3g1rwS+4fUfx6SnnDA1droUXHRK
+	BHlWWvoOSJZSwVMvAuEMCMBGaeccswPWxp61+2wyf4HfGpN/tLSS1awTcv6eraiHn33dniLqdzm
+	qAmoFvwWN9uHD9bw7m+0Vmgq7/n1pHbu4uuc9Md1w+ZPYGKYH6XIQpyctRu8y662ecIq9EEGss2
+	Dcoi3Zg1JCOoH/P5Sy9ZQBfHAq31h2d+sRcjVbVJBWnWFPD7qQ32P5rPiJrP681NXPkClADfvH3
+	nyO6zdHOuai4DWefIW1/oe/fDibt+KmAkdW/CJ
+X-Google-Smtp-Source: AGHT+IFb9xhfrGqgyhgxbe4fEWgQmjLBvYBcZmyGKEBU+dIY0Sgx0kR8JG7ZqLlAaegLuMuky+tzKw==
+X-Received: by 2002:a05:6214:19cd:b0:78e:e882:ac8b with SMTP id 6a1803df08f44-8309885a825mr48211456d6.28.1758990784601;
+        Sat, 27 Sep 2025 09:33:04 -0700 (PDT)
+Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:7c39:91fe:53eb:3d18])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8016e952d26sm42881786d6.59.2025.09.27.09.33.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Sep 2025 09:33:04 -0700 (PDT)
+From: chalianis1@gmail.com
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org,
+	Chali Anis <chalianis1@gmail.com>
+Date: Sat, 27 Sep 2025 12:33:01 -0400
+Message-Id: <20250927163301.1002593-1-chalianis1@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>,
- Tobias Waldekranz <tobias@waldekranz.com>,
- Ahmad Fatoum <a.fatoum@barebox.org>
-References: <20250926-tlv-integration-v1-0-45dc68b9b602@pengutronix.de>
- <20250926-tlv-integration-v1-3-45dc68b9b602@pengutronix.de>
-Content-Language: en-US
-From: Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <20250926-tlv-integration-v1-3-45dc68b9b602@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250926_072554_869286_DCF03458 
-X-CRM114-Status: GOOD (  26.85  )
+X-CRM114-CacheID: sfid-20250927_093306_338665_68270313 
+X-CRM114-Status: GOOD (  12.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,192 +103,42 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/7] test: move dm-verity testdata generation to fixture
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] net: efi-snp: fix mac address change when it is not supported.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi all,
+From: Chali Anis <chalianis1@gmail.com>
 
-On 2025-09-26 12:14, Jonas Rebmann wrote:
-> Simplify barebox integration test setup by moving logic away from
-> scripts/ and .github/.
-> 
-> Instead of generating testdata in separate scripts, they should be
-> implemented as testfs fixtures which are automatically ran as part of
-> the test suite.
-> 
-> Includes error handling and cleanup.
-> 
-> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-> ---
->   scripts/generate_testfs.sh | 44 ---------------------------------------
->   test/py/test_dm.py         | 51 ++++++++++++++++++++++++++++++++++++++++++++--
->   2 files changed, 49 insertions(+), 46 deletions(-)
-> 
-> diff --git a/scripts/generate_testfs.sh b/scripts/generate_testfs.sh
-> index 1c358ff846..3c200bd401 100755
-> --- a/scripts/generate_testfs.sh
-> +++ b/scripts/generate_testfs.sh
-> @@ -28,47 +28,3 @@ generate_fit()
->   	       ${KBUILD_OUTPUT}/testfs/barebox-gzipped.fit
->   }
->   [ -f .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ] && generate_fit
+continue interface open if the efiret is unsupported since the mac address
+change is not always supported, this permits to not fail when the network
+could be used since it already has a network mac address configured, this 
+is at least the case on qemu with certain versions of EDK2.
 
-It took me some time to figure out why this patch broke CI.
+Signed-off-by: Chali Anis <chalianis1@gmail.com>
+---
+ drivers/net/efi-snp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-With the set -e in this script, this last line of fit generation logic
-should have been
-
-   [ -f .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ] && generate_fit || true
-
-given the intent here is instead of erroring out, to just skip fit
-generation if the its does not exist.
-
-The only reason CI didn't break when Tobias added mipsel and riscv, for
-which no .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its exist, in commit
-739a1a7855f5 ("ci: pytest: Open up testfs to more consumers than the FIT
-test"), is that the github workflow (incorrectly) invokes the script
-with exec. This is why only when this check became the last line of the
-script, the error return code propagated into github ci.
-
-I would like to drop scripts/generate_testfs.sh entirely in v2,
-migrating the generate_fit logic to a pytest fixture too.
-
-The reason I haven't yet is mainly that there we cannot rely on
-KBUILD_DEFCONFIG to select the test data.
-
-I thought about selecting the its from something in barebox_config or
-something in strategy.qemu instead. Any suggestions?
-
-And I'd like to also move those testfs files out of .github. I would
-like to consider the pytest tests something more than just artifacts of
-the github workflow.
-
-As this excursion into cleanup around the integration tests is getting a
-bit more involved than I hoped, I'm happy about feedback already while
-I'm working on v2.
-
-> -
-> -alias pad128k="dd if=/dev/zero bs=128k count=1 status=none"
-> -
-> -generate_dm_verity()
-> -{
-> -    work=$(mktemp -d)
-> -    cd ${work}
-> -
-> -    # Create two dummy files; use lots of padding to make sure that
-> -    # when we alter the contents of 'english' in root-bad, 'latin' is
-> -    # still be readable, as their contents wont (a) share the same
-> -    # hash block and (b) the block cache layer won't accedentally read
-> -    # the invalid block.
-> -
-> -    pad128k  >latin
-> -    echo -n "veritas vos liberabit" >>latin
-> -    pad128k >>latin
-> -
-> -    pad128k  >english
-> -    echo -n "truth will set you free" >>english
-> -    pad128k >>english
-> -
-> -    truncate -s 1M good.fat
-> -    mkfs.vfat good.fat
-> -    mcopy -i good.fat latin english ::
-> -
-> -    veritysetup format \
-> -		--root-hash-file=good.hash \
-> -		good.fat good.verity
-> -
-> -    sed 's/truth will set you free/LIAR LIAR PANTS ON FIRE/' \
-> -	<good.fat >bad.fat
-> -
-> -    cd -
-> -    cp \
-> -	${work}/good.fat \
-> -	${work}/good.verity \
-> -	${work}/good.hash \
-> -	${work}/bad.fat \
-> -	${KBUILD_OUTPUT}/testfs
-> -
-> -    rm -rf ${work}
-> -}
-> -generate_dm_verity
-> diff --git a/test/py/test_dm.py b/test/py/test_dm.py
-> index 8bdacf7b4e..837881f4af 100644
-> --- a/test/py/test_dm.py
-> +++ b/test/py/test_dm.py
-> @@ -4,10 +4,57 @@ import re
->   import pytest
->   from .helper import of_get_property
->   
-> +import os, subprocess, shutil
->   
-> +def pad128k(f):
-> +    f.write(b"\0" * 128 * 1024)
->   
-> -def test_dm_verity(barebox, testfs):
-> -    barebox.run_check("cd /mnt/9p/testfs")
-> +@pytest.fixture(scope="module")
-> +def dm_testdata(testfs):
-> +    path = os.path.join(testfs, "dm")
-> +    os.makedirs(path, exist_ok=True)
-> +    cwd = os.getcwd()
-> +    os.chdir(path)
-> +
-> +    with open("latin", "wb") as f:
-> +        pad128k(f)
-> +        f.write(b"veritas vos liberabit")
-> +        pad128k(f)
-> +
-> +    with open("english", "wb") as f:
-> +        pad128k(f)
-> +        f.write(b"truth will set you free")
-> +        pad128k(f)
-> +
-> +    try:
-> +        subprocess.run(["truncate", "-s", "1M", "good.fat"], check=True)
-> +        subprocess.run(["mkfs.vfat", "good.fat"], check=True)
-> +        subprocess.run(["mcopy", "-i", "good.fat", "latin", "english", "::"], check=True)
-> +
-> +        subprocess.run([
-> +            "veritysetup", "format",
-> +            "--root-hash-file=good.hash",
-> +            "good.fat", "good.verity"
-> +        ], check=True)
-> +    except FileNotFoundError as e:
-> +        pytest.skip(f"Skip dm tests due to missing dependency: {e}")
-> +
-> +    with open("good.fat", "rb") as f: data = f.read()
-> +    with open("bad.fat", "wb") as f:
-> +        f.write(data.replace(
-> +            b"truth will set you free",
-> +            b"LIAR LIAR PANTS ON FIRE"
-> +        ))
-> +
-> +    os.chdir(cwd)
-> +
-> +    yield path
-> +
-> +    shutil.rmtree(path)
-> +
-> +
-> +def test_dm_verity(barebox, dm_testdata):
-> +    barebox.run_check("cd /mnt/9p/testfs/dm")
->   
->       # Since commands run in a subshell, export the root hash in a
->       # global, so that we can access it from subsequent commands
-> 
-
-Regards,
-Jonas
-
+diff --git a/drivers/net/efi-snp.c b/drivers/net/efi-snp.c
+index 119358b6c880..b4d2abfecf77 100644
+--- a/drivers/net/efi-snp.c
++++ b/drivers/net/efi-snp.c
+@@ -219,7 +219,7 @@ static int efi_snp_eth_open(struct eth_device *edev)
+ 
+ 	efiret = priv->snp->station_address(priv->snp, false,
+ 			(struct efi_mac_address *)priv->snp->Mode->PermanentAddress.Addr );
+-	if (EFI_ERROR(efiret)) {
++	if (EFI_ERROR(efiret) && efiret != EFI_UNSUPPORTED) {
+ 		dev_err(priv->dev, "failed to set MAC address: %s\n",
+ 				efi_strerror(efiret));
+ 		return -efi_errno(efiret);
 -- 
-Pengutronix e.K.                           | Jonas Rebmann               |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+2.34.1
+
 
 
