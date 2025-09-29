@@ -1,74 +1,67 @@
-Delivery-date: Mon, 29 Sep 2025 09:54:13 +0200
+Delivery-date: Mon, 29 Sep 2025 10:05:11 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v38i5-002LTA-2e
+	id 1v38sh-002LZi-1Z
 	for lore@lore.pengutronix.de;
-	Mon, 29 Sep 2025 09:54:13 +0200
+	Mon, 29 Sep 2025 10:05:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v38i5-0004mw-7K
-	for lore@pengutronix.de; Mon, 29 Sep 2025 09:54:13 +0200
+	id 1v38sg-0000fm-Sz
+	for lore@pengutronix.de; Mon, 29 Sep 2025 10:05:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EzGQA/8NBDZED5j4suPTYzgP1LKJw6S3saxJV9fTzco=; b=UazcPUem2iMQf/7A+4oArO3KjI
-	dlpw2W0h+BKNKyHYTV/4z3sPERP+ksP8YXKPr8O9U9xH58BpuZZdPoOB7h+7zPKA0efJhsHtqvcZn
-	E9CBUwzJyp5gvUzw0FMR2p6NXzycZ6/kNgdL+ZNVRgmQZaZ3SDuPeXpb5iQEZAM0sBmnKFXVaqpHq
-	x8pI7JOlt33dQEkvKsNllp/K6KF1ZVBQhlyTddeftY9z95QrANRIDI78m8roakIHsgefv0MZVfMQg
-	Ewv52sZrYGeqs5DZGEgYnTqw1+GG8n36AbuSU3+mb2a23mUhCKQJNnIwN1csrm2hR0R0OUK5WV18c
-	O/iDtgvg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=eIEwsW+0Vw3Kyc/V6spmryZNClUEzk4F5oMRFgu1Xes=; b=00O7Sa4SWuQZwMpQtKiRoI4bMr
+	dCNgz+8Tkgc6E2o6IEI0I1qFql5wJdr14j7JyJoXPWBW2wUy1RBEyGguY4f5ymwBGhUKKheZbfSFA
+	KJ5aJQCT+2KnQWXZMB2jXcj6I/QX9FlrZTBYe7WnS4Y+MWdeFsJAnpiWfdkz0VTo6TGrVGnvFK59A
+	SvyXhcJCH8RZE+G4zGfnJcJuysKV4xmFo+AMeTTolkzL75mCPfvV4R/9VrZRhRHXqKCGD6lMlZsZ3
+	eTWcwtijJkTEohLtqVPeqdDrQsCJP2QKOgw/s40x4fk7LAQPvhp4CRqDljpKx9pll/mxDL/AS68GU
+	rE/Gu70A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v38hf-00000001gpW-3q0Y;
-	Mon, 29 Sep 2025 07:53:47 +0000
+	id 1v38sE-00000001iMt-1XhQ;
+	Mon, 29 Sep 2025 08:04:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v38hc-00000001goY-3yKK
+	id 1v38s9-00000001iGs-14KX
 	for barebox@lists.infradead.org;
-	Mon, 29 Sep 2025 07:53:46 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1v38hb-0004b0-4Q; Mon, 29 Sep 2025 09:53:43 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1v38ha-0012Wo-2U;
-	Mon, 29 Sep 2025 09:53:42 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1v38ha-002X8I-2B;
-	Mon, 29 Sep 2025 09:53:42 +0200
-Date: Mon, 29 Sep 2025 09:53:42 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Jonas Rebmann <jre@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Message-ID: <aNo7BmtGiZuxWMc-@pengutronix.de>
-References: <20250926-tlv-integration-v1-0-45dc68b9b602@pengutronix.de>
- <20250926-tlv-integration-v1-3-45dc68b9b602@pengutronix.de>
- <bd290731-fc60-4ec0-b091-cef811d4e057@pengutronix.de>
+	Mon, 29 Sep 2025 08:04:39 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1v38s6-000070-Bz; Mon, 29 Sep 2025 10:04:34 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Mon, 29 Sep 2025 10:03:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bd290731-fc60-4ec0-b091-cef811d4e057@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250929-tlv-integration-v2-5-55f75da7e670@pengutronix.de>
+References: <20250929-tlv-integration-v2-0-55f75da7e670@pengutronix.de>
+In-Reply-To: <20250929-tlv-integration-v2-0-55f75da7e670@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Tobias Waldekranz <tobias@waldekranz.com>, 
+ Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.15-dev-7abec
+X-Developer-Signature: v=1; a=openpgp-sha256; l=789; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=mQ0o2xVP+FLdD9puV4/EZELjC7j8+sSLuuAZJrDZ+jE=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsi4ZdsfqX5+8vrSvwIa8V97bP5l8h1bsPJsUfhCrWyds
+ n/m978Yd5SyMIhxMciKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACaSv46R4dpevi0WyfueNH+d
+ ZGWsI9F3atOTh9t4N0zNF3uz72yifyHDP4N81mmq1z9U9mcnfC7OlFDifSXm4u3gZcnuzJ778Sc
+ nEwA=
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250929_005344_986279_645D8850 
-X-CRM114-Status: GOOD (  23.83  )
+X-CRM114-CacheID: sfid-20250929_010437_342535_89F3F705 
+X-CRM114-Status: UNSURE (   6.83  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,66 +79,39 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/7] test: move dm-verity testdata generation to fixture
+Subject: [PATCH v2 5/9] test: py: test_bootchooser: remove dead code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Sep 26, 2025 at 04:25:49PM +0200, Jonas Rebmann wrote:
-> Hi all,
-> 
-> On 2025-09-26 12:14, Jonas Rebmann wrote:
-> > Simplify barebox integration test setup by moving logic away from
-> > scripts/ and .github/.
-> > 
-> > Instead of generating testdata in separate scripts, they should be
-> > implemented as testfs fixtures which are automatically ran as part of
-> > the test suite.
-> > 
-> > Includes error handling and cleanup.
-> > 
-> > Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-> > ---
-> >   scripts/generate_testfs.sh | 44 ---------------------------------------
-> >   test/py/test_dm.py         | 51 ++++++++++++++++++++++++++++++++++++++++++++--
-> >   2 files changed, 49 insertions(+), 46 deletions(-)
-> > 
-> > diff --git a/scripts/generate_testfs.sh b/scripts/generate_testfs.sh
-> > index 1c358ff846..3c200bd401 100755
-> > --- a/scripts/generate_testfs.sh
-> > +++ b/scripts/generate_testfs.sh
-> > @@ -28,47 +28,3 @@ generate_fit()
-> >   	       ${KBUILD_OUTPUT}/testfs/barebox-gzipped.fit
-> >   }
-> >   [ -f .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ] && generate_fit
-> 
-> It took me some time to figure out why this patch broke CI.
-> 
-> With the set -e in this script, this last line of fit generation logic
-> should have been
-> 
->   [ -f .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ] && generate_fit || true
+This seems to have landed here by accident.
 
-I fixed this up in -next so that we no longer have this in the tree when
-you send your next series.
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+---
+ test/py/test_bootchooser.py | 4 ----
+ 1 file changed, 4 deletions(-)
 
-I've rewritten this to:
-
-if [ -f .github/testfs/${KBUILD_DEFCONFIG}-gzipped.its ]; then
-	generate_fit
-fi
-
-for better readability.
-
-Sascha
+diff --git a/test/py/test_bootchooser.py b/test/py/test_bootchooser.py
+index a5f2b25d65..bd8aee7399 100644
+--- a/test/py/test_bootchooser.py
++++ b/test/py/test_bootchooser.py
+@@ -5,10 +5,6 @@ from .helper import globalvars_set, devinfo, getparam_int, \
+                     getstate_int, getenv_int
+ 
+ 
+-def fit_name(suffix):
+-    return f"/mnt/9p/testfs/barebox-{suffix}.fit"
+-
+-
+ def generate_bootscript(barebox, command, name="test"):
+     barebox.run_check(f"echo -o /env/boot/{name} '#!/bin/sh'")
+     barebox.run_check(f"echo -a /env/boot/{name} '{command}'")
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.51.0.297.gca2559c1d6
+
 
 
