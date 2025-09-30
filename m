@@ -1,68 +1,69 @@
-Delivery-date: Tue, 30 Sep 2025 11:55:14 +0200
+Delivery-date: Tue, 30 Sep 2025 11:56:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3X4k-002jil-2B
+	id 1v3X5m-002jkE-0U
 	for lore@lore.pengutronix.de;
-	Tue, 30 Sep 2025 11:55:14 +0200
+	Tue, 30 Sep 2025 11:56:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3X4k-00021i-5E
-	for lore@pengutronix.de; Tue, 30 Sep 2025 11:55:14 +0200
+	id 1v3X5l-0002Kd-LE
+	for lore@pengutronix.de; Tue, 30 Sep 2025 11:56:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0e4LDtWswfHHZjqNlmwYq+5T3YdNKNsKMYaG7v12Ihg=; b=h0blKQrS0LmKuDQOHFuUIMbH6u
-	sFRJmrhm6eSwXZBw2AwGgi2BVMoZ4fodfaxAyYzHLJhKC2Ke4Fi0i6LFU6A3LXM/skB55QU5EyaId
-	KTn6rm+WvilY02OemuSxFO+IV/GRWpnQl0tGWb0mDpT2cDeVxuErfXRrttoM+sVyB1BKSGYDjPwJq
-	QlJ6v8t56zm0QBXRgBW9MZLsDc8aEwRdYMS2ENdAZ77kvMpoPGFK7mp4eHs9regCoBo0F8b8M8fOS
-	rJA40j51op/m+sXjcCzN9BbKmW1eUX+evk/eCZFS0j9NsuvQC5q3/O6IG2aDw5/BWQjL7VuIr/n19
-	F+vZT/eQ==;
+	bh=40DtCsN520kejDNDiR3dV7wSsF0+QeRF8tA3c1wYuTI=; b=Fz4F6Nrpv5jVGjd1jzkWCgljx1
+	yw8vzUQTH0ocHYt5To1w/Is/00+wTGHcGwnMUoP83AKiZ9VD+UlfIIkTiH5TzMy97Sn8ENXF6DDTP
+	suZAHQJlnU8hgjDonfHCv/bNe2r5QNBtcCdFs8P58GoI84DQpWmACygloGW/eBBxdFSIsq+MB1so0
+	+RKQVYqAoiaEsLi8LQRngX1fseRGIeUkkqAw6WFPgIN8Y+/hNCmvMu9cs2g5fmYUkuTQjgPy1Plcj
+	db71b4DD/pZlFp0EVDZ8Tpvp3rQZkoipXH6j5Pz6bjZETjhgo6fTKd+f2o5cZmhkx2X0q9gQL23uH
+	lgu0cxsg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3X4F-00000004vi3-13Zh;
-	Tue, 30 Sep 2025 09:54:43 +0000
+	id 1v3X5J-00000004vte-3q9Z;
+	Tue, 30 Sep 2025 09:55:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3X4B-00000004vgc-2Unn
+	id 1v3X5H-00000004vtB-3fAV
 	for barebox@lists.infradead.org;
-	Tue, 30 Sep 2025 09:54:41 +0000
+	Tue, 30 Sep 2025 09:55:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v3X49-0001sn-VH; Tue, 30 Sep 2025 11:54:37 +0200
+	id 1v3X5G-0002Aq-Ab; Tue, 30 Sep 2025 11:55:46 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v3X49-001Dzn-2V;
-	Tue, 30 Sep 2025 11:54:37 +0200
+	id 1v3X5G-001E03-0S;
+	Tue, 30 Sep 2025 11:55:46 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v3X49-0000000F61w-2zRx;
-	Tue, 30 Sep 2025 11:54:37 +0200
+	id 1v3X5G-0000000F68U-0JPJ;
+	Tue, 30 Sep 2025 11:55:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: sha@pengutronix.de
-In-Reply-To: <20250930085401.2133061-1-a.fatoum@pengutronix.de>
-References: <20250930085401.2133061-1-a.fatoum@pengutronix.de>
-Message-Id: <175922607770.3597987.4657271232186011387.b4-ty@pengutronix.de>
-Date: Tue, 30 Sep 2025 11:54:37 +0200
+In-Reply-To: <20250930093532.2329023-1-a.fatoum@pengutronix.de>
+References: <20250930093532.2329023-1-a.fatoum@pengutronix.de>
+Message-Id: <175922614606.3598389.3023287041186675669.b4-ty@pengutronix.de>
+Date: Tue, 30 Sep 2025 11:55:46 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250930_025439_636010_CDE28156 
-X-CRM114-Status: GOOD (  10.48  )
+X-CRM114-CacheID: sfid-20250930_025547_914082_A64E7F2F 
+X-CRM114-Status: UNSURE (   8.54  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,28 +85,28 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] MAKEALL: query CONFIG_64BIT before make instead of
- CONFIG_ARM64 after
+Subject: Re: [PATCH 1/2] fixup! Add security policy support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 30 Sep 2025 10:53:58 +0200, Ahmad Fatoum wrote:
-> The current logic inside MAKEALL is flawed: We source an ARM64 config
-> with CROSS_COMPILE=${CROSS_COMPILE_arm} and hope that CONFIG_ARM64
-> results, so we can grep for it in the .config despite it missing in the
-> defconfig.
+On Tue, 30 Sep 2025 11:35:27 +0200, Ahmad Fatoum wrote:
+> Makefile: fix spurious find No such file or directory warnings
 > 
-> Replace this by looking for CONFIG_64BIT instead in the defconfig
-> directly. This symbol seems to be there for all ARM64 configs we have
-> and if this ceases, CI will let us know.
+> When building with:
+> 
+>   $ ./MAKEALL -O build-arm -a arm imx_v8_defconfig
+> 
+> we run into a couple of messages:
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] MAKEALL: query CONFIG_64BIT before make instead of CONFIG_ARM64 after
-      https://git.pengutronix.de/cgit/barebox/commit/?id=181e6c5d638f (link may not be stable)
+[1/2] fixup! Add security policy support
+      https://git.pengutronix.de/cgit/barebox/commit/?id=945790bd7f1b (link may not be stable)
+[2/2] fixup! test: py: add basic security policy test
+      https://git.pengutronix.de/cgit/barebox/commit/?id=502d14a5c2f5 (link may not be stable)
 
 Best regards,
 -- 
