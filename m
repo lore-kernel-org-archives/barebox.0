@@ -1,67 +1,68 @@
-Delivery-date: Tue, 30 Sep 2025 11:36:08 +0200
+Delivery-date: Tue, 30 Sep 2025 11:55:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3WmG-002jSF-31
+	id 1v3X4k-002jil-2B
 	for lore@lore.pengutronix.de;
-	Tue, 30 Sep 2025 11:36:08 +0200
+	Tue, 30 Sep 2025 11:55:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3WmG-00060X-DT
-	for lore@pengutronix.de; Tue, 30 Sep 2025 11:36:08 +0200
+	id 1v3X4k-00021i-5E
+	for lore@pengutronix.de; Tue, 30 Sep 2025 11:55:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GGy7shkyvEc0V8Q9JFo9l2W2r+6azFLwM80z16yTBwE=; b=x1/tKQbM9si6ngLFpD/KYcbxmx
-	q18qWocLJNghvaWgVUN1lJ/YrtJywQ+aC7sB8jfx6FfBFZEJFk3+qVgD06HAzikab0DhNKCqgaRgU
-	aBEgVaWrEwbFnvZNVfQm4148wLCNUn8vf5U+KEVqV/6IU4DjPvKjXE8rv/+Jcck6J3PHLXe/AjaUY
-	EuO2Cy7Y+ZbDyqzdcPT98PJwibCvR+8crMLrO4uMnbNE51UZeT8uXgLovny/c2emcmB/4GBcYj4wo
-	PAiZBdjavwWsfK5JEK3vlJ+ZB/jHD1JouW2a0hUwjc/NnUOQ8/goFJjGdAmACYi8tdNcNZJFGgocJ
-	BnFRQk3g==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=0e4LDtWswfHHZjqNlmwYq+5T3YdNKNsKMYaG7v12Ihg=; b=h0blKQrS0LmKuDQOHFuUIMbH6u
+	sFRJmrhm6eSwXZBw2AwGgi2BVMoZ4fodfaxAyYzHLJhKC2Ke4Fi0i6LFU6A3LXM/skB55QU5EyaId
+	KTn6rm+WvilY02OemuSxFO+IV/GRWpnQl0tGWb0mDpT2cDeVxuErfXRrttoM+sVyB1BKSGYDjPwJq
+	QlJ6v8t56zm0QBXRgBW9MZLsDc8aEwRdYMS2ENdAZ77kvMpoPGFK7mp4eHs9regCoBo0F8b8M8fOS
+	rJA40j51op/m+sXjcCzN9BbKmW1eUX+evk/eCZFS0j9NsuvQC5q3/O6IG2aDw5/BWQjL7VuIr/n19
+	F+vZT/eQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3Wlm-00000004pY4-1OVC;
-	Tue, 30 Sep 2025 09:35:38 +0000
+	id 1v3X4F-00000004vi3-13Zh;
+	Tue, 30 Sep 2025 09:54:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3Wlj-00000004pXP-2EQK
+	id 1v3X4B-00000004vgc-2Unn
 	for barebox@lists.infradead.org;
-	Tue, 30 Sep 2025 09:35:36 +0000
+	Tue, 30 Sep 2025 09:54:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v3Wlh-0005n4-Td; Tue, 30 Sep 2025 11:35:33 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3X49-0001sn-VH; Tue, 30 Sep 2025 11:54:37 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v3Wlh-001DxT-2L;
-	Tue, 30 Sep 2025 11:35:33 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v3Wlh-00000009ltL-2esn;
-	Tue, 30 Sep 2025 11:35:33 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: sha@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 30 Sep 2025 11:35:27 +0200
-Message-ID: <20250930093532.2329023-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3X49-001Dzn-2V;
+	Tue, 30 Sep 2025 11:54:37 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3X49-0000000F61w-2zRx;
+	Tue, 30 Sep 2025 11:54:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: sha@pengutronix.de
+In-Reply-To: <20250930085401.2133061-1-a.fatoum@pengutronix.de>
+References: <20250930085401.2133061-1-a.fatoum@pengutronix.de>
+Message-Id: <175922607770.3597987.4657271232186011387.b4-ty@pengutronix.de>
+Date: Tue, 30 Sep 2025 11:54:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250930_023535_572466_8977F9F6 
-X-CRM114-Status: GOOD (  12.76  )
+X-CRM114-CacheID: sfid-20250930_025439_636010_CDE28156 
+X-CRM114-Status: GOOD (  10.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,53 +84,32 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] fixup! Add security policy support
+Subject: Re: [PATCH] MAKEALL: query CONFIG_64BIT before make instead of
+ CONFIG_ARM64 after
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Makefile: fix spurious find No such file or directory warnings
 
-When building with:
+On Tue, 30 Sep 2025 10:53:58 +0200, Ahmad Fatoum wrote:
+> The current logic inside MAKEALL is flawed: We source an ARM64 config
+> with CROSS_COMPILE=${CROSS_COMPILE_arm} and hope that CONFIG_ARM64
+> results, so we can grep for it in the .config despite it missing in the
+> defconfig.
+> 
+> Replace this by looking for CONFIG_64BIT instead in the defconfig
+> directly. This symbol seems to be there for all ARM64 configs we have
+> and if this ceases, CI will let us know.
+> 
+> [...]
 
-  $ ./MAKEALL -O build-arm -a arm imx_v8_defconfig
+Applied, thanks!
 
-we run into a couple of messages:
+[1/1] MAKEALL: query CONFIG_64BIT before make instead of CONFIG_ARM64 after
+      https://git.pengutronix.de/cgit/barebox/commit/?id=181e6c5d638f (link may not be stable)
 
-  Building arm64 imx_v8_defconfig
-  Configure: OK
-  find: ‘common’: No such file or directory
-  find: ‘drivers’: No such file or directory
-  find: ‘commands’: No such file or directory
-  find: ‘lib’: No such file or directory
-  [snip]
-
-This is because the working directory during the run of MAKEALL is the
-build directory, which at such an early time may not have these
-directories yet.
-
-Fix this by explicitly referencing the build directory while suppressing
-the error.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Makefile b/Makefile
-index 760ac28e8ff8..5d39261d7b74 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1085,7 +1085,7 @@ $(sort $(BAREBOX_OBJS)) $(BAREBOX_LDS) $(BAREBOX_PBL_OBJS): $(barebox-dirs) ;
- 
- PHONY += $(barebox-dirs)
- $(barebox-dirs): prepare scripts
--	@find $@ -name policy-list | xargs rm -f
-+	@find $(objtree)/$@ -name policy-list -exec rm -f {} \; 2>/dev/null || true
- 	$(Q)$(MAKE) $(build)=$@
- 
- # Store (new) KERNELRELASE string in include/config/kernel.release
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
