@@ -1,69 +1,67 @@
-Delivery-date: Tue, 30 Sep 2025 11:36:07 +0200
+Delivery-date: Tue, 30 Sep 2025 11:36:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3WmF-002jRt-0V
+	id 1v3WmG-002jSF-31
 	for lore@lore.pengutronix.de;
-	Tue, 30 Sep 2025 11:36:07 +0200
+	Tue, 30 Sep 2025 11:36:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3WmE-0005zU-Js
-	for lore@pengutronix.de; Tue, 30 Sep 2025 11:36:07 +0200
+	id 1v3WmG-00060X-DT
+	for lore@pengutronix.de; Tue, 30 Sep 2025 11:36:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HPOQ9StV1cydcTmcMqZZWMIhE0uDwqGDs3XI2inXfCQ=; b=CdaMMFPvlXq3w4bqwIYnqpYjo9
-	4lD5kDLUY5LTTJyrdc1dRxoPxAVgn325brYMx1QhlJZ6F7XPRkLbFPrPZi/0HCP65R1VtqA3/ujvK
-	PJapZECRpbXmaDLfP85V6TZ5PK9ftY5zI6I3JjkOvaUjK8NaoLdi5EoC3ujmPO5kkKrup3PK55y8m
-	wwYbG0pF+spVDuu8eEpodU730UQl73fWUCkiHorIGvFByKmzl1iEFSv+B9mQa7MhZujZ9XB+ZJcwR
-	upjmoTPCjRlLmdokY0DvUtEagYdqb89b4kJUyRSYB0Yl1ltTH9vyBPCo/2tiU+XUtkBJA18R6pVh6
-	TVLoHgUg==;
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=GGy7shkyvEc0V8Q9JFo9l2W2r+6azFLwM80z16yTBwE=; b=x1/tKQbM9si6ngLFpD/KYcbxmx
+	q18qWocLJNghvaWgVUN1lJ/YrtJywQ+aC7sB8jfx6FfBFZEJFk3+qVgD06HAzikab0DhNKCqgaRgU
+	aBEgVaWrEwbFnvZNVfQm4148wLCNUn8vf5U+KEVqV/6IU4DjPvKjXE8rv/+Jcck6J3PHLXe/AjaUY
+	EuO2Cy7Y+ZbDyqzdcPT98PJwibCvR+8crMLrO4uMnbNE51UZeT8uXgLovny/c2emcmB/4GBcYj4wo
+	PAiZBdjavwWsfK5JEK3vlJ+ZB/jHD1JouW2a0hUwjc/NnUOQ8/goFJjGdAmACYi8tdNcNZJFGgocJ
+	BnFRQk3g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3Wlm-00000004pYE-3hrY;
+	id 1v3Wlm-00000004pY4-1OVC;
 	Tue, 30 Sep 2025 09:35:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3Wlj-00000004pXO-28d7
+	id 1v3Wlj-00000004pXP-2EQK
 	for barebox@lists.infradead.org;
-	Tue, 30 Sep 2025 09:35:37 +0000
+	Tue, 30 Sep 2025 09:35:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v3Wlh-0005n5-V8; Tue, 30 Sep 2025 11:35:33 +0200
+	id 1v3Wlh-0005n4-Td; Tue, 30 Sep 2025 11:35:33 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v3Wlh-001DxU-2U;
+	id 1v3Wlh-001DxT-2L;
 	Tue, 30 Sep 2025 11:35:33 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v3Wlh-00000009ltL-2r2v;
+	id 1v3Wlh-00000009ltL-2esn;
 	Tue, 30 Sep 2025 11:35:33 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 30 Sep 2025 11:35:28 +0200
-Message-ID: <20250930093532.2329023-2-a.fatoum@pengutronix.de>
+Date: Tue, 30 Sep 2025 11:35:27 +0200
+Message-ID: <20250930093532.2329023-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250930093532.2329023-1-a.fatoum@pengutronix.de>
-References: <20250930093532.2329023-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250930_023535_573008_8A287288 
-X-CRM114-Status: UNSURE (   7.57  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20250930_023535_572466_8977F9F6 
+X-CRM114-Status: GOOD (  12.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,47 +83,51 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] fixup! test: py: add basic security policy test
+Subject: [PATCH 1/2] fixup! Add security policy support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-test: py: policies: rework for latest changes
+Makefile: fix spurious find No such file or directory warnings
 
-Compared to the RFC, tamper now prohibits the console, so the test will
-timeout. Work around this by issuing multiple commands in succession.
+When building with:
+
+  $ ./MAKEALL -O build-arm -a arm imx_v8_defconfig
+
+we run into a couple of messages:
+
+  Building arm64 imx_v8_defconfig
+  Configure: OK
+  find: ‘common’: No such file or directory
+  find: ‘drivers’: No such file or directory
+  find: ‘commands’: No such file or directory
+  find: ‘lib’: No such file or directory
+  [snip]
+
+This is because the working directory during the run of MAKEALL is the
+build directory, which at such an early time may not have these
+directories yet.
+
+Fix this by explicitly referencing the build directory while suppressing
+the error.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/py/test_policies.py | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/test/py/test_policies.py b/test/py/test_policies.py
-index b4ece29c9597..7b6d72b4438f 100644
---- a/test/py/test_policies.py
-+++ b/test/py/test_policies.py
-@@ -29,15 +29,15 @@ def test_security_policies(barebox, env):
-     assert 'go: Operation not permitted' not in stdout
-     assert rc == 1
+diff --git a/Makefile b/Makefile
+index 760ac28e8ff8..5d39261d7b74 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1085,7 +1085,7 @@ $(sort $(BAREBOX_OBJS)) $(BAREBOX_LDS) $(BAREBOX_PBL_OBJS): $(barebox-dirs) ;
  
--    stdout = barebox.run_check('sconfig -v -s tamper')
-+    stdout = barebox.run_check("""
-+    sconfig -v -s tamper; echo "POLICY=${security.policy}";
-+    sconfig +SCONFIG_CONSOLE_INPUT +SCONFIG_SHELL
-+    """)
-     assert set(['-SCONFIG_BOOT_UNSIGNED_IMAGES',
-                 '-SCONFIG_RATP',
--                '-SCONFIG_CMD_GO']) <= set(stdout)
--    assert 'Active Policy: tamper' in barebox.run_check('sconfig')
--
--    _, _, rc = barebox.run('sconfig -s devel')
--    assert rc != 0
--    assert 'Active Policy: tamper' in barebox.run_check('sconfig')
-+                '-SCONFIG_CMD_GO',
-+                'POLICY=tamper']) <= set(stdout)
-+    assert 'Active Policy: debug0' in barebox.run_check('sconfig')
+ PHONY += $(barebox-dirs)
+ $(barebox-dirs): prepare scripts
+-	@find $@ -name policy-list | xargs rm -f
++	@find $(objtree)/$@ -name policy-list -exec rm -f {} \; 2>/dev/null || true
+ 	$(Q)$(MAKE) $(build)=$@
  
-     stdout, _, rc = barebox.run('go')
-     assert 'go - start application at address or file' not in stdout
+ # Store (new) KERNELRELASE string in include/config/kernel.release
 -- 
 2.47.3
 
