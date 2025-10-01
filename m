@@ -1,89 +1,76 @@
-Delivery-date: Tue, 30 Sep 2025 16:13:18 +0200
+Delivery-date: Wed, 01 Oct 2025 10:07:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3b6U-002nmd-0Q
+	id 1v3rrt-0034Fe-2I
 	for lore@lore.pengutronix.de;
-	Tue, 30 Sep 2025 16:13:18 +0200
+	Wed, 01 Oct 2025 10:07:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3b6T-0007NG-Hw
-	for lore@pengutronix.de; Tue, 30 Sep 2025 16:13:18 +0200
+	id 1v3rrt-0003VN-3r
+	for lore@pengutronix.de; Wed, 01 Oct 2025 10:07:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=s39Mo+fePXbcOKXQQIgW+PWHa/EjgSrllvR2LSDKwfE=; b=G+k4l8eAIU6hDXM4nIJaQWDr10
-	iDd732tbiWhmfSWjfytwEvfmEClkCc8jgs2XMh9If9ZYzMWxK+4V7D5dm1SfzBnIGhIWMK+rZ6kwA
-	RnxBaiz85MMZ0OE2hsHXMX3jmCzAqyEvsErEvf7mincSgz9gtHhJrYLXApqBhsYvYvY805a1LixX4
-	hc0scAj+L0lM6Ki4AZ2Hz38x7P4Wf1ae3rvt/SdBWz1pUiMO11fXJeONUD+k4gWQwMc6zzH94gUlF
-	JHAkN0kcAi/UPyUifdK6l0Gu63w6cxHxBVz9B4948NxqrfVJCLEAh2iOcflIOXbd0UeAtxamDATz0
-	vMP3FNTw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=nXGGdAeNH1BxBHnCToZ5Asz0BxbrElIQvOhFD0Jc0Kc=; b=hHOpE3OWNPS/nKYZ3GdrKQ+sR4
+	wZ0fXZI6IbCvPBucZQQZCvx5X82Vn4XorTUbimfgRdOEk40y42oH5eIIfXI70e1NeLsuu4AJMFxWR
+	z9n4yERlyoybvQ8Dzu9tuuf7ZN/f72jV9hljkwke2KntGjkxDOpgy2/U69fb2VFw+ZKwvK+Hb6d1n
+	LdpsOOcrHfjEHGtkjPoeL6PxuPQkrsS44Rtlt1m+gF346dSltB+xSunM5cqMQWDbYggOAF2qhYkr5
+	8dJkA2Xhc7KVe0QeAmmQFSImEGmx57ONAwrjLxFqdOH6bJdfvtKn9BKdDOid5oC4eRcQUUqfMKDEo
+	/PtsPJyw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3b5v-00000005T9K-1kSD;
-	Tue, 30 Sep 2025 14:12:43 +0000
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+	id 1v3rrG-00000006yjE-2hmc;
+	Wed, 01 Oct 2025 08:06:42 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3b5t-00000005T8c-062Z
+	id 1v3rrE-00000006yhz-1lUp
 	for barebox@lists.infradead.org;
-	Tue, 30 Sep 2025 14:12:42 +0000
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-28a5b8b12a1so22790425ad.0
-        for <barebox@lists.infradead.org>; Tue, 30 Sep 2025 07:12:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759241560; x=1759846360; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s39Mo+fePXbcOKXQQIgW+PWHa/EjgSrllvR2LSDKwfE=;
-        b=U6+yINeKjjBrQyl3uEpbKivQugw/qoXcXlaqtPLL8HMp0ow+XQnzE461UVUOCQCJ/A
-         I3nxR2EnF2tZblvDf1QDojzXmsy7a3iTZ+Mz6ywrARlwzh5hRPapOfe9QxBuKBPnvBSY
-         SHm6eO3DJfUwAtMA6KZrJJ9vLmMZ7BsJaIDd6QqeCFy2XE0ygIOJXC0F59urydCRMcMy
-         btl/DfGQxO+z5xkWwoJn5Xs+qFnBM1RHx5FwkGCPaUQbLBnRnpq7g9nn5vl6itwfb9k3
-         CGu1nr40Qwq9rQRekC3YmbysQmD6UR0FlyRGBfJ0d6nxRt2WmHCz7wDFEaYRIsdy0hB+
-         jMew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759241560; x=1759846360;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s39Mo+fePXbcOKXQQIgW+PWHa/EjgSrllvR2LSDKwfE=;
-        b=TSgEHV0UITuh6PZUgojPzBDap8O5LeOJ+kQsf6oKKGcJ94MI3DBjJUUZZY7Isk60EO
-         VMejCA1eWZCG1AjswBaEcK0v4F93xSQX92pSmVkjvdqROAbu4iSsB5D4loSVHJOnBeih
-         h6634uUw7kglIoifICTZlk7PxxP0ACWPhQzKT3Itb8N3HodAIZuOM3mQBaEBoK/eBsYe
-         aZ7CJk9fgzPm68e3bTwtrAkFJI0sa7TSWQ+SsdJ+XMF0YqdiiiHMFYvWkYspEhTOLbqx
-         qM/UPasFd9kzMjRP+OZX9u4PeDDipCBf0eb5TY7K2IujrQXPNpOUgol0ry6CUpQWrs69
-         rAKg==
-X-Gm-Message-State: AOJu0YxjbMIYuCt8UJGCMF0WLz51liKBraoj6Yii1riASDA5ukGRhXtg
-	sHNfeWUmEG8rRTRa+JzhJyj2pp2iBQR28FyqOp5Q0TFR3o87Pg7P83bDSP/Szx1aZVcm2dWjDSK
-	hEjETkfHzb/PYLJXckbTbqJzsxidSdvQ=
-X-Gm-Gg: ASbGncsH6MGqLZYqv8wuVvjSD0eGbv7DSWiW83e9fGam2kYfH4s5qv89VjSdRbPU6pN
-	jxVvaiLvnAtno6xM3r90uksW+PQI8SHGr6+zNc0C4EOZ4F9H64CCq5F9phJ89DiN1cLSfrhg4VA
-	u+Nch5qsCw0KrjXMj3FOG0qR+2HNfoS1I2LmjufEYWKOjMitSo9cWvXuXSo/IFTNwSUv/9AMUt7
-	DqL/+vycu3Yb7A7DlBJ2vVSneGjn9LiZyl61WIG6co=
-X-Google-Smtp-Source: AGHT+IFv7s2b7BYDdu8jW5EO2JVrjjvinrFtCsbE3xFMoXLYIGN0SN5NKVOFCl7U0pHXVOZJdCkm7xeKiZv6u8Abd3Y=
-X-Received: by 2002:a17:903:faf:b0:27e:f16f:618b with SMTP id
- d9443c01a7336-27ef16f6265mr174694655ad.24.1759241559735; Tue, 30 Sep 2025
- 07:12:39 -0700 (PDT)
+	Wed, 01 Oct 2025 08:06:41 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3rr5-0003H9-0v; Wed, 01 Oct 2025 10:06:31 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3rr4-001NZ6-2Z;
+	Wed, 01 Oct 2025 10:06:30 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3rr4-00000001kP0-30ie;
+	Wed, 01 Oct 2025 10:06:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 01 Oct 2025 10:06:26 +0200
+Message-Id: <20251001-fs-remove-dev-argument-v1-0-1922aaf65062@pengutronix.de>
 MIME-Version: 1.0
-References: <20250930134652.3035951-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20250930134652.3035951-1-a.fatoum@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 30 Sep 2025 17:12:25 +0300
-X-Gm-Features: AS18NWAvOyNMnxv6P97HbkQh3s7eJpnbZ9iyJuKb2RMzr_50IBTjTWjptFa1vGA
-Message-ID: <CAP1tNvQ8+m87AUQM4c4H3qzDt+iZeLw8u3RzqSH3VpwtYe5DyA@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Michael Tretter <m.tretter@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAALh3GgC/x3MQQqDMBBG4avIrDuQSZWKV5EugvnVWRjLpA2Ce
+ PcGl9/ivZMyTJFpaE4yFM26pwp5NDStIS1gjdXkne/EOeE5s2HbCziicLDltyF9+dlHmby4tn8
+ J1fhjmPW4x+P7uv7n/HWFaAAAAA==
+X-Change-ID: 20251001-fs-remove-dev-argument-38d1c2104871
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759305990; l=2305;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=cdAhC+/DtP7l4VtumYC1N3j6lyXoF3xjddWpIu2Oncc=;
+ b=GmpIx0Dk58V37GnLTSpl97gNX1L4Q/wkOspnP0Xk+WozdguU2o8Oj6W9ckFe7vjfU+M20H3+H
+ Q1Vb+h+bSZmBqyBTxAVGn1v+7V7ZWGQDO0q0ND4n0MkvP4aQgmxi38b
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20250930_071241_086673_A2372E32 
-X-CRM114-Status: GOOD (  17.58  )
+X-CRM114-CacheID: sfid-20251001_010640_470958_A5948E03 
+X-CRM114-Status: GOOD (  11.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,95 +88,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH master] scripts: rockchip: rkimage: reinstate OpenSSL 1.1 compatibility
+X-Spam-Status: No, score=-1.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 0/2] fs: remove dev argument from file operations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Tested-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+All fs_driver operations like read, write and ioctl take a struct device *
+argument which is mostly unused by the filesystem driver and for the few
+cases where it was used the device can be retrieved from the file argument.
 
-=D0=B2=D1=82, 30 =D1=81=D0=B5=D0=BD=D1=82. 2025=E2=80=AF=D0=B3. =D0=B2 16:4=
-6, Ahmad Fatoum <a.fatoum@pengutronix.de>:
->
-> The new signing support made the rkimage utility require OpenSSL 3.0.
->
-> We will keep that requirement for signing, but for usage without
-> signing, let's skip the signing bits optional and report an error on
-> attempting to sign.
->
-> Reported-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-> Cc: Michael Tretter <m.tretter@pengutronix.de>
-> Fixes: 54da6347b273 ("scripts: rockchip: implement image signing")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  scripts/rkimage.c | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
->
-> diff --git a/scripts/rkimage.c b/scripts/rkimage.c
-> index 9b3ae8bbfff7..e5b6d61c4a9d 100644
-> --- a/scripts/rkimage.c
-> +++ b/scripts/rkimage.c
-> @@ -13,7 +13,6 @@
->  #include <stdbool.h>
->
->  #include <openssl/bn.h>
-> -#include <openssl/core_names.h>
->  /*
->   * TODO Switch from the OpenSSL ENGINE API to the PKCS#11 provider and t=
-he
->   * PROVIDER API: https://github.com/latchset/pkcs11-provider
-> @@ -64,7 +63,7 @@ static void idb_hash(struct newidb *idb)
->                 sha512(idbu8, size, idbu8 + size);
->  }
->
-> -static EVP_PKEY *load_key_pkcs11(const char *path)
-> +static __attribute__((unused)) EVP_PKEY *load_key_pkcs11(const char *pat=
-h)
->  {
->         const char *engine_id =3D "pkcs11";
->         ENGINE *e;
-> @@ -95,7 +94,7 @@ static EVP_PKEY *load_key_pkcs11(const char *path)
->         return pkey;
->  }
->
-> -static EVP_PKEY *load_key_file(const char *path)
-> +static __attribute__((unused)) EVP_PKEY *load_key_file(const char *path)
->  {
->         BIO *key;
->         EVP_PKEY *pkey =3D NULL;
-> @@ -180,6 +179,9 @@ static int create_newidb(struct newidb *idb)
->         return 0;
->  }
->
-> +#if OPENSSL_VERSION_NUMBER >=3D 0x30000000L
-> +#include <openssl/core_names.h>
-> +
->  static int rsa_get_params(EVP_PKEY *key, BIGNUM *e, BIGNUM *n, BIGNUM *n=
-p)
->  {
->         BN_CTX *ctx =3D BN_CTX_new();
-> @@ -356,6 +358,13 @@ static int sign_newidb(struct newidb *idb, const cha=
-r *path)
->
->         return ret;
->  }
-> +#else
-> +static int sign_newidb(struct newidb *idb, const char *path)
-> +{
-> +       fprintf(stderr, "Signing support requires at least OpenSSL 3.0\n"=
-);
-> +       return -ENOSYS;
-> +}
-> +#endif
->
->  struct option cbootcmd[] =3D {
->         {"help", 0, NULL, 'h'},
-> --
-> 2.47.3
->
+This series removes the dev argument and moves the the fs_driver
+operation over to filesystem_operations.
+
+This is done in preparation to support device special files later and
+consequently retire devfs as a filesystem.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+Sascha Hauer (2):
+      fs: remove redundant dev argument from fs_driver operations
+      fs: move fs_driver operations to struct file_operations
+
+ fs/9p/v9fs.h           |  8 +++-----
+ fs/9p/v9fs_vfs.h       |  2 +-
+ fs/9p/vfs_addr.c       |  6 ++----
+ fs/9p/vfs_dir.c        |  2 +-
+ fs/9p/vfs_file.c       |  6 ++++++
+ fs/9p/vfs_inode_dotl.c |  9 +--------
+ fs/bpkfs.c             |  8 ++++----
+ fs/cramfs/cramfs.c     |  9 +++++++--
+ fs/devfs.c             | 42 +++++++++++++++++++---------------------
+ fs/efi.c               |  9 ++++-----
+ fs/efivarfs.c          |  8 +++-----
+ fs/ext4/ext_barebox.c  |  8 ++++++--
+ fs/fat/fat.c           | 19 ++++++++----------
+ fs/fs.c                | 48 +++++++++++++++++++++++-----------------------
+ fs/jffs2/fs.c          | 15 +++++++--------
+ fs/legacy.c            | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/nfs.c               | 17 ++++++++---------
+ fs/omap4_usbbootfs.c   |  3 +--
+ fs/pstore/fs.c         |  8 ++++----
+ fs/qemu_fw_cfg.c       | 27 +++++++++++++-------------
+ fs/ramfs.c             | 20 ++++++++++---------
+ fs/ratpfs.c            | 15 ++++++---------
+ fs/smhfs.c             | 18 +++++++----------
+ fs/squashfs/squashfs.c | 15 +++++++--------
+ fs/tftp.c              | 19 +++++++++---------
+ fs/ubifs/super.c       |  1 +
+ fs/ubifs/ubifs.c       |  3 +--
+ fs/ubifs/ubifs.h       |  1 +
+ fs/uimagefs.c          | 15 +++++++--------
+ include/fs.h           | 24 +++++------------------
+ include/linux/fs.h     | 20 +++++++++++++++----
+ 31 files changed, 246 insertions(+), 211 deletions(-)
+---
+base-commit: 92d503132efc60305fb94d87e54a1214e1781dae
+change-id: 20251001-fs-remove-dev-argument-38d1c2104871
+
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
