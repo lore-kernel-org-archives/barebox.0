@@ -1,74 +1,74 @@
-Delivery-date: Wed, 01 Oct 2025 10:07:21 +0200
+Delivery-date: Wed, 01 Oct 2025 10:07:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3rrt-0034Fm-2f
+	id 1v3rs4-0034GQ-2b
 	for lore@lore.pengutronix.de;
-	Wed, 01 Oct 2025 10:07:21 +0200
+	Wed, 01 Oct 2025 10:07:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v3rrs-0003VI-7v
-	for lore@pengutronix.de; Wed, 01 Oct 2025 10:07:21 +0200
+	id 1v3rs2-0003Xz-R3
+	for lore@pengutronix.de; Wed, 01 Oct 2025 10:07:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DoKH/Bu5C+gpm+WskRQFkEnov3abVipq6IwMOtGDPuY=; b=ah4mETtCFO9rxttv5VYJRFpmDF
-	5AMqZm/xBUChdGoc4AzASDIuzLEn1ja7TNOFO0GAKmzspfcXBFlijmKucwgQVMIJDl0psgod5Pw49
-	XfHO8bXAKpwYfXr8/8JHMa5QOY7nvflzbxz46KXlzYWTeQI/3PYDt84BwkoPqL0mGSqtpfdYY6ns/
-	dbLMy0+MXWRJNi+zyQmCc1KYQ/OJ5L5RYzZv1lsEBkJKHBkiXOUUmbysVkTSr21m9J85Y8jbZZLYS
-	Zu4Ends9lAIFvIo6GoIANH80pMFJlsPs31aoaRmHYPjU01mNmwrqa+bQKNWXUayhktSr3xvoORWoO
-	sz6VfeTw==;
+	bh=SwPpNYvepZZXcjW8cUQRjRYjEHUjLpeneJnFZoG3fuI=; b=QWoo9yDJAKY3mqa7enKS0/5Ejb
+	x5R5Il50ORowfqswom/G+PBTmu8g75h9CKF257CokYCgDYyMZr8zCbeAAFHIRMJT+Lvs41eyEAuc0
+	gti7uQpTJJjJA1jItcwBADwb0H8yJeYwKNeoGEUJdxUKVZd5QjrZ1qDDGaRlcELZQXyTl5is5d9KR
+	jE1hj9qqKuDGK0U49RqmVYhCJrKMPacw4EBLFmQa5HN5EuT9OQUrsmj8CblVkgEYpu1dD63Biv4DO
+	+AH70YWdR/Y8RMcd+Bz6qPGybBK+GsOAUJ+iejjHGZuy+0wkYpE3hOpKZ/MoV3r7hcEYXPDDPNoz6
+	HhAZko7g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3rrA-00000006ygb-2Gzg;
+	id 1v3rrA-00000006ygk-3YqL;
 	Wed, 01 Oct 2025 08:06:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3rr7-00000006yfG-1oLq
+	id 1v3rr7-00000006yfF-1nXl
 	for barebox@lists.infradead.org;
 	Wed, 01 Oct 2025 08:06:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v3rr5-0003H8-0v; Wed, 01 Oct 2025 10:06:31 +0200
+	id 1v3rr5-0003HA-0e; Wed, 01 Oct 2025 10:06:31 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v3rr4-001NZ8-2a;
+	id 1v3rr4-001NZ7-2a;
 	Wed, 01 Oct 2025 10:06:30 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1v3rr4-00000001kP0-33BI;
+	id 1v3rr4-00000001kP0-31zf;
 	Wed, 01 Oct 2025 10:06:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 01 Oct 2025 10:06:28 +0200
+Date: Wed, 01 Oct 2025 10:06:27 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251001-fs-remove-dev-argument-v1-2-1922aaf65062@pengutronix.de>
+Message-Id: <20251001-fs-remove-dev-argument-v1-1-1922aaf65062@pengutronix.de>
 References: <20251001-fs-remove-dev-argument-v1-0-1922aaf65062@pengutronix.de>
 In-Reply-To: <20251001-fs-remove-dev-argument-v1-0-1922aaf65062@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1759305990; l=27127;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759305990; l=32658;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=DqPE7SfwGX4KErAgMrPdD/R5CizJONivJryj45myR0Q=;
- b=UCAYmvPUCGDEDPO03NQxofV7CuhXQc1dWbbllctd9IT9Fi+Ox5sf+qr3lhGPcS8UTHk9gmjHk
- zwf1drMtkboD8W3m7Sbw6LMaCyUDb33TaaHNA+fA6+a/8CSrPelwJTb
+ bh=kECPSJodrrXSPg6OIFiL+LhXU54fZ8RL4CoXMMzTPyc=;
+ b=C9y5mOavRtcZsxRF8A47C8DqRsfh9p9grg2f55RbvG3MkLFVcUkCeQMcGjgXDwh1rkT4CGucA
+ xUx8jwxa6EfB2d3e+RKL1BKD9vcCcp77oF0O+bewSxjguIx/P6126bH
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251001_010633_788663_C247FF77 
-X-CRM114-Status: GOOD (  21.64  )
+X-CRM114-CacheID: sfid-20251001_010633_789297_01259C21 
+X-CRM114-Status: GOOD (  16.79  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,827 +91,900 @@ X-Spam-Status: No, score=-1.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] fs: move fs_driver operations to struct
- file_operations
+Subject: [PATCH 1/2] fs: remove redundant dev argument from fs_driver
+ operations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The fs_driver operations really belong to struct file_operations. Move
-them there and clear a long standing TODO item.
-For the filesystems using the legacy layer move the file_operations to
-the legacy operations.
+All fs_driver operations like read, write and ioctl take a struct device *
+argument which is mostly unused by the filesystem driver and for the few
+cases where it was used the device can be retrieved from the file argument.
+
+Remove the redundant argument.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/9p/v9fs.h           |  2 +-
- fs/9p/vfs_file.c       |  6 ++++++
- fs/9p/vfs_inode_dotl.c |  9 +--------
+ fs/9p/v9fs.h           |  6 ++----
+ fs/9p/v9fs_vfs.h       |  2 +-
+ fs/9p/vfs_addr.c       |  6 ++----
+ fs/9p/vfs_dir.c        |  2 +-
+ fs/9p/vfs_inode_dotl.c |  2 +-
  fs/bpkfs.c             |  4 ++--
- fs/cramfs/cramfs.c     |  7 ++++++-
- fs/devfs.c             | 20 +++++++++----------
- fs/ext4/ext_barebox.c  |  6 +++++-
- fs/fat/fat.c           | 10 ++++------
- fs/fs.c                | 40 +++++++++++++++++++-------------------
- fs/jffs2/fs.c          | 12 ++++++------
- fs/legacy.c            | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/nfs.c               |  8 ++++----
+ fs/cramfs/cramfs.c     |  2 +-
+ fs/devfs.c             | 22 ++++++++++------------
+ fs/efi.c               |  9 ++++-----
+ fs/efivarfs.c          |  8 +++-----
+ fs/ext4/ext_barebox.c  |  2 +-
+ fs/fat/fat.c           |  9 ++++-----
+ fs/fs.c                | 28 ++++++++++++++--------------
+ fs/jffs2/fs.c          |  3 +--
+ fs/nfs.c               |  9 ++++-----
+ fs/omap4_usbbootfs.c   |  3 +--
  fs/pstore/fs.c         |  4 ++--
- fs/qemu_fw_cfg.c       | 12 +++++++-----
- fs/ramfs.c             | 11 +++++++----
- fs/ratpfs.c            |  6 +++---
- fs/smhfs.c             |  6 +++---
- fs/squashfs/squashfs.c | 12 ++++++------
- fs/tftp.c              |  8 ++++----
- fs/ubifs/super.c       |  1 +
- fs/ubifs/ubifs.c       |  3 +--
- fs/ubifs/ubifs.h       |  1 +
- fs/uimagefs.c          |  6 +++---
- include/fs.h           | 21 +++++---------------
- include/linux/fs.h     | 20 +++++++++++++++----
- 25 files changed, 176 insertions(+), 111 deletions(-)
+ fs/qemu_fw_cfg.c       | 15 ++++++---------
+ fs/ramfs.c             |  9 ++++-----
+ fs/ratpfs.c            |  9 +++------
+ fs/smhfs.c             | 12 ++++--------
+ fs/squashfs/squashfs.c |  3 +--
+ fs/tftp.c              | 11 +++++------
+ fs/ubifs/ubifs.c       |  2 +-
+ fs/uimagefs.c          |  9 ++++-----
+ include/fs.h           | 23 ++++++++++-------------
+ 26 files changed, 92 insertions(+), 122 deletions(-)
 
 diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
-index 4b90d35209cb396c8ee2dcda2c11911297284611..afe578318c6f568786aa8977fe6acb877188ee7b 100644
+index 2100fbcfa5de936d6fc574e0f0d5ac5c4da0de9e..4b90d35209cb396c8ee2dcda2c11911297284611 100644
 --- a/fs/9p/v9fs.h
 +++ b/fs/9p/v9fs.h
-@@ -133,8 +133,8 @@ extern struct inode *v9fs_fid_iget_dotl(struct super_block *sb,
+@@ -132,11 +132,9 @@ extern const struct inode_operations v9fs_symlink_inode_operations_dotl;
+ extern struct inode *v9fs_fid_iget_dotl(struct super_block *sb,
  						struct p9_fid *fid, bool new);
  
- int v9fs_read(struct file *f, void *buf, size_t insize);
--
- int v9fs_write(struct file *f, const void *buf, size_t insize);
-+int v9fs_truncate(struct file *f, loff_t size);
+-int v9fs_read(struct device *dev, struct file *f, void *buf,
+-	      size_t insize);
++int v9fs_read(struct file *f, void *buf, size_t insize);
+ 
+-int v9fs_write(struct device *dev, struct file *f, const void *buf,
+-	       size_t insize);
++int v9fs_write(struct file *f, const void *buf, size_t insize);
  
  /* other default globals */
  #define V9FS_PORT	564
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index f99f7f294b96ef6b00a956702a29ea239835d898..a993753e2dede0b1676cd74fd234efc9cdb1e9e8 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -64,4 +64,10 @@ int v9fs_file_open(struct inode *inode, struct file *file)
- const struct file_operations v9fs_file_operations_dotl = {
- 	.open = v9fs_file_open,
- 	.release = v9fs_dir_release,
-+	.read = v9fs_read,
-+#ifdef CONFIG_9P_FS_WRITE
-+	.write = v9fs_write,
-+	.truncate = v9fs_truncate,
-+	.flush = v9fs_file_fsync_dotl,
-+#endif
- };
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index c8ce3992cf0c5fc47cbab345f0992582297ae001..19b38b349786d603ae2be9ae7ace9e1190d29fa7 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -310,8 +310,7 @@ static int v9fs_vfs_setattr_dotl(struct dentry *dentry, struct iattr *iattr)
- 	return 0;
+diff --git a/fs/9p/v9fs_vfs.h b/fs/9p/v9fs_vfs.h
+index aa97032521b8af2c7bed8145db9e4d68e5057141..525a76de139e54525e33632ed7934e66e453e7cf 100644
+--- a/fs/9p/v9fs_vfs.h
++++ b/fs/9p/v9fs_vfs.h
+@@ -50,7 +50,7 @@ void v9fs_stat2inode_dotl(struct p9_stat_dotl *stat, struct inode *inode);
+ int v9fs_dir_release(struct inode *inode, struct file *file);
+ int v9fs_file_open(struct inode *inode, struct file *file);
+ 
+-int v9fs_file_fsync_dotl(struct device *dev, struct file *filp);
++int v9fs_file_fsync_dotl(struct file *filp);
+ static inline void v9fs_invalidate_inode_attr(struct inode *inode)
+ {
+ 	netfs_invalidate_inode_attr(netfs_inode(inode));
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index 70bb1a04f83c120036ff09a0dfc8f28a8996c2ec..5518e7503acb41e9206bcdc39580b4f19959aef7 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -63,8 +63,7 @@ static void v9fs_free_request(struct netfs_io_request *rreq)
+ 	p9_fid_put(fid);
  }
  
--static __maybe_unused int
--v9fs_truncate(struct file *f, loff_t size)
-+int v9fs_truncate(struct file *f, loff_t size)
+-int v9fs_read(struct device *dev, struct file *f, void *buf,
+-	      size_t insize)
++int v9fs_read(struct file *f, void *buf, size_t insize)
+ {
+ 	struct netfs_io_request rreq = {
+ 		.origin = NETFS_READPAGE,
+@@ -86,8 +85,7 @@ int v9fs_read(struct device *dev, struct file *f, void *buf,
+ 	return len ?: err;
+ }
+ 
+-int v9fs_write(struct device *dev, struct file *f, const void *buf,
+-	       size_t insize)
++int v9fs_write(struct file *f, const void *buf, size_t insize)
+ {
+ 	struct netfs_io_request rreq = {
+ 		.origin = NETFS_WRITETHROUGH,
+diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
+index 179d83620c220bef1836298a43ada1f9000dfe72..e08c33bab32efefdab34a681db337a4614e9ba3b 100644
+--- a/fs/9p/vfs_dir.c
++++ b/fs/9p/vfs_dir.c
+@@ -154,7 +154,7 @@ int v9fs_dir_release(struct inode *inode, struct file *filp)
+ 	return retval;
+ }
+ 
+-int v9fs_file_fsync_dotl(struct device *dev, struct file *filp)
++int v9fs_file_fsync_dotl(struct file *filp)
+ {
+         struct p9_fid *fid;
+ 
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index 46fc858eae67a4eba655fa14d8aeebc1c3e0b800..c8ce3992cf0c5fc47cbab345f0992582297ae001 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -311,7 +311,7 @@ static int v9fs_vfs_setattr_dotl(struct dentry *dentry, struct iattr *iattr)
+ }
+ 
+ static __maybe_unused int
+-v9fs_truncate(struct device *dev, struct file *f, loff_t size)
++v9fs_truncate(struct file *f, loff_t size)
  {
  	struct iattr iattr = {
  		.ia_valid = ATTR_SIZE | ATTR_FILE,
-@@ -565,12 +564,6 @@ const struct inode_operations v9fs_symlink_inode_operations_dotl = {
- };
- 
- struct fs_driver v9fs_driver = {
--	.read      = v9fs_read,
--#ifdef CONFIG_9P_FS_WRITE
--	.write     = v9fs_write,
--	.truncate  = v9fs_truncate,
--	.flush     = v9fs_file_fsync_dotl,
--#endif
- 	.drv = {
- 		.probe  = v9fs_mount,
- 		.remove = v9fs_umount,
 diff --git a/fs/bpkfs.c b/fs/bpkfs.c
-index 2831666b6ce0482b14f959c13e4f02eb1a9f11ec..5a3e2da2c97df7e1b92554962138289b1d91e675 100644
+index fe6154c555a49d6b8f05f9b6ea97970de7e69b24..2831666b6ce0482b14f959c13e4f02eb1a9f11ec 100644
 --- a/fs/bpkfs.c
 +++ b/fs/bpkfs.c
-@@ -498,11 +498,11 @@ static const struct fs_legacy_ops bpkfs_ops = {
- 	.readdir   = bpkfs_readdir,
- 	.closedir  = bpkfs_closedir,
- 	.stat      = bpkfs_stat,
-+	.read      = bpkfs_read,
-+	.lseek     = bpkfs_lseek,
- };
+@@ -180,7 +180,7 @@ static int bpkfs_close(struct device *dev, struct file *file)
+ 	return 0;
+ }
  
- static struct fs_driver bpkfs_driver = {
--	.read      = bpkfs_read,
--	.lseek     = bpkfs_lseek,
- 	.legacy_ops = &bpkfs_ops,
- 	.type = filetype_bpk,
- 	.drv = {
+-static int bpkfs_read(struct device *dev, struct file *file, void *buf,
++static int bpkfs_read(struct file *file, void *buf,
+ 		      size_t insize)
+ {
+ 	struct bpkfs_handle_data *d = file->private_data;
+@@ -193,7 +193,7 @@ static int bpkfs_read(struct device *dev, struct file *file, void *buf,
+ 	}
+ }
+ 
+-static int bpkfs_lseek(struct device *dev, struct file *file, loff_t pos)
++static int bpkfs_lseek(struct file *file, loff_t pos)
+ {
+ 	struct bpkfs_handle_data *d = file->private_data;
+ 
 diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
-index b20219677bd27aceaa8662749218b2f8ee9d07e4..d66cce8df8cae08138ff892bcce645d316ca71c6 100644
+index 641a6d2b0526f01b5ea64f9a59aa9086883e2b57..b20219677bd27aceaa8662749218b2f8ee9d07e4 100644
 --- a/fs/cramfs/cramfs.c
 +++ b/fs/cramfs/cramfs.c
-@@ -198,6 +198,7 @@ static int cramfs_info (struct device *dev)
- static const struct file_operations cramfs_dir_operations;
- static const struct inode_operations cramfs_dir_inode_operations;
- static const struct inode_operations cramfs_symlink_inode_operations;
-+static const struct file_operations cramfs_file_operations;
- 
- static unsigned long cramino(const struct cramfs_inode *cino, unsigned int offset)
- {
-@@ -237,6 +238,7 @@ static struct inode *get_cramfs_inode(struct super_block *sb,
- 
- 	switch (cramfs_inode->mode & S_IFMT) {
- 	case S_IFREG:
-+		inode->i_fop = &cramfs_file_operations;
- 		break;
- 	case S_IFDIR:
- 		inode->i_op = &cramfs_dir_inode_operations;
-@@ -414,6 +416,10 @@ static const struct file_operations cramfs_dir_operations = {
- 	.iterate = cramfs_iterate,
- };
- 
-+static const struct file_operations cramfs_file_operations = {
-+	.read = cramfs_read,
-+};
-+
- static const struct inode_operations cramfs_dir_inode_operations =
- {
- 	.lookup = cramfs_lookup,
-@@ -497,7 +503,6 @@ static void cramfs_remove(struct device *dev)
+@@ -162,7 +162,7 @@ static int cramfs_read_file(struct inode *inode, unsigned long offset,
+ 	return outsize;
  }
  
- static struct fs_driver cramfs_driver = {
--	.read		= cramfs_read,
- 	.drv = {
- 		.probe = cramfs_probe,
- 		.remove = cramfs_remove,
+-static int cramfs_read(struct device *_dev, struct file *f, void *buf, size_t size)
++static int cramfs_read(struct file *f, void *buf, size_t size)
+ {
+ 	return cramfs_read_file(f->f_inode, f->f_pos, buf, size);
+ }
 diff --git a/fs/devfs.c b/fs/devfs.c
-index 49f739b864f2dd89a4ade2405c6c5d0121157d0b..15c7a63d3949a5fa7c5ec15f58bc9f4c53b7852b 100644
+index 38a85bac3c49890067eac8b664cb9a15558a8738..49f739b864f2dd89a4ade2405c6c5d0121157d0b 100644
 --- a/fs/devfs.c
 +++ b/fs/devfs.c
-@@ -176,6 +176,16 @@ static const struct inode_operations devfs_dir_inode_operations;
- static const struct file_operations devfs_file_operations = {
- 	.open = devfs_open,
- 	.release = devfs_close,
-+	.read = devfs_read,
-+	.write = devfs_write,
-+	.lseek = devfs_lseek,
-+	.flush = devfs_flush,
-+	.ioctl = devfs_ioctl,
-+	.truncate = devfs_truncate,
-+	.erase = devfs_erase,
-+	.protect = devfs_protect,
-+	.discard_range = devfs_discard_range,
-+	.memmap = devfs_memmap,
+@@ -35,14 +35,14 @@ struct devfs_inode {
+ 	struct cdev *cdev;
  };
  
- static int devfs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
-@@ -300,16 +310,6 @@ static void devfs_delete(struct device *dev)
- }
- 
- static struct fs_driver devfs_driver = {
--	.read      = devfs_read,
--	.write     = devfs_write,
--	.lseek     = devfs_lseek,
--	.flush     = devfs_flush,
--	.ioctl     = devfs_ioctl,
--	.truncate  = devfs_truncate,
--	.erase     = devfs_erase,
--	.protect   = devfs_protect,
--	.discard_range = devfs_discard_range,
--	.memmap    = devfs_memmap,
- 	.drv = {
- 		.probe  = devfs_probe,
- 		.remove = devfs_delete,
-diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
-index e626f516b69a2970b5e8d48caea61a9ac1eb4e9c..5bee4853d4fceafa294975ac6013a376bfc87b0f 100644
---- a/fs/ext4/ext_barebox.c
-+++ b/fs/ext4/ext_barebox.c
-@@ -179,6 +179,10 @@ const struct file_operations ext_dir_operations = {
- 	.iterate = ext_iterate,
- };
- 
-+const struct file_operations ext_file_operations = {
-+	.read = ext_read,
-+};
-+
- static const char *ext_get_link(struct dentry *dentry, struct inode *inode)
+-static int devfs_read(struct device *_dev, struct file *f, void *buf, size_t size)
++static int devfs_read(struct file *f, void *buf, size_t size)
  {
- 	struct ext2fs_node *node = to_ext2_node(inode);
-@@ -230,6 +234,7 @@ struct inode *ext_get_inode(struct super_block *sb, int ino)
- 		return NULL;
- 	case S_IFREG:
- 		inode->i_op = &ext_inode_operations;
-+		inode->i_fop = &ext_file_operations;
- 		break;
- 	case S_IFDIR:
- 		inode->i_op = &ext_inode_operations;
-@@ -299,7 +304,6 @@ static void ext_remove(struct device *dev)
+ 	struct cdev *cdev = f->private_data;
+ 
+ 	return cdev_read(cdev, buf, size, f->f_pos, f->f_flags);
  }
  
- static struct fs_driver ext_driver = {
--	.read      = ext_read,
- 	.type      = filetype_ext,
- 	.drv = {
- 		.probe  = ext_probe,
-diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index 28517c6b90ac3487becc8bf1daffef8b84e10e65..cdca666566d26d06ddf57a68f7217bb9b3117106 100644
---- a/fs/fat/fat.c
-+++ b/fs/fat/fat.c
-@@ -384,16 +384,14 @@ static const struct fs_legacy_ops fat_ops = {
- 	.unlink    = fat_unlink,
- 	.mkdir     = fat_mkdir,
- 	.rmdir     = fat_rmdir,
-+	.write     = fat_write,
-+	.truncate  = fat_truncate,
- #endif
-+	.read      = fat_read,
-+	.lseek     = fat_lseek,
- };
- 
- static struct fs_driver fat_driver = {
--	.read      = fat_read,
--	.lseek     = fat_lseek,
--#ifdef CONFIG_FS_FAT_WRITE
--	.write     = fat_write,
--	.truncate  = fat_truncate,
--#endif
- 	.legacy_ops = &fat_ops,
- 	.type = filetype_fat,
- 	.drv = {
-diff --git a/fs/fs.c b/fs/fs.c
-index 8a90a317382b3dce7c2c60ccc5bb3bc9a528b02b..e2bcd8ea33b2c062e74366bf3825e4a9391ea879 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -372,9 +372,8 @@ static int create(struct dentry *dir, struct dentry *dentry)
- 
- static int fsdev_truncate(struct file *f, loff_t length)
+-static int devfs_write(struct device *_dev, struct file *f, const void *buf,
++static int devfs_write(struct file *f, const void *buf,
+ 		       size_t size)
  {
--	struct fs_driver *fsdrv = f->fsdev->driver;
--
--	return fsdrv->truncate ? fsdrv->truncate(f, length) : -EROFS;
-+	return f->f_inode->i_fop->truncate ?
-+		f->f_inode->i_fop->truncate(f, length) : -EROFS;
+ 	struct cdev *cdev = f->private_data;
+@@ -53,14 +53,14 @@ static int devfs_write(struct device *_dev, struct file *f, const void *buf,
+ 	return cdev_write(cdev, buf, size, f->f_pos, f->f_flags);
  }
  
- int ftruncate(int fd, loff_t length)
-@@ -408,8 +407,8 @@ int ioctl(int fd, unsigned int request, void *buf)
+-static int devfs_lseek(struct device *_dev, struct file *f, loff_t pos)
++static int devfs_lseek(struct file *f, loff_t pos)
+ {
+ 	struct cdev *cdev = f->private_data;
  
- 	fsdrv = f->fsdev->driver;
- 
--	if (fsdrv->ioctl)
--		ret = fsdrv->ioctl(f, request, buf);
-+	if (f->f_inode->i_fop->ioctl)
-+		ret = f->f_inode->i_fop->ioctl(f, request, buf);
- 	else
- 		ret = -ENOSYS;
- 
-@@ -437,7 +436,7 @@ static ssize_t __read(struct file *f, void *buf, size_t count)
- 	if (!count)
- 		return 0;
- 
--	ret = fsdrv->read(f, buf, count);
-+	ret = f->f_inode->i_fop->read(f, buf, count);
- out:
- 	return errno_set(ret);
+ 	return cdev_lseek(cdev, pos);
  }
-@@ -483,7 +482,7 @@ static ssize_t __write(struct file *f, const void *buf, size_t count)
  
- 	fsdrv = f->fsdev->driver;
- 
--	if ((f->f_flags & O_ACCMODE) == O_RDONLY || !fsdrv->write) {
-+	if ((f->f_flags & O_ACCMODE) == O_RDONLY || !f->f_inode->i_fop->write) {
- 		ret = -EBADF;
- 		goto out;
- 	}
-@@ -505,7 +504,8 @@ static ssize_t __write(struct file *f, const void *buf, size_t count)
- 			f->f_size = f->f_pos + count;
- 		}
- 	}
--	ret = fsdrv->write(f, buf, count);
-+
-+	ret = f->f_inode->i_fop->write(f, buf, count);
- out:
- 	return errno_set(ret);
+-static int devfs_erase(struct device *_dev, struct file *f, loff_t count,
++static int devfs_erase(struct file *f, loff_t count,
+ 		       loff_t offset, enum erase_type type)
+ {
+ 	struct cdev *cdev = f->private_data;
+@@ -77,23 +77,21 @@ static int devfs_erase(struct device *_dev, struct file *f, loff_t count,
+ 	return cdev_erase(cdev, count, offset);
  }
-@@ -554,8 +554,8 @@ int flush(int fd)
- 		return -errno;
  
- 	fsdrv = f->fsdev->driver;
--	if (fsdrv->flush)
--		ret = fsdrv->flush(f);
-+	if (f->f_inode->i_fop->flush)
-+		ret = f->f_inode->i_fop->flush(f);
- 	else
- 		ret = 0;
+-static int devfs_protect(struct device *dev, struct file *f, size_t count,
+-			 loff_t offset, int prot)
++static int devfs_protect(struct file *f, size_t count, loff_t offset, int prot)
+ {
+ 	struct cdev *cdev = f->private_data;
  
-@@ -598,8 +598,8 @@ loff_t lseek(int fd, loff_t offset, int whence)
- 	if (f->f_size != FILE_SIZE_STREAM && (pos < 0 || pos > f->f_size))
- 		goto out;
+ 	return cdev_protect(cdev, count, offset, prot);
+ }
  
--	if (fsdrv->lseek) {
--		ret = fsdrv->lseek(f, pos);
-+	if (f->f_inode->i_fop->lseek) {
-+		ret = f->f_inode->i_fop->lseek(f, pos);
- 		if (ret < 0)
- 			goto out;
- 	}
-@@ -635,8 +635,8 @@ int erase(int fd, loff_t count, loff_t offset, enum erase_type type)
- 	if (fsdrv != ramfs_driver)
- 		assert_command_context();
+-static int devfs_discard_range(struct device *dev, struct file *f, loff_t count,
+-			       loff_t offset)
++static int devfs_discard_range(struct file *f, loff_t count, loff_t offset)
+ {
+ 	struct cdev *cdev = f->private_data;
  
--	if (fsdrv->erase)
--		ret = fsdrv->erase(f, count, offset, type);
-+	if (f->f_inode->i_fop->erase)
-+		ret = f->f_inode->i_fop->erase(f, count, offset, type);
- 	else
- 		ret = -ENOSYS;
+ 	return cdev_discard_range(cdev, count, offset);
+ }
  
-@@ -662,8 +662,8 @@ int protect(int fd, size_t count, loff_t offset, int prot)
- 	if (fsdrv != ramfs_driver)
- 		assert_command_context();
+-static int devfs_memmap(struct device *_dev, struct file *f, void **map, int flags)
++static int devfs_memmap(struct file *f, void **map, int flags)
+ {
+ 	struct cdev *cdev = f->private_data;
  
--	if (fsdrv->protect)
--		ret = fsdrv->protect(f, count, offset, prot);
-+	if (f->f_inode->i_fop->protect)
-+		ret = f->f_inode->i_fop->protect(f, count, offset, prot);
- 	else
- 		ret = -ENOSYS;
+@@ -119,21 +117,21 @@ static int devfs_close(struct inode *inode, struct file *f)
+ 	return cdev_close(cdev);
+ }
  
-@@ -689,8 +689,8 @@ int discard_range(int fd, loff_t count, loff_t offset)
- 	if (fsdrv != ramfs_driver)
- 		assert_command_context();
+-static int devfs_flush(struct device *_dev, struct file *f)
++static int devfs_flush(struct file *f)
+ {
+ 	struct cdev *cdev = f->private_data;
  
--	if (fsdrv->discard_range)
--		ret = fsdrv->discard_range(f, count, offset);
-+	if (f->f_inode->i_fop->discard_range)
-+		ret = f->f_inode->i_fop->discard_range(f, count, offset);
- 	else
- 		ret = -ENOSYS;
+ 	return cdev_flush(cdev);
+ }
  
-@@ -727,8 +727,8 @@ void *memmap(int fd, int flags)
- 	if (fsdrv != ramfs_driver)
- 		assert_command_context();
+-static int devfs_ioctl(struct device *_dev, struct file *f, unsigned int request, void *buf)
++static int devfs_ioctl(struct file *f, unsigned int request, void *buf)
+ {
+ 	struct cdev *cdev = f->private_data;
  
--	if (fsdrv->memmap)
--		ret = fsdrv->memmap(f, &retp, flags);
-+	if (f->f_inode->i_fop->memmap)
-+		ret = f->f_inode->i_fop->memmap(f, &retp, flags);
- 	else
- 		ret = -EINVAL;
+ 	return cdev_ioctl(cdev, request, buf);
+ }
  
-diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-index 4906d990013b2adc25e3e5702280f75722508497..84f39a0f2a2490c329b7bab9e013730cb6500f98 100644
---- a/fs/jffs2/fs.c
-+++ b/fs/jffs2/fs.c
-@@ -64,11 +64,6 @@ static int jffs2_close(struct inode *inode, struct file *f)
+-static int devfs_truncate(struct device *dev, struct file *f, loff_t size)
++static int devfs_truncate(struct file *f, loff_t size)
+ {
+ 	struct cdev *cdev = f->private_data;
+ 
+diff --git a/fs/efi.c b/fs/efi.c
+index da15c9078051c167b56f75a81a083810f16061ce..63789c83ad01605d170a93786eb4cab7b124c69d 100644
+--- a/fs/efi.c
++++ b/fs/efi.c
+@@ -201,7 +201,7 @@ static int efifs_close(struct device *dev, struct file *f)
  	return 0;
  }
  
--const struct file_operations jffs2_file_operations = {
--	.open = jffs2_open,
--	.release = jffs2_close,
--};
--
- static int jffs2_get_block(struct jffs2_file *jf, unsigned int pos)
+-static int efifs_read(struct device *_dev, struct file *f, void *buf, size_t insize)
++static int efifs_read(struct file *f, void *buf, size_t insize)
  {
- 	struct jffs2_sb_info *c = JFFS2_SB_INFO(jf->inode->i_sb);
-@@ -138,6 +133,12 @@ static int jffs2_read(struct file *f, void *buf, size_t insize)
- 
+ 	struct efifs_file *ufile = f->private_data;
+ 	efi_status_t efiret;
+@@ -215,8 +215,7 @@ static int efifs_read(struct device *_dev, struct file *f, void *buf, size_t ins
+ 	return bufsize;
  }
  
-+const struct file_operations jffs2_file_operations = {
-+	.open = jffs2_open,
-+	.release = jffs2_close,
-+	.read = jffs2_read,
-+};
-+
- struct inode *jffs2_iget(struct super_block *sb, unsigned long ino)
+-static int efifs_write(struct device *_dev, struct file *f, const void *buf,
+-		       size_t insize)
++static int efifs_write(struct file *f, const void *buf, size_t insize)
  {
- 	struct jffs2_inode_info *f;
-@@ -458,7 +459,6 @@ static void jffs2_remove(struct device *dev)
- 
- 
- static struct fs_driver jffs2_driver = {
--	.read = jffs2_read,
- 	.type = filetype_jffs2,
- 	.drv = {
- 		.probe  = jffs2_probe,
-diff --git a/fs/legacy.c b/fs/legacy.c
-index 5cb4ec22fe7903e4c1371eb4d69671a3eeb790a1..7c73ad7c41e47028b28c3185c9387168d157b8f4 100644
---- a/fs/legacy.c
-+++ b/fs/legacy.c
-@@ -298,6 +298,53 @@ static const char *legacy_get_link(struct dentry *dentry, struct inode *inode)
- 	return inode->i_link;
+ 	struct efifs_file *ufile = f->private_data;
+ 	efi_status_t efiret;
+@@ -231,7 +230,7 @@ static int efifs_write(struct device *_dev, struct file *f, const void *buf,
+ 	return bufsize;
  }
  
-+static int legacy_read(struct file *f, void *buf, size_t size)
-+{
-+	const struct fs_legacy_ops *legacy_ops = f->fsdev->driver->legacy_ops;
-+
-+	return legacy_ops->read(f, buf, size);
-+}
-+
-+static int legacy_write(struct file *f, const void *buf, size_t size)
-+{
-+	const struct fs_legacy_ops *legacy_ops = f->fsdev->driver->legacy_ops;
-+
-+	if (!legacy_ops->write)
-+		return -EBADF;
-+
-+	return legacy_ops->write(f, buf, size);
-+}
-+
-+static int legacy_lseek(struct file *f, loff_t pos)
-+{
-+	const struct fs_legacy_ops *legacy_ops = f->fsdev->driver->legacy_ops;
-+
-+	if (!legacy_ops->lseek)
-+		return 0;
-+
-+	return legacy_ops->lseek(f, pos);
-+}
-+
-+static int legacy_ioctl(struct file *f, unsigned int request, void *buf)
-+{
-+	const struct fs_legacy_ops *legacy_ops = f->fsdev->driver->legacy_ops;
-+
-+	if (!legacy_ops->ioctl)
-+		return -ENOSYS;
-+
-+	return legacy_ops->ioctl(f, request, buf);
-+}
-+
-+static int legacy_truncate(struct file *f, loff_t size)
-+{
-+	const struct fs_legacy_ops *legacy_ops = f->fsdev->driver->legacy_ops;
-+
-+	if (!legacy_ops->truncate)
-+		return -EROFS;
-+
-+	return legacy_ops->truncate(f, size);
-+}
-+
- static const struct super_operations legacy_s_ops;
- static const struct inode_operations legacy_file_inode_operations;
- 
-@@ -313,6 +360,11 @@ static const struct inode_operations legacy_dir_inode_operations = {
- static const struct file_operations legacy_file_operations = {
- 	.open = legacy_open,
- 	.release = legacy_release,
-+	.read = legacy_read,
-+	.write = legacy_write,
-+	.lseek = legacy_lseek,
-+	.ioctl = legacy_ioctl,
-+	.truncate = legacy_truncate,
- };
- 
- static const struct file_operations legacy_dir_operations = {
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 48589a2183b71fb35db20e4c5ec0ecf66dfd2ef2..9c72d709fb44fa1f4fb60f7aa93bd1733fa50efa 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1321,6 +1321,10 @@ static const struct inode_operations nfs_dir_inode_operations;
- static const struct file_operations nfs_file_operations = {
- 	.open      = nfs_open,
- 	.release     = nfs_close,
-+	.read      = nfs_read,
-+	.lseek     = nfs_lseek,
-+	.write     = nfs_write,
-+	.truncate  = nfs_truncate,
- };
- static const struct inode_operations nfs_symlink_inode_operations = {
- 	.get_link = nfs_get_link,
-@@ -1554,10 +1558,6 @@ static void nfs_remove(struct device *dev)
- }
- 
- static struct fs_driver nfs_driver = {
--	.read      = nfs_read,
--	.lseek     = nfs_lseek,
--	.write     = nfs_write,
--	.truncate  = nfs_truncate,
- 	.drv = {
- 		.probe  = nfs_probe,
- 		.remove = nfs_remove,
-diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
-index 8d18728c73f842f4d7a94274328d027b5b536b69..88951632138a585176cc2fecfd94dabab27f3087 100644
---- a/fs/pstore/fs.c
-+++ b/fs/pstore/fs.c
-@@ -282,11 +282,11 @@ static const struct fs_legacy_ops pstore_ops = {
- 	.readdir   = pstore_readdir,
- 	.closedir  = pstore_closedir,
- 	.stat      = pstore_stat,
-+	.read      = pstore_read,
-+	.lseek     = pstore_lseek,
- };
- 
- static struct fs_driver pstore_driver = {
--	.read      = pstore_read,
--	.lseek     = pstore_lseek,
- 	.legacy_ops = &pstore_ops,
- 	.type = filetype_uimage,
- 	.drv = {
-diff --git a/fs/qemu_fw_cfg.c b/fs/qemu_fw_cfg.c
-index a3cf9a5f8bb01eaf6e5ecac5dc3e11ca61d43932..8e61df1ebf22f8e273fe860105327f0628c017b5 100644
---- a/fs/qemu_fw_cfg.c
-+++ b/fs/qemu_fw_cfg.c
-@@ -58,9 +58,7 @@ static const struct inode_operations fw_cfg_fs_dir_inode_operations;
- static const struct inode_operations fw_cfg_fs_symlink_inode_operations = {
- 	.get_link = fw_cfg_fs_get_link,
- };
--static const struct file_operations fw_cfg_fs_file_operations = {
--	.open = fw_cfg_fs_open
--};
-+static const struct file_operations fw_cfg_fs_file_operations;
- static const struct file_operations fw_cfg_fs_dir_operations;
- 
- static struct inode *fw_cfg_fs_get_inode(struct inode *iparent,
-@@ -337,6 +335,12 @@ static int fw_cfg_fs_write(struct file *f, const void *buf, size_t insize)
- 	return fw_cfg_fs_io(f, (void *)buf, insize, false);
- }
- 
-+static const struct file_operations fw_cfg_fs_file_operations = {
-+	.open = fw_cfg_fs_open,
-+	.read = fw_cfg_fs_read,
-+	.write = fw_cfg_fs_write,
-+};
-+
- static int fw_cfg_fs_probe(struct device *dev)
+-static int efifs_lseek(struct device *dev, struct file *f, loff_t pos)
++static int efifs_lseek(struct file *f, loff_t pos)
  {
- 	struct fw_cfg_fs_inode *node;
-@@ -390,8 +394,6 @@ static void fw_cfg_fs_remove(struct device *dev)
- }
- 
- static struct fs_driver fw_cfg_fs_driver = {
--	.read = fw_cfg_fs_read,
--	.write = fw_cfg_fs_write,
- 	.type = filetype_qemu_fw_cfg,
- 	.drv = {
- 		.probe = fw_cfg_fs_probe,
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 97a5a2425570553cbb3cc62fd96c35beefd6cf6c..d8c754492561e1b0d43c9b87d92b3199c437dc3e 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -395,6 +395,13 @@ static int ramfs_memmap(struct file *f, void **map, int flags)
+ 	struct efifs_file *ufile = f->private_data;
+ 	efi_status_t efiret;
+@@ -244,7 +243,7 @@ static int efifs_lseek(struct device *dev, struct file *f, loff_t pos)
  	return 0;
  }
  
-+static const struct file_operations ramfs_file_operations = {
-+	.read      = ramfs_read,
-+	.write     = ramfs_write,
-+	.memmap    = ramfs_memmap,
-+	.truncate  = ramfs_truncate,
-+};
-+
- static struct inode *ramfs_alloc_inode(struct super_block *sb)
+-static int efifs_truncate(struct device *dev, struct file *f, loff_t size)
++static int efifs_truncate(struct file *f, loff_t size)
  {
- 	struct ramfs_inode *node;
-@@ -435,10 +442,6 @@ static int ramfs_probe(struct device *dev)
- }
- 
- static struct fs_driver ramfs_driver = {
--	.read      = ramfs_read,
--	.write     = ramfs_write,
--	.memmap    = ramfs_memmap,
--	.truncate  = ramfs_truncate,
- 	.drv = {
- 		.probe  = ramfs_probe,
- 		.name = "ramfs",
-diff --git a/fs/ratpfs.c b/fs/ratpfs.c
-index ae214214b6b88499418b6986b2790374e89d0127..389f439b58b15c37bcad72ed6c786d8d70784339 100644
---- a/fs/ratpfs.c
-+++ b/fs/ratpfs.c
-@@ -446,12 +446,12 @@ static const struct fs_legacy_ops ratpfs_ops = {
- 	.unlink    = ratpfs_rm,
- 	.mkdir     = ratpfs_mkdir,
- 	.rmdir     = ratpfs_rm,
--};
--
--static struct fs_driver ratpfs_driver = {
- 	.read      = ratpfs_read,
- 	.write     = ratpfs_write,
- 	.truncate  = ratpfs_truncate,
-+};
-+
-+static struct fs_driver ratpfs_driver = {
- 	.legacy_ops = &ratpfs_ops,
- 	.drv = {
- 		.probe  = ratpfs_probe,
-diff --git a/fs/smhfs.c b/fs/smhfs.c
-index 736edda14838d61bca2fba9c1aff31653a72bda5..b5ed54b4b7ed847c3d85e8fd829565516df27012 100644
---- a/fs/smhfs.c
-+++ b/fs/smhfs.c
-@@ -142,13 +142,13 @@ static const struct fs_legacy_ops smhfs_ops = {
- 	.unlink    = smhfs_rm,
- 	.mkdir     = smhfs_mkdir,
- 	.rmdir     = smhfs_rm,
--};
--
--static struct fs_driver smhfs_driver = {
- 	.read      = smhfs_read,
- 	.lseek     = smhfs_lseek,
- 	.write     = smhfs_write,
- 	.truncate  = smhfs_truncate,
-+};
-+
-+static struct fs_driver smhfs_driver = {
- 	.legacy_ops = &smhfs_ops,
- 	.drv = {
- 		.probe  = smhfs_probe,
-diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index 2e06a30f90902df56e6deb8e8597803db46ff722..e30372627abf47397093dd5bf3c5b2e871ecc631 100644
---- a/fs/squashfs/squashfs.c
-+++ b/fs/squashfs/squashfs.c
-@@ -176,11 +176,6 @@ static int squashfs_close(struct inode *inode, struct file *f)
+ 	struct efifs_file *ufile = f->private_data;
+ 	efi_status_t efiret;
+diff --git a/fs/efivarfs.c b/fs/efivarfs.c
+index 9717a6340676ae447f54851f4346908699d04517..4811101354ba8157e3fbf06cb3e1c844baec2a83 100644
+--- a/fs/efivarfs.c
++++ b/fs/efivarfs.c
+@@ -180,8 +180,7 @@ static int efivarfs_close(struct device *dev, struct file *f)
  	return 0;
  }
  
--const struct file_operations squashfs_file_operations = {
--	.open = squashfs_open,
--	.release = squashfs_close,
--};
--
- static int squashfs_read_buf(struct squashfs_page *page, int pos, void **buf)
+-static int efivarfs_read(struct device *_dev, struct file *f, void *buf,
+-			 size_t insize)
++static int efivarfs_read(struct file *f, void *buf, size_t insize)
  {
- 	unsigned int data_block = pos / (32 * PAGE_CACHE_SIZE);
-@@ -241,8 +236,13 @@ static int squashfs_read(struct file *f, void *buf, size_t insize)
+ 	struct efivars_file *efile = f->private_data;
+ 
+@@ -190,8 +189,7 @@ static int efivarfs_read(struct device *_dev, struct file *f, void *buf,
  	return insize;
  }
  
-+const struct file_operations squashfs_file_operations = {
-+	.open = squashfs_open,
-+	.release = squashfs_close,
-+	.read = squashfs_read,
-+};
-+
- static struct fs_driver squashfs_driver = {
--	.read		= squashfs_read,
- 	.type		= filetype_squashfs,
- 	.drv = {
- 		.probe = squashfs_probe,
-diff --git a/fs/tftp.c b/fs/tftp.c
-index d1d4d55bc15adac7162d41b1677fbff5b85a79e2..a454306b4b5a95f168363fa8c9386dd63577972c 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -945,6 +945,10 @@ static const struct inode_operations tftp_dir_inode_operations;
- static const struct file_operations tftp_file_operations = {
- 	.open = tftp_open,
- 	.release = tftp_close,
-+	.read      = tftp_read,
-+	.lseek     = tftp_lseek,
-+	.write     = tftp_write,
-+	.truncate  = tftp_truncate,
- };
- 
- static struct inode *tftp_get_inode(struct super_block *sb, const struct inode *dir,
-@@ -1091,10 +1095,6 @@ static void tftp_remove(struct device *dev)
+-static int efivarfs_write(struct device *_dev, struct file *f, const void *buf,
+-			  size_t insize)
++static int efivarfs_write(struct file *f, const void *buf, size_t insize)
+ {
+ 	struct efivars_file *efile = f->private_data;
+ 	efi_status_t efiret;
+@@ -212,7 +210,7 @@ static int efivarfs_write(struct device *_dev, struct file *f, const void *buf,
+ 	return insize;
  }
  
- static struct fs_driver tftp_driver = {
--	.read      = tftp_read,
--	.lseek     = tftp_lseek,
--	.write     = tftp_write,
--	.truncate  = tftp_truncate,
- 	.drv = {
- 		.probe  = tftp_probe,
- 		.remove = tftp_remove,
-diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
-index 285c40b4c21c5f08ac40b4566e8507261c232eb3..45037b42ea56cc95343a431376c06f7922eda2f2 100644
---- a/fs/ubifs/super.c
-+++ b/fs/ubifs/super.c
-@@ -108,6 +108,7 @@ const struct inode_operations ubifs_file_inode_operations;
- const struct file_operations ubifs_file_operations = {
- 	.open = ubifs_open,
- 	.release = ubifs_close,
-+	.read = ubifs_read,
+-static int efivarfs_truncate(struct device *dev, struct file *f, loff_t size)
++static int efivarfs_truncate(struct file *f, loff_t size)
+ {
+ 	struct efivars_file *efile = f->private_data;
+ 	efi_status_t efiret;
+diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
+index e75478684ff39418fcfac0d53287aa2e67949361..e626f516b69a2970b5e8d48caea61a9ac1eb4e9c 100644
+--- a/fs/ext4/ext_barebox.c
++++ b/fs/ext4/ext_barebox.c
+@@ -48,7 +48,7 @@ static inline struct ext2fs_node *to_ext2_node(struct inode *inode)
+ 	return container_of(inode, struct ext2fs_node, i);
+ }
+ 
+-static int ext_read(struct device *_dev, struct file *f, void *buf, size_t insize)
++static int ext_read(struct file *f, void *buf, size_t insize)
+ {
+ 	struct inode *inode = f->f_inode;
+ 	struct ext2fs_node *node = to_ext2_node(inode);
+diff --git a/fs/fat/fat.c b/fs/fat/fat.c
+index 15a7b2a9692723f1a13c797bc89047a4c6fe44a3..28517c6b90ac3487becc8bf1daffef8b84e10e65 100644
+--- a/fs/fat/fat.c
++++ b/fs/fat/fat.c
+@@ -125,8 +125,7 @@ static int fat_rmdir(struct device *dev, const char *pathname)
+ 	return 0;
+ }
+ 
+-static int fat_write(struct device *_dev, struct file *f, const void *buf,
+-		     size_t insize)
++static int fat_write(struct file *f, const void *buf, size_t insize)
+ {
+ 	FIL *f_file = f->private_data;
+ 	int outsize;
+@@ -144,7 +143,7 @@ static int fat_write(struct device *_dev, struct file *f, const void *buf,
+ 	return outsize;
+ }
+ 
+-static int fat_truncate(struct device *dev, struct file *f, loff_t size)
++static int fat_truncate(struct file *f, loff_t size)
+ {
+ 	FIL *f_file = f->private_data;
+ 	unsigned long lastofs;
+@@ -224,7 +223,7 @@ static int fat_close(struct device *dev, struct file *f)
+ 	return 0;
+ }
+ 
+-static int fat_read(struct device *_dev, struct file *f, void *buf, size_t insize)
++static int fat_read(struct file *f, void *buf, size_t insize)
+ {
+ 	int ret;
+ 	FIL *f_file = f->private_data;
+@@ -240,7 +239,7 @@ static int fat_read(struct device *_dev, struct file *f, void *buf, size_t insiz
+ 	return outsize;
+ }
+ 
+-static int fat_lseek(struct device *dev, struct file *f, loff_t pos)
++static int fat_lseek(struct file *f, loff_t pos)
+ {
+ 	FIL *f_file = f->private_data;
+ 	int ret;
+diff --git a/fs/fs.c b/fs/fs.c
+index 02b6b0d8fdc7677184a991dbf629047e85c67851..8a90a317382b3dce7c2c60ccc5bb3bc9a528b02b 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -370,11 +370,11 @@ static int create(struct dentry *dir, struct dentry *dentry)
+ 	return inode->i_op->create(inode, dentry, S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO);
+ }
+ 
+-static int fsdev_truncate(struct device *dev, struct file *f, loff_t length)
++static int fsdev_truncate(struct file *f, loff_t length)
+ {
+ 	struct fs_driver *fsdrv = f->fsdev->driver;
+ 
+-	return fsdrv->truncate ? fsdrv->truncate(dev, f, length) : -EROFS;
++	return fsdrv->truncate ? fsdrv->truncate(f, length) : -EROFS;
+ }
+ 
+ int ftruncate(int fd, loff_t length)
+@@ -388,7 +388,7 @@ int ftruncate(int fd, loff_t length)
+ 	if (f->f_size == FILE_SIZE_STREAM)
+ 		return 0;
+ 
+-	ret = fsdev_truncate(&f->fsdev->dev, f, length);
++	ret = fsdev_truncate(f, length);
+ 	if (ret)
+ 		return errno_set(ret);
+ 
+@@ -409,7 +409,7 @@ int ioctl(int fd, unsigned int request, void *buf)
+ 	fsdrv = f->fsdev->driver;
+ 
+ 	if (fsdrv->ioctl)
+-		ret = fsdrv->ioctl(&f->fsdev->dev, f, request, buf);
++		ret = fsdrv->ioctl(f, request, buf);
+ 	else
+ 		ret = -ENOSYS;
+ 
+@@ -437,7 +437,7 @@ static ssize_t __read(struct file *f, void *buf, size_t count)
+ 	if (!count)
+ 		return 0;
+ 
+-	ret = fsdrv->read(&f->fsdev->dev, f, buf, count);
++	ret = fsdrv->read(f, buf, count);
+ out:
+ 	return errno_set(ret);
+ }
+@@ -492,7 +492,7 @@ static ssize_t __write(struct file *f, const void *buf, size_t count)
+ 		assert_command_context();
+ 
+ 	if (f->f_size != FILE_SIZE_STREAM && f->f_pos + count > f->f_size) {
+-		ret = fsdev_truncate(&f->fsdev->dev, f, f->f_pos + count);
++		ret = fsdev_truncate(f, f->f_pos + count);
+ 		if (ret) {
+ 			if (ret == -EPERM)
+ 				ret = -ENOSPC;
+@@ -505,7 +505,7 @@ static ssize_t __write(struct file *f, const void *buf, size_t count)
+ 			f->f_size = f->f_pos + count;
+ 		}
+ 	}
+-	ret = fsdrv->write(&f->fsdev->dev, f, buf, count);
++	ret = fsdrv->write(f, buf, count);
+ out:
+ 	return errno_set(ret);
+ }
+@@ -555,7 +555,7 @@ int flush(int fd)
+ 
+ 	fsdrv = f->fsdev->driver;
+ 	if (fsdrv->flush)
+-		ret = fsdrv->flush(&f->fsdev->dev, f);
++		ret = fsdrv->flush(f);
+ 	else
+ 		ret = 0;
+ 
+@@ -599,7 +599,7 @@ loff_t lseek(int fd, loff_t offset, int whence)
+ 		goto out;
+ 
+ 	if (fsdrv->lseek) {
+-		ret = fsdrv->lseek(&f->fsdev->dev, f, pos);
++		ret = fsdrv->lseek(f, pos);
+ 		if (ret < 0)
+ 			goto out;
+ 	}
+@@ -636,7 +636,7 @@ int erase(int fd, loff_t count, loff_t offset, enum erase_type type)
+ 		assert_command_context();
+ 
+ 	if (fsdrv->erase)
+-		ret = fsdrv->erase(&f->fsdev->dev, f, count, offset, type);
++		ret = fsdrv->erase(f, count, offset, type);
+ 	else
+ 		ret = -ENOSYS;
+ 
+@@ -663,7 +663,7 @@ int protect(int fd, size_t count, loff_t offset, int prot)
+ 		assert_command_context();
+ 
+ 	if (fsdrv->protect)
+-		ret = fsdrv->protect(&f->fsdev->dev, f, count, offset, prot);
++		ret = fsdrv->protect(f, count, offset, prot);
+ 	else
+ 		ret = -ENOSYS;
+ 
+@@ -690,7 +690,7 @@ int discard_range(int fd, loff_t count, loff_t offset)
+ 		assert_command_context();
+ 
+ 	if (fsdrv->discard_range)
+-		ret = fsdrv->discard_range(&f->fsdev->dev, f, count, offset);
++		ret = fsdrv->discard_range(f, count, offset);
+ 	else
+ 		ret = -ENOSYS;
+ 
+@@ -728,7 +728,7 @@ void *memmap(int fd, int flags)
+ 		assert_command_context();
+ 
+ 	if (fsdrv->memmap)
+-		ret = fsdrv->memmap(&f->fsdev->dev, f, &retp, flags);
++		ret = fsdrv->memmap(f, &retp, flags);
+ 	else
+ 		ret = -EINVAL;
+ 
+@@ -2675,7 +2675,7 @@ int openat(int dirfd, const char *pathname, int flags)
+ 	}
+ 
+ 	if (flags & O_TRUNC) {
+-		error = fsdev_truncate(&fsdev->dev, f, 0);
++		error = fsdev_truncate(f, 0);
+ 		f->f_size = 0;
+ 		if (error)
+ 			goto out;
+diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
+index 5952ea9e904fa03240245a8977429814d69c28d6..4906d990013b2adc25e3e5702280f75722508497 100644
+--- a/fs/jffs2/fs.c
++++ b/fs/jffs2/fs.c
+@@ -89,8 +89,7 @@ static int jffs2_get_block(struct jffs2_file *jf, unsigned int pos)
+ 	return 0;
+ }
+ 
+-static int jffs2_read(struct device *_dev, struct file *f, void *buf,
+-		      size_t insize)
++static int jffs2_read(struct file *f, void *buf, size_t insize)
+ {
+ 	struct jffs2_file *jf = f->private_data;
+ 	unsigned int pos = f->f_pos;
+diff --git a/fs/nfs.c b/fs/nfs.c
+index 17e1e7cfa1f1d66fab3b1b3e5efd3dc0fcb26327..48589a2183b71fb35db20e4c5ec0ecf66dfd2ef2 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -1067,7 +1067,7 @@ static void nfs_handler(void *ctx, char *p, unsigned len)
+ 	list_add_tail(&packet->list, &npriv->packets);
+ }
+ 
+-static int nfs_truncate(struct device *dev, struct file *f, loff_t size)
++static int nfs_truncate(struct file *f, loff_t size)
+ {
+ 	return -ENOSYS;
+ }
+@@ -1187,13 +1187,12 @@ static int nfs_close(struct inode *inode, struct file *file)
+ 	return 0;
+ }
+ 
+-static int nfs_write(struct device *_dev, struct file *file, const void *inbuf,
+-		     size_t insize)
++static int nfs_write(struct file *file, const void *inbuf, size_t insize)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static int nfs_read(struct device *dev, struct file *file, void *buf, size_t insize)
++static int nfs_read(struct file *file, void *buf, size_t insize)
+ {
+ 	struct file_priv *priv = file->private_data;
+ 
+@@ -1209,7 +1208,7 @@ static int nfs_read(struct device *dev, struct file *file, void *buf, size_t ins
+ 	return kfifo_get(priv->fifo, buf, insize);
+ }
+ 
+-static int nfs_lseek(struct device *dev, struct file *file, loff_t pos)
++static int nfs_lseek(struct file *file, loff_t pos)
+ {
+ 	struct file_priv *priv = file->private_data;
+ 
+diff --git a/fs/omap4_usbbootfs.c b/fs/omap4_usbbootfs.c
+index 9c1524c56cc585d3e1bf3fc26833fc122018bcb7..16c9a2784be5494d999775b7b3b7ca35d2f14fcb 100644
+--- a/fs/omap4_usbbootfs.c
++++ b/fs/omap4_usbbootfs.c
+@@ -93,8 +93,7 @@ static int omap4_usbbootfs_close(struct device *dev, struct file *f)
+ 	return omap4_usbbootfs_do_close(priv);
+ }
+ 
+-static int omap4_usbbootfs_read(struct device *dev, struct file *f, void *buf,
+-				size_t size)
++static int omap4_usbbootfs_read(struct file *f, void *buf, size_t size)
+ {
+ 	struct file_priv *priv = f->private_data;
+ 	u32 data;
+diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
+index efa1c48eca90ad5f9e3d3f579463d8e43221eb3e..8d18728c73f842f4d7a94274328d027b5b536b69 100644
+--- a/fs/pstore/fs.c
++++ b/fs/pstore/fs.c
+@@ -162,7 +162,7 @@ static int pstore_close(struct device *dev, struct file *file)
+ 	return 0;
+ }
+ 
+-static int pstore_read(struct device *dev, struct file *file, void *buf,
++static int pstore_read(struct file *file, void *buf,
+ 		       size_t insize)
+ {
+ 	struct pstore_private *d = file->private_data;
+@@ -173,7 +173,7 @@ static int pstore_read(struct device *dev, struct file *file, void *buf,
+ 	return insize;
+ }
+ 
+-static int pstore_lseek(struct device *dev, struct file *file, loff_t pos)
++static int pstore_lseek(struct file *file, loff_t pos)
+ {
+ 	struct pstore_private *d = file->private_data;
+ 
+diff --git a/fs/qemu_fw_cfg.c b/fs/qemu_fw_cfg.c
+index caf5415746494d1f087bed4f9603f7d2bc47b9b0..a3cf9a5f8bb01eaf6e5ecac5dc3e11ca61d43932 100644
+--- a/fs/qemu_fw_cfg.c
++++ b/fs/qemu_fw_cfg.c
+@@ -304,12 +304,11 @@ static const struct super_operations fw_cfg_fs_ops = {
+ 	.destroy_inode = fw_cfg_fs_destroy_inode,
  };
  
- struct inode *ubifs_iget(struct super_block *sb, unsigned long inum)
+-static int fw_cfg_fs_io(struct device *dev, struct file *f, void *buf,
+-			 size_t insize, bool read)
++static int fw_cfg_fs_io(struct file *f, void *buf, size_t insize, bool read)
+ {
+ 	struct inode *inode = f->f_inode;
+ 	struct fw_cfg_fs_inode *node = inode_to_node(inode);
+-	struct fw_cfg_fs_data *data = dev->priv;
++	struct fw_cfg_fs_data *data = f->fsdev->dev.priv;
+ 	int fd = data->fd;
+ 
+ 	if (node->buf) {
+@@ -328,16 +327,14 @@ static int fw_cfg_fs_io(struct device *dev, struct file *f, void *buf,
+ 		return pwrite(fd, buf, insize, f->f_pos);
+ }
+ 
+-static int fw_cfg_fs_read(struct device *dev, struct file *f, void *buf,
+-			   size_t insize)
++static int fw_cfg_fs_read(struct file *f, void *buf, size_t insize)
+ {
+-	return fw_cfg_fs_io(dev, f, buf, insize, true);
++	return fw_cfg_fs_io(f, buf, insize, true);
+ }
+ 
+-static int fw_cfg_fs_write(struct device *dev, struct file *f, const void *buf,
+-			    size_t insize)
++static int fw_cfg_fs_write(struct file *f, const void *buf, size_t insize)
+ {
+-	return fw_cfg_fs_io(dev, f, (void *)buf, insize, false);
++	return fw_cfg_fs_io(f, (void *)buf, insize, false);
+ }
+ 
+ static int fw_cfg_fs_probe(struct device *dev)
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index e971f608545cfd00f19f7ccb4ca7e3d21cd3ec41..97a5a2425570553cbb3cc62fd96c35beefd6cf6c 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -210,7 +210,7 @@ static struct ramfs_chunk *ramfs_find_chunk(struct ramfs_inode *node,
+ 	return NULL;
+ }
+ 
+-static int ramfs_read(struct device *_dev, struct file *f, void *buf, size_t insize)
++static int ramfs_read(struct file *f, void *buf, size_t insize)
+ {
+ 	struct inode *inode = f->f_inode;
+ 	struct ramfs_inode *node = to_ramfs_inode(inode);
+@@ -240,8 +240,7 @@ static int ramfs_read(struct device *_dev, struct file *f, void *buf, size_t ins
+ 	return insize;
+ }
+ 
+-static int ramfs_write(struct device *_dev, struct file *f, const void *buf,
+-		       size_t insize)
++static int ramfs_write(struct file *f, const void *buf, size_t insize)
+ {
+ 	struct inode *inode = f->f_inode;
+ 	struct ramfs_inode *node = to_ramfs_inode(inode);
+@@ -345,7 +344,7 @@ static int ramfs_truncate_up(struct ramfs_inode *node, unsigned long size)
+ 	return -ENOSPC;
+ }
+ 
+-static int ramfs_truncate(struct device *dev, struct file *f, loff_t size)
++static int ramfs_truncate(struct file *f, loff_t size)
+ {
+ 	struct inode *inode = f->f_inode;
+ 	struct ramfs_inode *node = to_ramfs_inode(inode);
+@@ -377,7 +376,7 @@ static int ramfs_truncate(struct device *dev, struct file *f, loff_t size)
+ 	return 0;
+ }
+ 
+-static int ramfs_memmap(struct device *_dev, struct file *f, void **map, int flags)
++static int ramfs_memmap(struct file *f, void **map, int flags)
+ {
+ 	struct inode *inode = f->f_inode;
+ 	struct ramfs_inode *node = to_ramfs_inode(inode);
+diff --git a/fs/ratpfs.c b/fs/ratpfs.c
+index c3c3a248b68122d3ae1eecb8b4c022458f1a8c07..ae214214b6b88499418b6986b2790374e89d0127 100644
+--- a/fs/ratpfs.c
++++ b/fs/ratpfs.c
+@@ -76,8 +76,7 @@ static int ratpfs_rm(struct device __always_unused *dev,
+ 	return 0;
+ }
+ 
+-static int ratpfs_truncate(struct device __always_unused *dev,
+-			   struct file *f, loff_t size)
++static int ratpfs_truncate(struct file *f, loff_t size)
+ {
+ 	int len_tx = 1 /* type */
+ 		+ 4 /* handle */
+@@ -198,8 +197,7 @@ static int ratpfs_close(struct device __always_unused *dev,
+ 	return ret;
+ }
+ 
+-static int ratpfs_write(struct device __always_unused *dev,
+-			struct file *f, const void *buf, size_t orig_size)
++static int ratpfs_write(struct file *f, const void *buf, size_t orig_size)
+ {
+ 	int size = min((int)orig_size, 4096);
+ 	int len_tx = 1 /* type */
+@@ -241,8 +239,7 @@ static int ratpfs_write(struct device __always_unused *dev,
+ 	return ret;
+ }
+ 
+-static int ratpfs_read(struct device __always_unused *dev,
+-		       struct file *f, void *buf, size_t orig_size)
++static int ratpfs_read(struct file *f, void *buf, size_t orig_size)
+ {
+ 	int size = min((int)orig_size, 4096);
+ 	int len_tx = 1 /* type */
+diff --git a/fs/smhfs.c b/fs/smhfs.c
+index 3a3b4bdc1d94239fcacd0c485e6e2ff3067df9ec..736edda14838d61bca2fba9c1aff31653a72bda5 100644
+--- a/fs/smhfs.c
++++ b/fs/smhfs.c
+@@ -51,8 +51,7 @@ static int smhfs_rm(struct device __always_unused *dev,
+ 	return semihosting_remove(pathname);
+ }
+ 
+-static int smhfs_truncate(struct device __always_unused *dev,
+-			  struct file __always_unused *f,
++static int smhfs_truncate(struct file __always_unused *f,
+ 			  loff_t __always_unused size)
+ {
+ 	return 0;
+@@ -83,22 +82,19 @@ static int smhfs_close(struct device __always_unused *dev,
+ 	return semihosting_close(file_to_fd(f));
+ }
+ 
+-static int smhfs_write(struct device __always_unused *dev,
+-		       struct file *f, const void *inbuf, size_t insize)
++static int smhfs_write(struct file *f, const void *inbuf, size_t insize)
+ {
+ 	long ret = semihosting_write(file_to_fd(f), inbuf, insize);
+ 	return ret < 0 ? ret : insize;
+ }
+ 
+-static int smhfs_read(struct device __always_unused *dev,
+-		      struct file *f, void *buf, size_t insize)
++static int smhfs_read(struct file *f, void *buf, size_t insize)
+ {
+ 	long ret = semihosting_read(file_to_fd(f), buf, insize);
+ 	return ret < 0 ? ret : insize;
+ }
+ 
+-static int smhfs_lseek(struct device __always_unused *dev,
+-			  struct file *f, loff_t pos)
++static int smhfs_lseek(struct file *f, loff_t pos)
+ {
+ 	return semihosting_seek(file_to_fd(f), pos);
+ }
+diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
+index 471bcae4eb034d04bf5a9322dc981703b899783a..2e06a30f90902df56e6deb8e8597803db46ff722 100644
+--- a/fs/squashfs/squashfs.c
++++ b/fs/squashfs/squashfs.c
+@@ -199,8 +199,7 @@ static int squashfs_read_buf(struct squashfs_page *page, int pos, void **buf)
+ 	return 0;
+ }
+ 
+-static int squashfs_read(struct device *_dev, struct file *f, void *buf,
+-			 size_t insize)
++static int squashfs_read(struct file *f, void *buf, size_t insize)
+ {
+ 	unsigned int size = insize;
+ 	unsigned int pos = f->f_pos;
+diff --git a/fs/tftp.c b/fs/tftp.c
+index 01ebcbfc7ae44e57fda0745cc05030704b9ea695..d1d4d55bc15adac7162d41b1677fbff5b85a79e2 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -188,7 +188,7 @@ static int tftp_window_cache_insert(struct tftp_cache *cache, uint16_t id,
+ 	return 0;
+ }
+ 
+-static int tftp_truncate(struct device *dev, struct file *f, loff_t size)
++static int tftp_truncate(struct file *f, loff_t size)
+ {
+ 	return 0;
+ }
+@@ -825,8 +825,7 @@ static int tftp_close(struct inode *inode, struct file *f)
+ 	return tftp_do_close(priv);
+ }
+ 
+-static int tftp_write(struct device *_dev, struct file *f, const void *inbuf,
+-		      size_t insize)
++static int tftp_write(struct file *f, const void *inbuf, size_t insize)
+ {
+ 	struct file_priv *priv = f->private_data;
+ 	size_t size, now;
+@@ -861,7 +860,7 @@ static int tftp_write(struct device *_dev, struct file *f, const void *inbuf,
+ 	return insize;
+ }
+ 
+-static int tftp_read(struct device *dev, struct file *f, void *buf, size_t insize)
++static int tftp_read(struct file *f, void *buf, size_t insize)
+ {
+ 	struct file_priv *priv = f->private_data;
+ 	size_t outsize = 0, now;
+@@ -901,7 +900,7 @@ static int tftp_read(struct device *dev, struct file *f, void *buf, size_t insiz
+ 	return outsize;
+ }
+ 
+-static int tftp_lseek(struct device *dev, struct file *f, loff_t pos)
++static int tftp_lseek(struct file *f, loff_t pos)
+ {
+ 	/* We cannot seek backwards without reloading or caching the file */
+ 	loff_t f_pos = f->f_pos;
+@@ -913,7 +912,7 @@ static int tftp_lseek(struct device *dev, struct file *f, loff_t pos)
+ 		while (pos > f_pos) {
+ 			size_t len = min_t(size_t, 1024, pos - f_pos);
+ 
+-			ret = tftp_read(dev, f, buf, len);
++			ret = tftp_read(f, buf, len);
+ 
+ 			if (!ret)
+ 				/* EOF, so the desired pos is invalid. */
 diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index d08612191f75711b3fc3a36be1626a7d3f7b463d..37986acbb238d1e86f8fa6afd5c917e44ccbba86 100644
+index 45b41ed7541dbfef1e9ca82afee2297a4727b571..d08612191f75711b3fc3a36be1626a7d3f7b463d 100644
 --- a/fs/ubifs/ubifs.c
 +++ b/fs/ubifs/ubifs.c
 @@ -382,7 +382,7 @@ static int ubifs_get_block(struct ubifs_file *uf, unsigned int pos)
  	return 0;
  }
  
--static int ubifs_read(struct file *f, void *buf, size_t insize)
-+int ubifs_read(struct file *f, void *buf, size_t insize)
+-static int ubifs_read(struct device *_dev, struct file *f, void *buf, size_t insize)
++static int ubifs_read(struct file *f, void *buf, size_t insize)
  {
  	struct ubifs_file *uf = f->private_data;
  	unsigned int pos = f->f_pos;
-@@ -502,7 +502,6 @@ static void ubifs_remove(struct device *dev)
- }
- 
- static struct fs_driver ubifs_driver = {
--	.read      = ubifs_read,
- 	.type = filetype_ubifs,
- 	.drv = {
- 		.probe  = ubifs_probe,
-diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
-index 4695772355ef40d646e49b7039c18fe918417a0d..aff2a247804ce7b489733d40d5096fb46c5b7c0f 100644
---- a/fs/ubifs/ubifs.h
-+++ b/fs/ubifs/ubifs.h
-@@ -2060,6 +2060,7 @@ int ubifs_decompress(const struct ubifs_info *c, const void *buf, int len,
- /* barebox specific */
- int ubifs_open(struct inode *inode, struct file *file);
- int ubifs_close(struct inode *inode, struct file *f);
-+int ubifs_read(struct file *f, void *buf, size_t insize);
- void ubifs_umount(struct ubifs_info *c);
- int ubifs_get_super(struct device *dev, struct ubi_volume_desc *ubi,
- 		    int silent);
 diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-index 3f1f3afa300592d9e2be497d3abd0f542bed3823..0017769446f89c670e21baaa3207ac70c36a72d0 100644
+index be268d3679d93e242cb1249cc64cc5720added01..3f1f3afa300592d9e2be497d3abd0f542bed3823 100644
 --- a/fs/uimagefs.c
 +++ b/fs/uimagefs.c
-@@ -522,12 +522,12 @@ static const struct fs_legacy_ops uimagefs_ops = {
- 	.readdir   = uimagefs_readdir,
- 	.closedir  = uimagefs_closedir,
- 	.stat      = uimagefs_stat,
--};
--
--static struct fs_driver uimagefs_driver = {
- 	.read      = uimagefs_read,
- 	.lseek     = uimagefs_lseek,
- 	.ioctl	   = uimagefs_ioctl,
-+};
-+
-+static struct fs_driver uimagefs_driver = {
- 	.legacy_ops = &uimagefs_ops,
- 	.type = filetype_uimage,
- 	.drv = {
-diff --git a/include/fs.h b/include/fs.h
-index bee247c9be2d30018862e488a4f9dec1d7033270..86442eacddf9f00c6db6bc784dfc6f83e241a655 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -43,22 +43,6 @@ enum erase_type {
- struct fs_driver {
- 	int (*probe) (struct device *dev);
- 
--	/* Truncate a file to given size */
--	int (*truncate)(struct file *f, loff_t size);
--
--	int (*read)(struct file *f, void *buf, size_t size);
--	int (*write)(struct file *f, const void *buf, size_t size);
--	int (*flush)(struct file *f);
--	int (*lseek)(struct file *f, loff_t pos);
--
--	int (*ioctl)(struct file *f, unsigned int request, void *buf);
--	int (*erase)(struct file *f, loff_t count,
--			loff_t offset, enum erase_type type);
--	int (*protect)(struct file *f, size_t count, loff_t offset, int prot);
--	int (*discard_range)(struct file *f, loff_t count, loff_t offset);
--
--	int (*memmap)(struct file *f, void **map, int flags);
--
- 	const struct fs_legacy_ops {
- 		int (*open)(struct device *dev, struct file *f, const char *pathname);
- 		int (*close)(struct device *dev, struct file *f);
-@@ -76,6 +60,11 @@ struct fs_driver {
- 		struct dirent* (*readdir)(struct device *dev, struct dir *dir);
- 		int (*closedir)(struct device *dev, DIR *dir);
- 		int (*stat)(struct device *dev, const char *file, struct stat *stat);
-+		int (*read)(struct file *f, void *buf, size_t size);
-+		int (*write)(struct file *f, const void *buf, size_t size);
-+		int (*lseek)(struct file *f, loff_t pos);
-+		int (*ioctl)(struct file *f, unsigned int request, void *buf);
-+		int (*truncate)(struct file *f, loff_t size);
- 	} *legacy_ops;
- 
- 	struct driver drv;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 55e01d386de4a7badac8701ad70cdaf336b5eacc..1e12236bcd85713ccafbc958d884e4c367b0b45b 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -481,14 +481,26 @@ static inline int dir_emit_dots(struct file *file, struct dir_context *ctx)
- 	return true;
+@@ -103,8 +103,7 @@ static int uimagefs_close(struct device *dev, struct file *file)
+ 	return 0;
  }
  
-+enum erase_type;
-+
- struct file_operations {
- 	int (*open) (struct inode *, struct file *);
- 	int (*release) (struct inode *, struct file *);
- 	int (*iterate) (struct file *, struct dir_context *);
--	/*
--	 * TODO: move the remaining callbacks in struct fs_driver
--	 * here with Linux semantics
--	 */
+-static int uimagefs_read(struct device *dev, struct file *file, void *buf,
+-			 size_t insize)
++static int uimagefs_read(struct file *file, void *buf, size_t insize)
+ {
+ 	struct uimagefs_handle_data *d = file->private_data;
+ 
+@@ -116,7 +115,7 @@ static int uimagefs_read(struct device *dev, struct file *file, void *buf,
+ 	}
+ }
+ 
+-static int uimagefs_lseek(struct device *dev, struct file *file, loff_t pos)
++static int uimagefs_lseek(struct file *file, loff_t pos)
+ {
+ 	struct uimagefs_handle_data *d = file->private_data;
+ 
+@@ -181,9 +180,9 @@ static int uimagefs_stat(struct device *dev, const char *filename,
+ 	return 0;
+ }
+ 
+-static int uimagefs_ioctl(struct device *dev, struct file *f, unsigned int request, void *buf)
++static int uimagefs_ioctl(struct file *f, unsigned int request, void *buf)
+ {
+-	struct uimagefs_handle *priv = dev->priv;
++	struct uimagefs_handle *priv = f->fsdev->dev.priv;
+ 
+ 	if (request != UIMAGEFS_METADATA)
+ 		return  -EINVAL;
+diff --git a/include/fs.h b/include/fs.h
+index e72f9bac174c080dd05393c74ee6e528cfe99c97..bee247c9be2d30018862e488a4f9dec1d7033270 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -44,23 +44,20 @@ struct fs_driver {
+ 	int (*probe) (struct device *dev);
+ 
+ 	/* Truncate a file to given size */
+-	int (*truncate)(struct device *dev, struct file *f, loff_t size);
++	int (*truncate)(struct file *f, loff_t size);
+ 
+-	int (*read)(struct device *dev, struct file *f, void *buf, size_t size);
+-	int (*write)(struct device *dev, struct file *f, const void *buf,
+-		     size_t size);
+-	int (*flush)(struct device *dev, struct file *f);
+-	int (*lseek)(struct device *dev, struct file *f, loff_t pos);
 +	int (*read)(struct file *f, void *buf, size_t size);
-+	int (*write)(struct file *f, const void *buf,
-+			size_t size);
++	int (*write)(struct file *f, const void *buf, size_t size);
 +	int (*flush)(struct file *f);
 +	int (*lseek)(struct file *f, loff_t pos);
-+
+ 
+-	int (*ioctl)(struct device *dev, struct file *f, unsigned int request, void *buf);
+-	int (*erase)(struct device *dev, struct file *f, loff_t count,
 +	int (*ioctl)(struct file *f, unsigned int request, void *buf);
 +	int (*erase)(struct file *f, loff_t count,
-+			loff_t offset, enum erase_type type);
-+	int (*protect)(struct file *f, size_t count,
-+			loff_t offset, int prot);
+ 			loff_t offset, enum erase_type type);
+-	int (*protect)(struct device *dev, struct file *f, size_t count,
+-			loff_t offset, int prot);
+-	int (*discard_range)(struct device *dev, struct file *f, loff_t count,
+-			     loff_t offset);
++	int (*protect)(struct file *f, size_t count, loff_t offset, int prot);
 +	int (*discard_range)(struct file *f, loff_t count, loff_t offset);
-+	int (*memmap)(struct file *f, void **map, int flags);
-+	int (*truncate)(struct file *f, loff_t size);
- };
  
- void drop_nlink(struct inode *inode);
+-	int (*memmap)(struct device *dev, struct file *f, void **map, int flags);
++	int (*memmap)(struct file *f, void **map, int flags);
+ 
+ 	const struct fs_legacy_ops {
+ 		int (*open)(struct device *dev, struct file *f, const char *pathname);
 
 -- 
 2.47.3
