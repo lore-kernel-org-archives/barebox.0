@@ -3,88 +3,93 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v5cdw-004lrJ-1b
+	id 1v5cdw-004lre-2P
 	for lore@lore.pengutronix.de;
 	Mon, 06 Oct 2025 06:16:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v5cdv-0002ra-9G
+	id 1v5cdv-0002s9-SH
 	for lore@pengutronix.de; Mon, 06 Oct 2025 06:16:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=3wcYv0uUlC+8453x4W661k11atzKYWEGvEjUCbuj/Qw=; b=Ytudadvz3Md+WGyDlBD0y/FPoU
-	J0tcFiiD1FdQjOg9G38qgLYFB/lFPN2ffCpMBx8CV8uVoeK+R9XEsSXBXC09RBmK/v4fM4QjcmmK0
-	ZLc87AmhgsHmNZlbAlEI+CUXxYx4+r8wfrALdHrGnqE2d56f/OrNQr/QZhD209+53tomaeyNW7oUf
-	9Q7RL9D9D1cQeJ1xlz4sraxcBiHUPMGbwaeprTVvEkqEoq3vxkXWsg1SzeEH9hMogtXP3Ymo+DQ1t
-	bW6Sif8WSYFkEm1qJXYvvBVwRq6VHEhhKESAODxHmykTsp04H9XbtwXWa4/UHv5zOZmIfRc7Kuq0b
-	KT7bBELQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+eQKvgqYXMC2/6G2+TT5rHYEwUvp1AhmGfQ992wsg6o=; b=dHctMPTX8ltmAN2TeUonR9HNkq
+	egkmIUcpyw4Onp0NIKtXMgyFa7mhqsSLqmA1+Dt5pm9IzYXp6wfUmnrXJG16fnaM+A15jcPtEkNwv
+	Iw7gokY0XT9n4fsiDw3OLWtfObEz7LHT9qJDsR4k0U4w046bD+2K8q0o34CwbupqqmUPC4NzSU4ZE
+	shBzvIMA4fnBJaP6N9uICkCnK1zp46Wudok0te8sOBvskIQ/f8zjZIyiIeY5DwrmfGQaOZTOGO62b
+	Pni4fGGy7ppP5eqjIdsks8Xs2VCRkRVVYgsPOh1ATTdNW6ugb96JLNEa+Yy6ObmC5fbxFdTGRShQU
+	mCBot6lg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5cd7-0000000GuG6-0HLP;
-	Mon, 06 Oct 2025 04:15:21 +0000
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+	id 1v5cdK-0000000GuOR-3YeA;
+	Mon, 06 Oct 2025 04:15:34 +0000
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5cd4-0000000GuFI-1b2B
+	id 1v5cdF-0000000GuKi-3CUx
 	for barebox@lists.infradead.org;
-	Mon, 06 Oct 2025 04:15:19 +0000
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-4e56cd8502aso47580511cf.0
-        for <barebox@lists.infradead.org>; Sun, 05 Oct 2025 21:15:17 -0700 (PDT)
+	Mon, 06 Oct 2025 04:15:31 +0000
+Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-4e4f8122660so45770941cf.0
+        for <barebox@lists.infradead.org>; Sun, 05 Oct 2025 21:15:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759724117; x=1760328917; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3wcYv0uUlC+8453x4W661k11atzKYWEGvEjUCbuj/Qw=;
-        b=RDJQ/pSQexnffGZ9mQM5YtR6cFDd2VRV3pFLpeBU/ixCR5R50UXy0O4oJt7buquzbo
-         l0dHIyXZU+9yBP7tGe0K2bgIM2E06J6qyM8iXPQezKabRtaSy/CqEDGuWaJ736I3RU9U
-         W3PLFYwnJ754u2+G017OZubYGvxzOsWcY2/HKvzUKaF+ZyQiAVfE1uosUMJXw/3YdNl/
-         Fwpy2AtjYWx9BRYAQ0ZQVV1dERLxTCIOm7Vtw4Ph6t3f8GhwXRADGxRlo2aMt54E8zJd
-         mVCZ8BlsuW5B0xMiNIEKE3F0bOo4V7RRdkqxfJs5Y38IpIq+6qhWDPFTymyoXBby8Uh4
-         C5YQ==
+        d=gmail.com; s=20230601; t=1759724129; x=1760328929; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+eQKvgqYXMC2/6G2+TT5rHYEwUvp1AhmGfQ992wsg6o=;
+        b=k6PbwgsO5oZIDMRRGx8OKfY5qrKHMjdrYx7YnUxttXWZ4j1yqVmm+Nsk1eSdVRUsnp
+         vtwlKDesoVs48Mf82SPZ7pjkXQuAkV8Nqjoo0tOEBHoF8aaongTzBW7+HTdGLJc8URM+
+         LF+nck+IJD56qPFLNV9/3neY4a/bcQjPkKHiMgabAoB8vi0CGPCacvsTv2/dbMwBKi0Q
+         yxiyB8tHnwFbtBOLzw0tz4vHA5qPkgdgxTy+gop1yHFVtYi6YcmBRWi/Xl9dtGQGKNsT
+         vS/YfI1d72AZlRV2ltcM4jQ/5i2RJ98xDBe0XgY7SK6dFWxGDxGSwWgl9Y8pozifHhYS
+         wcbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759724117; x=1760328917;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3wcYv0uUlC+8453x4W661k11atzKYWEGvEjUCbuj/Qw=;
-        b=aPORId1OGDJ7uLYVAxFBFK9DBGlKR43ahmykoqWAEmM7mPHlVyY3SZb6/TEUE/XAh0
-         Jfnl5DsHGMPxDC2TLwlzXmwYa1C29c5rUL6Q3mfVQnszU2qQVe87XyTyyNYnovFn/rq6
-         MAK6ocsquG2uGw1l2APoHmc/djjUSQIotKVkYYbj1ZEQaloboyrOU9JQWRcSgpMksSWL
-         HenZvSC6y3U0z0FOoOJn7Z/54WIx5BgxAOV9IHm1APe62SIG8hMEmrhDYRYW1rQAB4Cv
-         cT717SjrCUQgWB4kaxzf/6gNmkoQBNrxihum9KhGCPJoneGsROLswnvCahPt0SlM5BmY
-         fZyw==
-X-Gm-Message-State: AOJu0Yy7FYVmkY10yrMhYkVH/Yr/HEFwCL8mV71Zn2ElGYwoCLZRQnTe
-	Fw3ZV/ywmykIXY1fUESKVKORWIs5/GI3muoteFGiXJHCbF6FtTrCwoNT
-X-Gm-Gg: ASbGncv8wE2ETY4wsJVrory05vaweA82Ps1JQPIkRj2PBintZVDhqU7s1poVtO3Aw5S
-	hUDZvlUhhIkRya0xkY+sXnzS6nWBEbdWfth3DzCdKB3pv2864Um7jHFi8nulo2u2mFZz1sTNjLb
-	Yb6ZzLKPpGIafe7mJnGan0Pbz3LeQS0lpKx3ST9oLKBbcMo89Q6N6BXZtkS113cwkCNsnlY7n9U
-	tlV/HMdZHKZCbiBvphBFvwb+XXkIEnaThVY0ly5b3Nrgak8foq9zs/SNrmtCEJU7j6VQZYzdMdw
-	xj6FbqQNdQqScbBSJGlLrIw7b9RpW/994d1oWBPVWd4hH0KGkXVLK5Ta49MuMF4AUMPsEJXa4Yj
-	AXv4gIDLqK2Pxy9zQlT8a8HnLnXsgSQdrMTVqdkIZGncYW5gnyyFz8ehZkA0OWFpp
-X-Google-Smtp-Source: AGHT+IGM8zfwx1DpN4mDfrnk2b7zjLWjQLMS8nX60FAt16/CLgXd2NIjO4me9Uk0WPTiRsXOHgXPIw==
-X-Received: by 2002:a05:622a:13d3:b0:4e0:b5ef:2ba3 with SMTP id d75a77b69052e-4e576a959e4mr146163401cf.37.1759724116947;
-        Sun, 05 Oct 2025 21:15:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759724129; x=1760328929;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+eQKvgqYXMC2/6G2+TT5rHYEwUvp1AhmGfQ992wsg6o=;
+        b=jtBJaxaIRdyDtOv0hsMrH/f0q3FWoBFfYFGbRnfPSOa7h1Qdcv9zDmsKkHFCmGaMgz
+         pjICxJAuHDQrfhPwfMP/L1BYF/jrjc6BPHaSz/Xcgcpvg6hOFKgGh+SaKDVIuKjXB5Ht
+         VYfW78oqXboJn56VzGFkVqLsMV0aZK+P+hMoVvr97zQCpN1MdjcG+mqtcGN1MK91UtHk
+         eNz7Z/e2QOq1CHlW6OnCsbkOxvDHxp939dO6BGLPNphu9H9xq9XbXb6uJp3knHlPAVcB
+         yiLatTtMoSTnDZ0rAEQUUEQy/txJzeA3CgqzsLMLqHqOJYW6WQYuI42TxdvmYYIDWcpj
+         AEXA==
+X-Gm-Message-State: AOJu0YySCfCjKMvM2Gwdc/NmtI/y1zlUofgrcZ2XTX3FL1viBmPi/q3S
+	pk+lp/3HX0vR+Ge7vUtLj3ADNv7JbWTRFnPaMDSN5ltOwuZ8B0wWo4pm
+X-Gm-Gg: ASbGncsuAqujoqrq3TZW1Y7B4ptZRdM6CZ/nZpvlnmYMOpmTjJigFyMoDeRn+atd2gf
+	DffjYGJ9LLBr7ngv/cQhFkPJiVHIpf1uHCOhu+EzEkWPr+q6ZOAdMUQNBbA/1iTP5eBU0QuPKtp
+	bG10aYA9iW95N2t9DcXlf8lCr4G/1jmZKn3ic6ITc7m1cWjHN+CPGz+PIhNvHTSeyrM1qup/yjO
+	KIspliem3dmh5eqdHE6ebLE/fpUfmL0vSUNKhFZXyP3Zma8xN5KFVyBzu0rIuagvXPmvPonEt7p
+	v7kb2OjYfJnWXrvwKzcED/54qvN7ohhtrYWlMzQNh7CYiRqOGrXrabpafprRoK56Bk6OdFOKQ2A
+	FOg4bVE/ajdZEud1rlhXr48yEkgISxQEPXVLdDdS7l/mFyPX8GfBv4krBJ53u0VWe6wv9Oz8H/H
+	E=
+X-Google-Smtp-Source: AGHT+IHcoRURJPwYrFvdfsJhXqWG0rZGG3ssWbmNjGT6HLBJaWxKaz5UTBPngZy5ZA422O+g+NdfoQ==
+X-Received: by 2002:ac8:5fc3:0:b0:4df:2f33:2601 with SMTP id d75a77b69052e-4e576b42235mr130489611cf.83.1759724128735;
+        Sun, 05 Oct 2025 21:15:28 -0700 (PDT)
 Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:1608:a712:ade2:2b30])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55cadcecdsm119506221cf.23.2025.10.05.21.15.15
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55cadcecdsm119506221cf.23.2025.10.05.21.15.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Oct 2025 21:15:16 -0700 (PDT)
+        Sun, 05 Oct 2025 21:15:28 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org,
+	Ahmad Fatoum <a.fatoum@barebox.org>,
 	Chali Anis <chalianis1@gmail.com>
-Date: Mon,  6 Oct 2025 00:15:02 -0400
-Message-Id: <20251006041512.1360284-1-chalianis1@gmail.com>
+Date: Mon,  6 Oct 2025 00:15:11 -0400
+Message-Id: <20251006041512.1360284-10-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251006041512.1360284-1-chalianis1@gmail.com>
+References: <20251006041512.1360284-1-chalianis1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251005_211518_431984_2D403065 
-X-CRM114-Status: GOOD (  10.85  )
+X-CRM114-CacheID: sfid-20251005_211530_320966_596AEB5D 
+X-CRM114-Status: GOOD (  10.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -107,64 +112,34 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 01/11] common: filetype: add detection for x86 Linux kernel images
+Subject: [PATCH 10/11] efi: payload: make selectable without COMPILE_TEST
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Chali Anis <chalianis1@gmail.com>
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-Introduce a new filetype for x86 Linux kernel images by checking for
-the "HdrS" magic (0x53726448) at offset 0x202 in the setup header.
+Now that the barebox EFI payload has support for a non-x86 boot method,
+let's drop the COMPILE_TEST dependency.
 
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- common/filetype.c  | 3 +++
- include/filetype.h | 6 ++++++
- 2 files changed, 9 insertions(+)
+ efi/payload/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index eb397a175cb6..72f84442cae9 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -87,6 +87,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_zstd_compressed] = { "ZSTD compressed", "zstd" },
- 	[filetype_rockchip_rkss_image] = { "Rockchip signed boot image",
- 					   "rk-image" },
-+	[filetype_x86_linux_image] = { "x86 Linux image", "x86-linux" },
- };
+diff --git a/efi/payload/Kconfig b/efi/payload/Kconfig
+index 4fb866210a69..3b4a16e1e80c 100644
+--- a/efi/payload/Kconfig
++++ b/efi/payload/Kconfig
+@@ -4,7 +4,7 @@ config HAVE_EFI_PAYLOAD
+ 	bool
  
- static const char *file_type_to_nr_string(enum filetype f)
-@@ -435,6 +436,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 		return is_dos_exe(buf8) ? filetype_riscv_efi_linux_image : filetype_riscv_linux_image;
- 	if (is_riscv_linux_bootimage(buf) && !memcmp(&buf[12], "barebox", 8))
- 		return filetype_riscv_barebox_image;
-+	if (bufsize > 0x206 && is_x86_linux_bootimage(buf))
-+		return filetype_x86_linux_image;
- 
- 	if (le32_to_cpu(buf[5]) == 0x504d5453)
- 		return filetype_mxs_bootstream;
-diff --git a/include/filetype.h b/include/filetype.h
-index 6f4a103df304..ff4d54ee3c45 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -67,6 +67,7 @@ enum filetype {
- 	filetype_nxp_fspi_image,
- 	filetype_zstd_compressed,
- 	filetype_rockchip_rkss_image,
-+	filetype_x86_linux_image,
- 	filetype_max,
- };
- 
-@@ -150,4 +151,9 @@ static inline bool is_riscv_linux_bootimage(const void *header)
- 	return le32_to_cpup(header + 56) == 0x05435352;
- }
- 
-+static inline bool is_x86_linux_bootimage(const void *header)
-+{
-+	return le32_to_cpup(header + 0x202) == 0x53726448;
-+}
-+
- #endif /* __FILE_TYPE_H */
+ config EFI_PAYLOAD
+-	bool "Build as EFI payload" if COMPILE_TEST
++	bool "Build as EFI payload"
+ 	depends on HAVE_EFI_PAYLOAD
+ 	select PBL_FULLY_PIC if ARM64
+ 	select EFI
 -- 
 2.34.1
 
