@@ -1,95 +1,95 @@
-Delivery-date: Mon, 06 Oct 2025 06:16:10 +0200
+Delivery-date: Mon, 06 Oct 2025 06:16:11 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v5cdu-004lql-34
+	id 1v5cdv-004lr7-2b
 	for lore@lore.pengutronix.de;
-	Mon, 06 Oct 2025 06:16:10 +0200
+	Mon, 06 Oct 2025 06:16:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v5cdt-0002qI-IF
-	for lore@pengutronix.de; Mon, 06 Oct 2025 06:16:10 +0200
+	id 1v5cdu-0002qr-LA
+	for lore@pengutronix.de; Mon, 06 Oct 2025 06:16:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UXO6FDhvMNVSyl0BUWqEDa2P35eR6A4RSfgWqay7K10=; b=4u14DFbuqpicuMYfru0oGgp0ED
-	Rezx41ADN7MHZBFFwJEJ/Ig20v/jgFdj+bVVXvE6pf7uIdmQmcA97apQgIDMeVy3R6WQBkr/YGfEo
-	4ExatwyXswitXLaOyrsAZXA2k1j3+nudNvkAQw6UUJ8VRfxj8rYamFkJ35yOWQ4XJc5+n2iB27FRu
-	GUYKamgpLRJZjeUmP0N8EfjyKRNQxfliLoSXYYPIGXpJ6uEFUJZNPy+LlcZU8DS5iIRjv0SGFYJjR
-	V51QJyLkkpuJCflXZVwuhmbcQqRr+wEmZh7zOHWU9fd4Qh+wMJN7OcFWbc6tnVGmSk9i63A4Jg49g
-	cmdzsQng==;
+	bh=UaoqZbJziHezRM5qfhLs6y37x/1XG1l4x24ll67GHCA=; b=zPFgI/elYosNzkbWiGzvo7z9nw
+	RBgpVKYJVr/ZLzvTNvLN1bsr8BF3KeJMxAYsq3mVc6+i81XW2prg6sSg7qxraqlCSpWbJzlw6ZLAI
+	TKiD+6r5nHbLP9Pqut98RyoTWqYUDsq/JfMqxYcDaU2RLmFtF9MqRaahrnikFBa5uj1+AAcI4wvz3
+	sndFhQp25FKVRbRw6dUzYIouyJEA+hdVvaUn940/za5l+/9rJ5OCT4LlMHdaOaWd4k4cmXN74Tz8t
+	Zqs4Qog+VZ3d7uY6OddoX1KQQy94acPeqzfMD/jMV0MsqPAa4Vrtef7pjV4QQch2nIMgrXrgghn+V
+	yRPR1KrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5cdD-0000000GuIp-02F0;
-	Mon, 06 Oct 2025 04:15:27 +0000
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+	id 1v5cd9-0000000GuHV-2lCy;
+	Mon, 06 Oct 2025 04:15:23 +0000
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5cdA-0000000GuHf-3hvV
+	id 1v5cd6-0000000GuFw-3TWW
 	for barebox@lists.infradead.org;
-	Mon, 06 Oct 2025 04:15:25 +0000
-Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-4ddabf2ada5so71460961cf.1
-        for <barebox@lists.infradead.org>; Sun, 05 Oct 2025 21:15:24 -0700 (PDT)
+	Mon, 06 Oct 2025 04:15:21 +0000
+Received: by mail-qt1-x830.google.com with SMTP id d75a77b69052e-4df60ea79d1so49273121cf.2
+        for <barebox@lists.infradead.org>; Sun, 05 Oct 2025 21:15:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759724124; x=1760328924; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1759724120; x=1760328920; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UXO6FDhvMNVSyl0BUWqEDa2P35eR6A4RSfgWqay7K10=;
-        b=lQSXkN7mXMuZLFvWwxcx/goOH5Wp4ynawpNUaymSu4BaW3HI1wyrXQ/Td5XKqvTkSy
-         F/2oQCuWybe3rwHVaIcXENF71OQzaTy2XqoeljdU957Y3LupKTP77SXzzG9VEaeUtJgw
-         IQug6rCxdebvtdIzvIK4/mIr+ldS+QZyLxMU9IMsfuFUIMu2aZpAcwOYuWP5JteLcl3E
-         X08Ems1svRE5EnAN44bwnn+nkDrmw9z4woXJu2Ztltwi7qtuGnaBGLFl9++Y4OlWels0
-         H+vXoWkOWRoDKF2Jqvpcvn4zIXpIjuh45t2DAAX/jBM6ZfxeBBexz9lvDas970+esKwl
-         u0Zw==
+        bh=UaoqZbJziHezRM5qfhLs6y37x/1XG1l4x24ll67GHCA=;
+        b=cK/lvAGpJV09mxY0MpQsMtobBKXikrA4bdRnYDRpd4VWBeiFfzRSo8dM/5h+UdsHL4
+         oWv+oDVNYLv3BTiiBaXtHpS2jGv59ofzbLz2Zw7CJh5bpBKSyf0x7+hS6vmFqBO1lsdm
+         Q42kaopFL8w3R9+jIFFETgi81H0YmEY3JCM1Txb47GIhZ58FJe3lgrc1bh4Bbp+qxTn1
+         ar5S6vPumREANaeOCDalTUWD1eUlzIW3C0UM8aVNhyN+Vs/OWxz7CKUV2TzV8XtXRv3X
+         KIWiKmgig99UKdpMlri4ieTBMArV3LMSgWNkwt5So2uFLtlbNJHNCPqhPWHmERYMPyAn
+         BWQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759724124; x=1760328924;
+        d=1e100.net; s=20230601; t=1759724120; x=1760328920;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UXO6FDhvMNVSyl0BUWqEDa2P35eR6A4RSfgWqay7K10=;
-        b=vnE/EMB/zXafWJXYtN8dz4KMRDAaiHHDyyIbrr8oWp6wwMWpd1TZIxt6VLYfrQQSmG
-         /9p7AFutwVBaXiELmboFgyYc8CjYlyG4MEzkSkgSzMjbOcml53gXS1i7RhlMaJG71NbG
-         wJmiOgOCNJjtSikt/f3EZBmjuOt1HFRMcddMQqKMDhtrOonus18sIRzTbOGWP8TrM7r8
-         Bz5EvM6s16Pjo49ImGzhL/8t9U8ZAQR60930uVRuc8iYZq4OR7PGmxJ8/Z3uvSP1DU6Q
-         1s1CT4kcwFptba6lBA1wX9msZfkGfbJMZPkhZCPsgXbmm15E31+uo1iAzhztBWgwp0PD
-         306w==
-X-Gm-Message-State: AOJu0YztV1CMnahniDhb73pufLRL5fmKvfu13rtoYOSZD6HObFmQiN5n
-	Saddqc4bzHtPWKgvED3Ti0XOtngWdo+zpETr83yElJtL0ZRt88BxwID86mXr5A==
-X-Gm-Gg: ASbGncvM0hGhWVPpyWtC14XWQ2uiIvL0TdRv1uHj5rrohpwDlS9xRLpnAq9gkvFyBBa
-	KuiXr01sM8vS4xCoaWUTi3x7L1CJdRYn/zXd+V472ZtCWn9coAbnZ+z+PZtFqPfN7Ab44k8u0M+
-	TUYu0E/Xzusrgej7d2mQHZt9zHmo5ND6V1cH45au+39NeZkw0syjdMLqD6PyP37bLDtbZOHHyPR
-	kRaltFRHNt5ppyqEHGKOyeDLZSIl7QzK+6xiODlb5G9howqefPFh5fVJolPbaUd2Roj/QIgEm6d
-	+f0j0h27nybeLOhMxbMKyk44OwJOa8cHgIXVRRQ+Lj1NM6Cl/UFykaODEr3JoJuf7sB4/IXBYNE
-	UJQa5oZdgEyRaxXmVjz9wTFPpZtntLhYN61ueRH/D0VO22fmXf37HDWfMKACWsvt5hUub02kKEo
-	E=
-X-Google-Smtp-Source: AGHT+IETZc7OeB/tf7IPqCoJq8WdKWTUu0vmcWgCb1qeE4/ORmXj2PC1aqvT7Vlv8/WxRZu12IxBBQ==
-X-Received: by 2002:a05:622a:1346:b0:4df:bab4:f710 with SMTP id d75a77b69052e-4e576b13f70mr154611221cf.25.1759724123688;
-        Sun, 05 Oct 2025 21:15:23 -0700 (PDT)
+        bh=UaoqZbJziHezRM5qfhLs6y37x/1XG1l4x24ll67GHCA=;
+        b=VqfuMNQGhGVzGXcYWQAKpFQ9mnptqCsnioWaYiOrX0HmzmnB/Gwa5r26njKX4f95iv
+         /2DfHIQiQiyhgE3h4BsuwGy9eGD9/woEK7fpG+6tjDPQZT3KTBiiO4Sb+TuWoZkrqOkE
+         PtAizBpdtLEpDTiEYYCrp9zb88pqllm1yNq5MkisR/T10c0HYtO7hMp8wed8BDZNeTQs
+         87L+hfjM8I71y0W1SLu6aXrAd7RGs//8z/mwgWt+gJ9Ut6iBis4qRMvJYeouw63UuvCn
+         a4brQkESk3nYlwkCefFbivWRqrdX/nI6YibQLOAv/EyAnkm3ku43g8EO+1j162EKP1Bd
+         HF4g==
+X-Gm-Message-State: AOJu0YwLZEXug6xRyCUxC7dvGlCN/Nk4aTYQ0GlB6nnnmaEb44lUIjIq
+	I7UXSP0b/xVDLcm+jK39qtt2p29Vile8YegaZWx/CuVK8X/+3p8TeIg6
+X-Gm-Gg: ASbGncvz1SVeZrfw2sAZ66LjCsLLgE9UGC+uxL3w2eWMtlVCzEYbcxLVI4n8SnkkswL
+	v3/ZKojrEhgIA1flxJvGmS9nkMNinElGF3dJzEhCNYmzUXVmNANs99AjrZa7Az06MLGEsL6i05a
+	mIa3b5VA5ZqaTh56I1Xks3bwKQThp5EX8UkwVVsrK86zaBWP/NjFCjt95rEnzOBcc7Nud0NrZM9
+	igoGhcC09ZhY8cyeOgCr5scA/IZ1g5udW+dst0jDS72sMiDTIzvpw72Ic/cZynuTMLJ9fQLDLv2
+	azPkCjjQlz1quANtbEqFxAI8DIwp84DkfGySveYrCAxUYUt71B5auTlWlKQVkehbh/2kzgwiKOJ
+	4t9lGaHfhSTA+Ryufjc1UOyy9D/kmrogO68oavCxSlB8YsPGg8s5Qkkbuw1X6HFPD5EwVtV65o6
+	s=
+X-Google-Smtp-Source: AGHT+IFKjWnYbAk/ZkCDQe+FuwM3CL6q088kqnigcmqT4hLoVLL2kZrtL0cQgxzl95e2FPR2DCVNwQ==
+X-Received: by 2002:a05:622a:1108:b0:4d8:3c3:27c8 with SMTP id d75a77b69052e-4e576b1625fmr138595841cf.67.1759724119502;
+        Sun, 05 Oct 2025 21:15:19 -0700 (PDT)
 Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:1608:a712:ade2:2b30])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55cadcecdsm119506221cf.23.2025.10.05.21.15.22
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55cadcecdsm119506221cf.23.2025.10.05.21.15.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Oct 2025 21:15:23 -0700 (PDT)
+        Sun, 05 Oct 2025 21:15:18 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org,
 	Chali Anis <chalianis1@gmail.com>,
 	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  6 Oct 2025 00:15:07 -0400
-Message-Id: <20251006041512.1360284-6-chalianis1@gmail.com>
+Date: Mon,  6 Oct 2025 00:15:04 -0400
+Message-Id: <20251006041512.1360284-3-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251006041512.1360284-1-chalianis1@gmail.com>
 References: <20251006041512.1360284-1-chalianis1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251005_211524_949796_EF9208EB 
-X-CRM114-Status: GOOD (  15.98  )
+X-CRM114-CacheID: sfid-20251005_211520_888003_29810BCA 
+X-CRM114-Status: GOOD (  17.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -112,219 +112,205 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 06/11] efi: payload: earlymem: allocate only the barebox needs in term of memory
+Subject: [PATCH 03/11] efi: payload: add support for EFI initrd media protocol
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Chali Anis <chalianis1@gmail.com>
 
-With TLSF now able to invoke a callback to request additional memory on
-demand, limit early allocations to what barebox strictly requires and have
-everything handled via the request callback. This ensures more deterministic
-behavior and reduces the risk of OOM conditions.
+Implement the EFI initrd media protocol, which allows registering an
+initramfs data to be loaded by the linux after vi EFI Initrd Media
+protocol.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- common/tlsf_malloc.c       | 18 ++++++++++++++++++
- efi/payload/Kconfig        |  1 +
- efi/payload/early-mem.c    | 19 ++++---------------
- efi/payload/entry-multi.c  |  5 ++---
- efi/payload/entry-single.c |  5 ++---
- efi/payload/init.c         | 15 +++++++++++++++
- include/efi/efi-payload.h  |  2 +-
- include/malloc.h           |  1 +
- 8 files changed, 44 insertions(+), 22 deletions(-)
+ efi/guid.c                |   4 ++
+ efi/payload/Makefile      |   1 +
+ efi/payload/efi-initrd.c  | 104 ++++++++++++++++++++++++++++++++++++++
+ include/efi.h             |   4 ++
+ include/efi/efi-payload.h |   3 ++
+ 5 files changed, 116 insertions(+)
+ create mode 100644 efi/payload/efi-initrd.c
 
-diff --git a/common/tlsf_malloc.c b/common/tlsf_malloc.c
-index 74089fe7f390..d3b665a2fc40 100644
---- a/common/tlsf_malloc.c
-+++ b/common/tlsf_malloc.c
-@@ -11,11 +11,14 @@
- #include <stdio.h>
- #include <module.h>
- #include <tlsf.h>
-+#include <linux/sizes.h>
-+#include <linux/log2.h>
+diff --git a/efi/guid.c b/efi/guid.c
+index ef230a2b2403..46440c9f3328 100644
+--- a/efi/guid.c
++++ b/efi/guid.c
+@@ -44,6 +44,7 @@ const efi_guid_t efi_load_file_protocol_guid = EFI_LOAD_FILE_PROTOCOL_GUID;
+ const efi_guid_t efi_load_file2_protocol_guid = EFI_LOAD_FILE2_PROTOCOL_GUID;
+ const efi_guid_t efi_device_path_utilities_protocol_guid =
+ 	EFI_DEVICE_PATH_UTILITIES_PROTOCOL_GUID;
++const efi_guid_t efi_linux_initrd_media_guid = EFI_LINUX_INITRD_MEDIA_GUID;
  
- #include <linux/kasan.h>
- #include <linux/list.h>
+ #define EFI_GUID_STRING(guid, short, long) do {	\
+ 	if (!efi_guidcmp(guid, *g))		\
+@@ -128,5 +129,8 @@ const char *efi_guid_string(efi_guid_t *g)
+ 	EFI_GUID_STRING(EFI_ISCSIDXE_INF_GUID, "IScsiDxe.inf", "EFI IScsiDxe.inf File GUID");
+ 	EFI_GUID_STRING(EFI_VLANCONFIGDXE_INF_GUID, "VlanConfigDxe.inf", "EFI VlanConfigDxe.inf File GUID");
  
- tlsf_t tlsf_mem_pool;
-+static void (*malloc_request_store)(size_t bytes);
- 
- struct pool_entry {
- 	pool_t pool;
-@@ -124,3 +127,18 @@ void *malloc_add_pool(void *mem, size_t bytes)
- 
- 	return (void *)new_pool;
- }
++	/* Ramdisk */
++	EFI_GUID_STRING(EFI_LINUX_INITRD_MEDIA_GUID, "Initrd Media", "EFI Linux Initrd Media GUID");
 +
-+static void tlsf_request_store(tlsf_t tlsf, size_t bytes)
-+{
+ 	return "unknown";
+ }
+diff --git a/efi/payload/Makefile b/efi/payload/Makefile
+index a4a0332a8288..1250535302d3 100644
+--- a/efi/payload/Makefile
++++ b/efi/payload/Makefile
+@@ -2,6 +2,7 @@
+ 
+ obj-y += init.o
+ obj-y += image.o
++obj-y += efi-initrd.o
+ obj-$(CONFIG_OFTREE) += fdt.o
+ bbenv-y += env-efi
+ obj-$(CONFIG_CMD_IOMEM) += iomem.o
+diff --git a/efi/payload/efi-initrd.c b/efi/payload/efi-initrd.c
+new file mode 100644
+index 000000000000..ddc21704a8e0
+--- /dev/null
++++ b/efi/payload/efi-initrd.c
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * efi-initrd.c - barebox EFI payload support
++ *
++ * Copyright (c) 2025 Anis Chali <chalianis1@gmail.com>
++ * Copyright (C) 2025 Ahmad Fatoum <a.fatoum@pengutronix.de>
++ */
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <linux/hw_random.h>
++#include <efi.h>
++#include <efi/efi-device.h>
++#include <efi/device-path.h>
++#include <efi/efi-payload.h>
++
++static efi_status_t EFIAPI efi_initrd_load_file2(
++	struct efi_load_file_protocol *this, struct efi_device_path *file_path,
++	bool boot_policy, unsigned long *buffer_size, void *buffer);
++
++static const struct {
++	struct efi_device_path_vendor vendor;
++	struct efi_device_path end;
++} __packed initrd_dev_path = {
++	{ {
++		  DEVICE_PATH_TYPE_MEDIA_DEVICE,
++		  DEVICE_PATH_SUB_TYPE_VENDOR_PATH,
++		  sizeof(initrd_dev_path.vendor),
++	  },
++	EFI_LINUX_INITRD_MEDIA_GUID },
++	{ DEVICE_PATH_TYPE_END, DEVICE_PATH_SUB_TYPE_END,
++		DEVICE_PATH_END_LENGTH }
++};
++
++static struct linux_initrd {
++	struct efi_load_file_protocol base;
++	void *start;
 +	size_t size;
++	efi_handle_t lf2_handle;
++} initrd;
 +
-+	size = __roundup_pow_of_two(bytes + sizeof(struct pool_entry));
++#define to_linux_initrd(x) container_of(x, struct linux_initrd, base)
 +
-+	malloc_request_store(max_t(size_t, SZ_8M, size));
-+}
-+
-+void malloc_register_store(void (*cb)(size_t bytes))
++static efi_status_t EFIAPI efi_initrd_load_file2(
++	struct efi_load_file_protocol *this, struct efi_device_path *file_path,
++	bool boot_policy, unsigned long *buffer_size, void *buffer)
 +{
-+	malloc_request_store = cb;
-+	tlsf_register_store(tlsf_mem_pool, tlsf_request_store);
++
++	struct linux_initrd *initrd = to_linux_initrd(this);
++
++	if (!this || this != &initrd->base || !buffer_size)
++		return EFI_INVALID_PARAMETER;
++
++	if (file_path->type != initrd_dev_path.end.type ||
++	    file_path->sub_type != initrd_dev_path.end.sub_type)
++		return EFI_INVALID_PARAMETER;
++
++	if (boot_policy)
++		return EFI_UNSUPPORTED;
++
++	if (!buffer || *buffer_size < initrd->size) {
++		*buffer_size = initrd->size;
++		return EFI_BUFFER_TOO_SMALL;
++	} else {
++		memcpy(buffer, initrd->start, initrd->size);
++		*buffer_size = initrd->size;
++	}
++
++	return EFI_SUCCESS;
 +}
-diff --git a/efi/payload/Kconfig b/efi/payload/Kconfig
-index 9263d59de94a..a403acc81a93 100644
---- a/efi/payload/Kconfig
-+++ b/efi/payload/Kconfig
-@@ -15,6 +15,7 @@ config EFI_PAYLOAD
- 	select BLOCK
- 	select PARTITION_DISK
- 	select HW_HAS_PCI
-+	select MALLOC_TLSF
- 
- config HAVE_EFI_STUB
- 	bool
-diff --git a/efi/payload/early-mem.c b/efi/payload/early-mem.c
-index 0f79a8c30694..c5e94b33a756 100644
---- a/efi/payload/early-mem.c
-+++ b/efi/payload/early-mem.c
-@@ -6,28 +6,17 @@
- #include <efi/efi-payload.h>
- 
- void *efi_earlymem_alloc(const struct efi_system_table *sys_table,
--			 size_t *memsize, enum efi_memory_type mem_type)
-+			 size_t memsize, enum efi_memory_type mem_type)
- {
- 	struct efi_boot_services *bs = sys_table->boottime;
--	enum efi_allocate_type alloc_type = EFI_ALLOCATE_ANY_PAGES;
- 	efi_physical_addr_t mem;
- 	efi_status_t efiret;
- 
--	if (IS_ENABLED(CONFIG_X86)) {
--		/* Try to stay clear of memory mapped devices */
--		alloc_type = EFI_ALLOCATE_MAX_ADDRESS;
--		mem = SZ_1G - 1;
--	}
--
--	for (*memsize = SZ_256M; *memsize >= SZ_8M; *memsize /= 2) {
--		efiret  = bs->allocate_pages(alloc_type, mem_type,
--					     *memsize / EFI_PAGE_SIZE, &mem);
--		if (!EFI_ERROR(efiret) || efiret != EFI_OUT_OF_RESOURCES)
--			break;
--	}
-+	efiret  = bs->allocate_pages(EFI_ALLOCATE_ANY_PAGES, mem_type,
-+					     memsize / EFI_PAGE_SIZE, &mem);
- 	if (EFI_ERROR(efiret))
- 		panic("failed to allocate %zu byte memory pool: 0x%lx\n",
--		      *memsize, efiret);
-+		      memsize, efiret);
- 
- 	return efi_phys_to_virt(mem);
- }
-diff --git a/efi/payload/entry-multi.c b/efi/payload/entry-multi.c
-index d5d54cdf70a1..82f3dfffe870 100644
---- a/efi/payload/entry-multi.c
-+++ b/efi/payload/entry-multi.c
-@@ -23,7 +23,6 @@ static void efi_putc(void *ctx, int ch)
- 
- void __efistub_efi_pe_entry(void *image, struct efi_system_table *sys_table)
- {
--	size_t memsize;
- 	void *mem;
- 	static struct barebox_efi_data efidata;
- 
-@@ -37,7 +36,7 @@ void __efistub_efi_pe_entry(void *image, struct efi_system_table *sys_table)
- 
- 	handoff_data_add(HANDOFF_DATA_EFI, &efidata, sizeof(efidata));
- 
--	mem = efi_earlymem_alloc(sys_table, &memsize, EFI_LOADER_CODE);
-+	mem = efi_earlymem_alloc(sys_table, SZ_16M, EFI_BOOT_SERVICES_CODE);
- 
--	barebox_pbl_entry((uintptr_t)mem, memsize, NULL);
-+	barebox_pbl_entry((uintptr_t)mem, SZ_16M, NULL);
- }
-diff --git a/efi/payload/entry-single.c b/efi/payload/entry-single.c
-index 8600bd845c49..f481d0942ba5 100644
---- a/efi/payload/entry-single.c
-+++ b/efi/payload/entry-single.c
-@@ -17,7 +17,6 @@
- void efi_main(efi_handle_t image, struct efi_system_table *sys_table)
- {
- 	efi_status_t efiret;
--	size_t memsize;
- 	void *mem;
- 
- #ifdef DEBUG
-@@ -37,9 +36,9 @@ void efi_main(efi_handle_t image, struct efi_system_table *sys_table)
- 		BS->handle_protocol(efi_loaded_image->device_handle,
- 				&efi_device_path_protocol_guid, (void **)&efi_device_path);
- 
--	mem = efi_earlymem_alloc(sys_table, &memsize, EFI_LOADER_DATA);
-+	mem = efi_earlymem_alloc(sys_table, SZ_16M, EFI_BOOT_SERVICES_DATA);
- 
--	mem_malloc_init(mem, mem + memsize - 1);
-+	mem_malloc_init(mem, mem + SZ_16M - 1);
- 
- 	start_barebox();
- }
-diff --git a/efi/payload/init.c b/efi/payload/init.c
-index 239c5ce9ec18..5b827c57ed1f 100644
---- a/efi/payload/init.c
-+++ b/efi/payload/init.c
-@@ -270,11 +270,26 @@ static int efi_init(void)
- }
- device_efi_initcall(efi_init);
- 
-+static void efi_request_mem(size_t bytes)
++
++int efi_initrd_register(void *initrd_base, size_t initrd_sz)
 +{
 +	efi_status_t efiret;
-+	efi_physical_addr_t mem;
-+	size_t pages;
++	int ret;
 +
-+	pages = DIV_ROUND_UP(bytes, EFI_PAGE_SIZE);
-+	efiret = BS->allocate_pages(EFI_ALLOCATE_ANY_PAGES, EFI_LOADER_DATA,
-+				    pages, &mem);
-+	if (!EFI_ERROR(efiret))
-+		malloc_add_pool(efi_phys_to_virt(mem), pages * EFI_PAGE_SIZE);
++	initrd.base.load_file = efi_initrd_load_file2;
++	initrd.start = initrd_base;
++	initrd.size = initrd_sz;
++
++	efiret = BS->install_multiple_protocol_interfaces(
++		&initrd.lf2_handle, &efi_load_file2_protocol_guid, &initrd.base,
++		&efi_device_path_protocol_guid, &initrd_dev_path, NULL);
++	if (EFI_ERROR(efiret)) {
++		pr_err("Failed to install protocols for INITRD %s\n",
++		       efi_strerror(efiret));
++		ret = -efi_errno(efiret);
++		return ret;
++	}
++
++	return 0;
 +}
 +
- static int efi_core_init(void)
- {
- 	struct device *dev;
- 	int ret;
- 
-+	malloc_register_store(efi_request_mem);
++void efi_initrd_unregister(void)
++{
++	if (!initrd.base.load_file)
++		return;
 +
- 	dev = device_alloc("efi-cs", DEVICE_ID_SINGLE);
- 	ret = platform_device_register(dev);
- 	if (ret)
++	BS->uninstall_multiple_protocol_interfaces(
++		initrd.lf2_handle, &efi_device_path_protocol_guid, &initrd_dev_path,
++		&efi_load_file2_protocol_guid, &initrd.base, NULL);
++
++	initrd.base.load_file = NULL;
++}
+\ No newline at end of file
+diff --git a/include/efi.h b/include/efi.h
+index 40b69fdb0188..bd339ea097c3 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -558,6 +558,9 @@ extern struct efi_runtime_services *RT;
+ #define EFI_DRIVER_BINDING_PROTOCOL_GUID \
+     EFI_GUID(0x18a031ab, 0xb443, 0x4d1a, 0xa5, 0xc0, 0x0c, 0x09, 0x26, 0x1e, 0x9f, 0x71)
+ 
++#define EFI_LINUX_INITRD_MEDIA_GUID \
++	EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
++
+ struct efi_driver_binding_protocol {
+ 	efi_status_t (EFIAPI * supported)(
+ 			struct efi_driver_binding_protocol *this,
+@@ -603,6 +606,7 @@ extern const efi_guid_t efi_guid_event_group_reset_system;
+ extern const efi_guid_t efi_load_file_protocol_guid;
+ extern const efi_guid_t efi_load_file2_protocol_guid;
+ extern const efi_guid_t efi_device_path_utilities_protocol_guid;
++extern const efi_guid_t efi_linux_initrd_media_guid;
+ 
+ struct efi_config_table {
+ 	efi_guid_t guid;
 diff --git a/include/efi/efi-payload.h b/include/efi/efi-payload.h
-index d8e66a187a87..337471117d5a 100644
+index fe45864dd8a7..d8e66a187a87 100644
 --- a/include/efi/efi-payload.h
 +++ b/include/efi/efi-payload.h
-@@ -32,7 +32,7 @@ int efi_set_variable(char *name, efi_guid_t *vendor, uint32_t attributes,
- int efi_set_variable_usec(char *name, efi_guid_t *vendor, uint64_t usec);
- 
+@@ -34,4 +34,7 @@ int efi_set_variable_usec(char *name, efi_guid_t *vendor, uint64_t usec);
  void *efi_earlymem_alloc(const struct efi_system_table *sys_table,
--			 size_t *memsize, enum efi_memory_type mem_type);
-+			 size_t memsize, enum efi_memory_type mem_type);
+ 			 size_t *memsize, enum efi_memory_type mem_type);
  
- int efi_initrd_register(void *initrd, size_t initrd_size);
- void efi_initrd_unregister(void);
-diff --git a/include/malloc.h b/include/malloc.h
-index 35551250324e..69ff23b4a058 100644
---- a/include/malloc.h
-+++ b/include/malloc.h
-@@ -23,6 +23,7 @@
- 
- #ifdef CONFIG_MALLOC_TLSF
- void *malloc_add_pool(void *mem, size_t bytes);
-+void malloc_register_store(void (*cb)(size_t bytes));
++int efi_initrd_register(void *initrd, size_t initrd_size);
++void efi_initrd_unregister(void);
++
  #endif
- 
- #if IN_PROPER
 -- 
 2.34.1
 
