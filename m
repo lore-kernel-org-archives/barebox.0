@@ -1,93 +1,58 @@
-Delivery-date: Mon, 06 Oct 2025 06:16:29 +0200
+Delivery-date: Mon, 06 Oct 2025 08:58:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v5ceD-004luU-0H
+	id 1v5fBJ-004o92-1G
 	for lore@lore.pengutronix.de;
-	Mon, 06 Oct 2025 06:16:29 +0200
+	Mon, 06 Oct 2025 08:58:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v5ceC-0002yw-4Y
-	for lore@pengutronix.de; Mon, 06 Oct 2025 06:16:29 +0200
+	id 1v5fBH-0007fM-VF
+	for lore@pengutronix.de; Mon, 06 Oct 2025 08:58:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Pa9J9VCQ/NcLFfApvGJQE7f9BTZ456QRFG+yRJYmIYk=; b=yYitPN7t2eVV66Z2baJ8hwVMr5
-	f1vWq+e7HqrS7sCE2rzYQb2wsrnQwajIdWRMqfGs05PqU4+0wo1gEjAagU/i2D76y1elmD0Itdt4v
-	4R2xVC9JPMQwhmA0vCsHA9ujVeY5I/61hLTpJJHYLB5plGGR2W9UiASxxW971DK1bjqA6LmGcP/Wk
-	8jyk0Vd5PgY174cfN78spwj0eYsalNOMk8sCkR9js3jkoVQCfGp2njXFIkD9llaukointa9YXetsW
-	mDgl6X6L+4j47Q/+EWIVHLiYv9qAjf8MkcrFkEeW+MolzD4obsNDZmANrP0OT2Z2DoBymOWwBINh7
-	1XK6gLEg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=wmKpoekmrdkJzf7VzupLLZUQIRoLS+hRetH3zrhM1kE=; b=XlTtVxglhdrdcSEjUI0r4wsQTH
+	suE24LJB1sJqYovbojT8EzjUWRkgDfkDJg7eJzs5iCra1FZkjXK/XPOTw/XMP6DO8fsrwsq33uPPw
+	1Kv92MWhDmFvSFnEAReeQ+AAaQ5oLPpGSOU2J8CskUmeP8xbn7gNpZmCTvIxL+VPoC6xFu2axcuHa
+	9aaA+vfc/dw0uo8weaenJPr6TKcIpvs5iuzWHp27P+7fW5pA1VIUeQFxCn1uUqjicbycXo1oMHIxY
+	pQYPaYd+TLITW5fCcp4tDJ7U3izTK7UqXnTjgXDhsKbotydZFJqqloc85rL3uw7mr/jIis4h/p2bv
+	x6WR17bg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5cdG-0000000GuKq-1Rep;
-	Mon, 06 Oct 2025 04:15:30 +0000
-Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+	id 1v5fAa-0000000H3Pu-2Wwe;
+	Mon, 06 Oct 2025 06:58:04 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5cdD-0000000GuJ9-2evz
+	id 1v5fAX-0000000H3PT-3N5J
 	for barebox@lists.infradead.org;
-	Mon, 06 Oct 2025 04:15:28 +0000
-Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-4df81016e59so42228501cf.3
-        for <barebox@lists.infradead.org>; Sun, 05 Oct 2025 21:15:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759724127; x=1760328927; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pa9J9VCQ/NcLFfApvGJQE7f9BTZ456QRFG+yRJYmIYk=;
-        b=Ru3dES9KfdQxH3xj45bNPRm4TZoOfNBc6Wnhzme2PSm5lnlBTVXuuitiSU7RXcmD3v
-         G2ylhSM7smpL3t20IkidNVqay4ZoG5AdlYi9uTqR75P/W5/WnVQG7Z9dvVPA6QL+5dpP
-         efVHGYLS7XhqbuyLQ7EPRifsLhzJ38ihyMKu1jGU2TPlihEMMUPUFbZuLQR/HmqAbTI/
-         oB9p4LWX7ezX1ay1nnXsCoh4ZWqYnyxvx05fYiWU8sCWJNBDdSyC0DrueHCHIVEPoBei
-         wHtEs+vm9chegC9FA16F8OKo1VHdotiKTAzRf6hpO3YNZZOQ93ns+2yYXWnZCFEhHQ+L
-         bA7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759724127; x=1760328927;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pa9J9VCQ/NcLFfApvGJQE7f9BTZ456QRFG+yRJYmIYk=;
-        b=ifFRbdEdCj8aBxiwnRLxFvxQdrU3/Bt5LNQdSPxsAzptJdknZp08kem4sjJuiywJvt
-         x8DD0FuIKgEs9auIh3LI1MRkHqzlCISZMc5D3UpCUHu9Q0tNf2PNc8rHEI9ewUvp5gkD
-         F6wcRY7NZK0ed6r9jlno/4vPeA46kyj8Fy3Ys9uRf7Vz2KPWNAzsXkVU/IOXgqRb3T5L
-         h4evZVFi/FnZlaTkbGAqDdLEBA1fohXG0fcQLLi9gRJJPyj0sERslrcXJM0MNkunIvGL
-         IwIRaqj2mQ37pjqShxp09SmVVc0aNJlIxi4Xj+q+g6CXRyNNeIKQYm5rEK4/+7WG2OhG
-         SRGg==
-X-Gm-Message-State: AOJu0YzTEmApNfiTnQg8v0LUjwg28XngYIorL6oZm69liAWRCunt7hWA
-	1Jp3WbybzqAdY/9Kxs28oCPUzrFEHo/wFEcuKcZ0V+zFCJNU88WE267b
-X-Gm-Gg: ASbGncvQJ8bK5A//rISvxkzjgdprBflZ/Gkb2TEtnA2NY189QX2h8zlAd/3YZ6QNcw2
-	2iha1DIyQSkkce5m7HyMvzqWJ3N23aFL6w5S5z5A8d2bVzAmIvi0TTttxWnmRbn4IwccHfw485n
-	d69erCn9o7BTAtGZxSokW883csYtGgP5LC4InmwHr/fYFpM/TcqR3weauxGK+aJakc8PFwvgASc
-	zYAx1f9CMOFTSsN7uO9geMJgf2mk5ecCdcPjixST384n8bVst4n9Eol1AJnv80B34sHtB0bkNs0
-	TXKVf2IIJ2S0DRI6lCVk17bDEhp2pZsBNboLlFv8eJeBCLvOnsygsDda3/kmax8bYjmbes+RZDG
-	IIXwdrxXGN82sQQQJ2jIpyYCX3/M14aYM5SdyXjUYkwIXliaextJOmvvA0JodPsVV
-X-Google-Smtp-Source: AGHT+IGXeo1pbQy5/OKrNqhNJWoKquqBIgE+6fWAuJP5O4Z1iZYP513MKto0toTau8rOztT93XIzuA==
-X-Received: by 2002:a05:622a:58ca:b0:4dd:9798:38d9 with SMTP id d75a77b69052e-4e576ad6f4emr161101551cf.67.1759724126638;
-        Sun, 05 Oct 2025 21:15:26 -0700 (PDT)
-Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:1608:a712:ade2:2b30])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55cadcecdsm119506221cf.23.2025.10.05.21.15.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Oct 2025 21:15:26 -0700 (PDT)
-From: chalianis1@gmail.com
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org,
-	Chali Anis <chalianis1@gmail.com>
-Date: Mon,  6 Oct 2025 00:15:09 -0400
-Message-Id: <20251006041512.1360284-8-chalianis1@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251006041512.1360284-1-chalianis1@gmail.com>
-References: <20251006041512.1360284-1-chalianis1@gmail.com>
+	Mon, 06 Oct 2025 06:58:03 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1v5fAT-0007ZF-Us; Mon, 06 Oct 2025 08:57:57 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Mon, 06 Oct 2025 08:57:44 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251006-v2025-09-0-topic-socfpga-agilex5-sdhci-v1-1-17ad42db8c55@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAGdo42gC/x2NQQqDMBAAvyJ77sImEMV+pfSwxjUuFBOyRQTx7
+ 029zVxmTjCpKgbP7oQqu5rmrYl7dBBX3pKgzs3Bkw+OqMf9T0gjEn5z0YiW41ISIyf9yBHQ5jU
+ qsg80TiKD4x5arFRZ9LhHr/d1/QCcQ4w2eAAAAA==
+X-Change-ID: 20251006-v2025-09-0-topic-socfpga-agilex5-sdhci-a2509bee71a6
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251005_211527_693913_E4B67B9F 
-X-CRM114-Status: GOOD (  19.12  )
+X-CRM114-CacheID: sfid-20251005_235802_169388_E775F3B7 
+X-CRM114-Status: GOOD (  21.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,296 +70,658 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 08/11] efi: payload: bootm: add support for efi stub boot
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] mci: add cadence sdhci host
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Chali Anis <chalianis1@gmail.com>
+Import the sdhci-cadence driver from linux v6.12.
 
-Introduce support for booting Linux kernels with an EFI stub from the
-barebox EFI payload. This includes:
+Currently only works on Agilex5 which uses it in combination with a ComboPhy.
 
-- Loading the kernel image via EFI LoadImage/StartImage
-- Installing the FDT into the EFI configuration table unless
-  EFI_FDT_FORCE is enabled
-- Providing the initrd either through the Initrd Media GUID or
-  the initrd media protocol
-- Registering image handlers for EFI applications, x86/ARM64 EFI
-  Linux kernels, and a fallback handler for non-EFI x86 Linux images
-- Adding Kconfig options to control FDT forcing and initrd installation
-
-This enables barebox EFI payloads to directly boot Linux kernels with
-EFI stubs in a way compatible with the Linux EFI boot flow.
-
-Signed-off-by: Chali Anis <chalianis1@gmail.com>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- efi/payload/Kconfig  |   6 +-
- efi/payload/Makefile |   1 +
- efi/payload/bootm.c  | 219 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 225 insertions(+), 1 deletion(-)
- create mode 100644 efi/payload/bootm.c
+ drivers/mci/Kconfig         |   7 +
+ drivers/mci/cadence-sdhci.c | 602 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 609 insertions(+)
 
-diff --git a/efi/payload/Kconfig b/efi/payload/Kconfig
-index d0a46704a6b9..e3a6a72d6a1c 100644
---- a/efi/payload/Kconfig
-+++ b/efi/payload/Kconfig
-@@ -27,7 +27,11 @@ config EFI_STUB
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index c99f29a6db6f52137ae22aa550d752d78d86e80a..6736e7421cb34fabf4543286165fc1c1220d23f6 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -259,6 +259,13 @@ config MCI_STM32_SDMMC2
+ 	  If you have a board based on such a SoC and with a SD/MMC slot,
+ 	  say Y or M here.
  
- config EFI_HANDOVER_PROTOCOL
- 	bool "EFI Handover protocol"
--	default y
-+	depends on !EFI_PAYLOAD_BOOTM
- 	depends on X86
- 
-+config EFI_PAYLOAD_BOOTM
-+	bool "EFI bootm protocol"
-+	default !X86
++config MMC_CADENCE_SDHCI
++	tristate "SDHCI support for the Cadence SD/SDIO/eMMC controller"
++	select MCI_SDHCI
++	help
++	  This selects the Cadence SD/SDIO/eMMC driver.
++	  If you have a controller with this interface, say Y or M here.
 +
  endif
-diff --git a/efi/payload/Makefile b/efi/payload/Makefile
-index d8b577bf3e23..083728c53cb4 100644
---- a/efi/payload/Makefile
-+++ b/efi/payload/Makefile
-@@ -3,6 +3,7 @@
- obj-y += init.o
- obj-y += image.o
- obj-$(CONFIG_EFI_HANDOVER_PROTOCOL) += handover.o
-+obj-$(CONFIG_EFI_PAYLOAD_BOOTM) += bootm.o
- obj-y += efi-initrd.o
- obj-$(CONFIG_OFTREE) += fdt.o
- bbenv-y += env-efi
-diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
+ 
+ config MCI_IMX_ESDHC_PBL
+diff --git a/drivers/mci/cadence-sdhci.c b/drivers/mci/cadence-sdhci.c
 new file mode 100644
-index 000000000000..d0e995be5d7c
+index 0000000000000000000000000000000000000000..d59ee0466507c8ae29219b80ea4e32dc3da09c9d
 --- /dev/null
-+++ b/efi/payload/bootm.c
-@@ -0,0 +1,219 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/mci/cadence-sdhci.c
+@@ -0,0 +1,602 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * image.c - barebox EFI payload support
-+ *
-+ * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ * Copyright (C) 2016 Socionext Inc.
++ *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
 + */
-+
-+#define pr_fmt(fmt) "efi-bootm: " fmt
 +
 +#include <clock.h>
 +#include <common.h>
-+#include <linux/sizes.h>
-+#include <linux/ktime.h>
-+#include <memory.h>
-+#include <command.h>
-+#include <magicvar.h>
-+#include <init.h>
 +#include <driver.h>
-+#include <io.h>
-+#include <efi.h>
-+#include <malloc.h>
-+#include <string.h>
-+#include <linux/err.h>
-+#include <boot.h>
-+#include <bootm.h>
-+#include <fs.h>
-+#include <libfile.h>
-+#include <binfmt.h>
-+#include <wchar.h>
-+#include <image-fit.h>
-+#include <efi/efi-payload.h>
-+#include <efi/efi-device.h>
++#include <init.h>
++#include <linux/clk.h>
++#include <mci.h>
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/iopoll.h>
++#include <linux/reset.h>
 +
-+#include "image.h"
-+#include "setup_header.h"
++#include "sdhci.h"
 +
-+static int efi_load_os(struct image_data *data,
-+		       struct efi_loaded_image **loaded_image,
-+		       efi_handle_t *handle)
++/* HRS - Host Register Set (specific to Cadence) */
++#define SDHCI_CDNS_HRS04		0x10		/* PHY access port */
++#define SDHCI_CDNS_HRS05        0x14        /* PHY data access port */
++#define   SDHCI_CDNS_HRS04_ACK			BIT(26)
++#define   SDHCI_CDNS_HRS04_RD			BIT(25)
++#define   SDHCI_CDNS_HRS04_WR			BIT(24)
++#define   SDHCI_CDNS_HRS04_RDATA		GENMASK(23, 16)
++#define   SDHCI_CDNS_HRS04_WDATA		GENMASK(15, 8)
++#define   SDHCI_CDNS_HRS04_ADDR			GENMASK(5, 0)
++
++#define SDHCI_CDNS_HRS06		0x18		/* eMMC control */
++#define   SDHCI_CDNS_HRS06_TUNE_UP		BIT(15)
++#define   SDHCI_CDNS_HRS06_TUNE			GENMASK(13, 8)
++#define   SDHCI_CDNS_HRS06_MODE			GENMASK(2, 0)
++#define   SDHCI_CDNS_HRS06_MODE_SD		0x0
++#define   SDHCI_CDNS_HRS06_MODE_MMC_SDR		0x2
++#define   SDHCI_CDNS_HRS06_MODE_MMC_DDR		0x3
++#define   SDHCI_CDNS_HRS06_MODE_MMC_HS200	0x4
++#define   SDHCI_CDNS_HRS06_MODE_MMC_HS400	0x5
++#define   SDHCI_CDNS_HRS06_MODE_MMC_HS400ES	0x6
++
++/* PHY specific register */
++/* HRS register to set after SDMMC reset */
++#define SDHCI_CDNS_HRS00	0x0
++#define SDHCI_CDNS_HRS07	0x1C        /* IO_DELAY_INFO_REG */
++#define SDHCI_CDNS_HRS07_RW_COMPENSATE  GENMASK(20, 16) /* RW_COMPENSATE */
++#define SDHCI_CDNS_HRS07_IDELAY_VAL     GENMASK(4, 0)   /* IDELAY_VAL */
++/* TODO: check DV dfi_init val=9 */
++#define SDHCI_CDNS_HRS07_RW_COMPENSATE_DATA 0x9
++/* TODO: check DV dfi_init val=8 ; DDR Mode */
++#define SDHCI_CDNS_HRS07_RW_COMPENSATE_DATA_DDR 0x8
++#define SDHCI_CDNS_HRS07_IDELAY_VAL_DATA    0x0
++
++#define SDHCI_CDNS_HRS09	0x024
++#define SDHCI_CDNS_HRS09_PHY_SW_RESET       BIT(0)  /* PHY_SW_RESET */
++#define SDHCI_CDNS_HRS09_PHY_INIT_COMPLETE  BIT(1)  /* PHY_INIT_COMPLETE */
++#define SDHCI_CDNS_HRS09_RDDATA_EN  BIT(16) /* RDDATA_EN */
++#define SDHCI_CDNS_HRS09_RDCMD_EN   BIT(15) /* RDCMD_EN */
++#define SDHCI_CDNS_HRS09_EXTENDED_WR_MODE   BIT(3)  /* EXTENDED_WR_MODE */
++#define SDHCI_CDNS_HRS09_EXTENDED_RD_MODE   BIT(2)  /* EXTENDED_RD_MODE */
++
++#define SDHCI_CDNS_HRS10        0x28        /* PHY reset port */
++#define SDHCI_CDNS_HRS10_HCSDCLKADJ     GENMASK(19, 16) /* HCSDCLKADJ */
++#define SDHCI_CDNS_HRS10_HCSDCLKADJ_DATA    0x0         /* HCSDCLKADJ DATA */
++/* HCSDCLKADJ DATA; DDR Mode */
++#define SDHCI_CDNS_HRS10_HCSDCLKADJ_DATA_DDR    0x2
++#define SDHCI_CDNS_HRS16        0x40        /* CMD_DATA_OUTPUT */
++
++/* SRS - Slot Register Set (SDHCI-compatible) */
++#define SDHCI_CDNS_SRS_BASE	0x200
++#define SDHCI_CDNS_SRS09	0x224
++#define SDHCI_CDNS_SRS10	0x228
++#define SDHCI_CDNS_SRS11	0x22c
++#define SDHCI_CDNS_SRS12	0x230
++#define SDHCI_CDNS_SRS13	0x234
++#define SDHCI_CDNS_SRS09_CI	BIT(16)
++#define SDHCI_CDNS_SRS13_DATA	0xffffffff
++#define SD_HOST_CLK 200000000
++
++/* PHY */
++#define SDHCI_CDNS_PHY_DLY_SD_HS	0x00
++#define SDHCI_CDNS_PHY_DLY_SD_DEFAULT	0x01
++#define SDHCI_CDNS_PHY_DLY_UHS_SDR12	0x02
++#define SDHCI_CDNS_PHY_DLY_UHS_SDR25	0x03
++#define SDHCI_CDNS_PHY_DLY_UHS_SDR50	0x04
++#define SDHCI_CDNS_PHY_DLY_UHS_DDR50	0x05
++#define SDHCI_CDNS_PHY_DLY_EMMC_LEGACY	0x06
++#define SDHCI_CDNS_PHY_DLY_EMMC_SDR	0x07
++#define SDHCI_CDNS_PHY_DLY_EMMC_DDR	0x08
++#define SDHCI_CDNS_PHY_DLY_SDCLK	0x0b
++#define SDHCI_CDNS_PHY_DLY_HSMMC	0x0c
++#define SDHCI_CDNS_PHY_DLY_STROBE	0x0d
++/* PHY register values */
++#define PHY_DQ_TIMING_REG			0x2000
++#define PHY_DQS_TIMING_REG			0x2004
++#define PHY_GATE_LPBK_CTRL_REG			0x2008
++#define PHY_DLL_MASTER_CTRL_REG			0x200C
++#define PHY_DLL_SLAVE_CTRL_REG			0x2010
++#define PHY_CTRL_REG				0x2080
++#define USE_EXT_LPBK_DQS			BIT(22)
++#define USE_LPBK_DQS				BIT(21)
++#define USE_PHONY_DQS				BIT(20)
++#define USE_PHONY_DQS_CMD			BIT(19)
++#define SYNC_METHOD				BIT(31)
++#define SW_HALF_CYCLE_SHIFT			BIT(28)
++#define RD_DEL_SEL				GENMASK(24, 19)
++#define RD_DEL_SEL_DATA				0x34
++#define GATE_CFG_ALWAYS_ON			BIT(6)
++#define UNDERRUN_SUPPRESS			BIT(18)
++#define PARAM_DLL_BYPASS_MODE			BIT(23)
++#define PARAM_PHASE_DETECT_SEL			GENMASK(22, 20)
++#define PARAM_DLL_START_POINT			GENMASK(7, 0)
++#define PARAM_PHASE_DETECT_SEL_DATA		0x2
++#define PARAM_DLL_START_POINT_DATA		0x4
++#define PARAM_DLL_START_POINT_DATA_SDR50	254
++
++#define READ_DQS_CMD_DELAY		GENMASK(31, 24)
++#define CLK_WRDQS_DELAY			GENMASK(23, 16)
++#define CLK_WR_DELAY			GENMASK(15, 8)
++#define READ_DQS_DELAY			GENMASK(7, 0)
++#define READ_DQS_CMD_DELAY_DATA		0x0
++#define CLK_WRDQS_DELAY_DATA		0x0
++#define CLK_WR_DELAY_DATA		0x0
++#define READ_DQS_DELAY_DATA		0x0
++
++#define PHONY_DQS_TIMING		GENMASK(9, 4)
++#define PHONY_DQS_TIMING_DATA		0x0
++
++#define IO_MASK_ALWAYS_ON		BIT(31)
++#define IO_MASK_END			GENMASK(29, 27)
++#define IO_MASK_START			GENMASK(26, 24)
++#define DATA_SELECT_OE_END		GENMASK(2, 0)
++#define IO_MASK_END_DATA		0x5
++/* DDR Mode */
++#define IO_MASK_END_DATA_DDR		0x2
++#define IO_MASK_START_DATA		0x0
++#define DATA_SELECT_OE_END_DATA 	0x1
++
++/*
++ * The tuned val register is 6 bit-wide, but not the whole of the range is
++ * available.  The range 0-42 seems to be available (then 43 wraps around to 0)
++ * but I am not quite sure if it is official.  Use only 0 to 39 for safety.
++ */
++#define SDHCI_CDNS_MAX_TUNING_LOOP	40
++
++struct sdhci_cdns_phy_param {
++	u32 addr;
++	u32 data;
++	u32 offset;
++};
++
++struct sdhci_cdns_priv {
++	struct mci_host mci;
++	struct sdhci sdhci;
++	void __iomem *hrs_addr;
++	bool enhanced_strobe;
++	unsigned int nr_phy_params;
++	struct sdhci_cdns_phy_param phy_params[];
++};
++
++struct sdhci_cdns_phy_cfg {
++	const char *property;
++	u32 addr;
++	u32 offset;
++};
++
++static const struct sdhci_cdns_phy_cfg sdhci_cdns_phy_cfgs[] = {
++	{ "cdns,phy-input-delay-sd-highspeed", SDHCI_CDNS_PHY_DLY_SD_HS, },
++	{ "cdns,phy-input-delay-legacy", SDHCI_CDNS_PHY_DLY_SD_DEFAULT, },
++	{ "cdns,phy-input-delay-sd-uhs-sdr12", SDHCI_CDNS_PHY_DLY_UHS_SDR12, },
++	{ "cdns,phy-input-delay-sd-uhs-sdr25", SDHCI_CDNS_PHY_DLY_UHS_SDR25, },
++	{ "cdns,phy-input-delay-sd-uhs-sdr50", SDHCI_CDNS_PHY_DLY_UHS_SDR50, },
++	{ "cdns,phy-input-delay-sd-uhs-ddr50", SDHCI_CDNS_PHY_DLY_UHS_DDR50, },
++	{ "cdns,phy-input-delay-mmc-highspeed", SDHCI_CDNS_PHY_DLY_EMMC_SDR, },
++	{ "cdns,phy-input-delay-mmc-ddr", SDHCI_CDNS_PHY_DLY_EMMC_DDR, },
++	{ "cdns,phy-dll-delay-sdclk", SDHCI_CDNS_PHY_DLY_SDCLK, },
++	{ "cdns,phy-dll-delay-sdclk-hsmmc", SDHCI_CDNS_PHY_DLY_HSMMC, },
++	{ "cdns,phy-dll-delay-strobe", SDHCI_CDNS_PHY_DLY_STROBE, },
++	{ "cdns,phy-use-ext-lpbk-dqs", PHY_DQS_TIMING_REG, 22,},
++	{ "cdns,phy-use-lpbk-dqs", PHY_DQS_TIMING_REG, 21,},
++	{ "cdns,phy-use-phony-dqs", PHY_DQS_TIMING_REG, 20,},
++	{ "cdns,phy-use-phony-dqs-cmd", PHY_DQS_TIMING_REG, 19,},
++	{ "cdns,phy-io-mask-always-on", PHY_DQ_TIMING_REG, 31,},
++	{ "cdns,phy-io-mask-end", PHY_DQ_TIMING_REG, 27,},
++	{ "cdns,phy-io-mask-start", PHY_DQ_TIMING_REG, 24,},
++	{ "cdns,phy-data-select-oe-end", PHY_DQ_TIMING_REG, 0,},
++	{ "cdns,phy-sync-method", PHY_GATE_LPBK_CTRL_REG, 31,},
++	{ "cdns,phy-sw-half-cycle-shift", PHY_GATE_LPBK_CTRL_REG, 28,},
++	{ "cdns,phy-rd-del-sel", PHY_GATE_LPBK_CTRL_REG, 19,},
++	{ "cdns,phy-underrun-suppress", PHY_GATE_LPBK_CTRL_REG, 18,},
++	{ "cdns,phy-gate-cfg-always-on", PHY_GATE_LPBK_CTRL_REG, 6,},
++	{ "cdns,phy-param-dll-bypass-mode", PHY_DLL_MASTER_CTRL_REG, 23,},
++	{ "cdns,phy-param-phase-detect-sel", PHY_DLL_MASTER_CTRL_REG, 20,},
++	{ "cdns,phy-param-dll-start-point", PHY_DLL_MASTER_CTRL_REG, 0,},
++	{ "cdns,phy-read-dqs-cmd-delay", PHY_DLL_SLAVE_CTRL_REG, 24,},
++	{ "cdns,phy-clk-wrdqs-delay", PHY_DLL_SLAVE_CTRL_REG, 16,},
++	{ "cdns,phy-clk-wr-delay", PHY_DLL_SLAVE_CTRL_REG, 8,},
++	{ "cdns,phy-read-dqs-delay", PHY_DLL_SLAVE_CTRL_REG, 0,},
++	{ "cdns,phy-phony-dqs-timing", PHY_CTRL_REG, 4,},
++	{ "cdns,hrs09-rddata-en", SDHCI_CDNS_HRS09, 16,},
++	{ "cdns,hrs09-rdcmd-en", SDHCI_CDNS_HRS09, 15,},
++	{ "cdns,hrs09-extended-wr-mode", SDHCI_CDNS_HRS09, 3,},
++	{ "cdns,hrs09-extended-rd-mode", SDHCI_CDNS_HRS09, 2,},
++	{ "cdns,hrs10-hcsdclkadj", SDHCI_CDNS_HRS10, 16,},
++	{ "cdns,hrs16-wrdata1-sdclk-dly", SDHCI_CDNS_HRS16, 28,},
++	{ "cdns,hrs16-wrdata0-sdclk-dly", SDHCI_CDNS_HRS16, 24,},
++	{ "cdns,hrs16-wrcmd1-sdclk-dly", SDHCI_CDNS_HRS16, 20,},
++	{ "cdns,hrs16-wrcmd0-sdclk-dly", SDHCI_CDNS_HRS16, 16,},
++	{ "cdns,hrs16-wrdata1-dly", SDHCI_CDNS_HRS16, 12,},
++	{ "cdns,hrs16-wrdata0-dly", SDHCI_CDNS_HRS16, 8,},
++	{ "cdns,hrs16-wrcmd1-dly", SDHCI_CDNS_HRS16, 4,},
++	{ "cdns,hrs16-wrcmd0-dly", SDHCI_CDNS_HRS16, 0,},
++	{ "cdns,hrs07-rw-compensate", SDHCI_CDNS_HRS07, 16,},
++	{ "cdns,hrs07-idelay-val", SDHCI_CDNS_HRS07, 0,},
++};
++
++static int sdhci_cdns_write_phy_reg(struct sdhci_cdns_priv *priv,
++				    u8 addr, u8 data)
 +{
-+	return efi_load_image(data->os_file, loaded_image, handle);
-+}
-+
-+static int efi_load_ramdisk(struct image_data *data, void **initrd)
-+{
-+	unsigned long initrd_size;
-+	void *initrd_mem;
++	void __iomem *reg = priv->hrs_addr + SDHCI_CDNS_HRS04;
++	u32 tmp;
 +	int ret;
 +
-+	if (!data->initrd_file)
-+		return 0;
-+
-+	pr_info("Loading ramdisk from '%s'\n", data->initrd_file);
-+
-+	initrd_mem = read_file(data->initrd_file, &initrd_size);
-+	if (!initrd_mem) {
-+		ret = -errno;
-+		pr_err("Failed to read initrd from file '%s': %m\n",
-+		       data->initrd_file);
++	ret = readl_poll_timeout(reg, tmp, !(tmp & SDHCI_CDNS_HRS04_ACK), 10);
++	if (ret)
 +		return ret;
-+	}
 +
-+	ret = efi_initrd_register(initrd_mem, initrd_size);
-+	if (ret) {
-+		pr_err("Failed to register initrd: %pe\n", ERR_PTR(ret));
-+		goto free_mem;
-+	}
++	tmp = FIELD_PREP(SDHCI_CDNS_HRS04_WDATA, data) |
++	      FIELD_PREP(SDHCI_CDNS_HRS04_ADDR, addr);
++	writel(tmp, reg);
 +
-+	*initrd = initrd_mem;
++	tmp |= SDHCI_CDNS_HRS04_WR;
++	writel(tmp, reg);
 +
-+	return 0;
++	ret = readl_poll_timeout(reg, tmp, tmp & SDHCI_CDNS_HRS04_ACK, 10);
++	if (ret)
++		return ret;
 +
-+free_mem:
-+	free(initrd);
++	tmp &= ~SDHCI_CDNS_HRS04_WR;
++	writel(tmp, reg);
++
++	ret = readl_poll_timeout(reg, tmp, !(tmp & SDHCI_CDNS_HRS04_ACK), 10);
 +
 +	return ret;
 +}
 +
-+static int efi_load_fdt(struct image_data *data, void **fdt)
++static int sdhci_cdns_write_phy_reg_mask(struct sdhci_cdns_priv *priv,
++			u32 addr, u32 data, u32 mask)
 +{
-+	efi_physical_addr_t mem;
-+	efi_status_t efiret;
-+	void *of_tree, *vmem;
-+	unsigned long of_size;
-+	int ret;
++	u32 tmp;
 +
-+	if (!data->oftree_file)
-+		return 0;
++	tmp = addr;
 +
-+	pr_info("Loading devicetree from '%s'\n", data->oftree_file);
++	/* get PHY address */
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS04);
 +
-+	of_tree = read_file(data->oftree_file, &of_size);
-+	if (!of_tree) {
-+		ret = -errno;
-+		pr_err("Failed to read oftree: %m\n");
-+		return ret;
-+	}
++	/* read current PHY register value, before write */
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS05);
 +
-+	efiret = BS->allocate_pages(EFI_ALLOCATE_ANY_PAGES,
-+				    EFI_ACPI_RECLAIM_MEMORY,
-+				    DIV_ROUND_UP(SZ_2M, EFI_PAGE_SIZE), &mem);
-+	if (EFI_ERROR(efiret)) {
-+		pr_err("Failed to allocate pages for FDT: %s\n", efi_strerror(efiret));
-+		goto free_mem;
-+	}
++	tmp &= ~mask;
++	tmp |= data;
 +
-+	vmem = efi_phys_to_virt(mem);
-+	memcpy(vmem, of_tree, of_size);
++	/* write operation */
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS05);
 +
-+	efiret = BS->install_configuration_table(&efi_fdt_guid, vmem);
-+	if (EFI_ERROR(efiret)) {
-+		pr_err("Failed to install FDT: %s\n", efi_strerror(efiret));
-+		goto free_efi_mem;
-+	}
++	/* re-read PHY address */
++	writel(addr, priv->hrs_addr + SDHCI_CDNS_HRS04);
 +
-+	*fdt = vmem;
-+	return 0;
-+
-+free_efi_mem:
-+	BS->free_pages(mem, DIV_ROUND_UP(SZ_2M, EFI_PAGE_SIZE));
-+free_mem:
-+	free(of_tree);
-+	return -efi_errno(efiret);
-+}
-+
-+static void efi_unload_fdt(void *fdt)
-+{
-+	if (!fdt)
-+		return;
-+
-+	BS->install_configuration_table(&efi_fdt_guid, NULL);
-+	BS->free_pages(efi_virt_to_phys(fdt), SZ_2M);
-+}
-+
-+static int do_bootm_efi_stub(struct image_data *data)
-+{
-+	struct efi_loaded_image *loaded_image;
-+	void *fdt = NULL, *initrd = NULL;
-+	efi_handle_t handle;
-+	enum filetype type;
-+	int ret;
-+
-+	ret = efi_load_os(data, &loaded_image, &handle);
-+	if (ret)
-+		return ret;
-+
-+	ret = efi_load_fdt(data, &fdt);
-+	if (ret)
-+		goto unload_os;
-+
-+	ret = efi_load_ramdisk(data, &initrd);
-+	if (ret)
-+		goto unload_oftree;
-+
-+	type = file_detect_type(loaded_image->image_base, PAGE_SIZE);
-+	ret = efi_execute_image(handle, loaded_image, type);
-+	if (ret)
-+		goto unload_ramdisk;
++	/* re-read current PHY register value, check */
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS05);
 +
 +	return 0;
++}
 +
-+unload_ramdisk:
-+	if (initrd)
-+		efi_initrd_unregister();
-+unload_oftree:
-+	efi_unload_fdt(fdt);
-+unload_os:
-+	BS->unload_image(handle);
++static u32 sdhci_cdns_read_phy_reg(struct sdhci_cdns_priv *priv,
++			u32 addr)
++{
++	u32 tmp;
++
++	tmp = addr;
++
++	/* get PHY address */
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS04);
++
++	/* read current PHY register value, before write */
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS05);
++
++	return tmp;
++}
++
++static int sdhci_cdns_dfi_phy_val(struct sdhci_cdns_priv *priv, u32 reg)
++{
++	int i;
++	u32 tmp;
++
++	tmp = 0;
++
++	for (i = 0; i < priv->nr_phy_params; i++) {
++		if (priv->phy_params[i].addr == reg)
++			tmp |= priv->phy_params[i].data << priv->phy_params[i].offset;
++	}
++
++	return tmp;
++}
++
++static int sdhci_cdns_combophy_init_sd_dfi_init(struct sdhci_cdns_priv *priv)
++{
++	int ret = 0;
++	u32 mask = 0x0;
++	u32 tmp = 0;
++
++	writel(0x0, priv->hrs_addr + SDHCI_CDNS_SRS11);
++	writel(1<<0, priv->hrs_addr + SDHCI_CDNS_HRS00);
++	while ((readl(priv->hrs_addr + SDHCI_CDNS_HRS00) & 1<<0) == 1)
++
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & ~1;
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
++
++	tmp = (1 << 22) | (1 << 21) | (1 << 20) | (1 << 19);
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DQS_TIMING_REG, tmp, tmp);
++
++	tmp = (1 << 31) | (0 << 28) | (52 << 19) | (1 << 18) | (1 << 6);
++	mask = SYNC_METHOD | SW_HALF_CYCLE_SHIFT | RD_DEL_SEL | UNDERRUN_SUPPRESS |
++			GATE_CFG_ALWAYS_ON;
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_GATE_LPBK_CTRL_REG, tmp,
++			mask);
++
++	tmp = (1 << 23) | (2 << 20) | (4 << 0);
++	mask = PARAM_DLL_BYPASS_MODE | PARAM_PHASE_DETECT_SEL |
++			PARAM_DLL_START_POINT;
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DLL_MASTER_CTRL_REG, tmp,
++			mask);
++
++	tmp = (0 << 24) | (0 << 16) | (0 << 8) | (0 << 0);
++	mask = READ_DQS_CMD_DELAY | CLK_WRDQS_DELAY | CLK_WR_DELAY | READ_DQS_DELAY;
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DLL_SLAVE_CTRL_REG, tmp,
++			mask);
++
++	writel(0x2080, priv->hrs_addr + SDHCI_CDNS_HRS04);
++	tmp &= ~(0x3f << 4);
++	mask = PHONY_DQS_TIMING;
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_CTRL_REG, tmp, mask);
++
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) | 1;
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
++
++	while (~readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & (1 << 1))
++
++	tmp = sdhci_cdns_read_phy_reg(priv, PHY_DQ_TIMING_REG) & 0x07FFFF8;
++	tmp |= (0 << 31) | (0 << 27) | (0 << 24) | (1 << 0);
++	mask = IO_MASK_ALWAYS_ON | IO_MASK_END | IO_MASK_START | DATA_SELECT_OE_END;
++
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DQ_TIMING_REG, tmp, mask);
++
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & 0xFFFE7FF3;
++
++	tmp |= (1 << 16) | (1 << 15) | (1 << 3) | (1 << 2);
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
++
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS10) & 0xFFF0FFFF;
++
++	tmp |= (0 << 16);
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS10);
++
++	tmp = (0 << 28) | (0 << 24) | (0 << 20) | (0 << 16) | (0 << 12) | (1 << 8) |
++			(0 << 4) | (1 << 0);
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS16);
++
++	tmp = (9 << 16) | (0 << 0);
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS07);
 +
 +	return ret;
 +}
 +
-+static int efi_app_execute(struct image_data *data)
++static int sdhci_cdns_combophy_init_sd_gen(struct sdhci_cdns_priv *priv)
 +{
-+	struct efi_loaded_image *loaded_image;
-+	efi_handle_t handle;
-+	enum filetype type;
-+	int ret;
++	u32 tmp;
++	int ret = 0;
++	u32 mask = 0x0;
 +
-+	ret = efi_load_image(data->os_file, &loaded_image, &handle);
-+	if (ret)
-+		return ret;
++	/* step 1, switch on DLL_RESET */
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & ~1;
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
 +
-+	type = file_detect_type(loaded_image->image_base, PAGE_SIZE);
++	/* step 2, program PHY_DQS_TIMING_REG */
++	tmp = sdhci_cdns_dfi_phy_val(priv, PHY_DQS_TIMING_REG);
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DQS_TIMING_REG, tmp, tmp);
 +
-+	return efi_execute_image(handle, loaded_image, type);
++	/* step 3, program PHY_GATE_LPBK_CTRL_REG */
++	tmp = sdhci_cdns_dfi_phy_val(priv, PHY_GATE_LPBK_CTRL_REG);
++	mask = SYNC_METHOD | SW_HALF_CYCLE_SHIFT | RD_DEL_SEL | UNDERRUN_SUPPRESS |
++	GATE_CFG_ALWAYS_ON;
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_GATE_LPBK_CTRL_REG, tmp,
++	mask);
++
++	/* step 4, program PHY_DLL_MASTER_CTRL_REG */
++	tmp = sdhci_cdns_dfi_phy_val(priv, PHY_DLL_MASTER_CTRL_REG);
++	mask = PARAM_DLL_BYPASS_MODE | PARAM_PHASE_DETECT_SEL |
++	PARAM_DLL_START_POINT;
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DLL_MASTER_CTRL_REG, tmp,
++	mask);
++
++	/* step 5, program PHY_DLL_SLAVE_CTRL_REG */
++	tmp = sdhci_cdns_dfi_phy_val(priv, PHY_DLL_SLAVE_CTRL_REG);
++	mask = READ_DQS_CMD_DELAY | CLK_WRDQS_DELAY | CLK_WR_DELAY | READ_DQS_DELAY;
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DLL_SLAVE_CTRL_REG, tmp,
++	mask);
++
++	/* step 7, switch off DLL_RESET */
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) | 1;
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
++
++	/* step 8, polling PHY_INIT_COMPLETE */
++	while (~readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & (1 << 1))
++	/* polling for PHY_INIT_COMPLETE bit */
++
++	/* step 9, program PHY_DQ_TIMING_REG */
++	tmp = sdhci_cdns_read_phy_reg(priv, PHY_DQ_TIMING_REG) & 0x07FFFF8;
++	tmp |= sdhci_cdns_dfi_phy_val(priv, PHY_DQ_TIMING_REG);
++	mask = IO_MASK_ALWAYS_ON | IO_MASK_END | IO_MASK_START | DATA_SELECT_OE_END;
++	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DQ_TIMING_REG, tmp, mask);
++
++	/* step 10, program HRS09, register 42 */
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & 0xFFFE7FF3;
++
++	tmp |= sdhci_cdns_dfi_phy_val(priv, SDHCI_CDNS_HRS09);
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
++
++	/* step 11, program HRS10, register 43 */
++	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS10) & 0xFFF0FFFF;
++	tmp |= sdhci_cdns_dfi_phy_val(priv, SDHCI_CDNS_HRS10);
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS10);
++
++	/* step 12, program HRS16, register 48 */
++	tmp = sdhci_cdns_dfi_phy_val(priv, SDHCI_CDNS_HRS16);
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS16);
++
++	/* step 13, program HRS07, register 40 */
++	tmp = sdhci_cdns_dfi_phy_val(priv, SDHCI_CDNS_HRS07);
++	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS07);
++	/* end of combophy init */
++
++	return ret;
 +}
 +
-+static struct image_handler efi_app_handle_tr = {
-+	.name = "EFI Application",
-+	.bootm = efi_app_execute,
-+	.filetype = filetype_exe,
-+};
 +
-+static struct image_handler efi_x86_linux_handle_tr = {
-+	.name = "EFI X86 Linux kernel",
-+	.bootm = do_bootm_efi_stub,
-+	.filetype = filetype_x86_linux_image,
-+};
-+
-+static struct image_handler efi_arm64_handle_tr = {
-+	.name = "EFI ARM64 Linux kernel",
-+	.bootm = do_bootm_efi_stub,
-+	.filetype = filetype_arm64_efi_linux_image,
-+};
-+
-+static int efi_register_bootm_handler(void)
++static unsigned int sdhci_cdns_phy_param_count(struct device_node *np)
 +{
-+	register_image_handler(&efi_app_handle_tr);
++	unsigned int count = 0;
++	int i;
 +
-+	if (IS_ENABLED(CONFIG_X86))
-+		register_image_handler(&efi_x86_linux_handle_tr);
++	for (i = 0; i < ARRAY_SIZE(sdhci_cdns_phy_cfgs); i++)
++		if (of_property_read_bool(np, sdhci_cdns_phy_cfgs[i].property))
++			count++;
 +
-+	if (IS_ENABLED(CONFIG_ARM64))
-+		register_image_handler(&efi_arm64_handle_tr);
++	return count;
++}
++
++static void sdhci_cdns_phy_param_parse(struct device_node *np,
++				       struct sdhci_cdns_priv *priv)
++{
++	struct sdhci_cdns_phy_param *p = priv->phy_params;
++	u32 val;
++	int ret, i;
++
++	for (i = 0; i < ARRAY_SIZE(sdhci_cdns_phy_cfgs); i++) {
++		ret = of_property_read_u32(np, sdhci_cdns_phy_cfgs[i].property,
++					   &val);
++		if (ret)
++			continue;
++
++		p->addr = sdhci_cdns_phy_cfgs[i].addr;
++		p->data = val;
++		p->offset = sdhci_cdns_phy_cfgs[i].offset;
++		p++;
++	}
++}
++
++static int sdhci_cdns_phy_init(struct sdhci_cdns_priv *priv)
++{
++	int ret, i;
++
++	for (i = 0; i < priv->nr_phy_params; i++) {
++		if (priv->phy_params[i].offset)
++			break;
++		ret = sdhci_cdns_write_phy_reg(priv, priv->phy_params[i].addr,
++					       priv->phy_params[i].data);
++		if (ret)
++			return ret;
++	}
 +
 +	return 0;
 +}
-+late_efi_initcall(efi_register_bootm_handler);
++
++static void sdhci_cdns_set_clock(struct mci_host *host, unsigned int clock)
++{
++	struct sdhci_cdns_priv *priv = host->hw_dev->priv;
++	int ret;
++
++	ret = sdhci_cdns_combophy_init_sd_gen(priv);
++
++	sdhci_set_clock(&priv->sdhci, clock, host->f_max);
++}
++
++static void sdhci_cdns_set_ios(struct mci_host *host, struct mci_ios *ios)
++{
++	struct sdhci_cdns_priv *priv = host->hw_dev->priv;
++
++	if (ios->clock)
++		sdhci_cdns_set_clock(host, ios->clock);
++
++	sdhci_set_bus_width(&priv->sdhci, ios->bus_width);
++}
++
++static const struct mci_ops sdhci_cdns_ops = {
++	.set_ios = sdhci_cdns_set_ios,
++};
++
++static int sdhci_cdns_probe(struct device *dev)
++{
++	struct sdhci_cdns_priv *priv;
++	struct mci_host *mci;
++	struct clk *clk;
++	struct resource *iores;
++	struct reset_control *rst;
++	unsigned int nr_phy_params;
++	int ret;
++
++	priv = xzalloc(sizeof(*priv));
++	mci = &priv->mci;
++
++	clk = clk_get(dev, "biu");
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	rst = reset_control_get(dev, "reset");
++	if (IS_ERR(rst)) {
++		dev_err(dev, "Invalid reset line 'reset'.\n");
++		return PTR_ERR(rst);
++	}
++	reset_control_deassert(rst);
++	ret = clk_prepare_enable(clk);
++	if (ret)
++		return ret;
++
++	mci->ops = sdhci_cdns_ops;
++	mci->hw_dev = dev;
++
++	nr_phy_params = sdhci_cdns_phy_param_count(dev->of_node);
++
++	priv->nr_phy_params = nr_phy_params;
++	priv->hrs_addr = IOMEM(iores->start);
++	priv->enhanced_strobe = false;
++	priv->sdhci.base = IOMEM(iores->start + SDHCI_CDNS_SRS_BASE);
++	priv->sdhci.quirks2 = SDHCI_QUIRK2_40_BIT_DMA_MASK;
++	priv->sdhci.mci = mci;
++
++	mci_of_parse(mci);
++
++	sdhci_cdns_phy_param_parse(dev->of_node, priv);
++
++	ret = sdhci_cdns_phy_init(priv);
++	if (ret)
++		goto disable_clk;
++
++	ret = sdhci_cdns_combophy_init_sd_dfi_init(priv);
++	if (ret)
++		goto disable_clk;
++
++	dev->priv = priv;
++
++	ret = sdhci_setup_host(&priv->sdhci);
++	if (ret)
++		goto disable_clk;
++
++	return 0;
++
++disable_clk:
++	clk_disable_unprepare(clk);
++
++	return ret;
++}
++
++static __maybe_unused struct of_device_id sdhci_cdns_match[] = {
++	{
++		.compatible = "cdns,sd4hc"
++	},
++	{
++		.compatible = "intel,agilex5-sd4hc",
++	},
++	{ /* sentinel */ }
++};
++
++static struct driver sdhci_cdns_driver = {
++	.name = "sdhci-cdns",
++	.of_compatible = DRV_OF_COMPAT(sdhci_cdns_match),
++	.probe = sdhci_cdns_probe,
++};
++device_platform_driver(sdhci_cdns_driver);
+
+---
+base-commit: 6b59c24110434d7922e127dac22a598e0a6a23db
+change-id: 20251006-v2025-09-0-topic-socfpga-agilex5-sdhci-a2509bee71a6
+
+Best regards,
 -- 
-2.34.1
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 
 
