@@ -1,59 +1,70 @@
-Delivery-date: Tue, 07 Oct 2025 11:13:05 +0200
+Delivery-date: Tue, 07 Oct 2025 11:38:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v63kn-005CIn-1h
+	id 1v649K-005CY6-1H
 	for lore@lore.pengutronix.de;
-	Tue, 07 Oct 2025 11:13:05 +0200
+	Tue, 07 Oct 2025 11:38:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v63km-0001ey-Rq
-	for lore@pengutronix.de; Tue, 07 Oct 2025 11:13:05 +0200
+	id 1v649J-0003tx-Ql
+	for lore@pengutronix.de; Tue, 07 Oct 2025 11:38:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=C8HfmdINXhAHkgSDc1Yb0t+7qihMUS4ZE++F8TtxSro=; b=Cd/JP+RdsVILH3u3sxQzq/g0zP
-	DFK5/eKIVDfF83upB2ECnROvXi+VG2fm9mhXLT6GJxsHOVS9dv/yAL0wFKESOAiPhyk2lj7hxvR9N
-	jAGuZsT6GmGovXjZRIV7LEv2zNlAOuFlS54F/9iiuWtJcchFUtM2+kpaNUW7bUn+T1eqI5b8/Fgr9
-	VuP9ODYcRRGERTsDEbw6IDG9o30Q+pkfYrZ5XYm3UF0xhsdf0R4r7CaVm81A+lsIHL43XeRXOWxGF
-	62RAcqEujoe0i7vKbULEx1eoijckhix2e2JixyOhbY4WveMGuaExbS6za8nxLHyt2nHst1PNS/PiW
-	oL0QLzZQ==;
+	bh=E0tYLgZaErbxPhqZ8KdwtxtfkulEA4H1U/sLduIvAlY=; b=wBVbWZ0MyRACzS3QZfIlKravTm
+	0Ibwfy9s/eet9GUiQvc1R2i57cdb80rsCFT0vR8Bk1nXqrsb+sR3EFFN7VbE4xsUjf7AjyZfgRQtK
+	e+GmEHS0p5QCnMuOmbnya0Rh9gjhNpo8tiZp03nplOQw8Fz5S0z0bUOrXISPXAdg+3Z4U1kZbuCWC
+	E9OV5IfpVaTuQLKRnbVg/iq42/1rRD325urUsR9ya73JCyq7HOZEoGKCSj4usEavY4xFdoO6uLDgP
+	/wIIel7cFxIPMlshRrTcRHkkZP8gbOXg8MU4VuO4RYHvW4/zeg2mD13a4aahAGY+QG1VCR7DvykZD
+	DC9xTbFg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v63kL-00000001gbl-1GDR;
-	Tue, 07 Oct 2025 09:12:37 +0000
+	id 1v648k-00000001iGq-1kOd;
+	Tue, 07 Oct 2025 09:37:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v63kI-00000001gbK-3ivw
+	id 1v648g-00000001iGW-3c4L
 	for barebox@lists.infradead.org;
-	Tue, 07 Oct 2025 09:12:36 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v63kH-0001XS-Er; Tue, 07 Oct 2025 11:12:33 +0200
-Message-ID: <3186d83b-10ef-4ab7-bff8-18a18826c2e0@pengutronix.de>
-Date: Tue, 7 Oct 2025 11:12:33 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+	Tue, 07 Oct 2025 09:37:48 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v648f-0003oK-Bp; Tue, 07 Oct 2025 11:37:45 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v648e-002NYk-2q;
+	Tue, 07 Oct 2025 11:37:44 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v648e-0000000461y-3REH;
+	Tue, 07 Oct 2025 11:37:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Jonas Rebmann <jre@pengutronix.de>
 Cc: Tobias Waldekranz <tobias@waldekranz.com>
+In-Reply-To: <20250929-tlv-integration-v2-0-55f75da7e670@pengutronix.de>
 References: <20250929-tlv-integration-v2-0-55f75da7e670@pengutronix.de>
- <20250929-tlv-integration-v2-9-55f75da7e670@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20250929-tlv-integration-v2-9-55f75da7e670@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Message-Id: <175982986481.976456.2184758190951212360.b4-ty@pengutronix.de>
+Date: Tue, 07 Oct 2025 11:37:44 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251007_021234_993675_474AE04E 
-X-CRM114-Status: GOOD (  20.84  )
+X-CRM114-CacheID: sfid-20251007_023746_989443_113A0BC3 
+X-CRM114-Status: UNSURE (   8.77  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,121 +86,45 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 9/9] test: py: add TLV integration tests
+Subject: Re: [PATCH v2 0/9] TLV integration tests and test/py cleanup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-
-On 9/29/25 10:04 AM, Jonas Rebmann wrote:
+On Mon, 29 Sep 2025 10:03:51 +0200, Jonas Rebmann wrote:
 > With TLV signature coming up, we want to test all things TLV more
 > thoroughly, including "roundtrip" integration tests that include the
 > bareboxtlv-generator python-script and the tlv barebox-command.
 > 
->  - Encode the example TLV data
->  - Add a "corrupted" variant of that tlv binary with a bit error
->  - Test decoding those binaries using bareboxtlv-generator
->  - Test decoding those binaries using the tlv-command
+> As this is the third test module to make use of the testfs, it seemed
+> adequate to revisit its implementation.
 > 
-> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+> [...]
 
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Applied, thanks!
 
-> ---
->  test/py/test_tlv.py | 78 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 78 insertions(+)
-> 
-> diff --git a/test/py/test_tlv.py b/test/py/test_tlv.py
-> new file mode 100644
-> index 0000000000..963f3749b3
-> --- /dev/null
-> +++ b/test/py/test_tlv.py
-> @@ -0,0 +1,78 @@
-> +import os
-> +import re
-> +import subprocess
-> +from pathlib import Path
-> +from crcmod.predefined import mkPredefinedCrcFun
-> +from .helper import skip_disabled
-> +
-> +_crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
-> +
-> +import pytest
-> +
-> +
-> +class _TLV_Testdata:
-> +    def generator(self, args, check=True):
-> +        cmd = [os.sys.executable, str(self.generator_py)] + args
-> +        res = subprocess.run(cmd, text=True)
-> +        if check and res.returncode != 0:
-> +            raise RuntimeError(f"generator failed ({res.returncode}): {res.stdout}\n{res.stderr}")
-> +        return res
-> +
-> +    def __init__(self, testfs):
-> +        self.dir = Path(testfs)
-> +        self.scripts_dir = Path("scripts/bareboxtlv-generator")
-> +        self.data = self.scripts_dir / "data-example.yaml"
-> +        self.schema = self.scripts_dir / "schema-example.yaml"
-> +        self.generator_py = self.scripts_dir / "bareboxtlv-generator.py"
-> +        self.unsigned_bin = self.dir / 'unsigned.tlv'
-> +        self.corrupted_bin = self.dir / 'unsigned_corrupted.tlv'
-> +
-> +@pytest.fixture(scope="module")
-> +def tlv_testdata(testfs):
-> +    t = _TLV_Testdata(testfs)
-> +    t.generator(["--input-data", str(t.data), str(t.schema), str(t.unsigned_bin)])
-> +    assert t.unsigned_bin.exists(), "unsigned TLV not created"
-> +
-> +    with open(t.unsigned_bin, 'r+b') as f:
-> +        data = bytearray(f.read())
-> +    data[0x20] ^= 1
-> +    with open(t.corrupted_bin, "wb") as f:
-> +        f.write(data)
-> +
-> +    return t
-> +
-> +def test_tlv_generator(tlv_testdata):
-> +    t = tlv_testdata
-> +    out_yaml = t.dir / 'out.yaml'
-> +
-> +
-> +    good = t.generator(["--output-data", str(out_yaml), str(t.schema), str(t.unsigned_bin)], check=False)
-> +    assert good.returncode == 0, f"valid unsigned TLV failed to decode: {good.stderr}\n{good.stdout}"
-> +
-> +    bad = t.generator(["--output-data", str(t.dir / 'bad.yaml'), str(t.schema), str(t.corrupted_bin)], check=False)
-> +    assert bad.returncode != 0, "unsigned TLV with invalid CRC unexpectedly decoded successfully"
-> +
-> +def test_tlv_command(barebox, barebox_config, tlv_testdata):
-> +    skip_disabled(barebox_config, "CONFIG_CMD_TLV")
-> +    t = tlv_testdata
-> +    with open(t.data, 'r', encoding='utf-8') as f:
-> +        yaml_lines = [l.strip() for l in f if l.strip() and not l.strip().startswith('#')]
-> +
-> +    stdout = barebox.run_check(f"tlv /mnt/9p/testfs/{t.unsigned_bin.name}")
-> +
-> +    # work around 9pfs printing here after a failed network test
-> +    tlv_offset = next((i for i, line in enumerate(stdout) if line.startswith("tlv")), None)
-> +    tlv_lines = stdout[tlv_offset + 1:-1]
-> +
-> +    assert len(yaml_lines) == len(tlv_lines), \
-> +        f"YAML and TLV output line count mismatch for {t.unsigned_bin.name}"
-> +
-> +    for yline, tline in zip(yaml_lines, tlv_lines):
-> +        m = re.match(r'^\s*([^=]+) = "(.*)";$', tline)
-> +        assert m, f"malformed tlv line: {tline}"
-> +        tkey, tval = m.group(1), m.group(2)
-> +        m = re.match(r'^([^:]+):\s*(?:"([^"]*)"\s*|(.*))$', yline)
-> +        assert m, f"malformed yaml line: {yline}"
-> +        ykey, yval = m.group(1), m.group(2) or m.group(3)
-> +        assert ykey == tkey, f"key mismatch: {ykey} != {tkey}"
-> +        assert str(yval) == str(tval), f"value mismatch for {ykey}: {yval} != {tval}"
-> 
+[1/9] test: when testfs feature is available, always enable it
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f6ba436b7bc4 (link may not be stable)
+[2/9] test: provide testfs via fixture
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4f5d0ff29e19 (link may not be stable)
+[3/9] test: move dm-verity testdata generation to fixture
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2f18231088ef (link may not be stable)
+[4/9] test: move fitimage testdata generation to fixture and drop script
+      https://git.pengutronix.de/cgit/barebox/commit/?id=489e9c37b77a (link may not be stable)
+[5/9] test: py: test_bootchooser: remove dead code
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7d8f367ad149 (link may not be stable)
+[6/9] commands: tlv: clarify error opening tlv
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2fec81d2fc01 (link may not be stable)
+[7/9] ci: container: install crcmod and cryptography
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9703b653fb09 (link may not be stable)
+[8/9] configs: enable tlv command for multi_v7 and multi_v8
+      https://git.pengutronix.de/cgit/barebox/commit/?id=036761c5d072 (link may not be stable)
+[9/9] test: py: add TLV integration tests
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f493dd2b5655 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
