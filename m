@@ -1,62 +1,57 @@
-Delivery-date: Thu, 09 Oct 2025 08:38:21 +0200
+Delivery-date: Thu, 09 Oct 2025 10:50:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v6kI9-005rac-24
+	id 1v6mLg-005tZG-17
 	for lore@lore.pengutronix.de;
-	Thu, 09 Oct 2025 08:38:21 +0200
+	Thu, 09 Oct 2025 10:50:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v6kI8-0007gB-RV
-	for lore@pengutronix.de; Thu, 09 Oct 2025 08:38:21 +0200
+	id 1v6mLf-0005Fr-Le
+	for lore@pengutronix.de; Thu, 09 Oct 2025 10:50:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wdHOzvstCpt7em5hIYgrS6PQfyXxL6+eYE2hphzBhtY=; b=rYWrOkGkbqqGxGrmyUeZugGiaK
-	VGl/tgQQHTLdMMhgKTln99DSe9qCaCzf0U36YfZ3hy+Z6cC0vrqVJlPvC8+9PyR7f2lc2KEV8PFD1
-	F4gSDJJ2wkSBXyR4f1K6q3bNQZWFCalsFrznjy/6iw3YTNtwKnr6ELbKP0ZirFYXU3V6v9Pv7ycXq
-	X9etdf5vpFHixcJUYrJ2EDstRqt8yYsI2XpOJ0gJ4qfQX2wV9JheASG1UGXAxj0wE0JMDmkxtDwIz
-	chhEkgc/NHtAFfuTmong78XGnrfgY4tsL4o0ouiX5p8fpD7dBQnop93ogetGrHaCWH7uNgQ5GaBwW
-	sN0oSqDA==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/zecCBamwX3k8/wG1vF0hx+unlFRQ/aTDEqN3mSkxUI=; b=MraRLq/yQlr8LUkoSLu+ny2h1s
+	YNACuQJ/tgXQvkbi3sagEAYmZqBcobVyRzWfMDwplj8KEnPYF/SxoYRbOB0Nls0fvR/Qi9mjuoIvp
+	caSRkW3O4mQM6bLDVMxHcemwNYvnzeXYGu3qRDz/VaZ4quVE+3BfM+BT+hnOFRUTetYWh0CkjU3wR
+	/b5TwCBmnEx0YRR6Yr6nCDXASvBflJl1LWhYsaapQDAkWmCGvYj1Y+PNt02fydqmxkdaWJcgg5dPG
+	b7kjukO96nwvnN5iDAab0r0475IvIMpLW88Awf8lxpkQRACX2Ta70KjXI7GhYsnxHi5uNxT5K1I4o
+	m6SU2AMA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v6kHU-00000005HxE-0n34;
-	Thu, 09 Oct 2025 06:37:40 +0000
+	id 1v6mKz-00000005Z6y-0gQS;
+	Thu, 09 Oct 2025 08:49:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v6kHR-00000005HwT-0Qo9
+	id 1v6mKw-00000005Z6Z-1oxP
 	for barebox@lists.infradead.org;
-	Thu, 09 Oct 2025 06:37:38 +0000
+	Thu, 09 Oct 2025 08:49:23 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v6kHN-0007bB-NN; Thu, 09 Oct 2025 08:37:33 +0200
-Message-ID: <24151bf4-46bb-466b-a2c8-b8324e4b9b9b@pengutronix.de>
-Date: Thu, 9 Oct 2025 08:37:33 +0200
+	id 1v6mKu-00059r-AF; Thu, 09 Oct 2025 10:49:20 +0200
+Message-ID: <37482d38-768d-40cf-a00c-26444378ecba@pengutronix.de>
+Date: Thu, 9 Oct 2025 10:49:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Tobias Waldekranz <tobias@waldekranz.com>, barebox@lists.infradead.org,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Jonas Rebmann <jre@pengutronix.de>
-References: <20250918074455.891780-1-tobias@waldekranz.com>
- <3e45fde4-a263-4826-aafe-42f41bd46c26@pengutronix.de>
- <878qhm1nar.fsf@waldekranz.com>
- <7730e527-c73e-4857-946d-3411cbf3a510@pengutronix.de>
- <875xcp1599.fsf@waldekranz.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: maudspierings@gocontroll.com, Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+References: <20251008-ddr3-v1-1-8fe874a12878@gocontroll.com>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <875xcp1599.fsf@waldekranz.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251008-ddr3-v1-1-8fe874a12878@gocontroll.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251008_233737_150237_D1F5A441 
-X-CRM114-Status: GOOD (  37.06  )
+X-CRM114-CacheID: sfid-20251009_014922_479878_B7373042 
+X-CRM114-Status: GOOD (  23.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,169 +69,152 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,SUBJECT_IN_BLACKLIST,
-	SUBJECT_IN_BLOCKLIST autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 00/11] dm: verity: Add transparent integrity checking
- target
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] ARM: imx: add ddr3 ram support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hi,
 
-On 10/8/25 10:57 PM, Tobias Waldekranz wrote:
-> On ons, okt 08, 2025 at 09:30, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>> - ...so that I can then use it to generate test images,
->>>
->>> - ...so that I can write tests,
->>>
->>> - ...so that I can publish v1
->>>
->>> ...its...a whole thing :)
->>
->> IMO, just send patches against the Containerfile and we rebuild it.
->> We can create a new subdirectory, move the Containerfile into it and
->> put the patches there as well.
+thanks for your patch.
+
+While the directory is indeed drivers/ddr/imx, it's a different RAM
+controller than on the i.MX6, which is already used with DDR3.
+
+I would rather suggest: "ARM: i.MX8M: ddr:" as prefix.
+
+On 10/8/25 2:25 PM, Maud Spierings via B4 Relay wrote:
+> From: Maud Spierings <maudspierings@gocontroll.com>
 > 
-> So would you like those patches to add a clone+configure+build of
-> genimage to the Containerfile, or what do you have in mind?
+> Add the necessary bits to use DDR3 on imx platforms.
 > 
-> The other option would be to make do without genimage, and create the
-> DDI using veritysetup+openssl(1)+dd.
+> Tested on Ka-Ro tx8m-1610 (imx8mm) based platform with DDR3L memory.
 > 
-> Which would you prefer?
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 
-First one sounds good to me.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
+> ---
+>  drivers/ddr/imx/ddrphy_train.c | 18 ++++++++++++++++++
+>  firmware/Kconfig               |  3 +++
+>  firmware/Makefile              |  4 ++++
+>  include/soc/imx/ddr.h          | 10 ++++++++++
+>  4 files changed, 35 insertions(+)
 > 
->>> Anyway, this only works with existing crypto primitives because (a) we
->>> can use the certificateFingerprint property to locate the key, without
->>> having to parse the PKCS#7 data and (b) because the hash algorithm is
->>> specified by DPS to SHA256, again letting us skip over parsing the ASN.1
->>> data to determine that.
->>>
->>> If we want to support more general operations, e.g. have some
->>> lightweight openssl(1)-like command that can validate detached
->>> signatures, then I think something like mbedtls is definitely needed.
->>
->> I see.
->>
->>>> Jonas (Cc'd) is working right now in a backwards-compatible manner of
->>>> attaching meta-data to keys, e.g.:
->>>>
->>>> export myfitkey="keyring=fit,hint=myhint:pkcs11:token=foo,bar;object=bl"
->>>> export myjwtkey="keyring=jwt-myboard:jwt_pub.pem"
->>>
->>> Shiny! Being able to have multiple keyrings is a great feature.
->>
->> Yes, and it would be extensible to associate extra data with a key
->> in case you need this, although your fingerprint should probably
->> just be generated by keytoc.
+> diff --git a/drivers/ddr/imx/ddrphy_train.c b/drivers/ddr/imx/ddrphy_train.c
+> index 24997a6f36676b61b548e08c330dbfdcf336abc0..3185aaf61e494a72ecfac5760fa06f6c39b398ce 100644
+> --- a/drivers/ddr/imx/ddrphy_train.c
+> +++ b/drivers/ddr/imx/ddrphy_train.c
+> @@ -52,6 +52,19 @@ void ddr_get_firmware_ddr4(void)
+>  			     &ddr4_dmem_2d_size);
+>  }
+>  
+> +static const u16 *ddr3_imem_1d;
+> +static size_t ddr3_imem_1d_size;
+> +static const u16 *ddr3_dmem_1d;
+> +static size_t ddr3_dmem_1d_size;
+> +
+> +void ddr_get_firmware_ddr3(void)
+> +{
+> +	get_builtin_firmware(ddr3_imem_1d_bin, &ddr3_imem_1d,
+> +			     &ddr3_imem_1d_size);
+> +	get_builtin_firmware(ddr3_dmem_1d_bin, &ddr3_dmem_1d,
+> +			     &ddr3_dmem_1d_size);
+> +}
+> +
+>  void ddr_load_train_code(struct dram_controller *dram, enum dram_type dram_type,
+>  			 enum fw_type fw_type)
+>  {
+> @@ -82,6 +95,11 @@ void ddr_load_train_code(struct dram_controller *dram, enum dram_type dram_type,
+>  			dmem = ddr4_dmem_2d;
+>  			dsize = ddr4_dmem_2d_size;
+>  		}
+> +	} else if (dram_is_ddr3(dram_type)) {
+> +		imem = ddr3_imem_1d;
+> +		isize = ddr3_imem_1d_size;
+> +		dmem = ddr3_dmem_1d;
+> +		dsize = ddr3_dmem_1d_size;
+>  	} else {
+>  		panic("No matching DDR PHY firmware found");
+>  	}
+> diff --git a/firmware/Kconfig b/firmware/Kconfig
+> index 14a1c3d3a84407029e576e8e46993f828784f48b..a97a1e0dd324fa2ff95a0e77d1057bc45aa1ad07 100644
+> --- a/firmware/Kconfig
+> +++ b/firmware/Kconfig
+> @@ -22,6 +22,9 @@ config MISSING_FIRMWARE_ERROR
+>  	  If in doubt, say Y and refer to the documentation on where to acquire the
+>  	  needed firmware.
+>  
+> +config FIRMWARE_IMX_DDR3_PMU_TRAIN
+> +	bool
+> +
+>  config FIRMWARE_IMX_LPDDR4_PMU_TRAIN
+>  	bool
+>  
+> diff --git a/firmware/Makefile b/firmware/Makefile
+> index 1fe770a2d900f216dd457d88aee761df4ada26c6..163055554d51b0cc9547f4a43f97c39d23f8eb65 100644
+> --- a/firmware/Makefile
+> +++ b/firmware/Makefile
+> @@ -12,6 +12,10 @@ pbl-firmware-$(CONFIG_FIRMWARE_IMX_DDR4_PMU_TRAIN) += \
+>  	ddr4_imem_1d.bin \
+>  	ddr4_imem_2d.bin
+>  
+> +pbl-firmware-$(CONFIG_FIRMWARE_IMX_DDR3_PMU_TRAIN) += \
+> +	ddr3_dmem_1d.bin \
+> +	ddr3_imem_1d.bin
+> +
+>  pbl-firmware-$(CONFIG_FIRMWARE_IMX8MM_ATF) += imx8mm-bl31.bin$(if $(CONFIG_FIRMWARE_IMX8MM_OPTEE),-optee,)
+>  pbl-firmware-$(CONFIG_FIRMWARE_IMX8MN_ATF) += imx8mn-bl31.bin$(if $(CONFIG_FIRMWARE_IMX8MN_OPTEE),-optee,)
+>  pbl-firmware-$(CONFIG_FIRMWARE_IMX8MP_ATF) += imx8mp-bl31.bin$(if $(CONFIG_FIRMWARE_IMX8MP_OPTEE),-optee,)
+> diff --git a/include/soc/imx/ddr.h b/include/soc/imx/ddr.h
+> index 1e64613895d1b0bcfd5f48a55e0a8bcabd4d96c5..642606290082643dfed9fbeb283652b877d28639 100644
+> --- a/include/soc/imx/ddr.h
+> +++ b/include/soc/imx/ddr.h
+> @@ -18,6 +18,7 @@ enum dram_type {
+>  #define DRAM_TYPE_MASK	0x00ff
+>  	DRAM_TYPE_LPDDR4	= 0 << 0,
+>  	DRAM_TYPE_DDR4		= 1 << 0,
+> +	DRAM_TYPE_DDR3		= 2 << 0,
+>  };
+>  
+>  static inline enum dram_type get_dram_type(unsigned type)
+> @@ -115,11 +116,14 @@ struct dram_controller {
+>  
+>  void ddr_get_firmware_lpddr4(void);
+>  void ddr_get_firmware_ddr4(void);
+> +void ddr_get_firmware_ddr3(void);
+>  
+>  static inline void ddr_get_firmware(enum dram_type dram_type)
+>  {
+>  	if (dram_type == DRAM_TYPE_LPDDR4)
+>  		ddr_get_firmware_lpddr4();
+> +	else if (dram_type == DRAM_TYPE_DDR3)
+> +		ddr_get_firmware_ddr3();
+>  	else
+>  		ddr_get_firmware_ddr4();
+>  }
+> @@ -188,6 +192,12 @@ static inline bool dram_is_ddr4(enum dram_type dram_type)
+>  		dram_type == DRAM_TYPE_DDR4;
+>  }
+>  
+> +static inline bool dram_is_ddr3(enum dram_type dram_type)
+> +{
+> +	return IS_ENABLED(CONFIG_FIRMWARE_IMX_DDR3_PMU_TRAIN) &&
+> +		dram_type == DRAM_TYPE_DDR3;
+> +}
+> +
+>  #define DDRC_PHY_REG(x)	((x) * 4)
+>  
+>  #endif /* __SOC_IMX_DDR_H */
 > 
-> Yes, this is the approach I have taken:
-> https://github.com/wkz/barebox/commit/f2ee4cb4670c32104ac2ef2791c9e525b0d323ff
-
-Sounds good. Should we just skip MD5/SHA1 for new features though?
-
->> I might take you up on that if you are at 39c3 or FrOSCon ;)
+> ---
+> base-commit: 8785a6ad7467b6f1f70b6e12aa2ceb2fdd5d8546
+> change-id: 20251008-ddr3-177f68e06a31
 > 
-> Unfortunately not - hopefully our paths will cross at some other
-> conference! :)
-
-:)
-
->> It's a bit magic/implicit, but if we are going to implement it as is some
->> way, this would make it at least reproducible.
-> 
-> If you want (a) backwards compatibility and (b) something that does not
-> require any ACK from the UAPI group, then I think it is the best we can
-> do.
-
-Ack.
-
->> The project for which I upstreamed JWT support hasn't yet switched
->> over to security policies (v2025.10.0 will be the first release with them
->> expectedly). I will probably add an example to the 32-bit Qemu platform,
->> so it's possible to:
->>
->> pytest --interactive --bootarg barebox.security.token=$(cat common/boards/qemu-virt/devel.token)
-> 
-> Cool. Can you then place a unique ID from a fusebox or something in the
-> token, so that it is bound to a single device?
-
-Yes, the i.MX8M SoC unique ID was used as claim to bind the JWT to a
-specific HW. In the meantime, Marco imported SoC framework support from
-Linux, so we have a unified API for the unique ID that could be used.
-
-Cheers,
-Ahmad
-
-> 
->> Cheers,
->> Ahmad
->>
->>>
->>>> Cheers,
->>>> Ahmad
->>>>
->>>>>
->>>>> Tobias Waldekranz (11):
->>>>>   dm: Add helper to manage a lower device
->>>>>   dm: linear: Refactor to make use of the generalized cdev management
->>>>>   dm: verity: Add transparent integrity checking target
->>>>>   dm: verity: Add helper to parse superblock information
->>>>>   commands: veritysetup: Create dm-verity devices
->>>>>   ci: pytest: Open up testfs to more consumers than the FIT test
->>>>>   ci: pytest: Enable testfs feature on malta boards
->>>>>   ci: pytest: Generate test data for dm-verity
->>>>>   test: pytest: add basic dm-verity test
->>>>>   ci: pytest: Centralize feature discovery to a separate step
->>>>>   ci: pytest: Enable device-mapper labgrid tests
->>>>>
->>>>>  .github/workflows/test-labgrid-pytest.yml     |  26 +-
->>>>>  arch/mips/configs/qemu-malta_defconfig        |   4 +
->>>>>  commands/Kconfig                              |  10 +
->>>>>  commands/Makefile                             |   1 +
->>>>>  commands/veritysetup.c                        | 123 +++++
->>>>>  .../boards/configs/enable_dm_testing.config   |   9 +
->>>>>  drivers/block/dm/Kconfig                      |   7 +
->>>>>  drivers/block/dm/Makefile                     |   1 +
->>>>>  drivers/block/dm/dm-core.c                    | 118 ++++
->>>>>  drivers/block/dm/dm-linear.c                  |  64 +--
->>>>>  drivers/block/dm/dm-target.h                  |  34 ++
->>>>>  drivers/block/dm/dm-verity.c                  | 517 ++++++++++++++++++
->>>>>  include/device-mapper.h                       |   5 +
->>>>>  scripts/generate_testfs.sh                    |  64 ++-
->>>>>  test/mips/be@qemu-malta_defconfig.yaml        |   1 +
->>>>>  test/mips/qemu-malta64el_defconfig.yaml       |   1 +
->>>>>  test/py/test_dm.py                            |  38 ++
->>>>>  test/py/test_fit.py                           |   4 +-
->>>>>  test/riscv/qemu-virt64@rv64i_defconfig.yaml   |   1 +
->>>>>  test/riscv/qemu@virt32_defconfig.yaml         |   1 +
->>>>>  20 files changed, 968 insertions(+), 61 deletions(-)
->>>>>  create mode 100644 commands/veritysetup.c
->>>>>  create mode 100644 common/boards/configs/enable_dm_testing.config
->>>>>  create mode 100644 drivers/block/dm/dm-verity.c
->>>>>  create mode 100644 test/py/test_dm.py
->>>>>
->>>>
->>>>
->>>> -- 
->>>> Pengutronix e.K.                           |                             |
->>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>>
->>
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+> Best regards,
 
 -- 
 Pengutronix e.K.                  |                             |
