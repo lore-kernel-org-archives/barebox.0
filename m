@@ -1,80 +1,56 @@
-Delivery-date: Tue, 14 Oct 2025 13:04:12 +0200
+Delivery-date: Tue, 14 Oct 2025 17:27:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8cpA-007iLL-2p
+	id 1v8gvq-007mUK-0Y
 	for lore@lore.pengutronix.de;
-	Tue, 14 Oct 2025 13:04:12 +0200
+	Tue, 14 Oct 2025 17:27:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8cp6-0003ae-Ju
-	for lore@pengutronix.de; Tue, 14 Oct 2025 13:04:12 +0200
+	id 1v8gvp-0002Uq-IR
+	for lore@pengutronix.de; Tue, 14 Oct 2025 17:27:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HfoivMXikfNTl4oFgKd+FLpbQ7g3oU7iayll+PKJBA8=; b=F7qpA442B+th6jwL9DCj99LjYx
-	YEHlN2VC1++HLvCJHmfR4zrB7XBI7CgTsorWq1XwSs4yR0Kx3T2ZflxR+xZ3QMbBBpL+PuvH+/gcP
-	qGIQHDf3hfydnfGluQr3JFtxu23C1r5WbFpvqGi2Cj0yFnzfDeH+gQSRWmF6FA6LzJcNuaqXfm6EX
-	zCsyciCbrrkbUgfnk3YbYI/W0241qi074CHVc3JBsc927vmx35ZGz9QdxQFiTxqJ/VRCiq6NF7He0
-	0hVDy7xs0W6/asjpQNhv8oxUl4dfXify8NGdtC5HpJP7qu+A3IHsTJJNUg/EHB6cHpjD6XkQPozJK
-	vbf50eCQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=yq9HoMifazAtlQQ4Vz82H75s4vAQrZ1lhOWwTZ2KRKM=; b=lFTTHeR0H44XHUJ5ruZtKvBe+n
+	kZAZC8EfboIt4IZ/jtprQnRY6qXNwMcfPqHgSSygqY7rIOMjYOklnE5S1dVBnXh1JM6R9+HrqzOiG
+	9527SWY8iFYz/VTk0OCewraD+HZcWJW68nVjVispYjzTcZNK9ziPsQlvA/z2oLf9xcraQz+06W/Vm
+	O/YbEjDVvstaF/EBXm/KzN6OtYZI3xplt9H91uN82J9y/fN4+yymIHU5BD2A4SDD9w5BvzaINCJSN
+	6h/bwWUikavKDoimGiuumlUFnoheHUmW/0aAvtRHdtoPfsA8EaqhJ4bbaxyJ4HSxfClLWVY0RL+hL
+	BAUVlpAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8coS-0000000G0hW-3ARd;
-	Tue, 14 Oct 2025 11:03:28 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8coO-0000000G0bQ-1zVM
-	for barebox@bombadil.infradead.org;
-	Tue, 14 Oct 2025 11:03:24 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=HfoivMXikfNTl4oFgKd+FLpbQ7g3oU7iayll+PKJBA8=; b=p/6l9BrPrxP67GDrV+5PBV6AwV
-	U4Ev7gUHmjOWxNCX14N+wx4wQh1dNT0MzobcgQ8AqPrZsqOOQgoJ6/4qZwOwY8fpZs8Nn5Z7tWpKt
-	WJ/0Vw3wmqsL4citrcmqIFHZ8FkuilvpAKpeEoaGh+N6s+YmeLpRAR5qlGMMtxpDjU/D0ZhGjCfM/
-	RdQEDp2UoeS2dk5sA5JJRFlKpzDtRsJwjCJ8U8bVb98SL7hVnOdP12Z2/Pm1Rvo8UINGxWx3y4Kkk
-	JvxwsXpeovhkUwW1JE6RfkMBfMl0fYgw17JB86G2hpKAPj4EXeI3meL8kpVZxwntUoXnEKIvhF8aY
-	DazkbWEw==;
+	id 1v8gvB-0000000Gpie-19yl;
+	Tue, 14 Oct 2025 15:26:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8co8-000000056kr-1bdN
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v8gv8-0000000Gpgl-1wNz
 	for barebox@lists.infradead.org;
-	Tue, 14 Oct 2025 11:03:12 +0000
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	Tue, 14 Oct 2025 15:26:39 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1v8co5-0002Tj-Hz; Tue, 14 Oct 2025 13:03:05 +0200
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 14 Oct 2025 13:03:03 +0200
+	id 1v8gv6-0002MH-9g; Tue, 14 Oct 2025 17:26:36 +0200
+Message-ID: <c52ff3ad-bd4f-4a79-8106-c880212d6c1e@pengutronix.de>
+Date: Tue, 14 Oct 2025 17:26:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+References: <20251013120031.761008-1-a.fatoum@pengutronix.de>
+Content-Language: en-US
+From: Jonas Rebmann <jre@pengutronix.de>
+In-Reply-To: <20251013120031.761008-1-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251014-tlv-signature-v1-12-7a8aaf95081c@pengutronix.de>
-References: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
-In-Reply-To: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15544; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=ay9+mRMbXJ8Ivo57sG75cE1gAGE+zc3llA6mO648WGA=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsh4p/u8vOleW3dVU9ax960XCs5lPPvMnHr3x84lOp7K+
- yYf2xcR2FHKwiDGxSArpsgSqyanIGTsf92s0i4WZg4rE8gQBi5OAZjIAS9Ghnl5RpKNZzqbMorf
- TYkNc2pKzvb9EituwGX8QyTh2ZMSZUaG6x7JK1b/ZuoxWm989fj1oz8mfu6YHZT1aPnk1ErrJEk
- 5RgA=
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251014_120309_701761_CEB21F0A 
-X-CRM114-Status: GOOD (  13.67  )
+X-CRM114-CacheID: sfid-20251014_082638_504668_3582EEAB 
+X-CRM114-Status: GOOD (  23.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,345 +72,96 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 12/15] test: py: add signature to TLV integration tests
+Subject: Re: [PATCH] fixup! test: py: add TLV integration tests
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add TLV signature to TLV integration tests:
- - Signed TLV using development RSA key
- - Modify payload and fix CRC for a "tampered" tlv
- - Include both cases in generator and tlv-command tests.
+Hi Ahmad
 
-Use the keys selected by CRYPTO_BUILTIN_DEVELOPMENT_KEYS for all TLV
-testing. Consequentially add the matching private keys from the public
-repository at [1].
+On 2025-10-13 14:00, Ahmad Fatoum wrote:
+> test: py: tlv: skip when crcmod is missing
+> 
+> TLV tests shouldn't fail the test suite if the dependencies for the
+> generator scripts are not available.
+> 
+> Therefore, have the script return 127 as specific error code and skip
+> the test in that case.
+> 
+> While at it, also drop the currently unused import for mkPredefinedCrcFun.
 
-[1]: https://git.pengutronix.de/cgit/ptx-code-signing-dev/
+My patch "test: py: add TLV integration tests" intentionally only
+changes the test case. I think we should separate those things.
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
- crypto/fit-4096-development.key  |  51 ++++++++++
- crypto/fit-ecdsa-development.key |   5 +
- test/py/test_tlv.py              | 205 +++++++++++++++++++++++++++++++--------
- 3 files changed, 219 insertions(+), 42 deletions(-)
+> Cc: Jonas Rebmann <jre@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>   scripts/bareboxtlv-generator/bareboxtlv-generator.py | 8 +++++++-
+>   test/py/test_tlv.py                                  | 6 +++---
+>   2 files changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+> index 5f9285a80630..6174fe91cdd4 100755
+> --- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+> +++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+> @@ -2,9 +2,15 @@
+>   
+>   import argparse
+>   import struct
+> +import sys
+>   
+>   import yaml
+> -from crcmod.predefined import mkPredefinedCrcFun
+> +
+> +try:
+> +    from crcmod.predefined import mkPredefinedCrcFun
+> +except ModuleNotFoundError:
+> +    print("Error: missing crcmod dependency", file=sys.stderr)
+> +    sys.exit(127)
+>   
+>   _crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
+>   
 
-diff --git a/crypto/fit-4096-development.key b/crypto/fit-4096-development.key
-new file mode 100644
-index 0000000000..526cdfc2b5
---- /dev/null
-+++ b/crypto/fit-4096-development.key
-@@ -0,0 +1,51 @@
-+-----BEGIN RSA PRIVATE KEY-----
-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
-+-----END RSA PRIVATE KEY-----
-diff --git a/crypto/fit-ecdsa-development.key b/crypto/fit-ecdsa-development.key
-new file mode 100644
-index 0000000000..2b13c877a3
---- /dev/null
-+++ b/crypto/fit-ecdsa-development.key
-@@ -0,0 +1,5 @@
-+-----BEGIN EC PRIVATE KEY-----
-+MHcCAQEEIEsUW5DEOhD1CYHCnPfDULwbRQO9Yjt2/xM5SoY2GUQtoAoGCCqGSM49
-+AwEHoUQDQgAEowCa2OYfPdGRr1JpSYONOA3N2jwJjGbPbfG6uBzKg1VqOOk0a/Vf
-+BfEbQev6X96HCd6zvvC2tjBgvICW8UB0TQ==
-+-----END EC PRIVATE KEY-----
-diff --git a/test/py/test_tlv.py b/test/py/test_tlv.py
-index 79f9f9d01b..1200281dbc 100644
---- a/test/py/test_tlv.py
-+++ b/test/py/test_tlv.py
-@@ -1,6 +1,7 @@
- import os
- import re
- import subprocess
-+import struct
- from pathlib import Path
- from .helper import skip_disabled
- 
-@@ -8,71 +9,191 @@ import pytest
- 
- 
- class _TLV_Testdata:
--    def generator(self, args, check=True):
-+    def generator(self, args, expect_failure=False, input=None):
-         cmd = [os.sys.executable, str(self.generator_py)] + args
--        res = subprocess.run(cmd, text=True)
-+        res = subprocess.run(cmd, text=True, input=input, encoding="utf-8", capture_output=True)
-         if res.returncode == 127:
-             pytest.skip("test skipped due to missing host dependencies")
--
--        if check and res.returncode != 0:
--            raise RuntimeError(f"generator failed ({res.returncode}): {res.stdout}\n{res.stderr}")
-+        if res.returncode == 0 and expect_failure:
-+            raise RuntimeError(
-+                f"`{' '.join(cmd)}` succeded unexpectedly:\n{res.stderr}\n{res.stdout}"
-+            )
-+        elif res.returncode != 0 and not expect_failure:
-+            raise RuntimeError(
-+                f"`{' '.join(cmd)}` failed unexpectedly with {res.returncode}:\n{res.stderr}\n{res.stdout}"
-+            )
-         return res
- 
-+    def overwrite_magic(self, new_magic):
-+        with open(self.schema, "r", encoding="utf-8") as f:
-+            patched_schema = "".join(
-+                re.sub(r"^magic:\s*0x[a-fA-F0-9]{8}\s*$", f"magic: {new_magic}\n", line)
-+                for line in f
-+            )
-+        return patched_schema
-+
-+    def tlv_gen(self, outfile, magic=None, sign=None):
-+        param = ["--input-data", str(self.data)]
-+        if sign:
-+            param += ["--sign", str(sign)]
-+        if magic:
-+            param += ["/dev/stdin"]
-+        else:
-+            param += [str(self.schema)]
-+        param += [str(outfile)]
-+        ret = self.generator(param, input=self.overwrite_magic(magic) if magic else None)
-+        assert outfile.exists(), f"TLV {outfile} not created from {' '.join(param)}"
-+        return ret
-+
-+    def tlv_read(self, binfile, magic=None, verify=None, expect_failure=False):
-+        param = ["--output-data", "/dev/null"]
-+        if verify:
-+            param += ["--verify", str(verify)]
-+        if magic:
-+            param += ["/dev/stdin"]
-+        else:
-+            param += [str(self.schema)]
-+        param += [str(binfile)]
-+        ret = self.generator(
-+            param,
-+            input=self.overwrite_magic(magic) if magic else None,
-+            expect_failure=expect_failure,
-+        )
-+        return ret
-+
-+    def corrupt(self, fnin, fnout, fix_crc=False):
-+        try:
-+            from crcmod.predefined import mkPredefinedCrcFun
-+        except ModuleNotFoundError:
-+            pytest.skip("test skipped due to missing dependency python-crcmod")
-+            return
-+
-+        _crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
-+
-+        with open(fnin, "r+b") as f:
-+            data = bytearray(f.read())
-+        data[0x20] ^= 1
-+        if fix_crc:
-+            crc_raw = _crc32_mpeg(data[:-4])
-+            crc = struct.pack(">I", crc_raw)
-+            data[-4:] = crc
-+        with open(fnout, "wb") as f:
-+            f.write(data)
-+
-     def __init__(self, testfs):
-         self.dir = Path(testfs)
-         self.scripts_dir = Path("scripts/bareboxtlv-generator")
-         self.data = self.scripts_dir / "data-example.yaml"
-         self.schema = self.scripts_dir / "schema-example.yaml"
-         self.generator_py = self.scripts_dir / "bareboxtlv-generator.py"
--        self.unsigned_bin = self.dir / 'unsigned.tlv'
--        self.corrupted_bin = self.dir / 'unsigned_corrupted.tlv'
-+        self.privkey_rsa = Path("crypto/fit-4096-development.key")
-+        self.pubkey_rsa = Path("crypto/fit-4096-development.crt")
-+        self.privkey_ecdsa = Path("crypto/fit-ecdsa-development.key")
-+        self.pubkey_ecdsa = Path("crypto/fit-ecdsa-development.crt")
-+        self.unsigned_bin = self.dir / "unsigned.tlv"
-+        self.corrupted_bin = self.dir / "unsigned_corrupted.tlv"
-+        self.signed_bin = self.dir / "signed.tlv"
-+        self.ecdsa_signed_bin = self.dir / "ecdsa-signed.tlv"
-+        self.tampered_bin = self.dir / "signed-tampered.tlv"
-+        self.tampered_ecdsa_bin = self.dir / "ecdsa-signed-tampered.tlv"
-+
- 
- @pytest.fixture(scope="module")
- def tlv_testdata(testfs):
-     t = _TLV_Testdata(testfs)
--    t.generator(["--input-data", str(t.data), str(t.schema), str(t.unsigned_bin)])
--    assert t.unsigned_bin.exists(), "unsigned TLV not created"
- 
--    with open(t.unsigned_bin, 'r+b') as f:
--        data = bytearray(f.read())
--    data[0x20] ^= 1
--    with open(t.corrupted_bin, "wb") as f:
--        f.write(data)
-+    t.tlv_gen(t.unsigned_bin)
-+    t.tlv_gen(t.signed_bin, sign=t.privkey_rsa, magic="0x61bb95f3")
-+    t.tlv_gen(t.ecdsa_signed_bin, sign=t.privkey_ecdsa, magic="0x61bb95f3")
-+
-+    t.corrupt(t.unsigned_bin, t.corrupted_bin)
-+    t.corrupt(t.signed_bin, t.tampered_bin, fix_crc=True)
-+    t.corrupt(t.ecdsa_signed_bin, t.tampered_ecdsa_bin, fix_crc=True)
- 
-     return t
- 
-+
- def test_tlv_generator(tlv_testdata):
-     t = tlv_testdata
--    out_yaml = t.dir / 'out.yaml'
-+    out_yaml = t.dir / "out.yaml"
- 
-+    t.tlv_read(t.unsigned_bin)
-+    t.tlv_read(t.signed_bin, verify=t.pubkey_rsa, magic="0x61bb95f3")
-+    t.tlv_read(t.ecdsa_signed_bin, verify=t.pubkey_ecdsa, magic="0x61bb95f3")
- 
--    good = t.generator(["--output-data", str(out_yaml), str(t.schema), str(t.unsigned_bin)], check=False)
--    assert good.returncode == 0, f"valid unsigned TLV failed to decode: {good.stderr}\n{good.stdout}"
-+    t.tlv_read(t.corrupted_bin, expect_failure=True)
-+    t.tlv_read(t.tampered_bin, verify=t.pubkey_rsa, magic="0x61bb95f3", expect_failure=True)
-+    t.tlv_read(t.tampered_ecdsa_bin, verify=t.pubkey_ecdsa, magic="0x61bb95f3", expect_failure=True)
- 
--    bad = t.generator(["--output-data", str(t.dir / 'bad.yaml'), str(t.schema), str(t.corrupted_bin)], check=False)
--    assert bad.returncode != 0, "unsigned TLV with invalid CRC unexpectedly decoded successfully"
- 
--def test_tlv_command(barebox, barebox_config, tlv_testdata):
-+@pytest.fixture(scope="module")
-+def tlv_cmdtest(barebox_config, tlv_testdata):
-     skip_disabled(barebox_config, "CONFIG_CMD_TLV")
--    t = tlv_testdata
--    with open(t.data, 'r', encoding='utf-8') as f:
--        yaml_lines = [l.strip() for l in f if l.strip() and not l.strip().startswith('#')]
--
--    stdout = barebox.run_check(f"tlv /mnt/9p/testfs/{t.unsigned_bin.name}")
--
--    # work around 9pfs printing here after a failed network test
--    tlv_offset = next((i for i, line in enumerate(stdout) if line.startswith("tlv")), None)
--    tlv_lines = stdout[tlv_offset + 1:-1]
--
--    assert len(yaml_lines) == len(tlv_lines), \
--        f"YAML and TLV output line count mismatch for {t.unsigned_bin.name}"
--
--    for yline, tline in zip(yaml_lines, tlv_lines):
--        m = re.match(r'^\s*([^=]+) = "(.*)";$', tline)
--        assert m, f"malformed tlv line: {tline}"
--        tkey, tval = m.group(1), m.group(2)
--        m = re.match(r'^([^:]+):\s*(?:"([^"]*)"\s*|(.*))$', yline)
--        assert m, f"malformed yaml line: {yline}"
--        ykey, yval = m.group(1), m.group(2) or m.group(3)
--        assert ykey == tkey, f"key mismatch: {ykey} != {tkey}"
--        assert str(yval) == str(tval), f"value mismatch for {ykey}: {yval} != {tval}"
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS")
-+
-+    class _TLV_Cmdtest:
-+        def __init__(self, tlv_testdata):
-+            self.t = tlv_testdata
-+            with open(tlv_testdata.data, "r", encoding="utf-8") as f:
-+                self.yaml_lines = [
-+                    l.strip() for l in f if l.strip() and not l.strip().startswith("#")
-+                ]
-+
-+        def test(self, barebox, fn, fail=False):
-+            cmd = f"tlv /mnt/9p/testfs/{fn}"
-+            stdout, stderr, exitcode = barebox.run(cmd, timeout=2)
-+            if fail:
-+                assert exitcode != 0
-+                return
-+            elif exitcode != 0:
-+                raise RuntimeError(f"`{cmd}` failed with exitcode {exitcode}:\n{stderr}\n{stdout}")
-+
-+            # work around a corner case of 9pfs printing here (after a failed network test?)
-+            tlv_offset = next((i for i, line in enumerate(stdout) if line.startswith("tlv")), None)
-+            tlv_lines = stdout[tlv_offset + 1 : -1]
-+
-+            assert len(self.yaml_lines) == len(tlv_lines), (
-+                f"YAML and TLV output line count mismatch for {fn}"
-+            )
-+
-+            for yline, tline in zip(self.yaml_lines, tlv_lines):
-+                m = re.match(r'^\s*([^=]+) = "(.*)";$', tline)
-+                assert m, f"malformed tlv line: {tline}"
-+                tkey, tval = m.group(1), m.group(2)
-+                m = re.match(r'^([^:]+):\s*(?:"([^"]*)"\s*|(.*))$', yline)
-+                assert m, f"malformed yaml line: {yline}"
-+                ykey, yval = m.group(1), m.group(2) or m.group(3)
-+                assert ykey == tkey, f"key mismatch: {ykey} != {tkey}"
-+                assert str(yval) == str(tval), f"value mismatch for {ykey}: {yval} != {tval}"
-+
-+    return _TLV_Cmdtest(tlv_testdata)
-+
-+
-+def test_tlv_cmd_unsigned(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_RSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.unsigned_bin.name)
-+
-+
-+def test_tlv_cmd_signed(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_RSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.signed_bin.name)
-+
-+
-+def test_tlv_cmd_ecdsa_signed(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_ECDSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.ecdsa_signed_bin.name)
-+
-+
-+def test_tlv_cmd_corrupted(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_RSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.corrupted_bin.name, fail=True)
-+
-+
-+def test_tlv_cmd_tampered(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_RSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.tampered_bin.name, fail=True)
-+
-+
-+def test_tlv_cmd_ecdsa_tampered(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_ECDSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.tampered_ecdsa_bin.name, fail=True)
+Could you move this change to a separate patch which is not a fixup?
+
+> diff --git a/test/py/test_tlv.py b/test/py/test_tlv.py
+> index 963f3749b33b..79f9f9d01bbb 100644
+> --- a/test/py/test_tlv.py
+> +++ b/test/py/test_tlv.py
+> @@ -2,11 +2,8 @@ import os
+>   import re
+>   import subprocess
+>   from pathlib import Path
+> -from crcmod.predefined import mkPredefinedCrcFun
+>   from .helper import skip_disabled
+>   
+> -_crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
+> -
+>   import pytest
+>   
+>   
+> @@ -14,6 +11,9 @@ class _TLV_Testdata:
+>       def generator(self, args, check=True):
+>           cmd = [os.sys.executable, str(self.generator_py)] + args
+>           res = subprocess.run(cmd, text=True)
+> +        if res.returncode == 127:
+> +            pytest.skip("test skipped due to missing host dependencies")
+> +
+>           if check and res.returncode != 0:
+>               raise RuntimeError(f"generator failed ({res.returncode}): {res.stdout}\n{res.stderr}")
+>           return res
+
+And only leave this as fixup to the change on the test case?
+
+The reason it bothers me is that I'd like TLV signature without the
+integration tests to be easily backportable.
+
+Regards,
+Jonas
 
 -- 
-2.51.0.297.gca2559c1d6
-
+Pengutronix e.K.                           | Jonas Rebmann               |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
