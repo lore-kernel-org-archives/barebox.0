@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8cou-007iIT-1U
+	id 1v8cou-007iIm-2m
 	for lore@lore.pengutronix.de;
 	Tue, 14 Oct 2025 13:03:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8coo-0003IN-Nb
+	id 1v8cop-0003Ix-Fv
 	for lore@pengutronix.de; Tue, 14 Oct 2025 13:03:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,48 +18,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1eE9yHn+xnlQp7Fvh85L0zcVkisKzhmLbpA6dFExIRc=; b=R0y6khO9EmfgTbGNj3WeEmhyx+
-	snzqmXQbAo66rrsVgVLQFSMt0VU1Hotw57S3Y4D7MGs/SJuWSToS3P186FaKMX6S2Xfs0wxUJ6S4U
-	0QJV31dJQ8rPrWD4JxoahSZlhFwAIFKOEZEMnd9ey7Iy7f3vaFUh5gEQ8HqDTxfQIfBqlODNK/ep3
-	k6aRpZmK0PGRQGSo7dBCPI9vxBEV9qYUymFMiswCuOkv3t6P0loa1MMt8wjl3dvH0n9XGpSHpOXUD
-	3b1l/KWZ3l+MWHh8oX7mg2tnhxTGHkNt+pdxDESBH8yICzl2qELRJP5DZeDnkPKZr6tLqU1sOObuZ
-	eiLrgv9A==;
+	bh=o/Le1qMc4VotcHKP3cV+goRL49Xx75a3MUyt0iDpvtY=; b=kqkJvowDFAriyhu1fmv7el4t2T
+	+4+7Nc+KJtxn5Krzw7PwA2g0n/hHWOp3aPZsvYWjSeeWdrQurP5Anx8J8nPiYvjZYgQCflIheQCGN
+	dKTCk2KjZGXcyEmk/5GeOE9JE2Jc0P9nKPhBCcRffIeBhRUm6e8hlJ/8c8MldSo35JzAYjBd1dvuB
+	2oMNeA/DeCduaMyNryHy1qTT6GBU6Ws/v5dyEQMCos3WjhOxdkMq/5ff371O7CzgVrt7LrB5RWnij
+	rbQs5krl3ldGTtqiC5IWMSRBo99AGiNLoYrseTFatYIn5nM70cTDpl6CnyrDZOShGs6BZinhigjk8
+	cayhbF+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8coD-0000000G0PW-1Hbp;
-	Tue, 14 Oct 2025 11:03:13 +0000
+	id 1v8coE-0000000G0S1-3WAt;
+	Tue, 14 Oct 2025 11:03:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8co6-0000000G0IB-2zg6
+	id 1v8co6-0000000G0I7-305w
 	for barebox@lists.infradead.org;
-	Tue, 14 Oct 2025 11:03:09 +0000
+	Tue, 14 Oct 2025 11:03:11 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1v8co5-0002Tj-96; Tue, 14 Oct 2025 13:03:05 +0200
+	id 1v8co5-0002Tj-5j; Tue, 14 Oct 2025 13:03:05 +0200
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 14 Oct 2025 13:02:55 +0200
+Date: Tue, 14 Oct 2025 13:02:52 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251014-tlv-signature-v1-4-7a8aaf95081c@pengutronix.de>
+Message-Id: <20251014-tlv-signature-v1-1-7a8aaf95081c@pengutronix.de>
 References: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
 In-Reply-To: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11039; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=MKA9oQ6qk7eQcVXyIJHuLS3jG72ho6bMBiQttBOt0kc=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsh4p/t4Zq74ki2FzWzpE4zKzu28ZHXkhsP/umNHSs9va
- Iqe2jp7b0cpC4MYF4OsmCJLrJqcgpCx/3WzSrtYmDmsTCBDGLg4BWAinlcZGdoPsc5WS1SYmWnK
- 3rAyoCrNrd09dE88Q79WwtXJLF2PAhgZnviwfWzncLmo4Kocc7HLqLpaP6KgnTNVdfKe57bGLpv
- ZAQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14306; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=swOidNfZU4uJEK23fydOmKxmpHLumoJ0YN1HbORfVA8=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsh4p/votJ3Gh7Tbh+/OKBbK1j5xeclk79dvz6fOmlW+W
+ eXaqUnT5TtKWRjEuBhkxRRZYtXkFISM/a+bVdrFwsxhZQIZwsDFKQAT2dzH8FeY4zfH+uXTmR9U
+ XD/bFnWlIWh/4MKr25I+STiZnLmyWluekeFyh8nrXduPPEp48j/KVtOLl7XQ4oLLmtzdcjPcvil
+ mhHMAAA==
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251014_040306_934206_04206ACD 
-X-CRM114-Status: GOOD (  17.06  )
+X-CRM114-CacheID: sfid-20251014_040307_085652_3CDF4954 
+X-CRM114-Status: GOOD (  33.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,302 +81,428 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 04/15] crypto: keytoc: Rename "hint" to "fit-hint" and do
- not use it in identifiers
+Subject: [PATCH 01/15] common: clean up TLV code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The notion of name hints being appropriate as key identifiers is a
-relict from when public key infrastructure was only for fit images.
+This is a preparatory commit for TLV signature verification:
 
-Instead of mixing autogenerated key_<counter> and <hint> prefixes in key
-identifiers, simply use key_<counter> for all keys.
+ - Include overflow checks for TLV sizes
+ - Be careful with narrowing conversions
+ - Add and improve comments
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- scripts/keytoc.c | 109 +++++++++++++++++++++++++------------------------------
- 1 file changed, 49 insertions(+), 60 deletions(-)
+ common/tlv/parser.c              |  18 ++-
+ include/tlv/format.h             |  12 +-
+ scripts/include/linux/overflow.h | 312 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 337 insertions(+), 5 deletions(-)
 
-diff --git a/scripts/keytoc.c b/scripts/keytoc.c
-index a2b508bf49..a663cd20ae 100644
---- a/scripts/keytoc.c
-+++ b/scripts/keytoc.c
-@@ -29,9 +29,10 @@
- #include <ctype.h>
+diff --git a/common/tlv/parser.c b/common/tlv/parser.c
+index fc46092650..f74ada99d7 100644
+--- a/common/tlv/parser.c
++++ b/common/tlv/parser.c
+@@ -16,15 +16,20 @@ int tlv_parse(struct tlv_device *tlvdev,
+ 	const struct tlv *tlv = NULL;
+ 	struct tlv_mapping *map = NULL;
+ 	struct tlv_header *header = tlv_device_header(tlvdev);
+-	u32 magic, size;
++	u32 magic;
++	size_t size;
+ 	int ret = 0;
+ 	u32 crc = ~0;
  
- struct keyinfo {
--	char *keyname;
-+	char *name_hint;
- 	char *keyring;
- 	char *path;
-+	char *name_c;
+-
+ 	magic = be32_to_cpu(header->magic);
+ 
+ 	size = tlv_total_len(header);
+ 
++	if (size == SIZE_MAX) {
++		pr_warn("Invalid TLV header, overflows\n");
++		return -EOVERFLOW;
++	}
++
+ 	crc = crc32_be(crc, header, size - 4);
+ 	if (crc != tlv_crc(header)) {
+ 		pr_warn("Invalid CRC32. Should be %08x\n", crc);
+@@ -133,7 +138,8 @@ void tlv_of_unregister_fixup(struct tlv_device *tlvdev)
+ struct tlv_header *tlv_read(const char *filename, size_t *nread)
+ {
+ 	struct tlv_header *header = NULL, *tmpheader;
+-	int size, fd, ret;
++	size_t size;
++	int fd, ret;
+ 
+ 	fd = open(filename, O_RDONLY);
+ 	if (fd < 0)
+@@ -153,6 +159,12 @@ struct tlv_header *tlv_read(const char *filename, size_t *nread)
+ 
+ 	size = tlv_total_len(header);
+ 
++	if (size == SIZE_MAX) {
++		pr_warn("Invalid TLV header, overflows\n");
++		ret = -EOVERFLOW;
++		goto err;
++	}
++
+ 	tmpheader = realloc(header, size);
+ 	if (!tmpheader) {
+ 		struct stat st;
+diff --git a/include/tlv/format.h b/include/tlv/format.h
+index 29c8a6d42d..c4521c3131 100644
+--- a/include/tlv/format.h
++++ b/include/tlv/format.h
+@@ -18,6 +18,7 @@
+ 
+ #include <linux/compiler.h>
+ #include <linux/types.h>
++#include <linux/overflow.h>
+ #include <asm/unaligned.h>
+ #include <linux/build_bug.h>
+ 
+@@ -48,6 +49,8 @@ struct tlv_header {
+ 	__be32 length_tlv; /* in bytes */
+ 	__be32 length_sig; /* in bytes */
+ 	struct tlv tlvs[];
++	/* __be32 crc; */
++	/* u8 sig[]; */
  };
+ static_assert(sizeof(struct tlv_header) == 3 * 4);
  
- static int dts, standalone;
-@@ -366,7 +367,7 @@ static int print_bignum(BIGNUM *num, int num_bits, int width)
+@@ -56,8 +59,13 @@ static_assert(sizeof(struct tlv_header) == 3 * 4);
  
- 	arr = malloc(num_bits / width * sizeof(*arr));
- 	if (!arr)
--		enomem_exit("malloc");
-+		enomem_exit(__func__);
- 
- 	for (i = 0; i < num_bits / width; i++) {
- 		BN_mod(tmp, num, big2_32, ctx); /* n = N mod B */
-@@ -500,7 +501,7 @@ static int print_hash(EVP_PKEY *key)
- 	return ret ? -EINVAL : 0;
- }
- 
--static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *keyring, const char *key_name_c)
-+static int gen_key_ecdsa(EVP_PKEY *key, struct keyinfo *info)
+ static inline size_t tlv_total_len(const struct tlv_header *header)
  {
- 	char group[128];
- 	size_t outlen;
-@@ -530,7 +531,7 @@ static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *keyrin
- 		fprintf(stderr, "ERROR: generating a dts snippet for ECDSA keys is not yet supported\n");
- 		return -EOPNOTSUPP;
- 	} else {
--		fprintf(outfilep, "\nstatic unsigned char %s_hash[] = {\n\t", key_name_c);
-+		fprintf(outfilep, "\nstatic unsigned char %s_hash[] = {\n\t", info->name_c);
- 
- 		ret = print_hash(key);
- 		if (ret)
-@@ -538,37 +539,37 @@ static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *keyrin
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "\nstatic uint64_t %s_x[] = {", key_name_c);
-+		fprintf(outfilep, "\nstatic uint64_t %s_x[] = {", info->name_c);
- 		ret = print_bignum(key_x, bits, 64);
- 		if (ret)
- 			return ret;
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "static uint64_t %s_y[] = {", key_name_c);
-+		fprintf(outfilep, "static uint64_t %s_y[] = {", info->name_c);
- 		ret = print_bignum(key_y, bits, 64);
- 		if (ret)
- 			return ret;
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "static struct ecdsa_public_key %s = {\n", key_name_c);
-+		fprintf(outfilep, "static struct ecdsa_public_key %s = {\n", info->name_c);
- 
- 		fprintf(outfilep, "\t.curve_name = \"%s\",\n", group);
--		fprintf(outfilep, "\t.x = %s_x,\n", key_name_c);
--		fprintf(outfilep, "\t.y = %s_y,\n", key_name_c);
-+		fprintf(outfilep, "\t.x = %s_x,\n", info->name_c);
-+		fprintf(outfilep, "\t.y = %s_y,\n", info->name_c);
- 		fprintf(outfilep, "};\n");
- 		if (!standalone) {
--			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", key_name_c);
-+			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", info->name_c);
- 			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_ECDSA,\n");
--			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
--			fprintf(outfilep, "\t.keyring = \"%s\",\n", keyring);
--			fprintf(outfilep, "\t.hash = %s_hash,\n", key_name_c);
-+			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", info->name_hint);
-+			fprintf(outfilep, "\t.keyring = \"%s\",\n", info->keyring);
-+			fprintf(outfilep, "\t.hash = %s_hash,\n", info->name_c);
- 			fprintf(outfilep, "\t.hashlen = %u,\n", SHA256_DIGEST_LENGTH);
--			fprintf(outfilep, "\t.ecdsa = &%s,\n", key_name_c);
-+			fprintf(outfilep, "\t.ecdsa = &%s,\n", info->name_c);
- 			fprintf(outfilep, "};\n");
- 			fprintf(outfilep, "\n");
--			fprintf(outfilep, "const struct public_key *__%s_public_key __ll_elem(.public_keys.rodata.%s) = &%s_public_key;\n", key_name_c, key_name_c, key_name_c);
-+			fprintf(outfilep, "const struct public_key *__%s_public_key __ll_elem(.public_keys.rodata.%s) = &%s_public_key;\n", info->name_c, info->name_c, info->name_c);
- 		}
- 	}
- 
-@@ -579,7 +580,7 @@ static char *try_resolve_env(char *input)
- {
- 	char *var;
- 
--	if (strncmp(input, "__ENV__", 7))
-+	if (!input || strncmp(input, "__ENV__", 7))
- 		return input;
- 
- 	var = getenv(input + 7);
-@@ -593,7 +594,7 @@ static char *try_resolve_env(char *input)
- 	return var;
- }
- 
--static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring, const char *key_name_c)
-+static int gen_key_rsa(EVP_PKEY *key, struct keyinfo *info)
- {
- 	BIGNUM *modulus, *r_squared;
- 	uint64_t exponent = 0;
-@@ -608,7 +609,7 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring,
- 	bits = BN_num_bits(modulus);
- 
- 	if (dts) {
--		fprintf(outfilep, "\t\tkey-%s {\n", key_name_c);
-+		fprintf(outfilep, "\t\tkey-%s {\n", info->name_c);
- 		fprintf(outfilep, "\t\t\trsa,r-squared = <");
- 		ret = print_bignum(r_squared, bits, 32);
- 		if (ret)
-@@ -626,10 +627,10 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring,
- 			exponent & 0xffffffff);
- 		fprintf(outfilep, "\t\t\trsa,n0-inverse = <0x%0x>;\n", n0_inv);
- 		fprintf(outfilep, "\t\t\trsa,num-bits = <0x%0x>;\n", bits);
--		fprintf(outfilep, "\t\t\tkey-name-hint = \"%s\";\n", key_name_c);
-+		fprintf(outfilep, "\t\t\tkey-name-hint = \"%s\";\n", info->name_c);
- 		fprintf(outfilep, "\t\t};\n");
- 	} else {
--		fprintf(outfilep, "\nstatic unsigned char %s_hash[] = {\n\t", key_name_c);
-+		fprintf(outfilep, "\nstatic unsigned char %s_hash[] = {\n\t", info->name_c);
- 
- 		ret = print_hash(key);
- 		if (ret)
-@@ -637,14 +638,14 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring,
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "\nstatic uint32_t %s_modulus[] = {", key_name_c);
-+		fprintf(outfilep, "\nstatic uint32_t %s_modulus[] = {", info->name_c);
- 		ret = print_bignum(modulus, bits, 32);
- 		if (ret)
- 			return ret;
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "static uint32_t %s_rr[] = {", key_name_c);
-+		fprintf(outfilep, "static uint32_t %s_rr[] = {", info->name_c);
- 		ret = print_bignum(r_squared, bits, 32);
- 		if (ret)
- 			return ret;
-@@ -652,30 +653,30 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring,
- 		fprintf(outfilep, "\n};\n\n");
- 
- 		if (standalone) {
--			fprintf(outfilep, "struct rsa_public_key __key_%s;\n", key_name_c);
--			fprintf(outfilep, "struct rsa_public_key __key_%s = {\n", key_name_c);
-+			fprintf(outfilep, "struct rsa_public_key __key_%s;\n", info->name_c);
-+			fprintf(outfilep, "struct rsa_public_key __key_%s = {\n", info->name_c);
- 		} else {
--			fprintf(outfilep, "static struct rsa_public_key %s = {\n", key_name_c);
-+			fprintf(outfilep, "static struct rsa_public_key %s = {\n", info->name_c);
- 		}
- 
- 		fprintf(outfilep, "\t.len = %d,\n", bits / 32);
- 		fprintf(outfilep, "\t.n0inv = 0x%0x,\n", n0_inv);
--		fprintf(outfilep, "\t.modulus = %s_modulus,\n", key_name_c);
--		fprintf(outfilep, "\t.rr = %s_rr,\n", key_name_c);
-+		fprintf(outfilep, "\t.modulus = %s_modulus,\n", info->name_c);
-+		fprintf(outfilep, "\t.rr = %s_rr,\n", info->name_c);
- 		fprintf(outfilep, "\t.exponent = 0x%0lx,\n", exponent);
- 		fprintf(outfilep, "};\n");
- 
- 		if (!standalone) {
--			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", key_name_c);
-+			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", info->name_c);
- 			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_RSA,\n");
--			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
--			fprintf(outfilep, "\t.keyring = \"%s\",\n", keyring);
--			fprintf(outfilep, "\t.hash = %s_hash,\n", key_name_c);
-+			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", info->name_hint);
-+			fprintf(outfilep, "\t.keyring = \"%s\",\n", info->keyring);
-+			fprintf(outfilep, "\t.hash = %s_hash,\n", info->name_c);
- 			fprintf(outfilep, "\t.hashlen = %u,\n", SHA256_DIGEST_LENGTH);
--			fprintf(outfilep, "\t.rsa = &%s,\n", key_name_c);
-+			fprintf(outfilep, "\t.rsa = &%s,\n", info->name_c);
- 			fprintf(outfilep, "};\n");
- 			fprintf(outfilep, "\n");
--			fprintf(outfilep, "const struct public_key *__%s_public_key __ll_elem(.public_keys.rodata.%s) = &%s_public_key;\n", key_name_c, key_name_c, key_name_c);
-+			fprintf(outfilep, "const struct public_key *__%s_public_key __ll_elem(.public_keys.rodata.%s) = &%s_public_key;\n", info->name_c, info->name_c, info->name_c);
- 		}
- 	}
- 
-@@ -686,23 +687,7 @@ static int gen_key(struct keyinfo *info)
- {
- 	int ret;
- 	EVP_PKEY *key;
--	char *tmp, *key_name_c;
--
--	/* key name handling */
--	info->keyname = try_resolve_env(info->keyname);
--	if (!info->keyname)
--		exit(1);
- 
--	tmp = key_name_c = strdup(info->keyname);
--
--	while (*tmp) {
--		if (*tmp == '-')
--			*tmp = '_';
--		tmp++;
--	}
--
--	/* path/URI handling */
--	info->path = try_resolve_env(info->path);
- 	if (!info->path)
- 		exit(1);
- 
-@@ -717,12 +702,12 @@ static int gen_key(struct keyinfo *info)
- 	}
- 
- 	/* generate built-in keys */
--	ret = gen_key_ecdsa(key, info->keyname, info->keyring, key_name_c);
-+	ret = gen_key_ecdsa(key, info);
- 	if (ret == -EOPNOTSUPP)
- 		return ret;
- 
- 	if (ret)
--		ret = gen_key_rsa(key, info->keyname, info->keyring, key_name_c);
-+		ret = gen_key_rsa(key, info);
- 
- 	return ret;
- }
-@@ -756,7 +741,7 @@ static bool parse_info(char *p, struct keyinfo *out)
- 		return false;
- 
- 	if (*p == '\0') {
--		out->keyname = strdup(k);
-+		out->name_hint = strdup(k);
- 		if (!k)
- 			enomem_exit(__func__);
- 		return true; /* legacy syntax */
-@@ -782,8 +767,8 @@ static bool parse_info(char *p, struct keyinfo *out)
- 				enomem_exit(__func__);
- 			if (strcmp(k, "keyring") == 0)
- 				out->keyring = strdup(v);
--			else if (strcmp(k, "hint") == 0)
--				out->keyname = strdup(v);
-+			else if (strcmp(k, "fit-hint") == 0)
-+				out->name_hint = strdup(v);
- 			else
- 				return false;
- 
-@@ -831,7 +816,6 @@ int main(int argc, char *argv[])
- {
- 	int i, opt, ret;
- 	char *outfile = NULL;
--	int keynum = 1;
- 	int keycount;
- 	struct keyinfo *keylist;
- 
-@@ -904,11 +888,16 @@ int main(int argc, char *argv[])
- 	for (i = 0; i < keycount; i++) {
- 		struct keyinfo *info = &keylist[i];
- 
--		if (!info->keyname) {
--			ret = asprintf(&info->keyname, "key_%d", keynum++);
--			if (ret < 0)
--				enomem_exit("asprintf");
--		}
-+		/* resolve __ENV__ for name_hint and path */
-+		info->name_hint = try_resolve_env(info->name_hint);
-+		info->path = try_resolve_env(info->path);
+-	return sizeof(struct tlv_header) + get_unaligned_be32(&header->length_tlv)
+-		+ get_unaligned_be32(&header->length_sig) + 4;
++	size_t ret;
 +
-+		if (asprintf(&info->name_c, "key_%i", i + 1) < 0)
-+			enomem_exit("asprintf");
++	ret = size_add(sizeof(struct tlv_header), get_unaligned_be32(&header->length_tlv));
++	ret = size_add(ret, sizeof(__be32)); /* CRC appended after TLVs */
++	ret = size_add(ret, get_unaligned_be32(&header->length_sig)); /* optional signature appended after CRC */
 +
-+		/* unfortunately, the fit name hint is mandatory in the barebox codebase */
-+		if (!info->name_hint)
-+			info->name_hint = info->name_c;
++	return ret; /* SIZE_MAX on overflow */
+ }
  
- 		if (!info->keyring) {
- 			info->keyring = strdup("fit");
+ /*
+diff --git a/scripts/include/linux/overflow.h b/scripts/include/linux/overflow.h
+new file mode 100644
+index 0000000000..f9b60313ea
+--- /dev/null
++++ b/scripts/include/linux/overflow.h
+@@ -0,0 +1,312 @@
++/* SPDX-License-Identifier: GPL-2.0 OR MIT */
++#ifndef __LINUX_OVERFLOW_H
++#define __LINUX_OVERFLOW_H
++
++#include <linux/compiler.h>
++#include <linux/limits.h>
++#include <linux/const.h>
++
++/*
++ * We need to compute the minimum and maximum values representable in a given
++ * type. These macros may also be useful elsewhere. It would seem more obvious
++ * to do something like:
++ *
++ * #define type_min(T) (T)(is_signed_type(T) ? (T)1 << (8*sizeof(T)-1) : 0)
++ * #define type_max(T) (T)(is_signed_type(T) ? ((T)1 << (8*sizeof(T)-1)) - 1 : ~(T)0)
++ *
++ * Unfortunately, the middle expressions, strictly speaking, have
++ * undefined behaviour, and at least some versions of gcc warn about
++ * the type_max expression (but not if -fsanitize=undefined is in
++ * effect; in that case, the warning is deferred to runtime...).
++ *
++ * The slightly excessive casting in type_min is to make sure the
++ * macros also produce sensible values for the exotic type _Bool. [The
++ * overflow checkers only almost work for _Bool, but that's
++ * a-feature-not-a-bug, since people shouldn't be doing arithmetic on
++ * _Bools. Besides, the gcc builtins don't allow _Bool* as third
++ * argument.]
++ *
++ * Idea stolen from
++ * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
++ * credit to Christian Biere.
++ */
++#define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
++#define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
++#define type_min(T) ((T)((T)-type_max(T)-(T)1))
++
++/*
++ * Avoids triggering -Wtype-limits compilation warning,
++ * while using unsigned data types to check a < 0.
++ */
++#define is_non_negative(a) ((a) > 0 || (a) == 0)
++#define is_negative(a) (!(is_non_negative(a)))
++
++/*
++ * Allows for effectively applying __must_check to a macro so we can have
++ * both the type-agnostic benefits of the macros while also being able to
++ * enforce that the return value is, in fact, checked.
++ */
++static inline bool __must_check __must_check_overflow(bool overflow)
++{
++	return unlikely(overflow);
++}
++
++/**
++ * check_add_overflow() - Calculate addition with overflow checking
++ * @a: first addend
++ * @b: second addend
++ * @d: pointer to store sum
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted addition, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * sum has overflowed or been truncated.
++ */
++#define check_add_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_add_overflow(a, b, d))
++
++/**
++ * check_sub_overflow() - Calculate subtraction with overflow checking
++ * @a: minuend; value to subtract from
++ * @b: subtrahend; value to subtract from @a
++ * @d: pointer to store difference
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted subtraction, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * difference has underflowed or been truncated.
++ */
++#define check_sub_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_sub_overflow(a, b, d))
++
++/**
++ * check_mul_overflow() - Calculate multiplication with overflow checking
++ * @a: first factor
++ * @b: second factor
++ * @d: pointer to store product
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted multiplication, but is not
++ * considered "safe for use" on a non-zero return value, which indicates
++ * that the product has overflowed or been truncated.
++ */
++#define check_mul_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_mul_overflow(a, b, d))
++
++/**
++ * check_shl_overflow() - Calculate a left-shifted value and check overflow
++ * @a: Value to be shifted
++ * @s: How many bits left to shift
++ * @d: Pointer to where to store the result
++ *
++ * Computes *@d = (@a << @s)
++ *
++ * Returns true if '*@d' cannot hold the result or when '@a << @s' doesn't
++ * make sense. Example conditions:
++ *
++ * - '@a << @s' causes bits to be lost when stored in *@d.
++ * - '@s' is garbage (e.g. negative) or so large that the result of
++ *   '@a << @s' is guaranteed to be 0.
++ * - '@a' is negative.
++ * - '@a << @s' sets the sign bit, if any, in '*@d'.
++ *
++ * '*@d' will hold the results of the attempted shift, but is not
++ * considered "safe for use" if true is returned.
++ */
++#define check_shl_overflow(a, s, d) __must_check_overflow(({		\
++	typeof(a) _a = a;						\
++	typeof(s) _s = s;						\
++	typeof(d) _d = d;						\
++	u64 _a_full = _a;						\
++	unsigned int _to_shift =					\
++		is_non_negative(_s) && _s < 8 * sizeof(*d) ? _s : 0;	\
++	*_d = (_a_full << _to_shift);					\
++	(_to_shift != _s || is_negative(*_d) || is_negative(_a) ||	\
++	(*_d >> _to_shift) != _a);					\
++}))
++
++#define __overflows_type_constexpr(x, T) (			\
++	is_unsigned_type(typeof(x)) ?				\
++		(x) > type_max(typeof(T)) :			\
++	is_unsigned_type(typeof(T)) ?				\
++		(x) < 0 || (x) > type_max(typeof(T)) :		\
++	(x) < type_min(typeof(T)) || (x) > type_max(typeof(T)))
++
++#define __overflows_type(x, T)		({	\
++	typeof(T) v = 0;			\
++	check_add_overflow((x), v, &v);		\
++})
++
++/**
++ * overflows_type - helper for checking the overflows between value, variables,
++ *		    or data type
++ *
++ * @n: source constant value or variable to be checked
++ * @T: destination variable or data type proposed to store @x
++ *
++ * Compares the @x expression for whether or not it can safely fit in
++ * the storage of the type in @T. @x and @T can have different types.
++ * If @x is a constant expression, this will also resolve to a constant
++ * expression.
++ *
++ * Returns: true if overflow can occur, false otherwise.
++ */
++#define overflows_type(n, T)					\
++	__builtin_choose_expr(__is_constexpr(n),		\
++			      __overflows_type_constexpr(n, T),	\
++			      __overflows_type(n, T))
++
++/**
++ * castable_to_type - like __same_type(), but also allows for casted literals
++ *
++ * @n: variable or constant value
++ * @T: variable or data type
++ *
++ * Unlike the __same_type() macro, this allows a constant value as the
++ * first argument. If this value would not overflow into an assignment
++ * of the second argument's type, it returns true. Otherwise, this falls
++ * back to __same_type().
++ */
++#define castable_to_type(n, T)						\
++	__builtin_choose_expr(__is_constexpr(n),			\
++			      !__overflows_type_constexpr(n, T),	\
++			      __same_type(n, T))
++
++/**
++ * size_mul() - Calculate size_t multiplication with saturation at SIZE_MAX
++ * @factor1: first factor
++ * @factor2: second factor
++ *
++ * Returns: calculate @factor1 * @factor2, both promoted to size_t,
++ * with any overflow causing the return value to be SIZE_MAX. The
++ * lvalue must be size_t to avoid implicit type conversion.
++ */
++static inline size_t __must_check size_mul(size_t factor1, size_t factor2)
++{
++	size_t bytes;
++
++	if (check_mul_overflow(factor1, factor2, &bytes))
++		return SIZE_MAX;
++
++	return bytes;
++}
++
++/**
++ * size_add() - Calculate size_t addition with saturation at SIZE_MAX
++ * @addend1: first addend
++ * @addend2: second addend
++ *
++ * Returns: calculate @addend1 + @addend2, both promoted to size_t,
++ * with any overflow causing the return value to be SIZE_MAX. The
++ * lvalue must be size_t to avoid implicit type conversion.
++ */
++static inline size_t __must_check size_add(size_t addend1, size_t addend2)
++{
++	size_t bytes;
++
++	if (check_add_overflow(addend1, addend2, &bytes))
++		return SIZE_MAX;
++
++	return bytes;
++}
++
++/**
++ * size_sub() - Calculate size_t subtraction with saturation at SIZE_MAX
++ * @minuend: value to subtract from
++ * @subtrahend: value to subtract from @minuend
++ *
++ * Returns: calculate @minuend - @subtrahend, both promoted to size_t,
++ * with any overflow causing the return value to be SIZE_MAX. For
++ * composition with the size_add() and size_mul() helpers, neither
++ * argument may be SIZE_MAX (or the result with be forced to SIZE_MAX).
++ * The lvalue must be size_t to avoid implicit type conversion.
++ */
++static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
++{
++	size_t bytes;
++
++	if (minuend == SIZE_MAX || subtrahend == SIZE_MAX ||
++	    check_sub_overflow(minuend, subtrahend, &bytes))
++		return SIZE_MAX;
++
++	return bytes;
++}
++
++/**
++ * array_size() - Calculate size of 2-dimensional array.
++ * @a: dimension one
++ * @b: dimension two
++ *
++ * Calculates size of 2-dimensional array: @a * @b.
++ *
++ * Returns: number of bytes needed to represent the array or SIZE_MAX on
++ * overflow.
++ */
++#define array_size(a, b)	size_mul(a, b)
++
++/**
++ * array3_size() - Calculate size of 3-dimensional array.
++ * @a: dimension one
++ * @b: dimension two
++ * @c: dimension three
++ *
++ * Calculates size of 3-dimensional array: @a * @b * @c.
++ *
++ * Returns: number of bytes needed to represent the array or SIZE_MAX on
++ * overflow.
++ */
++#define array3_size(a, b, c)	size_mul(size_mul(a, b), c)
++
++/**
++ * flex_array_size() - Calculate size of a flexible array member
++ *                     within an enclosing structure.
++ * @p: Pointer to the structure.
++ * @member: Name of the flexible array member.
++ * @count: Number of elements in the array.
++ *
++ * Calculates size of a flexible array of @count number of @member
++ * elements, at the end of structure @p.
++ *
++ * Return: number of bytes needed or SIZE_MAX on overflow.
++ */
++#define flex_array_size(p, member, count)				\
++	__builtin_choose_expr(__is_constexpr(count),			\
++		(count) * sizeof(*(p)->member) + __must_be_array((p)->member),	\
++		size_mul(count, sizeof(*(p)->member) + __must_be_array((p)->member)))
++
++/**
++ * struct_size() - Calculate size of structure with trailing flexible array.
++ * @p: Pointer to the structure.
++ * @member: Name of the array member.
++ * @count: Number of elements in the array.
++ *
++ * Calculates size of memory needed for structure of @p followed by an
++ * array of @count number of @member elements.
++ *
++ * Return: number of bytes needed or SIZE_MAX on overflow.
++ */
++#define struct_size(p, member, count)					\
++	__builtin_choose_expr(__is_constexpr(count),			\
++		sizeof(*(p)) + flex_array_size(p, member, count),	\
++		size_add(sizeof(*(p)), flex_array_size(p, member, count)))
++
++/**
++ * struct_size_t() - Calculate size of structure with trailing flexible array
++ * @type: structure type name.
++ * @member: Name of the array member.
++ * @count: Number of elements in the array.
++ *
++ * Calculates size of memory needed for structure @type followed by an
++ * array of @count number of @member elements. Prefer using struct_size()
++ * when possible instead, to keep calculations associated with a specific
++ * instance variable of type @type.
++ *
++ * Return: number of bytes needed or SIZE_MAX on overflow.
++ */
++#define struct_size_t(type, member, count)					\
++	struct_size((type *)NULL, member, count)
++
++#endif /* __LINUX_OVERFLOW_H */
 
 -- 
 2.51.0.297.gca2559c1d6
