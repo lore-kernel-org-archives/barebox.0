@@ -3,65 +3,63 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8coo-007iFc-0c
+	id 1v8coo-007iFy-1a
 	for lore@lore.pengutronix.de;
 	Tue, 14 Oct 2025 13:03:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8coj-0003DN-O6
+	id 1v8coj-0003DS-Qs
 	for lore@pengutronix.de; Tue, 14 Oct 2025 13:03:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=wrY/FvWhpi/PbDjtcMVOR/bvjpBLEQDt2CccvrFBxMU=; b=DGfJJBSEZt303z
-	A+YPM4d2cyFq3+GjAfTRM+meesZwU1MfQ1rToQbKJ6dCJCH0Y75ezf1BgA8CPqea8kYRGcCOFmwfM
-	ol59iOMZkIvb5ObxqDFdpvx8JDRyLhCwzMH0bnxtevEOkfCGip1C49Eo1/x3M5vHchNSFFgl4kW4T
-	m3N3T4BqoHjG6xokVtayfDV5yMJwcOK2wAy22ADxlLXDmMYiL6la4dI9ecLx/EncZpCTk/jQNQ7cu
-	W3Sx0Y8bJxn70QglkRFDNz524BfgMzaWAG75rl4iNUIUrVO4UbNx4C6fCvSgP2ChBJ7C/hLRRDv/k
-	iOo6psQJHbxW5xrl06WQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/olRTtt58TNmhFVzG43RSlUh8olMGBmn5nA5oQigRGc=; b=JqJj9mmwrQzrI5f1Gv2BtAM/DO
+	62PMBktzW+q9JJBZkamX4WqxOZ+5C4wA6wVek856/lOkcz/lxeACiIiBHgznP/7NlpjgFduY93FKe
+	qRg+9sMv+4+Y60OnZZZWksrMdi70oC5fnM4yTBo6kuSgpgMDgBH2xR8zxdpJ89olCvGcgKcYWuMeo
+	nqE5Jhh9o0wqVVbouwgLMROqWUJenvn/LQY+shl9LM67Q/+wmetC6o/sAZ/7gttb6NEcOY5RnUAC/
+	4iv5P7+7AxzJ3FIbpApxkPW+ycY9ZJpvPfLpxgoEThHH9Y3yOxutAhcUqMNDu0BARsdwVpf/32TQi
+	AOXRlUZw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8coD-0000000G0Q4-2eHc;
+	id 1v8coD-0000000G0QV-3yFR;
 	Tue, 14 Oct 2025 11:03:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8co6-0000000G0I6-2zsK
+	id 1v8co6-0000000G0IT-49Vz
 	for barebox@lists.infradead.org;
 	Tue, 14 Oct 2025 11:03:10 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1v8co5-0002Tj-4i; Tue, 14 Oct 2025 13:03:05 +0200
+	id 1v8co5-0002Tj-Ix; Tue, 14 Oct 2025 13:03:05 +0200
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 14 Oct 2025 13:02:51 +0200
-Message-Id: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
+Date: Tue, 14 Oct 2025 13:03:04 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANst7mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDA0MT3ZKcMt3izPS8xJLSolRdIzNz4yTDRCMTExNTJaCegqLUtMwKsHn
- RsbW1AOEBpqJfAAAA
-X-Change-ID: 20251014-tlv-signature-2673b1a24445
+Message-Id: <20251014-tlv-signature-v1-13-7a8aaf95081c@pengutronix.de>
+References: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
+In-Reply-To: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4215; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=MmkH6rC14D7O8xfsqEYNV6wE04D4GA5oGGfc94MLwb0=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsh4p/twzh277fIqzxKlD/591blkho/1oyRBreWc3yOfz
- Z69v/D/3Y5SFgYxLgZZMUWWWDU5BSFj/+tmlXaxMHNYmUCGMHBxCsBE0pwZGe4v3Z1WaDhtr+Fi
- 86rla1gqxKXrl1acC3oUP8kn4LmjFAMjwyTnR7svzGm5L7v/VkK90Ib0h6JHUqo2Tnz298SfLP8
- 9nzgB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1715; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=k2gdbWHMoS3tR4YVrgEW0qbYH3cQfZqRIaH+Mbyzo3E=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsh4p/u8LjVJSHqyEWv2zr8qYV/5uh6aODL1PdvU41EeM
+ 7s3S+9jRykLgxgXg6yYIkusmpyCkLH/dbNKu1iYOaxMIEMYuDgFYCKa3Ax/ZX/dvD6N5VvF+7Vp
+ k4/k/5t/OO1lgFmM1p13TedWxGqd+M7I8ObsavPFO7iPvC2z0V9lvXy9pcmCtv2mkp8VPXi8OK8
+ vYQUA
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251014_040306_778018_4D873691 
-X-CRM114-Status: GOOD (  12.54  )
+X-CRM114-CacheID: sfid-20251014_040307_037082_42AEFE6E 
+X-CRM114-Status: GOOD (  11.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,91 +81,56 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 00/15] TLV-Signature and keyrings
+Subject: [PATCH 13/15] ci: pytest: Add kconfig fragment for TLV signature
+ integration tests
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series introduces everything needed for the use of signed TLVs in
-barebox. This allows for signed TLVs to be part of a secure boot chain,
-if CONFIG_TLV_SIGNATURE is enabled, keys are configured and the decoder
-is configured to require signature.
-
-As TLV signature verification uses the public_keys list, propagated by
-keytoc.c with the public keys selected in CONFIG_CRYPTO_PUBLIC_KEYS, the
-keyring feature was introduced to allow separate keys for separate
-concerns.
-
-The existing fitimage verification now only verifies against keys in the
-"fit" keyring. To require a valid signature of TLVs, specify a
-tlv_decoder::signature_keyring in the decoder. No signature verification
-is performed if signature_keyring is NULL for a decoder matched to the
-TLV magic.
-
-A new builtin decoder was added to common/tlv/barebox.c with the magic
-0x61bb95f3 and .signature_keyring = "tlv". Consequently
-CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS now adds the insecure development
-keys to both the "tlv" and the "fit" keyring. This allows for quick
-testing and debugging of decoders requiring signature.
-
-For the creation of signed TLVs, bareboxtlv-generator.py was updated
-with --sign and --verify options for TLV binary encoding and decoding
-respectively.
-
-Changes to the TLV format and -tool usage as well as the breaking
-changes to the keyspec syntax are documented in Documentation/.
+For targets that support inclusion of the testfs, make sure to inject
+all config options needed to run the signature verification tests from
+the test_tlv.py which invoke the TLV command and verify some of the
+generated test TLVs against the builtin developer keys.
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
-Jonas Rebmann (15):
-      common: clean up TLV code
-      crypto: Add support for keyrings
-      fit: only accept keys from "fit"-keyring
-      crypto: keytoc: Rename "hint" to "fit-hint" and do not use it in identifiers
-      commands: keys: update output format to include keyring
-      commands: tlv: Error out on invalid TLVs
-      scripts: bareboxtlv-generator: Implement signature
-      scripts: bareboxtlv-generator: Increase max_size in example schema
-      common: tlv: Add TLV-Signature support
-      common: tlv: default decoder for signed TLV
-      crypto: Use "development" keys for "fit" and "tlv" keyring
-      test: py: add signature to TLV integration tests
-      ci: pytest: Add kconfig fragment for TLV signature integration tests
-      doc/barebox-tlv: Update documentation regarding TLV-Signature
-      Documentation: migration-2025.11.0: List changes to CONFIG_CRYPTO_PUBLIC_KEYS
+ .github/workflows/test-labgrid-pytest.yml           |  1 +
+ common/boards/configs/enable_tlv_sig_testing.config | 13 +++++++++++++
+ 2 files changed, 14 insertions(+)
 
- .github/workflows/test-labgrid-pytest.yml          |   1 +
- .../devicetree/bindings/nvmem/barebox,tlv.yaml     |   1 +
- .../migration-guides/migration-2025.11.0.rst       |  17 ++
- Documentation/user/barebox-tlv.rst                 |  49 +++-
- commands/keys.c                                    |   8 +-
- commands/tlv.c                                     |   2 +-
- common/Kconfig                                     |   4 +
- .../boards/configs/enable_tlv_sig_testing.config   |  13 +
- common/image-fit.c                                 |  13 +-
- common/tlv/barebox.c                               |  25 +-
- common/tlv/parser.c                                | 102 ++++++-
- crypto/Makefile                                    |   6 +-
- crypto/fit-4096-development.key                    |  51 ++++
- crypto/fit-ecdsa-development.key                   |   5 +
- crypto/public-keys.c                               |  15 +-
- crypto/rsa.c                                       |   1 +
- include/crypto/public_key.h                        |  22 +-
- include/tlv/format.h                               |  29 +-
- include/tlv/tlv.h                                  |   1 +
- .../bareboxtlv-generator/bareboxtlv-generator.py   | 242 ++++++++++++++--
- scripts/bareboxtlv-generator/requirements.txt      |   1 +
- scripts/bareboxtlv-generator/schema-example.yaml   |   2 +-
- scripts/include/linux/overflow.h                   | 312 +++++++++++++++++++++
- scripts/keytoc.c                                   | 259 +++++++++++------
- test/py/test_tlv.py                                | 205 +++++++++++---
- 25 files changed, 1202 insertions(+), 184 deletions(-)
----
-base-commit: 39309dcb356714fc3f345f52ff30b0281d65e27b
-change-id: 20251014-tlv-signature-2673b1a24445
+diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
+index 4569e475bc..d9822fc206 100644
+--- a/.github/workflows/test-labgrid-pytest.yml
++++ b/.github/workflows/test-labgrid-pytest.yml
+@@ -89,6 +89,7 @@ jobs:
+ 
+         if [ "${{ steps.used-features.outputs.testfs }}" = "true" ]; then
+           KCONFIG_ADD="${KCONFIG_ADD} common/boards/configs/enable_dm_testing.config"
++          KCONFIG_ADD="${KCONFIG_ADD} common/boards/configs/enable_tlv_sig_testing.config"
+         fi
+ 
+         ./MAKEALL -O ${KBUILD_OUTPUT} -l "" -v 0 ${{matrix.defconfig}}
+diff --git a/common/boards/configs/enable_tlv_sig_testing.config b/common/boards/configs/enable_tlv_sig_testing.config
+new file mode 100644
+index 0000000000..f1729fece5
+--- /dev/null
++++ b/common/boards/configs/enable_tlv_sig_testing.config
+@@ -0,0 +1,13 @@
++CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS=y
++CONFIG_CRYPTO_ECC=y
++CONFIG_CRYPTO_RSA=y
++CONFIG_CRYPTO_ECDSA=y
++CONFIG_CRYPTO_BUILTIN_KEYS=y
++CONFIG_CRYPTO_PUBLIC_KEYS=""
++CONFIG_KEYTOC=y
++CONFIG_TLV=y
++CONFIG_TLV_DRV=y
++CONFIG_TLV_BAREBOX=y
++CONFIG_TLV_SIGNATURE=y
++CONFIG_CMD_KEYS=y
++CONFIG_CMD_TLV=y
 
-Best regards,
---  
-Jonas Rebmann <jre@pengutronix.de>
+-- 
+2.51.0.297.gca2559c1d6
 
 
 
