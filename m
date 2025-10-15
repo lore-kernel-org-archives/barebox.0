@@ -1,56 +1,55 @@
-Delivery-date: Tue, 14 Oct 2025 17:27:22 +0200
+Delivery-date: Wed, 15 Oct 2025 10:17:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8gvq-007mUK-0Y
+	id 1v8whR-0081y9-20
 	for lore@lore.pengutronix.de;
-	Tue, 14 Oct 2025 17:27:22 +0200
+	Wed, 15 Oct 2025 10:17:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8gvp-0002Uq-IR
-	for lore@pengutronix.de; Tue, 14 Oct 2025 17:27:22 +0200
+	id 1v8whR-0006ar-1F
+	for lore@pengutronix.de; Wed, 15 Oct 2025 10:17:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yq9HoMifazAtlQQ4Vz82H75s4vAQrZ1lhOWwTZ2KRKM=; b=lFTTHeR0H44XHUJ5ruZtKvBe+n
-	kZAZC8EfboIt4IZ/jtprQnRY6qXNwMcfPqHgSSygqY7rIOMjYOklnE5S1dVBnXh1JM6R9+HrqzOiG
-	9527SWY8iFYz/VTk0OCewraD+HZcWJW68nVjVispYjzTcZNK9ziPsQlvA/z2oLf9xcraQz+06W/Vm
-	O/YbEjDVvstaF/EBXm/KzN6OtYZI3xplt9H91uN82J9y/fN4+yymIHU5BD2A4SDD9w5BvzaINCJSN
-	6h/bwWUikavKDoimGiuumlUFnoheHUmW/0aAvtRHdtoPfsA8EaqhJ4bbaxyJ4HSxfClLWVY0RL+hL
-	BAUVlpAg==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Qnk5aswVxRd8ICuiHEYPZhu0ykZQbSCzb+3yKlea7CA=; b=AlatC+Vs00vQ/tsLxzMhS/JayF
+	QRstFks19a8oUAG41yHXXfegkfD6hc8DtRsvcSq7l4t87np+S4/TQrEBCxwfCx/nrCGtDkSCW8jkW
+	dzLMq6rcKjpZYyRZmSX6CfWVBk0+9H7lrrKRNvdKog86DcISWVf9HAinukpYUny8CYPNgMaILD5QN
+	OXQ5KmOXdxo7dKR+wfK6e1RLHZnw9gxKPCVMwLGy7DoNWpmx0Xlch46UErqMLbVlUI8kI5A24qbU2
+	TupvQlR0P2Gsskf117iWpeCfpCg+5MqgD9xAW4ycCGRSV58IGZGNwCVJFrKK2mkLuDWIICx/kusov
+	OqUxDf4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8gvB-0000000Gpie-19yl;
-	Tue, 14 Oct 2025 15:26:41 +0000
+	id 1v8wgr-00000000sQ2-2Nl0;
+	Wed, 15 Oct 2025 08:16:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8gv8-0000000Gpgl-1wNz
+	id 1v8wgn-00000000sOt-2pys
 	for barebox@lists.infradead.org;
-	Tue, 14 Oct 2025 15:26:39 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Wed, 15 Oct 2025 08:16:55 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1v8gv6-0002MH-9g; Tue, 14 Oct 2025 17:26:36 +0200
-Message-ID: <c52ff3ad-bd4f-4a79-8106-c880212d6c1e@pengutronix.de>
-Date: Tue, 14 Oct 2025 17:26:35 +0200
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1v8wgk-0006SV-0T; Wed, 15 Oct 2025 10:16:50 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Wed, 15 Oct 2025 10:16:46 +0200
+Message-ID: <20251015081648.4078283-2-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251015081648.4078283-1-a.fatoum@barebox.org>
+References: <20251015081648.4078283-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-References: <20251013120031.761008-1-a.fatoum@pengutronix.de>
-Content-Language: en-US
-From: Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <20251013120031.761008-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251014_082638_504668_3582EEAB 
-X-CRM114-Status: GOOD (  23.43  )
+X-CRM114-CacheID: sfid-20251015_011653_716535_B9A62C6C 
+X-CRM114-Status: GOOD (  11.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,100 +67,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! test: py: add TLV integration tests
+Subject: [PATCH 2/2] fs: add filepath helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad
+This helper can be useful for debugging code, so export it in a header
+and make first use of it.
 
-On 2025-10-13 14:00, Ahmad Fatoum wrote:
-> test: py: tlv: skip when crcmod is missing
-> 
-> TLV tests shouldn't fail the test suite if the dependencies for the
-> generator scripts are not available.
-> 
-> Therefore, have the script return 127 as specific error code and skip
-> the test in that case.
-> 
-> While at it, also drop the currently unused import for mkPredefinedCrcFun.
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ fs/legacy.c  | 8 ++++----
+ include/fs.h | 5 +++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-My patch "test: py: add TLV integration tests" intentionally only
-changes the test case. I think we should separate those things.
-
-> Cc: Jonas Rebmann <jre@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->   scripts/bareboxtlv-generator/bareboxtlv-generator.py | 8 +++++++-
->   test/py/test_tlv.py                                  | 6 +++---
->   2 files changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
-> index 5f9285a80630..6174fe91cdd4 100755
-> --- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
-> +++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
-> @@ -2,9 +2,15 @@
->   
->   import argparse
->   import struct
-> +import sys
->   
->   import yaml
-> -from crcmod.predefined import mkPredefinedCrcFun
-> +
-> +try:
-> +    from crcmod.predefined import mkPredefinedCrcFun
-> +except ModuleNotFoundError:
-> +    print("Error: missing crcmod dependency", file=sys.stderr)
-> +    sys.exit(127)
->   
->   _crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
->   
-
-Could you move this change to a separate patch which is not a fixup?
-
-> diff --git a/test/py/test_tlv.py b/test/py/test_tlv.py
-> index 963f3749b33b..79f9f9d01bbb 100644
-> --- a/test/py/test_tlv.py
-> +++ b/test/py/test_tlv.py
-> @@ -2,11 +2,8 @@ import os
->   import re
->   import subprocess
->   from pathlib import Path
-> -from crcmod.predefined import mkPredefinedCrcFun
->   from .helper import skip_disabled
->   
-> -_crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
-> -
->   import pytest
->   
->   
-> @@ -14,6 +11,9 @@ class _TLV_Testdata:
->       def generator(self, args, check=True):
->           cmd = [os.sys.executable, str(self.generator_py)] + args
->           res = subprocess.run(cmd, text=True)
-> +        if res.returncode == 127:
-> +            pytest.skip("test skipped due to missing host dependencies")
-> +
->           if check and res.returncode != 0:
->               raise RuntimeError(f"generator failed ({res.returncode}): {res.stdout}\n{res.stderr}")
->           return res
-
-And only leave this as fixup to the change on the test case?
-
-The reason it bothers me is that I'd like TLV signature without the
-integration tests to be easily backportable.
-
-Regards,
-Jonas
-
+diff --git a/fs/legacy.c b/fs/legacy.c
+index c2170f52a40b..dce14706ca20 100644
+--- a/fs/legacy.c
++++ b/fs/legacy.c
+@@ -16,8 +16,7 @@ static struct inode *legacy_get_inode(struct super_block *sb, const struct inode
+ 
+ static int legacy_iterate(struct file *file, struct dir_context *ctx)
+ {
+-	struct dentry *dentry = file->f_path.dentry;
+-	struct inode *dir = d_inode(dentry);
++	struct inode *dir = d_inode(file->f_path.dentry);
+ 	struct super_block *sb = dir->i_sb;
+ 	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	const struct fs_legacy_ops *legacy_ops = fsdev->driver->legacy_ops;
+@@ -27,7 +26,7 @@ static int legacy_iterate(struct file *file, struct dir_context *ctx)
+ 
+ 	dir_emit_dots(file, ctx);
+ 
+-	pathname = dpath(dentry, fsdev->vfsmount.mnt_root);
++	pathname = filepath(file);
+ 
+ 	d = legacy_ops->opendir(&fsdev->dev, pathname);
+ 	if (!d)
+@@ -87,7 +86,8 @@ static int legacy_open(struct inode *inode, struct file *file)
+ 	if (!legacy_ops->open)
+ 		return 0;
+ 
+-	pathname = dpath(file->f_path.dentry, fsdev->vfsmount.mnt_root);
++	pathname = filepath(file);
++
+ 	error = legacy_ops->open(&file->fsdev->dev, file, pathname);
+ 	free(pathname);
+ 
+diff --git a/include/fs.h b/include/fs.h
+index 86442eacddf9..98c482bbf2a9 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -172,4 +172,9 @@ static inline const char *devpath_to_name(const char *devpath)
+ 
+ const char *fs_detect(const char *filename, const char *fsoptions);
+ 
++static inline char *filepath(struct file *f)
++{
++	return dpath(f->f_path.dentry, f->fsdev->vfsmount.mnt_root);
++}
++
+ #endif /* __FS_H */
 -- 
-Pengutronix e.K.                           | Jonas Rebmann               |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+2.47.3
+
 
 
