@@ -1,53 +1,53 @@
-Delivery-date: Wed, 15 Oct 2025 10:17:35 +0200
+Delivery-date: Wed, 15 Oct 2025 10:27:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8whT-0081yW-0F
+	id 1v8wqk-00824w-2K
 	for lore@lore.pengutronix.de;
-	Wed, 15 Oct 2025 10:17:35 +0200
+	Wed, 15 Oct 2025 10:27:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v8whR-0006as-2B
-	for lore@pengutronix.de; Wed, 15 Oct 2025 10:17:35 +0200
+	id 1v8wqk-0007r2-5P
+	for lore@pengutronix.de; Wed, 15 Oct 2025 10:27:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GI1iLSFG0tcrZPG6qH33/syUSE8xKYLdeBrkIzlL+MY=; b=tS8Y2jXj04TxHnFSR8Qy6WC5FF
-	FRkxfxbembmEZnha6ctzCFLMxGc0McWxvnGC+Y59n1SmCXv0sZeMG1McXSnK6qI2qxH7p9gldzZ6H
-	4HnF8zuUIlKnIgjDlgn+MBxt99Cf56aMkKWUqW2Oi3opKWG1sBPXCv4UqCAxgXpeC0QW1XLYkwthY
-	orgabO03f4yzIzb2ta32IcYMpdgs18EiLeZtkLkhL4qh/BWXGNjNAaW53F9nEQs/lhvlwmstknGMX
-	t0RdR89XLQ1cSuqsY3JUfeA+ca0Cm8lWa//sUtqdayCtKxdijcnTPEkXy46FMV7Gmk1LSQB9tyQAi
-	aPQXaFfw==;
+	bh=r0OcyHoR01u9ZiAsIikHm8Z8mmXvOsvugD1vggeoucc=; b=ezNB+/aZp/Vo6rM9X7/8xr7PKU
+	MsKJsQZf7jR4Zs1uKneqtd+EN/odvwXJV1jc+h2f0w22HKCSwJP8VJus/ADq8Le87Ypuswwd3j/1o
+	6ZOEqk0R1YM2Xld/jJ4wbVTyUzsB0O1/EiT1bIb05yJ22ciUI+OcjRkq4V2yxC7ynIH7NySnx5kde
+	yy6yrPR6iQ5OYobWf8qqvSxEIbmFpy6IRRpZ9++KxCVa2abBsX5BXU6SLLfULt0yd9Sn3DRyzb4E+
+	2U+PNgcQlybUEUDn936E6Hl3vGztJsLQGa8SXELwni1E7w4ZxzMyTt3QELM28NaifvVb0HRpf8rWx
+	iVPDLvSQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8wgr-00000000sPw-0jMk;
-	Wed, 15 Oct 2025 08:16:57 +0000
+	id 1v8wqL-00000000u3C-18MD;
+	Wed, 15 Oct 2025 08:26:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8wgn-00000000sOs-2vjf
+	id 1v8wqI-00000000u2j-47AC
 	for barebox@lists.infradead.org;
-	Wed, 15 Oct 2025 08:16:55 +0000
+	Wed, 15 Oct 2025 08:26:43 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1v8wgj-0006SV-NR; Wed, 15 Oct 2025 10:16:49 +0200
+	id 1v8wqG-0007m0-SQ; Wed, 15 Oct 2025 10:26:40 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Wed, 15 Oct 2025 10:16:45 +0200
-Message-ID: <20251015081648.4078283-1-a.fatoum@barebox.org>
+Date: Wed, 15 Oct 2025 10:26:39 +0200
+Message-ID: <20251015082640.4093689-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251015_011653_736445_AF5E1135 
-X-CRM114-Status: GOOD (  10.24  )
+X-CRM114-CacheID: sfid-20251015_012643_019434_C0887781 
+X-CRM114-Status: GOOD (  10.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,61 +69,64 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] fs: make dpath always panic on OOM
+Subject: [PATCH] fixup! tlsf: support on-demand requesting memory from external store
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is effectively already the case since basprintf was changed to be
-equivalent to xasprintf. Replace basprintf with xasprintf to make this
-clearer and use xstrdup instead of strdup for the root node.
+tlsf: fix misaccounting in request_store feature
 
-All users, except one, didn't bother to check dpath return value for NULL
-anyway.
+A TLSF pool itself has overhead in the form of tlsf_pool_overhead()
+that's distinct from the struct pool_entry. Adding a helper that returns
+this total overhead allows us also to use roundup_pow_of_two(), which
+previously issues a warning on clang about sizeof(sizeof(...)) looking
+strange.
+
+Another issues is that request_store was not explicitly zeroed leading
+to issues on OOM situations, which is remedied as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- fs/fs.c     | 6 +++---
- fs/legacy.c | 2 --
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ common/tlsf.c        | 1 +
+ common/tlsf_malloc.c | 7 ++++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 529c328f26fc..528299e039d2 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -3022,9 +3022,9 @@ static char *__dpath(struct dentry *dentry, struct dentry *root)
+diff --git a/common/tlsf.c b/common/tlsf.c
+index 3c72b41c0385..e7f1b8354f02 100644
+--- a/common/tlsf.c
++++ b/common/tlsf.c
+@@ -654,6 +654,7 @@ static void control_construct(control_t* control)
+ 	control->block_null.next_free = &control->block_null;
+ 	control->block_null.prev_free = &control->block_null;
  
- 	ppath = __dpath(dentry->d_parent, root);
- 	if (ppath)
--		res = basprintf("%s/%s", ppath, dentry->d_name.name);
-+		res = xasprintf("%s/%s", ppath, dentry->d_name.name);
- 	else
--		res = basprintf("/%s", dentry->d_name.name);
-+		res = xasprintf("/%s", dentry->d_name.name);
- 	free(ppath);
++	control->request_store = NULL;
+ 	control->fl_bitmap = 0;
+ 	for (i = 0; i < FL_INDEX_COUNT; ++i)
+ 	{
+diff --git a/common/tlsf_malloc.c b/common/tlsf_malloc.c
+index d3b665a2fc40..9d55014117f0 100644
+--- a/common/tlsf_malloc.c
++++ b/common/tlsf_malloc.c
+@@ -27,6 +27,11 @@ struct pool_entry {
  
- 	return res;
-@@ -3058,7 +3058,7 @@ char *dpath(struct dentry *dentry, struct dentry *root)
- 	char *res;
+ static LIST_HEAD(mem_pool_list);
  
- 	if (dentry == root)
--		return strdup("/");
-+		return xstrdup("/");
++static inline size_t mem_pool_overhead(void)
++{
++	return sizeof(struct pool_entry) + tlsf_pool_overhead();
++}
++
+ void *malloc(size_t bytes)
+ {
+ 	void *mem;
+@@ -132,7 +137,7 @@ static void tlsf_request_store(tlsf_t tlsf, size_t bytes)
+ {
+ 	size_t size;
  
- 	res = __dpath(dentry, root);
+-	size = __roundup_pow_of_two(bytes + sizeof(struct pool_entry));
++	size = roundup_pow_of_two(bytes + mem_pool_overhead());
  
-diff --git a/fs/legacy.c b/fs/legacy.c
-index 7c73ad7c41e4..c2170f52a40b 100644
---- a/fs/legacy.c
-+++ b/fs/legacy.c
-@@ -60,8 +60,6 @@ static struct dentry *legacy_lookup(struct inode *dir, struct dentry *dentry,
- 	int ret;
- 
- 	pathname = dpath(dentry, fsdev->vfsmount.mnt_root);
--	if (!pathname)
--		return NULL;
- 
- 	ret = legacy_ops->stat(&fsdev->dev, pathname, &s);
- 	if (!ret) {
+ 	malloc_request_store(max_t(size_t, SZ_8M, size));
+ }
 -- 
 2.47.3
 
