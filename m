@@ -1,57 +1,58 @@
-Delivery-date: Thu, 16 Oct 2025 14:06:42 +0200
+Delivery-date: Thu, 16 Oct 2025 14:54:01 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v9Mkk-008Rzv-0W
+	id 1v9NUX-008Sll-2y
 	for lore@lore.pengutronix.de;
-	Thu, 16 Oct 2025 14:06:42 +0200
+	Thu, 16 Oct 2025 14:54:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1v9Mkj-0006nF-K2
-	for lore@pengutronix.de; Thu, 16 Oct 2025 14:06:42 +0200
+	id 1v9NUX-0004wh-AS
+	for lore@pengutronix.de; Thu, 16 Oct 2025 14:54:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=u+BeRmwzK0xKduTIoxaQFmMKBz46j+v5/39bNgyR/f4=; b=BAIIvyOW1b/ufviC4PKgpAjs34
-	sjWFPh4rGVhimfhKIkYoFGPbVjDW/7Mfdyy1duvLsKCPdQ30WO3cydfv2TncmvMsdOhldvLt12gII
-	J7PP82e82Hqx7mFKzzaZ1Fi5irstuFCqNB0phv7c4rQnYNXNuSa09uiJddcPvPG8f1AcCdBHBh5qL
-	eg/UEei+YjaKt6BrZb3FntvBiZKMCpVSaoadClImD/jG/yepjBckwJwEXpq6gcgpo7svRcA/hOPqU
-	7xNYIt8naVgJqoFkuooQKvcAIBNFJZgb+y+tqMlo6oqWrWHj2ySnfzxdunUn8nqmnH/wNHwKRlMjD
-	shIh6MqA==;
+	bh=0SlGV1r/BebjXbkPdU5ZPgfwR2JttdGeZej6Ztixel0=; b=oiFPQaSi/aEGEWhV4UqwT9PNFl
+	o99caJWTL9Vkx8z0G71s8hM0p0q/Qu8bIlIxJ0OozgZ2+RB3h783fgkyrq699XIELUx+YEg8rsTqJ
+	CBhZje/+EQ9XHvWJdjsf0gbujGjIp0tkt+IaW3qlUER4T7/zx4Pkb+7p01WmzX0xADvEiBGm3HSR5
+	+3Zrmg90b1MaMB75bHQcRG8YfDj8uFUEbxP8OWtnkdHxOr6S9gVv1DX/U/1ufEeSTsxDp3K+mBryS
+	BG00J1J+LD5i1wNiwXe3DuIvDbP7Jc7v0LggjTYR3jzdHi5q3noSIhtCS1jdcCeal7/AFwnUlRVOm
+	KAxoG3kQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v9Mjx-00000004fQl-2duP;
-	Thu, 16 Oct 2025 12:05:53 +0000
+	id 1v9NU4-00000004n4l-3dgz;
+	Thu, 16 Oct 2025 12:53:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v9Mjv-00000004fPS-1ziV
+	id 1v9NU2-00000004n3D-13X9
 	for barebox@lists.infradead.org;
-	Thu, 16 Oct 2025 12:05:52 +0000
+	Thu, 16 Oct 2025 12:53:31 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1v9Mjs-0006Zv-G4; Thu, 16 Oct 2025 14:05:48 +0200
-Message-ID: <e43bdf62-f5cf-4f4c-9f78-4332b175b422@pengutronix.de>
-Date: Thu, 16 Oct 2025 14:05:48 +0200
+	id 1v9NU0-0004oH-M5; Thu, 16 Oct 2025 14:53:28 +0200
+Message-ID: <67c3de1a-31c9-43a1-aa34-2be6a53f5396@pengutronix.de>
+Date: Thu, 16 Oct 2025 14:53:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20251014-virtiospam-v1-1-138c7a8dd3de@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: maud_spierings@hotmail.com, Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+References: <20251015-imx_gpio-v1-0-e57925f906bb@hotmail.com>
+ <20251015-imx_gpio-v1-1-e57925f906bb@hotmail.com>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20251014-virtiospam-v1-1-138c7a8dd3de@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251015-imx_gpio-v1-1-e57925f906bb@hotmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251016_050551_517446_D8D47684 
-X-CRM114-Status: GOOD (  16.47  )
+X-CRM114-CacheID: sfid-20251016_055330_291537_3EB65218 
+X-CRM114-Status: GOOD (  21.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,50 +74,75 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] virtio: Stop spamming debug buffer
+Subject: Re: [PATCH 1/2] gpio: i.MX: make _get_value() able to read output pin
+ state
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
 
-On 10/14/25 11:37 AM, Jonas Rebmann wrote:
-> At log level 7, this permanently prints over a hundred times per second,
-> probably unneeded debug print, drop it.
+On 10/15/25 8:03 PM, Maud Spierings via B4 Relay wrote:
+> From: Maud Spierings <maud_spierings@hotmail.com>
 > 
-> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+> Make _get_value() read back the dr register instead of the psr register
+> when the direction is set to output. Now _get_value() can actually read
+> the state of an output gpio instead of being always low.
+> 
+> Signed-off-by: Maud Spierings <maud_spierings@hotmail.com>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-> ---
->  drivers/virtio/virtio_ring.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-> index 284721aeff..c1c84e4961 100644
-> --- a/drivers/virtio/virtio_ring.c
-> +++ b/drivers/virtio/virtio_ring.c
-> @@ -241,10 +241,8 @@ void *virtqueue_get_buf(struct virtqueue *vq, unsigned int *len)
->  	u16 last_used;
->  	void *ret;
->  
-> -	if (!more_used(vq)) {
-> -		vq_debug(vq, "No more buffers in queue\n");
-> +	if (!more_used(vq))
->  		return NULL;
-> -	}
->  
->  	/* Only get used array entries after they have been exposed by host */
->  	virtio_rmb();
 > 
 > ---
-> base-commit: 8785a6ad7467b6f1f70b6e12aa2ceb2fdd5d8546
-> change-id: 20251014-virtiospam-72c3f6fb134b
+> inspired by similar logic being used in u-boot and Linux
+
+That's useful info that should go into the commit message IMO, because
+it explains why we think regression should be limited.
+
+> ---
+>  drivers/gpio/gpio-imx.c | 19 +++++++++++--------
+>  1 file changed, 11 insertions(+), 8 deletions(-)
 > 
-> Best regards,
-> --  
-> Jonas Rebmann <jre@pengutronix.de>
-> 
-> 
+> diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
+> index d9499c66cd..bb14c56399 100644
+> --- a/drivers/gpio/gpio-imx.c
+> +++ b/drivers/gpio/gpio-imx.c
+> @@ -89,24 +89,27 @@ static int imx_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int
+>  	return 0;
+>  }
+>  
+> -static int imx_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+> +static int imx_get_direction(struct gpio_chip *chip, unsigned offset)
+>  {
+>  	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+>  	void __iomem *base = imxgpio->base;
+> -	u32 val;
+> -
+> -	val = readl(base + imxgpio->regs->psr);
+> +	u32 val = readl(base + imxgpio->regs->gdir);
+>  
+> -	return val & (1 << gpio) ? 1 : 0;
+> +	return (val & (1 << offset)) ? GPIOF_DIR_OUT : GPIOF_DIR_IN;
+>  }
+>  
+> -static int imx_get_direction(struct gpio_chip *chip, unsigned offset)
+> +static int imx_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+>  {
+>  	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+>  	void __iomem *base = imxgpio->base;
+> -	u32 val = readl(base + imxgpio->regs->gdir);
+> +	u32 val;
+>  
+> -	return (val & (1 << offset)) ? GPIOF_DIR_OUT : GPIOF_DIR_IN;
+> +	if (imx_get_direction(chip, gpio) == GPIOF_DIR_IN)
+> +		val = readl(base + imxgpio->regs->psr);
+> +	else
+> +		val = readl(base + imxgpio->regs->dr);
+> +
+> +	return val & (1 << gpio) ? 1 : 0;
+>  }
+>  
+>  static struct gpio_ops imx_gpio_ops = {
 > 
 
 -- 
