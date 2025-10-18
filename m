@@ -1,85 +1,79 @@
-Delivery-date: Sat, 18 Oct 2025 12:00:28 +0200
+Delivery-date: Sat, 18 Oct 2025 12:00:30 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vA3jg-0098zc-2c
+	id 1vA3ji-0098zw-0L
 	for lore@lore.pengutronix.de;
-	Sat, 18 Oct 2025 12:00:28 +0200
+	Sat, 18 Oct 2025 12:00:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vA3jg-0008Ol-BQ
-	for lore@pengutronix.de; Sat, 18 Oct 2025 12:00:28 +0200
+	id 1vA3jh-0008PN-Hi
+	for lore@pengutronix.de; Sat, 18 Oct 2025 12:00:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Reply-To:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
-	From:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=L8jfsT2jAl6yQ1iq5VohE3igR4S1k5EEbkuKqmla6NE=; b=A4TTs0xMr03FOb6mii11DNtCGe
-	E73Ab1bgSTP7SWfTe6H7JUBVWvPFfIqDo/ccPK75U7Y2LXpeDmMIaoKAA4SnbEU9M7Vmzo7/nqLww
-	eNeY90jCPxYRht5j6nMsm3RXGQMwXwfWlk+6TR78xpFv9iJdmF9+FtcsnuGROdZ+EpAGw9jSGnSMu
-	JIGRqdp74EQeiyYRh38y/PFZa/F8TbUtHTxuxlvJqVan0bvu3Ss6r5+kP1M4roI8OtWXuPUOlCC6L
-	qsJpELyj+hdXhj4PXiVvZ8iYMeUYP2THSXzTaQqSfADmNzIBN0LTQBLm9dLCnErj2NR+4E76Ja5b3
-	F5hYlV8A==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Fhc/ItOKncrvwqBvwJL35pLMaq9JvcexT3wsHlnQFqM=; b=DRG/ml86D27uTe0veDXpLibDzs
+	UKdtKNOv0W4tMW/3anRvtGSRjMhyJqA91+erA6rcxIQyAEA06c433LUog1N2kkKCSWAJMw5p0ZM/3
+	GZjQb01PdJi38xmc9ZVfRo+5yyVvxk4jVgdcVuxffyxMR33+eKjfOyEl0+ajnBfhdruJgPHT8Ft2X
+	1u9nMdoEsYCGuMqWd388H1Dq5hAx+67CIQpQzVyLXxcPZilzyivUbXzJeJhB1QxT/Y3VwGQt6m8zp
+	5q47eaE10kLxYS3CylPS5AjFsMWhuQpI9XvPw6M0HuS9DlO3kGBrGHMe/FnAPx348kIiqUS625X0V
+	RloiJKBg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vA3j7-00000009mFg-2vBz;
+	id 1vA3j7-00000009mFa-1ldj;
 	Sat, 18 Oct 2025 09:59:53 +0000
-Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vA3j5-00000009mEy-3lKS
+	id 1vA3j6-00000009mEz-0Dlf
 	for barebox@lists.infradead.org;
-	Sat, 18 Oct 2025 09:59:53 +0000
+	Sat, 18 Oct 2025 09:59:52 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DE830416DA;
-	Sat, 18 Oct 2025 09:59:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B734FC4CEF8;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2629F60554;
+	Sat, 18 Oct 2025 09:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C2D1EC113D0;
 	Sat, 18 Oct 2025 09:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1760781590;
-	bh=AjuJYAqdvRGQNNKhF1dbI2ZCG5noLDXzzqMsfPFTL88=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=mM+IS3+qV7TG6fyUFKd/XP2yPerHBpobdDGZmu1upuN9hZwl2GPS0Mu4v9wMY6XQO
-	 To29YpxllEbjYUjSZrN3168C0mh3LFtBMUZZpLHJgPfCWkuKflN0GDX4J6gvzTKShX
-	 S4MLl6CPxnhe+s8cfV6WlWctAMYKdiEUZrFPWwodzSbZ8vEkfZzgSff9+TQ2+KWs1Y
-	 ULr650tQl5aBJsmy3E/it1SdtbR3+ynK5r0Ew8CaKiDjImf/gqZI2hkqLgoyG4QSXt
-	 VUO/L5FnOsJ4tBUH8qpUflgmNDuPJs+h4KBJlnt892L0QcypEpeBWfVU0dPmmEK+9m
-	 AOR52IqN0TAuA==
+	bh=hytKgfFB9Yr+OBBG4NeEsoI3QxFpnBHU/SRrc1k6a9s=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Ikiv1txEdd75cMsrWkrNjeWSnqsAl1/PlqGetHXpyjUMP6sPP7kxQ1UHdueKde7vz
+	 938blFb2efOg88gQ7DPD4+legnjbB5rF24rcX7d5og8O0noJcDeaPKgQdiogWZ7+5S
+	 S8vO+MNfZmaKZKb6Cyt7NyObMGlgwRYjvqof2Oapo8Rm7UgnPWbLn+N7OKub6OM/F7
+	 G/DEbzKuPKyT/qqnTDZgKv143q0Ugr/gBW7aVYemgh8+qKlmy9U2VOwdzMPwMZfgjd
+	 mL4cmlMa+Lvh8F9H4f5GJ3yYV3XPeHA4SnJH3Z7C+lOKGyIVCszb+D9L3rQUx3Kcgn
+	 4J47FEOdaVKVg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A53D8CCD195;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B43ADCCD193;
 	Sat, 18 Oct 2025 09:59:50 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maud_spierings.hotmail.com@kernel.org>
-Date: Sat, 18 Oct 2025 11:59:46 +0200
-Message-Id: <20251018-imx_gpio-v2-0-22e4fc090de6@hotmail.com>
+Date: Sat, 18 Oct 2025 11:59:47 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABJl82gC/23M0QqDIBTG8VeJcz2Hulm0q95jxNA65oGVoSGN8
- N3nut7l/+Pjd0DEQBjhUR0QMFEkv5SQlwoGp5cJGY2lQXKpBBeK0by/ppU8u9doUWCjzXiDcl8
- DWtpP6tmXdhQ3Hz6nnMRv/YMkwThD1bRS2ZbXxnTOb7Om93XwM/Q55y+Qo8PNogAAAA==
-X-Change-ID: 20251015-imx_gpio-46efe1e7abd3
+Message-Id: <20251018-imx_gpio-v2-1-22e4fc090de6@hotmail.com>
+References: <20251018-imx_gpio-v2-0-22e4fc090de6@hotmail.com>
+In-Reply-To: <20251018-imx_gpio-v2-0-22e4fc090de6@hotmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Maud Spierings <maud_spierings@hotmail.com>, 
  Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760781589; l=1076;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760781589; l=1903;
  i=maud_spierings@hotmail.com; s=20241110; h=from:subject:message-id;
- bh=AjuJYAqdvRGQNNKhF1dbI2ZCG5noLDXzzqMsfPFTL88=;
- b=wXhUi6cv8AVZwBg4QPO79V798U4hLAxwyxz89U7R1wlalVw6hp4zQZl+IDqvq7y8HIEI1jbau
- dp/hxdLd+QFBZDpxKlGoynuZ0rDxKhpvNUXjpAceWieemYYywho8sfq
+ bh=2RS2Lgt/bT52qDc9z9qZp64xftOMNQceTk9B57QI0ko=;
+ b=lTKNqp7ogic62TIXw3+liKqD7kmvVJvuSXwpvyb1amR+zQG+1TjMVxDJRjO1TUjF/9/6HvPom
+ 1ES5EJjcDhLC2cjpcWgIFRps+X+RZ8ichty7kP1///nvQ1ie37hpxs8
 X-Developer-Key: i=maud_spierings@hotmail.com; a=ed25519;
  pk=CeFKVnZvRfX2QjB1DpdiAe2N+MEjwLEB9Yhx/OAcxRc=
 X-Endpoint-Received: by B4 Relay for maud_spierings@hotmail.com/20241110
  with auth_id=273
 X-Original-From: Maud Spierings <maud_spierings@hotmail.com>
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251018_025951_982679_30FCFE82 
-X-CRM114-Status: UNSURE (   8.76  )
-X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,44 +92,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-102.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,USER_IN_WELCOMELIST,
 	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 0/2] gpio: i.MX: make _get_value() able to read output
+Subject: [PATCH v2 1/2] gpio: i.MX: make _get_value() able to read output
  pin state
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
+
+From: Maud Spierings <maud_spierings@hotmail.com>
 
 Make _get_value() read back the dr register instead of the psr register
 when the direction is set to output. Now _get_value() can actually read
 the state of an output gpio instead of being always low.
 
-Also add a note in the migration guide file.
+This aproach is also used by u-boot and Linux.
 
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Maud Spierings <maud_spierings@hotmail.com>
 ---
-Changes in v2:
-- Move the extra commit comment into the commit [1/2]
-- Actually add a note to the migration file [2/2]
-- Link to v1: https://lore.kernel.org/r/20251015-imx_gpio-v1-0-e57925f906bb@hotmail.com
+ drivers/gpio/gpio-imx.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
----
-Maud Spierings (2):
-      gpio: i.MX: make _get_value() able to read output pin state
-      Documentation: migration-2025.11.0: add note about new gpio behaviour
+diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
+index d9499c66cd..bb14c56399 100644
+--- a/drivers/gpio/gpio-imx.c
++++ b/drivers/gpio/gpio-imx.c
+@@ -89,24 +89,27 @@ static int imx_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int
+ 	return 0;
+ }
+ 
+-static int imx_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
++static int imx_get_direction(struct gpio_chip *chip, unsigned offset)
+ {
+ 	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+ 	void __iomem *base = imxgpio->base;
+-	u32 val;
+-
+-	val = readl(base + imxgpio->regs->psr);
++	u32 val = readl(base + imxgpio->regs->gdir);
+ 
+-	return val & (1 << gpio) ? 1 : 0;
++	return (val & (1 << offset)) ? GPIOF_DIR_OUT : GPIOF_DIR_IN;
+ }
+ 
+-static int imx_get_direction(struct gpio_chip *chip, unsigned offset)
++static int imx_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+ {
+ 	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+ 	void __iomem *base = imxgpio->base;
+-	u32 val = readl(base + imxgpio->regs->gdir);
++	u32 val;
+ 
+-	return (val & (1 << offset)) ? GPIOF_DIR_OUT : GPIOF_DIR_IN;
++	if (imx_get_direction(chip, gpio) == GPIOF_DIR_IN)
++		val = readl(base + imxgpio->regs->psr);
++	else
++		val = readl(base + imxgpio->regs->dr);
++
++	return val & (1 << gpio) ? 1 : 0;
+ }
+ 
+ static struct gpio_ops imx_gpio_ops = {
 
- .../migration-guides/migration-2025.11.0.rst          |  7 +++++++
- drivers/gpio/gpio-imx.c                               | 19 +++++++++++--------
- 2 files changed, 18 insertions(+), 8 deletions(-)
----
-base-commit: 8defba1d0ab1aef9dd5d57710e18d0d02e2c48e2
-change-id: 20251015-imx_gpio-46efe1e7abd3
-
-Best regards,
 -- 
-Maud Spierings <maud_spierings@hotmail.com>
+2.51.1.dirty
 
 
 
