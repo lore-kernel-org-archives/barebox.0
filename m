@@ -1,91 +1,71 @@
-Delivery-date: Mon, 20 Oct 2025 14:59:08 +0200
+Delivery-date: Mon, 20 Oct 2025 14:59:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vApTg-009tpN-1S
+	id 1vApTh-009tpj-2K
 	for lore@lore.pengutronix.de;
-	Mon, 20 Oct 2025 14:59:08 +0200
+	Mon, 20 Oct 2025 14:59:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vApTa-0000sI-At
-	for lore@pengutronix.de; Mon, 20 Oct 2025 14:59:08 +0200
+	id 1vApTb-0000tx-Js
+	for lore@pengutronix.de; Mon, 20 Oct 2025 14:59:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UwJMBEO/v/tK1Fyv9jNhWgCoovOF9BVkjrfvp8gy5F4=; b=aA7QdGQRbDg6QcQ+k4zAHDACvW
-	P1Zrfoogqsx7pxh3bPPsgp8/5XUF4rWzRLdovY7GN7iwwbDV9RH3Bql3tXDVl041q4emsdYQue3qi
-	LnIvJL31OkVdX2Ms2i78/0TDmHQCGorCb+YzCgxtO75ymIIWWUo4G+5t9fmoattbVmYGQX4jcFfVI
-	ydHAqsqzVrVZg+eTeBK+jG57uhyjM1IGDnLMZXt5JIT/+G4LbcLxeg5tbz7+gP9ogjPD9oQml/0S4
-	DscHU3aQ7t5eugEYX83mXX2M4FO9/BcEjUyJsh6INFfh0VjCDxac5AAtaWuxp78F0lEKGhQUOmCOY
-	/nNA/ryA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+BFJNRup3IH88uQ8xTVw2uG6cqY2lmp3EGSM1AupHbE=; b=urhnpmNTraujgJAbnSBHOT9EG4
+	rSdNIdGPcEv2dKOPK8slbaHV8IQZaJBeB9L6QaDDyTZHGf/vMNvtBXg+12/FvRXMYhThHiI/0aluK
+	ffgj0cGoGD1U9OW3n33vjQPRPeZc+5kqDI4oalS5gBz/qWka3YzGgsduDYASJamUmLg1xhWSCXeEt
+	uQTHFhDhPZb+4gDj2IEfzBCPtlSLeBS0UadTNE6fXl/B+fARSoGL1bEiL45HI9jUluPijPlG5iKUM
+	F3p7ZAhRVqBBXIw0KsrB8petTBsnBVbnl8cNubhRfgRFiBeCvfqMr3TW7Kvlqzkqut/yvzf7JwOEw
+	e2SKnaTw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSq-0000000DfQR-1tZt;
-	Mon, 20 Oct 2025 12:58:16 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSk-0000000DfF2-3ylq
-	for barebox@bombadil.infradead.org;
-	Mon, 20 Oct 2025 12:58:10 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Cc:To:In-Reply-To:References:Message-Id
-	:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=UwJMBEO/v/tK1Fyv9jNhWgCoovOF9BVkjrfvp8gy5F4=; b=Xy9ngZ3FfpWsCt2/0+FTIHn+Gf
-	6ibmoiezVsJrgMpY0OCZn1emzHKrr/3lfsjIBPe6ZSdgxBueBRJAwvCUoshJP82iE/hunLfdE0w8a
-	T1f35R4TwRiBKbruzsr2BrRSYp6cS5r+jwR1O6CmDehfIZU6jhr6QIE2cn1xqyetTR4MYsTZqeTfr
-	3aOjcpTJDLgFSaX/78Hy1G2amoHxYrV7dsUdPnnjUrMNjNkF47pn6ABeijivCQbx+USxNyqkEKe1T
-	0xbHjusaw9XzBfqv0j7fm9dUguAQSqcUtz6UFbeXeky/Gh+GW60Xzhh0Ru91rR6VAY7zScnjNDTDD
-	d9WspdHg==;
+	id 1vApSn-0000000DfLF-2hVF;
+	Mon, 20 Oct 2025 12:58:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSe-00000007hVY-46dz
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vApSg-0000000Df8A-0qmJ
 	for barebox@lists.infradead.org;
-	Mon, 20 Oct 2025 12:58:09 +0000
+	Mon, 20 Oct 2025 12:58:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vApSc-0008CR-0V
-	for barebox@lists.infradead.org; Mon, 20 Oct 2025 14:58:02 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vApSe-0008EJ-R1
+	for barebox@lists.infradead.org; Mon, 20 Oct 2025 14:58:04 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vAo6N-004XTq-1I;
-	Mon, 20 Oct 2025 13:30:59 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vAo6N-0000000A67x-1Lfx;
-	Mon, 20 Oct 2025 13:30:59 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1vAoAg-004XZ2-0D;
+	Mon, 20 Oct 2025 13:35:26 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vAoAf-007JfK-38;
+	Mon, 20 Oct 2025 13:35:25 +0200
+Date: Mon, 20 Oct 2025 13:35:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 Oct 2025 13:31:01 +0200
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aPYefTVIVhDIazXE@pengutronix.de>
+References: <20251014-ecdsa_keys-v1-1-08a72cfeec28@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251020-public-keys-const-v1-4-301de7918b06@pengutronix.de>
-References: <20251020-public-keys-const-v1-0-301de7918b06@pengutronix.de>
-In-Reply-To: <20251020-public-keys-const-v1-0-301de7918b06@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760959859; l=2202;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=vFnYr6sUBuAVvpHAfbdUA/TJnS9PmsiecQaZmNWKdIE=;
- b=WxQNKjHCKEKGepWd/KajDz8EaOO+zYKvq68/KYsCQkkHziQ2AtJMoZuf+gr8MVLEik8NEAid6
- EJGqhPHXl6CDn4j1W0N+phTyb71dEwqp7dNDjrFqJC/X7q+ji/9Yk1l
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251014-ecdsa_keys-v1-1-08a72cfeec28@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251020_135806_240596_C8797520 
-X-CRM114-Status: UNSURE (   8.45  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251020_055806_259504_3716DFD6 
+X-CRM114-Status: GOOD (  22.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -107,84 +87,101 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 4/5] public-keys: rsa: remove unused functions
+Subject: Re: [PATCH] crypto: ecdsa: remove unused ecdsa public key list
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The functions to duplicate and free a rsa key are no longer used. Remove
-them.
+On Tue, Oct 14, 2025 at 11:38:36AM +0200, Jonas Rebmann wrote:
+> This code is unused in barebox and is misleading as we're using
+> public_key lists containing keys of all supported types.
+> 
+> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+> ---
+>  crypto/ecdsa.c         | 18 ------------------
+>  include/crypto/ecdsa.h |  7 -------
+>  2 files changed, 25 deletions(-)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- crypto/rsa.c         | 18 ------------------
- include/crypto/rsa.h |  8 --------
- 2 files changed, 26 deletions(-)
+This is fine. I came up with the same patch, please see my more complete
+series I created before my holidays but haven't sent yet. I hope this
+doesn't conflict with your TLV signature series.
 
-diff --git a/crypto/rsa.c b/crypto/rsa.c
-index e4fc980f9187b49511d5b1a8e68d488944d9b483..ec5bd451158c29047cfd51eb64d3c38f4671e74d 100644
---- a/crypto/rsa.c
-+++ b/crypto/rsa.c
-@@ -447,24 +447,6 @@ struct public_key *rsa_of_read_key(struct device_node *node)
- 	return err ? ERR_PTR(err) : key;
- }
- 
--void rsa_key_free(struct rsa_public_key *key)
--{
--	free(key->modulus);
--	free(key->rr);
--	free(key);
--}
--
--struct rsa_public_key *rsa_key_dup(const struct rsa_public_key *key)
--{
--	struct rsa_public_key *new;
--
--	new = xmemdup(key, sizeof(*key));
--	new->modulus = xmemdup(key->modulus, key->len * sizeof(uint32_t));
--	new->rr = xmemdup(key->rr, key->len  * sizeof(uint32_t));
--
--	return new;
--}
--
- static void rsa_init_keys_of(void)
- {
- 	struct device_node *sigs, *sig;
-diff --git a/include/crypto/rsa.h b/include/crypto/rsa.h
-index efc8fca152743482697bbca1dd48e59519275861..fce94df094f90359ef500088277a0c1bf9130c14 100644
---- a/include/crypto/rsa.h
-+++ b/include/crypto/rsa.h
-@@ -37,7 +37,6 @@ struct rsa_public_key {
- struct device_node;
- 
- struct public_key *rsa_of_read_key(struct device_node *node);
--void rsa_key_free(struct rsa_public_key *key);
- 
- #ifdef CONFIG_CRYPTO_RSA
- /**
-@@ -55,8 +54,6 @@ void rsa_key_free(struct rsa_public_key *key);
- int rsa_verify(const struct rsa_public_key *key, const uint8_t *sig,
- 			  const uint32_t sig_len, const uint8_t *hash,
- 			  enum hash_algo algo);
--
--struct rsa_public_key *rsa_key_dup(const struct rsa_public_key *key);
- #else
- static inline int rsa_verify(const struct rsa_public_key *key, const uint8_t *sig,
- 			  const uint32_t sig_len, const uint8_t *hash,
-@@ -64,11 +61,6 @@ static inline int rsa_verify(const struct rsa_public_key *key, const uint8_t *si
- {
- 	return -ENOSYS;
- }
--
--static inline struct rsa_public_key *rsa_key_dup(const struct rsa_public_key *key)
--{
--	return NULL;
--}
- #endif
- 
- #endif
+Sascha
+
+> 
+> diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+> index 69c0accc95..6aaeff5c14 100644
+> --- a/crypto/ecdsa.c
+> +++ b/crypto/ecdsa.c
+> @@ -104,15 +104,6 @@ int ecdsa_verify(const struct ecdsa_public_key *key, const uint8_t *sig,
+>  	return _ecdsa_verify(ctx, (void *)mhash, rh, sh);
+>  }
+>  
+> -static LIST_HEAD(ecdsa_keys);
+> -
+> -int ecdsa_key_add(struct ecdsa_public_key *key)
+> -{
+> -	list_add_tail(&key->list, &ecdsa_keys);
+> -
+> -	return 0;
+> -}
+> -
+>  struct ecdsa_public_key *ecdsa_key_dup(const struct ecdsa_public_key *key)
+>  {
+>  	struct ecdsa_public_key *new;
+> @@ -129,12 +120,3 @@ struct ecdsa_public_key *ecdsa_key_dup(const struct ecdsa_public_key *key)
+>  
+>  	return new;
+>  }
+> -
+> -const struct ecdsa_public_key *ecdsa_key_next(const struct ecdsa_public_key *prev)
+> -{
+> -	prev = list_prepare_entry(prev, &ecdsa_keys, list);
+> -	list_for_each_entry_continue(prev, &ecdsa_keys, list)
+> -		return prev;
+> -
+> -	return NULL;
+> -}
+> diff --git a/include/crypto/ecdsa.h b/include/crypto/ecdsa.h
+> index 2e2b359d96..1bad70b9d2 100644
+> --- a/include/crypto/ecdsa.h
+> +++ b/include/crypto/ecdsa.h
+> @@ -4,21 +4,14 @@
+>  
+>  #include <linux/types.h>
+>  #include <linux/list.h>
+> -#include <errno.h>
+>  
+>  struct ecdsa_public_key {
+>  	const char *curve_name;	/* Name of curve, e.g. "prime256v1" */
+>  	const uint64_t *x;	/* x coordinate of public key */
+>  	const uint64_t *y;	/* y coordinate of public key */
+>  	unsigned int size_bits;	/* key size in bits, derived from curve name */
+> -	struct list_head list;
+>  };
+>  
+> -const struct ecdsa_public_key *ecdsa_key_next(const struct ecdsa_public_key *prev);
+> -
+> -#define for_each_ecdsa_key(key) \
+> -	for (key = ecdsa_key_next(NULL); key; key = ecdsa_key_next(key))
+> -
+>  #ifdef CONFIG_CRYPTO_ECDSA
+>  int ecdsa_verify(const struct ecdsa_public_key *key, const uint8_t *sig,
+>  		 const uint32_t sig_len, const uint8_t *hash);
+> 
+> ---
+> base-commit: 8785a6ad7467b6f1f70b6e12aa2ceb2fdd5d8546
+> change-id: 20251014-ecdsa_keys-fd8125a83e38
+> 
+> Best regards,
+> --  
+> Jonas Rebmann <jre@pengutronix.de>
+> 
+> 
 
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
