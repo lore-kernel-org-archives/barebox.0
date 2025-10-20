@@ -1,71 +1,72 @@
-Delivery-date: Mon, 20 Oct 2025 14:58:59 +0200
+Delivery-date: Mon, 20 Oct 2025 14:59:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vApTX-009tn8-29
+	id 1vApTb-009tng-0g
 	for lore@lore.pengutronix.de;
-	Mon, 20 Oct 2025 14:58:59 +0200
+	Mon, 20 Oct 2025 14:59:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vApTP-0000e8-0Z
-	for lore@pengutronix.de; Mon, 20 Oct 2025 14:58:59 +0200
+	id 1vApTS-0000jE-RL
+	for lore@pengutronix.de; Mon, 20 Oct 2025 14:59:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zYV11ud5r/4DizYya45TgUViLbEIcxru1AbtEDuSnAw=; b=OLp2mIxZ42faFT3OwXmTV5NOzF
-	QF4SRHpCMqWpn4d3mXiecHCyIBpykLyrma4jPPOls89th/cRn4xVxaX8weC15JhMrwhMd9//c0SO9
-	ryJs9vj6O8+XMXxiZAjPZ85ES6katIVIPndKR+94RBSDuisNP2ZeZORtZZNluScLRxUsPNwX6HFeF
-	LDOdEC7TJpcEzKKoUeGKWk3HVCZa+p7RVT37Q8kDRSFMQD+LR47/cTcODCRznRhWrwSHfFaEspjm7
-	jfrHreVwqkA3ah/QoxvccTYYj4sv2ZkHwQAx+iDXGZO9hUyzSqWij08X+ZHYrHrTnQ1ZWgzlR0yeR
-	sj1b7BfQ==;
+	bh=Z9dXeAyq/yRR8ebRIYaCA1lmFKdX5kHx7S0xsPWfNs8=; b=Ul1U239DpT67nUO0ysYgkGpBj3
+	H0V0DWDZZf2ICE+maJQ8I7cx0+INucVJvmJoP/qbnEm9rJkrd0XIsybvXE/hGMNwhVEfVwdHKIRVa
+	vT7MHASESPi63xwqOydYLDIq0RNi1cNG6gLl7kQztyRUhOhjJXZR1LcgRZ/tUU1JHvkDi7wU60UUe
+	c1GLS69TzS5FKBs0W+F7lPpE5uAE9cW10/gaOj1PAIyCwfx+KrWUYHQ1sIQSFppie0U00ki8ErbK5
+	R4eYTcDGlT6snngH2Sm3JfDqWozAfYGI3KVvLt8nJx6XkWNsskHKm+pxPT1CZx/JcYI9qg0EBoGm/
+	VBvglmdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSk-0000000DfGc-3qzx;
+	id 1vApSk-0000000DfFv-2Vnr;
 	Mon, 20 Oct 2025 12:58:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSf-0000000Df7A-26cU
+	id 1vApSe-0000000Df53-3hXq
 	for barebox@lists.infradead.org;
 	Mon, 20 Oct 2025 12:58:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vApSe-0008Du-3r
-	for barebox@lists.infradead.org; Mon, 20 Oct 2025 14:58:04 +0200
+	id 1vApSc-0008CX-65
+	for barebox@lists.infradead.org; Mon, 20 Oct 2025 14:58:02 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vAnQa-004X2y-1z;
-	Mon, 20 Oct 2025 12:47:48 +0200
+	id 1vAlIr-004VyF-20;
+	Mon, 20 Oct 2025 10:31:41 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vAnQa-007IzS-1b;
-	Mon, 20 Oct 2025 12:47:48 +0200
-Date: Mon, 20 Oct 2025 12:47:48 +0200
+	id 1vAlIr-007GXK-1g;
+	Mon, 20 Oct 2025 10:31:41 +0200
+Date: Mon, 20 Oct 2025 10:31:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <aPYTVLV88jhpRc24@pengutronix.de>
-References: <20251015092706.2358673-1-a.fatoum@pengutronix.de>
+Message-ID: <aPXzbWN-rh5dXEZx@pengutronix.de>
+References: <20251017120406.1348897-1-m.felsch@pengutronix.de>
+ <20251017120406.1348897-2-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251015092706.2358673-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20251017120406.1348897-2-m.felsch@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251020_055805_559419_844812BF 
-X-CRM114-Status: GOOD (  26.45  )
+X-CRM114-CacheID: sfid-20251020_055804_927474_3867541F 
+X-CRM114-Status: GOOD (  27.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,95 +88,166 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] commands: devinfo: print Deep Probe status for
- top-level machine device
+Subject: Re: [PATCH 2/4] lib: port CRC16 implementation from Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Oct 15, 2025 at 11:27:01AM +0200, Ahmad Fatoum wrote:
-> There is a log message when deep probe is disabled, but to make it
-> easier to verify that it's enabled, let's introduce it as extra info
-> in the devinfo command.
+On Fri, Oct 17, 2025 at 02:03:34PM +0200, Marco Felsch wrote:
+> Port the Linux CRC16 implementation.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  commands/devinfo.c |  4 ++++
->  drivers/of/base.c  | 12 +++++++++---
->  include/of.h       |  2 ++
->  3 files changed, 15 insertions(+), 3 deletions(-)
-> 
-> diff --git a/commands/devinfo.c b/commands/devinfo.c
-> index cff4dbb92e31..e132f88bf3f3 100644
-> --- a/commands/devinfo.c
-> +++ b/commands/devinfo.c
-> @@ -117,6 +117,10 @@ static int do_devinfo(int argc, char *argv[])
->  				printf("\n");
->  				of_print_nodes(dev->of_node, 0, ~0);
->  			}
-> +
-> +			if (dev == of_platform_root_device)
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Can't this just be
+I was faster ;)
 
-			if (dev->of_node && !dev->of_node->parent)
-
-?
+We already have this in master
 
 Sascha
 
-> +				printf("Deep probe: %s\n",
-> +				       deep_probe_is_supported() ? "true" : "false");
->  		}
->  #endif
->  	}
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index c20fffb899a9..15265dc22623 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2909,12 +2909,14 @@ static int of_probe_memory(void)
->  }
->  mem_initcall(of_probe_memory);
->  
-> +struct device *of_platform_root_device;
+> ---
+>  include/linux/crc16.h | 28 +++++++++++++++++++
+>  lib/Kconfig           |  8 ++++++
+>  lib/Makefile          |  1 +
+>  lib/crc16.c           | 65 +++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 102 insertions(+)
+>  create mode 100644 include/linux/crc16.h
+>  create mode 100644 lib/crc16.c
+> 
+> diff --git a/include/linux/crc16.h b/include/linux/crc16.h
+> new file mode 100644
+> index 000000000000..9fa74529b317
+> --- /dev/null
+> +++ b/include/linux/crc16.h
+> @@ -0,0 +1,28 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + *	crc16.h - CRC-16 routine
+> + *
+> + * Implements the standard CRC-16:
+> + *   Width 16
+> + *   Poly  0x8005 (x^16 + x^15 + x^2 + 1)
+> + *   Init  0
+> + *
+> + * Copyright (c) 2005 Ben Gardner <bgardner@wabtec.com>
+> + */
 > +
->  static void of_platform_device_create_root(struct device_node *np)
->  {
-> -	static struct device *dev;
-> +	struct device *dev;
->  	int ret;
->  
-> -	if (dev)
-> +	if (of_platform_root_device)
->  		return;
->  
->  	dev = xzalloc(sizeof(*dev));
-> @@ -2923,8 +2925,12 @@ static void of_platform_device_create_root(struct device_node *np)
->  	dev_set_name(dev, "machine");
->  
->  	ret = platform_device_register(dev);
-> -	if (ret)
-> +	if (WARN_ON(ret)) {
->  		free_device(dev);
-> +		return;
-> +	}
+> +#ifndef __CRC16_H
+> +#define __CRC16_H
 > +
-> +	of_platform_root_device = dev;
->  }
->  
->  static const struct of_device_id reserved_mem_matches[] = {
-> diff --git a/include/of.h b/include/of.h
-> index 640d76f4aade..d1efab13c780 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -428,6 +428,8 @@ extern int of_set_root_node(struct device_node *node);
->  extern int barebox_register_of(struct device_node *root);
->  extern int barebox_register_fdt(const void *dtb);
->  
-> +extern struct device *of_platform_root_device;
+> +#include <linux/types.h>
 > +
->  extern struct device *of_platform_device_create(struct device_node *np,
->  						struct device *parent);
->  extern void of_platform_device_dummy_drv(struct device *dev);
+> +extern u16 const crc16_table[256];
+> +
+> +extern u16 crc16(u16 crc, const u8 *buffer, size_t len);
+> +
+> +static inline u16 crc16_byte(u16 crc, const u8 data)
+> +{
+> +	return (crc >> 8) ^ crc16_table[(crc ^ data) & 0xff];
+> +}
+> +
+> +#endif /* __CRC16_H */
+> +
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index d07e2f3b6959..153a07ec8f4d 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -155,6 +155,14 @@ config CRC_CCITT
+>  	  the kernel tree does. Such modules that use library CRC-CCITT
+>  	  functions require M here.
+>  
+> +config CRC16
+> +	tristate "CRC16 functions"
+> +	help
+> +	  This option is provided for the case where no in-kernel-tree
+> +	  modules require CRC16 functions, but a module built outside
+> +	  the kernel tree does. Such modules that use library CRC16
+> +	  functions require M here.
+> +
+>  config CRC8
+>  	bool "CRC8 function"
+>  	help
+> diff --git a/lib/Makefile b/lib/Makefile
+> index 13f1de142008..e9f152b21dad 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -85,6 +85,7 @@ obj-y			+= parseopt.o
+>  obj-y			+= clz_ctz.o
+>  obj-$(CONFIG_CRC_CCITT) += crc-ccitt.o
+>  obj-$(CONFIG_CRC8)	+= crc8.o
+> +obj-$(CONFIG_CRC16)	+= crc16.o
+>  obj-$(CONFIG_NLS)	+= nls_base.o
+>  obj-$(CONFIG_FSL_QE_FIRMWARE) += fsl-qe-firmware.o
+>  obj-$(CONFIG_UBSAN_STANDALONE)	+= ubsan.o
+> diff --git a/lib/crc16.c b/lib/crc16.c
+> new file mode 100644
+> index 000000000000..5c3a803c01e0
+> --- /dev/null
+> +++ b/lib/crc16.c
+> @@ -0,0 +1,65 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + *      crc16.c
+> + */
+> +
+> +#include <linux/types.h>
+> +#include <linux/module.h>
+> +#include <linux/crc16.h>
+> +
+> +/** CRC table for the CRC-16. The poly is 0x8005 (x^16 + x^15 + x^2 + 1) */
+> +u16 const crc16_table[256] = {
+> +	0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
+> +	0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
+> +	0xCC01, 0x0CC0, 0x0D80, 0xCD41, 0x0F00, 0xCFC1, 0xCE81, 0x0E40,
+> +	0x0A00, 0xCAC1, 0xCB81, 0x0B40, 0xC901, 0x09C0, 0x0880, 0xC841,
+> +	0xD801, 0x18C0, 0x1980, 0xD941, 0x1B00, 0xDBC1, 0xDA81, 0x1A40,
+> +	0x1E00, 0xDEC1, 0xDF81, 0x1F40, 0xDD01, 0x1DC0, 0x1C80, 0xDC41,
+> +	0x1400, 0xD4C1, 0xD581, 0x1540, 0xD701, 0x17C0, 0x1680, 0xD641,
+> +	0xD201, 0x12C0, 0x1380, 0xD341, 0x1100, 0xD1C1, 0xD081, 0x1040,
+> +	0xF001, 0x30C0, 0x3180, 0xF141, 0x3300, 0xF3C1, 0xF281, 0x3240,
+> +	0x3600, 0xF6C1, 0xF781, 0x3740, 0xF501, 0x35C0, 0x3480, 0xF441,
+> +	0x3C00, 0xFCC1, 0xFD81, 0x3D40, 0xFF01, 0x3FC0, 0x3E80, 0xFE41,
+> +	0xFA01, 0x3AC0, 0x3B80, 0xFB41, 0x3900, 0xF9C1, 0xF881, 0x3840,
+> +	0x2800, 0xE8C1, 0xE981, 0x2940, 0xEB01, 0x2BC0, 0x2A80, 0xEA41,
+> +	0xEE01, 0x2EC0, 0x2F80, 0xEF41, 0x2D00, 0xEDC1, 0xEC81, 0x2C40,
+> +	0xE401, 0x24C0, 0x2580, 0xE541, 0x2700, 0xE7C1, 0xE681, 0x2640,
+> +	0x2200, 0xE2C1, 0xE381, 0x2340, 0xE101, 0x21C0, 0x2080, 0xE041,
+> +	0xA001, 0x60C0, 0x6180, 0xA141, 0x6300, 0xA3C1, 0xA281, 0x6240,
+> +	0x6600, 0xA6C1, 0xA781, 0x6740, 0xA501, 0x65C0, 0x6480, 0xA441,
+> +	0x6C00, 0xACC1, 0xAD81, 0x6D40, 0xAF01, 0x6FC0, 0x6E80, 0xAE41,
+> +	0xAA01, 0x6AC0, 0x6B80, 0xAB41, 0x6900, 0xA9C1, 0xA881, 0x6840,
+> +	0x7800, 0xB8C1, 0xB981, 0x7940, 0xBB01, 0x7BC0, 0x7A80, 0xBA41,
+> +	0xBE01, 0x7EC0, 0x7F80, 0xBF41, 0x7D00, 0xBDC1, 0xBC81, 0x7C40,
+> +	0xB401, 0x74C0, 0x7580, 0xB541, 0x7700, 0xB7C1, 0xB681, 0x7640,
+> +	0x7200, 0xB2C1, 0xB381, 0x7340, 0xB101, 0x71C0, 0x7080, 0xB041,
+> +	0x5000, 0x90C1, 0x9181, 0x5140, 0x9301, 0x53C0, 0x5280, 0x9241,
+> +	0x9601, 0x56C0, 0x5780, 0x9741, 0x5500, 0x95C1, 0x9481, 0x5440,
+> +	0x9C01, 0x5CC0, 0x5D80, 0x9D41, 0x5F00, 0x9FC1, 0x9E81, 0x5E40,
+> +	0x5A00, 0x9AC1, 0x9B81, 0x5B40, 0x9901, 0x59C0, 0x5880, 0x9841,
+> +	0x8801, 0x48C0, 0x4980, 0x8941, 0x4B00, 0x8BC1, 0x8A81, 0x4A40,
+> +	0x4E00, 0x8EC1, 0x8F81, 0x4F40, 0x8D01, 0x4DC0, 0x4C80, 0x8C41,
+> +	0x4400, 0x84C1, 0x8581, 0x4540, 0x8701, 0x47C0, 0x4680, 0x8641,
+> +	0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040
+> +};
+> +EXPORT_SYMBOL(crc16_table);
+> +
+> +/**
+> + * crc16 - compute the CRC-16 for the data buffer
+> + * @crc:	previous CRC value
+> + * @buffer:	data pointer
+> + * @len:	number of bytes in the buffer
+> + *
+> + * Returns the updated CRC value.
+> + */
+> +u16 crc16(u16 crc, u8 const *buffer, size_t len)
+> +{
+> +	while (len--)
+> +		crc = crc16_byte(crc, *buffer++);
+> +	return crc;
+> +}
+> +EXPORT_SYMBOL(crc16);
+> +
+> +MODULE_DESCRIPTION("CRC16 calculations");
+> +MODULE_LICENSE("GPL");
+> +
 > -- 
 > 2.47.3
 > 
