@@ -1,84 +1,86 @@
-Delivery-date: Mon, 20 Oct 2025 14:59:31 +0200
+Delivery-date: Mon, 20 Oct 2025 14:59:34 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vApU3-009tu0-1H
+	id 1vApU6-009tuU-1M
 	for lore@lore.pengutronix.de;
-	Mon, 20 Oct 2025 14:59:31 +0200
+	Mon, 20 Oct 2025 14:59:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vApTt-0001Gg-V4
-	for lore@pengutronix.de; Mon, 20 Oct 2025 14:59:31 +0200
+	id 1vApTw-0001Kl-F4
+	for lore@pengutronix.de; Mon, 20 Oct 2025 14:59:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=anEmzLmh9JgTlZaS72cXV99Yy0RbDx4K8am6GtTwFlQ=; b=RboIY+hesKMiqR1ulsM1lBcFIc
-	TAgNrtQI8feWLubbrI5QseR+vbOupszHXIUjjs8ZGkNfJhxscRzoid9h+Py94Y2VCqUuwm6+P927g
-	qgXiT/lFYzaGK0kJArePKX+HZuEUW47Bu2jLV+3UHOnNK5tSePQZSPOzjmViufx770Fgire4jQGs/
-	65sQX2dpbyZHO0UX/ygAwees9YfpgK5oRLEoZqw0l1zwAjt5dM1h97x7OwdNfdijCz1DSDdHIUZva
-	o80d6VfAPqWMrdfXoibtt4HQhQJEcxL/dsnmF7i52UUUApcvecX/GRUD+pb8eypVdRO/lGSt0B7K3
-	+R7a8PJw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=AnT81YPdkqfdh46HHR9eqbsZLSIiYbOxPCOL48k8L2Q=; b=SZtYqvqL1w9usVQztX/8PcyMPp
+	my44QPpxFoOe7sMDr+7nuoq1T8VRuQtxdtTiRV1LpvNoP5UzhrJmOWWDiGwdVkZlDg3pB8ljpEIrT
+	uXVkx8YahG590TnFdMhI+b4MWzGtIR5mkzfaqrIPh9J6LwVXMib5KvzpX4vViXrgfD520NHYmdLzc
+	62hM3AJc7FXgThVFV4YP1o8jZKxvJrBsbIKz3b4PIAYhZeKU5xqxVkB59pEcHivmOy8a3L+YX+3cO
+	wtmEDcL++W2D2JXlCASmzTp+nPKz8immNYOQurRym7nS27018YlE5X8fRn0tTpwZMIoQiTUXce03U
+	BVUYuYIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApT3-0000000DfnM-3BJt;
-	Mon, 20 Oct 2025 12:58:29 +0000
+	id 1vApT0-0000000DfiH-34XZ;
+	Mon, 20 Oct 2025 12:58:26 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSs-0000000DfU5-0UTR
+	id 1vApSp-0000000DfNw-0kE8
 	for barebox@bombadil.infradead.org;
-	Mon, 20 Oct 2025 12:58:18 +0000
+	Mon, 20 Oct 2025 12:58:15 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
-	Reply-To:Cc:Content-ID:Content-Description;
-	bh=anEmzLmh9JgTlZaS72cXV99Yy0RbDx4K8am6GtTwFlQ=; b=ht35RvWA+c4D62aiqKmVjsnzy2
-	YjDUbZEpfyfxX86wcPfURf8Mvw/yc+VKbT7c+FpSuiXbrhd9Tumu1WfyfiCx7Aeya3gcexd1F8Zr6
-	1ueH9U7o3ZH0Q4sbxSPT+wsy+ch+oc7/z1l3gMFMLyerJG36aStnMd5MLYBEStt6uuEwlHU/tB4e2
-	qSWzv6F8gctzeGqTHEltFC3TkAVknGZ+ZmOg6/BpMXTuriuGYd9aQomhQlZ+R9V/eDCjSHmbGPYlq
-	wAEKXlfcTKla91x/pnDCuJC2tHGKyDsZZtET8cz3VfFrkoIbcRJEUboq37Dzy85rGIYy4/wbDknU5
-	w62xZ2MQ==;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=AnT81YPdkqfdh46HHR9eqbsZLSIiYbOxPCOL48k8L2Q=; b=PsbDrV7fRkEeGuYiSAv9DYwpFk
+	qGEBEDrthNaH8k1AIDWo0JZy/9W+BUd9+vWbYnPBNGjsL+8yCAkXpEnLaDA48vAgqjk8juYfC2F7S
+	/q38VsjJ3AkXagEVvf/1s9m9gkctedTZ72YI7Eq+CG/vQOaMEUVuXtzScRPg+0ENXhSnHHHFd2pZ7
+	TvmSjAUog6q0RZU2idWwNPX4dqJ2Nb4Mu2GYDTb4+aeOkd5npISX8LvwiTFsvqvd8ZkNnLU9spBvN
+	YtqGOUHcKmTz3yQgYEX86fh7BEwZ8n6cC3J+BExaJ3AVsL9a2vhds0+4VLD5qwHFO/KzuVfgZBPrP
+	4hgkgwxA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSn-00000007hmA-3kY6
+	id 1vApSi-00000007hdM-2DRx
 	for barebox@lists.infradead.org;
-	Mon, 20 Oct 2025 12:58:17 +0000
+	Mon, 20 Oct 2025 12:58:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vApSc-0008Ck-HA
-	for barebox@lists.infradead.org; Mon, 20 Oct 2025 14:58:02 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vApSd-0008Do-UU
+	for barebox@lists.infradead.org; Mon, 20 Oct 2025 14:58:03 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vAneT-004X8z-1G;
-	Mon, 20 Oct 2025 13:02:09 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vAneT-0000000A4S3-1P4H;
-	Mon, 20 Oct 2025 13:02:09 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1vAmJ7-004WWl-37;
+	Mon, 20 Oct 2025 11:36:01 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vAmJ7-007Hav-2o;
+	Mon, 20 Oct 2025 11:36:01 +0200
+Date: Mon, 20 Oct 2025 11:36:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20251015082724.4094242-1-a.fatoum@barebox.org>
-References: <20251015082724.4094242-1-a.fatoum@barebox.org>
-Message-Id: <176095812932.2400366.6537733694502402917.b4-ty@pengutronix.de>
-Date: Mon, 20 Oct 2025 13:02:09 +0200
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aPYCgfi-oX6zQgY-@pengutronix.de>
+References: <20251017-dmesg-v1-1-ac9c2fb021f6@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251017-dmesg-v1-1-ac9c2fb021f6@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251020_135815_181431_72CDE47E 
-X-CRM114-Status: UNSURE (   4.51  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251020_135809_850021_037F1F1F 
+X-CRM114-Status: GOOD (  13.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,25 +102,46 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] tlsf: use compiler's static_assert implementation
+Subject: Re: [PATCH] commands: dmesg: clear logbuffer fully if not requested
+ otherwise
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Wed, 15 Oct 2025 10:27:24 +0200, Ahmad Fatoum wrote:
-> The compiler's statis_assert allows for a much better error message than
-> the current error message about negatively sized arrays.
+On Fri, Oct 17, 2025 at 01:04:36PM +0200, Jonas Rebmann wrote:
+> Previously, `dmesg -c` would clear the logbuffer except for the last 10
+> lines. This comes with a fair amount of surprise given linux `dmesg -c`
+> clears the whole logbuffer.
 > 
+> Clear the complete logbuffer given `dmesg -c` but with an optional
+> argument `dmesg -c [<num>]` to keep <num> lines.
 > 
+> While at it, move the deleteion of log lines to the log_print function
+> to prevent a corner case of lost log message if they arrive between the
+> log_print() and log_clean() in dmesg.
+> 
+> If loglevels are selected using -l or -p in addition to cleaning being
+> selected using -c, only clean those messages shown by the loglevel
+> selection.
 
-Applied, thanks!
+I find this behaviour rather surprising. The only useful thing I could
+think of we can do with this is "Discard unimportant messages", but only
+by printing them. It would be more useful if we had a -C (uppercase)
+option to discard messages without printing them. But even with that,
+there are many things we can do with this behaviour that are not useful
+and only a few that are actually useful. We could delete for example all
+"info" messages and keep the more and less important messages, but why
+would we want to do this?
 
-[1/1] tlsf: use compiler's static_assert implementation
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0565f4928ba4 (link may not be stable)
+I think you should rather use the filter options -l and -p to limit the
+output to the messages you are interested in and finally use -c to clear
+the buffer.
 
-Best regards,
+Sascha
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
