@@ -1,87 +1,86 @@
-Delivery-date: Mon, 20 Oct 2025 14:59:17 +0200
+Delivery-date: Mon, 20 Oct 2025 14:59:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vApTo-009tqp-36
+	id 1vApTq-009trL-2U
 	for lore@lore.pengutronix.de;
-	Mon, 20 Oct 2025 14:59:16 +0200
+	Mon, 20 Oct 2025 14:59:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vApTh-00010v-66
-	for lore@pengutronix.de; Mon, 20 Oct 2025 14:59:16 +0200
+	id 1vApTj-00013U-3V
+	for lore@pengutronix.de; Mon, 20 Oct 2025 14:59:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LGMvjmSL9UUxjVuooXEgNzxAicRhtLKilhqzHq/yRmA=; b=AQBbB3PYppkHY9d6X7EToKW619
-	r37sEfG+ZUQJWcHlGOpWMs6dYtUrM+riqJIyQxsIn94VeLABkwW29wlywJRwnBDM6OHlJ9Ofaf/k3
-	PoK2f5m2Uo1bYRVzE656jF8BTJbmMUXV+36/y+wgYHgFdzi+i6zsORw7uHP8sJrowEyH0wrwoxFSM
-	ccl9hKI24GX06U3is8RvbxCuzvMkEZSYCUNApCKMonNhBQ39Ht1qMMqsTW/a6dnisaBs448+dOnkT
-	lgkmOyxUiONnNG3EtyIVZEhoii6sDpsn8LqRNm81r3TGNpxXRW+lUStCE6AaBPq3bdUX40BNNkDtt
-	JSLqc7Uw==;
+	bh=GTyH0wsHXeQsP8pfniKO8+tFI1J++CvAlum78HVbDiE=; b=AKUaVUKXf1J1CjCnoZU8kCJB4n
+	KzSzbile+3sC/OMUQiaI4I09BF6Jvh5L0MRZpTVuOtHijtZx7ceKZlBZckWJedcPjZh5x/9RrsNs+
+	xRRP5aIUv+4SAsS8gcJl76Zd/FxMkTpG2nRhsZuFReKWjS7gm2bkzYKLKK8QZ6OWx4O0yrlhRKdPa
+	9Kh5r2jQTs/5TLSgkPSNYf4nZ2P3gu+RtUjHLOu3Dj+CqnuMkiHdXFD+nbyWlxJ3oO6Pl894h3QGL
+	3ivU4aXkmzDnNT0SDtWZDraaVs+CbSno9cKx+LwQdy/JCZjqjyQBdCrj5uHfAF4zLU4rzgirkN6JY
+	yDNWmUHg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSr-0000000DfUY-2zev;
-	Mon, 20 Oct 2025 12:58:17 +0000
+	id 1vApSu-0000000DfWf-1ocE;
+	Mon, 20 Oct 2025 12:58:20 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSl-0000000DfHI-3j0W
+	id 1vApSm-0000000DfIw-3KE2
 	for barebox@bombadil.infradead.org;
-	Mon, 20 Oct 2025 12:58:11 +0000
+	Mon, 20 Oct 2025 12:58:12 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=LGMvjmSL9UUxjVuooXEgNzxAicRhtLKilhqzHq/yRmA=; b=oWaQfdqVy1w/xTTg1w4apFBxRV
-	j7Hkq61+Xt4uihwLWDFGSsUdLb1Jiktq7tIWZ64UwTHY63VRLLRGn0TR0/uZmYG5Me00x+aVe9A8S
-	D4bTAhBUp1T/1zAKdkUOwHAqDzEJXWq0yuB1IroyRHiGv56n2BvPLJKm+w+cGHL8L6yfPyHqeB1Zg
-	Iw5uMnAleR5FQ64aTVBdqW0n2YrzYy0YKCyTnI9m1aGUTwW0CnVi01Esa6sNoyxtA2ZqlRtsV9oCU
-	VtszjmhyWg3FgaoiA1rYpoaDhhXByITfj5pLp5ItAAMEWRyEfgh4OWBl909WuczmVPMAIlS9mMv5N
-	x/6D3SQw==;
+	bh=GTyH0wsHXeQsP8pfniKO8+tFI1J++CvAlum78HVbDiE=; b=ESJALuVsx7XA60hHson1Qz6aFm
+	9k5Ldk4Zvn6VHR1UoxbOFmdryWwkNnq5NCY+ezzLhrvhFd4J0tsXWbDuZFPfbJWk6aUgX83ekBJ5L
+	MpYdP89wgHzQQKDT/gOB+gfpjvJbbs1Ay9aYrIKCbXCG22DgDAYFJVr+8S6WJp2zzUQRaqSbKelW5
+	i2V9h+HYAgTIvgBazK1FZfjUVGsOaF7SkUuZ04xFY+A22r2p90XRfJlW1SOGrVEHH7YZZCQ92aa0L
+	Ja+ddmBA2/F5HGMupVxnO+018o9ZJdOQt/8GSq4D8lY9alOAgLJXtQQHK8ll4LkwxPFoNmAiNIxP0
+	j+S+gh5w==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vApSe-00000007hVW-3iXK
+	id 1vApSh-00000007hb8-1dax
 	for barebox@lists.infradead.org;
-	Mon, 20 Oct 2025 12:58:10 +0000
+	Mon, 20 Oct 2025 12:58:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vApSb-0008CL-Qy
-	for barebox@lists.infradead.org; Mon, 20 Oct 2025 14:58:01 +0200
+	id 1vApSd-0008D0-1g
+	for barebox@lists.infradead.org; Mon, 20 Oct 2025 14:58:03 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vAlVM-004W4M-1e;
-	Mon, 20 Oct 2025 10:44:36 +0200
+	id 1vAmRn-004WXy-30;
+	Mon, 20 Oct 2025 11:44:59 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vAlVM-007Gb0-1I;
-	Mon, 20 Oct 2025 10:44:36 +0200
-Date: Mon, 20 Oct 2025 10:44:36 +0200
+	id 1vAmRn-007Hlz-2h;
+	Mon, 20 Oct 2025 11:44:59 +0200
+Date: Mon, 20 Oct 2025 11:44:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <aPX2dGXUM9BFm4qe@pengutronix.de>
-References: <20251017120406.1348897-1-m.felsch@pengutronix.de>
- <20251017120406.1348897-3-m.felsch@pengutronix.de>
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aPYEm6Ese37JVqJd@pengutronix.de>
+References: <20251017-gitignore-build-v1-1-f25d35c3bff4@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251017120406.1348897-3-m.felsch@pengutronix.de>
+In-Reply-To: <20251017-gitignore-build-v1-1-f25d35c3bff4@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251020_135806_182256_0E6524C1 
-X-CRM114-Status: GOOD (  21.72  )
+X-CRM114-CacheID: sfid-20251020_135808_699112_B8015250 
+X-CRM114-Status: GOOD (  15.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,52 +102,39 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/4] lib: hexdump: make use of pr_debug
+Subject: Re: [PATCH] gitignore: ignore /build
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Oct 17, 2025 at 02:03:35PM +0200, Marco Felsch wrote:
-> The hexdump library was ported from Linux which supports different
-> printk() level. Because the barebox print* facility is different
-> compared to the one from Linux the barebox printk() doesn't support
-> levels. Therefore the level is always set to an empty string.
+On Fri, Oct 17, 2025 at 12:22:13PM +0200, Jonas Rebmann wrote:
+> Documentation such as Documentation/boards/kvx.rst and tooling such as
+> conftest.py suggests /build is a good choice for build output directory.
 > 
-> Furthermore all barebox printk() calls aren't recorded by the internal
-> barebox_logbuf because they are mostly used for command prints. Linux on
-> the other hand record each printk() print.
+> Therefore, include it in .gitignore.
 > 
-> Not recording the output can be an issue on systems which don't have a
-> hw-console but a USB-ACM console, because the hexdump call may already
-> occurred before the console was ready.
-> 
-> Make use of pr_debug() instead to record the output within the
-> barebox_logbuf to be available later on via dmesg. Using pr_debug()
-> should be fine since it is mostly used for debugging/development
-> purpose.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 > ---
->  lib/hexdump.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+>  .gitignore | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/lib/hexdump.c b/lib/hexdump.c
-> index 940c4eec64e9..ab5e3cf727ec 100644
-> --- a/lib/hexdump.c
-> +++ b/lib/hexdump.c
-> @@ -284,16 +284,13 @@ void dev_print_hex_dump(struct device *dev, const char *level,
->  
->  		switch (prefix_type) {
->  		case DUMP_PREFIX_ADDRESS:
-> -			printk("%s%s%s%p: %s\n", level, name, prefix_str,
-> -			       ptr + i, linebuf);
-> +			pr_debug("%s%s%p: %s\n", name, prefix_str, ptr + i, linebuf);
+> diff --git a/.gitignore b/.gitignore
+> index 98bb4dac89..32d54b8fbe 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -53,6 +53,7 @@ policy-list
+>  /TAGS
+>  /barebox*
+>  /System.map
+> +/build
 
-pr_debug is only compiled in when DEBUG is defined. This means you have
-to add a "#define DEBUG" in lib/hexdump.c to make the messages visible
-printed in another file, or alternatively have to define DEBUG globally.
+I have nothing against adding this here. I just wondered why my build
+directories don't show up in git status and realized the barebox
+toplevel Makefile already creates a .gitignore file in the build
+directory:
 
-I think we should rather replace the const char *level argument with a
-unsigned int level argument expecting one of MSG_* and use pr_print() here.
+	{ echo "# this is build directory, ignore it"; echo "*"; } > .gitignore
+
+Any idea why this doesn't happen in your case?
 
 Sascha
 
