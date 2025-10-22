@@ -1,66 +1,60 @@
-Delivery-date: Wed, 22 Oct 2025 13:40:20 +0200
+Delivery-date: Wed, 22 Oct 2025 14:04:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBXCW-00Aan4-1Z
+	id 1vBXaM-00Ab6J-1K
 	for lore@lore.pengutronix.de;
-	Wed, 22 Oct 2025 13:40:20 +0200
+	Wed, 22 Oct 2025 14:04:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBXCV-0002yG-V0
-	for lore@pengutronix.de; Wed, 22 Oct 2025 13:40:20 +0200
+	id 1vBXaL-0006cl-Pz
+	for lore@pengutronix.de; Wed, 22 Oct 2025 14:04:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=RxkaEuzBKG1W4Pu3tpgjMldrW3VpJoX+i8bOJO2i8PU=; b=lrk6Rq9KMBfq8FxK5FQDG3cYc4
-	kaXUeL9ZaiO3nVKHYiuJUi5qXDP/h+i9FMXK7GzYMZKLE9MercgTg0yIyK4LE6WAOX9eiF/dAjRvf
-	uXcHfhlU+Rx2WfJKSEQqzSPCYZir+m6Gl3j5/NZxR1h8veVpSOzREr+Exxt+5bou9z+ycWVm1uZxK
-	sH94eU2jhTloUHfHJpzjNghmeTFglyZk7zAGa7YJSNT+QQEjVUZUZwBaifytG35plrw5pWbljvuCe
-	Dl3cwyJeKjraSVwXiJRL9L7GWHWZ/MdFu5BgnX/xbSJlIAqylG+65EsNjaEZ4lZihNngR+UaEy4SA
-	xSgQ7GVw==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=v/ktIJROcdLw33qKehXBEHLe/zUmoXkxnWsf956Xees=; b=EifG0fJjptLpskPnw2E9zv6FR8
+	NcmwPdNOQ1jeOtWOmchBTPBoYCNige+PYsmQ8ZYDLWu82TsixlevM0Sm0iBUY6IBOugG15qjHjqjZ
+	0tDDPZOywU3okfpZJjfDWKNy9FRtkKZi1a7ozhWt0fx2BoJFYWay71DpljP6bc9NrBLKgytk+nKlK
+	VhJ9YdJODpIgoAuy5fpYdvzQY1/XPqr0URCYiTCLtspWTGkDEjUNxQ6+H8qO0M5bomB4b0CtwQtGC
+	9/ioXZculcuIfNF4QCYPwr6ap9b/NeATAu45yS9+sdK96oREFalUH7sNPGhNqObSx0b/WNb5taOnh
+	DkuieyMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBXC3-00000002gih-3MGt;
-	Wed, 22 Oct 2025 11:39:51 +0000
+	id 1vBXZp-00000002kIz-2D1r;
+	Wed, 22 Oct 2025 12:04:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBXC1-00000002giL-1hQc
+	id 1vBXZn-00000002kIJ-1c3M
 	for barebox@lists.infradead.org;
-	Wed, 22 Oct 2025 11:39:50 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Wed, 22 Oct 2025 12:04:24 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vBXBz-0002tU-LK; Wed, 22 Oct 2025 13:39:47 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vBXBz-004ssI-1V;
-	Wed, 22 Oct 2025 13:39:47 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vBXBz-00000004gw7-1WLB;
-	Wed, 22 Oct 2025 13:39:47 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 22 Oct 2025 13:39:45 +0200
-Message-ID: <20251022113946.1118299-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	id 1vBXZl-0006QB-P5; Wed, 22 Oct 2025 14:04:21 +0200
+Message-ID: <7fc449c5-31d5-476b-a7f6-fa2e313d9dd1@pengutronix.de>
+Date: Wed, 22 Oct 2025 14:04:21 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
+ <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
+ <20251014-tlv-signature-v1-11-7a8aaf95081c@pengutronix.de>
+ <d97460e6-e4f3-4222-804b-165ffe7f870d@pengutronix.de>
+ <fce2d377-cab6-4b08-920e-1523f648682b@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <fce2d377-cab6-4b08-920e-1523f648682b@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251022_043949_482938_DC6ED0E2 
-X-CRM114-Status: UNSURE (   9.91  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251022_050423_421448_ED032817 
+X-CRM114-Status: GOOD (  25.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,38 +74,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! Documentation: add contributing section
+Subject: Re: [PATCH 11/15] crypto: Use "development" keys for "fit" and "tlv"
+ keyring
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Documentation: contributing: fix command to reproduce shuffle failure
+Hi,
 
-The -l and -v options are arguments to MAKEALL, not container.sh.
+On 10/22/25 1:17 PM, Jonas Rebmann wrote:
+> Hi,
+> 
+> On 2025-10-22 12:02, Ahmad Fatoum wrote:
+>>
+>>
+>> On 10/14/25 1:03 PM, Jonas Rebmann wrote:
+>>> All users of the CONFIG_CRYPTO_PUBLIC_KEYS feature should update to the
+>>> new syntax making keyring selection mandatory.
+>>>
+>>> Instead of just making the addition of the builtin snakeoil keys
+>>> explicit for the "fit" key, also add them to the "tlv" key to use them
+>>> as a testing set for TLV keys too.
+>>>
+>>> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+>>> ---
+>>>   crypto/Makefile | 6 ++++--
+>>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/crypto/Makefile b/crypto/Makefile
+>>> index 08b9a46e4c..076ba4f686 100644
+>>> --- a/crypto/Makefile
+>>> +++ b/crypto/Makefile
+>>> @@ -33,10 +33,12 @@ CONFIG_CRYPTO_PUBLIC_KEYS := $(foreach d,
+>>> $(CONFIG_CRYPTO_PUBLIC_KEYS),"$(d)")
+>>>     ifdef CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS
+>>>   ifdef CONFIG_CRYPTO_RSA
+>>> -CONFIG_CRYPTO_PUBLIC_KEYS += rsa-devel:$(srctree)/crypto/fit-4096-
+>>> development.crt
+>>> +CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=rsa-devel:
+>>> $(srctree)/crypto/fit-4096-development.crt
+>>> +CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv:$(srctree)/crypto/fit-4096-
+>>> development.crt
+>>>   endif
+>>>   ifdef CONFIG_CRYPTO_ECDSA
+>>> -CONFIG_CRYPTO_PUBLIC_KEYS += ecdsa-devel:$(srctree)/crypto/fit-
+>>> ecdsa-development.crt
+>>> +CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=ecdsa-devel:
+>>> $(srctree)/crypto/fit-ecdsa-development.crt
+>>> +CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv:$(srctree)/crypto/fit-
+>>> ecdsa-development.crt
+>>
+>> We don't want people to overload tlv and instead use their own keyring
+>> names. This is already too late for fit, but for this, let's call it
+>> tlv-example?
+> 
+> This would mean in the previous patch for `struct tlv_decoder
+> barebox_tlv_v1_signed` to also set the keyring to "tlv-example". My
+> understanding of the decoders in common/tlv/barebox.c is that they are
+> more than an example, rather an offer that for somewhat generic use,
+> somewhat generic decoders are provided. Hence the very generic keyring
+> name "tlv".
+> 
+> I need to use the barebox_tlv_v1_signed in the tests and I want to make
+> use of CONFIG_CRYPTO_PUBLIC_KEYS for that. I'm not sure if I understand
+> the role of CONFIG_CRYPTO_PUBLIC_KEYS and the decoders in
+> common/tlv/barebox.c correctly though.
+> 
+> Maybe we rename this keyring to "tlv-generic"?
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- Documentation/devel/contributing.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Ok.
 
-diff --git a/Documentation/devel/contributing.rst b/Documentation/devel/contributing.rst
-index cfc9441d8e14..45e904f78526 100644
---- a/Documentation/devel/contributing.rst
-+++ b/Documentation/devel/contributing.rst
-@@ -223,8 +223,8 @@ If a failure occurs, the log will include a ``shuffle=`` value::
- 
- You should be able to reproduce the same issue locally by running::
- 
--  ./scripts/container.sh -l '' -v 0 -e GNUMAKEFLAGS=--shuffle=857479879 \
--	./MAKEALL -a arm virt32_secure_defconfig
-+  ./scripts/container.sh -e GNUMAKEFLAGS=--shuffle=857479879 \
-+	./MAKEALL -l '' -v 0 -a arm virt32_secure_defconfig
- 
- Replace ``857479879`` above with the actual value reported by the CI.
- This reproduces the same randomized build sequence locally to help
+> If it helps, I could update the commit message to discourage use of a
+> catchall keyring in more sophisticated setups.
+
+You can do that, but it probably should be in the docs or in the Kconfig
+help text to have a chance of being read.
+
+Cheers,
+Ahmad
+
+> 
+> Regards,
+> Jonas
+> 
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
