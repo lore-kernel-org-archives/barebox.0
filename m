@@ -1,60 +1,59 @@
-Delivery-date: Wed, 22 Oct 2025 13:12:53 +0200
+Delivery-date: Wed, 22 Oct 2025 13:18:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBWlx-00AaWZ-2x
+	id 1vBWr8-00Aaa0-0U
 	for lore@lore.pengutronix.de;
-	Wed, 22 Oct 2025 13:12:53 +0200
+	Wed, 22 Oct 2025 13:18:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBWlx-0007hA-Ad
-	for lore@pengutronix.de; Wed, 22 Oct 2025 13:12:53 +0200
+	id 1vBWr7-0000Ei-I6
+	for lore@pengutronix.de; Wed, 22 Oct 2025 13:18:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3dlgCZIDRk4MEFSAhMP9WQ6NKPMZv48R8rmBy0HqeRU=; b=p1tW1/8mqirLeBWKHOphSzeggR
-	mur6CQISE43OzqqHU3x/NS1xGaBMUoWe+IXQyScS6k+QZJ/rT13L5XQGD/A8RJdKdMFS2oSYqau+E
-	kWOdgYxXxlV3Pzxv/z0QDP6WLKnTEcTAC+C1mdUpFkI6DOP1DcfcaJ4tHxAyfYjU0DxPcZf9NZgjU
-	zvaBIineZ1V4kzHYrHYETKeZuhVNku0mpS5uNzPyknLt369T5TLF6CcJYt6y36UJiuPnT5DU9jfIg
-	CcVR8ymfa9wAfKkYalPwIVstOiwM7HR3SQFVX/Gv2oEhpDvVXqOIIOG3VkojcK4NhTulUxoUgOLa7
-	BR4jz7Jw==;
+	bh=Z5kerRO1laflOf2e+kN1huQnfiOygHqNarGQ/zbwk6Q=; b=pyTiIgHnm1dx71QTi2zDK4cPWR
+	IbgVeIH5aslEGmstnx0jXFLUCZhSWN79f8tLPcM2zHwH0luIbOryq87na+mzRchVmBK6MfUUePCyo
+	5Ft6wSW3vWxChH65C28nxuLCnoZW6qajd7qFcKHlK/y9dp12uBIUEOVAOkp6HNkLPi05UilaYKx3m
+	cs9H5RmYtW8anWAlU74wyfJ3K2jfFmDkfercBwYzsktrghFJOZi8/Oet6sgo1rWT4Y91SQ2NGJzPe
+	H0pM2CrRAFEBJ+DrQiwlQ7v0kTCCAnxACghwQzulw4l/bSxNPNNQH0WBQRLs6cLP3mRWWnM4ZtoTg
+	zObk9Dsw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBWlW-00000002b8S-1I7D;
-	Wed, 22 Oct 2025 11:12:26 +0000
+	id 1vBWqf-00000002cZf-32JT;
+	Wed, 22 Oct 2025 11:17:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBWlU-00000002b7p-0ACD
+	id 1vBWqc-00000002cXm-2JbZ
 	for barebox@lists.infradead.org;
-	Wed, 22 Oct 2025 11:12:25 +0000
+	Wed, 22 Oct 2025 11:17:43 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vBWlS-0007bg-I9; Wed, 22 Oct 2025 13:12:22 +0200
-Message-ID: <d47ceb4f-9476-4e20-a61d-ed6d0cdc844c@pengutronix.de>
-Date: Wed, 22 Oct 2025 13:12:22 +0200
+	(envelope-from <jre@pengutronix.de>)
+	id 1vBWqa-00007C-KY; Wed, 22 Oct 2025 13:17:40 +0200
+Message-ID: <fce2d377-cab6-4b08-920e-1523f648682b@pengutronix.de>
+Date: Wed, 22 Oct 2025 13:17:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
 References: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
- <20251014-tlv-signature-v1-12-7a8aaf95081c@pengutronix.de>
- <703f28ed-2d8a-4784-a850-ae577119f56e@pengutronix.de>
- <b7970e33-0443-41f5-9faa-5dec98a176cb@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <b7970e33-0443-41f5-9faa-5dec98a176cb@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ <20251014-tlv-signature-v1-11-7a8aaf95081c@pengutronix.de>
+ <d97460e6-e4f3-4222-804b-165ffe7f870d@pengutronix.de>
+From: Jonas Rebmann <jre@pengutronix.de>
+Content-Language: en-US
+In-Reply-To: <d97460e6-e4f3-4222-804b-165ffe7f870d@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251022_041224_097009_A9AC302D 
-X-CRM114-Status: GOOD (  15.03  )
+X-CRM114-CacheID: sfid-20251022_041742_662428_89F27F61 
+X-CRM114-Status: GOOD (  20.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,67 +71,78 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 12/15] test: py: add signature to TLV integration tests
+Subject: Re: [PATCH 11/15] crypto: Use "development" keys for "fit" and "tlv"
+ keyring
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi,
 
-
-On 10/22/25 1:08 PM, Jonas Rebmann wrote:
-> Hi,
+On 2025-10-22 12:02, Ahmad Fatoum wrote:
 > 
-> On 2025-10-22 12:04, Ahmad Fatoum wrote:
->> Hi,
+> 
+> On 10/14/25 1:03 PM, Jonas Rebmann wrote:
+>> All users of the CONFIG_CRYPTO_PUBLIC_KEYS feature should update to the
+>> new syntax making keyring selection mandatory.
 >>
->> On 10/14/25 1:03 PM, Jonas Rebmann wrote:
->>> Add TLV signature to TLV integration tests:
->>>   - Signed TLV using development RSA key
->>>   - Modify payload and fix CRC for a "tampered" tlv
->>>   - Include both cases in generator and tlv-command tests.
->>>
->>> Use the keys selected by CRYPTO_BUILTIN_DEVELOPMENT_KEYS for all TLV
->>> testing. Consequentially add the matching private keys from the public
->>> repository at [1].
->>>
->>> [1]: https://git.pengutronix.de/cgit/ptx-code-signing-dev/
->>>
->>> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
->>> ---
->>>   crypto/fit-4096-development.key  |  51 ++++++++++
->>>   crypto/fit-ecdsa-development.key |   5 +
+>> Instead of just making the addition of the builtin snakeoil keys
+>> explicit for the "fit" key, also add them to the "tlv" key to use them
+>> as a testing set for TLV keys too.
 >>
->> Move this into test/?
+>> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+>> ---
+>>   crypto/Makefile | 6 ++++--
+>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/crypto/Makefile b/crypto/Makefile
+>> index 08b9a46e4c..076ba4f686 100644
+>> --- a/crypto/Makefile
+>> +++ b/crypto/Makefile
+>> @@ -33,10 +33,12 @@ CONFIG_CRYPTO_PUBLIC_KEYS := $(foreach d,$(CONFIG_CRYPTO_PUBLIC_KEYS),"$(d)")
+>>   
+>>   ifdef CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS
+>>   ifdef CONFIG_CRYPTO_RSA
+>> -CONFIG_CRYPTO_PUBLIC_KEYS += rsa-devel:$(srctree)/crypto/fit-4096-development.crt
+>> +CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=rsa-devel:$(srctree)/crypto/fit-4096-development.crt
+>> +CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv:$(srctree)/crypto/fit-4096-development.crt
+>>   endif
+>>   ifdef CONFIG_CRYPTO_ECDSA
+>> -CONFIG_CRYPTO_PUBLIC_KEYS += ecdsa-devel:$(srctree)/crypto/fit-ecdsa-development.crt
+>> +CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=ecdsa-devel:$(srctree)/crypto/fit-ecdsa-development.crt
+>> +CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv:$(srctree)/crypto/fit-ecdsa-development.crt
 > 
-> I chose to move the keys in with their certificates:
-> crypto/fit-4096-development.crt
-> crypto/fit-ecdsa-development.crt
-> 
-> Should I separate them, or move the certificates too (and adjust all
-> references such as for CONFIG_CRYPTO_PUBLIC_KEYS)?
+> We don't want people to overload tlv and instead use their own keyring
+> names. This is already too late for fit, but for this, let's call it
+> tlv-example?
 
-I am not sure crypto/ is the best place for this, but given that you
-aren't introducing them there, just leave it in crypto/ for now.
+This would mean in the previous patch for `struct tlv_decoder
+barebox_tlv_v1_signed` to also set the keyring to "tlv-example". My
+understanding of the decoders in common/tlv/barebox.c is that they are
+more than an example, rather an offer that for somewhat generic use,
+somewhat generic decoders are provided. Hence the very generic keyring
+name "tlv".
 
-I think it would be best to combine crt and key into a single pem file
-and adjust the Makefile, so we don't have loose files.
+I need to use the barebox_tlv_v1_signed in the tests and I want to make
+use of CONFIG_CRYPTO_PUBLIC_KEYS for that. I'm not sure if I understand
+the role of CONFIG_CRYPTO_PUBLIC_KEYS and the decoders in
+common/tlv/barebox.c correctly though.
 
-Cheers,
-Ahmad
+Maybe we rename this keyring to "tlv-generic"?
 
-> 
-> Regards,
-> Jonas
-> 
+If it helps, I could update the commit message to discourage use of a
+catchall keyring in more sophisticated setups.
+
+Regards,
+Jonas
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Pengutronix e.K.                           | Jonas Rebmann               |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
