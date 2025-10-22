@@ -1,60 +1,60 @@
-Delivery-date: Wed, 22 Oct 2025 14:05:57 +0200
+Delivery-date: Wed, 22 Oct 2025 14:29:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBXbJ-00Ab7H-2R
+	id 1vBXyB-00Abcf-2E
 	for lore@lore.pengutronix.de;
-	Wed, 22 Oct 2025 14:05:57 +0200
+	Wed, 22 Oct 2025 14:29:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBXbJ-0006m3-7Y
-	for lore@pengutronix.de; Wed, 22 Oct 2025 14:05:57 +0200
+	id 1vBXyB-0001cr-45
+	for lore@pengutronix.de; Wed, 22 Oct 2025 14:29:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kSPBuB8xCSowvcXOlx+NaePq5OHjMo3hC/jjf/K4+0U=; b=UmgSlLMdI2BxEE9cc57gKtmLDZ
-	VC/SvgrG23QEQ2+zI/u0qhtftMZQqmECrObOn0wRy+VkkwqQaQkPid0pn4+sbeu8xC379/AZBuoJp
-	tvlSEfbtkuoUi2GtB+4NaH55FK2IGrF5W/ILT4rCoruhXBHwODne+0UsLEtsfBHSyRpwrMOZKhtQj
-	gQnRSUg0MWSqV73V6ZlORxYD4c2QC6ukxQXUY+iTu0j7oLlGDaiTsubHBhAJaErn83z23TvdFxOfe
-	s/eiSpXFKZC+EAxFdW9zo5GjFYb0k4DIbl24P0kiJ9lfh2jiSHUIOaZGk/P0R8a/AbehY+Pybja2K
-	oYhJuAow==;
+	bh=mLuKzUCApebWctU9XOE4OrpmYi0mBqcWMeoEMJhmTdk=; b=bwjrYqpAsSMoKUyPfrUsF5ZAOj
+	e7UdNbwZAlHxlrnwW5pVDIWUStWAJvmxlBg74GIOQG2ZiQjnEfJhYQi6BQr+cBbI8LTInlEJcC5dg
+	HAW6UXtUSq2k44WgzbhSGCG08fHVTJtapX3EUSC1f5sx9FDkQPYlFISPh3zV/DQmPRIK7AQFFVJuZ
+	W2BmyNI7MoqYbmVbLh7DaCZ9OLDx5jGcfok9K/1/LPt0zIRCVFRHDEbAq0yx7WpdUOnosdT7Up/UO
+	DOEMnmudPId1Srl3v50ZqxYAkRwVq3S6XQc4lmkUzCDM8EFBAaXnshERGU+osGttK6q28OslM8JYh
+	nnCdRGPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBXav-00000002kTJ-2iyA;
-	Wed, 22 Oct 2025 12:05:33 +0000
+	id 1vBXxg-00000002nXj-1Zri;
+	Wed, 22 Oct 2025 12:29:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBXaq-00000002kSn-1qtd
+	id 1vBXxY-00000002nXG-1OIx
 	for barebox@lists.infradead.org;
-	Wed, 22 Oct 2025 12:05:29 +0000
+	Wed, 22 Oct 2025 12:28:58 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vBXao-0006hE-VG; Wed, 22 Oct 2025 14:05:27 +0200
-Message-ID: <0db56330-611d-4feb-a06d-15ee8a8302eb@pengutronix.de>
-Date: Wed, 22 Oct 2025 14:05:26 +0200
+	(envelope-from <jre@pengutronix.de>)
+	id 1vBXxW-0001Nm-HH; Wed, 22 Oct 2025 14:28:54 +0200
+Message-ID: <f0f65056-ef7a-4544-b98a-fa95d4674a1f@pengutronix.de>
+Date: Wed, 22 Oct 2025 14:28:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
 References: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
- <20251014-tlv-signature-v1-9-7a8aaf95081c@pengutronix.de>
- <7d50c7d4-06a2-40d4-9b77-114c5ab923ba@pengutronix.de>
- <03fc4cb8-beca-4ddb-96aa-27ecf3fa1ad3@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <03fc4cb8-beca-4ddb-96aa-27ecf3fa1ad3@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ <20251014-tlv-signature-v1-12-7a8aaf95081c@pengutronix.de>
+ <703f28ed-2d8a-4784-a850-ae577119f56e@pengutronix.de>
+ <f2e96d72-3d01-4845-a997-4926ea4bdee0@pengutronix.de>
+From: Jonas Rebmann <jre@pengutronix.de>
+Content-Language: en-US
+In-Reply-To: <f2e96d72-3d01-4845-a997-4926ea4bdee0@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251022_050528_475554_682B5374 
-X-CRM114-Status: GOOD (  16.54  )
+X-CRM114-CacheID: sfid-20251022_052856_875387_2560ABBB 
+X-CRM114-Status: GOOD (  16.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,65 +72,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 09/15] common: tlv: Add TLV-Signature support
+Subject: Re: [PATCH 12/15] test: py: add signature to TLV integration tests
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Jonas,
+Hi,
 
-On 10/22/25 12:43 PM, Jonas Rebmann wrote:
-> Hi Ahmad,
+On 2025-10-22 12:11, Ahmad Fatoum wrote:
 > 
-> Just answering to what I don't immediately apply for v2:
 > 
-> On 2025-10-22 12:00, Ahmad Fatoum wrote:
->>> +/*
->>> + * Retrieve length of header+TLVs (offset of spki hash part of
->>> signature if available)
->>> + */
->>> +
->>> +static inline size_t tlv_spki_hash_offset(const struct tlv_header
->>> *header)
->>> +{
->>> +    size_t ret = size_add(sizeof(struct tlv_header),
->>> get_unaligned_be32(&header->length_tlv));
->>>         return ret; /* SIZE_MAX on overflow */
+> On 10/22/25 12:04 PM, Ahmad Fatoum wrote:
+>> Hi,
 >>
->> Shouldn't you then check for SIZE_MAX at callsites?
+>> On 10/14/25 1:03 PM, Jonas Rebmann wrote:
+>>> Add TLV signature to TLV integration tests:
+>>>   - Signed TLV using development RSA key
+>>>   - Modify payload and fix CRC for a "tampered" tlv
+>>>   - Include both cases in generator and tlv-command tests.
+>>>
+>>> Use the keys selected by CRYPTO_BUILTIN_DEVELOPMENT_KEYS for all TLV
+>>> testing. Consequentially add the matching private keys from the public
+>>> repository at [1].
+>>>
+>>> [1]: https://git.pengutronix.de/cgit/ptx-code-signing-dev/
+>>>
+>>> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+>>> ---
+>>>   crypto/fit-4096-development.key  |  51 ++++++++++
+>>>   crypto/fit-ecdsa-development.key |   5 +
+>>
+>> Move this into test/?
 > 
-> I chose not to implement this check in all places using those
-> size/offset helpers.
+> Ah, I see the *.crt files are already in crypto...
+> Can't you concatenate the *.key and *.crt files into a single pem file?
 > 
-> In "[PATCH 01/15] common: clean up TLV code", I check early in the TLV
-> handling, that tlv_total_len() doesn't overflow. Later on, it is
-> guaranteed that calls to tlv_total_len(), tlv_spki_hash_offset() and the
-> such cannot overflow.
-> 
-> If I where to check at callsites of tlv_spki_hash_offset() I'd need to
-> check at all callsites of all TLV size/offset helperss, which seemed
-> unnecessary.
-> 
-> What do you think?
+> That's what we do for test/self/development_rsa2048.pem and it works
+> there. Removes clutter a bit.
 
-If it's already checked, you don't need to repeat the check.
+I'd prefer not to. I suppose our tooling supports this, users that
+utilize CRYPTO_BUILTIN_DEVELOPMENT_KEYS for testing may not; and they
+should not have to pick apart private and public key again.
 
-Thanks,
-Ahmad
+I'd consider concatenating them most of the time not the best practice.
+You'll have a file of which `file` tells you it's an "OpenSSH public
+key", but if you open it and then scroll down, you realize it's a
+private key.
 
-> 
-> Regards,
-> Jonas
-> 
+Yes this particular private key is all but private but lets not endorse
+this practice.
+
+Keeping them separates also makes it visible where we use the private
+key: We need it when creating the signed TLVs in test/py/test_tlv.py and
+only there.
+
+Regards,
+Jonas
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Pengutronix e.K.                           | Jonas Rebmann               |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
