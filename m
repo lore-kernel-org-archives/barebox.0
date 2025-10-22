@@ -1,66 +1,60 @@
-Delivery-date: Wed, 22 Oct 2025 11:58:24 +0200
+Delivery-date: Wed, 22 Oct 2025 12:00:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBVbs-00AZ60-2x
+	id 1vBVda-00AZ7Z-0I
 	for lore@lore.pengutronix.de;
-	Wed, 22 Oct 2025 11:58:24 +0200
+	Wed, 22 Oct 2025 12:00:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBVbs-00035t-C2
-	for lore@pengutronix.de; Wed, 22 Oct 2025 11:58:24 +0200
+	id 1vBVdZ-0003U6-Hz
+	for lore@pengutronix.de; Wed, 22 Oct 2025 12:00:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cjVR5gSSIQ7SCvLhcHtMVmuNRi5oaVOlxn3CGl8TWqM=; b=kVN3vIx8Xn2zSwYwDsDX9wgDuQ
-	vu94NyIy2MzcKl2ETpmAKbPgKMnfUHof5xpR8yo2IVWIq3dbzh3Av9xpkztcl21jynhxV3vq/Q2ce
-	RWePm0NTo+56woM/KoHGU7uOq/XLNGIzbwQkk0gH5m0qe7dyK7THp1jsbcUYY8/9Ly/HOaDR5gEaS
-	l8kvuCvU4XJ5Fj8fjYZ9+W/30wXYGQNdWbU4DFhz1OXTPUDBq7MpPEVVgB+fvbajjZYFAktTlCEBq
-	yAeyik0rDmi9l8Nb5DSvWRC5hKLKgYYfqX1/qfWWkRV8LQoDMxflkHVShZxzxvAksA3VGbnNmNI/U
-	uw19jSJg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=RLp2FFMVNwrwdQ6tvZ9kj+sCH/LJxQP7luWNByAd4FI=; b=pbO2qWJ8Kn0ZyIyVFZAWRsj40i
+	c+AJ4pedbvryAgVFEF00WuX5De/GxrMgRAyNsPIyuBJPvbzCfr04/veV8/gbyzrafVeHODnHUHVeG
+	Et0Ycv5/dOqsaUmCff1a56VaBilaMwAO9almgk77tk4xPZ76Y1YtP4gz97Ytp5v/19dMfNIFTJdtF
+	tW8w5noXWgFU62Gx2FFFF6wn7IMt10Cib/DHINijQvRl66gOLcgPOf9zff70Im2Wpz3nEBsNSVRDL
+	LCQlWQlDZxZ+1AJaZ7jliCMVEtXiGmWhlJTX2eCYzqe0XNz3j3yBzHt33NnYLb1Byv8CI/EnBeZDC
+	2cpxI/SQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBVbE-00000002Lk8-1Gyn;
-	Wed, 22 Oct 2025 09:57:44 +0000
+	id 1vBVd5-00000002MvD-04Wp;
+	Wed, 22 Oct 2025 09:59:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBVbA-00000002Lde-399M
+	id 1vBVcy-00000002MqL-0J1k
 	for barebox@lists.infradead.org;
-	Wed, 22 Oct 2025 09:57:43 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vBVb5-0002uO-Gr; Wed, 22 Oct 2025 11:57:35 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vBVb5-004rzK-15;
-	Wed, 22 Oct 2025 11:57:35 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vBVb5-00B7Gc-0n;
-	Wed, 22 Oct 2025 11:57:35 +0200
-Date: Wed, 22 Oct 2025 11:57:35 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Jonas Rebmann <jre@pengutronix.de>
-Message-ID: <20251022095735.bqyrvior5jsq6rho@pengutronix.de>
-References: <20251022093813.4191649-1-a.fatoum@pengutronix.de>
+	Wed, 22 Oct 2025 09:59:35 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1vBVct-0003L5-IC; Wed, 22 Oct 2025 11:59:27 +0200
+Message-ID: <d23b60ce-ce87-4027-a95e-2b14b8343b9d@pengutronix.de>
+Date: Wed, 22 Oct 2025 11:59:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022093813.4191649-1-a.fatoum@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
+ <20251014-tlv-signature-v1-5-7a8aaf95081c@pengutronix.de>
+ <1ee2493e-5907-406a-a063-8d231e3ff266@pengutronix.de>
+Content-Language: en-US
+From: Jonas Rebmann <jre@pengutronix.de>
+In-Reply-To: <1ee2493e-5907-406a-a063-8d231e3ff266@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251022_025741_358224_2F342D92 
-X-CRM114-Status: GOOD (  18.25  )
+X-CRM114-CacheID: sfid-20251022_025932_390018_95C37398 
+X-CRM114-Status: UNSURE (   9.26  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,61 +72,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! FIT: compare key name hint with streq_ptr for
- clarity
+Subject: Re: [PATCH 05/15] commands: keys: update output format to include
+ keyring
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-10-22, Ahmad Fatoum wrote:
-> FIT: fix use of multiple FIT keys
-> 
-> streq_ptr returns true if both arguments are NULL. This can happen if we
+Hi Ahmad,
 
-Damn!
+On 2025-10-22 11:43, Ahmad Fatoum wrote:
+>> +		printf("KEY: %*phN\tTYPE: %s\tKEYRING: %s\tHINT: %s\n", key->hashlen,
+>> +		       key->hash, public_key_type_string(key->type), key->keyring, key->key_name_hint);
+> 
+> Given that hint is only relevant to FIT, I think it would be better to
+> hide it when it's empty.
 
-> have no FIT key name hints at all and shouldn't lead to ignoring keys,
-> so add the check for the hint.
-> 
-> Cc: Marco Felsch <m.felsch@pengutronix.de>
-> Reported-by: Jonas Rebmann <jre@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+The key name hints are still defined, and unique amongst all keys. Just
+like before my series, if no hint is provided in keyspec, keytoc
+generates one: key_<num>.
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Therefore it should always be shown.
 
-> ---
->  common/image-fit.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/image-fit.c b/common/image-fit.c
-> index 3017ccb5048f..22f768e7a070 100644
-> --- a/common/image-fit.c
-> +++ b/common/image-fit.c
-> @@ -290,8 +290,8 @@ static int fit_check_signature(struct fit_handle *handle, struct device_node *si
->  	for_each_public_key(key) {
->  		fail_reason = "verification failed";
->  
-> -		/* Don't recheck with same key as before */
-> -		if (streq_ptr(key->key_name_hint, key_name))
-> +		/* Don't recheck with same key_name as before */
-> +		if (key_name && streq_ptr(key->key_name_hint, key_name))
->  			continue;
->  
->  		ret = public_key_verify(key, sig_value, sig_len, hash, algo);
-> -- 
-> 2.47.3
-> 
-> 
+Regards,
+Jonas
 
 -- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+Pengutronix e.K.                           | Jonas Rebmann               |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
