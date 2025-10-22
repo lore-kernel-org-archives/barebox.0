@@ -1,92 +1,94 @@
-Delivery-date: Wed, 22 Oct 2025 07:25:52 +0200
+Delivery-date: Wed, 22 Oct 2025 07:25:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBRM7-00AV6k-38
+	id 1vBRM9-00AV76-0T
 	for lore@lore.pengutronix.de;
-	Wed, 22 Oct 2025 07:25:51 +0200
+	Wed, 22 Oct 2025 07:25:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBRM7-0001lR-E1
-	for lore@pengutronix.de; Wed, 22 Oct 2025 07:25:51 +0200
+	id 1vBRM8-0001m1-IO
+	for lore@pengutronix.de; Wed, 22 Oct 2025 07:25:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ylth6lhMCeafCcSCSmtJOsLPEuMJmSybPPhxXNbe51k=; b=EC+pRJ160n5cC7ivz/NDvseDRn
-	KmJvJy/wNMIdGswIDJeCO86nv2uMtWOlzc92yvMO9vkXO3HCkIOBy5zvouDbXzJ8f8rvPB0814Ish
-	tpgREfxg8OdZVeGpquQ4J3vWYxnpNpHRdAr49xjgHEbLe/X/OZrBQgzmoBD40biI1pnbGBcI7ZmYR
-	qu3NIp4Hc46bKRASzVNpLnPx3+G8qmWKuYImwNKtcCCvIPbtlWI/qrHXnMWqWjJaEhdcQL7cq/ajM
-	VnpnQyV3N3w6RZINhpk/Nfw9dPaKRrru7VojBs6PtMRMw1Bgzsga6doJVFyLmH0lR5UaiHi1voQGe
-	k1HFqZww==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=7YjNajHlcDTD/oYdOeNY3ArS9vazpWyuYp8Owedh9oM=; b=ZjCaY0V3tBoBodCu3fbmm7LL7k
+	D2+gW71Ws35ElEA1LOuOPbwaY4jFZ8eLnb+PVjuuO3kgE6p0njdaoRiLNjEpu/ZZNuJfkhdTKlmGy
+	Xcssx+wVxMhWSRB2EL07r5KNOsj1oFo3pCQh6Vjvg3LpyoRexMf+eELIqEnVcwsxLGohsRaq4RiXW
+	qLRXopRihp67IzRL2ow7EhHLd3sMp/VCDsL7RcDOEdY8DzPa7CISTue7gflG6Ouy09skZaYg7Vj6D
+	9xdki3rK/K76EkvyFZ4YxCnyDWmmkFNAl/NjoNmQ3jPcUkv/ghrsOKFn//cMCCz+Pm0Ajd9KnkGBk
+	1hJUF2zQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBRLa-00000001WiW-22s7;
-	Wed, 22 Oct 2025 05:25:18 +0000
-Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
+	id 1vBRLd-00000001Wil-0VI3;
+	Wed, 22 Oct 2025 05:25:21 +0000
+Received: from mail-qk1-x72c.google.com ([2607:f8b0:4864:20::72c])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBRLW-00000001WhO-0dYm
+	id 1vBRLY-00000001Wi4-2SN5
 	for barebox@lists.infradead.org;
-	Wed, 22 Oct 2025 05:25:15 +0000
-Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-7f04816589bso982785385a.3
-        for <barebox@lists.infradead.org>; Tue, 21 Oct 2025 22:25:13 -0700 (PDT)
+	Wed, 22 Oct 2025 05:25:18 +0000
+Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-8907af237ceso754234185a.3
+        for <barebox@lists.infradead.org>; Tue, 21 Oct 2025 22:25:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761110713; x=1761715513; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ylth6lhMCeafCcSCSmtJOsLPEuMJmSybPPhxXNbe51k=;
-        b=ds8R4b10mabtKZ556J7C1TajJuEJfcK6Xfc49WZY2bLTP3qj3v4CWaIoafW2U0RqR3
-         lpzCyxXGB46aSa49s/oeIH59LhmKyuEYCai15wUGRfcR/ZNauAboKJ2s5Uqwy+EJvNyG
-         G72q0hiOhthzotccy40hMDtFsvf7ih0mW0PVNIiTo/15Hhw7lUsspqAfaDGlQEwxPREE
-         6859RK3+6xUqA/MAIFlBnMYU2rU8fKuwm7ijp0tDRkKVAmLe7itcHqMHB2zTxQBtJlj2
-         v+FI0+53dYKOgpc92p9MYM0Ne+DPZSqnY28QAfZfoeRnF2VkYphKOf4E3YSMaKi9pGkz
-         EqOA==
+        d=gmail.com; s=20230601; t=1761110715; x=1761715515; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7YjNajHlcDTD/oYdOeNY3ArS9vazpWyuYp8Owedh9oM=;
+        b=RewgZMvGRYHOBOirjKEzQDIGi0Bu2yRvAkM+Z6YXb06PftzHYvYEDpET3xKNU3ziGJ
+         mH2ZR+BYV2Dc2MJ7Y9KOSf7x4fxwMNEEdnCOPi6TIq6TwuBsLOMvVZQjzT2hxdOSXiky
+         oALhNQqdnV86CsBTAiZd3/N5GP23JJ04tk7gOTAplSsiwWfXBzKuHbvfixcnzzyb51Ur
+         HXUiJZIbYVPvKgcER8qim8D+ZvAH1lQD7eKOAYd9dYZoIGfPwPX0TuxWipMmoQxNVgRw
+         n12ZAw02bd9TZ/FlNgCCVL+ydIalUrs0wIKaUx/X+glvEVIUWdNaByCeLRgzVg+FfYji
+         ZT1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761110713; x=1761715513;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ylth6lhMCeafCcSCSmtJOsLPEuMJmSybPPhxXNbe51k=;
-        b=H+m3XuCI8dGcR3YoqSvrker+DH4+C71rr4qw4J7K6AdmFde5Q2YQwopGJqWfx25GFL
-         OemEmgSUL64/fzJ/JlQVF76PMjLuoGsT7oXRo+8ZDvNUGELdIcA7ZO+giOHHObGjkIm4
-         N4IUJws9+LkcpFmYKg/od2XQNUYsOI67tLk/0qjBjF3invM157193+rvqz5gv6zoFkEJ
-         4CQBcucEw8s4FnJmjpyFuA99RQbKJAlZzFJYA6v31XJkrW1I3szpojfF/2aCg/vdu+Iv
-         FobcZlwckMk8kqzNu095n9KJukNZVFlihHoVIn7dOZOFIDszA/Q/tnkBeSCetuzbgo5R
-         vtqA==
-X-Gm-Message-State: AOJu0YwxCNEgdCB6MvAj7DSCzPDKP6nma5g3WL3ksvfB5VLBks5Dc/Ah
-	xLfj2SjosRFyU9LaaaAjxbtZVrWlPmHn3Txfb5pydGBTkpWVo33Y9Neq
-X-Gm-Gg: ASbGncuC7rhMW3TtgO1wStqhtgAbswy7L66LpgFpiY5cdugiARFTCTobxQJLUqgVKjo
-	PvFB77dbJNb4+Of382iS12Afby+dFERMNYO1OZJRIZkD4ZbFu2aPPGALrYrpwb5DQx2JgXpg2A1
-	gzXd1LsFdHOoPC764KfHTtO/YDN7TF3S6odmowxf+wcvjZiMKh1vup6s5ZboBKiAuwyQlqGyhPC
-	Rpotl/IQQP0K5x0XPT4STaMtjl5yWTBFyyq+ka3E9C0G9QAcCrqmRn2pLqnYiQ+k8ISgHC8J3KB
-	zD66GnjEIHYJ7UoB5Pybqo2eUqOC6TPl5CQGuD2+7iPr01oA2fwAkWOi47LwG5YzU6sL5bSTNK1
-	HxKvR/lAkRYQitvvvQ7+mjxVeDv+ZDb8S+dxqymll7KqTlyd7ita34RnEH4fbfIShfM5iEKWeVd
-	1UOHyXnILD/R/tEklQGJCEbO6IsDAD
-X-Google-Smtp-Source: AGHT+IG+14Wj/goYfXxXqW+HhP2v5iCWGkhU860FC9bS5n2pEHCTTtpqxdN1SiLWo9F8uPCg7W4SmA==
-X-Received: by 2002:a05:620a:c53:b0:862:3e8d:e4fd with SMTP id af79cd13be357-8906f06c61fmr2499523385a.40.1761110712743;
-        Tue, 21 Oct 2025 22:25:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761110715; x=1761715515;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7YjNajHlcDTD/oYdOeNY3ArS9vazpWyuYp8Owedh9oM=;
+        b=K1DT2qAP0ACnBGgpxR3GDlYaye/cbYYnTN9TcBmWW70aZv7f9C9WKXGSVopotgTJKz
+         X3dxUYZWTTROcX7HU7eYnsHCVUIVgNBhK2FVzNyqDoUiQ/gVQmPHm8AlYTGFYrfs0vP3
+         lKwqmRDZoPES/fkyx0BUY2/SoQWC4irchyfkrhrrHZu4PaTv5hbUuUQgIVLPp8q1PEtu
+         ivJsXkToK/0VyOkGtlDBKUolBvQouhs9AOW/7FnI+AYG02pbDEsp2N44BW1se28pBWSO
+         gRBYe9lXPnREvNqMnRHD7mnaE1I66D+x2mTdC+GT0imW7N4AoH7a950CM8rAu48lhHK1
+         h6Yw==
+X-Gm-Message-State: AOJu0Yw5dAAMNp2ghy9oegN7ExCr2Wp7X9LwPNVuiFRuUDDyhKvFtMNo
+	vg+l9JQc4gEaE/JBQkXsMJT7ftrrJg12TJE0tP/HREoNBjwbff1/G4sf
+X-Gm-Gg: ASbGncumLPPpKpwcy/NuE5eQZa104ZV91cWn22On+HvWtNk7SM6JnEEBLaRoM+vHzvP
+	qGuTygxtQzQfw3ulssP/SY0YMRISScZMg/C19b3ExqMl/cd3PezdeBK8/sTbfYLfA0hpCOBm5F9
+	8Adj4k5W8bUbVieDddoFz6WdJSc2fjdTZ2WdnDui7qNI841Sw//FjIC3JNLtyyV/Q9q7Dymq1XT
+	NtGMzJa6FPhIkP8HiDfjDqC27kCh1zBPLi20BQd8T8u7ggZyay8LBrtQ1YjpE+SDQpFHYb3YuIC
+	UxkDm5GVJxsyNLA0I9svdM3EaXPHjVE0uqPks6aODW/Eacns6+ZJ54wWgipltHutFE533L+DQel
+	PE/QzulRnS3mZYxS/Y5MDs9ATp4myHG/47FTP59s/tgH1hLOTDUnEfuZ55BQVTSEijIvVFJ1E1s
+	2lIpQiBdFCZHHz9wTvhu+bP2XnOrrW
+X-Google-Smtp-Source: AGHT+IGYtcPCkyMU2VP93/6W0RuySnCPuarw0MpQx61x/yUeNGFktWDyLuWqGii5hwls6+ciY5uH+g==
+X-Received: by 2002:a05:620a:2688:b0:85f:d78c:579f with SMTP id af79cd13be357-890715aef86mr2095284585a.80.1761110715382;
+        Tue, 21 Oct 2025 22:25:15 -0700 (PDT)
 Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:3b30:d6e6:3dc0:29f0])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cc8d5edasm912895285a.7.2025.10.21.22.25.11
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cc8d5edasm912895285a.7.2025.10.21.22.25.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 22:25:12 -0700 (PDT)
+        Tue, 21 Oct 2025 22:25:14 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org,
 	Chali Anis <chalianis1@gmail.com>
-Date: Wed, 22 Oct 2025 01:25:06 -0400
-Message-Id: <20251022052508.1368520-1-chalianis1@gmail.com>
+Date: Wed, 22 Oct 2025 01:25:08 -0400
+Message-Id: <20251022052508.1368520-3-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251022052508.1368520-1-chalianis1@gmail.com>
+References: <20251022052508.1368520-1-chalianis1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251021_222514_201357_9D76E887 
-X-CRM114-Status: UNSURE (   7.90  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251021_222516_954943_868EC470 
+X-CRM114-Status: GOOD (  13.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -108,41 +110,74 @@ X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] test: Containerfile: add qemu-efi-aarch64.
+Subject: [PATCH 3/3] doc: efi: add efi armv8 payload documentation.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Chali Anis <chalianis1@gmail.com>
 
-this will provide the uefi bios binaries to used for efi aarch64
-payload test.
+Add how to compile armv8 efi payload and how to run it with qemu
 
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- test/Containerfile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/boards/efi.rst | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/test/Containerfile b/test/Containerfile
-index c6c3c57596a6..3d277a147ad1 100644
---- a/test/Containerfile
-+++ b/test/Containerfile
-@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
- 	qemu-system-misc \
- 	qemu-system-mips \
- 	qemu-system-x86 \
-+	qemu-efi-aarch64 \
- 	qemu-system-common \
- 	ovmf \
- 	python3 \
-@@ -63,7 +64,7 @@ ENV LLVM_VERSION=21
+diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
+index 869e5e88172f..a3a06b987f97 100644
+--- a/Documentation/boards/efi.rst
++++ b/Documentation/boards/efi.rst
+@@ -23,7 +23,7 @@ x86_64 binary currently is tested.
+ Building barebox for EFI
+ ------------------------
  
- RUN apt-get update && apt-get install -y --no-install-recommends lsb-release gnupg \
- 	&& wget https://apt.llvm.org/llvm.sh \
--	&& chmod +x llvm.sh && ./llvm.sh ${LLVM_VERSION} \
-+	&& chmod +x llvm.sh && ./llvm.sh ${LLVM_VERSION} -n trixie \
- 	&& apt-get remove -y lsb-release gnupg \
- 	&& apt-get autoremove -y --purge \
- 	&& apt-get clean \
+-Use the following to build barebox for EFI:
++Use the following to build barebox for EFI to target x86 machine:
+ 
+ .. code-block:: sh
+ 
+@@ -31,6 +31,14 @@ Use the following to build barebox for EFI:
+   make efi_defconfig
+   make
+ 
++Use the following to build barebox for EFI to target armv8 machine:
++
++.. code-block:: sh
++
++  export ARCH=arm
++  make efi_v8_defconfig
++  make
++
+ The resulting EFI image is ``barebox.efi`` (or the barebox-flash-image link).
+ 
+ Running barebox on EFI systems
+@@ -39,8 +47,9 @@ Running barebox on EFI systems
+ The simplest way to run barebox on a USB memory stick. (U)EFI only supports
+ FAT filesystems, so make sure you either have a FAT16 or FAT32 filesystem on
+ the memory stick. Put ``barebox.efi`` into the ``EFI/BOOT/`` directory and
+-name it ``BOOTx64.EFI`` on 64bit architectures and ``BOOTIA32.EFI`` on 32bit
+-architectures. Switching to USB boot in the BIOS should then be enough to
++name it, for x86 ``BOOTx64.EFI`` or ``BOOTIA32.EFI`` on 64bit or 32bit
++architectures recpectivly, for armv8 ``BOOTAA64.EFI``.
++Switching to USB boot in the BIOS should then be enough to
+ start barebox via USB. Some BIOSes allow to specify a path to a binary to
+ be executed, others have a "start UEFI shell" entry which executes
+ EFI/Shellx64.efi on the :term:`ESP`. This can be a barebox binary as well.
+@@ -87,9 +96,13 @@ necessary to make a copy first.
+ To start it create a USB memory stick like above and execute:
+ 
+ .. code-block:: sh
+-
++
++  # On x86
+   qemu-system-x86_64 -pflash OVMF.fd -nographic /dev/sdx
+ 
++  # On armv8
++  qemu-system-aarch64 -L /usr/share/qemu-efi-aarch64 -bios QEMU_EFI.fd -nographic /dev/sdx
++
+ A plain VFAT image will work aswell, but in this case the UEFI BIOS won't
+ recognize it as ESP and ``/boot`` won't be mounted.
+ 
 -- 
 2.34.1
 
