@@ -1,61 +1,64 @@
-Delivery-date: Wed, 22 Oct 2025 14:35:12 +0200
+Delivery-date: Wed, 22 Oct 2025 15:38:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBY3c-00AbhQ-2G
+	id 1vBZ2g-00Acdj-1Y
 	for lore@lore.pengutronix.de;
-	Wed, 22 Oct 2025 14:35:12 +0200
+	Wed, 22 Oct 2025 15:38:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vBY3c-0002lr-3q
-	for lore@pengutronix.de; Wed, 22 Oct 2025 14:35:12 +0200
+	id 1vBZ2f-00049r-SM
+	for lore@pengutronix.de; Wed, 22 Oct 2025 15:38:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rceEUjaYw2cabOFulJZiI9SNBKmD5PBAjN411CHus3Y=; b=oG744/tFIv9dTaAcUQ0u/7JHMp
-	hvVyLQzzt9O0wduaPZsfKJrHBKY9FEkOmDpn3g4zZjgMOdsNkNRrV41jj+fgTZ/YIHsILlflsw/aq
-	b+OFw4iFxpRt7FsxMdHab6nCk3DOqFwXH9/+p4chPuxwQZOVf0lQ7d+9S0fs/cypFV4uOjg0QJla/
-	lYy405fvnvXv2coF167RUHPosh6oM5HS/jwuOdhRLIdnwWPYMzo0sbQ+ayxef+S2+GMK4/0RUS4i0
-	Fl67FbsKTTIY6g+g/40o4uo7Tk0b6weYcbyl/idNuat5MQbjLhF414n6iOH5MF78PlpCOyxgFqaRk
-	L8h8W2zQ==;
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=BdZteVBm/lOTTho4v4V/HjrpLn9/IX3ZzVCasTun7j0=; b=2DSvAdCVGlztx70sVrjx06Yd5M
+	u9eQux1gPeytK9JNzQ8utfU4SszKzP0fb6pktJ27NJcbOVpwOybsQK4tnYav3qJXP1Vd0HTSBequ0
+	0Y6+a12GGseN0FUCz8TR4jz64B8c0FnuEnUAX8EmH5977+EpdXoxREuiYA2fnfeU8HkYavzkOwBjj
+	1nP1WVUS8mea6JNwVEKHjpOrjFly3ww5boDd1wyID5ug2jlLCZg1piAgwj/KMB/5H6a1lWqYj7GyY
+	klsyuEEziK/ApAPYBxKTY0V9r4ykcWyeRLrFQcC38phtulIdo4EIvo/k5n+n30W9A3VwXaHES+rn3
+	U6vijD5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBY3A-00000002oi5-0o8R;
-	Wed, 22 Oct 2025 12:34:44 +0000
+	id 1vBZ28-000000032DA-2OG6;
+	Wed, 22 Oct 2025 13:37:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBY38-00000002ohl-06oP
+	id 1vBZ25-000000032BG-1M06
 	for barebox@lists.infradead.org;
-	Wed, 22 Oct 2025 12:34:43 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vBY36-0002g4-ED; Wed, 22 Oct 2025 14:34:40 +0200
-Message-ID: <03e87d4d-e19a-4c98-b1b9-167b68c4ac8e@pengutronix.de>
-Date: Wed, 22 Oct 2025 14:34:40 +0200
+	Wed, 22 Oct 2025 13:37:42 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vBZ23-00041L-AN; Wed, 22 Oct 2025 15:37:39 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vBZ23-004tsz-0R;
+	Wed, 22 Oct 2025 15:37:39 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vBZ23-00000005r84-070a;
+	Wed, 22 Oct 2025 15:37:39 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed, 22 Oct 2025 15:37:38 +0200
+Message-ID: <20251022133738.1395366-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20251014-tlv-signature-v1-0-7a8aaf95081c@pengutronix.de>
- <20251014-tlv-signature-v1-12-7a8aaf95081c@pengutronix.de>
- <703f28ed-2d8a-4784-a850-ae577119f56e@pengutronix.de>
- <f2e96d72-3d01-4845-a997-4926ea4bdee0@pengutronix.de>
- <f0f65056-ef7a-4544-b98a-fa95d4674a1f@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <f0f65056-ef7a-4544-b98a-fa95d4674a1f@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251022_053442_082145_AC755DEC 
-X-CRM114-Status: GOOD (  21.31  )
+X-CRM114-CacheID: sfid-20251022_063741_359863_56EDA34D 
+X-CRM114-Status: GOOD (  15.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,82 +80,98 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 12/15] test: py: add signature to TLV integration tests
+Subject: [PATCH] Kbuild: make sure to build fixdep first
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+A host tool is built with:
 
-On 10/22/25 2:28 PM, Jonas Rebmann wrote:
-> Hi,
-> 
-> On 2025-10-22 12:11, Ahmad Fatoum wrote:
->>
->>
->> On 10/22/25 12:04 PM, Ahmad Fatoum wrote:
->>> Hi,
->>>
->>> On 10/14/25 1:03 PM, Jonas Rebmann wrote:
->>>> Add TLV signature to TLV integration tests:
->>>>   - Signed TLV using development RSA key
->>>>   - Modify payload and fix CRC for a "tampered" tlv
->>>>   - Include both cases in generator and tlv-command tests.
->>>>
->>>> Use the keys selected by CRYPTO_BUILTIN_DEVELOPMENT_KEYS for all TLV
->>>> testing. Consequentially add the matching private keys from the public
->>>> repository at [1].
->>>>
->>>> [1]: https://git.pengutronix.de/cgit/ptx-code-signing-dev/
->>>>
->>>> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
->>>> ---
->>>>   crypto/fit-4096-development.key  |  51 ++++++++++
->>>>   crypto/fit-ecdsa-development.key |   5 +
->>>
->>> Move this into test/?
->>
->> Ah, I see the *.crt files are already in crypto...
->> Can't you concatenate the *.key and *.crt files into a single pem file?
->>
->> That's what we do for test/self/development_rsa2048.pem and it works
->> there. Removes clutter a bit.
-> 
-> I'd prefer not to. I suppose our tooling supports this, users that
-> utilize CRYPTO_BUILTIN_DEVELOPMENT_KEYS for testing may not; and they
-> should not have to pick apart private and public key again.
+$(host-csingle): $(obj)/%: $(src)/%.c FORCE
+	$(call if_changed_dep,host-csingle)
 
-Which users? These keys are for barebox-internal consumption.
+if_changed_dep calls fixdep after successful compilation. fixdep is a
+host tool itself, so this only works when fixdep ist the first host tool
+that is being built.
 
-> I'd consider concatenating them most of the time not the best practice.
-> You'll have a file of which `file` tells you it's an "OpenSSH public
-> key", but if you open it and then scroll down, you realize it's a
-> private key.
-> 
-> Yes this particular private key is all but private but lets not endorse
-> this practice.
+Recently the sconfigpost tool was added to scripts/basic, so it can
+happen that this is built before fixdep so that the fixdep call fails.
 
-I don't buy this argument.
+Fix this by moving sconfigpost to a separate directory and adding
+scripts_basic as a dependency.
 
-> Keeping them separates also makes it visible where we use the private
-> key: We need it when creating the signed TLVs in test/py/test_tlv.py and
-> only there.
+The erroneous behaviour can be reproduced with:
+make ARCH=arm --shuffle=2659722306 O=build-foo imx_v8_defconfig
 
-The private key we already have in tree are piggy backing on the public
-key. I think we should do the same here as well.
+Fixes: b720fb9a90 ("Add security policy support")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ Makefile                                     | 10 +++++++---
+ scripts/basic/Makefile                       |  1 -
+ scripts/sconfigpost/Makefile                 |  1 +
+ scripts/{basic => sconfigpost}/sconfigpost.c |  0
+ 4 files changed, 8 insertions(+), 4 deletions(-)
+ create mode 100644 scripts/sconfigpost/Makefile
+ rename scripts/{basic => sconfigpost}/sconfigpost.c (100%)
 
-Cheers,
-Ahmad
-
-> 
-> Regards,
-> Jonas
-> 
-
+diff --git a/Makefile b/Makefile
+index 7884953539..3774b4f9c1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -450,7 +450,7 @@ AWK		= awk
+ GENKSYMS	= scripts/genksyms/genksyms
+ DEPMOD		= /sbin/depmod
+ KALLSYMS	= scripts/kallsyms
+-SCONFIGPOST	= scripts/basic/sconfigpost
++SCONFIGPOST	= scripts/sconfigpost/sconfigpost
+ PERL		= perl
+ PYTHON3		= python3
+ CHECK		= sparse
+@@ -556,6 +556,10 @@ PHONY += scripts_basic
+ scripts_basic:
+ 	$(Q)$(MAKE) $(build)=scripts/basic
+ 
++PHONY += scripts_sconfigpost
++scripts_sconfigpost: scripts_basic
++	$(Q)$(MAKE) $(build)=scripts/sconfigpost
++
+ PHONY += outputmakefile
+ # Before starting out-of-tree build, make sure the source tree is clean.
+ # outputmakefile generates a Makefile in the output directory, if using a
+@@ -1223,10 +1227,10 @@ endif
+ quiet_cmd_sconfigpost = SCONFPP $@
+       cmd_sconfigpost = $(SCONFIGPOST) $2 -D $(depfile) -o $@ $<
+ 
+-include/generated/security_autoconf.h: .security_config scripts_basic FORCE
++include/generated/security_autoconf.h: .security_config scripts_sconfigpost FORCE
+ 	$(call if_changed_dep,sconfigpost,-e)
+ 
+-include/generated/sconfig_names.h: .security_config scripts_basic include/generated/security_autoconf.h FORCE
++include/generated/sconfig_names.h: .security_config scripts_sconfigpost include/generated/security_autoconf.h FORCE
+ 	$(call if_changed_dep,sconfigpost,-s)
+ 
+ archprepare: include/generated/security_autoconf.h include/generated/sconfig_names.h
+diff --git a/scripts/basic/Makefile b/scripts/basic/Makefile
+index cd4d9f321d..65a714b578 100644
+--- a/scripts/basic/Makefile
++++ b/scripts/basic/Makefile
+@@ -4,4 +4,3 @@
+ # sconfigpost: used to postprocess security configs
+ 
+ hostprogs-always-y	+= fixdep
+-hostprogs-always-y	+= sconfigpost
+diff --git a/scripts/sconfigpost/Makefile b/scripts/sconfigpost/Makefile
+new file mode 100644
+index 0000000000..6120c30459
+--- /dev/null
++++ b/scripts/sconfigpost/Makefile
+@@ -0,0 +1 @@
++hostprogs-always-y	+= sconfigpost
+diff --git a/scripts/basic/sconfigpost.c b/scripts/sconfigpost/sconfigpost.c
+similarity index 100%
+rename from scripts/basic/sconfigpost.c
+rename to scripts/sconfigpost/sconfigpost.c
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
