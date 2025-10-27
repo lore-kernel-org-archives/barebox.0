@@ -1,69 +1,72 @@
-Delivery-date: Mon, 27 Oct 2025 11:22:10 +0100
+Delivery-date: Mon, 27 Oct 2025 11:25:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDKMc-00CIz6-1H
+	id 1vDKQ6-00CJ1f-26
 	for lore@lore.pengutronix.de;
-	Mon, 27 Oct 2025 11:22:10 +0100
+	Mon, 27 Oct 2025 11:25:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDKMb-0003x9-SV
-	for lore@pengutronix.de; Mon, 27 Oct 2025 11:22:10 +0100
+	id 1vDKQ6-0004Ym-52
+	for lore@pengutronix.de; Mon, 27 Oct 2025 11:25:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XGUVSufCr669doGtCKA0eDB4drUsF8bEeaBOBOJIUL8=; b=D4Q86h4pWsLJOAIPcAyOt0Ne4l
-	ekSRfpiiHyEmfbtTiOrmzlU9iInEQLJOCgx2y0bdB4G7gu7nrKVIFC4LBWg+nMGMa3Y7HmHUdLBQJ
-	9P/dNa0aN2TDqw0qo/sGkH5UVt9BQRBcO7Y4esmSVomAraPNQ/UzGSITxI03xvD17Pa1ovnMr4Joe
-	CyHiP7CVCvV5qZkx3cO52xg9AUcb0+3Nfzh6n6N7XdL6/xa7hISHhQqQrXvnKHlk5NeZIeKX4ZS6C
-	ajV1FirX1LprKCnRpK99ZN1Sy+aONoh3ymsfWfQOwCPFLJjsRW3J+2zXIDK9X/80lFcE/G2/Qbc6o
-	qcfgJKkw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=V9olgiXDPU6X52YEPDH2BtPxtrthZ5MMc7b+BOAA1Tk=; b=YvK94EDy0ljDe6ojFbUAbAmdmR
+	RmKPt10PejZt9DEGsXgeBM9BpSHal+8myA2wYsbu/Kavqtzc7SN4w87fNLCNoaUa7DJLLOeTDumLn
+	ZYIQqI5mGe12QsW+s0HQmlRTK+JTInG0t2wE3kmzPZ0HP8KgX4IJIItt71Tv2LuwNO4s7ydyFh4pH
+	wN3npOC66QFn912/dw6BY0aAHcCB44A9Neag8YDnNK7RlFy1AJSXg0SFwoI0EJXr09Tue3D3FkwJ/
+	yrZPAft41vUcdpPQFPpX3jYmdguDHaPMh2kIBKnWL1/vQSPmD50ZOQ4+XJyl7Aypx+Jt4ARujMKYF
+	FHpSCabA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDKMD-0000000De96-3vWt;
-	Mon, 27 Oct 2025 10:21:45 +0000
+	id 1vDKPd-0000000Dee3-11RM;
+	Mon, 27 Oct 2025 10:25:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDKMA-0000000De8E-35As
+	id 1vDKPa-0000000Ded9-0Di0
 	for barebox@lists.infradead.org;
-	Mon, 27 Oct 2025 10:21:43 +0000
+	Mon, 27 Oct 2025 10:25:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vDKM9-0003rU-95; Mon, 27 Oct 2025 11:21:41 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vDKPY-0004Qf-Ag; Mon, 27 Oct 2025 11:25:12 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vDKM9-005ghx-0I;
-	Mon, 27 Oct 2025 11:21:41 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vDKM9-000000013R3-21S5;
-	Mon, 27 Oct 2025 11:21:41 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vDKPY-005giM-0T;
+	Mon, 27 Oct 2025 11:25:12 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vDKPY-00398M-0A;
+	Mon, 27 Oct 2025 11:25:12 +0100
+Date: Mon, 27 Oct 2025 11:25:12 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20250930093435.3565118-1-s.hauer@pengutronix.de>
-References: <20250930093435.3565118-1-s.hauer@pengutronix.de>
-Message-Id: <176156050103.251510.8754928703418371050.b4-ty@pengutronix.de>
-Date: Mon, 27 Oct 2025 11:21:41 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+Message-ID: <aP9IiKis44az5DZy@pengutronix.de>
+References: <20251020182841.590206-1-a.fatoum@barebox.org>
+ <176120634786.1140879.1658847254082738843.b4-ty@pengutronix.de>
+ <92aba6cf-cb36-4fc6-a0ec-17d5ff214b15@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92aba6cf-cb36-4fc6-a0ec-17d5ff214b15@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251027_032142_806359_E2E65D02 
-X-CRM114-Status: UNSURE (   7.61  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251027_032514_090396_037A552A 
+X-CRM114-Status: GOOD (  16.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,26 +88,33 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: dts: k3-am62l: Set cpsw3g status to disabled by
- default
+Subject: Re: [PATCH 1/3] test: py: dm: skip test if veritysetup command is
+ disabled
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Tue, 30 Sep 2025 11:34:35 +0200, Sascha Hauer wrote:
-> Set the cpsw3 status to disabled by default and enable it in the
-> board(s) that actually use it.
+On Mon, Oct 27, 2025 at 08:56:39AM +0100, Ahmad Fatoum wrote:
+> On 23.10.25 09:59, Sascha Hauer wrote:
+> > 
+> > On Mon, 20 Oct 2025 20:28:36 +0200, Ahmad Fatoum wrote:
+> >> The test depends on veritysetup being available, so skip it if this is
+> >> not the case.
+> >>
+> >>
+> > 
+> > Applied, thanks!
 > 
-> 
+> Thanks, were they already pushed?
 
-Applied, thanks!
+They are now.
 
-[1/1] ARM: dts: k3-am62l: Set cpsw3g status to disabled by default
-      https://git.pengutronix.de/cgit/barebox/commit/?id=384a3b4bee10 (link may not be stable)
+Sascha
 
-Best regards,
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
