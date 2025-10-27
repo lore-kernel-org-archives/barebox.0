@@ -1,55 +1,54 @@
-Delivery-date: Mon, 27 Oct 2025 07:54:05 +0100
+Delivery-date: Mon, 27 Oct 2025 07:57:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDH7F-00CFf2-2c
+	id 1vDHAl-00CFhZ-1w
 	for lore@lore.pengutronix.de;
-	Mon, 27 Oct 2025 07:54:05 +0100
+	Mon, 27 Oct 2025 07:57:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDH7C-0001xd-QQ
-	for lore@pengutronix.de; Mon, 27 Oct 2025 07:54:05 +0100
+	id 1vDHAj-0002Sc-Ea
+	for lore@pengutronix.de; Mon, 27 Oct 2025 07:57:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TRKE79uDcBoVc/39qE1rWISX+wwdoVoruzMMt34t+Kk=; b=Y68UlVZVXC/dDmai54Q3EEjVLc
-	7IQuT+3UewtWtGEZXne8CxQFGRhcIAhIJT1hHkX3TE3MVRltZ47GC+N7TaKUmUCzsfTkE9tlXJfyU
-	U1cEx2i6Vep1LfpnIbgTPz+3DKwCanRd7hh5bNxztUQMpg5nH/ky5ws4J7p3L/M0/dUISnT8Ujqok
-	y4j97zzi901XXKcap1o53xo1npVonXMHYdolWCHllxZ9Vagae7MnPF8RpIDbweQudRIYigS6uHf/y
-	4cIJKkcjTG0UZqFEm6Wd/NkkzGcWK5tPMrdzVs+hD6xQx1iOEQ8mCiseIuyOAWg57RVZNfBmaWl6x
-	+d83jPrw==;
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ZTxiyTzXfKngbmXKhsUEA4zU6C7FonBxSZKd//z4/1g=; b=Za8fgh5Ur5KWu1XpEvQfmNMqlj
+	FfaOEdWRqwOnWbPHh9HYNOcupYXp2GtUllPoXDVccHN0tqO+g9aBsSX757GsYKW1h+snmEWm5K0Tg
+	xZiZVX1Pa0vAozDPnXRFq9WErY3nqNR1O/ueXM1ngYNtre/nzirON8PpUmzGenLf4a+ZF5Bj7FtzL
+	NRWta/LaKOkiU3bE/8C6TgUVdnc9pixkNoog5jZaNrGXcX88r57PJZ674huD4OPj9cnFpFBo7YIgo
+	psojtiyZO6q+A4B+nmmVY3og3KaSJVRcbwUG4QOr5Ceic6u5mSU3EaXvUoVP9J81+d1/Eqy/OHM4P
+	G9kuv4tg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDH6e-0000000DE4y-2vJu;
-	Mon, 27 Oct 2025 06:53:28 +0000
+	id 1vDHAD-0000000DEaZ-1LlR;
+	Mon, 27 Oct 2025 06:57:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDH6Z-0000000DE1r-1gcU
+	id 1vDHA8-0000000DEa6-3g8r
 	for barebox@lists.infradead.org;
-	Mon, 27 Oct 2025 06:53:26 +0000
+	Mon, 27 Oct 2025 06:57:07 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vDH6X-0001gg-QP; Mon, 27 Oct 2025 07:53:21 +0100
+	id 1vDHA7-0002Nd-4j; Mon, 27 Oct 2025 07:57:03 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 27 Oct 2025 07:53:08 +0100
-Message-ID: <20251027065315.2419160-5-a.fatoum@barebox.org>
+Date: Mon, 27 Oct 2025 07:57:00 +0100
+Message-ID: <20251027065701.2423010-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251027065315.2419160-1-a.fatoum@barebox.org>
-References: <20251027065315.2419160-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251026_235324_023965_77A752A3 
-X-CRM114-Status: GOOD (  25.29  )
+X-CRM114-CacheID: sfid-20251026_235706_182711_0A63E24B 
+X-CRM114-Status: GOOD (  21.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,1533 +70,967 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 5/5] pmdomain: add Rockchip power domain support
+Subject: [PATCH] video: panel: add support for Sitronix ST7703 MIPI-DSI panel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On the RK356x, hangs were observed with the VOP2 depending on initcall
-order. Enabling the power domain driver ported here resolved this.
+This panel has been tested with the RK3566 VOP2 MIPI-DSI on the
+Powkiddy RGB30. Support for MIPI-DSI on Rockchip is not upstream yet,
+but the panel can be used with other MIPI-DSI controllers as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/pmdomain/Kconfig               |    1 +
- drivers/pmdomain/Makefile              |    1 +
- drivers/pmdomain/rockchip/Kconfig      |   13 +
- drivers/pmdomain/rockchip/Makefile     |    2 +
- drivers/pmdomain/rockchip/pm-domains.c | 1421 ++++++++++++++++++++++++
- include/soc/rockchip/pm_domains.h      |   25 +
- 6 files changed, 1463 insertions(+)
- create mode 100644 drivers/pmdomain/rockchip/Kconfig
- create mode 100644 drivers/pmdomain/rockchip/Makefile
- create mode 100644 drivers/pmdomain/rockchip/pm-domains.c
- create mode 100644 include/soc/rockchip/pm_domains.h
+ drivers/video/Kconfig                 |  13 +
+ drivers/video/Makefile                |   1 +
+ drivers/video/panel-sitronix-st7703.c | 903 ++++++++++++++++++++++++++
+ 3 files changed, 917 insertions(+)
+ create mode 100644 drivers/video/panel-sitronix-st7703.c
 
-diff --git a/drivers/pmdomain/Kconfig b/drivers/pmdomain/Kconfig
-index 82095ae078c8..d1d4b07d4518 100644
---- a/drivers/pmdomain/Kconfig
-+++ b/drivers/pmdomain/Kconfig
-@@ -2,6 +2,7 @@
- menu "PM Domains"
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index b2eccd5db7fe..4605634bb581 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -202,6 +202,19 @@ config DRIVER_VIDEO_PANEL_SITRONIX_ST7789V
+ 	  Say Y here if you want to enable support for the Sitronix
+ 	  ST7789V controller for 240x320 LCD panels
  
- source "drivers/pmdomain/imx/Kconfig"
-+source "drivers/pmdomain/rockchip/Kconfig"
- source "drivers/pmdomain/ti/Kconfig"
- 
- endmenu
-diff --git a/drivers/pmdomain/Makefile b/drivers/pmdomain/Makefile
-index 25983a67e12f..40b92e659d46 100644
---- a/drivers/pmdomain/Makefile
-+++ b/drivers/pmdomain/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-y					+= imx/
-+obj-y					+= rockchip/
- obj-y					+= ti/
-diff --git a/drivers/pmdomain/rockchip/Kconfig b/drivers/pmdomain/rockchip/Kconfig
-new file mode 100644
-index 000000000000..0ee292b45b31
---- /dev/null
-+++ b/drivers/pmdomain/rockchip/Kconfig
-@@ -0,0 +1,13 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+if ARCH_ROCKCHIP || COMPILE_TEST
-+
-+config ROCKCHIP_PM_DOMAINS
-+	bool "Rockchip generic power domain"
-+	depends on REGULATOR
-+	select PM_GENERIC_DOMAINS
++config DRIVER_VIDEO_PANEL_SITRONIX_ST7703
++	tristate "Sitronix ST7703 based MIPI touchscreen panels"
++	depends on OF
++	depends on DRIVER_VIDEO_MIPI_DSI
++	depends on DRIVER_VIDEO_BACKLIGHT
 +	help
-+	  Say y here to enable power domain support.
-+	  The PMU is dedicated for managing the power of the whole chip and may
-+	  be needed, so peripherals that barebox is using are powered.
++	  Say Y here if you want to enable support for Sitronix ST7703 based
++	  panels, souch as Rocktech JH057N00900 MIPI DSI panel as e.g. used in
++	  the Librem 5 devkit. It has a resolution of 720x1440 pixels, a built
++	  in backlight and touch controller.
++	  Touch input support is provided by the goodix driver and needs to be
++	  selected separately.
 +
-+endif
-diff --git a/drivers/pmdomain/rockchip/Makefile b/drivers/pmdomain/rockchip/Makefile
+ config DRIVER_VIDEO_PANEL_ORISETECH_OTM8009A
+ 	tristate "Orise Technology otm8009a 480x800 dsi 2dl panel"
+ 	depends on OF
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 470a5abaa450..8dfebe2be6a2 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -15,6 +15,7 @@ obj-$(CONFIG_DRIVER_VIDEO_MIPI_DSI) += mipi_dsi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
++obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7703) += panel-sitronix-st7703.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_ORISETECH_OTM8009A) += panel-orisetech-otm8009a.o
+ 
+ obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
+diff --git a/drivers/video/panel-sitronix-st7703.c b/drivers/video/panel-sitronix-st7703.c
 new file mode 100644
-index 000000000000..8fb9d88a3492
+index 000000000000..a1c87c74bb6d
 --- /dev/null
-+++ b/drivers/pmdomain/rockchip/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_ROCKCHIP_PM_DOMAINS)	+= pm-domains.o
-diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
-new file mode 100644
-index 000000000000..4bd4532cb4fd
---- /dev/null
-+++ b/drivers/pmdomain/rockchip/pm-domains.c
-@@ -0,0 +1,1421 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/video/panel-sitronix-st7703.c
+@@ -0,0 +1,903 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Rockchip Generic power domain support.
++ * Driver for panels based on Sitronix ST7703 controller, souch as:
 + *
-+ * Copyright (c) 2015 ROCKCHIP, Co. Ltd.
++ * - Rocktech jh057n00900 5.5" MIPI-DSI panel
++ *
++ * Copyright (C) Purism SPC 2019
 + */
 +
-+
-+#include <linux/io.h>
-+#include <linux/iopoll.h>
-+#include <linux/err.h>
-+#include <linux/device.h>
-+#include <pm_domain.h>
++#include <clock.h>
++#include <linux/gpio/consumer.h>
++#include <video/media-bus-format.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
 +#include <of.h>
-+#include <of_address.h>
-+#include <linux/clk.h>
-+#include <linux/regmap.h>
++#include <of_device.h>
 +#include <regulator.h>
-+#include <mfd/syscon.h>
-+#include <soc/rockchip/pm_domains.h>
-+#include <dt-bindings/power/px30-power.h>
-+#include <dt-bindings/power/rockchip,rv1126-power.h>
-+#include <dt-bindings/power/rk3036-power.h>
-+#include <dt-bindings/power/rk3066-power.h>
-+#include <dt-bindings/power/rk3128-power.h>
-+#include <dt-bindings/power/rk3188-power.h>
-+#include <dt-bindings/power/rk3228-power.h>
-+#include <dt-bindings/power/rk3288-power.h>
-+#include <dt-bindings/power/rk3328-power.h>
-+#include <dt-bindings/power/rk3366-power.h>
-+#include <dt-bindings/power/rk3368-power.h>
-+#include <dt-bindings/power/rk3399-power.h>
-+#include <dt-bindings/power/rk3568-power.h>
-+#include <dt-bindings/power/rockchip,rk3576-power.h>
-+#include <dt-bindings/power/rk3588-power.h>
 +
-+#define readx_poll_timeout_atomic(op, addr, val, cond, poll_time, timeout_us) \
-+	readx_poll_timeout(op, addr, val, cond, timeout_us)
-+#define wmb() do { } while (0)
++#include <video/vpl.h>
++#include <video/mipi_display.h>
++#include <video/mipi_dsi.h>
++#include <video/drm/drm_modes.h>
++#include <video/drm/drm_connector.h>
++#include <video/videomode.h>
++#include <video/backlight.h>
 +
-+struct rockchip_domain_info {
-+	const char *name;
-+	int pwr_mask;
-+	int status_mask;
-+	int req_mask;
-+	int idle_mask;
-+	int ack_mask;
-+	bool active_wakeup;
-+	bool need_regulator;
-+	int pwr_w_mask;
-+	int req_w_mask;
-+	int clk_ungate_mask;
-+	int mem_status_mask;
-+	int repair_status_mask;
-+	u32 pwr_offset;
-+	u32 mem_offset;
-+	u32 req_offset;
-+};
++#define DRV_NAME "panel-sitronix-st7703"
 +
-+struct rockchip_pmu_info {
-+	u32 pwr_offset;
-+	u32 status_offset;
-+	u32 req_offset;
-+	u32 idle_offset;
-+	u32 ack_offset;
-+	u32 mem_pwr_offset;
-+	u32 chain_status_offset;
-+	u32 mem_status_offset;
-+	u32 repair_status_offset;
-+	u32 clk_ungate_offset;
++/* Manufacturer specific Commands send via DSI */
++#define ST7703_CMD_ALL_PIXEL_OFF 0x22
++#define ST7703_CMD_ALL_PIXEL_ON	 0x23
++#define ST7703_CMD_SETAPID	 0xB1
++#define ST7703_CMD_SETDISP	 0xB2
++#define ST7703_CMD_SETRGBIF	 0xB3
++#define ST7703_CMD_SETCYC	 0xB4
++#define ST7703_CMD_SETBGP	 0xB5
++#define ST7703_CMD_SETVCOM	 0xB6
++#define ST7703_CMD_SETOTP	 0xB7
++#define ST7703_CMD_SETPOWER_EXT	 0xB8
++#define ST7703_CMD_SETEXTC	 0xB9
++#define ST7703_CMD_SETMIPI	 0xBA
++#define ST7703_CMD_SETVDC	 0xBC
++#define ST7703_CMD_UNKNOWN_BF	 0xBF
++#define ST7703_CMD_SETSCR	 0xC0
++#define ST7703_CMD_SETPOWER	 0xC1
++#define ST7703_CMD_SETECO	 0xC6
++#define ST7703_CMD_SETIO	 0xC7
++#define ST7703_CMD_SETCABC	 0xC8
++#define ST7703_CMD_SETPANEL	 0xCC
++#define ST7703_CMD_SETGAMMA	 0xE0
++#define ST7703_CMD_SETEQ	 0xE3
++#define ST7703_CMD_SETGIP1	 0xE9
++#define ST7703_CMD_SETGIP2	 0xEA
++#define ST7703_CMD_UNKNOWN_EF	 0xEF
 +
-+	u32 core_pwrcnt_offset;
-+	u32 gpu_pwrcnt_offset;
-+
-+	unsigned int core_power_transition_time;
-+	unsigned int gpu_power_transition_time;
-+
-+	int num_domains;
-+	const struct rockchip_domain_info *domain_info;
-+};
-+
-+#define MAX_QOS_REGS_NUM	5
-+#define QOS_PRIORITY		0x08
-+#define QOS_MODE		0x0c
-+#define QOS_BANDWIDTH		0x10
-+#define QOS_SATURATION		0x14
-+#define QOS_EXTCONTROL		0x18
-+
-+struct rockchip_pm_domain {
-+	struct generic_pm_domain genpd;
-+	const struct rockchip_domain_info *info;
-+	struct rockchip_pmu *pmu;
-+	int num_qos;
-+	struct regmap **qos_regmap;
-+	u32 *qos_save_regs[MAX_QOS_REGS_NUM];
-+	int num_clks;
-+	struct clk_bulk_data *clks;
-+	struct device_node *node;
-+	struct regulator *supply;
-+};
-+
-+struct rockchip_pmu {
++struct st7703 {
 +	struct device *dev;
-+	struct regmap *regmap;
-+	const struct rockchip_pmu_info *info;
-+	struct genpd_onecell_data genpd_data;
-+	struct generic_pm_domain *domains[];
++	struct vpl vpl;
++	struct gpio_desc *reset_gpio;
++	struct regulator *vcc;
++	struct regulator *iovcc;
++	struct backlight_device *backlight;
++
++	const struct st7703_panel_desc *desc;
++	int allpixelson;
 +};
 +
-+#define to_rockchip_pd(gpd) container_of(gpd, struct rockchip_pm_domain, genpd)
++struct st7703_panel_desc {
++	const struct drm_display_mode *mode;
++	unsigned int lanes;
++	unsigned long mode_flags;
++	enum mipi_dsi_pixel_format format;
++	void (*init_sequence)(struct mipi_dsi_multi_context *dsi_ctx);
++};
 +
-+#define DOMAIN(_name, pwr, status, req, idle, ack, wakeup)	\
-+{							\
-+	.name = _name,				\
-+	.pwr_mask = (pwr),				\
-+	.status_mask = (status),			\
-+	.req_mask = (req),				\
-+	.idle_mask = (idle),				\
-+	.ack_mask = (ack),				\
-+	.active_wakeup = (wakeup),			\
-+}
-+
-+#define DOMAIN_M(_name, pwr, status, req, idle, ack, wakeup)	\
-+{							\
-+	.name = _name,				\
-+	.pwr_w_mask = (pwr) << 16,			\
-+	.pwr_mask = (pwr),				\
-+	.status_mask = (status),			\
-+	.req_w_mask = (req) << 16,			\
-+	.req_mask = (req),				\
-+	.idle_mask = (idle),				\
-+	.ack_mask = (ack),				\
-+	.active_wakeup = wakeup,			\
-+}
-+
-+#define DOMAIN_M_O_R(_name, p_offset, pwr, status, m_offset, m_status, r_status, r_offset, req, idle, ack, wakeup, regulator)	\
-+{							\
-+	.name = _name,					\
-+	.pwr_offset = p_offset,				\
-+	.pwr_w_mask = (pwr) << 16,			\
-+	.pwr_mask = (pwr),				\
-+	.status_mask = (status),			\
-+	.mem_offset = m_offset,				\
-+	.mem_status_mask = (m_status),			\
-+	.repair_status_mask = (r_status),		\
-+	.req_offset = r_offset,				\
-+	.req_w_mask = (req) << 16,			\
-+	.req_mask = (req),				\
-+	.idle_mask = (idle),				\
-+	.ack_mask = (ack),				\
-+	.active_wakeup = wakeup,			\
-+	.need_regulator = regulator,			\
-+}
-+
-+#define DOMAIN_M_O_R_G(_name, p_offset, pwr, status, m_offset, m_status, r_status, r_offset, req, idle, ack, g_mask, wakeup)	\
-+{							\
-+	.name = _name,					\
-+	.pwr_offset = p_offset,				\
-+	.pwr_w_mask = (pwr) << 16,			\
-+	.pwr_mask = (pwr),				\
-+	.status_mask = (status),			\
-+	.mem_offset = m_offset,				\
-+	.mem_status_mask = (m_status),			\
-+	.repair_status_mask = (r_status),		\
-+	.req_offset = r_offset,				\
-+	.req_w_mask = (req) << 16,			\
-+	.req_mask = (req),				\
-+	.idle_mask = (idle),				\
-+	.clk_ungate_mask = (g_mask),			\
-+	.ack_mask = (ack),				\
-+	.active_wakeup = wakeup,			\
-+}
-+
-+#define DOMAIN_RK3036(_name, req, ack, idle, wakeup)		\
-+{							\
-+	.name = _name,				\
-+	.req_mask = (req),				\
-+	.req_w_mask = (req) << 16,			\
-+	.ack_mask = (ack),				\
-+	.idle_mask = (idle),				\
-+	.active_wakeup = wakeup,			\
-+}
-+
-+#define DOMAIN_PX30(name, pwr, status, req, wakeup)		\
-+	DOMAIN_M(name, pwr, status, req, (req) << 16, req, wakeup)
-+
-+#define DOMAIN_RV1126(name, pwr, req, idle, wakeup)		\
-+	DOMAIN_M(name, pwr, pwr, req, idle, idle, wakeup)
-+
-+#define DOMAIN_RK3288(name, pwr, status, req, wakeup)		\
-+	DOMAIN(name, pwr, status, req, req, (req) << 16, wakeup)
-+
-+#define DOMAIN_RK3328(name, pwr, status, req, wakeup)		\
-+	DOMAIN_M(name, pwr, pwr, req, (req) << 10, req, wakeup)
-+
-+#define DOMAIN_RK3368(name, pwr, status, req, wakeup)		\
-+	DOMAIN(name, pwr, status, req, (req) << 16, req, wakeup)
-+
-+#define DOMAIN_RK3399(name, pwr, status, req, wakeup)		\
-+	DOMAIN(name, pwr, status, req, req, req, wakeup)
-+
-+#define DOMAIN_RK3568(name, pwr, req, wakeup)		\
-+	DOMAIN_M(name, pwr, pwr, req, req, req, wakeup)
-+
-+#define DOMAIN_RK3576(name, p_offset, pwr, status, r_status, r_offset, req, idle, g_mask, wakeup)	\
-+	DOMAIN_M_O_R_G(name, p_offset, pwr, status, 0, r_status, r_status, r_offset, req, idle, idle, g_mask, wakeup)
-+
-+static struct rockchip_pmu *dmc_pmu;
-+
-+/*
-+ * Block PMU transitions and make sure they don't interfere with ARM Trusted
-+ * Firmware operations. There are two conflicts, noted in the comments below.
-+ *
-+ * Caller must unblock PMU transitions via rockchip_pmu_unblock().
-+ */
-+int rockchip_pmu_block(void)
++static void jh057n_init_sequence(struct mipi_dsi_multi_context *dsi_ctx)
 +{
-+	struct rockchip_pmu *pmu;
-+	struct generic_pm_domain *genpd;
-+	struct rockchip_pm_domain *pd;
-+	int i, ret;
++	/*
++	 * Init sequence was supplied by the panel vendor. Most of the commands
++	 * resemble the ST7703 but the number of parameters often don't match
++	 * so it's likely a clone.
++	 */
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETEXTC,
++					 0xF1, 0x12, 0x83);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETRGBIF,
++					 0x10, 0x10, 0x05, 0x05, 0x03, 0xFF, 0x00, 0x00,
++					 0x00, 0x00);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETSCR,
++					 0x73, 0x73, 0x50, 0x50, 0x00, 0x00, 0x08, 0x70,
++					 0x00);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETVDC, 0x4E);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETPANEL, 0x0B);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETCYC, 0x80);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETDISP, 0xF0, 0x12, 0x30);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETEQ,
++					 0x07, 0x07, 0x0B, 0x0B, 0x03, 0x0B, 0x00, 0x00,
++					 0x00, 0x00, 0xFF, 0x00, 0xC0, 0x10);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETBGP, 0x08, 0x08);
++	mipi_dsi_mdelay(dsi_ctx, 20);
 +
-+	/* No PMU (yet)? Then we just block rockchip_pmu_probe(). */
-+	if (!dmc_pmu)
-+		return 0;
-+	pmu = dmc_pmu;
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETVCOM, 0x3F, 0x3F);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_UNKNOWN_BF, 0x02, 0x11, 0x00);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP1,
++					 0x82, 0x10, 0x06, 0x05, 0x9E, 0x0A, 0xA5, 0x12,
++					 0x31, 0x23, 0x37, 0x83, 0x04, 0xBC, 0x27, 0x38,
++					 0x0C, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0C, 0x00,
++					 0x03, 0x00, 0x00, 0x00, 0x75, 0x75, 0x31, 0x88,
++					 0x88, 0x88, 0x88, 0x88, 0x88, 0x13, 0x88, 0x64,
++					 0x64, 0x20, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88,
++					 0x02, 0x88, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++					 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP2,
++					 0x02, 0x21, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++					 0x00, 0x00, 0x00, 0x00, 0x02, 0x46, 0x02, 0x88,
++					 0x88, 0x88, 0x88, 0x88, 0x88, 0x64, 0x88, 0x13,
++					 0x57, 0x13, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88,
++					 0x75, 0x88, 0x23, 0x14, 0x00, 0x00, 0x02, 0x00,
++					 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++					 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x30, 0x0A,
++					 0xA5, 0x00, 0x00, 0x00, 0x00);
++	mipi_dsi_generic_write_seq_multi(dsi_ctx, ST7703_CMD_SETGAMMA,
++					 0x00, 0x09, 0x0E, 0x29, 0x2D, 0x3C, 0x41, 0x37,
++					 0x07, 0x0B, 0x0D, 0x10, 0x11, 0x0F, 0x10, 0x11,
++					 0x18, 0x00, 0x09, 0x0E, 0x29, 0x2D, 0x3C, 0x41,
++					 0x37, 0x07, 0x0B, 0x0D, 0x10, 0x11, 0x0F, 0x10,
++					 0x11, 0x18);
++	mipi_dsi_mdelay(dsi_ctx, 20);
++}
++
++static const struct drm_display_mode jh057n00900_mode = {
++	.hdisplay    = 720,
++	.hsync_start = 720 + 90,
++	.hsync_end   = 720 + 90 + 20,
++	.htotal	     = 720 + 90 + 20 + 20,
++	.vdisplay    = 1440,
++	.vsync_start = 1440 + 20,
++	.vsync_end   = 1440 + 20 + 4,
++	.vtotal	     = 1440 + 20 + 4 + 12,
++	.clock	     = 75276,
++	.flags	     = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.width_mm    = 65,
++	.height_mm   = 130,
++};
++
++static const struct st7703_panel_desc jh057n00900_panel_desc = {
++	.mode = &jh057n00900_mode,
++	.lanes = 4,
++	.mode_flags = MIPI_DSI_MODE_VIDEO |
++		MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
++	.format = MIPI_DSI_FMT_RGB888,
++	.init_sequence = jh057n_init_sequence,
++};
++
++static void xbd599_init_sequence(struct mipi_dsi_multi_context *dsi_ctx)
++{
++	/*
++	 * Init sequence was supplied by the panel vendor.
++	 */
++
++	/* Magic sequence to unlock user commands below. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEXTC, 0xF1, 0x12, 0x83);
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETMIPI,
++				     0x33, /* VC_main = 0, Lane_Number = 3 (4 lanes) */
++				     0x81, /* DSI_LDO_SEL = 1.7V, RTERM = 90 Ohm */
++				     0x05, /* IHSRX = x6 (Low High Speed driving ability) */
++				     0xF9, /* TX_CLK_SEL = fDSICLK/16 */
++				     0x0E, /* HFP_OSC (min. HFP number in DSI mode) */
++				     0x0E, /* HBP_OSC (min. HBP number in DSI mode) */
++				     /* The rest is undocumented in ST7703 datasheet */
++				     0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x44, 0x25, 0x00, 0x91, 0x0a, 0x00, 0x00, 0x02,
++				     0x4F, 0x11, 0x00, 0x00, 0x37);
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER_EXT,
++				     0x25, /* PCCS = 2, ECP_DC_DIV = 1/4 HSYNC */
++				     0x22, /* DT = 15ms XDK_ECP = x2 */
++				     0x20, /* PFM_DC_DIV = /1 */
++				     0x03  /* ECP_SYNC_EN = 1, VGX_SYNC_EN = 1 */);
++
++	/* RGB I/F porch timing */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETRGBIF,
++				     0x10, /* VBP_RGB_GEN */
++				     0x10, /* VFP_RGB_GEN */
++				     0x05, /* DE_BP_RGB_GEN */
++				     0x05, /* DE_FP_RGB_GEN */
++				     /* The rest is undocumented in ST7703 datasheet */
++				     0x03, 0xFF,
++				     0x00, 0x00,
++				     0x00, 0x00);
++
++	/* Source driving settings. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETSCR,
++				     0x73, /* N_POPON */
++				     0x73, /* N_NOPON */
++				     0x50, /* I_POPON */
++				     0x50, /* I_NOPON */
++				     0x00, /* SCR[31,24] */
++				     0xC0, /* SCR[23,16] */
++				     0x08, /* SCR[15,8] */
++				     0x70, /* SCR[7,0] */
++				     0x00  /* Undocumented */);
++
++	/* NVDDD_SEL = -1.8V, VDDD_SEL = out of range (possibly 1.9V?) */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVDC, 0x4E);
 +
 +	/*
-+	 * Power domain clocks: Per Rockchip, we *must* keep certain clocks
-+	 * enabled for the duration of power-domain transitions. Most
-+	 * transitions are handled by this driver, but some cases (in
-+	 * particular, DRAM DVFS / memory-controller idle) must be handled by
-+	 * firmware. Firmware can handle most clock management via a special
-+	 * "ungate" register (PMU_CRU_GATEDIS_CON0), but unfortunately, this
-+	 * doesn't handle PLLs. We can assist this transition by doing the
-+	 * clock management on behalf of firmware.
++	 * SS_PANEL = 1 (reverse scan), GS_PANEL = 0 (normal scan)
++	 * REV_PANEL = 1 (normally black panel), BGR_PANEL = 1 (BGR)
 +	 */
-+	for (i = 0; i < pmu->genpd_data.num_domains; i++) {
-+		genpd = pmu->genpd_data.domains[i];
-+		if (genpd) {
-+			pd = to_rockchip_pd(genpd);
-+			ret = clk_bulk_enable(pd->num_clks, pd->clks);
-+			if (ret < 0) {
-+				dev_err(pmu->dev,
-+					"failed to enable clks for domain '%s': %d\n",
-+					genpd->name, ret);
-+				goto err;
-+			}
-+		}
-+	}
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPANEL, 0x0B);
++
++	/* Zig-Zag Type C column inversion. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETCYC, 0x80);
++
++	/* Set display resolution. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETDISP,
++				     0xF0, /* NL = 240 */
++				     0x12, /* RES_V_LSB = 0, BLK_CON = VSSD,
++					    * RESO_SEL = 720RGB
++					    */
++				     0xF0  /* WHITE_GND_EN = 1 (GND),
++					    * WHITE_FRAME_SEL = 7 frames,
++					    * ISC = 0 frames
++					    */);
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEQ,
++				     0x00, /* PNOEQ */
++				     0x00, /* NNOEQ */
++				     0x0B, /* PEQGND */
++				     0x0B, /* NEQGND */
++				     0x10, /* PEQVCI */
++				     0x10, /* NEQVCI */
++				     0x00, /* PEQVCI1 */
++				     0x00, /* NEQVCI1 */
++				     0x00, /* reserved */
++				     0x00, /* reserved */
++				     0xFF, /* reserved */
++				     0x00, /* reserved */
++				     0xC0, /* ESD_DET_DATA_WHITE = 1, ESD_WHITE_EN = 1 */
++				     0x10  /* SLPIN_OPTION = 1 (no need vsync after sleep-in)
++					    * VEDIO_NO_CHECK_EN = 0
++					    * ESD_WHITE_GND_EN = 0
++					    * ESD_DET_TIME_SEL = 0 frames
++					    */);
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETECO, 0x01, 0x00, 0xFF, 0xFF, 0x00);
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER,
++				     0x74, /* VBTHS, VBTLS: VGH = 17V, VBL = -11V */
++				     0x00, /* FBOFF_VGH = 0, FBOFF_VGL = 0 */
++				     0x32, /* VRP  */
++				     0x32, /* VRN */
++				     0x77, /* reserved */
++				     0xF1, /* APS = 1 (small),
++					    * VGL_DET_EN = 1, VGH_DET_EN = 1,
++					    * VGL_TURBO = 1, VGH_TURBO = 1
++					    */
++				     0xFF, /* VGH1_L_DIV, VGL1_L_DIV (1.5MHz) */
++				     0xFF, /* VGH1_R_DIV, VGL1_R_DIV (1.5MHz) */
++				     0xCC, /* VGH2_L_DIV, VGL2_L_DIV (2.6MHz) */
++				     0xCC, /* VGH2_R_DIV, VGL2_R_DIV (2.6MHz) */
++				     0x77, /* VGH3_L_DIV, VGL3_L_DIV (4.5MHz) */
++				     0x77  /* VGH3_R_DIV, VGL3_R_DIV (4.5MHz) */);
++
++	/* Reference voltage. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETBGP,
++				     0x07, /* VREF_SEL = 4.2V */
++				     0x07  /* NVREF_SEL = 4.2V */);
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVCOM,
++				     0x2C, /* VCOMDC_F = -0.67V */
++				     0x2C  /* VCOMDC_B = -0.67V */);
++
++	/* Undocumented command. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_UNKNOWN_BF, 0x02, 0x11, 0x00);
++
++	/* This command is to set forward GIP timing. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP1,
++				     0x82, 0x10, 0x06, 0x05, 0xA2, 0x0A, 0xA5, 0x12,
++				     0x31, 0x23, 0x37, 0x83, 0x04, 0xBC, 0x27, 0x38,
++				     0x0C, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0C, 0x00,
++				     0x03, 0x00, 0x00, 0x00, 0x75, 0x75, 0x31, 0x88,
++				     0x88, 0x88, 0x88, 0x88, 0x88, 0x13, 0x88, 0x64,
++				     0x64, 0x20, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88,
++				     0x02, 0x88, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
++
++	/* This command is to set backward GIP timing. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP2,
++				     0x02, 0x21, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x02, 0x46, 0x02, 0x88,
++				     0x88, 0x88, 0x88, 0x88, 0x88, 0x64, 0x88, 0x13,
++				     0x57, 0x13, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88,
++				     0x75, 0x88, 0x23, 0x14, 0x00, 0x00, 0x02, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x0A,
++				     0xA5, 0x00, 0x00, 0x00, 0x00);
++
++	/* Adjust the gamma characteristics of the panel. */
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGAMMA,
++				     0x00, 0x09, 0x0D, 0x23, 0x27, 0x3C, 0x41, 0x35,
++				     0x07, 0x0D, 0x0E, 0x12, 0x13, 0x10, 0x12, 0x12,
++				     0x18, 0x00, 0x09, 0x0D, 0x23, 0x27, 0x3C, 0x41,
++				     0x35, 0x07, 0x0D, 0x0E, 0x12, 0x13, 0x10, 0x12,
++				     0x12, 0x18);
++}
++
++static const struct drm_display_mode xbd599_mode = {
++	.hdisplay    = 720,
++	.hsync_start = 720 + 40,
++	.hsync_end   = 720 + 40 + 40,
++	.htotal	     = 720 + 40 + 40 + 40,
++	.vdisplay    = 1440,
++	.vsync_start = 1440 + 18,
++	.vsync_end   = 1440 + 18 + 10,
++	.vtotal	     = 1440 + 18 + 10 + 17,
++	.clock	     = 69000,
++	.flags	     = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.width_mm    = 68,
++	.height_mm   = 136,
++};
++
++static const struct st7703_panel_desc xbd599_desc = {
++	.mode = &xbd599_mode,
++	.lanes = 4,
++	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
++	.format = MIPI_DSI_FMT_RGB888,
++	.init_sequence = xbd599_init_sequence,
++};
++
++static void rg353v2_init_sequence(struct mipi_dsi_multi_context *dsi_ctx)
++{
++	/*
++	 * Init sequence was supplied by the panel vendor.
++	 */
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEXTC, 0xf1, 0x12, 0x83);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETAPID, 0x00, 0x00, 0x00,
++				     0xda, 0x80);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETDISP, 0x00, 0x13, 0x70);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETRGBIF, 0x10, 0x10, 0x28,
++				     0x28, 0x03, 0xff, 0x00, 0x00, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETCYC, 0x80);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETBGP, 0x0a, 0x0a);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVCOM, 0x92, 0x92);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER_EXT, 0x25, 0x22,
++				     0xf0, 0x63);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETMIPI, 0x33, 0x81, 0x05,
++				     0xf9, 0x0e, 0x0e, 0x20, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x44, 0x25, 0x00, 0x90, 0x0a,
++				     0x00, 0x00, 0x01, 0x4f, 0x01, 0x00, 0x00, 0x37);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVDC, 0x47);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_UNKNOWN_BF, 0x02, 0x11, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETSCR, 0x73, 0x73, 0x50, 0x50,
++				     0x00, 0x00, 0x12, 0x50, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER, 0x53, 0xc0, 0x32,
++				     0x32, 0x77, 0xe1, 0xdd, 0xdd, 0x77, 0x77, 0x33,
++				     0x33);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETECO, 0x82, 0x00, 0xbf, 0xff,
++				     0x00, 0xff);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETIO, 0xb8, 0x00, 0x0a, 0x00,
++				     0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETCABC, 0x10, 0x40, 0x1e,
++				     0x02);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPANEL, 0x0b);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGAMMA, 0x00, 0x07, 0x0d,
++				     0x37, 0x35, 0x3f, 0x41, 0x44, 0x06, 0x0c, 0x0d,
++				     0x0f, 0x11, 0x10, 0x12, 0x14, 0x1a, 0x00, 0x07,
++				     0x0d, 0x37, 0x35, 0x3f, 0x41, 0x44, 0x06, 0x0c,
++				     0x0d, 0x0f, 0x11, 0x10, 0x12, 0x14, 0x1a);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEQ, 0x07, 0x07, 0x0b, 0x0b,
++				     0x0b, 0x0b, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00,
++				     0xc0, 0x10);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP1, 0xc8, 0x10, 0x02, 0x00,
++				     0x00, 0xb0, 0xb1, 0x11, 0x31, 0x23, 0x28, 0x80,
++				     0xb0, 0xb1, 0x27, 0x08, 0x00, 0x04, 0x02, 0x00,
++				     0x00, 0x00, 0x00, 0x04, 0x02, 0x00, 0x00, 0x00,
++				     0x88, 0x88, 0xba, 0x60, 0x24, 0x08, 0x88, 0x88,
++				     0x88, 0x88, 0x88, 0x88, 0x88, 0xba, 0x71, 0x35,
++				     0x18, 0x88, 0x88, 0x88, 0x88, 0x88, 0x00, 0x00,
++				     0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP2, 0x97, 0x0a, 0x82, 0x02,
++				     0x03, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x81, 0x88, 0xba, 0x17, 0x53, 0x88, 0x88, 0x88,
++				     0x88, 0x88, 0x88, 0x80, 0x88, 0xba, 0x06, 0x42,
++				     0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x23, 0x00,
++				     0x00, 0x02, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_UNKNOWN_EF, 0xff, 0xff, 0x01);
++}
++
++static const struct drm_display_mode rg353v2_mode = {
++	.hdisplay	= 640,
++	.hsync_start	= 640 + 40,
++	.hsync_end	= 640 + 40 + 2,
++	.htotal		= 640 + 40 + 2 + 80,
++	.vdisplay	= 480,
++	.vsync_start	= 480 + 18,
++	.vsync_end	= 480 + 18 + 2,
++	.vtotal		= 480 + 18 + 2 + 28,
++	.clock		= 24150,
++	.flags		= DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.width_mm	= 70,
++	.height_mm	= 57,
++};
++
++static const struct st7703_panel_desc rg353v2_desc = {
++	.mode = &rg353v2_mode,
++	.lanes = 4,
++	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
++		      MIPI_DSI_MODE_NO_EOT_PACKET | MIPI_DSI_MODE_LPM,
++	.format = MIPI_DSI_FMT_RGB888,
++	.init_sequence = rg353v2_init_sequence,
++};
++
++static void rgb30panel_init_sequence(struct mipi_dsi_multi_context *dsi_ctx)
++{
++	/* Init sequence extracted from Powkiddy RGB30 BSP kernel. */
++
++	/*
++	 * For some reason this specific panel must be taken out of sleep
++	 * before the full init sequence, or else it will not display.
++	 */
++	mipi_dsi_dcs_exit_sleep_mode_multi(dsi_ctx);
++	mipi_dsi_mdelay(dsi_ctx, 250);
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEXTC, 0xf1, 0x12, 0x83);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETMIPI, 0x33, 0x81, 0x05, 0xf9,
++				     0x0e, 0x0e, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x44, 0x25, 0x00, 0x90, 0x0a, 0x00,
++				     0x00, 0x01, 0x4f, 0x01, 0x00, 0x00, 0x37);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER_EXT, 0x25, 0x22, 0xf0,
++				     0x63);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_UNKNOWN_BF, 0x02, 0x11, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETRGBIF, 0x10, 0x10, 0x28,
++				     0x28, 0x03, 0xff, 0x00, 0x00, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETSCR, 0x73, 0x73, 0x50, 0x50,
++				     0x00, 0x00, 0x12, 0x70, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVDC, 0x46);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPANEL, 0x0b);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETCYC, 0x80);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETDISP, 0x3c, 0x12, 0x30);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEQ, 0x07, 0x07, 0x0b, 0x0b,
++				     0x03, 0x0b, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00,
++				     0xc0, 0x10);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER, 0x36, 0x00, 0x32,
++				     0x32, 0x77, 0xf1, 0xcc, 0xcc, 0x77, 0x77, 0x33,
++				     0x33);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETBGP, 0x0a, 0x0a);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVCOM, 0x88, 0x88);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP1, 0xc8, 0x10, 0x0a, 0x10,
++				     0x0f, 0xa1, 0x80, 0x12, 0x31, 0x23, 0x47, 0x86,
++				     0xa1, 0x80, 0x47, 0x08, 0x00, 0x00, 0x0d, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00,
++				     0x48, 0x02, 0x8b, 0xaf, 0x46, 0x02, 0x88, 0x88,
++				     0x88, 0x88, 0x88, 0x48, 0x13, 0x8b, 0xaf, 0x57,
++				     0x13, 0x88, 0x88, 0x88, 0x88, 0x88, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP2, 0x96, 0x12, 0x01, 0x01,
++				     0x01, 0x78, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x4f, 0x31, 0x8b, 0xa8, 0x31, 0x75, 0x88, 0x88,
++				     0x88, 0x88, 0x88, 0x4f, 0x20, 0x8b, 0xa8, 0x20,
++				     0x64, 0x88, 0x88, 0x88, 0x88, 0x88, 0x23, 0x00,
++				     0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x40, 0xa1, 0x80, 0x00, 0x00, 0x00,
++				     0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGAMMA, 0x00, 0x0a, 0x0f,
++				     0x29, 0x3b, 0x3f, 0x42, 0x39, 0x06, 0x0d, 0x10,
++				     0x13, 0x15, 0x14, 0x15, 0x10, 0x17, 0x00, 0x0a,
++				     0x0f, 0x29, 0x3b, 0x3f, 0x42, 0x39, 0x06, 0x0d,
++				     0x10, 0x13, 0x15, 0x14, 0x15, 0x10, 0x17);
++}
++
++static const struct drm_display_mode rgb30panel_mode = {
++	.hdisplay	= 720,
++	.hsync_start	= 720 + 45,
++	.hsync_end	= 720 + 45 + 4,
++	.htotal		= 720 + 45 + 4 + 45,
++	.vdisplay	= 720,
++	.vsync_start	= 720 + 15,
++	.vsync_end	= 720 + 15 + 3,
++	.vtotal		= 720 + 15 + 3 + 11,
++	.clock		= 36570,
++	.flags		= DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.width_mm	= 76,
++	.height_mm	= 76,
++};
++
++static const struct st7703_panel_desc rgb30panel_desc = {
++	.mode = &rgb30panel_mode,
++	.lanes = 4,
++	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
++		      MIPI_DSI_MODE_NO_EOT_PACKET | MIPI_DSI_MODE_LPM,
++	.format = MIPI_DSI_FMT_RGB888,
++	.init_sequence = rgb30panel_init_sequence,
++};
++
++static void rgb10max3_panel_init_sequence(struct mipi_dsi_multi_context *dsi_ctx)
++{
++	/* Init sequence extracted from Powkiddy RGB10MAX3 BSP kernel. */
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEXTC, 0xf1, 0x12, 0x83);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETAPID, 0x00, 0x00, 0x00, 0xda,
++				     0x80);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETDISP, 0xc8, 0x02, 0x30);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETRGBIF, 0x10, 0x10, 0x28,
++				     0x28, 0x03, 0xff, 0x00, 0x00, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETCYC, 0x80);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETBGP, 0x04, 0x04);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVCOM, 0x78, 0x78);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER_EXT, 0x25, 0x22, 0xf0,
++				     0x63);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETMIPI, 0x33, 0x81, 0x05, 0xf9,
++				     0x0e, 0x0e, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x44, 0x25, 0x00, 0x90, 0x0a, 0x00,
++				     0x00, 0x01, 0x4f, 0x01, 0x00, 0x00, 0x37);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVDC, 0x47);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_UNKNOWN_BF, 0x02, 0x11, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETSCR, 0x73, 0x73, 0x50, 0x50,
++				     0x00, 0x00, 0x12, 0x70, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER, 0x25, 0x00, 0x32,
++				     0x32, 0x77, 0xe1, 0xff, 0xff, 0xcc, 0xcc, 0x77,
++				     0x77);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETECO, 0x82, 0x00, 0xbf, 0xff,
++				     0x00, 0xff);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETIO, 0xb8, 0x00, 0x0a, 0x00,
++				     0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETCABC, 0x10, 0x40, 0x1e,
++				     0x02);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPANEL, 0x0b);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGAMMA, 0x00, 0x04, 0x07,
++				     0x2a, 0x39, 0x3f, 0x36, 0x31, 0x06, 0x0b, 0x0e,
++				     0x12, 0x14, 0x12, 0x13, 0x0f, 0x17, 0x00, 0x04,
++				     0x07, 0x2a, 0x39, 0x3f, 0x36, 0x31, 0x06, 0x0b,
++				     0x0e, 0x12, 0x14, 0x12, 0x13, 0x0f, 0x17);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEQ, 0x03, 0x03, 0x03, 0x03,
++				     0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0xff, 0x80,
++				     0xc0, 0x10);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP1, 0xc8, 0x10, 0x08, 0x00,
++				     0x00, 0x41, 0xf8, 0x12, 0x31, 0x23, 0x37, 0x86,
++				     0x11, 0xc8, 0x37, 0x2a, 0x00, 0x00, 0x0c, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00,
++				     0x88, 0x20, 0x46, 0x02, 0x88, 0x88, 0x88, 0x88,
++				     0x88, 0x88, 0xff, 0x88, 0x31, 0x57, 0x13, 0x88,
++				     0x88, 0x88, 0x88, 0x88, 0x88, 0xff, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP2, 0x00, 0x1a, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x8f, 0x13, 0x31, 0x75, 0x88, 0x88, 0x88, 0x88,
++				     0x88, 0x88, 0xf8, 0x8f, 0x02, 0x20, 0x64, 0x88,
++				     0x88, 0x88, 0x88, 0x88, 0x88, 0xf8, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_UNKNOWN_EF, 0xff, 0xff, 0x01);
++}
++
++static const struct drm_display_mode rgb10max3_panel_mode = {
++	.hdisplay	= 720,
++	.hsync_start	= 720 + 40,
++	.hsync_end	= 720 + 40 + 10,
++	.htotal		= 720 + 40 + 10 + 40,
++	.vdisplay	= 1280,
++	.vsync_start	= 1280 + 16,
++	.vsync_end	= 1280 + 16 + 4,
++	.vtotal		= 1280 + 16 + 4 + 14,
++	.clock		= 63800,
++	.flags		= DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.width_mm	= 62,
++	.height_mm	= 109,
++};
++
++static const struct st7703_panel_desc rgb10max3_panel_desc = {
++	.mode = &rgb10max3_panel_mode,
++	.lanes = 4,
++	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
++		      MIPI_DSI_MODE_NO_EOT_PACKET | MIPI_DSI_MODE_LPM,
++	.format = MIPI_DSI_FMT_RGB888,
++	.init_sequence = rgb10max3_panel_init_sequence,
++};
++
++static void gameforcechi_init_sequence(struct mipi_dsi_multi_context *dsi_ctx)
++{
++	/*
++	 * Init sequence was supplied by the panel vendor. Panel will not
++	 * respond to commands until it is brought out of sleep mode first.
++	 */
++
++	mipi_dsi_dcs_exit_sleep_mode_multi(dsi_ctx);
++	mipi_dsi_mdelay(dsi_ctx, 250);
++
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEXTC, 0xf1, 0x12, 0x83);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETMIPI, 0x31, 0x81, 0x05, 0xf9,
++				     0x0e, 0x0e, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x44, 0x25, 0x00, 0x91, 0x0a, 0x00,
++				     0x00, 0x02, 0x4f, 0xd1, 0x00, 0x00, 0x37);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER_EXT, 0x25);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_UNKNOWN_BF, 0x02, 0x11, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETRGBIF, 0x0c, 0x10, 0x0a,
++				     0x50, 0x03, 0xff, 0x00, 0x00, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETSCR, 0x73, 0x73, 0x50, 0x50,
++				     0x00, 0x00, 0x08, 0x70, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVDC, 0x46);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPANEL, 0x0b);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETCYC, 0x80);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETDISP, 0x00, 0x13, 0xf0);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETEQ, 0x07, 0x07, 0x0b, 0x0b,
++				     0x03, 0x0b, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00,
++				     0xc0, 0x10);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETPOWER, 0x53, 0x00, 0x1e,
++				     0x1e, 0x77, 0xe1, 0xcc, 0xdd, 0x67, 0x77, 0x33,
++				     0x33);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETBGP, 0x10, 0x10);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETVCOM, 0x6c, 0x7c);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP1, 0x08, 0x00, 0x0e, 0x00,
++				     0x00, 0xb0, 0xb1, 0x11, 0x31, 0x23, 0x28, 0x10,
++				     0xb0, 0xb1, 0x27, 0x08, 0x00, 0x04, 0x02, 0x00,
++				     0x00, 0x00, 0x00, 0x04, 0x02, 0x00, 0x00, 0x00,
++				     0x88, 0x88, 0xba, 0x60, 0x24, 0x08, 0x88, 0x88,
++				     0x88, 0x88, 0x88, 0x88, 0x88, 0xba, 0x71, 0x35,
++				     0x18, 0x88, 0x88, 0x88, 0x88, 0x88, 0x00, 0x00,
++				     0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGIP2, 0x97, 0x0a, 0x82, 0x02,
++				     0x13, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x80, 0x88, 0xba, 0x17, 0x53, 0x88, 0x88, 0x88,
++				     0x88, 0x88, 0x88, 0x81, 0x88, 0xba, 0x06, 0x42,
++				     0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x23, 0x10,
++				     0x00, 0x02, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++				     0x00);
++	mipi_dsi_dcs_write_seq_multi(dsi_ctx, ST7703_CMD_SETGAMMA, 0x00, 0x07, 0x0b,
++				     0x27, 0x2d, 0x3f, 0x3b, 0x37, 0x05, 0x0a, 0x0b,
++				     0x0f, 0x11, 0x0f, 0x12, 0x12, 0x18, 0x00, 0x07,
++				     0x0b, 0x27, 0x2d, 0x3f, 0x3b, 0x37, 0x05, 0xa0,
++				     0x0b, 0x0f, 0x11, 0x0f, 0x12, 0x12, 0x18);
++}
++
++static const struct drm_display_mode gameforcechi_mode = {
++	.hdisplay	= 640,
++	.hsync_start	= 640 + 40,
++	.hsync_end	= 640 + 40 + 2,
++	.htotal		= 640 + 40 + 2 + 80,
++	.vdisplay	= 480,
++	.vsync_start	= 480 + 17,
++	.vsync_end	= 480 + 17 + 5,
++	.vtotal		= 480 + 17 + 5 + 13,
++	.clock		= 23546,
++	.flags		= DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.width_mm	= 71,
++	.height_mm	= 53,
++};
++
++static const struct st7703_panel_desc gameforcechi_desc = {
++	.mode = &gameforcechi_mode,
++	.lanes = 2,
++	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
++		      MIPI_DSI_MODE_NO_EOT_PACKET | MIPI_DSI_MODE_LPM,
++	.format = MIPI_DSI_FMT_RGB888,
++	.init_sequence = gameforcechi_init_sequence,
++};
++
++static int st7703_enable(struct st7703 *ctx)
++{
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++	struct mipi_dsi_multi_context dsi_ctx = {.dsi = dsi};
++
++	ctx->desc->init_sequence(&dsi_ctx);
++
++	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
++
++	/* It takes the controller 120 msec to wake up after sleep. */
++	mipi_dsi_mdelay(&dsi_ctx, 120);
++
++	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
++
++	if  (dsi_ctx.accum_err)
++		return dsi_ctx.accum_err;
++
++	dev_dbg(ctx->dev, "Panel init sequence done\n");
++	return backlight_enable(ctx->backlight);
++}
++
++static int st7703_disable(struct st7703 *ctx)
++{
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++	struct mipi_dsi_multi_context dsi_ctx = {.dsi = dsi};
++
++	backlight_disable(ctx->backlight);
++
++	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
++
++	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
++
++	/* It takes the controller 120 msec to enter sleep mode. */
++	mipi_dsi_mdelay(&dsi_ctx, 120);
++
++	return dsi_ctx.accum_err;
++}
++
++static int st7703_unprepare(struct st7703 *ctx)
++{
++
++	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++	regulator_disable(ctx->iovcc);
++	regulator_disable(ctx->vcc);
 +
 +	return 0;
-+
-+err:
-+	for (i = i - 1; i >= 0; i--) {
-+		genpd = pmu->genpd_data.domains[i];
-+		if (genpd) {
-+			pd = to_rockchip_pd(genpd);
-+			clk_bulk_disable(pd->num_clks, pd->clks);
-+		}
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(rockchip_pmu_block);
-+
-+/* Unblock PMU transitions. */
-+void rockchip_pmu_unblock(void)
-+{
-+	struct rockchip_pmu *pmu;
-+	struct generic_pm_domain *genpd;
-+	struct rockchip_pm_domain *pd;
-+	int i;
-+
-+	if (dmc_pmu) {
-+		pmu = dmc_pmu;
-+		for (i = 0; i < pmu->genpd_data.num_domains; i++) {
-+			genpd = pmu->genpd_data.domains[i];
-+			if (genpd) {
-+				pd = to_rockchip_pd(genpd);
-+				clk_bulk_disable(pd->num_clks, pd->clks);
-+			}
-+		}
-+	}
-+}
-+EXPORT_SYMBOL_GPL(rockchip_pmu_unblock);
-+
-+#define DOMAIN_RK3588(name, p_offset, pwr, status, m_offset, m_status, r_status, r_offset, req, idle, wakeup, regulator)	\
-+	DOMAIN_M_O_R(name, p_offset, pwr, status, m_offset, m_status, r_status, r_offset, req, idle, idle, wakeup, regulator)
-+
-+static bool rockchip_pmu_domain_is_idle(struct rockchip_pm_domain *pd)
-+{
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	const struct rockchip_domain_info *pd_info = pd->info;
-+	unsigned int val;
-+
-+	regmap_read(pmu->regmap, pmu->info->idle_offset, &val);
-+	return (val & pd_info->idle_mask) == pd_info->idle_mask;
 +}
 +
-+static unsigned int rockchip_pmu_read_ack(struct rockchip_pmu *pmu)
++static int st7703_prepare(struct st7703 *ctx)
 +{
-+	unsigned int val;
-+
-+	regmap_read(pmu->regmap, pmu->info->ack_offset, &val);
-+	return val;
-+}
-+
-+static int rockchip_pmu_ungate_clk(struct rockchip_pm_domain *pd, bool ungate)
-+{
-+	const struct rockchip_domain_info *pd_info = pd->info;
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	unsigned int val;
-+	int clk_ungate_w_mask = pd_info->clk_ungate_mask << 16;
-+
-+	if (!pd_info->clk_ungate_mask)
-+		return 0;
-+
-+	if (!pmu->info->clk_ungate_offset)
-+		return 0;
-+
-+	val = ungate ? (pd_info->clk_ungate_mask | clk_ungate_w_mask) :
-+			clk_ungate_w_mask;
-+	regmap_write(pmu->regmap, pmu->info->clk_ungate_offset, val);
-+
-+	return 0;
-+}
-+
-+static int rockchip_pmu_set_idle_request(struct rockchip_pm_domain *pd,
-+					 bool idle)
-+{
-+	const struct rockchip_domain_info *pd_info = pd->info;
-+	struct generic_pm_domain *genpd = &pd->genpd;
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	u32 pd_req_offset = pd_info->req_offset;
-+	unsigned int target_ack;
-+	unsigned int val;
-+	bool is_idle;
 +	int ret;
 +
-+	if (pd_info->req_mask == 0)
-+		return 0;
-+	else if (pd_info->req_w_mask)
-+		regmap_write(pmu->regmap, pmu->info->req_offset + pd_req_offset,
-+			     idle ? (pd_info->req_mask | pd_info->req_w_mask) :
-+			     pd_info->req_w_mask);
-+	else
-+		regmap_update_bits(pmu->regmap, pmu->info->req_offset + pd_req_offset,
-+				   pd_info->req_mask, idle ? -1U : 0);
++	dev_dbg(ctx->dev, "Resetting the panel\n");
++	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
 +
-+	wmb();
-+
-+	/* Wait util idle_ack = 1 */
-+	target_ack = idle ? pd_info->ack_mask : 0;
-+	ret = readx_poll_timeout_atomic(rockchip_pmu_read_ack, pmu, val,
-+					(val & pd_info->ack_mask) == target_ack,
-+					0, 10000);
-+	if (ret) {
-+		dev_err(pmu->dev,
-+			"failed to get ack on domain '%s', val=0x%x\n",
-+			genpd->name, val);
-+		return ret;
-+	}
-+
-+	ret = readx_poll_timeout_atomic(rockchip_pmu_domain_is_idle, pd,
-+					is_idle, is_idle == idle, 0, 10000);
-+	if (ret) {
-+		dev_err(pmu->dev,
-+			"failed to set idle on domain '%s', val=%d\n",
-+			genpd->name, is_idle);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int rockchip_pmu_save_qos(struct rockchip_pm_domain *pd)
-+{
-+	int i;
-+
-+	for (i = 0; i < pd->num_qos; i++) {
-+		regmap_read(pd->qos_regmap[i],
-+			    QOS_PRIORITY,
-+			    &pd->qos_save_regs[0][i]);
-+		regmap_read(pd->qos_regmap[i],
-+			    QOS_MODE,
-+			    &pd->qos_save_regs[1][i]);
-+		regmap_read(pd->qos_regmap[i],
-+			    QOS_BANDWIDTH,
-+			    &pd->qos_save_regs[2][i]);
-+		regmap_read(pd->qos_regmap[i],
-+			    QOS_SATURATION,
-+			    &pd->qos_save_regs[3][i]);
-+		regmap_read(pd->qos_regmap[i],
-+			    QOS_EXTCONTROL,
-+			    &pd->qos_save_regs[4][i]);
-+	}
-+	return 0;
-+}
-+
-+static int rockchip_pmu_restore_qos(struct rockchip_pm_domain *pd)
-+{
-+	int i;
-+
-+	for (i = 0; i < pd->num_qos; i++) {
-+		regmap_write(pd->qos_regmap[i],
-+			     QOS_PRIORITY,
-+			     pd->qos_save_regs[0][i]);
-+		regmap_write(pd->qos_regmap[i],
-+			     QOS_MODE,
-+			     pd->qos_save_regs[1][i]);
-+		regmap_write(pd->qos_regmap[i],
-+			     QOS_BANDWIDTH,
-+			     pd->qos_save_regs[2][i]);
-+		regmap_write(pd->qos_regmap[i],
-+			     QOS_SATURATION,
-+			     pd->qos_save_regs[3][i]);
-+		regmap_write(pd->qos_regmap[i],
-+			     QOS_EXTCONTROL,
-+			     pd->qos_save_regs[4][i]);
-+	}
-+
-+	return 0;
-+}
-+
-+static bool rockchip_pmu_domain_is_on(struct rockchip_pm_domain *pd)
-+{
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	unsigned int val;
-+
-+	if (pd->info->repair_status_mask) {
-+		regmap_read(pmu->regmap, pmu->info->repair_status_offset, &val);
-+		/* 1'b1: power on, 1'b0: power off */
-+		return val & pd->info->repair_status_mask;
-+	}
-+
-+	/* check idle status for idle-only domains */
-+	if (pd->info->status_mask == 0)
-+		return !rockchip_pmu_domain_is_idle(pd);
-+
-+	regmap_read(pmu->regmap, pmu->info->status_offset, &val);
-+
-+	/* 1'b0: power on, 1'b1: power off */
-+	return !(val & pd->info->status_mask);
-+}
-+
-+static bool rockchip_pmu_domain_is_mem_on(struct rockchip_pm_domain *pd)
-+{
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	unsigned int val;
-+
-+	regmap_read(pmu->regmap,
-+		    pmu->info->mem_status_offset + pd->info->mem_offset, &val);
-+
-+	/* 1'b0: power on, 1'b1: power off */
-+	return !(val & pd->info->mem_status_mask);
-+}
-+
-+static bool rockchip_pmu_domain_is_chain_on(struct rockchip_pm_domain *pd)
-+{
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	unsigned int val;
-+
-+	regmap_read(pmu->regmap,
-+		    pmu->info->chain_status_offset + pd->info->mem_offset, &val);
-+
-+	/* 1'b1: power on, 1'b0: power off */
-+	return val & pd->info->mem_status_mask;
-+}
-+
-+static int rockchip_pmu_domain_mem_reset(struct rockchip_pm_domain *pd)
-+{
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	struct generic_pm_domain *genpd = &pd->genpd;
-+	bool is_on;
-+	int ret = 0;
-+
-+	ret = readx_poll_timeout_atomic(rockchip_pmu_domain_is_chain_on, pd, is_on,
-+					is_on == true, 0, 10000);
-+	if (ret) {
-+		dev_err(pmu->dev,
-+			"failed to get chain status '%s', target_on=1, val=%d\n",
-+			genpd->name, is_on);
-+		goto error;
-+	}
-+
-+	udelay(20);
-+
-+	regmap_write(pmu->regmap, pmu->info->mem_pwr_offset + pd->info->pwr_offset,
-+		     (pd->info->pwr_mask | pd->info->pwr_w_mask));
-+	wmb();
-+
-+	ret = readx_poll_timeout_atomic(rockchip_pmu_domain_is_mem_on, pd, is_on,
-+					is_on == false, 0, 10000);
-+	if (ret) {
-+		dev_err(pmu->dev,
-+			"failed to get mem status '%s', target_on=0, val=%d\n",
-+			genpd->name, is_on);
-+		goto error;
-+	}
-+
-+	regmap_write(pmu->regmap, pmu->info->mem_pwr_offset + pd->info->pwr_offset,
-+		     pd->info->pwr_w_mask);
-+	wmb();
-+
-+	ret = readx_poll_timeout_atomic(rockchip_pmu_domain_is_mem_on, pd, is_on,
-+					is_on == true, 0, 10000);
-+	if (ret) {
-+		dev_err(pmu->dev,
-+			"failed to get mem status '%s', target_on=1, val=%d\n",
-+			genpd->name, is_on);
-+	}
-+
-+error:
-+	return ret;
-+}
-+
-+static int rockchip_do_pmu_set_power_domain(struct rockchip_pm_domain *pd,
-+					    bool on)
-+{
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	struct generic_pm_domain *genpd = &pd->genpd;
-+	u32 pd_pwr_offset = pd->info->pwr_offset;
-+	bool is_on, is_mem_on = false;
-+	int ret;
-+
-+	if (pd->info->pwr_mask == 0)
-+		return 0;
-+
-+	if (on && pd->info->mem_status_mask)
-+		is_mem_on = rockchip_pmu_domain_is_mem_on(pd);
-+
-+	if (pd->info->pwr_w_mask)
-+		regmap_write(pmu->regmap, pmu->info->pwr_offset + pd_pwr_offset,
-+			     on ? pd->info->pwr_w_mask :
-+			     (pd->info->pwr_mask | pd->info->pwr_w_mask));
-+	else
-+		regmap_update_bits(pmu->regmap, pmu->info->pwr_offset + pd_pwr_offset,
-+				   pd->info->pwr_mask, on ? 0 : -1U);
-+
-+	wmb();
-+
-+	if (is_mem_on) {
-+		ret = rockchip_pmu_domain_mem_reset(pd);
-+		if (ret)
-+			return ret;
-+	}
-+
-+
-+	ret = readx_poll_timeout_atomic(rockchip_pmu_domain_is_on, pd, is_on,
-+					is_on == on, 0, 10000);
-+	if (ret) {
-+		dev_err(pmu->dev, "failed to set domain '%s' %s, val=%d\n",
-+			genpd->name, on ? "on" : "off", is_on);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int rockchip_pd_power(struct rockchip_pm_domain *pd, bool power_on)
-+{
-+	struct rockchip_pmu *pmu = pd->pmu;
-+	int ret;
-+
-+	if (rockchip_pmu_domain_is_on(pd) == power_on)
-+		return 0;
-+
-+	ret = clk_bulk_enable(pd->num_clks, pd->clks);
++	ret = regulator_enable(ctx->iovcc);
 +	if (ret < 0) {
-+		dev_err(pmu->dev, "failed to enable clocks\n");
++		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
 +		return ret;
 +	}
 +
-+	rockchip_pmu_ungate_clk(pd, true);
-+
-+	if (!power_on) {
-+		rockchip_pmu_save_qos(pd);
-+
-+		/* if powering down, idle request to NIU first */
-+		ret = rockchip_pmu_set_idle_request(pd, true);
-+		if (ret < 0)
-+			goto out;
-+	}
-+
-+	ret = rockchip_do_pmu_set_power_domain(pd, power_on);
-+	if (ret < 0)
-+		goto out;
-+
-+	if (power_on) {
-+		/* if powering up, leave idle mode */
-+		ret = rockchip_pmu_set_idle_request(pd, false);
-+		if (ret < 0)
-+			goto out;
-+
-+		rockchip_pmu_restore_qos(pd);
-+	}
-+
-+out:
-+	rockchip_pmu_ungate_clk(pd, false);
-+	clk_bulk_disable(pd->num_clks, pd->clks);
-+
-+	return ret;
-+}
-+
-+static int rockchip_pd_regulator_disable(struct rockchip_pm_domain *pd)
-+{
-+	return IS_ERR_OR_NULL(pd->supply) ? 0 : regulator_disable(pd->supply);
-+}
-+
-+static int rockchip_pd_regulator_enable(struct rockchip_pm_domain *pd)
-+{
-+	struct rockchip_pmu *pmu = pd->pmu;
-+
-+	if (!pd->info->need_regulator)
-+		return 0;
-+
-+	if (IS_ERR_OR_NULL(pd->supply)) {
-+		pd->supply = dev_of_regulator_get(pmu->dev, pd->node, "domain");
-+
-+		if (IS_ERR(pd->supply))
-+			return PTR_ERR(pd->supply);
-+	}
-+
-+	return regulator_enable(pd->supply);
-+}
-+
-+static int rockchip_pd_power_on(struct generic_pm_domain *domain)
-+{
-+	struct rockchip_pm_domain *pd = to_rockchip_pd(domain);
-+	int ret;
-+
-+	dev_dbg(pd->pmu->dev, "powering on '%s'\n", domain->name);
-+
-+	ret = rockchip_pd_regulator_enable(pd);
-+	if (ret) {
-+		dev_err(pd->pmu->dev, "Failed to enable supply: %d\n", ret);
++	ret = regulator_enable(ctx->vcc);
++	if (ret < 0) {
++		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
++		regulator_disable(ctx->iovcc);
 +		return ret;
 +	}
 +
-+	ret = rockchip_pd_power(pd, true);
-+	if (ret)
-+		rockchip_pd_regulator_disable(pd);
++	/* Give power supplies time to stabilize before deasserting reset. */
++	udelay(10000);
 +
-+	return ret;
-+}
-+
-+static int rockchip_pd_power_off(struct generic_pm_domain *domain)
-+{
-+	struct rockchip_pm_domain *pd = to_rockchip_pd(domain);
-+	int ret;
-+
-+	ret = rockchip_pd_power(pd, false);
-+	if (ret)
-+		return ret;
-+
-+	rockchip_pd_regulator_disable(pd);
-+	return ret;
-+}
-+
-+static int rockchip_pd_attach_dev(struct generic_pm_domain *genpd,
-+				  struct device *dev)
-+{
-+	struct clk *clk;
-+	int i;
-+	int error;
-+
-+	dev_dbg(dev, "attaching to power domain '%s'\n", genpd->name);
-+
-+	i = 0;
-+	while ((clk = of_clk_get(dev->of_node, i++)) && !IS_ERR(clk)) {
-+		dev_dbg(dev, "adding clock '%pC' to list of PM clocks\n", clk);
-+		error = clk_enable(clk);
-+		if (error) {
-+			dev_err(dev, "pm_clk_add_clk failed %d\n", error);
-+			clk_put(clk);
-+			return error;
-+		}
-+	}
++	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
++	udelay(15000);
 +
 +	return 0;
 +}
 +
-+static int rockchip_pm_add_one_domain(struct rockchip_pmu *pmu,
-+				      struct device_node *node)
++static int st7703_get_modes(struct st7703 *ctx,
++			    struct display_timings *timings)
 +{
-+	const struct rockchip_domain_info *pd_info;
-+	struct rockchip_pm_domain *pd;
-+	struct device_node *qos_node;
-+	int i, j;
-+	u32 id;
-+	int error;
++	struct fb_videomode *mode;
 +
-+	error = of_property_read_u32(node, "reg", &id);
-+	if (error) {
-+		dev_err(pmu->dev,
-+			"%pOFn: failed to retrieve domain id (reg): %d\n",
-+			node, error);
-+		return -EINVAL;
-+	}
++	mode = xzalloc(sizeof(*mode));
 +
-+	if (id >= pmu->info->num_domains) {
-+		dev_err(pmu->dev, "%pOFn: invalid domain id %d\n",
-+			node, id);
-+		return -EINVAL;
-+	}
-+	/* RK3588 has domains with two parents (RKVDEC0/RKVDEC1) */
-+	if (pmu->genpd_data.domains[id])
-+		return 0;
++	drm_display_mode_to_fb_videomode(ctx->desc->mode, mode);
 +
-+	pd_info = &pmu->info->domain_info[id];
-+	if (!pd_info) {
-+		dev_err(pmu->dev, "%pOFn: undefined domain id %d\n",
-+			node, id);
-+		return -EINVAL;
-+	}
++	timings->modes = mode;
++	timings->num_modes = 1;
 +
-+	pd = devm_kzalloc(pmu->dev, sizeof(*pd), GFP_KERNEL);
-+	if (!pd)
-+		return -ENOMEM;
++	return 0;
++}
 +
-+	pd->info = pd_info;
-+	pd->pmu = pmu;
-+	pd->node = node;
++static int st7703_allpixelson_set(struct param_d *param, void *priv)
++{
++	struct st7703 *ctx = priv;
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++	struct mipi_dsi_multi_context dsi_ctx = {.dsi = dsi};
 +
-+	pd->num_clks = of_clk_get_parent_count(node);
-+	if (pd->num_clks > 0) {
-+		pd->clks = devm_kcalloc(pmu->dev, pd->num_clks,
-+					sizeof(*pd->clks), GFP_KERNEL);
-+		if (!pd->clks)
-+			return -ENOMEM;
-+	} else {
-+		dev_dbg(pmu->dev, "%pOFn: doesn't have clocks: %d\n",
-+			node, pd->num_clks);
-+		pd->num_clks = 0;
-+	}
++	dev_dbg(ctx->dev, "Setting all pixels %s\n",
++		ctx->allpixelson ? "on" : "off");
 +
-+	for (i = 0; i < pd->num_clks; i++) {
-+		pd->clks[i].clk = of_clk_get(node, i);
-+		if (IS_ERR(pd->clks[i].clk)) {
-+			error = PTR_ERR(pd->clks[i].clk);
-+			dev_err(pmu->dev,
-+				"%pOFn: failed to get clk at index %d: %d\n",
-+				node, i, error);
-+			return error;
-+		}
-+	}
-+
-+	pd->num_qos = of_count_phandle_with_args(node, "pm_qos",
-+						 NULL);
-+
-+	if (pd->num_qos > 0) {
-+		pd->qos_regmap = devm_kcalloc(pmu->dev, pd->num_qos,
-+					      sizeof(*pd->qos_regmap),
-+					      GFP_KERNEL);
-+		if (!pd->qos_regmap) {
-+			error = -ENOMEM;
-+			goto err_unprepare_clocks;
-+		}
-+
-+		for (j = 0; j < MAX_QOS_REGS_NUM; j++) {
-+			pd->qos_save_regs[j] = devm_kcalloc(pmu->dev,
-+							    pd->num_qos,
-+							    sizeof(u32),
-+							    GFP_KERNEL);
-+			if (!pd->qos_save_regs[j]) {
-+				error = -ENOMEM;
-+				goto err_unprepare_clocks;
-+			}
-+		}
-+
-+		for (j = 0; j < pd->num_qos; j++) {
-+			qos_node = of_parse_phandle(node, "pm_qos", j);
-+			if (!qos_node) {
-+				error = -ENODEV;
-+				goto err_unprepare_clocks;
-+			}
-+			pd->qos_regmap[j] = syscon_node_to_regmap(qos_node);
-+			of_node_put(qos_node);
-+			if (IS_ERR(pd->qos_regmap[j])) {
-+				error = -ENODEV;
-+				goto err_unprepare_clocks;
-+			}
-+		}
-+	}
-+
-+	if (pd->info->name)
-+		pd->genpd.name = pd->info->name;
++	if (ctx->allpixelson)
++		mipi_dsi_generic_write_seq_multi(&dsi_ctx, ST7703_CMD_ALL_PIXEL_ON);
 +	else
-+		pd->genpd.name = kbasename(node->full_name);
-+	pd->genpd.power_off = rockchip_pd_power_off;
-+	pd->genpd.power_on = rockchip_pd_power_on;
-+	pd->genpd.attach_dev = rockchip_pd_attach_dev;
-+	pm_genpd_init(&pd->genpd, NULL,
-+		      !rockchip_pmu_domain_is_on(pd) ||
-+		      (pd->info->mem_status_mask && !rockchip_pmu_domain_is_mem_on(pd)));
++		mipi_dsi_generic_write_seq_multi(&dsi_ctx, ST7703_CMD_ALL_PIXEL_OFF);
 +
-+	pmu->genpd_data.domains[id] = &pd->genpd;
-+	return 0;
++	/*
++	 * Reset the panel to get video back. NOTE: This isn't a
++	 * particularly safe thing to do in general because it assumes
++	 * that the screen was on to begin with, but this is just a
++	 * debug parameter so it's not a huge deal.
++	 */
++	st7703_disable(ctx);
++	st7703_unprepare(ctx);
++	st7703_prepare(ctx);
++	st7703_enable(ctx);
 +
-+err_unprepare_clocks:
-+	clk_bulk_put(pd->num_clks, pd->clks);
-+	return error;
++	return dsi_ctx.accum_err;
 +}
 +
-+static void rockchip_pm_remove_one_domain(struct rockchip_pm_domain *pd)
++static int st7703_ioctl(struct vpl *vpl, unsigned int port,
++			unsigned int cmd, void *ptr)
 +{
++	struct st7703 *ctx = container_of(vpl, struct st7703, vpl);
++
++	switch (cmd) {
++	case VPL_PREPARE:
++		return st7703_prepare(ctx);
++	case VPL_ENABLE:
++		return st7703_enable(ctx);
++	case VPL_DISABLE:
++		return st7703_disable(ctx);
++	case VPL_UNPREPARE:
++		return st7703_unprepare(ctx);
++	case VPL_GET_VIDEOMODES:
++		return st7703_get_modes(ctx, ptr);
++	case VPL_GET_BUS_FORMAT:
++		*(u32 *)ptr = MEDIA_BUS_FMT_RGB888_1X24;
++		return 0;
++	default:
++		return 0;
++	}
++}
++
++static int st7703_probe(struct mipi_dsi_device *dsi)
++{
++	struct device_node *backlight_node;
++	struct device *dev = &dsi->dev;
++	struct st7703 *ctx;
 +	int ret;
 +
-+	/*
-+	 * We're in the error cleanup already, so we only complain,
-+	 * but won't emit another error on top of the original one.
-+	 */
-+	ret = pm_genpd_remove(&pd->genpd);
-+	if (ret < 0)
-+		dev_err(pd->pmu->dev, "failed to remove domain '%s' : %d - state may be inconsistent\n",
-+			pd->genpd.name, ret);
-+
-+	clk_bulk_put(pd->num_clks, pd->clks);
-+
-+	/* protect the zeroing of pm->num_clks */
-+	pd->num_clks = 0;
-+
-+	/* devm will free our memory */
-+}
-+
-+static void rockchip_pm_domain_cleanup(struct rockchip_pmu *pmu)
-+{
-+	struct generic_pm_domain *genpd;
-+	struct rockchip_pm_domain *pd;
-+	int i;
-+
-+	for (i = 0; i < pmu->genpd_data.num_domains; i++) {
-+		genpd = pmu->genpd_data.domains[i];
-+		if (genpd) {
-+			pd = to_rockchip_pd(genpd);
-+			rockchip_pm_remove_one_domain(pd);
-+		}
-+	}
-+
-+	/* devm will free our memory */
-+}
-+
-+static void rockchip_configure_pd_cnt(struct rockchip_pmu *pmu,
-+				      u32 domain_reg_offset,
-+				      unsigned int count)
-+{
-+	/* First configure domain power down transition count ... */
-+	regmap_write(pmu->regmap, domain_reg_offset, count);
-+	/* ... and then power up count. */
-+	regmap_write(pmu->regmap, domain_reg_offset + 4, count);
-+}
-+
-+static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
-+				     struct device_node *parent)
-+{
-+	struct device_node *np;
-+
-+	for_each_child_of_node(parent, np)
-+		return -ENOSYS;
-+
-+	return 0;
-+}
-+
-+static int rockchip_pm_domain_probe(struct device *dev)
-+{
-+	struct device_node *node, *np = dev->of_node;
-+	struct device *parent;
-+	struct rockchip_pmu *pmu;
-+	const struct rockchip_pmu_info *pmu_info;
-+	int error;
-+
-+	if (!np) {
-+		dev_err(dev, "device tree node not found\n");
-+		return -ENODEV;
-+	}
-+
-+	pmu_info = device_get_match_data(dev);
-+
-+	pmu = devm_kzalloc(dev,
-+			   struct_size(pmu, domains, pmu_info->num_domains),
-+			   GFP_KERNEL);
-+	if (!pmu)
++	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
 +		return -ENOMEM;
 +
-+	pmu->dev = dev;
++	ctx->reset_gpio = gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(ctx->reset_gpio))
++		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio), "Failed to get reset gpio\n");
 +
-+	pmu->info = pmu_info;
++	mipi_dsi_set_drvdata(dsi, ctx);
 +
-+	pmu->genpd_data.domains = pmu->domains;
-+	pmu->genpd_data.num_domains = pmu_info->num_domains;
++	ctx->dev = dev;
++	ctx->desc = of_device_get_match_data(dev);
 +
-+	parent = dev->parent;
-+	if (!parent) {
-+		dev_err(dev, "no parent for syscon devices\n");
-+		return -ENODEV;
-+	}
++	dsi->mode_flags = ctx->desc->mode_flags;
++	dsi->format = ctx->desc->format;
++	dsi->lanes = ctx->desc->lanes;
 +
-+	pmu->regmap = syscon_node_to_regmap(parent->of_node);
-+	if (IS_ERR(pmu->regmap)) {
-+		dev_err(dev, "no regmap available\n");
-+		return PTR_ERR(pmu->regmap);
-+	}
++	ctx->vcc = regulator_get(dev, "vcc");
++	if (IS_ERR(ctx->vcc))
++		return dev_err_probe(dev, PTR_ERR(ctx->vcc), "Failed to request vcc regulator\n");
 +
-+	/*
-+	 * Configure power up and down transition delays for CORE
-+	 * and GPU domains.
-+	 */
-+	if (pmu_info->core_power_transition_time)
-+		rockchip_configure_pd_cnt(pmu, pmu_info->core_pwrcnt_offset,
-+					pmu_info->core_power_transition_time);
-+	if (pmu_info->gpu_pwrcnt_offset)
-+		rockchip_configure_pd_cnt(pmu, pmu_info->gpu_pwrcnt_offset,
-+					pmu_info->gpu_power_transition_time);
++	ctx->iovcc = regulator_get(dev, "iovcc");
++	if (IS_ERR(ctx->iovcc))
++		return dev_err_probe(dev, PTR_ERR(ctx->iovcc),
++				     "Failed to request iovcc regulator\n");
 +
-+	error = -ENODEV;
-+
-+	for_each_available_child_of_node(np, node) {
-+		error = rockchip_pm_add_one_domain(pmu, node);
-+		if (error) {
-+			dev_err(dev, "failed to handle node %pOFn: %d\n",
-+				node, error);
-+			goto err_out;
-+		}
-+
-+		error = rockchip_pm_add_subdomain(pmu, node);
-+		if (error < 0) {
-+			dev_err(dev, "failed to handle subdomain node %pOFn: %d\n",
-+				node, error);
-+			goto err_out;
++	backlight_node = of_parse_phandle(dev->device_node, "backlight", 0);
++	if (backlight_node) {
++		ctx->backlight = of_backlight_find(backlight_node);
++		if (!ctx->backlight) {
++			dev_err(dev, "Cannot find backlight\n");
++			return -ENODEV;
 +		}
 +	}
 +
-+	if (error) {
-+		dev_dbg(dev, "no power domains defined\n");
-+		goto err_out;
++	ctx->vpl.node = dev->of_node;
++	ctx->vpl.ioctl = st7703_ioctl;
++
++	ret = vpl_register(&ctx->vpl);
++	if (ret)
++		return ret;
++
++	ret = mipi_dsi_attach(dsi);
++	if (ret < 0) {
++		dev_err(dev, "mipi_dsi_attach failed (%d). Is host ready?\n", ret);
++		return ret;
 +	}
 +
-+	error = of_genpd_add_provider_onecell(np, &pmu->genpd_data);
-+	if (error) {
-+		dev_err(dev, "failed to add provider: %d\n", error);
-+		goto err_out;
-+	}
++	dev_info(dev, "%ux%u@%u %ubpp dsi %udl - ready\n",
++		 ctx->desc->mode->hdisplay, ctx->desc->mode->vdisplay,
++		 drm_mode_vrefresh(ctx->desc->mode),
++		 mipi_dsi_pixel_format_to_bpp(dsi->format), dsi->lanes);
 +
-+	/* We only expect one PMU. */
-+	if (!WARN_ON_ONCE(dmc_pmu))
-+		dmc_pmu = pmu;
-+
-+	return 0;
-+
-+err_out:
-+	rockchip_pm_domain_cleanup(pmu);
-+	return error;
-+}
-+
-+static const struct rockchip_domain_info px30_pm_domains[] = {
-+	[PX30_PD_USB]		= DOMAIN_PX30("usb",      BIT(5),  BIT(5),  BIT(10), false),
-+	[PX30_PD_SDCARD]	= DOMAIN_PX30("sdcard",   BIT(8),  BIT(8),  BIT(9),  false),
-+	[PX30_PD_GMAC]		= DOMAIN_PX30("gmac",     BIT(10), BIT(10), BIT(6),  false),
-+	[PX30_PD_MMC_NAND]	= DOMAIN_PX30("mmc_nand", BIT(11), BIT(11), BIT(5),  false),
-+	[PX30_PD_VPU]		= DOMAIN_PX30("vpu",      BIT(12), BIT(12), BIT(14), false),
-+	[PX30_PD_VO]		= DOMAIN_PX30("vo",       BIT(13), BIT(13), BIT(7),  false),
-+	[PX30_PD_VI]		= DOMAIN_PX30("vi",       BIT(14), BIT(14), BIT(8),  false),
-+	[PX30_PD_GPU]		= DOMAIN_PX30("gpu",      BIT(15), BIT(15), BIT(2),  false),
-+};
-+
-+static const struct rockchip_domain_info rv1126_pm_domains[] = {
-+	[RV1126_PD_VEPU]	= DOMAIN_RV1126("vepu", BIT(2),  BIT(9),  BIT(9), false),
-+	[RV1126_PD_VI]		= DOMAIN_RV1126("vi", BIT(4),  BIT(6),  BIT(6),  false),
-+	[RV1126_PD_VO]		= DOMAIN_RV1126("vo", BIT(5),  BIT(7),  BIT(7),  false),
-+	[RV1126_PD_ISPP]	= DOMAIN_RV1126("ispp", BIT(1), BIT(8), BIT(8),  false),
-+	[RV1126_PD_VDPU]	= DOMAIN_RV1126("vdpu", BIT(3), BIT(10), BIT(10), false),
-+	[RV1126_PD_NVM]		= DOMAIN_RV1126("nvm", BIT(7), BIT(11), BIT(11),  false),
-+	[RV1126_PD_SDIO]	= DOMAIN_RV1126("sdio", BIT(8), BIT(13), BIT(13),  false),
-+	[RV1126_PD_USB]		= DOMAIN_RV1126("usb", BIT(9), BIT(15), BIT(15),  false),
-+};
-+
-+static const struct rockchip_domain_info rk3036_pm_domains[] = {
-+	[RK3036_PD_MSCH]	= DOMAIN_RK3036("msch", BIT(14), BIT(23), BIT(30), true),
-+	[RK3036_PD_CORE]	= DOMAIN_RK3036("core", BIT(13), BIT(17), BIT(24), false),
-+	[RK3036_PD_PERI]	= DOMAIN_RK3036("peri", BIT(12), BIT(18), BIT(25), false),
-+	[RK3036_PD_VIO]		= DOMAIN_RK3036("vio",  BIT(11), BIT(19), BIT(26), false),
-+	[RK3036_PD_VPU]		= DOMAIN_RK3036("vpu",  BIT(10), BIT(20), BIT(27), false),
-+	[RK3036_PD_GPU]		= DOMAIN_RK3036("gpu",  BIT(9),  BIT(21), BIT(28), false),
-+	[RK3036_PD_SYS]		= DOMAIN_RK3036("sys",  BIT(8),  BIT(22), BIT(29), false),
-+};
-+
-+static const struct rockchip_domain_info rk3066_pm_domains[] = {
-+	[RK3066_PD_GPU]		= DOMAIN("gpu",   BIT(9), BIT(9), BIT(3), BIT(24), BIT(29), false),
-+	[RK3066_PD_VIDEO]	= DOMAIN("video", BIT(8), BIT(8), BIT(4), BIT(23), BIT(28), false),
-+	[RK3066_PD_VIO]		= DOMAIN("vio",   BIT(7), BIT(7), BIT(5), BIT(22), BIT(27), false),
-+	[RK3066_PD_PERI]	= DOMAIN("peri",  BIT(6), BIT(6), BIT(2), BIT(25), BIT(30), false),
-+	[RK3066_PD_CPU]		= DOMAIN("cpu",   0,      BIT(5), BIT(1), BIT(26), BIT(31), false),
-+};
-+
-+static const struct rockchip_domain_info rk3128_pm_domains[] = {
-+	[RK3128_PD_CORE]	= DOMAIN_RK3288("core",  BIT(0), BIT(0), BIT(4), false),
-+	[RK3128_PD_MSCH]	= DOMAIN_RK3288("msch",  0,      0,      BIT(6), true),
-+	[RK3128_PD_VIO]		= DOMAIN_RK3288("vio",   BIT(3), BIT(3), BIT(2), false),
-+	[RK3128_PD_VIDEO]	= DOMAIN_RK3288("video", BIT(2), BIT(2), BIT(1), false),
-+	[RK3128_PD_GPU]		= DOMAIN_RK3288("gpu",   BIT(1), BIT(1), BIT(3), false),
-+};
-+
-+static const struct rockchip_domain_info rk3188_pm_domains[] = {
-+	[RK3188_PD_GPU]		= DOMAIN("gpu",   BIT(9), BIT(9), BIT(3), BIT(24), BIT(29), false),
-+	[RK3188_PD_VIDEO]	= DOMAIN("video", BIT(8), BIT(8), BIT(4), BIT(23), BIT(28), false),
-+	[RK3188_PD_VIO]		= DOMAIN("vio",   BIT(7), BIT(7), BIT(5), BIT(22), BIT(27), false),
-+	[RK3188_PD_PERI]	= DOMAIN("peri",  BIT(6), BIT(6), BIT(2), BIT(25), BIT(30), false),
-+	[RK3188_PD_CPU]		= DOMAIN("cpu",   BIT(5), BIT(5), BIT(1), BIT(26), BIT(31), false),
-+};
-+
-+static const struct rockchip_domain_info rk3228_pm_domains[] = {
-+	[RK3228_PD_CORE]	= DOMAIN_RK3036("core", BIT(0),  BIT(0),  BIT(16), true),
-+	[RK3228_PD_MSCH]	= DOMAIN_RK3036("msch", BIT(1),  BIT(1),  BIT(17), true),
-+	[RK3228_PD_BUS]		= DOMAIN_RK3036("bus",  BIT(2),  BIT(2),  BIT(18), true),
-+	[RK3228_PD_SYS]		= DOMAIN_RK3036("sys",  BIT(3),  BIT(3),  BIT(19), true),
-+	[RK3228_PD_VIO]		= DOMAIN_RK3036("vio",  BIT(4),  BIT(4),  BIT(20), false),
-+	[RK3228_PD_VOP]		= DOMAIN_RK3036("vop",  BIT(5),  BIT(5),  BIT(21), false),
-+	[RK3228_PD_VPU]		= DOMAIN_RK3036("vpu",  BIT(6),  BIT(6),  BIT(22), false),
-+	[RK3228_PD_RKVDEC]	= DOMAIN_RK3036("vdec", BIT(7),  BIT(7),  BIT(23), false),
-+	[RK3228_PD_GPU]		= DOMAIN_RK3036("gpu",  BIT(8),  BIT(8),  BIT(24), false),
-+	[RK3228_PD_PERI]	= DOMAIN_RK3036("peri", BIT(9),  BIT(9),  BIT(25), true),
-+	[RK3228_PD_GMAC]	= DOMAIN_RK3036("gmac", BIT(10), BIT(10), BIT(26), false),
-+};
-+
-+static const struct rockchip_domain_info rk3288_pm_domains[] = {
-+	[RK3288_PD_VIO]		= DOMAIN_RK3288("vio",   BIT(7),  BIT(7),  BIT(4), false),
-+	[RK3288_PD_HEVC]	= DOMAIN_RK3288("hevc",  BIT(14), BIT(10), BIT(9), false),
-+	[RK3288_PD_VIDEO]	= DOMAIN_RK3288("video", BIT(8),  BIT(8),  BIT(3), false),
-+	[RK3288_PD_GPU]		= DOMAIN_RK3288("gpu",   BIT(9),  BIT(9),  BIT(2), false),
-+};
-+
-+static const struct rockchip_domain_info rk3328_pm_domains[] = {
-+	[RK3328_PD_CORE]	= DOMAIN_RK3328("core",  0, BIT(0), BIT(0), false),
-+	[RK3328_PD_GPU]		= DOMAIN_RK3328("gpu",   0, BIT(1), BIT(1), false),
-+	[RK3328_PD_BUS]		= DOMAIN_RK3328("bus",   0, BIT(2), BIT(2), true),
-+	[RK3328_PD_MSCH]	= DOMAIN_RK3328("msch",  0, BIT(3), BIT(3), true),
-+	[RK3328_PD_PERI]	= DOMAIN_RK3328("peri",  0, BIT(4), BIT(4), true),
-+	[RK3328_PD_VIDEO]	= DOMAIN_RK3328("video", 0, BIT(5), BIT(5), false),
-+	[RK3328_PD_HEVC]	= DOMAIN_RK3328("hevc",  0, BIT(6), BIT(6), false),
-+	[RK3328_PD_VIO]		= DOMAIN_RK3328("vio",   0, BIT(8), BIT(8), false),
-+	[RK3328_PD_VPU]		= DOMAIN_RK3328("vpu",   0, BIT(9), BIT(9), false),
-+};
-+
-+static const struct rockchip_domain_info rk3366_pm_domains[] = {
-+	[RK3366_PD_PERI]	= DOMAIN_RK3368("peri",   BIT(10), BIT(10), BIT(6), true),
-+	[RK3366_PD_VIO]		= DOMAIN_RK3368("vio",    BIT(14), BIT(14), BIT(8), false),
-+	[RK3366_PD_VIDEO]	= DOMAIN_RK3368("video",  BIT(13), BIT(13), BIT(7), false),
-+	[RK3366_PD_RKVDEC]	= DOMAIN_RK3368("vdec",   BIT(11), BIT(11), BIT(7), false),
-+	[RK3366_PD_WIFIBT]	= DOMAIN_RK3368("wifibt", BIT(8),  BIT(8),  BIT(9), false),
-+	[RK3366_PD_VPU]		= DOMAIN_RK3368("vpu",    BIT(12), BIT(12), BIT(7), false),
-+	[RK3366_PD_GPU]		= DOMAIN_RK3368("gpu",    BIT(15), BIT(15), BIT(2), false),
-+};
-+
-+static const struct rockchip_domain_info rk3368_pm_domains[] = {
-+	[RK3368_PD_PERI]	= DOMAIN_RK3368("peri",  BIT(13), BIT(12), BIT(6), true),
-+	[RK3368_PD_VIO]		= DOMAIN_RK3368("vio",   BIT(15), BIT(14), BIT(8), false),
-+	[RK3368_PD_VIDEO]	= DOMAIN_RK3368("video", BIT(14), BIT(13), BIT(7), false),
-+	[RK3368_PD_GPU_0]	= DOMAIN_RK3368("gpu_0", BIT(16), BIT(15), BIT(2), false),
-+	[RK3368_PD_GPU_1]	= DOMAIN_RK3368("gpu_1", BIT(17), BIT(16), BIT(2), false),
-+};
-+
-+static const struct rockchip_domain_info rk3399_pm_domains[] = {
-+	[RK3399_PD_TCPD0]	= DOMAIN_RK3399("tcpd0",     BIT(8),  BIT(8),  0,       false),
-+	[RK3399_PD_TCPD1]	= DOMAIN_RK3399("tcpd1",     BIT(9),  BIT(9),  0,       false),
-+	[RK3399_PD_CCI]		= DOMAIN_RK3399("cci",       BIT(10), BIT(10), 0,       true),
-+	[RK3399_PD_CCI0]	= DOMAIN_RK3399("cci0",      0,       0,       BIT(15), true),
-+	[RK3399_PD_CCI1]	= DOMAIN_RK3399("cci1",      0,       0,       BIT(16), true),
-+	[RK3399_PD_PERILP]	= DOMAIN_RK3399("perilp",    BIT(11), BIT(11), BIT(1),  true),
-+	[RK3399_PD_PERIHP]	= DOMAIN_RK3399("perihp",    BIT(12), BIT(12), BIT(2),  true),
-+	[RK3399_PD_CENTER]	= DOMAIN_RK3399("center",    BIT(13), BIT(13), BIT(14), true),
-+	[RK3399_PD_VIO]		= DOMAIN_RK3399("vio",       BIT(14), BIT(14), BIT(17), false),
-+	[RK3399_PD_GPU]		= DOMAIN_RK3399("gpu",       BIT(15), BIT(15), BIT(0),  false),
-+	[RK3399_PD_VCODEC]	= DOMAIN_RK3399("vcodec",    BIT(16), BIT(16), BIT(3),  false),
-+	[RK3399_PD_VDU]		= DOMAIN_RK3399("vdu",       BIT(17), BIT(17), BIT(4),  false),
-+	[RK3399_PD_RGA]		= DOMAIN_RK3399("rga",       BIT(18), BIT(18), BIT(5),  false),
-+	[RK3399_PD_IEP]		= DOMAIN_RK3399("iep",       BIT(19), BIT(19), BIT(6),  false),
-+	[RK3399_PD_VO]		= DOMAIN_RK3399("vo",        BIT(20), BIT(20), 0,       false),
-+	[RK3399_PD_VOPB]	= DOMAIN_RK3399("vopb",      0,       0,       BIT(7),  false),
-+	[RK3399_PD_VOPL]	= DOMAIN_RK3399("vopl",      0,       0,       BIT(8),  false),
-+	[RK3399_PD_ISP0]	= DOMAIN_RK3399("isp0",      BIT(22), BIT(22), BIT(9),  false),
-+	[RK3399_PD_ISP1]	= DOMAIN_RK3399("isp1",      BIT(23), BIT(23), BIT(10), false),
-+	[RK3399_PD_HDCP]	= DOMAIN_RK3399("hdcp",      BIT(24), BIT(24), BIT(11), false),
-+	[RK3399_PD_GMAC]	= DOMAIN_RK3399("gmac",      BIT(25), BIT(25), BIT(23), true),
-+	[RK3399_PD_EMMC]	= DOMAIN_RK3399("emmc",      BIT(26), BIT(26), BIT(24), true),
-+	[RK3399_PD_USB3]	= DOMAIN_RK3399("usb3",      BIT(27), BIT(27), BIT(12), true),
-+	[RK3399_PD_EDP]		= DOMAIN_RK3399("edp",       BIT(28), BIT(28), BIT(22), false),
-+	[RK3399_PD_GIC]		= DOMAIN_RK3399("gic",       BIT(29), BIT(29), BIT(27), true),
-+	[RK3399_PD_SD]		= DOMAIN_RK3399("sd",        BIT(30), BIT(30), BIT(28), true),
-+	[RK3399_PD_SDIOAUDIO]	= DOMAIN_RK3399("sdioaudio", BIT(31), BIT(31), BIT(29), true),
-+};
-+
-+static const struct rockchip_domain_info rk3568_pm_domains[] = {
-+	[RK3568_PD_NPU]		= DOMAIN_RK3568("npu",  BIT(1), BIT(2),  false),
-+	[RK3568_PD_GPU]		= DOMAIN_RK3568("gpu",  BIT(0), BIT(1),  false),
-+	[RK3568_PD_VI]		= DOMAIN_RK3568("vi",   BIT(6), BIT(3),  false),
-+	[RK3568_PD_VO]		= DOMAIN_RK3568("vo",   BIT(7), BIT(4),  false),
-+	[RK3568_PD_RGA]		= DOMAIN_RK3568("rga",  BIT(5), BIT(5),  false),
-+	[RK3568_PD_VPU]		= DOMAIN_RK3568("vpu",  BIT(2), BIT(6),  false),
-+	[RK3568_PD_RKVDEC]	= DOMAIN_RK3568("vdec", BIT(4), BIT(8),  false),
-+	[RK3568_PD_RKVENC]	= DOMAIN_RK3568("venc", BIT(3), BIT(7),  false),
-+	[RK3568_PD_PIPE]	= DOMAIN_RK3568("pipe", BIT(8), BIT(11), false),
-+};
-+
-+static const struct rockchip_domain_info rk3576_pm_domains[] = {
-+	[RK3576_PD_NPU]		= DOMAIN_RK3576("npu",    0x0, BIT(0),  BIT(0), 0,       0x0, 0,       0,       0,       false),
-+	[RK3576_PD_NVM]		= DOMAIN_RK3576("nvm",    0x0, BIT(6),  0,      BIT(6),  0x4, BIT(2),  BIT(18), BIT(2),  false),
-+	[RK3576_PD_SDGMAC]	= DOMAIN_RK3576("sdgmac", 0x0, BIT(7),  0,      BIT(7),  0x4, BIT(1),  BIT(17), 0x6,     false),
-+	[RK3576_PD_AUDIO]	= DOMAIN_RK3576("audio",  0x0, BIT(8),  0,      BIT(8),  0x4, BIT(0),  BIT(16), BIT(0),  false),
-+	[RK3576_PD_PHP]		= DOMAIN_RK3576("php",    0x0, BIT(9),  0,      BIT(9),  0x0, BIT(15), BIT(15), BIT(15), false),
-+	[RK3576_PD_SUBPHP]	= DOMAIN_RK3576("subphp", 0x0, BIT(10), 0,      BIT(10), 0x0, 0,       0,       0,       false),
-+	[RK3576_PD_VOP]		= DOMAIN_RK3576("vop",    0x0, BIT(11), 0,      BIT(11), 0x0, 0x6000,  0x6000,  0x6000,  false),
-+	[RK3576_PD_VO1]		= DOMAIN_RK3576("vo1",    0x0, BIT(14), 0,      BIT(14), 0x0, BIT(12), BIT(12), 0x7000,  false),
-+	[RK3576_PD_VO0]		= DOMAIN_RK3576("vo0",    0x0, BIT(15), 0,      BIT(15), 0x0, BIT(11), BIT(11), 0x6800,  false),
-+	[RK3576_PD_USB]		= DOMAIN_RK3576("usb",    0x4, BIT(0),  0,      BIT(16), 0x0, BIT(10), BIT(10), 0x6400,  true),
-+	[RK3576_PD_VI]		= DOMAIN_RK3576("vi",     0x4, BIT(1),  0,      BIT(17), 0x0, BIT(9),  BIT(9),  BIT(9),  false),
-+	[RK3576_PD_VEPU0]	= DOMAIN_RK3576("vepu0",  0x4, BIT(2),  0,      BIT(18), 0x0, BIT(7),  BIT(7),  0x280,   false),
-+	[RK3576_PD_VEPU1]	= DOMAIN_RK3576("vepu1",  0x4, BIT(3),  0,      BIT(19), 0x0, BIT(8),  BIT(8),  BIT(8),  false),
-+	[RK3576_PD_VDEC]	= DOMAIN_RK3576("vdec",   0x4, BIT(4),  0,      BIT(20), 0x0, BIT(6),  BIT(6),  BIT(6),  false),
-+	[RK3576_PD_VPU]		= DOMAIN_RK3576("vpu",    0x4, BIT(5),  0,      BIT(21), 0x0, BIT(5),  BIT(5),  BIT(5),  false),
-+	[RK3576_PD_NPUTOP]	= DOMAIN_RK3576("nputop", 0x4, BIT(6),  0,      BIT(22), 0x0, 0x18,    0x18,    0x18,    false),
-+	[RK3576_PD_NPU0]	= DOMAIN_RK3576("npu0",   0x4, BIT(7),  0,      BIT(23), 0x0, BIT(1),  BIT(1),  0x1a,    false),
-+	[RK3576_PD_NPU1]	= DOMAIN_RK3576("npu1",   0x4, BIT(8),  0,      BIT(24), 0x0, BIT(2),  BIT(2),  0x1c,    false),
-+	[RK3576_PD_GPU]		= DOMAIN_RK3576("gpu",    0x4, BIT(9),  0,      BIT(25), 0x0, BIT(0),  BIT(0),  BIT(0),  false),
-+};
-+
-+static const struct rockchip_domain_info rk3588_pm_domains[] = {
-+	[RK3588_PD_GPU]		= DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false, true),
-+	[RK3588_PD_NPU]		= DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x0, 0,       0,       0x0, 0,       0,       false, true),
-+	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, false),
-+	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
-+	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
-+	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
-+	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, false),
-+	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, false),
-+	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, false),
-+	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, false),
-+	[RK3588_PD_VDPU]	= DOMAIN_RK3588("vdpu",    0x0, BIT(10), 0,       0x0, BIT(18), BIT(9),  0x0, BIT(8),  BIT(8),  false, false),
-+	[RK3588_PD_RGA30]	= DOMAIN_RK3588("rga30",   0x0, BIT(11), 0,       0x0, BIT(19), BIT(10), 0x0, 0,       0,       false, false),
-+	[RK3588_PD_AV1]		= DOMAIN_RK3588("av1",     0x0, BIT(12), 0,       0x0, BIT(20), BIT(11), 0x0, BIT(9),  BIT(9),  false, false),
-+	[RK3588_PD_VI]		= DOMAIN_RK3588("vi",      0x0, BIT(13), 0,       0x0, BIT(21), BIT(12), 0x0, BIT(10), BIT(10), false, false),
-+	[RK3588_PD_FEC]		= DOMAIN_RK3588("fec",     0x0, BIT(14), 0,       0x0, BIT(22), BIT(13), 0x0, 0,       0,       false, false),
-+	[RK3588_PD_ISP1]	= DOMAIN_RK3588("isp1",    0x0, BIT(15), 0,       0x0, BIT(23), BIT(14), 0x0, BIT(11), BIT(11), false, false),
-+	[RK3588_PD_RGA31]	= DOMAIN_RK3588("rga31",   0x4, BIT(0),  0,       0x0, BIT(24), BIT(15), 0x0, BIT(12), BIT(12), false, false),
-+	[RK3588_PD_VOP]		= DOMAIN_RK3588("vop",     0x4, BIT(1),  0,       0x0, BIT(25), BIT(16), 0x0, BIT(13) | BIT(14), BIT(13) | BIT(14), false, false),
-+	[RK3588_PD_VO0]		= DOMAIN_RK3588("vo0",     0x4, BIT(2),  0,       0x0, BIT(26), BIT(17), 0x0, BIT(15), BIT(15), false, false),
-+	[RK3588_PD_VO1]		= DOMAIN_RK3588("vo1",     0x4, BIT(3),  0,       0x0, BIT(27), BIT(18), 0x4, BIT(0),  BIT(16), false, false),
-+	[RK3588_PD_AUDIO]	= DOMAIN_RK3588("audio",   0x4, BIT(4),  0,       0x0, BIT(28), BIT(19), 0x4, BIT(1),  BIT(17), false, false),
-+	[RK3588_PD_PHP]		= DOMAIN_RK3588("php",     0x4, BIT(5),  0,       0x0, BIT(29), BIT(20), 0x4, BIT(5),  BIT(21), false, false),
-+	[RK3588_PD_GMAC]	= DOMAIN_RK3588("gmac",    0x4, BIT(6),  0,       0x0, BIT(30), BIT(21), 0x0, 0,       0,       false, false),
-+	[RK3588_PD_PCIE]	= DOMAIN_RK3588("pcie",    0x4, BIT(7),  0,       0x0, BIT(31), BIT(22), 0x0, 0,       0,       true, false),
-+	[RK3588_PD_NVM]		= DOMAIN_RK3588("nvm",     0x4, BIT(8),  BIT(24), 0x4, 0,       0,       0x4, BIT(2),  BIT(18), false, false),
-+	[RK3588_PD_NVM0]	= DOMAIN_RK3588("nvm0",    0x4, BIT(9),  0,       0x4, BIT(1),  BIT(23), 0x0, 0,       0,       false, false),
-+	[RK3588_PD_SDIO]	= DOMAIN_RK3588("sdio",    0x4, BIT(10), 0,       0x4, BIT(2),  BIT(24), 0x4, BIT(3),  BIT(19), false, false),
-+	[RK3588_PD_USB]		= DOMAIN_RK3588("usb",     0x4, BIT(11), 0,       0x4, BIT(3),  BIT(25), 0x4, BIT(4),  BIT(20), true, false),
-+	[RK3588_PD_SDMMC]	= DOMAIN_RK3588("sdmmc",   0x4, BIT(13), 0,       0x4, BIT(5),  BIT(26), 0x0, 0,       0,       false, false),
-+};
-+
-+static const struct rockchip_pmu_info px30_pmu = {
-+	.pwr_offset = 0x18,
-+	.status_offset = 0x20,
-+	.req_offset = 0x64,
-+	.idle_offset = 0x6c,
-+	.ack_offset = 0x6c,
-+
-+	.num_domains = ARRAY_SIZE(px30_pm_domains),
-+	.domain_info = px30_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3036_pmu = {
-+	.req_offset = 0x148,
-+	.idle_offset = 0x14c,
-+	.ack_offset = 0x14c,
-+
-+	.num_domains = ARRAY_SIZE(rk3036_pm_domains),
-+	.domain_info = rk3036_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3066_pmu = {
-+	.pwr_offset = 0x08,
-+	.status_offset = 0x0c,
-+	.req_offset = 0x38, /* PMU_MISC_CON1 */
-+	.idle_offset = 0x0c,
-+	.ack_offset = 0x0c,
-+
-+	.num_domains = ARRAY_SIZE(rk3066_pm_domains),
-+	.domain_info = rk3066_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3128_pmu = {
-+	.pwr_offset = 0x04,
-+	.status_offset = 0x08,
-+	.req_offset = 0x0c,
-+	.idle_offset = 0x10,
-+	.ack_offset = 0x10,
-+
-+	.num_domains = ARRAY_SIZE(rk3128_pm_domains),
-+	.domain_info = rk3128_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3188_pmu = {
-+	.pwr_offset = 0x08,
-+	.status_offset = 0x0c,
-+	.req_offset = 0x38, /* PMU_MISC_CON1 */
-+	.idle_offset = 0x0c,
-+	.ack_offset = 0x0c,
-+
-+	.num_domains = ARRAY_SIZE(rk3188_pm_domains),
-+	.domain_info = rk3188_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3228_pmu = {
-+	.req_offset = 0x40c,
-+	.idle_offset = 0x488,
-+	.ack_offset = 0x488,
-+
-+	.num_domains = ARRAY_SIZE(rk3228_pm_domains),
-+	.domain_info = rk3228_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3288_pmu = {
-+	.pwr_offset = 0x08,
-+	.status_offset = 0x0c,
-+	.req_offset = 0x10,
-+	.idle_offset = 0x14,
-+	.ack_offset = 0x14,
-+
-+	.core_pwrcnt_offset = 0x34,
-+	.gpu_pwrcnt_offset = 0x3c,
-+
-+	.core_power_transition_time = 24, /* 1us */
-+	.gpu_power_transition_time = 24, /* 1us */
-+
-+	.num_domains = ARRAY_SIZE(rk3288_pm_domains),
-+	.domain_info = rk3288_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3328_pmu = {
-+	.req_offset = 0x414,
-+	.idle_offset = 0x484,
-+	.ack_offset = 0x484,
-+
-+	.num_domains = ARRAY_SIZE(rk3328_pm_domains),
-+	.domain_info = rk3328_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3366_pmu = {
-+	.pwr_offset = 0x0c,
-+	.status_offset = 0x10,
-+	.req_offset = 0x3c,
-+	.idle_offset = 0x40,
-+	.ack_offset = 0x40,
-+
-+	.core_pwrcnt_offset = 0x48,
-+	.gpu_pwrcnt_offset = 0x50,
-+
-+	.core_power_transition_time = 24,
-+	.gpu_power_transition_time = 24,
-+
-+	.num_domains = ARRAY_SIZE(rk3366_pm_domains),
-+	.domain_info = rk3366_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3368_pmu = {
-+	.pwr_offset = 0x0c,
-+	.status_offset = 0x10,
-+	.req_offset = 0x3c,
-+	.idle_offset = 0x40,
-+	.ack_offset = 0x40,
-+
-+	.core_pwrcnt_offset = 0x48,
-+	.gpu_pwrcnt_offset = 0x50,
-+
-+	.core_power_transition_time = 24,
-+	.gpu_power_transition_time = 24,
-+
-+	.num_domains = ARRAY_SIZE(rk3368_pm_domains),
-+	.domain_info = rk3368_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3399_pmu = {
-+	.pwr_offset = 0x14,
-+	.status_offset = 0x18,
-+	.req_offset = 0x60,
-+	.idle_offset = 0x64,
-+	.ack_offset = 0x68,
-+
-+	/* ARM Trusted Firmware manages power transition times */
-+
-+	.num_domains = ARRAY_SIZE(rk3399_pm_domains),
-+	.domain_info = rk3399_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3568_pmu = {
-+	.pwr_offset = 0xa0,
-+	.status_offset = 0x98,
-+	.req_offset = 0x50,
-+	.idle_offset = 0x68,
-+	.ack_offset = 0x60,
-+
-+	.num_domains = ARRAY_SIZE(rk3568_pm_domains),
-+	.domain_info = rk3568_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3576_pmu = {
-+	.pwr_offset = 0x210,
-+	.status_offset = 0x230,
-+	.chain_status_offset = 0x248,
-+	.mem_status_offset = 0x250,
-+	.mem_pwr_offset = 0x300,
-+	.req_offset = 0x110,
-+	.idle_offset = 0x128,
-+	.ack_offset = 0x120,
-+	.repair_status_offset = 0x570,
-+	.clk_ungate_offset = 0x140,
-+
-+	.num_domains = ARRAY_SIZE(rk3576_pm_domains),
-+	.domain_info = rk3576_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rk3588_pmu = {
-+	.pwr_offset = 0x14c,
-+	.status_offset = 0x180,
-+	.req_offset = 0x10c,
-+	.idle_offset = 0x120,
-+	.ack_offset = 0x118,
-+	.mem_pwr_offset = 0x1a0,
-+	.chain_status_offset = 0x1f0,
-+	.mem_status_offset = 0x1f8,
-+	.repair_status_offset = 0x290,
-+
-+	.num_domains = ARRAY_SIZE(rk3588_pm_domains),
-+	.domain_info = rk3588_pm_domains,
-+};
-+
-+static const struct rockchip_pmu_info rv1126_pmu = {
-+	.pwr_offset = 0x110,
-+	.status_offset = 0x108,
-+	.req_offset = 0xc0,
-+	.idle_offset = 0xd8,
-+	.ack_offset = 0xd0,
-+
-+	.num_domains = ARRAY_SIZE(rv1126_pm_domains),
-+	.domain_info = rv1126_pm_domains,
-+};
-+
-+static const struct of_device_id rockchip_pm_domain_dt_match[] = {
-+	{
-+		.compatible = "rockchip,px30-power-controller",
-+		.data = (void *)&px30_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3036-power-controller",
-+		.data = (void *)&rk3036_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3066-power-controller",
-+		.data = (void *)&rk3066_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3128-power-controller",
-+		.data = (void *)&rk3128_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3188-power-controller",
-+		.data = (void *)&rk3188_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3228-power-controller",
-+		.data = (void *)&rk3228_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3288-power-controller",
-+		.data = (void *)&rk3288_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3328-power-controller",
-+		.data = (void *)&rk3328_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3366-power-controller",
-+		.data = (void *)&rk3366_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3368-power-controller",
-+		.data = (void *)&rk3368_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3399-power-controller",
-+		.data = (void *)&rk3399_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3568-power-controller",
-+		.data = (void *)&rk3568_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3576-power-controller",
-+		.data = (void *)&rk3576_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rk3588-power-controller",
-+		.data = (void *)&rk3588_pmu,
-+	},
-+	{
-+		.compatible = "rockchip,rv1126-power-controller",
-+		.data = (void *)&rv1126_pmu,
-+	},
-+	{ /* sentinel */ },
-+};
-+
-+static struct driver rockchip_pm_domain_driver = {
-+	.probe = rockchip_pm_domain_probe,
-+	.name   = "rockchip-pm-domain",
-+	.of_match_table = rockchip_pm_domain_dt_match,
-+};
-+
-+static int __init rockchip_pm_domain_drv_register(void)
-+{
-+	return platform_driver_register(&rockchip_pm_domain_driver);
-+}
-+postcore_initcall(rockchip_pm_domain_drv_register);
-diff --git a/include/soc/rockchip/pm_domains.h b/include/soc/rockchip/pm_domains.h
-new file mode 100644
-index 000000000000..7dbd941fc937
---- /dev/null
-+++ b/include/soc/rockchip/pm_domains.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright 2022, The Chromium OS Authors. All rights reserved.
-+ */
-+
-+#ifndef __SOC_ROCKCHIP_PM_DOMAINS_H__
-+#define __SOC_ROCKCHIP_PM_DOMAINS_H__
-+
-+#ifdef CONFIG_ROCKCHIP_PM_DOMAINS
-+
-+int rockchip_pmu_block(void);
-+void rockchip_pmu_unblock(void);
-+
-+#else /* CONFIG_ROCKCHIP_PM_DOMAINS */
-+
-+static inline int rockchip_pmu_block(void)
-+{
++	dev_add_param_bool(dev, "allpixelson", st7703_allpixelson_set, NULL,
++			&ctx->allpixelson, ctx);
 +	return 0;
 +}
 +
-+static inline void rockchip_pmu_unblock(void) { }
++static const struct of_device_id st7703_of_match[] = {
++	{ .compatible = "anbernic,rg353v-panel-v2", .data = &rg353v2_desc },
++	{ .compatible = "gameforce,chi-panel", .data = &gameforcechi_desc },
++	{ .compatible = "powkiddy,rgb10max3-panel", .data = &rgb10max3_panel_desc },
++	{ .compatible = "powkiddy,rgb30-panel", .data = &rgb30panel_desc },
++	{ .compatible = "rocktech,jh057n00900", .data = &jh057n00900_panel_desc },
++	{ .compatible = "xingbangda,xbd599", .data = &xbd599_desc },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, st7703_of_match);
 +
-+#endif /* CONFIG_ROCKCHIP_PM_DOMAINS */
++static struct mipi_dsi_driver st7703_driver = {
++	.probe	= st7703_probe,
++	.driver = {
++		.name = DRV_NAME,
++		.of_match_table = st7703_of_match,
++	},
++};
++module_mipi_dsi_driver(st7703_driver);
 +
-+#endif /* __SOC_ROCKCHIP_PM_DOMAINS_H__ */
++MODULE_AUTHOR("Guido Günther <agx@sigxcpu.org>");
++MODULE_DESCRIPTION("DRM driver for Sitronix ST7703 based MIPI DSI panels");
++MODULE_LICENSE("GPL v2");
 -- 
 2.47.3
 
