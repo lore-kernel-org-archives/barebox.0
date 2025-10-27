@@ -1,55 +1,53 @@
-Delivery-date: Mon, 27 Oct 2025 08:43:11 +0100
+Delivery-date: Mon, 27 Oct 2025 08:45:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDHsl-00CGW7-00
+	id 1vDHuo-00CGXm-00
 	for lore@lore.pengutronix.de;
-	Mon, 27 Oct 2025 08:43:11 +0100
+	Mon, 27 Oct 2025 08:45:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDHsk-0007b5-C3
-	for lore@pengutronix.de; Mon, 27 Oct 2025 08:43:10 +0100
+	id 1vDHun-0007uY-BH
+	for lore@pengutronix.de; Mon, 27 Oct 2025 08:45:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=a3zvhrzyfHFZ+a33T3iBeKTZf0qvVPvL6m9U2fTq4HQ=; b=RnGgtB7v2+B6RISIDQNLr6L7b3
-	B5ZnV4utO6IAuxZWTSAMGd1veoSEnq37/Na4ICZ1tBwf6agsUjd6y2v4OUR796xIb486ZHLzghxyX
-	HUNo2P+AosMK0mGbMOrbRhWTVbZmZ6JzFLMqLscpbfGWae3NSGYOAgoL4W77pxhmAFVlc34Uf/rUh
-	5Ub+HgiQOr1A3W9NhOaijblmX4rFBXekDQoWVukauaCUEVbUQi8/AfzsT+LOLKae3vSPhf6IbicMF
-	HC2bNkDbXyD/72JVFO9bMPQuKvvlvGMqxC6HObKiPo6Dpw8qkTh7I5vSbb2eCGsyuCkcnH0t9/oGx
-	WXhgUChQ==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=oAqaVmw2HuMw7zZ1AqlsR9bIJK5KkRlMwf7O0hv0PAY=; b=UPbKR5JdrQ70gt39wPyDHaPR7q
+	rldQ644m1mE/Sw14yllNHGyxjVA39we9vej3uDwnpYjnJRmrKYb3NALoLGYuQCD4n3pgIskMXm7eC
+	ZhgZUBSIw9OjLZpO6lZ1orMzZQWh5TFSYy28nyZB/651CG7T6c9iRDxd38ZGgECetNqhAGqp/SZVe
+	i0uD4DU3tI8+DIrB9LB0ZTTRhY+/ijp3BcMVhDAc6xB1Vrsxc/+rwmGCiAjpHJv1ZhZxvvjryRSGD
+	lxGg0a1ZXn5BHHsAwxC2ioQTnfccytsUy8vbsUmSTKGYPzl7sl5XMYIWg0TgsQ63biU4m91Ib48GK
+	R1fcsDdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDHsH-0000000DIE4-3sEG;
-	Mon, 27 Oct 2025 07:42:41 +0000
+	id 1vDHuN-0000000DIQT-3hiO;
+	Mon, 27 Oct 2025 07:44:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDHsF-0000000DID0-0FC1
+	id 1vDHuL-0000000DIPz-0lMk
 	for barebox@lists.infradead.org;
-	Mon, 27 Oct 2025 07:42:40 +0000
+	Mon, 27 Oct 2025 07:44:50 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vDHsD-0007R6-Ej; Mon, 27 Oct 2025 08:42:37 +0100
+	id 1vDHuJ-0007pG-Bq; Mon, 27 Oct 2025 08:44:47 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 27 Oct 2025 08:42:31 +0100
-Message-ID: <20251027074236.2473380-2-a.fatoum@barebox.org>
+Date: Mon, 27 Oct 2025 08:44:45 +0100
+Message-ID: <20251027074446.2474869-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251027074236.2473380-1-a.fatoum@barebox.org>
-References: <20251027074236.2473380-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251027_004239_117186_D84D1984 
-X-CRM114-Status: GOOD (  13.22  )
+X-CRM114-CacheID: sfid-20251027_004449_222989_E6D7D1B0 
+X-CRM114-Status: GOOD (  16.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,113 +69,181 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] sandbox: export list_fuzz_tests to sandbox_main
+Subject: [PATCH] sandbox: add memory leak debugging tooling around LeakSanitizer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Using call_for_each_fuzz_test in the PBL is awkward, because the struct
-definition isn't visible there and so we make use of the fact that a
-string pointer is the first element of the struct.
+When enabled, this allows calling barebox_memleak_check() or running the
+checkleak command to instruct LeakSanitizer to sweep the memory and find
+unreferenced allocations.
 
-Let's avoid this, by just providing a function that lists the fuzzers.
+LeakSanitizier is also enabled along AddressSanitizer and runs on AMD64
+Linux automatically on exit already.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/sandbox/Makefile    |  2 +-
- arch/sandbox/os/common.c |  9 +++------
- include/fuzz.h           |  4 +++-
- lib/fuzz.c               | 13 +++++++++++++
- 4 files changed, 20 insertions(+), 8 deletions(-)
+ arch/sandbox/Makefile         |  2 +-
+ arch/sandbox/os/libc_malloc.c |  9 ++++++
+ commands/Kconfig              |  9 ++++++
+ commands/Makefile             |  1 +
+ commands/checkleak.c          | 52 +++++++++++++++++++++++++++++++++++
+ common/Kconfig.debug          |  6 ++++
+ include/malloc.h              |  6 ++++
+ 7 files changed, 84 insertions(+), 1 deletion(-)
+ create mode 100644 commands/checkleak.c
 
 diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 0318c8dd1452..fdff09c07cb9 100644
+index fdff09c07cb9..1b1774cc4b0a 100644
 --- a/arch/sandbox/Makefile
 +++ b/arch/sandbox/Makefile
-@@ -96,7 +96,7 @@ SANDBOX_PROPER2PBL_GLUE_SYMS := \
- 	strsep_unescaped start_barebox linux_get_stickypage_path \
- 	stickypage mem_malloc_init \
- 	barebox_register_filedev barebox_register_dtb barebox_register_console \
--	barebox_errno barebox_loglevel call_for_each_fuzz_test setup_external_fuzz
-+	barebox_errno barebox_loglevel list_fuzz_tests setup_external_fuzz
+@@ -36,7 +36,7 @@ TEXT_BASE = $(CONFIG_TEXT_BASE)
  
- OBJCOPYFLAGS_barebox.o := $(addprefix --keep-global-symbol=, $(SANDBOX_PROPER2PBL_GLUE_SYMS))
+ SANDBOX_PBL2PROPER_GLUE_SYMS := \
+ 	putchar errno setjmp longjmp \
+-	malloc_stats memalign malloc free realloc calloc brk sbrk
++	malloc_stats memalign malloc free realloc calloc memleak_check brk sbrk
  
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index e872a6381988..1628e28d83fb 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -56,14 +56,11 @@ extern int barebox_loglevel;
- #endif
+ KBUILD_CFLAGS += $(foreach s,$(SANDBOX_PBL2PROPER_GLUE_SYMS),-D$(s)=barebox_$(s))
  
- #ifdef CONFIG_FUZZ_EXTERNAL
--int call_for_each_fuzz_test(int (*fn)(const char **test, void *), void *ctx);
-+void list_fuzz_tests(int (*println)(const char *));
- int setup_external_fuzz(const char *name,
- 			int *argc, char ***argv);
- #else
--static inline int call_for_each_fuzz_test(int (*fn)(const char **test, void *), void *ctx)
--{
--	return 0;
--}
-+static inline void list_fuzz_tests(int (*println)(const char *)) { }
- static inline int setup_external_fuzz(const char *name,
- 				      int *argc, char ***argv)
- {
-@@ -668,7 +665,7 @@ static int normal_main(int argc, char *argv[])
- 			sdl_yres = strtoul(optarg, NULL, 0);
- 			break;
- 		case OPT_LIST_FUZZERS:
--			call_for_each_fuzz_test(print_fuzz_test_name, NULL);
-+			list_fuzz_tests(puts);
- 			exit(0);
- 			break;
- 		case OPT_FUZZ:
-diff --git a/include/fuzz.h b/include/fuzz.h
-index f516d86ab769..11332e834753 100644
---- a/include/fuzz.h
-+++ b/include/fuzz.h
-@@ -20,7 +20,7 @@
-  * @func: Function to call to perform fuzz test on an input
-  */
- struct fuzz_test {
--	const char *name; /* must be first member */
-+	const char *name;
- 	int (*func)(const uint8_t * data, size_t size);
- };
+diff --git a/arch/sandbox/os/libc_malloc.c b/arch/sandbox/os/libc_malloc.c
+index bb4fb1c9ead4..fee4550f327c 100644
+--- a/arch/sandbox/os/libc_malloc.c
++++ b/arch/sandbox/os/libc_malloc.c
+@@ -98,3 +98,12 @@ void *barebox_calloc(size_t n, size_t elem_size)
  
-@@ -86,6 +86,8 @@ static inline int fuzz_test_once(const struct fuzz_test *test, const u8 *data, s
- 
- int call_for_each_fuzz_test(int (*fn)(const struct fuzz_test *test, void *), void *ctx);
- 
-+void list_fuzz_tests(int (*println)(const char *));
-+
- int setup_external_fuzz(const char *fuzz_name,
- 			int *argc, char ***argv);
- 
-diff --git a/lib/fuzz.c b/lib/fuzz.c
-index 7be7ecedd922..038e176096bc 100644
---- a/lib/fuzz.c
-+++ b/lib/fuzz.c
-@@ -19,6 +19,19 @@ int call_for_each_fuzz_test(int (*fn)(const struct fuzz_test *test, void *ctx),
- 	return 0;
+ 	return mem;
  }
- 
-+static int list_fuzz_test_one(const struct fuzz_test *test, void *ctx)
-+{
-+	int (*println)(const char *) = ctx;
 +
-+	println(test->name);
++#ifdef CONFIG_DEBUG_MEMLEAK
++void barebox_memleak_check(void)
++{
++	void __lsan_do_leak_check(void);
++
++	__lsan_do_leak_check();
++}
++#endif
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 78b1e69dd38e..c7c03a65477b 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -210,6 +210,15 @@ config CMD_MEMINFO
+ 	  system bytes     =     282616
+ 	  in use bytes     =     274752
+ 
++config CMD_CHECKLEAK
++	tristate
++	prompt "checkleak"
++	depends on DEBUG_MEMLEAK
++	default y
++	help
++	  List memory leaks encountered since the last time
++	  the command ran.
++
+ config CMD_ARM_MMUINFO
+ 	bool "mmuinfo command"
+ 	depends on CPU_V7 || CPU_V8
+diff --git a/commands/Makefile b/commands/Makefile
+index 858e0c257eba..8fffac8fd442 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -47,6 +47,7 @@ obj-$(CONFIG_CMD_TRUNCATE)	+= truncate.o
+ obj-$(CONFIG_CMD_SYNC)		+= sync.o
+ obj-$(CONFIG_CMD_FLASH)		+= flash.o
+ obj-$(CONFIG_CMD_MEMINFO)	+= meminfo.o
++obj-$(CONFIG_CMD_CHECKLEAK)	+= checkleak.o
+ obj-$(CONFIG_CMD_TIMEOUT)	+= timeout.o
+ obj-$(CONFIG_CMD_READLINE)	+= readline.o
+ obj-$(CONFIG_CMD_SETENV)	+= setenv.o
+diff --git a/commands/checkleak.c b/commands/checkleak.c
+new file mode 100644
+index 000000000000..c0449fc82e00
+--- /dev/null
++++ b/commands/checkleak.c
+@@ -0,0 +1,52 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <command.h>
++#include <malloc.h>
++#include <abort.h>
++#include <getopt.h>
++#include <linux/kstrtox.h>
++
++static int do_checkleak(int argc, char *argv[])
++{
++	unsigned int count;
++	int opt;
++
++	while((opt = getopt(argc, argv, "l:")) > 0) {
++		switch(opt) {
++		case 'l':
++			if (kstrtouint(optarg, 0, &count))
++				return COMMAND_ERROR;
++			(void)malloc(count);
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	argv += optind;
++	argc -= optind;
++
++	if (argc)
++		return COMMAND_ERROR_USAGE;
++
++	memleak_check();
++
 +	return 0;
 +}
 +
-+void list_fuzz_tests(int (*println)(const char *))
-+{
-+	call_for_each_fuzz_test(list_fuzz_test_one, println);
-+}
++BAREBOX_CMD_HELP_START(checkleak)
++BAREBOX_CMD_HELP_TEXT("list memory leaks encountered since the last time")
++BAREBOX_CMD_HELP_TEXT("the command ran.")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-l COUNT",  "force leak of COUNT bytes")
++BAREBOX_CMD_HELP_END
 +
- #ifdef CONFIG_FUZZ_EXTERNAL
- const u8 *fuzzer_get_data(size_t *len);
- #else
++BAREBOX_CMD_START(checkleak)
++	.cmd		= do_checkleak,
++	BAREBOX_CMD_DESC("check for memory leaks")
++	BAREBOX_CMD_OPTS("[-l]")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_checkleak_help)
++BAREBOX_CMD_END
++
+diff --git a/common/Kconfig.debug b/common/Kconfig.debug
+index 9c70555eb83c..2de885ebb3f8 100644
+--- a/common/Kconfig.debug
++++ b/common/Kconfig.debug
+@@ -124,6 +124,12 @@ config PRINTF_FULL
+ source "lib/Kconfig.ubsan"
+ source "lib/kasan/Kconfig"
+ 
++config DEBUG_MEMLEAK
++	bool "barebox memory leak detector"
++	depends on MALLOC_LIBC && ASAN
++	help
++	  Say Y here if you want to enable LeakSanitizer.
++
+ config COMPILE_TEST
+ 	bool "compile-test drivers of other platforms"
+ 	default n
+diff --git a/include/malloc.h b/include/malloc.h
+index 81ab0f457b01..31a2ff1b3d8e 100644
+--- a/include/malloc.h
++++ b/include/malloc.h
+@@ -88,4 +88,10 @@ static inline bool want_init_on_free(void)
+ 	return IS_ENABLED(CONFIG_INIT_ON_FREE_DEFAULT_ON);
+ }
+ 
++#ifdef CONFIG_DEBUG_MEMLEAK
++void memleak_check(void);
++#else
++static inline void memleak_check(void) {}
++#endif
++
+ #endif /* __MALLOC_H */
 -- 
 2.47.3
 
