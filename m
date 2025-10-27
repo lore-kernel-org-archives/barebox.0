@@ -1,55 +1,55 @@
-Delivery-date: Mon, 27 Oct 2025 08:02:54 +0100
+Delivery-date: Mon, 27 Oct 2025 08:02:58 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDHFm-00CFm1-0o
+	id 1vDHFq-00CFmS-22
 	for lore@lore.pengutronix.de;
-	Mon, 27 Oct 2025 08:02:54 +0100
+	Mon, 27 Oct 2025 08:02:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDHFl-0003pD-1a
-	for lore@pengutronix.de; Mon, 27 Oct 2025 08:02:54 +0100
+	id 1vDHFo-0003rS-Uq
+	for lore@pengutronix.de; Mon, 27 Oct 2025 08:02:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fnNIMQHgGTwK8+1UVU2RPF1wNdlzBXOP3a/E6ETjUa4=; b=ucC3uH9+2BM6RYNEixcXigRRvA
-	fZ2aGenwQ7X47F+PIgwsUWFRogwe9/4azlWf5zKlvwsWUyHiD1Zqfu5SEFP9zKuFIm1qJlcfd0pRB
-	5fXFFhfvvuVw0Yegpucp5SQ0NuG33MvZ0TFY1VNRVOlHGdqJsx/Re3gfTIAvn/z9oUBQspk/UI4JN
-	pt1DvboHRVcejJTf5Ua1jP1p6QYgoGZTdHqHFq4d0zai8BJnylvgl99EsOFhu61Oma+7aD8kTTsPB
-	flmALMtVVI9+WORTBu5iLxSL0qe1drn70wf/30x8EQQODWmBIB7/OKFv35nqmFLI7kiMXtxyVvU4a
-	yL9/xQoQ==;
+	bh=ba/9GahKA4VUjDRM7YXD4L6D5/+M1OEjf5uCZMd3gXc=; b=lSZOQHsUU21OLrMFDOWp8Ku3id
+	OSBmsr5GOlPjOmPIQdBFX38BlJuBOXDU23H8/Z+T4LIMOdZ5PbaNfQcYcFy4aZCZK2TVpHeQscv+E
+	q3CHiWJP2c8ne6j04DruqlmcDggX+2V13VhyB4ls+FipyQ35ZuC/9P4gvhcEA3c20tJLeSPHcM/Er
+	VpaRuY9zhzbzyfSSv4coruN1EviX5jtFvSr4OuJ4sYRfobmThhAxynHPSFgikj4ebO/nm5d0vV9eR
+	zjhWBPJ+RZAIaUlAWBuDFaRYBpy9csF1K6b6opdvMyJ5jiKXxdiaSYgpRLlOfL5zyapjQiWQGHqJw
+	N3ymkZDQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDHFG-0000000DFAE-2lAq;
-	Mon, 27 Oct 2025 07:02:22 +0000
+	id 1vDHFH-0000000DFAk-04xq;
+	Mon, 27 Oct 2025 07:02:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDHFC-0000000DF7t-2lkw
+	id 1vDHFD-0000000DF7w-0ZvE
 	for barebox@lists.infradead.org;
 	Mon, 27 Oct 2025 07:02:20 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vDHFA-0003Rs-Vu; Mon, 27 Oct 2025 08:02:17 +0100
+	id 1vDHFB-0003Rs-J9; Mon, 27 Oct 2025 08:02:17 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 27 Oct 2025 08:00:53 +0100
-Message-ID: <20251027070214.2425834-2-a.fatoum@barebox.org>
+Date: Mon, 27 Oct 2025 08:00:56 +0100
+Message-ID: <20251027070214.2425834-5-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027070214.2425834-1-a.fatoum@barebox.org>
 References: <20251027070214.2425834-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251027_000219_007855_6A1CFB63 
-X-CRM114-Status: GOOD (  25.72  )
+X-CRM114-CacheID: sfid-20251027_000219_486484_7703536B 
+X-CRM114-Status: GOOD (  22.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,574 +71,819 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/4] phy: add support for generic MIPI D-PHY
+Subject: [PATCH 4/4] phy: rockchip: add Innosilicon MIPI/LVDS/TTL PHY driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-These function will be required for the Rockchip MIPI-DSI support.
+This driver was tested in conjunction with the upcoming VOP2 MIPI-DSI
+support on an rk3566 to drive a Powkiddy RGB30's DSI panel.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/phy/Kconfig               |   8 +
- drivers/phy/Makefile              |   1 +
- drivers/phy/phy-core-mipi-dphy.c  | 187 +++++++++++++++++++
- include/linux/phy/phy-mipi-dphy.h | 287 ++++++++++++++++++++++++++++++
- include/linux/phy/phy.h           |   1 +
- include/linux/time64.h            |  17 ++
- 6 files changed, 501 insertions(+)
- create mode 100644 drivers/phy/phy-core-mipi-dphy.c
- create mode 100644 include/linux/phy/phy-mipi-dphy.h
- create mode 100644 include/linux/time64.h
+ drivers/phy/rockchip/Kconfig                  |   9 +
+ drivers/phy/rockchip/Makefile                 |   1 +
+ .../phy/rockchip/phy-rockchip-inno-dsidphy.c  | 764 ++++++++++++++++++
+ 3 files changed, 774 insertions(+)
+ create mode 100644 drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c
 
-diff --git a/drivers/phy/Kconfig b/drivers/phy/Kconfig
-index 52c792914909..6b3364808825 100644
---- a/drivers/phy/Kconfig
-+++ b/drivers/phy/Kconfig
-@@ -16,6 +16,14 @@ menuconfig GENERIC_PHY
- 
- if GENERIC_PHY
- 
-+config GENERIC_PHY_MIPI_DPHY
-+	bool
+diff --git a/drivers/phy/rockchip/Kconfig b/drivers/phy/rockchip/Kconfig
+index 013c738c6d03..1d9f02b43429 100644
+--- a/drivers/phy/rockchip/Kconfig
++++ b/drivers/phy/rockchip/Kconfig
+@@ -1,4 +1,13 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++
++config PHY_ROCKCHIP_INNO_DSIDPHY
++	tristate "Rockchip Innosilicon MIPI/LVDS/TTL PHY driver"
++	depends on (ARCH_ROCKCHIP || COMPILE_TEST) && OF
++	select GENERIC_PHY_MIPI_DPHY
 +	help
-+	  Generic MIPI D-PHY support.
++	  Enable this to support the Rockchip MIPI/LVDS/TTL PHY with
++	  Innosilicon IP block.
 +
-+	  Provides a number of helpers a core functions for MIPI D-PHY
-+	  drivers to us.
-+
- config USB_NOP_XCEIV
- 	bool "Generic USB nop phy"
- 	help
-diff --git a/drivers/phy/Makefile b/drivers/phy/Makefile
-index 37e5f32d6a15..0f903c28f4da 100644
---- a/drivers/phy/Makefile
-+++ b/drivers/phy/Makefile
-@@ -8,3 +8,4 @@ obj-$(CONFIG_USB_NOP_XCEIV)		+= usb-nop-xceiv.o
- obj-y					+= freescale/
- obj-$(CONFIG_PHY_STM32_USBPHYC) 	+= phy-stm32-usbphyc.o
- obj-y					+= rockchip/
-+obj-$(CONFIG_GENERIC_PHY_MIPI_DPHY)	+= phy-core-mipi-dphy.o
-diff --git a/drivers/phy/phy-core-mipi-dphy.c b/drivers/phy/phy-core-mipi-dphy.c
+ config PHY_ROCKCHIP_INNO_USB2
+ 	bool "Rockchip INNO USB2PHY Driver"
+ 	depends on (ARCH_ROCKCHIP || COMPILE_TEST) && OFDEVICE
+diff --git a/drivers/phy/rockchip/Makefile b/drivers/phy/rockchip/Makefile
+index 96775a993015..4a2173fd69ef 100644
+--- a/drivers/phy/rockchip/Makefile
++++ b/drivers/phy/rockchip/Makefile
+@@ -1,4 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_PHY_ROCKCHIP_INNO_DSIDPHY)	+= phy-rockchip-inno-dsidphy.o
+ obj-$(CONFIG_PHY_ROCKCHIP_INNO_USB2) += phy-rockchip-inno-usb2.o
+ obj-$(CONFIG_PHY_ROCKCHIP_NANENG_COMBO_PHY) += phy-rockchip-naneng-combphy.o
+ obj-$(CONFIG_PHY_ROCKCHIP_SNPS_PCIE3) += phy-rockchip-snps-pcie3.o
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c
 new file mode 100644
-index 000000000000..f4956a417a47
+index 000000000000..5a929dc97291
 --- /dev/null
-+++ b/drivers/phy/phy-core-mipi-dphy.c
-@@ -0,0 +1,187 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c
+@@ -0,0 +1,764 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright (C) 2013 NVIDIA Corporation
-+ * Copyright (C) 2018 Cadence Design Systems Inc.
++ * Copyright (c) 2018 Rockchip Electronics Co. Ltd.
++ *
++ * Author: Wyon Bi <bivvy.bi@rock-chips.com>
 + */
 +
-+#include <linux/errno.h>
-+#include <linux/export.h>
++#include <linux/bits.h>
 +#include <linux/kernel.h>
++#include <linux/clk.h>
++#include <linux/iopoll.h>
++#include <linux/clk-provider.h>
++#include <clock.h>
++#include <init.h>
++#include <mfd/syscon.h>
++#include <linux/module.h>
++#include <of.h>
++#include <linux/device.h>
++#include <linux/reset.h>
 +#include <linux/time64.h>
 +
 +#include <linux/phy/phy.h>
 +#include <linux/phy/phy-mipi-dphy.h>
 +
-+/*
-+ * Minimum D-PHY timings based on MIPI D-PHY specification. Derived
-+ * from the valid ranges specified in Section 6.9, Table 14, Page 41
-+ * of the D-PHY specification (v1.2).
-+ */
-+static int phy_mipi_dphy_calc_config(unsigned long pixel_clock,
-+				     unsigned int bpp,
-+				     unsigned int lanes,
-+				     unsigned long long hs_clk_rate,
-+				     struct phy_configure_opts_mipi_dphy *cfg)
-+{
-+	unsigned long long ui;
-+
-+	if (!cfg)
-+		return -EINVAL;
-+
-+	if (!hs_clk_rate) {
-+		hs_clk_rate = pixel_clock * bpp;
-+		do_div(hs_clk_rate, lanes);
-+	}
-+
-+	ui = ALIGN(PSEC_PER_SEC, hs_clk_rate);
-+	do_div(ui, hs_clk_rate);
-+
-+	cfg->clk_miss = 0;
-+	cfg->clk_post = 60000 + 52 * ui;
-+	cfg->clk_pre = 8;
-+	cfg->clk_prepare = 38000;
-+	cfg->clk_settle = 95000;
-+	cfg->clk_term_en = 0;
-+	cfg->clk_trail = 60000;
-+	cfg->clk_zero = 262000;
-+	cfg->d_term_en = 0;
-+	cfg->eot = 0;
-+	cfg->hs_exit = 100000;
-+	cfg->hs_prepare = 40000 + 4 * ui;
-+	cfg->hs_zero = 105000 + 6 * ui;
-+	cfg->hs_settle = 85000 + 6 * ui;
-+	cfg->hs_skip = 40000;
-+
-+	/*
-+	 * The MIPI D-PHY specification (Section 6.9, v1.2, Table 14, Page 40)
-+	 * contains this formula as:
-+	 *
-+	 *     T_HS-TRAIL = max(n * 8 * ui, 60 + n * 4 * ui)
-+	 *
-+	 * where n = 1 for forward-direction HS mode and n = 4 for reverse-
-+	 * direction HS mode. There's only one setting and this function does
-+	 * not parameterize on anything other that ui, so this code will
-+	 * assumes that reverse-direction HS mode is supported and uses n = 4.
-+	 */
-+	cfg->hs_trail = max(4 * 8 * ui, 60000 + 4 * 4 * ui);
-+
-+	cfg->init = 100;
-+	cfg->lpx = 50000;
-+	cfg->ta_get = 5 * cfg->lpx;
-+	cfg->ta_go = 4 * cfg->lpx;
-+	cfg->ta_sure = cfg->lpx;
-+	cfg->wakeup = 1000;
-+
-+	cfg->hs_clk_rate = hs_clk_rate;
-+	cfg->lanes = lanes;
-+
-+	return 0;
-+}
-+
-+int phy_mipi_dphy_get_default_config(unsigned long pixel_clock,
-+				     unsigned int bpp,
-+				     unsigned int lanes,
-+				     struct phy_configure_opts_mipi_dphy *cfg)
-+{
-+	return phy_mipi_dphy_calc_config(pixel_clock, bpp, lanes, 0, cfg);
-+
-+}
-+EXPORT_SYMBOL(phy_mipi_dphy_get_default_config);
-+
-+int phy_mipi_dphy_get_default_config_for_hsclk(unsigned long long hs_clk_rate,
-+					       unsigned int lanes,
-+					       struct phy_configure_opts_mipi_dphy *cfg)
-+{
-+	if (!hs_clk_rate)
-+		return -EINVAL;
-+
-+	return phy_mipi_dphy_calc_config(0, 0, lanes, hs_clk_rate, cfg);
-+
-+}
-+EXPORT_SYMBOL(phy_mipi_dphy_get_default_config_for_hsclk);
++#define UPDATE(x, h, l)	(((x) << (l)) & GENMASK((h), (l)))
 +
 +/*
-+ * Validate D-PHY configuration according to MIPI D-PHY specification
-+ * (v1.2, Section Section 6.9 "Global Operation Timing Parameters").
++ * The offset address[7:0] is distributed two parts, one from the bit7 to bit5
++ * is the first address, the other from the bit4 to bit0 is the second address.
++ * when you configure the registers, you must set both of them. The Clock Lane
++ * and Data Lane use the same registers with the same second address, but the
++ * first address is different.
 + */
-+int phy_mipi_dphy_config_validate(struct phy_configure_opts_mipi_dphy *cfg)
-+{
-+	unsigned long long ui;
++#define FIRST_ADDRESS(x)		(((x) & 0x7) << 5)
++#define SECOND_ADDRESS(x)		(((x) & 0x1f) << 0)
++#define PHY_REG(first, second)		(FIRST_ADDRESS(first) | \
++					 SECOND_ADDRESS(second))
 +
-+	if (!cfg)
-+		return -EINVAL;
++/* Analog Register Part: reg00 */
++#define BANDGAP_POWER_MASK			BIT(7)
++#define BANDGAP_POWER_DOWN			BIT(7)
++#define BANDGAP_POWER_ON			0
++#define LANE_EN_MASK				GENMASK(6, 2)
++#define LANE_EN_CK				BIT(6)
++#define LANE_EN_3				BIT(5)
++#define LANE_EN_2				BIT(4)
++#define LANE_EN_1				BIT(3)
++#define LANE_EN_0				BIT(2)
++#define POWER_WORK_MASK				GENMASK(1, 0)
++#define POWER_WORK_ENABLE			UPDATE(1, 1, 0)
++#define POWER_WORK_DISABLE			UPDATE(2, 1, 0)
++/* Analog Register Part: reg01 */
++#define REG_SYNCRST_MASK			BIT(2)
++#define REG_SYNCRST_RESET			BIT(2)
++#define REG_SYNCRST_NORMAL			0
++#define REG_LDOPD_MASK				BIT(1)
++#define REG_LDOPD_POWER_DOWN			BIT(1)
++#define REG_LDOPD_POWER_ON			0
++#define REG_PLLPD_MASK				BIT(0)
++#define REG_PLLPD_POWER_DOWN			BIT(0)
++#define REG_PLLPD_POWER_ON			0
++/* Analog Register Part: reg03 */
++#define REG_FBDIV_HI_MASK			BIT(5)
++#define REG_FBDIV_HI(x)				UPDATE((x >> 8), 5, 5)
++#define REG_PREDIV_MASK				GENMASK(4, 0)
++#define REG_PREDIV(x)				UPDATE(x, 4, 0)
++/* Analog Register Part: reg04 */
++#define REG_FBDIV_LO_MASK			GENMASK(7, 0)
++#define REG_FBDIV_LO(x)				UPDATE(x, 7, 0)
++/* Analog Register Part: reg05 */
++#define SAMPLE_CLOCK_PHASE_MASK			GENMASK(6, 4)
++#define SAMPLE_CLOCK_PHASE(x)			UPDATE(x, 6, 4)
++#define CLOCK_LANE_SKEW_PHASE_MASK		GENMASK(2, 0)
++#define CLOCK_LANE_SKEW_PHASE(x)		UPDATE(x, 2, 0)
++/* Analog Register Part: reg06 */
++#define DATA_LANE_3_SKEW_PHASE_MASK		GENMASK(6, 4)
++#define DATA_LANE_3_SKEW_PHASE(x)		UPDATE(x, 6, 4)
++#define DATA_LANE_2_SKEW_PHASE_MASK		GENMASK(2, 0)
++#define DATA_LANE_2_SKEW_PHASE(x)		UPDATE(x, 2, 0)
++/* Analog Register Part: reg07 */
++#define DATA_LANE_1_SKEW_PHASE_MASK		GENMASK(6, 4)
++#define DATA_LANE_1_SKEW_PHASE(x)		UPDATE(x, 6, 4)
++#define DATA_LANE_0_SKEW_PHASE_MASK		GENMASK(2, 0)
++#define DATA_LANE_0_SKEW_PHASE(x)		UPDATE(x, 2, 0)
++/* Analog Register Part: reg08 */
++#define PLL_POST_DIV_ENABLE_MASK		BIT(5)
++#define PLL_POST_DIV_ENABLE			BIT(5)
++#define SAMPLE_CLOCK_DIRECTION_MASK		BIT(4)
++#define SAMPLE_CLOCK_DIRECTION_REVERSE		BIT(4)
++#define SAMPLE_CLOCK_DIRECTION_FORWARD		0
++#define LOWFRE_EN_MASK				BIT(5)
++#define PLL_OUTPUT_FREQUENCY_DIV_BY_1		0
++#define PLL_OUTPUT_FREQUENCY_DIV_BY_2		1
++/* Analog Register Part: reg0b */
++#define CLOCK_LANE_VOD_RANGE_SET_MASK		GENMASK(3, 0)
++#define CLOCK_LANE_VOD_RANGE_SET(x)		UPDATE(x, 3, 0)
++#define VOD_MIN_RANGE				0x1
++#define VOD_MID_RANGE				0x3
++#define VOD_BIG_RANGE				0x7
++#define VOD_MAX_RANGE				0xf
++/* Analog Register Part: reg1E */
++#define PLL_MODE_SEL_MASK			GENMASK(6, 5)
++#define PLL_MODE_SEL_LVDS_MODE			0
++#define PLL_MODE_SEL_MIPI_MODE			BIT(5)
++/* Digital Register Part: reg00 */
++#define REG_DIG_RSTN_MASK			BIT(0)
++#define REG_DIG_RSTN_NORMAL			BIT(0)
++#define REG_DIG_RSTN_RESET			0
++/* Digital Register Part: reg01 */
++#define INVERT_TXCLKESC_MASK			BIT(1)
++#define INVERT_TXCLKESC_ENABLE			BIT(1)
++#define INVERT_TXCLKESC_DISABLE			0
++#define INVERT_TXBYTECLKHS_MASK			BIT(0)
++#define INVERT_TXBYTECLKHS_ENABLE		BIT(0)
++#define INVERT_TXBYTECLKHS_DISABLE		0
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg05 */
++#define T_LPX_CNT_MASK				GENMASK(5, 0)
++#define T_LPX_CNT(x)				UPDATE(x, 5, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg06 */
++#define T_HS_ZERO_CNT_HI_MASK			BIT(7)
++#define T_HS_ZERO_CNT_HI(x)			UPDATE(x, 7, 7)
++#define T_HS_PREPARE_CNT_MASK			GENMASK(6, 0)
++#define T_HS_PREPARE_CNT(x)			UPDATE(x, 6, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg07 */
++#define T_HS_ZERO_CNT_LO_MASK			GENMASK(5, 0)
++#define T_HS_ZERO_CNT_LO(x)			UPDATE(x, 5, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg08 */
++#define T_HS_TRAIL_CNT_MASK			GENMASK(6, 0)
++#define T_HS_TRAIL_CNT(x)			UPDATE(x, 6, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg09 */
++#define T_HS_EXIT_CNT_LO_MASK			GENMASK(4, 0)
++#define T_HS_EXIT_CNT_LO(x)			UPDATE(x, 4, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg0a */
++#define T_CLK_POST_CNT_LO_MASK			GENMASK(3, 0)
++#define T_CLK_POST_CNT_LO(x)			UPDATE(x, 3, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg0c */
++#define LPDT_TX_PPI_SYNC_MASK			BIT(2)
++#define LPDT_TX_PPI_SYNC_ENABLE			BIT(2)
++#define LPDT_TX_PPI_SYNC_DISABLE		0
++#define T_WAKEUP_CNT_HI_MASK			GENMASK(1, 0)
++#define T_WAKEUP_CNT_HI(x)			UPDATE(x, 1, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg0d */
++#define T_WAKEUP_CNT_LO_MASK			GENMASK(7, 0)
++#define T_WAKEUP_CNT_LO(x)			UPDATE(x, 7, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg0e */
++#define T_CLK_PRE_CNT_MASK			GENMASK(3, 0)
++#define T_CLK_PRE_CNT(x)			UPDATE(x, 3, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg10 */
++#define T_CLK_POST_CNT_HI_MASK			GENMASK(7, 6)
++#define T_CLK_POST_CNT_HI(x)			UPDATE(x, 7, 6)
++#define T_TA_GO_CNT_MASK			GENMASK(5, 0)
++#define T_TA_GO_CNT(x)				UPDATE(x, 5, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg11 */
++#define T_HS_EXIT_CNT_HI_MASK			BIT(6)
++#define T_HS_EXIT_CNT_HI(x)			UPDATE(x, 6, 6)
++#define T_TA_SURE_CNT_MASK			GENMASK(5, 0)
++#define T_TA_SURE_CNT(x)			UPDATE(x, 5, 0)
++/* Clock/Data0/Data1/Data2/Data3 Lane Register Part: reg12 */
++#define T_TA_WAIT_CNT_MASK			GENMASK(5, 0)
++#define T_TA_WAIT_CNT(x)			UPDATE(x, 5, 0)
++/* LVDS Register Part: reg00 */
++#define LVDS_DIGITAL_INTERNAL_RESET_MASK	BIT(2)
++#define LVDS_DIGITAL_INTERNAL_RESET_DISABLE	BIT(2)
++#define LVDS_DIGITAL_INTERNAL_RESET_ENABLE	0
++/* LVDS Register Part: reg01 */
++#define LVDS_DIGITAL_INTERNAL_ENABLE_MASK	BIT(7)
++#define LVDS_DIGITAL_INTERNAL_ENABLE		BIT(7)
++#define LVDS_DIGITAL_INTERNAL_DISABLE		0
++/* LVDS Register Part: reg03 */
++#define MODE_ENABLE_MASK			GENMASK(2, 0)
++#define TTL_MODE_ENABLE				BIT(2)
++#define LVDS_MODE_ENABLE			BIT(1)
++#define MIPI_MODE_ENABLE			BIT(0)
++/* LVDS Register Part: reg0b */
++#define LVDS_LANE_EN_MASK			GENMASK(7, 3)
++#define LVDS_DATA_LANE0_EN			BIT(7)
++#define LVDS_DATA_LANE1_EN			BIT(6)
++#define LVDS_DATA_LANE2_EN			BIT(5)
++#define LVDS_DATA_LANE3_EN			BIT(4)
++#define LVDS_CLK_LANE_EN			BIT(3)
++#define LVDS_PLL_POWER_MASK			BIT(2)
++#define LVDS_PLL_POWER_OFF			BIT(2)
++#define LVDS_PLL_POWER_ON			0
++#define LVDS_BANDGAP_POWER_MASK			BIT(0)
++#define LVDS_BANDGAP_POWER_DOWN			BIT(0)
++#define LVDS_BANDGAP_POWER_ON			0
 +
-+	ui = ALIGN(PSEC_PER_SEC, cfg->hs_clk_rate);
-+	do_div(ui, cfg->hs_clk_rate);
++#define DSI_PHY_RSTZ		0xa0
++#define PHY_ENABLECLK		BIT(2)
++#define DSI_PHY_STATUS		0xb0
++#define PHY_LOCK		BIT(0)
 +
-+	if (cfg->clk_miss > 60000)
-+		return -EINVAL;
-+
-+	if (cfg->clk_post < (60000 + 52 * ui))
-+		return -EINVAL;
-+
-+	if (cfg->clk_pre < 8)
-+		return -EINVAL;
-+
-+	if (cfg->clk_prepare < 38000 || cfg->clk_prepare > 95000)
-+		return -EINVAL;
-+
-+	if (cfg->clk_settle < 95000 || cfg->clk_settle > 300000)
-+		return -EINVAL;
-+
-+	if (cfg->clk_term_en > 38000)
-+		return -EINVAL;
-+
-+	if (cfg->clk_trail < 60000)
-+		return -EINVAL;
-+
-+	if ((cfg->clk_prepare + cfg->clk_zero) < 300000)
-+		return -EINVAL;
-+
-+	if (cfg->d_term_en > (35000 + 4 * ui))
-+		return -EINVAL;
-+
-+	if (cfg->eot > (105000 + 12 * ui))
-+		return -EINVAL;
-+
-+	if (cfg->hs_exit < 100000)
-+		return -EINVAL;
-+
-+	if (cfg->hs_prepare < (40000 + 4 * ui) ||
-+	    cfg->hs_prepare > (85000 + 6 * ui))
-+		return -EINVAL;
-+
-+	if ((cfg->hs_prepare + cfg->hs_zero) < (145000 + 10 * ui))
-+		return -EINVAL;
-+
-+	if ((cfg->hs_settle < (85000 + 6 * ui)) ||
-+	    (cfg->hs_settle > (145000 + 10 * ui)))
-+		return -EINVAL;
-+
-+	if (cfg->hs_skip < 40000 || cfg->hs_skip > (55000 + 4 * ui))
-+		return -EINVAL;
-+
-+	if (cfg->hs_trail < max(8 * ui, 60000 + 4 * ui))
-+		return -EINVAL;
-+
-+	if (cfg->init < 100)
-+		return -EINVAL;
-+
-+	if (cfg->lpx < 50000)
-+		return -EINVAL;
-+
-+	if (cfg->ta_get != (5 * cfg->lpx))
-+		return -EINVAL;
-+
-+	if (cfg->ta_go != (4 * cfg->lpx))
-+		return -EINVAL;
-+
-+	if (cfg->ta_sure < cfg->lpx || cfg->ta_sure > (2 * cfg->lpx))
-+		return -EINVAL;
-+
-+	if (cfg->wakeup < 1000)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(phy_mipi_dphy_config_validate);
-diff --git a/include/linux/phy/phy-mipi-dphy.h b/include/linux/phy/phy-mipi-dphy.h
-new file mode 100644
-index 000000000000..1ac128d78dfe
---- /dev/null
-+++ b/include/linux/phy/phy-mipi-dphy.h
-@@ -0,0 +1,287 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2018 Cadence Design Systems Inc.
-+ */
-+
-+#ifndef __PHY_MIPI_DPHY_H_
-+#define __PHY_MIPI_DPHY_H_
-+
-+/**
-+ * struct phy_configure_opts_mipi_dphy - MIPI D-PHY configuration set
-+ *
-+ * This structure is used to represent the configuration state of a
-+ * MIPI D-PHY phy.
-+ */
-+struct phy_configure_opts_mipi_dphy {
-+	/**
-+	 * @clk_miss:
-+	 *
-+	 * Timeout, in picoseconds, for receiver to detect absence of
-+	 * Clock transitions and disable the Clock Lane HS-RX.
-+	 *
-+	 * Maximum value: 60000 ps
-+	 */
-+	unsigned int		clk_miss;
-+
-+	/**
-+	 * @clk_post:
-+	 *
-+	 * Time, in picoseconds, that the transmitter continues to
-+	 * send HS clock after the last associated Data Lane has
-+	 * transitioned to LP Mode. Interval is defined as the period
-+	 * from the end of @hs_trail to the beginning of @clk_trail.
-+	 *
-+	 * Minimum value: 60000 ps + 52 * @hs_clk_rate period in ps
-+	 */
-+	unsigned int		clk_post;
-+
-+	/**
-+	 * @clk_pre:
-+	 *
-+	 * Time, in UI, that the HS clock shall be driven by
-+	 * the transmitter prior to any associated Data Lane beginning
-+	 * the transition from LP to HS mode.
-+	 *
-+	 * Minimum value: 8 UI
-+	 */
-+	unsigned int		clk_pre;
-+
-+	/**
-+	 * @clk_prepare:
-+	 *
-+	 * Time, in picoseconds, that the transmitter drives the Clock
-+	 * Lane LP-00 Line state immediately before the HS-0 Line
-+	 * state starting the HS transmission.
-+	 *
-+	 * Minimum value: 38000 ps
-+	 * Maximum value: 95000 ps
-+	 */
-+	unsigned int		clk_prepare;
-+
-+	/**
-+	 * @clk_settle:
-+	 *
-+	 * Time interval, in picoseconds, during which the HS receiver
-+	 * should ignore any Clock Lane HS transitions, starting from
-+	 * the beginning of @clk_prepare.
-+	 *
-+	 * Minimum value: 95000 ps
-+	 * Maximum value: 300000 ps
-+	 */
-+	unsigned int		clk_settle;
-+
-+	/**
-+	 * @clk_term_en:
-+	 *
-+	 * Time, in picoseconds, for the Clock Lane receiver to enable
-+	 * the HS line termination.
-+	 *
-+	 * Maximum value: 38000 ps
-+	 */
-+	unsigned int		clk_term_en;
-+
-+	/**
-+	 * @clk_trail:
-+	 *
-+	 * Time, in picoseconds, that the transmitter drives the HS-0
-+	 * state after the last payload clock bit of a HS transmission
-+	 * burst.
-+	 *
-+	 * Minimum value: 60000 ps
-+	 */
-+	unsigned int		clk_trail;
-+
-+	/**
-+	 * @clk_zero:
-+	 *
-+	 * Time, in picoseconds, that the transmitter drives the HS-0
-+	 * state prior to starting the Clock.
-+	 */
-+	unsigned int		clk_zero;
-+
-+	/**
-+	 * @d_term_en:
-+	 *
-+	 * Time, in picoseconds, for the Data Lane receiver to enable
-+	 * the HS line termination.
-+	 *
-+	 * Maximum value: 35000 ps + 4 * @hs_clk_rate period in ps
-+	 */
-+	unsigned int		d_term_en;
-+
-+	/**
-+	 * @eot:
-+	 *
-+	 * Transmitted time interval, in picoseconds, from the start
-+	 * of @hs_trail or @clk_trail, to the start of the LP- 11
-+	 * state following a HS burst.
-+	 *
-+	 * Maximum value: 105000 ps + 12 * @hs_clk_rate period in ps
-+	 */
-+	unsigned int		eot;
-+
-+	/**
-+	 * @hs_exit:
-+	 *
-+	 * Time, in picoseconds, that the transmitter drives LP-11
-+	 * following a HS burst.
-+	 *
-+	 * Minimum value: 100000 ps
-+	 */
-+	unsigned int		hs_exit;
-+
-+	/**
-+	 * @hs_prepare:
-+	 *
-+	 * Time, in picoseconds, that the transmitter drives the Data
-+	 * Lane LP-00 Line state immediately before the HS-0 Line
-+	 * state starting the HS transmission.
-+	 *
-+	 * Minimum value: 40000 ps + 4 * @hs_clk_rate period in ps
-+	 * Maximum value: 85000 ps + 6 * @hs_clk_rate period in ps
-+	 */
-+	unsigned int		hs_prepare;
-+
-+	/**
-+	 * @hs_settle:
-+	 *
-+	 * Time interval, in picoseconds, during which the HS receiver
-+	 * shall ignore any Data Lane HS transitions, starting from
-+	 * the beginning of @hs_prepare.
-+	 *
-+	 * Minimum value: 85000 ps + 6 * @hs_clk_rate period in ps
-+	 * Maximum value: 145000 ps + 10 * @hs_clk_rate period in ps
-+	 */
-+	unsigned int		hs_settle;
-+
-+	/**
-+	 * @hs_skip:
-+	 *
-+	 * Time interval, in picoseconds, during which the HS-RX
-+	 * should ignore any transitions on the Data Lane, following a
-+	 * HS burst. The end point of the interval is defined as the
-+	 * beginning of the LP-11 state following the HS burst.
-+	 *
-+	 * Minimum value: 40000 ps
-+	 * Maximum value: 55000 ps + 4 * @hs_clk_rate period in ps
-+	 */
-+	unsigned int		hs_skip;
-+
-+	/**
-+	 * @hs_trail:
-+	 *
-+	 * Time, in picoseconds, that the transmitter drives the
-+	 * flipped differential state after last payload data bit of a
-+	 * HS transmission burst
-+	 *
-+	 * Minimum value: max(8 * @hs_clk_rate period in ps,
-+	 *		      60000 ps + 4 * @hs_clk_rate period in ps)
-+	 */
-+	unsigned int		hs_trail;
-+
-+	/**
-+	 * @hs_zero:
-+	 *
-+	 * Time, in picoseconds, that the transmitter drives the HS-0
-+	 * state prior to transmitting the Sync sequence.
-+	 */
-+	unsigned int		hs_zero;
-+
-+	/**
-+	 * @init:
-+	 *
-+	 * Time, in microseconds for the initialization period to
-+	 * complete.
-+	 *
-+	 * Minimum value: 100 us
-+	 */
-+	unsigned int		init;
-+
-+	/**
-+	 * @lpx:
-+	 *
-+	 * Transmitted length, in picoseconds, of any Low-Power state
-+	 * period.
-+	 *
-+	 * Minimum value: 50000 ps
-+	 */
-+	unsigned int		lpx;
-+
-+	/**
-+	 * @ta_get:
-+	 *
-+	 * Time, in picoseconds, that the new transmitter drives the
-+	 * Bridge state (LP-00) after accepting control during a Link
-+	 * Turnaround.
-+	 *
-+	 * Value: 5 * @lpx
-+	 */
-+	unsigned int		ta_get;
-+
-+	/**
-+	 * @ta_go:
-+	 *
-+	 * Time, in picoseconds, that the transmitter drives the
-+	 * Bridge state (LP-00) before releasing control during a Link
-+	 * Turnaround.
-+	 *
-+	 * Value: 4 * @lpx
-+	 */
-+	unsigned int		ta_go;
-+
-+	/**
-+	 * @ta_sure:
-+	 *
-+	 * Time, in picoseconds, that the new transmitter waits after
-+	 * the LP-10 state before transmitting the Bridge state
-+	 * (LP-00) during a Link Turnaround.
-+	 *
-+	 * Minimum value: @lpx
-+	 * Maximum value: 2 * @lpx
-+	 */
-+	unsigned int		ta_sure;
-+
-+	/**
-+	 * @wakeup:
-+	 *
-+	 * Time, in microseconds, that a transmitter drives a Mark-1
-+	 * state prior to a Stop state in order to initiate an exit
-+	 * from ULPS.
-+	 *
-+	 * Minimum value: 1000 us
-+	 */
-+	unsigned int		wakeup;
-+
-+	/**
-+	 * @hs_clk_rate:
-+	 *
-+	 * Clock rate, in Hertz, of the high-speed clock.
-+	 */
-+	unsigned long		hs_clk_rate;
-+
-+	/**
-+	 * @lp_clk_rate:
-+	 *
-+	 * Clock rate, in Hertz, of the low-power clock.
-+	 */
-+	unsigned long		lp_clk_rate;
-+
-+	/**
-+	 * @lanes:
-+	 *
-+	 * Number of active, consecutive, data lanes, starting from
-+	 * lane 0, used for the transmissions.
-+	 */
-+	unsigned char		lanes;
++enum phy_max_rate {
++	MAX_1GHZ,
++	MAX_2_5GHZ,
 +};
 +
-+int phy_mipi_dphy_get_default_config(unsigned long pixel_clock,
-+				     unsigned int bpp,
-+				     unsigned int lanes,
-+				     struct phy_configure_opts_mipi_dphy *cfg);
-+int phy_mipi_dphy_get_default_config_for_hsclk(unsigned long long hs_clk_rate,
-+					       unsigned int lanes,
-+					       struct phy_configure_opts_mipi_dphy *cfg);
-+int phy_mipi_dphy_config_validate(struct phy_configure_opts_mipi_dphy *cfg);
++struct inno_video_phy_plat_data {
++	const struct inno_mipi_dphy_timing *inno_mipi_dphy_timing_table;
++	const unsigned int num_timings;
++	enum phy_max_rate max_rate;
++};
 +
-+#endif /* __PHY_MIPI_DPHY_H_ */
-diff --git a/include/linux/phy/phy.h b/include/linux/phy/phy.h
-index dd28c6eeefc1..b4a99c9c7037 100644
---- a/include/linux/phy/phy.h
-+++ b/include/linux/phy/phy.h
-@@ -17,6 +17,7 @@
- #include <linux/err.h>
- #include <of.h>
- #include <regulator.h>
-+#include <linux/phy/phy-mipi-dphy.h>
- 
- struct phy;
- 
-diff --git a/include/linux/time64.h b/include/linux/time64.h
-new file mode 100644
-index 000000000000..720a7eb9d761
---- /dev/null
-+++ b/include/linux/time64.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __LINUX_TIME64_H
-+#define __LINUX_TIME64_H
++struct inno_dsidphy {
++	struct device *dev;
++	struct clk *ref_clk;
++	struct clk *pclk_phy;
++	struct clk *pclk_host;
++	const struct inno_video_phy_plat_data *pdata;
++	void __iomem *phy_base;
++	void __iomem *host_base;
++	struct reset_control *rst;
++	enum phy_mode mode;
++	struct phy_configure_opts_mipi_dphy dphy_cfg;
 +
-+#define PSEC_PER_NSEC	1000L
++	struct clk *pll_clk;
++	struct {
++		struct clk_hw hw;
++		u8 prediv;
++		u16 fbdiv;
++		unsigned long rate;
++	} pll;
++};
 +
-+/* Parameters used to convert the timespec values: */
-+#define MSEC_PER_SEC	1000L
-+#define USEC_PER_MSEC	1000L
-+#define NSEC_PER_USEC	1000L
-+#define NSEC_PER_MSEC	1000000L
-+#define USEC_PER_SEC	1000000L
-+#define NSEC_PER_SEC	1000000000L
-+#define PSEC_PER_SEC	1000000000000LL
-+#define FSEC_PER_SEC	1000000000000000LL
++enum {
++	REGISTER_PART_ANALOG,
++	REGISTER_PART_DIGITAL,
++	REGISTER_PART_CLOCK_LANE,
++	REGISTER_PART_DATA0_LANE,
++	REGISTER_PART_DATA1_LANE,
++	REGISTER_PART_DATA2_LANE,
++	REGISTER_PART_DATA3_LANE,
++	REGISTER_PART_LVDS,
++};
 +
-+#endif /* __LINUX_TIME64_H */
++struct inno_mipi_dphy_timing {
++	unsigned long rate;
++	u8 lpx;
++	u8 hs_prepare;
++	u8 clk_lane_hs_zero;
++	u8 data_lane_hs_zero;
++	u8 hs_trail;
++};
++
++static const
++struct inno_mipi_dphy_timing inno_mipi_dphy_timing_table_max_1ghz[] = {
++	{ 110000000, 0x0, 0x20, 0x16, 0x02, 0x22},
++	{ 150000000, 0x0, 0x06, 0x16, 0x03, 0x45},
++	{ 200000000, 0x0, 0x18, 0x17, 0x04, 0x0b},
++	{ 250000000, 0x0, 0x05, 0x17, 0x05, 0x16},
++	{ 300000000, 0x0, 0x51, 0x18, 0x06, 0x2c},
++	{ 400000000, 0x0, 0x64, 0x19, 0x07, 0x33},
++	{ 500000000, 0x0, 0x20, 0x1b, 0x07, 0x4e},
++	{ 600000000, 0x0, 0x6a, 0x1d, 0x08, 0x3a},
++	{ 700000000, 0x0, 0x3e, 0x1e, 0x08, 0x6a},
++	{ 800000000, 0x0, 0x21, 0x1f, 0x09, 0x29},
++	{1000000000, 0x0, 0x09, 0x20, 0x09, 0x27},
++};
++
++static const
++struct inno_mipi_dphy_timing inno_mipi_dphy_timing_table_max_2_5ghz[] = {
++	{ 110000000, 0x02, 0x7f, 0x16, 0x02, 0x02},
++	{ 150000000, 0x02, 0x7f, 0x16, 0x03, 0x02},
++	{ 200000000, 0x02, 0x7f, 0x17, 0x04, 0x02},
++	{ 250000000, 0x02, 0x7f, 0x17, 0x05, 0x04},
++	{ 300000000, 0x02, 0x7f, 0x18, 0x06, 0x04},
++	{ 400000000, 0x03, 0x7e, 0x19, 0x07, 0x04},
++	{ 500000000, 0x03, 0x7c, 0x1b, 0x07, 0x08},
++	{ 600000000, 0x03, 0x70, 0x1d, 0x08, 0x10},
++	{ 700000000, 0x05, 0x40, 0x1e, 0x08, 0x30},
++	{ 800000000, 0x05, 0x02, 0x1f, 0x09, 0x30},
++	{1000000000, 0x05, 0x08, 0x20, 0x09, 0x30},
++	{1200000000, 0x06, 0x03, 0x32, 0x14, 0x0f},
++	{1400000000, 0x09, 0x03, 0x32, 0x14, 0x0f},
++	{1600000000, 0x0d, 0x42, 0x36, 0x0e, 0x0f},
++	{1800000000, 0x0e, 0x47, 0x7a, 0x0e, 0x0f},
++	{2000000000, 0x11, 0x64, 0x7a, 0x0e, 0x0b},
++	{2200000000, 0x13, 0x64, 0x7e, 0x15, 0x0b},
++	{2400000000, 0x13, 0x33, 0x7f, 0x15, 0x6a},
++	{2500000000, 0x15, 0x54, 0x7f, 0x15, 0x6a},
++};
++
++static void phy_update_bits(struct inno_dsidphy *inno,
++			    u8 first, u8 second, u8 mask, u8 val)
++{
++	u32 reg = PHY_REG(first, second) << 2;
++	unsigned int tmp, orig;
++
++	orig = readl(inno->phy_base + reg);
++	tmp = orig & ~mask;
++	tmp |= val & mask;
++	writel(tmp, inno->phy_base + reg);
++}
++
++static unsigned long inno_dsidphy_pll_calc_rate(struct inno_dsidphy *inno,
++						unsigned long rate)
++{
++	unsigned long prate = clk_get_rate(inno->ref_clk);
++	unsigned long best_freq = 0;
++	unsigned long fref, fout;
++	u8 min_prediv, max_prediv;
++	u8 _prediv, best_prediv = 1;
++	u16 _fbdiv, best_fbdiv = 1;
++	u32 min_delta = UINT_MAX;
++
++	/*
++	 * The PLL output frequency can be calculated using a simple formula:
++	 * PLL_Output_Frequency = (FREF / PREDIV * FBDIV) / 2
++	 * PLL_Output_Frequency: it is equal to DDR-Clock-Frequency * 2
++	 */
++	fref = prate / 2;
++	if (rate > 1000000000UL)
++		fout = 1000000000UL;
++	else
++		fout = rate;
++
++	/* 5Mhz < Fref / prediv < 40MHz */
++	min_prediv = DIV_ROUND_UP(fref, 40000000);
++	max_prediv = fref / 5000000;
++
++	for (_prediv = min_prediv; _prediv <= max_prediv; _prediv++) {
++		u64 tmp;
++		u32 delta;
++
++		tmp = (u64)fout * _prediv;
++		do_div(tmp, fref);
++		_fbdiv = tmp;
++
++		/*
++		 * The possible settings of feedback divider are
++		 * 12, 13, 14, 16, ~ 511
++		 */
++		if (_fbdiv == 15)
++			continue;
++
++		if (_fbdiv < 12 || _fbdiv > 511)
++			continue;
++
++		tmp = (u64)_fbdiv * fref;
++		do_div(tmp, _prediv);
++
++		delta = abs(fout - tmp);
++		if (!delta) {
++			best_prediv = _prediv;
++			best_fbdiv = _fbdiv;
++			best_freq = tmp;
++			break;
++		} else if (delta < min_delta) {
++			best_prediv = _prediv;
++			best_fbdiv = _fbdiv;
++			best_freq = tmp;
++			min_delta = delta;
++		}
++	}
++
++	if (best_freq) {
++		inno->pll.prediv = best_prediv;
++		inno->pll.fbdiv = best_fbdiv;
++		inno->pll.rate = best_freq;
++	}
++
++	return best_freq;
++}
++
++static void inno_dsidphy_mipi_mode_enable(struct inno_dsidphy *inno)
++{
++	struct phy_configure_opts_mipi_dphy *cfg = &inno->dphy_cfg;
++	const struct inno_mipi_dphy_timing *timings;
++	u32 t_txbyteclkhs, t_txclkesc;
++	u32 txbyteclkhs, txclkesc, esc_clk_div;
++	u32 hs_exit, clk_post, clk_pre, wakeup, lpx, ta_go, ta_sure, ta_wait;
++	u32 hs_prepare, hs_trail, hs_zero, clk_lane_hs_zero, data_lane_hs_zero;
++	unsigned int i;
++
++	timings = inno->pdata->inno_mipi_dphy_timing_table;
++
++	inno_dsidphy_pll_calc_rate(inno, cfg->hs_clk_rate);
++
++	/* Select MIPI mode */
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x03,
++			MODE_ENABLE_MASK, MIPI_MODE_ENABLE);
++	/* Configure PLL */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x03,
++			REG_PREDIV_MASK, REG_PREDIV(inno->pll.prediv));
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x03,
++			REG_FBDIV_HI_MASK, REG_FBDIV_HI(inno->pll.fbdiv));
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x04,
++			REG_FBDIV_LO_MASK, REG_FBDIV_LO(inno->pll.fbdiv));
++	if (inno->pdata->max_rate == MAX_2_5GHZ) {
++		phy_update_bits(inno, REGISTER_PART_ANALOG, 0x08,
++				PLL_POST_DIV_ENABLE_MASK, PLL_POST_DIV_ENABLE);
++		phy_update_bits(inno, REGISTER_PART_ANALOG, 0x0b,
++				CLOCK_LANE_VOD_RANGE_SET_MASK,
++				CLOCK_LANE_VOD_RANGE_SET(VOD_MAX_RANGE));
++	}
++	/* Enable PLL and LDO */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x01,
++			REG_LDOPD_MASK | REG_PLLPD_MASK,
++			REG_LDOPD_POWER_ON | REG_PLLPD_POWER_ON);
++	/* Reset analog */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x01,
++			REG_SYNCRST_MASK, REG_SYNCRST_RESET);
++	udelay(1);
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x01,
++			REG_SYNCRST_MASK, REG_SYNCRST_NORMAL);
++	/* Reset digital */
++	phy_update_bits(inno, REGISTER_PART_DIGITAL, 0x00,
++			REG_DIG_RSTN_MASK, REG_DIG_RSTN_RESET);
++	udelay(1);
++	phy_update_bits(inno, REGISTER_PART_DIGITAL, 0x00,
++			REG_DIG_RSTN_MASK, REG_DIG_RSTN_NORMAL);
++
++	txbyteclkhs = inno->pll.rate / 8;
++	t_txbyteclkhs = div_u64(PSEC_PER_SEC, txbyteclkhs);
++
++	esc_clk_div = DIV_ROUND_UP(txbyteclkhs, 20000000);
++	txclkesc = txbyteclkhs / esc_clk_div;
++	t_txclkesc = div_u64(PSEC_PER_SEC, txclkesc);
++
++	/*
++	 * The value of counter for HS Ths-exit
++	 * Ths-exit = Tpin_txbyteclkhs * value
++	 */
++	hs_exit = DIV_ROUND_UP(cfg->hs_exit, t_txbyteclkhs);
++	/*
++	 * The value of counter for HS Tclk-post
++	 * Tclk-post = Tpin_txbyteclkhs * value
++	 */
++	clk_post = DIV_ROUND_UP(cfg->clk_post, t_txbyteclkhs);
++	/*
++	 * The value of counter for HS Tclk-pre
++	 * Tclk-pre = Tpin_txbyteclkhs * value
++	 */
++	clk_pre = DIV_ROUND_UP(cfg->clk_pre, BITS_PER_BYTE);
++
++	/*
++	 * The value of counter for HS Tta-go
++	 * Tta-go for turnaround
++	 * Tta-go = Ttxclkesc * value
++	 */
++	ta_go = DIV_ROUND_UP(cfg->ta_go, t_txclkesc);
++	/*
++	 * The value of counter for HS Tta-sure
++	 * Tta-sure for turnaround
++	 * Tta-sure = Ttxclkesc * value
++	 */
++	ta_sure = DIV_ROUND_UP(cfg->ta_sure, t_txclkesc);
++	/*
++	 * The value of counter for HS Tta-wait
++	 * Tta-wait for turnaround
++	 * Tta-wait = Ttxclkesc * value
++	 */
++	ta_wait = DIV_ROUND_UP(cfg->ta_get, t_txclkesc);
++
++	for (i = 0; i < inno->pdata->num_timings; i++)
++		if (inno->pll.rate <= timings[i].rate)
++			break;
++
++	if (i == inno->pdata->num_timings)
++		--i;
++
++	/*
++	 * The value of counter for HS Tlpx Time
++	 * Tlpx = Tpin_txbyteclkhs * (2 + value)
++	 */
++	if (inno->pdata->max_rate == MAX_1GHZ) {
++		lpx = DIV_ROUND_UP(cfg->lpx, t_txbyteclkhs);
++		if (lpx >= 2)
++			lpx -= 2;
++	} else
++		lpx = timings[i].lpx;
++
++	hs_prepare = timings[i].hs_prepare;
++	hs_trail = timings[i].hs_trail;
++	clk_lane_hs_zero = timings[i].clk_lane_hs_zero;
++	data_lane_hs_zero = timings[i].data_lane_hs_zero;
++	wakeup = 0x3ff;
++
++	for (i = REGISTER_PART_CLOCK_LANE; i <= REGISTER_PART_DATA3_LANE; i++) {
++		if (i == REGISTER_PART_CLOCK_LANE)
++			hs_zero = clk_lane_hs_zero;
++		else
++			hs_zero = data_lane_hs_zero;
++
++		phy_update_bits(inno, i, 0x05, T_LPX_CNT_MASK,
++				T_LPX_CNT(lpx));
++		phy_update_bits(inno, i, 0x06, T_HS_PREPARE_CNT_MASK,
++				T_HS_PREPARE_CNT(hs_prepare));
++		if (inno->pdata->max_rate == MAX_2_5GHZ)
++			phy_update_bits(inno, i, 0x06, T_HS_ZERO_CNT_HI_MASK,
++					T_HS_ZERO_CNT_HI(hs_zero >> 6));
++		phy_update_bits(inno, i, 0x07, T_HS_ZERO_CNT_LO_MASK,
++				T_HS_ZERO_CNT_LO(hs_zero));
++		phy_update_bits(inno, i, 0x08, T_HS_TRAIL_CNT_MASK,
++				T_HS_TRAIL_CNT(hs_trail));
++		if (inno->pdata->max_rate == MAX_2_5GHZ)
++			phy_update_bits(inno, i, 0x11, T_HS_EXIT_CNT_HI_MASK,
++					T_HS_EXIT_CNT_HI(hs_exit >> 5));
++		phy_update_bits(inno, i, 0x09, T_HS_EXIT_CNT_LO_MASK,
++				T_HS_EXIT_CNT_LO(hs_exit));
++		if (inno->pdata->max_rate == MAX_2_5GHZ)
++			phy_update_bits(inno, i, 0x10, T_CLK_POST_CNT_HI_MASK,
++					T_CLK_POST_CNT_HI(clk_post >> 4));
++		phy_update_bits(inno, i, 0x0a, T_CLK_POST_CNT_LO_MASK,
++				T_CLK_POST_CNT_LO(clk_post));
++		phy_update_bits(inno, i, 0x0e, T_CLK_PRE_CNT_MASK,
++				T_CLK_PRE_CNT(clk_pre));
++		phy_update_bits(inno, i, 0x0c, T_WAKEUP_CNT_HI_MASK,
++				T_WAKEUP_CNT_HI(wakeup >> 8));
++		phy_update_bits(inno, i, 0x0d, T_WAKEUP_CNT_LO_MASK,
++				T_WAKEUP_CNT_LO(wakeup));
++		phy_update_bits(inno, i, 0x10, T_TA_GO_CNT_MASK,
++				T_TA_GO_CNT(ta_go));
++		phy_update_bits(inno, i, 0x11, T_TA_SURE_CNT_MASK,
++				T_TA_SURE_CNT(ta_sure));
++		phy_update_bits(inno, i, 0x12, T_TA_WAIT_CNT_MASK,
++				T_TA_WAIT_CNT(ta_wait));
++	}
++
++	/* Enable all lanes on analog part */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x00,
++			LANE_EN_MASK, LANE_EN_CK | LANE_EN_3 | LANE_EN_2 |
++			LANE_EN_1 | LANE_EN_0);
++}
++
++static void inno_dsidphy_lvds_mode_enable(struct inno_dsidphy *inno)
++{
++	u8 prediv = 2;
++	u16 fbdiv = 28;
++
++	/* Sample clock reverse direction */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x08,
++			SAMPLE_CLOCK_DIRECTION_MASK | LOWFRE_EN_MASK,
++			SAMPLE_CLOCK_DIRECTION_REVERSE |
++			PLL_OUTPUT_FREQUENCY_DIV_BY_1);
++
++	/* Select LVDS mode */
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x03,
++			MODE_ENABLE_MASK, LVDS_MODE_ENABLE);
++	/* Configure PLL */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x03,
++			REG_PREDIV_MASK, REG_PREDIV(prediv));
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x03,
++			REG_FBDIV_HI_MASK, REG_FBDIV_HI(fbdiv));
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x04,
++			REG_FBDIV_LO_MASK, REG_FBDIV_LO(fbdiv));
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x08, 0xff, 0xfc);
++	/* Enable PLL and Bandgap */
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x0b,
++			LVDS_PLL_POWER_MASK | LVDS_BANDGAP_POWER_MASK,
++			LVDS_PLL_POWER_ON | LVDS_BANDGAP_POWER_ON);
++
++	mdelay(20);
++
++	/* Select PLL mode */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x1e,
++			PLL_MODE_SEL_MASK, PLL_MODE_SEL_LVDS_MODE);
++
++	/* Reset LVDS digital logic */
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x00,
++			LVDS_DIGITAL_INTERNAL_RESET_MASK,
++			LVDS_DIGITAL_INTERNAL_RESET_ENABLE);
++	udelay(1);
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x00,
++			LVDS_DIGITAL_INTERNAL_RESET_MASK,
++			LVDS_DIGITAL_INTERNAL_RESET_DISABLE);
++	/* Enable LVDS digital logic */
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x01,
++			LVDS_DIGITAL_INTERNAL_ENABLE_MASK,
++			LVDS_DIGITAL_INTERNAL_ENABLE);
++	/* Enable LVDS analog driver */
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x0b,
++			LVDS_LANE_EN_MASK, LVDS_CLK_LANE_EN |
++			LVDS_DATA_LANE0_EN | LVDS_DATA_LANE1_EN |
++			LVDS_DATA_LANE2_EN | LVDS_DATA_LANE3_EN);
++}
++
++static int inno_dsidphy_power_on(struct phy *phy)
++{
++	struct inno_dsidphy *inno = phy_get_drvdata(phy);
++
++	clk_prepare_enable(inno->pclk_phy);
++	clk_prepare_enable(inno->ref_clk);
++
++	/* Bandgap power on */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x00,
++			BANDGAP_POWER_MASK, BANDGAP_POWER_ON);
++	/* Enable power work */
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x00,
++			POWER_WORK_MASK, POWER_WORK_ENABLE);
++
++	switch (inno->mode) {
++	case PHY_MODE_MIPI_DPHY:
++		inno_dsidphy_mipi_mode_enable(inno);
++		break;
++	case PHY_MODE_LVDS:
++		inno_dsidphy_lvds_mode_enable(inno);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int inno_dsidphy_power_off(struct phy *phy)
++{
++	struct inno_dsidphy *inno = phy_get_drvdata(phy);
++
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x00, LANE_EN_MASK, 0);
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x01,
++			REG_LDOPD_MASK | REG_PLLPD_MASK,
++			REG_LDOPD_POWER_DOWN | REG_PLLPD_POWER_DOWN);
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x00,
++			POWER_WORK_MASK, POWER_WORK_DISABLE);
++	phy_update_bits(inno, REGISTER_PART_ANALOG, 0x00,
++			BANDGAP_POWER_MASK, BANDGAP_POWER_DOWN);
++
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x0b, LVDS_LANE_EN_MASK, 0);
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x01,
++			LVDS_DIGITAL_INTERNAL_ENABLE_MASK,
++			LVDS_DIGITAL_INTERNAL_DISABLE);
++	phy_update_bits(inno, REGISTER_PART_LVDS, 0x0b,
++			LVDS_PLL_POWER_MASK | LVDS_BANDGAP_POWER_MASK,
++			LVDS_PLL_POWER_OFF | LVDS_BANDGAP_POWER_DOWN);
++
++	clk_disable_unprepare(inno->ref_clk);
++	clk_disable_unprepare(inno->pclk_phy);
++
++	return 0;
++}
++
++static int inno_dsidphy_set_mode(struct phy *phy, enum phy_mode mode,
++				   int submode)
++{
++	struct inno_dsidphy *inno = phy_get_drvdata(phy);
++
++	switch (mode) {
++	case PHY_MODE_MIPI_DPHY:
++	case PHY_MODE_LVDS:
++		inno->mode = mode;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int inno_dsidphy_configure(struct phy *phy,
++				  union phy_configure_opts *opts)
++{
++	struct inno_dsidphy *inno = phy_get_drvdata(phy);
++	int ret;
++
++	if (inno->mode != PHY_MODE_MIPI_DPHY)
++		return -EINVAL;
++
++	ret = phy_mipi_dphy_config_validate(&opts->mipi_dphy);
++	if (ret)
++		return ret;
++
++	memcpy(&inno->dphy_cfg, &opts->mipi_dphy, sizeof(inno->dphy_cfg));
++
++	return 0;
++}
++
++static const struct phy_ops inno_dsidphy_ops = {
++	.configure = inno_dsidphy_configure,
++	.set_mode = inno_dsidphy_set_mode,
++	.power_on = inno_dsidphy_power_on,
++	.power_off = inno_dsidphy_power_off,
++};
++
++static const struct inno_video_phy_plat_data max_1ghz_video_phy_plat_data = {
++	.inno_mipi_dphy_timing_table = inno_mipi_dphy_timing_table_max_1ghz,
++	.num_timings = ARRAY_SIZE(inno_mipi_dphy_timing_table_max_1ghz),
++	.max_rate = MAX_1GHZ,
++};
++
++static const struct inno_video_phy_plat_data max_2_5ghz_video_phy_plat_data = {
++	.inno_mipi_dphy_timing_table = inno_mipi_dphy_timing_table_max_2_5ghz,
++	.num_timings = ARRAY_SIZE(inno_mipi_dphy_timing_table_max_2_5ghz),
++	.max_rate = MAX_2_5GHZ,
++};
++
++static int inno_dsidphy_probe(struct device *dev)
++{
++	struct inno_dsidphy *inno;
++	struct phy_provider *phy_provider;
++	struct phy *phy;
++
++	inno = devm_kzalloc(dev, sizeof(*inno), GFP_KERNEL);
++	if (!inno)
++		return -ENOMEM;
++
++	inno->dev = dev;
++	inno->pdata = device_get_match_data(inno->dev);
++	dev_set_drvdata(dev, inno);
++
++	inno->phy_base = dev_platform_ioremap_resource(dev, 0);
++	if (IS_ERR(inno->phy_base))
++		return PTR_ERR(inno->phy_base);
++
++	inno->ref_clk = clk_get(dev, "ref");
++	if (IS_ERR(inno->ref_clk))
++		return dev_errp_probe(dev, inno->ref_clk,
++				      "failed to get ref clock\n");
++
++	inno->pclk_phy = clk_get(dev, "pclk");
++	if (IS_ERR(inno->pclk_phy))
++		return dev_errp_probe(dev, inno->pclk_phy,
++				      "failed to get phy pclk\n");
++
++	inno->rst = reset_control_get(dev, "apb");
++	if (IS_ERR(inno->rst))
++		return dev_errp_probe(dev, inno->rst,
++				      "failed to get system reset control\n");
++
++	phy = phy_create(dev, NULL, &inno_dsidphy_ops);
++	if (IS_ERR(phy))
++		return dev_errp_probe(dev, phy, "failed to create phy\n");
++
++	phy_set_drvdata(phy, inno);
++
++	phy_provider = of_phy_provider_register(dev, of_phy_simple_xlate);
++	if (IS_ERR(phy_provider))
++		return dev_errp_probe(dev, phy_provider,
++				      "failed to register phy provider\n");
++
++	return 0;
++}
++
++static const struct of_device_id inno_dsidphy_of_match[] = {
++	{
++		.compatible = "rockchip,px30-dsi-dphy",
++		.data = &max_1ghz_video_phy_plat_data,
++	}, {
++		.compatible = "rockchip,rk3128-dsi-dphy",
++		.data = &max_1ghz_video_phy_plat_data,
++	}, {
++		.compatible = "rockchip,rk3368-dsi-dphy",
++		.data = &max_1ghz_video_phy_plat_data,
++	}, {
++		.compatible = "rockchip,rk3568-dsi-dphy",
++		.data = &max_2_5ghz_video_phy_plat_data,
++	}, {
++		.compatible = "rockchip,rv1126-dsi-dphy",
++		.data = &max_2_5ghz_video_phy_plat_data,
++	},
++	{}
++};
++MODULE_DEVICE_TABLE(of, inno_dsidphy_of_match);
++
++static struct driver inno_dsidphy_driver = {
++	.name = "inno-dsidphy",
++	.of_match_table	= of_match_ptr(inno_dsidphy_of_match),
++	.probe = inno_dsidphy_probe,
++};
++device_platform_driver(inno_dsidphy_driver);
++
++MODULE_AUTHOR("Wyon Bi <bivvy.bi@rock-chips.com>");
++MODULE_DESCRIPTION("Innosilicon MIPI/LVDS/TTL Video Combo PHY driver");
++MODULE_LICENSE("GPL v2");
 -- 
 2.47.3
 
