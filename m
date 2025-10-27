@@ -1,53 +1,55 @@
-Delivery-date: Mon, 27 Oct 2025 08:45:18 +0100
+Delivery-date: Mon, 27 Oct 2025 08:55:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDHuo-00CGXm-00
+	id 1vDI4P-00CGdq-1w
 	for lore@lore.pengutronix.de;
-	Mon, 27 Oct 2025 08:45:18 +0100
+	Mon, 27 Oct 2025 08:55:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDHun-0007uY-BH
-	for lore@pengutronix.de; Mon, 27 Oct 2025 08:45:17 +0100
+	id 1vDI4O-0000KS-Rh
+	for lore@pengutronix.de; Mon, 27 Oct 2025 08:55:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=oAqaVmw2HuMw7zZ1AqlsR9bIJK5KkRlMwf7O0hv0PAY=; b=UPbKR5JdrQ70gt39wPyDHaPR7q
-	rldQ644m1mE/Sw14yllNHGyxjVA39we9vej3uDwnpYjnJRmrKYb3NALoLGYuQCD4n3pgIskMXm7eC
-	ZhgZUBSIw9OjLZpO6lZ1orMzZQWh5TFSYy28nyZB/651CG7T6c9iRDxd38ZGgECetNqhAGqp/SZVe
-	i0uD4DU3tI8+DIrB9LB0ZTTRhY+/ijp3BcMVhDAc6xB1Vrsxc/+rwmGCiAjpHJv1ZhZxvvjryRSGD
-	lxGg0a1ZXn5BHHsAwxC2ioQTnfccytsUy8vbsUmSTKGYPzl7sl5XMYIWg0TgsQ63biU4m91Ib48GK
-	R1fcsDdQ==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=yRJt8/Rs7lSCyL/ZwwIabdBylKc6kTIWIt4B+MnOBzs=; b=OTkinEvYpoxqby3isECUY7MdTD
+	oXlk/N0llnpmOH6j1qZ0Ceun3126DtVyOhKk/77sZ1O7qjIoUEWuYfS+0c+LGg1AoVqzGwk1VtNTp
+	gDFXCDoL4QNrz7xBVF0UxmbWnRmThYERUEpvyNNUa2dRLa9rbIrRM//T2bHoMgVvg09TjLMGVfVlS
+	6GmlnM9sWVYgPOUku0koheyTCbZVTg7tMqCrgRslpfMm3ZoYloMJkJAvJhqoCYLxY+OW4iFGo1Nwt
+	F33zirFBj1bSbqoB16X8ZioCYkqbsgNkJblwmp4ArCOVa6KdJqLw6VTJDsIVubiy1tFjQJU9LClv5
+	OZuL28FQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDHuN-0000000DIQT-3hiO;
-	Mon, 27 Oct 2025 07:44:51 +0000
+	id 1vDI3x-0000000DJBh-1weW;
+	Mon, 27 Oct 2025 07:54:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDHuL-0000000DIPz-0lMk
+	id 1vDI3t-0000000DJAG-3jnH
 	for barebox@lists.infradead.org;
-	Mon, 27 Oct 2025 07:44:50 +0000
+	Mon, 27 Oct 2025 07:54:43 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vDHuJ-0007pG-Bq; Mon, 27 Oct 2025 08:44:47 +0100
+	id 1vDI3s-0000B3-BG; Mon, 27 Oct 2025 08:54:40 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 27 Oct 2025 08:44:45 +0100
-Message-ID: <20251027074446.2474869-1-a.fatoum@barebox.org>
+Date: Mon, 27 Oct 2025 08:54:34 +0100
+Message-ID: <20251027075438.2480311-3-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251027075438.2480311-1-a.fatoum@barebox.org>
+References: <20251027075438.2480311-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251027_004449_222989_E6D7D1B0 
-X-CRM114-Status: GOOD (  16.27  )
+X-CRM114-CacheID: sfid-20251027_005441_934755_3A848CD5 
+X-CRM114-Status: GOOD (  16.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,185 +67,191 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] sandbox: add memory leak debugging tooling around LeakSanitizer
+Subject: [PATCH RFC 3/3] hush: fix memory leaks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When enabled, this allows calling barebox_memleak_check() or running the
-checkleak command to instruct LeakSanitizer to sweep the memory and find
-unreferenced allocations.
+The memory leaks in hush have been bothered me for years and every time
+I look into it, I give up after a while, because the code is convoluted.
 
-LeakSanitizier is also enabled along AddressSanitizer and runs on AMD64
-Linux automatically on exit already.
+Talloc shines here as we can just allocate a "zero-size" talloc object
+as parent for a context and associate all allocations from that context
+with it.
+
+Then when that context is free'd all children will be freed as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/sandbox/Makefile         |  2 +-
- arch/sandbox/os/libc_malloc.c |  9 ++++++
- commands/Kconfig              |  9 ++++++
- commands/Makefile             |  1 +
- commands/checkleak.c          | 52 +++++++++++++++++++++++++++++++++++
- common/Kconfig.debug          |  6 ++++
- include/malloc.h              |  6 ++++
- 7 files changed, 84 insertions(+), 1 deletion(-)
- create mode 100644 commands/checkleak.c
+ common/hush.c | 41 +++++++++++++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index fdff09c07cb9..1b1774cc4b0a 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -36,7 +36,7 @@ TEXT_BASE = $(CONFIG_TEXT_BASE)
+diff --git a/common/hush.c b/common/hush.c
+index ec3c0cd91320..2e0cc4229d35 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -97,6 +97,7 @@
  
- SANDBOX_PBL2PROPER_GLUE_SYMS := \
- 	putchar errno setjmp longjmp \
--	malloc_stats memalign malloc free realloc calloc brk sbrk
-+	malloc_stats memalign malloc free realloc calloc memleak_check brk sbrk
+ #define pr_fmt(fmt) "hush: " fmt
  
- KBUILD_CFLAGS += $(foreach s,$(SANDBOX_PBL2PROPER_GLUE_SYMS),-D$(s)=barebox_$(s))
++#include <talloc.h>
+ #include <malloc.h>         /* malloc, free, realloc*/
+ #include <xfuncs.h>
+ #include <linux/ctype.h>    /* isalpha, isdigit */
+@@ -180,6 +181,7 @@ struct option {
  
-diff --git a/arch/sandbox/os/libc_malloc.c b/arch/sandbox/os/libc_malloc.c
-index bb4fb1c9ead4..fee4550f327c 100644
---- a/arch/sandbox/os/libc_malloc.c
-+++ b/arch/sandbox/os/libc_malloc.c
-@@ -98,3 +98,12 @@ void *barebox_calloc(size_t n, size_t elem_size)
+ /* This holds pointers to the various results of parsing */
+ struct p_context {
++	const void *scope;
+ 	struct child_prog *child;
+ 	struct pipe *list_head;
+ 	struct pipe *pipe;
+@@ -308,7 +310,7 @@ static int run_pipe_real(struct p_context *ctx, struct pipe *pi);
+ /*   variable assignment: */
+ static int is_assignment(const char *s);
+ /*   data structure manipulation: */
+-static void initialize_context(struct p_context *ctx);
++static void initialize_context(struct p_context *ctx, bool newscope);
+ static void release_context(struct p_context *ctx);
+ static int done_word(o_string *dest, struct p_context *ctx);
+ static int done_command(struct p_context *ctx);
+@@ -435,7 +437,7 @@ static char *getprompt(void)
+ 	if (prompt_command) {
+ 		unsigned int lr = last_return_code;
  
- 	return mem;
+-		initialize_context(&ctx);
++		initialize_context(&ctx, false);
+ 		parse_string_outer(&ctx, prompt_command, FLAG_PARSE_SEMICOLON);
+ 		release_context(&ctx);
+ 
+@@ -837,7 +839,7 @@ static int run_pipe_real(struct p_context *ctx, struct pipe *pi)
+ 		char * str = NULL;
+ 		struct p_context ctx1;
+ 
+-		initialize_context(&ctx1);
++		initialize_context(&ctx1, true);
+ 
+ 		str = make_string((child->argv + i));
+ 		rcode = parse_string_outer(&ctx1, str, FLAG_EXIT_FROM_LOOP | FLAG_REPARSING);
+@@ -1062,7 +1064,8 @@ static int free_pipe(struct pipe *pi, int indent)
+ 		}
+ 	}
+ 
+-	free(pi->progs);   /* children are an array, they get freed all at once */
++	/* children are an array, they get freed all at once */
++	talloc_free(pi->progs);
+ 	pi->progs = NULL;
+ 
+ 	return ret_code;
+@@ -1079,7 +1082,7 @@ static int free_pipe_list(struct pipe *head, int indent)
+ 		final_printf("%s pipe followup code %d\n", indenter(indent), pi->followup);
+ 		next = pi->next;
+ 		pi->next = NULL;
+-		free(pi);
++		talloc_free(pi);
+ 	}
+ 	return rcode;
  }
-+
-+#ifdef CONFIG_DEBUG_MEMLEAK
-+void barebox_memleak_check(void)
-+{
-+	void __lsan_do_leak_check(void);
-+
-+	__lsan_do_leak_check();
-+}
-+#endif
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 78b1e69dd38e..c7c03a65477b 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -210,6 +210,15 @@ config CMD_MEMINFO
- 	  system bytes     =     282616
- 	  in use bytes     =     274752
- 
-+config CMD_CHECKLEAK
-+	tristate
-+	prompt "checkleak"
-+	depends on DEBUG_MEMLEAK
-+	default y
-+	help
-+	  List memory leaks encountered since the last time
-+	  the command ran.
-+
- config CMD_ARM_MMUINFO
- 	bool "mmuinfo command"
- 	depends on CPU_V7 || CPU_V8
-diff --git a/commands/Makefile b/commands/Makefile
-index 858e0c257eba..8fffac8fd442 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -47,6 +47,7 @@ obj-$(CONFIG_CMD_TRUNCATE)	+= truncate.o
- obj-$(CONFIG_CMD_SYNC)		+= sync.o
- obj-$(CONFIG_CMD_FLASH)		+= flash.o
- obj-$(CONFIG_CMD_MEMINFO)	+= meminfo.o
-+obj-$(CONFIG_CMD_CHECKLEAK)	+= checkleak.o
- obj-$(CONFIG_CMD_TIMEOUT)	+= timeout.o
- obj-$(CONFIG_CMD_READLINE)	+= readline.o
- obj-$(CONFIG_CMD_SETENV)	+= setenv.o
-diff --git a/commands/checkleak.c b/commands/checkleak.c
-new file mode 100644
-index 000000000000..c0449fc82e00
---- /dev/null
-+++ b/commands/checkleak.c
-@@ -0,0 +1,52 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <command.h>
-+#include <malloc.h>
-+#include <abort.h>
-+#include <getopt.h>
-+#include <linux/kstrtox.h>
-+
-+static int do_checkleak(int argc, char *argv[])
-+{
-+	unsigned int count;
-+	int opt;
-+
-+	while((opt = getopt(argc, argv, "l:")) > 0) {
-+		switch(opt) {
-+		case 'l':
-+			if (kstrtouint(optarg, 0, &count))
-+				return COMMAND_ERROR;
-+			(void)malloc(count);
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	argv += optind;
-+	argc -= optind;
-+
-+	if (argc)
-+		return COMMAND_ERROR_USAGE;
-+
-+	memleak_check();
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(checkleak)
-+BAREBOX_CMD_HELP_TEXT("list memory leaks encountered since the last time")
-+BAREBOX_CMD_HELP_TEXT("the command ran.")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-l COUNT",  "force leak of COUNT bytes")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(checkleak)
-+	.cmd		= do_checkleak,
-+	BAREBOX_CMD_DESC("check for memory leaks")
-+	BAREBOX_CMD_OPTS("[-l]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_checkleak_help)
-+BAREBOX_CMD_END
-+
-diff --git a/common/Kconfig.debug b/common/Kconfig.debug
-index 9c70555eb83c..2de885ebb3f8 100644
---- a/common/Kconfig.debug
-+++ b/common/Kconfig.debug
-@@ -124,6 +124,12 @@ config PRINTF_FULL
- source "lib/Kconfig.ubsan"
- source "lib/kasan/Kconfig"
- 
-+config DEBUG_MEMLEAK
-+	bool "barebox memory leak detector"
-+	depends on MALLOC_LIBC && ASAN
-+	help
-+	  Say Y here if you want to enable LeakSanitizer.
-+
- config COMPILE_TEST
- 	bool "compile-test drivers of other platforms"
- 	default n
-diff --git a/include/malloc.h b/include/malloc.h
-index 81ab0f457b01..31a2ff1b3d8e 100644
---- a/include/malloc.h
-+++ b/include/malloc.h
-@@ -88,4 +88,10 @@ static inline bool want_init_on_free(void)
- 	return IS_ENABLED(CONFIG_INIT_ON_FREE_DEFAULT_ON);
+@@ -1182,16 +1185,18 @@ static int is_assignment(const char *s)
  }
  
-+#ifdef CONFIG_DEBUG_MEMLEAK
-+void memleak_check(void);
-+#else
-+static inline void memleak_check(void) {}
-+#endif
-+
- #endif /* __MALLOC_H */
+ 
+-static struct pipe *new_pipe(void)
++static struct pipe *new_pipe(struct p_context *ctx)
+ {
+-	return xzalloc(sizeof(struct pipe));
++	return xtalloc_zero_size(ctx->scope, sizeof(struct pipe));
+ }
+ 
+-static void initialize_context(struct p_context *ctx)
++static void initialize_context(struct p_context *ctx, bool newscope)
+ {
++	if (newscope)
++		ctx->scope = talloc_new(NULL);
+ 	ctx->pipe = NULL;
+ 	ctx->child = NULL;
+-	ctx->list_head = new_pipe();
++	ctx->list_head = new_pipe(ctx);
+ 	ctx->pipe = ctx->list_head;
+ 	ctx->w = RES_NONE;
+ 	ctx->stack = NULL;
+@@ -1211,6 +1216,7 @@ static void release_context(struct p_context *ctx)
+ 		free(opt);
+ 	}
+ #endif
++	talloc_free((void *)ctx->scope);
+ }
+ 
+ /* normal return is 0
+@@ -1269,7 +1275,7 @@ static int reserved_word(o_string *dest, struct p_context *ctx)
+ 				return 1;
+ 			}
+ 			*new = *ctx;   /* physical copy */
+-			initialize_context(ctx);
++			initialize_context(ctx, false);
+ 			ctx->stack = new;
+ 		} else if (ctx->w == RES_NONE || !(ctx->old_flag & (1 << r->code))) {
+ 			syntax_unexpected_token(r->literal);
+@@ -1366,7 +1372,10 @@ static int done_command(struct p_context *ctx)
+ 	} else {
+ 		hush_debug("%s: initializing\n", __func__);
+ 	}
+-	pi->progs = xrealloc(pi->progs, sizeof(*pi->progs) * (pi->num_progs + 1));
++	pi->progs = talloc_realloc_size(ctx->scope, pi->progs,
++					sizeof(*pi->progs) * (pi->num_progs + 1));
++	if (!pi->progs)
++		panic("enomem");
+ 
+ 	prog = pi->progs + pi->num_progs;
+ 	prog->glob_result.gl_pathv = NULL;
+@@ -1392,7 +1401,7 @@ static int done_pipe(struct p_context *ctx, pipe_style type)
+ 	ctx->pipe->followup = type;
+ 	ctx->pipe->r_mode = ctx->w;
+ 
+-	new_p = new_pipe();
++	new_p = new_pipe(ctx);
+ 
+ 	ctx->pipe->next = new_p;
+ 	ctx->pipe = new_p;
+@@ -1705,7 +1714,7 @@ char *shell_expand(char *str)
+ 
+ 	o.quote = 1;
+ 
+-	initialize_context(&ctx);
++	initialize_context(&ctx, false);
+ 
+ 	parse_string(&o, &ctx, str);
+ 
+@@ -1732,7 +1741,7 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
+ 
+ 	do {
+ 		ctx->type = flag;
+-		initialize_context(ctx);
++		initialize_context(ctx, false);
+ 		update_ifs_map();
+ 
+ 		if (!(flag & FLAG_PARSE_SEMICOLON) || (flag & FLAG_REPARSING))
+@@ -1921,7 +1930,7 @@ int run_command(const char *cmd)
+ 	if (!IS_ALLOWED(SCONFIG_SHELL))
+ 		return -EPERM;
+ 
+-	initialize_context(&ctx);
++	initialize_context(&ctx, true);
+ 
+ 	ret = parse_string_outer(&ctx, cmd, FLAG_PARSE_SEMICOLON);
+ 	release_context(&ctx);
+@@ -1949,7 +1958,7 @@ static int source_script(const char *path, int argc, char *argv[])
+ 	char *script;
+ 	int ret;
+ 
+-	initialize_context(&ctx);
++	initialize_context(&ctx, true);
+ 
+ 	ctx.global_argc = argc;
+ 	ctx.global_argv = argv;
 -- 
 2.47.3
 
