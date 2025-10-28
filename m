@@ -1,70 +1,73 @@
-Delivery-date: Tue, 28 Oct 2025 10:42:56 +0100
+Delivery-date: Tue, 28 Oct 2025 10:48:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDgEC-00Cdtt-1U
+	id 1vDgJp-00CdxV-0m
 	for lore@lore.pengutronix.de;
-	Tue, 28 Oct 2025 10:42:56 +0100
+	Tue, 28 Oct 2025 10:48:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDgEB-0005oe-SI
-	for lore@pengutronix.de; Tue, 28 Oct 2025 10:42:56 +0100
+	id 1vDgJo-0006Zh-Me
+	for lore@pengutronix.de; Tue, 28 Oct 2025 10:48:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=U2v9MF053OeMDOztz7wHl2TCS1u720Kc5WpxU0lSwUg=; b=ooyTO3xIzYwx/IIEPMPWd7l6W4
-	JcZSNVbtp6VZWGgvnos5mk5VQd+oh7m2oC/kweg1KWYQ+82+aNbNRh6OyFPc8NDh0d1l9wXlepy3K
-	L6NMBHfQ4BI6MNqsLIonNPhkg06pHObibcqsZpJ2BoOsKciqlNsOavLjgiZiG72kBfLzMG6MZfkJg
-	zQtQSru3C/EhKXVMCN+enRXuIl1UQWJ6Tm2+t6vCffXJHEdd8zuGX1bhVJMsiZ3rWHloXYeUYSR9f
-	yVnzTeL2vQsOsujH5WagFWv7BZNm8uDugcmF/h+gkC3Lu7TWidYPxiQjvNBpZGICzxFeHF97LBADB
-	wU06psPQ==;
+	bh=TZcyaT88knIgW3qyIbIyLhgKZp9wWdyVHZJl5+uJ7qs=; b=AWKBzoSlKcWB/cjM7GblrBZscA
+	b+GUlYR9Y01m7HOMZbkJXZAidbkvWKxx/1fYKV/Z9dqiXS9c6PwulF1CLWzbfa64rLA3/ekOQ0pad
+	qXPr/1OsL4Fs5jxOiDQvfn39lyEu1eZ6Voq0U2up6APC+ItdAHbTak9MIkRkQruOfRIKQHepHrkqO
+	hUfwOnNlFCKFrvVD5sq8Df6jAY5CNmqI75U3U0kSwPt7GWKZP+FZGR+xZc9zIRebHlPjslrF/ImH0
+	TC0wPWlSd1ay1a+9SOV2OxzFp6BUY0gS8xmCchWn0n8evkfEipRvfv9gPJPLbOmS6DhEAQaVD3sez
+	n9sPM1kg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDgDc-0000000Ferb-0Bzi;
-	Tue, 28 Oct 2025 09:42:20 +0000
+	id 1vDgJM-0000000FfLw-0w6S;
+	Tue, 28 Oct 2025 09:48:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDgDZ-0000000FerB-2whG
+	id 1vDgJK-0000000FfLY-0LZO
 	for barebox@lists.infradead.org;
-	Tue, 28 Oct 2025 09:42:19 +0000
+	Tue, 28 Oct 2025 09:48:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vDgDX-0005gU-RV; Tue, 28 Oct 2025 10:42:15 +0100
+	id 1vDgJH-0006Ta-Vt; Tue, 28 Oct 2025 10:48:12 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vDgDX-005qvM-2A;
-	Tue, 28 Oct 2025 10:42:15 +0100
+	id 1vDgJH-005qvz-2a;
+	Tue, 28 Oct 2025 10:48:11 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vDgDX-005141-1s;
-	Tue, 28 Oct 2025 10:42:15 +0100
-Date: Tue, 28 Oct 2025 10:42:15 +0100
+	id 1vDgJH-005199-2C;
+	Tue, 28 Oct 2025 10:48:11 +0100
+Date: Tue, 28 Oct 2025 10:48:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <aQCP95IqfhGo1zJg@pengutronix.de>
-References: <20251027075438.2480311-1-a.fatoum@barebox.org>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>, barebox@lists.infradead.org
+Message-ID: <aQCRW2k8IkHPTW_-@pengutronix.de>
+References: <20251027192938.2586566-1-a.fatoum@barebox.org>
+ <20251027192938.2586566-5-a.fatoum@barebox.org>
+ <aQCFYqNbaavn3pYU@pengutronix.de>
+ <10308082-4d36-488f-b87c-9357e0e7125d@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251027075438.2480311-1-a.fatoum@barebox.org>
+In-Reply-To: <10308082-4d36-488f-b87c-9357e0e7125d@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251028_024217_743183_0B1A4F86 
-X-CRM114-Status: GOOD (  19.42  )
+X-CRM114-CacheID: sfid-20251028_024814_123644_5DF4154D 
+X-CRM114-Status: GOOD (  17.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,77 +89,42 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH RFC 1/3] lib: add talloc for overlaying a tree onto
- allocations
+Subject: Re: [PATCH v2 5/5] pmdomain: add Rockchip power domain support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Oct 27, 2025 at 08:54:32AM +0100, Ahmad Fatoum wrote:
-> +#ifndef __TALLOC_H__
-> +#define __TALLOC_H__
-> +
-> +#include <linux/types.h>
-> +
-> +struct talloc {
-> +	struct talloc *child;
-> +	struct talloc *next;
-> +	union {
-> +		struct talloc *prev;
-> +		struct talloc *parent; /* Valid only when is_first(mem) */
-> +	};
-> +};
+On Tue, Oct 28, 2025 at 10:04:06AM +0100, Ahmad Fatoum wrote:
+> 
+> 
+> On 10/28/25 9:57 AM, Sascha Hauer wrote:
+> > On Mon, Oct 27, 2025 at 08:28:20PM +0100, Ahmad Fatoum wrote:
+> >> +static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
+> >> +				     struct device_node *parent)
+> >> +{
+> >> +	struct device_node *np;
+> >> +
+> >> +	for_each_child_of_node(parent, np)
+> >> +		return -ENOSYS;
+> >> +
+> > 
+> > I gave it a quick try on RK3588 and driver probe fails here. RK3588 has
+> > several subdomains in its power controller.
+> 
+> I need it on rk3566 though, otherwise the probe hangs. Should I drop the
+> rk358x compatibles?
 
-Currently tlsf allocations are 8 byte aligned. On 32bit architectures
-struct talloc will be 12 bytes, so talloc allocations will only have 4
-byte alignment.
+That leaves us with the warnings introduced with the last patch:
 
-> +static void *talloc_ctx_init(struct talloc *hdr, const void *parent)
-> +{
-> +	void *mem;
-> +
-> +	if (!hdr)
-> +		return NULL;
-> +
-> +	memset(hdr, 0, sizeof(*hdr));
-> +
-> +	mem = hdr2mem(hdr);
-> +	talloc_steal(parent, mem);
-> +	return mem;
-> +}
-> +
-> +/**
-> + * talloc_usable_size() - Report the size of the talloation
+WARNING: dwc3 fc000000.usb@fc000000.of: power domain not found (ignoring)
+WARNING: rockchip-dw-pcie a40c00000.pcie@fe180000.of: power domain not found (ignoring)
+WARNING: rockchip-dw-pcie a41000000.pcie@fe190000.of: power domain not found (ignoring)
+WARNING: dw_mmc fe2c0000.mmc@fe2c0000.of: power domain not found (ignoring)
+WARNING: dwc3 fc400000.usb@fc400000.of: power domain not found (ignoring)
+WARNING: rockchip-dw-pcie a40400000.pcie@fe160000.of: power domain not found (ignoring)
 
-s/talloation/tallocation/
-
-> + *
-> + * @mem: pointer to previously talloc'ed memory chunk.
-> + *
-> + * Return: size of tallocation
-> + */
-> +size_t talloc_usable_size(void *mem)
-> +{
-> +	return malloc_usable_size(mem) - sizeof(struct talloc);
-> +}
-> +EXPORT_SYMBOL(talloc_usable_size);
-
-This function is unused. Do we need it?
-
-> +/**
-> + * talloc_free() - Deallocate a talloc'ed memory chunk and all the chunks depending on it.
-> + *
-> + * @mem: pointer to previously talloc'ed memory chunk.
-> + */
-> +void talloc_free(void *mem)
-> +{
-> +	struct talloc *hdr = mem2hdr(mem);
-> +
-> +	if (ZERO_OR_NULL_PTR(hdr))
-> +		return;
-
-For correctness I believe you have to check mem here, not hdr.
-
-(Although the above works as long as sizeof(struct talloc) <= ZERO_SIZE_PTR)
+Maybe add a dummy driver where people can add their compatible to when
+they encounter the warning knowing that their SoC doesn't need a power
+domain driver?
 
 Sascha
 
