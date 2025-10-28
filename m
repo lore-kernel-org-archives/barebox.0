@@ -1,56 +1,72 @@
-Delivery-date: Tue, 28 Oct 2025 14:43:51 +0100
+Delivery-date: Tue, 28 Oct 2025 14:48:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDjzL-00ChYG-0e
+	id 1vDk4E-00ChbF-35
 	for lore@lore.pengutronix.de;
-	Tue, 28 Oct 2025 14:43:51 +0100
+	Tue, 28 Oct 2025 14:48:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDjzK-0004q7-Je
-	for lore@pengutronix.de; Tue, 28 Oct 2025 14:43:51 +0100
+	id 1vDk4E-0005nn-BH
+	for lore@pengutronix.de; Tue, 28 Oct 2025 14:48:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
 	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
 	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=47BDGleCbG0XEvCNQf2MtsTKZJDjo/zgJ7UldmAp1XQ=; b=QF1J7SMHBNYzfJl600pFsBoma4
-	TSxnfdOP7ZO4YFDozOLx1HREqMDTspMWsIqen5SdT9bdZvvA09Ijo6a6aWSs+OVSCdSi27nMGcqs5
-	tURdmmjZx90PhoZ59raGa1ImKlvePRauElmqBpcUTwmGphN2K+QjPKOvm+9e8MvyZ4VDVv2Nndtrd
-	kG1+++fWhjQzHr+7hk8eRuqccSr5RRZ/RmgGhDPNa/Wf1kqfEBdzwq7eCqf7RJ+A7pNTGXU/8p60x
-	I+sHMmRiWS1nT0Colk68Q/uzFK2mP6DTTvcx5+wReIuin2nVum940giWvtYFo11BHbvo6MPRy3yEB
-	xNrt0ilQ==;
+	bh=qiZNOYQI/LLlc0iZfL/NJJQlmV4wRVdPtb4UsjIgKyM=; b=LfypGoFueMpTNv3Wy4HJgFnJIY
+	1pFHn5Kpdo2sSEUVIFsthpQQvo/z9a9T1YLy65UcF0Ebjb9tBZtSNtnZtbsHnA6q32ztHke8bGNcm
+	U3Ka+AD69ZARMgeS7KSIEmmVi+/Od9NTCoA+Vkxwf31K5FJAN2zq6Se9uYg4ab9l1rtIUBSf+UluZ
+	KBMcbowZlL9/11UdjEHLo+wG4XgwOJO5djrXkt2IpCT2z7qjIMfEYaF/TR5+LQQxvo1C+2TF3fBYv
+	iGKxYPay2YAv7f3IDVp2CX4vhViOfbK2kR+dfYRaFU3v8TTMDPg/ibsyYrnnwk/uNH21bA00EyVVk
+	jl1HJ5CA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDjyj-0000000G10a-1S2c;
-	Tue, 28 Oct 2025 13:43:13 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vDk3j-0000000G23x-0Tsh;
+	Tue, 28 Oct 2025 13:48:23 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDjyg-0000000G0zr-0fA3
+	id 1vDk3i-0000000G23f-1vxd
+	for barebox@bombadil.infradead.org;
+	Tue, 28 Oct 2025 13:48:22 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Transfer-Encoding
+	:Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=qiZNOYQI/LLlc0iZfL/NJJQlmV4wRVdPtb4UsjIgKyM=; b=DBdhoOtKmsUkSkgSRMbTRquCco
+	gbP6legloNG6kMQOusFPgbAt1ehok+RQk3DvLfk5eWA27EBnZc15N11MbOKtWFxj83tcfp9XmOA68
+	+peFDYilZO5cNazCXsej8n57a21+Mnsp5UOF3MLR1D7FuJ/tW0sKpXzsTYeAYcg43JGLkrLEhp/Nn
+	yxAB84gRgPXeM5evpXrArWCx1lijzHqsytlg0o65NWYUPIT43dV6nM+WIMjIvrIBu7BmlTLKZwSNq
+	IEK15IjuHzBjZS+OIzfQmH6YiS7Mrsc0GnSNkgbX9B/KnGKr4EcjosKRVrQ80sv3Cyag0t3vFPJLr
+	jbrmxgjQ==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDjBv-00000004TVY-07aP
 	for barebox@lists.infradead.org;
-	Tue, 28 Oct 2025 13:43:11 +0000
+	Tue, 28 Oct 2025 12:52:48 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1vDjyd-0004iG-Al; Tue, 28 Oct 2025 14:43:07 +0100
-Message-ID: <e23500c84662501cf43a2269d72539415da5211a.camel@pengutronix.de>
+	id 1vDk3b-0005hV-Ch; Tue, 28 Oct 2025 14:48:15 +0100
+Message-ID: <e78f9ef3ee79828a6808820d9e583d29abe3639b.camel@pengutronix.de>
 From: Fabian Pflug <f.pflug@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Date: Tue, 28 Oct 2025 14:43:06 +0100
-In-Reply-To: <2fc02718-032e-4ad4-89a5-e780836c430d@pengutronix.de>
+Date: Tue, 28 Oct 2025 14:48:15 +0100
+In-Reply-To: <2f1a2a5a-1c70-4bdc-a84f-8e76761deca8@pengutronix.de>
 References: <20251028121820.1242298-1-f.pflug@pengutronix.de>
-	 <2fc02718-032e-4ad4-89a5-e780836c430d@pengutronix.de>
+	 <20251028121820.1242298-3-f.pflug@pengutronix.de>
+	 <2f1a2a5a-1c70-4bdc-a84f-8e76761deca8@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.1-1 
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251028_064310_225920_378425FB 
-X-CRM114-Status: GOOD (  25.80  )
+X-CRM114-CacheID: sfid-20251028_125247_104114_BE4697F8 
+X-CRM114-Status: GOOD (  25.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,72 +88,80 @@ X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] startup: check for console before showing menu
+Subject: Re: [PATCH 3/3] startup: mount ps only on policy FS_EXTERNAL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Ahmad,
+Hey :)
 
-On Tue, 2025-10-28 at 13:39 +0100, Ahmad Fatoum wrote:
-> Hi Fabian,
+On Tue, 2025-10-28 at 13:56 +0100, Ahmad Fatoum wrote:
+> Hi,
 >=20
 > On 10/28/25 1:18 PM, Fabian Pflug wrote:
-> > If there is no input available or possible due to policy settings, it
-> > does not make sense to show a menu and ask for input.
-> >=20
-> > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> > Without the SCONFIG_FS_EXTERNAL, the bus of the driver for pstore will
+> > not load, resulting in a missing driver for pstore and an error during
+> > bootup.
+> > Only mount the /pstore if FS_EXTERNAL is allowed by the security policy=
+.
+> > > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 > > ---
-> > =C2=A0common/startup.c | 18 ++++++++++--------
-> > =C2=A01 file changed, 10 insertions(+), 8 deletions(-)
+> > =C2=A0common/startup.c | 22 ++++++++++++++++++++--
+> > =C2=A01 file changed, 20 insertions(+), 2 deletions(-)
 > >=20
 > > diff --git a/common/startup.c b/common/startup.c
-> > index 8d36ffceb4..3bc2609006 100644
+> > index ea5436afa6..f16a99f7e4 100644
 > > --- a/common/startup.c
 > > +++ b/common/startup.c
-> > @@ -45,6 +45,7 @@
-> > =C2=A0#include <pbl/handoff-data.h>
-> > =C2=A0#include <libfile.h>
-> > =C2=A0#include <fuzz.h>
-> > +#include <security/config.h>
+> > @@ -55,6 +55,19 @@ extern exitcall_t __barebox_exitcalls_start[], __bar=
+ebox_exitcalls_end[];
+> > =C2=A0enum system_states barebox_system_state;
 > > =C2=A0
-> > =C2=A0extern initcall_t __barebox_initcalls_start[], __barebox_early_in=
-itcalls_end[],
-> > =C2=A0		=C2=A0 __barebox_initcalls_end[];
-> > @@ -361,14 +362,15 @@ static int run_init(void)
-> > =C2=A0		run_shell();
-> > =C2=A0	}
-> > =C2=A0
-> > -	do {
-> > -		/*
-> > -		 * Let's run the command once at least, so an error
-> > -		 * message is printed if the file doesn't exist
-> > -		 */
-> > -		run_command(MENUFILE);
-> > -	} while (stat(MENUFILE, &s) =3D=3D 0);
-> > -
-> > +	if(!IS_ENABLED(CONFIG_CONSOLE_DISABLE_INPUT) && IS_ALLOWED(SCONFIG_CO=
-NSOLE_INPUT)) {
+> > =C2=A0#if defined CONFIG_FS_RAMFS && defined CONFIG_FS_DEVFS
+> > +static struct sconfig_notifier_block sconfig_notifier;
+> > +static void u_mount_pstore(struct sconfig_notifier_block *nb,
+> > +			=C2=A0=C2=A0 enum security_config_option opt, bool allowed)
+> > +{
+> > +	if (allowed) {
+> > +		mkdir("/pstore", 0);
 >=20
-> CONFIG_CONSOLE_DISABLE_INPUT only influences the default, it can still
-> be changed later at runtime, so this is not necessarily correct.
->=20
-> > +		do {
->=20
-> Move the IS_ALLOWED(SCONFIG_CONSOLE_INPUT) check here?
->=20
-> Feels more natural to do it in the loop than outside. Extra benefit: We
-> could use it for testing purposes (Menu entry that locks the console..)
+> I think we should create the directory unconditionally without paying
+> respect to whether we can mount or not.
 
-I see the extra benefit for testing the console, but at this point, if ther=
-e is no input possible, then we cannot enter
-something into the console. The menu is a new screen on the device, which m=
-akes it hard to read the possible error
-messages before going to console here, because the security policy did some=
-thing during development, that was not
-intended. I would love to have the system hang here instead and tell me as =
-much.
+I think that could irritate people into thinking, that there is nothing ins=
+ide the pstore.
+When there is no /pstore directory, it is clear, that the mount is not ther=
+e and one gets to wonder why and what happens
+here instead of chasing around, why the pstore is empty.
 
-I will not stop you in implementing it differently, but I will not do that.
+>=20
+> > +		mount("none", "pstore", "/pstore", NULL);
+> > +	} else {
+> > +		umount("/pstore");
+>=20
+> The harm is already done when loosening security mode, so I don't think
+> we want to start unmounting things.
+
+That I can do. :)
+
+>=20
+> As mentioned, I'd prefer replacing SCONFIG_FS_EXTERNAL altogether with a
+> whitelist of mounts, so common code calls:
+>=20
+> =C2=A0 allow_mount("none", "ramfs", "/", NULL);
+> =C2=A0 allow_mount("none", "devfs", "/dev", NULL);
+>=20
+> and board code can call:
+>=20
+> =C2=A0 allow_mount("non", "pstore", "/pstore", NULL);
+>=20
+> and we won't need any special handling here. Waiting to see what Sascha
+> thinks.
+
+
+I see your Idea and think this could be good, but also need something fast =
+for me now and this works in that regard. I
+see yours as a long term solution that is a bit more complicated that what =
+I know about barebox.
 
 Kind regards
 Fabian
@@ -146,15 +170,28 @@ Fabian
 > Cheers,
 > Ahmad
 >=20
-> > +			/*
-> > +			* Let's run the command once at least, so an error
-> > +			* message is printed if the file doesn't exist
-> > +			*/
-> > +			run_command(MENUFILE);
-> > +		} while (stat(MENUFILE, &s) =3D=3D 0);
+> > +		rmdir("/pstore");
 > > +	}
-> > =C2=A0	hang();
-> > =C2=A0}
+> > +}
+> > +
+> > =C2=A0static int mount_root(void)
+> > =C2=A0{
+> > =C2=A0	mount("none", "ramfs", "/", NULL);
+> > @@ -69,8 +82,13 @@ static int mount_root(void)
+> > =C2=A0	}
 > > =C2=A0
+> > =C2=A0	if (IS_ENABLED(CONFIG_FS_PSTORE)) {
+> > -		mkdir("/pstore", 0);
+> > -		mount("none", "pstore", "/pstore", NULL);
+> > +		if (IS_ALLOWED(SCONFIG_FS_EXTERNAL)) {
+> > +			mkdir("/pstore", 0);
+> > +			mount("none", "pstore", "/pstore", NULL);
+> > +		}
+> > +		sconfig_register_handler_filtered(&sconfig_notifier,
+> > +						=C2=A0 u_mount_pstore,
+> > +						=C2=A0 SCONFIG_FS_EXTERNAL);
+> > =C2=A0	}
+> > =C2=A0
+> > =C2=A0	if (IS_ENABLED(CONFIG_9P_FS))
 
 
