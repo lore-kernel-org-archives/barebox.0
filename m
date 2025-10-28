@@ -1,48 +1,63 @@
-Delivery-date: Tue, 28 Oct 2025 19:04:35 +0100
+Delivery-date: Tue, 28 Oct 2025 19:04:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDo3f-00Clm7-1j
+	id 1vDo3g-00ClmT-2C
 	for lore@lore.pengutronix.de;
-	Tue, 28 Oct 2025 19:04:35 +0100
+	Tue, 28 Oct 2025 19:04:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDo3a-0001F5-L4
-	for lore@pengutronix.de; Tue, 28 Oct 2025 19:04:35 +0100
+	id 1vDo3d-0001H6-Dy
+	for lore@pengutronix.de; Tue, 28 Oct 2025 19:04:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=h0mEjZ2azX7A8KLcGOdpztzbiYRaDq8i4fJtY2R/8oY=; b=aOqtwbCdxjYlxO+DyINAyChAnc
-	qiOj1GX3QeIF3a0kY8M2/NmLCAkPx7m8SezSvygKHJMYJmeAiwpd4TK44juiZW03AiqIQobRdFu3U
-	GBxZfRySrSYKp2EynchbkaD06gFpCcyze9oFB+12ghPRZxXKEu11504XT8tLhOcUJqZkMafnEe4Ei
-	QkYxylv26V+idINChkrkAbifktlz8SBuzE1Ga9/Owf+Pv80Xfao8EZzbAorcJRrXV1YRXjF8nML9Q
-	RkF2Yc70s4E3p8qJxQXVysiKXy+/F4VF44nbr8LXq1vD71yiJsZtojR2jK4Blv4pw79YZiaaBSZnY
-	nJb03xXg==;
+	bh=e9DI4CaBVf56kjN3WX1W+ufkZ9wFJIoZ8wt9giW/+sM=; b=rrte/5AQRtSubVobyo8ZuaHfwe
+	WQbONHVIIFcpyEzXCSv3NgqEzp4xxU2UJsTydpfRn37DlZtkoXJCWZInqlQlTBkqStOtfqdohbqXz
+	YtWcgaYpJrxAH8tSdSGI7VCOKBQWcwu0FV+0r9CQVVLoshn45TdY1BW/hMLFmX1PolEhXZ11RDJ9W
+	dUXwEjbTfuRwwzR+0VpIi2jLJ6bzDzJquV0/qK8FQ63bjd3GmlU/ffkBwe22s80fBHOvclFIaGQC2
+	cEFJv7gaLHm4guSQd7kBOR7Oiq+RvPvDBa/irzgngGpW7I48U7yt0kKvMLPHlX6AOPPQiDggwwFrK
+	t8u3iYKQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDo2q-0000000GSCe-1M5O;
-	Tue, 28 Oct 2025 18:03:44 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vDo2z-0000000GSOC-0QRY;
+	Tue, 28 Oct 2025 18:03:53 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDo2j-0000000GS7k-0T7O
+	id 1vDo2q-0000000GSCd-3q6Y
+	for barebox@bombadil.infradead.org;
+	Tue, 28 Oct 2025 18:03:45 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=e9DI4CaBVf56kjN3WX1W+ufkZ9wFJIoZ8wt9giW/+sM=; b=NlxGxxiK9C7Gjtd5HSDR+6IcaN
+	Vi3HPjkWJfttyfAXVLGIxPCb8yStVQH7CCR5J79CdUQMicWQuIyWx/lxnt4rUUpDog7+mcr1F1KAE
+	PFuwgtuk8J7K5oS11mxlI8kRNA6ADKIJCvB9CLxHpBT0uG5L/E+mrk9oROnPXOMSik/PX2YcUAaTK
+	IHaNkxZevkeoC4AoBeBKcILj6JfKUuBqJWenoAhkdfhSn55OsvMqgFeiTbldNeTf5ZFjwhofNdowe
+	mqPjrAeqTMu9jR+bwkyZO90++Ae4Ob7Xn7mhWJi4YlNDMwI2rguYAd5UdpxbXoXypJJMC5xk46Ct1
+	+LKktdOg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDnB3-000000050Db-3CXa
 	for barebox@lists.infradead.org;
-	Tue, 28 Oct 2025 18:03:40 +0000
+	Tue, 28 Oct 2025 17:08:11 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1vDo2h-0000PX-2z; Tue, 28 Oct 2025 19:03:35 +0100
+	id 1vDo2h-0000PX-J6; Tue, 28 Oct 2025 19:03:35 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 28 Oct 2025 19:03:10 +0100
+Date: Tue, 28 Oct 2025 19:03:22 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251028-tlv-signature-v2-5-3bafce636ad7@pengutronix.de>
+Message-Id: <20251028-tlv-signature-v2-17-3bafce636ad7@pengutronix.de>
 References: <20251028-tlv-signature-v2-0-3bafce636ad7@pengutronix.de>
 In-Reply-To: <20251028-tlv-signature-v2-0-3bafce636ad7@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,17 +65,17 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
  Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11603; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=b3Qztn6QFkG720D4yp3HvuZ61V0RKSCNgDVRl/Fah4g=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYshkZC38E7h2QYrUbaG5au0nezobX/BrP5Z8ylP9eEa1Y
- ++++TxzO0pZGMS4GGTFFFli1eQUhIz9r5tV2sXCzGFlAhnCwMUpABO5y87wPykm0idn4TS7+qwp
- 5S752g4n1V5KZumJvZhTenKKK6+nNiPDDt5bX//2hVYxTzjRVOr2lUX6QEbo3svm/+Qyn+o9PPq
- BEwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1833; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=D137uaAvHqpokqc9uPHYKKLFCnL3s2y41DBuducp7pA=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYshkZC0zWj4t7qTv3cCytx/jyj58lfJak77i3k+Jcpcmk
+ W+LzytWd5SyMIhxMciKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACZiNIuR4WCxw8G4slmeT5RX
+ Xzq87GmQ0jupqqaKiPviiasPL9zFX8bI0Py9yMiVe1kM/48VLFsUGbZfcI7Lv9V/IeLc2Xu8SYv
+ /MgEA
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251028_110337_307934_B96AACD2 
-X-CRM114-Status: GOOD (  17.50  )
+X-CRM114-CacheID: sfid-20251028_170809_917088_A98C6FD7 
+X-CRM114-Status: GOOD (  10.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,311 +97,48 @@ X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 05/17] crypto: keytoc: Rename "hint" to "fit-hint" and
- do not use it in identifiers
+Subject: [PATCH v2 17/17] Documentation: migration-2025.11.0: List changes
+ to CONFIG_CRYPTO_PUBLIC_KEYS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The notion of name hints being appropriate as key identifiers is a
-relict from when public key infrastructure was only for fit images.
-
-Instead of mixing autogenerated key_<counter> and <hint> prefixes in key
-identifiers, simply use key_<counter> for all keys.
+As part of the introduction of TLV signature in public key keyrings,
+there is a new interpreter for CONFIG_CRYPTO_PUBLIC_KEYS in
+scripts/keytoc.c. All users should update to the new syntax and are
+presented with a warning. Users with invalid characters in the legacy
+syntax must change the fit-hint and will be presented with an error.
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- scripts/keytoc.c | 111 +++++++++++++++++++++++++------------------------------
- 1 file changed, 50 insertions(+), 61 deletions(-)
+ Documentation/migration-guides/migration-2025.11.0.rst | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/scripts/keytoc.c b/scripts/keytoc.c
-index 78e56930bc..ade924298a 100644
---- a/scripts/keytoc.c
-+++ b/scripts/keytoc.c
-@@ -29,9 +29,10 @@
- #include <ctype.h>
+diff --git a/Documentation/migration-guides/migration-2025.11.0.rst b/Documentation/migration-guides/migration-2025.11.0.rst
+index a9c7abb66e..bd7fcf8126 100644
+--- a/Documentation/migration-guides/migration-2025.11.0.rst
++++ b/Documentation/migration-guides/migration-2025.11.0.rst
+@@ -1,6 +1,21 @@
+ Release v2025.11.0
+ ==================
  
- struct keyinfo {
--	char *keyname;
-+	char *name_hint;
- 	char *keyring;
- 	char *path;
-+	char *name_c;
- };
- 
- static int dts, standalone;
-@@ -366,7 +367,7 @@ static int print_bignum(BIGNUM *num, int num_bits, int width)
- 
- 	arr = malloc(num_bits / width * sizeof(*arr));
- 	if (!arr)
--		enomem_exit("malloc");
-+		enomem_exit(__func__);
- 
- 	for (i = 0; i < num_bits / width; i++) {
- 		BN_mod(tmp, num, big2_32, ctx); /* n = N mod B */
-@@ -500,7 +501,7 @@ static int print_hash(EVP_PKEY *key)
- 	return ret ? -EINVAL : 0;
- }
- 
--static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *keyring, const char *key_name_c)
-+static int gen_key_ecdsa(EVP_PKEY *key, struct keyinfo *info)
- {
- 	char group[128];
- 	size_t outlen;
-@@ -530,7 +531,7 @@ static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *keyrin
- 		fprintf(stderr, "ERROR: generating a dts snippet for ECDSA keys is not yet supported\n");
- 		return -EOPNOTSUPP;
- 	} else {
--		fprintf(outfilep, "\nstatic unsigned char %s_hash[] = {\n\t", key_name_c);
-+		fprintf(outfilep, "\nstatic unsigned char %s_hash[] = {\n\t", info->name_c);
- 
- 		ret = print_hash(key);
- 		if (ret)
-@@ -538,37 +539,37 @@ static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *keyrin
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "\nstatic const uint64_t %s_x[] = {", key_name_c);
-+		fprintf(outfilep, "\nstatic const uint64_t %s_x[] = {", info->name_c);
- 		ret = print_bignum(key_x, bits, 64);
- 		if (ret)
- 			return ret;
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "static const uint64_t %s_y[] = {", key_name_c);
-+		fprintf(outfilep, "static const uint64_t %s_y[] = {", info->name_c);
- 		ret = print_bignum(key_y, bits, 64);
- 		if (ret)
- 			return ret;
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "static struct ecdsa_public_key %s = {\n", key_name_c);
-+		fprintf(outfilep, "static struct ecdsa_public_key %s = {\n", info->name_c);
- 
- 		fprintf(outfilep, "\t.curve_name = \"%s\",\n", group);
--		fprintf(outfilep, "\t.x = %s_x,\n", key_name_c);
--		fprintf(outfilep, "\t.y = %s_y,\n", key_name_c);
-+		fprintf(outfilep, "\t.x = %s_x,\n", info->name_c);
-+		fprintf(outfilep, "\t.y = %s_y,\n", info->name_c);
- 		fprintf(outfilep, "};\n");
- 		if (!standalone) {
--			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", key_name_c);
-+			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", info->name_c);
- 			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_ECDSA,\n");
--			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
--			fprintf(outfilep, "\t.keyring = \"%s\",\n", keyring);
--			fprintf(outfilep, "\t.hash = %s_hash,\n", key_name_c);
-+			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", info->name_hint);
-+			fprintf(outfilep, "\t.keyring = \"%s\",\n", info->keyring);
-+			fprintf(outfilep, "\t.hash = %s_hash,\n", info->name_c);
- 			fprintf(outfilep, "\t.hashlen = %u,\n", SHA256_DIGEST_LENGTH);
--			fprintf(outfilep, "\t.ecdsa = &%s,\n", key_name_c);
-+			fprintf(outfilep, "\t.ecdsa = &%s,\n", info->name_c);
- 			fprintf(outfilep, "};\n");
- 			fprintf(outfilep, "\n");
--			fprintf(outfilep, "const struct public_key *__%s_public_key __ll_elem(.public_keys.rodata.%s) = &%s_public_key;\n", key_name_c, key_name_c, key_name_c);
-+			fprintf(outfilep, "const struct public_key *__%s_public_key __ll_elem(.public_keys.rodata.%s) = &%s_public_key;\n", info->name_c, info->name_c, info->name_c);
- 		}
- 	}
- 
-@@ -579,7 +580,7 @@ static char *try_resolve_env(char *input)
- {
- 	char *var;
- 
--	if (strncmp(input, "__ENV__", 7))
-+	if (!input || strncmp(input, "__ENV__", 7))
- 		return input;
- 
- 	var = getenv(input + 7);
-@@ -593,7 +594,7 @@ static char *try_resolve_env(char *input)
- 	return var;
- }
- 
--static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring, const char *key_name_c)
-+static int gen_key_rsa(EVP_PKEY *key, struct keyinfo *info)
- {
- 	BIGNUM *modulus, *r_squared;
- 	uint64_t exponent = 0;
-@@ -608,7 +609,7 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring,
- 	bits = BN_num_bits(modulus);
- 
- 	if (dts) {
--		fprintf(outfilep, "\t\tkey-%s {\n", key_name_c);
-+		fprintf(outfilep, "\t\tkey-%s {\n", info->name_c);
- 		fprintf(outfilep, "\t\t\trsa,r-squared = <");
- 		ret = print_bignum(r_squared, bits, 32);
- 		if (ret)
-@@ -626,10 +627,10 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring,
- 			exponent & 0xffffffff);
- 		fprintf(outfilep, "\t\t\trsa,n0-inverse = <0x%0x>;\n", n0_inv);
- 		fprintf(outfilep, "\t\t\trsa,num-bits = <0x%0x>;\n", bits);
--		fprintf(outfilep, "\t\t\tkey-name-hint = \"%s\";\n", key_name_c);
-+		fprintf(outfilep, "\t\t\tkey-name-hint = \"%s\";\n", info->name_c);
- 		fprintf(outfilep, "\t\t};\n");
- 	} else {
--		fprintf(outfilep, "\nstatic unsigned char %s_hash[] = {\n\t", key_name_c);
-+		fprintf(outfilep, "\nstatic unsigned char %s_hash[] = {\n\t", info->name_c);
- 
- 		ret = print_hash(key);
- 		if (ret)
-@@ -637,14 +638,14 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring,
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "\nstatic const uint32_t %s_modulus[] = {", key_name_c);
-+		fprintf(outfilep, "\nstatic const uint32_t %s_modulus[] = {", info->name_c);
- 		ret = print_bignum(modulus, bits, 32);
- 		if (ret)
- 			return ret;
- 
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "static const uint32_t %s_rr[] = {", key_name_c);
-+		fprintf(outfilep, "static const uint32_t %s_rr[] = {", info->name_c);
- 		ret = print_bignum(r_squared, bits, 32);
- 		if (ret)
- 			return ret;
-@@ -652,30 +653,30 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring,
- 		fprintf(outfilep, "\n};\n\n");
- 
- 		if (standalone) {
--			fprintf(outfilep, "struct rsa_public_key __key_%s;\n", key_name_c);
--			fprintf(outfilep, "struct rsa_public_key __key_%s = {\n", key_name_c);
-+			fprintf(outfilep, "struct rsa_public_key __key_%s;\n", info->name_c);
-+			fprintf(outfilep, "struct rsa_public_key __key_%s = {\n", info->name_c);
- 		} else {
--			fprintf(outfilep, "static struct rsa_public_key %s = {\n", key_name_c);
-+			fprintf(outfilep, "static struct rsa_public_key %s = {\n", info->name_c);
- 		}
- 
- 		fprintf(outfilep, "\t.len = %d,\n", bits / 32);
- 		fprintf(outfilep, "\t.n0inv = 0x%0x,\n", n0_inv);
--		fprintf(outfilep, "\t.modulus = %s_modulus,\n", key_name_c);
--		fprintf(outfilep, "\t.rr = %s_rr,\n", key_name_c);
-+		fprintf(outfilep, "\t.modulus = %s_modulus,\n", info->name_c);
-+		fprintf(outfilep, "\t.rr = %s_rr,\n", info->name_c);
- 		fprintf(outfilep, "\t.exponent = 0x%0lx,\n", exponent);
- 		fprintf(outfilep, "};\n");
- 
- 		if (!standalone) {
--			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", key_name_c);
-+			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", info->name_c);
- 			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_RSA,\n");
--			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
--			fprintf(outfilep, "\t.keyring = \"%s\",\n", keyring);
--			fprintf(outfilep, "\t.hash = %s_hash,\n", key_name_c);
-+			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", info->name_hint);
-+			fprintf(outfilep, "\t.keyring = \"%s\",\n", info->keyring);
-+			fprintf(outfilep, "\t.hash = %s_hash,\n", info->name_c);
- 			fprintf(outfilep, "\t.hashlen = %u,\n", SHA256_DIGEST_LENGTH);
--			fprintf(outfilep, "\t.rsa = &%s,\n", key_name_c);
-+			fprintf(outfilep, "\t.rsa = &%s,\n", info->name_c);
- 			fprintf(outfilep, "};\n");
- 			fprintf(outfilep, "\n");
--			fprintf(outfilep, "const struct public_key *__%s_public_key __ll_elem(.public_keys.rodata.%s) = &%s_public_key;\n", key_name_c, key_name_c, key_name_c);
-+			fprintf(outfilep, "const struct public_key *__%s_public_key __ll_elem(.public_keys.rodata.%s) = &%s_public_key;\n", info->name_c, info->name_c, info->name_c);
- 		}
- 	}
- 
-@@ -686,23 +687,7 @@ static int gen_key(struct keyinfo *info)
- {
- 	int ret;
- 	EVP_PKEY *key;
--	char *tmp, *key_name_c;
--
--	/* key name handling */
--	info->keyname = try_resolve_env(info->keyname);
--	if (!info->keyname)
--		exit(1);
- 
--	tmp = key_name_c = strdup(info->keyname);
--
--	while (*tmp) {
--		if (*tmp == '-')
--			*tmp = '_';
--		tmp++;
--	}
--
--	/* path/URI handling */
--	info->path = try_resolve_env(info->path);
- 	if (!info->path)
- 		exit(1);
- 
-@@ -717,12 +702,12 @@ static int gen_key(struct keyinfo *info)
- 	}
- 
- 	/* generate built-in keys */
--	ret = gen_key_ecdsa(key, info->keyname, info->keyring, key_name_c);
-+	ret = gen_key_ecdsa(key, info);
- 	if (ret == -EOPNOTSUPP)
- 		return ret;
- 
- 	if (ret)
--		ret = gen_key_rsa(key, info->keyname, info->keyring, key_name_c);
-+		ret = gen_key_rsa(key, info);
- 
- 	return ret;
- }
-@@ -756,7 +741,7 @@ static bool parse_info(char *p, struct keyinfo *out)
- 		return false;
- 
- 	if (*p == '\0') {
--		out->keyname = strdup(k);
-+		out->name_hint = strdup(k);
- 		if (!k)
- 			enomem_exit(__func__);
- 		return true; /* legacy syntax */
-@@ -782,8 +767,8 @@ static bool parse_info(char *p, struct keyinfo *out)
- 				enomem_exit(__func__);
- 			if (strcmp(k, "keyring") == 0)
- 				out->keyring = strdup(v);
--			else if (strcmp(k, "hint") == 0)
--				out->keyname = strdup(v);
-+			else if (strcmp(k, "fit-hint") == 0)
-+				out->name_hint = strdup(v);
- 			else
- 				return false;
- 
-@@ -831,7 +816,6 @@ int main(int argc, char *argv[])
- {
- 	int i, opt, ret;
- 	char *outfile = NULL;
--	int keynum = 1;
- 	int keycount;
- 	struct keyinfo *keylist;
- 
-@@ -861,7 +845,7 @@ int main(int argc, char *argv[])
- 	}
- 
- 	if (optind == argc) {
--		fprintf(stderr, "Usage: %s [-ods] keyring=<keyring>,hint=<hint>:<crt> ...\n", argv[0]);
-+		fprintf(stderr, "Usage: %s [-ods] keyring=<keyring>[,fit-hint=<hint>]:<crt> ...\n", argv[0]);
- 		fprintf(stderr, "\t-o FILE\twrite output into FILE instead of stdout\n");
- 		fprintf(stderr, "\t-d\tgenerate device tree snippet instead of C code\n");
- 		fprintf(stderr, "\t-s\tgenerate standalone key outside FIT image keyring\n");
-@@ -904,11 +888,16 @@ int main(int argc, char *argv[])
- 	for (i = 0; i < keycount; i++) {
- 		struct keyinfo *info = &keylist[i];
- 
--		if (!info->keyname) {
--			ret = asprintf(&info->keyname, "key_%d", keynum++);
--			if (ret < 0)
--				enomem_exit("asprintf");
--		}
-+		/* resolve __ENV__ for name_hint and path */
-+		info->name_hint = try_resolve_env(info->name_hint);
-+		info->path = try_resolve_env(info->path);
++Configuration options
++---------------------
 +
-+		if (asprintf(&info->name_c, "key_%i", i + 1) < 0)
-+			enomem_exit("asprintf");
++* The syntax of ``CONFIG_CRYPTO_PUBLIC_KEYS`` was updated with the introduction
++  of the keyring feature. Previously, keys selected via
++  ``CONFIG_CRYPTO_PUBLIC_KEYS`` were only used for fitimage verification. Now,
++  fitimage verification uses the "fit" keyring. "fit" will be selected as the
++  default keyring for transition but a warning will be emitted when no keyring
++  is explicitly provided. Existing users should update their keyspec for
++  fitimage public keys to ``keyring=fit[,fit-hint=<fit_hint>]:<crt>``
++* The fit-hints in ``CONFIG_CRYPTO_PUBLIC_KEYS`` are now limited to identifiers
++  matching the regular expression ``[a-zA-Z][a-zA-Z0-9_-]*``. Public keys with
++  a ``fit-hint`` not conforming to this results in an error, affected key-hints
++  must be changed. Please reach out to the mailing list if this causes issues.
 +
-+		/* unfortunately, the fit name hint is mandatory in the barebox codebase */
-+		if (!info->name_hint)
-+			info->name_hint = info->name_c;
+ i.MX GPIOs
+ ----------
  
- 		if (!info->keyring) {
- 			info->keyring = strdup("fit");
 
 -- 
 2.51.2.535.g419c72cb8a
