@@ -1,67 +1,67 @@
-Delivery-date: Tue, 28 Oct 2025 08:27:49 +0100
+Delivery-date: Tue, 28 Oct 2025 08:28:53 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDe7R-00Cbo8-0P
+	id 1vDe8S-00Cbp8-35
 	for lore@lore.pengutronix.de;
-	Tue, 28 Oct 2025 08:27:49 +0100
+	Tue, 28 Oct 2025 08:28:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDe7Q-0003av-Kr
-	for lore@pengutronix.de; Tue, 28 Oct 2025 08:27:49 +0100
+	id 1vDe8S-0003p7-Eu
+	for lore@pengutronix.de; Tue, 28 Oct 2025 08:28:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VibbY5wYTI4lKgIDONIgPloA0hZLrP3gnne/GrxjSSo=; b=Tg4QdHzCfYwHOgdIjogs0fV2d9
-	CtombqWZa/uXdR/YNkfKdN885SWupQNabXJ6iTrwBbo+2H6nRb2tEzeTZJrI1leEknwwIBnElKk1w
-	FehAcfNOhRR6EKpRyK5zAj+yXE++XHPMI+fy1B27zQqVjktGNuSivs5AO0l6yLJZrlqSA/yfLzFxE
-	LPT0iO8Fx7wlY9WSaCsXaHzQRZqczBfsuOxuuv6CjR1+AC2L/4+04thm4/A9RMlSAt1a6uFi074uL
-	hCdo5hb5uW8d5y/QZ7i8KpmA27LfefLZMEUCJopmgyX7bsa3CGOoexhR5AlroqHlklacSIe2bJgTQ
-	l7IIHytg==;
+	bh=mZ1zMB+j7m79aUnlfvJA5X6IDHlyHf3qcE27JR3HU2I=; b=uWlm7jicKJEUfW+vO2p6qEXCbs
+	FpYkw8kMyx5xlWyBtxiCEochnJE6PPnOnU4VK+FZQl7+gCD6/t+E4izcVBWUgDGUthnViJSrf5U5F
+	olewRwPE0jEhbJvv+b6uLEAjHPkitX0+A/DJnjDVoL8Tcfh8Whbs3FGJPMC/Jq7+K+kBX8mJwItO2
+	vPUWKoDQj5vJJ82Le/+9jzh4UdNSkh84ZYaTtsqnTRvM57Qf6tdhidnUWyHAY7MQMpi3zVQ6oOHbI
+	0bwMdLllEgY6LwAOoU4R1PjGTKGcAMPHUn28i3e/qF9SqE7sjIxHqYslIXRGEXcxpZCliDLJme+RI
+	yhErcbBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDe70-0000000FPQm-1T5P;
-	Tue, 28 Oct 2025 07:27:22 +0000
+	id 1vDe85-0000000FPXb-2ztV;
+	Tue, 28 Oct 2025 07:28:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDe6x-0000000FPQ0-43Jl
+	id 1vDe83-0000000FPXD-0T9p
 	for barebox@lists.infradead.org;
-	Tue, 28 Oct 2025 07:27:21 +0000
+	Tue, 28 Oct 2025 07:28:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vDe6w-0003TN-BY; Tue, 28 Oct 2025 08:27:18 +0100
+	id 1vDe81-0003hl-GY; Tue, 28 Oct 2025 08:28:25 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vDe6w-005pwz-0Y;
-	Tue, 28 Oct 2025 08:27:18 +0100
+	id 1vDe81-005px7-11;
+	Tue, 28 Oct 2025 08:28:25 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vDe6w-0000000BfdB-2KWF;
-	Tue, 28 Oct 2025 08:27:18 +0100
+	id 1vDe81-0000000Bfgi-2wsH;
+	Tue, 28 Oct 2025 08:28:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20251027073622.2468586-1-a.fatoum@barebox.org>
-References: <20251027073622.2468586-1-a.fatoum@barebox.org>
-Message-Id: <176163643810.2781516.18358920127273592720.b4-ty@pengutronix.de>
-Date: Tue, 28 Oct 2025 08:27:18 +0100
+In-Reply-To: <20251027064213.2412332-1-a.fatoum@barebox.org>
+References: <20251027064213.2412332-1-a.fatoum@barebox.org>
+Message-Id: <176163650525.2781735.6890936301342754165.b4-ty@pengutronix.de>
+Date: Tue, 28 Oct 2025 08:28:25 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251028_002720_008929_6915223F 
-X-CRM114-Status: UNSURE (   6.18  )
+X-CRM114-CacheID: sfid-20251028_002827_153813_ADEF2EEF 
+X-CRM114-Status: UNSURE (   6.24  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,21 +84,21 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] video: Rockchip: add vop2_data::version field like
- Linux
+Subject: Re: [PATCH] video: vpl: add debug output when calling ioctl
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 27 Oct 2025 08:36:21 +0100, Ahmad Fatoum wrote:
-> This makes it easier to compare Linux and barebox code.
+On Mon, 27 Oct 2025 07:42:11 +0100, Ahmad Fatoum wrote:
+> To simplify pipeline debugging, add some human-readable output when
+> an ioctl is propagating along the pipeline.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] video: Rockchip: add vop2_data::version field like Linux
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3e5569ee8f3e (link may not be stable)
+[1/1] video: vpl: add debug output when calling ioctl
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9003a08d0a29 (link may not be stable)
 
 Best regards,
 -- 
