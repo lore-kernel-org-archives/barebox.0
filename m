@@ -1,63 +1,63 @@
-Delivery-date: Tue, 28 Oct 2025 19:04:38 +0100
+Delivery-date: Tue, 28 Oct 2025 19:04:39 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDo3i-00ClnP-0Q
+	id 1vDo3j-00Clnv-0X
 	for lore@lore.pengutronix.de;
-	Tue, 28 Oct 2025 19:04:38 +0100
+	Tue, 28 Oct 2025 19:04:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDo3d-0001HY-Qy
-	for lore@pengutronix.de; Tue, 28 Oct 2025 19:04:37 +0100
+	id 1vDo3g-0001KZ-JG
+	for lore@pengutronix.de; Tue, 28 Oct 2025 19:04:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ldVEMmSff54aoGTeUc9jEftSV3fsrSzombZnL3zPcDM=; b=yUrScUoGPTpH4O8SYhEfPvCU7y
-	DCtFOyHJoyyUIPqHHoE3Eo7NjmXU+c+KBKDfibrZ89tZAknAU6D3x30PE7rsmdvVcxRIoK/kyS/zR
-	wz1xLOWp+Ensqx+2ScdmXpnjYq1kTl4jNOo9SA0ehCtCF15ejI60o0eNb7HKlatPfYm5U5lWcPMrV
-	Vaib6CyZArO+SaDCglPI4/ovoIVIZVygI0Gnv14tdWkaWcWGkEFU9hUpP5gxp67IMJpu6vnCSr8d1
-	N7n8uDTv/PafPIBfB7qsVP3emmukxF5nZIX6ACSE3L8RY23fsd8DXGvv3wuQxugGRd6emnGdtdmnM
-	IAldfsJg==;
+	bh=dW/nY6InHjT4EFPgofLbZVtLRzctjCxW3D8z8XDJ6Fs=; b=dj8MVsz2O6Xaw/jQz4shGSlhVr
+	BzVXskcu0shIZStIDKpIPvgmXkRw1hRdlgBxGCfUZYbGGw9l2qMhyiowvVL3pPaLQSP/EkOWF2QAv
+	p5WAz7/qPx+tL78mE+VYbRgh/1BpNa9TM6pRNVdnkk/vdGaib50xAtQGnWnFqhOm1vaDt3sFGloqt
+	Au0WQjOoVLsAfxvhLhwRwlBlWwFX6jJogI+WeFwqfeDpT8IuHk0t/j9+nYL5/fJdu9Y7MfkBFj/9/
+	Et16K/WQh8/mGBjQLU0JYMUsu5LhNlRkNZnieVDjs/ir7YsedCs3z7461gamYMbcSu6oI0mL6rhzc
+	ETHNLoqw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDo2u-0000000GSHM-3thB;
-	Tue, 28 Oct 2025 18:03:48 +0000
+	id 1vDo2t-0000000GSEq-0Lbg;
+	Tue, 28 Oct 2025 18:03:47 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDo2o-0000000GSAW-03NN
+	id 1vDo2n-0000000GSAN-2xnX
 	for barebox@bombadil.infradead.org;
-	Tue, 28 Oct 2025 18:03:42 +0000
+	Tue, 28 Oct 2025 18:03:41 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ldVEMmSff54aoGTeUc9jEftSV3fsrSzombZnL3zPcDM=; b=bNS3ZbSOkUPlzYU8YcAce/VU02
-	A5DPp5Hhec/YwykMdTzkQOh7o8Gn8Vykakoq04pn1tQl+c8d6QYPYJafosXe8l+cAR0vAYSZjU/yP
-	szVx4L8fZruXxGM0syIBzKtsV+U6C7WxP2p57tRTwMpnZkLyWAYO+M39TP5/5AEydVcOEeTWc/IBH
-	X5Bh8mVo6wlC7mLaKRULGR3gv80RCh5N4YbMvn9sujJQw3UOxhQ8HUG+GklTOG2rutCgjXahS4I31
-	PIXpRax0Nrg7NqzLlGano5Ahdbl2x77/7n9WIaRjt0Z87hTqYuT8Rv6xiadhAvq1dDxFpyOZNwkrc
-	8LuXgheA==;
+	bh=dW/nY6InHjT4EFPgofLbZVtLRzctjCxW3D8z8XDJ6Fs=; b=GMtleaviUF7ETp01AvlLeFeBkh
+	psM5Yy9Erg1ynVNa4L7EiOcaH/+jremjzTczsQqOkTppnoC3CKZW2Z4c7oSe2FvYZKROxBwyb3abT
+	+epJPdYmgcsgWFOsQuZrvYuCFpIuGW9QHaH6RF6phC8ojFh5o1DkveUctlN/sB5C3PpwBI8CDi66z
+	C3Pf3TdDt0HBpdEXeRLEVR8Uoc4R7fMhe5Wli4OKgVw/c/4/ggfS3cyDIh9zGyphi2xIPBOCnj3xQ
+	kYxWAMtutUWcFa+Ps2WnCr81GBMcqoBTXWtf9+Zg5Bwo9CZGZaX1WXcIJKK79X+TIxhuISUayKzuU
+	DZ5ebWrw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDnAz-000000050DY-2azG
+	id 1vDnAz-000000050DR-2d84
 	for barebox@lists.infradead.org;
 	Tue, 28 Oct 2025 17:08:09 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1vDo2h-0000PX-EL; Tue, 28 Oct 2025 19:03:35 +0100
+	id 1vDo2h-0000PX-6n; Tue, 28 Oct 2025 19:03:35 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 28 Oct 2025 19:03:18 +0100
+Date: Tue, 28 Oct 2025 19:03:13 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251028-tlv-signature-v2-13-3bafce636ad7@pengutronix.de>
+Message-Id: <20251028-tlv-signature-v2-8-3bafce636ad7@pengutronix.de>
 References: <20251028-tlv-signature-v2-0-3bafce636ad7@pengutronix.de>
 In-Reply-To: <20251028-tlv-signature-v2-0-3bafce636ad7@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -65,17 +65,17 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
  Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15682; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=zfLmEji6pT6YlWqIpUH0E4Dw5yKaVcch0K5F5a8ndmM=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYshkZC3R7n7T6fmkTTzY0u1yb1H8v3W7m8QCrQy09m5cV
- nlsX9TPjlIWBjEuBlkxRZZYNTkFIWP/62aVdrEwc1iZQIYwcHEKwERMWRkZNodeKjyorJjOk5Sv
- eDXBjSu0Y6KQU+3GKUa9J+uKJjLWMDIcXFvpNV36J8OByWvnmp3qEBQxy11hdeD4Bakoz++1F5u
- 5AQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14961; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=MMqx7GS8rhTlMpNPBYQDTdOMz16lhvhV0mClmbTOzBQ=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYshkZC2Su236/kvWc1Pboke2XdeyF/Tf7OVijZBMzXkof
+ XfPw8q4jlIWBjEuBlkxRZZYNTkFIWP/62aVdrEwc1iZQIYwcHEKwERm9jP8L1ojy/4i+26f0bad
+ 3hxPhNyu/ZJfs9/qZuPp+rZr1S3+Lxj+mbXmbHTMdpXreXvFJCrv3+uO22kPjU3VGlz8BEtS7Xa
+ zAQA=
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251028_170805_861482_26AD4312 
-X-CRM114-Status: GOOD (  14.20  )
+X-CRM114-CacheID: sfid-20251028_170805_864901_BDD067AF 
+X-CRM114-Status: GOOD (  21.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,344 +97,385 @@ X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 13/17] test: py: add signature to TLV integration tests
+Subject: [PATCH v2 08/17] scripts: bareboxtlv-generator: Implement
+ signature
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add TLV signature to TLV integration tests:
- - Signed TLV using development RSA key
- - Modify payload and fix CRC for a "tampered" tlv
- - Include both cases in generator and tlv-command tests.
+Implement signature and verification for RSA and ECDSA with PKCS1 v1.5
+padding and SHA256 hashing based on previous stubs.
 
-Use the keys selected by CRYPTO_BUILTIN_DEVELOPMENT_KEYS for all TLV
-testing. Consequentially add the matching private keys from the public
-repository at [1].
+Sign the header (consisting of magic, length of the TLV list in bytes,
+and a 0 as placeholder for the length of the signature in bytes), and
+the TLVs. Store the signature between TLVs and CRC. Include the
+signature in the CRC.
 
-[1]: https://git.pengutronix.de/cgit/ptx-code-signing-dev/
+The pyca cryptography module and the OpenSSL CLI is required if the
+signature features are to be used.
+
+pyca/cryptography does not support PKCS#11 tokens, and no other python
+module currently supports this transparently which is why the private
+key is accessed via the OpenSSL CLI. This way, any OpenSSL supported
+provider can be used e.g. to pass pkcs11-URI's (once pkcs11-provider is
+correctly configured for OpenSSL).
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- crypto/fit-4096-development.key  |  51 ++++++++++
- crypto/fit-ecdsa-development.key |   5 +
- test/py/test_tlv.py              | 206 +++++++++++++++++++++++++++++++--------
- 3 files changed, 221 insertions(+), 41 deletions(-)
+ .../bareboxtlv-generator/bareboxtlv-generator.py   | 243 +++++++++++++++++++--
+ scripts/bareboxtlv-generator/requirements.txt      |   1 +
+ 2 files changed, 226 insertions(+), 18 deletions(-)
 
-diff --git a/crypto/fit-4096-development.key b/crypto/fit-4096-development.key
-new file mode 100644
-index 0000000000..526cdfc2b5
---- /dev/null
-+++ b/crypto/fit-4096-development.key
-@@ -0,0 +1,51 @@
-+-----BEGIN RSA PRIVATE KEY-----
-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
-+-----END RSA PRIVATE KEY-----
-diff --git a/crypto/fit-ecdsa-development.key b/crypto/fit-ecdsa-development.key
-new file mode 100644
-index 0000000000..2b13c877a3
---- /dev/null
-+++ b/crypto/fit-ecdsa-development.key
-@@ -0,0 +1,5 @@
-+-----BEGIN EC PRIVATE KEY-----
-+MHcCAQEEIEsUW5DEOhD1CYHCnPfDULwbRQO9Yjt2/xM5SoY2GUQtoAoGCCqGSM49
-+AwEHoUQDQgAEowCa2OYfPdGRr1JpSYONOA3N2jwJjGbPbfG6uBzKg1VqOOk0a/Vf
-+BfEbQev6X96HCd6zvvC2tjBgvICW8UB0TQ==
-+-----END EC PRIVATE KEY-----
-diff --git a/test/py/test_tlv.py b/test/py/test_tlv.py
-index be579629b2..9fb3110cb8 100644
---- a/test/py/test_tlv.py
-+++ b/test/py/test_tlv.py
-@@ -4,6 +4,7 @@ import sys
- import os
- import re
- import subprocess
-+import struct
- from pathlib import Path
- from .helper import skip_disabled
- import pytest
-@@ -16,21 +17,94 @@ except ModuleNotFoundError:
+diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+index 5f9285a806..aa243d8b06 100755
+--- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
++++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+@@ -1,18 +1,190 @@
+ #!/usr/bin/env python3
+ 
+ import argparse
++import os
++import hashlib
++import shutil
+ import struct
++import subprocess
++import sys
+ 
+ import yaml
+ from crcmod.predefined import mkPredefinedCrcFun
+ 
+ _crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
+ 
++MAGIC_LENGTH = 12
++SPKI_LENGTH = 4
++
++def openssl(args, stdin: bytes = None) -> bytes:
++    """
++    Invoke the OpenSSL CLI with the given arguments
++
++    Parameters:
++        args: List of arguments for the openssl command (excluding 'openssl' itself)
++        stdin: Input bytes to pass to the command's stdin
++
++    Returns:
++        bytes: stdout of the command
++    """
++    cmd = ["openssl"] + args
++
++    result = subprocess.run(
++        cmd,
++        input=stdin,
++        stdout=subprocess.PIPE,
++        check=True
++    )
++
++    return result.stdout
+ 
+ class MaxSizeReachedException(Exception):
+     pass
  
  
- class _TLV_Testdata:
--    def generator(self, args, check=True):
-+    def generator(self, args, expect_failure=False, input=None):
-         cmd = [os.sys.executable, str(self.generator_py)] + args
--        res = subprocess.run(cmd, text=True)
--        if check and res.returncode != 0:
--            raise RuntimeError(f"generator failed ({res.returncode}): {res.stdout}\n{res.stderr}")
-+        res = subprocess.run(cmd, text=True, input=input, encoding="utf-8", capture_output=True)
-+        if res.returncode == 127:
-+            pytest.skip("test skipped due to missing host dependencies")
-+        if res.returncode == 0 and expect_failure:
-+            raise RuntimeError(
-+                f"`{' '.join(cmd)}` succeded unexpectedly:\n{res.stderr}\n{res.stdout}"
-+            )
-+        elif res.returncode != 0 and not expect_failure:
-+            raise RuntimeError(
-+                f"`{' '.join(cmd)}` failed unexpectedly with {res.returncode}:\n{res.stderr}\n{res.stdout}"
-+            )
-         return res
- 
-+    def overwrite_magic(self, new_magic):
-+        with open(self.schema, "r", encoding="utf-8") as f:
-+            patched_schema = "".join(
-+                re.sub(r"^magic:\s*0x[a-fA-F0-9]{8}\s*$", f"magic: {new_magic}\n", line)
-+                for line in f
-+            )
-+        return patched_schema
++class PrivateKey:
++    """
++    A private key for signing TLVs, requires the cryptography module
++    """
 +
-+    def tlv_gen(self, outfile, magic=None, sign=None):
-+        param = ["--input-data", str(self.data)]
-+        if sign:
-+            param += ["--sign", str(sign)]
-+        if magic:
-+            param += ["/dev/stdin"]
-+        else:
-+            param += [str(self.schema)]
-+        param += [str(outfile)]
-+        ret = self.generator(param, input=self.overwrite_magic(magic) if magic else None)
-+        assert outfile.exists(), f"TLV {outfile} not created from {' '.join(param)}"
-+        return ret
++    def __init__(self, path: str | None = None):
++        """
++        Load a private key from:
++        - PKCS#12 (.p12/.pfx)
++        - PEM/DER private key file
++        """
 +
-+    def tlv_read(self, binfile, magic=None, verify=None, expect_failure=False):
-+        param = ["--output-data", "/dev/null"]
-+        if verify:
-+            param += ["--verify", str(verify)]
-+        if magic:
-+            param += ["/dev/stdin"]
-+        else:
-+            param += [str(self.schema)]
-+        param += [str(binfile)]
-+        ret = self.generator(
-+            param,
-+            input=self.overwrite_magic(magic) if magic else None,
-+            expect_failure=expect_failure,
-+        )
-+        return ret
-+
-+    def corrupt(self, fnin, fnout, fix_crc=False):
 +        try:
-+            from crcmod.predefined import mkPredefinedCrcFun
++            from cryptography.hazmat.primitives import serialization
 +        except ModuleNotFoundError:
-+            pytest.skip("test skipped due to missing dependency python-crcmod")
-+            return
++            print("Error: missing pyca/cryptography dependency", file=sys.stderr)
++            sys.exit(127)
 +
-+        _crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
++        if shutil.which("openssl") is None:
++            print("The `openssl` binary is required for cryptographic operations but wasn't found in PATH!")
++            sys.exit(127)
 +
-+        with open(fnin, "r+b") as f:
-+            data = bytearray(f.read())
-+        data[0x20] ^= 1
-+        if fix_crc:
-+            crc_raw = _crc32_mpeg(data[:-4])
-+            crc = struct.pack(">I", crc_raw)
-+            data[-4:] = crc
-+        with open(fnout, "wb") as f:
-+            f.write(data)
++        self.inkey = path
++        self.public_key = serialization.load_pem_public_key(openssl(["pkey", "-pubout", "-in", self.inkey]));
 +
-     def __init__(self, testfs):
-         self.dir = Path(testfs)
-         self.scripts_dir = Path("scripts/bareboxtlv-generator")
-         self.data = self.scripts_dir / "data-example.yaml"
-         self.schema = self.scripts_dir / "schema-example.yaml"
-         self.generator_py = self.scripts_dir / "bareboxtlv-generator.py"
--        self.unsigned_bin = self.dir / 'unsigned.tlv'
--        self.corrupted_bin = self.dir / 'unsigned_corrupted.tlv'
-+        self.privkey_rsa = Path("crypto/fit-4096-development.key")
-+        self.pubkey_rsa = Path("crypto/fit-4096-development.crt")
-+        self.privkey_ecdsa = Path("crypto/fit-ecdsa-development.key")
-+        self.pubkey_ecdsa = Path("crypto/fit-ecdsa-development.crt")
-+        self.unsigned_bin = self.dir / "unsigned.tlv"
-+        self.corrupted_bin = self.dir / "unsigned_corrupted.tlv"
-+        self.signed_bin = self.dir / "signed.tlv"
-+        self.ecdsa_signed_bin = self.dir / "ecdsa-signed.tlv"
-+        self.tampered_bin = self.dir / "signed-tampered.tlv"
-+        self.tampered_ecdsa_bin = self.dir / "ecdsa-signed-tampered.tlv"
++    def sign(self, message: bytes) -> bytes:
++        """
++        Sign message with RSA, or ECDSA automatically based on key type.
++        """
 +
- 
- @pytest.fixture(scope="module")
- def tlv_testdata(testfs):
-@@ -38,49 +112,99 @@ def tlv_testdata(testfs):
-         pytest.skip("missing crcmod dependency")
- 
-     t = _TLV_Testdata(testfs)
--    t.generator(["--input-data", str(t.data), str(t.schema), str(t.unsigned_bin)])
--    assert t.unsigned_bin.exists(), "unsigned TLV not created"
- 
--    with open(t.unsigned_bin, 'r+b') as f:
--        data = bytearray(f.read())
--    data[0x20] ^= 1
--    with open(t.corrupted_bin, "wb") as f:
--        f.write(data)
-+    t.tlv_gen(t.unsigned_bin)
-+    t.tlv_gen(t.signed_bin, sign=t.privkey_rsa, magic="0x61bb95f3")
-+    t.tlv_gen(t.ecdsa_signed_bin, sign=t.privkey_ecdsa, magic="0x61bb95f3")
++        from cryptography.hazmat.primitives.asymmetric import rsa, ec
++        from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
 +
-+    t.corrupt(t.unsigned_bin, t.corrupted_bin)
-+    t.corrupt(t.signed_bin, t.tampered_bin, fix_crc=True)
-+    t.corrupt(t.ecdsa_signed_bin, t.tampered_ecdsa_bin, fix_crc=True)
- 
-     return t
- 
++        # Access private keys only via the openssl cli so that any configured provider, such as pkcs11, can be used.
++        sig = openssl(["pkeyutl", "-sign", "-rawin", "-digest", "sha256", "-inkey", self.inkey], stdin = message)
 +
- def test_tlv_generator(tlv_testdata):
-     t = tlv_testdata
--    out_yaml = t.dir / 'out.yaml'
-+    out_yaml = t.dir / "out.yaml"
++        if isinstance(self.public_key, rsa.RSAPublicKey):
++            return sig
++        elif isinstance(self.public_key, ec.EllipticCurvePublicKey):
++            r, s = decode_dss_signature(sig)
++            key_bits = self.public_key.curve.key_size
++            assert key_bits % 8 == 0
++            key_bytes = key_bits // 8
++            sig  = r.to_bytes(key_bytes, byteorder="big")
++            sig += s.to_bytes(key_bytes, byteorder="big")
++            return sig
++        else:
++            raise TypeError("Unsupported key type")
++
++    def spki_hash(self) -> bytes:
++        """
++        Four bytes of SHA256 digest of the derived public key's SubjectPublicKeyInfo.
++        Used for faster identification of the key to be used for decryption.
++        """
++        pub = PublicKey(pubkey = self.public_key)
++        return pub.spki_hash()
++
++
++class PublicKey:
++    """
++    A public key for validating TLVs signatures, requires the cryptography module
++    """
++
++    def __init__(self, path: str | None = None, pubkey: bytes | None = None):
++        """
++        Load a private key from:
++        - PKCS#12 (.p12/.pfx)
++        - PEM/DER public key file
++        - existing object
++        """
++        try:
++            from cryptography.hazmat.primitives import serialization
++            from cryptography import x509
++        except ModuleNotFoundError:
++            print("Error: missing pyca/cryptography dependency", file=sys.stderr)
++            sys.exit(127)
++
++        if pubkey is not None:
++            assert path is None
++            self.pubkey = pubkey
++        else:
++            with open(path, "rb") as f:
++                data = f.read()
++
++            if path.endswith((".p12", ".pfx")):
++                privatekey, cert, _ = serialization.pkcs12.load_key_and_certificates(data, password=None)
++                self.pubkey = cert.public_key()
++
++            else:
++                try:
++                    self.pubkey = serialization.load_pem_public_key(data)
++                except ValueError:
++                    try:
++                        self.pubkey = serialization.load_der_public_key(data)
++                    except ValueError:
++                        try:
++                            self.pubkey = x509.load_pem_x509_certificate(data).public_key()
++                        except ValueError:
++                            self.pubkey = serialization.load_pem_public_key(openssl(["pkey", "-pubout", "-in", path]))
++
++    def verify(self, message: bytes, signature: bytes) -> bool:
++        """
++        Verify signature
++        """
++
++        from cryptography.hazmat.primitives import hashes
++        from cryptography.hazmat.primitives.asymmetric import rsa, ec, padding
++        from cryptography.hazmat.primitives.asymmetric.utils import encode_dss_signature
++        from cryptography import exceptions
++
++        try:
++            if isinstance(self.pubkey, rsa.RSAPublicKey):
++                self.pubkey.verify(signature, message, padding.PKCS1v15(), hashes.SHA256())
++            elif isinstance(self.pubkey, ec.EllipticCurvePublicKey):
++                key_bits = self.pubkey.curve.key_size
++                assert key_bits % 8 == 0
++                key_bytes = key_bits // 8
++                r = int.from_bytes(signature[:key_bytes], byteorder="big")
++                s = int.from_bytes(signature[key_bytes:], byteorder="big")
++
++                der_sig = encode_dss_signature(r, s)
++                self.pubkey.verify(der_sig, message, ec.ECDSA(hashes.SHA256()))
++            else:
++                raise TypeError("Unsupported key type")
++            return True
++        except exceptions.InvalidSignature:
++            return False
++
++    def spki_hash(self) -> bytes:
++        """
++        Four bytes of SHA256 digest of the public key's SubjectPublicKeyInfo.
++        Used for faster identification of the key to be used for decryption.
++        """
++
++        from cryptography.hazmat.primitives import serialization
++
++        spki = self.pubkey.public_bytes(
++            encoding=serialization.Encoding.DER,
++            format=serialization.PublicFormat.SubjectPublicKeyInfo,
++        )
++        return hashlib.sha256(spki).digest()[:SPKI_LENGTH]
++
++
+ class FactoryDataset:
+     """
+     Generates TLV-encoded datasets that can be used with Barebox's
+@@ -35,8 +207,9 @@ class FactoryDataset:
+     # };                                                        #
+     #############################################################
  
-+    t.tlv_read(t.unsigned_bin)
-+    t.tlv_read(t.signed_bin, verify=t.pubkey_rsa, magic="0x61bb95f3")
-+    t.tlv_read(t.ecdsa_signed_bin, verify=t.pubkey_ecdsa, magic="0x61bb95f3")
+-    Limitations:
+-    * Signing is currently not supported and length_sig is always 0x0.
++    Note:
++    * Signature is preceded with four bytes of pubkey checksum which is included in the length_sig field
++    * The length_sig field is set to zero for signage and must be zeroed before verification
+     """
  
--    good = t.generator(["--output-data", str(out_yaml), str(t.schema), str(t.unsigned_bin)], check=False)
--    assert good.returncode == 0, f"valid unsigned TLV failed to decode: {good.stderr}\n{good.stdout}"
-+    t.tlv_read(t.corrupted_bin, expect_failure=True)
-+    t.tlv_read(t.tampered_bin, verify=t.pubkey_rsa, magic="0x61bb95f3", expect_failure=True)
-+    t.tlv_read(t.tampered_ecdsa_bin, verify=t.pubkey_ecdsa, magic="0x61bb95f3", expect_failure=True)
+     def __init__(self, schema):
+@@ -124,7 +297,7 @@ class FactoryDataset:
+         """
+         self.schema = schema
  
--    bad = t.generator(["--output-data", str(t.dir / 'bad.yaml'), str(t.schema), str(t.corrupted_bin)], check=False)
--    assert bad.returncode != 0, "unsigned TLV with invalid CRC unexpectedly decoded successfully"
+-    def encode(self, data):
++    def encode(self, data, sign: PrivateKey | None = None) -> bytes:
+         """
+         Generate an EEPROM image for the given data.
  
--def test_tlv_command(barebox, barebox_config, tlv_testdata):
-+@pytest.fixture(scope="module")
-+def tlv_cmdtest(barebox_config, tlv_testdata):
-     skip_disabled(barebox_config, "CONFIG_CMD_TLV")
--    t = tlv_testdata
--    with open(t.data, 'r', encoding='utf-8') as f:
--        yaml_lines = [l.strip() for l in f if l.strip() and not l.strip().startswith('#')]
+@@ -132,6 +305,7 @@ class FactoryDataset:
+         """
+         # build payload of TLVs
+         tlvs = b""
++        signature = b""
+ 
+         for name, value in data.items():
+             if name not in self.schema["tags"]:
+@@ -186,12 +360,20 @@ class FactoryDataset:
+ 
+             tlvs += struct.pack(f">HH{fmt}", tag["tag"], struct.calcsize(fmt), bin)
+ 
++        sig_len = 0
++
+         # Convert the framing data.
+-        len_sig = 0x0  # Not implemented.
+-        header = struct.pack(">3I", self.schema["magic"], len(tlvs), len_sig)
+-        crc_raw = _crc32_mpeg(header + tlvs)
++        header = struct.pack(">3I", self.schema["magic"], len(tlvs), sig_len)
++
++        if sign:
++            # Sign with sig_len = 0, the actual signature length will not be signed!
++            signature = sign.spki_hash() + sign.sign(header + tlvs)
++            # Actual header now with length of the signature
++            header = struct.pack(">3I", self.schema["magic"], len(tlvs), len(signature))
++
++        crc_raw = _crc32_mpeg(header + tlvs + signature)
+         crc = struct.pack(">I", crc_raw)
+-        bin = header + tlvs + crc
++        bin = header + tlvs + signature + crc
+ 
+         # Check length
+         if "max_size" in self.schema and len(bin) > self.schema["max_size"]:
+@@ -200,7 +382,7 @@ class FactoryDataset:
+             )
+         return bin
+ 
+-    def decode(self, bin):
++    def decode(self, bin, pubkey: PublicKey | None = None):
+         """
+         Decode a TLV-encoded binary image.
+ 
+@@ -212,17 +394,13 @@ class FactoryDataset:
+         if len(bin) < 16:
+             raise ValueError("Supplied binary is too small to be TLV-encoded data.")
+ 
+-        bin_magic, bin_tlv_len, bin_sig_len = struct.unpack(">3I", bin[:12])
++        bin_magic, bin_tlv_len, bin_sig_len = struct.unpack(">3I", bin[:MAGIC_LENGTH])
+         # check magic
+         if bin_magic != self.schema["magic"]:
+             raise ValueError(f'Magic missmatch. Is {hex(bin_magic)} but expected {hex(self.schema["magic"])}')
+ 
+-        # check signature length
+-        if bin_sig_len != 0:
+-            raise ValueError("Signature check is not supported!")
 -
--    stdout = barebox.run_check(f"tlv /mnt/9p/testfs/{t.unsigned_bin.name}")
--
--    # work around 9pfs printing here after a failed network test
--    tlv_offset = next((i for i, line in enumerate(stdout) if line.startswith("tlv")), None)
--    tlv_lines = stdout[tlv_offset + 1:-1]
--
--    assert len(yaml_lines) == len(tlv_lines), \
--        f"YAML and TLV output line count mismatch for {t.unsigned_bin.name}"
--
--    for yline, tline in zip(yaml_lines, tlv_lines):
--        m = re.match(r'^\s*([^=]+) = "(.*)";$', tline)
--        assert m, f"malformed tlv line: {tline}"
--        tkey, tval = m.group(1), m.group(2)
--        m = re.match(r'^([^:]+):\s*(?:"([^"]*)"\s*|(.*))$', yline)
--        assert m, f"malformed yaml line: {yline}"
--        ykey, yval = m.group(1), m.group(2) or m.group(3)
--        assert ykey == tkey, f"key mismatch: {ykey} != {tkey}"
--        assert str(yval) == str(tval), f"value mismatch for {ykey}: {yval} != {tval}"
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS")
+         # check crc
+-        crc_offset = 12 + bin_tlv_len + bin_sig_len
++        crc_offset = MAGIC_LENGTH + bin_tlv_len + bin_sig_len
+         if crc_offset > len(bin) - 4:
+             raise ValueError("crc location calculated behind binary.")
+         bin_crc = struct.unpack(">I", bin[crc_offset : crc_offset + 4])[0]  # noqa E203
+@@ -230,8 +408,26 @@ class FactoryDataset:
+         if bin_crc != calc_crc:
+             raise ValueError(f"CRC missmatch. Is {hex(bin_crc)} but expected {hex(calc_crc)}.")
+ 
+-        ptr = 12
+-        while ptr < crc_offset:
++        # check signature length
++        if bin_sig_len != 0 and pubkey is None:
++            print("WARNING: TLV contains a signature but signature verification not enabled via --verify!", file=sys.stderr)
++        elif bin_sig_len == 0 and pubkey is not None:
++            raise ValueError("TLV signature validation was requested but TLV is unsigned.")
++        elif pubkey is not None:
++            sig_offset = MAGIC_LENGTH + bin_tlv_len
++            bin_sig = bin[sig_offset + SPKI_LENGTH : sig_offset + bin_sig_len]
++            spki = bin[sig_offset : sig_offset + SPKI_LENGTH]
++            if spki != pubkey.spki_hash():
++                raise ValueError("TLV signature SPKI mismatch.")
 +
-+    class _TLV_Cmdtest:
-+        def __init__(self, tlv_testdata):
-+            self.t = tlv_testdata
-+            with open(tlv_testdata.data, "r", encoding="utf-8") as f:
-+                self.yaml_lines = [
-+                    l.strip() for l in f if l.strip() and not l.strip().startswith("#")
-+                ]
++            # verify file excluding signature itself, and excluding signature length field
++            bin_verify = bytearray(bin[:sig_offset])
++            bin_verify[8:12] = struct.pack(">I", 0)
++            if not pubkey.verify(bin_verify, bin_sig):
++                raise ValueError("TLV signature validation failed.")
 +
-+        def test(self, barebox, fn, fail=False):
-+            cmd = f"tlv /mnt/9p/testfs/{fn}"
-+            stdout, stderr, exitcode = barebox.run(cmd, timeout=2)
-+            if fail:
-+                assert exitcode != 0
-+                return
-+            elif exitcode != 0:
-+                raise RuntimeError(f"`{cmd}` failed with exitcode {exitcode}:\n{stderr}\n{stdout}")
++        ptr = MAGIC_LENGTH
++        while ptr < MAGIC_LENGTH + bin_tlv_len:
+             tag_id, tag_len = struct.unpack_from(">HH", bin, ptr)
+             data_ptr = ptr + 4
+             ptr += tag_len + 4
+@@ -293,7 +489,9 @@ def _main():
+     parser = argparse.ArgumentParser(description="Generate a TLV dataset for the Barebox TLV parser")
+     parser.add_argument("schema", help="YAML file describing the data.")
+     parser.add_argument("--input-data", help="YAML file containing data to write to the binary.")
++    parser.add_argument("--sign", help=" When using --input-data: Private key to sign the TLV with.")
+     parser.add_argument("--output-data", help="YAML file where the contents of the binary will be written to.")
++    parser.add_argument("--verify", help="When using --output-data: Public key to verify the signature against")
+     parser.add_argument("binary", help="Path to where export data to be copied into DUT's EEPROM.")
+     args = parser.parse_args()
+ 
+@@ -305,14 +503,23 @@ def _main():
+     if args.input_data:
+         with open(args.input_data) as d_fh:
+             data = yaml.load(d_fh, Loader=yaml.SafeLoader)
+-        bin = eeprom.encode(data)
 +
-+            # work around a corner case of 9pfs printing here (after a failed network test?)
-+            tlv_offset = next((i for i, line in enumerate(stdout) if line.startswith("tlv")), None)
-+            tlv_lines = stdout[tlv_offset + 1 : -1]
-+
-+            assert len(self.yaml_lines) == len(tlv_lines), (
-+                f"YAML and TLV output line count mismatch for {fn}"
-+            )
-+
-+            for yline, tline in zip(self.yaml_lines, tlv_lines):
-+                m = re.match(r'^\s*([^=]+) = "(.*)";$', tline)
-+                assert m, f"malformed tlv line: {tline}"
-+                tkey, tval = m.group(1), m.group(2)
-+                m = re.match(r'^([^:]+):\s*(?:"([^"]*)"\s*|(.*))$', yline)
-+                assert m, f"malformed yaml line: {yline}"
-+                ykey, yval = m.group(1), m.group(2) or m.group(3)
-+                assert ykey == tkey, f"key mismatch: {ykey} != {tkey}"
-+                assert str(yval) == str(tval), f"value mismatch for {ykey}: {yval} != {tval}"
-+
-+    return _TLV_Cmdtest(tlv_testdata)
-+
-+
-+def test_tlv_cmd_unsigned(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_RSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.unsigned_bin.name)
-+
-+
-+def test_tlv_cmd_signed(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_RSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.signed_bin.name)
-+
-+
-+def test_tlv_cmd_ecdsa_signed(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_ECDSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.ecdsa_signed_bin.name)
-+
-+
-+def test_tlv_cmd_corrupted(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_RSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.corrupted_bin.name, fail=True)
-+
-+
-+def test_tlv_cmd_tampered(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_RSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.tampered_bin.name, fail=True)
-+
-+
-+def test_tlv_cmd_ecdsa_tampered(barebox, barebox_config, tlv_cmdtest):
-+    skip_disabled(barebox_config, "CONFIG_CRYPTO_ECDSA")
-+    tlv_cmdtest.test(barebox, tlv_cmdtest.t.tampered_ecdsa_bin.name, fail=True)
++        if args.sign:
++            privkey = PrivateKey(path=args.sign)
++        else:
++            privkey = None
++        bin = eeprom.encode(data, sign=privkey)
+         with open(args.binary, "wb+") as out_fh:
+             out_fh.write(bin)
+ 
+     if args.output_data:
+         with open(args.binary, "rb") as in_fh:
+             bin = in_fh.read()
+-        data = eeprom.decode(bin)
++        if args.verify:
++            pubkey = PublicKey(path=args.verify)
++        else:
++            pubkey = None
++        data = eeprom.decode(bin, pubkey=pubkey)
+         with open(args.output_data, "w+") as out_fh:
+             yaml.dump(data, out_fh)
+ 
+diff --git a/scripts/bareboxtlv-generator/requirements.txt b/scripts/bareboxtlv-generator/requirements.txt
+index a1f7e3b3f2..9125d46b55 100644
+--- a/scripts/bareboxtlv-generator/requirements.txt
++++ b/scripts/bareboxtlv-generator/requirements.txt
+@@ -1,2 +1,3 @@
+ crcmod
+ pyaml
++cryptography[signature]
 
 -- 
 2.51.2.535.g419c72cb8a
