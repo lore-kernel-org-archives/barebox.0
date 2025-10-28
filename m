@@ -1,73 +1,64 @@
-Delivery-date: Tue, 28 Oct 2025 08:04:29 +0100
+Delivery-date: Tue, 28 Oct 2025 08:27:01 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDdkr-00CbIs-2l
+	id 1vDe6f-00CbmT-34
 	for lore@lore.pengutronix.de;
-	Tue, 28 Oct 2025 08:04:29 +0100
+	Tue, 28 Oct 2025 08:27:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDdkr-0001UY-7W
-	for lore@pengutronix.de; Tue, 28 Oct 2025 08:04:29 +0100
+	id 1vDe6f-0003Oe-CK
+	for lore@pengutronix.de; Tue, 28 Oct 2025 08:27:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SkstifL5CsFyoG8v91RsZ8ztjrC4XSWNRYWRRwAcXvg=; b=ny6en6BX7qjz/epDd0qxbyoTQZ
-	UcaGiDRWULJRGBzJDfzXHTKzy/cewukiDatESy3CW2GDrIq4nyfLJ1TMkvS2PXoQY/HmBwp2V7cue
-	s/YUXDZqyIfv9u3a+Nequ1MlkysxSSOiItg45uwekdI6D0ov4HG1N52twOl2QX5ECIccyYSq3XXif
-	Vs7NmzMxK8H0Z2dnzAP5wrjARGcbTfk9fcDY0XAArOo6fG7R5B57kxfU68I+vhasXp2emgoanzTlz
-	XH62J8v4M9MLxZOU28q1SEectt+0tuAEom1QWF44/mYy/e94eg3NlRunhq4OwwieiJeNVeCs88T+Z
-	KxCH2VpQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=N3mQFtfWq2prP5cFnfYTeqEFHENv6lw1YAzvwB0ZbT0=; b=hPl8b2K8k3tqqK
+	uP+24o0kj+skasKm42XVB3t8Kw5swjXWXzx3KP8i2qE3UeTLQTooqfXiUuh1ZDxo4INpLSDyR1Fx/
+	BeRjW58vAMqDCsheYJVaQHyidzKWgU7iastGSy5TI22LkyRI1iN7BSLhIqGsJNdGTt+3OldlUcxID
+	z3K/LJdEr+vP7TYDBn5najlQ3Yg5mliKWol9nyzki72s6n4WZjYeilwsU4WZuqORUhSEz96ime6Gf
+	9m6xUIj6ZXys7TRfxVpq7nprQG4D6cDgwoywNEjY6sxcIwkaJTXf3fbS+nGsmJ7zg2nS65ied6US0
+	3jhgnTWdfjq6JvKqAzzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDdkB-0000000FNjF-2trl;
-	Tue, 28 Oct 2025 07:03:47 +0000
+	id 1vDe6B-0000000FPGe-0v2T;
+	Tue, 28 Oct 2025 07:26:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDdk8-0000000FNiq-0HXU
+	id 1vDe68-0000000FPFu-3gYt
 	for barebox@lists.infradead.org;
-	Tue, 28 Oct 2025 07:03:45 +0000
+	Tue, 28 Oct 2025 07:26:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vDdk5-0001KR-6t; Tue, 28 Oct 2025 08:03:41 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vDe67-0003JU-6D; Tue, 28 Oct 2025 08:26:27 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vDdk4-005pep-2s;
-	Tue, 28 Oct 2025 08:03:40 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vDdk4-004ygL-2X;
-	Tue, 28 Oct 2025 08:03:40 +0100
-Date: Tue, 28 Oct 2025 08:03:40 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vDe66-005pwp-2h;
+	Tue, 28 Oct 2025 08:26:26 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vDe67-0000000BfUQ-0fSV;
+	Tue, 28 Oct 2025 08:26:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>,
-	Michael Tretter <mtr@pengutronix.de>
-Message-ID: <aQBqzDjHmUwv2u_6@pengutronix.de>
-References: <20251027141555.846950-1-s.hauer@pengutronix.de>
- <CAP1tNvTpPDwBKB-9mGbX89CRdQ-rdhUf_Wn7BYHK8UMg0dAQcw@mail.gmail.com>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue, 28 Oct 2025 08:26:25 +0100
+Message-ID: <20251028072625.2781087-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP1tNvTpPDwBKB-9mGbX89CRdQ-rdhUf_Wn7BYHK8UMg0dAQcw@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251028_000344_108603_D9C98503 
-X-CRM114-Status: GOOD (  33.12  )
+X-CRM114-CacheID: sfid-20251028_002628_916949_D2F39F80 
+X-CRM114-Status: GOOD (  16.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,6 +70,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Michael Tretter <mtr@pengutronix.de>, Alexander Shiyan <eagle.alexander923@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -89,88 +81,69 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] clk: rockchip rk3588: configure CPLL in driver
+Subject: [PATCH v2] clk: rockchip rk3588: configure CPLL in driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Oct 27, 2025 at 05:27:43PM +0300, Alexander Shiyan wrote:
-> Hello.
-> 
-> PLL_PPLL -> PLL_CPLL ?
+The rk3588 CPLL should be configured to 1.5GHz and 09c87c85e0 ("ARM:
+dts: rockchip: Set CPLL frequency for RK3588") does this. It does it
+however after the assigned-clocks/assigned-clock-rates properties of the
+"rockchip,rk3588-cru" node have been evaluated which contain a setting
+of CLK_150M_SRC which is a child clock of the CPLL.  Configuring the
+CPLL after CLK_150M_SRC alters the setting of the just configured 150M
+clock again.
 
-Ups, indeed, yes. It seems I only checked CLK_150M_SRC to be at 150MHz,
-but not that CPLL runs at 1.5GHz.
+We must make sure to configure the CPLL before its child clocks. For
+this we could overwrite the assigned-* properties in the
+"rockchip,rk3588-cru" node, but with that we would miss future updates
+to this property, so configure the CPLL in the driver code instead right
+before we call into of_clk_add_provider().
 
-I am happy that with CPLL instead of PPLL the patch works as I had
-intended :)
+Fixes: 09c87c85e0 ("ARM: dts: rockchip: Set CPLL frequency for RK3588")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
 
-Sascha
+Changes since v1:
+- actually use CPLL
 
-> 
-> пн, 27 окт. 2025 г. в 17:16, Sascha Hauer <s.hauer@pengutronix.de>:
-> >
-> > The rk3588 CPLL should be configured to 1.5GHz and 09c87c85e0 ("ARM:
-> > dts: rockchip: Set CPLL frequency for RK3588") does this. It does it
-> > however after the assigned-clocks/assigned-clock-rates properties of the
-> > "rockchip,rk3588-cru" node have been evaluated which contain a setting
-> > of CLK_150M_SRC which is a child clock of the CPLL.  Configuring the
-> > CPLL after CLK_150M_SRC alters the setting of the just configured 150M
-> > clock again.
-> >
-> > We must make sure to configure the CPLL before its child clocks. For
-> > this we could overwrite the assigned-* properties in the
-> > "rockchip,rk3588-cru" node, but with that we would miss future updates
-> > to this property, so configure the CPLL in the driver code instead right
-> > before we call into of_clk_add_provider().
-> >
-> > Fixes: 09c87c85e0 ("ARM: dts: rockchip: Set CPLL frequency for RK3588")
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/dts/rk3588.dtsi          | 3 ---
-> >  drivers/clk/rockchip/clk-rk3588.c | 7 +++++++
-> >  2 files changed, 7 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/arm/dts/rk3588.dtsi b/arch/arm/dts/rk3588.dtsi
-> > index 42d692a9bd..416700cf0e 100644
-> > --- a/arch/arm/dts/rk3588.dtsi
-> > +++ b/arch/arm/dts/rk3588.dtsi
-> > @@ -1,9 +1,6 @@
-> >  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> >
-> >  / {
-> > -       assigned-clocks = <&cru PLL_CPLL>;
-> > -       assigned-clock-rates = <1500000000>;
-> > -
-> >         dmc: memory-controller {
-> >                 compatible = "rockchip,rk3588-dmc";
-> >                 rockchip,pmu = <&pmu1grf>;
-> > diff --git a/drivers/clk/rockchip/clk-rk3588.c b/drivers/clk/rockchip/clk-rk3588.c
-> > index 5aecfb3b1b..fcf95131df 100644
-> > --- a/drivers/clk/rockchip/clk-rk3588.c
-> > +++ b/drivers/clk/rockchip/clk-rk3588.c
-> > @@ -2500,6 +2500,13 @@ static void __init rk3588_clk_init(struct device_node *np)
-> >
-> >         rockchip_register_restart_notifier(ctx, RK3588_GLB_SRST_FST);
-> >
-> > +       /*
-> > +        * CPLL must run at 1.5GHz. Do this here instead via assigned-clocks
-> > +        * in the device tree so that we do not have to overwrite the properties
-> > +        * in the upstream device tree.
-> > +        */
-> > +       clk_set_rate(ctx->clk_data.clks[PLL_PPLL], 1500000000);
-> > +
-> >         rockchip_clk_of_add_provider(np, ctx);
-> >  }
-> >
-> > --
-> > 2.47.3
-> >
-> 
+ arch/arm/dts/rk3588.dtsi          | 3 ---
+ drivers/clk/rockchip/clk-rk3588.c | 7 +++++++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
+diff --git a/arch/arm/dts/rk3588.dtsi b/arch/arm/dts/rk3588.dtsi
+index 42d692a9bd..416700cf0e 100644
+--- a/arch/arm/dts/rk3588.dtsi
++++ b/arch/arm/dts/rk3588.dtsi
+@@ -1,9 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+ 
+ / {
+-	assigned-clocks = <&cru PLL_CPLL>;
+-	assigned-clock-rates = <1500000000>;
+-
+ 	dmc: memory-controller {
+ 		compatible = "rockchip,rk3588-dmc";
+ 		rockchip,pmu = <&pmu1grf>;
+diff --git a/drivers/clk/rockchip/clk-rk3588.c b/drivers/clk/rockchip/clk-rk3588.c
+index 5aecfb3b1b..eb6b4fde14 100644
+--- a/drivers/clk/rockchip/clk-rk3588.c
++++ b/drivers/clk/rockchip/clk-rk3588.c
+@@ -2500,6 +2500,13 @@ static void __init rk3588_clk_init(struct device_node *np)
+ 
+ 	rockchip_register_restart_notifier(ctx, RK3588_GLB_SRST_FST);
+ 
++	/*
++	 * CPLL must run at 1.5GHz. Do this here instead via assigned-clocks
++	 * in the device tree so that we do not have to overwrite the properties
++	 * in the upstream device tree.
++	 */
++	clk_set_rate(ctx->clk_data.clks[PLL_CPLL], 1500000000);
++
+ 	rockchip_clk_of_add_provider(np, ctx);
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.3
+
 
 
