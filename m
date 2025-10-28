@@ -1,71 +1,68 @@
-Delivery-date: Tue, 28 Oct 2025 09:57:51 +0100
+Delivery-date: Tue, 28 Oct 2025 10:03:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDfWZ-00Cd7W-1B
+	id 1vDfcR-00CdNJ-0b
 	for lore@lore.pengutronix.de;
-	Tue, 28 Oct 2025 09:57:51 +0100
+	Tue, 28 Oct 2025 10:03:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vDfWY-0006uC-R5
-	for lore@pengutronix.de; Tue, 28 Oct 2025 09:57:51 +0100
+	id 1vDfcQ-0000Wx-Lm
+	for lore@pengutronix.de; Tue, 28 Oct 2025 10:03:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JSrEe357prnNf52Tb9Ppfnkw5hwFx09j/476lyvL9YM=; b=mM8dojhlKMVI0qvYwu+WW9kd2l
-	bDC733+Xaww2VX3BrNd3y+hMdK7VhGQFsh1IqSvXQEyoD9YWc87cFjYxrHvxktd1nQj0pkbHI023x
-	91iZTU1CNvwgcQdv2IwhC+cUP8APl1EX8Y1GGX2hn/V6d1Hk4wS1DWd4f4u7n6kxcV6mT7QRMiR0k
-	BQoAbJYWd9VikEP1B50yr21AtKq6Sk916UnthLSVsG8a5Tz/ogZXKNgsopjDzMc27Lkdcy7rTPlm1
-	0YFK5ckquVQ+aFr+oeGPq68e5C/S16IBv+p7gzka+Gl1A+psvuuFsDgL4NOznTMO/YFup7RnPcwod
-	S/jrX6mQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=g9BE8FqouQfvGlew32GP8xjMy2o6Mo84RfB5VliGL7w=; b=pvaKFvIRecmEN5TnjF4ErhaF9W
+	f1EwQpaCQWfh2tq/LG9R5PXNZ2mkwrilvnj/sCVf7M9pUlRhFsF4jhrj62NXyFQMnc0iMtQed1amS
+	TcXsBrlUTyjc20ASlWCZLKk0gNUzfzdEkKYwlGk8qNcDB7JZ7FVk8hGc7IPa23g0D193ZiynEoA0Y
+	5d8vX71oX33D7ip/79/aUw2ZlakXOG/apkLxhda/2PLYynXhLC0QbVEoVZmaWNXzd3CXthcvHWffE
+	coQxlOrYM5tKQNAt8OROiz/QEv9HZij47lnb9LKxrNND8bdEFb+Yd6hktGWjt/b0LNVqRIZQeztzU
+	jcA0zqpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDfVv-0000000FaJY-2LY5;
-	Tue, 28 Oct 2025 08:57:11 +0000
+	id 1vDfbw-0000000FbUp-33zw;
+	Tue, 28 Oct 2025 09:03:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDfVs-0000000FaIt-3pkI
+	id 1vDfbv-0000000FbUB-0WMt
 	for barebox@lists.infradead.org;
-	Tue, 28 Oct 2025 08:57:10 +0000
+	Tue, 28 Oct 2025 09:03:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vDfVr-0006ls-2b; Tue, 28 Oct 2025 09:57:07 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vDfbt-0000QJ-A1; Tue, 28 Oct 2025 10:03:21 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vDfVq-005qVX-2t;
-	Tue, 28 Oct 2025 09:57:06 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vDfVq-0050DU-2a;
-	Tue, 28 Oct 2025 09:57:06 +0100
-Date: Tue, 28 Oct 2025 09:57:06 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vDfbt-005qW7-0N;
+	Tue, 28 Oct 2025 10:03:21 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vDfbt-0000000C8pc-23N6;
+	Tue, 28 Oct 2025 10:03:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <aQCFYqNbaavn3pYU@pengutronix.de>
-References: <20251027192938.2586566-1-a.fatoum@barebox.org>
- <20251027192938.2586566-5-a.fatoum@barebox.org>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251027080832.1989341-1-a.fatoum@pengutronix.de>
+References: <20251027080832.1989341-1-a.fatoum@pengutronix.de>
+Message-Id: <176164220103.2893755.6430648745722172852.b4-ty@pengutronix.de>
+Date: Tue, 28 Oct 2025 10:03:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027192938.2586566-5-a.fatoum@barebox.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251028_015708_955224_C9B5F2DB 
-X-CRM114-Status: GOOD (  13.16  )
+X-CRM114-CacheID: sfid-20251028_020323_164965_B38E7B20 
+X-CRM114-Status: UNSURE (   8.91  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,30 +84,29 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 5/5] pmdomain: add Rockchip power domain support
+Subject: Re: [PATCH] kbuild: add make check target
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Oct 27, 2025 at 08:28:20PM +0100, Ahmad Fatoum wrote:
-> +static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
-> +				     struct device_node *parent)
-> +{
-> +	struct device_node *np;
-> +
-> +	for_each_child_of_node(parent, np)
-> +		return -ENOSYS;
-> +
 
-I gave it a quick try on RK3588 and driver probe fails here. RK3588 has
-several subdomains in its power controller.
+On Mon, 27 Oct 2025 09:08:23 +0100, Ahmad Fatoum wrote:
+> The barebox test suite is invoked by running pytest, but for many
+> projects running make check is what is usually expected.
+> 
+> Add a make check target that calls pytest to accommodate that.
+> In future, we may add extra checks to test that pytest is correctly
+> installed to make it easier to use.
+> 
+> [...]
 
-Sascha
+Applied, thanks!
 
+[1/1] kbuild: add make check target
+      https://git.pengutronix.de/cgit/barebox/commit/?id=91243c375738 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
