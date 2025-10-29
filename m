@@ -1,58 +1,64 @@
-Delivery-date: Wed, 29 Oct 2025 11:01:35 +0100
+Delivery-date: Wed, 29 Oct 2025 14:17:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vE2zn-00D0Wy-1t
+	id 1vE62w-00D3Zy-0B
 	for lore@lore.pengutronix.de;
-	Wed, 29 Oct 2025 11:01:35 +0100
+	Wed, 29 Oct 2025 14:17:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vE2zm-000246-TV
-	for lore@pengutronix.de; Wed, 29 Oct 2025 11:01:35 +0100
+	id 1vE62v-0001sG-Gm
+	for lore@pengutronix.de; Wed, 29 Oct 2025 14:17:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=it/EHYi8dksS5k/dpUoS6+s+QfCujnoT/y6xPPbGU1M=; b=wr7NztLI6qpJHZD2Fz5GFX0TO1
-	bKMi48bl86JXzebbkINrX559yvKyefWRjnRW1RPsRkKKUNIJJRHDYymgtOfjiIaixiedZgkj6hB2u
-	r8zpYU1txNDg8R7w9/5/LjG8Jia2rGHDiMW33g2afky7BxXdCY3OToOUC4mHwiUldTI1SF3ZCjCKE
-	YDlVPRXF//64RaYSD/f6Egc95U01a4JSepDVtxbMvACSRDOXZRsV98v1Iq/3JMDthyxjeicag0R5E
-	jhoCOHy2vnrZR+GAqrPbCU6A/szuBWBgMi5sYDvpF2RxmACv0kZKKp7vFnKz6cR4wg7yR5pigdWi3
-	gtDiqXdg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=hQHvnyjZW9Ic2k1fiJGCULxJ9jYkDmfU0SxuywJvDgQ=; b=PafBdMNsklSu6E
+	rrADH0El4MHJRrKI+vS27hCUUIeyKw762R/WxAJz3rlQDJv0ysK/+etlsXL33c6jWPufXSrBjoFZx
+	MJjHTX7duKr/1N1uPjpEkRN9ebxRBGwchWx9//jiRWt/sEqmqHVZbPlSKlutssoXXhYH+OI/FHSGD
+	x+2oJCFHO5kSXZ+XoH8w+CNt65x0yOfH22kk1mX2bM5RilsfTLW6Uj8/VCHCP375gpZmHpBMcAFJu
+	7FA8rkNPJvPwF9kvR58UJvRBbCBEeytEVdcmCYOG1QuG3Y0vZux+PQZATd7wqoLi/+49c6AK3JWG7
+	tpy7opU/EJsZkP01R67w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vE2zI-00000000c18-3vWU;
-	Wed, 29 Oct 2025 10:01:04 +0000
+	id 1vE62L-00000001KCI-0MYa;
+	Wed, 29 Oct 2025 13:16:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vE2zG-00000000byg-1kyU
+	id 1vE62H-00000001KAa-2gyh
 	for barebox@lists.infradead.org;
-	Wed, 29 Oct 2025 10:01:03 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vE2zD-0001ww-Bv; Wed, 29 Oct 2025 11:00:59 +0100
-Message-ID: <02e2565f-a976-4a92-809d-67ae90818145@pengutronix.de>
-Date: Wed, 29 Oct 2025 11:00:59 +0100
+	Wed, 29 Oct 2025 13:16:23 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vE62F-0001jz-6P; Wed, 29 Oct 2025 14:16:19 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vE62F-006308-01;
+	Wed, 29 Oct 2025 14:16:19 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vE62F-00000006k6c-1Q3k;
+	Wed, 29 Oct 2025 14:16:18 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed, 29 Oct 2025 14:16:17 +0100
+Message-ID: <20251029131617.1607191-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, Fabian Pflug <f.pflug@pengutronix.de>
-References: <20251029070141.2503368-1-a.fatoum@pengutronix.de>
- <20251029095555.qoo3z6lm2vtwexam@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20251029095555.qoo3z6lm2vtwexam@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251029_030102_504466_62001E24 
-X-CRM114-Status: GOOD (  25.11  )
+X-CRM114-CacheID: sfid-20251029_061621_680800_8A719C50 
+X-CRM114-Status: GOOD (  15.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,6 +70,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Fabian Pfitzner <f.pfitzner@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -74,129 +81,57 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] crypto: caam - skip RNG selftest when i.MX6 is in normal
- world
+Subject: [PATCH] mtd: peb: mtd_peb_read(): move error message to caller
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Move the error message about a failure to read a PEB to the caller.
+In some cases like for example i.MX6 with NAND boot it can happen
+that mtd_peb_read() is called on the NAND blocks containing the FCB.
+These are not protected with regular ECC, so are not readable. The error
+message is expected and harmless. UBI needs this error message though,
+so move it there. Other callers have their own error message already.
 
-On 10/29/25 10:55 AM, Marco Felsch wrote:
-> On 25-10-29, Ahmad Fatoum wrote:
->> On an i.MX6 running under OP-TEE, the CAAM selftest fails as it needs to
->> run in the secure world[1].
->>
->> We can detect that barebox is running in the normal world on an i.MX6,
->> so use that info to gracefully skip the test.
->>
->> This is not enough to get the CAAM working (The DECO registers may not
->> be accessible to barebox), but that is arguably a more useful error
->> message than an -EBUSY.
->>
->> [1]: Scroll down to "Job Ring TZ assignment issue"
->> https://community.nxp.com/t5/i-MX-Security/RNG-self-test-errors-on-select-i-MX-device-revisions/ta-p/1102970
->>
->> Reported-by: Fabian Pflug <f.pflug@pengutronix.de>
->> Cc: Marco Felsch <m.felsch@pengutronix.de>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  arch/arm/mach-imx/imx6.c            |  2 +-
->>  drivers/crypto/caam/rng_self_test.c | 13 ++++++++++++-
->>  include/mach/imx/imx6.h             |  2 ++
->>  3 files changed, 15 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
->> index 0cf2c17d6b90..29a56de56293 100644
->> --- a/arch/arm/mach-imx/imx6.c
->> +++ b/arch/arm/mach-imx/imx6.c
->> @@ -254,7 +254,7 @@ int imx6_devices_init(void)
->>  	return 0;
->>  }
->>  
->> -static bool imx6_cannot_write_l2x0(void)
->> +bool imx6_cannot_write_l2x0(void)
->>  {
->>  	void __iomem *l2x0_base = IOMEM(0x00a02000);
->>  	u32 val;
->> diff --git a/drivers/crypto/caam/rng_self_test.c b/drivers/crypto/caam/rng_self_test.c
->> index 5216ecef4451..a42d9cad1639 100644
->> --- a/drivers/crypto/caam/rng_self_test.c
->> +++ b/drivers/crypto/caam/rng_self_test.c
->> @@ -47,6 +47,8 @@
->>  #include <dma.h>
->>  #include <common.h>
->>  #include <linux/kernel.h>
->> +#include <mach/imx/generic.h>
->> +#include <mach/imx/imx6.h>
->>  
->>  #include "error.h"
->>  #include "regs.h"
->> @@ -143,7 +145,7 @@ static void rng_self_test_done(struct device *dev, u32 *desc, u32 err,
->>   * * i.MX6DLS silicon revision 1.4
->>   * * i.MX6SX silicon revision 1.4
->>   * * i.MX6UL silicon revision 1.2
->> - * * i.MX67SD silicon revision 1.3
->> + * * i.MX7SD silicon revision 1.3
->>   *
->>   */
->>  int caam_rng_self_test(struct device *dev, const u8 caam_era, const u8 rngvid,
->> @@ -176,6 +178,15 @@ int caam_rng_self_test(struct device *dev, const u8 caam_era, const u8 rngvid,
->>  		return -EINVAL;
->>  	}
->>  
->> +	if (cpu_is_mx6() && imx6_cannot_write_l2x0()) {
-> 
-> Nit:
-> Would be nice to have an in_secure_mode() function to make the purpose
-> more clear. However, change is correct and you added a comment, so
-> 
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/peb.c    | 2 +-
+ drivers/mtd/ubi/io.c | 8 ++++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-A generic in_secure_mode() function must necessarily be tristate for
-architectural reasons: yes, no, don't know.
-
-I guess we could do that, but yes, out of scope for this fix.
-
-Cheers,
-Ahmad
-
-
-
-> 
-> 
->> +		/* If we enter this if clause, we are likely running
->> +		 * under OP-TEE, so there is no point in continuing
->> +		 * and getting -EBUSY waiting for job completion
->> +		 */
->> +		pr_info("skipping test in normal world\n");
->> +		return 0;
->> +	}
->> +
->>  	result = dma_alloc(sizeof(*result) * result_size);
->>  	desc = dma_alloc(sizeof(*desc) * desc_size);
->>  
->> diff --git a/include/mach/imx/imx6.h b/include/mach/imx/imx6.h
->> index 109df9b811c5..7b3cedd80f66 100644
->> --- a/include/mach/imx/imx6.h
->> +++ b/include/mach/imx/imx6.h
->> @@ -135,4 +135,6 @@ int imx6_cpu_revision(void);
->>  
->>  u64 imx6_uid(void);
->>  
->> +bool imx6_cannot_write_l2x0(void);
->> +
->>  #endif /* __MACH_IMX6_H */
->> -- 
->> 2.47.3
->>
->>
-> 
-
+diff --git a/drivers/mtd/peb.c b/drivers/mtd/peb.c
+index 840fc1799a..10ccf188c7 100644
+--- a/drivers/mtd/peb.c
++++ b/drivers/mtd/peb.c
+@@ -239,7 +239,7 @@ int mtd_peb_read(struct mtd_info *mtd, void *buf, int pnum, int offset,
+ 		if (mtd_is_eccerr(err) && retries++ < MTD_IO_RETRIES)
+ 			goto retry;
+ 
+-		dev_err(&mtd->dev, "error %d%s while reading %d bytes from PEB %d:%d\n",
++		dev_dbg(&mtd->dev, "error %d%s while reading %d bytes from PEB %d:%d\n",
+ 			err, errstr, len, pnum, offset);
+ 		return err;
+ 	}
+diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
+index 88df185789..340a601426 100644
+--- a/drivers/mtd/ubi/io.c
++++ b/drivers/mtd/ubi/io.c
+@@ -115,6 +115,14 @@ int ubi_io_read(const struct ubi_device *ubi, void *buf, int pnum, int offset,
+ 	ret = mtd_peb_read(ubi->mtd, buf, pnum, offset, len);
+ 	if (mtd_is_bitflip(ret))
+ 		return UBI_IO_BITFLIPS;
++
++	if (ret) {
++		const char *errstr = mtd_is_eccerr(ret) ? " (ECC error)" : "";
++
++		ubi_err(ubi, "error %d%s while reading %d bytes from PEB %d:%d\n",
++			ret, errstr, len, pnum, offset);
++	}
++
+ 	return ret;
+ }
+ 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
