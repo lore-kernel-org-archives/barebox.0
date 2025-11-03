@@ -1,62 +1,90 @@
-Delivery-date: Mon, 03 Nov 2025 12:55:54 +0100
+Delivery-date: Mon, 03 Nov 2025 15:10:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vFtAA-00EqOb-0o
+	id 1vFvGC-00EsM2-2F
 	for lore@lore.pengutronix.de;
-	Mon, 03 Nov 2025 12:55:54 +0100
+	Mon, 03 Nov 2025 15:10:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vFtA9-0000uJ-HQ
-	for lore@pengutronix.de; Mon, 03 Nov 2025 12:55:54 +0100
+	id 1vFvGB-0001Jl-Rz
+	for lore@pengutronix.de; Mon, 03 Nov 2025 15:10:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4VjWcVXATZiVL4jEukkaAKWgrfBd3tNlnHS3C1jAsZI=; b=ZgindyHoZ7C+gNaD8bjyUlBEPe
-	O7ngJhQ7axEWugYqLX08eDqLmlSJNoSz6X3vwz1JGdtueWBwH4HKWg4jCR0IkOrRjeHPVSdbHvyyY
-	nvnNuot0zpMqydifEizxRaJ7oAnLqjBfPU6DNPIRrn/YxYtdyRhQowxxRxdQA4/7LHYHFlrlAvV0E
-	fdtWfFhuxTGURfnyhv7TL3LEJNPf+F3tRVcpbfSF1onzCWGwpuZ/G8PsqqU4FkPeofNK3dg51Se5h
-	gBSqSXTI7LSVVyVvUMCiBK+gpmyglVAMRk72+Haq/HcJhnfHK2b2sAuXsSYemA7pd5cepVYQ87c4N
-	Wx1Hssmg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:Content-Type:To:Subject:Message-ID:Date:From:
+	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=/2cunIPWzHO8v+b+SHHCLmFeNNsY2zDOR7IrDiREJPE=; b=JmpMtDilkemLzS
+	uurI8XiK/eJH4V2yrD5jH8ekfIqnb/U/QI8qhjBOHFcQzUgSEZC5VLGid3X8raEHQdf/IsUQKs+jd
+	uigcxEC2YMCEu9bjoJ9roLjl5u734BNW+30Pfi5E3fA6/TUCUwArEv1+iMxgFrRIFlUwrQ762MlX8
+	mN3+mjQWqZIOr4V3ERzJARxsL1ku/MAu46CGEpMhUpYyJNgWRTz1XbdbKUpiGJ22cz+P3M8ewdLPM
+	IB4i2oQkWveabKh321wVa+KQZBGuJEQsH/C42ntkxrpk/TIgisC8aOkrK8/rHhvL+yiK0iuOem3Ab
+	u+KE9uguGouGt3aiuSrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFt9i-00000009n9M-0xD4;
-	Mon, 03 Nov 2025 11:55:26 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vFvFX-00000009zzx-1Rro;
+	Mon, 03 Nov 2025 14:09:35 +0000
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFt9e-00000009n8r-3ftS
+	id 1vFvFU-00000009zzb-3Pmq
 	for barebox@lists.infradead.org;
-	Mon, 03 Nov 2025 11:55:24 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1vFt9c-0000jZ-Fn; Mon, 03 Nov 2025 12:55:20 +0100
-Message-ID: <45026e71-c901-428c-86b3-461c017db3f6@pengutronix.de>
-Date: Mon, 3 Nov 2025 12:55:20 +0100
+	Mon, 03 Nov 2025 14:09:34 +0000
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-2907948c1d2so47705145ad.3
+        for <barebox@lists.infradead.org>; Mon, 03 Nov 2025 06:09:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762178972; x=1762783772; darn=lists.infradead.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/2cunIPWzHO8v+b+SHHCLmFeNNsY2zDOR7IrDiREJPE=;
+        b=CDhG+tjFIaNSML9qFy+WUYYRrOOntpMLZAraXr+suQtkyuXJA/zItgchCeWeNSQrUs
+         FmrNZogKx+Ix4zR09pPkNFhP3n0OkRbtUMKWSY62OfOnNGMbUdzemBWKCuGcxwuCj+hC
+         wboLDOVWhtd9/zg3HFpWHZdaDtZ/VGA57xW9w0QRKr3H4T3BSWK46DN4Uh4V1Wz9Ym/C
+         DKhzSU4WHzw0kcWmI22LlgRxaA8ZQaK3St0lhObzaDtncB5IwDWj/pMqqQJo+WQTQ5eI
+         owTqUFmn5GNvg9BoQz+2A/bbmjiapcglQqQBVKNfAlafmo9Mmd9fOnAcwKfGeoIc0c2R
+         aWTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762178972; x=1762783772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/2cunIPWzHO8v+b+SHHCLmFeNNsY2zDOR7IrDiREJPE=;
+        b=Pn+xg8i0lxqQK1fF5nTgow1we/P5lRUGNtt9OYGpvr28YAtLSSvlFFulZlgGONJ3mL
+         W7ibumix6FSkIIsgJVyWB/Al6VaPlrP2HpB/XF7ebNQL0VaE9YARZjRAXCGA+xQjnUPQ
+         zZOmpVw9U9QZ+ddJI4TyQdCBoIg7EfdgrneRwQeto7sUs4oAkAMwAD4PUXlFUCqzm1xe
+         T41YvM0AULPQrqo9qi2ecron31UwOofoTHUaw09ETpTcAgu04NDw6ljqFTqyx4Hdv5KW
+         cuqdY1ohE4YagBU79gLOT8QXqkKvmL0nqc2535Bud560PCKrUDX3daIe1eIMETF3IotO
+         qK+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXUje0JFRNCTV8W0tIyl1vD5nGiGPxiRvS4UrLRahIn+St2dqAMVFgJzIcLW3L/QkjzyyBbQIpt@lists.infradead.org
+X-Gm-Message-State: AOJu0Yzd7doDNoLzBCZE9onZixhCPxLU77dzGcA0PmAFXP3h/vEcGHk7
+	yBQ+dCVNxsF7q3KF2Ma650YBmgyxobpKEiKHjsxuSISAPL66Q9tmR8K/6swjzKkri39TuDUoOcX
+	I5hiZKuF0NcaouNXdhOuvmznktMfTQ2s=
+X-Gm-Gg: ASbGncu9+xwu11kMFwxyu+jpBWOLvcdUniPGzBED5bfwl6UfBpG7jqAd96Re9mkudAx
+	dfkwLrHgELqUPbxx6lnjmvvm+Lzk02AXBFwMHJqxyf5mqupY/9NgVHfcX9+EWsh+DGoxy3aTXCg
+	9F2h3AlG3EZmEeJSI9gviyMe9iFYQrVNZjs59XTQROYk3bsGSzrXWrNtxRHR/zJa3oddSNEXDvF
+	sGDot8cPeaRZI4yK2aK+p/xx1vWdOXNTzBgITYGeO+0IJzTx2Ru9uLpbwH6F9u/khS0ksiOlwru
+	QYw+B/TiKS7/4ZJEVUWIgP9bFcU8xg==
+X-Google-Smtp-Source: AGHT+IH86K3v8I6dJxohGuoW8DLRcUDdyPFvp8rDxUtUbPv5+Jtsn8X2Wc7iGHLbiHB6nG3KCq5syYAlGSGIBU+oDpU=
+X-Received: by 2002:a17:903:2d0:b0:272:dee1:c137 with SMTP id
+ d9443c01a7336-2951a39619cmr176059465ad.13.1762178971623; Mon, 03 Nov 2025
+ 06:09:31 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-References: <20251028-tlv-signature-v2-0-3bafce636ad7@pengutronix.de>
- <20251028-tlv-signature-v2-10-3bafce636ad7@pengutronix.de>
- <aQh9uBVAHngkoCow@pengutronix.de>
- <2249476f-03b5-404b-9a9b-feb69393ef1e@pengutronix.de>
- <aQiU0iaWu06nzXiE@pengutronix.de>
-From: Jonas Rebmann <jre@pengutronix.de>
-Content-Language: en-US
-In-Reply-To: <aQiU0iaWu06nzXiE@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251103043833.149013-1-chalianis1@gmail.com> <e6fe90ea-3ba4-402b-9b9e-dbe2f386dc63@pengutronix.de>
+In-Reply-To: <e6fe90ea-3ba4-402b-9b9e-dbe2f386dc63@pengutronix.de>
+From: anis chali <chalianis1@gmail.com>
+Date: Mon, 3 Nov 2025 09:09:20 -0500
+X-Gm-Features: AWmQ_bltuuh7JFZy-gMTNeCo3w9Q-9z5Fga3DqHjspegm97UKC6plMaA09P1J_I
+Message-ID: <CAL+1fyC5bD3k6rufJx6eYXjL4Fo00QOWRRC3JzgfcU-3maROhA@mail.gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251103_035522_925460_1571B7F7 
-X-CRM114-Status: GOOD (  27.85  )
+X-CRM114-CacheID: sfid-20251103_060932_860666_65402D07 
+X-CRM114-Status: GOOD (  33.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,165 +96,180 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 10/17] common: tlv: Add TLV-Signature support
+X-Spam-Status: No, score=-2.6 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 1/2] drivers: misc: external_state: add a barebox external state.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+>> strlen can't return negative numbers.
+ack, right it is size_t (unsigned)
 
-
-On 2025-11-03 12:41, Sascha Hauer wrote:
-> On Mon, Nov 03, 2025 at 12:21:56PM +0100, Jonas Rebmann wrote:
->> Hi Sascha,
+>> The original function had a number of safety checks that are missing her=
+e:
 >>
->> On 2025-11-03 11:02, Sascha Hauer wrote:
->>> On Tue, Oct 28, 2025 at 07:03:15PM +0100, Jonas Rebmann wrote:
->>>> Implement TLV signature using the existing placeholders for it. Use the
->>>> existing cryptographic primitives and public key handling used for
->>>> fitimage verification.
->>>>
->>>> Signature is verified and then must be valid iff CONFIG_TLV_SIGNATURE is
->>>> enabled and a keyring is selected for the decoder. SHA256 hashing is
->>>> hardcoded for now.
->>>>
->>>> As 16 bit are well sufficient to store the length of the signature
->>>> section in bytes, reduce it to its least significant 16 bit and reserve
->>>> the remaining 16 bit for future use.
->>>>
->>>> As sig_len where the only reserved bits left, and where zero-reserved,
->>>> this leaves more wiggle room to still expand the format in the future.
->>>>
->>>> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
->>>> ---
->>>>    common/Kconfig       |  5 +++
->>>>    common/tlv/parser.c  | 87 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->>>>    include/tlv/format.h | 22 ++++++++++---
->>>>    3 files changed, 109 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/common/Kconfig b/common/Kconfig
->>>> index d923d4c4b6..663465443d 100644
->>>> --- a/common/Kconfig
->>>> +++ b/common/Kconfig
->>>> @@ -1122,6 +1122,11 @@ config TLV
->>>>    	  barebox TLV is a scheme for storing factory data on non-volatile
->>>>    	  storage. Unlike state, it's meant to be read-only.
->>>> +config TLV_SIGNATURE
->>>> +	bool "barebox TLV signature support"
->>>> +	depends on TLV
->>>> +	select CRYPTO_BUILTIN_KEYS
->>>> +
->>>>    config TLV_DRV
->>>>    	bool "barebox TLV generic driver"
->>>>    	depends on TLV
->>>> diff --git a/common/tlv/parser.c b/common/tlv/parser.c
->>>> index f74ada99d7..cbf45413dd 100644
->>>> --- a/common/tlv/parser.c
->>>> +++ b/common/tlv/parser.c
->>>> @@ -1,6 +1,7 @@
->>>>    // SPDX-License-Identifier: GPL-2.0-only
->>>>    #define pr_fmt(fmt) "barebox-tlv: " fmt
->>>> +#include "tlv/format.h"
->>>>    #include <common.h>
->>>>    #include <tlv/tlv.h>
->>>> @@ -9,6 +10,80 @@
->>>>    #include <linux/stat.h>
->>>>    #include <crc.h>
->>>>    #include <net.h>
->>>> +#include <crypto/public_key.h>
->>>> +
->>>> +static int tlv_verify_try_key(const struct public_key *key, const uint8_t *sig,
->>>> +			      const uint32_t sig_len, const void *data,
->>>> +			      unsigned long data_len)
->>>> +{
->>>> +	enum hash_algo algo = HASH_ALGO_SHA256;
->>>> +	int ret;
->>>> +	struct digest *digest;
->>>> +	void *hash;
->>>> +
->>>> +	digest = digest_alloc_by_algo(algo);
->>>> +	if (!digest)
->>>> +		return -ENOMEM;
->>>> +
->>>> +	digest_init(digest);
->>>> +	if (IS_ERR(digest)) {
->>>
->>> What you meant to do here is
->>>
->>> 	ret = digest_init(digest);
->>> 	if (ret) {
->>> 		...
->>> 	}
->>>
+>> - It only ran the code when in EFI payload mode, as the same barebox
+>>  binary could be chainloaded without EFI
 >>
->> I used IS_ERR() here simply because that's how I saw it in
->> common/image-fit.c. Will that need to be changed too then?
-> 
-> I don't see that the return value of digest_init() is checked in
-> common/image-fit.c.
-> 
-> Yes, we should consistently check the return value of digest_init().
-> 
-> Anyway, my point was that your IS_ERR(digest) is bogus.
-
-Oh indeed, common/image-fit.c uses IS_ERR(digest) for fit_alloc_digest()
-but digest_init() is unchecked. Will apply your suggestion for v3.
-
->>>> +	for_each_public_key_keyring(key, id, keyring) {
->>>> +		u32 spki_key = get_unaligned_le32(key->hash);
->>>> +
->>>> +		if (spki_key == spki_tlv) {
->>>> +			count_spki_matches++;
->>>> +			ret = tlv_verify_try_key(key, spki_tlv_ptr + SPKI_LEN, sig_len - SPKI_LEN, header, payload_sz);
->>>> +			if (!ret)
->>>> +				return 0;
->>>> +			pr_warn("TLV spki %08x matched available key but signature verification failed: %pe!\n", spki_tlv, ERR_PTR(ret));
->>>
->>> Not sure what this warning is about. Either it can happen that there are
->>> two keys with the same hash in which case there's nothing to warn about,
->>> or it can't happen and you would return an error here.
+>> - It checked that /boot is mounted and gave a useful error message to hi=
+nt
+>>  at e.g., EFIFS missing, which we are missing out on here.
 >>
->> When this happens, there is either a 32-bit hash collision, or
->> something's broken, such as what we had last week, where ECDSA keys
->> where incorrectly initialized, leading to signature verification to
->> always fail even with a valid key.
->>
->> We can't error out here already because when we designed the TLV
->> signature verification feature we specified that in case of spki hash
->> collision, all matching keys must be tried.
-> 
-> Ok, considering that a hash collision can happen we shouldn't warn about
-> it.
-> 
+>> I am not yet convinced this is strictly an improvement.
 
-The odds of this happening are 1 in 2^32. It is much more likely that
-the underlying issue lays elsewhere. If no spki hash match occurs,
-there's a warning too:
+Yes you are right but I didn't reintegrate the code in generic driver
+since it will just use Kconfigs to reference a state dtb file.
+In case this code was accepted there is no context to do the check,
+but I ensured that barebox gives a behaves in way that the user
+will quickly see that there is no /boot directory with the message
+telling No such file or directory, anyway you suggestion to add -f to
+state command
+is more elegant, I will do some experimentations. the aim of this
+patch is to support a state.dtb given in runtime which permits
+userspace interaction with
+native board because I didn't figure out how barebox state command
+could communicate with a barebox intree state.
 
-	if (!count_spki_matches) {
-		pr_warn("TLV spki %08x matched no key!\n", spki_tlv);
-		return -ENOKEY;
-	}
+>> If you have the need to customize where your state comes from, how about=
+ adding
+>> a state -f /path/to/state.dtb command option and calling it from your in=
+it script?
+right, more elegant suggestion, I will try it.
 
-The difference between: 'There was no matching key' and 'We had a key
-but failed to verify for dubious reasons' should clearly be reflected
-in the logs.
+Thank's for feedback
 
-Regards,
-Jonas
+Anis.
 
--- 
-Pengutronix e.K.                           | Jonas Rebmann               |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Le lun. 3 nov. 2025 =C3=A0 01:46, Ahmad Fatoum <a.fatoum@pengutronix.de> a =
+=C3=A9crit :
+>
+> Hi,
+>
+> On 03.11.25 05:38, chalianis1@gmail.com wrote:
+> > From: Chali Anis <chalianis1@gmail.com>
+> >
+> > Add a driver to use an external state dtb, gives the ability to define
+> > an external state at compile time. useful for yocto or buildroot defini=
+ng
+> > a state.dtb that will be passed to barebox at compile time vi a defconf=
+ig
+> > fragment.
+>
+> We already had code that did this unconditionally for EFI.
+> Can you explain why this needs to be customizable?
+>
+> > +config EXTERNAL_STATE
+> > +     tristate "Use external barebox state dtb"
+> > +     depends on OFDEVICE
+> > +     depends on STATE
+> > +     help
+> > +       This permits the use of an extranl dtb state blob
+>
+> external
+>
+> > +       which permits to dynamicly at compile time specify
+>
+> dynamically
+>
+> > +       an external blob vi EXTERNAL_STATE_DTB_PATH
+> > +
+> > +config EXTERNAL_STATE_DTB_PATH
+> > +     string "the external barebox state dtb path"
+> > +     depends on EXTERNAL_STATE
+>
+> Really needs help text as EXTERNAL makes me think of a file on the
+> build host.
+>
+> > +static int state_external_init(void)
+> > +{
+> > +     const char *dt_path =3D CONFIG_EXTERNAL_STATE_DTB_PATH;
+> > +     struct device_node *state_root =3D NULL;
+> > +     size_t size;
+> > +     void *fdt;
+> > +     int ret;
+> > +
+> > +     if (strlen(dt_path) <=3D 0)
+> > +             return -EINVAL;
+>
+> strlen can't return negative numbers.
+>
+> The original function had a number of safety checks that are missing here=
+:
+>
+> - It only ran the code when in EFI payload mode, as the same barebox
+>   binary could be chainloaded without EFI
+>
+> - It checked that /boot is mounted and gave a useful error message to hin=
+t
+>   at e.g., EFIFS missing, which we are missing out on here.
+>
+>
+> I am not yet convinced this is strictly an improvement.
+>
+> If you have the need to customize where your state comes from, how about =
+adding
+> a state -f /path/to/state.dtb command option and calling it from your ini=
+t script?
+>
+> Cheers,
+> Ahmad
+>
+> > +
+> > +     fdt =3D read_file(dt_path, &size);
+> > +     if (!fdt) {
+> > +             pr_info("unable to read %s: %m\n", dt_path);
+> > +             return 0;
+> > +     }
+> > +
+> > +     state_root =3D of_unflatten_dtb(fdt, size);
+> > +     if (!IS_ERR(state_root)) {
+> > +             struct device_node *np =3D NULL;
+> > +             struct state *state;
+> > +
+> > +             ret =3D barebox_register_of(state_root);
+> > +             if (ret)
+> > +                     pr_warn("Failed to register device-tree: %pe\n", =
+ERR_PTR(ret));
+> > +
+> > +             np =3D of_find_node_by_alias(state_root, "state");
+> > +
+> > +             state =3D state_new_from_node(np, false);
+> > +             if (IS_ERR(state))
+> > +                     return PTR_ERR(state);
+> > +
+> > +             ret =3D state_load(state);
+> > +             if (ret !=3D -ENOMEDIUM)
+> > +                     pr_warn("Failed to load persistent state, continu=
+ing with defaults, %d\n",
+> > +                             ret);
+> > +
+> > +             return 0;
+> > +     }
+> > +
+> > +     return -EINVAL;
+> > +}
+> > +
+> > +late_initcall(state_external_init);
+>
+>
+> --
+> Pengutronix e.K.                           |                             =
+|
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
+|
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
+|
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
+|
 
 
