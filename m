@@ -1,68 +1,69 @@
-Delivery-date: Mon, 03 Nov 2025 09:43:18 +0100
+Delivery-date: Mon, 03 Nov 2025 09:44:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vFq9m-00EnO2-1c
+	id 1vFqAm-00EnPI-2B
 	for lore@lore.pengutronix.de;
-	Mon, 03 Nov 2025 09:43:18 +0100
+	Mon, 03 Nov 2025 09:44:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vFq9m-0000ad-00
-	for lore@pengutronix.de; Mon, 03 Nov 2025 09:43:18 +0100
+	id 1vFqAm-0000mk-5Q
+	for lore@pengutronix.de; Mon, 03 Nov 2025 09:44:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GGHKy5x7bx4+Edm6ovhGOpU0YxhLmOc5rUqLWdn316s=; b=CbvCe6zee/KJmnTLmRuTo3X/0z
-	eFaaSxXh9MZhkWo8JLnOJQRXiAayaJZsTWr6PQHuY5KYXqF+OEH8/SWEonEokNwzhKFP0MW0J3X5z
-	ZyK5zLOnkkfeR8W8zpa2viq4OXHnCm4tUbRTj4NfoI9NrdIscE3l2NDD6KB+YsUAJSBb/j+2Ew3ic
-	OZfisTu79Lwel/4q/laTNOrSQVnEUopSGyWN+I83rF/lrqEqc+421wBNhkZY8+VQ/tGABGTQFnmDw
-	Hi+JywXi/yuRnsKoPfUb1DQSpV4fyZ+iP1GFFJn+lEDQpfVnueyO8XQzwkPL36oFYW6kWVl4ZeE74
-	a1DXr+7w==;
+	bh=XhvDyCoICVKvJQtRb4kjsVbUkVRqpiNc/dsR/T8lme8=; b=uryVxND8qYHSTeZuVBmZPugU1S
+	pl870++gTCjdmMBMGhOUeYQq904wQ2v1/c6AcPOkTjN47tQhEa02HG2oXm4T7DLiTxfJbBKqzOJ+G
+	jl/2PLdVc0SDzvDBVtHtozDFPblmildeG71yVRqlp4eYj6Jh+x4Sd1HhZvTYxIspiN5Zj1LhIDRow
+	YshFTZl5Lkw6zuE8Nh1ipGACXGLM1fRnjs9dkCHt8kIKt6KnDQbe0kh1mDquj7zL9xNEeOc530WAz
+	uTERETowjnzW7ascnhybr5Fm7kl7Qok8vT+jiXy+u+hrMZC5v67j411G6TNsX6pz/HTdeNd/O+Zkh
+	URn66Q3g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFq9C-00000009SBV-0y1H;
-	Mon, 03 Nov 2025 08:42:42 +0000
+	id 1vFqAC-00000009SJb-2T41;
+	Mon, 03 Nov 2025 08:43:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFq99-00000009SAK-1pzi
+	id 1vFqAA-00000009SJE-2L8k
 	for barebox@lists.infradead.org;
-	Mon, 03 Nov 2025 08:42:40 +0000
+	Mon, 03 Nov 2025 08:43:43 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vFq97-0000Qs-TJ; Mon, 03 Nov 2025 09:42:37 +0100
+	id 1vFqA9-0000fh-1A; Mon, 03 Nov 2025 09:43:41 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vFq97-006pTB-2I;
-	Mon, 03 Nov 2025 09:42:37 +0100
+	id 1vFqA8-006pTP-2k;
+	Mon, 03 Nov 2025 09:43:40 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vFq98-0000000HLn0-0P3f;
-	Mon, 03 Nov 2025 09:42:37 +0100
+	id 1vFqA9-0000000HLso-0ygA;
+	Mon, 03 Nov 2025 09:43:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20251103074703.305235-1-a.fatoum@barebox.org>
-References: <20251103074703.305235-1-a.fatoum@barebox.org>
-Message-Id: <176215935764.4135271.11483634129449135322.b4-ty@pengutronix.de>
-Date: Mon, 03 Nov 2025 09:42:37 +0100
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Fabian Pflug <f.pflug@pengutronix.de>, 
+ Marco Felsch <m.felsch@pengutronix.de>
+In-Reply-To: <20251029070141.2503368-1-a.fatoum@pengutronix.de>
+References: <20251029070141.2503368-1-a.fatoum@pengutronix.de>
+Message-Id: <176215942078.4135643.7321890676299481148.b4-ty@pengutronix.de>
+Date: Mon, 03 Nov 2025 09:43:40 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251103_004239_480568_F8B46FD0 
-X-CRM114-Status: UNSURE (   6.55  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251103_004342_602311_DD491D6F 
+X-CRM114-Status: GOOD (  11.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,22 +85,29 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] x86: drop unused header asm/segment.h and modes.h
- headers
+Subject: Re: [PATCH] crypto: caam - skip RNG selftest when i.MX6 is in
+ normal world
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 03 Nov 2025 08:47:02 +0100, Ahmad Fatoum wrote:
-> This headers are left-overs from the legacy BIOS support that has been
-> removed a few years ago and are not included anywhere.
+On Wed, 29 Oct 2025 08:01:38 +0100, Ahmad Fatoum wrote:
+> On an i.MX6 running under OP-TEE, the CAAM selftest fails as it needs to
+> run in the secure world[1].
 > 
+> We can detect that barebox is running in the normal world on an i.MX6,
+> so use that info to gracefully skip the test.
 > 
+> This is not enough to get the CAAM working (The DECO registers may not
+> be accessible to barebox), but that is arguably a more useful error
+> message than an -EBUSY.
+> 
+> [...]
 
 Applied, thanks!
 
-[1/1] x86: drop unused header asm/segment.h and modes.h headers
-      https://git.pengutronix.de/cgit/barebox/commit/?id=d1c7ab98cc35 (link may not be stable)
+[1/1] crypto: caam - skip RNG selftest when i.MX6 is in normal world
+      https://git.pengutronix.de/cgit/barebox/commit/?id=84e672622f1d (link may not be stable)
 
 Best regards,
 -- 
