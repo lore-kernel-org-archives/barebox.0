@@ -1,67 +1,67 @@
-Delivery-date: Mon, 03 Nov 2025 09:42:51 +0100
+Delivery-date: Mon, 03 Nov 2025 09:43:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vFq9L-00EnNI-0Q
+	id 1vFq9m-00EnO2-1c
 	for lore@lore.pengutronix.de;
-	Mon, 03 Nov 2025 09:42:51 +0100
+	Mon, 03 Nov 2025 09:43:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vFq9K-0000VB-KM
-	for lore@pengutronix.de; Mon, 03 Nov 2025 09:42:51 +0100
+	id 1vFq9m-0000ad-00
+	for lore@pengutronix.de; Mon, 03 Nov 2025 09:43:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=j6a1iNwusALB6pWtq5r65MKwKs43oRtJv1+36u0sAe4=; b=SYvOFV5mlJ/qMq/+i/EoT676O2
-	WnEIJ/csbKCA4JFKPo9Ycd48anwblTOl5aUUA65EH7W8YZ4d4+5TzSnm56DHWJjh7sqB9OJQcnnJ3
-	sKRTaK/urOF8IT9RoC0my7jPSrsE8xhpkQuLrWOAUbPSCoedMcpIDP9evHVMsp8gxer5Pnfl6PFqR
-	TLl+zKPGFoXu4JQFNBXGcs0HhAbuzDWs/kjip2WeIwBcw5wN/WhwLAUmF/ZTUSMCFNOlZe1NbhDPF
-	ExiLsusdWAAGyilfGyL8K1JXDtPXCcMN3SFzT3xuJGZCTyg1lmC4aNmGK4GKLRYnG/FD8eb1lbLAo
-	Eyzmrz5g==;
+	bh=GGHKy5x7bx4+Edm6ovhGOpU0YxhLmOc5rUqLWdn316s=; b=CbvCe6zee/KJmnTLmRuTo3X/0z
+	eFaaSxXh9MZhkWo8JLnOJQRXiAayaJZsTWr6PQHuY5KYXqF+OEH8/SWEonEokNwzhKFP0MW0J3X5z
+	ZyK5zLOnkkfeR8W8zpa2viq4OXHnCm4tUbRTj4NfoI9NrdIscE3l2NDD6KB+YsUAJSBb/j+2Ew3ic
+	OZfisTu79Lwel/4q/laTNOrSQVnEUopSGyWN+I83rF/lrqEqc+421wBNhkZY8+VQ/tGABGTQFnmDw
+	Hi+JywXi/yuRnsKoPfUb1DQSpV4fyZ+iP1GFFJn+lEDQpfVnueyO8XQzwkPL36oFYW6kWVl4ZeE74
+	a1DXr+7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFq8t-00000009S6P-1mh9;
-	Mon, 03 Nov 2025 08:42:23 +0000
+	id 1vFq9C-00000009SBV-0y1H;
+	Mon, 03 Nov 2025 08:42:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFq8r-00000009S5f-1Kxn
+	id 1vFq99-00000009SAK-1pzi
 	for barebox@lists.infradead.org;
-	Mon, 03 Nov 2025 08:42:22 +0000
+	Mon, 03 Nov 2025 08:42:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vFq8p-0000Kn-Ra; Mon, 03 Nov 2025 09:42:19 +0100
+	id 1vFq97-0000Qs-TJ; Mon, 03 Nov 2025 09:42:37 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vFq8p-006pT7-28;
-	Mon, 03 Nov 2025 09:42:19 +0100
+	id 1vFq97-006pTB-2I;
+	Mon, 03 Nov 2025 09:42:37 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vFq8q-0000000HLkg-0CgQ;
-	Mon, 03 Nov 2025 09:42:19 +0100
+	id 1vFq98-0000000HLn0-0P3f;
+	Mon, 03 Nov 2025 09:42:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20251103074509.302260-1-a.fatoum@barebox.org>
-References: <20251103074509.302260-1-a.fatoum@barebox.org>
-Message-Id: <176215933960.4135129.6975035075206516935.b4-ty@pengutronix.de>
-Date: Mon, 03 Nov 2025 09:42:19 +0100
+In-Reply-To: <20251103074703.305235-1-a.fatoum@barebox.org>
+References: <20251103074703.305235-1-a.fatoum@barebox.org>
+Message-Id: <176215935764.4135271.11483634129449135322.b4-ty@pengutronix.de>
+Date: Mon, 03 Nov 2025 09:42:37 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251103_004221_364272_880831F6 
-X-CRM114-Status: UNSURE (   8.85  )
+X-CRM114-CacheID: sfid-20251103_004239_480568_F8B46FD0 
+X-CRM114-Status: UNSURE (   6.55  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,27 +84,22 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] common: elf: rename elf_section misnomer to
- elf_segment
+Subject: Re: [PATCH] x86: drop unused header asm/segment.h and modes.h
+ headers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 03 Nov 2025 08:45:08 +0100, Ahmad Fatoum wrote:
-> An elf section is needed for linking, the segment is needed for loading.
+On Mon, 03 Nov 2025 08:47:02 +0100, Ahmad Fatoum wrote:
+> This headers are left-overs from the legacy BIOS support that has been
+> removed a few years ago and are not included anywhere.
 > 
-> We only handle statically linked ELF files currently in barebox, so we
-> do not look at the sections at all.
 > 
-> Replace the misleading struct elf_section with the correct naming:
-> elf_segment.
-> 
-> [...]
 
 Applied, thanks!
 
-[1/1] common: elf: rename elf_section misnomer to elf_segment
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ea3dc64d3218 (link may not be stable)
+[1/1] x86: drop unused header asm/segment.h and modes.h headers
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d1c7ab98cc35 (link may not be stable)
 
 Best regards,
 -- 
