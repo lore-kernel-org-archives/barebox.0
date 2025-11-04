@@ -1,66 +1,74 @@
-Delivery-date: Tue, 04 Nov 2025 11:01:06 +0100
+Delivery-date: Tue, 04 Nov 2025 11:12:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vGDqc-00FB5U-0e
+	id 1vGE1N-00FBCC-2M
 	for lore@lore.pengutronix.de;
-	Tue, 04 Nov 2025 11:01:06 +0100
+	Tue, 04 Nov 2025 11:12:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vGDqY-00020h-Ay
-	for lore@pengutronix.de; Tue, 04 Nov 2025 11:01:06 +0100
+	id 1vGE1N-0003MF-5Q
+	for lore@pengutronix.de; Tue, 04 Nov 2025 11:12:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=JUu02MO+WKfNQr+E7duLKiAQCSWxHifOpOtXtH9HjbM=; b=oAp7MFPPRVrdJDWpSPfMY7fZ14
-	zxt6IV5ay9tJlRDXxG4CrLVBeyAfx8G0vctNIypWxctLq8DKJoPUwh4+V4UIw1/amG9pqGswNAIef
-	ZMzTmqnqNReuN2cOr5v8C3OhoQOgbx/U+5PXOQ0GFazlT0C6ayD0eS8GsYDl2hDqspiLPCQvttBzw
-	ko/Xzyv+dBMONLdqXk3oHyYUA0Eq6k54lEYyTT7xzOnKW9yX8pi09D9f+269zWFRYedY0Km/ObjV2
-	Ha9i6kbDYaLxUGyQi+UnHdvJL90f9UFa+BLYRIL1jRfEgmeRt1g24g5gYftE7+rrMf7D4FCOadLNN
-	B6E0f8Mg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4x4NNCHntm8w8A7OV1Ua7wmaOAbR+mbOySQrVZndiI8=; b=RB1/r2mlYtM4nb1Krzn+uRZV4I
+	ZmFDQAmGCBVA05bYOjDthOUk0V0Ddf2g6+CTAS/n/gp6vaIg1gtuY87Yix7joMLhSwdLI59t3m8ja
+	Ejf+VqHRxW2oJE1eWmXpDWiRIO4x6xWa9bYe8DK2nD5aYJ85h7Pm6QLa1VRNdgmo/PKNUXCN80IQg
+	jHxF6EaEcQCE7Jp5ZJeU2PWSx04EXRUxdnZiBb34Vqk/r3BIjECrMa9YmBhZ7VeFh6LP9n+cZ2Umg
+	1Qs+OBTq2Tk/ECz8GwHI9ralKO+ZUWYSr+EARO4HLp66ch3axfmedjvLARvchK4b6f9WGJWL644PV
+	xxP0IqCQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vGDq2-0000000BZmu-2djI;
-	Tue, 04 Nov 2025 10:00:30 +0000
+	id 1vGE0p-0000000BaZu-1qqs;
+	Tue, 04 Nov 2025 10:11:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vGDpz-0000000BZmZ-1geM
+	id 1vGE0m-0000000BaYz-18rJ
 	for barebox@lists.infradead.org;
-	Tue, 04 Nov 2025 10:00:28 +0000
+	Tue, 04 Nov 2025 10:11:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vGDpx-0001sI-Oe; Tue, 04 Nov 2025 11:00:25 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vGE0j-0003Fb-6H; Tue, 04 Nov 2025 11:11:33 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vGDpx-0070Xm-1s;
-	Tue, 04 Nov 2025 11:00:25 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vGDpx-0000000CWA7-23Ec;
-	Tue, 04 Nov 2025 11:00:25 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  4 Nov 2025 11:00:24 +0100
-Message-ID: <20251104100024.2983523-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <sha@pengutronix.de>)
+	id 1vGE0j-0070p2-00;
+	Tue, 04 Nov 2025 11:11:33 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vGE0i-000yq9-2s;
+	Tue, 04 Nov 2025 11:11:32 +0100
+Date: Tue, 4 Nov 2025 11:11:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <aQnRVNvuEYy32a19@pengutronix.de>
+References: <20251028-tlv-signature-v2-0-3bafce636ad7@pengutronix.de>
+ <20251028-tlv-signature-v2-15-3bafce636ad7@pengutronix.de>
+ <aQh_K6q-F2Og-vhb@pengutronix.de>
+ <5d5a5331-9cc8-426a-85ea-cdb288fdf265@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5d5a5331-9cc8-426a-85ea-cdb288fdf265@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251104_020027_441765_BB03CA98 
-X-CRM114-Status: UNSURE (   8.34  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251104_021136_333746_2E035B3F 
+X-CRM114-Status: GOOD (  25.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,46 +86,62 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! crypto: caam - skip RNG selftest when i.MX6 is in normal world
+Subject: Re: [PATCH v2 15/17] crypto: concatenate fit development certificate
+ with private key
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-crypto: caam - fix COMPILE_TEST breakage
+On Mon, Nov 03, 2025 at 12:41:14PM +0100, Jonas Rebmann wrote:
+> Hi Sascha,
+> 
+> On 2025-11-03 11:08, Sascha Hauer wrote:
+> > On Tue, Oct 28, 2025 at 07:03:20PM +0100, Jonas Rebmann wrote:
+> > > Merge the exemplary keys copied in from [1] into a single pem file,
+> > > in a manner similar to test/self/development_rsa2048.pem for consistency
+> > > and to reduce clutter a bit.
+> > > 
+> > > While at it, rename them from "fit-" to "snakeoil-" as they are not only
+> > > used for fit, but also for tlv integration tests, and to indicate more
+> > > clearly that these are publicly known keys.
+> > 
+> > Should we rather keep the "fit" name and add another key for tlv
+> > integration tests?
+> 
+> I'd rather not add more 'compromised' keys to the repo. What would be
+> the gain?
 
-<mach/imx/*.h> doesn't exist when we compile allyesconfig for sandbox,
-so stub out the macros used from it, so CAAM can continue to build
-independently of selected architecture.
+My thinking was that with this we could make sure that during tests
+actually a key from the desired keyring is used.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/crypto/caam/rng_self_test.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+> 
+> I think naming it snakeoil gives it the warning it deserves. We should
+> make it hard for anyone to confuse our CI/Development keys with their
+> production keys.
 
-diff --git a/drivers/crypto/caam/rng_self_test.c b/drivers/crypto/caam/rng_self_test.c
-index a42d9cad1639..f008908b903e 100644
---- a/drivers/crypto/caam/rng_self_test.c
-+++ b/drivers/crypto/caam/rng_self_test.c
-@@ -47,8 +47,14 @@
- #include <dma.h>
- #include <common.h>
- #include <linux/kernel.h>
-+
-+#ifdef CONFIG_ARCH_IMX6
- #include <mach/imx/generic.h>
- #include <mach/imx/imx6.h>
-+#else
-+#define cpu_is_mx6()			false
-+#define imx6_cannot_write_l2x0()	false
-+#endif
- 
- #include "error.h"
- #include "regs.h"
+Indeed. I just don't like the term "snakeoil" here.
+
+>From wikipedia:
+
+"Snake oil" is a term used to describe deceptive marketing, health care fraud, or a scam.
+
+We don't do anything like this here. We're not trying to sell snake oil.
+
+I am open for something like "testing" or "development".
+
+Also we might want to add a runtime message like:
+
+"WARNING: This barebox binary contains well known keys and is unsecure"
+
+Sascha
+
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
