@@ -1,64 +1,69 @@
-Delivery-date: Thu, 06 Nov 2025 08:31:26 +0100
+Delivery-date: Thu, 06 Nov 2025 08:44:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vGuSs-00FrYd-1R
+	id 1vGufN-00FrlP-1B
 	for lore@lore.pengutronix.de;
-	Thu, 06 Nov 2025 08:31:26 +0100
+	Thu, 06 Nov 2025 08:44:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vGuSr-0008RK-Rn
-	for lore@pengutronix.de; Thu, 06 Nov 2025 08:31:26 +0100
+	id 1vGufM-0001Hm-S2
+	for lore@pengutronix.de; Thu, 06 Nov 2025 08:44:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=qBALkKdfQjBgfSCprIWJHPLg68kBracRS3SHCB5hu08=; b=YCkFqjH9fvjDs4P45u/0hpGjyV
-	wi79Bf7WE0gqn9jVRihfRfPLBkaox4h7S6ilvoA8v83LPKLLqWBVx7l1JGZ3VNWTmXywqFMO9NcMI
-	jv9g+vj5BuFsf466UZ5GVOtr23hgH1h2bYcAxWfp/DIsjQasDKRzaxyygk9YAp4G85LrPS+DVvrrm
-	ZONaHeeX+SpfRtbEEux8LUGS/ezO3E+nUSgCdQKvEGv9notZMGQLBDfR9WMunXcd8Hkb/iAViRUIQ
-	8p7V2YHIH9GazgZJx9eQ/sdZvanFZSZDg/D1T2AHMvJRMj7XrZtCYbCypZflwG0ZKwm7ydECcLwBu
-	ZyekesIA==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=b/QZeyF2omLDo+N+ZHq7Rp14T7Y1sZ9PKDzPZCWJ+q8=; b=x0dNuVH+C1ZDsXKBHR+be3bCIu
+	s1GecjP3yM96rV76rXwwliVIw2KkQDYzrvYRFKXHme4lNj42xWsalnmgMvuhu/fb6CIeZIwtYgDTS
+	EeMoZg9MeF4SORgFFgZJzDCTrZLWQDG9xLg+Y5KSqArlrRTRYnMBW/6M3azAzPaG8IXaaci/oDJOe
+	W3om2t3au5nEXiP0YTiejYeciiJfLS0+0ZDU6ruZOqrwsLj4PIZLmuKHf012gFGy8+V7I0JJdORlb
+	w1GNP/MWuaHJbz3FuzTuxwGcJFKjhoHpmEQMZEmxqUJT8B6YxLHcRt+J6dChHoxM5jinozNPAsx5M
+	YcZMfhXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vGuSC-0000000F0aI-0gqg;
-	Thu, 06 Nov 2025 07:30:44 +0000
+	id 1vGuer-0000000F18I-1h2F;
+	Thu, 06 Nov 2025 07:43:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vGuS8-0000000F0Zx-2CfD
+	id 1vGuep-0000000F17w-0NHE
 	for barebox@lists.infradead.org;
-	Thu, 06 Nov 2025 07:30:42 +0000
+	Thu, 06 Nov 2025 07:43:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vGuS4-0008Lr-Ox; Thu, 06 Nov 2025 08:30:36 +0100
+	id 1vGuen-00019A-Fq; Thu, 06 Nov 2025 08:43:45 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vGuS4-007KB9-1s;
-	Thu, 06 Nov 2025 08:30:36 +0100
+	id 1vGuen-007KGe-0y;
+	Thu, 06 Nov 2025 08:43:45 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vGuS4-0000000F1Yq-3qHS;
-	Thu, 06 Nov 2025 08:30:36 +0100
+	id 1vGuen-0000000F2Fk-2qll;
+	Thu, 06 Nov 2025 08:43:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  6 Nov 2025 08:30:35 +0100
-Message-ID: <20251106073035.3580913-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+Cc: Fabian Pflug <f.pflug@pengutronix.de>
+In-Reply-To: <20251105093639.1200672-1-a.fatoum@barebox.org>
+References: <20251105093639.1200672-1-a.fatoum@barebox.org>
+Message-Id: <176241502522.3583559.475732319714503740.b4-ty@pengutronix.de>
+Date: Thu, 06 Nov 2025 08:43:45 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251105_233040_568057_7BFEBE39 
-X-CRM114-Status: GOOD (  11.12  )
+X-CRM114-CacheID: sfid-20251105_234347_134586_7CD09D4E 
+X-CRM114-Status: UNSURE (   9.13  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,69 +85,29 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: k3: allow to take signing key from environment variable
+Subject: Re: [PATCH] commands: usbgadget: improve error message on failure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds a new Kconfig option CONFIG_ARCH_K3_SIGNING_KEY_ENV. With
-this option enabled the content of CONFIG_ARCH_K3_SIGNING_KEY is treated
-as the name of an environment variable from which the private key
-file/uri is taken. This allows for better integration with build
-systems.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-k3/Kconfig |  8 ++++++++
- images/Makefile.k3       | 12 +++++++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+On Wed, 05 Nov 2025 10:36:38 +0100, Ahmad Fatoum wrote:
+> The command reports EINVAL when encountering an option it doesn't
+> understand and the help text for other errors.
+> 
+> It's more useful to users to flip them around, so they can see e.g.
+> -EPERM if a security policy prevented the command from working.
+> 
+> 
+> [...]
 
-diff --git a/arch/arm/mach-k3/Kconfig b/arch/arm/mach-k3/Kconfig
-index ecd77d8d9a..58f6ba827d 100644
---- a/arch/arm/mach-k3/Kconfig
-+++ b/arch/arm/mach-k3/Kconfig
-@@ -81,6 +81,14 @@ config ARCH_K3_SIGNING_KEY_CUSTOM
- 
- endchoice
- 
-+config ARCH_K3_SIGNING_KEY_ENV
-+	bool "Specify signing key in environment"
-+	depends on ARCH_K3_SIGNING_KEY_CUSTOM
-+	help
-+	  If this option is enabled the content of CONFIG_ARCH_K3_SIGNING_KEY
-+	  is treated as name of an environment variable rather than a filename/uri
-+	  directly which allows for better integration with build systems.
-+
- config ARCH_K3_SIGNING_KEY
- 	string "Signing key"
- 	depends on ARCH_K3_SIGNING_KEY_CUSTOM
-diff --git a/images/Makefile.k3 b/images/Makefile.k3
-index 1a8bfe641a..9de48f4d2b 100644
---- a/images/Makefile.k3
-+++ b/images/Makefile.k3
-@@ -17,10 +17,20 @@ image-$(CONFIG_MACH_BEAGLEPLAY) += barebox-beagleplay.img
- 
- endif
- 
-+
-+
- ifdef CONFIG_ARCH_K3_SIGNING_KEY_TI_DEVEL
- KEY_custmpk=$(srctree)/arch/arm/mach-k3/custMpk.pem
- else
--KEY_custmpk="$(CONFIG_ARCH_K3_SIGNING_KEY)"
-+
-+k3_sigining_key=$(call remove_quotes,$(CONFIG_ARCH_K3_SIGNING_KEY))
-+
-+ifeq ($(CONFIG_ARCH_K3_SIGNING_KEY_ENV),y)
-+KEY_custmpk=$(shell echo $$$(k3_sigining_key))
-+else
-+KEY_custmpk=$(k3_sigining_key)
-+endif
-+
- endif
- KEY_degenerate=$(srctree)/arch/arm/mach-k3/ti-degenerate-key.pem
- 
+Applied, thanks!
+
+[1/1] commands: usbgadget: improve error message on failure
+      https://git.pengutronix.de/cgit/barebox/commit/?id=84288a3726a8 (link may not be stable)
+
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
