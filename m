@@ -1,48 +1,48 @@
-Delivery-date: Thu, 06 Nov 2025 16:19:09 +0100
+Delivery-date: Thu, 06 Nov 2025 16:19:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vH1lV-00Fyqf-1N
+	id 1vH1lX-00Fyri-1W
 	for lore@lore.pengutronix.de;
-	Thu, 06 Nov 2025 16:19:09 +0100
+	Thu, 06 Nov 2025 16:19:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vH1lQ-0006mF-8f
-	for lore@pengutronix.de; Thu, 06 Nov 2025 16:19:09 +0100
+	id 1vH1lT-0006p1-5U
+	for lore@pengutronix.de; Thu, 06 Nov 2025 16:19:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YPgglnrpaFBrBywy+682ZSjen8ecfIVm6zDl2D70iSo=; b=YrIJfAK5CIvdmmGSMdnheLi/hB
-	rf3KUGfqyj4LUl8s8Yxmr8cLa+yCgWVfJiJRBZa573Iw7Hvt9BrEyydftodp/jZY5v3vQqeaA/Zde
-	D+HdPQ2zxGrs7YeDpdjTQF/dmdCvRmVojE1cdQdkywXOlBqeSMZL1bEaxU2elhwYaTC9QWYAwBpsu
-	0e9+mjEIQIDxX9pbhnRWaCcNTkG3EIxpcj61Lt/DwJc1T/qnmV1T3Ck4usiU6B8YM+uCbbMBFEEzz
-	cyuw1ZgjgKotrcGjE0hs+UChCbyGQmnwSUo8+gibsbjypNcsIOMVH+zZ8iKz+FjLTESi0UakngfRT
-	q7wPwhVQ==;
+	bh=dW/nY6InHjT4EFPgofLbZVtLRzctjCxW3D8z8XDJ6Fs=; b=O7L7yf4zkKMCiUaAiafSREKiHV
+	+jThyfd5ALokbm0aPlTRLo2iv4TCZBY2wbytDfRMpMPBL3Vth07OSc+yrx+gk4CBr9+OXcV8c+BCW
+	/K6tjpxMtd7lbi3vxO9nP4Nh9vGAzawUCwnMMZyjOkxrbjKS3FXPJGmL/MXtGaxaE2w2KT6c2PiHQ
+	zhehPoJcCmcWlF9wNcwlwLdl1QQaqFuEiW998m6VoWUO86qWTrjyILf6tahR3DL17fNLVyAPOvPYi
+	LFNymFR47pzJpBckEkXTUm0R0PWzGEwvrkt+LJSKV+LIx3Nz8r9aHhts4YhbYOxU6v6DBUqllHJoP
+	1S6ATq9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vH1kk-0000000FnLJ-20tC;
-	Thu, 06 Nov 2025 15:18:22 +0000
+	id 1vH1km-0000000FnPc-2zhg;
+	Thu, 06 Nov 2025 15:18:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vH1kc-0000000FnAZ-0BfQ
+	id 1vH1kc-0000000FnAa-19ww
 	for barebox@lists.infradead.org;
-	Thu, 06 Nov 2025 15:18:18 +0000
+	Thu, 06 Nov 2025 15:18:19 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1vH1kY-0005tl-RF; Thu, 06 Nov 2025 16:18:10 +0100
+	id 1vH1kY-0005tl-WD; Thu, 06 Nov 2025 16:18:11 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Thu, 06 Nov 2025 16:18:00 +0100
+Date: Thu, 06 Nov 2025 16:18:05 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-tlv-signature-v3-3-5d00ed378e75@pengutronix.de>
+Message-Id: <20251106-tlv-signature-v3-8-5d00ed378e75@pengutronix.de>
 References: <20251106-tlv-signature-v3-0-5d00ed378e75@pengutronix.de>
 In-Reply-To: <20251106-tlv-signature-v3-0-5d00ed378e75@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,17 +50,17 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
  Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13279; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=yCkQ2XP316vi7i65N01wYtNQ3mvYGc0NnSLqa/Pl/No=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjk2aMdc2fSRJOtnhbOc9Sd5n9ht0hbxuBnLa1mVuIa9
- uVpmN22jlIWBjEuBlkxRZZYNTkFIWP/62aVdrEwc1iZQIYwcHEKwET6lBj+xx9/ZrGoY+6K38L9
- mvMjLvQePnLBulOJ9VHxr66A+2IdBowMd0s4TO34GY7Xv6ryl5m8+tP0iIh3azK21gpN5f5p4OX
- EDQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14961; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=MMqx7GS8rhTlMpNPBYQDTdOMz16lhvhV0mClmbTOzBQ=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjk2aNne9DjUfIRSW5TzRoBtpuqtULhkxbYKGjvuvdHu
+ sZs0um+jlIWBjEuBlkxRZZYNTkFIWP/62aVdrEwc1iZQIYwcHEKwERsqhkZNrc5T/d9khEnvbfW
+ cr/NxjtN+/avvFZ1giu887ZT9s/8s4wMpyP1OcSXr9WyutvDcEmRkfGfcI2jwZ8Wa99frTfj9nz
+ gAQA=
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251106_071814_430610_E3FF3A36 
-X-CRM114-Status: GOOD (  28.62  )
+X-CRM114-CacheID: sfid-20251106_071814_631505_43F2409C 
+X-CRM114-Status: GOOD (  21.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,442 +82,385 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 03/17] crypto: Add support for keyrings
+Subject: [PATCH v3 08/17] scripts: bareboxtlv-generator: Implement
+ signature
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Public keys for TLV verification will be handled with the mechanism used
-in the existing fitimage verification where scripts/keytoc.c generates
-public_keys.h based on CONFIG_CRYPTO_PUBLIC_KEYS.
+Implement signature and verification for RSA and ECDSA with PKCS1 v1.5
+padding and SHA256 hashing based on previous stubs.
 
-Expand the existing keyspec parser to support a new syntax of
-  keyring=<keyring>[,fit-hint=<fit_hint>]:<crt>
-in addition to the legacy syntax of
-  [<fit_hint>:]<crt>
+Sign the header (consisting of magic, length of the TLV list in bytes,
+and a 0 as placeholder for the length of the signature in bytes), and
+the TLVs. Store the signature between TLVs and CRC. Include the
+signature in the CRC.
 
-With the new keyspec parsing, keyring name and fit hint need to confirm
-to the regular expression
-  [a-zA-Z][a-zA-Z0-9_-]*
+The pyca cryptography module and the OpenSSL CLI is required if the
+signature features are to be used.
 
-For backwards compatibility, the old syntax stays supported with the
-keyring defaulting to "fit" and a warning emitted.
-
-Note however that the restriction of fit name hints to above regex
-applies even when supplied in the legacy syntax.
-
-To be able to error out when encountering an invalid keyspec, some
-refactoring of keytoc.c was necessary.
+pyca/cryptography does not support PKCS#11 tokens, and no other python
+module currently supports this transparently which is why the private
+key is accessed via the OpenSSL CLI. This way, any OpenSSL supported
+provider can be used e.g. to pass pkcs11-URI's (once pkcs11-provider is
+correctly configured for OpenSSL).
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- crypto/Kconfig              |  37 +++++----
- include/crypto/public_key.h |   1 +
- scripts/keytoc.c            | 186 +++++++++++++++++++++++++++++++++-----------
- 3 files changed, 166 insertions(+), 58 deletions(-)
+ .../bareboxtlv-generator/bareboxtlv-generator.py   | 243 +++++++++++++++++++--
+ scripts/bareboxtlv-generator/requirements.txt      |   1 +
+ 2 files changed, 226 insertions(+), 18 deletions(-)
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index dd14a2532c..528e9a0d22 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -135,33 +135,42 @@ config CRYPTO_PUBLIC_KEYS
- 	depends on CRYPTO_BUILTIN_KEYS
- 	string "public keys to compile in"
- 	help
--	  This option should be a space separated list of filenames of
--	  PEM-formatted files containing X.509 certificates to be included into
--	  barebox. If an entry starts with "pkcs11:" it is interpreted as a
--	  PKCS#11 URI rather than a file. If an entry starts with a <hint>:
--	  prefix, <hint> is used as a key name hint to find a key without
--	  iterating over all keys.
-+	  This option should be a space separated list of filenames of public
-+	  key specifications. While other syntaxes are supported for legacy
-+	  reasons, each entry should have the format
-+	  keyring=<keyring>[,fit-hint=<hint>]:<crt>
+diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+index 5f9285a806..aa243d8b06 100755
+--- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
++++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+@@ -1,18 +1,190 @@
+ #!/usr/bin/env python3
+ 
+ import argparse
++import os
++import hashlib
++import shutil
+ import struct
++import subprocess
++import sys
+ 
+ import yaml
+ from crcmod.predefined import mkPredefinedCrcFun
+ 
+ _crc32_mpeg = mkPredefinedCrcFun("crc-32-mpeg")
+ 
++MAGIC_LENGTH = 12
++SPKI_LENGTH = 4
 +
-+	  <keyring> specifies the keyring for the key to be included in (e.g.
-+	  "fit" if this key is to be used for fitimage verification).
++def openssl(args, stdin: bytes = None) -> bytes:
++    """
++    Invoke the OpenSSL CLI with the given arguments
 +
-+	  <fit-hint> is used as a key name hint for fitimage verificaiton to
-+	  find a key without iterating over all keys.
++    Parameters:
++        args: List of arguments for the openssl command (excluding 'openssl' itself)
++        stdin: Input bytes to pass to the command's stdin
 +
-+	  <crt> specifies the path of a public key to be included in barebox.
-+	  It can be a PEM-formatted file containing an X.509 certificate. If a
-+	  certificate path starts with "pkcs11:" it is interpreted as a PKCS#11
-+	  URI rather than a file.
- 
- 	  Placeholders such as __ENV__VAR_NAME can be used to look up the
--	  corresponding value in the environment variable VAR_NAME for both
--	  public key paths/URIs as well as key name hints.
-+	  corresponding value in the environment variable VAR_NAME for public
-+	  key paths/URIs as well as key name hints.
- 
- 	  Examples specified directly:
- 
--	  - CONFIG_CRYPTO_PUBLIC_KEYS="pkcs11:object=foo"
--	  - CONFIG_CRYPTO_PUBLIC_KEYS="myhint:pkcs11:object=foo"
--	  - CONFIG_CRYPTO_PUBLIC_KEYS="myhint:pkcs11:object=foo /foobar/baz.der"
--	  - CONFIG_CRYPTO_PUBLIC_KEYS="myhint:pkcs11:object=foo myotherhint:/foobar/baz.der"
-+	  - CONFIG_CRYPTO_PUBLIC_KEYS="keyring=fit:pkcs11:object=foo"
-+	  - CONFIG_CRYPTO_PUBLIC_KEYS="keyring=fit,fit-hint=myhint:pkcs11:object=foo"
-+	  - CONFIG_CRYPTO_PUBLIC_KEYS="keyring=fit,fit-hint=myhint:pkcs11:object=foo keyring=fit:/foobar/baz.der"
-+	  - CONFIG_CRYPTO_PUBLIC_KEYS="keyring=fit,fit-hint=myhint:pkcs11:object=foo keyring=fit,fit-hint=myotherhint:/foobar/baz.der"
- 
- 	  Example specified indirectly by two environment variables:
- 
- 	  - myhint="myhint"
- 	  - myname="pkcs11:object=foo" (.der could be used too)
--	  - CONFIG_CRYPTO_PUBLIC_KEYS="__ENV__myhint:__ENV__myname"
-+	  - CONFIG_CRYPTO_PUBLIC_KEYS="keyring=fit,fit-hint=__ENV__myhint:__ENV__myname"
- 
- 	  Example specified indirectly by a single environment variable:
- 
--	  - mykey="myhint:pkcs11:object=foo" (.der could be used too)
-+	  - mykey="keyring=fit,fit-hint=myhint:pkcs11:object=foo" (.der could be used too)
- 	  - CONFIG_CRYPTO_PUBLIC_KEYS="__ENV__mykey"
- 
- endmenu
-diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-index 5c0234acc0..612efa8f38 100644
---- a/include/crypto/public_key.h
-+++ b/include/crypto/public_key.h
-@@ -15,6 +15,7 @@ enum public_key_type {
- struct public_key {
- 	enum public_key_type type;
- 	const char *key_name_hint;
-+	char *keyring;
- 	const unsigned char *hash;
- 	unsigned int hashlen;
- 
-diff --git a/scripts/keytoc.c b/scripts/keytoc.c
-index 9d6ec376c1..78e56930bc 100644
---- a/scripts/keytoc.c
-+++ b/scripts/keytoc.c
-@@ -25,6 +25,15 @@
- #include <openssl/param_build.h>
- #include <openssl/store.h>
- 
-+#include <stdbool.h>
-+#include <ctype.h>
++    Returns:
++        bytes: stdout of the command
++    """
++    cmd = ["openssl"] + args
 +
-+struct keyinfo {
-+	char *keyname;
-+	char *keyring;
-+	char *path;
-+};
++    result = subprocess.run(
++        cmd,
++        input=stdin,
++        stdout=subprocess.PIPE,
++        check=True
++    )
 +
- static int dts, standalone;
++    return result.stdout
  
- static void enomem_exit(const char *func)
-@@ -491,7 +500,7 @@ static int print_hash(EVP_PKEY *key)
- 	return ret ? -EINVAL : 0;
- }
+ class MaxSizeReachedException(Exception):
+     pass
  
--static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *key_name_c)
-+static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *keyring, const char *key_name_c)
- {
- 	char group[128];
- 	size_t outlen;
-@@ -553,6 +562,7 @@ static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *key_na
- 			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", key_name_c);
- 			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_ECDSA,\n");
- 			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
-+			fprintf(outfilep, "\t.keyring = \"%s\",\n", keyring);
- 			fprintf(outfilep, "\t.hash = %s_hash,\n", key_name_c);
- 			fprintf(outfilep, "\t.hashlen = %u,\n", SHA256_DIGEST_LENGTH);
- 			fprintf(outfilep, "\t.ecdsa = &%s,\n", key_name_c);
-@@ -565,9 +575,9 @@ static int gen_key_ecdsa(EVP_PKEY *key, const char *key_name, const char *key_na
- 	return 0;
- }
  
--static const char *try_resolve_env(const char *input)
-+static char *try_resolve_env(char *input)
- {
--	const char *var;
-+	char *var;
- 
- 	if (strncmp(input, "__ENV__", 7))
- 		return input;
-@@ -583,7 +593,7 @@ static const char *try_resolve_env(const char *input)
- 	return var;
- }
- 
--static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *key_name_c)
-+static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *keyring, const char *key_name_c)
- {
- 	BIGNUM *modulus, *r_squared;
- 	uint64_t exponent = 0;
-@@ -659,6 +669,7 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *key_name
- 			fprintf(outfilep, "\nstatic struct public_key %s_public_key = {\n", key_name_c);
- 			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_RSA,\n");
- 			fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", key_name);
-+			fprintf(outfilep, "\t.keyring = \"%s\",\n", keyring);
- 			fprintf(outfilep, "\t.hash = %s_hash,\n", key_name_c);
- 			fprintf(outfilep, "\t.hashlen = %u,\n", SHA256_DIGEST_LENGTH);
- 			fprintf(outfilep, "\t.rsa = &%s,\n", key_name_c);
-@@ -671,18 +682,18 @@ static int gen_key_rsa(EVP_PKEY *key, const char *key_name, const char *key_name
- 	return 0;
- }
- 
--static int gen_key(const char *keyname, const char *path)
-+static int gen_key(struct keyinfo *info)
- {
- 	int ret;
- 	EVP_PKEY *key;
- 	char *tmp, *key_name_c;
- 
- 	/* key name handling */
--	keyname = try_resolve_env(keyname);
--	if (!keyname)
-+	info->keyname = try_resolve_env(info->keyname);
-+	if (!info->keyname)
- 		exit(1);
- 
--	tmp = key_name_c = strdup(keyname);
-+	tmp = key_name_c = strdup(info->keyname);
- 
- 	while (*tmp) {
- 		if (*tmp == '-')
-@@ -691,32 +702,104 @@ static int gen_key(const char *keyname, const char *path)
- 	}
- 
- 	/* path/URI handling */
--	path = try_resolve_env(path);
--	if (!path)
-+	info->path = try_resolve_env(info->path);
-+	if (!info->path)
- 		exit(1);
- 
--	if (!strncmp(path, "pkcs11:", 7)) {
--		ret = engine_get_pub_key(path, &key);
-+	if (!strncmp(info->path, "pkcs11:", 7)) {
-+		ret = engine_get_pub_key(info->path, &key);
- 		if (ret)
- 			exit(1);
- 	} else {
--		ret = pem_get_pub_key(path, &key);
-+		ret = pem_get_pub_key(info->path, &key);
- 		if (ret)
- 			exit(1);
- 	}
- 
- 	/* generate built-in keys */
--	ret = gen_key_ecdsa(key, keyname, key_name_c);
-+	ret = gen_key_ecdsa(key, info->keyname, info->keyring, key_name_c);
- 	if (ret == -EOPNOTSUPP)
- 		return ret;
- 
- 	if (ret)
--		ret = gen_key_rsa(key, keyname, key_name_c);
-+		ret = gen_key_rsa(key, info->keyname, info->keyring, key_name_c);
- 
- 	return ret;
- }
- 
--static void get_name_path(const char *keyspec, char **keyname, char **path)
-+static bool is_identifier(char **s)
-+{
-+	char *p = *s;
++class PrivateKey:
++    """
++    A private key for signing TLVs, requires the cryptography module
++    """
 +
-+	/* [a-zA-Z] */
-+	if (!isalpha(*p))
-+		return false;
-+	p++;
++    def __init__(self, path: str | None = None):
++        """
++        Load a private key from:
++        - PKCS#12 (.p12/.pfx)
++        - PEM/DER private key file
++        """
 +
-+	/* [a-zA-Z0-9_-]* */
-+	while (isalnum(*p) || *p == '_' || *p == '-')
-+		p++;
++        try:
++            from cryptography.hazmat.primitives import serialization
++        except ModuleNotFoundError:
++            print("Error: missing pyca/cryptography dependency", file=sys.stderr)
++            sys.exit(127)
 +
-+	*s = p;
-+	return true;
-+}
++        if shutil.which("openssl") is None:
++            print("The `openssl` binary is required for cryptographic operations but wasn't found in PATH!")
++            sys.exit(127)
 +
-+static bool parse_info(char *p, struct keyinfo *out)
-+{
-+	char *k = p;
-+	char *v;
++        self.inkey = path
++        self.public_key = serialization.load_pem_public_key(openssl(["pkey", "-pubout", "-in", self.inkey]));
 +
-+	if (*p == '\0') /* spec starts with colon. This is valid. */
-+		return true;
++    def sign(self, message: bytes) -> bytes:
++        """
++        Sign message with RSA, or ECDSA automatically based on key type.
++        """
 +
-+	if (!is_identifier(&p))
-+		return false;
++        from cryptography.hazmat.primitives.asymmetric import rsa, ec
++        from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
 +
-+	if (*p == '\0') {
-+		out->keyname = strdup(k);
-+		if (!k)
-+			enomem_exit(__func__);
-+		return true; /* legacy syntax */
-+	}
++        # Access private keys only via the openssl cli so that any configured provider, such as pkcs11, can be used.
++        sig = openssl(["pkeyutl", "-sign", "-rawin", "-digest", "sha256", "-inkey", self.inkey], stdin = message)
 +
-+	/* new syntax: `<k>=<v>[,k=v[...]]` */
-+	for (;;) {
-+		if (*p != '=')
-+			return false;
-+		*p = '\0';
++        if isinstance(self.public_key, rsa.RSAPublicKey):
++            return sig
++        elif isinstance(self.public_key, ec.EllipticCurvePublicKey):
++            r, s = decode_dss_signature(sig)
++            key_bits = self.public_key.curve.key_size
++            assert key_bits % 8 == 0
++            key_bytes = key_bits // 8
++            sig  = r.to_bytes(key_bytes, byteorder="big")
++            sig += s.to_bytes(key_bytes, byteorder="big")
++            return sig
++        else:
++            raise TypeError("Unsupported key type")
 +
-+		p++;
-+		/* read `<k>=`, excepting <v> */
-+		v = p;
-+		if (!is_identifier(&p))
-+			return false;
++    def spki_hash(self) -> bytes:
++        """
++        Four bytes of SHA256 digest of the derived public key's SubjectPublicKeyInfo.
++        Used for faster identification of the key to be used for decryption.
++        """
++        pub = PublicKey(pubkey = self.public_key)
++        return pub.spki_hash()
 +
-+		if (*p == '\0' || *p == ',') {
-+			char d = *p;
-+			*p = '\0';
-+			v = strdup(v);
-+			if (!v)
-+				enomem_exit(__func__);
-+			if (strcmp(k, "keyring") == 0)
-+				out->keyring = strdup(v);
-+			else if (strcmp(k, "hint") == 0)
-+				out->keyname = strdup(v);
-+			else
-+				return false;
 +
-+			if (d == '\0')
-+				return true;
-+		} else {
-+			return false;
-+		}
-+		p++;
-+		k = p;
-+		if (!is_identifier(&p))
-+			return true;
-+	}
-+}
++class PublicKey:
++    """
++    A public key for validating TLVs signatures, requires the cryptography module
++    """
 +
-+static bool get_name_path(const char *keyspec, struct keyinfo *out)
- {
- 	char *sep, *spec;
++    def __init__(self, path: str | None = None, pubkey: bytes | None = None):
++        """
++        Load a private key from:
++        - PKCS#12 (.p12/.pfx)
++        - PEM/DER public key file
++        - existing object
++        """
++        try:
++            from cryptography.hazmat.primitives import serialization
++            from cryptography import x509
++        except ModuleNotFoundError:
++            print("Error: missing pyca/cryptography dependency", file=sys.stderr)
++            sys.exit(127)
++
++        if pubkey is not None:
++            assert path is None
++            self.pubkey = pubkey
++        else:
++            with open(path, "rb") as f:
++                data = f.read()
++
++            if path.endswith((".p12", ".pfx")):
++                privatekey, cert, _ = serialization.pkcs12.load_key_and_certificates(data, password=None)
++                self.pubkey = cert.public_key()
++
++            else:
++                try:
++                    self.pubkey = serialization.load_pem_public_key(data)
++                except ValueError:
++                    try:
++                        self.pubkey = serialization.load_der_public_key(data)
++                    except ValueError:
++                        try:
++                            self.pubkey = x509.load_pem_x509_certificate(data).public_key()
++                        except ValueError:
++                            self.pubkey = serialization.load_pem_public_key(openssl(["pkey", "-pubout", "-in", path]))
++
++    def verify(self, message: bytes, signature: bytes) -> bool:
++        """
++        Verify signature
++        """
++
++        from cryptography.hazmat.primitives import hashes
++        from cryptography.hazmat.primitives.asymmetric import rsa, ec, padding
++        from cryptography.hazmat.primitives.asymmetric.utils import encode_dss_signature
++        from cryptography import exceptions
++
++        try:
++            if isinstance(self.pubkey, rsa.RSAPublicKey):
++                self.pubkey.verify(signature, message, padding.PKCS1v15(), hashes.SHA256())
++            elif isinstance(self.pubkey, ec.EllipticCurvePublicKey):
++                key_bits = self.pubkey.curve.key_size
++                assert key_bits % 8 == 0
++                key_bytes = key_bits // 8
++                r = int.from_bytes(signature[:key_bytes], byteorder="big")
++                s = int.from_bytes(signature[key_bytes:], byteorder="big")
++
++                der_sig = encode_dss_signature(r, s)
++                self.pubkey.verify(der_sig, message, ec.ECDSA(hashes.SHA256()))
++            else:
++                raise TypeError("Unsupported key type")
++            return True
++        except exceptions.InvalidSignature:
++            return False
++
++    def spki_hash(self) -> bytes:
++        """
++        Four bytes of SHA256 digest of the public key's SubjectPublicKeyInfo.
++        Used for faster identification of the key to be used for decryption.
++        """
++
++        from cryptography.hazmat.primitives import serialization
++
++        spki = self.pubkey.public_bytes(
++            encoding=serialization.Encoding.DER,
++            format=serialization.PublicFormat.SubjectPublicKeyInfo,
++        )
++        return hashlib.sha256(spki).digest()[:SPKI_LENGTH]
++
++
+ class FactoryDataset:
+     """
+     Generates TLV-encoded datasets that can be used with Barebox's
+@@ -35,8 +207,9 @@ class FactoryDataset:
+     # };                                                        #
+     #############################################################
  
-@@ -724,24 +807,24 @@ static void get_name_path(const char *keyspec, char **keyname, char **path)
- 	if (!spec)
- 		enomem_exit(__func__);
+-    Limitations:
+-    * Signing is currently not supported and length_sig is always 0x0.
++    Note:
++    * Signature is preceded with four bytes of pubkey checksum which is included in the length_sig field
++    * The length_sig field is set to zero for signage and must be zeroed before verification
+     """
  
--	/* Split <key-hint>:<key-path> pair, <key-hint> is optional */
- 	sep = strchr(spec, ':');
- 	if (!sep) {
--		*path = spec;
--		return;
-+		out->path = spec;
-+		return true;
- 	}
+     def __init__(self, schema):
+@@ -124,7 +297,7 @@ class FactoryDataset:
+         """
+         self.schema = schema
  
- 	*sep = 0;
--	*keyname = strdup(spec);
--	if (!*keyname)
--		enomem_exit(__func__);
+-    def encode(self, data):
++    def encode(self, data, sign: PrivateKey | None = None) -> bytes:
+         """
+         Generate an EEPROM image for the given data.
+ 
+@@ -132,6 +305,7 @@ class FactoryDataset:
+         """
+         # build payload of TLVs
+         tlvs = b""
++        signature = b""
+ 
+         for name, value in data.items():
+             if name not in self.schema["tags"]:
+@@ -186,12 +360,20 @@ class FactoryDataset:
+ 
+             tlvs += struct.pack(f">HH{fmt}", tag["tag"], struct.calcsize(fmt), bin)
+ 
++        sig_len = 0
++
+         # Convert the framing data.
+-        len_sig = 0x0  # Not implemented.
+-        header = struct.pack(">3I", self.schema["magic"], len(tlvs), len_sig)
+-        crc_raw = _crc32_mpeg(header + tlvs)
++        header = struct.pack(">3I", self.schema["magic"], len(tlvs), sig_len)
++
++        if sign:
++            # Sign with sig_len = 0, the actual signature length will not be signed!
++            signature = sign.spki_hash() + sign.sign(header + tlvs)
++            # Actual header now with length of the signature
++            header = struct.pack(">3I", self.schema["magic"], len(tlvs), len(signature))
++
++        crc_raw = _crc32_mpeg(header + tlvs + signature)
+         crc = struct.pack(">I", crc_raw)
+-        bin = header + tlvs + crc
++        bin = header + tlvs + signature + crc
+ 
+         # Check length
+         if "max_size" in self.schema and len(bin) > self.schema["max_size"]:
+@@ -200,7 +382,7 @@ class FactoryDataset:
+             )
+         return bin
+ 
+-    def decode(self, bin):
++    def decode(self, bin, pubkey: PublicKey | None = None):
+         """
+         Decode a TLV-encoded binary image.
+ 
+@@ -212,17 +394,13 @@ class FactoryDataset:
+         if len(bin) < 16:
+             raise ValueError("Supplied binary is too small to be TLV-encoded data.")
+ 
+-        bin_magic, bin_tlv_len, bin_sig_len = struct.unpack(">3I", bin[:12])
++        bin_magic, bin_tlv_len, bin_sig_len = struct.unpack(">3I", bin[:MAGIC_LENGTH])
+         # check magic
+         if bin_magic != self.schema["magic"]:
+             raise ValueError(f'Magic missmatch. Is {hex(bin_magic)} but expected {hex(self.schema["magic"])}')
+ 
+-        # check signature length
+-        if bin_sig_len != 0:
+-            raise ValueError("Signature check is not supported!")
 -
-+	if (!parse_info(spec, out)) {
-+		free(spec);
-+		return false;
-+	}
- 	sep++;
--	*path = strdup(sep);
--	if (!*path)
-+	out->path = strdup(sep);
-+	if (!out->path)
- 		enomem_exit(__func__);
+         # check crc
+-        crc_offset = 12 + bin_tlv_len + bin_sig_len
++        crc_offset = MAGIC_LENGTH + bin_tlv_len + bin_sig_len
+         if crc_offset > len(bin) - 4:
+             raise ValueError("crc location calculated behind binary.")
+         bin_crc = struct.unpack(">I", bin[crc_offset : crc_offset + 4])[0]  # noqa E203
+@@ -230,8 +408,26 @@ class FactoryDataset:
+         if bin_crc != calc_crc:
+             raise ValueError(f"CRC missmatch. Is {hex(bin_crc)} but expected {hex(calc_crc)}.")
  
- 	free(spec);
-+	return true;
- }
- 
- int main(int argc, char *argv[])
-@@ -749,6 +832,8 @@ int main(int argc, char *argv[])
- 	int i, opt, ret;
- 	char *outfile = NULL;
- 	int keynum = 1;
-+	int keycount;
-+	struct keyinfo *keylist;
- 
- 	outfilep = stdout;
- 
-@@ -776,13 +861,33 @@ int main(int argc, char *argv[])
- 	}
- 
- 	if (optind == argc) {
--		fprintf(stderr, "Usage: %s [-ods] <key_name_hint>:<crt> ...\n", argv[0]);
-+		fprintf(stderr, "Usage: %s [-ods] keyring=<keyring>,hint=<hint>:<crt> ...\n", argv[0]);
- 		fprintf(stderr, "\t-o FILE\twrite output into FILE instead of stdout\n");
- 		fprintf(stderr, "\t-d\tgenerate device tree snippet instead of C code\n");
- 		fprintf(stderr, "\t-s\tgenerate standalone key outside FIT image keyring\n");
- 		exit(1);
- 	}
- 
-+	keycount = argc - optind;
-+	keylist = calloc(sizeof(struct keyinfo), keycount);
+-        ptr = 12
+-        while ptr < crc_offset:
++        # check signature length
++        if bin_sig_len != 0 and pubkey is None:
++            print("WARNING: TLV contains a signature but signature verification not enabled via --verify!", file=sys.stderr)
++        elif bin_sig_len == 0 and pubkey is not None:
++            raise ValueError("TLV signature validation was requested but TLV is unsigned.")
++        elif pubkey is not None:
++            sig_offset = MAGIC_LENGTH + bin_tlv_len
++            bin_sig = bin[sig_offset + SPKI_LENGTH : sig_offset + bin_sig_len]
++            spki = bin[sig_offset : sig_offset + SPKI_LENGTH]
++            if spki != pubkey.spki_hash():
++                raise ValueError("TLV signature SPKI mismatch.")
 +
-+	for (i = 0; i < keycount; i++) {
-+		const char *keyspec = argv[optind + i];
-+		struct keyinfo *info = &keylist[i];
++            # verify file excluding signature itself, and excluding signature length field
++            bin_verify = bytearray(bin[:sig_offset])
++            bin_verify[8:12] = struct.pack(">I", 0)
++            if not pubkey.verify(bin_verify, bin_sig):
++                raise ValueError("TLV signature validation failed.")
 +
-+		if (!keyspec)
-+			exit(1);
++        ptr = MAGIC_LENGTH
++        while ptr < MAGIC_LENGTH + bin_tlv_len:
+             tag_id, tag_len = struct.unpack_from(">HH", bin, ptr)
+             data_ptr = ptr + 4
+             ptr += tag_len + 4
+@@ -293,7 +489,9 @@ def _main():
+     parser = argparse.ArgumentParser(description="Generate a TLV dataset for the Barebox TLV parser")
+     parser.add_argument("schema", help="YAML file describing the data.")
+     parser.add_argument("--input-data", help="YAML file containing data to write to the binary.")
++    parser.add_argument("--sign", help=" When using --input-data: Private key to sign the TLV with.")
+     parser.add_argument("--output-data", help="YAML file where the contents of the binary will be written to.")
++    parser.add_argument("--verify", help="When using --output-data: Public key to verify the signature against")
+     parser.add_argument("binary", help="Path to where export data to be copied into DUT's EEPROM.")
+     args = parser.parse_args()
+ 
+@@ -305,14 +503,23 @@ def _main():
+     if args.input_data:
+         with open(args.input_data) as d_fh:
+             data = yaml.load(d_fh, Loader=yaml.SafeLoader)
+-        bin = eeprom.encode(data)
 +
-+		if (!strncmp(keyspec, "pkcs11:", 7)) { // legacy format of pkcs11 URI
-+			info->path = strdup(keyspec);
-+		} else {
-+			if (!get_name_path(keyspec, info)) {
-+				fprintf(stderr, "invalid keyspec %i: %s\n", optind, keyspec);
-+				exit(1);
-+			}
-+		}
-+	}
-+
- 	if (dts) {
- 		fprintf(outfilep, "/dts-v1/;\n");
- 		fprintf(outfilep, "/ {\n");
-@@ -795,32 +900,24 @@ int main(int argc, char *argv[])
- 		fprintf(outfilep, "#include <crypto/rsa.h>\n");
- 	}
++        if args.sign:
++            privkey = PrivateKey(path=args.sign)
++        else:
++            privkey = None
++        bin = eeprom.encode(data, sign=privkey)
+         with open(args.binary, "wb+") as out_fh:
+             out_fh.write(bin)
  
--	for (i = optind; i < argc; i++) {
--		const char *keyspec = argv[i];
--		char *keyname = NULL;
--		char *path = NULL;
--
--		keyspec = try_resolve_env(keyspec);
--		if (!keyspec)
--			exit(1);
+     if args.output_data:
+         with open(args.binary, "rb") as in_fh:
+             bin = in_fh.read()
+-        data = eeprom.decode(bin)
++        if args.verify:
++            pubkey = PublicKey(path=args.verify)
++        else:
++            pubkey = None
++        data = eeprom.decode(bin, pubkey=pubkey)
+         with open(args.output_data, "w+") as out_fh:
+             yaml.dump(data, out_fh)
  
--		if (!strncmp(keyspec, "pkcs11:", 7))
--			path = strdup(keyspec);
--		else
--			get_name_path(keyspec, &keyname, &path);
-+	for (i = 0; i < keycount; i++) {
-+		struct keyinfo *info = &keylist[i];
- 
--		if (!keyname) {
--			ret = asprintf(&keyname, "key_%d", keynum++);
-+		if (!info->keyname) {
-+			ret = asprintf(&info->keyname, "key_%d", keynum++);
- 			if (ret < 0)
- 				enomem_exit("asprintf");
- 		}
- 
--		ret = gen_key(keyname, path);
-+		if (!info->keyring) {
-+			info->keyring = strdup("fit");
-+			fprintf(stderr, "Warning: No keyring provided in keyspec, defaulting to keyring=fit for %s\n", argv[optind + i]);
-+		}
-+
-+		ret = gen_key(info);
- 		if (ret)
- 			exit(1);
--
--		free(keyname);
--		free(path);
- 	}
- 
- 	if (dts) {
-@@ -828,5 +925,6 @@ int main(int argc, char *argv[])
- 		fprintf(outfilep, "};\n");
- 	}
- 
-+	/* all keyinfo fields freed on exit */
- 	exit(0);
- }
+diff --git a/scripts/bareboxtlv-generator/requirements.txt b/scripts/bareboxtlv-generator/requirements.txt
+index a1f7e3b3f2..9125d46b55 100644
+--- a/scripts/bareboxtlv-generator/requirements.txt
++++ b/scripts/bareboxtlv-generator/requirements.txt
+@@ -1,2 +1,3 @@
+ crcmod
+ pyaml
++cryptography[signature]
 
 -- 
 2.51.2.535.g419c72cb8a
