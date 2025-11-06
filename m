@@ -1,48 +1,48 @@
-Delivery-date: Thu, 06 Nov 2025 16:19:13 +0100
+Delivery-date: Thu, 06 Nov 2025 16:19:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vH1lZ-00FysE-0Y
+	id 1vH1lc-00Fysp-2w
 	for lore@lore.pengutronix.de;
-	Thu, 06 Nov 2025 16:19:13 +0100
+	Thu, 06 Nov 2025 16:19:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vH1lU-0006qP-DI
-	for lore@pengutronix.de; Thu, 06 Nov 2025 16:19:12 +0100
+	id 1vH1lY-0006uK-M5
+	for lore@pengutronix.de; Thu, 06 Nov 2025 16:19:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8sXF9L/wBKxg+DCLZ0cJktXqnX9FmFtYvhu/aanuEf0=; b=rzIh9YgtTiLOyow1kkWpuNMxfw
-	x84GEL4M68kQ97qQVuK/dASk3vDE4K6RPbErG12uzEgwsXNxUTvMRWn+Bn3dDc5aCb5eqijd6kh4+
-	Ma9HPVtR/WzKv5+5R5lCXT+UO4U/2p2JQ/qj8E78NiaHyIadknU2f+0GBSMl9mtvzhQX5rshB2wCT
-	kBTxpa7fbSTU44ntJwy9IUn7x1f5/oVFqJ5NC9uP+8JrSkfE9O0gXys4pulszVbT28aJK6wn0nw4Q
-	7sPI+YfOko60ofdT8E9L11N1I4nuIMdEs7GP5qMFGuSNoaPfB7CQe0cIpf8IJiHGCl2xYwCMhK8Z6
-	eRuUU5NQ==;
+	bh=0pln20L0xXJpg8LZEpYKb1KeAbBLJqrfitvXsSSnEwI=; b=tMaR74s/WlIWxNNVtSqgq3vrgh
+	uGb3WeNoPMIIGgMOOTvk56Z9gr4sxP0S1s4w0015Vwepqfo2cuxwe615fqcnf+KRTkKqpd2Tsn2lp
+	dbt7Pn9WdbH9ENvJ2Ky8jNjNpWYAz0BidoRfomyfZLXv9Lt8DFtGOUcCxj4f+vWvlCiEHauxL6Pb7
+	yH2AmhUm/Q8rUc1l2pphjZ4/74dhXnvylX7cTsYoVZ1dKpbo00W6WaZ1qb1+XGvqF0ViBzmnw46jy
+	g7kjbhYuv1G90Xt1em3r18qJHh1aHSPDPVUE4hUJ/9LvRF1rVE09bC1Tx8+f8kbypEG83GqoyHLWl
+	Rx3++sYw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vH1kj-0000000FnKj-104E;
-	Thu, 06 Nov 2025 15:18:21 +0000
+	id 1vH1kn-0000000FnQ4-0BJi;
+	Thu, 06 Nov 2025 15:18:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vH1kc-0000000FnAg-1G2y
+	id 1vH1kc-0000000FnAS-1FLJ
 	for barebox@lists.infradead.org;
-	Thu, 06 Nov 2025 15:18:18 +0000
+	Thu, 06 Nov 2025 15:18:19 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1vH1kZ-0005tl-91; Thu, 06 Nov 2025 16:18:11 +0100
+	id 1vH1kY-0005tl-Q9; Thu, 06 Nov 2025 16:18:10 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Thu, 06 Nov 2025 16:18:12 +0100
+Date: Thu, 06 Nov 2025 16:17:59 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-tlv-signature-v3-15-5d00ed378e75@pengutronix.de>
+Message-Id: <20251106-tlv-signature-v3-2-5d00ed378e75@pengutronix.de>
 References: <20251106-tlv-signature-v3-0-5d00ed378e75@pengutronix.de>
 In-Reply-To: <20251106-tlv-signature-v3-0-5d00ed378e75@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,17 +50,17 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
  Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9439; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=uvVSjeiinlcAQ2QdXuJLKsb4f47ZSOaEHBPXGpEAIuY=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjk2WN43+5pUeZjD+vKOHaLG5m/nu+asV8wQn3rpMytU
- 6bd5Oq53VHKwiDGxSArpsgSqyanIGTsf92s0i4WZg4rE8gQBi5OAZjIt08M/13//64zF7y6nDlf
- /u7fNwdmzJo93WCWqlXPRfH8DCbWCZMY/qkYbp+nfYLzZqynlTqj+M/njLciE9Nqqy5fluAwXn+
- 9lBsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14306; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=tJPkTM3Dswqk7iV1UqYjk1ne+7tNe2IveaSgdjBMJLo=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjk2aPNNdHf7er6Pa86RO9ETA0RuqwvKa4WfPKQuuOvv
+ zud3wtldpSyMIhxMciKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACby/Ckjwyfh1mWRdkHCvFle
+ RQUPj1denHj6/8kjXUWN6u8Vrmns/MTIcKl+fgjnl1+X5Be3LLoeeq856OHlZPlLBwJ4+qe7zWD
+ z4gIA
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251106_071814_508926_837F3482 
-X-CRM114-Status: GOOD (  11.50  )
+X-CRM114-CacheID: sfid-20251106_071814_653683_E86B373B 
+X-CRM114-Status: GOOD (  33.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,181 +82,428 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 15/17] crypto: concatenate fit development certificate
- with private key
+Subject: [PATCH v3 02/17] common: clean up TLV code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Merge the exemplary keys copied in from [1] into a single pem file,
-in a manner similar to test/self/development_rsa2048.pem for consistency
-and to reduce clutter a bit.
+This is a preparatory commit for TLV signature verification:
 
-While at it, rename them from "fit-" to "snakeoil-" as they are not only
-used for fit, but also for tlv integration tests, and to indicate more
-clearly that these are publicly known keys.
-
-[1] https://git.pengutronix.de/cgit/ptx-code-signing-dev/
+ - Include overflow checks for TLV sizes
+ - Be careful with narrowing conversions
+ - Add and improve comments
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- crypto/Makefile                                    |  8 +++---
- crypto/fit-4096-development.crt                    | 33 ----------------------
- crypto/fit-ecdsa-development.key                   |  5 ----
- ...velopment.key => snakeoil-4096-development.pem} | 33 ++++++++++++++++++++++
- ...elopment.crt => snakeoil-ecdsa-development.pem} |  5 ++++
- test/py/test_tlv.py                                |  8 +++---
- 6 files changed, 46 insertions(+), 46 deletions(-)
+ common/tlv/parser.c              |  18 ++-
+ include/tlv/format.h             |  12 +-
+ scripts/include/linux/overflow.h | 312 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 337 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/Makefile b/crypto/Makefile
-index cbc5f5235a..17043316c4 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -33,12 +33,12 @@ CONFIG_CRYPTO_PUBLIC_KEYS := $(foreach d,$(CONFIG_CRYPTO_PUBLIC_KEYS),"$(d)")
+diff --git a/common/tlv/parser.c b/common/tlv/parser.c
+index fc46092650..f74ada99d7 100644
+--- a/common/tlv/parser.c
++++ b/common/tlv/parser.c
+@@ -16,15 +16,20 @@ int tlv_parse(struct tlv_device *tlvdev,
+ 	const struct tlv *tlv = NULL;
+ 	struct tlv_mapping *map = NULL;
+ 	struct tlv_header *header = tlv_device_header(tlvdev);
+-	u32 magic, size;
++	u32 magic;
++	size_t size;
+ 	int ret = 0;
+ 	u32 crc = ~0;
  
- ifdef CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS
- ifdef CONFIG_CRYPTO_RSA
--CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=rsa-devel:$(srctree)/crypto/fit-4096-development.crt
--CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv-generic:$(srctree)/crypto/fit-4096-development.crt
-+CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=rsa-devel:$(srctree)/crypto/snakeoil-4096-development.pem
-+CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv-generic:$(srctree)/crypto/snakeoil-4096-development.pem
- endif
- ifdef CONFIG_CRYPTO_ECDSA
--CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=ecdsa-devel:$(srctree)/crypto/fit-ecdsa-development.crt
--CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv-generic:$(srctree)/crypto/fit-ecdsa-development.crt
-+CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=ecdsa-devel:$(srctree)/crypto/snakeoil-ecdsa-development.pem
-+CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv-generic:$(srctree)/crypto/snakeoil-ecdsa-development.pem
- endif
- endif
+-
+ 	magic = be32_to_cpu(header->magic);
  
-diff --git a/crypto/fit-4096-development.crt b/crypto/fit-4096-development.crt
-deleted file mode 100644
-index dffba216b9..0000000000
---- a/crypto/fit-4096-development.crt
-+++ /dev/null
-@@ -1,33 +0,0 @@
-------BEGIN CERTIFICATE-----
--MIIFpzCCA4+gAwIBAgIUFUQCZBUFYriH8+8jb1A9eJv5N30wDQYJKoZIhvcNAQEL
--BQAwXTEUMBIGA1UECgwLUGVuZ3V0cm9uaXgxIDAeBgNVBAMMF0RldmVsb3BtZW50
--IHNpZ25pbmcga2V5MSMwIQYJKoZIhvcNAQkBFhRkZWJ1Z0BwZW5ndXRyb25peC5k
--ZTAgFw0xOTEwMDExMzA1MThaGA8yMTE5MDkwNzEzMDUxOFowXTEUMBIGA1UECgwL
--UGVuZ3V0cm9uaXgxIDAeBgNVBAMMF0RldmVsb3BtZW50IHNpZ25pbmcga2V5MSMw
--IQYJKoZIhvcNAQkBFhRkZWJ1Z0BwZW5ndXRyb25peC5kZTCCAiIwDQYJKoZIhvcN
--AQEBBQADggIPADCCAgoCggIBAMmR5Io1H6qALxBC2sUi548qoU6axIpZ3+yar0gj
--A1FF79nRJZNa+EcIgaMCaf+Ft7DseIAEhBzNsZQ1sj2GVEf9W7WXlSbziET1n8PC
--aC097W20kziMNOAZOjFIdy24AbcW2yhhpBXsKtzm9V0DlnGN2QM3yxbqKD1iUOl/
--iInM5KwNKxp8KboR5W/LTnUGUYw3ryFVbxJEY0YqqwMOaSk8vzLf0iSf8gu6iabS
--ELJEONst0ah3glZj+mRelVdbHDZh6/PpEQ9fQ4QqLOgy1qtqQhT8J0poDOE9BVnC
--bDIjbWvq7UavpBu0YzjmG26r7pN75DK0E0UHgGH3Z7jhophkGMYlYfarjjFRujSd
--ocpU2tEvxDykFELyvQPG5w7pedtlz5jFRzrS11RrcCsfcUFMf9g+2qKpZlSUhkHg
--DDYtDRBYam7hnV7if9nCsLaGwpZM9Fm2zJSOFATO1eKj9yUpMYqI0SobTR7XRNyr
--Rd66J0SWlPsg4IDaG1i4ieE7UNDgAtURBCRqu7PZPAEovurPlV+8lbZRljCI2wRg
--JfJaoF17AKa0a5raH2kIBD1b3EgCG7nIfyaqR4bPLxwYlm/ymXTnv7zImEBP3ffy
--mPK8m2Wtw4Sr8ze1+fcpjmCyCxwe918YuW0AOtQ2nmBOCpz4iWhA61HHK5RYzASM
--Bq6LAgMBAAGjXTBbMAwGA1UdEwEB/wQCMAAwCwYDVR0PBAQDAgeAMB0GA1UdDgQW
--BBRscfq3jG3UfwhRTQyiWoStdF/WFzAfBgNVHSMEGDAWgBRscfq3jG3UfwhRTQyi
--WoStdF/WFzANBgkqhkiG9w0BAQsFAAOCAgEAp6suTnOCSormgkuhopR5Sk0nl1ME
--+DSxB56E6HVOgP2lXfNAYtfjdZwPtD2cCMyZD9m0w5usXUb+XFzW4L4AFsBnwbuu
--3/082u/qF21v7sEhdi83p3ordHnevc5HTTN0mfUNlqsCG+sCL+w+IQEWvHii4Hnc
--MPv6xbEhxU0ahTpByFwj0+YFPMq4nwQi6pqZCCP7qm0UV+T5+W8CnCivDq9laX+g
--RyJIPgH67ZFQlnnhjSqNq+7yF3Ac0U3IcMKSMaCOCIxuh+QfgHqE9jP62pRblpJx
--UPX5WF9/tBQ7757UEj+nHRKpgnJQzQ6Ks8/7FVmvbY9g9KWEIfeULsT8M1qMdW1E
--bZqleKhEySQbqUyIM29SpIfqd8unBecKFELfVf47TTEbWQRSExRMDGs31MXnvsiP
--jCSW7+BZNBwRXAyR3jB2ludw7DpZJk/VzTf2tja/FPl0sGSG0ggdmGHDnvHApQn5
--RidvJEyQSv+hfn6x+wE0nWpY2/+bV9RvOPwZnLsYkb9falnLwBlTpwa2uX6o4LP1
--8orfuQn3SrfRRKuaVwzjRvkb2fw15745mmOWK/VVtrHD8B3kA6cmTW3JEace+wma
--qCeFbwawz4vZpYCV4hQm06YefDRwZ4zBnkPnkN8i0Wqnb2kJUk5YrWKMZyFagAFU
--Yu8PytQLFKL1pZU=
-------END CERTIFICATE-----
-diff --git a/crypto/fit-ecdsa-development.key b/crypto/fit-ecdsa-development.key
-deleted file mode 100644
-index 2b13c877a3..0000000000
---- a/crypto/fit-ecdsa-development.key
-+++ /dev/null
-@@ -1,5 +0,0 @@
-------BEGIN EC PRIVATE KEY-----
--MHcCAQEEIEsUW5DEOhD1CYHCnPfDULwbRQO9Yjt2/xM5SoY2GUQtoAoGCCqGSM49
--AwEHoUQDQgAEowCa2OYfPdGRr1JpSYONOA3N2jwJjGbPbfG6uBzKg1VqOOk0a/Vf
--BfEbQev6X96HCd6zvvC2tjBgvICW8UB0TQ==
-------END EC PRIVATE KEY-----
-diff --git a/crypto/fit-4096-development.key b/crypto/snakeoil-4096-development.pem
-similarity index 61%
-rename from crypto/fit-4096-development.key
-rename to crypto/snakeoil-4096-development.pem
-index 526cdfc2b5..039b74034d 100644
---- a/crypto/fit-4096-development.key
-+++ b/crypto/snakeoil-4096-development.pem
-@@ -1,3 +1,36 @@
-+-----BEGIN CERTIFICATE-----
-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
-+Yu8PytQLFKL1pZU=
-+-----END CERTIFICATE-----
- -----BEGIN RSA PRIVATE KEY-----
- MIIJKgIBAAKCAgEAyZHkijUfqoAvEELaxSLnjyqhTprEilnf7JqvSCMDUUXv2dEl
- k1r4RwiBowJp/4W3sOx4gASEHM2xlDWyPYZUR/1btZeVJvOIRPWfw8JoLT3tbbST
-diff --git a/crypto/fit-ecdsa-development.crt b/crypto/snakeoil-ecdsa-development.pem
-similarity index 76%
-rename from crypto/fit-ecdsa-development.crt
-rename to crypto/snakeoil-ecdsa-development.pem
-index 490d48b93a..aeb0764d55 100644
---- a/crypto/fit-ecdsa-development.crt
-+++ b/crypto/snakeoil-ecdsa-development.pem
-@@ -11,3 +11,8 @@ VR0PBAQDAgeAMB0GA1UdDgQWBBQ5gyCsUddXXclJHHRUH+w2+R0N2jAKBggqhkjO
- PQQDAgNIADBFAiAfMkyM1n7JYCYqvYq4YdbWD8q2kZvVYhRK7gKIRZNUjAIhAKng
- 1plXACT2UcKDQV9+o3qbve9LDV3aASRmZz47DX+0
- -----END CERTIFICATE-----
-+-----BEGIN EC PRIVATE KEY-----
-+MHcCAQEEIEsUW5DEOhD1CYHCnPfDULwbRQO9Yjt2/xM5SoY2GUQtoAoGCCqGSM49
-+AwEHoUQDQgAEowCa2OYfPdGRr1JpSYONOA3N2jwJjGbPbfG6uBzKg1VqOOk0a/Vf
-+BfEbQev6X96HCd6zvvC2tjBgvICW8UB0TQ==
-+-----END EC PRIVATE KEY-----
-diff --git a/test/py/test_tlv.py b/test/py/test_tlv.py
-index 9fb3110cb8..49c53fe39b 100644
---- a/test/py/test_tlv.py
-+++ b/test/py/test_tlv.py
-@@ -94,10 +94,10 @@ class _TLV_Testdata:
-         self.data = self.scripts_dir / "data-example.yaml"
-         self.schema = self.scripts_dir / "schema-example.yaml"
-         self.generator_py = self.scripts_dir / "bareboxtlv-generator.py"
--        self.privkey_rsa = Path("crypto/fit-4096-development.key")
--        self.pubkey_rsa = Path("crypto/fit-4096-development.crt")
--        self.privkey_ecdsa = Path("crypto/fit-ecdsa-development.key")
--        self.pubkey_ecdsa = Path("crypto/fit-ecdsa-development.crt")
-+        self.privkey_rsa = Path("crypto/snakeoil-4096-development.pem")
-+        self.pubkey_rsa = Path("crypto/snakeoil-4096-development.pem")
-+        self.privkey_ecdsa = Path("crypto/snakeoil-ecdsa-development.pem")
-+        self.pubkey_ecdsa = Path("crypto/snakeoil-ecdsa-development.pem")
-         self.unsigned_bin = self.dir / "unsigned.tlv"
-         self.corrupted_bin = self.dir / "unsigned_corrupted.tlv"
-         self.signed_bin = self.dir / "signed.tlv"
+ 	size = tlv_total_len(header);
+ 
++	if (size == SIZE_MAX) {
++		pr_warn("Invalid TLV header, overflows\n");
++		return -EOVERFLOW;
++	}
++
+ 	crc = crc32_be(crc, header, size - 4);
+ 	if (crc != tlv_crc(header)) {
+ 		pr_warn("Invalid CRC32. Should be %08x\n", crc);
+@@ -133,7 +138,8 @@ void tlv_of_unregister_fixup(struct tlv_device *tlvdev)
+ struct tlv_header *tlv_read(const char *filename, size_t *nread)
+ {
+ 	struct tlv_header *header = NULL, *tmpheader;
+-	int size, fd, ret;
++	size_t size;
++	int fd, ret;
+ 
+ 	fd = open(filename, O_RDONLY);
+ 	if (fd < 0)
+@@ -153,6 +159,12 @@ struct tlv_header *tlv_read(const char *filename, size_t *nread)
+ 
+ 	size = tlv_total_len(header);
+ 
++	if (size == SIZE_MAX) {
++		pr_warn("Invalid TLV header, overflows\n");
++		ret = -EOVERFLOW;
++		goto err;
++	}
++
+ 	tmpheader = realloc(header, size);
+ 	if (!tmpheader) {
+ 		struct stat st;
+diff --git a/include/tlv/format.h b/include/tlv/format.h
+index 29c8a6d42d..c4521c3131 100644
+--- a/include/tlv/format.h
++++ b/include/tlv/format.h
+@@ -18,6 +18,7 @@
+ 
+ #include <linux/compiler.h>
+ #include <linux/types.h>
++#include <linux/overflow.h>
+ #include <asm/unaligned.h>
+ #include <linux/build_bug.h>
+ 
+@@ -48,6 +49,8 @@ struct tlv_header {
+ 	__be32 length_tlv; /* in bytes */
+ 	__be32 length_sig; /* in bytes */
+ 	struct tlv tlvs[];
++	/* __be32 crc; */
++	/* u8 sig[]; */
+ };
+ static_assert(sizeof(struct tlv_header) == 3 * 4);
+ 
+@@ -56,8 +59,13 @@ static_assert(sizeof(struct tlv_header) == 3 * 4);
+ 
+ static inline size_t tlv_total_len(const struct tlv_header *header)
+ {
+-	return sizeof(struct tlv_header) + get_unaligned_be32(&header->length_tlv)
+-		+ get_unaligned_be32(&header->length_sig) + 4;
++	size_t ret;
++
++	ret = size_add(sizeof(struct tlv_header), get_unaligned_be32(&header->length_tlv));
++	ret = size_add(ret, sizeof(__be32)); /* CRC appended after TLVs */
++	ret = size_add(ret, get_unaligned_be32(&header->length_sig)); /* optional signature appended after CRC */
++
++	return ret; /* SIZE_MAX on overflow */
+ }
+ 
+ /*
+diff --git a/scripts/include/linux/overflow.h b/scripts/include/linux/overflow.h
+new file mode 100644
+index 0000000000..f9b60313ea
+--- /dev/null
++++ b/scripts/include/linux/overflow.h
+@@ -0,0 +1,312 @@
++/* SPDX-License-Identifier: GPL-2.0 OR MIT */
++#ifndef __LINUX_OVERFLOW_H
++#define __LINUX_OVERFLOW_H
++
++#include <linux/compiler.h>
++#include <linux/limits.h>
++#include <linux/const.h>
++
++/*
++ * We need to compute the minimum and maximum values representable in a given
++ * type. These macros may also be useful elsewhere. It would seem more obvious
++ * to do something like:
++ *
++ * #define type_min(T) (T)(is_signed_type(T) ? (T)1 << (8*sizeof(T)-1) : 0)
++ * #define type_max(T) (T)(is_signed_type(T) ? ((T)1 << (8*sizeof(T)-1)) - 1 : ~(T)0)
++ *
++ * Unfortunately, the middle expressions, strictly speaking, have
++ * undefined behaviour, and at least some versions of gcc warn about
++ * the type_max expression (but not if -fsanitize=undefined is in
++ * effect; in that case, the warning is deferred to runtime...).
++ *
++ * The slightly excessive casting in type_min is to make sure the
++ * macros also produce sensible values for the exotic type _Bool. [The
++ * overflow checkers only almost work for _Bool, but that's
++ * a-feature-not-a-bug, since people shouldn't be doing arithmetic on
++ * _Bools. Besides, the gcc builtins don't allow _Bool* as third
++ * argument.]
++ *
++ * Idea stolen from
++ * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
++ * credit to Christian Biere.
++ */
++#define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
++#define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
++#define type_min(T) ((T)((T)-type_max(T)-(T)1))
++
++/*
++ * Avoids triggering -Wtype-limits compilation warning,
++ * while using unsigned data types to check a < 0.
++ */
++#define is_non_negative(a) ((a) > 0 || (a) == 0)
++#define is_negative(a) (!(is_non_negative(a)))
++
++/*
++ * Allows for effectively applying __must_check to a macro so we can have
++ * both the type-agnostic benefits of the macros while also being able to
++ * enforce that the return value is, in fact, checked.
++ */
++static inline bool __must_check __must_check_overflow(bool overflow)
++{
++	return unlikely(overflow);
++}
++
++/**
++ * check_add_overflow() - Calculate addition with overflow checking
++ * @a: first addend
++ * @b: second addend
++ * @d: pointer to store sum
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted addition, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * sum has overflowed or been truncated.
++ */
++#define check_add_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_add_overflow(a, b, d))
++
++/**
++ * check_sub_overflow() - Calculate subtraction with overflow checking
++ * @a: minuend; value to subtract from
++ * @b: subtrahend; value to subtract from @a
++ * @d: pointer to store difference
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted subtraction, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * difference has underflowed or been truncated.
++ */
++#define check_sub_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_sub_overflow(a, b, d))
++
++/**
++ * check_mul_overflow() - Calculate multiplication with overflow checking
++ * @a: first factor
++ * @b: second factor
++ * @d: pointer to store product
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted multiplication, but is not
++ * considered "safe for use" on a non-zero return value, which indicates
++ * that the product has overflowed or been truncated.
++ */
++#define check_mul_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_mul_overflow(a, b, d))
++
++/**
++ * check_shl_overflow() - Calculate a left-shifted value and check overflow
++ * @a: Value to be shifted
++ * @s: How many bits left to shift
++ * @d: Pointer to where to store the result
++ *
++ * Computes *@d = (@a << @s)
++ *
++ * Returns true if '*@d' cannot hold the result or when '@a << @s' doesn't
++ * make sense. Example conditions:
++ *
++ * - '@a << @s' causes bits to be lost when stored in *@d.
++ * - '@s' is garbage (e.g. negative) or so large that the result of
++ *   '@a << @s' is guaranteed to be 0.
++ * - '@a' is negative.
++ * - '@a << @s' sets the sign bit, if any, in '*@d'.
++ *
++ * '*@d' will hold the results of the attempted shift, but is not
++ * considered "safe for use" if true is returned.
++ */
++#define check_shl_overflow(a, s, d) __must_check_overflow(({		\
++	typeof(a) _a = a;						\
++	typeof(s) _s = s;						\
++	typeof(d) _d = d;						\
++	u64 _a_full = _a;						\
++	unsigned int _to_shift =					\
++		is_non_negative(_s) && _s < 8 * sizeof(*d) ? _s : 0;	\
++	*_d = (_a_full << _to_shift);					\
++	(_to_shift != _s || is_negative(*_d) || is_negative(_a) ||	\
++	(*_d >> _to_shift) != _a);					\
++}))
++
++#define __overflows_type_constexpr(x, T) (			\
++	is_unsigned_type(typeof(x)) ?				\
++		(x) > type_max(typeof(T)) :			\
++	is_unsigned_type(typeof(T)) ?				\
++		(x) < 0 || (x) > type_max(typeof(T)) :		\
++	(x) < type_min(typeof(T)) || (x) > type_max(typeof(T)))
++
++#define __overflows_type(x, T)		({	\
++	typeof(T) v = 0;			\
++	check_add_overflow((x), v, &v);		\
++})
++
++/**
++ * overflows_type - helper for checking the overflows between value, variables,
++ *		    or data type
++ *
++ * @n: source constant value or variable to be checked
++ * @T: destination variable or data type proposed to store @x
++ *
++ * Compares the @x expression for whether or not it can safely fit in
++ * the storage of the type in @T. @x and @T can have different types.
++ * If @x is a constant expression, this will also resolve to a constant
++ * expression.
++ *
++ * Returns: true if overflow can occur, false otherwise.
++ */
++#define overflows_type(n, T)					\
++	__builtin_choose_expr(__is_constexpr(n),		\
++			      __overflows_type_constexpr(n, T),	\
++			      __overflows_type(n, T))
++
++/**
++ * castable_to_type - like __same_type(), but also allows for casted literals
++ *
++ * @n: variable or constant value
++ * @T: variable or data type
++ *
++ * Unlike the __same_type() macro, this allows a constant value as the
++ * first argument. If this value would not overflow into an assignment
++ * of the second argument's type, it returns true. Otherwise, this falls
++ * back to __same_type().
++ */
++#define castable_to_type(n, T)						\
++	__builtin_choose_expr(__is_constexpr(n),			\
++			      !__overflows_type_constexpr(n, T),	\
++			      __same_type(n, T))
++
++/**
++ * size_mul() - Calculate size_t multiplication with saturation at SIZE_MAX
++ * @factor1: first factor
++ * @factor2: second factor
++ *
++ * Returns: calculate @factor1 * @factor2, both promoted to size_t,
++ * with any overflow causing the return value to be SIZE_MAX. The
++ * lvalue must be size_t to avoid implicit type conversion.
++ */
++static inline size_t __must_check size_mul(size_t factor1, size_t factor2)
++{
++	size_t bytes;
++
++	if (check_mul_overflow(factor1, factor2, &bytes))
++		return SIZE_MAX;
++
++	return bytes;
++}
++
++/**
++ * size_add() - Calculate size_t addition with saturation at SIZE_MAX
++ * @addend1: first addend
++ * @addend2: second addend
++ *
++ * Returns: calculate @addend1 + @addend2, both promoted to size_t,
++ * with any overflow causing the return value to be SIZE_MAX. The
++ * lvalue must be size_t to avoid implicit type conversion.
++ */
++static inline size_t __must_check size_add(size_t addend1, size_t addend2)
++{
++	size_t bytes;
++
++	if (check_add_overflow(addend1, addend2, &bytes))
++		return SIZE_MAX;
++
++	return bytes;
++}
++
++/**
++ * size_sub() - Calculate size_t subtraction with saturation at SIZE_MAX
++ * @minuend: value to subtract from
++ * @subtrahend: value to subtract from @minuend
++ *
++ * Returns: calculate @minuend - @subtrahend, both promoted to size_t,
++ * with any overflow causing the return value to be SIZE_MAX. For
++ * composition with the size_add() and size_mul() helpers, neither
++ * argument may be SIZE_MAX (or the result with be forced to SIZE_MAX).
++ * The lvalue must be size_t to avoid implicit type conversion.
++ */
++static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
++{
++	size_t bytes;
++
++	if (minuend == SIZE_MAX || subtrahend == SIZE_MAX ||
++	    check_sub_overflow(minuend, subtrahend, &bytes))
++		return SIZE_MAX;
++
++	return bytes;
++}
++
++/**
++ * array_size() - Calculate size of 2-dimensional array.
++ * @a: dimension one
++ * @b: dimension two
++ *
++ * Calculates size of 2-dimensional array: @a * @b.
++ *
++ * Returns: number of bytes needed to represent the array or SIZE_MAX on
++ * overflow.
++ */
++#define array_size(a, b)	size_mul(a, b)
++
++/**
++ * array3_size() - Calculate size of 3-dimensional array.
++ * @a: dimension one
++ * @b: dimension two
++ * @c: dimension three
++ *
++ * Calculates size of 3-dimensional array: @a * @b * @c.
++ *
++ * Returns: number of bytes needed to represent the array or SIZE_MAX on
++ * overflow.
++ */
++#define array3_size(a, b, c)	size_mul(size_mul(a, b), c)
++
++/**
++ * flex_array_size() - Calculate size of a flexible array member
++ *                     within an enclosing structure.
++ * @p: Pointer to the structure.
++ * @member: Name of the flexible array member.
++ * @count: Number of elements in the array.
++ *
++ * Calculates size of a flexible array of @count number of @member
++ * elements, at the end of structure @p.
++ *
++ * Return: number of bytes needed or SIZE_MAX on overflow.
++ */
++#define flex_array_size(p, member, count)				\
++	__builtin_choose_expr(__is_constexpr(count),			\
++		(count) * sizeof(*(p)->member) + __must_be_array((p)->member),	\
++		size_mul(count, sizeof(*(p)->member) + __must_be_array((p)->member)))
++
++/**
++ * struct_size() - Calculate size of structure with trailing flexible array.
++ * @p: Pointer to the structure.
++ * @member: Name of the array member.
++ * @count: Number of elements in the array.
++ *
++ * Calculates size of memory needed for structure of @p followed by an
++ * array of @count number of @member elements.
++ *
++ * Return: number of bytes needed or SIZE_MAX on overflow.
++ */
++#define struct_size(p, member, count)					\
++	__builtin_choose_expr(__is_constexpr(count),			\
++		sizeof(*(p)) + flex_array_size(p, member, count),	\
++		size_add(sizeof(*(p)), flex_array_size(p, member, count)))
++
++/**
++ * struct_size_t() - Calculate size of structure with trailing flexible array
++ * @type: structure type name.
++ * @member: Name of the array member.
++ * @count: Number of elements in the array.
++ *
++ * Calculates size of memory needed for structure @type followed by an
++ * array of @count number of @member elements. Prefer using struct_size()
++ * when possible instead, to keep calculations associated with a specific
++ * instance variable of type @type.
++ *
++ * Return: number of bytes needed or SIZE_MAX on overflow.
++ */
++#define struct_size_t(type, member, count)					\
++	struct_size((type *)NULL, member, count)
++
++#endif /* __LINUX_OVERFLOW_H */
 
 -- 
 2.51.2.535.g419c72cb8a
