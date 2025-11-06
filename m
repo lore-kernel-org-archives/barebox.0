@@ -1,48 +1,48 @@
-Delivery-date: Thu, 06 Nov 2025 16:19:16 +0100
+Delivery-date: Thu, 06 Nov 2025 16:19:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vH1lc-00Fysp-2w
+	id 1vH1lm-00FytV-0V
 	for lore@lore.pengutronix.de;
-	Thu, 06 Nov 2025 16:19:16 +0100
+	Thu, 06 Nov 2025 16:19:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vH1lY-0006uK-M5
-	for lore@pengutronix.de; Thu, 06 Nov 2025 16:19:16 +0100
+	id 1vH1lg-000737-DX
+	for lore@pengutronix.de; Thu, 06 Nov 2025 16:19:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0pln20L0xXJpg8LZEpYKb1KeAbBLJqrfitvXsSSnEwI=; b=tMaR74s/WlIWxNNVtSqgq3vrgh
-	uGb3WeNoPMIIGgMOOTvk56Z9gr4sxP0S1s4w0015Vwepqfo2cuxwe615fqcnf+KRTkKqpd2Tsn2lp
-	dbt7Pn9WdbH9ENvJ2Ky8jNjNpWYAz0BidoRfomyfZLXv9Lt8DFtGOUcCxj4f+vWvlCiEHauxL6Pb7
-	yH2AmhUm/Q8rUc1l2pphjZ4/74dhXnvylX7cTsYoVZ1dKpbo00W6WaZ1qb1+XGvqF0ViBzmnw46jy
-	g7kjbhYuv1G90Xt1em3r18qJHh1aHSPDPVUE4hUJ/9LvRF1rVE09bC1Tx8+f8kbypEG83GqoyHLWl
-	Rx3++sYw==;
+	bh=dvL9KpF/7dTF9mu/hytxZU1z313fUfLLsOkBFXUVwHk=; b=cwQxMYMQO709O2l0Ag6uHwiB/1
+	GUVAMp6J5SMgbJJYqH+iBJDq+DkmehsGydkZ1eO17A2QVMptRzInABy5v1GgM0NAs3itMbG6CJZcG
+	Wx/t8HyaRI+ffrc90xTviN3Kczk9HOD/d3yvZj81U305SNZPCv5bwzCK5t30UAM1x4lJ3gh9B33oi
+	c+CutSg6eE/LC+7fnwOyiMEhtOJeosroDOtBm014XruugYvkejQZ0LLm8N8m6hQOwGw5sOcseYa47
+	WMJmkv9ZieWItsQ/1bHu7HNpOoD1lXP/a2ZmYR6MT/N3ZM1/J74Dq15/4PUNFyfDFlKF75TeL6nra
+	M2lNW9uA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vH1kn-0000000FnQ4-0BJi;
-	Thu, 06 Nov 2025 15:18:25 +0000
+	id 1vH1ky-0000000Fnfl-3ATb;
+	Thu, 06 Nov 2025 15:18:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vH1kc-0000000FnAS-1FLJ
+	id 1vH1kq-0000000FnUV-3IsO
 	for barebox@lists.infradead.org;
-	Thu, 06 Nov 2025 15:18:19 +0000
+	Thu, 06 Nov 2025 15:18:34 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1vH1kY-0005tl-Q9; Thu, 06 Nov 2025 16:18:10 +0100
+	id 1vH1kZ-0005tl-3G; Thu, 06 Nov 2025 16:18:11 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Thu, 06 Nov 2025 16:17:59 +0100
+Date: Thu, 06 Nov 2025 16:18:08 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-tlv-signature-v3-2-5d00ed378e75@pengutronix.de>
+Message-Id: <20251106-tlv-signature-v3-11-5d00ed378e75@pengutronix.de>
 References: <20251106-tlv-signature-v3-0-5d00ed378e75@pengutronix.de>
 In-Reply-To: <20251106-tlv-signature-v3-0-5d00ed378e75@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,17 +50,17 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
  Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14306; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=tJPkTM3Dswqk7iV1UqYjk1ne+7tNe2IveaSgdjBMJLo=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjk2aPNNdHf7er6Pa86RO9ETA0RuqwvKa4WfPKQuuOvv
- zud3wtldpSyMIhxMciKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACby/Ckjwyfh1mWRdkHCvFle
- RQUPj1denHj6/8kjXUWN6u8Vrmns/MTIcKl+fgjnl1+X5Be3LLoeeq856OHlZPlLBwJ4+qe7zWD
- z4gIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2756; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=DvTg9FOgr+nRZY3iy5O4rnBlVVecN6SyKSebd3TppHs=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjk2aOfUv2pJaVoeYh0ibLbw51y/rs2351ZFCjJmGfh2
+ KHHZf+8o5SFQYyLQVZMkSVWTU5ByNj/ulmlXSzMHFYmkCEMXJwCMJGlMowM/SI866PMfGafrRJ+
+ 1/2u82LO1kxr3+6QVWaMXnWnZlSyMTJ8vz/lZH7d8otnBZ137jfxL/xwXz72qZnyncCNF853rtz
+ JBwA=
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251106_071814_653683_E86B373B 
-X-CRM114-Status: GOOD (  33.54  )
+X-CRM114-CacheID: sfid-20251106_071830_087800_F17AB762 
+X-CRM114-Status: GOOD (  13.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,428 +82,89 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 02/17] common: clean up TLV code
+Subject: [PATCH v3 11/17] common: tlv: default decoder for signed TLV
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is a preparatory commit for TLV signature verification:
-
- - Include overflow checks for TLV sizes
- - Be careful with narrowing conversions
- - Add and improve comments
+Introduce a second default decoder that behaves just like barebox_tlv_v1
+but uses the "tlv-generic" keyring.
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- common/tlv/parser.c              |  18 ++-
- include/tlv/format.h             |  12 +-
- scripts/include/linux/overflow.h | 312 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 337 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/nvmem/barebox,tlv.yaml     |  1 +
+ common/tlv/barebox.c                               | 25 +++++++++++++++++++++-
+ include/tlv/format.h                               |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/common/tlv/parser.c b/common/tlv/parser.c
-index fc46092650..f74ada99d7 100644
---- a/common/tlv/parser.c
-+++ b/common/tlv/parser.c
-@@ -16,15 +16,20 @@ int tlv_parse(struct tlv_device *tlvdev,
- 	const struct tlv *tlv = NULL;
- 	struct tlv_mapping *map = NULL;
- 	struct tlv_header *header = tlv_device_header(tlvdev);
--	u32 magic, size;
-+	u32 magic;
-+	size_t size;
- 	int ret = 0;
- 	u32 crc = ~0;
+diff --git a/Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml b/Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml
+index 7a77b9a0b4..7d678ee04a 100644
+--- a/Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml
++++ b/Documentation/devicetree/bindings/nvmem/barebox,tlv.yaml
+@@ -22,6 +22,7 @@ properties:
+     items:
+       - enum:
+         - barebox,tlv-v1        # magic: 0x61bb95f2
++        - barebox,tlv-v1-signed # magic: 0x61bb95f3
+         - lxa,tlv-baseboard-v1  # magic: 0xbc288dfe
+         - lxa,tlv-powerboard-v1 # magic: 0xdca5a870
+       - const: barebox,tlv
+diff --git a/common/tlv/barebox.c b/common/tlv/barebox.c
+index b941463b31..24de3eeaaa 100644
+--- a/common/tlv/barebox.c
++++ b/common/tlv/barebox.c
+@@ -177,16 +177,39 @@ static struct of_device_id of_matches[] = {
+ 	{ .compatible = "barebox,tlv-v1" },
+ 	{ /* sentinel */}
+ };
++static struct of_device_id of_matches_signed[] = {
++	{ .compatible = "barebox,tlv-v1-signed" },
++	{ /* sentinel */ }
++};
  
--
- 	magic = be32_to_cpu(header->magic);
- 
- 	size = tlv_total_len(header);
- 
-+	if (size == SIZE_MAX) {
-+		pr_warn("Invalid TLV header, overflows\n");
-+		return -EOVERFLOW;
-+	}
+ static struct tlv_decoder barebox_tlv_v1 = {
+ 	.magic = TLV_MAGIC_BAREBOX_V1,
+ 	.driver.name = "barebox-tlv-v1",
+ 	.driver.of_compatible = of_matches,
+ 	.mappings = mappings,
++	.signature_keyring = NULL,
++};
 +
- 	crc = crc32_be(crc, header, size - 4);
- 	if (crc != tlv_crc(header)) {
- 		pr_warn("Invalid CRC32. Should be %08x\n", crc);
-@@ -133,7 +138,8 @@ void tlv_of_unregister_fixup(struct tlv_device *tlvdev)
- struct tlv_header *tlv_read(const char *filename, size_t *nread)
++static struct tlv_decoder barebox_tlv_v1_signed = {
++	.magic = TLV_MAGIC_BAREBOX_V1_SIGNED,
++	.driver.name = "barebox-tlv-v1-signed",
++	.driver.of_compatible = of_matches_signed,
++	.mappings = mappings,
++	.signature_keyring = "tlv-generic",
+ };
+ 
+ static int tlv_register_default(void)
  {
- 	struct tlv_header *header = NULL, *tmpheader;
--	int size, fd, ret;
-+	size_t size;
-+	int fd, ret;
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0)
-@@ -153,6 +159,12 @@ struct tlv_header *tlv_read(const char *filename, size_t *nread)
- 
- 	size = tlv_total_len(header);
- 
-+	if (size == SIZE_MAX) {
-+		pr_warn("Invalid TLV header, overflows\n");
-+		ret = -EOVERFLOW;
-+		goto err;
-+	}
+-	return tlv_register_decoder(&barebox_tlv_v1);
++	int err;
 +
- 	tmpheader = realloc(header, size);
- 	if (!tmpheader) {
- 		struct stat st;
++	err = tlv_register_decoder(&barebox_tlv_v1);
++	if (err)
++		return err;
++	if (IS_ENABLED(CONFIG_TLV_SIGNATURE)) {
++		err = tlv_register_decoder(&barebox_tlv_v1_signed);
++		if (err)
++			return err;
++	}
++	return 0;
+ }
+ device_initcall(tlv_register_default);
 diff --git a/include/tlv/format.h b/include/tlv/format.h
-index 29c8a6d42d..c4521c3131 100644
+index cbe0a132b1..ab12f0c9bb 100644
 --- a/include/tlv/format.h
 +++ b/include/tlv/format.h
-@@ -18,6 +18,7 @@
- 
- #include <linux/compiler.h>
- #include <linux/types.h>
-+#include <linux/overflow.h>
- #include <asm/unaligned.h>
+@@ -23,6 +23,7 @@
  #include <linux/build_bug.h>
  
-@@ -48,6 +49,8 @@ struct tlv_header {
- 	__be32 length_tlv; /* in bytes */
- 	__be32 length_sig; /* in bytes */
- 	struct tlv tlvs[];
-+	/* __be32 crc; */
-+	/* u8 sig[]; */
- };
- static_assert(sizeof(struct tlv_header) == 3 * 4);
- 
-@@ -56,8 +59,13 @@ static_assert(sizeof(struct tlv_header) == 3 * 4);
- 
- static inline size_t tlv_total_len(const struct tlv_header *header)
- {
--	return sizeof(struct tlv_header) + get_unaligned_be32(&header->length_tlv)
--		+ get_unaligned_be32(&header->length_sig) + 4;
-+	size_t ret;
-+
-+	ret = size_add(sizeof(struct tlv_header), get_unaligned_be32(&header->length_tlv));
-+	ret = size_add(ret, sizeof(__be32)); /* CRC appended after TLVs */
-+	ret = size_add(ret, get_unaligned_be32(&header->length_sig)); /* optional signature appended after CRC */
-+
-+	return ret; /* SIZE_MAX on overflow */
- }
- 
- /*
-diff --git a/scripts/include/linux/overflow.h b/scripts/include/linux/overflow.h
-new file mode 100644
-index 0000000000..f9b60313ea
---- /dev/null
-+++ b/scripts/include/linux/overflow.h
-@@ -0,0 +1,312 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR MIT */
-+#ifndef __LINUX_OVERFLOW_H
-+#define __LINUX_OVERFLOW_H
-+
-+#include <linux/compiler.h>
-+#include <linux/limits.h>
-+#include <linux/const.h>
-+
-+/*
-+ * We need to compute the minimum and maximum values representable in a given
-+ * type. These macros may also be useful elsewhere. It would seem more obvious
-+ * to do something like:
-+ *
-+ * #define type_min(T) (T)(is_signed_type(T) ? (T)1 << (8*sizeof(T)-1) : 0)
-+ * #define type_max(T) (T)(is_signed_type(T) ? ((T)1 << (8*sizeof(T)-1)) - 1 : ~(T)0)
-+ *
-+ * Unfortunately, the middle expressions, strictly speaking, have
-+ * undefined behaviour, and at least some versions of gcc warn about
-+ * the type_max expression (but not if -fsanitize=undefined is in
-+ * effect; in that case, the warning is deferred to runtime...).
-+ *
-+ * The slightly excessive casting in type_min is to make sure the
-+ * macros also produce sensible values for the exotic type _Bool. [The
-+ * overflow checkers only almost work for _Bool, but that's
-+ * a-feature-not-a-bug, since people shouldn't be doing arithmetic on
-+ * _Bools. Besides, the gcc builtins don't allow _Bool* as third
-+ * argument.]
-+ *
-+ * Idea stolen from
-+ * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
-+ * credit to Christian Biere.
-+ */
-+#define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
-+#define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
-+#define type_min(T) ((T)((T)-type_max(T)-(T)1))
-+
-+/*
-+ * Avoids triggering -Wtype-limits compilation warning,
-+ * while using unsigned data types to check a < 0.
-+ */
-+#define is_non_negative(a) ((a) > 0 || (a) == 0)
-+#define is_negative(a) (!(is_non_negative(a)))
-+
-+/*
-+ * Allows for effectively applying __must_check to a macro so we can have
-+ * both the type-agnostic benefits of the macros while also being able to
-+ * enforce that the return value is, in fact, checked.
-+ */
-+static inline bool __must_check __must_check_overflow(bool overflow)
-+{
-+	return unlikely(overflow);
-+}
-+
-+/**
-+ * check_add_overflow() - Calculate addition with overflow checking
-+ * @a: first addend
-+ * @b: second addend
-+ * @d: pointer to store sum
-+ *
-+ * Returns 0 on success.
-+ *
-+ * *@d holds the results of the attempted addition, but is not considered
-+ * "safe for use" on a non-zero return value, which indicates that the
-+ * sum has overflowed or been truncated.
-+ */
-+#define check_add_overflow(a, b, d)	\
-+	__must_check_overflow(__builtin_add_overflow(a, b, d))
-+
-+/**
-+ * check_sub_overflow() - Calculate subtraction with overflow checking
-+ * @a: minuend; value to subtract from
-+ * @b: subtrahend; value to subtract from @a
-+ * @d: pointer to store difference
-+ *
-+ * Returns 0 on success.
-+ *
-+ * *@d holds the results of the attempted subtraction, but is not considered
-+ * "safe for use" on a non-zero return value, which indicates that the
-+ * difference has underflowed or been truncated.
-+ */
-+#define check_sub_overflow(a, b, d)	\
-+	__must_check_overflow(__builtin_sub_overflow(a, b, d))
-+
-+/**
-+ * check_mul_overflow() - Calculate multiplication with overflow checking
-+ * @a: first factor
-+ * @b: second factor
-+ * @d: pointer to store product
-+ *
-+ * Returns 0 on success.
-+ *
-+ * *@d holds the results of the attempted multiplication, but is not
-+ * considered "safe for use" on a non-zero return value, which indicates
-+ * that the product has overflowed or been truncated.
-+ */
-+#define check_mul_overflow(a, b, d)	\
-+	__must_check_overflow(__builtin_mul_overflow(a, b, d))
-+
-+/**
-+ * check_shl_overflow() - Calculate a left-shifted value and check overflow
-+ * @a: Value to be shifted
-+ * @s: How many bits left to shift
-+ * @d: Pointer to where to store the result
-+ *
-+ * Computes *@d = (@a << @s)
-+ *
-+ * Returns true if '*@d' cannot hold the result or when '@a << @s' doesn't
-+ * make sense. Example conditions:
-+ *
-+ * - '@a << @s' causes bits to be lost when stored in *@d.
-+ * - '@s' is garbage (e.g. negative) or so large that the result of
-+ *   '@a << @s' is guaranteed to be 0.
-+ * - '@a' is negative.
-+ * - '@a << @s' sets the sign bit, if any, in '*@d'.
-+ *
-+ * '*@d' will hold the results of the attempted shift, but is not
-+ * considered "safe for use" if true is returned.
-+ */
-+#define check_shl_overflow(a, s, d) __must_check_overflow(({		\
-+	typeof(a) _a = a;						\
-+	typeof(s) _s = s;						\
-+	typeof(d) _d = d;						\
-+	u64 _a_full = _a;						\
-+	unsigned int _to_shift =					\
-+		is_non_negative(_s) && _s < 8 * sizeof(*d) ? _s : 0;	\
-+	*_d = (_a_full << _to_shift);					\
-+	(_to_shift != _s || is_negative(*_d) || is_negative(_a) ||	\
-+	(*_d >> _to_shift) != _a);					\
-+}))
-+
-+#define __overflows_type_constexpr(x, T) (			\
-+	is_unsigned_type(typeof(x)) ?				\
-+		(x) > type_max(typeof(T)) :			\
-+	is_unsigned_type(typeof(T)) ?				\
-+		(x) < 0 || (x) > type_max(typeof(T)) :		\
-+	(x) < type_min(typeof(T)) || (x) > type_max(typeof(T)))
-+
-+#define __overflows_type(x, T)		({	\
-+	typeof(T) v = 0;			\
-+	check_add_overflow((x), v, &v);		\
-+})
-+
-+/**
-+ * overflows_type - helper for checking the overflows between value, variables,
-+ *		    or data type
-+ *
-+ * @n: source constant value or variable to be checked
-+ * @T: destination variable or data type proposed to store @x
-+ *
-+ * Compares the @x expression for whether or not it can safely fit in
-+ * the storage of the type in @T. @x and @T can have different types.
-+ * If @x is a constant expression, this will also resolve to a constant
-+ * expression.
-+ *
-+ * Returns: true if overflow can occur, false otherwise.
-+ */
-+#define overflows_type(n, T)					\
-+	__builtin_choose_expr(__is_constexpr(n),		\
-+			      __overflows_type_constexpr(n, T),	\
-+			      __overflows_type(n, T))
-+
-+/**
-+ * castable_to_type - like __same_type(), but also allows for casted literals
-+ *
-+ * @n: variable or constant value
-+ * @T: variable or data type
-+ *
-+ * Unlike the __same_type() macro, this allows a constant value as the
-+ * first argument. If this value would not overflow into an assignment
-+ * of the second argument's type, it returns true. Otherwise, this falls
-+ * back to __same_type().
-+ */
-+#define castable_to_type(n, T)						\
-+	__builtin_choose_expr(__is_constexpr(n),			\
-+			      !__overflows_type_constexpr(n, T),	\
-+			      __same_type(n, T))
-+
-+/**
-+ * size_mul() - Calculate size_t multiplication with saturation at SIZE_MAX
-+ * @factor1: first factor
-+ * @factor2: second factor
-+ *
-+ * Returns: calculate @factor1 * @factor2, both promoted to size_t,
-+ * with any overflow causing the return value to be SIZE_MAX. The
-+ * lvalue must be size_t to avoid implicit type conversion.
-+ */
-+static inline size_t __must_check size_mul(size_t factor1, size_t factor2)
-+{
-+	size_t bytes;
-+
-+	if (check_mul_overflow(factor1, factor2, &bytes))
-+		return SIZE_MAX;
-+
-+	return bytes;
-+}
-+
-+/**
-+ * size_add() - Calculate size_t addition with saturation at SIZE_MAX
-+ * @addend1: first addend
-+ * @addend2: second addend
-+ *
-+ * Returns: calculate @addend1 + @addend2, both promoted to size_t,
-+ * with any overflow causing the return value to be SIZE_MAX. The
-+ * lvalue must be size_t to avoid implicit type conversion.
-+ */
-+static inline size_t __must_check size_add(size_t addend1, size_t addend2)
-+{
-+	size_t bytes;
-+
-+	if (check_add_overflow(addend1, addend2, &bytes))
-+		return SIZE_MAX;
-+
-+	return bytes;
-+}
-+
-+/**
-+ * size_sub() - Calculate size_t subtraction with saturation at SIZE_MAX
-+ * @minuend: value to subtract from
-+ * @subtrahend: value to subtract from @minuend
-+ *
-+ * Returns: calculate @minuend - @subtrahend, both promoted to size_t,
-+ * with any overflow causing the return value to be SIZE_MAX. For
-+ * composition with the size_add() and size_mul() helpers, neither
-+ * argument may be SIZE_MAX (or the result with be forced to SIZE_MAX).
-+ * The lvalue must be size_t to avoid implicit type conversion.
-+ */
-+static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
-+{
-+	size_t bytes;
-+
-+	if (minuend == SIZE_MAX || subtrahend == SIZE_MAX ||
-+	    check_sub_overflow(minuend, subtrahend, &bytes))
-+		return SIZE_MAX;
-+
-+	return bytes;
-+}
-+
-+/**
-+ * array_size() - Calculate size of 2-dimensional array.
-+ * @a: dimension one
-+ * @b: dimension two
-+ *
-+ * Calculates size of 2-dimensional array: @a * @b.
-+ *
-+ * Returns: number of bytes needed to represent the array or SIZE_MAX on
-+ * overflow.
-+ */
-+#define array_size(a, b)	size_mul(a, b)
-+
-+/**
-+ * array3_size() - Calculate size of 3-dimensional array.
-+ * @a: dimension one
-+ * @b: dimension two
-+ * @c: dimension three
-+ *
-+ * Calculates size of 3-dimensional array: @a * @b * @c.
-+ *
-+ * Returns: number of bytes needed to represent the array or SIZE_MAX on
-+ * overflow.
-+ */
-+#define array3_size(a, b, c)	size_mul(size_mul(a, b), c)
-+
-+/**
-+ * flex_array_size() - Calculate size of a flexible array member
-+ *                     within an enclosing structure.
-+ * @p: Pointer to the structure.
-+ * @member: Name of the flexible array member.
-+ * @count: Number of elements in the array.
-+ *
-+ * Calculates size of a flexible array of @count number of @member
-+ * elements, at the end of structure @p.
-+ *
-+ * Return: number of bytes needed or SIZE_MAX on overflow.
-+ */
-+#define flex_array_size(p, member, count)				\
-+	__builtin_choose_expr(__is_constexpr(count),			\
-+		(count) * sizeof(*(p)->member) + __must_be_array((p)->member),	\
-+		size_mul(count, sizeof(*(p)->member) + __must_be_array((p)->member)))
-+
-+/**
-+ * struct_size() - Calculate size of structure with trailing flexible array.
-+ * @p: Pointer to the structure.
-+ * @member: Name of the array member.
-+ * @count: Number of elements in the array.
-+ *
-+ * Calculates size of memory needed for structure of @p followed by an
-+ * array of @count number of @member elements.
-+ *
-+ * Return: number of bytes needed or SIZE_MAX on overflow.
-+ */
-+#define struct_size(p, member, count)					\
-+	__builtin_choose_expr(__is_constexpr(count),			\
-+		sizeof(*(p)) + flex_array_size(p, member, count),	\
-+		size_add(sizeof(*(p)), flex_array_size(p, member, count)))
-+
-+/**
-+ * struct_size_t() - Calculate size of structure with trailing flexible array
-+ * @type: structure type name.
-+ * @member: Name of the array member.
-+ * @count: Number of elements in the array.
-+ *
-+ * Calculates size of memory needed for structure @type followed by an
-+ * array of @count number of @member elements. Prefer using struct_size()
-+ * when possible instead, to keep calculations associated with a specific
-+ * instance variable of type @type.
-+ *
-+ * Return: number of bytes needed or SIZE_MAX on overflow.
-+ */
-+#define struct_size_t(type, member, count)					\
-+	struct_size((type *)NULL, member, count)
-+
-+#endif /* __LINUX_OVERFLOW_H */
+ #define TLV_MAGIC_BAREBOX_V1		0x61bb95f2
++#define TLV_MAGIC_BAREBOX_V1_SIGNED	0x61bb95f3
+ #define TLV_MAGIC_LXA_BASEBOARD_V1	0xbc288dfe
+ #define TLV_MAGIC_LXA_POWERBOARD_V1	0xc6895c21
+ #define TLV_MAGIC_LXA_IOBOARD_V1	0xdca5a870
 
 -- 
 2.51.2.535.g419c72cb8a
