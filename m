@@ -1,69 +1,77 @@
-Delivery-date: Fri, 07 Nov 2025 09:59:45 +0100
+Delivery-date: Fri, 07 Nov 2025 13:01:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vHIJt-00GFCS-2r
+	id 1vHL9q-00GHqQ-0H
 	for lore@lore.pengutronix.de;
-	Fri, 07 Nov 2025 09:59:45 +0100
+	Fri, 07 Nov 2025 13:01:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vHIJt-0007Qb-5y
-	for lore@pengutronix.de; Fri, 07 Nov 2025 09:59:45 +0100
+	id 1vHL9p-0007gV-Ii
+	for lore@pengutronix.de; Fri, 07 Nov 2025 13:01:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xXdv8i3GCYxZ5a05SNk/oCscbGR+r0r88mCVILkpg/s=; b=yzuL7Z9P2CVSiTfqXZJbT341mv
-	p+gANf0MpT3N9HCgxV5wZ5WhzQP/WrKQTWr7+R0Ij3GM7B1dodw6QvTdq50Kvo6yDMlFaPw0zUY4c
-	ouFb1bhEoucqrSWDi8SsM8zHe1b0eR0fyQ8mvjqGeFAKzl/66BnK+QTdN7wBeYiGzlghpOQbX7qzz
-	mrTCouQawYCFV9SC9Sl3Z02NI1ExGJsO7HoTlO23LxtRISE60yPDxKEbP0NcLBxGpvc5t6VI4G9sD
-	V6sHsU+155vVuRB1TphBX7c3qM3mT4UR+0nBihnqxUQ5lMus5V9gpAcwNADMiMPxYGExdzm7Lnyey
-	k/MzA7mA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=fCWNT5xnXiB3z0YWrbvDg91jfCZWB3g6M8XrcVeO90k=; b=NLv0B30hF3BA6z5MVJtTF0cKQX
+	bnbQdB2p2JoJKwYpIcXtYid+eseDKVssg5Ym51dQynwyH166ZFhiZFobyf6fliJ4Vhf26eboriLRN
+	fCjJbdvQWySad90ekPVL4lYIBF+J/F/69FU2YArRsaGRzWnuXbbrQur8DbsYznXerDLSQz96/ydJx
+	XWgWbPAPXor8JttYJwg6AVXUYwZgyCksa8eqkNRVOMkXkTBx9Knxy8+S0pij6adHlqliZ8wIBn5hM
+	FTv6xKQY4anZUO3uoUBCYbwz9WjsqqcDtOfh8b+5fUNADXur0NIr3oUMlREvZmgJZ0oAHPA3NiMFv
+	k6Co9XfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vHIJJ-0000000Gv96-11HC;
-	Fri, 07 Nov 2025 08:59:09 +0000
+	id 1vHL9N-0000000HG7s-3zZI;
+	Fri, 07 Nov 2025 12:01:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vHIJF-0000000Gv7p-3bNT
+	id 1vHL9E-0000000HG5O-16vx
 	for barebox@lists.infradead.org;
-	Fri, 07 Nov 2025 08:59:08 +0000
+	Fri, 07 Nov 2025 12:01:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vHIJC-0007BV-J0; Fri, 07 Nov 2025 09:59:02 +0100
+	id 1vHL9B-0007KA-Do; Fri, 07 Nov 2025 13:00:53 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vHIJC-007V7K-0z;
-	Fri, 07 Nov 2025 09:59:02 +0100
+	id 1vHL9B-007WR2-0b;
+	Fri, 07 Nov 2025 13:00:53 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vHIJC-00000000Hfb-2rCE;
-	Fri, 07 Nov 2025 09:59:02 +0100
+	id 1vHL9B-00000000sNa-2Hop;
+	Fri, 07 Nov 2025 13:00:53 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Jonas Rebmann <jre@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251028-tlv-signature-v2-0-3bafce636ad7@pengutronix.de>
-References: <20251028-tlv-signature-v2-0-3bafce636ad7@pengutronix.de>
-Message-Id: <176250594223.67872.10834272940421361044.b4-ty@pengutronix.de>
-Date: Fri, 07 Nov 2025 09:59:02 +0100
+Date: Fri, 07 Nov 2025 13:00:50 +0100
+Message-Id: <20251107-memleaks-v1-0-c7b74a2ae9db@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHLfDWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDQwNz3dzU3JzUxOxiXWMzU0sD4+TkRONkYyWg8oKi1LTMCrBR0bG1tQA
+ SocRSWgAAAA==
+X-Change-ID: 20251107-memleaks-365903cca3c3
+To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762516853; l=687;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=4e1b7sVC6BpkGjo6yEuHl3NFUYRpcoQSAHxt1kCFOkM=;
+ b=L5E01hpjX4L0gNe+8MUXmaRW/DypXIfysGw3PLJxy6OhH0JQEWrBRLr3znme+iPfgUtrsPNoK
+ Y+Q+Z7R+pXPC4lFVRsCpzu9lgsaNIBKr/vjOMc0rKb+kXEammVUb5SK
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251107_005905_905156_926AEDCE 
-X-CRM114-Status: GOOD (  11.74  )
+X-CRM114-CacheID: sfid-20251107_040056_309001_34883DAF 
+X-CRM114-Status: UNSURE (   7.41  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,64 +89,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 00/17] TLV-Signature and keyrings
+Subject: [PATCH 0/4] fix some memory leaks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+This series fixes some memory leaks I stumbled upon
 
-On Tue, 28 Oct 2025 19:03:05 +0100, Jonas Rebmann wrote:
-> This series introduces everything needed for the use of signed TLVs in
-> barebox. This allows for signed TLVs to be part of a secure boot chain,
-> if CONFIG_TLV_SIGNATURE is enabled, keys are configured and the decoder
-> is configured to require signature.
-> 
-> As TLV signature verification uses the public_keys list, propagated by
-> keytoc.c with the public keys selected in CONFIG_CRYPTO_PUBLIC_KEYS, the
-> keyring feature was introduced to allow separate keys for separate
-> concerns.
-> 
-> [...]
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+Sascha Hauer (4):
+      tlv: fix memory leak
+      of: free of_fixup in of_unregister_fixup()
+      bobject: free object name in bobject_del()
+      bfetch: fix memory leak
 
-Applied, thanks!
-
-[01/17] lib: idr: avoid dangling else in idr_for_each_entry()
-        https://git.pengutronix.de/cgit/barebox/commit/?id=558f95a99d30 (link may not be stable)
-[02/17] common: clean up TLV code
-        https://git.pengutronix.de/cgit/barebox/commit/?id=12fbe2420c57 (link may not be stable)
-[03/17] crypto: Add support for keyrings
-        https://git.pengutronix.de/cgit/barebox/commit/?id=9b6abf4928dc (link may not be stable)
-[04/17] fit: only accept keys from "fit"-keyring
-        https://git.pengutronix.de/cgit/barebox/commit/?id=35e1d658501d (link may not be stable)
-[05/17] crypto: keytoc: Rename "hint" to "fit-hint" and do not use it in identifiers
-        https://git.pengutronix.de/cgit/barebox/commit/?id=631598a78787 (link may not be stable)
-[06/17] commands: keys: update output format to include keyring
-        https://git.pengutronix.de/cgit/barebox/commit/?id=7a255f1bb20a (link may not be stable)
-[07/17] commands: tlv: Error out on invalid TLVs
-        https://git.pengutronix.de/cgit/barebox/commit/?id=8fc7e96dce0a (link may not be stable)
-[08/17] scripts: bareboxtlv-generator: Implement signature
-        https://git.pengutronix.de/cgit/barebox/commit/?id=bdc51ec7b77b (link may not be stable)
-[09/17] scripts: bareboxtlv-generator: Increase max_size in example schema
-        https://git.pengutronix.de/cgit/barebox/commit/?id=40dccf6965ad (link may not be stable)
-[10/17] common: tlv: Add TLV-Signature support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=49deb31eb9f4 (link may not be stable)
-[11/17] common: tlv: default decoder for signed TLV
-        https://git.pengutronix.de/cgit/barebox/commit/?id=92801a8a3b85 (link may not be stable)
-[12/17] crypto: Use "development" keys for "fit" and "tlv" keyring
-        https://git.pengutronix.de/cgit/barebox/commit/?id=1006b066cf20 (link may not be stable)
-[13/17] test: py: add signature to TLV integration tests
-        https://git.pengutronix.de/cgit/barebox/commit/?id=50407b127bc1 (link may not be stable)
-[14/17] ci: pytest: Add kconfig fragment for TLV signature integration tests
-        https://git.pengutronix.de/cgit/barebox/commit/?id=54205e3cfa11 (link may not be stable)
-[15/17] crypto: concatenate fit development certificate with private key
-        https://git.pengutronix.de/cgit/barebox/commit/?id=a3078241ffb4 (link may not be stable)
-[16/17] doc/barebox-tlv: Update documentation regarding TLV-Signature
-        https://git.pengutronix.de/cgit/barebox/commit/?id=39a6cb84f837 (link may not be stable)
-[17/17] Documentation: migration-2025.11.0: List changes to CONFIG_CRYPTO_PUBLIC_KEYS
-        (no commit info)
+ commands/bfetch.c | 28 +++++++++++++++++++++++-----
+ common/oftree.c   |  1 +
+ common/tlv/bus.c  |  6 +++++-
+ include/bobject.h |  4 ----
+ lib/bobject.c     |  7 +++----
+ 5 files changed, 32 insertions(+), 14 deletions(-)
+---
+base-commit: 5789cb9767ba53b757bcb6bb12a676ff9ea69d34
+change-id: 20251107-memleaks-365903cca3c3
 
 Best regards,
 -- 
