@@ -1,54 +1,72 @@
-Delivery-date: Fri, 07 Nov 2025 14:22:43 +0100
+Delivery-date: Fri, 07 Nov 2025 14:24:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vHMQN-00GJDG-0J
+	id 1vHMSC-00GJEq-17
 	for lore@lore.pengutronix.de;
-	Fri, 07 Nov 2025 14:22:43 +0100
+	Fri, 07 Nov 2025 14:24:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vHMQM-0003LP-J3
-	for lore@pengutronix.de; Fri, 07 Nov 2025 14:22:43 +0100
+	id 1vHMSB-0003kx-Pv
+	for lore@pengutronix.de; Fri, 07 Nov 2025 14:24:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=v5bZfdx9IvhiDs4/mIrNkqqyjI+Xmt4ro7G/gDsgVHc=; b=kgCQB8ZtgS0wTcAZ3a5aS8WeOh
-	tXXbt7zas82nIA/peNXvVpT+hn+tRY2MRXpKnm9RXzjZ0EENbcpu9WLcQqAnX+rxbCdy0hHgfxjX2
-	3vI7LPC/R8gMEm70d/ToidF2EO6zrAjb1zhPz2ut21SMHX6dnMA/wpzI+KUlKWSd6zK89AeocidZe
-	7zLj4ZXwCUWcfZ+WaSLpmxbNaWbIumm0+tqyw7evhld/CWLrVo0+gBdYIqBu4D2KjVhcj35gJ9c0z
-	k3F9R+W+rzrltWr0FOCvl0PqLXxlcPB5vfyXyVLu5DqWNpBz6p2wLTsCjdSe+m6QpbReZAgdtL4tU
-	Tuay/0ow==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=S6u0UkQy2dU0l7W5r1N2RDyeSqzYHvGbS2Xg1W91Kp8=; b=mRauDv9S3x9qEsSANGpKhn7m6i
+	NqD/eyuURAqAPwE0iXdUnupMY1vRufWlvCcVSnSa58bVQsMS9VyDp8fmVWHZoUUFBjLSNaQwugIyi
+	87TgRd8Q4gd7KEfcUc/Z9YvLU4vBKy/ict18J5PYq87OW9MOCHWz2wnu6mgR2KyA/RiC/s+oikpiG
+	YZYLcKLj4guWFKylcw2sFI94nx/qsRKNid5avRDYqKeXPu3hqUiw4961RETUrP6K7Me3IjSJbTCKM
+	vhBhHXgCwYpgLUbXxbIfeMtRoyVEa671akiBZzi/9jS/yfV+bSUsyO3YsiWwAkZVAqnDIaZQLXN8C
+	e+RqUpsA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vHMPm-0000000HODs-2Gi2;
-	Fri, 07 Nov 2025 13:22:06 +0000
+	id 1vHMRn-0000000HOdI-1MiG;
+	Fri, 07 Nov 2025 13:24:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vHMPk-0000000HODX-0pPM
+	id 1vHMRk-0000000HOco-3KAx
 	for barebox@lists.infradead.org;
-	Fri, 07 Nov 2025 13:22:05 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vHMPh-0003CP-9G; Fri, 07 Nov 2025 14:22:01 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri,  7 Nov 2025 14:21:43 +0100
-Message-ID: <20251107132158.629348-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Fri, 07 Nov 2025 13:24:10 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vHMRh-0003fK-PS; Fri, 07 Nov 2025 14:24:05 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vHMRh-007XJU-1v;
+	Fri, 07 Nov 2025 14:24:05 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vHMRh-006oFb-1Z;
+	Fri, 07 Nov 2025 14:24:05 +0100
+Date: Fri, 7 Nov 2025 14:24:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>, barebox@lists.infradead.org
+Message-ID: <aQ3y9XOBgGnuuyHV@pengutronix.de>
+References: <20251027074446.2474869-1-a.fatoum@barebox.org>
+ <aQB3hThqS9P0wHuX@pengutronix.de>
+ <ada2cb2b-e08a-4d02-bb04-15750352836f@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ada2cb2b-e08a-4d02-bb04-15750352836f@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251107_052204_254461_B43BA77D 
-X-CRM114-Status: UNSURE (   7.72  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251107_052408_900064_185D3290 
+X-CRM114-Status: GOOD (  22.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,45 +88,62 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: i.MX8MP: skov: add new 10" jt101tm023 variant support
+Subject: Re: [PATCH] sandbox: add memory leak debugging tooling around
+ LeakSanitizer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+On Tue, Oct 28, 2025 at 08:59:05AM +0100, Ahmad Fatoum wrote:
+> Hi Sascha,
+> 
+> On 10/28/25 8:57 AM, Sascha Hauer wrote:
+> > On Mon, Oct 27, 2025 at 08:44:45AM +0100, Ahmad Fatoum wrote:
+> >> When enabled, this allows calling barebox_memleak_check() or running the
+> >> checkleak command to instruct LeakSanitizer to sweep the memory and find
+> >> unreferenced allocations.
+> >>
+> >> LeakSanitizier is also enabled along AddressSanitizer and runs on AMD64
+> >> Linux automatically on exit already.
+> >>
+> >> +static int do_checkleak(int argc, char *argv[])
+> >> +{
+> >> +	unsigned int count;
+> >> +	int opt;
+> >> +
+> >> +	while((opt = getopt(argc, argv, "l:")) > 0) {
+> >> +		switch(opt) {
+> >> +		case 'l':
+> >> +			if (kstrtouint(optarg, 0, &count))
+> >> +				return COMMAND_ERROR;
+> >> +			(void)malloc(count);
+> >> +			break;
+> >> +		default:
+> >> +			return COMMAND_ERROR_USAGE;
+> >> +		}
+> >> +	}
+> >> +
+> >> +	argv += optind;
+> >> +	argc -= optind;
+> >> +
+> >> +	if (argc)
+> >> +		return COMMAND_ERROR_USAGE;
+> >> +
+> >> +	memleak_check();
+> > 
+> > barebox exits in this call. Is this intended?
+> 
+> Until I figure out how to suppress it, yes, unfortunately. Haven't dug
+> into the source code yet.
 
-Add new 10" JuTouch JT101TM023 board variant incl. the possible HDMI
-sub-variant.
+With __lsan_do_recoverable_leak_check() instead of
+__lsan_do_leak_check() the progam doesn't exit.
 
-Unfortunately HDMI variants have no dedicated revision encoding, instead
-HDMI variants are encoded via a sub-variant in SW via barebox-state. Add
-a dedicated Rev.C compatible so the compatible can be used by systemd
-services, albeit Rev.B-HDMI and Rev.C-HDMI don't differ.
+Sascha
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- arch/arm/boards/skov-imx8mp/board.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/arm/boards/skov-imx8mp/board.c b/arch/arm/boards/skov-imx8mp/board.c
-index 0e471a3437bf..0266388849d2 100644
---- a/arch/arm/boards/skov-imx8mp/board.c
-+++ b/arch/arm/boards/skov-imx8mp/board.c
-@@ -90,6 +90,12 @@ static const struct board_description imx8mp_variants[] = {
- 	[3] = {
- 		.dts_compatible = "skov,imx8mp-skov-revc-tian-g07017",
- 	},
-+
-+	[4] = {
-+		.dts_compatible = "skov,imx8mp-skov-revc-jutouch-jt101tm023",
-+		.dts_compatible_hdmi = "skov,imx8mp-skov-revc-hdmi",
-+		.flags = SKOV_IMX8MP_HAS_HDMI,
-+	},
- };
- 
- static const struct board_description imx8mp_basic_variant = {
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
