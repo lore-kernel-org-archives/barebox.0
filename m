@@ -1,48 +1,48 @@
-Delivery-date: Mon, 10 Nov 2025 21:35:44 +0100
+Delivery-date: Mon, 10 Nov 2025 21:35:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYc4-00HVMV-2L
+	id 1vIYc6-00HVMr-0E
 	for lore@lore.pengutronix.de;
-	Mon, 10 Nov 2025 21:35:44 +0100
+	Mon, 10 Nov 2025 21:35:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYc3-0002Gr-0G
-	for lore@pengutronix.de; Mon, 10 Nov 2025 21:35:44 +0100
+	id 1vIYc3-0002HT-P0
+	for lore@pengutronix.de; Mon, 10 Nov 2025 21:35:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vG/VrXJDXS3Fua0wQStOMGDOPyaHMVfHq1OZkTk0xb4=; b=XJOVd4Ny3G8rnSt9adZAM8fK/o
-	doLd3HRzlzfL0zsRfAxyIS1L6THkEI7KTjqj/ibnLN51jI/HJ3CLa5d899VZdEQFRDmo5s5q68vHd
-	INRd66j2Ny08CsbSs14eq2C3yNnCA+Wm4IreMtUha2iqSoDetsTc4TQzs1GCLy9jsoFzSrlGOtyzQ
-	8qs+mQlzVWpTzcWRzueEWiRMz4ccamBRZcbSEFlY6tF0QDTqcNRhPnRDzgv2fQg0xZgy2lG/js+jy
-	/PMYjAq84WDlTe/cKIc9HmDZQZtn+iNOgOVONY19OIJXqjQcDoUKAYne5t3jVfmuDxO0isFaH2CS/
-	/JDiFEEQ==;
+	bh=9GSckm++zndjKw2Sb/LoTQGhh7e+j66OTSAr3Kk/tH0=; b=ng5XnBTQFDAGGHu0xsv0nCxw2Q
+	Y8RLx/XAIcEKmKjuON6rk/QD0Pdfs1EZfHE0ti8bHtSs1UdHAHdEP3Og5eXg+p3Z9Joft4py854wm
+	xzBj4z1fCLBaUpC+aHgx4Yh7rtPvKKl5aSlKm1KIfkM0aMmWlOi7E7Et4XCiC3q0e03AWtg2AXBmS
+	XhVO8WDgfXleZZCVcGdjnpV31PI7B9EjfZx3eqGbrN499nrZ84Alm56vZNllOwtrjZoojYoA8hbKm
+	O3TtAVsJIquxKP3gd4GOZUS23et4Ta6GUNkcMmVz+h+6UoCUnNUwZrVI+6OJS1xCrqwokG4siFbhH
+	7ABGu+1A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbG-000000065Y8-174w;
-	Mon, 10 Nov 2025 20:34:54 +0000
+	id 1vIYbD-000000065WS-4BGQ;
+	Mon, 10 Nov 2025 20:34:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbB-000000065SF-1uoo
+	id 1vIYbB-000000065SB-1bp0
 	for barebox@lists.infradead.org;
-	Mon, 10 Nov 2025 20:34:51 +0000
+	Mon, 10 Nov 2025 20:34:50 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vIYb8-0001MT-Kb; Mon, 10 Nov 2025 21:34:46 +0100
+	id 1vIYb8-0001MT-H6; Mon, 10 Nov 2025 21:34:46 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 10 Nov 2025 21:34:47 +0100
+Date: Mon, 10 Nov 2025 21:34:43 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-7-8f0625ac5471@pengutronix.de>
+Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-3-8f0625ac5471@pengutronix.de>
 References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
 In-Reply-To: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +50,9 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251110_123449_504403_B350D4D8 
-X-CRM114-Status: GOOD (  11.69  )
+X-CRM114-CacheID: sfid-20251110_123449_423015_B0545FEF 
+X-CRM114-Status: UNSURE (   7.06  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,79 +74,31 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 07/23] ARM: i.MX8M: imx8m_tfa_start_bl31() add support for
- bl33 and fdt
+Subject: [PATCH 03/23] ARM: atf: add missing includes in atf_common.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds the support to pass the bl33 entry and the fdt to
-imx8m_tfa_start_bl31() which is required to pass it later on the the
-bl31 via the bl_params.
+Add missing includes else atf_common.h depends on the include order.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/atf.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm/include/asm/atf_common.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-index 531ded2c57b1f194a2f209161ea086f41fccf58f..f4d4774b9eec798dd69042560d83f7313c0cb74f 100644
---- a/arch/arm/mach-imx/atf.c
-+++ b/arch/arm/mach-imx/atf.c
-@@ -44,6 +44,9 @@ static void imx_adjust_optee_memory(void **bl32, void **bl32_image, size_t *bl32
-  * @tfa_dest:	Place where the BL31 is copied to and executed
-  * @tee:	Pointer to the optional BL32 blob
-  * @tee_size:	Size of the optional BL32 blob
-+ * @bl33:	Pointer to the already loaded BL33 blob
-+ * @fdt:	Pointer to the barebox internal DT (either compressed or not
-+ *		compressed)
-  *
-  * This function:
-  *
-@@ -63,7 +66,7 @@ static void imx_adjust_optee_memory(void **bl32, void **bl32_image, size_t *bl32
+diff --git a/arch/arm/include/asm/atf_common.h b/arch/arm/include/asm/atf_common.h
+index ab99cd3ac1428c0dda0b9d6841a721119d45e301..11d3801da1cc171cf1601163712203b3c7089c6f 100644
+--- a/arch/arm/include/asm/atf_common.h
++++ b/arch/arm/include/asm/atf_common.h
+@@ -11,6 +11,9 @@
+ #ifndef __BL_COMMON_H__
+ #define __BL_COMMON_H__
  
- static __noreturn void
- imx8m_tfa_start_bl31(const void *tfa_bin, size_t tfa_size, void *tfa_dest,
--		     void *tee_bin, size_t tee_size)
-+		     void *tee_bin, size_t tee_size, void *bl33, void *fdt)
- {
- 	void __noreturn (*bl31)(void) = tfa_dest;
- 	unsigned long endmem;
-@@ -196,7 +199,7 @@ __noreturn void __imx8mm_load_and_start_image_via_tfa(void *fdt, void *bl33)
- 	}
- 
- 	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MM_ATF_BL31_BASE_ADDR,
--			     bl32, bl32_size);
-+			     bl32, bl32_size, bl33, fdt);
- }
- 
- void imx8mp_load_bl33(void *bl33)
-@@ -260,7 +263,7 @@ __noreturn void __imx8mp_load_and_start_image_via_tfa(void *fdt, void *bl33)
- 	}
- 
- 	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MP_ATF_BL31_BASE_ADDR,
--			     bl32, bl32_size);
-+			     bl32, bl32_size, bl33, fdt);
- }
- 
- void imx8mn_load_bl33(void *bl33)
-@@ -324,7 +327,7 @@ __noreturn void __imx8mn_load_and_start_image_via_tfa(void *fdt, void *bl33)
- 	}
- 
- 	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MN_ATF_BL31_BASE_ADDR,
--			     bl32, bl32_size);
-+			     bl32, bl32_size, bl33, fdt);
- }
- 
- void imx8mq_load_bl33(void *bl33)
-@@ -382,7 +385,7 @@ __noreturn void __imx8mq_load_and_start_image_via_tfa(void *fdt, void *bl33)
- 	}
- 
- 	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MQ_ATF_BL31_BASE_ADDR,
--			     bl32, bl32_size);
-+			     bl32, bl32_size, bl33, fdt);
- }
- 
- void __noreturn imx93_load_and_start_image_via_tfa(void)
++#include <linux/sizes.h>
++#include <linux/types.h>
++
+ #define ATF_PARAM_EP		0x01
+ #define ATF_PARAM_IMAGE_BINARY	0x02
+ #define ATF_PARAM_BL31		0x03
 
 -- 
 2.47.3
