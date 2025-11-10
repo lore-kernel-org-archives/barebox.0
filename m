@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYcB-00HVRH-1s
+	id 1vIYcB-00HVRd-31
 	for lore@lore.pengutronix.de;
 	Mon, 10 Nov 2025 21:35:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYc7-0002Ld-Av
+	id 1vIYc6-0002Kc-Bu
 	for lore@pengutronix.de; Mon, 10 Nov 2025 21:35:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tJZOZGLgrKe/odoMOdEuDP3dX5p8GbVQXc4TGkEQxwo=; b=EWzPn6IRJLDAeErZjJflNREGgh
-	YYoh91QcUNLioW8dSxGjGZrEcB7XymtfbLkzNO5KR5rnzEouTX0gfgNjHpMPrOe6wqbLO4IyiRQgk
-	wIduaVHKr9lekLpumUWg3WpnI6S63nPkOMsIzoq+i0MaAzJ/N5RqlCXnagoQ2B/LSCNPLQ5qxJ4Vn
-	Lp0I0NdEtBd4TM2xz25y4GTBlf8XH3xbHWX5rQFz7+Bgn7rNUGa6FZqeKQt5gReEKi3PrzTMn7wAg
-	GYJbYOnRfN+oRvpWX20SYU3kxkq1poHDACFexY9eC/TdWEX8Nu8NZiVZTN2nhfmPhYviU+6hrUiRB
-	1+s0gjHg==;
+	bh=bOthgLzlPjSPXM8pJCejLBpfXSEGX9u6DjRhg+6wVKM=; b=i2dfVoRBXGv6MYGtBVUiKmy+e8
+	E+VrHz35aUMvV8wFuQwsHEcib4I4aGrMAV6UbTsQ5BnY35g3MBKdmRNQCCHoTBR0U1yxf7TBXtRHs
+	9wcAeYSV7n48+YuZwOcvvP0Hkks/lyiAs5OyJ6zHYcjY+UuzaRb6OK+ZeA7/imEUen+sxq5QGntXf
+	+Erwz2kkI+hfwgf4N/tcSTCruNeqmm267JCctjtLSr04TdjWqjGJLVqwdYUMGMEdEU1pbg6BCQrad
+	JOL9t5yvFs862frULcsizxs0Iz2S6VQJ5SUOldkN0UgNB7XpNE10IgllEx6Up2YmgVce/EdNLgYtM
+	ujvpuA0A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbI-000000065aE-1TTm;
-	Mon, 10 Nov 2025 20:34:56 +0000
+	id 1vIYbN-000000065hk-2Egi;
+	Mon, 10 Nov 2025 20:35:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbB-000000065SH-1zpc
+	id 1vIYbC-000000065SL-3Wfl
 	for barebox@lists.infradead.org;
-	Mon, 10 Nov 2025 20:34:52 +0000
+	Mon, 10 Nov 2025 20:34:55 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vIYb8-0001MT-MH; Mon, 10 Nov 2025 21:34:46 +0100
+	id 1vIYb8-0001MT-Ql; Mon, 10 Nov 2025 21:34:46 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 10 Nov 2025 21:34:49 +0100
+Date: Mon, 10 Nov 2025 21:34:54 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-9-8f0625ac5471@pengutronix.de>
+Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-14-8f0625ac5471@pengutronix.de>
 References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
 In-Reply-To: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +50,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251110_123449_522499_A4ECEB0A 
-X-CRM114-Status: GOOD (  15.75  )
+X-CRM114-CacheID: sfid-20251110_123450_903613_3A554657 
+X-CRM114-Status: GOOD (  12.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,163 +73,89 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 09/23] pbl: fdt: add pbl_load_fdt helper
+Subject: [PATCH 14/23] ARM: i.MX: scratch: add OP-TEE FDTO support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The helper provides a common FDT load mechanism to load the (compressed)
-DTB to the provided destination address. Early FDTs may required by
-other BL3x binaries like BL31 (TF-A) and BL32 (OP-TEE).
+OP-TEE has the support to write DTB overlay fragments if enabled via
+OP-TEE config switch CFG_EXTERNAL_DTB_OVERLAY.
+
+The overlay fragments are added to the exisiting DTB if OP-TEE was
+started with a DTB provided via arg2 or written to a stand-alone DTB
+overlay.
+
+This adds a dedicated storage slot which can be passed to OP-TEE or be
+used by barebox to extract the added overlay fragment into it.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/Kconfig  |  3 +++
- include/pbl.h |  2 ++
- pbl/Kconfig   | 11 +++++++++
- pbl/fdt.c     | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 91 insertions(+)
+ arch/arm/mach-imx/scratch.c | 14 ++++++++++++++
+ common/Kconfig              | 10 ++++++++++
+ include/mach/imx/scratch.h  |  1 +
+ 3 files changed, 25 insertions(+)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 55618bf896c25f2afa2786706e27fce6ab4b3a39..edd574879b244d3843f1b5a06e1e25c5d4acbc8d 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -62,6 +62,9 @@ config ARCH_DMA_DEFAULT_COHERENT
- config ARCH_HAS_DMA_WRITE_COMBINE
- 	bool
+diff --git a/arch/arm/mach-imx/scratch.c b/arch/arm/mach-imx/scratch.c
+index 9c0f1c09c4e0b863d8c95888db7cf0518f698d53..393d3a976fec28a94e4515c82d309eb7338cdd4c 100644
+--- a/arch/arm/mach-imx/scratch.c
++++ b/arch/arm/mach-imx/scratch.c
+@@ -18,6 +18,7 @@ struct imx_scratch_space {
+ 	struct optee_header optee_hdr;
+ 	/* FDT needs an 8 byte alignment */
+ 	u8 fdt[CONFIG_SCRATCH_FDT_SIZE] __aligned(8);
++	u8 optee_fdto[CONFIG_SCRATCH_FDTO_SIZE] __aligned(8);
+ };
+ static_assert(sizeof(struct imx_scratch_space) <= CONFIG_SCRATCH_SIZE);
  
-+config ARCH_HAS_EARLY_FDT_SUPPORT
-+	bool
-+
- config ARCH_HAS_ASAN_FIBER_API
- 	bool
- 
-diff --git a/include/pbl.h b/include/pbl.h
-index 9db4652e833bf5e82fd42a1cae19e94c4f2f868f..bf0c9e2ba29428361cb16a572295e66f20acdd82 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -31,6 +31,8 @@ fdt_device_get_match_data(const void *fdt, const char *nodepath,
- 
- int pbl_barebox_verify(const void *compressed_start, unsigned int len,
- 		       const void *hash, unsigned int hash_len);
-+int pbl_load_fdt(const void *fdt, void *dest, int destsize);
-+
- #endif
- 
- void __noreturn barebox_pbl_entry(ulong, ulong, void *);
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index cab9325d16e8625bcca10125b3281062abffedbc..ea2086f33ea405ecd7b00065eaf9874218152b3a 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -65,6 +65,17 @@ config PBL_VERIFY_PIGGY
- 	depends on ARM || MIPS || RISCV
- 	bool "Verify barebox proper hash before decompression" if COMPILE_TEST
- 
-+config PBL_EARLY_FDT_LOAD
-+	bool "Enable early FDT loading"
-+	depends on ARCH_HAS_EARLY_FDT_SUPPORT
-+	select LIBFDT
-+	help
-+	  This enables the support to decompress and load the barebox builtin DTB
-+	  during the pbl (BL2) phase.
-+
-+	  This is useful for BL31 and BL32 firmwares which may use the DTB for
-+	  device configuration.
-+
- config PBL_CLOCKSOURCE
- 	bool
- 
-diff --git a/pbl/fdt.c b/pbl/fdt.c
-index ac377446caeafb1beaeb211aa8bdec8767ae21fe..0cd9f5a0f11723e9f9b6848e8553da481b92f2be 100644
---- a/pbl/fdt.c
-+++ b/pbl/fdt.c
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <compressed-dtb.h>
- #include <linux/libfdt.h>
- #include <pbl.h>
- #include <linux/printk.h>
- #include <stdio.h>
-+#include <uncompress.h>
- 
- static const __be32 *fdt_parse_reg(const __be32 *reg, uint32_t n,
- 				   uint64_t *val)
-@@ -185,3 +187,76 @@ const void *fdt_device_get_match_data(const void *fdt, const char *nodepath,
- 
- 	return NULL;
+@@ -108,3 +109,16 @@ void imx_scratch_get_fdt(void **fdt, unsigned int *fdt_sz)
+ 	*fdt = scratch->fdt;
+ 	*fdt_sz = sizeof(scratch->fdt);
  }
 +
-+static int pbl_open_dtbz_into(const void *fdt, void *buf, int bufsize)
++void imx_scratch_get_optee_fdto(void **fdto, unsigned int *fdto_sz)
 +{
-+	const struct barebox_boarddata_compressed_dtb *compressed_dtb;
-+	int ret;
-+
-+	if (!fdt_blob_can_be_decompressed(fdt)) {
-+		pr_warn("DTB can't be decompressed\n");
-+		return -EINVAL;
++	if (!scratch) {
++		if (IN_PBL)
++			return;
++		else
++			scratch = (void *)arm_mem_scratch_get();
 +	}
 +
-+	compressed_dtb = fdt;
-+
-+	if (IS_ENABLED(CONFIG_IMAGE_COMPRESSION_NONE)) {
-+		ret = fdt_open_into(compressed_dtb->data, buf, bufsize);
-+		if (ret)
-+			pr_warn("Failed to open uncompressed DTB with %s\n",
-+				fdt_strerror(ret));
-+		return ret ? -EINVAL : 0;
-+	}
-+
-+	if (bufsize < compressed_dtb->datalen_uncompressed) {
-+		pr_warn("FDT buffer to small, min. %u bytes required\n",
-+			compressed_dtb->datalen_uncompressed);
-+		return -EINVAL;
-+	}
-+
-+	ret = pbl_dtbz_uncompress(buf, (void *)compressed_dtb->data,
-+				  compressed_dtb->datalen);
-+	if (ret) {
-+		pr_warn("Failed to uncompress DTB err=%d\n", ret);
-+		return ret;
-+	}
-+
-+	if (!blob_is_fdt(buf)) {
-+		pr_warn("Failed to determine FDT type for uncompressed DTB\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Required to setup size data structures to allow runtime adaptions */
-+	ret = fdt_open_into(buf, buf, bufsize);
-+	if (ret)
-+		pr_warn("Failed to open decompressed DTB with %s\n", fdt_strerror(ret));
-+
-+	return ret ? -EINVAL : 0;
++	*fdto = scratch->optee_fdto;
++	*fdto_sz = sizeof(scratch->optee_fdto);
 +}
+diff --git a/common/Kconfig b/common/Kconfig
+index 3f394416c3c376d1cf842472803a47462bb012ed..2e4f4d6713575dbdabf24da8953978b40ddf5604 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -318,6 +318,16 @@ config SCRATCH_FDT_SIZE
+ 	  This option should match the OP-TEE's CFG_DTB_MAX_SIZE configuration
+ 	  if used by OP-TEE.
+ 
++config SCRATCH_FDTO_SIZE
++	hex
++	default 0x0
++	default 0x4000 if PBL_EARLY_FDT_LOAD
++	prompt "Scratch FDTO size"
++	help
++	  The size of possible FDT overlay areas used by BL3x binaries to store
++	  runtime generated overlays. Can be 0x0 if early FDT support is not
++	  requied e.g. during BL31 and BL32 stage.
 +
-+int pbl_load_fdt(const void *fdt, void *dest, int destsize)
-+{
-+	int ret;
-+
-+	if (!IS_ENABLED(CONFIG_PBL_EARLY_FDT_LOAD))
-+		return -ENOTSUPP;
-+
-+	if (destsize == 0) {
-+		pr_warn("Skip early FDT load due to dest buffer size of 0-bytes\n");
-+		return -EINVAL;
-+	}
-+
-+	if (blob_is_fdt(fdt)) {
-+		ret = fdt_open_into(fdt, dest, destsize);
-+		if (ret)
-+			pr_warn("Failed to uncompressed DTB with %s\n",
-+				fdt_strerror(ret));
-+		return ret ? -EINVAL : 0;
-+	} else if (blob_is_compressed_fdt(fdt)) {
-+		return pbl_open_dtbz_into(fdt, dest, destsize);
-+	}
-+
-+	pr_warn("FDT detection failed\n");
-+
-+	return -EINVAL;
-+}
+ config MALLOC_ALIGNMENT
+ 	hex
+ 	default 8
+diff --git a/include/mach/imx/scratch.h b/include/mach/imx/scratch.h
+index 43bf55de48099f1662cd4331620a93303d4dd710..a9745a95732dd961dcae83ec46c3eaa078d62a16 100644
+--- a/include/mach/imx/scratch.h
++++ b/include/mach/imx/scratch.h
+@@ -15,6 +15,7 @@ const struct optee_header *imx_scratch_get_optee_hdr(void);
+ void imx_scratch_save_optee_hdr(const struct optee_header *hdr);
+ 
+ void imx_scratch_get_fdt(void **fdt, unsigned int *fdt_sz);
++void imx_scratch_get_optee_fdto(void **fdto, unsigned int *fdto_sz);
+ 
+ #define imx8mq_init_scratch_space() imx8m_init_scratch_space(32, true)
+ #define imx8mm_init_scratch_space() imx8m_init_scratch_space(32, true)
 
 -- 
 2.47.3
