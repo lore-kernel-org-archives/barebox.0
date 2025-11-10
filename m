@@ -1,57 +1,98 @@
-Delivery-date: Mon, 10 Nov 2025 21:35:57 +0100
+Delivery-date: Mon, 10 Nov 2025 21:56:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYcH-00HVUy-0r
+	id 1vIYwE-00HVl9-15
 	for lore@lore.pengutronix.de;
-	Mon, 10 Nov 2025 21:35:57 +0100
+	Mon, 10 Nov 2025 21:56:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYcB-0002Q4-Pq
-	for lore@pengutronix.de; Mon, 10 Nov 2025 21:35:57 +0100
+	id 1vIYwD-0005LV-Pm
+	for lore@pengutronix.de; Mon, 10 Nov 2025 21:56:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vQ1B2FKY78WJ3xnygU8ShhXd+NLs6+fC7PM+x9w0xWk=; b=Xx2R80EBhdVOH/VQ4dXQCD3HnY
-	2bg0Mb1luH/CKFyCnh5/9FiWmRQPLPPJOMRnHsivT6spEO4/u9D96i50eckg6nwkfFNtDlqsAeV5h
-	qc4pVbiGy4wdDE7aTTZFt99L6aHORugC32hd7fYZ/rpYlZEoYBwDRjOIzpizs79Nw6phRHa8TUD+D
-	/Gg0E1iYVoRvRj/DpvAfIlfcCafnKY1UyaEZ2HE6QzKReXqfe4h5+veb2EZ6/c8YAfIAfAYNNee8x
-	4OFUOXdlqt0uGFO0RVnAXZigmduzjjwjBPKaRHpYe1xysSpQRoMe9BRS9/KT8QND98k4cythcJUw9
-	rvTwalSQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=T+KI/g7yrbF5IZkQHD7bFjGxBebQDXa6VHVW/zGvQ3U=; b=MIPj8Pm4V5zKJw33E9C1LtB0hK
+	agtfeYiwszlLUIMD0n+g2qhmjXOQVgCVos/XmvvHPqesFpRayqJsmtppY5LG2aO74134HBp0FV8O3
+	oNzMCB7jd0q6LWmhWiSxn6QTgW1Ylc5XkMZpRspqwminJPJyjBtFDIu/XAkcB/vgZ7Fb03Ha92Y0q
+	GRpXHWFhgvwEdY9KjQfSRt/iWy9zy9L1X4lzNc88DF6aC9NlBMlo8l5eVrwxXZVenQOAZgm/Lhv61
+	OYpvtwYY739lz01rRQ1EkwVY1v4mzOFHDGWRrvwuDtPusuQaHzpUlO/YlRhfsLpG7PO29ctQGxCoe
+	Qg32XX4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbN-000000065iU-3ZsH;
-	Mon, 10 Nov 2025 20:35:01 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vIYvn-000000068Kq-0pWo;
+	Mon, 10 Nov 2025 20:56:07 +0000
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbB-000000065SC-1v4G
+	id 1vIYvj-000000068HY-17Uk
 	for barebox@lists.infradead.org;
-	Mon, 10 Nov 2025 20:34:55 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vIYb8-0001MT-Hz; Mon, 10 Nov 2025 21:34:46 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 10 Nov 2025 21:34:44 +0100
+	Mon, 10 Nov 2025 20:56:06 +0000
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-47778704516so9189305e9.3
+        for <barebox@lists.infradead.org>; Mon, 10 Nov 2025 12:56:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762808161; x=1763412961; darn=lists.infradead.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T+KI/g7yrbF5IZkQHD7bFjGxBebQDXa6VHVW/zGvQ3U=;
+        b=JnSv4scRW6j7hs189vSGodGFZ5nZRay3szmDRlDzkhW4K7jGZon3n1yBa52MY1xt5x
+         fKFGpjtTvQTDLJlZP0jhUDDyqGh5ORJZ83SOVZleU0VSgp1B1kD2dc6vSRHoiNBOcKbq
+         qYDm60AU/k2NhsaAYY9fTBtuoKVz0/NjgfxrvE5+4rGVA3QQX3xO5tMu8mWVHZ9eiArv
+         RK8vZ/3dzm3m5nhCOjdGicNK9CgpM7s0JJPtwlFHenw+Hd+Tw6o+rDpcbt4kHU76ONtW
+         cueC+hVDXdhaY+vWDaMNks8amFsW9My15xtjov1+4irj8gepPLrFCF57AGISaBGqptrE
+         3BFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762808161; x=1763412961;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T+KI/g7yrbF5IZkQHD7bFjGxBebQDXa6VHVW/zGvQ3U=;
+        b=ZFghGOfdRpVlLKyWgcaVC2Fqr51NDR/LqFl73lV5xHqWUatMjVA6WJ6RE5MFhVrbku
+         L+t5gCIUtAtuSIBUVYI92GoTzjajKIGe/LZFo+fOlbCbc2XX5r5rfeJx6gu+YHmnTSgH
+         YcMnM37ZjTfoO+opVhy0znQZ8jjeq1WBWxF4uXe7sqjIcAOPh3bhd3HFko4dEPcm83T8
+         JMzOxQ1uK6afpuxVIft7TUjjhtphxpB6YSXMzLa20XBRRzYoriNnBQvOEZP9hKh/j/S5
+         t821Mmk15UYtkEp16DXBiS0NshwMuLT4ZVO4XH6ZXJ/FGhTLqlVxV5GRuikU+fGfisz/
+         QWdA==
+X-Gm-Message-State: AOJu0YxaoA5osf+6LNTPu/6h7WvsLy8JKXMv//ZacAt0Lb1tueg0fMsG
+	2HRjdkiSEuLwaqSh1rr/bvTbQnpRnEIeWEoz6rAP+ZFt0C9W+8k2CRvTjcTrER6e
+X-Gm-Gg: ASbGncuNDq/WgrESbu2YBb9PN9pcPn/LeQnPi+Vid0bvBuoh7PQJ/EI+g8ROuiUQGg6
+	2F/LcIiaTy5ZkTXJ0Ru3dbUDPdSd8nZYrf7MRAFGOLMpa1ZLgZ2R4R/Iv4z9sTfc69qwH1flVdx
+	tavzRVCP+qM+sOd9AmZUy22CDsdwoR1f3idGjecuNwJjR1xJrsy96uuVTDoUdSDKTiq8EDUuzhP
+	JKmHKMdLYyxctkJgMPEF2KIhz/MXrgnJyfCUvXMTKaFYCKTz2fLjtjRMs/2YQe+hyTu2QhCnoYy
+	l6deG0h25LQ/y+hWGC+MgcVllciUg6YiC17WTkePYehrWAjHtnIh82OnB8WuIsG+3MxEYtwDduR
+	1xTbzqZLlAaCp/bF+Tz7NqzuaNSLxxnor6mQ6ywKuFvRlnRr4+YzKAj9Ww9fw+7HvYsjHO22t8C
+	Uda8s7Bcq96x9r5+Ek2p3/FVKrFcei+AhFI/94dBkFgikBeqqpwFHR3Nxd/f1sHPQ6pLcuYDRNC
+	ak+LKyQl80fnrwiTEywjW8r5DvMl3IOVpdsevXpCDnIn0gSXJ6L/oBrO81EIcar8IpAMXsQjzMO
+	PnujrdeRXzJCdXNMQ84buKjhgL6tiMOl8BhEQgSjfA==
+X-Google-Smtp-Source: AGHT+IGytV2qsk13ej00nT/TLDJsCYbDyTwWEQS9p9K63ybh36jyA4DzV2SqRkBITZGURoxwdzzyrw==
+X-Received: by 2002:a05:600c:a05:b0:477:54cd:202e with SMTP id 5b1f17b1804b1-4777322eeb2mr89727475e9.2.1762808160689;
+        Mon, 10 Nov 2025 12:56:00 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8388-08be-f800-3793-f246-f72d-16b7.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:3793:f246:f72d:16b7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775cdc33c8sm333772815e9.2.2025.11.10.12.56.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 12:56:00 -0800 (PST)
+From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+Date: Mon, 10 Nov 2025 21:55:31 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-4-8f0625ac5471@pengutronix.de>
-References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
-In-Reply-To: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>
+Message-Id: <20251110-fixup_docs-v1-1-1acaf5593d26@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAEJREmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDQ0MD3bTMitKC+JT85GJdA1Mzs0QDAwsTc2NTJaCGgqJUoCzYsOjY2lo
+ Ac3OKb1wAAAA=
+X-Change-ID: 20251110-fixup_docs-0566a0084735
+To: barebox@lists.infradead.org
+Cc: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251110_123449_831067_BAAFB99F 
-X-CRM114-Status: GOOD (  15.93  )
+X-CRM114-CacheID: sfid-20251110_125603_326107_F6AC382A 
+X-CRM114-Status: UNSURE (   9.29  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,494 +110,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 04/23] ARM: i.MX8M: add support to pass DT via
- imx8m{m,n,q,p}_load_and_start_image_via_tfa()
+X-Spam-Status: No, score=-3.0 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] Documentation: defaultenv-2: Document C-based init script
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The internal barebox DTB isn't passed to other BL3x stages albeit it can
-be very useful, e.g. OP-TEE (as BL32) could parse the memory
-configuration from the DTB.
+Add a note to clarify that the default init script is now implemented in
+C rather than as a shell script.
 
-Extending the common TF-A (ATF) loader helpers is the first step to be
-able to pass the board DTB to other BL3x firmware images.
-
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Fixes: 90df2a955e3c ("defaultenv: Convert init script to C")
+Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 ---
- arch/arm/boards/congatec-qmx8p/lowlevel.c          |  6 +++---
- arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c    |  2 +-
- arch/arm/boards/karo-qsxp-ml81/lowlevel.c          |  2 +-
- arch/arm/boards/mnt-reform/lowlevel.c              |  2 +-
- arch/arm/boards/nxp-imx8mm-evk/lowlevel.c          | 15 +++++++++-----
- arch/arm/boards/nxp-imx8mn-evk/lowlevel.c          | 11 ++++++----
- arch/arm/boards/nxp-imx8mp-evk/lowlevel.c          |  2 +-
- arch/arm/boards/nxp-imx8mq-evk/lowlevel.c          |  2 +-
- arch/arm/boards/phytec-som-imx8mm/lowlevel.c       |  2 +-
- arch/arm/boards/phytec-som-imx8mq/lowlevel.c       |  2 +-
- arch/arm/boards/polyhex-debix/lowlevel.c           |  6 +++---
- arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c   |  2 +-
- arch/arm/boards/skov-imx8mp/lowlevel.c             |  6 +++---
- arch/arm/boards/tqma8mpxl/lowlevel.c               |  2 +-
- .../variscite-dt8mcustomboard-imx8mp/lowlevel.c    |  2 +-
- arch/arm/boards/zii-imx8mq-dev/lowlevel.c          | 21 ++++++++++---------
- arch/arm/mach-imx/atf.c                            | 24 +++++++++++-----------
- include/mach/imx/xload.h                           | 16 +++++++--------
- 18 files changed, 67 insertions(+), 58 deletions(-)
+ Documentation/user/defaultenv-2.rst | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/congatec-qmx8p/lowlevel.c b/arch/arm/boards/congatec-qmx8p/lowlevel.c
-index 1889b9bb3318a2cfc4d31cabbe0476060cfeae22..fb969bcf9c0330c22134a20f21893041174316a7 100644
---- a/arch/arm/boards/congatec-qmx8p/lowlevel.c
-+++ b/arch/arm/boards/congatec-qmx8p/lowlevel.c
-@@ -87,7 +87,7 @@ static void power_init_board(void)
+diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
+index 3715fd770d9d89d52172bcc1e7564d871977aa30..e5cb4a51bfad47e5022fb719d513a201519334e5 100644
+--- a/Documentation/user/defaultenv-2.rst
++++ b/Documentation/user/defaultenv-2.rst
+@@ -50,9 +50,10 @@ and their respective included directories in ``defaultenv/Makefile``:
+ /env/bin/init
+ -------------
+ 
+-This script is executed by the barebox startup code after initialization.
+-In defaultenv-2, this script will define and set a number of global
+-variables, followed by sourcing all of the scripts in ``/env/init/`` with:
++The default init script is now written in C. However, you can still define
++your own ``/env/bin/init`` script and it will take precedence over the
++built-in C implementation.
++Example for simple init script:
+ 
+ .. code-block:: sh
  
- extern struct dram_timing_info dram_timing_4g;
- 
--static void start_tfa(void)
-+static void start_tfa(char dtb[])
- {
- 	/*
- 	 * If we are in EL3 we are running for the first time and need to
-@@ -102,14 +102,14 @@ static void start_tfa(void)
- 
- 	imx8mp_ddr_init(&dram_timing_4g, DRAM_TYPE_LPDDR4);
- 
--	imx8mp_load_and_start_image_via_tfa();
-+	imx8mp_load_and_start_image_via_tfa(dtb);
- }
- 
- static __noreturn noinline void congatec_qmx8p_start(char dtb[])
- {
- 	setup_uart();
- 
--	start_tfa();
-+	start_tfa(dtb);
- 
- 	/*
- 	 * Standard entry we hit once we initialized both DDR and ATF
-diff --git a/arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c b/arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c
-index a779c1f0ac1919cf024c8a5bd7f692b6caee6e38..fe25d74cd423235af399dd62c71255852f71b167 100644
---- a/arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c
-+++ b/arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c
-@@ -92,7 +92,7 @@ ENTRY_FUNCTION(start_innocomm_wb15_evk, r0, r1, r2)
- 
- 		imx8mm_ddr_init(&innocomm_wb15_dram_timing, DRAM_TYPE_LPDDR4);
- 
--		imx8mm_load_and_start_image_via_tfa();
-+		imx8mm_load_and_start_image_via_tfa(__dtb_z_imx8mm_innocomm_wb15_evk_start);
- 	}
- 
- 	/* Standard entry we hit once we initialized both DDR and ATF */
-diff --git a/arch/arm/boards/karo-qsxp-ml81/lowlevel.c b/arch/arm/boards/karo-qsxp-ml81/lowlevel.c
-index 506a9c9930e5b27c4de40504f5e9dbb59805c7ed..fba57446173257222a61c5cb8fd7cd9f2a13779a 100644
---- a/arch/arm/boards/karo-qsxp-ml81/lowlevel.c
-+++ b/arch/arm/boards/karo-qsxp-ml81/lowlevel.c
-@@ -94,7 +94,7 @@ ENTRY_FUNCTION(start_karo_qsxp_ml81, r0, r1, r2)
- 
- 		imx8mp_ddr_init(&karo_qsxp_ml81_dram_timing, DRAM_TYPE_LPDDR4);
- 
--		imx8mp_load_and_start_image_via_tfa();
-+		imx8mp_load_and_start_image_via_tfa(__dtb_z_imx8mp_karo_qsxp_ml81_qsbase4_start);
- 	}
- 
- 	/* Standard entry we hit once we initialized both DDR and ATF */
-diff --git a/arch/arm/boards/mnt-reform/lowlevel.c b/arch/arm/boards/mnt-reform/lowlevel.c
-index 9f951508dfdd5fba5d980a7ebd5538731a2f58fa..de54f3cd7212f9d6f2fae1f7cd3bc2b6b41b2ecb 100644
---- a/arch/arm/boards/mnt-reform/lowlevel.c
-+++ b/arch/arm/boards/mnt-reform/lowlevel.c
-@@ -123,7 +123,7 @@ static __noreturn noinline void mnt_reform_start(void)
- 
- 		imx8mq_ddr_init(&mnt_reform_dram_timing, DRAM_TYPE_LPDDR4);
- 
--		imx8mq_load_and_start_image_via_tfa();
-+		imx8mq_load_and_start_image_via_tfa(__dtb_z_imx8mq_mnt_reform2_start);
- 	}
- 
- 	/*
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-index 881d8285b60ef0d2e0ca408f6847a18d17dbe5d4..7dbcfdc878eb855d6d54b35c8e9fefd3689e565a 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-@@ -21,6 +21,10 @@
- #include <mach/imx/xload.h>
- #include <soc/imx8m/ddr.h>
- 
-+extern char __dtb_z_imx8mm_evk_start[];
-+extern char __dtb_z_imx8mm_evkb_start[];
-+static void *fdt;
-+
- #define UART_PAD_CTRL	MUX_PAD_CTRL(PAD_CTL_DSE_3P3V_45_OHM)
- 
- static void setup_uart(void)
-@@ -87,10 +91,13 @@ static void power_init_board(void)
- 
- 	i2c = imx8m_i2c_early_init(IOMEM(MX8MQ_I2C1_BASE_ADDR));
- 
--	if (i2c_dev_probe(i2c, 0x25, true) == 0)
-+	if (i2c_dev_probe(i2c, 0x25, true) == 0) {
- 		pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
--	else
-+		fdt = __dtb_z_imx8mm_evkb_start;
-+	} else {
- 		pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
-+		fdt = __dtb_z_imx8mm_evk_start;
-+	}
- }
- 
- extern struct dram_timing_info imx8mm_evk_dram_timing;
-@@ -109,7 +116,7 @@ static void start_atf(void)
- 	power_init_board();
- 	imx8mm_ddr_init(&imx8mm_evk_dram_timing, DRAM_TYPE_LPDDR4);
- 
--	imx8mm_load_and_start_image_via_tfa();
-+	imx8mm_load_and_start_image_via_tfa(fdt);
- }
- 
- /*
-@@ -130,9 +137,7 @@ static void start_atf(void)
-  */
- static __noreturn noinline void nxp_imx8mm_evk_start(void)
- {
--	extern char __dtb_z_imx8mm_evk_start[], __dtb_z_imx8mm_evkb_start[];
- 	struct pbl_i2c *i2c;
--	void *fdt;
- 
- 	setup_uart();
- 
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-index a1a501b1d962c202be5bb06bb20a2743728eb642..032c2421693614aa0e0eaabccf9482c8cd22bca8 100644
---- a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-@@ -25,6 +25,10 @@
- #include <mfd/bd71837.h>
- #include <soc/imx8m/ddr.h>
- 
-+extern char __dtb_z_imx8mn_evk_start[];
-+extern char __dtb_z_imx8mn_ddr4_evk_start[];
-+static void *fdt;
-+
- static void setup_uart(void)
- {
- 	void __iomem *uart = IOMEM(MX8M_UART2_BASE_ADDR);
-@@ -104,12 +108,14 @@ static void start_atf(void)
- 	if (i2c_dev_probe(i2c, 0x25, true) == 0) {
- 		pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
- 		imx8mn_ddr_init(&imx8mn_evk_lpddr4_timing, DRAM_TYPE_LPDDR4);
-+		fdt = __dtb_z_imx8mn_evk_start;
- 	} else {
- 		pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
- 		imx8mn_ddr_init(&imx8mn_evk_ddr4_timing, DRAM_TYPE_DDR4);
-+		fdt = __dtb_z_imx8mn_ddr4_evk_start;
- 	}
- 
--	imx8mn_load_and_start_image_via_tfa();
-+	imx8mn_load_and_start_image_via_tfa(fdt);
- }
- 
- /*
-@@ -130,9 +136,6 @@ static void start_atf(void)
-  */
- static __noreturn noinline void nxp_imx8mn_evk_start(void)
- {
--	extern char __dtb_z_imx8mn_evk_start[], __dtb_z_imx8mn_ddr4_evk_start[];
--	void *fdt;
--
- 	setup_uart();
- 
- 	start_atf();
-diff --git a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-index 969947d2ec4ec23a092c58de6c683a5d655640b9..5e0cab38235966503e402f519d251e9cb6c96fe7 100644
---- a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-@@ -103,7 +103,7 @@ static void start_atf(void)
- 
- 	imx8mp_ddr_init(&imx8mp_evk_dram_timing, DRAM_TYPE_LPDDR4);
- 
--	imx8mp_load_and_start_image_via_tfa();
-+	imx8mp_load_and_start_image_via_tfa(__dtb_z_imx8mp_evk_start);
- }
- 
- /*
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-index d1a517dddbd93aee33e27b012d3287cfde1ea017..861664f94fd52c7f4e3ea27538d6d7f2600b8cc4 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-@@ -67,7 +67,7 @@ static __noreturn noinline void nxp_imx8mq_evk_start(void)
- 	if (current_el() == 3) {
- 		ddr_init();
- 
--		imx8mq_load_and_start_image_via_tfa();
-+		imx8mq_load_and_start_image_via_tfa(__dtb_z_imx8mq_evk_start);
- 	}
- 
- 	/*
-diff --git a/arch/arm/boards/phytec-som-imx8mm/lowlevel.c b/arch/arm/boards/phytec-som-imx8mm/lowlevel.c
-index 26f0f4d3e12e3c467c86deb5b9a1f921fcc43eb5..835bb66d659ab60c0e0c449c0d1b6ece9650a522 100644
---- a/arch/arm/boards/phytec-som-imx8mm/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-imx8mm/lowlevel.c
-@@ -110,7 +110,7 @@ static void start_phyboard_polis_rdk_common(enum phytec_imx8m_ddr_size size)
- 
- 		phyboard_polis_rdk_ddr_init(size);
- 
--		imx8mm_load_and_start_image_via_tfa();
-+		imx8mm_load_and_start_image_via_tfa(__dtb_z_imx8mm_phyboard_polis_rdk_start);
- 	}
- 
- 	/* Standard entry we hit once we initialized both DDR and ATF */
-diff --git a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-index 362b3ed823c1337a84fc653e0334f3fb859ad723..7ec05c3d01e9fa4c86f4b70bdea6f09b53caf441 100644
---- a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-@@ -65,7 +65,7 @@ static __noreturn noinline void phytec_phycore_imx8mq_start(void)
- 	 * loadting ATF blob again
- 	 */
- 	if (current_el() == 3)
--		imx8mq_load_and_start_image_via_tfa();
-+		imx8mq_load_and_start_image_via_tfa(__dtb_z_imx8mq_phytec_phycore_som_start);
- 
- 	/*
- 	 * Standard entry we hit once we initialized both DDR and ATF
-diff --git a/arch/arm/boards/polyhex-debix/lowlevel.c b/arch/arm/boards/polyhex-debix/lowlevel.c
-index fa49fcb5c1430617d8b2cce5c5d3024e5ff95452..707287100e30a6d6a2f75afcd93f2e56a2c126cb 100644
---- a/arch/arm/boards/polyhex-debix/lowlevel.c
-+++ b/arch/arm/boards/polyhex-debix/lowlevel.c
-@@ -84,7 +84,7 @@ static void power_init_board(void)
- extern struct dram_timing_info imx8mp_debix_dram_timing;
- extern struct dram_timing_info imx8mp_debix_8g_dram_timing;
- 
--static void start_atf(struct dram_timing_info *dram_timing)
-+static void start_atf(struct dram_timing_info *dram_timing, void *dtb)
- {
- 	/*
- 	 * If we are in EL3 we are running for the first time and need to
-@@ -100,7 +100,7 @@ static void start_atf(struct dram_timing_info *dram_timing)
- 
- 	imx8mp_ddr_init(dram_timing, DRAM_TYPE_LPDDR4);
- 
--	imx8mp_load_and_start_image_via_tfa();
-+	imx8mp_load_and_start_image_via_tfa(dtb);
- }
- 
- /*
-@@ -124,7 +124,7 @@ imx8mp_debix_start(struct dram_timing_info *dram_timing, void *dtb)
- {
- 	setup_uart();
- 
--	start_atf(dram_timing);
-+	start_atf(dram_timing, dtb);
- 
- 	/*
- 	 * Standard entry we hit once we initialized both DDR and ATF
-diff --git a/arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c b/arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c
-index 711316ae4be71134e45537019fc8cdc61cec8969..f040509a0f7c1f4fcd70dc9296e4709b565bc8a6 100644
---- a/arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c
-+++ b/arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c
-@@ -49,7 +49,7 @@ static void start_atf(void)
- 
- 	imx8mm_ddr_init(&prt8mm_dram_timing, DRAM_TYPE_LPDDR4);
- 
--	imx8mm_load_and_start_image_via_tfa();
-+	imx8mm_load_and_start_image_via_tfa(__dtb_z_imx8mm_prt8mm_start);
- }
- 
- /*
-diff --git a/arch/arm/boards/skov-imx8mp/lowlevel.c b/arch/arm/boards/skov-imx8mp/lowlevel.c
-index 1fd665d676753ed1210dc82b98e40adf24f0e5a0..7859240eec10b2d3f8d351c04966fc68045d8b55 100644
---- a/arch/arm/boards/skov-imx8mp/lowlevel.c
-+++ b/arch/arm/boards/skov-imx8mp/lowlevel.c
-@@ -149,7 +149,7 @@ static void power_init_board(void)
- 
- extern struct dram_timing_info imx8mp_skov_dram_timing;
- 
--static void start_atf(struct dram_timing_info *dram_timing)
-+static void start_atf(struct dram_timing_info *dram_timing, void *dtb)
- {
- 	/*
- 	 * If we are in EL3 we are running for the first time and need to
-@@ -165,7 +165,7 @@ static void start_atf(struct dram_timing_info *dram_timing)
- 
- 	imx8mp_ddr_init(dram_timing, DRAM_TYPE_LPDDR4);
- 
--	imx8mp_load_and_start_image_via_tfa();
-+	imx8mp_load_and_start_image_via_tfa(dtb);
- }
- 
- /*
-@@ -189,7 +189,7 @@ imx8mp_skov_start(struct dram_timing_info *dram_timing, void *dtb)
- {
- 	setup_uart();
- 
--	start_atf(dram_timing);
-+	start_atf(dram_timing, dtb);
- 
- 	/*
- 	 * Standard entry we hit once we initialized both DDR and ATF
-diff --git a/arch/arm/boards/tqma8mpxl/lowlevel.c b/arch/arm/boards/tqma8mpxl/lowlevel.c
-index e0a0f17d3aa43435ba46c55f5609aabd1abf4300..4ab3bd934aab30b925f4496ae6883a71348053f0 100644
---- a/arch/arm/boards/tqma8mpxl/lowlevel.c
-+++ b/arch/arm/boards/tqma8mpxl/lowlevel.c
-@@ -96,7 +96,7 @@ static __noreturn noinline void tqma8mpxl_start(void)
- 
- 		imx8mp_ddr_init(&dram_timing_2gb_no_ecc, DRAM_TYPE_LPDDR4);
- 
--		imx8mp_load_and_start_image_via_tfa();
-+		imx8mp_load_and_start_image_via_tfa(__dtb_z_imx8mp_tqma8mpql_mba8mpxl_start);
- 	}
- 
- 	imx8mp_barebox_entry(__dtb_z_imx8mp_tqma8mpql_mba8mpxl_start);
-diff --git a/arch/arm/boards/variscite-dt8mcustomboard-imx8mp/lowlevel.c b/arch/arm/boards/variscite-dt8mcustomboard-imx8mp/lowlevel.c
-index c9907ebf0a35597798a3b5d073e750ae2d6d8fdf..96869e86ed8f48de821eafe0882c2a78cb0aae3d 100644
---- a/arch/arm/boards/variscite-dt8mcustomboard-imx8mp/lowlevel.c
-+++ b/arch/arm/boards/variscite-dt8mcustomboard-imx8mp/lowlevel.c
-@@ -95,7 +95,7 @@ static void start_atf(void)
- 
- 	imx8mp_ddr_init(&var_dart_imx8mp_dram_timing, DRAM_TYPE_LPDDR4);
- 
--	imx8mp_load_and_start_image_via_tfa();
-+	imx8mp_load_and_start_image_via_tfa(__dtb_z_imx8mp_var_dart_dt8mcustomboard_start);
- }
- 
- static __noreturn noinline void variscite_imx8mp_dart_cb_start(void)
-diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-index 4184748cd858848df3d47a2e01f2bbaa86934202..53cdf52562991932656015a8ebf9f0a311e9ef5d 100644
---- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-+++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-@@ -122,16 +122,6 @@ static __noreturn noinline void zii_imx8mq_dev_start(void)
- 		 */
- 		zii_imx8mq_dev_sram_setup();
- 	}
--	/*
--	 * Straight from the power-on we are at EL3, so the following
--	 * code _will_ load and jump to ATF.
--	 *
--	 * However when we are re-executed upon exit from ATF's
--	 * initialization routine, it is EL2 which means we'll skip
--	 * loadting ATF blob again
--	 */
--	if (current_el() == 3)
--		imx8mq_load_and_start_image_via_tfa();
- 
- 	system_type = get_system_type();
- 
-@@ -153,6 +143,17 @@ static __noreturn noinline void zii_imx8mq_dev_start(void)
- 		break;
- 	}
- 
-+	/*
-+	 * Straight from the power-on we are at EL3, so the following
-+	 * code _will_ load and jump to ATF.
-+	 *
-+	 * However when we are re-executed upon exit from ATF's
-+	 * initialization routine, it is EL2 which means we'll skip
-+	 * loadting ATF blob again
-+	 */
-+	if (current_el() == 3)
-+		imx8mq_load_and_start_image_via_tfa(fdt);
-+
- 	/*
- 	 * Standard entry we hit once we initialized both DDR and ATF
- 	 */
-diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-index 11fe0334059d104a003ee084c618ff6f0d66ea3c..42ab9e9a23e433c50a1df1739d0163049174e6a6 100644
---- a/arch/arm/mach-imx/atf.c
-+++ b/arch/arm/mach-imx/atf.c
-@@ -141,12 +141,12 @@ static void imx_adjust_optee_memory(void **bl32, void **bl32_image, size_t *bl32
- 	*bl32_image += sizeof(*hdr);
- }
- 
--__noreturn void imx8mm_load_and_start_image_via_tfa(void)
-+__noreturn void imx8mm_load_and_start_image_via_tfa(void *fdt)
- {
--	__imx8mm_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+	__imx8mm_load_and_start_image_via_tfa(fdt, (void *)MX8M_ATF_BL33_BASE_ADDR);
- }
- 
--__noreturn void __imx8mm_load_and_start_image_via_tfa(void *bl33)
-+__noreturn void __imx8mm_load_and_start_image_via_tfa(void *fdt, void *bl33)
- {
- 	const void *bl31;
- 	size_t bl31_size;
-@@ -215,12 +215,12 @@ void imx8mp_load_bl33(void *bl33)
- 	memcpy(bl33, __image_start, barebox_pbl_size);
- }
- 
--__noreturn void imx8mp_load_and_start_image_via_tfa(void)
-+__noreturn void imx8mp_load_and_start_image_via_tfa(void *fdt)
- {
--	__imx8mp_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+	__imx8mp_load_and_start_image_via_tfa(fdt, (void *)MX8M_ATF_BL33_BASE_ADDR);
- }
- 
--__noreturn void __imx8mp_load_and_start_image_via_tfa(void *bl33)
-+__noreturn void __imx8mp_load_and_start_image_via_tfa(void *fdt, void *bl33)
- {
- 	const void *bl31;
- 	size_t bl31_size;
-@@ -290,12 +290,12 @@ void imx8mn_load_bl33(void *bl33)
- 	memcpy(bl33, __image_start, barebox_pbl_size);
- }
- 
--__noreturn void imx8mn_load_and_start_image_via_tfa(void)
-+__noreturn void imx8mn_load_and_start_image_via_tfa(void *fdt)
- {
--	__imx8mn_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+	__imx8mn_load_and_start_image_via_tfa(fdt, (void *)MX8M_ATF_BL33_BASE_ADDR);
- }
- 
--__noreturn void __imx8mn_load_and_start_image_via_tfa(void *bl33)
-+__noreturn void __imx8mn_load_and_start_image_via_tfa(void *fdt, void *bl33)
- {
- 	const void *bl31;
- 	size_t bl31_size;
-@@ -358,12 +358,12 @@ void imx8mq_load_bl33(void *bl33)
- 	memcpy(bl33, __image_start, barebox_pbl_size);
- }
- 
--__noreturn void imx8mq_load_and_start_image_via_tfa(void)
-+__noreturn void imx8mq_load_and_start_image_via_tfa(void *fdt)
- {
--	__imx8mq_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+	__imx8mq_load_and_start_image_via_tfa(fdt, (void *)MX8M_ATF_BL33_BASE_ADDR);
- }
- 
--__noreturn void __imx8mq_load_and_start_image_via_tfa(void *bl33)
-+__noreturn void __imx8mq_load_and_start_image_via_tfa(void *fdt, void *bl33)
- {
- 	const void *bl31;
- 	size_t bl31_size;
-diff --git a/include/mach/imx/xload.h b/include/mach/imx/xload.h
-index 396c728547614091fc710de50dc1583c6b6e2a68..749b936cb840373d1a3905620ee8dabdf84e8d32 100644
---- a/include/mach/imx/xload.h
-+++ b/include/mach/imx/xload.h
-@@ -29,14 +29,14 @@ void imx8mn_load_bl33(void *bl33);
- void imx8mp_load_bl33(void *bl33);
- void imx8mq_load_bl33(void *bl33);
- 
--void __noreturn imx8mm_load_and_start_image_via_tfa(void);
--void __noreturn imx8mn_load_and_start_image_via_tfa(void);
--void __noreturn imx8mp_load_and_start_image_via_tfa(void);
--void __noreturn imx8mq_load_and_start_image_via_tfa(void);
--void __noreturn __imx8mm_load_and_start_image_via_tfa(void *bl33);
--void __noreturn __imx8mn_load_and_start_image_via_tfa(void *bl33);
--void __noreturn __imx8mp_load_and_start_image_via_tfa(void *bl33);
--void __noreturn __imx8mq_load_and_start_image_via_tfa(void *bl33);
-+void __noreturn imx8mm_load_and_start_image_via_tfa(void *fdt);
-+void __noreturn imx8mn_load_and_start_image_via_tfa(void *fdt);
-+void __noreturn imx8mp_load_and_start_image_via_tfa(void *fdt);
-+void __noreturn imx8mq_load_and_start_image_via_tfa(void *fdt);
-+void __noreturn __imx8mm_load_and_start_image_via_tfa(void *fdt, void *bl33);
-+void __noreturn __imx8mn_load_and_start_image_via_tfa(void *fdt, void *bl33);
-+void __noreturn __imx8mp_load_and_start_image_via_tfa(void *fdt, void *bl33);
-+void __noreturn __imx8mq_load_and_start_image_via_tfa(void *fdt, void *bl33);
- 
- void __noreturn imx93_load_and_start_image_via_tfa(void);
- void __noreturn __imx93_load_and_start_image_via_tfa(void *bl33);
 
+---
+base-commit: 0633a4db9d2351234b565b55978ce068b387eb2d
+change-id: 20251110-fixup_docs-0566a0084735
+
+Best regards,
 -- 
-2.47.3
+Sohaib Mohamed <sohaib.amhmd@gmail.com>
 
 
 
