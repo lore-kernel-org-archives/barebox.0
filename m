@@ -1,59 +1,57 @@
-Delivery-date: Mon, 10 Nov 2025 21:35:53 +0100
+Delivery-date: Mon, 10 Nov 2025 21:35:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYcD-00HVT2-2y
+	id 1vIYcF-00HVTk-0Z
 	for lore@lore.pengutronix.de;
-	Mon, 10 Nov 2025 21:35:53 +0100
+	Mon, 10 Nov 2025 21:35:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYc8-0002NF-V0
-	for lore@pengutronix.de; Mon, 10 Nov 2025 21:35:53 +0100
+	id 1vIYcB-0002Q2-On
+	for lore@pengutronix.de; Mon, 10 Nov 2025 21:35:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=hqlH++AISlfWN2qQSBTawXASEf4QZes578PlY6JA2dM=; b=fd0iLvQvKnLXxk
-	pGDSnCm1v9sdriflGhlcGiTJ5bKwiMvOGL8FBBZg+nWxpjxc51AaUFdStfR9EAG5h8JQTtWvCmWEa
-	leYB3lo5a1LMPsogCKsO2udWU3iZcepDez/ueJnhQW3Ph4R56NTipzNYtyWCT2ySQxOabeEq0EDlS
-	5AwvbQIKL/Z70jUvQcAsJs/u0aPs+jNXw4xcEZ3U/Aceip+qnRRrZ75dtgVJYHgn8eVd5N7CeML7B
-	OC4zhlXAqvr8BpCwwl7tDJgJKWKoWGC23B+UcAi1jYuYgyj6bfbqJLsaj7dfQb5qvZiKq/YlbHuqv
-	z1IdzgT1BQf4BhbHOqsg==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=46kdRtBuhXlBGR0ED+kiFuPoQ4Y+pwn9mFOD588W3A4=; b=qWRqWmhRXwgcDk6+qP1NYIl7/A
+	1AMy9fuNLE6geHQVsDDePMkzoCinPwAgHVkqKsvXq1vCpBGtup05BoUUs1kp/rgFIunAmOkm276PS
+	KZ1PCPJQUO43PZCSv1uavVKnjXoofJ3Kjgt5J9REk7SEBtiLR9VJDHURn88f2uGv0bkkmrm3TPUr5
+	6gw8XlewP8eAisHyO+eaL7b7hviOZPH5lkR+F8yTiN0zH5aIze6I8DCUn8eluSwMh6N3EyoD63vO7
+	SD1Ve3I58dAuq5jnIP4KRkH4XcEfGlDck71IWqNRf9NuZedS+L5VTKq7v+rCuMDxeq2bXcJ+qWJ3x
+	pPwbi4oQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbM-000000065gb-2agY;
-	Mon, 10 Nov 2025 20:35:00 +0000
+	id 1vIYbJ-000000065bZ-2jxH;
+	Mon, 10 Nov 2025 20:34:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbC-000000065S8-2ePe
+	id 1vIYbB-000000065SJ-2Azv
 	for barebox@lists.infradead.org;
-	Mon, 10 Nov 2025 20:34:55 +0000
+	Mon, 10 Nov 2025 20:34:53 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vIYb8-0001MT-EQ; Mon, 10 Nov 2025 21:34:46 +0100
+	id 1vIYb8-0001MT-O8; Mon, 10 Nov 2025 21:34:46 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 10 Nov 2025 21:34:40 +0100
-Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
+Date: Mon, 10 Nov 2025 21:34:51 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGBMEmkC/x2NQQqEMBAEvyJztiGjZkG/Ih6WOHEHliQkIoL49
- 417q4Ki+6IiWaXQ1FyU5dCiMVThtiH3eYdNoGt16kxnmdngeAhmhMEekzrEtIsgetR8/WrYIKO
- 3bHt2w2ugOpSyeD3/J/Ny3z9Nz9w8dAAAAA==
-X-Change-ID: 20251110-v2025-09-0-topic-optee-of-handling-e9f51531c464
+Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-11-8f0625ac5471@pengutronix.de>
+References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
+In-Reply-To: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251110_123450_711819_A02C31CB 
-X-CRM114-Status: GOOD (  15.15  )
+X-CRM114-CacheID: sfid-20251110_123449_573184_077188CE 
+X-CRM114-Status: GOOD (  12.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,149 +73,77 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 00/23] Improve OP-TEE handling
+Subject: [PATCH 11/23] ARM: i.MX8M: esdctl: drop ddrc base from
+ imx8m_ddrc_sdram_size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+All i.MX8M use the same DDRC MMIO address. Therefore drop the ddrc param
+from imx8m_ddrc_sdram_size() and set it locally.
 
-by this patchset I want to improve the current barebox OP-TEE handling.
-
-Currently there are many paths which do all have their own pitfalls.
-
- - ARM (i.MX6, i.MX6UL(L)):
-   - bootm OP-TEE loading (deprecated)
-   - early boot loading:
-     Barebox and OP-TEE make use of a 'magic' FDT memory location, which
-     was used by OP-TEE to pass information like 'reserved-memory' nodes
-     and the used firmware interface and the psci node.
-
-     Barebox doesn't pass the builtin FDT which could be used by OP-TEE
-     to determine the memory setup.
-
- - ARM64 (i.MX8M, i.MX93, Rockchip):
-   - early boot loading via BL2
-     Barebox doesn't make use of the 'magic' FDT memroy location and
-     instead uses Kconfig options which need to be in sync with the
-     OP-TEE config switches during compile time to configure the
-     'reserved-memory' nodes and firmware interface.
-
-     Barebox doesn't pass the builtin FDT which could be used by OP-TEE
-     to determine the memory setup.
-
- - RISC-V
-   - no OP-TEE support yet
-
-By this patchset I want to implement a common flow, while keeping the
-backward compatibility. The common bootflow shall be:
-
- - BL2:
-   - opt. extracts the builtin DTB into a buffer
-   - passes the DTB to OP-TEE via arch dependend boot arguments.
- - OP-TEE
-   - uses the DTB to gather information like memory setup
-   - can dyn. configure the TZC accordingly
-   - provides information back to barebox via DTB overlay fragments
-     (added to the provided DTB (details..)). This can be
-     'reserved-memory' nodes, OP-TEE call-interface (smc), or secure HW
-     configurations (like CAAM secure-jobrings)
- - BL33 (pbl)
-   - extracts the information from OP-TEE and registers it via a well
-     known handoff data ID for barebox proper.
- - BL33 (proper)
-   - the common barebox proper boot path checks for a specific
-     handoff-id and registers the OF overlay as early as possible during
-     boot.
-
-BL2, OP-TEE and BL33 (pbl) are architecture dependend steps for which
-common helpers are added by this patchset.
-
-BL33 (proper) is common to all and addressed by this patchset as well.
-
-The patchset targets the i.MX8M platforms, other platforms need to be
-converted later on.
-
-Regards,
-  Marco
+While on it drop the param from _imx8m_ddrc_add_mem() as well since it
+is no longer needed to be passed to imx8m_ddrc_sdram_size().
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-Marco Felsch (23):
-      pbl: compressed-dtb: add missing includes
-      pbl: fdt: fix fdt_fixup_mem error handling
-      ARM: atf: add missing includes in atf_common.h
-      ARM: i.MX8M: add support to pass DT via imx8m{m,n,q,p}_load_and_start_image_via_tfa()
-      ARM: i.MX8M: cosmetic cleanup
-      ARM: i.MX8M: move BL32 setup into imx8m_tfa_start_bl31()
-      ARM: i.MX8M: imx8m_tfa_start_bl31() add support for bl33 and fdt
-      pbl: decomp: add pbl_dtbz_uncompress helper
-      pbl: fdt: add pbl_load_fdt helper
-      ARM: i.MX: scratch: add FDT support
-      ARM: i.MX8M: esdctl: drop ddrc base from imx8m_ddrc_sdram_size
-      ARM: i.MX8M: esdctl: export imx8m_ddrc_sdram_size()
-      ARM: i.MX8M: add support to pass BL3x bl_params
-      ARM: i.MX: scratch: add OP-TEE FDTO support
-      pbl: string: add strncmp
-      pbl: fdt: add fdt_copy_node helper
-      handoff-data: Add BL32_DT_OVL entry
-      security: optee: add optee_extract_fdto helper
-      security: optee: add helpers to apply OP-TEE FDTO
-      ARM: i.MX8M: Add support to extract OP-TEE provided informations
-      of: base: register optional OP-TEE overlay
-      pbl: add support to disable/remove the /secure-chosen/stdout-path
-      ARM: i.MX8M: remove /secure-chosen/stdout-path if requested
+ arch/arm/mach-imx/esdctl.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
- arch/Kconfig                                       |   3 +
- arch/arm/boards/congatec-qmx8p/lowlevel.c          |   6 +-
- arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c    |   2 +-
- arch/arm/boards/karo-qsxp-ml81/lowlevel.c          |   2 +-
- arch/arm/boards/mnt-reform/lowlevel.c              |   2 +-
- arch/arm/boards/nxp-imx8mm-evk/lowlevel.c          |  15 +-
- arch/arm/boards/nxp-imx8mn-evk/lowlevel.c          |  11 +-
- arch/arm/boards/nxp-imx8mp-evk/lowlevel.c          |   2 +-
- arch/arm/boards/nxp-imx8mq-evk/lowlevel.c          |   2 +-
- arch/arm/boards/phytec-som-imx8mm/lowlevel.c       |   2 +-
- arch/arm/boards/phytec-som-imx8mq/lowlevel.c       |   2 +-
- arch/arm/boards/polyhex-debix/lowlevel.c           |   6 +-
- arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c   |   2 +-
- arch/arm/boards/skov-imx8mp/lowlevel.c             |   6 +-
- arch/arm/boards/tqma8mpxl/lowlevel.c               |   2 +-
- .../variscite-dt8mcustomboard-imx8mp/lowlevel.c    |   2 +-
- arch/arm/boards/zii-imx8mq-dev/lowlevel.c          |  21 +-
- arch/arm/include/asm/atf_common.h                  |   3 +
- arch/arm/mach-imx/Kconfig                          |  13 +
- arch/arm/mach-imx/atf.c                            | 262 +++++++++++++--------
- arch/arm/mach-imx/esdctl.c                         |  53 ++++-
- arch/arm/mach-imx/imx9.c                           |   2 +-
- arch/arm/mach-imx/scratch.c                        |  30 +++
- arch/arm/mach-rockchip/rockchip.c                  |   3 +-
- common/Kconfig                                     |  24 ++
- drivers/of/base.c                                  |   3 +
- drivers/soc/imx/soc-imx8m.c                        |   3 +-
- drivers/tee/optee/Kconfig                          |   1 +
- drivers/tee/optee/of_fixup.c                       |  46 ++++
- include/compressed-dtb.h                           |   2 +
- include/mach/imx/esdctl.h                          |   1 +
- include/mach/imx/scratch.h                         |   3 +
- include/mach/imx/xload.h                           |  16 +-
- include/pbl.h                                      |   9 +
- include/pbl/handoff-data.h                         |   1 +
- include/tee/optee.h                                |  17 ++
- pbl/Kconfig                                        |  11 +
- pbl/console.c                                      |  18 ++
- pbl/decomp.c                                       |  12 +
- pbl/fdt.c                                          | 187 ++++++++++++++-
- pbl/handoff-data.c                                 |   2 +
- pbl/string.c                                       |  15 ++
- security/optee.c                                   |  44 ++++
- 43 files changed, 708 insertions(+), 161 deletions(-)
----
-base-commit: 6b59c24110434d7922e127dac22a598e0a6a23db
-change-id: 20251110-v2025-09-0-topic-optee-of-handling-e9f51531c464
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 4c4c3528e1a6e68c508edc48ad38c9e2e6324c1c..0a1e042792bd90b40ffc8084efbdc5a25ba0dd02 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -467,8 +467,9 @@ static void imx_ddrc_set_mstr_device_config(u32 *mstr, unsigned bits)
+ 	*mstr |= FIELD_PREP(DDRC_MSTR_DEVICE_CONFIG, fls(bits / 8));
+ }
+ 
+-static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswidth)
++static resource_size_t imx8m_ddrc_sdram_size(unsigned buswidth)
+ {
++	void __iomem *ddrc = IOMEM(MX8M_DDRC_CTL_BASE_ADDR);
+ 	const u32 addrmap[DDRC_ADDRMAP_LENGTH] = {
+ 		readl(ddrc + DDRC_ADDRMAP(0)),
+ 		readl(ddrc + DDRC_ADDRMAP(1)),
+@@ -518,10 +519,10 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswid
+ 				   reduced_adress_space, mstr);
+ }
+ 
+-static int _imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data,
++static int _imx8m_ddrc_add_mem(const struct imx_esdctl_data *data,
+ 			       unsigned int buswidth)
+ {
+-	resource_size_t size = imx8m_ddrc_sdram_size(mmdcbase, buswidth);
++	resource_size_t size = imx8m_ddrc_sdram_size(buswidth);
+ 	resource_size_t size0, size1;
+ 	int ret;
+ 
+@@ -555,12 +556,12 @@ static int _imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *dat
+ 
+ static int imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ {
+-	return _imx8m_ddrc_add_mem(mmdcbase, data, 32);
++	return _imx8m_ddrc_add_mem(data, 32);
+ }
+ 
+ static int imx8mn_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+ {
+-	return _imx8m_ddrc_add_mem(mmdcbase, data, 16);
++	return _imx8m_ddrc_add_mem(data, 16);
+ }
+ 
+ #define IMX9_DDRC_CS_CONFIG(n)	(0x80 + (n) * 4)
+@@ -1001,7 +1002,7 @@ resource_size_t imx8m_barebox_earlymem_size(unsigned buswidth)
+ {
+ 	resource_size_t size;
+ 
+-	size = imx8m_ddrc_sdram_size(IOMEM(MX8M_DDRC_CTL_BASE_ADDR), buswidth);
++	size = imx8m_ddrc_sdram_size(buswidth);
+ 	/*
+ 	 * We artificially limit detected memory size to force malloc
+ 	 * pool placement to be within 4GiB address space, so as to
 
-Best regards,
 -- 
-Marco Felsch <m.felsch@pengutronix.de>
+2.47.3
 
 
 
