@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYcB-00HVQm-0j
+	id 1vIYcB-00HVRH-1s
 	for lore@lore.pengutronix.de;
 	Mon, 10 Nov 2025 21:35:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIYc5-0002Jo-SO
+	id 1vIYc7-0002Ld-Av
 	for lore@pengutronix.de; Mon, 10 Nov 2025 21:35:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,46 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Tx9cAlP10IXf1O9fxpb47vPc1B94i5JVuJmvgm0gx3k=; b=jGqHw+3PoLlvRMHuskZPChQtBR
-	GzDx3MCkSjLs7YypJstYPwfjV2fU3nL+CLLPqQcF+ZcZed57w0zgyQEpJO+qYoSZYZAQjho2hmtqA
-	WcedG1PsUEQT5T4K4zXNPMHe3emplzLT/U8gH3NO9WZk8VlElFpwYncxghCFVwrCAiZBRIQgZVIWb
-	CnQGhMj6JOzNYXVZNOmnP0f6OR3NqfNYCHHuk4LwQMchdlQtU2ghD+/Dl9c9Q7ErD9fZadGcB2Xbf
-	nRkHLKDpdrRvY7eD+0efXKPtYcWDsCcGg0/apcRuGl1ZDkf7Nv7cnim6Sb59UnvMafyFqJwhQVanZ
-	RKa8CiOQ==;
+	bh=tJZOZGLgrKe/odoMOdEuDP3dX5p8GbVQXc4TGkEQxwo=; b=EWzPn6IRJLDAeErZjJflNREGgh
+	YYoh91QcUNLioW8dSxGjGZrEcB7XymtfbLkzNO5KR5rnzEouTX0gfgNjHpMPrOe6wqbLO4IyiRQgk
+	wIduaVHKr9lekLpumUWg3WpnI6S63nPkOMsIzoq+i0MaAzJ/N5RqlCXnagoQ2B/LSCNPLQ5qxJ4Vn
+	Lp0I0NdEtBd4TM2xz25y4GTBlf8XH3xbHWX5rQFz7+Bgn7rNUGa6FZqeKQt5gReEKi3PrzTMn7wAg
+	GYJbYOnRfN+oRvpWX20SYU3kxkq1poHDACFexY9eC/TdWEX8Nu8NZiVZTN2nhfmPhYviU+6hrUiRB
+	1+s0gjHg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbJ-000000065at-02P0;
-	Mon, 10 Nov 2025 20:34:57 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYbE-000000065WU-2mKG
-	for barebox@bombadil.infradead.org;
-	Mon, 10 Nov 2025 20:34:52 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=Tx9cAlP10IXf1O9fxpb47vPc1B94i5JVuJmvgm0gx3k=; b=Jxw83qN0SwwkOS8CKZOov2R6Fo
-	h1CEX5Hy/FcqoZM+j91uEakKUj1X+JME6R+eu9Zdhum8APp0pVGAhj+hOM/lTh+4phbe+9wdzpwOd
-	VZw6EAQWOvk9lr137SelAcgfgvbyGQt1lCBRo0xGXzPO1aejMSQxg6XAGWDXp/wILJ1XTLgeumTZa
-	KTm5hP0F59N0J46IQXngBUmHrwaZz2Tj+rTIXDPV4ifshdqTWf/vD1m+cJeAO+QBHW63HIQDuV/r3
-	gqJxqbg35y3q9xI+dvXzpeUdhEtCnn6ZfUr9kelLE9Qwsh5H+fRt+Y2oUSAraLE9prF4DqEmYT5hF
-	Bop/Ij9w==;
+	id 1vIYbI-000000065aE-1TTm;
+	Mon, 10 Nov 2025 20:34:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIXjV-0000000BgCx-42kF
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vIYbB-000000065SH-1zpc
 	for barebox@lists.infradead.org;
-	Mon, 10 Nov 2025 19:39:23 +0000
+	Mon, 10 Nov 2025 20:34:52 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vIYb8-0001MT-VS; Mon, 10 Nov 2025 21:34:46 +0100
+	id 1vIYb8-0001MT-MH; Mon, 10 Nov 2025 21:34:46 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 10 Nov 2025 21:34:59 +0100
+Date: Mon, 10 Nov 2025 21:34:49 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-19-8f0625ac5471@pengutronix.de>
+Message-Id: <20251110-v2025-09-0-topic-optee-of-handling-v1-9-8f0625ac5471@pengutronix.de>
 References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
 In-Reply-To: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -65,8 +50,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251110_193922_154412_C7ACBFD3 
-X-CRM114-Status: GOOD (  11.24  )
+X-CRM114-CacheID: sfid-20251110_123449_522499_A4ECEB0A 
+X-CRM114-Status: GOOD (  15.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,123 +73,163 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 19/23] security: optee: add helpers to apply OP-TEE FDTO
+Subject: [PATCH 09/23] pbl: fdt: add pbl_load_fdt helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add helpers which can be used later on by barebox core to apply an
-overlay provided by OP-TEE.
+The helper provides a common FDT load mechanism to load the (compressed)
+DTB to the provided destination address. Early FDTs may required by
+other BL3x binaries like BL31 (TF-A) and BL32 (OP-TEE).
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/tee/optee/Kconfig    |  1 +
- drivers/tee/optee/of_fixup.c | 46 ++++++++++++++++++++++++++++++++++++++++++++
- include/tee/optee.h          | 11 +++++++++++
- 3 files changed, 58 insertions(+)
+ arch/Kconfig  |  3 +++
+ include/pbl.h |  2 ++
+ pbl/Kconfig   | 11 +++++++++
+ pbl/fdt.c     | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 91 insertions(+)
 
-diff --git a/drivers/tee/optee/Kconfig b/drivers/tee/optee/Kconfig
-index 805aba65edb72e04341db34a1ada6ff94ab30add..ebfc895203287261cd86fc77d15cc9922403e5c0 100644
---- a/drivers/tee/optee/Kconfig
-+++ b/drivers/tee/optee/Kconfig
-@@ -45,3 +45,4 @@ endif
- config OF_FIXUP_OPTEE
- 	def_bool y
- 	depends on HAVE_OPTEE && ARM
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 55618bf896c25f2afa2786706e27fce6ab4b3a39..edd574879b244d3843f1b5a06e1e25c5d4acbc8d 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -62,6 +62,9 @@ config ARCH_DMA_DEFAULT_COHERENT
+ config ARCH_HAS_DMA_WRITE_COMBINE
+ 	bool
+ 
++config ARCH_HAS_EARLY_FDT_SUPPORT
++	bool
++
+ config ARCH_HAS_ASAN_FIBER_API
+ 	bool
+ 
+diff --git a/include/pbl.h b/include/pbl.h
+index 9db4652e833bf5e82fd42a1cae19e94c4f2f868f..bf0c9e2ba29428361cb16a572295e66f20acdd82 100644
+--- a/include/pbl.h
++++ b/include/pbl.h
+@@ -31,6 +31,8 @@ fdt_device_get_match_data(const void *fdt, const char *nodepath,
+ 
+ int pbl_barebox_verify(const void *compressed_start, unsigned int len,
+ 		       const void *hash, unsigned int hash_len);
++int pbl_load_fdt(const void *fdt, void *dest, int destsize);
++
+ #endif
+ 
+ void __noreturn barebox_pbl_entry(ulong, ulong, void *);
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index cab9325d16e8625bcca10125b3281062abffedbc..ea2086f33ea405ecd7b00065eaf9874218152b3a 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -65,6 +65,17 @@ config PBL_VERIFY_PIGGY
+ 	depends on ARM || MIPS || RISCV
+ 	bool "Verify barebox proper hash before decompression" if COMPILE_TEST
+ 
++config PBL_EARLY_FDT_LOAD
++	bool "Enable early FDT loading"
++	depends on ARCH_HAS_EARLY_FDT_SUPPORT
 +	select LIBFDT
-diff --git a/drivers/tee/optee/of_fixup.c b/drivers/tee/optee/of_fixup.c
-index 152322901a7e6af9c83da4c6a2d43f6e2c9af329..9df663d970671b658e38073496720033066106b2 100644
---- a/drivers/tee/optee/of_fixup.c
-+++ b/drivers/tee/optee/of_fixup.c
-@@ -1,10 +1,14 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- 
-+#include <linux/libfdt.h>
- #include <of.h>
- #include <linux/ioport.h>
-+#include <linux/printk.h>
- #include <asm/barebox-arm.h>
- #include <tee/optee.h>
- 
-+static bool optee_ovl_applied;
++	help
++	  This enables the support to decompress and load the barebox builtin DTB
++	  during the pbl (BL2) phase.
 +
- int of_optee_fixup(struct device_node *root, void *_data)
- {
- 	struct of_optee_fixup_data *fixup_data = _data;
-@@ -64,3 +68,45 @@ int of_optee_fixup(struct device_node *root, void *_data)
++	  This is useful for BL31 and BL32 firmwares which may use the DTB for
++	  device configuration.
++
+ config PBL_CLOCKSOURCE
+ 	bool
  
- 	return of_fixup_reserved_memory(root, &res_shm);
+diff --git a/pbl/fdt.c b/pbl/fdt.c
+index ac377446caeafb1beaeb211aa8bdec8767ae21fe..0cd9f5a0f11723e9f9b6848e8553da481b92f2be 100644
+--- a/pbl/fdt.c
++++ b/pbl/fdt.c
+@@ -1,8 +1,10 @@
+ // SPDX-License-Identifier: GPL-2.0
++#include <compressed-dtb.h>
+ #include <linux/libfdt.h>
+ #include <pbl.h>
+ #include <linux/printk.h>
+ #include <stdio.h>
++#include <uncompress.h>
+ 
+ static const __be32 *fdt_parse_reg(const __be32 *reg, uint32_t n,
+ 				   uint64_t *val)
+@@ -185,3 +187,76 @@ const void *fdt_device_get_match_data(const void *fdt, const char *nodepath,
+ 
+ 	return NULL;
  }
 +
-+void optee_register_overlay(void)
++static int pbl_open_dtbz_into(const void *fdt, void *buf, int bufsize)
 +{
-+	struct device_node *overlay;
-+	size_t size = 0;
-+	void *fdto;
-+	int err;
++	const struct barebox_boarddata_compressed_dtb *compressed_dtb;
++	int ret;
 +
-+	if (optee_ovl_applied) {
-+		pr_warn("OP-TEE overlay already applied, skip\n");
-+		return;
++	if (!fdt_blob_can_be_decompressed(fdt)) {
++		pr_warn("DTB can't be decompressed\n");
++		return -EINVAL;
 +	}
 +
-+	fdto = handoff_data_get_entry(HANDOFF_DATA_BL32_DT_OVL, &size);
-+	if (!fdto || size == 0)
-+		return;
++	compressed_dtb = fdt;
 +
-+	err = fdt_check_header(fdto);
-+	if (err) {
-+		pr_warn("Invalid OP-TEE overlay found: %s\n", fdt_strerror(err));
-+		return;
++	if (IS_ENABLED(CONFIG_IMAGE_COMPRESSION_NONE)) {
++		ret = fdt_open_into(compressed_dtb->data, buf, bufsize);
++		if (ret)
++			pr_warn("Failed to open uncompressed DTB with %s\n",
++				fdt_strerror(ret));
++		return ret ? -EINVAL : 0;
 +	}
 +
-+	overlay = of_unflatten_dtb(fdto, size);
-+	if (IS_ERR(overlay)) {
-+		pr_warn("Failed to unflatten OP-TEE: %pe\n", overlay);
-+		return;
++	if (bufsize < compressed_dtb->datalen_uncompressed) {
++		pr_warn("FDT buffer to small, min. %u bytes required\n",
++			compressed_dtb->datalen_uncompressed);
++		return -EINVAL;
 +	}
 +
-+	err = of_register_overlay(overlay);
-+	if (err) {
-+		pr_warn("Failed to register OP-TEE overlay: %pe\n", ERR_PTR(err));
-+		return;
++	ret = pbl_dtbz_uncompress(buf, (void *)compressed_dtb->data,
++				  compressed_dtb->datalen);
++	if (ret) {
++		pr_warn("Failed to uncompress DTB err=%d\n", ret);
++		return ret;
 +	}
 +
-+	optee_ovl_applied = true;
++	if (!blob_is_fdt(buf)) {
++		pr_warn("Failed to determine FDT type for uncompressed DTB\n");
++		return -EINVAL;
++	}
++
++	/* Required to setup size data structures to allow runtime adaptions */
++	ret = fdt_open_into(buf, buf, bufsize);
++	if (ret)
++		pr_warn("Failed to open decompressed DTB with %s\n", fdt_strerror(ret));
++
++	return ret ? -EINVAL : 0;
 +}
 +
-+bool optee_overlay_applied(void)
++int pbl_load_fdt(const void *fdt, void *dest, int destsize)
 +{
-+	return optee_ovl_applied;
-+}
-diff --git a/include/tee/optee.h b/include/tee/optee.h
-index 679662a6e6944da59d24d6268ebcf5dff19d0980..a3f1917f63957e9cf3193150604cf7c93876e9ce 100644
---- a/include/tee/optee.h
-+++ b/include/tee/optee.h
-@@ -38,6 +38,8 @@ int optee_verify_header (const struct optee_header *hdr);
- void optee_set_membase(const struct optee_header *hdr);
- int optee_get_membase(u64 *membase);
- int optee_extract_fdto(const void *fdt, void *fdto, unsigned int fdto_sz);
-+void optee_register_overlay(void);
-+bool optee_overlay_applied(void);
- 
- #else
- 
-@@ -55,6 +57,15 @@ static inline int optee_extract_fdto(const void *fdt, void *fdto, unsigned int f
- 	return 0;
- }
- 
-+static inline void optee_register_overlay(void)
-+{
-+}
++	int ret;
 +
-+static inline bool optee_overlay_applied(void)
-+{
-+	return false;
-+}
++	if (!IS_ENABLED(CONFIG_PBL_EARLY_FDT_LOAD))
++		return -ENOTSUPP;
 +
- #endif /* CONFIG_HAVE_OPTEE */
- 
- #ifdef __PBL__
++	if (destsize == 0) {
++		pr_warn("Skip early FDT load due to dest buffer size of 0-bytes\n");
++		return -EINVAL;
++	}
++
++	if (blob_is_fdt(fdt)) {
++		ret = fdt_open_into(fdt, dest, destsize);
++		if (ret)
++			pr_warn("Failed to uncompressed DTB with %s\n",
++				fdt_strerror(ret));
++		return ret ? -EINVAL : 0;
++	} else if (blob_is_compressed_fdt(fdt)) {
++		return pbl_open_dtbz_into(fdt, dest, destsize);
++	}
++
++	pr_warn("FDT detection failed\n");
++
++	return -EINVAL;
++}
 
 -- 
 2.47.3
