@@ -1,57 +1,53 @@
-Delivery-date: Tue, 11 Nov 2025 11:49:30 +0100
+Delivery-date: Tue, 11 Nov 2025 12:50:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIlwI-0007X2-1z
+	id 1vImtd-0008hU-2l
 	for lore@lore.pengutronix.de;
-	Tue, 11 Nov 2025 11:49:30 +0100
+	Tue, 11 Nov 2025 12:50:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIlwI-0004L1-0p
-	for lore@pengutronix.de; Tue, 11 Nov 2025 11:49:30 +0100
+	id 1vImtd-0004ga-9n
+	for lore@pengutronix.de; Tue, 11 Nov 2025 12:50:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=w8WQdZGnpV/j5KaNMi9tnaEAIvnsFj/L2BStcwxXXqQ=; b=byzhNt7vTxm6Q42pNfALzFbw1f
-	/17o+52qXfOKwkv3KTS/qncVPr8//WlSMp8mn7hqVCflwBJzbx04oLodgkZl+3VOxLHFeEoljAaeB
-	BNazK6pjzFepGBaIhwgtFeStb5FMnlbXO2os0AdoUjS+3a9nbzugpSP7loDyLRehtJdRzXhtvMd9Q
-	BE1OWoEFSyz5cYnCvKG8I7If67EjYzuqOhy/TJtG6vVw3FOHMVujge1tBqubp7GLffgAJNbGAlabq
-	m41VqyGFEMnuHpQux6+XG1pDQFTt6yUG1LQIvtxiXwPjdDURNS4kiUgVOsBYlLUm6hpzMqdO6R6yw
-	mmrg43qw==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Um2O18GX/XBn9JP5CRPAOrEMLGZ73W9H0ljChb2KreE=; b=RBeamhN7OwiZBvf1Z1s96BjUBh
+	02HHgApwTyasZU+djf8qrvQHt51/BzFNIs85co8Kg/TC3PBCPugMmJYwctWUTVrbVhK81MWJsME/E
+	tWzYsCkbXcgj+aIFEnbmH+5SXxWGP66rNFrsFDlmNxOh2QlXPiVul3e4qNVVnR3QOEwCGKsDloM7d
+	LiVTQjg8qTzvUNyOJIkA0TcgfXtkN+v3K3NhJVTm98T5zDsb6RPbaCiPK2XuoTYzez/q3xMkcj3wK
+	siZZJo6nIwLyd7mqSt9fjf9fsloKvSaPe3JVBg6t0oVjgv1DnKZPNZEm4rZsR2ObkpuMsg0MmEl7e
+	GM+RZlqA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIlvk-00000006zbL-0t2T;
-	Tue, 11 Nov 2025 10:48:56 +0000
+	id 1vImt8-0000000776X-3ajv;
+	Tue, 11 Nov 2025 11:50:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIlvh-00000006zaY-21JV
+	id 1vImt6-0000000775k-0bTk
 	for barebox@lists.infradead.org;
-	Tue, 11 Nov 2025 10:48:54 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Tue, 11 Nov 2025 11:50:17 +0000
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vIlvf-0004Ct-SA; Tue, 11 Nov 2025 11:48:51 +0100
-Message-ID: <34937029-c9f6-4343-b335-d1fc69f4e0a8@pengutronix.de>
-Date: Tue, 11 Nov 2025 11:48:51 +0100
+	(envelope-from <f.pfitzner@pengutronix.de>)
+	id 1vImt3-0004ZK-4w; Tue, 11 Nov 2025 12:50:13 +0100
+From: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+Date: Tue, 11 Nov 2025 12:49:16 +0100
+Message-ID: <20251111114915.1289377-2-f.pfitzner@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Fabian Pflug <f.pflug@pengutronix.de>, barebox@lists.infradead.org
-References: <20251110214648.2738052-1-f.pflug@pengutronix.de>
- <98968c9c-4edf-46d3-a317-01fb79b925f4@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <98968c9c-4edf-46d3-a317-01fb79b925f4@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251111_024853_525588_CD22093C 
-X-CRM114-Status: GOOD (  22.78  )
+X-CRM114-CacheID: sfid-20251111_035016_182486_2BEA35C8 
+X-CRM114-Status: GOOD (  11.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,92 +65,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] security: policy: allow querying the active policy
+Subject: [PATCH] ARM: karo-tx6: enable deep-probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Signed-off-by: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+---
+ Documentation/migration-guides/migration-2025.11.0.rst | 4 ++++
+ arch/arm/boards/karo-tx6x/board.c                      | 2 ++
+ arch/arm/dts/imx6dl-tx6u.dts                           | 2 +-
+ arch/arm/dts/imx6q-tx6q.dts                            | 2 +-
+ 4 files changed, 8 insertions(+), 2 deletions(-)
 
-On 11/11/25 9:59 AM, Ahmad Fatoum wrote:
-> Hello Fabian,
-> 
-> On 11/10/25 10:46 PM, Fabian Pflug wrote:
->> Sometimes it is needed from board code to not to check what is allowed,
->> but what is the currently activated security policy to do some stuff.
-> 
-> As you know, security policies were a recent addition in the last
-> month's release and we are still gathering experience with how to best
-> use it.
-> 
-> May I ask what you are using the name for? I envisioned the name to be
-> just a descriptive string and that boards would define their own
-> SCONFIG_ symbols if they need to control something.
-
-I talked with Fabian off-list about this. I prefer not to add an API as
-not to encourage comparisons against the name of the security policy for
-security-related decisions.
-
-If the name is needed (in this case to avoid some security unrelated
-setup when in lockdown), ${security.policy} or the active_policy
-variable can be used instead.
-
-Cheers,
-Ahmad
-
-> 
-> 
-> Thanks,
-> Ahmad
-> 
->>
->> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
->> ---
->>  include/security/policy.h | 1 +
->>  security/policy.c         | 8 ++++++++
->>  2 files changed, 9 insertions(+)
->>
->> diff --git a/include/security/policy.h b/include/security/policy.h
->> index c41220ef3b..3eedf6e5ac 100644
->> --- a/include/security/policy.h
->> +++ b/include/security/policy.h
->> @@ -32,6 +32,7 @@ const struct security_policy *security_policy_get(const char *name);
->>  int security_policy_activate(const struct security_policy *policy);
->>  int security_policy_select(const char *name);
->>  void security_policy_list(void);
->> +bool security_policy_is_active(const char *name);
->>  
->>  #ifdef CONFIG_SECURITY_POLICY
->>  int __security_policy_register(const struct security_policy policy[]);
->> diff --git a/security/policy.c b/security/policy.c
->> index 85333d9e6f..abb956014d 100644
->> --- a/security/policy.c
->> +++ b/security/policy.c
->> @@ -225,6 +225,14 @@ static int security_policy_get_name(struct param_d *param, void *priv)
->>  	return 0;
->>  }
->>  
->> +bool security_policy_is_active(const char *name)
->> +{
->> +	if (!active_policy)
->> +		return false;
->> +
->> +	return !strcmp(name, active_policy->name);
->> +}
->> +
->>  static int security_init(void)
->>  {
->>  	register_device(&security_device);
-> 
-
+diff --git a/Documentation/migration-guides/migration-2025.11.0.rst b/Documentation/migration-guides/migration-2025.11.0.rst
+index a9c7abb66e..fa8140f615 100644
+--- a/Documentation/migration-guides/migration-2025.11.0.rst
++++ b/Documentation/migration-guides/migration-2025.11.0.rst
+@@ -18,3 +18,7 @@ Karo TX6X
+ The barebox update handler for this SoM no longer unconditionally updates
+ /dev/mmc3.boot0, but instead it now updates the inactive boot partition
+ on /dev/mmc3 and then sets it as active allowing for power-fail safety.
++
++Deep probe has been enabled for this board. Out-of-tree board code for these
++SoMs must either ensure devices are available as the in-tree code does or they
++should add ``barebox,disable-deep-probe`` to their top level device tree node.
+diff --git a/arch/arm/boards/karo-tx6x/board.c b/arch/arm/boards/karo-tx6x/board.c
+index 43e23f00cd..1924660c11 100644
+--- a/arch/arm/boards/karo-tx6x/board.c
++++ b/arch/arm/boards/karo-tx6x/board.c
+@@ -54,6 +54,8 @@ static int setup_pmic_voltages(void)
+ 	int bus = 0;
+ 	uint8_t reg;
+ 
++	of_device_ensure_probed_by_alias("i2c0");
++
+ 	adapter = i2c_get_adapter(bus);
+ 	if (!adapter) {
+ 		pr_err("i2c bus %d not found\n", bus);
+diff --git a/arch/arm/dts/imx6dl-tx6u.dts b/arch/arm/dts/imx6dl-tx6u.dts
+index 1055de9d80..c23673d729 100644
+--- a/arch/arm/dts/imx6dl-tx6u.dts
++++ b/arch/arm/dts/imx6dl-tx6u.dts
+@@ -8,6 +8,6 @@
+ / {
+ 	model = "Ka-Ro electronics TX6U-801x Module";
+ 	compatible = "karo,imx6dl-tx6dl", "fsl,imx6dl";
+-	barebox,disable-deep-probe;
++	barebox,deep-probe;
+ };
+ 
+diff --git a/arch/arm/dts/imx6q-tx6q.dts b/arch/arm/dts/imx6q-tx6q.dts
+index c2aacfc415..daf9549ea5 100644
+--- a/arch/arm/dts/imx6q-tx6q.dts
++++ b/arch/arm/dts/imx6q-tx6q.dts
+@@ -8,6 +8,6 @@
+ / {
+ 	model = "Ka-Ro electronics TX6Q Module";
+ 	compatible = "karo,imx6q-tx6q", "fsl,imx6q";
+-	barebox,disable-deep-probe;
++	barebox,deep-probe;
+ };
+ 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
