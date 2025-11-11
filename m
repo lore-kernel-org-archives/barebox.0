@@ -1,72 +1,57 @@
-Delivery-date: Tue, 11 Nov 2025 11:22:29 +0100
+Delivery-date: Tue, 11 Nov 2025 11:49:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIlW8-0007Cg-3C
+	id 1vIlwI-0007X2-1z
 	for lore@lore.pengutronix.de;
-	Tue, 11 Nov 2025 11:22:29 +0100
+	Tue, 11 Nov 2025 11:49:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIlW8-0000IV-A7
-	for lore@pengutronix.de; Tue, 11 Nov 2025 11:22:28 +0100
+	id 1vIlwI-0004L1-0p
+	for lore@pengutronix.de; Tue, 11 Nov 2025 11:49:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XI781SquWvqEOLx6Uthfixd0uvDKNFtAz83lZZZJKk8=; b=ymSNW1GLYueuTTTuU+KledKl1v
-	V1PHVZ8IP2a6pnsExETmeq/By60+8unTZKZ/4SDtcQgAITo1S6W4uDlfeumt80YyhFdqcZ4Wzz1r7
-	hPw/7YXeh1DnoeLKb/qngi620hPm9CN8fYha0BuTFa0nYRnHg/V709pjfGinoZBnH28oPHeqlp8i4
-	FPHfv0SYVQKqR/RluSZBPmIRw6jvKSZkHZpxp3SYjcq/ibRGd7WFnA6D5dDmsGQK88ST6ZEyHIMiV
-	UcoCk6/XGGUmy9T3my785gdvYeOCJkjN9BmunvxjFrmmPMezX6XQf6/lL9T7CL3ttP9taha2y0zzc
-	6M995+Jw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=w8WQdZGnpV/j5KaNMi9tnaEAIvnsFj/L2BStcwxXXqQ=; b=byzhNt7vTxm6Q42pNfALzFbw1f
+	/17o+52qXfOKwkv3KTS/qncVPr8//WlSMp8mn7hqVCflwBJzbx04oLodgkZl+3VOxLHFeEoljAaeB
+	BNazK6pjzFepGBaIhwgtFeStb5FMnlbXO2os0AdoUjS+3a9nbzugpSP7loDyLRehtJdRzXhtvMd9Q
+	BE1OWoEFSyz5cYnCvKG8I7If67EjYzuqOhy/TJtG6vVw3FOHMVujge1tBqubp7GLffgAJNbGAlabq
+	m41VqyGFEMnuHpQux6+XG1pDQFTt6yUG1LQIvtxiXwPjdDURNS4kiUgVOsBYlLUm6hpzMqdO6R6yw
+	mmrg43qw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIlVZ-00000006wVQ-22er;
-	Tue, 11 Nov 2025 10:21:53 +0000
+	id 1vIlvk-00000006zbL-0t2T;
+	Tue, 11 Nov 2025 10:48:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIlVW-00000006wUu-3EoX
+	id 1vIlvh-00000006zaY-21JV
 	for barebox@lists.infradead.org;
-	Tue, 11 Nov 2025 10:21:52 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vIlVT-0000BI-TF; Tue, 11 Nov 2025 11:21:47 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vIlVT-008BRc-22;
-	Tue, 11 Nov 2025 11:21:47 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vIlVT-00ESVk-1f;
-	Tue, 11 Nov 2025 11:21:47 +0100
-Date: Tue, 11 Nov 2025 11:21:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <aRMOO3jH4a16GBI6@pengutronix.de>
-References: <20251109180337.7809-1-akurz@blala.de>
- <aRGoWdjxowN3TTRA@pengutronix.de>
- <alpine.DEB.2.21.2511110711550.12061@blala.de>
+	Tue, 11 Nov 2025 10:48:54 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vIlvf-0004Ct-SA; Tue, 11 Nov 2025 11:48:51 +0100
+Message-ID: <34937029-c9f6-4343-b335-d1fc69f4e0a8@pengutronix.de>
+Date: Tue, 11 Nov 2025 11:48:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2511110711550.12061@blala.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Fabian Pflug <f.pflug@pengutronix.de>, barebox@lists.infradead.org
+References: <20251110214648.2738052-1-f.pflug@pengutronix.de>
+ <98968c9c-4edf-46d3-a317-01fb79b925f4@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <98968c9c-4edf-46d3-a317-01fb79b925f4@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251111_022150_815177_2A05314E 
-X-CRM114-Status: GOOD (  33.54  )
+X-CRM114-CacheID: sfid-20251111_024853_525588_CD22093C 
+X-CRM114-Status: GOOD (  22.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,114 +69,92 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM i.MX6SL: Add Kindle generation 6/7 support
+Subject: Re: [PATCH] security: policy: allow querying the active policy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Nov 11, 2025 at 07:32:13AM +0000, Alexander Kurz wrote:
-> Hi Sascha,
-> 
-> On Mon, 10 Nov 2025, Sascha Hauer wrote:
-> 
-> > 
-> > Hi Alexander,
-> > 
-> > On Sun, Nov 09, 2025 at 06:03:37PM +0000, Alexander Kurz wrote:
-> > > Four Amazon Kindle 6th and 7th generation e-book readers were considered
-> ...
-> > > diff --git a/Documentation/boards/imx/amazon-kindle-6-7.rst b/Documentation/boards/imx/amazon-kindle-6-7.rst
-> > 
-> > Thanks for the good documentation, very appreciated :)
-> Thanks!
-> 
-> > 
-> > > new file mode 100644
-> > > index 0000000000..c7a5ef9424
-> > > +ENTRY_FUNCTION(start_imx6sl_kindle6_dp75sdi, r0, r1, r2)
-> > > +{
-> > > +	void *fdt;
-> > > +
-> > > +	imx6_cpu_lowlevel_init();
-> > > +
-> > > +	arm_setup_stack(0x00920000);
-> > > +
-> > > +	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
-> > > +		writel(0x4, 0x020e016c);
-> > > +		imx6_uart_setup_ll();
-> > > +	}
-> > > +
-> > > +	fdt = __dtb_imx6sl_kindle6_dp75sdi_start + get_runtime_offset();
-> > > +	barebox_arm_entry(0x80000000, SZ_256M, fdt);
-> > 
-> > Does imx6ul_barebox_entry() work here instead? In that case you could
-> > drop the memory nodes from the device trees.
-> Replacing barebox_arm_entry() with imx6ul_barebox_entry() seems to work
-> so far (have only tested it on one device), but will this really make the 
-> memory nodes from the device trees obsolete as well? Some devices have 256 
-> while others 512MB RAM, when the amount of memory is not hardcoded, is it 
-> auto-determined?
+Hi,
 
-Yes, the memory nodes will be autogenerated from the configuration read
-back from the DRAM controller.
+On 11/11/25 9:59 AM, Ahmad Fatoum wrote:
+> Hello Fabian,
+> 
+> On 11/10/25 10:46 PM, Fabian Pflug wrote:
+>> Sometimes it is needed from board code to not to check what is allowed,
+>> but what is the currently activated security policy to do some stuff.
+> 
+> As you know, security policies were a recent addition in the last
+> month's release and we are still gathering experience with how to best
+> use it.
+> 
+> May I ask what you are using the name for? I envisioned the name to be
+> just a descriptive string and that boards would define their own
+> SCONFIG_ symbols if they need to control something.
+
+I talked with Fabian off-list about this. I prefer not to add an API as
+not to encourage comparisons against the name of the security policy for
+security-related decisions.
+
+If the name is needed (in this case to avoid some security unrelated
+setup when in lockdown), ${security.policy} or the active_policy
+variable can be used instead.
+
+Cheers,
+Ahmad
 
 > 
-> > 
-> > > +++ b/arch/arm/dts/imx6sl-kindle-nm460gz.dts
-> > > @@ -0,0 +1,69 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > > +/*
-> > > + * Copyright (C) 2025 Alexander Kurz <akurz@blala.de>
-> > > + */
-> > > +
-> > > +/dts-v1/;
-> > > +#include "imx6sl-kindle-common.dtsi"
-> > > +#include <dt-bindings/interrupt-controller/irq.h>
-> > > +#include <dt-bindings/gpio/gpio.h>
-> > > +#include <dt-bindings/input/input.h>
-> > > +
-> > > +/ {
-> > > +	model = "kindle-nm460gz";
-> > > +	compatible = "amazon,imx6sl-kindle-nm460gz", "fsl,imx6sl";
-> > > +	barebox,disable-deep-probe;
-> > 
-> > Is this intentional? What doesn't work with deep probe enabled?
-> With barebox,deep-probe mmc1 will not be available when kindle_rev_init()
-> is called at late_initcall(kindle_mx6sl_late_init).
-> This way, the required ATAGs will be missing.
-> Will deep-probe influence device_initcall(kindle6_device_init)?
-
-deep probe will probe devices on demand for you. What's left to do for
-you is to say that you need the mmc1 device by doing a:
-
-of_device_ensure_probed_by_alias("mmc1");
-
-This will handle the dependencies like probing regulators or clocks
-regardless of the initcall level you are in.
-
-You also have this in your patch:
-
-+       /* Probe the eMMC to allow reading the board serial and revision */
-+       dev = get_device_by_name("mmc1");
-+       if (dev)
-+               dev_set_param(dev, "probe", "1");
-
-which can be replaced by a:
-
-device_detect_by_name("mmc1");
-
-The different initcall levels in your board code shouldn't be necessary
-anmore with this.
-
-Sascha
+> 
+> Thanks,
+> Ahmad
+> 
+>>
+>> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+>> ---
+>>  include/security/policy.h | 1 +
+>>  security/policy.c         | 8 ++++++++
+>>  2 files changed, 9 insertions(+)
+>>
+>> diff --git a/include/security/policy.h b/include/security/policy.h
+>> index c41220ef3b..3eedf6e5ac 100644
+>> --- a/include/security/policy.h
+>> +++ b/include/security/policy.h
+>> @@ -32,6 +32,7 @@ const struct security_policy *security_policy_get(const char *name);
+>>  int security_policy_activate(const struct security_policy *policy);
+>>  int security_policy_select(const char *name);
+>>  void security_policy_list(void);
+>> +bool security_policy_is_active(const char *name);
+>>  
+>>  #ifdef CONFIG_SECURITY_POLICY
+>>  int __security_policy_register(const struct security_policy policy[]);
+>> diff --git a/security/policy.c b/security/policy.c
+>> index 85333d9e6f..abb956014d 100644
+>> --- a/security/policy.c
+>> +++ b/security/policy.c
+>> @@ -225,6 +225,14 @@ static int security_policy_get_name(struct param_d *param, void *priv)
+>>  	return 0;
+>>  }
+>>  
+>> +bool security_policy_is_active(const char *name)
+>> +{
+>> +	if (!active_policy)
+>> +		return false;
+>> +
+>> +	return !strcmp(name, active_policy->name);
+>> +}
+>> +
+>>  static int security_init(void)
+>>  {
+>>  	register_device(&security_device);
+> 
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
