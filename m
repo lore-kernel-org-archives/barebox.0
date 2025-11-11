@@ -1,60 +1,68 @@
-Delivery-date: Tue, 11 Nov 2025 15:31:29 +0100
+Delivery-date: Tue, 11 Nov 2025 15:56:05 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIpP7-000B9w-1j
+	id 1vIpmv-000BSm-1Q
 	for lore@lore.pengutronix.de;
-	Tue, 11 Nov 2025 15:31:29 +0100
+	Tue, 11 Nov 2025 15:56:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vIpP6-0003a7-SK
-	for lore@pengutronix.de; Tue, 11 Nov 2025 15:31:29 +0100
+	id 1vIpmu-0007W0-U7
+	for lore@pengutronix.de; Tue, 11 Nov 2025 15:56:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HfCiEZAqAC0zbYkF/yPf7fb8HsxF2wQtCY91vMjg9Sw=; b=sIF9v/tqfgl4A6XnUhTQZoZ1YD
-	qqPo+4A1BwAwBnfuoDr+fKBYnmsCyHVA3vz9WwpSj4yfhLnVLYDs2fG123ns+3dKxDck5GE9sh9ex
-	mgDBr+TwljVxwRnW+jfBlGH3UTWtQ+ReGUCgbizicivPAnUcoY4m1Za9Q54+EWg4fpjZVitobcZuG
-	JecGb8/dnathwi/MGze7/oAhNKu35JqcnhwQRfdvlUj68beToWqi0aC4KxJOimMxfbINDJWbslwV/
-	A2HXGws/Lj3HBwC9yuhlw2ZLi4ZUqg1jTdXdyJ9DZmbDkiEujm2CzWPVd3/7JLLR1rbc0JI1t4gqo
-	2tHKyltA==;
+	bh=lPL4jq+IuMoSaF1Qshc+dy8Vmn0pYyKQRQ3yqeq8SUE=; b=P+LTAo+UtBlI37R3vV77Vx5k+3
+	tMo/i0q4jL5SdPaDFuGNxFEhRC+VYnXWpIWQIOcqNK6qfzulXDI5h3iAgG6U13sPJ/3QGljxGN5SP
+	rL3U6R5o/CV3PpNB8rS6I1kV3+lzD2Ttso8mdV/3jqrujX9jJdfUMO3+6ZttjSvwjJbdOHTOJ7a1z
+	vaQRVxBU+06JHioeUqG18JdrzaPyaXtGUmQALMUB6ohmFCOHsXHbUxfZBr25B9Z4BRlg7KHCd3ldf
+	TCiSEYSRxShrAQqKwmcwtmyJul7mBPFTfkIYZPJzKQUw1WFoXwxxLnFqomMJYswLIKme/7PlwlCQ1
+	+3vOjXrQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIpOa-00000007K4D-3l0n;
-	Tue, 11 Nov 2025 14:30:56 +0000
+	id 1vIpmN-00000007Lfh-2hPo;
+	Tue, 11 Nov 2025 14:55:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIpOY-00000007K3n-2tIa
+	id 1vIpmL-00000007Leu-2NFr
 	for barebox@lists.infradead.org;
-	Tue, 11 Nov 2025 14:30:56 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vIpOV-0003Sl-0n; Tue, 11 Nov 2025 15:30:51 +0100
-Message-ID: <e5018cae-3676-4c67-b809-84a72b647c21@pengutronix.de>
-Date: Tue, 11 Nov 2025 15:30:49 +0100
+	Tue, 11 Nov 2025 14:55:30 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vIpmI-0007Ni-FW; Tue, 11 Nov 2025 15:55:26 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vIpmI-008DdM-0w;
+	Tue, 11 Nov 2025 15:55:26 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vIpmI-0000000HIb3-2gHH;
+	Tue, 11 Nov 2025 15:55:26 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251110190428.3401453-1-a.fatoum@pengutronix.de>
+References: <20251110190428.3401453-1-a.fatoum@pengutronix.de>
+Message-Id: <176287292617.4123028.17531728965157573954.b4-ty@pengutronix.de>
+Date: Tue, 11 Nov 2025 15:55:26 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Marco Felsch <m.felsch@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
- <20251110-v2025-09-0-topic-optee-of-handling-v1-10-8f0625ac5471@pengutronix.de>
- <aRNEygSVau3tmHVk@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <aRNEygSVau3tmHVk@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251111_063054_741395_90A2DACE 
-X-CRM114-Status: GOOD (  23.50  )
+X-CRM114-CacheID: sfid-20251111_065529_632196_C86C7DF4 
+X-CRM114-Status: UNSURE (   6.82  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,104 +80,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 10/23] ARM: i.MX: scratch: add FDT support
+Subject: Re: [PATCH master] migration-guides: add notes for v2024.09.0 to
+ v2025.04.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
 
-On 11/11/25 3:14 PM, Sascha Hauer wrote:
-> On Mon, Nov 10, 2025 at 09:34:50PM +0100, Marco Felsch wrote:
->> Add support to store a FDT within the scratch area. The user needs to
->> query the location and size via imx_scratch_get_fdt() which can be used
->> afterwards to write the actual FDT into it.
->>
->> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
->> ---
->>  arch/arm/mach-imx/scratch.c | 16 ++++++++++++++++
->>  common/Kconfig              | 14 ++++++++++++++
->>  include/mach/imx/scratch.h  |  2 ++
->>  3 files changed, 32 insertions(+)
->>
->> diff --git a/arch/arm/mach-imx/scratch.c b/arch/arm/mach-imx/scratch.c
->> index e4e2d25969f061c9fcdfd7c3d87701b715eb2805..9c0f1c09c4e0b863d8c95888db7cf0518f698d53 100644
->> --- a/arch/arm/mach-imx/scratch.c
->> +++ b/arch/arm/mach-imx/scratch.c
->> @@ -16,7 +16,10 @@ struct imx_scratch_space {
->>  	u32 bootrom_log[128];
->>  	u32 reserved[128];		/* reserve for bootrom log */
->>  	struct optee_header optee_hdr;
->> +	/* FDT needs an 8 byte alignment */
->> +	u8 fdt[CONFIG_SCRATCH_FDT_SIZE] __aligned(8);
->>  };
->> +static_assert(sizeof(struct imx_scratch_space) <= CONFIG_SCRATCH_SIZE);
->>  
->>  static struct imx_scratch_space *scratch;
->>  
->> @@ -92,3 +95,16 @@ const struct optee_header *imx_scratch_get_optee_hdr(void)
->>  
->>  	return &scratch->optee_hdr;
->>  }
->> +
->> +void imx_scratch_get_fdt(void **fdt, unsigned int *fdt_sz)
->> +{
->> +	if (!scratch) {
->> +		if (IN_PBL)
->> +			return;
->> +		else
->> +			scratch = (void *)arm_mem_scratch_get();
->> +	}
->> +
->> +	*fdt = scratch->fdt;
->> +	*fdt_sz = sizeof(scratch->fdt);
->> +}
->> diff --git a/common/Kconfig b/common/Kconfig
->> index eb2fb1da1e0919b6e7d5e868c48ad2e195cd8aa8..3f394416c3c376d1cf842472803a47462bb012ed 100644
->> --- a/common/Kconfig
->> +++ b/common/Kconfig
->> @@ -302,8 +302,22 @@ config MALLOC_SIZE
->>  config SCRATCH_SIZE
->>  	hex
->>  	default 0x8000
->> +	default 0x48000 if PBL_EARLY_FDT_LOAD
-
-Easy to misconfigure. How about an additional:
-
-range 0x48000 <some big size> if PBL_EARLY_FDT_LOAD
-
->>  	prompt "Scratch size"
+On Mon, 10 Nov 2025 20:04:27 +0100, Ahmad Fatoum wrote:
+> v2024.08.0 was the first release included in OpenEmbedded core, so add
+> migration guides for later releases to aid users in updating.
 > 
-> Do I get this right that the scratch space now includes the space for
-> the early FDT? If yes then this can lead to inconsistencies when the
-> scratch space is to small. Why not add an extra space?
-
-I would prefer we do not complicate the "endmem" layout more than we
-have currently.
-
-What I think we want in future is an API to allocate from the scratch
-mem a handoff block and there would be no hardcoded offsets and struct
-imx_scratch_space could go away. To save handoff when switching from PBL
-to proper, we would then also allocate to the scratch space.
-
-This will probably happen separately, so I am in favor of not creating a
-new section that's removed afterwards.
-
-Cheers,
-Ahmad
-
+> November 2024 didn't have a release, so that's why only seven migration
+> guides are added.
 > 
-> Sascha
 > 
+> [...]
 
+Applied, thanks!
+
+[1/1] migration-guides: add notes for v2024.09.0 to v2025.04.0
+      https://git.pengutronix.de/cgit/barebox/commit/?id=839595746889 (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
