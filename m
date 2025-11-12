@@ -1,65 +1,68 @@
-Delivery-date: Wed, 12 Nov 2025 16:11:41 +0100
+Delivery-date: Wed, 12 Nov 2025 17:41:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vJCVZ-000DCG-0e
+	id 1vJDuj-000EnV-2a
 	for lore@lore.pengutronix.de;
-	Wed, 12 Nov 2025 16:11:41 +0100
+	Wed, 12 Nov 2025 17:41:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vJCVY-00068e-Lg
-	for lore@pengutronix.de; Wed, 12 Nov 2025 16:11:41 +0100
+	id 1vJDuj-0004XS-6b
+	for lore@pengutronix.de; Wed, 12 Nov 2025 17:41:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=KRS4Yo+/S0fNxVQxjlS0rR1ZkQDqFrxueqMxiTa2yNs=; b=4HmrLzItpVQ6NQPdzJWMt6geIj
-	Gzu/ukiN85gVcE8GvszPuxPhLIK1ssIg1/U/fAUSavr6dLt/rizPMtCW7IOsjrpMfdQm6HVb2iWEO
-	ygLB0psGUEroJOocLdOJDpn05N2wt3GGtitFyPAOTVwfTNALGARg6H6IaonNab4FZ1uy9KCFYux+F
-	6qMg73p/4lKrn8A6jHTTZGg8xU+s4JjZRro3woOuDYysBypGG3eG34yPIJVDqGTS7miVDteceD7vg
-	lurZ1hkHYUBDTgQ74QsA8e3subvAy9WNFVPPfhCFgVDo5jrprd3NTd9+tgkGfDx6xUzGIgsczmHNC
-	h+BwggAw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Edox8XHD86WJz3XnJB9R7ZpuEKF2Wv5lxZc3y/eozcE=; b=4aM/3yN5yQEm1WV9GHTfYdlCtX
+	1W9BXDvtTtoN20kkycsXpSQA+Na976yKkwC5++NVFr9Ja8Q8kGRHFdY+ZtezvFMY3/WoAtJyRYYQC
+	uFUmBgcEbMTAnwmENIGoKrIgrCXwr8lJ5+tp4XfOxSpSHdrmmfqulYIk+xBQHe/tik5pKarncvE0Y
+	PxILYPpL/5hGzRPcRnBfP9ZrRa4xEK0bKWQ+dKvuyAK83I2wsss0ukK8Jepidb/qy5QcvGlZQAuB+
+	FCep7MiG2/a6BHd5F1gdYkDpz/U1nJ+WTiBBSYJCWSeAtmkoFFB6MZ987mVFOzXBXu6mcF3PSg667
+	6krX+I/g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJCUz-000000091OW-14bt;
-	Wed, 12 Nov 2025 15:11:05 +0000
+	id 1vJDuA-00000009CH2-1xm3;
+	Wed, 12 Nov 2025 16:41:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJCUw-000000091Nx-2hN2
+	id 1vJDu7-00000009CGJ-2lhM
 	for barebox@lists.infradead.org;
-	Wed, 12 Nov 2025 15:11:03 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vJCUt-00061c-IZ; Wed, 12 Nov 2025 16:10:59 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vJCUt-0006Pi-1F;
-	Wed, 12 Nov 2025 16:10:59 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vJCUt-00000002H2R-19iQ;
-	Wed, 12 Nov 2025 16:10:59 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 12 Nov 2025 16:10:58 +0100
-Message-ID: <20251112151058.540654-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Wed, 12 Nov 2025 16:41:09 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1vJDu4-0004OO-AF; Wed, 12 Nov 2025 17:41:04 +0100
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Wed, 12 Nov 2025 17:40:55 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251112-tlv-bytes-v1-1-d0ed7117e814@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAJa4FGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDQ0Mj3ZKcMt2kypLUYt0kAwPzREtjY4OkVAsloPqCotS0zAqwWdFKQW7
+ OSrG1tQCJhNVfYAAAAA==
+X-Change-ID: 20251112-tlv-bytes-b007a9330be8
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.15-dev-7abec
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2507; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=u0AuN5uxq2cYhiDRnkwCzoJcc5Rzm2f2Rgtriw1UyYg=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsgU2TH//XUGBc/Kr9kR/43+OXCkXA//entztcb6luDp1
+ 76n6OWadpSyMIhxMciKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACZy/AHDf9+1FQsu/Kqvk+pf
+ wr55/dK35WcOetUL/VxeH3XQxEPg01OGP1wVt5kWtvLxfugMXMC5sjPkX/Ph2tuPPvw4Fpy5Jnu
+ GFSMA
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251112_071102_679564_71E14F5F 
-X-CRM114-Status: GOOD (  10.06  )
+X-CRM114-CacheID: sfid-20251112_084107_706171_30299BAF 
+X-CRM114-Status: UNSURE (   9.46  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,58 +80,68 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] poller: activate POLLER_WARN_OVERTIME only on third strike
+Subject: [PATCH RFC] bareboxtlv-generator: add raw "bytes"-format
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This warning was meant to address the case that a poller repeatedly
-takes too long that interactive usage is impacted.
+Stores a byte sequence up to the maximum supported length of 65'535
+bytes, encoded from and decoded to a hexadecimal representation.
 
-I frequently see this warning during initial USB gadget set up and that
-is not really useful to show every user and developers can use the
-poller command, so let's wait until we are on our third (2nd when
-counting from 0) overtime to print the one time warning.
+Whitespace in the input string is skipped, allowing for arbitrary
+grouping of the hexadecimal digits in the yaml input data.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- common/Kconfig  | 2 +-
- common/poller.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+I did not end up using this format and no mappings/parsers exist on the
+barebox end. Leaving the patch here for future reference.
+---
+ scripts/bareboxtlv-generator/bareboxtlv-generator.py | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index d923d4c4b628..c6a7f2feabd3 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1104,7 +1104,7 @@ config POLLER_WARN_OVERTIME
- 	help
- 	  Pollers are meant to poll and quickly execute actions.
- 	  exceeding the maximum runtime of POLLER_MAX_RUNTIME_MS
--	  will trigger a one-time warning.
-+	  three times will trigger a one-time warning.
+diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+index aa243d8b06..1fd5a45d43 100755
+--- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
++++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+@@ -320,6 +320,18 @@ class FactoryDataset:
+                 if len(bin) > 2**16 - 1:
+                     raise ValueError(f"String {name} is too long!")
  
- config BTHREAD
- 	bool "barebox co-operative (green) thread infrastructure"
-diff --git a/common/poller.c b/common/poller.c
-index 5dc2be97211d..ca0d68d6cb27 100644
---- a/common/poller.c
-+++ b/common/poller.c
-@@ -135,8 +135,8 @@ void poller_call(void)
- 		duration_ms = ktime_ms_delta(ktime_get(), start);
- 		if (duration_ms > POLLER_MAX_RUNTIME_MS) {
- 			if (IS_ENABLED(CONFIG_POLLER_WARN_OVERTIME) &&
--			    !poller->overtime)
--				pr_warn("'%s' took unexpectedly long: %llums\n",
-+			    poller->overtime == 2)
-+				pr_warn("'%s' takes unexpectedly long: %llums\n",
- 					poller->name, duration_ms);
- 
- 			if (poller->overtime < U16_MAX)
--- 
-2.47.3
++            elif tag_format == "bytes":
++                try:
++                    bin = bytes.fromhex(value)
++                except ValueError:
++                    raise ValueError(f"{name}: Invalid hex string for bytes format")
++                if "length" in tag:
++                    if tag["length"]!=len(bin):
++                        raise ValueError(f"{name}: schema requires this byte sequence to be {tag["length"]} bytes but the given sequence is {len(bin)} byte long.")
++                fmt = f"{len(bin)}s"
++                if len(bin) > 2**16 - 1:
++                    raise ValueError(f"Bytes {name} is too long!")
++
+             elif tag_format == "decimal":
+                 fmtl = tag["length"]
+                 if fmtl == 1:
+@@ -451,6 +463,8 @@ class FactoryDataset:
+                 value = struct.unpack_from(fmt, bin, data_ptr)[0]
+             elif tag_schema["format"] == "string":
+                 value = bin[data_ptr : data_ptr + tag_len].decode("UTF-8")  # noqa E203
++            elif tag_schema["format"] == "bytes":
++                value = bin[data_ptr : data_ptr + tag_len].hex()
+             elif tag_schema["format"] == "mac-sequence":
+                 if tag_len != 7:
+                     raise ValueError(f"Tag {name} has wrong length {hex(tag_len)} but expected 0x7.")
+
+---
+base-commit: f485ddfccf960959d25462073528d314b8bf1aea
+change-id: 20251112-tlv-bytes-b007a9330be8
+
+Best regards,
+--  
+Jonas Rebmann <jre@pengutronix.de>
 
 
 
