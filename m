@@ -1,58 +1,68 @@
-Delivery-date: Fri, 14 Nov 2025 11:25:15 +0100
+Delivery-date: Fri, 14 Nov 2025 14:00:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vJqzT-000s7D-0N
+	id 1vJtPe-000uYa-1Q
 	for lore@lore.pengutronix.de;
-	Fri, 14 Nov 2025 11:25:15 +0100
+	Fri, 14 Nov 2025 14:00:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vJqzS-0004g2-Hq
-	for lore@pengutronix.de; Fri, 14 Nov 2025 11:25:15 +0100
+	id 1vJtPd-0007nV-Tb
+	for lore@pengutronix.de; Fri, 14 Nov 2025 14:00:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vkcMaG8ae7L08hMw9Zdi9D+GWva4aoJ90pf9EUpAWWw=; b=fRay+Fyq2J0MLWeswPyPJt8wH8
-	ENu8MRKAjGGAMfelp9poR0lDOgJe++pi8WhkoNvw+fjPX7pXB7GF/RpeKBSpgc9rIWQeDJiCtbL+i
-	W5f4GsZXm4fQKcUj+RXuokPRVUXLMHxHPU+VURioPL1h5mTHToIZ1ZqYub/Nx3U0MjC9xuN7ge7+A
-	ceC+5KGtAduS7lJ6eYsqBy3n1Ymykd7PuaYYNaokN401bGTE7vwPKEjJGv5nGyZYQyL0+Si/zgQNe
-	FTLgqfWOlr3+No0mY796BkFoQefFX/HHAT3i+xkikS6IkDbWlZRGgrsrt9WkOfzOdpX/iG4b4LBXf
-	llU+C4eA==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=msmnHWt05Ytosn1EcVoiTjl64Nua6wK5NoWM0n3wXmo=; b=4Yyty9h133PVDhCC1btoPwFDdI
+	d92qKCBOsSpwTNhEcNK4aSVa9A2NG92HvKYJXwj65ct0JXvdkzUcBFp1E9trgyRqAGattmRVlLI2j
+	+mz50j82DIOL2IbwR4Q89WD2NzBGQOvZYGwmOXMTziNeCsYW5Mu1hQx04NYMgbXpwUHlDnYQ8GO/9
+	fFhxI9so9VzzHSkVZmbR4X7Ty+KOmG9mPclGt9ZCIIKO/aQrFAybWMHPEQxWTxxMa26IklIH2ldhr
+	vzapJaUMNjMOmXnAUr7BvizciMzMG4bCVIgNZVs+YbwsUNhRqC7QRwom1uNfOA5LLsarb8oxMCP9Q
+	MaI+ceNg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJqz0-0000000C0eH-10n6;
-	Fri, 14 Nov 2025 10:24:46 +0000
+	id 1vJtP2-0000000CDgz-05tu;
+	Fri, 14 Nov 2025 12:59:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJqyv-0000000C0cv-1Lwy
+	id 1vJtOz-0000000CDfv-09y1
 	for barebox@lists.infradead.org;
-	Fri, 14 Nov 2025 10:24:44 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1vJqyr-0004aA-Kf; Fri, 14 Nov 2025 11:24:37 +0100
-Message-ID: <a706647c-82ed-4923-a6dd-6e0d3818d11c@pengutronix.de>
-Date: Fri, 14 Nov 2025 11:24:37 +0100
+	Fri, 14 Nov 2025 12:59:47 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vJtOv-0007ZG-Ry; Fri, 14 Nov 2025 13:59:41 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vJtOv-000QQM-28;
+	Fri, 14 Nov 2025 13:59:41 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vJtOw-0000000Gh0I-04Y1;
+	Fri, 14 Nov 2025 13:59:41 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251112213727.4036102-1-a.fatoum@pengutronix.de>
+References: <20251112213727.4036102-1-a.fatoum@pengutronix.de>
+Message-Id: <176312518156.3977625.10806925688187751873.b4-ty@pengutronix.de>
+Date: Fri, 14 Nov 2025 13:59:41 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20251112-tlv_bind_serial-v1-1-638cf222553a@pengutronix.de>
- <a6d6bbcb-96b7-4a43-9322-c42562cd1bf1@pengutronix.de>
-From: Jonas Rebmann <jre@pengutronix.de>
-Content-Language: en-US
-In-Reply-To: <a6d6bbcb-96b7-4a43-9322-c42562cd1bf1@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251114_022441_367256_733DC8FB 
-X-CRM114-Status: GOOD (  14.64  )
+X-CRM114-CacheID: sfid-20251114_045945_081442_C405F43A 
+X-CRM114-Status: UNSURE (   8.34  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,67 +80,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] tlv: Add tlv_bind_serial mapping
+Subject: Re: [PATCH master] ARM: i.MX93: reinstate aliases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
 
-On 2025-11-13 10:11, Ahmad Fatoum wrote:
->> +	struct bus_type *bus;
->> +	struct device_d *socdev;
->> +	const char *soc_serial;
->> +	char *tlv_serial = basprintf("%.*s", len, val);
+On Wed, 12 Nov 2025 22:37:26 +0100, Ahmad Fatoum wrote:
+> Regrettably, the i.MX93 device trees no longer list aliases in the SoC
+> dtsi and instead leave it to the boards. This broke native GPIO
+> controllers on i.MX93 in barebox, because the driver expects aliases for
+> all device tree platforms.
 > 
-> strndup would also work here.
-
-Since a such basprintf is used in __tlv_format_str() and
-tlv_format_blob(), I found it adequate to do it the same way.
-
->> +
->> +	bus = get_bus_by_name("soc");
->> +	if (!bus) {
->> +		pr_err("No 'soc' bus found\n");
+> Add back the aliases into a barebox override.
 > 
-> goto out and use a common error message? That way you also cover the
-> case of no socdev existing.
+> [...]
 
-Ah indeed, will do that in v2.
+Applied, thanks!
 
->> +		return -EACCES;
->> +	}
->> +
->> +	for_each_device(socdev) {
->> +		soc_serial = dev_get_param(socdev, "serial_number");
->> +		if (!soc_serial)
->> +			continue;
->> +
->> +		if (streq_ptr(tlv_serial, soc_serial))
->> +			return __tlv_format_str(dev, map, len, val) ? 0 : -ENOMEM;
-> 
-> 	return tlv_format_str(...) directly instead?
-> 
-> I talked with Sascha yesterday and I believe he is implementing a common
-> get_soc_uid(). If so, that might be suitable for use here.
+[1/1] ARM: i.MX93: reinstate aliases
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e83419c7f263 (link may not be stable)
 
-Sounds good! When I wrote this code, I was unsure whether multiple SoC
-UIDs or a soc1.serial_number are cases we ever want to care about. If
-not, I would habe only tested against the one/first serial_number here
-and then break the loop...
-
-Will update to get_soc_uid() if that's posted before v2.
-
-Regards,
-Jonas
-
+Best regards,
 -- 
-Pengutronix e.K.                           | Jonas Rebmann               |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
