@@ -1,91 +1,58 @@
-Delivery-date: Fri, 14 Nov 2025 06:01:24 +0100
+Delivery-date: Fri, 14 Nov 2025 08:24:05 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vJlw4-000miU-1X
+	id 1vJoA9-000p8C-1X
 	for lore@lore.pengutronix.de;
-	Fri, 14 Nov 2025 06:01:24 +0100
+	Fri, 14 Nov 2025 08:24:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vJlw3-0004Nu-Ru
-	for lore@pengutronix.de; Fri, 14 Nov 2025 06:01:24 +0100
+	id 1vJoA8-0000ZS-T1
+	for lore@pengutronix.de; Fri, 14 Nov 2025 08:24:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=bCf87BTFlWISLBmjugRqVfa1B77w+JkuH6obiklAtqg=; b=L9wtaQ20DWPpCmlwBZy7jmayxv
-	Q4kC3CuhK6fdNFaMPs95zsEDFHLYivHMKY2TJrfQyXGeKY+vs6eRydBeX5waywVzivRXydn/Q4T9b
-	/4FNu9O8xhYEWPqZAlmCeDLSVu0f1zgU0BK+LU4iq9pGhuzLJTLRVjnrzXzjk84nlAAEJ8rXZhyvo
-	PO4tUojHR4IrdfA2fcnm/UkEGDYWhh1tBtOsDjbGbixRPwoA2v3SRIGtCEnVgOz3oq+YGkbnSc/XB
-	WYSfgb+7uyNfhE0djNrhz8FeNOhz7MFXHxc5HVkFbYhYMsFCBtm1oeHeBXexMWqvbTg/FHtGuyBlK
-	gmaqcF+A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CoDRXz1FgTaHXc/Hs23vOrETeR1Qlf0D2Aii6/uFmPU=; b=uQSvb0dgzBp/wDpIbnwumPKRB1
+	Bqs9GE2V7Mvh6uHCuP6T3O24auJJK8Tj94Zg/e25a1iR+k3jzMVcW6dni+Muj2Lk7YZFLPAkN/WTa
+	5wUpQkMX89Cs4SSO3uUky4vc5FNkeg5pV6rICSH4Z7tvFE5xzuOw/MBOKFMyu+CFg0uMlTJF91ZYj
+	rdwOmlAaFAAHNEXdNxEftKnLBI4dtF9JJg4Gt2i0QLK2q/K4iBHQEycjZ4r6aNohAGA1YG1C81FBk
+	KHisc8T5ia0KwZCHq00ehcW6gbPJwdn+6cuxbwQ/ZTQuiYe0Sg81U4uAI9qEqks4r3rDuwFXniIAJ
+	Lv0w67Qg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJlvR-0000000BZcT-1a07;
-	Fri, 14 Nov 2025 05:00:45 +0000
-Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
+	id 1vJo9f-0000000BkUr-3aMq;
+	Fri, 14 Nov 2025 07:23:35 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJlvN-0000000BZbt-15oC
+	id 1vJo9b-0000000BkTV-2GzC
 	for barebox@lists.infradead.org;
-	Fri, 14 Nov 2025 05:00:42 +0000
-Received: by mail-qk1-x72d.google.com with SMTP id af79cd13be357-8b21fa7b91bso152082185a.1
-        for <barebox@lists.infradead.org>; Thu, 13 Nov 2025 21:00:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763096440; x=1763701240; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bCf87BTFlWISLBmjugRqVfa1B77w+JkuH6obiklAtqg=;
-        b=fnKp6T8cW+hsax5SYB4i3TQGigFriND5gFldUIbxT9FMoTdOM/E7XB/vs/ksgXOjW5
-         6aqkTPcP53DBwd9OQPEHRncS01y/5snEuVg88n4fpGC2m18B25EQwXT4QybmtfHteIqO
-         1xRUznGrVPnYgzt/bgxzM8MUaW2gzBop871Jsa9dg6UTHm1px1X7iJ8Z+4GC4qOC2jQU
-         3GLobg02fKqzr63harJ/jUb0IFVEKy4FeNL7jkxzji6Pvaado9YLRWt3nAaNYH8p0emX
-         K7yj5kqMN075n15WAFjf8SgFR8dXYc4WgkHN5LZPkGst7zqDqn6P6P+bDGADMhYyP8RU
-         dXEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763096440; x=1763701240;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bCf87BTFlWISLBmjugRqVfa1B77w+JkuH6obiklAtqg=;
-        b=as8aPtA6UAnFazWfFgvWkV9xOg6OfhLfxeyA7LgoQ+JMwiAOhTT1zE93orhpR1q0C9
-         iAEBpC257wdlnyFHufwuWG8ALbvLHJP/Tbj5D6rRpJuc5tDMDKgboF7M1M5VAjGvY6iH
-         z53+lV5lpyrWRQq/dg3cMXqI4/pMJjaRHTkLTTX7Zbfr5xYUS7x9ZUhFc6EwPMVXP8tz
-         H05DD6IqTwVlFX5Ob/KY2aD0PBnYIXzmNXtD35364Vx8owJTR9Ihy7dtlgc71L08BXXv
-         MTv4CxGmoOEK2A/hSGWbqVt8keJqGL95L6hXCqI90jixgZyoYW9m1FgUVk5h4dIPSG92
-         g1ng==
-X-Gm-Message-State: AOJu0YxldsQRwq9TyqPNawYn9NScrCtgAcWkCmjagHZnpoRW8W93xxzG
-	f2VAwKmp6yUAJiRe5xCMxYuqBhEA/vy2EgMnQugoUIG5rKUPtFg0+F0b
-X-Gm-Gg: ASbGnctOVIbx3++L7ipMsJLyL4+RmUjNf2OClN9QRLMoNShE8SqkTpCD9vvEn+psEK+
-	/Bx0IX9WsO9yXvIZsyB5fLP2Xa9kvTWXU9AEoMdatXYvPtRDnOMhXHYz0wT0C61UY62pkezsY63
-	/LoPnO8SyHMYnAoqSlO0rqTBsxkF2AgcN8PcUzczcnq3ZLJXu3ORdguAi2TmZsX7U+4z0ex7W1V
-	23WMXcKmzFxkMW3KLCVx+LVn6zZ152wyJlcZpn7QtwQdNtmrwfuF60lNrDEavEWiB9aYmDY2sqN
-	p8xCf7V3dO9D9Awrec0h+wv5g8MNUiqD7zXWgF/9Uupl++rberOOk2xwWB0Ej/AGgMzyXn8DcNH
-	hzAVtZhVET69pZ9XrssoIYg3El6sE9XiylYEdz44/BnYfbmbKnO55oijJSOGR+MsRnUiYPYT4uf
-	k5PIQ1bXWjoEq16UPtzH9U
-X-Google-Smtp-Source: AGHT+IGEHxFtbTyZD5EVRz6NggQ9Tav8cTHSD+NtMDcR2aGMBEZXWXeAMN7pFzFhOw0cAlQt5vue6g==
-X-Received: by 2002:a05:620a:2686:b0:892:43af:ba4b with SMTP id af79cd13be357-8b2c315962amr250042685a.29.1763096439481;
-        Thu, 13 Nov 2025 21:00:39 -0800 (PST)
-Received: from CNCMK0001D007E.ht.home ([2607:fa49:8c41:2600::d61])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2af062acasm267252785a.53.2025.11.13.21.00.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 21:00:38 -0800 (PST)
-From: chalianis1@gmail.com
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org,
-	Chali Anis <chalianis1@gmail.com>
-Date: Fri, 14 Nov 2025 00:00:34 -0500
-Message-ID: <20251114050034.186683-1-chalianis1@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	Fri, 14 Nov 2025 07:23:33 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1vJo9Y-0000Ng-Dj; Fri, 14 Nov 2025 08:23:28 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Fri, 14 Nov 2025 08:23:16 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251114-v2025-11-0-topic-socfpga-arria10-v1-2-e091cddacea5@pengutronix.de>
+References: <20251114-v2025-11-0-topic-socfpga-arria10-v1-0-e091cddacea5@pengutronix.de>
+In-Reply-To: <20251114-v2025-11-0-topic-socfpga-arria10-v1-0-e091cddacea5@pengutronix.de>
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ Bruno Knittel <bruno.knittel@bruker.com>
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251113_210041_306514_3ACDC8DF 
-X-CRM114-Status: GOOD (  11.49  )
+X-CRM114-CacheID: sfid-20251113_232331_586789_F8DE4B41 
+X-CRM114-Status: UNSURE (   9.55  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,73 +70,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] blspec: derive root prefix from blspec config path instead of mountpoint
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 2/2] ARM: socfpga: arria10-init: setup uart earlier
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Chali Anis <chalianis1@gmail.com>
+From: Bruno Knittel <bruno.knittel@bruker.com>
 
-Add get_prefix_path() to compute the filesystem prefix of a BLSpec
-entry by locating the deepest /loader/entries/ component in the
-configuration path. This ensures correct rootpath extraction for
-nested loader directories, mixed path layouts, duplicate segments,
-and paths without valid loader entries. If no prefix is found,
-fall back to get_mounted_path().
+Dedicated peripherals like GPIO but especially UART can be enabled and
+used before the FPGA is configured.
 
-Signed-off-by: Chali Anis <chalianis1@gmail.com>
+This commit ensures socfpga_uart_setup_ll() is done before FPGA
+configuration and allows to have UART debug output as early as possible.
+
+Signed-off-by: Bruno Knittel <bruno.knittel@bruker.com>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- common/blspec.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ arch/arm/mach-socfpga/arria10-init.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 80ebe256ceaf..ad94d4d6be64 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -391,6 +391,29 @@ static bool entry_is_match_machine_id(struct blspec_entry *entry)
- 	return ret;
+diff --git a/arch/arm/mach-socfpga/arria10-init.c b/arch/arm/mach-socfpga/arria10-init.c
+index 14cee3196a..7b438a8947 100644
+--- a/arch/arm/mach-socfpga/arria10-init.c
++++ b/arch/arm/mach-socfpga/arria10-init.c
+@@ -146,10 +146,6 @@ void arria10_finish_io(uint32_t *pinmux)
+ 	arria10_reset_deassert_shared_peripherals();
+ 
+ 	arria10_reset_deassert_fpga_peripherals();
+-
+-	socfpga_uart_setup_ll();
+-
+-	puts_ll("lowlevel init done\n");
  }
+ /*
+  * First C function to initialize the critical hardware early
+@@ -197,4 +193,8 @@ void arria10_init(struct arria10_mainpll_cfg *mainpll,
  
-+/*
-+ * Return the path prefix before the deepest "/loader/entries/" component
-+ * in @configname. Falls back to the mounted path if none is found.
-+ */
-+static char *get_blspec_prefix_path(char *configname)
-+{
-+	char *p;
-+	char *scfg = configname;
-+	char *save = NULL;
+ 	/* deassert peripheral resets */
+ 	arria10_reset_deassert_dedicated_peripherals();
 +
-+	while ((p = strstr(scfg, "/loader/entries/")) != NULL) {
-+		if (p - configname > 0)
-+			save = p;
++	socfpga_uart_setup_ll();
 +
-+		scfg = p + 1;
-+	}
-+
-+	if (save && save - configname > 0)
-+		return xstrndup(configname, save - configname);
-+
-+	return get_mounted_path(configname);
-+}
-+
- static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
- 			      const char *configname)
- {
-@@ -404,7 +427,7 @@ static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
- 	if (IS_ERR(entry))
- 		return PTR_ERR(entry);
- 
--	root = root ?: get_mounted_path(configname);
-+	root = root ?: get_blspec_prefix_path(configname);
- 	entry->rootpath = xstrdup_const(root);
- 	entry->configpath = xstrdup_const(configname);
- 	entry->cdev = get_cdev_by_mountpath(root);
++	puts_ll("lowlevel init done\n");
+ }
+
 -- 
-2.49.0
+2.46.0
 
 
 
