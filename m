@@ -1,67 +1,57 @@
-Delivery-date: Mon, 17 Nov 2025 18:14:52 +0100
+Delivery-date: Mon, 17 Nov 2025 20:17:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vL2oW-0022yF-04
+	id 1vL4jN-0024ip-2Y
 	for lore@lore.pengutronix.de;
-	Mon, 17 Nov 2025 18:14:52 +0100
+	Mon, 17 Nov 2025 20:17:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vL2oV-0002P9-Bt
-	for lore@pengutronix.de; Mon, 17 Nov 2025 18:14:51 +0100
+	id 1vL4jN-00020c-5o
+	for lore@pengutronix.de; Mon, 17 Nov 2025 20:17:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Og9DXWuJp59kHOFdsEQH9Ugbhqh4B8DG6JIWafbdImw=; b=4uYY6vwOOZ7IxbVH0D1Nl4nwVv
-	dBROh0IPxjiZvKwGjVPZHEdkP83BzZnvkQOb0e2HoyQLeq5ClxKlbiGpXDXuLPRMM6dk0Tp/25nc/
-	PoGSagBuqN2GiRCRuXrnVtrEudEidP580iiDNdi9bw2PlnTpvLextDHMztcN6eZLZ6qpGnamHPhvR
-	fkpaG6L377QTw38y/3whSce7TuQuYs+vxKcjvmYInZgRo/QJhBpugY5O7/n6HL5ZFJAoloJSdDYNu
-	GlhWTCP8mNDYm9lijcIgjGY68Qpao6MuEeNPkynHT4Wy41K9HkaAzoKqSCZnuwdpR23vyB7y1tuas
-	7/P1RXGQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=bmag4D2R7pj+fOOCcA6R1kTvYW7EoFcLuQkJUfR1kyw=; b=UapF5oc7lw4B0pM6Hs40gtLFPu
+	HMOHF889IyHwg0UpHMXNzdtVjzFjpuc6JvAkY13f1Hnaen57XylUrtkwbku58QZDJhrVuYGm6nYx7
+	DKBftQyuKx//pS/MzupW3kwfeTFDK5Dzx2YUfP1DzBcpHHK4shoRDBsgUYafUeFCK8jVGsG44pYks
+	esLc4PIZIGIeoCXSyv7ex3tE0wLIXYrfrpV/xTLCuS7dcUSNAsxK/CsOwb59KLZ94O1SzIDA7H1cp
+	9ND8/V/mzz/0BiriXbjPhScf4V61vcRnSi7H0pe8d+sMtPLaIwcK4Riy+yKnOwPryb30tbSt8M4QZ
+	e4bGwo4w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vL2nv-0000000GW9f-3u3Z;
-	Mon, 17 Nov 2025 17:14:15 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vL4is-0000000Gjed-0uUr;
+	Mon, 17 Nov 2025 19:17:10 +0000
+Received: from vs10.datenmanufaktur-hosting.net ([213.160.73.65] helo=vs81.iboxed.net)
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vL2nu-0000000GW99-0PcE
+	id 1vL4iq-0000000GjeC-0nvm
 	for barebox@lists.infradead.org;
-	Mon, 17 Nov 2025 17:14:15 +0000
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1vL2ns-0002Dd-3R; Mon, 17 Nov 2025 18:14:12 +0100
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Mon, 17 Nov 2025 18:14:06 +0100
+	Mon, 17 Nov 2025 19:17:09 +0000
+Received: from blala.de (localhost [127.0.0.1])
+	by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id 5AHJNCGq013489;
+	Mon, 17 Nov 2025 19:23:12 GMT
+Received: from localhost (akurz@localhost)
+	by blala.de (8.15.2/8.15.2/Submit) with ESMTP id 5AHJNCnd013485;
+	Mon, 17 Nov 2025 19:23:12 GMT
+Date: Mon, 17 Nov 2025 19:23:12 +0000 (UTC)
+From: Alexander Kurz <akurz@blala.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+cc: barebox@lists.infradead.org
+In-Reply-To: <aRrgLDG2tbcJ1dg0@pengutronix.de>
+Message-ID: <alpine.DEB.2.21.2511171921070.8214@blala.de>
+References: <20251117064601.30401-1-akurz@blala.de> <aRrgLDG2tbcJ1dg0@pengutronix.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251117-tlv_bind_serial-v2-1-60c7b1e3e81b@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAN1XG2kC/3WNywqDMBBFf0Vm3RQzPpCu+h8iEs1EByRKYoNF8
- u+N7rs8F865J3hyTB5e2QmOAntebQJ8ZDDOyk4kWCcGzLGSUqLYl9APbHV/iWoRQzNgqWqjS5V
- DsjZHho+72HaJZ/b76r73QZDX+r8VpJCiLprRIGJVFeq9kZ0+u1stH09N0MUYfyflOFazAAAA
-X-Change-ID: 20251112-tlv_bind_serial-b8b24a6fd4a0
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4054; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=SBe8CbMEbLRgsUwI1EHEx4e+VZgHejsCgvSXNnVh1WE=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsiUDn9cVvQgO/l2zJ59k6pEDDfqsLEue7eSbXbKHyX2t
- IMP2q5M6yhlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAExEh5Phv1dczBXnrRpfw7Zt
- nWj9UJlx8gTflc5nvWfqn57z+vucefYM/0yPfdrUHKohwTxzzUtZ//zDp32P8z0t3/S73jA8o2W
- fHhMA
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
+Content-Type: text/plain; charset=US-ASCII
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251117_091414_140309_70809FC3 
-X-CRM114-Status: GOOD (  15.48  )
+X-CRM114-CacheID: sfid-20251117_111708_518992_78C971B1 
+X-CRM114-Status: GOOD (  26.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,111 +73,80 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2] tlv: Add tlv_bind_soc_uid mapping
+Subject: Re: [PATCH v2 0/1] Add Kindle generation 6/7 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Particularly when using secure boot with signed TLVs, it may be required
-to issue and sign TLVs for specific units. As typically all units of a
-board are compiled to validate TLVs against the same key, a "binding"
-mechanism is needed if interchange of TLVs across those units must be
-prevented. This mapping binds against the UID of the SoC, rendering a
-signed TLV with such a field invalid for all but the one unit.
 
-When generating TLVs that use this mapping, the exact case-sensitive
-string representation of the SoC UID must be taken into account.
 
-Add the special mapping tlv_bind_soc_uid that aborts TLV parsing if the
-supplied string does not match the SoC UID number.
+On Mon, 17 Nov 2025, Sascha Hauer wrote:
 
-Include this mapping in barebox_tlv_v1_mappings with tag 0x0024 to make
-it available in testing and in other setups using the generic tlv
-parsers.
+> On Mon, Nov 17, 2025 at 06:46:00AM +0000, Alexander Kurz wrote:
+> > Changes in v2:
+> > - Link to v1: https://lore.barebox.org/barebox/aRMOO3jH4a16GBI6@pengutronix.de/
+> > - Remove explicit RAM size settings from lowlevel.c and dts since this can be
+> >   autodetected. As consequence, both DP75SDI variants (Paperwhite 2 and 3) now
+> >   share the same dts.
+> > - Rebase to current
+> > - Attempts to use barebox,deep-probe did unfortunately not work yet.
+> >   Brief description of the problem:
+> >   Device specific data is stored in /dev/mmc1.boot0.userdata, this data
+> >   is read by barebox and passed as ATAGs to the vendor kernel, without this
+> >   data, the device won't work properly.
+> >   An attempt has been made to use barebox,deep-probe (see patch below), however,
+> >   mmc1 will not be available later, resulting e.g. in an error
+> >   > Could not read board info from /dev/mmc1.boot0.userdata
+> >   during startup.
+> >   Example patch:
+> > # diff --git a/arch/arm/boards/kindle-mx6sl/board.c b/arch/arm/boards/kindle-mx6sl/board.c
+> > index ff8083a756..5c18e074c9 100644
+> > --- a/arch/arm/boards/kindle-mx6sl/board.c
+> > +++ b/arch/arm/boards/kindle-mx6sl/board.c
+> > @@ -194,15 +194,10 @@ late_initcall(kindle_mx6sl_late_init);
+> >  
+> >  static int kindle6_device_init(void)
+> >  {
+> > -       struct device *dev;
+> > -
+> >         if (!is_mx6sl_kindle())
+> >                 return 0;
+> >  
+> > -       /* Probe the eMMC to allow reading the board serial and revision */
+> > -       dev = get_device_by_name("mmc1");
+> > -       if (dev)
+> > -               dev_set_param(dev, "probe", "1");
+> > +       of_device_ensure_probed_by_alias("mmc1");
+> 
+> On return of this function the MMC host is probed, but the card is not
+> yet detected. You can do that by adding a:
+> 
+> 	device_detect_by_name("mmc1");
+> 
+> Does it work with this line added?
+Thanks, with this change, the this works now with barebox,deep-probe.
 
-Set up tlv_register_default as a late initcall so that it's loaded after
-the SoC UID was initialized.
+> 
+> Sascha
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
-Changes in v2:
-- Switch to using barebox_get_soc_uid and rename and reword everything
-  accordingly (serial number -> soc uid)
-- Init tlv_register_default as late_initcall instead of device_initcall
-- Link to v1: https://lore.barebox.org/barebox/20251112-tlv_bind_serial-v1-1-638cf222553a@pengutronix.de
----
- common/tlv/barebox.c | 18 +++++++++++++++++-
- include/tlv/tlv.h    |  1 +
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/common/tlv/barebox.c b/common/tlv/barebox.c
-index 24de3eeaaa..fdba9fa2a5 100644
---- a/common/tlv/barebox.c
-+++ b/common/tlv/barebox.c
-@@ -1,8 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
-+#include "barebox-info.h"
- #include <common.h>
- #include <net.h>
- #include <tlv/tlv.h>
-+#include <param.h>
-+#include <string.h>
-+
- 
- int tlv_handle_serial(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val)
- {
-@@ -16,6 +20,16 @@ int tlv_handle_serial(struct tlv_device *dev, struct tlv_mapping *map, u16 len,
- 	return 0;
- }
- 
-+int tlv_bind_soc_uid(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val)
-+{
-+	char *tlv_serial = basprintf("%.*s", len, val);
-+
-+	if (streq_ptr(tlv_serial, barebox_get_soc_uid()))
-+		return __tlv_format_str(dev, map, len, val) ? 0 : -ENOMEM;
-+
-+	return -EACCES;
-+}
-+
- int tlv_handle_eth_address(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val)
- {
- 	int i;
-@@ -169,6 +183,8 @@ struct tlv_mapping barebox_tlv_v1_mappings[] = {
- 	{ 0x0011, tlv_handle_eth_address, "ethernet-address" },
- 	/* A sequence of multiple Ethernet addresses */
- 	{ 0x0012, tlv_handle_eth_address_seq, "ethernet-address" },
-+	/* Reject TLVs if device serial number string does not match CPU serial */
-+	{ 0x0024, tlv_bind_soc_uid, "bound-soc_uid"},
- 	{ /* sentintel */ },
- };
- 
-@@ -212,4 +228,4 @@ static int tlv_register_default(void)
- 	}
- 	return 0;
- }
--device_initcall(tlv_register_default);
-+late_initcall(tlv_register_default);
-diff --git a/include/tlv/tlv.h b/include/tlv/tlv.h
-index 536f61646c..54e3afed45 100644
---- a/include/tlv/tlv.h
-+++ b/include/tlv/tlv.h
-@@ -37,6 +37,7 @@ extern int tlv_format_hex(struct tlv_device *dev, struct tlv_mapping *map, u16 l
- extern int tlv_format_mac(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val);
- extern int tlv_format_blob(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val);
- extern int tlv_handle_serial(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val);
-+extern int tlv_bind_soc_uid(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val);
- extern int tlv_handle_eth_address(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val);
- extern int tlv_handle_eth_address_seq(struct tlv_device *dev, struct tlv_mapping *map, u16 len, const u8 *val);
- 
-
----
-base-commit: bafc52d7dc93accb213271e3e5c267c4335d8cb2
-change-id: 20251112-tlv_bind_serial-b8b24a6fd4a0
-
-Best regards,
---  
-Jonas Rebmann <jre@pengutronix.de>
-
+Thanks, Alexander
+> 
+> >  
+> >         defaultenv_append_directory(defaultenv_kindle_mx6sl);
+> >  
+> > # diff --git a/arch/arm/dts/imx6sl-kindle-dp75sdi.dts b/arch/arm/dts/imx6sl-kindle-dp75sdi.dts
+> > index 9dc4a0c867..05fdd77a47 100644
+> > --- a/arch/arm/dts/imx6sl-kindle-dp75sdi.dts
+> > +++ b/arch/arm/dts/imx6sl-kindle-dp75sdi.dts
+> > @@ -12,7 +12,7 @@
+> >  / {
+> >         model = "kindle-dp75sdi";
+> >         compatible = "amazon,imx6sl-kindle-dp75sdi",  "fsl,imx6sl";
+> > -       barebox,disable-deep-probe;
+> > +       barebox,deep-probe;
+> >  };
+> >  
+> >  &iomuxc {
+> > 
+> > 
 
 
