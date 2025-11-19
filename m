@@ -1,68 +1,71 @@
-Delivery-date: Wed, 19 Nov 2025 16:06:32 +0100
+Delivery-date: Wed, 19 Nov 2025 16:16:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vLjlP-002hKP-25
+	id 1vLjuk-002hTz-1H
 	for lore@lore.pengutronix.de;
-	Wed, 19 Nov 2025 16:06:32 +0100
+	Wed, 19 Nov 2025 16:16:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vLjlO-0005L7-UE
-	for lore@pengutronix.de; Wed, 19 Nov 2025 16:06:31 +0100
+	id 1vLjuj-0006nH-QM
+	for lore@pengutronix.de; Wed, 19 Nov 2025 16:16:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
+	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qo38AajaeJS7VUigLq/EOoKFrox0oZQwLgX+5a16d0k=; b=WIp+tkDhFuHYVErnhayRc6VD9Y
-	Z2ck8NZuf01im2b6KOL5tpfdZ8M2BbGGNT+VCyviksU/r2yh8OaI+cLnKSQuAY291I63Zg8zWe99H
-	BEx7IHGZug1UxzG55B9tGMMI9XZhCGFUgEjXjYS3D4XGJbua5YpBX3Tu3p2s+AaoBAd3QU7n9Ag31
-	7Db5C637luvx49AG650Z17XqJDhlrIpwfzbLl+ml7bOj7FLYwcXpas7AR/Bs7U1uqbZq0b5UKJe+V
-	+Cl4EXZBV87rbL0ihetydx+G8TrYml68VWN6/gsm82Kitv4Iyvn/WSn0SVoIksvwdhlU5J5o3V/zS
-	3rA+pvSw==;
+	bh=kotel5JkxtE33EKt/JMprDg7fG+5VHDVJEACHmW5SYo=; b=A+mlLj1iJ81jTXXAgiWyUhJk20
+	c/ys2VZfeyreRXm4L8OXngdSAh3i77gkPdUSULZq4BN9PH15wU/z70s1agjMRPGP+gQbivsDdyMiR
+	TYsO16HkFMk/WYi3sxUp6e/XPJv3wRZhJjhQ3bCHz/XczPTSQJP6hqsM0UVM2vxv+iaxBR0WN8+rr
+	vJYtaK82T0tdsYhEpsXOiqB/Gpoea3DYDzGHLoaKGcOPZBekDbR8LyakonSMNi28A8C7Z+p1c8c8L
+	TeDLV8Wv68i4WJrPHPRioCHTrw1dkUTsO96d9pgbL4HJp0UrcxtofB11CmW/MdBa/1qmiCnjOdMSe
+	Ol7kS21w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLjkn-00000003SlQ-21RG;
-	Wed, 19 Nov 2025 15:05:53 +0000
+	id 1vLjuL-00000003TUF-0PfE;
+	Wed, 19 Nov 2025 15:15:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLjkj-00000003Sip-2bJs
+	id 1vLjuI-00000003TTF-3Rx9
 	for barebox@lists.infradead.org;
-	Wed, 19 Nov 2025 15:05:51 +0000
+	Wed, 19 Nov 2025 15:15:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <jlu@pengutronix.de>)
-	id 1vLjkg-00059i-4K; Wed, 19 Nov 2025 16:05:46 +0100
+	id 1vLjuH-0006ib-9H; Wed, 19 Nov 2025 16:15:41 +0100
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <jlu@pengutronix.de>)
-	id 1vLjkf-001Gea-32;
-	Wed, 19 Nov 2025 16:05:45 +0100
+	id 1vLjuH-001Grj-0I;
+	Wed, 19 Nov 2025 16:15:41 +0100
 Received: from localhost ([127.0.0.1] helo=[IPv6:::1])
 	by ptz.office.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <jlu@pengutronix.de>)
-	id 1vLjkf-0000000FJlh-3BPQ;
-	Wed, 19 Nov 2025 16:05:45 +0100
-Message-ID: <aba642ab3008f9a8d1a260745cada0f265b739b2.camel@pengutronix.de>
+	id 1vLjuG-000000002CF-3s6C;
+	Wed, 19 Nov 2025 16:15:41 +0100
+Message-ID: <11773b48d0ce0781f1ec24e3a98e81137f913de1.camel@pengutronix.de>
 From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>,  BAREBOX <barebox@lists.infradead.org>
-Date: Wed, 19 Nov 2025 16:05:45 +0100
-In-Reply-To: <20251117-tlv_bind_serial-v2-1-60c7b1e3e81b@pengutronix.de>
+To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Date: Wed, 19 Nov 2025 16:15:40 +0100
+In-Reply-To: <e630c09b-8eba-48aa-8f10-0d17a4d9df60@pengutronix.de>
 References: <20251117-tlv_bind_serial-v2-1-60c7b1e3e81b@pengutronix.de>
+	 <aRww5p7AxPtgEmgm@pengutronix.de>
+	 <539763d8-582a-4ec0-90b3-bdd265a493d9@pengutronix.de>
+	 <e630c09b-8eba-48aa-8f10-0d17a4d9df60@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2+deb12u1 
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251119_070549_680329_E36007EF 
-X-CRM114-Status: GOOD (  30.86  )
+X-CRM114-CacheID: sfid-20251119_071542_860043_6A821ABF 
+X-CRM114-Status: GOOD (  24.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,7 +83,7 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
@@ -88,133 +91,48 @@ Subject: Re: [PATCH v2] tlv: Add tlv_bind_soc_uid mapping
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, 2025-11-17 at 18:14 +0100, Jonas Rebmann wrote:
-> Particularly when using secure boot with signed TLVs, it may be required
-> to issue and sign TLVs for specific units. As typically all units of a
-> board are compiled to validate TLVs against the same key, a "binding"
-> mechanism is needed if interchange of TLVs across those units must be
-> prevented. This mapping binds against the UID of the SoC, rendering a
-> signed TLV with such a field invalid for all but the one unit.
+On Tue, 2025-11-18 at 10:57 +0100, Jonas Rebmann wrote:
+> Hi again, tiny addition:
 >=20
-> When generating TLVs that use this mapping, the exact case-sensitive
-> string representation of the SoC UID must be taken into account.
+> On 2025-11-18 10:49, Jonas Rebmann wrote:
+> > On 2025-11-18 09:40, Sascha Hauer wrote:
+> > To me the big question is: What is a SoC UID?
+> >=20
+> > Is it an arbitrary string that happens to be, for many SoCs composed of
+> > [0-9A-F] and efficiently represented in binary in the efuses? Then it
+> > feels a bit surprising to me to compare this 'arbitrary vendor-provided
+> > string' case-insensitively.
+> >=20
+> > But if we consider this an arbitrary block of binary data, typically
+> > looked at in hexadecimal then I suggest we use the raw "bytes"-format I
+> > sent an RFC patch for on Nov 12, and compare to
+> > barebox_get_soc_uid_bin(). I originally wrote that RFC patch for storin=
+g
+> > SoC UIDs but had a conversation with Ahmad that led me to view the SoC
+> > UID as an arbitrary string. However now that we have
+> > barebox_get_soc_uid_bin(), I'm tempted to change my mind.
 >=20
-> Add the special mapping tlv_bind_soc_uid that aborts TLV parsing if the
-> supplied string does not match the SoC UID number.
->=20
-> Include this mapping in barebox_tlv_v1_mappings with tag 0x0024 to make
-> it available in testing and in other setups using the generic tlv
-> parsers.
->=20
-> Set up tlv_register_default as a late initcall so that it's loaded after
-> the SoC UID was initialized.
->=20
-> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-> ---
-> Changes in v2:
-> - Switch to using barebox_get_soc_uid and rename and reword everything
->   accordingly (serial number -> soc uid)
-> - Init tlv_register_default as late_initcall instead of device_initcall
-> - Link to v1: https://lore.barebox.org/barebox/20251112-tlv_bind_serial-v=
-1-1-638cf222553a@pengutronix.de
-> ---
->  common/tlv/barebox.c | 18 +++++++++++++++++-
->  include/tlv/tlv.h    |  1 +
->  2 files changed, 18 insertions(+), 1 deletion(-)
->=20
-> diff --git a/common/tlv/barebox.c b/common/tlv/barebox.c
-> index 24de3eeaaa..fdba9fa2a5 100644
-> --- a/common/tlv/barebox.c
-> +++ b/common/tlv/barebox.c
-> @@ -1,8 +1,12 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> =20
-> +#include "barebox-info.h"
->  #include <common.h>
->  #include <net.h>
->  #include <tlv/tlv.h>
-> +#include <param.h>
-> +#include <string.h>
-> +
-> =20
->  int tlv_handle_serial(struct tlv_device *dev, struct tlv_mapping *map, u=
-16 len, const u8 *val)
->  {
-> @@ -16,6 +20,16 @@ int tlv_handle_serial(struct tlv_device *dev, struct t=
-lv_mapping *map, u16 len,
->  	return 0;
->  }
-> =20
-> +int tlv_bind_soc_uid(struct tlv_device *dev, struct tlv_mapping *map, u1=
-6 len, const u8 *val)
-> +{
-> +	char *tlv_serial =3D basprintf("%.*s", len, val);
-> +
-> +	if (streq_ptr(tlv_serial, barebox_get_soc_uid()))
-> +		return __tlv_format_str(dev, map, len, val) ? 0 : -ENOMEM;
-> +
-> +	return -EACCES;
-> +}
-> +
->  int tlv_handle_eth_address(struct tlv_device *dev, struct tlv_mapping *m=
-ap, u16 len, const u8 *val)
->  {
->  	int i;
-> @@ -169,6 +183,8 @@ struct tlv_mapping barebox_tlv_v1_mappings[] =3D {
->  	{ 0x0011, tlv_handle_eth_address, "ethernet-address" },
->  	/* A sequence of multiple Ethernet addresses */
->  	{ 0x0012, tlv_handle_eth_address_seq, "ethernet-address" },
-> +	/* Reject TLVs if device serial number string does not match CPU serial=
- */
+> I did consider changing this for v2 however in your [PATCH v2 1/9]
+> "introduce SoC UID" you mentioned that "Others even print the binary
+> data as decimal (qcom).". If we where to use 'raw "bytes"-format' as in
+> my RFC, the data YAMLs would have hexadecimal representation and I'm not
+> sure if that could get too confusing. At least we could consider to add
+> a (mandatory?) YAML-field that specifies the number system.
 
-This still used the 'serial' term.
+As the UID is normally read from registers or messages exchanged with a sec=
+urity
+enclave, each SOC vendor has already defined a binary format. We should jus=
+t
+store that unmodified in the TLV value instead of inventing a custom format=
+.
 
-> +	{ 0x0024, tlv_bind_soc_uid, "bound-soc_uid"},
-
-Don't start mixing '-' and '_'. All existing property names use only '-'.
+In the schema yaml file, we could freely define how a "bytes" format is
+translated from and to a human readable representation, by adding an "text-
+encoding" property (e.g. "hex-lower"/"hex-upper"/"base64") as fits each use=
+-
+case.
 
 Jan
-
->  	{ /* sentintel */ },
->  };
-> =20
-> @@ -212,4 +228,4 @@ static int tlv_register_default(void)
->  	}
->  	return 0;
->  }
-> -device_initcall(tlv_register_default);
-> +late_initcall(tlv_register_default);
-> diff --git a/include/tlv/tlv.h b/include/tlv/tlv.h
-> index 536f61646c..54e3afed45 100644
-> --- a/include/tlv/tlv.h
-> +++ b/include/tlv/tlv.h
-> @@ -37,6 +37,7 @@ extern int tlv_format_hex(struct tlv_device *dev, struc=
-t tlv_mapping *map, u16 l
->  extern int tlv_format_mac(struct tlv_device *dev, struct tlv_mapping *ma=
-p, u16 len, const u8 *val);
->  extern int tlv_format_blob(struct tlv_device *dev, struct tlv_mapping *m=
-ap, u16 len, const u8 *val);
->  extern int tlv_handle_serial(struct tlv_device *dev, struct tlv_mapping =
-*map, u16 len, const u8 *val);
-> +extern int tlv_bind_soc_uid(struct tlv_device *dev, struct tlv_mapping *=
-map, u16 len, const u8 *val);
->  extern int tlv_handle_eth_address(struct tlv_device *dev, struct tlv_map=
-ping *map, u16 len, const u8 *val);
->  extern int tlv_handle_eth_address_seq(struct tlv_device *dev, struct tlv=
-_mapping *map, u16 len, const u8 *val);
-> =20
->=20
-> ---
-> base-commit: bafc52d7dc93accb213271e3e5c267c4335d8cb2
-> change-id: 20251112-tlv_bind_serial-b8b24a6fd4a0
->=20
-> Best regards,
-> -- =20
-> Jonas Rebmann <jre@pengutronix.de>
->=20
->=20
->=20
-
 --=20
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
