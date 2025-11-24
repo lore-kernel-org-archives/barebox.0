@@ -1,60 +1,60 @@
-Delivery-date: Mon, 24 Nov 2025 19:00:37 +0100
+Delivery-date: Mon, 24 Nov 2025 19:00:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vNard-004Svr-0J
+	id 1vNare-004SwC-0C
 	for lore@lore.pengutronix.de;
-	Mon, 24 Nov 2025 19:00:37 +0100
+	Mon, 24 Nov 2025 19:00:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vNarc-0002DE-E8
-	for lore@pengutronix.de; Mon, 24 Nov 2025 19:00:37 +0100
+	id 1vNard-0002Di-H6
+	for lore@pengutronix.de; Mon, 24 Nov 2025 19:00:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KuVTD1Mbu3XD4TYDxnMl9+4q00oo19ADrwd64xByOk4=; b=pokd05HJOZTZwu6jHU/Wh8rQ75
-	cgjcV8DS7mESqCSVgDjTfvorpO24TWRqHgmNveA0A81u/YPkJtDzrQzNI9RpYeyXH32JO28fyKbzO
-	HreIowQ0X1dg7OjYIc6Ygd5XMHXtCb21t7i+yP4FBXkPeTPtNm9Qc+zePmu9McYUIbw0y/XexTvRk
-	N7+B0BNY8zpgffzll2WPlbVvIYfQ1jpIbd+OK53beVMxJLbsjqvhGB2IH7wMrNDdI2svuSyKdC3Tn
-	y4fEEs6CudDybLN7B4jvHFixcY+QsVx113mWCs2qS1PUsQ9TbGDPl+GGRAn3hjbcbgGW2bi+LBokk
-	R00tfNew==;
+	bh=CyYao7hW3B2gwoSPy98L+DDsFJMGSxjBLd1Y6J7s428=; b=ATfeB1e93IBsW0N4jFBk4ZrOxb
+	pviULhPqkrMfvv4UfCJO7z8k5VU68xmfUBxE0YNz2cEuaYWdj2/Zi7zrF/NaX8gEM2VK0sLUBqnLy
+	tccbIYUEn5N63i6w/oOWmfYLgoMFAdIBY/LJdyz0Yh44/oV+Rd6x/lDVwm4A6IIEymUtrdE1g4XJ7
+	XE6t5qyho6fKp8puOwmZg5a9Qhxz9Iy8On6kfn5Ww4Od9sfG/0z0zjvkWuAI6RqaIrbll2PNd8h5B
+	KqoW6HndALf05GovqPpgG0sWzEVtE+Eazn7Ons+U313PeSJkIitynKRA6rg5IjJBi4+G0sNlcqiey
+	kyn1M94g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNaqw-0000000C8ov-21eC;
-	Mon, 24 Nov 2025 17:59:54 +0000
+	id 1vNaqx-0000000C8pB-0xqt;
+	Mon, 24 Nov 2025 17:59:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNaqs-0000000C8nc-2v6F
+	id 1vNaqs-0000000C8nb-2uwx
 	for barebox@lists.infradead.org;
-	Mon, 24 Nov 2025 17:59:52 +0000
+	Mon, 24 Nov 2025 17:59:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vNaqq-00020w-I6; Mon, 24 Nov 2025 18:59:48 +0100
+	id 1vNaqq-00020v-Ga; Mon, 24 Nov 2025 18:59:48 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vNaqq-002Dwe-1B;
+	id 1vNaqq-002Dwb-12;
 	Mon, 24 Nov 2025 18:59:48 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vNaqq-00000007EuD-18y4;
+	id 1vNaqq-00000007EuD-0wZH;
 	Mon, 24 Nov 2025 18:59:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: =?UTF-8?q?Jan=20L=C3=BCbbe?= <j.luebbe@pengutronix.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 24 Nov 2025 18:59:42 +0100
-Message-ID: <20251124175947.1725563-3-a.fatoum@pengutronix.de>
+Date: Mon, 24 Nov 2025 18:59:41 +0100
+Message-ID: <20251124175947.1725563-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251124175947.1725563-1-a.fatoum@pengutronix.de>
 References: <20251124175947.1725563-1-a.fatoum@pengutronix.de>
@@ -62,8 +62,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251124_095950_736486_E01CE446 
-X-CRM114-Status: GOOD (  14.63  )
+X-CRM114-CacheID: sfid-20251124_095950_738897_E0C4AEF6 
+X-CRM114-Status: GOOD (  12.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,144 +85,66 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] defaultenv: add base and external defaultenv in pure_initcall
+Subject: [PATCH 2/3] defaultenv: don't abort defaultenv_load silently on error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently depend on the order of the calls to defaultenv_append() to
-decide which overlays to apply first.
-
-To ensure the base environment is always loaded first, all of
-defaultenv_append(), defaultenv_append_runtime_directory() and
-defaultenv_load() call defaultenv_add_base() first.
-
-Simplify this by adding base and external (i.e. from the BSP) defaultenv
-in the earliest initcall.
-
-This has a welcome side effect: Previously, fw_cfg env was applied
-before an external defaultenv, but now it's applied afterwards and thus
-can override it.
+Failure to load one defaultenv has no bearing on whether subsequent
+defaultenv loads would succeed, so do not abort the loop early in that
+case.
 
 Reported-by: Jan Lübbe <j.luebbe@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- defaultenv/defaultenv.c | 78 +++++++++++++++--------------------------
- 1 file changed, 28 insertions(+), 50 deletions(-)
+ common/startup.c        | 8 ++++++--
+ defaultenv/defaultenv.c | 8 ++++----
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
+diff --git a/common/startup.c b/common/startup.c
+index dfea8394fdee..8f5e77d4619c 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -92,8 +92,12 @@ static int load_environment(void)
+ 
+ 	default_environment_path = default_environment_path_get();
+ 
+-	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT))
+-		defaultenv_load("/env", 0);
++	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT)) {
++		ret = defaultenv_load("/env", 0);
++		if (ret)
++			pr_warn("Failed loading (some) defaultenv overlays: %pe\n",
++				ERR_PTR(ret));
++	}
+ 
+ 	if (IS_ENABLED(CONFIG_ENV_HANDLING)) {
+ 		envfs_load(default_environment_path, "/env", 0);
 diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
-index 8407a2457630..6891d95e301e 100644
+index 652fda05027a..8407a2457630 100644
 --- a/defaultenv/defaultenv.c
 +++ b/defaultenv/defaultenv.c
-@@ -33,48 +33,6 @@ struct defaultenv {
- 	size_t size;
- };
- 
--static void defaultenv_add_base(void)
--{
--	static int base_added;
--
--	if (base_added)
--		return;
--
--	base_added = 1;
--
--	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW))
--		defaultenv_append_directory(defaultenv_2_base);
--	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU))
--		defaultenv_append_directory(defaultenv_2_menu);
--	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU))
--		defaultenv_append_directory(defaultenv_2_dfu);
--	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE))
--		defaultenv_append_directory(defaultenv_2_reboot_mode);
--	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY))
--		defaultenv_append_directory(defaultenv_2_security_policy);
--	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG))
--		defaultenv_append_directory(defaultenv_2_ikconfig);
--	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
--		defaultenv_append_directory(defaultenv_1);
--}
--
--static void defaultenv_add_external(void)
--{
--	static int external_added;
--
--	if (external_added)
--		return;
--
--	external_added = 1;
--
--	/*
--	 * The traditional or external environment given with
--	 * CONFIG_DEFAULT_ENVIRONMENT_PATH.
--	 */
--	defaultenv_append((void *)default_environment,
--			default_environment_size, "defaultenv");
--}
--
- /*
-  * defaultenv_append - append a envfs buffer to the default environment
-  * @buf:	The buffer containing the binary environment. If it is
-@@ -88,8 +46,6 @@ void defaultenv_append(void *buf, unsigned int size, const char *name)
+@@ -177,17 +177,17 @@ static int defaultenv_load_one(struct defaultenv *df, const char *dir,
+ int defaultenv_load(const char *dir, unsigned flags)
  {
  	struct defaultenv *df;
+-	int ret;
++	int err = 0;
  
--	defaultenv_add_base();
--
- 	df = xzalloc(sizeof(*df));
- 	df->buf = buf;
- 	df->size = size;
-@@ -106,8 +62,6 @@ void defaultenv_append_runtime_directory(const char *srcdir)
- 	if (stat(srcdir, &s) || !S_ISDIR(s.st_mode))
- 		return;
+ 	defaultenv_add_base();
  
--	defaultenv_add_base();
--
- 	df = xzalloc(sizeof(*df));
- 	df->srcdir = srcdir;
- 	df->name = srcdir;
-@@ -179,10 +133,6 @@ int defaultenv_load(const char *dir, unsigned flags)
- 	struct defaultenv *df;
- 	int err = 0;
+ 	defaultenv_add_external();
  
--	defaultenv_add_base();
--
--	defaultenv_add_external();
--
  	list_for_each_entry(df, &defaultenv_list, list) {
- 		int ret = defaultenv_load_one(df, dir, flags);
+-		ret = defaultenv_load_one(df, dir, flags);
++		int ret = defaultenv_load_one(df, dir, flags);
  		if (ret)
-@@ -191,3 +141,31 @@ int defaultenv_load(const char *dir, unsigned flags)
+-			return ret;
++			err = ret;
+ 	}
  
- 	return err;
+-	return 0;
++	return err;
  }
-+
-+static int defaultenv_init(void)
-+{
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW))
-+		defaultenv_append_directory(defaultenv_2_base);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU))
-+		defaultenv_append_directory(defaultenv_2_menu);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU))
-+		defaultenv_append_directory(defaultenv_2_dfu);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE))
-+		defaultenv_append_directory(defaultenv_2_reboot_mode);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SECURITY_POLICY))
-+		defaultenv_append_directory(defaultenv_2_security_policy);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG))
-+		defaultenv_append_directory(defaultenv_2_ikconfig);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
-+		defaultenv_append_directory(defaultenv_1);
-+
-+	/*
-+	 * The traditional or external environment given with
-+	 * CONFIG_DEFAULT_ENVIRONMENT_PATH.
-+	 */
-+	defaultenv_append((void *)default_environment,
-+			default_environment_size, "defaultenv");
-+
-+	return 0;
-+}
-+pure_initcall(defaultenv_init);
 -- 
 2.47.3
 
