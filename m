@@ -1,63 +1,65 @@
-Delivery-date: Mon, 24 Nov 2025 20:58:57 +0100
+Delivery-date: Tue, 25 Nov 2025 07:27:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vNci9-004Ueg-1p
+	id 1vNmVy-004dvU-0M
 	for lore@lore.pengutronix.de;
-	Mon, 24 Nov 2025 20:58:57 +0100
+	Tue, 25 Nov 2025 07:27:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vNci8-0004SW-Uz
-	for lore@pengutronix.de; Mon, 24 Nov 2025 20:58:57 +0100
+	id 1vNmVx-0006Ez-Em
+	for lore@pengutronix.de; Tue, 25 Nov 2025 07:27:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ofyloLJAfdICZJrY+BuIK5ePNe34AoauxXBMFcunfZM=; b=OXtHWqoXN+ahhUWgOBObOi/KEG
-	oW7hmHeiPj2m3Bnrdk9xTCcQJOAh+UuRrATE8bp1WAz3X9FpJ+DsMSTpUOOcETyaxhb7yDwhBXx6l
-	6MxYnn3dgcqsf3jap2zWBwu2kieNV2YjABlIssX53rJ3y9rFbOtxtqiYt1e6siCGrlm/y/t+Fxzup
-	IVXEgHeKWC/B+GBmO1BJG/comATd5f2DkHB66xAoT8ApKyvJPJVdvKYvnr2S+FhMBN2AH+WkU/C5N
-	YGr2Zw3DQuZ+u2Ly7Mx06bFMyxE6fKnTlQcacmgXULjBZbfe0hQM3VCOzbBqU90Oa/QDv3EaKMDlk
-	bwUls6SQ==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=VOfVtZOK4nDm0faLNMk/0TztpJmfPDx72oaQGXpcDog=; b=B348G8xpqW97rJdMeeh0DVHwy8
+	UKH4lmI70IThUk5y7ufzK1mQgtfzGNZgvKVcx5XD+VUiFReI8eEXbaq6DXZWciQnoXlfuCwuVdPG/
+	y/u/eGa3nODHePfy3HcScIigy7srgROtO2GUl6RJkAfYAH1Vl/KZ3I+NxAZPLmMRv/8fXp4jOv8VI
+	iA6UJzVDDhFp/3GtWwaonedBTRCUzMuC0lU3C6gnlPNNLWwI9b7HLpVgBIdkR9urJRvKG8VVG/RA/
+	DfMLybpvRtedYWfkfMGucyXboR5IRSsOW4YzP5Rhn/s9HPSS1jH0U+cPuZZPwlSuUi3cUCu5KJJeo
+	PTunICYQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNchP-0000000CH28-44uK;
-	Mon, 24 Nov 2025 19:58:11 +0000
+	id 1vNmVD-0000000Cosc-2ft6;
+	Tue, 25 Nov 2025 06:26:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNchM-0000000CH1l-3QSY
+	id 1vNmVA-0000000Cos8-3FIE
 	for barebox@lists.infradead.org;
-	Mon, 24 Nov 2025 19:58:10 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1vNchJ-0004NE-R9; Mon, 24 Nov 2025 20:58:05 +0100
-Message-ID: <540bcb3e-c678-410c-aaa9-e60e28bf62ff@pengutronix.de>
-Date: Mon, 24 Nov 2025 20:58:05 +0100
+	Tue, 25 Nov 2025 06:26:14 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vNmV7-00064N-00; Tue, 25 Nov 2025 07:26:09 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vNmV6-002L4D-2b;
+	Tue, 25 Nov 2025 07:26:08 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vNmV6-0000000AyRx-2ybC;
+	Tue, 25 Nov 2025 07:26:08 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 25 Nov 2025 07:23:44 +0100
+Message-ID: <20251125062603.2614867-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>, =?UTF-8?Q?Jan_L=C3=BCbbe?=
- <jlu@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-References: <20251117-tlv_bind_serial-v2-1-60c7b1e3e81b@pengutronix.de>
- <aRww5p7AxPtgEmgm@pengutronix.de>
- <539763d8-582a-4ec0-90b3-bdd265a493d9@pengutronix.de>
- <e630c09b-8eba-48aa-8f10-0d17a4d9df60@pengutronix.de>
- <11773b48d0ce0781f1ec24e3a98e81137f913de1.camel@pengutronix.de>
- <aSQ1AWPxHw4knocf@pengutronix.de>
-Content-Language: en-US
-From: Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <aSQ1AWPxHw4knocf@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251124_115808_878708_29D8E939 
-X-CRM114-Status: GOOD (  21.59  )
+X-CRM114-CacheID: sfid-20251124_222612_810953_1DF596CA 
+X-CRM114-Status: GOOD (  12.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,73 +77,101 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] tlv: Add tlv_bind_soc_uid mapping
+Subject: [PATCH v2 1/4] fs: qemu_fw_cfg: make use of the automount
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Jan,
+We assume /mnt/fw_cfg to be the fw_cfg mount path at other places
+already, so let's drop some complexity by just using the automount.
 
-On 2025-11-24 11:35, Sascha Hauer wrote:
-> On Wed, Nov 19, 2025 at 04:15:40PM +0100, Jan Lübbe wrote:
->> On Tue, 2025-11-18 at 10:57 +0100, Jonas Rebmann wrote:
->>> On 2025-11-18 10:49, Jonas Rebmann wrote:
->>>> On 2025-11-18 09:40, Sascha Hauer wrote:
->>>> To me the big question is: What is a SoC UID?
->>>>
->>>> Is it an arbitrary string that happens to be, for many SoCs composed of
->>>> [0-9A-F] and efficiently represented in binary in the efuses? Then it
->>>> feels a bit surprising to me to compare this 'arbitrary vendor-provided
->>>> string' case-insensitively.
->>>>
->>>> But if we consider this an arbitrary block of binary data, typically
->>>> looked at in hexadecimal then I suggest we use the raw "bytes"-format I
->>>> sent an RFC patch for on Nov 12, and compare to
->>>> barebox_get_soc_uid_bin(). I originally wrote that RFC patch for storing
->>>> SoC UIDs but had a conversation with Ahmad that led me to view the SoC
->>>> UID as an arbitrary string. However now that we have
->>>> barebox_get_soc_uid_bin(), I'm tempted to change my mind.
->>>
->>> I did consider changing this for v2 however in your [PATCH v2 1/9]
->>> "introduce SoC UID" you mentioned that "Others even print the binary
->>> data as decimal (qcom).". If we where to use 'raw "bytes"-format' as in
->>> my RFC, the data YAMLs would have hexadecimal representation and I'm not
->>> sure if that could get too confusing. At least we could consider to add
->>> a (mandatory?) YAML-field that specifies the number system.
->>
->> As the UID is normally read from registers or messages exchanged with a security
->> enclave, each SOC vendor has already defined a binary format. We should just
->> store that unmodified in the TLV value instead of inventing a custom format.
-> 
-> The format is not custom, it's the format Linux provides in sysfs.
-> 
-> It might be confusing if the SOC UID we use has a different format.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - new preparatory patch
+---
+ fs/devfs-core.c  |  6 ++++++
+ fs/qemu_fw_cfg.c | 27 +++++----------------------
+ include/driver.h |  2 ++
+ 3 files changed, 13 insertions(+), 22 deletions(-)
 
-After further discussion with Sascha and Ahmad, I will stick to
-comparing strings in v3.
-
-As there is neither a kernel interface nor a barebox shell interface to
-read the binary representation of the SoC UID, or at least to read some
-uniform (e.g. always hexadecimal) string representation of the SoC UID,
-this would be too impractical. Instead we're taking care that the
-soc_uid string representation in barebox always matches the
-representation given in the kernel. This way, the serial_number/soc_uid
-values easily read from barebox environment or kernel sysfs can be used
-directly without SoC-specific parsing.
-
-I would however rename this to `tlv_bind_soc_uid_string` so we can have
-`tlv_bind_soc_uid_bin` in addition if needed later.
-
-Regards,
-Jonas
-
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 92e7c5823ed0..4f8230e124eb 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -86,6 +86,12 @@ struct cdev *cdev_by_name(const char *filename)
+ 	return cdev_readlink(cdev);
+ }
+ 
++struct device *device_find_by_file_path(const char *filename)
++{
++	struct cdev *cdev = cdev_by_name(devpath_to_name(filename));
++	return cdev ? cdev->dev : NULL;
++}
++
+ struct cdev *cdev_by_device_node(struct device_node *node)
+ {
+ 	struct cdev *cdev;
+diff --git a/fs/qemu_fw_cfg.c b/fs/qemu_fw_cfg.c
+index 8e61df1ebf22..5aaf14267f88 100644
+--- a/fs/qemu_fw_cfg.c
++++ b/fs/qemu_fw_cfg.c
+@@ -410,32 +410,15 @@ coredevice_initcall(qemu_fw_cfg_fs_init);
+ 
+ static int qemu_fw_cfg_early_mount(void)
+ {
+-	struct cdev *cdev;
+-	struct device *dev;
+-	const char *mntpath;
+-	int dirfd, fd;
+-
+-	cdev = cdev_by_name("fw_cfg");
+-	if (!cdev)
+-		return 0;
++	int fd;
+ 
+ 	/*
+-	 * Trigger a mount, so ramfb device can be detected and
+-	 * environment can be loaded
++	 * Also triggers the automount, so ramfb device can be detected
+ 	 */
+-	mntpath = cdev_mount(cdev);
+-	if (IS_ERR(mntpath))
+-		return PTR_ERR(mntpath);
+-
+-	dirfd = open(mntpath, O_PATH | O_DIRECTORY);
+-	if (dirfd < 0)
+-		return dirfd;
+-
+-	fd = openat(dirfd, "by_name/etc/ramfb", O_WRONLY);
+-	close(dirfd);
++	fd = open("/mnt/fw_cfg/by_name/etc/ramfb", O_WRONLY);
+ 	if (fd >= 0) {
+-		dev = device_alloc("qemu-ramfb", DEVICE_ID_SINGLE);
+-		dev->parent = cdev->dev;
++		struct device *dev = device_alloc("qemu-ramfb", DEVICE_ID_SINGLE);
++		dev->parent = device_find_by_file_path("/dev/fw_cfg");
+ 		dev->platform_data = (void *)(uintptr_t)fd;
+ 		platform_device_register(dev);
+ 	}
+diff --git a/include/driver.h b/include/driver.h
+index c130a3cd63fd..143ca18e4e39 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -477,6 +477,8 @@ int cdev_fdopen(struct cdev *cdev, unsigned long flags);
+ int cdev_close(struct cdev *cdev);
+ int cdev_flush(struct cdev *cdev);
+ 
++struct device *device_find_by_file_path(const char *filepath);
++
+ typedef int (*cdev_alias_processor_t)(struct cdev *, void *data);
+ 
+ #ifdef CONFIG_CDEV_ALIAS
 -- 
-Pengutronix e.K.                           | Jonas Rebmann               |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+2.47.3
+
 
 
