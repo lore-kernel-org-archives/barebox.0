@@ -1,60 +1,60 @@
-Delivery-date: Tue, 25 Nov 2025 07:27:02 +0100
+Delivery-date: Tue, 25 Nov 2025 07:27:06 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vNmVy-004dvf-2D
+	id 1vNmW2-004dwG-1F
 	for lore@lore.pengutronix.de;
-	Tue, 25 Nov 2025 07:27:02 +0100
+	Tue, 25 Nov 2025 07:27:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vNmVy-0006FZ-3Z
-	for lore@pengutronix.de; Tue, 25 Nov 2025 07:27:02 +0100
+	id 1vNmW1-0006Go-RZ
+	for lore@pengutronix.de; Tue, 25 Nov 2025 07:27:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FGVDIbfYGfm01wisc8oYghuyaO+ihAeZdivgqh8mG0I=; b=PP7doFPvpmpBhEWVghDV6ccrTl
-	dRWH0flszr/zCAQjLCgk74woSiQMacBqWx2TwvWbz+BBJTY/+0X45sz0F4vMP0Hfc1DS1KfX0jl6x
-	kvP7VXsVrbcPUtK02LaiAVUYoNP4DMniDZKMeyzgTHLLmxMm56uxg2AFabUbKEjCnNgy0uJU2Iwiu
-	kdhRThoEKIYroojapyJw1QPcT05SjqTC0dQqSiKQXKIDhMB/QxhNORS9uyy2JF+h0nD9+KLfTdsPg
-	HuwWprlZVBYV5ztlqVcOCfZRIwmamp3j0kYKq2CyaXLjr4HFRr3wO0Tdl5XbUeP23m6PahlxGz1dR
-	+x1MF8gA==;
+	bh=p+MDMmbJ1FnmULTGlSWTcr8rApIT54LQbmsTQyJ2P3I=; b=rxq2Dy/H6vuFZPlxxXpwFipTLJ
+	zhW5sFt0VyooZibDFno5WLQuP59iMN77OhDzXm6fvaa2GDkOYYg8vhTwlIpE5RL3Ujhv2hZhR6YbB
+	v/yFO5crMGxHFbKO4JgICnaBCI9WCYC03zfNe+kTyYnYzqOXHK7C+NulpmQA5CuhqDN2mXhvhcT9S
+	/ls7MsYdLYu+6AznFbB2H31D5wwqm/bEDV/tbgjimmO/eDschnLFm39YaJaW+ZlKFp7hx9Pxagy19
+	ayctRdoRAH0HvpTMrJumWG1hentC1aa3+GVnT4o5UZalxkJUbpZv0y97+Ov12zQOvBYeQKB0+66Ey
+	eJ3F8PiQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNmVG-0000000CotL-3piM;
-	Tue, 25 Nov 2025 06:26:18 +0000
+	id 1vNmVZ-0000000Covq-0sOK;
+	Tue, 25 Nov 2025 06:26:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNmVE-0000000Cosb-1Voa
+	id 1vNmVX-0000000CovI-2WLm
 	for barebox@lists.infradead.org;
-	Tue, 25 Nov 2025 06:26:17 +0000
+	Tue, 25 Nov 2025 06:26:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vNmVC-000652-Si; Tue, 25 Nov 2025 07:26:14 +0100
+	id 1vNmVW-00066r-1m; Tue, 25 Nov 2025 07:26:34 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vNmVC-002L4J-2H;
-	Tue, 25 Nov 2025 07:26:14 +0100
+	id 1vNmVV-002L4N-2n;
+	Tue, 25 Nov 2025 07:26:33 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vNmVC-0000000AyRx-2ZHL;
-	Tue, 25 Nov 2025 07:26:14 +0100
+	id 1vNmVV-0000000AyRx-3EoJ;
+	Tue, 25 Nov 2025 07:26:33 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: =?UTF-8?q?Jan=20L=C3=BCbbe?= <j.luebbe@pengutronix.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 25 Nov 2025 07:23:47 +0100
-Message-ID: <20251125062603.2614867-5-a.fatoum@pengutronix.de>
+Date: Tue, 25 Nov 2025 07:23:49 +0100
+Message-ID: <20251125062603.2614867-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251125062603.2614867-2-a.fatoum@pengutronix.de>
 References: <20251125062603.2614867-2-a.fatoum@pengutronix.de>
@@ -62,8 +62,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251124_222616_419765_EF0F4BF4 
-X-CRM114-Status: GOOD (  15.68  )
+X-CRM114-CacheID: sfid-20251124_222635_643924_AC849409 
+X-CRM114-Status: GOOD (  13.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,77 +85,69 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/4] fs: qemu_fw_cfg: handle non-existent opt/org.barebox.env key gracefully
+Subject: [PATCH v2 3/4] defaultenv: don't abort defaultenv_load silently on error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-QEMU fw_cfg file system driver is the sole user of
-defaultenv_append_runtime_directory() and it passes a path that's not
-necessarily available.
+Failure to load one defaultenv has no bearing on whether subsequent
+defaultenv loads would succeed, so do not abort the loop early in that
+case.
 
-When that happens, this is not noticed until the loop in defaultenv_load()
-aborts early with an -ENOENT preventing load of an external environment.
-
-Fix this as by not adding the directory if it doesn't exist.
-
-Fixes: 31dfb561d1a4 ("fs: qemu_fw_cfg: support populating environment via QEMU fw_cfg")
 Reported-by: Jan Lübbe <j.luebbe@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - move stat outside of probe, otherwise we end up with the mount
-    twice, because the automount triggers before the probe is complete
-    and the DCACHE_MOUNTED flag is set.
+  - no change
 ---
- fs/qemu_fw_cfg.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ common/startup.c        | 8 ++++++--
+ defaultenv/defaultenv.c | 8 ++++----
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/qemu_fw_cfg.c b/fs/qemu_fw_cfg.c
-index 5aaf14267f88..d0414b127c59 100644
---- a/fs/qemu_fw_cfg.c
-+++ b/fs/qemu_fw_cfg.c
-@@ -20,6 +20,8 @@
- #include <linux/err.h>
- #include <linux/ctype.h>
+diff --git a/common/startup.c b/common/startup.c
+index dfea8394fdee..8f5e77d4619c 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -92,8 +92,12 @@ static int load_environment(void)
  
-+#define FW_CFG_BAREBOX_ENV	"/mnt/fw_cfg/by_name/opt/org.barebox.env"
-+
- struct fw_cfg_fs_inode {
- 	struct inode inode;
- 	const char *name;
-@@ -376,8 +378,6 @@ static int fw_cfg_fs_probe(struct device *dev)
- 	if (ret)
- 		goto free_data;
+ 	default_environment_path = default_environment_path_get();
  
--	defaultenv_append_runtime_directory("/mnt/fw_cfg/by_name/opt/org.barebox.env");
--
- 	return 0;
- free_data:
- 	free(data);
-@@ -410,10 +410,12 @@ coredevice_initcall(qemu_fw_cfg_fs_init);
+-	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT))
+-		defaultenv_load("/env", 0);
++	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT)) {
++		ret = defaultenv_load("/env", 0);
++		if (ret)
++			pr_warn("Failed loading (some) defaultenv overlays: %pe\n",
++				ERR_PTR(ret));
++	}
  
- static int qemu_fw_cfg_early_mount(void)
+ 	if (IS_ENABLED(CONFIG_ENV_HANDLING)) {
+ 		envfs_load(default_environment_path, "/env", 0);
+diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
+index d6cca466a683..99f681f6520e 100644
+--- a/defaultenv/defaultenv.c
++++ b/defaultenv/defaultenv.c
+@@ -172,17 +172,17 @@ static int defaultenv_load_one(struct defaultenv *df, const char *dir,
+ int defaultenv_load(const char *dir, unsigned flags)
  {
-+	struct stat s;
- 	int fd;
+ 	struct defaultenv *df;
+-	int ret;
++	int err = 0;
  
- 	/*
--	 * Also triggers the automount, so ramfb device can be detected
-+	 * Also triggers the automount, so both ramfb device can be detected
-+	 * and environment can be loaded
- 	 */
- 	fd = open("/mnt/fw_cfg/by_name/etc/ramfb", O_WRONLY);
- 	if (fd >= 0) {
-@@ -423,6 +425,9 @@ static int qemu_fw_cfg_early_mount(void)
- 		platform_device_register(dev);
+ 	defaultenv_add_base();
+ 
+ 	defaultenv_add_external();
+ 
+ 	list_for_each_entry(df, &defaultenv_list, list) {
+-		ret = defaultenv_load_one(df, dir, flags);
++		int ret = defaultenv_load_one(df, dir, flags);
+ 		if (ret)
+-			return ret;
++			err = ret;
  	}
  
-+	if (!stat(FW_CFG_BAREBOX_ENV, &s) && S_ISDIR(s.st_mode))
-+		defaultenv_append_runtime_directory(FW_CFG_BAREBOX_ENV);
-+
- 	return 0;
+-	return 0;
++	return err;
  }
- late_initcall(qemu_fw_cfg_early_mount);
 -- 
 2.47.3
 
