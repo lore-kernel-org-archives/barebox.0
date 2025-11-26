@@ -1,67 +1,68 @@
-Delivery-date: Wed, 26 Nov 2025 15:09:51 +0100
+Delivery-date: Wed, 26 Nov 2025 15:09:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOGDP-0055ss-25
+	id 1vOGDS-0055tG-0l
 	for lore@lore.pengutronix.de;
-	Wed, 26 Nov 2025 15:09:51 +0100
+	Wed, 26 Nov 2025 15:09:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOGDO-0002vo-WC
-	for lore@pengutronix.de; Wed, 26 Nov 2025 15:09:51 +0100
+	id 1vOGDR-0002wr-LM
+	for lore@pengutronix.de; Wed, 26 Nov 2025 15:09:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=bDTLpLU+PEEZ7e8FgP8VcVVS6MTS1bvaypE70dSzoLA=; b=auN6ntn0VpeNziror5TM3f1aM0
-	W3hi/XE2GnUtBUCqiuBBau6kI4Yu3/L7ikMUhU71XZoeWw9d3HJHE6dfCY445E24G1ipkebW3CSdO
-	mDQRekRjGzsNp74RkqlDwmQOU0z9o87pmJhly43dZopaMGMqmxM21ONo78b71J7GtZ//VRASMu1/T
-	RLoORGl7vcS2WTA78aGP+1t18nAZK5C7fTAFHFKXiGKBIvXZeRxlcrmmDnP+8H2CE7vNpmy7xBaEB
-	IoIo0XfqeI19k61vzZ5ElaLVaih1pV3kEBKoBy0X/IsB7uXmNvU10YMyXz7UUk2MeTfQmHwXF9cAt
-	2UIW1qHQ==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=yupWbjDuk0+cRhElrGGzIz7Liw/OoRlk80wcJMvWuJE=; b=gd7fvoy7+HV6RcrcE/BJDKgQEE
+	bXrTZIuYy3bX6IrtQRerps0DltNh2P45Gf/XQJVzVIrVQQMrnocC91E2LpBBzlgEhhp+f+hIWDalt
+	nrA5wb9m+a0KvIdtdYz2gPie0IHnbXLA9ZTOsjSIzj1iDFeDYDBJANRyvPgkUnu6rILxcbhuotyva
+	x3HinSZC76/ECZBWcF7GxxccgVKaVMs8QHRjGXXT5YguTkIKlqvLPgn7KCXuB2NxKjFRxtV43uE2G
+	6aTRf+BGhJGeDUi54evaYg/NepmaqVL4YX4cPhPwAA3Ou1PMHtrCiwvSJcTxtIQzGbXgNqtiGRVAx
+	oczZ/9LQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOGCv-0000000F50v-2jyi;
-	Wed, 26 Nov 2025 14:09:21 +0000
+	id 1vOGCk-0000000F4za-18WX;
+	Wed, 26 Nov 2025 14:09:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOGCr-0000000F509-3ypB
+	id 1vOGCf-0000000F4zH-2sZj
 	for barebox@lists.infradead.org;
-	Wed, 26 Nov 2025 14:09:19 +0000
+	Wed, 26 Nov 2025 14:09:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOGCp-0002eF-2K; Wed, 26 Nov 2025 15:09:15 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vOGCb-0002ZQ-Jv; Wed, 26 Nov 2025 15:09:01 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOGCo-002cdx-2p;
-	Wed, 26 Nov 2025 15:09:14 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOGCo-0000000HD1k-3DuK;
-	Wed, 26 Nov 2025 15:09:14 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Jan=20L=C3=BCbbe?= <j.luebbe@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 26 Nov 2025 15:09:11 +0100
-Message-ID: <20251126140914.4081895-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vOGCb-002cdt-1N;
+	Wed, 26 Nov 2025 15:09:01 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vOGCb-00000008Tzh-3PZq;
+	Wed, 26 Nov 2025 15:09:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251125062603.2614867-2-a.fatoum@pengutronix.de>
+References: <20251125062603.2614867-2-a.fatoum@pengutronix.de>
+Message-Id: <176416614136.2021904.2098195270639975187.b4-ty@pengutronix.de>
+Date: Wed, 26 Nov 2025 15:09:01 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251126_060917_990282_51F56709 
-X-CRM114-Status: GOOD (  13.76  )
+X-CRM114-CacheID: sfid-20251126_060905_764615_571F3498 
+X-CRM114-Status: UNSURE (   6.36  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,85 +80,35 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH master] boards: qemu-virt: drop fitimage-pubkey.dts
+Subject: Re: [PATCH v2 1/4] fs: qemu_fw_cfg: make use of the automount
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-CONFIG_BOOTM_FITIMAGE_PUBKEY was removed in v2025.09.0 and the device
-tree snippet that we merged at runtime into the DT we receive from QEMU
-is now empty and no longer serves a purpose.
 
-Remove it as it's actually detrimental: of_merge_nodes is a low-level
-operation that doesn't handle duplicate nodes and when
-CONFIG_EXTERNAL_DTS_FRAGMENTS adds a state node of its own, the barebox
-barebox live device tree ends up with the state twice.
+On Tue, 25 Nov 2025 07:23:44 +0100, Ahmad Fatoum wrote:
+> We assume /mnt/fw_cfg to be the fw_cfg mount path at other places
+> already, so let's drop some complexity by just using the automount.
+> 
+> 
 
-Reported-by: Jan Lübbe <j.luebbe@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/boards/qemu-virt/Makefile            | 3 +--
- common/boards/qemu-virt/board.c             | 5 +----
- common/boards/qemu-virt/fitimage-pubkey.dts | 3 ---
- 3 files changed, 2 insertions(+), 9 deletions(-)
- delete mode 100644 common/boards/qemu-virt/fitimage-pubkey.dts
+Applied, thanks!
 
-diff --git a/common/boards/qemu-virt/Makefile b/common/boards/qemu-virt/Makefile
-index 7e1440aecff0..457ee5cdc6c9 100644
---- a/common/boards/qemu-virt/Makefile
-+++ b/common/boards/qemu-virt/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
- obj-y += board.o commandline.o
--obj-y += qemu-virt-flash.dtbo.o fitimage-pubkey.dtb.o
-+obj-y += qemu-virt-flash.dtbo.o
- ifeq ($(CONFIG_RISCV),y)
- DTC_CPP_FLAGS_qemu-virt-flash.dtbo := -DCONFIG_RISCV
- endif
-@@ -12,5 +12,4 @@ endif
- policy-y += qemu-virt-factory.sconfig
- policy-y += qemu-virt-lockdown.sconfig
- 
--clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
- clean-files += *.dtbo *.dtbo.S .*.dtso
-diff --git a/common/boards/qemu-virt/board.c b/common/boards/qemu-virt/board.c
-index 6ad354218927..0c9cc1a75d3b 100644
---- a/common/boards/qemu-virt/board.c
-+++ b/common/boards/qemu-virt/board.c
-@@ -56,7 +56,7 @@ BAREBOX_DEEP_PROBE_ENABLE(virt_of_match);
- static int virt_board_driver_init(void)
- {
- 	struct device_node *root = of_get_root_node();
--	struct device_node *flash, *pubkey;
-+	struct device_node *flash;
- 	const struct of_device_id *id;
- 	void (*init)(void);
- 
-@@ -77,9 +77,6 @@ static int virt_board_driver_init(void)
- 	if (flash && of_device_is_available(flash))
- 		of_overlay_apply_dtbo(root, __dtbo_qemu_virt_flash_start);
- 
--	pubkey = of_unflatten_dtb(__dtb_fitimage_pubkey_start, INT_MAX);
--	of_merge_nodes(root, pubkey);
--
- 	/* fragment may have added aliases to the DT */
- 	of_alias_scan();
- 
-diff --git a/common/boards/qemu-virt/fitimage-pubkey.dts b/common/boards/qemu-virt/fitimage-pubkey.dts
-deleted file mode 100644
-index 1419fa0da5d5..000000000000
---- a/common/boards/qemu-virt/fitimage-pubkey.dts
-+++ /dev/null
-@@ -1,3 +0,0 @@
--/dts-v1/;
--
--/{ };
+[1/4] fs: qemu_fw_cfg: make use of the automount
+      https://git.pengutronix.de/cgit/barebox/commit/?id=332be0eec5f8 (link may not be stable)
+[2/4] fs: qemu_fw_cfg: handle non-existent opt/org.barebox.env key gracefully
+      https://git.pengutronix.de/cgit/barebox/commit/?id=cfa4f62c104c (link may not be stable)
+[3/4] defaultenv: don't abort defaultenv_load silently on error
+      https://git.pengutronix.de/cgit/barebox/commit/?id=62f9ed9cdee5 (link may not be stable)
+[4/4] defaultenv: add base and external defaultenv in pure_initcall
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7f1cc5dd869d (link may not be stable)
+
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
