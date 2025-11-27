@@ -1,47 +1,47 @@
-Delivery-date: Thu, 27 Nov 2025 12:02:39 +0100
+Delivery-date: Thu, 27 Nov 2025 12:03:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOZln-005P7U-0j
+	id 1vOZmZ-005PBU-2m
 	for lore@lore.pengutronix.de;
-	Thu, 27 Nov 2025 12:02:39 +0100
+	Thu, 27 Nov 2025 12:03:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOZlm-00071I-Hb
-	for lore@pengutronix.de; Thu, 27 Nov 2025 12:02:39 +0100
+	id 1vOZmZ-0007Kk-4I
+	for lore@pengutronix.de; Thu, 27 Nov 2025 12:03:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=buEAKxO8/yh2+tvPfSECTBxumk0/yNu2Ot+whjrIZJM=; b=0ta0UsLpHYpYPdMmkaL+gfKhe+
-	Pkgd/6QOcUHB32ZheP+7s+Sc1K6Aj+Hj7w4jtgvtE/sv2/CsKRhCWHzKw1R+0xy7upwY32MbLXyT1
-	qthOD8KWLT+F6ptPzHuO8kBLfbX64ZrTxZ+NbgoIU8qIhdmyEMS3YqAuUHQf4RgTvJUAdUDiRb2x0
-	UOwFJV5hbL8pa4h0t8DlclrNlfPvcR1qh7t46IrAKUhP/B4O2ozWIUW2AtxqnW22Z/Xh6s4XCinjS
-	5kuDoLSRcTdR3wlF9fBROEfD+h+6yPn5/loWOnmXBww+ikRDeUlryLlBffghCS/9abAs8Jpvtpsz4
-	AGV8ppKA==;
+	bh=Lwsy4kio1eTlbyNtlIs802ax8p1LCl+DU3BRi4b+8og=; b=JpHgeCjhy2UGFGC0UmDVYQy67L
+	dM5JB1mnXgw+PMvhphqhgGKwP/w8LIOkCGhmZIBmD9PLQP1yyCgOzt+Nh3MyXBTZ/tcDzWuvKlaLr
+	tMnXhHeWyPw1Oz3SiHiDR7Wyvy2rXLtCD/l2Hs6DY5JziNRGSErNviPJdJkEixEXat5H/iNoxVIfz
+	otlHEUCJkKHDdlL1tIphyodTsGr8cVMBQjHYH68iXQ5qfgfnIWaaFhEABiNYVBOUNDLA3uCkH4gxx
+	0oLArkz3ty+Ch/I37sL28P19NGOScA6VCBtt8undS13bDHpwtMszGiyPtJ5S4b86OqlM9SyZtuv0h
+	wB5tUeEw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOZlN-0000000GQ9x-0txF;
-	Thu, 27 Nov 2025 11:02:13 +0000
+	id 1vOZm7-0000000GQEy-2RIs;
+	Thu, 27 Nov 2025 11:02:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOZlK-0000000GQ9X-3Sth
+	id 1vOZm5-0000000GQES-0UOG
 	for barebox@lists.infradead.org;
-	Thu, 27 Nov 2025 11:02:11 +0000
+	Thu, 27 Nov 2025 11:02:58 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1vOZlJ-0005fd-DX; Thu, 27 Nov 2025 12:02:09 +0100
+	id 1vOZm3-0005fd-NE; Thu, 27 Nov 2025 12:02:55 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Thu, 27 Nov 2025 11:57:11 +0100
-Message-ID: <20251127105824.3560951-8-f.pflug@pengutronix.de>
+Date: Thu, 27 Nov 2025 11:57:13 +0100
+Message-ID: <20251127105824.3560951-10-f.pflug@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251127105824.3560951-1-f.pflug@pengutronix.de>
 References: <20251126064710.3721039-1-f.pflug@pengutronix.de>
@@ -49,8 +49,8 @@ References: <20251126064710.3721039-1-f.pflug@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251127_030210_864036_829D816F 
-X-CRM114-Status: GOOD (  13.59  )
+X-CRM114-CacheID: sfid-20251127_030257_158471_6EA70F69 
+X-CRM114-Status: GOOD (  17.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,86 +72,157 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/4] bootm: use new api to get kernel command line params
+Subject: [PATCH v2 4/4] bootm: introduce bootm.root_arg variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Getting root device adn root kernel options seperatily any combining
-them in this function instead of getting the full string from the helper
-functions. This is in preperation for replacing the root= string in the
-kernel commandline with something defined during runtime.
+The bootm.root_arg variable will be responsible for the root= part of
+the kernel commandline if bootm.appendroot is set and a root device has
+been selected.
+root_arg allows to replace the root=/dev/... with verity=/dev/..., which
+is useful in a verified boot context, where you pass the root file
+system to the initramfs, but do not want the kernel to be able to parse
+and mount the rootfs. With renaming the root= to something different,
+you make sure, that the kernel does not mount the rootfs.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
 
-restore warning for PARTUUID
+added parameter to device text
 
- common/bootm.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ common/bootm.c  | 17 ++++++++++++-----
+ fs/fs.c         | 26 --------------------------
+ include/bootm.h |  1 +
+ include/fs.h    |  1 -
+ 4 files changed, 13 insertions(+), 32 deletions(-)
 
 diff --git a/common/bootm.c b/common/bootm.c
-index 17792b2a1d..562e469552 100644
+index 562e469552..42312227c2 100644
 --- a/common/bootm.c
 +++ b/common/bootm.c
-@@ -4,6 +4,7 @@
- #include <bootm.h>
- #include <bootm-overrides.h>
- #include <fs.h>
-+#include <fcntl.h>
- #include <malloc.h>
- #include <memory.h>
- #include <block.h>
-@@ -841,33 +842,40 @@ int bootm_boot(struct bootm_data *bootm_data)
+@@ -69,6 +69,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 		data->initrd_file = getenv_nonempty("global.bootm.initrd");
  	}
+ 	data->root_dev = getenv_nonempty("global.bootm.root_dev");
++	data->root_arg = getenv_nonempty("global.bootm.root_arg");
+ 	data->verify = bootm_get_verify_mode();
+ 	data->appendroot = bootm_appendroot;
+ 	data->provide_machine_id = bootm_provide_machine_id;
+@@ -88,6 +89,7 @@ void bootm_data_restore_defaults(const struct bootm_data *data)
+ 		globalvar_set("bootm.initrd", data->initrd_file);
+ 	}
+ 	globalvar_set("bootm.root_dev", data->root_dev);
++	globalvar_set("bootm.root_arg", data->root_arg);
+ 	bootm_set_verify_mode(data->verify);
+ 	bootm_appendroot = data->appendroot;
+ 	bootm_provide_machine_id = data->provide_machine_id;
+@@ -854,11 +856,14 @@ int bootm_boot(struct bootm_data *bootm_data)
  
- 	if (bootm_data->appendroot) {
--		char *rootarg;
-+		char *root = NULL;
-+		char *rootopts = NULL;
- 
- 		if (bootm_data->root_dev) {
- 			const char *root_dev_name = devpath_to_name(bootm_data->root_dev);
- 			struct cdev *root_cdev = cdev_open_by_name(root_dev_name, O_RDONLY);
-+			int err;
- 
--			rootarg = cdev_get_linux_rootarg(root_cdev);
--			if (!rootarg) {
--				rootarg = ERR_PTR(-EINVAL);
-+			err = cdev_get_linux_root_and_opts(root_cdev, &root, &rootopts);
- 
-+			if (IS_ERR(err)) {
+ 			if (IS_ERR(err)) {
  				if (!root_cdev)
--					pr_err("no cdev found for %s, cannot set root= option\n",
--						root_dev_name);
-+					pr_err("no cdev found for %s, cannot set root= option\n", root_dev_name);
+-					pr_err("no cdev found for %s, cannot set root= option\n", root_dev_name);
++					pr_err("no cdev found for %s, cannot set %s= option\n",
++						root_dev_name, bootm_data->root_arg);
  				else if (!root_cdev->partuuid[0])
--					pr_err("%s doesn't have a PARTUUID, cannot set root= option\n",
--						root_dev_name);
-+					pr_err("%s doesn't have a PARTUUID, cannot set root= option\n", root_dev_name);
-+				else
-+					pr_err("could not determine root= from %s\n", root_dev_name);
+-					pr_err("%s doesn't have a PARTUUID, cannot set root= option\n", root_dev_name);
++					pr_err("%s doesn't have a PARTUUID, cannot set %s= option\n",
++						root_dev_name, bootm_data->root_arg);
+ 				else
+-					pr_err("could not determine root= from %s\n", root_dev_name);
++					pr_err("could not determine %s= from %s\n",
++						bootm_data->root_arg, root_dev_name);
  			}
  
  			if (root_cdev)
- 				cdev_close(root_cdev);
- 		} else {
--			rootarg = path_get_linux_rootarg(data->os_file);
-+			struct fs_device *fsdev = get_fsdevice_by_path(AT_FDCWD, data->os_file);
-+			if (fsdev)
-+				fsdev_get_linux_root_options(fsdev, &root, &rootopts);
-+			else
-+				pr_err("no fsdevice under path: %s\n", data->os_file);
+@@ -872,10 +877,10 @@ int bootm_boot(struct bootm_data *bootm_data)
  		}
  
--		if (IS_ERR(rootarg)) {
-+		if (!root) {
- 			pr_err("Failed to append kernel cmdline parameter 'root='\n");
+ 		if (!root) {
+-			pr_err("Failed to append kernel cmdline parameter 'root='\n");
++			pr_err("Failed to append kernel cmdline parameter '%s='\n", bootm_data->root_arg);
  		} else {
-+			char *rootarg;
-+			rootarg = format_root_bootarg("root", root, rootopts);
+ 			char *rootarg;
+-			rootarg = format_root_bootarg("root", root, rootopts);
++			rootarg = format_root_bootarg(bootm_data->root_arg, root, rootopts);
  			pr_info("Adding \"%s\" to Kernel commandline\n", rootarg);
  			globalvar_add_simple("linux.bootargs.bootm.appendroot",
  					     rootarg);
+@@ -1118,6 +1123,7 @@ static int bootm_init(void)
+ 	globalvar_add_simple("bootm.image.loadaddr", NULL);
+ 	globalvar_add_simple("bootm.oftree", NULL);
+ 	globalvar_add_simple("bootm.root_dev", NULL);
++	globalvar_add_simple("bootm.root_arg", "root");
+ 	globalvar_add_simple("bootm.tee", NULL);
+ 	globalvar_add_simple_bool("bootm.appendroot", &bootm_appendroot);
+ 	globalvar_add_simple_bool("bootm.earlycon", &bootm_earlycon);
+@@ -1175,5 +1181,6 @@ BAREBOX_MAGICVAR(global.bootm.verbose, "bootm default verbosity level (0=quiet)"
+ BAREBOX_MAGICVAR(global.bootm.earlycon, "Add earlycon option to Kernel for early log output");
+ BAREBOX_MAGICVAR(global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from (default, device can be overridden via global.bootm.root_dev)");
+ BAREBOX_MAGICVAR(global.bootm.root_dev, "bootm default root device (overrides default device in global.bootm.appendroot)");
++BAREBOX_MAGICVAR(global.bootm.root_arg, "bootm default parameter name arg for the root partition (normally 'root' for root=/dev/...)");
+ BAREBOX_MAGICVAR(global.bootm.provide_machine_id, "If true, append systemd.machine_id=$global.machine_id to Kernel command line");
+ BAREBOX_MAGICVAR(global.bootm.provide_hostname, "If true, append systemd.hostname=$global.hostname to Kernel command line");
+diff --git a/fs/fs.c b/fs/fs.c
+index f3b759b20a..6540bcdd11 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1246,32 +1246,6 @@ void fsdev_get_linux_root_options(struct fs_device *fsdev, char **root, char **r
+ 	}
+ }
+ 
+-/**
+- * path_get_linux_rootarg() - Given a path return a suitable root= option for
+- *                            Linux
+- * @path: The path
+- *
+- * Return: A string containing the root= option or an ERR_PTR. the returned
+- *         string must be freed by the caller.
+- */
+-char *path_get_linux_rootarg(const char *path)
+-{
+-	struct fs_device *fsdev;
+-	char *root = NULL;
+-	char *rootopts = NULL;
+-
+-	fsdev = get_fsdevice_by_path(AT_FDCWD, path);
+-	if (!fsdev)
+-		return ERR_PTR(-EINVAL);
+-
+-	fsdev_get_linux_root_options(fsdev, &root, &rootopts);
+-
+-	if (!root)
+-		return ERR_PTR(-EINVAL);
+-
+-	return format_root_bootarg("root", root, rootopts);
+-}
+-
+ /**
+  * __is_tftp_fs() - return true when path is mounted on TFTP
+  * @path: The path
+diff --git a/include/bootm.h b/include/bootm.h
+index b35deb25bf..43f4258885 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -19,6 +19,7 @@ struct bootm_data {
+ 	const char *oftree_file;
+ 	const char *tee_file;
+ 	const char *root_dev;
++	const char *root_arg;
+ 	int verbose;
+ 	enum bootm_verify verify;
+ 	bool force;
+diff --git a/include/fs.h b/include/fs.h
+index c50437d609..ddd93e93ec 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -162,7 +162,6 @@ void mount_all(void);
+ 
+ void fsdev_set_linux_root_options(struct fs_device *fsdev, const char *root, const char* rootopts);
+ void fsdev_get_linux_root_options(struct fs_device *fsdev, char **root, char **rootopts);
+-char *path_get_linux_rootarg(const char *path);
+ 
+ static inline const char *devpath_to_name(const char *devpath)
+ {
 -- 
 2.47.3
 
