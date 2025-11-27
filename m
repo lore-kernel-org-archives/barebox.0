@@ -1,58 +1,66 @@
-Delivery-date: Thu, 27 Nov 2025 12:08:56 +0100
+Delivery-date: Thu, 27 Nov 2025 12:34:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOZrs-005PFW-1C
+	id 1vOaH1-005PZu-1n
 	for lore@lore.pengutronix.de;
-	Thu, 27 Nov 2025 12:08:56 +0100
+	Thu, 27 Nov 2025 12:34:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOZrr-0007tb-PA
-	for lore@pengutronix.de; Thu, 27 Nov 2025 12:08:56 +0100
+	id 1vOaH1-0002Ap-1H
+	for lore@pengutronix.de; Thu, 27 Nov 2025 12:34:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=aiX3Gf4xNGnNx3IOgNrxu4DEDcYJgkO915M6jBBNH30=; b=Qg8LKoCbDwZIwyMtKa0dmfTyEx
-	5r/1o/hQDccIOCbhJsgecfdzm9AZC8SI6dG/sOIbUZd83cRisQRdcBNfi1jsXi60b9QdhL8zyGkxq
-	OMQOf61HhMgWT7XUY/7zOV4aQ8jwftXioj2JVoFBP/p3AOx7ZP54inbcHJfc1+p9bG3DnhMORi1sx
-	TnPSrYeMFye0dEpXBDuvw7XH6wCzXZQSSwTB5ZC8EtkqduoXJYXASfaL6KsiAMgL1ev98SCbpCGlN
-	HRrF8IrD6O0SyxjV8p+OXAjPsnlHQRTkJqIPHVxbUWwjpWM1K5L75E7JP1CAWFpUQsE1CHf8RVHvM
-	0vy2Pzzw==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+8aYE+Vac1H7Xc57Po5PWeYTU1k/jRnIAeUocknS/n0=; b=SiqwBpmbnIUSqRpNWpt8VaeVd9
+	9rvyvUYfHBAwlzmWohds7Wt+galidOdd+0czJAgGhCZ5ABoRZoSs8OlTNe+cRIU0mT/Im5wCOe+QR
+	igNWmZFr6mcdaMkbPrpAowOXU8n6pp7r3f96OS28m0717qJtwjblkL/XVGAtsPVc9D1yrwSYpDLYa
+	g6v9ZT46+k6lLv8dc8PeHP0vlUL5k4634c3BVFJqfkJHzZkucLvF+0SwkYwaW9UxtCMZG3NYJoVPo
+	L6j4bNbSmfmgaJOS/odKwgaHWOYR0dF0sqXwXjMqBQWgiHJ/Su0SZ+S/R6kZnA9dM5TMi1Rq/k5pZ
+	wSdSrWMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOZrP-0000000GQpk-40QA;
-	Thu, 27 Nov 2025 11:08:27 +0000
+	id 1vOaGZ-0000000GSdI-0D7J;
+	Thu, 27 Nov 2025 11:34:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOZrN-0000000GQpK-1cQH
+	id 1vOaGV-0000000GSc9-0YoY
 	for barebox@lists.infradead.org;
-	Thu, 27 Nov 2025 11:08:26 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOZrL-0007pw-Sk; Thu, 27 Nov 2025 12:08:23 +0100
-Message-ID: <31a1a05b-e304-40c5-97cc-e5326bef25b8@pengutronix.de>
-Date: Thu, 27 Nov 2025 12:08:23 +0100
+	Thu, 27 Nov 2025 11:34:24 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vOaGT-00022Q-Nm; Thu, 27 Nov 2025 12:34:21 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vOaGT-002mQg-1m;
+	Thu, 27 Nov 2025 12:34:21 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vOaGT-0000000BV0F-3jTC;
+	Thu, 27 Nov 2025 12:34:21 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 27 Nov 2025 12:34:15 +0100
+Message-ID: <20251127113416.2740774-2-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251127113416.2740774-1-s.hauer@pengutronix.de>
+References: <20251127113416.2740774-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Fabian Pflug <f.pflug@pengutronix.de>, barebox@lists.infradead.org
-References: <20251126064710.3721039-1-f.pflug@pengutronix.de>
- <20251127105824.3560951-1-f.pflug@pengutronix.de>
- <20251127105824.3560951-4-f.pflug@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251127105824.3560951-4-f.pflug@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251127_030825_468159_DE3ACBD5 
-X-CRM114-Status: GOOD (  20.00  )
+X-CRM114-CacheID: sfid-20251127_033423_205004_C774E25B 
+X-CRM114-Status: GOOD (  11.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,94 +78,50 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-1.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/4] block.h: renamed get_rootargs to get_root
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,SUBJECT_IN_BLACKLIST,
+	SUBJECT_IN_BLOCKLIST autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH 2/3] driver: call free_device_res() from unregister_device()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+free_device_res() frees dynamically allocated resources allocated during
+device lifetime. These are no longer needed when the device is
+unregistered, so we can free them in unregister_device(). With this
+free_device_res() might be called multiple times, so set
+dev->deferred_probe_reason to NULL after freeing it to avoid double
+frees.
 
-On 11/27/25 11:57 AM, Fabian Pflug wrote:
-> Don't return the full commandline-parameter, but instead just return the
-> root block/fs/etc. The functions downstream can add root= before.
-> 
-> This is the first commit in a series to make root= dynamic.
-> 
-> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/base/driver.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-> +	char *root = NULL;
-
-Scope could be reduced, but you don't need to resend just for that.
-
-Thanks,
-Ahmad
-
-
->  
->  	if (!partcdev)
->  		return NULL;
-> @@ -598,8 +599,13 @@ char *cdev_get_linux_rootarg(const struct cdev *partcdev)
->  	if (!blk)
->  		return NULL;
->  
-> -	if (blk->ops->get_rootarg)
-> -		rootarg = blk->ops->get_rootarg(blk, partcdev);
-> +	if (blk->ops->get_root) {
-> +		root = blk->ops->get_root(blk, partcdev);
-> +		if (root) {
-> +			rootarg = basprintf("root=%s", root);
-> +			free(root);
-> +		}
-> +	}
->  	if (!rootarg && partcdev->partuuid[0] != 0)
->  		rootarg = basprintf("root=PARTUUID=%s", partcdev->partuuid);
->  
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 57825bc849..206147cb93 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -2691,7 +2691,7 @@ static char *mci_get_linux_mmcblkdev(struct block_device *blk,
->  		 * skipping it.
->  		 */
->  		if (cdev_partname_equal(partcdev, cdev))
-> -			return basprintf("root=/dev/mmcblk%dp%d", id, partnum);
-> +			return basprintf("/dev/mmcblk%dp%d", id, partnum);
->  		if (cdev->flags & DEVFS_PARTITION_FROM_TABLE)
->  			partnum++;
->  	}
-> @@ -2703,7 +2703,7 @@ static struct block_device_ops mci_ops = {
->  	.read = mci_sd_read,
->  	.write = IS_ENABLED(CONFIG_MCI_WRITE) ? mci_sd_write : NULL,
->  	.erase = IS_ENABLED(CONFIG_MCI_ERASE) ? mci_sd_erase : NULL,
-> -	.get_rootarg = IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) ?
-> +	.get_root = IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) ?
->  		mci_get_linux_mmcblkdev : NULL,
->  };
->  
-> diff --git a/include/block.h b/include/block.h
-> index fc7a0a32fb..b277f590e4 100644
-> --- a/include/block.h
-> +++ b/include/block.h
-> @@ -14,7 +14,7 @@ struct block_device_ops {
->  	int (*write)(struct block_device *, const void *buf, sector_t block, blkcnt_t num_blocks);
->  	int (*erase)(struct block_device *blk, sector_t block, blkcnt_t num_blocks);
->  	int (*flush)(struct block_device *);
-> -	char *(*get_rootarg)(struct block_device *blk, const struct cdev *partcdev);
-> +	char *(*get_root)(struct block_device *blk, const struct cdev *partcdev);
->  };
->  
->  struct chunk;
-
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index eefed4b1a5..753e06963b 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -335,6 +335,8 @@ int unregister_device(struct device *old_dev)
+ 	if (np && np->dev == old_dev)
+ 		np->dev = NULL;
+ 
++	free_device_res(old_dev);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(unregister_device);
+@@ -352,6 +354,7 @@ void free_device_res(struct device *dev)
+ 	free(dev->unique_name);
+ 	dev->unique_name = NULL;
+ 	free(dev->deferred_probe_reason);
++	dev->deferred_probe_reason = NULL;
+ }
+ EXPORT_SYMBOL(free_device_res);
+ 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
