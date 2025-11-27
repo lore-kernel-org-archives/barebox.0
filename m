@@ -1,16 +1,16 @@
-Delivery-date: Thu, 27 Nov 2025 10:20:06 +0100
+Delivery-date: Thu, 27 Nov 2025 10:20:07 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOYAY-005NXF-1W
+	id 1vOYAZ-005NXo-0C
 	for lore@lore.pengutronix.de;
-	Thu, 27 Nov 2025 10:20:06 +0100
+	Thu, 27 Nov 2025 10:20:07 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOYAW-0003Vo-NY
+	id 1vOYAX-0003Ww-LE
 	for lore@pengutronix.de; Thu, 27 Nov 2025 10:20:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,57 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DXttWexVTusZuyD5onM8+UiP1vy/C2+DSLCjihoDZIw=; b=JddBkbETy8wLgjVaTNgSThwwPv
-	TUX+Owx0oQC8Q408VzRLmTa/tmOVNnrULADNMBdo4g1ZxGKTWps6uXgFxG/ynzooxIGRijxiguNRi
-	FlceOhmGoS/PMs1Zhcooq8+7LpuMxM/kLMeYkYqOAUE/3+aBz0mOKkeWgIu2LsswAPu79K8OVxXO2
-	9BzHnMKA4WvySZzm75OTNezHehPL+iZB8WY9qU63Jjaa+ovN0rfknjSq/DtzsIKe2N6bO0K0YeV6N
-	Mkjm4UcZ9KjXw4Z3KK6prRFJvGfqP2SZCuZYDxq5f5MQ97jgnRRuSw8br9CpegTrnSPsP2G1G/5Hc
-	Ld3J0/Lg==;
+	bh=qH3/VztdkGTZzVE03Y4xq6Meuy4PSVPqXSf9aesADNs=; b=f2XYQcHWIOveBDQLE6bloq+cUf
+	/533UZzi47uISM7CBczXDtgwVgGH3L2nN9M1WkUmzRQSt9U/UU6Yzq3orDYijMbl0cpxsCt+xDIVs
+	U96Ix78wgkiGO3OdpTtWAIYMuHjAl/UIROBLcWMufiD9MprNlB14RCFnW50PlrBUeiiPyDrHO5Vwi
+	CwYl+axEPNpVn8uV63ds7meElBe5q6E4L2x/Fe+b/CTBpb/vEsFjTpWKdudaX6W0fcPaOmHULahic
+	qBGjr8BqBju1VJuD3DZu1SetwVD2Pp8zr16xMfAorawESOgvphquvYSa8uVLFuRvGNiOQ5KKHAQdA
+	VSezVodg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOYA0-0000000GGiy-45Cc;
-	Thu, 27 Nov 2025 09:19:33 +0000
+	id 1vOYA6-0000000GGoS-1S9f;
+	Thu, 27 Nov 2025 09:19:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOY9v-0000000GGfK-3TcQ
+	id 1vOYA3-0000000GGkY-3NqM
 	for barebox@lists.infradead.org;
-	Thu, 27 Nov 2025 09:19:30 +0000
+	Thu, 27 Nov 2025 09:19:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vOY9u-00035N-Ck; Thu, 27 Nov 2025 10:19:26 +0100
+	id 1vOY9u-00035J-Cl; Thu, 27 Nov 2025 10:19:26 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vOY9u-002lPF-02;
-	Thu, 27 Nov 2025 10:19:26 +0100
+	id 1vOY9t-002lPB-30;
+	Thu, 27 Nov 2025 10:19:25 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vOY9u-00000000tc4-1JQ0;
+	id 1vOY9u-00000000tc4-19N3;
 	Thu, 27 Nov 2025 10:19:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Nov 2025 10:19:28 +0100
+Date: Thu, 27 Nov 2025 10:19:23 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251127-devfs-v1-6-4aff12818757@pengutronix.de>
+Message-Id: <20251127-devfs-v1-1-4aff12818757@pengutronix.de>
 References: <20251127-devfs-v1-0-4aff12818757@pengutronix.de>
 In-Reply-To: <20251127-devfs-v1-0-4aff12818757@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764235165; l=7078;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764235165; l=5210;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=n43yS9jyJtTYs04QUDTBYat5J7mgGgCnm1IBDwEO2Xc=;
- b=e6U4vlSg6s970WHHzg0CIrVaRl68jxLdGkv5lGAs+qgB9FTHm0psA+N9Y+w86cl8lcbYCfgZL
- 0TQeEX/JCZ+AzuCcxXDqUhtEKpYLwHmubhyjVAWKkcBWtVN8tCufROT
+ bh=DhTMynZtMSAUzjBPuuRxsoFMcC/kR82JRunzdJGqgKE=;
+ b=PCQQOua3KwOncnqOEbEOvFZSyqr0uVHJYY/+vpmn3hN6U/yRyddbAuqCcqhgRvLVRNE8nm2kj
+ MftcLeCrJdjBW477Rq/exKlMOToLQNAhkr7CXc1s7iSyQHyBg453Tiy
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251127_011928_036619_1CF577BE 
-X-CRM114-Status: GOOD (  16.53  )
+X-CRM114-CacheID: sfid-20251127_011935_855418_01F785A8 
+X-CRM114-Status: GOOD (  14.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,296 +90,169 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 06/10] fs: retire devfs as filesystem
+Subject: [PATCH 01/10] fs: implement mknod
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Switch over to device special files for implementing devfs. With this we
-can drop the current devfs implementation as a filesystem driver.
+This implements mknod for the barebox VFS. Use the cdevname for
+connecting a device special node with a cdev. In Linux this is done with
+major/minor numbers which shouldn't be necessary for barebox as we do
+not intend to mount filesystems which contain device special nodes, but
+instead create them in ramfs. If a mounted filesystem contains special
+nodes then these won't work with barebox.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/startup.c |   2 +-
- fs/devfs-core.c  |  35 +++++++++++
- fs/devfs.c       | 174 +------------------------------------------------------
- include/driver.h |   1 +
- 4 files changed, 39 insertions(+), 173 deletions(-)
+ fs/devfs.c         | 13 +++++++++++++
+ fs/fs.c            | 35 +++++++++++++++++++++++++++++++++++
+ include/fcntl.h    |  6 ++++++
+ include/linux/fs.h | 13 +++++++++++++
+ 4 files changed, 67 insertions(+)
 
-diff --git a/common/startup.c b/common/startup.c
-index dfea8394fdee67f53cb608aea882d20151cc9c61..ba3bb79c861aaa9268121ee6868399fcce8ec36c 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -60,7 +60,7 @@ static int mount_root(void)
- 	mkdir("/dev", 0);
- 	mkdir("/tmp", 0);
- 	mkdir("/mnt", 0);
--	mount("none", "devfs", "/dev", NULL);
-+	devfs_init();
- 
- 	if (IS_ENABLED(CONFIG_FS_EFIVARFS) && efi_is_payload()) {
- 		mkdir("/efivars", 0);
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 7841ac71540675c27ec3a695f0b7333cd3b02e0c..c4ff5fe5718ea2c0236fdbf124e56a13e17702d1 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -458,6 +458,39 @@ static void cdev_free(struct cdev *cdev)
- 	free(cdev);
- }
- 
-+static bool devfs_initialized;
-+
-+static void devfs_mknod(struct cdev *cdev)
-+{
-+	char *path;
-+	int ret;
-+
-+	if (!devfs_initialized)
-+		return;
-+
-+	path = xasprintf("/dev/%s", cdev->name);
-+
-+	if (cdev->link)
-+		ret = symlink(cdev->link->name, path);
-+	else
-+		ret = mknod(path, S_IFCHR | 0600, cdev->name);
-+
-+	free(path);
-+
-+	if (ret)
-+		pr_err("Failed to create /dev/%s: %pe\n", cdev->name, ERR_PTR(ret));
-+}
-+
-+void devfs_init(void)
-+{
-+	struct cdev *cdev;
-+
-+	devfs_initialized = true;
-+
-+	for_each_cdev(cdev)
-+		devfs_mknod(cdev);
-+}
-+
- int devfs_create(struct cdev *new)
- {
- 	struct cdev *cdev;
-@@ -479,6 +512,8 @@ int devfs_create(struct cdev *new)
- 	if (new->link)
- 		list_add_tail(&new->link_entry, &new->link->links);
- 
-+	devfs_mknod(new);
-+
- 	return 0;
- }
- 
 diff --git a/fs/devfs.c b/fs/devfs.c
-index a48c6452697b47cbd3ffc6f993230e7993e565fe..061fbf5d2ffe11671c13ee5bd2cc315c378bb86f 100644
+index 15c7a63d3949a5fa7c5ec15f58bc9f4c53b7852b..be3272be49e66eb843823b3ff664a1565f326790 100644
 --- a/fs/devfs.c
 +++ b/fs/devfs.c
-@@ -29,6 +29,7 @@
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/mtd-abi.h>
- #include <block.h>
-+#include <stringlist.h>
+@@ -103,6 +103,12 @@ static int devfs_open(struct inode *inode, struct file *f)
+ 	struct devfs_inode *node = container_of(inode, struct devfs_inode, inode);
+ 	struct cdev *cdev = node->cdev;
  
- struct devfs_inode {
- 	struct inode inode;
-@@ -143,41 +144,6 @@ static int devfs_truncate(struct file *f, loff_t size)
- 	return cdev_truncate(cdev, size);
- }
++	if (inode->cdevname) {
++		cdev = cdev_by_name(inode->cdevname);
++		if (!cdev)
++			return -ENOENT;
++	}
++
+ 	f->f_size = cdev->flags & DEVFS_IS_CHARACTER_DEV ?
+ 			FILE_SIZE_STREAM : cdev->size;
+ 	f->private_data = cdev;
+@@ -188,6 +194,13 @@ static const struct file_operations devfs_file_operations = {
+ 	.memmap = devfs_memmap,
+ };
  
--static struct inode *devfs_alloc_inode(struct super_block *sb)
--{
--	struct devfs_inode *node;
--
--	node = xzalloc(sizeof(*node));
--	if (!node)
--		return NULL;
--
--	return &node->inode;
--}
--
--static void devfs_destroy_inode(struct inode *inode)
--{
--	struct devfs_inode *node = container_of(inode, struct devfs_inode, inode);
--
--	free(node);
--}
--
--static int devfs_iterate(struct file *file, struct dir_context *ctx)
--{
--	struct cdev *cdev;
--
--	dir_emit_dots(file, ctx);
--
--	for_each_cdev(cdev) {
--		dir_emit(ctx, cdev->name, strlen(cdev->name),
--				1 /* FIXME */, DT_REG);
--	}
--
--        return 0;
--}
--
--static const struct inode_operations devfs_file_inode_operations;
--static const struct file_operations devfs_dir_operations;
--static const struct inode_operations devfs_dir_inode_operations;
- static const struct file_operations devfs_file_operations = {
- 	.open = devfs_open,
- 	.release = devfs_close,
-@@ -197,141 +163,5 @@ void init_special_inode(struct inode *inode, umode_t mode, const char *cdevname)
++void init_special_inode(struct inode *inode, umode_t mode, const char *cdevname)
++{
++	inode->i_mode = mode;
++	inode->i_fop = &devfs_file_operations;
++	inode->cdevname = strdup(cdevname);
++}
++
+ static int devfs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
  {
- 	inode->i_mode = mode;
- 	inode->i_fop = &devfs_file_operations;
--	inode->cdevname = strdup(cdevname);
--}
--
--static int devfs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
--{
--	struct devfs_inode *dinode;
--	struct inode *inode;
--	struct cdev *cdev;
--
--	cdev = cdev_by_name(dentry->name);
--	if (!cdev)
--		return -ENOENT;
--
--	inode = d_inode(dentry);
--	if (!inode)
--		return 0;
--
--	dinode = container_of(inode, struct devfs_inode, inode);
--
--	if (dinode->cdev != cdev)
--		return 0;
--
--	return 1;
-+	inode->cdevname = xstrdup(cdevname);
+ 	struct devfs_inode *dinode;
+diff --git a/fs/fs.c b/fs/fs.c
+index 528299e039d2d73b76c363b7ece32b6255d925f1..bfcfadff7fa76de17c68a0dca4843aa02cb62b6d 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -826,6 +826,8 @@ static int dentry_delete_subtree(struct super_block *sb, struct dentry *parent)
+ 
+ static void destroy_inode(struct inode *inode)
+ {
++	free(inode->cdevname);
++
+ 	if (inode->i_sb->s_op->destroy_inode)
+ 		inode->i_sb->s_op->destroy_inode(inode);
+ 	else
+@@ -2745,6 +2747,39 @@ int openat(int dirfd, const char *pathname, int flags)
  }
--
--static const struct dentry_operations devfs_dentry_operations = {
--	.d_revalidate = devfs_lookup_revalidate,
--};
--
--static struct inode *devfs_get_inode(struct super_block *sb, const struct inode *dir,
--                                     umode_t mode)
--{
--	struct inode *inode = new_inode(sb);
--
--	if (!inode)
--		return NULL;
--
--	inode->i_ino = get_next_ino();
--	inode->i_mode = mode;
--
--	switch (mode & S_IFMT) {
--	default:
--		return NULL;
--	case S_IFCHR:
--	case S_IFBLK:
--		inode->i_op = &devfs_file_inode_operations;
--		inode->i_fop = &devfs_file_operations;
--		break;
--	case S_IFDIR:
--		inode->i_op = &devfs_dir_inode_operations;
--		inode->i_fop = &devfs_dir_operations;
--		inc_nlink(inode);
--		break;
--	}
--
--	return inode;
--}
--
--static struct dentry *devfs_lookup(struct inode *dir, struct dentry *dentry,
--				   unsigned int flags)
--{
--	struct devfs_inode *dinode;
--	struct inode *inode;
--	struct cdev *cdev;
--	umode_t mode;
--
--	cdev = cdev_by_name(dentry->name);
--	if (!cdev)
--		return ERR_PTR(-ENOENT);
--
--	mode = cdev_get_block_device(cdev) ? S_IFBLK : S_IFCHR;
--
--	inode = devfs_get_inode(dir->i_sb, dir, mode);
--	if (!inode)
--		return ERR_PTR(-ENOMEM);
--
--	if (cdev->ops->write)
--		inode->i_mode |= S_IWUSR;
--	if (cdev->ops->read)
--		inode->i_mode |= S_IRUSR;
--
--	dinode = container_of(inode, struct devfs_inode, inode);
--
--	inode->i_size = cdev->size;
--	dinode->cdev = cdev;
--
--	d_add(dentry, inode);
--
--	return NULL;
--}
--
--static const struct file_operations devfs_dir_operations = {
--	.iterate = devfs_iterate,
--};
--
--static const struct inode_operations devfs_dir_inode_operations =
--{
--	.lookup = devfs_lookup,
--};
--
--static const struct super_operations devfs_ops = {
--	.alloc_inode = devfs_alloc_inode,
--	.destroy_inode = devfs_destroy_inode,
--};
--
--static int devfs_probe(struct device *dev)
--{
--	struct inode *inode;
--	struct fs_device *fsdev = dev_to_fs_device(dev);
--	struct super_block *sb = &fsdev->sb;
--
--	sb->s_op = &devfs_ops;
--	sb->s_d_op = &devfs_dentry_operations;
--
--	inode = devfs_get_inode(sb, NULL, S_IFDIR);
--	sb->s_root = d_make_root(inode);
--
--	return 0;
--}
--
--static void devfs_delete(struct device *dev)
--{
--}
--
--static struct fs_driver devfs_driver = {
--	.drv = {
--		.probe  = devfs_probe,
--		.remove = devfs_delete,
--		.name = "devfs",
--	}
--};
--
--static int devfs_init(void)
--{
--	return register_fs_driver(&devfs_driver);
--}
--
--coredevice_initcall(devfs_init);
-diff --git a/include/driver.h b/include/driver.h
-index 7d93c07c402421bd449adfda3aebaddddf5d3266..5a67d20ccff3fca339e7b40c32ecfbc244f358f5 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -459,6 +459,7 @@ static inline const char *cdev_name(struct cdev *cdev)
- 	return cdev ? cdev->name : NULL;
+ EXPORT_SYMBOL(openat);
+ 
++static int vfs_mknod(struct inode *dir, struct dentry *dentry, umode_t mode,
++		     const char *cdevname)
++{
++	int error;
++
++	if (!dir->i_op->mknod)
++		return -EPERM;
++
++	error = dir->i_op->mknod(dir, dentry, mode, cdevname);
++
++	return error;
++}
++
++int mknodat(int dirfd, const char *pathname, mode_t mode, const char *devname)
++{
++	struct dentry *dentry;
++	struct path path;
++	int error;
++
++	dentry = filename_create(dirfd, getname(pathname), &path, 0);
++	if (IS_ERR(dentry)) {
++		error = PTR_ERR(dentry);
++		goto out;
++	}
++
++	error = vfs_mknod(path.dentry->d_inode, dentry, mode, devname);
++
++	dput(dentry);
++	path_put(&path);
++out:
++	return errno_set(error);
++}
++
+ int unlinkat(int dirfd, const char *pathname, int flags)
+ {
+ 	int ret;
+diff --git a/include/fcntl.h b/include/fcntl.h
+index db7926ee25fbe14607063d420697964801cd8321..57c01002cc9290bfae53f3b5be5615eda874c720 100644
+--- a/include/fcntl.h
++++ b/include/fcntl.h
+@@ -46,6 +46,8 @@ static inline int openat(int dirfd, const char *pathname, int flags, ...)
+ }
+ #endif
+ 
++int mknodat(int dirfd, const char *pathname, mode_t mode, const char *devname);
++
+ static inline int open(const char *pathname, int flags, ...)
+ {
+ 	return openat(AT_FDCWD, pathname, flags);
+@@ -56,4 +58,8 @@ static inline int creat(const char *pathname, mode_t mode)
+ 	return open(pathname, O_CREAT | O_WRONLY | O_TRUNC);
  }
  
-+void devfs_init(void);
- int devfs_create(struct cdev *);
- int devfs_create_link(struct cdev *, const char *name);
- int devfs_remove(struct cdev *);
++static inline int mknod(const char *pathname, mode_t mode, const char *devname)
++{
++	return mknodat(AT_FDCWD, pathname, mode, devname);
++}
+ #endif /* __FCNTL_H */
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index ed4332c79d496b18b37b120b6008e1e474316e76..f6b8f6a8e08b7e56716005453d6f9c4488ba853f 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -149,6 +149,8 @@ struct inode {
+ 
+ 	char			*i_link;
+ 
++	char			*cdevname;
++
+ 	void			*i_private; /* fs or device private pointer */
+ };
+ 
+@@ -429,6 +431,16 @@ void ihold(struct inode *inode);
+ void inc_nlink(struct inode *inode);
+ void clear_nlink(struct inode *inode);
+ void set_nlink(struct inode *inode, unsigned int nlink);
++#ifdef CONFIG_FS_DEVFS
++void init_special_inode(struct inode *inode, umode_t mode, const char *cdevname);
++#else
++static inline void init_special_inode(struct inode *inode, umode_t mode,
++				      const char *cdevname)
++{
++}
++#endif
++
++struct cdev;
+ 
+ struct inode_operations {
+ 	struct dentry * (*lookup) (struct inode *,struct dentry *, unsigned int);
+@@ -436,6 +448,7 @@ struct inode_operations {
+ 	const char *(*get_link) (struct dentry *dentry, struct inode *inode);
+ 
+ 	int (*create) (struct inode *,struct dentry *, umode_t);
++	int (*mknod) (struct inode *,struct dentry *, umode_t, const char *name);
+ 	int (*link) (struct dentry *,struct inode *,struct dentry *);
+ 	int (*unlink) (struct inode *,struct dentry *);
+ 	int (*symlink) (struct inode *,struct dentry *,const char *);
 
 -- 
 2.47.3
