@@ -1,56 +1,58 @@
-Delivery-date: Thu, 27 Nov 2025 12:03:27 +0100
+Delivery-date: Thu, 27 Nov 2025 12:08:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOZmZ-005PBU-2m
+	id 1vOZrs-005PFW-1C
 	for lore@lore.pengutronix.de;
-	Thu, 27 Nov 2025 12:03:27 +0100
+	Thu, 27 Nov 2025 12:08:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOZmZ-0007Kk-4I
-	for lore@pengutronix.de; Thu, 27 Nov 2025 12:03:27 +0100
+	id 1vOZrr-0007tb-PA
+	for lore@pengutronix.de; Thu, 27 Nov 2025 12:08:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Lwsy4kio1eTlbyNtlIs802ax8p1LCl+DU3BRi4b+8og=; b=JpHgeCjhy2UGFGC0UmDVYQy67L
-	dM5JB1mnXgw+PMvhphqhgGKwP/w8LIOkCGhmZIBmD9PLQP1yyCgOzt+Nh3MyXBTZ/tcDzWuvKlaLr
-	tMnXhHeWyPw1Oz3SiHiDR7Wyvy2rXLtCD/l2Hs6DY5JziNRGSErNviPJdJkEixEXat5H/iNoxVIfz
-	otlHEUCJkKHDdlL1tIphyodTsGr8cVMBQjHYH68iXQ5qfgfnIWaaFhEABiNYVBOUNDLA3uCkH4gxx
-	0oLArkz3ty+Ch/I37sL28P19NGOScA6VCBtt8undS13bDHpwtMszGiyPtJ5S4b86OqlM9SyZtuv0h
-	wB5tUeEw==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=aiX3Gf4xNGnNx3IOgNrxu4DEDcYJgkO915M6jBBNH30=; b=Qg8LKoCbDwZIwyMtKa0dmfTyEx
+	5r/1o/hQDccIOCbhJsgecfdzm9AZC8SI6dG/sOIbUZd83cRisQRdcBNfi1jsXi60b9QdhL8zyGkxq
+	OMQOf61HhMgWT7XUY/7zOV4aQ8jwftXioj2JVoFBP/p3AOx7ZP54inbcHJfc1+p9bG3DnhMORi1sx
+	TnPSrYeMFye0dEpXBDuvw7XH6wCzXZQSSwTB5ZC8EtkqduoXJYXASfaL6KsiAMgL1ev98SCbpCGlN
+	HRrF8IrD6O0SyxjV8p+OXAjPsnlHQRTkJqIPHVxbUWwjpWM1K5L75E7JP1CAWFpUQsE1CHf8RVHvM
+	0vy2Pzzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOZm7-0000000GQEy-2RIs;
-	Thu, 27 Nov 2025 11:02:59 +0000
+	id 1vOZrP-0000000GQpk-40QA;
+	Thu, 27 Nov 2025 11:08:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOZm5-0000000GQES-0UOG
+	id 1vOZrN-0000000GQpK-1cQH
 	for barebox@lists.infradead.org;
-	Thu, 27 Nov 2025 11:02:58 +0000
-Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
+	Thu, 27 Nov 2025 11:08:26 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1vOZm3-0005fd-NE; Thu, 27 Nov 2025 12:02:55 +0100
-From: Fabian Pflug <f.pflug@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Thu, 27 Nov 2025 11:57:13 +0100
-Message-ID: <20251127105824.3560951-10-f.pflug@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251127105824.3560951-1-f.pflug@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vOZrL-0007pw-Sk; Thu, 27 Nov 2025 12:08:23 +0100
+Message-ID: <31a1a05b-e304-40c5-97cc-e5326bef25b8@pengutronix.de>
+Date: Thu, 27 Nov 2025 12:08:23 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Fabian Pflug <f.pflug@pengutronix.de>, barebox@lists.infradead.org
 References: <20251126064710.3721039-1-f.pflug@pengutronix.de>
  <20251127105824.3560951-1-f.pflug@pengutronix.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20251127105824.3560951-4-f.pflug@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251127105824.3560951-4-f.pflug@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251127_030257_158471_6EA70F69 
-X-CRM114-Status: GOOD (  17.86  )
+X-CRM114-CacheID: sfid-20251127_030825_468159_DE3ACBD5 
+X-CRM114-Status: GOOD (  20.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,163 +70,94 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/4] bootm: introduce bootm.root_arg variable
+Subject: Re: [PATCH v2 1/4] block.h: renamed get_rootargs to get_root
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The bootm.root_arg variable will be responsible for the root= part of
-the kernel commandline if bootm.appendroot is set and a root device has
-been selected.
-root_arg allows to replace the root=/dev/... with verity=/dev/..., which
-is useful in a verified boot context, where you pass the root file
-system to the initramfs, but do not want the kernel to be able to parse
-and mount the rootfs. With renaming the root= to something different,
-you make sure, that the kernel does not mount the rootfs.
+Hi,
 
-Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
----
+On 11/27/25 11:57 AM, Fabian Pflug wrote:
+> Don't return the full commandline-parameter, but instead just return the
+> root block/fs/etc. The functions downstream can add root= before.
+> 
+> This is the first commit in a series to make root= dynamic.
+> 
+> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 
-added parameter to device text
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
- common/bootm.c  | 17 ++++++++++++-----
- fs/fs.c         | 26 --------------------------
- include/bootm.h |  1 +
- include/fs.h    |  1 -
- 4 files changed, 13 insertions(+), 32 deletions(-)
+> +	char *root = NULL;
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 562e469552..42312227c2 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -69,6 +69,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
- 		data->initrd_file = getenv_nonempty("global.bootm.initrd");
- 	}
- 	data->root_dev = getenv_nonempty("global.bootm.root_dev");
-+	data->root_arg = getenv_nonempty("global.bootm.root_arg");
- 	data->verify = bootm_get_verify_mode();
- 	data->appendroot = bootm_appendroot;
- 	data->provide_machine_id = bootm_provide_machine_id;
-@@ -88,6 +89,7 @@ void bootm_data_restore_defaults(const struct bootm_data *data)
- 		globalvar_set("bootm.initrd", data->initrd_file);
- 	}
- 	globalvar_set("bootm.root_dev", data->root_dev);
-+	globalvar_set("bootm.root_arg", data->root_arg);
- 	bootm_set_verify_mode(data->verify);
- 	bootm_appendroot = data->appendroot;
- 	bootm_provide_machine_id = data->provide_machine_id;
-@@ -854,11 +856,14 @@ int bootm_boot(struct bootm_data *bootm_data)
- 
- 			if (IS_ERR(err)) {
- 				if (!root_cdev)
--					pr_err("no cdev found for %s, cannot set root= option\n", root_dev_name);
-+					pr_err("no cdev found for %s, cannot set %s= option\n",
-+						root_dev_name, bootm_data->root_arg);
- 				else if (!root_cdev->partuuid[0])
--					pr_err("%s doesn't have a PARTUUID, cannot set root= option\n", root_dev_name);
-+					pr_err("%s doesn't have a PARTUUID, cannot set %s= option\n",
-+						root_dev_name, bootm_data->root_arg);
- 				else
--					pr_err("could not determine root= from %s\n", root_dev_name);
-+					pr_err("could not determine %s= from %s\n",
-+						bootm_data->root_arg, root_dev_name);
- 			}
- 
- 			if (root_cdev)
-@@ -872,10 +877,10 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		}
- 
- 		if (!root) {
--			pr_err("Failed to append kernel cmdline parameter 'root='\n");
-+			pr_err("Failed to append kernel cmdline parameter '%s='\n", bootm_data->root_arg);
- 		} else {
- 			char *rootarg;
--			rootarg = format_root_bootarg("root", root, rootopts);
-+			rootarg = format_root_bootarg(bootm_data->root_arg, root, rootopts);
- 			pr_info("Adding \"%s\" to Kernel commandline\n", rootarg);
- 			globalvar_add_simple("linux.bootargs.bootm.appendroot",
- 					     rootarg);
-@@ -1118,6 +1123,7 @@ static int bootm_init(void)
- 	globalvar_add_simple("bootm.image.loadaddr", NULL);
- 	globalvar_add_simple("bootm.oftree", NULL);
- 	globalvar_add_simple("bootm.root_dev", NULL);
-+	globalvar_add_simple("bootm.root_arg", "root");
- 	globalvar_add_simple("bootm.tee", NULL);
- 	globalvar_add_simple_bool("bootm.appendroot", &bootm_appendroot);
- 	globalvar_add_simple_bool("bootm.earlycon", &bootm_earlycon);
-@@ -1175,5 +1181,6 @@ BAREBOX_MAGICVAR(global.bootm.verbose, "bootm default verbosity level (0=quiet)"
- BAREBOX_MAGICVAR(global.bootm.earlycon, "Add earlycon option to Kernel for early log output");
- BAREBOX_MAGICVAR(global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from (default, device can be overridden via global.bootm.root_dev)");
- BAREBOX_MAGICVAR(global.bootm.root_dev, "bootm default root device (overrides default device in global.bootm.appendroot)");
-+BAREBOX_MAGICVAR(global.bootm.root_arg, "bootm default parameter name arg for the root partition (normally 'root' for root=/dev/...)");
- BAREBOX_MAGICVAR(global.bootm.provide_machine_id, "If true, append systemd.machine_id=$global.machine_id to Kernel command line");
- BAREBOX_MAGICVAR(global.bootm.provide_hostname, "If true, append systemd.hostname=$global.hostname to Kernel command line");
-diff --git a/fs/fs.c b/fs/fs.c
-index f3b759b20a..6540bcdd11 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1246,32 +1246,6 @@ void fsdev_get_linux_root_options(struct fs_device *fsdev, char **root, char **r
- 	}
- }
- 
--/**
-- * path_get_linux_rootarg() - Given a path return a suitable root= option for
-- *                            Linux
-- * @path: The path
-- *
-- * Return: A string containing the root= option or an ERR_PTR. the returned
-- *         string must be freed by the caller.
-- */
--char *path_get_linux_rootarg(const char *path)
--{
--	struct fs_device *fsdev;
--	char *root = NULL;
--	char *rootopts = NULL;
--
--	fsdev = get_fsdevice_by_path(AT_FDCWD, path);
--	if (!fsdev)
--		return ERR_PTR(-EINVAL);
--
--	fsdev_get_linux_root_options(fsdev, &root, &rootopts);
--
--	if (!root)
--		return ERR_PTR(-EINVAL);
--
--	return format_root_bootarg("root", root, rootopts);
--}
--
- /**
-  * __is_tftp_fs() - return true when path is mounted on TFTP
-  * @path: The path
-diff --git a/include/bootm.h b/include/bootm.h
-index b35deb25bf..43f4258885 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -19,6 +19,7 @@ struct bootm_data {
- 	const char *oftree_file;
- 	const char *tee_file;
- 	const char *root_dev;
-+	const char *root_arg;
- 	int verbose;
- 	enum bootm_verify verify;
- 	bool force;
-diff --git a/include/fs.h b/include/fs.h
-index c50437d609..ddd93e93ec 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -162,7 +162,6 @@ void mount_all(void);
- 
- void fsdev_set_linux_root_options(struct fs_device *fsdev, const char *root, const char* rootopts);
- void fsdev_get_linux_root_options(struct fs_device *fsdev, char **root, char **rootopts);
--char *path_get_linux_rootarg(const char *path);
- 
- static inline const char *devpath_to_name(const char *devpath)
- {
+Scope could be reduced, but you don't need to resend just for that.
+
+Thanks,
+Ahmad
+
+
+>  
+>  	if (!partcdev)
+>  		return NULL;
+> @@ -598,8 +599,13 @@ char *cdev_get_linux_rootarg(const struct cdev *partcdev)
+>  	if (!blk)
+>  		return NULL;
+>  
+> -	if (blk->ops->get_rootarg)
+> -		rootarg = blk->ops->get_rootarg(blk, partcdev);
+> +	if (blk->ops->get_root) {
+> +		root = blk->ops->get_root(blk, partcdev);
+> +		if (root) {
+> +			rootarg = basprintf("root=%s", root);
+> +			free(root);
+> +		}
+> +	}
+>  	if (!rootarg && partcdev->partuuid[0] != 0)
+>  		rootarg = basprintf("root=PARTUUID=%s", partcdev->partuuid);
+>  
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index 57825bc849..206147cb93 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -2691,7 +2691,7 @@ static char *mci_get_linux_mmcblkdev(struct block_device *blk,
+>  		 * skipping it.
+>  		 */
+>  		if (cdev_partname_equal(partcdev, cdev))
+> -			return basprintf("root=/dev/mmcblk%dp%d", id, partnum);
+> +			return basprintf("/dev/mmcblk%dp%d", id, partnum);
+>  		if (cdev->flags & DEVFS_PARTITION_FROM_TABLE)
+>  			partnum++;
+>  	}
+> @@ -2703,7 +2703,7 @@ static struct block_device_ops mci_ops = {
+>  	.read = mci_sd_read,
+>  	.write = IS_ENABLED(CONFIG_MCI_WRITE) ? mci_sd_write : NULL,
+>  	.erase = IS_ENABLED(CONFIG_MCI_ERASE) ? mci_sd_erase : NULL,
+> -	.get_rootarg = IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) ?
+> +	.get_root = IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) ?
+>  		mci_get_linux_mmcblkdev : NULL,
+>  };
+>  
+> diff --git a/include/block.h b/include/block.h
+> index fc7a0a32fb..b277f590e4 100644
+> --- a/include/block.h
+> +++ b/include/block.h
+> @@ -14,7 +14,7 @@ struct block_device_ops {
+>  	int (*write)(struct block_device *, const void *buf, sector_t block, blkcnt_t num_blocks);
+>  	int (*erase)(struct block_device *blk, sector_t block, blkcnt_t num_blocks);
+>  	int (*flush)(struct block_device *);
+> -	char *(*get_rootarg)(struct block_device *blk, const struct cdev *partcdev);
+> +	char *(*get_root)(struct block_device *blk, const struct cdev *partcdev);
+>  };
+>  
+>  struct chunk;
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
