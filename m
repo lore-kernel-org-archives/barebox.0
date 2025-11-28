@@ -1,69 +1,66 @@
-Delivery-date: Fri, 28 Nov 2025 13:56:49 +0100
+Delivery-date: Fri, 28 Nov 2025 14:29:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOy1p-005mv5-0I
+	id 1vOyXL-005nTI-1X
 	for lore@lore.pengutronix.de;
-	Fri, 28 Nov 2025 13:56:49 +0100
+	Fri, 28 Nov 2025 14:29:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOy1o-0004Er-Ec
-	for lore@pengutronix.de; Fri, 28 Nov 2025 13:56:49 +0100
+	id 1vOyXK-0008R6-TS
+	for lore@pengutronix.de; Fri, 28 Nov 2025 14:29:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bahv1JYJ8I5P3s50zxs+mM4PbfZRsLhdx/ed8Woy4mg=; b=BdV9/5cq14Iij7CQ7peI4VUoTF
-	cVEkgAWXqNwhB0GqGT3gJgwSGpGaRfXkLrtHhxed4zv5YUNc97osRR4kdG5HUmizq1elOZBKCzgfK
-	HE5ccxxYgoA3GOh7E7Bl7clP29eYl+e6CX2Gl/Cpv2QtmMqemKYNW+Zoc9Gawo5P8netngkI7WgJp
-	Mt92dro7YPXufFrvKzXc8vm0qf8/NkOunQgdyUODCjdLUFEdI5iAf7gTgbDD4aS1G3AvHIAcJHFQE
-	e7KoopTCXcPPNQdTYchxsCCBASQkk35oTJDHViljIL92FVJBbFX9X2oGm3fvgOM8ubs1h2qBB4U+y
-	Bt4sW32g==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=gKLLf+Ro+hpCZOvFsDjWFHaSs8vxJbH4iEbkZEzJh4w=; b=ZLt5lXpFS/nIfus/9oUPPZIrAm
+	M4kQqdTq4hIJCNsLsBUP5jPayFls060bg5qjkk7JlTI5PqNv25Ts6v7EfX5hHbiPuGoeWYC1pW/hu
+	DDdpUirHmbixFidD88zRIzlN3b2QHPcO2TVe2MER7F7rQxG2LHXO72joW10vddWCDCcHdFNT2wTMX
+	T1bldHjf+fa+PqCpy8qw2wqqKzAQYeaGXZkrOYIRzV18xx8mROEAhZfqoImpomTFlXnBE/BLniFBy
+	J7stTYkYYK6MzZ7DQ1FpGYHYhqNqKB/tedRYHJiQHpwHwFpC2aoka7XqpiGuKfvgNNRK9BQ9AbFhQ
+	xyuij9xw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOy1Q-00000000RfD-16TV;
-	Fri, 28 Nov 2025 12:56:24 +0000
+	id 1vOyWo-00000000TuS-091V;
+	Fri, 28 Nov 2025 13:28:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOy1L-00000000Rcv-09vp
+	id 1vOyWk-00000000TtK-18Mj
 	for barebox@lists.infradead.org;
-	Fri, 28 Nov 2025 12:56:21 +0000
+	Fri, 28 Nov 2025 13:28:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOy1J-00042t-Ld
-	for barebox@lists.infradead.org; Fri, 28 Nov 2025 13:56:17 +0100
+	id 1vOyWi-0008LR-0z; Fri, 28 Nov 2025 14:28:44 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOy1J-002xLi-1U
-	for barebox@lists.infradead.org;
-	Fri, 28 Nov 2025 13:56:17 +0100
+	id 1vOyWg-002xgY-36;
+	Fri, 28 Nov 2025 14:28:42 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOy1J-00000002TQM-1CeT
-	for barebox@lists.infradead.org;
-	Fri, 28 Nov 2025 13:56:17 +0100
+	id 1vOyWg-0000000AwH7-3WKv;
+	Fri, 28 Nov 2025 14:28:42 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 28 Nov 2025 13:50:04 +0100
-Message-ID: <20251128125616.136559-3-a.fatoum@pengutronix.de>
+Cc: Alexander Kurz <akurz@blala.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 28 Nov 2025 14:28:41 +0100
+Message-ID: <20251128132842.2605920-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251128125616.136559-1-a.fatoum@pengutronix.de>
-References: <20251128125616.136559-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251128_045619_119438_632B1562 
-X-CRM114-Status: GOOD (  13.44  )
+X-CRM114-CacheID: sfid-20251128_052846_335204_397AEF30 
+X-CRM114-Status: GOOD (  10.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,138 +82,47 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/4] include: move sprintf prototypes to new linux/sprintf.h
+Subject: [PATCH] fixup! ARM i.MX6SL: Add Kindle generation 6/7 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+Documentation: i.MX: kindle: fix ReST warnings
 
-The <stdio.h> header mixes console and sprintf functionality. Get a
-little closer to the Linux split by moving the sprintf family of
-functions to <linux/sprintf.h>.
+- Reorder the numbering, so there isn't 2. twice
+- Fix indentation, of sub-bulletpoint
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/sprintf.h | 48 +++++++++++++++++++++++++++++++++++++++++
- include/stdio.h         | 39 +--------------------------------
- 2 files changed, 49 insertions(+), 38 deletions(-)
- create mode 100644 include/linux/sprintf.h
+ Documentation/boards/imx/amazon-kindle-6-7.rst | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/sprintf.h b/include/linux/sprintf.h
-new file mode 100644
-index 000000000000..349773d3e16a
---- /dev/null
-+++ b/include/linux/sprintf.h
-@@ -0,0 +1,48 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_KERNEL_SPRINTF_H_
-+#define _LINUX_KERNEL_SPRINTF_H_
-+
-+#include <linux/types.h>
-+#include <stdarg.h>
-+
-+int sprintf(char *buf, const char *fmt, ...) __printf(2, 3);
-+int snprintf(char *buf, size_t size, const char *fmt, ...) __printf(3, 4);
-+int scnprintf(char *buf, size_t size, const char *fmt, ...) __printf(3, 4);
-+int vsprintf(char *buf, const char *fmt, va_list args);
-+int vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
-+int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
-+
-+#if IN_PROPER || defined(CONFIG_PBL_CONSOLE)
-+int asprintf(char **strp, const char *fmt, ...) __printf(2, 3);
-+char *bvasprintf(const char *fmt, va_list ap);
-+int vasprintf(char **strp, const char *fmt, va_list ap);
-+int vrasprintf(char **strp, const char *fmt, va_list ap);
-+int rasprintf(char **strp, const char *fmt, ...) __printf(2, 3);
-+#else
-+static inline __printf(2, 3) int asprintf(char **strp, const char *fmt, ...)
-+{
-+	return -1;
-+}
-+static inline char *bvasprintf(const char *fmt, va_list ap)
-+{
-+	return NULL;
-+}
-+static inline int vasprintf(char **strp, const char *fmt, va_list ap)
-+{
-+	return -1;
-+}
-+static inline int vrasprintf(char **strp, const char *fmt, va_list ap)
-+{
-+	return -1;
-+}
-+static inline __printf(2, 3) int rasprintf(char **strp, const char *fmt, ...)
-+{
-+	return -1;
-+}
-+#endif
-+
-+#define basprintf xasprintf
-+
-+const char *size_human_readable(unsigned long long size);
-+
-+#endif	/* _LINUX_KERNEL_SPRINTF_H */
-diff --git a/include/stdio.h b/include/stdio.h
-index f3e430b3b3d5..c0043b08bcc5 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -6,47 +6,11 @@
- #include <console.h>
- #include <printf.h>
- #include <xfuncs.h>
-+#include <linux/sprintf.h>
+diff --git a/Documentation/boards/imx/amazon-kindle-6-7.rst b/Documentation/boards/imx/amazon-kindle-6-7.rst
+index c57d27afe421..4769fb2ad59e 100644
+--- a/Documentation/boards/imx/amazon-kindle-6-7.rst
++++ b/Documentation/boards/imx/amazon-kindle-6-7.rst
+@@ -61,15 +61,15 @@ into USB boot mode, the eMMC may be disabled temporarily.
  
- /*
-  * STDIO based functions (can always be used)
-  */
--int sprintf(char *buf, const char *fmt, ...) __printf(2, 3);
--int snprintf(char *buf, size_t size, const char *fmt, ...) __printf(3, 4);
--int scnprintf(char *buf, size_t size, const char *fmt, ...) __printf(3, 4);
--int vsprintf(char *buf, const char *fmt, va_list args);
--int vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
--int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
--
--#if IN_PROPER || defined(CONFIG_PBL_CONSOLE)
--int asprintf(char **strp, const char *fmt, ...) __printf(2, 3);
--char *bvasprintf(const char *fmt, va_list ap);
--int vasprintf(char **strp, const char *fmt, va_list ap);
--int vrasprintf(char **strp, const char *fmt, va_list ap);
--int rasprintf(char **strp, const char *fmt, ...) __printf(2, 3);
--#else
--static inline __printf(2, 3) int asprintf(char **strp, const char *fmt, ...)
--{
--	return -1;
--}
--static inline char *bvasprintf(const char *fmt, va_list ap)
--{
--	return NULL;
--}
--static inline int vasprintf(char **strp, const char *fmt, va_list ap)
--{
--	return -1;
--}
--static inline int vrasprintf(char **strp, const char *fmt, va_list ap)
--{
--	return -1;
--}
--static inline __printf(2, 3) int rasprintf(char **strp, const char *fmt, ...)
--{
--	return -1;
--}
--#endif
--
--#define basprintf xasprintf
+ 1. Connect the Kindle to your host computer with a USB cable.
+ 2. Disable the eMMC
+-   * for the DP75SDI pull the left resistor left of TP806/TP807 (below
+-     TP914) facing the eMMC to zero.
+-2. Power down the device by holding the power button until the power LED goes
++   (for the DP75SDI pull the left resistor left of TP806/TP807 (below
++   TP914) facing the eMMC to zero).
++3. Power down the device by holding the power button until the power LED goes
+    dark (about 12-15 seconds).
+-3. Release the power button.
+-4. Free the eMMC pin.
+-5. After 10-20 seconds, a new USB device named ``SE Blank MEGREZ`` should
++4. Release the power button.
++5. Free the eMMC pin.
++6. After 10-20 seconds, a new USB device named ``SE Blank MEGREZ`` should
+    appear on your host computer.
+-6. Use imx-usb-loader to boot from USB.
++7. Use imx-usb-loader to boot from USB.
  
- #ifdef CONFIG_ARCH_HAS_CTRLC
- int arch_ctrlc(void);
-@@ -113,7 +77,6 @@ static inline void console_ctrlc_allow(void) { }
- static inline void console_ctrlc_forbid(void) { }
- #endif
+    .. code-block:: console
  
--const char *size_human_readable(unsigned long long size);
- int readline(const char *prompt, char *buf, int len);
- 
- #if (IN_PROPER && !defined(CONFIG_CONSOLE_NONE)) || \
 -- 
 2.47.3
 
