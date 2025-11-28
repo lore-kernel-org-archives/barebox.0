@@ -1,87 +1,58 @@
-Delivery-date: Fri, 28 Nov 2025 09:22:44 +0100
+Delivery-date: Fri, 28 Nov 2025 10:36:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOtka-005iuy-2W
+	id 1vOuty-005jve-2I
 	for lore@lore.pengutronix.de;
-	Fri, 28 Nov 2025 09:22:44 +0100
+	Fri, 28 Nov 2025 10:36:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOtka-0001Ie-8e
-	for lore@pengutronix.de; Fri, 28 Nov 2025 09:22:44 +0100
+	id 1vOuty-00012O-3m
+	for lore@pengutronix.de; Fri, 28 Nov 2025 10:36:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=fyWGoPsMJIY7/SrIamBoYrZnm6Eq/zlU/+NhgZ1NSg8=; b=hEhUL0mbluUCUt
-	U9FBN3PuLe5P3YpDZ8vmVtTdfV3wHzM1smYYq90Wl4Q47qMVi+/FRxgTPVp8zs5xtsic5iWCdporG
-	woFN/K7IMvEgLBGTZtGhs1Kn7wDlTv2nYUz+z/i96PNiaAZ/AnirYr7veqmvrWoTmppt29XdujZq1
-	bP9FSotr4iDiR8JkUkWx2iNVnfIIWMaWDN0/cEtMxn8t7qLQ5C9oNWoN8OthXStZ8lfp3bl0pLECq
-	ztpVZAhB7WTC0k+KPvdnD/PUK+vvO6D1tTqSLgYwJSauhzlfIsi9eO6Hx2AhS66PY79tUJ4h2PwB9
-	j5TmS/Ldc484m5uQU0zg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Vsm3E8UDnJLfwm1pQJfYB3h90ly+/M46a3l5xGwjfJ8=; b=c9teqr+en9GjlgXcvziiywwi0K
+	XeYldA32ewokm7cRYHYphqpjulscSM2HkVNG9iDqm0vEpjUhheNax85+WkDEyTpNpfQ4Zs6nBNcPc
+	jdFKp0PSZ0M1SM8kt7/Xb8rI4KfZjgf69OvTZcDztIurhZVutsZwVQ1ALOZkUmBou5Bl409bcn6Fb
+	BZN1GODf+gNhY7ZaTfs37k+UzTqHyPuvzYIoz2+ffceA0XjFzrx3oIMJFgaYckxDLiWUTn2ASFBrC
+	kcbrsPm3PUeWmCmtcinYOPkrYSACvcka2PdFLpsHe5GjfsFPSRJ/W4qtm8eQnbjpfnGzHH06C5GI3
+	7fe7IGyQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOtk2-000000008i4-0SGp;
-	Fri, 28 Nov 2025 08:22:10 +0000
+	id 1vOutK-00000000Ec8-2vZR;
+	Fri, 28 Nov 2025 09:35:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOtjx-000000008hc-1MHU
+	id 1vOutI-00000000Ebl-0mIn
 	for barebox@lists.infradead.org;
-	Fri, 28 Nov 2025 08:22:06 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1vOtjv-0001EP-6Q; Fri, 28 Nov 2025 09:22:03 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1vOtjv-002vO5-03;
-	Fri, 28 Nov 2025 09:22:03 +0100
-Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
-	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1vOtju-00000009aIx-42Pr;
-	Fri, 28 Nov 2025 09:22:02 +0100
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Fri, 28 Nov 2025 09:22:01 +0100
+	Fri, 28 Nov 2025 09:35:49 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vOutF-0000vk-9u; Fri, 28 Nov 2025 10:35:45 +0100
+Message-ID: <d9e0dfea-6f2b-44dc-9feb-b552f12a5c90@pengutronix.de>
+Date: Fri, 28 Nov 2025 10:35:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Sohaib Mohamed <sohaib.amhmd@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <20251128-avenger96-v1-0-009b13bd8df7@gmail.com>
+ <20251128-avenger96-v1-1-009b13bd8df7@gmail.com>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251128-avenger96-v1-1-009b13bd8df7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251128-keytoc-v1-1-5540f8543f32@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAKlbKWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDQyML3ezUypL8ZN3ExMSUVAvLtFQLEyMloOKCotS0zAqwQdGxtbUAYmK
- g71gAAAA=
-X-Change-ID: 20251128-keytoc-aaade89fe842
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1124;
- i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=LsBgYcG6x0WthO7oNVLIOGuxGYp11ysAwZ9Mtz1TPZg=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBpKVuqUGtAe3/X5RJv06CrGjzJhd+Z46eM69ZRW
- EbcdJ5iP86JAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCaSlbqgAKCRC/aVhE+XH0
- q86+D/94ouRHyR/XXLeZjcmsb2C5pCHNN8/0Y7eEToDNIVcJ34hml5cFH+Sj5fG1Wo03vu6Nija
- Sof54WdKjnKtyvZHZHpJMvw8+UxJtJE3SHC/EmskhDOq2uRzPnZY0ofzktiTh/pa4dFLK6Hke2L
- IOYAMQbjwQwaVQcndpKHJ7DWXKtnBDdhVTyA4t5y6nfu5SUh4QNtSrSgCp/drndHDPKeJF16hoJ
- dmF0ntX2OI/bu33zo8SSpDlmws8Zkmw2+Mc0VuIdNqa5hj3sgxp+xCYRXXfUz3MuE5JKEtMLdEo
- Wz6UA2E1ED5vcf9dMngMKZJQ2aTsjY1pGVvT/NPYAjm4yu28iDMPZliNqKC4zJUZAa3P8hV+r5H
- k6tCUsONgvC9J9xmgvlWdRlRCd3A3nr5VJEWVe93qEUKW1mdo5joVzgS50CTIExSVdFBjDWnORB
- tlLO+lPgJmZTYeCY1c7R4VAuVmZETaxAOryOXwa1I9OZi8EIluS2m4A78eYLVefGjcSpY2nFwFf
- NfIrwdDFlYRFQ+Z308JFpGhfrBedHrOrF0/M6PFS1t8h5PM5txfnQR+RBybJfjHPP3wir8cECQn
- SoqIE4AnUFnGQrHOHLIjrnwP2a6p3qwmLN9UY30FiEjXmzwuR+pRgkq49VZOuwHA6n543TguWp5
- hEoot3EBwdvF7uQ==
-X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
- fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251128_002205_369199_4FCF574B 
-X-CRM114-Status: GOOD (  11.78  )
+X-CRM114-CacheID: sfid-20251128_013548_252780_E687A898 
+X-CRM114-Status: GOOD (  17.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,46 +70,107 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-1.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] crypto: keytoc: fix env parsing after keyring support
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,SUBJECT_IN_BLACKLIST,
+	SUBJECT_IN_BLOCKLIST autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 1/3] common: bbu: refactor flash operations into separate
+ function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Since the support for keyrings was added for keytoc the parsing of
-pkcs11 keydescriptions that are set from environment variables is
-broken. Fix this by adding the necessary try_resolve_env call before
-working with the key description.
+On 11/28/25 1:51 AM, Sohaib Mohamed wrote:
+> Extract flash logic (protect, erase, write) from bbu_std_file_handler()
+> into a new flash() function that accepts an offset parameter, so it can
+> be used from further barebox update handlers as well.
+> 
+> Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 
-Fixes: 9b6abf4928 ("crypto: Add support for keyrings")
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- scripts/keytoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/scripts/keytoc.c b/scripts/keytoc.c
-index ade924298a3169c6ac52b781deac94f706a14203..77ada3af451983722f40e5bb40f8e2789884a898 100644
---- a/scripts/keytoc.c
-+++ b/scripts/keytoc.c
-@@ -856,7 +856,7 @@ int main(int argc, char *argv[])
- 	keylist = calloc(sizeof(struct keyinfo), keycount);
- 
- 	for (i = 0; i < keycount; i++) {
--		const char *keyspec = argv[optind + i];
-+		const char *keyspec = try_resolve_env(argv[optind + i]);
- 		struct keyinfo *info = &keylist[i];
- 
- 		if (!keyspec)
+> ---
+>  common/bbu.c  | 17 +++++++++++------
+>  include/bbu.h |  2 ++
+>  2 files changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/common/bbu.c b/common/bbu.c
+> index 03261583fe..39db87e823 100644
+> --- a/common/bbu.c
+> +++ b/common/bbu.c
+> @@ -431,8 +431,7 @@ int bbu_mmcboot_register_handler(const char *name,
+>  	return ret;
+>  }
+>  
+> -int bbu_std_file_handler(struct bbu_handler *handler,
+> -			 struct bbu_data *data)
+> +int bbu_flash(struct bbu_data *data, loff_t offset)
+>  {
+>  	int fd, ret;
+>  	struct stat s;
+> @@ -458,25 +457,25 @@ int bbu_std_file_handler(struct bbu_handler *handler,
+>  	if (fd < 0)
+>  		return fd;
+>  
+> -	ret = protect(fd, data->len, 0, 0);
+> +	ret = protect(fd, data->len, offset, 0);
+>  	if (ret && (ret != -ENOSYS) && (ret != -ENOTSUPP)) {
+>  		printf("unprotecting %s failed with %pe\n", data->devicefile,
+>  				ERR_PTR(ret));
+>  		goto err_close;
+>  	}
+>  
+> -	ret = erase(fd, data->len, 0, ERASE_TO_WRITE);
+> +	ret = erase(fd, data->len, offset, ERASE_TO_WRITE);
+>  	if (ret && ret != -ENOSYS) {
+>  		printf("erasing %s failed with %pe\n", data->devicefile,
+>  				ERR_PTR(ret));
+>  		goto err_close;
+>  	}
+>  
+> -	ret = write_full(fd, data->image, data->len);
+> +	ret = pwrite_full(fd, data->image, data->len, offset);
+>  	if (ret < 0)
+>  		goto err_close;
+>  
+> -	protect(fd, data->len, 0, 1);
+> +	protect(fd, data->len, offset, 1);
+>  
+>  	ret = 0;
+>  
+> @@ -486,6 +485,12 @@ int bbu_std_file_handler(struct bbu_handler *handler,
+>  	return ret;
+>  }
+>  
+> +int bbu_std_file_handler(struct bbu_handler *handler,
+> +			 struct bbu_data *data)
+> +{
+> +	return bbu_flash(data, 0);
+> +}
+> +
+>  static int bbu_std_file_handler_checked(struct bbu_handler *handler,
+>  					struct bbu_data *data)
+>  {
+> diff --git a/include/bbu.h b/include/bbu.h
+> index 94006563c9..f5b74b32ac 100644
+> --- a/include/bbu.h
+> +++ b/include/bbu.h
+> @@ -56,6 +56,8 @@ int bbu_mmcboot_handler(struct bbu_handler *, struct bbu_data *,
+>  int bbu_std_file_handler(struct bbu_handler *handler,
+>  			 struct bbu_data *data);
+>  
+> +int bbu_flash(struct bbu_data *data, loff_t offset);
+> +
+>  #ifdef CONFIG_BAREBOX_UPDATE
+>  
+>  bool bbu_handlers_available(void);
+> 
 
----
-base-commit: 5d89bec4985d850d59813e34c6b5213d8e8f48f0
-change-id: 20251128-keytoc-aaade89fe842
-
-Best regards,
 -- 
-Michael Grzeschik <m.grzeschik@pengutronix.de>
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
