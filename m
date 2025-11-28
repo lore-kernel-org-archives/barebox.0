@@ -1,58 +1,58 @@
-Delivery-date: Fri, 28 Nov 2025 10:45:45 +0100
+Delivery-date: Fri, 28 Nov 2025 11:02:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOv2v-005k6X-2F
+	id 1vOvJJ-005kFy-2M
 	for lore@lore.pengutronix.de;
-	Fri, 28 Nov 2025 10:45:45 +0100
+	Fri, 28 Nov 2025 11:02:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOv2v-000270-2d
-	for lore@pengutronix.de; Fri, 28 Nov 2025 10:45:45 +0100
+	id 1vOvJJ-0003l0-26
+	for lore@pengutronix.de; Fri, 28 Nov 2025 11:02:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=l3Xov8gfR1NSn5wsQ1+kx8tMVjqwuQ7epeiAaKE8/ks=; b=sVW3iwmkw84MR5B0ZDLgT2F1zR
-	WE8C0W0pvcRLDCSpWJbV49sB11JVPC8A1q40R5aJgeU7s0RmIZQI4uDC/hl60ZFbTP0VWWmzUyZU9
-	LQSvNCT6ZQqGlO/l/BRYE5OdGAbjM1RZ+a7rb76wHDtLIR2vgCHVuVgPfufoAfOj95taJEiN4HJ+M
-	tn4vKxtPqbLdmRKtX7OEatlQFdeEg+AF/wiOg+4SUp+MYxxjinjA7sj+S0AhKRQQLLps2ErMb+kUf
-	pL/kDCCF+m0VZZBiX+nf+SjdKToVPDinJS/tJB++dTxVnV8KuxOGUfKbfG4Gmt3GOGy+pxZmfMfUZ
-	TBIoknAQ==;
+	bh=VMUmWlD9wEu7TuFtQ0+kl+B4Q2ea1FEIAFIHUoDaesk=; b=Yt5Cyr1hfgtN+kyXiEPjI5dtKD
+	rOTVBGtsjOIDFsQdqKkqiuw2U9LoTG1AoisTyzhhN1K2Qn+xYG+mAA9Tq4vY6MM/NeMlmh8dbtcZl
+	5jiZ8sD1MIlts5i0rf9FmGQHhD4mVBZUGAKWFShQGZpnHwnc8ypar5+IFUA87puBQ2zdXWKux6oG0
+	dWEe/bOl3qKrKefdKgU1AIQAA2HaTHBux0OrcAiQ9p3CJa0SuG4dBEsSwOj2AzXQZyOwab3iuyaQ+
+	hxBd5TjXdYTmSFO+wpeLm7yXPz4EocaGo9VNyTqBAtXBV/0Z6ewS0amhnrY+Qw9xk6HfwtysPkDl9
+	J78vl2gQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOv2W-00000000FBT-0b3v;
-	Fri, 28 Nov 2025 09:45:20 +0000
+	id 1vOvIX-00000000Fv7-3NFs;
+	Fri, 28 Nov 2025 10:01:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOv2T-00000000FAA-0bib
+	id 1vOvIV-00000000Fui-1b1y
 	for barebox@lists.infradead.org;
-	Fri, 28 Nov 2025 09:45:18 +0000
+	Fri, 28 Nov 2025 10:01:52 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOv2R-00020l-Lj; Fri, 28 Nov 2025 10:45:15 +0100
-Message-ID: <c15f6ae3-812a-43b2-aa3b-47c4d4e4da1b@pengutronix.de>
-Date: Fri, 28 Nov 2025 10:45:15 +0100
+	id 1vOvIS-0003bP-Pk; Fri, 28 Nov 2025 11:01:48 +0100
+Message-ID: <d0d39130-aa0e-4822-ac87-31fe96a1653e@pengutronix.de>
+Date: Fri, 28 Nov 2025 11:01:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Fabian Pflug <f.pflug@pengutronix.de>, barebox@lists.infradead.org
 References: <20251127105824.3560951-1-f.pflug@pengutronix.de>
  <20251127143052.3114915-1-f.pflug@pengutronix.de>
- <20251127143052.3114915-2-f.pflug@pengutronix.de>
+ <20251127143052.3114915-3-f.pflug@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20251127143052.3114915-2-f.pflug@pengutronix.de>
+In-Reply-To: <20251127143052.3114915-3-f.pflug@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251128_014517_192486_EF195CB4 
-X-CRM114-Status: GOOD (  21.54  )
+X-CRM114-CacheID: sfid-20251128_020151_451572_A2F35C0E 
+X-CRM114-Status: GOOD (  30.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,84 +74,137 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 1/4] block.h: renamed get_rootargs to get_root
+Subject: Re: [PATCH v3 2/4] fs: split rootargs into root and options
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hi,
 
 On 11/27/25 3:25 PM, Fabian Pflug wrote:
-> Don't return the full commandline-parameter, but instead just return the
-> root block/fs/etc. The functions downstream can add root= before.
-> 
-> This is the first commit in a series to make root= dynamic.
+> The rootargs argument (root=/dev/etc rootwait) can be split into the
+> root and options parts, which makes it easier to manipulate them both
+> independently. This changes tries to be as backward compatible as
+> possible and does not change the behaviour of the get functions, but
+> introduces new ones to get both items seperatly.
 > 
 > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
+with below syntax error fixed. Pointed out some nitpicks while at it.
+
 > ---
->  common/block.c         | 10 ++++++++--
->  drivers/mci/mci-core.c |  4 ++--
->  include/block.h        |  2 +-
->  3 files changed, 11 insertions(+), 5 deletions(-)
+>  .../migration-guides/migration-master.rst     | 15 +++++
+>  common/block.c                                | 44 ++++++++------
+>  fs/9p/vfs_super.c                             |  6 +-
+>  fs/fs.c                                       | 58 ++++++++++++++-----
+>  fs/nfs.c                                      |  4 +-
+>  fs/squashfs/squashfs.c                        | 13 +++--
+>  fs/ubifs/ubifs.c                              | 12 ++--
+>  include/block.h                               |  5 ++
+>  include/bootargs.h                            |  2 +
+>  include/fs.h                                  |  6 +-
+>  10 files changed, 117 insertions(+), 48 deletions(-)
+>  create mode 100644 Documentation/migration-guides/migration-master.rst
 > 
-> diff --git a/common/block.c b/common/block.c
-> index ca2ed37dbd..07c4d5d504 100644
-> --- a/common/block.c
-> +++ b/common/block.c
-> @@ -598,8 +598,14 @@ char *cdev_get_linux_rootarg(const struct cdev *partcdev)
->  	if (!blk)
->  		return NULL;
+> diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
+> new file mode 100644
+> index 0000000000..0d6cfcad57
+> --- /dev/null
+> +++ b/Documentation/migration-guides/migration-master.rst
+> @@ -0,0 +1,15 @@
+> +Filesystems
+> +-----------
+> +
+> +{linux.bootargs} is replaced with "root={linux.bootargs.root} {linux.bootargs.rootopts}"
+> +
+> +The variable linux.bootargs has been replaced by the two variables
+> +linux.bootargs.root and linux.bootargs.rootopts, splitting the previous bootargs
+> +into three parts. A nonexistent fixed "root=", then the root filesystem and then
+> +additional optional params for this particular filesystem.
+> +
+> +for example the previous
+> +    linux.bootargs="root=/dev/nfs nfsroot=192.168.1.1:/rootfs"
+> +becomes
+> +    linux.bootargs.root="/dev/nfs"
+> +    linux.bootargs.rootopts="nfsroot=192.168.1.1:/rootfs"
+
+That will look odd rendered to HTML without extra ReST formatting.
+For inline literal code (e.g., ``{linux.booargs}``) and for the code
+blocks, use ::, e.g.:
+
+for example the previous::
+
+    linux.bootargs="root=/dev/nfs nfsroot=192.168.1.1:/rootfs"
+
+
+> +char *cdev_get_linux_rootarg(const struct cdev *partcdev)
+> +{
+> +	int err;
+> +	char* root = NULL;
+> +	char* rootopts = NULL;
+
+Asterisks next to identifier.
+
+> +char *format_root_bootarg(const char *root_arg, char *root, char *rootopts) {
+
+Newline before brace.
+
+> -	str = dev_get_param(&fsdev->dev, "linux.bootargs");
+> -	if (!str)
+> -		return ERR_PTR(-ENOSYS);
+> +	fsdev_get_linux_root_options(fsdev, &root, &rootopts);
 >  
-> -	if (blk->ops->get_rootarg)
-> -		rootarg = blk->ops->get_rootarg(blk, partcdev);
-> +	if (blk->ops->get_root) {
-> +		char *root = NULL;
-> +		root = blk->ops->get_root(blk, partcdev);
+> -	return xstrdup(str);
+> +	if (!root)
+> +		return ERR_PTR(-EINVAL);
+
+-ENOSYS would have been the better return type here, which is also what
+we had before.
+
+> -		str = cdev_get_linux_rootarg(fsdev->cdev);
+> -		if (str)
+> -			fsdev_set_linux_rootarg(fsdev, str);
+> +		cdev_get_linux_root_and_opts(fsdev->cdev, &root, &rootopts);
 > +		if (root) {
-> +			rootarg = basprintf("root=%s", root);
+> +			fsdev_set_linux_root_options(fsdev, root, rootopts);
 > +			free(root);
+> +			if(rootopts)
+> +				free(rootopts);
+
+Coding style is spaces after if, but you can drop the check anyway, as
+mentioned previously.
+
 > +		}
-> +	}
->  	if (!rootarg && partcdev->partuuid[0] != 0)
->  		rootarg = basprintf("root=PARTUUID=%s", partcdev->partuuid);
->  
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 57825bc849..206147cb93 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -2691,7 +2691,7 @@ static char *mci_get_linux_mmcblkdev(struct block_device *blk,
->  		 * skipping it.
->  		 */
->  		if (cdev_partname_equal(partcdev, cdev))
-> -			return basprintf("root=/dev/mmcblk%dp%d", id, partnum);
-> +			return basprintf("/dev/mmcblk%dp%d", id, partnum);
->  		if (cdev->flags & DEVFS_PARTITION_FROM_TABLE)
->  			partnum++;
 >  	}
-> @@ -2703,7 +2703,7 @@ static struct block_device_ops mci_ops = {
->  	.read = mci_sd_read,
->  	.write = IS_ENABLED(CONFIG_MCI_WRITE) ? mci_sd_write : NULL,
->  	.erase = IS_ENABLED(CONFIG_MCI_ERASE) ? mci_sd_erase : NULL,
-> -	.get_rootarg = IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) ?
-> +	.get_root = IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) ?
->  		mci_get_linux_mmcblkdev : NULL,
->  };
->  
+
+>  static int ubifs_probe(struct device *dev)
 > diff --git a/include/block.h b/include/block.h
-> index fc7a0a32fb..b277f590e4 100644
+> index b277f590e4..ff18dcded0 100644
 > --- a/include/block.h
 > +++ b/include/block.h
-> @@ -14,7 +14,7 @@ struct block_device_ops {
->  	int (*write)(struct block_device *, const void *buf, sector_t block, blkcnt_t num_blocks);
->  	int (*erase)(struct block_device *blk, sector_t block, blkcnt_t num_blocks);
->  	int (*flush)(struct block_device *);
-> -	char *(*get_rootarg)(struct block_device *blk, const struct cdev *partcdev);
-> +	char *(*get_root)(struct block_device *blk, const struct cdev *partcdev);
->  };
->  
->  struct chunk;
+> @@ -85,6 +85,7 @@ static inline int block_flush(struct block_device *blk)
+>  #ifdef CONFIG_BLOCK
+>  unsigned file_list_add_blockdevs(struct file_list *files);
+>  char *cdev_get_linux_rootarg(const struct cdev *partcdev);
+> +int cdev_get_linux_root_and_opts(const struct cdev *partcdev, char** root, char** rootopts);
+>  #else
+>  static inline unsigned file_list_add_blockdevs(struct file_list *files)
+>  {
+> @@ -94,6 +95,10 @@ static inline char *cdev_get_linux_rootarg(const struct cdev *partcdev)
+>  {
+>  	return NULL;
+>  }
+> +static inline void cdev_get_linux_root_and_opts(const struct cdev *partcdev, char** root, char** rootopts)
+> +{
+> +	return -ENOSYS;
+> +}
+
+Here's the actual issue: a void function can't return a value. Would
+break in CI for platforms without CONFIG_BLOCK.
+
+Cheers,
+Ahmad
 
 -- 
 Pengutronix e.K.                  |                             |
