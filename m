@@ -1,58 +1,58 @@
-Delivery-date: Fri, 28 Nov 2025 10:40:28 +0100
+Delivery-date: Fri, 28 Nov 2025 10:41:33 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOuxo-005jyE-1I
+	id 1vOuyr-005jzN-1M
 	for lore@lore.pengutronix.de;
-	Fri, 28 Nov 2025 10:40:28 +0100
+	Fri, 28 Nov 2025 10:41:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vOuxn-0001RG-MM
-	for lore@pengutronix.de; Fri, 28 Nov 2025 10:40:28 +0100
+	id 1vOuyq-0001dl-Fp
+	for lore@pengutronix.de; Fri, 28 Nov 2025 10:41:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zY+rfJ8CwS3doi96JzSpw3bGH4tUJjYZUkVdY77QtTM=; b=lWpSKzGgDUj3KstEjMGbk78Tr3
-	9e5SPccJ6mw5c8dEss2l2OQDkqetLmE2BggrY+Pdle/NXyOLFbZukP4Gj61xbapbh4gX0xv6moTjL
-	nmkn+JOAiV882N3DRhcwr8j9J11ZfrpHY5zwDUa9qxhqjR1x/9XsGXhJKGA0TCrW3/6MiYAiOL6do
-	PmJU9ToL0M8IQ4e4MpViOVATGfAAMOghh/ypApVFaPexK3seFhUEgp1jm1CwPFIvPHSI12rEkauvw
-	bmmJjKl/EhQNQ9mjmTmFIozDfUEXdby6gYbE+8nICGovAPQKaSEj5N8M2EF83BUQZB2iowM25cK8O
-	tcued9Jw==;
+	bh=HqiVNAG+GX4F334c4EUPc4D4gj9KPQwBUTIvvzzRvE0=; b=LoPLA2dGUw8UVb3o9z6ckkxKXE
+	r1IKe1jc5fwTHpvi6phF3SVYucRXqWcxWKgD7qU0MtOwjCZEww2Bjrc+loGlHB+qmR2wQQ1HIKBTM
+	h//ZicwzorJRyuT53WYeBDzL3hXoaL87bkhjvpD9lNGb0TeIUamZZ24vlB2LEjXEbaW9H2odVndik
+	EjkGIz9U1Xz+Tx/25XixlU29Pjt0YdoIs+YtyBO2yFICAtzr0ozIHVZGhF8d5Kiqs43uXIrNL3mRJ
+	eSAxLInL2cWGht9F5rOlkPD+6/iMJubODpicDiz/xao5tWGdjfRozrx0QM23jzE+hMau1zHwbUTno
+	M/LD3yFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOuxP-00000000EpK-1Bd0;
-	Fri, 28 Nov 2025 09:40:03 +0000
+	id 1vOuyK-00000000Ev4-0rxU;
+	Fri, 28 Nov 2025 09:41:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOuxM-00000000Eoh-2HcK
+	id 1vOuyI-00000000Eua-0Ksd
 	for barebox@lists.infradead.org;
-	Fri, 28 Nov 2025 09:40:01 +0000
+	Fri, 28 Nov 2025 09:40:59 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vOuxL-0001M3-0m; Fri, 28 Nov 2025 10:39:59 +0100
-Message-ID: <dcb2c091-33a7-4c9c-822e-d62a3922d21e@pengutronix.de>
-Date: Fri, 28 Nov 2025 10:39:58 +0100
+	id 1vOuyG-0001Vj-Hs; Fri, 28 Nov 2025 10:40:56 +0100
+Message-ID: <3df9c55c-44e4-45c2-927f-23b0f70fa49e@pengutronix.de>
+Date: Fri, 28 Nov 2025 10:40:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sohaib Mohamed <sohaib.amhmd@gmail.com>,
  Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
 References: <20251128-avenger96-v1-0-009b13bd8df7@gmail.com>
- <20251128-avenger96-v1-2-009b13bd8df7@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ <20251128-avenger96-v1-3-009b13bd8df7@gmail.com>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20251128-avenger96-v1-2-009b13bd8df7@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251128-avenger96-v1-3-009b13bd8df7@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251128_014000_624659_AE589155 
-X-CRM114-Status: GOOD (  27.33  )
+X-CRM114-CacheID: sfid-20251128_014058_274627_85A928FC 
+X-CRM114-Status: GOOD (  25.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,154 +74,185 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] ARM: stm32mp: bbu: add NOR flash FIP update handler
+Subject: Re: [PATCH 3/3] ARM: stm32mp: add support for STM32MP157A Avenger96
+ board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 11/28/25 1:51 AM, Sohaib Mohamed wrote:
-> Add support for updating STM32MP1 bootloader in NOR flash. The handler
-> automatically detects FIP location (256K or 512K offset) and flashes
-> FSBL at offset 0 and FIP at offset 512K. FIP is truncated if it exceeds
-> available space.
+> Add board support for the Arrow Electronics STM32MP157A Avenger96 board.
 > 
-> The handler detects the FIP location within the image (at either 256K
-> or 512K offset) and flashes components to their appropriate locations:
-> - FSBL at offset 0 (first 256K)
-> - FIP at offset 512K (remainder of flash)
-
-Above two paragraphs just repeat the same info.
-
-> When flashing from eMMC boot partitions to NOR, the FIP is truncated if
-> needed since eMMC boot partitions are typically larger than available
-> NOR flash space.
-
-This doesn't reflect what the code is doing. It just passes it along to
-bbu_flash. I would expect flashing a too big image would just fail with
--ENOSPC, because pwrite_full() couldn't write all bytes and not
-truncation as the commit message claims.
-
+> This commit adds:
+> - Board initialization code with boot source detection
+> - barebox_update handlers for SD card, eMMC
+> 
+> Tested with STM32MP157A DHCOR SoM on Avenger96 carrier board.
+> 
 > Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  arch/arm/mach-stm32mp/bbu.c | 77 +++++++++++++++++++++++++++++++++++++++++++++
->  include/mach/stm32mp/bbu.h  | 10 ++++++
->  2 files changed, 87 insertions(+)
+>  arch/arm/boards/Makefile                    |  1 +
+>  arch/arm/boards/dhcor-stm32mp1/Makefile     |  2 ++
+>  arch/arm/boards/dhcor-stm32mp1/board.c      | 47 +++++++++++++++++++++++++++++
+>  arch/arm/configs/multi_v7_defconfig         |  2 ++
+>  arch/arm/configs/stm32mp_defconfig          |  2 ++
+>  arch/arm/dts/Makefile                       |  1 +
+>  arch/arm/dts/stm32mp157a-dhcor-stm32mp1.dts |  4 +++
+>  arch/arm/mach-stm32mp/Kconfig               |  4 +++
+>  8 files changed, 63 insertions(+)
 > 
-> diff --git a/arch/arm/mach-stm32mp/bbu.c b/arch/arm/mach-stm32mp/bbu.c
-> index 07b5111341..e8d0138cc7 100644
-> --- a/arch/arm/mach-stm32mp/bbu.c
-> +++ b/arch/arm/mach-stm32mp/bbu.c
-> @@ -193,3 +193,80 @@ int stm32mp_bbu_mmc_fip_register(const char *name,
->  
->  	return ret;
->  }
+> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> index f73285ede9..f75277bc17 100644
+> --- a/arch/arm/boards/Makefile
+> +++ b/arch/arm/boards/Makefile
+> @@ -135,6 +135,7 @@ obj-$(CONFIG_MACH_LXA_MC1)			+= lxa-mc1/
+>  obj-$(CONFIG_MACH_LXA_TAC)			+= lxa-tac/
+>  obj-$(CONFIG_MACH_LXA_FAIRYTUX2)		+= lxa-fairytux2/
+>  obj-$(CONFIG_MACH_STM32MP15X_EV1)		+= stm32mp15x-ev1/
+> +obj-$(CONFIG_MACH_DHCOR_STM32MP1)		+= dhcor-stm32mp1/
+>  obj-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT)	+= technexion-pico-hobbit/
+>  obj-$(CONFIG_MACH_TECHNEXION_WANDBOARD)		+= technexion-wandboard/
+>  obj-$(CONFIG_MACH_TNY_A9260)			+= tny-a926x/
+> diff --git a/arch/arm/boards/dhcor-stm32mp1/Makefile b/arch/arm/boards/dhcor-stm32mp1/Makefile
+> new file mode 100644
+> index 0000000000..bcca1a9f84
+> --- /dev/null
+> +++ b/arch/arm/boards/dhcor-stm32mp1/Makefile
+> @@ -0,0 +1,2 @@
+> +# SPDX-License-Identifier: GPL-2.0+
+> +obj-y += board.o
+> diff --git a/arch/arm/boards/dhcor-stm32mp1/board.c b/arch/arm/boards/dhcor-stm32mp1/board.c
+> new file mode 100644
+> index 0000000000..2a02942d6c
+> --- /dev/null
+> +++ b/arch/arm/boards/dhcor-stm32mp1/board.c
+> @@ -0,0 +1,47 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright (c) 2025, Sohaib Mohamed <sohaib.amhmd@gmail.com>
+> +#include <filetype.h>
+> +#include <common.h>
+> +#include <init.h>
+> +#include <asm/memory.h>
+> +#include <mach/stm32mp/bbu.h>
+> +#include <bootsource.h>
+> +#include <of.h>
 > +
-> +static int stm32mp_bbu_nor_fip_handler(struct bbu_handler *handler,
-> +			 struct bbu_data *data)
+> +static int dhcor_stm32mp1_probe(struct device *dev)
 > +{
-> +	struct bbu_data *fsbl_data, *fip_data;
-> +	enum filetype filetype;
-> +	int ret;
+> +	int emmc_bbu_flag = 0;
+> +	int sd_bbu_flag = 0;
+> +	int nor_bbu_flag = 0;
 > +
-> +	filetype = file_detect_type(data->image, data->len);
-> +	if (filetype == filetype_fip) {
-> +		pr_debug("Flashing FIP at offset 512K\n");
-> +		return bbu_flash(data, SZ_512K);
+> +	if (bootsource_get() == BOOTSOURCE_MMC) {
+> +		if (bootsource_get_instance() == 2)
+> +			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
+> +		else
+> +			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
+> +	} else if (bootsource_get() == BOOTSOURCE_NOR) {
+> +		nor_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
+> +	} else {
+> +		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
 > +	}
 > +
-> +	if (filetype != filetype_stm32_image_fsbl_v1) {
-> +		if (!bbu_force(data, "incorrect image type. Expected: %s, got %s",
-> +				file_type_to_string(filetype_stm32_image_fsbl_v1),
-> +				file_type_to_string(filetype)))
-> +			return -EINVAL;
+> +	stm32mp_bbu_mmc_fip_register("sd", "/dev/mmc0", sd_bbu_flag);
+> +	stm32mp_bbu_mmc_fip_register("emmc", "/dev/mmc1", emmc_bbu_flag);
+> +	stm32mp_bbu_nor_fip_register("nor", "/dev/m25p0", nor_bbu_flag);
 > +
-> +		/* Force: Let's assume it's an FSBL and flash anyway */
-> +	}
-> +
-> +	if (data->len > SZ_256K)
-> +		filetype = file_detect_type(data->image + SZ_256K,
-> +					    data->len - SZ_256K);
-> +	else
-> +		filetype = filetype_unknown;
-> +
-> +	/* Not an eMMC image, just flash 1:1 */
-> +	if (filetype != filetype_fip) {
-> +		pr_debug("Flashing FSBL at offset 0\n");
-> +		return bbu_flash(data, 0);
-> +	}
-> +
-> +	/* On SPI-NOR, offset 256K is FSBL2. If we get a FIP image there
-> +	 * instead, let's assume that's an eMMC boot partition image
-> +	 * and flash the FSBL to offset 0 and the remainder to offset 512K
-> +	 */
-> +
-> +	pr_debug("Flashing FSBL at offset 0\n");
-> +	fsbl_data = data;
-> +	fsbl_data->image = data->image;
-> +	fsbl_data->len = SZ_256K;
-> +
-> +	ret = bbu_flash(fsbl_data, 0);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	pr_debug("Flashing FIP from file offset 256K at offset 512K\n");
-> +	fip_data = data;
-> +	fip_data->image = data->image + SZ_256K;
-> +	fip_data->len = data->len - SZ_256K;
-> +
-> +	return bbu_flash(fip_data, SZ_512K);
+> +	return 0;
 > +}
 > +
-> +int stm32mp_bbu_nor_fip_register(const char *name,
-> +				 const char *devicefile,
-> +				 unsigned long flags)
-> +{
-> +	struct stm32mp_bbu_handler *priv;
-> +	int ret;
+> +static const struct of_device_id dhcor_stm32mp1_of_match[] = {
+> +	{ .compatible = "dh,stm32mp157a-dhcor-som" },
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, dhcor_stm32mp1_of_match);
+> +BAREBOX_DEEP_PROBE_ENABLE(dhcor_stm32mp1_of_match);
 > +
-> +	priv = xzalloc(sizeof(*priv));
+> +static struct driver dhcor_stm32mp1_driver = {
+> +	.name = "dhcor_stm32mp1",
+> +	.probe = dhcor_stm32mp1_probe,
+> +	.of_compatible = dhcor_stm32mp1_of_match,
+> +};
+> +device_platform_driver(dhcor_stm32mp1_driver);
+> diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+> index 93f79c79d2..ef4e106148 100644
+> --- a/arch/arm/configs/multi_v7_defconfig
+> +++ b/arch/arm/configs/multi_v7_defconfig
+> @@ -82,6 +82,7 @@ CONFIG_MACH_STM32MP15XX_DKX=y
+>  CONFIG_MACH_LXA_MC1=y
+>  CONFIG_MACH_LXA_TAC=y
+>  CONFIG_MACH_LXA_FAIRYTUX2=y
+> +CONFIG_MACH_DHCOR_STM32MP1=y
+>  CONFIG_MACH_SEEED_ODYSSEY=y
+>  CONFIG_MACH_STM32MP15X_EV1=y
+>  CONFIG_MACH_PROTONIC_STM32MP1=y
+> @@ -214,6 +215,7 @@ CONFIG_DEEP_PROBE_DEFAULT=y
+>  CONFIG_OF_BAREBOX_DRIVERS=y
+>  CONFIG_AIODEV=y
+>  CONFIG_STM32_ADC=y
+> +CONFIG_STM32_QSPI=y
+>  CONFIG_SERIAL_AMBA_PL011=y
+>  CONFIG_DRIVER_SERIAL_STM32=y
+>  CONFIG_DRIVER_SERIAL_NS16550=y
+> diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
+> index 4df7b371f3..1d1b75fbb0 100644
+> --- a/arch/arm/configs/stm32mp_defconfig
+> +++ b/arch/arm/configs/stm32mp_defconfig
+> @@ -4,6 +4,7 @@ CONFIG_MACH_STM32MP15XX_DKX=y
+>  CONFIG_MACH_LXA_MC1=y
+>  CONFIG_MACH_LXA_TAC=y
+>  CONFIG_MACH_LXA_FAIRYTUX2=y
+> +CONFIG_MACH_DHCOR_STM32MP1=y
+>  CONFIG_MACH_SEEED_ODYSSEY=y
+>  CONFIG_MACH_STM32MP15X_EV1=y
+>  CONFIG_MACH_PROTONIC_STM32MP1=y
+> @@ -104,6 +105,7 @@ CONFIG_NET_FASTBOOT=y
+>  CONFIG_OF_BAREBOX_DRIVERS=y
+>  CONFIG_AIODEV=y
+>  CONFIG_STM32_ADC=y
+> +CONFIG_STM32_QSPI=y
+>  CONFIG_DRIVER_SERIAL_STM32=y
+>  CONFIG_DRIVER_NET_DESIGNWARE_STM32=y
+>  CONFIG_AT803X_PHY=y
+> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+> index e78722a9a7..3cd1d8fe59 100644
+> --- a/arch/arm/dts/Makefile
+> +++ b/arch/arm/dts/Makefile
+> @@ -169,6 +169,7 @@ lwl-$(CONFIG_MACH_LXA_MC1) += stm32mp157c-lxa-mc1.dtb.o stm32mp157c-lxa-mc1-scmi
+>  lwl-$(CONFIG_MACH_LXA_TAC) += stm32mp157c-lxa-tac-gen1.dtb.o stm32mp157c-lxa-tac-gen2.dtb.o \
+>  				stm32mp153c-lxa-tac-gen3.dtb.o
+>  lwl-$(CONFIG_MACH_LXA_FAIRYTUX2) += stm32mp153c-lxa-fairytux2-gen1.dtb.o stm32mp153c-lxa-fairytux2-gen2.dtb.o
+> +lwl-$(CONFIG_MACH_DHCOR_STM32MP1) += stm32mp157a-dhcor-stm32mp1.dtb.o
+>  lwl-$(CONFIG_MACH_STM32MP15X_EV1) += stm32mp157c-ev1.dtb.o stm32mp157c-ev1-scmi.dtb.o
+>  lwl-$(CONFIG_MACH_SCB9328) += imx1-scb9328.dtb.o
+>  lwl-$(CONFIG_MACH_TECHNEXION_WANDBOARD) += imx6q-wandboard.dtb.o imx6dl-wandboard.dtb.o
+> diff --git a/arch/arm/dts/stm32mp157a-dhcor-stm32mp1.dts b/arch/arm/dts/stm32mp157a-dhcor-stm32mp1.dts
+> new file mode 100644
+> index 0000000000..5187cc882f
+> --- /dev/null
+> +++ b/arch/arm/dts/stm32mp157a-dhcor-stm32mp1.dts
+> @@ -0,0 +1,4 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 > +
-> +	priv->handler.flags = flags;
-> +	priv->handler.devicefile = devicefile;
-> +	priv->handler.name = name;
-> +	priv->handler.handler = stm32mp_bbu_nor_fip_handler;
-> +
-> +	ret = bbu_register_handler(&priv->handler);
-> +	if (ret)
-> +		free(priv);
-> +
-> +	return ret;
-> +}
-> diff --git a/include/mach/stm32mp/bbu.h b/include/mach/stm32mp/bbu.h
-> index 233bcf6478..87b29f1527 100644
-> --- a/include/mach/stm32mp/bbu.h
-> +++ b/include/mach/stm32mp/bbu.h
-> @@ -10,6 +10,9 @@
->  int stm32mp_bbu_mmc_fip_register(const char *name, const char *devicefile,
->  				 unsigned long flags);
+> +#include <arm/st/stm32mp157a-dhcor-avenger96.dts>
+> +#include "stm32mp151.dtsi"
+> diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
+> index 5ea0c4004f..54ce644d73 100644
+> --- a/arch/arm/mach-stm32mp/Kconfig
+> +++ b/arch/arm/mach-stm32mp/Kconfig
+> @@ -39,6 +39,10 @@ config MACH_LXA_FAIRYTUX2
+>  	bool "Linux Automation FairyTux 2"
+>  	select BOARD_LXA
 >  
-> +int stm32mp_bbu_nor_fip_register(const char *name, const char *devicefile,
-> +				 unsigned long flags);
+> +config MACH_DHCOR_STM32MP1
+> +	select ARCH_STM32MP157
+> +	bool "DHCOR STM32MP1 boards including Arrow Avenger96"
 > +
->  #else
->  
->  static inline int stm32mp_bbu_mmc_fip_register(const char *name,
-> @@ -19,6 +22,13 @@ static inline int stm32mp_bbu_mmc_fip_register(const char *name,
->  	return -ENOSYS;
->  }
->  
-> +static inline int stm32mp_bbu_nor_fip_register(const char *name,
-> +					       const char *devicefile,
-> +					       unsigned long flags)
-> +{
-> +	return -ENOSYS;
-> +}
-> +
->  #endif
->  
->  #endif /* MACH_STM32MP_BBU_H_ */
+>  config MACH_SEEED_ODYSSEY
+>  	select ARCH_STM32MP157
+>  	bool "Seeed Studio Odyssey"
 > 
 
 -- 
