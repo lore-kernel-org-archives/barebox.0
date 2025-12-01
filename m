@@ -1,65 +1,68 @@
-Delivery-date: Mon, 01 Dec 2025 14:39:11 +0100
+Delivery-date: Mon, 01 Dec 2025 15:10:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQ47S-006pZw-39
+	id 1vQ4bM-006q79-1x
 	for lore@lore.pengutronix.de;
-	Mon, 01 Dec 2025 14:39:10 +0100
+	Mon, 01 Dec 2025 15:10:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQ47S-0004Eg-An
-	for lore@pengutronix.de; Mon, 01 Dec 2025 14:39:10 +0100
+	id 1vQ4bM-0007jW-2X
+	for lore@pengutronix.de; Mon, 01 Dec 2025 15:10:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=kYgazKBRhoDvtPo+fQq/le1SZCC+zA48vCOgPpq3Tig=; b=SfyiV8h2A7trOr90cmQM8LeXO8
-	F1Fz5uSxPLhh8yuym0h8TllTHbYc799VTM0ZLYmwcqeRj6/G3DG1vR9gLYOCmKAk7aSfKKeKrRST1
-	vOpJ3viDOT7oQ0bbhIM3Mn26JE6N1e/zg6fNy/XtJaLczbtLAUghK6Qi86uXVlowdbAFIrN6SRds4
-	yH6uWHjiNfhwhh6BflbXbv+RGlOt3tg7QhZZc6TiMeLAlRP+e35rvFB3HYWuDu40cIX4t9NZrhaGQ
-	DWU2fZVS6B2pIR7QftfxdQf5syHB05zwbqvwCsQ/PL6jDZoW7J33gE3QsIsTin5oqIaZfVDtiVErj
-	bkQr2qtg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=W3I887KR/For2Alos+/d86k/MX+stlWz9+WU44HXM0c=; b=WHvrTB+Ti2OF4F
+	XP5zWgvY7bKc9swFuYuIW8WU4F1NE1GGsCPagu3JV9wPVH6169NAFiwVFPQ4SytZ5XhS/CqCSH2nM
+	TcBFT5qjB1gPq8sBuudHoB8T+lYXicbOSfgzf1VTRZ/0BaNXcpD0y/CmxOcUqL2KieHFB2weCqKWb
+	Ac9xxus7aeARnpffujDdSDYDc91i5Gr0M353Xw+wNW7Zw3Gp9BVXDsPdBWNldnyidDiM+Bp2U33S/
+	Yjzilj/XI53uWgFcR2GuF9tz8le+3XXgdK41AWVv6tL0WZe/GzKdpnw8s7Jy3df72lgL8LMbsZ//D
+	scdMrsftxR7UEF92TTnw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQ46x-000000042Kh-1bbV;
-	Mon, 01 Dec 2025 13:38:39 +0000
+	id 1vQ4al-000000043UT-1mO3;
+	Mon, 01 Dec 2025 14:09:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQ46u-000000042KF-1hPa
+	id 1vQ4ai-000000043TK-0W4s
 	for barebox@lists.infradead.org;
-	Mon, 01 Dec 2025 13:38:38 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vQ46s-0004AC-58; Mon, 01 Dec 2025 14:38:34 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vQ46r-003S6r-37;
-	Mon, 01 Dec 2025 14:38:33 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vQ46r-0000000Dryw-3ds7;
-	Mon, 01 Dec 2025 14:38:33 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Dec 2025 14:37:47 +0100
-Message-ID: <20251201133832.3303902-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Mon, 01 Dec 2025 14:09:25 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1vQ4ae-0007a4-QF; Mon, 01 Dec 2025 15:09:20 +0100
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Mon, 01 Dec 2025 15:09:17 +0100
+Message-Id: <20251201-base64-bounds-v1-0-3ae2b2e8b7cb@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI2hLWkC/x3MQQqAIBBA0avErBPSSqmrRAvTsWaj4VAE0t2Tl
+ m/xfwHGTMgwNwUy3sSUYoVsG3CHjTsK8tWgOjVK1UmxWUY9iC1d0bNA35vJKadDMFCbM2Og5/8
+ t6/t+6DTRmV8AAAA=
+X-Change-ID: 20251201-base64-bounds-ed379c2c6ff7
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.15-dev-7abec
+X-Developer-Signature: v=1; a=openpgp-sha256; l=862; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=VUKOmQOAszC5BZVX0Pdcp1vs36SOULPy3c7m1IPQNhc=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjUXdinNjdPcrLhvV+HFkqtepfr9+8d97Qy3vyCoD+/e
+ jdcDJu+saOUhUGMi0FWTJElVk1OQcjY/7pZpV0szBxWJpAhDFycAjCR23wM/3RSd5reSC3+tyLz
+ y+90L43qmgfLtsteTlOf9faRbtjycDtGhn39d2p8Vm0Ve2Oe/HfN4qdnU/5P0VY1cIv8eoi/rVn
+ uLQ8A
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251201_053836_464046_E9254F8A 
-X-CRM114-Status: GOOD (  13.35  )
+X-CRM114-CacheID: sfid-20251201_060924_171970_1B866629 
+X-CRM114-Status: UNSURE (   6.98  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,56 +80,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH master] pmdomain: fix NULL pointer derference with dummy power domains
+Subject: [PATCH 0/2] Fix out-of-bounds potential in decode_base64 and add
+ regression tests
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With the addition of commit 4aca68990d04 ("drivers: power: ignore power
-domains with barebox,allow-dummy"), it's possible for genpd to be NULL
-when there is no driver and the device tree node has barebox,allow-dummy
-in it.
+I took a closer look at decode_base64 while reviewing coverity report
+584740 (Out-of-bounds access). 1/2 resolves the issue (although coverity
+seems to suspect an out-of-bounds access for the wrong reason and might
+keep doing so), 2/2 adds a selftest I used to debug the issue.
 
-Allow for this possibility in genpd_add_device and genpd_remove_device
-as well.
-
-Fixes: 44c6bedbd439 ("pmdomain: allow callback for when devices are attached")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
-Issue is in master, but has not yet hit a release.
-Needed also on next to fix CI breakage as the issue became visible only
-after in-tree boards started using barebox,allow-dummy.
----
- drivers/base/power.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Jonas Rebmann (2):
+      lib: base64: Fix out-of-bounds potential by respecting dst_len
+      test: self: add base64 selftests
 
-diff --git a/drivers/base/power.c b/drivers/base/power.c
-index 668b835df3e6..c71389422a53 100644
---- a/drivers/base/power.c
-+++ b/drivers/base/power.c
-@@ -335,7 +335,7 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev)
- {
- 	dev->pm_domain = genpd;
- 
--	if (genpd->attach_dev)
-+	if (genpd && genpd->attach_dev)
- 		return genpd->attach_dev(genpd, dev);
- 
- 	return 0;
-@@ -344,7 +344,7 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev)
- static void genpd_remove_device(struct generic_pm_domain *genpd,
- 			       struct device *dev)
- {
--	if (genpd->detach_dev)
-+	if (genpd && genpd->detach_dev)
- 		genpd->detach_dev(genpd, dev);
- 
- 	dev->pm_domain = NULL;
--- 
-2.47.3
+ lib/base64.c       | 10 +++++-----
+ test/self/Kconfig  |  7 +++++++
+ test/self/Makefile |  1 +
+ test/self/base64.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 58 insertions(+), 5 deletions(-)
+---
+base-commit: ec00fef65d808f8bc9c5655262b0e4f8ce2c4e92
+change-id: 20251201-base64-bounds-ed379c2c6ff7
+
+Best regards,
+--  
+Jonas Rebmann <jre@pengutronix.de>
 
 
 
