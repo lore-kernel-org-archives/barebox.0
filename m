@@ -1,65 +1,68 @@
-Delivery-date: Mon, 01 Dec 2025 15:10:07 +0100
+Delivery-date: Mon, 01 Dec 2025 15:13:14 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQ4bP-006q7q-2V
+	id 1vQ4eQ-006qEL-2W
 	for lore@lore.pengutronix.de;
-	Mon, 01 Dec 2025 15:10:07 +0100
+	Mon, 01 Dec 2025 15:13:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQ4bP-0007kG-7w
-	for lore@pengutronix.de; Mon, 01 Dec 2025 15:10:07 +0100
+	id 1vQ4eQ-00087Y-7j
+	for lore@pengutronix.de; Mon, 01 Dec 2025 15:13:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HAT54Ccb0rqOp9Y+fEWzhcgdcJXA/HxhyI6xF+bCb3U=; b=HLMxrwjKEMAnu8czgr5rGHp9Pp
-	w0royzGlp6vhKuA2wJqA/snPj/5G7J0sNfqZXV2fb0rqrNGlRiN7WiWB0QnufRquRoIB844Mv1zbo
-	KTqWSZoZ/CDvQcx6WGFTdzGYJupKWqp/uXAkuDlZp4IRmr5+ZgyFTMmdIV92/DeJ9i0cGmKLK6o1b
-	HLrNPjb6TLZg1EvIMG7i3vaxKYaZ6NemkP/jsPAp5vA3sqdrGahuQZqMZhLtrOwj3rOHMKiWB20tU
-	X/zTpXSxxb5KDJVguHmjkcJKp8tikrMbaf2SPtZLx9yF4MDGy7+w09+zyinwNRCHGTHCzCZ5R6QJE
-	fN51qEuQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=lMthcoSyjEqhMpES9WGgvuOREctoUlXuN1PQPtcCXtk=; b=2YPpF06+lWgpc1Jt3iwrASV6OR
+	VD4kPGkL9oyDGcidzLVcjM27JpI2eJYLKN3T0cWhJVl+w2oK3/j0SSpiV9rpk7xEyJv9xTJbg03NT
+	pOXaf4vTagHE/zlmVjwcVHhrmAUfJnYfhi3OZXQuZPehZldMs8Jk4J1wbl2EvqoZTtgA8sQ9PIP9G
+	OZQ+OCYm21fgsBuO7M9tDR63IpovRAc42rxzoq7Ajw5wbLEakJJMVrgLccvWRtLI/XA2PFECHd7Jh
+	jeqsX19VP/qetwy3BRLQoszjIkGHs/xrZci/zqIHkokNk9nYPJtFWOjTkpOmN0aRqUKN29QTmlhdz
+	LSBWN97A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQ4ak-000000043UI-0duE;
-	Mon, 01 Dec 2025 14:09:26 +0000
+	id 1vQ4e1-000000043tC-3x4P;
+	Mon, 01 Dec 2025 14:12:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQ4ai-000000043TL-0Vrc
+	id 1vQ4dz-000000043sY-0sHe
 	for barebox@lists.infradead.org;
-	Mon, 01 Dec 2025 14:09:25 +0000
+	Mon, 01 Dec 2025 14:12:48 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1vQ4ae-0007a4-RL; Mon, 01 Dec 2025 15:09:20 +0100
+	id 1vQ4dx-000837-Ks; Mon, 01 Dec 2025 15:12:45 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Mon, 01 Dec 2025 15:09:18 +0100
+Date: Mon, 01 Dec 2025 15:12:43 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251201-base64-bounds-v1-1-3ae2b2e8b7cb@pengutronix.de>
-References: <20251201-base64-bounds-v1-0-3ae2b2e8b7cb@pengutronix.de>
-In-Reply-To: <20251201-base64-bounds-v1-0-3ae2b2e8b7cb@pengutronix.de>
+Message-Id: <20251201-tlv-hardening-v1-1-5dcaa5f7aed5@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAFqiLWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDIwND3ZKcMt2MxKKU1LzMvHTdtBQDc2MLw6Rk4zQLJaCegqLUtMwKsHn
+ RsbW1AKLM0jBfAAAA
+X-Change-ID: 20251201-tlv-hardening-fd07381bc3f8
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1465; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=oWY2rISXGxyF9E8QGhmtmQiz0I86cTB8cuLw8B69pkc=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjUXdg/4ahhn1iEw/eZmbEFKZEWatuX7JtcWvzb10JHT
- ZfFMm5XRykLgxgXg6yYIkusmpyCkLH/dbNKu1iYOaxMIEMYuDgFYCLHPzAyfF8pxpFr8abUZurr
- ZtlpCzdP95I9XOAYlvlm/cYdb9ve8jL8Mwm8tViGJSmi+DQn54607cx/40Rmdhx19jjXcCD398o
- TnAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1204; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=GNQMmD59fKmSPhWsCh0vs7wDwzOgw5cMBmodCdnIzdM=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjUXRQblaCxPsbDPE/g2K8F1ye+uCDD/4DnA4tRiPfe6
+ HP5wsflO0pZGMS4GGTFFFli1eQUhIz9r5tV2sXCzGFlAhnCwMUpABMRiWX4KzctjL1TWbDVeuPB
+ kCuCTBNdTxfseTX1iPKunYpq6m9PvmFkeDZz4+Q5eyKOzDu+z1en9NTn6XXlxtG38pe+lH6xbuW
+ Kdl4A
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251201_060924_172021_218BFEF9 
-X-CRM114-Status: GOOD (  12.15  )
+X-CRM114-CacheID: sfid-20251201_061247_246754_5668F3CA 
+X-CRM114-Status: UNSURE (   9.12  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,57 +84,54 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] lib: base64: Fix out-of-bounds potential by respecting
- dst_len
+Subject: [PATCH] tlv: register_device() error handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-__decode_base64 generally writes the input in 3 bytes increments,
-corresponding to 4 bytes increments in the base64 input buffer. This
-means that in order to respect dst_len as the size of the output buffer,
-the case of exceeding dst_len within a loop iteration must be
-considered.
-
-In such a case, refrain from writing the last one or two bytes if that
-write would be past dst_len.
+register_device() returns 0 on success, or an error, which must be
+handled appropriately.
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- lib/base64.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Resolves coverity CID 584716 (Unchecked return value).
+---
+ common/tlv/bus.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/lib/base64.c b/lib/base64.c
-index d5ab217528..3e29f0a56c 100644
---- a/lib/base64.c
-+++ b/lib/base64.c
-@@ -163,19 +163,19 @@ static int __decode_base64(char *p_dst, int dst_len, const char *src, bool url)
- 		 */
- 		if (count > 1)
- 			*dst++ = six_bit[0] << 2 | six_bit[1] >> 4;
--		if (count > 2)
-+		if (count > 2 && dst_len > 1)
- 			*dst++ = six_bit[1] << 4 | six_bit[2] >> 2;
--		if (count > 3)
-+		if (count > 3 && dst_len > 2)
- 			*dst++ = six_bit[2] << 6 | six_bit[3];
-+		/* last character was "=" */
-+		if (count != 0)
-+			length += min(count - 1, dst_len);
- 		/*
- 		 * Note that if we decode "AA==" and ate first '=',
- 		 * we just decoded one char (count == 2) and now we'll
- 		 * do the loop once more to decode second '='.
- 		 */
- 		dst_len -= count-1;
--		/* last character was "=" */
--		if (count != 0)
--			length += count - 1;
- 	}
- ret:
- 	p_dst = dst;
+diff --git a/common/tlv/bus.c b/common/tlv/bus.c
+index a59f8d297a..36a3022fdf 100644
+--- a/common/tlv/bus.c
++++ b/common/tlv/bus.c
+@@ -23,6 +23,7 @@ struct tlv_device *tlv_register_device(struct tlv_header *header,
+ 	const char *name = NULL;
+ 	struct device *dev;
+ 	static int id = 0;
++	int ret;
+ 
+ 	tlvdev = xzalloc(sizeof(*tlvdev));
+ 
+@@ -46,7 +47,12 @@ struct tlv_device *tlv_register_device(struct tlv_header *header,
+ 
+ 	dev->device_node = of_new_node(tlv_parent_node, dev_name(dev));
+ 	dev->device_node->dev = dev;
+-	register_device(dev);
++	ret = register_device(dev);
++	if (ret) {
++		pr_err("Failed to register device %s, %d\n", name, ret);
++		free(tlvdev);
++		return ERR_PTR(ret);
++	}
+ 
+ 	return tlvdev;
+ }
 
--- 
-2.51.2.535.g419c72cb8a
+---
+base-commit: ec00fef65d808f8bc9c5655262b0e4f8ce2c4e92
+change-id: 20251201-tlv-hardening-fd07381bc3f8
+
+Best regards,
+--  
+Jonas Rebmann <jre@pengutronix.de>
 
 
 
