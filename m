@@ -1,67 +1,67 @@
-Delivery-date: Mon, 01 Dec 2025 10:57:21 +0100
+Delivery-date: Mon, 01 Dec 2025 11:11:33 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQ0en-006mDt-2H
+	id 1vQ0sX-006mY3-1d
 	for lore@lore.pengutronix.de;
-	Mon, 01 Dec 2025 10:57:21 +0100
+	Mon, 01 Dec 2025 11:11:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQ0en-0002y9-6n
-	for lore@pengutronix.de; Mon, 01 Dec 2025 10:57:21 +0100
+	id 1vQ0sW-0004jh-VU
+	for lore@pengutronix.de; Mon, 01 Dec 2025 11:11:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VaLrH3iEBNesEKrVEUCHb0GULwc96/LgJv6h7Epu8UU=; b=yJK2hXWMhwbbDp5d1beHom4781
-	wPrw27aSLGOGD5OpJhqzBLV06eib5stejwEI5lZiEwTRXhibwBQBtN5IlzG3kaA6CSJIVLWOg3pmr
-	1KdY5T159d/kmkt12kMSPDu2vK+ejMqau1pbmQ2tmt3oroxMK93OEdqsIugqrIop/WSrlJtBvE3E8
-	99P6SevAtOx/3pSvf7I+Wdbs21elSt/OWZelIWJ92mjKQ6hqox3SczR+sLnoJnkjblmVlG+0zrsW1
-	kQLEDxz2O8JiKdBdhgq2s4MxkJ34Ng4jRJNKqasIZf2FlrYlZZlj5vjAoVVVAxupwaOipOl0KuQzF
-	JSknrweA==;
+	bh=tkQrX9eSrpm3sXRXX3FNu5TNNGN1EFHM2yYldF3UkX8=; b=NkfM1r2lI2rwZQMQsMl/UL4qCT
+	zhUHXjrPQWl0P3IU/iqnTjeIHF1aMhO+aMR6UeBsc9Kb9o54pOcPf8pFKsrXGAJPps7k8sMdWOS1P
+	Rub7YDxEX/W+O12n418JkXW9FgM70PszttrBTWCHUmh1vm61DU+WD69OsEHAJUFGZIGm1FOdt0QAj
+	HNeRNMhSliAmMti/GEOCQV3paua+ONcw3D8PvLCDxu8g7N+YFnQWgTtTxvCjY0R7MlaGoyxa4lwr5
+	57K2pH8qRpL4t4txUGI9/xH71AI+FxUeh72AdG1g9YKGw+Bxz0cPYZ3vd7KEMEKwmxZNfwhzXzyR/
+	11pTMD5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQ0eS-00000003FtR-17lB;
-	Mon, 01 Dec 2025 09:57:00 +0000
+	id 1vQ0s5-00000003I1o-0sLj;
+	Mon, 01 Dec 2025 10:11:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQ0eP-00000003FsL-3gUU
+	id 1vQ0s2-00000003I0q-0Xb8
 	for barebox@lists.infradead.org;
-	Mon, 01 Dec 2025 09:56:59 +0000
+	Mon, 01 Dec 2025 10:11:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQ0eG-0002kZ-BX; Mon, 01 Dec 2025 10:56:48 +0100
+	id 1vQ0s0-0004el-Bz; Mon, 01 Dec 2025 11:11:00 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQ0eG-003QDR-0U;
-	Mon, 01 Dec 2025 10:56:48 +0100
+	id 1vQ0s0-003QJW-0a;
+	Mon, 01 Dec 2025 11:11:00 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQ0eG-00000000dBI-0MPT;
-	Mon, 01 Dec 2025 10:56:48 +0100
+	id 1vQ0s0-00000000eEW-0W1e;
+	Mon, 01 Dec 2025 11:11:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251128104258.1748758-1-a.fatoum@pengutronix.de>
-References: <20251128104258.1748758-1-a.fatoum@pengutronix.de>
-Message-Id: <176458300808.150585.12114505184577510660.b4-ty@pengutronix.de>
-Date: Mon, 01 Dec 2025 10:56:48 +0100
+In-Reply-To: <20251128110005.3336591-1-a.fatoum@pengutronix.de>
+References: <20251128110005.3336591-1-a.fatoum@pengutronix.de>
+Message-Id: <176458386011.154620.13932160769676797587.b4-ty@pengutronix.de>
+Date: Mon, 01 Dec 2025 11:11:00 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251201_015657_921231_C8F8AC60 
-X-CRM114-Status: UNSURE (   7.48  )
+X-CRM114-CacheID: sfid-20251201_021102_375304_B9627A78 
+X-CRM114-Status: UNSURE (   6.95  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,25 +84,35 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] sandbox: setjmp: avoid conflict with noinline macro
+Subject: Re: [PATCH 0/4] Kbuild: replace legacy <config.h> mechanism
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 28 Nov 2025 11:42:57 +0100, Ahmad Fatoum wrote:
-> We define noinline as a macro in <linux/compiler_types.h>, which we
-> don't yet include here, but might in future with the Kbuild update.
+On Fri, 28 Nov 2025 11:58:40 +0100, Ahmad Fatoum wrote:
+> Generation per-board config.h headers is a left-over from times long
+> past. For most boards it's no longer possible anyway due to multi-image
+> suppot, but for legacy boards that still use it, let's switch away
+> existing users from this magic and remove it.
 > 
-> Prepare for that by using the double underscore version instead, which
-> won't conflict.
-> 
+> Ahmad Fatoum (4):
+>   openrisc: drop <config.h> usage
+>   ARM: drop <config.h> usage
+>   ppc: drop <config.h> usage
+>   treewide: drop last remnants of <config.h>
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] sandbox: setjmp: avoid conflict with noinline macro
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2a15cc630f36 (link may not be stable)
+[1/4] openrisc: drop <config.h> usage
+      https://git.pengutronix.de/cgit/barebox/commit/?id=5f9f86027928 (link may not be stable)
+[2/4] ARM: drop <config.h> usage
+      https://git.pengutronix.de/cgit/barebox/commit/?id=fa1e14784549 (link may not be stable)
+[3/4] ppc: drop <config.h> usage
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1a4b2f568d63 (link may not be stable)
+[4/4] treewide: drop last remnants of <config.h>
+      https://git.pengutronix.de/cgit/barebox/commit/?id=80428a121189 (link may not be stable)
 
 Best regards,
 -- 
