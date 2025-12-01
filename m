@@ -1,57 +1,56 @@
-Delivery-date: Mon, 01 Dec 2025 08:25:56 +0100
+Delivery-date: Mon, 01 Dec 2025 09:48:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vPyIF-006joG-2v
+	id 1vPzZy-006kwl-2b
 	for lore@lore.pengutronix.de;
-	Mon, 01 Dec 2025 08:25:55 +0100
+	Mon, 01 Dec 2025 09:48:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vPyIE-0004Do-OQ
-	for lore@pengutronix.de; Mon, 01 Dec 2025 08:25:55 +0100
+	id 1vPzZy-0002v7-6o
+	for lore@pengutronix.de; Mon, 01 Dec 2025 09:48:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0SZvCpg0An6JryYgpJt9t19vHVJ92LiBhZ49QT9FSiI=; b=d/aGFGzQQDeoNEy2tugb7p1fig
-	+4wnnYyn/VwsI5nTpyiqpqkwbhJ36f3OpunqLg+8i3pHIOsGCKAFFP8C9Pi6yXwVcMpnPIvmJQvr5
-	JKX/btBFXhp5oU2juTxZ/wNXYnaU1WrFQEjG+X5jcxrkZ8pYgKjUehoaid03I3wZPO5oTJ1iJoTFh
-	nMMoM1idGlUr3UlCyYYc8mjfFeTf6d0Oj/DKHfs1d2TyBLwM4Dc4GF+apWAj7TknMQENKw6568/Jr
-	MNjA5+aO7+GB8oHmKCxyVi1sch0hbsnzL7s61pDR53i0V3zVNQw2q1wNF9OAboGv1WxPAg8WeIc9D
-	M4hkyamg==;
+	bh=uWpTMjwI0DjVPMwYs3agS5yGIhxn6Q5eyesJz68kSCI=; b=VCu67YrcgkLcxrFjjKgzgRcG/m
+	Ltn4JKqbD3NOl7wqBVCv+ffV5lcMXnGHfIeZjqZMJJfr7LU5lUvkXNYMsp6gCMoKEJi3ZepddC6DN
+	OhDrehNLPGfBchgjPjTPShz7Jb2Gbe3K8R5GtM4SDcbtoYyNX+ObCJzZh8t4YPg34qKpCwCEXirYZ
+	ETiqf21McHizm1TCV/6P67TsHJwoPg5bU3npFmtyN/XqE83+CXV9jCjUMjZ/YzQMu+8IH3GxnrDmJ
+	NY7l5jwVfab8YilcnXxLxTy5rE2ggkpsmqO0/8EpgXfaOoXD58+PsG0izihhE5g4SCaPQNd9bbRXI
+	CNHOkJtA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vPyHf-00000003331-49aa;
-	Mon, 01 Dec 2025 07:25:19 +0000
+	id 1vPzZS-000000039DM-2zVR;
+	Mon, 01 Dec 2025 08:47:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vPyHW-0000000330R-42l1
+	id 1vPzZP-000000039Aw-2ExK
 	for barebox@lists.infradead.org;
-	Mon, 01 Dec 2025 07:25:13 +0000
-Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
+	Mon, 01 Dec 2025 08:47:45 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1vPyHS-0003y9-J6; Mon, 01 Dec 2025 08:25:06 +0100
-From: Fabian Pflug <f.pflug@pengutronix.de>
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1vPzZM-0002eN-J3; Mon, 01 Dec 2025 09:47:40 +0100
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Fabian Pflug <f.pflug@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Dec 2025 08:20:58 +0100
-Message-ID: <20251201072452.1829564-3-f.pflug@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon,  1 Dec 2025 09:45:52 +0100
+Message-ID: <20251201084737.1270303-2-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251201072452.1829564-1-f.pflug@pengutronix.de>
-References: <20251128150434.3842713-1-f.pflug@pengutronix.de>
- <20251201072452.1829564-1-f.pflug@pengutronix.de>
+In-Reply-To: <20251201084737.1270303-1-a.fatoum@barebox.org>
+References: <20251201084737.1270303-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251130_232511_303010_A8714C5B 
-X-CRM114-Status: GOOD (  25.55  )
+X-CRM114-CacheID: sfid-20251201_004743_565510_7F06E32A 
+X-CRM114-Status: UNSURE (   8.21  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,420 +68,91 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v5 2/4] fs: split rootargs into root and options
+Subject: [PATCH v3 2/6] ARM: rpi: make power domain optional
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The rootargs argument (root=/dev/etc rootwait) can be split into the
-root and options parts, which makes it easier to manipulate them both
-independently. This changes tries to be as backward compatible as
-possible and does not change the behaviour of the get functions, but
-introduces new ones to get both items seperatly.
+We have deep probe enabled for the Raspberry Pi boards, but don't have a
+power domain driver and indeed never needed one till now.
 
-Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Mark it optional using the barebox,allow-dummy property.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
+v2 -> v3:
+  - new change to suppress warning introduced later in series
+---
+ arch/arm/dts/bcm2711-rpi.dtsi    | 4 ++++
+ arch/arm/dts/bcm2835-rpi.dts     | 4 ++++
+ arch/arm/dts/bcm2836-rpi-2.dts   | 4 ++++
+ arch/arm/dts/bcm2837-rpi-3.dts   | 4 ++++
+ arch/arm/dts/bcm2837-rpi-cm3.dts | 4 ++++
+ 5 files changed, 20 insertions(+)
 
-Updated documentation block for nfs to reflect current state.
-
- Documentation/filesystems/nfs.rst             | 10 ++--
- .../migration-guides/migration-master.rst     | 18 ++++++
- common/block.c                                | 43 +++++++++-----
- fs/9p/vfs_super.c                             |  6 +-
- fs/fs.c                                       | 59 ++++++++++++++-----
- fs/nfs.c                                      |  4 +-
- fs/squashfs/squashfs.c                        | 13 ++--
- fs/ubifs/ubifs.c                              | 12 ++--
- include/block.h                               |  5 ++
- include/bootargs.h                            |  2 +
- include/fs.h                                  |  6 +-
- 11 files changed, 126 insertions(+), 52 deletions(-)
- create mode 100644 Documentation/migration-guides/migration-master.rst
-
-diff --git a/Documentation/filesystems/nfs.rst b/Documentation/filesystems/nfs.rst
-index 3e40ae9767..73614c8a83 100644
---- a/Documentation/filesystems/nfs.rst
-+++ b/Documentation/filesystems/nfs.rst
-@@ -13,9 +13,10 @@ Example:
- 
-    barebox:/ mount -t nfs 192.168.23.4:/home/user/nfsroot /mnt/nfs
- 
--The barebox NFS driver adds a ``linux.bootargs`` device parameter to the NFS device.
--This parameter holds a Linux kernel commandline snippet containing a suitable root=
--option for booting from exactly that NFS share.
-+The barebox NFS driver adds two ``linux.bootargs`` device parameters to the NFS
-+device. These parameters will be combined into a Linux kernel commandline
-+snippet containing a suitable root= option for booting from exactly that NFS
-+share.
- 
- Example:
- 
-@@ -23,7 +24,8 @@ Example:
- 
-   barebox:/ devinfo nfs0
-   ...
--  linux.bootargs: root=/dev/nfs nfsroot=192.168.23.4:/home/sha/nfsroot/generic-v7,v3,tcp
-+  linux.bootargs.root: /dev/nfs
-+  linux.bootargs.rootopts: nfsroot=192.168.23.4:/home/sha/nfsroot/generic-v7,v3,tcp
- 
- The options default to ``v3,tcp`` but can be adjusted before mounting the NFS share with
- the ``global.linux.rootnfsopts`` variable
-diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
-new file mode 100644
-index 0000000000..3b20dc1e4e
---- /dev/null
-+++ b/Documentation/migration-guides/migration-master.rst
-@@ -0,0 +1,18 @@
-+Filesystems
-+-----------
+diff --git a/arch/arm/dts/bcm2711-rpi.dtsi b/arch/arm/dts/bcm2711-rpi.dtsi
+index dbcfc085ae1f..2722133a4afc 100644
+--- a/arch/arm/dts/bcm2711-rpi.dtsi
++++ b/arch/arm/dts/bcm2711-rpi.dtsi
+@@ -15,3 +15,7 @@ &uart1 {
+ 	 */
+ 	clock-frequency = <500000000>;
+ };
 +
-+``{linux.bootargs}`` is replaced with ``root={linux.bootargs.root} {linux.bootargs.rootopts}``
++&power {
++	barebox,allow-dummy;
++};
+diff --git a/arch/arm/dts/bcm2835-rpi.dts b/arch/arm/dts/bcm2835-rpi.dts
+index 1564ebfcd713..07509dd77270 100644
+--- a/arch/arm/dts/bcm2835-rpi.dts
++++ b/arch/arm/dts/bcm2835-rpi.dts
+@@ -11,3 +11,7 @@ / {
+ &{/memory@0} {
+ 	reg = <0x0 0x0>;
+ };
 +
-+The variable linux.bootargs has been replaced by the two variables
-+linux.bootargs.root and linux.bootargs.rootopts, splitting the previous bootargs
-+into three parts. A nonexistent fixed "root=", then the root filesystem and then
-+additional optional params for this particular filesystem.
++&power {
++	barebox,allow-dummy;
++};
+diff --git a/arch/arm/dts/bcm2836-rpi-2.dts b/arch/arm/dts/bcm2836-rpi-2.dts
+index 4b59afb17e93..4632b17880ae 100644
+--- a/arch/arm/dts/bcm2836-rpi-2.dts
++++ b/arch/arm/dts/bcm2836-rpi-2.dts
+@@ -7,3 +7,7 @@ / {
+ &{/memory@0} {
+ 	reg = <0x0 0x0>;
+ };
 +
-+for example the previous::
++&power {
++	barebox,allow-dummy;
++};
+diff --git a/arch/arm/dts/bcm2837-rpi-3.dts b/arch/arm/dts/bcm2837-rpi-3.dts
+index 38fc947b4038..48dfbbed2df5 100644
+--- a/arch/arm/dts/bcm2837-rpi-3.dts
++++ b/arch/arm/dts/bcm2837-rpi-3.dts
+@@ -7,3 +7,7 @@ / {
+ &{/memory@0} {
+ 	reg = <0x0 0x0>;
+ };
 +
-+    linux.bootargs="root=/dev/nfs nfsroot=192.168.1.1:/rootfs"
++&power {
++	barebox,allow-dummy;
++};
+diff --git a/arch/arm/dts/bcm2837-rpi-cm3.dts b/arch/arm/dts/bcm2837-rpi-cm3.dts
+index 78613f12c697..9c2e41c98475 100644
+--- a/arch/arm/dts/bcm2837-rpi-cm3.dts
++++ b/arch/arm/dts/bcm2837-rpi-cm3.dts
+@@ -11,3 +11,7 @@ chosen {
+ &{/memory@0} {
+ 	reg = <0x0 0x0>;
+ };
 +
-+becomes::
-+
-+    linux.bootargs.root="/dev/nfs"
-+    linux.bootargs.rootopts="nfsroot=192.168.1.1:/rootfs"
-diff --git a/common/block.c b/common/block.c
-index 07c4d5d504..345adad722 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -584,34 +584,45 @@ const char *blk_type_str(enum blk_type type)
- 	}
- }
- 
--char *cdev_get_linux_rootarg(const struct cdev *partcdev)
-+int cdev_get_linux_root_and_opts(const struct cdev *partcdev, char **root, char **rootopts)
- {
-+
- 	const struct cdev *cdevm;
- 	struct block_device *blk;
--	char *rootarg = NULL;
-+	char *root_local = NULL;
- 
- 	if (!partcdev)
--		return NULL;
-+		return -EINVAL;
- 
- 	cdevm = partcdev->master ?: partcdev;
- 	blk = cdev_get_block_device(cdevm);
- 	if (!blk)
--		return NULL;
-+		return -EINVAL;
- 
--	if (blk->ops->get_root) {
--		char *root = NULL;
--		root = blk->ops->get_root(blk, partcdev);
--		if (root) {
--			rootarg = basprintf("root=%s", root);
--			free(root);
--		}
--	}
--	if (!rootarg && partcdev->partuuid[0] != 0)
--		rootarg = basprintf("root=PARTUUID=%s", partcdev->partuuid);
-+	if (blk->ops->get_root)
-+		root_local = blk->ops->get_root(blk, partcdev);
-+	if (!root_local && partcdev->partuuid[0] != 0)
-+		root_local = xasprintf("PARTUUID=%s", partcdev->partuuid);
-+
-+	if (!root_local)
-+		return -ENODEV;
- 
- 	if (IS_ENABLED(CONFIG_ROOTWAIT_BOOTARG) && blk->rootwait)
--		rootarg = linux_bootargs_append_rootwait(rootarg);
-+		*rootopts = xasprintf("rootwait=%d", linux_rootwait_secs);
- 
--	return rootarg;
-+	*root = root_local;
-+	return 0;
- }
- 
-+char *cdev_get_linux_rootarg(const struct cdev *partcdev)
-+{
-+	int err;
-+	char *root = NULL;
-+	char *rootopts = NULL;
-+
-+	err = cdev_get_linux_root_and_opts(partcdev, &root, &rootopts);
-+	if (err)
-+		return NULL;
-+
-+	return format_root_bootarg("root", root, rootopts);
-+}
-diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index 6a451d9ef5..efc9a9193d 100644
---- a/fs/9p/vfs_super.c
-+++ b/fs/9p/vfs_super.c
-@@ -70,11 +70,11 @@ static void v9fs_set_rootarg(struct v9fs_session_info *v9ses,
- 	trans = v9ses->clnt->trans_mod->name;
- 	path = v9ses->aname;
- 
--	str = basprintf("root=%s rootfstype=9p rootflags=trans=%s,msize=%d,"
-+	str = basprintf("rootfstype=9p rootflags=trans=%s,msize=%d,"
- 			"cache=loose,uname=%s,dfltuid=0,dfltgid=0,aname=%s",
--			tag, trans, v9ses->clnt->msize, tag, path);
-+			trans, v9ses->clnt->msize, tag, path);
- 
--	fsdev_set_linux_rootarg(fsdev, str);
-+	fsdev_set_linux_root_options(fsdev, tag, str);
- 
- 	free(str);
- }
-diff --git a/fs/fs.c b/fs/fs.c
-index 528299e039..0f27879395 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -14,6 +14,7 @@
-  *
-  */
- 
-+#include <bootargs.h>
- #include <common.h>
- #include <command.h>
- #include <fs.h>
-@@ -1226,12 +1227,34 @@ void mount_all(void)
- 	}
- }
- 
--void fsdev_set_linux_rootarg(struct fs_device *fsdev, const char *str)
-+void fsdev_set_linux_root_options(struct fs_device *fsdev, const char *root, const char *rootopts)
- {
--	fsdev->linux_rootarg = xstrdup(str);
-+	fsdev->linux_root = xstrdup(root);
-+	fsdev->linux_rootopts = xstrdup(rootopts);
- 
--	dev_add_param_fixed(&fsdev->dev, "linux.bootargs",
--			    "%s", fsdev->linux_rootarg);
-+	dev_add_param_fixed(&fsdev->dev, "linux.bootargs.root",
-+			    "%s", fsdev->linux_root);
-+	dev_add_param_fixed(&fsdev->dev, "linux.bootargs.rootopts",
-+			    "%s", fsdev->linux_rootopts);
-+}
-+
-+void fsdev_get_linux_root_options(struct fs_device *fsdev, char **root, char **rootopts)
-+{
-+	if (fsdev) {
-+		*root = dev_get_param(&fsdev->dev, "linux.bootargs.root");
-+		*rootopts = dev_get_param(&fsdev->dev, "linux.bootargs.rootopts");
-+	}
-+}
-+
-+char *format_root_bootarg(const char *root_arg, char *root, char *rootopts) {
-+	char *bootarg;
-+	if (rootopts)
-+		bootarg = xasprintf("%s=%s %s", root_arg, root, rootopts);
-+	else
-+		bootarg = xasprintf("%s=%s", root_arg, root);
-+	free(root);
-+	free(rootopts);
-+	return bootarg;
- }
- 
- /**
-@@ -1245,17 +1268,19 @@ void fsdev_set_linux_rootarg(struct fs_device *fsdev, const char *str)
- char *path_get_linux_rootarg(const char *path)
- {
- 	struct fs_device *fsdev;
--	const char *str;
-+	char *root = NULL;
-+	char *rootopts = NULL;
- 
- 	fsdev = get_fsdevice_by_path(AT_FDCWD, path);
- 	if (!fsdev)
--		return ERR_PTR(-EINVAL);
--
--	str = dev_get_param(&fsdev->dev, "linux.bootargs");
--	if (!str)
- 		return ERR_PTR(-ENOSYS);
- 
--	return xstrdup(str);
-+	fsdev_get_linux_root_options(fsdev, &root, &rootopts);
-+
-+	if (!root)
-+		return ERR_PTR(-ENOSYS);
-+
-+	return format_root_bootarg("root", root, rootopts);
- }
- 
- /**
-@@ -3249,12 +3274,16 @@ int mount(const char *device, const char *fsname, const char *pathname,
- 
- 	fsdev->vfsmount.mnt_root = fsdev->sb.s_root;
- 
--	if (!fsdev->linux_rootarg) {
--		char *str;
-+	if (!fsdev->linux_root) {
-+		char *root = NULL;
-+		char *rootopts = NULL;
- 
--		str = cdev_get_linux_rootarg(fsdev->cdev);
--		if (str)
--			fsdev_set_linux_rootarg(fsdev, str);
-+		ret = cdev_get_linux_root_and_opts(fsdev->cdev, &root, &rootopts);
-+		if (ret == 0) {
-+			fsdev_set_linux_root_options(fsdev, root, rootopts);
-+			free(root);
-+			free(rootopts);
-+		}
- 	}
- 
- 	path_put(&path);
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 5c2476cd88..0b40c56ff3 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1558,7 +1558,7 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device *fsdev)
- 	char *str, *tmp;
- 	const char *bootargs;
- 
--	str = basprintf("root=/dev/nfs nfsroot=%pI4:%s%s%s", &npriv->server, npriv->path,
-+	str = basprintf("nfsroot=%pI4:%s%s%s", &npriv->server, npriv->path,
- 			  rootnfsopts[0] ? "," : "", rootnfsopts);
- 
- 	/* forward specific mount options on demand */
-@@ -1584,7 +1584,7 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device *fsdev)
- 	if (IS_ENABLED(CONFIG_ROOTWAIT_BOOTARG))
- 		str = linux_bootargs_append_rootwait(str);
- 
--	fsdev_set_linux_rootarg(fsdev, str);
-+	fsdev_set_linux_root_options(fsdev, "/dev/nfs", str);
- 
- 	free(str);
- }
-diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index e30372627a..365aa1f219 100644
---- a/fs/squashfs/squashfs.c
-+++ b/fs/squashfs/squashfs.c
-@@ -46,7 +46,8 @@ static void squashfs_set_rootarg(struct fs_device *fsdev)
- 	struct ubi_volume_info vi = {};
- 	struct ubi_device_info di = {};
- 	struct mtd_info *mtd;
--	char *str;
-+	char *root;
-+	char *rootopts;
- 
- 	if (!IS_ENABLED(CONFIG_MTD_UBI))
- 		return;
-@@ -60,12 +61,14 @@ static void squashfs_set_rootarg(struct fs_device *fsdev)
- 	ubi_get_device_info(vi.ubi_num, &di);
- 	mtd = di.mtd;
- 
--	str = basprintf("root=/dev/ubiblock%d_%d ubi.mtd=%s ubi.block=%d,%d rootfstype=squashfs",
--			vi.ubi_num, vi.vol_id, mtd->cdev.partname, vi.ubi_num, vi.vol_id);
-+	root = basprintf("/dev/ubiblock%d_%d", vi.ubi_num, vi.vol_id);
-+	rootopts = basprintf("ubi.mtd=%s ubi.block=%d,%d rootfstype=squashfs",
-+			mtd->cdev.partname, vi.ubi_num, vi.vol_id);
- 
--	fsdev_set_linux_rootarg(fsdev, str);
-+	fsdev_set_linux_root_options(fsdev, root, rootopts);
- 
--	free(str);
-+	free(root);
-+	free(rootopts);
- }
- 
- static struct inode *squashfs_alloc_inode(struct super_block *sb)
-diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index 37986acbb2..9cc35fa273 100644
---- a/fs/ubifs/ubifs.c
-+++ b/fs/ubifs/ubifs.c
-@@ -435,19 +435,21 @@ static void ubifs_set_rootarg(struct ubifs_priv *priv,
- 	struct ubi_volume_info vi = {};
- 	struct ubi_device_info di = {};
- 	struct mtd_info *mtd;
--	char *str;
-+	char *root;
-+	char *rootopts;
- 
- 	ubi_get_volume_info(priv->ubi, &vi);
- 	ubi_get_device_info(vi.ubi_num, &di);
- 
- 	mtd = di.mtd;
- 
--	str = basprintf("root=ubi0:%s ubi.mtd=%s rootfstype=ubifs",
--			  vi.name, mtd->cdev.partname);
-+	root = basprintf("ubi0:%s", vi.name);
-+	rootopts = basprintf("ubi.mtd=%s rootfstype=ubifs", mtd->cdev.partname);
- 
--	fsdev_set_linux_rootarg(fsdev, str);
-+	fsdev_set_linux_root_options(fsdev, root, rootopts);
- 
--	free(str);
-+	free(root);
-+	free(rootopts);
- }
- 
- static int ubifs_probe(struct device *dev)
-diff --git a/include/block.h b/include/block.h
-index b277f590e4..cbab04095d 100644
---- a/include/block.h
-+++ b/include/block.h
-@@ -85,6 +85,7 @@ static inline int block_flush(struct block_device *blk)
- #ifdef CONFIG_BLOCK
- unsigned file_list_add_blockdevs(struct file_list *files);
- char *cdev_get_linux_rootarg(const struct cdev *partcdev);
-+int cdev_get_linux_root_and_opts(const struct cdev *partcdev, char** root, char** rootopts);
- #else
- static inline unsigned file_list_add_blockdevs(struct file_list *files)
- {
-@@ -94,6 +95,10 @@ static inline char *cdev_get_linux_rootarg(const struct cdev *partcdev)
- {
- 	return NULL;
- }
-+static inline int cdev_get_linux_root_and_opts(const struct cdev *partcdev, char** root, char** rootopts)
-+{
-+	return -ENOSYS;
-+}
- #endif
- 
- static inline bool cdev_is_block_device(const struct cdev *cdev)
-diff --git a/include/bootargs.h b/include/bootargs.h
-index 1cf88bd380..6cb61750d1 100644
---- a/include/bootargs.h
-+++ b/include/bootargs.h
-@@ -26,4 +26,6 @@ static inline char *linux_bootargs_append_rootwait(char *rootarg)
- }
- #endif
- 
-+char *format_root_bootarg(const char *root_arg, char *root, char *rootopts);
-+
- #endif /* __BOOTARGS_H */
-diff --git a/include/fs.h b/include/fs.h
-index 98c482bbf2..c50437d609 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -90,7 +90,8 @@ struct fs_device {
- 	char *path;
- 	struct list_head list;
- 	char *options;
--	char *linux_rootarg;
-+	char *linux_root;
-+	char *linux_rootopts;
- 
- 	struct super_block sb;
- 
-@@ -159,7 +160,8 @@ const char *cdev_mount_default(struct cdev *cdev, const char *fsoptions);
- const char *cdev_mount(struct cdev *cdev);
- void mount_all(void);
- 
--void fsdev_set_linux_rootarg(struct fs_device *fsdev, const char *str);
-+void fsdev_set_linux_root_options(struct fs_device *fsdev, const char *root, const char* rootopts);
-+void fsdev_get_linux_root_options(struct fs_device *fsdev, char **root, char **rootopts);
- char *path_get_linux_rootarg(const char *path);
- 
- static inline const char *devpath_to_name(const char *devpath)
++&power {
++	barebox,allow-dummy;
++};
 -- 
 2.47.3
 
