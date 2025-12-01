@@ -1,80 +1,82 @@
-Delivery-date: Mon, 01 Dec 2025 11:26:46 +0100
+Delivery-date: Mon, 01 Dec 2025 11:26:47 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQ17G-006moY-2T
+	id 1vQ17H-006mp5-0e
 	for lore@lore.pengutronix.de;
-	Mon, 01 Dec 2025 11:26:46 +0100
+	Mon, 01 Dec 2025 11:26:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQ17G-0006p1-AY
-	for lore@pengutronix.de; Mon, 01 Dec 2025 11:26:46 +0100
+	id 1vQ17F-0006oA-8v
+	for lore@pengutronix.de; Mon, 01 Dec 2025 11:26:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Reply-To:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
-	From:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ZasBxG95dWgcPBQxXonLhaKnpjYU+Amv3DuzBqvTsso=; b=zzyODPBCn/u8EN5HsjPdxWjnFc
-	lf2QW71yDIc9TL9o9cyGDIpXwBudHTsJ8rHw1IKZInXFiIWkHF4HiAqI2u4EOEJ+HnnLYfiXZpcBt
-	jyIYvtYbdGEquzskdsGpamvMcXt46ZqQCeifoMnLUEC5ros/M4GPj+yyDVlEJexz3c//GMUT+Ed8q
-	6YdU6kGRBsJPstjXh1OtdMPekBD6sqA+uhCtBbWQbbeKtadeO31KVbvsSNlDE+QxB5F+vh5FdfFpD
-	EQ2oxshQLVZS8osv599tRnAJ7q78Cek/wP2GST+8jfGBSHL7egKPp+VMNrlOc8QLPBvP65ddYsKhb
-	/KKrEDxQ==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CytX66lFOH2ykIOLGrHtj0vYhijVoxDYVTsC9kJwOmw=; b=S6LS5HtIr5Fc+y7ATLSPmVFJdW
+	RrKIo7K5Nm9ESP4AKrxG8Dse4/EHC/tjPWYKgzigKWabwlkXU6OD8cLYs+f2kjRwIWexVXYFaohwm
+	6AEE9NDsZ4qx6inH3ILqIl1aw4rj+LHDgypKmlCq4kR/GWvdkOwXr4n2DeE0Y7cBNa2ZKAZ9GQ8ep
+	m4iOrH8fV4CKo0YiSKM2N1tuHk5vUe71hOUpJ9iYAIrya/M1sy0cSJnzfvSvMBmmmKieN+rqBFtkj
+	wIn30GsSrlnYY/hh6mYoNAOYXnFwgmztpdrv2Vm+8GugoNaYzNlF+UyPMWGaRvNoM9R8IRiBZOp8d
+	hQPefu0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQ16q-00000003KI1-1m9v;
-	Mon, 01 Dec 2025 10:26:20 +0000
-Received: from tor.source.kernel.org ([172.105.4.254])
+	id 1vQ16t-00000003KK5-2ybk;
+	Mon, 01 Dec 2025 10:26:23 +0000
+Received: from sea.source.kernel.org ([172.234.252.31])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQ16p-00000003KGs-2hBD
+	id 1vQ16p-00000003KGo-39sy
 	for barebox@lists.infradead.org;
-	Mon, 01 Dec 2025 10:26:19 +0000
+	Mon, 01 Dec 2025 10:26:21 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC39560137;
+	by sea.source.kernel.org (Postfix) with ESMTP id BC65042CEB;
 	Mon,  1 Dec 2025 10:26:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 84005C4CEF1;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9C992C113D0;
 	Mon,  1 Dec 2025 10:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764584778;
-	bh=F8ktlJonnEn8cfMgL8uqYJDCvD+zs0ubs3EcbflE3GU=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=ti+uV6UIpx6nRJClSNv6XlNfVS6TV11eepqwKAstSzOdu0AXMKdW4vpCmMX4XZ+Hu
-	 Uq2+BMNmymqRWJEUNc4jn1DxaIAZvUsSGi2iMolp6SOqp3jXz1baUk7Su3kmiOtsHD
-	 Vv3Xgh8gWwnH4F16HiWuefSTG8EOuOYq0MZQjzo0ETu5EV2fR+qkZ/c4pADFOtOJwP
-	 RVafcFtzW56/L+OoCDWLvIVIorBV0OJ/3WH/urF8KpYC8fq+Rg5ea/RB+wbNRt/kcd
-	 bb0LPgvwB0+U3OYEFVig1a/srqro4vtVDKvyq3VZGBmdEx/0xUtKSBBURIoKy0Nwgq
-	 AuHiqcMbg9E9A==
+	bh=RK5I7MzKqHTT1khivvQb6jIvTV3ZEhugm7xngX+slJg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=YM9V0FlcJjHr+o5AkR9FuHzDo1pOOm2DNc9xVRIsYgJUoDneejSbGvgOEu8ZLmYxR
+	 bC8arKa3rbtdj3iJNHtA/jPn/f0LGXNmhWq2cB0PMHLz6Mid9kYHtqlny1hkTKDt9N
+	 svgaJQN7Sy6GEw4/9OX5Rpl0vH7G1RAfbFArHA752OXPPIn7x0q0q3bDSLbAXAX8Fs
+	 d+lP2PyCzBFZ8CWO0vyP/6AkKYcUz9Dy/70n8yvf9fBaS8ciJgyDW1OTpZ8L/9mWz9
+	 W54emBJLsUg0xfRRVhib/58RU3RpzP1plN2e7KOiWA7f2PKvV+gmIjp179Dvd1lxlA
+	 /x05r1PdT52iA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 740B0D116F5;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F8BED111A8;
 	Mon,  1 Dec 2025 10:26:18 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Mon, 01 Dec 2025 11:26:15 +0100
-Message-Id: <20251201-imx_usb-v2-0-95ec2a0e8694@gocontroll.com>
+Date: Mon, 01 Dec 2025 11:26:16 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEdtLWkC/2XMQQrCMBCF4auUWRtJoqnBlfeQIp04tgNtU5IaK
- iV3N3br8n88vg0iBaYI12qDQIkj+6mEPlTg+nbqSPCzNGipjVLaCh7XxzuiOCuJiOZCsrZQ3nO
- gF6+7dG9K9xwXHz47nNRv/TeSElIg1q1RVuLJ0q3zzk9L8MNwdH6EJuf8BXtkyQ6jAAAA
-X-Change-ID: 20251128-imx_usb-410bbb57e068
+Message-Id: <20251201-imx_usb-v2-1-95ec2a0e8694@gocontroll.com>
+References: <20251201-imx_usb-v2-0-95ec2a0e8694@gocontroll.com>
+In-Reply-To: <20251201-imx_usb-v2-0-95ec2a0e8694@gocontroll.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Maud Spierings <maudspierings@gocontroll.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764584777; l=902;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764584777; l=915;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=F8ktlJonnEn8cfMgL8uqYJDCvD+zs0ubs3EcbflE3GU=;
- b=qc2J6672L0jI5mCqLkhSCvsPKS5KEuCnesql8IDk9s2bfKmRDwmsowE6pbGO/J1WVlGEkkopY
- wfYrdLezY8bCSgYXA1T0F9K76918uTZ3gd4UwmA1gspfGBc4f94AZd6
+ bh=puxY5pJSZsJ+VyRdZC4qG9rFi3Qw/x8A0EbiuaE/63c=;
+ b=89TtDrIB/9pTzhHUFqn+JQLkijYT6dhVdBPxpNSPXgICKx6aQfJVZ2wsYf764KpHhXVK+RaDD
+ 2Ue+b4tgdtUBwjUtQvjElXVyPyei1b3Rz+hCOdD+rHEN+teXtlEcEPL
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
  with auth_id=341
 X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20251201_022619_853452_88590571 
+X-CRM114-Status: UNSURE (   8.39  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,41 +95,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-103.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,USER_IN_WELCOMELIST,
 	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 0/3] scripts: imx: imx-usb-loader: fix mingw compilation
+Subject: [PATCH v2 1/3] scripts: imx: Makefile.mingw64: add _GNU_SOURCE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Compiling imx-usb-loader for windows targets had become broken, fix it.
+From: Maud Spierings <maudspierings@gocontroll.com>
+
+imx.c uses asprintf which requires _GNU_SOURCE to be defined, include
+defines.h to define it.
 
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
-Changes in v2:
-- Extract the mingw pread implementation to a seperate file that only
-  gets used when mingw is the target.
-- Link to v1: https://lore.kernel.org/r/20251128-imx_usb-v1-0-bb6a5180b38e@gocontroll.com
+ scripts/imx/Makefile.mingw64 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-Maud Spierings (3):
-      scripts: imx: Makefile.mingw64: add _GNU_SOURCE
-      scripts: imx: add pread implementation for mingw target
-      gitignore: ignore *.exe
+diff --git a/scripts/imx/Makefile.mingw64 b/scripts/imx/Makefile.mingw64
+index e012d833f1..101b39e917 100644
+--- a/scripts/imx/Makefile.mingw64
++++ b/scripts/imx/Makefile.mingw64
+@@ -30,7 +30,7 @@ $(if $(obj),, \
+ # $(realpath ...) resolves symlinks
+ obj := $(realpath $(obj))
+ 
+-CPPFLAGS := -I $(LIBUSB_MINGW)/include/libusb-1.0 -I $(src)/../include/ -I $(src)/../../include/mach/
++CPPFLAGS := -I $(LIBUSB_MINGW)/include/libusb-1.0 -I $(src)/../include/ -I $(src)/../../include/mach/ -include $(src)/../include/defines.h
+ LDFLAGS := -L $(LIBUSB_MINGW)/lib -lusb-1.0 -static
+ 
+ OBJECTS := $(addprefix $(obj)/, imx.o imx-usb-loader.o)
 
- .gitignore                   |  1 +
- scripts/imx/Makefile.mingw64 |  4 ++--
- scripts/imx/pread.c          | 25 +++++++++++++++++++++++++
- 3 files changed, 28 insertions(+), 2 deletions(-)
----
-base-commit: 3e01efb6c6527ca72a1213000006be1902db7be9
-change-id: 20251128-imx_usb-410bbb57e068
-
-Best regards,
 -- 
-Maud Spierings <maudspierings@gocontroll.com>
+2.52.0
 
 
 
