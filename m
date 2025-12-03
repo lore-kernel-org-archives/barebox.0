@@ -1,68 +1,71 @@
-Delivery-date: Wed, 03 Dec 2025 10:00:43 +0100
+Delivery-date: Wed, 03 Dec 2025 10:34:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQij5-007SUo-0Z
+	id 1vQjFa-007T4E-18
 	for lore@lore.pengutronix.de;
-	Wed, 03 Dec 2025 10:00:43 +0100
+	Wed, 03 Dec 2025 10:34:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQij4-0004lG-JN
-	for lore@pengutronix.de; Wed, 03 Dec 2025 10:00:43 +0100
+	id 1vQjFZ-0001J6-Q9
+	for lore@pengutronix.de; Wed, 03 Dec 2025 10:34:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IrCiQaOx4PjGQpwr8VQD5rNgTRSOaqyl04yjM/Zcf+I=; b=3E2eIzpfHC8Q6Ex7O0uQkIP9LV
-	oI5c5hFyMjYAFweKqBvCjSRJres6mB2n5lCE0uYXcU2pRL/fSum9fP2Cfyppq7espj5PLDvxjfl85
-	7OiY0Mz7/b9gqLs+HmUDyQG6zjEXAJpXSNk9qmGpjjPxRYQlewxq3n7PYiAYikD5rwycJZr1iZ9wX
-	xSzptis2i2rVTP5pFdNJXzIbgQnDv716q0TYuTKGGYxp+FxbClLjO+VjP301rKjj2wgHjKwEmcc+k
-	XP7XBDcYlqljGCLeCorYY5S7FMskknqOILLHpxbWC1+lRD0itZ0RAxVMRmCK/AQMb+uMKIbfHVZje
-	/U3dNxeA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=og6VCQ/+dozzGpFgxbjmotIQ8eAA3iKMakfmw3Jh/RE=; b=vH5xOMJAL4gDTghTyxigzKIp9s
+	uiO0tRqGai4M353BAIr+4brRefjZ2TIoCoD13kzGyLayU8JfKXvfeJRhoizBezOR2zInKb+SqonDA
+	QasShEYwOL1tUY+gJSFSvqVEMvXlF14fXGg81AohDZo7k+RKk/3iaBnhDP/pQI3M9+GANzrSTErl5
+	unAN76A604VgZV/MHzdgi/rClKE97S2pWovQw78mxUTlhpsM1OB86jTOfFBTdVGa+OGY4K3lZEN3w
+	sWlPdfE83bD/ihbf3A24LP4HJVPY2EZG0LkIqHzb+CbFrEAWe0dMWh6Aiub6u+YKk+Bq9yLMSYiMt
+	9yHGNtGQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQiid-00000006LEy-0rYX;
-	Wed, 03 Dec 2025 09:00:15 +0000
+	id 1vQjF1-00000006ObX-3OUo;
+	Wed, 03 Dec 2025 09:33:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQiiR-00000006LE3-2nOZ
+	id 1vQjEz-00000006ObA-2m69
 	for barebox@lists.infradead.org;
-	Wed, 03 Dec 2025 09:00:06 +0000
+	Wed, 03 Dec 2025 09:33:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQiiQ-0004Hj-6i; Wed, 03 Dec 2025 10:00:02 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vQjEy-0001EB-43; Wed, 03 Dec 2025 10:33:40 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQiiQ-003kSC-03;
-	Wed, 03 Dec 2025 10:00:02 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQiiP-0000000EOOt-40CN;
-	Wed, 03 Dec 2025 10:00:01 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vQjEx-003km6-30;
+	Wed, 03 Dec 2025 10:33:39 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vQjEx-003ZQM-2g;
+	Wed, 03 Dec 2025 10:33:39 +0100
+Date: Wed, 3 Dec 2025 10:33:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20251202092256.1565823-1-s.hauer@pengutronix.de>
-References: <20251202092256.1565823-1-s.hauer@pengutronix.de>
-Message-Id: <176475240195.3430240.14057389685142425705.b4-ty@pengutronix.de>
-Date: Wed, 03 Dec 2025 10:00:01 +0100
+To: Fabian Pflug <f.pflug@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <aTAD8x0vakc7ESTx@pengutronix.de>
+References: <20251128150434.3842713-1-f.pflug@pengutronix.de>
+ <20251201072452.1829564-1-f.pflug@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251201072452.1829564-1-f.pflug@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251203_010004_613184_6C73CD80 
-X-CRM114-Status: GOOD (  10.81  )
+X-CRM114-CacheID: sfid-20251203_013341_723237_D9D89A9E 
+X-CRM114-Status: GOOD (  18.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,32 +87,57 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fs: fix automount when last filename component is a
- automountpoint
+Subject: Re: [PATCH v5 0/4] make the root= command line parameter variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi Fabian,
 
-On Tue, 02 Dec 2025 10:22:56 +0100, Sascha Hauer wrote:
-> When opening a directory in openat() as indicated with the O_DIRECTORY
-> flag, pass the LOOKUP_DIRECTOY flag to filename_lookup() to make sure
-> the target is actually a directory. By doing this we can skip the check
-> afterwards.
+Could you next time send a new revision as new thread rather than as a
+reply to the previous revision? That makes it easier to keep track.
+
+Sascha
+
+On Mon, Dec 01, 2025 at 08:20:56AM +0100, Fabian Pflug wrote:
+> Changes in v5:
+> Updated documentation for nfs
+> Added documentation about new bootm variable
+> Fixed commit message for last patch
 > 
-> filename_lookup() only triggers the automount on the last component when
-> the LOOKUP_DIRECTORY flag is set, so with this change when /mnt/mmc2.3/
-> is a automountpoint a
+> Fabian Pflug (4):
+>   block.h: renamed get_rootargs to get_root
+>   fs: split rootargs into root and options
+>   bootm: use new api to get kernel command line params
+>   bootm: introduce bootm.root_param variable
 > 
-> [...]
+>  Documentation/filesystems/nfs.rst             | 10 +--
+>  .../migration-guides/migration-master.rst     | 18 ++++++
+>  Documentation/user/security.rst               | 16 +++++
+>  common/block.c                                | 37 ++++++++---
+>  common/bootm.c                                | 37 +++++++----
+>  drivers/mci/mci-core.c                        |  4 +-
+>  fs/9p/vfs_super.c                             |  6 +-
+>  fs/fs.c                                       | 61 ++++++++++---------
+>  fs/nfs.c                                      |  4 +-
+>  fs/squashfs/squashfs.c                        | 13 ++--
+>  fs/ubifs/ubifs.c                              | 12 ++--
+>  include/block.h                               |  7 ++-
+>  include/bootargs.h                            |  2 +
+>  include/bootm.h                               |  1 +
+>  include/fs.h                                  |  7 ++-
+>  15 files changed, 160 insertions(+), 75 deletions(-)
+>  create mode 100644 Documentation/migration-guides/migration-master.rst
+> 
+> -- 
+> 2.47.3
+> 
+> 
+> 
 
-Applied, thanks!
-
-[1/1] fs: fix automount when last filename component is a automountpoint
-      https://git.pengutronix.de/cgit/barebox/commit/?id=500df27eb054 (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
