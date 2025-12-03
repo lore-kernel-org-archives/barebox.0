@@ -1,77 +1,74 @@
-Delivery-date: Wed, 03 Dec 2025 16:19:39 +0100
+Delivery-date: Wed, 03 Dec 2025 16:19:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQodn-007YPU-30
+	id 1vQodo-007YPg-37
 	for lore@lore.pengutronix.de;
-	Wed, 03 Dec 2025 16:19:39 +0100
+	Wed, 03 Dec 2025 16:19:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQodn-0003SB-Cn
-	for lore@pengutronix.de; Wed, 03 Dec 2025 16:19:39 +0100
+	id 1vQodo-0003T0-BS
+	for lore@pengutronix.de; Wed, 03 Dec 2025 16:19:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=aYteswCYnBdTZFRIFEiLdLyLfgCMYZ6ArC000mZ/x2E=; b=FJmQjE0o51PtJG1JuVSyn89HA+
-	ousB9LR7weV5kqihxMWiW9ZhIF3fiYBWQ8O2cHszaFLKj/vmOwzMkXs5J63RrTz5zERgH69kTWPYL
-	I9XSZOxZ4qauy+Oo25AVEHqTkknH+0tfw03yf2gHkQTCBh9w9tBTEVK1ztKdGUpMkxhF7Ae6Y24Ow
-	+C/qygQcAHxVHCMbUrSorplzfGE7hcv6ZJ4UK+sX4Yjf+Roif+HzFtQrwI9XLTebmydin878q1ThB
-	OaSOkwpJEheOu+gdL3O5/R0PoIh/QG/2h6cgRYw0yHQrCHk7AR658RrhlOgM6UnFvzqEt0yyFEkJt
-	h76lD8Sw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=7PjuuZ3iNnJsmUNj+7gS8kBR5Zr8iTyetiu5YrjsEL4=; b=yCT6iXmbi5MOpIWH20pKRkxDPk
+	07ai9wdiBWH8WuboNBCD3O3B9a7R620wQM3mB0Qu/BxhreH8DtbUq4Ix7dgPFOXMO8zRhRJONWSsg
+	kGw9Tvt2LZ0V6cdKbUgJdIE//wfGFm/mesLkxq0iNp4nefIVI9zilfE91p1AtmMxQeA2L3w/dS8xT
+	fZtsyoOw6xobFQvy95EZeLCX0NlLoME8ontWISoiUB+jPYAmCTLznreoqjkTJxkTfFF4YoaoWRfZK
+	ZwRlx3S5yYfaxFPJfE9tVE7fJs6xEotIdVerw8OjZo/T/0h5ZIxW9KOyxZVabLMJ1L+OZqXzhro2/
+	BejIb+FQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQodM-00000006gjD-0bZU;
-	Wed, 03 Dec 2025 15:19:12 +0000
+	id 1vQodS-00000006gok-3aQI;
+	Wed, 03 Dec 2025 15:19:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQodI-00000006ghN-3sOs
+	id 1vQodQ-00000006gkp-1YHY
 	for barebox@lists.infradead.org;
-	Wed, 03 Dec 2025 15:19:10 +0000
+	Wed, 03 Dec 2025 15:19:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQodH-0003AG-0N; Wed, 03 Dec 2025 16:19:07 +0100
+	id 1vQodG-0003AC-Ut; Wed, 03 Dec 2025 16:19:06 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQodG-003nYL-2Q;
+	id 1vQodG-003nYN-2H;
 	Wed, 03 Dec 2025 16:19:06 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQodG-00000009MJM-2ViX;
+	id 1vQodG-00000009MJM-2cDD;
 	Wed, 03 Dec 2025 16:19:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 03 Dec 2025 16:19:04 +0100
-Message-Id: <20251203-efi-partition-refresh-v1-0-f0b6e79b5fa0@pengutronix.de>
+Date: Wed, 03 Dec 2025 16:19:08 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOhUMGkC/x2MQQqAMAwEv1JyNtBWLOpXxEPVaHNRSYsI4t8NH
- oednQcyCVOG3jwgdHHmY1dwlYE5xX0j5EUZvPWN87ZGWhnPKIWLmii0CuWE0bVLqG0X3DSDfk8
- d+P67w/i+H21n0TBnAAAA
-X-Change-ID: 20251203-efi-partition-refresh-a18d630961bc
+Message-Id: <20251203-efi-partition-refresh-v1-4-f0b6e79b5fa0@pengutronix.de>
+References: <20251203-efi-partition-refresh-v1-0-f0b6e79b5fa0@pengutronix.de>
+In-Reply-To: <20251203-efi-partition-refresh-v1-0-f0b6e79b5fa0@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764775146; l=1237;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764775146; l=1671;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=5Ht2gJyRFZl/uS1z9oCNrkgGfjZHv6TYkosLRypAXmQ=;
- b=fdX2wXocM5LIfQseuNwsm61u2B90ATmWh5crL6RpfwEDPSrWwVapUnyYvvqfAlNyvDfqNcDlW
- UVlJnVDWtMpBFOVB9dZ0vHK6ph/JkgwqlyYbo/Qmfw6GMVM/4JSBWTM
+ bh=pwwVJw4EnMGDxq0JqI1zLdlIwSeTQGFN1ExltrmqMHg=;
+ b=QBbNMZaeFpXR9W9OsnUMrK6565z2404yTCU0R2AmH8I8hUOB6E3+qL8s+n97sxqDa2kC5hBZF
+ 18wGn6+vOPBAr/igj3XfCHt2VlFMisRQafcY2Bn6rcYzmx8KmMGyfUY
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251203_071908_997646_3CC54F26 
-X-CRM114-Status: UNSURE (   9.11  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251203_071916_427001_3BD72133 
+X-CRM114-Status: GOOD (  14.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,40 +90,62 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 0/6] partitions: GPT: refresh partition tables when
- necessary
+Subject: [PATCH 4/6] partitions: gpt: write inactive GPT first
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is a continuation of the patch previously sent separately:
+There are two GPT partition tables on a device, the primary at the
+beginning of a device and the alternate at the end of the device.
 
-https://lore.kernel.org/all/20251128111929.2463263-1-s.hauer@pengutronix.de/
-
-Ahmad's comment to this was that we should write the inactive GPT first
-to make sure there's always a valid GPT on the device. This series
-implements just that. I stumbled upon a bug when we restore the primary
-GPT from the alternate GPT, this is fixed in this series.
+For the sake of being more robust against power failures let's write the
+inactive GPT first and the currently active one afterwards. This always
+leaves us a usable GPT on the device when updating the partition table.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Sascha Hauer (6):
-      partitions: gpt: pass epd context pointer to find_valid_gpt()
-      partitions: gpt: only write actual ptes size to device
-      partitions: gpt: factor out a function to write primary/alternate GPT
-      partitions: gpt: write inactive GPT first
-      partitions: gpt: fix GPT restauration from alternate GPT
-      partitions: gpt: refresh partition tables when necessary
+ common/partitions/efi.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
- common/partitions/Kconfig |  14 +++
- common/partitions/efi.c   | 293 +++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 236 insertions(+), 71 deletions(-)
----
-base-commit: 500df27eb054f86ce232c5bb30c3a7ea8f771e61
-change-id: 20251203-efi-partition-refresh-a18d630961bc
+diff --git a/common/partitions/efi.c b/common/partitions/efi.c
+index 8da62acf36646b62ff2fac25673adbc48650d299..1766f0123353d502065673d02e983e6cdd51b9af 100644
+--- a/common/partitions/efi.c
++++ b/common/partitions/efi.c
+@@ -27,6 +27,8 @@ struct efi_partition_desc {
+ 	gpt_header *gpt;
+ 	gpt_entry *ptes;
+ 	struct param_d *param_guid;
++	bool good_pgpt;
++	bool good_agpt;
+ };
+ 
+ struct efi_partition {
+@@ -424,6 +426,9 @@ static int find_valid_gpt(struct efi_partition_desc *epd, void *buf)
+ 	if (IS_ENABLED(CONFIG_PARTITION_DISK_EFI_GPT_COMPARE))
+ 		compare_gpts(blk->dev, pgpt, agpt, lastlba);
+ 
++	epd->good_pgpt = good_pgpt;
++	epd->good_agpt = good_agpt;
++
+ 	/* The good cases */
+ 	if (good_pgpt) {
+ 		epd->gpt  = pgpt;
+@@ -810,11 +815,11 @@ static __maybe_unused int efi_partition_write(struct partition_desc *pd)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = __efi_partition_write(epd, true);
++	ret = __efi_partition_write(epd, !epd->good_pgpt);
+ 	if (ret)
+ 		goto err_block_write;
+ 
+-	ret = __efi_partition_write(epd, false);
++	ret = __efi_partition_write(epd, epd->good_pgpt);
+ 	if (ret)
+ 		goto err_block_write;
+ 
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
