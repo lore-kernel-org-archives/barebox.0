@@ -1,65 +1,96 @@
-Delivery-date: Wed, 03 Dec 2025 13:10:29 +0100
+Delivery-date: Wed, 03 Dec 2025 16:12:22 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQlgj-007VTZ-2Z
+	id 1vQoWk-007YFg-0R
 	for lore@lore.pengutronix.de;
-	Wed, 03 Dec 2025 13:10:29 +0100
+	Wed, 03 Dec 2025 16:12:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQlgj-0000tJ-3J
-	for lore@pengutronix.de; Wed, 03 Dec 2025 13:10:29 +0100
+	id 1vQoWj-0002WU-7u
+	for lore@pengutronix.de; Wed, 03 Dec 2025 16:12:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=a/9xhGiFthDqnQoaGDWoMuTAMFipcEqkvz4SAODEWcs=; b=NMRIOuDLrftjgpkd4GUz3CsJi0
-	ds59G3eI82fvCz60KlTQ42WaRUwKf/EbVoJK4YSgtlRVr4N/WJWaw/pcH9XZWV7qSngbsEfgEWK/N
-	/zYzSAkXr0vvRKMT3Ry5q9d8i3ivFlVSxFFECOZ7CVLVb1trSpopMb7nffLXBiQobST3/SdNyi6PI
-	uKSeEa4WgjRfQRyBHIfd9l10OK4BRXb8WeEaLB4nI72XJ73S+xbBAzDRLQm67n7Q9A4YVtB1RAGpW
-	AwYirpqNpxSbiacvMxK0IQh0ki7588Z4o3fy/K/M6Q3zVjQmbcUVZlfbm9ZyETHFoCAQKM3b3Tcif
-	rxttcFbQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=TmLhHDnuCTdxEX6tUFe+3cDvWMSs7OocnPSFfisaK/A=; b=zo1pdlrpv673whVaKSA89dYsMI
+	HuZxKS+wvjTaAeWVs1SlhW64onPb5Bn6nV5/3ANLGB7Vz6gnjG+GewZLRHqOn/d2l8uYTTAHpem1R
+	HSlKZm8kZURJCcdjzFwYgFl5fLul261dWLPyC9wSQOJvpXezC5vwybfuvOlMnySqhHA7X20bjk34/
+	04VvSAO4pa1hninL00dN83yt3uWnq3u8dY+q/dSpMML4VeX7nDLdhSjoOQ0ZdMfby0fzft4YKdeml
+	tj7SKrj8Iq5yt7BcIXbIVafeMKn47ed8C27cpnDqM0Qc8SaqdEYJI0rmwfpft9daHitGC3bvJlhKK
+	O8ELY00A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQlgF-00000006XW7-48bd;
-	Wed, 03 Dec 2025 12:09:59 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vQoW3-00000006gSa-233V;
+	Wed, 03 Dec 2025 15:11:39 +0000
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQlgC-00000006XVe-3v1z
+	id 1vQoW0-00000006gS9-3d3V
 	for barebox@lists.infradead.org;
-	Wed, 03 Dec 2025 12:09:58 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vQlgB-0000kC-73; Wed, 03 Dec 2025 13:09:55 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vQlgB-003m8G-03;
-	Wed, 03 Dec 2025 13:09:55 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vQlgA-00000001KwE-3rIT;
-	Wed, 03 Dec 2025 13:09:54 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Dec 2025 13:09:52 +0100
-Message-ID: <20251203120953.318785-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Wed, 03 Dec 2025 15:11:38 +0000
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-47796a837c7so50599265e9.0
+        for <barebox@lists.infradead.org>; Wed, 03 Dec 2025 07:11:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764774694; x=1765379494; darn=lists.infradead.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TmLhHDnuCTdxEX6tUFe+3cDvWMSs7OocnPSFfisaK/A=;
+        b=eS34xrrRW6UBZmhvikeqEEEzmgZvFYGfP5H6a8nC1+1wX71GIc5sWaKM8P0ulOcVYu
+         kRxx6nUz+PC36MnOux1ngHsNJU3KDCywtg3B+qfS0XTUtFm7r5HtCZuI+siMjUiVd7HI
+         NRIzFxS3x3IqO7UCOcThWYwjMrLc6QE1pqxBeSOjROvMwSt3kN21lz6IXcmsnYkBwqh1
+         vI4BtGzFXf/AKsFPicejEUWZQ+QoxMSx4liqnWJWmlZBNg35+dqKfW1itJROrrgkhU9q
+         +pXIlDoey4qUPHa7btrcBR3eMzCSRXE0T4vkB5me/RaKm+h2V7MG2rjYgTbhu2qZ4J9z
+         I6cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764774694; x=1765379494;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TmLhHDnuCTdxEX6tUFe+3cDvWMSs7OocnPSFfisaK/A=;
+        b=cos1NKwgPtI2yfQnR/1spc7OGG3VrKBplk3UilVaFGXxfvvir6szFHs31zaN70xzEF
+         xuMNHJGpfrMLC3m1O1fvigQErogHJbc0ddRoKE+iC+mXSPwWnyh38488dteXoRNrZ070
+         fuNqOHEWX37Cmu9oYDCIpcn9I8RdROoU81IaPW0VJ58f+Z2jlxepN4f5Nyzv2YcnWafy
+         XL99479x+NmHoX3Sn0irVZ+QJq9/fTFwXpglW/yTHEYdkguq3whAbaWCVZ7wxI6VYlmu
+         XZOzQ3lONzmz7G0/0wuRBFvJvvljvHAyprk4T/2ax37Z2D+Fo66bZMA5/WVj5E4/kyxQ
+         ei4Q==
+X-Gm-Message-State: AOJu0YxQHC1MEAYDoBzJMUzPbmyLe04znDQPeS11OEHBgrJQzw5oxrx0
+	MZfxQq9ibNbTYMOtFmX8KxiDx4/ykMK7/tKkuk3vAREZaxlAVpLIRsF5ak5l7g==
+X-Gm-Gg: ASbGncuyHK0GZYEbadULlYKsBNCAYmoONVItpHLEzqK+K/j9TRciKLaO6ncwCO8Yap5
+	vxofSC2Gog164OETaJQBptPDgoPHTsx0d19Ai20p/QpAEZddHPfGfLVPKA1VOQM/riqiVnVyk0X
+	er2EwKeH7GX5FLNcFxx2ScO21LlkFssXrDux/Tq1nVm+EN8nH+HBzbTjSuC3H+pltw0Mq+x6W3h
+	ZF50DZK0FbXsJGzA3mcrx0lHFkDmOO48UNMx3OboUq6ZxV94hw13Ga/Tx90U4yfQdmkCPqwu053
+	xHIeYJGiTpmLkmY4I1l+f3cxLN22wivxHDnQhaAic9o7/X6j1zklZOGePGf1zRYayoBHtoCY3+S
+	jud/fObdMy4TBYDvxEA6DvTLdz3wkBVecxRBv1eUIdElc10SR2tMYw3lZKjv0E1QUczQNdzUCCl
+	AlxiRgjnNvvzpI3IEgbu+0oTrp3UvRDuUgBfkMsru9nnO+Hk9sX95kfbxpsOGIdCsVOnoXwOjqv
+	3WSDphKnwCAn3co89Fl8wzoEU4fAmdi9827QMq7f8gBf5gUFVToR7B86CPjU39F9ee+0Mf6v3Te
+	6+UPb243njZAf9U0wKHFvh0Zc6R+SLEn1b0r5Q==
+X-Google-Smtp-Source: AGHT+IEmpo/aynxdsrurFxOoQEj/3mXQ5a9jLQ2p931w+fHBHKS0V3plb25guQB5qcXy6GJLPy1sDw==
+X-Received: by 2002:a05:600c:198a:b0:477:5aaa:57a6 with SMTP id 5b1f17b1804b1-4792aef1c83mr27227015e9.10.1764774694154;
+        Wed, 03 Dec 2025 07:11:34 -0800 (PST)
+Received: from smalinux (2a02-8388-08be-f800-b582-e1f7-764e-a16b.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:b582:e1f7:764e:a16b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42e1c5c3c81sm40125430f8f.3.2025.12.03.07.11.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 07:11:33 -0800 (PST)
+Date: Wed, 3 Dec 2025 16:11:32 +0100
+From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <uhhhpqmdhnuycj4harqiycdbczxaeu6qxn7jlsuxn33guklohd@2sfe4g66i5tn>
+References: <20251128-avenger96-v1-0-009b13bd8df7@gmail.com>
+ <20251128-avenger96-v1-2-009b13bd8df7@gmail.com>
+ <aS1wGqrhGhU6XfIR@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aS1wGqrhGhU6XfIR@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251203_040957_246375_9C66125F 
-X-CRM114-Status: GOOD (  17.84  )
+X-CRM114-CacheID: sfid-20251203_071136_958421_88FD9404 
+X-CRM114-Status: GOOD (  34.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,208 +108,175 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] commands: implement new safemode command
+X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/3] ARM: stm32mp: bbu: add NOR flash FIP update handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-barebox has extensive support for manipulating the device tree it passes
-to Linux, which can be useful during bringup.
+On Mon, Dec 01, 2025 at 11:38:18AM +0100, Sascha Hauer wrote:
+> On Fri, Nov 28, 2025 at 01:51:18AM +0100, Sohaib Mohamed wrote:
+> > Add support for updating STM32MP1 bootloader in NOR flash. The handler
+> > automatically detects FIP location (256K or 512K offset) and flashes
+>
+> The "or 512K offset" part isn't implemented, right?
 
-Let's collect some of this functionality into a safemode command in an
-attempt to gather that knowledge at one place.
+You're correct. Offset 512K is actually the default location for FIP
+images in NOR flash layout. I will clarify this in the commit message.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- commands/Kconfig       |   7 +++
- commands/Makefile      |   1 +
- commands/safemode.c    | 109 +++++++++++++++++++++++++++++++++++++++++
- drivers/mci/mci-core.c |   6 +--
- include/mci.h          |   5 ++
- 5 files changed, 123 insertions(+), 5 deletions(-)
- create mode 100644 commands/safemode.c
-
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 6bfc1499afdb..af3b65f35547 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -226,6 +226,13 @@ config CMD_MEMINFO
- 	  system bytes     =     282616
- 	  in use bytes     =     274752
- 
-+config CMD_SAFEMODE
-+	tristate
-+	prompt "safemode"
-+	select CMD_OF_PROPERTY
-+	help
-+	  Apply safe-mode defaults for next kernel boot.
-+
- config CMD_CHECKLEAK
- 	tristate
- 	prompt "checkleak"
-diff --git a/commands/Makefile b/commands/Makefile
-index e7d65163ad80..657fb426ba3e 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -17,6 +17,7 @@ obj-$(CONFIG_CMD_MW)		+= mw.o
- obj-$(CONFIG_CMD_MEMCMP)	+= memcmp.o
- obj-$(CONFIG_CMD_MEMCPY)	+= memcpy.o
- obj-$(CONFIG_CMD_MEMSET)	+= memset.o
-+obj-$(CONFIG_CMD_SAFEMODE)	+= safemode.o
- obj-$(CONFIG_CMD_EDIT)		+= edit.o
- obj-$(CONFIG_CMD_ETHLOG)	+= ethlog.o
- obj-$(CONFIG_CMD_EXEC)		+= exec.o
-diff --git a/commands/safemode.c b/commands/safemode.c
-new file mode 100644
-index 000000000000..9016869bc56e
---- /dev/null
-+++ b/commands/safemode.c
-@@ -0,0 +1,109 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <command.h>
-+#include <getopt.h>
-+#include <mci.h>
-+#include <xfuncs.h>
-+#include <stdio.h>
-+#include <environment.h>
-+
-+#define	SAFEMODE_MMC		BIT(0)
-+#define	SAFEMODE_CONSOLE	BIT(1)
-+#define	SAFEMODE_BOOT		BIT(2)
-+
-+#define run_command_fmt(args...) ({	\
-+	char *__buf = xasprintf(args);	\
-+	if (verbose)			\
-+		printf("%s\n", __buf);	\
-+	int __ret = run_command(__buf);	\
-+	free(__buf);			\
-+	__ret;				\
-+})
-+
-+static void safemode_mmc(int verbose)
-+{
-+	struct mci *mci;
-+
-+	for_each_mci(mci) {
-+		const char *dev = dev_name(&mci->dev);
-+
-+		run_command_fmt("%s.broken_cd=1", dev);
-+		run_command_fmt("of_property -fs %s max-frequency '<52000000>'", dev);
-+		run_command_fmt("of_property -fs %s pinctrl-names default", dev);
-+	}
-+}
-+
-+static void safemode_console(int verbose)
-+{
-+	run_command_fmt("global.bootm.earlycon=1");
-+}
-+
-+static void safemode_boot(int verbose)
-+{
-+	if (IS_ENABLED(CONFIG_WATCHDOG))
-+		run_command_fmt("global.boot.watchdog_timeout=0");
-+
-+	if (IS_ENABLED(CONFIG_BOOTCHOOSER) &&
-+	    getenv_nonempty("global.bootchooser.targets"))
-+		run_command_fmt("bootchooser -a default -p defaut");
-+
-+	if (IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL))
-+		run_command_fmt("global.linux.efi.handover=1");
-+}
-+
-+static int do_safemode(int argc, char *argv[])
-+{
-+	unsigned safemode = 0;
-+	int opt, verbose = 0;
-+
-+	while((opt = getopt(argc, argv, "mcbv")) > 0) {
-+		switch(opt) {
-+		case 'm':
-+			safemode |= SAFEMODE_MMC;
-+			break;
-+		case 'c':
-+			safemode |= SAFEMODE_CONSOLE;
-+			break;
-+		case 'b':
-+			safemode |= SAFEMODE_BOOT;
-+			break;
-+		case 'v':
-+			verbose++;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (argc != optind)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (!safemode)
-+		safemode = ~0;
-+
-+	if (safemode & SAFEMODE_MMC)
-+		safemode_mmc(verbose);
-+	if (safemode & SAFEMODE_CONSOLE)
-+		safemode_console(verbose);
-+	if (safemode & SAFEMODE_BOOT)
-+		safemode_boot(verbose);
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(safemode)
-+BAREBOX_CMD_HELP_TEXT("Apply safe-mode defaults for next kernel boot.")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-m",  "safe mmc settings")
-+BAREBOX_CMD_HELP_OPT ("-c",  "safe console settings")
-+BAREBOX_CMD_HELP_OPT ("-b",  "safe boot defaults")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(safemode)
-+	.cmd		= do_safemode,
-+	BAREBOX_CMD_DESC("enable safe mode")
-+	BAREBOX_CMD_OPTS("[-mcb]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
-+	BAREBOX_CMD_HELP(cmd_safemode_help)
-+BAREBOX_CMD_END
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 57825bc849a1..ef676deb7c7f 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -40,11 +40,7 @@ static inline u32 unstuff_bits(const u32 *resp, int start, int size)
- 	return __res & __mask;
- }
- 
--static DEFINE_DEV_CLASS(mmc_class, "mmc");
--
--#define for_each_mci(mci) \
--	class_for_each_container_of_device(&mmc_class, mci, dev)
--
-+DEFINE_DEV_CLASS(mmc_class, "mmc");
- 
- /**
-  * @file
-diff --git a/include/mci.h b/include/mci.h
-index 3db33f914236..3f2b63598568 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -798,4 +798,9 @@ static inline bool mmc_card_hs200(struct mci *mci)
- 	return mci->host->ios.timing == MMC_TIMING_MMC_HS200;
- }
- 
-+extern struct class mmc_class;
-+
-+#define for_each_mci(mci) \
-+	class_for_each_container_of_device(&mmc_class, mci, dev)
-+
- #endif /* _MCI_H_ */
--- 
-2.47.3
-
+>
+> > FSBL at offset 0 and FIP at offset 512K. FIP is truncated if it exceeds
+> > available space.
+> >
+> > The handler detects the FIP location within the image (at either 256K
+> > or 512K offset) and flashes components to their appropriate locations:
+> > - FSBL at offset 0 (first 256K)
+> > - FIP at offset 512K (remainder of flash)
+> >
+> > When flashing from eMMC boot partitions to NOR, the FIP is truncated if
+> > needed since eMMC boot partitions are typically larger than available
+> > NOR flash space.
+>
+> I guess you mean that not the FIP image is truncated, but the input
+> image (/dev/mmcx.boot) is truncated to the actual FIP image size.
+>
+> But like Ahmad I can't find this part implemented. Should we just drop
+> this sentence for now?
+>
+> Sascha
+>
+> >
+> > Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+> > ---
+> >  arch/arm/mach-stm32mp/bbu.c | 77 +++++++++++++++++++++++++++++++++++++++++++++
+> >  include/mach/stm32mp/bbu.h  | 10 ++++++
+> >  2 files changed, 87 insertions(+)
+> >
+> > diff --git a/arch/arm/mach-stm32mp/bbu.c b/arch/arm/mach-stm32mp/bbu.c
+> > index 07b5111341..e8d0138cc7 100644
+> > --- a/arch/arm/mach-stm32mp/bbu.c
+> > +++ b/arch/arm/mach-stm32mp/bbu.c
+> > @@ -193,3 +193,80 @@ int stm32mp_bbu_mmc_fip_register(const char *name,
+> >
+> >  	return ret;
+> >  }
+> > +
+> > +static int stm32mp_bbu_nor_fip_handler(struct bbu_handler *handler,
+> > +			 struct bbu_data *data)
+> > +{
+> > +	struct bbu_data *fsbl_data, *fip_data;
+> > +	enum filetype filetype;
+> > +	int ret;
+> > +
+> > +	filetype = file_detect_type(data->image, data->len);
+> > +	if (filetype == filetype_fip) {
+> > +		pr_debug("Flashing FIP at offset 512K\n");
+> > +		return bbu_flash(data, SZ_512K);
+> > +	}
+> > +
+> > +	if (filetype != filetype_stm32_image_fsbl_v1) {
+> > +		if (!bbu_force(data, "incorrect image type. Expected: %s, got %s",
+> > +				file_type_to_string(filetype_stm32_image_fsbl_v1),
+> > +				file_type_to_string(filetype)))
+> > +			return -EINVAL;
+> > +
+> > +		/* Force: Let's assume it's an FSBL and flash anyway */
+> > +	}
+> > +
+> > +	if (data->len > SZ_256K)
+> > +		filetype = file_detect_type(data->image + SZ_256K,
+> > +					    data->len - SZ_256K);
+> > +	else
+> > +		filetype = filetype_unknown;
+> > +
+> > +	/* Not an eMMC image, just flash 1:1 */
+> > +	if (filetype != filetype_fip) {
+> > +		pr_debug("Flashing FSBL at offset 0\n");
+> > +		return bbu_flash(data, 0);
+> > +	}
+> > +
+> > +	/* On SPI-NOR, offset 256K is FSBL2. If we get a FIP image there
+> > +	 * instead, let's assume that's an eMMC boot partition image
+> > +	 * and flash the FSBL to offset 0 and the remainder to offset 512K
+> > +	 */
+> > +
+> > +	pr_debug("Flashing FSBL at offset 0\n");
+> > +	fsbl_data = data;
+> > +	fsbl_data->image = data->image;
+> > +	fsbl_data->len = SZ_256K;
+> > +
+> > +	ret = bbu_flash(fsbl_data, 0);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	pr_debug("Flashing FIP from file offset 256K at offset 512K\n");
+> > +	fip_data = data;
+> > +	fip_data->image = data->image + SZ_256K;
+> > +	fip_data->len = data->len - SZ_256K;
+> > +
+> > +	return bbu_flash(fip_data, SZ_512K);
+> > +}
+> > +
+> > +int stm32mp_bbu_nor_fip_register(const char *name,
+> > +				 const char *devicefile,
+> > +				 unsigned long flags)
+> > +{
+> > +	struct stm32mp_bbu_handler *priv;
+> > +	int ret;
+> > +
+> > +	priv = xzalloc(sizeof(*priv));
+> > +
+> > +	priv->handler.flags = flags;
+> > +	priv->handler.devicefile = devicefile;
+> > +	priv->handler.name = name;
+> > +	priv->handler.handler = stm32mp_bbu_nor_fip_handler;
+> > +
+> > +	ret = bbu_register_handler(&priv->handler);
+> > +	if (ret)
+> > +		free(priv);
+> > +
+> > +	return ret;
+> > +}
+> > diff --git a/include/mach/stm32mp/bbu.h b/include/mach/stm32mp/bbu.h
+> > index 233bcf6478..87b29f1527 100644
+> > --- a/include/mach/stm32mp/bbu.h
+> > +++ b/include/mach/stm32mp/bbu.h
+> > @@ -10,6 +10,9 @@
+> >  int stm32mp_bbu_mmc_fip_register(const char *name, const char *devicefile,
+> >  				 unsigned long flags);
+> >
+> > +int stm32mp_bbu_nor_fip_register(const char *name, const char *devicefile,
+> > +				 unsigned long flags);
+> > +
+> >  #else
+> >
+> >  static inline int stm32mp_bbu_mmc_fip_register(const char *name,
+> > @@ -19,6 +22,13 @@ static inline int stm32mp_bbu_mmc_fip_register(const char *name,
+> >  	return -ENOSYS;
+> >  }
+> >
+> > +static inline int stm32mp_bbu_nor_fip_register(const char *name,
+> > +					       const char *devicefile,
+> > +					       unsigned long flags)
+> > +{
+> > +	return -ENOSYS;
+> > +}
+> > +
+> >  #endif
+> >
+> >  #endif /* MACH_STM32MP_BBU_H_ */
+> >
+> > --
+> > 2.43.0
+> >
+> >
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
