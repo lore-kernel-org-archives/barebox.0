@@ -1,84 +1,68 @@
-Delivery-date: Wed, 03 Dec 2025 10:53:30 +0100
+Delivery-date: Wed, 03 Dec 2025 12:56:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQjYA-007TKD-2j
+	id 1vQlTa-007V8e-17
 	for lore@lore.pengutronix.de;
-	Wed, 03 Dec 2025 10:53:30 +0100
+	Wed, 03 Dec 2025 12:56:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQjYA-0003YL-AD
-	for lore@pengutronix.de; Wed, 03 Dec 2025 10:53:30 +0100
+	id 1vQlTZ-0007v1-Q5
+	for lore@pengutronix.de; Wed, 03 Dec 2025 12:56:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tN4eKMLMpC6NSjyW3us+om9BD04eSBXV63CbxrWhybo=; b=Qh6bsoPw7C2u+hJqCINiPgxV1F
-	lr0yNelV2mI1SXZV//GIo7HBRxxMDCrnjBUkK26/0c32OW4nUWVzZQDO0fukJ+LQ6Oh8yrHXpgEFL
-	aWW6QWqP937ivVCArKHqJEfh+bml1Xy9M8aqHX064XhJJ8Us3X6n4w6TVkTUi4yd8pqWo42z/+9rt
-	aEzkCQHifQ9lHGvleovrXBZZoJW91LFVkJIsgrZvtamwvwfFLnDaAA0g2n0R3GTSuce0/oKPEFx0T
-	jkqrN5P7Gmp2aW6saP49MRsopAcLH0vIY1afxLhtMAftawlnip+b7UBUv6qmUUSxAd7Xzi13455/z
-	yLV1yFQw==;
+	bh=Ex/Voq4QT+XWhkGd1Np2MVSpXoWqPEwoL5uhgLw9Wus=; b=cRH6el5xNzwjZqHv5KpoNgX6rM
+	7VpBKRrE8HfnCEKv/7gIupDlu75GVIcBkTxX00wrGX4NcMPgKh62xoVeOll5EOiKCP7hSNCU+05cz
+	bDJN75xelIQtqXlv3KVGCFSkFwKmnpoqkd214Y1acw36FVtkd2qBt+rOb7M1btPrgaGVsEo3NTNRu
+	BFUiGmT2FKeUkqgsyfruCrs79MZuNY3IyxKDBdinFBC3BVL8iff9Pt2iUgpo2dOd/+WGXJTpICP8G
+	5iMzf9u9VYpKM8SbMgB5Ih8uH+v425UOpa5LvZfxIUkikZi9OmvqoOhyvQ0Zcv3zHgAnzu5ZWmWDy
+	7Lg8oYaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQjXg-00000006Q3Z-0noH;
-	Wed, 03 Dec 2025 09:53:00 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQjXf-00000006Q3P-2tcx
-	for barebox@bombadil.infradead.org;
-	Wed, 03 Dec 2025 09:52:59 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
-	Reply-To:Cc:Content-ID:Content-Description;
-	bh=tN4eKMLMpC6NSjyW3us+om9BD04eSBXV63CbxrWhybo=; b=Y8Ab2K4vf8cgoeSUJnIxxc+6vg
-	REV1gnHENeJLCFtiDy2I1f/LBcqiJYah/IgWbCkOfGbSQQfqjKnvgJw7s98r8oxOH1XhXPkfR1QmL
-	t8B5GFHI/HBl+niq+JCog80GetkRZSDxrOvZJRMrgbuiaW6kXFMrpalkoY8YaXM8UXDofx30UDmlC
-	EyK2a5IhNER/sQyO8uxQtrCaoKQPRUZTPNtOpz+Qth/6UyReQIWKLLpWG0i1aOnhWao249I/nvsxS
-	49L/6tLy6UHp9oLnWCV0FiY2MBrZoXpbwNdHsr3eVLn3nHsoyQwHzxnWqn/AY/kjpZMPt3zYb4bnM
-	okzZVa4w==;
+	id 1vQlSy-00000006WwY-1WcE;
+	Wed, 03 Dec 2025 11:56:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQig4-000000020yx-2MCQ
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vQlSv-00000006Wvy-22vI
 	for barebox@lists.infradead.org;
-	Wed, 03 Dec 2025 08:57:38 +0000
+	Wed, 03 Dec 2025 11:56:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQjXZ-0003QN-MQ; Wed, 03 Dec 2025 10:52:53 +0100
+	id 1vQlSs-0007q9-60; Wed, 03 Dec 2025 12:56:10 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQjXZ-003ks1-1e;
-	Wed, 03 Dec 2025 10:52:53 +0100
+	id 1vQlSr-003lpR-3D;
+	Wed, 03 Dec 2025 12:56:10 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQjXZ-00000002Rcj-1u2t;
-	Wed, 03 Dec 2025 10:52:53 +0100
+	id 1vQlSr-0000000GbVM-3wB8;
+	Wed, 03 Dec 2025 12:56:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Fabian Pflug <f.pflug@pengutronix.de>
-In-Reply-To: <20251201072452.1829564-1-f.pflug@pengutronix.de>
-References: <20251128150434.3842713-1-f.pflug@pengutronix.de>
- <20251201072452.1829564-1-f.pflug@pengutronix.de>
-Message-Id: <176475557345.582751.16608254176968142914.b4-ty@pengutronix.de>
-Date: Wed, 03 Dec 2025 10:52:53 +0100
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20251202-k3-deps-v1-0-68404d3b2c70@pengutronix.de>
+References: <20251202-k3-deps-v1-0-68404d3b2c70@pengutronix.de>
+Message-Id: <176476296993.3957310.10018421375362639664.b4-ty@pengutronix.de>
+Date: Wed, 03 Dec 2025 12:56:09 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251203_085736_739252_50CB46C4 
-X-CRM114-Status: UNSURE (   8.15  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251203_035613_533943_E4DE4DB1 
+X-CRM114-Status: GOOD (  12.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,35 +84,33 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v5 0/4] make the root= command line parameter variable
+Subject: Re: [PATCH 0/4] ARM: k3: fix k3img dependencies
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 01 Dec 2025 08:20:56 +0100, Fabian Pflug wrote:
-> Changes in v5:
-> Updated documentation for nfs
-> Added documentation about new bootm variable
-> Fixed commit message for last patch
+On Tue, 02 Dec 2025 16:58:24 +0100, Sascha Hauer wrote:
+> This series fixes a dependency problem in the K3 image generation. The
+> k3img tool takes several files as input, but only the barebox image is
+> actually a dependency, so when (only) one of the other files change the
+> final image is not re-generated.
 > 
-> Fabian Pflug (4):
->   block.h: renamed get_rootargs to get_root
->   fs: split rootargs into root and options
->   bootm: use new api to get kernel command line params
->   bootm: introduce bootm.root_param variable
+> While at it we can make some input files SoC specific which means we no
+> longer have to specify them per board, saving one line per board and
+> file in Makefile.k3
 > 
 > [...]
 
 Applied, thanks!
 
-[1/4] block.h: renamed get_rootargs to get_root
-      https://git.pengutronix.de/cgit/barebox/commit/?id=d7b08f7bf37f (link may not be stable)
-[2/4] fs: split rootargs into root and options
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a289ccecdf94 (link may not be stable)
-[3/4] bootm: use new api to get kernel command line params
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4b6e9e9bb3f0 (link may not be stable)
-[4/4] bootm: introduce bootm.root_param variable
-      https://git.pengutronix.de/cgit/barebox/commit/?id=52655a85e232 (link may not be stable)
+[1/4] ARM: K3: am62l: don't put sysfwdata into 1st stage image
+      https://git.pengutronix.de/cgit/barebox/commit/?id=429f52b9f493 (link may not be stable)
+[2/4] ARM: k3: make some firmware files SoC specific
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e7189c9722ab (link may not be stable)
+[3/4] ARM: k3: am62l: Add dedicated config option for OP-TEE
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2711c4ca4fdc (link may not be stable)
+[4/4] ARM: k3: am62l: fix dependencies on k3img input files
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f1739aa759f0 (link may not be stable)
 
 Best regards,
 -- 
