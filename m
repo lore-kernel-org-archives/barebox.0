@@ -3,72 +3,72 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQodo-007YPg-37
+	id 1vQodp-007YQ2-1Z
 	for lore@lore.pengutronix.de;
-	Wed, 03 Dec 2025 16:19:40 +0100
+	Wed, 03 Dec 2025 16:19:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vQodo-0003T0-BS
-	for lore@pengutronix.de; Wed, 03 Dec 2025 16:19:40 +0100
+	id 1vQodo-0003TT-Rs
+	for lore@pengutronix.de; Wed, 03 Dec 2025 16:19:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7PjuuZ3iNnJsmUNj+7gS8kBR5Zr8iTyetiu5YrjsEL4=; b=yCT6iXmbi5MOpIWH20pKRkxDPk
-	07ai9wdiBWH8WuboNBCD3O3B9a7R620wQM3mB0Qu/BxhreH8DtbUq4Ix7dgPFOXMO8zRhRJONWSsg
-	kGw9Tvt2LZ0V6cdKbUgJdIE//wfGFm/mesLkxq0iNp4nefIVI9zilfE91p1AtmMxQeA2L3w/dS8xT
-	fZtsyoOw6xobFQvy95EZeLCX0NlLoME8ontWISoiUB+jPYAmCTLznreoqjkTJxkTfFF4YoaoWRfZK
-	ZwRlx3S5yYfaxFPJfE9tVE7fJs6xEotIdVerw8OjZo/T/0h5ZIxW9KOyxZVabLMJ1L+OZqXzhro2/
-	BejIb+FQ==;
+	bh=UTZgYhBOXZWbZkxNDM8RAfPlmRurwLGXITYQQrBBp2k=; b=I4RPQUjv7zPKK/72ld86HH+XOb
+	PCnfZ9AgzM7w7IiR83mEXRWGjuc7rOKf+lNaJyEn2Zp+yZF19J503p32iKXake7oSnroeKUM32s24
+	cx5b+NTYm/R7rI/iSDmQj+i15lBqBv603+SH2y1C0LN7Oetd9uQw5dR+eAHDjwHEgRFqsflr1pei0
+	V5Ofbkqvo42TmiGeWLd4X6cmjH3bY8kL6X5U+KDbJs5d++1Mo5VbTn060DnAryUaLhQ7HN/OgKaC4
+	ib+29G/u3CxLjSdkCmfLt9XueQKXf0nkUElKYHV7YJvFb15/ph7/hdnL93Uy+xgh3v0+RlNnlYsIJ
+	ABpaMiPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQodS-00000006gok-3aQI;
-	Wed, 03 Dec 2025 15:19:18 +0000
+	id 1vQodP-00000006gkY-0LSV;
+	Wed, 03 Dec 2025 15:19:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQodQ-00000006gkp-1YHY
+	id 1vQodI-00000006ghM-3smU
 	for barebox@lists.infradead.org;
-	Wed, 03 Dec 2025 15:19:17 +0000
+	Wed, 03 Dec 2025 15:19:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQodG-0003AC-Ut; Wed, 03 Dec 2025 16:19:06 +0100
+	id 1vQodH-0003AE-06; Wed, 03 Dec 2025 16:19:07 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQodG-003nYN-2H;
+	id 1vQodG-003nYO-2N;
 	Wed, 03 Dec 2025 16:19:06 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vQodG-00000009MJM-2cDD;
+	id 1vQodG-00000009MJM-2dMH;
 	Wed, 03 Dec 2025 16:19:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 03 Dec 2025 16:19:08 +0100
+Date: Wed, 03 Dec 2025 16:19:09 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251203-efi-partition-refresh-v1-4-f0b6e79b5fa0@pengutronix.de>
+Message-Id: <20251203-efi-partition-refresh-v1-5-f0b6e79b5fa0@pengutronix.de>
 References: <20251203-efi-partition-refresh-v1-0-f0b6e79b5fa0@pengutronix.de>
 In-Reply-To: <20251203-efi-partition-refresh-v1-0-f0b6e79b5fa0@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764775146; l=1671;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764775146; l=2748;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=pwwVJw4EnMGDxq0JqI1zLdlIwSeTQGFN1ExltrmqMHg=;
- b=QBbNMZaeFpXR9W9OsnUMrK6565z2404yTCU0R2AmH8I8hUOB6E3+qL8s+n97sxqDa2kC5hBZF
- 18wGn6+vOPBAr/igj3XfCHt2VlFMisRQafcY2Bn6rcYzmx8KmMGyfUY
+ bh=TpnBXdpbqumCfAWprOcXj/4xnEYTZQhZu7OyhLS7t0k=;
+ b=SrAPEBnheN0UZhVwBure/s9d7tPc/1g1NXlwr0LMco0yjB6MA1iMHN4EpzMNKizOnRC+GhFWa
+ L41iv+leOeDAMmrUkhJlsUaY06VbMUa7Uui29a30SKRFGddwsIpoBZh
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251203_071916_427001_3BD72133 
-X-CRM114-Status: GOOD (  14.50  )
+X-CRM114-CacheID: sfid-20251203_071909_013044_DDF6B5F9 
+X-CRM114-Status: GOOD (  18.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,59 +90,76 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 4/6] partitions: gpt: write inactive GPT first
+Subject: [PATCH 5/6] partitions: gpt: fix GPT restauration from alternate
+ GPT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-There are two GPT partition tables on a device, the primary at the
-beginning of a device and the alternate at the end of the device.
+We read GPT headers from the device and store it in epd->gpt. When
+writing a partition table we assume that epd->gpt is read from
+the primary GPT header: We only adjust the partition_entry_lba for
+the alternate header. This assumption is wrong, in case the primary
+GPT header is corrupted epd->gpt could also come from the alternate
+GPT header. When this happens we have to set partition_entry_lba
+correctly for the primary GPT header as well.
 
-For the sake of being more robust against power failures let's write the
-inactive GPT first and the currently active one afterwards. This always
-leaves us a usable GPT on the device when updating the partition table.
+Unfortunately this is not trivial. While we could just use LBA2 for
+the partition entries, this might overwrite a bootloader stored there (see
+[1]). Instead the following logic is applied:
+
+When the primary GPT header was good when reading it, keep the partition
+table entries where they are. If not, take the first usable LBA and
+substract the size we need for the partition entries.
+
+[1] https://lore.barebox.org/20250602-createnv-v1-2-c3239ff875d5@pengutronix.de
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/partitions/efi.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ common/partitions/efi.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
 diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-index 8da62acf36646b62ff2fac25673adbc48650d299..1766f0123353d502065673d02e983e6cdd51b9af 100644
+index 1766f0123353d502065673d02e983e6cdd51b9af..0fd60c9fd0442c3c571c685a5b0b41b8f33db7bd 100644
 --- a/common/partitions/efi.c
 +++ b/common/partitions/efi.c
-@@ -27,6 +27,8 @@ struct efi_partition_desc {
- 	gpt_header *gpt;
- 	gpt_entry *ptes;
- 	struct param_d *param_guid;
-+	bool good_pgpt;
-+	bool good_agpt;
- };
+@@ -762,7 +762,36 @@ static int __efi_partition_write(struct efi_partition_desc *epd, bool primary)
  
- struct efi_partition {
-@@ -424,6 +426,9 @@ static int find_valid_gpt(struct efi_partition_desc *epd, void *buf)
- 	if (IS_ENABLED(CONFIG_PARTITION_DISK_EFI_GPT_COMPARE))
- 		compare_gpts(blk->dev, pgpt, agpt, lastlba);
- 
-+	epd->good_pgpt = good_pgpt;
-+	epd->good_agpt = good_agpt;
+ 	if (primary) {
+ 		my_lba = 1;
+-		partition_entry_lba = le64_to_cpu(gpt->partition_entry_lba);
 +
- 	/* The good cases */
- 	if (good_pgpt) {
- 		epd->gpt  = pgpt;
-@@ -810,11 +815,11 @@ static __maybe_unused int efi_partition_write(struct partition_desc *pd)
- 	if (ret)
- 		return ret;
- 
--	ret = __efi_partition_write(epd, true);
-+	ret = __efi_partition_write(epd, !epd->good_pgpt);
- 	if (ret)
- 		goto err_block_write;
- 
--	ret = __efi_partition_write(epd, false);
-+	ret = __efi_partition_write(epd, epd->good_pgpt);
- 	if (ret)
- 		goto err_block_write;
- 
++		if (epd->good_pgpt) {
++			/*
++			 * The primary GPT was good, we can just leave the partition
++			 * entries where they are.
++			 */
++			partition_entry_lba = le64_to_cpu(gpt->partition_entry_lba);
++		} else {
++			/*
++			 * The primary GPT was bad. When this is not a new partition
++			 * table, but instead read from the disk, the header is from the
++			 * alternate GPT, meaning the partition_entry_lba also points
++			 * to the alternate partitions. We have to find a place for the
++			 * primary partition entries in this case. We could store them
++			 * right after the GPT header, but this might destroy a bootloader
++			 * stored there. Instead, substract the size we need from the
++			 * first usable LBA.
++			 */
++			uint64_t first_usable_lba;
++
++			first_usable_lba = le64_to_cpu(gpt->first_usable_lba);
++
++			if (first_usable_lba < 32 + 1 + 1) {
++				pr_err("First usable LBA is %llu which doesn't leave "
++				       "enough space for partition entries\n",
++					first_usable_lba);
++				return -EINVAL;
++			}
++			partition_entry_lba = first_usable_lba - 32;
++		}
+ 		gpt->alternate_lba = cpu_to_le64(last_lba(blk));
+ 	} else {
+ 		my_lba = last_lba(blk);
 
 -- 
 2.47.3
