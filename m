@@ -1,74 +1,71 @@
-Delivery-date: Mon, 08 Dec 2025 13:01:40 +0100
+Delivery-date: Mon, 08 Dec 2025 13:02:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vSZvw-009CkG-0W
+	id 1vSZxB-009CmC-0A
 	for lore@lore.pengutronix.de;
-	Mon, 08 Dec 2025 13:01:40 +0100
+	Mon, 08 Dec 2025 13:02:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vSZvv-0002kU-IE
-	for lore@pengutronix.de; Mon, 08 Dec 2025 13:01:40 +0100
+	id 1vSZxA-0002z7-HW
+	for lore@pengutronix.de; Mon, 08 Dec 2025 13:02:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=O+ys25QoWneVe0BWd9nrc+mydutWaGbazSoYDick/20=; b=JyVnIdnL0WokeQlbJANQGJimqw
-	xZlrHm9tzhoXR9DgYDWeUAfqqbba8FsUtmsNR7ePP/fcDczjKbq7Nzf4QQh/v9syMH+CDKNac5SDv
-	zRgwyTGY0yxWy6/BBscn6Qh/g19+NTyCuL1NN2SZKw9oq/Ujl/68E3tRmG5VgWUyw9j+Fmwtem6Yn
-	RmLFbYm5xACD1iUtG3lMoqOyVkB71scREJWctJA5jFiAqYCtU86CaC4scVtyUAQvNsekCwz2UVuyx
-	MDBN8mLDG480p0c9szSTaqgLLK5q7CTaAoEF3fbOMlgcT0qVzOZpO0n7NT+scqB4jYoopuaSzr2jX
-	kuHryaJg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2HXARWXr543bydsNXEkAuaTzVwUOBq82DLuvxWfeJF4=; b=MrXqvD0wTjqJuIYH5og2U6lpmv
+	HvWcFOM0ev5NAf351YeIbNc51sNOcH21mItOHStn0nvgIlZp0EV3GCBM1jo4iWzwv2FTpG8AOuQfE
+	gVmxBzgUz6hSTLsIfMXdOzMLN2AMgDjMDfX/4K/7XLpqT5AxHaZb4DXEy055leCdB6ldEyPtdumia
+	DC6ZaiRuR/pRcRieESPMIKkI6IpijX1VfCDVxrVzNcx8pOm1skuChsLXQgLqiVnXmjpAiZjXiPba0
+	XbPZdcCc09TKLcVhamGHUtBhl4ZUJwNTaRdHMWIwh5zs+c2BSt3GJCpNMiUlbc5lxNr/yoifsGNr/
+	YbcdMTLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vSZvN-0000000D2JB-01ko;
-	Mon, 08 Dec 2025 12:01:05 +0000
+	id 1vSZwj-0000000D2Za-1AnR;
+	Mon, 08 Dec 2025 12:02:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vSZvG-0000000D2Gu-1FWG
+	id 1vSZwg-0000000D2Z6-2JmZ
 	for barebox@lists.infradead.org;
-	Mon, 08 Dec 2025 12:01:02 +0000
+	Mon, 08 Dec 2025 12:02:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vSZvE-0002VR-9k; Mon, 08 Dec 2025 13:00:56 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vSZwd-0002v2-8R; Mon, 08 Dec 2025 13:02:23 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vSZvE-004bib-0E;
-	Mon, 08 Dec 2025 13:00:56 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vSZvD-000000027w4-4BVm;
-	Mon, 08 Dec 2025 13:00:55 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vSZwd-004bj3-0E;
+	Mon, 08 Dec 2025 13:02:23 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vSZwc-00D7tx-30;
+	Mon, 08 Dec 2025 13:02:22 +0100
+Date: Mon, 8 Dec 2025 13:02:22 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 08 Dec 2025 13:00:51 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <aTa-TgPKdkRUr1Wd@pengutronix.de>
+References: <20251205143112.1180264-1-s.hauer@pengutronix.de>
+ <218f30a8-a711-431b-bcec-92dd89d5428f@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251208-nvmem-eeprom-v1-1-41ba588e2f3a@pengutronix.de>
-References: <20251208-nvmem-eeprom-v1-0-41ba588e2f3a@pengutronix.de>
-In-Reply-To: <20251208-nvmem-eeprom-v1-0-41ba588e2f3a@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765195255; l=1860;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=HRc9Ww4kt9MwtU1HbPVvpjrlamCbTblwu+mQh6UYczA=;
- b=bF8rhpwvPorU/T8S0lNCnBWxPU7zO3sqWGc7T8ybnam97zl74wt4OzD2Y+BV7jgUVnRBwU+fz
- FN+EpZ4a5ZLBUENc4kyRfJ1K8j8X0pbR0IEc/tnD1yfSuy3XA+XB6bd
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <218f30a8-a711-431b-bcec-92dd89d5428f@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251208_040058_366597_BF3504E4 
-X-CRM114-Status: GOOD (  12.54  )
+X-CRM114-CacheID: sfid-20251208_040226_590408_9B50FC0F 
+X-CRM114-Status: GOOD (  18.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,70 +83,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,SUBJECT_IN_BLACKLIST,
-	SUBJECT_IN_BLOCKLIST autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 1/4] driver: implement get_free_deviceid_from()
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] ARM: i.MX: dts: imx93-tqma9352-mba93xxla: add eeprom
+ aliases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-get_free_deviceid() starts looking for a free device ID starting from
-zero. Add get_free_deviceid_from() which takes a start ID to look from
-which is useful when some lower device IDs shall be reserved, for
-example by device tree aliases.
+On Fri, Dec 05, 2025 at 03:33:29PM +0100, Ahmad Fatoum wrote:
+> Hi,
+> 
+> On 12/5/25 3:31 PM, Sascha Hauer wrote:
+> > eeprom0 has an alias in the upstream device tree whereas the other
+> > EEPROMs have not. Add aliases for the other EEPROMs. Without it the
+> > other devices will also try to register themselves as eeprom0 which
+> > fails with -EEXIST.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> Should we fix the driver to use dynamic IDs in absence of EEPROMs?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/base/driver.c | 10 ++++------
- include/driver.h      |  7 ++++++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+Yes, but I needed you to motivate me to jump into this rabbit hole ;)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index eca23d7c308800ead5e2f4e25208dc68ab2fd92e..1a5a3598be5d4b2c6ce8558b1ac8c3cba4d59485 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -95,14 +95,12 @@ static struct device *get_device_by_name_id(const char *name, int id)
- 	return NULL;
- }
- 
--int get_free_deviceid(const char *name_template)
-+int get_free_deviceid_from(const char *name_template, int id_from)
- {
--	int i = 0;
--
- 	while (1) {
--		if (!get_device_by_name_id(name_template, i))
--			return i;
--		i++;
-+		if (!get_device_by_name_id(name_template, id_from))
-+			return id_from;
-+		id_from++;
- 	};
- }
- 
-diff --git a/include/driver.h b/include/driver.h
-index c130a3cd63fd5e6dc365a33c765a22dc4e2ca90a..84fb5c0aa9a085e39d2905d453d69adff50d2cd5 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -124,7 +124,12 @@ struct device *find_device(const char *str);
-  * appending a number to the template. Dynamically created devices should
-  * use this function rather than filling the id field themselves.
-  */
--int get_free_deviceid(const char *name_template);
-+int get_free_deviceid_from(const char *name_template, int id_from);
-+
-+static inline int get_free_deviceid(const char *name_template)
-+{
-+	return get_free_deviceid_from(name_template, 0);
-+}
- 
- int dev_add_alias(struct device *dev, const char *fmt, ...) __printf(2, 3);
- 
+Sascha
 
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
