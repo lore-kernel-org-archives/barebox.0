@@ -1,65 +1,74 @@
-Delivery-date: Mon, 08 Dec 2025 11:33:04 +0100
+Delivery-date: Mon, 08 Dec 2025 13:01:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vSYYC-009BN0-2C
+	id 1vSZvu-009CjC-1j
 	for lore@lore.pengutronix.de;
-	Mon, 08 Dec 2025 11:33:04 +0100
+	Mon, 08 Dec 2025 13:01:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vSYYC-0002nk-5r
-	for lore@pengutronix.de; Mon, 08 Dec 2025 11:33:04 +0100
+	id 1vSZvt-0002jJ-Un
+	for lore@pengutronix.de; Mon, 08 Dec 2025 13:01:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=fNvvyy4dxLkQvyWjsaBjbrKGY4xpzaGlJROZNVRSORQ=; b=AlRQWB0R5g2KRLj3hYCGGQjV+N
-	mR+cnwaNzoe8dgKcitd7awHUpjhE10HwqPqTzWVHM8Sm3vcN/lLJm6Y91pXcAAAMiTfFBwQ0GmpqW
-	s6dU4H9V3/kTS68xxaguJHGERpjkJzsn48I2h1rJ13MbsVRKJyU4tIllAD5qcSHk/wsrGjdAyLmIJ
-	8YwvscWI9b9taZCB4yAGVqFlfXXpUVBsPREe8DVrXsja+UEDJktyfR3eZjkgLE63lZsPeTa5LSXTx
-	aTG366OrK0atu9F+ojZlOcofJM2DMnVNL1LRDpLaotoMJsxpsz1mfiWsTuRhh1sfX5ncBW1NnUovT
-	FnHJmrdg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=USU5ZAZry1MswHdoY+B07gaPMCGP2o5s3XsXmbaAIVM=; b=Q3GB5z+Ycy5eoSqhehLKQFEaH9
+	mfmwrJxTF+896CKyDBG7s5wads9gzeA6PtdWuhgLes9mGJ514BrjoW2Kk7pTsZ5yj1L679nGulyJ1
+	KiGPPBa19WSozKUBetyiRAT5Wq2tvWpnS8+/KnaHRB37HSRFZvHqyCdHhUYcRZjsgekv8PDLl5fiH
+	IoUtzZmxs2XaSMTZDArNsDnuq+UzDPHrDUF59iwPJ7wXsEYAyGDs1JKyqZ+rxYXXDH+Yq3mif+oPC
+	RYm8JLQobrPu6BIeghmPAbAbqS1lCLx3D6G/Tzd2uYq95w1vzGJhFJ2PsBrMBduOL9TvFrZyvcI/L
+	G97aSkTw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vSYXo-0000000CxMh-1kI7;
-	Mon, 08 Dec 2025 10:32:40 +0000
+	id 1vSZvN-0000000D2JT-2VSX;
+	Mon, 08 Dec 2025 12:01:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vSYXm-0000000CxLR-2Y5M
+	id 1vSZvG-0000000D2Gt-1FtE
 	for barebox@lists.infradead.org;
-	Mon, 08 Dec 2025 10:32:39 +0000
+	Mon, 08 Dec 2025 12:01:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vSYXk-0002gz-Vv; Mon, 08 Dec 2025 11:32:37 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vSZvE-0002VS-9b; Mon, 08 Dec 2025 13:00:56 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vSYXk-004b2G-2Z;
-	Mon, 08 Dec 2025 11:32:36 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vSYXk-0000000HKpz-2xFA;
-	Mon, 08 Dec 2025 11:32:36 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  8 Dec 2025 11:32:35 +0100
-Message-ID: <20251208103236.4131639-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vSZvE-004bia-0E;
+	Mon, 08 Dec 2025 13:00:56 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vSZvE-000000027w4-00EI;
+	Mon, 08 Dec 2025 13:00:56 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 08 Dec 2025 13:00:52 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251208-nvmem-eeprom-v1-2-41ba588e2f3a@pengutronix.de>
+References: <20251208-nvmem-eeprom-v1-0-41ba588e2f3a@pengutronix.de>
+In-Reply-To: <20251208-nvmem-eeprom-v1-0-41ba588e2f3a@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765195255; l=1754;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=j02PMmCcJb2W9bx+BS8yCu/G1dz265WWrztQISLAytQ=;
+ b=ek22AeXobZljb7XkDlC6i6iAaM1PqcaxC5tWvAfYoDjjYHsqFo07hE9RV4XhVegFfUP7py+Yp
+ uQ64KcX8WDLDPd7wGqbPi0IpDYrtW95hmx6H5HJmrY3R16HoaLbVmMd
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251208_023238_645849_EC232920 
-X-CRM114-Status: GOOD (  10.05  )
+X-CRM114-CacheID: sfid-20251208_040058_370244_BF3B297E 
+X-CRM114-Status: GOOD (  12.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,38 +86,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! printf: define printk/no_printk in terms of prints
+Subject: [PATCH 2/4] nvmem: fix device name setting
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-printf: use printf instead of printk in no_printk
+For the nvmem device ID it was only possible to specify NVMEM_DEVID_NONE
+which translates to DEVICE_ID_SINGLE or NVMEM_DEVID_AUTO which
+translates to DEVICE_ID_DYNAMIC. All other values default to
+DEVICE_ID_DYNAMIC.
 
-The original commit was decoupling them a bit to allow for implementing
-a printk with Linux semantics. This also requires us that no_printf has
-no dependency on printk, but that was missed. Add that now.
+Explicitly allow to set a fixed device ID so that the caller can fully
+specify the name under which the new nvmem device appears. The special
+case is when no config->name is given. In this we use "nvmem" as device
+name, but we also have to ignore config->id.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/printf.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/core.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/include/printf.h b/include/printf.h
-index 58793bc067dc..3503b72c9e5e 100644
---- a/include/printf.h
-+++ b/include/printf.h
-@@ -37,7 +37,7 @@ void __noreturn panic_no_stacktrace(const char *fmt, ...) __printf(1, 2);
- #define no_printf(fmt, ...)				\
- ({							\
- 	if (0)						\
--		printk(fmt, ##__VA_ARGS__);		\
-+		printf(fmt, ##__VA_ARGS__);		\
- 	0;						\
- })
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index a96aaf0b5a7215d05e976133aacfee1fdf9c36f7..8e1cf400e5d83ad6d53d21a705913cee72bfd4ab 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -487,15 +487,23 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 	if (config->read_only || !config->reg_write || of_property_read_bool(np, "read-only"))
+ 		nvmem->read_only = true;
  
+-	dev_set_name(&nvmem->dev, "%s", config->name ? : "nvmem");
+-	switch (config->id) {
+-	case NVMEM_DEVID_NONE:
+-		nvmem->dev.id = DEVICE_ID_SINGLE;
++	if (config->name) {
++		dev_set_name(&nvmem->dev, "%s", config->name);
++
++		switch (config->id) {
++		case NVMEM_DEVID_NONE:
++			nvmem->dev.id = DEVICE_ID_SINGLE;
++			break;
++		case NVMEM_DEVID_AUTO:
++			nvmem->dev.id = DEVICE_ID_DYNAMIC;
++			break;
++		default:
++			nvmem->dev.id = config->id;
+ 		break;
+-	case NVMEM_DEVID_AUTO:
+-	default:
++		}
++	} else {
++		dev_set_name(&nvmem->dev, "nvmem");
+ 		nvmem->dev.id = DEVICE_ID_DYNAMIC;
+-		break;
+ 	}
+ 
+ 	rval = register_device(&nvmem->dev);
+
 -- 
 2.47.3
 
