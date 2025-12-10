@@ -1,74 +1,68 @@
-Delivery-date: Tue, 09 Dec 2025 14:06:15 +0100
+Delivery-date: Wed, 10 Dec 2025 08:10:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vSxPz-009Z3o-1W
+	id 1vTEL7-009pL3-1f
 	for lore@lore.pengutronix.de;
-	Tue, 09 Dec 2025 14:06:15 +0100
+	Wed, 10 Dec 2025 08:10:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vSxPy-0003jz-VI
-	for lore@pengutronix.de; Tue, 09 Dec 2025 14:06:15 +0100
+	id 1vTEL6-00004q-Vk
+	for lore@pengutronix.de; Wed, 10 Dec 2025 08:10:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lv/mf5l89Fg0Td4F5ppWTTZ/8m1SKGgyOdtfC5t3lOA=; b=3BWa8lVPRuzqf5yzRJ3pE3aOAj
-	KfIUxm+0i0fCJDU1rwcRnL2SCwZcrL6wjAgeZNbbnMHsYGMa5NRcVggyk9TyF8NmT+awPZEUjgna4
-	qITxu0WyyZfcGiVlRAet1VXXJXo3q6p1R09voIoSRLe1SAucSqB6yl1Sx+A3p7d2ZzOSRY3GL7bJQ
-	nnDIAjlAOHSZsO6KcXzM6JWexkO2J24+Uz2eP+XOgBZDotOaueJzrEatdMOISByB8A4xsMYKoMVXx
-	5bWs5ET9n1zu8KtnaoDL0FiyYSX1XgCF5/ai7Wk7ocTVa9FEXjr0SH3CHuv2J0o41nEhNA0x/05K5
-	hU5lzf2g==;
+	bh=C8eE60DG9BUo7OpkzALNIct8O+0mAw1etrdts+/oMnQ=; b=UGzIV7xftsA/p22Kv47Dk42Pf+
+	N8MJFndDV8oCorVHUG+6vCMAFKZDcAup/UUxGBn2aVc34ZWG9e8M8P5xNeGARSnI6VAinOuStd58c
+	eT0ZP2zIBhsUl8LX/6ZnAEEOll2GjSDiH5kmJJqaBmjrDGIXpzWxHZGg+JOfxBf3Z2sskh2qpDh/f
+	GT7Y7V8iA6nc2sAimyIN9QWUdNvxm7IWdT493vE6qP5P5f89d57mhHKaEIGuJZTcu+TccV0loL6hm
+	QXDht6CHGmP5ro0Kr/kSEDqIAKGiQxq8v9091Eqg++lfdeHrUrWPQqN42LB/qxDilQwaaWKKCoFO7
+	fbENY2MA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vSxPS-0000000EIci-20PF;
-	Tue, 09 Dec 2025 13:05:42 +0000
+	id 1vTEKT-0000000FC9T-20he;
+	Wed, 10 Dec 2025 07:09:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vSxPP-0000000EIb8-26zV
+	id 1vTEKO-0000000FC8w-3fVu
 	for barebox@lists.infradead.org;
-	Tue, 09 Dec 2025 13:05:41 +0000
+	Wed, 10 Dec 2025 07:09:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vSxPO-0003Ws-2z; Tue, 09 Dec 2025 14:05:38 +0100
+	id 1vTEKM-0008RG-S3; Wed, 10 Dec 2025 08:09:34 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vSxPN-004n1Q-2u;
-	Tue, 09 Dec 2025 14:05:37 +0100
+	id 1vTEKM-004uoa-2B;
+	Wed, 10 Dec 2025 08:09:34 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vSxBb-0000000HSGm-06in;
-	Tue, 09 Dec 2025 13:51:23 +0100
+	id 1vTEKM-00000001vF0-2ZK9;
+	Wed, 10 Dec 2025 08:09:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 09 Dec 2025 13:51:32 +0100
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20251208-nvmem-eeprom-v1-0-41ba588e2f3a@pengutronix.de>
+References: <20251208-nvmem-eeprom-v1-0-41ba588e2f3a@pengutronix.de>
+Message-Id: <176535057460.458268.18423169816058280554.b4-ty@pengutronix.de>
+Date: Wed, 10 Dec 2025 08:09:34 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251209-devfs-v2-13-62ae16698cff@pengutronix.de>
-References: <20251209-devfs-v2-0-62ae16698cff@pengutronix.de>
-In-Reply-To: <20251209-devfs-v2-0-62ae16698cff@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765284682; l=957;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=EvgkdhCRtSMKBkm2SYM1VUNST7ks7ZTr+LZRepjvUxc=;
- b=9Ie2QwlNEzk0cWP3wWkfFpTE5iIT3e+AOPSTD0v6+tqRFuWv9BnGiDw863tQZYf/DwPdNq+Wk
- 3HUN6swAdU3BigARa4Ihk8lqiOyJTFabqbOKblsQ6j/vNp6M9kaIrhz
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251209_050539_544258_4204C565 
-X-CRM114-Status: GOOD (  10.13  )
+X-CRM114-CacheID: sfid-20251209_230938_287155_E7072955 
+X-CRM114-Status: GOOD (  10.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,40 +84,38 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 13/13] ls: use ~0 for FILE_SIZE_STREAM
+Subject: Re: [PATCH 0/4] driver name fixes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For stream size files we used to show ((loff_t) -1) as file size which
-is quite unreadable. Use ~0 in this case.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/ls.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+On Mon, 08 Dec 2025 13:00:50 +0100, Sascha Hauer wrote:
+> Starting point of this series was that I had multiple EEPROMs on a board
+> from which one had an alias "eeprom0" and the other ones didn't have
+> aliases. the EEPROMs without aliases failed to register because they
+> tried to register themselves as "eeprom0" as well.
+> 
+> While EEPROMs triggered this series it fixes a longstanding problem in
+> barebox: It was possible to register two devices with the same name when
+> one device was registered as "foo0", DEVICE_ID_SINGLE and another one
+> as "foo", id = 0.
+> 
+> [...]
 
-diff --git a/commands/ls.c b/commands/ls.c
-index 1ccd44f7bbc00a03b773b56020a7117ce94b24cd..5c9e0f738b03ae36655b04ec1037811a4abc0423 100644
---- a/commands/ls.c
-+++ b/commands/ls.c
-@@ -33,8 +33,12 @@ static void ls_one(const char *path, const char* fullname)
- 		return;
- 
- 	mkmodestr(s.st_mode, modestr);
--	printf("%s %*llu %*.*s", modestr, SIZELEN, s.st_size, namelen,
--	       namelen, path);
-+	if (s.st_size == FILE_SIZE_STREAM)
-+		printf("%s %*s %*.*s", modestr, SIZELEN, "~0", namelen,
-+		       namelen, path);
-+	else
-+		printf("%s %*llu %*.*s", modestr, SIZELEN, s.st_size, namelen,
-+			namelen, path);
- 
- 	if (S_ISLNK(s.st_mode)) {
- 		char realname[PATH_MAX];
+Applied, thanks!
 
+[1/4] driver: implement get_free_deviceid_from()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0850fd8e22fa (link may not be stable)
+[2/4] nvmem: fix device name setting
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f6bf81cfc94d (link may not be stable)
+[3/4] driver: fix device name clashes
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6e30160425f3 (link may not be stable)
+[4/4] eeprom: at24: reserve EEPROM names which have an alias
+      https://git.pengutronix.de/cgit/barebox/commit/?id=5d1577f0d3dd (link may not be stable)
+
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
