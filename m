@@ -1,71 +1,71 @@
-Delivery-date: Wed, 10 Dec 2025 08:18:47 +0100
+Delivery-date: Wed, 10 Dec 2025 08:41:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTETH-009pVA-2c
+	id 1vTEpA-009pkF-3C
 	for lore@lore.pengutronix.de;
-	Wed, 10 Dec 2025 08:18:47 +0100
+	Wed, 10 Dec 2025 08:41:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTETH-0000fd-9L
-	for lore@pengutronix.de; Wed, 10 Dec 2025 08:18:47 +0100
+	id 1vTEpA-0002Qm-8I
+	for lore@pengutronix.de; Wed, 10 Dec 2025 08:41:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=W8TMN92O2gKksA+RB7alaPUcZwqAJZSm7wqjSvKUHfg=; b=vqXBDTugHsTGmjDOt95Gcj7m5W
-	TRiNqxeZsGK82hUiGQWqP93Qp6rFjuyFl8mS9LCZnyUjopUMm37RjR9+DxcbwM2tQnRyOpSWg43Y5
-	ITAnZAmMbNYDqceqfcgrKSjh7GJnmVoVjST4tEb9wlRF59rR0+cr7MP9AMWaF7fISKI+pi0ZuS1+R
-	xhtnEhosPEGu3kf39TRmX3q5tQUUaoS1cJMQFv+aKkxDvbA68KkyIxqdbMMUILPLtU6MR1Ds6yixO
-	xwGaTW9WRSQBDOwmrWE4Iqsxo9MjS0Hid7L8uit/sBwxZsjWvCFG0M4XNXfboM9bntfvNP0YSCIti
-	uineEvEg==;
+	bh=3GOyvc5fdMG1WDMwpRaoI+Z4m074VNlLFrV7T7+oj/E=; b=EDo15lJUkQPSy72/gLmMeiLM4N
+	Z7bE/O/7+t37QVX4bQivwoEkpyqBqO/uqRhLWmkdbKXoQqtHvNXtAfUVCQbGoAHhBqyFz5itqWMS/
+	ISTvS9pKmzRV/KPa9FpkmuY+2KqGBKOg5TyvCKZ2ndI3R4nr/qJ3PcNs5g7AOY5o9opYvjGC/Auzg
+	g2h4sP1ruRNOVlDiIt58nLNi/zcYB/ly9pkO2YdB0YOWDnfqd8kqvEDXZmUYVW1Ip7yAYgpqnm4Nn
+	01sAXrviX/IIllbnPuSac+IReNKE+0NCGAQKsFB10fo6Cm4OEA0tr1uT/343Gi3wULPJdNyHD7UfU
+	WC3x9hqw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTESr-0000000FCQj-3Iaw;
-	Wed, 10 Dec 2025 07:18:21 +0000
+	id 1vTEoZ-0000000FDBe-25cq;
+	Wed, 10 Dec 2025 07:40:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTESp-0000000FCQK-1R2R
+	id 1vTEoX-0000000FDBD-0Z0H
 	for barebox@lists.infradead.org;
-	Wed, 10 Dec 2025 07:18:20 +0000
+	Wed, 10 Dec 2025 07:40:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vTESm-0000bJ-D2; Wed, 10 Dec 2025 08:18:16 +0100
+	id 1vTEoV-0002MC-Ip; Wed, 10 Dec 2025 08:40:43 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vTESm-004upL-0h;
-	Wed, 10 Dec 2025 08:18:16 +0100
+	id 1vTEoV-004uwU-1G;
+	Wed, 10 Dec 2025 08:40:43 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vTESm-00Gtc1-0M;
-	Wed, 10 Dec 2025 08:18:16 +0100
-Date: Wed, 10 Dec 2025 08:18:16 +0100
+	id 1vTEoV-00GtoJ-0u;
+	Wed, 10 Dec 2025 08:40:43 +0100
+Date: Wed, 10 Dec 2025 08:40:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Fabian Pflug <f.pflug@pengutronix.de>
 Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <aTkeuH-uZl2T8Nwi@pengutronix.de>
+Message-ID: <aTkj-yfL7NNF44LP@pengutronix.de>
 References: <20251208-v2025-11-0-topic-optee-imx6-start-v1-0-0907128cdb8f@pengutronix.de>
- <20251208-v2025-11-0-topic-optee-imx6-start-v1-1-0907128cdb8f@pengutronix.de>
+ <20251208-v2025-11-0-topic-optee-imx6-start-v1-3-0907128cdb8f@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251208-v2025-11-0-topic-optee-imx6-start-v1-1-0907128cdb8f@pengutronix.de>
+In-Reply-To: <20251208-v2025-11-0-topic-optee-imx6-start-v1-3-0907128cdb8f@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251209_231819_383229_CFD07111 
-X-CRM114-Status: GOOD (  20.76  )
+X-CRM114-CacheID: sfid-20251209_234045_197745_9BD2DE27 
+X-CRM114-Status: GOOD (  30.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,41 +87,156 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] ARM: make arm_mem_scratch respect the OP-TEE stack
+Subject: Re: [PATCH 3/3] ARM: i.MX6: load optee in PBL before barebox proper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Fabian,
-
-On Mon, Dec 08, 2025 at 10:28:38AM +0100, Fabian Pflug wrote:
-> According to the ASCII-ART above, before the end of memory comes the
-> optee memory, then the scratch stack.
+On Mon, Dec 08, 2025 at 10:28:40AM +0100, Fabian Pflug wrote:
+> This patch uses the space in the scratch memory to hand over to OP-TEE
+> for device-tree overlays. If OP-TEE is configured with CFG_DT_ADDR=,
+> then it will write its devicetree-overlay into the address and it will
+> be picked up and applied by barebox.
+> 
+> This allows for generic OP-TEE loading for i.MX6 devices without changes
+> to the board or lowlevel code.
 > 
 > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 > ---
->  arch/arm/include/asm/barebox-arm.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm/mach-imx/esdctl.c | 49 +++++++++++++++++++++++++++++++++++++++++++---
+>  common/Kconfig             |  1 +
+>  firmware/Kconfig           |  8 ++++++++
+>  firmware/Makefile          |  1 +
+>  include/tee/optee.h        |  9 ++++++++-
+>  5 files changed, 64 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-> index 11be8b8583..e630969796 100644
-> --- a/arch/arm/include/asm/barebox-arm.h
-> +++ b/arch/arm/include/asm/barebox-arm.h
-> @@ -159,7 +159,7 @@ static inline unsigned long arm_mem_stack_top(unsigned long endmem)
+> diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+> index b9393fba4a..2434844c96 100644
+> --- a/arch/arm/mach-imx/esdctl.c
+> +++ b/arch/arm/mach-imx/esdctl.c
+> @@ -6,6 +6,7 @@
+>  #include <common.h>
+>  #include <io.h>
+>  #include <errno.h>
+> +#include <firmware.h>
+>  #include <linux/sizes.h>
+>  #include <init.h>
+>  #include <of.h>
+> @@ -30,6 +31,7 @@
+>  #include <mach/imx/imx7-regs.h>
+>  #include <mach/imx/imx9-regs.h>
+>  #include <mach/imx/scratch.h>
+> +#include <mach/imx/tzasc.h>
+>  #include <tee/optee.h>
 >  
->  static inline const void *arm_mem_scratch_get(void)
+>  struct imx_esdctl_data {
+> @@ -976,18 +978,59 @@ void __noreturn imx53_barebox_entry(void *boarddata)
+>  static void __noreturn
+>  imx6_barebox_entry(unsigned long membase, void *boarddata)
 >  {
-> -	return (const void *)arm_mem_scratch(arm_mem_endmem_get());
-> +	return (const void *)arm_mem_scratch(arm_mem_optee(arm_mem_endmem_get()));
+> -	barebox_arm_entry(membase,
+> -			  imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR)),
+> -			  boarddata);
+> +	ulong memsize = imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR));
+> +
+> +	if (IS_ENABLED(CONFIG_FIRMWARE_IMX6_OPTEE) &&
+> +	    IS_ENABLED(CONFIG_PBL_OPTEE) && imx6_can_access_tzasc()) {
+> +		void *fdto;
+> +		unsigned int fdto_size;
+> +		int tee_size;
+> +		void *tee;
+> +
+> +		get_builtin_firmware(imx6_optee_bin, &tee, &tee_size);
+> +
+> +		ulong endmem = arm_mem_barebox_image_end(membase + memsize);
+> +		imx_init_scratch_space(endmem, 1);
+> +		imx_scratch_get_optee_fdto(&fdto, &fdto_size);
+> +		if (!fdto_size) {
+> +			pr_warn("No space configured for OP-TEE devicetree\n");
+> +			fdto = NULL;
+> +		}
+> +
+> +		start_optee_early(fdto, tee);
+> +		if (fdto_size)
+> +			handoff_data_add(HANDOFF_DATA_BL32_DT_OVL, fdto,
+> +					 fdto_size);
+> +	}
+> +
+> +	barebox_arm_entry(membase, memsize, boarddata);
+>  }
+>  
+>  void __noreturn imx6q_barebox_entry(void *boarddata)
+>  {
+> +	if (IS_ENABLED(CONFIG_FIRMWARE_IMX6_OPTEE) &&
+> +	    IS_ENABLED(CONFIG_PBL_OPTEE) && imx6_can_access_tzasc()) {
+> +		if (imx6q_tzc380_is_bypassed())
+> +			panic("TZC380 is bypassed, abort OP-TEE loading\n");
+> +
+> +		/* Add early non-secure TZASC region1 to pass DTO */
+> +		imx6q_tzc380_early_ns_region1();
+> +	}
+> +
+>  	imx6_barebox_entry(MX6_MMDC_PORT01_BASE_ADDR, boarddata);
+>  }
+>  
+>  void __noreturn imx6ul_barebox_entry(void *boarddata)
+>  {
+> +	if (IS_ENABLED(CONFIG_FIRMWARE_IMX6_OPTEE) &&
+> +	    IS_ENABLED(CONFIG_PBL_OPTEE) && imx6_can_access_tzasc()) {
+> +		if (imx6ul_tzc380_is_bypassed())
+> +			panic("TZC380 is bypassed, abort OP-TEE loading\n");
+> +
+> +		/* Add early non-secure TZASC region1 to pass DTO */
+> +		imx6ul_tzc380_early_ns_region1();
+> +	}
+> +
+>  	imx6_barebox_entry(MX6_MMDC_PORT0_BASE_ADDR, boarddata);
+>  }
+>  
+> diff --git a/common/Kconfig b/common/Kconfig
+> index c42dc88ccf..20012cdc2c 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -322,6 +322,7 @@ config SCRATCH_FDTO_SIZE
+>  	hex
+>  	default 0x0
+>  	default 0x4000 if PBL_EARLY_FDT_LOAD
+> +	default 0x4000 if FIRMWARE_IMX6_OPTEE
+>  	prompt "Scratch FDTO size"
+>  	help
+>  	  The size of possible FDT overlay areas used by BL3x binaries to store
+> diff --git a/firmware/Kconfig b/firmware/Kconfig
+> index a97a1e0dd3..3e4245989c 100644
+> --- a/firmware/Kconfig
+> +++ b/firmware/Kconfig
+> @@ -49,6 +49,14 @@ config FIRMWARE_IMX93_ATF
+>  config FIRMWARE_AGILEX5_ATF
+>  	bool
+>  
+> +config FIRMWARE_IMX6_OPTEE
+> +	bool "install OP-TEE on i.MX6 boards"
+> +	depends on PBL_OPTEE
+> +	help
+> +	  This enables OP-TEE loading and starting on i.MX6. Place the OP-TEE binary
+> +	  in CONFIG_EXTRA_FIRMWARE_DIR/imx6-optee.bin. If this is enabled, then
+> +	  the OP-TEE will automagically be loaded during boot.
 
-arm_mem_scratch() is:
+automatically please.
 
-static inline unsigned long arm_mem_scratch(unsigned long endmem)
-{
-	return arm_mem_optee(endmem) - SCRATCH_SIZE;
-}
+> -int start_optee_early(void* fdt, void* tee);
+> +int start_optee_early(void *fdt, void *tee);
+>  int imx6q_start_optee_early(void *fdt, void *tee, void *data_location,
+>  			    unsigned int data_location_size);
+>  int imx6ul_start_optee_early(void *fdt, void *tee, void *data_location,
+>  			     unsigned int data_location_size);
+>  
+> +#else
+> +
+> +static inline int start_optee_early(void *fdt, void *tee)
+> +{
+> +	return -ENOSYS;
+> +}
 
-So this already has the OPTEE space substracted. With your patch it's
-substracted twice.
+Is this needed?
 
 Sascha
 
