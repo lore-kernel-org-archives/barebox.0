@@ -1,68 +1,71 @@
-Delivery-date: Wed, 10 Dec 2025 08:10:21 +0100
+Delivery-date: Wed, 10 Dec 2025 08:18:47 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTEL7-009pL3-1f
+	id 1vTETH-009pVA-2c
 	for lore@lore.pengutronix.de;
-	Wed, 10 Dec 2025 08:10:21 +0100
+	Wed, 10 Dec 2025 08:18:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTEL6-00004q-Vk
-	for lore@pengutronix.de; Wed, 10 Dec 2025 08:10:21 +0100
+	id 1vTETH-0000fd-9L
+	for lore@pengutronix.de; Wed, 10 Dec 2025 08:18:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=C8eE60DG9BUo7OpkzALNIct8O+0mAw1etrdts+/oMnQ=; b=UGzIV7xftsA/p22Kv47Dk42Pf+
-	N8MJFndDV8oCorVHUG+6vCMAFKZDcAup/UUxGBn2aVc34ZWG9e8M8P5xNeGARSnI6VAinOuStd58c
-	eT0ZP2zIBhsUl8LX/6ZnAEEOll2GjSDiH5kmJJqaBmjrDGIXpzWxHZGg+JOfxBf3Z2sskh2qpDh/f
-	GT7Y7V8iA6nc2sAimyIN9QWUdNvxm7IWdT493vE6qP5P5f89d57mhHKaEIGuJZTcu+TccV0loL6hm
-	QXDht6CHGmP5ro0Kr/kSEDqIAKGiQxq8v9091Eqg++lfdeHrUrWPQqN42LB/qxDilQwaaWKKCoFO7
-	fbENY2MA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=W8TMN92O2gKksA+RB7alaPUcZwqAJZSm7wqjSvKUHfg=; b=vqXBDTugHsTGmjDOt95Gcj7m5W
+	TRiNqxeZsGK82hUiGQWqP93Qp6rFjuyFl8mS9LCZnyUjopUMm37RjR9+DxcbwM2tQnRyOpSWg43Y5
+	ITAnZAmMbNYDqceqfcgrKSjh7GJnmVoVjST4tEb9wlRF59rR0+cr7MP9AMWaF7fISKI+pi0ZuS1+R
+	xhtnEhosPEGu3kf39TRmX3q5tQUUaoS1cJMQFv+aKkxDvbA68KkyIxqdbMMUILPLtU6MR1Ds6yixO
+	xwGaTW9WRSQBDOwmrWE4Iqsxo9MjS0Hid7L8uit/sBwxZsjWvCFG0M4XNXfboM9bntfvNP0YSCIti
+	uineEvEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTEKT-0000000FC9T-20he;
-	Wed, 10 Dec 2025 07:09:41 +0000
+	id 1vTESr-0000000FCQj-3Iaw;
+	Wed, 10 Dec 2025 07:18:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTEKO-0000000FC8w-3fVu
+	id 1vTESp-0000000FCQK-1R2R
 	for barebox@lists.infradead.org;
-	Wed, 10 Dec 2025 07:09:39 +0000
+	Wed, 10 Dec 2025 07:18:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vTEKM-0008RG-S3; Wed, 10 Dec 2025 08:09:34 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vTESm-0000bJ-D2; Wed, 10 Dec 2025 08:18:16 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vTEKM-004uoa-2B;
-	Wed, 10 Dec 2025 08:09:34 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vTEKM-00000001vF0-2ZK9;
-	Wed, 10 Dec 2025 08:09:34 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vTESm-004upL-0h;
+	Wed, 10 Dec 2025 08:18:16 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vTESm-00Gtc1-0M;
+	Wed, 10 Dec 2025 08:18:16 +0100
+Date: Wed, 10 Dec 2025 08:18:16 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20251208-nvmem-eeprom-v1-0-41ba588e2f3a@pengutronix.de>
-References: <20251208-nvmem-eeprom-v1-0-41ba588e2f3a@pengutronix.de>
-Message-Id: <176535057460.458268.18423169816058280554.b4-ty@pengutronix.de>
-Date: Wed, 10 Dec 2025 08:09:34 +0100
+To: Fabian Pflug <f.pflug@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aTkeuH-uZl2T8Nwi@pengutronix.de>
+References: <20251208-v2025-11-0-topic-optee-imx6-start-v1-0-0907128cdb8f@pengutronix.de>
+ <20251208-v2025-11-0-topic-optee-imx6-start-v1-1-0907128cdb8f@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208-v2025-11-0-topic-optee-imx6-start-v1-1-0907128cdb8f@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251209_230938_287155_E7072955 
-X-CRM114-Status: GOOD (  10.10  )
+X-CRM114-CacheID: sfid-20251209_231819_383229_CFD07111 
+X-CRM114-Status: GOOD (  20.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,38 +87,48 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/4] driver name fixes
+Subject: Re: [PATCH 1/3] ARM: make arm_mem_scratch respect the OP-TEE stack
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi Fabian,
 
-On Mon, 08 Dec 2025 13:00:50 +0100, Sascha Hauer wrote:
-> Starting point of this series was that I had multiple EEPROMs on a board
-> from which one had an alias "eeprom0" and the other ones didn't have
-> aliases. the EEPROMs without aliases failed to register because they
-> tried to register themselves as "eeprom0" as well.
+On Mon, Dec 08, 2025 at 10:28:38AM +0100, Fabian Pflug wrote:
+> According to the ASCII-ART above, before the end of memory comes the
+> optee memory, then the scratch stack.
 > 
-> While EEPROMs triggered this series it fixes a longstanding problem in
-> barebox: It was possible to register two devices with the same name when
-> one device was registered as "foo0", DEVICE_ID_SINGLE and another one
-> as "foo", id = 0.
+> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> ---
+>  arch/arm/include/asm/barebox-arm.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> [...]
+> diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+> index 11be8b8583..e630969796 100644
+> --- a/arch/arm/include/asm/barebox-arm.h
+> +++ b/arch/arm/include/asm/barebox-arm.h
+> @@ -159,7 +159,7 @@ static inline unsigned long arm_mem_stack_top(unsigned long endmem)
+>  
+>  static inline const void *arm_mem_scratch_get(void)
+>  {
+> -	return (const void *)arm_mem_scratch(arm_mem_endmem_get());
+> +	return (const void *)arm_mem_scratch(arm_mem_optee(arm_mem_endmem_get()));
 
-Applied, thanks!
+arm_mem_scratch() is:
 
-[1/4] driver: implement get_free_deviceid_from()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0850fd8e22fa (link may not be stable)
-[2/4] nvmem: fix device name setting
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f6bf81cfc94d (link may not be stable)
-[3/4] driver: fix device name clashes
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6e30160425f3 (link may not be stable)
-[4/4] eeprom: at24: reserve EEPROM names which have an alias
-      https://git.pengutronix.de/cgit/barebox/commit/?id=5d1577f0d3dd (link may not be stable)
+static inline unsigned long arm_mem_scratch(unsigned long endmem)
+{
+	return arm_mem_optee(endmem) - SCRATCH_SIZE;
+}
 
-Best regards,
+So this already has the OPTEE space substracted. With your patch it's
+substracted twice.
+
+Sascha
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
