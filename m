@@ -1,58 +1,75 @@
-Delivery-date: Wed, 10 Dec 2025 10:32:46 +0100
+Delivery-date: Wed, 10 Dec 2025 11:16:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTGYw-009riQ-2T
+	id 1vTHFT-009sTA-1f
 	for lore@lore.pengutronix.de;
-	Wed, 10 Dec 2025 10:32:46 +0100
+	Wed, 10 Dec 2025 11:16:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTGYw-00068f-75
-	for lore@pengutronix.de; Wed, 10 Dec 2025 10:32:46 +0100
+	id 1vTHFS-0001uo-W4
+	for lore@pengutronix.de; Wed, 10 Dec 2025 11:16:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
-	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FL0+ofgHWHg8tNpJvbu4X87gCwGPiLybJVQ7tYGgKfA=; b=jkOzIe1rMMEKTGDysqvqbp8a74
-	EH1VQ5kf4hX+7gTv4BN3WCL/x03yXCaRx/FkFx4YZHHUBMDbgj45bQ0F3WeI1tp9ZrcLHyVeyX2JT
-	YBrbjWSYe2ayuzj6KWjUow9sHoZnyZABjb1YWKaXSOpbZDhSWyKZhHq/3dgjIqnpMl2fUZda+Oc+a
-	Y2U7dDEbNpUkozuTjark5fJukqBNFyJibZKbmCYPx6RxSrYaFC+rAjX0jCav06oTvdXxCt4k/xcx9
-	+jmbP4CQHx5BG/Wc23XNRotlaQJoGyp7nJq9uEKis5FwVSRj+LHq/SobpPyGa7JNT/aFqdfSlvbDN
-	Iq2uFqVg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=st+z/YRTdfaWAaRhqCHTJZLLQSwCB15HtEelWgaDSFo=; b=MyGGphoGHth3xfZfRj5HFuRYDH
+	HPThvq/umVIqfdv5SZdBt5t6xO6t0vSeHGSqBjwMuchGDoo9GBsvBEPZwsx8oLQZ8seTgmhiPOkWm
+	Ja81GNTHiyAsMWbgP8gf5E+SmCMRw6pT/glFhQD2QpFUiBQmH7oF7z0sblfdRt1cMqbOjnztcuDFc
+	LeuiADxxcQZvsq3UzBis+q//NnIUtXDQOGUyd1ORSxTIVsM2YewVGWFdwDsJ+tGR47dJKm3SU/xc/
+	He+U1eSRvv1rZnsa98Y9kG2tXttGWAyoZYgCpAz7aha4/yu8UgpEN2EiMPnwJGBg5M5R0EEapUYf/
+	QyHjOZBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTGYU-0000000FHmD-0ABo;
-	Wed, 10 Dec 2025 09:32:18 +0000
+	id 1vTHEw-0000000FJL1-2G2z;
+	Wed, 10 Dec 2025 10:16:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTGYR-0000000FHlX-001M
+	id 1vTHEq-0000000FJKD-0n8l
 	for barebox@lists.infradead.org;
-	Wed, 10 Dec 2025 09:32:16 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1vTGYP-00063H-EE; Wed, 10 Dec 2025 10:32:13 +0100
-Message-ID: <5ae5767f95d85c9556884def41cd0e627ed2003c.camel@pengutronix.de>
-From: Fabian Pflug <f.pflug@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Date: Wed, 10 Dec 2025 10:32:13 +0100
-In-Reply-To: <aTkeuH-uZl2T8Nwi@pengutronix.de>
-References: <20251208-v2025-11-0-topic-optee-imx6-start-v1-0-0907128cdb8f@pengutronix.de>
-	 <20251208-v2025-11-0-topic-optee-imx6-start-v1-1-0907128cdb8f@pengutronix.de>
-	 <aTkeuH-uZl2T8Nwi@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	Wed, 10 Dec 2025 10:16:08 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vTHEm-0001eJ-SK; Wed, 10 Dec 2025 11:16:00 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vTHEm-004wMK-22;
+	Wed, 10 Dec 2025 11:16:00 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vTHEm-00000004RFo-2IXJ;
+	Wed, 10 Dec 2025 11:16:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 10 Dec 2025 11:15:59 +0100
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251210-devfs-prep-v1-1-3a2a3aa27eab@pengutronix.de>
+References: <20251210-devfs-prep-v1-0-3a2a3aa27eab@pengutronix.de>
+In-Reply-To: <20251210-devfs-prep-v1-0-3a2a3aa27eab@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765361760; l=867;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=cQKbrHLRlbqplYlI0igvXJjzfMQmf9MS5GCnKn2fjmY=;
+ b=YIb7tpPL0ZDiKdymz6rO9aUS2O9OW7PZTHIfxbRtlfetH55Fj4U5ay0JxvJPqY85XzEAjnU0l
+ CmSaN/ZtYwnAh5JlWS3iRSiPtYp3z8eMeboF1TFO/TVQMUSokvW+n9f
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251210_013215_039251_383947EA 
-X-CRM114-Status: GOOD (  17.48  )
+X-CRM114-CacheID: sfid-20251210_021604_236580_B941312D 
+X-CRM114-Status: UNSURE (   9.24  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,62 +87,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] ARM: make arm_mem_scratch respect the OP-TEE stack
+Subject: [PATCH 1/3] fs: get path in path_init()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha :)
+Call path_get() in path_init() when dirfd doesn't belong to the current
+directory and is not the root directory. Without it path_put() will be
+called later without a previous path_get().
 
-On Wed, 2025-12-10 at 08:18 +0100, Sascha Hauer wrote:
-> Hi Fabian,
->=20
-> On Mon, Dec 08, 2025 at 10:28:38AM +0100, Fabian Pflug wrote:
-> > According to the ASCII-ART above, before the end of memory comes the
-> > optee memory, then the scratch stack.
-> >=20
-> > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-> > ---
-> > =C2=A0arch/arm/include/asm/barebox-arm.h | 2 +-
-> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/=
-barebox-arm.h
-> > index 11be8b8583..e630969796 100644
-> > --- a/arch/arm/include/asm/barebox-arm.h
-> > +++ b/arch/arm/include/asm/barebox-arm.h
-> > @@ -159,7 +159,7 @@ static inline unsigned long arm_mem_stack_top(unsig=
-ned long endmem)
-> > =C2=A0
-> > =C2=A0static inline const void *arm_mem_scratch_get(void)
-> > =C2=A0{
-> > -	return (const void *)arm_mem_scratch(arm_mem_endmem_get());
-> > +	return (const void *)arm_mem_scratch(arm_mem_optee(arm_mem_endmem_get=
-()));
->=20
-> arm_mem_scratch() is:
->=20
-> static inline unsigned long arm_mem_scratch(unsigned long endmem)
-> {
-> 	return arm_mem_optee(endmem) - SCRATCH_SIZE;
-> }
->=20
-> So this already has the OPTEE space substracted. With your patch it's
-> substracted twice.
+Reproducer:
 
-Yes, you are right! Don't know why I did not see that...
+mkdir /ram
+mount -t ramfs none /ram
+stat -C ram .
+umount /ram
 
-This also makes the third patch in the series wrong, because it will remove=
- the offset twice in another way.
+Without this patch umount fails with -EBUSY.
 
-I will send a new series after resolving the comment on the other patch. :)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Fabian
+diff --git a/fs/fs.c b/fs/fs.c
+index d884726187dd526213f8b51a68a2e0db1bb50e58..f7859304a7b5f4158db83298b586c633668301d5 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -2251,6 +2251,7 @@ static const char *path_init(int dirfd, struct nameidata *nd, unsigned flags)
+ 
+ 		nd->path.mnt = &f->fsdev->vfsmount;
+ 		nd->path.dentry = f->f_path.dentry;
++		path_get(&nd->path);
+ 		follow_mount(&nd->path);
+ 
+ 		if (*s == '/')
 
->=20
-> Sascha
+-- 
+2.47.3
+
 
 
