@@ -1,71 +1,64 @@
-Delivery-date: Thu, 11 Dec 2025 09:10:42 +0100
+Delivery-date: Thu, 11 Dec 2025 09:40:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTbl4-00ADl1-1M
+	id 1vTcDQ-00AELN-2W
 	for lore@lore.pengutronix.de;
-	Thu, 11 Dec 2025 09:10:42 +0100
+	Thu, 11 Dec 2025 09:40:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTbl3-0000dm-SQ
-	for lore@pengutronix.de; Thu, 11 Dec 2025 09:10:42 +0100
+	id 1vTcDQ-0003X1-6T
+	for lore@pengutronix.de; Thu, 11 Dec 2025 09:40:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lTqGoRiepsJGzWpjBUjWGDibEr5Peqk13670vgqtgbg=; b=FdgOUJuEbjWoBSVfMCAfFtNhG/
-	y3S/ejckDC5/40bIeCeRs5440X2nA0do5wKUDmjB4EMM1pOodJUDacGXdqQmqoviJw/edSD/dMUGZ
-	v02At2xl6XbjkDp+7bG0x4fJ4yejJwvd6dShoJFmk4+ufgDdjjw7zKYin+IzEEeA4U0tVA5fiEhlw
-	oyxUcGbWnunZBM8W0VASG2Xspon8GW6SZ/PPWvEmv2mEiDUejbmoCznnPhCHeYHOldWEyuXIfcKgN
-	ZcIpIXVf3fzGpDrTcFe/0MdQGk717MeXFJONPNN9kzdoYDBySkLO+lnfvKYkSbfcAAf77SX+sxsth
-	GCdNmwQw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Tq1KSK0/Brx0pSpVHcslqhI0Ze8MSi/5hDZsUzII82A=; b=C8z4iBHXZMnS0E
+	/daon61p1U9wHNHMaBmyx2e4c70+/SVkPTn9XPxh53usvyLEX6ISoZG1xoAqXNrK28aRN1P/HR8qR
+	f+jjJ9FxE/kzSuyvYAG+YzlEcqK4ZEttNiPmXd7okbWyI0JQtR/jQ6tkqhSmvKZE9XugcEJWqcGDU
+	d/V4fX2OR0NGUsavaMD9FIg7ipb94FXmgSDYcKGfFhtgw3PDL0cjqreCevxnRrDX6vkyh8nZQ7TYA
+	fz+WZu9TpcSOU5BNQ9DmRnU1WL6x5v4+TDihh/Am9+Jg9Q8fdvxhvNAOFzEKN/99r/kVgt1KaZmhv
+	vYyindUA3BWi++8fb/5w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTbkh-0000000GMS5-2G57;
-	Thu, 11 Dec 2025 08:10:19 +0000
+	id 1vTcCz-0000000GO4y-3baO;
+	Thu, 11 Dec 2025 08:39:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTbke-0000000GMRe-38cp
+	id 1vTcCu-0000000GO3t-1ZBU
 	for barebox@lists.infradead.org;
-	Thu, 11 Dec 2025 08:10:17 +0000
+	Thu, 11 Dec 2025 08:39:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vTbkb-0000Yd-OJ; Thu, 11 Dec 2025 09:10:13 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vTcCs-0003PV-O3; Thu, 11 Dec 2025 09:39:26 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vTbkb-00563I-1o;
-	Thu, 11 Dec 2025 09:10:13 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vTbkb-001EXS-1O;
-	Thu, 11 Dec 2025 09:10:13 +0100
-Date: Thu, 11 Dec 2025 09:10:13 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vTcCs-0056Bc-1n;
+	Thu, 11 Dec 2025 09:39:26 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vTcCs-00000008KPH-1qIJ;
+	Thu, 11 Dec 2025 09:39:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <aTp8ZaoiferxM6ES@pengutronix.de>
-References: <20251209081731.3444677-1-s.hauer@pengutronix.de>
- <8c86e290-7e82-417f-943d-cd45fa147e8a@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 11 Dec 2025 09:39:24 +0100
+Message-ID: <20251211083925.1985059-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8c86e290-7e82-417f-943d-cd45fa147e8a@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251211_001016_807931_CC2A8AAF 
-X-CRM114-Status: GOOD (  21.81  )
+X-CRM114-CacheID: sfid-20251211_003929_096752_6274EAC1 
+X-CRM114-Status: GOOD (  14.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,6 +70,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Marco Felsch <mfe@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -87,61 +81,70 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX Riotboard: Use eMMC boot partition to boot
+Subject: [PATCH 1/2] ARM: i.MX8MM EVK: refactor early startup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Dec 09, 2025 at 10:47:47AM +0100, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 12/9/25 9:17 AM, Sascha Hauer wrote:
-> > The Riotboard boots fine from eMMC boot partitions, so use them to store
-> > barebox.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> Is this worth a migration guide entry?
+refactor startup a bit to make it more clear:
+- Do not call start_atf() when not in EL3 rather than immediately
+  returning from the function
+- rename start_atf() to nxp_imx8mm_evk_init_early() and call
+  nxp_imx8mm_evk_init_early() from nxp_imx8mm_evk_start() directly
 
-Yeah, added one.
+This is done in preparation for a series which changes
+nxp_imx8mm_evk_init_early() to take a device tree pointer.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/nxp-imx8mm-evk/lowlevel.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-> 
-> Cheers,
-> Ahmad
-> 
-> > ---
-> >  arch/arm/boards/embest-riotboard/board.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/boards/embest-riotboard/board.c b/arch/arm/boards/embest-riotboard/board.c
-> > index ebaff48388..83fbf0ee57 100644
-> > --- a/arch/arm/boards/embest-riotboard/board.c
-> > +++ b/arch/arm/boards/embest-riotboard/board.c
-> > @@ -21,7 +21,7 @@
-> >  
-> >  static int riotboard_probe(struct device *dev)
-> >  {
-> > -	imx6_bbu_internal_mmc_register_handler("emmc", "/dev/mmc3.barebox",
-> > +	imx6_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc3",
-> >  			BBU_HANDLER_FLAG_DEFAULT);
-> >  	imx6_bbu_internal_mmc_register_handler("sd", "/dev/mmc2", 0);
-> >  
-> 
-> -- 
-> Pengutronix e.K.                  |                             |
-> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-> 
-> 
-
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+index 881d8285b6..a09caa4904 100644
+--- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+@@ -95,21 +95,11 @@ static void power_init_board(void)
+ 
+ extern struct dram_timing_info imx8mm_evk_dram_timing;
+ 
+-static void start_atf(void)
++static void nxp_imx8mm_evk_init_early(void)
+ {
+-	/*
+-	 * If we are in EL3 we are running for the first time and need to
+-	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
+-	 * to DRAM in EL2.
+-	 */
+-	if (current_el() != 3)
+-		return;
+-
+ 	imx8mm_early_clock_init();
+ 	power_init_board();
+ 	imx8mm_ddr_init(&imx8mm_evk_dram_timing, DRAM_TYPE_LPDDR4);
+-
+-	imx8mm_load_and_start_image_via_tfa();
+ }
+ 
+ /*
+@@ -136,7 +126,15 @@ static __noreturn noinline void nxp_imx8mm_evk_start(void)
+ 
+ 	setup_uart();
+ 
+-	start_atf();
++	/*
++	 * If we are in EL3 we are running for the first time and need to
++	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
++	 * to DRAM in EL2.
++	 */
++	if (current_el() == 3) {
++		nxp_imx8mm_evk_init_early();
++		imx8mm_load_and_start_image_via_tfa();
++	}
+ 
+ 	/*
+ 	 * Standard entry we hit once we initialized both DDR and ATF. I2C pad
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.3
+
 
 
