@@ -1,80 +1,81 @@
-Delivery-date: Thu, 11 Dec 2025 21:37:36 +0100
+Delivery-date: Thu, 11 Dec 2025 21:39:58 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTnPs-00AQKW-2z
+	id 1vTnSA-00AQMO-11
 	for lore@lore.pengutronix.de;
-	Thu, 11 Dec 2025 21:37:36 +0100
+	Thu, 11 Dec 2025 21:39:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTnPs-0008PK-7d
-	for lore@pengutronix.de; Thu, 11 Dec 2025 21:37:36 +0100
+	id 1vTnS9-0000Ip-MQ
+	for lore@pengutronix.de; Thu, 11 Dec 2025 21:39:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=P8R5tTFao8KYuX60H2gI7czzxX/T0hRL+CP9uwVcYpI=; b=hQR70PlY/DLaBDCp3S7paWb5Rd
-	tVzcEQxiJbAbL39WQkLQYFyQI7KGZP/AHbKhzxpZZ1I9AEjj1yJy2PuG4ChIauMMvkftgoboYj90g
-	4DLElB+K06TWsxdwA9CNw95R81w65sFY6dJEmUfT+U7yfJrSIskHeMysc1moZ4rue9aAd7iTe4S/f
-	QXhJrfCeVz53C0CZneustJikan/fT87WtDhXw1yfHmt5PKfmo30nM9WcYuHo11n4on/qiyvVcO9cr
-	DzoQADEGX++sy6rykMSQRUKrvJfb8k+sToGer6CpBuXtQ3ZBmw+Ro1DjaAj6RQWjim5jt4K5ou2BV
-	E6jVgL5Q==;
+	bh=TpPdZfUiyVNyShtqjEGxAya4M45DRrZiNLGqUNiczEs=; b=4dI5iSCjHNTZJOoRXwqv9qVDfs
+	+osLn+5Y5IIH0NAqbjrfjxRxc3DHPJ3M338jWn8xM2bnzIvj2C34enr/rKtRONrdT0liqX93cFWhD
+	kANII3+ssO7IWGcaK2pnic92hs8LcINSuXROvjj582Dl5B9K5UUAOB0mL8TM7Bd42zkQFmhJpF//r
+	8Bb27B1fExS/f02gARockLvuP0Gbb6XtCFKHCrFfTTsCQloB2qB1q6LC4/59yp7v1NOlTuh4zShna
+	dXSYa9D7IMMCfT5iXn0G6l5x6mzNVJy/ZE6fdfdYZH7o/NYbjfS6RrZzG4yyS8+Wj8IlSzeC/RPAZ
+	myCHh4Yg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTnPW-0000000HFg3-1TCP;
-	Thu, 11 Dec 2025 20:37:14 +0000
+	id 1vTnRl-0000000HFtp-3Nod;
+	Thu, 11 Dec 2025 20:39:33 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTnPU-0000000HFf3-40Cq
+	id 1vTnRk-0000000HFth-0RtH
 	for barebox@bombadil.infradead.org;
-	Thu, 11 Dec 2025 20:37:12 +0000
+	Thu, 11 Dec 2025 20:39:32 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:In-Reply-To:References;
-	bh=P8R5tTFao8KYuX60H2gI7czzxX/T0hRL+CP9uwVcYpI=; b=lXHUWuLSpAnQ014WyO1HqiZdZD
-	LvCG6YrarfK4Faek5JlYnM9H3Qd39MJKGXMsCHHggvfx55NfkOTJeiM8xSuKw66EgtnSnmGvdtCu8
-	3cJIM9i+6EVRwPfK5Cdl+IZtLO2jchSYWEMBLF2d7tEZgHzQilj1Xe/DDduz9R9B1BVo1ue8HVcc3
-	ASkS3u3Uv2Z1cIha/WdyzjL0N2+cK6jvY903QuusUAHduh2WBCVcd3qxw09sbDI/pTutmSR1a25pp
-	sVZDLd1dpBxCGoV2m2HGz4s0znh+bpzWkRtfQQF+ez89iokH0OyRO4nnhrlhwa/IQNqMO0r28YltH
-	vxezcJqQ==;
+	bh=TpPdZfUiyVNyShtqjEGxAya4M45DRrZiNLGqUNiczEs=; b=TL2+cYsqkIR3VxVz2GEpSv8lQU
+	ayV0FUm98Uq9sl6oIFoRrnqm4QQlcvDIZAerbpRF6yYE+F5DNapRfKIFbVJBwlvcKpJ/0XS6AGC0K
+	7tMnCLSYyizh+tgvs2DiPsO+h5bxG9M7YL79WUznzjd1maIyecU/HKuYpdS+w3xyJjPxklfa/SA+i
+	k5zRfSI/4nRWEMzawUPLphs9zadoW7oInn52RmRMfZc439DQy4fVGdMM3LsdLqb4QrYxiwAtRZj7a
+	hBxK83Vp1nRIdTC5ddYGy5ZfoYeWcZ7CxkUrBrNWqpXdRj8njd62I9MDxc20tY3jbU7AMWXLLKswu
+	kZx8nzug==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTmXx-0000000FZai-0w3X
+	id 1vTmaB-0000000FZfi-1HQb
 	for barebox@lists.infradead.org;
-	Thu, 11 Dec 2025 19:41:54 +0000
+	Thu, 11 Dec 2025 19:44:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTnPR-00084e-Ie; Thu, 11 Dec 2025 21:37:09 +0100
+	id 1vTnRf-0000Dv-TE; Thu, 11 Dec 2025 21:39:27 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTnPR-005BWu-0h;
-	Thu, 11 Dec 2025 21:37:09 +0100
+	id 1vTnRf-005BX8-2J;
+	Thu, 11 Dec 2025 21:39:27 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTnPR-0000000AEzR-0TrK;
-	Thu, 11 Dec 2025 21:37:09 +0100
+	id 1vTnRf-0000000AW7N-2brZ;
+	Thu, 11 Dec 2025 21:39:27 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 11 Dec 2025 21:37:07 +0100
-Message-ID: <20251211203708.2440188-1-a.fatoum@pengutronix.de>
+Date: Thu, 11 Dec 2025 21:39:26 +0100
+Message-ID: <20251211203927.2506115-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251211_194153_397326_84235DE5 
-X-CRM114-Status: GOOD (  10.18  )
+X-CRM114-CacheID: sfid-20251211_194411_583835_A3119595 
+X-CRM114-Status: UNSURE (   9.87  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,71 +93,85 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,SUBJECT_IN_BLACKLIST,
-	SUBJECT_IN_BLOCKLIST autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] driver: base: report driver remove before, not after operation
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH] clk: rk3568: sync driver with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Calling pr_report_probe() after the removal is unexpected as for
-initcalls and probes, we print before to make hangs or crashes
-easier to pinpoint.
+The driver has gained  some more PLL rates, a new clock and three
+additions to the list of critical clocks. Import these changes.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/base/driver.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/clk/rockchip/clk-rk3568.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 753e06963b16..102e7ea2c0dd 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -659,15 +659,25 @@ int dev_add_alias(struct device *dev, const char *fmt, ...)
- }
- EXPORT_SYMBOL_GPL(dev_add_alias);
+diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
+index 7ed5aa52136b..a14150454fe8 100644
+--- a/drivers/clk/rockchip/clk-rk3568.c
++++ b/drivers/clk/rockchip/clk-rk3568.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++// SPDX-Comment: Origin-URL: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/clk/rockchip/clk-rk3568.c?id=132b62280a9dbe38c627183ae7f1611de3ee0d9a
+ /*
+  * Copyright (c) 2021 Rockchip Electronics Co. Ltd.
+  * Author: Elaine Zhang <zhangqing@rock-chips.com>
+@@ -66,6 +67,7 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
+ 	RK3036_PLL_RATE(912000000, 1, 76, 2, 1, 1, 0),
+ 	RK3036_PLL_RATE(816000000, 1, 68, 2, 1, 1, 0),
+ 	RK3036_PLL_RATE(800000000, 3, 200, 2, 1, 1, 0),
++	RK3036_PLL_RATE(724000000, 3, 181, 2, 1, 1, 0),
+ 	RK3036_PLL_RATE(700000000, 3, 350, 4, 1, 1, 0),
+ 	RK3036_PLL_RATE(696000000, 1, 116, 4, 1, 1, 0),
+ 	RK3036_PLL_RATE(600000000, 1, 100, 4, 1, 1, 0),
+@@ -80,6 +82,8 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
+ 	RK3036_PLL_RATE(200000000, 1, 100, 3, 4, 1, 0),
+ 	RK3036_PLL_RATE(148500000, 1, 99, 4, 4, 1, 0),
+ 	RK3036_PLL_RATE(135000000, 2, 45, 4, 1, 1, 0),
++	RK3036_PLL_RATE(132000000, 1, 66, 6, 2, 1, 0),
++	RK3036_PLL_RATE(128000000, 1, 16, 3, 1, 1, 0),
+ 	RK3036_PLL_RATE(126400000, 1, 79, 5, 3, 1, 0),
+ 	RK3036_PLL_RATE(119000000, 3, 119, 4, 2, 1, 0),
+ 	RK3036_PLL_RATE(115200000, 1, 24, 5, 1, 1, 0),
+@@ -89,6 +93,7 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
+ 	RK3036_PLL_RATE(96000000, 1, 96, 6, 4, 1, 0),
+ 	RK3036_PLL_RATE(78750000, 4, 315, 6, 4, 1, 0),
+ 	RK3036_PLL_RATE(74250000, 2, 99, 4, 4, 1, 0),
++	RK3036_PLL_RATE(33300000, 4, 111, 5, 4, 1, 0),
+ 	{ /* sentinel */ },
+ };
  
--bool device_remove(struct device *dev)
-+typedef void (*dev_remove_op_t)(struct device *dev);
+@@ -216,6 +221,7 @@ static const struct rockchip_cpuclk_reg_data rk3568_cpuclk_data = {
+ 
+ PNAME(mux_pll_p)			= { "xin24m" };
+ PNAME(mux_usb480m_p)			= { "xin24m", "usb480m_phy", "clk_rtc_32k" };
++PNAME(mux_usb480m_phy_p)		= { "clk_usbphy0_480m", "clk_usbphy1_480m"};
+ PNAME(mux_armclk_p)			= { "apll", "gpll" };
+ PNAME(clk_i2s0_8ch_tx_p)		= { "clk_i2s0_8ch_tx_src", "clk_i2s0_8ch_tx_frac", "i2s0_mclkin", "xin_osc0_half" };
+ PNAME(clk_i2s0_8ch_rx_p)		= { "clk_i2s0_8ch_rx_src", "clk_i2s0_8ch_rx_frac", "i2s0_mclkin", "xin_osc0_half" };
+@@ -486,6 +492,9 @@ static struct rockchip_clk_branch rk3568_clk_branches[] __initdata = {
+ 	MUX(USB480M, "usb480m", mux_usb480m_p, CLK_SET_RATE_PARENT,
+ 			RK3568_MODE_CON0, 14, 2, MFLAGS),
+ 
++	MUX(USB480M_PHY, "usb480m_phy", mux_usb480m_phy_p, CLK_SET_RATE_PARENT,
++			RK3568_MISC_CON2, 15, 1, MFLAGS),
 +
-+static dev_remove_op_t get_device_remove(struct device *dev)
- {
- 	if (dev->bus && dev->bus->remove)
--		dev->bus->remove(dev);
-+		return dev->bus->remove;
- 	else if (dev->driver->remove)
--		dev->driver->remove(dev);
-+		return dev->driver->remove;
- 	else
--		return false; /* nothing to do */
-+		return NULL;
-+}
+ 	/* PD_CORE */
+ 	COMPOSITE(0, "sclk_core_src", apll_gpll_npll_p, CLK_IGNORE_UNUSED,
+ 			RK3568_CLKSEL_CON(2), 8, 2, MFLAGS, 0, 4, DFLAGS | CLK_DIVIDER_READ_ONLY,
+@@ -1597,6 +1606,9 @@ static const char *const rk3568_cru_critical_clocks[] __initconst = {
+ 	"hclk_php",
+ 	"pclk_php",
+ 	"hclk_usb",
++	"pclk_usb",
++	"hclk_vi",
++	"hclk_vo",
+ };
  
-+bool device_remove(struct device *dev)
-+{
-+	dev_remove_op_t remove = get_device_remove(dev);
-+	if (!remove)
-+		return false;  /* nothing to do */
-+
-+	remove(dev);
- 	return true;
- }
- EXPORT_SYMBOL_GPL(device_remove);
-@@ -677,8 +687,11 @@ static void devices_shutdown(void)
- 	struct device *dev;
- 
- 	list_for_each_entry(dev, &active_device_list, active) {
--		if (device_remove(dev))
-+		dev_remove_op_t remove = get_device_remove(dev);
-+		if (remove) {
- 			pr_report_probe("%*sremove-> %s\n", 1 * 4, "", dev_name(dev));
-+			remove(dev);
-+		}
- 		dev->driver = NULL;
- 	}
- }
+ static const char *const rk3568_pmucru_critical_clocks[] __initconst = {
 -- 
 2.47.3
 
