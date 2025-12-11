@@ -1,67 +1,67 @@
-Delivery-date: Thu, 11 Dec 2025 21:53:13 +0100
+Delivery-date: Thu, 11 Dec 2025 21:53:14 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTnez-00AQgH-0Y
+	id 1vTnf0-00AQgd-25
 	for lore@lore.pengutronix.de;
-	Thu, 11 Dec 2025 21:53:13 +0100
+	Thu, 11 Dec 2025 21:53:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTney-0002qi-F0
-	for lore@pengutronix.de; Thu, 11 Dec 2025 21:53:13 +0100
+	id 1vTnez-0002rT-W0
+	for lore@pengutronix.de; Thu, 11 Dec 2025 21:53:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yvo52tusEmooD+TacIy9RgRNIqcvF+P8mOkwbsJH2lU=; b=Rt9pKLiWPIR7WbT/RaZchLmk9A
-	dlho8t+Ka0ESkNeBrYPlx+Ie1j8oOuXNRLM0dp1qp/0NQaK2bKVzIIhC2mo7CVGQMLW0RfEX1V9iM
-	EJfmMNW+iiwgpXEi6jYeoz6UUe/ofCiKtdSWf8FsR2lktDQME+swaaLohShwtGmZL/1mLgfeOO8Vm
-	J+Aje551YLUkciz8hvi2U6wPKmc3m5olsZyCXGxQlVijvpbWbhMYoc8vFykT2p7CoHJKAL1dHWYLG
-	K9w6VwcVCFaTzBxNS3rBUQADt6bz7iZKond7RejXVXi7ATAUQIOO42Ls5FnHT6Tp+E8KJKX9OHs+j
-	TCpc0Qlw==;
+	bh=kWCq6M39dQN9EtHhNSMvQWbZ5wjCXV8kiZi8GyBQBDo=; b=XDFrPAj+brsKDZnWd+ZDgMlYG8
+	6uknOhehlK8rnWobVrjau/2GdH4Q1LODB/0UNDk/c57AA17gNn/2onCKnwPGLBAzcwuuvIj1JH3WY
+	DP+MGU9Ii8fNLRXATOh8doYRfxv270gB2RwqbooFPgyPVIRqPA5rApr5PATsN2SWwBEUqU+ZkONb4
+	7fvfGGgHa0E8+LrwqWJvIlTTsoV0WmsOCqXuzYhvhnCM7qUykXuXAvSekwYevHUwEcul01r4fy8Kq
+	O6Xrz/Eb6KuQ6u4p/xDlgnzdZY1zSRxJQLug/TzZrH5vsVMa0XM3GqseP8q9DBPlxEoH8Ybb7u2HQ
+	+Js8OpuA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTneY-0000000HIB7-3WSm;
+	id 1vTneY-0000000HIAP-1AuU;
 	Thu, 11 Dec 2025 20:52:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTneV-0000000HI7Y-1Di4
+	id 1vTneV-0000000HI7T-0gTb
 	for barebox@lists.infradead.org;
 	Thu, 11 Dec 2025 20:52:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTneT-0002VZ-Qy; Thu, 11 Dec 2025 21:52:41 +0100
+	id 1vTneT-0002VB-Lw; Thu, 11 Dec 2025 21:52:41 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTneT-005BZG-1y;
+	id 1vTneT-005BZ6-1Y;
 	Thu, 11 Dec 2025 21:52:41 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTneT-0000000CFbB-2ANr;
+	id 1vTneT-0000000CFbB-1aDx;
 	Thu, 11 Dec 2025 21:52:41 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 11 Dec 2025 21:50:08 +0100
-Message-ID: <20251211205240.2836186-7-a.fatoum@pengutronix.de>
+Date: Thu, 11 Dec 2025 21:50:05 +0100
+Message-ID: <20251211205240.2836186-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251211205240.2836186-1-a.fatoum@pengutronix.de>
 References: <20251211205240.2836186-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251211_125243_341491_8AB30216 
-X-CRM114-Status: GOOD (  12.87  )
+X-CRM114-CacheID: sfid-20251211_125243_197775_807E4AD5 
+X-CRM114-Status: GOOD (  13.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,180 +83,130 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 6/6] resource: implement release_region_range
+Subject: [PATCH 3/6] commands: iomem: add support for printing gaps
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For EFI loader use, we will need the ability to free only part of a
-previously requested region.
+With the new resource_iter support, it's easy to walk gaps between
+resources as well, so wire this into the iomem command.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/resource.c      | 134 +++++++++++++++++++++++++++++++++++++++++
- include/linux/ioport.h |   5 ++
- 2 files changed, 139 insertions(+)
+ commands/iomemport.c | 41 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/common/resource.c b/common/resource.c
-index c8623b9c40a6..078dc9f2ff2d 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -107,6 +107,140 @@ int release_region(struct resource *res)
- 	return 0;
- }
+diff --git a/commands/iomemport.c b/commands/iomemport.c
+index fe1273ba7451..c5b1ea8909e4 100644
+--- a/commands/iomemport.c
++++ b/commands/iomemport.c
+@@ -12,6 +12,7 @@
+ #define	FLAG_VERBOSE		BIT(0)
+ #define	FLAG_IOPORT		BIT(1)
+ #define	FLAG_JSON		BIT(2)
++#define	FLAG_GAPS		BIT(3)
  
-+static int yes_free(struct resource *res, void *data)
-+{
-+	return 1;
-+}
-+
-+/*
-+ * release a region previously requested with request_*_region
-+ */
-+int release_region_range(struct resource *parent,
-+			 resource_size_t start, resource_size_t size,
-+			 int (*should_free)(struct resource *res, void *data),
-+			 void *data)
-+{
-+	resource_size_t end = start + size - 1;
-+	struct resource *r, *tmp;
-+	int ret, err = 0;
-+
-+	if (end < parent->start || start > parent->end)
-+		return 0;
-+
-+	if (!should_free)
-+		should_free = yes_free;
-+
-+	list_for_each_entry_safe(r, tmp, &parent->children, sibling) {
-+		if (end < r->start || start > r->end)
-+			continue;
-+
-+		/*
-+		 * CASE 1: fully covered
-+		 *
-+		 *   r:    |----------------|
-+		 *   cut: |xxxxxxxxxxxxxxxxxxx|
-+		 *
-+		 *   remove fully
-+		 */
-+		if (start <= r->start && r->end <= end) {
-+			ret = should_free(r, data);
-+			if (ret < 0)
-+				return ret;
-+			if (ret == 0)
-+				continue;
-+
-+			ret = release_region(r);
-+			if (ret)
-+				err = ret;
-+			continue;
-+		}
-+
-+		/*
-+		 * CASE 2: trim head
-+		 *
-+		 *   r:    |----------------|
-+		 *   cut: |xxxxx|
-+		 *   new pieces:
-+		 *       left  = removed
-+		 *       right = end+1   .. r.end
-+		 */
-+		if (start <= r->start && r->end > end) {
-+			ret = should_free(r, data);
-+			if (ret < 0)
-+				return ret;
-+			if (ret == 0)
-+				continue;
-+
-+			if (list_empty(&r->children))
-+				r->start = end + 1;
-+			else
-+				err = -EBUSY;
-+			continue;
-+		}
-+
-+		/*
-+		 * CASE 3: trim tail
-+		 *
-+		 *   r:    |----------------|
-+		 *   cut:                |xxxxx|
-+		 *   new pieces:
-+		 *       left  = r.start .. start-1
-+		 *       right = removed
-+		 */
-+		if (start > r->start && r->end <= end) {
-+			ret = should_free(r, data);
-+			if (ret < 0)
-+				return ret;
-+			if (ret == 0)
-+				continue;
-+
-+			if (list_empty(&r->children))
-+				r->end = start - 1;
-+			else
-+				err = -EBUSY;
-+			continue;
-+		}
-+
-+		/*
-+		 * CASE 4: split
-+		 *
-+		 *   r:    |----------------|
-+		 *   cut:       |xxxxx|
-+		 *   new pieces:
-+		 *       left  = r.start .. start-1
-+		 *       right = end+1   .. r.end
-+		 */
-+		if (start > r->start && r->end > end) {
-+			struct resource *right;
-+
-+			ret = should_free(r, data);
-+			if (ret < 0)
-+				return ret;
-+			if (ret == 0)
-+				continue;
-+
-+			if (!list_empty(&r->children)) {
-+				err = -EBUSY;
-+				continue;
-+			}
-+
-+			right = xzalloc(sizeof(*right));
-+			init_resource(right, r->name);
-+
-+			right->start = end + 1;
-+			right->end = r->end;
-+			right->parent = parent;
-+			right->flags = r->flags;
-+
-+			r->end = start - 1;
-+
-+			list_add(&right->sibling, &r->sibling);
-+			continue;
-+		}
-+	}
-+
-+	return WARN_ON(err);
-+}
+ static inline bool json_puts(const char *str, int flags)
+ {
+@@ -26,12 +27,14 @@ static inline bool json_puts(const char *str, int flags)
+ static void __print_resources(struct resource *res, int indent,
+ 			      ulong *addr, unsigned flags)
+ {
+-	const char *size_str;
++	const char *size_str, *name;
+ 	char buf[64];
+-	struct resource *r;
++	struct resource *gap, _gap;
+ 	resource_size_t size = resource_size(res);
+ 	int i;
  
- /*
-  * merge two adjacent sibling regions.
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 1d8686d51e81..2a190e96b1a7 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -209,6 +209,11 @@ int __merge_regions(const char *name,
- 
- int release_region(struct resource *res);
- 
-+int release_region_range(struct resource *parent,
-+			 resource_size_t start, resource_size_t size,
-+			 int (*should_free)(struct resource *res, void *data),
-+			 void *data);
++	gap = flags & FLAG_GAPS ? &_gap : NULL;
 +
- extern struct resource iomem_resource;
- extern struct resource ioport_resource;
+ 	if (addr && !region_overlap_end_inclusive(*addr, *addr, res->start, res->end))
+ 		return;
  
+@@ -41,11 +44,14 @@ static void __print_resources(struct resource *res, int indent,
+ 	for (i = 0; i < indent; i++)
+ 		printf("  ");
+ 
++	name = res->name ?: "";
++
+ 	if (flags & FLAG_JSON) {
+ 		printf("{ \"name\": \"%s\", \"start\": \"%pa\", "
+-		       "\"end\": \"%pa\", \"reserved\": %s",
+-		       res->name, &res->start, &res->end,
+-		       is_reserved_resource(res) ? "true" : "false");
++		       "\"end\": \"%pa\", \"reserved\": %s%s",
++		       name, &res->start, &res->end,
++		       is_reserved_resource(res) ? "true" : "false",
++		       region_is_gap(res) ? ", \"free\": true" : "");
+ 	} else {
+ 		if (flags & (FLAG_VERBOSE | FLAG_IOPORT)) {
+ 			snprintf(buf, sizeof(buf), "%pa", &size);
+@@ -54,19 +60,24 @@ static void __print_resources(struct resource *res, int indent,
+ 			size_str = size_human_readable(size);
+ 		}
+ 
+-		printf("%pa - %pa (size %9s) %s%s\n",
+-		       &res->start, &res->end, size_str,
+-		       is_reserved_resource(res) ? "[R] " : "",
+-		       res->name);
++		printf("%pa - %pa (%s %9s) %s%s\n",
++		       &res->start, &res->end, region_is_gap(res) ? "free" : "size",
++		       size_str, is_reserved_resource(res) ? "[R] " : "", name);
+ 	}
+ 
+ 	if (!list_empty(&res->children)) {
++		struct resource *r = resource_iter_first(res, gap);
++
+ 		json_puts(", \"children\": [\n", flags);
+-		list_for_each_entry(r, &res->children, sibling) {
++
++		while (r) {
+ 			__print_resources(r, indent + 1, addr, flags);
+-			if (r->sibling.next != &res->children)
++
++			r = resource_iter_next(r, gap);
++			if (r)
+ 				json_puts(",\n", flags);
+ 		}
++
+ 		json_puts("]", flags);
+ 	}
+ 
+@@ -85,7 +96,7 @@ static int do_iomem(int argc, char *argv[])
+ 	unsigned flags = 0;
+ 	int opt, ret;
+ 
+-	while((opt = getopt(argc, argv, "vj")) > 0) {
++	while((opt = getopt(argc, argv, "vjg")) > 0) {
+ 		switch(opt) {
+ 		case 'v':
+ 			flags |= FLAG_VERBOSE;
+@@ -93,6 +104,9 @@ static int do_iomem(int argc, char *argv[])
+ 		case 'j':
+ 			flags |= FLAG_JSON;
+ 			break;
++		case 'g':
++			flags |= FLAG_GAPS;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -124,12 +138,13 @@ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-v",  "verbose output")
+ BAREBOX_CMD_HELP_OPT ("-j",  "JSON output")
++BAREBOX_CMD_HELP_OPT ("-g",  "include gaps")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(iomem)
+ 	.cmd		= do_iomem,
+ 	BAREBOX_CMD_DESC("show IO memory usage")
+-	BAREBOX_CMD_OPTS("[-vj] [ADDRESS]")
++	BAREBOX_CMD_OPTS("[-vjg] [ADDRESS]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+ 	BAREBOX_CMD_HELP(cmd_iomem_help)
+ BAREBOX_CMD_END
 -- 
 2.47.3
 
