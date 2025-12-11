@@ -1,66 +1,62 @@
-Delivery-date: Thu, 11 Dec 2025 09:40:00 +0100
+Delivery-date: Thu, 11 Dec 2025 11:47:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTcDQ-00AELX-2p
+	id 1vTeD7-00AGb9-1c
 	for lore@lore.pengutronix.de;
-	Thu, 11 Dec 2025 09:40:00 +0100
+	Thu, 11 Dec 2025 11:47:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTcDQ-0003XI-AH
-	for lore@pengutronix.de; Thu, 11 Dec 2025 09:40:00 +0100
+	id 1vTeD6-0003Yp-Nu
+	for lore@pengutronix.de; Thu, 11 Dec 2025 11:47:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=dpMMIxVxyHNfZECd1mH8e6EYM1PNrkZlo+SPVK1hlRw=; b=vE/KPDkIc5LDB6
-	xyaYXGQUaYi0m/wwpzSPsmyBNYbsMCsm4IFBzlHKfffKItKoW+I8T5evaIYoTkiH0YsEIUD9wbw3T
-	RZgD6nHq/vPAePuaNEqE2rlPaAdsJtCSxvy+vClEv62JSbMqETsFexSZsiioYeKxfW9KqVbWloAKJ
-	3D4wP4E/02HrQ8+yMR+3jude31UaPgY7UUlbf9hnH7ufdI61sKKVNNr5IToJ4OPBWN8CZNi5cOF2/
-	8a0p++aG+oMObaWAkrKdK9x5biBArcmI2WfhR5xpwN7AfDjy4tFhAl7HTIWs1fU1Bglm6qwP6yHO3
-	CAz7ncXdUdomQU6NqQeg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=F1QDWZEcvlASz4JmqsZslwN76Ss5GauwM9vWtTOUK5c=; b=S29IHVpr9yjJeGZNKYDlGgh/S0
+	rFixc5IkBmIIY1pJ0XpwXaLjXdcJ0c07eF0JfRScovOpE0I/VO1B6GjuGWzuKEz6pOV9Ry0IofLC+
+	ZsMdPpb9sJ4DwLyf4VmmRr+1de5VpxmiQJicnKUehfeEu1shhoC9DwFyEuDC6i/NyplSa79KS/ty/
+	kNyOz85NxdEoQc94eKQl71gzwWRS0tfBO62w+HsuHljaRjuQqtBjaKrHRJOS9fGA812fwdeV7C/Ow
+	edJGlfj4kdqXops1GL/JGyz08kpbsz+rpYdOTRHyktvZmslLJmwZGKx2pDXo4DNons+fAeR4HwnM7
+	zVbEN/zA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTcCz-0000000GO4s-2ToT;
-	Thu, 11 Dec 2025 08:39:33 +0000
+	id 1vTeCO-0000000GUlv-2IGL;
+	Thu, 11 Dec 2025 10:47:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTcCu-0000000GO3u-2KJT
+	id 1vTeCL-0000000GUlX-44tm
 	for barebox@lists.infradead.org;
-	Thu, 11 Dec 2025 08:39:32 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vTcCt-0003Ps-54; Thu, 11 Dec 2025 09:39:27 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vTcCs-0056Bg-35;
-	Thu, 11 Dec 2025 09:39:26 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vTcCs-00000008KPH-3XqP;
-	Thu, 11 Dec 2025 09:39:26 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 11 Dec 2025 09:39:25 +0100
-Message-ID: <20251211083925.1985059-2-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251211083925.1985059-1-s.hauer@pengutronix.de>
-References: <20251211083925.1985059-1-s.hauer@pengutronix.de>
+	Thu, 11 Dec 2025 10:47:03 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vTeCI-0003Lq-E6; Thu, 11 Dec 2025 11:46:58 +0100
+Message-ID: <d72a7cfc-d325-47b1-b4e1-1868bb22fd39@pengutronix.de>
+Date: Thu, 11 Dec 2025 11:46:56 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Renaud Barbier <Renaud.Barbier@ametek.com>
+Cc: Lucas Stach <lst@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <BL0PR07MB5665EA1D980C39F834845849EC1C9@BL0PR07MB5665.namprd07.prod.outlook.com>
+ <9bb964dc-3c24-7c70-b007-759c3aa85511@pengutronix.de>
+ <874d52d0-f476-53cf-1331-72f80bffacbd@pengutronix.de>
+ <BN8PR07MB69932217E808C9DB9435411FECD6A@BN8PR07MB6993.namprd07.prod.outlook.com>
+ <9923f2ef-cbce-44a1-86bf-6aaf829d3008@pengutronix.de>
+ <BN8PR07MB6993379BECE786EB6B07106FECA7A@BN8PR07MB6993.namprd07.prod.outlook.com>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <BN8PR07MB6993379BECE786EB6B07106FECA7A@BN8PR07MB6993.namprd07.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251211_003929_096731_12B7F377 
-X-CRM114-Status: GOOD (  16.00  )
+X-CRM114-CacheID: sfid-20251211_024702_043203_83BB481C 
+X-CRM114-Status: GOOD (  31.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,87 +68,192 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Marco Felsch <mfe@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] ARM: i.MX8MN EVK: refactor early startup
+Subject: Re: PCIE on LS1021A
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-refactor startup a bit to make it more clear:
-- Do not call start_atf() when not in EL3 rather than immediately
-  returning from the function
-- rename start_atf() to nxp_imx8mn_evk_init_early() and call
-  nxp_imx8mn_evk_init_early() from nxp_imx8mn_evk_start() directly
+Hi,
 
-This is done in preparation for a series which changes
-nxp_imx8mn_evk_init_early() to take a device tree pointer.
+(Adding mailing list to Cc)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/nxp-imx8mn-evk/lowlevel.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+On 12/5/25 5:58 PM, Renaud Barbier wrote:
+> I read about the MMU in ARMv7 with LPAE
+> My understanding is that for  LPAE:
+> - There are 3 different sizes 4K, 2MB or 1G to map memory associated to 3 table level with 512 entries:
+> - in U-boot   arch/arm/cpu/armv7/ls102xa/cpu.c:mmu_setup , the boot loader uses two levels of table to map the full memory DDR or device memory with 1G blocks in level 1 or the PCIe with 2MiB block2 in level 2.. It is not clear to me how devices registers get map to virtual address though the function map_physmem afterwards though.
 
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-index a1a501b1d9..93e3ce7a09 100644
---- a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-@@ -80,18 +80,10 @@ static struct pmic_config bd71837_cfg[] = {
- 
- extern struct dram_timing_info imx8mn_evk_ddr4_timing, imx8mn_evk_lpddr4_timing;
- 
--static void start_atf(void)
-+static void nxp_imx8mn_evk_init_early(void)
- {
- 	struct pbl_i2c *i2c;
- 
--	/*
--	 * If we are in EL3 we are running for the first time and need to
--	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
--	 * to DRAM in EL2.
--	 */
--	if (current_el() != 3)
--		return;
--
- 	imx8mn_early_clock_init();
- 
- 	imx8mn_setup_pad(IMX8MN_PAD_I2C1_SCL__I2C1_SCL);
-@@ -108,8 +100,6 @@ static void start_atf(void)
- 		pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
- 		imx8mn_ddr_init(&imx8mn_evk_ddr4_timing, DRAM_TYPE_DDR4);
- 	}
--
--	imx8mn_load_and_start_image_via_tfa();
- }
- 
- /*
-@@ -135,7 +125,15 @@ static __noreturn noinline void nxp_imx8mn_evk_start(void)
- 
- 	setup_uart();
- 
--	start_atf();
-+	/*
-+	 * If we are in EL3 we are running for the first time and need to
-+	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
-+	 * to DRAM in EL2.
-+	 */
-+	if (current_el() == 3) {
-+		nxp_imx8mn_evk_init_early();
-+		imx8mn_load_and_start_image_via_tfa();
-+	}
- 
- 	/* Check if we configured DDR4 in EL3 */
- 	if (readl(MX8M_DDRC_CTL_BASE_ADDR) & BIT(4))
+I am not familiar either with the MMU setup in U-Boot.
+
+> For barebox,  I would think, 3 levels of table are needed. Am I right?
+
+I think it would be acceptable for map_io_sections() to fail with an
+error code if called to remap a too small region.
+
+So if supporting remap of only 2M for non-SDRAM makes things easier for
+you, go for it.
+
+Cheers,
+Ahmad
+
+> 
+> 
+> 
+> 
+> 
+>> -----Original Message-----
+>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> Sent: 28 November 2025 10:15
+>> To: Renaud Barbier <Renaud.Barbier@ametek.com>; Barebox List
+>> <barebox@lists.infradead.org>
+>> Cc: Lucas Stach <lst@pengutronix.de>
+>> Subject: Re: PCIE on LS1021A
+>>
+>> ***NOTICE*** This came from an external source. Use caution when
+>> replying, clicking links, or opening attachments.
+>>
+>> Hi Renaud,
+>>
+>> On 11/18/25 6:42 PM, Renaud Barbier wrote:
+>>> Hello Ahmad,
+>>> This has been a while that I asked you about a question on the PCIE for the
+>> LS1021A.
+>>> We are developing a new product with a NVME device using the LS1021A
+>>> CPU and I would like to add LPAE support to barebox so that PCI child
+>> devices can be probed.
+>>
+>> Sounds good!
+>>
+>>> I am trying to figure out how to assemble LPAE support based on the
+>> information you gave me below and what I see in U-boot.
+>>>
+>>> A grep of LPAE in U-boot shows several files with specific code for LPAE:
+>>> arch/arm/cpu/armv7/start.S
+>>> arch/arm/lib/cache-cp15.c
+>>> arch/arm/cpu/armv7/ls102xa/cpu.c
+>>>
+>>> I do  recognize similar pieces of code between barebox and U-boot From
+>>> the message below, I understand I would need to update map_io_sections
+>>> to map the PCI address as in U-boot mmu_setup from the file
+>>> arch/arm/cpu/armv7/ls102xa/cpu.c
+>>
+>> I imagine, you'll want to to basically duplicate mmu_32.c as mmu_32l or
+>> something and reimplement it for long descriptor use.
+>>
+>> Types like phys_addr_t would become 64-bit (and map_io_sections should
+>> take a 64-bit physical address in your case) and then you need to map the
+>> PCI regions below < 4G, so the CPU may access them.
+>>
+>> Cheers,
+>> Ahmad
+>>
+>>>
+>>> Cheers,
+>>> Renaud
+>>>
+>>>
+>>>
+>>>> -----Original Message-----
+>>>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>> Sent: 09 December 2022 19:18
+>>>> To: Renaud Barbier <Renaud.Barbier@ametek.com>; Barebox List
+>>>> <barebox@lists.infradead.org>
+>>>> Cc: Lucas Stach <lst@pengutronix.de>
+>>>> Subject: Re: PCIE on LS1021A
+>>>>
+>>>> ***NOTICE*** This came from an external source. Use caution when
+>>>> replying, clicking links, or opening attachments.
+>>>>
+>>>> On 09.12.22 19:37, Ahmad Fatoum wrote:
+>>>>>> From my debugging I can see that the Layerscape PCIE driver use VA
+>>>>>> address = PA address = 0x24000000
+>>>>>>
+>>>>>> So  Is the problem I am seeing an issue with mapping the correct
+>>>>>> physical
+>>>> address for a 32-bit processor?
+>>>>>>
+>>>>>> If yes, how can I map the 64-bit PA to a 32-bit VA?
+>>>>>
+>>>>> Normally, you would call map_io_sections as pci-tegra does, but in
+>>>>> your case this alone is insufficient as you will need to implement
+>>>>> ARM32 LPAE support first. Once that's in place, you can use
+>>>>> map_io_sections and map it to e.g. 0x24000000 as U-Boot does
+>>>> arch/arm/cpu/armv7/ls102xa/cpu.c mmu_setup().
+>>>>>
+>>>>> U-Boot LPAE support was added to support Rpi2, which starts in HYP
+>>>>> mode, but we had worked around that in barebox to not require LPAE.
+>>>>> For your case however, I don't believe there's a way around using
+>>>>> LPAE
+>>>> page tables.
+>>>>>
+>>>>> Tangentially related: I don't know how the PCI controller maintains
+>>>>> cache coherency, but if it does write back through CPU caches, you
+>>>>> may
+>>>> observe memory corruption.
+>>>>>
+>>>>> It may be the safest for you to disable cache snooping for PCIe
+>>>>> until that's resolved (We've this planned, but it will probably not
+>>>>> happen this
+>>>> year.
+>>>>> If you're interested I can elaborate).
+>>>>
+>>>> I should have shortened the context a bit. Posting again in case you
+>>>> missed it.
+>>>>
+>>>>>
+>>>>> Cheers,
+>>>>> Ahmad
+>>>>>
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> Cheers,
+>>>>>> Renaud
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>> --
+>>>> Pengutronix e.K.                           |                             |
+>>>> Steuerwalder Str. 21                       |
+>>>>
+>> https://urldefense.com/v3/__http://www.pengutronix.de/__;!!HKOSU0g!Cf
+>>>> A
+>>>> u4L9MQvIuEvfQmVymcZYkrdbrn98J2QbYMFsHhqFrxp8fDzjT6-
+>>>> h9nSajsgYcNvsCjJVWd98oYvdyj7pvR-ZfDY0$   |
+>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555
+>> |
+>>>
+>>
+>> --
+>> Pengutronix e.K.                  |                             |
+>> Steuerwalder Str. 21              |
+>> https://urldefense.com/v3/__http://www.pengutronix.de/__;!!HKOSU0g!Gr
+>> qIPFb9B_Y1IapEh1Za8-
+>> VKxnpv9bH1ejrQAh_s0Zf5MypqMk7BEOM9anjygqIVmKWxo04Tbhpm4L3YtQ
+>> C2G3bKq8E$   |
+>> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+> 
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
