@@ -1,80 +1,82 @@
-Delivery-date: Thu, 11 Dec 2025 21:35:23 +0100
+Delivery-date: Thu, 11 Dec 2025 21:37:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTnNj-00AQFu-2d
+	id 1vTnPY-00AQHi-2N
 	for lore@lore.pengutronix.de;
-	Thu, 11 Dec 2025 21:35:23 +0100
+	Thu, 11 Dec 2025 21:37:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vTnNj-0007dz-4x
-	for lore@pengutronix.de; Thu, 11 Dec 2025 21:35:23 +0100
+	id 1vTnPY-00089l-5B
+	for lore@pengutronix.de; Thu, 11 Dec 2025 21:37:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=cp/wYk0OFnO52ASPq0rFpJEhikg6W1RqM9YmBQumS2Y=; b=En8xKHD4i07amr9DnRZpI6YPnb
-	FGPM6i1O3C9oeCLF42XYIViXlxF828MpamIcdzhxRv0FUbrrbbxnU68BTsh/AHwBQIWWcqtvrawV7
-	h/oz0Us6cvgLY2D7M7R/RV8TEPEthKCwZBHydwj8YkeZQSjZv63ZtR1USHEpIbbBNErdjs74mAs8H
-	pEI7/aodw/Kte0zzaoR1M5NjAnso7qem6keCIqxZwqjxR3zy3WWCH7JR1cMDLSYVRucG6CbIk14HV
-	rznR81Gt8Tow3494ZO3kSEsesUyj48Lfeo8zuV+Zcph3eUV0heUay4nWYucVMM9pOOJHxbEYuHTF7
-	J8I7JOlA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=z46FtFqybYtGaYlz990Jm56h4NO7Dmn1QLf2m9QqKt8=; b=nDvmjbAvVMrDf1/5uJnX3ED9H9
+	4tNVXxNsPEurG50UXt+ARPVxs+BEc/LtAgct6OxnKzk6p+NCddQ1Tk0LDj22qqdYDIg+Xj+OQmVbw
+	Qwrpj8NLMD+j+4Lh7d1kVRh+etoCDsNKaLNAcbNoMWkD3PfqLzsRj5DoYttqsDQidKSojLv1tU/JU
+	r/d93wGW+eQP3JyyaBa2CuqcRFNGjB1OWGAeX1f/2WziS4zTnlaHda87Gtru+W7QcF6VWRQyU8by5
+	USqG+JWo4+dLuVsLl/LIBt7RZSwlqDdjLEoSCM2HzH1P3eFn9yyCKPwaWeeZV034vQfvrlmUD1AfZ
+	GK5wJZ9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTnND-0000000HF3F-07b9;
-	Thu, 11 Dec 2025 20:34:51 +0000
+	id 1vTnPC-0000000HFPY-0omU;
+	Thu, 11 Dec 2025 20:36:54 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTnNB-0000000HF2l-2EXJ
+	id 1vTnPA-0000000HFOK-1StG
 	for barebox@bombadil.infradead.org;
-	Thu, 11 Dec 2025 20:34:49 +0000
+	Thu, 11 Dec 2025 20:36:52 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=cp/wYk0OFnO52ASPq0rFpJEhikg6W1RqM9YmBQumS2Y=; b=GwLMXus1zZpkdRy31YeXie+pvn
-	072adKYe4dDXsQ/py3Zr61w/ymSRkIHbDmCe/H3U6tp/I3Doqt09QTwSU8kluPJaLlBGss9y99sxU
-	Mpge4rhDhWNhzBgyo3kLd2U/1NcVufmcOtNk5ES5yjL9Pb4z/nWm5FtUHletZyaL4ttNTUVtWcZ+g
-	6qFuBlysd9K6/8fPjwDYMT2RQBbVDJbZLS+WqCS/toEQSG/dC4N1dI72DpSNK2w9noEohTSofN7Xc
-	83UgBkfH1VA+x8ukHyokMkw0Zvl7GJpfhRPGMXKtl1xiv5vL6emZyafbis6k/Vm+2BDH76pKwy9bp
-	18Ns38Eg==;
+	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=z46FtFqybYtGaYlz990Jm56h4NO7Dmn1QLf2m9QqKt8=; b=h2AcV9MlOODHH8wk0Pq30QBxjk
+	TNwr8D8NrlqBlssQMxtGHwXSspEfUdCNpfFOsl40VelRhWMwkYZnYI/80dMmEVS+DhM4kcTwSFDIh
+	TEZPH2kRK+TEUBFpNjWPZcnoVimpncG11PHUnzFhz/sO7J3HLBfIMytRn/JFL8kle8uaUykkRUxWf
+	43zXog/on2HAh1BCDTYmQ+YiiEYe3oHJKdZ+t8YBlMPPnOwBLedC0bbHXjFfYX9MpAw71GQEN30LW
+	d5QcDjTmcwVBHvlOLyxHRjePKAPqSYMP4q/pIGy5lGrunTqtdHQfiM5FT0mO3X/RNluHpgTl+kBme
+	gxHTz3kg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTmVd-0000000FZQx-3Gv0
+	id 1vTmXa-0000000FZXP-42Dx
 	for barebox@lists.infradead.org;
-	Thu, 11 Dec 2025 19:39:31 +0000
+	Thu, 11 Dec 2025 19:41:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTnN8-0007V4-BW; Thu, 11 Dec 2025 21:34:46 +0100
+	id 1vTnP5-0007pi-BW; Thu, 11 Dec 2025 21:36:47 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTnN8-005BWB-0X;
-	Thu, 11 Dec 2025 21:34:46 +0100
+	id 1vTnP5-005BWQ-0W;
+	Thu, 11 Dec 2025 21:36:47 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vTnN8-00000009dBe-0Fww;
-	Thu, 11 Dec 2025 21:34:46 +0100
+	id 1vTnJS-00000008e20-0DoX;
+	Thu, 11 Dec 2025 21:30:58 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 11 Dec 2025 21:34:44 +0100
-Message-ID: <20251211203445.2293696-1-a.fatoum@pengutronix.de>
+Date: Thu, 11 Dec 2025 21:30:07 +0100
+Message-ID: <20251211203056.2014710-17-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251211203056.2014710-1-a.fatoum@pengutronix.de>
+References: <20251211203056.2014710-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251211_193929_942415_FFF72579 
-X-CRM114-Status: GOOD (  13.32  )
+X-CRM114-CacheID: sfid-20251211_194131_228545_1DD33BF5 
+X-CRM114-Status: GOOD (  10.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,165 +98,54 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM64: mmu: implement mmu_disable completely in assembly
+Subject: [PATCH 16/16] efi: add missing EFIAPI to functions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Splitting mmu_disable into two noinline function on a RK3568 leads to a
-barebox crash, because the code has the implicit assumption that the
-compiler won't generate memory accesses including spilling to stack.
-
-We can't guarantee this in C code, so implement the procedure in
-assembly.
-
-While at it, drop mmu_early_disable(), which is unused, superfluous and
-suffers from the same issue as old mmu_disable().
+EFI functions have a different calling convention on x86, but this was
+missed for a few functions and function pointers.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/cache-armv8.S   | 54 ++++++++++++++++++++++++++++++++++++
- arch/arm/cpu/mmu_64.c        | 27 +-----------------
- arch/arm/include/asm/cache.h |  1 +
- arch/arm/include/asm/mmu.h   |  1 -
- 4 files changed, 56 insertions(+), 27 deletions(-)
+ drivers/clocksource/efi.c | 2 +-
+ include/efi/services.h    | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/cpu/cache-armv8.S b/arch/arm/cpu/cache-armv8.S
-index 9d9e0fb585a1..b1847a2b9d1b 100644
---- a/arch/arm/cpu/cache-armv8.S
-+++ b/arch/arm/cpu/cache-armv8.S
-@@ -9,6 +9,7 @@
- 
- #include <linux/linkage.h>
- #include <init.h>
-+#include <asm/system.h>
- 
- /*
-  * void v8_flush_dcache_level(level)
-@@ -120,6 +121,59 @@ ENTRY(v8_invalidate_dcache_all)
- 	ret
- ENDPROC(v8_invalidate_dcache_all)
- 
-+/*
-+ * void v8_mmu_disable(void)
-+ *
-+ * Implements the equivalent of following C code:
-+ *
-+ *	set_cr(get_cr() & ~(CR_M | CR_C))
-+ *	v8_flush_dcache_all();
-+ *	tlb_invalidate();
-+ *
-+ *	dsb();
-+ *	isb();
-+ *
-+ * As D$ needs to be cleaned after it was disabled, this procedure
-+ * is not permitted to trigger memory access, including spilling
-+ * locals to stack. It's thus necessarily needs to be implemented
-+ * in assembly.
-+ */
-+.section .text.v8_mmu_disable
-+ENTRY(v8_mmu_disable)
-+	mov	x14, lr
-+	mov	x1, #~(CR_C | CR_M)
-+	mrs	x0, currentel
-+	lsr	w0, w0, #2		/* w0 <- current exception level */
-+	cmp	w0, #0x1
-+	b.eq	1f
-+	cmp 	w0, #0x2
-+	b.eq	2f
-+3:	/* EL3 */
-+	mrs	x0, sctlr_el3
-+	and	x0, x0, x1
-+	msr	sctlr_el1, x0
-+	bl	v8_flush_dcache_all
-+	tlbi	alle3
-+	b	0f
-+2:	/* EL2 */
-+	mrs	x0, sctlr_el2
-+	and	x0, x0, x1
-+	msr	sctlr_el1, x0
-+	bl	v8_flush_dcache_all
-+	tlbi	alle2
-+	b	0f
-+1:	/* EL1 */
-+	mrs	x0, sctlr_el1
-+	and	x0, x0, x1
-+	msr	sctlr_el1, x0
-+	bl	v8_flush_dcache_all
-+	tlbi	vmalle1
-+0:	/* common prologue */
-+	dsb 	sy
-+	isb
-+	ret	x14
-+ENDPROC(v8_mmu_disable)
-+
- /*
-  * void v8_flush_dcache_range(start, end)
-  *
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index f22fcb5f8ea4..56c6a21f2b2a 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -344,17 +344,7 @@ void __mmu_init(bool mmu_on)
- 
- void mmu_disable(void)
- {
--	unsigned int cr;
--
--	cr = get_cr();
--	cr &= ~(CR_M | CR_C);
--
--	set_cr(cr);
--	v8_flush_dcache_all();
--	tlb_invalidate();
--
--	dsb();
--	isb();
-+	v8_mmu_disable();
+diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
+index 534bea5525c4..7a07db0af83d 100644
+--- a/drivers/clocksource/efi.c
++++ b/drivers/clocksource/efi.c
+@@ -18,7 +18,7 @@ static uint64_t efi_cs_read(void)
+ 	return ticks;
  }
  
- void dma_inv_range(void *ptr, size_t size)
-@@ -436,18 +426,3 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
- 
- 	mmu_enable();
- }
--
--void mmu_early_disable(void)
--{
--	unsigned int cr;
--
--	cr = get_cr();
--	cr &= ~(CR_M | CR_C);
--
--	set_cr(cr);
--	v8_flush_dcache_all();
--	tlb_invalidate();
--
--	dsb();
--	isb();
--}
-diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
-index dd022c1f23f2..ea78ae123aec 100644
---- a/arch/arm/include/asm/cache.h
-+++ b/arch/arm/include/asm/cache.h
-@@ -15,6 +15,7 @@ void v8_flush_dcache_all(void);
- void v8_invalidate_dcache_all(void);
- void v8_flush_dcache_range(unsigned long start, unsigned long end);
- void v8_inv_dcache_range(unsigned long start, unsigned long end);
-+void v8_mmu_disable(void);
- 
- static inline void icache_invalidate(void)
+-static void efi_cs_inc(struct efi_event *event, void *ctx)
++static void EFIAPI efi_cs_inc(struct efi_event *event, void *ctx)
  {
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index eef6c53b5912..1fafbf9d77be 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -65,6 +65,5 @@ void __dma_flush_range(unsigned long, unsigned long);
- void __dma_inv_range(unsigned long, unsigned long);
- 
- void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned long barebox_base);
--void mmu_early_disable(void);
- 
- #endif /* __ASM_MMU_H */
+ 	ticks++;
+ }
+diff --git a/include/efi/services.h b/include/efi/services.h
+index 9fc6a066a917..eaeaf1a55ee8 100644
+--- a/include/efi/services.h
++++ b/include/efi/services.h
+@@ -65,7 +65,7 @@ struct efi_boot_services {
+ #define EFI_TPL_NOTIFY		16
+ #define EFI_TPL_HIGH_LEVEL	31
+ 	efi_status_t(EFIAPI *create_event)(u32 type , unsigned long tpl,
+-			void (*fn) (struct efi_event *event, void *ctx),
++			void (EFIAPI *fn) (struct efi_event *event, void *ctx),
+ 			void *ctx, struct efi_event **event);
+ 	efi_status_t(EFIAPI *set_timer)(struct efi_event *event, enum efi_timer_delay type, uint64_t time);
+ 	efi_status_t(EFIAPI *wait_for_event)(size_t number_of_events, struct efi_event **event,
+@@ -174,7 +174,7 @@ struct efi_runtime_services {
+ 				       size_t descriptor_size,
+ 				       uint32_t descriptor_version,
+ 				       struct efi_memory_desc *virtmap);
+-	efi_status_t (*convert_pointer)(unsigned long dbg, void **address);
++	efi_status_t (EFIAPI *convert_pointer)(unsigned long dbg, void **address);
+ 	efi_status_t (EFIAPI *get_variable)(efi_char16_t *variable_name, const efi_guid_t *vendor,
+ 			u32 *Attributes, size_t *data_size, void *data);
+ 	efi_status_t (EFIAPI *get_next_variable)(size_t *variable_name_size,
 -- 
 2.47.3
 
