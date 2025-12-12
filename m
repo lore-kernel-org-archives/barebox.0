@@ -1,58 +1,65 @@
-Delivery-date: Fri, 12 Dec 2025 15:07:06 +0100
+Delivery-date: Fri, 12 Dec 2025 16:37:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vU3nW-00AgsC-1R
+	id 1vU5D3-00AiPN-37
 	for lore@lore.pengutronix.de;
-	Fri, 12 Dec 2025 15:07:06 +0100
+	Fri, 12 Dec 2025 16:37:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vU3nV-000526-T2
-	for lore@pengutronix.de; Fri, 12 Dec 2025 15:07:06 +0100
+	id 1vU5D3-0005xP-DH
+	for lore@pengutronix.de; Fri, 12 Dec 2025 16:37:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AHtDGLFUtI603LqtAQ1Gy5E6wSVrjXvwN4Z1lT5eSk0=; b=iwSIx3hIK8hiVwKX5TFUSOnoM3
-	VSbzRPytWONVtddyo3Gxrvej/6ihhs8nmrKBu55oElo1+GgeY+ckZ0XB4DUMwViH3TnBRF1KSiwqe
-	8tSTXV1Rvt5Q9eUIIWpUG/wSqljwr4ciH1EiqDuitkROtlvPOB3cdG7yWAJ7khelfzDsoz+TAspfd
-	zBgSSWP1CfGsWfIU6rIBMoYFGGEUSZO9h26aCm4FWS0IavSmKpmnstUvJZnBNwzdYLBAtgqN1Kq7j
-	wqSvGS06lp00try7zfn5K+V5ekrjZrf4p08a65M6+JgUx/tJQxWqjrKulNyvrIn6vgEq1f0ic/FPF
-	6/sCdBEQ==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=2FAdgq+DAOXA1yh/yANa6KzNWFnKhx41574j7IbF6oc=; b=BNEXQlWTkulen/vd0EjBXYRYPc
+	m6JWU3LOhK+OkFh9gMcD+eijZo0m8668Es9X90uh5gEoluH/DsoI3aGR8foXG3Ihe/k2uI52tRW3X
+	N2olTD6LoRyxqqmMjmqPznKJ19YU6z2EHQh5wlY+iSBYZkad34of8xtKWMtnKWhRKmIl0TCoLGTiM
+	zXXegWLwqJXfARNFqPoqAWX2VosjJzFZ2alesv7HmH7HKg1sc7nFlv2is3Fj703PkUhi66wQXz81d
+	dqevjCT0A4xRb2lVX/rNvxDjEadgQtf8Z2GTwVmFEoIGbzfVFsuIPlZfEOLEUsVHuv2dKQozGiFPK
+	ZJo2q7Ag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vU3n9-00000000bbR-3tuL;
-	Fri, 12 Dec 2025 14:06:43 +0000
+	id 1vU5CT-00000000kVn-3FKI;
+	Fri, 12 Dec 2025 15:36:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vU3n6-00000000bb0-2l0j
+	id 1vU5CQ-00000000kVE-1isv
 	for barebox@lists.infradead.org;
-	Fri, 12 Dec 2025 14:06:41 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Fri, 12 Dec 2025 15:36:57 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vU3n4-0004xE-On; Fri, 12 Dec 2025 15:06:38 +0100
-Message-ID: <49d8c5cf-360d-4fa1-87fc-cde4765e3808@pengutronix.de>
-Date: Fri, 12 Dec 2025 15:06:38 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: chalianis1@gmail.com, s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
-References: <20251212050824.1273837-1-chalianis1@gmail.com>
- <20251212050824.1273837-5-chalianis1@gmail.com>
+	id 1vU5CO-0005oL-Hq; Fri, 12 Dec 2025 16:36:52 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vU5CO-005Jm2-1B;
+	Fri, 12 Dec 2025 16:36:52 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vU5CO-00000001b8q-14mz;
+	Fri, 12 Dec 2025 16:36:52 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20251212050824.1273837-5-chalianis1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 12 Dec 2025 16:36:20 +0100
+Message-ID: <20251212153649.365215-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251212_060640_701244_F163BB50 
-X-CRM114-Status: GOOD (  15.00  )
+X-CRM114-CacheID: sfid-20251212_073654_447340_029285F8 
+X-CRM114-Status: GOOD (  10.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,56 +81,51 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 5/5] doc: efi: add efi armv8 documentaion.
+Subject: [PATCH master] i2c: omap: fix probe on am335x
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+The AM335x uses ti,omap4-i2c as compatible for the I2C device tree
+nodes, but that compatible unlike its brethern has no driver data as
+it's determined using the machine compatible in the probe function
+instead.
 
+device_get_match_data() returning NULL is thus expected and should not
+lead to an immediate error.
 
-On 12/12/25 6:08 AM, chalianis1@gmail.com wrote:
-> From: Chali Anis <chalianis1@gmail.com>
-> 
-> Signed-off-by: Chali Anis <chalianis1@gmail.com>
+Fixes: 20d87123a638 ("treewide: replace dev_get_drvdata with device_get_match_data")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+I manually verified all drivers calling device_get_match_data() and I
+believe this to be the only such bug.
+---
+ drivers/i2c/busses/i2c-omap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Just a comment below:
-
-> -name it ``BOOTx64.EFI`` on 64bit architectures and ``BOOTIA32.EFI`` on 32bit
-> -architectures. Switching to USB boot in the BIOS should then be enough to
-> +name it, for x86 ``BOOTx64.EFI`` or ``BOOTIA32.EFI`` on 64bit or 32bit 
-> +architectures recpectivly, for armv8 ``BOOTAA64.EFI``. 
-
-Maybe mention CONFIG_EFI_PAYLOAD_DEFAULT_PATH, which will have the name
-depending on architecture?
-
-> +Switching to USB boot in the BIOS should then be enough to
->  start barebox via USB. Some BIOSes allow to specify a path to a binary to
->  be executed, others have a "start UEFI shell" entry which executes
->  EFI/Shellx64.efi on the :term:`ESP`. This can be a barebox binary as well.
-> @@ -87,9 +96,13 @@ necessary to make a copy first.
->  To start it create a USB memory stick like above and execute:
->  
->  .. code-block:: sh
-> -
-> +  
-> +  # On x86
->    qemu-system-x86_64 -pflash OVMF.fd -nographic /dev/sdx
->  
-> +  # On armv8
-> +  qemu-system-aarch64 -L /usr/share/qemu-efi-aarch64 -bios QEMU_EFI.fd -nographic /dev/sdx
-> +
->  A plain VFAT image will work aswell, but in this case the UEFI BIOS won't
->  recognize it as ESP and ``/boot`` won't be mounted.
->  
-> 
-> 
-
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 29378a96d722..c45483579250 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1076,14 +1076,15 @@ i2c_omap_probe(struct device *pdev)
+ 	}
+ 
+ 	i2c_data = device_get_match_data(pdev);
+-	if (!i2c_data)
+-		return -ENODEV;
+ 
+ 	if (of_machine_is_compatible("ti,am33xx"))
+ 		i2c_data = &am33xx_data;
+ 	if (of_machine_is_compatible("ti,omap4"))
+ 		i2c_data = &omap4_data;
+ 
++	if (!i2c_data)
++		return -EINVAL;
++
+ 	i2c_omap->data = i2c_data;
+ 	i2c_omap->reg_shift = (i2c_data->flags >>
+ 					OMAP_I2C_FLAG_BUS_SHIFT__SHIFT) & 3;
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
