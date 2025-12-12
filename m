@@ -1,65 +1,67 @@
-Delivery-date: Fri, 12 Dec 2025 16:37:34 +0100
+Delivery-date: Fri, 12 Dec 2025 17:15:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vU5D3-00AiPN-37
+	id 1vU5nK-00Aj88-2a
 	for lore@lore.pengutronix.de;
-	Fri, 12 Dec 2025 16:37:33 +0100
+	Fri, 12 Dec 2025 17:15:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vU5D3-0005xP-DH
-	for lore@pengutronix.de; Fri, 12 Dec 2025 16:37:33 +0100
+	id 1vU5nK-00027m-Aa
+	for lore@pengutronix.de; Fri, 12 Dec 2025 17:15:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=2FAdgq+DAOXA1yh/yANa6KzNWFnKhx41574j7IbF6oc=; b=BNEXQlWTkulen/vd0EjBXYRYPc
-	m6JWU3LOhK+OkFh9gMcD+eijZo0m8668Es9X90uh5gEoluH/DsoI3aGR8foXG3Ihe/k2uI52tRW3X
-	N2olTD6LoRyxqqmMjmqPznKJ19YU6z2EHQh5wlY+iSBYZkad34of8xtKWMtnKWhRKmIl0TCoLGTiM
-	zXXegWLwqJXfARNFqPoqAWX2VosjJzFZ2alesv7HmH7HKg1sc7nFlv2is3Fj703PkUhi66wQXz81d
-	dqevjCT0A4xRb2lVX/rNvxDjEadgQtf8Z2GTwVmFEoIGbzfVFsuIPlZfEOLEUsVHuv2dKQozGiFPK
-	ZJo2q7Ag==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=SD6nXLqwaVvaKMtDLKVYFouiXrapsXa/iYSBzSJHmLg=; b=BDto9lWtvXmGFS
+	RyY0+y5SAvKj50O+AbW4zy5dvu8AJ0xB4sZk5MMCt4JREo40rjDOkjGMTfnM/HOLuw+g7MSG+ik6O
+	cE2w35ORFjzWxEWf7j4J8lrwtFJwTYsiDO4/8yE+QcLImZDcUT6KOKwhxFbQjsM5ks8hXo5SIXMmc
+	y7ccQvWOcHu3OnNOr4TulS1njWz61KpGyW5nAAO3NguGc76sjFPjSQPkk+gF1l7Zhte/hempZcJXQ
+	IDTcJc6gkJmcBaVA7RnW4lUCX7G3ituzJ12vHlzp3U8UrvAtgo+MwTpW85c+JSeX4g61Hp+ubdBe9
+	6g/75oZ3jb918fVQRJMA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vU5CT-00000000kVn-3FKI;
-	Fri, 12 Dec 2025 15:36:57 +0000
+	id 1vU5mo-00000000ocx-2MdM;
+	Fri, 12 Dec 2025 16:14:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vU5CQ-00000000kVE-1isv
+	id 1vU5ml-00000000obo-3vG5
 	for barebox@lists.infradead.org;
-	Fri, 12 Dec 2025 15:36:57 +0000
+	Fri, 12 Dec 2025 16:14:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vU5CO-0005oL-Hq; Fri, 12 Dec 2025 16:36:52 +0100
+	id 1vU5mk-0001tB-18; Fri, 12 Dec 2025 17:14:26 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vU5CO-005Jm2-1B;
-	Fri, 12 Dec 2025 16:36:52 +0100
+	id 1vU5mj-005K65-2f;
+	Fri, 12 Dec 2025 17:14:25 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vU5CO-00000001b8q-14mz;
-	Fri, 12 Dec 2025 16:36:52 +0100
+	id 1vU5mj-000000072e4-31Uo;
+	Fri, 12 Dec 2025 17:14:25 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 12 Dec 2025 16:36:20 +0100
-Message-ID: <20251212153649.365215-1-a.fatoum@pengutronix.de>
+Date: Fri, 12 Dec 2025 17:12:52 +0100
+Message-ID: <20251212161424.1627626-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251212161424.1627626-1-a.fatoum@pengutronix.de>
+References: <20251212161424.1627626-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251212_073654_447340_029285F8 
-X-CRM114-Status: GOOD (  10.25  )
+X-CRM114-CacheID: sfid-20251212_081428_230606_AE482B0A 
+X-CRM114-Status: UNSURE (   8.83  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,59 +73,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
-	metis.whiteo.stw.pengutronix.de
-X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH master] i2c: omap: fix probe on am335x
+Subject: [PATCH v2 4/5] boot: try builtin and removable media before net for boot.default
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); Unknown failure
 
-The AM335x uses ti,omap4-i2c as compatible for the I2C device tree
-nodes, but that compatible unlike its brethern has no driver data as
-it's determined using the machine compatible in the probe function
-instead.
+This is the same sequence to automatically probe the environment, so it
+makes sense that the automatic boot order would follow.
 
-device_get_match_data() returning NULL is thus expected and should not
-lead to an immediate error.
-
-Fixes: 20d87123a638 ("treewide: replace dev_get_drvdata with device_get_match_data")
+Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-I manually verified all drivers calling device_get_match_data() and I
-believe this to be the only such bug.
+v1 -> v2:
+  - add Sascha's R-b
 ---
- drivers/i2c/busses/i2c-omap.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ common/boot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index 29378a96d722..c45483579250 100644
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1076,14 +1076,15 @@ i2c_omap_probe(struct device *pdev)
- 	}
+diff --git a/common/boot.c b/common/boot.c
+index 07bd288df29d..14525d31ae2d 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -137,6 +137,8 @@ static int init_boot(void)
+ 	if (!global_boot_default)
+ 		global_boot_default = xstrdup(
+ 			IF_ENABLED(CONFIG_BOOT_DEFAULTS, "bootsource ")
++			IF_ENABLED(CONFIG_BOOT_DEFAULTS, "storage.builtin ")
++			IF_ENABLED(CONFIG_BOOT_DEFAULTS, "storage.removable ")
+ 			"net"
+ 		);
  
- 	i2c_data = device_get_match_data(pdev);
--	if (!i2c_data)
--		return -ENODEV;
- 
- 	if (of_machine_is_compatible("ti,am33xx"))
- 		i2c_data = &am33xx_data;
- 	if (of_machine_is_compatible("ti,omap4"))
- 		i2c_data = &omap4_data;
- 
-+	if (!i2c_data)
-+		return -EINVAL;
-+
- 	i2c_omap->data = i2c_data;
- 	i2c_omap->reg_shift = (i2c_data->flags >>
- 					OMAP_I2C_FLAG_BUS_SHIFT__SHIFT) & 3;
 -- 
 2.47.3
 
