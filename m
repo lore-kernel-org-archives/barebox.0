@@ -1,69 +1,57 @@
-Delivery-date: Mon, 15 Dec 2025 13:17:11 +0100
+Delivery-date: Mon, 15 Dec 2025 13:17:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV7Vn-00BjuV-1l
+	id 1vV7WP-00BjvS-2P
 	for lore@lore.pengutronix.de;
-	Mon, 15 Dec 2025 13:17:11 +0100
+	Mon, 15 Dec 2025 13:17:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV7Vm-0003nP-6m
-	for lore@pengutronix.de; Mon, 15 Dec 2025 13:17:11 +0100
+	id 1vV7WP-00046z-52
+	for lore@pengutronix.de; Mon, 15 Dec 2025 13:17:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=I5+JrPTno62DyYwBKxWUNOmO7L14LOKmoEOSB2dDe0w=; b=n342k3zR6C2B3DL3o/Vk8Svspm
-	jDdGIn5/FJBcrLPnB9OI0tIGOHwGQD/Mhzc9b+QLpqqtmBgBvUko80tps21wa2kYQ+ehZTY0nmX1K
-	vWfAjTr6aKHiy925j/0wHYD4NdWPL4ZWCW6m9i3R0aoXr8mN1fCxYt03qnFvqxue5kgrgDYr2A8jb
-	fAp6jm1virflpAKiy+L6K7HDdyeqXsJR51Y7CDWmDa/My8ZsYphpkUEXXkKDyHLn+z3lMiCSXUqFz
-	Uv/xlyt/hKEPNAkzOKhUwmU/aoPDYwSQ/1YvveWckGxajWJditIIXHs+UKRQnR0wtnbF22ULOz+9y
-	pKNrBMsg==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=j1oD1DIbNflmXHUikYcdn2ndXj/c2cReEmbUoJQhmSA=; b=3gezNFZgYw0LyAMqy3XWWflnDc
+	sMee2I+HUJcV5Ws4A33w0p49nZplpO50b5ZCKec6PcHAVt6smk7NrmeJkbeaTIKm7HkWCZdvdH5NO
+	odxIjl4m11U6/qp5uUmg2vFmlP/9p/Hrd3sJS/vRqKr0dLYlTLueE9ozJX+dQhg+kjgFX6oaE/0+U
+	WX0o3kdBAj/ej3ekwfpW6SEaL3U6Y8NFR4FngnyPXOAe+uLsQF7biXZ9iXhyJTkMiSVV6ewDGsNjP
+	bHunCniczOf6zYGKpKhtt1mykJKMF/Dn/9GFl6yPgzu+Z0ufvwgnzmhXbn0aUMsNLBBHYc8wDvLe9
+	ABltJVKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV7V5-00000003aTn-3wrc;
-	Mon, 15 Dec 2025 12:16:27 +0000
+	id 1vV7Vv-00000003ab9-11Cr;
+	Mon, 15 Dec 2025 12:17:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV7V2-00000003aT6-2qhW
+	id 1vV7Vp-00000003aZb-2BQ3
 	for barebox@lists.infradead.org;
-	Mon, 15 Dec 2025 12:16:26 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV7V1-0003eq-0G; Mon, 15 Dec 2025 13:16:23 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV7V0-005mLw-2e;
-	Mon, 15 Dec 2025 13:16:22 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV7V0-00000001XMv-3D9H;
-	Mon, 15 Dec 2025 13:16:22 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20251209-devfs-v2-0-62ae16698cff@pengutronix.de>
-References: <20251209-devfs-v2-0-62ae16698cff@pengutronix.de>
-Message-Id: <176580098276.366548.15149939700617421032.b4-ty@pengutronix.de>
-Date: Mon, 15 Dec 2025 13:16:22 +0100
+	Mon, 15 Dec 2025 12:17:14 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vV7Vo-0003nv-1y; Mon, 15 Dec 2025 13:17:12 +0100
+Message-ID: <4cfc991a-29b1-41b2-8fe7-a3f944ec0b14@pengutronix.de>
+Date: Mon, 15 Dec 2025 13:17:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+References: <20251215075907.1222551-1-a.fatoum@pengutronix.de>
+ <176579746741.354794.15681124579401216876.b4-ty@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <176579746741.354794.15681124579401216876.b4-ty@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251215_041624_742723_4BBB816E 
-X-CRM114-Status: UNSURE (   9.39  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251215_041713_584904_0412012D 
+X-CRM114-Status: GOOD (  12.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,53 +73,48 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 00/13] fs: Use device special nodes for devfs
+Subject: Re: [PATCH 1/5] net: 9p: fix variable name in BAREBOX_MAGICVAR
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi,
 
-On Tue, 09 Dec 2025 13:51:19 +0100, Sascha Hauer wrote:
-> Until now we have a devfs which is a filesystem of its own. This
-> comes with a few limitations:
+On 12/15/25 12:17 PM, Sascha Hauer wrote:
 > 
-> - we cannot create directories under /dev/
-> - Links are implemented in the devfs filesystem. They do not show
->   up as regular links
+> On Mon, 15 Dec 2025 08:58:57 +0100, Ahmad Fatoum wrote:
+>> The variable is called global.9p.debug, not plan9debug.
+>>
+>>
 > 
-> [...]
+> Applied, thanks!
+> 
+> [1/5] net: 9p: fix variable name in BAREBOX_MAGICVAR
+>       https://git.pengutronix.de/cgit/barebox/commit/?id=370f8098d2ab (link may not be stable)
+> [2/5] bootchooser: inline document global.bootchooser.reset_priorities
+>       https://git.pengutronix.de/cgit/barebox/commit/?id=473dec063496 (link may not be stable)
+> [3/5] reset_source: inline document global.system.reset*
+>       https://git.pengutronix.de/cgit/barebox/commit/?id=fe328bcb8a40 (link may not be stable)
+> [4/5] Documentation: generate docs for magic variables
+>       https://git.pengutronix.de/cgit/barebox/commit/?id=e3078309ff30 (link may not be stable)
+> [5/5] Documentation: turn magic variables literals into references
+>       https://git.pengutronix.de/cgit/barebox/commit/?id=ab1033dd5dff (link may not be stable)
 
-Applied, thanks!
+Thanks!
 
-[01/13] fs: devfs-core: add devfs_create_link_node()
-        https://git.pengutronix.de/cgit/barebox/commit/?id=0532ad160214 (link may not be stable)
-[02/13] storage-by-alias: drop fake cdev
-        https://git.pengutronix.de/cgit/barebox/commit/?id=50f91eaeac24 (link may not be stable)
-[03/13] fs: implement mknod
-        https://git.pengutronix.de/cgit/barebox/commit/?id=d37d0ed18ddc (link may not be stable)
-[04/13] commands: add mknod command
-        https://git.pengutronix.de/cgit/barebox/commit/?id=65a86ce343b3 (link may not be stable)
-[05/13] fs: ramfs: add device file support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=84efacef29bf (link may not be stable)
-[06/13] cdev: add cdev_size() helper
-        https://git.pengutronix.de/cgit/barebox/commit/?id=1935728cfea8 (link may not be stable)
-[07/13] fs: fix st_size for device files
-        https://git.pengutronix.de/cgit/barebox/commit/?id=37b73179a340 (link may not be stable)
-[08/13] fs: retire devfs as filesystem
-        https://git.pengutronix.de/cgit/barebox/commit/?id=cff48c7caba4 (link may not be stable)
-[09/13] fs: include cdevname in struct stat
-        https://git.pengutronix.de/cgit/barebox/commit/?id=f7950b1fac33 (link may not be stable)
-[10/13] fs: stat_print: get cdevname from stat
-        https://git.pengutronix.de/cgit/barebox/commit/?id=6f646eccbf9f (link may not be stable)
-[11/13] common: cdev-alias: rename struct
-        https://git.pengutronix.de/cgit/barebox/commit/?id=0511991f9c04 (link may not be stable)
-[12/13] fs: replace cdev links with aliases
-        https://git.pengutronix.de/cgit/barebox/commit/?id=224b5a781f34 (link may not be stable)
-[13/13] ls: use ~0 for FILE_SIZE_STREAM
-        https://git.pengutronix.de/cgit/barebox/commit/?id=6bcded4d13b3 (link may not be stable)
+Given that these are either doc fixes or additions, maybe a candidate
+for master?
 
-Best regards,
+Cheers,
+Ahmad
+
+> 
+> Best regards,
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
