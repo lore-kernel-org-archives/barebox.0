@@ -1,67 +1,67 @@
-Delivery-date: Mon, 15 Dec 2025 10:13:50 +0100
+Delivery-date: Mon, 15 Dec 2025 10:14:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV4eM-00Bgwx-34
+	id 1vV4fJ-00Bgy7-2T
 	for lore@lore.pengutronix.de;
-	Mon, 15 Dec 2025 10:13:50 +0100
+	Mon, 15 Dec 2025 10:14:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV4eM-0006us-Al
-	for lore@pengutronix.de; Mon, 15 Dec 2025 10:13:50 +0100
+	id 1vV4fJ-0007E2-81
+	for lore@pengutronix.de; Mon, 15 Dec 2025 10:14:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=y1qcFGjH17Lt5qokXm8QWVSLx7aqFQYh+EFdeVI4fp0=; b=fREcrwPGvTBnWKF9eqlLP4rFS7
-	4So6ciYNufOfW1DqyhJDBPkIMaVFqlkK4naFWnIUZKuy/bCb+EzUen7THtOFIhzB0KrmaL/TARs6Q
-	aRtv8leUPgku37sKstdSeC+9T3PSaLGp/rMdcQzOOTU9e77HlYqqO/javIboj3pBfc0tVpJRY7rvo
-	fVb2MKokjMYKXniJbczTi44cbg+KTo6GUsR0B19kAF1s4InZYI5vWO2o7rT0Hh8fgpBPm8BbAcXh2
-	zy2s4GgY7NEpVKnQJ5+7Q3Rb2g8XEWmi0yHuzlts0VSz3g1swf4pI7l/vDPADTEyRwv2rSWGZUKe+
-	sI/a1+wA==;
+	bh=j+IPiDey+a1EVc4rhjkNZPXpl7bvm+ZBtfXUZDN0NS4=; b=V8uwCRFA7imiJ9hXmpRKmQlLSI
+	h88ZfeH9TWgEVAlO7caaTSzufpBGhjeWa7vkNEkgcJMbxcX6YwEW3X0VkotFWFhMiT6NcrcGWdPkQ
+	efoGkxB2EKeZKkBMRUiSGW7zKeah/FWjzEZAlMzsmJvR6XmiiAH+9pJpyjc3ZQGR3I/m8aLE1LZUU
+	MXk1pgJ8Ofd0SbHw7MbBpd2jO2+PjRxzetmd2IsxYzEnO4513QNdteWbZtIz8HxI38yr0L4P2A9t7
+	Mv1boACsjDsH/H+yfBvVzt/gEnxt9yMQ2vQ21HiaQpDt93AnYAqi4X2QSSXyRv/H1ENPRDUsGJmYV
+	RdIZRvZw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV4dx-00000003LMZ-1OHY;
-	Mon, 15 Dec 2025 09:13:25 +0000
+	id 1vV4er-00000003LVA-2xJo;
+	Mon, 15 Dec 2025 09:14:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV4dv-00000003LM1-0Zol
+	id 1vV4ep-00000003LUY-22ba
 	for barebox@lists.infradead.org;
-	Mon, 15 Dec 2025 09:13:24 +0000
+	Mon, 15 Dec 2025 09:14:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4dt-0006pL-II; Mon, 15 Dec 2025 10:13:21 +0100
+	id 1vV4en-0006z5-Tz; Mon, 15 Dec 2025 10:14:17 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4dt-005kv3-1E;
-	Mon, 15 Dec 2025 10:13:21 +0100
+	id 1vV4en-005kv9-2M;
+	Mon, 15 Dec 2025 10:14:17 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4dt-000000018Ba-1Mpm;
-	Mon, 15 Dec 2025 10:13:21 +0100
+	id 1vV4en-000000018IR-2nQz;
+	Mon, 15 Dec 2025 10:14:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251215084412.2548801-1-a.fatoum@pengutronix.de>
-References: <20251215084412.2548801-1-a.fatoum@pengutronix.de>
-Message-Id: <176579000132.269675.4000853715241188394.b4-ty@pengutronix.de>
-Date: Mon, 15 Dec 2025 10:13:21 +0100
+In-Reply-To: <20251215085038.2734779-1-a.fatoum@pengutronix.de>
+References: <20251215085038.2734779-1-a.fatoum@pengutronix.de>
+Message-Id: <176579005766.270096.2203166853165597377.b4-ty@pengutronix.de>
+Date: Mon, 15 Dec 2025 10:14:17 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251215_011323_516719_E0BEB52C 
-X-CRM114-Status: UNSURE (   5.44  )
+X-CRM114-CacheID: sfid-20251215_011419_541621_88F7CB81 
+X-CRM114-Status: UNSURE (   6.10  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,21 +84,21 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] rtc-lib: implement rtc_calc_weekday
+Subject: Re: [PATCH] poweroff: make header self-contained
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 15 Dec 2025 09:44:09 +0100, Ahmad Fatoum wrote:
-> For use by the EFI loader RTC set time boot service, import
-> rtc_calc_weekday() from U-Boot.
+On Mon, 15 Dec 2025 09:50:38 +0100, Ahmad Fatoum wrote:
+> Make LSP happy and allow including the file as first header by making it
+> self-contained.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] rtc-lib: implement rtc_calc_weekday
-      https://git.pengutronix.de/cgit/barebox/commit/?id=d2ee979c560b (link may not be stable)
+[1/1] poweroff: make header self-contained
+      https://git.pengutronix.de/cgit/barebox/commit/?id=36bfe12fdec2 (link may not be stable)
 
 Best regards,
 -- 
