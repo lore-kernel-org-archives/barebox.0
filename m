@@ -1,67 +1,67 @@
-Delivery-date: Mon, 15 Dec 2025 08:24:13 +0100
+Delivery-date: Mon, 15 Dec 2025 08:25:53 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV2wH-00Bev8-0r
+	id 1vV2xt-00Bewi-2H
 	for lore@lore.pengutronix.de;
-	Mon, 15 Dec 2025 08:24:13 +0100
+	Mon, 15 Dec 2025 08:25:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV2wG-0001rb-Np
-	for lore@pengutronix.de; Mon, 15 Dec 2025 08:24:13 +0100
+	id 1vV2xt-00025l-5y
+	for lore@pengutronix.de; Mon, 15 Dec 2025 08:25:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7uDKwGsRdaX14qczJ/61mGNGMc95I0rB6YI4lHBv2zA=; b=VOLgMiPsPTpcn9U5z2AO0t9Z2R
-	YvWOPxR1BcFWU3q6DPzFAi4psWEWVkkKeCgvGQ1CT8BPYJ1TrojXcdxkJavE2pRmMC9gPmMbtl1VY
-	vBufxNWUL4hVu+vt488Y+iI3+XBEmR73TgrcCR5n3WBT3fiC5bnzESJOMFVoWy1juD+Z0Tez7Tncv
-	nXXvdl8qQZoKueIgP0tPgQQ9PmP60y1/dNG3H7cuOylw5csujfI5i7Fud/Kaew6nbHLl9SpDN0NWc
-	uljQXQu26GYWAirG48cEfraT9u3juM8FPzOq669N5LVfWaeSO8IPuHEoPi+wo+Wwo+bLwm4a19omK
-	XT6d0Scg==;
+	bh=VjtH8AAHSaDarVqmoZ6qb8DET+n8Ahm55e4VLHI7sjI=; b=WhdRcHIOXZVr8NQmMWf9tyrd1I
+	zZQSqQjXsUmBO8PDbqjrnGexSJcp2Nm+U35SZyhH0/K2u39+7l6MGUJF9UTZphd9icdGEDeoKipeA
+	gTYdWyjMLZG8MWR5J93x2lGdLoTVJ4GhJlpXyGSLq/3lP0kgCgsBUD4xtPiOGbcrXf8M6rgK9U8y4
+	6S/3tVd/OyYh14wS/6kak4+i1mSGwK8Pvwlr56ceNQDT/0Vn7xsaCNNOPQKm5OZR1koQSRaJhwGwG
+	qzIF3KToooR3AWa1Ipbyx/4B/p1frnzBB34tcKMzqQf0bpVTsVAEpofrVotK9y/mkN7X5Ra/bR/r3
+	TH+8ltow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV2vo-00000003CBl-2rHS;
-	Mon, 15 Dec 2025 07:23:44 +0000
+	id 1vV2x8-00000003CJ2-0T5X;
+	Mon, 15 Dec 2025 07:25:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV2vm-00000003CBA-1LKy
+	id 1vV2x5-00000003CIT-0Uau
 	for barebox@lists.infradead.org;
-	Mon, 15 Dec 2025 07:23:43 +0000
+	Mon, 15 Dec 2025 07:25:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV2vk-0001kk-MP; Mon, 15 Dec 2025 08:23:40 +0100
+	id 1vV2x3-0001wZ-Hu; Mon, 15 Dec 2025 08:25:01 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV2vk-005k2u-1e;
-	Mon, 15 Dec 2025 08:23:40 +0100
+	id 1vV2x3-005k31-1B;
+	Mon, 15 Dec 2025 08:25:01 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV2vk-000000011D8-1txI;
-	Mon, 15 Dec 2025 08:23:40 +0100
+	id 1vV2x3-000000011JY-1HTM;
+	Mon, 15 Dec 2025 08:25:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251211174050.3689753-1-a.fatoum@pengutronix.de>
-References: <20251211174050.3689753-1-a.fatoum@pengutronix.de>
-Message-Id: <176578342045.242971.8499734982021343107.b4-ty@pengutronix.de>
-Date: Mon, 15 Dec 2025 08:23:40 +0100
+In-Reply-To: <20251211193315.3927292-1-a.fatoum@pengutronix.de>
+References: <20251211193315.3927292-1-a.fatoum@pengutronix.de>
+Message-Id: <176578350130.243363.11557771093872746627.b4-ty@pengutronix.de>
+Date: Mon, 15 Dec 2025 08:25:01 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251214_232342_365697_D4A79CAF 
-X-CRM114-Status: UNSURE (   8.49  )
+X-CRM114-CacheID: sfid-20251214_232503_215517_BE10CF2B 
+X-CRM114-Status: UNSURE (   7.49  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,25 +84,26 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] clk: vexpress: clk-sp810: sync with Linux
+Subject: Re: [PATCH 1/2] fixup! efi: add option to generate vfat file for
+ barebox.efi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 11 Dec 2025 18:40:39 +0100, Ahmad Fatoum wrote:
-> labgrid-pytest --lg-env test/arm/a15@multi_v7_defconfig.yaml crashes for
-> me, because the parent is hardcoded as 1 and that leads to an out of
-> bounds access when executing the clk_dump commands as it tries to get
-> ahold of the name in clk_lookup.
+On Thu, 11 Dec 2025 20:33:12 +0100, Ahmad Fatoum wrote:
+> efi: fix generation for non !EFI_STUB configurations
 > 
-> Sync the driver with Linux to fix this issue.
+> The if currently always succeeded and trying to build the payload code
+> on sandbox unearthes another issue, so fix both.
 > 
-> [...]
+> 
 
 Applied, thanks!
 
-[1/1] clk: vexpress: clk-sp810: sync with Linux
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8a7a891c5d35 (link may not be stable)
+[1/2] fixup! efi: add option to generate vfat file for barebox.efi
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b3ab8e3976c2 (link may not be stable)
+[2/2] efi: payload: enable build for sandbox
+      (no commit info)
 
 Best regards,
 -- 
