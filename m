@@ -1,67 +1,67 @@
-Delivery-date: Mon, 15 Dec 2025 08:16:31 +0100
+Delivery-date: Mon, 15 Dec 2025 08:21:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV2op-00Beo5-2h
+	id 1vV2tr-00BesC-08
 	for lore@lore.pengutronix.de;
-	Mon, 15 Dec 2025 08:16:31 +0100
+	Mon, 15 Dec 2025 08:21:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV2op-00017D-0F
-	for lore@pengutronix.de; Mon, 15 Dec 2025 08:16:31 +0100
+	id 1vV2tq-0001Xz-73
+	for lore@pengutronix.de; Mon, 15 Dec 2025 08:21:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=k2gGwExpKFjmGxTXkqFYYHL/dbETu7XbYHAv5nm0h/o=; b=K9j7oVAfS6k+DMCpSBjgAY1X0R
-	4LVJXYmIJf7sGZ8GZYQmGAu5DxA/u+lwwQzk+OBvsyMSKt/IWV/NpB6XAPd2nkwOVywuaG7puvtMw
-	Ch4Udhai5p2hhOM2RQFbCTMM+G7rcbfIEzAEz7yX3AA0zWvjMNaeDeo1DzKessx4vDs4O31DzMeRR
-	izbOk5l+WzTkShYrDtjaxU2YS/3bBo5ubZigYFCg5g6TTCaWdT2/kxDpZF+yTeL+My8Q0CVGV5y9l
-	n4VvY3Lru1YNtykRLGqko97bb7x71EZqKN93tVyDmG0V/mtrmrn8o0hkGK06cJ+hHPL3QoF4lc1cL
-	u03CYkEw==;
+	bh=wC/4nH24DBqBFbTqfAsMEJ2ucujCooVyqTj2NsGu4Co=; b=csKIXq3D7a88HsG5PB0xCwmcqY
+	95oDf9GpabMVyPegn3OO8EaQXP89beQxVMNibWYiGKEDYw2Ksn50MM0qnx3+4Ktvm1bzmyjvd3ft2
+	YhYzQ0FKsSA+ScUoyOTevukGYTF+JML4pwLlFkOo0LTKQ2j+jLKdR2QPazXepki100nyclXEOdHBM
+	6nQM8KhLKMVYxE2WIJGJ1fcC1nPZxphtfZ/ssU1bIf3rQF33/ZhvjRHvYl8zB0oych9T6GEDX8ad3
+	r+m1KozoBdJBnktfepIFpy+sPOheBQCuXwvru94dTY48J/aYTvWwKFy2I8CuWR3SKnzSlgueGT3M3
+	N71MoWGw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV2oF-00000003BjL-2igN;
-	Mon, 15 Dec 2025 07:15:55 +0000
+	id 1vV2tJ-00000003Byd-0b3E;
+	Mon, 15 Dec 2025 07:21:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV2oD-00000003Biq-398X
+	id 1vV2t9-00000003Bxn-25tg
 	for barebox@lists.infradead.org;
-	Mon, 15 Dec 2025 07:15:54 +0000
+	Mon, 15 Dec 2025 07:21:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV2oC-0000zr-5h; Mon, 15 Dec 2025 08:15:52 +0100
+	id 1vV2t7-0001R3-SQ; Mon, 15 Dec 2025 08:20:57 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV2oB-005k16-3C;
-	Mon, 15 Dec 2025 08:15:52 +0100
+	id 1vV2t7-005k2I-2B;
+	Mon, 15 Dec 2025 08:20:57 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV2oB-00000001117-3uNZ;
-	Mon, 15 Dec 2025 08:15:51 +0100
+	id 1vV2t7-0000000117B-2aB3;
+	Mon, 15 Dec 2025 08:20:57 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251211203455.2300589-1-a.fatoum@pengutronix.de>
-References: <20251211203455.2300589-1-a.fatoum@pengutronix.de>
-Message-Id: <176578295192.242227.15152540116075097029.b4-ty@pengutronix.de>
-Date: Mon, 15 Dec 2025 08:15:51 +0100
+In-Reply-To: <20251211203708.2440188-1-a.fatoum@pengutronix.de>
+References: <20251211203708.2440188-1-a.fatoum@pengutronix.de>
+Message-Id: <176578325761.242514.15893789424533181912.b4-ty@pengutronix.de>
+Date: Mon, 15 Dec 2025 08:20:57 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251214_231553_794466_D2FC7373 
-X-CRM114-Status: UNSURE (   5.97  )
+X-CRM114-CacheID: sfid-20251214_232059_928038_C4798362 
+X-CRM114-Status: UNSURE (   6.24  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,25 +80,28 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-1.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: mmu: include <asm/io.h> from <mmu.h>
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,SUBJECT_IN_BLACKLIST,
+	SUBJECT_IN_BLOCKLIST autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] driver: base: report driver remove before, not after
+ operation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 11 Dec 2025 21:34:54 +0100, Ahmad Fatoum wrote:
-> To make sure virt_to_phys() is always defined, include the relevant
-> header.
+On Thu, 11 Dec 2025 21:37:07 +0100, Ahmad Fatoum wrote:
+> Calling pr_report_probe() after the removal is unexpected as for
+> initcalls and probes, we print before to make hangs or crashes
+> easier to pinpoint.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] ARM: mmu: include <asm/io.h> from <mmu.h>
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4f82342bc0df (link may not be stable)
+[1/1] driver: base: report driver remove before, not after operation
+      https://git.pengutronix.de/cgit/barebox/commit/?id=97fd52dc91b2 (link may not be stable)
 
 Best regards,
 -- 
