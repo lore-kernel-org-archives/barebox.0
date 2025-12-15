@@ -1,67 +1,67 @@
-Delivery-date: Mon, 15 Dec 2025 10:13:19 +0100
+Delivery-date: Mon, 15 Dec 2025 10:13:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV4dr-00Bgw9-0L
+	id 1vV4eM-00Bgwx-34
 	for lore@lore.pengutronix.de;
-	Mon, 15 Dec 2025 10:13:19 +0100
+	Mon, 15 Dec 2025 10:13:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV4dq-0006oZ-Id
-	for lore@pengutronix.de; Mon, 15 Dec 2025 10:13:19 +0100
+	id 1vV4eM-0006us-Al
+	for lore@pengutronix.de; Mon, 15 Dec 2025 10:13:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ld7Dt1WVQcjA+Yz2CYIILUxAJnk42tYaUJupqpRg2UI=; b=j45Y1x5IPQOTjpcP31CEqBd8xf
-	Ct+jJa/BEcx2nX8yDXAmAMpoeLoLb92dlwu8VBGmiRLIULFHbpWUusmqNvS40UruJtsFufHzHRQwY
-	kCeZ5938HlVhwT26kXZ7aCfQH26Izqja3iMubhTHDt7F8N7AmW1DcHxO4xOBASMdNr7h2/55o8mBp
-	+L7wpcQMHFr4ydtu+5nrMkaW8RBvBNdgW0r9xgcNtZsCILPU86T5jnzoeu9PDwsnpvhH7wq3jJDax
-	5jXV27OYcnnisuOL5K3GHic0KlQnySGZCEdjP7jHn+35DqriFldovryT5MrSrD86519uHvjqWgJu7
-	NMmXCisQ==;
+	bh=y1qcFGjH17Lt5qokXm8QWVSLx7aqFQYh+EFdeVI4fp0=; b=fREcrwPGvTBnWKF9eqlLP4rFS7
+	4So6ciYNufOfW1DqyhJDBPkIMaVFqlkK4naFWnIUZKuy/bCb+EzUen7THtOFIhzB0KrmaL/TARs6Q
+	aRtv8leUPgku37sKstdSeC+9T3PSaLGp/rMdcQzOOTU9e77HlYqqO/javIboj3pBfc0tVpJRY7rvo
+	fVb2MKokjMYKXniJbczTi44cbg+KTo6GUsR0B19kAF1s4InZYI5vWO2o7rT0Hh8fgpBPm8BbAcXh2
+	zy2s4GgY7NEpVKnQJ5+7Q3Rb2g8XEWmi0yHuzlts0VSz3g1swf4pI7l/vDPADTEyRwv2rSWGZUKe+
+	sI/a1+wA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV4dQ-00000003LHx-0329;
-	Mon, 15 Dec 2025 09:12:52 +0000
+	id 1vV4dx-00000003LMZ-1OHY;
+	Mon, 15 Dec 2025 09:13:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV4dM-00000003LHC-2N0X
+	id 1vV4dv-00000003LM1-0Zol
 	for barebox@lists.infradead.org;
-	Mon, 15 Dec 2025 09:12:49 +0000
+	Mon, 15 Dec 2025 09:13:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4dK-0006ji-SW; Mon, 15 Dec 2025 10:12:46 +0100
+	id 1vV4dt-0006pL-II; Mon, 15 Dec 2025 10:13:21 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4dK-005kux-2F;
-	Mon, 15 Dec 2025 10:12:46 +0100
+	id 1vV4dt-005kv3-1E;
+	Mon, 15 Dec 2025 10:13:21 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4dK-0000000187C-2fC3;
-	Mon, 15 Dec 2025 10:12:46 +0100
+	id 1vV4dt-000000018Ba-1Mpm;
+	Mon, 15 Dec 2025 10:13:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251215084711.2635214-1-a.fatoum@pengutronix.de>
-References: <20251215084711.2635214-1-a.fatoum@pengutronix.de>
-Message-Id: <176578996663.269507.2609251783990400672.b4-ty@pengutronix.de>
-Date: Mon, 15 Dec 2025 10:12:46 +0100
+In-Reply-To: <20251215084412.2548801-1-a.fatoum@pengutronix.de>
+References: <20251215084412.2548801-1-a.fatoum@pengutronix.de>
+Message-Id: <176579000132.269675.4000853715241188394.b4-ty@pengutronix.de>
+Date: Mon, 15 Dec 2025 10:13:21 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251215_011248_603381_6E59B6A7 
-X-CRM114-Status: UNSURE (   7.46  )
+X-CRM114-CacheID: sfid-20251215_011323_516719_E0BEB52C 
+X-CRM114-Status: UNSURE (   5.44  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,27 +82,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM64: support reserving the x18 platform register
+Subject: Re: [PATCH] rtc-lib: implement rtc_calc_weekday
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 15 Dec 2025 09:47:10 +0100, Ahmad Fatoum wrote:
-> Linux helpfully complained about "register x18 corrupted by EFI" with
-> the upcoming EFI loader support as this register is apparently the
-> platform register and is meant to be usable by the OS without other
-> firmware like the EFI runtime services clobbering it.
+On Mon, 15 Dec 2025 09:44:09 +0100, Ahmad Fatoum wrote:
+> For use by the EFI loader RTC set time boot service, import
+> rtc_calc_weekday() from U-Boot.
 > 
-> Provide a hidden AAPCS64 symbol that will be usable for this purpose.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] ARM64: support reserving the x18 platform register
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0562055890bc (link may not be stable)
+[1/1] rtc-lib: implement rtc_calc_weekday
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d2ee979c560b (link may not be stable)
 
 Best regards,
 -- 
