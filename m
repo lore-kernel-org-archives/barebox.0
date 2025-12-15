@@ -1,58 +1,78 @@
-Delivery-date: Mon, 15 Dec 2025 15:27:01 +0100
+Delivery-date: Mon, 15 Dec 2025 20:44:32 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV9XR-00Bm1E-0p
+	id 1vVEUi-00Bqys-2Y
 	for lore@lore.pengutronix.de;
-	Mon, 15 Dec 2025 15:27:01 +0100
+	Mon, 15 Dec 2025 20:44:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV9XQ-0003NS-Mv
-	for lore@pengutronix.de; Mon, 15 Dec 2025 15:27:01 +0100
+	id 1vVEUh-0003ET-Ss
+	for lore@pengutronix.de; Mon, 15 Dec 2025 20:44:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zHG1O1BCRebNXvC2FMVukLJ9JrvTnRjKEiVFMX4IOVY=; b=a7AQVG4DKxMJDbWqw100j998mS
-	37RceE38LkRB3+lWwN4LCVvszt6DUuo32RWBZmVRSz6tLFAelH55Qekcghv7/sua0yIr8X1B3hNzz
-	McqrpI8a/+u7FqH0kyO1d4oqd4cpsWYp/9S5gRjLdupjoSu0bjGfdSYJswUxa329NTM/RmWk28i9f
-	A/01xNnvhU8EyeDI+fRvpvP3SOw77P/xE0bpG+FtIyTSrUE8ODj8/dIzbvZGtiLI7V7RmWFK2NgC0
-	sgTwYQvtfTa2lJ/O6fdI5nygvBg0Os0GuMG5fLELUQ3+yMNpg5wJ1mOWzyDa0i0tY/Wgj7421eHnU
-	nJf9AuPA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:Content-Type:To:Subject:Message-ID:Date:From:
+	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=abUQvRA+jHEqh1JKEQZz+wrimh08nBQhMEsoNkfIU24=; b=PjU30ybrCgW/Lc
+	V9ZMdB30C6zZe8ny+dOAJcxRg0x32Bq8kuS4zRUZQ3xfT2HUQqN/KkcPD7agkWc3HmdKtBlRmmrT0
+	zG18ZBNXnOX1x5hmLaYc/pU0ClVEEpjnDdX72LvnPbt9VOJyjfFXihypANC4E+kVDVdwA/iPjfs4v
+	MpI11p0ItmtJM6x3v6UoGM+CzU9NZWqc56Btl9P0Wjk7DQ/wD+MGmVe8zN8jlfKJ78r6kdYMLDAiu
+	mmJ98pheMNZRyIBiO/WJE7JzdUudBrL2lfiT9+7XN6SMbpAfuw1fm7LyHgzXTYs720Tjkf3yYntxY
+	KSD66z4cKYiWfILeojNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV9Wx-00000003nQJ-41ic;
-	Mon, 15 Dec 2025 14:26:31 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vVETw-00000004BpG-0sGn;
+	Mon, 15 Dec 2025 19:43:44 +0000
+Received: from sea.source.kernel.org ([172.234.252.31])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV9Wv-00000003nPc-2BfM
+	id 1vVETr-00000004BoJ-2Upz
 	for barebox@lists.infradead.org;
-	Mon, 15 Dec 2025 14:26:30 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vV9Wt-0003H2-T5; Mon, 15 Dec 2025 15:26:27 +0100
-Message-ID: <548f5076-11c1-4c0b-be4d-fa9934a2ebfe@pengutronix.de>
-Date: Mon, 15 Dec 2025 15:26:27 +0100
+	Mon, 15 Dec 2025 19:43:41 +0000
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 24717442E3
+	for <barebox@lists.infradead.org>; Mon, 15 Dec 2025 19:43:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05799C4AF09
+	for <barebox@lists.infradead.org>; Mon, 15 Dec 2025 19:43:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765827819;
+	bh=QAMKKq+/07OKE2edah45Zywl8LeTi9tuqwkGpLjZYEw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KsEyoZ7G5Ju7kqFhPvG3H8KQOT7gqgJ5WG2uMk9wC7nQLYLUWAVco8lSu9AfiGLWo
+	 3OZCkta4fv4QT+oI0vwA22vfY5ayWBzNy9GvGiTS7US5pZeJ/xa8KS0lVg5gnG0fnM
+	 wiTQ56MmpJx2A2ylThkfE6Kfr7d6CgrhfXvFhv/rSHG9crpPAuaGqVxTHjxUVYQg/Y
+	 bKm8i2nuAj4aP9DJrZh1LGhqi9TN+Fu2ESkK3VL/Atag4Hi2s99ujH0vIn6xtcPjqt
+	 cvLkHXEf2h0YyIbTfIMpTOeVhVoMuDYcQrXO+Bm8OaBkKKUSpzIeqUZ7/dxjTFocpP
+	 6cvnycQKd3HOw==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b79d6a70fc8so680602566b.0
+        for <barebox@lists.infradead.org>; Mon, 15 Dec 2025 11:43:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUxDp8zyJp2YmMqhpHOX9Dgwvo+BZdsifVHmmMuvpw1FtajTmMGRZ9GrdlncwWmqp26cxjdUSqO@lists.infradead.org
+X-Gm-Message-State: AOJu0Yz4qZdrax6+Pn8VJ3GZ93HPrIzYtEieqlPBv5RCoZBRYDEl7uqC
+	2oSOMlsvfLt76yq0hKcQQ0zEPBJ7Ec1HWX254BJm8RPLkJWoMAv6v70Fn3Gj7oI8oh8MEm22Nuv
+	sJE5CwchKt7yH/1aBPH8PfKWC77y87A==
+X-Google-Smtp-Source: AGHT+IHPOvW2BGVu2D4Ir+xTf+ZrZ0oTHwKdRBT3jQdNMTbk0Ko9WuWTep47Nqx4mbBndw2hB+2iEYVbKpnnkmMFsi4=
+X-Received: by 2002:a17:907:7e97:b0:b74:983b:4056 with SMTP id
+ a640c23a62f3a-b7d235c8495mr1177908366b.8.1765827817406; Mon, 15 Dec 2025
+ 11:43:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
- barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
-References: <20251215-v2025-11-0-topic-socfpga-agilex5-sdhci-v1-0-11eea1b2ef41@pengutronix.de>
- <20251215-v2025-11-0-topic-socfpga-agilex5-sdhci-v1-1-11eea1b2ef41@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20251215-v2025-11-0-topic-socfpga-agilex5-sdhci-v1-1-11eea1b2ef41@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251212203226.458694-5-robh@kernel.org> <20251213181324.u32ztfblkknfpz44@pengutronix.de>
+ <CAL_JsqK9OREenZjBHrDh7AqsyUXYOzTOhY4e0qHGzYkX8tacWQ@mail.gmail.com> <20251214185750.tzt6jf4zg5gtex63@pengutronix.de>
+In-Reply-To: <20251214185750.tzt6jf4zg5gtex63@pengutronix.de>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 15 Dec 2025 13:43:25 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
+X-Gm-Features: AQt7F2oiZD_a6RbSn-VyOWgON7AhmUCDA0yS1ZH9l8th1WHWsPTGvW7f6u1q7WA
+Message-ID: <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251215_062629_564306_33682272 
-X-CRM114-Status: GOOD (  19.06  )
+X-CRM114-CacheID: sfid-20251215_114339_732632_30CA0820 
+X-CRM114-Status: GOOD (  27.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,72 +84,134 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>, linux-kernel@vger.kernel.org, frieder.schrempf@kontron.de, oualid.derouiche@kontron.de, linux-renesas-soc@vger.kernel.org, eberhard.stoll@kontron.de, Pengutronix Kernel Team <kernel@pengutronix.de>, barebox@lists.infradead.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, annette.kobou@kontron.de, Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-103.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/5] mci: cadence: fix typo and actually build
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,USER_IN_WELCOMELIST,
+	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] ARM: dts: nxp/imx6: Drop unused .dtsi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On Sun, Dec 14, 2025 at 12:58=E2=80=AFPM Marco Felsch <m.felsch@pengutronix=
+.de> wrote:
+>
+> On 25-12-14, Rob Herring wrote:
+> > On Sat, Dec 13, 2025 at 12:13=E2=80=AFPM Marco Felsch <m.felsch@pengutr=
+onix.de> wrote:
+> > >
+> > > Hi Rob,
+> > >
+> > > On 25-12-12, Rob Herring (Arm) wrote:
+> > > > These .dtsi files are not included anywhere in the tree and can't b=
+e
+> > > > tested.
+> > >
+> > > not in the tree but by other projects, please see below.
+> > >
+> > > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > > > ---
+> > > >  .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
+> > > >  .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
+> > > >  .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ---------------=
+-
+> > > >  .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 ---------------=
+----
+> > > >  4 files changed, 123 deletions(-)
+> > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i=
+.dtsi
+> > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.=
+dtsi
+> > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dt=
+si
+> > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dt=
+si
+> > > >
+> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b=
+/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > > > deleted file mode 100644
+> > > > index 5a9b819d7ee8..000000000000
+> > > > --- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > > > +++ /dev/null
+> > > > @@ -1,12 +0,0 @@
+> > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
+> > > > -/*
+> > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutroni=
+x.de>
+> > > > - */
+> > > > -
+> > > > -#include "imx6dl.dtsi"
+> > > > -#include "imx6qdl-kontron-samx6i.dtsi"
+> > > > -
+> > > > -/ {
+> > > > -     model =3D "Kontron SMARC-sAMX6i Dual-Lite/Solo";
+> > > > -     compatible =3D "kontron,imx6dl-samx6i", "fsl,imx6dl";
+> > > > -};
+> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/=
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > > > deleted file mode 100644
+> > > > index e76963436079..000000000000
+> > > > --- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > > > +++ /dev/null
+> > > > @@ -1,12 +0,0 @@
+> > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
+> > > > -/*
+> > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutroni=
+x.de>
+> > > > - */
+> > > > -
+> > > > -#include "imx6q.dtsi"
+> > > > -#include "imx6qdl-kontron-samx6i.dtsi"
+> > > > -
+> > > > -/ {
+> > > > -     model =3D "Kontron SMARC-sAMX6i Quad/Dual";
+> > > > -     compatible =3D "kontron,imx6q-samx6i", "fsl,imx6q";
+> > > > -};
+> > >
+> > > I can't speak for the other two .dtsi files but both kontron .dtsi fi=
+les
+> > > are used by barebox:
+> > >
+> > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/=
+imx6dl-samx6i.dts#L8
+> > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/=
+imx6q-samx6i.dts#L8
+> > >
+> > > Removing them here will cause a regression for barebox.
+> >
+> > Please upstream something that uses the .dtsi. Other than the
+> > undocumented barebox property, no reason these can't be.
+>
+> My intention wasn't to point to the barebox-only
+> "barebox,disable-deep-probe" property. I was refering to the include
+> line.
+>
+> The two .dtsi files we're talking about are SoM .dtsi files. We don't
+> have access to the Kontron EVK baseboard which uses this SoM.
+>
+> I've added a few Kontron devs which may can add the missing baseboard
+> support.
+>
+> +Cc: frieder.schrempf@kontron.de
+> +Cc: annette.kobou@kontron.de
+> +Cc: oualid.derouiche@kontron.de
+> +Cc: eberhard.stoll@kontron.de
+>
+> I could also add the imx6dl-samx6i.dts and imx6q-samx6i.dts like we do
+> in barebox. But as said, this would be a devicetree for a SoM which
+> makes sense for the bootloader but not for the kernel.
 
+Why not? People use the kernel as a bootloader. There's also some
+discussions about splitting SoMs and baseboards into overlays for
+baseboards (and also even into SoC base DT plus overlay for boards).
 
-On 12/15/25 3:21 PM, Steffen Trumtrar wrote:
-> All other Kconfig symbols use MCI_* instead of MMC_*. Fix that.
-> Also, add the cadence-sdhci to the Makefile, so that the driver is build.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Can we enable this in one of the defconfigs for CI coverage at least?
-
-Cheers,
-Ahmad
-
-> ---
->  drivers/mci/Kconfig  | 2 +-
->  drivers/mci/Makefile | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-> index 6736e7421c..e7b8afb3b4 100644
-> --- a/drivers/mci/Kconfig
-> +++ b/drivers/mci/Kconfig
-> @@ -259,7 +259,7 @@ config MCI_STM32_SDMMC2
->  	  If you have a board based on such a SoC and with a SD/MMC slot,
->  	  say Y or M here.
->  
-> -config MMC_CADENCE_SDHCI
-> +config MCI_CADENCE_SDHCI
->  	tristate "SDHCI support for the Cadence SD/SDIO/eMMC controller"
->  	select MCI_SDHCI
->  	help
-> diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
-> index f76059e7b5..6a3af532a0 100644
-> --- a/drivers/mci/Makefile
-> +++ b/drivers/mci/Makefile
-> @@ -8,6 +8,7 @@ obj-$(CONFIG_MCI_ATMEL)		+= atmel_mci.o atmel_mci_common.o
->  obj-$(CONFIG_MCI_ATMEL_SDHCI)	+= atmel-sdhci.o atmel-sdhci-common.o
->  obj-$(CONFIG_MCI_BCM283X)	+= mci-bcm2835.o
->  obj-$(CONFIG_MCI_BCM283X_SDHOST)	+= bcm2835-sdhost.o
-> +obj-$(CONFIG_MCI_CADENCE_SDHCI) += cadence-sdhci.o
->  obj-$(CONFIG_MCI_DOVE)		+= dove-sdhci.o
->  pbl-$(CONFIG_MCI_ATMEL_PBL)	+= atmel_mci_pbl.o atmel_mci_common.o
->  pbl-$(CONFIG_MCI_ATMEL_SDHCI_PBL)	+= atmel-sdhci-pbl.o atmel-sdhci-common.o
-> 
-
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Rob
 
 
