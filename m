@@ -1,68 +1,69 @@
-Delivery-date: Mon, 15 Dec 2025 10:31:23 +0100
+Delivery-date: Mon, 15 Dec 2025 10:32:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV4vL-00Bh9o-0e
+	id 1vV4vy-00BhAj-04
 	for lore@lore.pengutronix.de;
-	Mon, 15 Dec 2025 10:31:23 +0100
+	Mon, 15 Dec 2025 10:32:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV4vK-0000ZE-Kt
-	for lore@pengutronix.de; Mon, 15 Dec 2025 10:31:23 +0100
+	id 1vV4vx-0000fr-Ge
+	for lore@pengutronix.de; Mon, 15 Dec 2025 10:32:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vQXTpfcjS7Jn3ckkSDXQ0ypZbVsohs7Ay8XvK/y7s4c=; b=l2DjE8peenWog0PSU+y3rlQuHa
-	qUaOK05X9m1904KZDe40iKAII8Joj/gbcZS/YSAip0aDJSbSoR/J70QQ73wYr7zxoK+eJFHwhCbBz
-	s7jCpD41jCe4zQYKLAvurJ8HNHI0wlqE+ZtS1/V1naZoA8g7qO/+lsC76gcHpFzd9/cp8x44MT2Mf
-	xf81EWX3AO8UcopakitK41RF3QUuk/0NesUITyr9SQ1QIx2xKQOU/v9CR3Mj2S3DMBagtm2qTvWPT
-	ALED4XgKn0BF4IwDR7B/vYc6FshIjmrzByGPN5ex7p/dop1fRI7v7l6YbCDui3JN7g/d2v27LVQM+
-	/I41jqjA==;
+	bh=gqLM+/XFLcmme59Ea0XlwhOn7xYw81r8P3CYOGBDEVg=; b=o9iPqb5Qx/5gjM94+QJzHl3CyP
+	+Q9YsBQ0bXALVmLISvgMoEQx3dCnRgKAjVMg0s+nn79/Fm7QVXwk+5rzuoce7mJiC8oTPtoqGGAYn
+	jTGDR+3Ie81YaZOGxyqySfOdVi34dCrQyYiW6/56elzIaXfO4myNQWlvZ5C+mXiHKI7WMENZCwC96
+	DJP2065RFSRUchkHzFNbc4x1/wjE+W5hn665gTJGvyVb+4/PRRJgBUGZMVhDkXZDlxasOJCcZhHIX
+	fLYT2XSObA8MWm0vTWR7zhAy5F1OHv7SdL42SbxTz7tKfVxSBDWa41IZk2SDKx+w8hWhtcxljHml1
+	YvobJ6+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV4us-00000003MjH-0hNB;
-	Mon, 15 Dec 2025 09:30:54 +0000
+	id 1vV4vY-00000003Mnt-2324;
+	Mon, 15 Dec 2025 09:31:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV4up-00000003Miw-3QYW
+	id 1vV4vU-00000003MnG-2X0L
 	for barebox@lists.infradead.org;
-	Mon, 15 Dec 2025 09:30:53 +0000
+	Mon, 15 Dec 2025 09:31:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4uo-0000TS-D6; Mon, 15 Dec 2025 10:30:50 +0100
+	id 1vV4vT-0000aU-1n; Mon, 15 Dec 2025 10:31:31 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4uo-005kyV-0i;
-	Mon, 15 Dec 2025 10:30:50 +0100
+	id 1vV4vS-005kyf-2n;
+	Mon, 15 Dec 2025 10:31:30 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vV4uo-00000001Bpt-0fdk;
-	Mon, 15 Dec 2025 10:30:50 +0100
+	id 1vV4vS-00000001BtV-3NCF;
+	Mon, 15 Dec 2025 10:31:30 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
+To: Barebox List <barebox@lists.infradead.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20251210-devfs-prep-v1-0-3a2a3aa27eab@pengutronix.de>
-References: <20251210-devfs-prep-v1-0-3a2a3aa27eab@pengutronix.de>
-Message-Id: <176579105015.283807.4917452732259942845.b4-ty@pengutronix.de>
-Date: Mon, 15 Dec 2025 10:30:50 +0100
+Cc: Marco Felsch <mfe@pengutronix.de>
+In-Reply-To: <20251211083925.1985059-1-s.hauer@pengutronix.de>
+References: <20251211083925.1985059-1-s.hauer@pengutronix.de>
+Message-Id: <176579109080.284040.17090687119004128050.b4-ty@pengutronix.de>
+Date: Mon, 15 Dec 2025 10:31:30 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251215_013051_880129_86A9E675 
-X-CRM114-Status: UNSURE (   7.73  )
+X-CRM114-CacheID: sfid-20251215_013132_645548_728159B2 
+X-CRM114-Status: UNSURE (   9.69  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,26 +86,29 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/3] selftest: preparations for devfs changes
+Subject: Re: [PATCH 1/2] ARM: i.MX8MM EVK: refactor early startup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 10 Dec 2025 11:15:58 +0100, Sascha Hauer wrote:
-> With the devfs series devfs as a filesystem will go away. The dirfd
-> selftest uses it though, so switch this test to use ramfs instead. This
-> revealed a bug in the fs layer which is fixed in this series.
+On Thu, 11 Dec 2025 09:39:24 +0100, Sascha Hauer wrote:
+> refactor startup a bit to make it more clear:
+> - Do not call start_atf() when not in EL3 rather than immediately
+>   returning from the function
+> - rename start_atf() to nxp_imx8mm_evk_init_early() and call
+>   nxp_imx8mm_evk_init_early() from nxp_imx8mm_evk_start() directly
 > 
+> This is done in preparation for a series which changes
+> nxp_imx8mm_evk_init_early() to take a device tree pointer.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/3] fs: get path in path_init()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=dd496c007f8d (link may not be stable)
-[2/3] fs: warn when mount reference count becomes negative
-      https://git.pengutronix.de/cgit/barebox/commit/?id=aa4835448c79 (link may not be stable)
-[3/3] test: dirfs: use ramfs rather than devfs
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a8ae0a3a6c3b (link may not be stable)
+[1/2] ARM: i.MX8MM EVK: refactor early startup
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7862713c314f (link may not be stable)
+[2/2] ARM: i.MX8MN EVK: refactor early startup
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ec8cd03194a8 (link may not be stable)
 
 Best regards,
 -- 
