@@ -1,58 +1,58 @@
-Delivery-date: Mon, 15 Dec 2025 12:15:27 +0100
+Delivery-date: Mon, 15 Dec 2025 12:15:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV6Y2-00Birk-39
+	id 1vV6YX-00BisW-2k
 	for lore@lore.pengutronix.de;
-	Mon, 15 Dec 2025 12:15:26 +0100
+	Mon, 15 Dec 2025 12:15:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vV6Y2-00041P-C5
-	for lore@pengutronix.de; Mon, 15 Dec 2025 12:15:26 +0100
+	id 1vV6YX-000489-5T
+	for lore@pengutronix.de; Mon, 15 Dec 2025 12:15:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=U+gShM+XsurAa/1KnRjgIB/0N++2ixurBeb8jyxepRM=; b=Ozyxy/Zb8wL9nGzT5ty+29Vwfx
-	gL0e6HXhpuf4H0H4VYEfF3itqp6xcX/LI4GuLSV43P3Q7A3Rp5MgWodvEaPWt0oIZFvU903qvNH1J
-	TMEOQF6NiQtVJXb3FFf1iGVKwVu72AtqcHq874oSwQDlhN+dRgR2OcwR5OHjpduSw8PpA5tpYJvF0
-	ngS9yz+WTFVOrZmU2Va/CdnUOe/BsAzyhU68aGrerz9nAQYdQD7msD50RVe8Ntj2DWfS1JVQgrQSG
-	B9tCisyQYwtFkQBOOIhjcQlD1tgCqoeGlZtKwL92oYDteda4j2ZUy/7YLGNDhczlzzB2rP77B0+Zt
-	H00vJi5w==;
+	bh=cMDark2h+DbCgyXdk/q8n0sgpMtjdjC6oWd/CDxV1l0=; b=IM+I1UI2OkwNFQMjxUFpRWTW+e
+	PKgnEJPK0HHGLNGe/0RUhV3XDjmvcx8jBiqu/xbtiFOwON8wYscanqc0VwzEaizCXd6msfVEHEXkS
+	vkxAfcseCzC+AyQN4pkwEwJB7hPl3ddgzSiuOgvZ5iipDk1kZ0XwJNq6vTLPMhH58qgPtyzvE3nMm
+	idKwk7XAIey/I2w/F0bUDiPfk5dt1QrUfbqjAvfHH9YVPOwZphrPkUennXbI79bA2BU28F07+AbJk
+	seYXO1lK+us7oIA5mQzHUzVzDwN2Cx9dT/2AfEpiCPxoOP9M3x0GsYaRKa27Kq/WnejgFkFOxXJ/b
+	4T6CyBfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV6XS-00000003VSj-1LDu;
-	Mon, 15 Dec 2025 11:14:50 +0000
+	id 1vV6Y1-00000003VXx-2uHc;
+	Mon, 15 Dec 2025 11:15:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vV6XP-00000003VSH-1uui
+	id 1vV6Xy-00000003VXQ-40w8
 	for barebox@lists.infradead.org;
-	Mon, 15 Dec 2025 11:14:48 +0000
+	Mon, 15 Dec 2025 11:15:24 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vV6XN-0003qA-So; Mon, 15 Dec 2025 12:14:45 +0100
-Message-ID: <e32d9c9a-83e1-4095-aaad-17daf755b60d@pengutronix.de>
-Date: Mon, 15 Dec 2025 12:14:45 +0100
+	id 1vV6Xx-0003xR-Fe; Mon, 15 Dec 2025 12:15:21 +0100
+Message-ID: <59162d54-9dfe-4a45-947d-145177aaa125@pengutronix.de>
+Date: Mon, 15 Dec 2025 12:15:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 References: <20251209-devfs-v2-0-62ae16698cff@pengutronix.de>
- <20251209-devfs-v2-1-62ae16698cff@pengutronix.de>
+ <20251209-devfs-v2-2-62ae16698cff@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20251209-devfs-v2-1-62ae16698cff@pengutronix.de>
+In-Reply-To: <20251209-devfs-v2-2-62ae16698cff@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251215_031447_496271_739AFE19 
-X-CRM114-Status: GOOD (  17.27  )
+X-CRM114-CacheID: sfid-20251215_031522_999307_451A7A83 
+X-CRM114-Status: GOOD (  21.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,71 +74,171 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 01/13] fs: devfs-core: add devfs_create_link_node()
+Subject: Re: [PATCH v2 02/13] storage-by-alias: drop fake cdev
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
 
 On 12/9/25 1:51 PM, Sascha Hauer wrote:
-> Allow to create a devfs link that not only has its own name, but also
-> its own device_node.
+> storage-by-alias creates its own cdev, but that is never used. The only
+> purpose is to create a cdev with its own device node which otherwise
+> links to the original cdev. This means we can drop all the cdev
+> operations and use the newly created devfs_create_link_node() with the
+> same effect.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  fs/devfs-core.c  | 8 +++++++-
->  include/driver.h | 2 ++
->  2 files changed, 9 insertions(+), 1 deletion(-)
+>  drivers/misc/storage-by-alias.c | 120 +++-------------------------------------
+>  1 file changed, 7 insertions(+), 113 deletions(-)
 > 
-> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-> index 92e7c5823ed0d3a4c54cc7b2b1c9bf32ac535907..91082265d1aaa965160de5e414364e3fb14824d1 100644
-> --- a/fs/devfs-core.c
-> +++ b/fs/devfs-core.c
-> @@ -476,7 +476,7 @@ int devfs_create(struct cdev *new)
->  	return 0;
->  }
+> diff --git a/drivers/misc/storage-by-alias.c b/drivers/misc/storage-by-alias.c
+> index 2c498e0d0483ca71093612382c78372df399c437..6c759867ccbb7a7b4bc922152699eb346d42d271 100644
+> --- a/drivers/misc/storage-by-alias.c
+> +++ b/drivers/misc/storage-by-alias.c
+> @@ -24,102 +24,8 @@ static LIST_HEAD(sba_list);
+>  struct sba {
+>  	char *alias;
+>  	struct device *dev;
+> -	struct cdev *rcdev;
+> -	struct cdev cdev;
+>  	struct list_head list;
+> -};
+> -
+> -static ssize_t sba_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_read(sba->rcdev, buf, count, offset, flags);
+> -}
+> -
+> -static ssize_t sba_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_write(sba->rcdev, buf, count, offset, flags);
+> -}
+> -
+> -static int sba_ioctl(struct cdev *cdev, unsigned int request, void *buf)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_ioctl(sba->rcdev, request, buf);
+> -}
+> -
+> -static int sba_open(struct cdev *cdev, unsigned long flags)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_open(sba->rcdev, flags);
+> -}
+> -
+> -static int sba_close(struct cdev *cdev)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	cdev_close(sba->rcdev);
+> -
+> -	return 0;
+> -}
+> -
+> -static int sba_flush(struct cdev *cdev)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_flush(sba->rcdev);
+> -}
+> -
+> -static int sba_erase(struct cdev *cdev, loff_t count, loff_t offset)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_erase(sba->rcdev, count, offset);
+> -}
+> -
+> -static int sba_protect(struct cdev *cdev, size_t count, loff_t offset, int prot)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_protect(sba->rcdev, count, offset, prot);
+> -}
+> -
+> -static int sba_discard_range(struct cdev *cdev, loff_t count, loff_t offset)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_discard_range(sba->rcdev, count, offset);
+> -}
+> -
+> -static int sba_memmap(struct cdev *cdev, void **map, int flags)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_memmap(sba->rcdev, map, flags);
+> -}
+> -
+> -static int sba_truncate(struct cdev *cdev, size_t size)
+> -{
+> -	struct sba *sba = cdev->priv;
+> -
+> -	return cdev_truncate(sba->rcdev, size);
+> -}
+> -
+> -static struct cdev_operations sba_ops = {
+> -	.read = sba_read,
+> -	.write = sba_write,
+> -	.ioctl = sba_ioctl,
+> -	.open = sba_open,
+> -	.close = sba_close,
+> -	.flush = sba_flush,
+> -	.erase = sba_erase,
+> -	.protect = sba_protect,
+> -	.discard_range = sba_discard_range,
+> -	.memmap = sba_memmap,
+> -	.truncate = sba_truncate,
+> +	bool populated;
+>  };
 >  
-> -int devfs_create_link(struct cdev *cdev, const char *name)
-> +int devfs_create_link_node(struct cdev *cdev, const char *name, struct device_node *node)
->  {
->  	struct cdev *new;
+>  static int sba_add_partitions(struct cdev *rcdev, void *data)
+> @@ -127,29 +33,17 @@ static int sba_add_partitions(struct cdev *rcdev, void *data)
+>  	struct sba *sba = data;
 >  	int ret;
-> @@ -489,6 +489,7 @@ int devfs_create_link(struct cdev *cdev, const char *name)
 >  
->  	new = cdev_alloc(name);
->  	new->link = cdev;
-> +	new->device_node = node;
+> -	dev_dbg(sba->dev, "Adding %s -> %s\n", sba->alias, rcdev->name);
+> -
+> -	if (sba->rcdev)
+> +	if (sba->populated)
+>  		return 0;
 >  
->  	ret = devfs_create(new);
->  	if (ret) {
-> @@ -512,6 +513,11 @@ int devfs_create_link(struct cdev *cdev, const char *name)
+> -	sba->rcdev = rcdev;
+> -	sba->cdev.link = rcdev;
+> -	sba->cdev.name = sba->alias;
+> -	sba->cdev.size = rcdev->size;
+> -	sba->cdev.ops = &sba_ops;
+> -	sba->cdev.dev = sba->dev;
+> -	sba->cdev.priv = sba;
+> +	dev_info(sba->dev, "Adding %s -> %s\n", sba->alias, rcdev->name);
+>  
+> -	if (rcdev->flags & DEVFS_WRITE_AUTOERASE)
+> -		sba->cdev.flags |= DEVFS_WRITE_AUTOERASE;
+> +	ret = devfs_create_link_node(rcdev, sba->alias, sba->dev->device_node);
+> +	if (ret)
+> +		return ret;
+>  
+> -	ret = devfs_create(&sba->cdev);
+> -	if (ret) {
+> -		dev_err(sba->dev, "Failed to create cdev: %pe\n", ERR_PTR(ret));
+> -		return 0;
+> -	}
+> +	sba->populated = true;
+>  
+> -	of_parse_partitions(&sba->cdev, sba->dev->of_node);
 >  	return 0;
 >  }
 >  
-> +int devfs_create_link(struct cdev *cdev, const char *name)
-> +{
-> +	return devfs_create_link_node(cdev, name, NULL);
-> +}
-> +
->  int devfs_remove(struct cdev *cdev)
->  {
->  	struct cdev *c, *tmp;
-> diff --git a/include/driver.h b/include/driver.h
-> index c130a3cd63fd5e6dc365a33c765a22dc4e2ca90a..e0fddecd085c991db4f1fe34c56405d28b6f53ad 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -461,6 +461,8 @@ static inline const char *cdev_name(struct cdev *cdev)
->  
->  int devfs_create(struct cdev *);
->  int devfs_create_link(struct cdev *, const char *name);
-> +int devfs_create_link_node(struct cdev *cdev, const char *name,
-> +			   struct device_node *node);
->  int devfs_remove(struct cdev *);
->  int cdev_find_free_index(const char *);
->  struct cdev *cdev_find_partition(struct cdev *cdevm, const char *name);
 > 
 
 -- 
