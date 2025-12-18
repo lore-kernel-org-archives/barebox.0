@@ -1,71 +1,65 @@
-Delivery-date: Thu, 18 Dec 2025 10:03:48 +0100
+Delivery-date: Thu, 18 Dec 2025 10:20:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vW9vI-00Clq7-0p
+	id 1vWABP-00CmGD-2N
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 10:03:48 +0100
+	Thu, 18 Dec 2025 10:20:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vW9vH-0007oi-NV
-	for lore@pengutronix.de; Thu, 18 Dec 2025 10:03:48 +0100
+	id 1vWABP-0001so-4A
+	for lore@pengutronix.de; Thu, 18 Dec 2025 10:20:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5Evd+E63iseQj/932jCu3GRrhZeleJuJL4L5i2/V7l4=; b=hjPF0svsjn3LEOh1+aFpxcFYhZ
-	GwJ1GzNJ8qa8yCk74QzvFp1vjB/K3iaPi90ayJpUf3oNdahfF4MCnAU8kGVb8OTj2S5cCzyZrV2Bn
-	zbr6NYzJtYLOa32v7Eax+5KIMMAq6Y7DAMIHtpYTvWuO0dCf5cj7KnITlHwPd9BVcxgFBfxRILekH
-	WyhUtD3BcNP9czKCdWs2AvoHSjXYmg6MOtFS9yAtBsNDdN4GG2QBRfvy7CQ5uHyhlyXHO9Oh9/vMX
-	aHfEXx4PFNVNhaWBZR9th3CLTL4A+UUXaN6qA1+PAvCmXcXN69I6qoHpox3AEkHj+Kj7YGI/vk5aG
-	s/T38bwg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=pCo14BxnRh1heMCzTmNqn2E+1QHyoWjoYzY5RvajdGs=; b=vNdya2+iYsn0WEjujspYjvZ5UY
+	Hh0nywg4VUvQ5+FEMYSt23H1/Mf2hR/GFhFfbc4x0pBv5Bpc10H+JnJ0PYf7WZV9k5jrzlOjHhkoq
+	+CxlqVoGgM6As9cDOuiFHb065EFR+XrzMg5rxOtOI6k+16ZRxxzWnAFLD3681RaCl2I9TJU0ZYUaV
+	X23ZG3PxjvJfo3zPZatWqm4BD/SSqZDfxMA1njmLWN8i/wavvWzd7qiM/RUGteATFv2+o+nfgJzG4
+	9LOWYsTVJ2RDlYxk2iDfSa85lnegQeHInM66tFTLsH+OWlIb04tBLaQqQ5Bpq/DXmu1tL2uug9srw
+	PudczkVg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vW9ue-000000086nl-41R3;
-	Thu, 18 Dec 2025 09:03:08 +0000
+	id 1vWAAq-0000000886F-1AIQ;
+	Thu, 18 Dec 2025 09:19:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vW9ud-000000086n5-0iEm
+	id 1vWAAn-0000000885R-49To
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 09:03:08 +0000
+	Thu, 18 Dec 2025 09:19:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vW9ub-0007hk-GT; Thu, 18 Dec 2025 10:03:05 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWAAl-0001js-UL; Thu, 18 Dec 2025 10:19:47 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vW9ub-006FVA-10;
-	Thu, 18 Dec 2025 10:03:05 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vW9ub-00EXOj-0T;
-	Thu, 18 Dec 2025 10:03:05 +0100
-Date: Thu, 18 Dec 2025 10:03:05 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org,
-	Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <aUPDSdwDr0Fb5Lp7@pengutronix.de>
-References: <20251215-v2025-11-0-topic-socfpga-agilex5-clk-v1-1-e1270179d761@pengutronix.de>
- <176604556200.1742453.4912455583993389480.b4-ty@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWAAk-006FoM-1I;
+	Thu, 18 Dec 2025 10:19:46 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWAAk-0000000EWb4-1Fn4;
+	Thu, 18 Dec 2025 10:19:46 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 18 Dec 2025 10:19:45 +0100
+Message-ID: <20251218091945.3461410-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <176604556200.1742453.4912455583993389480.b4-ty@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_010307_209963_D5EE841A 
-X-CRM114-Status: GOOD (  15.30  )
+X-CRM114-CacheID: sfid-20251218_011950_031992_9E4D6020 
+X-CRM114-Status: GOOD (  13.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,44 +77,69 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] clk: socfpga: agilex5: sync with kernel
+Subject: [PATCH] cdev: maintain partition index in struct cdev
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Dec 18, 2025 at 09:12:42AM +0100, Sascha Hauer wrote:
-> 
-> On Mon, 15 Dec 2025 15:08:43 +0100, Steffen Trumtrar wrote:
-> > Since v6.19-rc1 linux now has an Agilex5 clock driver [1]. This is sligthly
-> > different than the previous out-of-tree version. Sync with the mainlined
-> > linux driver and cleanup on the way.
-> > 
-> > [1] commit 2050b57ecda040010ec797fb07713889372c5041
-> > 
-> > 
-> > [...]
-> 
-> Applied, thanks!
-> 
-> [1/1] clk: socfpga: agilex5: sync with kernel
->       https://git.pengutronix.de/cgit/barebox/commit/?id=4ee3b897bbf5 (link may not be stable)
-> [1/1] fixup! clk: socfpga: agilex5: sync with kernel
->       https://git.pengutronix.de/cgit/barebox/commit/?id=370032bb46cf (link may not be stable)
+For use by the EFI loader, we will need to know a partition's number
+within the partition table on disk, so have the devfs-core keep track
+of that.
 
-Reverted. Please fix build failures in socfpga-agilex5_defconfig
+Mere iteration over the cdev list doesn't work for thus purpose as there
+may be invalid PTEs, which cause e.g. the first on-disk partition to
+have a higher number.
 
-https://github.com/barebox/barebox/actions/runs/20331066539/job/58406224218
+See 9dfffaf2ef47 ("partitions: efi: Continue partition enumeration on
+invalid pte") for more info. A real world example is the current
+debian-13-nocloud-arm64.raw image, which has two partitions:
+0 and 14 (or 1 and 15 in barebox).
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v2 -> v3:
+  - fix comment to mention that index is 0-based (Sascha)j
+v1 -> v2:
+  - record actual partition number from the table.
+    I compared against EDK-II and Linux and both take the actual
+    number, which may not be either the number in our cdev list
+    or the location on disk.
+---
+ common/partitions.c | 1 +
+ include/driver.h    | 3 +++
+ 2 files changed, 4 insertions(+)
 
-
+diff --git a/common/partitions.c b/common/partitions.c
+index 1a4e046c5f55..40f4c629e1ac 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -52,6 +52,7 @@ static int register_one_partition(struct block_device *blk, struct partition *pa
+ 		goto out;
+ 	}
+ 
++	cdev->partition_table_index = part->num;
+ 	cdev->flags |= DEVFS_PARTITION_FROM_TABLE | part->flags;
+ 	cdev->typeflags |= part->typeflags;
+ 	cdev->typeuuid = part->typeuuid;
+diff --git a/include/driver.h b/include/driver.h
+index 14d1731fd976..77b9b876955a 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -436,6 +436,9 @@ struct cdev {
+ 	loff_t size;
+ 	unsigned int flags;
+ 	u16 typeflags; /* GPT type-specific attributes */
++	s8 partition_table_index;    /* For GPT/MBR-formatted disks only:
++				      * 0-based index of partition on disk
++				      */
+ 	int open;
+ 	struct mtd_info *mtd;
+ 	struct list_head aliases;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.3
+
 
 
