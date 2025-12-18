@@ -1,67 +1,67 @@
-Delivery-date: Thu, 18 Dec 2025 12:38:18 +0100
+Delivery-date: Thu, 18 Dec 2025 12:38:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWCKo-00CoLi-2R
+	id 1vWCKu-00CoMC-2T
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 12:38:18 +0100
+	Thu, 18 Dec 2025 12:38:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWCKN-0000b3-77
-	for lore@pengutronix.de; Thu, 18 Dec 2025 12:38:18 +0100
+	id 1vWCKR-0000e3-8l
+	for lore@pengutronix.de; Thu, 18 Dec 2025 12:38:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hHlMdMtFUPNoRD9aWxIEkZpKZReuN9kRXmY0Ns+rBb4=; b=oWafw5iVp9ffBYFY/o9td5z4GM
-	Fxvj2SwghEyGL1eZseVf8pQHnNOw75J87n3X+qCmdStmBi1jKcHmxuNnn9IIh2QaUMr3j8r0w3xOv
-	FoxShwpVBl7S/5Jcmu8CBEJSAY9WdzwcqasdTBF+xIlTIzQq0aWxDKt13Xo/8CEOPTxqhFNL1E5TP
-	kl6xHrQh2DuFgO4j8FL9N1N6jYPXuWws13uL6KdYMnrkXx6+vkAtVn4HwtLBWUjW1oHGDAEC1pzao
-	Y//MEsxpRa45Uxa5sszZHpGLulzyvYTtQo8bK26LFUiAwhxZVAWOGj8bwkWINFCY6wuDy81Fn3s/Z
-	A5RQkJHw==;
+	bh=IUrBdob8+aGKOt1+8LNioBtNWHgGDpjefQxxGSXNaPU=; b=TGDDOLkdyzGSxiTfTUgYctlRuB
+	PL66v2boRZY+48yTpYmyuH370L6XMuwxeeODCKOgX+thk8LLAANGBfNP6VMWqjOvffxXva0QLYEnQ
+	lh6b/wnKXYc7pzFU115EBSTcjeMIFg9+zk0jtq88aeJSJKKkuDG6IFyG4bdRSzZZOZqy2UFSnTfyI
+	IRqPgPS1WJCgD9T8c85iGG4xI6B8SFZ5RALcHEJJAEvZbA4eH2GvCknA2H/UdOgnisjRrqOM6SeNT
+	AOx2CTDraALsKWp706cN/BF2QhwArOLFJi7RdFTZYYgk8dYFeNmvJzva2d1uz4ipWXltx19EWOfiO
+	9sh3Vvmw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWCJV-00000008KLV-21MX;
-	Thu, 18 Dec 2025 11:36:57 +0000
+	id 1vWCJU-00000008KKf-2zo8;
+	Thu, 18 Dec 2025 11:36:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWCJN-00000008KBG-3gAX
+	id 1vWCJN-00000008KBB-2C4T
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 11:36:54 +0000
+	Thu, 18 Dec 2025 11:36:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWCJM-00089W-CV; Thu, 18 Dec 2025 12:36:48 +0100
+	id 1vWCJM-00088T-0M; Thu, 18 Dec 2025 12:36:48 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWCJM-006Guw-0e;
-	Thu, 18 Dec 2025 12:36:48 +0100
+	id 1vWCJL-006Guc-2X;
+	Thu, 18 Dec 2025 12:36:47 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWBw5-0000000AVre-2MdT;
+	id 1vWBw5-0000000AVre-1zmW;
 	Thu, 18 Dec 2025 12:12:45 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Dec 2025 11:38:13 +0100
-Message-ID: <20251218111242.1527495-54-a.fatoum@pengutronix.de>
+Date: Thu, 18 Dec 2025 11:38:11 +0100
+Message-ID: <20251218111242.1527495-52-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251218111242.1527495-1-a.fatoum@pengutronix.de>
 References: <20251218111242.1527495-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_033649_911992_A84CE123 
-X-CRM114-Status: GOOD (  15.68  )
+X-CRM114-CacheID: sfid-20251218_033649_569673_A8AC5E95 
+X-CRM114-Status: GOOD (  17.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,118 +83,146 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v1 53/54] efi: loader: pass along SMBIOS table
+Subject: [PATCH v1 51/54] efi: loader: CONFIG_EFI_RT_VOLATILE_STORE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This allows e.g. dmidecode in Linux to query the information that barebox
-has collected.
+If we store EFI variables on ESP during boottime, we need cooperation
+from the OS to write that file to implement SetVariable.
+
+Populate the necessary options to allow efivar(1) to read a dump
+of the variables after writing them and then persist them to ESP.
+
+Note that this violates the EFI spec and it's not power-fail safe, but
+it's an ok fallback for now.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/Kconfig      | 13 +++++++++++
- efi/loader/Makefile |  1 +
- efi/loader/smbios.c | 55 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 69 insertions(+)
- create mode 100644 efi/loader/smbios.c
+ efi/loader/Kconfig        | 18 ++++++++++++++
+ efi/loader/efi_var_file.c | 51 +++++++++++++++++++++++++++++++++++++++
+ efi/loader/runtime.c      |  4 +++
+ efi/loader/variable.h     |  2 ++
+ 4 files changed, 75 insertions(+)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index b61a5bc40a1f..d4d9d930a996 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -755,6 +755,19 @@ config MMCBLKDEV_ROOTARG
- 	  [1] fa2d0aa96941 ("mmc: core: Allow setting slot index via device tree
- 	      alias")
+diff --git a/efi/loader/Kconfig b/efi/loader/Kconfig
+index 4a5e4c375fd4..5692e54ebe01 100644
+--- a/efi/loader/Kconfig
++++ b/efi/loader/Kconfig
+@@ -68,6 +68,24 @@ config EFI_VARIABLE_NO_STORE
  
-+config GENERATE_SMBIOS_TABLE
-+	bool "Generate an SMBIOS (System Management BIOS) table"
-+	depends on EFI_LOADER && OF
-+	select SMBIOS
+ endchoice
+ 
++config EFI_RT_VOLATILE_STORE
++	bool "Allow variable runtime services in volatile storage (e.g RAM)"
++	depends on EFI_VARIABLE_FILE_STORE
++	select EFI_RUNTIME_SET_VARIABLE
 +	default y
 +	help
-+	  The System Management BIOS (SMBIOS) specification addresses how
-+	  motherboard and system vendors present management information about
-+	  their products in a standard format by extending the BIOS interface
-+	  on Intel architecture systems.
++	  When EFI variables are stored on file we don't allow SetVariableRT,
++	  since the OS doesn't know how to write that file. At the same time
++	  we copy runtime variables in DRAM and support GetVariableRT
 +
-+	  Check http://www.dmtf.org/standards/smbios for details.
++	  Enable this option to allow SetVariableRT on the RAM backend of
++	  the EFI variable storage. The OS will be responsible for syncing
++	  the RAM contents to the file, otherwise any changes made during
++	  runtime won't persist reboots.
++	  Authenticated variables are not supported. Note that this will
++	  violate the EFI spec since writing auth variables will return
++	  EFI_INVALID_PARAMETER
 +
- config BAREBOX_UPDATE
- 	bool "In-system barebox update infrastructure"
+ endmenu
  
-diff --git a/efi/loader/Makefile b/efi/loader/Makefile
-index c06d1f7c8c35..7992a4f5caa0 100644
---- a/efi/loader/Makefile
-+++ b/efi/loader/Makefile
-@@ -15,6 +15,7 @@ obj-y += loadopts.o
- obj-$(CONFIG_BOOT) += bootesp.o
- obj-$(CONFIG_EFI_LOADER_BOOTMGR) += efibootmgr.o
- obj-$(CONFIG_BOOTM) += bootm.o
-+obj-$(CONFIG_GENERATE_SMBIOS_TABLE) += smbios.o
- obj-y += efi_var_common.o
- obj-y += efi_variable.o
- obj-y += efi_var_mem.o
-diff --git a/efi/loader/smbios.c b/efi/loader/smbios.c
-new file mode 100644
-index 000000000000..81ba77c24017
---- /dev/null
-+++ b/efi/loader/smbios.c
-@@ -0,0 +1,55 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+// SPDX-FileCopyrightText: 2016 Alexander Graf
-+// SPDX-Comment: Origin-URL: https://github.com/u-boot/u-boot/blob/1c5aab803c0b0f07be1d3b0029f4031463497acf/lib/efi_loader/efi_smbios.c
+ source "efi/loader/protocols/Kconfig"
+diff --git a/efi/loader/efi_var_file.c b/efi/loader/efi_var_file.c
+index 08a5c172cced..652354693ae7 100644
+--- a/efi/loader/efi_var_file.c
++++ b/efi/loader/efi_var_file.c
+@@ -184,6 +184,57 @@ efi_status_t efi_var_from_file(int dirfd, const char *filename)
+ 	free(buf);
+ 	return ret;
+ }
 +
-+#define pr_fmt(fmt) "efi-loader: smbios: " fmt
++// SPDX-SnippetBegin
++// SPDX-Snippet-Comment: Origin-URL: https://github.com/u-boot/u-boot/blob/e9c34fab18a9a0022b36729afd8e262e062764e2/lib/efi_loader/efi_runtime.c
 +
-+#include <efi/loader.h>
-+#include <efi/guid.h>
-+#include <efi/error.h>
-+#include <efi/memory.h>
-+#include <efi/loader/table.h>
-+#include <linux/printk.h>
-+#include <malloc.h>
-+#include <smbios.h>
-+#include <init.h>
-+#include <linux/sizes.h>
-+
-+#define TABLE_SIZE	SZ_4K
-+
-+/*
-+ * Install the SMBIOS table as a configuration table.
-+ *
-+ * Return:	status code
-+ */
-+static efi_status_t efi_smbios_register(void *data)
++efi_status_t efi_init_runtime_variable_supported(void)
 +{
-+	efi_status_t ret;
-+	u64 memory;
-+	void *buf;
++	u8 s = 0;
++	int ret;
 +
-+	/* Align the table to a 4KB boundary to keep EFI happy */
-+	ret = efi_allocate_pages(EFI_ALLOCATE_ANY_PAGES,
-+				 EFI_RUNTIME_SERVICES_DATA,
-+				 efi_size_in_pages(TABLE_SIZE),
-+				 &memory, "smbios");
++	if (!IS_ENABLED(CONFIG_EFI_RT_VOLATILE_STORE))
++		return EFI_SUCCESS;
++
++	ret = efi_set_variable_int(u"RTStorageVolatile",
++				   &efi_file_store_vars_guid,
++				   EFI_VARIABLE_BOOTSERVICE_ACCESS |
++				   EFI_VARIABLE_RUNTIME_ACCESS |
++				   EFI_VARIABLE_READ_ONLY,
++				   strlen(efi_var_file_name) + 1,
++				   efi_var_file_name, false);
++	if (ret != EFI_SUCCESS) {
++		pr_err("Failed to set RTStorageVolatile\n");
++		return ret;
++	}
++	/*
++	 * This variable needs to be visible so users can read it,
++	 * but the real contents are going to be filled during
++	 * GetVariable
++	 */
++	ret = efi_set_variable_int(u"VarToFile",
++				   &efi_file_store_vars_guid,
++				   EFI_VARIABLE_BOOTSERVICE_ACCESS |
++				   EFI_VARIABLE_RUNTIME_ACCESS |
++				   EFI_VARIABLE_READ_ONLY,
++				   sizeof(s),
++				   &s, false);
++	if (ret != EFI_SUCCESS) {
++		pr_err("Failed to set VarToFile\n");
++		efi_set_variable_int(u"RTStorageVolatile",
++				     &efi_file_store_vars_guid,
++				     EFI_VARIABLE_BOOTSERVICE_ACCESS |
++				     EFI_VARIABLE_RUNTIME_ACCESS |
++				     EFI_VARIABLE_READ_ONLY,
++				     0, NULL, false);
++		return ret;
++	}
++
++	return EFI_SUCCESS;
++}
++
++// SPDX-SnippetEnd
++
+ static int efi_init_var_params(void)
+ {
+ 	if (efi_is_payload())
+diff --git a/efi/loader/runtime.c b/efi/loader/runtime.c
+index b46c85eeaa7b..4b3cb6df1350 100644
+--- a/efi/loader/runtime.c
++++ b/efi/loader/runtime.c
+@@ -71,6 +71,10 @@ efi_status_t efi_init_runtime_supported(void)
+ 		CHECK_RT_FLAG(QUERY_CAPSULE_CAPABILITIES) |
+ 		CHECK_RT_FLAG(QUERY_VARIABLE_INFO);
+ 
++	ret = efi_init_runtime_variable_supported();
 +	if (ret != EFI_SUCCESS)
 +		return ret;
 +
-+	buf = efi_phys_to_virt(memory);
+ 	return efi_install_configuration_table(&efi_rt_properties_table_guid, rt_table);
+ }
+ 
+diff --git a/efi/loader/variable.h b/efi/loader/variable.h
+index 3710be84a2d1..775bd11dc450 100644
+--- a/efi/loader/variable.h
++++ b/efi/loader/variable.h
+@@ -2,6 +2,8 @@
+ #include <efi/types.h>
+ #include <efi/error.h>
+ 
++efi_status_t efi_init_runtime_variable_supported(void);
 +
-+	if (!write_smbios_table(buf)) {
-+		pr_err("Failed to write SMBIOS table\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Install SMBIOS information as configuration table */
-+	return efi_install_configuration_table(&efi_smbios3_guid, buf);
-+}
-+
-+static int efi_smbios_init(void)
-+{
-+	efi_register_deferred_init(efi_smbios_register, NULL);
-+	return 0;
-+}
-+postenvironment_initcall(efi_smbios_init);
+ efi_status_t EFIAPI efi_get_variable_boot(u16 *variable_name,
+ 					  const efi_guid_t *vendor, u32 *attributes,
+ 					  efi_uintn_t *data_size, void *data);
 -- 
 2.47.3
 
