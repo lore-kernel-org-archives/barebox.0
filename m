@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWLfe-00CyUN-1r
+	id 1vWLfe-00CyUU-27
 	for lore@lore.pengutronix.de;
 	Thu, 18 Dec 2025 22:36:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWLfd-0004Ea-R4
+	id 1vWLfd-0004Ee-Vu
 	for lore@pengutronix.de; Thu, 18 Dec 2025 22:36:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wEtSlbnR0qIA8WVK491HBv7HWRVJGG1iUwnhlmHK2PU=; b=jJ8ngDIeUnijOFY39PzT57XSBw
-	yPYhg3GZWJTJ7Sjm/AU61eCmu3TVenzHTT7NC+Ct+hDuEqk3DX6uDbvnej2zJu3z06PHtSKC4nM9m
-	w7lbUCY24sNnFVi7ikKiFpzd/0wNyNtHQDiPDxpG8vnur4BqZ8QdgeA7sqdoDpPu/SFZluBJNMtvy
-	c4yJI0gA5s0LXn4rWaN27dcA3LpjFJk8ZnAPnqaFws3vKFZ4+6I1c7g6vWCJ3LVA+zs8a/BvWMHAP
-	ekEbXUMJtHIij8ULs8Bk6QKaq0R2mo8BNnIzt6HAKDEcQKK9wXgg9z9vChsWTuCd6hYEQmdQUtTt3
-	O78dbinQ==;
+	bh=/f359D/6kkQ6b25/rRYN8wgWBI6+SyVzRxppgZh9nvQ=; b=l6ZcFNNOWeDrVlgA6WJca3iJEM
+	p8hl9RFCgvNOcri1WXjtMPWKK2wvJzTMUfLmp+nywXHKLXz1UEQXJjxMB/gnOlgbZg97VEqgAbibp
+	UqVzY9JgFr5ZvX3x5kb3ET24DBRLtUFSqwfzj4K5N5S8ddbZuIF+w/ohAv9imzx3oCA+Kk6zP9mzV
+	kwOL366cWXZmSoJD6eWSuAbwhTNERBmqw6cyMBmpg5meL41jtLkjn42H1LlYzrwGqNTVPeWu1cqKH
+	p3mBJJYUx2C9sin8tInZQUTYHAtHVTH2iPFQOu6cBUaZPV3m9LjtJFtyDJCAJPLVQU5cUOa2if/ci
+	r2G3gpvg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWLf5-00000009DQB-3Ium;
+	id 1vWLf5-00000009DPr-21Kd;
 	Thu, 18 Dec 2025 21:35:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWLf2-00000009DOc-3dXP
+	id 1vWLf2-00000009DOb-3eQK
 	for barebox@lists.infradead.org;
 	Thu, 18 Dec 2025 21:35:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWLf1-00041a-4f; Thu, 18 Dec 2025 22:35:47 +0100
+	id 1vWLf1-00041Y-1h; Thu, 18 Dec 2025 22:35:47 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWLf0-006LsF-34;
+	id 1vWLf0-006Ls9-2m;
 	Thu, 18 Dec 2025 22:35:46 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWLf0-0000000E03K-3bxi;
+	id 1vWLf0-0000000E03K-3E1f;
 	Thu, 18 Dec 2025 22:35:46 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Dec 2025 22:33:10 +0100
-Message-ID: <20251218213542.3263658-4-a.fatoum@pengutronix.de>
+Date: Thu, 18 Dec 2025 22:33:08 +0100
+Message-ID: <20251218213542.3263658-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251218213542.3263658-1-a.fatoum@pengutronix.de>
 References: <20251218213542.3263658-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_133548_912886_92705E6E 
-X-CRM114-Status: GOOD (  20.01  )
+X-CRM114-CacheID: sfid-20251218_133548_915210_6547D0A2 
+X-CRM114-Status: GOOD (  11.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,113 +83,73 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 4/4] arm64: rockchip: qnap-tsx33: support USB installer with EFI
+Subject: [PATCH v3 2/4] Documentation: rk35xx: expand on supported SoCs/boards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-[ NOT FOR MERGING ]
+We have fairly good Rockchip support and as can be seen in
+81b2c56c7e9d ("ARM: Initial support for Rockchip RK3576"), adding new
+SoC support can be very straight forward.
 
-We do not do USB enumeration by default, but we should if we want to be
-able to boot off an UEFI installer image inserted via USB.
-
-This has been tested on QNAP TS-433eU with
-debian-13.1.0-arm64-netinst.iso.
+Adapt the docs to mention all what's currently supported and add a note
+about how to extend support.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Included, just for informational purposes, until EFI loader support is
-upstream.
+v1 -> v2:
+  - new patch
 ---
- Documentation/boards/rk35xx/qnap-tsx33.rst    | 26 +++++++++++++++++--
- arch/arm/boards/qnap-tsx33/Makefile           |  1 +
- arch/arm/boards/qnap-tsx33/board.c            |  3 +++
- .../defaultenv-tsx33/init/usbdetect           |  6 +++++
- 4 files changed, 34 insertions(+), 2 deletions(-)
- create mode 100755 arch/arm/boards/qnap-tsx33/defaultenv-tsx33/init/usbdetect
+ Documentation/boards/rk35xx.rst | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/boards/rk35xx/qnap-tsx33.rst b/Documentation/boards/rk35xx/qnap-tsx33.rst
-index b205e31e561b..0a21df4a2b12 100644
---- a/Documentation/boards/rk35xx/qnap-tsx33.rst
-+++ b/Documentation/boards/rk35xx/qnap-tsx33.rst
-@@ -24,6 +24,14 @@ With these barebox can be compiled as:
+diff --git a/Documentation/boards/rk35xx.rst b/Documentation/boards/rk35xx.rst
+index 8776ae3f7c0f..95b2866d0544 100644
+--- a/Documentation/boards/rk35xx.rst
++++ b/Documentation/boards/rk35xx.rst
+@@ -1,9 +1,8 @@
+ RK35xx Rockchip SoCs
+ ====================
  
- If cross-compiling, ``CROSS_COMPILE`` needs to be additionally set.
+-Barebox features support for the Rockchip RK3566 and RK3568 SoCs, where the
+-RK3566 can be considered as reduced but largely identical version of the
+-RK3568.
++Barebox features support for multiple SoCs of the Rockchip RK35xx
++series, including RK3566, RK3568, RK3576 and RK3588.
  
-+Alternatively, if you enable barebox to boot an OS image with
-+UEFI, use:
-+
-+.. code-block:: sh
-+
-+  make ARCH=arm rockchip_v8_efiloader_defconfig
-+  make ARCH=arm
-+
- Flashing via USB
+ Supported Boards
  ----------------
+@@ -11,9 +10,12 @@ Supported Boards
+ - Rockchip RK3568 EVB
+ - Rockchip RK3568 Bananapi R2 Pro
+ - Pine64 Quartz64 Model A
++- Pine64 Pine Tab 2
+ - Radxa ROCK3 Model A
++- Radxa ROCK5 (RK3588)
+ - Radxa CM3 (RK3566) IO Board
+ - Protonic MECSBC
++- Protonic PRTPUK
  
-@@ -48,5 +56,19 @@ load barebox into RAM and flash it to the eMMC using ``fastboot``:
- Booting Debian
- --------------
+ The steps described in the following target the RK3568 and the RK3568 EVB but
+ generally apply to both SoCs and all boards.
+@@ -127,3 +129,18 @@ And after that the ``ddrbin_tool`` binary can be used to apply this
+ modification to the relevant ddr init blob::
  
--Refer to https://wiki.debian.org/InstallingDebianOn/Qnap/TS-433
--for information on how to install Debian.
-+Flash the Debian netinstall image to a USB stick and insert it into
-+the (first) front USB and power on the device after having flashed
-+barebox to the eMMC as per the previous section.
+ $ tools/ddrbin_tool rk3568 tools/ddrbin_param.txt bin/rk35/rk3568_ddr_1560MHz_v1.21.bin
 +
-+It should then boot into a GRUB menu and from there into the
-+Debian installer.
++Adding new SoC support
++----------------------
 +
-+When the installer asks you at the end about whether to also install
-+GRUB to the removable media path, say **yes**.
++On 64-bit Rockchip Platforms, the barebox prebootloader acts as
++the latter part of BL2 to load TF-A and optionally OP-TEE and
++then execution continues to barebox proper as BL33.
 +
-+After installation is done, remove the USB drive and the system
-+will automatically boot from the Debian system installed to the
-+eMMC.
++As the low-level setup of DRAM happens outside of barebox,
++adding support for new SoCs is thus very straight-forward.
 +
-+Refer also to https://wiki.debian.org/InstallingDebianOn/Qnap/TS-433
-+for more information on how to install Debian.
-diff --git a/arch/arm/boards/qnap-tsx33/Makefile b/arch/arm/boards/qnap-tsx33/Makefile
-index 1d052d28c9fc..ec1b7fb7486b 100644
---- a/arch/arm/boards/qnap-tsx33/Makefile
-+++ b/arch/arm/boards/qnap-tsx33/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
- lwl-y += lowlevel.o
- obj-y += board.o
-+bbenv-y += defaultenv-tsx33
-diff --git a/arch/arm/boards/qnap-tsx33/board.c b/arch/arm/boards/qnap-tsx33/board.c
-index a4e86b0337f8..c407401e571a 100644
---- a/arch/arm/boards/qnap-tsx33/board.c
-+++ b/arch/arm/boards/qnap-tsx33/board.c
-@@ -7,6 +7,7 @@
- #include <globalvar.h>
- #include <envfs.h>
- #include <deep-probe.h>
-+#include <environment.h>
- #include <linux/usb/gadget-multi.h>
- 
- struct ts433_match_data {
-@@ -49,6 +50,8 @@ static int ts433_probe(struct device *dev)
- 
- 	rockchip_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/mmc0");
- 
-+	defaultenv_append_directory(defaultenv_tsx33);
-+
- 	return 0;
- }
- 
-diff --git a/arch/arm/boards/qnap-tsx33/defaultenv-tsx33/init/usbdetect b/arch/arm/boards/qnap-tsx33/defaultenv-tsx33/init/usbdetect
-new file mode 100755
-index 000000000000..f2d30f01ac32
---- /dev/null
-+++ b/arch/arm/boards/qnap-tsx33/defaultenv-tsx33/init/usbdetect
-@@ -0,0 +1,6 @@
-+#!/bin/sh
-+
-+if [ -n "${efi.loader}" ] && [ "${bootsource}" = mmc ]; then
-+	otg.mode=host
-+	usb
-+fi
++For base functionality, it probably requires only porting the
++Linux clk and pinctrl drivers as well as the boilerplate needed
++for every SoC. Reach out to the :ref:`mailing list <feedback>`
++if you have unsupported hardware.
 -- 
 2.47.3
 
