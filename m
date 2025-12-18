@@ -1,82 +1,82 @@
-Delivery-date: Thu, 18 Dec 2025 12:40:25 +0100
+Delivery-date: Thu, 18 Dec 2025 12:40:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWCMr-00CoV7-0d
+	id 1vWCMt-00CoVX-1z
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 12:40:25 +0100
+	Thu, 18 Dec 2025 12:40:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWCM6-0001ro-DD
-	for lore@pengutronix.de; Thu, 18 Dec 2025 12:40:25 +0100
+	id 1vWCM9-0001uO-U0
+	for lore@pengutronix.de; Thu, 18 Dec 2025 12:40:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qzE6d7hqSDGsAGPJHUd8LPvfNCLbfiX9iWzNKxVWY6w=; b=HAeuBqtIoUSfEBYQfkI8Qnr/QD
-	1UhWzvwAzXoPrGIJNaQ34xb1lbx3o1WPdjn9KI55fVuckneq5i8+SWpOE2yfQjEUNaaV+/ej/T6yF
-	vpgTfY4mDtNnQt02bKcR39OTvSuPUEtwOe7bSGm+r8xrGG81q9Ooh9ZcQ6F/jPzM/WvXD/j9q2Qjf
-	epMduVke6lwGP+qi6NFL+dSVlvfOFnmgU191+3moUbmUYsM3lhRKaHCwmOG+/+YD19zDOlLGoQtHq
-	SSLCpT0dm8ZmO14ds5PZt954MRZ1L6K/BfjbktEMPxcbU0IfP56oomS0F6HfX98BRfrddLgJyMu8i
-	vmuFvDuQ==;
+	bh=3PwjYQD7lU6dabdD7igdcvhViwfGij3AJOCpQ9Cwv1k=; b=wnjTNWA6W71FhS5cR6SxmzgLvf
+	Y4Z8l2lxVMxKVRFJ3j6oIYlpk6k4/j8Se4OLkB8DnHfauWT5UoJY83XiDGLB0mPuyHoA2ADDRt2TX
+	Etlfw6SH/IE5pPJgpdWh3/mpKYH8SRCsB/TFnAKM6yBmBQkaHg2qZ5t2ci9WVVIBnQeHRYo1Lev84
+	Zxj4HX+q2dfrYxo/6gYYbJHR/q1bL+pRkGcNn/Y5OrrTnS0kCBZ1uwrgEp6uDCKv4GdsM0TYtLXDt
+	FoHVilxpN4wLEuLKD2rz0ANV3/Cidb24LlzLjxqSM3I4Z56zUmRR6vR6bVZIE6F1ZS98Y+zm/+7EI
+	iv8nsDsA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWCK0-00000008Ktb-1Gnm;
-	Thu, 18 Dec 2025 11:37:28 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+	id 1vWCK9-00000008LAd-0C1d;
+	Thu, 18 Dec 2025 11:37:37 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWCJX-00000008KN4-0gm1
+	id 1vWCJY-00000008KPh-2KMJ
 	for barebox@bombadil.infradead.org;
-	Thu, 18 Dec 2025 11:36:59 +0000
+	Thu, 18 Dec 2025 11:37:03 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=qzE6d7hqSDGsAGPJHUd8LPvfNCLbfiX9iWzNKxVWY6w=; b=eMryjqDHLDcme9SZwHIpmfyzJ5
-	HS2WLHoF6qwMhF4O6EFPv6S8p+AbrM+WylMIBbtCkyrkZvAGGr6888K9z290qUyo5WSbhL3rkCa0E
-	Z4bNkM9DNz3S7JxKxmITi2JwascX7X3viOKh17R0lDxxHfCh6yCOOQPT/rGqEpBjMPoR0Jk/Y3+i5
-	GuV6WytN8djKQF5XK4uC4iQdv3WTQJiNlUExQBmqOrFAoKOKZ/YvsuKNwt9T2ixqfklWxm0QXFME/
-	CHWJxIlx0ZbJcyyl987uKcyCUzKrEWR3KLIPuUIIy+WCjpQPone40OFJnMTK9vyu2RYOYnwLvUcC/
-	MJIAO7jQ==;
+	bh=3PwjYQD7lU6dabdD7igdcvhViwfGij3AJOCpQ9Cwv1k=; b=M5I5VS8fX8R/7eXsqo6jlma8/d
+	G/E3Dvve3no7LvKQpBMqxDI5YXGwTsc9DkVD6JdWSGUPLE72tncvqwVb9cbWqj72kH9bWvtrfan6x
+	hE/sMkMFIDcsntZdnZdlJCWg2IXxWEsbDIOKiv3vC0OwpYGNSNh/bAKf0x10hTh18rQuYmBFIras/
+	fBJ6+ObIMYyhXikdsxlxF+duRzTEFbtSqHhjcVUVJ/w6C8dZqeciMIgOIXM44ihgAPt7KHbToU/uq
+	HhqXL+TxAJC4YDcy0y2iFvojGnKFuk7ckfX4Rko9BHASvLl77OKdrVNzv5XE50m/EmIm2/shM1dVf
+	dbl88h8w==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWCJR-000000063vw-3KBL
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vWBS1-00000008fRM-1GNB
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 11:36:58 +0000
+	Thu, 18 Dec 2025 10:41:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWCJP-0008Gn-0m; Thu, 18 Dec 2025 12:36:51 +0100
+	id 1vWCJM-0008An-Sp; Thu, 18 Dec 2025 12:36:48 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWCJO-006Gwx-2Y;
-	Thu, 18 Dec 2025 12:36:50 +0100
+	id 1vWCJM-006GvK-2E;
+	Thu, 18 Dec 2025 12:36:48 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWBw3-0000000AVre-3IUt;
+	id 1vWBw3-0000000AVre-35Uc;
 	Thu, 18 Dec 2025 12:12:43 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Dec 2025 11:37:36 +0100
-Message-ID: <20251218111242.1527495-17-a.fatoum@pengutronix.de>
+Date: Thu, 18 Dec 2025 11:37:35 +0100
+Message-ID: <20251218111242.1527495-16-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251218111242.1527495-1-a.fatoum@pengutronix.de>
 References: <20251218111242.1527495-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_113653_940972_552FB946 
-X-CRM114-Status: GOOD (  34.84  )
+X-CRM114-CacheID: sfid-20251218_104141_585890_F157D8AA 
+X-CRM114-Status: GOOD (  20.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,1243 +98,167 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v1 16/54] efi: loader: add devicepath support
+Subject: [PATCH v1 15/54] efi: loader: add object handling API
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A proper device path would walk the chain of barebox devices as
-determined from the OF device tree and assemble a path like:
+Add definitions and prototypes for the EFI object model.
+The implementations will follow later, but we add this first here, so we
+do not have to add everything in one big commit and can split it out
+into separate parts.
 
-  MMIO -> PCI root -> USB controller -> USB Mass storage -> Block device
-
-This can still happen in future, but for now we just use following
-simplification that allows us to represent every VFS path in barebox as
-EFI device path:
-
-  - A Bbs device node for the device component:
-    * The cdev of the device the file resides in
-    * The mount path followed by / if no cdev backs the FS device
-  - A FilePath device node for the file path, relative to the mount point
-
-BBS is the BIOS Boot Specification, which seems long obsolete, but it lends
-itself nicely to our purposes of wrapping barebox VFS paths. There's already
-a FilePath device node sub type for media devices, but it's usually at the
-end of the device path and buggy EFI payload may be not search beyond the
-first file path they encounter. All other device path nodes are documented
-as formatting their argument as hexadecimal with BBS being the only exception,
-which takes a non-UTF-8 string.
+The code using it can still be compiled, but it will only be linkable
+with linker garbage collection enabled.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/loader/Makefile             |    1 +
- efi/loader/devicepath.c         | 1073 +++++++++++++++++++++++++++++++
- fs/fs.c                         |    7 +
- include/efi/loader.h            |    4 +
- include/efi/loader/devicepath.h |   66 ++
- 5 files changed, 1151 insertions(+)
- create mode 100644 efi/loader/devicepath.c
- create mode 100644 include/efi/loader/devicepath.h
+ include/efi/loader/object.h | 137 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 137 insertions(+)
+ create mode 100644 include/efi/loader/object.h
 
-diff --git a/efi/loader/Makefile b/efi/loader/Makefile
-index b4294d746b8b..c635b5b6a533 100644
---- a/efi/loader/Makefile
-+++ b/efi/loader/Makefile
-@@ -3,3 +3,4 @@
- obj-y += memory.o pool_alloc.o
- obj-y += trace.o
- obj-y += table.o
-+obj-y += devicepath.o
-diff --git a/efi/loader/devicepath.c b/efi/loader/devicepath.c
+diff --git a/include/efi/loader/object.h b/include/efi/loader/object.h
 new file mode 100644
-index 000000000000..cd783477ef3e
+index 000000000000..ba294d8ff4e3
 --- /dev/null
-+++ b/efi/loader/devicepath.c
-@@ -0,0 +1,1073 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+// SPDX-Comment: Origin-URL: https://github.com/u-boot/u-boot/blob/d786c6b69f537ed2a64950028d270d064970d29f/lib/efi_loader/efi_device_path.c
-+
-+#define pr_fmt(fmt) "efi-loader: devicepath: " fmt
-+
-+#include <efi/loader.h>
-+#include <efi/guid.h>
-+#include <efi/loader/object.h>
-+#include <efi/devicepath.h>
-+#include <efi/loader/devicepath.h>
-+#include <efi/error.h>
-+#include <string.h>
-+#include <xfuncs.h>
-+#include <driver.h>
-+#include <charset.h>
-+#include <block.h>
-+#include <asm/unaligned.h>
-+#include <linux/overflow.h>
-+#include <fs.h>
-+
++++ b/include/efi/loader/object.h
+@@ -0,0 +1,137 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
-+ * END - Template end node for EFI device paths.
++ *  EFI application loader
 + *
-+ * Represents the terminating node of an EFI device path.
-+ * It has a type of DEVICE_PATH_TYPE_END and sub_type DEVICE_PATH_SUB_TYPE_END
++ *  Copyright (c) 2016 Alexander Graf
 + */
-+static const struct efi_device_path END = {
-+	.type     = DEVICE_PATH_TYPE_END,
-+	.sub_type = DEVICE_PATH_SUB_TYPE_END,
-+	.length   = sizeof(END),
-+};
 +
-+/* template ROOT node: */
-+static const struct efi_device_path_vendor ROOT = {
-+	.header = {
-+		.type     = DEVICE_PATH_TYPE_HARDWARE_DEVICE,
-+		.sub_type = DEVICE_PATH_SUB_TYPE_VENDOR,
-+		.length   = sizeof(ROOT),
-+	},
-+	.Guid = BAREBOX_GUID,
-+};
-+
-+static void *dp_alloc(size_t sz)
-+{
-+	return efi_alloc(sz, "DP");
-+}
-+
-+/**
-+ * efi_dp_next() - Iterate to next block in device-path
-+ *
-+ * Advance to the next node in an EFI device path.
-+ *
-+ * @dp: Pointer to the current device path node.
-+ * Return: Pointer to the next device path node, or NULL if at the end
-+ * or if input is NULL.
-+ */
-+struct efi_device_path *efi_dp_next(const struct efi_device_path *dp)
-+{
-+	if (dp == NULL)
-+		return NULL;
-+	if (dp->type == DEVICE_PATH_TYPE_END)
-+		return NULL;
-+	dp = ((void *)dp) + dp->length;
-+	if (dp->type == DEVICE_PATH_TYPE_END)
-+		return NULL;
-+	return (struct efi_device_path *)dp;
-+}
-+
-+/**
-+ * efi_dp_match() - Compare two device-paths
-+ *
-+ * Compare two device paths node by node. The comparison stops when an End
-+ * node is reached in the shorter of the two paths. This is useful, for example,
-+ * to compare a device-path representing a device with one representing a file
-+ * on that device, or a device with a parent device.
-+ *
-+ * @a: Pointer to the first device path.
-+ * @b: Pointer to the second device path.
-+ * Return: An integer less than, equal to, or greater than zero if the first
-+ * differing node in 'a' is found, respectively, to be less than,
-+ * to match, or be greater than the corresponding node in 'b'. Returns 0
-+ * if they match up to the end of the shorter path. Compares length first,
-+ * then content.
-+ */
-+int efi_dp_match(const struct efi_device_path *a,
-+		 const struct efi_device_path *b)
-+{
-+	while (1) {
-+		int ret;
-+
-+		ret = memcmp(&a->length, &b->length, sizeof(a->length));
-+		if (ret)
-+			return ret;
-+
-+		ret = memcmp(a, b, a->length);
-+		if (ret)
-+			return ret;
-+
-+		a = efi_dp_next(a);
-+		b = efi_dp_next(b);
-+
-+		if (!a || !b)
-+			return 0;
-+	}
-+}
-+
-+/**
-+ * efi_dp_shorten() - shorten device-path
-+ *
-+ * When creating a short-boot option we want to use a device-path that is
-+ * independent of the location where the block device is plugged in.
-+ *
-+ * UsbWwi() nodes contain a serial number, hard drive paths a partition
-+ * UUID. Both should be unique.
-+ *
-+ * See UEFI spec, section 3.1.2 for "short-form device path".
-+ *
-+ * @dp:     original device-path
-+ * Return:  shortened device-path or NULL
-+ */
-+static struct efi_device_path *efi_dp_shorten(struct efi_device_path *dp)
-+{
-+	while (dp) {
-+		if (EFI_DP_TYPE(dp, MEDIA_DEVICE, HARD_DRIVE_PATH) ||
-+		    EFI_DP_TYPE(dp, MEDIA_DEVICE, FILE_PATH))
-+			return dp;
-+
-+		dp = efi_dp_next(dp);
-+	}
-+
-+	return dp;
-+}
-+
-+/**
-+ * find_handle() - find handle by device path and installed protocol
-+ *
-+ * If @rem is provided, the handle with the longest partial match is returned.
-+ *
-+ * @dp:		device path to search
-+ * @guid:	GUID of protocol that must be installed on path or NULL
-+ * @short_path:	use short form device path for matching
-+ * @rem:	pointer to receive remaining device path
-+ * Return:	matching handle
-+ */
-+static efi_handle_t find_handle(struct efi_device_path *dp,
-+				const efi_guid_t *guid, bool short_path,
-+				struct efi_device_path **rem)
-+{
-+	efi_handle_t handle, best_handle = NULL;
-+	efi_uintn_t len, best_len = 0;
-+
-+	len = efi_dp_instance_size(dp);
-+
-+	list_for_each_entry(handle, &efi_obj_list, link) {
-+		struct efi_handler *handler;
-+		struct efi_device_path *dp_current;
-+		efi_uintn_t len_current;
-+		efi_status_t ret;
-+
-+		if (guid) {
-+			ret = efi_search_protocol(handle, guid, &handler);
-+			if (ret != EFI_SUCCESS)
-+				continue;
-+		}
-+		ret = efi_search_protocol(handle, &efi_device_path_protocol_guid,
-+					  &handler);
-+		if (ret != EFI_SUCCESS)
-+			continue;
-+		dp_current = handler->protocol_interface;
-+		if (short_path) {
-+			dp_current = efi_dp_shorten(dp_current);
-+			if (!dp_current)
-+				continue;
-+		}
-+		len_current = efi_dp_instance_size(dp_current);
-+		if (rem) {
-+			if (len_current > len)
-+				continue;
-+		} else {
-+			if (len_current != len)
-+				continue;
-+		}
-+		if (memcmp(dp_current, dp, len_current))
-+			continue;
-+		if (!rem)
-+			return handle;
-+		if (len_current > best_len) {
-+			best_len = len_current;
-+			best_handle = handle;
-+			*rem = (void*)((u8 *)dp + len_current);
-+		}
-+	}
-+	return best_handle;
-+}
-+
-+/**
-+ * efi_dp_find_obj() - find handle by device path
-+ *
-+ * If @rem is provided, the handle with the longest partial match is returned.
-+ *
-+ * @dp:     device path to search
-+ * @guid:   GUID of protocol that must be installed on path or NULL
-+ * @rem:    pointer to receive remaining device path
-+ * Return:  matching handle
-+ */
-+efi_handle_t efi_dp_find_obj(struct efi_device_path *dp,
-+			     const efi_guid_t *guid,
-+			     struct efi_device_path **rem)
-+{
-+	efi_handle_t handle;
-+
-+	handle = find_handle(dp, guid, false, rem);
-+	if (!handle)
-+		/* Match short form device path */
-+		handle = find_handle(dp, guid, true, rem);
-+
-+	return handle;
-+}
-+
-+/**
-+ * efi_dp_last_node() - Determine the last device path node before the end node
-+ *
-+ * Iterate through the device path to find the very last node before
-+ * the terminating EFI_DP_END node.
-+ *
-+ * @dp: Pointer to the device path.
-+ * Return: Pointer to the last actual data node before the end node if it exists
-+ * otherwise NULL (e.g., if dp is NULL or only an EFI_DP_END node).
-+ */
-+const struct efi_device_path *efi_dp_last_node(const struct efi_device_path *dp)
-+{
-+	struct efi_device_path *ret;
-+
-+	if (!dp || dp->type == DEVICE_PATH_TYPE_END)
-+		return NULL;
-+	while (dp) {
-+		ret = (struct efi_device_path *)dp;
-+		dp = efi_dp_next(dp);
-+	}
-+	return ret;
-+}
-+
-+/**
-+ * efi_dp_instance_size() - Get size of the first device path instance
-+ *
-+ * Calculate the total length of all nodes in the first instance of a
-+ * (potentially multi-instance) device path. The size of the instance-specific
-+ * end node (if any) or the final device path. The end node is not included.
-+ *
-+ * @dp: Pointer to the device path.
-+ * Return: Size in bytes of the first instance, or 0 if dp is NULL or an
-+ * EFI_DP_END node
-+ */
-+efi_uintn_t efi_dp_instance_size(const struct efi_device_path *dp)
-+{
-+	efi_uintn_t sz = 0;
-+
-+	if (!dp || dp->type == DEVICE_PATH_TYPE_END)
-+		return 0;
-+	while (dp) {
-+		sz += dp->length;
-+		dp = efi_dp_next(dp);
-+	}
-+
-+	return sz;
-+}
-+
-+/**
-+ * efi_dp_size() - Get size of multi-instance device path excluding end node
-+ *
-+ * Calculate the total size of the entire device path structure, traversing
-+ * through all instances, up to but not including the final
-+ * END_ENTIRE_DEVICE_PATH node.
-+ *
-+ * @dp: Pointer to the device path.
-+ * Return: Total size in bytes of all nodes in the device path (excluding the
-+ * final EFI_DP_END node), or 0 if dp is NULL.
-+ */
-+efi_uintn_t efi_dp_size(const struct efi_device_path *dp)
-+{
-+	const struct efi_device_path *p = dp;
-+
-+	if (!p)
-+		return 0;
-+	while (p->type != DEVICE_PATH_TYPE_END ||
-+	       p->sub_type != DEVICE_PATH_SUB_TYPE_END)
-+		p = (void *)p + p->length;
-+
-+	return (void *)p - (void *)dp;
-+}
-+
-+/**
-+ * efi_dp_dup() - Copy multi-instance device path
-+ *
-+ * Duplicate the given device path, including its end node(s).
-+ * The caller is responsible for freeing the allocated memory (e.g.,
-+ * using efi_free()).
-+ *
-+ * @dp: Pointer to the device path to duplicate.
-+ * Return: Pointer to the newly allocated and copied device path, or NULL on
-+ * allocation failure or if dp is NULL.
-+ */
-+struct efi_device_path *efi_dp_dup(const struct efi_device_path *dp)
-+{
-+	struct efi_device_path *ndp;
-+	size_t sz = efi_dp_size(dp) + sizeof(END);
-+
-+	if (!dp)
-+		return NULL;
-+
-+	ndp = dp_alloc(sz);
-+	if (!ndp)
-+		return NULL;
-+	memcpy(ndp, dp, sz);
-+
-+	return ndp;
-+}
-+
-+/**
-+ * efi_dp_concat() - Concatenate two device paths and terminate the result
-+ *
-+ * @dp1:        First device path
-+ * @dp2:        Second device path
-+ * @split_end_node:
-+ * - 0 to concatenate (dp1 is assumed not to have an end node or it's ignored,
-+ *   dp2 is appended, then one EFI_DP_END node)
-+ * - 1 to concatenate with end node added as separator (dp1, END_THIS_INSTANCE,
-+ *   dp2, END_ENTIRE)
-+ *
-+ * Size of dp1 excluding last end node to concatenate with end node as
-+ * separator in case dp1 contains an end node (dp1 (partial), END_THIS_INSTANCE,
-+ * dp2, END_ENTIRE)
-+ *
-+ * Return:
-+ * concatenated device path or NULL. Caller must free the returned value.
-+ */
-+struct
-+efi_device_path *efi_dp_concat(const struct efi_device_path *dp1,
-+			       const struct efi_device_path *dp2,
-+			       size_t split_end_node)
-+{
-+	struct efi_device_path *ret;
-+	size_t end_size;
-+
-+	if (!dp1 && !dp2) {
-+		/* return an end node */
-+		ret = efi_dp_dup(&END);
-+	} else if (!dp1) {
-+		ret = efi_dp_dup(dp2);
-+	} else if (!dp2) {
-+		ret = efi_dp_dup(dp1);
-+	} else {
-+		/* both dp1 and dp2 are non-null */
-+		size_t sz1;
-+		size_t sz2 = efi_dp_size(dp2);
-+		void *p;
-+
-+		if (split_end_node < sizeof(struct efi_device_path))
-+			sz1 = efi_dp_size(dp1);
-+		else
-+			sz1 = split_end_node;
-+
-+		if (split_end_node)
-+			end_size = 2 * sizeof(END);
-+		else
-+			end_size = sizeof(END);
-+		p = dp_alloc(sz1 + sz2 + end_size);
-+		if (!p)
-+			return NULL;
-+		ret = p;
-+		memcpy(p, dp1, sz1);
-+		p += sz1;
-+
-+		if (split_end_node) {
-+			memcpy(p, &END, sizeof(END));
-+			p += sizeof(END);
-+		}
-+
-+		/* the end node of the second device path has to be retained */
-+		memcpy(p, dp2, sz2);
-+		p += sz2;
-+		memcpy(p, &END, sizeof(END));
-+	}
-+
-+	return ret;
-+}
-+
-+/**
-+ * efi_dp_append_node() - Append a single node to a device path
-+ *
-+ * Create a new device path by appending a given node to an existing
-+ * device path.
-+ * If the original device path @dp is NULL, a new path is created
-+ * with the given @node followed by an EFI_DP_END node.
-+ * If the @node is NULL and @dp is not NULL, the original path @dp is
-+ * duplicated.
-+ * If both @dp and @node are NULL, a path with only an EFI_DP_END node is
-+ * returned.
-+ * The caller must free the returned path (e.g., using efi_free()).
-+ *
-+ * @dp:   Original device path (can be NULL).
-+ * @node: Node to append (can be NULL).
-+ * Return: New device path with the node appended, or NULL on allocation
-+ * failure.
-+ */
-+struct efi_device_path *efi_dp_append_node(const struct efi_device_path *dp,
-+					   const struct efi_device_path *node)
-+{
-+	struct efi_device_path *ret;
-+
-+	if (!node && !dp) {
-+		ret = efi_dp_dup(&END);
-+	} else if (!node) {
-+		ret = efi_dp_dup(dp);
-+	} else if (!dp) {
-+		size_t sz = node->length;
-+		void *p = dp_alloc(sz + sizeof(END));
-+		if (!p)
-+			return NULL;
-+		memcpy(p, node, sz);
-+		memcpy(p + sz, &END, sizeof(END));
-+		ret = p;
-+	} else {
-+		/* both dp and node are non-null */
-+		size_t sz = efi_dp_size(dp);
-+		void *p = dp_alloc(sz + node->length + sizeof(END));
-+		if (!p)
-+			return NULL;
-+		memcpy(p, dp, sz);
-+		memcpy(p + sz, node, node->length);
-+		memcpy(p + sz + node->length, &END, sizeof(END));
-+		ret = p;
-+	}
-+
-+	return ret;
-+}
-+
-+/**
-+ * efi_dp_split_file_path() - split of relative file path from device path
-+ *
-+ * Given a device path indicating a file on a device, separate the device
-+ * path in two: the device path of the actual device and the file path
-+ * relative to this device.
-+ *
-+ * @full_path:      device path including device and file path
-+ * @device_path:    path of the device
-+ * @file_path:      relative path of the file or NULL if there is none
-+ * Return:      status code
-+ */
-+efi_status_t efi_dp_split_file_path(struct efi_device_path *full_path,
-+				    struct efi_device_path **device_path,
-+				    struct efi_device_path **file_path)
-+{
-+	struct efi_device_path *p, *dp, *fp = NULL;
-+
-+	*device_path = NULL;
-+	*file_path = NULL;
-+	dp = efi_dp_dup(full_path);
-+	if (!dp)
-+		return EFI_OUT_OF_RESOURCES;
-+	p = dp;
-+	while (!EFI_DP_TYPE(p, MEDIA_DEVICE, FILE_PATH)) {
-+		p = efi_dp_next(p);
-+		if (!p)
-+			goto out;
-+	}
-+	fp = efi_dp_dup(p);
-+	if (!fp)
-+		return EFI_OUT_OF_RESOURCES;
-+	p->type = DEVICE_PATH_TYPE_END;
-+	p->sub_type = DEVICE_PATH_SUB_TYPE_END;
-+	p->length = sizeof(*p);
-+
-+out:
-+	*device_path = dp;
-+	*file_path = fp;
-+	return EFI_SUCCESS;
-+}
-+
-+static void efi_dp_end(struct efi_device_path *dp)
-+{
-+	*dp = END;
-+}
-+
-+/**
-+ * efi_dp_from_mem() - Construct a device-path for a memory-mapped region
-+ *
-+ * Create an EFI device path representing a specific memory region, defined
-+ * by its type, start address, and size.
-+ * The caller is responsible for freeing the allocated memory (e.g.,
-+ * using efi_free()).
-+ *
-+ * @memory_type: EFI memory type (e.g., EFI_RESERVED_MEMORY_TYPE).
-+ * @start_address: Starting address of the memory region.
-+ * @size: Size of the memory region in bytes.
-+ * Return: Pointer to the new memory device path, or NULL on allocation failure
-+ */
-+struct efi_device_path *efi_dp_from_mem(uint32_t memory_type,
-+					uint64_t start_address,
-+					uint64_t end_address)
-+{
-+	struct efi_device_path_memory *mdp;
-+	void *buf, *start;
-+
-+	start = buf = dp_alloc(sizeof(*mdp) + sizeof(END));
-+	if (!buf)
-+		return NULL;
-+
-+	mdp = buf;
-+	mdp->header.type = DEVICE_PATH_TYPE_HARDWARE_DEVICE;
-+	mdp->header.sub_type = DEVICE_PATH_SUB_TYPE_MEMORY;
-+	mdp->header.length = sizeof(*mdp);
-+	mdp->memory_type = memory_type;
-+	mdp->starting_address = start_address;
-+	mdp->ending_address = end_address;
-+
-+	efi_dp_end(&mdp[1].header);
-+
-+	return start;
-+}
-+
-+/**
-+ * efi_dp_create_device_node() - Create a new device path node
-+ *
-+ * Allocate and initialise the header of a new EFI device path node with the
-+ * given type, sub-type, and length. The content of the node beyond the basic
-+ * efi_device_path header is zeroed by efi_alloc.
-+ *
-+ * @type:     Device path type.
-+ * @sub_type: Device path sub-type.
-+ * @length:   Length of the node (must be >= sizeof(struct efi_device_path)).
-+ * Return: Pointer to the new device path node, or NULL on allocation failure
-+ * or if length is invalid.
-+ */
-+struct efi_device_path *efi_dp_create_device_node(const u8 type,
-+						  const u8 sub_type,
-+						  const u16 length)
-+{
-+	struct efi_device_path *ret;
-+
-+	if (length < sizeof(struct efi_device_path))
-+		return NULL;
-+
-+	ret = dp_alloc(length);
-+	if (!ret)
-+		return ret;
-+	ret->type = type;
-+	ret->sub_type = sub_type;
-+	ret->length = length;
-+	return ret;
-+}
-+
-+/**
-+ * efi_dp_append_instance() - Append a device path instance to another
-+ *
-+ * Concatenate two device paths, treating the second path (@dpi) as a new
-+ * instance appended to the first path (@dp). An END_THIS_INSTANCE node is
-+ * inserted between @dp and @dpi if @dp is not NULL.
-+ * If @dp is NULL, @dpi is duplicated (and terminated appropriately).
-+ * @dpi must not be NULL.
-+ * The caller is responsible for freeing the returned path (e.g., using
-+ * efi_free()).
-+ *
-+ * @dp:  The base device path. If NULL, @dpi is duplicated.
-+ * @dpi: The device path instance to append. Must not be NULL.
-+ * Return: A new device path with @dpi appended as a new instance, or NULL on
-+ * error  (e.g. allocation failure, @dpi is NULL).
-+ */
-+struct efi_device_path *efi_dp_append_instance(
-+		const struct efi_device_path *dp,
-+		const struct efi_device_path *dpi)
-+{
-+	size_t sz, szi;
-+	struct efi_device_path *p, *ret;
-+
-+	if (!dpi)
-+		return NULL;
-+	if (!dp)
-+		return efi_dp_dup(dpi);
-+	sz = efi_dp_size(dp);
-+	szi = efi_dp_instance_size(dpi);
-+	p = dp_alloc(sz + szi + 2 * sizeof(END));
-+	if (!p)
-+		return NULL;
-+	ret = p;
-+	memcpy(p, dp, sz + sizeof(END));
-+	p = (void *)p + sz;
-+	p->sub_type = DEVICE_PATH_SUB_TYPE_INSTANCE_END;
-+	p = (void *)p + sizeof(END);
-+	memcpy(p, dpi, szi);
-+	p = (void *)p + szi;
-+	memcpy(p, &END, sizeof(END));
-+	return ret;
-+}
-+
-+/**
-+ * efi_dp_get_next_instance() - Extract the next dp instance
-+ *
-+ * Given a pointer to a pointer to a device path (@dp), this function extracts
-+ * the first instance from the path. It allocates a new path for this extracted
-+ * instance (including its instance-specific EFI_DP_END node). The input pointer
-+ * (*@dp) is then updated to point to the start of the next instance in the
-+ * original path, or set to NULL if no more instances remain.
-+ * The caller is responsible for freeing the returned instance path (e.g.,
-+ * using efi_free()).
-+ *
-+ * @dp:  On input, a pointer to a pointer to the multi-instance device path.
-+ * On output, *@dp is updated to point to the start of the next instance,
-+ * or NULL if no more instances.
-+ * @size: Optional pointer to an efi_uintn_t variable that will receive the size
-+ * of the extracted instance path (including its EFI_DP_END node).
-+ * Return: Pointer to a newly allocated device path for the extracted instance,
-+ * or NULL if no instance could be extracted or an error occurred (e.g.,
-+ * allocation failure).
-+ */
-+struct efi_device_path *efi_dp_get_next_instance(struct efi_device_path **dp,
-+						 efi_uintn_t *size)
-+{
-+	size_t sz;
-+	struct efi_device_path *p;
-+
-+	if (size)
-+		*size = 0;
-+	if (!dp || !*dp)
-+		return NULL;
-+	sz = efi_dp_instance_size(*dp);
-+	p = dp_alloc(sz + sizeof(END));
-+	if (!p)
-+		return NULL;
-+	memcpy(p, *dp, sz + sizeof(END));
-+	*dp = (void *)*dp + sz;
-+	if ((*dp)->sub_type == DEVICE_PATH_SUB_TYPE_INSTANCE_END)
-+		*dp = (void *)*dp + sizeof(END);
-+	else
-+		*dp = NULL;
-+	if (size)
-+		*size = sz + sizeof(END);
-+	return p;
-+}
-+
-+/**
-+ * efi_dp_is_multi_instance() - Check if a device path is multi-instance
-+ *
-+ * Traverse the device path to its end. It is considered multi-instance if an
-+ * END_THIS_INSTANCE_DEVICE_PATH node (type DEVICE_PATH_TYPE_END, sub-type
-+ * DEVICE_PATH_SUB_TYPE_INSTANCE_END) is encountered before the final
-+ * END_ENTIRE_DEVICE_PATH node.
-+ *
-+ * @dp: The device path to check.
-+ * Return: True if the device path contains multiple instances, false otherwise
-+ * (including if @dp is NULL).
-+ */
-+bool efi_dp_is_multi_instance(const struct efi_device_path *dp)
-+{
-+	const struct efi_device_path *p = dp;
-+
-+	if (!p)
-+		return false;
-+	while (p->type != DEVICE_PATH_TYPE_END)
-+		p = (void *)p + p->length;
-+	return p->sub_type == DEVICE_PATH_SUB_TYPE_INSTANCE_END;
-+}
-+
-+/**
-+ * path_to_uefi() - convert UTF-8 path to an UEFI style path
-+ *
-+ * Convert UTF-8 path to a UEFI style path (i.e. with backslashes as path
-+ * separators and UTF-16).
-+ *
-+ * @src:	source buffer
-+ * @uefi:	target buffer, possibly unaligned
-+ * Return: number of wide characters, including NUL terminator
-+ */
-+static size_t path_to_uefi(wchar_t *uefi, const char *src)
-+{
-+	wchar_t *pos = uefi;
-+
-+	while (*src) {
-+		s32 code = utf8_get(&src);
-+
-+		if (code < 0)
-+			code = '?';
-+		else if (code == '/')
-+			code = '\\';
-+		utf16_put(code, &pos);
-+	}
-+	*pos++ = 0;
-+
-+	return pos - uefi;
-+}
-+
-+/**
-+ * efi_fp_size() - Calculate file path EFI device node size
-+ *
-+ * Calculate the final size the node would take, so space can be allocated.
-+ *
-+ * @path:	file path inside device
-+ * Return: Size needed for the efi_device_path_file_path or -EOVERFLOW on error
-+ */
-+static ssize_t efi_fp_size(const char *path)
-+{
-+	size_t fpsize;
-+
-+	fpsize = struct_size_t(struct efi_device_path_file_path, path_name,
-+			       utf8_utf16_strlen(path) + 1);
-+	if (fpsize > U16_MAX)
-+		return -EOVERFLOW;
-+
-+	return fpsize;
-+}
-+
-+/**
-+ * efi_fp_fill() - Fill file path EFI device node
-+ *
-+ * Initialize the node and fill out its path including NUL termination.
-+ *
-+ * @fp:		efi_device_path_file_path to be filled
-+ * @path:	file path inside device
-+ * Return: Pointer to next node after advancing by fp + copied path
-+ */
-+static struct efi_device_path *efi_fp_fill(struct efi_device_path_file_path *fp, const char *path)
-+{
-+	fp->header.type = DEVICE_PATH_TYPE_MEDIA_DEVICE;
-+	fp->header.sub_type = DEVICE_PATH_SUB_TYPE_FILE_PATH;
-+	fp->header.length = struct_size(fp, path_name, path_to_uefi(fp->path_name, path));
-+
-+	return efi_dp_next(&fp->header);
-+}
-+
-+/**
-+ * efi_bbs_size() - Calculate BiosBootSpecification EFI device node size
-+ *
-+ * Calculate the final size node would take, so space can be allocated.
-+ * To simplify things for users within this file that will want to prepend
-+ * and append strings, this is directly handled in the API.
-+ *
-+ * @prefix:	prefix to prepend in front of path, may be NULL
-+ * @path:	The string argument for the BBS node
-+ * @suffix:	suffix to append after path, may be NULL
-+ * Return: Size needed for the efi_device_path_bbs_bbs or -EOVERFLOW on error
-+ */
-+static ssize_t efi_bbs_size(const char *prefix, const char *path, const char *suffix)
-+{
-+	size_t fpsize;
-+	size_t len = 0;
-+
-+	len += strlen(prefix ?: "");
-+	len += strlen(path);
-+	len += strlen(suffix ?: "");
-+	len += 1;
-+
-+	fpsize = struct_size_t(struct efi_device_path_bbs_bbs, String, len);
-+	if (fpsize > U16_MAX)
-+		return -EOVERFLOW;
-+
-+	return fpsize;
-+}
-+
-+/**
-+ * efi_bbs_fill() - Fill BiosBootSpecification EFI device node
-+ *
-+ * Initialize the node and fill out its path including NUL termination.
-+ * To simplify things for users within this file that will want to prepend
-+ * and append strings, this is directly handled in the API.
-+ *
-+ * @bp:		efi_device_path_file_path to be filled
-+ * @prefix:	prefix to prepend in front of path, may be NULL
-+ * @path:	The string argument for the BBS node
-+ * @suffix:	suffix to append after path, may be NULL
-+ * Return: Pointer to next node after advancing by bp + copied path
-+ */
-+static struct efi_device_path *efi_bbs_fill(struct efi_device_path_bbs_bbs *bp,
-+					    const char *prefix,
-+					    const char *path,
-+					    const char *suffix)
-+{
-+	s8 *end = bp->String;
-+
-+	bp->header.type = DEVICE_PATH_TYPE_BBS_DEVICE;
-+	bp->header.sub_type = 0x01;
-+	bp->device_type = BBS_TYPE_DEV;
-+	bp->status_flag = 0;
-+
-+	end = stpcpy(end, prefix ?: "");
-+	end = stpcpy(end, path);
-+	end = stpcpy(end, suffix ?: "");
-+	end++;
-+
-+	bp->header.length = struct_size(bp, String, end - bp->String);
-+
-+	return efi_dp_next(&bp->header);
-+}
-+
-+/**
-+ * __efi_dp_cdev_table_part() - Fill hard drive EFI device node from cdev
-+ *
-+ * Generates an EFI device node from a barebox cdev partition. The result
-+ * looks like this:
-+ *
-+ *   HD(Part2,Sig7963f4e7-618a-3b49-ac6b-10821a9385cc).
-+ *
-+ * @hddp:	The EFI device path node
-+ * @cdev:	The partition's cdev
-+ * Return: Pointer to next node after advancing by sizeof(*hddp)
-+ */
-+static struct efi_device_path *
-+__efi_dp_cdev_table_part(struct efi_device_path_hard_drive_path *hddp,
-+			 const struct cdev *cdev)
-+{
-+	struct cdev *master = cdev->master;
-+	struct block_device *blk = cdev_get_block_device(master);
-+	int ret;
-+
-+	if (!(master->flags & (DEVFS_IS_MBR_PARTITIONED | DEVFS_IS_GPT_PARTITIONED))) {
-+		pr_debug("%s: cdev outside partition table\n", cdev->name);
-+		return NULL;
-+	}
-+
-+	/*
-+	 * UEFI v2.10 documents Signature as u32 for MBR and GUID for GPT.
-+	 * As signature for partition on MBR ist ${DISKSIG}-${PARTID}, this
-+	 * would imply that GUID is also DISKUUID and not PARTUUID. EDK-II
-+	 * and U-Boot use partition GUID though, which is kind of redundant
-+	 * as there's already a partition number... We follow suit, even
-+	 * if doesn't make perfect sense.
-+	 */
-+	if (cdev_is_gpt_partitioned(master)) {
-+		guid_t sig;
-+
-+		ret = guid_parse(cdev->partuuid, &sig);
-+		if (ret) {
-+			pr_debug("%s: failed to parse GPT uuid\n", cdev->name);
-+			return NULL;
-+		}
-+
-+		hddp->mbr_type = MBR_TYPE_EFI_PARTITION_TABLE_HEADER;
-+		hddp->signature_type = SIGNATURE_TYPE_GUID;
-+		export_guid(hddp->signature, &sig);
-+	} else if (cdev_is_mbr_partitioned(master)) {
-+		u32 sig;
-+
-+		// TODO Extended partitions should be children of the
-+		// extended raw partition, which should've an index of 0
-+
-+		ret = kstrtou32(master->diskuuid, 16, &sig);
-+		if (ret) {
-+			pr_debug("%s: failed to parse MBR signature\n", cdev->name);
-+			return NULL;
-+		}
-+
-+		hddp->mbr_type = MBR_TYPE_PCAT;
-+		hddp->signature_type = SIGNATURE_TYPE_MBR;
-+		put_unaligned_le32(sig, hddp->signature);
-+		memset(&hddp->signature[4], 0, 12);
-+	}
-+
-+	hddp->header.type = DEVICE_PATH_TYPE_MEDIA_DEVICE;
-+	hddp->header.sub_type = DEVICE_PATH_SUB_TYPE_HARD_DRIVE_PATH;
-+	hddp->header.length = sizeof(*hddp);
-+	/* barebox starts counting partitions at 1 */
-+	hddp->partition_number = cdev->partition_table_index + 1;
-+
-+	hddp->partition_start = cdev->offset >> blk->blockbits;
-+	hddp->partition_size = cdev->size >> blk->blockbits;
-+
-+	return efi_dp_next(&hddp->header);
-+}
-+
-+/**
-+ * efi_dp_from_cdev() - Generate EFI device node from any cdev
-+ *
-+ * A barebox cdev is represented as a BBS path, optionally followed
-+ * by a hard drive path specifying the partition.
-+ *
-+ * BBS is the BIOS Boot Specification, which seems long obsolete, but it lends
-+ * itself nicely to our purposes of wrapping barebox VFS paths. There's already
-+ * a FilePath device node sub type for media devices, but it's usually at the
-+ * end of the device path and buggy EFI payload may be not search beyond the
-+ * first file path they encounter. All other device path nodes are documented
-+ * as formatting their argument as hexadecimal with BBS being the only exception,
-+ * which takes a non-UTF-8 string. Our convention is:
-+ *
-+ *   virtioblk2 -> BBS(Dev,/dev/virtioblk2) FIXME
-+ *
-+ * @cdev:	A barebox cdev
-+ * @full:	return full path, including ROOT and END
-+ * Return: Pointer to efi_alloc()ated node or NULL on error
-+ */
-+struct efi_device_path *efi_dp_from_cdev(struct cdev *cdev, bool full)
-+{
-+	struct efi_device_path *dp = NULL;
-+	void *buf = NULL;
-+	struct cdev *cdevm = full ? cdev->master : NULL;
-+	ssize_t bbs_size;
-+	size_t dp_size = 0;
-+
-+	bbs_size = efi_bbs_size("/dev/", cdev->name, NULL);
-+	if (bbs_size < 0)
-+		return NULL;
-+
-+	if (full)
-+		dp_size += sizeof(ROOT) + sizeof(END);
-+	if (cdevm)
-+		dp_size += bbs_size;
-+
-+	dp_size += max_t(size_t,
-+			 sizeof(struct efi_device_path_hard_drive_path), bbs_size);
-+
-+	dp = buf = dp_alloc(dp_size);
-+	if (!dp)
-+		return NULL;
-+
-+	if (full)
-+		buf = mempcpy(buf, &ROOT, sizeof(ROOT));
-+
-+	if (cdevm)
-+		buf = efi_bbs_fill(buf, "/dev/", cdevm->name, NULL);
-+
-+	if (cdev->flags & DEVFS_PARTITION_FROM_TABLE) {
-+		void *oldbuf = buf;
-+
-+		buf = __efi_dp_cdev_table_part(buf, cdev);
-+		if (buf)
-+			goto out;
-+
-+		buf = oldbuf;
-+	}
-+
-+	buf = efi_bbs_fill(buf, "/dev/", cdev->name, NULL);
-+
-+out:
-+	if (full)
-+		efi_dp_end(buf);
-+	return dp;
-+}
-+
-+/**
-+ * efi_dp_from_fsdev() - Generate EFI device node from non-cdev-backed FS dev
-+ *
-+ * For file system devices with no backing cdev, this function returns
-+ * a BBS path wrapping the mount point with a trailing slash as to
-+ * differentiate from cdevs, which have no trailing /. Example:
-+ *
-+ *   tftpfs0 -> BBS(Dev,/mnt/tftp/)
-+ *
-+ * @fsdev:	File system device
-+ * Return: Pointer to efi_alloc()ated node or NULL on error
-+ */
-+static struct efi_device_path *efi_dp_from_fsdev(struct fs_device *fsdev)
-+{
-+	struct efi_device_path *dp;
-+	ssize_t bbs_size;
-+	const char *slash = "/";
-+	void *buf;
-+
-+	if (*fsdev->path && fsdev->path[strlen(fsdev->path) - 1] == '/')
-+		slash = NULL;
-+
-+	bbs_size = efi_bbs_size(NULL, fsdev->path, slash);
-+	if (bbs_size < 0)
-+		return NULL;
-+
-+	dp = buf = dp_alloc(sizeof(ROOT) + bbs_size + sizeof(END));
-+	if (!dp)
-+		return NULL;
-+
-+	buf = mempcpy(buf, &ROOT, sizeof(ROOT));
-+	buf = efi_bbs_fill(buf, NULL, fsdev->path, slash);
-+	efi_dp_end(buf);
-+
-+	return dp;
-+}
-+
-+/**
-+ * efi_dp_from_fsdev() - Generate EFI device node from barebox VFS path
-+ *
-+ * This function can map any barebox VFS path to an EFI device path.
-+ * It's not pretty and in future it's meant to be only the fallback,
-+ * with proper hierarchy, e.g.
-+ * MMIO -> PCI root -> USB controller -> USB Mass storage -> Block device,
-+ * taking its place.
-+ *
-+ * For now though, it's enough to allow Grub to find its config and to
-+ * represent arbitrary VFS paths.
-+ *
-+ * Examples (All start with VenHw(b9731de6-84a3-cc4a-aeab-82e828f362bb)):
-+ *
-+ *   /dev/hwrng0
-+ *	-> devfs0/hwrng0
-+ *   /mnt/virtioblk0.14/
-+ *      -> BBS(Dev,/dev/virtioblk0)/HD(Part15,Sig26e17b2d-45f0-4c67-9d42-0a5c4a9587fc)/\
-+ *   /mnt/virtioblk0.14/barebox.efivars
-+ *      ->
-+ *      BBS(Dev,/dev/virtioblk0)/HD(Part15,Sig26e17b2d-45f0-4c67-9d42-0a5c4a9587fc)/\barebox.efivars
-+ *   /dev/hwrng0
-+ *      -> BBS(Dev,/dev/hwrng0)
-+ *   /mnt/9p/
-+ *      -> BBS(Dev,/)/\mnt\9p
-+ *   /mnt/9p/fs0
-+ *      -> BBS(Dev,/mnt/9p/fs0/)/\
-+ *   /mnt/9p/fs0/
-+ *      -> BBS(Dev,/mnt/9p/fs0/)/\
-+ *
-+ * @dirfd:	directory fd to lookup a relative path in
-+ * @path:	relative or absolute VFS path
-+ * Return: Pointer to efi_alloc()ated node or NULL on error
-+ */
-+struct efi_device_path *efi_dp_from_file(int dirfd, const char *path)
-+{
-+	struct fs_device *fsdev;
-+	void *buf;
-+	ssize_t dp_size;
-+	struct efi_device_path *prefix_dp, *dp = NULL;
-+	struct cdev *cdev;
-+	char *filepath;
-+
-+	cdev = cdev_by_name(devpath_to_name(path));
-+	if (cdev)
-+		return efi_dp_from_cdev(cdev, true);
-+
-+	fsdev = resolve_fsdevice_path(dirfd, path, &filepath);
-+	if (!fsdev)
-+		return NULL;
-+
-+	if (fsdev->cdev)
-+		prefix_dp = efi_dp_from_cdev(fsdev->cdev, true);
-+	else
-+		prefix_dp = efi_dp_from_fsdev(fsdev);
-+
-+	if (!prefix_dp)
-+		goto out;
-+
-+	/* both dp and node are non-null */
-+	dp_size = efi_dp_size(prefix_dp);
-+	buf = dp = dp_alloc(dp_size + efi_fp_size(filepath) + sizeof(END));
-+	if (!dp)
-+		goto out;
-+
-+	buf = mempcpy(buf, prefix_dp, dp_size);
-+	buf = efi_fp_fill(buf, filepath);
-+	efi_dp_end(buf);
-+
-+out:
-+	efi_free_pool(prefix_dp);
-+	free(filepath);
-+
-+	return dp;
-+}
-+
-+/**
-+ * efi_dp_from_file_tostr() - format barebox VFS path as EFI device path string
-+ *
-+ * Convert any barebox virtual file system path to an UEFI device path
-+ * and then return its full string representation.
-+ *
-+ * @dirfd:	directory fd
-+ * @path:	barebox virtual file system path
-+ * Return: string representation of the UEFI device path to be freed with
-+ *         free() or NULL otherwise.
-+ */
-+char *efi_dp_from_file_tostr(int dirfd, const char *path)
-+{
-+	struct efi_device_path *dp;
-+	char *dpstr = NULL;
-+
-+	dp = efi_dp_from_file(dirfd, path);
-+	if (dp)
-+		dpstr = device_path_to_str(dp);
-+
-+	efi_free_pool(dp);
-+
-+	return dpstr;
-+}
-diff --git a/fs/fs.c b/fs/fs.c
-index e997bd5f6a99..75fd3a3ef962 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -37,6 +37,7 @@
- #include <parseopt.h>
- #include <linux/namei.h>
- #include <security/config.h>
-+#include <efi/loader/devicepath.h>
- 
- char *mkmodestr(unsigned long mode, char *str)
- {
-@@ -197,6 +198,12 @@ void stat_print(int dirfd, const char *filename, const struct stat *st)
- 
- 	if (cdev)
- 		cdev_print(cdev);
-+
-+	if (IS_ENABLED(CONFIG_EFI_LOADER)) {
-+		char *dpstr = efi_dp_from_file_tostr(dirfd, filename);
-+		printf("EFI device path: %s\n", dpstr);
-+		free(dpstr);
-+	}
- }
- EXPORT_SYMBOL(stat_print);
- 
-diff --git a/include/efi/loader.h b/include/efi/loader.h
-index fcca8676479d..47fdcf5c5114 100644
---- a/include/efi/loader.h
-+++ b/include/efi/loader.h
-@@ -12,6 +12,10 @@ struct efi_table_hdr;
- 
- #define EFI_SPECIFICATION_VERSION (2 << 16 | 80)
- 
-+/* GUID used by the root node. */
-+#define BAREBOX_GUID \
-+	EFI_GUID(0x0f38fd98, 0x6788, 0x5379, 0x9b, 0xae, 0x43, 0x05, 0xb3, 0x58, 0x4f, 0x82)
-+
- /* Key identifying current memory map */
- extern efi_uintn_t efi_memory_map_key;
- 
-diff --git a/include/efi/loader/devicepath.h b/include/efi/loader/devicepath.h
-new file mode 100644
-index 000000000000..f199dab8e58c
---- /dev/null
-+++ b/include/efi/loader/devicepath.h
-@@ -0,0 +1,66 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __EFI_LOADER_DEVICE_PATH_H
-+#define __EFI_LOADER_DEVICE_PATH_H
++#ifndef _EFI_LOADER_OBJECT_H
++#define _EFI_LOADER_OBJECT_H
 +
 +#include <efi/types.h>
-+#include <linux/compiler.h>
++#include <efi/services.h>
 +
-+struct efi_device_path *efi_dp_next(const struct efi_device_path *dp);
++/**
++ * enum efi_object_type - type of EFI object
++ *
++ * In UnloadImage we must be able to identify if the handle relates to a
++ * started image.
++ */
++enum efi_object_type {
++	/** @EFI_OBJECT_TYPE_UNDEFINED: undefined image type */
++	EFI_OBJECT_TYPE_UNDEFINED = 0,
++	/** @EFI_OBJECT_TYPE_BAREBOX_FIRMWARE: barebox firmware */
++	EFI_OBJECT_TYPE_BAREBOX_FIRMWARE,
++	/** @EFI_OBJECT_TYPE_LOADED_IMAGE: loaded image (not started) */
++	EFI_OBJECT_TYPE_LOADED_IMAGE,
++	/** @EFI_OBJECT_TYPE_STARTED_IMAGE: started image */
++	EFI_OBJECT_TYPE_STARTED_IMAGE,
++};
 +
-+int efi_dp_match(const struct efi_device_path *a,
-+		 const struct efi_device_path *b);
++/**
++ * struct efi_object - dereferenced EFI handle
++ *
++ * @link:	pointers to put the handle into a linked list
++ * @protocols:	linked list with the protocol interfaces installed on this
++ *		handle
++ * @type:	image type if the handle relates to an image
++ *
++ * UEFI offers a flexible and expandable object model. The objects in the UEFI
++ * API are devices, drivers, and loaded images. struct efi_object is our storage
++ * structure for these objects.
++ *
++ * When including this structure into a larger structure always put it first so
++ * that when deleting a handle the whole encompassing structure can be freed.
++ *
++ * A pointer to this structure is referred to as a handle. Typedef efi_handle_t
++ * has been created for such pointers.
++ */
++struct efi_object {
++	/* Every UEFI object is part of a global object list */
++	struct list_head link;
++	/* The list of protocols */
++	struct list_head protocols;
++	enum efi_object_type type;
++};
 +
-+efi_handle_t efi_dp_find_obj(struct efi_device_path *dp,
-+			     const efi_guid_t *guid,
-+			     struct efi_device_path **rem);
++/**
++ * struct efi_open_protocol_info_item - open protocol info item
++ *
++ * When a protocol is opened a open protocol info entry is created.
++ * These are maintained in a list.
++ *
++ * @link:	link to the list of open protocol info entries of a protocol
++ * @info:	information about the opening of a protocol
++ */
++struct efi_open_protocol_info_item {
++	struct list_head link;
++	struct efi_open_protocol_information_entry info;
++};
 +
-+size_t efi_dp_instance_size(const struct efi_device_path *dp);
++/**
++ * struct efi_handler - single protocol interface of a handle
++ *
++ * When the UEFI payload wants to open a protocol on an object to get its
++ * interface (usually a struct with callback functions), this struct maps the
++ * protocol GUID to the respective protocol interface
++ *
++ * @link:		link to the list of protocols of a handle
++ * @guid:		GUID of the protocol
++ * @protocol_interface:	protocol interface
++ * @open_infos:		link to the list of open protocol info items
++ */
++struct efi_handler {
++	struct list_head link;
++	efi_guid_t guid;
++	void *protocol_interface;
++	struct list_head open_infos;
++};
 +
-+size_t efi_dp_size(const struct efi_device_path *dp);
++/* This list contains all UEFI objects we know of */
++extern struct list_head efi_obj_list;
 +
-+struct efi_device_path *efi_dp_dup(const struct efi_device_path *dp);
++/* Root node */
++extern efi_handle_t efi_root;
 +
-+struct efi_device_path *efi_dp_concat(const struct efi_device_path *dp1,
-+				      const struct efi_device_path *dp2,
-+				      size_t split_end_node);
++/* Initialize efi execution environment */
++efi_status_t efi_init_obj_list(void);
 +
-+struct efi_device_path *efi_dp_append_node(const struct efi_device_path *dp,
-+					   const struct efi_device_path *node);
++/* Add a new object to the object list. */
++void efi_add_handle(efi_handle_t obj);
++/* Create handle */
++efi_status_t efi_create_handle(efi_handle_t *handle);
++/* Delete handle */
++efi_status_t efi_delete_handle(efi_handle_t obj);
++/* Call this to validate a handle and find the EFI object for it */
++struct efi_object *efi_search_obj(const efi_handle_t handle);
 +
-+struct efi_device_path *efi_dp_create_device_node(const u8 type,
-+						  const u8 sub_type,
-+						  const u16 length);
-+struct efi_device_path *efi_dp_append_instance(
-+		const struct efi_device_path *dp,
-+		const struct efi_device_path *dpi);
++/* Find a protocol on a handle */
++efi_status_t efi_search_protocol(const efi_handle_t handle,
++				 const efi_guid_t *protocol_guid,
++				 struct efi_handler **handler);
++/* Install new protocol on a handle */
++efi_status_t efi_add_protocol(const efi_handle_t handle,
++			      const efi_guid_t *protocol,
++			      const void *protocol_interface);
++/* Open protocol */
++efi_status_t efi_protocol_open(struct efi_handler *handler,
++			       void **protocol_interface, void *agent_handle,
++			       void *controller_handle, uint32_t attributes);
 +
-+struct efi_device_path *efi_dp_get_next_instance(struct efi_device_path **dp,
-+						 size_t *size);
++/* Install multiple protocol interfaces */
++efi_status_t EFIAPI
++efi_install_multiple_protocol_interfaces(efi_handle_t *handle, ...) __attribute__((sentinel));
++efi_status_t EFIAPI
++efi_uninstall_multiple_protocol_interfaces(efi_handle_t handle, ...)  __attribute__((sentinel));
++/* Get handles that support a given protocol */
++efi_status_t EFIAPI efi_locate_handle_buffer(
++			enum efi_locate_search_type search_type,
++			const efi_guid_t *protocol, void *search_key,
++			size_t *no_handles, efi_handle_t **buffer);
++/* Close an previously opened protocol interface */
++efi_status_t EFIAPI efi_close_protocol(efi_handle_t handle,
++				       const efi_guid_t *protocol,
++				       efi_handle_t agent_handle,
++				       efi_handle_t controller_handle);
 +
-+bool efi_dp_is_multi_instance(const struct efi_device_path *dp);
-+
-+struct efi_device_path *efi_dp_from_file(int dirfd, const char *);
-+
-+struct cdev;
-+
-+struct efi_device_path *efi_dp_from_cdev(struct cdev *cdev, bool full);
-+
-+efi_status_t efi_dp_split_file_path(struct efi_device_path *full_path,
-+				    struct efi_device_path **device_path,
-+				    struct efi_device_path **file_path);
-+
-+struct efi_device_path *efi_dp_from_mem(uint32_t mem_type,
-+					uint64_t start_address,
-+					uint64_t end_address);
-+
-+const struct efi_device_path *efi_dp_last_node(
-+			const struct efi_device_path *dp);
-+
-+#define EFI_DP_TYPE(_dp, _type, _subtype) \
-+	(((_dp)->type == DEVICE_PATH_TYPE_##_type) && \
-+	 ((_dp)->sub_type == DEVICE_PATH_SUB_TYPE_##_subtype))
-+
-+
-+char *efi_dp_from_file_tostr(int dirfd, const char *path);
-+
-+#endif /* __EFI_LOADER_DEVICE_PATH_H */
++#endif /* _EFI_LOADER_OBJECT_H */
 -- 
 2.47.3
 
