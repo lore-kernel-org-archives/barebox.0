@@ -1,63 +1,63 @@
-Delivery-date: Thu, 18 Dec 2025 18:37:18 +0100
+Delivery-date: Thu, 18 Dec 2025 18:37:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWHwE-00Cukt-0t
+	id 1vWHwG-00CulF-2B
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 18:37:18 +0100
+	Thu, 18 Dec 2025 18:37:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWHwD-0007je-Lg
-	for lore@pengutronix.de; Thu, 18 Dec 2025 18:37:18 +0100
+	id 1vWHwG-0007kN-21
+	for lore@pengutronix.de; Thu, 18 Dec 2025 18:37:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=04Vx8vPYlp/yTk83koNAPQdtTJWB38/Sp+SN7dQif80=; b=nGaD+Zzt37kYmWUOI2L37d2rPR
-	XPE0E0OZicTsvSZkd78MIIQypVR1yuEzhGQpk2OP8p8jTzvUCGWfQ9mG2okGOM6cxP8OAjbPFOZDR
-	hD3YbEh9XudMCXSn/A5DDcySuMiOX0ShAlZOjzOF2bMn95wLvqnF84BaWbDtZ/cLtvi5FZ13GU/QL
-	SDGbCvqnvdShMXTDq8oZMWS1RyYjdtkLaKGJE5dECDLIzGqBGwBGrS/3gWgtVMINbqA2Ns4GkbpK8
-	GjDwZ9mT0Dtr20mHoDAkVTyNrQpTcAA3Jw43xvitgNizikZiqgVXl7cq24bRQRFYVK9pq6zOTh8BY
-	MtyPtvmw==;
+	bh=713tNZb0h/kM86hx85Fr0GdK/uuHe6rQn7oWzqTw8Sc=; b=k5AHWHhoc3JKoE4Av5lKXDSiW5
+	+89Y0+SrGXklI2vByEdGJRtQkRvbJ0JalJbKhk9/ACatHbrccD8K9wEyp7HLy6IZd6l1LsQf5GEyF
+	0daZ7GBMD81D/T6qSIIBdfZMLoDUgjbgUrsoFH7OulpU9cJvc3M5J8PVcJXpDjXNiBsdbFJwp45Rs
+	ZNk9ntkERDzVlqTEvdUY6N5+5WPRN6i04POhohp0Q4yzBpjhAmU+LkSVx/r4IHEmWgCThWDsGPwdk
+	z9bwOC26CIUSzHJrsaRCS5CqYDqIN3qDDUgLDf4bHMytrqdR+M9ayAcwTNpKtO2ifNr9HBjb+zt5z
+	ljRwZCBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWHvm-00000008vxx-11eZ;
-	Thu, 18 Dec 2025 17:36:50 +0000
+	id 1vWHvj-00000008vwJ-3c4a;
+	Thu, 18 Dec 2025 17:36:47 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWHvk-00000008vwR-2fsg
+	id 1vWHvj-00000008vvr-0Y7E
 	for barebox@bombadil.infradead.org;
-	Thu, 18 Dec 2025 17:36:48 +0000
+	Thu, 18 Dec 2025 17:36:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=04Vx8vPYlp/yTk83koNAPQdtTJWB38/Sp+SN7dQif80=; b=FvQKrY24dklxESea8/S83g/Ydy
-	Nv2a+VQC2oAxrcTcsUPgRpVTlBTOcfkWoNLkUvxVdHnxMnj5bS+Pyge8QiIJx5I+l2BrkEYHs2KuI
-	HnzbL0x7KDgZXiFI1v4T+wnC+xlBwcDVLPwD6lrswGy8+RC9wlmHHtulfdoaOhnUZ+639TIyoNmNz
-	RVzhywyiO98RGTA68TH1pzOC1cYi56qkijPutHhaa3HNe+MzKfghZ1MnLEy8gxbWB3S1RNxhu2ERZ
-	1OJ7nwe1X5p0vjWXnyrK37Xqu+RY1VzgZni7emyN6+ko1jhBe9d3VAmLYC8G0LFly0WBZSCBayaZi
-	nC1lnhlw==;
+	bh=713tNZb0h/kM86hx85Fr0GdK/uuHe6rQn7oWzqTw8Sc=; b=Mi2X2msCMu1FNpVNGinETPFhOq
+	Y/zPU9OlHE4RrVm54U2HjP/YqeipUnJTaQ/ZBdgwnkSTJzhpgH2McEeFBh7Q0tAcClto4lql3C8yu
+	P7dZMjmMyw/AWE9/nKFEe6o65exUhBGRWfwg/HCVwDHb1v7uJ4CcvJNE94jhDk3/CSaEhK9zCAPbE
+	76G+W3BUOS4QTF51MiadpVnEhra+JLPETgyDDIXOiXSJn+HVxlxS7KnB/TFBVZhmXVO48mf5XFGxH
+	DwGuDYWbQtc+BF34n1E4l3hOemIKjaz565qXCj6GFJeVlXKcgfQLtPPR7aszyMY1X8LtksODSCav2
+	3i4iZsBA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWH4D-00000009IdC-44WY
+	id 1vWH4D-00000009IdB-32i2
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 16:41:33 +0000
+	Thu, 18 Dec 2025 16:41:31 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1vWHve-0007Si-1A; Thu, 18 Dec 2025 18:36:42 +0100
+	id 1vWHve-0007Si-0G; Thu, 18 Dec 2025 18:36:42 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Thu, 18 Dec 2025 18:36:30 +0100
+Date: Thu, 18 Dec 2025 18:36:29 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251218-v2025-11-0-topic-imx6-field-return-v1-3-3781143198d6@pengutronix.de>
+Message-Id: <20251218-v2025-11-0-topic-imx6-field-return-v1-2-3781143198d6@pengutronix.de>
 References: <20251218-v2025-11-0-topic-imx6-field-return-v1-0-3781143198d6@pengutronix.de>
 In-Reply-To: <20251218-v2025-11-0-topic-imx6-field-return-v1-0-3781143198d6@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
@@ -65,8 +65,9 @@ Cc: Marco Felsch <m.felsch@pengutronix.de>,
  Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_164130_100790_5926E109 
-X-CRM114-Status: GOOD (  11.24  )
+X-CRM114-CacheID: sfid-20251218_164129_881195_244F3FCC 
+X-CRM114-Status: UNSURE (   9.16  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,79 +89,91 @@ X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/4] i.MX: HAB: extend field_return support to imx6
+Subject: [PATCH 2/4] nvmem: ocotp: extend support to query the sticky bit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Extend the helper for imx_fuse_burn with support for i.MX6 devices.
+The i.MX* devices do have an sticky bit which indicates if the
+field-return fuse can be written. Before only support for i.MX8* was
+provided. Extend this for the i.MX6* series.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- drivers/hab/hab.c                | 10 ++++++----
- include/mach/imx/ocotp-fusemap.h |  1 +
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/nvmem/ocotp.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
-index 1c747e8a3e..281645f79e 100644
---- a/drivers/hab/hab.c
-+++ b/drivers/hab/hab.c
-@@ -262,7 +262,7 @@ static int imx8m_hab_revoke_key_ocotp(unsigned key_idx)
-  */
- #define MX8MP_FIELD_RETURN_PATTERN	0x28001401
- 
--static int imx8m_hab_field_return_ocotp(void)
-+static int imx_hab_field_return_ocotp(void)
- {
- 	int ret;
- 
-@@ -274,7 +274,9 @@ static int imx8m_hab_field_return_ocotp(void)
- 	if (ret == 1)
- 		return -EINVAL;
- 
--	if (cpu_is_mx8mp())
-+	if (cpu_is_mx6())
-+		ret = imx_ocotp_write_field(MX6_OCOTP_FIELD_RETURN, 1);
-+	else if (cpu_is_mx8mp())
- 		ret = imx_ocotp_write_field(MX8MP_OCOTP_FIELD_RETURN,
- 					    MX8MP_FIELD_RETURN_PATTERN);
- 	else
-@@ -282,7 +284,6 @@ static int imx8m_hab_field_return_ocotp(void)
- 
- 	return ret;
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index 7bca275404..1f74fddb60 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -294,7 +294,7 @@ static void imx8m_lock_srk_revoke(struct ocotp_priv *priv)
+ 	writel(val, priv->base + OCOTP_SW_STICKY);
  }
--
- struct imx_hab_ops {
- 	int (*write_srk_hash)(const u8 *srk, unsigned flags);
- 	int (*read_srk_hash)(u8 *srk);
-@@ -310,6 +311,7 @@ static struct imx_hab_ops imx6_hab_ops_ocotp = {
- 	.device_locked_down = imx6_hab_device_locked_down_ocotp,
- 	.permanent_write_enable = imx_hab_permanent_write_enable_ocotp,
- 	.print_status = imx6_hab_print_status,
-+	.field_return = imx_hab_field_return_ocotp,
+ 
+-static bool imx8m_field_return_locked(struct ocotp_priv *priv)
++static bool imx_field_return_locked(struct ocotp_priv *priv)
+ {
+ 	return readl(priv->base + OCOTP_SW_STICKY) & OCOTP_SW_STICKY_FIELD_RETURN_LOCK;
+ }
+@@ -990,6 +990,7 @@ static struct imx_ocotp_data imx6q_ocotp_data = {
+ 	.fuse_blow = imx6_fuse_blow_addr,
+ 	.fuse_read = imx6_fuse_read_addr,
+ 	.ctrl = &ocotp_ctrl_reg_default,
++	.field_return_locked = imx_field_return_locked,
  };
  
- static struct imx_hab_ops imx8m_hab_ops_ocotp = {
-@@ -320,7 +322,7 @@ static struct imx_hab_ops imx8m_hab_ops_ocotp = {
- 	.permanent_write_enable = imx_hab_permanent_write_enable_ocotp,
- 	.print_status = imx8m_hab_print_status,
- 	.revoke_key = imx8m_hab_revoke_key_ocotp,
--	.field_return = imx8m_hab_field_return_ocotp,
-+	.field_return = imx_hab_field_return_ocotp,
+ static struct imx_ocotp_data imx6sl_ocotp_data = {
+@@ -1002,6 +1003,7 @@ static struct imx_ocotp_data imx6sl_ocotp_data = {
+ 	.fuse_blow = imx6_fuse_blow_addr,
+ 	.fuse_read = imx6_fuse_read_addr,
+ 	.ctrl = &ocotp_ctrl_reg_default,
++	.field_return_locked = imx_field_return_locked,
  };
  
- static int imx_ahab_write_srk_hash(const u8 *__newsrk, unsigned flags)
-diff --git a/include/mach/imx/ocotp-fusemap.h b/include/mach/imx/ocotp-fusemap.h
-index ae10dcef2a..3fd9d6df24 100644
---- a/include/mach/imx/ocotp-fusemap.h
-+++ b/include/mach/imx/ocotp-fusemap.h
-@@ -103,6 +103,7 @@
- #define MX8M_OCOTP_TZASC_EN		(OCOTP_WORD(0x480) | OCOTP_BIT(11) | OCOTP_WIDTH(1))
- #define MX8MP_OCOTP_ROM_NO_LOG		(OCOTP_WORD(0x480) | OCOTP_BIT(22) | OCOTP_WIDTH(1))
- #define MX8M_OCOTP_RECOVERY_SDMMC_BOOT_DIS	(OCOTP_WORD(0x490) | OCOTP_BIT(23) | OCOTP_WIDTH(1))
-+#define MX6_OCOTP_FIELD_RETURN		(OCOTP_WORD(0x6E0) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
- #define MX8M_OCOTP_FIELD_RETURN		(OCOTP_WORD(0x630) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
- #define MX8MP_OCOTP_FIELD_RETURN	(OCOTP_WORD(0x630) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
- #define MX8M_OCOTP_SRK_REVOKE		(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(4))
+ static struct imx_ocotp_data imx6ul_ocotp_data = {
+@@ -1014,6 +1016,7 @@ static struct imx_ocotp_data imx6ul_ocotp_data = {
+ 	.fuse_blow = imx6_fuse_blow_addr,
+ 	.fuse_read = imx6_fuse_read_addr,
+ 	.ctrl = &ocotp_ctrl_reg_default,
++	.field_return_locked = imx_field_return_locked,
+ };
+ 
+ static struct imx_ocotp_data imx6ull_ocotp_data = {
+@@ -1026,6 +1029,7 @@ static struct imx_ocotp_data imx6ull_ocotp_data = {
+ 	.fuse_blow = imx6_fuse_blow_addr,
+ 	.fuse_read = imx6_fuse_read_addr,
+ 	.ctrl = &ocotp_ctrl_reg_default,
++	.field_return_locked = imx_field_return_locked,
+ };
+ 
+ static struct imx_ocotp_data vf610_ocotp_data = {
+@@ -1063,7 +1067,7 @@ static struct imx_ocotp_data imx8mp_ocotp_data = {
+ 	.fuse_read = imx6_fuse_read_addr,
+ 	.srk_revoke_locked = imx8m_srk_revoke_locked,
+ 	.lock_srk_revoke = imx8m_lock_srk_revoke,
+-	.field_return_locked = imx8m_field_return_locked,
++	.field_return_locked = imx_field_return_locked,
+ 	.ctrl = &ocotp_ctrl_reg_8mp,
+ };
+ 
+@@ -1095,7 +1099,7 @@ static struct imx_ocotp_data imx8mm_ocotp_data = {
+ 	.fuse_read = imx6_fuse_read_addr,
+ 	.srk_revoke_locked = imx8m_srk_revoke_locked,
+ 	.lock_srk_revoke = imx8m_lock_srk_revoke,
+-	.field_return_locked = imx8m_field_return_locked,
++	.field_return_locked = imx_field_return_locked,
+ 	.feat = &imx8mm_featctrl_data,
+ 	.ctrl = &ocotp_ctrl_reg_default,
+ };
+@@ -1116,7 +1120,7 @@ static struct imx_ocotp_data imx8mn_ocotp_data = {
+ 	.fuse_read = imx6_fuse_read_addr,
+ 	.srk_revoke_locked = imx8m_srk_revoke_locked,
+ 	.lock_srk_revoke = imx8m_lock_srk_revoke,
+-	.field_return_locked = imx8m_field_return_locked,
++	.field_return_locked = imx_field_return_locked,
+ 	.feat = &imx8mn_featctrl_data,
+ 	.ctrl = &ocotp_ctrl_reg_default,
+ };
 
 -- 
 2.47.3
