@@ -1,71 +1,69 @@
-Delivery-date: Thu, 18 Dec 2025 09:05:08 +0100
+Delivery-date: Thu, 18 Dec 2025 09:13:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vW90V-00CkvD-3B
+	id 1vW98N-00ClGg-1x
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 09:05:08 +0100
+	Thu, 18 Dec 2025 09:13:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vW90V-0001rQ-FD
-	for lore@pengutronix.de; Thu, 18 Dec 2025 09:05:07 +0100
+	id 1vW98N-0002jy-2B
+	for lore@pengutronix.de; Thu, 18 Dec 2025 09:13:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OIkKCbP2mFekhxhvuh2Z2PBCHD+MVGUtw7Uq5cFBkNk=; b=FVKVaiwvwogCKOh66GbjNXs9bZ
-	4B48oC88EWBdzF3iKpCxKu0SXUzFUBXch+0GUVsNmmqqFm9hfGPPhvXDELDsGDzbeck4Il7UV4gXJ
-	/tlfFyhbLVjRqIZKqgKyWPMuw957XZeT/7G1QkKXSr1ZyftsWZDXDYE4pL+KZDq5AHvNXFRjA4tgV
-	P9TseNxiQ4EdS1ItLnUNUnQBlmXDRWb7tHNvI1R7NiF6FVP7zYS7KrSYYjXccETsRfRW9gLFBe9bC
-	P2rZI/8hZKPzIPbWfWD/LlheI3p3vqCbuP8LkA9s+iE2WkbTf24CK7oynezvLbS5E6gtd/pL/xjMK
-	SziHWMMw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GP9sBplfGsZfPqN25mXHLFab1jRKb8la48WeXQ5KTpY=; b=Yec/kARZ3lgT1V1ePvUhvrfy4Y
+	KG9F2N+DKG8aw0GH++gF2M0zTP4hn5tWI9tL77ZWT1Olzy20BSRmQm36mCGFdwAwz8llAX843l5r5
+	ycJU2Mm4WrzR52WbJeOggqaNMWLc7vuZCuY4tSMcR6KkQnmcnv3itKVWm1g578HDRXQVs2Ssz1Syi
+	lk10gxq+APsJNWW6IalFNNxMqtze3nihmuQhapWO+5hZLGKTO275d/rgqoxX/4MycMvuad40p35sS
+	4AJ080E5xNunMNLH6ALgB58RrVnkgLek7FLyhhtSMbGzbKqARJevYhbX8tEjHs6luw5aHWcV2FhdB
+	LC24uq2g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vW8zz-000000080Cg-06T5;
-	Thu, 18 Dec 2025 08:04:35 +0000
+	id 1vW97u-0000000825X-3Vpl;
+	Thu, 18 Dec 2025 08:12:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vW8zv-000000080Al-2brE
+	id 1vW97r-0000000824Z-3b9n
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 08:04:32 +0000
+	Thu, 18 Dec 2025 08:12:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vW8zt-0001mE-VP; Thu, 18 Dec 2025 09:04:29 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vW97q-0002e7-8D; Thu, 18 Dec 2025 09:12:42 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vW8zt-006FKL-2W;
-	Thu, 18 Dec 2025 09:04:29 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vW8zt-00EWpo-2B;
-	Thu, 18 Dec 2025 09:04:29 +0100
-Date: Thu, 18 Dec 2025 09:04:29 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vW97q-006FLs-0E;
+	Thu, 18 Dec 2025 09:12:42 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vW97q-00000007JIS-02dD;
+	Thu, 18 Dec 2025 09:12:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Jonas Rebmann <jre@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <aUO1jd7LuiAfKDNG@pengutronix.de>
-References: <20251217103547.4046898-1-a.fatoum@pengutronix.de>
- <efca75a6-a218-48ee-8471-2e2967e86de5@pengutronix.de>
+To: barebox@lists.infradead.org, 
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>
+In-Reply-To: <20251215-v2025-11-0-topic-socfpga-agilex5-clk-v1-1-e1270179d761@pengutronix.de>
+References: <20251215-v2025-11-0-topic-socfpga-agilex5-clk-v1-1-e1270179d761@pengutronix.de>
+Message-Id: <176604556200.1742453.4912455583993389480.b4-ty@pengutronix.de>
+Date: Thu, 18 Dec 2025 09:12:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <efca75a6-a218-48ee-8471-2e2967e86de5@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_000431_684476_DE3600EA 
-X-CRM114-Status: GOOD (  17.55  )
+X-CRM114-CacheID: sfid-20251218_001243_898185_447357AA 
+X-CRM114-Status: UNSURE (   6.69  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,45 +81,35 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts: add helper for generating Origin-URL references
+Subject: Re: [PATCH] clk: socfpga: agilex5: sync with kernel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Dec 17, 2025 at 11:59:43AM +0100, Jonas Rebmann wrote:
-> > +# Optional second argument to allow e.g. !git origin-url $remote_file % im vim
-> > +# In cases where local file has different extension then the original
-> > +dstbasename="$(basename ${2:-$1})"
-> > +
-> > +[ -e "$1" ] || err "File not found"
-> > +
-> > +filepath="$(realpath "$1")"
-> > +
-> > +repo_root="$(git -C "$(dirname "$filepath")" rev-parse --show-toplevel 2>/dev/null \
-> > +    || err "Not inside a Git repository: $filepath")"
-> > +
-> > +rel_path="$(realpath --relative-to="$repo_root" "$filepath")"
-> > +
-> > +# newest commit that touched this file
-> > +file_commit="$(git -C "$repo_root" log -n1 --format=%H -- "$rel_path")"
+
+On Mon, 15 Dec 2025 15:08:43 +0100, Steffen Trumtrar wrote:
+> Since v6.19-rc1 linux now has an Agilex5 clock driver [1]. This is sligthly
+> different than the previous out-of-tree version. Sync with the mainlined
+> linux driver and cleanup on the way.
 > 
-> So the idea is that the Origin-URL is generated for the commit to which
-> <path-to-file> is checked out at the time? Maybe you could state that
-> more clearly e.g. in the top of the script or in the usage message.
+> [1] commit 2050b57ecda040010ec797fb07713889372c5041
 > 
-> We don't want people to add Origin-URLs referencing just any commit.
+> 
+> [...]
 
-Ah, should have read that before writing a mail ;)
+Applied, thanks!
 
-Sascha
+[1/1] clk: socfpga: agilex5: sync with kernel
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4ee3b897bbf5 (link may not be stable)
+[1/1] fixup! clk: socfpga: agilex5: sync with kernel
+      https://git.pengutronix.de/cgit/barebox/commit/?id=370032bb46cf (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
