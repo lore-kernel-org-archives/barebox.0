@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWBwz-00Co1J-0w
+	id 1vWBwz-00Co1e-2x
 	for lore@lore.pengutronix.de;
 	Thu, 18 Dec 2025 12:13:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWBwx-0005o3-LM
+	id 1vWBwy-0005ow-Fc
 	for lore@pengutronix.de; Thu, 18 Dec 2025 12:13:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7uFgOy/0JrZ27JpAjKXJOZiiYMhlGeDuU+WsDdGIYig=; b=KQRDQyN+QAiFonhEqMdr9zsTen
-	+lFuIEmPnJXtmCtT6FbAKslycL+pkD/jRJF2j+F6QUeTsjzoW9LgmBZfRdJ6/9I6gsxGR/C0TFpE/
-	k8puhTJV8INi0lT3OVD0eNaD390tDKw7jgFjQiUuEjFEBkZHBqcKltr8wrIRBYsJcdCGWsJ6XkdE/
-	alVLlZEF9r7io6v9eUBACw7a697X2FT28Zig+UmHS6yBzjGj+8hmVYOgwBfOTscMTrhqL3RY2dzU/
-	c0smk1CcQqmVd6acgwgy+JZHoY8D87YIdgILlF9DDMJTnv2Yg3xaQBQxGAHDnV1Gobsg9T63iGEdp
-	2NvbHEiQ==;
+	bh=GazF4N/m0sMXuas9m1XyEdeNFUBpfDQ57eDkOgp98pQ=; b=WienDKtOo69S4l0h5mQsytQ43U
+	Aei1G3RhVVmsZz4wrkF6ZwTpisKoznfe+Rq5UOmSGbn4eiTtPnFBYkclmxbCDdjykAd/XDqhkirmD
+	3mw3MU0heVZUbV6oFMgVoI9FEKhVpfb/isPrdXhasBCpBdkUmtOW5W6E3K844S8TJo6wVhcBkE38Y
+	kHkYnHBXZ/7BX5/3LCM3eKQ1/3x6e5fP9RsxGCPO/f9as3Je7XiG7xRqz3QVcX/+iVJlogGgIV1AN
+	zZmKkFaD/C91MCttgH2Dh9Bn1i/JT6y5bvD4iDOEMwHDsNq0l2zCu93ufGWmuS13fs3rc164rMZIq
+	FD6flk+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWBwD-00000008IKK-0zsW;
+	id 1vWBwD-00000008IKV-2L3t;
 	Thu, 18 Dec 2025 11:12:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWBw7-00000008IGA-2nib
+	id 1vWBw7-00000008IG6-2nQK
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 11:12:50 +0000
+	Thu, 18 Dec 2025 11:12:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWBw3-0005Np-OK; Thu, 18 Dec 2025 12:12:43 +0100
+	id 1vWBw3-0005N4-E7; Thu, 18 Dec 2025 12:12:43 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWBw3-006Ggg-1g;
+	id 1vWBw3-006GgK-0k;
 	Thu, 18 Dec 2025 12:12:43 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWBw3-0000000AVre-1mWR;
+	id 1vWBw3-0000000AVre-0YZ0;
 	Thu, 18 Dec 2025 12:12:43 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Dec 2025 11:37:29 +0100
-Message-ID: <20251218111242.1527495-10-a.fatoum@pengutronix.de>
+Date: Thu, 18 Dec 2025 11:37:23 +0100
+Message-ID: <20251218111242.1527495-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251218111242.1527495-1-a.fatoum@pengutronix.de>
 References: <20251218111242.1527495-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_031247_738875_F30F4A16 
-X-CRM114-Status: GOOD (  16.57  )
+X-CRM114-CacheID: sfid-20251218_031247_726502_07279778 
+X-CRM114-Status: GOOD (  15.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,218 +83,176 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v1 09/54] ARM: lds: add EFI runtime service section
+Subject: [PATCH v1 03/54] lib: vsprintf: print human-readable EFI GUIDs with %pUs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that we have __efi_runtime* attributes, let's make sure all data and
-code marked as such is consecutive, so the OS can reclaim most of the
-barebox memory after ExitBootServices.
+For use during debugging, let's wire efi_guid_string() into printf.
 
-It's critical that the EFI runtime section doesn't have any references
-to outside itself and the NOCROSSREFS_FROM introduced here helps with
-that, but it doesn't catch all issues, e.g. __efi_runtime_data global
-variables that are referenced through the GOT.
-
-A workaround for that will be introduced in a later commit.
+In future, we may decide to print other UUIDs as well, but before we do
+that we'll likely want to make the function more performant as it
+currently compares against all GUIDs known to it serially.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/lib32/barebox.lds.S      |  5 ++++
- arch/arm/lib64/barebox.lds.S      |  4 ++++
- common/memory.c                   | 36 +++++++++++++++++++++++++++-
- include/asm-generic/barebox.lds.h | 40 +++++++++++++++++++++++++++++++
- include/asm-generic/sections.h    | 10 ++++++++
- 5 files changed, 94 insertions(+), 1 deletion(-)
+ commands/efi_handle_dump.c |  2 +-
+ drivers/efi/efi-device.c   |  2 +-
+ efi/guid.c                 |  4 ++--
+ include/efi/guid.h         |  2 +-
+ lib/vsprintf.c             | 23 +++++++++++++++++++++++
+ test/self/printf.c         |  4 ++++
+ 6 files changed, 32 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
-index ede6889991f1..2d08b95758b7 100644
---- a/arch/arm/lib32/barebox.lds.S
-+++ b/arch/arm/lib32/barebox.lds.S
-@@ -68,6 +68,9 @@ SECTIONS
- 	BAREBOX_RELOCATION_TABLE
+diff --git a/commands/efi_handle_dump.c b/commands/efi_handle_dump.c
+index c82f3e32469a..c5c6b6bbc3bc 100644
+--- a/commands/efi_handle_dump.c
++++ b/commands/efi_handle_dump.c
+@@ -51,7 +51,7 @@ static void efi_dump(struct efi_boot_services *bs, efi_handle_t *handles, size_t
+ 		printf("  Protocols:\n");
+ 		for (j = 0; j < num_guids; j++)
+ 			printf("  %d: %pUl: %s\n", j, guids[j],
+-					efi_guid_string(guids[j]));
++					efi_guid_string(guids[j]) ?: "unknown");
  
- 	_edata = .;
-+
-+	BAREBOX_EFI_RUNTIME
-+
- 	.image_end : { *(.__image_end) }
+ 		efi_devpath(bs, handles[i], &efi_device_path_protocol_guid,
+ 			    "Devpath");
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index 470abdee5297..6bf43cebea8d 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -58,7 +58,7 @@ static void efi_devinfo(struct device *dev)
  
- 	. = ALIGN(4);
-@@ -86,3 +89,5 @@ SECTIONS
- 	_end = .;
- 	_barebox_image_size = __bss_start;
+ 	for (i = 0; i < efidev->num_guids; i++)
+ 		printf("  %d: %pUl: %s\n", i, &efidev->guids[i],
+-					efi_guid_string(&efidev->guids[i]));
++					efi_guid_string(&efidev->guids[i]) ?: "unknown");
  }
-+
-+NOCROSSREFS_FROM(.efi_runtime)
-diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-index e2f1164c47f7..5ee5fbc3741e 100644
---- a/arch/arm/lib64/barebox.lds.S
-+++ b/arch/arm/lib64/barebox.lds.S
-@@ -44,6 +44,8 @@ SECTIONS
  
- 	_edata = .;
+ static efi_handle_t efi_find_parent(efi_handle_t handle)
+diff --git a/efi/guid.c b/efi/guid.c
+index 5b15c472bb85..8853829d216b 100644
+--- a/efi/guid.c
++++ b/efi/guid.c
+@@ -80,7 +80,7 @@ const efi_guid_t efi_guid_event_group_return_to_efibootmgr =
+ 		return long;			\
+ 	} while(0)
  
-+	BAREBOX_EFI_RUNTIME
-+
- 	.image_end : { *(.__image_end) }
+-const char *efi_guid_string(efi_guid_t *g)
++const char *efi_guid_string(const efi_guid_t *g)
+ {
+ 	EFI_GUID_STRING(EFI_NULL_GUID, "NULL", "NULL GUID");
+ 	EFI_GUID_STRING(EFI_MPS_TABLE_GUID, "MPS Table", "MPS Table GUID in EFI System Table");
+@@ -161,5 +161,5 @@ const char *efi_guid_string(efi_guid_t *g)
+ 	/* Ramdisk */
+ 	EFI_GUID_STRING(EFI_LINUX_INITRD_MEDIA_GUID, "Initrd Media", "EFI Linux Initrd Media GUID");
  
- 	. = ALIGN(4);
-@@ -53,3 +55,5 @@ SECTIONS
- 	_end = .;
- 	_barebox_image_size = __bss_start;
+-	return "unknown";
++	return NULL;
  }
-+
-+NOCROSSREFS_FROM(.efi_runtime)
-diff --git a/common/memory.c b/common/memory.c
-index 0e07ba432053..2cd6d29a8f2b 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -7,6 +7,7 @@
+diff --git a/include/efi/guid.h b/include/efi/guid.h
+index f6018b5f7ef8..202300c74aaa 100644
+--- a/include/efi/guid.h
++++ b/include/efi/guid.h
+@@ -6,7 +6,7 @@
+ #include <efi/types.h>
+ #include <linux/string.h>
+ 
+-const char *efi_guid_string(efi_guid_t *g);
++const char *efi_guid_string(const efi_guid_t *g);
+ 
+ static inline int
+ efi_guidcmp (efi_guid_t left, efi_guid_t right)
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 622b40ac69e9..5ef4a075d0f6 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -22,6 +22,7 @@
+ #include <wchar.h>
+ #include <of.h>
+ #include <efi/devicepath.h>
++#include <efi/guid.h>
  
  #include <common.h>
- #include <memory.h>
-+#include <efi/mode.h>
- #include <of.h>
- #include <init.h>
- #include <linux/ioport.h>
-@@ -112,6 +113,8 @@ struct resource *request_barebox_region(const char *name,
- 
- static int mem_malloc_resource(void)
- {
-+	__maybe_unused struct resource *res;
-+	int ret = 0;
- #if !defined __SANDBOX__
- 	/*
- 	 * Normally it's a bug when one of these fails,
-@@ -138,6 +141,37 @@ static int mem_malloc_resource(void)
- 			(unsigned long)&_edata -
- 			(unsigned long)&_sdata,
- 			MEMATTRS_RW);
-+#ifdef CONFIG_EFI_RUNTIME
-+	if (!efi_is_payload()) {
-+		/* We don't usually have much .rodata here, so we just
-+		 * fold it into the text area, so we don't waste the
-+		 * rest of the page
-+		 */
-+		res = request_barebox_region("barebox EFI runtime code",
-+				(unsigned long)&__efi_runtime_text_start,
-+				(unsigned long)&__efi_runtime_rodata_stop -
-+				(unsigned long)&__efi_runtime_text_start,
-+				MEMATTRS_RX);
-+		if (res) {
-+			res->runtime = true;
-+			res->type = MEMTYPE_RUNTIME_SERVICES_CODE;
-+		} else {
-+			ret = -EBUSY;
-+		}
-+
-+		res = request_barebox_region("barebox EFI runtime data",
-+				(unsigned long)&__efi_runtime_data_start,
-+				(unsigned long)&__efi_runtime_data_stop -
-+				(unsigned long)&__efi_runtime_data_start,
-+				MEMATTRS_RW);
-+		if (res) {
-+			res->runtime = true;
-+			res->type = MEMTYPE_RUNTIME_SERVICES_DATA;
-+		} else {
-+			ret = -EBUSY;
-+		}
-+	}
-+#endif
- 	request_barebox_region("barebox bss",
- 			(unsigned long)&__bss_start,
- 			(unsigned long)&__bss_stop -
-@@ -149,7 +183,7 @@ static int mem_malloc_resource(void)
- 			     MEMTYPE_BOOT_SERVICES_DATA, MEMATTRS_RW);
- #endif
- 
--	return 0;
-+	return ret;
- }
- coredevice_initcall(mem_malloc_resource);
- 
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index 2c0f4da9e5d4..092dbc6dffa6 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -155,6 +155,30 @@
- 	BAREBOX_DEEP_PROBE			\
- 	BAREBOX_FUZZ_TESTS
- 
-+#ifdef CONFIG_EFI_RUNTIME
-+#define BAREBOX_EFI_RUNTIME			\
-+	. = ALIGN(4096);			\
-+	.efi_runtime : {			\
-+		__efi_runtime_start = .;	\
-+		__efi_runtime_text_start = .;	\
-+		*(.efi_runtime.text*)		\
-+		__efi_runtime_text_stop = .;	\
-+		__efi_runtime_rodata_start = .;	\
-+		*(.efi_runtime.rodata*)		\
-+		__efi_runtime_rodata_stop = .;	\
-+		. = ALIGN(4096);		\
-+		__efi_runtime_data_start = .;	\
-+		*(.efi_runtime.data*)		\
-+		*(.efi_runtime.bss*)		\
-+		__efi_runtime_data_stop = .;	\
-+		__efi_runtime_stop = .;		\
-+	}					\
-+	. = ALIGN(4096);
-+#else
-+#define BAREBOX_EFI_RUNTIME
-+#endif
-+
-+
- #if defined(CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE) && \
- CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE < CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
- #define MAX_BARE_INIT_SIZE CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE
-@@ -187,3 +211,19 @@ CONFIG_ARCH_BAREBOX_MAX_PBL_SIZE < CONFIG_BAREBOX_MAX_PBL_SIZE
- #else
- #define READONLY
- #endif
-+
-+#ifdef CONFIG_IS_CLANG
-+/* binutils implements this since v2.27 */
-+#define NOCROSSREFS_TO(...)
-+#endif
-+
-+#define NOCROSSREFS_FROM(sect) \
-+	NOCROSSREFS_TO(.text sect) \
-+	NOCROSSREFS_TO(.bss sect) \
-+	NOCROSSREFS_TO(.rodata sect) \
-+	NOCROSSREFS_TO(.data sect) \
-+	NOCROSSREFS_TO(.bbenv sect) \
-+	NOCROSSREFS_TO(.dynamic sect) \
-+	NOCROSSREFS_TO(.got sect) \
-+	NOCROSSREFS_TO(.rela sect) \
-+	NOCROSSREFS_TO(.dynsym sect)
-diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-index 35b0dd8cac1a..816e30341d82 100644
---- a/include/asm-generic/sections.h
-+++ b/include/asm-generic/sections.h
-@@ -10,6 +10,10 @@ extern char __start_rodata[], __end_rodata[];
- extern char __bss_start[], __bss_stop[];
- extern char _sdata[], _edata[];
- extern char __bare_init_start[], __bare_init_end[];
-+extern char __efi_runtime_start[], __efi_runtime_stop[];
-+extern char __efi_runtime_text_start[], __efi_runtime_text_stop[];
-+extern char __efi_runtime_data_start[], __efi_runtime_data_stop[];
-+extern char __efi_runtime_rodata_start[], __efi_runtime_rodata_stop[];
- extern char _end[];
- extern char __image_start[];
- extern char __image_end[];
-@@ -39,4 +43,10 @@ static inline bool is_barebox_rodata(unsigned long addr)
- 	       addr < (unsigned long)__end_rodata;
+ #include <pbl.h>
+@@ -372,6 +373,22 @@ char *uuid_string(char *buf, const char *end, const u8 *addr, int field_width,
+ 	return string(buf, end, uuid, field_width, precision, flags);
  }
  
-+static inline bool in_barebox_efi_runtime(unsigned long addr)
++static noinline_for_stack
++char *efi_guid_string_format(char *buf, const char *end, const efi_guid_t *addr,
++			     int field_width, int precision, int flags, const char *fmt)
 +{
-+	return addr >= (unsigned long)__efi_runtime_start &&
-+	       addr < (unsigned long)__efi_runtime_stop;
++	const char *desc = NULL;
++
++	if (!addr)
++		return string(buf, end, NULL, field_width, precision, flags);
++
++	desc = efi_guid_string(addr);
++	if (desc)
++		return string(buf, end, desc, field_width, precision, flags);
++
++	return uuid_string(buf, end, addr->b, field_width, precision, flags, fmt);
 +}
 +
- #endif /* _ASM_GENERIC_SECTIONS_H_ */
+ static char *device_path_string(char *buf, const char *end, const struct efi_device_path *dp,
+ 				int field_width, int precision, int flags)
+ {
+@@ -510,6 +527,8 @@ char *clock(char *buf, const char *end, const struct clk *clk,
+  *             [0][1][2][3]-[4][5]-[6][7]-[8][9]-[10][11][12][13][14][15]
+  *           little endian output byte order is:
+  *             [3][2][1][0]-[5][4]-[7][6]-[8][9]-[10][11][12][13][14][15]
++ *         s human readable description of the EFI GUID if possible and plain
++ *           GUID otherwise
+  * - 'V' For a struct va_format which contains a format string * and va_list *,
+  *       call vsnprintf(->format, *->va_list).
+  *       Implements a "recursive vsnprintf".
+@@ -534,6 +553,8 @@ char *clock(char *buf, const char *end, const struct clk *clk,
+  *
+  * - 'JP' For a JSON path
+  * - 'D' For EFI device paths
++ * - 'Us' For a 16 byte EFI GUID, it prints the human readable description
++ *   if possible or the plain GUID as %pU would otherwise.
+  */
+ static char *pointer(const char *fmt, char *buf, const char *end, const void *ptr,
+ 		     int field_width, int precision, int flags)
+@@ -547,6 +568,8 @@ static char *pointer(const char *fmt, char *buf, const char *end, const void *pt
+ 	case 's':
+ 		return symbol_string(buf, end, ptr, field_width, precision, flags, with_offset);
+ 	case 'U':
++		if (fmt[1] == 's' && IS_ENABLED(CONFIG_EFI_GUID))
++			return efi_guid_string_format(buf, end, ptr, field_width, precision, flags, fmt);
+ 		if (IS_ENABLED(CONFIG_PRINTF_UUID))
+ 			return uuid_string(buf, end, ptr, field_width, precision, flags, fmt);
+ 		break;
+diff --git a/test/self/printf.c b/test/self/printf.c
+index 3f35b5514705..9d7a936749a1 100644
+--- a/test/self/printf.c
++++ b/test/self/printf.c
+@@ -13,6 +13,7 @@
+ #include <stdlib.h>
+ #include <linux/string.h>
+ #include <errno.h>
++#include <efi/guid.h>
+ 
+ #include <linux/bitmap.h>
+ 
+@@ -260,6 +261,7 @@ uuid(void)
+ {
+ 	const char uuid[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7,
+ 			       0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf};
++	efi_guid_t protocol_guid = EFI_LOAD_FILE2_PROTOCOL_GUID;
+ 
+ 	if (!IS_ENABLED(CONFIG_PRINTF_UUID)) {
+ 		pr_info("skipping UUID tests: disabled in config\n");
+@@ -271,6 +273,8 @@ uuid(void)
+ 	test("00010203-0405-0607-0809-0A0B0C0D0E0F", "%pUB", uuid);
+ 	test("03020100-0504-0706-0809-0a0b0c0d0e0f", "%pUl", uuid);
+ 	test("03020100-0504-0706-0809-0A0B0C0D0E0F", "%pUL", uuid);
++	if (IS_ENABLED(CONFIG_EFI_GUID))
++		test("EFI Load File 2 Protocol", "%pUs", &protocol_guid);
+ }
+ 
+ static void __init
 -- 
 2.47.3
 
