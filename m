@@ -1,66 +1,70 @@
-Delivery-date: Thu, 18 Dec 2025 16:18:50 +0100
+Delivery-date: Thu, 18 Dec 2025 17:43:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWFmE-00Cs67-0X
+	id 1vWH5q-00Cti1-1C
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 16:18:50 +0100
+	Thu, 18 Dec 2025 17:43:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWFmD-000185-G7
-	for lore@pengutronix.de; Thu, 18 Dec 2025 16:18:50 +0100
+	id 1vWH5p-0002M0-Kg
+	for lore@pengutronix.de; Thu, 18 Dec 2025 17:43:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=w9iLVOE7T8lrlX3kxrEwwiw4vmL2+PJbVRVkp2ITy3I=; b=H5rA6CmTXu8gXG7M3oCZB60seU
-	77Z5oRCS5qHTl+4TkKemDtIm9w2vYN0niBxbj/4/ZjquzNDw+3+IAJ6+E4DA1q7ESAPJN6n+/tFyd
-	sSBez687i6S4WrVpVc+Jfuc5LaVol9sE187jyCoPAjDqJcH+y95KGhF3LkYSKlu08ehQzgyVn8smx
-	xpG7N7rK5SVkroIwyviYsJBqY2x/vJ6o+BoKqPuxrT5foxFqf73zDZiFT2YHOO3ilHKA1/yIV15gp
-	Ak7ZrrOWzsBvhfVYuO7hiNmAujDOSFBdT07DEsU0aODSpPnrlgZjykU7ijA9o8+J0f2LLPNdUu53C
-	hKFoLO8A==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=33fwawFMb+N81U+Q09j4/hd21k/vRj0ovuwAQpS9ufs=; b=1VUnL6vjWZqR95yy7wZj6JGuEB
+	JSXIY+782L8d8leF97Pt55QZPoQ8dF2NpNJqkvoM7gKNhKhzM1PsWXdOa44xwTyu5l+QA1irgTG2n
+	zviD7BBjC+B2EOELavlIIpqhjxnleTbFZ8Vbb+gwC/gKnH198PnNUjqzoGxabUsWurdsfDxCbAMY5
+	Z4W0yIj23lqCzz2cY92Wil1XFMOaDGy246Ut6q663uqm8kMhCC3DnfxBeLjw0AbScXLox0bUjfsd2
+	0R4kItR71eR4dU36QohvCQCvYQXrZTAbUxkdiOE5yCimEuXd9SWySpt571aau1J3tB5t4hWA5e/ED
+	qE0LJSRg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWFlh-00000008fuz-08tx;
-	Thu, 18 Dec 2025 15:18:17 +0000
+	id 1vWH5E-00000008qTV-2q7K;
+	Thu, 18 Dec 2025 16:42:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWFla-00000008fto-1gCD
+	id 1vWH59-00000008qRb-37Kf
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 15:18:15 +0000
+	Thu, 18 Dec 2025 16:42:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWFlY-0000xp-AH; Thu, 18 Dec 2025 16:18:08 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWH4s-00029z-19; Thu, 18 Dec 2025 17:42:10 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWFlY-006IyJ-0O;
-	Thu, 18 Dec 2025 16:18:08 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWFlY-00000002u1T-06WD;
-	Thu, 18 Dec 2025 16:18:08 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Jonas Rebmann <jre@pengutronix.de>
-Date: Thu, 18 Dec 2025 16:18:06 +0100
-Message-ID: <20251218151807.691382-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWH4r-006Jmi-1h;
+	Thu, 18 Dec 2025 17:42:09 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWH4r-00EcKV-1D;
+	Thu, 18 Dec 2025 17:42:09 +0100
+Date: Thu, 18 Dec 2025 17:42:09 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Rob Herring <robh@kernel.org>
+Message-ID: <20251218164209.6ombc6g4gy7tuwcz@pengutronix.de>
+References: <20251212203226.458694-5-robh@kernel.org>
+ <20251213181324.u32ztfblkknfpz44@pengutronix.de>
+ <CAL_JsqK9OREenZjBHrDh7AqsyUXYOzTOhY4e0qHGzYkX8tacWQ@mail.gmail.com>
+ <20251214185750.tzt6jf4zg5gtex63@pengutronix.de>
+ <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_071812_717667_FFEED2D1 
-X-CRM114-Status: GOOD (  16.03  )
+X-CRM114-CacheID: sfid-20251218_084227_780710_5620E285 
+X-CRM114-Status: GOOD (  34.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,6 +76,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>, linux-kernel@vger.kernel.org, frieder.schrempf@kontron.de, oualid.derouiche@kontron.de, linux-renesas-soc@vger.kernel.org, eberhard.stoll@kontron.de, Pengutronix Kernel Team <kernel@pengutronix.de>, barebox@lists.infradead.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, annette.kobou@kontron.de, Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -82,149 +87,130 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2] scripts: add helper for generating Origin-URL references
+Subject: Re: [PATCH] ARM: dts: nxp/imx6: Drop unused .dtsi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To improve tracking where code originated from, e.g. when porting from
-Linux or U-Boot, some recent commits have started using Origin-URL
-comments. Add a script that can generate them with the assumption that
-the origin project is checked out at exactly the version the code was
-copied from.
+On 25-12-15, Rob Herring wrote:
+> On Sun, Dec 14, 2025 at 12:58 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> >
+> > On 25-12-14, Rob Herring wrote:
+> > > On Sat, Dec 13, 2025 at 12:13 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> > > >
+> > > > Hi Rob,
+> > > >
+> > > > On 25-12-12, Rob Herring (Arm) wrote:
+> > > > > These .dtsi files are not included anywhere in the tree and can't be
+> > > > > tested.
+> > > >
+> > > > not in the tree but by other projects, please see below.
+> > > >
+> > > > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > > > > ---
+> > > > >  .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
+> > > > >  .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
+> > > > >  .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ----------------
+> > > > >  .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 -------------------
+> > > > >  4 files changed, 123 deletions(-)
+> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+> > > > >
+> > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > > > > deleted file mode 100644
+> > > > > index 5a9b819d7ee8..000000000000
+> > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > > > > +++ /dev/null
+> > > > > @@ -1,12 +0,0 @@
+> > > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
+> > > > > -/*
+> > > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
+> > > > > - */
+> > > > > -
+> > > > > -#include "imx6dl.dtsi"
+> > > > > -#include "imx6qdl-kontron-samx6i.dtsi"
+> > > > > -
+> > > > > -/ {
+> > > > > -     model = "Kontron SMARC-sAMX6i Dual-Lite/Solo";
+> > > > > -     compatible = "kontron,imx6dl-samx6i", "fsl,imx6dl";
+> > > > > -};
+> > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > > > > deleted file mode 100644
+> > > > > index e76963436079..000000000000
+> > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > > > > +++ /dev/null
+> > > > > @@ -1,12 +0,0 @@
+> > > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
+> > > > > -/*
+> > > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
+> > > > > - */
+> > > > > -
+> > > > > -#include "imx6q.dtsi"
+> > > > > -#include "imx6qdl-kontron-samx6i.dtsi"
+> > > > > -
+> > > > > -/ {
+> > > > > -     model = "Kontron SMARC-sAMX6i Quad/Dual";
+> > > > > -     compatible = "kontron,imx6q-samx6i", "fsl,imx6q";
+> > > > > -};
+> > > >
+> > > > I can't speak for the other two .dtsi files but both kontron .dtsi files
+> > > > are used by barebox:
+> > > >
+> > > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6dl-samx6i.dts#L8
+> > > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6q-samx6i.dts#L8
+> > > >
+> > > > Removing them here will cause a regression for barebox.
+> > >
+> > > Please upstream something that uses the .dtsi. Other than the
+> > > undocumented barebox property, no reason these can't be.
+> >
+> > My intention wasn't to point to the barebox-only
+> > "barebox,disable-deep-probe" property. I was refering to the include
+> > line.
+> >
+> > The two .dtsi files we're talking about are SoM .dtsi files. We don't
+> > have access to the Kontron EVK baseboard which uses this SoM.
+> >
+> > I've added a few Kontron devs which may can add the missing baseboard
+> > support.
+> >
+> > +Cc: frieder.schrempf@kontron.de
+> > +Cc: annette.kobou@kontron.de
+> > +Cc: oualid.derouiche@kontron.de
+> > +Cc: eberhard.stoll@kontron.de
+> >
+> > I could also add the imx6dl-samx6i.dts and imx6q-samx6i.dts like we do
+> > in barebox. But as said, this would be a devicetree for a SoM which
+> > makes sense for the bootloader but not for the kernel.
+> 
+> Why not? People use the kernel as a bootloader. There's also some
 
-Examples in Vim:
+Using the kernel as bootloader is a good point, which I didn't had in my
+mind!
 
-  # add into highlight URL pointing at specified file
-  V:!git origin-url ../linux/lib/ucs2_string.c
+I will add the som.dts, please don't remove the kontron dtsi files yet.
 
-  # as above, but consult buffer extension for comment style
-  V:!git origin-url ../linux/lib/ucs2_string.c %
+> discussions about splitting SoMs and baseboards into overlays for
+> baseboards (and also even into SoC base DT plus overlay for boards).
 
-  # generate in snippet syntax
-  V:!git origin-url -s ../linux/lib/ucs2_string.c
+Do you have pointers?
 
-This is mostly useful for new code that's being ported. It does have no
-support to find out similarity between the files specified.
+Regards,
+  Marco
 
-Cc: Jonas Rebmann <jre@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - mention that this is meant for new code in commit and usage message
-    (Jonas)
-  - add comment explaining included hashes (Jonas)
----
- scripts/git-origin-url.sh | 99 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 99 insertions(+)
- create mode 100755 scripts/git-origin-url.sh
 
-diff --git a/scripts/git-origin-url.sh b/scripts/git-origin-url.sh
-new file mode 100755
-index 000000000000..3aa15561c474
---- /dev/null
-+++ b/scripts/git-origin-url.sh
-@@ -0,0 +1,99 @@
-+#!/usr/bin/env bash
-+# SPDX-License-Identifier: BSD-0-Clause
-+
-+set -euo pipefail
-+
-+# Some very early hashes to identify the projects by
-+declare -A repos=(
-+    ["a3ffa97f40dc81f2d6b07ee964f2340fe0c1ba97"]="https://git.pengutronix.de/cgit/barebox"
-+    ["1da177e4c3f41524e886b7f1b8a0c1fc7321cac2"]="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
-+    ["cc8ed39b240180b58810784f844e253263594ac3"]="https://git.busybox.net/busybox"
-+    ["7e492d8258182e31c988bbf9917d4a3d41949d56"]="https://github.com/u-boot/u-boot"
-+    ["afe1be4dbdf142513f6ac1d92e6a20bdc4b20c80"]="https://github.com/systemd/systemd"
-+)
-+
-+err() { echo "error: $* " >&2; exit 1; }
-+usage="Usage: $0 [-s] <path-to-remote-file> [local-file]
-+
-+Generate an Origin-URL comment from a remote file with the assumption
-+that it is in a git repository checked out at the correct version
-+from which the code in question was originally copied."
-+
-+snippet=""
-+while getopts "sh" opt; do
-+    case "$opt" in
-+        s)
-+            snippet="Snippet-"
-+            ;;
-+        h)
-+            echo "$usage"
-+            exit 0
-+            ;;
-+        *)
-+            err "$usage"
-+            ;;
-+	esac
-+done
-+
-+shift $((OPTIND-1))
-+
-+if [ $# -ne 1 ] && [ $# -ne 2 ]; then
-+    err "$usage"
-+fi
-+
-+# Optional second argument to allow e.g. !git origin-url $remote_file % im vim
-+# In cases where local file has different extension then the original
-+dstbasename="$(basename ${2:-$1})"
-+
-+[ -e "$1" ] || err "File not found"
-+
-+filepath="$(realpath "$1")"
-+
-+repo_root="$(git -C "$(dirname "$filepath")" rev-parse --show-toplevel 2>/dev/null \
-+    || err "Not inside a Git repository: $filepath")"
-+
-+rel_path="$(realpath --relative-to="$repo_root" "$filepath")"
-+
-+# newest commit that touched this file
-+file_commit="$(git -C "$repo_root" log -n1 --format=%H -- "$rel_path")"
-+
-+origin_url=""
-+
-+# find which repo this file ultimately came from
-+for commit in "${!repos[@]}"; do
-+    if git -C "$repo_root" merge-base --is-ancestor "$commit" "$file_commit" 2>/dev/null; then
-+        origin_url="${repos[$commit]}"
-+        break
-+    fi
-+done
-+
-+[ -z "$origin_url" ] && err "No matching repo base found for file commit $file_commit"
-+
-+# output uses the newest file commit, not the origin commit
-+if [[ $origin_url == https://github.com/* ]] ; then
-+    tree_url="$origin_url/blob/$file_commit/$rel_path"
-+else
-+    # assume cgit as fallback
-+    tree_url="$origin_url/tree/$rel_path?id=$file_commit"
-+fi
-+
-+case "${dstbasename##*.}" in
-+    h|S|imxcfg|y|l|lds)
-+        comment_begin='/* '
-+        comment_end=' */'
-+        ;;
-+    c|dts*)
-+        comment_begin='// '
-+        comment_end=''
-+        ;;
-+    *)
-+        comment_begin='# '
-+        comment_end=''
-+        ;;
-+esac
-+
-+comment() { echo "${comment_begin}${*}${comment_end}"; }
-+
-+[ -z "${snippet}" ] || comment "SPDX-SnippetBegin"
-+comment "SPDX-${snippet}Comment: Origin-URL: ${tree_url}"
-+[ -z "${snippet}" ] || comment "SPDX-SnippetEnd"
+> 
+> Rob
+> 
+
 -- 
-2.47.3
+#gernperDu 
+#CallMeByMyFirstName
 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
