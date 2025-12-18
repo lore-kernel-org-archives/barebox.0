@@ -1,68 +1,67 @@
-Delivery-date: Thu, 18 Dec 2025 14:21:47 +0100
+Delivery-date: Thu, 18 Dec 2025 15:50:31 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWDwx-00CqG2-0f
+	id 1vWFKp-00CrXm-1C
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 14:21:47 +0100
+	Thu, 18 Dec 2025 15:50:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWDww-0005WN-Mj
-	for lore@pengutronix.de; Thu, 18 Dec 2025 14:21:47 +0100
+	id 1vWFKo-0005WW-Ae
+	for lore@pengutronix.de; Thu, 18 Dec 2025 15:50:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DHmAV0JOfP4yV1nxY+ujVTXWVgKNV9ShCk/PsBMxZPo=; b=P3BBqKLU2cGL3ePVisjSk/1D92
-	1GrV+1NhfbvWzTrq0lTCImXwgVOZnTW1+AyH8cGc/VWKfoUlDYbo7Q511pM286ryrzx58uZMojaz0
-	yNwVpLxpyWeReLKsAJyPuSEvVsWCjhENTOs+HimzeJpcfvGxHwcCv4sDy1MQM8TbAO77GOTAGTog0
-	F5KRrp0oXlCorjD3T6hPIMXD63wDRHs4LMhMs7ONDsWJJ5PX6CBmpi+Y/4FfUwBtP+wggDUgUHoM1
-	Z+xrpWj+4F9w14WIi97vQtyLoKpPe8hNX7G6DMrVVrfWRexS8ywqJULGKPP01Kot6sezUcpFLLUw9
-	OE9WN4tQ==;
+	bh=aAkjaP4tq+aLxKeSf32MYY2GqgzzVZACuHb3T/0B7r8=; b=SurjYreUcDr8/TeyFyrK21ZlUR
+	mVhgq/oLdKdaJFjy4CRxHH6UYNQGFSBWLYaRE52fSoddAEaVkkScsLspOvH5CAIHvfTObiaRnJHrT
+	VYQyRsP4RMsVgv1M0KfdlwbNHGC5bbsUII3VY5CBwT0+71nJ4d1poQP0L8cbMMJk2mLJfQfemm4Ty
+	/8CV5SWDMW4jighDiS8DnKzy7awIL5wDF8MgqQKnPz+KAbVpYIz0axf9cQdxX+BzVhZPHgoCLCRiR
+	lWEVf8uMAcsJvLQQeUlrGCmpjwYbRhkndrkY81EF2ts7Ti+ujuATqL4ZB+p+ULUmpkq/gdwlCbPzH
+	I/FZHwuA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWDwJ-00000008VyQ-1vKq;
-	Thu, 18 Dec 2025 13:21:07 +0000
+	id 1vWFKJ-00000008dZa-2UlP;
+	Thu, 18 Dec 2025 14:49:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWDwA-00000008Vxs-06rJ
+	id 1vWFKD-00000008dWZ-34Hy
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 13:21:01 +0000
+	Thu, 18 Dec 2025 14:49:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vWDw7-0005PL-U1; Thu, 18 Dec 2025 14:20:55 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWFKB-0005In-H9; Thu, 18 Dec 2025 15:49:51 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vWDw6-006I0s-2Y;
-	Thu, 18 Dec 2025 14:20:54 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vWDw6-0000000BVSi-2wjw;
-	Thu, 18 Dec 2025 14:20:54 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251211204257.2605869-1-a.fatoum@pengutronix.de>
-References: <20251211204257.2605869-1-a.fatoum@pengutronix.de>
-Message-Id: <176606405469.2741484.16953752566180536591.b4-ty@pengutronix.de>
-Date: Thu, 18 Dec 2025 14:20:54 +0100
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWFKB-006Ica-11;
+	Thu, 18 Dec 2025 15:49:51 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWFKB-0000000E9lv-0wSP;
+	Thu, 18 Dec 2025 15:49:51 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 18 Dec 2025 15:48:46 +0100
+Message-ID: <20251218144950.3068179-4-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251218144950.3068179-1-a.fatoum@pengutronix.de>
+References: <20251218144950.3068179-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_052059_173841_AAC4CBAE 
-X-CRM114-Status: UNSURE (   7.98  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251218_064953_771199_E60D1819 
+X-CRM114-Status: GOOD (  11.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,30 +83,86 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] boot: allow prioritizing boot entry providers
+Subject: [PATCH 3/4] test: py: add simple EFI loader integration test
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Boot into a Linux image (assumes journald) and check that the system was
+UEFI booted by barebox.
 
-On Thu, 11 Dec 2025 21:42:57 +0100, Ahmad Fatoum wrote:
-> It's not unusual for an EFI system partition to both have boot loader
-> spec entries and an EFI application at the default payload path for
-> removable media.
-> 
-> In that case, we will want to establish a fixed order for boot entries,
-> so add an optional priority field for this purpose. The default priority
-> is 0 and providers can sort themself higher or lower.
-> 
-> [...]
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ test/py/test_linux_efiloader.py | 59 +++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
+ create mode 100644 test/py/test_linux_efiloader.py
 
-Applied, thanks!
-
-[1/1] boot: allow prioritizing boot entry providers
-      https://git.pengutronix.de/cgit/barebox/commit/?id=5f2c1d88a520 (link may not be stable)
-
-Best regards,
+diff --git a/test/py/test_linux_efiloader.py b/test/py/test_linux_efiloader.py
+new file mode 100644
+index 000000000000..22531bff81f4
+--- /dev/null
++++ b/test/py/test_linux_efiloader.py
+@@ -0,0 +1,59 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++import re
++import pytest
++
++
++def get_dmesg(shell):
++    stdout, _, ret = shell.run("journalctl -k --no-pager --grep efi -o cat")
++    assert ret == 0
++    return stdout
++
++
++@pytest.mark.lg_feature(['bootable', 'efi'])
++def test_efi_kernel_no_warn(shell):
++    stdout, stderr, ret = shell.run("journalctl -k --no-pager --grep efi -o cat -p warning")
++    assert stdout == []
++    assert stderr == []
++
++
++@pytest.mark.lg_feature(['bootable', 'efi'])
++def test_expected_efi_messages(shell, env):
++    dmesg = get_dmesg(shell)
++
++    expected_patterns = [
++        r"efi:\s+EFI v2\.8 by barebox",
++        r"Remapping and enabling EFI services\.",
++        r"efivars:\s+Registered efivars operations",
++    ]
++
++    for pattern in expected_patterns:
++        assert re.search(pattern, "\n".join(dmesg)), \
++               f"Missing expected EFI message: {pattern}"
++
++
++@pytest.mark.lg_feature(['bootable', 'efi'])
++def test_efi_systab(shell, env):
++    stdout, stderr, ret = shell.run("cat /sys/firmware/efi/systab")
++    assert ret == 0
++    assert stderr == []
++    assert len(stdout) > 0
++
++    expected_patterns = [
++    ]
++
++    if 'smbios' in env.get_target_features():
++        expected_patterns.append(r"SMBIOS3=")
++
++    for pattern in expected_patterns:
++        assert re.search(pattern, "\n".join(stdout)), \
++               f"Missing expected entry in systab : {pattern}"
++
++
++@pytest.mark.lg_feature(['bootable', 'efi'])
++def test_efivars_filesystem_not_empty(shell):
++    # Directory must not be empty
++    stdout, _, ret = shell.run("ls -1 /sys/firmware/efi/efivars")
++    assert ret == 0
++
++    assert len(stdout), "EFI variables directory is empty"
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
