@@ -1,82 +1,82 @@
-Delivery-date: Thu, 18 Dec 2025 12:40:13 +0100
+Delivery-date: Thu, 18 Dec 2025 12:40:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWCMf-00CoUH-04
+	id 1vWCMn-00CoUh-1N
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 12:40:13 +0100
+	Thu, 18 Dec 2025 12:40:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWCLz-0001mA-IL
-	for lore@pengutronix.de; Thu, 18 Dec 2025 12:40:12 +0100
+	id 1vWCM4-0001qa-Ob
+	for lore@pengutronix.de; Thu, 18 Dec 2025 12:40:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=R/2DIxpin+i9a9Z5MRKr329nWcmwzKpylpB8zG0/M8k=; b=Y2Jb9zqM85D6lTykBoDNGsaV2O
-	M3hlNu0ja0Bu6KG3tgxvvhwLEen9/5OgkbJ4aZXPA07BDKrMTDv7IuXF6p8nYatLeDVowi6+jVZA/
-	Te6hQwgMD70EuHY8OlH/sxT9MlCXCNQcp72DMYAYxRtc7a4rV7D3ILHru1COMIlsMCh1V8OPp+Dy9
-	QGKx7jNZKY9eypebHwEmBZkr245oiO8dUvjOXTPHzPamTxOVYWAtF+p7XirmuXo8ecs61nxWBCa8A
-	YWxKTKzwpEXHJ+6VimB9awWvqEfhRva2Pyn9EmVM0t3KpwOSX9Lu66DFM+wH8WVSXPaN6Yp1MWx5f
-	vf7hBkmg==;
+	bh=kUKOaAeCPq5Xxe727JMWv2IM0xEdk5hUCxf5nkW1LUw=; b=UH/tcS9kooPjfCy98GlUgN9xLL
+	ZivuI/VCCx6QQZd4v7RBYo/FU/vn7gV8UrksQoACPZy/ndZK0f2lcLxWLs0u5gGktzOfKSsP3JSHs
+	EOZ0WcNttDf/5ok4EtQZaxszCDe277DphFIlV+KfQdYf2g2S9TXiOb946CxpbPtOXtliSiCKhVCX2
+	bKRtuMnnQ1snVDRQieetrJqLfpRzOYt/p+9KyK832PaBsnn+TMT8VeQdeTaX0A89vwDF4ErNNgTCi
+	6aN43wL+aVWgepFSPrkg6REymYq2gonGtFj6gLjTqfVtsrz8cFAHM9Ej88KItsWAgPXWU2Bn33JyF
+	lhvOO43w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWCK2-00000008KvD-3WlB;
-	Thu, 18 Dec 2025 11:37:30 +0000
+	id 1vWCK6-00000008L4x-25gb;
+	Thu, 18 Dec 2025 11:37:34 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWCJX-00000008KN6-1JLF
+	id 1vWCJY-00000008KPa-1sR4
 	for barebox@bombadil.infradead.org;
-	Thu, 18 Dec 2025 11:36:59 +0000
+	Thu, 18 Dec 2025 11:37:02 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=R/2DIxpin+i9a9Z5MRKr329nWcmwzKpylpB8zG0/M8k=; b=rdmktdK+e8GzMhdVGjp4RmzLB4
-	wslvphafpqMeGmGjye3pbkEx7W/qtkLhar08buNqjkrbmg0lZdkn34tK284Rzr+dON+FANBj649Hl
-	gdu7+lfFZQh/fnRjpz38S4aXxhd7sHBPmwtocvBd5AKvVz+NV5xauMIkV79OGmfWxLz8tTP6OP86n
-	Zo0615p0n46IdE61vL2TPUNMpS4gEfYaXCD1SARZ5T29L63NhSSLiES5ROIGjwRccaUj+PMaEIvjA
-	622dgeBpoP53fmqszVWyPboqySBmWgQb/c2bUL849GXCsmS8hnHIRbI4Paejzt5+sR7YgEVznMt7H
-	qB4JjuNA==;
+	bh=kUKOaAeCPq5Xxe727JMWv2IM0xEdk5hUCxf5nkW1LUw=; b=oyXleqj9GiVxwFFkQX5e4brT1S
+	CRLK7QOSKRPp0gJYL5cWcckNpXUkrBhW6jZPFDlFQROPrqpTpGcncodfvUItkEexHu1d7kfOEUHEJ
+	8PyGTAzx8CVyvZvZUV4GRZt2OCN4Bcu6KUCnx3Nu15ixENRKVLxDeZzVR/6cWEV2FbMdLTZwMtHMo
+	YQJx6bvGssLaQNR/Bqhx9+QTMm6k1e2GJ/wkEC/pLRyxNByxuRrvkYhX5hv5+980eZpLwERxuKuew
+	+l6fOmTXq1hDX9EOxckx7f20TVgnWhSBUT04tmcQHjoLx6/bG/H4tQqs7hCQiAXdyFKRjBEqPJ4As
+	53l/zrkQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWBS0-00000008fRN-1bX1
+	id 1vWBRx-00000008fRP-0Zzf
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 10:41:43 +0000
+	Thu, 18 Dec 2025 10:41:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWCJM-0008B1-V0; Thu, 18 Dec 2025 12:36:48 +0100
+	id 1vWCJN-0008BP-46; Thu, 18 Dec 2025 12:36:49 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWCJM-006GvO-2U;
+	id 1vWCJM-006GvW-31;
 	Thu, 18 Dec 2025 12:36:48 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWBw5-0000000AVre-0imU;
-	Thu, 18 Dec 2025 12:12:45 +0100
+	id 1vWBw4-0000000AVre-2Eag;
+	Thu, 18 Dec 2025 12:12:44 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Dec 2025 11:38:05 +0100
-Message-ID: <20251218111242.1527495-46-a.fatoum@pengutronix.de>
+Date: Thu, 18 Dec 2025 11:37:51 +0100
+Message-ID: <20251218111242.1527495-32-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251218111242.1527495-1-a.fatoum@pengutronix.de>
 References: <20251218111242.1527495-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_104141_308524_F37E7638 
-X-CRM114-Status: GOOD (  27.57  )
+X-CRM114-CacheID: sfid-20251218_104141_422247_795D3257 
+X-CRM114-Status: GOOD (  27.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,394 +98,424 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v1 45/54] efi: loader: implement bootm handler
+Subject: [PATCH v1 31/54] efi: loader: protocol: add unicode collation support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-As counterpart to the EFI-less bootm handlers for the different
-architectures, define EFI-enabled variants that will initialize the EFI
-loader support and load the PE by EFI means.
+Like with the HII support before it, implementing this protocol is also
+necessary for the EFI shell to run.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/loader/Makefile |   1 +
- efi/loader/bootm.c  | 358 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 359 insertions(+)
- create mode 100644 efi/loader/bootm.c
+ efi/loader/protocols/Kconfig             |  18 ++
+ efi/loader/protocols/Makefile            |   1 +
+ efi/loader/protocols/unicode_collation.c | 329 +++++++++++++++++++++++
+ include/efi/protocol/unicode_collation.h |  24 ++
+ 4 files changed, 372 insertions(+)
+ create mode 100644 efi/loader/protocols/unicode_collation.c
+ create mode 100644 include/efi/protocol/unicode_collation.h
 
-diff --git a/efi/loader/Makefile b/efi/loader/Makefile
-index 62483057b426..2a78361e58d5 100644
---- a/efi/loader/Makefile
-+++ b/efi/loader/Makefile
-@@ -14,3 +14,4 @@ obj-y += pe.o
- obj-y += loadopts.o
- obj-$(CONFIG_BOOT) += bootesp.o
- obj-$(CONFIG_EFI_LOADER_BOOTMGR) += efibootmgr.o
-+obj-$(CONFIG_BOOTM) += bootm.o
-diff --git a/efi/loader/bootm.c b/efi/loader/bootm.c
+diff --git a/efi/loader/protocols/Kconfig b/efi/loader/protocols/Kconfig
+index 4ed7499da4a2..8c8bfabd7c0f 100644
+--- a/efi/loader/protocols/Kconfig
++++ b/efi/loader/protocols/Kconfig
+@@ -13,4 +13,22 @@ config EFI_LOADER_HII
+ 	  barebox implements enough of its features to be able to run the UEFI
+ 	  Shell, but not more than that.
+ 
++config EFI_LOADER_UNICODE_COLLATION_PROTOCOL2
++	bool "Unicode collation protocol"
++	default y
++	help
++	  The Unicode collation protocol is used for lexical comparisons. It is
++	  required to run the UEFI shell.
++
++config EFI_LOADER_UNICODE_CAPITALIZATION
++	bool "Support Unicode capitalization"
++	default y
++	depends on EFI_LOADER_UNICODE_COLLATION_PROTOCOL2
++	select UNICODE_CAPITALIZATION
++	help
++	  Select this option to enable correct handling of the capitalization of
++	  Unicode codepoints in the range 0x0000-0xffff. If this option is not
++	  set, only the the correct handling of the letters of the codepage
++	  used by the FAT file system is ensured.
++
+ endmenu
+diff --git a/efi/loader/protocols/Makefile b/efi/loader/protocols/Makefile
+index f4a9c0650fd9..b6e39b0666da 100644
+--- a/efi/loader/protocols/Makefile
++++ b/efi/loader/protocols/Makefile
+@@ -5,3 +5,4 @@ obj-$(CONFIG_DISK) += disk.o
+ obj-$(CONFIG_VIDEO) += gop.o
+ obj-$(CONFIG_CONSOLE_FULL) += console.o
+ obj-$(CONFIG_EFI_LOADER_HII) += hii.o hii_config.o
++obj-$(CONFIG_EFI_LOADER_UNICODE_COLLATION_PROTOCOL2) += unicode_collation.o
+diff --git a/efi/loader/protocols/unicode_collation.c b/efi/loader/protocols/unicode_collation.c
 new file mode 100644
-index 000000000000..dffe53bcf9c8
+index 000000000000..4d9a26501723
 --- /dev/null
-+++ b/efi/loader/bootm.c
-@@ -0,0 +1,358 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// SPDX-Comment: Origin-URL: https://github.com/u-boot/u-boot/blob/162a6b3df349295bf766c1d128d71b4547e8d56e/lib/efi_loader/efi_helper.c
++++ b/efi/loader/protocols/unicode_collation.c
+@@ -0,0 +1,329 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Copyright (c) 2016 Alexander Graf
++ * EFI Unicode collation protocol
++ *
++ * Copyright (c) 2018 Heinrich Schuchardt <xypron.glpk@gmx.de>
 + */
-+#define pr_fmt(fmt) "efi-loader: bootm: " fmt
 +
-+#include <clock.h>
-+#include <linux/sizes.h>
-+#include <memory.h>
-+#include <command.h>
-+#include <magicvar.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <io.h>
-+#include <bootargs.h>
-+#include <malloc.h>
-+#include <string.h>
-+#include <linux/err.h>
-+#include <fs.h>
-+#include <filetype.h>
-+#include <libfile.h>
-+#include <bootm.h>
-+#include <wchar.h>
-+#include <efi/mode.h>
-+#include <efi/loader.h>
-+#include <efi/loader/object.h>
-+#include <efi/loader/option.h>
-+#include <efi/loader/table.h>
-+#include <efi/loader/devicepath.h>
-+#include <efi/loader/image.h>
-+#include <efi/loader/event.h>
++#include <charset.h>
++#include <charset.h>
++#include <linux/printk.h>
 +#include <efi/guid.h>
-+#include <efi/services.h>
++#include <efi/loader.h>
++#include <efi/loader/trace.h>
++#include <efi/loader/object.h>
 +#include <efi/error.h>
-+#include <efi/initrd.h>
-+#include <efi/devicepath.h>
++#include <efi/protocol/unicode_collation.h>
++
++/* Characters that may not be used in FAT 8.3 file names */
++static const char illegal[] = "+,<=>:;\"/\\|?*[]\x7f";
++
++/*
++ * EDK2 assumes codepage 1250 when creating FAT 8.3 file names.
++ * Linux defaults to codepage 437 for FAT 8.3 file names.
++ */
++/* Unicode code points for code page 437 characters 0x80 - 0xff */
++static const u16 *codepage = codepage_437;
 +
 +/**
-+ * copy_fdt() - Copy the device tree to a new location available to EFI
++ * efi_stri_coll() - compare utf-16 strings case-insenitively
 + *
-+ * The FDT is copied to a suitable location within the EFI memory map.
-+ * Additional 12 KiB are added to the space in case the device tree needs to be
-+ * expanded later with fdt_open_into().
++ * @this:	unicode collation protocol instance
++ * @s1:		first string
++ * @s2:		second string
 + *
-+ * @fdtp:	On entry a pointer to the flattened device tree.
-+ *		On exit a pointer to the copy of the flattened device tree.
-+ *		FDT start
-+ * Return:	status code
++ * This function implements the StriColl() service of the
++ * EFI_UNICODE_COLLATION_PROTOCOL2.
++ *
++ * See the Unified Extensible Firmware Interface (UEFI) specification for
++ * details.
++ *
++ * Return:	0: s1 == s2, > 0: s1 > s2, < 0: s1 < s2
 + */
-+static efi_status_t copy_fdt(void **fdtp)
++static efi_intn_t EFIAPI efi_stri_coll(
++		struct efi_unicode_collation_protocol *this, u16 *s1, u16 *s2)
 +{
-+	efi_status_t efiret;
-+	void *fdt, *new_fdt;
-+	static u64 new_fdt_addr;
-+	static efi_uintn_t fdt_pages;
-+	size_t fdt_size;
++	s32 c1, c2;
++	efi_intn_t ret = 0;
 +
-+	/*
-+	 * Remove the configuration table that might already be
-+	 * installed, ignoring EFI_NOT_FOUND if no device-tree
-+	 * is installed
-+	 */
-+	efi_install_configuration_table(&efi_fdt_guid, NULL);
-+
-+	if (new_fdt_addr) {
-+		pr_debug("%s: Found allocated memory at %#llx, with %#zx pages\n",
-+			  __func__, new_fdt_addr, fdt_pages);
-+
-+		efiret = efi_free_pages(new_fdt_addr, fdt_pages);
-+		if (efiret != EFI_SUCCESS)
-+			pr_err("Unable to free up existing FDT memory region\n");
-+
-+		new_fdt_addr = 0;
-+		fdt_pages = 0;
-+	}
-+
-+	/*
-+	 * Give us at least 12 KiB of breathing room in case the device tree
-+	 * needs to be expanded later.
-+	 */
-+	fdt = *fdtp;
-+	fdt_pages = efi_size_in_pages(fdt_totalsize(fdt) + 0x3000);
-+	fdt_size = fdt_pages << EFI_PAGE_SHIFT;
-+
-+	/*
-+	 * Safe fdt location is at 127 MiB.
-+	 * On the sandbox convert from the sandbox address space.
-+	 */
-+	efiret = efi_allocate_pages(EFI_ALLOCATE_ANY_PAGES,
-+				 EFI_ACPI_RECLAIM_MEMORY, fdt_pages,
-+				 &new_fdt_addr, "FDT");
-+	if (efiret != EFI_SUCCESS) {
-+		pr_err("Failed to reserve space for FDT\n");
-+		goto done;
-+	}
-+
-+	new_fdt = (void *)(uintptr_t)new_fdt_addr;
-+	memcpy(new_fdt, fdt, fdt_totalsize(fdt));
-+	fdt_set_totalsize(new_fdt, fdt_size);
-+
-+	*fdtp = new_fdt;
-+
-+done:
-+	return efiret;
-+}
-+
-+/**
-+ * efi_install_fdt() - install device tree
-+ *
-+ * If fdt is not NULL, the device tree located at that memory
-+ * address will will be installed as configuration table, otherwise the device
-+ * tree located at the address indicated by environment variable fdt_addr or as
-+ * fallback fdtcontroladdr will be used.
-+ *
-+ * On architectures using ACPI tables device trees shall not be installed as
-+ * configuration table.
-+ *
-+ * @fdt:	address of device tree
-+ *		the hardware device tree as indicated by environment variable
-+ *		fdt_addr or as fallback the internal device tree as indicated by
-+ *		the environment variable fdtcontroladdr
-+ * Return:	status code
-+ */
-+static efi_status_t efi_install_fdt(void *fdt)
-+{
-+	/*
-+	 * The EBBR spec requires that we have either an FDT or an ACPI table
-+	 * but not both.
-+	 */
-+	efi_status_t ret;
-+
-+	/* Install device tree */
-+	if (fdt_check_header(fdt)) {
-+		pr_err("invalid device tree\n");
-+		return EFI_LOAD_ERROR;
-+	}
-+
-+	/* Prepare device tree for payload */
-+	ret = copy_fdt(&fdt);
-+	if (ret) {
-+		pr_err("out of memory\n");
-+		return EFI_OUT_OF_RESOURCES;
-+	}
-+
-+	/* Install device tree as UEFI table */
-+	ret = efi_install_configuration_table(&efi_fdt_guid, fdt);
-+	if (ret != EFI_SUCCESS) {
-+		pr_err("failed to install device tree\n");
-+		return ret;
-+	}
-+
-+	return EFI_SUCCESS;
-+}
-+
-+/**
-+ * efi_install_initrd() - install initrd
-+ *
-+ * Install the initrd located at @initrd using the EFI_LOAD_FILE2
-+ * protocol.
-+ *
-+ * @initrd:	address of initrd or NULL if none is provided
-+ * @initrd_sz:	size of initrd
-+ * Return:	status code
-+ */
-+static efi_status_t efi_install_initrd(struct image_data *data,
-+				       struct resource *source)
-+{
-+	const struct resource *initrd_res;
-+	unsigned long initrd_start;
-+
-+	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
-+		return EFI_SUCCESS;
-+
-+	if (UIMAGE_IS_ADDRESS_VALID(data->initrd_address))
-+		initrd_start = data->initrd_address;
-+	else
-+		initrd_start = EFI_PAGE_ALIGN(source->end + 1);
-+
-+	initrd_res = bootm_load_initrd(data, initrd_start);
-+	if (IS_ERR(initrd_res))
-+		return PTR_ERR(initrd_res);
-+	if (initrd_res)
-+		efi_initrd_register((void *)initrd_res->start,
-+				    resource_size(initrd_res));
-+
-+	return EFI_SUCCESS;
-+}
-+
-+static int efi_loader_bootm(struct image_data *data)
-+{
-+	resource_size_t start, end;
-+	void *load_option = NULL;
-+	u32 load_option_size = 0;
-+	efi_handle_t handle;
-+	struct efi_device_path *file_path = NULL;
-+	struct resource *source;
-+	struct efi_event *evt;
-+	size_t exit_data_size = 0;
-+	u16 *exit_data = NULL;
-+	efi_status_t efiret;
-+	int ret = 0;
-+	void *fdt;
-+	int flags = 0;
-+
-+	memory_bank_first_find_space(&start, &end);
-+	data->os_address = start;
-+
-+	source = file_to_sdram(data->os_file, data->os_address, MEMTYPE_LOADER_CODE);
-+	if (!source)
-+		return -EINVAL;
-+
-+	if (filetype_is_linux_efi_image(data->os_type)) {
-+		const char *options;
-+
-+		options = linux_bootargs_get();
-+		if (options) {
-+			load_option = xstrdup_char_to_wchar(options);
-+			load_option_size = (strlen(options) + 1) * sizeof(wchar_t);
++	EFI_ENTRY("%p, %ls, %ls", this, s1, s2);
++	for (; *s1 | *s2; ++s1, ++s2) {
++		c1 = utf_to_upper(*s1);
++		c2 = utf_to_upper(*s2);
++		if (c1 < c2) {
++			ret = -1;
++			goto out;
++		} else if (c1 > c2) {
++			ret = 1;
++			goto out;
 +		}
 +	}
++out:
++	EFI_EXIT(EFI_SUCCESS);
++	return ret;
++}
 +
-+	file_path = efi_dp_from_file(AT_FDCWD, data->os_file);
++/**
++ * next_lower() - get next codepoint converted to lower case
++ *
++ * @string:	pointer to u16 string, on return advanced by one codepoint
++ * Return:	first codepoint of string converted to lower case
++ */
++static s32 next_lower(const u16 **string)
++{
++	return utf_to_lower(utf16_get(string));
++}
 +
-+	pr_info("Loading %pD\n", file_path);
++/**
++ * metai_match() - compare utf-16 string with a pattern string case-insenitively
++ *
++ * @string:	string to compare
++ * @pattern:	pattern string
++ *
++ * The pattern string may use these:
++ *	- * matches >= 0 characters
++ *	- ? matches 1 character
++ *	- [<char1><char2>...<charN>] match any character in the set
++ *	- [<char1>-<char2>] matches any character in the range
++ *
++ * This function is called my efi_metai_match().
++ *
++ * For '*' pattern searches this function calls itself recursively.
++ * Performance-wise this is suboptimal, especially for multiple '*' wildcards.
++ * But it results in simple code.
++ *
++ * Return:	true if the string is matched.
++ */
++static bool metai_match(const u16 *string, const u16 *pattern)
++{
++	s32 first, s, p;
 +
-+	/* Initialize EFI drivers */
-+	efiret = efi_init_obj_list();
-+	if (efiret) {
-+		pr_err("Cannot initialize UEFI sub-system: %pe\n",
-+			ERR_PTR(-efi_errno(ret)));
-+		goto out;
-+	}
++	for (; *string && *pattern;) {
++		const u16 *string_old = string;
 +
-+	ret = -EINVAL;
++		s = next_lower(&string);
++		p = next_lower(&pattern);
 +
-+	fdt = bootm_get_devicetree(data);
-+	if (IS_ERR(fdt))
-+		return PTR_ERR(fdt);
-+	if (fdt) {
-+		ret = efi_install_fdt(fdt);
-+		if (ret)
-+			return ret;
-+	}
++		switch (p) {
++		case '*':
++			/* Match 0 or more characters */
++			for (;; s = next_lower(&string)) {
++				if (metai_match(string_old, pattern))
++					return true;
++				if (!s)
++					return false;
++				string_old = string;
++			}
++		case '?':
++			/* Match any one character */
++			break;
++		case '[':
++			/* Match any character in the set */
++			p = next_lower(&pattern);
++			first = p;
++			if (first == ']')
++				/* Empty set */
++				return false;
++			p = next_lower(&pattern);
++			if (p == '-') {
++				/* Range */
++				p = next_lower(&pattern);
++				if (s < first || s > p)
++					return false;
++				p = next_lower(&pattern);
++				if (p != ']')
++					return false;
++			} else {
++				/* Set */
++				bool hit = false;
 +
-+	efiret = efi_install_initrd(data, source);
-+	if(efiret != EFI_SUCCESS)
-+		goto out;
-+
-+	if (data->verbose >= 1)
-+		flags |= EFI_VERBOSE_RUN;
-+	if (data->dryrun)
-+		flags |= EFI_DRYRUN;
-+
-+	efiret = efiloader_load_image(false, efi_root, file_path,
-+				(void *)source->start,
-+				resource_size(source), &handle);
-+	if (efiret != EFI_SUCCESS) {
-+		pr_err("Loading image failed\n");
-+		goto out;
-+	}
-+
-+	efiret = efi_set_load_options(handle, load_option_size, load_option);
-+	if (efiret)
-+		goto out;
-+
-+	/* On ARM, PBL should have already moved us into EL2 here, so
-+	 * no need to switch modes
-+	 */
-+
-+	/*
-+	 * The UEFI standard requires that the watchdog timer is set to five
-+	 * minutes when invoking an EFI boot option.
-+	 *
-+	 * Unified Extensible Firmware Interface (UEFI), version 2.7 Errata A
-+	 * 7.5. Miscellaneous Boot Services - EFI_BOOT_SERVICES.SetWatchdogTimer
-+	 */
-+	ret = efi_set_watchdog(300);
-+	if (ret != EFI_SUCCESS) {
-+		pr_err("failed to set watchdog timer\n");
-+		goto out;
-+	}
-+
-+	/* Call our payload! */
-+	ret = __efi_start_image(handle, &exit_data_size, &exit_data, flags);
-+	if (ret != EFI_SUCCESS) {
-+		pr_err("## Application failed, r = %lu\n",
-+			ret & ~EFI_ERROR_MASK);
-+		if (exit_data) {
-+			pr_err("## %ls\n", exit_data);
-+			efi_free_pool(exit_data);
++				if (s == first)
++					hit = true;
++				for (; p && p != ']';
++				     p = next_lower(&pattern)) {
++					if (p == s)
++						hit = true;
++				}
++				if (!hit || p != ']')
++					return false;
++			}
++			break;
++		default:
++			/* Match one character */
++			if (p != s)
++				return false;
 +		}
 +	}
++	if (!*pattern && !*string)
++		return true;
++	return false;
++}
 +
-+	/* Notify EFI_EVENT_GROUP_RETURN_TO_EFIBOOTMGR event group. */
-+	list_for_each_entry(evt, &efi_events, link) {
-+		if (evt->group &&
-+		    !efi_guidcmp(*evt->group,
-+				 efi_guid_event_group_return_to_efibootmgr)) {
-+			efi_signal_event(evt);
-+			systab.boottime->close_event(evt);
++/**
++ * efi_metai_match() - compare utf-16 string with a pattern string
++ *		       case-insenitively
++ *
++ * @this:	unicode collation protocol instance
++ * @string:	string to compare
++ * @pattern:	pattern string
++ *
++ * The pattern string may use these:
++ *	- * matches >= 0 characters
++ *	- ? matches 1 character
++ *	- [<char1><char2>...<charN>] match any character in the set
++ *	- [<char1>-<char2>] matches any character in the range
++ *
++ * This function implements the MetaMatch() service of the
++ * EFI_UNICODE_COLLATION_PROTOCOL2.
++ *
++ * Return:	true if the string is matched.
++ */
++static bool EFIAPI efi_metai_match(struct efi_unicode_collation_protocol *this,
++				   const u16 *string, const u16 *pattern)
++{
++	bool ret;
++
++	EFI_ENTRY("%p, %ls, %ls", this, string, pattern);
++	ret =  metai_match(string, pattern);
++	EFI_EXIT(EFI_SUCCESS);
++	return ret;
++}
++
++/**
++ * efi_str_lwr() - convert to lower case
++ *
++ * @this:	unicode collation protocol instance
++ * @string:	string to convert
++ *
++ * The conversion is done in place. As long as upper and lower letters use the
++ * same number of words this does not pose a problem.
++ *
++ * This function implements the StrLwr() service of the
++ * EFI_UNICODE_COLLATION_PROTOCOL2.
++ */
++static void EFIAPI efi_str_lwr(struct efi_unicode_collation_protocol *this,
++			       u16 *string)
++{
++	EFI_ENTRY("%p, %ls", this, string);
++	for (; *string; ++string)
++		*string = utf_to_lower(*string);
++	EFI_EXIT(EFI_SUCCESS);
++}
++
++/**
++ * efi_str_upr() - convert to upper case
++ *
++ * @this:	unicode collation protocol instance
++ * @string:	string to convert
++ *
++ * The conversion is done in place. As long as upper and lower letters use the
++ * same number of words this does not pose a problem.
++ *
++ * This function implements the StrUpr() service of the
++ * EFI_UNICODE_COLLATION_PROTOCOL2.
++ */
++static void EFIAPI efi_str_upr(struct efi_unicode_collation_protocol *this,
++			       u16 *string)
++{
++	EFI_ENTRY("%p, %ls", this, string);
++	for (; *string; ++string)
++		*string = utf_to_upper(*string);
++	EFI_EXIT(EFI_SUCCESS);
++}
++
++/**
++ * efi_fat_to_str() - convert an 8.3 file name from an OEM codepage to Unicode
++ *
++ * @this:	unicode collation protocol instance
++ * @fat_size:	size of the string to convert
++ * @fat:	string to convert
++ * @string:	converted string
++ *
++ * This function implements the FatToStr() service of the
++ * EFI_UNICODE_COLLATION_PROTOCOL2.
++ */
++static void EFIAPI efi_fat_to_str(struct efi_unicode_collation_protocol *this,
++				  efi_uintn_t fat_size, char *fat, u16 *string)
++{
++	efi_uintn_t i;
++	u16 c;
++
++	EFI_ENTRY("%p, %zu, %s, %p", this, fat_size, fat, string);
++	for (i = 0; i < fat_size; ++i) {
++		c = (unsigned char)fat[i];
++		if (c > 0x80)
++			c = codepage[c - 0x60];
++		string[i] = c;
++		if (!c)
++			break;
++	}
++	string[i] = 0;
++	EFI_EXIT(EFI_SUCCESS);
++}
++
++/**
++ * efi_str_to_fat() - convert a utf-16 string to legal characters for a FAT
++ *                    file name in an OEM code page
++ *
++ * @this:	unicode collation protocol instance
++ * @string:	Unicode string to convert
++ * @fat_size:	size of the target buffer
++ * @fat:	converted string
++ *
++ * This function implements the StrToFat() service of the
++ * EFI_UNICODE_COLLATION_PROTOCOL2.
++ *
++ * Return:	true if an illegal character was substituted by '_'.
++ */
++static bool EFIAPI efi_str_to_fat(struct efi_unicode_collation_protocol *this,
++				  const u16 *string, efi_uintn_t fat_size,
++				  char *fat)
++{
++	efi_uintn_t i;
++	s32 c;
++	bool ret = false;
++
++	EFI_ENTRY("%p, %ls, %zu, %p", this, string, fat_size, fat);
++	for (i = 0; i < fat_size;) {
++		c = utf16_get(&string);
++		switch (c) {
++		/* Ignore period and space */
++		case '.':
++		case ' ':
++			continue;
++		case 0:
 +			break;
 +		}
++		c = utf_to_upper(c);
++		if (utf_to_cp(&c, codepage) ||
++		    (c && (c < 0x20 || strchr(illegal, c)))) {
++			ret = true;
++			c = '_';
++		}
++
++		fat[i] = c;
++		if (!c)
++			break;
++		++i;
 +	}
-+
-+	/* Control is returned to us, disable EFI watchdog */
-+	efi_set_watchdog(0);
-+
++	EFI_EXIT(EFI_SUCCESS);
 +	return ret;
-+
-+out:
-+	efi_initrd_unregister();
-+	efi_install_configuration_table(&efi_fdt_guid, NULL);
-+	efi_free_pool(file_path);
-+	free(load_option);
-+	release_sdram_region(source);
-+
-+	return ret ?: -efi_errno(efiret);
 +}
 +
-+static struct image_handler riscv_linux_efi_handler = {
-+	.name = "RISC-V Linux/EFI image",
-+	.bootm = efi_loader_bootm,
-+	.check_image = bootm_efi_check_image,
-+	.filetype = filetype_riscv_efi_linux_image,
++static const struct efi_unicode_collation_protocol efi_unicode_collation_protocol2 = {
++	.stri_coll = efi_stri_coll,
++	.metai_match = efi_metai_match,
++	.str_lwr = efi_str_lwr,
++	.str_upr = efi_str_upr,
++	.fat_to_str = efi_fat_to_str,
++	.str_to_fat = efi_str_to_fat,
++	.supported_languages = "en",
 +};
 +
-+static struct image_handler aarch64_linux_efi_handler = {
-+	.name = "ARM aarch64 Linux/EFI image",
-+	.bootm = efi_loader_bootm,
-+	.check_image = bootm_efi_check_image,
-+	.filetype = filetype_arm64_efi_linux_image,
-+};
-+
-+static struct image_handler arm32_linux_efi_handler = {
-+	.name = "ARM arm32 Linux/EFI image",
-+	.bootm = efi_loader_bootm,
-+	.check_image = bootm_efi_check_image,
-+	.filetype = filetype_arm_efi_zimage,
-+};
-+
-+static struct image_handler efi_image_loader = {
-+	.name = "EFI Application",
-+	.bootm = efi_loader_bootm,
-+	.filetype = filetype_exe,
-+};
-+
-+static int efiloader_bootm_register(void)
++static int efi_unicode_collation_init(void)
 +{
-+	if (IS_ENABLED(CONFIG_ARM32))
-+		register_image_handler(&arm32_linux_efi_handler);
-+	if (IS_ENABLED(CONFIG_ARM64))
-+		register_image_handler(&aarch64_linux_efi_handler);
-+	if (IS_ENABLED(CONFIG_RISCV))
-+		register_image_handler(&riscv_linux_efi_handler);
-+	return register_image_handler(&efi_image_loader);
++	efi_add_root_node_protocol_deferred(&efi_guid_unicode_collation_protocol2,
++					    &efi_unicode_collation_protocol2);
++	return 0;
 +}
-+late_initcall(efiloader_bootm_register);
++device_initcall(efi_unicode_collation_init);
+diff --git a/include/efi/protocol/unicode_collation.h b/include/efi/protocol/unicode_collation.h
+new file mode 100644
+index 000000000000..13ebad6fb0d8
+--- /dev/null
++++ b/include/efi/protocol/unicode_collation.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _EFI_PROTOCOL_UNICODE_COLLATION_H
++#define _EFI_PROTOCOL_UNICODE_COLLATION_H
++
++#include <efi/types.h>
++
++struct efi_unicode_collation_protocol {
++	efi_intn_t (EFIAPI *stri_coll)(
++		struct efi_unicode_collation_protocol *this, u16 *s1, u16 *s2);
++	bool (EFIAPI *metai_match)(struct efi_unicode_collation_protocol *this,
++				   const u16 *string, const u16 *patter);
++	void (EFIAPI *str_lwr)(struct efi_unicode_collation_protocol
++			       *this, u16 *string);
++	void (EFIAPI *str_upr)(struct efi_unicode_collation_protocol *this,
++			       u16 *string);
++	void (EFIAPI *fat_to_str)(struct efi_unicode_collation_protocol *this,
++				  efi_uintn_t fat_size, char *fat, u16 *string);
++	bool (EFIAPI *str_to_fat)(struct efi_unicode_collation_protocol *this,
++				  const u16 *string, efi_uintn_t fat_size,
++				  char *fat);
++	char *supported_languages;
++};
++
++#endif
 -- 
 2.47.3
 
