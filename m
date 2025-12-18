@@ -1,70 +1,72 @@
-Delivery-date: Thu, 18 Dec 2025 17:43:10 +0100
+Delivery-date: Thu, 18 Dec 2025 18:37:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWH5q-00Cti1-1C
+	id 1vWHwE-00Cukt-0t
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 17:43:10 +0100
+	Thu, 18 Dec 2025 18:37:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWH5p-0002M0-Kg
-	for lore@pengutronix.de; Thu, 18 Dec 2025 17:43:10 +0100
+	id 1vWHwD-0007je-Lg
+	for lore@pengutronix.de; Thu, 18 Dec 2025 18:37:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=33fwawFMb+N81U+Q09j4/hd21k/vRj0ovuwAQpS9ufs=; b=1VUnL6vjWZqR95yy7wZj6JGuEB
-	JSXIY+782L8d8leF97Pt55QZPoQ8dF2NpNJqkvoM7gKNhKhzM1PsWXdOa44xwTyu5l+QA1irgTG2n
-	zviD7BBjC+B2EOELavlIIpqhjxnleTbFZ8Vbb+gwC/gKnH198PnNUjqzoGxabUsWurdsfDxCbAMY5
-	Z4W0yIj23lqCzz2cY92Wil1XFMOaDGy246Ut6q663uqm8kMhCC3DnfxBeLjw0AbScXLox0bUjfsd2
-	0R4kItR71eR4dU36QohvCQCvYQXrZTAbUxkdiOE5yCimEuXd9SWySpt571aau1J3tB5t4hWA5e/ED
-	qE0LJSRg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=04Vx8vPYlp/yTk83koNAPQdtTJWB38/Sp+SN7dQif80=; b=nGaD+Zzt37kYmWUOI2L37d2rPR
+	XPE0E0OZicTsvSZkd78MIIQypVR1yuEzhGQpk2OP8p8jTzvUCGWfQ9mG2okGOM6cxP8OAjbPFOZDR
+	hD3YbEh9XudMCXSn/A5DDcySuMiOX0ShAlZOjzOF2bMn95wLvqnF84BaWbDtZ/cLtvi5FZ13GU/QL
+	SDGbCvqnvdShMXTDq8oZMWS1RyYjdtkLaKGJE5dECDLIzGqBGwBGrS/3gWgtVMINbqA2Ns4GkbpK8
+	GjDwZ9mT0Dtr20mHoDAkVTyNrQpTcAA3Jw43xvitgNizikZiqgVXl7cq24bRQRFYVK9pq6zOTh8BY
+	MtyPtvmw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWH5E-00000008qTV-2q7K;
-	Thu, 18 Dec 2025 16:42:32 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vWHvm-00000008vxx-11eZ;
+	Thu, 18 Dec 2025 17:36:50 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWH59-00000008qRb-37Kf
+	id 1vWHvk-00000008vwR-2fsg
+	for barebox@bombadil.infradead.org;
+	Thu, 18 Dec 2025 17:36:48 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=04Vx8vPYlp/yTk83koNAPQdtTJWB38/Sp+SN7dQif80=; b=FvQKrY24dklxESea8/S83g/Ydy
+	Nv2a+VQC2oAxrcTcsUPgRpVTlBTOcfkWoNLkUvxVdHnxMnj5bS+Pyge8QiIJx5I+l2BrkEYHs2KuI
+	HnzbL0x7KDgZXiFI1v4T+wnC+xlBwcDVLPwD6lrswGy8+RC9wlmHHtulfdoaOhnUZ+639TIyoNmNz
+	RVzhywyiO98RGTA68TH1pzOC1cYi56qkijPutHhaa3HNe+MzKfghZ1MnLEy8gxbWB3S1RNxhu2ERZ
+	1OJ7nwe1X5p0vjWXnyrK37Xqu+RY1VzgZni7emyN6+ko1jhBe9d3VAmLYC8G0LFly0WBZSCBayaZi
+	nC1lnhlw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vWH4D-00000009IdC-44WY
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 16:42:28 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWH4s-00029z-19; Thu, 18 Dec 2025 17:42:10 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWH4r-006Jmi-1h;
-	Thu, 18 Dec 2025 17:42:09 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWH4r-00EcKV-1D;
-	Thu, 18 Dec 2025 17:42:09 +0100
-Date: Thu, 18 Dec 2025 17:42:09 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Rob Herring <robh@kernel.org>
-Message-ID: <20251218164209.6ombc6g4gy7tuwcz@pengutronix.de>
-References: <20251212203226.458694-5-robh@kernel.org>
- <20251213181324.u32ztfblkknfpz44@pengutronix.de>
- <CAL_JsqK9OREenZjBHrDh7AqsyUXYOzTOhY4e0qHGzYkX8tacWQ@mail.gmail.com>
- <20251214185750.tzt6jf4zg5gtex63@pengutronix.de>
- <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
+	Thu, 18 Dec 2025 16:41:33 +0000
+Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <f.pflug@pengutronix.de>)
+	id 1vWHve-0007Si-1A; Thu, 18 Dec 2025 18:36:42 +0100
+From: Fabian Pflug <f.pflug@pengutronix.de>
+Date: Thu, 18 Dec 2025 18:36:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251218-v2025-11-0-topic-imx6-field-return-v1-3-3781143198d6@pengutronix.de>
+References: <20251218-v2025-11-0-topic-imx6-field-return-v1-0-3781143198d6@pengutronix.de>
+In-Reply-To: <20251218-v2025-11-0-topic-imx6-field-return-v1-0-3781143198d6@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+Cc: Marco Felsch <m.felsch@pengutronix.de>, 
+ Fabian Pflug <f.pflug@pengutronix.de>
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_084227_780710_5620E285 
-X-CRM114-Status: GOOD (  34.60  )
+X-CRM114-CacheID: sfid-20251218_164130_100790_5926E109 
+X-CRM114-Status: GOOD (  11.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,141 +78,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>, linux-kernel@vger.kernel.org, frieder.schrempf@kontron.de, oualid.derouiche@kontron.de, linux-renesas-soc@vger.kernel.org, eberhard.stoll@kontron.de, Pengutronix Kernel Team <kernel@pengutronix.de>, barebox@lists.infradead.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, annette.kobou@kontron.de, Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: dts: nxp/imx6: Drop unused .dtsi
+Subject: [PATCH 3/4] i.MX: HAB: extend field_return support to imx6
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-12-15, Rob Herring wrote:
-> On Sun, Dec 14, 2025 at 12:58 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> >
-> > On 25-12-14, Rob Herring wrote:
-> > > On Sat, Dec 13, 2025 at 12:13 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> > > >
-> > > > Hi Rob,
-> > > >
-> > > > On 25-12-12, Rob Herring (Arm) wrote:
-> > > > > These .dtsi files are not included anywhere in the tree and can't be
-> > > > > tested.
-> > > >
-> > > > not in the tree but by other projects, please see below.
-> > > >
-> > > > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > > > > ---
-> > > > >  .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
-> > > > >  .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
-> > > > >  .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ----------------
-> > > > >  .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 -------------------
-> > > > >  4 files changed, 123 deletions(-)
-> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
-> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
-> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
-> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
-> > > > >
-> > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
-> > > > > deleted file mode 100644
-> > > > > index 5a9b819d7ee8..000000000000
-> > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
-> > > > > +++ /dev/null
-> > > > > @@ -1,12 +0,0 @@
-> > > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
-> > > > > -/*
-> > > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
-> > > > > - */
-> > > > > -
-> > > > > -#include "imx6dl.dtsi"
-> > > > > -#include "imx6qdl-kontron-samx6i.dtsi"
-> > > > > -
-> > > > > -/ {
-> > > > > -     model = "Kontron SMARC-sAMX6i Dual-Lite/Solo";
-> > > > > -     compatible = "kontron,imx6dl-samx6i", "fsl,imx6dl";
-> > > > > -};
-> > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
-> > > > > deleted file mode 100644
-> > > > > index e76963436079..000000000000
-> > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
-> > > > > +++ /dev/null
-> > > > > @@ -1,12 +0,0 @@
-> > > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
-> > > > > -/*
-> > > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
-> > > > > - */
-> > > > > -
-> > > > > -#include "imx6q.dtsi"
-> > > > > -#include "imx6qdl-kontron-samx6i.dtsi"
-> > > > > -
-> > > > > -/ {
-> > > > > -     model = "Kontron SMARC-sAMX6i Quad/Dual";
-> > > > > -     compatible = "kontron,imx6q-samx6i", "fsl,imx6q";
-> > > > > -};
-> > > >
-> > > > I can't speak for the other two .dtsi files but both kontron .dtsi files
-> > > > are used by barebox:
-> > > >
-> > > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6dl-samx6i.dts#L8
-> > > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6q-samx6i.dts#L8
-> > > >
-> > > > Removing them here will cause a regression for barebox.
-> > >
-> > > Please upstream something that uses the .dtsi. Other than the
-> > > undocumented barebox property, no reason these can't be.
-> >
-> > My intention wasn't to point to the barebox-only
-> > "barebox,disable-deep-probe" property. I was refering to the include
-> > line.
-> >
-> > The two .dtsi files we're talking about are SoM .dtsi files. We don't
-> > have access to the Kontron EVK baseboard which uses this SoM.
-> >
-> > I've added a few Kontron devs which may can add the missing baseboard
-> > support.
-> >
-> > +Cc: frieder.schrempf@kontron.de
-> > +Cc: annette.kobou@kontron.de
-> > +Cc: oualid.derouiche@kontron.de
-> > +Cc: eberhard.stoll@kontron.de
-> >
-> > I could also add the imx6dl-samx6i.dts and imx6q-samx6i.dts like we do
-> > in barebox. But as said, this would be a devicetree for a SoM which
-> > makes sense for the bootloader but not for the kernel.
-> 
-> Why not? People use the kernel as a bootloader. There's also some
+Extend the helper for imx_fuse_burn with support for i.MX6 devices.
 
-Using the kernel as bootloader is a good point, which I didn't had in my
-mind!
+Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+---
+ drivers/hab/hab.c                | 10 ++++++----
+ include/mach/imx/ocotp-fusemap.h |  1 +
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-I will add the som.dts, please don't remove the kontron dtsi files yet.
-
-> discussions about splitting SoMs and baseboards into overlays for
-> baseboards (and also even into SoC base DT plus overlay for boards).
-
-Do you have pointers?
-
-Regards,
-  Marco
-
-
-> 
-> Rob
-> 
+diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
+index 1c747e8a3e..281645f79e 100644
+--- a/drivers/hab/hab.c
++++ b/drivers/hab/hab.c
+@@ -262,7 +262,7 @@ static int imx8m_hab_revoke_key_ocotp(unsigned key_idx)
+  */
+ #define MX8MP_FIELD_RETURN_PATTERN	0x28001401
+ 
+-static int imx8m_hab_field_return_ocotp(void)
++static int imx_hab_field_return_ocotp(void)
+ {
+ 	int ret;
+ 
+@@ -274,7 +274,9 @@ static int imx8m_hab_field_return_ocotp(void)
+ 	if (ret == 1)
+ 		return -EINVAL;
+ 
+-	if (cpu_is_mx8mp())
++	if (cpu_is_mx6())
++		ret = imx_ocotp_write_field(MX6_OCOTP_FIELD_RETURN, 1);
++	else if (cpu_is_mx8mp())
+ 		ret = imx_ocotp_write_field(MX8MP_OCOTP_FIELD_RETURN,
+ 					    MX8MP_FIELD_RETURN_PATTERN);
+ 	else
+@@ -282,7 +284,6 @@ static int imx8m_hab_field_return_ocotp(void)
+ 
+ 	return ret;
+ }
+-
+ struct imx_hab_ops {
+ 	int (*write_srk_hash)(const u8 *srk, unsigned flags);
+ 	int (*read_srk_hash)(u8 *srk);
+@@ -310,6 +311,7 @@ static struct imx_hab_ops imx6_hab_ops_ocotp = {
+ 	.device_locked_down = imx6_hab_device_locked_down_ocotp,
+ 	.permanent_write_enable = imx_hab_permanent_write_enable_ocotp,
+ 	.print_status = imx6_hab_print_status,
++	.field_return = imx_hab_field_return_ocotp,
+ };
+ 
+ static struct imx_hab_ops imx8m_hab_ops_ocotp = {
+@@ -320,7 +322,7 @@ static struct imx_hab_ops imx8m_hab_ops_ocotp = {
+ 	.permanent_write_enable = imx_hab_permanent_write_enable_ocotp,
+ 	.print_status = imx8m_hab_print_status,
+ 	.revoke_key = imx8m_hab_revoke_key_ocotp,
+-	.field_return = imx8m_hab_field_return_ocotp,
++	.field_return = imx_hab_field_return_ocotp,
+ };
+ 
+ static int imx_ahab_write_srk_hash(const u8 *__newsrk, unsigned flags)
+diff --git a/include/mach/imx/ocotp-fusemap.h b/include/mach/imx/ocotp-fusemap.h
+index ae10dcef2a..3fd9d6df24 100644
+--- a/include/mach/imx/ocotp-fusemap.h
++++ b/include/mach/imx/ocotp-fusemap.h
+@@ -103,6 +103,7 @@
+ #define MX8M_OCOTP_TZASC_EN		(OCOTP_WORD(0x480) | OCOTP_BIT(11) | OCOTP_WIDTH(1))
+ #define MX8MP_OCOTP_ROM_NO_LOG		(OCOTP_WORD(0x480) | OCOTP_BIT(22) | OCOTP_WIDTH(1))
+ #define MX8M_OCOTP_RECOVERY_SDMMC_BOOT_DIS	(OCOTP_WORD(0x490) | OCOTP_BIT(23) | OCOTP_WIDTH(1))
++#define MX6_OCOTP_FIELD_RETURN		(OCOTP_WORD(0x6E0) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
+ #define MX8M_OCOTP_FIELD_RETURN		(OCOTP_WORD(0x630) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
+ #define MX8MP_OCOTP_FIELD_RETURN	(OCOTP_WORD(0x630) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+ #define MX8M_OCOTP_SRK_REVOKE		(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(4))
 
 -- 
-#gernperDu 
-#CallMeByMyFirstName
+2.47.3
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
