@@ -1,67 +1,66 @@
-Delivery-date: Thu, 18 Dec 2025 15:50:32 +0100
+Delivery-date: Thu, 18 Dec 2025 16:18:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWFKq-00CrYl-0h
+	id 1vWFmE-00Cs67-0X
 	for lore@lore.pengutronix.de;
-	Thu, 18 Dec 2025 15:50:32 +0100
+	Thu, 18 Dec 2025 16:18:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWFKp-0005X4-Ia
-	for lore@pengutronix.de; Thu, 18 Dec 2025 15:50:32 +0100
+	id 1vWFmD-000185-G7
+	for lore@pengutronix.de; Thu, 18 Dec 2025 16:18:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=eSN3BlsMeoSJPglG2iyPSddJYEUK2Du7xPGL8IDDUrw=; b=BN8NZ7BBnDW8P5ENo7A7MdgsS+
-	NnSnsFMAD6BSo/tAW5FFONCrbfcudF1/ConzXZbfzYOMLiNJ/g9XjX+kSOCs142O4vTnr0OyOwljj
-	GDhLByHsmTVrBeia0qmhkSmJ6h0P1RLxQaHCgtqniPGLrffzfB5Jv+ADWNrgkfaZwr1VLOiiVqMbo
-	Wkaha2CL7SaFim1zBucwRLTYjW7M4Y8QKgyYDc9lNak5XoMq2zIzBnaQWmK3cxPgNMrI7ouEQHnz1
-	1SEYu3nQhdYSVqu1nB4oeedPwrUMy46vr6bMdk0OUdSdyaMQFJyEhk6OiBBBzucMUEm2njOT0bKNl
-	o0jP2Ojw==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=w9iLVOE7T8lrlX3kxrEwwiw4vmL2+PJbVRVkp2ITy3I=; b=H5rA6CmTXu8gXG7M3oCZB60seU
+	77Z5oRCS5qHTl+4TkKemDtIm9w2vYN0niBxbj/4/ZjquzNDw+3+IAJ6+E4DA1q7ESAPJN6n+/tFyd
+	sSBez687i6S4WrVpVc+Jfuc5LaVol9sE187jyCoPAjDqJcH+y95KGhF3LkYSKlu08ehQzgyVn8smx
+	xpG7N7rK5SVkroIwyviYsJBqY2x/vJ6o+BoKqPuxrT5foxFqf73zDZiFT2YHOO3ilHKA1/yIV15gp
+	Ak7ZrrOWzsBvhfVYuO7hiNmAujDOSFBdT07DEsU0aODSpPnrlgZjykU7ijA9o8+J0f2LLPNdUu53C
+	hKFoLO8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWFKJ-00000008dZP-1LoQ;
-	Thu, 18 Dec 2025 14:49:59 +0000
+	id 1vWFlh-00000008fuz-08tx;
+	Thu, 18 Dec 2025 15:18:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWFKD-00000008dWY-33gN
+	id 1vWFla-00000008fto-1gCD
 	for barebox@lists.infradead.org;
-	Thu, 18 Dec 2025 14:49:56 +0000
+	Thu, 18 Dec 2025 15:18:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWFKB-0005Im-FN; Thu, 18 Dec 2025 15:49:51 +0100
+	id 1vWFlY-0000xp-AH; Thu, 18 Dec 2025 16:18:08 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWFKB-006IcX-0s;
-	Thu, 18 Dec 2025 15:49:51 +0100
+	id 1vWFlY-006IyJ-0O;
+	Thu, 18 Dec 2025 16:18:08 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWFKB-0000000E9lv-0jxW;
-	Thu, 18 Dec 2025 15:49:51 +0100
+	id 1vWFlY-00000002u1T-06WD;
+	Thu, 18 Dec 2025 16:18:08 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Dec 2025 15:48:45 +0100
-Message-ID: <20251218144950.3068179-3-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Jonas Rebmann <jre@pengutronix.de>
+Date: Thu, 18 Dec 2025 16:18:06 +0100
+Message-ID: <20251218151807.691382-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251218144950.3068179-1-a.fatoum@pengutronix.de>
-References: <20251218144950.3068179-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251218_064953_770441_0C534FEE 
-X-CRM114-Status: GOOD (  12.94  )
+X-CRM114-CacheID: sfid-20251218_071812_717667_FFEED2D1 
+X-CRM114-Status: GOOD (  16.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,59 +82,147 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] test: py: add simple SMBIOS tests
+Subject: [PATCH v2] scripts: add helper for generating Origin-URL references
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For configs that are bootable (meaning they are configured to start an
-OS) and have the smbios feature enabled, let's verify that the kernel
-has found the entry point and that it contains the "barebox" string.
+To improve tracking where code originated from, e.g. when porting from
+Linux or U-Boot, some recent commits have started using Origin-URL
+comments. Add a script that can generate them with the assumption that
+the origin project is checked out at exactly the version the code was
+copied from.
 
-We could do more extensive tests with dmidecode(1) and we should in
-future, but we don't want to require its existence for the base check.
+Examples in Vim:
 
+  # add into highlight URL pointing at specified file
+  V:!git origin-url ../linux/lib/ucs2_string.c
+
+  # as above, but consult buffer extension for comment style
+  V:!git origin-url ../linux/lib/ucs2_string.c %
+
+  # generate in snippet syntax
+  V:!git origin-url -s ../linux/lib/ucs2_string.c
+
+This is mostly useful for new code that's being ported. It does have no
+support to find out similarity between the files specified.
+
+Cc: Jonas Rebmann <jre@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/py/test_linux_smbios.py | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
- create mode 100644 test/py/test_linux_smbios.py
+v1 -> v2:
+  - mention that this is meant for new code in commit and usage message
+    (Jonas)
+  - add comment explaining included hashes (Jonas)
+---
+ scripts/git-origin-url.sh | 99 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 99 insertions(+)
+ create mode 100755 scripts/git-origin-url.sh
 
-diff --git a/test/py/test_linux_smbios.py b/test/py/test_linux_smbios.py
-new file mode 100644
-index 000000000000..d0c2b7ca5665
+diff --git a/scripts/git-origin-url.sh b/scripts/git-origin-url.sh
+new file mode 100755
+index 000000000000..3aa15561c474
 --- /dev/null
-+++ b/test/py/test_linux_smbios.py
-@@ -0,0 +1,30 @@
-+# SPDX-License-Identifier: GPL-2.0-only
++++ b/scripts/git-origin-url.sh
+@@ -0,0 +1,99 @@
++#!/usr/bin/env bash
++# SPDX-License-Identifier: BSD-0-Clause
 +
-+import pytest
++set -euo pipefail
 +
++# Some very early hashes to identify the projects by
++declare -A repos=(
++    ["a3ffa97f40dc81f2d6b07ee964f2340fe0c1ba97"]="https://git.pengutronix.de/cgit/barebox"
++    ["1da177e4c3f41524e886b7f1b8a0c1fc7321cac2"]="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
++    ["cc8ed39b240180b58810784f844e253263594ac3"]="https://git.busybox.net/busybox"
++    ["7e492d8258182e31c988bbf9917d4a3d41949d56"]="https://github.com/u-boot/u-boot"
++    ["afe1be4dbdf142513f6ac1d92e6a20bdc4b20c80"]="https://github.com/systemd/systemd"
++)
 +
-+@pytest.mark.lg_feature(['bootable', 'smbios'])
-+def test_smbios3_tables_present(shell):
-+    _, _, ret = shell.run("test -e /sys/firmware/dmi/tables/smbios_entry_point")
-+    assert ret == 0, "SMBIOS entry point not found"
++err() { echo "error: $* " >&2; exit 1; }
++usage="Usage: $0 [-s] <path-to-remote-file> [local-file]
 +
-+    [stdout], _, ret = shell.run("stat -c '%s' /sys/firmware/dmi/tables/DMI")
-+    assert ret == 0
++Generate an Origin-URL comment from a remote file with the assumption
++that it is in a git repository checked out at the correct version
++from which the code in question was originally copied."
 +
-+    size = int(stdout)
-+    assert size > 0, "SMBIOS DMI table is empty"
++snippet=""
++while getopts "sh" opt; do
++    case "$opt" in
++        s)
++            snippet="Snippet-"
++            ;;
++        h)
++            echo "$usage"
++            exit 0
++            ;;
++        *)
++            err "$usage"
++            ;;
++	esac
++done
 +
-+    [stdout], _, ret = shell.run("dd if=/sys/firmware/dmi/tables/smbios_entry_point bs=1 count=5 2>/dev/null")
-+    assert ret == 0
-+    assert stdout == "_SM3_", "SMBIOS entry point is not SMBIOS 3.x"
++shift $((OPTIND-1))
 +
++if [ $# -ne 1 ] && [ $# -ne 2 ]; then
++    err "$usage"
++fi
 +
-+@pytest.mark.lg_feature(['bootable', 'smbios'])
-+def test_smbios_contains_barebox(shell):
-+    """
-+    Search raw SMBIOS/DMI tables for a barebox vendor string.
-+    This avoids dmidecode and relies on simple string matching.
-+    """
-+    # The DMI table is binary; strings are still ASCII embedded
-+    stdout, _, ret = shell.run("strings /sys/firmware/dmi/tables/DMI | grep -i barebox")
-+    assert len(stdout) > 0, "barebox not found in SMBIOS/DMI tables"
++# Optional second argument to allow e.g. !git origin-url $remote_file % im vim
++# In cases where local file has different extension then the original
++dstbasename="$(basename ${2:-$1})"
++
++[ -e "$1" ] || err "File not found"
++
++filepath="$(realpath "$1")"
++
++repo_root="$(git -C "$(dirname "$filepath")" rev-parse --show-toplevel 2>/dev/null \
++    || err "Not inside a Git repository: $filepath")"
++
++rel_path="$(realpath --relative-to="$repo_root" "$filepath")"
++
++# newest commit that touched this file
++file_commit="$(git -C "$repo_root" log -n1 --format=%H -- "$rel_path")"
++
++origin_url=""
++
++# find which repo this file ultimately came from
++for commit in "${!repos[@]}"; do
++    if git -C "$repo_root" merge-base --is-ancestor "$commit" "$file_commit" 2>/dev/null; then
++        origin_url="${repos[$commit]}"
++        break
++    fi
++done
++
++[ -z "$origin_url" ] && err "No matching repo base found for file commit $file_commit"
++
++# output uses the newest file commit, not the origin commit
++if [[ $origin_url == https://github.com/* ]] ; then
++    tree_url="$origin_url/blob/$file_commit/$rel_path"
++else
++    # assume cgit as fallback
++    tree_url="$origin_url/tree/$rel_path?id=$file_commit"
++fi
++
++case "${dstbasename##*.}" in
++    h|S|imxcfg|y|l|lds)
++        comment_begin='/* '
++        comment_end=' */'
++        ;;
++    c|dts*)
++        comment_begin='// '
++        comment_end=''
++        ;;
++    *)
++        comment_begin='# '
++        comment_end=''
++        ;;
++esac
++
++comment() { echo "${comment_begin}${*}${comment_end}"; }
++
++[ -z "${snippet}" ] || comment "SPDX-SnippetBegin"
++comment "SPDX-${snippet}Comment: Origin-URL: ${tree_url}"
++[ -z "${snippet}" ] || comment "SPDX-SnippetEnd"
 -- 
 2.47.3
 
