@@ -1,82 +1,83 @@
-Delivery-date: Fri, 19 Dec 2025 11:38:56 +0100
+Delivery-date: Fri, 19 Dec 2025 11:38:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsu-00DAi1-1P
+	id 1vWXsv-00DAiN-2V
 	for lore@lore.pengutronix.de;
-	Fri, 19 Dec 2025 11:38:56 +0100
+	Fri, 19 Dec 2025 11:38:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsZ-0006jb-DW
-	for lore@pengutronix.de; Fri, 19 Dec 2025 11:38:56 +0100
+	id 1vWXsa-0006kc-BT
+	for lore@pengutronix.de; Fri, 19 Dec 2025 11:38:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2lgOHHP6Z/dk6oUBkXCmPAN/8AtUKDB762rXnspW1TQ=; b=wJhkQfQ9VipTLbREXFt6Za2Lep
-	yHENB7mHfLbC6E7SX+hxmzAzajUIEqOe+opwW/PZNLiKPptJiQ5Ym5cflQnbKR5l4YQ3OZVnXIzfE
-	DxlDe96A/fG3mrHf4NIx3Mk9spVD+HMMgTkC1MRjuL8MfqkQB0apEYe0+Sz/icCz31+aC2Dq4j861
-	eS18tS00xORBVe+LRQXSrYTadsrzJ1Rx6ysix55aB69HrMUQQvAHQepIyZi2CYGB9H/8yBaCt9+NE
-	UpGUxHwvz4KQoojvseoMEahpzYnnTXiYDI3I2ez/7kGRa6yOxv/77g29KnqPOFiGaBVQEPu3hAIZ5
-	GggO4MzA==;
+	bh=EvWU8kRT7Tszw/r2Cq4DR1uzys0bUhl2P3uP4kY8NSs=; b=ZWvsAqyX6PlnKWgKBiR7iMIqHQ
+	ixvfzvXo6lh5l0dumKE3bBU4vNFIF7JSnvoWzSWJAaAPD4Eea6J0lqGaXOOw6S/0jt+wsEEQEwYlO
+	w/MZM9dvBzCRpUI+idq0KYJcZ+kcRkR2xULVhYQOpM2HqE5Ng9ncWXxhYqdj8Bxl8PsG2bjZiDL49
+	yyRSRXwA+J9VUYctbLf74VhIloDG1TD8LJhnbbVK5fyDVg7UnGTaPUWydMkNcE3PuXEtnSRjgL49W
+	HpWU/1Iysiw6YCdQbiPickhtd/RhQDV8n6jdoi/Hmk0PxA9PmPTDxTYgxwsgOM0NLVmgPHGgkwx93
+	GZUw2E4w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXrQ-0000000A6ct-08Nh;
-	Fri, 19 Dec 2025 10:37:24 +0000
+	id 1vWXrR-0000000A6g6-1887;
+	Fri, 19 Dec 2025 10:37:25 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqz-0000000A65Z-2LA8
+	id 1vWXr0-0000000A66b-10oI
 	for barebox@bombadil.infradead.org;
-	Fri, 19 Dec 2025 10:36:57 +0000
+	Fri, 19 Dec 2025 10:36:58 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=2lgOHHP6Z/dk6oUBkXCmPAN/8AtUKDB762rXnspW1TQ=; b=RA+/RATZIxY0dxv711Am/qRqxh
-	yucqtkqmzg1TFW+MrkWoYcfoyC/qhRz2Fi6tJKx+DsGli1OG2/jBwwhavaF7wAB7tbGa9e4R6Fxf9
-	GaKgnaolzKnW2IwngagvUsKO0kVHqKTctbqEXL/EUYgq96sgTyKbJFyRhfu9VCXV8n9+Cy/i91tHW
-	snPYmXuRASIK/DGnGJMx128nuATDPp5bUpkPLOZ7YNSDFrpwKVQp13+etlgZQsw+kCwn1Hk1lf3hu
-	3gZ23PncL+sr9d3sHFUWxlcBVk0Z/QjvhsBGVTht81Zeg+R1XQK9IEzpQrk7AJR0uJql5DIa4xcLu
-	sWp3O3Lw==;
+	bh=EvWU8kRT7Tszw/r2Cq4DR1uzys0bUhl2P3uP4kY8NSs=; b=l6fNkf0djhnWHRV05fJtkpnfsR
+	Vd0Lig4dI5yTjwOiuaPu54pUkiLZZsz4v3Rcs2ulbhJ0NBt51NjFQ1QL1yvhe9c0vQfu859FkY+jL
+	kdvXay0YxaXNllsSXX2TEuxS2FxD3gwGy+95rFIngRhoqbcvq1IZLzNensiPX7y2oXBUw98Uz2xqL
+	gB3UORRCEFSvbY+HPbQyomUGQyO3lXNtcJ8nkz+0hC9vgy3t8KNR2leoQMVb9qSXptOugvxwUxt1z
+	CQFOpDCPeIAX9lpVrRSIGjHORBtQLMbKuFLhLwAJWWHa7MImCK9fmYouw5sb0pVoLW/oW9jZ0+RwE
+	LrH/JaLA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqu-00000007RTD-0V2k
+	id 1vWXqu-00000007RTH-0VJo
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 10:36:56 +0000
+	Fri, 19 Dec 2025 10:36:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqs-0004gT-Ce; Fri, 19 Dec 2025 11:36:50 +0100
+	id 1vWXqs-0004gv-JL; Fri, 19 Dec 2025 11:36:50 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqs-006RVt-0Z;
+	id 1vWXqs-006RW1-18;
 	Fri, 19 Dec 2025 11:36:50 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVh-0000000320L-2Kcd;
-	Fri, 19 Dec 2025 11:14:57 +0100
+	id 1vWXVi-0000000320L-23qf;
+	Fri, 19 Dec 2025 11:14:58 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 Dec 2025 10:20:59 +0100
-Message-ID: <20251219101453.2806980-24-a.fatoum@pengutronix.de>
+Cc: Jonas Rebmann <jre@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:21:19 +0100
+Message-ID: <20251219101453.2806980-44-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_103652_253982_EBB9C4D8 
-X-CRM114-Status: GOOD (  12.00  )
+X-CRM114-CacheID: sfid-20251219_103652_254158_C80105F1 
+X-CRM114-Status: GOOD (  12.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,96 +99,59 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 23/49] fs: qemu_fw_cfg: make use of the automount
+Subject: [PATCH v2025.09.y 43/49] lib: base64: Fix out-of-bounds potential by respecting dst_len
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We assume /mnt/fw_cfg to be the fw_cfg mount path at other places
-already, so let's drop some complexity by just using the automount.
+From: Jonas Rebmann <jre@pengutronix.de>
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20251125062603.2614867-2-a.fatoum@pengutronix.de
+__decode_base64 generally writes the input in 3 bytes increments,
+corresponding to 4 bytes increments in the base64 input buffer. This
+means that in order to respect dst_len as the size of the output buffer,
+the case of exceeding dst_len within a loop iteration must be
+considered.
+
+In such a case, refrain from writing the last one or two bytes if that
+write would be past dst_len.
+
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+Link: https://lore.barebox.org/20251202-base64-bounds-v2-1-34d3716c3f55@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit 332be0eec5f8b0683838fda48889efd8de76c9b1)
+(cherry picked from commit c99102d34c2d8f8c79cfaecf8968581031cbffef)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/devfs-core.c  |  6 ++++++
- fs/qemu_fw_cfg.c | 27 +++++----------------------
- include/driver.h |  2 ++
- 3 files changed, 13 insertions(+), 22 deletions(-)
+ lib/base64.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 92e7c5823ed0..4f8230e124eb 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -86,6 +86,12 @@ struct cdev *cdev_by_name(const char *filename)
- 	return cdev_readlink(cdev);
- }
- 
-+struct device *device_find_by_file_path(const char *filename)
-+{
-+	struct cdev *cdev = cdev_by_name(devpath_to_name(filename));
-+	return cdev ? cdev->dev : NULL;
-+}
-+
- struct cdev *cdev_by_device_node(struct device_node *node)
- {
- 	struct cdev *cdev;
-diff --git a/fs/qemu_fw_cfg.c b/fs/qemu_fw_cfg.c
-index caf541574649..49115beeb21d 100644
---- a/fs/qemu_fw_cfg.c
-+++ b/fs/qemu_fw_cfg.c
-@@ -411,32 +411,15 @@ coredevice_initcall(qemu_fw_cfg_fs_init);
- 
- static int qemu_fw_cfg_early_mount(void)
- {
--	struct cdev *cdev;
--	struct device *dev;
--	const char *mntpath;
--	int dirfd, fd;
--
--	cdev = cdev_by_name("fw_cfg");
--	if (!cdev)
--		return 0;
-+	int fd;
- 
- 	/*
--	 * Trigger a mount, so ramfb device can be detected and
--	 * environment can be loaded
-+	 * Also triggers the automount, so ramfb device can be detected
- 	 */
--	mntpath = cdev_mount(cdev);
--	if (IS_ERR(mntpath))
--		return PTR_ERR(mntpath);
--
--	dirfd = open(mntpath, O_PATH | O_DIRECTORY);
--	if (dirfd < 0)
--		return dirfd;
--
--	fd = openat(dirfd, "by_name/etc/ramfb", O_WRONLY);
--	close(dirfd);
-+	fd = open("/mnt/fw_cfg/by_name/etc/ramfb", O_WRONLY);
- 	if (fd >= 0) {
--		dev = device_alloc("qemu-ramfb", DEVICE_ID_SINGLE);
--		dev->parent = cdev->dev;
-+		struct device *dev = device_alloc("qemu-ramfb", DEVICE_ID_SINGLE);
-+		dev->parent = device_find_by_file_path("/dev/fw_cfg");
- 		dev->platform_data = (void *)(uintptr_t)fd;
- 		platform_device_register(dev);
+diff --git a/lib/base64.c b/lib/base64.c
+index d5ab217528db..3e29f0a56c45 100644
+--- a/lib/base64.c
++++ b/lib/base64.c
+@@ -163,19 +163,19 @@ static int __decode_base64(char *p_dst, int dst_len, const char *src, bool url)
+ 		 */
+ 		if (count > 1)
+ 			*dst++ = six_bit[0] << 2 | six_bit[1] >> 4;
+-		if (count > 2)
++		if (count > 2 && dst_len > 1)
+ 			*dst++ = six_bit[1] << 4 | six_bit[2] >> 2;
+-		if (count > 3)
++		if (count > 3 && dst_len > 2)
+ 			*dst++ = six_bit[2] << 6 | six_bit[3];
++		/* last character was "=" */
++		if (count != 0)
++			length += min(count - 1, dst_len);
+ 		/*
+ 		 * Note that if we decode "AA==" and ate first '=',
+ 		 * we just decoded one char (count == 2) and now we'll
+ 		 * do the loop once more to decode second '='.
+ 		 */
+ 		dst_len -= count-1;
+-		/* last character was "=" */
+-		if (count != 0)
+-			length += count - 1;
  	}
-diff --git a/include/driver.h b/include/driver.h
-index c130a3cd63fd..143ca18e4e39 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -477,6 +477,8 @@ int cdev_fdopen(struct cdev *cdev, unsigned long flags);
- int cdev_close(struct cdev *cdev);
- int cdev_flush(struct cdev *cdev);
- 
-+struct device *device_find_by_file_path(const char *filepath);
-+
- typedef int (*cdev_alias_processor_t)(struct cdev *, void *data);
- 
- #ifdef CONFIG_CDEV_ALIAS
+ ret:
+ 	p_dst = dst;
 -- 
 2.47.3
 
