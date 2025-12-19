@@ -1,67 +1,69 @@
-Delivery-date: Fri, 19 Dec 2025 11:37:54 +0100
+Delivery-date: Fri, 19 Dec 2025 11:37:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXru-00DAYV-12
+	id 1vWXrv-00DAZM-0s
 	for lore@lore.pengutronix.de;
-	Fri, 19 Dec 2025 11:37:54 +0100
+	Fri, 19 Dec 2025 11:37:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXri-0005fF-SU
-	for lore@pengutronix.de; Fri, 19 Dec 2025 11:37:54 +0100
+	id 1vWXrj-0005fK-BI
+	for lore@pengutronix.de; Fri, 19 Dec 2025 11:37:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=s9ifIuWTTwMh1TWo4NKcIuFtp9ZI1QWaEc3burxjRE8=; b=1WxEmEzrh0Z/R4hHtJN2lRFmND
-	HzbKySfutR5Z0FuS1SOgSn3koUSKA8nGZcfacWyo9SdYjMfB+Yfvqs5i4bwIupjCdNu8Vcp9+Ft6o
-	m+vb3cw4aK3lLiJ+NtgoE04XQUHp6/U3q9rR0Ge29JjKbFBjhK6pl3ld0V6ovsI+1+2IYDwn7XY3t
-	SnRzqHBOVLxao9CYu6GLk+klSg2ELXHorindg2cYRgA+WPmopbqd+HahjJqph00Nng9eW66K8+6AD
-	vAbdE8oHOTGroWyxftJVrqsmmWBVoUwP+C8fDTYrjgjrWKxG1KvSve3gR1CojFA+Q1bRE0SitFO8Z
-	zR47N0DQ==;
+	bh=BBjtUaMmO1lZt4Fr8DYaMPQbrSMol4LeTrNsLa7DqI0=; b=DOtrVqoBz33QTT2O9zBxEoAHzc
+	Sa+z6IxjfXIfXOFMXHVEPZ/6a4dUDPs3XxGnr9Tnjiz0/MTTyP+UuD3hMdIyg7hIq5MdcL1pAgwrC
+	bgJ6mtru57O44Z0g2Lf8nXiZ78LdMSSVuXljIfyHbQULewCArgMVtM2sD+3UxAydKlvhHD2k7neyO
+	Yjos9871Cb8OvfnS3Jr7ZyOJ3hNv2AH7qNMhl3khj6lIhjateTwtQ/7tGzLv4Efz54RQIoM4YWXn6
+	W/9AMjov3VTDwU3lAZhpN3zh3pIrw9rMEjWUInjKTGgR3Xw3D9V7sWW8tJ1IZDvY7idRApxBZyw0p
+	DsqQGCfg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqy-0000000A65V-45n9;
-	Fri, 19 Dec 2025 10:36:56 +0000
+	id 1vWXr0-0000000A683-1ld0;
+	Fri, 19 Dec 2025 10:36:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqr-0000000A5ul-3ysN
+	id 1vWXqs-0000000A5ur-1dz8
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 10:36:53 +0000
+	Fri, 19 Dec 2025 10:36:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqq-0004ah-F4; Fri, 19 Dec 2025 11:36:48 +0100
+	id 1vWXqq-0004be-RD; Fri, 19 Dec 2025 11:36:48 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqq-006RUT-0n;
+	id 1vWXqq-006RUj-23;
 	Fri, 19 Dec 2025 11:36:48 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVh-0000000320L-1BnB;
+	id 1vWXVh-0000000320L-2W48;
 	Fri, 19 Dec 2025 11:14:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 Dec 2025 10:20:53 +0100
-Message-ID: <20251219101453.2806980-18-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	=?UTF-8?q?Jan=20L=C3=BCbbe?= <j.luebbe@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:21:00 +0100
+Message-ID: <20251219101453.2806980-25-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_023649_984051_6ED117BA 
-X-CRM114-Status: GOOD (  11.30  )
+X-CRM114-CacheID: sfid-20251219_023650_427549_753C4AE3 
+X-CRM114-Status: GOOD (  14.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,68 +85,76 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 17/49] ARM: mmu: have zero_page_remappable() check MMU status
+Subject: [PATCH v2025.09.y 24/49] fs: qemu_fw_cfg: handle non-existent opt/org.barebox.env key gracefully
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-zero_page_access() and zero_page_faulting() call remap_range(), which
-assumes the TTBR was initialized to page tables set up by barebox.
+QEMU fw_cfg file system driver is the sole user of
+defaultenv_append_runtime_directory() and it passes a path that's not
+necessarily available.
 
-It's thus not safe to call them from generic code prior to enabling the
-MMU, but we are doing just that. In preparation for fixing, let's make
-zero_page_remappable reflect MMU status.
+When that happens, this is not noticed until the loop in defaultenv_load()
+aborts early with an -ENOENT preventing load of an external environment.
 
-While at it, also drop the duplicate zero_page_access() prototype.
+Fix this as by not adding the directory if it doesn't exist.
 
+Fixes: 31dfb561d1a4 ("fs: qemu_fw_cfg: support populating environment via QEMU fw_cfg")
+Reported-by: Jan Lübbe <j.luebbe@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20251028143238.1782982-1-a.fatoum@pengutronix.de
+Link: https://lore.barebox.org/20251125062603.2614867-5-a.fatoum@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit 594850b2de53300ae25c103e4ec88b2dac418106)
+(cherry picked from commit cfa4f62c104c6b9232b5bad5b0a5e7e5341a9870)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/mmu-common.c |  5 +++++
- include/zero_page.h       | 12 ++++++------
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ fs/qemu_fw_cfg.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index 033ba01ea4c8..92e06b06077f 100644
---- a/arch/arm/cpu/mmu-common.c
-+++ b/arch/arm/cpu/mmu-common.c
-@@ -81,6 +81,11 @@ void *dma_alloc_writecombine(struct device *dev, size_t size, dma_addr_t *dma_ha
- 	return dma_alloc_map(dev, size, dma_handle, MAP_WRITECOMBINE);
- }
+diff --git a/fs/qemu_fw_cfg.c b/fs/qemu_fw_cfg.c
+index 49115beeb21d..b28f4df99c25 100644
+--- a/fs/qemu_fw_cfg.c
++++ b/fs/qemu_fw_cfg.c
+@@ -20,6 +20,8 @@
+ #include <linux/err.h>
+ #include <linux/ctype.h>
  
-+bool zero_page_remappable(void)
-+{
-+	return get_cr() & CR_M;
-+}
++#define FW_CFG_BAREBOX_ENV	"/mnt/fw_cfg/by_name/opt/org.barebox.env"
 +
- void zero_page_access(void)
- {
- 	remap_range(0x0, PAGE_SIZE, MAP_CACHED);
-diff --git a/include/zero_page.h b/include/zero_page.h
-index 8dd66a1efb9b..072e71be581e 100644
---- a/include/zero_page.h
-+++ b/include/zero_page.h
-@@ -20,12 +20,12 @@ void zero_page_faulting(void);
-  */
- void zero_page_access(void);
+ struct fw_cfg_fs_inode {
+ 	struct inode inode;
+ 	const char *name;
+@@ -375,8 +377,6 @@ static int fw_cfg_fs_probe(struct device *dev)
+ 	if (ret)
+ 		goto free_data;
  
--void zero_page_access(void);
+-	defaultenv_append_runtime_directory("/mnt/fw_cfg/by_name/opt/org.barebox.env");
 -
--static inline bool zero_page_remappable(void)
--{
--	return true;
--}
-+/**
-+ * zero_page_remappable() - check if zero page can be remapped
-+ *
-+ * Check if MMU is enabled and zero page remapping support is available.
-+ */
-+bool zero_page_remappable(void);
+ 	return 0;
+ free_data:
+ 	free(data);
+@@ -411,10 +411,12 @@ coredevice_initcall(qemu_fw_cfg_fs_init);
  
- #else
+ static int qemu_fw_cfg_early_mount(void)
+ {
++	struct stat s;
+ 	int fd;
  
+ 	/*
+-	 * Also triggers the automount, so ramfb device can be detected
++	 * Also triggers the automount, so both ramfb device can be detected
++	 * and environment can be loaded
+ 	 */
+ 	fd = open("/mnt/fw_cfg/by_name/etc/ramfb", O_WRONLY);
+ 	if (fd >= 0) {
+@@ -424,6 +426,9 @@ static int qemu_fw_cfg_early_mount(void)
+ 		platform_device_register(dev);
+ 	}
+ 
++	if (!stat(FW_CFG_BAREBOX_ENV, &s) && S_ISDIR(s.st_mode))
++		defaultenv_append_runtime_directory(FW_CFG_BAREBOX_ENV);
++
+ 	return 0;
+ }
+ late_initcall(qemu_fw_cfg_early_mount);
 -- 
 2.47.3
 
