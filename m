@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXru-00DAYU-0o
+	id 1vWXru-00DAYV-12
 	for lore@lore.pengutronix.de;
 	Fri, 19 Dec 2025 11:37:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXrj-0005fH-0I
+	id 1vWXri-0005fF-SU
 	for lore@pengutronix.de; Fri, 19 Dec 2025 11:37:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,51 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JVOeVi1aGBMXZJyWmc5kvtHD6QBuJkqLP/l8C7D4spg=; b=aCrCX3vjv1/PDDad2a0P8RjuRh
-	ZDdzwmDlPblHA53lnGMeqdCn/3bEj9eD4pF1Jx1NeI2f6PnIEC/7WVifk/XhqAQ3xCj3/v5z7RsQA
-	jgfv5YhE4aYuyjauvYq+NOLFrAad+PLPig0iodIO6UthsL//9VGjDUU4Wec3wpIUwv0yGEh8mebLK
-	MOA6SKeJJOJaRxi6jK9xBS6X0V8IYC2/gYb9JiAWfOMqo92FI4NrpBHZd4bBPfz2cTK8U8kqXpKJG
-	g1y5PH/uA3MHuQWkeNvrAWV/toP0OfYB1OG46C5Zqn3CKOFaS+FWLSSlRKhLK5HPTZpxmY2aHpYNM
-	cKphcvFQ==;
+	bh=s9ifIuWTTwMh1TWo4NKcIuFtp9ZI1QWaEc3burxjRE8=; b=1WxEmEzrh0Z/R4hHtJN2lRFmND
+	HzbKySfutR5Z0FuS1SOgSn3koUSKA8nGZcfacWyo9SdYjMfB+Yfvqs5i4bwIupjCdNu8Vcp9+Ft6o
+	m+vb3cw4aK3lLiJ+NtgoE04XQUHp6/U3q9rR0Ge29JjKbFBjhK6pl3ld0V6ovsI+1+2IYDwn7XY3t
+	SnRzqHBOVLxao9CYu6GLk+klSg2ELXHorindg2cYRgA+WPmopbqd+HahjJqph00Nng9eW66K8+6AD
+	vAbdE8oHOTGroWyxftJVrqsmmWBVoUwP+C8fDTYrjgjrWKxG1KvSve3gR1CojFA+Q1bRE0SitFO8Z
+	zR47N0DQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqy-0000000A63k-06jT;
+	id 1vWXqy-0000000A65V-45n9;
 	Fri, 19 Dec 2025 10:36:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqr-0000000A5ui-37KV
+	id 1vWXqr-0000000A5ul-3ysN
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 10:36:52 +0000
+	Fri, 19 Dec 2025 10:36:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqq-0004a8-8G; Fri, 19 Dec 2025 11:36:48 +0100
+	id 1vWXqq-0004ah-F4; Fri, 19 Dec 2025 11:36:48 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqp-006RUI-2v;
-	Fri, 19 Dec 2025 11:36:47 +0100
+	id 1vWXqq-006RUT-0n;
+	Fri, 19 Dec 2025 11:36:48 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVh-0000000320L-3tO2;
+	id 1vWXVh-0000000320L-1BnB;
 	Fri, 19 Dec 2025 11:14:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Maud Spierings <maudspierings@gocontroll.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 Dec 2025 10:21:07 +0100
-Message-ID: <20251219101453.2806980-32-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:20:53 +0100
+Message-ID: <20251219101453.2806980-18-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_023649_794278_757575F2 
-X-CRM114-Status: GOOD (  14.88  )
+X-CRM114-CacheID: sfid-20251219_023649_984051_6ED117BA 
+X-CRM114-Status: GOOD (  11.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,74 +83,68 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 31/49] scripts: imx: add pread implementation for mingw target
+Subject: [PATCH v2025.09.y 17/49] ARM: mmu: have zero_page_remappable() check MMU status
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+zero_page_access() and zero_page_faulting() call remap_range(), which
+assumes the TTBR was initialized to page tables set up by barebox.
 
-Add a simple pread implementation for the mingw target so imx-usb-loader
-can be compiled for windows.
+It's thus not safe to call them from generic code prior to enabling the
+MMU, but we are doing just that. In preparation for fixing, let's make
+zero_page_remappable reflect MMU status.
 
-This function is actually only called by bareboxtlv, which I don't think
-targets being compiled for windows, so it is a bit of a dead weight.
+While at it, also drop the duplicate zero_page_access() prototype.
 
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20251201-imx_usb-v2-2-95ec2a0e8694@gocontroll.com
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20251028143238.1782982-1-a.fatoum@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit 969c9b94b58de50ab0db2eeef0a4dcfad4f5da5c)
+(cherry picked from commit 594850b2de53300ae25c103e4ec88b2dac418106)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/imx/Makefile.mingw64 |  2 +-
- scripts/imx/pread.c          | 25 +++++++++++++++++++++++++
- 2 files changed, 26 insertions(+), 1 deletion(-)
- create mode 100644 scripts/imx/pread.c
+ arch/arm/cpu/mmu-common.c |  5 +++++
+ include/zero_page.h       | 12 ++++++------
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/imx/Makefile.mingw64 b/scripts/imx/Makefile.mingw64
-index 101b39e9178d..a7be48ae5333 100644
---- a/scripts/imx/Makefile.mingw64
-+++ b/scripts/imx/Makefile.mingw64
-@@ -33,7 +33,7 @@ obj := $(realpath $(obj))
- CPPFLAGS := -I $(LIBUSB_MINGW)/include/libusb-1.0 -I $(src)/../include/ -I $(src)/../../include/mach/ -include $(src)/../include/defines.h
- LDFLAGS := -L $(LIBUSB_MINGW)/lib -lusb-1.0 -static
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+index 033ba01ea4c8..92e06b06077f 100644
+--- a/arch/arm/cpu/mmu-common.c
++++ b/arch/arm/cpu/mmu-common.c
+@@ -81,6 +81,11 @@ void *dma_alloc_writecombine(struct device *dev, size_t size, dma_addr_t *dma_ha
+ 	return dma_alloc_map(dev, size, dma_handle, MAP_WRITECOMBINE);
+ }
  
--OBJECTS := $(addprefix $(obj)/, imx.o imx-usb-loader.o)
-+OBJECTS := $(addprefix $(obj)/, imx.o imx-usb-loader.o pread.o)
- 
- $(obj)/%.o: $(src)/%.c
- 	@$(CC) -c -o $@ $< $(CPPFLAGS)
-diff --git a/scripts/imx/pread.c b/scripts/imx/pread.c
-new file mode 100644
-index 000000000000..febb6f32432c
---- /dev/null
-+++ b/scripts/imx/pread.c
-@@ -0,0 +1,25 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: 2025 Maud Spierings, GOcontroll B.V.
-+
-+#include <stdint.h>
-+#include <sys/types.h>
-+#include <unistd.h>
-+
-+ssize_t pread(int fd, void *buf, size_t count, off_t offset)
++bool zero_page_remappable(void)
 +{
-+	int offset_start, now;
-+
-+	offset_start = lseek(fd, 0, SEEK_CUR);
-+	if (offset_start < 0)
-+		return offset_start;
-+
-+	now = lseek(fd, offset, SEEK_SET);
-+	if (now < 0)
-+		return now;
-+
-+	now = read(fd, buf, count);
-+
-+	lseek(fd, offset_start, SEEK_SET);
-+
-+	return now;
++	return get_cr() & CR_M;
 +}
++
+ void zero_page_access(void)
+ {
+ 	remap_range(0x0, PAGE_SIZE, MAP_CACHED);
+diff --git a/include/zero_page.h b/include/zero_page.h
+index 8dd66a1efb9b..072e71be581e 100644
+--- a/include/zero_page.h
++++ b/include/zero_page.h
+@@ -20,12 +20,12 @@ void zero_page_faulting(void);
+  */
+ void zero_page_access(void);
+ 
+-void zero_page_access(void);
+-
+-static inline bool zero_page_remappable(void)
+-{
+-	return true;
+-}
++/**
++ * zero_page_remappable() - check if zero page can be remapped
++ *
++ * Check if MMU is enabled and zero page remapping support is available.
++ */
++bool zero_page_remappable(void);
+ 
+ #else
+ 
 -- 
 2.47.3
 
