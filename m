@@ -1,81 +1,81 @@
-Delivery-date: Fri, 19 Dec 2025 11:39:03 +0100
+Delivery-date: Fri, 19 Dec 2025 11:39:12 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXt1-00DAkC-2c
+	id 1vWXtA-00DAko-08
 	for lore@lore.pengutronix.de;
-	Fri, 19 Dec 2025 11:39:03 +0100
+	Fri, 19 Dec 2025 11:39:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsh-0006rG-7J
-	for lore@pengutronix.de; Fri, 19 Dec 2025 11:39:03 +0100
+	id 1vWXsv-000750-4H
+	for lore@pengutronix.de; Fri, 19 Dec 2025 11:39:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ILAiccVCu+7dnByLmPsBtFzXv+MF0lgeiX8Q1ZSUqtg=; b=lKjeqwGf1ywMTq
-	vtTcR/oLxo1+VTt2a8Y193qVxaqcghss4c6NK9I+hZHoQted1+vbldQdOOvh5XSajpb/toyqhvjxo
-	r+VE1bJDufrUHtfp89LwmPwG94Kcpc81g7nEYEboUNNfftPezZgQj1pHR+8M19c6TBXa2l2tN0vkj
-	fQFJPnAT7Oaf8OJNJWfmNpHBmH10vvFjB6yo4p+9MdnKSfvOdKQ9oKqLqxiqrQmgV4JkReIwsQjzJ
-	9/KYO4QNnWhsBmXFWuCrsDVIN2kyBGH6j6ogGrOjAazmVAFMRU6tUBO+/KqQ/PtNvG4vNZi299Oo8
-	SSObDHlBgDi2uL5sUVmw==;
+	List-Owner; bh=SsDFGx5IsPVlaEMDTLt2gdk1AqZsOfxc/Y3I2ZhVe7s=; b=hNJzBu4ZP8Il2y
+	M1CyDt1zCJVkktglhuGOew9mFUT8NtWffTSgg37ZwKdHHqBeXEx5xS8aZLtZu76jBv6XFRhySZbJv
+	CszvPotFzdRpXyNM7UU7hdd7dlIEsq5Kk+FjEhPULt2Xsv/RA7lyY0LST15VgxFnQ/xbn+3/g0HCy
+	/6BfWAlgeY/3kRB4D5yDjHXkMzuAwt2mxVlakEtUL4rIx00KCdyZL8jUPGi4U6ZTzwesRs2oP3O31
+	LsWO6URd5D4Efmw3SQbis16eC9tsNkjJ0sWJyqw3cw4bHpx/5Pxn+SFopOBk/XGUiHWepta6q47d+
+	JXB4+1k0plfjI3aVWMdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXrY-0000000A6r0-1qxB;
-	Fri, 19 Dec 2025 10:37:32 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1vWXrg-0000000A76B-2kX1;
+	Fri, 19 Dec 2025 10:37:40 +0000
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXr1-0000000A69Z-3itM
+	id 1vWXr4-0000000A6CC-0I1v
 	for barebox@bombadil.infradead.org;
-	Fri, 19 Dec 2025 10:36:59 +0000
+	Fri, 19 Dec 2025 10:37:02 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=ILAiccVCu+7dnByLmPsBtFzXv+MF0lgeiX8Q1ZSUqtg=; b=Yo88RFUE5wAZmatmw6cDzJtsj4
-	g2KjCE8LrIVzqSgTxqkm+xSLely3lKKhfYQpX6j4WfEiXoghraMa02nRtseDbBxBAClhV/Kzm0PUp
-	96Rjf1J+tRUpo9cgKWX9C34Jb6EEymAb1YfZIApyIaLAs4Utz4C7ylyOiujGRnkTGJ13Yg1n3CVj8
-	unOZFwhIiH/+46qY0XKzSIxbkyjG4QsndCmRe9tTXQyMCNA9tV/lKsrkkVF1su1H6p79u34K2qlQF
-	Ug5DvoeYiVOviOwibQBnV0CIFtMuQDQ/h+VAFKYjIO7idaFdGFG8j/fx78KsRkPhd1VBxep7uA3zX
-	PcyHJfgg==;
+	bh=SsDFGx5IsPVlaEMDTLt2gdk1AqZsOfxc/Y3I2ZhVe7s=; b=M9VI7lMRxNU+26gZunZ2GSAzpt
+	p6kkCg7GKuXpz46aLJultMCSfF0mj9BCM/aUv//VwIbX1/ggkfmftRU7QZUOzx8liEh8jeWf6yQDj
+	Qwdlc7hZE9krCZSDxMmbgJkxrwtmobsBlOgzbI2nTyy5SLlA7yvBA95O/W32qBmjaXpP2QRDZRZE8
+	T/4/OmF+8M6xdgarNzCCOGeLbKD91F4qUq1ZrtssiVyxFVjHhVQmvAcmfYWAydNEGrMt7vIwT2tkT
+	9Y12eP9vA2azLwQlt7dvpbk3OA0+Cy/Dfa4+m+JNFBNBSQof/zlPmTs4W9A2JxIszJkuhzybl+5du
+	Vq85PkPQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWWzR-0000000AbFS-2QwI
+	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vWXr0-00000007RVj-35iN
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 09:41:44 +0000
+	Fri, 19 Dec 2025 10:37:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqt-0004ia-2T; Fri, 19 Dec 2025 11:36:51 +0100
+	id 1vWXqs-0004fV-1W; Fri, 19 Dec 2025 11:36:50 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqs-006RWP-2n;
-	Fri, 19 Dec 2025 11:36:50 +0100
+	id 1vWXqr-006RVd-2i;
+	Fri, 19 Dec 2025 11:36:49 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVi-0000000320L-314v;
+	id 1vWXVi-0000000320L-13Yi;
 	Fri, 19 Dec 2025 11:14:58 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 19 Dec 2025 10:21:24 +0100
-Message-ID: <20251219101453.2806980-49-a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:21:14 +0100
+Message-ID: <20251219101453.2806980-39-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_094137_735232_3531FC54 
-X-CRM114-Status: UNSURE (   8.91  )
+X-CRM114-CacheID: sfid-20251219_103658_812419_54B949BD 
+X-CRM114-Status: UNSURE (   9.86  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -99,53 +99,64 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 48/49] i2c: implement i2c_unregister_device()
+Subject: [PATCH v2025.09.y 38/49] fs: fix automount when last filename component is a automountpoint
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-We had no need so far, but we do in a followup patch.
+When opening a directory in openat() as indicated with the O_DIRECTORY
+flag, pass the LOOKUP_DIRECTOY flag to filename_lookup() to make sure
+the target is actually a directory. By doing this we can skip the check
+afterwards.
 
-Link: https://lore.barebox.org/20251217145156.1581678-2-s.hauer@pengutronix.de
+filename_lookup() only triggers the automount on the last component when
+the LOOKUP_DIRECTORY flag is set, so with this change when /mnt/mmc2.3/
+is a automountpoint a
+
+stat /mnt/mmc2.3/
+
+now triggers automounting. This also fixes tab completion with
+"ls /mnt/mmc2.3/<tab>" which previously didn't trigger autmounting.
+
+Fixes: a1da0079d1 ("fs: implement opendir in terms of fdopendir")
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20251202092256.1565823-1-s.hauer@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit aec4d23749922d10aed37641bc6c0fafccec4c09)
+(cherry picked from commit 500df27eb054f86ce232c5bb30c3a7ea8f771e61)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/i2c/i2c.c | 6 ++++++
- include/i2c/i2c.h | 2 ++
- 2 files changed, 8 insertions(+)
+ fs/fs.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 7b11c350399d..658a0a2b7165 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -421,6 +421,12 @@ static struct i2c_client *i2c_new_device(struct i2c_adapter *adapter,
- 	return client;
- }
+diff --git a/fs/fs.c b/fs/fs.c
+index 54bd35786857..3eaf9084d096 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -2606,7 +2606,12 @@ int openat(int dirfd, const char *pathname, int flags)
+ 	}
  
-+void i2c_unregister_device(struct i2c_client *client)
-+{
-+	unregister_device(&client->dev);
-+	devinfo_del(&client->dev, i2c_info);
-+}
+ 	if (!(flags & O_CREAT) || error == -EEXIST) {
+-		error = filename_lookup(dirfd, getname(pathname), LOOKUP_FOLLOW, &path);
++		unsigned f = LOOKUP_FOLLOW;
 +
- static void of_i2c_register_devices(struct i2c_adapter *adap)
- {
- 	struct device_node *n;
-diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
-index 5c0174b0ddc7..fb3f43cabb9d 100644
---- a/include/i2c/i2c.h
-+++ b/include/i2c/i2c.h
-@@ -313,6 +313,8 @@ extern struct class i2c_adapter_class;
- extern struct i2c_client *
- i2c_new_dummy(struct i2c_adapter *adap, u16 address);
++		if (flags & O_DIRECTORY)
++			f |= LOOKUP_DIRECTORY;
++
++		error = filename_lookup(dirfd, getname(pathname), f, &path);
+ 		dentry = path.dentry;
+ 	}
  
-+void i2c_unregister_device(struct i2c_client *client);
-+
- /* Return the adapter number for a specific adapter */
- static inline int i2c_adapter_id(struct i2c_adapter *adap)
- {
+@@ -2636,9 +2641,6 @@ int openat(int dirfd, const char *pathname, int flags)
+ 		}
+ 
+ 		flags |= O_DIRECTORY;
+-	} else if (flags & O_DIRECTORY) {
+-		error = -ENOTDIR;
+-		goto out1;
+ 	}
+ 
+ 	inode = d_inode(dentry);
 -- 
 2.47.3
 
