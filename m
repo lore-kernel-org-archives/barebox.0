@@ -1,83 +1,82 @@
-Delivery-date: Fri, 19 Dec 2025 11:38:52 +0100
+Delivery-date: Fri, 19 Dec 2025 11:38:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsq-00DAhT-0F
+	id 1vWXsu-00DAi1-1P
 	for lore@lore.pengutronix.de;
-	Fri, 19 Dec 2025 11:38:52 +0100
+	Fri, 19 Dec 2025 11:38:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsV-0006ea-8b
-	for lore@pengutronix.de; Fri, 19 Dec 2025 11:38:51 +0100
+	id 1vWXsZ-0006jb-DW
+	for lore@pengutronix.de; Fri, 19 Dec 2025 11:38:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=np54NRH0SdPkbrDcsPvrMHpNvSlYK0yFRo2Urd8AU9Q=; b=dQMvHiA5QzlfcbvniJMabkZCQ6
-	Df8x7DWSUXk/ShM0UXfK0pg78qZogcNSuFKmDWDU/uZutxmv9+MCO9bKQAWDX78NGuGB67qcF3+HA
-	5Y4FikVDUPwTR2iGw47SFvtIWrULPEfD+1ZsgJnvtMCWQzZ0AwalRtMqQad4Wjg6KGLuGE9NLJBjm
-	HIwY07PPI9kz9qAWzLsKvY/AcOYdT9u50tYKA/rYTjZAB+3WBhVjYQ9NfLJYujC0eOWUo/Ua4FPc+
-	QFHsmIX1Hv/2un82DsVncGRv1BbjfkLs1zYahaB81say9hJNZwnaU4vavqe+28yj/yfj2xTQgf05J
-	2iwX/kXA==;
+	bh=2lgOHHP6Z/dk6oUBkXCmPAN/8AtUKDB762rXnspW1TQ=; b=wJhkQfQ9VipTLbREXFt6Za2Lep
+	yHENB7mHfLbC6E7SX+hxmzAzajUIEqOe+opwW/PZNLiKPptJiQ5Ym5cflQnbKR5l4YQ3OZVnXIzfE
+	DxlDe96A/fG3mrHf4NIx3Mk9spVD+HMMgTkC1MRjuL8MfqkQB0apEYe0+Sz/icCz31+aC2Dq4j861
+	eS18tS00xORBVe+LRQXSrYTadsrzJ1Rx6ysix55aB69HrMUQQvAHQepIyZi2CYGB9H/8yBaCt9+NE
+	UpGUxHwvz4KQoojvseoMEahpzYnnTXiYDI3I2ez/7kGRa6yOxv/77g29KnqPOFiGaBVQEPu3hAIZ5
+	GggO4MzA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXrP-0000000A6bw-1Jnl;
-	Fri, 19 Dec 2025 10:37:23 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1vWXrQ-0000000A6ct-08Nh;
+	Fri, 19 Dec 2025 10:37:24 +0000
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqy-0000000A63e-2Tdv
+	id 1vWXqz-0000000A65Z-2LA8
 	for barebox@bombadil.infradead.org;
-	Fri, 19 Dec 2025 10:36:56 +0000
+	Fri, 19 Dec 2025 10:36:57 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=np54NRH0SdPkbrDcsPvrMHpNvSlYK0yFRo2Urd8AU9Q=; b=ZcBVuCMdoJgJOYJg1ywBdtgYOG
-	lkF0tFjVcGtOXNtuEzmNbhjW42FTaxctGxZ4BzSz5ppzvraDFKJAioLzH2U17y5vp3LPg9BHVgeRj
-	Mh1kxL7CmXsAzzow1ybncN94NJi0XTpQvVmlIOTDJyxDdGzVpklbyoxlFm/opNB2vM8BXpO6BpRht
-	OtIR88fqEif0pAjjJ7f7wTarsbWgAagw+n+HFelJqB/rU4WqeDkJxUoAiDoLPEr8h2C3130AcUA1k
-	qJ7LFJ+8EbVjyiRcugDucMvbQ0azjHBbYwavYgqa0naeJRXyUVPfhUQhyVmqzNswWc3cDeFX3j8rs
-	Q+81fQsw==;
+	bh=2lgOHHP6Z/dk6oUBkXCmPAN/8AtUKDB762rXnspW1TQ=; b=RA+/RATZIxY0dxv711Am/qRqxh
+	yucqtkqmzg1TFW+MrkWoYcfoyC/qhRz2Fi6tJKx+DsGli1OG2/jBwwhavaF7wAB7tbGa9e4R6Fxf9
+	GaKgnaolzKnW2IwngagvUsKO0kVHqKTctbqEXL/EUYgq96sgTyKbJFyRhfu9VCXV8n9+Cy/i91tHW
+	snPYmXuRASIK/DGnGJMx128nuATDPp5bUpkPLOZ7YNSDFrpwKVQp13+etlgZQsw+kCwn1Hk1lf3hu
+	3gZ23PncL+sr9d3sHFUWxlcBVk0Z/QjvhsBGVTht81Zeg+R1XQK9IEzpQrk7AJR0uJql5DIa4xcLu
+	sWp3O3Lw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWWzQ-0000000AbCM-0u5l
+	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vWXqu-00000007RTD-0V2k
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 09:41:41 +0000
+	Fri, 19 Dec 2025 10:36:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqr-0004e9-Mr; Fri, 19 Dec 2025 11:36:49 +0100
+	id 1vWXqs-0004gT-Ce; Fri, 19 Dec 2025 11:36:50 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqr-006RVN-1a;
-	Fri, 19 Dec 2025 11:36:49 +0100
+	id 1vWXqs-006RVt-0Z;
+	Fri, 19 Dec 2025 11:36:50 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVh-0000000320L-28ys;
+	id 1vWXVh-0000000320L-2Kcd;
 	Fri, 19 Dec 2025 11:14:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 Dec 2025 10:20:58 +0100
-Message-ID: <20251219101453.2806980-23-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:20:59 +0100
+Message-ID: <20251219101453.2806980-24-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_094136_340249_475D27C2 
-X-CRM114-Status: GOOD (  11.04  )
+X-CRM114-CacheID: sfid-20251219_103652_253982_EBB9C4D8 
+X-CRM114-Status: GOOD (  12.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,60 +98,96 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 22/49] commands: truncate: fix multiple file handling with relative sizes
+Subject: [PATCH v2025.09.y 23/49] fs: qemu_fw_cfg: make use of the automount
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+We assume /mnt/fw_cfg to be the fw_cfg mount path at other places
+already, so let's drop some complexity by just using the automount.
 
-Fix bug where processing multiple files with -s +SIZE option
-would use incorrect sizes for files after the first one, because the
-size variable was being overwritten.
-
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Link: https://lore.barebox.org/20251119185307.931800-1-eagle.alexander923@gmail.com
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20251125062603.2614867-2-a.fatoum@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit 6981db707661f68a1aea4f0969360cb0af7fd530)
+(cherry picked from commit 332be0eec5f8b0683838fda48889efd8de76c9b1)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/truncate.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/devfs-core.c  |  6 ++++++
+ fs/qemu_fw_cfg.c | 27 +++++----------------------
+ include/driver.h |  2 ++
+ 3 files changed, 13 insertions(+), 22 deletions(-)
 
-diff --git a/commands/truncate.c b/commands/truncate.c
-index 5c6d74257da1..83661fbaf63b 100644
---- a/commands/truncate.c
-+++ b/commands/truncate.c
-@@ -59,23 +59,26 @@ static int do_truncate(int argc, char *argv[])
- 			continue;
- 		}
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 92e7c5823ed0..4f8230e124eb 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -86,6 +86,12 @@ struct cdev *cdev_by_name(const char *filename)
+ 	return cdev_readlink(cdev);
+ }
  
-+		off_t target_size = size;
++struct device *device_find_by_file_path(const char *filename)
++{
++	struct cdev *cdev = cdev_by_name(devpath_to_name(filename));
++	return cdev ? cdev->dev : NULL;
++}
 +
- 		if (modify) {
- 			struct stat st;
+ struct cdev *cdev_by_device_node(struct device_node *node)
+ {
+ 	struct cdev *cdev;
+diff --git a/fs/qemu_fw_cfg.c b/fs/qemu_fw_cfg.c
+index caf541574649..49115beeb21d 100644
+--- a/fs/qemu_fw_cfg.c
++++ b/fs/qemu_fw_cfg.c
+@@ -411,32 +411,15 @@ coredevice_initcall(qemu_fw_cfg_fs_init);
  
- 			if (fstat(fd, &st) == -1) {
- 				perror("fstat");
- 				ret = 1;
--				goto close;
-+				close(fd);
-+				continue;
- 			}
+ static int qemu_fw_cfg_early_mount(void)
+ {
+-	struct cdev *cdev;
+-	struct device *dev;
+-	const char *mntpath;
+-	int dirfd, fd;
+-
+-	cdev = cdev_by_name("fw_cfg");
+-	if (!cdev)
+-		return 0;
++	int fd;
  
--			size = st.st_size + modify * size;
-+			target_size = st.st_size + size;
- 		}
- 
--		if (ftruncate(fd, size) == -1) {
-+		if (ftruncate(fd, target_size) == -1) {
- 			perror("truncate");
- 			ret = 1;
- 		}
--close:
-+
- 		close(fd);
+ 	/*
+-	 * Trigger a mount, so ramfb device can be detected and
+-	 * environment can be loaded
++	 * Also triggers the automount, so ramfb device can be detected
+ 	 */
+-	mntpath = cdev_mount(cdev);
+-	if (IS_ERR(mntpath))
+-		return PTR_ERR(mntpath);
+-
+-	dirfd = open(mntpath, O_PATH | O_DIRECTORY);
+-	if (dirfd < 0)
+-		return dirfd;
+-
+-	fd = openat(dirfd, "by_name/etc/ramfb", O_WRONLY);
+-	close(dirfd);
++	fd = open("/mnt/fw_cfg/by_name/etc/ramfb", O_WRONLY);
+ 	if (fd >= 0) {
+-		dev = device_alloc("qemu-ramfb", DEVICE_ID_SINGLE);
+-		dev->parent = cdev->dev;
++		struct device *dev = device_alloc("qemu-ramfb", DEVICE_ID_SINGLE);
++		dev->parent = device_find_by_file_path("/dev/fw_cfg");
+ 		dev->platform_data = (void *)(uintptr_t)fd;
+ 		platform_device_register(dev);
  	}
+diff --git a/include/driver.h b/include/driver.h
+index c130a3cd63fd..143ca18e4e39 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -477,6 +477,8 @@ int cdev_fdopen(struct cdev *cdev, unsigned long flags);
+ int cdev_close(struct cdev *cdev);
+ int cdev_flush(struct cdev *cdev);
  
++struct device *device_find_by_file_path(const char *filepath);
++
+ typedef int (*cdev_alias_processor_t)(struct cdev *, void *data);
+ 
+ #ifdef CONFIG_CDEV_ALIAS
 -- 
 2.47.3
 
