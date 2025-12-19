@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsv-00DAiN-2V
+	id 1vWXsv-00DAiV-2n
 	for lore@lore.pengutronix.de;
 	Fri, 19 Dec 2025 11:38:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsa-0006kc-BT
+	id 1vWXsa-0006lE-Ts
 	for lore@pengutronix.de; Fri, 19 Dec 2025 11:38:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,66 +18,67 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EvWU8kRT7Tszw/r2Cq4DR1uzys0bUhl2P3uP4kY8NSs=; b=ZWvsAqyX6PlnKWgKBiR7iMIqHQ
-	ixvfzvXo6lh5l0dumKE3bBU4vNFIF7JSnvoWzSWJAaAPD4Eea6J0lqGaXOOw6S/0jt+wsEEQEwYlO
-	w/MZM9dvBzCRpUI+idq0KYJcZ+kcRkR2xULVhYQOpM2HqE5Ng9ncWXxhYqdj8Bxl8PsG2bjZiDL49
-	yyRSRXwA+J9VUYctbLf74VhIloDG1TD8LJhnbbVK5fyDVg7UnGTaPUWydMkNcE3PuXEtnSRjgL49W
-	HpWU/1Iysiw6YCdQbiPickhtd/RhQDV8n6jdoi/Hmk0PxA9PmPTDxTYgxwsgOM0NLVmgPHGgkwx93
-	GZUw2E4w==;
+	bh=NcvGie0q72CvEm+zfjLWhKP8Q+trrxwGiy62Z2IaTXI=; b=bJAMHtZ3r0DnDgi45kaEW+t/Qu
+	m5Aquq+5ruYETMYJoA9spXIHWaukaQ92JkfQYlxkaeKGI45ZGG9ffFEN1j73vAcljGk9wgvwXUX20
+	sZiUoRsQPFnVAwMFfoi17T58SMmdODEQCoWDa84cBqUUTdJJ6+f2680pX5O2oMaK7u7s0lYzVN8To
+	t/DS73QDSKWuJb/B0CXyfyFNMlRdTTG7LbnwHbFP5CDkgruP42kkSW55bM4Se/y6eWUoKlC6/CpAL
+	Y7L6qVh68te/KvywESHI07d7y4UNePg+XnuOi/SoqWX2goQLbE/bWikWgT9d9aMXRf89Nev7kvqzM
+	Doz5fq+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXrR-0000000A6g6-1887;
-	Fri, 19 Dec 2025 10:37:25 +0000
+	id 1vWXrQ-0000000A6fH-3L81;
+	Fri, 19 Dec 2025 10:37:24 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXr0-0000000A66b-10oI
+	id 1vWXqz-0000000A65u-3nUd
 	for barebox@bombadil.infradead.org;
-	Fri, 19 Dec 2025 10:36:58 +0000
+	Fri, 19 Dec 2025 10:36:57 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=EvWU8kRT7Tszw/r2Cq4DR1uzys0bUhl2P3uP4kY8NSs=; b=l6fNkf0djhnWHRV05fJtkpnfsR
-	Vd0Lig4dI5yTjwOiuaPu54pUkiLZZsz4v3Rcs2ulbhJ0NBt51NjFQ1QL1yvhe9c0vQfu859FkY+jL
-	kdvXay0YxaXNllsSXX2TEuxS2FxD3gwGy+95rFIngRhoqbcvq1IZLzNensiPX7y2oXBUw98Uz2xqL
-	gB3UORRCEFSvbY+HPbQyomUGQyO3lXNtcJ8nkz+0hC9vgy3t8KNR2leoQMVb9qSXptOugvxwUxt1z
-	CQFOpDCPeIAX9lpVrRSIGjHORBtQLMbKuFLhLwAJWWHa7MImCK9fmYouw5sb0pVoLW/oW9jZ0+RwE
-	LrH/JaLA==;
+	bh=NcvGie0q72CvEm+zfjLWhKP8Q+trrxwGiy62Z2IaTXI=; b=p5C1pR5b+veHnpWzgdB6hNOBe1
+	Ibq5hC26PMEmN9Rm59a6+8WRrPfLzsYavfH4topyT8XZMqKICyH31JO1fipWAlO0zcoLVEPCiJRtm
+	AvSKQ/feiXARi185jOlZFRgWIytEfFFvfFUowBA/xksc/9/lsGzmvyGw4T7yQRaLg4bGRNwnVkYlm
+	KyR9JC01wooaug74S1NVDF3yQpIhAzTJFdaCJLNUZqdvXSmDoZnXfj7xfaWrenSwBFiyYgA31LDQp
+	bxH0rE2eFrvIxQ22Sxg5LM8DrNPdJoDNPuO62Ms1E45bMVyeoRFjM42vLdDyiQHR+cAPBYAi/Jirx
+	wxqra8dw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqu-00000007RTH-0VJo
+	id 1vWXqu-00000007RTI-0Uxu
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 10:36:57 +0000
+	Fri, 19 Dec 2025 10:36:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqs-0004gv-JL; Fri, 19 Dec 2025 11:36:50 +0100
+	id 1vWXqs-0004hc-UQ; Fri, 19 Dec 2025 11:36:50 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqs-006RW1-18;
+	id 1vWXqs-006RWC-1w;
 	Fri, 19 Dec 2025 11:36:50 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVi-0000000320L-23qf;
-	Fri, 19 Dec 2025 11:14:58 +0100
+	id 1vWXVh-0000000320L-3hum;
+	Fri, 19 Dec 2025 11:14:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Jonas Rebmann <jre@pengutronix.de>,
+Cc: Maud Spierings <maudspierings@gocontroll.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 Dec 2025 10:21:19 +0100
-Message-ID: <20251219101453.2806980-44-a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:21:06 +0100
+Message-ID: <20251219101453.2806980-31-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_103652_254158_C80105F1 
-X-CRM114-Status: GOOD (  12.20  )
+X-CRM114-CacheID: sfid-20251219_103652_260801_DDB2C98C 
+X-CRM114-Status: UNSURE (   8.94  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,59 +100,38 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 43/49] lib: base64: Fix out-of-bounds potential by respecting dst_len
+Subject: [PATCH v2025.09.y 30/49] scripts: imx: Makefile.mingw64: add _GNU_SOURCE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Jonas Rebmann <jre@pengutronix.de>
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-__decode_base64 generally writes the input in 3 bytes increments,
-corresponding to 4 bytes increments in the base64 input buffer. This
-means that in order to respect dst_len as the size of the output buffer,
-the case of exceeding dst_len within a loop iteration must be
-considered.
+imx.c uses asprintf which requires _GNU_SOURCE to be defined, include
+defines.h to define it.
 
-In such a case, refrain from writing the last one or two bytes if that
-write would be past dst_len.
-
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-Link: https://lore.barebox.org/20251202-base64-bounds-v2-1-34d3716c3f55@pengutronix.de
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20251201-imx_usb-v2-1-95ec2a0e8694@gocontroll.com
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit c99102d34c2d8f8c79cfaecf8968581031cbffef)
+(cherry picked from commit ef66b9e0f1c7e2ec80ff8d57715d8794fa0949b4)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- lib/base64.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ scripts/imx/Makefile.mingw64 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/base64.c b/lib/base64.c
-index d5ab217528db..3e29f0a56c45 100644
---- a/lib/base64.c
-+++ b/lib/base64.c
-@@ -163,19 +163,19 @@ static int __decode_base64(char *p_dst, int dst_len, const char *src, bool url)
- 		 */
- 		if (count > 1)
- 			*dst++ = six_bit[0] << 2 | six_bit[1] >> 4;
--		if (count > 2)
-+		if (count > 2 && dst_len > 1)
- 			*dst++ = six_bit[1] << 4 | six_bit[2] >> 2;
--		if (count > 3)
-+		if (count > 3 && dst_len > 2)
- 			*dst++ = six_bit[2] << 6 | six_bit[3];
-+		/* last character was "=" */
-+		if (count != 0)
-+			length += min(count - 1, dst_len);
- 		/*
- 		 * Note that if we decode "AA==" and ate first '=',
- 		 * we just decoded one char (count == 2) and now we'll
- 		 * do the loop once more to decode second '='.
- 		 */
- 		dst_len -= count-1;
--		/* last character was "=" */
--		if (count != 0)
--			length += count - 1;
- 	}
- ret:
- 	p_dst = dst;
+diff --git a/scripts/imx/Makefile.mingw64 b/scripts/imx/Makefile.mingw64
+index e012d833f1b4..101b39e9178d 100644
+--- a/scripts/imx/Makefile.mingw64
++++ b/scripts/imx/Makefile.mingw64
+@@ -30,7 +30,7 @@ $(if $(obj),, \
+ # $(realpath ...) resolves symlinks
+ obj := $(realpath $(obj))
+ 
+-CPPFLAGS := -I $(LIBUSB_MINGW)/include/libusb-1.0 -I $(src)/../include/ -I $(src)/../../include/mach/
++CPPFLAGS := -I $(LIBUSB_MINGW)/include/libusb-1.0 -I $(src)/../include/ -I $(src)/../../include/mach/ -include $(src)/../include/defines.h
+ LDFLAGS := -L $(LIBUSB_MINGW)/lib -lusb-1.0 -static
+ 
+ OBJECTS := $(addprefix $(obj)/, imx.o imx-usb-loader.o)
 -- 
 2.47.3
 
