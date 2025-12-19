@@ -1,69 +1,66 @@
-Delivery-date: Fri, 19 Dec 2025 11:07:23 +0100
+Delivery-date: Fri, 19 Dec 2025 11:15:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXON-00DA5Y-2y
+	id 1vWXWU-00DAFB-0w
 	for lore@lore.pengutronix.de;
-	Fri, 19 Dec 2025 11:07:23 +0100
+	Fri, 19 Dec 2025 11:15:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXON-00019v-A0
-	for lore@pengutronix.de; Fri, 19 Dec 2025 11:07:23 +0100
+	id 1vWXWT-0002UG-Jz
+	for lore@pengutronix.de; Fri, 19 Dec 2025 11:15:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JM3vjeVnLUdsOdEL6wNI5vcFQPaYYsx2p8CQTfAOcZ4=; b=gq7nH+Wkocci1aHbokB6hG2huW
-	w7z8VP75uNp3lS10VMaI8tsPknPkHbB6uFyFMK9dRkzWXfEnGzxs/0HK8D4y0DDAys+Yfa3QYlMmG
-	yFArXA7ZcroFv7Qi3IvarNSeBpNfSYssAun7SxktpiHpKsFvLOP9dIY4Zbqs/oPj9w2nTlDCuxByr
-	JOaCEumTNGlgUw+t52kfVi1fbZ5l4saYv0CFG+8fZq6I0NnnyMkXZcFc1K3kJ00CK0Zvhpv1J1FNQ
-	OAidcACk2qP7PjRvm4Z0BWgpmJQ7EFIHSzNgA9Lx02YLm1+na6uzNKOrQGae+fl3etIIgvAR3T2mG
-	Xb1Q2MWQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=f6NyFRxUKchqWi8tW2R7O+s+GAefRWbgONqgDpBHm2A=; b=LTsBy/0khHiUHR
+	l8uCwQHwFgE1IprJ9+ehWlIQwltR39DspOziWCQVvJ9R/FWQK1I39v0vrpHKXln6maIUWUdCX+wmc
+	Ak2DFsg3aGM/E91C27sD8Q6I9rkFa9OAidFIQNJw383y++UAR3opISR/OAoGZVosPdIqnjE9nd2Oh
+	5W9QJGIz0pKqBx+j8lonsITArBMSRWW9z8CjmOZpd026AC1FhSQ3nmGTrvNrVWJ+8j77ZgJludq3V
+	wgHbPxAyfeWhvx9SBwIRPIJigXecOmekKXFNq2x0DeDG8oMsSPgk2wKt0J6p4omJ6ZsPeKaufeGIx
+	W46Ey7BYPg3djyxR8bWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXNr-0000000A11T-1NBL;
-	Fri, 19 Dec 2025 10:06:51 +0000
+	id 1vWXVl-0000000A30q-3rOa;
+	Fri, 19 Dec 2025 10:15:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXNp-0000000A10w-09Wy
+	id 1vWXVi-0000000A2z3-2qOj
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 10:06:50 +0000
+	Fri, 19 Dec 2025 10:15:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWXNn-000140-8K; Fri, 19 Dec 2025 11:06:47 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWXVg-00021d-RC; Fri, 19 Dec 2025 11:14:56 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWXNn-006RAQ-0D;
-	Fri, 19 Dec 2025 11:06:47 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWXNm-00GSOo-2t;
-	Fri, 19 Dec 2025 11:06:46 +0100
-Date: Fri, 19 Dec 2025 11:06:46 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Fabian Pflug <f.pflug@pengutronix.de>,
-	BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20251219100646.c7iytlzannxf7b3r@pengutronix.de>
-References: <20251219-v2025-11-0-topic-imx6-field-return-v2-0-2696ac61ae2d@pengutronix.de>
- <20251219-v2025-11-0-topic-imx6-field-return-v2-1-2696ac61ae2d@pengutronix.de>
- <4114d7e2-9331-413f-9dda-b16b53ea42bc@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWXVg-006RN6-24;
+	Fri, 19 Dec 2025 11:14:56 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vWXVg-0000000320L-2HsN;
+	Fri, 19 Dec 2025 11:14:56 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Fri, 19 Dec 2025 10:20:37 +0100
+Message-ID: <20251219101453.2806980-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
+References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4114d7e2-9331-413f-9dda-b16b53ea42bc@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_020649_096693_0FAD6DC8 
-X-CRM114-Status: GOOD (  21.51  )
+X-CRM114-CacheID: sfid-20251219_021458_713061_9BD4D52B 
+X-CRM114-Status: GOOD (  11.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,6 +72,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -85,90 +83,39 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/4] arm: mach-imx6: use kconfig for field return
+Subject: [PATCH v2025.09.y 01/49] mci: sdhci: am654: Use sdhci_wait_idle()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 25-12-19, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 12/19/25 10:06 AM, Fabian Pflug wrote:
-> > There is a Kconfig option for the field return, that is also documented,
-> > so using it here instead of providing a headerfile to patch.
-> > 
-> > Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-> > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-> > ---
-> >  include/mach/imx/habv4-imx6-gencsf-template.h | 11 +++--------
-> >  1 file changed, 3 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/include/mach/imx/habv4-imx6-gencsf-template.h b/include/mach/imx/habv4-imx6-gencsf-template.h
-> > index 45da2981cb..c24bf84b85 100644
-> > --- a/include/mach/imx/habv4-imx6-gencsf-template.h
-> > +++ b/include/mach/imx/habv4-imx6-gencsf-template.h
-> > @@ -39,17 +39,12 @@ hab Engine = SETUP_HABV4_ENGINE
-> >  hab Features = SETUP_HABV4_FEATURES
-> >  #endif
-> >  
-> > -/*
-> > -// allow fusing FIELD_RETURN
-> > -// # ocotp0.permanent_write_enable=1
-> > -// # mw -l -d /dev/imx-ocotp 0xb8 0x1
-> > +#if defined(CONFIG_HABV4_CSF_UNLOCK_FIELD_RETURN)
-> >  hab [Unlock]
-> >  hab Engine = OCOTP
-> >  hab Features = FIELD RETURN
-> > -// device-specific UID:
-> > -// $ dd if=/sys/bus/nvmem/devices/imx-ocotp0/nvmem bs=4 skip=1 count=2 status=none | hexdump -ve '1/1 "0x%.2x, "' | sed 's/, $//'
-> > -hab UID = 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08
-> > -*/
-> > +hab UID = HABV4_CSF_UNLOCK_UID
-> 
-> How can this work without a CONFIG_ in front of the option?
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Good catch Ahmad! I think Fabian just copied the broken mainlined
-version from the i.MX8M.
+sdhci_wait_idle() is what Linux does and it works fine in barebox.
+sdhci_wait_idle_data() instead also waits for the SDHCI_CMD_INHIBIT_DATA
+bit which shouldn't be necessary.
 
-My v2
-(https://lore.barebox.org/barebox/20240703-v2024-05-0-topic-hab-v2-8-17419aa5d3a3@pengutronix.de/)
-used another abroach to set the define which didn't made it into
-mainline :/
+Link: https://lore.barebox.org/20250828113442.3543907-2-s.hauer@pengutronix.de
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+(cherry picked from commit a2876b0468eeda34846a88bb3ce6fec9718035b5)
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/am654-sdhci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So mainline is broken for i.MX8M as well :/
-
-@Fabian
-Could you please include a patch which fixes this for the i.MX8M as
-well?
-
-Regards,
-  Marco
-
-
-> 
-> Thanks,
-> Ahmad
-> 
-> > +#endif
-> >  
-> >  hab [Install Key]
-> >  /* verification key index in key store (0, 2...4) */
-> > 
-> 
-> -- 
-> Pengutronix e.K.                  |                             |
-> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-> 
-> 
-
+diff --git a/drivers/mci/am654-sdhci.c b/drivers/mci/am654-sdhci.c
+index 24abf10492c1..17d3f7627005 100644
+--- a/drivers/mci/am654-sdhci.c
++++ b/drivers/mci/am654-sdhci.c
+@@ -463,7 +463,7 @@ static int am654_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	int ret;
+ 	dma_addr_t dma;
+ 
+-	ret = sdhci_wait_idle_data(&host->sdhci, cmd);
++	ret = sdhci_wait_idle(&host->sdhci, cmd, data);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
-#gernperDu 
-#CallMeByMyFirstName
+2.47.3
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
