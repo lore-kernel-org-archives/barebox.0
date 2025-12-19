@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWaj0-00DDPr-28
+	id 1vWaj0-00DDQ3-32
 	for lore@lore.pengutronix.de;
 	Fri, 19 Dec 2025 14:40:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWaj0-0001vd-20
+	id 1vWaj0-0001vh-AR
 	for lore@pengutronix.de; Fri, 19 Dec 2025 14:40:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VCKRrdcryAWA272ej1uGj+Ze/2MEhKEKI2fRAeeK6Q0=; b=u+WF01DGkalRJrq5Tbk2DPhCwk
-	b9+LeL6C0tY+VdDc7N4azGnGjNAnHoLI6ykHuUJt607jUNiZJt6ZxjbISu3GWLBbgZQCFrtr/9jRG
-	wrhExqq1YAvgQNi7hMwYDo+brLLSv03teLuoLrbCayhsELMPzf9ekYV3xuFC6nRvi+6C2Wa6Wgk1H
-	rUK0Lqp0fX7OsJ7bj8cqLNQTgBQCbRrvbZnFD3EAz0feGSwE5FJZToLJdhnz6ndzmfyOAQBKVLf7U
-	pbn1goK+uyLUQyAzjEdtIQZ2jeav+Agle5lb9EcbTlouwp9Y3wp4XIvEdgtSUeccyH66XysjXe+fD
-	hw4gMJ9w==;
+	bh=x7QX3exYryuv9hkAASHFxnQotoKeP04OEIA8lcRHraM=; b=KuZDEDwzqT4+C2O6tKmvLmwlDO
+	9hdCJVXOfexDkh8PmRFkUCDsbPZSI0RkDTeGconUcpstFkLJjD3hIgYKuHf4X5DO3Qk5EoJi4DSam
+	eOXxxSyRRAAJQ0Hv0mnpU2dcSk5qYFqF/meUVOu4aQHzbxnTVAlekSm6N/xsHcdo5M7HVHeT6r9KC
+	u5x60ZHZuC/LnO08SoXhO3wrcFnmOk4MR2B9aPs0VUWYZwXjTI/qo3g0dtkuPMNnff1jirqRldrSU
+	2asoWzhL5+f6H2M+QlL5XuFhLZRw0jaeJ8+d9NGeBo/jV6uqk7v17hUXaxeBnsAgmUP+JDXzd95qd
+	gGf6UEkw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWaiG-0000000AMZg-2SmM;
-	Fri, 19 Dec 2025 13:40:08 +0000
+	id 1vWaiE-0000000AMYa-3Blr;
+	Fri, 19 Dec 2025 13:40:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWaiD-0000000AMXl-2n7G
+	id 1vWai8-0000000AMUx-0Wn1
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 13:40:06 +0000
+	Fri, 19 Dec 2025 13:40:03 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1vWai4-0001XS-2f; Fri, 19 Dec 2025 14:39:56 +0100
+	id 1vWai4-0001XS-4p; Fri, 19 Dec 2025 14:39:56 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 19 Dec 2025 14:39:55 +0100
+Date: Fri, 19 Dec 2025 14:39:57 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251219-v2025-11-0-topic-imx6-field-return-v4-3-57eec237ceaf@pengutronix.de>
+Message-Id: <20251219-v2025-11-0-topic-imx6-field-return-v4-5-57eec237ceaf@pengutronix.de>
 References: <20251219-v2025-11-0-topic-imx6-field-return-v4-0-57eec237ceaf@pengutronix.de>
 In-Reply-To: <20251219-v2025-11-0-topic-imx6-field-return-v4-0-57eec237ceaf@pengutronix.de>
 To: Marco Felsch <m.felsch@pengutronix.de>, 
@@ -51,9 +51,8 @@ To: Marco Felsch <m.felsch@pengutronix.de>,
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_054005_714351_929C3489 
-X-CRM114-Status: UNSURE (   9.51  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251219_054000_177421_F088BAEE 
+X-CRM114-Status: GOOD (  14.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,97 +74,98 @@ X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v4 3/5] nvmem: ocotp: extend support to query the sticky
- bit
+Subject: [PATCH v4 5/5] commands: hab: extend by field_return fuse burn
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The i.MX* devices do have an sticky bit which indicates if the
-field-return fuse can be written. Before only support for i.MX8* was
-provided. Extend this for the i.MX6* series.
-
-Since i.MX8 and i.MX6 share the same code, rename
-imx8m_field_return_locked to imx_field_return_locked to not confuse the
-user.
+Extend hab command with an additional parameter to burn the field return
+fuse.
+Since there is now a convenient way to burn the field return fuse, give
+a hint at the Kconfig option about this, as it already describes what to
+do in order to burn the fuse to make it complete.
 
 Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/arm/mach-imx/Kconfig |  2 ++
+ commands/hab.c            | 24 ++++++++++++++++++++----
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 7bca275404..1f74fddb60 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -294,7 +294,7 @@ static void imx8m_lock_srk_revoke(struct ocotp_priv *priv)
- 	writel(val, priv->base + OCOTP_SW_STICKY);
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 819a753240..7cc34fab95 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -880,6 +880,8 @@ config HABV4_CSF_UNLOCK_UID
+ 	  So this value have to be set:
+ 	    - 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77
+ 
++	  Afterwards, the `hab -p -r` command can be used to burn the fuse.
++
+ config HAB_CERTS_ENV
+ 	depends on HAB
+ 	bool "Specify certificates in environment"
+diff --git a/commands/hab.c b/commands/hab.c
+index 8ae943a4c8..df045df470 100644
+--- a/commands/hab.c
++++ b/commands/hab.c
+@@ -16,9 +16,9 @@ static int do_hab(int argc, char *argv[])
+ 	char *srkhashfile = NULL, *srkhash = NULL;
+ 	unsigned flags = 0;
+ 	u8 srk[SRK_HASH_SIZE];
+-	int lockdown = 0, info = 0;
++	int lockdown = 0, info = 0, field_return = 0;
+ 
+-	while ((opt = getopt(argc, argv, "s:fpx:li")) > 0) {
++	while ((opt = getopt(argc, argv, "s:fpx:lir")) > 0) {
+ 		switch (opt) {
+ 		case 's':
+ 			srkhashfile = optarg;
+@@ -38,12 +38,15 @@ static int do_hab(int argc, char *argv[])
+ 		case 'i':
+ 			info = 1;
+ 			break;
++		case 'r':
++			field_return = 1;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+ 	}
+ 
+-	if (!info && !lockdown && !srkhashfile && !srkhash) {
++	if (!info && !lockdown && !srkhashfile && !srkhash && !field_return) {
+ 		printf("Nothing to do\n");
+ 		return COMMAND_ERROR_USAGE;
+ 	}
+@@ -94,7 +97,19 @@ static int do_hab(int argc, char *argv[])
+ 		printf("Device successfully locked down\n");
+ 	}
+ 
+-	return 0;
++	if (field_return) {
++		ret = imx_hab_field_return(flags & IMX_SRK_HASH_WRITE_PERMANENT);
++		if (ret == -EINVAL && IS_ENABLED(CONFIG_HABV4_CSF_UNLOCK_FIELD_RETURN))
++			printf("Field-return burn failed, check HABV4_CSF_UNLOCK_UID!\n");
++		else if (ret == -EINVAL && !IS_ENABLED(CONFIG_HABV4_CSF_UNLOCK_FIELD_RETURN))
++			printf("Field-return burn failed because CONFIG_HABV4_CSF_UNLOCK_FIELD_RETURN=n\n");
++		else if (ret)
++			printf("Field-return burn failed\n");
++		else
++			printf("Field return fuse successfully burnt\n");
++	}
++
++	return ret;
  }
  
--static bool imx8m_field_return_locked(struct ocotp_priv *priv)
-+static bool imx_field_return_locked(struct ocotp_priv *priv)
- {
- 	return readl(priv->base + OCOTP_SW_STICKY) & OCOTP_SW_STICKY_FIELD_RETURN_LOCK;
- }
-@@ -990,6 +990,7 @@ static struct imx_ocotp_data imx6q_ocotp_data = {
- 	.fuse_blow = imx6_fuse_blow_addr,
- 	.fuse_read = imx6_fuse_read_addr,
- 	.ctrl = &ocotp_ctrl_reg_default,
-+	.field_return_locked = imx_field_return_locked,
- };
+ BAREBOX_CMD_HELP_START(hab)
+@@ -105,6 +120,7 @@ BAREBOX_CMD_HELP_OPT ("-x <sha256>",  "Burn Super Root Key hash from hex string"
+ BAREBOX_CMD_HELP_OPT ("-i",  "Print HAB info")
+ BAREBOX_CMD_HELP_OPT ("-f",  "Force. Write even when a key is already written")
+ BAREBOX_CMD_HELP_OPT ("-l",  "Lockdown device. Dangerous! After executing only signed images can be booted")
++BAREBOX_CMD_HELP_OPT ("-r",  "Field Return. Dangerous! Access to device keys will be disabled forever")
+ BAREBOX_CMD_HELP_OPT ("-p",  "Permanent. Really burn fuses. Be careful!")
+ BAREBOX_CMD_HELP_END
  
- static struct imx_ocotp_data imx6sl_ocotp_data = {
-@@ -1002,6 +1003,7 @@ static struct imx_ocotp_data imx6sl_ocotp_data = {
- 	.fuse_blow = imx6_fuse_blow_addr,
- 	.fuse_read = imx6_fuse_read_addr,
- 	.ctrl = &ocotp_ctrl_reg_default,
-+	.field_return_locked = imx_field_return_locked,
- };
- 
- static struct imx_ocotp_data imx6ul_ocotp_data = {
-@@ -1014,6 +1016,7 @@ static struct imx_ocotp_data imx6ul_ocotp_data = {
- 	.fuse_blow = imx6_fuse_blow_addr,
- 	.fuse_read = imx6_fuse_read_addr,
- 	.ctrl = &ocotp_ctrl_reg_default,
-+	.field_return_locked = imx_field_return_locked,
- };
- 
- static struct imx_ocotp_data imx6ull_ocotp_data = {
-@@ -1026,6 +1029,7 @@ static struct imx_ocotp_data imx6ull_ocotp_data = {
- 	.fuse_blow = imx6_fuse_blow_addr,
- 	.fuse_read = imx6_fuse_read_addr,
- 	.ctrl = &ocotp_ctrl_reg_default,
-+	.field_return_locked = imx_field_return_locked,
- };
- 
- static struct imx_ocotp_data vf610_ocotp_data = {
-@@ -1063,7 +1067,7 @@ static struct imx_ocotp_data imx8mp_ocotp_data = {
- 	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
--	.field_return_locked = imx8m_field_return_locked,
-+	.field_return_locked = imx_field_return_locked,
- 	.ctrl = &ocotp_ctrl_reg_8mp,
- };
- 
-@@ -1095,7 +1099,7 @@ static struct imx_ocotp_data imx8mm_ocotp_data = {
- 	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
--	.field_return_locked = imx8m_field_return_locked,
-+	.field_return_locked = imx_field_return_locked,
- 	.feat = &imx8mm_featctrl_data,
- 	.ctrl = &ocotp_ctrl_reg_default,
- };
-@@ -1116,7 +1120,7 @@ static struct imx_ocotp_data imx8mn_ocotp_data = {
- 	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
--	.field_return_locked = imx8m_field_return_locked,
-+	.field_return_locked = imx_field_return_locked,
- 	.feat = &imx8mn_featctrl_data,
- 	.ctrl = &ocotp_ctrl_reg_default,
- };
 
 -- 
 2.47.3
