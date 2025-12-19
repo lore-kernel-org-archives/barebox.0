@@ -1,68 +1,67 @@
-Delivery-date: Fri, 19 Dec 2025 11:37:51 +0100
+Delivery-date: Fri, 19 Dec 2025 11:37:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXrr-00DAXN-1g
+	id 1vWXrs-00DAXj-0d
 	for lore@lore.pengutronix.de;
-	Fri, 19 Dec 2025 11:37:51 +0100
+	Fri, 19 Dec 2025 11:37:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXrg-0005dA-Rp
-	for lore@pengutronix.de; Fri, 19 Dec 2025 11:37:51 +0100
+	id 1vWXrh-0005e9-S3
+	for lore@pengutronix.de; Fri, 19 Dec 2025 11:37:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YHRP3an4iBbYtAw5la+r+97DRpmgoNNqTxWTAx8Iq8I=; b=G/pLl0beLjjx2IVehi6fgB9gq3
-	KddIg5QLkLEVjVGe9OMDzKyKAAvDE44ylENyhgiSNYR2Glv8VUBNrh070J222xndNj75TULoRJz7f
-	/PyxxQogK/8Pl5q1+3rE0vsj4zJ/qE/vCtyU5QPZZCXz9ET+sluLDIbUcRR6E0p+h3NxzYU35Z2ZR
-	786ISjdtP0YwvmgbJNVtS0bj+EjhpNBvaizlMwaTOB4uRuJ6/TXCVkVEUzNexhkJ6cJ3Aq5IGHtIg
-	qhl/2t77Zj0oNCCVGNED2v9/kV3o33STdrPcfqPqCSnIebeQyj0VI5hCijOCFwrf2AXweDa5ppoF5
-	J/XSmczA==;
+	bh=vu8lKistq9GDdLkPoC1Gyt4ZnlLkwe/X2t+O4VQPPB0=; b=jBt/7qvW0L/kel/s6gzLH4RAfi
+	8rWHgzVcC2/B0pijzN55bF3S6FZtyz9ocv0bNMa2j8+FvOJ5hXb+SUKyW6cGiZeS9QfzPEZQ1jVhP
+	gA3DZ+nc0aFZlcB2KK0hpjOJBVb1Hrh2FqslyffqJMveYUn2MuUnzKHCBGejGw1kbbqmXkRRNCodg
+	R7Vi3NypTz8KQAsSncgm8aWUoEFsxnZ7FO5ogPzKjkLnLC+76FtgxGplEzJJtkJcK8JPlZ5hP3sv/
+	qKo6Ny4MstpApZbc8YB78uMQDBFRjYjDvdU0Kr8H1P+hAMCL6lOLg+TuNyD3zB9KaXtDnguDJJcrQ
+	ceCO/9hQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqu-0000000A5zd-1WdE;
-	Fri, 19 Dec 2025 10:36:52 +0000
+	id 1vWXqz-0000000A65w-1Uzr;
+	Fri, 19 Dec 2025 10:36:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqr-0000000A5ub-1H1N
+	id 1vWXqs-0000000A5un-0SqA
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 10:36:51 +0000
+	Fri, 19 Dec 2025 10:36:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqp-0004Yb-GN; Fri, 19 Dec 2025 11:36:47 +0100
+	id 1vWXqq-0004b5-IR; Fri, 19 Dec 2025 11:36:48 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqp-006RTw-0u;
-	Fri, 19 Dec 2025 11:36:47 +0100
+	id 1vWXqq-006RUY-18;
+	Fri, 19 Dec 2025 11:36:48 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVh-0000000320L-3VOX;
-	Fri, 19 Dec 2025 11:14:57 +0100
+	id 1vWXVh-0000000320L-44oi;
+	Fri, 19 Dec 2025 11:14:58 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 Dec 2025 10:21:05 +0100
-Message-ID: <20251219101453.2806980-30-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:21:08 +0100
+Message-ID: <20251219101453.2806980-33-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_023649_343312_5A9F2D7A 
-X-CRM114-Status: GOOD (  12.08  )
+X-CRM114-CacheID: sfid-20251219_023650_144894_653C56B8 
+X-CRM114-Status: GOOD (  17.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,49 +83,101 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 29/49] mci: am654-sdhci: correctly configure SLOTTYPE_EMBEDDED
+Subject: [PATCH v2025.09.y 32/49] net: arp: collect context into new struct pending_arp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+The ARP code employs two global variables to communicate between the
+code sending off the ARP request and the response that runs in the
+poller:
 
-struct am654_sdhci_plat::non_removable is set no where, so drop it in
-favor of struct mci_host::non_removable, which is actually populated by
-the MCI core to reflect the non-removable device tree property.
+- arp_wait_ip, which is the IP to be resolved
+- arp_ether, which on success will point to the resulting MAC address
 
-This aligns us with Linux behavior, but hasn't been tested on real
-hardware.
+To make the relation between these two clearer and to prepare for the
+follow-up fix, collect them into a common struct.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-Link: https://lore.barebox.org/20251128104040.1491636-1-a.fatoum@pengutronix.de
+No functional change expected.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20251128124939.108159-1-a.fatoum@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit 1d04259898e90e58b1ac4277d112d39f10843c13)
+(cherry picked from commit 8ed55472688ae35f214562b0f96cc9a89f295c6a)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/am654-sdhci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/net.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mci/am654-sdhci.c b/drivers/mci/am654-sdhci.c
-index 17d3f7627005..bb67c8bf4693 100644
---- a/drivers/mci/am654-sdhci.c
-+++ b/drivers/mci/am654-sdhci.c
-@@ -156,7 +156,6 @@ struct am654_sdhci_plat {
- 	bool fails_without_test_cd;
+diff --git a/net/net.c b/net/net.c
+index 4703842f4377..795afed159aa 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -110,26 +110,33 @@ int setenv_ip(const char *name, IPaddr_t ip)
+ 	return 0;
+ }
  
- 	struct regmap *base;
--	bool non_removable;
- 	u32 otap_del_sel[ARRAY_SIZE(td)];
- 	u32 itap_del_sel[ARRAY_SIZE(td)];
- 	u32 trm_icp;
-@@ -359,7 +358,7 @@ static int am654_sdhci_init(struct mci_host *mci, struct device *dev)
- 		regmap_update_bits(plat->base, PHY_CTRL1, IOMUX_ENABLE_MASK, 0);
+-static unsigned char *arp_ether;
+-static IPaddr_t arp_wait_ip;
++/**
++ * struct pending_arp - Pending ARP state
++ * @ip: input IPv4 address whose resolution is being requested 
++ * @ether: output MAC addess buffer after receing a response
++ */
++static struct pending_arp {
++	IPaddr_t ip;
++	unsigned char *ether;
++} pending_arp;
  
- 	/* Set slot type based on SD or eMMC */
--	if (plat->non_removable)
-+	if (mci->non_removable)
- 		ctl_cfg_2 = SLOTTYPE_EMBEDDED;
+ static void arp_handler(struct arprequest *arp)
+ {
+ 	IPaddr_t tmp;
  
- 	regmap_update_bits(plat->base, CTL_CFG_2, SLOTTYPE_MASK, ctl_cfg_2);
+ 	/* are we waiting for a reply */
+-	if (!arp_wait_ip)
++	if (!pending_arp.ip)
+ 		return;
+ 
+ 	tmp = net_read_ip(&arp->ar_data[6]);
+ 
+ 	/* matched waiting packet's address */
+-	if (tmp == arp_wait_ip) {
++	if (tmp == pending_arp.ip) {
+ 		/* save address for later use */
+-		memcpy(arp_ether, &arp->ar_data[0], 6);
++		memcpy(pending_arp.ether, &arp->ar_data[0], 6);
+ 
+ 		/* no arp request pending now */
+-		arp_wait_ip = 0;
++		pending_arp.ip = 0;
+ 	}
+ }
+ 
+@@ -162,6 +169,7 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 	static char *arp_packet;
+ 	struct ethernet *et;
+ 	unsigned retries = 0;
++	IPaddr_t arp_wait_ip;
+ 	int ret;
+ 
+ 	if (!edev)
+@@ -207,14 +215,15 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 
+ 	net_write_ip(arp->ar_data + 16, arp_wait_ip);
+ 
+-	arp_ether = ether;
++	pending_arp.ether = ether;
++	pending_arp.ip = arp_wait_ip;
+ 
+ 	ret = eth_send(edev, arp_packet, ETHER_HDR_SIZE + ARP_HDR_SIZE);
+ 	if (ret)
+ 		return ret;
+ 	arp_start = get_time_ns();
+ 
+-	while (arp_wait_ip) {
++	while (pending_arp.ip) {
+ 		if (ctrlc())
+ 			return -EINTR;
+ 
 -- 
 2.47.3
 
