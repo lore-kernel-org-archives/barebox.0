@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsp-00DAgr-1k
+	id 1vWXsp-00DAh7-2X
 	for lore@lore.pengutronix.de;
 	Fri, 19 Dec 2025 11:38:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsU-0006d3-HT
+	id 1vWXsU-0006dg-R7
 	for lore@pengutronix.de; Fri, 19 Dec 2025 11:38:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,64 +18,64 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=J+/WXEaFAUeA8R9eApVHq+Yz6z42/t0PbEoTVXwSkrM=; b=bcGjpAAFzbH/a1
-	pmnPFYbk9a44GETNQFAm9J9d+thIdGAjoSxB/fO7BRsg3R8p9fCBQAUM/nZrd/1UWLwf9gANeYyK6
-	e3mYEhATFHm9negGm4xxvN1JXEOO37zx2qQUEyRjH2LUbSi2iiUck1BTp7PSnXuubwZYUdehGCA5y
-	85yJemKr0TDgH7Sc2lShC6X6AqkwiKb2kf1RTip28Fl3mzyMz1UbgwoVGxGonUKIzTHyeHfaZokc7
-	KbZvj8I6nW+w4WFiRCnwHFP9PQZ8uVZ1Wtvq9OQQXxxRy+W8ubrKfdkA6HAtDbQXf0gZ0GEXF3DzZ
-	vB9EoY0KyPPkW9uYMT6A==;
+	List-Owner; bh=JIsJKI4amSJLCzDxgKcCx9hRrId3XzopzsweMco6rXg=; b=oKWzIft/3w4uCa
+	r5NINar59Hb9Us2EtRYrZ7F0mqJhFnG+tGy4otkKmLyH1+HaBP0vMF+yw4MzPMRxjpQvFLnc56kOi
+	SfRMPvQXvRF6PuhZWd/Dh7bgRiDEbQkAj//PymxHG4onUheadh1NmUqmll7ENsUaun2igzocNT6Px
+	8xqJIliRRghej+ZRxx0OkV5ZraGtg/oxNU25fI5RnONUxv4C3ml0b/2aBE7gZVesQO42wPYZuo72b
+	6d8j6R1A21zmnn5j4UYSjnR6OR6t00kz+C5AeOYJx61LlfBB7L3tYt8esc+4HYEij1PPDJ078hJYu
+	sWIC5vOroLYYOdt4ZqLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXrQ-0000000A6eK-1iz9;
-	Fri, 19 Dec 2025 10:37:24 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+	id 1vWXrR-0000000A6hA-3lSq;
+	Fri, 19 Dec 2025 10:37:25 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqz-0000000A65f-2zzT
+	id 1vWXr0-0000000A66d-1a6q
 	for barebox@bombadil.infradead.org;
-	Fri, 19 Dec 2025 10:36:57 +0000
+	Fri, 19 Dec 2025 10:36:58 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=J+/WXEaFAUeA8R9eApVHq+Yz6z42/t0PbEoTVXwSkrM=; b=WsWWyQ4nnqQiHdSuWWRXU0uyHT
-	4QrsvGFdPmz6iyhWcqZ8Fp54TFi4AbzPWxlRMKU765EcJKZBRhoFVs0Sf4YXOs8SBmur4RjNr0zn6
-	yvSvad3fvvid11o8Ws1Pd89pjcA31dtkQkAQJ80p7B/bwHCvzs16JDFhEjSAmILZrZRxO+34yz5WD
-	oqEwJ42oc1z2P7B2SFHVgbwbvYTu/bbnkVEzNJlAGswMFLTQ0AUYRcylj5gbiTVCxG1blIZfSRPQp
-	MKQ3GfvLYccYxb5Th3OPhyXkzne9X4PsVQZMioW/NtBVIo8hvTwR2viPuA0j4hs3UNkZJ80xD5bpt
-	OKunp/hA==;
+	bh=JIsJKI4amSJLCzDxgKcCx9hRrId3XzopzsweMco6rXg=; b=qTCCJ0oV+HMcOjn4+xCsUFQWpZ
+	LhwHeerhuszvQVBBouyx5rieRSR8rrlJsqtxia2VGV5vHzDviIVhay3VGdUxexaU+B6CLWxp1oLws
+	ikOjCRcKfTqfwHL1jVNsUfhvGKtUXe/SjC0XZmQcb9u06Ms8dTwCmLKH8sPMolpCBXQKqzeURpDJT
+	UI4yO3ZzITR7ijABQSoebzR1WTLk98TwqHD1i1rqP0/WRDpEAd+BuoCtbpcgVnk4T9i21jPf2GBQL
+	hkls2DKAiu3l1J7yX0FL/da/BSDddf6Oj6D+c0fIvhb1taDaNfkada42nTP+6nv4ElakajqifUz71
+	+/hU4CLA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqu-00000007RTJ-0V7s
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vWWzQ-0000000AbDK-1Kq8
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 10:36:56 +0000
+	Fri, 19 Dec 2025 09:41:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqs-0004hT-O2; Fri, 19 Dec 2025 11:36:50 +0100
+	id 1vWXqr-0004eP-Po; Fri, 19 Dec 2025 11:36:49 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqs-006RW9-1f;
-	Fri, 19 Dec 2025 11:36:50 +0100
+	id 1vWXqr-006RVR-1r;
+	Fri, 19 Dec 2025 11:36:49 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVi-0000000320L-1ep5;
+	id 1vWXVi-0000000320L-3DZD;
 	Fri, 19 Dec 2025 11:14:58 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 19 Dec 2025 10:21:17 +0100
-Message-ID: <20251219101453.2806980-42-a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:21:25 +0100
+Message-ID: <20251219101453.2806980-50-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_103652_261265_D0A11668 
-X-CRM114-Status: GOOD (  11.66  )
+X-CRM114-CacheID: sfid-20251219_094136_406477_E5F3A974 
+X-CRM114-Status: GOOD (  11.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,61 +98,41 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 41/49] ARM: k3: am62l: Add dedicated config option for OP-TEE
+Subject: [PATCH v2025.09.y 49/49] eeprom: at24: unregister devices in error path
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Until now we compiled in the OP-TEE binary into the AM62l images when it
-exists. The when-it-exists part makes it hard to add a dependeny on the
-file, so add a dedicated config option for it.
+The AT24 driver might register some i2c devices using i2c_new_dummy().
+These are freed in the error path, but not unregistered which leads to
+memory corruptions later.
 
-Link: https://lore.barebox.org/20251202-k3-deps-v1-3-68404d3b2c70@pengutronix.de
+Link: https://lore.barebox.org/20251217145156.1581678-3-s.hauer@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit 2711c4ca4fdce892567391e8f363d277c03505b3)
+(cherry picked from commit ebd2558bf99b3758854ac2b104cff7cfbd2cebb9)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- firmware/Kconfig   | 4 ++++
- images/Makefile.k3 | 8 ++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/eeprom/at24.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 14a1c3d3a844..1121615fe6d5 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -113,6 +113,10 @@ config FIRMWARE_LS1028A_ATF
- config FIRMWARE_LS1046A_ATF
- 	bool
+diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
+index 667d111b349d..feb11b1cbb18 100644
+--- a/drivers/eeprom/at24.c
++++ b/drivers/eeprom/at24.c
+@@ -492,8 +492,11 @@ static int at24_probe(struct device *dev)
  
-+config FIRMWARE_K3_AM62L_OPTEE
-+	bool "install OP-TEE on K3 AM62L boards"
-+	depends on MACH_AM62LX
-+
- config HAVE_FIRMWARE_VERIFY_NEXT_IMAGE
- 	bool
+ err_devfs_create:
+ err_clients:
+-	for (i = 1; i < num_addresses; i++)
++	for (i = 1; i < num_addresses; i++) {
++		if (at24->client[i])
++			i2c_unregister_device(at24->client[i]);
+ 		kfree(at24->client[i]);
++	}
  
-diff --git a/images/Makefile.k3 b/images/Makefile.k3
-index 992d1557275c..bb49c0a9548a 100644
---- a/images/Makefile.k3
-+++ b/images/Makefile.k3
-@@ -87,10 +87,14 @@ quiet_cmd_k3_am62x_image = K3_am62x_IMG   $@
- 			$(DMDATA_am625):17:16:0:43c3a800			\
- 			--key "$(KEY_$(@F))" --out $@
- 
-+ifdef CONFIG_FIRMWARE_K3_AM62L_OPTEE
-+AM62L_TIBOOT3_OPTEE = $(FIRMWARE_DIR)/am62lx-bl32.bin
-+endif
-+
- quiet_cmd_k3_am62lx_image = K3_am62lx_IMG   $@
-       cmd_k3_am62lx_image = \
--		if [ -e "$(FIRMWARE_DIR)/am62lx-bl32.bin" ]; then		\
--			optee=$(FIRMWARE_DIR)/am62lx-bl32.bin:17:16:0:80200000;	\
-+		if [ -n "$(AM62L_TIBOOT3_OPTEE)" ]; then			\
-+			optee=$(AM62L_TIBOOT3_OPTEE):17:16:0:80200000;		\
- 		fi;								\
- 										\
- 		$(srctree)/scripts/k3img					\
+ 	if (gpio_is_valid(at24->wp_gpio))
+ 		gpio_free(at24->wp_gpio);
 -- 
 2.47.3
 
