@@ -1,58 +1,67 @@
-Delivery-date: Fri, 19 Dec 2025 10:35:31 +0100
+Delivery-date: Fri, 19 Dec 2025 10:57:08 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWWtX-00D9WC-2h
+	id 1vWXES-00D9mh-13
 	for lore@lore.pengutronix.de;
-	Fri, 19 Dec 2025 10:35:31 +0100
+	Fri, 19 Dec 2025 10:57:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWWtX-00067W-9V
-	for lore@pengutronix.de; Fri, 19 Dec 2025 10:35:31 +0100
+	id 1vWXER-00088n-Nj
+	for lore@pengutronix.de; Fri, 19 Dec 2025 10:57:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FrBijA3gXoALbN7Oe2y6vwLHQHTMFmZ0jeeOUC8iojY=; b=q0MbNw2YfTWO0OxJFQ7vY/gZ/F
-	Ff2qUfCzpdLarYUT6J6CAEOEqpz/5Qtsug9MaeESaaPMQAC3TJFPZmPUqyCdAxCp1TWlG3NPedK8R
-	lAX+d1K9tc5d4QkQigLgZO5VwfByNzyRokJ6h+g5eCKoeukJxlQHfiG87214oY497F458ebM+XjHR
-	g6QNrZYoUiSm2j0XYByRMDJ/4XHAeqPt3ytZA/piuLNQHLRCvCieAkysvlZKIH4Bdr7bM//HTjEQ9
-	NVnB2TrWrBvg6p5WXgbedeA/krza4SS/1xSIGEi3Tzt7qFScZsRhdcGWWl9qP3qsUFWGuwKkfrtyl
-	piQJb6QQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=T5TaKCtqX/ZHm61ANhrWPG2suAOwKFP5Yj3qrsq2ijE=; b=SdSOyetGAyUEwbtgwtDAa5nDO/
+	EEsgclByktQJYHTCkvbyHFIBL1Gu3BudTVo/nrHyXO3WxF01UQWAdXsB2Scm4UWd1BeM6PFSz/Mj8
+	cOC1YQ9Bj9k5r7LMHnE3ALlx+Y0aJUxsVQ+OLb6Qfu2i++rfSii0bmK5khRr+vIVe3Crw9xvEqD6e
+	qoEjgd40bvci4KOBQqCK+EdJpr6+P3dq1XElsQ7mDGkS+bKSHikb1vWl0iBouGoRiSxbLkF/offW6
+	ULNof2RbASgQe95iQk9vGNo4pv1y/6tGuxNQCIEPCbAOuJ4ixYSn0Vdl4k/NKawzyKnvtWlnu0czC
+	9+/Ga5yw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWWt3-00000009y0q-0nXI;
-	Fri, 19 Dec 2025 09:35:01 +0000
+	id 1vWXDy-00000009zp9-20Rc;
+	Fri, 19 Dec 2025 09:56:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWWt1-00000009xzA-08ei
+	id 1vWXDv-00000009znx-20ZR
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 09:35:00 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWWsz-0005y5-9s; Fri, 19 Dec 2025 10:34:57 +0100
-Message-ID: <84b8c4da-2156-41f6-a8f1-a2eb83f3ace7@pengutronix.de>
-Date: Fri, 19 Dec 2025 10:34:56 +0100
+	Fri, 19 Dec 2025 09:56:36 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWXDt-00082e-Rb; Fri, 19 Dec 2025 10:56:33 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWXDt-006R53-29;
+	Fri, 19 Dec 2025 10:56:33 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWXDt-00GS5Q-1l;
+	Fri, 19 Dec 2025 10:56:33 +0100
+Date: Fri, 19 Dec 2025 10:56:33 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Fabian Pflug <f.pflug@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <20251219095633.fsn7runigisbomgu@pengutronix.de>
+References: <20251219-v2025-11-0-topic-imx6-field-return-v2-0-2696ac61ae2d@pengutronix.de>
+ <20251219-v2025-11-0-topic-imx6-field-return-v2-3-2696ac61ae2d@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-References: <20251219-imx93-clk-v1-1-087f491c7f89@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251219-imx93-clk-v1-1-087f491c7f89@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219-v2025-11-0-topic-imx6-field-return-v2-3-2696ac61ae2d@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_013459_082696_8EA72140 
-X-CRM114-Status: GOOD (  17.04  )
+X-CRM114-CacheID: sfid-20251219_015635_518950_5DD1337B 
+X-CRM114-Status: GOOD (  21.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,58 +83,100 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: imx93: dtsi: set assigned-clocks for usdhc1
+Subject: Re: [PATCH v2 3/4] i.MX: HAB: extend field_return support to imx6
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello,
-
-On 12/19/25 10:29 AM, Michael Grzeschik wrote:
-> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+On 25-12-19, Fabian Pflug wrote:
+> Extend the helper for imx_fuse_burn with support for i.MX6 devices.
+> Create a helper function for i.MX8 and i.MX6 rom the old i.MX8M
+> function, as they all share the same pattern.
 > 
-> Configure the usdhc1 clock for imx93 devices.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-
-Can you please explain why this is necessary? I suspect it's to support
-HS200 speeds, but this info should go into commit message body instead
-of rephrasing the title.
-
-Thanks,
-Ahmad
-
-
+> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 > ---
->  arch/arm/dts/imx93.dtsi | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  drivers/hab/hab.c                | 22 +++++++++++++++-------
+>  include/mach/imx/ocotp-fusemap.h |  1 +
+>  2 files changed, 16 insertions(+), 7 deletions(-)
 > 
-> diff --git a/arch/arm/dts/imx93.dtsi b/arch/arm/dts/imx93.dtsi
-> index e1328de672438ffc8a3b785a3fb76168ced8dbdb..3bb9e24c781632dd390e483f059cabb600a4f6a6 100644
-> --- a/arch/arm/dts/imx93.dtsi
-> +++ b/arch/arm/dts/imx93.dtsi
-> @@ -47,3 +47,9 @@ ddrc: memory-controller@4e300000 {
->  		};
->  	};
->  };
+> diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
+> index 1c747e8a3e..3c9739871b 100644
+> --- a/drivers/hab/hab.c
+> +++ b/drivers/hab/hab.c
+> @@ -262,7 +262,7 @@ static int imx8m_hab_revoke_key_ocotp(unsigned key_idx)
+>   */
+>  #define MX8MP_FIELD_RETURN_PATTERN	0x28001401
+
+Nit: I would like to keep this define close to the
+imx8m_hab_field_return_ocotp().
+
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+
+
+> -static int imx8m_hab_field_return_ocotp(void)
+> +static int imx_hab_field_return_ocotp(unint32_t field, unsigned int value)
+>  {
+>  	int ret;
+>  
+> @@ -274,13 +274,20 @@ static int imx8m_hab_field_return_ocotp(void)
+>  	if (ret == 1)
+>  		return -EINVAL;
+>  
+> -	if (cpu_is_mx8mp())
+> -		ret = imx_ocotp_write_field(MX8MP_OCOTP_FIELD_RETURN,
+> -					    MX8MP_FIELD_RETURN_PATTERN);
+> -	else
+> -		ret = imx_ocotp_write_field(MX8M_OCOTP_FIELD_RETURN, 1);
+> +	return imx_ocotp_write_field(field, value);
+> +}
+>  
+> -	return ret;
+> +static int imx6_hab_field_return_ocotp(void)
+> +{
+> +	return imx_hab_field_return_ocotp(MX6_OCOTP_FIELD_RETURN, 1);
+> +}
 > +
-> +&usdhc1 {
-> +	assigned-clocks = <&clk IMX93_CLK_USDHC1>;
-> +	assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1>;
-> +	assigned-clock-rates = <400000000>;
-> +};
+> +static int imx8m_hab_field_return_ocotp(void)
+> +{
+> +	if (cpu_is_mx8mp())
+> +		return imx_hab_field_return_ocotp(MX8MP_OCOTP_FIELD_RETURN,
+> +						  MX8MP_FIELD_RETURN_PATTERN);
+> +	return imx_hab_field_return_ocotp(MX8M_OCOTP_FIELD_RETURN, 1);
+>  }
+>  
+>  struct imx_hab_ops {
+> @@ -310,6 +317,7 @@ static struct imx_hab_ops imx6_hab_ops_ocotp = {
+>  	.device_locked_down = imx6_hab_device_locked_down_ocotp,
+>  	.permanent_write_enable = imx_hab_permanent_write_enable_ocotp,
+>  	.print_status = imx6_hab_print_status,
+> +	.field_return = imx6_hab_field_return_ocotp,
+>  };
+>  
+>  static struct imx_hab_ops imx8m_hab_ops_ocotp = {
+> diff --git a/include/mach/imx/ocotp-fusemap.h b/include/mach/imx/ocotp-fusemap.h
+> index ae10dcef2a..3fd9d6df24 100644
+> --- a/include/mach/imx/ocotp-fusemap.h
+> +++ b/include/mach/imx/ocotp-fusemap.h
+> @@ -103,6 +103,7 @@
+>  #define MX8M_OCOTP_TZASC_EN		(OCOTP_WORD(0x480) | OCOTP_BIT(11) | OCOTP_WIDTH(1))
+>  #define MX8MP_OCOTP_ROM_NO_LOG		(OCOTP_WORD(0x480) | OCOTP_BIT(22) | OCOTP_WIDTH(1))
+>  #define MX8M_OCOTP_RECOVERY_SDMMC_BOOT_DIS	(OCOTP_WORD(0x490) | OCOTP_BIT(23) | OCOTP_WIDTH(1))
+> +#define MX6_OCOTP_FIELD_RETURN		(OCOTP_WORD(0x6E0) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
+>  #define MX8M_OCOTP_FIELD_RETURN		(OCOTP_WORD(0x630) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
+>  #define MX8MP_OCOTP_FIELD_RETURN	(OCOTP_WORD(0x630) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+>  #define MX8M_OCOTP_SRK_REVOKE		(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(4))
 > 
-> ---
-> base-commit: e2d7e032281158b54541392b4d8108de204137a1
-> change-id: 20251219-imx93-clk-cf19103fcd76
+> -- 
+> 2.47.3
 > 
-> Best regards,
+> 
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+#gernperDu 
+#CallMeByMyFirstName
 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
