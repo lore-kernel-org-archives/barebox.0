@@ -1,82 +1,83 @@
-Delivery-date: Fri, 19 Dec 2025 11:39:12 +0100
+Delivery-date: Fri, 19 Dec 2025 11:39:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXtA-00DAko-08
+	id 1vWXtB-00DAlA-0m
 	for lore@lore.pengutronix.de;
-	Fri, 19 Dec 2025 11:39:12 +0100
+	Fri, 19 Dec 2025 11:39:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXsv-000750-4H
-	for lore@pengutronix.de; Fri, 19 Dec 2025 11:39:11 +0100
+	id 1vWXsw-00076N-Er
+	for lore@pengutronix.de; Fri, 19 Dec 2025 11:39:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=SsDFGx5IsPVlaEMDTLt2gdk1AqZsOfxc/Y3I2ZhVe7s=; b=hNJzBu4ZP8Il2y
-	M1CyDt1zCJVkktglhuGOew9mFUT8NtWffTSgg37ZwKdHHqBeXEx5xS8aZLtZu76jBv6XFRhySZbJv
-	CszvPotFzdRpXyNM7UU7hdd7dlIEsq5Kk+FjEhPULt2Xsv/RA7lyY0LST15VgxFnQ/xbn+3/g0HCy
-	/6BfWAlgeY/3kRB4D5yDjHXkMzuAwt2mxVlakEtUL4rIx00KCdyZL8jUPGi4U6ZTzwesRs2oP3O31
-	LsWO6URd5D4Efmw3SQbis16eC9tsNkjJ0sWJyqw3cw4bHpx/5Pxn+SFopOBk/XGUiHWepta6q47d+
-	JXB4+1k0plfjI3aVWMdQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=f8XO6CvWr86pqVKjMdnArAWh0xCXVvkmqqocP9HmMwk=; b=4OSyvRu5CxLpOxHiq4IpkrGWwU
+	osUsLB/SBYKfyZnP1esUrRGtnzRM6ftjbfpNfE1UkAk5uoAwey7r9BrC+1r+CENvj3UOmy5asbmgA
+	qNMDy9L16JFGpuY0MGgj+RwLb46hLbly48bm5V/0HoukHf+duivyhRTVHuRmfARca7GL+wSjBiuct
+	SjHFXyqLoc8Na8qlF1D2ZqqY1EDj36bJZkBMqwWvHXqFJN94DwDRWrCs88kQGm7XSeQlunk26vF4a
+	A5lOIKLQzn86og6x103U6076W0sWwgVTZR7hbjquYCQC8At0jgqNnqqikMeRM4ycX2W2NWrrNsI8Y
+	2Rx1v9Jg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXrg-0000000A76B-2kX1;
-	Fri, 19 Dec 2025 10:37:40 +0000
+	id 1vWXrh-0000000A77L-1klp;
+	Fri, 19 Dec 2025 10:37:41 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXr4-0000000A6CC-0I1v
+	id 1vWXr4-0000000A6Ck-2Fhn
 	for barebox@bombadil.infradead.org;
 	Fri, 19 Dec 2025 10:37:02 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=SsDFGx5IsPVlaEMDTLt2gdk1AqZsOfxc/Y3I2ZhVe7s=; b=M9VI7lMRxNU+26gZunZ2GSAzpt
-	p6kkCg7GKuXpz46aLJultMCSfF0mj9BCM/aUv//VwIbX1/ggkfmftRU7QZUOzx8liEh8jeWf6yQDj
-	Qwdlc7hZE9krCZSDxMmbgJkxrwtmobsBlOgzbI2nTyy5SLlA7yvBA95O/W32qBmjaXpP2QRDZRZE8
-	T/4/OmF+8M6xdgarNzCCOGeLbKD91F4qUq1ZrtssiVyxFVjHhVQmvAcmfYWAydNEGrMt7vIwT2tkT
-	9Y12eP9vA2azLwQlt7dvpbk3OA0+Cy/Dfa4+m+JNFBNBSQof/zlPmTs4W9A2JxIszJkuhzybl+5du
-	Vq85PkPQ==;
+	bh=f8XO6CvWr86pqVKjMdnArAWh0xCXVvkmqqocP9HmMwk=; b=urgk8hbI1DIoT+birvU5g8Ogyz
+	DY/O2FZ1CCC98f17nxJ0wwmIdyG/nQnn5f1JHA6MILY9dJlcJanePR6n9VwGRetYckkmusBakoBv3
+	zVOzSfPw06UPy3qSlsd2qvOb6q1UlY5LYTH6u5xCZJQgS7YENZqAFiHIA82c07hK+iAI1SDEaLNuK
+	cD2SqeHHlSwyoRvuWU712obLnuWfdJ9ffNR+p1JOK7senHNMYLeZ+9DC7HESW8Ygh6LpVFjUSC/ge
+	W3WUX4M3rxkDrQQkBpQwYReMJjIEsEz9Uw3VxDZXEaC0sHX+v7LX8HvEvQiY7PPD+1sYBhBRfLDe/
+	M6JyznOw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXr0-00000007RVj-35iN
+	id 1vWXr1-00000007RWC-1oeT
 	for barebox@lists.infradead.org;
 	Fri, 19 Dec 2025 10:37:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqs-0004fV-1W; Fri, 19 Dec 2025 11:36:50 +0100
+	id 1vWXqt-0004iG-0h; Fri, 19 Dec 2025 11:36:51 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqr-006RVd-2i;
-	Fri, 19 Dec 2025 11:36:49 +0100
+	id 1vWXqs-006RWL-2V;
+	Fri, 19 Dec 2025 11:36:50 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVi-0000000320L-13Yi;
-	Fri, 19 Dec 2025 11:14:58 +0100
+	id 1vWXVh-0000000320L-3Iu2;
+	Fri, 19 Dec 2025 11:14:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 19 Dec 2025 10:21:14 +0100
-Message-ID: <20251219101453.2806980-39-a.fatoum@pengutronix.de>
+Cc: Maud Spierings <maudspierings@gocontroll.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:21:04 +0100
+Message-ID: <20251219101453.2806980-29-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_103658_812419_54B949BD 
-X-CRM114-Status: UNSURE (   9.86  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251219_103659_548805_2D96AF18 
+X-CRM114-Status: GOOD (  12.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,7 +89,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -99,64 +99,56 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 38/49] fs: fix automount when last filename component is a automountpoint
+Subject: [PATCH v2025.09.y 28/49] net: designware-imx: don't set txclk when mode is (r)mii
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-When opening a directory in openat() as indicated with the O_DIRECTORY
-flag, pass the LOOKUP_DIRECTOY flag to filename_lookup() to make sure
-the target is actually a directory. By doing this we can skip the check
-afterwards.
+Add an early exit to eqos_set_txclk() when the mode is (r)mii.
 
-filename_lookup() only triggers the automount on the last component when
-the LOOKUP_DIRECTORY flag is set, so with this change when /mnt/mmc2.3/
-is a automountpoint a
+The "tx" clock is actually something called the "slice 81 clock" which
+must always be 50M for the rmii mode. This will later get divided into
+the actual tx clock /2 or /20 which does match those clock rates. Still
+the provided clock != tx clock when the mode is rmii.
 
-stat /mnt/mmc2.3/
+Linux also excludes the mii mode from this clock lookup, even though
+the clock rates actually seem to match there. I am not aware why it is
+also excluded, it may be best to wait with merging this until [1] has
+found an answer. But for now I thought it would be best to match Linux
+behaviour.
 
-now triggers automounting. This also fixes tab completion with
-"ls /mnt/mmc2.3/<tab>" which previously didn't trigger autmounting.
+Link: https://lore.kernel.org/all/aRclKDeHzfJSzpQ3@shell.armlinux.org.uk/ [1]
 
-Fixes: a1da0079d1 ("fs: implement opendir in terms of fdopendir")
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20251202092256.1565823-1-s.hauer@pengutronix.de
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Link: https://lore.barebox.org/20251114-eqos_rmii-v1-1-4a20cf7cb4c0@gocontroll.com
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit 500df27eb054f86ce232c5bb30c3a7ea8f771e61)
+(cherry picked from commit 7302e971fcd4153e7407db0abe6a1ddeb5f96f29)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/designware_imx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 54bd35786857..3eaf9084d096 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -2606,7 +2606,12 @@ int openat(int dirfd, const char *pathname, int flags)
- 	}
+diff --git a/drivers/net/designware_imx.c b/drivers/net/designware_imx.c
+index ec3558fad026..bc3136f8ff7e 100644
+--- a/drivers/net/designware_imx.c
++++ b/drivers/net/designware_imx.c
+@@ -59,10 +59,15 @@ static unsigned long eqos_get_csr_clk_rate_imx(struct eqos *eqos)
  
- 	if (!(flags & O_CREAT) || error == -EEXIST) {
--		error = filename_lookup(dirfd, getname(pathname), LOOKUP_FOLLOW, &path);
-+		unsigned f = LOOKUP_FOLLOW;
+ static int eqos_set_txclk(struct eqos *eqos, int speed)
+ {
++	phy_interface_t interface = eqos->interface;
+ 	struct eqos_imx_priv *priv = eqos->priv;
+ 	unsigned long rate;
+ 	int ret;
+ 
++	if (interface == PHY_INTERFACE_MODE_RMII ||
++	    interface == PHY_INTERFACE_MODE_MII)
++		return 0;
 +
-+		if (flags & O_DIRECTORY)
-+			f |= LOOKUP_DIRECTORY;
-+
-+		error = filename_lookup(dirfd, getname(pathname), f, &path);
- 		dentry = path.dentry;
- 	}
- 
-@@ -2636,9 +2641,6 @@ int openat(int dirfd, const char *pathname, int flags)
- 		}
- 
- 		flags |= O_DIRECTORY;
--	} else if (flags & O_DIRECTORY) {
--		error = -ENOTDIR;
--		goto out1;
- 	}
- 
- 	inode = d_inode(dentry);
+ 	switch (speed) {
+ 	case SPEED_10:
+ 		rate = 2500000;
 -- 
 2.47.3
 
