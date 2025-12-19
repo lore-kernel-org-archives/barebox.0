@@ -3,66 +3,66 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXru-00DAYJ-02
+	id 1vWXru-00DAYU-0o
 	for lore@lore.pengutronix.de;
 	Fri, 19 Dec 2025 11:37:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vWXrj-0005fW-0a
-	for lore@pengutronix.de; Fri, 19 Dec 2025 11:37:53 +0100
+	id 1vWXrj-0005fH-0I
+	for lore@pengutronix.de; Fri, 19 Dec 2025 11:37:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QWMRIufUGwDLGTU/hOYXQ1BUurGYtzeIPi/62e/tsHU=; b=pB5lrx9LhmSNEqt+1HJ6/YpMeh
-	31n1EgESplVM02jFR0sfU9Ihc7hF9nOvkgMHu8VUa9AobN70fMZCJPWL6m068tWXvIPzrIQoH7i93
-	9MUMmyE/3ut6IReOC1MZ/ERvQwM7W3oTKs4r62F4Vm4vPVXUrEhrzYElI049TgpbcUaorA4HbpyqO
-	z5iWjoXXKaW+Rvp8iWpifHwAliiTU0qcoAw/sYo51WaU+oM28PVx+d072a2JGhbCo7/h1F7DYW41N
-	TYngoO8KIHj68MB++2HwGVNbF/1VJP5insCP+Q/Vl4SuU8huTclJX6QPqhxBJE/8N1eQkpOlrM9Vd
-	sqTDVIdg==;
+	bh=JVOeVi1aGBMXZJyWmc5kvtHD6QBuJkqLP/l8C7D4spg=; b=aCrCX3vjv1/PDDad2a0P8RjuRh
+	ZDdzwmDlPblHA53lnGMeqdCn/3bEj9eD4pF1Jx1NeI2f6PnIEC/7WVifk/XhqAQ3xCj3/v5z7RsQA
+	jgfv5YhE4aYuyjauvYq+NOLFrAad+PLPig0iodIO6UthsL//9VGjDUU4Wec3wpIUwv0yGEh8mebLK
+	MOA6SKeJJOJaRxi6jK9xBS6X0V8IYC2/gYb9JiAWfOMqo92FI4NrpBHZd4bBPfz2cTK8U8kqXpKJG
+	g1y5PH/uA3MHuQWkeNvrAWV/toP0OfYB1OG46C5Zqn3CKOFaS+FWLSSlRKhLK5HPTZpxmY2aHpYNM
+	cKphcvFQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqz-0000000A66j-2xRf;
-	Fri, 19 Dec 2025 10:36:57 +0000
+	id 1vWXqy-0000000A63k-06jT;
+	Fri, 19 Dec 2025 10:36:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWXqs-0000000A5uo-0Tkq
+	id 1vWXqr-0000000A5ui-37KV
 	for barebox@lists.infradead.org;
-	Fri, 19 Dec 2025 10:36:53 +0000
+	Fri, 19 Dec 2025 10:36:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqq-0004bE-Ky; Fri, 19 Dec 2025 11:36:48 +0100
+	id 1vWXqq-0004a8-8G; Fri, 19 Dec 2025 11:36:48 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXqq-006RUc-1S;
-	Fri, 19 Dec 2025 11:36:48 +0100
+	id 1vWXqp-006RUI-2v;
+	Fri, 19 Dec 2025 11:36:47 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWXVi-0000000320L-2cKq;
-	Fri, 19 Dec 2025 11:14:58 +0100
+	id 1vWXVh-0000000320L-3tO2;
+	Fri, 19 Dec 2025 11:14:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 Dec 2025 10:21:22 +0100
-Message-ID: <20251219101453.2806980-47-a.fatoum@pengutronix.de>
+Cc: Maud Spierings <maudspierings@gocontroll.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 19 Dec 2025 10:21:07 +0100
+Message-ID: <20251219101453.2806980-32-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 References: <20251219101453.2806980-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251219_023650_146835_70CC5065 
-X-CRM114-Status: UNSURE (   9.86  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20251219_023649_794278_757575F2 
+X-CRM114-Status: GOOD (  14.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,34 +84,74 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 46/49] net: 9p: fix variable name in BAREBOX_MAGICVAR
+Subject: [PATCH v2025.09.y 31/49] scripts: imx: add pread implementation for mingw target
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The variable is called global.9p.debug, not plan9debug.
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20251215075907.1222551-1-a.fatoum@pengutronix.de
+Add a simple pread implementation for the mingw target so imx-usb-loader
+can be compiled for windows.
+
+This function is actually only called by bareboxtlv, which I don't think
+targets being compiled for windows, so it is a bit of a dead weight.
+
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20251201-imx_usb-v2-2-95ec2a0e8694@gocontroll.com
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-(cherry picked from commit 370f8098d2ab573c7800ab0be9631ed6a9ad61c5)
+(cherry picked from commit 969c9b94b58de50ab0db2eeef0a4dcfad4f5da5c)
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- net/9p/mod.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/imx/Makefile.mingw64 |  2 +-
+ scripts/imx/pread.c          | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
+ create mode 100644 scripts/imx/pread.c
 
-diff --git a/net/9p/mod.c b/net/9p/mod.c
-index ef071a1b490d..d6b3ba583428 100644
---- a/net/9p/mod.c
-+++ b/net/9p/mod.c
-@@ -26,7 +26,7 @@
+diff --git a/scripts/imx/Makefile.mingw64 b/scripts/imx/Makefile.mingw64
+index 101b39e9178d..a7be48ae5333 100644
+--- a/scripts/imx/Makefile.mingw64
++++ b/scripts/imx/Makefile.mingw64
+@@ -33,7 +33,7 @@ obj := $(realpath $(obj))
+ CPPFLAGS := -I $(LIBUSB_MINGW)/include/libusb-1.0 -I $(src)/../include/ -I $(src)/../../include/mach/ -include $(src)/../include/defines.h
+ LDFLAGS := -L $(LIBUSB_MINGW)/lib -lusb-1.0 -static
  
- #ifdef CONFIG_NET_9P_DEBUG
- unsigned int p9_debug_level;	/* feature-rific global debug level  */
--BAREBOX_MAGICVAR(plan9debug, "9P debugging level");
-+BAREBOX_MAGICVAR(global.9p.debug, "9P debugging level");
+-OBJECTS := $(addprefix $(obj)/, imx.o imx-usb-loader.o)
++OBJECTS := $(addprefix $(obj)/, imx.o imx-usb-loader.o pread.o)
  
- void _p9_debug(enum p9_debug_flags level, const char *func,
- 	       const char *fmt, ...)
+ $(obj)/%.o: $(src)/%.c
+ 	@$(CC) -c -o $@ $< $(CPPFLAGS)
+diff --git a/scripts/imx/pread.c b/scripts/imx/pread.c
+new file mode 100644
+index 000000000000..febb6f32432c
+--- /dev/null
++++ b/scripts/imx/pread.c
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: 2025 Maud Spierings, GOcontroll B.V.
++
++#include <stdint.h>
++#include <sys/types.h>
++#include <unistd.h>
++
++ssize_t pread(int fd, void *buf, size_t count, off_t offset)
++{
++	int offset_start, now;
++
++	offset_start = lseek(fd, 0, SEEK_CUR);
++	if (offset_start < 0)
++		return offset_start;
++
++	now = lseek(fd, offset, SEEK_SET);
++	if (now < 0)
++		return now;
++
++	now = read(fd, buf, count);
++
++	lseek(fd, offset_start, SEEK_SET);
++
++	return now;
++}
 -- 
 2.47.3
 
