@@ -1,68 +1,67 @@
-Delivery-date: Mon, 22 Dec 2025 10:54:17 +0100
+Delivery-date: Mon, 22 Dec 2025 11:16:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vXccK-00ECLG-00
+	id 1vXcxf-00ECpE-1S
 	for lore@lore.pengutronix.de;
-	Mon, 22 Dec 2025 10:54:17 +0100
+	Mon, 22 Dec 2025 11:16:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vXccI-0001to-Vt
-	for lore@pengutronix.de; Mon, 22 Dec 2025 10:54:15 +0100
+	id 1vXcxe-0004PS-QD
+	for lore@pengutronix.de; Mon, 22 Dec 2025 11:16:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Subject:To:From:Date:Reply-To:Cc:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=fDdzQrOUSn3s8JEkNoMYFsLjIoQrF4AmUsi+/EwwpNU=; b=Y/ZsTNQUzXT4ghckbspZ1IagIg
-	jxx3yeuTN5j9F92++WCNl1F04n70fGd9t9y+wsymRaODDnOVT2N+ugOtZcqQ2wMDWUKpzrcPvcn+R
-	bdFh7oWLuXUYfmH2kn72wu5cEMVWsF8l0LfaXiHUDnS1gEQtrW0nXqtneRhROClpbSUxefDgLP1C5
-	HISznLx4FwCVJUqBZnvMdB8sBr7qKKKwkPl7NCTfN5NFYNOPGyASp8IkOGiAxARIGRZaQEok68sKO
-	B7Gv+SLJbNiLcKzHfb5puRdxRkreEPCP9hIRa9bm8BpkWxxh/M2fIGvlm/R12hfk5W1jLLX1OkaB4
-	IFBh619g==;
+	bh=rH05YnVXBOtafOV/ybMP3EedVbssi8ZfSw5rPTeK340=; b=Cpvc9wITIyC5lBWOuFT6APPDrK
+	+SymbLOFlfSUdUbC4cE6eXXREQS4htneES6lsYRTvBdMNOhlhTBlkp1BWWNkOFLUSvuj2RBI+1RlL
+	JBkBX6/3UTiVGQblvuQ6M+iCfjzxvE5ANQ1NCoQ6mFcTq0DqQwiBImvDqV8m4oa0JYhfW8k2OE3Qq
+	YcFiDmRvEmkqa6sb9BtO3YiA9rwWQ2Nfx4dBkraMNK1cIeKSA6PcApXovlhOzqWchglU8gaMHJIG7
+	JmGBZ1IuGI5di9MN15lfDy5rRSN/mXS2MglPRnG07piRRNzvOt3osY/gpbwuGMF77J/TXLoYZ0dZD
+	gqUVtpaQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vXcba-0000000DZIU-1aTy;
-	Mon, 22 Dec 2025 09:53:30 +0000
+	id 1vXcx4-0000000Dbc2-3Lqa;
+	Mon, 22 Dec 2025 10:15:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vXcbW-0000000DZI2-0hQF
+	id 1vXcx2-0000000DbbE-0kCF
 	for barebox@lists.infradead.org;
-	Mon, 22 Dec 2025 09:53:28 +0000
+	Mon, 22 Dec 2025 10:15:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vXcbS-0001m4-64; Mon, 22 Dec 2025 10:53:22 +0100
+	id 1vXcx0-0004KT-15; Mon, 22 Dec 2025 11:15:38 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vXcbS-006unO-00;
-	Mon, 22 Dec 2025 10:53:22 +0100
+	id 1vXcwz-006v5V-03;
+	Mon, 22 Dec 2025 11:15:37 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vXcbR-004TMh-2n;
-	Mon, 22 Dec 2025 10:53:21 +0100
-Date: Mon, 22 Dec 2025 10:53:21 +0100
+	id 1vXcwy-004ThH-2s;
+	Mon, 22 Dec 2025 11:15:36 +0100
+Date: Mon, 22 Dec 2025 11:15:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <aUkVEcaajHt42VZl@pengutronix.de>
+Message-ID: <aUkaSKDePHF8__LB@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20251222_015326_409095_4D41C31E 
-X-CRM114-Status: GOOD (  21.34  )
+X-CRM114-CacheID: sfid-20251222_021540_287483_6A7620FD 
+X-CRM114-Status: GOOD (  15.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,194 +83,85 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: v2025.12.0
+Subject: v2025.09.1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
 Hi All,
 
-Right before christmas we have a v2025.12.0 release.
-
-Not a big release but there are still some nice things to find. First of
-all sandbox can now utilize LeakSanitizer to find memory leaks. This was
-already used to find several memory leaks so that sandbox now runs
-through all tests without memory leaks.
-The barebox TLV support now has signature support which makes it ideal
-for storing factory data which can be coupled to a specific device.
-Until now the barebox magicvars were only documented in the magicvar
-command. With this release they are now also documented on the website,
-check out https://barebox.org/doc/2025.12.0/user/variables.html.
-
-See below for a migration guide to this release and also for a full list
-of changes that went into this release.
-
-I wish you all a merry christmas!
+I just created a stable update for barebox-2025.09.0. Background is that
+we want to create stable releases to provide stable updates for the YOCTO
+barebox recipes. This stable release is specifically targeted at
+whinlatter which is currently at v2025.09.0
 
 Sascha
 
-
-Migration notes for Release v2025.12.0
-======================================
-
-Shell
------
-
-* An optional parameter was added to the `-c` option of `dmesg` allowing
-  configuration of the number of lines to remain in the log buffer after
-  clearing. When no parameter is provided to `-c`, zero is assumed, and no
-  lines are retained. Earlier versions always left 10 lines of logs remain in
-  the log buffer.
-
-Configuration options
----------------------
-
-* The syntax of ``CONFIG_CRYPTO_PUBLIC_KEYS`` was updated with the introduction
-  of the keyring feature. Previously, keys selected via
-  ``CONFIG_CRYPTO_PUBLIC_KEYS`` were only used for fitimage verification. Now,
-  fitimage verification uses the "fit" keyring. "fit" will be selected as the
-  default keyring for transition but a warning will be emitted when no keyring
-  is explicitly provided. Existing users should update their keyspec for
-  fitimage public keys to ``keyring=fit[,fit-hint=<fit_hint>]:<crt>``
-* The fit-hints in ``CONFIG_CRYPTO_PUBLIC_KEYS`` are now limited to identifiers
-  matching the regular expression ``[a-zA-Z][a-zA-Z0-9_-]*``. Public keys with
-  a ``fit-hint`` not conforming to this results in an error, affected key-hints
-  must be changed. Please reach out to the mailing list if this causes issues.
-
-----------------------------------------------------------------
-Ahmad Fatoum (52):
-      fuzz: add context pointer to call_for_each_fuzz_test
-      sandbox: export list_fuzz_tests to sandbox_main
-      fuzz: do not export for_each_fuzz_test
-      video: Rockchip: add vop2_data::version field like Linux
-      video: vpl: add debug output when calling ioctl
-      video: panel: add support for Sitronix ST7703 MIPI-DSI panel
-      phy: add support for generic MIPI D-PHY
-      phy: add devinfo callback
-      phy: add phy_configure operation
-      phy: rockchip: add Innosilicon MIPI/LVDS/TTL PHY driver
-      pinctrl: support selecting states from command line
-      video: make video/mipi_dsi.h header self-contained
-      sound: pwm-beeper: make duty cycle configurable
-      param: add support for setting parameters with percentages
-      video: backlight-pwm: switch to gpiod functions
-      backlight: support setting brightness as percentage
-      console: print banner on every fully activated console
-      regulator: implement dev_of_regulator_get
-      pmdomain: look up pmdomain even if not have_genpd_providers
-      pmdomain: allow callback for when devices are attached
-      imd: drop .barebox_imd section from arm/riscv non-PBL lds
-      common: elf: rename elf_section misnomer to elf_segment
-      x86: drop unused header asm/segment.h and modes.h headers
+Ahmad Fatoum (20):
+      scripts: rockchip: rkimage: reinstate OpenSSL 1.1 compatibility
+      range: fix corner cases when exclusive end is zero
       state: guard against empty variable set in DT
-      commands: usbgadget: improve error message on failure
-      usb: dwc3: port Linux i.MX8MP glue driver
-      phy: freescale: imx8mq-usb: add support for 8MP/8MQ vbus-supply
-      crypto: caam - skip RNG selftest when i.MX6 is in normal world
-      .clangd: remove -enable-trivial-auto-var-init-zero-... flag
-      lib: add talloc for overlaying a tree onto allocations
-      video: stm: make multi-image compatible
-      video: stm: allocate uncached framebuffer memory as write-combine
-      video: stm: add explicit support for i.MX6SX
-      test: self: add talloc selftest
-      hush: fix memory leaks
-      sandbox: add memory leak debugging tooling around LeakSanitizer
-      ARM: i.MX93: reinstate aliases
+      ARM: i.MX8M: romapi: skip zero_page_access() if MMU is disabled
+      ARM: mmu: have zero_page_remappable() check MMU status
+      ARM: mmu: fix hang when reserved memory at start of RAM
+      poller: activate POLLER_WARN_OVERTIME only on third strike
       bootm: fix boot override inheritance
+      fs: qemu_fw_cfg: make use of the automount
+      fs: qemu_fw_cfg: handle non-existent opt/org.barebox.env key gracefully
       boards: qemu-virt: drop fitimage-pubkey.dts
-      Documentation: migration-guides: don't warn about migration-master
-      Documentation: factor out build rules into stand-alone Makefile
-      ci: add workflow to check documentation build is warning free
-      ARM: Rockchip: document changing console baud rate
-      pmdomain: fix NULL pointer derference with dummy power domains
+      sandbox: fix race with .old_version removal
+      mci: am654-sdhci: correctly configure SLOTTYPE_EMBEDDED
+      net: arp: collect context into new struct pending_arp
+      net: reset pending ARP state when request is done
+      test: populate qemu_bin, even if missing features
+      test: exit directly when invoking QEMU states on non-QEMU targets
       param: make setting a parameter to the same string value a no-op
-      net: fsl_enetc: fix missing dmb() symbols on non-ARM
       i2c: omap: fix probe on am335x
       net: 9p: fix variable name in BAREBOX_MAGICVAR
-      bootchooser: inline document global.bootchooser.reset_priorities
-      reset_source: inline document global.system.reset*
-      Documentation: generate docs for magic variables
-      Documentation: turn magic variables literals into references
 
-Fabian Pflug (1):
-      console_common: get_first_active: respect security policy
+Alexander Shiyan (4):
+      clk: rockchip: rk3588: Add PLL rate for 1500 MHz
+      ARM: dts: rockchip: Set initial CPU frequencies for RK3588
+      ARM: dts: rockchip: Set CPLL frequency for RK3588
+      commands: truncate: fix multiple file handling with relative sizes
 
-Jan Luebbe (1):
-      doc: user: booting-linux: document global.bootm.initrd
+Chali Anis (1):
+      pci: pci-tegra: fix null pointer assignation.
 
-Jonas Rebmann (20):
-      gitignore: ignore /build, /oe-logs, /oe-workdir
-      commands: dmesg: clear logbuffer fully if not requested otherwise
-      lib: idr: avoid dangling else in idr_for_each_entry()
-      common: clean up TLV code
-      crypto: Add support for keyrings
-      fit: only accept keys from "fit"-keyring
-      crypto: keytoc: Rename "hint" to "fit-hint" and do not use it in identifiers
-      commands: keys: update output format to include keyring
-      commands: tlv: Error out on invalid TLVs
-      scripts: bareboxtlv-generator: Implement signature
-      scripts: bareboxtlv-generator: Increase max_size in example schema
-      common: tlv: Add TLV-Signature support
-      common: tlv: default decoder for signed TLV
-      crypto: Use "development" keys for "fit" and "tlv" keyring
-      test: py: add signature to TLV integration tests
-      ci: pytest: Add kconfig fragment for TLV signature integration tests
-      crypto: concatenate fit development certificate with private key
-      doc/barebox-tlv: Update documentation regarding TLV-Signature
-      Documentation: migration-2025.12.0: List changes to CONFIG_CRYPTO_PUBLIC_KEYS
+Jonas Rebmann (3):
+      virtio: Stop spamming debug buffer
       tlv: register_device() error handling
+      lib: base64: Fix out-of-bounds potential by respecting dst_len
 
-Marco Felsch (1):
-      ARM: atf: document BL32 FDT argument
-
-Maud Spierings (4):
+Maud Spierings (6):
+      ARM: i.MX: Fix the iomux DSE defines for imx8mp
+      net: designware-imx: don't set txclk when mode is (r)mii
       scripts: imx: Makefile.mingw64: add _GNU_SOURCE
       scripts: imx: add pread implementation for mingw target
-      gitignore: ignore *.exe
+      ARM: i.MX8M: Fix the RAM size calculation for DDR3
       pmdomain: fix collision in names when registering
 
 Michael Grzeschik (1):
-      crypto: keytoc: fix env parsing after keyring support
+      clk: clk_set_parent: skip any operation if current and new parents are equal
 
-Sascha Hauer (28):
+Philipp Zabel (1):
+      ARM: i.MX6: configure AIPS registers only if trusted
+
+Sascha Hauer (15):
+      mci: sdhci: am654: Use sdhci_wait_idle()
+      ARM: dts: am62lx: fix secondary core startup
       mtd: peb: mtd_peb_read(): move error message to caller
-      dts: update to v6.18-rc3
-      dts: update to v6.18-rc4
-      ARM: multi_v8_defconfig: enable more rockchip stuff
-      ARM: k3: allow to take signing key from environment variable
-      tlv: fix memory leak
-      of: free of_fixup in of_unregister_fixup()
-      bobject: free object name in bobject_del()
-      bfetch: fix memory leak
-      Merge branch 'for-next/arm'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/imx'
-      Merge branch 'for-next/memleaks'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/pmdomain'
-      Merge branch 'for-next/rochchip'
-      Merge branch 'for-next/talloc'
-      Merge branch 'for-next/tlv'
+      fs: nfs: drop PROG_NFS special casing
+      fs: nfs: do not read past packets
       clk: rockchip rk3588: configure CPLL in driver
-      device: use free_const to free device/bobject name
-      nvmem: Fix typo in Kconfig
-      public-keys: fix warning message
-      dm: fix memory leak
-      Merge branch 'document-bootm-initrd' of https://github.com/jluebbe/barebox
       fs: fix automount when last filename component is a automountpoint
-      Merge branch 'for-next/documentation'
+      ARM: K3: am62l: don't put sysfwdata into 1st stage image
+      ARM: k3: make some firmware files SoC specific
+      ARM: k3: am62l: Add dedicated config option for OP-TEE
+      ARM: k3: am62l: fix dependencies on k3img input files
+      i2c: implement i2c_unregister_device()
+      eeprom: at24: unregister devices in error path
       ARM: i.MX8MN-EVK: Fix maximum load size
-      Release v2025.12.0
-
-Sohaib Mohamed (1):
-      Documentation: defaultenv-2: Document C-based init script
-
-Steffen Trumtrar (1):
-      ARM: i.MX8MP: skov: add new 10" jt101tm023 variant support
-
-Ulrich Ölmann (2):
-      docs: security-policies: fix typo
-      docs: security-policies: fix code block rendering by removing extra colon
+      Release v2025.09.1
 
 -- 
 Pengutronix e.K.                           |                             |
