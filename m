@@ -1,53 +1,54 @@
-Delivery-date: Mon, 05 Jan 2026 09:48:17 +0100
+Delivery-date: Mon, 05 Jan 2026 10:03:29 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcgG9-001Shb-06
+	id 1vcgUr-001Sr8-0B
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 09:48:17 +0100
+	Mon, 05 Jan 2026 10:03:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcgG8-0004hD-Co
-	for lore@pengutronix.de; Mon, 05 Jan 2026 09:48:16 +0100
+	id 1vcgUq-0006jF-HU
+	for lore@pengutronix.de; Mon, 05 Jan 2026 10:03:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=1WdVD2zxbhMxLBGrylr2CnaMZZG1aLbV7e0ZgWwpQ0o=; b=HSAxAOLzei0ugFc5dQYGwQIyPT
-	QiDt3k+2OsqiK5Znz1lPzbShRTa8QVCU5jH3EPjhELoG6SvrLcgfz93Ut1wVNkIMckX5w8R94fwUn
-	o2sN9PszVcjmDBonQ2UV+51jVg2G54uED67wkEWNYVTv8grhZxSHw3wC9W7u8o6UucR+63wAeLHWH
-	Sox1MTNuBeUpT/JwwJl+8YMiDK3iOmQ7jjT8wvOGoCIg8ojIcPQYq56bgKEwvMB899JnS/lkuUEqZ
-	CXv++LxTW81njoq6sClbvndMxrUDtOxoYz9GzHB5fxfgTEwz0OemDR6z1k6OBiw+kvLhGoqx0Kgcw
-	Y9q79v9w==;
+	bh=Etn9j1jBALFQFd0vjw+SuuJI+g3SirV9e739SUH64oM=; b=WQPtIhUpDgd4LDOCk5pr7LMOEm
+	ziM3/7xeFnvnnLKJprtej7SqX5pwDtIjWLOARHaLYLc3qm/TRiAV2QjetL298ABwJ4dPsyL8/6E5V
+	KrRTVj81T5wesImZIknOTFAqsvZwUUQ+enayHDMFJfyPbfu9VBnkvt0h2A/x2lCzdfOZw+W/+qKzU
+	7eKkmvSASCA3XHpTOQI/fIqnWeU/tOrab1rVZxle06XyMBVpPxvl4LCmy0eKbyKYX+S0gTjhi/wzX
+	FlLxNclsIxTEGs0/etcQ8+vBqqpAVMf1TwaWNkdRFma+XgaDTLO6XxlLRxyqQ66zmY0sh8Fp62AZL
+	cmboGCrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcgFk-0000000B0aa-0zig;
-	Mon, 05 Jan 2026 08:47:52 +0000
+	id 1vcgUL-0000000B22z-49Y8;
+	Mon, 05 Jan 2026 09:02:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcgFh-0000000B0aE-2dfu
+	id 1vcgUK-0000000B22C-172L
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 08:47:50 +0000
+	Mon, 05 Jan 2026 09:02:57 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vcgFf-0004cz-Rs; Mon, 05 Jan 2026 09:47:47 +0100
+	id 1vcgUI-0006XS-Et; Mon, 05 Jan 2026 10:02:54 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  5 Jan 2026 09:47:45 +0100
-Message-ID: <20260105084746.3289185-1-a.fatoum@barebox.org>
+Date: Mon,  5 Jan 2026 10:02:53 +0100
+Message-ID: <20260105090253.3299052-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_004749_669166_F0FBB1AA 
-X-CRM114-Status: GOOD (  11.64  )
+X-CRM114-CacheID: sfid-20260105_010256_301906_46BC8D4A 
+X-CRM114-Status: UNSURE (   9.40  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,146 +70,40 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] mmu: move MAP_RO definition into global mmu.h header
+Subject: [PATCH] ARM64: elf: set ELF_CLASS64 for ARM64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To allow generic code to remap memory as read-only, let's add the
-definition to the global header.
-
-On platforms other than ARM, mapping R/O will just be cached R/W.
+This doesn't yet matter, because we don't make use of these definitions
+(they are meant for core files), but when we start processing the
+barebox proper ELF in PBL, it will become required, so fix this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/Kconfig              | 3 +++
- arch/arm/Kconfig          | 1 +
- arch/arm/cpu/mmu-common.c | 4 ++--
- arch/arm/cpu/mmu-common.h | 3 +--
- arch/arm/cpu/mmu_32.c     | 4 ++--
- arch/arm/cpu/mmu_64.c     | 2 +-
- include/mmu.h             | 6 ++++++
- 7 files changed, 16 insertions(+), 7 deletions(-)
+ arch/arm/include/asm/elf.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index ca9aa25a9c4b..3daba5239740 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -62,6 +62,9 @@ config ARCH_DMA_DEFAULT_COHERENT
- config ARCH_HAS_DMA_WRITE_COMBINE
- 	bool
- 
-+config ARCH_HAS_RO_MAPPINGS
-+	bool
-+
- config ARCH_HAS_ASAN_FIBER_API
- 	bool
- 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 5123e9b1402c..d9b1f5de1fa7 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -17,6 +17,7 @@ config ARM
- 	select HAVE_ARCH_BOOTM_OFTREE
- 	select HW_HAS_PCI
- 	select ARCH_HAS_DMA_WRITE_COMBINE
-+	select ARCH_HAS_RO_MAPPINGS
- 	select HAVE_EFI_LOADER if MMU # for payload unaligned accesses
- 	default y
- 
-diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index a1431c0ff461..6db85fa9c7d4 100644
---- a/arch/arm/cpu/mmu-common.c
-+++ b/arch/arm/cpu/mmu-common.c
-@@ -22,7 +22,7 @@ const char *map_type_tostr(maptype_t map_type)
- 
- 	switch (map_type) {
- 	case ARCH_MAP_CACHED_RWX:	return "RWX";
--	case ARCH_MAP_CACHED_RO:	return "RO";
-+	case MAP_RO:			return "RO";
- 	case MAP_CACHED:		return "CACHED";
- 	case MAP_UNCACHED:		return "UNCACHED";
- 	case MAP_CODE:			return "CODE";
-@@ -158,7 +158,7 @@ static void mmu_remap_memory_banks(void)
- 	}
- 
- 	remap_range((void *)code_start, code_size, MAP_CODE);
--	remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
-+	remap_range((void *)rodata_start, rodata_size, MAP_RO);
- 
- 	setup_trap_pages();
- }
-diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
-index a111e15a21b4..39332d8f5a98 100644
---- a/arch/arm/cpu/mmu-common.h
-+++ b/arch/arm/cpu/mmu-common.h
-@@ -12,7 +12,6 @@
- #include <linux/bits.h>
- 
- #define ARCH_MAP_CACHED_RWX	MAP_ARCH(2)
--#define ARCH_MAP_CACHED_RO	MAP_ARCH(3)
- 
- #define ARCH_MAP_FLAG_PAGEWISE	BIT(31)
- 
-@@ -32,7 +31,7 @@ static inline maptype_t arm_mmu_maybe_skip_permissions(maptype_t map_type)
- 	switch (map_type & MAP_TYPE_MASK) {
- 	case MAP_CODE:
- 	case MAP_CACHED:
--	case ARCH_MAP_CACHED_RO:
-+	case MAP_RO:
- 		return ARCH_MAP_CACHED_RWX;
- 	default:
- 		return map_type;
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index 912d14e8cf82..d41ebcfb7fe4 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -304,7 +304,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
- 		switch (map_type & MAP_TYPE_MASK) {
- 		case ARCH_MAP_CACHED_RWX:
- 			return PTE_FLAGS_CACHED_V7_RWX;
--		case ARCH_MAP_CACHED_RO:
-+		case MAP_RO:
- 			return PTE_FLAGS_CACHED_RO_V7;
- 		case MAP_CACHED:
- 			return PTE_FLAGS_CACHED_V7;
-@@ -320,7 +320,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
- 		}
- 	} else {
- 		switch (map_type & MAP_TYPE_MASK) {
--		case ARCH_MAP_CACHED_RO:
-+		case MAP_RO:
- 		case MAP_CODE:
- 			return PTE_FLAGS_CACHED_RO_V4;
- 		case ARCH_MAP_CACHED_RWX:
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 56c6a21f2b2a..006b2b29478f 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -159,7 +159,7 @@ static unsigned long get_pte_attrs(maptype_t map_type)
- 		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
- 	case MAP_CODE:
- 		return CACHED_MEM | PTE_BLOCK_RO;
--	case ARCH_MAP_CACHED_RO:
-+	case MAP_RO:
- 		return attrs_xn() | CACHED_MEM | PTE_BLOCK_RO;
- 	case ARCH_MAP_CACHED_RWX:
- 		return CACHED_MEM;
-diff --git a/include/mmu.h b/include/mmu.h
-index f79619808829..7d87885a5cb4 100644
---- a/include/mmu.h
-+++ b/include/mmu.h
-@@ -16,6 +16,12 @@
- #define MAP_WRITECOMBINE	MAP_UNCACHED
+diff --git a/arch/arm/include/asm/elf.h b/arch/arm/include/asm/elf.h
+index 4043e6fd5b99..0b4704a4a561 100644
+--- a/arch/arm/include/asm/elf.h
++++ b/arch/arm/include/asm/elf.h
+@@ -39,15 +39,16 @@ typedef struct user_fp elf_fpregset_t;
+ /*
+  * These are used to set parameters in the core dumps.
+  */
+-#define ELF_CLASS	ELFCLASS32
+ #ifdef __ARMEB__
+ #define ELF_DATA	ELFDATA2MSB
+ #else
+ #define ELF_DATA	ELFDATA2LSB
  #endif
- 
-+#ifdef CONFIG_ARCH_HAS_RO_MAPPINGS
-+#define MAP_RO			5
-+#else
-+#define MAP_RO			MAP_CACHED
-+#endif
-+
- #define MAP_TYPE_MASK	0xFFFF
- #define MAP_ARCH(x)	((u16)~(x))
+ #ifdef CONFIG_CPU_64
++#define ELF_CLASS	ELFCLASS64
+ #define ELF_ARCH	EM_AARCH64
+ #else
++#define ELF_CLASS	ELFCLASS32
+ #define ELF_ARCH	EM_ARM
+ #endif
  
 -- 
 2.47.3
