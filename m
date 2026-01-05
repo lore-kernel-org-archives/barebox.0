@@ -3,54 +3,53 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcfcw-001S29-2L
+	id 1vcfcw-001S1w-01
 	for lore@lore.pengutronix.de;
 	Mon, 05 Jan 2026 09:07:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcfcv-0008Au-VI
-	for lore@pengutronix.de; Mon, 05 Jan 2026 09:07:46 +0100
+	id 1vcfcv-0008AL-0p
+	for lore@pengutronix.de; Mon, 05 Jan 2026 09:07:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gSpfe+zuR6ZWPQRwDotziAEMVMMDvJJ7ngE/2mOaClU=; b=G5IykQ5USg5vaAGuyWsoPRSll0
-	uLbZNACRm3z8MbhaEedp56mC93PsI2Go87DTu1su0tE3ywbDMq8qaB0aN77kluxc6SNOyNdmhznsV
-	SkRTIzAWvplCd+HmkmOGy3N58+mkvAZrWjFzLs/MOGVTvQat4dORQanAeg97A76EfHddrpiibhpdS
-	h/8s1Zl055ycSYqFDW/XNmCs8hV7X7X8dT1+fuy6XZ0mfxK2SPNSiLTKXzDHQ0+j3Qa+NVVGlhKSw
-	n+5p+ih/QY/kIEnv2+SLaHE1xx2HZIafoGyRogveU5fURLXerlSFf7S2cfh/8/LLzJAFLLRrfqJag
-	9N1pvwUg==;
+	bh=decKlBwPNw//ofKiugLbvnw0gW1kIH7vDHA05nfvX5I=; b=NwhBToZ8g+xKRQnwu8m5RhNA3U
+	0yel95TBM8C05vEQvqPR98F0Y/zpAFLOjJS5BWyjohmcKORbQhV5jV/HgtTSOO3A7ElSb6Ubt9S2w
+	C1LU9trtJX6Fr0OMH7TVsv+228n06iySH8NEoSyVZ6xG6U6IMm+YQHfGBUb0YGhJDWJHlPpYrjHDH
+	rExTigVqzlwHoWAdGmvds/MwTeUx0uCGE6y1sOsUZ04VXqoHUn31wrqs3AAR20XqLeR+GZ5y4Y/he
+	O/qvcQYW/XAlf7nA7xmodpK77PDfzAC/tsck3vgdtvNRvrc23FaiP7SZUh+2a3meTxGu6Lv5gROo5
+	MvsKiLmg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcfcI-0000000Ax4X-072y;
-	Mon, 05 Jan 2026 08:07:06 +0000
+	id 1vcfcG-0000000Ax3E-2x1d;
+	Mon, 05 Jan 2026 08:07:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcfcC-0000000AwzN-13Ii
+	id 1vcfcB-0000000AwzM-3iP5
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 08:07:03 +0000
+	Mon, 05 Jan 2026 08:07:02 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vcfc9-0007f0-Bi; Mon, 05 Jan 2026 09:06:57 +0100
+	id 1vcfc8-0007f0-W4; Mon, 05 Jan 2026 09:06:57 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  5 Jan 2026 09:03:38 +0100
-Message-ID: <20260105080653.3240497-7-a.fatoum@barebox.org>
+Date: Mon,  5 Jan 2026 09:03:37 +0100
+Message-ID: <20260105080653.3240497-6-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260105080653.3240497-1-a.fatoum@barebox.org>
 References: <20260105080653.3240497-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_000700_287337_47FD65ED 
-X-CRM114-Status: UNSURE (   7.92  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260105_000659_921952_8A2C1AF3 
+X-CRM114-Status: GOOD (  14.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,52 +71,116 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 06/10] memory: move release_sdram_region into header
+Subject: [PATCH 05/10] bootm: refactor for readability and extensibility
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To make it clear that release_sdram_region and release_region are the
-same, move it into a header and give it a comment saying as much.
+The code is hard to follow with the gotos and the organically grown
+ordering. Let's refactor it, so we can start putting a loop around it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- common/memory.c  | 5 -----
- include/memory.h | 6 +++++-
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ common/bootm.c | 71 +++++++++++++++++++++++---------------------------
+ 1 file changed, 32 insertions(+), 39 deletions(-)
 
-diff --git a/common/memory.c b/common/memory.c
-index 2cd6d29a8f2b..7dc7f40db7fc 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -352,11 +352,6 @@ struct resource *reserve_sdram_region(const char *name, resource_size_t start,
- 	return res;
- }
- 
--int release_sdram_region(struct resource *res)
--{
--	return release_region(res);
--}
--
- void memory_bank_find_space(struct memory_bank *bank, resource_size_t *retstart,
- 			   resource_size_t *retend)
+diff --git a/common/bootm.c b/common/bootm.c
+index 1554a8f7f3f9..26fd8227f01f 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -280,61 +280,54 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ const struct resource *
+ bootm_load_initrd(struct image_data *data, unsigned long load_address)
  {
-diff --git a/include/memory.h b/include/memory.h
-index 6189a0f65c50..3475e9211b0c 100644
---- a/include/memory.h
-+++ b/include/memory.h
-@@ -63,7 +63,11 @@ static inline struct resource *request_sdram_region(const char *name,
- struct resource *reserve_sdram_region(const char *name, resource_size_t start,
- 				      resource_size_t size);
+-	struct resource *res;
+-	enum filetype type;
++	struct resource *res = NULL;
++	const char *initrd, *initrd_part = NULL;
++	enum filetype type = filetype_unknown;
+ 	int ret;
  
--int release_sdram_region(struct resource *res);
-+/* It's always fine to call release_region directly as well */
-+static inline int release_sdram_region(struct resource *res)
-+{
-+	return release_region(res);
-+}
+ 	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
+ 		return NULL;
  
- void memory_bank_find_space(struct memory_bank *bank, resource_size_t *retstart,
- 			    resource_size_t *retend);
+-	if (bootm_get_override(&data->initrd_file, bootm_overrides.initrd_file))
+-		goto initrd_file;
+-
+-	if (data->initrd_res)
++	/* TODO: This should not be set anywhere, but in case it is, let's print
++	 * a warning to find out if we need this
++	 */
++	if (WARN_ON(data->initrd_res))
+ 		return data->initrd_res;
+ 
+-	if (data->os_fit) {
+-		res = bootm_load_fit_initrd(data, load_address);
+-		if (IS_ERR(res))
+-			return res;
+-		if (res)
+-			pr_info("Loaded initrd from FIT image\n");
++	bootm_get_override(&data->initrd_file, bootm_overrides.initrd_file);
+ 
+-		goto done1;
+-	}
+-
+-initrd_file:
+-	if (!data->initrd_file)
+-		return NULL;
+-
+-	ret = file_name_detect_type(data->initrd_file, &type);
+-	if (ret) {
+-		pr_err("could not open initrd \"%s\": %pe\n", data->initrd_file, ERR_PTR(ret));
+-		return ERR_PTR(ret);
++	initrd = data->initrd_file;
++	if (initrd) {
++		ret = file_name_detect_type(initrd, &type);
++		if (ret) {
++			pr_err("could not open initrd \"%s\": %pe\n",
++			       initrd, ERR_PTR(ret));
++			return ERR_PTR(ret);
++		}
+ 	}
+ 
+ 	if (type == filetype_uimage) {
+ 		res = bootm_load_uimage_initrd(data, load_address);
+-		if (IS_ERR(res))
+-			return res;
++		if (data->initrd->header.ih_type == IH_TYPE_MULTI)
++			initrd_part = data->initrd_part;
++
++	} else if (initrd) {
++		res = file_to_sdram(initrd, load_address, MEMTYPE_LOADER_DATA)
++			?: ERR_PTR(-ENOMEM);
++
++	} else if (data->os_fit) {
++		res = bootm_load_fit_initrd(data, load_address);
++		type = filetype_fit;
+ 
+-		goto done;
+ 	}
+ 
+-	res = file_to_sdram(data->initrd_file, load_address, MEMTYPE_LOADER_DATA);
+-	if (!res)
+-		return ERR_PTR(-ENOMEM);
++	if (IS_ERR_OR_NULL(res))
++		return res;
+ 
+-done:
+-
+-	pr_info("Loaded initrd %s '%s'", file_type_to_string(type),
+-	       data->initrd_file);
+-	if (type == filetype_uimage && data->initrd->header.ih_type == IH_TYPE_MULTI)
+-		pr_info(", multifile image %s", data->initrd_part);
+-	pr_info("\n");
+-done1:
+-	if (res)
+-		pr_info("initrd is at %pa-%pa\n", &res->start, &res->end);
++	pr_info("Loaded initrd from %s %s%s%s to %pa-%pa\n",
++		file_type_to_string(type), initrd,
++		initrd_part ? "@" : "", initrd_part ?: "",
++		&res->start, &res->end);
+ 
+ 	data->initrd_res = res;
+ 	return data->initrd_res;
 -- 
 2.47.3
 
