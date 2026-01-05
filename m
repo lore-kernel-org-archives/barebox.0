@@ -1,59 +1,56 @@
-Delivery-date: Mon, 05 Jan 2026 13:12:27 +0100
+Delivery-date: Mon, 05 Jan 2026 13:13:48 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcjRj-001W0D-2r
+	id 1vcjT2-001W5g-33
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 13:12:27 +0100
+	Mon, 05 Jan 2026 13:13:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcjRj-0003nR-9y
-	for lore@pengutronix.de; Mon, 05 Jan 2026 13:12:27 +0100
+	id 1vcjT2-00042E-93
+	for lore@pengutronix.de; Mon, 05 Jan 2026 13:13:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ryt5zkUAsloZUaOTbs8hdikWiCLXhts409Po2BJ/HIo=; b=2UdCliQqgksAcxRVVRcmvZBw7Q
-	f54b7UjapCYkt2hjs43F8vPV7Po5kIvsYFjNNnJq2xAbpDHZX0D5ABjoqeHs55mJ89VcpzxpSzDEe
-	WXOsHzg9IwcgbOVuGcSppIp4bwJudR+5SQ1cFqPJfAB4Vq+Uy1XoaKhlmiamN5wAWKwzVg1TXQ2zT
-	qsBmgU8ilw3ioxPKn+pokRWO0EZyUbMdAlJ1IcslESVfxYmx8Gf/liYR93CxO2fb7Y54Y3Zx/zJa9
-	9oTqVI9fABt+b2EimbWLX3GJgSBvcKokkCQi7yuG3EarFyfr5QRTLCRczp9g5h3ftvpn7R5Oi4d9k
-	1NeYA6gA==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=qPctwXhEgo0qqBFRXnuk9zrSThbrrnIk8R/bXUOsP/s=; b=ICfgAGCgyASpb2R1JQNr8du7YN
+	0lDx/SHoeYZgxuHlUmU9wErPNcgzy9syDzG7Tz4tChjt4e9+mCKuwqrH7Yg9mt8ZovSXYxCRme+aJ
+	qWOutxgnL0qXHKqnIh5yv9+BrXD8Fmqrksrxrhxfgd9Rl3Lf+5Gap63YkwJMXp1qy3WcnTo9jtqzR
+	W/e155hAFb6dAl954N8SEFC6rgpLtiSFhw84dhqCEf8v8dgQh6R9txyPJ32vDs+mwIFPXsv0Cg5qk
+	v7SvagZA1sqZzCoxJSbcGDY5IJTNUMBLz0NNfsN7WpXMwcTURsFgrIOQ/zchYHLXuSca7WnCRwFhm
+	jEKQHg8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcjRH-0000000BFse-1Smk;
-	Mon, 05 Jan 2026 12:11:59 +0000
+	id 1vcjSa-0000000BFzx-3Qqc;
+	Mon, 05 Jan 2026 12:13:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcjRE-0000000BFsB-0xkM
+	id 1vcjSY-0000000BFzb-2IWw
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 12:11:57 +0000
+	Mon, 05 Jan 2026 12:13:19 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vcjRC-0003fU-IG; Mon, 05 Jan 2026 13:11:54 +0100
-Message-ID: <44ff845e-8a6a-4c38-8e7d-ec1504f9914b@pengutronix.de>
-Date: Mon, 5 Jan 2026 13:11:54 +0100
+	id 1vcjSW-0003vN-UO; Mon, 05 Jan 2026 13:13:16 +0100
+Message-ID: <edf42b5a-e639-416a-b7ae-61a4e7cde8ba@pengutronix.de>
+Date: Mon, 5 Jan 2026 13:13:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
-References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
- <20260105-pbl-load-elf-v1-9-e97853f98232@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+To: Ahmad Fatoum <a.fatoum@barebox.org>, barebox@lists.infradead.org
+References: <20260105084746.3289185-1-a.fatoum@barebox.org>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260105-pbl-load-elf-v1-9-e97853f98232@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260105084746.3289185-1-a.fatoum@barebox.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_041156_270237_95305533 
-X-CRM114-Status: GOOD (  17.99  )
+X-CRM114-CacheID: sfid-20260105_041318_593534_629AB5BC 
+X-CRM114-Status: GOOD (  20.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,76 +72,158 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 09/19] PBL: allow to link ELF image into PBL
+Subject: Re: [PATCH] mmu: move MAP_RO definition into global mmu.h header
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
+Hi,
 
-On 1/5/26 12:26 PM, Sascha Hauer wrote:
-> Some architectures want to link the barebox proper ELF image into the
-> PBL. Allow that and provide a Kconfig option to select the ELF image.
+On 1/5/26 9:47 AM, Ahmad Fatoum wrote:
+> To allow generic code to remap memory as read-only, let's add the
+> definition to the global header.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  images/Makefile | 18 ++++++++++++++++--
->  images/piggy.S  |  4 ++++
->  pbl/Kconfig     |  8 ++++++++
->  3 files changed, 28 insertions(+), 2 deletions(-)
+> On platforms other than ARM, mapping R/O will just be cached R/W.
 > 
-> diff --git a/images/Makefile b/images/Makefile
-> index 448479ee8cf355a771ce63314ce64a631544f488..8d4fd1504ab64d4f4d1cc19f2b36cff9939964e3 100644
-> --- a/images/Makefile
-> +++ b/images/Makefile
-> @@ -138,7 +138,13 @@ $(obj)/%.itb: $(obj)/%.its FORCE
->  $(obj)/%.fit: $(obj)/$$(FILE_$$(@F)) $(dtstree)/dtbs-list FORCE
->  	$(call if_changed,fit)
->  
-> -$(obj)/piggy.o: $(obj)/barebox.z FORCE
-> +ifeq ($(CONFIG_PBL_IMAGE_ELF),)
-> +PIGGY_IMAGE := $(obj)/barebox.z
-> +else
-> +PIGGY_IMAGE := $(obj)/barebox.elf.z
-> +endif
+> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 
-Heh, in my attempt, I had an elfcompress host tool that compressed every
-segment separately and then the PBL decompressed every segment on its
-own directly to the load address.
-
-Having things laid out properly from the get go is certainly neater.
-Why not call it barebox.z still though and change BAREBOX_PROPER to be
-vmbarebox? This would
-
-> +
-> +$(obj)/piggy.o: ${PIGGY_IMAGE} FORCE
->  
->  $(obj)/sha_sum.o: $(obj)/barebox.sha.bin FORCE
->  
-> @@ -154,6 +160,14 @@ $(obj)/barebox.sum: $(obj)/barebox.z FORCE
->  $(obj)/barebox.z: $(obj)/../$(BAREBOX_PROPER) FORCE
->  	$(call if_changed,$(suffix_y))
->  
-> +# barebox.elf.z - compressed barebox ELF binary
-> +# ----------------------------------------------------------------
-> +# Prevent the %.elf pattern rule from building ../barebox.elf
-> +$(obj)/../barebox.elf: ;
-> +
-> +$(obj)/barebox.elf.z: $(obj)/../barebox.elf FORCE
-> +	$(call if_changed,$(suffix_y))
-
-As you noticed youtself, barebox.elf is not a good name, because it's
-generated outside this makefile, but still has an %.elf: rule.
-
-How about vmbarebox instead?
-
-> +config PBL_IMAGE_ELF
-> +	bool
-
-should select ELF.
-
+Please disregard in favor of Sascha's version. I think it's better to
+just let it fail on unsupported architectures instead of mapping it to
+MAP_CACHED.
 
 Cheers,
 Ahmad
+
+> ---
+>  arch/Kconfig              | 3 +++
+>  arch/arm/Kconfig          | 1 +
+>  arch/arm/cpu/mmu-common.c | 4 ++--
+>  arch/arm/cpu/mmu-common.h | 3 +--
+>  arch/arm/cpu/mmu_32.c     | 4 ++--
+>  arch/arm/cpu/mmu_64.c     | 2 +-
+>  include/mmu.h             | 6 ++++++
+>  7 files changed, 16 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index ca9aa25a9c4b..3daba5239740 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -62,6 +62,9 @@ config ARCH_DMA_DEFAULT_COHERENT
+>  config ARCH_HAS_DMA_WRITE_COMBINE
+>  	bool
+>  
+> +config ARCH_HAS_RO_MAPPINGS
+> +	bool
+> +
+>  config ARCH_HAS_ASAN_FIBER_API
+>  	bool
+>  
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 5123e9b1402c..d9b1f5de1fa7 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -17,6 +17,7 @@ config ARM
+>  	select HAVE_ARCH_BOOTM_OFTREE
+>  	select HW_HAS_PCI
+>  	select ARCH_HAS_DMA_WRITE_COMBINE
+> +	select ARCH_HAS_RO_MAPPINGS
+>  	select HAVE_EFI_LOADER if MMU # for payload unaligned accesses
+>  	default y
+>  
+> diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+> index a1431c0ff461..6db85fa9c7d4 100644
+> --- a/arch/arm/cpu/mmu-common.c
+> +++ b/arch/arm/cpu/mmu-common.c
+> @@ -22,7 +22,7 @@ const char *map_type_tostr(maptype_t map_type)
+>  
+>  	switch (map_type) {
+>  	case ARCH_MAP_CACHED_RWX:	return "RWX";
+> -	case ARCH_MAP_CACHED_RO:	return "RO";
+> +	case MAP_RO:			return "RO";
+>  	case MAP_CACHED:		return "CACHED";
+>  	case MAP_UNCACHED:		return "UNCACHED";
+>  	case MAP_CODE:			return "CODE";
+> @@ -158,7 +158,7 @@ static void mmu_remap_memory_banks(void)
+>  	}
+>  
+>  	remap_range((void *)code_start, code_size, MAP_CODE);
+> -	remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
+> +	remap_range((void *)rodata_start, rodata_size, MAP_RO);
+>  
+>  	setup_trap_pages();
+>  }
+> diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
+> index a111e15a21b4..39332d8f5a98 100644
+> --- a/arch/arm/cpu/mmu-common.h
+> +++ b/arch/arm/cpu/mmu-common.h
+> @@ -12,7 +12,6 @@
+>  #include <linux/bits.h>
+>  
+>  #define ARCH_MAP_CACHED_RWX	MAP_ARCH(2)
+> -#define ARCH_MAP_CACHED_RO	MAP_ARCH(3)
+>  
+>  #define ARCH_MAP_FLAG_PAGEWISE	BIT(31)
+>  
+> @@ -32,7 +31,7 @@ static inline maptype_t arm_mmu_maybe_skip_permissions(maptype_t map_type)
+>  	switch (map_type & MAP_TYPE_MASK) {
+>  	case MAP_CODE:
+>  	case MAP_CACHED:
+> -	case ARCH_MAP_CACHED_RO:
+> +	case MAP_RO:
+>  		return ARCH_MAP_CACHED_RWX;
+>  	default:
+>  		return map_type;
+> diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+> index 912d14e8cf82..d41ebcfb7fe4 100644
+> --- a/arch/arm/cpu/mmu_32.c
+> +++ b/arch/arm/cpu/mmu_32.c
+> @@ -304,7 +304,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
+>  		switch (map_type & MAP_TYPE_MASK) {
+>  		case ARCH_MAP_CACHED_RWX:
+>  			return PTE_FLAGS_CACHED_V7_RWX;
+> -		case ARCH_MAP_CACHED_RO:
+> +		case MAP_RO:
+>  			return PTE_FLAGS_CACHED_RO_V7;
+>  		case MAP_CACHED:
+>  			return PTE_FLAGS_CACHED_V7;
+> @@ -320,7 +320,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
+>  		}
+>  	} else {
+>  		switch (map_type & MAP_TYPE_MASK) {
+> -		case ARCH_MAP_CACHED_RO:
+> +		case MAP_RO:
+>  		case MAP_CODE:
+>  			return PTE_FLAGS_CACHED_RO_V4;
+>  		case ARCH_MAP_CACHED_RWX:
+> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+> index 56c6a21f2b2a..006b2b29478f 100644
+> --- a/arch/arm/cpu/mmu_64.c
+> +++ b/arch/arm/cpu/mmu_64.c
+> @@ -159,7 +159,7 @@ static unsigned long get_pte_attrs(maptype_t map_type)
+>  		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
+>  	case MAP_CODE:
+>  		return CACHED_MEM | PTE_BLOCK_RO;
+> -	case ARCH_MAP_CACHED_RO:
+> +	case MAP_RO:
+>  		return attrs_xn() | CACHED_MEM | PTE_BLOCK_RO;
+>  	case ARCH_MAP_CACHED_RWX:
+>  		return CACHED_MEM;
+> diff --git a/include/mmu.h b/include/mmu.h
+> index f79619808829..7d87885a5cb4 100644
+> --- a/include/mmu.h
+> +++ b/include/mmu.h
+> @@ -16,6 +16,12 @@
+>  #define MAP_WRITECOMBINE	MAP_UNCACHED
+>  #endif
+>  
+> +#ifdef CONFIG_ARCH_HAS_RO_MAPPINGS
+> +#define MAP_RO			5
+> +#else
+> +#define MAP_RO			MAP_CACHED
+> +#endif
+> +
+>  #define MAP_TYPE_MASK	0xFFFF
+>  #define MAP_ARCH(x)	((u16)~(x))
+>  
 
 -- 
 Pengutronix e.K.                  |                             |
