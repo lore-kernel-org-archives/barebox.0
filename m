@@ -1,59 +1,59 @@
-Delivery-date: Mon, 05 Jan 2026 13:14:39 +0100
+Delivery-date: Mon, 05 Jan 2026 13:15:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcjTr-001W6c-2H
+	id 1vcjV0-001W7j-34
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 13:14:39 +0100
+	Mon, 05 Jan 2026 13:15:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcjTr-0004An-1k
-	for lore@pengutronix.de; Mon, 05 Jan 2026 13:14:39 +0100
+	id 1vcjV0-0004PF-BB
+	for lore@pengutronix.de; Mon, 05 Jan 2026 13:15:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rV/SwBYx8AWK8Czubc1UnVe/fXb+uOgHu+KdKjrAovk=; b=ym040Jr2SW5h+lgRuSpqrBz6ty
-	WeYbgMm29v7QOYESPwc7+ao+hfgeF/vn9xX2zbqWNTLCKhtGLfH1DtqMY4FVcgVr17fhDcN+CECg0
-	5hI/ATcRyCJs97Iag3epgFosPYivqHk23Urp6I3IdS4vypzofCbMHc15/DoFiZrub6ROXG12+g0cs
-	9VX4uPgrwvKVjEKUyygiD5fPcAxSFCKtlrLCQKTQGgsiAHmS4YJINmx9wivbVNloye4v+RJN++iB+
-	GaF2a46HjmzATLVLdQZiRaezIQuxswfSWKGDaTYe/RYe6uoHh6tsUAOZGSYyyo2AYsoC5vYs7rPDV
-	CCNBhyXg==;
+	bh=3bXg+Vuz6YUr9xAwRMpLp4V0hpBa0W7Ws+Pbxrwd/1w=; b=tHufpC7eE6j+5wI6Y24BVbRQZg
+	cKV8KEtywdASc3jYzd2PcyHVH3/CXNmd3wdn1VSKsQg7+eyZ5yY2ufxjPaReVyNGu2kYVU5VceR7O
+	Ng41xqXcU2z2OE1Gp9onfcVQRTp6y4R7KPZId1pkZWf/IXI835sTw+OOFfdNHQqPuU90JWJRtNqEr
+	G6XAi+tJhzH5B4+zw2QJ0lEsfUp2vbbUPPifjC2EILVVIZErGT0pzaE6c6o2lktQjG/kOK5DZYFV9
+	iGlx0VFrfz6WrsPLue2uOwG5GTewoxoTfXf6N0Q4sZtI3AJfZHvF0ua8zAe1u5hIis1al726pCvWH
+	Lys69/FA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcjTO-0000000BG9J-3M20;
-	Mon, 05 Jan 2026 12:14:10 +0000
+	id 1vcjUb-0000000BGNX-1JXB;
+	Mon, 05 Jan 2026 12:15:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcjTM-0000000BG8k-3CFT
+	id 1vcjUY-0000000BGN6-39zr
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 12:14:10 +0000
+	Mon, 05 Jan 2026 12:15:24 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vcjTL-000463-7h; Mon, 05 Jan 2026 13:14:07 +0100
-Message-ID: <8263c93a-a3c4-4637-92ee-287a09133594@pengutronix.de>
-Date: Mon, 5 Jan 2026 13:14:07 +0100
+	id 1vcjUX-0004Ip-51; Mon, 05 Jan 2026 13:15:21 +0100
+Message-ID: <0a85c1df-8960-440b-b901-1c338db1f003@pengutronix.de>
+Date: Mon, 5 Jan 2026 13:15:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
 References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
- <20260105-pbl-load-elf-v1-10-e97853f98232@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+ <20260105-pbl-load-elf-v1-11-e97853f98232@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260105-pbl-load-elf-v1-10-e97853f98232@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260105-pbl-load-elf-v1-11-e97853f98232@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_041408_805519_43DA7B92 
-X-CRM114-Status: GOOD (  19.10  )
+X-CRM114-CacheID: sfid-20260105_041522_800527_BD9C8D51 
+X-CRM114-Status: GOOD (  17.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,121 +75,79 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 10/19] mmu: add MAP_CACHED_RO mapping type
+Subject: Re: [PATCH 11/19] mmu: introduce pbl_remap_range()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 1/5/26 12:26 PM, Sascha Hauer wrote:
-> ARM32 and ARM64 have ARCH_MAP_CACHED_RO. We'll move parts of the MMU
-> initialization to generic code later, so add a new mapping type to
-> include/mmu.h.
+> Add PBL-specific memory remapping function that always uses page-wise
+> mapping (ARCH_MAP_FLAG_PAGEWISE) for fine-grained permissions on
+> adjacent ELF segments with different protection requirements.
+> 
+> Wraps arch-specific __arch_remap_range() for ARMv7 (4KB pages) and
+> ARMv8 (page tables with BBM). Needed for ELF segment permission setup.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  arch/arm/cpu/mmu-common.c | 4 ++--
->  arch/arm/cpu/mmu-common.h | 3 +--
->  arch/arm/cpu/mmu_32.c     | 4 ++--
->  arch/arm/cpu/mmu_64.c     | 2 +-
->  include/mmu.h             | 3 ++-
->  5 files changed, 8 insertions(+), 8 deletions(-)
+>  arch/arm/cpu/mmu_32.c | 7 +++++++
+>  arch/arm/cpu/mmu_64.c | 8 ++++++++
+>  include/mmu.h         | 3 +++
+>  3 files changed, 18 insertions(+)
 > 
-> diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-> index b3d9e9579686c0612068c6281420cb6ccaaf4ee8..3208139fdd24e89cf4c76e27477da23da169f164 100644
-> --- a/arch/arm/cpu/mmu-common.c
-> +++ b/arch/arm/cpu/mmu-common.c
-> @@ -22,7 +22,7 @@ const char *map_type_tostr(maptype_t map_type)
->  
->  	switch (map_type) {
->  	case ARCH_MAP_CACHED_RWX:	return "RWX";
-> -	case ARCH_MAP_CACHED_RO:	return "RO";
-> +	case MAP_CACHED_RO:		return "RO";
->  	case MAP_CACHED:		return "CACHED";
->  	case MAP_UNCACHED:		return "UNCACHED";
->  	case MAP_CODE:			return "CODE";
-> @@ -161,7 +161,7 @@ static void mmu_remap_memory_banks(void)
->  	setup_trap_pages();
->  
->  	remap_range((void *)code_start, code_size, MAP_CODE);
-> -	remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
-> +	remap_range((void *)rodata_start, rodata_size, MAP_CACHED_RO);
->  }
->  
->  static int mmu_init(void)
-> diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
-> index a111e15a21b479b5ffa2ea8973e2ad189e531925..b42c421ffde8ebba84b17c6311b735f7759dc69b 100644
-> --- a/arch/arm/cpu/mmu-common.h
-> +++ b/arch/arm/cpu/mmu-common.h
-> @@ -12,7 +12,6 @@
->  #include <linux/bits.h>
->  
->  #define ARCH_MAP_CACHED_RWX	MAP_ARCH(2)
-> -#define ARCH_MAP_CACHED_RO	MAP_ARCH(3)
->  
->  #define ARCH_MAP_FLAG_PAGEWISE	BIT(31)
->  
-> @@ -32,7 +31,7 @@ static inline maptype_t arm_mmu_maybe_skip_permissions(maptype_t map_type)
->  	switch (map_type & MAP_TYPE_MASK) {
->  	case MAP_CODE:
->  	case MAP_CACHED:
-> -	case ARCH_MAP_CACHED_RO:
-> +	case MAP_CACHED_RO:
->  		return ARCH_MAP_CACHED_RWX;
->  	default:
->  		return map_type;
 > diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-> index 63c412873ec8fdb047a3323e773648cb03d5757b..97c7107290ce95ddb21a322a5d0e74f3d324c528 100644
+> index 97c7107290ce95ddb21a322a5d0e74f3d324c528..86a55d165ba3cec5154c345a1a3a9cb959f0996f 100644
 > --- a/arch/arm/cpu/mmu_32.c
 > +++ b/arch/arm/cpu/mmu_32.c
-> @@ -304,7 +304,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
->  		switch (map_type & MAP_TYPE_MASK) {
->  		case ARCH_MAP_CACHED_RWX:
->  			return PTE_FLAGS_CACHED_V7_RWX;
-> -		case ARCH_MAP_CACHED_RO:
-> +		case MAP_CACHED_RO:
->  			return PTE_FLAGS_CACHED_RO_V7;
->  		case MAP_CACHED:
->  			return PTE_FLAGS_CACHED_V7;
-> @@ -320,7 +320,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
->  		}
->  	} else {
->  		switch (map_type & MAP_TYPE_MASK) {
-> -		case ARCH_MAP_CACHED_RO:
-> +		case MAP_CACHED_RO:
->  		case MAP_CODE:
->  			return PTE_FLAGS_CACHED_RO_V4;
->  		case ARCH_MAP_CACHED_RWX:
+> @@ -435,6 +435,13 @@ static void early_remap_range(u32 addr, size_t size, maptype_t map_type)
+>  	__arch_remap_range((void *)addr, addr, size, map_type);
+>  }
+>  
+> +void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
+> +		     maptype_t map_type)
+> +{
+> +	__arch_remap_range(virt_addr, phys_addr, size,
+> +			   map_type | ARCH_MAP_FLAG_PAGEWISE);
+> +}
+> +
+>  static bool pte_is_cacheable(uint32_t pte, int level)
+>  {
+>  	return	(level == 2 && (pte & PTE_CACHEABLE)) ||
 > diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-> index f22fcb5f8ea4db9843c8447ac5bf4f8cf29bb59c..afb3d2d7efd0bc7ecde1177d1544f54d751b5dc1 100644
+> index afb3d2d7efd0bc7ecde1177d1544f54d751b5dc1..63faaa46703697e527eae766392e7ea7ae186b3d 100644
 > --- a/arch/arm/cpu/mmu_64.c
 > +++ b/arch/arm/cpu/mmu_64.c
-> @@ -159,7 +159,7 @@ static unsigned long get_pte_attrs(maptype_t map_type)
->  		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
->  	case MAP_CODE:
->  		return CACHED_MEM | PTE_BLOCK_RO;
-> -	case ARCH_MAP_CACHED_RO:
-> +	case MAP_CACHED_RO:
->  		return attrs_xn() | CACHED_MEM | PTE_BLOCK_RO;
->  	case ARCH_MAP_CACHED_RWX:
->  		return CACHED_MEM;
+> @@ -282,6 +282,14 @@ static void early_remap_range(uint64_t addr, size_t size, maptype_t map_type)
+>  	__arch_remap_range(addr, addr, size, map_type, false);
+>  }
+>  
+> +void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
+> +		     maptype_t map_type)
+> +{
+> +	__arch_remap_range((uint64_t)virt_addr, phys_addr,
+> +			   (uint64_t)size, map_type | ARCH_MAP_FLAG_PAGEWISE,
+> +			   true);
+> +}
+> +
+>  int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, maptype_t map_type)
+>  {
+>  	map_type = arm_mmu_maybe_skip_permissions(map_type);
 > diff --git a/include/mmu.h b/include/mmu.h
-> index 29992ae1d6c644f4eaa6519dae2b57055333bff6..53603b7956c229b4c715c57b19d0398931eb2d6b 100644
+> index 53603b7956c229b4c715c57b19d0398931eb2d6b..37df7b482e1d83e94e61997db6cf9834d8cf7f3c 100644
 > --- a/include/mmu.h
 > +++ b/include/mmu.h
-> @@ -9,9 +9,10 @@
->  #define MAP_CACHED		1
->  #define MAP_FAULT		2
->  #define MAP_CODE		3
-> +#define MAP_CACHED_RO		4
->  
->  #ifdef CONFIG_ARCH_HAS_DMA_WRITE_COMBINE
-> -#define MAP_WRITECOMBINE	4
-> +#define MAP_WRITECOMBINE	5
->  #else
->  #define MAP_WRITECOMBINE	MAP_UNCACHED
+> @@ -64,6 +64,9 @@ static inline bool arch_can_remap(void)
+>  }
 >  #endif
+>  
+> +void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
+> +		     maptype_t map_type);
+> +
+>  static inline int remap_range(void *start, size_t size, maptype_t map_type)
+>  {
+>  	return arch_remap_range(start, virt_to_phys(start), size, map_type);
 > 
 
 -- 
