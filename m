@@ -1,16 +1,16 @@
-Delivery-date: Mon, 05 Jan 2026 20:15:02 +0100
+Delivery-date: Mon, 05 Jan 2026 20:15:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcq2g-001cu7-1A
+	id 1vcq2g-001cuT-2q
 	for lore@lore.pengutronix.de;
 	Mon, 05 Jan 2026 20:15:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcq2f-0006C4-GJ
+	id 1vcq2g-0006DA-GF
 	for lore@pengutronix.de; Mon, 05 Jan 2026 20:15:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UywUgKdiHQhzA8Mp2Boas40wNHuG5wO8UNPSmtkdz9Y=; b=lEpCotWh+EPm1QJ2mO+VTQIxbA
-	xnVehD3UQY0nVmJLUpFFQn01NJF61mwgasjMKDZyJcHBB4D2peo8DOF9pNWPKWfZNd0KYSidxA2CF
-	6K017Q3oDExSK4o6V9xQtMQs9wDjFEuY8Ne19kzn0saPbp9Xs3gQacnOGd43t6K1CTS6wqu+kgRO7
-	aYHecvHjhtjFlTpFzLCC9do4gdjUG41IG+wkYG5yVBV8WdyqEp+lKyn6/1FYX0++mrvy+tOgNr5sB
-	5CXLLA3Zk2ezAzeHXe3rFeKkgqctoiBc2xMTWrdwq0OmdMpNmI/Kv7wL+69AarDEsxYCIG0RRsuWi
-	aofiBnDQ==;
+	bh=IcfZmLhW0fXefC0DxzXNEIcZRTZbnsTr8ZWoMOE15rQ=; b=tDTbA0L0M/5hb05GjjOrsVyANb
+	9SnOqh37TKCuH4hhR9IhK8mShdJLx3LO05fGmlWaLg+uYybPdkHxk3BTHY2R1fFdOZ403iMQ0vufg
+	7Gv2PY9tfHM1/SHY9BGwQEL0zvFRw2EB3rRbN1C/HLckYhqTMqNPTrewfwavyh36YTz3yLKOgNADB
+	hEPa98CpSxaW7Pk/Bul+F3UuOh3rY6QPvC7Bf+gFAwtS1pRIZH/uuwZ5msP/vVo3r1uKX2xr7U1G9
+	3BOKaIhyG2s1H3dYDFrJgB/9MPmXjkzpUVAsugyGe42bYpx6fHflyA6VTIkgUboiNGYhiJ/Na8GFs
+	oSM5umlA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcq1x-0000000BxWp-3Vmh;
+	id 1vcq1x-0000000BxWP-0MRM;
 	Mon, 05 Jan 2026 19:14:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcq1t-0000000BxTy-1Fmg
+	id 1vcq1t-0000000BxTw-1FwZ
 	for barebox@lists.infradead.org;
 	Mon, 05 Jan 2026 19:14:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vcq1r-0005tC-Ee; Mon, 05 Jan 2026 20:14:11 +0100
+	id 1vcq1r-0005tI-Jk; Mon, 05 Jan 2026 20:14:11 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vcq1r-009E5h-0r;
+	id 1vcq1r-009E5q-1K;
 	Mon, 05 Jan 2026 20:14:11 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vcq1r-00000002a4z-3bLi;
+	id 1vcq1r-00000002a4z-4BXu;
 	Mon, 05 Jan 2026 20:14:11 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  5 Jan 2026 20:12:52 +0100
-Message-ID: <20260105191410.615318-2-a.fatoum@pengutronix.de>
+Date: Mon,  5 Jan 2026 20:12:55 +0100
+Message-ID: <20260105191410.615318-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260105191410.615318-1-a.fatoum@pengutronix.de>
 References: <20260105191410.615318-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_111413_397245_A06CF48D 
-X-CRM114-Status: GOOD (  25.76  )
+X-CRM114-CacheID: sfid-20260105_111413_391155_56A8D506 
+X-CRM114-Status: GOOD (  20.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,209 +76,182 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
-	metis.whiteo.stw.pengutronix.de
-X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] usb: dwc3: export dwc3_core_probe/dwc3_core_remove like Linux
+Subject: [PATCH 4/5] usb: dwc3: add DesignWare USB3 generic platform driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); Unknown failure
 
-Traditionally, platforms-specific glue was abstracted as a separate
-parent device tree node for the snps,dwc3 node. For some newer
-integrations, this is no longer the case and there is only a single
-(flattened) node. To prepare support for these drivers, export the probe
-and remove functions with the Linux semantics.
+Linux seems to move towards not having glue device tree nodes separate
+from the DWC3 nodes. Import the Linux generic driver for use with
+Layerscape and other platforms that may be migrated in future.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/usb/dwc3/core.c | 78 ++++++++++++++++++++++++++++-------------
- drivers/usb/dwc3/glue.h | 49 ++++++++++++++++++++++++++
- 2 files changed, 102 insertions(+), 25 deletions(-)
- create mode 100644 drivers/usb/dwc3/glue.h
+ drivers/usb/dwc3/Kconfig             |  11 +++
+ drivers/usb/dwc3/Makefile            |   1 +
+ drivers/usb/dwc3/dwc3-generic-plat.c | 125 +++++++++++++++++++++++++++
+ 3 files changed, 137 insertions(+)
+ create mode 100644 drivers/usb/dwc3/dwc3-generic-plat.c
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 7f2cb6c4a70a..472630c95392 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -17,6 +17,7 @@
- #include <linux/reset.h>
- #include <linux/usb/of.h>
+diff --git a/drivers/usb/dwc3/Kconfig b/drivers/usb/dwc3/Kconfig
+index bed629776227..4c97ed556a48 100644
+--- a/drivers/usb/dwc3/Kconfig
++++ b/drivers/usb/dwc3/Kconfig
+@@ -68,4 +68,15 @@ config USB_DWC3_AM62
+ 	  in USB 2.0 mode only.
+ 	  Say 'Y' or 'M' here if you have one such device
  
++config USB_DWC3_GENERIC_PLAT
++	tristate "DWC3 Generic Platform Driver"
++	depends on OF && COMMON_CLK
++	default ARCH_LAYERSCAPE
++	help
++	  Support USB3 functionality in simple SoC integrations.
++	  Currently supports SpacemiT and Layerscape DWC USB3. Platforms using
++	  dwc3-of-simple can easily switch to dwc3-generic by flattening
++	  the dwc3 child node in the device tree.
++	  Say 'Y' or 'M' here if your platform integrates DWC3 in a similar way.
++
+ endif
+diff --git a/drivers/usb/dwc3/Makefile b/drivers/usb/dwc3/Makefile
+index 31acda1825f5..cd7e217c7c9b 100644
+--- a/drivers/usb/dwc3/Makefile
++++ b/drivers/usb/dwc3/Makefile
+@@ -15,3 +15,4 @@ endif
+ obj-$(CONFIG_USB_DWC3_OF_SIMPLE)	+= dwc3-of-simple.o
+ obj-$(CONFIG_USB_DWC3_AM62)		+= dwc3-am62.o
+ obj-$(CONFIG_USB_DWC3_IMX8MP)		+= dwc3-imx8mp.o
++obj-$(CONFIG_USB_DWC3_GENERIC_PLAT)	+= dwc3-generic-plat.o
+diff --git a/drivers/usb/dwc3/dwc3-generic-plat.c b/drivers/usb/dwc3/dwc3-generic-plat.c
+new file mode 100644
+index 000000000000..f3ab8a312696
+--- /dev/null
++++ b/drivers/usb/dwc3/dwc3-generic-plat.c
+@@ -0,0 +1,125 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * dwc3-generic-plat.c - DesignWare USB3 generic platform driver
++ *
++ * Copyright (C) 2025 Ze Huang <huang.ze@linux.dev>
++ *
++ * Inspired by dwc3-qcom.c and dwc3-of-simple.c
++ */
++
++#include <linux/clk.h>
++#include <linux/device.h>
++#include <linux/reset.h>
++#include <linux/regmap.h>
++#include <mfd/syscon.h>
++#include "of_device.h"
 +#include "glue.h"
- #include "core.h"
- #include "gadget.h"
- #include "io.h"
-@@ -1402,41 +1403,43 @@ static void dwc3_check_params(struct dwc3 *dwc)
- 	}
- }
- 
--static int dwc3_probe(struct device *dev)
-+int dwc3_core_probe(const struct dwc3_probe_data *data)
- {
--	struct dwc3		*dwc;
-+	struct dwc3		*dwc = data->dwc;
-+	struct device		*dev = dwc->dev;
-+	struct resource		*res = data->res;
- 	int			ret;
- 
--	dwc = xzalloc(sizeof(*dwc));
- 	dev->priv = dwc;
- 
--	dwc->dev = dev;
--	dwc->regs = dev_get_mem_region(dwc->dev, 0) + DWC3_GLOBALS_REGS_START;
-+	dwc->regs = IOMEM(res->start) + DWC3_GLOBALS_REGS_START;
- 
- 	dwc3_get_properties(dwc);
- 
--	if (dev->of_node) {
--		ret = clk_bulk_get_all(dev, &dwc->clks);
--		if (ret < 0)
-+	if (!data->ignore_clocks_and_resets) {
-+		if (dev->of_node) {
-+			ret = clk_bulk_get_all(dev, &dwc->clks);
-+			if (ret < 0)
-+				return ret;
 +
-+			dwc->num_clks = ret;
-+		}
++struct dwc3_generic {
++	struct device		*dev;
++	struct dwc3		dwc;
++	struct clk_bulk_data	*clks;
++	int			num_clocks;
++	struct reset_control	*resets;
++};
 +
-+		ret = clk_bulk_enable(dwc->num_clks, dwc->clks);
-+		if (ret)
- 			return ret;
- 
--		dwc->num_clks = ret;
-+		dwc->reset = reset_control_get(dev, NULL);
-+		if (IS_ERR(dwc->reset)) {
-+			dev_err(dev, "Failed to get reset control: %pe\n", dwc->reset);
-+			return PTR_ERR(dwc->reset);
-+		}
++struct dwc3_generic_config {
++	int (*init)(struct dwc3_generic *dwc3g);
++	struct dwc3_properties properties;
++};
 +
-+		reset_control_assert(dwc->reset);
-+		mdelay(1);
-+		reset_control_deassert(dwc->reset);
- 	}
- 
--	ret = clk_bulk_enable(dwc->num_clks, dwc->clks);
--	if (ret)
--		return ret;
--
--	dwc->reset = reset_control_get(dev, NULL);
--	if (IS_ERR(dwc->reset)) {
--		dev_err(dev, "Failed to get reset control: %pe\n", dwc->reset);
--		return PTR_ERR(dwc->reset);
--	}
--
--	reset_control_assert(dwc->reset);
--	mdelay(1);
--	reset_control_deassert(dwc->reset);
--
- 	if (!dwc3_core_is_valid(dwc)) {
- 		dev_err(dwc->dev, "this is not a DesignWare USB3 DRD Core\n");
- 		return -ENODEV;
-@@ -1476,10 +1479,30 @@ static int dwc3_probe(struct device *dev)
- 	return 0;
- }
- 
--static void dwc3_remove(struct device *dev)
-+static int dwc3_probe(struct device *dev)
- {
--	struct dwc3 *dwc = dev->priv;
++#define to_dwc3_generic(d) container_of((d), struct dwc3_generic, dwc)
++
++static int dwc3_generic_probe(struct device *dev)
++{
++	const struct dwc3_generic_config *plat_config;
 +	struct dwc3_probe_data probe_data = {};
++	struct dwc3_generic *dwc3g;
 +	struct resource *res;
-+	struct dwc3 *dwc;
- 
++	int ret;
++
++	dwc3g = xzalloc(sizeof(*dwc3g));
++
++	dwc3g->dev = dev;
++
 +	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
 +	if (!res) {
 +		dev_err(dev, "missing memory resource\n");
 +		return -ENODEV;
 +	}
 +
-+	dwc = xzalloc(sizeof(*dwc));
++	dwc3g->resets = reset_control_array_get(dev);
++	if (IS_ERR(dwc3g->resets))
++		return dev_err_probe(dev, PTR_ERR(dwc3g->resets), "failed to get resets\n");
 +
-+	dwc->dev = dev;
++	ret = reset_control_assert(dwc3g->resets);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to assert resets\n");
 +
-+	probe_data.dwc = dwc;
++	/* Not strict timing, just for safety */
++	udelay(2);
++
++	ret = reset_control_deassert(dwc3g->resets);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to deassert resets\n");
++
++	ret = clk_bulk_get_all_enabled(dwc3g->dev, &dwc3g->clks);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "failed to get clocks\n");
++
++	dwc3g->num_clocks = ret;
++	dwc3g->dwc.dev = dev;
++	probe_data.dwc = &dwc3g->dwc;
 +	probe_data.res = res;
++	probe_data.ignore_clocks_and_resets = true;
 +
-+	return dwc3_core_probe(&probe_data);
++	plat_config = of_device_get_match_data(dev);
++	if (!plat_config) {
++		probe_data.properties = DWC3_DEFAULT_PROPERTIES;
++		goto core_probe;
++	}
++
++	probe_data.properties = plat_config->properties;
++	if (plat_config->init) {
++		ret = plat_config->init(dwc3g);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "failed to init platform\n");
++	}
++
++core_probe:
++	ret = dwc3_core_probe(&probe_data);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to register DWC3 Core\n");
++
++	return 0;
 +}
 +
-+void dwc3_core_remove(struct dwc3 *dwc)
++static void dwc3_generic_remove(struct device *dev)
 +{
- 	dwc3_core_exit_mode(dwc);
- 	dwc3_core_exit(dwc);
- 	clk_bulk_put(dwc->num_clks, dwc->clks);
-@@ -1487,6 +1510,11 @@ static void dwc3_remove(struct device *dev)
- 	dwc3_free_scratch_buffers(dwc);
- }
- 
-+static void dwc3_remove(struct device *dev)
-+{
-+	dwc3_core_remove(dev->priv);
++	struct dwc3 *dwc = dev_get_drvdata(dev);
++
++	dwc3_core_remove(dwc);
 +}
 +
- static const struct of_device_id of_dwc3_match[] = {
- 	{
- 		.compatible = "snps,dwc3",
-diff --git a/drivers/usb/dwc3/glue.h b/drivers/usb/dwc3/glue.h
-new file mode 100644
-index 000000000000..05d6d2723d19
---- /dev/null
-+++ b/drivers/usb/dwc3/glue.h
-@@ -0,0 +1,49 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * glue.h - DesignWare USB3 DRD glue header
-+ */
-+
-+#ifndef __DRIVERS_USB_DWC3_GLUE_H
-+#define __DRIVERS_USB_DWC3_GLUE_H
-+
-+#include <linux/types.h>
-+#include "core.h"
-+
-+/**
-+ * dwc3_probe_data: Initialization parameters passed to dwc3_core_probe()
-+ * @dwc: Reference to dwc3 context structure
-+ * @res: resource for the DWC3 core mmio region
-+ * @ignore_clocks_and_resets: clocks and resets defined for the device should
-+ *		be ignored by the DWC3 core, as they are managed by the glue
-+ */
-+struct dwc3_probe_data {
-+	struct dwc3 *dwc;
-+	struct resource *res;
-+	bool ignore_clocks_and_resets;
++static const struct dwc3_generic_config fsl_ls1028_dwc3 = {
++	.properties.gsbuscfg0_reqinfo = 0x2222,
 +};
 +
-+/**
-+ * dwc3_core_probe - Initialize the core dwc3 driver
-+ * @data: Initialization and configuration parameters for the controller
-+ *
-+ * Initializes the DesignWare USB3 core driver by setting up resources,
-+ * registering interrupts, performing hardware setup, and preparing
-+ * the controller for operation in the appropriate mode (host, gadget,
-+ * or OTG). This is the main initialization function called by glue
-+ * layer drivers to set up the core controller.
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int dwc3_core_probe(const struct dwc3_probe_data *data);
++static const struct of_device_id dwc3_generic_of_match[] = {
++	{ .compatible = "spacemit,k1-dwc3", },
++	{ .compatible = "fsl,ls1028a-dwc3", &fsl_ls1028_dwc3},
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, dwc3_generic_of_match);
 +
-+/**
-+ * dwc3_core_remove - Deinitialize and remove the core dwc3 driver
-+ * @dwc: Pointer to DWC3 controller context
-+ *
-+ * Cleans up resources and disables the dwc3 core driver. This should be called
-+ * during driver removal or when the glue layer needs to shut down the
-+ * controller completely.
-+ */
-+void dwc3_core_remove(struct dwc3 *dwc);
++static struct driver dwc3_generic_driver = {
++	.probe		= dwc3_generic_probe,
++	.remove		= dwc3_generic_remove,
++	.name	= "dwc3-generic-plat",
++	.of_match_table = dwc3_generic_of_match,
++};
++device_platform_driver(dwc3_generic_driver);
 +
-+#endif
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("DesignWare USB3 generic platform driver");
 -- 
 2.47.3
 
