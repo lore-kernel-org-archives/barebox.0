@@ -1,53 +1,53 @@
-Delivery-date: Mon, 05 Jan 2026 09:46:42 +0100
+Delivery-date: Mon, 05 Jan 2026 09:48:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcgEc-001Sg6-1P
+	id 1vcgG9-001Shb-06
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 09:46:42 +0100
+	Mon, 05 Jan 2026 09:48:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcgEb-0004Wp-RB
-	for lore@pengutronix.de; Mon, 05 Jan 2026 09:46:42 +0100
+	id 1vcgG8-0004hD-Co
+	for lore@pengutronix.de; Mon, 05 Jan 2026 09:48:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GEwzE1XG+6NrDW2kxm5kyuot4OX62NS/ZgKibXDrrwQ=; b=U8qeSvk4izwsg/t42rrWiLBJcJ
-	LW3J5GbJ46wzKAR0t3xeF2qiBvzkP7b/N2ijwiSaoZzedlvu8ECyYa8cKOlfpZTrtjoOv532sJsqa
-	uMngMBByWxuH2daTRGUu4XVIuBJbsMIJaXV4upRCNS2OEtwFIL/nuTGcI/ZdWI7me2SRHmiQibCM7
-	EIUte85GiqLLBTQ+sSXBB3pXXM14hRZGH/u4xXaq+WO8n42kQO8fhcrdElhJojwXGhPXcum+HYVch
-	Zl4oPGTxwrdxfEpL5H6l7Mz2M9YPziilzLPgBcm3BWRd3/+td/h5iAYLeveWuDG9fbLwj5wOFQ4Q/
-	keaw1grA==;
+	bh=1WdVD2zxbhMxLBGrylr2CnaMZZG1aLbV7e0ZgWwpQ0o=; b=HSAxAOLzei0ugFc5dQYGwQIyPT
+	QiDt3k+2OsqiK5Znz1lPzbShRTa8QVCU5jH3EPjhELoG6SvrLcgfz93Ut1wVNkIMckX5w8R94fwUn
+	o2sN9PszVcjmDBonQ2UV+51jVg2G54uED67wkEWNYVTv8grhZxSHw3wC9W7u8o6UucR+63wAeLHWH
+	Sox1MTNuBeUpT/JwwJl+8YMiDK3iOmQ7jjT8wvOGoCIg8ojIcPQYq56bgKEwvMB899JnS/lkuUEqZ
+	CXv++LxTW81njoq6sClbvndMxrUDtOxoYz9GzHB5fxfgTEwz0OemDR6z1k6OBiw+kvLhGoqx0Kgcw
+	Y9q79v9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcgEA-0000000B0VK-30oo;
-	Mon, 05 Jan 2026 08:46:14 +0000
+	id 1vcgFk-0000000B0aa-0zig;
+	Mon, 05 Jan 2026 08:47:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcgE4-0000000B0Uo-3iHF
+	id 1vcgFh-0000000B0aE-2dfu
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 08:46:11 +0000
+	Mon, 05 Jan 2026 08:47:50 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vcgE2-0004Qb-Uf; Mon, 05 Jan 2026 09:46:07 +0100
+	id 1vcgFf-0004cz-Rs; Mon, 05 Jan 2026 09:47:47 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  5 Jan 2026 09:46:01 +0100
-Message-ID: <20260105084604.3288407-1-a.fatoum@barebox.org>
+Date: Mon,  5 Jan 2026 09:47:45 +0100
+Message-ID: <20260105084746.3289185-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_004608_925882_734B8AD9 
-X-CRM114-Status: GOOD (  13.31  )
+X-CRM114-CacheID: sfid-20260105_004749_669166_F0FBB1AA 
+X-CRM114-Status: GOOD (  11.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,132 +69,147 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: remove unused constructor support
+Subject: [PATCH] mmu: move MAP_RO definition into global mmu.h header
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-CONFIG_CONSTRUCTORS was added alongside KASAN support, but it appears to
-be unused and not necessary for KASAN to work.
+To allow generic code to remap memory as read-only, let's add the
+definition to the global header.
 
-While at it, we also remove the legacy CONSTRUCTORS directive that only
-exists in the 32-bit, but not 64-bit ARM linker script.
-
-I suspect that in Linux, constructors are needed for external modules,
-but in barebox, we don't currently make use of it, so it should be safe
-to drop.
+On platforms other than ARM, mapping R/O will just be cached R/W.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/lib32/barebox.lds.S      |  4 +---
- common/startup.c                  | 15 ---------------
- include/asm-generic/barebox.lds.h | 12 ------------
- lib/Kconfig                       |  3 ---
- lib/kasan/Kconfig                 |  1 -
- 5 files changed, 1 insertion(+), 34 deletions(-)
+ arch/Kconfig              | 3 +++
+ arch/arm/Kconfig          | 1 +
+ arch/arm/cpu/mmu-common.c | 4 ++--
+ arch/arm/cpu/mmu-common.h | 3 +--
+ arch/arm/cpu/mmu_32.c     | 4 ++--
+ arch/arm/cpu/mmu_64.c     | 2 +-
+ include/mmu.h             | 6 ++++++
+ 7 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
-index 2d08b95758b7..c704dd6d70f3 100644
---- a/arch/arm/lib32/barebox.lds.S
-+++ b/arch/arm/lib32/barebox.lds.S
-@@ -59,9 +59,7 @@ SECTIONS
- 	_sdata = .;
+diff --git a/arch/Kconfig b/arch/Kconfig
+index ca9aa25a9c4b..3daba5239740 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -62,6 +62,9 @@ config ARCH_DMA_DEFAULT_COHERENT
+ config ARCH_HAS_DMA_WRITE_COMBINE
+ 	bool
  
- 	. = ALIGN(4);
--	.data : { *(.data*)
--		CONSTRUCTORS
--	}
-+	.data : { *(.data*) }
++config ARCH_HAS_RO_MAPPINGS
++	bool
++
+ config ARCH_HAS_ASAN_FIBER_API
+ 	bool
  
- 	. = .;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 5123e9b1402c..d9b1f5de1fa7 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -17,6 +17,7 @@ config ARM
+ 	select HAVE_ARCH_BOOTM_OFTREE
+ 	select HW_HAS_PCI
+ 	select ARCH_HAS_DMA_WRITE_COMBINE
++	select ARCH_HAS_RO_MAPPINGS
+ 	select HAVE_EFI_LOADER if MMU # for payload unaligned accesses
+ 	default y
  
-diff --git a/common/startup.c b/common/startup.c
-index 81a3ae1513c2..6730b6c49220 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -396,19 +396,6 @@ static int run_init(void)
- 	hang();
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+index a1431c0ff461..6db85fa9c7d4 100644
+--- a/arch/arm/cpu/mmu-common.c
++++ b/arch/arm/cpu/mmu-common.c
+@@ -22,7 +22,7 @@ const char *map_type_tostr(maptype_t map_type)
+ 
+ 	switch (map_type) {
+ 	case ARCH_MAP_CACHED_RWX:	return "RWX";
+-	case ARCH_MAP_CACHED_RO:	return "RO";
++	case MAP_RO:			return "RO";
+ 	case MAP_CACHED:		return "CACHED";
+ 	case MAP_UNCACHED:		return "UNCACHED";
+ 	case MAP_CODE:			return "CODE";
+@@ -158,7 +158,7 @@ static void mmu_remap_memory_banks(void)
+ 	}
+ 
+ 	remap_range((void *)code_start, code_size, MAP_CODE);
+-	remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
++	remap_range((void *)rodata_start, rodata_size, MAP_RO);
+ 
+ 	setup_trap_pages();
  }
+diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
+index a111e15a21b4..39332d8f5a98 100644
+--- a/arch/arm/cpu/mmu-common.h
++++ b/arch/arm/cpu/mmu-common.h
+@@ -12,7 +12,6 @@
+ #include <linux/bits.h>
  
--typedef void (*ctor_fn_t)(void);
--
--/* Call all constructor functions linked into the kernel. */
--static void do_ctors(void)
--{
--#ifdef CONFIG_CONSTRUCTORS
--	ctor_fn_t *fn = (ctor_fn_t *) __ctors_start;
--
--	for (; fn < (ctor_fn_t *) __ctors_end; fn++)
--		(*fn)();
--#endif
--}
--
- int (*barebox_main)(void)
- 	= !IS_ENABLED(CONFIG_SHELL_NONE) &&
-            IS_ENABLED(CONFIG_COMMAND_SUPPORT) ? run_init : NULL;
-@@ -418,8 +405,6 @@ void __noreturn start_barebox(void)
- 	initcall_t *initcall;
- 	int result;
+ #define ARCH_MAP_CACHED_RWX	MAP_ARCH(2)
+-#define ARCH_MAP_CACHED_RO	MAP_ARCH(3)
  
--	do_ctors();
--
- 	for (initcall = __barebox_initcalls_start;
- 			initcall < __barebox_initcalls_end; initcall++) {
- 		pr_debug("initcall-> %pS\n", *initcall);
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index 092dbc6dffa6..12082d567a4d 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -129,24 +129,12 @@
+ #define ARCH_MAP_FLAG_PAGEWISE	BIT(31)
+ 
+@@ -32,7 +31,7 @@ static inline maptype_t arm_mmu_maybe_skip_permissions(maptype_t map_type)
+ 	switch (map_type & MAP_TYPE_MASK) {
+ 	case MAP_CODE:
+ 	case MAP_CACHED:
+-	case ARCH_MAP_CACHED_RO:
++	case MAP_RO:
+ 		return ARCH_MAP_CACHED_RWX;
+ 	default:
+ 		return map_type;
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index 912d14e8cf82..d41ebcfb7fe4 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -304,7 +304,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
+ 		switch (map_type & MAP_TYPE_MASK) {
+ 		case ARCH_MAP_CACHED_RWX:
+ 			return PTE_FLAGS_CACHED_V7_RWX;
+-		case ARCH_MAP_CACHED_RO:
++		case MAP_RO:
+ 			return PTE_FLAGS_CACHED_RO_V7;
+ 		case MAP_CACHED:
+ 			return PTE_FLAGS_CACHED_V7;
+@@ -320,7 +320,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
+ 		}
+ 	} else {
+ 		switch (map_type & MAP_TYPE_MASK) {
+-		case ARCH_MAP_CACHED_RO:
++		case MAP_RO:
+ 		case MAP_CODE:
+ 			return PTE_FLAGS_CACHED_RO_V4;
+ 		case ARCH_MAP_CACHED_RWX:
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 56c6a21f2b2a..006b2b29478f 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -159,7 +159,7 @@ static unsigned long get_pte_attrs(maptype_t map_type)
+ 		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
+ 	case MAP_CODE:
+ 		return CACHED_MEM | PTE_BLOCK_RO;
+-	case ARCH_MAP_CACHED_RO:
++	case MAP_RO:
+ 		return attrs_xn() | CACHED_MEM | PTE_BLOCK_RO;
+ 	case ARCH_MAP_CACHED_RWX:
+ 		return CACHED_MEM;
+diff --git a/include/mmu.h b/include/mmu.h
+index f79619808829..7d87885a5cb4 100644
+--- a/include/mmu.h
++++ b/include/mmu.h
+@@ -16,6 +16,12 @@
+ #define MAP_WRITECOMBINE	MAP_UNCACHED
  #endif
  
++#ifdef CONFIG_ARCH_HAS_RO_MAPPINGS
++#define MAP_RO			5
++#else
++#define MAP_RO			MAP_CACHED
++#endif
++
+ #define MAP_TYPE_MASK	0xFFFF
+ #define MAP_ARCH(x)	((u16)~(x))
  
--#ifdef CONFIG_CONSTRUCTORS
--#define KERNEL_CTORS()  . = ALIGN(8);                      \
--			__ctors_start = .;                 \
--			KEEP(*(.ctors))                    \
--			KEEP(*(SORT(.init_array.*)))       \
--			KEEP(*(.init_array))               \
--			__ctors_end = .;
--#else
--#define KERNEL_CTORS()
--#endif
--
- #define RO_DATA_SECTION				\
- 	BAREBOX_INITCALLS			\
- 	BAREBOX_EXITCALLS			\
- 	BAREBOX_CMDS				\
- 	BAREBOX_RATP_CMDS			\
- 	BAREBOX_SYMS				\
--	KERNEL_CTORS()				\
- 	BAREBOX_MAGICVARS			\
- 	BAREBOX_CLK_TABLE			\
- 	BAREBOX_DTB				\
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 58993bc5d3c9..9b8e0c2fa77d 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -80,9 +80,6 @@ config REED_SOLOMON
- config BASE64
- 	bool "include base64 encode/decode support"
- 
--config CONSTRUCTORS
--	bool
--
- config GENERIC_FIND_NEXT_BIT
- 	def_bool n
- 
-diff --git a/lib/kasan/Kconfig b/lib/kasan/Kconfig
-index 532412953ba5..62645ba8ea95 100644
---- a/lib/kasan/Kconfig
-+++ b/lib/kasan/Kconfig
-@@ -7,7 +7,6 @@ config KASAN
- 	bool "KASAN: runtime memory debugger"
- 	depends on (HAVE_ARCH_KASAN && CC_HAS_KASAN_GENERIC)
- 	depends on MALLOC_TLSF
--	select CONSTRUCTORS
- 	select PRINTF_HEXSTR
- 	help
- 	  Enables KASAN (KernelAddressSANitizer) - runtime memory debugger,
 -- 
 2.47.3
 
