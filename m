@@ -1,74 +1,74 @@
-Delivery-date: Mon, 05 Jan 2026 12:32:02 +0100
+Delivery-date: Mon, 05 Jan 2026 12:32:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcioc-001VGt-1x
+	id 1vcioe-001VHa-1x
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 12:32:02 +0100
+	Mon, 05 Jan 2026 12:32:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vciob-00077R-Mi
-	for lore@pengutronix.de; Mon, 05 Jan 2026 12:32:02 +0100
+	id 1vciod-00079P-Dz
+	for lore@pengutronix.de; Mon, 05 Jan 2026 12:32:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=U8oIoZpbA181R5vlp2z+fYoJl71/UaTmto/Qq28vJuQ=; b=DSIn4aBFHGaVWIKXWL/qDMeYSf
-	LCNj7eyDlTlI0e/l8q839byeDkU+PkEIKIJ4VhCeayRsCu+zk47YxB3C8umy/EouhbTg0sKQGzYyc
-	Mtlz6hoLDEjbgwY3e7Q5BPVLZm+aSD+TjFaqp5m26/lzpAHsu5sXIfkJELaOdg9iyalAgo/cdG6HS
-	BWdTo4jPrRZMiaxAfSDjmRLCbeXsLNom8DHAWObYL4eIOJ6Y/Z/so/l83/8UiDGN6VVSlKy7mrG67
-	jn57zCYepdV03oTAj8ZhQzGpQKG5RBOOiOYZUSq1r6Wf0/IGB4UzT3oN5anIZV5dKFYRgJ0lJo4wp
-	K6qdFH4A==;
+	bh=9mwfpSToNSBYGw/KYUuxrKY4EyvHnfXlMS6y93OwcZQ=; b=TQiny3QLRA+yAVNZTw1VH7vIXh
+	ZAoygrv3gfSyqmEGGeohWQXfK4nDXo1LgtYqTC4IlDmK/s5k8v0YwGHYK00EQnyPrYXu5dMqdsOaS
+	BL5xclJbbFmOLOgRVNYPTnVbNdAgikobnSCOW7P71xlM9POUrQGxoiyL7LsyDQ093v4vZQlJdXiV7
+	5KexrucWH3Iku3qmoPuUZSEAPHox04GrCLja+xCgqO4LmsibsJ6Dvx/K6D7sgq3lB20EGAmKN59Vj
+	won3XkO2rMlfJqPzSWH70Tk1dHay0RfNFYCNtyYVwF5bYfS3XaDJwRHBWt4uaa8T6DdgwX8askpjM
+	YU3Z0iHQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcio9-0000000BCDd-2dfc;
-	Mon, 05 Jan 2026 11:31:33 +0000
+	id 1vcioB-0000000BCF0-2chR;
+	Mon, 05 Jan 2026 11:31:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcio7-0000000BCB1-2Kpy
+	id 1vcio7-0000000BCB7-3I89
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 11:31:32 +0000
+	Mon, 05 Jan 2026 11:31:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcio5-0006jN-Qu; Mon, 05 Jan 2026 12:31:29 +0100
+	id 1vcio6-0006kO-Cd; Mon, 05 Jan 2026 12:31:30 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcio5-0099zR-23;
-	Mon, 05 Jan 2026 12:31:29 +0100
+	id 1vcio6-0099zn-0c;
+	Mon, 05 Jan 2026 12:31:30 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcije-00000007KWP-16DZ;
+	id 1vcije-00000007KWP-16dQ;
 	Mon, 05 Jan 2026 12:26:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 05 Jan 2026 12:26:58 +0100
+Date: Mon, 05 Jan 2026 12:26:59 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-pbl-load-elf-v1-17-e97853f98232@pengutronix.de>
+Message-Id: <20260105-pbl-load-elf-v1-18-e97853f98232@pengutronix.de>
 References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
 In-Reply-To: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767612414; l=2608;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767612414; l=3835;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=1y66pqL8rPeZQGQAZfvFOBkB1Fziu4JYjQERNexxuoY=;
- b=aRuWiPylZGWroojuH+6iZG/PjQZeGQXJQzPbBvyODU+4O1lfbay3k6K2V1JuazlHhoDNddY9g
- 8lqZgMz/jWoDVLXLGCeDUUqrev3gFi6K0pkUAjp3mznOtdcq9kF5aPR
+ bh=RwPJu9V5wrb6I14AxTEzIMGB09aAYkdG0SOy6sXgkpE=;
+ b=VnwA3fWZTHq7CPEAB+PdmlA7tioGwIVI1Jc7S+gGCkK8NUiTGNUBxNcxq2qlW36fyX5U5ncKb
+ nP/K/xfuiVTAzlvxaoQf/DhVnN6jTyJl2/2SCwEpYug/3hKMXCNoAtF
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_033131_621867_B94429F7 
-X-CRM114-Status: GOOD (  11.34  )
+X-CRM114-CacheID: sfid-20260105_033131_829277_243EEFF0 
+X-CRM114-Status: GOOD (  12.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,84 +91,148 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 17/19] riscv: link ELF image into PBL
+Subject: [PATCH 18/19] riscv: linker script: create separate PT_LOAD
+ segments for text, rodata, and data
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Instead of linking the raw binary barebox proper image into the PBL link
-the ELF image into the PBL. With this barebox proper starts with a properly
-linked and fully initialized C environment, so the calls to
-relocate_to_adr() and setup_c() can be removed from barebox proper.
+Fix the linker script to generate three distinct PT_LOAD segments with
+correct permissions instead of combining .rodata with .data.
+
+Before this fix, the linker auto-generated only two PT_LOAD segments:
+1. Text segment (PF_R|PF_X)
+2. Data segment (PF_R|PF_W) - containing .rodata, .data, .bss, etc.
+
+This caused .rodata to be mapped with write permissions when
+riscv_mmu_setup_from_elf() or riscv_pmp_setup_from_elf() set up memory
+permissions based on ELF segments, defeating the W^X protection.
+
+With explicit PHDRS directives, we now generate three segments:
+1. text segment (PF_R|PF_X): .text and related code sections
+2. rodata segment (PF_R): .rodata and related read-only sections
+3. data segment (PF_R|PF_W): .data, .bss, and related sections
+
+This ensures riscv_mmu_setup_from_elf() and riscv_pmp_setup_from_elf()
+correctly map .rodata as read-only instead of read-write.
+
+Also update the prelink script to handle binaries without a PT_DYNAMIC
+segment, as the new PHDRS layout may result in this case.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/riscv/Kconfig           |  2 ++
- arch/riscv/boot/start.c      |  4 ----
- arch/riscv/boot/uncompress.c | 16 +++++++++++++++-
- 3 files changed, 17 insertions(+), 5 deletions(-)
+ arch/riscv/lib/barebox.lds.S | 38 +++++++++++++++++++++++++-------------
+ scripts/prelink-riscv.inc    |  9 +++++++--
+ 2 files changed, 32 insertions(+), 15 deletions(-)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 96d013d8514ac12de5c34a426262d85f8cf021b9..f8c8b38ed6d7fdae48669e6d7b737f695f1c4cc9 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -17,6 +17,8 @@ config RISCV
- 	select HAS_KALLSYMS
- 	select RISCV_TIMER if RISCV_SBI
- 	select HW_HAS_PCI
-+	select ELF
-+	select PBL_IMAGE_ELF
- 	select HAVE_ARCH_BOARD_GENERIC_DT
- 	select HAVE_ARCH_BOOTM_OFTREE
- 
-diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
-index 5091340c8a374fc360ab732ba01ec8516e82a83d..874f4e72ae46fe7435c9defedceaf5b4e9662b55 100644
---- a/arch/riscv/boot/start.c
-+++ b/arch/riscv/boot/start.c
-@@ -123,10 +123,6 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
- 	unsigned long barebox_size = barebox_image_size + MAX_BSS_SIZE;
- 	unsigned long barebox_base = riscv_mem_barebox_image(membase, endmem, barebox_size);
- 
--	relocate_to_current_adr();
--
--	setup_c();
--
- 	barrier();
- 
- 	irq_init_vector(riscv_mode());
-diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
-index 84142acf9c66fe1fcceb6ae63d15ac078ccddee7..dc0d1fd5d41a88acea8717a7f5fcdb8da3298663 100644
---- a/arch/riscv/boot/uncompress.c
-+++ b/arch/riscv/boot/uncompress.c
-@@ -32,6 +32,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	unsigned long barebox_base;
- 	void *pg_start, *pg_end;
- 	unsigned long pc = get_pc();
-+	struct elf_image elf;
-+	int ret;
- 
- 	irq_init_vector(riscv_mode());
- 
-@@ -68,7 +70,19 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 
- 	sync_caches_for_execution();
- 
--	barebox = (void *)barebox_base;
-+	ret = elf_open_binary_into(&elf, (void *)barebox_base);
-+	if (ret) {
-+		pr_err("Failed to open ELF binary: %d\n", ret);
-+		hang();
-+	}
+diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
+index 03b3a967193cfee1c67b96632cf972a553e8bec4..1565a6fedef1ade7687740240bc36f407ca880fc 100644
+--- a/arch/riscv/lib/barebox.lds.S
++++ b/arch/riscv/lib/barebox.lds.S
+@@ -16,14 +16,23 @@
+ OUTPUT_ARCH(BAREBOX_OUTPUT_ARCH)
+ ENTRY(start)
+ OUTPUT_FORMAT(BAREBOX_OUTPUT_FORMAT)
 +
-+	ret = elf_load_inplace(&elf);
-+	if (ret) {
-+		pr_err("Failed to relocate ELF: %d\n", ret);
-+		hang();
-+	}
++PHDRS
++{
++	text PT_LOAD FLAGS(5);     /* PF_R | PF_X */
++	rodata PT_LOAD FLAGS(4);   /* PF_R */
++	data PT_LOAD FLAGS(6);     /* PF_R | PF_W */
++	dynamic PT_DYNAMIC FLAGS(6); /* PF_R | PF_W */
++}
 +
-+	barebox = (void *)elf.entry;
+ SECTIONS
+ {
+ 	. = 0x0;
  
- 	pr_debug("jumping to uncompressed image at 0x%p. dtb=0x%p\n", barebox, fdt);
+-	.image_start : { *(.__image_start) }
++	.image_start : { *(.__image_start) } :text
  
+ 	. = ALIGN(4);
+-	._text : { *(._text) }
++	._text : { *(._text) } :text
+ 	.text      :
+ 	{
+ 		_stext = .;
+@@ -35,44 +44,47 @@ SECTIONS
+ 		KEEP(*(.text_exceptions*))
+ 		__exceptions_stop = .;
+ 		*(.text*)
+-	}
++	} :text
+ 	BAREBOX_BARE_INIT_SIZE
+ 
+-	. = ALIGN(4);
++	. = ALIGN(4096);
+ 	__start_rodata = .;
+ 	.rodata : {
+ 		*(.rodata*)
+ 		RO_DATA_SECTION
+-	}
++	} :rodata
+ 
+ 	__end_rodata = .;
+ 	_etext = .;
+ 	_sdata = .;
+ 
+-	. = ALIGN(4);
+-	.data : { *(.data*) }
++	. = ALIGN(4096);
++
++	.data : { *(.data*) } :data
+ 
+ 	/DISCARD/ : { *(.rela.plt*) }
+ 	.rela.dyn : {
+ 		__rel_dyn_start = .;
+ 		*(.rel*)
+ 		__rel_dyn_end = .;
+-	}
++	} :data
+ 
+ 	.dynsym : {
+ 		__dynsym_start = .;
+ 		*(.dynsym)
+ 		__dynsym_end = .;
+-	}
++	} :data
++
++	.dynamic : { *(.dynamic) } :data :dynamic
+ 
+ 	_edata = .;
+ 
+-	.image_end : { *(.__image_end) }
++	.image_end : { *(.__image_end) } :data
+ 
+ 	. = ALIGN(4);
+-	.__bss_start :  { *(.__bss_start) }
+-	.bss : { *(.bss*) }
+-	.__bss_stop :  { *(.__bss_stop) }
++	.__bss_start :  { *(.__bss_start) } :data
++	.bss : { *(.bss*) } :data
++	.__bss_stop :  { *(.__bss_stop) } :data
+ 	_end = .;
+ 	_barebox_image_size = __bss_start;
+ }
+diff --git a/scripts/prelink-riscv.inc b/scripts/prelink-riscv.inc
+index f2b5467f5b3c19be285153d3ad7cdb210a24a94c..8a54a9737fe73827ad8cab01a61fbecc68a1140a 100644
+--- a/scripts/prelink-riscv.inc
++++ b/scripts/prelink-riscv.inc
+@@ -61,8 +61,13 @@ static void prelink_bonn(void *data)
+ 		}
+ 	}
+ 
+-	if (dyns == NULL)
+-		die("No dynamic section found");
++	if (dyns == NULL) {
++		/* No PT_DYNAMIC segment found - binary may not need prelinking.
++		 * This can happen with statically-linked relocatable binaries
++		 * that handle relocations differently. Exit successfully.
++		 */
++		return;
++	}
+ 
+ 	Elf_Rela *rela_dyn = NULL;
+ 	size_t rela_count = 0;
 
 -- 
 2.47.3
