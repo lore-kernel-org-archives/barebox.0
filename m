@@ -1,73 +1,73 @@
-Delivery-date: Mon, 05 Jan 2026 20:53:50 +0100
+Delivery-date: Mon, 05 Jan 2026 23:43:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcqeE-001dLm-2I
+	id 1vctIk-001g7L-1j
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 20:53:50 +0100
+	Mon, 05 Jan 2026 23:43:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcqeE-0001Wa-1a
-	for lore@pengutronix.de; Mon, 05 Jan 2026 20:53:50 +0100
+	id 1vctIj-00082U-I8
+	for lore@pengutronix.de; Mon, 05 Jan 2026 23:43:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NEIQMWxUVzvNtMofIvHONF4MawKfQv0QHdODBrOhNAM=; b=2SRC1jfWQDwdN1Ky8KdH/+jO0U
-	s3TDt5q31orGYzMgjQ+g5TBiUdYK3EVt7Jfer0enjBX5zeJkpO0lcU4H37ov7BcotGNhiYGLiCuQ/
-	usqkNK9swZuQPqsw7xv3bTul5EVuu6mSm09UFByC7UbL6c9rQHOB6R7KOZCqQY3MXj68lwE2UuygO
-	Qyf6/a2bpcrKr1juq9xP3m4Xssqcwlr+5r5oB8asap6k1F7l97wrp7UY84ZuAMfiGIMW01gW8nrZu
-	wXClRtTm/jYys5SkbaTanJhZR7DEXGaloE14B4uGDTXJYuesTJIBLf3T53ulwF/q9hXq6gqIQq47s
-	YVh3mZPA==;
+	bh=tQ/Wxun1iaL7BG4mKqmFKPDkUBerFyvpkoq4aApN104=; b=To8fuTIeqNXesqh3zf7vvflxsF
+	V0j56NAR5c4obHJozhgU6EbeTmxBqvxYOO5jBltDSzb3tJKVz/ZsfImEu9Cy2zPt+YjnnWdJor8LX
+	EjPW5ejnx9SNslXqLhsb6AJPM2n7Zn10E3DC+gipAT8FPfig+EnkuectNqG2aU5uvsi/da7BvuD7X
+	G7088aiOYdXfLKADWqgrOo278j3iJKq+fZFy1QwIZ62Ms48VXnD9W5iNK01yjDp7gx5ZMjXKmnKs/
+	dOe/msckN3mUxba4DnlKExUPeUOFVPLu6ltKLw8vT+iQZja+80nKa8o5iFr3lPL5VHinWIjHwvvrA
+	xKfOFVpg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcqdk-0000000C0go-11C5;
-	Mon, 05 Jan 2026 19:53:20 +0000
+	id 1vctHz-0000000CAVF-0kp9;
+	Mon, 05 Jan 2026 22:43:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcqdh-0000000C0ff-15N2
+	id 1vctHv-0000000CAUt-2zBi
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 19:53:18 +0000
+	Mon, 05 Jan 2026 22:43:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vcqdf-0001OU-IY; Mon, 05 Jan 2026 20:53:15 +0100
+	id 1vctHt-0007v9-C9; Mon, 05 Jan 2026 23:42:57 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vcqdf-009EDB-0g;
-	Mon, 05 Jan 2026 20:53:15 +0100
+	id 1vctHs-009FX4-35;
+	Mon, 05 Jan 2026 23:42:56 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vcqdf-00CZcN-0G;
-	Mon, 05 Jan 2026 20:53:15 +0100
-Date: Mon, 5 Jan 2026 20:53:15 +0100
+	id 1vctHs-00CbSJ-2l;
+	Mon, 05 Jan 2026 23:42:56 +0100
+Date: Mon, 5 Jan 2026 23:42:56 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: BAREBOX <barebox@lists.infradead.org>,
 	"Claude Sonnet 4.5" <noreply@anthropic.com>
-Message-ID: <aVwWq1BJEMDWT8dq@pengutronix.de>
+Message-ID: <aVw-cJ1f-B17q2j8@pengutronix.de>
 References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
- <20260105-pbl-load-elf-v1-4-e97853f98232@pengutronix.de>
- <6f69f906-bb29-40ad-8a3b-9cb09cb499b3@pengutronix.de>
+ <20260105-pbl-load-elf-v1-6-e97853f98232@pengutronix.de>
+ <9a2744c4-b115-40e9-9f19-36a291acaeb9@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6f69f906-bb29-40ad-8a3b-9cb09cb499b3@pengutronix.de>
+In-Reply-To: <9a2744c4-b115-40e9-9f19-36a291acaeb9@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_115317_296986_3EC8F6F3 
-X-CRM114-Status: GOOD (  35.65  )
+X-CRM114-CacheID: sfid-20260105_144300_308851_9B92CBE8 
+X-CRM114-Status: GOOD (  49.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,116 +89,177 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 04/19] ARM: implement elf_apply_relocations() for ELF
- relocation support
+Subject: Re: [PATCH 06/19] elf: implement elf_load_inplace()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Jan 05, 2026 at 12:58:23PM +0100, Ahmad Fatoum wrote:
+On Mon, Jan 05, 2026 at 02:37:13PM +0100, Ahmad Fatoum wrote:
 > Hi,
 > 
 > On 1/5/26 12:26 PM, Sascha Hauer wrote:
-> > Implement architecture-specific ELF relocation handlers for ARM32 and ARM64.
+> > Implement elf_load_inplace() to apply dynamic relocations to an ELF binary
+> > that is already loaded in memory. Unlike elf_load(), this function does not
+> > allocate memory or copy segments - it only modifies the existing image in
+> > place.
 > > 
-> > ARM32 implementation (arch/arm/lib32/elf_reloc.c):
-> > - Handles REL-format relocations (no explicit addend)
-> > - Supports R_ARM_RELATIVE and R_ARM_ABS32 relocation types
-> > - Addend is read from the target location
+> > This is useful for self-relocating loaders or when the ELF has been loaded
+> > by external means (e.g., firmware or another bootloader).
+> 
+> Nice. This is more elegant than what I came up with (compressing every
+> segment separately). :)
+> 
+> > For ET_DYN (position-independent) binaries, the relocation offset is
+> > calculated relative to the first executable PT_LOAD segment (.text section),
+> > taking into account the difference between the segment's virtual address
+> > and its file offset.
+> 
+> While this may be true for barebox proper, I think in the general case,
+> we need to iterate over all segments and take the lowest address.
+> The first executable PT_LOAD shouldn't have a special significance in
+> this case.
+> 
 > > 
-> > ARM64 implementation (arch/arm/lib64/elf_reloc.c):
-> > - Handles RELA-format relocations (with explicit addend)
-> > - Supports R_AARCH64_RELATIVE and R_AARCH64_ABS64 relocation types
-> > - Addend is provided in relocation entry
-> > 
-> > Both implementations:
-> > - Parse PT_DYNAMIC segment to locate relocation tables
-> > - Validate relocation table format and entry sizes
-> > - Apply relocations based on the computed load offset
-> > - Return appropriate errors for unsupported relocation types
+> > The entry point is also adjusted to point to the relocated image.
 > > 
 > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > > Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 > > ---
-> >  arch/arm/include/asm/elf.h |  11 +++++
-> >  arch/arm/lib32/Makefile    |   1 +
-> >  arch/arm/lib32/elf_reloc.c | 105 +++++++++++++++++++++++++++++++++++++++++++++
-> >  arch/arm/lib64/Makefile    |   1 +
-> >  arch/arm/lib64/elf_reloc.c | 105 +++++++++++++++++++++++++++++++++++++++++++++
-> >  5 files changed, 223 insertions(+)
+> >  common/elf.c  | 152 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  include/elf.h |   8 ++++
+> >  2 files changed, 160 insertions(+)
 > > 
-> > diff --git a/arch/arm/include/asm/elf.h b/arch/arm/include/asm/elf.h
-> > index 4043e6fd5b991eb5cccb3fa0ea28d208006ee1fc..cceb92ee1a5f63c37b0e981c263676bd35a261c0 100644
-> > --- a/arch/arm/include/asm/elf.h
-> > +++ b/arch/arm/include/asm/elf.h
-> > @@ -36,6 +36,17 @@ typedef struct user_fp elf_fpregset_t;
-> >  #define R_ARM_THM_CALL		10
-> >  #define R_ARM_THM_JUMP24	30
+> > diff --git a/common/elf.c b/common/elf.c
+> > index fc2949c285ebb0c0740c68c551926da8d0bb8637..565b283b694773727ef77917cfd8c1d4ee83a8d1 100644
+> > --- a/common/elf.c
+> > +++ b/common/elf.c
+> > @@ -531,3 +531,155 @@ void elf_close(struct elf_image *elf)
 > >  
-> > +/* Additional relocation types for dynamic linking */
-> > +#define R_ARM_RELATIVE		23
-> 
-> This is already defined in arch/arm/cpu/common.c, you can guess where
-> this is going ;)
-> 
-> > +#define R_ARM_GLOB_DAT		21
-> > +#define R_ARM_JUMP_SLOT		22
-> 
-> These two are not used.
-> 
+> >  	free(elf);
+> >  }
 > > +
-> > +#define R_AARCH64_NONE		0
-> > +#define R_AARCH64_ABS64		257
-> > +#define R_AARCH64_RELATIVE	1027
-> > +#define R_AARCH64_GLOB_DAT	1025
-> > +#define R_AARCH64_JUMP_SLOT	1026
+> > +static void *elf_find_dynamic_inplace(struct elf_image *elf)
 > 
-> Likewise, only R_AARCH64_JUMP_SLOT and R_AARCH64_GLOB_DAT are not used.
+> const void *
 > 
-> > +/*
-> > + * Parse dynamic section and extract relocation info for ARM32
-> > + */
-> > +static int parse_dynamic_section(struct elf_image *elf, Elf32_Dyn *dyn,
-> > +				  Elf32_Rel **rel_out, u64 *relsz_out)
 > > +{
-> > +	Elf32_Rel *rel = NULL;
-> 
-> If we define ELF_CLASS depending on CONFIG_ARM32/CONFIG_ARM64, we can
-> write a generic parse_dynamic_section() that applies to all architectures.
-> 
-> In this case, we would just collect both REL and RELA in the switch and
-> just use what's available.
-> > +int elf_apply_relocations(struct elf_image *elf, void *dyn_seg)
-> > +{
-> 
-> We already have relocate_to_current_adr(). If we change it to call
-> a new relocate_image():
-> 
-> 	relocate_image(get_runtime_offset(),
-> 			runtime_addr(__rel_dyn_start),
-> 			runtime_addr(__rel_dyn_end),
-> 			runtime_addr(__dynsym_start),
-> 			runtime_addr(__dynsym_end));
-> 
-> Then we could use relocate_image() in generic code instead of
-> duplicating it per architecture.
-> 
-> > +/*
-> > + * Parse dynamic section and extract relocation info for ARM64
+> > +	void *buf = elf->hdr_buf;
+> > +	void *phdr = buf + elf_hdr_e_phoff(elf, buf);
+> > +	int i;
+> > +
+> > +	for (i = 0; i < elf_hdr_e_phnum(elf, buf); i++) {
+> > +		if (elf_phdr_p_type(elf, phdr) == PT_DYNAMIC) {
+> > +			u64 offset = elf_phdr_p_offset(elf, phdr);
+> > +			/* For in-place binary, PT_DYNAMIC is at hdr_buf + offset */
+> > +			return elf->hdr_buf + offset;
+> > +		}
+> > +		phdr += elf_size_of_phdr(elf);
+> > +	}
+> > +
+> > +	return NULL;  /* No PT_DYNAMIC segment */
+> > +}
+> > +
+> > +/**
+> > + * elf_load_inplace() - Apply dynamic relocations to an ELF binary in place
+> > + * @elf: ELF image previously opened with elf_open_binary()
+> > + *
+> > + * This function applies dynamic relocations to an ELF binary that is already
+> > + * loaded at its target address in memory. Unlike elf_load(), this does not
+> > + * allocate memory or copy segments - it only modifies the existing image.
+> > + *
+> > + * This is useful for self-relocating loaders or when the ELF has been loaded
+> > + * by external means (e.g., loaded by firmware or another bootloader).
+> > + *
+> > + * The ELF image must have been previously opened with elf_open_binary().
+> > + *
+> > + * For ET_DYN (position-independent) binaries, the relocation offset is
+> > + * calculated relative to the first executable PT_LOAD segment (.text section).
+> > + *
+> > + * For ET_EXEC binaries, no relocation is applied as they are expected to
+> > + * be at their link-time addresses.
+> > + *
+> > + * Returns: 0 on success, negative error code on failure
 > > + */
-> > +static int parse_dynamic_section(struct elf_image *elf, Elf64_Dyn *dyn,
-> > +				  Elf64_Rela **rela_out, u64 *relasz_out)
+> > +int elf_load_inplace(struct elf_image *elf)
+> > +{
+> > +	void *dyn_seg;
+> > +	void *buf, *phdr;
+> > +	void *elf_buf;
+> > +	int i, ret;
+> > +
+> > +	buf = elf->hdr_buf;
+> > +	elf_buf = elf->hdr_buf;
+> > +
+> > +	/*
+> > +	 * First pass: Clear BSS segments (p_memsz > p_filesz).
+> > +	 * This must be done before relocations as uninitialized data
+> > +	 * must be zeroed per C standard.
+> > +	 */
+> > +	phdr = buf + elf_hdr_e_phoff(elf, buf);
+> > +	for (i = 0; i < elf_hdr_e_phnum(elf, buf); i++) {
+> > +		if (elf_phdr_p_type(elf, phdr) == PT_LOAD) {
+> > +			u64 p_offset = elf_phdr_p_offset(elf, phdr);
+> > +			u64 p_filesz = elf_phdr_p_filesz(elf, phdr);
+> > +			u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
+> > +
+> > +			/* Clear BSS (uninitialized data) */
+> > +			if (p_filesz < p_memsz) {
+> > +				void *bss_start = elf_buf + p_offset + p_filesz;
+> > +				size_t bss_size = p_memsz - p_filesz;
+> > +				memset(bss_start, 0x00, bss_size);
 > 
-> Same comment as for ARM32. I believe this can go into generic code.
+> How can this be done in-place? If this is padding to get to a page
+> boundary, I would assume it's already zero. If it goes beyond a page,
+> this will overwrite follow-up segments wouldn't it?
 > 
-> > +		case R_AARCH64_ABS64:
-> > +			/* B(P) = S + A */
-> > +			*fixup_addr = base + rela->r_addend;
-> > +			break;
-> 
-> What did you do to get R_AARCH64_ABS64 relocations? We don't handle them
-> in relocate_to_current_adr() and they shouldn't have been generated.
+> I also find bss_ an unforunate name here as this is applied to all segments.
 
-Likely Claude just generated this for completeness.
+The code basically implements this (from
+https://refspecs.linuxbase.org/elf/gabi4+/ch5.pheader.html):
+
+PT_LOAD
+    The array element specifies a loadable segment, described by
+    p_filesz and p_memsz. The bytes from the file are mapped to the
+    beginning of the memory segment. If the segment's memory size
+    (p_memsz) is larger than the file size (p_filesz), the ``extra''
+    bytes are defined to hold the value 0 and to follow the segment's
+    initialized area
+
+You are right, this is done for all segments, but de facto the segment
+containing the bss section is the only one where p_filesz < p_memsz
+is actually used, so "Clear bss segments" doesn't sound too wrong to me.
+
+I experimented a bit. When I change the linker file to move the bss
+section before the data section, the bss section really shows up as
+zeroes in the ELF file and p_filesz becomes p_memsz for all segments.
+Only when the bss section is at the very end of the binary the bss
+section is no longer part of the ELF binary and may hit uninitialized
+memory which we really have to memset.
+
+> 
+> 
+> > +	if (elf->type == ET_DYN) {
+> > +		u64 text_vaddr = 0;
+> > +		u64 text_offset = 0;
+> > +		bool found_text = false;
+> > +
+> > +		/* Find first executable PT_LOAD segment (.text) */
+> 
+> As mentioned, we should rather get the lowest address across all segments.
+
+Not sure if this is true. I didn't manage to generate a binary where the
+text section is not the first one. When I try to move for example the
+data section before the text section then I end up with no executable
+segment at all. Something weird is happening there, I haven't fully
+understood how the generation of segments from sections work.
+
+> 
+> > +	/* Apply architecture-specific relocations */
+> > +	ret = elf_apply_relocations(elf, dyn_seg);
+> 
+> Should I upstream my relocate_image changes that reuse the
+> relocate_to_current_adr() code and you rebase on top?
+
+Show the patch and we'll see.
 
 Sascha
 
