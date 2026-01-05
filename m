@@ -1,68 +1,55 @@
-Delivery-date: Mon, 05 Jan 2026 09:22:01 +0100
+Delivery-date: Mon, 05 Jan 2026 09:23:06 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcfqj-001SJS-1E
+	id 1vcfrm-001SKi-0L
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 09:22:01 +0100
+	Mon, 05 Jan 2026 09:23:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcfqi-0001M8-Q4
-	for lore@pengutronix.de; Mon, 05 Jan 2026 09:22:01 +0100
+	id 1vcfrl-0001X3-HM
+	for lore@pengutronix.de; Mon, 05 Jan 2026 09:23:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=nR+zdQQMmIRb31Fw/Be6IsRjFHew/bYVYFHH+3EOR9E=; b=WbVyQFZlt0ZoPNA1E5Xm53Wo94
-	P4ekIPKPsjlMLR0jE560+NpKSGDbQ/KaKvyq0edp75ShPAstodIL4rgkZ0MEbc5KPjfp0xSKkNroO
-	SocEuxqQo3uuHiq6bLVPMTbNKbcyvbTc7mjEaJCxHJZT4BVEpxOYY98TLw64U1iVaq/tuoz2HOywp
-	JKseCbuUhjYdQ2LGtW644uUCmSh3ADK4wA9eM88ZVpxLuvcqTszrDlOp5Hlbjf0V+ecdnoFqkmFlm
-	4SdS7x/MDBFG4jHXoORR54/X3RBoUIkzrekVj+IidV8jsjRjZVJpHTVPJWQRtJuY8maTrtn3FG1e7
-	magxSU4g==;
+	bh=GUhEILzbDxcLAfPsXxDXq4U2XowJAwY1i9EHmY5Tw6g=; b=wENxa0UmW//oOsIYCq7FqQrX0F
+	y1qHvWleQE/3Wv4/2jfFNeFj+BctY+0KWOXIS7lv6I2Utbrt9aPOGO+tfl7E5hijsixgroWN59ymY
+	7MtJOZG1y9f5FO58G+J0xhTkEkebggddi+ema7rLAJKkt/uGdyVhsAlSy0oh0iCKTpFsb85fHkeiE
+	PtkJ8QMoFFz4cFaP8K/brkc1BNDjHkJuPxMU3IUaFoMzled5m9+HMilcHl/6kYDuWmgO3mG/w0YPp
+	UtVrDAs3YcE0AaLPfG8Dp3lpzGVglkZ83RDA5xWJFiqjrI+pWUtTUJYsq2heQ2qvSpCJHKWVkkURY
+	ze2yvd9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcfqH-0000000AyUI-4A5p;
-	Mon, 05 Jan 2026 08:21:33 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcfqG-0000000AyU5-3Z8l
-	for barebox@bombadil.infradead.org;
-	Mon, 05 Jan 2026 08:21:32 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=nR+zdQQMmIRb31Fw/Be6IsRjFHew/bYVYFHH+3EOR9E=; b=bDiaoitSO/a6xTTPFoo2KE5yPn
-	6EJUE2FKLMbjje9+Emf0WNCyQdZsuSKI9llLl6ZTYNZwX8JKqfY+g4h+aB2n0K7ieZx5VfEawbKvk
-	TWVZ2JNoR5Dq+7nHG+xkh5K4wd/pttvCEWmqBLfTKFn6JXr4ss4g5McU6+OCTelYyIDugFbMvoiAU
-	d2VwIUpZ35H9yw+L1DaWWxcsimkMvnVbMMP4+CxmZO6m5QdfJG40oXv3AyFlXNb3QJmi56uvSlW7N
-	8WUNtMqiv0bd1QaVpi6r5JimEbESDxFT4eNUfcbMBPuGw0QHuRIQ46BRoI7GPSIpIGmRHB5wumLlp
-	Uv7AbJDQ==;
+	id 1vcfrL-0000000Ayg5-3Gfm;
+	Mon, 05 Jan 2026 08:22:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcfqE-00000007pMH-0WjA
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vcfrJ-0000000AyfN-0vYt
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 08:21:31 +0000
+	Mon, 05 Jan 2026 08:22:38 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vcfqD-0001Hc-7X; Mon, 05 Jan 2026 09:21:29 +0100
+	id 1vcfrH-0001SY-6B; Mon, 05 Jan 2026 09:22:35 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  5 Jan 2026 09:21:14 +0100
-Message-ID: <20260105082128.3248033-1-a.fatoum@barebox.org>
+Cc: David Dgien <dgienda125@gmail.com>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon,  5 Jan 2026 09:22:33 +0100
+Message-ID: <20260105082234.3248830-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_082130_339350_E1EE5648 
-X-CRM114-Status: GOOD (  13.61  )
+X-CRM114-CacheID: sfid-20260105_002237_257136_BA466C25 
+X-CRM114-Status: UNSURE (   9.56  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,68 +71,79 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] startup: attempt poweroff if no shell and nothing to do
+Subject: [PATCH] malloc: make malloc_add_pool return void
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For testing noshell configuration in virtual machines and sandbox,
-it's useful if the process would just exit instead of hanging
-indefinitely.
+There is no common semantics for how the result of the function is
+interpreted and there are no users that make use of it, so turn it to
+return void.
 
-This is usually handled with panic(), which can be customized to
-poweroff or reset, but in this case a panic with CONFIG_PANIC_RESET=y
-would just lead to a reboot loop.
-
-Instead, let's explicitly poweroff in that case. For platforms that
-don't support powering off, the function will hang as before, but for
-others, it will not waste as much energy.
-
+Cc: David Dgien <dgienda125@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- Documentation/migration-guides/migration-master.rst | 9 +++++++++
- common/startup.c                                    | 5 +++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ common/tlsf_malloc.c | 10 ++++------
+ include/malloc.h     |  4 ++--
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
-index ebf69e3c6bb1..e258f656cae3 100644
---- a/Documentation/migration-guides/migration-master.rst
-+++ b/Documentation/migration-guides/migration-master.rst
-@@ -35,3 +35,12 @@ ARM i.MX6 RIoTboard
+diff --git a/common/tlsf_malloc.c b/common/tlsf_malloc.c
+index 7de39ebeef09..36fdc307cc26 100644
+--- a/common/tlsf_malloc.c
++++ b/common/tlsf_malloc.c
+@@ -105,13 +105,13 @@ void malloc_stats(void)
+ 	printf("used: %zu\nfree: %zu\n", s.used, s.free);
+ }
  
- The barebox update handler has been changed to write barebox to the
- eMMC boot partitions rather than the user data area.
-+
-+CONFIG_SHELL_NONE
-+-----------------
-+
-+If there's nothing to do for a shell-less barebox, it will now attempt
-+to poweroff the system instead of busy-looping indefinitely.
-+This changes behavior for systems that rely on a watchdog to reset
-+a hanging barebox in this situation. If this breaks anything for you,
-+please reach out.
-diff --git a/common/startup.c b/common/startup.c
-index 81a3ae1513c2..05ed75de29a4 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -20,6 +20,7 @@
- #include <shell.h>
- #include <init.h>
- #include <command.h>
-+#include <poweroff.h>
- #include <malloc.h>
- #include <debug_ll.h>
- #include <fs.h>
-@@ -440,8 +441,8 @@ void __noreturn start_barebox(void)
- 		barebox_main();
+-void *malloc_add_pool(void *mem, size_t bytes)
++void malloc_add_pool(void *mem, size_t bytes)
+ {
+ 	pool_t new_pool;
+ 	struct pool_entry *new_pool_entry;
  
- 	if (IS_ENABLED(CONFIG_SHELL_NONE)) {
--		pr_err("Nothing left to do\n");
--		hang();
-+		pr_crit("Nothing left to do\n");
-+		poweroff_machine(0);
- 	} else {
- 		while (1)
- 			run_shell();
+ 	if (!mem)
+-		return NULL;
++		return;
+ 
+ 	if (!tlsf_mem_pool) {
+ 		tlsf_mem_pool = tlsf_create(mem);
+@@ -121,16 +121,14 @@ void *malloc_add_pool(void *mem, size_t bytes)
+ 
+ 	new_pool = tlsf_add_pool(tlsf_mem_pool, mem, bytes);
+ 	if (!new_pool)
+-		return NULL;
++		return;
+ 
+ 	new_pool_entry = malloc(sizeof(*new_pool_entry));
+ 	if (!new_pool_entry)
+-		return NULL;
++		return;
+ 
+ 	new_pool_entry->pool = new_pool;
+ 	list_add(&new_pool_entry->list, &mem_pool_list);
+-
+-	return (void *)new_pool;
+ }
+ 
+ static void tlsf_request_store(tlsf_t tlsf, size_t bytes)
+diff --git a/include/malloc.h b/include/malloc.h
+index bee998cd9079..82fa2bb39c8e 100644
+--- a/include/malloc.h
++++ b/include/malloc.h
+@@ -22,12 +22,12 @@
+ 				(unsigned long)ZERO_SIZE_PTR)
+ 
+ #ifdef CONFIG_MALLOC_TLSF
+-void *malloc_add_pool(void *mem, size_t bytes);
++void malloc_add_pool(void *mem, size_t bytes);
+ void malloc_register_store(void (*cb)(size_t bytes));
+ bool malloc_store_is_registered(void);
+ #else
+ #include <linux/bug.h>
+-static inline void *malloc_add_pool(void *mem, size_t bytes) { BUG(); }
++static inline void malloc_add_pool(void *mem, size_t bytes) { BUG(); }
+ static inline void malloc_register_store(void (*cb)(size_t bytes)) { BUG(); }
+ static inline bool malloc_store_is_registered(void) { return false; }
+ #endif
 -- 
 2.47.3
 
