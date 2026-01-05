@@ -1,74 +1,74 @@
-Delivery-date: Mon, 05 Jan 2026 12:27:56 +0100
+Delivery-date: Mon, 05 Jan 2026 12:32:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcike-001VDx-0U
+	id 1vcioc-001VGs-1t
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 12:27:56 +0100
+	Mon, 05 Jan 2026 12:32:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcikd-0006Ht-Gy
-	for lore@pengutronix.de; Mon, 05 Jan 2026 12:27:56 +0100
+	id 1vciob-00077N-Jk
+	for lore@pengutronix.de; Mon, 05 Jan 2026 12:32:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=L0f+hu8WMrhx/B15dDVRX68Kh+VUFCBuDitEsJGnFWg=; b=EhlAPc5FhyRl10K6ijvyjqwdYE
-	IS3k7Zi2zoaAehrXba+QXTOUz63VDn42zxm8w4qeMOadMZy/vrWlwhGkze+4qocivI7fN5NIM8eeF
-	Y0UGYncHRdqAysQ8hQukhpdfw+SfGJSMpYmh3ErBGLXSfQKaoOSb+88ro1Ib1UY2idK4E8vklr4ix
-	YVDvWpgDpMh0DOcenM6Nm1ZsCrBXkD3IdVWXxhPhNXX91MiY/F8MLcRBpPTn4k5fZ1H2NbQMfZ64G
-	L9+n9StUp/jeMQu8wJ/AFuBCoiCn2rpzzkgIvyWQrX5uaHRa1PKkSdgdCK29FiIMcY/2ps8GbgcdD
-	nWk1vpXQ==;
+	bh=TEBLhMmD02n44dRTEoIjsyzT/CwpJE2lSQD65F69SxQ=; b=IgSdPSzYFVfLO5HaKnbX+fbXNF
+	Kcuucwn0K64vxfePaAbwp7kDyvqAKukD0ehhD9OTypPyHB5zHNQV1kSXsxLdgadFtOhhxEG2Sqdu3
+	nAZfeykUr7pdMVqwQKcdUzO7DBt+scbkCc7sRKBzPhcwXamlCuAPzQ954i0wGT9zuK5CIWOiq43Ka
+	/GMhWu24IXNKvkz/Y2kciBPqFoh5jXeMipOGjjLSFf4G94MyqTIIDP79zcVcFrGGCZOasIhhk48ue
+	qyMoJBg8gRD39+jV1tpF1X11hw2rCcz8wWvuGP/ORRbxiVuws5+pwgbKpRXw3fvYv8ToEbjQF4rss
+	el08CUqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcik7-0000000BBbY-3ImF;
-	Mon, 05 Jan 2026 11:27:23 +0000
+	id 1vcioA-0000000BCEP-46W6;
+	Mon, 05 Jan 2026 11:31:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcik4-0000000BBXI-2mNr
+	id 1vcio7-0000000BCB4-2L5C
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 11:27:21 +0000
+	Mon, 05 Jan 2026 11:31:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcije-0005Yo-MM; Mon, 05 Jan 2026 12:26:54 +0100
+	id 1vcio6-0006jf-3m; Mon, 05 Jan 2026 12:31:30 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcije-0099xf-16;
-	Mon, 05 Jan 2026 12:26:54 +0100
+	id 1vcio5-0099zb-2x;
+	Mon, 05 Jan 2026 12:31:29 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcije-00000007KWP-0xcQ;
+	id 1vcije-00000007KWP-14Ol;
 	Mon, 05 Jan 2026 12:26:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 05 Jan 2026 12:26:48 +0100
+Date: Mon, 05 Jan 2026 12:26:56 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-pbl-load-elf-v1-7-e97853f98232@pengutronix.de>
+Message-Id: <20260105-pbl-load-elf-v1-15-e97853f98232@pengutronix.de>
 References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
 In-Reply-To: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767612414; l=2048;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767612414; l=3304;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=+mSKl84QuIgsXtn6lkpaZG7Acf9xzt5oa4PLx2DZwl0=;
- b=yCuP3TvKlJvIMKAXCf/dAJhENgEM21nQq0+swwZgBeJBSdTk74Pc3oxofpo3rrGnzSuJ8CMj8
- IS68390NokiDDf1Aj5wNYm6mskPxZbIHEEKphLKylVCGPVLG6qKxd24
+ bh=scfJFYms+6lvjXMUVGY8svKOZAHFvELvKHAyCbT+FKk=;
+ b=RWABGloR2Pfrz8cW0mQUq6b27kT7vD6iN3xhGrIcfsE64KLenepyhID1zO/ztHwEUsGp0zBuk
+ 7MhYvVbLu7ZBBfKubIFeltYOPt0LHFfqeqgtCRKAAGeW9pXyVvRkOpK
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_032720_726469_17E73123 
-X-CRM114-Status: GOOD (  12.62  )
+X-CRM114-CacheID: sfid-20260105_033131_621915_82AC6AAF 
+X-CRM114-Status: GOOD (  12.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,81 +91,109 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 07/19] elf: create elf_open_binary_into()
+Subject: [PATCH 15/19] ARM: link ELF image into PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-elf_open_binary() returns a dynamically allocated struct elf_image *. We
-do not have malloc in the PBL, so for better PBL support create
-elf_open_binary_into() which takes a struct elf_image * as argument.
+Instead of linking the raw binary barebox proper image into the PBL link
+the ELF image into the PBL. With this barebox proper starts with a properly
+linked and fully initialized C environment, so the calls to
+relocate_to_adr() and setup_c() can be removed from barebox proper.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ---
- common/elf.c  | 26 +++++++++++++++++++-------
- include/elf.h |  1 +
- 2 files changed, 20 insertions(+), 7 deletions(-)
+ arch/arm/Kconfig          |  2 ++
+ arch/arm/cpu/start.c      |  4 ----
+ arch/arm/cpu/uncompress.c | 32 ++++++++++++++++++++++++++------
+ 3 files changed, 28 insertions(+), 10 deletions(-)
 
-diff --git a/common/elf.c b/common/elf.c
-index 565b283b694773727ef77917cfd8c1d4ee83a8d1..ee5e31dc58bbb6432d82ff96d9dbeb4c6ce72e39 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -318,6 +318,23 @@ static void elf_init_struct(struct elf_image *elf)
- 	elf->filename = NULL;
- }
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index afa6de3cd0b145e42755e3ca2d7a13c8a69ff1d3..60975083b32f3127f982c526c6cf30ffe3e45924 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -17,6 +17,8 @@ config ARM
+ 	select HAVE_ARCH_BOOTM_OFTREE
+ 	select HW_HAS_PCI
+ 	select ARCH_HAS_DMA_WRITE_COMBINE
++	select ELF
++	select PBL_IMAGE_ELF
+ 	default y
  
-+int elf_open_binary_into(struct elf_image *elf, void *buf)
-+{
+ config ARCH_LINUX_NAME
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index f7d4507e71588ba5e241b24b952d55e2a4b0f794..71a12abdd0941889617e6b63063304d0e4522c81 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -139,10 +139,6 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
+ 	if (IS_ENABLED(CONFIG_CPU_V7))
+ 		armv7_hyp_install();
+ 
+-	relocate_to_adr(barebox_base);
+-
+-	setup_c();
+-
+ 	barrier();
+ 
+ 	pbl_barebox_break();
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index b9fc1d04db96e77c8fcd7fd1930798ea1d9294d7..ccc3c5ae3ba60e990ee73715a49a316e2a14c44e 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -20,6 +20,7 @@
+ #include <asm/mmu.h>
+ #include <asm/unaligned.h>
+ #include <compressed-dtb.h>
++#include <elf.h>
+ 
+ #include <debug_ll.h>
+ 
+@@ -85,21 +86,40 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	else if (IS_ENABLED(CONFIG_ARMV7R_MPU))
+ 		set_cr(get_cr() | CR_C);
+ 
+-	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
++	pr_debug("uncompressing barebox ELF at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
+ 			pg_start, pg_len, barebox_base, uncompressed_len);
+ 
+ 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
+ 
+-	handoff_data_move(handoff_data);
++	pr_debug("relocating ELF in place\n");
+ 
+-	sync_caches_for_execution();
++	struct elf_image elf;
 +	int ret;
 +
-+	memset(elf, 0, sizeof(*elf));
-+	elf_init_struct(elf);
++	ret = elf_open_binary_into(&elf, (void *)barebox_base);
++	if (ret) {
++		pr_err("Failed to open ELF binary: %d\n", ret);
++		hang();
++	}
 +
-+	elf->hdr_buf = buf;
-+	ret = elf_check_image(elf, buf);
-+	if (ret)
-+		return ret;
++	ret = elf_load_inplace(&elf);
++	if (ret) {
++		pr_err("Failed to relocate ELF: %d\n", ret);
++		hang();
++	}
 +
-+	elf->entry = elf_hdr_e_entry(elf, elf->hdr_buf);
++	pr_debug("ELF entry point: 0x%llx\n", elf.entry);
+ 
+ 	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
+-		barebox = (void *)(barebox_base + 1);
++		barebox = (void *)(unsigned long)(elf.entry | 1);
+ 	else
+-		barebox = (void *)barebox_base;
++		barebox = (void *)(unsigned long)elf.entry;
 +
-+	return 0;
-+}
++	handoff_data_move(handoff_data);
 +
- struct elf_image *elf_open_binary(void *buf)
- {
- 	int ret;
-@@ -327,17 +344,12 @@ struct elf_image *elf_open_binary(void *buf)
- 	if (!elf)
- 		return ERR_PTR(-ENOMEM);
++	sync_caches_for_execution();
  
--	elf_init_struct(elf);
--
--	elf->hdr_buf = buf;
--	ret = elf_check_image(elf, buf);
-+	ret = elf_open_binary_into(elf, buf);
- 	if (ret) {
- 		free(elf);
--		return ERR_PTR(-EINVAL);
-+		return ERR_PTR(ret);
- 	}
+-	pr_debug("jumping to uncompressed image at 0x%p\n", barebox);
++	pr_debug("jumping to ELF entry point at 0x%p\n", barebox);
  
--	elf->entry = elf_hdr_e_entry(elf, elf->hdr_buf);
--
- 	return elf;
- }
- 
-diff --git a/include/elf.h b/include/elf.h
-index 5b1d75c14ce198292b052159de310ac14c3bd2d9..ea2c399cca7f70a2c8c6d239be1fa0ff0519a683 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -410,6 +410,7 @@ static inline size_t elf_get_mem_size(struct elf_image *elf)
- 	return elf->high_addr - elf->low_addr;
- }
- 
-+int elf_open_binary_into(struct elf_image *elf, void *buf);
- struct elf_image *elf_open_binary(void *buf);
- struct elf_image *elf_open(const char *filename);
- void elf_close(struct elf_image *elf);
+ 	if (IS_ENABLED(CONFIG_CPU_V7) && boot_cpu_mode() == HYP_MODE)
+ 		armv7_switch_to_hyp();
 
 -- 
 2.47.3
