@@ -1,61 +1,65 @@
-Delivery-date: Mon, 05 Jan 2026 18:12:14 +0100
+Delivery-date: Mon, 05 Jan 2026 20:15:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vco7q-001b0c-2w
+	id 1vcq2e-001csp-1C
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 18:12:14 +0100
+	Mon, 05 Jan 2026 20:15:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vco7q-0002Za-C2
-	for lore@pengutronix.de; Mon, 05 Jan 2026 18:12:14 +0100
+	id 1vcq2d-0006B9-FQ
+	for lore@pengutronix.de; Mon, 05 Jan 2026 20:15:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nutb5m9Aql5pwNaBePbyrvFQmJEe1iKPc9k6tXjG+JU=; b=R8Zs0kQKNLiaYydwo6BHSj9HOa
-	Wf/+ZHeoqErGsHqaf2lQKiC+od8uaJeGxCy2fWcj4b1utZpj9+2RCP1yJfOaiXlm9BDpmlnD6j5fD
-	Kj4mqGVzboihGcRcHZuCmtLaLCz9vryWh4LslC8cwfF92Q6ucEGvKevr6D2ytQmQE2tHGxAa5JOEi
-	iJrMeBZIMpalbB6IvDvmxQEtzVRU/VDzpZGs1AeYoMHdB5fhrmtrIPGWAgczgPHEwYNdhd+bViW7Y
-	IZwKg3A+mu0VexpArjeIq9x/LcYPalh0v694G0KQvEFF9nqWOS04nuO0fTQI+ZAwdR0VBKvYdCo5M
-	8z1dfZFQ==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=4yT/dnl0c4kmu7UudKElzZMpPVr1yYaeU3FWIABptFo=; b=0W92idg/f8tlIkIRJy4XnQ0dI9
+	w77wIKcy12ovne3CmqV/YTRGnldeKmo5sOEsG3ifhlKLdCxxamoeKh7USmM/KOxM3Krg8ielmPWxo
+	QDmaFWTY7KLEZeGH6q51gPMxxKGTcSMXz8En/k94Ll2Tgnqa3RlSK+GeEV5OiXLPcAiQwaxlXkSGH
+	/obCvhJY8eHG+zG7HoMQUOgUvbCwprGpUQFVShBbBmASn4lJqDdCDqnBYS1eC4xblD/1in2jaGD3O
+	0Au40Q8v06Souo6kPVCqZ7c63crQ3LJTRxYwTmxkLlPp0hK25NJyBV1KHIl6f91aE6mt4gKDxWk9H
+	HedQY59g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vco7N-0000000Bn71-0ghx;
-	Mon, 05 Jan 2026 17:11:45 +0000
+	id 1vcq1w-0000000BxW4-2Bpj;
+	Mon, 05 Jan 2026 19:14:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vco7I-0000000Bn6L-486q
+	id 1vcq1t-0000000BxTx-1FMG
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 17:11:42 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Mon, 05 Jan 2026 19:14:14 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vco7F-0002Ou-Ur; Mon, 05 Jan 2026 18:11:38 +0100
-Message-ID: <1ecc98f5-566e-42d5-9f35-eb2be350ece7@pengutronix.de>
-Date: Mon, 5 Jan 2026 18:11:37 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>,
- "Claude Sonnet 4.5" <noreply@anthropic.com>
-References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
- <20260105-pbl-load-elf-v1-8-e97853f98232@pengutronix.de>
- <b86f471c-0813-49d8-a46b-6df823cd6d67@pengutronix.de>
- <aVvcFFLvuiXzR9lc@pengutronix.de>
-Content-Language: en-US
+	id 1vcq1r-0005tB-DM; Mon, 05 Jan 2026 20:14:11 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vcq1r-009E5g-0j;
+	Mon, 05 Jan 2026 20:14:11 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vcq1r-00000002a4z-3Pp7;
+	Mon, 05 Jan 2026 20:14:11 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <aVvcFFLvuiXzR9lc@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  5 Jan 2026 20:12:51 +0100
+Message-ID: <20260105191410.615318-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_091141_032069_E00B45E2 
-X-CRM114-Status: GOOD (  15.24  )
+X-CRM114-CacheID: sfid-20260105_111413_374290_7ED2BD71 
+X-CRM114-Status: GOOD (  11.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,60 +81,44 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 08/19] Makefile: add barebox.elf build target
+Subject: [PATCH 0/5] usb: dwc3: add fsl,ls1028a-dwc3 glue driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Linux seems to move towards not having glue device tree nodes separate
+from the DWC3 nodes. Import the Linux generic driver for use with
+Layerscape and other platforms that may be migrated in future.
 
-On 1/5/26 16:43, Sascha Hauer wrote:
-> On Mon, Jan 05, 2026 at 01:22:40PM +0100, Ahmad Fatoum wrote:
->>>  .SECONDEXPANSION:
->>>  $(symlink-y): $$(or $$(SYMLINK_DEP_$$(@F)),$$(SYMLINK_TARGET_$$(@F))) FORCE
->>> @@ -1091,6 +1094,17 @@ barebox.fit: images/barebox-$(CONFIG_ARCH_LINUX_NAME).fit
->>>  barebox.srec: barebox
->>>  	$(OBJCOPY) -O srec $< $@
->>>  
->>> +OBJCOPYFLAGS_barebox.elf = --strip-debug --strip-unneeded \
->>
->> --strip-section-headers goes the farthest I think.
-> 
-> The objcopy from the toolchain I used (binutils-2.40) doesn't support
-> this option. A newer one I just upgraded to indeed does.
+This meant for next and applies on top of the temporary workaround in
+master at
+https://lore.barebox.org/barebox/20260105151921.224540-1-a.fatoum@pengutronix.de/T/#u
 
-Interesting, --strip-all is the next best thing then, I think, so I'd suggest:
+Ahmad Fatoum (5):
+  usb: dwc3: export dwc3_core_probe/dwc3_core_remove like Linux
+  usb: dwc3: add support for Global SoC Bus Configuration Register
+  clk: implement and use clk_bulk_get_all_enabled helper
+  usb: dwc3: add DesignWare USB3 generic platform driver
+  Revert "ARM64: dts: Layerscape: workaround v6.19-rc1 DT sync DWC3
+    breakage"
 
-$(objcopy-option, --strip-section-headers, --strip-all)
-
-With (untested):
-
-# objcopy-option
-# Usage: KBUILD_LDFLAGS += $(call objcopy-option, --strip-section-headers)
-objcopy-option = $(call try-run,\
-        $(CC) -x c /dev/null -c -o "$$TMPO"; $(OBJCOPY) $(1) "$$TMPO" "$$TMP",$(1),$(2))
-
->> OBJCOPYFLAGS_$@ = $your_options.
->>
->>
->> Sidenote: We should add --error-rwx-segments depending on
->> CONFIG_PBL_IMAGE_ELF.
-> 
-> Is this a objcopy option? My objcopy doesn't seem to support this.
-
-See LDFLAGS_common += $(call ld-option,--no-warn-rwx-segments).
-
-Cheers,
-Ahmad
-
-> 
-> Sascha
-> 
-
+ arch/arm/dts/fsl-ls1028a.dtsi        |   9 --
+ arch/arm/dts/fsl-ls1046a.dtsi        |  13 ---
+ drivers/bus/simple-pm-bus.c          |   6 +-
+ drivers/clk/clk-bulk.c               |  19 ++++
+ drivers/usb/dwc3/Kconfig             |  11 +++
+ drivers/usb/dwc3/Makefile            |   1 +
+ drivers/usb/dwc3/core.c              | 113 ++++++++++++++++++------
+ drivers/usb/dwc3/core.h              |   8 ++
+ drivers/usb/dwc3/dwc3-generic-plat.c | 125 +++++++++++++++++++++++++++
+ drivers/usb/dwc3/glue.h              |  63 ++++++++++++++
+ drivers/usb/host/ehci-hcd.c          |   5 +-
+ include/linux/clk.h                  |  16 ++++
+ 12 files changed, 332 insertions(+), 57 deletions(-)
+ create mode 100644 drivers/usb/dwc3/dwc3-generic-plat.c
+ create mode 100644 drivers/usb/dwc3/glue.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.3
+
 
 
