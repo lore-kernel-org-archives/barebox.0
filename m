@@ -1,59 +1,56 @@
-Delivery-date: Mon, 05 Jan 2026 14:13:08 +0100
+Delivery-date: Mon, 05 Jan 2026 14:16:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vckOS-001X2J-08
+	id 1vckRt-001X51-1p
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 14:13:08 +0100
+	Mon, 05 Jan 2026 14:16:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vckOR-00039I-Di
-	for lore@pengutronix.de; Mon, 05 Jan 2026 14:13:07 +0100
+	id 1vckRs-0003Ra-Tj
+	for lore@pengutronix.de; Mon, 05 Jan 2026 14:16:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MzKb+DvjKLr3mlRx+mKq7Jsax+U4VOc5QxPvUraFLeU=; b=T08W0I77kzb/hzkmpE2M26HBiH
-	sIQEpaTUsVbTCM8c41P6OdXC5bz4WOcwg5Wsi6s71xGbGXQJRi//cGa80rnxkw4yhfzmz6pTou7iJ
-	2mW0/m8+6ES5paVJGYzuro+RZukvrTqWyIH5uhoqWgLMR5EOYSp+LY4LmLlCok+rGhoms36qDwV2w
-	oPr2aao27xEfdI8fDfK2D6vuVIXHqR4k04SWoLvtD7HPh14N1FPMPvVEoC5HCGJjvrrVn1BFktNMw
-	Hi0Miw4/GIcYwfiGNJxvybwBBnghuExWQr2JzpeW/qxId7VpQwHO4Pk/jYXPAQPzY+sELimbgMa/m
-	9x2C0imA==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2atX2Wkb32OESWgJKn90yTUeJx4jkKhPbK2nblQm1WI=; b=ojk9UBF9AXy1yw3YbQbTynC8fq
+	mghA2Xnp1WWx0Qar75Mods1GMrSB8tGFN+g3qNgQ50q7BGSN3CbUtJ4TPamd1OGqtuTp9+ZpJbpUg
+	TuYPaLXJ+kbCSu3Eo+O+EFeKeb5Vvtxr5Hx+kJ3BDPVUSEpqHLNzdsDvVTSgk48eAEtacal+4CbXx
+	OU4LHzN1fkl7CgafTswRp4r0SuELXo6DK2r8pCtm+KqUq6GUQxuJsg9kk3oVfFqoChCbVf+/OSgZk
+	f/KlIJdaR+kAc51I6zhRConUPI0LmJclsai6o8SjiCjCsexM4Cp6pJ0wz26jR0p4beWG9VPnfK25R
+	+UmbpxkQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vckO4-0000000BPQQ-1RGy;
-	Mon, 05 Jan 2026 13:12:44 +0000
+	id 1vckRS-0000000BPwd-22yW;
+	Mon, 05 Jan 2026 13:16:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vckO2-0000000BPPt-1oZw
+	id 1vckRQ-0000000BPvp-0iyt
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 13:12:43 +0000
+	Mon, 05 Jan 2026 13:16:13 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vckO0-00034G-Un; Mon, 05 Jan 2026 14:12:41 +0100
-Message-ID: <a54f9e18-4548-4fa1-8426-1c1860b7146e@pengutronix.de>
-Date: Mon, 5 Jan 2026 14:12:40 +0100
+	id 1vckRO-0003NG-Fn; Mon, 05 Jan 2026 14:16:10 +0100
+Message-ID: <5f54eb25-b3d2-4c9b-b80f-c6131e20bc76@pengutronix.de>
+Date: Mon, 5 Jan 2026 14:16:10 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
-References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
- <20260105-pbl-load-elf-v1-17-e97853f98232@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+To: Ahmad Fatoum <a.fatoum@barebox.org>, barebox@lists.infradead.org
+References: <20260105083640.3257482-1-a.fatoum@barebox.org>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260105-pbl-load-elf-v1-17-e97853f98232@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260105083640.3257482-1-a.fatoum@barebox.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_051242_480344_38B98C71 
-X-CRM114-Status: GOOD (  19.70  )
+X-CRM114-CacheID: sfid-20260105_051612_237181_7415FB43 
+X-CRM114-Status: GOOD (  19.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,104 +72,102 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 17/19] riscv: link ELF image into PBL
+Subject: Re: [PATCH] pbl: export pbl_verify_piggy function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hi,
 
-On 1/5/26 12:26 PM, Sascha Hauer wrote:
-> Instead of linking the raw binary barebox proper image into the PBL link
-> the ELF image into the PBL. With this barebox proper starts with a properly
-> linked and fully initialized C environment, so the calls to
-> relocate_to_adr() and setup_c() can be removed from barebox proper.
+On 1/5/26 9:36 AM, Ahmad Fatoum wrote:
+> To support barebox proper being an ELF binary, we will want to verify it
+> all at once and then decompress the segments one by one.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/riscv/Kconfig           |  2 ++
->  arch/riscv/boot/start.c      |  4 ----
->  arch/riscv/boot/uncompress.c | 16 +++++++++++++++-
->  3 files changed, 17 insertions(+), 5 deletions(-)
+> Export the necessary API to prepare for this.
 > 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 96d013d8514ac12de5c34a426262d85f8cf021b9..f8c8b38ed6d7fdae48669e6d7b737f695f1c4cc9 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -17,6 +17,8 @@ config RISCV
->  	select HAS_KALLSYMS
->  	select RISCV_TIMER if RISCV_SBI
->  	select HW_HAS_PCI
-> +	select ELF
+> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 
-IMO should be selected by PBL_IMAGE_ELF instead.
-
-> +	select PBL_IMAGE_ELF
->  	select HAVE_ARCH_BOARD_GENERIC_DT
->  	select HAVE_ARCH_BOOTM_OFTREE
->  
-> diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
-> index 5091340c8a374fc360ab732ba01ec8516e82a83d..874f4e72ae46fe7435c9defedceaf5b4e9662b55 100644
-> --- a/arch/riscv/boot/start.c
-> +++ b/arch/riscv/boot/start.c
-> @@ -123,10 +123,6 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
->  	unsigned long barebox_size = barebox_image_size + MAX_BSS_SIZE;
->  	unsigned long barebox_base = riscv_mem_barebox_image(membase, endmem, barebox_size);
->  
-> -	relocate_to_current_adr();
-> -
-> -	setup_c();
-> -
->  	barrier();
-
-barrier() can go away as well.
-
->  
->  	irq_init_vector(riscv_mode());
-> diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
-> index 84142acf9c66fe1fcceb6ae63d15ac078ccddee7..dc0d1fd5d41a88acea8717a7f5fcdb8da3298663 100644
-> --- a/arch/riscv/boot/uncompress.c
-> +++ b/arch/riscv/boot/uncompress.c
-> @@ -32,6 +32,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
->  	unsigned long barebox_base;
->  	void *pg_start, *pg_end;
->  	unsigned long pc = get_pc();
-> +	struct elf_image elf;
-> +	int ret;
->  
->  	irq_init_vector(riscv_mode());
->  
-> @@ -68,7 +70,19 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
->  
->  	sync_caches_for_execution();
->  
-> -	barebox = (void *)barebox_base;
-> +	ret = elf_open_binary_into(&elf, (void *)barebox_base);
-> +	if (ret) {
-> +		pr_err("Failed to open ELF binary: %d\n", ret);
-> +		hang();
-
-panic()
-
-> +	}
-> +
-> +	ret = elf_load_inplace(&elf);
-> +	if (ret) {
-> +		pr_err("Failed to relocate ELF: %d\n", ret);
-> +		hang();
-> +	}
-
-panic()
+Please dismiss. I like the way of decompressing and fixing up in place more.
 
 Cheers,
 Ahmad
 
-> +
-> +	barebox = (void *)elf.entry;
->  
->  	pr_debug("jumping to uncompressed image at 0x%p. dtb=0x%p\n", barebox, fdt);
->  
+> ---
+>  include/pbl.h |  3 +++
+>  pbl/decomp.c  | 42 ++++++++++++++++++++++++++++--------------
+>  2 files changed, 31 insertions(+), 14 deletions(-)
 > 
-
+> diff --git a/include/pbl.h b/include/pbl.h
+> index b330010562c4..6fe868e14abc 100644
+> --- a/include/pbl.h
+> +++ b/include/pbl.h
+> @@ -14,7 +14,10 @@
+>  extern unsigned long free_mem_ptr;
+>  extern unsigned long free_mem_end_ptr;
+>  
+> +void pbl_verify_piggy(void *compressed_start, unsigned int len);
+>  void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len);
+> +long pbl_barebox_uncompress_noverify(void *dest, void *compressed_start,
+> +				     unsigned int len);
+>  
+>  void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsize);
+>  int fdt_fixup_mem(void *fdt, unsigned long membase[], unsigned long memsize[], size_t num);
+> diff --git a/pbl/decomp.c b/pbl/decomp.c
+> index ebdf81ddfbe5..ba722acdd174 100644
+> --- a/pbl/decomp.c
+> +++ b/pbl/decomp.c
+> @@ -89,24 +89,38 @@ int pbl_barebox_verify(const void *compressed_start, unsigned int len,
+>  	return memcmp(hash, computed_hash, SHA256_DIGEST_SIZE);
+>  }
+>  
+> -void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len)
+> +void pbl_verify_piggy(void *compressed_start, unsigned int len)
+>  {
+>  	uint32_t pbl_hash_len;
+>  	void *pbl_hash_start, *pbl_hash_end;
+>  
+> -	if (IS_ENABLED(CONFIG_PBL_VERIFY_PIGGY)) {
+> -		pbl_hash_start = sha_sum;
+> -		pbl_hash_end = sha_sum_end;
+> -		pbl_hash_len = pbl_hash_end - pbl_hash_start;
+> -		if (pbl_barebox_verify(compressed_start, len, pbl_hash_start,
+> -				       pbl_hash_len) != 0) {
+> -			putc_ll('!');
+> -			panic("hash mismatch, refusing to decompress");
+> -		}
+> +	if (!IS_ENABLED(CONFIG_PBL_VERIFY_PIGGY)) {
+> +		pr_debug("Verifying piggybacked barebox proper disabled\n");
+> +		return;
+>  	}
+>  
+> -	decompress((void *)compressed_start,
+> -			len,
+> -			NULL, NULL,
+> -			dest, NULL, errorfn);
+> +	pbl_hash_start = sha_sum;
+> +	pbl_hash_end = sha_sum_end;
+> +	pbl_hash_len = pbl_hash_end - pbl_hash_start;
+> +	if (pbl_barebox_verify(compressed_start, len, pbl_hash_start,
+> +			       pbl_hash_len) != 0) {
+> +		putc_ll('!');
+> +		panic("hash mismatch, refusing to decompress");
+> +	}
+> +}
+> +
+> +
+> +long pbl_barebox_uncompress_noverify(void *dest, void *compressed_start,
+> +				     unsigned int len)
+> +{
+> +	long pos;
+> +	return decompress((void *)compressed_start,
+> +			  len, NULL, NULL,
+> +			  dest, &pos, errorfn) ?: pos;
+> +}
+> +
+> +void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len)
+> +{
+> +	pbl_verify_piggy(compressed_start, len);
+> +	pbl_barebox_uncompress_noverify(dest, compressed_start, len);
+>  }
 
 -- 
 Pengutronix e.K.                  |                             |
