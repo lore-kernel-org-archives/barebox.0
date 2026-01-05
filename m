@@ -1,74 +1,76 @@
-Delivery-date: Mon, 05 Jan 2026 12:27:34 +0100
+Delivery-date: Mon, 05 Jan 2026 12:27:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcikI-001VBF-1k
+	id 1vcikJ-001VBl-0J
 	for lore@lore.pengutronix.de;
-	Mon, 05 Jan 2026 12:27:34 +0100
+	Mon, 05 Jan 2026 12:27:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vcikH-0005z7-6Y
+	id 1vcikH-0005zs-SA
 	for lore@pengutronix.de; Mon, 05 Jan 2026 12:27:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
-	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+TY0nAnti3o/uQGZtPD3IAzo/NozldDj4SXAAr2N2NI=; b=d9qOf3l6A4w16RMd4/b+gWcom5
-	qg6y59FAdC8EB4CZ6qiSjOQyFBqmhqbhbH3wHznWiq7uveFlWoo7XUz/2pZ/DKair4NbIYbsem2vy
-	VKvIraBdnuJs0NL64qs+YAxkjvwMh4YVqz68KqkQb2sg7VZvKPU79DHxUq5vevDKFj1E7Eh6IU1BQ
-	5Z9TGG5TctMulpogUzJnLQL3Zmrd9nOl7hZJqzxzCxxvQPZ+hfBvvmYhqShEt79imAhK3Hh1Hre1k
-	i9Sbsi5CxmEwk/jmKVfsUPhO2KdECzwRs5W1YXnyo4sH4z0A9JLBQTJvDJ7Aph9ASMrEIApYKSsRy
-	N/zr3Dlg==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=U7Q88ADDfqyg0zUTN1sNo/niKKGAWWE0VBSjx0Q0W0M=; b=idICLt/YwRnQhH
+	YBHvQu75azJYniDnN82xu2my0NctBuwPba3siYnyK6o3nSYRN0AHListYRpPN2Nu7X6Itb+IgWT+o
+	tCC0FYdiEHQMmkJipJQ/2JnMCa0SMDAasaWAZSwinwfLdo8pncQkgBqOoNz1H8GAkNa6Ail/Csbnh
+	BgRvRYnSEGMm3Th24pWJSF7xNv4maYHVxL90/AA36rzcFeuUYCNQ6tw6kENvgwhikRuNOWRZ95fzb
+	svnG5vOEolYT7MWaz6spVu/PfR0U/d3L6eIl//KvCV+0+nDKRh0tc3h4wwrj6fOdgTgzKQip/W+lY
+	8MZILT2zloK8lIWHWTqA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcijm-0000000BBHz-0CDE;
-	Mon, 05 Jan 2026 11:27:02 +0000
+	id 1vcijj-0000000BBGR-40yV;
+	Mon, 05 Jan 2026 11:26:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcijg-0000000BBDx-1YfX
+	id 1vcijg-0000000BBDw-1YqV
 	for barebox@lists.infradead.org;
-	Mon, 05 Jan 2026 11:26:59 +0000
+	Mon, 05 Jan 2026 11:26:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcije-0005Yl-M9; Mon, 05 Jan 2026 12:26:54 +0100
+	id 1vcije-0005Yk-M8; Mon, 05 Jan 2026 12:26:54 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcije-0099xe-11;
+	id 1vcije-0099xY-0v;
 	Mon, 05 Jan 2026 12:26:54 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vcije-00000007KWP-0woX;
+	id 1vcije-00000007KWP-0qIP;
 	Mon, 05 Jan 2026 12:26:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 05 Jan 2026 12:26:47 +0100
+Date: Mon, 05 Jan 2026 12:26:41 +0100
+Message-Id: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-pbl-load-elf-v1-6-e97853f98232@pengutronix.de>
-References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
-In-Reply-To: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPGfW2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDIyNz3YKkHN2c/MQU3dScNN3kJJPkJIPk1CTzFAsloJaCotS0zAqwcdG
+ xtbUAPHqAZV4AAAA=
+X-Change-ID: 20251227-pbl-load-elf-cb4cb0ceb7d8
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767612414; l=6807;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767612413; l=4861;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Wl3Uta8xb2OG2qwnK2Xl7/ibnldMT+ryc4ql9Mfptfk=;
- b=IX7Uz5InJ4IesaMvJCekFs+6v1Cj1to4sxzNqWd4WtJ8M5j8ALUyYpYmwBs8dcieX4iAQDV7f
- /sSA+KvumuZDx1On2lamjrOYhWhaEi3h170psnpJkq/euEbHnrUFt/P
+ bh=y0WjXVia50s+3gkmhydRr3JLHUmx/cMjS/Vn5ZIr5TE=;
+ b=DMRa/RQwjHYcU3vZOdM76J20VHDNAlXZhK1UUt/lm6u0sDQR4wyoEXYlkulP2/QFJuoW8ZQad
+ 99DjeaeK+lhDfwtsqacu7huMN1s+SnPkibgK+jC0nAtJDvFfhpvK4mh
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_032656_566686_E3487FE9 
-X-CRM114-Status: GOOD (  22.35  )
+X-CRM114-CacheID: sfid-20260105_032656_410303_4F780F11 
+X-CRM114-Status: GOOD (  14.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,214 +93,112 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 06/19] elf: implement elf_load_inplace()
+Subject: [PATCH 00/19] PBL: Add PBL ELF loading support with dynamic
+ relocations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Implement elf_load_inplace() to apply dynamic relocations to an ELF binary
-that is already loaded in memory. Unlike elf_load(), this function does not
-allocate memory or copy segments - it only modifies the existing image in
-place.
+Until now we linked the raw barebox proper binary into the PBL which
+comes with a number of disadvantages. We rely on self-modifying code
+to in barebox proper (relocate_to_current_adr()) and have no initialized
+bss segment (setup_c()). Also we can only mark the .text and .rodata as
+readonly during runtime of barebox proper.
 
-This is useful for self-relocating loaders or when the ELF has been loaded
-by external means (e.g., firmware or another bootloader).
+This series overcomes this by linking a ELF image into the PBL. This
+image is properly layed out, linked and initialized in the PBL. With
+this barebox proper has a proper C environment and text/rodata
+protection from the start.
 
-For ET_DYN (position-independent) binaries, the relocation offset is
-calculated relative to the first executable PT_LOAD segment (.text section),
-taking into account the difference between the segment's virtual address
-and its file offset.
+As a bonus this series also adds initial MMU support for RISCV, also
+based on loading the ELF image and configuring the MMU from the PBL.
 
-The entry point is also adjusted to point to the relocated image.
+This series also marks my start into AI assisted programming as you can
+see in the Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+and 🤖 Generated with [Claude Code](https://claude.com/claude-code)
+tags. Without it I wouldn't have started this series during my xmas
+break, but with it it was actually quite fun to do; it felt like having
+a programming team which I just had to delegate new tasks to while
+having fun with my family myself ;)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/elf.c  | 152 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/elf.h |   8 ++++
- 2 files changed, 160 insertions(+)
+Sascha Hauer (19):
+      elf: Use memcmp to make suitable for PBL
+      elf: build for PBL as well
+      elf: add dynamic relocation support
+      ARM: implement elf_apply_relocations() for ELF relocation support
+      riscv: implement elf_apply_relocations() for ELF relocation support
+      elf: implement elf_load_inplace()
+      elf: create elf_open_binary_into()
+      Makefile: add barebox.elf build target
+      PBL: allow to link ELF image into PBL
+      mmu: add MAP_CACHED_RO mapping type
+      mmu: introduce pbl_remap_range()
+      ARM: use relative jumps in exception table
+      ARM: exceptions: make in-binary exception table const
+      ARM: linker script: create separate PT_LOAD segments for text, rodata, and data
+      ARM: link ELF image into PBL
+      ARM: PBL: setup MMU with proper permissions from ELF segments
+      riscv: link ELF image into PBL
+      riscv: linker script: create separate PT_LOAD segments for text, rodata, and data
+      riscv: add ELF segment-based memory protection with MMU
 
-diff --git a/common/elf.c b/common/elf.c
-index fc2949c285ebb0c0740c68c551926da8d0bb8637..565b283b694773727ef77917cfd8c1d4ee83a8d1 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -531,3 +531,155 @@ void elf_close(struct elf_image *elf)
- 
- 	free(elf);
- }
-+
-+static void *elf_find_dynamic_inplace(struct elf_image *elf)
-+{
-+	void *buf = elf->hdr_buf;
-+	void *phdr = buf + elf_hdr_e_phoff(elf, buf);
-+	int i;
-+
-+	for (i = 0; i < elf_hdr_e_phnum(elf, buf); i++) {
-+		if (elf_phdr_p_type(elf, phdr) == PT_DYNAMIC) {
-+			u64 offset = elf_phdr_p_offset(elf, phdr);
-+			/* For in-place binary, PT_DYNAMIC is at hdr_buf + offset */
-+			return elf->hdr_buf + offset;
-+		}
-+		phdr += elf_size_of_phdr(elf);
-+	}
-+
-+	return NULL;  /* No PT_DYNAMIC segment */
-+}
-+
-+/**
-+ * elf_load_inplace() - Apply dynamic relocations to an ELF binary in place
-+ * @elf: ELF image previously opened with elf_open_binary()
-+ *
-+ * This function applies dynamic relocations to an ELF binary that is already
-+ * loaded at its target address in memory. Unlike elf_load(), this does not
-+ * allocate memory or copy segments - it only modifies the existing image.
-+ *
-+ * This is useful for self-relocating loaders or when the ELF has been loaded
-+ * by external means (e.g., loaded by firmware or another bootloader).
-+ *
-+ * The ELF image must have been previously opened with elf_open_binary().
-+ *
-+ * For ET_DYN (position-independent) binaries, the relocation offset is
-+ * calculated relative to the first executable PT_LOAD segment (.text section).
-+ *
-+ * For ET_EXEC binaries, no relocation is applied as they are expected to
-+ * be at their link-time addresses.
-+ *
-+ * Returns: 0 on success, negative error code on failure
-+ */
-+int elf_load_inplace(struct elf_image *elf)
-+{
-+	void *dyn_seg;
-+	void *buf, *phdr;
-+	void *elf_buf;
-+	int i, ret;
-+
-+	buf = elf->hdr_buf;
-+	elf_buf = elf->hdr_buf;
-+
-+	/*
-+	 * First pass: Clear BSS segments (p_memsz > p_filesz).
-+	 * This must be done before relocations as uninitialized data
-+	 * must be zeroed per C standard.
-+	 */
-+	phdr = buf + elf_hdr_e_phoff(elf, buf);
-+	for (i = 0; i < elf_hdr_e_phnum(elf, buf); i++) {
-+		if (elf_phdr_p_type(elf, phdr) == PT_LOAD) {
-+			u64 p_offset = elf_phdr_p_offset(elf, phdr);
-+			u64 p_filesz = elf_phdr_p_filesz(elf, phdr);
-+			u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
-+
-+			/* Clear BSS (uninitialized data) */
-+			if (p_filesz < p_memsz) {
-+				void *bss_start = elf_buf + p_offset + p_filesz;
-+				size_t bss_size = p_memsz - p_filesz;
-+				memset(bss_start, 0x00, bss_size);
-+			}
-+		}
-+		phdr += elf_size_of_phdr(elf);
-+	}
-+
-+	/*
-+	 * Calculate relocation offset for the in-place binary.
-+	 * For ET_DYN, we need to find the first executable PT_LOAD segment
-+	 * (.text section) and use it as the relocation base.
-+	 */
-+	if (elf->type == ET_DYN) {
-+		u64 text_vaddr = 0;
-+		u64 text_offset = 0;
-+		bool found_text = false;
-+
-+		/* Find first executable PT_LOAD segment (.text) */
-+		phdr = buf + elf_hdr_e_phoff(elf, buf);
-+		for (i = 0; i < elf_hdr_e_phnum(elf, buf); i++) {
-+			if (elf_phdr_p_type(elf, phdr) == PT_LOAD) {
-+				u32 flags = elf_phdr_p_flags(elf, phdr);
-+				/* Check if segment is executable (PF_X = 0x1) */
-+				if (flags & PF_X) {
-+					text_vaddr = elf_phdr_p_vaddr(elf, phdr);
-+					text_offset = elf_phdr_p_offset(elf, phdr);
-+					found_text = true;
-+					break;
-+				}
-+			}
-+			phdr += elf_size_of_phdr(elf);
-+		}
-+
-+		if (!found_text) {
-+			pr_err("No executable PT_LOAD segment found\n");
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		/*
-+		 * Calculate relocation offset relative to .text section:
-+		 * - .text is at file offset text_offset, so in memory at: elf_buf + text_offset
-+		 * - .text has virtual address text_vaddr
-+		 * - reloc_offset = (actual .text address) - (virtual .text address)
-+		 */
-+		elf->reloc_offset = ((unsigned long)elf_buf + text_offset) - text_vaddr;
-+
-+		pr_debug("In-place ELF relocation: text_vaddr=0x%llx, text_offset=0x%llx, "
-+			 "load_addr=%p, offset=0x%08lx\n",
-+			 text_vaddr, text_offset, elf_buf, elf->reloc_offset);
-+
-+		/* Adjust entry point to point to relocated image */
-+		elf->entry += elf->reloc_offset;
-+	} else {
-+		/*
-+		 * ET_EXEC binaries are at their link-time addresses,
-+		 * no relocation needed
-+		 */
-+		elf->reloc_offset = 0;
-+	}
-+
-+	/* Find PT_DYNAMIC segment */
-+	dyn_seg = elf_find_dynamic_inplace(elf);
-+	if (!dyn_seg) {
-+		/*
-+		 * No PT_DYNAMIC segment found.
-+		 * This is fine for statically-linked binaries or
-+		 * binaries without relocations.
-+		 */
-+		pr_debug("No PT_DYNAMIC segment found\n");
-+		ret = 0;
-+		goto out;
-+	}
-+
-+	/* Apply architecture-specific relocations */
-+	ret = elf_apply_relocations(elf, dyn_seg);
-+	if (ret) {
-+		pr_err("In-place relocation failed: %d\n", ret);
-+		goto out;
-+	}
-+
-+	pr_debug("In-place ELF relocation completed successfully\n");
-+	return 0;
-+
-+out:
-+	return ret;
-+}
-diff --git a/include/elf.h b/include/elf.h
-index 4b19c917639d0d655d9f7530f0311afa599f1a98..5b1d75c14ce198292b052159de310ac14c3bd2d9 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -422,6 +422,14 @@ int elf_load(struct elf_image *elf);
-  */
- void elf_set_load_address(struct elf_image *elf, void *addr);
- 
-+/*
-+ * Apply dynamic relocations to an ELF binary already loaded in memory.
-+ * This modifies the ELF image in place without allocating new memory.
-+ * Useful for self-relocating loaders or externally loaded binaries.
-+ * The elf parameter must have been previously opened with elf_open_binary().
-+ */
-+int elf_load_inplace(struct elf_image *elf);
-+
- /*
-  * Architecture-specific relocation handler.
-  * Returns 0 on success, -ENOSYS if architecture doesn't support relocations,
+ Makefile                           |  16 +-
+ arch/arm/Kconfig                   |   2 +
+ arch/arm/cpu/exceptions_32.S       |  54 +++---
+ arch/arm/cpu/interrupts_32.c       |  41 +++-
+ arch/arm/cpu/mmu-common.c          |  66 +------
+ arch/arm/cpu/mmu-common.h          |   3 +-
+ arch/arm/cpu/mmu_32.c              |  19 +-
+ arch/arm/cpu/mmu_64.c              |  10 +-
+ arch/arm/cpu/no-mmu.c              |  11 +-
+ arch/arm/cpu/start.c               |   4 -
+ arch/arm/cpu/uncompress.c          |  46 ++++-
+ arch/arm/include/asm/barebox-arm.h |   4 +-
+ arch/arm/include/asm/barebox.lds.h |  14 +-
+ arch/arm/include/asm/elf.h         |  11 ++
+ arch/arm/include/asm/sections.h    |   1 +
+ arch/arm/lib/pbl.lds.S             |   8 +-
+ arch/arm/lib32/Makefile            |   1 +
+ arch/arm/lib32/barebox.lds.S       |  39 ++--
+ arch/arm/lib32/elf_reloc.c         | 105 ++++++++++
+ arch/arm/lib64/Makefile            |   1 +
+ arch/arm/lib64/barebox.lds.S       |  31 ++-
+ arch/arm/lib64/elf_reloc.c         | 105 ++++++++++
+ arch/riscv/Kconfig                 |  18 ++
+ arch/riscv/Kconfig.socs            |   1 -
+ arch/riscv/boot/start.c            |   4 -
+ arch/riscv/boot/uncompress.c       |  41 +++-
+ arch/riscv/cpu/Makefile            |   1 +
+ arch/riscv/cpu/mmu.c               | 386 +++++++++++++++++++++++++++++++++++++
+ arch/riscv/cpu/mmu.h               | 144 ++++++++++++++
+ arch/riscv/include/asm/asm.h       |   3 +-
+ arch/riscv/include/asm/mmu.h       |  44 +++++
+ arch/riscv/lib/Makefile            |   1 +
+ arch/riscv/lib/barebox.lds.S       |  38 ++--
+ arch/riscv/lib/elf_reloc.c         | 212 ++++++++++++++++++++
+ common/Makefile                    |   2 +-
+ common/elf.c                       | 367 +++++++++++++++++++++++++++++++++--
+ images/Makefile                    |  18 +-
+ images/piggy.S                     |   4 +
+ include/elf.h                      |  62 ++++++
+ include/mmu.h                      |  12 +-
+ include/pbl/mmu.h                  |  29 +++
+ lib/Makefile                       |   1 +
+ lib/elf_reloc.c                    |  15 ++
+ pbl/Kconfig                        |   8 +
+ pbl/Makefile                       |   1 +
+ pbl/mmu.c                          | 111 +++++++++++
+ scripts/prelink-riscv.inc          |   9 +-
+ 47 files changed, 1922 insertions(+), 202 deletions(-)
+---
+base-commit: e2d7e032281158b54541392b4d8108de204137a1
+change-id: 20251227-pbl-load-elf-cb4cb0ceb7d8
 
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
