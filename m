@@ -1,75 +1,74 @@
-Delivery-date: Tue, 06 Jan 2026 14:12:22 +0100
+Delivery-date: Tue, 06 Jan 2026 14:14:33 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6rG-001u0p-1g
+	id 1vd6tN-001u6r-03
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 14:12:22 +0100
+	Tue, 06 Jan 2026 14:14:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6rF-0005fq-Vn
-	for lore@pengutronix.de; Tue, 06 Jan 2026 14:12:22 +0100
+	id 1vd6tM-0005zU-DE
+	for lore@pengutronix.de; Tue, 06 Jan 2026 14:14:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=G9ESPXEcAbLAfisTBtRNpO3zE0qa/UR5AdCuSdaQyVs=; b=Sj4FTJrdxX4b7TCNePx4xzymOs
-	g1+0Q9wCh4J1+AJQPM1MyGjp7g3l5emsQaB0WqJhQNRxqHaLrwHlogtJkrUJO0uTJSQbEsZMP8/Cp
-	m34dLJhJPM2OCrS3U/Y4XpGSsopVgRlj7nrE1pDmK2SOJf7Dl398iv7mAXWf8qUGfRmi4KXXkRa78
-	5SFBgJaIHbeTbE4dyxtgOhRWBcGIevJsz2y1MrsvMxdbmdmbB21tLpeUzLZvmcnCyBsBhNiR2qSyq
-	0FK2VIP0OayOEsydsQ7n4Nt4vNnxbYuJgzChqOHBcfjrw1xTbxmYsu/s6c7TkOrLukPOv19SdWSoe
-	11EtzKkA==;
+	bh=IxEfmOCv8Yriw0NLyjruUTEpsSheDyckR9VqY5+nKWI=; b=ScDHf9HSPiEDgLr31ULaGkbU81
+	klTng0nFZ0Hyg4xMcKHmhbOBMFLKhp028l7Av04ScjUFS8ao0JmAj8APmcz/D/7OJDNGkTig0SKGY
+	oRHzH7RTacR7++cKAdTMFRJVNCEEUcPY8RAsl6IYOvGlKGxtWmdTEq0fSBYpF49BCfY4CbY7H1gU/
+	UxCbKW862WASdR0ca0YwUVAKf1msU8ip9K0EKjDeA2eI1nn3UFSruZab7rd/kB9m9Zl8bJ+gK0hjW
+	nHPaD3HW39obZL5qqr2mPez6NIYx/VZufL6WePOTsvFLPdCCnqEvMpBH3NgqwPbO7KHrTNkwUr5NA
+	UTuichoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6qu-0000000D4LP-0J5m;
-	Tue, 06 Jan 2026 13:12:00 +0000
+	id 1vd6sv-0000000D4ai-2ZzP;
+	Tue, 06 Jan 2026 13:14:05 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6qt-0000000D4L4-2OnS
+	id 1vd6su-0000000D4aa-09TU
 	for barebox@bombadil.infradead.org;
-	Tue, 06 Jan 2026 13:11:59 +0000
+	Tue, 06 Jan 2026 13:14:04 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
 	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
 	Sender:Reply-To:Content-ID:Content-Description;
-	bh=G9ESPXEcAbLAfisTBtRNpO3zE0qa/UR5AdCuSdaQyVs=; b=bNyaMS5UksSJs/02uUwcHOds0i
-	7xlHA2XtPf+Tvo0miTk65ErvFWVT8NvDU5wLAH+Hnc44zwpgAS6OEzyBHEKMzXorjRWsw7208E+dE
-	JwkP85IgwvCDYZ2Fh1PUESWVBPDeQ8H0zPar2jyy37IhOpr97kPeV3+S2CGcdqhd99X9yPYVjrveX
-	OaDlsRQTqzXlH58FEVNZGuP+VzOhEgsV4gPgqeGGtk7OaJ0sq14wIflOJUIab5e8r5HkPVlIYpgpb
-	Gnr1wCi8KtbK0+QbFQQYqDzQ/gIwtEXhc1PmUZcD34YCaOhWsjdbFkx4y7rBAr22WjSEK7DUY1D97
-	mkF93s6g==;
+	bh=IxEfmOCv8Yriw0NLyjruUTEpsSheDyckR9VqY5+nKWI=; b=jnem2jevgVbFx5IojDr7bHwuF7
+	8EvpLCR8WBzFADYvx1RgCTq4cr8dsmQaA1d9dfN3k/IWVZtqSBOeZvGzMTYZqlWlWXJ/6oM9MpvvG
+	TnPElFmTgz98xUwOSByks9GpjTSWd9hWJ5/9SdWuX0AB0z265a7XX+rA1y82Db04YSC1tjPtf1BZf
+	CnE63aHn+iIFVTet0NM/acY++l4xV/cDPopu/n+beJoi9Dmek7wq/DDpjoh+U1U9tyQ1ULHNeFjuy
+	n9jrQzyPtkudHdyCi3E9se74rtwvCesVPt3kJfNtkJ/GMUbcKLi7BGBmlzhhP8wejuy5vdYl2IZ24
+	hv04GsAQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6qq-00000009k69-30T0
+	id 1vd6sq-00000009kGl-3WX5
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 13:11:58 +0000
+	Tue, 06 Jan 2026 13:14:02 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vd6qq-0005Ut-7l; Tue, 06 Jan 2026 14:11:56 +0100
-Message-ID: <23363b31-361d-432a-b78e-e32613378025@pengutronix.de>
-Date: Tue, 6 Jan 2026 14:11:55 +0100
+	id 1vd6sq-0005ut-63; Tue, 06 Jan 2026 14:14:00 +0100
+Message-ID: <6716230c-4bdb-4642-a1d6-cedc337e1b7b@pengutronix.de>
+Date: Tue, 6 Jan 2026 14:13:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
-Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>,
- Marco Felsch <m.felsch@pengutronix.de>
+Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
 References: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
- <20260106-pbl-load-elf-v2-20-487bc760f045@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+ <20260106-pbl-load-elf-v2-9-487bc760f045@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260106-pbl-load-elf-v2-20-487bc760f045@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260106-pbl-load-elf-v2-9-487bc760f045@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_131156_810687_B2B404F6 
-X-CRM114-Status: GOOD (  16.69  )
+X-CRM114-CacheID: sfid-20260106_131400_989408_6E254E82 
+X-CRM114-Status: GOOD (  17.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,37 +90,68 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 20/21] riscv: Allwinner D1: Drop M-Mode
+Subject: Re: [PATCH v2 09/21] Makefile: add barebox.elf build target
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
+Hi,
 
 On 1/6/26 1:53 PM, Sascha Hauer wrote:
-> The Allwinner D1 selects both RISCV_M_MODE and RISCV_S_MODE. The board
-> code uses barebox_riscv_machine_entry() and not barebox_riscv_machine_entry()
-> which indicates RISCV_M_MODE was only selected by accident. Remove it.
+> Add a build target to create barebox.elf, which provides an ELF format
+> version of barebox that can be used for debugging or alternative boot
+> scenarios.
+
+I don't find my feedback re: different name for barebox.elf (e.g.
+vmbarebox) and use of --strip-all/--strip-section-headers addressed here.
+
+Cheers,
+Ahmad
+
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
+> Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 > ---
->  arch/riscv/Kconfig.socs | 1 -
->  1 file changed, 1 deletion(-)
+>  Makefile | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-> index 4a3b56b5fff48c86901ed0346be490a6847ac14e..0d9984dd2888e6cab81939e3ee97ef83851362a0 100644
-> --- a/arch/riscv/Kconfig.socs
-> +++ b/arch/riscv/Kconfig.socs
-> @@ -123,7 +123,6 @@ if SOC_ALLWINNER_SUN20I
->  config BOARD_ALLWINNER_D1
->  	bool "Allwinner D1 Nezha"
->  	select RISCV_S_MODE
-> -	select RISCV_M_MODE
->  	def_bool y
->  
+> diff --git a/Makefile b/Makefile
+> index 3b31cecc22c431a063b8d2d3c387da487b698e74..aa12b385c779512fe20d33792f4968fed2eec29a 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -853,6 +853,9 @@ all: barebox-flash-images
 >  endif
+>  
+>  all: $(symlink-y)
+> +ifeq ($(CONFIG_PBL_IMAGE)-$(CONFIG_PBL_IMAGE_NO_PIGGY),y-)
+> +all: barebox.elf
+> +endif
+>  
+>  .SECONDEXPANSION:
+>  $(symlink-y): $$(or $$(SYMLINK_DEP_$$(@F)),$$(SYMLINK_TARGET_$$(@F))) FORCE
+> @@ -1096,6 +1099,14 @@ barebox.fit: images/barebox-$(CONFIG_ARCH_LINUX_NAME).fit
+>  barebox.srec: barebox
+>  	$(OBJCOPY) -O srec $< $@
+>  
+> +OBJCOPYFLAGS_barebox.elf = --strip-debug --strip-unneeded \
+> +			   --remove-section=.comment \
+> +			   --remove-section=.note* \
+> +			   --remove-section=.gnu.hash
+> +
+> +barebox.elf: barebox FORCE
+> +	$(call if_changed,objcopy)
+> +
+>  quiet_cmd_barebox_proper__ = CC      $@
+>        cmd_barebox_proper__ = $(CC) -r -o $@ -Wl,--whole-archive $(BAREBOX_OBJS)
+>  
+> @@ -1378,7 +1389,7 @@ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+>                  .tmp_version .tmp_barebox* barebox.bin barebox.map \
+>  		.tmp_kallsyms* compile_commands.json \
+>  		.tmp_barebox.o barebox.o barebox-flash-image \
+> -		barebox.srec barebox.efi
+> +		barebox.srec barebox.efi barebox.elf
+>  
+>  CLEAN_FILES +=	scripts/bareboxenv-target scripts/kernel-install-target \
+>  		scripts/bareboxcrc32-target scripts/bareboximd-target \
 > 
 
 -- 
