@@ -1,74 +1,74 @@
-Delivery-date: Tue, 06 Jan 2026 14:02:09 +0100
+Delivery-date: Tue, 06 Jan 2026 14:02:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6hN-001tcF-05
+	id 1vd6hN-001tcc-3B
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 14:02:09 +0100
+	Tue, 06 Jan 2026 14:02:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6hL-0003Nf-D4
-	for lore@pengutronix.de; Tue, 06 Jan 2026 14:02:08 +0100
+	id 1vd6hL-0003O2-QE
+	for lore@pengutronix.de; Tue, 06 Jan 2026 14:02:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oP3RfuOvC5T1IIIILhRFOq8wnfNm0GqM1NDX91UhQzI=; b=FqStudEc7JDxR/JDUU5Ci5jfOL
-	71AAaBVt/ZsJgYCD5vQ/PKL+AaS8fkO1YRY8LtGLMIYvVNg4Ym0Z8l7EJMfrOtu1qLCEDRc8cgBy2
-	1FvoelA+ILDrzsJR0G44QB43s+6/j4XyD1ao2Uy+f5WzPiMB7kSgH1i024Bv2vPBUKaOBbayx39Bx
-	cWg2soKkXBj99R0Tx8M+LBka2pcMhOp9p+bsNFpjSNnpo94PuDgvx6eqNrW6CpWoIqLnTuCY/nQhH
-	lLq0Kz8BHe1vFlHeD8yYzAqWmE5LuiNMq+Jj8Do6QYYOVuUXNfW1rp897bvw0qgf4V7Cc3gHGyKpz
-	WR8Cw1OA==;
+	bh=ZFZXLL4TQsMwHYf3SEFUVFgTWEf2lV3QVy37ZlGiEc4=; b=faw89yp+B1Usmbm2fIAAICLe/1
+	fyfbdBLqFp7ceMnyW8HDxemTQ6e9p0zVupHEkHuBdAwIzl6svzWMUxz/QQzCaTqcwombh1JBMxtdg
+	2QXIRGPJJpO6aWMn45m1JgNpMgnQkZyUtwczjd42yWjPYZ0HBizEdhix6TQaDowQIC4X9uXFURxaG
+	mtaWxXDCH2b1+DQSx0ox8NTI9SFyw+EvZkxc0pLKbgL/o+H7bcItI9GssWawlljwBqOBhVBElRTHN
+	jDLJSLbibRkHTMAU9ClgzBrEIZPw3H9ssclFAUpmue/fCJeXzeI1pCfX509Ea/G50fAWM+/h6Z6lI
+	D4cKXQAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6go-0000000D2U2-1rds;
-	Tue, 06 Jan 2026 13:01:34 +0000
+	id 1vd6gp-0000000D2VF-2Sqz;
+	Tue, 06 Jan 2026 13:01:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6gl-0000000D2Qo-1xmR
+	id 1vd6gl-0000000D2Qn-1qjh
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 13:01:33 +0000
+	Tue, 06 Jan 2026 13:01:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6gk-0002p5-1j; Tue, 06 Jan 2026 14:01:30 +0100
+	id 1vd6gj-0002p3-Uz; Tue, 06 Jan 2026 14:01:29 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6gj-009Ldw-2k;
+	id 1vd6gj-009Ldt-2T;
 	Tue, 06 Jan 2026 14:01:29 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6Ye-000000078QE-3cyH;
+	id 1vd6Ye-000000078QE-3eRx;
 	Tue, 06 Jan 2026 13:53:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 06 Jan 2026 13:53:19 +0100
+Date: Tue, 06 Jan 2026 13:53:20 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-pbl-load-elf-v2-16-487bc760f045@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260106-pbl-load-elf-v2-17-487bc760f045@pengutronix.de>
 References: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
 In-Reply-To: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767703988; l=4010;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767703988; l=9119;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=1cIcHuQXtWDOYhHI+TZlaW2D5A2b/YcIrincKPCN9fQ=;
- b=uWtho1lLkfnrlW+aKUpzJoNmpz1lzLfKODT4ZX5K641mpvXvIh24X3qSBAC5bXWtWGPB/C/WN
- +HEfQn37FAJDW9YXENGPB0LdjG2LYC8TERHU+hqkh3KkwX6frQUzy0W
+ bh=XH7hiafmVz1SAXWFGvOY3a0cAq3GoJ54P9C9HCB5am8=;
+ b=usV8ErcUlZvOfkDuuLiFGEPi3NdF3yUwpPDPAuCdMbPRKaU+sjh5LujnRGQajE3SV/7VaPLHq
+ VQaV7oC5gHqBAdHL1n2U2NhhbA/EYVCfmNc8olPgbSFg4n7RWloE1Y0
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_050131_507160_2278DCE1 
-X-CRM114-Status: GOOD (  12.90  )
+X-CRM114-CacheID: sfid-20260106_050131_650783_4AB28C2B 
+X-CRM114-Status: GOOD (  24.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,123 +91,270 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 16/21] ARM: link ELF image into PBL
+Subject: [PATCH v2 17/21] ARM: PBL: setup MMU with proper permissions from
+ ELF segments
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Instead of linking the raw binary barebox proper image into the PBL link
-the ELF image into the PBL. With this barebox proper starts with a properly
-linked and fully initialized C environment, so the calls to
-relocate_to_adr() and setup_c() can be removed from barebox proper.
+Move complete MMU setup into PBL by leveraging ELF segment information
+to apply correct memory permissions before jumping to barebox proper.
 
+After ELF relocation, parse PT_LOAD segments and map each with
+permissions derived from p_flags:
+- Text segments (PF_R|PF_X): Read-only + executable (MAP_CODE)
+- Data segments (PF_R|PF_W): Read-write (MAP_CACHED)
+- RO data segments (PF_R): Read-only (ARCH_MAP_CACHED_RO)
+
+This ensures barebox proper starts with full W^X protection already
+in place, eliminating the need for complex remapping in barebox proper.
+The mmu_init() function now only sets up trap pages for exception
+handling.
+
+The framework is portable - common ELF parsing in pbl/mmu.c uses
+architecture-specific early_remap_range() exported from mmu_*.c.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig          |  2 ++
- arch/arm/cpu/start.c      | 11 +++--------
- arch/arm/cpu/uncompress.c | 26 +++++++++++++++++++-------
- 3 files changed, 24 insertions(+), 15 deletions(-)
+ arch/arm/cpu/mmu-common.c |  12 +++--
+ arch/arm/cpu/uncompress.c |  14 ++++++
+ include/pbl/mmu.h         |  29 ++++++++++++
+ pbl/Makefile              |   1 +
+ pbl/mmu.c                 | 111 ++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 160 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 5123e9b1402c56db94df6a7a33ae993c61d51fbc..c53c58844a9411e3777711db2900b0e01cf55eec 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -18,6 +18,8 @@ config ARM
- 	select HW_HAS_PCI
- 	select ARCH_HAS_DMA_WRITE_COMBINE
- 	select HAVE_EFI_LOADER if MMU # for payload unaligned accesses
-+	select ELF
-+	select PBL_IMAGE_ELF
- 	default y
- 
- config ARCH_LINUX_NAME
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index f7d4507e71588ba5e241b24b952d55e2a4b0f794..f7062380cd5d265b3326f247a99b1847e16d64f0 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -127,8 +127,9 @@ static int barebox_memory_areas_init(void)
- }
- device_initcall(barebox_memory_areas_init);
- 
--__noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
--		unsigned long memsize, struct handoff_data *hd)
-+__noreturn void barebox_non_pbl_start(unsigned long membase,
-+				      unsigned long memsize,
-+				      struct handoff_data *hd)
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+index 67317f127cadb138cc2e85bb18c92ab47bc1206f..e469db0544a3842b49e9d8ba3c8ce3e1c3f7a20c 100644
+--- a/arch/arm/cpu/mmu-common.c
++++ b/arch/arm/cpu/mmu-common.c
+@@ -127,10 +127,6 @@ static inline void remap_range_end_sans_text(unsigned long start, unsigned long
+ static void mmu_remap_memory_banks(void)
  {
- 	unsigned long endmem = membase + memsize;
- 	unsigned long malloc_start, malloc_end;
-@@ -139,12 +140,6 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
- 	if (IS_ENABLED(CONFIG_CPU_V7))
- 		armv7_hyp_install();
+ 	struct memory_bank *bank;
+-	unsigned long code_start = (unsigned long)&_stext;
+-	unsigned long code_size = (unsigned long)&__start_rodata - (unsigned long)&_stext;
+-	unsigned long rodata_start = (unsigned long)&__start_rodata;
+-	unsigned long rodata_size = (unsigned long)&__end_rodata - rodata_start;
  
--	relocate_to_adr(barebox_base);
--
--	setup_c();
--
--	barrier();
--
- 	pbl_barebox_break();
+ 	/*
+ 	 * Early mmu init will have mapped everything but the initial memory area
+@@ -138,6 +134,10 @@ static void mmu_remap_memory_banks(void)
+ 	 * all memory banks, so let's map all pages, excluding reserved memory areas
+ 	 * and barebox text area cacheable.
+ 	 *
++	 * PBL has already set up the MMU with proper permissions for text and
++	 * rodata based on ELF segment information, so we don't need to remap
++	 * those here.
++	 *
+ 	 * This code will become much less complex once we switch over to using
+ 	 * CONFIG_MEMORY_ATTRIBUTES for MMU as well.
+ 	 */
+@@ -157,9 +157,7 @@ static void mmu_remap_memory_banks(void)
+ 		remap_range_end_sans_text(pos, bank->res->end + 1, MAP_CACHED);
+ 	}
  
- 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
+-	remap_range((void *)code_start, code_size, MAP_CODE);
+-	remap_range((void *)rodata_start, rodata_size, MAP_CACHED_RO);
+-
++	/* Do this while interrupt vectors are still writable */
+ 	setup_trap_pages();
+ }
+ 
 diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index b9fc1d04db96e77c8fcd7fd1930798ea1d9294d7..8cc7102290986e71d2f3a2f34df1a9f946c56ced 100644
+index 8cc7102290986e71d2f3a2f34df1a9f946c56ced..619bd8d5b0b56ab2704a0fa1e4964bb603b761d9 100644
 --- a/arch/arm/cpu/uncompress.c
 +++ b/arch/arm/cpu/uncompress.c
-@@ -20,6 +20,7 @@
- #include <asm/mmu.h>
+@@ -21,6 +21,7 @@
  #include <asm/unaligned.h>
  #include <compressed-dtb.h>
-+#include <elf.h>
+ #include <elf.h>
++#include <pbl/mmu.h>
  
  #include <debug_ll.h>
  
-@@ -41,6 +42,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	void *pg_start, *pg_end;
- 	unsigned long pc = get_pc();
- 	void *handoff_data;
-+	struct elf_image elf;
-+	int ret;
+@@ -105,6 +106,19 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
  
- 	/* piggy data is not relocated, so determine the bounds now */
- 	pg_start = runtime_address(input_data);
-@@ -85,21 +88,30 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	else if (IS_ENABLED(CONFIG_ARMV7R_MPU))
- 		set_cr(get_cr() | CR_C);
+ 	pr_debug("ELF entry point: 0x%llx\n", elf.entry);
  
--	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
-+	pr_debug("uncompressing barebox ELF at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
- 			pg_start, pg_len, barebox_base, uncompressed_len);
++	/*
++	 * Now that the ELF image is relocated, we know the exact addresses
++	 * of all segments. Set up MMU with proper permissions based on
++	 * ELF segment flags (PF_R/W/X).
++	 */
++	if (IS_ENABLED(CONFIG_MMU)) {
++		ret = pbl_mmu_setup_from_elf(&elf, membase, memsize);
++		if (ret) {
++			pr_err("Failed to setup MMU from ELF: %d\n", ret);
++			hang();
++		}
++	}
++
+ 	barebox = (void *)(unsigned long)elf.entry;
  
- 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
- 
-+	pr_debug("relocating ELF in place\n");
-+
-+	ret = elf_open_binary_into(&elf, (void *)barebox_base);
-+	if (ret)
-+		panic("Failed to open ELF binary: %d\n", ret);
-+
-+	ret = elf_load_inplace(&elf);
-+	if (ret)
-+		panic("Failed to relocate ELF: %d\n", ret);
-+
-+	pr_debug("ELF entry point: 0x%llx\n", elf.entry);
-+
-+	barebox = (void *)(unsigned long)elf.entry;
-+
  	handoff_data_move(handoff_data);
- 
- 	sync_caches_for_execution();
- 
--	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
--		barebox = (void *)(barebox_base + 1);
--	else
--		barebox = (void *)barebox_base;
--
--	pr_debug("jumping to uncompressed image at 0x%p\n", barebox);
-+	pr_debug("jumping to ELF entry point at 0x%p\n", barebox);
- 
- 	if (IS_ENABLED(CONFIG_CPU_V7) && boot_cpu_mode() == HYP_MODE)
- 		armv7_switch_to_hyp();
+diff --git a/include/pbl/mmu.h b/include/pbl/mmu.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..4a00d8e528ab5452981347185c9114235f213e2b
+--- /dev/null
++++ b/include/pbl/mmu.h
+@@ -0,0 +1,29 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __PBL_MMU_H
++#define __PBL_MMU_H
++
++#include <linux/types.h>
++
++struct elf_image;
++
++/**
++ * pbl_mmu_setup_from_elf() - Configure MMU using ELF segment information
++ * @elf: ELF image structure from elf_open_binary_into()
++ * @membase: Base address of RAM
++ * @memsize: Size of RAM
++ *
++ * This function sets up the MMU with proper permissions based on ELF
++ * segment flags. It should be called after elf_load_inplace() has
++ * relocated the barebox image.
++ *
++ * Segment permissions are mapped as follows:
++ *   PF_R | PF_X  -> Read-only + executable (text)
++ *   PF_R | PF_W  -> Read-write (data, bss)
++ *   PF_R         -> Read-only (rodata)
++ *
++ * Return: 0 on success, negative error code on failure
++ */
++int pbl_mmu_setup_from_elf(struct elf_image *elf, unsigned long membase,
++			    unsigned long memsize);
++
++#endif /* __PBL_MMU_H */
+diff --git a/pbl/Makefile b/pbl/Makefile
+index f66391be7b2898388425657f54afcd6e4c72e3db..b78124cdcd2a4690be11d5503006723252b4904f 100644
+--- a/pbl/Makefile
++++ b/pbl/Makefile
+@@ -9,3 +9,4 @@ pbl-$(CONFIG_HAVE_IMAGE_COMPRESSION) += decomp.o
+ pbl-$(CONFIG_LIBFDT) += fdt.o
+ pbl-$(CONFIG_PBL_CONSOLE) += console.o
+ obj-pbl-y += handoff-data.o
++obj-pbl-$(CONFIG_MMU) += mmu.o
+diff --git a/pbl/mmu.c b/pbl/mmu.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..853fdcba55699025ea1d2a49385747e29cb2debc
+--- /dev/null
++++ b/pbl/mmu.c
+@@ -0,0 +1,111 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2025 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++
++#define pr_fmt(fmt) "pbl-mmu: " fmt
++
++#include <common.h>
++#include <elf.h>
++#include <mmu.h>
++#include <pbl/mmu.h>
++#include <asm/mmu.h>
++#include <linux/bits.h>
++#include <linux/sizes.h>
++
++/*
++ * Map ELF segment permissions (p_flags) to architecture MMU flags
++ */
++static unsigned int elf_flags_to_mmu_flags(u32 p_flags)
++{
++	bool readable = p_flags & PF_R;
++	bool writable = p_flags & PF_W;
++	bool executable = p_flags & PF_X;
++
++	if (readable && writable) {
++		/* Data, BSS: Read-write, cached, non-executable */
++		return MAP_CACHED;
++	} else if (readable && executable) {
++		/* Text: Read-only, cached, executable */
++		return MAP_CODE;
++	} else if (readable) {
++		/* Read-only data: Read-only, cached, non-executable */
++		return MAP_CACHED_RO;
++	} else {
++		/*
++		 * Unusual: segment with no read permission.
++		 * Map as uncached, non-executable for safety.
++		 */
++		pr_warn("Segment with unusual permissions: flags=0x%x\n", p_flags);
++		return MAP_UNCACHED;
++	}
++}
++
++int pbl_mmu_setup_from_elf(struct elf_image *elf, unsigned long membase,
++			    unsigned long memsize)
++{
++	void *phdr;
++	int i;
++	int phnum = elf_hdr_e_phnum(elf, elf->hdr_buf);
++	size_t phoff = elf_hdr_e_phoff(elf, elf->hdr_buf);
++	size_t phentsize = elf_size_of_phdr(elf);
++
++	pr_debug("Setting up MMU from ELF segments\n");
++	pr_debug("ELF entry point: 0x%llx\n", elf->entry);
++	pr_debug("ELF loaded at: 0x%p - 0x%p\n", elf->low_addr, elf->high_addr);
++
++	/*
++	 * Iterate through all PT_LOAD segments and set up MMU permissions
++	 * based on the segment's p_flags
++	 */
++	for (i = 0; i < phnum; i++) {
++		phdr = elf->hdr_buf + phoff + i * phentsize;
++
++		if (elf_phdr_p_type(elf, phdr) != PT_LOAD)
++			continue;
++
++		u64 p_vaddr = elf_phdr_p_vaddr(elf, phdr);
++		u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
++		u32 p_flags = elf_phdr_p_flags(elf, phdr);
++
++		/*
++		 * Calculate actual address after relocation.
++		 * For ET_EXEC: reloc_offset is 0, use p_vaddr directly
++		 * For ET_DYN: reloc_offset adjusts virtual to actual address
++		 */
++		unsigned long addr = p_vaddr + elf->reloc_offset;
++		unsigned long size = p_memsz;
++		unsigned long segment_end = addr + size;
++
++		/* Validate segment is within available memory */
++		if (segment_end < addr || /* overflow check */
++		    addr < membase ||
++		    segment_end > membase + memsize) {
++			pr_err("Segment %d outside memory bounds\n", i);
++			return -EINVAL;
++		}
++
++		/* Validate alignment - warn and round if needed */
++		if (!IS_ALIGNED(addr, PAGE_SIZE) || !IS_ALIGNED(size, PAGE_SIZE)) {
++			pr_debug("Segment %d not page-aligned, rounding\n", i);
++			size = ALIGN(size, PAGE_SIZE);
++		}
++
++		unsigned int mmu_flags = elf_flags_to_mmu_flags(p_flags);
++
++		pr_debug("Segment %d: addr=0x%08lx size=0x%08lx flags=0x%x [%c%c%c] -> mmu_flags=0x%x\n",
++			 i, addr, size, p_flags,
++			 (p_flags & PF_R) ? 'R' : '-',
++			 (p_flags & PF_W) ? 'W' : '-',
++			 (p_flags & PF_X) ? 'X' : '-',
++			 mmu_flags);
++
++		/*
++		 * Remap this segment with proper permissions.
++		 * Use page-wise mapping to allow different permissions for
++		 * different segments even if they're nearby.
++		 */
++		pbl_remap_range((void *)addr, addr, size, mmu_flags);
++	}
++
++	pr_debug("MMU setup from ELF complete\n");
++	return 0;
++}
 
 -- 
 2.47.3
