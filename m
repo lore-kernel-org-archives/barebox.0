@@ -1,74 +1,75 @@
-Delivery-date: Tue, 06 Jan 2026 14:51:59 +0100
+Delivery-date: Tue, 06 Jan 2026 14:54:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd7Tb-001ubz-1W
+	id 1vd7Vn-001udq-0m
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 14:51:59 +0100
+	Tue, 06 Jan 2026 14:54:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd7Ta-0001zc-Q8
-	for lore@pengutronix.de; Tue, 06 Jan 2026 14:51:59 +0100
+	id 1vd7Vm-0002HC-Nr
+	for lore@pengutronix.de; Tue, 06 Jan 2026 14:54:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bKNBqAIc+OOwj/1ACBjaaZGYBhNrJjj94+OZzCbf3YU=; b=qu5ETaYvCFpaoPex6fiSLrK1AF
-	SBICigtF/cxbw6oPGOua/R0GUqE0fRrLQwpTL8KTCicvJdfHf5NgVzNhp9IfWgrPvtQ8clL8zRbEj
-	gSBiqyOkEVba8TfCqUfVpsBpeRrBNuvW3WaQOJQPbAoFbmOADmYuV8glKHDRyID/jMvuShzxi3k+3
-	MHEjDms4Lh7dAYttRD3RoVCrKDE/ZVMvlDFkPdGhf6SAH84TthgmN2qndp0Je5Vaoqmm5TmdY3z0T
-	mmrRQoW6HbSBNheEh1kQglbuc+J0nDLrX/l7Gzgmadf7bxXmZ1GbhzmWfSxx/76lWMWtmAsuZk04V
-	PVTzdDiw==;
+	bh=aDvMtJz9W2w5Y8NIupdXzFumWEQthXg9Y/xfkfPoOl0=; b=hvN6O344XOJ3xE0G6mxBzxXDG8
+	ypTJUblUY4+3qGNUU9c644F+jjg3BR3oRxuGqvpSl0D6BM71tDOv6s/rBS/aH0PI+Dua0HnezhDGc
+	+NITOeDgGD9ISCMEV/J0sRNQOhwqeW6uTSW/ofs2qTsplfVln582e7iclaDKqUu9c8sqZfYu6Do3s
+	f78Dn7B2CcJIGwmBIlHgKlwmeot1OI9ysVhoSy5t+Fnfi5VUB/3FbG0I1CMr6Xfdhc1UsPOGGyJtQ
+	q18jeQlyrZ9FQCjmQ1ICsT4MMrkqto+tozDASkquYEGYk9TXklJGamwZMcSP6SnXUqjCQ6qi0HqDG
+	zeaZWkCQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd7Sy-0000000DDIY-03DG;
-	Tue, 06 Jan 2026 13:51:20 +0000
+	id 1vd7VK-0000000DE3F-47yb;
+	Tue, 06 Jan 2026 13:53:46 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd7Ss-0000000DDDV-3P74
+	id 1vd7VK-0000000DE39-0bX1
 	for barebox@bombadil.infradead.org;
-	Tue, 06 Jan 2026 13:51:14 +0000
+	Tue, 06 Jan 2026 13:53:46 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
 	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description;
-	bh=bKNBqAIc+OOwj/1ACBjaaZGYBhNrJjj94+OZzCbf3YU=; b=g8RvDGYzRAP9XTueUZAX0TueO6
-	N7buvgxulTvWbdQezPW/TbKZ0Mxs2VYktCm90mvBCGk8z/bde46a2LEa73Ml/VDs6alIfVNcKyZdq
-	QngFj9AIfgPFF/fk7VPrxyA1vJmTYQGh/NJXC0wz+IK051Nz2aTMz3q7hjBmSZrTtcEAcnL4ApJ3b
-	R3CHxzPU4FYgceYd9RsJrYTTAEfR+sVM6asgavgknJFD34QiWx/2PHLw6tEv3L63IP7caOgrcl+nL
-	qK4oNyT1a6FkU+7a5NuzoqeNj5BOC0t8/42HQRCkjMdVud28V2pOtiNdHy8dm7Nc81Q2gTpECOYta
-	1humAwAg==;
+	bh=aDvMtJz9W2w5Y8NIupdXzFumWEQthXg9Y/xfkfPoOl0=; b=tWPxqXPA7b/SEUHlI/ZA2bTFU9
+	5FBWdL0f4W3x77U/+C3Fz0SQRE5BDqctjnd0K2Sgayu/o+04r9cdRB5y5LEsx6VODR2OM6m4vPyKf
+	dzD9/E5Re5Bm66l7iR43FqJG8y55Pz8uPTcV4y7DjdpuMF+fqAlNncu5fP9PswJsIec7ka5OX7TRw
+	g8/oX2SvP687wLyiccswhgYyoRxy1vrTiCAb6Lz2+7CUBUybNWteEBDxYiZvNDDFhY4k9CsxvJknP
+	imp3/4K5MP2ByB65R3XS0S+7XJIdQHKIoYe5Zm80x62OCp/gq8hArZIhnWjHTVS2Hsty8UcVtJ1DU
+	uk/Y60wA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd7So-0000000Brkj-2NWC
+	id 1vd7VG-0000000Bru2-3z8i
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 13:51:13 +0000
+	Tue, 06 Jan 2026 13:53:44 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vd7Sl-0001tU-JO; Tue, 06 Jan 2026 14:51:07 +0100
-Message-ID: <14aa93ff-c0e8-4604-9afb-1c74a570ee6d@pengutronix.de>
-Date: Tue, 6 Jan 2026 14:51:07 +0100
+	id 1vd7VG-00029G-Ej; Tue, 06 Jan 2026 14:53:42 +0100
+Message-ID: <1cf2995b-e44a-4623-af05-9cc44fdc42ab@pengutronix.de>
+Date: Tue, 6 Jan 2026 14:53:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
 References: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
- <20260106-pbl-load-elf-v2-3-487bc760f045@pengutronix.de>
+ <20260106-pbl-load-elf-v2-7-487bc760f045@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260106-pbl-load-elf-v2-3-487bc760f045@pengutronix.de>
+In-Reply-To: <20260106-pbl-load-elf-v2-7-487bc760f045@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_135110_647265_DB3E5661 
-X-CRM114-Status: GOOD (  20.56  )
+X-CRM114-CacheID: sfid-20260106_135343_031802_FDDAA7DD 
+X-CRM114-Status: UNSURE (   6.33  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,111 +91,26 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 03/21] elf: add dynamic relocation support
+Subject: Re: [PATCH v2 07/21] elf: implement elf_load_inplace()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hi,
 
 On 1/6/26 1:53 PM, Sascha Hauer wrote:
-> Add support for applying dynamic relocations to ELF binaries. This allows
-> loading ET_DYN (position-independent) binaries and ET_EXEC binaries at
-> custom load addresses.
-> 
-> Key changes:
-> - Add elf_image.reloc_offset to track offset between vaddr and load address
-> - Implement elf_compute_load_offset() to calculate relocation offset
-> - Add elf_set_load_address() API to specify custom load address
-> - Implement elf_find_dynamic_segment() to locate PT_DYNAMIC
-> - Add elf_relocate() to apply relocations
-> - Provide weak default elf_apply_relocations() stub for unsupported architectures
-> - Add ELF dynamic section accessors
-> 
-> The relocation offset type is unsigned long to properly handle pointer
-> arithmetic and avoid casting issues.
-> 
-> Architecture-specific implementations should override the weak
-> elf_apply_relocations() function to handle their relocation types.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+> For ET_DYN (position-independent) binaries, the relocation offset is
+> calculated relative to the first executable PT_LOAD segment (.text section),
+> taking into account the difference between the segment's virtual address
+> and its file offset.
 
-Wrong way round ^
+Same review feedback as for v1: I believe it's the lowest load address
+with no special significance to the text section.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Apart from that:
 
-But some nitpicks and a question below.
+Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-> +static void *elf_get_dest(struct elf_image *elf, void *phdr)
-
-How about elf_phdr_relocated_paddr as a more descriptive name?
-
-> +	if (elf->load_address) {
-> +		elf->base_load_addr = elf->load_address;
-> +	} else if (elf->type == ET_EXEC) {
-> +		elf->base_load_addr = NULL;
-> +	} else {
-> +		elf->base_load_addr = (void *)(phys_addr_t)min_paddr;
-> +	}
-
-Curly braces can be removed.
-
-> +	if (elf->type == ET_EXEC && !elf->load_address) {
-> +		elf->reloc_offset = 0;
-> +	} else {
-> +		elf->reloc_offset = ((unsigned long)elf->base_load_addr - min_vaddr);
-> +	}
-
-Ditto.
-
-
-> +void elf_set_load_address(struct elf_image *elf, void *addr)
-> +{
-> +	elf->load_address = addr;
-> +}
-> +
-> +static void *elf_find_dynamic_segment(struct elf_image *elf)
-> +{
-> +	void *buf = elf->hdr_buf;
-> +	void *phdr = buf + elf_hdr_e_phoff(elf, buf);
-> +	int i;
-> +
-> +	for (i = 0; i < elf_hdr_e_phnum(elf, buf); i++) {
-> +		if (elf_phdr_p_type(elf, phdr) == PT_DYNAMIC) {
-> +			u64 offset = elf_phdr_p_offset(elf, phdr);
-> +
-> +			/* If loaded from file, PT_DYNAMIC might not be in hdr_buf */
-> +			if (elf->filename)
-> +				return elf_get_dest(elf, phdr);
-> +			else
-> +				/* Binary in memory, use offset */
-> +				return elf->hdr_buf + offset;
-
-Does elf_get_dest(elf, phdr) not compute the same address that we would
-get here?
-
-> +	/* Check that we found exactly one relocation type */
-> +	if (rel && rela) {
-> +		pr_err("ELF has both REL and RELA relocations\n");
-> +		return -EINVAL;
-> +	}
-
-Future work could be checking these things at compile time and skipping
-the checks in PBL.
-
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 6d259dd94e163336d7fdab38c7b74b301aabc5c5..da2c8ffe1dbf512a901295c89494e0837f31a0d9 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -24,6 +24,7 @@ obj-y			+= readkey.o
->  obj-y			+= kfifo.o
->  obj-y			+= libbb.o
->  obj-y			+= libgen.o
-> +obj-y			+= elf_reloc.o
-
-Why is this not obj-pbl-y?
-
-Cheers,
+Thanks,
 Ahmad
 
 -- 
