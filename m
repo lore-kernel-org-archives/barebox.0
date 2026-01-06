@@ -1,60 +1,71 @@
-Delivery-date: Tue, 06 Jan 2026 09:50:40 +0100
+Delivery-date: Tue, 06 Jan 2026 10:17:28 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd2m0-001pkB-0J
+	id 1vd3Bv-001qG6-39
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 09:50:40 +0100
+	Tue, 06 Jan 2026 10:17:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd2lz-0004RR-Ff
-	for lore@pengutronix.de; Tue, 06 Jan 2026 09:50:40 +0100
+	id 1vd3Bv-0000II-BG
+	for lore@pengutronix.de; Tue, 06 Jan 2026 10:17:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ew8yZiB2Z/MN7KMlLcf2T4pkEKqE/pn3Ek2pM8obBpM=; b=f7Usr7Akp/plh33oZZLVCjUkFf
-	yqY3mHW1cVzsosKEP8+IOUNJ/eJ/F1vfb6tmLGkJwqtrBKa5w7F8cawxzcZtEiZQgF2Jz32ly67hS
-	Yyu9X4NGLQp4KlgdzwFm3wU8NCJoL8CVP0J6pPyHoSV2wkmkgSz6czckX6hBdY8S+4zdiRFxa5gT1
-	JCklMotfvL1gA/2+SwewqZjWLOdoGNhVQeK09yOtHfYtaUZnM749c0zOrQ2gIbrtQSsXM4QpQcyT+
-	igcvzEDD8CHMaaTDvwzzuz8cSirIBIq7BqA72TZuvWa8jbBrchR2Rk4YHuaakAg6c2qPg/90AArcP
-	GFW2divg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=NsR8pTwG/2AJCj22fn77T3JWU+jgZ8sYKESKB09JjEU=; b=Q4dz50rvhd+VFumiS/T3K6WCG1
+	TabYGfg+/W7u6nB1OXsEoBeeeVKZKFBObtsAxAn4Sp7x4SBoa05a20VYeoVIlkhC6+Fl05tjpC/mV
+	wCLPJdYMmDFB+cQV6LfEdCE1zFg7O6gxb3eJp4wgUlzEylqQUQqystAIf/5njU2L9TGPwxsl5nQy3
+	6dE9Mv2huZj/eJTJ86FltTK8R93RZpZtupiwsG6VLh+9JyvCNS65HJ3Jv6HJ/WKmEdO5760fG/r56
+	PWtaG/jRV3osOhWcUdGqBVU48fR4kdDRa3R3hTYE/Krzjyx209QwYd/PPjcRItSJWXu2aOBG802s3
+	ex28ThUA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd2lV-0000000Cddi-2itY;
-	Tue, 06 Jan 2026 08:50:09 +0000
+	id 1vd3BF-0000000CgUD-3Mav;
+	Tue, 06 Jan 2026 09:16:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd2lS-0000000Cdd5-2quW
+	id 1vd3BC-0000000CgRT-1UPe
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 08:50:07 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vd2lR-0004N9-0Y; Tue, 06 Jan 2026 09:50:05 +0100
-Message-ID: <4885c971-49b7-4912-89f5-9d401dd5e39d@pengutronix.de>
-Date: Tue, 6 Jan 2026 09:50:04 +0100
+	Tue, 06 Jan 2026 09:16:43 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vd3BA-0008Vt-Lj; Tue, 06 Jan 2026 10:16:40 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vd3BA-009K4n-1U;
+	Tue, 06 Jan 2026 10:16:40 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vd3BA-00EHeF-0z;
+	Tue, 06 Jan 2026 10:16:40 +0100
+Date: Tue, 6 Jan 2026 10:16:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@barebox.org>
+Cc: barebox@lists.infradead.org
+Message-ID: <aVzS-J58j8FsFpC3@pengutronix.de>
+References: <20260106081659.3491945-1-a.fatoum@barebox.org>
+ <20260106081659.3491945-2-a.fatoum@barebox.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
-References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
- <20260105-pbl-load-elf-v1-11-e97853f98232@pengutronix.de>
- <0a85c1df-8960-440b-b901-1c338db1f003@pengutronix.de>
-Content-Language: en-US
-In-Reply-To: <0a85c1df-8960-440b-b901-1c338db1f003@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260106081659.3491945-2-a.fatoum@barebox.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_005006_749685_5E3113D1 
-X-CRM114-Status: GOOD (  15.92  )
+X-CRM114-CacheID: sfid-20260106_011642_531497_EA71D25D 
+X-CRM114-Status: GOOD (  31.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,98 +83,96 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 11/19] mmu: introduce pbl_remap_range()
+Subject: Re: [PATCH 2/2] ARM: cpu: common: define generic relocate_image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 1/5/26 13:15, Ahmad Fatoum wrote:
-> On 1/5/26 12:26 PM, Sascha Hauer wrote:
->> Add PBL-specific memory remapping function that always uses page-wise
->> mapping (ARCH_MAP_FLAG_PAGEWISE) for fine-grained permissions on
->> adjacent ELF segments with different protection requirements.
->>
->> Wraps arch-specific __arch_remap_range() for ARMv7 (4KB pages) and
->> ARMv8 (page tables with BBM). Needed for ELF segment permission setup.
->>
->> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+On Tue, Jan 06, 2026 at 09:16:57AM +0100, Ahmad Fatoum wrote:
+> For use by the ELF loader in PBL to relocate barebox proper, export a
+> new relocate_image capable of relocating barebox and implement
+> relocate_to_current_adr() in terms of it.
 > 
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-
-Hmm, a question: Why do we need to preemptively break up pages?
-Doesn't normal remapping do that already? My understanding was
-that we only did it here to allow remapping while executing from
-it, but in the PBL ELF loader we are not executing from there,
-so there should not be an issue.
-
-Thanks,
-Ahmad
-
+> When doing ELF loading, the PT_DYNAMIC segment will contain the info
+> needed to derive the arguments for relocate_image():
 > 
->> ---
->>  arch/arm/cpu/mmu_32.c | 7 +++++++
->>  arch/arm/cpu/mmu_64.c | 8 ++++++++
->>  include/mmu.h         | 3 +++
->>  3 files changed, 18 insertions(+)
->>
->> diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
->> index 97c7107290ce95ddb21a322a5d0e74f3d324c528..86a55d165ba3cec5154c345a1a3a9cb959f0996f 100644
->> --- a/arch/arm/cpu/mmu_32.c
->> +++ b/arch/arm/cpu/mmu_32.c
->> @@ -435,6 +435,13 @@ static void early_remap_range(u32 addr, size_t size, maptype_t map_type)
->>  	__arch_remap_range((void *)addr, addr, size, map_type);
->>  }
->>  
->> +void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
->> +		     maptype_t map_type)
->> +{
->> +	__arch_remap_range(virt_addr, phys_addr, size,
->> +			   map_type | ARCH_MAP_FLAG_PAGEWISE);
->> +}
->> +
->>  static bool pte_is_cacheable(uint32_t pte, int level)
->>  {
->>  	return	(level == 2 && (pte & PTE_CACHEABLE)) ||
->> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
->> index afb3d2d7efd0bc7ecde1177d1544f54d751b5dc1..63faaa46703697e527eae766392e7ea7ae186b3d 100644
->> --- a/arch/arm/cpu/mmu_64.c
->> +++ b/arch/arm/cpu/mmu_64.c
->> @@ -282,6 +282,14 @@ static void early_remap_range(uint64_t addr, size_t size, maptype_t map_type)
->>  	__arch_remap_range(addr, addr, size, map_type, false);
->>  }
->>  
->> +void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
->> +		     maptype_t map_type)
->> +{
->> +	__arch_remap_range((uint64_t)virt_addr, phys_addr,
->> +			   (uint64_t)size, map_type | ARCH_MAP_FLAG_PAGEWISE,
->> +			   true);
->> +}
->> +
->>  int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, maptype_t map_type)
->>  {
->>  	map_type = arm_mmu_maybe_skip_permissions(map_type);
->> diff --git a/include/mmu.h b/include/mmu.h
->> index 53603b7956c229b4c715c57b19d0398931eb2d6b..37df7b482e1d83e94e61997db6cf9834d8cf7f3c 100644
->> --- a/include/mmu.h
->> +++ b/include/mmu.h
->> @@ -64,6 +64,9 @@ static inline bool arch_can_remap(void)
->>  }
->>  #endif
->>  
->> +void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
->> +		     maptype_t map_type);
->> +
->>  static inline int remap_range(void *start, size_t size, maptype_t map_type)
->>  {
->>  	return arch_remap_range(start, virt_to_phys(start), size, map_type);
->>
+>   - dstart: DT_REL  /DT_RELA
+>   - dend:   DT_RELSZ/DT_RELASZ
+>   - dynsym: DT_SYMTAB
 > 
+> dynend is optional and could in theory be generated by looking at
+> DT_HASH or DT_GNU_HASH, but it's not required. Best guess is that the
+> zeroing is there just to signify that we don't need this data anymore.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+> ---
+>  arch/arm/cpu/common.c        | 34 +++++++++++++++-------------------
+>  arch/arm/include/asm/reloc.h |  3 +++
+>  2 files changed, 18 insertions(+), 19 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+> index 5b65b0745b98..f4f3f8f6325b 100644
+> --- a/arch/arm/cpu/common.c
+> +++ b/arch/arm/cpu/common.c
+> @@ -60,22 +60,10 @@ void pbl_barebox_break(void)
+>  /*
+>   * relocate binary to the currently running address
+>   */
+> -void __prereloc relocate_to_current_adr(void)
+> +void __prereloc relocate_image(unsigned long offset,
+> +			       void *dstart, void *dend,
+> +			       long *dynsym, long *dynend)
 
+As relocate_image() now contains two entirely separate implementations
+for ARM32 and ARM64, should we move it to arch/arm/lib[32|64]/ ?
+
+>  {
+> -	unsigned long offset;
+> -	unsigned long __maybe_unused *dynsym, *dynend;
+> -	void *dstart, *dend;
+> -
+> -	/* Get offset between linked address and runtime address */
+> -	offset = get_runtime_offset();
+> -
+> -	/*
+> -	 * We have yet to relocate, so using runtime_address
+> -	 * to compute the relocated address
+> -	 */
+> -	dstart = runtime_address(__rel_dyn_start);
+> -	dend = runtime_address(__rel_dyn_end);
+> -
+>  #if defined(CONFIG_CPU_64)
+>  	while (dstart < dend) {
+>  		struct elf64_rela *rel = dstart;
+> @@ -105,8 +93,6 @@ void __prereloc relocate_to_current_adr(void)
+>  		dstart += sizeof(*rel);
+>  	}
+>  #elif defined(CONFIG_CPU_32)
+> -	dynsym = runtime_address(__dynsym_start);
+> -	dynend = runtime_address(__dynsym_end);
+>  
+>  	while (dstart < dend) {
+>  		struct elf32_rel *rel = dstart;
+> @@ -141,10 +127,21 @@ void __prereloc relocate_to_current_adr(void)
+>  		dstart += sizeof(*rel);
+>  	}
+>  
+> -	__memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
+> +	/* Optional: not required for correctness */
+> +	if (dynend)
+> +		__memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
+
+The purpose of this memset is that we can call relocate_to_current_adr()
+multiple times on the same binary. This happens when relocate_to_current_adr()
+is called in the board code and then again in uncompress.c. I think in
+this particular case we could just early return above when offset == 0,
+but I think there are (were?) some cases where the same binary is moved multiple
+times.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
