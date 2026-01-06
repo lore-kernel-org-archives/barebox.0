@@ -1,67 +1,67 @@
-Delivery-date: Tue, 06 Jan 2026 08:39:18 +0100
+Delivery-date: Tue, 06 Jan 2026 08:40:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd1ew-001oVm-1R
+	id 1vd1fn-001oWk-26
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 08:39:18 +0100
+	Tue, 06 Jan 2026 08:40:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd1ev-0005Ll-Pl
-	for lore@pengutronix.de; Tue, 06 Jan 2026 08:39:18 +0100
+	id 1vd1fn-0005V8-49
+	for lore@pengutronix.de; Tue, 06 Jan 2026 08:40:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iDKAGgCurJE2RKG4lEZ02YdYEK3GuLWZMhmY0mJkSIw=; b=vxD0YMOlai13xUhl2Bj9dYv9xC
-	105k0zgzXALZeAocf8nAx+OyTWPbki1I6p0UBBLMSvIvfFP8h/mx15zKi8fK00oYKJ8xEEiJsJqEd
-	VwmI21/nbmpeDk0Lb65CydlT3pNwmglJ+nmNG1QCsms8Yhw0cwrsiQbov4gVOeWiX3Iw0VGVNXTHj
-	N5pxNfWcKGAkoiwrqRotchmWBWhBC5/k0vRi1vcch2iixTho8T1tim9Ce509I9Y3e38/iMI2rU+y2
-	RJ83+JVUnxIYWzEJGEhb9V+FiObdBFe+IhM1xXwLJfchfi34wiz2dGzIj1TJwUppkiskwC76i90cz
-	CL0eWXLQ==;
+	bh=9h8yiQaBoc6qxZsorOA8IxTksUaWTfj/AiUHD7ovyeM=; b=ecnIGZDNnS/oUQLGqMTF2qEoC6
+	dbvyZTK0ZcBev0sNx++NbDGsCW/e6iwXEnCeH9bk39KBjsuQHJO4lOhWawKDcZ7mr4rHg3GGd/Pvz
+	7NXREX6silCc1+yBLT8IA9IDDNKucP0opmktOAMs1tMsHcAp7zCWknCrFyTppYpq2hZYrns/SXM85
+	CF9DX7vCPs+/wEQ8mCIGec4GbQvhiFLHBoO39NWZh/EmXdr7J/+cp+iwf9ktQ/A1EDQWSwaPlvU8z
+	K7FzMGTcU1u2xX7gWScE3LvZdFTkpEf7ex0NX00dlINKIsjRU8G0bKrHVZnABUoYYNM4HGwR/LmeH
+	uVXm4cFg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd1eU-0000000CWzp-2L1n;
-	Tue, 06 Jan 2026 07:38:50 +0000
+	id 1vd1fL-0000000CX6y-0ZmW;
+	Tue, 06 Jan 2026 07:39:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd1eN-0000000CWyl-1SX3
+	id 1vd1fH-0000000CX6U-2sKV
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 07:38:48 +0000
+	Tue, 06 Jan 2026 07:39:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd1eL-0005Dr-Rn; Tue, 06 Jan 2026 08:38:41 +0100
+	id 1vd1fG-0005OW-2s; Tue, 06 Jan 2026 08:39:38 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd1eL-009JJ0-2A;
-	Tue, 06 Jan 2026 08:38:41 +0100
+	id 1vd1fF-009JJF-2s;
+	Tue, 06 Jan 2026 08:39:37 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd1eL-000000088b4-2Zct;
-	Tue, 06 Jan 2026 08:38:41 +0100
+	id 1vd1fF-000000088cr-3TZy;
+	Tue, 06 Jan 2026 08:39:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260105083745.3258038-1-a.fatoum@barebox.org>
-References: <20260105083745.3258038-1-a.fatoum@barebox.org>
-Message-Id: <176768512161.1939659.13961581216157069854.b4-ty@pengutronix.de>
-Date: Tue, 06 Jan 2026 08:38:41 +0100
+In-Reply-To: <20260105083340.3254634-1-a.fatoum@barebox.org>
+References: <20260105083340.3254634-1-a.fatoum@barebox.org>
+Message-Id: <176768517782.1939766.10386118900914427294.b4-ty@pengutronix.de>
+Date: Tue, 06 Jan 2026 08:39:37 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260105_233843_391161_82E89537 
-X-CRM114-Status: UNSURE (   7.86  )
+X-CRM114-CacheID: sfid-20260105_233939_727274_54CFE35F 
+X-CRM114-Status: UNSURE (   7.14  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,22 +84,24 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: virt: add DEBUG_LL support
+Subject: Re: [PATCH 1/2] common: elf: use strdup_const for symmetry
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 05 Jan 2026 09:37:44 +0100, Ahmad Fatoum wrote:
-> Both Virt and Vexpress have a PL011 serial console as default console,
-> but they place it at different addresses. Add a new DEBUG_QEMU_ARM32_VIRT
-> config option to be able to use DEBUG_LL on 32-bit Virt as well.
+On Mon, 05 Jan 2026 09:33:37 +0100, Ahmad Fatoum wrote:
+> The elf->filename is free'd by free_const, but it's always allocated
+> with strdup. Change this to strdup_const to be able to avoid duplicating
+> string literals.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] ARM: virt: add DEBUG_LL support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=88a8699f5a26 (link may not be stable)
+[1/2] common: elf: use strdup_const for symmetry
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2e47b5900193 (link may not be stable)
+[2/2] common: elf: use memcmp for fixed-size comparison
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3dc2cad1a7e7 (link may not be stable)
 
 Best regards,
 -- 
