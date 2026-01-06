@@ -1,57 +1,74 @@
-Delivery-date: Tue, 06 Jan 2026 12:54:54 +0100
+Delivery-date: Tue, 06 Jan 2026 13:53:47 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd5eI-001sXj-08
+	id 1vd6ZG-001tSC-3D
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 12:54:54 +0100
+	Tue, 06 Jan 2026 13:53:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd5eH-0002yV-Fs
-	for lore@pengutronix.de; Tue, 06 Jan 2026 12:54:53 +0100
+	id 1vd6ZF-0001Nl-Pu
+	for lore@pengutronix.de; Tue, 06 Jan 2026 13:53:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kD/zH1R09ptTVYt6wnCR3Qxw+ItbkB8sgDqLCxrym8s=; b=JJXtQl5GiNvbWuQvc/0h/F3L+9
-	PzLBEmGk8urdr9we8Cd3Ne2DjcEwbgZZ6IXD6T8THoDsMSaj77si8HzjQr25dSBZ9G/dOXO5IqPml
-	zrCpe35Tw42P0h7WOOUe+70A7ihHtu9H0BPXDozTk+7M6adfnO1x9HgQMTjjZXbmED5fmaKDB2zB4
-	gWsOQvwVBMXkaDrcfBSdLmV95sOS1QO8PZsF6IlxhFjkooRtRuV5CORl4zU559i5WauyczCrz2tH/
-	RK587yP2+JZgo2Tqu9QH9Ic+SBhkCuEbuF7CpX1io844fFwkhpJ9xn7JWRTDPSHLBB3h0oaEixjr9
-	FSGO/krQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=wjnRQ7aJx3h1C2FL9blydgedqvlQ3xDeSrxS3865i2w=; b=kw2TPGGp++N7IYtMbldnz7DBh1
+	9+AYUe48MDn2RuceWUE5krsZLQ0YlIEa9AFX+QIDsZ/ioHzKLQtzC5mXKakQW7r+oCPAtC4tJybzd
+	biP+KY5lAVLHT/HVdQKS/qt06KZj+JGInscsyn5+HrMniLHcG/6oNUe81X0x92xg68mhEry/lZOcs
+	n0ectYFkGhsiAgRP8dsiEFTdAw8b/z4SHw4ot48hxycyjooxI1fZOooTlO/p/3zqf6hpmLh/+GRri
+	tiVvC5WR1t0Z86MEVAOZERH7tkMlzepsAE6xBBTMSW8I/VTmwb4We8UFbxEbdqOzAGwTQVeEUNhQg
+	jMN5ZnSA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd5dk-0000000CvTi-0RNW;
-	Tue, 06 Jan 2026 11:54:20 +0000
+	id 1vd6Yl-0000000D1YR-0RKy;
+	Tue, 06 Jan 2026 12:53:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd5di-0000000CvSW-15fG
+	id 1vd6Yi-0000000D1X9-1cgf
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 11:54:19 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vd5df-0002se-7T; Tue, 06 Jan 2026 12:54:15 +0100
-Message-ID: <a4a8720b-4448-47b8-a80d-5deadb99f68d@pengutronix.de>
-Date: Tue, 6 Jan 2026 12:54:14 +0100
+	Tue, 06 Jan 2026 12:53:13 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vd6Yf-000131-BW; Tue, 06 Jan 2026 13:53:09 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vd6Ye-009Lcg-2y;
+	Tue, 06 Jan 2026 13:53:08 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vd6Ye-000000078QE-3ILF;
+	Tue, 06 Jan 2026 13:53:08 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 06 Jan 2026 13:53:08 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jonas Rebmann <jre@pengutronix.de>, barebox@lists.infradead.org
-References: <20251217103547.4046898-1-a.fatoum@pengutronix.de>
- <efca75a6-a218-48ee-8471-2e2967e86de5@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <efca75a6-a218-48ee-8471-2e2967e86de5@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260106-pbl-load-elf-v2-5-487bc760f045@pengutronix.de>
+References: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
+In-Reply-To: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767703988; l=1739;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=WJ7DVaMgoLVyTE2DMNRZ6OQcdpEm5W5Y128wGf/JUKM=;
+ b=NYP4gxAWOGh2ZdEMCRpX6XXx3L2Fpvyx4k8D19yytDrPVuhZC/Qb9KoLg6T3lLwITbSdFYzbD
+ gcjmlZkrcMfCqSlTDqnus7+g84HodHXLOJJCPefz6nCPDRtDROdID8R
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_035418_321923_BADD659C 
-X-CRM114-Status: GOOD (  17.71  )
+X-CRM114-CacheID: sfid-20260106_045312_428682_0DC6CF5E 
+X-CRM114-Status: GOOD (  11.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -63,6 +80,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -73,52 +91,72 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts: add helper for generating Origin-URL references
+Subject: [PATCH v2 05/21] riscv: define generic relocate_image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Jonas,
+For use by the ELF loader in PBL to relocate barebox proper, export a
+new relocate_image capable of relocating barebox and implement
+relocate_to_current_adr() in terms of it.
 
-On 12/17/25 11:59 AM, Jonas Rebmann wrote:
->> +declare -A repos=(
-> 
-> Maybe mention that these are the initial commits of the repositories
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/riscv/lib/reloc.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-Done in v2.
-> The official upstream for u-boot according to its readme is the gitlab at
-> https://source.denx.de/u-boot/u-boot
-
-Denx is no more and the Gitlab has experienced availability problems in
-the recent past afair. We can change it later once it has moved to its
-new home.
-
->> +# newest commit that touched this file
->> +file_commit="$(git -C "$repo_root" log -n1 --format=%H -- "$rel_path")"
-> 
-> So the idea is that the Origin-URL is generated for the commit to which
-> <path-to-file> is checked out at the time? Maybe you could state that
-> more clearly e.g. in the top of the script or in the usage message.
-
-Done in v2.
-
-> We don't want people to add Origin-URLs referencing just any commit.
-
-Yes, of course, but for me when porting over new code, it's a useful helper.
-
-> Once I get to it, I want to add Origin-URLs to some existing code and
-> reconstructing which exact commit something was originally based on is
-> the annoying part of that.
-
-I know. This is geared towards new code.
-
-Cheers,
-Ahmad
+diff --git a/arch/riscv/lib/reloc.c b/arch/riscv/lib/reloc.c
+index 0c1ec8b4880227d16ab5e7b580244f1db2e967ec..18b13a7013cff4032c12b999470f265dbda13c51 100644
+--- a/arch/riscv/lib/reloc.c
++++ b/arch/riscv/lib/reloc.c
+@@ -30,26 +30,15 @@ void sync_caches_for_execution(void)
+ 	local_flush_icache_all();
+ }
+ 
+-void relocate_to_current_adr(void)
++static void relocate_image(unsigned long offset,
++			   void *dstart, void *dend,
++			   long *dynsym, long *dynend)
+ {
+-	unsigned long offset;
+-	unsigned long *dynsym;
+-	void *dstart, *dend;
+ 	Elf_Rela *rela;
+ 
+-	/* Get offset between linked address and runtime address */
+-	offset = get_runtime_offset();
+ 	if (!offset)
+ 		return;
+ 
+-	/*
+-	 * We have yet to relocate, so using runtime_address
+-	 * to compute the relocated address
+-	 */
+-	dstart = runtime_address(__rel_dyn_start);
+-	dend = runtime_address(__rel_dyn_end);
+-	dynsym = runtime_address(__dynsym_start);
+-
+ 	for (rela = dstart; (void *)rela < dend; rela++) {
+ 		unsigned long *fixup;
+ 
+@@ -74,5 +63,15 @@ void relocate_to_current_adr(void)
+ 		}
+ 	}
+ 
++}
++
++void relocate_to_current_adr(void)
++{
++	relocate_image(get_runtime_offset(),
++		       runtime_address(__rel_dyn_start),
++		       runtime_address(__rel_dyn_end),
++		       runtime_address(__dynsym_start),
++		       NULL);
++
+ 	sync_caches_for_execution();
+ }
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
