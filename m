@@ -1,71 +1,74 @@
-Delivery-date: Tue, 06 Jan 2026 10:17:28 +0100
+Delivery-date: Tue, 06 Jan 2026 10:26:01 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd3Bv-001qG6-39
+	id 1vd3KD-001qLW-1O
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 10:17:27 +0100
+	Tue, 06 Jan 2026 10:26:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd3Bv-0000II-BG
-	for lore@pengutronix.de; Tue, 06 Jan 2026 10:17:27 +0100
+	id 1vd3KC-0001fw-Sj
+	for lore@pengutronix.de; Tue, 06 Jan 2026 10:26:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NsR8pTwG/2AJCj22fn77T3JWU+jgZ8sYKESKB09JjEU=; b=Q4dz50rvhd+VFumiS/T3K6WCG1
-	TabYGfg+/W7u6nB1OXsEoBeeeVKZKFBObtsAxAn4Sp7x4SBoa05a20VYeoVIlkhC6+Fl05tjpC/mV
-	wCLPJdYMmDFB+cQV6LfEdCE1zFg7O6gxb3eJp4wgUlzEylqQUQqystAIf/5njU2L9TGPwxsl5nQy3
-	6dE9Mv2huZj/eJTJ86FltTK8R93RZpZtupiwsG6VLh+9JyvCNS65HJ3Jv6HJ/WKmEdO5760fG/r56
-	PWtaG/jRV3osOhWcUdGqBVU48fR4kdDRa3R3hTYE/Krzjyx209QwYd/PPjcRItSJWXu2aOBG802s3
-	ex28ThUA==;
+	bh=+ezrzcS3ks5tjk9EtXImMVwzLVMXVyvw9Sn6RvwVOyY=; b=ONXezZIduzAx9UfLvs4ZsBW5nR
+	cmg16qtsDgtPCpgb5pDUtzbPd8p8D/tfJZyjgvbYETiQQxdqZZhhP4POxV7b8nBT0wXZ22JSvF8zw
+	HzXTFns1QBF3jgAWLbi/KOh9mvrxqYJh5LF4gofwciSTHOpuTJitSaszD/ohnk7pgn6xJs02XB0q8
+	uanx2Yg2zWUmT++6NmRjUhD9+dos2eV8O/HTsvZGm3yuadkL3hAAklSvcU0RIkJm7W3fDnXhwrVyB
+	3beH0uvazCjtZzpr58MugxyBSkHe3znsrRC72XEOGlIVxpLCEsGtrqD+jLuzC9eWFxF9ro+685Gy1
+	3D2GioVw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd3BF-0000000CgUD-3Mav;
-	Tue, 06 Jan 2026 09:16:45 +0000
+	id 1vd3Je-0000000CiWn-3l6R;
+	Tue, 06 Jan 2026 09:25:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd3BC-0000000CgRT-1UPe
+	id 1vd3JY-0000000CiUe-3GAk
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 09:16:43 +0000
+	Tue, 06 Jan 2026 09:25:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vd3BA-0008Vt-Lj; Tue, 06 Jan 2026 10:16:40 +0100
+	id 1vd3JW-0001ZC-Vv; Tue, 06 Jan 2026 10:25:19 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vd3BA-009K4n-1U;
-	Tue, 06 Jan 2026 10:16:40 +0100
+	id 1vd3JW-009K6L-1m;
+	Tue, 06 Jan 2026 10:25:18 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vd3BA-00EHeF-0z;
-	Tue, 06 Jan 2026 10:16:40 +0100
-Date: Tue, 6 Jan 2026 10:16:40 +0100
+	id 1vd3JW-00EHgp-1N;
+	Tue, 06 Jan 2026 10:25:18 +0100
+Date: Tue, 6 Jan 2026 10:25:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <aVzS-J58j8FsFpC3@pengutronix.de>
-References: <20260106081659.3491945-1-a.fatoum@barebox.org>
- <20260106081659.3491945-2-a.fatoum@barebox.org>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	"Claude Sonnet 4.5" <noreply@anthropic.com>
+Message-ID: <aVzU_uopGgKAlegK@pengutronix.de>
+References: <20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de>
+ <20260105-pbl-load-elf-v1-11-e97853f98232@pengutronix.de>
+ <0a85c1df-8960-440b-b901-1c338db1f003@pengutronix.de>
+ <4885c971-49b7-4912-89f5-9d401dd5e39d@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260106081659.3491945-2-a.fatoum@barebox.org>
+In-Reply-To: <4885c971-49b7-4912-89f5-9d401dd5e39d@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_011642_531497_EA71D25D 
-X-CRM114-Status: GOOD (  31.48  )
+X-CRM114-CacheID: sfid-20260106_012520_810860_6A771E6A 
+X-CRM114-Status: GOOD (  18.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,90 +90,34 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] ARM: cpu: common: define generic relocate_image
+Subject: Re: [PATCH 11/19] mmu: introduce pbl_remap_range()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jan 06, 2026 at 09:16:57AM +0100, Ahmad Fatoum wrote:
-> For use by the ELF loader in PBL to relocate barebox proper, export a
-> new relocate_image capable of relocating barebox and implement
-> relocate_to_current_adr() in terms of it.
+On Tue, Jan 06, 2026 at 09:50:04AM +0100, Ahmad Fatoum wrote:
+> On 1/5/26 13:15, Ahmad Fatoum wrote:
+> > On 1/5/26 12:26 PM, Sascha Hauer wrote:
+> >> Add PBL-specific memory remapping function that always uses page-wise
+> >> mapping (ARCH_MAP_FLAG_PAGEWISE) for fine-grained permissions on
+> >> adjacent ELF segments with different protection requirements.
+> >>
+> >> Wraps arch-specific __arch_remap_range() for ARMv7 (4KB pages) and
+> >> ARMv8 (page tables with BBM). Needed for ELF segment permission setup.
+> >>
+> >> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > 
+> > Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > 
-> When doing ELF loading, the PT_DYNAMIC segment will contain the info
-> needed to derive the arguments for relocate_image():
 > 
->   - dstart: DT_REL  /DT_RELA
->   - dend:   DT_RELSZ/DT_RELASZ
->   - dynsym: DT_SYMTAB
-> 
-> dynend is optional and could in theory be generated by looking at
-> DT_HASH or DT_GNU_HASH, but it's not required. Best guess is that the
-> zeroing is there just to signify that we don't need this data anymore.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-> ---
->  arch/arm/cpu/common.c        | 34 +++++++++++++++-------------------
->  arch/arm/include/asm/reloc.h |  3 +++
->  2 files changed, 18 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-> index 5b65b0745b98..f4f3f8f6325b 100644
-> --- a/arch/arm/cpu/common.c
-> +++ b/arch/arm/cpu/common.c
-> @@ -60,22 +60,10 @@ void pbl_barebox_break(void)
->  /*
->   * relocate binary to the currently running address
->   */
-> -void __prereloc relocate_to_current_adr(void)
-> +void __prereloc relocate_image(unsigned long offset,
-> +			       void *dstart, void *dend,
-> +			       long *dynsym, long *dynend)
+> Hmm, a question: Why do we need to preemptively break up pages?
+> Doesn't normal remapping do that already? My understanding was
+> that we only did it here to allow remapping while executing from
+> it, but in the PBL ELF loader we are not executing from there,
+> so there should not be an issue.
 
-As relocate_image() now contains two entirely separate implementations
-for ARM32 and ARM64, should we move it to arch/arm/lib[32|64]/ ?
-
->  {
-> -	unsigned long offset;
-> -	unsigned long __maybe_unused *dynsym, *dynend;
-> -	void *dstart, *dend;
-> -
-> -	/* Get offset between linked address and runtime address */
-> -	offset = get_runtime_offset();
-> -
-> -	/*
-> -	 * We have yet to relocate, so using runtime_address
-> -	 * to compute the relocated address
-> -	 */
-> -	dstart = runtime_address(__rel_dyn_start);
-> -	dend = runtime_address(__rel_dyn_end);
-> -
->  #if defined(CONFIG_CPU_64)
->  	while (dstart < dend) {
->  		struct elf64_rela *rel = dstart;
-> @@ -105,8 +93,6 @@ void __prereloc relocate_to_current_adr(void)
->  		dstart += sizeof(*rel);
->  	}
->  #elif defined(CONFIG_CPU_32)
-> -	dynsym = runtime_address(__dynsym_start);
-> -	dynend = runtime_address(__dynsym_end);
->  
->  	while (dstart < dend) {
->  		struct elf32_rel *rel = dstart;
-> @@ -141,10 +127,21 @@ void __prereloc relocate_to_current_adr(void)
->  		dstart += sizeof(*rel);
->  	}
->  
-> -	__memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
-> +	/* Optional: not required for correctness */
-> +	if (dynend)
-> +		__memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
-
-The purpose of this memset is that we can call relocate_to_current_adr()
-multiple times on the same binary. This happens when relocate_to_current_adr()
-is called in the board code and then again in uncompress.c. I think in
-this particular case we could just early return above when offset == 0,
-but I think there are (were?) some cases where the same binary is moved multiple
-times.
+Yes, I think the ARCH_MAP_FLAG_PAGEWISE flag can be dropped here.
+In the end it seems we do not the flag anymore when loading the
+ELF image in PBL.
 
 Sascha
 
