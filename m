@@ -1,54 +1,55 @@
-Delivery-date: Tue, 06 Jan 2026 09:17:34 +0100
+Delivery-date: Tue, 06 Jan 2026 09:17:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd2Fy-001pKn-2L
+	id 1vd2G0-001pL9-2J
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 09:17:34 +0100
+	Tue, 06 Jan 2026 09:17:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd2Fy-0001cw-4g
-	for lore@pengutronix.de; Tue, 06 Jan 2026 09:17:34 +0100
+	id 1vd2G0-0001dO-31
+	for lore@pengutronix.de; Tue, 06 Jan 2026 09:17:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=SOeRV9mEr2v0DJaFARtfw0lAyFISo3vtPSmbIEGb3lg=; b=deTQjdzJ78a6ulgqS3/3n+ZpoB
-	GK4gGCX2AGHfCdqfNUE05JKoYWfL3k06mrDc9ntBMR2GeERt8WU4XNzc5YnWHfebQSyOZcCxFZdVU
-	OjltO6VFzOUNtXAmHlpel0V7575IzRN7PLdPsQZyCrwh+ubICJnSlOth8ZwZrUjRnZFYyWgNXbDtT
-	XpkKl/Yw5iBYGRyKDcvzTfaptNDidN2GvwmHm62L9TrM2FS3KVzGcOTQZ6DoDeSn/7afYVT0Xtj5l
-	GaOB+Lg2TZz1mSwtNkNHaFBiP5bEvlUt0PNz6b9r69yHAyMd/N+C2WyvDokFX1/PEahIPFzhluF5u
-	dmZ8SxCg==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=l5PXyss5hJcAclRW0FCVX7h2heXA8TvmE0ksiej0FtE=; b=0Mti5aElwUcXvCd2n9L+Ro4k5g
+	+lRcAOxojw4kOFvmnW4V4aaSEJJaNTMhWS0yzZFfwU1kNAokM6TZJjTDAiValbvLluBnujq7fIVNz
+	jeN6YEUmCmU6rKT022QzTQ7ruSXKvi+z6x1plbPNV4aH96TdCEGMTWEMUuNUgdksUlZ228aC2tbsZ
+	0xqu8nmRDeEpW9pSx6wvqBpvYWNOLdK4TLlaUpjFbkxJeBjetGQ8qCOOnmuqWmzYMFOa+eiMb6MNg
+	XysTlQUOO3CTWG1Fwx2Y5Hi0GwMMlyYX7QUzTb/T3NkkHdy16H6iGEpHSlg15Yir26sSHTftKos+R
+	RAKQEHSw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd2FW-0000000Cb74-3SIA;
-	Tue, 06 Jan 2026 08:17:06 +0000
+	id 1vd2FX-0000000Cb7A-0O1p;
+	Tue, 06 Jan 2026 08:17:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd2FU-0000000Cb6N-1Vju
+	id 1vd2FU-0000000Cb6O-1Vli
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 08:17:05 +0000
+	Tue, 06 Jan 2026 08:17:06 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vd2FQ-0001Ua-Mx; Tue, 06 Jan 2026 09:17:00 +0100
+	id 1vd2FR-0001Ua-5b; Tue, 06 Jan 2026 09:17:01 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Tue,  6 Jan 2026 09:16:56 +0100
-Message-ID: <20260106081659.3491945-1-a.fatoum@barebox.org>
+Date: Tue,  6 Jan 2026 09:16:57 +0100
+Message-ID: <20260106081659.3491945-2-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260106081659.3491945-1-a.fatoum@barebox.org>
+References: <20260106081659.3491945-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_001704_398691_9C8B30CB 
-X-CRM114-Status: UNSURE (   9.26  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260106_001704_398543_62F43627 
+X-CRM114-Status: GOOD (  14.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,89 +71,112 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] ARM: cpu: common: skip R_ARM_NONE relocations
+Subject: [PATCH 2/2] ARM: cpu: common: define generic relocate_image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Relocations may be turned into no-op in place by strip running on an
-executable by having their type set to 0 (R_ARM_NONE).
+For use by the ELF loader in PBL to relocate barebox proper, export a
+new relocate_image capable of relocating barebox and implement
+relocate_to_current_adr() in terms of it.
 
-This can happen with the incoming ELF loading in PBL support, so teach
-relocate_to_current_adr() to skip these no-op relocation entries.
+When doing ELF loading, the PT_DYNAMIC segment will contain the info
+needed to derive the arguments for relocate_image():
+
+  - dstart: DT_REL  /DT_RELA
+  - dend:   DT_RELSZ/DT_RELASZ
+  - dynsym: DT_SYMTAB
+
+dynend is optional and could in theory be generated by looking at
+DT_HASH or DT_GNU_HASH, but it's not required. Best guess is that the
+zeroing is there just to signify that we don't need this data anymore.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/cpu/common.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ arch/arm/cpu/common.c        | 34 +++++++++++++++-------------------
+ arch/arm/include/asm/reloc.h |  3 +++
+ 2 files changed, 18 insertions(+), 19 deletions(-)
 
 diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-index 339ef2db2534..5b65b0745b98 100644
+index 5b65b0745b98..f4f3f8f6325b 100644
 --- a/arch/arm/cpu/common.c
 +++ b/arch/arm/cpu/common.c
-@@ -36,6 +36,7 @@ void sync_caches_for_execution(void)
- 	arm_early_mmu_cache_flush();
- }
- 
-+#define R_ARM_NONE 0
- #define R_ARM_RELATIVE 23
- #define R_AARCH64_RELATIVE 1027
- 
-@@ -78,14 +79,19 @@ void __prereloc relocate_to_current_adr(void)
+@@ -60,22 +60,10 @@ void pbl_barebox_break(void)
+ /*
+  * relocate binary to the currently running address
+  */
+-void __prereloc relocate_to_current_adr(void)
++void __prereloc relocate_image(unsigned long offset,
++			       void *dstart, void *dend,
++			       long *dynsym, long *dynend)
+ {
+-	unsigned long offset;
+-	unsigned long __maybe_unused *dynsym, *dynend;
+-	void *dstart, *dend;
+-
+-	/* Get offset between linked address and runtime address */
+-	offset = get_runtime_offset();
+-
+-	/*
+-	 * We have yet to relocate, so using runtime_address
+-	 * to compute the relocated address
+-	 */
+-	dstart = runtime_address(__rel_dyn_start);
+-	dend = runtime_address(__rel_dyn_end);
+-
  #if defined(CONFIG_CPU_64)
  	while (dstart < dend) {
  		struct elf64_rela *rel = dstart;
-+		unsigned long *fixup;
- 
--		if (ELF64_R_TYPE(rel->r_info) == R_AARCH64_RELATIVE) {
--			unsigned long *fixup = (unsigned long *)(rel->r_offset + offset);
-+		switch(ELF64_R_TYPE(rel->r_info)) {
-+		case R_AARCH64_RELATIVE:
-+			fixup = (unsigned long *)(rel->r_offset + offset);
- 
- 			*fixup = rel->r_addend + offset;
- 			rel->r_addend += offset;
- 			rel->r_offset += offset;
--		} else {
-+			break;
-+		case R_ARM_NONE:
-+			break;
-+		default:
- 			putc_ll('>');
- 			puthex_ll(rel->r_info);
- 			putc_ll(' ');
-@@ -104,20 +110,26 @@ void __prereloc relocate_to_current_adr(void)
+@@ -105,8 +93,6 @@ void __prereloc relocate_to_current_adr(void)
+ 		dstart += sizeof(*rel);
+ 	}
+ #elif defined(CONFIG_CPU_32)
+-	dynsym = runtime_address(__dynsym_start);
+-	dynend = runtime_address(__dynsym_end);
  
  	while (dstart < dend) {
  		struct elf32_rel *rel = dstart;
-+		unsigned long r, *fixup;
+@@ -141,10 +127,21 @@ void __prereloc relocate_to_current_adr(void)
+ 		dstart += sizeof(*rel);
+ 	}
  
--		if (ELF32_R_TYPE(rel->r_info) == R_ARM_RELATIVE) {
--			unsigned long *fixup = (unsigned long *)(rel->r_offset + offset);
-+		switch (ELF32_R_TYPE(rel->r_info)) {
-+		case R_ARM_RELATIVE:
-+			fixup = (unsigned long *)(rel->r_offset + offset);
+-	__memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
++	/* Optional: not required for correctness */
++	if (dynend)
++		__memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
+ #else
+ #error "Architecture not specified"
+ #endif
++}
++
++void __prereloc relocate_to_current_adr(void)
++{
++	relocate_image(get_runtime_offset(),
++		       runtime_address(__rel_dyn_start),
++		       runtime_address(__rel_dyn_end),
++		       runtime_address(__dynsym_start),
++		       runtime_address(__dynsym_end));
  
- 			*fixup = *fixup + offset;
+ 	sync_caches_for_execution();
+ }
+@@ -196,4 +193,3 @@ void print_pbl_mem_layout(ulong membase, ulong endmem, ulong barebox_base)
+ 	printf("membase               = 0x%08lx+0x%08lx\n",
+ 	       membase, endmem - membase);
+ }
+-
+diff --git a/arch/arm/include/asm/reloc.h b/arch/arm/include/asm/reloc.h
+index 2d7411ab5284..62c07932fad4 100644
+--- a/arch/arm/include/asm/reloc.h
++++ b/arch/arm/include/asm/reloc.h
+@@ -30,6 +30,9 @@ static inline __prereloc unsigned long global_variable_offset(void)
+ }
+ #define global_variable_offset() global_variable_offset()
  
- 			rel->r_offset += offset;
--		} else if (ELF32_R_TYPE(rel->r_info) == R_ARM_ABS32) {
--			unsigned long r = dynsym[ELF32_R_SYM(rel->r_info) * 4 + 1];
--			unsigned long *fixup = (unsigned long *)(rel->r_offset + offset);
-+			break;
-+		case R_ARM_ABS32:
-+			r = dynsym[ELF32_R_SYM(rel->r_info) * 4 + 1];
-+			fixup = (unsigned long *)(rel->r_offset + offset);
- 
- 			*fixup = *fixup + r + offset;
- 			rel->r_offset += offset;
--		} else {
-+			break;
-+		case R_ARM_NONE:
-+			break;
-+		default:
- 			putc_ll('>');
- 			puthex_ll(rel->r_info);
- 			putc_ll(' ');
++void relocate_image(unsigned long offset,
++		    void *dstart, void *dend,
++		    long *dynsym, long *dynend);
+ void relocate_to_current_adr(void);
+ void relocate_to_adr(unsigned long target);
+ void relocate_to_adr_full(unsigned long target);
 -- 
 2.47.3
 
