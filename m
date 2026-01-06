@@ -1,74 +1,74 @@
-Delivery-date: Tue, 06 Jan 2026 14:02:10 +0100
+Delivery-date: Tue, 06 Jan 2026 14:02:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6hO-001tcq-0v
+	id 1vd6hP-001tdI-10
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 14:02:10 +0100
+	Tue, 06 Jan 2026 14:02:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6hM-0003ON-FE
-	for lore@pengutronix.de; Tue, 06 Jan 2026 14:02:10 +0100
+	id 1vd6hN-0003PC-BG
+	for lore@pengutronix.de; Tue, 06 Jan 2026 14:02:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SVsy07tdQFuopXl+10bPdfIG31lrSun7bzrQml5IQGc=; b=hR500RkloVrczxrGhraBduMAIP
-	5Dlsam/XEBYqj0mpLV/EnNtq2Yj8Og5RtSLn+n5UxExn+9ldUVKoPyRKzVZsXTIgKZA8dzUSWWQcj
-	3ucV9wr64qF4U2uOaNdHxDQmrr57LeN88qG9DhOMndgPirEaKThB46w9bFkcCQIV00k5FpbJKCGrM
-	2MvA1UX514vtihXCRPoOVqsj7XeNp67VdTS2+G8lobTd5qLKcCAy7N+JYMVmfVfKQpOYf8DyEOZMZ
-	mHGdHvChtYx1vaeNx4gSr8h7igccNQx3yJgWRwXCs1jaDtnIIWUO5PBwFvnpHq7cMc2JiTkDqpsgh
-	XbWWKdMA==;
+	bh=UN7SDUdcGWTli4oHv7n+26Y2enO+YnpcFUrO0qAtdV8=; b=rKfU3rHWlIhTVQJguv9NamPYMD
+	l/4UP/LawxjNQCvLa72ky8YK5UgecPogJVKUQctRAZgMHU/qcNoAjfpSbIVc6rNNE2aD8p65Vhw+/
+	rJjc/JQ8JW6Ua8rp54063B2860+ik72IR6WujWtIUM0LLVIXsAceIPWhizRzG3+qcEUoLTqbU7qlV
+	Rf/npxSkRQGulrDs5gNuy869FlQipQZXVWAWhgodvejMyjGLtyeINISxApbhjd5QnDh7LUvPy18rp
+	+4d2tBgZPYOzg2fWzlntRCOrgKvy7a4xrLAk83iXczh1pwy96lkGdzNTxSdAORMmS03oDX6PpIl5M
+	kmAfbnrw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6gq-0000000D2WC-2TLy;
+	id 1vd6gq-0000000D2Vi-06KS;
 	Tue, 06 Jan 2026 13:01:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6gl-0000000D2Qs-3Udd
+	id 1vd6gl-0000000D2Qq-2cN3
 	for barebox@lists.infradead.org;
 	Tue, 06 Jan 2026 13:01:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6gk-0002qB-Du; Tue, 06 Jan 2026 14:01:30 +0100
+	id 1vd6gk-0002pc-7O; Tue, 06 Jan 2026 14:01:30 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6gk-009LeC-0k;
+	id 1vd6gk-009Le3-04;
 	Tue, 06 Jan 2026 14:01:30 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6Ye-000000078QE-3aB9;
+	id 1vd6Ye-000000078QE-3gvH;
 	Tue, 06 Jan 2026 13:53:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 06 Jan 2026 13:53:16 +0100
+Date: Tue, 06 Jan 2026 13:53:22 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-pbl-load-elf-v2-13-487bc760f045@pengutronix.de>
+Message-Id: <20260106-pbl-load-elf-v2-19-487bc760f045@pengutronix.de>
 References: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
 In-Reply-To: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767703988; l=5217;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767703988; l=3832;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Hz5o9wsx9nC57WG6LOqxXTh3alA3574zAXK8mJw1IG8=;
- b=9zE/bplUdJOxH4a2U9zJXTkNnCdTG9E65+zpKYwmMnYWx14msdRxJv8W74oB2U5yubOhM0kb9
- +UxgGYYm8PHCJuLXGXFlGfHsiTFD+Ffojbz+rmr4Qk/JOA79vs5S6DM
+ bh=Mwri7O285H8eq8NrUdJccMIzCCVq61V1B/iQGjMnMH8=;
+ b=GM1zhZziJEnVV7aLdsnLW9eQY8phSaVpC2USC20KI29EAA1tAirdwllZ0G5fYB1iJ029PsTpq
+ tzbVt0CDdVuDALtD5tu4pgjBhON45Ugv/zDXXvR1BFBAQOOIplNwPsy
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_050131_896007_40D8825A 
-X-CRM114-Status: GOOD (  16.15  )
+X-CRM114-CacheID: sfid-20260106_050131_680535_B2B54FEC 
+X-CRM114-Status: GOOD (  12.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,164 +91,147 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 13/21] ARM: use relative jumps in exception table
+Subject: [PATCH v2 19/21] riscv: linker script: create separate PT_LOAD
+ segments for text, rodata, and data
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Create position-independent exception vectors using relative branches
-instead of absolute addresses. This works on ARMv7 onwards which
-supports setting the address of the exception vectors.
+Fix the linker script to generate three distinct PT_LOAD segments with
+correct permissions instead of combining .rodata with .data.
 
-New .text_inplace_exceptions section contains PC-relative branches,
-enabling barebox proper to start with MMU already configured using
-ELF segment addresses.
+Before this fix, the linker auto-generated only two PT_LOAD segments:
+1. Text segment (PF_R|PF_X)
+2. Data segment (PF_R|PF_W) - containing .rodata, .data, .bss, etc.
+
+This caused .rodata to be mapped with write permissions when
+riscv_mmu_setup_from_elf() or riscv_pmp_setup_from_elf() set up memory
+permissions based on ELF segments, defeating the W^X protection.
+
+With explicit PHDRS directives, we now generate three segments:
+1. text segment (PF_R|PF_X): .text and related code sections
+2. rodata segment (PF_R): .rodata and related read-only sections
+3. data segment (PF_R|PF_W): .data, .bss, and related sections
+
+This ensures riscv_mmu_setup_from_elf() and riscv_pmp_setup_from_elf()
+correctly map .rodata as read-only instead of read-write.
+
+Also update the prelink script to handle binaries without a PT_DYNAMIC
+segment, as the new PHDRS layout may result in this case.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/exceptions_32.S    | 20 ++++++++++++++++++++
- arch/arm/cpu/interrupts_32.c    |  7 ++-----
- arch/arm/cpu/no-mmu.c           | 11 +----------
- arch/arm/include/asm/sections.h |  1 +
- arch/arm/lib/pbl.lds.S          |  6 +++---
- arch/arm/lib32/barebox.lds.S    |  4 ++++
- 6 files changed, 31 insertions(+), 18 deletions(-)
+ arch/riscv/lib/barebox.lds.S | 37 ++++++++++++++++++++++++-------------
+ scripts/prelink-riscv.inc    |  9 +++++++--
+ 2 files changed, 31 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/cpu/exceptions_32.S b/arch/arm/cpu/exceptions_32.S
-index dc3d42663cbedd37947e27d449eb4ac8c3d8c3f1..85ee4ca3fd4e5aff8e1e02aa3d7375173a923072 100644
---- a/arch/arm/cpu/exceptions_32.S
-+++ b/arch/arm/cpu/exceptions_32.S
-@@ -155,6 +155,26 @@ ENTRY(arm_fixup_vectors)
- ENDPROC(arm_fixup_vectors)
- #endif
+diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
+index 38376befe9a82ead2152f8c7fc581eb5bb35fab4..1565a6fedef1ade7687740240bc36f407ca880fc 100644
+--- a/arch/riscv/lib/barebox.lds.S
++++ b/arch/riscv/lib/barebox.lds.S
+@@ -17,14 +17,22 @@ OUTPUT_ARCH(BAREBOX_OUTPUT_ARCH)
+ ENTRY(start)
+ OUTPUT_FORMAT(BAREBOX_OUTPUT_FORMAT)
  
-+.section .text_inplace_exceptions
-+1:	b 1b			/* barebox_arm_reset_vector */
-+#ifdef CONFIG_ARM_EXCEPTIONS
-+	b undefined_instruction	/* undefined instruction */
-+	b software_interrupt	/* software interrupt (SWI) */
-+	b prefetch_abort	/* prefetch abort */
-+	b data_abort		/* data abort */
-+1:	b 1b			/* (reserved) */
-+	b irq			/* irq (interrupt) */
-+	b fiq			/* fiq (fast interrupt) */
-+#else
-+1:	b 1b				/* undefined instruction */
-+1:	b 1b				/* software interrupt (SWI) */
-+1:	b 1b				/* prefetch abort */
-+1:	b 1b				/* data abort */
-+1:	b 1b				/* (reserved) */
-+1:	b 1b				/* irq (interrupt) */
-+1:	b 1b				/* fiq (fast interrupt) */
-+#endif
++PHDRS
++{
++	text PT_LOAD FLAGS(5);     /* PF_R | PF_X */
++	rodata PT_LOAD FLAGS(4);   /* PF_R */
++	data PT_LOAD FLAGS(6);     /* PF_R | PF_W */
++	dynamic PT_DYNAMIC FLAGS(6); /* PF_R | PF_W */
++}
 +
- .section .text_exceptions
- .globl extable
- extable:
-diff --git a/arch/arm/cpu/interrupts_32.c b/arch/arm/cpu/interrupts_32.c
-index 0b88db10fe487378fe08018701bc672f63139fc1..5dc4802fafbfdbcd54707b84835f40177e10742b 100644
---- a/arch/arm/cpu/interrupts_32.c
-+++ b/arch/arm/cpu/interrupts_32.c
-@@ -231,10 +231,8 @@ static __maybe_unused int arm_init_vectors(void)
- 	 * First try to use the vectors where they actually are, works
- 	 * on ARMv7 and later.
- 	 */
--	if (!set_vector_table((unsigned long)__exceptions_start)) {
--		arm_fixup_vectors();
-+	if (!set_vector_table((unsigned long)__inplace_exceptions_start))
- 		return 0;
--	}
- 
- 	/*
- 	 * Next try high vectors at 0xffff0000.
-@@ -264,7 +262,6 @@ void arm_pbl_init_exceptions(void)
- 	if (cpu_architecture() < CPU_ARCH_ARMv7)
- 		return;
- 
--	set_vbar((unsigned long)__exceptions_start);
--	arm_fixup_vectors();
-+	set_vbar((unsigned long)__inplace_exceptions_start);
- }
- #endif
-diff --git a/arch/arm/cpu/no-mmu.c b/arch/arm/cpu/no-mmu.c
-index c4ef5d1f9d55136d606c244309dbeeb8fd988784..68246d71156c7c84b9faff452cebb37132b83573 100644
---- a/arch/arm/cpu/no-mmu.c
-+++ b/arch/arm/cpu/no-mmu.c
-@@ -21,8 +21,6 @@
- #include <asm/sections.h>
- #include <asm/cputype.h>
- 
--#define __exceptions_size (__exceptions_stop - __exceptions_start)
--
- static bool has_vbar(void)
+ SECTIONS
  {
- 	u32 mainid;
-@@ -41,7 +39,6 @@ static bool has_vbar(void)
+ 	. = 0x0;
  
- static int nommu_v7_vectors_init(void)
- {
--	void *vectors;
- 	u32 cr;
+-	.image_start : { *(.__image_start) }
++	.image_start : { *(.__image_start) } :text
  
- 	if (cpu_architecture() < CPU_ARCH_ARMv7)
-@@ -58,13 +55,7 @@ static int nommu_v7_vectors_init(void)
- 	cr &= ~CR_V;
- 	set_cr(cr);
- 
--	arm_fixup_vectors();
--
--	vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
--	memset(vectors, 0, PAGE_SIZE);
--	memcpy(vectors, __exceptions_start, __exceptions_size);
--
--	set_vbar((unsigned int)vectors);
-+	set_vbar((unsigned int)__inplace_exceptions_start);
- 
- 	return 0;
- }
-diff --git a/arch/arm/include/asm/sections.h b/arch/arm/include/asm/sections.h
-index 15b1a6482a5b148284ab47de2db1c2653909da09..bf4fb7b109a7a22d9a298257af23a11b9efe6861 100644
---- a/arch/arm/include/asm/sections.h
-+++ b/arch/arm/include/asm/sections.h
-@@ -13,6 +13,7 @@ extern char __dynsym_start[];
- extern char __dynsym_end[];
- extern char __exceptions_start[];
- extern char __exceptions_stop[];
-+extern char __inplace_exceptions_start[];
- 
- #endif
- 
-diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
-index 9c51f5eb3a3d8256752a78e03fed851c84d92edb..53b21084cff2e3d916cd37485281f2f78166c37d 100644
---- a/arch/arm/lib/pbl.lds.S
-+++ b/arch/arm/lib/pbl.lds.S
-@@ -53,9 +53,9 @@ SECTIONS
- 		*(.text_bare_init*)
- 		__bare_init_end = .;
- 		. = ALIGN(0x20);
--		__exceptions_start = .;
--		KEEP(*(.text_exceptions*))
--		__exceptions_stop = .;
-+		__inplace_exceptions_start = .;
-+		KEEP(*(.text_inplace_exceptions*))
-+		__inplace_exceptions_stop = .;
- 		*(.text*)
- 	}
- 
-diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
-index c704dd6d70f3ab157ceb67dfb14760e03f2a5d62..17e0970ba4989e5213ed38ea5ff87bdf5bfa2740 100644
---- a/arch/arm/lib32/barebox.lds.S
-+++ b/arch/arm/lib32/barebox.lds.S
-@@ -26,6 +26,10 @@ SECTIONS
- 		__exceptions_start = .;
+ 	. = ALIGN(4);
+-	._text : { *(._text) }
++	._text : { *(._text) } :text
+ 	.text      :
+ 	{
+ 		_stext = .;
+@@ -36,44 +44,47 @@ SECTIONS
  		KEEP(*(.text_exceptions*))
  		__exceptions_stop = .;
-+		. = ALIGN(0x20);
-+		__inplace_exceptions_start = .;
-+		KEEP(*(.text_inplace_exceptions*))
-+		__inplace_exceptions_stop = .;
  		*(.text*)
- 	}
+-	}
++	} :text
  	BAREBOX_BARE_INIT_SIZE
+ 
+-	. = ALIGN(4);
++	. = ALIGN(4096);
+ 	__start_rodata = .;
+ 	.rodata : {
+ 		*(.rodata*)
+ 		RO_DATA_SECTION
+-	}
++	} :rodata
+ 
+ 	__end_rodata = .;
+ 	_etext = .;
+ 	_sdata = .;
+ 
+-	. = ALIGN(4);
+-	.data : { *(.data*) }
++	. = ALIGN(4096);
++
++	.data : { *(.data*) } :data
+ 
+ 	/DISCARD/ : { *(.rela.plt*) }
+ 	.rela.dyn : {
+ 		__rel_dyn_start = .;
+ 		*(.rel*)
+ 		__rel_dyn_end = .;
+-	}
++	} :data
+ 
+ 	.dynsym : {
+ 		__dynsym_start = .;
+ 		*(.dynsym)
+ 		__dynsym_end = .;
+-	}
++	} :data
++
++	.dynamic : { *(.dynamic) } :data :dynamic
+ 
+ 	_edata = .;
+ 
+-	.image_end : { *(.__image_end) }
++	.image_end : { *(.__image_end) } :data
+ 
+ 	. = ALIGN(4);
+-	.__bss_start :  { *(.__bss_start) }
+-	.bss : { *(.bss*) }
+-	.__bss_stop :  { *(.__bss_stop) }
++	.__bss_start :  { *(.__bss_start) } :data
++	.bss : { *(.bss*) } :data
++	.__bss_stop :  { *(.__bss_stop) } :data
+ 	_end = .;
+ 	_barebox_image_size = __bss_start;
+ }
+diff --git a/scripts/prelink-riscv.inc b/scripts/prelink-riscv.inc
+index f2b5467f5b3c19be285153d3ad7cdb210a24a94c..8a54a9737fe73827ad8cab01a61fbecc68a1140a 100644
+--- a/scripts/prelink-riscv.inc
++++ b/scripts/prelink-riscv.inc
+@@ -61,8 +61,13 @@ static void prelink_bonn(void *data)
+ 		}
+ 	}
+ 
+-	if (dyns == NULL)
+-		die("No dynamic section found");
++	if (dyns == NULL) {
++		/* No PT_DYNAMIC segment found - binary may not need prelinking.
++		 * This can happen with statically-linked relocatable binaries
++		 * that handle relocations differently. Exit successfully.
++		 */
++		return;
++	}
+ 
+ 	Elf_Rela *rela_dyn = NULL;
+ 	size_t rela_count = 0;
 
 -- 
 2.47.3
