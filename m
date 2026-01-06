@@ -1,88 +1,75 @@
-Delivery-date: Tue, 06 Jan 2026 14:12:16 +0100
+Delivery-date: Tue, 06 Jan 2026 14:12:22 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6rA-001u0S-1V
+	id 1vd6rG-001u0p-1g
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 14:12:16 +0100
+	Tue, 06 Jan 2026 14:12:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6r9-0005dH-Tn
-	for lore@pengutronix.de; Tue, 06 Jan 2026 14:12:16 +0100
+	id 1vd6rF-0005fq-Vn
+	for lore@pengutronix.de; Tue, 06 Jan 2026 14:12:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Xsca91Gg6eK0Q2R9F+nK22eTeIz4ZeY0vg35CQS5HGw=; b=ERtDsT+qAPE9LfZ+SBz0EdNIzu
-	8dEWvvIMNIJaifsL9Ttt3Ue/o0dYZ8D1D/0Z/tdmuaHVXDJfBheJlVDSaAAg1rYJPQ7DNys5Recuv
-	UiH94uYDhedu/HeVB8TpU11OA0VPMfqXTtV+Rxp7X0FLJgoyFJiuumuH5A49RxadS2UonjE9S2oh+
-	5yCfimyvIiOl/++HNBb6pddscij9wCqrjah1F3DSC/8A2kTcwiXqGdk6rDvLc7WZrfx/pKeskTLX+
-	whSXrp+jD76ZPf2TmKJ+IR6m21Rd5j7ekz8ix75/X86Tk0h+bC1PbpmkVOW3yCH0MfixntKRmwW8K
-	OgK+BIyg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=G9ESPXEcAbLAfisTBtRNpO3zE0qa/UR5AdCuSdaQyVs=; b=Sj4FTJrdxX4b7TCNePx4xzymOs
+	g1+0Q9wCh4J1+AJQPM1MyGjp7g3l5emsQaB0WqJhQNRxqHaLrwHlogtJkrUJO0uTJSQbEsZMP8/Cp
+	m34dLJhJPM2OCrS3U/Y4XpGSsopVgRlj7nrE1pDmK2SOJf7Dl398iv7mAXWf8qUGfRmi4KXXkRa78
+	5SFBgJaIHbeTbE4dyxtgOhRWBcGIevJsz2y1MrsvMxdbmdmbB21tLpeUzLZvmcnCyBsBhNiR2qSyq
+	0FK2VIP0OayOEsydsQ7n4Nt4vNnxbYuJgzChqOHBcfjrw1xTbxmYsu/s6c7TkOrLukPOv19SdWSoe
+	11EtzKkA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6qn-0000000D4IE-1Lvq;
-	Tue, 06 Jan 2026 13:11:53 +0000
+	id 1vd6qu-0000000D4LP-0J5m;
+	Tue, 06 Jan 2026 13:12:00 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6qm-0000000D4Hb-0iCd
+	id 1vd6qt-0000000D4L4-2OnS
 	for barebox@bombadil.infradead.org;
-	Tue, 06 Jan 2026 13:11:52 +0000
+	Tue, 06 Jan 2026 13:11:59 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Xsca91Gg6eK0Q2R9F+nK22eTeIz4ZeY0vg35CQS5HGw=; b=oO3ZICtZhXPVJKsrWqdT7P2BKq
-	jzafQtjajPTPG1g3am1fR5DME6alibQrxX/7WlNLYch2le/xxcuoyGiw2Z6PxwByXHGqTxbMRVvFT
-	ihYG0bLCCUf45WZdKYa5d3OZbdq+pOpeuZ4ZqL9h9X4Eg5MQfuFCYT2vOKc6K+8LwXbq1nwk9Wtsk
-	zR8Cgs9Ho6ANttlqsD1Y3hldTxrtpaidRmIKQ4kQdge4KioUIPz7wqfsE42ioLXEAl7weV6pXt/GY
-	oyAhADjp98hSgCkHmROXpsym+/1x2itd78ZNWz49mylTugXjB+a+ls6bRK7aj2xoBOTYzeXhHBjPE
-	hoEVDDUg==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=G9ESPXEcAbLAfisTBtRNpO3zE0qa/UR5AdCuSdaQyVs=; b=bNyaMS5UksSJs/02uUwcHOds0i
+	7xlHA2XtPf+Tvo0miTk65ErvFWVT8NvDU5wLAH+Hnc44zwpgAS6OEzyBHEKMzXorjRWsw7208E+dE
+	JwkP85IgwvCDYZ2Fh1PUESWVBPDeQ8H0zPar2jyy37IhOpr97kPeV3+S2CGcdqhd99X9yPYVjrveX
+	OaDlsRQTqzXlH58FEVNZGuP+VzOhEgsV4gPgqeGGtk7OaJ0sq14wIflOJUIab5e8r5HkPVlIYpgpb
+	Gnr1wCi8KtbK0+QbFQQYqDzQ/gIwtEXhc1PmUZcD34YCaOhWsjdbFkx4y7rBAr22WjSEK7DUY1D97
+	mkF93s6g==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6qj-00000009k5X-0oou
+	id 1vd6qq-00000009k69-30T0
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 13:11:51 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vd6qh-0005Sf-W7; Tue, 06 Jan 2026 14:11:48 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vd6qh-009LvY-2a;
-	Tue, 06 Jan 2026 14:11:47 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vd6qh-00EK3U-2F;
-	Tue, 06 Jan 2026 14:11:47 +0100
-Date: Tue, 6 Jan 2026 14:11:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>,
-	"Claude Sonnet 4.5" <noreply@anthropic.com>
-Message-ID: <aV0KE_g9ji407e8f@pengutronix.de>
-References: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
- <20260106-pbl-load-elf-v2-5-487bc760f045@pengutronix.de>
- <f901e957-4a87-46f7-8928-09cf171a4405@pengutronix.de>
+	Tue, 06 Jan 2026 13:11:58 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vd6qq-0005Ut-7l; Tue, 06 Jan 2026 14:11:56 +0100
+Message-ID: <23363b31-361d-432a-b78e-e32613378025@pengutronix.de>
+Date: Tue, 6 Jan 2026 14:11:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f901e957-4a87-46f7-8928-09cf171a4405@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>,
+ Marco Felsch <m.felsch@pengutronix.de>
+References: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
+ <20260106-pbl-load-elf-v2-20-487bc760f045@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260106-pbl-load-elf-v2-20-487bc760f045@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_131149_267318_0886BC24 
-X-CRM114-Status: GOOD (  17.66  )
+X-CRM114-CacheID: sfid-20260106_131156_810687_B2B404F6 
+X-CRM114-Status: GOOD (  16.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,42 +87,48 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 05/21] riscv: define generic relocate_image
+Subject: Re: [PATCH v2 20/21] riscv: Allwinner D1: Drop M-Mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jan 06, 2026 at 02:10:02PM +0100, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 1/6/26 1:53 PM, Sascha Hauer wrote:
-> > For use by the ELF loader in PBL to relocate barebox proper, export a
-> > new relocate_image capable of relocating barebox and implement
-> > relocate_to_current_adr() in terms of it.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> > -	dstart = runtime_address(__rel_dyn_start);
-> > -	dend = runtime_address(__rel_dyn_end);
-> > -	dynsym = runtime_address(__dynsym_start);
-> 
-> Interestingly dynend wasn't used here and no memset, unlike for ARM and
-> also it needs dynsym even with RELA...
 
-Yes, as said, the memset is only needed for multiple relocations of the
-same image. Likely nobody trapped into this on RiscV.
 
-Sascha
+On 1/6/26 1:53 PM, Sascha Hauer wrote:
+> The Allwinner D1 selects both RISCV_M_MODE and RISCV_S_MODE. The board
+> code uses barebox_riscv_machine_entry() and not barebox_riscv_machine_entry()
+> which indicates RISCV_M_MODE was only selected by accident. Remove it.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> ---
+>  arch/riscv/Kconfig.socs | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+> index 4a3b56b5fff48c86901ed0346be490a6847ac14e..0d9984dd2888e6cab81939e3ee97ef83851362a0 100644
+> --- a/arch/riscv/Kconfig.socs
+> +++ b/arch/riscv/Kconfig.socs
+> @@ -123,7 +123,6 @@ if SOC_ALLWINNER_SUN20I
+>  config BOARD_ALLWINNER_D1
+>  	bool "Allwinner D1 Nezha"
+>  	select RISCV_S_MODE
+> -	select RISCV_M_MODE
+>  	def_bool y
+>  
+>  endif
+> 
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
