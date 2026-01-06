@@ -1,70 +1,68 @@
-Delivery-date: Tue, 06 Jan 2026 09:02:21 +0100
+Delivery-date: Tue, 06 Jan 2026 09:04:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd21E-001otw-39
+	id 1vd23l-001ovr-0S
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 09:02:20 +0100
+	Tue, 06 Jan 2026 09:04:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd21E-0008RT-EQ
-	for lore@pengutronix.de; Tue, 06 Jan 2026 09:02:20 +0100
+	id 1vd23k-0000Hl-K6
+	for lore@pengutronix.de; Tue, 06 Jan 2026 09:04:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=c0U2nMHfnA3cljLtNM8z1D4Kk8kDM7fxxOJrU6dFxeY=; b=VNGPjwa/WYmbVtzs/fLGi93lWZ
-	CpIOAqSbl0rNfP7dCejMHSHVBtQBqa4vgShR7TgGOmwvnmf74SYKAVGjkNt73OYJK609zGZk+LpZn
-	N44mJKZ7j/bxYJscLd+15Sa1aVHz70kcXK+kGf+0R7KSbmbXlJohxVMEqXp7YX63ZEbIrU8WYit4B
-	Rtv8L3zB9qLBObhUuOhvlWgzIFd2spINipmcpbJA6OME+jPPakslBAf2Jt26C7QGbSnTCC2WOD9MJ
-	bCywdOe15cbWHYyrbtK/GhP4vhaHJC2zwpjqRFETcI0MjvYSbO1hvU8G4W6nnggi/4se8TwFUa6Du
-	KHvF95Hw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8PcZIXWeibKiOdprgLVD93mEVKwrQ8S72tF9bsnbg/A=; b=N8xZGxcl6Dx5zsJXq4ahQJYzOT
+	hw98dCAf+tmkSsrY8fwxK2cCobKIcd1PUpJnXCetFRa2EqIecA25v+7fJn3FXSp8293bzRHvUPTJ+
+	a+YqiRVxWg519Ojc+twcSdtVTSKK4fOINCHT6F/ozkrR5+KlSrN19MuozqTpMKVDsoVK7u4SdLRsW
+	2RlL1OsbR9ls6BCfBLd4eCEwv0wcRJ10QkrF/cvSKEMspdNYz9Z50g7oEdZ6aMCiIn9ZW9FJ8Pbfi
+	lCEXolYn4fO7uCaSUK/BM/DNkhx11IgDsFP4dYYPnZkdjKmWZY42X14bFnEixygPRYzH2ZAeO2ckj
+	1op2XKrw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd20d-0000000CaJ3-2drW;
-	Tue, 06 Jan 2026 08:01:43 +0000
+	id 1vd236-0000000CaUM-1hxS;
+	Tue, 06 Jan 2026 08:04:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd20V-0000000CaIc-3iKQ
+	id 1vd233-0000000CaTq-2GjA
 	for barebox@lists.infradead.org;
-	Tue, 06 Jan 2026 08:01:42 +0000
+	Tue, 06 Jan 2026 08:04:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vd20U-0008Km-DQ; Tue, 06 Jan 2026 09:01:34 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vd231-0000Bl-EV; Tue, 06 Jan 2026 09:04:11 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vd20R-009JM5-1m;
-	Tue, 06 Jan 2026 09:01:31 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vd20R-00EGmm-1K;
-	Tue, 06 Jan 2026 09:01:31 +0100
-Date: Tue, 6 Jan 2026 09:01:31 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vd231-009JMQ-0q;
+	Tue, 06 Jan 2026 09:04:11 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vd231-000000089xt-0qCT;
+	Tue, 06 Jan 2026 09:04:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: zhengxiaojun <zheng.xiaojun@foxmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <aVzBW_WDMIKKM84I@pengutronix.de>
-References: <tencent_A811AA5F980ABDFC4D4DF8D73132B8D22506@qq.com>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260105151921.224540-1-a.fatoum@pengutronix.de>
+References: <20260105151921.224540-1-a.fatoum@pengutronix.de>
+Message-Id: <176768665119.1944916.14075351993086749801.b4-ty@pengutronix.de>
+Date: Tue, 06 Jan 2026 09:04:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_A811AA5F980ABDFC4D4DF8D73132B8D22506@qq.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_000141_567461_3F54AE0B 
-X-CRM114-Status: GOOD (  15.99  )
+X-CRM114-CacheID: sfid-20260106_000413_584639_A06CB33F 
+X-CRM114-Status: UNSURE (   8.01  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,35 +80,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: The non-removable option causes an MMC initialization error
+Subject: Re: [PATCH] ARM64: dts: Layerscape: workaround v6.19-rc1 DT sync
+ DWC3 breakage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
 
-On Tue, Jan 06, 2026 at 03:37:03PM +0800, zhengxiaojun wrote:
-> Hi,
->    The macro MMC_CAP_NONREMOVABLE defines the same value as
-> MMC_CAP_1_8V_DDR, which is causing the error. I've noticed that the
-> MMC_CAPS_* values are quite different from those in Linux, I'm wondering
-> which value for MMC_CAP_NONREMOVABLE would be appropriate, or if we should
-> ensure these values consistent with Linux.
+On Mon, 05 Jan 2026 16:19:19 +0100, Ahmad Fatoum wrote:
+> Upstream Linux commit 7b204755ebc2 ("arm64: dts: layerscape: add
+> dma-coherent for usb node") has dropped the snps,dwc3 compatible in
+> favor of a driver matching against fsl,ls1028a-dwc3.
+> 
+> Reinstate the old compatible temporarily to avoid breakage in the
+> next release until the new driver is added regularly.
+> 
+> [...]
 
-Being consistent to Linux helps avoiding a similar issue later. I'd say
-we should make two patches, one for master just redefining MMC_CAP_1_8V_DDR
-to a non conflicting value and another one for next for making them
-consistent to Linux.
+Applied, thanks!
 
-Sascha
+[1/1] ARM64: dts: Layerscape: workaround v6.19-rc1 DT sync DWC3 breakage
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9a6987da10b7 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
