@@ -1,16 +1,16 @@
-Delivery-date: Tue, 06 Jan 2026 14:02:13 +0100
+Delivery-date: Tue, 06 Jan 2026 14:02:14 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6hR-001tem-1T
+	id 1vd6hS-001tfJ-0L
 	for lore@lore.pengutronix.de;
-	Tue, 06 Jan 2026 14:02:13 +0100
+	Tue, 06 Jan 2026 14:02:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vd6hP-0003R9-Oz
+	id 1vd6hQ-0003SG-MG
 	for lore@pengutronix.de; Tue, 06 Jan 2026 14:02:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,73 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZuiSrpgOOaYui4nRxCxWMNVeM/gtJQiHhvkNUKotj/A=; b=1fcPQ73m9BX4CjHYwosHR6Fpn1
-	J9+XQ8g9nacSpGO+lULMkQyu3VFqISCw7Jl6AZvDgojhT8hytcL506Mc31POKHE92oQxBlLvvf5h9
-	Un8DGzpjBekZCnZ+D7yM6VipwDoD2FIgxQuOxJTHgwDj+IjkS8n3YzxrzfS1dVqXt8ZZGMHf/z5fy
-	KA0HhEgkY4dPYSslubUpLpbTkVK7NC4laIgXrj2QUF6ViQb8RlGfh2SAl2JHd4TJlJ3zea5lQPsWo
-	ODarNr0hw69JVPzQLlXF6jWi18ERL2krzsVV/q4faMd5DyZ+4uSlXLjbYyNj+hy83GegfLmIvWn7K
-	oOG1T3sw==;
+	bh=5B6sxA4bplN9IQ7pcnermuKllXF5uClt5YUzboDug0w=; b=xPFLI6JZSlqPeuTJ54K4+pSyMr
+	we/ERrUMHeCo82aV6k3KnNUUKICyTuOKQrUTh+4reuDvMtpiOwBaWj3uPPmG8qfDzzvASBeVC+SZP
+	huoCZtGw4cROoMzctzPeEl+PJ8cM/KotTBPE0Uqt0d6AdBVctBsOmFUslAZC5wKCeOy9k55VMraEW
+	Cu4un56qXQ4gQA2d9DpWopE1tdoJvveYcA9NyGkBBAGy12soHMYkvgWYcZ4FRe/YoqDj6aWgL9I/b
+	560+sj5u4lriEa0Uqbk/m5y/UkYgZM4Wi8u+xPfxWw5sslD3wcSUa947y+0OQ0J9VFbFvMKVZuA/I
+	bgrUXqMg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6gt-0000000D2aH-1dOJ;
+	id 1vd6gt-0000000D2Zi-0MdS;
 	Tue, 06 Jan 2026 13:01:39 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6gq-0000000D2VG-1EqF
-	for barebox@bombadil.infradead.org;
-	Tue, 06 Jan 2026 13:01:36 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ZuiSrpgOOaYui4nRxCxWMNVeM/gtJQiHhvkNUKotj/A=; b=LP2pEsRw5KRwxQDMddalBcs4ff
-	0DnZBlWvj4vNsONKrOeoy0MwdUmKuE4+FNX/B/DeYOz6FttusnrKYBFvvBbpNOejEix+FxEgsTSBt
-	ncNjMr+859XvHMV9Ls3eSgvEoyWmBsvHuinwt96H2pfPRC6fjs7S2M5I3Dh9C58JGrVAwJiYJ5JIB
-	TXFDjVfv+CuQdVL94dnbolXBDz5aVcbuaANO/dfmgCahkwgdxHA5pLUXy2alnnSbnvHXIjQIuuUkr
-	B9XR46CvkBTVaMoArRZW81r16LHBDlECNlywV42d09y5kPxQ8+dBwJrR0N1cRSOJYIHfHflFLBFfm
-	kHPWHXaA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vd6gn-00000009jKb-1tXZ
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vd6gm-0000000D2Qw-0tWh
 	for barebox@lists.infradead.org;
 	Tue, 06 Jan 2026 13:01:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6gk-0002rT-TH; Tue, 06 Jan 2026 14:01:30 +0100
+	id 1vd6gk-0002rD-QH; Tue, 06 Jan 2026 14:01:30 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6gk-009LeV-2H;
+	id 1vd6gk-009LeR-1z;
 	Tue, 06 Jan 2026 14:01:30 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vd6Ye-000000078QE-3jVe;
+	id 1vd6Ye-000000078QE-3fHr;
 	Tue, 06 Jan 2026 13:53:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 06 Jan 2026 13:53:23 +0100
+Date: Tue, 06 Jan 2026 13:53:21 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-pbl-load-elf-v2-20-487bc760f045@pengutronix.de>
+Message-Id: <20260106-pbl-load-elf-v2-18-487bc760f045@pengutronix.de>
 References: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
 In-Reply-To: <20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767703988; l=761;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767703988; l=2798;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=MQVkyW6KmwnarSoz8qWgPEA16Yeo1zsjQRw17byxOs4=;
- b=cnl4GDCU0XC8qO9nMmIWJQhiO4BofGhPH7Dx2smfctP21Jc4oaBaruefzNXvicWLXdBvvXq8K
- 9scqGCavhOtC2nnTftqKETRZFrUNMnI7de/veOEJo8aadxUdYVLiogx
+ bh=DHLbo1AfYK5kJnZX/B8fM41Xo4nD4NszMxm83Y425nk=;
+ b=oEGHvXsAtu1G0CZyfTWocgNTlldhNeoIDWPYlsIVDBCbJk9n1trH7xMah88U7NLo/XbwhhZK3
+ 8RyyEPMaeTrDDSLWzRCXHGJIMFitd4dpJsM54aZRt4Th2AKd/II3r+2
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_130133_515533_DD0ADCC6 
-X-CRM114-Status: UNSURE (   9.39  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260106_050132_253590_440E69C8 
+X-CRM114-Status: GOOD (  12.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -107,31 +91,90 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 20/21] riscv: Allwinner D1: Drop M-Mode
+Subject: [PATCH v2 18/21] riscv: link ELF image into PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Allwinner D1 selects both RISCV_M_MODE and RISCV_S_MODE. The board
-code uses barebox_riscv_machine_entry() and not barebox_riscv_machine_entry()
-which indicates RISCV_M_MODE was only selected by accident. Remove it.
+Instead of linking the raw binary barebox proper image into the PBL link
+the ELF image into the PBL. With this barebox proper starts with a properly
+linked and fully initialized C environment, so the calls to
+relocate_to_adr() and setup_c() can be removed from barebox proper.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/riscv/Kconfig.socs | 1 -
- 1 file changed, 1 deletion(-)
+ arch/riscv/Kconfig           |  1 +
+ arch/riscv/boot/start.c      |  6 ------
+ arch/riscv/boot/uncompress.c | 21 ++++++++++++++++++++-
+ 3 files changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-index 4a3b56b5fff48c86901ed0346be490a6847ac14e..0d9984dd2888e6cab81939e3ee97ef83851362a0 100644
---- a/arch/riscv/Kconfig.socs
-+++ b/arch/riscv/Kconfig.socs
-@@ -123,7 +123,6 @@ if SOC_ALLWINNER_SUN20I
- config BOARD_ALLWINNER_D1
- 	bool "Allwinner D1 Nezha"
- 	select RISCV_S_MODE
--	select RISCV_M_MODE
- 	def_bool y
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 96d013d8514ac12de5c34a426262d85f8cf021b9..d9794354f4ed2e8bf7276e03b968c566002c2ec6 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -17,6 +17,7 @@ config RISCV
+ 	select HAS_KALLSYMS
+ 	select RISCV_TIMER if RISCV_SBI
+ 	select HW_HAS_PCI
++	select PBL_IMAGE_ELF
+ 	select HAVE_ARCH_BOARD_GENERIC_DT
+ 	select HAVE_ARCH_BOOTM_OFTREE
  
- endif
+diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
+index 5091340c8a374fc360ab732ba01ec8516e82a83d..002ab3eccb4292d8d88a95f8b93163c970cb1d64 100644
+--- a/arch/riscv/boot/start.c
++++ b/arch/riscv/boot/start.c
+@@ -123,12 +123,6 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
+ 	unsigned long barebox_size = barebox_image_size + MAX_BSS_SIZE;
+ 	unsigned long barebox_base = riscv_mem_barebox_image(membase, endmem, barebox_size);
+ 
+-	relocate_to_current_adr();
+-
+-	setup_c();
+-
+-	barrier();
+-
+ 	irq_init_vector(riscv_mode());
+ 
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
+diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
+index 84142acf9c66fe1fcceb6ae63d15ac078ccddee7..fba04cf4fb6ed450d80b83a8a595346a3186f1e7 100644
+--- a/arch/riscv/boot/uncompress.c
++++ b/arch/riscv/boot/uncompress.c
+@@ -32,6 +32,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	unsigned long barebox_base;
+ 	void *pg_start, *pg_end;
+ 	unsigned long pc = get_pc();
++	struct elf_image elf;
++	int ret;
+ 
+ 	irq_init_vector(riscv_mode());
+ 
+@@ -68,7 +70,24 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	sync_caches_for_execution();
+ 
+-	barebox = (void *)barebox_base;
++	ret = elf_open_binary_into(&elf, (void *)barebox_base);
++	if (ret) {
++		pr_err("Failed to open ELF binary: %d\n", ret);
++		hang();
++	}
++
++	ret = elf_load_inplace(&elf);
++	if (ret) {
++		pr_err("Failed to relocate ELF: %d\n", ret);
++		hang();
++	}
++
++	/*
++	 * TODO: Add pbl_mmu_setup_from_elf() call when RISC-V PBL
++	 * MMU support is implemented, similar to ARM
++	 */
++
++	barebox = (void *)elf.entry;
+ 
+ 	pr_debug("jumping to uncompressed image at 0x%p. dtb=0x%p\n", barebox, fdt);
+ 
 
 -- 
 2.47.3
