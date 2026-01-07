@@ -1,57 +1,71 @@
-Delivery-date: Wed, 07 Jan 2026 11:39:56 +0100
+Delivery-date: Wed, 07 Jan 2026 12:08:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdQxI-002Dk8-02
+	id 1vdRPN-002E6A-34
 	for lore@lore.pengutronix.de;
-	Wed, 07 Jan 2026 11:39:56 +0100
+	Wed, 07 Jan 2026 12:08:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdQxH-0006Mr-F0
-	for lore@pengutronix.de; Wed, 07 Jan 2026 11:39:55 +0100
+	id 1vdRPN-0001o0-Dw
+	for lore@pengutronix.de; Wed, 07 Jan 2026 12:08:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bMQ0P/rpd/piVcp5G9AL9+zvhNMMXrhLLXyPweUTm/U=; b=Epzh0Juuz5OoHN+5euYOZFE89H
-	QtNPy8zbYZGQ8ivBw445sVWr4uHRhQmfdOI1gv148DOKhbvP7PYV/jvSYQzm4lrCcO24t+WBcwQAm
-	73noVq4w8jWVpyoBCKsR3Un1HToo1f2/oxD8piZCI1k2peHk6yre81hdIcJgmXPj7zWw7muaT9ztG
-	V2oCVa5n056kcd2ow5pacxVQM1TCtNYd5IJhuAkFebFXybtgVDeiEn0EYJSEYmcARdGwTIdERwVxW
-	/pf714RHRwBx5GkjMQD2PUStSZN8J7QRbxR0B/xtrDcjRQr2cFPzsW7QpJorp1n9GHkb60uONisNg
-	D0Cz5dTA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3aZoHjJE7bHBvDPll9GS2LohHohPPxxxF0GTEKWhIxQ=; b=vgJHNIdjK5kL9nIcgiWbydndn1
+	mRQctCDe2xbI58HN94op17DOjBWXCUnVRiTC0XZmrUIacz7iWTVHl343Ppt9yGaYTbceyvnS7U4Cf
+	sktHcaawng4LKqbi0L8bCTXG71BLMfHCedwBs7Ou6VgJ3JJctREEVHAmVb9Sgu5xpYVHLIJ1wClhb
+	/gPstK9AJwH6X4aPhz1uvd8WCI22MQCYQ39SbtXg0g0pHidxml82QHellUsFcHXHjSNWVbBX/SIaC
+	6ks7NatyScKUvrTAr0eVhPoziNEFVbQMNo6FES8gH7vXmewOSTG8WoDJnXsA39chXbzcAPd1I/p91
+	MaMCASKQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdQwj-0000000EjLg-1qqc;
-	Wed, 07 Jan 2026 10:39:21 +0000
+	id 1vdROn-0000000EmXA-26Vl;
+	Wed, 07 Jan 2026 11:08:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdQwg-0000000EjKx-2omA
+	id 1vdROl-0000000EmWQ-0fmP
 	for barebox@lists.infradead.org;
-	Wed, 07 Jan 2026 10:39:19 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vdQwe-0006Hu-VI; Wed, 07 Jan 2026 11:39:17 +0100
-Message-ID: <db44b00b-b2a5-4b06-bcbb-c579cef6622b@pengutronix.de>
-Date: Wed, 7 Jan 2026 11:39:16 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
+	Wed, 07 Jan 2026 11:08:20 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vdROi-0001hP-4Q; Wed, 07 Jan 2026 12:08:16 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vdROh-009UvA-33;
+	Wed, 07 Jan 2026 12:08:15 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vdROh-00G7lU-2c;
+	Wed, 07 Jan 2026 12:08:15 +0100
+Date: Wed, 7 Jan 2026 12:08:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aV4-n9FvSROvNaUU@pengutronix.de>
 References: <20251203-efi-partition-refresh-v1-0-f0b6e79b5fa0@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20251203-efi-partition-refresh-v1-0-f0b6e79b5fa0@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <db44b00b-b2a5-4b06-bcbb-c579cef6622b@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db44b00b-b2a5-4b06-bcbb-c579cef6622b@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260107_023918_738817_76A15AB7 
-X-CRM114-Status: GOOD (  18.91  )
+X-CRM114-CacheID: sfid-20260107_030819_197692_0D96BFC4 
+X-CRM114-Status: GOOD (  21.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,7 +83,7 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
@@ -78,54 +92,35 @@ Subject: Re: [PATCH 0/6] partitions: GPT: refresh partition tables when
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
-
-On 12/3/25 4:19 PM, Sascha Hauer wrote:
-> This is a continuation of the patch previously sent separately:
+On Wed, Jan 07, 2026 at 11:39:16AM +0100, Ahmad Fatoum wrote:
+> Hello Sascha,
 > 
-> https://lore.kernel.org/all/20251128111929.2463263-1-s.hauer@pengutronix.de/
+> On 12/3/25 4:19 PM, Sascha Hauer wrote:
+> > This is a continuation of the patch previously sent separately:
+> > 
+> > https://lore.kernel.org/all/20251128111929.2463263-1-s.hauer@pengutronix.de/
+> > 
+> > Ahmad's comment to this was that we should write the inactive GPT first
+> > to make sure there's always a valid GPT on the device. This series
+> > implements just that. I stumbled upon a bug when we restore the primary
+> > GPT from the alternate GPT, this is fixed in this series.
 > 
-> Ahmad's comment to this was that we should write the inactive GPT first
-> to make sure there's always a valid GPT on the device. This series
-> implements just that. I stumbled upon a bug when we restore the primary
-> GPT from the alternate GPT, this is fixed in this series.
-
-I thought with this series now applied, we could wipe the first 2
-sectors and it would fall back to the alternate GPT, but this is not the
-case because partition_table_read() invokes the partition parsers only
-when partition_parser_get_by_filetype() detects the magic in the first
-two sectors.
-
-Did you consider adapting it?
-
-Thanks,
-Ahmad
-
+> I thought with this series now applied, we could wipe the first 2
+> sectors and it would fall back to the alternate GPT, but this is not the
+> case because partition_table_read() invokes the partition parsers only
+> when partition_parser_get_by_filetype() detects the magic in the first
+> two sectors.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> Sascha Hauer (6):
->       partitions: gpt: pass epd context pointer to find_valid_gpt()
->       partitions: gpt: only write actual ptes size to device
->       partitions: gpt: factor out a function to write primary/alternate GPT
->       partitions: gpt: write inactive GPT first
->       partitions: gpt: fix GPT restauration from alternate GPT
->       partitions: gpt: refresh partition tables when necessary
-> 
->  common/partitions/Kconfig |  14 +++
->  common/partitions/efi.c   | 293 +++++++++++++++++++++++++++++++++++-----------
->  2 files changed, 236 insertions(+), 71 deletions(-)
-> ---
-> base-commit: 500df27eb054f86ce232c5bb30c3a7ea8f771e61
-> change-id: 20251203-efi-partition-refresh-a18d630961bc
-> 
-> Best regards,
+> Did you consider adapting it?
+
+I am aware of this, but haven't looked into it.
+
+Sascha
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
