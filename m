@@ -1,70 +1,58 @@
-Delivery-date: Wed, 07 Jan 2026 08:46:26 +0100
+Delivery-date: Wed, 07 Jan 2026 09:10:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdOFO-002B4F-1c
+	id 1vdOcr-002BUj-2p
 	for lore@lore.pengutronix.de;
-	Wed, 07 Jan 2026 08:46:26 +0100
+	Wed, 07 Jan 2026 09:10:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdOFM-000495-N1
-	for lore@pengutronix.de; Wed, 07 Jan 2026 08:46:26 +0100
+	id 1vdOcr-0006Bw-B0
+	for lore@pengutronix.de; Wed, 07 Jan 2026 09:10:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pdScigxXw3lG5RATqZIOI9HWIFFItb+HfmcGrMN23ao=; b=Jp7ntX6Gk/i048z8yG7Y731leD
-	hGYqrVmBd/UOUJV5ZUWfe3JK6omir879MmLYjjG5fu+Wvfd6Cgy7Q3awKqfp3W/wxPr0B+CkwzGkN
-	xvQGffuaxeDZmzlU7SxRiGFagJf+9Y6mAb90z6UTw5Gf5TM/3Vj4XjyzkeULvPDVN3FaloHG1rVXK
-	I3obNx2GxqubbF6UeckHi+NGgFanp3iYgyffHSHSdhaeeMBQwXTW+0yWWIhtUud7lXArOzJr+/v/z
-	TOOnugp31QQH5fqfRp/3s55Ls2gcmlEPArIqgNnNS/0kV1iFlcwD1lWLCD/a/74ritTyIJzu7iWtx
-	szYNXdZA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=dFCfrWiTfsuKP3W31DwFhKQearVdKiB/547ZCdcUrBY=; b=sheGvXHR98LsiObqU9vT1F0WIC
+	04BaCfUrQQ6u+4u+xZacF+lO4Uty5QO65qHQVk+zjXQQhfa9gJSsJnxWwZhGs/2F347c+KxsilyBt
+	nk9CWjbQeq6IFSxq86Pa1udRfNYYoAhHi9eGKmfKqMPobnSOUeO4WAc67GLVFgg42OHTDgEkDUo6I
+	/eYg5rBhRIV2K5e3G+pRk3iiDx7RhO0sN9QkRrRK/piYdbHMY+pD5/zrEF/xOUEgdg4jeuu36kVWo
+	gToCu5pu1OGFLEshP8QAo5GBdk3rR351FT/VFkwxKPnHhX/c7ulNjyyvBOLJB5vh354NKogRRTHg4
+	tsSaXEcw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdOEy-0000000EJev-42e4;
-	Wed, 07 Jan 2026 07:46:00 +0000
+	id 1vdOcE-0000000EMc4-00PZ;
+	Wed, 07 Jan 2026 08:10:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdOEw-0000000EJe6-2m6X
+	id 1vdOcB-0000000EMau-0d5t
 	for barebox@lists.infradead.org;
-	Wed, 07 Jan 2026 07:45:59 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vdOEt-000432-Uj; Wed, 07 Jan 2026 08:45:55 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vdOEt-009TRB-2R;
-	Wed, 07 Jan 2026 08:45:55 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vdOEt-00G4hI-29;
-	Wed, 07 Jan 2026 08:45:55 +0100
-Date: Wed, 7 Jan 2026 08:45:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: zhengxiaojun <zheng.xiaojun@foxmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <aV4PMxDOuiHZh7ks@pengutronix.de>
-References: <tencent_C5E0959753A838615BF48C3792E12BC74A08@qq.com>
+	Wed, 07 Jan 2026 08:10:00 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vdOc8-00060t-Vq; Wed, 07 Jan 2026 09:09:57 +0100
+Message-ID: <010cb0fc-da0c-4537-8f81-c75fc9ffdd84@pengutronix.de>
+Date: Wed, 7 Jan 2026 09:09:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_C5E0959753A838615BF48C3792E12BC74A08@qq.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: mfe@pengutronix.de
+References: <20251218094645.49668-1-a.fatoum@pengutronix.de>
+ <176605178500.3950089.802776548022539556.b4-ty@pengutronix.de>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <176605178500.3950089.802776548022539556.b4-ty@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260106_234558_699228_E4723B65 
-X-CRM114-Status: GOOD (  19.22  )
+X-CRM114-CacheID: sfid-20260107_000959_196837_FA0ED890 
+X-CRM114-Status: GOOD (  13.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,46 +70,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mmc: resolve conflict between MMC_CAP_NONREMOVABLE and
- MMC_CAP_1_8V_DDR
+Subject: Re: [PATCH] mci: use partition table index for Linux mmcblkdev fixup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Jan 07, 2026 at 09:12:50AM +0800, zhengxiaojun wrote:
-> Resolve conflict between MMC_CAP_NONREMOVABLE and MMC_CAP_1_8V_DDR.
-> 
-> Signed-off-by: zhengxiaojun <zheng.xiaojun at foxmail.com>
+Hello Sascha,
 
-Added while applying:
+On 12/18/25 10:56, Sascha Hauer wrote:
+> 
+> On Thu, 18 Dec 2025 10:46:35 +0100, Ahmad Fatoum wrote:
+>> If we have invalid PTEs, there will be gaps in the partition numbering
+>> both in barebox and in Linux, but if we only iterate through the
+>> partition list, we will not account for this.
+>>
+>> Use the new cdev::partition_table_index to fix this.
+>>
+>>
+>> [...]
+> 
+> Applied, thanks!
 
-Fixes: a382be0b4f ("mci: add option to detect non-removable cards during startup")
+This patch seems missing on both master and next.
 
-Sascha
+Cheers,
+Ahmad
 
-> ---
->  include/mci.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/include/mci.h b/include/mci.h
-> index 3db33f9142..50214aaae7 100644
-> --- a/include/mci.h
-> +++ b/include/mci.h
-> @@ -58,7 +58,7 @@
->  #define MMC_CAP_1_2V_DDR		(1 << 9)	/* Host supports eMMC DDR 1.2V */
->  #define MMC_CAP_DDR			(MMC_CAP_3_3V_DDR | MMC_CAP_1_8V_DDR | \
->  					 MMC_CAP_1_2V_DDR)
-> -#define MMC_CAP_NONREMOVABLE	(1 << 8)	/* Nonremovable e.g.eMMC */
-> +#define MMC_CAP_NONREMOVABLE	(1 << 10)	/* Nonremovable e.g. eMMC */
->  #define MMC_CAP_UHS_SDR12	(1 << 16)	/* Host supports UHS SDR12 mode */
->  #define MMC_CAP_UHS_SDR25	(1 << 17)	/* Host supports UHS SDR25 mode */
->  #define MMC_CAP_UHS_SDR50	(1 << 18)	/* Host supports UHS SDR50 mode */
+> [1/1] mci: use partition table index for Linux mmcblkdev fixup
+>       https://git.pengutronix.de/cgit/barebox/commit/?id=928a71e0d678 (link may not be stable)
 > 
-> 
-> 
+> Best regards,
+
 
 -- 
 Pengutronix e.K.                           |                             |
