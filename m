@@ -1,55 +1,64 @@
-Delivery-date: Wed, 07 Jan 2026 15:57:13 +0100
+Delivery-date: Thu, 08 Jan 2026 11:08:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdUyH-002HeV-1R
+	id 1vdmwQ-002aF9-0a
 	for lore@lore.pengutronix.de;
-	Wed, 07 Jan 2026 15:57:13 +0100
+	Thu, 08 Jan 2026 11:08:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdUyG-0002tS-UI
-	for lore@pengutronix.de; Wed, 07 Jan 2026 15:57:13 +0100
+	id 1vdmwP-000650-Hu
+	for lore@pengutronix.de; Thu, 08 Jan 2026 11:08:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=QsCIQjnC15pxDCAjnreDPR4cuLpBXw+8VLf8p4wa4lc=; b=fk8zMDvmciJv4JYjdXyoRmMusW
-	gGXYxI7LrCQ5inZNuRD01AfjjMWYPE3xCRhg4NqpPD/mSEc9rStNwsmiF7Zzv6Ey6Hn3+41hOUxqP
-	9UdpZQlDfv32U/QoEZXWs0CCrN/SyzwX/U+oTU8eR3kUyMMW8+wazJZl1MU9zG5BYNpeX9V4rJNb+
-	niUm4xKdnNQgBBe0QR9BBy+wA9GN1XR290xkpooUYk6PDE411Q+lPH1Ob1jBZE+tPY9puB1IbImzz
-	oxxwbhyxMFT+5X0nJ/yp+TRgg7ir3UF4d2hkibgvSRu8mKtaouar//Sxc0XsnzAXykLWmkn7CL6Ov
-	QeZqJLJA==;
+	bh=7w45YJL/wHG37Ro7Qbm4TFoDsURm8NeqHeJQdkWfTo8=; b=TGHnToLYTpL1J7e4eL0O7ax2wD
+	JyOZyUU/UKgMKNm7LPafEgqFVWkxFJaWrxiT+N033zPwHcZh3Esaa++fM69etH77MumuQtMUUelva
+	EBKOHxQ7koEAb27fpPYx/YBfTA78oF4s7azLqS1JeSAClz7T1wGXSGLYp2S/KUV7isojToXRg+OJM
+	e3afOCXKSwrkNUqrdxJEaslNJ/CmilsaqU6NgwNVotBg5AU5oM68NIx2SLSnFahkebXPa67kH10Mc
+	yOYPahEFS4Uy/GipFS2HwYlx/qABsyVdatJFury82y7fLmlIdWJWlwsbc4qtbDlByjuZdMlvDaAy0
+	gXMLgzSQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdUxi-0000000F8Va-1Vt9;
-	Wed, 07 Jan 2026 14:56:38 +0000
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+	id 1vdmvh-0000000GZCs-3hjz;
+	Thu, 08 Jan 2026 10:07:45 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdUxg-0000000F8V4-2oYQ
+	id 1vdmve-0000000GZBt-3c3Y
 	for barebox@lists.infradead.org;
-	Wed, 07 Jan 2026 14:56:37 +0000
-Received: by magratgarlick.emantor.de (Postfix, from userid 114)
-	id DEC06106628; Wed,  7 Jan 2026 15:56:33 +0100 (CET)
-Received: from localhost (unknown [IPv6:2001:9e8:6958:fd01:2662:6854:ff68:2958])
-	by magratgarlick.emantor.de (Postfix) with ESMTPSA id 83822106617;
-	Wed,  7 Jan 2026 15:56:33 +0100 (CET)
-From: Rouven Czerwinski <rouven.czerwinski@linaro.org>
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <rouven.czerwinski@linaro.org>
-Date: Wed,  7 Jan 2026 15:56:28 +0100
-Message-ID: <20260107145628.3825096-1-rouven.czerwinski@linaro.org>
-X-Mailer: git-send-email 2.51.2
+	Thu, 08 Jan 2026 10:07:44 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vdmvc-0005xa-KU; Thu, 08 Jan 2026 11:07:40 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vdmvc-009eo8-1S;
+	Thu, 08 Jan 2026 11:07:40 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vdmvc-00000007GZT-1N8c;
+	Thu, 08 Jan 2026 11:07:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu,  8 Jan 2026 11:07:39 +0100
+Message-ID: <20260108100739.1731988-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260107_065636_860916_886EDFE9 
-X-CRM114-Status: UNSURE (   9.19  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260108_020742_897981_36CDB097 
+X-CRM114-Status: GOOD (  10.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,38 +76,67 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] Documentation: imx8mq-evk: warn for EVKB variant
+Subject: [PATCH] test/strategy.py: optionally don't activate BareboxDriver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-There is another EVKB variant of the MCIMX8M-EVK, which is currently not
-compatible with barebox. Add a warning to the documentation.
+When bootstrapping barebox on QEMU with my barebox-bringup utility it
+brings it to the 'barebox' state before opening a console. The
+BareboxDriver consumes all console messages in order to bring barebox
+to the prompt. This is bad for interactive use where one wants to
+see the console output right from the start.
 
-Signed-off-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
+Insert a 'on' state which brings up QEMU but doesn't activate the
+BareboxDriver.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/boards/imx/nxp-imx8mq-evk.rst | 3 +++
- 1 file changed, 3 insertions(+)
+ test/strategy.py | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/boards/imx/nxp-imx8mq-evk.rst b/Documentation/boards/imx/nxp-imx8mq-evk.rst
-index d98f94ac61..a15c535593 100644
---- a/Documentation/boards/imx/nxp-imx8mq-evk.rst
-+++ b/Documentation/boards/imx/nxp-imx8mq-evk.rst
-@@ -8,6 +8,9 @@ Board comes with:
+diff --git a/test/strategy.py b/test/strategy.py
+index 0f1b761474..0ca08b0cdd 100644
+--- a/test/strategy.py
++++ b/test/strategy.py
+@@ -21,11 +21,12 @@ if match is None or int(match.group(1)) < 25:
+ class Status(enum.Enum):
+     unknown = 0
+     off = 1
+-    barebox = 2
+-    qemu_dry_run = 3
+-    qemu_interactive = 4
+-    qemu_dump_dtb = 5
+-    shell = 6
++    on = 2
++    barebox = 3
++    qemu_dry_run = 4
++    qemu_interactive = 5
++    qemu_dump_dtb = 6
++    shell = 7
  
- Not including booting via serial, the device can boot from either SD or eMMC.
  
-+.. warning:: Barebox is currently not compatible with the MCIMX8M-EVK**B**
-+   variant with 4GiB of RAM.
-+
- Downloading DDR PHY and HDMI/eDP Firmware
- -----------------------------------------
- 
+ @target_factory.reg_driver
+@@ -63,11 +64,13 @@ class BareboxTestStrategy(Strategy):
+             self.target.deactivate(self.console)
+             self.target.activate(self.power)
+             self.power.off()
+-        elif status == Status.barebox:
++        elif status == Status.on:
+             self.transition(Status.off)  # pylint: disable=missing-kwoa
+             self.target.activate(self.console)
+             # cycle power
+             self.power.cycle()
++        elif status == Status.barebox:
++            self.transition(Status.on)  # pylint: disable=missing-kwoa
+             # interrupt barebox
+             self.target.activate(self.barebox)
+         elif status == Status.shell:
 -- 
-2.51.2
+2.47.3
 
 
 
