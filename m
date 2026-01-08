@@ -1,92 +1,90 @@
-Delivery-date: Thu, 08 Jan 2026 16:51:17 +0100
+Delivery-date: Thu, 08 Jan 2026 17:02:32 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdsI9-002fVJ-1U
+	id 1vdsT2-002fca-1f
 	for lore@lore.pengutronix.de;
-	Thu, 08 Jan 2026 16:51:17 +0100
+	Thu, 08 Jan 2026 17:02:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdsI8-0007Rc-Ec
-	for lore@pengutronix.de; Thu, 08 Jan 2026 16:51:17 +0100
+	id 1vdsT0-00013A-ND
+	for lore@pengutronix.de; Thu, 08 Jan 2026 17:02:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=lfBB1NgdJNveaPd5tqni+RdJKahqBycv2pmPAqOndj0=; b=aheN6i7JLnf2fD
-	YNFlIQ5jhAHmHDvrPVb8NPcQHZa4VSHdEcJlUoD55dt6vrJNrNtRXclnBvW+WU6uNP++tEKhE/co5
-	h3qg9DwK6h67NdnrQxCaXdQbEI2GHsdRlLUozSwTuNcbvzYIIpcngG+HCEMLZjxmVKuPBlA29WNYI
-	ale/c2Ll4ElyldDmIebTFAduHyeQmo2tpiGcZvvl/7ekMQp9YG9DpxnNSa6/I4jsD/+NVUr2MUf+w
-	pbwmXdCto06jPD/m5yEfB+eWer9BBx0mmu6wmROdh9CfCvAj7yoOjC/MMBy3ygW3O3W5pFXb2j0Vi
-	65tj2MUMfNEqUCZZDSrg==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=689pm1wkFKDVa/nbhnSIBlC3ZlFxq2TNcGQOKHgWjAg=; b=mrS3A85M+CdkISq0pc6TH2kbzP
+	QAJq/pxNBoZKjkqXfMDjRqXwp7nWzbSOjBKmF6saPO8nCfv96RKVnciCWnQQqQaQF5DBL0cGfPsbQ
+	8XD4NFOG1bVfxaj70ldDyHIuyPNr/q0s39s40IXNJeacYOkUqt41MuoKJqNub4pNPPaVz8E0kpiQ6
+	nXOfp8lMuGgSy4whgqXla9PxiUijdCkYfKpU/CvURYks0SquWK5+hvVSUAmkbjMKsYmIjn+wXXMv2
+	SeTTm443gtO2VSIYcaXmiYVx2bUZQs3TkQPWXyqBfJevKdZd86u8bOPgUVqP+lhMC30UQPbR+Rbkt
+	FQiL3UhQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsHZ-0000000HadS-1JeY;
-	Thu, 08 Jan 2026 15:50:41 +0000
+	id 1vdsSK-000000001yg-2TKt;
+	Thu, 08 Jan 2026 16:01:48 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsHV-0000000HabC-1X7g
+	id 1vdsS8-000000001tX-1Nw7
 	for barebox@bombadil.infradead.org;
-	Thu, 08 Jan 2026 15:50:39 +0000
+	Thu, 08 Jan 2026 16:01:36 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Sender:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=lfBB1NgdJNveaPd5tqni+RdJKahqBycv2pmPAqOndj0=; b=Xt3LPC1fzC+QCOmTQGSLD7M5mE
-	c0EXoZDWOumEN1+PGAJ9Kv0xm/pBinhrIipo5L1jCAK0Oy1GW1kw5xkT8qoGYxgkpPJksh1dkY2HG
-	gDxBLNVPMx8DzcSmSImO/H91uI3sEOfgTyz8jsEand6xaTcipG/s9jbn4XEIZNyzsjQo/TiGIVTaa
-	Lo0c6wpk/9AvNRIFKfUPaRgoxPCk1CxIAY7WcBuCILfxrb5BKfXHlK1ICTRrEDIRqjrhoBAUR+QDi
-	7dNAUZ1MXPne5S6uY9LaJhXfXKMInIjsbdByXfcWcIf3AH56olA0oAhfe9kUdZ9Pv42FoZPdUGboc
-	1T93K+lg==;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=689pm1wkFKDVa/nbhnSIBlC3ZlFxq2TNcGQOKHgWjAg=; b=XcxUrf/+kL9oBWzvxhyLzlky4X
+	52p+4bLMJ/c/RTPBHwThV/3Y/rjJMlz2SxoSn1bMKJWX4u0Ru1ZeZJVHKdHNilXuNTuuww8dMPDwy
+	NmjDOt/QhTEgd716atMdik7QzEn8SxIdLH9tSfFFE0Gd+Im+ghAIHpvVpPwzTEXEXl1YNY7Q4CpsP
+	05vm69b390KDtsxk0KP/CfsouYQGuc2YQ5OiNdXMxXUattUbtw7vyAlGou2YgoWwRUXIQ/wbrj6fw
+	TR+0GbnV07lmQmXNAtlIz5jgGJMcv+FXyHMxsezKX6kaWoAIPkE7l70usMbqOTAHYsK+KkpHvT/sk
+	UTHOJ3zg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsHS-0000000DYkF-1vuY
+	id 1vdsS2-0000000DaVJ-3aCo
 	for barebox@lists.infradead.org;
-	Thu, 08 Jan 2026 15:50:36 +0000
+	Thu, 08 Jan 2026 16:01:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsGv-0006hG-S9; Thu, 08 Jan 2026 16:50:01 +0100
+	id 1vdsS2-0000Sv-F1; Thu, 08 Jan 2026 17:01:30 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsGv-009hV6-1G;
-	Thu, 08 Jan 2026 16:50:01 +0100
+	id 1vdsS2-009hXV-0o;
+	Thu, 08 Jan 2026 17:01:30 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsGv-0000000AN2q-1H9b;
+	id 1vdsGv-0000000AN2q-1Xfc;
 	Thu, 08 Jan 2026 16:50:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 08 Jan 2026 16:49:57 +0100
-Message-Id: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
+Date: Thu, 08 Jan 2026 16:50:10 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACXSX2kC/2XMTQ6DIBhF0a0YxqUBFKEddR9NBwIfSmLAgCU2x
- r0XHfVneF/yzooSRAcJXasVRcguueBL1KcK6aHzPWBnSiNGGKeMCTypEY+hMxhGi7VqtCIalDA
- SlcsUwbrl4O6P0oNLc4ivQ890X3eoJZTwbyhTTDBchOS1vUhWs9sEvn/OMXi3nA2gXcvsU2h/B
- FaERgqlRUssafifsG3bG5D5U+jvAAAA
-X-Change-ID: 20251227-pbl-load-elf-cb4cb0ceb7d8
+Message-Id: <20260108-pbl-load-elf-v3-13-e28c931fc179@pengutronix.de>
+References: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
+In-Reply-To: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767887401; l=5070;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767887401; l=2544;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=EV/7qkkvEXXOvgNvpXWFpAnOJ2XM7ZhpkKtulUP7mJs=;
- b=BJ99gpRhEx/4XInMWb49jD75oLrogwWiQn6ILAilKkAAUKsNiXaV206+2AYrclwI6SA8fYC9S
- pXWSTvpdtuZDHpzpmkIZZaCGfrz/42QnEXV8sw/tkvR7oPcU+wqQNLX
+ bh=W9gm9ER0b+hiyQ5zGKjeQIafOjqCLiRWP9P/Xopku0g=;
+ b=5+Wt/L6Kh91MD3jmJhA4lNadFkjiWwIiUDyYEwvi5y7Gv2pdZ0+zAhMgEnDPrCdq1p1W6g05c
+ ESmbK9Xpz3yCZOH0dsKumzEslgFmXEhfvAWp2V9wSxYFHtg8PLBT9Ys
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260108_155034_571703_9D515306 
-X-CRM114-Status: GOOD (  16.43  )
+X-CRM114-CacheID: sfid-20260108_160130_958228_3EFA6902 
+X-CRM114-Status: UNSURE (   8.41  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,125 +103,81 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 00/23] PBL: Add PBL ELF loading support with dynamic
- relocations
+Subject: [PATCH v3 13/23] mmu: introduce pbl_remap_range()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Until now we linked the raw barebox proper binary into the PBL which
-comes with a number of disadvantages. We rely on self-modifying code
-to in barebox proper (relocate_to_current_adr()) and have no initialized
-bss segment (setup_c()). Also we can only mark the .text and .rodata as
-readonly during runtime of barebox proper.
+Add PBL-specific memory remapping function that always uses page-wise
+mapping (ARCH_MAP_FLAG_PAGEWISE) for fine-grained permissions on
+adjacent ELF segments with different protection requirements.
 
-This series overcomes this by linking a ELF image into the PBL. This
-image is properly layed out, linked and initialized in the PBL. With
-this barebox proper has a proper C environment and text/rodata
-protection from the start.
+Wraps arch-specific __arch_remap_range() for ARMv7 (4KB pages) and
+ARMv8 (page tables with BBM). Needed for ELF segment permission setup.
 
-As a bonus this series also adds initial MMU support for RISCV, also
-based on loading the ELF image and configuring the MMU from the PBL.
-
-I lost track about the review feedback for v1, partly because I asked
-Claude to integrate the review feedback for me, which it did, but not
-completely. Nevertheless I think this series has enough changes for now
-so that it deserves a second look.
-
-What I didn't care about yet is that we found out that neither ARM nor
-RiscV use any absolute relocations, so we might be able to remove
-support for them, make sure these are not emitted during compile time,
-or properly test/fix them when we discover that they are indeed needed.
-
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Changes in v3:
-- integrate Ahmads feedback
-- cleanup barebox proper entry
-- add missing "ax" flag to ARM exception table, and let linker do the
-  fixup
-- Link to v2: https://lore.barebox.org/20260106-pbl-load-elf-v2-0-487bc760f045@pengutronix.de
+ arch/arm/cpu/mmu_32.c | 6 ++++++
+ arch/arm/cpu/mmu_64.c | 7 +++++++
+ include/mmu.h         | 3 +++
+ 3 files changed, 16 insertions(+)
 
-Changes in v2:
-- rebased on Ahmads patches and with it reused existing relocate_image()
-- hopefully integrated all feedback for v1
-- Link to v1: https://lore.barebox.org/20260105-pbl-load-elf-v1-0-e97853f98232@pengutronix.de
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index 71ead41c3d274548c9427c1ce9833de309114c4d..981202b789befbd04e212f48490aebb41dfb6b98 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -435,6 +435,12 @@ static void early_remap_range(u32 addr, size_t size, maptype_t map_type)
+ 	__arch_remap_range((void *)addr, addr, size, map_type);
+ }
+ 
++void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
++		     maptype_t map_type)
++{
++	__arch_remap_range(virt_addr, phys_addr, size, map_type);
++}
++
+ static bool pte_is_cacheable(uint32_t pte, int level)
+ {
+ 	return	(level == 2 && (pte & PTE_CACHEABLE)) ||
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index ddf1373ec0a801baad043146187d7f4c3eac6a2a..5ea0d39ad4c7fb219b38cf957335615d0d6e96c5 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -282,6 +282,13 @@ static void early_remap_range(uint64_t addr, size_t size, maptype_t map_type)
+ 	__arch_remap_range(addr, addr, size, map_type, false);
+ }
+ 
++void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
++		     maptype_t map_type)
++{
++	__arch_remap_range((uint64_t)virt_addr, phys_addr,
++			   (uint64_t)size, map_type, true);
++}
++
+ int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size, maptype_t map_type)
+ {
+ 	map_type = arm_mmu_maybe_skip_permissions(map_type);
+diff --git a/include/mmu.h b/include/mmu.h
+index 9f582f25e1de14d47cfe2eff64f9cce81c4e492d..32d9a7aca3b9a61d542bf3e21e27f1ac51f43ee2 100644
+--- a/include/mmu.h
++++ b/include/mmu.h
+@@ -65,6 +65,9 @@ static inline bool arch_can_remap(void)
+ }
+ #endif
+ 
++void pbl_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
++		     maptype_t map_type);
++
+ static inline int remap_range(void *start, size_t size, maptype_t map_type)
+ {
+ 	return arch_remap_range(start, virt_to_phys(start), size, map_type);
 
----
-Sascha Hauer (23):
-      Makefile.compiler: add objcopy-option
-      elf: only accept images matching the native ELF_CLASS
-      elf: build for PBL as well
-      elf: add dynamic relocation support
-      ARM: implement elf_apply_relocations() for ELF relocation support
-      riscv: define generic relocate_image
-      riscv: implement elf_apply_relocations() for ELF relocation support
-      elf: implement elf_load_inplace()
-      elf: create elf_open_binary_into()
-      Makefile: add vmbarebox build target
-      PBL: allow to link ELF image into PBL
-      mmu: add MAP_CACHED_RO mapping type
-      mmu: introduce pbl_remap_range()
-      ARM: drop arm_fixup_vectors()
-      ARM: linker script: create separate PT_LOAD segments for text, rodata, and data
-      ARM: link ELF image into PBL
-      ARM: PBL: setup MMU with proper permissions from ELF segments
-      riscv: linker script: create separate PT_LOAD segments for text, rodata, and data
-      riscv: link ELF image into PBL
-      riscv: Allwinner D1: Drop M-Mode
-      riscv: add ELF segment-based memory protection with MMU
-      ARM: cleanup barebox proper entry
-      riscv: cleanup barebox proper entry
-
- Makefile                           |  15 +-
- arch/arm/Kconfig                   |   1 +
- arch/arm/cpu/exceptions_32.S       |  54 +----
- arch/arm/cpu/interrupts_32.c       |   5 +-
- arch/arm/cpu/mmu-common.c          |  29 ++-
- arch/arm/cpu/mmu-common.h          |   3 +-
- arch/arm/cpu/mmu_32.c              |  12 +-
- arch/arm/cpu/mmu_64.c              |   9 +-
- arch/arm/cpu/no-mmu.c              |   2 -
- arch/arm/cpu/start.c               |  22 +-
- arch/arm/cpu/uncompress.c          |  40 +++-
- arch/arm/include/asm/barebox-arm.h |   4 -
- arch/arm/include/asm/elf.h         |   7 +
- arch/arm/lib32/barebox.lds.S       |  41 ++--
- arch/arm/lib32/reloc.c             |  19 ++
- arch/arm/lib64/barebox.lds.S       |  36 +--
- arch/arm/lib64/reloc.c             |  21 +-
- arch/riscv/Kconfig                 |  18 ++
- arch/riscv/Kconfig.socs            |   1 -
- arch/riscv/boot/start.c            |  19 +-
- arch/riscv/boot/uncompress.c       |  36 ++-
- arch/riscv/cpu/Makefile            |   1 +
- arch/riscv/cpu/mmu.c               | 387 ++++++++++++++++++++++++++++++++
- arch/riscv/cpu/mmu.h               | 120 ++++++++++
- arch/riscv/include/asm/asm.h       |   3 +-
- arch/riscv/include/asm/mmu.h       |  44 ++++
- arch/riscv/lib/barebox.lds.S       |  45 ++--
- arch/riscv/lib/reloc.c             |  43 ++--
- common/Makefile                    |   2 +-
- common/elf.c                       | 446 ++++++++++++++++++++++++++++++++++++-
- include/elf.h                      |  73 ++++++
- include/mmu.h                      |   6 +-
- include/pbl/mmu.h                  |  29 +++
- pbl/Kconfig                        |   9 +
- pbl/Makefile                       |   1 +
- pbl/mmu.c                          | 111 +++++++++
- scripts/Makefile.compiler          |   5 +
- 37 files changed, 1508 insertions(+), 211 deletions(-)
----
-base-commit: 7649b642aaa43c1b7dca44f0f9596fbc9d0f7caa
-change-id: 20251227-pbl-load-elf-cb4cb0ceb7d8
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
