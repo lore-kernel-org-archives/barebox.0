@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdsT5-002fcy-0R
+	id 1vdsT5-002fd8-0n
 	for lore@lore.pengutronix.de;
 	Thu, 08 Jan 2026 17:02:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdsT4-00015y-Db
+	id 1vdsT4-000160-GN
 	for lore@pengutronix.de; Thu, 08 Jan 2026 17:02:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,72 +18,73 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=su4V0LD9bL2fAho+jeLk28KOj2hFvk4sn1vmaA4rv+Q=; b=yEGC9xsy1hx7PXPoSQ1EUnXyfr
-	V24tJ/k8Feg7Dy4DAoqmTzmM9P7SIy0OezHVPWNcthfTtQA2NsOl8yA0o1ZSvlDQXutyl1+jCs3dE
-	eX6FKE+0moRcp/ObhjZgQdJUCXEFS5WfBCv60NQvrbXsqTgroye/yXJv5gZpGK4WcTXezR9INS5eT
-	Pbxn2hawdEWmax94XPv9C7aHLCSWJy/6HyRBYFUxzWkTa0smHAgdfP6+36r7XfQRbtSL0schzWH1V
-	0y0EbSW6n9YAYHiP60KGqpR9jwGeahYRPvsT906JoOnnWkhcgwIHiRZni8I6+mbgD4I2E4Ql3Lczb
-	SpD0d0tg==;
+	bh=iPjONTWI0V52spJxl2Axwb8IPxRhcDGtlyhbG5mPcYk=; b=uVZbGKmMDDRge3A6zSi5wGuiLS
+	JEDEJDM5BZEDfPNfMV0XU2c8j/5TVnHGTDhnoUGyqApOfDIlKOKW0zeckeXXIAmh1FEFAoE75Y+Vh
+	zn+6AI9KengagvC2Bhs61DApurTORG10kE+CthBbA04cWGp2h1oh4NJegdGO8eJF/LBJpTFsdWrA+
+	GcxNNxOLVrK9XWwZiVeCwVngKKo6MDTuJQ5XJ3z7n4b9PFtEroDaG8w76tnS9x46LSqZzbFhJvDzR
+	fdWXc09wc0pqI6pJZzpg3U9cZg8khyctRMIOL6y3hDNRtNXfpYaOhOE2UfkQ0BEz2th7LCiWV44f4
+	5idEKwxQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsSI-000000001we-1Nag;
-	Thu, 08 Jan 2026 16:01:46 +0000
+	id 1vdsSP-00000000218-1Vir;
+	Thu, 08 Jan 2026 16:01:53 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsS5-000000001sL-0HUx
+	id 1vdsS9-000000001uR-3cte
 	for barebox@bombadil.infradead.org;
-	Thu, 08 Jan 2026 16:01:35 +0000
+	Thu, 08 Jan 2026 16:01:45 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=su4V0LD9bL2fAho+jeLk28KOj2hFvk4sn1vmaA4rv+Q=; b=ZaCKOwlqXb93KTqEeeqEoX0Sx4
-	6qEoKmuEpQq/TTxRBAlW2ufcJkKZZ4VXrpxEWfjwr5x78/vllNzbQx3GJLzK4bAZUqeHEI3oy5caV
-	cb9wwBh1LiPoI6AuaS64lmkz4gt5QWfM/XJRIyfF3imui1q7jnx1bPrgtHbT7sUexHe+r6tEGkIQp
-	Z3kERmHIIp/LYdxUE4OcHlNpBQFoOwGJMCqco61Qi5CCV7LYLYDFDZlLbuIUPdq7pZd/yWlUpOROB
-	WUgtNA14L9QTkOds5R/Y3aVgt8uYHaHzK6iBVIWVNwEoFA5bXMvp8jLXGvRucH3DHcpjBnyO0hQJe
-	pYVo6wrw==;
+	bh=iPjONTWI0V52spJxl2Axwb8IPxRhcDGtlyhbG5mPcYk=; b=QHvX3mAlIN0HUtxgWVHGG9bI8P
+	e+Q7Ta5Gg7SgYHhLKpldjDGusKJ5k1mVqnrvJBChT6/PkG8/Xn5W7gwku4llTAAWm6AdpM8+z6eqU
+	/yOoelyl/onV5HxdnMJE+g2XpZfPiuog/qVOhfsZi5ysF2RdMAMpfbKWtWuI6nCWuFyAV4zAcz9k4
+	HwyrYg+8LabKp9a0UM3pSF3Tlg2/Oks0wO/MBHf2p6iZv7RnmCd5Rwgbq7KRN1YDBAs550kRfn4Th
+	WsQM9V7Iy9kV5x9W95WGwMY/ddM5lWFI2i7KLseKoB17IwFZorqZWL4j52gR7Di7uYLz5P4RkyzxB
+	itDbxFkQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsS2-0000000DaTk-1bsm
+	id 1vdsS3-0000000DaVk-0F3h
 	for barebox@lists.infradead.org;
-	Thu, 08 Jan 2026 16:01:31 +0000
+	Thu, 08 Jan 2026 16:01:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsS1-0000R0-Sg; Thu, 08 Jan 2026 17:01:29 +0100
+	id 1vdsS2-0000U1-Ny; Thu, 08 Jan 2026 17:01:30 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsS1-009hX6-2A;
-	Thu, 08 Jan 2026 17:01:29 +0100
+	id 1vdsS2-009hXg-1i;
+	Thu, 08 Jan 2026 17:01:30 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsGv-0000000AN2q-1aF2;
+	id 1vdsGv-0000000AN2q-1Wa0;
 	Thu, 08 Jan 2026 16:50:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 08 Jan 2026 16:50:13 +0100
+Date: Thu, 08 Jan 2026 16:50:08 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-pbl-load-elf-v3-16-e28c931fc179@pengutronix.de>
+Message-Id: <20260108-pbl-load-elf-v3-11-e28c931fc179@pengutronix.de>
 References: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
 In-Reply-To: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767887401; l=4521;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767887401; l=1420;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=cNs3cLIbz4fhBbMubmQreCTjm5e8+ONDEoMvok9Qo7A=;
- b=ghjmd0SQuccIAEQPPjHYc258zS5OUc2UbXeFOWBckD/n6wAsp3L4JGXOZz3JG9lLEwtAmGqrG
- YW8slp6f3t+CdO4zjRKuvR9uZ4sSo56Xq6iaJOSdn0b8MAck9xw1CoD
+ bh=rlWoqUQkjOeeb4D6AU1g5hy6e+pdtbGzKgp4ki/nQRI=;
+ b=zaUB73m3wbyH+Rn8lIHyeoExl4Ysg6wHQX5DN6HlCoUkdaWLRl26tcAuHmQImCPRS3yUjhvVy
+ MtyVrvPclenCPWXYD1uEAo7eWxcRHeKcGujGXJzaH/LeqF4R97pHjGG
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260108_160130_464985_7EEE4FF7 
-X-CRM114-Status: GOOD (  13.96  )
+X-CRM114-CacheID: sfid-20260108_160131_149398_4117921A 
+X-CRM114-Status: UNSURE (   9.79  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,7 +96,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -106,132 +107,55 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 16/23] ARM: link ELF image into PBL
+Subject: [PATCH v3 11/23] PBL: allow to link ELF image into PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Instead of linking the raw binary barebox proper image into the PBL link
-the ELF image into the PBL. With this barebox proper starts with a properly
-linked and fully initialized C environment, so the calls to
-relocate_to_adr() and setup_c() can be removed from barebox proper.
+Some architectures want to link the barebox proper ELF image into the
+PBL. Allow that and provide a Kconfig option to select the ELF image.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig          |  1 +
- arch/arm/cpu/start.c      | 13 ++++---------
- arch/arm/cpu/uncompress.c | 26 +++++++++++++++++++-------
- 3 files changed, 24 insertions(+), 16 deletions(-)
+ Makefile    | 4 ++++
+ pbl/Kconfig | 9 +++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 5123e9b1402c56db94df6a7a33ae993c61d51fbc..65856977ab41298be36b78c64de857570d575744 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -18,6 +18,7 @@ config ARM
- 	select HW_HAS_PCI
- 	select ARCH_HAS_DMA_WRITE_COMBINE
- 	select HAVE_EFI_LOADER if MMU # for payload unaligned accesses
-+	select PBL_IMAGE_ELF
- 	default y
+diff --git a/Makefile b/Makefile
+index 9d8fe242411422163cb800c0b2dd1eb9f0709f47..44011868083135e2a4c53413535bedf70f1704f7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -831,7 +831,11 @@ export KBUILD_BINARY ?= barebox.bin
+ # Also any assignments in arch/$(SRCARCH)/Makefile take precedence over
+ # the default value.
  
- config ARCH_LINUX_NAME
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index f7d4507e71588ba5e241b24b952d55e2a4b0f794..2498bdb894c261f587af6542ea4574c497a6edc0 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -127,8 +127,9 @@ static int barebox_memory_areas_init(void)
- }
- device_initcall(barebox_memory_areas_init);
++ifeq ($(CONFIG_PBL_IMAGE_ELF),y)
++export BAREBOX_PROPER ?= vmbarebox
++else
+ export BAREBOX_PROPER ?= barebox.bin
++endif
  
--__noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
--		unsigned long memsize, struct handoff_data *hd)
-+__noreturn void barebox_non_pbl_start(unsigned long membase,
-+				      unsigned long memsize,
-+				      struct handoff_data *hd)
- {
- 	unsigned long endmem = membase + memsize;
- 	unsigned long malloc_start, malloc_end;
-@@ -139,12 +140,6 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
- 	if (IS_ENABLED(CONFIG_CPU_V7))
- 		armv7_hyp_install();
+ barebox-flash-images: $(KBUILD_IMAGE)
+ 	@echo $^ > $@
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index cab9325d16e8625bcca10125b3281062abffedbc..63f29cd6135926c48b355b80fc7a123b90098c20 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -21,6 +21,15 @@ config PBL_IMAGE_NO_PIGGY
+ 	  want to use the piggy mechanism to load barebox proper.
+ 	  It's so far only intended for sandbox.
  
--	relocate_to_adr(barebox_base);
--
--	setup_c();
--
--	barrier();
--
- 	pbl_barebox_break();
- 
- 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
-@@ -200,7 +195,7 @@ void start(unsigned long membase, unsigned long memsize, struct handoff_data *hd
-  * First function in the uncompressed image. We get here from
-  * the pbl. The stack already has been set up by the pbl.
-  */
--void NAKED __prereloc __section(.text_entry) start(unsigned long membase,
-+void __section(.text_entry) start(unsigned long membase,
- 		unsigned long memsize, struct handoff_data *hd)
- {
- 	barebox_non_pbl_start(membase, memsize, hd);
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index b9fc1d04db96e77c8fcd7fd1930798ea1d9294d7..8cc7102290986e71d2f3a2f34df1a9f946c56ced 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -20,6 +20,7 @@
- #include <asm/mmu.h>
- #include <asm/unaligned.h>
- #include <compressed-dtb.h>
-+#include <elf.h>
- 
- #include <debug_ll.h>
- 
-@@ -41,6 +42,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	void *pg_start, *pg_end;
- 	unsigned long pc = get_pc();
- 	void *handoff_data;
-+	struct elf_image elf;
-+	int ret;
- 
- 	/* piggy data is not relocated, so determine the bounds now */
- 	pg_start = runtime_address(input_data);
-@@ -85,21 +88,30 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	else if (IS_ENABLED(CONFIG_ARMV7R_MPU))
- 		set_cr(get_cr() | CR_C);
- 
--	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
-+	pr_debug("uncompressing barebox ELF at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
- 			pg_start, pg_len, barebox_base, uncompressed_len);
- 
- 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
- 
-+	pr_debug("relocating ELF in place\n");
++config PBL_IMAGE_ELF
++	bool
++	depends on PBL_IMAGE
++	select ELF
++	help
++	  If yes, link ELF image into the PBL, otherwise a raw binary
++	  is linked into the PBL. This must match the loader code in the
++	  PBL.
 +
-+	ret = elf_open_binary_into(&elf, (void *)barebox_base);
-+	if (ret)
-+		panic("Failed to open ELF binary: %d\n", ret);
-+
-+	ret = elf_load_inplace(&elf);
-+	if (ret)
-+		panic("Failed to relocate ELF: %d\n", ret);
-+
-+	pr_debug("ELF entry point: 0x%llx\n", elf.entry);
-+
-+	barebox = (void *)(unsigned long)elf.entry;
-+
- 	handoff_data_move(handoff_data);
- 
- 	sync_caches_for_execution();
- 
--	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
--		barebox = (void *)(barebox_base + 1);
--	else
--		barebox = (void *)barebox_base;
--
--	pr_debug("jumping to uncompressed image at 0x%p\n", barebox);
-+	pr_debug("jumping to ELF entry point at 0x%p\n", barebox);
- 
- 	if (IS_ENABLED(CONFIG_CPU_V7) && boot_cpu_mode() == HYP_MODE)
- 		armv7_switch_to_hyp();
+ config PBL_MULTI_IMAGES
+ 	bool
+ 	select PBL_IMAGE
 
 -- 
 2.47.3
