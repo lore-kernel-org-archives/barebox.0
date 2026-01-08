@@ -1,69 +1,59 @@
-Delivery-date: Thu, 08 Jan 2026 17:06:16 +0100
+Delivery-date: Thu, 08 Jan 2026 17:26:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdsWe-002fkE-2w
+	id 1vdsq0-002gPW-2w
 	for lore@lore.pengutronix.de;
-	Thu, 08 Jan 2026 17:06:16 +0100
+	Thu, 08 Jan 2026 17:26:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdsWe-0002AH-Cq
-	for lore@pengutronix.de; Thu, 08 Jan 2026 17:06:16 +0100
+	id 1vdsq0-0005Hu-CR
+	for lore@pengutronix.de; Thu, 08 Jan 2026 17:26:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IzHXEvLt6wM/cMTzp8QsnaCIylBOAn3JQszjGFgv70I=; b=PUoDaIKsVfH9Fr0zV4Biom7jRC
-	G+ooj5Vm4Zf2Qk1yxLUCzVMXMWCAuWO1O5tAq8EbEfTPc1WffdFOsRagmoCk/qwrR/UgCZOIaR49j
-	bmF8y9VVNe2vLrIQ2Xx7uf/0F3lijSopNo8lhAZwBjt9tf8UUAfAXaE4P59ZF5EMd2fcdaWbMydub
-	aq4Rov7AWzjnfGeAp46eEHuZpPWeKRVRFv/ObfzUOSURDWXtwt1oLSz8bF6EmJOOGupHUG9PEemhG
-	4B/UOHZyIJizassXsV4D/WHpOfsKpbm/7MGJu/D7CUqJ+2wrqlN5fa8uLw7N6lkuWk7l3ktCKrUq3
-	F43b2S0w==;
+	bh=wfPFxXaE+iiFwExJWjujeND65T9YLwNPWaAK1o5r7nw=; b=GWoqoFD98QK7PoSbqe5KHYU8PB
+	sJZZQpdiHPnGuI/WIhyZNt5fXqh+xRIp3OqIHqA/OPU1HrTtKgA8JFGpD2eF75TjwAXbEsVlLzmSV
+	uvwg0B0LXztaoSGv2g50Tl5Bs0VVLr/jiI3zne4u2onhFWVet6CkPLVbub4QYIXU0f5ENAon/p4pc
+	mijfhNt7G6jReDaD1W6d8Ar2uhSqoFc9gzf2nGawRPKp1kgF7sZQMahOP8NQSFIvi6Fskbi+VQWRB
+	EXveG35qbM8NZvV/FEPCgNSgREehVfvcInHSnoIh6piNUfXQ79/hpUHf/igeRZVqhj3znkjKWe4FK
+	EYPEO13g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsW3-000000003Ul-1sjY;
-	Thu, 08 Jan 2026 16:05:39 +0000
+	id 1vdspJ-000000007fv-3IRc;
+	Thu, 08 Jan 2026 16:25:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsW0-000000003Tu-2qgT
+	id 1vdspF-000000007eZ-2wPV
 	for barebox@lists.infradead.org;
-	Thu, 08 Jan 2026 16:05:37 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsVz-0001yL-4K; Thu, 08 Jan 2026 17:05:35 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsVy-009hcb-32;
-	Thu, 08 Jan 2026 17:05:34 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsVy-0000000AOTM-3hTD;
-	Thu, 08 Jan 2026 17:05:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20260108100739.1731988-1-s.hauer@pengutronix.de>
-References: <20260108100739.1731988-1-s.hauer@pengutronix.de>
-Message-Id: <176788833487.2477331.14117449458983208330.b4-ty@pengutronix.de>
-Date: Thu, 08 Jan 2026 17:05:34 +0100
+	Thu, 08 Jan 2026 16:25:32 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vdspD-00058D-Tj; Thu, 08 Jan 2026 17:25:28 +0100
+Message-ID: <a2e7ee66-49b1-4de9-b687-6694a778ac10@pengutronix.de>
+Date: Thu, 8 Jan 2026 17:25:27 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
+References: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
+ <20260108-pbl-load-elf-v3-1-e28c931fc179@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260108-pbl-load-elf-v3-1-e28c931fc179@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260108_080536_719522_86C4A7D2 
-X-CRM114-Status: UNSURE (   9.15  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260108_082531_136939_30E37E97 
+X-CRM114-Status: GOOD (  15.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,36 +71,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] test/strategy.py: optionally don't activate
- BareboxDriver
+Subject: Re: [PATCH v3 01/23] Makefile.compiler: add objcopy-option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Thu, 08 Jan 2026 11:07:39 +0100, Sascha Hauer wrote:
-> When bootstrapping barebox on QEMU with my barebox-bringup utility it
-> brings it to the 'barebox' state before opening a console. The
-> BareboxDriver consumes all console messages in order to bring barebox
-> to the prompt. This is bad for interactive use where one wants to
-> see the console output right from the start.
+On 1/8/26 4:49 PM, Sascha Hauer wrote:
+> Similar to other *-option macros this one is for testing if objcopy
+> flags are supported.
 > 
-> Insert a 'on' state which brings up QEMU but doesn't activate the
-> BareboxDriver.
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> ---
+>  scripts/Makefile.compiler | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> [...]
+> diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+> index 1d34239b3bbaf49dede33f67d69ebeb511b5dc28..f2fdddd07bbef9ea90da219602086b5be591a75d 100644
+> --- a/scripts/Makefile.compiler
+> +++ b/scripts/Makefile.compiler
+> @@ -69,6 +69,11 @@ cc-ifversion = $(shell [ $(call cc-version, $(CC)) $(1) $(2) ] && echo $(3))
+>  ld-option = $(call try-run,\
+>  	$(CC) -x c /dev/null -c -o "$$TMPO" ; $(LD) $(1) "$$TMPO" -o "$$TMP",$(1),$(2))
+>  
+> +# objcopy-option
+> +# Usage: KBUILD_LDFLAGS += $(call objcopy-option,--strip-section-headers,--strip-all)
+> +objcopy-option = $(call try-run,\
+> +        $(CC) -x c /dev/null -c -o "$$TMPO"; $(OBJCOPY) $(1) "$$TMPO" "$$TMP",$(1),$(2))
+> +
+>  # Prefix -I with $(srctree) if it is not an absolute path.
+>  # skip if -I has no parameter
+>  addtree = $(if $(patsubst -I%,%,$(1)), \
+> 
 
-Applied, thanks!
-
-[1/1] test/strategy.py: optionally don't activate BareboxDriver
-      https://git.pengutronix.de/cgit/barebox/commit/?id=624fd6ded3fc (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
