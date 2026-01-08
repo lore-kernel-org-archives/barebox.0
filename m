@@ -1,90 +1,89 @@
-Delivery-date: Thu, 08 Jan 2026 17:02:41 +0100
+Delivery-date: Thu, 08 Jan 2026 17:02:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdsTB-002ffI-2E
+	id 1vdsTC-002ffk-1a
 	for lore@lore.pengutronix.de;
-	Thu, 08 Jan 2026 17:02:41 +0100
+	Thu, 08 Jan 2026 17:02:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vdsT8-00019y-T2
-	for lore@pengutronix.de; Thu, 08 Jan 2026 17:02:41 +0100
+	id 1vdsTB-0001B5-1p
+	for lore@pengutronix.de; Thu, 08 Jan 2026 17:02:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=e6xgPL1u97U8siFAFO2MSeh5bXeYr8J2+4Jlzjfl3cc=; b=f5xo8ztphXtxattpHQ0h9bKai5
-	e9FdhGjpZkqRnHfSSmwXtUHZ0hubDiN+3jcvIf4DmbUMfLM47uNkbOyvqMuYySJINFdiY9HUUSeU0
-	43uGDZ6l7bL4+fwTEENza1oQWBfoKYcpWZ04xplt4Sm00fNUyC39lPpnfIfFZqVVTqqAEIn94Vwgw
-	IxZMZUmW3EjPSuYGnY83TUgqGdLcndjHWPzgszUpUYP+rQliiQDHirGGx/0pQKJI7BhKu/0vAgGhz
-	gvdbRQl+w6s2RLJxE0qMiggvkCOZOFRz48eXLZHLgAEOzkOjek1dqjHpXm0oUW/gjMsbp6Dr/fwX5
-	b+frcsWw==;
+	bh=mlf0ynOtS8uHWfAiSbPQ2QOoZ/5c2Q+TI+PUUvu2qKY=; b=mv3xkLv36Vm1XYs5Tp/lriz5M8
+	UYaPLovlI/rmhLXYCT//nUdVcq1jPmeLE3bKUAKQ1M8PtiLHL5fvI8EAxwJQJG9LMXEvG/mXp+KtZ
+	HXvMZUixgOGjM3f8NUa2vEkT/tCdO+yxNlzoSrBUB/9xdoCryMxYGfT/4Z2zQDVLrWka+emgIg9d0
+	eoa1z7wJlPIP5zyA8YJ+xzwKMLHjkDZHlgcDI6Vq16ym+Y/kgJJAAQLDOpQsnu+jjIY2Unfb3/r6N
+	5HWzFJt3VOd1CPaIGuxl6mlZ2k++n3HCtaeavJNoLlqDewcNzLJDnrGZC33uq3Y0rHhIGY0busHLd
+	O6jkYVyA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsSH-000000001uM-1vZY;
+	id 1vdsSH-000000001wN-39R2;
 	Thu, 08 Jan 2026 16:01:45 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsS6-000000001sV-2o7O
+	id 1vdsS6-000000001sW-2rEg
 	for barebox@bombadil.infradead.org;
 	Thu, 08 Jan 2026 16:01:35 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=e6xgPL1u97U8siFAFO2MSeh5bXeYr8J2+4Jlzjfl3cc=; b=mDOWwxxpfO0NthUKlrKk1OO3FN
-	bHZIX04KzBDbv0B3F5uwdA7dZ7V6KKJYhY7CCgTSYPUku13Q0ri/NTVS0hMFtlowEla2OklwAE3RB
-	FufJLYyIFGESW0c4ZT5GrYZDkQYkr25Tc3I0qF5pi8oA1i1GLhGgU6tfIi2Zp8Sa9zBXqLK1y9j3b
-	sFIjJ3WhOhJxWraxKp8busSaUXj+E+XjigMfy/1BhypCFp1p1oQz/IW9YcdsbSGuxPHtklJgbJT+A
-	SWrSqsYUUf3ZjNb9ExhCDKjXq8/SI4zHPp2lL8euOugkCLEqnEOJMdWE+3P1/RdugIcHihru+pXyW
-	GpiyfvCQ==;
+	bh=mlf0ynOtS8uHWfAiSbPQ2QOoZ/5c2Q+TI+PUUvu2qKY=; b=iYVYYmWd3LfFZOajpv5eRTlDlg
+	eu/gLSapstbC0GkBLMKZuLnJnWABYVjk1SN3BZWl92+esfaCs0x87ITor1W+CKihC23D52V9On1Uh
+	8TbTZ4G3UqHhZ5IwivYVE8Z/K5m3mayBxRQTybeuZdYw8hYsvE+4PSVgrjkusqHeeKrUyD/CAb3ym
+	HLGdskScJgC7dkNS+7YHgSYx5zI7FPo3+hrBadGWVliuJHJj3uJIrOB0WddO2GZ+yekOjEU8babic
+	ewQkCNrBWrhSol+Oe+lhRw9U5IU6i/Yx1TpENlDb3Y1QGO1On3A3MEpQVP8J6Ock/OdsAr1lOrG+3
+	IQCJSgcg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdsS2-0000000DaTi-1bwN
+	id 1vdsS2-0000000DaTh-1bnS
 	for barebox@lists.infradead.org;
 	Thu, 08 Jan 2026 16:01:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsS1-0000Qo-Mt; Thu, 08 Jan 2026 17:01:29 +0100
+	id 1vdsS1-0000Qy-Ot; Thu, 08 Jan 2026 17:01:29 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsS1-009hX0-1Y;
+	id 1vdsS1-009hX3-1r;
 	Thu, 08 Jan 2026 17:01:29 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vdsGv-0000000AN2q-1c6z;
+	id 1vdsGv-0000000AN2q-1cxW;
 	Thu, 08 Jan 2026 16:50:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 08 Jan 2026 16:50:17 +0100
+Date: Thu, 08 Jan 2026 16:50:19 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-pbl-load-elf-v3-20-e28c931fc179@pengutronix.de>
+Message-Id: <20260108-pbl-load-elf-v3-22-e28c931fc179@pengutronix.de>
 References: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
 In-Reply-To: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767887401; l=814;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767887401; l=2844;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Ej+wU3+RaUFPlc5c7uZsa2b43U2UnNPECeSOygKGhVs=;
- b=klCzEhkdf1b5lJRINXCcbDBXq9AZJ6QQh12kUR+5F8gq/RHigFfYOmuaBQuwkEaszpXeAAbDI
- CJaVtvlo+52B8YgPBsnV5Tia7+5hOlb4ssNCml+3de1RlnuwMjVYJPw
+ bh=9EweNDnd/RYm9Q2GEAav6l3TXX6E4csjF1yZVUm9kjI=;
+ b=D5P3wE+bQtEn5PbrX30JEDcPn4KjbXXTvo3DInuykgTLs0iY+6uLBA6MnYKlpvtSTpP0mPdNr
+ tv/DTERIb3gAAK3Vjx9nsy443AhA12/CieNjmT+g86Rxu8vLuQ67Vtn
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260108_160130_512022_447DE248 
-X-CRM114-Status: UNSURE (   8.97  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260108_160130_476490_71D295C7 
+X-CRM114-Status: GOOD (  14.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,7 +95,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -107,32 +106,103 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 20/23] riscv: Allwinner D1: Drop M-Mode
+Subject: [PATCH v3 22/23] ARM: cleanup barebox proper entry
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Allwinner D1 selects both RISCV_M_MODE and RISCV_S_MODE. The board
-code uses barebox_riscv_machine_entry() and not barebox_riscv_machine_entry()
-which indicates RISCV_M_MODE was only selected by accident. Remove it.
+As barebox proper is now an ELF file we no longer need to map the entry
+function to the start of the image. Just link it to wherever the linker
+wants it and drop the text_entry section. Also, remove the start()
+function and set the ELF entry to barebox_non_pbl_start() directly.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+While at it also remove the bare_init stuff from the barebox proper
+linker script as it's only relevant to the PBL linker script which
+is a separate script.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/riscv/Kconfig.socs | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/cpu/start.c         | 11 -----------
+ arch/arm/lib32/barebox.lds.S |  7 +------
+ arch/arm/lib64/barebox.lds.S |  7 +------
+ 3 files changed, 2 insertions(+), 23 deletions(-)
 
-diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-index 4a3b56b5fff48c86901ed0346be490a6847ac14e..0d9984dd2888e6cab81939e3ee97ef83851362a0 100644
---- a/arch/riscv/Kconfig.socs
-+++ b/arch/riscv/Kconfig.socs
-@@ -123,7 +123,6 @@ if SOC_ALLWINNER_SUN20I
- config BOARD_ALLWINNER_D1
- 	bool "Allwinner D1 Nezha"
- 	select RISCV_S_MODE
--	select RISCV_M_MODE
- 	def_bool y
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 2498bdb894c261f587af6542ea4574c497a6edc0..c2f14736dac5948d0b751f2307690420ee4c23ca 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -189,14 +189,3 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
  
- endif
+ 	start_barebox();
+ }
+-
+-void start(unsigned long membase, unsigned long memsize, struct handoff_data *hd);
+-/*
+- * First function in the uncompressed image. We get here from
+- * the pbl. The stack already has been set up by the pbl.
+- */
+-void __section(.text_entry) start(unsigned long membase,
+-		unsigned long memsize, struct handoff_data *hd)
+-{
+-	barebox_non_pbl_start(membase, memsize, hd);
+-}
+diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
+index 2fb43b4619ff29d8d21dd579d3a3002b7134ff71..e1a9495440b3330811561db2e8ea92149756ff8a 100644
+--- a/arch/arm/lib32/barebox.lds.S
++++ b/arch/arm/lib32/barebox.lds.S
+@@ -6,7 +6,7 @@
+ 
+ OUTPUT_FORMAT(BAREBOX_OUTPUT_FORMAT)
+ OUTPUT_ARCH(BAREBOX_OUTPUT_ARCH)
+-ENTRY(start)
++ENTRY(barebox_non_pbl_start)
+ 
+ PHDRS
+ {
+@@ -27,17 +27,12 @@ SECTIONS
+ 	.text      :
+ 	{
+ 		_stext = .;
+-		*(.text_entry*)
+-		__bare_init_start = .;
+-		*(.text_bare_init*)
+-		__bare_init_end = .;
+ 		. = ALIGN(0x20);
+ 		__exceptions_start = .;
+ 		KEEP(*(.text_exceptions*))
+ 		__exceptions_stop = .;
+ 		*(.text*)
+ 	} :text
+-	BAREBOX_BARE_INIT_SIZE
+ 
+ 	. = ALIGN(4096);
+ 	__start_rodata = .;
+diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+index 71f677a917851270e09c6d439fe5cbe4b6b41034..2255eaf503eae3d915f51d5d7ba2e6cdc10f711a 100644
+--- a/arch/arm/lib64/barebox.lds.S
++++ b/arch/arm/lib64/barebox.lds.S
+@@ -5,7 +5,7 @@
+ 
+ OUTPUT_FORMAT(BAREBOX_OUTPUT_FORMAT)
+ OUTPUT_ARCH(BAREBOX_OUTPUT_ARCH)
+-ENTRY(start)
++ENTRY(barebox_non_pbl_start)
+ 
+ PHDRS
+ {
+@@ -26,13 +26,8 @@ SECTIONS
+ 	.text      :
+ 	{
+ 		_stext = .;
+-		*(.text_entry*)
+-		__bare_init_start = .;
+-		*(.text_bare_init*)
+-		__bare_init_end = .;
+ 		*(.text*)
+ 	} :text
+-	BAREBOX_BARE_INIT_SIZE
+ 
+ 	. = ALIGN(4096);
+ 	__start_rodata = .;
 
 -- 
 2.47.3
