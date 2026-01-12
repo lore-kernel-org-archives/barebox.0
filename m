@@ -1,55 +1,53 @@
-Delivery-date: Mon, 12 Jan 2026 09:56:31 +0100
+Delivery-date: Mon, 12 Jan 2026 09:56:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vfDix-000Sne-35
+	id 1vfDjG-000SoN-2m
 	for lore@lore.pengutronix.de;
-	Mon, 12 Jan 2026 09:56:31 +0100
+	Mon, 12 Jan 2026 09:56:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vfDiw-00024V-Vv
-	for lore@pengutronix.de; Mon, 12 Jan 2026 09:56:31 +0100
+	id 1vfDjF-0002Gv-TI
+	for lore@pengutronix.de; Mon, 12 Jan 2026 09:56:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Sg25INpJMCxdUJILySSes3Xc/RCCnYAwEZhVnZw6QhA=; b=KpVz85plAxNzRV1y1qF3K6rzOP
-	dPtlWSzTULPhSt73OrzuV/O/XRHxAmV4pPsw2fbV3Qgwvq5SwSjn9Was9NvHlaVo056NWP+C7/zKl
-	CiQxWE/Htd8j3H/Lmk6uBsd4ev94TJ0oEC2GgnL1lJNaAI4BNJicIsnCIJepCN92x/zCD7lsRnOXO
-	k53pzF7Yjd1WfZ7ADU6tFJA0YJIz5xzm/OY+FDm/aunk5JSnHD5nMZ8EL3a/EVymi0vPPJLljl3r6
-	VWmxTLHCoutNohsRGf7v7Uv2Bz3nrVNmGD0MkMW9iEbhD3HbC2SK2e+C7rod0wnA1Y0HLUxafZR8M
-	aBW2SB7A==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=DtyKmcAh+JWvcSt13J+lywYt3yo1bTiHqoJ+0ktH6RE=; b=BvRAy2cS3ncjvgfm8QArg1Z5+O
+	3NGsmoC+0dH9EYfbnVA4Z4jMPHu27DYoPCa89it9/ODc1rhw+3qOQr/t7EkUZaHN9sqBpizwGSRt4
+	47LVqHdBzpmBWqO4rgqeH2Dlo2PBF4CUBu0gdiNuQzdf8EZ854RWWbGxaOYhM7YSMlyeKyIiPUMyB
+	RpUieJ1Hrj6JhiD3conWkz/8OtHRKlifF5BNCY69rgvA7ekABFi8ughGBJf9PyVdGP15ngim437Kt
+	8L7aaImnHjLZOPEFlXTvuB5VyxGapPRK4kRJCZa57wTUyzoJYf3MjZZHarazMjAgZ9fWf/qzPrTi8
+	Sj03zG8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfDiP-0000000520B-2Rce;
-	Mon, 12 Jan 2026 08:55:57 +0000
+	id 1vfDip-000000052Ck-3Eeo;
+	Mon, 12 Jan 2026 08:56:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfDiN-000000051yw-1XjM
+	id 1vfDin-000000052B2-0JcQ
 	for barebox@lists.infradead.org;
-	Mon, 12 Jan 2026 08:55:56 +0000
+	Mon, 12 Jan 2026 08:56:22 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vfDiL-0001qw-Qm; Mon, 12 Jan 2026 09:55:53 +0100
+	id 1vfDil-0001zv-8s; Mon, 12 Jan 2026 09:56:19 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 12 Jan 2026 09:55:40 +0100
-Message-ID: <20260112085548.2952525-2-a.fatoum@barebox.org>
+Date: Mon, 12 Jan 2026 09:56:04 +0100
+Message-ID: <20260112085617.2952747-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260112085548.2952525-1-a.fatoum@barebox.org>
-References: <20260112085548.2952525-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260112_005555_404693_47441719 
-X-CRM114-Status: UNSURE (   9.41  )
+X-CRM114-CacheID: sfid-20260112_005621_108763_2F59FE72 
+X-CRM114-Status: UNSURE (   8.81  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -72,31 +70,36 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH master 2/3] scripts: Makefile.lib: suppress graph_port warnings for overlays
+Subject: [PATCH 1/3] regulator: bcm2835: register only on Raspberry Pi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In overlays, often only part of a graph is applied with the rest in the
-base device tree, so this warning is seldom useful. Disable it.
+The device was registered whenever the driver was compiled, including in
+multi-platform builds. Guard behind raspberrypi,bcm2835-firmware, until
+this is turned into a "real" driver one day.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- scripts/Makefile.lib | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/bcm2835.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 66e690fbfd67..0dbaa071cfc3 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -397,7 +397,7 @@ ifeq ($(CONFIG_OF_OVERLAY_LIVE), y)
- DTC_FLAGS.dtb += -@
- endif
+diff --git a/drivers/regulator/bcm2835.c b/drivers/regulator/bcm2835.c
+index fa9fc47207b4..9d2803baca24 100644
+--- a/drivers/regulator/bcm2835.c
++++ b/drivers/regulator/bcm2835.c
+@@ -138,8 +138,10 @@ postcore_platform_driver(regulator_bcm2835_driver);
  
--DTC_FLAGS.dtbo += -Wno-avoid_default_addr_size -Wno-reg_format
-+DTC_FLAGS.dtbo += -Wno-avoid_default_addr_size -Wno-reg_format -Wno-graph_port
+ static int regulator_bcm2835_init(void)
+ {
+-	add_generic_device("regulator-bcm2835", DEVICE_ID_SINGLE, NULL,
+-			   0, 0, 0, NULL);
++	if (of_get_compatible_child(of_get_root_node(),
++				    "raspberrypi,bcm2835-firmware"))
++		add_generic_device("regulator-bcm2835", DEVICE_ID_SINGLE, NULL,
++				   0, 0, 0, NULL);
  
- # Generate an assembly file to wrap the output of the device tree compiler
- quiet_cmd_dt_S_dtb = DTB     $@
+ 	return 0;
+ }
 -- 
 2.47.3
 
