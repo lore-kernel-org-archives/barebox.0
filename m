@@ -1,59 +1,59 @@
-Delivery-date: Mon, 12 Jan 2026 14:26:26 +0100
+Delivery-date: Mon, 12 Jan 2026 14:39:14 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vfHwB-000XI5-0j
+	id 1vfI8Z-000XQf-0F
 	for lore@lore.pengutronix.de;
-	Mon, 12 Jan 2026 14:26:26 +0100
+	Mon, 12 Jan 2026 14:39:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vfHwA-0006yi-5v
-	for lore@pengutronix.de; Mon, 12 Jan 2026 14:26:26 +0100
+	id 1vfI8Y-0000Hy-1S
+	for lore@pengutronix.de; Mon, 12 Jan 2026 14:39:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+qCkG5MXlh9q5TB8PK//1/krlMB0DQY2xLAof21WvZU=; b=KUHKDwGEhBVo/Jzg8RANngp+q0
-	CSe5PUdNWG8VhrQ3BLbJ/ISd1e3f2LcOqK3B5utQxJQcDeBz1vGZfAX/6vviNSWMtBnKw0ivagWiX
-	L6wYvqeHZsWQXXjcScToBteok82f9t9zP5MibrFL/gXcfrHROTU4gQsAUq7pQh/p6uI7+78iVvuke
-	04gjIp/+J98m33CfSChdZCy3pdbkP645VTAVCY1fwzrzm3Kohvd6RytUNt9OVwNY0u0nhGxTtJXyr
-	uSAnpmvAnBzZjJqTWZM6yjPaA6IuF9mtlFjgmCQsgd6KFlo3iH8KEC/3xzocuIskwMagqIcL2omaR
-	fFB9WvvQ==;
+	bh=Xdru1htCmRZjp5eE7rQQKu5uzJoo9lR9tcKJCXDiYY8=; b=4LN+9h0e6ftNB3GT3tOh8CXkSt
+	zL8ke62zWaGOOwgTPgInYaLraN9kDOBFaIiDiHiy8SKGmn4BbqaqmGsp9gJoD/IGFwd8Dtrc4dbPG
+	KVrnRwhZnxz69/6WFVpRB2WoG3v3UpEvPu0ltIvb9JphEgimnd4YL32oHpT8b6Bpa+CecjPQ/5sgf
+	7jm8Gl9FYLrPfCw2LyR2hF3XiaUrMhxiTz+BjlIz+HHoAYNRMlR9pZ2+l9Cq/nEUCEAJ+CDPpM8IZ
+	aTQ4Q4/EJBUKfNttz3ARTVI+vo6ZiS92YDZbXsSir7GBJmcLoQ7OYuBb1JiOkAYD928UzSA1n/J14
+	u3HHIu2g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfHvn-00000005P2E-1faX;
-	Mon, 12 Jan 2026 13:26:03 +0000
+	id 1vfI87-00000005QXO-0b3U;
+	Mon, 12 Jan 2026 13:38:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfHvk-00000005P1o-49g1
+	id 1vfI84-00000005QWh-1SWe
 	for barebox@lists.infradead.org;
-	Mon, 12 Jan 2026 13:26:02 +0000
+	Mon, 12 Jan 2026 13:38:45 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vfHvj-0006t9-DL; Mon, 12 Jan 2026 14:25:59 +0100
-Message-ID: <e7819817-d6b7-435a-ab58-8930d521037a@pengutronix.de>
-Date: Mon, 12 Jan 2026 14:25:59 +0100
+	id 1vfI82-0000CG-M8; Mon, 12 Jan 2026 14:38:42 +0100
+Message-ID: <f08142ef-969d-4a91-8f39-6360711c3f35@pengutronix.de>
+Date: Mon, 12 Jan 2026 14:38:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
 References: <20260108-pbl-load-elf-v3-0-e28c931fc179@pengutronix.de>
- <20260108-pbl-load-elf-v3-16-e28c931fc179@pengutronix.de>
+ <20260108-pbl-load-elf-v3-17-e28c931fc179@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260108-pbl-load-elf-v3-16-e28c931fc179@pengutronix.de>
+In-Reply-To: <20260108-pbl-load-elf-v3-17-e28c931fc179@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260112_052601_696604_7C2B4E5B 
-X-CRM114-Status: GOOD (  22.76  )
+X-CRM114-CacheID: sfid-20260112_053844_391843_3797C155 
+X-CRM114-Status: GOOD (  17.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,88 +75,81 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 16/23] ARM: link ELF image into PBL
+Subject: Re: [PATCH v3 17/23] ARM: PBL: setup MMU with proper permissions from
+ ELF segments
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hi,
 
 On 1/8/26 4:50 PM, Sascha Hauer wrote:
-> Instead of linking the raw binary barebox proper image into the PBL link
-> the ELF image into the PBL. With this barebox proper starts with a properly
-> linked and fully initialized C environment, so the calls to
-> relocate_to_adr() and setup_c() can be removed from barebox proper.
+> Move complete MMU setup into PBL by leveraging ELF segment information
+> to apply correct memory permissions before jumping to barebox proper.
 > 
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/Kconfig          |  1 +
->  arch/arm/cpu/start.c      | 13 ++++---------
->  arch/arm/cpu/uncompress.c | 26 +++++++++++++++++++-------
->  3 files changed, 24 insertions(+), 16 deletions(-)
-> 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 5123e9b1402c56db94df6a7a33ae993c61d51fbc..65856977ab41298be36b78c64de857570d575744 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -18,6 +18,7 @@ config ARM
->  	select HW_HAS_PCI
->  	select ARCH_HAS_DMA_WRITE_COMBINE
->  	select HAVE_EFI_LOADER if MMU # for payload unaligned accesses
-> +	select PBL_IMAGE_ELF
->  	default y
->  
->  config ARCH_LINUX_NAME
-> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> index f7d4507e71588ba5e241b24b952d55e2a4b0f794..2498bdb894c261f587af6542ea4574c497a6edc0 100644
-> --- a/arch/arm/cpu/start.c
-> +++ b/arch/arm/cpu/start.c
-> @@ -127,8 +127,9 @@ static int barebox_memory_areas_init(void)
->  }
->  device_initcall(barebox_memory_areas_init);
->  
-> -__noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
-> -		unsigned long memsize, struct handoff_data *hd)
-> +__noreturn void barebox_non_pbl_start(unsigned long membase,
-> +				      unsigned long memsize,
-> +				      struct handoff_data *hd)
+> After ELF relocation, parse PT_LOAD segments and map each with
+> permissions derived from p_flags:
+> - Text segments (PF_R|PF_X): Read-only + executable (MAP_CODE)
+> - Data segments (PF_R|PF_W): Read-write (MAP_CACHED)
+> - RO data segments (PF_R): Read-only (ARCH_MAP_CACHED_RO)
+
+MAP_CACHED_RO is the name now.
+
+> -static inline void remap_range_end_sans_text(unsigned long start, unsigned long end,
+> +static inline void remap_range_end_sans_image(unsigned long start, unsigned long end,
+>  					     unsigned map_type)
 >  {
->  	unsigned long endmem = membase + memsize;
->  	unsigned long malloc_start, malloc_end;
-> @@ -139,12 +140,6 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
->  	if (IS_ENABLED(CONFIG_CPU_V7))
->  		armv7_hyp_install();
->  
-> -	relocate_to_adr(barebox_base);
-> -
-> -	setup_c();
-> -
-> -	barrier();
-> -
->  	pbl_barebox_break();
->  
->  	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
-> @@ -200,7 +195,7 @@ void start(unsigned long membase, unsigned long memsize, struct handoff_data *hd
->   * First function in the uncompressed image. We get here from
->   * the pbl. The stack already has been set up by the pbl.
->   */
-> -void NAKED __prereloc __section(.text_entry) start(unsigned long membase,
-> +void __section(.text_entry) start(unsigned long membase,
->  		unsigned long memsize, struct handoff_data *hd)
+> -	unsigned long text_start = (unsigned long)&_stext;
+> -	unsigned long text_end = (unsigned long)&_etext;
+> +	unsigned long image_start = (unsigned long)&_stext;
+> +	unsigned long image_end = (unsigned long)&_etext;
 
-Just squash the last patch into this one?
+Uhm, __image_start and __image_end, not just the variable names...
 
-> +	ret = elf_load_inplace(&elf);
-> +	if (ret)
-> +		panic("Failed to relocate ELF: %d\n", ret);
+> +	/*
+> +	 * Now that the ELF image is relocated, we know the exact addresses
+> +	 * of all segments. Set up MMU with proper permissions based on
+> +	 * ELF segment flags (PF_R/W/X).
+> +	 */
+> +	if (IS_ENABLED(CONFIG_MMU)) {
+> +		ret = pbl_mmu_setup_from_elf(&elf, membase, memsize);
+
+Add static inline stub to header for !MMU case and drop IS_ENABLED() here?
+
+> +		if (ret) {
+> +			pr_err("Failed to setup MMU from ELF: %d\n", ret);
+> +			hang();
+
+panic()
+
+> +int pbl_mmu_setup_from_elf(struct elf_image *elf, unsigned long membase,
+> +			    unsigned long memsize)
+> +{
+> +	void *phdr;
+> +	int i;
+> +	int phnum = elf_hdr_e_phnum(elf, elf->hdr_buf);
+> +	size_t phoff = elf_hdr_e_phoff(elf, elf->hdr_buf);
+> +	size_t phentsize = elf_size_of_phdr(elf);
 > +
-> +	pr_debug("ELF entry point: 0x%llx\n", elf.entry);
+> +	pr_debug("Setting up MMU from ELF segments\n");
+> +	pr_debug("ELF entry point: 0x%llx\n", elf->entry);
 
-Drop this line as there is already an equivalent print further down.
+Drop this line as CONFIG_DEBUG_PBL enables all pr_debug and this line
+would then be duplicate.
+
+> +		/* Validate alignment - warn and round if needed */
+> +		if (!IS_ALIGNED(addr, PAGE_SIZE) || !IS_ALIGNED(size, PAGE_SIZE)) {
+
+Remove IS_ALIGNED(addr, PAGE_SIZE) as it's not rounded and the message
+is thus not accurate. We shouldn't round it either, just falling through
+to remapping will raise a panic if it's unaligned, which is ok IMO.
+
+
+> +		pbl_remap_range((void *)addr, addr, size, mmu_flags);
+
+Using remap_range() means we can avoid the (void *)addr.
 
 Cheers,
 Ahmad
-
 
 -- 
 Pengutronix e.K.                  |                             |
