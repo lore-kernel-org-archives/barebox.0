@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vg06U-001EYV-2t
+	id 1vg06V-001EYg-0S
 	for lore@lore.pengutronix.de;
 	Wed, 14 Jan 2026 13:36:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vg06T-0005ZU-0s
+	id 1vg06T-0005ZV-2e
 	for lore@pengutronix.de; Wed, 14 Jan 2026 13:36:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,52 +18,52 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3oBtMcRY7omkBLeycmYo71BJaGH4aAtYTgM8hK1E+HE=; b=IQNb9o7h0t1ScwsXe/ogeod0dd
-	zXDZJxxb8O9eRQXaUKI0U2+Mf6kzXicwv8ra1l9rUYgzDiKslbqtuoxPq7SCPVdZCwnCjo5KWZ4tK
-	JmTeg9bIlOODX0rDfAXw1HUKAGbJIAUwEj6NEhH88cv596ltKhpqB3rw/p9gBugNcXZ7Zpq3u5FjS
-	3hjVpenDA9p/+Gbt2YvruXkB3ueKEO8PLmqMgjD5+zn3xifb474atWY+siyUbhYXC6VUwEBW04Ckv
-	KbbNPBvEgdsgtbA5WwKizy7cAvWJyH+7+1aCKrFfXf6u8uYf3cGw6+9YAerNqlHwTq0gAz9bVCYBv
-	ok6kWUNA==;
+	bh=EGm7tRXOTEVXFoCNqP2ch4kNK/LgJCrVwzBoSsWXduQ=; b=AQykb9OtWWeJ+4k93Ow2Zh8qGs
+	biH9m+grfKdsdNKCHJ4hSW+uyRtmxumLMoXcKgTpqZeYSpHR1t2XNnn5s159HkyYU73kSOfTiel3z
+	bt6W5c6NUxlXCsDxhOThq6+SrUUD7LdzMaaUEVA8DqkP38rZc9USYDB1/kdUC7MnjOEUQhvS8pcKU
+	fAP1p+kHV+feEe5m5r6j+2lGiy9wdY3kZ7jhB1DBhq4Sqm5kZ/tJLTZXaF9PhziuYyrYAkMVu8904
+	UoVYe7Mr7GYaS8i1ib2FtyFoUzMg7tatW62EaAhIOq2im2TEBGNpL7klwK9Sv/yL1ipaVjevbtwqC
+	ddQHDQRg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg05r-00000009BzP-1lgL;
-	Wed, 14 Jan 2026 12:35:23 +0000
+	id 1vg05t-00000009C1w-2ZMA;
+	Wed, 14 Jan 2026 12:35:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg05m-00000009BvT-3Q9S
+	id 1vg05m-00000009Bvh-3uHr
 	for barebox@lists.infradead.org;
-	Wed, 14 Jan 2026 12:35:21 +0000
+	Wed, 14 Jan 2026 12:35:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vg05l-00050l-A7; Wed, 14 Jan 2026 13:35:17 +0100
+	id 1vg05l-000510-DF; Wed, 14 Jan 2026 13:35:17 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vg05l-000afO-2X;
+	id 1vg05l-000afS-2p;
 	Wed, 14 Jan 2026 13:35:17 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vfzlc-00000000TKs-17v2;
+	id 1vfzlc-00000000TKs-1AS2;
 	Wed, 14 Jan 2026 13:14:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Jan 2026 13:14:39 +0100
+Date: Wed, 14 Jan 2026 13:14:45 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260114-pbl-load-elf-v4-14-0afa78d95a7e@pengutronix.de>
+Message-Id: <20260114-pbl-load-elf-v4-20-0afa78d95a7e@pengutronix.de>
 References: <20260114-pbl-load-elf-v4-0-0afa78d95a7e@pengutronix.de>
 In-Reply-To: <20260114-pbl-load-elf-v4-0-0afa78d95a7e@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768392868; l=5218;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768392868; l=5039;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=O/yiH5gvpzZ/qPBjOHTzuhkQjz8qOhS9BBXC287KwwY=;
- b=e9GkgtfM1uIWDYsL41icZn8i6YXIoX3biyEPL6bnfFTgeaeuEbNgH2d54o5KD37B5lFjVtR/j
- jwptCVGryreDrVHYD5IbPyVZdS8SvZSPRpMHJy6ZoyulnxzfknRwBn3
+ bh=iMLjYgkMvk/eXecoVNmcAoXFKLSv6JCypNt6TPDeayU=;
+ b=eLmzPQWrSzx7rQNuUxpGUsNSHZSNOC/RUt5X4sqb0xQSRgxm+MblsT+TSFlBptbvHBjBPduLN
+ AgqjNZpRysbAWx8I33LaCcavB7dVOkW/5omYsyeQmyNf7l7HHUcbJGC
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-BeenThere: barebox@lists.infradead.org
@@ -88,161 +88,155 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v4 14/22] ARM: drop arm_fixup_vectors()
+Subject: [PATCH v4 20/22] riscv: link ELF image into PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add the missing "ax" flag for the exception table. With this the jumps
-in the exception table are correctly relocated and we no longer have to
-fix them up during runtime. Remove the now unnecessary
-arm_fixup_vectors().
+Instead of linking the raw binary barebox proper image into the PBL link
+the ELF image into the PBL. With this barebox proper starts with a properly
+linked and fully initialized C environment, so the calls to
+relocate_to_adr() and setup_c() can be removed from barebox proper.
+
+As barebox proper is now an ELF file we no longer need to map the entry
+function to the start of the image. Just link it to wherever the linker
+wants it and drop the text_entry section. Also, remove the start()
+function and set the ELF entry to barebox_non_pbl_start() directly.
+
+While at it also remove the bare_init stuff from the barebox proper
+linker script as it's only relevant to the PBL linker script which
+is a separate script.
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/exceptions_32.S       | 54 +++++---------------------------------
- arch/arm/cpu/interrupts_32.c       |  5 +---
- arch/arm/cpu/mmu_32.c              |  2 --
- arch/arm/cpu/no-mmu.c              |  2 --
- arch/arm/include/asm/barebox-arm.h |  4 ---
- 5 files changed, 8 insertions(+), 59 deletions(-)
+ arch/riscv/Kconfig           |  1 +
+ arch/riscv/boot/start.c      | 19 +------------------
+ arch/riscv/boot/uncompress.c | 21 ++++++++++++++++++++-
+ arch/riscv/lib/barebox.lds.S |  7 +------
+ 4 files changed, 23 insertions(+), 25 deletions(-)
 
-diff --git a/arch/arm/cpu/exceptions_32.S b/arch/arm/cpu/exceptions_32.S
-index dc3d42663cbedd37947e27d449eb4ac8c3d8c3f1..68eb696fc7b78924156172a8867d3c9ed1dce588 100644
---- a/arch/arm/cpu/exceptions_32.S
-+++ b/arch/arm/cpu/exceptions_32.S
-@@ -127,58 +127,18 @@ fiq:
- 	bad_save_user_regs
- 	bl 	do_fiq
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 96d013d8514ac12de5c34a426262d85f8cf021b9..d9794354f4ed2e8bf7276e03b968c566002c2ec6 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -17,6 +17,7 @@ config RISCV
+ 	select HAS_KALLSYMS
+ 	select RISCV_TIMER if RISCV_SBI
+ 	select HW_HAS_PCI
++	select PBL_IMAGE_ELF
+ 	select HAVE_ARCH_BOARD_GENERIC_DT
+ 	select HAVE_ARCH_BOOTM_OFTREE
  
--#ifdef CONFIG_ARM_EXCEPTIONS
--/*
-- * With relocatable binary support the runtime exception vectors do not match
-- * the addresses in the binary. We have to fix them up during runtime
-- */
--ENTRY(arm_fixup_vectors)
--	ldr	r0, =undefined_instruction
--	ldr	r1, =_undefined_instruction
--	str	r0, [r1]
--	ldr	r0, =software_interrupt
--	ldr	r1, =_software_interrupt
--	str	r0, [r1]
--	ldr	r0, =prefetch_abort
--	ldr	r1, =_prefetch_abort
--	str	r0, [r1]
--	ldr	r0, =data_abort
--	ldr	r1, =_data_abort
--	str	r0, [r1]
--	ldr	r0, =irq
--	ldr	r1, =_irq
--	str	r0, [r1]
--	ldr	r0, =fiq
--	ldr	r1, =_fiq
--	str	r0, [r1]
--	bx	lr
--ENDPROC(arm_fixup_vectors)
--#endif
--
--.section .text_exceptions
-+.section .text_exceptions, "ax"
- .globl extable
- extable:
- 1:	b 1b				/* barebox_arm_reset_vector */
- #ifdef CONFIG_ARM_EXCEPTIONS
--	ldr pc, _undefined_instruction	/* undefined instruction */
--	ldr pc, _software_interrupt	/* software interrupt (SWI) */
--	ldr pc, _prefetch_abort		/* prefetch abort */
--	ldr pc, _data_abort		/* data abort */
-+	ldr pc, =undefined_instruction	/* undefined instruction */
-+	ldr pc, =software_interrupt	/* software interrupt (SWI) */
-+	ldr pc, =prefetch_abort		/* prefetch abort */
-+	ldr pc, =data_abort		/* data abort */
- 1:	b 1b				/* (reserved) */
--	ldr pc, _irq			/* irq (interrupt) */
--	ldr pc, _fiq			/* fiq (fast interrupt) */
--.globl _undefined_instruction
--_undefined_instruction: .word undefined_instruction
--.globl _software_interrupt
--_software_interrupt: .word software_interrupt
--.globl _prefetch_abort
--_prefetch_abort: .word prefetch_abort
--.globl _data_abort
--_data_abort: .word data_abort
--.globl _irq
--_irq: .word irq
--.globl _fiq
--_fiq: .word fiq
-+	ldr pc, =irq			/* irq (interrupt) */
-+	ldr pc, =fiq			/* fiq (fast interrupt) */
- #else
- 1:	b 1b				/* undefined instruction */
- 1:	b 1b				/* software interrupt (SWI) */
-diff --git a/arch/arm/cpu/interrupts_32.c b/arch/arm/cpu/interrupts_32.c
-index 0b88db10fe487378fe08018701bc672f63139fc1..af2231f2a78059f7dc6b4a786a384fb870e9f14c 100644
---- a/arch/arm/cpu/interrupts_32.c
-+++ b/arch/arm/cpu/interrupts_32.c
-@@ -231,10 +231,8 @@ static __maybe_unused int arm_init_vectors(void)
- 	 * First try to use the vectors where they actually are, works
- 	 * on ARMv7 and later.
- 	 */
--	if (!set_vector_table((unsigned long)__exceptions_start)) {
--		arm_fixup_vectors();
-+	if (!set_vector_table((unsigned long)__exceptions_start))
- 		return 0;
--	}
- 
- 	/*
- 	 * Next try high vectors at 0xffff0000.
-@@ -265,6 +263,5 @@ void arm_pbl_init_exceptions(void)
- 		return;
- 
- 	set_vbar((unsigned long)__exceptions_start);
--	arm_fixup_vectors();
- }
- #endif
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index eee1385a8f413fdb2fda0539e017c99f99bdea1a..eae5a878e812a1e52a036fde9f46b035f63614a8 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -528,8 +528,6 @@ void create_vector_table(unsigned long adr)
- 			      get_pte_flags(MAP_CACHED), true);
- 	}
- 
--	arm_fixup_vectors();
--
- 	memset(vectors, 0, PAGE_SIZE);
- 	memcpy(vectors, __exceptions_start, __exceptions_stop - __exceptions_start);
- }
-diff --git a/arch/arm/cpu/no-mmu.c b/arch/arm/cpu/no-mmu.c
-index c4ef5d1f9d55136d606c244309dbeeb8fd988784..8e00cffebfd9193a45f5b5ab1863e4e6b13464d8 100644
---- a/arch/arm/cpu/no-mmu.c
-+++ b/arch/arm/cpu/no-mmu.c
-@@ -58,8 +58,6 @@ static int nommu_v7_vectors_init(void)
- 	cr &= ~CR_V;
- 	set_cr(cr);
- 
--	arm_fixup_vectors();
--
- 	vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
- 	memset(vectors, 0, PAGE_SIZE);
- 	memcpy(vectors, __exceptions_start, __exceptions_size);
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index e1d89d5684d36f003ba8da3651ae86bda1d9b34c..99f82311945ceb0d06ef9e36ba34a9be54f1ae8e 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -45,12 +45,8 @@ unsigned long arm_mem_membase_get(void);
- unsigned long arm_mem_endmem_get(void);
- 
- #ifdef CONFIG_ARM_EXCEPTIONS
--void arm_fixup_vectors(void);
- ulong arm_get_vector_table(void);
- #else
--static inline void arm_fixup_vectors(void)
--{
--}
- static inline ulong arm_get_vector_table(void)
+diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
+index 5091340c8a374fc360ab732ba01ec8516e82a83d..15bb91ac1b49ada66375507120256daff6b563f4 100644
+--- a/arch/riscv/boot/start.c
++++ b/arch/riscv/boot/start.c
+@@ -114,7 +114,7 @@ device_initcall(barebox_memory_areas_init);
+  * First function in the uncompressed image. We get here from
+  * the pbl. The stack already has been set up by the pbl.
+  */
+-__noreturn __no_sanitize_address __section(.text_entry)
++__noreturn
+ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
+ 			   void *boarddata)
  {
- 	return ~0;
+@@ -123,12 +123,6 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
+ 	unsigned long barebox_size = barebox_image_size + MAX_BSS_SIZE;
+ 	unsigned long barebox_base = riscv_mem_barebox_image(membase, endmem, barebox_size);
+ 
+-	relocate_to_current_adr();
+-
+-	setup_c();
+-
+-	barrier();
+-
+ 	irq_init_vector(riscv_mode());
+ 
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
+@@ -183,14 +177,3 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	start_barebox();
+ }
+-
+-void start(unsigned long membase, unsigned long memsize, void *boarddata);
+-/*
+- * First function in the uncompressed image. We get here from
+- * the pbl. The stack already has been set up by the pbl.
+- */
+-void __no_sanitize_address __section(.text_entry) start(unsigned long membase,
+-		unsigned long memsize, void *boarddata)
+-{
+-	barebox_non_pbl_start(membase, memsize, boarddata);
+-}
+diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
+index 84142acf9c66fe1fcceb6ae63d15ac078ccddee7..d0eb36accb04bfd27504a931a0b30effc3b8237b 100644
+--- a/arch/riscv/boot/uncompress.c
++++ b/arch/riscv/boot/uncompress.c
+@@ -32,6 +32,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	unsigned long barebox_base;
+ 	void *pg_start, *pg_end;
+ 	unsigned long pc = get_pc();
++	struct elf_image elf;
++	int ret;
+ 
+ 	irq_init_vector(riscv_mode());
+ 
+@@ -68,7 +70,24 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	sync_caches_for_execution();
+ 
+-	barebox = (void *)barebox_base;
++	ret = elf_open_binary_into(&elf, (void *)barebox_base);
++	if (ret) {
++		pr_err("Failed to open ELF binary: %d\n", ret);
++		hang();
++	}
++
++	ret = elf_load_inplace(&elf);
++	if (ret) {
++		pr_err("Failed to relocate ELF: %d\n", ret);
++		hang();
++	}
++
++	/*
++	 * TODO: Add pbl_mmu_setup_from_elf() call when RISC-V PBL
++	 * MMU support is implemented, similar to ARM
++	 */
++
++	barebox = (void *)(unsigned long)elf.entry;
+ 
+ 	pr_debug("jumping to uncompressed image at 0x%p. dtb=0x%p\n", barebox, fdt);
+ 
+diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
+index 0cfa4bff57920bfaed822cb62c553c49f543994c..e2666938097d2a732067f4bd69140a9969eb0cbb 100644
+--- a/arch/riscv/lib/barebox.lds.S
++++ b/arch/riscv/lib/barebox.lds.S
+@@ -14,7 +14,7 @@
+ #include <asm/barebox.lds.h>
+ 
+ OUTPUT_ARCH(BAREBOX_OUTPUT_ARCH)
+-ENTRY(start)
++ENTRY(barebox_non_pbl_start)
+ OUTPUT_FORMAT(BAREBOX_OUTPUT_FORMAT)
+ 
+ PHDRS
+@@ -36,16 +36,11 @@ SECTIONS
+ 	.text      :
+ 	{
+ 		_stext = .;
+-		*(.text_entry*)
+-		__bare_init_start = .;
+-		*(.text_bare_init*)
+-		__bare_init_end = .;
+ 		__exceptions_start = .;
+ 		KEEP(*(.text_exceptions*))
+ 		__exceptions_stop = .;
+ 		*(.text*)
+ 	} :text
+-	BAREBOX_BARE_INIT_SIZE
+ 
+ 	. = ALIGN(4096);
+ 	__start_rodata = .;
 
 -- 
 2.47.3
