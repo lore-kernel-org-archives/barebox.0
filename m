@@ -1,67 +1,67 @@
-Delivery-date: Wed, 14 Jan 2026 13:03:10 +0100
+Delivery-date: Wed, 14 Jan 2026 13:03:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vfzag-001Dny-2n
+	id 1vfzah-001DoM-1h
 	for lore@lore.pengutronix.de;
-	Wed, 14 Jan 2026 13:03:10 +0100
+	Wed, 14 Jan 2026 13:03:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vfzaf-0008Qo-8j
-	for lore@pengutronix.de; Wed, 14 Jan 2026 13:03:10 +0100
+	id 1vfzaf-0008Qu-8j
+	for lore@pengutronix.de; Wed, 14 Jan 2026 13:03:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NA6kwzbK3JsRtrf8J5C8EPu4wec7lIlrCSid/m+O3q8=; b=HLljp7k+4bCOqsiB8Q/CKz569I
-	5zMMhyT9i9OCgh2hLkVT9SsQmUbL/pNRaQurMjX3dBQ1G6qKq5KDfuFk9KmlthldjbwtAhl+UM/I9
-	TQrzpgLdjHIdqnvRPC0HEg3ZRs7MJEQK0CoQLDWpaVxtclVRibmAoSs9rBEBTH/yS0n3AkPHE6Pqf
-	kd0uoIlVQKcsXV1Fn7GcNt33HuPyYNTfSp5f9tvJ6hlzN9BDPAxit7mZ2SyRBFvCGgvS8Zj+pgl0Q
-	onsoa+ujmAjArU4CWqRd5/3KJFknvUr0LRkSNTrFiSAIIN0YIJMa1rdkklaLXq7S3DZL3x/4oSPAX
-	3VeHH66g==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=HrxiFhTae78L3jkML6aGHHa60Y3E2Qg5OS+kSClLnGI=; b=eZp9OATlymuK6XKAGzeP2yOsfL
+	3Gx5SzcACndWdals/BPeuYGq3g6W8ueeUPe+y0eDzz8ePAgj1O5DxIIqUYmWlxyo0ciiEqyOoRz9C
+	qRb3rk8eEQVML+ypfRfQsFroa1M8qqs3/Zyy35zFXD4JZ4dZBnygWljZjSuDYcBLToVGM3HcGJnVB
+	nkBZANmsY0I+IFURGmbQqz3f+0+2HvgX+A8WMgG9qPR/+hcDimXafzt1v7YeB18Dm+11xaLZz62bw
+	sMTlVQFG3zQi+mstcEwwNU6RQC7xgZefAvHJEMsURfilOc56997kcWxAn3bNVQoRPOvCQRyXYFUqI
+	RNNtdvRg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfza6-000000094WO-1Y5U;
-	Wed, 14 Jan 2026 12:02:34 +0000
+	id 1vfza7-000000094Xd-2kNa;
+	Wed, 14 Jan 2026 12:02:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfzZx-000000094TL-1No2
+	id 1vfza4-000000094Vu-2ebO
 	for barebox@lists.infradead.org;
-	Wed, 14 Jan 2026 12:02:30 +0000
+	Wed, 14 Jan 2026 12:02:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vfzZv-00084d-2G; Wed, 14 Jan 2026 13:02:23 +0100
+	id 1vfzZu-00084a-Tf; Wed, 14 Jan 2026 13:02:22 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vfzZv-000a7U-1i;
+	id 1vfzZv-000a7N-1E;
 	Wed, 14 Jan 2026 13:02:22 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vfzZv-00000003xZ4-1pvE;
+	id 1vfzZv-00000003xZ4-1Fin;
 	Wed, 14 Jan 2026 13:02:22 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 14 Jan 2026 13:00:58 +0100
-Message-ID: <20260114120221.941836-4-a.fatoum@pengutronix.de>
+Cc: Marco Felsch <m.felsch@pengutronix.de>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 14 Jan 2026 13:00:55 +0100
+Message-ID: <20260114120221.941836-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260114120221.941836-1-a.fatoum@pengutronix.de>
-References: <20260114120221.941836-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260114_040225_368926_9C7A02D3 
-X-CRM114-Status: GOOD (  11.99  )
+X-CRM114-CacheID: sfid-20260114_040232_694937_17635FF5 
+X-CRM114-Status: GOOD (  12.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,117 +83,45 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/5] ARM: i.MX8M: cosmetic cleanup
+Subject: [PATCH v2 1/5] pbl: fdt: fix fdt_fixup_mem error handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Marco Felsch <m.felsch@pengutronix.de>
 
-Rename the local imx8m_atf_start_bl31() to imx8m_tfa_start_bl31() since
-the official naming is Trusted-Firmware A (TF-A) and not ARM Trusted
-Firmware which was the former name.
-
-While on it rename the parameters to make it clear what firmware
-component is passed and align the function documentation with the
-reality.
+fdt_find_or_add_memory() returns >= 0 on success, so the return must be
+checked to be < 0. Also fix the following pr_warn() which used the wrong
+variable.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Fixes: ae175d4748b1 ("PBL: fdt: add fdt_fixup_mem to fixup memory nodes")
+Cc: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 - > v2:
   - split off preparatory patch from
     https://lore.barebox.org/barebox/20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de/T/#t
+  - Add Fixes:
 ---
- arch/arm/mach-imx/atf.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ pbl/fdt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-index 11fe0334059d..df2991f47827 100644
---- a/arch/arm/mach-imx/atf.c
-+++ b/arch/arm/mach-imx/atf.c
-@@ -19,11 +19,11 @@
- #include <mach/imx/xload.h>
+diff --git a/pbl/fdt.c b/pbl/fdt.c
+index c9820112c644..ac377446caea 100644
+--- a/pbl/fdt.c
++++ b/pbl/fdt.c
+@@ -128,9 +128,9 @@ int fdt_fixup_mem(void *fdt, unsigned long membase[], unsigned long memsize[],
  
- /**
-- * imx8m_atf_load_bl31 - Load ATF BL31 blob and transfer control to it
-+ * imx8m_tfa_start_bl31 - Load TF-A BL31 blob and transfer control to it
-  *
-- * @fw:		Pointer to the BL31 blob
-- * @fw_size:	Size of the BL31 blob
-- * @atf_dest:	Place where the BL31 is copied to and executed
-+ * @tfa:	Pointer to the BL31 blob
-+ * @tfa_size:	Size of the BL31 blob
-+ * @tfa_dest:	Place where the BL31 is copied to and executed
-  *
-  * This function:
-  *
-@@ -37,12 +37,12 @@
-  *     3. Transfers control to BL31
-  */
+ 		snprintf(name, sizeof(name), "memory@%lx", base);
+ 		node = fdt_find_or_add_memory(fdt, root, name);
+-		if (!node) {
++		if (node < 0) {
+ 			pr_warn("%s: Failed to get node: %s\n",
+-				name, fdt_strerror(err));
++				name, fdt_strerror(node));
+ 			continue;
+ 		}
  
--static __noreturn void imx8m_atf_start_bl31(const void *fw, size_t fw_size, void *atf_dest)
-+static __noreturn void imx8m_tfa_start_bl31(const void *tfa_bin, size_t tfa_size, void *tfa_dest)
- {
--	void __noreturn (*bl31)(void) = atf_dest;
-+	void __noreturn (*bl31)(void) = tfa_dest;
- 	int ret;
- 
--	BUG_ON(fw_size > MX8M_ATF_BL31_SIZE_LIMIT);
-+	BUG_ON(tfa_size > MX8M_ATF_BL31_SIZE_LIMIT);
- 
- 	if (IS_ENABLED(CONFIG_FSL_CAAM_RNG_PBL_INIT)) {
- 		ret = imx_early_caam_init(MX8M_CAAM_BASE_ADDR);
-@@ -52,10 +52,10 @@ static __noreturn void imx8m_atf_start_bl31(const void *fw, size_t fw_size, void
- 			pr_debug("CAAM early init successful\n");
- 	}
- 
--	memcpy(bl31, fw, fw_size);
-+	memcpy(bl31, tfa_bin, tfa_size);
- 
- 	asm volatile("msr sp_el2, %0" : :
--		     "r" (atf_dest - 16) :
-+		     "r" (tfa_dest - 16) :
- 		     "cc");
- 	bl31();
- 	__builtin_unreachable();
-@@ -176,7 +176,7 @@ __noreturn void __imx8mm_load_and_start_image_via_tfa(void *bl33)
- 		get_builtin_firmware(imx8mm_bl31_bin, &bl31, &bl31_size);
- 	}
- 
--	imx8m_atf_start_bl31(bl31, bl31_size, (void *)MX8MM_ATF_BL31_BASE_ADDR);
-+	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MM_ATF_BL31_BASE_ADDR);
- }
- 
- void imx8mp_load_bl33(void *bl33)
-@@ -250,10 +250,9 @@ __noreturn void __imx8mp_load_and_start_image_via_tfa(void *bl33)
- 		get_builtin_firmware(imx8mp_bl31_bin, &bl31, &bl31_size);
- 	}
- 
--	imx8m_atf_start_bl31(bl31, bl31_size, (void *)MX8MP_ATF_BL31_BASE_ADDR);
-+	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MP_ATF_BL31_BASE_ADDR);
- }
- 
--
- void imx8mn_load_bl33(void *bl33)
- {
- 	enum bootsource src;
-@@ -325,7 +324,7 @@ __noreturn void __imx8mn_load_and_start_image_via_tfa(void *bl33)
- 		get_builtin_firmware(imx8mn_bl31_bin, &bl31, &bl31_size);
- 	}
- 
--	imx8m_atf_start_bl31(bl31, bl31_size, (void *)MX8MN_ATF_BL31_BASE_ADDR);
-+	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MN_ATF_BL31_BASE_ADDR);
- }
- 
- void imx8mq_load_bl33(void *bl33)
-@@ -393,7 +392,7 @@ __noreturn void __imx8mq_load_and_start_image_via_tfa(void *bl33)
- 		get_builtin_firmware(imx8mq_bl31_bin, &bl31, &bl31_size);
- 	}
- 
--	imx8m_atf_start_bl31(bl31, bl31_size, (void *)MX8MQ_ATF_BL31_BASE_ADDR);
-+	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MQ_ATF_BL31_BASE_ADDR);
- }
- 
- void __noreturn imx93_load_and_start_image_via_tfa(void)
 -- 
 2.47.3
 
