@@ -1,74 +1,74 @@
-Delivery-date: Wed, 14 Jan 2026 13:36:07 +0100
+Delivery-date: Wed, 14 Jan 2026 13:36:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vg06Z-001Eai-2r
+	id 1vg06c-001EbL-2R
 	for lore@lore.pengutronix.de;
-	Wed, 14 Jan 2026 13:36:07 +0100
+	Wed, 14 Jan 2026 13:36:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vg06X-0005el-US
-	for lore@pengutronix.de; Wed, 14 Jan 2026 13:36:07 +0100
+	id 1vg06a-0005gr-KI
+	for lore@pengutronix.de; Wed, 14 Jan 2026 13:36:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IxdgeEIZ0vazOhIWhVJKO87LVOg+/SqYpcUDp66bDvI=; b=o/feMxxyjqxLCVUGxOu0frzR6I
-	nMVtwpGYqeiwd1b2y5Mr/9kn51a0d9mvA/xMSh8kyTb3y2GgrvPkCozCejyKKEiNMk5w1TwSC2Ufm
-	DBG1sHScZByjsV+YHt74++i2IHdnuZnqgJwa4V13G1bUd7liDCd948tCAVeFjpbLWmWK5sn4MJbVk
-	xlyic/c5b5Mi1G2EldW013BrEQoQP76wCHyCUL8vm6Oi+MdwjB5aBiYZtZ6soHb4BMz6IEyp2r5lD
-	h+fv3fBlWj6aEjzLKg4ApI0jcXYIbnPsxezNBCIOIHALLogZsPaupOy+h/IZBwKD0IAVBQv6gQbeH
-	xAJ6vSsg==;
+	bh=s4fmc8HR1/Uu2rnJkK1z1s628Gv4iN1Ha7cVLg+UKjU=; b=WpyjLl9VMV6ciQLxxvdOx2oQLi
+	6MjrdRr7tRlIti+acCN25l/uFl56UASEkuJt6rBjHCGdu/URi7FlVFBkyXkof9y0ospwCkdFR57wY
+	8voiJxKdHQLDTIR0XKzCovGMQ0Mjj8PDn92qZliUYa7nQRqQgOMHwFdIQ1YKaVekcKEqvpLVTWDWk
+	3AlBGeIiOMPgVTLzMJLqHQhy+IbidzNbTdD9kCET+l0/v4kpm6tE4h+wZwSSqvAV0h3UYXA9QxGSE
+	3a02bMSBeeujqraPkogUOlKkTm9T9CAB2/vaDI+GeDdVN9BLCdJNYYrvrTF/IzjqMh4EHsTiWmW/a
+	2I6kpdDA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg05w-00000009C7G-26J0;
-	Wed, 14 Jan 2026 12:35:28 +0000
+	id 1vg05u-00000009C3y-2gQz;
+	Wed, 14 Jan 2026 12:35:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg05m-00000009BvK-2HJt
+	id 1vg05n-00000009Bvk-1FJG
 	for barebox@lists.infradead.org;
-	Wed, 14 Jan 2026 12:35:24 +0000
+	Wed, 14 Jan 2026 12:35:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vg05l-00050D-4S; Wed, 14 Jan 2026 13:35:17 +0100
+	id 1vg05l-00052Y-Rj; Wed, 14 Jan 2026 13:35:17 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vg05l-000afG-1x;
-	Wed, 14 Jan 2026 13:35:16 +0100
+	id 1vg05m-000afl-10;
+	Wed, 14 Jan 2026 13:35:17 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vfzlc-00000000TKs-19b9;
+	id 1vfzlc-00000000TKs-1BGH;
 	Wed, 14 Jan 2026 13:14:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Jan 2026 13:14:43 +0100
+Date: Wed, 14 Jan 2026 13:14:47 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260114-pbl-load-elf-v4-18-0afa78d95a7e@pengutronix.de>
+Message-Id: <20260114-pbl-load-elf-v4-22-0afa78d95a7e@pengutronix.de>
 References: <20260114-pbl-load-elf-v4-0-0afa78d95a7e@pengutronix.de>
 In-Reply-To: <20260114-pbl-load-elf-v4-0-0afa78d95a7e@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768392868; l=10150;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768392868; l=22869;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=R1RJQzGduu3TzI+B1N39NRlz7C+cyNjIgNMjFq4dBtg=;
- b=oCmuktH5NUNeFyRKS/VQa1fKtyNo397DYfPD3fKPcgkKgOLhUQYaS5ITDz+YWzIXUfJmezf11
- VJ1G828g7DuC47KTEYYFoD/a14f4rXB/cr7880W2Jkh8DWC7qQpq1oE
+ bh=/nT716VsH506m0yvFFhOHqbcYUEQJWrylyRE1ndMW5M=;
+ b=j2iaN4/EsOYhgB+NbMLG8fcz5t3+CXpeINehJHazHPoCny8yQX7j1k2OVL9rERqre4LaSx+yB
+ phQUrCbOMpfBfAWZJbxHiyQxZ3NLjqCMOpfQ5hlo+Y5DsFce8zcoOJH
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260114_043520_211434_CDC1F5D3 
-X-CRM114-Status: GOOD (  23.78  )
+X-CRM114-CacheID: sfid-20260114_043520_184044_9AC42C9F 
+X-CRM114-Status: GOOD (  29.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,303 +91,709 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v4 18/22] ARM: PBL: setup MMU with proper permissions from
- ELF segments
+Subject: [PATCH v4 22/22] riscv: add ELF segment-based memory protection
+ with MMU
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Move complete MMU setup into PBL by leveraging ELF segment information
-to apply correct memory permissions before jumping to barebox proper.
+Enable hardware-enforced W^X (Write XOR Execute) memory protection through
+ELF segment-based permissions using the RISC-V MMU.
 
-After ELF relocation, parse PT_LOAD segments and map each with
-permissions derived from p_flags:
-- Text segments (PF_R|PF_X): Read-only + executable (MAP_CODE)
-- Data segments (PF_R|PF_W): Read-write (MAP_CACHED)
-- RO data segments (PF_R): Read-only (MAP_CACHED_RO)
+This implementation provides memory protection for RISC-V S-mode using
+Sv39 (RV64) or Sv32 (RV32) page tables.
 
-This ensures barebox proper starts with full W^X protection already
-in place, eliminating the need for complex remapping in barebox proper.
+S-mode MMU Implementation (mmu.c):
+- Implement page table walking for Sv39/Sv32
+- pbl_remap_range(): remap segments with ELF-derived permissions
+- mmu_early_enable(): create identity mapping and enable SATP CSR
+- Map ELF flags to PTE bits:
+  * MAP_CODE → PTE_R | PTE_X (read + execute)
+  * MAP_CACHED_RO → PTE_R (read only)
+  * MAP_CACHED → PTE_R | PTE_W (read + write)
 
-The framework is portable - common ELF parsing in pbl/mmu.c uses
-architecture-specific early_remap_range() exported from mmu_*.c.
+Integration:
+- Update uncompress.c to call mmu_early_enable() before decompression
+  (enables caching for faster decompression)
+- Call pbl_mmu_setup_from_elf() after ELF relocation to apply final
+  segment-based permissions
+- Uses portable pbl/mmu.c infrastructure to parse PT_LOAD segments
+
+Configuration:
+- Add CONFIG_MMU option (default y for RISCV_S_MODE)
+- Update asm/mmu.h with ARCH_HAS_REMAP and function declarations
+
+Security Benefits:
+- Text sections are read-only and executable (cannot be modified)
+- Read-only data sections are read-only and non-executable
+- Data sections are read-write and non-executable (cannot be executed)
+- Hardware-enforced W^X prevents code injection attacks
+
+This is based on the current ARM implementation.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu-common.c |  29 ++++++-------
- arch/arm/cpu/uncompress.c |  10 +++++
- include/pbl/mmu.h         |  38 ++++++++++++++++
- pbl/Makefile              |   1 +
- pbl/mmu.c                 | 107 ++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 170 insertions(+), 15 deletions(-)
+ arch/riscv/Kconfig           |  17 +++
+ arch/riscv/boot/uncompress.c |  33 ++--
+ arch/riscv/cpu/Makefile      |   1 +
+ arch/riscv/cpu/mmu.c         | 354 +++++++++++++++++++++++++++++++++++++++++++
+ arch/riscv/cpu/mmu.h         | 120 +++++++++++++++
+ arch/riscv/include/asm/asm.h |   3 +-
+ arch/riscv/include/asm/mmu.h |  36 +++++
+ 7 files changed, 553 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index 67317f127cadb138cc2e85bb18c92ab47bc1206f..3a00358d6058b42584ccdbafd398b0ed6229b999 100644
---- a/arch/arm/cpu/mmu-common.c
-+++ b/arch/arm/cpu/mmu-common.c
-@@ -109,28 +109,26 @@ static inline void remap_range_end(unsigned long start, unsigned long end,
- 	remap_range((void *)start, end - start, map_type);
- }
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index d9794354f4ed2e8bf7276e03b968c566002c2ec6..99562c7df8927e11d4de448ad486e49dd5a0d0fd 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -129,4 +129,21 @@ config RISCV_MULTI_MODE
+ config RISCV_SBI
+ 	def_bool RISCV_S_MODE
  
--static inline void remap_range_end_sans_text(unsigned long start, unsigned long end,
-+static inline void remap_range_end_sans_image(unsigned long start, unsigned long end,
- 					     unsigned map_type)
- {
--	unsigned long text_start = (unsigned long)&_stext;
--	unsigned long text_end = (unsigned long)&_etext;
-+	unsigned long image_start = (unsigned long)&__image_start;
-+	unsigned long image_end = (unsigned long)&__image_end;
- 
--	if (region_overlap_end_exclusive(start, end, text_start, text_end)) {
--		remap_range_end(start, text_start, MAP_CACHED);
-+	if (region_overlap_end_exclusive(start, end, image_start, image_end)) {
-+		remap_range_end(start, image_start, MAP_CACHED);
- 		/* skip barebox segments here, will be mapped later */
--		start = text_end;
-+		start = image_end;
- 	}
- 
-+	start = ALIGN(start, PAGE_SIZE);
++config MMU
++	bool "MMU-based memory protection"
++	default y if RISCV_S_MODE
++	help
++	  Enable MMU (Memory Management Unit) support for RISC-V S-mode.
++	  This provides hardware-enforced W^X (Write XOR Execute) memory
++	  protection using page tables (Sv39 for RV64, Sv32 for RV32).
 +
- 	remap_range_end(start, end, MAP_CACHED);
- }
- 
- static void mmu_remap_memory_banks(void)
- {
- 	struct memory_bank *bank;
--	unsigned long code_start = (unsigned long)&_stext;
--	unsigned long code_size = (unsigned long)&__start_rodata - (unsigned long)&_stext;
--	unsigned long rodata_start = (unsigned long)&__start_rodata;
--	unsigned long rodata_size = (unsigned long)&__end_rodata - rodata_start;
- 
- 	/*
- 	 * Early mmu init will have mapped everything but the initial memory area
-@@ -138,6 +136,10 @@ static void mmu_remap_memory_banks(void)
- 	 * all memory banks, so let's map all pages, excluding reserved memory areas
- 	 * and barebox text area cacheable.
- 	 *
-+	 * PBL has already set up the MMU with proper permissions for text, data
-+	 * and rodata based on ELF segment information, so we don't need to remap
-+	 * those here.
-+	 *
- 	 * This code will become much less complex once we switch over to using
- 	 * CONFIG_MEMORY_ATTRIBUTES for MMU as well.
- 	 */
-@@ -150,16 +152,13 @@ static void mmu_remap_memory_banks(void)
- 		/* Skip reserved regions */
- 		for_each_reserved_region(bank, rsv) {
- 			if (pos != rsv->start)
--				remap_range_end_sans_text(pos, rsv->start, MAP_CACHED);
-+				remap_range_end_sans_image(pos, rsv->start, MAP_CACHED);
- 			pos = rsv->end + 1;
- 		}
- 
--		remap_range_end_sans_text(pos, bank->res->end + 1, MAP_CACHED);
-+		remap_range_end_sans_image(pos, bank->res->end + 1, MAP_CACHED);
- 	}
- 
--	remap_range((void *)code_start, code_size, MAP_CODE);
--	remap_range((void *)rodata_start, rodata_size, MAP_CACHED_RO);
--
- 	setup_trap_pages();
- }
- 
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 10df5fcba90b3d5f616a9d16e6bdc5120cf54e9d..9a9f391022c1c78d9652b3a177e591c31fe94246 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -21,6 +21,7 @@
- #include <asm/unaligned.h>
- #include <compressed-dtb.h>
- #include <elf.h>
++	  The PBL sets up page table entries based on ELF segment permissions,
++	  ensuring that:
++	  - Text sections are read-only and executable
++	  - Read-only data sections are read-only and non-executable
++	  - Data sections are read-write and non-executable
++
++	  Say Y if running in S-mode (supervisor mode) with virtual memory.
++	  Say N if running in M-mode or if you don't need memory protection.
++
+ endmenu
+diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
+index d0eb36accb04bfd27504a931a0b30effc3b8237b..703899397e21a663efc22f34a6dd544d24875254 100644
+--- a/arch/riscv/boot/uncompress.c
++++ b/arch/riscv/boot/uncompress.c
+@@ -10,11 +10,14 @@
+ #include <init.h>
+ #include <linux/sizes.h>
+ #include <pbl.h>
 +#include <pbl/mmu.h>
+ #include <asm/barebox-riscv.h>
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
+ #include <asm/unaligned.h>
++#include <asm/mmu.h>
+ #include <asm/irq.h>
++#include <elf.h>
  
  #include <debug_ll.h>
  
-@@ -103,6 +104,15 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	if (ret)
- 		panic("Failed to relocate ELF: %d\n", ret);
+@@ -63,6 +66,14 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	free_mem_ptr = riscv_mem_early_malloc(membase, endmem);
+ 	free_mem_end_ptr = riscv_mem_early_malloc_end(membase, endmem);
  
 +	/*
++	 * Enable MMU early to enable caching for faster decompression.
++	 * This creates an initial identity mapping that will be refined
++	 * later based on ELF segments.
++	 */
++	if (IS_ENABLED(CONFIG_MMU))
++		mmu_early_enable(membase, memsize, barebox_base);
++
+ 	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
+ 			pg_start, pg_len, barebox_base, uncompressed_len);
+ 
+@@ -71,21 +82,23 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	sync_caches_for_execution();
+ 
+ 	ret = elf_open_binary_into(&elf, (void *)barebox_base);
+-	if (ret) {
+-		pr_err("Failed to open ELF binary: %d\n", ret);
+-		hang();
+-	}
++	if (ret)
++		panic("Failed to open ELF binary: %d\n", ret);
+ 
+ 	ret = elf_load_inplace(&elf);
+-	if (ret) {
+-		pr_err("Failed to relocate ELF: %d\n", ret);
+-		hang();
+-	}
++	if (ret)
++		panic("Failed to relocate ELF: %d\n", ret);
++
++	pr_debug("ELF entry point: 0x%llx\n", elf.entry);
+ 
+ 	/*
+-	 * TODO: Add pbl_mmu_setup_from_elf() call when RISC-V PBL
+-	 * MMU support is implemented, similar to ARM
 +	 * Now that the ELF image is relocated, we know the exact addresses
 +	 * of all segments. Set up MMU with proper permissions based on
 +	 * ELF segment flags (PF_R/W/X).
-+	 */
+ 	 */
 +	ret = pbl_mmu_setup_from_elf(&elf, membase, memsize);
 +	if (ret)
-+		panic("Failed to setup MMU from ELF: %d\n", ret);
-+
++		panic("Failed to setup memory protection from ELF: %d\n", ret);
+ 
  	barebox = (void *)(unsigned long)elf.entry;
  
- 	handoff_data_move(handoff_data);
-diff --git a/include/pbl/mmu.h b/include/pbl/mmu.h
+diff --git a/arch/riscv/cpu/Makefile b/arch/riscv/cpu/Makefile
+index d79bafc6f142a0060d2a86078f0fb969b298ba98..6bf31b574cd6242df6393fbdc8accc08dceb822a 100644
+--- a/arch/riscv/cpu/Makefile
++++ b/arch/riscv/cpu/Makefile
+@@ -7,3 +7,4 @@ obj-pbl-$(CONFIG_RISCV_M_MODE) += mtrap.o
+ obj-pbl-$(CONFIG_RISCV_S_MODE) += strap.o
+ obj-pbl-y += interrupts.o
+ endif
++obj-pbl-$(CONFIG_MMU) += mmu.o
+diff --git a/arch/riscv/cpu/mmu.c b/arch/riscv/cpu/mmu.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..72537604e2ed52bb26ac70a5424008f1c4bbde90
+index 0000000000000000000000000000000000000000..bafd597b69447e4464ca50118b866bdf468557fb
 --- /dev/null
-+++ b/include/pbl/mmu.h
-@@ -0,0 +1,38 @@
++++ b/arch/riscv/cpu/mmu.c
+@@ -0,0 +1,354 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2026 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++
++#define pr_fmt(fmt) "mmu: " fmt
++
++#include <common.h>
++#include <init.h>
++#include <mmu.h>
++#include <errno.h>
++#include <linux/sizes.h>
++#include <linux/bitops.h>
++#include <asm/sections.h>
++#include <asm/csr.h>
++
++#include "mmu.h"
++
++/*
++ * Page table storage for early MMU setup in PBL.
++ * Static allocation before BSS is available.
++ */
++static char early_pt_storage[RISCV_EARLY_PAGETABLE_SIZE] __aligned(RISCV_PGSIZE);
++static unsigned int early_pt_idx;
++
++/*
++ * Allocate a page table from the early PBL storage
++ */
++static pte_t *alloc_pte(void)
++{
++	pte_t *pt;
++
++	if ((early_pt_idx + 1) * RISCV_PGSIZE >= RISCV_EARLY_PAGETABLE_SIZE) {
++		pr_err("Out of early page table memory (need more than %d KB)\n",
++		       RISCV_EARLY_PAGETABLE_SIZE / 1024);
++		hang();
++	}
++
++	pt = (pte_t *)(early_pt_storage + early_pt_idx * RISCV_PGSIZE);
++	early_pt_idx++;
++
++	/* Clear the page table */
++	memset(pt, 0, RISCV_PGSIZE);
++
++	return pt;
++}
++
++/*
++ * split_pte - Split a megapage/gigapage PTE into a page table
++ * @pte: Pointer to the PTE to split
++ * @level: Current page table level (0-2 for Sv39)
++ *
++ * This function takes a leaf PTE (megapage/gigapage) and converts it into
++ * a page table pointer with 512 entries, each covering 1/512th of the
++ * original range with identical permissions.
++ *
++ * Example: A 2MB megapage at Level 1 becomes a Level 2 page table with
++ * 512 × 4KB pages, all with the same R/W/X attributes.
++ */
++static void split_pte(pte_t *pte, int level)
++{
++	pte_t old_pte = *pte;
++	pte_t *new_table;
++	pte_t phys_base;
++	pte_t attrs;
++	unsigned long granularity;
++	int i;
++
++	/* If already a table pointer (no RWX bits), nothing to do */
++	if (!(*pte & (PTE_R | PTE_W | PTE_X)))
++		return;
++
++	/* Allocate new page table (512 entries × 8 bytes = 4KB) */
++	new_table = alloc_pte();
++
++	/* Extract physical base address from old PTE */
++	phys_base = (old_pte >> PTE_PPN_SHIFT) << RISCV_PGSHIFT;
++
++	/* Extract permission attributes to replicate */
++	attrs = old_pte & (PTE_R | PTE_W | PTE_X | PTE_A | PTE_D | PTE_U | PTE_G);
++
++	/*
++	 * Calculate granularity of child level.
++	 * Level 0 (1GB) → Level 1 (2MB): granularity = 2MB = 1 << 21
++	 * Level 1 (2MB) → Level 2 (4KB): granularity = 4KB = 1 << 12
++	 *
++	 * Formula: granularity = 1 << (12 + 9 * (Levels - 2 - level))
++	 * For Sv39 (3 levels):
++	 *   level=0: 1 << (12 + 9*1) = 2MB
++	 *   level=1: 1 << (12 + 9*0) = 4KB
++	 */
++	granularity = 1UL << (RISCV_PGSHIFT + RISCV_PGLEVEL_BITS *
++			      (RISCV_PGTABLE_LEVELS - 2 - level));
++
++	/* Populate new table: replicate old mapping across 512 entries */
++	for (i = 0; i < RISCV_PTE_ENTRIES; i++) {
++		unsigned long new_phys = phys_base + (i * granularity);
++		pte_t new_pte = ((new_phys >> RISCV_PGSHIFT) << PTE_PPN_SHIFT) |
++				attrs | PTE_V;
++		new_table[i] = new_pte;
++	}
++
++	/*
++	 * Replace old leaf PTE with table pointer.
++	 * No RWX bits = pointer to next level.
++	 */
++	*pte = (((unsigned long)new_table >> RISCV_PGSHIFT) << PTE_PPN_SHIFT) | PTE_V;
++
++	pr_debug("Split level %d PTE at phys=0x%llx (granularity=%lu KB)\n",
++		 level, (unsigned long long)phys_base, granularity / 1024);
++}
++
++/*
++ * Get the root page table base
++ */
++static pte_t *get_ttb(void)
++{
++	return (pte_t *)early_pt_storage;
++}
++
++/*
++ * Convert maptype flags to PTE permission bits
++ */
++static unsigned long flags_to_pte(maptype_t flags)
++{
++	unsigned long pte = PTE_V;  /* Valid bit always set */
++
++	/*
++	 * Map barebox memory types to RISC-V PTE flags:
++	 * - ARCH_MAP_CACHED_RWX: read + write + execute (early boot, full RAM access)
++	 * - MAP_CODE: read + execute (text sections)
++	 * - MAP_CACHED_RO: read only (rodata sections)
++	 * - MAP_CACHED: read + write (data/bss sections)
++	 * - MAP_UNCACHED: read + write, uncached (device memory)
++	 */
++	switch (flags & MAP_TYPE_MASK) {
++	case ARCH_MAP_CACHED_RWX:
++		/* Full access for early boot: R + W + X */
++		pte |= PTE_R | PTE_W | PTE_X;
++		break;
++	case MAP_CACHED_RO:
++		/* Read-only data: R, no W, no X */
++		pte |= PTE_R;
++		break;
++	case MAP_CODE:
++		/* Code: R + X, no W */
++		pte |= PTE_R | PTE_X;
++		break;
++	case MAP_CACHED: /* TODO: implement */
++	case MAP_UNCACHED:
++	default:
++		/* Data or uncached: R + W, no X */
++		pte |= PTE_R | PTE_W;
++		break;
++	}
++
++	/* Set accessed and dirty bits to avoid hardware updates */
++	pte |= PTE_A | PTE_D;
++
++	return pte;
++}
++
++/*
++ * Walk page tables and get/create PTE for given address at specified level
++ */
++static pte_t *walk_pgtable(unsigned long addr, int target_level)
++{
++	pte_t *table = get_ttb();
++	int level;
++
++	for (level = 0; level < target_level; level++) {
++		unsigned int index = VPN(addr, RISCV_PGTABLE_LEVELS - 1 - level);
++		pte_t *pte = &table[index];
++
++		if (!(*pte & PTE_V)) {
++			/* Entry not valid - allocate new page table */
++			pte_t *new_table = alloc_pte();
++			pte_t new_pte = ((unsigned long)new_table >> RISCV_PGSHIFT) << PTE_PPN_SHIFT;
++			new_pte |= PTE_V;
++			*pte = new_pte;
++			table = new_table;
++		} else if (*pte & (PTE_R | PTE_W | PTE_X)) {
++			/* This is a leaf PTE - split it before descending */
++			split_pte(pte, level);
++			/* After split, PTE is now a table pointer - follow it */
++			table = (pte_t *)(((*pte >> PTE_PPN_SHIFT) << RISCV_PGSHIFT));
++		} else {
++			/* Valid non-leaf PTE - follow to next level */
++			table = (pte_t *)(((*pte >> PTE_PPN_SHIFT) << RISCV_PGSHIFT));
++		}
++	}
++
++	return table;
++}
++
++/*
++ * Create a page table entry mapping virt -> phys with given permissions
++ */
++static void create_pte(unsigned long virt, phys_addr_t phys, maptype_t flags)
++{
++	pte_t *table;
++	unsigned int index;
++	pte_t pte;
++
++	/* Walk to leaf level page table */
++	table = walk_pgtable(virt, RISCV_PGTABLE_LEVELS - 1);
++
++	/* Get index for this address at leaf level */
++	index = VPN(virt, 0);
++
++	/* Build PTE: PPN + flags */
++	pte = (phys >> RISCV_PGSHIFT) << PTE_PPN_SHIFT;
++	pte |= flags_to_pte(flags);
++
++	/* Write PTE */
++	table[index] = pte;
++}
++
++/*
++ * create_megapage - Create a 2MB megapage mapping
++ * @virt: Virtual address (should be 2MB-aligned)
++ * @phys: Physical address (should be 2MB-aligned)
++ * @flags: Mapping flags (MAP_CACHED, etc.)
++ *
++ * Creates a leaf PTE at Level 1 covering 2MB. This is identical to a 4KB
++ * PTE except it's placed at Level 1 instead of Level 2, saving page tables.
++ */
++static void create_megapage(unsigned long virt, phys_addr_t phys, maptype_t flags)
++{
++	pte_t *table;
++	unsigned int index;
++	pte_t pte;
++
++	/* Walk to Level 1 (one level above 4KB leaf) */
++	table = walk_pgtable(virt, RISCV_PGTABLE_LEVELS - 2);
++
++	/* Get VPN[1] index for this address at Level 1 */
++	index = VPN(virt, 1);
++
++	/* Build leaf PTE at Level 1: PPN + RWX flags make it a megapage */
++	pte = (phys >> RISCV_PGSHIFT) << PTE_PPN_SHIFT;
++	pte |= flags_to_pte(flags);
++
++	/* Write megapage PTE */
++	table[index] = pte;
++}
++
++/*
++ * mmu_early_enable - Set up initial MMU with identity mapping
++ *
++ * Called before barebox decompression to enable caching for faster decompression.
++ * Creates a simple identity map of all RAM with RWX permissions.
++ */
++void mmu_early_enable(unsigned long membase, unsigned long memsize,
++		      unsigned long barebox_base)
++{
++	unsigned long addr;
++	unsigned long end = membase + memsize;
++	unsigned long satp;
++
++	pr_debug("Enabling MMU: mem=0x%08lx-0x%08lx barebox=0x%08lx\n",
++		 membase, end, barebox_base);
++
++	/* Reset page table allocator */
++	early_pt_idx = 0;
++
++	/* Allocate root page table */
++	(void)alloc_pte();
++
++	pr_debug("Creating flat identity mapping...\n");
++
++	/*
++	 * Create a flat identity mapping of the lower address space as uncached.
++	 * This ensures I/O devices (UART, etc.) are accessible after MMU is enabled.
++	 * RV64: Map lower 4GB using 2MB megapages (2048 entries).
++	 * RV32: Map entire 4GB using 4MB superpages (1024 entries in root table).
++	 */
++	addr = 0;
++	do {
++		create_megapage(addr, addr, MAP_UNCACHED);
++		addr += RISCV_L1_SIZE;
++	} while (lower_32_bits(addr) != 0);  /* Wraps around to 0 after 0xFFFFFFFF */
++
++	/*
++	 * Remap RAM as cached with RWX permissions using superpages.
++	 * This overwrites the uncached mappings for RAM regions, providing
++	 * better performance. Later, pbl_mmu_setup_from_elf() will split
++	 * superpages as needed to set fine-grained permissions based on ELF segments.
++	 */
++	pr_debug("Remapping RAM 0x%08lx-0x%08lx as cached RWX...\n", membase, end);
++	for (addr = membase; addr < end; addr += RISCV_L1_SIZE)
++		create_megapage(addr, addr, ARCH_MAP_CACHED_RWX);
++
++	pr_debug("Page table setup complete, used %lu KB\n",
++		 (early_pt_idx * RISCV_PGSIZE) / 1024);
++
++	/*
++	 * Enable MMU by setting SATP CSR:
++	 * - MODE field: Sv39 (RV64) or Sv32 (RV32)
++	 * - ASID: 0 (no address space ID)
++	 * - PPN: physical address of root page table
++	 */
++	satp = SATP_MODE | (((unsigned long)get_ttb() >> RISCV_PGSHIFT) & SATP_PPN_MASK);
++
++	pr_debug("Enabling MMU: SATP=0x%08lx\n", satp);
++
++	/* Synchronize before enabling MMU */
++	sfence_vma();
++
++	/* Enable MMU */
++	csr_write(satp, satp);
++
++	/* Synchronize after enabling MMU */
++	sfence_vma();
++
++	pr_debug("MMU enabled with %lu %spages for RAM\n",
++		 (memsize / RISCV_L1_SIZE),
++		 IS_ENABLED(CONFIG_64BIT) ? "2MB mega" : "4MB super");
++}
++
++/*
++ * arch_remap_range - Remap a virtual address range (barebox proper)
++ *
++ * This is the non-PBL version used in barebox proper after full relocation.
++ * Currently provides basic remapping support. For full MMU management in
++ * barebox proper, this would need to be extended with:
++ * - Dynamic page table allocation
++ * - Cache flushing for non-cached mappings
++ * - TLB management
++ * - Support for MAP_FAULT (guard pages)
++ */
++int arch_remap_range(void *virt, phys_addr_t phys, size_t size,
++		     maptype_t map_type)
++{
++	unsigned long addr = (unsigned long)virt;
++	unsigned long end = addr + size;
++
++	pr_debug("Remapping 0x%p-0x%08lx -> 0x%pap (flags=0x%x)\n",
++		 virt, end, &phys, map_type);
++
++	/* Align to page boundaries */
++	addr &= ~(RISCV_PGSIZE - 1);
++	end = ALIGN(end, RISCV_PGSIZE);
++
++	/* Create page table entries for each page in the range */
++	while (addr < end) {
++		create_pte(addr, phys, map_type);
++		addr += RISCV_PGSIZE;
++		phys += RISCV_PGSIZE;
++	}
++
++	/* Flush TLB for the remapped range */
++	sfence_vma();
++
++	return 0;
++}
+diff --git a/arch/riscv/cpu/mmu.h b/arch/riscv/cpu/mmu.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..0222c97fc1ddc507c7bc2f832df60a21d66d25f3
+--- /dev/null
++++ b/arch/riscv/cpu/mmu.h
+@@ -0,0 +1,120 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __PBL_MMU_H
-+#define __PBL_MMU_H
++/* SPDX-FileCopyrightText: 2026 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix */
++
++#ifndef __RISCV_CPU_MMU_H
++#define __RISCV_CPU_MMU_H
 +
 +#include <linux/types.h>
 +
-+struct elf_image;
-+
-+/**
-+ * pbl_mmu_setup_from_elf() - Configure MMU using ELF segment information
-+ * @elf: ELF image structure from elf_open_binary_into()
-+ * @membase: Base address of RAM
-+ * @memsize: Size of RAM
-+ *
-+ * This function sets up the MMU with proper permissions based on ELF
-+ * segment flags. It should be called after elf_load_inplace() has
-+ * relocated the barebox image.
-+ *
-+ * Segment permissions are mapped as follows:
-+ *   PF_R | PF_X  -> Read-only + executable (text)
-+ *   PF_R | PF_W  -> Read-write (data, bss)
-+ *   PF_R         -> Read-only (rodata)
-+ *
-+ * Return: 0 on success, negative error code on failure
++/*
++ * RISC-V MMU constants for Sv39 (RV64) and Sv32 (RV32) page tables
 + */
-+#if IS_ENABLED(CONFIG_MMU)
-+int pbl_mmu_setup_from_elf(struct elf_image *elf, unsigned long membase,
-+			    unsigned long memsize);
++
++/* Page table configuration */
++#define RISCV_PGSHIFT		12
++#define RISCV_PGSIZE		(1UL << RISCV_PGSHIFT)  /* 4KB */
++
++#ifdef CONFIG_64BIT
++/* Sv39: 9-bit VPN fields, 512 entries per table */
++#define RISCV_PGLEVEL_BITS	9
++#define RISCV_PGTABLE_ENTRIES	512
 +#else
-+static inline int pbl_mmu_setup_from_elf(struct elf_image *elf,
-+					 unsigned long membase,
-+					 unsigned long memsize)
-+{
-+	return 0;
-+}
++/* Sv32: 10-bit VPN fields, 1024 entries per table */
++#define RISCV_PGLEVEL_BITS	10
++#define RISCV_PGTABLE_ENTRIES	1024
 +#endif
 +
-+#endif /* __PBL_MMU_H */
-diff --git a/pbl/Makefile b/pbl/Makefile
-index f66391be7b2898388425657f54afcd6e4c72e3db..b78124cdcd2a4690be11d5503006723252b4904f 100644
---- a/pbl/Makefile
-+++ b/pbl/Makefile
-@@ -9,3 +9,4 @@ pbl-$(CONFIG_HAVE_IMAGE_COMPRESSION) += decomp.o
- pbl-$(CONFIG_LIBFDT) += fdt.o
- pbl-$(CONFIG_PBL_CONSOLE) += console.o
- obj-pbl-y += handoff-data.o
-+obj-pbl-$(CONFIG_MMU) += mmu.o
-diff --git a/pbl/mmu.c b/pbl/mmu.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..9227a83b48163e4cd90412c5ea85c7021ee25ab0
---- /dev/null
-+++ b/pbl/mmu.c
-@@ -0,0 +1,107 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2025 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++/* Page table entry (PTE) bit definitions */
++#define PTE_V		(1UL << 0)  /* Valid */
++#define PTE_R		(1UL << 1)  /* Read */
++#define PTE_W		(1UL << 2)  /* Write */
++#define PTE_X		(1UL << 3)  /* Execute */
++#define PTE_U		(1UL << 4)  /* User accessible */
++#define PTE_G		(1UL << 5)  /* Global mapping */
++#define PTE_A		(1UL << 6)  /* Accessed */
++#define PTE_D		(1UL << 7)  /* Dirty */
++#define PTE_RSW_MASK	(3UL << 8)  /* Reserved for software */
 +
-+#define pr_fmt(fmt) "pbl-mmu: " fmt
++/* PTE physical page number (PPN) field position */
++#define PTE_PPN_SHIFT	10
 +
-+#include <common.h>
-+#include <elf.h>
-+#include <mmu.h>
-+#include <pbl/mmu.h>
-+#include <asm/mmu.h>
-+#include <linux/bits.h>
-+#include <linux/sizes.h>
++#ifdef CONFIG_64BIT
++/*
++ * Sv39: 39-bit virtual addressing, 3-level page tables
++ * Virtual address format: [38:30] VPN[2], [29:21] VPN[1], [20:12] VPN[0], [11:0] offset
++ */
++#define RISCV_PGTABLE_LEVELS	3
++#define VA_BITS			39
++#else
++/*
++ * Sv32: 32-bit virtual addressing, 2-level page tables
++ * Virtual address format: [31:22] VPN[1], [21:12] VPN[0], [11:0] offset
++ */
++#define RISCV_PGTABLE_LEVELS	2
++#define VA_BITS			32
++#endif
++
++/* SATP register fields */
++#ifdef CONFIG_64BIT
++#define SATP_PPN_MASK		((1ULL << 44) - 1)  /* Physical page number (Sv39) */
++#else
++#define SATP_PPN_MASK		((1UL << 22) - 1)   /* Physical page number (Sv32) */
++#endif
++
++/* Extract VPN (Virtual Page Number) from virtual address */
++#define VPN_MASK		((1UL << RISCV_PGLEVEL_BITS) - 1)
++#define VPN(addr, level)	(((addr) >> (RISCV_PGSHIFT + (level) * RISCV_PGLEVEL_BITS)) & VPN_MASK)
++
++/* RISC-V page sizes by level */
++#ifdef CONFIG_64BIT
++/* Sv39: 3-level page tables */
++#define RISCV_L2_SHIFT		30	/* 1GB gigapages (Level 0 in Sv39) */
++#define RISCV_L1_SHIFT		21	/* 2MB megapages (Level 1 in Sv39) */
++#define RISCV_L0_SHIFT		12	/* 4KB pages (Level 2 in Sv39) */
++#else
++/* Sv32: 2-level page tables */
++#define RISCV_L1_SHIFT		22	/* 4MB superpages (Level 0 in Sv32) */
++#define RISCV_L0_SHIFT		12	/* 4KB pages (Level 1 in Sv32) */
++#endif
++
++#ifdef CONFIG_64BIT
++#define RISCV_L2_SIZE		(1UL << RISCV_L2_SHIFT)	/* 1GB (RV64 only) */
++#endif
++#define RISCV_L1_SIZE		(1UL << RISCV_L1_SHIFT)	/* 2MB (RV64) or 4MB (RV32) */
++#define RISCV_L0_SIZE		(1UL << RISCV_L0_SHIFT)	/* 4KB */
++
++/* Number of entries per page table (use RISCV_PGTABLE_ENTRIES instead) */
++#define RISCV_PTE_ENTRIES	RISCV_PGTABLE_ENTRIES
++
++/* PTE type - 64-bit on RV64, 32-bit on RV32 */
++#ifdef CONFIG_64BIT
++typedef uint64_t pte_t;
++#else
++typedef uint32_t pte_t;
++#endif
++
++/* Early page table allocation size (PBL) */
++#ifdef CONFIG_64BIT
++/* Sv39: 3 levels, allocate space for root + worst case intermediate tables */
++#define RISCV_EARLY_PAGETABLE_SIZE	(64 * 1024)  /* 64KB */
++#else
++/* Sv32: 2 levels, smaller allocation */
++#define RISCV_EARLY_PAGETABLE_SIZE	(32 * 1024)  /* 32KB */
++#endif
++
++#ifndef __ASSEMBLY__
++
++/* SFENCE.VMA - Synchronize updates to page tables */
++static inline void sfence_vma(void)
++{
++	__asm__ __volatile__ ("sfence.vma" : : : "memory");
++}
++
++static inline void sfence_vma_addr(unsigned long addr)
++{
++	__asm__ __volatile__ ("sfence.vma %0" : : "r" (addr) : "memory");
++}
++
++#endif /* __ASSEMBLY__ */
++
++#endif /* __RISCV_CPU_MMU_H */
+diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.h
+index 9c992a88d858fe6105f16978849f3a564d42b85f..23f60b615ea91e680c57b7b65b868260a761de5e 100644
+--- a/arch/riscv/include/asm/asm.h
++++ b/arch/riscv/include/asm/asm.h
+@@ -9,7 +9,8 @@
+ #ifdef __ASSEMBLY__
+ #define __ASM_STR(x)	x
+ #else
+-#define __ASM_STR(x)	#x
++#define __ASM_STR_HELPER(x)	#x
++#define __ASM_STR(x)	__ASM_STR_HELPER(x)
+ #endif
+ 
+ #if __riscv_xlen == 64
+diff --git a/arch/riscv/include/asm/mmu.h b/arch/riscv/include/asm/mmu.h
+index 1c2646ebb3393f120ad7208109372fef8bc32e81..f487b9c7005f0c4bb89b36b5eb6ee6229e44a3c0 100644
+--- a/arch/riscv/include/asm/mmu.h
++++ b/arch/riscv/include/asm/mmu.h
+@@ -3,6 +3,42 @@
+ #ifndef __ASM_MMU_H
+ #define __ASM_MMU_H
+ 
++#include <linux/types.h>
 +
 +/*
-+ * Map ELF segment permissions (p_flags) to architecture MMU flags
++ * RISC-V supports memory protection through two mechanisms:
++ * - S-mode: Virtual memory with page tables (MMU)
++ * - M-mode: Physical Memory Protection (PMP) regions
 + */
-+static unsigned int elf_flags_to_mmu_flags(u32 p_flags)
-+{
-+	bool readable = p_flags & PF_R;
-+	bool writable = p_flags & PF_W;
-+	bool executable = p_flags & PF_X;
 +
-+	if (readable && writable) {
-+		/* Data, BSS: Read-write, cached, non-executable */
-+		return MAP_CACHED;
-+	} else if (readable && executable) {
-+		/* Text: Read-only, cached, executable */
-+		return MAP_CODE;
-+	} else if (readable) {
-+		/* Read-only data: Read-only, cached, non-executable */
-+		return MAP_CACHED_RO;
-+	} else {
-+		/*
-+		 * Unusual: segment with no read permission.
-+		 * Map as uncached, non-executable for safety.
-+		 */
-+		pr_warn("Segment with unusual permissions: flags=0x%x\n", p_flags);
-+		return MAP_UNCACHED;
-+	}
-+}
++#ifdef CONFIG_MMU
++#define ARCH_HAS_REMAP
++#define MAP_ARCH_DEFAULT MAP_CACHED
 +
-+int pbl_mmu_setup_from_elf(struct elf_image *elf, unsigned long membase,
-+			    unsigned long memsize)
-+{
-+	void *phdr;
-+	int i = -1;
++/* Architecture-specific memory type flags */
++#define ARCH_MAP_CACHED_RWX		MAP_ARCH(2)	/* Cached, RWX (early boot) */
++#define ARCH_MAP_FLAG_PAGEWISE		(1 << 16)	/* Force page-wise mapping */
 +
-+	pr_debug("Setting up MMU from ELF segments\n");
-+	pr_debug("ELF loaded at: 0x%p - 0x%p\n", elf->low_addr, elf->high_addr);
++/*
++ * Early MMU/PMP setup - called before decompression for performance.
++ * S-mode: Sets up basic page tables and enables MMU via SATP CSR.
++ * M-mode: Configures initial PMP regions.
++ */
++void mmu_early_enable(unsigned long membase, unsigned long memsize,
++		      unsigned long barebox_base);
 +
-+	/*
-+	 * Iterate through all PT_LOAD segments and set up MMU permissions
-+	 * based on the segment's p_flags
-+	 */
-+	elf_for_each_segment(phdr, elf, elf->hdr_buf) {
-+		i++;
++/*
++ * Remap a virtual address range with specified memory type (barebox proper).
++ * Used by the generic remap infrastructure after barebox is fully relocated.
++ * Implementation is in arch/riscv/cpu/mmu.c (S-mode) or pmp.c (M-mode).
++ */
++int arch_remap_range(void *virt_addr, phys_addr_t phys_addr, size_t size,
++		     maptype_t map_type);
 +
-+		if (elf_phdr_p_type(elf, phdr) != PT_LOAD)
-+			continue;
++#else
+ #define MAP_ARCH_DEFAULT MAP_UNCACHED
++#endif
 +
-+		u64 p_vaddr = elf_phdr_p_vaddr(elf, phdr);
-+		u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
-+		u32 p_flags = elf_phdr_p_flags(elf, phdr);
-+
-+		/*
-+		 * Calculate actual address after relocation.
-+		 * For ET_EXEC: reloc_offset is 0, use p_vaddr directly
-+		 * For ET_DYN: reloc_offset adjusts virtual to actual address
-+		 */
-+		unsigned long addr = p_vaddr + elf->reloc_offset;
-+		unsigned long size = p_memsz;
-+		unsigned long segment_end = addr + size;
-+
-+		/* Validate segment is within available memory */
-+		if (segment_end < addr || /* overflow check */
-+		    addr < membase ||
-+		    segment_end > membase + memsize) {
-+			pr_err("Segment %d outside memory bounds\n", i);
-+			return -EINVAL;
-+		}
-+
-+		/* Validate alignment - warn and round if needed */
-+		if (!IS_ALIGNED(size, PAGE_SIZE)) {
-+			pr_debug("Segment %d not page-aligned, rounding\n", i);
-+			size = ALIGN(size, PAGE_SIZE);
-+		}
-+
-+		unsigned int mmu_flags = elf_flags_to_mmu_flags(p_flags);
-+
-+		pr_debug("Segment %d: addr=0x%08lx size=0x%08lx flags=0x%x [%c%c%c] -> mmu_flags=0x%x\n",
-+			 i, addr, size, p_flags,
-+			 (p_flags & PF_R) ? 'R' : '-',
-+			 (p_flags & PF_W) ? 'W' : '-',
-+			 (p_flags & PF_X) ? 'X' : '-',
-+			 mmu_flags);
-+
-+		/*
-+		 * Remap this segment with proper permissions.
-+		 * Use page-wise mapping to allow different permissions for
-+		 * different segments even if they're nearby.
-+		 */
-+		remap_range((void *)addr, size, mmu_flags);
-+	}
-+
-+	pr_debug("MMU setup from ELF complete\n");
-+	return 0;
-+}
++#include <mmu.h>
+ 
+ #endif /* __ASM_MMU_H */
 
 -- 
 2.47.3
