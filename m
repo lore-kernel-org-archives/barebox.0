@@ -3,73 +3,69 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vg06V-001EZ2-1a
+	id 1vg06V-001EZC-25
 	for lore@lore.pengutronix.de;
 	Wed, 14 Jan 2026 13:36:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vg06T-0005ZS-0r
-	for lore@pengutronix.de; Wed, 14 Jan 2026 13:36:02 +0100
+	id 1vg06U-0005aa-7u
+	for lore@pengutronix.de; Wed, 14 Jan 2026 13:36:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=S72lHo0vDsRwj5tJkkGCWkKMDher46VcS3gsj6me55Y=; b=DeD0yDoh+lgzXmxCm9XZiJDSto
-	DDzmMcoTOqRNR/yk+4s4cChjRPLqqBQvIdDjV2Nd+3BhSwnueEuePbbRnc7GExFeHfme/0bdHa8UJ
-	G7GlTyi6QfWOfSiCK3W0fHZEGZQHWJQOVMQr9YrZY8uagQCd3spMzp0fvI7NYehlQG9yYYLmOoKvZ
-	Vr0PtXxUo2+2d7zLI2VVbtYcJrWfn7WlSKTQJeSY38bGNSagu4NQ8h234TaJWsB9KL8llqdIRIwUh
-	yVfX5Ca6ewAismpWKS/K591EdMtmQ8vNQlMR6y6vSVFPPmH/GuTFTB+VwyLpK62GPVSJMyWGyvBMx
-	a8GEIm1A==;
+	bh=Fxige9jD3szc4XhvhFk6YwkWc4LBZzbtwc92zdp6WOo=; b=mqcTRvNC7Gs9T7RH68IAhYK1I5
+	0Eo9h09Ho3u5K6JCX1kDbmV0eu5Z/WYqfSiTXyetieMIwurzz6tALTmdkGDnVyNxjTAZIJTZZYqD7
+	CX2NCU1pH6ALA7BBYvkel4C611RrN3rZQwt8Gs+ksAkUO2paetKjmyABgEX9b2WBebDFc4mOA4UYc
+	5a9nATZ75u9m1cmoXARcPKyyxl42Pvq9vxxH/KZglO6Jp2knl5fis6Iu1SaB+rA+78uz4lCN/q7to
+	MZXI/w9cAlXEUBc7UUX3t2FStI6UfY4fH2GpOle0QgAy70DS6ZrWKKvY0ZbbsjdDtiBRBXm0e4Dgj
+	1PSzIauQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg05u-00000009C3N-10ff;
-	Wed, 14 Jan 2026 12:35:26 +0000
+	id 1vg05r-00000009Bzu-3Is4;
+	Wed, 14 Jan 2026 12:35:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg05m-00000009BvX-3kD9
+	id 1vg05m-00000009BvM-2jbf
 	for barebox@lists.infradead.org;
-	Wed, 14 Jan 2026 12:35:23 +0000
+	Wed, 14 Jan 2026 12:35:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vg05l-00051I-Fl; Wed, 14 Jan 2026 13:35:17 +0100
+	id 1vg05l-00050B-1Z; Wed, 14 Jan 2026 13:35:17 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vg05l-000afW-36;
-	Wed, 14 Jan 2026 13:35:17 +0100
+	id 1vg05l-000afD-1g;
+	Wed, 14 Jan 2026 13:35:16 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vfzlc-00000000TKs-18LF;
+	id 1vfzlc-00000000TKs-18pb;
 	Wed, 14 Jan 2026 13:14:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Jan 2026 13:14:40 +0100
+Date: Wed, 14 Jan 2026 13:14:41 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260114-pbl-load-elf-v4-15-0afa78d95a7e@pengutronix.de>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260114-pbl-load-elf-v4-16-0afa78d95a7e@pengutronix.de>
 References: <20260114-pbl-load-elf-v4-0-0afa78d95a7e@pengutronix.de>
 In-Reply-To: <20260114-pbl-load-elf-v4-0-0afa78d95a7e@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768392868; l=4659;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768392868; l=4641;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Z2HWa7EVVn66PpINn0L30Q4US+vhgCG5kKsEVqFIPew=;
- b=lXYbhRp8TF9Qaew09k5pINcduUBWWNJfC3vwRQbxmAIh5LgRk97wD5D77RplPHZ1vuzT3XCut
- KY4ZAQqOGKyClOJ7kSQJQpRFTxjXRtkxJNN8gGOTv9wnk83zFkM1Ktn
+ bh=NzJLpwrSbBRgxF7YF/VAcXu0tC7wR8NUWJSRITYMSDc=;
+ b=TUECVesZvzG6z5FCGbOaUU0NRU3szcPA6hBdkPRcTxYfaAGQD6eleBt8t0OvjKM+TzWPpRjSs
+ sVIbp4nsmJgCRSHDwoOPq1fwx6GOTqX5SPpAq69/UZubNcDFDgTsrMG
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260114_043520_166995_7F345484 
-X-CRM114-Status: UNSURE (   9.82  )
-X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,7 +77,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>
+Cc: "Claude Sonnet 4.5" <noreply@anthropic.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -92,202 +88,134 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v4 15/22] ARM: linker script: create separate PT_LOAD
- segments for text, rodata, and data
+Subject: [PATCH v4 16/22] ARM: link ELF image into PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Fix the linker scripts to generate three distinct PT_LOAD segments with
-correct permissions instead of combining .rodata with .data.
+Instead of linking the raw binary barebox proper image into the PBL link
+the ELF image into the PBL. With this barebox proper starts with a properly
+linked and fully initialized C environment, so the calls to
+relocate_to_adr() and setup_c() can be removed from barebox proper.
 
-Before this fix, the linker auto-generated only two PT_LOAD segments:
-1. Text segment (PF_R|PF_X)
-2. Data segment (PF_R|PF_W) - containing .rodata, .data, .bss, etc.
+Also we no longer have to link the entry point to the beginning of the
+binary as we can jump to the correct ELF entry point. With this we can
+remove the text_entry section.
 
-With explicit PHDRS directives, we now generate three segments:
-1. text segment (PF_R|PF_X): .text and related code sections
-2. rodata segment (PF_R): .rodata and unwind tables
-3. data segment (PF_R|PF_W): .data, .bss, and related sections
-
-With this we can setup the MMU properly from outside the ELF binary.
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib32/barebox.lds.S | 35 +++++++++++++++++++++++------------
- arch/arm/lib64/barebox.lds.S | 31 ++++++++++++++++++++-----------
- 2 files changed, 43 insertions(+), 23 deletions(-)
+ arch/arm/Kconfig          |  1 +
+ arch/arm/cpu/start.c      | 13 ++++---------
+ arch/arm/cpu/uncompress.c | 24 +++++++++++++++++-------
+ 3 files changed, 22 insertions(+), 16 deletions(-)
 
-diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
-index c704dd6d70f3ab157ceb67dfb14760e03f2a5d62..c09899361599dfc8d50b38e35b68c08f48ea9913 100644
---- a/arch/arm/lib32/barebox.lds.S
-+++ b/arch/arm/lib32/barebox.lds.S
-@@ -7,14 +7,23 @@
- OUTPUT_FORMAT(BAREBOX_OUTPUT_FORMAT)
- OUTPUT_ARCH(BAREBOX_OUTPUT_ARCH)
- ENTRY(start)
-+
-+PHDRS
-+{
-+	text PT_LOAD FLAGS(5);		/* PF_R | PF_X */
-+	rodata PT_LOAD FLAGS(4);	/* PF_R */
-+	dynamic PT_DYNAMIC FLAGS(4);	/* PF_R */
-+	data PT_LOAD FLAGS(6);		/* PF_R | PF_W */
-+}
-+
- SECTIONS
- {
- 	. = 0x0;
--	.image_start : { *(.__image_start) }
-+	.image_start : { *(.__image_start) } :text
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 5123e9b1402c56db94df6a7a33ae993c61d51fbc..65856977ab41298be36b78c64de857570d575744 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -18,6 +18,7 @@ config ARM
+ 	select HW_HAS_PCI
+ 	select ARCH_HAS_DMA_WRITE_COMBINE
+ 	select HAVE_EFI_LOADER if MMU # for payload unaligned accesses
++	select PBL_IMAGE_ELF
+ 	default y
  
- 	. = ALIGN(4);
- 
--	._text : { *(._text) }
-+	._text : { *(._text) } :text
- 	.text      :
- 	{
- 		_stext = .;
-@@ -27,7 +36,7 @@ SECTIONS
- 		KEEP(*(.text_exceptions*))
- 		__exceptions_stop = .;
- 		*(.text*)
--	}
-+	} :text
- 	BAREBOX_BARE_INIT_SIZE
- 
- 	. = ALIGN(4096);
-@@ -35,7 +44,7 @@ SECTIONS
- 	.rodata : {
- 		*(.rodata*)
- 		RO_DATA_SECTION
--	}
-+	} :rodata
- 
- #ifdef CONFIG_ARM_UNWIND
- 	/*
-@@ -46,20 +55,22 @@ SECTIONS
- 		__start_unwind_idx = .;
- 		*(.ARM.exidx*)
- 		__stop_unwind_idx = .;
--	}
-+	} :rodata
- 	.ARM.unwind_tab : {
- 		__start_unwind_tab = .;
- 		*(.ARM.extab*)
- 		__stop_unwind_tab = .;
--	}
-+	} :rodata
- #endif
-+	.dynamic : { *(.dynamic) } :rodata :dynamic
-+
- 	. = ALIGN(4096);
-+
- 	__end_rodata = .;
- 	_etext = .;
- 	_sdata = .;
- 
--	. = ALIGN(4);
--	.data : { *(.data*) }
-+	.data : { *(.data*) } :data
- 
- 	. = .;
- 
-@@ -69,12 +80,12 @@ SECTIONS
- 
- 	BAREBOX_EFI_RUNTIME
- 
--	.image_end : { *(.__image_end) }
-+	.image_end : { *(.__image_end) } :data
- 
- 	. = ALIGN(4);
--	.__bss_start :  { *(.__bss_start) }
--	.bss : { *(.bss*) }
--	.__bss_stop :  { *(.__bss_stop) }
-+	.__bss_start :  { *(.__bss_start) } :data
-+	.bss : { *(.bss*) } :data
-+	.__bss_stop :  { *(.__bss_stop) } :data
- 
- #ifdef CONFIG_ARM_SECURE_MONITOR
- 	. = ALIGN(16);
-diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-index 5ee5fbc3741e1f7644c00f9b37c0903c27704a3e..1ce2c67df03068e5328a41b394aa1bcbbe63c027 100644
---- a/arch/arm/lib64/barebox.lds.S
-+++ b/arch/arm/lib64/barebox.lds.S
-@@ -6,14 +6,23 @@
- OUTPUT_FORMAT(BAREBOX_OUTPUT_FORMAT)
- OUTPUT_ARCH(BAREBOX_OUTPUT_ARCH)
- ENTRY(start)
-+
-+PHDRS
-+{
-+	text PT_LOAD FLAGS(5);		/* PF_R | PF_X */
-+	rodata PT_LOAD FLAGS(4);	/* PF_R */
-+	dynamic PT_DYNAMIC FLAGS(4);	/* PF_R */
-+	data PT_LOAD FLAGS(6);		/* PF_R | PF_W */
-+}
-+
- SECTIONS
- {
- 	. = 0x0;
- 
--	.image_start : { *(.__image_start) }
-+	.image_start : { *(.__image_start) } :text
- 
- 	. = ALIGN(4);
--	._text : { *(._text) }
-+	._text : { *(._text) } :text
- 	.text      :
- 	{
- 		_stext = .;
-@@ -22,7 +31,7 @@ SECTIONS
- 		*(.text_bare_init*)
- 		__bare_init_end = .;
- 		*(.text*)
--	}
-+	} :text
- 	BAREBOX_BARE_INIT_SIZE
- 
- 	. = ALIGN(4096);
-@@ -30,7 +39,9 @@ SECTIONS
- 	.rodata : {
- 		*(.rodata*)
- 		RO_DATA_SECTION
--	}
-+	} :rodata
-+
-+	.dynamic : { *(.dynamic) } :rodata :dynamic
- 
- 	. = ALIGN(4096);
- 
-@@ -38,20 +49,18 @@ SECTIONS
- 	_etext = .;
- 	_sdata = .;
- 
--	.data : { *(.data*) }
--
--	BAREBOX_RELOCATION_TABLE
-+	.data : { *(.data*) } :data
- 
- 	_edata = .;
- 
- 	BAREBOX_EFI_RUNTIME
- 
--	.image_end : { *(.__image_end) }
-+	.image_end : { *(.__image_end) } :data
- 
- 	. = ALIGN(4);
--	.__bss_start :  { *(.__bss_start) }
--	.bss : { *(.bss*) }
--	.__bss_stop :  { *(.__bss_stop) }
-+	.__bss_start :  { *(.__bss_start) } :data
-+	.bss : { *(.bss*) } :data
-+	.__bss_stop :  { *(.__bss_stop) } :data
- 	_end = .;
- 	_barebox_image_size = __bss_start;
+ config ARCH_LINUX_NAME
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index f7d4507e71588ba5e241b24b952d55e2a4b0f794..2498bdb894c261f587af6542ea4574c497a6edc0 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -127,8 +127,9 @@ static int barebox_memory_areas_init(void)
  }
+ device_initcall(barebox_memory_areas_init);
+ 
+-__noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
+-		unsigned long memsize, struct handoff_data *hd)
++__noreturn void barebox_non_pbl_start(unsigned long membase,
++				      unsigned long memsize,
++				      struct handoff_data *hd)
+ {
+ 	unsigned long endmem = membase + memsize;
+ 	unsigned long malloc_start, malloc_end;
+@@ -139,12 +140,6 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
+ 	if (IS_ENABLED(CONFIG_CPU_V7))
+ 		armv7_hyp_install();
+ 
+-	relocate_to_adr(barebox_base);
+-
+-	setup_c();
+-
+-	barrier();
+-
+ 	pbl_barebox_break();
+ 
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
+@@ -200,7 +195,7 @@ void start(unsigned long membase, unsigned long memsize, struct handoff_data *hd
+  * First function in the uncompressed image. We get here from
+  * the pbl. The stack already has been set up by the pbl.
+  */
+-void NAKED __prereloc __section(.text_entry) start(unsigned long membase,
++void __section(.text_entry) start(unsigned long membase,
+ 		unsigned long memsize, struct handoff_data *hd)
+ {
+ 	barebox_non_pbl_start(membase, memsize, hd);
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index b9fc1d04db96e77c8fcd7fd1930798ea1d9294d7..10df5fcba90b3d5f616a9d16e6bdc5120cf54e9d 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -20,6 +20,7 @@
+ #include <asm/mmu.h>
+ #include <asm/unaligned.h>
+ #include <compressed-dtb.h>
++#include <elf.h>
+ 
+ #include <debug_ll.h>
+ 
+@@ -41,6 +42,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	void *pg_start, *pg_end;
+ 	unsigned long pc = get_pc();
+ 	void *handoff_data;
++	struct elf_image elf;
++	int ret;
+ 
+ 	/* piggy data is not relocated, so determine the bounds now */
+ 	pg_start = runtime_address(input_data);
+@@ -85,21 +88,28 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	else if (IS_ENABLED(CONFIG_ARMV7R_MPU))
+ 		set_cr(get_cr() | CR_C);
+ 
+-	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
++	pr_debug("uncompressing barebox ELF at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
+ 			pg_start, pg_len, barebox_base, uncompressed_len);
+ 
+ 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
+ 
++	pr_debug("relocating ELF in place\n");
++
++	ret = elf_open_binary_into(&elf, (void *)barebox_base);
++	if (ret)
++		panic("Failed to open ELF binary: %d\n", ret);
++
++	ret = elf_load_inplace(&elf);
++	if (ret)
++		panic("Failed to relocate ELF: %d\n", ret);
++
++	barebox = (void *)(unsigned long)elf.entry;
++
+ 	handoff_data_move(handoff_data);
+ 
+ 	sync_caches_for_execution();
+ 
+-	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
+-		barebox = (void *)(barebox_base + 1);
+-	else
+-		barebox = (void *)barebox_base;
+-
+-	pr_debug("jumping to uncompressed image at 0x%p\n", barebox);
++	pr_debug("jumping to ELF entry point at 0x%p\n", barebox);
+ 
+ 	if (IS_ENABLED(CONFIG_CPU_V7) && boot_cpu_mode() == HYP_MODE)
+ 		armv7_switch_to_hyp();
 
 -- 
 2.47.3
